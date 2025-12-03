@@ -2,36 +2,36 @@
 - (AMSUIWebClientContext)context;
 - (AMSUIWebContainerViewController)currentContainer;
 - (AMSUIWebContainerViewController)rootContainer;
-- (AMSUIWebFlowController)initWithRootContainer:(id)a3 context:(id)a4;
+- (AMSUIWebFlowController)initWithRootContainer:(id)container context:(id)context;
 - (id)dismissViewController;
-- (id)replaceWithPageModel:(id)a3 forContainer:(id)a4 options:(id)a5;
-- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)a3;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_takeSnapshotFromContainer:(id)a3 completion:(id)a4;
-- (void)performSafeTransitionFrom:(id)a3 block:(id)a4;
+- (id)replaceWithPageModel:(id)model forContainer:(id)container options:(id)options;
+- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)presentation;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_takeSnapshotFromContainer:(id)container completion:(id)completion;
+- (void)performSafeTransitionFrom:(id)from block:(id)block;
 - (void)popViewController;
-- (void)popViewControllerToRelativeIndex:(int64_t)a3;
-- (void)presentWithOptions:(id)a3;
-- (void)pushWithOptions:(id)a3;
-- (void)startTimeout:(double)a3 queue:(id)a4 block:(id)a5;
+- (void)popViewControllerToRelativeIndex:(int64_t)index;
+- (void)presentWithOptions:(id)options;
+- (void)pushWithOptions:(id)options;
+- (void)startTimeout:(double)timeout queue:(id)queue block:(id)block;
 - (void)startTimeoutInterruption;
 - (void)stopTimeoutInterruption;
 @end
 
 @implementation AMSUIWebFlowController
 
-- (AMSUIWebFlowController)initWithRootContainer:(id)a3 context:(id)a4
+- (AMSUIWebFlowController)initWithRootContainer:(id)container context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = AMSUIWebFlowController;
   v8 = [(AMSUIWebFlowController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v7);
-    objc_storeWeak(&v9->_rootContainer, v6);
+    objc_storeWeak(&v8->_context, contextCopy);
+    objc_storeWeak(&v9->_rootContainer, containerCopy);
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     timeouts = v9->_timeouts;
     v9->_timeouts = v10;
@@ -43,53 +43,53 @@
 - (AMSUIWebContainerViewController)currentContainer
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AMSUIWebFlowController *)self rootContainer];
-  v4 = [v3 nextContainer];
+  rootContainer = [(AMSUIWebFlowController *)self rootContainer];
+  nextContainer = [rootContainer nextContainer];
 
-  if (v4)
+  if (nextContainer)
   {
     do
     {
-      v5 = [v3 nextContainer];
+      nextContainer2 = [rootContainer nextContainer];
 
-      v6 = [v5 nextContainer];
+      v5NextContainer = [nextContainer2 nextContainer];
 
-      v3 = v5;
+      rootContainer = nextContainer2;
     }
 
-    while (v6);
+    while (v5NextContainer);
   }
 
   else
   {
-    v5 = v3;
+    nextContainer2 = rootContainer;
   }
 
-  return v5;
+  return nextContainer2;
 }
 
 - (id)dismissViewController
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AMSUIWebFlowController *)self currentContainer];
-  v4 = [MEMORY[0x1E698CAC8] currentProcess];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.ios.StoreKitUIService"];
+  currentContainer = [(AMSUIWebFlowController *)self currentContainer];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+  bundleIdentifier = [currentProcess bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.ios.StoreKitUIService"];
 
-  v7 = v3;
+  v7 = currentContainer;
   if (v6)
   {
-    v8 = [(AMSUIWebFlowController *)self currentContainer];
-    v9 = [v8 navigationController];
-    v10 = v9;
-    if (v9)
+    currentContainer2 = [(AMSUIWebFlowController *)self currentContainer];
+    navigationController = [currentContainer2 navigationController];
+    v10 = navigationController;
+    if (navigationController)
     {
-      v11 = v9;
+      v11 = navigationController;
     }
 
     else
     {
-      v11 = v3;
+      v11 = currentContainer;
     }
 
     v7 = v11;
@@ -100,11 +100,11 @@
   v18[1] = 3221225472;
   v18[2] = __47__AMSUIWebFlowController_dismissViewController__block_invoke;
   v18[3] = &unk_1E7F24590;
-  v19 = v3;
-  v20 = self;
+  v19 = currentContainer;
+  selfCopy = self;
   v13 = v12;
   v21 = v13;
-  v14 = v3;
+  v14 = currentContainer;
   [v7 ams_dismissViewControllerAnimated:1 includePresented:1 completion:v18];
   v15 = v21;
   v16 = v13;
@@ -141,18 +141,18 @@ uint64_t __47__AMSUIWebFlowController_dismissViewController__block_invoke(id *a1
   return result;
 }
 
-- (void)performSafeTransitionFrom:(id)a3 block:(id)a4
+- (void)performSafeTransitionFrom:(id)from block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__AMSUIWebFlowController_performSafeTransitionFrom_block___block_invoke;
   v9[3] = &unk_1E7F245E0;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = fromCopy;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = fromCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
@@ -183,11 +183,11 @@ void __58__AMSUIWebFlowController_performSafeTransitionFrom_block___block_invoke
 - (void)popViewController
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AMSUIWebFlowController *)self currentContainer];
-  v7 = [(AMSUIWebFlowController *)self navigationControllerForViewController:v3];
+  currentContainer = [(AMSUIWebFlowController *)self currentContainer];
+  v7 = [(AMSUIWebFlowController *)self navigationControllerForViewController:currentContainer];
 
-  v4 = [v7 viewControllers];
-  v5 = [v4 count];
+  viewControllers = [v7 viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 >= 2)
   {
@@ -196,38 +196,38 @@ void __58__AMSUIWebFlowController_performSafeTransitionFrom_block___block_invoke
   }
 }
 
-- (void)popViewControllerToRelativeIndex:(int64_t)a3
+- (void)popViewControllerToRelativeIndex:(int64_t)index
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AMSUIWebFlowController *)self context];
-  v6 = [v5 flowController];
-  v7 = [v6 currentContainer];
+  context = [(AMSUIWebFlowController *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
 
-  v8 = [v7 pushPresentationDelegate];
+  pushPresentationDelegate = [currentContainer pushPresentationDelegate];
 
-  if (v8)
+  if (pushPresentationDelegate)
   {
     do
     {
-      v21 = [v7 pushPresentationDelegate];
+      pushPresentationDelegate2 = [currentContainer pushPresentationDelegate];
 
-      v9 = [v21 pushPresentationDelegate];
+      v21PushPresentationDelegate = [pushPresentationDelegate2 pushPresentationDelegate];
 
-      v10 = v21;
-      v7 = v21;
+      v10 = pushPresentationDelegate2;
+      currentContainer = pushPresentationDelegate2;
     }
 
-    while (v9);
+    while (v21PushPresentationDelegate);
   }
 
   else
   {
-    v10 = v7;
+    v10 = currentContainer;
   }
 
   v22 = v10;
-  v11 = [(AMSUIWebFlowController *)self currentContainer];
-  v12 = [(AMSUIWebFlowController *)self navigationControllerForViewController:v11];
+  currentContainer2 = [(AMSUIWebFlowController *)self currentContainer];
+  v12 = [(AMSUIWebFlowController *)self navigationControllerForViewController:currentContainer2];
 
   WeakRetained = objc_loadWeakRetained(&self->_context);
   v14 = [v12 settingsCompatibleViewControllers:{objc_msgSend(WeakRetained, "disableSettingsNavigationProxy")}];
@@ -246,8 +246,8 @@ void __58__AMSUIWebFlowController_performSafeTransitionFrom_block___block_invoke
 
   v15 = 0;
 LABEL_10:
-  v18 = v15 + a3;
-  if (a3 || v18 != [v14 count] - 1)
+  v18 = v15 + index;
+  if (index || v18 != [v14 count] - 1)
   {
     if ((v18 & 0x8000000000000000) != 0 || v18 >= [v14 count])
     {
@@ -263,96 +263,96 @@ LABEL_10:
   }
 }
 
-- (void)presentWithOptions:(id)a3
+- (void)presentWithOptions:(id)options
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = objc_opt_class();
-    v8 = [(AMSUIWebFlowController *)self context];
-    v9 = [v8 logKey];
+    context = [(AMSUIWebFlowController *)self context];
+    logKey = [context logKey];
     *buf = 138543618;
     v50 = v7;
     v51 = 2114;
-    v52 = v9;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Presenting new page", buf, 0x16u);
+    v52 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Presenting new page", buf, 0x16u);
   }
 
-  v10 = [(AMSUIWebFlowController *)self currentContainer];
-  v11 = [v4 loadingPage];
-  v12 = [v11 navigationBar];
-  v13 = v12;
-  if (v12)
+  currentContainer = [(AMSUIWebFlowController *)self currentContainer];
+  loadingPage = [optionsCopy loadingPage];
+  navigationBar = [loadingPage navigationBar];
+  v13 = navigationBar;
+  if (navigationBar)
   {
-    v14 = v12;
+    navigationBar2 = navigationBar;
   }
 
   else
   {
-    v14 = [v4 navigationBar];
+    navigationBar2 = [optionsCopy navigationBar];
   }
 
-  v15 = v14;
+  v15 = navigationBar2;
 
   v16 = [AMSUIWebPlaceholderViewController alloc];
-  v17 = [v4 loadingPage];
-  v18 = [(AMSUIWebFlowController *)self context];
-  v19 = [v10 appearance];
-  v20 = [(AMSUIWebPlaceholderViewController *)v16 initWithModel:v17 context:v18 appearance:v19];
+  loadingPage2 = [optionsCopy loadingPage];
+  context2 = [(AMSUIWebFlowController *)self context];
+  appearance = [currentContainer appearance];
+  v20 = [(AMSUIWebPlaceholderViewController *)v16 initWithModel:loadingPage2 context:context2 appearance:appearance];
 
   [(AMSUIWebPlaceholderViewController *)v20 setAnimateFadeIn:1];
-  v21 = [v10 appearance];
-  v22 = [v21 copy];
+  appearance2 = [currentContainer appearance];
+  v22 = [appearance2 copy];
 
   [v22 setClientHandlesDismissability:0];
   v23 = [AMSUIWebContainerViewController alloc];
-  v24 = [(AMSUIWebFlowController *)self context];
-  v25 = [(AMSUIWebContainerViewController *)v23 initWithViewController:v20 appearance:v22 navigationBar:v15 context:v24];
+  context3 = [(AMSUIWebFlowController *)self context];
+  v25 = [(AMSUIWebContainerViewController *)v23 initWithViewController:v20 appearance:v22 navigationBar:v15 context:context3];
 
-  v26 = [v4 pageData];
-  [(AMSUIWebContainerViewController *)v25 setPageInfo:v26];
+  pageData = [optionsCopy pageData];
+  [(AMSUIWebContainerViewController *)v25 setPageInfo:pageData];
 
-  v27 = [(AMSUIWebContainerViewController *)v25 appearance];
-  v28 = [v4 backgroundColor];
-  [v27 updateBackgroundColorWithJSString:v28];
+  appearance3 = [(AMSUIWebContainerViewController *)v25 appearance];
+  backgroundColor = [optionsCopy backgroundColor];
+  [appearance3 updateBackgroundColorWithJSString:backgroundColor];
 
-  [(AMSUIWebContainerViewController *)v25 setModalPresentationDelegate:v10];
-  -[AMSUIWebContainerViewController setContainerIndex:](v25, "setContainerIndex:", [v10 containerIndex] + 1);
-  [v10 setNextContainer:v25];
-  v29 = 2 * ([v4 modalPresentationStyle] != 1);
-  v30 = 2 * ([v4 modalTransitionStyle] == 1);
+  [(AMSUIWebContainerViewController *)v25 setModalPresentationDelegate:currentContainer];
+  -[AMSUIWebContainerViewController setContainerIndex:](v25, "setContainerIndex:", [currentContainer containerIndex] + 1);
+  [currentContainer setNextContainer:v25];
+  v29 = 2 * ([optionsCopy modalPresentationStyle] != 1);
+  v30 = 2 * ([optionsCopy modalTransitionStyle] == 1);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__AMSUIWebFlowController_presentWithOptions___block_invoke;
   aBlock[3] = &unk_1E7F26318;
   v31 = v25;
   v44 = v31;
-  v45 = self;
+  selfCopy = self;
   v47 = v29;
   v48 = v30;
-  v46 = v10;
-  v32 = v10;
+  v46 = currentContainer;
+  v32 = currentContainer;
   v33 = _Block_copy(aBlock);
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __45__AMSUIWebFlowController_presentWithOptions___block_invoke_2;
   v38[3] = &unk_1E7F26368;
-  v39 = v4;
-  v40 = self;
+  v39 = optionsCopy;
+  selfCopy2 = self;
   v41 = v31;
   v42 = v33;
   v34 = v31;
   v35 = v33;
-  v36 = v4;
+  v36 = optionsCopy;
   [(AMSUIWebFlowController *)self _takeSnapshotFromContainer:v32 completion:v38];
 
   v37 = *MEMORY[0x1E69E9840];
@@ -405,109 +405,109 @@ uint64_t __45__AMSUIWebFlowController_presentWithOptions___block_invoke_3(uint64
   return v2();
 }
 
-- (void)pushWithOptions:(id)a3
+- (void)pushWithOptions:(id)options
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AMSUIWebFlowController *)self currentContainer];
-  v6 = [(AMSUIWebFlowController *)self navigationControllerForViewController:v5];
+  currentContainer = [(AMSUIWebFlowController *)self currentContainer];
+  v6 = [(AMSUIWebFlowController *)self navigationControllerForViewController:currentContainer];
 
-  v7 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  v8 = v7;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
   if (v6)
   {
-    if (!v7)
+    if (!mEMORY[0x1E698C968])
     {
-      v8 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v9 = [(AMSUIWebPlaceholderViewController *)v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [(AMSUIWebPlaceholderViewController *)mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v10 = objc_opt_class();
-      v11 = [(AMSUIWebFlowController *)self context];
-      v12 = [v11 logKey];
+      context = [(AMSUIWebFlowController *)self context];
+      logKey = [context logKey];
       *buf = 138543618;
       v47 = v10;
       v48 = 2114;
-      v49 = v12;
-      _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Pushing new page", buf, 0x16u);
+      v49 = logKey;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Pushing new page", buf, 0x16u);
     }
 
-    v13 = [(AMSUIWebFlowController *)self currentContainer];
+    currentContainer2 = [(AMSUIWebFlowController *)self currentContainer];
     v14 = [AMSUIWebPlaceholderViewController alloc];
-    v15 = [v4 loadingPage];
-    v16 = [(AMSUIWebFlowController *)self context];
-    v17 = [v13 appearance];
-    v8 = [(AMSUIWebPlaceholderViewController *)v14 initWithModel:v15 context:v16 appearance:v17];
+    loadingPage = [optionsCopy loadingPage];
+    context2 = [(AMSUIWebFlowController *)self context];
+    appearance = [currentContainer2 appearance];
+    mEMORY[0x1E698C968]2 = [(AMSUIWebPlaceholderViewController *)v14 initWithModel:loadingPage context:context2 appearance:appearance];
 
-    [(AMSUIWebPlaceholderViewController *)v8 setAnimateFadeIn:1];
-    v18 = [v4 loadingPage];
-    v19 = [v18 navigationBar];
-    v20 = v19;
-    if (v19)
+    [(AMSUIWebPlaceholderViewController *)mEMORY[0x1E698C968]2 setAnimateFadeIn:1];
+    loadingPage2 = [optionsCopy loadingPage];
+    navigationBar = [loadingPage2 navigationBar];
+    v20 = navigationBar;
+    if (navigationBar)
     {
-      v21 = v19;
+      navigationBar2 = navigationBar;
     }
 
     else
     {
-      v21 = [v4 navigationBar];
+      navigationBar2 = [optionsCopy navigationBar];
     }
 
-    v22 = v21;
+    oSLogObject2 = navigationBar2;
 
     v26 = [AMSUIWebContainerViewController alloc];
-    v27 = [v13 appearance];
-    v28 = [(AMSUIWebFlowController *)self context];
-    v29 = [(AMSUIWebContainerViewController *)v26 initWithViewController:v8 appearance:v27 navigationBar:v22 context:v28];
+    appearance2 = [currentContainer2 appearance];
+    context3 = [(AMSUIWebFlowController *)self context];
+    v29 = [(AMSUIWebContainerViewController *)v26 initWithViewController:mEMORY[0x1E698C968]2 appearance:appearance2 navigationBar:oSLogObject2 context:context3];
 
-    v30 = [(AMSUIWebContainerViewController *)v29 appearance];
-    v31 = [v4 backgroundColor];
-    [v30 updateBackgroundColorWithJSString:v31];
+    appearance3 = [(AMSUIWebContainerViewController *)v29 appearance];
+    backgroundColor = [optionsCopy backgroundColor];
+    [appearance3 updateBackgroundColorWithJSString:backgroundColor];
 
-    v32 = [v4 pageData];
-    [(AMSUIWebContainerViewController *)v29 setPageInfo:v32];
+    pageData = [optionsCopy pageData];
+    [(AMSUIWebContainerViewController *)v29 setPageInfo:pageData];
 
-    v33 = [v13 modalPresentationDelegate];
-    [(AMSUIWebContainerViewController *)v29 setModalPresentationDelegate:v33];
+    modalPresentationDelegate = [currentContainer2 modalPresentationDelegate];
+    [(AMSUIWebContainerViewController *)v29 setModalPresentationDelegate:modalPresentationDelegate];
 
-    [(AMSUIWebContainerViewController *)v29 setPushPresentationDelegate:v13];
-    -[AMSUIWebContainerViewController setContainerIndex:](v29, "setContainerIndex:", [v13 containerIndex] + 1);
-    [v13 setNextContainer:v29];
+    [(AMSUIWebContainerViewController *)v29 setPushPresentationDelegate:currentContainer2];
+    -[AMSUIWebContainerViewController setContainerIndex:](v29, "setContainerIndex:", [currentContainer2 containerIndex] + 1);
+    [currentContainer2 setNextContainer:v29];
     v38 = MEMORY[0x1E69E9820];
     v39 = 3221225472;
     v40 = __42__AMSUIWebFlowController_pushWithOptions___block_invoke;
     v41 = &unk_1E7F24A88;
-    v42 = v4;
-    v43 = self;
-    v44 = v13;
+    v42 = optionsCopy;
+    selfCopy = self;
+    v44 = currentContainer2;
     v45 = v29;
     v34 = v29;
-    v35 = v13;
+    v35 = currentContainer2;
     v36 = _Block_copy(&v38);
     [(AMSUIWebFlowController *)self _takeSnapshotFromContainer:v35 completion:v36, v38, v39, v40, v41];
   }
 
   else
   {
-    if (!v7)
+    if (!mEMORY[0x1E698C968])
     {
-      v8 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v22 = [(AMSUIWebPlaceholderViewController *)v8 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [(AMSUIWebPlaceholderViewController *)mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v23 = objc_opt_class();
-      v24 = [(AMSUIWebFlowController *)self context];
-      v25 = [v24 logKey];
+      context4 = [(AMSUIWebFlowController *)self context];
+      logKey2 = [context4 logKey];
       *buf = 138543618;
       v47 = v23;
       v48 = 2114;
-      v49 = v25;
-      _os_log_impl(&dword_1BB036000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Push failed, no navigation controller found.", buf, 0x16u);
+      v49 = logKey2;
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Push failed, no navigation controller found.", buf, 0x16u);
     }
   }
 
@@ -556,35 +556,35 @@ void __42__AMSUIWebFlowController_pushWithOptions___block_invoke_2(uint64_t a1)
   [v4 settingsCompatiblePushViewController:v2 disableProxy:{objc_msgSend(v3, "disableSettingsNavigationProxy")}];
 }
 
-- (id)replaceWithPageModel:(id)a3 forContainer:(id)a4 options:(id)a5
+- (id)replaceWithPageModel:(id)model forContainer:(id)container options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  containerCopy = container;
+  optionsCopy = options;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v11 = [v8 loadPage];
-  objc_initWeak(&location, v9);
+  loadPage = [modelCopy loadPage];
+  objc_initWeak(&location, containerCopy);
   objc_initWeak(&from, self);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68__AMSUIWebFlowController_replaceWithPageModel_forContainer_options___block_invoke;
   v17[3] = &unk_1E7F263B8;
   v17[4] = self;
-  v12 = v8;
+  v12 = modelCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = containerCopy;
   v19 = v13;
   objc_copyWeak(&v21, &location);
   objc_copyWeak(&v22, &from);
-  v14 = v10;
+  v14 = optionsCopy;
   v20 = v14;
-  [v11 addSuccessBlock:v17];
+  [loadPage addSuccessBlock:v17];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __68__AMSUIWebFlowController_replaceWithPageModel_forContainer_options___block_invoke_12;
   v16[3] = &unk_1E7F24410;
   v16[4] = self;
-  [v11 addErrorBlock:v16];
+  [loadPage addErrorBlock:v16];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v21);
@@ -592,7 +592,7 @@ void __42__AMSUIWebFlowController_pushWithOptions___block_invoke_2(uint64_t a1)
   objc_destroyWeak(&from);
   objc_destroyWeak(&location);
 
-  return v11;
+  return loadPage;
 }
 
 void __68__AMSUIWebFlowController_replaceWithPageModel_forContainer_options___block_invoke(uint64_t a1)
@@ -742,34 +742,34 @@ void __68__AMSUIWebFlowController_replaceWithPageModel_forContainer_options___bl
 - (void)startTimeoutInterruption
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIWebFlowController *)self timeoutLock];
-  [v3 lock];
+  timeoutLock = [(AMSUIWebFlowController *)self timeoutLock];
+  [timeoutLock lock];
 
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v6 = objc_opt_class();
-    v7 = [(AMSUIWebFlowController *)self context];
-    v8 = [v7 logKey];
+    context = [(AMSUIWebFlowController *)self context];
+    logKey = [context logKey];
     *buf = 138543618;
     v22 = v6;
     v23 = 2114;
-    v24 = v8;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Starting timeout interruption.", buf, 0x16u);
+    v24 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Starting timeout interruption.", buf, 0x16u);
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(AMSUIWebFlowController *)self timeouts];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  timeouts = [(AMSUIWebFlowController *)self timeouts];
+  v10 = [timeouts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -781,68 +781,68 @@ void __68__AMSUIWebFlowController_replaceWithPageModel_forContainer_options___bl
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(timeouts);
         }
 
         [*(*(&v16 + 1) + 8 * v13++) pause];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [timeouts countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [(AMSUIWebFlowController *)self timeoutLock];
-  [v14 unlock];
+  timeoutLock2 = [(AMSUIWebFlowController *)self timeoutLock];
+  [timeoutLock2 unlock];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTimeout:(double)a3 queue:(id)a4 block:(id)a5
+- (void)startTimeout:(double)timeout queue:(id)queue block:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  blockCopy = block;
   v9 = MEMORY[0x1E698C968];
-  v10 = a4;
-  v11 = [v9 sharedWebUIConfig];
-  if (!v11)
+  queueCopy = queue;
+  sharedWebUIConfig = [v9 sharedWebUIConfig];
+  if (!sharedWebUIConfig)
   {
-    v11 = [MEMORY[0x1E698C968] sharedConfig];
+    sharedWebUIConfig = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [sharedWebUIConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v13 = objc_opt_class();
-    v14 = [(AMSUIWebFlowController *)self context];
-    v15 = [v14 logKey];
+    context = [(AMSUIWebFlowController *)self context];
+    logKey = [context logKey];
     *buf = 138543618;
     v29 = v13;
     v30 = 2114;
-    v31 = v15;
-    _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Starting timeout...", buf, 0x16u);
+    v31 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Starting timeout...", buf, 0x16u);
   }
 
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __51__AMSUIWebFlowController_startTimeout_queue_block___block_invoke;
   v25 = &unk_1E7F263E0;
-  v26 = self;
-  v27 = v8;
-  v16 = v8;
-  v17 = [AMSUIWebFlowTimeout timeoutWithTimeout:v10 queue:&v22 block:a3];
+  selfCopy = self;
+  v27 = blockCopy;
+  v16 = blockCopy;
+  v17 = [AMSUIWebFlowTimeout timeoutWithTimeout:queueCopy queue:&v22 block:timeout];
 
   v18 = [(AMSUIWebFlowController *)self timeoutLock:v22];
   [v18 lock];
 
-  v19 = [(AMSUIWebFlowController *)self timeouts];
-  [v19 addObject:v17];
+  timeouts = [(AMSUIWebFlowController *)self timeouts];
+  [timeouts addObject:v17];
 
   [v17 start];
-  v20 = [(AMSUIWebFlowController *)self timeoutLock];
-  [v20 unlock];
+  timeoutLock = [(AMSUIWebFlowController *)self timeoutLock];
+  [timeoutLock unlock];
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -868,34 +868,34 @@ uint64_t __51__AMSUIWebFlowController_startTimeout_queue_block___block_invoke(ui
 - (void)stopTimeoutInterruption
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIWebFlowController *)self timeoutLock];
-  [v3 lock];
+  timeoutLock = [(AMSUIWebFlowController *)self timeoutLock];
+  [timeoutLock lock];
 
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v6 = objc_opt_class();
-    v7 = [(AMSUIWebFlowController *)self context];
-    v8 = [v7 logKey];
+    context = [(AMSUIWebFlowController *)self context];
+    logKey = [context logKey];
     *buf = 138543618;
     v23 = v6;
     v24 = 2114;
-    v25 = v8;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Stopping timeout interruption.", buf, 0x16u);
+    v25 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Stopping timeout interruption.", buf, 0x16u);
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(AMSUIWebFlowController *)self timeouts];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  timeouts = [(AMSUIWebFlowController *)self timeouts];
+  v10 = [timeouts countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -906,7 +906,7 @@ uint64_t __51__AMSUIWebFlowController_startTimeout_queue_block___block_invoke(ui
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(timeouts);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
@@ -914,14 +914,14 @@ uint64_t __51__AMSUIWebFlowController_startTimeout_queue_block___block_invoke(ui
         [v14 start];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [timeouts countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(AMSUIWebFlowController *)self timeoutLock];
-  [v15 unlock];
+  timeoutLock2 = [(AMSUIWebFlowController *)self timeoutLock];
+  [timeoutLock2 unlock];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1151,19 +1151,19 @@ void __71__AMSUIWebFlowController__refreshPageWithForContainer_options_isRetry__
   [v13 enqueueEvent];
 }
 
-- (void)_takeSnapshotFromContainer:(id)a3 completion:(id)a4
+- (void)_takeSnapshotFromContainer:(id)container completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = [v6 containedViewController];
+  containedViewController = [containerCopy containedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 containedViewController];
-    [v6 cacheScrollViewPositionFor:v10];
+    containedViewController2 = [containerCopy containedViewController];
+    [containerCopy cacheScrollViewPositionFor:containedViewController2];
 
     v21 = 0;
     v22 = &v21;
@@ -1171,12 +1171,12 @@ void __71__AMSUIWebFlowController__refreshPageWithForContainer_options_isRetry__
     v24 = __Block_byref_object_copy__5;
     v25 = __Block_byref_object_dispose__5;
     v11 = [AMSUIWebPlaceholderViewController alloc];
-    v12 = [v6 containedViewController];
-    v13 = [(AMSUIWebFlowController *)self context];
-    v14 = [v6 appearance];
-    v26 = [(AMSUIWebPlaceholderViewController *)v11 initWithSnapshot:v12 context:v13 appearance:v14];
+    containedViewController3 = [containerCopy containedViewController];
+    context = [(AMSUIWebFlowController *)self context];
+    appearance = [containerCopy appearance];
+    v26 = [(AMSUIWebPlaceholderViewController *)v11 initWithSnapshot:containedViewController3 context:context appearance:appearance];
 
-    objc_initWeak(&location, v6);
+    objc_initWeak(&location, containerCopy);
     v15 = v22[5];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -1184,7 +1184,7 @@ void __71__AMSUIWebFlowController__refreshPageWithForContainer_options_isRetry__
     v16[3] = &unk_1E7F264A8;
     objc_copyWeak(&v19, &location);
     v18 = &v21;
-    v17 = v7;
+    v17 = completionCopy;
     [v15 awaitSnapshotWithCompletion:v16];
 
     objc_destroyWeak(&v19);
@@ -1192,9 +1192,9 @@ void __71__AMSUIWebFlowController__refreshPageWithForContainer_options_isRetry__
     _Block_object_dispose(&v21, 8);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1210,20 +1210,20 @@ void __64__AMSUIWebFlowController__takeSnapshotFromContainer_completion___block_
   *(v3 + 40) = 0;
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = [(AMSUIWebFlowController *)self currentContainer];
-  v4 = [v3 supportedInterfaceOrientations];
+  currentContainer = [(AMSUIWebFlowController *)self currentContainer];
+  supportedInterfaceOrientations = [currentContainer supportedInterfaceOrientations];
 
-  return v4;
+  return supportedInterfaceOrientations;
 }
 
-- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)a3
+- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)presentation
 {
-  v3 = [(AMSUIWebFlowController *)self currentContainer];
-  v4 = [v3 preferredInterfaceOrientationForPresentation];
+  currentContainer = [(AMSUIWebFlowController *)self currentContainer];
+  preferredInterfaceOrientationForPresentation = [currentContainer preferredInterfaceOrientationForPresentation];
 
-  return v4;
+  return preferredInterfaceOrientationForPresentation;
 }
 
 - (AMSUIWebContainerViewController)rootContainer

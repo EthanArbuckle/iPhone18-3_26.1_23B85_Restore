@@ -1,26 +1,26 @@
 @interface AMSUISystemImageFetchOperation
-- (AMSUISystemImageFetchOperation)initWithSystemImageName:(id)a3 variableValue:(id)a4 compatibleWithTraitCollection:(id)a5;
+- (AMSUISystemImageFetchOperation)initWithSystemImageName:(id)name variableValue:(id)value compatibleWithTraitCollection:(id)collection;
 - (void)main;
 @end
 
 @implementation AMSUISystemImageFetchOperation
 
-- (AMSUISystemImageFetchOperation)initWithSystemImageName:(id)a3 variableValue:(id)a4 compatibleWithTraitCollection:(id)a5
+- (AMSUISystemImageFetchOperation)initWithSystemImageName:(id)name variableValue:(id)value compatibleWithTraitCollection:(id)collection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  valueCopy = value;
+  collectionCopy = collection;
   v15.receiver = self;
   v15.super_class = AMSUISystemImageFetchOperation;
   v11 = [(AMSUISystemImageFetchOperation *)&v15 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithString:v8];
+    v12 = [MEMORY[0x1E696AEC0] stringWithString:nameCopy];
     imageName = v11->_imageName;
     v11->_imageName = v12;
 
-    objc_storeStrong(&v11->_traitCollection, a5);
-    objc_storeStrong(&v11->_variableValue, a4);
+    objc_storeStrong(&v11->_traitCollection, collection);
+    objc_storeStrong(&v11->_variableValue, value);
   }
 
   return v11;
@@ -29,23 +29,23 @@
 - (void)main
 {
   v3 = objc_alloc(MEMORY[0x1E69DCAC8]);
-  v4 = [(AMSUISystemImageFetchOperation *)self traitCollection];
-  v11 = [v3 configurationWithTraitCollection:v4];
+  traitCollection = [(AMSUISystemImageFetchOperation *)self traitCollection];
+  v11 = [v3 configurationWithTraitCollection:traitCollection];
 
-  v5 = [(AMSUISystemImageFetchOperation *)self variableValue];
+  variableValue = [(AMSUISystemImageFetchOperation *)self variableValue];
 
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [(AMSUISystemImageFetchOperation *)self imageName];
-  if (v5)
+  imageName = [(AMSUISystemImageFetchOperation *)self imageName];
+  if (variableValue)
   {
-    v8 = [(AMSUISystemImageFetchOperation *)self variableValue];
-    [v8 doubleValue];
-    v9 = [v6 _systemImageNamed:v7 variableValue:v11 withConfiguration:?];
+    variableValue2 = [(AMSUISystemImageFetchOperation *)self variableValue];
+    [variableValue2 doubleValue];
+    v9 = [v6 _systemImageNamed:imageName variableValue:v11 withConfiguration:?];
   }
 
   else
   {
-    v9 = [v6 _systemImageNamed:v7 withConfiguration:v11];
+    v9 = [v6 _systemImageNamed:imageName withConfiguration:v11];
   }
 
   if (v9)

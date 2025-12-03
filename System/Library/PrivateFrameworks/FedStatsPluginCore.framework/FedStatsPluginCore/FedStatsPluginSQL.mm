@@ -1,13 +1,13 @@
 @interface FedStatsPluginSQL
-- (FedStatsPluginSQL)initWithError:(id *)a3;
-- (id)accessedColumnsForStream:(id)a3;
+- (FedStatsPluginSQL)initWithError:(id *)error;
+- (id)accessedColumnsForStream:(id)stream;
 - (id)accessedStreams;
-- (id)runQuery:(id)a3 withError:(id *)a4;
+- (id)runQuery:(id)query withError:(id *)error;
 @end
 
 @implementation FedStatsPluginSQL
 
-- (FedStatsPluginSQL)initWithError:(id *)a3
+- (FedStatsPluginSQL)initWithError:(id *)error
 {
   v36.receiver = self;
   v36.super_class = FedStatsPluginSQL;
@@ -21,7 +21,7 @@
   v6 = v5;
   if (!v5)
   {
-    if (!a3)
+    if (!error)
     {
 LABEL_17:
 
@@ -30,7 +30,7 @@ LABEL_17:
     }
 
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not create the BIOME database"];
-    *a3 = [FedStatsPluginError errorWithCode:400 description:v10];
+    *error = [FedStatsPluginError errorWithCode:400 description:v10];
 LABEL_16:
 
     goto LABEL_17;
@@ -95,10 +95,10 @@ LABEL_16:
   if ((v19 & 1) == 0 || (v20, v29 = 0, v7 = @"subsample", v21 = [v6 registerFunctionWithName:@"subsample" numArgs:3 function:&__block_literal_global_71 userData:0 error:&v29], v22 = v29, v10 = v22, (v21 & 1) == 0))
   {
 LABEL_12:
-    if (a3)
+    if (error)
     {
       v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot register UDF '%@' with Biome DB", v7];
-      *a3 = [FedStatsPluginError errorWithCode:300 underlyingError:v10 description:v27];
+      *error = [FedStatsPluginError errorWithCode:300 underlyingError:v10 description:v27];
     }
 
     goto LABEL_16;
@@ -257,21 +257,21 @@ id __35__FedStatsPluginSQL_initWithError___block_invoke_7(uint64_t a1, void *a2,
   return v10;
 }
 
-- (id)runQuery:(id)a3 withError:(id *)a4
+- (id)runQuery:(id)query withError:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(FedStatsPluginSQL *)self database];
-  [v6 resetColumnAccessLog];
+  queryCopy = query;
+  database = [(FedStatsPluginSQL *)self database];
+  [database resetColumnAccessLog];
 
-  v48 = v5;
-  v8 = v7 = [v5 copy];
+  v48 = queryCopy;
+  v8 = v7 = [queryCopy copy];
   v10 = v9 = objc_claimAutoreleasedReturnValue();
 
-  v44 = self;
-  v11 = [(FedStatsPluginSQL *)self database];
+  selfCopy = self;
+  database2 = [(FedStatsPluginSQL *)self database];
   v47 = v10;
-  v12 = [v11 executeQuery:{@"%@", v10}];
+  v12 = [database2 executeQuery:{@"%@", v10}];
 
   v49 = [MEMORY[0x277D08458] samplerWithCount:*MEMORY[0x277D08478]];
   if ([v12 next])
@@ -279,15 +279,15 @@ id __35__FedStatsPluginSQL_initWithError___block_invoke_7(uint64_t a1, void *a2,
     do
     {
       v13 = MEMORY[0x277CBEB38];
-      v14 = [v12 columns];
-      v15 = [v13 dictionaryWithCapacity:{objc_msgSend(v14, "count")}];
+      columns = [v12 columns];
+      v15 = [v13 dictionaryWithCapacity:{objc_msgSend(columns, "count")}];
 
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v16 = [v12 columns];
-      v17 = [v16 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      columns2 = [v12 columns];
+      v17 = [columns2 countByEnumeratingWithState:&v55 objects:v60 count:16];
       if (v17)
       {
         v18 = v17;
@@ -298,15 +298,15 @@ id __35__FedStatsPluginSQL_initWithError___block_invoke_7(uint64_t a1, void *a2,
           {
             if (*v56 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(columns2);
             }
 
             v21 = *(*(&v55 + 1) + 8 * i);
-            v22 = [MEMORY[0x277CBEB68] null];
-            [v15 setObject:v22 forKey:v21];
+            null = [MEMORY[0x277CBEB68] null];
+            [v15 setObject:null forKey:v21];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v55 objects:v60 count:16];
+          v18 = [columns2 countByEnumeratingWithState:&v55 objects:v60 count:16];
         }
 
         while (v18);
@@ -321,12 +321,12 @@ id __35__FedStatsPluginSQL_initWithError___block_invoke_7(uint64_t a1, void *a2,
     while (([v12 next] & 1) != 0);
   }
 
-  v24 = [v12 error];
+  error = [v12 error];
 
-  if (!v24)
+  if (!error)
   {
-    v27 = [v49 getResults];
-    if (![v27 count])
+    getResults = [v49 getResults];
+    if (![getResults count])
     {
       v28 = +[FedStatsPluginLog logger];
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -336,20 +336,20 @@ id __35__FedStatsPluginSQL_initWithError___block_invoke_7(uint64_t a1, void *a2,
       }
     }
 
-    v46 = v27;
+    v46 = getResults;
     v29 = MEMORY[0x277CBEB38];
-    v30 = [(FedStatsPluginSQL *)v44 database];
-    v31 = [v30 accessedColumns];
-    v25 = [v29 dictionaryWithCapacity:{objc_msgSend(v31, "count")}];
+    database3 = [(FedStatsPluginSQL *)selfCopy database];
+    accessedColumns = [database3 accessedColumns];
+    error2 = [v29 dictionaryWithCapacity:{objc_msgSend(accessedColumns, "count")}];
 
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v32 = [(FedStatsPluginSQL *)v44 database];
-    v33 = [v32 accessedColumns];
+    database4 = [(FedStatsPluginSQL *)selfCopy database];
+    accessedColumns2 = [database4 accessedColumns];
 
-    v34 = [v33 countByEnumeratingWithState:&v50 objects:v59 count:16];
+    v34 = [accessedColumns2 countByEnumeratingWithState:&v50 objects:v59 count:16];
     if (v34)
     {
       v35 = v34;
@@ -360,32 +360,32 @@ id __35__FedStatsPluginSQL_initWithError___block_invoke_7(uint64_t a1, void *a2,
         {
           if (*v51 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(accessedColumns2);
           }
 
           v38 = *(*(&v50 + 1) + 8 * j);
-          v39 = [v38 columns];
-          v40 = [v39 allObjects];
-          v41 = [v38 table];
-          [v25 setObject:v40 forKey:v41];
+          columns3 = [v38 columns];
+          allObjects = [columns3 allObjects];
+          table = [v38 table];
+          [error2 setObject:allObjects forKey:table];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v50 objects:v59 count:16];
+        v35 = [accessedColumns2 countByEnumeratingWithState:&v50 objects:v59 count:16];
       }
 
       while (v35);
     }
 
-    [(FedStatsPluginSQL *)v44 setAccessInformation:v25];
+    [(FedStatsPluginSQL *)selfCopy setAccessInformation:error2];
     v26 = v46;
     goto LABEL_25;
   }
 
-  if (a4)
+  if (error)
   {
-    v25 = [v12 error];
-    [FedStatsPluginError errorWithCode:400 underlyingError:v25 description:@"Query execution failed"];
-    *a4 = v26 = 0;
+    error2 = [v12 error];
+    [FedStatsPluginError errorWithCode:400 underlyingError:error2 description:@"Query execution failed"];
+    *error = v26 = 0;
 LABEL_25:
 
     goto LABEL_27;
@@ -401,17 +401,17 @@ LABEL_27:
 
 - (id)accessedStreams
 {
-  v2 = [(FedStatsPluginSQL *)self accessInformation];
-  v3 = [v2 allKeys];
+  accessInformation = [(FedStatsPluginSQL *)self accessInformation];
+  allKeys = [accessInformation allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (id)accessedColumnsForStream:(id)a3
+- (id)accessedColumnsForStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(FedStatsPluginSQL *)self accessInformation];
-  v6 = [v5 objectForKey:v4];
+  streamCopy = stream;
+  accessInformation = [(FedStatsPluginSQL *)self accessInformation];
+  v6 = [accessInformation objectForKey:streamCopy];
 
   return v6;
 }

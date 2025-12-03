@@ -1,20 +1,20 @@
 @interface TimerSnippetTimeView
-- (BOOL)updateDisplayWithTime:(double)a3;
-- (TimerSnippetTimeView)initWithFrame:(CGRect)a3;
-- (void)markStaleWithTime:(double)a3;
-- (void)setFireTime:(double)a3 withTime:(double)a4;
-- (void)setRemainingTime:(double)a3;
+- (BOOL)updateDisplayWithTime:(double)time;
+- (TimerSnippetTimeView)initWithFrame:(CGRect)frame;
+- (void)markStaleWithTime:(double)time;
+- (void)setFireTime:(double)time withTime:(double)withTime;
+- (void)setRemainingTime:(double)time;
 - (void)setupConstraints;
-- (void)setupWithDuration:(double)a3;
+- (void)setupWithDuration:(double)duration;
 @end
 
 @implementation TimerSnippetTimeView
 
-- (TimerSnippetTimeView)initWithFrame:(CGRect)a3
+- (TimerSnippetTimeView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = TimerSnippetTimeView;
-  v3 = [(TimerSnippetTimeView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TimerSnippetTimeView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -24,8 +24,8 @@
     v3->_timeLabel = v5;
 
     v7 = [UIFont systemFontOfSize:60.0 weight:UIFontWeightThin];
-    v8 = [v7 mtui_fontByAddingTimeFontAttributes];
-    [(UILabel *)v3->_timeLabel setFont:v8];
+    mtui_fontByAddingTimeFontAttributes = [v7 mtui_fontByAddingTimeFontAttributes];
+    [(UILabel *)v3->_timeLabel setFont:mtui_fontByAddingTimeFontAttributes];
 
     v9 = +[UIColor siriui_textColor];
     [(UILabel *)v3->_timeLabel setTextColor:v9];
@@ -45,42 +45,42 @@
 - (void)setupConstraints
 {
   v9 = objc_opt_new();
-  v3 = [(UILabel *)self->_timeLabel centerXAnchor];
-  v4 = [(TimerSnippetTimeView *)self centerXAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  centerXAnchor = [(UILabel *)self->_timeLabel centerXAnchor];
+  centerXAnchor2 = [(TimerSnippetTimeView *)self centerXAnchor];
+  v5 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v9 addObject:v5];
 
-  v6 = [(UILabel *)self->_timeLabel centerYAnchor];
-  v7 = [(TimerSnippetTimeView *)self centerYAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  centerYAnchor = [(UILabel *)self->_timeLabel centerYAnchor];
+  centerYAnchor2 = [(TimerSnippetTimeView *)self centerYAnchor];
+  v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v9 addObject:v8];
 
   [NSLayoutConstraint activateConstraints:v9];
 }
 
-- (void)setRemainingTime:(double)a3
+- (void)setRemainingTime:(double)time
 {
   self->_running = 0;
-  self->_remainingTime = a3;
+  self->_remainingTime = time;
   [(TimerSnippetTimeView *)self setupWithDuration:?];
 }
 
-- (void)setFireTime:(double)a3 withTime:(double)a4
+- (void)setFireTime:(double)time withTime:(double)withTime
 {
   self->_running = 1;
-  v4 = round(a3);
+  v4 = round(time);
   self->_fireTime = v4;
-  [(TimerSnippetTimeView *)self setupWithDuration:v4 - round(a4)];
+  [(TimerSnippetTimeView *)self setupWithDuration:v4 - round(withTime)];
 }
 
-- (BOOL)updateDisplayWithTime:(double)a3
+- (BOOL)updateDisplayWithTime:(double)time
 {
   if (!self->_running)
   {
     return 1;
   }
 
-  v4 = fmax(self->_fireTime - round(a3), 0.0);
+  v4 = fmax(self->_fireTime - round(time), 0.0);
   v5 = FormatTime();
   [(UILabel *)self->_timeLabel setText:v5];
 
@@ -94,16 +94,16 @@
   return 0;
 }
 
-- (void)markStaleWithTime:(double)a3
+- (void)markStaleWithTime:(double)time
 {
   if (self->_running)
   {
     self->_running = 0;
-    self->_remainingTime = fmax(self->_fireTime - round(a3), 0.0);
+    self->_remainingTime = fmax(self->_fireTime - round(time), 0.0);
   }
 }
 
-- (void)setupWithDuration:(double)a3
+- (void)setupWithDuration:(double)duration
 {
   v4 = FormatTime();
   [(UILabel *)self->_timeLabel setText:v4];

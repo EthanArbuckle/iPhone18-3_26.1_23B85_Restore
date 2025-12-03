@@ -7,18 +7,18 @@
 
 - (uint64_t)userInterfaceStyle
 {
-  v0 = [MEMORY[0x277D759A0] mainScreen];
-  v1 = [v0 traitCollection];
-  v2 = [v1 userInterfaceStyle];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v2 == 2)
+  if (userInterfaceStyle == 2)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 1;
+    return userInterfaceStyle == 1;
   }
 }
 
@@ -26,10 +26,10 @@
 {
   if (a3 <= 3)
   {
-    a1 = **(&unk_279EE7F18 + a3);
+    self = **(&unk_279EE7F18 + a3);
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -15,77 +15,77 @@
   [(UIKeyboardCandidateViewState *)v3 setHasBackdrop:0];
   [(UIKeyboardCandidateViewConfiguration *)self candidateDefaultFontSize];
   v5 = [(UIKeyboardCandidateViewConfiguration *)self candidateFontWithSize:?];
-  v6 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v6 setCandidateFont:v5];
+  style = [(UIKeyboardCandidateViewState *)v3 style];
+  [style setCandidateFont:v5];
 
-  v7 = [(UIKeyboardCandidateViewState *)v3 style];
-  v8 = [v7 candidateFont];
-  CopyWithSymbolicTraits = CTFontCreateCopyWithSymbolicTraits(v8, 0.0, 0, 2u, 2u);
-  v10 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v10 setSupplementalLexiconCandidateFont:CopyWithSymbolicTraits];
+  style2 = [(UIKeyboardCandidateViewState *)v3 style];
+  candidateFont = [style2 candidateFont];
+  CopyWithSymbolicTraits = CTFontCreateCopyWithSymbolicTraits(candidateFont, 0.0, 0, 2u, 2u);
+  style3 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style3 setSupplementalLexiconCandidateFont:CopyWithSymbolicTraits];
 
-  v11 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v11 setMaxNumberOfProactiveCells:2];
+  style4 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style4 setMaxNumberOfProactiveCells:2];
 
   if (_os_feature_enabled_impl())
   {
     v12 = +[UIColor insertionPointColor];
-    v13 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v13 setHighlightedBackgroundColor:v12];
+    style5 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style5 setHighlightedBackgroundColor:v12];
 
-    v14 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v14 setHasShadow:1];
+    style6 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style6 setHasShadow:1];
 
-    v15 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v15 setRoundsArrowButtonEdge:1];
+    style7 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style7 setRoundsArrowButtonEdge:1];
   }
 
   else
   {
-    v15 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v15 setHighlightedBackgroundColor:0];
+    style7 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style7 setHighlightedBackgroundColor:0];
   }
 
-  v16 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v16 setColumnsCount:9];
+  style8 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style8 setColumnsCount:9];
 
-  v17 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v17 setRowHeight:41.0];
+  style9 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style9 setRowHeight:41.0];
 
-  v18 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v18 setGridPadding:{0.0, 0.0, 0.0, 42.0}];
+  style10 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style10 setGridPadding:{0.0, 0.0, 0.0, 42.0}];
 
-  v19 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v19 setGridLinePadding:{0.0, 0.0, 0.0, 0.0}];
+  style11 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style11 setGridLinePadding:{0.0, 0.0, 0.0, 0.0}];
 
-  v20 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v20 setScrollDisabled:1];
+  style12 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style12 setScrollDisabled:1];
 
-  v21 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v21 setShowExtraLineBeforeFirstRow:1];
+  style13 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style13 setShowExtraLineBeforeFirstRow:1];
 
   v22 = _os_feature_enabled_impl();
-  v23 = [(UIKeyboardCandidateViewState *)v3 style];
-  v24 = v23;
+  style14 = [(UIKeyboardCandidateViewState *)v3 style];
+  v24 = style14;
   if (v22)
   {
-    [v23 setCornerRadius:10.0];
+    [style14 setCornerRadius:10.0];
 
-    v25 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v25 setArrowButtonImageName:@"chevron.up"];
+    style15 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style15 setArrowButtonImageName:@"chevron.up"];
 
-    v26 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
-    v27 = [v26 pocketShadowImageForDarkKeyboard:-[UIKeyboardCandidateViewConfiguration darkKeyboard](self fadesToBottom:"darkKeyboard") drawShadow:0 topPadding:0 bottomPadding:1.0 height:{1.0, 42.0}];
-    v28 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v28 setArrowButtonSeparatorImage:v27];
+    style17 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
+    v27 = [style17 pocketShadowImageForDarkKeyboard:-[UIKeyboardCandidateViewConfiguration darkKeyboard](self fadesToBottom:"darkKeyboard") drawShadow:0 topPadding:0 bottomPadding:1.0 height:{1.0, 42.0}];
+    style16 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style16 setArrowButtonSeparatorImage:v27];
   }
 
   else
   {
-    [v23 setCornerRadius:8.0];
+    [style14 setCornerRadius:8.0];
 
-    v26 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v26 setArrowButtonImageName:@"kb-extend-arrow"];
+    style17 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style17 setArrowButtonImageName:@"kb-extend-arrow"];
   }
 
   [(UIKeyboardCandidateViewState *)v3 setSortControlPosition:5];
@@ -98,16 +98,16 @@
   if (!_os_feature_enabled_impl())
   {
     v30 = +[UIColor separatorColor];
-    v31 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v31 setLineColor:v30];
+    style18 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style18 setLineColor:v30];
 
     v32 = +[UIColor systemBackgroundColor];
-    v33 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v33 setBackgroundColor:v32];
+    style19 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style19 setBackgroundColor:v32];
 
     v34 = +[UIColor systemBackgroundColor];
-    v35 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v35 setArrowButtonBackgroundColor:v34];
+    style20 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style20 setArrowButtonBackgroundColor:v34];
 
 LABEL_19:
     v42 = +[UIColor systemBackgroundColor];
@@ -124,8 +124,8 @@ LABEL_19:
     +[UIColor lineSeparatorColor];
   }
   v36 = ;
-  v37 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v37 setLineColor:v36];
+  style21 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style21 setLineColor:v36];
 
   if ([(UIKeyboardCandidateViewConfiguration *)self darkKeyboard])
   {
@@ -137,8 +137,8 @@ LABEL_19:
     +[UIColor candidateRowBackgroundColor];
   }
   v38 = ;
-  v39 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v39 setBackgroundColor:v38];
+  style22 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style22 setBackgroundColor:v38];
 
   if ([(UIKeyboardCandidateViewConfiguration *)self darkKeyboard])
   {
@@ -150,8 +150,8 @@ LABEL_19:
     +[UIColor candidateRowHighlightedColor];
   }
   v40 = ;
-  v41 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v41 setArrowButtonBackgroundColor:v40];
+  style23 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style23 setArrowButtonBackgroundColor:v40];
 
   if ([(UIKeyboardCandidateViewConfiguration *)self darkKeyboard])
   {
@@ -161,16 +161,16 @@ LABEL_19:
   v42 = +[UIColor candidateRowHighlightedColor];
 LABEL_21:
   v43 = v42;
-  v44 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v44 setHighlightedRowBackgroundColor:v43];
+  style24 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style24 setHighlightedRowBackgroundColor:v43];
 
   v45 = +[UIColor systemBackgroundColor];
-  v46 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v46 setSortControlBackgroundColor:v45];
+  style25 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style25 setSortControlBackgroundColor:v45];
 
   v47 = +[UIColor secondarySystemFillColor];
-  v48 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v48 setGroupHeaderBackgroundColor:v47];
+  style26 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style26 setGroupHeaderBackgroundColor:v47];
 
   v80 = 0.0;
   v49 = +[UIColor tertiarySystemFillColor];
@@ -178,45 +178,45 @@ LABEL_21:
 
   v50 = +[UIColor tertiarySystemFillColor];
   v51 = [v50 colorWithAlphaComponent:v80 * 0.5];
-  v52 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v52 setGridBackgroundColor:v51];
+  style27 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style27 setGridBackgroundColor:v51];
 
   v53 = +[UIColor labelColor];
-  v54 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v54 setTextColor:v53];
+  style28 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style28 setTextColor:v53];
 
   v55 = +[UIColor tertiaryLabelColor];
-  v56 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v56 setCandidateNumberColor:v55];
+  style29 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style29 setCandidateNumberColor:v55];
 
   if (_os_feature_enabled_impl())
   {
     v57 = [off_1E70ECC18 systemFontOfSize:14.0 weight:*off_1E70ECD08];
-    v58 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v58 setCandidateNumberFont:v57];
+    style30 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style30 setCandidateNumberFont:v57];
   }
 
   v59 = +[UIColor tertiaryLabelColor];
-  v60 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v60 setAlternativeTextColor:v59];
+  style31 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style31 setAlternativeTextColor:v59];
 
-  v61 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v61 setSortControlColor:0];
+  style32 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style32 setSortControlColor:0];
 
   if (_os_feature_enabled_impl())
   {
-    v62 = [(UIKeyboardCandidateViewState *)v3 style];
-    v63 = [v62 candidateNumberColor];
-    v64 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v64 setArrowButtonColor:v63];
+    style33 = [(UIKeyboardCandidateViewState *)v3 style];
+    candidateNumberColor = [style33 candidateNumberColor];
+    style34 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style34 setArrowButtonColor:candidateNumberColor];
 
     v65 = +[UIColor candidateRowHighlightedColor];
-    v66 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v66 setHighlightedTextColor:v65];
+    style35 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style35 setHighlightedTextColor:v65];
 
     v67 = +[UIColor candidateRowHighlightedColor];
-    v68 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v68 setHighlightedCandidateNumberColor:v67];
+    style36 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style36 setHighlightedCandidateNumberColor:v67];
 
     +[UIColor candidateRowHighlightedColor];
   }
@@ -224,32 +224,32 @@ LABEL_21:
   else
   {
     v69 = +[UIColor labelColor];
-    v70 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v70 setHighlightedTextColor:v69];
+    style37 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style37 setHighlightedTextColor:v69];
 
     v71 = +[UIColor tertiaryLabelColor];
-    v72 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v72 setHighlightedCandidateNumberColor:v71];
+    style38 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style38 setHighlightedCandidateNumberColor:v71];
 
     +[UIColor tertiaryLabelColor];
   }
   v73 = ;
-  v74 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v74 setHighlightedAlternativeTextColor:v73];
+  style39 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style39 setHighlightedAlternativeTextColor:v73];
 
   if (_os_feature_enabled_impl())
   {
-    v75 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v75 setHighlightedCellBackgroundImage:0];
+    style40 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style40 setHighlightedCellBackgroundImage:0];
   }
 
   else
   {
-    v75 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
+    style40 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
     v76 = +[UIColor secondarySystemFillColor];
-    v77 = [v75 highlightedBarCellBackgroundImageWithColor:v76 insets:{3.0, 3.0, 3.0, 3.0}];
-    v78 = [(UIKeyboardCandidateViewState *)v3 style];
-    [v78 setHighlightedCellBackgroundImage:v77];
+    v77 = [style40 highlightedBarCellBackgroundImageWithColor:v76 insets:{3.0, 3.0, 3.0, 3.0}];
+    style41 = [(UIKeyboardCandidateViewState *)v3 style];
+    [style41 setHighlightedCellBackgroundImage:v77];
   }
 
   return v3;
@@ -257,19 +257,19 @@ LABEL_21:
 
 - (id)extendedState
 {
-  v2 = [(UIKeyboardCandidateViewConfigurationPhoneInline *)self initialState];
-  [v2 setPrimaryGridRowType:1];
-  [v2 setArrowButtonDirection:0];
-  [v2 setArrowButtonPosition:0];
-  [v2 setSortControlPosition:2];
-  v3 = [v2 style];
-  [v3 rowHeight];
-  [v2 setAdditionalHeight:v4 * 4.0 + -1.0];
+  initialState = [(UIKeyboardCandidateViewConfigurationPhoneInline *)self initialState];
+  [initialState setPrimaryGridRowType:1];
+  [initialState setArrowButtonDirection:0];
+  [initialState setArrowButtonPosition:0];
+  [initialState setSortControlPosition:2];
+  style = [initialState style];
+  [style rowHeight];
+  [initialState setAdditionalHeight:v4 * 4.0 + -1.0];
 
-  v5 = [v2 style];
-  [v5 setScrollDisabled:0];
+  style2 = [initialState style];
+  [style2 setScrollDisabled:0];
 
-  return v2;
+  return initialState;
 }
 
 @end

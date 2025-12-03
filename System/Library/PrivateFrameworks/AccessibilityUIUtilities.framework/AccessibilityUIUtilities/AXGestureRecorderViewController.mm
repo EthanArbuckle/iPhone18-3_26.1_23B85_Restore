@@ -1,36 +1,36 @@
 @interface AXGestureRecorderViewController
 - (AXGestureRecorderViewControllerDelegate)delegate;
-- (BOOL)isChromeVisibleForGestureRecorderView:(id)a3;
+- (BOOL)isChromeVisibleForGestureRecorderView:(id)view;
 - (BOOL)isEmpty;
 - (double)_maximumDurationOfRecordedGesture;
-- (id)gestureRecorderView:(id)a3 dynamicFingerPathAtIndex:(unint64_t)a4;
-- (id)recordedGesturePropertyListRepresentationWithName:(id)a3;
+- (id)gestureRecorderView:(id)view dynamicFingerPathAtIndex:(unint64_t)index;
+- (id)recordedGesturePropertyListRepresentationWithName:(id)name;
 - (id)recordedReplayableGestureRepresentation;
-- (unint64_t)numberOfDynamicFingerPathsInGestureRecorderView:(id)a3;
-- (void)_advanceInstantReplayForStaticFingerAtIndex:(id)a3;
+- (unint64_t)numberOfDynamicFingerPathsInGestureRecorderView:(id)view;
+- (void)_advanceInstantReplayForStaticFingerAtIndex:(id)index;
 - (void)_advanceReplay;
 - (void)_clearWeakReferencesWithOutlets;
 - (void)_didFinishReplayingRecordedGesture;
-- (void)_didStartRecordingAtomicFingerPathAtPoint:(CGPoint)a3;
+- (void)_didStartRecordingAtomicFingerPathAtPoint:(CGPoint)point;
 - (void)_didStopRecordingAtomicFingerPath;
 - (void)_endInstantReplay;
-- (void)_endInstantReplayForStaticFingerAtIndex:(unint64_t)a3;
+- (void)_endInstantReplayForStaticFingerAtIndex:(unint64_t)index;
 - (void)_exitReplayMode;
 - (void)_freezeAllDynamicFingerPaths;
-- (void)_startInstantReplayForStaticFingerAtIndex:(unint64_t)a3;
-- (void)_updateDynamicFingerPathsWithTouches:(id)a3 touchesDidEnd:(BOOL)a4;
+- (void)_startInstantReplayForStaticFingerAtIndex:(unint64_t)index;
+- (void)_updateDynamicFingerPathsWithTouches:(id)touches touchesDidEnd:(BOOL)end;
 - (void)dealloc;
 - (void)deleteAllFingerPaths;
-- (void)gestureRecorderFingerPathCollection:(id)a3 didInsertFingerPathAtIndex:(unint64_t)a4;
-- (void)gestureRecorderFingerPathCollection:(id)a3 didUpdateFingerPathAtIndex:(unint64_t)a4;
-- (void)gestureRecorderView:(id)a3 setChromeVisible:(BOOL)a4;
+- (void)gestureRecorderFingerPathCollection:(id)collection didInsertFingerPathAtIndex:(unint64_t)index;
+- (void)gestureRecorderFingerPathCollection:(id)collection didUpdateFingerPathAtIndex:(unint64_t)index;
+- (void)gestureRecorderView:(id)view setChromeVisible:(BOOL)visible;
 - (void)hideStaticView;
 - (void)loadView;
 - (void)reloadAllFingerPaths;
 - (void)replayRecordedGesture;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation AXGestureRecorderViewController
@@ -45,24 +45,24 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-  v4 = [v3 fingerPathsCount];
-  v5 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
-  LOBYTE(v4) = v4 + [v5 fingerPathsCount] == 0;
+  fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+  fingerPathsCount = [fingerPathCollection fingerPathsCount];
+  dynamicFingerPathCollection = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+  LOBYTE(fingerPathsCount) = fingerPathsCount + [dynamicFingerPathCollection fingerPathsCount] == 0;
 
-  return v4;
+  return fingerPathsCount;
 }
 
 - (void)loadView
 {
   v3 = [AXGestureRecorderView alloc];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v6 = [(AXGestureRecorderView *)v3 initWithFrame:?];
 
   [(AXGestureRecorderView *)v6 setAutoresizingMask:18];
-  v5 = [(AXGestureRecorderViewController *)self styleProvider];
-  [(AXGestureRecorderView *)v6 setStyleProvider:v5];
+  styleProvider = [(AXGestureRecorderViewController *)self styleProvider];
+  [(AXGestureRecorderView *)v6 setStyleProvider:styleProvider];
 
   [(AXGestureRecorderView *)v6 setDataSource:self];
   [(AXGestureRecorderViewController *)self setView:v6];
@@ -70,33 +70,33 @@
 
 - (void)hideStaticView
 {
-  v2 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  [v2 hideStaticView];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  [gestureRecorderView hideStaticView];
 }
 
-- (id)recordedGesturePropertyListRepresentationWithName:(id)a3
+- (id)recordedGesturePropertyListRepresentationWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-  v6 = [v5 propertyListRepresentationWithName:v4];
+  nameCopy = name;
+  fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+  v6 = [fingerPathCollection propertyListRepresentationWithName:nameCopy];
 
   return v6;
 }
 
 - (id)recordedReplayableGestureRepresentation
 {
-  v2 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-  v3 = [v2 replayableGestureRepresentation];
+  fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+  replayableGestureRepresentation = [fingerPathCollection replayableGestureRepresentation];
 
-  return v3;
+  return replayableGestureRepresentation;
 }
 
 - (void)deleteAllFingerPaths
 {
   [(AXGestureRecorderViewController *)self setFingerPathCollection:0];
   [(AXGestureRecorderViewController *)self setDynamicFingerPathCollection:0];
-  v3 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  [v3 deleteAllFingerPaths];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  [gestureRecorderView deleteAllFingerPaths];
 
   [(AXGestureRecorderViewController *)self setShouldPreventFurtherRecording:0];
   [(AXGestureRecorderViewController *)self setTrackingTouches:0];
@@ -106,15 +106,15 @@
 
 - (void)replayRecordedGesture
 {
-  v3 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-  v4 = [v3 timestampsCount];
+  fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+  timestampsCount = [fingerPathCollection timestampsCount];
 
-  if (v4 && (-[AXGestureRecorderViewController fingerPathCollection](self, "fingerPathCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 fingerPathsCount], v5, v6))
+  if (timestampsCount && (-[AXGestureRecorderViewController fingerPathCollection](self, "fingerPathCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 fingerPathsCount], v5, v6))
   {
     [(AXGestureRecorderViewController *)self _endInstantReplay];
     [(AXGestureRecorderViewController *)self setInReplayMode:1];
     [(AXGestureRecorderViewController *)self setReplayTimestampIndex:0];
-    [(AXGestureRecorderViewController *)self setReplayTimestampsCount:v4];
+    [(AXGestureRecorderViewController *)self setReplayTimestampsCount:timestampsCount];
 
     [(AXGestureRecorderViewController *)self _advanceReplay];
   }
@@ -128,81 +128,81 @@
 
 - (void)reloadAllFingerPaths
 {
-  v3 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  v4 = [(AXGestureRecorderViewController *)self numberOfDynamicFingerPathsInGestureRecorderView:v3];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  v4 = [(AXGestureRecorderViewController *)self numberOfDynamicFingerPathsInGestureRecorderView:gestureRecorderView];
 
   if (v4 >= 1)
   {
     for (i = 0; i != v4; ++i)
     {
-      v6 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-      [v6 reloadDynamicFingerPathAtIndex:i];
+      gestureRecorderView2 = [(AXGestureRecorderViewController *)self gestureRecorderView];
+      [gestureRecorderView2 reloadDynamicFingerPathAtIndex:i];
     }
   }
 }
 
 - (void)_advanceReplay
 {
-  v4 = [(AXGestureRecorderViewController *)self replayTimestampIndex];
-  if (v4 >= [(AXGestureRecorderViewController *)self replayTimestampsCount])
+  replayTimestampIndex = [(AXGestureRecorderViewController *)self replayTimestampIndex];
+  if (replayTimestampIndex >= [(AXGestureRecorderViewController *)self replayTimestampsCount])
   {
     _AXAssert();
   }
 
-  if (v4 < [(AXGestureRecorderViewController *)self replayTimestampsCount])
+  if (replayTimestampIndex < [(AXGestureRecorderViewController *)self replayTimestampsCount])
   {
-    v17 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-    [v17 setReplayMode:1];
-    if (!v4)
+    gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+    [gestureRecorderView setReplayMode:1];
+    if (!replayTimestampIndex)
     {
-      [v17 deleteAllFingerPaths];
+      [gestureRecorderView deleteAllFingerPaths];
     }
 
-    v5 = [(AXGestureRecorderViewController *)self replayDynamicFingerPaths];
-    v6 = [v5 count];
-    v7 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-    v8 = [v7 fingerPathsCount];
-    if (v8)
+    replayDynamicFingerPaths = [(AXGestureRecorderViewController *)self replayDynamicFingerPaths];
+    v6 = [replayDynamicFingerPaths count];
+    fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+    fingerPathsCount = [fingerPathCollection fingerPathsCount];
+    if (fingerPathsCount)
     {
-      v9 = v8;
+      v9 = fingerPathsCount;
       for (i = 0; i != v9; ++i)
       {
-        if (!v5)
+        if (!replayDynamicFingerPaths)
         {
-          v5 = objc_opt_new();
-          [(AXGestureRecorderViewController *)self setReplayDynamicFingerPaths:v5];
+          replayDynamicFingerPaths = objc_opt_new();
+          [(AXGestureRecorderViewController *)self setReplayDynamicFingerPaths:replayDynamicFingerPaths];
         }
 
-        v11 = [v7 fingerPathToAppendForIndex:i forTimestampAtIndex:v4];
+        v11 = [fingerPathCollection fingerPathToAppendForIndex:i forTimestampAtIndex:replayTimestampIndex];
         if (v11)
         {
           if (i >= v6)
           {
-            [v5 addObject:v11];
-            [v17 insertDynamicFingerPathAtIndex:v6++];
+            [replayDynamicFingerPaths addObject:v11];
+            [gestureRecorderView insertDynamicFingerPathAtIndex:v6++];
           }
 
           else
           {
-            v12 = [v5 objectAtIndexedSubscript:i];
+            v12 = [replayDynamicFingerPaths objectAtIndexedSubscript:i];
             [v12 appendPath:v11];
-            [v17 reloadDynamicFingerPathAtIndex:i];
+            [gestureRecorderView reloadDynamicFingerPathAtIndex:i];
           }
         }
       }
     }
 
-    [(AXGestureRecorderViewController *)self setReplayTimestampIndex:v4 + 1];
-    if (v4 + 1 >= [(AXGestureRecorderViewController *)self replayTimestampsCount])
+    [(AXGestureRecorderViewController *)self setReplayTimestampIndex:replayTimestampIndex + 1];
+    if (replayTimestampIndex + 1 >= [(AXGestureRecorderViewController *)self replayTimestampsCount])
     {
       [(AXGestureRecorderViewController *)self _exitReplayMode];
     }
 
     else
     {
-      [v7 timestampAtIndex:v4 + 1];
+      [fingerPathCollection timestampAtIndex:replayTimestampIndex + 1];
       v14 = v13;
-      [v7 timestampAtIndex:v4];
+      [fingerPathCollection timestampAtIndex:replayTimestampIndex];
       [(AXGestureRecorderViewController *)self performSelector:v16 withObject:0 afterDelay:v14 - v15];
     }
   }
@@ -214,82 +214,82 @@
   [(AXGestureRecorderViewController *)self setReplayTimestampIndex:0];
   [(AXGestureRecorderViewController *)self setReplayTimestampsCount:0];
   [(AXGestureRecorderViewController *)self setReplayDynamicFingerPaths:0];
-  v3 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  [v3 freezeAllDynamicFingerPaths];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  [gestureRecorderView freezeAllDynamicFingerPaths];
 
   [(AXGestureRecorderViewController *)self _didFinishReplayingRecordedGesture];
-  v4 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  [v4 setReplayMode:0];
+  gestureRecorderView2 = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  [gestureRecorderView2 setReplayMode:0];
 }
 
-- (void)_advanceInstantReplayForStaticFingerAtIndex:(id)a3
+- (void)_advanceInstantReplayForStaticFingerAtIndex:(id)index
 {
-  v32 = a3;
-  v4 = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
+  indexCopy = index;
+  instantReplayTimestampIndexes = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
 
-  if (!v4)
+  if (!instantReplayTimestampIndexes)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXGestureRecorderViewController *)self setInstantReplayTimestampIndexes:v5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(AXGestureRecorderViewController *)self setInstantReplayTimestampIndexes:dictionary];
   }
 
-  v6 = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
+  instantReplayPartialFingerPaths = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
 
-  if (!v6)
+  if (!instantReplayPartialFingerPaths)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXGestureRecorderViewController *)self setInstantReplayPartialFingerPaths:v7];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(AXGestureRecorderViewController *)self setInstantReplayPartialFingerPaths:dictionary2];
   }
 
-  v8 = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
-  v9 = [v8 objectForKeyedSubscript:v32];
-  v10 = [v9 unsignedIntegerValue];
+  instantReplayTimestampIndexes2 = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
+  v9 = [instantReplayTimestampIndexes2 objectForKeyedSubscript:indexCopy];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v11 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-  v12 = [v11 timestampsCount];
+  fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+  timestampsCount = [fingerPathCollection timestampsCount];
 
-  v13 = [v32 unsignedIntegerValue];
-  if (v10 >= v12)
+  unsignedIntegerValue2 = [indexCopy unsignedIntegerValue];
+  if (unsignedIntegerValue >= timestampsCount)
   {
-    v20 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-    v21 = [v20 timestampsCount];
+    fingerPathCollection2 = [(AXGestureRecorderViewController *)self fingerPathCollection];
+    timestampsCount2 = [fingerPathCollection2 timestampsCount];
 
-    if (v10 != v21)
+    if (unsignedIntegerValue != timestampsCount2)
     {
       _AXAssert();
     }
 
-    [(AXGestureRecorderViewController *)self _endInstantReplayForStaticFingerAtIndex:v13];
+    [(AXGestureRecorderViewController *)self _endInstantReplayForStaticFingerAtIndex:unsignedIntegerValue2];
   }
 
   else
   {
-    if (v10)
+    if (unsignedIntegerValue)
     {
-      v14 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-      v15 = [v14 fingerPathToAppendForIndex:v13 forTimestampAtIndex:v10];
+      fingerPathCollection3 = [(AXGestureRecorderViewController *)self fingerPathCollection];
+      v15 = [fingerPathCollection3 fingerPathToAppendForIndex:unsignedIntegerValue2 forTimestampAtIndex:unsignedIntegerValue];
 
-      ++v10;
+      ++unsignedIntegerValue;
     }
 
     else
     {
       v15 = 0;
-      while (v10 < v12)
+      while (unsignedIntegerValue < timestampsCount)
       {
         while (1)
         {
-          v22 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-          v23 = [v22 fingerPathToAppendForIndex:v13 forTimestampAtIndex:v10];
+          fingerPathCollection4 = [(AXGestureRecorderViewController *)self fingerPathCollection];
+          v23 = [fingerPathCollection4 fingerPathToAppendForIndex:unsignedIntegerValue2 forTimestampAtIndex:unsignedIntegerValue];
 
-          ++v10;
+          ++unsignedIntegerValue;
           v15 = v23;
           if (!v23)
           {
             break;
           }
 
-          if (![v23 isEmpty] || v10 >= v12)
+          if (![v23 isEmpty] || unsignedIntegerValue >= timestampsCount)
           {
             goto LABEL_8;
           }
@@ -300,14 +300,14 @@
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
-    v17 = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
-    [v17 setObject:v16 forKeyedSubscript:v32];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue];
+    instantReplayTimestampIndexes3 = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
+    [instantReplayTimestampIndexes3 setObject:v16 forKeyedSubscript:indexCopy];
 
     if (v15)
     {
-      v18 = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
-      v19 = [v18 objectForKeyedSubscript:v32];
+      instantReplayPartialFingerPaths2 = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
+      v19 = [instantReplayPartialFingerPaths2 objectForKeyedSubscript:indexCopy];
 
       if (v19)
       {
@@ -319,55 +319,55 @@ LABEL_8:
         v19 = v15;
       }
 
-      v24 = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
-      [v24 setObject:v19 forKeyedSubscript:v32];
+      instantReplayPartialFingerPaths3 = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
+      [instantReplayPartialFingerPaths3 setObject:v19 forKeyedSubscript:indexCopy];
 
-      v25 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-      [v25 updateInstantReplayAtIndex:v13 withPartialPath:v19];
+      gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+      [gestureRecorderView updateInstantReplayAtIndex:unsignedIntegerValue2 withPartialPath:v19];
 
-      if (v10 >= v12)
+      if (unsignedIntegerValue >= timestampsCount)
       {
         v31 = 0.3;
       }
 
       else
       {
-        v26 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-        [v26 timestampAtIndex:v10];
+        fingerPathCollection5 = [(AXGestureRecorderViewController *)self fingerPathCollection];
+        [fingerPathCollection5 timestampAtIndex:unsignedIntegerValue];
         v28 = v27;
-        v29 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-        [v29 timestampAtIndex:v10 - 1];
+        fingerPathCollection6 = [(AXGestureRecorderViewController *)self fingerPathCollection];
+        [fingerPathCollection6 timestampAtIndex:unsignedIntegerValue - 1];
         v31 = v28 - v30;
       }
 
-      [(AXGestureRecorderViewController *)self performSelector:sel__advanceInstantReplayForStaticFingerAtIndex_ withObject:v32 afterDelay:v31];
+      [(AXGestureRecorderViewController *)self performSelector:sel__advanceInstantReplayForStaticFingerAtIndex_ withObject:indexCopy afterDelay:v31];
     }
 
     else
     {
-      [(AXGestureRecorderViewController *)self _endInstantReplayForStaticFingerAtIndex:v13];
+      [(AXGestureRecorderViewController *)self _endInstantReplayForStaticFingerAtIndex:unsignedIntegerValue2];
     }
   }
 }
 
-- (void)_startInstantReplayForStaticFingerAtIndex:(unint64_t)a3
+- (void)_startInstantReplayForStaticFingerAtIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(AXGestureRecorderViewController *)self _advanceInstantReplayForStaticFingerAtIndex:v4];
 }
 
-- (void)_endInstantReplayForStaticFingerAtIndex:(unint64_t)a3
+- (void)_endInstantReplayForStaticFingerAtIndex:(unint64_t)index
 {
-  v5 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  [v5 finishInstantReplayAtIndex:a3];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  [gestureRecorderView finishInstantReplayAtIndex:index];
 
-  v6 = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v6 removeObjectForKey:v7];
+  instantReplayTimestampIndexes = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [instantReplayTimestampIndexes removeObjectForKey:v7];
 
-  v9 = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v9 removeObjectForKey:v8];
+  instantReplayPartialFingerPaths = [(AXGestureRecorderViewController *)self instantReplayPartialFingerPaths];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [instantReplayPartialFingerPaths removeObjectForKey:v8];
 }
 
 - (void)_endInstantReplay
@@ -377,8 +377,8 @@ LABEL_8:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  instantReplayTimestampIndexes = [(AXGestureRecorderViewController *)self instantReplayTimestampIndexes];
+  v4 = [instantReplayTimestampIndexes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -389,20 +389,20 @@ LABEL_8:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(instantReplayTimestampIndexes);
         }
 
         [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__advanceInstantReplayForStaticFingerAtIndex_ object:*(*(&v9 + 1) + 8 * i)];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [instantReplayTimestampIndexes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  [v8 clearInstantReplayFingerPaths];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  [gestureRecorderView clearInstantReplayFingerPaths];
 
   [(AXGestureRecorderViewController *)self setInstantReplayTimestampIndexes:0];
   [(AXGestureRecorderViewController *)self setInstantReplayPartialFingerPaths:0];
@@ -412,84 +412,84 @@ LABEL_8:
 {
   if ([(AXGestureRecorderViewController *)self isViewLoaded])
   {
-    v3 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-    [v3 setDataSource:0];
+    gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+    [gestureRecorderView setDataSource:0];
   }
 }
 
 - (double)_maximumDurationOfRecordedGesture
 {
-  v3 = [(AXGestureRecorderViewController *)self delegate];
+  delegate = [(AXGestureRecorderViewController *)self delegate];
   v4 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v3 maximumDurationOfRecordedGestureForGestureRecorderViewController:self];
+    [delegate maximumDurationOfRecordedGestureForGestureRecorderViewController:self];
     v4 = v5;
   }
 
   return v4;
 }
 
-- (void)_didStartRecordingAtomicFingerPathAtPoint:(CGPoint)a3
+- (void)_didStartRecordingAtomicFingerPathAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXGestureRecorderViewController *)self delegate];
+  y = point.y;
+  x = point.x;
+  delegate = [(AXGestureRecorderViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 gestureRecorderViewController:self didStartRecordingAtomicFingerPathAtPoint:{x, y}];
+    [delegate gestureRecorderViewController:self didStartRecordingAtomicFingerPathAtPoint:{x, y}];
   }
 }
 
 - (void)_didStopRecordingAtomicFingerPath
 {
-  v3 = [(AXGestureRecorderViewController *)self delegate];
+  delegate = [(AXGestureRecorderViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 gestureRecorderViewControllerDidStopRecordingAtomicFingerPath:self];
+    [delegate gestureRecorderViewControllerDidStopRecordingAtomicFingerPath:self];
   }
 }
 
 - (void)_didFinishReplayingRecordedGesture
 {
-  v3 = [(AXGestureRecorderViewController *)self delegate];
+  delegate = [(AXGestureRecorderViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 gestureRecorderViewControllerDidFinishReplayingRecordedGesture:self];
+    [delegate gestureRecorderViewControllerDidFinishReplayingRecordedGesture:self];
   }
 }
 
-- (void)_updateDynamicFingerPathsWithTouches:(id)a3 touchesDidEnd:(BOOL)a4
+- (void)_updateDynamicFingerPathsWithTouches:(id)touches touchesDidEnd:(BOOL)end
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
-  if (!v6)
+  endCopy = end;
+  touchesCopy = touches;
+  dynamicFingerPathCollection = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+  if (!dynamicFingerPathCollection)
   {
-    v6 = [[AXGestureRecorderFingerPathCollection alloc] initWithMaximumFingerPathsCount:10];
-    [(AXGestureRecorderFingerPathCollection *)v6 setShouldRecordRealTimeGesture:([(AXGestureRecorderViewController *)self recorderType]& 0xFFFFFFFFFFFFFFFDLL) == 1];
-    v7 = [(AXGestureRecorderViewController *)self styleProvider];
-    [v7 minimumFingerLineWidth];
-    [(AXGestureRecorderFingerPathCollection *)v6 setMinimumFingerLineWidth:?];
+    dynamicFingerPathCollection = [[AXGestureRecorderFingerPathCollection alloc] initWithMaximumFingerPathsCount:10];
+    [(AXGestureRecorderFingerPathCollection *)dynamicFingerPathCollection setShouldRecordRealTimeGesture:([(AXGestureRecorderViewController *)self recorderType]& 0xFFFFFFFFFFFFFFFDLL) == 1];
+    styleProvider = [(AXGestureRecorderViewController *)self styleProvider];
+    [styleProvider minimumFingerLineWidth];
+    [(AXGestureRecorderFingerPathCollection *)dynamicFingerPathCollection setMinimumFingerLineWidth:?];
 
-    v8 = [(AXGestureRecorderViewController *)self styleProvider];
-    [v8 maximumFingerLineWidth];
-    [(AXGestureRecorderFingerPathCollection *)v6 setMaximumFingerLineWidth:?];
+    styleProvider2 = [(AXGestureRecorderViewController *)self styleProvider];
+    [styleProvider2 maximumFingerLineWidth];
+    [(AXGestureRecorderFingerPathCollection *)dynamicFingerPathCollection setMaximumFingerLineWidth:?];
 
-    [(AXGestureRecorderFingerPathCollection *)v6 setDelegate:self];
-    [(AXGestureRecorderViewController *)self setDynamicFingerPathCollection:v6];
+    [(AXGestureRecorderFingerPathCollection *)dynamicFingerPathCollection setDelegate:self];
+    [(AXGestureRecorderViewController *)self setDynamicFingerPathCollection:dynamicFingerPathCollection];
   }
 
-  v9 = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
   Current = CFAbsoluteTimeGetCurrent();
-  if (v4)
+  if (endCopy)
   {
-    [(AXGestureRecorderFingerPathCollection *)v6 handleLiftForTouches:v11 referenceView:v9 time:Current];
+    [(AXGestureRecorderFingerPathCollection *)dynamicFingerPathCollection handleLiftForTouches:touchesCopy referenceView:gestureRecorderView time:Current];
   }
 
   else
   {
-    [(AXGestureRecorderFingerPathCollection *)v6 appendPointsForTouches:v11 referenceView:v9 time:Current];
+    [(AXGestureRecorderFingerPathCollection *)dynamicFingerPathCollection appendPointsForTouches:touchesCopy referenceView:gestureRecorderView time:Current];
   }
 
   [(AXGestureRecorderViewController *)self reloadAllFingerPaths];
@@ -497,51 +497,51 @@ LABEL_8:
 
 - (void)_freezeAllDynamicFingerPaths
 {
-  v9 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-  if (!v9)
+  fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+  if (!fingerPathCollection)
   {
-    v9 = [[AXGestureRecorderFingerPathCollection alloc] initWithMaximumFingerPathsCount:10];
-    [(AXGestureRecorderFingerPathCollection *)v9 setShouldRecordRealTimeGesture:([(AXGestureRecorderViewController *)self recorderType]& 0xFFFFFFFFFFFFFFFDLL) == 1];
-    v3 = [(AXGestureRecorderViewController *)self styleProvider];
-    [v3 minimumFingerLineWidth];
-    [(AXGestureRecorderFingerPathCollection *)v9 setMinimumFingerLineWidth:?];
+    fingerPathCollection = [[AXGestureRecorderFingerPathCollection alloc] initWithMaximumFingerPathsCount:10];
+    [(AXGestureRecorderFingerPathCollection *)fingerPathCollection setShouldRecordRealTimeGesture:([(AXGestureRecorderViewController *)self recorderType]& 0xFFFFFFFFFFFFFFFDLL) == 1];
+    styleProvider = [(AXGestureRecorderViewController *)self styleProvider];
+    [styleProvider minimumFingerLineWidth];
+    [(AXGestureRecorderFingerPathCollection *)fingerPathCollection setMinimumFingerLineWidth:?];
 
-    v4 = [(AXGestureRecorderViewController *)self styleProvider];
-    [v4 maximumFingerLineWidth];
-    [(AXGestureRecorderFingerPathCollection *)v9 setMaximumFingerLineWidth:?];
+    styleProvider2 = [(AXGestureRecorderViewController *)self styleProvider];
+    [styleProvider2 maximumFingerLineWidth];
+    [(AXGestureRecorderFingerPathCollection *)fingerPathCollection setMaximumFingerLineWidth:?];
 
-    [(AXGestureRecorderFingerPathCollection *)v9 setDelegate:self];
-    [(AXGestureRecorderViewController *)self setFingerPathCollection:v9];
+    [(AXGestureRecorderFingerPathCollection *)fingerPathCollection setDelegate:self];
+    [(AXGestureRecorderViewController *)self setFingerPathCollection:fingerPathCollection];
   }
 
-  v5 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-  v6 = [v5 fingerPathsCount];
+  fingerPathCollection2 = [(AXGestureRecorderViewController *)self fingerPathCollection];
+  fingerPathsCount = [fingerPathCollection2 fingerPathsCount];
 
-  v7 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
-  [(AXGestureRecorderFingerPathCollection *)v9 appendFingerPathsFromFingerPathCollection:v7];
-  v8 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-  [v8 freezeAllDynamicFingerPathsWithInstantReplayOffset:v6];
+  dynamicFingerPathCollection = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+  [(AXGestureRecorderFingerPathCollection *)fingerPathCollection appendFingerPathsFromFingerPathCollection:dynamicFingerPathCollection];
+  gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+  [gestureRecorderView freezeAllDynamicFingerPathsWithInstantReplayOffset:fingerPathsCount];
 
-  [v7 reset];
+  [dynamicFingerPathCollection reset];
   [(AXGestureRecorderViewController *)self setTrackingTouches:0];
   if (![(AXGestureRecorderViewController *)self isInReplayMode])
   {
-    while (v6 < [(AXGestureRecorderFingerPathCollection *)v9 fingerPathsCount])
+    while (fingerPathsCount < [(AXGestureRecorderFingerPathCollection *)fingerPathCollection fingerPathsCount])
     {
-      [(AXGestureRecorderViewController *)self _startInstantReplayForStaticFingerAtIndex:v6++];
+      [(AXGestureRecorderViewController *)self _startInstantReplayForStaticFingerAtIndex:fingerPathsCount++];
     }
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v12 = a3;
+  beganCopy = began;
   if (![(AXGestureRecorderViewController *)self shouldPreventFurtherRecording])
   {
-    v5 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
-    v6 = [v5 fingerPathsCount];
-    v7 = [(AXGestureRecorderViewController *)self fingerPathCollection];
-    v8 = [v7 fingerPathsCount] + v6;
+    dynamicFingerPathCollection = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+    fingerPathsCount = [dynamicFingerPathCollection fingerPathsCount];
+    fingerPathCollection = [(AXGestureRecorderViewController *)self fingerPathCollection];
+    v8 = [fingerPathCollection fingerPathsCount] + fingerPathsCount;
 
     if (v8 <= 9)
     {
@@ -549,21 +549,21 @@ LABEL_8:
       {
         if (![(AXGestureRecorderViewController *)self isInReplayMode])
         {
-          if (![v12 count])
+          if (![beganCopy count])
           {
             _AXAssert();
           }
 
-          v9 = [v12 anyObject];
-          if ([(AXGestureRecorderViewController *)self recorderType]== 2 && v9)
+          anyObject = [beganCopy anyObject];
+          if ([(AXGestureRecorderViewController *)self recorderType]== 2 && anyObject)
           {
-            v10 = [MEMORY[0x1E695DFD8] setWithObject:v9];
+            v10 = [MEMORY[0x1E695DFD8] setWithObject:anyObject];
 
-            v12 = v10;
+            beganCopy = v10;
           }
 
-          v11 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-          [v9 locationInView:v11];
+          gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+          [anyObject locationInView:gestureRecorderView];
           [(AXGestureRecorderViewController *)self _didStartRecordingAtomicFingerPathAtPoint:?];
         }
 
@@ -576,9 +576,9 @@ LABEL_8:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v9 = a3;
+  movedCopy = moved;
   if (![(AXGestureRecorderViewController *)self shouldPreventFurtherRecording]&& [(AXGestureRecorderViewController *)self isTrackingTouches])
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -587,7 +587,7 @@ LABEL_8:
     [(AXGestureRecorderViewController *)self _maximumDurationOfRecordedGesture];
     if (v7 <= v8)
     {
-      [(AXGestureRecorderViewController *)self _updateDynamicFingerPathsWithTouches:v9 touchesDidEnd:0];
+      [(AXGestureRecorderViewController *)self _updateDynamicFingerPathsWithTouches:movedCopy touchesDidEnd:0];
     }
 
     else
@@ -597,10 +597,10 @@ LABEL_8:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v15 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (![(AXGestureRecorderViewController *)self shouldPreventFurtherRecording]&& [(AXGestureRecorderViewController *)self isTrackingTouches])
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -609,12 +609,12 @@ LABEL_8:
     [(AXGestureRecorderViewController *)self _maximumDurationOfRecordedGesture];
     if (v9 <= v10)
     {
-      [(AXGestureRecorderViewController *)self _updateDynamicFingerPathsWithTouches:v15 touchesDidEnd:1];
+      [(AXGestureRecorderViewController *)self _updateDynamicFingerPathsWithTouches:endedCopy touchesDidEnd:1];
     }
 
-    v11 = [v15 count];
-    v12 = [(AXGestureRecorderViewController *)self view];
-    v13 = [v6 touchesForView:v12];
+    v11 = [endedCopy count];
+    view = [(AXGestureRecorderViewController *)self view];
+    v13 = [eventCopy touchesForView:view];
     v14 = [v13 count];
 
     if (v11 == v14)
@@ -628,80 +628,80 @@ LABEL_8:
   }
 }
 
-- (unint64_t)numberOfDynamicFingerPathsInGestureRecorderView:(id)a3
+- (unint64_t)numberOfDynamicFingerPathsInGestureRecorderView:(id)view
 {
   if ([(AXGestureRecorderViewController *)self isInReplayMode])
   {
-    v4 = [(AXGestureRecorderViewController *)self replayDynamicFingerPaths];
-    v5 = [v4 count];
+    replayDynamicFingerPaths = [(AXGestureRecorderViewController *)self replayDynamicFingerPaths];
+    fingerPathsCount = [replayDynamicFingerPaths count];
   }
 
   else
   {
-    v4 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
-    v5 = [v4 fingerPathsCount];
+    replayDynamicFingerPaths = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+    fingerPathsCount = [replayDynamicFingerPaths fingerPathsCount];
   }
 
-  v6 = v5;
+  v6 = fingerPathsCount;
 
   return v6;
 }
 
-- (id)gestureRecorderView:(id)a3 dynamicFingerPathAtIndex:(unint64_t)a4
+- (id)gestureRecorderView:(id)view dynamicFingerPathAtIndex:(unint64_t)index
 {
   if ([(AXGestureRecorderViewController *)self isInReplayMode])
   {
-    v6 = [(AXGestureRecorderViewController *)self replayDynamicFingerPaths];
-    [v6 objectAtIndex:a4];
+    replayDynamicFingerPaths = [(AXGestureRecorderViewController *)self replayDynamicFingerPaths];
+    [replayDynamicFingerPaths objectAtIndex:index];
   }
 
   else
   {
-    v6 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
-    [v6 fingerPathAtIndex:a4];
+    replayDynamicFingerPaths = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+    [replayDynamicFingerPaths fingerPathAtIndex:index];
   }
   v7 = ;
 
   return v7;
 }
 
-- (BOOL)isChromeVisibleForGestureRecorderView:(id)a3
+- (BOOL)isChromeVisibleForGestureRecorderView:(id)view
 {
-  v3 = self;
-  v4 = [(AXGestureRecorderViewController *)self delegate];
-  LOBYTE(v3) = [v4 isChromeVisibleForGestureRecorderViewController:v3];
+  selfCopy = self;
+  delegate = [(AXGestureRecorderViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate isChromeVisibleForGestureRecorderViewController:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)gestureRecorderView:(id)a3 setChromeVisible:(BOOL)a4
+- (void)gestureRecorderView:(id)view setChromeVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = [(AXGestureRecorderViewController *)self delegate];
-  [v6 gestureRecorderViewController:self setChromeVisible:v4];
+  visibleCopy = visible;
+  delegate = [(AXGestureRecorderViewController *)self delegate];
+  [delegate gestureRecorderViewController:self setChromeVisible:visibleCopy];
 }
 
-- (void)gestureRecorderFingerPathCollection:(id)a3 didInsertFingerPathAtIndex:(unint64_t)a4
+- (void)gestureRecorderFingerPathCollection:(id)collection didInsertFingerPathAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+  collectionCopy = collection;
+  dynamicFingerPathCollection = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
 
-  if (v7 == v6)
+  if (dynamicFingerPathCollection == collectionCopy)
   {
-    v8 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-    [v8 insertDynamicFingerPathAtIndex:a4];
+    gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+    [gestureRecorderView insertDynamicFingerPathAtIndex:index];
   }
 }
 
-- (void)gestureRecorderFingerPathCollection:(id)a3 didUpdateFingerPathAtIndex:(unint64_t)a4
+- (void)gestureRecorderFingerPathCollection:(id)collection didUpdateFingerPathAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
+  collectionCopy = collection;
+  dynamicFingerPathCollection = [(AXGestureRecorderViewController *)self dynamicFingerPathCollection];
 
-  if (v7 == v6)
+  if (dynamicFingerPathCollection == collectionCopy)
   {
-    v8 = [(AXGestureRecorderViewController *)self gestureRecorderView];
-    [v8 reloadDynamicFingerPathAtIndex:a4];
+    gestureRecorderView = [(AXGestureRecorderViewController *)self gestureRecorderView];
+    [gestureRecorderView reloadDynamicFingerPathAtIndex:index];
   }
 }
 

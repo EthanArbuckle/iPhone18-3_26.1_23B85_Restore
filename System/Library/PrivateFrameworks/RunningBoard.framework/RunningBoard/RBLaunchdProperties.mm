@@ -1,25 +1,25 @@
 @interface RBLaunchdProperties
-+ (id)_instanceWithProperties:(id)a3;
-+ (id)processIdentityForEndpoint:(id)a3;
-+ (id)propertiesForJob:(id)a3;
-+ (id)propertiesForLabel:(id)a3 error:(id *)a4;
-- (id)_configureDaemonOrAngelWithProperties:(id)a3 path:(id)a4 isAngel:(BOOL)a5;
-- (id)_configureXPCServiceWithProperties:(id)a3;
-- (id)_initWithProperties:(id)a3;
-- (void)_parseAdditionalProperties:(id)a3;
-- (void)_parseClientRestriction:(id)a3;
-- (void)_parseEndpoints:(id)a3 withAdditionalProperties:(id)a4;
-- (void)_parseLASSProperties:(id)a3;
++ (id)_instanceWithProperties:(id)properties;
++ (id)processIdentityForEndpoint:(id)endpoint;
++ (id)propertiesForJob:(id)job;
++ (id)propertiesForLabel:(id)label error:(id *)error;
+- (id)_configureDaemonOrAngelWithProperties:(id)properties path:(id)path isAngel:(BOOL)angel;
+- (id)_configureXPCServiceWithProperties:(id)properties;
+- (id)_initWithProperties:(id)properties;
+- (void)_parseAdditionalProperties:(id)properties;
+- (void)_parseClientRestriction:(id)restriction;
+- (void)_parseEndpoints:(id)endpoints withAdditionalProperties:(id)properties;
+- (void)_parseLASSProperties:(id)properties;
 @end
 
 @implementation RBLaunchdProperties
 
-+ (id)_instanceWithProperties:(id)a3
++ (id)_instanceWithProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
-    v3 = a3;
-    v4 = [[RBLaunchdProperties alloc] _initWithProperties:v3];
+    propertiesCopy = properties;
+    v4 = [[RBLaunchdProperties alloc] _initWithProperties:propertiesCopy];
   }
 
   else
@@ -30,24 +30,24 @@
   return v4;
 }
 
-- (id)_initWithProperties:(id)a3
+- (id)_initWithProperties:(id)properties
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
     [(RBLaunchdProperties *)&v31 _initWithProperties:buf];
   }
 
-  v5 = v4;
+  v5 = propertiesCopy;
   v30.receiver = self;
   v30.super_class = RBLaunchdProperties;
   v6 = [(RBLaunchdProperties *)&v30 init];
   if (v6)
   {
-    v7 = [v5 path];
-    v8 = [v5 xpcBundle];
-    if (v8)
+    path = [v5 path];
+    xpcBundle = [v5 xpcBundle];
+    if (xpcBundle)
     {
       v9 = 0;
       v10 = 0;
@@ -55,24 +55,24 @@
 
     else
     {
-      v12 = [v7 pathExtension];
-      v9 = [v12 isEqualToString:@"plist"];
+      pathExtension = [path pathExtension];
+      v9 = [pathExtension isEqualToString:@"plist"];
 
       v10 = v9 ^ 1;
     }
 
-    v13 = [v5 label];
+    label = [v5 label];
     p_jobLabel = &v6->_jobLabel;
     jobLabel = v6->_jobLabel;
-    v6->_jobLabel = v13;
+    v6->_jobLabel = label;
 
     [(RBLaunchdProperties *)v6 _parseLASSProperties:v5];
-    v15 = [v5 serviceType];
-    if (v15 > 3)
+    serviceType = [v5 serviceType];
+    if (serviceType > 3)
     {
-      if ((v15 - 5) < 2)
+      if ((serviceType - 5) < 2)
       {
-        if ((v8 & 1) == 0)
+        if ((xpcBundle & 1) == 0)
         {
           v21 = rbs_process_log();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -85,7 +85,7 @@
         goto LABEL_29;
       }
 
-      if (v15 == 4)
+      if (serviceType == 4)
       {
         if (!v6->_specifiedIdentity)
         {
@@ -118,7 +118,7 @@
 
     else
     {
-      if ((v15 - 1) < 2)
+      if ((serviceType - 1) < 2)
       {
         if ((v9 & 1) == 0)
         {
@@ -131,7 +131,7 @@
 
         v17 = v6;
         v18 = v5;
-        v19 = v7;
+        v19 = path;
         v20 = 0;
 LABEL_28:
         v22 = [(RBLaunchdProperties *)v17 _configureDaemonOrAngelWithProperties:v18 path:v19 isAngel:v20];
@@ -142,7 +142,7 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      if (v15 == 3)
+      if (serviceType == 3)
       {
         if ((v9 & 1) == 0)
         {
@@ -160,7 +160,7 @@ LABEL_30:
 
         v17 = v6;
         v18 = v5;
-        v19 = v7;
+        v19 = path;
         v20 = 1;
         goto LABEL_28;
       }
@@ -182,15 +182,15 @@ LABEL_31:
   return p_jobLabel;
 }
 
-+ (id)propertiesForJob:(id)a3
++ (id)propertiesForJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   v10 = 0;
-  v5 = [MEMORY[0x277CEBF18] propertiesForJob:v4 error:&v10];
+  v5 = [MEMORY[0x277CEBF18] propertiesForJob:jobCopy error:&v10];
   v6 = v10;
   if (v5)
   {
-    v7 = [a1 _instanceWithProperties:v5];
+    v7 = [self _instanceWithProperties:v5];
   }
 
   else
@@ -207,20 +207,20 @@ LABEL_31:
   return v7;
 }
 
-+ (id)propertiesForLabel:(id)a3 error:(id *)a4
++ (id)propertiesForLabel:(id)label error:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CEBF28];
   v6 = MEMORY[0x277CEBF20];
-  v7 = a3;
-  v8 = [v6 currentDomain];
-  v9 = [v5 copyJobWithLabel:v7 domain:v8];
+  labelCopy = label;
+  currentDomain = [v6 currentDomain];
+  v9 = [v5 copyJobWithLabel:labelCopy domain:currentDomain];
 
   if (v9)
   {
     v10 = [RBLaunchdProperties propertiesForJob:v9];
     v11 = v10;
-    if (a4 && !v10)
+    if (error && !v10)
     {
       v12 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277D47098];
@@ -229,13 +229,13 @@ LABEL_31:
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v15 = [v12 errorWithDomain:v13 code:4 userInfo:v14];
 LABEL_7:
-      *a4 = v15;
+      *error = v15;
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277D47098];
@@ -255,10 +255,10 @@ LABEL_7:
   return v11;
 }
 
-+ (id)processIdentityForEndpoint:(id)a3
++ (id)processIdentityForEndpoint:(id)endpoint
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endpointCopy = endpoint;
   v15[0] = 0;
   v15[1] = 0;
   if (xpc_endpoint_get_bs_job_handle())
@@ -267,24 +267,24 @@ LABEL_7:
     v6 = [MEMORY[0x277CEBF28] copyJobWithHandle:v5];
     if (v6)
     {
-      v7 = [a1 propertiesForJob:v6];
+      v7 = [self propertiesForJob:v6];
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 specifiedIdentity];
-        v10 = v9;
-        if (v9)
+        specifiedIdentity = [v7 specifiedIdentity];
+        v10 = specifiedIdentity;
+        if (specifiedIdentity)
         {
-          v11 = v9;
-          v10 = v11;
+          resolvedIdentity = specifiedIdentity;
+          v10 = resolvedIdentity;
         }
 
         else
         {
-          v11 = [v8 resolvedIdentity];
+          resolvedIdentity = [v8 resolvedIdentity];
         }
 
-        v12 = v11;
+        v12 = resolvedIdentity;
       }
 
       else
@@ -327,20 +327,20 @@ LABEL_7:
   return v12;
 }
 
-- (id)_configureXPCServiceWithProperties:(id)a3
+- (id)_configureXPCServiceWithProperties:(id)properties
 {
-  self->_hostPid = [a3 hostPID];
+  self->_hostPid = [properties hostPID];
   self->_type = 3;
   return self;
 }
 
-- (void)_parseLASSProperties:(id)a3
+- (void)_parseLASSProperties:(id)properties
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 instance];
+  propertiesCopy = properties;
+  instance = [propertiesCopy instance];
   uuid = self->_uuid;
-  self->_uuid = v5;
+  self->_uuid = instance;
 
   self->_multiInstance = self->_uuid != 0;
   v7 = rbs_general_log();
@@ -352,9 +352,9 @@ LABEL_7:
     _os_log_impl(&dword_262485000, v7, OS_LOG_TYPE_INFO, "_multiInstance = %d", &v20, 8u);
   }
 
-  v9 = [v4 program];
+  program = [propertiesCopy program];
   executablePath = self->_executablePath;
-  self->_executablePath = v9;
+  self->_executablePath = program;
 
   v11 = rbs_general_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -365,9 +365,9 @@ LABEL_7:
     _os_log_impl(&dword_262485000, v11, OS_LOG_TYPE_INFO, "_executablePath = %{public}@", &v20, 0xCu);
   }
 
-  v13 = [v4 additionalProperties];
-  v14 = v13;
-  if (v13 && MEMORY[0x26672A380](v13) == MEMORY[0x277D86468])
+  additionalProperties = [propertiesCopy additionalProperties];
+  v14 = additionalProperties;
+  if (additionalProperties && MEMORY[0x26672A380](additionalProperties) == MEMORY[0x277D86468])
   {
     v18 = rbs_general_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -376,9 +376,9 @@ LABEL_7:
     }
 
     [(RBLaunchdProperties *)self _parseAdditionalProperties:v14];
-    v19 = [v4 endpoints];
-    v15 = v19;
-    if (v19 && MEMORY[0x26672A380](v19) == MEMORY[0x277D86440] && xpc_array_get_count(v15))
+    endpoints = [propertiesCopy endpoints];
+    v15 = endpoints;
+    if (endpoints && MEMORY[0x26672A380](endpoints) == MEMORY[0x277D86440] && xpc_array_get_count(v15))
     {
       [(RBLaunchdProperties *)self _parseEndpoints:v15 withAdditionalProperties:v14];
     }
@@ -399,10 +399,10 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_parseAdditionalProperties:(id)a3
+- (void)_parseAdditionalProperties:(id)properties
 {
   v71 = *MEMORY[0x277D85DE8];
-  v4 = xpc_dictionary_get_value(a3, "RunningBoard");
+  v4 = xpc_dictionary_get_value(properties, "RunningBoard");
   v5 = v4;
   if (!v4 || (v6 = MEMORY[0x26672A380](v4), v7 = MEMORY[0x277D86468], v6 != MEMORY[0x277D86468]))
   {
@@ -573,13 +573,13 @@ LABEL_46:
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_parseClientRestriction:(id)a3
+- (void)_parseClientRestriction:(id)restriction
 {
   v15[4] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEA90];
-  v5 = a3;
-  bytes_ptr = xpc_data_get_bytes_ptr(v5);
-  length = xpc_data_get_length(v5);
+  restrictionCopy = restriction;
+  bytes_ptr = xpc_data_get_bytes_ptr(restrictionCopy);
+  length = xpc_data_get_length(restrictionCopy);
 
   v8 = [v4 dataWithBytes:bytes_ptr length:length];
   v9 = MEMORY[0x277CBEB98];
@@ -597,14 +597,14 @@ LABEL_46:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_parseEndpoints:(id)a3 withAdditionalProperties:(id)a4
+- (void)_parseEndpoints:(id)endpoints withAdditionalProperties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
-  if (xpc_array_get_count(v5))
+  endpointsCopy = endpoints;
+  propertiesCopy = properties;
+  if (xpc_array_get_count(endpointsCopy))
   {
-    xdict = v6;
-    v37 = v5;
+    xdict = propertiesCopy;
+    v37 = endpointsCopy;
     v7 = 0;
     v8 = 0;
     v9 = "XPCServiceEndpointName";
@@ -612,7 +612,7 @@ LABEL_46:
     v11 = "XPCServiceEndpointPort";
     do
     {
-      v12 = xpc_array_get_dictionary(v5, v7);
+      v12 = xpc_array_get_dictionary(endpointsCopy, v7);
       string = xpc_dictionary_get_string(v12, v9);
       v14 = xpc_dictionary_get_BOOL(v12, v10);
       v15 = xpc_dictionary_get_value(v12, v11);
@@ -628,28 +628,28 @@ LABEL_46:
 
         if (v8)
         {
-          v23 = [v22 name];
-          [v8 setObject:v22 forKey:v23];
+          name = [v22 name];
+          [v8 setObject:v22 forKey:name];
         }
 
         else
         {
           v24 = MEMORY[0x277CBEB38];
-          v23 = [v22 name];
-          v8 = [v24 dictionaryWithObject:v22 forKey:v23];
+          name = [v22 name];
+          v8 = [v24 dictionaryWithObject:v22 forKey:name];
         }
 
         v9 = v19;
         v10 = v18;
         v11 = v17;
-        v5 = v37;
+        endpointsCopy = v37;
       }
 
       ++v7;
     }
 
-    while (xpc_array_get_count(v5) > v7);
-    v6 = xdict;
+    while (xpc_array_get_count(endpointsCopy) > v7);
+    propertiesCopy = xdict;
     if (v8)
     {
       v25 = xpc_dictionary_get_dictionary(xdict, "RunningBoard");
@@ -670,7 +670,7 @@ LABEL_46:
             applier[2] = __64__RBLaunchdProperties__parseEndpoints_withAdditionalProperties___block_invoke;
             applier[3] = &unk_279B33A88;
             v39 = v8;
-            v40 = self;
+            selfCopy = self;
             v32 = v31;
             v41 = v32;
             if (xpc_dictionary_apply(v30, applier) && [v32 count])
@@ -773,13 +773,13 @@ LABEL_16:
   return v13;
 }
 
-- (id)_configureDaemonOrAngelWithProperties:(id)a3 path:(id)a4 isAngel:(BOOL)a5
+- (id)_configureDaemonOrAngelWithProperties:(id)properties path:(id)path isAngel:(BOOL)angel
 {
-  v6 = a5;
+  angelCopy = angel;
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  propertiesCopy = properties;
+  pathCopy = path;
+  if (!pathCopy)
   {
     v22 = rbs_general_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -790,8 +790,8 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  v11 = [v9 label];
-  v12 = [v11 length];
+  label = [propertiesCopy label];
+  v12 = [label length];
 
   if (!v12)
   {
@@ -803,13 +803,13 @@ LABEL_16:
 
 LABEL_21:
 
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_70;
   }
 
-  objc_storeStrong(&self->_path, a4);
+  objc_storeStrong(&self->_path, path);
   explicitAngelFlag = self->_explicitAngelFlag;
-  if (explicitAngelFlag || v6)
+  if (explicitAngelFlag || angelCopy)
   {
     self->_type = 4;
     if (self->_overrideManageFlags == 255)
@@ -817,16 +817,16 @@ LABEL_21:
       if (!explicitAngelFlag)
       {
 LABEL_31:
-        if ([v9 processType] != 256)
+        if ([propertiesCopy processType] != 256)
         {
           v26 = rbs_general_log();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
           {
-            [RBLaunchdProperties _configureDaemonOrAngelWithProperties:v9 path:? isAngel:?];
+            [RBLaunchdProperties _configureDaemonOrAngelWithProperties:propertiesCopy path:? isAngel:?];
           }
         }
 
-        if ([v9 keepAlive])
+        if ([propertiesCopy keepAlive])
         {
           v27 = rbs_general_log();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
@@ -835,7 +835,7 @@ LABEL_31:
           }
         }
 
-        if ([v9 runAtLoad])
+        if ([propertiesCopy runAtLoad])
         {
           v28 = rbs_general_log();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
@@ -844,7 +844,7 @@ LABEL_31:
           }
         }
 
-        if ([v9 enableTransactions])
+        if ([propertiesCopy enableTransactions])
         {
           v29 = rbs_general_log();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
@@ -853,7 +853,7 @@ LABEL_31:
           }
         }
 
-        if ([v9 enablePressuredExit])
+        if ([propertiesCopy enablePressuredExit])
         {
           v30 = rbs_general_log();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
@@ -862,18 +862,18 @@ LABEL_31:
           }
         }
 
-        v14 = [v9 endpoints];
-        if (!xpc_array_get_count(v14) || !xpc_array_get_count(v14))
+        endpoints = [propertiesCopy endpoints];
+        if (!xpc_array_get_count(endpoints) || !xpc_array_get_count(endpoints))
         {
           goto LABEL_69;
         }
 
-        v43 = v10;
-        v44 = v9;
+        v43 = pathCopy;
+        v44 = propertiesCopy;
         v31 = 0;
         do
         {
-          v32 = xpc_array_get_value(v14, v31);
+          v32 = xpc_array_get_value(endpoints, v31);
           string = xpc_dictionary_get_string(v32, "XPCServiceEndpointName");
           v34 = rbs_general_log();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
@@ -927,7 +927,7 @@ LABEL_31:
           ++v31;
         }
 
-        while (xpc_array_get_count(v14) > v31);
+        while (xpc_array_get_count(endpoints) > v31);
         goto LABEL_16;
       }
     }
@@ -957,18 +957,18 @@ LABEL_31:
   }
 
   self->_type = 2;
-  v14 = [v9 endpoints];
-  if (!xpc_array_get_count(v14) || !xpc_array_get_count(v14))
+  endpoints = [propertiesCopy endpoints];
+  if (!xpc_array_get_count(endpoints) || !xpc_array_get_count(endpoints))
   {
     goto LABEL_69;
   }
 
-  v43 = v10;
-  v44 = v9;
+  v43 = pathCopy;
+  v44 = propertiesCopy;
   v15 = 0;
   do
   {
-    v16 = xpc_array_get_value(v14, v15);
+    v16 = xpc_array_get_value(endpoints, v15);
     v17 = xpc_dictionary_get_string(v16, "XPCServiceEndpointName");
     if (v17)
     {
@@ -998,18 +998,18 @@ LABEL_31:
     ++v15;
   }
 
-  while (xpc_array_get_count(v14) > v15);
+  while (xpc_array_get_count(endpoints) > v15);
 LABEL_16:
-  v10 = v43;
-  v9 = v44;
+  pathCopy = v43;
+  propertiesCopy = v44;
 LABEL_69:
 
-  v23 = self;
+  selfCopy = self;
 LABEL_70:
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)_initWithProperties:(uint64_t *)a1 .cold.1(uint64_t *a1)

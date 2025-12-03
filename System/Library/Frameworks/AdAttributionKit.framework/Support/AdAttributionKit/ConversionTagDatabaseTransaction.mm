@@ -1,6 +1,6 @@
 @interface ConversionTagDatabaseTransaction
 - (_TtC20AttributionKitDaemon32ConversionTagDatabaseTransaction)init;
-- (_TtC20AttributionKitDaemon32ConversionTagDatabaseTransaction)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon32ConversionTagDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation ConversionTagDatabaseTransaction
@@ -12,11 +12,11 @@
   return [(ConversionTagDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon32ConversionTagDatabaseTransaction)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon32ConversionTagDatabaseTransaction)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(ConversionTagDatabaseSession *)&v5 initWithConnection:a3];
+  return [(ConversionTagDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

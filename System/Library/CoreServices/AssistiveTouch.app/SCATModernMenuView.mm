@@ -1,50 +1,50 @@
 @interface SCATModernMenuView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 includeTip:(BOOL)a4;
-- (SCATModernMenuView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits includeTip:(BOOL)tip;
+- (SCATModernMenuView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SCATModernMenuView
 
-- (SCATModernMenuView)initWithFrame:(CGRect)a3
+- (SCATModernMenuView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = SCATModernMenuView;
   v7 = [(SCATModernMenuView *)&v16 initWithFrame:?];
   if (v7)
   {
-    v8 = [[SCATModernMenuBackgroundView alloc] initWithFrame:x, y, width, height];
-    [(SCATModernMenuBackgroundView *)v8 setAutoresizingMask:18];
-    [(SCATModernMenuView *)v7 setBackgroundView:v8];
-    v9 = [(SCATModernMenuBackgroundView *)v8 backdropView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    height = [[SCATModernMenuBackgroundView alloc] initWithFrame:x, y, width, height];
+    [(SCATModernMenuBackgroundView *)height setAutoresizingMask:18];
+    [(SCATModernMenuView *)v7 setBackgroundView:height];
+    backdropView = [(SCATModernMenuBackgroundView *)height backdropView];
+    [backdropView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(SCATModernMenuBackgroundView *)v8 backdropView];
-    [(SCATModernMenuView *)v7 addSubview:v10];
+    backdropView2 = [(SCATModernMenuBackgroundView *)height backdropView];
+    [(SCATModernMenuView *)v7 addSubview:backdropView2];
 
-    v11 = [(SCATModernMenuBackgroundView *)v8 backdropView];
-    v12 = [v11 contentView];
-    [v12 addSubview:v8];
+    backdropView3 = [(SCATModernMenuBackgroundView *)height backdropView];
+    contentView = [backdropView3 contentView];
+    [contentView addSubview:height];
 
-    v13 = [(SCATModernMenuBackgroundView *)v8 backdropView];
-    v14 = [NSLayoutConstraint ax_constraintsToMakeView:v7 sameDimensionsAsView:v13];
+    backdropView4 = [(SCATModernMenuBackgroundView *)height backdropView];
+    v14 = [NSLayoutConstraint ax_constraintsToMakeView:v7 sameDimensionsAsView:backdropView4];
     [NSLayoutConstraint activateConstraints:v14];
   }
 
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 includeTip:(BOOL)a4
+- (CGSize)sizeThatFits:(CGSize)fits includeTip:(BOOL)tip
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v7 = [(SCATModernMenuView *)self backgroundView];
-  [v7 sizeThatFits:v4 includeTip:{width, height}];
+  tipCopy = tip;
+  height = fits.height;
+  width = fits.width;
+  backgroundView = [(SCATModernMenuView *)self backgroundView];
+  [backgroundView sizeThatFits:tipCopy includeTip:{width, height}];
   v9 = v8;
   v11 = v10;
 
@@ -55,12 +55,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(SCATModernMenuView *)self backgroundView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  backgroundView = [(SCATModernMenuView *)self backgroundView];
+  [backgroundView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

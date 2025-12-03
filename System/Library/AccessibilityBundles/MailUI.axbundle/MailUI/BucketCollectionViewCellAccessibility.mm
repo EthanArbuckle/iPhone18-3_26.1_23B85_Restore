@@ -1,17 +1,17 @@
 @interface BucketCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation BucketCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailUI.BucketCollectionViewCell" hasSwiftField:@"item" withSwiftType:"Optional<BucketItem>"];
-  [v3 validateClass:@"MailUI.BucketItem" hasSwiftField:@"title" withSwiftType:"String"];
-  [v3 validateClass:@"MailUI.BucketItem" hasSwiftField:@"isUnseen" withSwiftType:"Bool"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailUI.BucketCollectionViewCell" hasSwiftField:@"item" withSwiftType:"Optional<BucketItem>"];
+  [validationsCopy validateClass:@"MailUI.BucketItem" hasSwiftField:@"title" withSwiftType:"String"];
+  [validationsCopy validateClass:@"MailUI.BucketItem" hasSwiftField:@"isUnseen" withSwiftType:"Bool"];
 }
 
 - (id)accessibilityLabel
@@ -27,17 +27,17 @@
   v3 = [(BucketCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"item"];
   if ([v3 safeSwiftBoolForKey:@"isUnseen"])
   {
-    v4 = accessibilityLocalizedString(@"category.unread");
+    accessibilityValue = accessibilityLocalizedString(@"category.unread");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = BucketCollectionViewCellAccessibility;
-    v4 = [(BucketCollectionViewCellAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(BucketCollectionViewCellAccessibility *)&v7 accessibilityValue];
   }
 
-  v5 = v4;
+  v5 = accessibilityValue;
 
   return v5;
 }

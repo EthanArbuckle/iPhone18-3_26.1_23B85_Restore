@@ -1,38 +1,38 @@
 @interface JavaUtilCollections_SingletonList
-- (BOOL)containsWithId:(id)a3;
-- (JavaUtilCollections_SingletonList)initWithId:(id)a3;
-- (id)getWithInt:(int)a3;
+- (BOOL)containsWithId:(id)id;
+- (JavaUtilCollections_SingletonList)initWithId:(id)id;
+- (id)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_SingletonList
 
-- (JavaUtilCollections_SingletonList)initWithId:(id)a3
+- (JavaUtilCollections_SingletonList)initWithId:(id)id
 {
   JavaUtilAbstractList_init(self, a2);
-  JreStrongAssign(&self->element_, a3);
+  JreStrongAssign(&self->element_, id);
   return self;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   element = self->element_;
   if (element)
   {
-    LOBYTE(v4) = [element isEqual:a3];
+    LOBYTE(v4) = [element isEqual:id];
   }
 
   else
   {
-    return a3 == 0;
+    return id == 0;
   }
 
   return v4;
 }
 
-- (id)getWithInt:(int)a3
+- (id)getWithInt:(int)int
 {
-  if (a3)
+  if (int)
   {
     v4 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v4);

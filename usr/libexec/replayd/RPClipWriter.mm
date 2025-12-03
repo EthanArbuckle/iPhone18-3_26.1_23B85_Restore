@@ -1,23 +1,23 @@
 @interface RPClipWriter
-- (RPClipWriter)initWithWindowSize:(CGSize)a3;
+- (RPClipWriter)initWithWindowSize:(CGSize)size;
 - (id)dispatchClipWriterQueue;
-- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)exportClipToURL:(id)a3 duration:(double)a4 completionHandler:(id)a5;
+- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)exportClipToURL:(id)l duration:(double)duration completionHandler:(id)handler;
 - (void)flushClipBuffer;
-- (void)queueAndWaitForSample:(int)a3 withAssetInput:(id)a4 withBuffer:(id)a5 didAppendIdleFrame:(BOOL)a6;
+- (void)queueAndWaitForSample:(int)sample withAssetInput:(id)input withBuffer:(id)buffer didAppendIdleFrame:(BOOL)frame;
 - (void)setupAssetWriter;
-- (void)updateLatestSampleTime:(opaqueCMSampleBuffer *)a3;
-- (void)waitForCompletionAndFinishWriting:(id *)a3 withHandler:(id)a4;
+- (void)updateLatestSampleTime:(opaqueCMSampleBuffer *)time;
+- (void)waitForCompletionAndFinishWriting:(id *)writing withHandler:(id)handler;
 @end
 
 @implementation RPClipWriter
 
-- (RPClipWriter)initWithWindowSize:(CGSize)a3
+- (RPClipWriter)initWithWindowSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -132,7 +132,7 @@
   }
 }
 
-- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -141,22 +141,22 @@
     v9 = 1024;
     v10 = 109;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d %p", buf, 0x1Cu);
   }
 
-  CFRetain(a3);
-  v5 = [(RPClipWriter *)self dispatchClipWriterQueue];
+  CFRetain(buffer);
+  dispatchClipWriterQueue = [(RPClipWriter *)self dispatchClipWriterQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100053BE4;
   v6[3] = &unk_1000A1230;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = buffer;
+  dispatch_async(dispatchClipWriterQueue, v6);
 }
 
-- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -165,22 +165,22 @@
     v9 = 1024;
     v10 = 133;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d %p", buf, 0x1Cu);
   }
 
-  CFRetain(a3);
-  v5 = [(RPClipWriter *)self dispatchClipWriterQueue];
+  CFRetain(buffer);
+  dispatchClipWriterQueue = [(RPClipWriter *)self dispatchClipWriterQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100053DD8;
   v6[3] = &unk_1000A1230;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = buffer;
+  dispatch_async(dispatchClipWriterQueue, v6);
 }
 
-- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -189,25 +189,25 @@
     v9 = 1024;
     v10 = 143;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d %p", buf, 0x1Cu);
   }
 
-  CFRetain(a3);
-  v5 = [(RPClipWriter *)self dispatchClipWriterQueue];
+  CFRetain(buffer);
+  dispatchClipWriterQueue = [(RPClipWriter *)self dispatchClipWriterQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100053F74;
   v6[3] = &unk_1000A1230;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = buffer;
+  dispatch_async(dispatchClipWriterQueue, v6);
 }
 
-- (void)updateLatestSampleTime:(opaqueCMSampleBuffer *)a3
+- (void)updateLatestSampleTime:(opaqueCMSampleBuffer *)time
 {
   memset(&v6, 0, sizeof(v6));
-  CMSampleBufferGetPresentationTimeStamp(&v6, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v6, time);
   latestCMSamplePresentationTime = self->_latestCMSamplePresentationTime;
   Seconds = CMTimeGetSeconds(&latestCMSamplePresentationTime);
   latestCMSamplePresentationTime = v6;
@@ -217,10 +217,10 @@
   }
 }
 
-- (void)queueAndWaitForSample:(int)a3 withAssetInput:(id)a4 withBuffer:(id)a5 didAppendIdleFrame:(BOOL)a6
+- (void)queueAndWaitForSample:(int)sample withAssetInput:(id)input withBuffer:(id)buffer didAppendIdleFrame:(BOOL)frame
 {
-  v10 = a4;
-  v11 = a5;
+  inputCopy = input;
+  bufferCopy = buffer;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -242,7 +242,7 @@
   v25[1] = v25;
   v25[2] = 0x2020000000;
   v26 = 0;
-  v12 = [v11 count];
+  v12 = [bufferCopy count];
   *(*&buf[8] + 24) = v12;
   dispatch_group_enter(self->_clipWriterDispatchGroup);
   clipWriterQueue = self->_clipWriterQueue;
@@ -250,16 +250,16 @@
   v16[1] = 3221225472;
   v16[2] = sub_1000542A4;
   v16[3] = &unk_1000A2728;
-  v23 = a3;
+  sampleCopy = sample;
   v20 = v27;
   v21 = buf;
-  v14 = v10;
+  v14 = inputCopy;
   v17 = v14;
   v22 = v25;
-  v15 = v11;
+  v15 = bufferCopy;
   v18 = v15;
-  v19 = self;
-  v24 = a6;
+  selfCopy = self;
+  frameCopy = frame;
   [v14 requestMediaDataWhenReadyOnQueue:clipWriterQueue usingBlock:v16];
 
   _Block_object_dispose(v25, 8);
@@ -267,9 +267,9 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)waitForCompletionAndFinishWriting:(id *)a3 withHandler:(id)a4
+- (void)waitForCompletionAndFinishWriting:(id *)writing withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -285,11 +285,11 @@
   block[1] = 3221225472;
   block[2] = sub_100054930;
   block[3] = &unk_1000A2750;
-  v12 = *&a3->var0;
-  var3 = a3->var3;
+  v12 = *&writing->var0;
+  var3 = writing->var3;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_group_notify(clipWriterDispatchGroup, clipWriterQueue, block);
 }
 
@@ -302,23 +302,23 @@
     v7 = 1024;
     v8 = 231;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
-  v3 = [(RPClipWriter *)self dispatchClipWriterQueue];
+  dispatchClipWriterQueue = [(RPClipWriter *)self dispatchClipWriterQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100054BF0;
   block[3] = &unk_1000A1088;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchClipWriterQueue, block);
 }
 
-- (void)exportClipToURL:(id)a3 duration:(double)a4 completionHandler:(id)a5
+- (void)exportClipToURL:(id)l duration:(double)duration completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.value) = 136446466;
@@ -332,7 +332,7 @@
   epoch = self->_latestCMSamplePresentationTime.epoch;
   buf = self->_latestCMSamplePresentationTime;
   Seconds = CMTimeGetSeconds(&buf);
-  objc_storeStrong(&self->_outputURL, a3);
+  objc_storeStrong(&self->_outputURL, l);
   buf.value = 0;
   *&buf.timescale = &buf;
   buf.epoch = 0x3032000000;
@@ -351,7 +351,7 @@
   v30 = sub_10005521C;
   v31 = sub_10005522C;
   v32 = 0;
-  v12 = [(RPClipWriter *)self dispatchClipWriterQueue];
+  dispatchClipWriterQueue = [(RPClipWriter *)self dispatchClipWriterQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100055234;
@@ -360,7 +360,7 @@
   block[5] = &buf;
   block[6] = &v33;
   block[7] = &v27;
-  dispatch_sync(v12, block);
+  dispatch_sync(dispatchClipWriterQueue, block);
 
   self->_enableMic = [v28[5] getTotalNumberOfSamples] != 0;
   v21[0] = _NSConcreteStackBlock;
@@ -370,7 +370,7 @@
   p_buf = &buf;
   v24 = &v33;
   v25 = &v27;
-  v13 = v10;
+  v13 = handlerCopy;
   v22 = v13;
   v14 = objc_retainBlock(v21);
   if ([(RPClipBuffer *)self->_clipBufferVideo getTotalNumberOfSamples])
@@ -389,19 +389,19 @@
     if (self->_videoInput)
     {
       v18 = [[NSMutableArray alloc] initWithCapacity:0];
-      -[RPClipWriter queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:](self, "queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:", 0, self->_videoInput, v18, [*(*&buf.timescale + 40) getSamplesForDuration:v18 latestSeconds:a4 withOutputArray:v17]);
+      -[RPClipWriter queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:](self, "queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:", 0, self->_videoInput, v18, [*(*&buf.timescale + 40) getSamplesForDuration:v18 latestSeconds:duration withOutputArray:v17]);
     }
 
     if (self->_audioInput1)
     {
       v19 = [[NSMutableArray alloc] initWithCapacity:0];
-      -[RPClipWriter queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:](self, "queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:", 1, self->_audioInput1, v19, [v34[5] getSamplesForDuration:v19 latestSeconds:a4 withOutputArray:v17]);
+      -[RPClipWriter queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:](self, "queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:", 1, self->_audioInput1, v19, [v34[5] getSamplesForDuration:v19 latestSeconds:duration withOutputArray:v17]);
     }
 
     if (self->_audioInput2)
     {
       v20 = [[NSMutableArray alloc] initWithCapacity:0];
-      -[RPClipWriter queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:](self, "queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:", 2, self->_audioInput2, v20, [v28[5] getSamplesForDuration:v20 latestSeconds:a4 withOutputArray:v17]);
+      -[RPClipWriter queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:](self, "queueAndWaitForSample:withAssetInput:withBuffer:didAppendIdleFrame:", 2, self->_audioInput2, v20, [v28[5] getSamplesForDuration:v20 latestSeconds:duration withOutputArray:v17]);
     }
 
     *v41 = v39;

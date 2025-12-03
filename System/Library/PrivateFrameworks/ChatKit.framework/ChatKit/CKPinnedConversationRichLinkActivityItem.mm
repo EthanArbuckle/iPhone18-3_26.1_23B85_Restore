@@ -1,27 +1,27 @@
 @interface CKPinnedConversationRichLinkActivityItem
-- (CKPinnedConversationRichLinkActivityItem)initWithLinkView:(id)a3;
-- (CKPinnedConversationRichLinkActivityItem)initWithMessage:(id)a3 chatContext:(id)a4 contentScale:(double)a5 attachedContactItemIdentifier:(id)a6;
+- (CKPinnedConversationRichLinkActivityItem)initWithLinkView:(id)view;
+- (CKPinnedConversationRichLinkActivityItem)initWithMessage:(id)message chatContext:(id)context contentScale:(double)scale attachedContactItemIdentifier:(id)identifier;
 - (id)activityItemView;
 - (id)linkPreviewContentView;
 @end
 
 @implementation CKPinnedConversationRichLinkActivityItem
 
-- (CKPinnedConversationRichLinkActivityItem)initWithMessage:(id)a3 chatContext:(id)a4 contentScale:(double)a5 attachedContactItemIdentifier:(id)a6
+- (CKPinnedConversationRichLinkActivityItem)initWithMessage:(id)message chatContext:(id)context contentScale:(double)scale attachedContactItemIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  messageCopy = message;
+  contextCopy = context;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CKPinnedConversationRichLinkActivityItem;
   v14 = [(CKPinnedConversationRichLinkActivityItem *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_message, a3);
-    objc_storeStrong(&v15->_chatContext, a4);
-    v15->_activityItemContentScale = a5;
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_message, message);
+    objc_storeStrong(&v15->_chatContext, context);
+    v15->_activityItemContentScale = scale;
+    v16 = [identifierCopy copy];
     attachedContactItemIdentifier = v15->_attachedContactItemIdentifier;
     v15->_attachedContactItemIdentifier = v16;
   }
@@ -29,16 +29,16 @@
   return v15;
 }
 
-- (CKPinnedConversationRichLinkActivityItem)initWithLinkView:(id)a3
+- (CKPinnedConversationRichLinkActivityItem)initWithLinkView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CKPinnedConversationRichLinkActivityItem;
   v6 = [(CKPinnedConversationRichLinkActivityItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_linkView, a3);
+    objc_storeStrong(&v6->_linkView, view);
   }
 
   return v7;
@@ -53,39 +53,39 @@
 
 - (id)linkPreviewContentView
 {
-  v3 = [(CKPinnedConversationRichLinkActivityItem *)self message];
+  message = [(CKPinnedConversationRichLinkActivityItem *)self message];
 
-  if (v3)
+  if (message)
   {
-    v4 = [(CKPinnedConversationRichLinkActivityItem *)self message];
-    v5 = [(CKPinnedConversationRichLinkActivityItem *)self chatContext];
-    v6 = [v4 richLinkDataSourceWithChatContext:v5];
+    message2 = [(CKPinnedConversationRichLinkActivityItem *)self message];
+    chatContext = [(CKPinnedConversationRichLinkActivityItem *)self chatContext];
+    v6 = [message2 richLinkDataSourceWithChatContext:chatContext];
 
     v7 = objc_alloc(MEMORY[0x1E696ECC8]);
     v8 = [v6 url];
-    v9 = [v7 initWithURL:v8];
+    linkView = [v7 initWithURL:v8];
 
-    v10 = [v6 richLinkMetadata];
-    [v9 setMetadata:v10];
+    richLinkMetadata = [v6 richLinkMetadata];
+    [linkView setMetadata:richLinkMetadata];
 
-    [v9 _setPreferredSizeClass:7];
-    [v9 _setApplyCornerRadius:0];
-    [v9 _setDisableTapGesture:1];
-    [v9 _setDisableAnimations:1];
-    [v9 _setForceFlexibleWidth:1];
+    [linkView _setPreferredSizeClass:7];
+    [linkView _setApplyCornerRadius:0];
+    [linkView _setDisableTapGesture:1];
+    [linkView _setDisableAnimations:1];
+    [linkView _setForceFlexibleWidth:1];
   }
 
   else
   {
-    v9 = [(CKPinnedConversationRichLinkActivityItem *)self linkView];
+    linkView = [(CKPinnedConversationRichLinkActivityItem *)self linkView];
 
-    if (v9)
+    if (linkView)
     {
-      v9 = [(CKPinnedConversationRichLinkActivityItem *)self linkView];
+      linkView = [(CKPinnedConversationRichLinkActivityItem *)self linkView];
     }
   }
 
-  return v9;
+  return linkView;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface BRDiskCheckerFilesystemDirectory
-- (BRDiskCheckerFilesystemDirectory)initWithURL:(id)a3 parentIsShared:(BOOL)a4 db:(id)a5;
+- (BRDiskCheckerFilesystemDirectory)initWithURL:(id)l parentIsShared:(BOOL)shared db:(id)db;
 - (id)_countOfShareAliasesNotOnDisk;
-- (id)_filesystemIdentifierFromURL:(id)a3 isDocument:(BOOL)a4;
-- (id)_lookupInjectionFromFileURL:(id)a3 isDocument:(BOOL)a4;
-- (void)_addDocument:(id)a3;
-- (void)addSubdirectory:(id)a3;
-- (void)addSymlink:(id)a3;
+- (id)_filesystemIdentifierFromURL:(id)l isDocument:(BOOL)document;
+- (id)_lookupInjectionFromFileURL:(id)l isDocument:(BOOL)document;
+- (void)_addDocument:(id)document;
+- (void)addSubdirectory:(id)subdirectory;
+- (void)addSymlink:(id)symlink;
 @end
 
 @implementation BRDiskCheckerFilesystemDirectory
 
-- (BRDiskCheckerFilesystemDirectory)initWithURL:(id)a3 parentIsShared:(BOOL)a4 db:(id)a5
+- (BRDiskCheckerFilesystemDirectory)initWithURL:(id)l parentIsShared:(BOOL)shared db:(id)db
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  sharedCopy = shared;
+  lCopy = l;
+  dbCopy = db;
   v28.receiver = self;
   v28.super_class = BRDiskCheckerFilesystemDirectory;
   v11 = [(BRDiskCheckerFilesystemDirectory *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_url, a3);
+    objc_storeStrong(&v11->_url, l);
     v13 = objc_opt_new();
     telemetryWarningEvents = v12->_telemetryWarningEvents;
     v12->_telemetryWarningEvents = v13;
 
-    objc_storeStrong(&v12->_db, a5);
-    if (v6)
+    objc_storeStrong(&v12->_db, db);
+    if (sharedCopy)
     {
       v12->_isShared = 1;
       v15 = brc_bread_crumbs();
@@ -42,15 +42,15 @@ LABEL_5:
       goto LABEL_13;
     }
 
-    [(BRDiskCheckerFilesystemDirectory *)v12 _processSharingInfoAtURL:v9 isDocument:0 isSharedToMeTopLevelItem:&v12->_isSharedToMeTopLevelItem shareAliasIsMissing:&v12->_shareAliasMissing];
+    [(BRDiskCheckerFilesystemDirectory *)v12 _processSharingInfoAtURL:lCopy isDocument:0 isSharedToMeTopLevelItem:&v12->_isSharedToMeTopLevelItem shareAliasIsMissing:&v12->_shareAliasMissing];
     if (!v12->_recursiveShareAliasCount && !v12->_recursiveSharedByMeCount && !v12->_isSharedToMeTopLevelItem)
     {
-      v20 = [(BRDiskCheckerFilesystemDirectory *)v12 _countOfShareAliasesNotOnDisk];
-      v21 = [v20 longLongValue];
+      _countOfShareAliasesNotOnDisk = [(BRDiskCheckerFilesystemDirectory *)v12 _countOfShareAliasesNotOnDisk];
+      longLongValue = [_countOfShareAliasesNotOnDisk longLongValue];
 
-      v22 = v12->_directChildCount + v21;
+      v22 = v12->_directChildCount + longLongValue;
       v12->_directChildCount = v22;
-      v12->_recursiveShareAliasCount += v21;
+      v12->_recursiveShareAliasCount += longLongValue;
       if (v22 < 1)
       {
         goto LABEL_13;
@@ -60,11 +60,11 @@ LABEL_5:
       v16 = brc_default_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(NSURL *)v12->_url path];
-        v24 = [v23 fp_obfuscatedPath];
+        path = [(NSURL *)v12->_url path];
+        fp_obfuscatedPath = [path fp_obfuscatedPath];
         directChildCount = v12->_directChildCount;
         *buf = 138412802;
-        v30 = v24;
+        v30 = fp_obfuscatedPath;
         v31 = 1024;
         *v32 = directChildCount;
         *&v32[4] = 2112;
@@ -114,18 +114,18 @@ LABEL_13:
 
 - (id)_countOfShareAliasesNotOnDisk
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(BRDiskCheckerFilesystemDirectory *)self _filesystemIdentifierFromURL:self->_url isDocument:0];
   if (v3)
   {
-    v4 = [(BRCPQLConnection *)v2->_db fetch:@"SELECT item_id, zone_rowid FROM client_items WHERE item_file_id = %@ AND item_state IN (0)", v3];
+    v4 = [(BRCPQLConnection *)selfCopy->_db fetch:@"SELECT item_id, zone_rowid FROM client_items WHERE item_file_id = %@ AND item_state IN (0)", v3];
     if ([v4 next])
     {
       v28 = v3;
       v5 = [v4 objectOfClass:objc_opt_class() atIndex:0];
       v26 = [v4 numberAtIndex:1];
       v27 = v5;
-      v6 = [(BRCPQLConnection *)v2->_db fetch:@"SELECT item_alias_target FROM server_items WHERE item_parent_id = %@ AND zone_rowid = %@ AND item_type = 3", v5, v26];
+      v6 = [(BRCPQLConnection *)selfCopy->_db fetch:@"SELECT item_alias_target FROM server_items WHERE item_parent_id = %@ AND zone_rowid = %@ AND item_type = 3", v5, v26];
 
       v36 = 0u;
       v37 = 0u;
@@ -156,15 +156,15 @@ LABEL_13:
             v13 = v31;
             if (v12)
             {
-              db = v2->_db;
+              db = selfCopy->_db;
               v15 = v7;
-              v16 = v2;
+              v16 = selfCopy;
               v17 = v33;
-              v18 = [v32 ownerName];
-              v19 = [v32 appLibraryOrZoneName];
+              ownerName = [v32 ownerName];
+              appLibraryOrZoneName = [v32 appLibraryOrZoneName];
               v24 = v17;
-              v2 = v16;
-              v20 = [(BRCPQLConnection *)db numberWithSQL:@"SELECT 1 FROM server_items WHERE item_id = %@ AND item_id_is_root(item_parent_id) AND zone_rowid = (SELECT sz.rowid FROM server_zones AS sz WHERE sz.zone_owner = %@ AND sz.zone_name = %@)", v24, v18, v19];
+              selfCopy = v16;
+              v20 = [(BRCPQLConnection *)db numberWithSQL:@"SELECT 1 FROM server_items WHERE item_id = %@ AND item_id_is_root(item_parent_id) AND zone_rowid = (SELECT sz.rowid FROM server_zones AS sz WHERE sz.zone_owner = %@ AND sz.zone_name = %@)", v24, ownerName, appLibraryOrZoneName];
 
               v7 = v15 + ([v20 BOOLValue] ^ 1);
             }
@@ -214,15 +214,15 @@ LABEL_13:
   return v22;
 }
 
-- (id)_filesystemIdentifierFromURL:(id)a3 isDocument:(BOOL)a4
+- (id)_filesystemIdentifierFromURL:(id)l isDocument:(BOOL)document
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = open([v5 fileSystemRepresentation], 0);
+  documentCopy = document;
+  lCopy = l;
+  v6 = open([lCopy fileSystemRepresentation], 0);
   if ((v6 & 0x80000000) == 0)
   {
     v7 = v6;
-    if (v4)
+    if (documentCopy)
     {
       DocID = BRCGetOrAllocateDocID();
       if (DocID)
@@ -277,13 +277,13 @@ LABEL_17:
   return v12;
 }
 
-- (id)_lookupInjectionFromFileURL:(id)a3 isDocument:(BOOL)a4
+- (id)_lookupInjectionFromFileURL:(id)l isDocument:(BOOL)document
 {
-  v4 = a4;
-  v5 = [(BRDiskCheckerFilesystemDirectory *)self _filesystemIdentifierFromURL:a3 isDocument:?];
+  documentCopy = document;
+  v5 = [(BRDiskCheckerFilesystemDirectory *)self _filesystemIdentifierFromURL:l isDocument:?];
   if (v5)
   {
-    if (v4)
+    if (documentCopy)
     {
       v6 = @"ci.item_doc_id = %@";
     }
@@ -304,9 +304,9 @@ LABEL_17:
   return v7;
 }
 
-- (void)_addDocument:(id)a3
+- (void)_addDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -315,7 +315,7 @@ LABEL_17:
   }
 
   v11 = 0;
-  [(BRDiskCheckerFilesystemDirectory *)self _processSharingInfoAtURL:v4 isDocument:1 isSharedToMeTopLevelItem:&v11 + 1 shareAliasIsMissing:&v11];
+  [(BRDiskCheckerFilesystemDirectory *)self _processSharingInfoAtURL:documentCopy isDocument:1 isSharedToMeTopLevelItem:&v11 + 1 shareAliasIsMissing:&v11];
   if (self->_isShared || (v11 & 1) == 0)
   {
     ++self->_directChildCount;
@@ -349,9 +349,9 @@ LABEL_17:
   }
 }
 
-- (void)addSymlink:(id)a3
+- (void)addSymlink:(id)symlink
 {
-  v4 = a3;
+  symlinkCopy = symlink;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -362,9 +362,9 @@ LABEL_17:
   *&self->_directChildCount = vadd_s32(*&self->_directChildCount, 0x100000001);
 }
 
-- (void)addSubdirectory:(id)a3
+- (void)addSubdirectory:(id)subdirectory
 {
-  v4 = a3;
+  subdirectoryCopy = subdirectory;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -372,14 +372,14 @@ LABEL_17:
     sub_1000077CC();
   }
 
-  if (![v4 isSharedToMeTopLevelItem] || (objc_msgSend(v4, "shareAliasMissing") & 1) == 0)
+  if (![subdirectoryCopy isSharedToMeTopLevelItem] || (objc_msgSend(subdirectoryCopy, "shareAliasMissing") & 1) == 0)
   {
     ++self->_directChildCount;
-    self->_recursiveShareAliasCount += [v4 recursiveShareAliasCount];
-    self->_recursiveSharedByMeCount += [v4 recursiveSharedByMeCount];
-    if (([v4 isSharedToMeTopLevelItem] & 1) == 0)
+    self->_recursiveShareAliasCount += [subdirectoryCopy recursiveShareAliasCount];
+    self->_recursiveSharedByMeCount += [subdirectoryCopy recursiveSharedByMeCount];
+    if (([subdirectoryCopy isSharedToMeTopLevelItem] & 1) == 0)
     {
-      self->_recursiveItemCount += [v4 recursiveItemCount];
+      self->_recursiveItemCount += [subdirectoryCopy recursiveItemCount];
     }
   }
 }

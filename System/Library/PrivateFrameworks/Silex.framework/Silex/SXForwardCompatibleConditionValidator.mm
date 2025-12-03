@@ -1,15 +1,15 @@
 @interface SXForwardCompatibleConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXForwardCompatibleConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = [a3 JSONRepresentation];
-  v6 = [v5 allKeys];
-  v7 = [v4 setWithArray:v6];
+  jSONRepresentation = [condition JSONRepresentation];
+  allKeys = [jSONRepresentation allKeys];
+  v7 = [v4 setWithArray:allKeys];
 
   v8 = SXConditionTypes();
   [v7 minusSet:v8];

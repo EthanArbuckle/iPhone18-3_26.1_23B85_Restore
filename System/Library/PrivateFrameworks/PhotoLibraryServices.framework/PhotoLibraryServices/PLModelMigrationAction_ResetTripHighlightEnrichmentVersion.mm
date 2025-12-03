@@ -1,26 +1,26 @@
 @interface PLModelMigrationAction_ResetTripHighlightEnrichmentVersion
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetTripHighlightEnrichmentVersion
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLPhotosHighlight predicateForAllTripHighlights];
   v8 = +[PLPhotosHighlight entityName];
   v68 = @"enrichmentVersion";
   v69[0] = &unk_1F0FBA8A0;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v69 forKeys:&v68 count:1];
   v32 = 0;
-  v10 = [PLModelMigrator executeBatchUpdateWithEntityName:v8 predicate:v7 propertiesToUpdate:v9 managedObjectContext:v6 error:&v32];
+  v10 = [PLModelMigrator executeBatchUpdateWithEntityName:v8 predicate:v7 propertiesToUpdate:v9 managedObjectContext:contextCopy error:&v32];
   v11 = v32;
 
   if (v10)
   {
     v31 = v11;
-    v12 = [v6 save:&v31];
+    v12 = [contextCopy save:&v31];
     v13 = v31;
 
     if (v12)
@@ -36,9 +36,9 @@
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionBackground *)self logger];
+      logger = [(PLModelMigrationActionBackground *)self logger];
 
-      if (v21)
+      if (logger)
       {
         v66 = 0u;
         v67 = 0u;
@@ -116,10 +116,10 @@
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v16 = v13;
   v14 = v16;
-  if (a4)
+  if (error)
   {
     v17 = v16;
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = 3;

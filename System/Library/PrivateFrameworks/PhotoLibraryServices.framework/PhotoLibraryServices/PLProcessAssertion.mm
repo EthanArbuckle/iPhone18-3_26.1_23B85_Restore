@@ -1,5 +1,5 @@
 @interface PLProcessAssertion
-- (PLProcessAssertion)initWithIdentifier:(id)a3;
+- (PLProcessAssertion)initWithIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -12,9 +12,9 @@
   return [v3 stringWithFormat:@"<%p:%@ %@ %p>", self, v4, objc_opt_class(), self->_processAssertion];
 }
 
-- (PLProcessAssertion)initWithIdentifier:(id)a3
+- (PLProcessAssertion)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = PLProcessAssertion;
   v5 = [(PLProcessAssertion *)&v10 init];

@@ -11,24 +11,24 @@
 - (FCHeadlineThumbnail)thumbnailLarge;
 - (FCHeadlineThumbnail)thumbnailMedium;
 - (FCHeadlineThumbnail)thumbnailSmall;
-- (FCRecipe)initWithLocalRecipe:(id)a3 assetManager:(id)a4;
-- (FCRecipe)initWithRecipeMetadata:(id)a3 sourceChannel:(id)a4 assetManager:(id)a5;
-- (FCRecipe)initWithRecipeRecord:(id)a3 sourceChannel:(id)a4 articles:(id)a5 assetManager:(id)a6 interestToken:(id)a7;
+- (FCRecipe)initWithLocalRecipe:(id)recipe assetManager:(id)manager;
+- (FCRecipe)initWithRecipeMetadata:(id)metadata sourceChannel:(id)channel assetManager:(id)manager;
+- (FCRecipe)initWithRecipeRecord:(id)record sourceChannel:(id)channel articles:(id)articles assetManager:(id)manager interestToken:(id)token;
 - (FCRecipeMetadataType)appliedOverrideMetadata;
 - (NSArray)articleIDs;
 - (NSString)shortExcerpt;
 - (NSString)sourceChannelID;
 - (NSString)title;
-- (void)applyRecipeMetadata:(id)a3 configuration:(id)a4;
+- (void)applyRecipeMetadata:(id)metadata configuration:(id)configuration;
 @end
 
 @implementation FCRecipe
 
-- (FCRecipe)initWithRecipeMetadata:(id)a3 sourceChannel:(id)a4 assetManager:(id)a5
+- (FCRecipe)initWithRecipeMetadata:(id)metadata sourceChannel:(id)channel assetManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  channelCopy = channel;
+  managerCopy = manager;
   v70.receiver = self;
   v70.super_class = FCRecipe;
   v11 = [(FCRecipe *)&v70 init];
@@ -36,38 +36,38 @@
   if (v11)
   {
     v11->_source = 1;
-    v13 = [v9 copy];
+    v13 = [channelCopy copy];
     sourceChannel = v12->_sourceChannel;
     v12->_sourceChannel = v13;
 
-    v15 = [(FCChannelProviding *)v12->_sourceChannel identifier];
+    identifier = [(FCChannelProviding *)v12->_sourceChannel identifier];
     publisherID = v12->_publisherID;
-    v12->_publisherID = v15;
+    v12->_publisherID = identifier;
 
-    v17 = [v8 identifier];
+    identifier2 = [metadataCopy identifier];
     identifier = v12->_identifier;
-    v12->_identifier = v17;
+    v12->_identifier = identifier2;
 
-    v19 = [v8 title];
+    title = [metadataCopy title];
     title = v12->_title;
-    v12->_title = v19;
+    v12->_title = title;
 
-    v21 = [v8 shortExcerpt];
+    shortExcerpt = [metadataCopy shortExcerpt];
     shortExcerpt = v12->_shortExcerpt;
-    v12->_shortExcerpt = v21;
+    v12->_shortExcerpt = shortExcerpt;
 
-    v12->_paid = [v8 isPaid];
-    v23 = [v8 publishDate];
+    v12->_paid = [metadataCopy isPaid];
+    publishDate = [metadataCopy publishDate];
     publishDate = v12->_publishDate;
-    v12->_publishDate = v23;
+    v12->_publishDate = publishDate;
 
     v12->_isDraft = 0;
-    v25 = [v8 thumbnailSmallMetadata];
+    thumbnailSmallMetadata = [metadataCopy thumbnailSmallMetadata];
     v27 = *MEMORY[0x1E695F060];
     v26 = *(MEMORY[0x1E695F060] + 8);
-    if (v25)
+    if (thumbnailSmallMetadata)
     {
-      v28 = ((v25 >> 8) & 0xFFFFFFF);
+      v28 = ((thumbnailSmallMetadata >> 8) & 0xFFFFFFF);
     }
 
     else
@@ -75,9 +75,9 @@
       v28 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    if (v25)
+    if (thumbnailSmallMetadata)
     {
-      v29 = (v25 >> 36);
+      v29 = (thumbnailSmallMetadata >> 36);
     }
 
     else
@@ -85,10 +85,10 @@
       v29 = *MEMORY[0x1E695F060];
     }
 
-    v30 = [v8 thumbnailMediumMetadata];
-    if (v30)
+    thumbnailMediumMetadata = [metadataCopy thumbnailMediumMetadata];
+    if (thumbnailMediumMetadata)
     {
-      v31 = ((v30 >> 8) & 0xFFFFFFF);
+      v31 = ((thumbnailMediumMetadata >> 8) & 0xFFFFFFF);
     }
 
     else
@@ -96,9 +96,9 @@
       v31 = v26;
     }
 
-    if (v30)
+    if (thumbnailMediumMetadata)
     {
-      v32 = (v30 >> 36);
+      v32 = (thumbnailMediumMetadata >> 36);
     }
 
     else
@@ -106,10 +106,10 @@
       v32 = v27;
     }
 
-    v33 = [v8 thumbnailLargeMetadata];
-    if (v33)
+    thumbnailLargeMetadata = [metadataCopy thumbnailLargeMetadata];
+    if (thumbnailLargeMetadata)
     {
-      v34 = ((v33 >> 8) & 0xFFFFFFF);
+      v34 = ((thumbnailLargeMetadata >> 8) & 0xFFFFFFF);
     }
 
     else
@@ -117,9 +117,9 @@
       v34 = v26;
     }
 
-    if (v33)
+    if (thumbnailLargeMetadata)
     {
-      v35 = (v33 >> 36);
+      v35 = (thumbnailLargeMetadata >> 36);
     }
 
     else
@@ -127,24 +127,24 @@
       v35 = v27;
     }
 
-    v36 = [v8 thumbnailExtraLargeMetadata];
-    if (v36)
+    thumbnailExtraLargeMetadata = [metadataCopy thumbnailExtraLargeMetadata];
+    if (thumbnailExtraLargeMetadata)
     {
-      v26 = ((v36 >> 8) & 0xFFFFFFF);
-      v27 = (v36 >> 36);
+      v26 = ((thumbnailExtraLargeMetadata >> 8) & 0xFFFFFFF);
+      v27 = (thumbnailExtraLargeMetadata >> 36);
     }
 
-    v37 = [v8 thumbnailSmall];
-    v38 = [v10 assetHandleForCKAssetURLString:v37 lifetimeHint:0];
+    thumbnailSmall = [metadataCopy thumbnailSmall];
+    v38 = [managerCopy assetHandleForCKAssetURLString:thumbnailSmall lifetimeHint:0];
 
-    v39 = [v8 thumbnailMedium];
-    v40 = [v10 assetHandleForCKAssetURLString:v39 lifetimeHint:0];
+    thumbnailMedium = [metadataCopy thumbnailMedium];
+    v40 = [managerCopy assetHandleForCKAssetURLString:thumbnailMedium lifetimeHint:0];
 
-    v41 = [v8 thumbnailLarge];
-    v42 = [v10 assetHandleForCKAssetURLString:v41 lifetimeHint:0];
+    thumbnailLarge = [metadataCopy thumbnailLarge];
+    v42 = [managerCopy assetHandleForCKAssetURLString:thumbnailLarge lifetimeHint:0];
 
-    v43 = [v8 thumbnailExtraLarge];
-    v44 = [v10 assetHandleForCKAssetURLString:v43 lifetimeHint:0];
+    thumbnailExtraLarge = [metadataCopy thumbnailExtraLarge];
+    v44 = [managerCopy assetHandleForCKAssetURLString:thumbnailExtraLarge lifetimeHint:0];
 
     v45 = [FCHeadlineThumbnail headlineThumbnailWithAssetHandle:v38 thumbnailSize:v29, v28];
     thumbnailSmall = v12->_thumbnailSmall;
@@ -162,27 +162,27 @@
     thumbnailExtraLarge = v12->_thumbnailExtraLarge;
     v12->_thumbnailExtraLarge = v51;
 
-    v12->_thumbnailFocalFrame.origin.x = FCCGRectFromBuffer([v8 thumbnailFocalFrame]);
+    v12->_thumbnailFocalFrame.origin.x = FCCGRectFromBuffer([metadataCopy thumbnailFocalFrame]);
     v12->_thumbnailFocalFrame.origin.y = v53;
     v12->_thumbnailFocalFrame.size.width = v54;
     v12->_thumbnailFocalFrame.size.height = v55;
-    v56 = [v8 thumbnailPrimaryColor];
-    v57 = [FCColor colorWithHexString:v56];
+    thumbnailPrimaryColor = [metadataCopy thumbnailPrimaryColor];
+    v57 = [FCColor colorWithHexString:thumbnailPrimaryColor];
     thumbnailPrimaryColor = v12->_thumbnailPrimaryColor;
     v12->_thumbnailPrimaryColor = v57;
 
-    v59 = [v8 thumbnailBackgroundColor];
-    v60 = [FCColor colorWithHexString:v59];
+    thumbnailBackgroundColor = [metadataCopy thumbnailBackgroundColor];
+    v60 = [FCColor colorWithHexString:thumbnailBackgroundColor];
     thumbnailBackgroundColor = v12->_thumbnailBackgroundColor;
     v12->_thumbnailBackgroundColor = v60;
 
-    v62 = [v8 thumbnailAccentColor];
-    v63 = [FCColor colorWithHexString:v62];
+    thumbnailAccentColor = [metadataCopy thumbnailAccentColor];
+    v63 = [FCColor colorWithHexString:thumbnailAccentColor];
     thumbnailAccentColor = v12->_thumbnailAccentColor;
     v12->_thumbnailAccentColor = v63;
 
-    v65 = [v8 thumbnailTextColor];
-    v66 = [FCColor colorWithHexString:v65];
+    thumbnailTextColor = [metadataCopy thumbnailTextColor];
+    v66 = [FCColor colorWithHexString:thumbnailTextColor];
     thumbnailTextColor = v12->_thumbnailTextColor;
     v12->_thumbnailTextColor = v66;
 
@@ -202,111 +202,111 @@
   return v12;
 }
 
-- (FCRecipe)initWithRecipeRecord:(id)a3 sourceChannel:(id)a4 articles:(id)a5 assetManager:(id)a6 interestToken:(id)a7
+- (FCRecipe)initWithRecipeRecord:(id)record sourceChannel:(id)channel articles:(id)articles assetManager:(id)manager interestToken:(id)token
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  recordCopy = record;
+  channelCopy = channel;
+  articlesCopy = articles;
+  managerCopy = manager;
+  tokenCopy = token;
   v160.receiver = self;
   v160.super_class = FCRecipe;
   v18 = [(FCRecipe *)&v160 init];
   if (v18)
   {
-    v157 = v17;
-    v159 = v15;
+    v157 = tokenCopy;
+    v159 = articlesCopy;
     context = objc_autoreleasePoolPush();
     v18->_source = 0;
-    objc_storeStrong(&v18->_recipeRecord, a3);
-    objc_storeStrong(&v18->_interestToken, a7);
-    v19 = [v14 copy];
+    objc_storeStrong(&v18->_recipeRecord, record);
+    objc_storeStrong(&v18->_interestToken, token);
+    v19 = [channelCopy copy];
     sourceChannel = v18->_sourceChannel;
     v18->_sourceChannel = v19;
 
-    v21 = [v13 base];
-    v22 = [v21 identifier];
-    v23 = [v22 copy];
+    base = [recordCopy base];
+    identifier = [base identifier];
+    v23 = [identifier copy];
     identifier = v18->_identifier;
     v18->_identifier = v23;
 
-    v25 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     loadDate = v18->_loadDate;
-    v18->_loadDate = v25;
+    v18->_loadDate = date;
 
     v27 = MEMORY[0x1E695DF00];
-    v28 = [v13 base];
-    v29 = [v28 fetchDate];
-    v30 = [v27 dateWithPBDate:v29];
+    base2 = [recordCopy base];
+    fetchDate = [base2 fetchDate];
+    v30 = [v27 dateWithPBDate:fetchDate];
     fetchDate = v18->_fetchDate;
     v18->_fetchDate = v30;
 
     v32 = MEMORY[0x1E695DF00];
-    v33 = [v13 base];
-    v34 = [v33 modificationDate];
-    v35 = [v32 dateWithPBDate:v34];
+    base3 = [recordCopy base];
+    modificationDate = [base3 modificationDate];
+    v35 = [v32 dateWithPBDate:modificationDate];
     lastModifiedDate = v18->_lastModifiedDate;
     v18->_lastModifiedDate = v35;
 
     v37 = MEMORY[0x1E695DF00];
-    v38 = [v13 lastReferenceDate];
-    v39 = [v37 dateWithPBDate:v38];
+    lastReferenceDate = [recordCopy lastReferenceDate];
+    v39 = [v37 dateWithPBDate:lastReferenceDate];
     lastReferenceDate = v18->_lastReferenceDate;
     v18->_lastReferenceDate = v39;
 
-    v41 = [v13 language];
-    v42 = [v41 copy];
+    language = [recordCopy language];
+    v42 = [language copy];
     language = v18->_language;
     v18->_language = v42;
 
-    v44 = [v13 title];
-    v45 = [v44 copy];
+    title = [recordCopy title];
+    v45 = [title copy];
     title = v18->_title;
     v18->_title = v45;
 
     v47 = MEMORY[0x1E695DF00];
-    v48 = [v13 publishDate];
-    v49 = [v47 dateWithPBDate:v48];
+    publishDate = [recordCopy publishDate];
+    v49 = [v47 dateWithPBDate:publishDate];
     publishDate = v18->_publishDate;
     v18->_publishDate = v49;
 
-    v18->_paid = [v13 isPaid];
-    v18->_isDraft = [v13 isDraft];
-    v18->_minimumNewsVersion = [v13 minimumNewsVersion];
-    v51 = [v13 iAdCategories];
+    v18->_paid = [recordCopy isPaid];
+    v18->_isDraft = [recordCopy isDraft];
+    v18->_minimumNewsVersion = [recordCopy minimumNewsVersion];
+    iAdCategories = [recordCopy iAdCategories];
     iAdCategories = v18->_iAdCategories;
-    v18->_iAdCategories = v51;
+    v18->_iAdCategories = iAdCategories;
 
-    v53 = [v13 iAdKeywords];
+    iAdKeywords = [recordCopy iAdKeywords];
     iAdKeywords = v18->_iAdKeywords;
-    v18->_iAdKeywords = v53;
+    v18->_iAdKeywords = iAdKeywords;
 
-    v55 = [v13 iAdSectionTagIDs];
+    iAdSectionTagIDs = [recordCopy iAdSectionTagIDs];
     iAdSectionIDs = v18->_iAdSectionIDs;
-    v18->_iAdSectionIDs = v55;
+    v18->_iAdSectionIDs = iAdSectionTagIDs;
 
-    v57 = [v13 blockedStorefrontIDs];
+    blockedStorefrontIDs = [recordCopy blockedStorefrontIDs];
     blockedStorefrontIDs = v18->_blockedStorefrontIDs;
-    v18->_blockedStorefrontIDs = v57;
+    v18->_blockedStorefrontIDs = blockedStorefrontIDs;
 
-    v59 = [v13 allowedStorefrontIDs];
+    allowedStorefrontIDs = [recordCopy allowedStorefrontIDs];
     allowedStorefrontIDs = v18->_allowedStorefrontIDs;
-    v18->_allowedStorefrontIDs = v59;
+    v18->_allowedStorefrontIDs = allowedStorefrontIDs;
 
-    v18->_thumbnailFocalFrame.origin.x = FCCGRectFromBuffer([v13 thumbnailFocalFrame]);
+    v18->_thumbnailFocalFrame.origin.x = FCCGRectFromBuffer([recordCopy thumbnailFocalFrame]);
     v18->_thumbnailFocalFrame.origin.y = v61;
     v18->_thumbnailFocalFrame.size.width = v62;
     v18->_thumbnailFocalFrame.size.height = v63;
-    v64 = [v13 thumbnailPerceptualHash];
+    thumbnailPerceptualHash = [recordCopy thumbnailPerceptualHash];
     thumbnailPerceptualHash = v18->_thumbnailPerceptualHash;
-    v18->_thumbnailPerceptualHash = v64;
+    v18->_thumbnailPerceptualHash = thumbnailPerceptualHash;
 
-    v66 = [v13 thumbnailSmallMetadata];
+    thumbnailSmallMetadata = [recordCopy thumbnailSmallMetadata];
     v68 = *MEMORY[0x1E695F060];
     v67 = *(MEMORY[0x1E695F060] + 8);
-    if (v66)
+    if (thumbnailSmallMetadata)
     {
-      v69 = ((v66 >> 8) & 0xFFFFFFF);
+      v69 = ((thumbnailSmallMetadata >> 8) & 0xFFFFFFF);
     }
 
     else
@@ -314,9 +314,9 @@
       v69 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    if (v66)
+    if (thumbnailSmallMetadata)
     {
-      v70 = (v66 >> 36);
+      v70 = (thumbnailSmallMetadata >> 36);
     }
 
     else
@@ -324,10 +324,10 @@
       v70 = *MEMORY[0x1E695F060];
     }
 
-    v71 = [v13 thumbnailMediumMetadata];
-    if (v71)
+    thumbnailMediumMetadata = [recordCopy thumbnailMediumMetadata];
+    if (thumbnailMediumMetadata)
     {
-      v72 = ((v71 >> 8) & 0xFFFFFFF);
+      v72 = ((thumbnailMediumMetadata >> 8) & 0xFFFFFFF);
     }
 
     else
@@ -335,9 +335,9 @@
       v72 = v67;
     }
 
-    if (v71)
+    if (thumbnailMediumMetadata)
     {
-      v73 = (v71 >> 36);
+      v73 = (thumbnailMediumMetadata >> 36);
     }
 
     else
@@ -345,10 +345,10 @@
       v73 = v68;
     }
 
-    v74 = [v13 thumbnailLargeMetadata];
-    if (v74)
+    thumbnailLargeMetadata = [recordCopy thumbnailLargeMetadata];
+    if (thumbnailLargeMetadata)
     {
-      v75 = ((v74 >> 8) & 0xFFFFFFF);
+      v75 = ((thumbnailLargeMetadata >> 8) & 0xFFFFFFF);
     }
 
     else
@@ -356,9 +356,9 @@
       v75 = v67;
     }
 
-    if (v74)
+    if (thumbnailLargeMetadata)
     {
-      v76 = (v74 >> 36);
+      v76 = (thumbnailLargeMetadata >> 36);
     }
 
     else
@@ -366,28 +366,28 @@
       v76 = v68;
     }
 
-    v77 = [v13 thumbnailExtraLargeMetadata];
-    if (v77)
+    thumbnailExtraLargeMetadata = [recordCopy thumbnailExtraLargeMetadata];
+    if (thumbnailExtraLargeMetadata)
     {
-      v67 = ((v77 >> 8) & 0xFFFFFFF);
-      v68 = (v77 >> 36);
+      v67 = ((thumbnailExtraLargeMetadata >> 8) & 0xFFFFFFF);
+      v68 = (thumbnailExtraLargeMetadata >> 36);
     }
 
-    v78 = [v13 base];
-    v79 = [v13 thumbnailSmallURL];
-    v80 = [v78 generateThumbnailAssetHandleForURL:v79 withAssetManager:v16];
+    base4 = [recordCopy base];
+    thumbnailSmallURL = [recordCopy thumbnailSmallURL];
+    v80 = [base4 generateThumbnailAssetHandleForURL:thumbnailSmallURL withAssetManager:managerCopy];
 
-    v81 = [v13 base];
-    v82 = [v13 thumbnailMediumURL];
-    v83 = [v81 generateThumbnailAssetHandleForURL:v82 withAssetManager:v16];
+    base5 = [recordCopy base];
+    thumbnailMediumURL = [recordCopy thumbnailMediumURL];
+    v83 = [base5 generateThumbnailAssetHandleForURL:thumbnailMediumURL withAssetManager:managerCopy];
 
-    v84 = [v13 base];
-    v85 = [v13 thumbnailLargeURL];
-    v86 = [v84 generateThumbnailAssetHandleForURL:v85 withAssetManager:v16];
+    base6 = [recordCopy base];
+    thumbnailLargeURL = [recordCopy thumbnailLargeURL];
+    v86 = [base6 generateThumbnailAssetHandleForURL:thumbnailLargeURL withAssetManager:managerCopy];
 
-    v87 = [v13 base];
-    v88 = [v13 thumbnailExtraLargeURL];
-    v89 = [v87 generateThumbnailAssetHandleForURL:v88 withAssetManager:v16];
+    base7 = [recordCopy base];
+    thumbnailExtraLargeURL = [recordCopy thumbnailExtraLargeURL];
+    v89 = [base7 generateThumbnailAssetHandleForURL:thumbnailExtraLargeURL withAssetManager:managerCopy];
 
     v155 = v80;
     v90 = [FCHeadlineThumbnail headlineThumbnailWithAssetHandle:v80 thumbnailSize:v70, v69];
@@ -409,33 +409,33 @@
     thumbnailExtraLarge = v18->_thumbnailExtraLarge;
     v18->_thumbnailExtraLarge = v96;
 
-    v98 = [v13 thumbnailPrimaryColor];
-    v99 = [FCColor colorWithHexString:v98];
+    thumbnailPrimaryColor = [recordCopy thumbnailPrimaryColor];
+    v99 = [FCColor colorWithHexString:thumbnailPrimaryColor];
     thumbnailPrimaryColor = v18->_thumbnailPrimaryColor;
     v18->_thumbnailPrimaryColor = v99;
 
-    v101 = [v13 thumbnailBackgroundColor];
-    v102 = [FCColor colorWithHexString:v101];
+    thumbnailBackgroundColor = [recordCopy thumbnailBackgroundColor];
+    v102 = [FCColor colorWithHexString:thumbnailBackgroundColor];
     thumbnailBackgroundColor = v18->_thumbnailBackgroundColor;
     v18->_thumbnailBackgroundColor = v102;
 
-    v104 = [v13 thumbnailAccentColor];
-    v105 = [FCColor colorWithHexString:v104];
+    thumbnailAccentColor = [recordCopy thumbnailAccentColor];
+    v105 = [FCColor colorWithHexString:thumbnailAccentColor];
     thumbnailAccentColor = v18->_thumbnailAccentColor;
     v18->_thumbnailAccentColor = v105;
 
-    v107 = [v13 thumbnailTextColor];
-    v108 = [FCColor colorWithHexString:v107];
+    thumbnailTextColor = [recordCopy thumbnailTextColor];
+    v108 = [FCColor colorWithHexString:thumbnailTextColor];
     thumbnailTextColor = v18->_thumbnailTextColor;
     v18->_thumbnailTextColor = v108;
 
-    v110 = [v13 shortExcerpt];
-    v111 = [v110 copy];
+    shortExcerpt = [recordCopy shortExcerpt];
+    v111 = [shortExcerpt copy];
     shortExcerpt = v18->_shortExcerpt;
     v18->_shortExcerpt = v111;
 
-    v113 = [v13 contentType];
-    v114 = [v113 componentsSeparatedByString:@"-"];
+    contentType = [recordCopy contentType];
+    v114 = [contentType componentsSeparatedByString:@"-"];
     if ([v114 count])
     {
       v115 = [v114 objectAtIndexedSubscript:0];
@@ -446,7 +446,7 @@
       v115 = @"unknown";
     }
 
-    v158 = v14;
+    v158 = channelCopy;
     if ([v114 count] < 2)
     {
       v116 = @"unknown";
@@ -470,21 +470,21 @@
     v18->_contentFormat = FCRecipeContentFormatFromString(v115);
     v18->_contentEncoding = FCRecipeContentEncodingFromString(v116);
     objc_storeStrong(&v18->_contentVersion, v117);
-    v118 = [v13 generateContentAssetHandleWithAssetManager:v16];
+    v118 = [recordCopy generateContentAssetHandleWithAssetManager:managerCopy];
     contentAssetHandle = v18->_contentAssetHandle;
     v18->_contentAssetHandle = v118;
 
-    v120 = [v13 totalTime];
+    totalTime = [recordCopy totalTime];
     totalTime = v18->_totalTime;
-    v18->_totalTime = v120;
+    v18->_totalTime = totalTime;
 
-    v122 = [v13 authors];
+    authors = [recordCopy authors];
     authors = v18->_authors;
-    v18->_authors = v122;
+    v18->_authors = authors;
 
-    v124 = [v13 topicTagIDs];
+    topicTagIDs = [recordCopy topicTagIDs];
     topicTagIDs = v18->_topicTagIDs;
-    v18->_topicTagIDs = v124;
+    v18->_topicTagIDs = topicTagIDs;
 
     v126 = [v159 copy];
     articles = v18->_articles;
@@ -492,21 +492,21 @@
 
     objc_storeStrong(&v18->_itemID, v18->_identifier);
     v18->_halfLife = 0;
-    v128 = [(FCChannelProviding *)v18->_sourceChannel identifier];
+    identifier2 = [(FCChannelProviding *)v18->_sourceChannel identifier];
     publisherID = v18->_publisherID;
-    v18->_publisherID = v128;
+    v18->_publisherID = identifier2;
 
     v130 = v18->_thumbnailSmall || v18->_thumbnailMedium || v18->_thumbnailLarge || v18->_thumbnailExtraLarge != 0;
     v18->_hasThumbnail = v130;
-    v131 = [v13 topicTagIDs];
+    topicTagIDs2 = [recordCopy topicTagIDs];
     topicIDs = v18->_topicIDs;
-    v18->_topicIDs = v131;
+    v18->_topicIDs = topicTagIDs2;
 
-    v133 = [v13 topics];
-    v134 = v133;
-    if (v133)
+    topics = [recordCopy topics];
+    v134 = topics;
+    if (topics)
     {
-      v135 = v133;
+      v135 = topics;
     }
 
     else
@@ -516,22 +516,22 @@
 
     objc_storeStrong(&v18->_topics, v135);
 
-    v136 = [v13 recipesRecirculationDataURL];
-    if (!v136)
+    recipesRecirculationDataURL = [recordCopy recipesRecirculationDataURL];
+    if (!recipesRecirculationDataURL)
     {
       goto LABEL_41;
     }
 
-    v137 = v136;
+    v137 = recipesRecirculationDataURL;
     v138 = MEMORY[0x1E695DFF8];
-    [v13 recipesRecirculationDataURL];
-    v140 = v139 = v113;
+    [recordCopy recipesRecirculationDataURL];
+    v140 = v139 = contentType;
     v141 = [v138 URLWithString:v140];
 
-    v113 = v139;
+    contentType = v139;
     if (v141)
     {
-      v142 = [v16 assetHandleForURL:v141 lifetimeHint:0];
+      v142 = [managerCopy assetHandleForURL:v141 lifetimeHint:0];
       recipeRecirculationDataAssetHandle = v18->_recipeRecirculationDataAssetHandle;
       v18->_recipeRecirculationDataAssetHandle = v142;
     }
@@ -543,31 +543,31 @@ LABEL_41:
       v18->_recipeRecirculationDataAssetHandle = 0;
     }
 
-    v144 = [v13 personalizationData];
+    personalizationData = [recordCopy personalizationData];
     personalizationData = v18->_personalizationData;
-    v18->_personalizationData = v144;
+    v18->_personalizationData = personalizationData;
 
-    v146 = [v13 rapidUpdatePersonalizationData];
+    rapidUpdatePersonalizationData = [recordCopy rapidUpdatePersonalizationData];
     rapidUpdatePersonalizationData = v18->_rapidUpdatePersonalizationData;
-    v18->_rapidUpdatePersonalizationData = v146;
+    v18->_rapidUpdatePersonalizationData = rapidUpdatePersonalizationData;
 
-    v148 = [v13 eventAggregationPersonalizationData];
+    eventAggregationPersonalizationData = [recordCopy eventAggregationPersonalizationData];
     eventAggregationPersonalizationData = v18->_eventAggregationPersonalizationData;
-    v18->_eventAggregationPersonalizationData = v148;
+    v18->_eventAggregationPersonalizationData = eventAggregationPersonalizationData;
 
     objc_autoreleasePoolPop(context);
-    v14 = v158;
-    v15 = v159;
-    v17 = v157;
+    channelCopy = v158;
+    articlesCopy = v159;
+    tokenCopy = v157;
   }
 
   return v18;
 }
 
-- (FCRecipe)initWithLocalRecipe:(id)a3 assetManager:(id)a4
+- (FCRecipe)initWithLocalRecipe:(id)recipe assetManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  recipeCopy = recipe;
+  managerCopy = manager;
   v56.receiver = self;
   v56.super_class = FCRecipe;
   v8 = [(FCRecipe *)&v56 init];
@@ -576,66 +576,66 @@ LABEL_41:
   {
     v8->_source = 2;
     v8->_isDraft = 1;
-    v10 = [v6 sourceChannel];
-    v11 = [v10 copy];
+    sourceChannel = [recipeCopy sourceChannel];
+    v11 = [sourceChannel copy];
     sourceChannel = v9->_sourceChannel;
     v9->_sourceChannel = v11;
 
-    v13 = [v6 identifier];
+    identifier = [recipeCopy identifier];
     identifier = v9->_identifier;
-    v9->_identifier = v13;
+    v9->_identifier = identifier;
 
-    v15 = [v6 title];
+    title = [recipeCopy title];
     title = v9->_title;
-    v9->_title = v15;
+    v9->_title = title;
 
-    v17 = [v6 shortExcerpt];
+    shortExcerpt = [recipeCopy shortExcerpt];
     shortExcerpt = v9->_shortExcerpt;
-    v9->_shortExcerpt = v17;
+    v9->_shortExcerpt = shortExcerpt;
 
     v9->_paid = 0;
-    v19 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     publishDate = v9->_publishDate;
-    v9->_publishDate = v19;
+    v9->_publishDate = date;
 
-    v9->_contentFormat = [v6 contentFormat];
-    v9->_contentEncoding = [v6 contentEncoding];
-    v21 = [v6 contentURL];
-    v22 = [v21 isFileURL];
+    v9->_contentFormat = [recipeCopy contentFormat];
+    v9->_contentEncoding = [recipeCopy contentEncoding];
+    contentURL = [recipeCopy contentURL];
+    isFileURL = [contentURL isFileURL];
 
-    v23 = [v6 contentURL];
-    if (v22)
+    contentURL2 = [recipeCopy contentURL];
+    if (isFileURL)
     {
-      v24 = [v6 contentURL];
-      v25 = [v7 assetHandleForURL:v23 prefetchedFileURL:v24 importMethod:0 lifetimeHint:2];
+      contentURL3 = [recipeCopy contentURL];
+      v25 = [managerCopy assetHandleForURL:contentURL2 prefetchedFileURL:contentURL3 importMethod:0 lifetimeHint:2];
       contentAssetHandle = v9->_contentAssetHandle;
       v9->_contentAssetHandle = v25;
     }
 
     else
     {
-      v27 = [v7 assetHandleForURL:v23 lifetimeHint:2];
-      v24 = v9->_contentAssetHandle;
+      v27 = [managerCopy assetHandleForURL:contentURL2 lifetimeHint:2];
+      contentURL3 = v9->_contentAssetHandle;
       v9->_contentAssetHandle = v27;
     }
 
-    v28 = [v6 thumbnailURL];
+    thumbnailURL = [recipeCopy thumbnailURL];
 
-    if (v28)
+    if (thumbnailURL)
     {
-      v29 = [v6 thumbnailURL];
-      v30 = [v29 isFileURL];
+      thumbnailURL2 = [recipeCopy thumbnailURL];
+      isFileURL2 = [thumbnailURL2 isFileURL];
 
-      v31 = [v6 thumbnailURL];
-      if (v30)
+      thumbnailURL3 = [recipeCopy thumbnailURL];
+      if (isFileURL2)
       {
-        v32 = [v6 thumbnailURL];
-        v33 = [v7 assetHandleForURL:v31 prefetchedFileURL:v32 importMethod:0 lifetimeHint:2];
+        thumbnailURL4 = [recipeCopy thumbnailURL];
+        v33 = [managerCopy assetHandleForURL:thumbnailURL3 prefetchedFileURL:thumbnailURL4 importMethod:0 lifetimeHint:2];
       }
 
       else
       {
-        v33 = [v7 assetHandleForURL:v31 lifetimeHint:2];
+        v33 = [managerCopy assetHandleForURL:thumbnailURL3 lifetimeHint:2];
       }
 
       if (v33)
@@ -664,22 +664,22 @@ LABEL_41:
       }
     }
 
-    v47 = [v6 thumbnailPrimaryColor];
+    thumbnailPrimaryColor = [recipeCopy thumbnailPrimaryColor];
 
-    if (v47)
+    if (thumbnailPrimaryColor)
     {
-      v48 = [v6 thumbnailPrimaryColor];
-      v49 = [FCColor colorWithHexString:v48];
+      thumbnailPrimaryColor2 = [recipeCopy thumbnailPrimaryColor];
+      v49 = [FCColor colorWithHexString:thumbnailPrimaryColor2];
       thumbnailPrimaryColor = v9->_thumbnailPrimaryColor;
       v9->_thumbnailPrimaryColor = v49;
     }
 
-    v51 = [v6 thumbnailBackgroundColor];
+    thumbnailBackgroundColor = [recipeCopy thumbnailBackgroundColor];
 
-    if (v51)
+    if (thumbnailBackgroundColor)
     {
-      v52 = [v6 thumbnailBackgroundColor];
-      v53 = [FCColor colorWithHexString:v52];
+      thumbnailBackgroundColor2 = [recipeCopy thumbnailBackgroundColor];
+      v53 = [FCColor colorWithHexString:thumbnailBackgroundColor2];
       thumbnailBackgroundColor = v9->_thumbnailBackgroundColor;
       v9->_thumbnailBackgroundColor = v53;
     }
@@ -699,27 +699,27 @@ LABEL_41:
   return self;
 }
 
-- (void)applyRecipeMetadata:(id)a3 configuration:(id)a4
+- (void)applyRecipeMetadata:(id)metadata configuration:(id)configuration
 {
   if (self)
   {
-    objc_setProperty_atomic(self, a2, a3, 424);
+    objc_setProperty_atomic(self, a2, metadata, 424);
   }
 }
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self title];
-  title = v3;
-  if (!v3)
+  title = [(FCRecipe *)self title];
+  title = title;
+  if (!title)
   {
-    title = v2->_title;
+    title = selfCopy->_title;
   }
 
   v5 = title;
@@ -729,17 +729,17 @@ LABEL_41:
 
 - (NSString)shortExcerpt
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self shortExcerpt];
-  shortExcerpt = v3;
-  if (!v3)
+  shortExcerpt = [(FCRecipe *)self shortExcerpt];
+  shortExcerpt = shortExcerpt;
+  if (!shortExcerpt)
   {
-    shortExcerpt = v2->_shortExcerpt;
+    shortExcerpt = selfCopy->_shortExcerpt;
   }
 
   v5 = shortExcerpt;
@@ -749,19 +749,19 @@ LABEL_41:
 
 - (FCHeadlineThumbnail)thumbnailSmall
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 lowQualityImage];
-  v5 = [v4 thumbnail];
-  thumbnailSmall = v5;
-  if (!v5)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  lowQualityImage = [formatThumbnail lowQualityImage];
+  thumbnail = [lowQualityImage thumbnail];
+  thumbnailSmall = thumbnail;
+  if (!thumbnail)
   {
-    thumbnailSmall = v2->_thumbnailSmall;
+    thumbnailSmall = selfCopy->_thumbnailSmall;
   }
 
   v7 = thumbnailSmall;
@@ -771,19 +771,19 @@ LABEL_41:
 
 - (FCHeadlineThumbnail)thumbnailMedium
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 mediumQualityImage];
-  v5 = [v4 thumbnail];
-  thumbnailMedium = v5;
-  if (!v5)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  mediumQualityImage = [formatThumbnail mediumQualityImage];
+  thumbnail = [mediumQualityImage thumbnail];
+  thumbnailMedium = thumbnail;
+  if (!thumbnail)
   {
-    thumbnailMedium = v2->_thumbnailMedium;
+    thumbnailMedium = selfCopy->_thumbnailMedium;
   }
 
   v7 = thumbnailMedium;
@@ -793,19 +793,19 @@ LABEL_41:
 
 - (FCHeadlineThumbnail)thumbnailLarge
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 highQualityImage];
-  v5 = [v4 thumbnail];
-  thumbnailLarge = v5;
-  if (!v5)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  highQualityImage = [formatThumbnail highQualityImage];
+  thumbnail = [highQualityImage thumbnail];
+  thumbnailLarge = thumbnail;
+  if (!thumbnail)
   {
-    thumbnailLarge = v2->_thumbnailLarge;
+    thumbnailLarge = selfCopy->_thumbnailLarge;
   }
 
   v7 = thumbnailLarge;
@@ -815,19 +815,19 @@ LABEL_41:
 
 - (FCHeadlineThumbnail)thumbnailExtraLarge
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 ultraQualityImage];
-  v5 = [v4 thumbnail];
-  thumbnailExtraLarge = v5;
-  if (!v5)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  ultraQualityImage = [formatThumbnail ultraQualityImage];
+  thumbnail = [ultraQualityImage thumbnail];
+  thumbnailExtraLarge = thumbnail;
+  if (!thumbnail)
   {
-    thumbnailExtraLarge = v2->_thumbnailExtraLarge;
+    thumbnailExtraLarge = selfCopy->_thumbnailExtraLarge;
   }
 
   v7 = thumbnailExtraLarge;
@@ -837,18 +837,18 @@ LABEL_41:
 
 - (FCColor)thumbnailPrimaryColor
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 primaryColor];
-  thumbnailPrimaryColor = v4;
-  if (!v4)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  primaryColor = [formatThumbnail primaryColor];
+  thumbnailPrimaryColor = primaryColor;
+  if (!primaryColor)
   {
-    thumbnailPrimaryColor = v2->_thumbnailPrimaryColor;
+    thumbnailPrimaryColor = selfCopy->_thumbnailPrimaryColor;
   }
 
   v6 = thumbnailPrimaryColor;
@@ -858,18 +858,18 @@ LABEL_41:
 
 - (FCColor)thumbnailBackgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 backgroundColor];
-  thumbnailBackgroundColor = v4;
-  if (!v4)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  backgroundColor = [formatThumbnail backgroundColor];
+  thumbnailBackgroundColor = backgroundColor;
+  if (!backgroundColor)
   {
-    thumbnailBackgroundColor = v2->_thumbnailBackgroundColor;
+    thumbnailBackgroundColor = selfCopy->_thumbnailBackgroundColor;
   }
 
   v6 = thumbnailBackgroundColor;
@@ -879,18 +879,18 @@ LABEL_41:
 
 - (FCColor)thumbnailTextColor
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 textColor];
-  thumbnailTextColor = v4;
-  if (!v4)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  textColor = [formatThumbnail textColor];
+  thumbnailTextColor = textColor;
+  if (!textColor)
   {
-    thumbnailTextColor = v2->_thumbnailTextColor;
+    thumbnailTextColor = selfCopy->_thumbnailTextColor;
   }
 
   v6 = thumbnailTextColor;
@@ -900,18 +900,18 @@ LABEL_41:
 
 - (FCColor)thumbnailAccentColor
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 424, 1);
   }
 
-  v3 = [(FCRecipe *)self formatThumbnail];
-  v4 = [v3 accentColor];
-  thumbnailAccentColor = v4;
-  if (!v4)
+  formatThumbnail = [(FCRecipe *)self formatThumbnail];
+  accentColor = [formatThumbnail accentColor];
+  thumbnailAccentColor = accentColor;
+  if (!accentColor)
   {
-    thumbnailAccentColor = v2->_thumbnailAccentColor;
+    thumbnailAccentColor = selfCopy->_thumbnailAccentColor;
   }
 
   v6 = thumbnailAccentColor;
@@ -921,8 +921,8 @@ LABEL_41:
 
 - (NSArray)articleIDs
 {
-  v2 = [(FCRecipe *)self articles];
-  v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_89];
+  articles = [(FCRecipe *)self articles];
+  v3 = [articles fc_arrayByTransformingWithBlock:&__block_literal_global_89];
 
   return v3;
 }
@@ -1157,10 +1157,10 @@ void __27__FCRecipe_contentManifest__block_invoke(uint64_t a1, void *a2)
 
 - (NSString)sourceChannelID
 {
-  v2 = [(FCRecipe *)self sourceChannel];
-  v3 = [v2 identifier];
+  sourceChannel = [(FCRecipe *)self sourceChannel];
+  identifier = [sourceChannel identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (CGRect)thumbnailFocalFrame

@@ -1,49 +1,49 @@
 @interface DMCBYODEnrollmentFlowUIPresenter
 - (DMCEnrollmentAuthenticationController)authenticationController;
-- (id)_fakeAppleAccountWithAuthenticationResults:(id)a3 personaID:(id)a4 store:(id)a5;
-- (id)_fakeiTunesAccountWithAuthenticationResults:(id)a3 personaID:(id)a4 store:(id)a5;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
-- (void)_createLockupRequestAndViewGroupWithITunesItemID:(id)a3 completionHandler:(id)a4;
-- (void)_handleApplicationInstallationViewControllerDelegate:(id)a3 didReceiveUserAction:(BOOL)a4 error:(id)a5;
-- (void)_makeAuthenticationActionHandlerWithEphemeral:(BOOL)a3 requireAppleMAID:(BOOL)a4 presentingViewController:(id)a5;
-- (void)_showCancelAlertForMAID:(id)a3 actionHandler:(id)a4;
-- (void)authenticationViewController:(id)a3 didReceivePassword:(id)a4 forUsername:(id)a5;
-- (void)authenticationViewController:(id)a3 didReceiveUsername:(id)a4;
-- (void)authenticationViewControllerDidCancel:(id)a3;
-- (void)consentViewController:(id)a3 didReceiveUserAction:(BOOL)a4;
-- (void)debuggingApplicationInstallationViewController:(id)a3 didInstallApplication:(id)a4;
+- (id)_fakeAppleAccountWithAuthenticationResults:(id)results personaID:(id)d store:(id)store;
+- (id)_fakeiTunesAccountWithAuthenticationResults:(id)results personaID:(id)d store:(id)store;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
+- (void)_createLockupRequestAndViewGroupWithITunesItemID:(id)d completionHandler:(id)handler;
+- (void)_handleApplicationInstallationViewControllerDelegate:(id)delegate didReceiveUserAction:(BOOL)action error:(id)error;
+- (void)_makeAuthenticationActionHandlerWithEphemeral:(BOOL)ephemeral requireAppleMAID:(BOOL)d presentingViewController:(id)controller;
+- (void)_showCancelAlertForMAID:(id)d actionHandler:(id)handler;
+- (void)authenticationViewController:(id)controller didReceivePassword:(id)password forUsername:(id)username;
+- (void)authenticationViewController:(id)controller didReceiveUsername:(id)username;
+- (void)authenticationViewControllerDidCancel:(id)cancel;
+- (void)consentViewController:(id)controller didReceiveUserAction:(BOOL)action;
+- (void)debuggingApplicationInstallationViewController:(id)controller didInstallApplication:(id)application;
 - (void)dismissEnrollmentScene;
-- (void)displayManagementDetailsOverviewWithProfileData:(id)a3 managedAppleID:(id)a4 completionHandler:(id)a5;
-- (void)doesUserWantToRestoreSnapshot:(id)a3 withConflictingApps:(id)a4 completion:(id)a5;
-- (void)ensureNetworkConnectionWithCompletionHandler:(id)a3;
-- (void)fetchEnrollmentProfileWithWebAuthURL:(id)a3 machineInfo:(id)a4 anchorCertificateRefs:(id)a5 completionHandler:(id)a6;
-- (void)iCloudPromotionViewController:(id)a3 didReceiveUserAction:(BOOL)a4;
-- (void)informQuestionViewControllerOfPreflightResult:(id)a3;
-- (void)managementDetailsOverviewViewController:(id)a3 didReceiveUserAction:(BOOL)a4;
-- (void)questionsController:(id)a3 didFinishWithResponses:(id)a4;
-- (void)receivedProfile:(id)a3;
-- (void)requestDebuggingApplicationsInstallation:(id)a3 requiredEntitlements:(id)a4 completionHandler:(id)a5;
-- (void)requestDevicePasscodeDataWithCompletionHandler:(id)a3;
-- (void)requestESSOApplicationInstallationWithITunesItemID:(id)a3 requiredEntitlements:(id)a4 completionHandler:(id)a5;
-- (void)requestMAIDAuthenticationWithManagedAppleID:(id)a3 personaID:(id)a4 ephemeral:(BOOL)a5 requireAppleMAID:(BOOL)a6 completionHandler:(id)a7;
-- (void)requestMAIDSignInWithAuthenticationResults:(id)a3 personaID:(id)a4 makeiTunesAccountActive:(BOOL)a5 completionHandler:(id)a6;
-- (void)requestMDMUsernameAndPasswordWithCompletionHandler:(id)a3;
-- (void)requestSilentMAIDAuthenticationWithAuthenticationResults:(id)a3 personaID:(id)a4 requireAppleMAID:(BOOL)a5 completionHandler:(id)a6;
-- (void)requestUserConsentForMigrationWithPendingCloudConfig:(id)a3 originalEnrollmentType:(unint64_t)a4 isMandatory:(BOOL)a5 deadline:(id)a6 completionHandler:(id)a7;
-- (void)requestUserConsentWithCloudConfig:(id)a3 completionHandler:(id)a4;
-- (void)requestUserConsentWithProfileData:(id)a3 managedAppleID:(id)a4 enrollmentType:(unint64_t)a5 completionHandler:(id)a6;
-- (void)requestUserInputWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)requestUsernameWithDefaultUsername:(id)a3 completionHandler:(id)a4;
-- (void)requestWebAuthenticationWithWebAuthURL:(id)a3 authenticator:(id)a4 authParams:(id)a5 completionHandler:(id)a6;
-- (void)requestiCloudSignInConfirmationWithCompletionHandler:(id)a3;
-- (void)restoreViewController:(id)a3 didReceiveUserAction:(BOOL)a4;
+- (void)displayManagementDetailsOverviewWithProfileData:(id)data managedAppleID:(id)d completionHandler:(id)handler;
+- (void)doesUserWantToRestoreSnapshot:(id)snapshot withConflictingApps:(id)apps completion:(id)completion;
+- (void)ensureNetworkConnectionWithCompletionHandler:(id)handler;
+- (void)fetchEnrollmentProfileWithWebAuthURL:(id)l machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)iCloudPromotionViewController:(id)controller didReceiveUserAction:(BOOL)action;
+- (void)informQuestionViewControllerOfPreflightResult:(id)result;
+- (void)managementDetailsOverviewViewController:(id)controller didReceiveUserAction:(BOOL)action;
+- (void)questionsController:(id)controller didFinishWithResponses:(id)responses;
+- (void)receivedProfile:(id)profile;
+- (void)requestDebuggingApplicationsInstallation:(id)installation requiredEntitlements:(id)entitlements completionHandler:(id)handler;
+- (void)requestDevicePasscodeDataWithCompletionHandler:(id)handler;
+- (void)requestESSOApplicationInstallationWithITunesItemID:(id)d requiredEntitlements:(id)entitlements completionHandler:(id)handler;
+- (void)requestMAIDAuthenticationWithManagedAppleID:(id)d personaID:(id)iD ephemeral:(BOOL)ephemeral requireAppleMAID:(BOOL)aID completionHandler:(id)handler;
+- (void)requestMAIDSignInWithAuthenticationResults:(id)results personaID:(id)d makeiTunesAccountActive:(BOOL)active completionHandler:(id)handler;
+- (void)requestMDMUsernameAndPasswordWithCompletionHandler:(id)handler;
+- (void)requestSilentMAIDAuthenticationWithAuthenticationResults:(id)results personaID:(id)d requireAppleMAID:(BOOL)iD completionHandler:(id)handler;
+- (void)requestUserConsentForMigrationWithPendingCloudConfig:(id)config originalEnrollmentType:(unint64_t)type isMandatory:(BOOL)mandatory deadline:(id)deadline completionHandler:(id)handler;
+- (void)requestUserConsentWithCloudConfig:(id)config completionHandler:(id)handler;
+- (void)requestUserConsentWithProfileData:(id)data managedAppleID:(id)d enrollmentType:(unint64_t)type completionHandler:(id)handler;
+- (void)requestUserInputWithRequest:(id)request completionHandler:(id)handler;
+- (void)requestUsernameWithDefaultUsername:(id)username completionHandler:(id)handler;
+- (void)requestWebAuthenticationWithWebAuthURL:(id)l authenticator:(id)authenticator authParams:(id)params completionHandler:(id)handler;
+- (void)requestiCloudSignInConfirmationWithCompletionHandler:(id)handler;
+- (void)restoreViewController:(id)controller didReceiveUserAction:(BOOL)action;
 - (void)showEnrollmentCompletionScene;
-- (void)showEnrollmentFailure:(id)a3;
+- (void)showEnrollmentFailure:(id)failure;
 - (void)showInstallingEnrollmentProfileScene;
-- (void)showiCloudPromotionPageWithiCloudQuotaString:(id)a3 completionHandler:(id)a4;
-- (void)suggestRestoreForAccountWithUsername:(id)a3 personaID:(id)a4 completionHandler:(id)a5;
-- (void)testInformationViewController:(id)a3 didReceiveUserAction:(BOOL)a4;
-- (void)webAuthCanceled:(id)a3;
+- (void)showiCloudPromotionPageWithiCloudQuotaString:(id)string completionHandler:(id)handler;
+- (void)suggestRestoreForAccountWithUsername:(id)username personaID:(id)d completionHandler:(id)handler;
+- (void)testInformationViewController:(id)controller didReceiveUserAction:(BOOL)action;
+- (void)webAuthCanceled:(id)canceled;
 @end
 
 @implementation DMCBYODEnrollmentFlowUIPresenter
@@ -63,15 +63,15 @@
   return authenticationController;
 }
 
-- (void)_showCancelAlertForMAID:(id)a3 actionHandler:(id)a4
+- (void)_showCancelAlertForMAID:(id)d actionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 length];
+  dCopy = d;
+  handlerCopy = handler;
+  [dCopy length];
   v8 = DMCLocalizedString();
-  if ([v6 length])
+  if ([dCopy length])
   {
-    v20 = [(DMCBYODEnrollmentFlowUIPresenter *)self managedAppleID];
+    managedAppleID = [(DMCBYODEnrollmentFlowUIPresenter *)self managedAppleID];
     v9 = DMCLocalizedFormat();
   }
 
@@ -80,7 +80,7 @@
     v9 = DMCLocalizedString();
   }
 
-  [v6 length];
+  [dCopy length];
   v10 = DMCLocalizedString();
   v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v8 message:v9 preferredStyle:1];
   v12 = MEMORY[0x277D750F8];
@@ -89,7 +89,7 @@
   v23[1] = 3221225472;
   v23[2] = __74__DMCBYODEnrollmentFlowUIPresenter__showCancelAlertForMAID_actionHandler___block_invoke;
   v23[3] = &unk_278EE7358;
-  v14 = v7;
+  v14 = handlerCopy;
   v24 = v14;
   v15 = [v12 actionWithTitle:v13 style:1 handler:v23];
 
@@ -104,8 +104,8 @@
   v18 = [v16 actionWithTitle:v10 style:0 handler:v21];
   [v11 addAction:v18];
   [v11 addAction:v15];
-  v19 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
-  [v19 dmc_presentAlert:v11 completion:0];
+  navigationController = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
+  [navigationController dmc_presentAlert:v11 completion:0];
 }
 
 uint64_t __74__DMCBYODEnrollmentFlowUIPresenter__showCancelAlertForMAID_actionHandler___block_invoke_2(uint64_t a1)
@@ -119,19 +119,19 @@ uint64_t __74__DMCBYODEnrollmentFlowUIPresenter__showCancelAlertForMAID_actionHa
   return v4();
 }
 
-- (void)requestUsernameWithDefaultUsername:(id)a3 completionHandler:(id)a4
+- (void)requestUsernameWithDefaultUsername:(id)username completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  usernameCopy = username;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__DMCBYODEnrollmentFlowUIPresenter_requestUsernameWithDefaultUsername_completionHandler___block_invoke;
   block[3] = &unk_278EE73A8;
-  v11 = v6;
-  v12 = v7;
+  v11 = usernameCopy;
+  v12 = handlerCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = usernameCopy;
+  v9 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -169,9 +169,9 @@ void __89__DMCBYODEnrollmentFlowUIPresenter_requestUsernameWithDefaultUsername_c
   [v9 pushViewController:v11 foundationViewController:v10];
 }
 
-- (void)ensureNetworkConnectionWithCompletionHandler:(id)a3
+- (void)ensureNetworkConnectionWithCompletionHandler:(id)handler
 {
-  v9 = a3;
+  handlerCopy = handler;
   if ([MEMORY[0x277D03500] shouldSimulateMDMCommunication] & 1) != 0 || (v3 = objc_opt_new(), v4 = objc_msgSend(v3, "deviceMightHaveNetworkStrict:", 0), v3, (v4))
   {
     v5 = 0;
@@ -185,23 +185,23 @@ void __89__DMCBYODEnrollmentFlowUIPresenter_requestUsernameWithDefaultUsername_c
     v5 = [v6 DMCErrorWithDomain:v7 code:15041 descriptionArray:v8 errorType:{*MEMORY[0x277D032F8], 0}];
   }
 
-  v9[2](v9, v5);
+  handlerCopy[2](handlerCopy, v5);
 }
 
-- (void)requestESSOApplicationInstallationWithITunesItemID:(id)a3 requiredEntitlements:(id)a4 completionHandler:(id)a5
+- (void)requestESSOApplicationInstallationWithITunesItemID:(id)d requiredEntitlements:(id)entitlements completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setESSOApplicationInstallationCompletionHandler:a5];
+  dCopy = d;
+  entitlementsCopy = entitlements;
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setESSOApplicationInstallationCompletionHandler:handler];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __126__DMCBYODEnrollmentFlowUIPresenter_requestESSOApplicationInstallationWithITunesItemID_requiredEntitlements_completionHandler___block_invoke;
   block[3] = &unk_278EE7420;
   block[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = dCopy;
+  v14 = entitlementsCopy;
+  v10 = entitlementsCopy;
+  v11 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -242,40 +242,40 @@ void __126__DMCBYODEnrollmentFlowUIPresenter_requestESSOApplicationInstallationW
   [*(a1 + 32) pushViewController:v2 foundationViewController:v2];
 }
 
-- (void)requestDevicePasscodeDataWithCompletionHandler:(id)a3
+- (void)requestDevicePasscodeDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = DMCLocalizedStringByDevice();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__DMCBYODEnrollmentFlowUIPresenter_requestDevicePasscodeDataWithCompletionHandler___block_invoke;
   v7[3] = &unk_278EE7448;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(DMCEnrollmentFlowUIPresenterBase *)self requestDevicePasscodeWithDescriptionText:v5 completionHandler:v7];
 }
 
-- (void)requestWebAuthenticationWithWebAuthURL:(id)a3 authenticator:(id)a4 authParams:(id)a5 completionHandler:(id)a6
+- (void)requestWebAuthenticationWithWebAuthURL:(id)l authenticator:(id)authenticator authParams:(id)params completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  authenticatorCopy = authenticator;
+  paramsCopy = params;
+  handlerCopy = handler;
   v14 = objc_alloc(MEMORY[0x277CBA9D8]);
   v15 = *MEMORY[0x277D245C0];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __118__DMCBYODEnrollmentFlowUIPresenter_requestWebAuthenticationWithWebAuthURL_authenticator_authParams_completionHandler___block_invoke;
   v24 = &unk_278EE7498;
-  v25 = self;
-  v16 = v13;
+  selfCopy = self;
+  v16 = handlerCopy;
   v28 = v16;
-  v17 = v11;
+  v17 = authenticatorCopy;
   v26 = v17;
-  v18 = v12;
+  v18 = paramsCopy;
   v27 = v18;
-  v19 = [v14 initWithURL:v10 callbackURLScheme:v15 completionHandler:&v21];
+  v19 = [v14 initWithURL:lCopy callbackURLScheme:v15 completionHandler:&v21];
   if (([MEMORY[0x277D03500] useNonEphemeralWebAuthSession] & 1) == 0)
   {
     [v19 setPrefersEphemeralWebBrowserSession:1];
@@ -286,7 +286,7 @@ void __126__DMCBYODEnrollmentFlowUIPresenter_requestESSOApplicationInstallationW
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v10;
+    v30 = lCopy;
     _os_log_impl(&dword_247E7D000, v20, OS_LOG_TYPE_DEFAULT, "Beginning web authentication with URL: %{public}@", buf, 0xCu);
   }
 
@@ -331,21 +331,21 @@ void __118__DMCBYODEnrollmentFlowUIPresenter_requestWebAuthenticationWithWebAuth
   }
 }
 
-- (void)requestMAIDAuthenticationWithManagedAppleID:(id)a3 personaID:(id)a4 ephemeral:(BOOL)a5 requireAppleMAID:(BOOL)a6 completionHandler:(id)a7
+- (void)requestMAIDAuthenticationWithManagedAppleID:(id)d personaID:(id)iD ephemeral:(BOOL)ephemeral requireAppleMAID:(BOOL)aID completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
+  dCopy = d;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __135__DMCBYODEnrollmentFlowUIPresenter_requestMAIDAuthenticationWithManagedAppleID_personaID_ephemeral_requireAppleMAID_completionHandler___block_invoke;
   v15[3] = &unk_278EE7588;
-  v16 = v11;
-  v17 = v12;
+  v16 = dCopy;
+  v17 = handlerCopy;
   v15[4] = self;
-  v18 = a6;
-  v19 = a5;
-  v13 = v11;
-  v14 = v12;
+  aIDCopy = aID;
+  ephemeralCopy = ephemeral;
+  v13 = dCopy;
+  v14 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v15);
 }
 
@@ -562,18 +562,18 @@ uint64_t __135__DMCBYODEnrollmentFlowUIPresenter_requestMAIDAuthenticationWithMa
   }
 }
 
-- (void)_makeAuthenticationActionHandlerWithEphemeral:(BOOL)a3 requireAppleMAID:(BOOL)a4 presentingViewController:(id)a5
+- (void)_makeAuthenticationActionHandlerWithEphemeral:(BOOL)ephemeral requireAppleMAID:(BOOL)d presentingViewController:(id)controller
 {
-  v8 = a5;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __124__DMCBYODEnrollmentFlowUIPresenter__makeAuthenticationActionHandlerWithEphemeral_requireAppleMAID_presentingViewController___block_invoke;
   v10[3] = &unk_278EE75D8;
   objc_copyWeak(&v12, &location);
-  v13 = a3;
-  v14 = a4;
-  v9 = v8;
+  ephemeralCopy = ephemeral;
+  dCopy = d;
+  v9 = controllerCopy;
   v11 = v9;
   [(DMCBYODEnrollmentFlowUIPresenter *)self setAuthenticationActionHandler:v10];
 
@@ -683,23 +683,23 @@ void __124__DMCBYODEnrollmentFlowUIPresenter__makeAuthenticationActionHandlerWit
   [v1 setInProgress:0];
 }
 
-- (void)requestSilentMAIDAuthenticationWithAuthenticationResults:(id)a3 personaID:(id)a4 requireAppleMAID:(BOOL)a5 completionHandler:(id)a6
+- (void)requestSilentMAIDAuthenticationWithAuthenticationResults:(id)results personaID:(id)d requireAppleMAID:(BOOL)iD completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  resultsCopy = results;
+  dCopy = d;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __138__DMCBYODEnrollmentFlowUIPresenter_requestSilentMAIDAuthenticationWithAuthenticationResults_personaID_requireAppleMAID_completionHandler___block_invoke;
   block[3] = &unk_278EE76A0;
   block[4] = self;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
-  v20 = a5;
-  v13 = v10;
-  v14 = v12;
-  v15 = v11;
+  v17 = dCopy;
+  v18 = resultsCopy;
+  v19 = handlerCopy;
+  iDCopy = iD;
+  v13 = resultsCopy;
+  v14 = handlerCopy;
+  v15 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -802,23 +802,23 @@ void __138__DMCBYODEnrollmentFlowUIPresenter_requestSilentMAIDAuthenticationWith
   (*(v2 + 16))(v2, v3, *(a1 + 56), *(a1 + 40));
 }
 
-- (void)requestMAIDSignInWithAuthenticationResults:(id)a3 personaID:(id)a4 makeiTunesAccountActive:(BOOL)a5 completionHandler:(id)a6
+- (void)requestMAIDSignInWithAuthenticationResults:(id)results personaID:(id)d makeiTunesAccountActive:(BOOL)active completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  resultsCopy = results;
+  dCopy = d;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __131__DMCBYODEnrollmentFlowUIPresenter_requestMAIDSignInWithAuthenticationResults_personaID_makeiTunesAccountActive_completionHandler___block_invoke;
   block[3] = &unk_278EE76F0;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v20 = a5;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = resultsCopy;
+  v18 = dCopy;
+  v19 = handlerCopy;
+  activeCopy = active;
+  v13 = handlerCopy;
+  v14 = dCopy;
+  v15 = resultsCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -872,15 +872,15 @@ void __131__DMCBYODEnrollmentFlowUIPresenter_requestMAIDSignInWithAuthentication
   }
 }
 
-- (void)requestUserConsentWithProfileData:(id)a3 managedAppleID:(id)a4 enrollmentType:(unint64_t)a5 completionHandler:(id)a6
+- (void)requestUserConsentWithProfileData:(id)data managedAppleID:(id)d enrollmentType:(unint64_t)type completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     v23 = 0;
-    v13 = [MEMORY[0x277D26290] profileWithData:v10 outError:&v23];
+    v13 = [MEMORY[0x277D26290] profileWithData:dataCopy outError:&v23];
     v14 = v23;
     if (v14)
     {
@@ -899,18 +899,18 @@ void __131__DMCBYODEnrollmentFlowUIPresenter_requestMAIDSignInWithAuthentication
     v13 = 0;
   }
 
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setManagedAppleID:v11];
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:v12];
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setManagedAppleID:dCopy];
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:handlerCopy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __118__DMCBYODEnrollmentFlowUIPresenter_requestUserConsentWithProfileData_managedAppleID_enrollmentType_completionHandler___block_invoke;
   v18[3] = &unk_278EE7718;
   v18[4] = self;
-  v19 = v11;
+  v19 = dCopy;
   v20 = v13;
-  v21 = a5;
+  typeCopy = type;
   v16 = v13;
-  v17 = v11;
+  v17 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], v18);
 }
 
@@ -920,13 +920,13 @@ void __118__DMCBYODEnrollmentFlowUIPresenter_requestUserConsentWithProfileData_m
   [*(a1 + 32) pushViewController:v2];
 }
 
-- (void)displayManagementDetailsOverviewWithProfileData:(id)a3 managedAppleID:(id)a4 completionHandler:(id)a5
+- (void)displayManagementDetailsOverviewWithProfileData:(id)data managedAppleID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
+  dCopy = d;
   v9 = MEMORY[0x277D26290];
   v28 = 0;
-  v10 = a5;
-  v11 = [v9 profileWithData:a3 outError:&v28];
+  handlerCopy = handler;
+  v11 = [v9 profileWithData:data outError:&v28];
   v12 = v28;
   if (v12)
   {
@@ -938,12 +938,12 @@ void __118__DMCBYODEnrollmentFlowUIPresenter_requestUserConsentWithProfileData_m
     }
   }
 
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setManagedAppleID:v8];
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:v10];
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setManagedAppleID:dCopy];
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:handlerCopy];
 
-  v14 = [v11 hasRequiredAppIDForMDM];
-  v15 = v14;
-  if (v14)
+  hasRequiredAppIDForMDM = [v11 hasRequiredAppIDForMDM];
+  v15 = hasRequiredAppIDForMDM;
+  if (hasRequiredAppIDForMDM)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -951,9 +951,9 @@ void __118__DMCBYODEnrollmentFlowUIPresenter_requestUserConsentWithProfileData_m
     block[3] = &unk_278EE73D0;
     block[4] = self;
     v16 = &v21;
-    v21 = v14;
+    v21 = hasRequiredAppIDForMDM;
     v17 = &v22;
-    v22 = v8;
+    v22 = dCopy;
     v23 = v11;
     v18 = v11;
     dispatch_async(MEMORY[0x277D85CD0], block);
@@ -968,7 +968,7 @@ void __118__DMCBYODEnrollmentFlowUIPresenter_requestUserConsentWithProfileData_m
     v24[4] = self;
     v16 = &v25;
     v17 = &v26;
-    v25 = v8;
+    v25 = dCopy;
     v26 = v11;
     v19 = v11;
     dispatch_async(MEMORY[0x277D85CD0], v24);
@@ -1020,15 +1020,15 @@ void __117__DMCBYODEnrollmentFlowUIPresenter_displayManagementDetailsOverviewWit
   [*(a1 + 32) pushViewController:v2];
 }
 
-- (void)_createLockupRequestAndViewGroupWithITunesItemID:(id)a3 completionHandler:(id)a4
+- (void)_createLockupRequestAndViewGroupWithITunesItemID:(id)d completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v7 = [objc_alloc(MEMORY[0x277CEC2A0]) initWithName:@"DMC Enrollment App Lockup"];
   v8 = objc_alloc(MEMORY[0x277CEC258]);
-  v9 = [v5 stringValue];
-  v10 = [v8 initWithStringValue:v9];
+  stringValue = [dCopy stringValue];
+  v10 = [v8 initWithStringValue:stringValue];
 
   v11 = objc_alloc(MEMORY[0x277CEC290]);
   v12 = [v11 initWithID:v10 kind:*MEMORY[0x277CEC230] context:*MEMORY[0x277CEC210]];
@@ -1039,14 +1039,14 @@ void __117__DMCBYODEnrollmentFlowUIPresenter_displayManagementDetailsOverviewWit
   v18[1] = 3221225472;
   v18[2] = __103__DMCBYODEnrollmentFlowUIPresenter__createLockupRequestAndViewGroupWithITunesItemID_completionHandler___block_invoke;
   v18[3] = &unk_278EE7790;
-  v19 = v5;
+  v19 = dCopy;
   v20 = v13;
   v21 = v7;
-  v22 = v6;
+  v22 = handlerCopy;
   v14 = v7;
-  v15 = v6;
+  v15 = handlerCopy;
   v16 = v13;
-  v17 = v5;
+  v17 = dCopy;
   [v14 _cacheLockupsWithRequests:v16 withCompletionBlock:v18];
 }
 
@@ -1077,11 +1077,11 @@ void __103__DMCBYODEnrollmentFlowUIPresenter__createLockupRequestAndViewGroupWit
   (*(a1[7] + 16))();
 }
 
-- (void)requestUserInputWithRequest:(id)a3 completionHandler:(id)a4
+- (void)requestUserInputWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setUserInputCompletionHandler:a4];
-  v7 = [[DMCInstallProfileQuestionViewController alloc] initWithUserInput:v6];
+  requestCopy = request;
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setUserInputCompletionHandler:handler];
+  v7 = [[DMCInstallProfileQuestionViewController alloc] initWithUserInput:requestCopy];
 
   [(DMCInstallProfileQuestionViewController *)v7 setQuestionsDelegate:self];
   v9[0] = MEMORY[0x277D85DD0];
@@ -1094,31 +1094,31 @@ void __103__DMCBYODEnrollmentFlowUIPresenter__createLockupRequestAndViewGroupWit
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
-- (void)informQuestionViewControllerOfPreflightResult:(id)a3
+- (void)informQuestionViewControllerOfPreflightResult:(id)result
 {
-  v4 = a3;
-  v5 = [(DMCBYODEnrollmentFlowUIPresenter *)self questionsController];
-  [v5 profileConnectionDidFinishPreflightWithError:v4];
+  resultCopy = result;
+  questionsController = [(DMCBYODEnrollmentFlowUIPresenter *)self questionsController];
+  [questionsController profileConnectionDidFinishPreflightWithError:resultCopy];
 }
 
-- (void)showiCloudPromotionPageWithiCloudQuotaString:(id)a3 completionHandler:(id)a4
+- (void)showiCloudPromotionPageWithiCloudQuotaString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __99__DMCBYODEnrollmentFlowUIPresenter_showiCloudPromotionPageWithiCloudQuotaString_completionHandler___block_invoke;
   v12[3] = &unk_278EE77E0;
-  v13 = v7;
-  v8 = v7;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   [(DMCBYODEnrollmentFlowUIPresenter *)self setICloudPromotionCompletionHandler:v12];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__DMCBYODEnrollmentFlowUIPresenter_showiCloudPromotionPageWithiCloudQuotaString_completionHandler___block_invoke_2;
   block[3] = &unk_278EE77B8;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = stringCopy;
+  v9 = stringCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1129,15 +1129,15 @@ void __99__DMCBYODEnrollmentFlowUIPresenter_showiCloudPromotionPageWithiCloudQuo
   [*(a1 + 32) pushViewController:v2];
 }
 
-- (void)requestiCloudSignInConfirmationWithCompletionHandler:(id)a3
+- (void)requestiCloudSignInConfirmationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __89__DMCBYODEnrollmentFlowUIPresenter_requestiCloudSignInConfirmationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278EE77E0;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   [(DMCBYODEnrollmentFlowUIPresenter *)self setICloudPromotionCompletionHandler:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -1153,11 +1153,11 @@ void __89__DMCBYODEnrollmentFlowUIPresenter_requestiCloudSignInConfirmationWithC
   [*(a1 + 32) pushViewController:v2 foundationViewController:v2];
 }
 
-- (void)suggestRestoreForAccountWithUsername:(id)a3 personaID:(id)a4 completionHandler:(id)a5
+- (void)suggestRestoreForAccountWithUsername:(id)username personaID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setManagedAppleID:a3];
+  dCopy = d;
+  handlerCopy = handler;
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setManagedAppleID:username];
   if ([MEMORY[0x277D03500] shouldSimulateMDMAccountDrivenEnrollment] && (objc_msgSend(MEMORY[0x277D03500], "simulatedMDMAccountDrivenEnrollmentAuthenticationResults"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v11 = objc_opt_new();
@@ -1165,8 +1165,8 @@ void __89__DMCBYODEnrollmentFlowUIPresenter_requestiCloudSignInConfirmationWithC
     v19[1] = 3221225472;
     v19[2] = __101__DMCBYODEnrollmentFlowUIPresenter_suggestRestoreForAccountWithUsername_personaID_completionHandler___block_invoke;
     v19[3] = &unk_278EE76C8;
-    v20 = v9;
-    v12 = v9;
+    v20 = handlerCopy;
+    v12 = handlerCopy;
     [(DMCBYODEnrollmentFlowUIPresenter *)self doesUserWantToRestoreSnapshot:v11 withConflictingApps:0 completion:v19];
 
     v13 = v20;
@@ -1174,7 +1174,7 @@ void __89__DMCBYODEnrollmentFlowUIPresenter_requestiCloudSignInConfirmationWithC
 
   else
   {
-    v12 = [[DMCRFMBSnapshotSource alloc] initWithPersonaIdentifier:v8 delegate:0];
+    v12 = [[DMCRFMBSnapshotSource alloc] initWithPersonaIdentifier:dCopy delegate:0];
     v13 = objc_alloc_init(DMCRFMBDeviceEnvironment);
     v14 = [DMCRFRestoreFlow alloc];
     v17[0] = MEMORY[0x277D85DD0];
@@ -1182,8 +1182,8 @@ void __89__DMCBYODEnrollmentFlowUIPresenter_requestiCloudSignInConfirmationWithC
     v17[2] = __101__DMCBYODEnrollmentFlowUIPresenter_suggestRestoreForAccountWithUsername_personaID_completionHandler___block_invoke_2;
     v17[3] = &unk_278EE7858;
     v17[4] = self;
-    v18 = v9;
-    v15 = v9;
+    v18 = handlerCopy;
+    v15 = handlerCopy;
     v16 = [(DMCRFRestoreFlow *)v14 initWithSnapshotSource:v12 interactionClient:self deviceEnvironment:v13 completion:v17];
     [(DMCRFRestoreFlow *)v16 startManagedRestoreWorkflow];
   }
@@ -1223,11 +1223,11 @@ void __101__DMCBYODEnrollmentFlowUIPresenter_suggestRestoreForAccountWithUsernam
   [v2 presentOKAlertWithTitle:0 message:v3 action:v4];
 }
 
-- (void)requestDebuggingApplicationsInstallation:(id)a3 requiredEntitlements:(id)a4 completionHandler:(id)a5
+- (void)requestDebuggingApplicationsInstallation:(id)installation requiredEntitlements:(id)entitlements completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setESSODebuggingApplicationInstallationCompletionHandler:a5];
+  installationCopy = installation;
+  entitlementsCopy = entitlements;
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setESSODebuggingApplicationInstallationCompletionHandler:handler];
   v10 = objc_opt_new();
   [(DMCBYODEnrollmentFlowUIPresenter *)self setInstalledDebuggingApplication:v10];
 
@@ -1236,10 +1236,10 @@ void __101__DMCBYODEnrollmentFlowUIPresenter_suggestRestoreForAccountWithUsernam
   block[2] = __116__DMCBYODEnrollmentFlowUIPresenter_requestDebuggingApplicationsInstallation_requiredEntitlements_completionHandler___block_invoke;
   block[3] = &unk_278EE7420;
   block[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = installationCopy;
+  v15 = entitlementsCopy;
+  v11 = entitlementsCopy;
+  v12 = installationCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1305,16 +1305,16 @@ void __65__DMCBYODEnrollmentFlowUIPresenter_showEnrollmentCompletionScene__block
   [v5 openSensitiveURL:v6 withOptions:0];
 }
 
-- (void)showEnrollmentFailure:(id)a3
+- (void)showEnrollmentFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__DMCBYODEnrollmentFlowUIPresenter_showEnrollmentFailure___block_invoke;
   v6[3] = &unk_278EE77B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = failureCopy;
+  v5 = failureCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1364,14 +1364,14 @@ void __58__DMCBYODEnrollmentFlowUIPresenter_showEnrollmentFailure___block_invoke
 
 - (void)dismissEnrollmentScene
 {
-  v3 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameViewController];
-  if ([v3 inProgress])
+  usernameViewController = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameViewController];
+  if ([usernameViewController inProgress])
   {
-    v4 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
-    v5 = [v4 topViewController];
-    v6 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameViewController];
+    navigationController = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
+    topViewController = [navigationController topViewController];
+    usernameViewController2 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameViewController];
 
-    if (v5 == v6)
+    if (topViewController == usernameViewController2)
     {
       v7 = dispatch_time(0, 700000000);
       block[0] = MEMORY[0x277D85DD0];
@@ -1391,21 +1391,21 @@ void __58__DMCBYODEnrollmentFlowUIPresenter_showEnrollmentFailure___block_invoke
   [(DMCEnrollmentFlowUIPresenterBase *)self dismissWithCompletion:0];
 }
 
-- (void)authenticationViewController:(id)a3 didReceiveUsername:(id)a4
+- (void)authenticationViewController:(id)controller didReceiveUsername:(id)username
 {
-  v5 = a4;
+  usernameCopy = username;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__DMCBYODEnrollmentFlowUIPresenter_authenticationViewController_didReceiveUsername___block_invoke;
   block[3] = &unk_278EE74C0;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v6 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
+  usernameCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
 
-  if (v6)
+  if (usernameCompletionHandler)
   {
-    v7 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
-    (v7)[2](v7, v5, 0);
+    usernameCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
+    (usernameCompletionHandler2)[2](usernameCompletionHandler2, usernameCopy, 0);
 
     [(DMCBYODEnrollmentFlowUIPresenter *)self setUsernameCompletionHandler:0];
   }
@@ -1417,13 +1417,13 @@ void __84__DMCBYODEnrollmentFlowUIPresenter_authenticationViewController_didRece
   [v1 setInProgress:1];
 }
 
-- (void)authenticationViewController:(id)a3 didReceivePassword:(id)a4 forUsername:(id)a5
+- (void)authenticationViewController:(id)controller didReceivePassword:(id)password forUsername:(id)username
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationCompletionHandler];
+  passwordCopy = password;
+  usernameCopy = username;
+  authenticationCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationCompletionHandler];
 
-  if (v9)
+  if (authenticationCompletionHandler)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1431,13 +1431,13 @@ void __84__DMCBYODEnrollmentFlowUIPresenter_authenticationViewController_didRece
     block[3] = &unk_278EE74C0;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v10 = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationActionHandler];
-    (v10)[2](v10, v8, v7);
+    authenticationActionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationActionHandler];
+    (authenticationActionHandler)[2](authenticationActionHandler, usernameCopy, passwordCopy);
   }
 
-  v11 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
+  usernameAndPasswordCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
 
-  if (v11)
+  if (usernameAndPasswordCompletionHandler)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -1445,8 +1445,8 @@ void __84__DMCBYODEnrollmentFlowUIPresenter_authenticationViewController_didRece
     v13[3] = &unk_278EE74C0;
     v13[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], v13);
-    v12 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
-    (v12)[2](v12, v8, v7, 0);
+    usernameAndPasswordCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
+    (usernameAndPasswordCompletionHandler2)[2](usernameAndPasswordCompletionHandler2, usernameCopy, passwordCopy, 0);
 
     [(DMCBYODEnrollmentFlowUIPresenter *)self setUsernameAndPasswordCompletionHandler:0];
   }
@@ -1464,14 +1464,14 @@ void __96__DMCBYODEnrollmentFlowUIPresenter_authenticationViewController_didRece
   [v1 setInProgress:1];
 }
 
-- (void)authenticationViewControllerDidCancel:(id)a3
+- (void)authenticationViewControllerDidCancel:(id)cancel
 {
-  v4 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
+  usernameCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
 
-  if (v4)
+  if (usernameCompletionHandler)
   {
-    v5 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
-    v5[2](v5, 0, 1);
+    usernameCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameCompletionHandler];
+    usernameCompletionHandler2[2](usernameCompletionHandler2, 0, 1);
 
     [(DMCBYODEnrollmentFlowUIPresenter *)self setUsernameCompletionHandler:0];
   }
@@ -1490,23 +1490,23 @@ void __96__DMCBYODEnrollmentFlowUIPresenter_authenticationViewController_didRece
 
     else
     {
-      v6 = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationCompletionHandler];
+      authenticationCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationCompletionHandler];
 
-      if (v6)
+      if (authenticationCompletionHandler)
       {
-        v7 = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationCompletionHandler];
-        v7[2](v7, 0, 1, 0);
+        authenticationCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self authenticationCompletionHandler];
+        authenticationCompletionHandler2[2](authenticationCompletionHandler2, 0, 1, 0);
 
         [(DMCBYODEnrollmentFlowUIPresenter *)self setAuthenticationCompletionHandler:0];
       }
     }
 
-    v8 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
+    usernameAndPasswordCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
 
-    if (v8)
+    if (usernameAndPasswordCompletionHandler)
     {
-      v9 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
-      v9[2](v9, 0, 0, 1);
+      usernameAndPasswordCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self usernameAndPasswordCompletionHandler];
+      usernameAndPasswordCompletionHandler2[2](usernameAndPasswordCompletionHandler2, 0, 0, 1);
 
       [(DMCBYODEnrollmentFlowUIPresenter *)self setUsernameAndPasswordCompletionHandler:0];
     }
@@ -1542,19 +1542,19 @@ void __74__DMCBYODEnrollmentFlowUIPresenter_authenticationViewControllerDidCance
   }
 }
 
-- (void)consentViewController:(id)a3 didReceiveUserAction:(BOOL)a4
+- (void)consentViewController:(id)controller didReceiveUserAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  actionCopy = action;
+  controllerCopy = controller;
+  if (actionCopy)
   {
-    v7 = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
+    consentCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
 
-    if (v7)
+    if (consentCompletionHandler)
     {
-      [v6 setInProgress:1];
-      v8 = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
-      v8[2](v8, 1);
+      [controllerCopy setInProgress:1];
+      consentCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
+      consentCompletionHandler2[2](consentCompletionHandler2, 1);
 
       [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:0];
     }
@@ -1601,45 +1601,45 @@ void __79__DMCBYODEnrollmentFlowUIPresenter_consentViewController_didReceiveUser
   }
 }
 
-- (void)questionsController:(id)a3 didFinishWithResponses:(id)a4
+- (void)questionsController:(id)controller didFinishWithResponses:(id)responses
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  responsesCopy = responses;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__DMCBYODEnrollmentFlowUIPresenter_questionsController_didFinishWithResponses___block_invoke;
   block[3] = &unk_278EE74C0;
-  v8 = v6;
+  v8 = controllerCopy;
   v12 = v8;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v9 = [(DMCBYODEnrollmentFlowUIPresenter *)self userInputCompletionHandler];
+  userInputCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self userInputCompletionHandler];
 
-  if (v9)
+  if (userInputCompletionHandler)
   {
-    v10 = [(DMCBYODEnrollmentFlowUIPresenter *)self userInputCompletionHandler];
-    (v10)[2](v10, v7, [v7 count] == 0);
+    userInputCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self userInputCompletionHandler];
+    (userInputCompletionHandler2)[2](userInputCompletionHandler2, responsesCopy, [responsesCopy count] == 0);
   }
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v3 = [(DMCEnrollmentFlowUIPresenterBase *)self baseViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  baseViewController = [(DMCEnrollmentFlowUIPresenterBase *)self baseViewController];
+  view = [baseViewController view];
+  window = [view window];
 
-  return v5;
+  return window;
 }
 
-- (void)iCloudPromotionViewController:(id)a3 didReceiveUserAction:(BOOL)a4
+- (void)iCloudPromotionViewController:(id)controller didReceiveUserAction:(BOOL)action
 {
-  if (a4)
+  if (action)
   {
-    v5 = [(DMCBYODEnrollmentFlowUIPresenter *)self iCloudPromotionCompletionHandler];
+    iCloudPromotionCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self iCloudPromotionCompletionHandler];
 
-    if (v5)
+    if (iCloudPromotionCompletionHandler)
     {
-      v6 = [(DMCBYODEnrollmentFlowUIPresenter *)self iCloudPromotionCompletionHandler];
-      v6[2](v6, 1);
+      iCloudPromotionCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self iCloudPromotionCompletionHandler];
+      iCloudPromotionCompletionHandler2[2](iCloudPromotionCompletionHandler2, 1);
 
       [(DMCBYODEnrollmentFlowUIPresenter *)self setICloudPromotionCompletionHandler:0];
     }
@@ -1685,27 +1685,27 @@ void __87__DMCBYODEnrollmentFlowUIPresenter_iCloudPromotionViewController_didRec
   }
 }
 
-- (void)doesUserWantToRestoreSnapshot:(id)a3 withConflictingApps:(id)a4 completion:(id)a5
+- (void)doesUserWantToRestoreSnapshot:(id)snapshot withConflictingApps:(id)apps completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  snapshotCopy = snapshot;
+  appsCopy = apps;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __97__DMCBYODEnrollmentFlowUIPresenter_doesUserWantToRestoreSnapshot_withConflictingApps_completion___block_invoke;
   v17[3] = &unk_278EE77E0;
-  v18 = v10;
-  v11 = v10;
+  v18 = completionCopy;
+  v11 = completionCopy;
   [(DMCBYODEnrollmentFlowUIPresenter *)self setRestoreCompletionHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__DMCBYODEnrollmentFlowUIPresenter_doesUserWantToRestoreSnapshot_withConflictingApps_completion___block_invoke_2;
   v14[3] = &unk_278EE7420;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = snapshotCopy;
+  v16 = appsCopy;
+  v12 = appsCopy;
+  v13 = snapshotCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 
@@ -1732,34 +1732,34 @@ void __97__DMCBYODEnrollmentFlowUIPresenter_doesUserWantToRestoreSnapshot_withCo
   [*(a1 + 32) pushViewController:v7];
 }
 
-- (void)restoreViewController:(id)a3 didReceiveUserAction:(BOOL)a4
+- (void)restoreViewController:(id)controller didReceiveUserAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = [(DMCBYODEnrollmentFlowUIPresenter *)self restoreCompletionHandler];
+  actionCopy = action;
+  restoreCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self restoreCompletionHandler];
 
-  if (v6)
+  if (restoreCompletionHandler)
   {
-    v7 = [(DMCBYODEnrollmentFlowUIPresenter *)self restoreCompletionHandler];
-    v7[2](v7, v4);
+    restoreCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self restoreCompletionHandler];
+    restoreCompletionHandler2[2](restoreCompletionHandler2, actionCopy);
 
     [(DMCBYODEnrollmentFlowUIPresenter *)self setRestoreCompletionHandler:0];
   }
 }
 
-- (void)_handleApplicationInstallationViewControllerDelegate:(id)a3 didReceiveUserAction:(BOOL)a4 error:(id)a5
+- (void)_handleApplicationInstallationViewControllerDelegate:(id)delegate didReceiveUserAction:(BOOL)action error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  delegateCopy = delegate;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __116__DMCBYODEnrollmentFlowUIPresenter__handleApplicationInstallationViewControllerDelegate_didReceiveUserAction_error___block_invoke;
   v12[3] = &unk_278EE78D0;
-  v16 = a4;
-  v13 = v9;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v9;
+  actionCopy = action;
+  v13 = errorCopy;
+  v14 = delegateCopy;
+  selfCopy = self;
+  v10 = delegateCopy;
+  v11 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
@@ -1839,26 +1839,26 @@ void __116__DMCBYODEnrollmentFlowUIPresenter__handleApplicationInstallationViewC
   }
 }
 
-- (void)debuggingApplicationInstallationViewController:(id)a3 didInstallApplication:(id)a4
+- (void)debuggingApplicationInstallationViewController:(id)controller didInstallApplication:(id)application
 {
-  v5 = a4;
-  v6 = [(DMCBYODEnrollmentFlowUIPresenter *)self installedDebuggingApplication];
-  [v6 addObject:v5];
+  applicationCopy = application;
+  installedDebuggingApplication = [(DMCBYODEnrollmentFlowUIPresenter *)self installedDebuggingApplication];
+  [installedDebuggingApplication addObject:applicationCopy];
 }
 
-- (void)managementDetailsOverviewViewController:(id)a3 didReceiveUserAction:(BOOL)a4
+- (void)managementDetailsOverviewViewController:(id)controller didReceiveUserAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  actionCopy = action;
+  controllerCopy = controller;
+  if (actionCopy)
   {
-    v7 = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
+    consentCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
 
-    if (v7)
+    if (consentCompletionHandler)
     {
-      [v6 setInProgress:1];
-      v8 = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
-      v8[2](v8, 1);
+      [controllerCopy setInProgress:1];
+      consentCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self consentCompletionHandler];
+      consentCompletionHandler2[2](consentCompletionHandler2, 1);
 
       [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:0];
     }
@@ -1905,35 +1905,35 @@ void __97__DMCBYODEnrollmentFlowUIPresenter_managementDetailsOverviewViewControl
   }
 }
 
-- (id)_fakeAppleAccountWithAuthenticationResults:(id)a3 personaID:(id)a4 store:(id)a5
+- (id)_fakeAppleAccountWithAuthenticationResults:(id)results personaID:(id)d store:(id)store
 {
   v7 = MEMORY[0x277CB8F30];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  storeCopy = store;
+  dCopy = d;
+  resultsCopy = results;
   v11 = [v7 alloc];
-  v12 = [v8 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8BA0]];
+  v12 = [storeCopy accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8BA0]];
 
   v13 = [v11 initWithAccountType:v12];
   v14 = *MEMORY[0x277CEFFD8];
-  v15 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
+  v15 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
   [v13 setAccountDescription:v15];
 
-  v16 = [v10 objectForKeyedSubscript:v14];
+  v16 = [resultsCopy objectForKeyedSubscript:v14];
   [v13 setUsername:v16];
 
-  [v13 dmc_setPersonaIdentifier:v9];
+  [v13 dmc_setPersonaIdentifier:dCopy];
   [v13 aa_setAccountClass:*MEMORY[0x277CEC680]];
-  v17 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
+  v17 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
   [v13 dmc_setAltDSID:v17];
 
-  v18 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFF88]];
+  v18 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF88]];
   [v13 dmc_setDSID:v18];
 
-  v19 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFF98]];
+  v19 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF98]];
   [v13 aa_setFirstName:v19];
 
-  v20 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFFB8]];
+  v20 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFB8]];
 
   [v13 aa_setLastName:v20];
   [v13 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"isManagedAppleID"];
@@ -1942,27 +1942,27 @@ void __97__DMCBYODEnrollmentFlowUIPresenter_managementDetailsOverviewViewControl
   return v13;
 }
 
-- (id)_fakeiTunesAccountWithAuthenticationResults:(id)a3 personaID:(id)a4 store:(id)a5
+- (id)_fakeiTunesAccountWithAuthenticationResults:(id)results personaID:(id)d store:(id)store
 {
   v7 = MEMORY[0x277CB8F30];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  storeCopy = store;
+  dCopy = d;
+  resultsCopy = results;
   v11 = [v7 alloc];
-  v12 = [v8 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8D58]];
+  v12 = [storeCopy accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8D58]];
 
   v13 = [v11 initWithAccountType:v12];
-  v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
+  v14 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
   [v13 setUsername:v14];
 
-  [v13 dmc_setPersonaIdentifier:v9];
-  v15 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
+  [v13 dmc_setPersonaIdentifier:dCopy];
+  v15 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
   [v13 dmc_setAltDSID:v15];
 
-  v16 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFF98]];
+  v16 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF98]];
   [v13 aa_setFirstName:v16];
 
-  v17 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFFB8]];
+  v17 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFB8]];
 
   [v13 aa_setLastName:v17];
   [v13 setActive:0];
@@ -1972,9 +1972,9 @@ void __97__DMCBYODEnrollmentFlowUIPresenter_managementDetailsOverviewViewControl
   return v13;
 }
 
-- (void)requestUserConsentForMigrationWithPendingCloudConfig:(id)a3 originalEnrollmentType:(unint64_t)a4 isMandatory:(BOOL)a5 deadline:(id)a6 completionHandler:(id)a7
+- (void)requestUserConsentForMigrationWithPendingCloudConfig:(id)config originalEnrollmentType:(unint64_t)type isMandatory:(BOOL)mandatory deadline:(id)deadline completionHandler:(id)handler
 {
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setMigrationConsentCompletionHandler:a7, a4, a5, a6];
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setMigrationConsentCompletionHandler:handler, type, mandatory, deadline];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __157__DMCBYODEnrollmentFlowUIPresenter_Test__requestUserConsentForMigrationWithPendingCloudConfig_originalEnrollmentType_isMandatory_deadline_completionHandler___block_invoke;
@@ -1989,9 +1989,9 @@ void __157__DMCBYODEnrollmentFlowUIPresenter_Test__requestUserConsentForMigratio
   [*(a1 + 32) pushViewController:v2];
 }
 
-- (void)requestUserConsentWithCloudConfig:(id)a3 completionHandler:(id)a4
+- (void)requestUserConsentWithCloudConfig:(id)config completionHandler:(id)handler
 {
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:a4];
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setConsentCompletionHandler:handler];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__DMCBYODEnrollmentFlowUIPresenter_Test__requestUserConsentWithCloudConfig_completionHandler___block_invoke;
@@ -2006,23 +2006,23 @@ void __94__DMCBYODEnrollmentFlowUIPresenter_Test__requestUserConsentWithCloudCon
   [*(a1 + 32) pushViewController:v2];
 }
 
-- (void)fetchEnrollmentProfileWithWebAuthURL:(id)a3 machineInfo:(id)a4 anchorCertificateRefs:(id)a5 completionHandler:(id)a6
+- (void)fetchEnrollmentProfileWithWebAuthURL:(id)l machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(DMCBYODEnrollmentFlowUIPresenter *)self setWebURLCompletionHandler:a6];
+  lCopy = l;
+  infoCopy = info;
+  refsCopy = refs;
+  [(DMCBYODEnrollmentFlowUIPresenter *)self setWebURLCompletionHandler:handler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __131__DMCBYODEnrollmentFlowUIPresenter_Test__fetchEnrollmentProfileWithWebAuthURL_machineInfo_anchorCertificateRefs_completionHandler___block_invoke;
   v16[3] = &unk_278EE73D0;
-  v17 = v10;
-  v18 = self;
-  v19 = v11;
-  v20 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = lCopy;
+  selfCopy = self;
+  v19 = infoCopy;
+  v20 = refsCopy;
+  v13 = refsCopy;
+  v14 = infoCopy;
+  v15 = lCopy;
   dispatch_async(MEMORY[0x277D85CD0], v16);
 }
 
@@ -2036,16 +2036,16 @@ void __131__DMCBYODEnrollmentFlowUIPresenter_Test__fetchEnrollmentProfileWithWeb
   [*(a1 + 40) pushViewController:v2];
 }
 
-- (void)requestMDMUsernameAndPasswordWithCompletionHandler:(id)a3
+- (void)requestMDMUsernameAndPasswordWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __93__DMCBYODEnrollmentFlowUIPresenter_Test__requestMDMUsernameAndPasswordWithCompletionHandler___block_invoke;
   v6[3] = &unk_278EE7830;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -2082,43 +2082,43 @@ void __93__DMCBYODEnrollmentFlowUIPresenter_Test__requestMDMUsernameAndPasswordW
   [v9 pushViewController:v10];
 }
 
-- (void)webAuthCanceled:(id)a3
+- (void)webAuthCanceled:(id)canceled
 {
-  v6 = a3;
-  v4 = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
+  canceledCopy = canceled;
+  webURLCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
 
-  if (v4)
+  if (webURLCompletionHandler)
   {
-    v5 = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
-    (v5)[2](v5, 0, v6 == 0);
+    webURLCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
+    (webURLCompletionHandler2)[2](webURLCompletionHandler2, 0, canceledCopy == 0);
 
     [(DMCBYODEnrollmentFlowUIPresenter *)self setWebURLCompletionHandler:0];
   }
 }
 
-- (void)receivedProfile:(id)a3
+- (void)receivedProfile:(id)profile
 {
-  v6 = a3;
-  v4 = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
+  profileCopy = profile;
+  webURLCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
 
-  if (v4)
+  if (webURLCompletionHandler)
   {
-    v5 = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
-    (v5)[2](v5, v6, 0, 0);
+    webURLCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self webURLCompletionHandler];
+    (webURLCompletionHandler2)[2](webURLCompletionHandler2, profileCopy, 0, 0);
 
     [(DMCBYODEnrollmentFlowUIPresenter *)self setWebURLCompletionHandler:0];
   }
 }
 
-- (void)testInformationViewController:(id)a3 didReceiveUserAction:(BOOL)a4
+- (void)testInformationViewController:(id)controller didReceiveUserAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = [(DMCBYODEnrollmentFlowUIPresenter *)self migrationConsentCompletionHandler];
+  actionCopy = action;
+  migrationConsentCompletionHandler = [(DMCBYODEnrollmentFlowUIPresenter *)self migrationConsentCompletionHandler];
 
-  if (v6)
+  if (migrationConsentCompletionHandler)
   {
-    v7 = [(DMCBYODEnrollmentFlowUIPresenter *)self migrationConsentCompletionHandler];
-    v7[2](v7, v4);
+    migrationConsentCompletionHandler2 = [(DMCBYODEnrollmentFlowUIPresenter *)self migrationConsentCompletionHandler];
+    migrationConsentCompletionHandler2[2](migrationConsentCompletionHandler2, actionCopy);
 
     [(DMCBYODEnrollmentFlowUIPresenter *)self setMigrationConsentCompletionHandler:0];
   }

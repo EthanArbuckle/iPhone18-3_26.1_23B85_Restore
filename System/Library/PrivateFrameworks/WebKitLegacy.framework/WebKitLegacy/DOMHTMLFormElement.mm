@@ -14,12 +14,12 @@
 - (void)reset;
 - (void)setAcceptCharset:(NSString *)acceptCharset;
 - (void)setAction:(NSString *)action;
-- (void)setAutocomplete:(id)a3;
+- (void)setAutocomplete:(id)autocomplete;
 - (void)setEncoding:(NSString *)encoding;
 - (void)setEnctype:(NSString *)enctype;
 - (void)setMethod:(NSString *)method;
 - (void)setName:(NSString *)name;
-- (void)setNoValidate:(BOOL)a3;
+- (void)setNoValidate:(BOOL)validate;
 - (void)setTarget:(NSString *)target;
 - (void)submit;
 @end
@@ -167,10 +167,10 @@
   return v5;
 }
 
-- (void)setAutocomplete:(id)a3
+- (void)setAutocomplete:(id)autocomplete
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, autocomplete, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -517,7 +517,7 @@ LABEL_13:
   return v12;
 }
 
-- (void)setNoValidate:(BOOL)a3
+- (void)setNoValidate:(BOOL)validate
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setBooleanAttribute();

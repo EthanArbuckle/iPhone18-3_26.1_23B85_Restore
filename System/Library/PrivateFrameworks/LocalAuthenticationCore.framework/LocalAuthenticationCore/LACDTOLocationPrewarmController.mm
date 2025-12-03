@@ -1,34 +1,34 @@
 @interface LACDTOLocationPrewarmController
-- (LACDTOLocationPrewarmController)initWithLocationProvider:(id)a3 strategy:(id)a4 workQueue:(id)a5;
-- (void)_prewarmWithCompletion:(id)a3;
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4;
-- (void)prewarmWithCompletion:(id)a3;
+- (LACDTOLocationPrewarmController)initWithLocationProvider:(id)provider strategy:(id)strategy workQueue:(id)queue;
+- (void)_prewarmWithCompletion:(id)completion;
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification;
+- (void)prewarmWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLocationPrewarmController
 
-- (LACDTOLocationPrewarmController)initWithLocationProvider:(id)a3 strategy:(id)a4 workQueue:(id)a5
+- (LACDTOLocationPrewarmController)initWithLocationProvider:(id)provider strategy:(id)strategy workQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  strategyCopy = strategy;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = LACDTOLocationPrewarmController;
   v12 = [(LACDTOLocationPrewarmController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_locationProvider, a3);
-    objc_storeStrong(&v13->_strategy, a4);
-    objc_storeStrong(&v13->_workQueue, a5);
+    objc_storeStrong(&v12->_locationProvider, provider);
+    objc_storeStrong(&v13->_strategy, strategy);
+    objc_storeStrong(&v13->_workQueue, queue);
   }
 
   return v13;
 }
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification
 {
-  if (LACDarwinNotificationsEqual(a4, @"com.apple.springboard.lockstate"))
+  if (LACDarwinNotificationsEqual(notification, @"com.apple.springboard.lockstate"))
   {
     objc_initWeak(&location, self);
     workQueue = self->_workQueue;
@@ -54,9 +54,9 @@ void __77__LACDTOLocationPrewarmController_notificationCenter_didReceiveNotifica
   }
 }
 
-- (void)prewarmWithCompletion:(id)a3
+- (void)prewarmWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_running)
   {
     v5 = LACLogDTOLocation();
@@ -65,7 +65,7 @@ void __77__LACDTOLocationPrewarmController_notificationCenter_didReceiveNotifica
       [LACDTOLocationPrewarmController prewarmWithCompletion:v5];
     }
 
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -84,7 +84,7 @@ void __77__LACDTOLocationPrewarmController_notificationCenter_didReceiveNotifica
     v7[2] = __57__LACDTOLocationPrewarmController_prewarmWithCompletion___block_invoke;
     v7[3] = &unk_1E7A977A8;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = completionCopy;
     [(LACDTOLocationPrewarmController *)self _prewarmWithCompletion:v7];
 
     objc_destroyWeak(&v9);
@@ -114,9 +114,9 @@ void __57__LACDTOLocationPrewarmController_prewarmWithCompletion___block_invoke(
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_prewarmWithCompletion:(id)a3
+- (void)_prewarmWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   strategy = self->_strategy;
   v7[0] = MEMORY[0x1E69E9820];
@@ -124,7 +124,7 @@ void __57__LACDTOLocationPrewarmController_prewarmWithCompletion___block_invoke(
   v7[2] = __58__LACDTOLocationPrewarmController__prewarmWithCompletion___block_invoke;
   v7[3] = &unk_1E7A977D0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTOLocationPrewarmStrategy *)strategy checkNeedsPrewarmWithCompletion:v7];
 

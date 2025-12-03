@@ -1,22 +1,22 @@
 @interface INUIAppIntentDeliverer
-- (void)deliverIntent:(id)a3 reply:(id)a4;
-- (void)deliverIntentForwardingActionWithResponseHandler:(id)a3;
+- (void)deliverIntent:(id)intent reply:(id)reply;
+- (void)deliverIntentForwardingActionWithResponseHandler:(id)handler;
 @end
 
 @implementation INUIAppIntentDeliverer
 
-- (void)deliverIntent:(id)a3 reply:(id)a4
+- (void)deliverIntent:(id)intent reply:(id)reply
 {
   v4.receiver = self;
   v4.super_class = INUIAppIntentDeliverer;
-  [(INAppIntentDeliverer *)&v4 deliverIntent:a3 reply:a4];
+  [(INAppIntentDeliverer *)&v4 deliverIntent:intent reply:reply];
 }
 
-- (void)deliverIntentForwardingActionWithResponseHandler:(id)a3
+- (void)deliverIntentForwardingActionWithResponseHandler:(id)handler
 {
   v3.receiver = self;
   v3.super_class = INUIAppIntentDeliverer;
-  [(INAppIntentDeliverer *)&v3 deliverIntentForwardingActionWithResponseHandler:a3];
+  [(INAppIntentDeliverer *)&v3 deliverIntentForwardingActionWithResponseHandler:handler];
 }
 
 @end

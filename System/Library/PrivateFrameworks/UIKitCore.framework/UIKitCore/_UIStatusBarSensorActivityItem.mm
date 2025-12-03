@@ -1,6 +1,6 @@
 @interface _UIStatusBarSensorActivityItem
 - (_UIStatusBarSensorActivityView)sensorActivityIndicator;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_create_sensorActivityIndicator;
 @end
 
@@ -26,30 +26,30 @@
   self->_sensorActivityIndicator = v4;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v18.receiver = self;
   v18.super_class = _UIStatusBarSensorActivityItem;
-  v6 = a3;
-  v7 = [(_UIStatusBarItem *)&v18 applyUpdate:v6 toDisplayItem:a4];
-  v8 = [v6 dataChanged];
+  updateCopy = update;
+  v7 = [(_UIStatusBarItem *)&v18 applyUpdate:updateCopy toDisplayItem:item];
+  dataChanged = [updateCopy dataChanged];
 
-  if (v8)
+  if (dataChanged)
   {
-    v9 = [(_UIStatusBarItem *)self statusBar];
-    v10 = [v9 visualProvider];
+    statusBar = [(_UIStatusBarItem *)self statusBar];
+    visualProvider = [statusBar visualProvider];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(_UIStatusBarItem *)self statusBar];
-      v12 = [v11 visualProvider];
-      v13 = [v12 showSensorActivityIndicatorWithoutPortalView];
+      statusBar2 = [(_UIStatusBarItem *)self statusBar];
+      visualProvider2 = [statusBar2 visualProvider];
+      showSensorActivityIndicatorWithoutPortalView = [visualProvider2 showSensorActivityIndicatorWithoutPortalView];
 
-      if (v13)
+      if (showSensorActivityIndicatorWithoutPortalView)
       {
-        v14 = [(_UIStatusBarSensorActivityItem *)self sensorActivityIndicator];
-        v15 = [(_UIStatusBarItem *)self statusBar];
-        v16 = [v15 _effectiveTargetScreen];
-        [v14 configureSensorViewWithoutPortalIfNeededForTargetScreen:v16];
+        sensorActivityIndicator = [(_UIStatusBarSensorActivityItem *)self sensorActivityIndicator];
+        statusBar3 = [(_UIStatusBarItem *)self statusBar];
+        _effectiveTargetScreen = [statusBar3 _effectiveTargetScreen];
+        [sensorActivityIndicator configureSensorViewWithoutPortalIfNeededForTargetScreen:_effectiveTargetScreen];
 LABEL_7:
 
         goto LABEL_8;
@@ -60,10 +60,10 @@ LABEL_7:
     {
     }
 
-    v14 = [(_UIStatusBarSensorActivityItem *)self sensorActivityIndicator];
-    v15 = [(_UIStatusBarItem *)self statusBar];
-    v16 = [v15 _effectiveTargetScreen];
-    [v14 configurePortalViewIfNeededForTargetScreen:v16];
+    sensorActivityIndicator = [(_UIStatusBarSensorActivityItem *)self sensorActivityIndicator];
+    statusBar3 = [(_UIStatusBarItem *)self statusBar];
+    _effectiveTargetScreen = [statusBar3 _effectiveTargetScreen];
+    [sensorActivityIndicator configurePortalViewIfNeededForTargetScreen:_effectiveTargetScreen];
     goto LABEL_7;
   }
 

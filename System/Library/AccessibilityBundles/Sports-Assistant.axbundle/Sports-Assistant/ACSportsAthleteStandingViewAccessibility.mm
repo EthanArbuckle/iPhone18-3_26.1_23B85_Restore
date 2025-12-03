@@ -1,17 +1,17 @@
 @interface ACSportsAthleteStandingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation ACSportsAthleteStandingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ACSportsAthleteStandingView" isKindOfClass:@"ACSportsEntityView"];
-  [v3 validateClass:@"ACSportsEntityView" hasInstanceMethod:@"entity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsEntity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ACSportsStandingColumnView" hasInstanceVariable:@"_snippetColumnHeaders" withType:"NSArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ACSportsAthleteStandingView" isKindOfClass:@"ACSportsEntityView"];
+  [validationsCopy validateClass:@"ACSportsEntityView" hasInstanceMethod:@"entity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsEntity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ACSportsStandingColumnView" hasInstanceVariable:@"_snippetColumnHeaders" withType:"NSArray"];
 }
 
 - (id)accessibilityLabel
@@ -24,14 +24,14 @@
   v7 = [v6 count];
   if (v7 == [v5 count])
   {
-    v8 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v13[0] = MEMORY[0x29EDCA5F8];
     v13[1] = 3221225472;
     v13[2] = __62__ACSportsAthleteStandingViewAccessibility_accessibilityLabel__block_invoke;
     v13[3] = &unk_29F2FA7C8;
-    v14 = v8;
+    v14 = array;
     v15 = v5;
-    v9 = v8;
+    v9 = array;
     [v6 enumerateObjectsUsingBlock:v13];
     v12 = [v9 componentsJoinedByString:{@", "}];
     v10 = __UIAXStringForVariables();

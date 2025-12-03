@@ -9,10 +9,10 @@
   v145 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v123 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(__CFString *)v4 representedResource];
-  v122 = [v5 identifier];
+  representedResource = [(__CFString *)v4 representedResource];
+  identifier = [representedResource identifier];
 
-  if (!v122)
+  if (!identifier)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC2C0];
@@ -29,11 +29,11 @@
     [v123 addObject:v9];
   }
 
-  v101 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:v122];
-  v10 = [(__CFString *)v4 rulesVersion];
-  v11 = [v10 integerValue];
+  v101 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:identifier];
+  rulesVersion = [(__CFString *)v4 rulesVersion];
+  integerValue = [rulesVersion integerValue];
 
-  if (v11 <= 0)
+  if (integerValue <= 0)
   {
     _HKInitializeLogging();
     v12 = *MEMORY[0x277CCC2C0];
@@ -77,7 +77,7 @@
     [v123 addObject:v121];
   }
 
-  v100 = [(__CFString *)v4 country];
+  country = [(__CFString *)v4 country];
   v133 = 0;
   v111 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"note" expectedClass:objc_opt_class() isArray:0 error:&v133];
   v120 = v133;
@@ -126,8 +126,8 @@
     [v123 addObject:v119];
   }
 
-  v29 = [(__CFString *)v4 representedResource];
-  v98 = [v29 extractionHints];
+  representedResource2 = [(__CFString *)v4 representedResource];
+  extractionHints = [representedResource2 extractionHints];
 
   v131 = 0;
   v30 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"medicationCodings" expectedClass:objc_opt_class() isArray:1 error:&v131];
@@ -351,29 +351,29 @@
   v78 = v71;
   if (![v123 count])
   {
-    v86 = [(__CFString *)v4 representedResource];
-    v87 = [v86 receivedDate];
-    v88 = v87;
-    if (v87)
+    representedResource3 = [(__CFString *)v4 representedResource];
+    receivedDate = [representedResource3 receivedDate];
+    v88 = receivedDate;
+    if (receivedDate)
     {
-      v89 = v87;
+      date = receivedDate;
     }
 
     else
     {
-      v89 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v90 = v89;
+    v90 = date;
 
-    v91 = [v110 BOOLValue];
-    v83 = [MEMORY[0x277CCD2E8] localDevice];
-    v92 = [(__CFString *)v4 medicalRecordMetadata];
-    v93 = [MEMORY[0x277CCD638] medicationDispenseRecordType];
-    v85 = [MEMORY[0x277CCD630] medicationDispenseRecordWithType:v93 note:v111 enteredInError:v91 modifiedDate:v90 originIdentifier:v101 locale:v112 extractionVersion:v11 device:v83 metadata:v92 country:v100 state:(v98 >> 2) & 1 medicationCodings:v103 quantityDispensed:v104 preparationDate:v105 handOverDate:v106 dosages:v107 earliestDosageDate:v108 statusCoding:v109 daysSupplyQuantity:v78];
-    v94 = [(__CFString *)v4 representedResource];
-    v95 = [v94 firstSeenDate];
-    [v85 _setCreationDate:v95];
+    bOOLValue = [v110 BOOLValue];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    medicalRecordMetadata = [(__CFString *)v4 medicalRecordMetadata];
+    medicationDispenseRecordType = [MEMORY[0x277CCD638] medicationDispenseRecordType];
+    v85 = [MEMORY[0x277CCD630] medicationDispenseRecordWithType:medicationDispenseRecordType note:v111 enteredInError:bOOLValue modifiedDate:v90 originIdentifier:v101 locale:v112 extractionVersion:integerValue device:localDevice metadata:medicalRecordMetadata country:country state:(extractionHints >> 2) & 1 medicationCodings:v103 quantityDispensed:v104 preparationDate:v105 handOverDate:v106 dosages:v107 earliestDosageDate:v108 statusCoding:v109 daysSupplyQuantity:v78];
+    representedResource4 = [(__CFString *)v4 representedResource];
+    firstSeenDate = [representedResource4 firstSeenDate];
+    [v85 _setCreationDate:firstSeenDate];
 
     goto LABEL_77;
   }
@@ -385,7 +385,7 @@
   v81 = [v79 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:201 userInfo:v80];
 
   v82 = v81;
-  v83 = v82;
+  localDevice = v82;
   if (!v82)
   {
     goto LABEL_73;
@@ -401,9 +401,9 @@ LABEL_73:
 
   v84 = v82;
   v85 = 0;
-  *a4 = v83;
+  *a4 = localDevice;
 LABEL_74:
-  v90 = v83;
+  v90 = localDevice;
 LABEL_77:
 
   v96 = *MEMORY[0x277D85DE8];

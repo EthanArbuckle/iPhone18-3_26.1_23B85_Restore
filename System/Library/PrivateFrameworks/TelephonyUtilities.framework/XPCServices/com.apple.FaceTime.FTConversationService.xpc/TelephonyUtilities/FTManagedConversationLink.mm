@@ -1,29 +1,29 @@
 @interface FTManagedConversationLink
-+ (id)managedConversationLinkForTUConversationLinkDescriptor:(id)a3 inManagedObjectContext:(id)a4;
-- (FTManagedConversationLink)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
++ (id)managedConversationLinkForTUConversationLinkDescriptor:(id)descriptor inManagedObjectContext:(id)context;
+- (FTManagedConversationLink)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (NSSet)tuInvitedHandles;
 - (TUConversationLinkDescriptor)tuConversationLinkDescriptor;
 - (id)description;
-- (void)updateWithDescriptor:(id)a3;
+- (void)updateWithDescriptor:(id)descriptor;
 @end
 
 @implementation FTManagedConversationLink
 
-+ (id)managedConversationLinkForTUConversationLinkDescriptor:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedConversationLinkForTUConversationLinkDescriptor:(id)descriptor inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 persistentStoreCoordinator];
-  v8 = [v7 managedObjectModel];
+  descriptorCopy = descriptor;
+  contextCopy = context;
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
 
-  if (v8)
+  if (managedObjectModel)
   {
-    v9 = [v8 entitiesByName];
-    v10 = [v9 objectForKeyedSubscript:@"ConversationLink"];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v10 = [entitiesByName objectForKeyedSubscript:@"ConversationLink"];
 
     if (v10)
     {
-      v11 = [objc_alloc(objc_opt_class()) initWithEntity:v10 insertIntoManagedObjectContext:v6];
+      v11 = [objc_alloc(objc_opt_class()) initWithEntity:v10 insertIntoManagedObjectContext:contextCopy];
     }
 
     else
@@ -34,18 +34,18 @@
         v31 = 138412546;
         v32 = @"ConversationLink";
         v33 = 2112;
-        v34 = v6;
+        v34 = contextCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Could not find entity description with name %@ in managed object context %@. Falling back to convenience initializer.", &v31, 0x16u);
       }
 
-      v11 = [objc_alloc(objc_opt_class()) initWithContext:v6];
+      v11 = [objc_alloc(objc_opt_class()) initWithContext:contextCopy];
     }
 
     v12 = v11;
-    v14 = [v5 invitedHandles];
-    if (v14)
+    invitedHandles = [descriptorCopy invitedHandles];
+    if (invitedHandles)
     {
-      v15 = [FTManagedHandle managedHandlesForTUHandles:v14 inManagedObjectContext:v6];
+      v15 = [FTManagedHandle managedHandlesForTUHandles:invitedHandles inManagedObjectContext:contextCopy];
     }
 
     else
@@ -53,46 +53,46 @@
       v15 = 0;
     }
 
-    [v12 setActivated:{objc_msgSend(v5, "isActivated")}];
-    v16 = [v5 creationDate];
-    [v12 setCreationDate:v16];
+    [v12 setActivated:{objc_msgSend(descriptorCopy, "isActivated")}];
+    creationDate = [descriptorCopy creationDate];
+    [v12 setCreationDate:creationDate];
 
-    v17 = [v5 deletionDate];
-    [v12 setDeletionDate:v17];
+    deletionDate = [descriptorCopy deletionDate];
+    [v12 setDeletionDate:deletionDate];
 
-    v18 = [v5 expirationDate];
-    [v12 setExpirationDate:v18];
+    expirationDate = [descriptorCopy expirationDate];
+    [v12 setExpirationDate:expirationDate];
 
-    v19 = [v5 groupUUID];
-    [v12 setGroupUUID:v19];
+    groupUUID = [descriptorCopy groupUUID];
+    [v12 setGroupUUID:groupUUID];
 
     [v12 setInvitedHandles:v15];
-    v20 = [v5 originator];
-    v21 = [v20 identifier];
-    [v12 setOriginatorIdentifier:v21];
+    originator = [descriptorCopy originator];
+    identifier = [originator identifier];
+    [v12 setOriginatorIdentifier:identifier];
 
-    v22 = [v5 originator];
-    v23 = [v22 handle];
-    v24 = [FTManagedHandle managedHandleForTUHandle:v23 inManagedObjectContext:v6];
+    originator2 = [descriptorCopy originator];
+    handle = [originator2 handle];
+    v24 = [FTManagedHandle managedHandleForTUHandle:handle inManagedObjectContext:contextCopy];
     [v12 setOriginatorHandle:v24];
 
-    v25 = [v5 originator];
-    [v12 setOriginatorRevision:{objc_msgSend(v25, "revision")}];
+    originator3 = [descriptorCopy originator];
+    [v12 setOriginatorRevision:{objc_msgSend(originator3, "revision")}];
 
-    v26 = [v5 pseudonym];
-    [v12 setPseudonym:v26];
+    pseudonym = [descriptorCopy pseudonym];
+    [v12 setPseudonym:pseudonym];
 
-    v27 = [v5 publicKey];
-    [v12 setPublicKey:v27];
+    publicKey = [descriptorCopy publicKey];
+    [v12 setPublicKey:publicKey];
 
-    v28 = [v5 privateKey];
-    [v12 setPrivateKey:v28];
+    privateKey = [descriptorCopy privateKey];
+    [v12 setPrivateKey:privateKey];
 
-    v29 = [v5 name];
-    [v12 setName:v29];
+    name = [descriptorCopy name];
+    [v12 setName:name];
 
-    [v12 setLifetimeType:{objc_msgSend(v5, "linkLifetimeScope")}];
-    [v12 setDeleteReason:{objc_msgSend(v5, "deleteReason")}];
+    [v12 setLifetimeType:{objc_msgSend(descriptorCopy, "linkLifetimeScope")}];
+    [v12 setDeleteReason:{objc_msgSend(descriptorCopy, "deleteReason")}];
   }
 
   else
@@ -108,69 +108,69 @@
   v3 = [NSMutableString stringWithFormat:@"<%@ %p ", objc_opt_class(), self];
   [v3 appendFormat:@" isActivated=%d", -[FTManagedConversationLink activated](self, "activated")];
   v4 = objc_opt_self();
-  v5 = [v4 pseudonym];
+  pseudonym = [v4 pseudonym];
 
-  if (v5)
+  if (pseudonym)
   {
     v6 = objc_opt_self();
-    v7 = [v6 pseudonym];
-    [v3 appendFormat:@" self.pseudonym=%@", v7];
+    pseudonym2 = [v6 pseudonym];
+    [v3 appendFormat:@" self.pseudonym=%@", pseudonym2];
   }
 
   v8 = objc_opt_self();
-  v9 = [v8 creationDate];
+  creationDate = [v8 creationDate];
 
-  if (v9)
+  if (creationDate)
   {
     v10 = objc_opt_self();
-    v11 = [v10 creationDate];
-    [v3 appendFormat:@" self.creationDate=%@", v11];
+    creationDate2 = [v10 creationDate];
+    [v3 appendFormat:@" self.creationDate=%@", creationDate2];
   }
 
   v12 = objc_opt_self();
-  v13 = [v12 deletionDate];
+  deletionDate = [v12 deletionDate];
 
-  if (v13)
+  if (deletionDate)
   {
     v14 = objc_opt_self();
-    v15 = [v14 deletionDate];
-    [v3 appendFormat:@" self.deletionDate=%@", v15];
+    deletionDate2 = [v14 deletionDate];
+    [v3 appendFormat:@" self.deletionDate=%@", deletionDate2];
   }
 
   v16 = objc_opt_self();
-  v17 = [v16 privateKey];
+  privateKey = [v16 privateKey];
 
-  if (v17)
+  if (privateKey)
   {
     v18 = objc_opt_self();
-    v19 = [v18 privateKey];
-    [v3 appendFormat:@" self.privateKey=%@", v19];
+    privateKey2 = [v18 privateKey];
+    [v3 appendFormat:@" self.privateKey=%@", privateKey2];
   }
 
   v20 = objc_opt_self();
-  v21 = [v20 expirationDate];
+  expirationDate = [v20 expirationDate];
 
-  if (v21)
+  if (expirationDate)
   {
     v22 = objc_opt_self();
-    v23 = [v22 expirationDate];
-    [v3 appendFormat:@" self.expirationDate=%@", v23];
+    expirationDate2 = [v22 expirationDate];
+    [v3 appendFormat:@" self.expirationDate=%@", expirationDate2];
   }
 
-  v24 = [(FTManagedConversationLink *)self groupUUID];
-  [v3 appendFormat:@" groupUUID=%@", v24];
+  groupUUID = [(FTManagedConversationLink *)self groupUUID];
+  [v3 appendFormat:@" groupUUID=%@", groupUUID];
 
-  v25 = [(FTManagedConversationLink *)self originatorIdentifier];
-  [v3 appendFormat:@" originatorIdentifier=%@", v25];
+  originatorIdentifier = [(FTManagedConversationLink *)self originatorIdentifier];
+  [v3 appendFormat:@" originatorIdentifier=%@", originatorIdentifier];
 
   v26 = objc_opt_self();
-  v27 = [v26 name];
+  name = [v26 name];
 
-  if (v27)
+  if (name)
   {
     v28 = objc_opt_self();
-    v29 = [v28 name];
-    [v3 appendFormat:@" self.name=%@", v29];
+    name2 = [v28 name];
+    [v3 appendFormat:@" self.name=%@", name2];
   }
 
   [v3 appendFormat:@" deleteReason=%hd", -[FTManagedConversationLink deleteReason](self, "deleteReason")];
@@ -180,71 +180,71 @@
   return v30;
 }
 
-- (void)updateWithDescriptor:(id)a3
+- (void)updateWithDescriptor:(id)descriptor
 {
-  v32 = a3;
-  -[FTManagedConversationLink setActivated:](self, "setActivated:", [v32 isActivated]);
-  v4 = [v32 creationDate];
-  [(FTManagedConversationLink *)self setCreationDate:v4];
+  descriptorCopy = descriptor;
+  -[FTManagedConversationLink setActivated:](self, "setActivated:", [descriptorCopy isActivated]);
+  creationDate = [descriptorCopy creationDate];
+  [(FTManagedConversationLink *)self setCreationDate:creationDate];
 
-  v5 = [v32 deletionDate];
-  [(FTManagedConversationLink *)self setDeletionDate:v5];
+  deletionDate = [descriptorCopy deletionDate];
+  [(FTManagedConversationLink *)self setDeletionDate:deletionDate];
 
-  v6 = [v32 expirationDate];
-  [(FTManagedConversationLink *)self setExpirationDate:v6];
+  expirationDate = [descriptorCopy expirationDate];
+  [(FTManagedConversationLink *)self setExpirationDate:expirationDate];
 
-  v7 = [v32 groupUUID];
-  [(FTManagedConversationLink *)self setGroupUUID:v7];
+  groupUUID = [descriptorCopy groupUUID];
+  [(FTManagedConversationLink *)self setGroupUUID:groupUUID];
 
-  v8 = [v32 originator];
-  v9 = [v8 identifier];
-  [(FTManagedConversationLink *)self setOriginatorIdentifier:v9];
+  originator = [descriptorCopy originator];
+  identifier = [originator identifier];
+  [(FTManagedConversationLink *)self setOriginatorIdentifier:identifier];
 
-  v10 = [v32 originator];
-  -[FTManagedConversationLink setOriginatorRevision:](self, "setOriginatorRevision:", [v10 revision]);
+  originator2 = [descriptorCopy originator];
+  -[FTManagedConversationLink setOriginatorRevision:](self, "setOriginatorRevision:", [originator2 revision]);
 
-  v11 = [v32 pseudonym];
-  [(FTManagedConversationLink *)self setPseudonym:v11];
+  pseudonym = [descriptorCopy pseudonym];
+  [(FTManagedConversationLink *)self setPseudonym:pseudonym];
 
-  v12 = [v32 publicKey];
-  [(FTManagedConversationLink *)self setPublicKey:v12];
+  publicKey = [descriptorCopy publicKey];
+  [(FTManagedConversationLink *)self setPublicKey:publicKey];
 
-  v13 = [v32 privateKey];
-  [(FTManagedConversationLink *)self setPrivateKey:v13];
+  privateKey = [descriptorCopy privateKey];
+  [(FTManagedConversationLink *)self setPrivateKey:privateKey];
 
-  v14 = [v32 name];
-  [(FTManagedConversationLink *)self setName:v14];
+  name = [descriptorCopy name];
+  [(FTManagedConversationLink *)self setName:name];
 
-  -[FTManagedConversationLink setLifetimeType:](self, "setLifetimeType:", [v32 linkLifetimeScope]);
-  -[FTManagedConversationLink setDeleteReason:](self, "setDeleteReason:", [v32 deleteReason]);
-  v15 = [v32 originator];
-  v16 = [v15 handle];
-  v17 = [(FTManagedConversationLink *)self originatorHandle];
-  v18 = [v17 tuHandle];
-  v19 = [v16 isEqualToHandle:v18];
+  -[FTManagedConversationLink setLifetimeType:](self, "setLifetimeType:", [descriptorCopy linkLifetimeScope]);
+  -[FTManagedConversationLink setDeleteReason:](self, "setDeleteReason:", [descriptorCopy deleteReason]);
+  originator3 = [descriptorCopy originator];
+  handle = [originator3 handle];
+  originatorHandle = [(FTManagedConversationLink *)self originatorHandle];
+  tuHandle = [originatorHandle tuHandle];
+  v19 = [handle isEqualToHandle:tuHandle];
 
   if ((v19 & 1) == 0)
   {
-    v20 = [v32 originator];
-    v21 = [v20 handle];
-    v22 = [(FTManagedConversationLink *)self managedObjectContext];
-    v23 = [FTManagedHandle managedHandleForTUHandle:v21 inManagedObjectContext:v22];
+    originator4 = [descriptorCopy originator];
+    handle2 = [originator4 handle];
+    managedObjectContext = [(FTManagedConversationLink *)self managedObjectContext];
+    v23 = [FTManagedHandle managedHandleForTUHandle:handle2 inManagedObjectContext:managedObjectContext];
     [(FTManagedConversationLink *)self setOriginatorHandle:v23];
   }
 
-  v24 = [v32 invitedHandles];
-  if (v24)
+  invitedHandles = [descriptorCopy invitedHandles];
+  if (invitedHandles)
   {
-    v25 = v24;
-    v26 = [(FTManagedConversationLink *)self tuInvitedHandles];
-    v27 = [v32 invitedHandles];
-    v28 = [v26 isEqualToSet:v27];
+    v25 = invitedHandles;
+    tuInvitedHandles = [(FTManagedConversationLink *)self tuInvitedHandles];
+    invitedHandles2 = [descriptorCopy invitedHandles];
+    v28 = [tuInvitedHandles isEqualToSet:invitedHandles2];
 
     if ((v28 & 1) == 0)
     {
-      v29 = [v32 invitedHandles];
-      v30 = [(FTManagedConversationLink *)self managedObjectContext];
-      v31 = [FTManagedHandle managedHandlesForTUHandles:v29 inManagedObjectContext:v30];
+      invitedHandles3 = [descriptorCopy invitedHandles];
+      managedObjectContext2 = [(FTManagedConversationLink *)self managedObjectContext];
+      v31 = [FTManagedHandle managedHandlesForTUHandles:invitedHandles3 inManagedObjectContext:managedObjectContext2];
 
       [(FTManagedConversationLink *)self setInvitedHandles:v31];
     }
@@ -254,36 +254,36 @@
 - (TUConversationLinkDescriptor)tuConversationLinkDescriptor
 {
   v3 = [TUConversationLinkOriginator alloc];
-  v4 = [(FTManagedConversationLink *)self originatorIdentifier];
-  v5 = [(FTManagedConversationLink *)self originatorRevision];
-  v6 = [(FTManagedConversationLink *)self originatorHandle];
-  v7 = [v6 tuHandle];
-  v8 = [v3 initWithIdentifier:v4 revision:v5 handle:v7];
+  originatorIdentifier = [(FTManagedConversationLink *)self originatorIdentifier];
+  originatorRevision = [(FTManagedConversationLink *)self originatorRevision];
+  originatorHandle = [(FTManagedConversationLink *)self originatorHandle];
+  tuHandle = [originatorHandle tuHandle];
+  v8 = [v3 initWithIdentifier:originatorIdentifier revision:originatorRevision handle:tuHandle];
 
   v9 = [TUMutableConversationLinkDescriptor alloc];
-  v10 = [(FTManagedConversationLink *)self groupUUID];
-  v11 = [(FTManagedConversationLink *)self pseudonym];
-  v12 = [(FTManagedConversationLink *)self publicKey];
-  v13 = [v9 initWithGroupUUID:v10 originator:v8 pseudonym:v11 publicKey:v12];
+  groupUUID = [(FTManagedConversationLink *)self groupUUID];
+  pseudonym = [(FTManagedConversationLink *)self pseudonym];
+  publicKey = [(FTManagedConversationLink *)self publicKey];
+  v13 = [v9 initWithGroupUUID:groupUUID originator:v8 pseudonym:pseudonym publicKey:publicKey];
 
   [v13 setActivated:{-[FTManagedConversationLink activated](self, "activated")}];
-  v14 = [(FTManagedConversationLink *)self creationDate];
-  [v13 setCreationDate:v14];
+  creationDate = [(FTManagedConversationLink *)self creationDate];
+  [v13 setCreationDate:creationDate];
 
-  v15 = [(FTManagedConversationLink *)self deletionDate];
-  [v13 setDeletionDate:v15];
+  deletionDate = [(FTManagedConversationLink *)self deletionDate];
+  [v13 setDeletionDate:deletionDate];
 
-  v16 = [(FTManagedConversationLink *)self expirationDate];
-  [v13 setExpirationDate:v16];
+  expirationDate = [(FTManagedConversationLink *)self expirationDate];
+  [v13 setExpirationDate:expirationDate];
 
-  v17 = [(FTManagedConversationLink *)self tuInvitedHandles];
-  [v13 setInvitedHandles:v17];
+  tuInvitedHandles = [(FTManagedConversationLink *)self tuInvitedHandles];
+  [v13 setInvitedHandles:tuInvitedHandles];
 
-  v18 = [(FTManagedConversationLink *)self name];
-  [v13 setName:v18];
+  name = [(FTManagedConversationLink *)self name];
+  [v13 setName:name];
 
-  v19 = [(FTManagedConversationLink *)self privateKey];
-  [v13 setPrivateKey:v19];
+  privateKey = [(FTManagedConversationLink *)self privateKey];
+  [v13 setPrivateKey:privateKey];
 
   [v13 setLinkLifetimeScope:{-[FTManagedConversationLink lifetimeType](self, "lifetimeType")}];
   [v13 setDeleteReason:{-[FTManagedConversationLink deleteReason](self, "deleteReason")}];
@@ -294,11 +294,11 @@
 
 - (NSSet)tuInvitedHandles
 {
-  v2 = [(FTManagedConversationLink *)self invitedHandles];
-  v3 = v2;
-  if (v2)
+  invitedHandles = [(FTManagedConversationLink *)self invitedHandles];
+  v3 = invitedHandles;
+  if (invitedHandles)
   {
-    v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v2 count]);
+    v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [invitedHandles count]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -318,10 +318,10 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) tuHandle];
-          if (v10)
+          tuHandle = [*(*(&v13 + 1) + 8 * i) tuHandle];
+          if (tuHandle)
           {
-            [v4 addObject:v10];
+            [v4 addObject:tuHandle];
           }
         }
 
@@ -342,11 +342,11 @@
   return v11;
 }
 
-- (FTManagedConversationLink)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (FTManagedConversationLink)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FTManagedConversationLink();
-  return [(FTManagedConversationLink *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(FTManagedConversationLink *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

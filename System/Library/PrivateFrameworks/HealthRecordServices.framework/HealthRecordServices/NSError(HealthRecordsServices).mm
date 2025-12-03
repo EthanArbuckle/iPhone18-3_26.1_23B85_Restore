@@ -17,34 +17,34 @@
 
 - (uint64_t)hrs_isReloginRequiredError
 {
-  if ([a1 hk_OAuth2_isOAuth2Error])
+  if ([self hk_OAuth2_isOAuth2Error])
   {
-    v2 = [a1 code];
-    if (v2 >= 0xB)
+    code = [self code];
+    if (code >= 0xB)
     {
       LOBYTE(v3) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = 0x4A8u >> v2;
+      LOBYTE(v3) = 0x4A8u >> code;
     }
   }
 
   else
   {
-    v4 = [a1 domain];
-    v5 = [v4 isEqualToString:@"com.apple.healthkit.healthrecords.private"];
+    domain = [self domain];
+    v5 = [domain isEqualToString:@"com.apple.healthkit.healthrecords.private"];
 
     if (v5)
     {
-      LOBYTE(v3) = [a1 code] == 1;
+      LOBYTE(v3) = [self code] == 1;
     }
 
     else
     {
-      v6 = [a1 hrs_accumulatedAuthorizationFailures];
-      v7 = [v6 hk_filter:&__block_literal_global_2];
+      hrs_accumulatedAuthorizationFailures = [self hrs_accumulatedAuthorizationFailures];
+      v7 = [hrs_accumulatedAuthorizationFailures hk_filter:&__block_literal_global_2];
       v3 = [v7 count] != 0;
     }
   }
@@ -55,8 +55,8 @@
 - (id)_hrs_accumulatedErrorsForUserInfoKey:()HealthRecordsServices
 {
   v4 = a3;
-  v5 = [a1 domain];
-  if (![v5 isEqualToString:@"HRSAccumulatedIngestionErrorDomain"])
+  domain = [self domain];
+  if (![domain isEqualToString:@"HRSAccumulatedIngestionErrorDomain"])
   {
     v12 = 0;
 LABEL_8:
@@ -64,17 +64,17 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [a1 userInfo];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  userInfo = [self userInfo];
+  v7 = [userInfo objectForKeyedSubscript:v4];
 
   if (v7)
   {
-    v8 = [a1 userInfo];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    userInfo2 = [self userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:v4];
     objc_opt_class();
-    v5 = HKSafeObject();
+    domain = HKSafeObject();
 
-    v10 = [v5 hk_filter:&__block_literal_global_310];
+    v10 = [domain hk_filter:&__block_literal_global_310];
     if ([v10 count])
     {
       v11 = v10;
@@ -98,30 +98,30 @@ LABEL_9:
 
 - (uint64_t)hrs_hasAuthorizationFailure
 {
-  if ([a1 hk_OAuth2_isOAuth2Error])
+  if ([self hk_OAuth2_isOAuth2Error])
   {
     return 1;
   }
 
-  v3 = [a1 hrs_accumulatedAuthorizationFailures];
-  v2 = [v3 count] != 0;
+  hrs_accumulatedAuthorizationFailures = [self hrs_accumulatedAuthorizationFailures];
+  v2 = [hrs_accumulatedAuthorizationFailures count] != 0;
 
   return v2;
 }
 
 - (BOOL)hrs_hasResourceFetchFailure
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCC160]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x277CCC160]];
 
   if (!v3)
   {
-    v5 = [a1 domain];
-    if ([v5 isEqualToString:@"com.apple.healthkit.healthrecords.private"])
+    domain2 = [self domain];
+    if ([domain2 isEqualToString:@"com.apple.healthkit.healthrecords.private"])
     {
-      v6 = [a1 code];
+      code = [self code];
 
-      if (v6 == 2)
+      if (code == 2)
       {
         return 1;
       }
@@ -131,29 +131,29 @@ LABEL_9:
     {
     }
 
-    v7 = [a1 hrs_accumulatedResourceFetchFailures];
-    v4 = [v7 count] != 0;
+    hrs_accumulatedResourceFetchFailures = [self hrs_accumulatedResourceFetchFailures];
+    v4 = [hrs_accumulatedResourceFetchFailures count] != 0;
 
     return v4;
   }
 
-  return [a1 code] > 399;
+  return [self code] > 399;
 }
 
 - (BOOL)hrs_hasResourceFetchErrorsIndicatingRateLimitation
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCC160]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x277CCC160]];
 
   if (v3)
   {
-    return [a1 code] == 429 || objc_msgSend(a1, "code") == 425;
+    return [self code] == 429 || objc_msgSend(self, "code") == 425;
   }
 
   else
   {
-    v5 = [a1 hrs_accumulatedResourceFetchFailures];
-    v6 = [v5 hk_filter:&__block_literal_global_313];
+    hrs_accumulatedResourceFetchFailures = [self hrs_accumulatedResourceFetchFailures];
+    v6 = [hrs_accumulatedResourceFetchFailures hk_filter:&__block_literal_global_313];
     v4 = [v6 count] != 0;
   }
 
@@ -162,8 +162,8 @@ LABEL_9:
 
 - (id)hrs_completeDescriptionRedactingSensitiveItemsIfNecessary:()HealthRecordsServices
 {
-  v5 = [a1 localizedDescription];
-  v6 = v5;
+  localizedDescription = [self localizedDescription];
+  v6 = localizedDescription;
   if (a3)
   {
     v7 = HKSensitiveLogItem();
@@ -173,13 +173,13 @@ LABEL_9:
 
   else
   {
-    v42 = v5;
+    v42 = localizedDescription;
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCA758] prefixedWith:@"failing URL" redactIfNecessary:a3];
-  v10 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCA0B0] prefixedWith:@"failing URL" redactIfNecessary:a3];
-  v11 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCC168] prefixedWith:@"failing URL" redactIfNecessary:a3];
+  v9 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCA758] prefixedWith:@"failing URL" redactIfNecessary:a3];
+  v10 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCA0B0] prefixedWith:@"failing URL" redactIfNecessary:a3];
+  v11 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCC168] prefixedWith:@"failing URL" redactIfNecessary:a3];
   v39 = v11;
   v40 = v10;
   if (v10)
@@ -204,44 +204,44 @@ LABEL_9:
   }
 
   [v8 hk_addNonNilObject:v13];
-  v14 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCC170] prefixedWith:@"response headers" redactIfNecessary:a3];
+  v14 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCC170] prefixedWith:@"response headers" redactIfNecessary:a3];
   [v8 hk_addNonNilObject:v14];
 
-  v15 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCC590] prefixedWith:@"bearer auth error" redactIfNecessary:0];
+  v15 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCC590] prefixedWith:@"bearer auth error" redactIfNecessary:0];
   [v8 hk_addNonNilObject:v15];
 
-  v16 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCC5A0] prefixedWith:@"server error description" redactIfNecessary:a3];
+  v16 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCC5A0] prefixedWith:@"server error description" redactIfNecessary:a3];
   [v8 hk_addNonNilObject:v16];
 
-  v17 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCC5A8] prefixedWith:@"server error name" redactIfNecessary:0];
+  v17 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCC5A8] prefixedWith:@"server error name" redactIfNecessary:0];
   [v8 hk_addNonNilObject:v17];
 
-  v18 = [a1 hrs_userInfoValueForKey:*MEMORY[0x277CCC598] prefixedWith:@"HTTP status" redactIfNecessary:0];
+  v18 = [self hrs_userInfoValueForKey:*MEMORY[0x277CCC598] prefixedWith:@"HTTP status" redactIfNecessary:0];
   [v8 hk_addNonNilObject:v18];
 
-  v19 = [a1 underlyingErrors];
-  v20 = [v19 mutableCopy];
+  underlyingErrors = [self underlyingErrors];
+  v20 = [underlyingErrors mutableCopy];
 
-  v21 = [a1 hrs_accumulatedAuthorizationFailures];
-  if ([v21 count])
+  hrs_accumulatedAuthorizationFailures = [self hrs_accumulatedAuthorizationFailures];
+  if ([hrs_accumulatedAuthorizationFailures count])
   {
-    [v20 addObjectsFromArray:v21];
+    [v20 addObjectsFromArray:hrs_accumulatedAuthorizationFailures];
   }
 
-  v22 = [a1 hrs_accumulatedResourceFetchFailures];
-  if ([v22 count])
+  hrs_accumulatedResourceFetchFailures = [self hrs_accumulatedResourceFetchFailures];
+  if ([hrs_accumulatedResourceFetchFailures count])
   {
-    [v20 addObjectsFromArray:v22];
+    [v20 addObjectsFromArray:hrs_accumulatedResourceFetchFailures];
   }
 
-  v23 = [a1 hrs_accumulatedOtherErrors];
-  if ([v23 count])
+  hrs_accumulatedOtherErrors = [self hrs_accumulatedOtherErrors];
+  if ([hrs_accumulatedOtherErrors count])
   {
-    [v20 addObjectsFromArray:v23];
+    [v20 addObjectsFromArray:hrs_accumulatedOtherErrors];
   }
 
-  v37 = v22;
-  v38 = v21;
+  v37 = hrs_accumulatedResourceFetchFailures;
+  v38 = hrs_accumulatedAuthorizationFailures;
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __92__NSError_HealthRecordsServices__hrs_completeDescriptionRedactingSensitiveItemsIfNecessary___block_invoke;
@@ -275,8 +275,8 @@ LABEL_9:
   v31 = MEMORY[0x277CCACA8];
   v32 = objc_opt_class();
   v33 = NSStringFromClass(v32);
-  v34 = [a1 domain];
-  v35 = [v31 stringWithFormat:@"<%@ %@: %ld, %@%@%@>", v33, v34, objc_msgSend(a1, "code"), v42, v27, v30];
+  domain = [self domain];
+  v35 = [v31 stringWithFormat:@"<%@ %@: %ld, %@%@%@>", v33, domain, objc_msgSend(self, "code"), v42, v27, v30];
 
   return v35;
 }
@@ -311,11 +311,11 @@ LABEL_9:
   v5 = a3;
   if (!v5)
   {
-    [(NSError(HealthRecordsServices) *)a2 hrs_authorizationOrResourceFetchErrorFromError:a1];
+    [(NSError(HealthRecordsServices) *)a2 hrs_authorizationOrResourceFetchErrorFromError:self];
   }
 
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:@"HRSAccumulatedIngestionErrorDomain"];
+  domain = [v5 domain];
+  v7 = [domain isEqualToString:@"HRSAccumulatedIngestionErrorDomain"];
 
   if (v7)
   {
@@ -324,9 +324,9 @@ LABEL_9:
 
   else
   {
-    v9 = [v5 hk_OAuth2_isOAuth2Error];
+    hk_OAuth2_isOAuth2Error = [v5 hk_OAuth2_isOAuth2Error];
     v10 = MEMORY[0x277CCA9B8];
-    if (v9)
+    if (hk_OAuth2_isOAuth2Error)
     {
       v18[0] = v5;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
@@ -383,16 +383,16 @@ LABEL_9:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 domain];
-          v13 = [v12 isEqualToString:@"HRSAccumulatedIngestionErrorDomain"];
+          domain = [v11 domain];
+          v13 = [domain isEqualToString:@"HRSAccumulatedIngestionErrorDomain"];
 
           if (v13)
           {
-            v14 = [v11 hrs_accumulatedAuthorizationFailures];
-            v15 = v14;
-            if (v14)
+            hrs_accumulatedAuthorizationFailures = [v11 hrs_accumulatedAuthorizationFailures];
+            v15 = hrs_accumulatedAuthorizationFailures;
+            if (hrs_accumulatedAuthorizationFailures)
             {
-              v16 = v14;
+              v16 = hrs_accumulatedAuthorizationFailures;
             }
 
             else
@@ -402,11 +402,11 @@ LABEL_9:
 
             [v4 addObjectsFromArray:v16];
 
-            v17 = [v11 hrs_accumulatedResourceFetchFailures];
-            v18 = v17;
-            if (v17)
+            hrs_accumulatedResourceFetchFailures = [v11 hrs_accumulatedResourceFetchFailures];
+            v18 = hrs_accumulatedResourceFetchFailures;
+            if (hrs_accumulatedResourceFetchFailures)
             {
-              v19 = v17;
+              v19 = hrs_accumulatedResourceFetchFailures;
             }
 
             else
@@ -416,11 +416,11 @@ LABEL_9:
 
             [v33 addObjectsFromArray:v19];
 
-            v20 = [v11 hrs_accumulatedOtherErrors];
-            v21 = v20;
-            if (v20)
+            hrs_accumulatedOtherErrors = [v11 hrs_accumulatedOtherErrors];
+            v21 = hrs_accumulatedOtherErrors;
+            if (hrs_accumulatedOtherErrors)
             {
-              v22 = v20;
+              v22 = hrs_accumulatedOtherErrors;
             }
 
             else
@@ -475,7 +475,7 @@ LABEL_9:
     while (v7);
   }
 
-  v27 = [a1 hrs_accumulatedErrorWithAuthorizationFailures:v4 resourceFetchFailures:v33 otherErrors:v32];
+  v27 = [self hrs_accumulatedErrorWithAuthorizationFailures:v4 resourceFetchFailures:v33 otherErrors:v32];
 
   v28 = *MEMORY[0x277D85DE8];
 
@@ -518,8 +518,8 @@ LABEL_9:
 {
   v8 = a4;
   v9 = a3;
-  v10 = [a1 userInfo];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  userInfo = [self userInfo];
+  v11 = [userInfo objectForKeyedSubscript:v9];
 
   if (v11)
   {

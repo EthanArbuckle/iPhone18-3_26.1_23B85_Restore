@@ -13,36 +13,36 @@
 - (UIColor)controlTintColor;
 - (UIColor)tintColor;
 - (_UIViewGlass)init;
-- (_UIViewGlass)initWithVariant:(int64_t)a3;
-- (_UIViewGlass)initWithVariant:(int64_t)a3 smoothness:(double)a4;
+- (_UIViewGlass)initWithVariant:(int64_t)variant;
+- (_UIViewGlass)initWithVariant:(int64_t)variant smoothness:(double)smoothness;
 - (double)smoothness;
 - (id)_identityGlass;
 - (int64_t)_flexVariant;
 - (int64_t)identifier;
 - (int64_t)size;
 - (int64_t)variant;
-- (void)_setFlexVariant:(int64_t)a3;
-- (void)setAdaptive:(BOOL)a3;
-- (void)setAdaptiveFixedLuminance:(double)a3;
-- (void)setAdaptiveInitialLuminance:(double)a3;
-- (void)setAdaptiveStyle:(int64_t)a3;
-- (void)setAllowsGrouping:(BOOL)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setBoostWhitePoint:(BOOL)a3;
-- (void)setControlTintColor:(id)a3;
-- (void)setFixedBackgroundColor:(id)a3;
-- (void)setFlexible:(BOOL)a3;
-- (void)setIdentifier:(int64_t)a3;
-- (void)setMeshed:(BOOL)a3;
-- (void)setSharpTinting:(BOOL)a3;
-- (void)setSmoothness:(double)a3;
-- (void)setSubvariant:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)_setFlexVariant:(int64_t)variant;
+- (void)setAdaptive:(BOOL)adaptive;
+- (void)setAdaptiveFixedLuminance:(double)luminance;
+- (void)setAdaptiveInitialLuminance:(double)luminance;
+- (void)setAdaptiveStyle:(int64_t)style;
+- (void)setAllowsGrouping:(BOOL)grouping;
+- (void)setBackdropGroupName:(id)name;
+- (void)setBoostWhitePoint:(BOOL)point;
+- (void)setControlTintColor:(id)color;
+- (void)setFixedBackgroundColor:(id)color;
+- (void)setFlexible:(BOOL)flexible;
+- (void)setIdentifier:(int64_t)identifier;
+- (void)setMeshed:(BOOL)meshed;
+- (void)setSharpTinting:(BOOL)tinting;
+- (void)setSmoothness:(double)smoothness;
+- (void)setSubvariant:(id)subvariant;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation _UIViewGlass
 
-- (void)setFlexible:(BOOL)a3
+- (void)setFlexible:(BOOL)flexible
 {
   v5 = type metadata accessor for _Glass(0);
   MEMORY[0x1EEE9AC00](v5);
@@ -50,10 +50,10 @@
   v8 = OBJC_IVAR____UIViewGlass__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v8, &v12);
-  v9 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
-  v7[*(v5 + 52)] = a3;
+  v7[*(v5 + 52)] = flexible;
   v13 = v5;
   v14 = &protocol witness table for _Glass;
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(&v12);
@@ -64,12 +64,12 @@
   swift_endAccess();
 }
 
-- (_UIViewGlass)initWithVariant:(int64_t)a3
+- (_UIViewGlass)initWithVariant:(int64_t)variant
 {
   v5 = type metadata accessor for _Glass._GlassVariant(0);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  sub_188AFE79C(a3, v7);
+  sub_188AFE79C(variant, v7);
   v13 = type metadata accessor for _Glass(0);
   v14 = &protocol witness table for _Glass;
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(&v12);
@@ -80,11 +80,11 @@
   return [(_UIViewGlass *)&v11 init];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_188BEBA60(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_188BEBA60(color);
 }
 
 - (_UIViewGlass)init
@@ -111,16 +111,16 @@
   return [(_UIViewGlass *)&v12 init];
 }
 
-- (_UIViewGlass)initWithVariant:(int64_t)a3 smoothness:(double)a4
+- (_UIViewGlass)initWithVariant:(int64_t)variant smoothness:(double)smoothness
 {
   v7 = type metadata accessor for _Glass._GlassVariant(0);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  sub_188AFE79C(a3, v9);
+  sub_188AFE79C(variant, v9);
   v15 = type metadata accessor for _Glass(0);
   v16 = &protocol witness table for _Glass;
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(&v14);
-  _Glass.init(_:smoothness:)(v9, boxed_opaque_existential_0, a4);
+  _Glass.init(_:smoothness:)(v9, boxed_opaque_existential_0, smoothness);
   sub_188A5EBAC(&v14, self + OBJC_IVAR____UIViewGlass__underlyingMaterial);
   v13.receiver = self;
   v13.super_class = _UIViewGlass;
@@ -129,7 +129,7 @@
 
 - (id)_identityGlass
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F69B84();
 
   return v3;
@@ -151,7 +151,7 @@
 
 - (int64_t)size
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F69FCC();
 
   return v3;
@@ -172,7 +172,7 @@
   return v7;
 }
 
-- (void)setIdentifier:(int64_t)a3
+- (void)setIdentifier:(int64_t)identifier
 {
   v5 = type metadata accessor for _Glass(0);
   MEMORY[0x1EEE9AC00](v5);
@@ -180,10 +180,10 @@
   v8 = OBJC_IVAR____UIViewGlass__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v8, &v12);
-  v9 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
-  *&v7[*(v5 + 40)] = a3;
+  *&v7[*(v5 + 40)] = identifier;
   v13 = v5;
   v14 = &protocol witness table for _Glass;
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(&v12);
@@ -209,7 +209,7 @@
   return v7;
 }
 
-- (void)setSmoothness:(double)a3
+- (void)setSmoothness:(double)smoothness
 {
   v5 = type metadata accessor for _Glass(0);
   MEMORY[0x1EEE9AC00](v5);
@@ -217,10 +217,10 @@
   v8 = OBJC_IVAR____UIViewGlass__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v8, &v12);
-  v9 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
-  *&v7[*(v5 + 48)] = a3;
+  *&v7[*(v5 + 48)] = smoothness;
   v13 = v5;
   v14 = &protocol witness table for _Glass;
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(&v12);
@@ -263,16 +263,16 @@
   return v7;
 }
 
-- (void)setControlTintColor:(id)a3
+- (void)setControlTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_188F6A9A4(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_188F6A9A4(color);
 }
 
-- (void)setSubvariant:(id)a3
+- (void)setSubvariant:(id)subvariant
 {
-  if (a3)
+  if (subvariant)
   {
     v4 = sub_18A4A7288();
     v6 = v5;
@@ -284,13 +284,13 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_188F6AB9C(v4, v6);
 }
 
 - (BOOL)contentLensing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86A70]);
 
   return v3 & 1;
@@ -298,7 +298,7 @@
 
 - (BOOL)highlightsDisplayAngle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86A38]);
 
   return v3 & 1;
@@ -306,7 +306,7 @@
 
 - (BOOL)excludingPlatter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86AB8]);
 
   return v3 & 1;
@@ -314,7 +314,7 @@
 
 - (BOOL)excludingForeground
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86AD8]);
 
   return v3 & 1;
@@ -322,7 +322,7 @@
 
 - (BOOL)excludingShadow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86A68]);
 
   return v3 & 1;
@@ -330,7 +330,7 @@
 
 - (BOOL)excludingControlLensing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86A98]);
 
   return v3 & 1;
@@ -338,7 +338,7 @@
 
 - (BOOL)excludingControlDisplacement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86AE0]);
 
   return v3 & 1;
@@ -374,7 +374,7 @@
   return v7;
 }
 
-- (void)_setFlexVariant:(int64_t)a3
+- (void)_setFlexVariant:(int64_t)variant
 {
   v5 = type metadata accessor for _Glass(0);
   MEMORY[0x1EEE9AC00](v5);
@@ -382,10 +382,10 @@
   v8 = OBJC_IVAR____UIViewGlass__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v8, &v12);
-  v9 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
-  *&v7[*(v5 + 60)] = a3;
+  *&v7[*(v5 + 60)] = variant;
   v13 = v5;
   v14 = &protocol witness table for _Glass;
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(&v12);
@@ -398,17 +398,17 @@
 
 - (BOOL)boostWhitePoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F6B66C(MEMORY[0x1EEE86A88]);
 
   return v3 & 1;
 }
 
-- (void)setBoostWhitePoint:(BOOL)a3
+- (void)setBoostWhitePoint:(BOOL)point
 {
-  v3 = a3;
-  v4 = self;
-  sub_188F6B8D4(v3);
+  pointCopy = point;
+  selfCopy = self;
+  sub_188F6B8D4(pointCopy);
 }
 
 - (BOOL)allowsGrouping
@@ -426,7 +426,7 @@
   return self;
 }
 
-- (void)setAllowsGrouping:(BOOL)a3
+- (void)setAllowsGrouping:(BOOL)grouping
 {
   v5 = type metadata accessor for _Glass(0);
   MEMORY[0x1EEE9AC00](v5);
@@ -434,10 +434,10 @@
   v8 = OBJC_IVAR____UIViewGlass__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v8, &v12);
-  v9 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
-  v7[*(v5 + 28)] = a3;
+  v7[*(v5 + 28)] = grouping;
   v13 = v5;
   v14 = &protocol witness table for _Glass;
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(&v12);
@@ -474,12 +474,12 @@
   return v8;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
   v5 = type metadata accessor for _Glass(0);
   MEMORY[0x1EEE9AC00](v5);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (name)
   {
     v8 = sub_18A4A7288();
     v10 = v9;
@@ -494,7 +494,7 @@
   v11 = OBJC_IVAR____UIViewGlass__underlyingMaterial;
   swift_beginAccess();
   sub_188A53994(self + v11, &v15);
-  v12 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA933ED0);
   swift_dynamicCast();
   *(v7 + 1) = v8;
@@ -510,50 +510,50 @@
   swift_endAccess();
 }
 
-- (void)setAdaptive:(BOOL)a3
+- (void)setAdaptive:(BOOL)adaptive
 {
-  v3 = a3;
-  v4 = self;
-  sub_188F6CBC8(v3, MEMORY[0x1EEE869A0]);
+  adaptiveCopy = adaptive;
+  selfCopy = self;
+  sub_188F6CBC8(adaptiveCopy, MEMORY[0x1EEE869A0]);
 }
 
-- (void)setAdaptiveStyle:(int64_t)a3
+- (void)setAdaptiveStyle:(int64_t)style
 {
-  v4 = self;
-  sub_188F6C0C8(a3);
+  selfCopy = self;
+  sub_188F6C0C8(style);
 }
 
-- (void)setAdaptiveInitialLuminance:(double)a3
+- (void)setAdaptiveInitialLuminance:(double)luminance
 {
-  v4 = self;
-  sub_188F6C3D0(MEMORY[0x1EEE86920], a3);
+  selfCopy = self;
+  sub_188F6C3D0(MEMORY[0x1EEE86920], luminance);
 }
 
-- (void)setAdaptiveFixedLuminance:(double)a3
+- (void)setAdaptiveFixedLuminance:(double)luminance
 {
-  v4 = self;
-  sub_188F6C3D0(MEMORY[0x1EEE86918], a3);
+  selfCopy = self;
+  sub_188F6C3D0(MEMORY[0x1EEE86918], luminance);
 }
 
-- (void)setFixedBackgroundColor:(id)a3
+- (void)setFixedBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_188F6C748(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_188F6C748(color);
 }
 
-- (void)setSharpTinting:(BOOL)a3
+- (void)setSharpTinting:(BOOL)tinting
 {
-  v3 = a3;
-  v4 = self;
-  sub_188F6CBC8(v3, MEMORY[0x1EEE868F0]);
+  tintingCopy = tinting;
+  selfCopy = self;
+  sub_188F6CBC8(tintingCopy, MEMORY[0x1EEE868F0]);
 }
 
-- (void)setMeshed:(BOOL)a3
+- (void)setMeshed:(BOOL)meshed
 {
-  v3 = a3;
-  v4 = self;
-  sub_188F6CBC8(v3, MEMORY[0x1EEE86950]);
+  meshedCopy = meshed;
+  selfCopy = self;
+  sub_188F6CBC8(meshedCopy, MEMORY[0x1EEE86950]);
 }
 
 @end

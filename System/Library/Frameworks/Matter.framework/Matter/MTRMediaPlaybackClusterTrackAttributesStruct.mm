@@ -1,6 +1,6 @@
 @interface MTRMediaPlaybackClusterTrackAttributesStruct
 - (MTRMediaPlaybackClusterTrackAttributesStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMediaPlaybackClusterTrackAttributesStruct);
-  v5 = [(MTRMediaPlaybackClusterTrackAttributesStruct *)self languageCode];
-  [(MTRMediaPlaybackClusterTrackAttributesStruct *)v4 setLanguageCode:v5];
+  languageCode = [(MTRMediaPlaybackClusterTrackAttributesStruct *)self languageCode];
+  [(MTRMediaPlaybackClusterTrackAttributesStruct *)v4 setLanguageCode:languageCode];
 
-  v6 = [(MTRMediaPlaybackClusterTrackAttributesStruct *)self displayName];
-  [(MTRMediaPlaybackClusterTrackAttributesStruct *)v4 setDisplayName:v6];
+  displayName = [(MTRMediaPlaybackClusterTrackAttributesStruct *)self displayName];
+  [(MTRMediaPlaybackClusterTrackAttributesStruct *)v4 setDisplayName:displayName];
 
   return v4;
 }

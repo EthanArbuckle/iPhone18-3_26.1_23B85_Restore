@@ -1,27 +1,27 @@
 @interface _REMLConditionExplanation
-- (_REMLConditionExplanation)explanationWithStyle:(unint64_t)a3;
-- (_REMLConditionExplanation)initWithCondition:(id)a3;
-- (id)_constantConditionExplanationWithStyle:(unint64_t)a3;
-- (id)_featureRuleExplanation:(id)a3 withStyle:(unint64_t)a4;
-- (id)_hasFeatureExplanation:(id)a3 withStyle:(unint64_t)a4;
-- (id)_probabilityExplanation:(id)a3 withStyle:(unint64_t)a4;
-- (id)_valueExplanation:(id)a3 withStyle:(unint64_t)a4;
-- (id)explanationByCombiningWithExplanation:(id)a3;
-- (int64_t)_rankExplanationToSimilarExplanation:(id)a3;
+- (_REMLConditionExplanation)explanationWithStyle:(unint64_t)style;
+- (_REMLConditionExplanation)initWithCondition:(id)condition;
+- (id)_constantConditionExplanationWithStyle:(unint64_t)style;
+- (id)_featureRuleExplanation:(id)explanation withStyle:(unint64_t)style;
+- (id)_hasFeatureExplanation:(id)explanation withStyle:(unint64_t)style;
+- (id)_probabilityExplanation:(id)explanation withStyle:(unint64_t)style;
+- (id)_valueExplanation:(id)explanation withStyle:(unint64_t)style;
+- (id)explanationByCombiningWithExplanation:(id)explanation;
+- (int64_t)_rankExplanationToSimilarExplanation:(id)explanation;
 @end
 
 @implementation _REMLConditionExplanation
 
-- (_REMLConditionExplanation)initWithCondition:(id)a3
+- (_REMLConditionExplanation)initWithCondition:(id)condition
 {
-  v5 = a3;
+  conditionCopy = condition;
   v15.receiver = self;
   v15.super_class = _REMLConditionExplanation;
   v6 = [(_REMLConditionExplanation *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_condition, a3);
+    objc_storeStrong(&v6->_condition, condition);
     v7->_type = 6;
     condition = v7->_condition;
     objc_opt_class();
@@ -71,27 +71,27 @@ LABEL_13:
   return v7;
 }
 
-- (id)explanationByCombiningWithExplanation:(id)a3
+- (id)explanationByCombiningWithExplanation:(id)explanation
 {
-  v4 = a3;
-  if ([(REMLExplanation *)self rankExplanationToExplanation:v4]!= -1)
+  explanationCopy = explanation;
+  if ([(REMLExplanation *)self rankExplanationToExplanation:explanationCopy]!= -1)
   {
-    self = v4;
+    self = explanationCopy;
   }
 
-  v5 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (int64_t)_rankExplanationToSimilarExplanation:(id)a3
+- (int64_t)_rankExplanationToSimilarExplanation:(id)explanation
 {
   v3 = MEMORY[0x277CCABB0];
   type = self->_type;
-  v5 = a3;
+  explanationCopy = explanation;
   v6 = [v3 numberWithUnsignedInteger:type];
   v7 = MEMORY[0x277CCABB0];
-  v8 = v5[2];
+  v8 = explanationCopy[2];
 
   v9 = [v7 numberWithUnsignedInteger:v8];
   v10 = [v6 compare:v9];
@@ -99,7 +99,7 @@ LABEL_13:
   return v10;
 }
 
-- (_REMLConditionExplanation)explanationWithStyle:(unint64_t)a3
+- (_REMLConditionExplanation)explanationWithStyle:(unint64_t)style
 {
   type = self->_type;
   v4 = &stru_283B97458;
@@ -107,7 +107,7 @@ LABEL_13:
   {
     if (type == 1)
     {
-      v5 = [(_REMLConditionExplanation *)self _constantConditionExplanationWithStyle:a3];
+      v5 = [(_REMLConditionExplanation *)self _constantConditionExplanationWithStyle:style];
     }
 
     else
@@ -117,7 +117,7 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v5 = [(_REMLConditionExplanation *)self _probabilityExplanation:self->_condition withStyle:a3];
+      v5 = [(_REMLConditionExplanation *)self _probabilityExplanation:self->_condition withStyle:style];
     }
   }
 
@@ -126,13 +126,13 @@ LABEL_13:
     switch(type)
     {
       case 3:
-        v5 = [(_REMLConditionExplanation *)self _featureRuleExplanation:self->_condition withStyle:a3];
+        v5 = [(_REMLConditionExplanation *)self _featureRuleExplanation:self->_condition withStyle:style];
         break;
       case 4:
-        v5 = [(_REMLConditionExplanation *)self _valueExplanation:self->_condition withStyle:a3];
+        v5 = [(_REMLConditionExplanation *)self _valueExplanation:self->_condition withStyle:style];
         break;
       case 5:
-        v5 = [(_REMLConditionExplanation *)self _hasFeatureExplanation:self->_condition withStyle:a3];
+        v5 = [(_REMLConditionExplanation *)self _hasFeatureExplanation:self->_condition withStyle:style];
         break;
       default:
         goto LABEL_13;
@@ -145,15 +145,15 @@ LABEL_13:
   return v4;
 }
 
-- (id)_constantConditionExplanationWithStyle:(unint64_t)a3
+- (id)_constantConditionExplanationWithStyle:(unint64_t)style
 {
   v3 = @"condition is always true";
-  if (a3 != 1)
+  if (style != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (style)
   {
     return v3;
   }
@@ -164,77 +164,77 @@ LABEL_13:
   }
 }
 
-- (id)_featureRuleExplanation:(id)a3 withStyle:(unint64_t)a4
+- (id)_featureRuleExplanation:(id)explanation withStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = [v5 firstFeature];
-  v7 = [v6 name];
+  explanationCopy = explanation;
+  firstFeature = [explanationCopy firstFeature];
+  name = [firstFeature name];
 
-  v8 = [v5 secondFeature];
-  v9 = [v8 name];
+  secondFeature = [explanationCopy secondFeature];
+  name2 = [secondFeature name];
 
-  v10 = [v5 relation];
-  if (a4 == 1)
+  relation = [explanationCopy relation];
+  if (style == 1)
   {
-    if ((v10 + 2) <= 6)
+    if ((relation + 2) <= 6)
     {
-      v11 = off_2785FDE00[v10 + 2];
+      v11 = off_2785FDE00[relation + 2];
       goto LABEL_7;
     }
   }
 
-  else if (!a4)
+  else if (!style)
   {
-    v11 = RERelationDescription(v10);
+    v11 = RERelationDescription(relation);
     goto LABEL_7;
   }
 
   v11 = 0;
 LABEL_7:
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@ %@", v7, v11, v9];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@ %@", name, v11, name2];
 
   return v12;
 }
 
-- (id)_probabilityExplanation:(id)a3 withStyle:(unint64_t)a4
+- (id)_probabilityExplanation:(id)explanation withStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = [v5 feature];
+  explanationCopy = explanation;
+  feature = [explanationCopy feature];
 
-  if (v6)
+  if (feature)
   {
-    v7 = [v5 feature];
-    [v7 name];
+    feature2 = [explanationCopy feature];
+    [feature2 name];
   }
 
   else
   {
     v8 = MEMORY[0x277CCABB0];
-    [v5 threshold];
-    v7 = [v8 numberWithFloat:?];
-    [v7 stringValue];
+    [explanationCopy threshold];
+    feature2 = [v8 numberWithFloat:?];
+    [feature2 stringValue];
   }
   v9 = ;
 
-  v10 = [v5 interaction];
+  interaction = [explanationCopy interaction];
 
-  if (v10)
+  if (interaction)
   {
-    if (a4 != 1)
+    if (style != 1)
     {
-      if (!a4)
+      if (!style)
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = [v5 interaction];
-        v13 = [v11 stringWithFormat:@"%@ prob", v12];
+        interaction2 = [explanationCopy interaction];
+        v13 = [v11 stringWithFormat:@"%@ prob", interaction2];
 
 LABEL_11:
-        v14 = RERelationDescription([v5 relation]);
+        v14 = RERelationDescription([explanationCopy relation]);
         goto LABEL_14;
       }
 
 LABEL_12:
-      [v5 relation];
+      [explanationCopy relation];
       v13 = 0;
 LABEL_13:
       v14 = 0;
@@ -242,15 +242,15 @@ LABEL_13:
     }
 
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v5 interaction];
-    v13 = [v17 stringWithFormat:@"probability for %@", v18];
+    interaction3 = [explanationCopy interaction];
+    v13 = [v17 stringWithFormat:@"probability for %@", interaction3];
   }
 
   else
   {
-    if (a4 != 1)
+    if (style != 1)
     {
-      if (!a4)
+      if (!style)
       {
         v13 = @"prob";
         goto LABEL_11;
@@ -262,10 +262,10 @@ LABEL_13:
     v13 = @"probability";
   }
 
-  v19 = [v5 relation];
-  if (v19 > 0)
+  relation = [explanationCopy relation];
+  if (relation > 0)
   {
-    switch(v19)
+    switch(relation)
     {
       case 1:
         v14 = @"greater than or equal to";
@@ -281,19 +281,19 @@ LABEL_13:
     }
   }
 
-  else if (v19 == -2)
+  else if (relation == -2)
   {
     v14 = @"less than";
   }
 
-  else if (v19 == -1)
+  else if (relation == -1)
   {
     v14 = @"less than or equal to";
   }
 
   else
   {
-    if (v19)
+    if (relation)
     {
       goto LABEL_13;
     }
@@ -307,61 +307,61 @@ LABEL_14:
   return v15;
 }
 
-- (id)_valueExplanation:(id)a3 withStyle:(unint64_t)a4
+- (id)_valueExplanation:(id)explanation withStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = REDescriptionForTaggedPointer([v5 value]);
-  v7 = [v5 feature];
-  v8 = [v7 name];
+  explanationCopy = explanation;
+  v6 = REDescriptionForTaggedPointer([explanationCopy value]);
+  feature = [explanationCopy feature];
+  name = [feature name];
 
-  v9 = [v5 relation];
-  if (a4 == 1)
+  relation = [explanationCopy relation];
+  if (style == 1)
   {
-    if ((v9 + 2) <= 6)
+    if ((relation + 2) <= 6)
     {
-      v10 = off_2785FDE00[v9 + 2];
+      v10 = off_2785FDE00[relation + 2];
       goto LABEL_7;
     }
   }
 
-  else if (!a4)
+  else if (!style)
   {
-    v10 = RERelationDescription(v9);
+    v10 = RERelationDescription(relation);
     goto LABEL_7;
   }
 
   v10 = 0;
 LABEL_7:
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@ %@", v8, v10, v6];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@ %@", name, v10, v6];
 
   return v11;
 }
 
-- (id)_hasFeatureExplanation:(id)a3 withStyle:(unint64_t)a4
+- (id)_hasFeatureExplanation:(id)explanation withStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = [v5 feature];
-  v7 = [v6 name];
+  explanationCopy = explanation;
+  feature = [explanationCopy feature];
+  name = [feature name];
 
-  LODWORD(v6) = [v5 contains];
+  LODWORD(feature) = [explanationCopy contains];
   v8 = @"doesn't contain";
-  if (v6)
+  if (feature)
   {
     v8 = @"contains";
   }
 
   v9 = v8;
-  if (!a4)
+  if (!style)
   {
     v10 = @"%@ %@";
     goto LABEL_7;
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
     v10 = @"%@ value for %@";
 LABEL_7:
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:v10, v9, v7];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:v10, v9, name];
     goto LABEL_9;
   }
 

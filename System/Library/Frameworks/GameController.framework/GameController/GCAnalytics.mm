@@ -1,27 +1,27 @@
 @interface GCAnalytics
 + (id)instance;
-- (BOOL)sendEvent:(id)a3 withXPCPayloadBuilder:(id)a4;
+- (BOOL)sendEvent:(id)event withXPCPayloadBuilder:(id)builder;
 - (GCAnalytics)init;
 - (id)getBundleID;
 - (void)checkMultipleControllers;
 - (void)dealloc;
-- (void)publishController:(id)a3;
+- (void)publishController:(id)controller;
 - (void)runInputPollTimer;
-- (void)sendEvent:(id)a3 withXPCPayload:(id)a4;
-- (void)sendHapticsClientDestroyedEventForBundleID:(id)a3 productCategory:(id)a4 totalPlayers:(int)a5 sessionTotalDuration:(int)a6 sessionActiveDuration:(int)a7 terminationReason:(id)a8;
-- (void)sendHapticsEngineCreatedEventForBundleID:(id)a3 productCategory:(id)a4 hapticsLocality:(id)a5;
-- (void)sendHapticsErrorRaisedEventFromSource:(id)a3 productCategory:(id)a4 errorType:(id)a5;
-- (void)sendHapticsPlayerDestroyedEventForBundleID:(id)a3 productCategory:(id)a4 totalEventsProcessed:(int)a5 transientEventsProcessed:(int)a6 continuousEventsProcessed:(int)a7 parameterCurvesProcessed:(int)a8 sessionTotalDuration:(int)a9 sessionActiveDuration:(int)a10;
-- (void)sendRPKitInstantCaptureBufferStartedEventForBundleID:(id)a3;
-- (void)sendRPKitInstantCaptureSavedEventForBundleID:(id)a3 productCategory:(id)a4;
-- (void)sendRPKitManualRecordingSavedEventForBundleID:(id)a3 productCategory:(id)a4 duration:(int)a5;
-- (void)sendRPKitScreenshotSavedEventForBundleID:(id)a3 productCategory:(id)a4;
-- (void)sendSettingsButtonCustomizedEventForBundleID:(id)a3 productCategory:(id)a4 button:(id)a5;
-- (void)sendSettingsCustomizationsResetEventForBundleID:(id)a3 productCategory:(id)a4;
-- (void)sendSettingsCustomizationsToggledEventForBundleID:(id)a3 productCategory:(id)a4 toggledOn:(BOOL)a5;
-- (void)sendSettingsIdentifyControllerEventForProductCategory:(id)a3;
-- (void)sendSettingsRPKitGesturesCustomized:(id)a3 from:(id)a4;
-- (void)unpublishController:(id)a3;
+- (void)sendEvent:(id)event withXPCPayload:(id)payload;
+- (void)sendHapticsClientDestroyedEventForBundleID:(id)d productCategory:(id)category totalPlayers:(int)players sessionTotalDuration:(int)duration sessionActiveDuration:(int)activeDuration terminationReason:(id)reason;
+- (void)sendHapticsEngineCreatedEventForBundleID:(id)d productCategory:(id)category hapticsLocality:(id)locality;
+- (void)sendHapticsErrorRaisedEventFromSource:(id)source productCategory:(id)category errorType:(id)type;
+- (void)sendHapticsPlayerDestroyedEventForBundleID:(id)d productCategory:(id)category totalEventsProcessed:(int)processed transientEventsProcessed:(int)eventsProcessed continuousEventsProcessed:(int)continuousEventsProcessed parameterCurvesProcessed:(int)curvesProcessed sessionTotalDuration:(int)duration sessionActiveDuration:(int)self0;
+- (void)sendRPKitInstantCaptureBufferStartedEventForBundleID:(id)d;
+- (void)sendRPKitInstantCaptureSavedEventForBundleID:(id)d productCategory:(id)category;
+- (void)sendRPKitManualRecordingSavedEventForBundleID:(id)d productCategory:(id)category duration:(int)duration;
+- (void)sendRPKitScreenshotSavedEventForBundleID:(id)d productCategory:(id)category;
+- (void)sendSettingsButtonCustomizedEventForBundleID:(id)d productCategory:(id)category button:(id)button;
+- (void)sendSettingsCustomizationsResetEventForBundleID:(id)d productCategory:(id)category;
+- (void)sendSettingsCustomizationsToggledEventForBundleID:(id)d productCategory:(id)category toggledOn:(BOOL)on;
+- (void)sendSettingsIdentifyControllerEventForProductCategory:(id)category;
+- (void)sendSettingsRPKitGesturesCustomized:(id)customized from:(id)from;
+- (void)unpublishController:(id)controller;
 @end
 
 @implementation GCAnalytics
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __39__GCAnalytics_GameController__instance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (instance_dispatcher != -1)
   {
     dispatch_once(&instance_dispatcher, block);
@@ -55,18 +55,18 @@ void __39__GCAnalytics_GameController__instance__block_invoke(uint64_t a1)
   bundleID = self->_bundleID;
   if (!bundleID)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v6 = self->_bundleID;
-    self->_bundleID = v5;
+    self->_bundleID = bundleIdentifier;
 
     bundleID = self->_bundleID;
     if (!bundleID)
     {
-      v7 = [MEMORY[0x1E696AE30] processInfo];
-      v8 = [v7 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
       v9 = self->_bundleID;
-      self->_bundleID = v8;
+      self->_bundleID = processName;
 
       bundleID = self->_bundleID;
     }
@@ -114,8 +114,8 @@ id __54__GCAnalytics_GameController__sendInputsPressedEvent___block_invoke(uint6
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(NSMutableDictionary *)self->_controllersData allValues];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allValues = [(NSMutableDictionary *)self->_controllersData allValues];
+    v5 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -127,19 +127,19 @@ id __54__GCAnalytics_GameController__sendInputsPressedEvent___block_invoke(uint6
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
           if (([v10 isATVRemote] & 1) == 0)
           {
             ++v7;
-            v11 = [v10 detailedProductCategory];
-            [v3 addObject:v11];
+            detailedProductCategory = [v10 detailedProductCategory];
+            [v3 addObject:detailedProductCategory];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -265,9 +265,9 @@ uint64_t __48__GCAnalytics_GameController__runInputPollTimer__block_invoke_2(uin
   return result;
 }
 
-- (void)publishController:(id)a3
+- (void)publishController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__GCAnalytics_GameController__publishController___block_invoke;
@@ -284,10 +284,10 @@ uint64_t __48__GCAnalytics_GameController__runInputPollTimer__block_invoke_2(uin
   v12 = 0u;
   v13 = 0u;
   v11 = 0u;
-  dataFromController(v4, &v11);
+  dataFromController(controllerCopy, &v11);
   controllersData = self->_controllersData;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "deviceHash")}];
-  [(NSMutableDictionary *)controllersData setObject:v4 forKey:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(controllerCopy, "deviceHash")}];
+  [(NSMutableDictionary *)controllersData setObject:controllerCopy forKey:v6];
 
   v7 = MEMORY[0x1E69E9820];
   v8 = v11;
@@ -339,10 +339,10 @@ id __49__GCAnalytics_GameController__publishController___block_invoke_2(uint64_t
   return v13;
 }
 
-- (void)unpublishController:(id)a3
+- (void)unpublishController:(id)controller
 {
   controllersData = self->_controllersData;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "deviceHash")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(controller, "deviceHash")}];
   [(NSMutableDictionary *)controllersData removeObjectForKey:v4];
 }
 
@@ -359,14 +359,14 @@ id __50__GCAnalytics_GameController__onSiriMotionEnabled__block_invoke(uint64_t 
   return v2;
 }
 
-- (void)sendSettingsCustomizationsToggledEventForBundleID:(id)a3 productCategory:(id)a4 toggledOn:(BOOL)a5
+- (void)sendSettingsCustomizationsToggledEventForBundleID:(id)d productCategory:(id)category toggledOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  categoryCopy = category;
   v8 = @"N/A";
-  if (v6)
+  if (dCopy)
   {
-    v9 = v6;
+    v9 = dCopy;
   }
 
   else
@@ -374,9 +374,9 @@ id __50__GCAnalytics_GameController__onSiriMotionEnabled__block_invoke(uint64_t 
     v9 = @"N/A";
   }
 
-  if (v7)
+  if (categoryCopy)
   {
-    v8 = v7;
+    v8 = categoryCopy;
   }
 
   v12 = v9;
@@ -404,25 +404,25 @@ id __110__GCAnalytics_SettingsAnalytics__sendSettingsCustomizationsToggledEventF
   return v3;
 }
 
-- (void)sendSettingsCustomizationsResetEventForBundleID:(id)a3 productCategory:(id)a4
+- (void)sendSettingsCustomizationsResetEventForBundleID:(id)d productCategory:(id)category
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  categoryCopy = category;
   v7 = @"N/A";
-  if (!v5)
+  if (!dCopy)
   {
-    v5 = @"N/A";
+    dCopy = @"N/A";
   }
 
-  if (v6)
+  if (categoryCopy)
   {
-    v7 = v6;
+    v7 = categoryCopy;
   }
 
-  v10 = v5;
+  v10 = dCopy;
   v11 = v7;
   v8 = v7;
-  v9 = v5;
+  v9 = dCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -440,16 +440,16 @@ id __98__GCAnalytics_SettingsAnalytics__sendSettingsCustomizationsResetEventForB
   return v2;
 }
 
-- (void)sendSettingsButtonCustomizedEventForBundleID:(id)a3 productCategory:(id)a4 button:(id)a5
+- (void)sendSettingsButtonCustomizedEventForBundleID:(id)d productCategory:(id)category button:(id)button
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  dCopy = d;
+  categoryCopy = category;
+  buttonCopy = button;
+  if (buttonCopy)
   {
-    if (v7)
+    if (dCopy)
     {
-      v10 = v7;
+      v10 = dCopy;
     }
 
     else
@@ -457,14 +457,14 @@ id __98__GCAnalytics_SettingsAnalytics__sendSettingsCustomizationsResetEventForB
       v10 = @"N/A";
     }
 
-    if (!v8)
+    if (!categoryCopy)
     {
-      v8 = @"N/A";
+      categoryCopy = @"N/A";
     }
 
-    v7 = v10;
-    v8 = v8;
-    v11 = v9;
+    dCopy = v10;
+    categoryCopy = categoryCopy;
+    v11 = buttonCopy;
     AnalyticsSendEventLazy();
   }
 }
@@ -484,13 +484,13 @@ id __102__GCAnalytics_SettingsAnalytics__sendSettingsButtonCustomizedEventForBun
   return v2;
 }
 
-- (void)sendSettingsIdentifyControllerEventForProductCategory:(id)a3
+- (void)sendSettingsIdentifyControllerEventForProductCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = @"N/A";
-  if (v3)
+  if (categoryCopy)
   {
-    v4 = v3;
+    v4 = categoryCopy;
   }
 
   v6 = v4;
@@ -536,53 +536,53 @@ id __93__GCAnalytics_SettingsAnalytics__sendSettingsCustomizedAppsEventForTotalC
   return v2;
 }
 
-- (void)sendSettingsRPKitGesturesCustomized:(id)a3 from:(id)a4
+- (void)sendSettingsRPKitGesturesCustomized:(id)customized from:(id)from
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  customizedCopy = customized;
+  fromCopy = from;
   v7 = getGCSettingsLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v5;
+    v35 = customizedCopy;
     v36 = 2112;
-    v37 = v6;
+    v37 = fromCopy;
     _os_log_impl(&dword_1D2CD5000, v7, OS_LOG_TYPE_DEFAULT, "sendSettingsRPKitGesturesCustomized %@, %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (customizedCopy)
   {
-    if (v6)
+    if (fromCopy)
     {
-      v8 = [v5 controllerElementMappingKey];
+      controllerElementMappingKey = [customizedCopy controllerElementMappingKey];
 
-      if (v8)
+      if (controllerElementMappingKey)
       {
         v26 = objc_opt_new();
-        v9 = [v5 singlePressGesture];
-        if (v9 != [v6 singlePressGesture])
+        singlePressGesture = [customizedCopy singlePressGesture];
+        if (singlePressGesture != [fromCopy singlePressGesture])
         {
-          v10 = GCSystemGestureModeToString([v5 singlePressGesture]);
+          v10 = GCSystemGestureModeToString([customizedCopy singlePressGesture]);
           [v26 setObject:v10 forKeyedSubscript:@"Single Press"];
         }
 
-        v11 = [v5 doublePressGesture];
-        if (v11 != [v6 doublePressGesture])
+        doublePressGesture = [customizedCopy doublePressGesture];
+        if (doublePressGesture != [fromCopy doublePressGesture])
         {
-          v12 = GCSystemGestureModeToString([v5 doublePressGesture]);
+          v12 = GCSystemGestureModeToString([customizedCopy doublePressGesture]);
           [v26 setObject:v12 forKeyedSubscript:@"Double Press"];
         }
 
-        v13 = [v5 longPressGesture];
-        if (v13 != [v6 longPressGesture])
+        longPressGesture = [customizedCopy longPressGesture];
+        if (longPressGesture != [fromCopy longPressGesture])
         {
-          v14 = GCSystemGestureModeToString([v5 longPressGesture]);
+          v14 = GCSystemGestureModeToString([customizedCopy longPressGesture]);
           [v26 setObject:v14 forKeyedSubscript:@"Long Press"];
         }
 
-        v25 = v6;
-        v15 = v5;
+        v25 = fromCopy;
+        v15 = customizedCopy;
         v16 = getGCSettingsLogger();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -596,8 +596,8 @@ id __93__GCAnalytics_SettingsAnalytics__sendSettingsCustomizedAppsEventForTotalC
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v17 = [v26 allKeys];
-        v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        allKeys = [v26 allKeys];
+        v18 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v18)
         {
           v19 = v18;
@@ -608,7 +608,7 @@ id __93__GCAnalytics_SettingsAnalytics__sendSettingsCustomizedAppsEventForTotalC
             {
               if (*v30 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(allKeys);
               }
 
               v22 = *(*(&v29 + 1) + 8 * i);
@@ -617,15 +617,15 @@ id __93__GCAnalytics_SettingsAnalytics__sendSettingsCustomizedAppsEventForTotalC
               AnalyticsSendEventLazy();
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+            v19 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
           }
 
           while (v19);
         }
 
         objc_autoreleasePoolPop(context);
-        v5 = v15;
-        v6 = v25;
+        customizedCopy = v15;
+        fromCopy = v25;
       }
     }
   }
@@ -653,25 +653,25 @@ id __75__GCAnalytics_SettingsAnalytics__sendSettingsRPKitGesturesCustomized_from
   return v6;
 }
 
-- (void)sendRPKitScreenshotSavedEventForBundleID:(id)a3 productCategory:(id)a4
+- (void)sendRPKitScreenshotSavedEventForBundleID:(id)d productCategory:(id)category
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  categoryCopy = category;
   v7 = @"N/A";
-  if (!v5)
+  if (!dCopy)
   {
-    v5 = @"N/A";
+    dCopy = @"N/A";
   }
 
-  if (v6)
+  if (categoryCopy)
   {
-    v7 = v6;
+    v7 = categoryCopy;
   }
 
-  v10 = v5;
+  v10 = dCopy;
   v11 = v7;
   v8 = v7;
-  v9 = v5;
+  v9 = dCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -689,14 +689,14 @@ id __92__GCAnalytics_ReplayKitAnalytics__sendRPKitScreenshotSavedEventForBundleI
   return v2;
 }
 
-- (void)sendRPKitManualRecordingSavedEventForBundleID:(id)a3 productCategory:(id)a4 duration:(int)a5
+- (void)sendRPKitManualRecordingSavedEventForBundleID:(id)d productCategory:(id)category duration:(int)duration
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  categoryCopy = category;
   v8 = @"N/A";
-  if (v6)
+  if (dCopy)
   {
-    v9 = v6;
+    v9 = dCopy;
   }
 
   else
@@ -704,9 +704,9 @@ id __92__GCAnalytics_ReplayKitAnalytics__sendRPKitScreenshotSavedEventForBundleI
     v9 = @"N/A";
   }
 
-  if (v7)
+  if (categoryCopy)
   {
-    v8 = v7;
+    v8 = categoryCopy;
   }
 
   v12 = v9;
@@ -734,25 +734,25 @@ id __106__GCAnalytics_ReplayKitAnalytics__sendRPKitManualRecordingSavedEventForB
   return v3;
 }
 
-- (void)sendRPKitInstantCaptureSavedEventForBundleID:(id)a3 productCategory:(id)a4
+- (void)sendRPKitInstantCaptureSavedEventForBundleID:(id)d productCategory:(id)category
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  categoryCopy = category;
   v7 = @"N/A";
-  if (!v5)
+  if (!dCopy)
   {
-    v5 = @"N/A";
+    dCopy = @"N/A";
   }
 
-  if (v6)
+  if (categoryCopy)
   {
-    v7 = v6;
+    v7 = categoryCopy;
   }
 
-  v10 = v5;
+  v10 = dCopy;
   v11 = v7;
   v8 = v7;
-  v9 = v5;
+  v9 = dCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -770,13 +770,13 @@ id __96__GCAnalytics_ReplayKitAnalytics__sendRPKitInstantCaptureSavedEventForBun
   return v2;
 }
 
-- (void)sendRPKitInstantCaptureBufferStartedEventForBundleID:(id)a3
+- (void)sendRPKitInstantCaptureBufferStartedEventForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = @"N/A";
-  if (v3)
+  if (dCopy)
   {
-    v4 = v3;
+    v4 = dCopy;
   }
 
   v6 = v4;
@@ -796,33 +796,33 @@ id __88__GCAnalytics_ReplayKitAnalytics__sendRPKitInstantCaptureBufferStartedEve
   return v2;
 }
 
-- (void)sendHapticsEngineCreatedEventForBundleID:(id)a3 productCategory:(id)a4 hapticsLocality:(id)a5
+- (void)sendHapticsEngineCreatedEventForBundleID:(id)d productCategory:(id)category hapticsLocality:(id)locality
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  categoryCopy = category;
+  localityCopy = locality;
   v10 = @"N/A";
-  if (!v7)
+  if (!dCopy)
   {
-    v7 = @"N/A";
+    dCopy = @"N/A";
   }
 
-  if (!v8)
+  if (!categoryCopy)
   {
-    v8 = @"N/A";
+    categoryCopy = @"N/A";
   }
 
-  if (v9)
+  if (localityCopy)
   {
-    v10 = v9;
+    v10 = localityCopy;
   }
 
-  v14 = v7;
-  v15 = v8;
+  v14 = dCopy;
+  v15 = categoryCopy;
   v16 = v10;
   v11 = v10;
-  v12 = v8;
-  v13 = v7;
+  v12 = categoryCopy;
+  v13 = dCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -841,31 +841,31 @@ id __106__GCAnalytics_HapticsAnalytics__sendHapticsEngineCreatedEventForBundleID
   return v2;
 }
 
-- (void)sendHapticsClientDestroyedEventForBundleID:(id)a3 productCategory:(id)a4 totalPlayers:(int)a5 sessionTotalDuration:(int)a6 sessionActiveDuration:(int)a7 terminationReason:(id)a8
+- (void)sendHapticsClientDestroyedEventForBundleID:(id)d productCategory:(id)category totalPlayers:(int)players sessionTotalDuration:(int)duration sessionActiveDuration:(int)activeDuration terminationReason:(id)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a8;
+  dCopy = d;
+  categoryCopy = category;
+  reasonCopy = reason;
   v13 = @"N/A";
-  if (!v10)
+  if (!dCopy)
   {
-    v10 = @"N/A";
+    dCopy = @"N/A";
   }
 
-  if (!v11)
+  if (!categoryCopy)
   {
-    v11 = @"N/A";
+    categoryCopy = @"N/A";
   }
 
-  if (v12)
+  if (reasonCopy)
   {
-    v13 = v12;
+    v13 = reasonCopy;
   }
 
   v17 = v13;
   v14 = v13;
-  v15 = v11;
-  v16 = v10;
+  v15 = categoryCopy;
+  v16 = dCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -893,17 +893,17 @@ id __166__GCAnalytics_HapticsAnalytics__sendHapticsClientDestroyedEventForBundle
   return v5;
 }
 
-- (void)sendHapticsPlayerDestroyedEventForBundleID:(id)a3 productCategory:(id)a4 totalEventsProcessed:(int)a5 transientEventsProcessed:(int)a6 continuousEventsProcessed:(int)a7 parameterCurvesProcessed:(int)a8 sessionTotalDuration:(int)a9 sessionActiveDuration:(int)a10
+- (void)sendHapticsPlayerDestroyedEventForBundleID:(id)d productCategory:(id)category totalEventsProcessed:(int)processed transientEventsProcessed:(int)eventsProcessed continuousEventsProcessed:(int)continuousEventsProcessed parameterCurvesProcessed:(int)curvesProcessed sessionTotalDuration:(int)duration sessionActiveDuration:(int)self0
 {
-  v12 = a3;
-  v13 = a4;
+  dCopy = d;
+  categoryCopy = category;
   v14 = mach_absolute_time();
   if (v14 * self->_timebaseInfo.numer / self->_timebaseInfo.denom / 0x3B9ACA00 - self->_lastHapticsEvent * self->_timebaseInfo.numer / self->_timebaseInfo.denom / 0x3B9ACA00 > 4)
   {
     self->_lastHapticsEvent = v14;
-    if (v12)
+    if (dCopy)
     {
-      v16 = v12;
+      v16 = dCopy;
     }
 
     else
@@ -911,16 +911,16 @@ id __166__GCAnalytics_HapticsAnalytics__sendHapticsClientDestroyedEventForBundle
       v16 = @"N/A";
     }
 
-    if (!v13)
+    if (!categoryCopy)
     {
-      v13 = @"N/A";
+      categoryCopy = @"N/A";
     }
 
-    v12 = v16;
-    v13 = v13;
+    dCopy = v16;
+    categoryCopy = categoryCopy;
     AnalyticsSendEventLazy();
 
-    v15 = v12;
+    v15 = dCopy;
     goto LABEL_11;
   }
 
@@ -969,14 +969,14 @@ id __232__GCAnalytics_HapticsAnalytics__sendHapticsPlayerDestroyedEventForBundle
   return v9;
 }
 
-- (void)sendHapticsErrorRaisedEventFromSource:(id)a3 productCategory:(id)a4 errorType:(id)a5
+- (void)sendHapticsErrorRaisedEventFromSource:(id)source productCategory:(id)category errorType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  sourceCopy = source;
+  categoryCopy = category;
+  typeCopy = type;
+  if (sourceCopy)
   {
-    v10 = v7;
+    v10 = sourceCopy;
   }
 
   else
@@ -984,14 +984,14 @@ id __232__GCAnalytics_HapticsAnalytics__sendHapticsPlayerDestroyedEventForBundle
     v10 = @"N/A";
   }
 
-  if (!v8)
+  if (!categoryCopy)
   {
-    v8 = @"N/A";
+    categoryCopy = @"N/A";
   }
 
-  if (v9)
+  if (typeCopy)
   {
-    v11 = v9;
+    v11 = typeCopy;
   }
 
   else
@@ -1000,10 +1000,10 @@ id __232__GCAnalytics_HapticsAnalytics__sendHapticsPlayerDestroyedEventForBundle
   }
 
   v15 = v11;
-  v16 = v8;
+  v16 = categoryCopy;
   v17 = v10;
   v12 = v10;
-  v13 = v8;
+  v13 = categoryCopy;
   v14 = v11;
   AnalyticsSendEventLazy();
 }
@@ -1036,23 +1036,23 @@ id __97__GCAnalytics_HapticsAnalytics__sendHapticsErrorRaisedEventFromSource_pro
   return v2;
 }
 
-- (void)sendEvent:(id)a3 withXPCPayload:(id)a4
+- (void)sendEvent:(id)event withXPCPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  [a3 UTF8String];
+  eventCopy = event;
+  payloadCopy = payload;
+  [event UTF8String];
   analytics_send_event();
 }
 
-- (BOOL)sendEvent:(id)a3 withXPCPayloadBuilder:(id)a4
+- (BOOL)sendEvent:(id)event withXPCPayloadBuilder:(id)builder
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = a4;
-  [v5 UTF8String];
-  LOBYTE(v5) = analytics_send_event_lazy();
+  eventCopy = event;
+  eventCopy2 = event;
+  builderCopy = builder;
+  [eventCopy UTF8String];
+  LOBYTE(eventCopy) = analytics_send_event_lazy();
 
-  return v5;
+  return eventCopy;
 }
 
 @end

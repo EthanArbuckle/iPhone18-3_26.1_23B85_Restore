@@ -1,19 +1,19 @@
 @interface APDeviceLockedTask
-- (APDeviceLockedTask)initWithHandler:(id)a3;
+- (APDeviceLockedTask)initWithHandler:(id)handler;
 - (void)_registerForLockStateNotification;
 @end
 
 @implementation APDeviceLockedTask
 
-- (APDeviceLockedTask)initWithHandler:(id)a3
+- (APDeviceLockedTask)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = APDeviceLockedTask;
   v5 = [(APDeviceLockedTask *)&v12 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     taskHandler = v5->_taskHandler;
     v5->_taskHandler = v6;
 

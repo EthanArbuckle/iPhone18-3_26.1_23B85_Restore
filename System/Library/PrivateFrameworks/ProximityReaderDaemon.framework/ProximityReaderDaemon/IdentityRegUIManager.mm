@@ -1,12 +1,12 @@
 @interface IdentityRegUIManager
-- (void)registerWithCompletion:(id)a3;
+- (void)registerWithCompletion:(id)completion;
 @end
 
 @implementation IdentityRegUIManager
 
-- (void)registerWithCompletion:(id)a3
+- (void)registerWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(*self + 312);

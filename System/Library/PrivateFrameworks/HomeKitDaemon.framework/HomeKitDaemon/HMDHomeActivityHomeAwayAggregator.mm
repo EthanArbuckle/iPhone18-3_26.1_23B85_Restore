@@ -1,39 +1,39 @@
 @interface HMDHomeActivityHomeAwayAggregator
 + (id)logCategory;
-- (BOOL)handleUpdateFromDetector:(id)a3;
-- (BOOL)isReportTimestampWithinValidPeriod:(id)a3;
-- (BOOL)isStateEquivalentForExistingReport:(id)a3 newReport:(id)a4;
-- (BOOL)processUserPresenceWithAuthStatus:(id)a3 regionStatus:(id)a4 updateReason:(id)a5 forUser:(id)a6 fromDevice:(id)a7;
-- (HMDHomeActivityHomeAwayAggregator)initWithDataSource:(id)a3;
+- (BOOL)handleUpdateFromDetector:(id)detector;
+- (BOOL)isReportTimestampWithinValidPeriod:(id)period;
+- (BOOL)isStateEquivalentForExistingReport:(id)report newReport:(id)newReport;
+- (BOOL)processUserPresenceWithAuthStatus:(id)status regionStatus:(id)regionStatus updateReason:(id)reason forUser:(id)user fromDevice:(id)device;
+- (HMDHomeActivityHomeAwayAggregator)initWithDataSource:(id)source;
 - (HMDHomeActivityHomeAwayAggregatorState)computedState;
-- (HMDHomeActivityHomeAwayUserStatesDetails)_userActivityStatesDetailsWithMap:(HMDHomeActivityHomeAwayUserStatesDetails *)a1;
+- (HMDHomeActivityHomeAwayUserStatesDetails)_userActivityStatesDetailsWithMap:(HMDHomeActivityHomeAwayUserStatesDetails *)map;
 - (HMDHomeActivityHomeAwayUserStatesDetails)userActivityStatesDetails;
-- (uint64_t)effectiveStateForReport:(void *)a1;
-- (void)_postHomePresenceUpdateNotificationWithHomePresence:(void *)a3 userPresence:(void *)a4 causingDevice:(uint64_t)a5 isUpdate:;
-- (void)_postHomePresenceUpdateNotificationWithReport:(HMDHomeActivityHomeAwayUserStatesDetails *)a1 userActivityMap:(void *)a2 isUpdate:(void *)a3;
-- (void)handleRestrictedGuestScheduleEndedForUserUUID:(id)a3;
-- (void)handleRestrictedGuestScheduleStartedForUserUUID:(id)a3;
+- (uint64_t)effectiveStateForReport:(void *)report;
+- (void)_postHomePresenceUpdateNotificationWithHomePresence:(void *)presence userPresence:(void *)userPresence causingDevice:(uint64_t)device isUpdate:;
+- (void)_postHomePresenceUpdateNotificationWithReport:(HMDHomeActivityHomeAwayUserStatesDetails *)report userActivityMap:(void *)map isUpdate:(void *)update;
+- (void)handleRestrictedGuestScheduleEndedForUserUUID:(id)d;
+- (void)handleRestrictedGuestScheduleStartedForUserUUID:(id)d;
 @end
 
 @implementation HMDHomeActivityHomeAwayAggregator
 
-- (void)handleRestrictedGuestScheduleEndedForUserUUID:(id)a3
+- (void)handleRestrictedGuestScheduleEndedForUserUUID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dCopy = d;
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDHomeActivityStateAggregator *)self rawUserActivityMap];
-  v8 = [v7 copy];
+  rawUserActivityMap = [(HMDHomeActivityStateAggregator *)self rawUserActivityMap];
+  v8 = [rawUserActivityMap copy];
 
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:dCopy];
   v10 = v9;
   if (!v9)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -41,7 +41,7 @@
       v21 = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v17 = "%{public}@Ignoring RG schedule ended notification because we don't have report from user %@";
 LABEL_11:
       v18 = v15;
@@ -55,13 +55,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [v9 user];
-  v12 = [v11 isRestrictedGuest];
+  user = [v9 user];
+  isRestrictedGuest = [user isRestrictedGuest];
 
-  if ((v12 & 1) == 0)
+  if ((isRestrictedGuest & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -69,7 +69,7 @@ LABEL_13:
       v21 = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v17 = "%{public}@Received RG schedule ended notification for user that's not RG %@";
       v18 = v15;
       v19 = OS_LOG_TYPE_ERROR;
@@ -85,7 +85,7 @@ LABEL_12:
   if ([v10 state] != 2)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -93,7 +93,7 @@ LABEL_12:
       v21 = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v17 = "%{public}@RG schedule ended but not sending home presence update notification because user is already away %@";
       goto LABEL_11;
     }
@@ -107,60 +107,60 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postHomePresenceUpdateNotificationWithReport:(HMDHomeActivityHomeAwayUserStatesDetails *)a1 userActivityMap:(void *)a2 isUpdate:(void *)a3
+- (void)_postHomePresenceUpdateNotificationWithReport:(HMDHomeActivityHomeAwayUserStatesDetails *)report userActivityMap:(void *)map isUpdate:(void *)update
 {
-  if (a1)
+  if (report)
   {
-    v5 = a2;
-    v9 = [(HMDHomeActivityHomeAwayAggregator *)a1 _userActivityStatesDetailsWithMap:a3];
-    v6 = [v5 user];
-    v7 = [v9 detailForUser:v6];
+    mapCopy = map;
+    v9 = [(HMDHomeActivityHomeAwayAggregator *)report _userActivityStatesDetailsWithMap:update];
+    user = [mapCopy user];
+    v7 = [v9 detailForUser:user];
 
-    v8 = [v5 sourceDevice];
+    sourceDevice = [mapCopy sourceDevice];
 
-    [(HMDHomeActivityHomeAwayAggregator *)a1 _postHomePresenceUpdateNotificationWithHomePresence:v9 userPresence:v7 causingDevice:v8 isUpdate:1];
+    [(HMDHomeActivityHomeAwayAggregator *)report _postHomePresenceUpdateNotificationWithHomePresence:v9 userPresence:v7 causingDevice:sourceDevice isUpdate:1];
   }
 }
 
-- (HMDHomeActivityHomeAwayUserStatesDetails)_userActivityStatesDetailsWithMap:(HMDHomeActivityHomeAwayUserStatesDetails *)a1
+- (HMDHomeActivityHomeAwayUserStatesDetails)_userActivityStatesDetailsWithMap:(HMDHomeActivityHomeAwayUserStatesDetails *)map
 {
-  v2 = a1;
-  if (a1)
+  mapCopy = map;
+  if (map)
   {
     v3 = a2;
-    v4 = [(HMDHomeActivityHomeAwayUserStatesDetails *)v2 dataSource];
-    v5 = [v4 currentDate];
+    dataSource = [(HMDHomeActivityHomeAwayUserStatesDetails *)mapCopy dataSource];
+    currentDate = [dataSource currentDate];
 
     v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __71__HMDHomeActivityHomeAwayAggregator__userActivityStatesDetailsWithMap___block_invoke;
     v13[3] = &unk_278676FB8;
-    v14 = v5;
-    v15 = v2;
+    v14 = currentDate;
+    v15 = mapCopy;
     v16 = v6;
     v7 = v6;
-    v8 = v5;
+    v8 = currentDate;
     [v3 enumerateKeysAndObjectsUsingBlock:v13];
 
     v9 = [HMDHomeActivityHomeAwayUserStatesDetails alloc];
-    v10 = [(HMDHomeActivityHomeAwayUserStatesDetails *)v2 dataSource];
-    v11 = [v10 home];
-    v2 = [(HMDHomeActivityHomeAwayUserStatesDetails *)v9 initWithMap:v7 home:v11];
+    dataSource2 = [(HMDHomeActivityHomeAwayUserStatesDetails *)mapCopy dataSource];
+    home = [dataSource2 home];
+    mapCopy = [(HMDHomeActivityHomeAwayUserStatesDetails *)v9 initWithMap:v7 home:home];
   }
 
-  return v2;
+  return mapCopy;
 }
 
-- (void)_postHomePresenceUpdateNotificationWithHomePresence:(void *)a3 userPresence:(void *)a4 causingDevice:(uint64_t)a5 isUpdate:
+- (void)_postHomePresenceUpdateNotificationWithHomePresence:(void *)presence userPresence:(void *)userPresence causingDevice:(uint64_t)device isUpdate:
 {
   v27 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = [[HMDHomePresenceUpdate alloc] initWithHomePresence:v9 userPresence:v10 update:a5 causingDevice:v11];
+  presenceCopy = presence;
+  userPresenceCopy = userPresence;
+  v12 = [[HMDHomePresenceUpdate alloc] initWithHomePresence:v9 userPresence:presenceCopy update:device causingDevice:userPresenceCopy];
   v13 = objc_autoreleasePoolPush();
-  v14 = a1;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -173,12 +173,12 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [v14 dataSource];
-  v18 = [v17 notificationCenter];
+  dataSource = [selfCopy dataSource];
+  notificationCenter = [dataSource notificationCenter];
   v21 = @"HMDHomePresenceUpdateKey";
   v22 = v12;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-  [v18 postNotificationName:@"HMDHomePresenceUpdateNotification" object:v14 userInfo:v19];
+  [notificationCenter postNotificationName:@"HMDHomePresenceUpdateNotification" object:selfCopy userInfo:v19];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -213,23 +213,23 @@ void __71__HMDHomeActivityHomeAwayAggregator__userActivityStatesDetailsWithMap__
   }
 }
 
-- (void)handleRestrictedGuestScheduleStartedForUserUUID:(id)a3
+- (void)handleRestrictedGuestScheduleStartedForUserUUID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dCopy = d;
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDHomeActivityStateAggregator *)self rawUserActivityMap];
-  v8 = [v7 copy];
+  rawUserActivityMap = [(HMDHomeActivityStateAggregator *)self rawUserActivityMap];
+  v8 = [rawUserActivityMap copy];
 
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:dCopy];
   v10 = v9;
   if (!v9)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -237,7 +237,7 @@ void __71__HMDHomeActivityHomeAwayAggregator__userActivityStatesDetailsWithMap__
       v21 = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v17 = "%{public}@Ignoring RG schedule started notification because we don't have report from user %@";
 LABEL_11:
       v18 = v15;
@@ -251,13 +251,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [v9 user];
-  v12 = [v11 isRestrictedGuest];
+  user = [v9 user];
+  isRestrictedGuest = [user isRestrictedGuest];
 
-  if ((v12 & 1) == 0)
+  if ((isRestrictedGuest & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -265,7 +265,7 @@ LABEL_13:
       v21 = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v17 = "%{public}@Received RG schedule started notification for user that's not RG %@";
       v18 = v15;
       v19 = OS_LOG_TYPE_ERROR;
@@ -281,7 +281,7 @@ LABEL_12:
   if ([v10 state] != 2)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -289,7 +289,7 @@ LABEL_12:
       v21 = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v17 = "%{public}@RG schedule started but not sending home presence update notification because user is not home yet %@";
       goto LABEL_11;
     }
@@ -303,14 +303,14 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isStateEquivalentForExistingReport:(id)a3 newReport:(id)a4
+- (BOOL)isStateEquivalentForExistingReport:(id)report newReport:(id)newReport
 {
-  v6 = a3;
-  v7 = a4;
+  reportCopy = report;
+  newReportCopy = newReport;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = reportCopy;
   }
 
   else
@@ -319,7 +319,7 @@ LABEL_14:
   }
 
   v9 = v8;
-  v10 = v7;
+  v10 = newReportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -357,38 +357,38 @@ LABEL_14:
   return v15;
 }
 
-- (uint64_t)effectiveStateForReport:(void *)a1
+- (uint64_t)effectiveStateForReport:(void *)report
 {
   v3 = a2;
-  if (a1)
+  if (report)
   {
-    v4 = [a1 dataSource];
-    v5 = [v4 currentDate];
-    v6 = [a1 dataSource];
-    [v6 reportValidityInterval];
-    if ([v3 isExpiredWithCurrentDate:v5 validInterval:?])
+    dataSource = [report dataSource];
+    currentDate = [dataSource currentDate];
+    dataSource2 = [report dataSource];
+    [dataSource2 reportValidityInterval];
+    if ([v3 isExpiredWithCurrentDate:currentDate validInterval:?])
     {
-      v7 = 3;
+      state = 3;
     }
 
     else
     {
-      v7 = [v3 state];
+      state = [v3 state];
     }
   }
 
   else
   {
-    v7 = 0;
+    state = 0;
   }
 
-  return v7;
+  return state;
 }
 
 - (HMDHomeActivityHomeAwayUserStatesDetails)userActivityStatesDetails
 {
-  v3 = [(HMDHomeActivityStateAggregator *)self rawUserActivityMap];
-  v4 = [v3 copy];
+  rawUserActivityMap = [(HMDHomeActivityStateAggregator *)self rawUserActivityMap];
+  v4 = [rawUserActivityMap copy];
 
   v5 = [(HMDHomeActivityHomeAwayAggregator *)self _userActivityStatesDetailsWithMap:v4];
 
@@ -399,34 +399,34 @@ LABEL_14:
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDHomeActivityStateAggregator *)v4 userActivityMap];
+    userActivityMap = [(HMDHomeActivityStateAggregator *)selfCopy userActivityMap];
     *buf = 138543618;
     v21 = v6;
     v22 = 2112;
-    v23 = v7;
+    v23 = userActivityMap;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Computing state from user activity map %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMDHomeActivityStateAggregator *)v4 userActivityMap];
-  v9 = [v8 count];
+  userActivityMap2 = [(HMDHomeActivityStateAggregator *)selfCopy userActivityMap];
+  v9 = [userActivityMap2 count];
 
-  if (v9 && (-[HMDHomeActivityHomeAwayAggregator userActivityStatesDetails](v4, "userActivityStatesDetails"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isAnyUserAtHome], v10, !v11))
+  if (v9 && (-[HMDHomeActivityHomeAwayAggregator userActivityStatesDetails](selfCopy, "userActivityStatesDetails"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isAnyUserAtHome], v10, !v11))
   {
-    v13 = [(HMDHomeActivityStateAggregator *)v4 userActivityMap];
+    userActivityMap3 = [(HMDHomeActivityStateAggregator *)selfCopy userActivityMap];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke;
     v19[3] = &unk_278676F70;
-    v19[4] = v4;
-    v14 = [v13 na_filter:v19];
-    v15 = [MEMORY[0x277CBEAA8] distantPast];
-    v16 = [v14 na_reduceWithInitialValue:v15 reducer:&__block_literal_global_89522];
+    v19[4] = selfCopy;
+    v14 = [userActivityMap3 na_filter:v19];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    v16 = [v14 na_reduceWithInitialValue:distantPast reducer:&__block_literal_global_89522];
 
     v12 = [[HMDHomeActivityHomeAwayAggregatorState alloc] initWithType:2 awayChangedTimestamp:v16];
   }
@@ -462,15 +462,15 @@ id __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke_2(uint64_
   return v7;
 }
 
-- (BOOL)isReportTimestampWithinValidPeriod:(id)a3
+- (BOOL)isReportTimestampWithinValidPeriod:(id)period
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  periodCopy = period;
+  if (periodCopy)
   {
-    v5 = [(HMDHomeActivityStateAggregator *)self dataSource];
-    v6 = [v5 currentDate];
-    [v4 timeIntervalSinceDate:v6];
+    dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+    currentDate = [dataSource currentDate];
+    [periodCopy timeIntervalSinceDate:currentDate];
     v8 = fabs(v7);
 
     v9 = v8 < 120.0;
@@ -479,7 +479,7 @@ id __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke_2(uint64_
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -497,21 +497,21 @@ id __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke_2(uint64_
   return v9;
 }
 
-- (BOOL)handleUpdateFromDetector:(id)a3
+- (BOOL)handleUpdateFromDetector:(id)detector
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  detectorCopy = detector;
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDHomeActivityHomeAwayAggregator *)self userActivityStatesDetails];
+  userActivityStatesDetails = [(HMDHomeActivityHomeAwayAggregator *)self userActivityStatesDetails];
   v43.receiver = self;
   v43.super_class = HMDHomeActivityHomeAwayAggregator;
-  v8 = [(HMDHomeActivityStateAggregator *)&v43 handleUpdateFromDetector:v4];
+  v8 = [(HMDHomeActivityStateAggregator *)&v43 handleUpdateFromDetector:detectorCopy];
   if (v8)
   {
-    v9 = v4;
+    v9 = detectorCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -528,38 +528,38 @@ id __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke_2(uint64_
     if (v11)
     {
       v12 = v11;
-      v42 = v7;
+      v42 = userActivityStatesDetails;
       if (self)
       {
-        v13 = [(HMDHomeActivityStateAggregator *)self dataSource];
-        v14 = [v13 featuresDataSource];
-        v15 = [v14 isHomeActivityStateReplacesPresenceMonitorFeatureEnabled];
+        dataSource2 = [(HMDHomeActivityStateAggregator *)self dataSource];
+        featuresDataSource = [dataSource2 featuresDataSource];
+        isHomeActivityStateReplacesPresenceMonitorFeatureEnabled = [featuresDataSource isHomeActivityStateReplacesPresenceMonitorFeatureEnabled];
 
-        if (v15)
+        if (isHomeActivityStateReplacesPresenceMonitorFeatureEnabled)
         {
-          v16 = [v12 user];
-          v17 = [(HMDHomeActivityHomeAwayAggregator *)self userActivityStatesDetails];
+          user = [v12 user];
+          userActivityStatesDetails2 = [(HMDHomeActivityHomeAwayAggregator *)self userActivityStatesDetails];
           context = v12;
-          v38 = [v12 sourceDevice];
-          v18 = [v42 detailForUser:v16];
-          v39 = v17;
-          v19 = [v17 detailForUser:v16];
-          v20 = [v18 isNotAtHome];
+          sourceDevice = [v12 sourceDevice];
+          v18 = [v42 detailForUser:user];
+          v39 = userActivityStatesDetails2;
+          v19 = [userActivityStatesDetails2 detailForUser:user];
+          isNotAtHome = [v18 isNotAtHome];
           v37 = v18;
-          v21 = [v18 isAtHome];
-          v22 = [v19 isNotAtHome];
+          isAtHome = [v18 isAtHome];
+          isNotAtHome2 = [v19 isNotAtHome];
           v34 = v19;
-          v23 = [v19 isAtHome];
-          v24 = v23;
-          v33 = v20;
-          v40 = v16;
-          if ((v20 & v23 & 1) != 0 || (v21 & v22) != 0)
+          isAtHome2 = [v19 isAtHome];
+          v24 = isAtHome2;
+          v33 = isNotAtHome;
+          v40 = user;
+          if ((isNotAtHome & isAtHome2 & 1) != 0 || (isAtHome & isNotAtHome2) != 0)
           {
             v12 = context;
             if ([context reason] == 11)
             {
-              v25 = [context changedTimestamp];
-              v41 = [(HMDHomeActivityHomeAwayAggregator *)self isReportTimestampWithinValidPeriod:v25];
+              changedTimestamp = [context changedTimestamp];
+              v41 = [(HMDHomeActivityHomeAwayAggregator *)self isReportTimestampWithinValidPeriod:changedTimestamp];
             }
 
             else
@@ -575,7 +575,7 @@ id __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke_2(uint64_
           }
 
           contexta = objc_autoreleasePoolPush();
-          v26 = self;
+          selfCopy = self;
           v27 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
@@ -585,20 +585,20 @@ id __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke_2(uint64_
             *buf = 138544642;
             v45 = v28;
             v46 = 1024;
-            v47 = v21;
+            v47 = isAtHome;
             v48 = 1024;
             v49 = v33;
             v50 = 1024;
             v51 = v29 & 1;
             v52 = 1024;
-            v53 = v22 & 1;
+            v53 = isNotAtHome2 & 1;
             v54 = 1024;
             v55 = v41;
             _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Sending user activity state changed notification for Old(H: %{BOOL}d, A: %{BOOL}d) -> New(H: %{BOOL}d, A: %{BOOL}d), isUpdate: %{BOOL}d", buf, 0x2Au);
           }
 
           objc_autoreleasePoolPop(contexta);
-          [(HMDHomeActivityHomeAwayAggregator *)v26 _postHomePresenceUpdateNotificationWithHomePresence:v39 userPresence:v34 causingDevice:v38 isUpdate:v41];
+          [(HMDHomeActivityHomeAwayAggregator *)selfCopy _postHomePresenceUpdateNotificationWithHomePresence:v39 userPresence:v34 causingDevice:sourceDevice isUpdate:v41];
         }
       }
     }
@@ -608,22 +608,22 @@ id __50__HMDHomeActivityHomeAwayAggregator_computedState__block_invoke_2(uint64_
   return v8;
 }
 
-- (BOOL)processUserPresenceWithAuthStatus:(id)a3 regionStatus:(id)a4 updateReason:(id)a5 forUser:(id)a6 fromDevice:(id)a7
+- (BOOL)processUserPresenceWithAuthStatus:(id)status regionStatus:(id)regionStatus updateReason:(id)reason forUser:(id)user fromDevice:(id)device
 {
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v18 = [v17 queue];
-  dispatch_assert_queue_V2(v18);
+  statusCopy = status;
+  regionStatusCopy = regionStatus;
+  reasonCopy = reason;
+  userCopy = user;
+  deviceCopy = device;
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (([v15 isAllowedToContributeActivityStates] & 1) == 0)
+  if (([userCopy isAllowedToContributeActivityStates] & 1) == 0)
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy3 = self;
     v30 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -637,31 +637,31 @@ LABEL_13:
     }
 
     v31 = HMFGetLogIdentifier();
-    v32 = [v15 shortDescription];
+    shortDescription = [userCopy shortDescription];
     *buf = 138543618;
     v50 = v31;
     v51 = 2114;
-    v52 = v32;
+    v52 = shortDescription;
     _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_INFO, "%{public}@Ignoring presence update from %{public}@ because they're not allowed to contribute to Home Activity State", buf, 0x16u);
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v19 = HMDUserActivityHomeAwayStateFromPresenceRegion(v13, v12);
-  v20 = [v14 value] - 2;
+  v19 = HMDUserActivityHomeAwayStateFromPresenceRegion(regionStatusCopy, statusCopy);
+  v20 = [reasonCopy value] - 2;
   if (v20 <= 0xA)
   {
     v21 = qword_22A5874F0[v20];
-    if (v13)
+    if (regionStatusCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_15:
-    v34 = [(HMDHomeActivityStateAggregator *)self removeActivityReportForUser:v15];
+    v34 = [(HMDHomeActivityStateAggregator *)self removeActivityReportForUser:userCopy];
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy2 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
@@ -680,16 +680,16 @@ LABEL_15:
   }
 
   v21 = 1;
-  if (!v13)
+  if (!regionStatusCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_4:
-  if (![v12 value])
+  if (![statusCopy value])
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy3 = self;
     v30 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -704,7 +704,7 @@ LABEL_4:
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy4 = self;
   v24 = HMFGetOSLogHandle();
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
   if (v19 == 1)
@@ -726,12 +726,12 @@ LABEL_4:
     v48 = HMFGetLogIdentifier();
     v47 = off_278672FD8[v19];
     v46 = HMDUserActivityStateDetectorUpdateReasonAsString(v21);
-    [v15 userID];
+    [userCopy userID];
     v39 = v45 = v22;
     *buf = 138544386;
     v50 = v48;
     v51 = 2114;
-    v52 = v12;
+    v52 = statusCopy;
     v53 = 2114;
     v54 = v47;
     v55 = 2114;
@@ -744,22 +744,22 @@ LABEL_4:
   }
 
   objc_autoreleasePoolPop(v22);
-  v40 = [(HMDHomeActivityStateAggregator *)v23 dataSource];
-  v41 = [v40 currentDate];
+  dataSource2 = [(HMDHomeActivityStateAggregator *)selfCopy4 dataSource];
+  currentDate = [dataSource2 currentDate];
 
-  v42 = [[HMDUserActivityHomeAwayReport alloc] initWithUser:v15 state:v19 fromDevice:v16 reason:v21 changedTimestamp:v41 lastUpdatedTimeStamp:v41];
-  v33 = [(HMDHomeActivityHomeAwayAggregator *)v23 handleUpdateFromDetector:v42];
+  v42 = [[HMDUserActivityHomeAwayReport alloc] initWithUser:userCopy state:v19 fromDevice:deviceCopy reason:v21 changedTimestamp:currentDate lastUpdatedTimeStamp:currentDate];
+  v33 = [(HMDHomeActivityHomeAwayAggregator *)selfCopy4 handleUpdateFromDetector:v42];
 
 LABEL_23:
   v43 = *MEMORY[0x277D85DE8];
   return v33;
 }
 
-- (HMDHomeActivityHomeAwayAggregator)initWithDataSource:(id)a3
+- (HMDHomeActivityHomeAwayAggregator)initWithDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregatorStorage *)[HMDHomeActivityHomeAwayAggregatorStorage alloc] initWithDataSource:v4];
-  v6 = [(HMDHomeActivityStateAggregator *)self initWithStorage:v5 dataSource:v4];
+  sourceCopy = source;
+  v5 = [(HMDHomeActivityStateAggregatorStorage *)[HMDHomeActivityHomeAwayAggregatorStorage alloc] initWithDataSource:sourceCopy];
+  v6 = [(HMDHomeActivityStateAggregator *)self initWithStorage:v5 dataSource:sourceCopy];
 
   return v6;
 }

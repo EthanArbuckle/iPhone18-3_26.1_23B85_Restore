@@ -1,24 +1,24 @@
 @interface PKApplyWebServiceApplicationDeleteRequest
-- (PKApplyWebServiceApplicationDeleteRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceApplicationDeleteRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceApplicationDeleteRequest
 
-- (PKApplyWebServiceApplicationDeleteRequest)initWithCoder:(id)a3
+- (PKApplyWebServiceApplicationDeleteRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKApplyWebServiceApplicationDeleteRequest;
-  v5 = [(PKApplyWebServiceRequest *)&v11 initWithCoder:v4];
+  v5 = [(PKApplyWebServiceRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     baseURL = v5->_baseURL;
     v5->_baseURL = v8;
   }
@@ -26,21 +26,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceApplicationDeleteRequest;
-  v4 = a3;
-  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_baseURL forKey:@"baseURL"];
+  coderCopy = coder;
+  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_baseURL forKey:@"baseURL"];
 }
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -62,7 +62,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v9 = PKLogFacilityTypeGetObject(0xEuLL);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))

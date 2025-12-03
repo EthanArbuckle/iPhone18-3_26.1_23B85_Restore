@@ -1,15 +1,15 @@
 @interface ATXMPBContextMenuFeedbackTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)menuActionTypeAsString:(int)a3;
-- (int)StringAsMenuActionType:(id)a3;
+- (id)menuActionTypeAsString:(int)string;
+- (int)StringAsMenuActionType:(id)type;
 - (int)menuActionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBContextMenuFeedbackTracker
@@ -27,33 +27,33 @@
   }
 }
 
-- (id)menuActionTypeAsString:(int)a3
+- (id)menuActionTypeAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"DismissOnce";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"NeverShowAgain";
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsMenuActionType:(id)a3
+- (int)StringAsMenuActionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"DismissOnce"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"DismissOnce"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"NeverShowAgain"])
+    if ([typeCopy isEqualToString:@"NeverShowAgain"])
     {
       v4 = 2;
     }
@@ -73,15 +73,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBContextMenuFeedbackTracker;
   v4 = [(ATXMPBContextMenuFeedbackTracker *)&v8 description];
-  v5 = [(ATXMPBContextMenuFeedbackTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBContextMenuFeedbackTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     menuActionType = self->_menuActionType;
@@ -100,109 +100,109 @@
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_menuActionType];
     }
 
-    [v3 setObject:v5 forKey:@"menuActionType"];
+    [dictionary setObject:v5 forKey:@"menuActionType"];
   }
 
   clientModelId = self->_clientModelId;
   if (clientModelId)
   {
-    [v3 setObject:clientModelId forKey:@"clientModelId"];
+    [dictionary setObject:clientModelId forKey:@"clientModelId"];
   }
 
   executableType = self->_executableType;
   if (executableType)
   {
-    [v3 setObject:executableType forKey:@"executableType"];
+    [dictionary setObject:executableType forKey:@"executableType"];
   }
 
   consumerSubType = self->_consumerSubType;
   if (consumerSubType)
   {
-    [v3 setObject:consumerSubType forKey:@"consumerSubType"];
+    [dictionary setObject:consumerSubType forKey:@"consumerSubType"];
   }
 
   suggestion = self->_suggestion;
   if (suggestion)
   {
-    [v3 setObject:suggestion forKey:@"suggestion"];
+    [dictionary setObject:suggestion forKey:@"suggestion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientModelId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_executableType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_suggestion)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_menuActionType;
-    *(v4 + 48) |= 1u;
+    toCopy[8] = self->_menuActionType;
+    *(toCopy + 48) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_clientModelId)
   {
-    [v4 setClientModelId:?];
-    v4 = v5;
+    [toCopy setClientModelId:?];
+    toCopy = v5;
   }
 
   if (self->_executableType)
   {
     [v5 setExecutableType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_consumerSubType)
   {
     [v5 setConsumerSubType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_suggestion)
   {
     [v5 setSuggestion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -210,42 +210,42 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v7 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSString *)self->_executableType copyWithZone:a3];
+  v9 = [(NSString *)self->_executableType copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v11 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(NSString *)self->_suggestion copyWithZone:a3];
+  v13 = [(NSString *)self->_suggestion copyWithZone:zone];
   v14 = v6[5];
   v6[5] = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_menuActionType != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_menuActionType != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v9 = 0;
@@ -253,13 +253,13 @@ LABEL_15:
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 1) && ![(NSString *)clientModelId isEqual:?])
+  if (clientModelId | *(equalCopy + 1) && ![(NSString *)clientModelId isEqual:?])
   {
     goto LABEL_15;
   }
 
   executableType = self->_executableType;
-  if (executableType | *(v4 + 3))
+  if (executableType | *(equalCopy + 3))
   {
     if (![(NSString *)executableType isEqual:?])
     {
@@ -268,7 +268,7 @@ LABEL_15:
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 2))
+  if (consumerSubType | *(equalCopy + 2))
   {
     if (![(NSString *)consumerSubType isEqual:?])
     {
@@ -277,7 +277,7 @@ LABEL_15:
   }
 
   suggestion = self->_suggestion;
-  if (suggestion | *(v4 + 5))
+  if (suggestion | *(equalCopy + 5))
   {
     v9 = [(NSString *)suggestion isEqual:?];
   }
@@ -310,38 +310,38 @@ LABEL_16:
   return v6 ^ [(NSString *)self->_suggestion hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[12])
+  fromCopy = from;
+  if (fromCopy[12])
   {
-    self->_menuActionType = v4[8];
+    self->_menuActionType = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(ATXMPBContextMenuFeedbackTracker *)self setClientModelId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXMPBContextMenuFeedbackTracker *)self setExecutableType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXMPBContextMenuFeedbackTracker *)self setConsumerSubType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXMPBContextMenuFeedbackTracker *)self setSuggestion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

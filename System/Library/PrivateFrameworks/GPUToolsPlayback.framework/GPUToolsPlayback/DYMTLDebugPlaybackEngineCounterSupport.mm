@@ -1,41 +1,41 @@
 @interface DYMTLDebugPlaybackEngineCounterSupport
-- (BOOL)_FixSplitEncoderSamples:(void *)a3 forProfile:(const void *)a4 withInfo:(id)a5 andUpdatedCounterInfo:(id)a6;
-- (BOOL)_computeAverageForFrameProfile:(void *)a3 forProfile:(const void *)a4 withInfo:(id)a5 andUpdatedCounterInfo:(id)a6 forEncoders:(BOOL)a7;
-- (DYMTLDebugPlaybackEngineCounterSupport)initWithPlaybackEngine:(id)a3;
+- (BOOL)_FixSplitEncoderSamples:(void *)samples forProfile:(const void *)profile withInfo:(id)info andUpdatedCounterInfo:(id)counterInfo;
+- (BOOL)_computeAverageForFrameProfile:(void *)profile forProfile:(const void *)forProfile withInfo:(id)info andUpdatedCounterInfo:(id)counterInfo forEncoders:(BOOL)encoders;
+- (DYMTLDebugPlaybackEngineCounterSupport)initWithPlaybackEngine:(id)engine;
 - (id).cxx_construct;
-- (id)_profileFrameWithCounterListsForProfileInfo:(id)a3;
-- (id)_profileSplitEncodersForProfileInfo:(id)a3;
-- (id)_runPassesForCounterLists:(id)a3 encoderPass:(BOOL)a4 frameProfileInfo:(void *)a5;
-- (id)_updatedBatchInfos:(id)a3 fromPerEncoderDrawCallCount:(id)a4;
+- (id)_profileFrameWithCounterListsForProfileInfo:(id)info;
+- (id)_profileSplitEncodersForProfileInfo:(id)info;
+- (id)_runPassesForCounterLists:(id)lists encoderPass:(BOOL)pass frameProfileInfo:(void *)info;
+- (id)_updatedBatchInfos:(id)infos fromPerEncoderDrawCallCount:(id)count;
 - (id)availableCounters;
 - (id)derivedCounterData;
-- (id)profileEncodersForProfileInfo:(id)a3;
-- (id)profileFrameWithCounterListsForProfileInfo:(id)a3;
-- (id)profileFrameWithCounterListsForProfileInfoAsync:(id)a3;
-- (id)profileFrameWithPayload:(id)a3;
+- (id)profileEncodersForProfileInfo:(id)info;
+- (id)profileFrameWithCounterListsForProfileInfo:(id)info;
+- (id)profileFrameWithCounterListsForProfileInfoAsync:(id)async;
+- (id)profileFrameWithPayload:(id)payload;
 - (void)_clearData;
 - (void)_setupPState;
-- (void)addCommandBufferFrameProfile:(const void *)a3;
-- (void)addCounters:(id)a3;
+- (void)addCommandBufferFrameProfile:(const void *)profile;
+- (void)addCounters:(id)counters;
 - (void)createBatchIdFilterMapping;
 @end
 
 @implementation DYMTLDebugPlaybackEngineCounterSupport
 
-- (DYMTLDebugPlaybackEngineCounterSupport)initWithPlaybackEngine:(id)a3
+- (DYMTLDebugPlaybackEngineCounterSupport)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v11.receiver = self;
   v11.super_class = DYMTLDebugPlaybackEngineCounterSupport;
   v5 = [(DYMTLDebugPlaybackEngineCounterSupport *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_engine, v4);
+    objc_storeWeak(&v5->_engine, engineCopy);
     v6->_loopCount = 1;
     v7 = MTLCreateSystemDefaultDevice();
-    v8 = [v7 name];
-    v6->_isAGXDevice = [v8 compare:@"Unknown Unknown"] == 0;
+    name = [v7 name];
+    v6->_isAGXDevice = [name compare:@"Unknown Unknown"] == 0;
 
     v9 = v6;
   }
@@ -45,13 +45,13 @@
 
 - (void)_setupPState
 {
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v5 objectForKey:@"GPUFrameProfilingPowerStateWarmupTime"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"GPUFrameProfilingPowerStateWarmupTime"];
 
   if (v3)
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v6 integerForKey:@"GPUFrameProfilingPowerStateWarmupTime"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults2 integerForKey:@"GPUFrameProfilingPowerStateWarmupTime"];
 
     if (v4 < 1)
     {
@@ -74,27 +74,27 @@
   [v9 playbackToFunction:0 withLoops:0xFFFFFFFFLL];
 }
 
-- (BOOL)_computeAverageForFrameProfile:(void *)a3 forProfile:(const void *)a4 withInfo:(id)a5 andUpdatedCounterInfo:(id)a6 forEncoders:(BOOL)a7
+- (BOOL)_computeAverageForFrameProfile:(void *)profile forProfile:(const void *)forProfile withInfo:(id)info andUpdatedCounterInfo:(id)counterInfo forEncoders:(BOOL)encoders
 {
-  v11 = a5;
-  v12 = a6;
-  if (*a4 == *(a4 + 1) || ((WeakRetained = objc_loadWeakRetained(&self->_engine), v14 = [WeakRetained numIterationsInLastPlayback], v15 = v14, v14 <= 1) ? (v16 = 1) : (v16 = v14), WeakRetained, v17 = 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 4), v18 = v17 / v16, v17 % v16))
+  infoCopy = info;
+  counterInfoCopy = counterInfo;
+  if (*forProfile == *(forProfile + 1) || ((WeakRetained = objc_loadWeakRetained(&self->_engine), v14 = [WeakRetained numIterationsInLastPlayback], v15 = v14, v14 <= 1) ? (v16 = 1) : (v16 = v14), WeakRetained, v17 = 0xAAAAAAAAAAAAAAABLL * ((*(forProfile + 1) - *forProfile) >> 4), v18 = v17 / v16, v17 % v16))
   {
     v19 = 0;
   }
 
   else
   {
-    v37 = a3;
-    std::vector<std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long>>::resize(a3, v17 / v16);
-    v21 = **a4;
+    profileCopy = profile;
+    std::vector<std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long>>::resize(profile, v17 / v16);
+    v21 = **forProfile;
     if (v15 > 1)
     {
-      v35 = v12;
-      v36 = v11;
+      v35 = counterInfoCopy;
+      v36 = infoCopy;
       std::vector<std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long,std::vector<unsigned long long>,std::vector<unsigned long long>>>::vector[abi:ne200100](v38, v17 / v16);
-      v24 = *a4;
-      if (*(a4 + 1) != *a4)
+      v24 = *forProfile;
+      if (*(forProfile + 1) != *forProfile)
       {
         v25 = 0;
         v26 = 0;
@@ -116,11 +116,11 @@
           }
 
           ++v26;
-          v24 = *a4;
+          v24 = *forProfile;
           v25 += 6;
         }
 
-        while (v26 < 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 4));
+        while (v26 < 0xAAAAAAAAAAAAAAABLL * ((*(forProfile + 1) - *forProfile) >> 4));
       }
 
       if (v17 >= v16)
@@ -134,8 +134,8 @@
         v29 = 56;
         do
         {
-          v30 = *v37;
-          v31 = (*v37 + v28);
+          v30 = *profileCopy;
+          v31 = (*profileCopy + v28);
           v32 = v38[0];
           v33 = v38[0] + v29;
           *v31 = *(v38[0] + v29 - 56);
@@ -163,16 +163,16 @@
       v39 = v38;
       std::vector<std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long,std::vector<unsigned long long>,std::vector<unsigned long long>>>::__destroy_vector::operator()[abi:ne200100](&v39);
       v19 = 1;
-      v12 = v35;
-      v11 = v36;
+      counterInfoCopy = v35;
+      infoCopy = v36;
     }
 
     else
     {
       if (v17 >= v16)
       {
-        v22 = (*a4 + 24);
-        v23 = (*a3 + 24);
+        v22 = (*forProfile + 24);
+        v23 = (*profile + 24);
         do
         {
           *(v23 - 3) = *(v22 - 3) - v21;
@@ -203,23 +203,23 @@
   self->_commandBufferFrameProfilesPerDMDrawCallInfo.__end_ = self->_commandBufferFrameProfilesPerDMDrawCallInfo.__begin_;
 }
 
-- (id)profileFrameWithPayload:(id)a3
+- (id)profileFrameWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   [(DYMTLDebugPlaybackEngineCounterSupport *)self _setupPState];
   loopCount = self->_loopCount;
   self->_loopCount = 15;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v7 = [WeakRetained player];
-  [v7 enableStatsSampling:1];
+  player = [WeakRetained player];
+  [player enableStatsSampling:1];
 
   v8 = objc_loadWeakRetained(&self->_engine);
-  v9 = [v8 player];
-  v10 = [v9 setupCounterConfigurationAndGetFrameProfilerCounters];
+  player2 = [v8 player];
+  setupCounterConfigurationAndGetFrameProfilerCounters = [player2 setupCounterConfigurationAndGetFrameProfilerCounters];
 
-  if (v4)
+  if (payloadCopy)
   {
-    v11 = [v4 mutableCopy];
+    v11 = [payloadCopy mutableCopy];
   }
 
   else
@@ -228,34 +228,34 @@
   }
 
   v12 = v11;
-  [v11 setObject:v10 forKeyedSubscript:*MEMORY[0x277D0B480]];
+  [v11 setObject:setupCounterConfigurationAndGetFrameProfilerCounters forKeyedSubscript:*MEMORY[0x277D0B480]];
   v13 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:v12];
   v14 = *MEMORY[0x277D0B030];
   v59 = [v13 objectForKeyedSubscript:*MEMORY[0x277D0B030]];
   v15 = objc_loadWeakRetained(&self->_engine);
-  v16 = [v15 player];
-  [v16 enableStatsSampling:1];
+  player3 = [v15 player];
+  [player3 enableStatsSampling:1];
 
   v17 = objc_loadWeakRetained(&self->_engine);
-  v18 = [v17 player];
-  [v18 sampleEncoderCounters];
+  player4 = [v17 player];
+  [player4 sampleEncoderCounters];
 
   v19 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:v12 encoderPass:1];
-  v20 = self;
+  selfCopy = self;
   v21 = v19;
-  v57 = v20;
-  v22 = objc_loadWeakRetained(&v20->_engine);
-  v23 = [v22 player];
-  [v23 enableStatsSampling:0];
+  v57 = selfCopy;
+  v22 = objc_loadWeakRetained(&selfCopy->_engine);
+  player5 = [v22 player];
+  [player5 enableStatsSampling:0];
   v53 = v13;
   v54 = v12;
-  v55 = v4;
-  v56 = v10;
+  v55 = payloadCopy;
+  v56 = setupCounterConfigurationAndGetFrameProfilerCounters;
 
   v52 = v21;
   v58 = [v21 objectForKeyedSubscript:v14];
   v57->_loopCount = loopCount;
-  v24 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = [v59 count];
   if (v25 == [v58 count])
   {
@@ -264,7 +264,7 @@ LABEL_6:
     if (v26 >= [v59 count])
     {
       [(DYMTLDebugPlaybackEngineCounterSupport *)v57 addCounters:v56];
-      [(NSMutableDictionary *)v57->_frameProfiling setObject:v24 forKeyedSubscript:@"frame profile data"];
+      [(NSMutableDictionary *)v57->_frameProfiling setObject:array forKeyedSubscript:@"frame profile data"];
       v49 = v57->_frameProfiling;
       frameProfiling = v57->_frameProfiling;
       v57->_frameProfiling = 0;
@@ -307,10 +307,10 @@ LABEL_6:
 
           v38 = [v33 objectAtIndexedSubscript:0];
           v39 = [v38 objectAtIndexedSubscript:3];
-          v40 = [v39 unsignedLongLongValue];
+          unsignedLongLongValue = [v39 unsignedLongLongValue];
 
           v41 = 0;
-          v42 = v40;
+          v42 = unsignedLongLongValue;
           while (v41 < [v32 count])
           {
             if (v34)
@@ -330,7 +330,7 @@ LABEL_6:
             [v47 setObject:v46 atIndexedSubscript:3];
 
             v48 = [v32 objectAtIndexedSubscript:v41];
-            [v24 addObjectsFromArray:v48];
+            [array addObjectsFromArray:v48];
 
             ++v41;
           }
@@ -349,10 +349,10 @@ LABEL_6:
   return v49;
 }
 
-- (void)addCommandBufferFrameProfile:(const void *)a3
+- (void)addCommandBufferFrameProfile:(const void *)profile
 {
-  v3 = *a3;
-  v4 = *(a3 + 1);
+  v3 = *profile;
+  v4 = *(profile + 1);
   p_commandBufferFrameProfilesInfo = &self->_commandBufferFrameProfilesInfo;
   while (v3 != v4)
   {
@@ -361,17 +361,17 @@ LABEL_6:
   }
 }
 
-- (BOOL)_FixSplitEncoderSamples:(void *)a3 forProfile:(const void *)a4 withInfo:(id)a5 andUpdatedCounterInfo:(id)a6
+- (BOOL)_FixSplitEncoderSamples:(void *)samples forProfile:(const void *)profile withInfo:(id)info andUpdatedCounterInfo:(id)counterInfo
 {
-  v6 = *a4;
-  v7 = *(a4 + 1);
-  if (*a4 != v7)
+  v6 = *profile;
+  v7 = *(profile + 1);
+  if (*profile != v7)
   {
-    std::vector<std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long>>::resize(a3, 0xAAAAAAAAAAAAAAABLL * ((v7 - v6) >> 4));
-    v11 = *a4;
-    v10 = *(a4 + 1);
-    v12 = v10 - *a4;
-    if (v10 != *a4)
+    std::vector<std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long,unsigned long long>>::resize(samples, 0xAAAAAAAAAAAAAAABLL * ((v7 - v6) >> 4));
+    v11 = *profile;
+    v10 = *(profile + 1);
+    v12 = v10 - *profile;
+    if (v10 != *profile)
     {
       v13 = 0;
       v14 = 0;
@@ -384,7 +384,7 @@ LABEL_6:
         v18 = 1;
       }
 
-      v19 = (*a3 + 24);
+      v19 = (*samples + 24);
       v20 = -1;
       do
       {
@@ -423,39 +423,39 @@ LABEL_6:
   return v6 != v7;
 }
 
-- (id)_profileSplitEncodersForProfileInfo:(id)a3
+- (id)_profileSplitEncodersForProfileInfo:(id)info
 {
   v202 = *MEMORY[0x277D85DE8];
-  v146 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v5 = [WeakRetained player];
+  player = [WeakRetained player];
 
-  v152 = v5;
-  [v5 enableStatsSampling:1];
-  [v5 sampleSplitEncoderCounters];
-  [v5 setupProfileInfo:v146];
+  v152 = player;
+  [player enableStatsSampling:1];
+  [player sampleSplitEncoderCounters];
+  [player setupProfileInfo:infoCopy];
   [(DYMTLDebugPlaybackEngineCounterSupport *)self _clearData];
   v6 = objc_loadWeakRetained(&self->_engine);
   [v6 setPlaybackMode:9];
 
-  v7 = [v146 objectForKeyedSubscript:*MEMORY[0x277D0B480]];
-  v151 = [v5 counterInfo:v7];
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D0B480]];
+  v151 = [player counterInfo:v7];
 
   v8 = objc_loadWeakRetained(&self->_engine);
-  v9 = [v8 player];
-  [v9 setupProfilingForCounterLists];
+  player2 = [v8 player];
+  [player2 setupProfilingForCounterLists];
 
   v10 = [v151 objectForKeyedSubscript:*MEMORY[0x277D0B398]];
-  v161 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
   v155 = *MEMORY[0x277D0B0D0];
   v145 = [v151 objectForKeyedSubscript:?];
   v157 = *MEMORY[0x277D0B0C8];
   v165 = [v151 objectForKeyedSubscript:?];
-  if (v161)
+  if (unsignedIntegerValue)
   {
     v11 = 0;
-    for (i = 0; i != v161; ++i)
+    for (i = 0; i != unsignedIntegerValue; ++i)
     {
       v13 = [v165 objectAtIndexedSubscript:i];
       v11 += [v13 count];
@@ -470,12 +470,12 @@ LABEL_6:
   if (self->_isAGXDevice)
   {
     v14 = objc_loadWeakRetained(&self->_engine);
-    v15 = [v14 player];
-    [v15 enableConsistentState:1];
+    player3 = [v14 player];
+    [player3 enableConsistentState:1];
   }
 
   v16 = 0x6DB6DB6DB6DB6DB7;
-  if (v161)
+  if (unsignedIntegerValue)
   {
     v17 = 0;
     while (([v152 setupProfilingForListAtIndex:v17] & 1) != 0)
@@ -508,7 +508,7 @@ LABEL_6:
       __p = 0;
       v191 = 0;
       v192 = 0;
-      v26 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _FixSplitEncoderSamples:&__p forProfile:&self->_commandBufferFrameProfilesInfo withInfo:v146 andUpdatedCounterInfo:v163];
+      v26 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _FixSplitEncoderSamples:&__p forProfile:&self->_commandBufferFrameProfilesInfo withInfo:infoCopy andUpdatedCounterInfo:v163];
       v27 = __p;
       if (!v26)
       {
@@ -614,7 +614,7 @@ LABEL_6:
       }
 
       v17 = obj + 1;
-      if (obj + 1 == v161)
+      if (obj + 1 == unsignedIntegerValue)
       {
         goto LABEL_34;
       }
@@ -713,10 +713,10 @@ LABEL_34:
       while (v56);
     }
 
-    if (v161)
+    if (unsignedIntegerValue)
     {
       v62 = objc_opt_new();
-      if (v161 != 1)
+      if (unsignedIntegerValue != 1)
       {
         v63 = [v165 objectAtIndexedSubscript:0];
         v64 = [v63 count];
@@ -790,7 +790,7 @@ LABEL_34:
         ++v77;
       }
 
-      while (v77 != v161);
+      while (v77 != unsignedIntegerValue);
       v84 = __p;
       if (__p != &v191)
       {
@@ -824,17 +824,17 @@ LABEL_34:
                 v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v182];
                 v91 = [v76 objectForKeyedSubscript:v90];
                 v92 = [v164 objectForKeyedSubscript:v91];
-                v93 = [v92 unsignedIntegerValue];
+                unsignedIntegerValue2 = [v92 unsignedIntegerValue];
 
                 v94 = v182++;
-                *(v184 + 16 * v93) = *(v84[8] + 16 * v94);
+                *(v184 + 16 * unsignedIntegerValue2) = *(v84[8] + 16 * v94);
               }
             }
 
             ++v86;
           }
 
-          while (v86 != v161);
+          while (v86 != unsignedIntegerValue);
           v95 = v84[8];
           if (v95)
           {
@@ -881,16 +881,16 @@ LABEL_34:
     }
 
     v99 = [v164 objectForKeyedSubscript:@"MTLStatCommandBufferIndex"];
-    v150 = [v99 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v99 unsignedIntegerValue];
 
     v100 = [v164 objectForKeyedSubscript:@"MTLStatEncoderIndex"];
-    v149 = [v100 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v100 unsignedIntegerValue];
 
     v101 = [v164 objectForKeyedSubscript:@"MTLStatCommandIndex"];
-    v148 = [v101 unsignedIntegerValue];
+    unsignedIntegerValue5 = [v101 unsignedIntegerValue];
 
     v102 = [v164 objectForKeyedSubscript:@"MTLStat_nSec"];
-    v147 = [v102 unsignedIntegerValue];
+    unsignedIntegerValue6 = [v102 unsignedIntegerValue];
 
     v156 = objc_opt_new();
     v154 = objc_opt_new();
@@ -953,24 +953,24 @@ LABEL_34:
         v198[0] = v117;
         v198[1] = &unk_2860BA180;
         v118 = [MEMORY[0x277CBEA60] arrayWithObjects:v198 count:2];
-        [v110 setObject:v118 atIndexedSubscript:v150];
+        [v110 setObject:v118 atIndexedSubscript:unsignedIntegerValue3];
 
         v119 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objb, "count") - 1}];
         v197[0] = v119;
         v197[1] = &unk_2860BA180;
         v120 = [MEMORY[0x277CBEA60] arrayWithObjects:v197 count:2];
-        [v110 setObject:v120 atIndexedSubscript:v149];
+        [v110 setObject:v120 atIndexedSubscript:unsignedIntegerValue4];
 
         v121 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v162, "count")}];
         v196[0] = v121;
         v196[1] = &unk_2860BA180;
         v122 = [MEMORY[0x277CBEA60] arrayWithObjects:v196 count:2];
-        [v110 setObject:v122 atIndexedSubscript:v148];
+        [v110 setObject:v122 atIndexedSubscript:unsignedIntegerValue5];
 
-        v123 = [v154 lastObject];
-        v124 = [v110 objectAtIndexedSubscript:v147];
+        lastObject = [v154 lastObject];
+        v124 = [v110 objectAtIndexedSubscript:unsignedIntegerValue6];
         v125 = [v124 objectAtIndexedSubscript:0];
-        [v123 addObject:v125];
+        [lastObject addObject:v125];
 
         v126 = [MEMORY[0x277CBEB18] arrayWithObject:v110];
         [v162 addObject:v126];
@@ -1084,8 +1084,8 @@ LABEL_34:
 - (void)createBatchIdFilterMapping
 {
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v3 = [WeakRetained player];
-  [v3 enableStatsSampling:1];
+  player = [WeakRetained player];
+  [player enableStatsSampling:1];
 
   v6 = objc_loadWeakRetained(&self->_engine);
   [v6 setPlaybackMode:12];
@@ -1094,43 +1094,43 @@ LABEL_34:
   [v7 playbackToFunction:0 withLoops:1];
 
   v8 = objc_loadWeakRetained(&self->_engine);
-  v4 = [v8 player];
-  [v4 enableStatsSampling:0];
+  player2 = [v8 player];
+  [player2 enableStatsSampling:0];
 
   v9 = objc_loadWeakRetained(&self->_engine);
   [v9 setPlaybackMode:0];
 }
 
-- (id)profileEncodersForProfileInfo:(id)a3
+- (id)profileEncodersForProfileInfo:(id)info
 {
   v106 = *MEMORY[0x277D85DE8];
-  v66 = a3;
+  infoCopy = info;
   [(DYMTLDebugPlaybackEngineCounterSupport *)self _setupPState];
-  v69 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v5 = [WeakRetained player];
-  [v5 enableStatsSampling:1];
+  player = [WeakRetained player];
+  [player enableStatsSampling:1];
 
-  v6 = objc_loadWeakRetained(&v69->_engine);
-  v7 = [v6 player];
-  [v7 sampleEncoderCounters];
+  v6 = objc_loadWeakRetained(&selfCopy->_engine);
+  player2 = [v6 player];
+  [player2 sampleEncoderCounters];
 
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"MTLStatCommandBufferIndex", @"MTLStatEncoderIndex", @"MTLStatCommandIndex", @"MTLStat_nSec", @"MTLStatTotalGPUCycles", 0}];
   v9 = [v8 mutableCopy];
 
-  v10 = objc_loadWeakRetained(&v69->_engine);
+  v10 = objc_loadWeakRetained(&selfCopy->_engine);
   v61 = v9;
-  v11 = [v10 player];
+  player3 = [v10 player];
 
-  v65 = v11;
-  if ([v11 isCounterAvailable:@"SW_PBUsed"])
+  v65 = player3;
+  if ([player3 isCounterAvailable:@"SW_PBUsed"])
   {
     v12 = @"SW_PBUsed";
   }
 
   else
   {
-    if (![v11 isCounterAvailable:@"_fedf2c59"])
+    if (![player3 isCounterAvailable:@"_fedf2c59"])
     {
       v82 = 0;
       goto LABEL_7;
@@ -1142,13 +1142,13 @@ LABEL_34:
   [v9 addObject:v12];
   v82 = 1;
 LABEL_7:
-  v68 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v66];
+  v68 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:infoCopy];
   [v68 setValue:v9 forKey:*MEMORY[0x277D0B480]];
-  loopCount = v69->_loopCount;
-  v69->_loopCount = 1;
-  if (v69->_isAGXDevice)
+  loopCount = selfCopy->_loopCount;
+  selfCopy->_loopCount = 1;
+  if (selfCopy->_isAGXDevice)
   {
-    v14 = [v66 objectForKeyedSubscript:*MEMORY[0x277D0B4F8]];
+    v14 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D0B4F8]];
     v15 = v14;
     if (v14)
     {
@@ -1166,22 +1166,22 @@ LABEL_7:
       v20 = 0.5;
     }
 
-    v67 = [(DYMTLDebugPlaybackEngineCounterSupport *)v69 _profileFrameWithCounterListsForProfileInfo:v68 setConsistentState:v19];
+    v67 = [(DYMTLDebugPlaybackEngineCounterSupport *)selfCopy _profileFrameWithCounterListsForProfileInfo:v68 setConsistentState:v19];
   }
 
   else
   {
-    v67 = [(DYMTLDebugPlaybackEngineCounterSupport *)v69 _profileFrameWithCounterListsForProfileInfo:v68];
+    v67 = [(DYMTLDebugPlaybackEngineCounterSupport *)selfCopy _profileFrameWithCounterListsForProfileInfo:v68];
     v19 = 0;
     v18 = 0;
     v20 = 0.5;
   }
 
-  v64 = [(DYMTLDebugPlaybackEngineCounterSupport *)v69 _profileSplitEncodersForProfileInfo:v68];
-  if (v69->_isAGXDevice)
+  v64 = [(DYMTLDebugPlaybackEngineCounterSupport *)selfCopy _profileSplitEncodersForProfileInfo:v68];
+  if (selfCopy->_isAGXDevice)
   {
-    v21 = [(DYMTLDebugPlaybackEngineCounterSupport *)v69 _profileFrameForFrameTiming:v68 atConsistentState:v19];
-    v22 = ((1.0 - v20) * [(DYMTLDebugPlaybackEngineCounterSupport *)v69 _profileFrameForFrameTiming:v68 atConsistentState:v18]+ v20 * v21);
+    v21 = [(DYMTLDebugPlaybackEngineCounterSupport *)selfCopy _profileFrameForFrameTiming:v68 atConsistentState:v19];
+    v22 = ((1.0 - v20) * [(DYMTLDebugPlaybackEngineCounterSupport *)selfCopy _profileFrameForFrameTiming:v68 atConsistentState:v18]+ v20 * v21);
     v23 = MEMORY[0x277CBEB38];
     v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v22];
     v63 = [v23 dictionaryWithObject:v24 forKey:@"gputime"];
@@ -1192,7 +1192,7 @@ LABEL_7:
     v63 = 0;
   }
 
-  v69->_loopCount = loopCount;
+  selfCopy->_loopCount = loopCount;
   if (!v67)
   {
     v37 = 0;
@@ -1400,7 +1400,7 @@ LABEL_37:
   [v37 setObject:v75 forKeyedSubscript:@"kick time data"];
   [v37 setObject:v76 forKeyedSubscript:@"kick cycle data"];
   [v37 setObject:v64 forKeyedSubscript:*MEMORY[0x277D0B4E0]];
-  if (v69->_isAGXDevice)
+  if (selfCopy->_isAGXDevice)
   {
     [v37 setObject:v63 forKeyedSubscript:@"consistent time"];
   }
@@ -1416,26 +1416,26 @@ LABEL_67:
   return v37;
 }
 
-- (id)profileFrameWithCounterListsForProfileInfo:(id)a3
+- (id)profileFrameWithCounterListsForProfileInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v6 = [WeakRetained player];
-  [v6 enableStatsSampling:1];
+  player = [WeakRetained player];
+  [player enableStatsSampling:1];
 
   v7 = objc_loadWeakRetained(&self->_engine);
-  v8 = [v7 player];
-  [v8 setupAllStatLocationsWithBlitOption:1];
+  player2 = [v7 player];
+  [player2 setupAllStatLocationsWithBlitOption:1];
 
-  v9 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:v4 encoderPass:0];
+  v9 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:infoCopy encoderPass:0];
   if (self->_isAGXDevice)
   {
     v10 = *MEMORY[0x277D0B4E0];
-    v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0B4E0]];
+    v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D0B4E0]];
     v12 = v11;
     if (v11 && [v11 BOOLValue])
     {
-      v13 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileSplitEncodersForProfileInfo:v4];
+      v13 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileSplitEncodersForProfileInfo:infoCopy];
       if (v13)
       {
         [v9 setObject:v13 forKeyedSubscript:v10];
@@ -1445,7 +1445,7 @@ LABEL_67:
 
   else
   {
-    v14 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0B4D8]];
+    v14 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D0B4D8]];
 
     if (!v14)
     {
@@ -1453,55 +1453,55 @@ LABEL_67:
     }
 
     v15 = objc_loadWeakRetained(&self->_engine);
-    v16 = [v15 player];
-    [v16 enableStatsSampling:1];
+    player3 = [v15 player];
+    [player3 enableStatsSampling:1];
 
     v17 = objc_loadWeakRetained(&self->_engine);
-    v18 = [v17 player];
-    [v18 sampleEncoderCounters];
+    player4 = [v17 player];
+    [player4 sampleEncoderCounters];
 
-    v12 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:v4 encoderPass:1];
+    v12 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:infoCopy encoderPass:1];
     [v9 setObject:v12 forKeyedSubscript:*MEMORY[0x277D0B150]];
   }
 
 LABEL_10:
   v19 = objc_loadWeakRetained(&self->_engine);
-  v20 = [v19 player];
-  [v20 enableStatsSampling:0];
+  player5 = [v19 player];
+  [player5 enableStatsSampling:0];
 
   return v9;
 }
 
-- (id)profileFrameWithCounterListsForProfileInfoAsync:(id)a3
+- (id)profileFrameWithCounterListsForProfileInfoAsync:(id)async
 {
-  v3 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfoAsync:a3 encoderPass:0 updateStatSampling:1 setConsistentState:0];
+  v3 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfoAsync:async encoderPass:0 updateStatSampling:1 setConsistentState:0];
 
   return v3;
 }
 
-- (id)_profileFrameWithCounterListsForProfileInfo:(id)a3
+- (id)_profileFrameWithCounterListsForProfileInfo:(id)info
 {
-  v3 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:a3 encoderPass:0];
+  v3 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _profileFrameWithCounterListsForProfileInfo:info encoderPass:0];
 
   return v3;
 }
 
-- (id)_updatedBatchInfos:(id)a3 fromPerEncoderDrawCallCount:(id)a4
+- (id)_updatedBatchInfos:(id)infos fromPerEncoderDrawCallCount:(id)count
 {
-  v5 = a3;
-  v6 = a4;
+  infosCopy = infos;
+  countCopy = count;
   v7 = objc_opt_new();
   v8 = 0;
   v9 = 0;
-  while (v8 < [v6 count])
+  while (v8 < [countCopy count])
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-    v11 = [v6 objectForKeyedSubscript:v10];
-    v12 = [v11 unsignedIntegerValue];
+    v11 = [countCopy objectForKeyedSubscript:v10];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-    if (v12)
+    if (unsignedIntegerValue)
     {
-      v13 = [v5 objectAtIndexedSubscript:v9];
+      v13 = [infosCopy objectAtIndexedSubscript:v9];
       [v7 addObject:v13];
       ++v9;
     }
@@ -1517,39 +1517,39 @@ LABEL_10:
   return v7;
 }
 
-- (id)_runPassesForCounterLists:(id)a3 encoderPass:(BOOL)a4 frameProfileInfo:(void *)a5
+- (id)_runPassesForCounterLists:(id)lists encoderPass:(BOOL)pass frameProfileInfo:(void *)info
 {
-  v31 = a3;
+  listsCopy = lists;
   [(DYMTLDebugPlaybackEngineCounterSupport *)self _clearData];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   [WeakRetained setPlaybackMode:5];
 
   v7 = objc_loadWeakRetained(&self->_engine);
-  v8 = [v7 player];
+  player = [v7 player];
 
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
   v51 = __Block_byref_object_copy__3;
   v52 = __Block_byref_object_dispose__3;
-  v9 = [v31 objectForKeyedSubscript:*MEMORY[0x277D0B480]];
-  v53 = [v8 counterInfo:v9];
+  v9 = [listsCopy objectForKeyedSubscript:*MEMORY[0x277D0B480]];
+  v53 = [player counterInfo:v9];
 
   if (self->_isAGXDevice)
   {
     v10 = *MEMORY[0x277D0B038];
-    v11 = [v31 objectForKeyedSubscript:*MEMORY[0x277D0B038]];
+    v11 = [listsCopy objectForKeyedSubscript:*MEMORY[0x277D0B038]];
     if (v11)
     {
-      v12 = [v31 objectForKeyedSubscript:@"perEncoderIndexDrawCallCount"];
+      v12 = [listsCopy objectForKeyedSubscript:@"perEncoderIndexDrawCallCount"];
       v13 = [(DYMTLDebugPlaybackEngineCounterSupport *)self _updatedBatchInfos:v11 fromPerEncoderDrawCallCount:v12];
 
-      [v8 setupBatchFilterForEncoders:v13];
+      [player setupBatchFilterForEncoders:v13];
       if (v13)
       {
         [v49[5] setObject:v13 forKeyedSubscript:v10];
         v14 = *MEMORY[0x277D0B220];
-        v15 = [v31 objectForKeyedSubscript:*MEMORY[0x277D0B220]];
+        v15 = [listsCopy objectForKeyedSubscript:*MEMORY[0x277D0B220]];
 
         if (v15)
         {
@@ -1564,21 +1564,21 @@ LABEL_10:
     }
   }
 
-  [v8 setupProfilingForCounterLists];
+  [player setupProfilingForCounterLists];
   v16 = [v49[5] objectForKeyedSubscript:*MEMORY[0x277D0B398]];
-  v17 = [v16 unsignedIntegerValue];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 0;
   v18 = dispatch_group_create();
-  if (v17)
+  if (unsignedIntegerValue)
   {
     v19 = 0;
     while (!v45[3])
     {
-      if (([v8 setupProfilingForListAtIndex:v19] & 1) == 0)
+      if (([player setupProfilingForListAtIndex:v19] & 1) == 0)
       {
 
         v27 = 0;
@@ -1588,7 +1588,7 @@ LABEL_10:
       v20 = objc_loadWeakRetained(&self->_engine);
       [v20 setPlaybackMode:5];
 
-      [v8 resetFunctionPlayerData];
+      [player resetFunctionPlayerData];
       v21 = objc_loadWeakRetained(&self->_engine);
       [v21 setLoopTimeLimit:3000000000];
 
@@ -1617,10 +1617,10 @@ LABEL_10:
       v36 = &v48;
       v35 = &v44;
       block[4] = self;
-      v24 = v31;
-      v40 = a4;
+      v24 = listsCopy;
+      passCopy = pass;
       v33 = v24;
-      v39 = a5;
+      infoCopy = info;
       v34 = v18;
       dispatch_async(v23, block);
 
@@ -1631,14 +1631,14 @@ LABEL_10:
         operator delete(__p[0]);
       }
 
-      if (v17 == ++v19)
+      if (unsignedIntegerValue == ++v19)
       {
         break;
       }
     }
   }
 
-  [v8 stopFrameProfiling];
+  [player stopFrameProfiling];
   v25 = objc_loadWeakRetained(&self->_engine);
   [v25 setPlaybackMode:0];
 
@@ -2272,8 +2272,8 @@ LABEL_109:
 - (id)availableCounters
 {
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v3 = [WeakRetained player];
-  v4 = [v3 counterInfo:0];
+  player = [WeakRetained player];
+  v4 = [player counterInfo:0];
 
   return v4;
 }
@@ -2281,20 +2281,20 @@ LABEL_109:
 - (id)derivedCounterData
 {
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v3 = [WeakRetained player];
-  v4 = [v3 derivedCounterData];
+  player = [WeakRetained player];
+  derivedCounterData = [player derivedCounterData];
 
-  return v4;
+  return derivedCounterData;
 }
 
-- (void)addCounters:(id)a3
+- (void)addCounters:(id)counters
 {
-  v7 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  countersCopy = counters;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   frameProfiling = self->_frameProfiling;
-  self->_frameProfiling = v4;
+  self->_frameProfiling = dictionary;
 
-  v6 = [v7 copy];
+  v6 = [countersCopy copy];
   [(NSMutableDictionary *)self->_frameProfiling setObject:v6 forKeyedSubscript:@"frame counters"];
 }
 

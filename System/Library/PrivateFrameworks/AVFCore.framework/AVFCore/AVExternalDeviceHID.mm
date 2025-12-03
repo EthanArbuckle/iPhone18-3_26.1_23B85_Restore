@@ -1,8 +1,8 @@
 @interface AVExternalDeviceHID
-- (AVExternalDeviceHID)initWithExternalDeviceAndHIDDictionary:(id)a3 hidDictionary:(id)a4;
+- (AVExternalDeviceHID)initWithExternalDeviceAndHIDDictionary:(id)dictionary hidDictionary:(id)hidDictionary;
 - (id)_figEndpointHIDInputMode;
 - (void)dealloc;
-- (void)setInputMode:(int64_t)a3;
+- (void)setInputMode:(int64_t)mode;
 @end
 
 @implementation AVExternalDeviceHID
@@ -30,7 +30,7 @@
   return v3;
 }
 
-- (AVExternalDeviceHID)initWithExternalDeviceAndHIDDictionary:(id)a3 hidDictionary:(id)a4
+- (AVExternalDeviceHID)initWithExternalDeviceAndHIDDictionary:(id)dictionary hidDictionary:(id)hidDictionary
 {
   v9.receiver = self;
   v9.super_class = AVExternalDeviceHID;
@@ -41,9 +41,9 @@
     v6->_externalDeviceHID = v7;
     if (v7)
     {
-      v6->_externalDeviceHID->weakReferenceToExternalDevice = [a3 _weakReference];
-      v6->_externalDeviceHID->UUID = [a4 objectForKey:*MEMORY[0x1E6961840]];
-      v6->_externalDeviceHID->screenID = [a4 objectForKey:*MEMORY[0x1E6961838]];
+      v6->_externalDeviceHID->weakReferenceToExternalDevice = [dictionary _weakReference];
+      v6->_externalDeviceHID->UUID = [hidDictionary objectForKey:*MEMORY[0x1E6961840]];
+      v6->_externalDeviceHID->screenID = [hidDictionary objectForKey:*MEMORY[0x1E6961838]];
       v6->_externalDeviceHID->inputMode = [(AVExternalDeviceHID *)v6 _figEndpointHIDInputMode];
       CFRetain(v6->_externalDeviceHID);
     }
@@ -72,7 +72,7 @@
   [(AVExternalDeviceHID *)&v4 dealloc];
 }
 
-- (void)setInputMode:(int64_t)a3
+- (void)setInputMode:(int64_t)mode
 {
   v5 = [-[AVExternalDeviceHID _externalDevice](self "_externalDevice")];
   if (v5)
@@ -82,7 +82,7 @@
     if (CMBaseObjectIsMemberOfClass())
     {
 
-      self->_externalDeviceHID->inputMode = [MEMORY[0x1E696AD98] numberWithInt:a3];
+      self->_externalDeviceHID->inputMode = [MEMORY[0x1E696AD98] numberWithInt:mode];
       externalDeviceHID = self->_externalDeviceHID;
       UUID = externalDeviceHID->UUID;
       inputMode = externalDeviceHID->inputMode;

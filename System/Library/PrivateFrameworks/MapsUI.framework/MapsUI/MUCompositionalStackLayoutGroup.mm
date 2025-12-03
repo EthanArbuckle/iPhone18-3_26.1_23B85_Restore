@@ -1,106 +1,106 @@
 @interface MUCompositionalStackLayoutGroup
-- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)a3;
-- (BOOL)hasAlignmentForArrangedLayoutItem:(id)a3;
-- (MUCompositionalStackLayoutGroup)initWithAxis:(int64_t)a3;
-- (MUCompositionalStackLayoutGroup)initWithIdentifier:(id)a3 axis:(int64_t)a4;
+- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)item;
+- (BOOL)hasAlignmentForArrangedLayoutItem:(id)item;
+- (MUCompositionalStackLayoutGroup)initWithAxis:(int64_t)axis;
+- (MUCompositionalStackLayoutGroup)initWithIdentifier:(id)identifier axis:(int64_t)axis;
 - (NSDirectionalEdgeInsets)insets;
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3;
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3;
-- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)alignmentForArrangedLayoutItem:(id)a3;
-- (void)addArrangedLayoutItem:(id)a3;
-- (void)disableAlignmentForArrangedLayoutItem:(id)a3;
-- (void)removeArrangedLayoutItem:(id)a3;
-- (void)resetAlignmentForArrangedLayoutItem:(id)a3;
-- (void)setAlignment:(int64_t)a3 forArrangedLayoutItem:(id)a4;
-- (void)setAlignmentFittingSizePriority:(float)a3 forArrangedLayoutItem:(id)a4;
-- (void)setArrangedLayoutItems:(id)a3;
-- (void)setOffset:(UIOffset)a3 forArrangedLayoutItem:(id)a4;
-- (void)setPadding:(NSDirectionalEdgeInsets)a3 forArrangedLayoutItem:(id)a4;
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item;
+- (UIOffset)offsetForArrangedLayoutItem:(id)item;
+- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)alignmentForArrangedLayoutItem:(id)item;
+- (void)addArrangedLayoutItem:(id)item;
+- (void)disableAlignmentForArrangedLayoutItem:(id)item;
+- (void)removeArrangedLayoutItem:(id)item;
+- (void)resetAlignmentForArrangedLayoutItem:(id)item;
+- (void)setAlignment:(int64_t)alignment forArrangedLayoutItem:(id)item;
+- (void)setAlignmentFittingSizePriority:(float)priority forArrangedLayoutItem:(id)item;
+- (void)setArrangedLayoutItems:(id)items;
+- (void)setOffset:(UIOffset)offset forArrangedLayoutItem:(id)item;
+- (void)setPadding:(NSDirectionalEdgeInsets)padding forArrangedLayoutItem:(id)item;
 @end
 
 @implementation MUCompositionalStackLayoutGroup
 
-- (void)setAlignmentFittingSizePriority:(float)a3 forArrangedLayoutItem:(id)a4
+- (void)setAlignmentFittingSizePriority:(float)priority forArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v7 = unwrapLayoutItem(a4);
-  *&v6 = a3;
+  v7 = unwrapLayoutItem(item);
+  *&v6 = priority;
   [(MUCompositionalStackLayoutGroupInternal *)internal setAlignmentFittingSizePriority:v7 forArrangedLayoutItem:v6];
 }
 
-- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)a3
+- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   [(MUCompositionalStackLayoutGroupInternal *)internal alignmentFittingSizePriorityForArrangedLayoutItem:v4];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)a3
+- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   LOBYTE(internal) = [(MUCompositionalStackLayoutGroupInternal *)internal alignmentBoundsContentForArrangedLayoutItem:v4];
 
   return internal;
 }
 
-- (void)setAlignment:(int64_t)a3 forArrangedLayoutItem:(id)a4
+- (void)setAlignment:(int64_t)alignment forArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v6 = unwrapLayoutItem(a4);
-  [(MUCompositionalStackLayoutGroupInternal *)internal setAlignment:a3 forArrangedLayoutItem:v6];
+  v6 = unwrapLayoutItem(item);
+  [(MUCompositionalStackLayoutGroupInternal *)internal setAlignment:alignment forArrangedLayoutItem:v6];
 }
 
-- (int64_t)alignmentForArrangedLayoutItem:(id)a3
+- (int64_t)alignmentForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   v5 = [(MUCompositionalStackLayoutGroupInternal *)internal alignmentForArrangedLayoutItem:v4];
 
   return v5;
 }
 
-- (void)resetAlignmentForArrangedLayoutItem:(id)a3
+- (void)resetAlignmentForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   [(MUCompositionalStackLayoutGroupInternal *)internal resetAlignmentForArrangedLayoutItem:v4];
 }
 
-- (void)disableAlignmentForArrangedLayoutItem:(id)a3
+- (void)disableAlignmentForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   [(MUCompositionalStackLayoutGroupInternal *)internal disableAlignmentForArrangedLayoutItem:v4];
 }
 
-- (BOOL)hasAlignmentForArrangedLayoutItem:(id)a3
+- (BOOL)hasAlignmentForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   LOBYTE(internal) = [(MUCompositionalStackLayoutGroupInternal *)internal hasAlignmentForArrangedLayoutItem:v4];
 
   return internal;
 }
 
-- (void)setOffset:(UIOffset)a3 forArrangedLayoutItem:(id)a4
+- (void)setOffset:(UIOffset)offset forArrangedLayoutItem:(id)item
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   internal = self->_internal;
-  v7 = unwrapLayoutItem(a4);
+  v7 = unwrapLayoutItem(item);
   [(MUCompositionalStackLayoutGroupInternal *)internal setOffset:v7 forArrangedLayoutItem:horizontal, vertical];
 }
 
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3
+- (UIOffset)offsetForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   [(MUCompositionalStackLayoutGroupInternal *)internal offsetForArrangedLayoutItem:v4];
   v6 = v5;
   v8 = v7;
@@ -112,21 +112,21 @@
   return result;
 }
 
-- (void)setPadding:(NSDirectionalEdgeInsets)a3 forArrangedLayoutItem:(id)a4
+- (void)setPadding:(NSDirectionalEdgeInsets)padding forArrangedLayoutItem:(id)item
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = padding.trailing;
+  bottom = padding.bottom;
+  leading = padding.leading;
+  top = padding.top;
   internal = self->_internal;
-  v9 = unwrapLayoutItem(a4);
+  v9 = unwrapLayoutItem(item);
   [(MUCompositionalStackLayoutGroupInternal *)internal setPadding:v9 forArrangedLayoutItem:top, leading, bottom, trailing];
 }
 
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item
 {
   internal = self->_internal;
-  v4 = unwrapLayoutItem(a3);
+  v4 = unwrapLayoutItem(item);
   [(MUCompositionalStackLayoutGroupInternal *)internal paddingForArrangedLayoutItem:v4];
   v6 = v5;
   v8 = v7;
@@ -144,52 +144,52 @@
   return result;
 }
 
-- (void)removeArrangedLayoutItem:(id)a3
+- (void)removeArrangedLayoutItem:(id)item
 {
-  v11 = a3;
-  v4 = unwrapLayoutItem(v11);
+  itemCopy = item;
+  v4 = unwrapLayoutItem(itemCopy);
   v5 = [(NSArray *)self->_arrangedLayoutItems count];
   [(MUCompositionalStackLayoutGroupInternal *)self->_internal removeArrangedLayoutItem:v4];
-  v6 = [(MUCompositionalStackLayoutGroupInternal *)self->_internal arrangedLayoutItems];
-  v7 = [v6 count];
+  arrangedLayoutItems = [(MUCompositionalStackLayoutGroupInternal *)self->_internal arrangedLayoutItems];
+  v7 = [arrangedLayoutItems count];
 
   if (v5 != v7)
   {
     v8 = [MEMORY[0x1E695DF70] arrayWithArray:self->_arrangedLayoutItems];
-    [v8 removeObject:v11];
+    [v8 removeObject:itemCopy];
     v9 = [v8 copy];
     arrangedLayoutItems = self->_arrangedLayoutItems;
     self->_arrangedLayoutItems = v9;
   }
 }
 
-- (void)addArrangedLayoutItem:(id)a3
+- (void)addArrangedLayoutItem:(id)item
 {
-  v10 = a3;
-  v4 = unwrapLayoutItem(v10);
+  itemCopy = item;
+  v4 = unwrapLayoutItem(itemCopy);
   v5 = [(NSArray *)self->_arrangedLayoutItems count];
   [(MUCompositionalStackLayoutGroupInternal *)self->_internal addArrangedLayoutItem:v4];
-  v6 = [(MUCompositionalStackLayoutGroupInternal *)self->_internal arrangedLayoutItems];
-  v7 = [v6 count];
+  arrangedLayoutItems = [(MUCompositionalStackLayoutGroupInternal *)self->_internal arrangedLayoutItems];
+  v7 = [arrangedLayoutItems count];
 
   if (v5 != v7)
   {
-    v8 = [(NSArray *)self->_arrangedLayoutItems arrayByAddingObject:v10];
+    v8 = [(NSArray *)self->_arrangedLayoutItems arrayByAddingObject:itemCopy];
     arrangedLayoutItems = self->_arrangedLayoutItems;
     self->_arrangedLayoutItems = v8;
   }
 }
 
-- (void)setArrangedLayoutItems:(id)a3
+- (void)setArrangedLayoutItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_arrangedLayoutItems != v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (self->_arrangedLayoutItems != itemsCopy)
   {
-    v9 = v4;
-    v4 = [(NSArray *)v4 isEqual:?];
+    v9 = itemsCopy;
+    itemsCopy = [(NSArray *)itemsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((itemsCopy & 1) == 0)
     {
       v6 = [MEMORY[0x1E695DEC8] arrayWithArray:v9];
       arrangedLayoutItems = self->_arrangedLayoutItems;
@@ -202,7 +202,7 @@
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](itemsCopy, v5);
 }
 
 - (NSDirectionalEdgeInsets)insets
@@ -215,10 +215,10 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(MUCompositionalStackLayoutGroupInternal *)self->_internal copy];
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAxis:", -[MUCompositionalStackLayoutGroup axis](self, "axis")}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAxis:", -[MUCompositionalStackLayoutGroup axis](self, "axis")}];
   v7 = *(v6 + 16);
   *(v6 + 16) = v5;
   v8 = v5;
@@ -227,10 +227,10 @@
   return v6;
 }
 
-- (MUCompositionalStackLayoutGroup)initWithIdentifier:(id)a3 axis:(int64_t)a4
+- (MUCompositionalStackLayoutGroup)initWithIdentifier:(id)identifier axis:(int64_t)axis
 {
-  v6 = a3;
-  v7 = [[MUCompositionalStackLayoutGroupInternal alloc] initWithIdentifier:v6 axis:a4];
+  identifierCopy = identifier;
+  v7 = [[MUCompositionalStackLayoutGroupInternal alloc] initWithIdentifier:identifierCopy axis:axis];
 
   v12.receiver = self;
   v12.super_class = MUCompositionalStackLayoutGroup;
@@ -246,9 +246,9 @@
   return v9;
 }
 
-- (MUCompositionalStackLayoutGroup)initWithAxis:(int64_t)a3
+- (MUCompositionalStackLayoutGroup)initWithAxis:(int64_t)axis
 {
-  v4 = [[MUCompositionalStackLayoutGroupInternal alloc] initWithAxis:a3];
+  v4 = [[MUCompositionalStackLayoutGroupInternal alloc] initWithAxis:axis];
   v9.receiver = self;
   v9.super_class = MUCompositionalStackLayoutGroup;
   v5 = [(MUCompositionalStackLayoutGroup *)&v9 init];

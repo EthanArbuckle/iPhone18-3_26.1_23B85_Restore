@@ -1,8 +1,8 @@
 @interface REAppUsagePredictor
 + (id)supportedFeatures;
-- (id)_nextTimelineTransitionDateAfter:(id)a3;
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6;
-- (void)_scheduleTimelineProgressionTimerAfter:(id)a3;
+- (id)_nextTimelineTransitionDateAfter:(id)after;
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context;
+- (void)_scheduleTimelineProgressionTimerAfter:(id)after;
 - (void)update;
 @end
 
@@ -30,14 +30,14 @@
 
   objc_initWeak(&location, self);
   v5 = +[(RESingleton *)REDuetKnowledgeStore];
-  v6 = [(REPredictor *)self queue];
+  queue = [(REPredictor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__REAppUsagePredictor_update__block_invoke;
   v7[3] = &unk_2785FA308;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  [v5 executeQuery:v4 responseQueue:v6 completion:v7];
+  [v5 executeQuery:v4 responseQueue:queue completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -65,21 +65,21 @@ void __29__REAppUsagePredictor_update__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context
 {
-  v8 = a6;
-  v9 = [a4 applicationBundleIdentifier];
-  if (v9)
+  contextCopy = context;
+  applicationBundleIdentifier = [element applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
-    v10 = [v8 attributeForKey:@"RETrainingContextDateKey"];
+    date = [contextCopy attributeForKey:@"RETrainingContextDateKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v10)
+      if (date)
       {
 LABEL_8:
-        v12 = [(RETimeline *)self->_timeline valueForDate:v10];
-        v13 = [v12 objectForKeyedSubscript:v9];
+        v12 = [(RETimeline *)self->_timeline valueForDate:date];
+        v13 = [v12 objectForKeyedSubscript:applicationBundleIdentifier];
 
         if (v13)
         {
@@ -101,7 +101,7 @@ LABEL_8:
     {
     }
 
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     goto LABEL_8;
   }
 
@@ -111,24 +111,24 @@ LABEL_12:
   return v11;
 }
 
-- (id)_nextTimelineTransitionDateAfter:(id)a3
+- (id)_nextTimelineTransitionDateAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v5 = [(RETimeline *)self->_timeline transitionDates];
+  transitionDates = [(RETimeline *)self->_timeline transitionDates];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__REAppUsagePredictor__nextTimelineTransitionDateAfter___block_invoke;
   v9[3] = &unk_2785FA330;
-  v6 = v4;
+  v6 = afterCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [transitionDates enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -146,35 +146,35 @@ void __56__REAppUsagePredictor__nextTimelineTransitionDateAfter___block_invoke(u
   }
 }
 
-- (void)_scheduleTimelineProgressionTimerAfter:(id)a3
+- (void)_scheduleTimelineProgressionTimerAfter:(id)after
 {
-  v4 = a3;
-  if (!v4)
+  afterCopy = after;
+  if (!afterCopy)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    afterCopy = [MEMORY[0x277CBEAA8] date];
   }
 
   [(REUpNextTimer *)self->_timelineProgressionTimer invalidate];
   timelineProgressionTimer = self->_timelineProgressionTimer;
   self->_timelineProgressionTimer = 0;
 
-  v6 = [(REAppUsagePredictor *)self _nextTimelineTransitionDateAfter:v4];
+  v6 = [(REAppUsagePredictor *)self _nextTimelineTransitionDateAfter:afterCopy];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEAA8] distantFuture];
-    v8 = [v6 isEqual:v7];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v8 = [v6 isEqual:distantFuture];
 
     if ((v8 & 1) == 0)
     {
       objc_initWeak(&location, self);
-      v9 = [(REPredictor *)self queue];
+      queue = [(REPredictor *)self queue];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __62__REAppUsagePredictor__scheduleTimelineProgressionTimerAfter___block_invoke;
       v12[3] = &unk_2785FA358;
       objc_copyWeak(&v14, &location);
       v13 = v6;
-      v10 = [REUpNextTimer timerWithFireDate:v13 queue:v9 block:v12];
+      v10 = [REUpNextTimer timerWithFireDate:v13 queue:queue block:v12];
 
       v11 = self->_timelineProgressionTimer;
       self->_timelineProgressionTimer = v10;

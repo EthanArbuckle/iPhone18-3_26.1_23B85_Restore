@@ -1,9 +1,9 @@
 @interface BYODServiceManager
-- (BOOL)receivedValidResponse:(id)a3 forRequest:(id)a4;
+- (BOOL)receivedValidResponse:(id)response forRequest:(id)request;
 - (BYODServiceManager)init;
 - (void)_finishedLoading;
 - (void)_preLoadCancel;
-- (void)loadRequest:(id)a3 withCompletion:(id)a4;
+- (void)loadRequest:(id)request withCompletion:(id)completion;
 @end
 
 @implementation BYODServiceManager
@@ -15,10 +15,10 @@
   return [(BYODServiceManager *)&v3 init];
 }
 
-- (void)loadRequest:(id)a3 withCompletion:(id)a4
+- (void)loadRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   [(BYODServiceManager *)self _preLoadCancel];
   if (self->_request)
   {
@@ -48,9 +48,9 @@ LABEL_8:
     v18 = 3221225472;
     v19 = sub_6138C;
     v20 = &unk_B9850;
-    v21 = self;
-    v22 = v7;
-    v13 = [(NSURLSession *)v12 dataTaskWithRequest:v6 completionHandler:&v17];
+    selfCopy = self;
+    v22 = completionCopy;
+    v13 = [(NSURLSession *)v12 dataTaskWithRequest:requestCopy completionHandler:&v17];
     dataTask = self->_dataTask;
     self->_dataTask = v13;
 
@@ -80,11 +80,11 @@ LABEL_8:
   self->_request = 0;
 }
 
-- (BOOL)receivedValidResponse:(id)a3 forRequest:(id)a4
+- (BOOL)receivedValidResponse:(id)response forRequest:(id)request
 {
-  v4 = a3;
+  responseCopy = response;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) == 0 || [v4 statusCode] - 600 < 0xFFFFFFFFFFFFFF38;
+  v5 = (objc_opt_isKindOfClass() & 1) == 0 || [responseCopy statusCode] - 600 < 0xFFFFFFFFFFFFFF38;
 
   return v5;
 }

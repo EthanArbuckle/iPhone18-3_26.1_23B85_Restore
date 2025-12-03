@@ -3,7 +3,7 @@
 - (NSString)title;
 - (NSURL)representedURL;
 - (UITitlebar)owningTitlebar;
-- (_UINavigationBarNSToolbarProxy)initWithTitlebar:(id)a3;
+- (_UINavigationBarNSToolbarProxy)initWithTitlebar:(id)titlebar;
 - (_UINavigationBarNSToolbarProxyTabBarItemProviding)tabBarProvider;
 - (id)description;
 - (id)representedDragItemsProvider;
@@ -13,16 +13,16 @@
 
 @implementation _UINavigationBarNSToolbarProxy
 
-- (_UINavigationBarNSToolbarProxy)initWithTitlebar:(id)a3
+- (_UINavigationBarNSToolbarProxy)initWithTitlebar:(id)titlebar
 {
-  v4 = a3;
+  titlebarCopy = titlebar;
   v8.receiver = self;
   v8.super_class = _UINavigationBarNSToolbarProxy;
   v5 = [(_UINavigationBarNSToolbarProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owningTitlebar, v4);
+    objc_storeWeak(&v5->_owningTitlebar, titlebarCopy);
   }
 
   return v6;

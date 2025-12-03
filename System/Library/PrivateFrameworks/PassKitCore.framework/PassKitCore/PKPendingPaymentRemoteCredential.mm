@@ -1,12 +1,12 @@
 @interface PKPendingPaymentRemoteCredential
-- (BOOL)representsCredential:(id)a3;
-- (BOOL)representsPass:(id)a3;
-- (PKPendingPaymentRemoteCredential)initWithCoder:(id)a3;
-- (PKPendingPaymentRemoteCredential)initWithRemoteCredential:(id)a3;
+- (BOOL)representsCredential:(id)credential;
+- (BOOL)representsPass:(id)pass;
+- (PKPendingPaymentRemoteCredential)initWithCoder:(id)coder;
+- (PKPendingPaymentRemoteCredential)initWithRemoteCredential:(id)credential;
 - (id)credential;
 - (id)initForDatabase;
-- (void)_copyIntoPendingProvision:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_copyIntoPendingProvision:(id)provision;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPendingPaymentRemoteCredential
@@ -18,62 +18,62 @@
   return [(PKPendingPaymentRemoteCredential *)&v3 init];
 }
 
-- (PKPendingPaymentRemoteCredential)initWithRemoteCredential:(id)a3
+- (PKPendingPaymentRemoteCredential)initWithRemoteCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  credentialCopy = credential;
+  identifier = [credentialCopy identifier];
   v29.receiver = self;
   v29.super_class = PKPendingPaymentRemoteCredential;
-  v6 = [(PKPendingProvisioning *)&v29 initWithUniqueIdentifier:v5 status:1];
+  v6 = [(PKPendingProvisioning *)&v29 initWithUniqueIdentifier:identifier status:1];
 
   if (v6)
   {
-    v7 = [v4 passTypeIdentifier];
+    passTypeIdentifier = [credentialCopy passTypeIdentifier];
     passTypeIdentifier = v6->_passTypeIdentifier;
-    v6->_passTypeIdentifier = v7;
+    v6->_passTypeIdentifier = passTypeIdentifier;
 
-    v9 = [v4 serialNumber];
+    serialNumber = [credentialCopy serialNumber];
     passSerialNumber = v6->_passSerialNumber;
-    v6->_passSerialNumber = v9;
+    v6->_passSerialNumber = serialNumber;
 
-    v6->_credentialType = [v4 credentialType];
-    v6->_cardType = [v4 cardType];
-    v11 = [v4 sanitizedPrimaryAccountNumber];
+    v6->_credentialType = [credentialCopy credentialType];
+    v6->_cardType = [credentialCopy cardType];
+    sanitizedPrimaryAccountNumber = [credentialCopy sanitizedPrimaryAccountNumber];
     sanitizedPrimaryAccountNumber = v6->_sanitizedPrimaryAccountNumber;
-    v6->_sanitizedPrimaryAccountNumber = v11;
+    v6->_sanitizedPrimaryAccountNumber = sanitizedPrimaryAccountNumber;
 
-    v13 = [v4 identifier];
+    identifier2 = [credentialCopy identifier];
     cardIdentifier = v6->_cardIdentifier;
-    v6->_cardIdentifier = v13;
+    v6->_cardIdentifier = identifier2;
 
-    v15 = [v4 ownershipTokenIdentifier];
+    ownershipTokenIdentifier = [credentialCopy ownershipTokenIdentifier];
     ownershipToken = v6->_ownershipToken;
-    v6->_ownershipToken = v15;
+    v6->_ownershipToken = ownershipTokenIdentifier;
 
-    v17 = [v4 passURL];
+    passURL = [credentialCopy passURL];
     passURL = v6->_passURL;
-    v6->_passURL = v17;
+    v6->_passURL = passURL;
 
-    v19 = [v4 activationMethods];
+    activationMethods = [credentialCopy activationMethods];
     activationMethods = v6->_activationMethods;
-    v6->_activationMethods = v19;
+    v6->_activationMethods = activationMethods;
 
-    v21 = [v4 transferableFromDevices];
-    v22 = [v21 firstObject];
+    transferableFromDevices = [credentialCopy transferableFromDevices];
+    firstObject = [transferableFromDevices firstObject];
 
-    if (v22)
+    if (firstObject)
     {
-      v23 = [v22 serialNumber];
+      serialNumber2 = [firstObject serialNumber];
       transferableFromDeviceSerialNumber = v6->_transferableFromDeviceSerialNumber;
-      v6->_transferableFromDeviceSerialNumber = v23;
+      v6->_transferableFromDeviceSerialNumber = serialNumber2;
 
-      v25 = [v22 identifier];
+      identifier3 = [firstObject identifier];
       transferableFromDeviceIdentifier = v6->_transferableFromDeviceIdentifier;
-      v6->_transferableFromDeviceIdentifier = v25;
+      v6->_transferableFromDeviceIdentifier = identifier3;
     }
 
-    v27 = [v4 state];
-    [(PKPendingProvisioning *)v6 setProvisioningState:v27];
+    state = [credentialCopy state];
+    [(PKPendingProvisioning *)v6 setProvisioningState:state];
   }
 
   return v6;
@@ -104,24 +104,24 @@
     [(PKPaymentRemoteCredential *)v4 setStatus:5];
   }
 
-  v7 = [(PKPendingProvisioning *)self provisioningState];
+  provisioningState = [(PKPendingProvisioning *)self provisioningState];
 
-  if (v7)
+  if (provisioningState)
   {
-    v8 = [(PKPendingProvisioning *)self provisioningState];
-    [(PKPaymentCredential *)v4 setState:v8];
+    provisioningState2 = [(PKPendingProvisioning *)self provisioningState];
+    [(PKPaymentCredential *)v4 setState:provisioningState2];
   }
 
   return v4;
 }
 
-- (BOOL)representsCredential:(id)a3
+- (BOOL)representsCredential:(id)credential
 {
-  v4 = a3;
-  if ([v4 isRemoteCredential])
+  credentialCopy = credential;
+  if ([credentialCopy isRemoteCredential])
   {
-    v5 = [v4 remoteCredential];
-    v6 = v5;
+    remoteCredential = [credentialCopy remoteCredential];
+    v6 = remoteCredential;
     v7 = 96;
     cardIdentifier = self->_cardIdentifier;
     if (!cardIdentifier)
@@ -138,9 +138,9 @@ LABEL_24:
       goto LABEL_15;
     }
 
-    v9 = [v5 identifier];
+    identifier = [remoteCredential identifier];
     v10 = self->_cardIdentifier;
-    v7 = v9;
+    v7 = identifier;
     v11 = v10;
     v12 = v11;
     if (v7 == v11)
@@ -157,17 +157,17 @@ LABEL_14:
         if (*p_passURL)
         {
 LABEL_15:
-          v16 = [v6 passURL];
-          v17 = v16;
+          passURL = [v6 passURL];
+          v17 = passURL;
           v18 = *p_passURL;
-          if (v16 && v18)
+          if (passURL && v18)
           {
-            v14 = [(NSURL *)v16 isEqual:?];
+            v14 = [(NSURL *)passURL isEqual:?];
           }
 
           else
           {
-            v14 = v16 == v18;
+            v14 = passURL == v18;
           }
 
           if (!cardIdentifier)
@@ -202,15 +202,15 @@ LABEL_25:
   return v14;
 }
 
-- (BOOL)representsPass:(id)a3
+- (BOOL)representsPass:(id)pass
 {
-  v4 = a3;
-  v5 = [v4 passTypeIdentifier];
-  v6 = [v4 serialNumber];
+  passCopy = pass;
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  serialNumber = [passCopy serialNumber];
 
-  v7 = [(NSURL *)self->_passURL absoluteString];
+  absoluteString = [(NSURL *)self->_passURL absoluteString];
   v8 = self->_passTypeIdentifier;
-  v9 = v5;
+  v9 = passTypeIdentifier;
   v10 = v9;
   if (v8 == v9)
   {
@@ -229,7 +229,7 @@ LABEL_25:
     if (!v11)
     {
 LABEL_11:
-      if (!v7)
+      if (!absoluteString)
       {
         goto LABEL_17;
       }
@@ -239,7 +239,7 @@ LABEL_11:
   }
 
   v8 = self->_passSerialNumber;
-  v12 = v6;
+  v12 = serialNumber;
   v13 = v12;
   if (v8 == v12)
   {
@@ -263,7 +263,7 @@ LABEL_19:
 
 LABEL_14:
 
-  if (!v7)
+  if (!absoluteString)
   {
 LABEL_17:
     v15 = 0;
@@ -271,64 +271,64 @@ LABEL_17:
   }
 
 LABEL_15:
-  if (![v7 containsString:v10])
+  if (![absoluteString containsString:v10])
   {
     goto LABEL_17;
   }
 
-  v15 = [v7 containsString:v6];
+  v15 = [absoluteString containsString:serialNumber];
 LABEL_20:
 
   return v15;
 }
 
-- (PKPendingPaymentRemoteCredential)initWithCoder:(id)a3
+- (PKPendingPaymentRemoteCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = PKPendingPaymentRemoteCredential;
-  v5 = [(PKPendingProvisioning *)&v27 initWithCoder:v4];
+  v5 = [(PKPendingProvisioning *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v8;
 
-    v5->_credentialType = [v4 decodeIntegerForKey:@"credentialType"];
-    v5->_cardType = [v4 decodeIntegerForKey:@"cardType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedPrimaryAccountNumber"];
+    v5->_credentialType = [coderCopy decodeIntegerForKey:@"credentialType"];
+    v5->_cardType = [coderCopy decodeIntegerForKey:@"cardType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedPrimaryAccountNumber"];
     sanitizedPrimaryAccountNumber = v5->_sanitizedPrimaryAccountNumber;
     v5->_sanitizedPrimaryAccountNumber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardIdentifier"];
     cardIdentifier = v5->_cardIdentifier;
     v5->_cardIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownershipToken"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownershipToken"];
     ownershipToken = v5->_ownershipToken;
     v5->_ownershipToken = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferableFromDeviceSerialNumber"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferableFromDeviceSerialNumber"];
     transferableFromDeviceSerialNumber = v5->_transferableFromDeviceSerialNumber;
     v5->_transferableFromDeviceSerialNumber = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferableFromDeviceIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferableFromDeviceIdentifier"];
     transferableFromDeviceIdentifier = v5->_transferableFromDeviceIdentifier;
     v5->_transferableFromDeviceIdentifier = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passURL"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passURL"];
     passURL = v5->_passURL;
     v5->_passURL = v22;
 
-    v24 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"activationMethods"];
+    v24 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"activationMethods"];
     activationMethods = v5->_activationMethods;
     v5->_activationMethods = v24;
   }
@@ -336,73 +336,73 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPendingPaymentRemoteCredential;
-  v4 = a3;
-  [(PKPendingProvisioning *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_passTypeIdentifier forKey:{@"passTypeIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v4 encodeInteger:self->_credentialType forKey:@"credentialType"];
-  [v4 encodeInteger:self->_cardType forKey:@"cardType"];
-  [v4 encodeObject:self->_sanitizedPrimaryAccountNumber forKey:@"sanitizedPrimaryAccountNumber"];
-  [v4 encodeObject:self->_cardIdentifier forKey:@"cardIdentifier"];
-  [v4 encodeObject:self->_ownershipToken forKey:@"ownershipToken"];
-  [v4 encodeObject:self->_nonce forKey:@"nonce"];
-  [v4 encodeObject:self->_transferableFromDeviceSerialNumber forKey:@"transferableFromDeviceSerialNumber"];
-  [v4 encodeObject:self->_transferableFromDeviceIdentifier forKey:@"transferableFromDeviceIdentifier"];
-  [v4 encodeObject:self->_passURL forKey:@"passURL"];
-  [v4 encodeObject:self->_activationMethods forKey:@"activationMethods"];
+  coderCopy = coder;
+  [(PKPendingProvisioning *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:{@"passTypeIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeInteger:self->_credentialType forKey:@"credentialType"];
+  [coderCopy encodeInteger:self->_cardType forKey:@"cardType"];
+  [coderCopy encodeObject:self->_sanitizedPrimaryAccountNumber forKey:@"sanitizedPrimaryAccountNumber"];
+  [coderCopy encodeObject:self->_cardIdentifier forKey:@"cardIdentifier"];
+  [coderCopy encodeObject:self->_ownershipToken forKey:@"ownershipToken"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
+  [coderCopy encodeObject:self->_transferableFromDeviceSerialNumber forKey:@"transferableFromDeviceSerialNumber"];
+  [coderCopy encodeObject:self->_transferableFromDeviceIdentifier forKey:@"transferableFromDeviceIdentifier"];
+  [coderCopy encodeObject:self->_passURL forKey:@"passURL"];
+  [coderCopy encodeObject:self->_activationMethods forKey:@"activationMethods"];
 }
 
-- (void)_copyIntoPendingProvision:(id)a3
+- (void)_copyIntoPendingProvision:(id)provision
 {
   v25.receiver = self;
   v25.super_class = PKPendingPaymentRemoteCredential;
-  v4 = a3;
-  [(PKPendingProvisioning *)&v25 _copyIntoPendingProvision:v4];
+  provisionCopy = provision;
+  [(PKPendingProvisioning *)&v25 _copyIntoPendingProvision:provisionCopy];
   v5 = [(NSString *)self->_passTypeIdentifier copy:v25.receiver];
-  v6 = v4[7];
-  v4[7] = v5;
+  v6 = provisionCopy[7];
+  provisionCopy[7] = v5;
 
   v7 = [(NSString *)self->_passSerialNumber copy];
-  v8 = v4[8];
-  v4[8] = v7;
+  v8 = provisionCopy[8];
+  provisionCopy[8] = v7;
 
-  v4[9] = self->_credentialType;
-  v4[10] = self->_cardType;
+  provisionCopy[9] = self->_credentialType;
+  provisionCopy[10] = self->_cardType;
   v9 = [(NSString *)self->_sanitizedPrimaryAccountNumber copy];
-  v10 = v4[11];
-  v4[11] = v9;
+  v10 = provisionCopy[11];
+  provisionCopy[11] = v9;
 
   v11 = [(NSString *)self->_cardIdentifier copy];
-  v12 = v4[12];
-  v4[12] = v11;
+  v12 = provisionCopy[12];
+  provisionCopy[12] = v11;
 
   v13 = [(NSString *)self->_ownershipToken copy];
-  v14 = v4[13];
-  v4[13] = v13;
+  v14 = provisionCopy[13];
+  provisionCopy[13] = v13;
 
   v15 = [(NSString *)self->_nonce copy];
-  v16 = v4[14];
-  v4[14] = v15;
+  v16 = provisionCopy[14];
+  provisionCopy[14] = v15;
 
   v17 = [(NSString *)self->_transferableFromDeviceSerialNumber copy];
-  v18 = v4[15];
-  v4[15] = v17;
+  v18 = provisionCopy[15];
+  provisionCopy[15] = v17;
 
   v19 = [(NSString *)self->_transferableFromDeviceIdentifier copy];
-  v20 = v4[16];
-  v4[16] = v19;
+  v20 = provisionCopy[16];
+  provisionCopy[16] = v19;
 
   v21 = [(NSURL *)self->_passURL copy];
-  v22 = v4[17];
-  v4[17] = v21;
+  v22 = provisionCopy[17];
+  provisionCopy[17] = v21;
 
   v23 = [(NSArray *)self->_activationMethods copy];
-  v24 = v4[18];
-  v4[18] = v23;
+  v24 = provisionCopy[18];
+  provisionCopy[18] = v23;
 }
 
 @end

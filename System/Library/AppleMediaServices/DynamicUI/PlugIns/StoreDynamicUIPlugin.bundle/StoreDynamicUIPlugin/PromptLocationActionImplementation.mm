@@ -1,23 +1,23 @@
 @interface PromptLocationActionImplementation
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation PromptLocationActionImplementation
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  sub_DF0C0(v4);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  sub_DF0C0(authorizationCopy);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_DF5B4(v7, v8);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_DF5B4(selfCopy, errorCopy);
 }
 
 @end

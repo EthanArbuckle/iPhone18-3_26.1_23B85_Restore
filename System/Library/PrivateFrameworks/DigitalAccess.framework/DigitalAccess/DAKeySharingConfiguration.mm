@@ -1,10 +1,10 @@
 @interface DAKeySharingConfiguration
 - (DAKeySharingConfiguration)init;
-- (DAKeySharingConfiguration)initWithCoder:(id)a3;
-- (DAKeySharingConfiguration)initWithProfile:(unint64_t)a3 displayName:(id)a4 metaData:(id)a5 targetDeviceType:(int64_t)a6;
-- (DAKeySharingConfiguration)initWithProfile:(unint64_t)a3 displayName:(id)a4 metaData:(id)a5 targetDeviceType:(int64_t)a6 enableVehiclePasscode:(BOOL)a7 maxRetriesForDevicePasscode:(unint64_t)a8 deviceEnteredPasscode:(id)a9 proprietaryEntitlements:(id)a10;
+- (DAKeySharingConfiguration)initWithCoder:(id)coder;
+- (DAKeySharingConfiguration)initWithProfile:(unint64_t)profile displayName:(id)name metaData:(id)data targetDeviceType:(int64_t)type;
+- (DAKeySharingConfiguration)initWithProfile:(unint64_t)profile displayName:(id)name metaData:(id)data targetDeviceType:(int64_t)type enableVehiclePasscode:(BOOL)passcode maxRetriesForDevicePasscode:(unint64_t)devicePasscode deviceEnteredPasscode:(id)enteredPasscode proprietaryEntitlements:(id)self0;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAKeySharingConfiguration
@@ -41,21 +41,21 @@
   return v3;
 }
 
-- (DAKeySharingConfiguration)initWithProfile:(unint64_t)a3 displayName:(id)a4 metaData:(id)a5 targetDeviceType:(int64_t)a6
+- (DAKeySharingConfiguration)initWithProfile:(unint64_t)profile displayName:(id)name metaData:(id)data targetDeviceType:(int64_t)type
 {
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = DAKeySharingConfiguration;
   v13 = [(DAKeySharingConfiguration *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_profile = a3;
-    objc_storeStrong(&v13->_displayName, a4);
-    objc_storeStrong(&v14->_metaData, a5);
+    v13->_profile = profile;
+    objc_storeStrong(&v13->_displayName, name);
+    objc_storeStrong(&v14->_metaData, data);
     v14->_enableVehicleEnteredPasscode = 0;
-    v14->_targetDeviceType = a6;
+    v14->_targetDeviceType = type;
     v14->_maxRetriesForDeviceEnteredPasscode = 0;
     deviceEnteredPasscode = v14->_deviceEnteredPasscode;
     v14->_deviceEnteredPasscode = 0;
@@ -69,26 +69,26 @@
   return v14;
 }
 
-- (DAKeySharingConfiguration)initWithProfile:(unint64_t)a3 displayName:(id)a4 metaData:(id)a5 targetDeviceType:(int64_t)a6 enableVehiclePasscode:(BOOL)a7 maxRetriesForDevicePasscode:(unint64_t)a8 deviceEnteredPasscode:(id)a9 proprietaryEntitlements:(id)a10
+- (DAKeySharingConfiguration)initWithProfile:(unint64_t)profile displayName:(id)name metaData:(id)data targetDeviceType:(int64_t)type enableVehiclePasscode:(BOOL)passcode maxRetriesForDevicePasscode:(unint64_t)devicePasscode deviceEnteredPasscode:(id)enteredPasscode proprietaryEntitlements:(id)self0
 {
-  v23 = a4;
-  v15 = a5;
-  v16 = a9;
-  v17 = a10;
+  nameCopy = name;
+  dataCopy = data;
+  enteredPasscodeCopy = enteredPasscode;
+  entitlementsCopy = entitlements;
   v24.receiver = self;
   v24.super_class = DAKeySharingConfiguration;
   v18 = [(DAKeySharingConfiguration *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    v18->_profile = a3;
-    objc_storeStrong(&v18->_displayName, a4);
-    objc_storeStrong(&v19->_metaData, a5);
-    v19->_enableVehicleEnteredPasscode = a7;
-    v19->_targetDeviceType = a6;
-    v19->_maxRetriesForDeviceEnteredPasscode = a8;
-    objc_storeStrong(&v19->_deviceEnteredPasscode, a9);
-    objc_storeStrong(&v19->_proprietaryEntitlements, a10);
+    v18->_profile = profile;
+    objc_storeStrong(&v18->_displayName, name);
+    objc_storeStrong(&v19->_metaData, data);
+    v19->_enableVehicleEnteredPasscode = passcode;
+    v19->_targetDeviceType = type;
+    v19->_maxRetriesForDeviceEnteredPasscode = devicePasscode;
+    objc_storeStrong(&v19->_deviceEnteredPasscode, enteredPasscode);
+    objc_storeStrong(&v19->_proprietaryEntitlements, entitlements);
     v19->_mockRefreshInstanceCA = 0;
     v19->_keyRole = 0;
     v19->_sharingFlow = 0;
@@ -97,60 +97,60 @@
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeInteger:-[DAKeySharingConfiguration profile](self forKey:{"profile"), @"profile"}];
-  [v8 encodeInteger:-[DAKeySharingConfiguration keyRole](self forKey:{"keyRole"), @"keyRole"}];
-  v4 = [(DAKeySharingConfiguration *)self displayName];
-  [v8 encodeObject:v4 forKey:@"displayName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DAKeySharingConfiguration profile](self forKey:{"profile"), @"profile"}];
+  [coderCopy encodeInteger:-[DAKeySharingConfiguration keyRole](self forKey:{"keyRole"), @"keyRole"}];
+  displayName = [(DAKeySharingConfiguration *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v5 = [(DAKeySharingConfiguration *)self metaData];
-  [v8 encodeObject:v5 forKey:@"metaData"];
+  metaData = [(DAKeySharingConfiguration *)self metaData];
+  [coderCopy encodeObject:metaData forKey:@"metaData"];
 
-  [v8 encodeInteger:-[DAKeySharingConfiguration targetDeviceType](self forKey:{"targetDeviceType"), @"targetDeviceType"}];
-  [v8 encodeBool:-[DAKeySharingConfiguration enableVehicleEnteredPasscode](self forKey:{"enableVehicleEnteredPasscode"), @"enableVehicleEnteredPasscode"}];
-  [v8 encodeInteger:-[DAKeySharingConfiguration maxRetriesForDeviceEnteredPasscode](self forKey:{"maxRetriesForDeviceEnteredPasscode"), @"maxRetriesForDeviceEnteredPasscode"}];
-  v6 = [(DAKeySharingConfiguration *)self deviceEnteredPasscode];
-  [v8 encodeObject:v6 forKey:@"deviceEnteredPasscode"];
+  [coderCopy encodeInteger:-[DAKeySharingConfiguration targetDeviceType](self forKey:{"targetDeviceType"), @"targetDeviceType"}];
+  [coderCopy encodeBool:-[DAKeySharingConfiguration enableVehicleEnteredPasscode](self forKey:{"enableVehicleEnteredPasscode"), @"enableVehicleEnteredPasscode"}];
+  [coderCopy encodeInteger:-[DAKeySharingConfiguration maxRetriesForDeviceEnteredPasscode](self forKey:{"maxRetriesForDeviceEnteredPasscode"), @"maxRetriesForDeviceEnteredPasscode"}];
+  deviceEnteredPasscode = [(DAKeySharingConfiguration *)self deviceEnteredPasscode];
+  [coderCopy encodeObject:deviceEnteredPasscode forKey:@"deviceEnteredPasscode"];
 
-  v7 = [(DAKeySharingConfiguration *)self proprietaryEntitlements];
-  [v8 encodeObject:v7 forKey:@"proprietaryEntitlements"];
+  proprietaryEntitlements = [(DAKeySharingConfiguration *)self proprietaryEntitlements];
+  [coderCopy encodeObject:proprietaryEntitlements forKey:@"proprietaryEntitlements"];
 
-  [v8 encodeBool:-[DAKeySharingConfiguration mockRefreshInstanceCA](self forKey:{"mockRefreshInstanceCA"), @"mockRefreshInstanceCA"}];
+  [coderCopy encodeBool:-[DAKeySharingConfiguration mockRefreshInstanceCA](self forKey:{"mockRefreshInstanceCA"), @"mockRefreshInstanceCA"}];
 }
 
-- (DAKeySharingConfiguration)initWithCoder:(id)a3
+- (DAKeySharingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = DAKeySharingConfiguration;
   v5 = [(DAKeySharingConfiguration *)&v15 init];
   if (v5)
   {
-    v5->_profile = [v4 decodeIntegerForKey:@"profile"];
-    v5->_keyRole = [v4 decodeIntegerForKey:@"keyRole"];
+    v5->_profile = [coderCopy decodeIntegerForKey:@"profile"];
+    v5->_keyRole = [coderCopy decodeIntegerForKey:@"keyRole"];
     v5->_sharingFlow = 0;
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metaData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metaData"];
     metaData = v5->_metaData;
     v5->_metaData = v8;
 
-    v5->_targetDeviceType = [v4 decodeIntegerForKey:@"targetDeviceType"];
-    v5->_enableVehicleEnteredPasscode = [v4 decodeBoolForKey:@"enableVehicleEnteredPasscode"];
-    v5->_maxRetriesForDeviceEnteredPasscode = [v4 decodeIntegerForKey:@"maxRetriesForDeviceEnteredPasscode"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceEnteredPasscode"];
+    v5->_targetDeviceType = [coderCopy decodeIntegerForKey:@"targetDeviceType"];
+    v5->_enableVehicleEnteredPasscode = [coderCopy decodeBoolForKey:@"enableVehicleEnteredPasscode"];
+    v5->_maxRetriesForDeviceEnteredPasscode = [coderCopy decodeIntegerForKey:@"maxRetriesForDeviceEnteredPasscode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceEnteredPasscode"];
     deviceEnteredPasscode = v5->_deviceEnteredPasscode;
     v5->_deviceEnteredPasscode = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryEntitlements"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryEntitlements"];
     proprietaryEntitlements = v5->_proprietaryEntitlements;
     v5->_proprietaryEntitlements = v12;
 
-    v5->_mockRefreshInstanceCA = [v4 decodeBoolForKey:@"mockRefreshInstanceCA"];
+    v5->_mockRefreshInstanceCA = [coderCopy decodeBoolForKey:@"mockRefreshInstanceCA"];
   }
 
   return v5;
@@ -158,40 +158,40 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sharing Profile       : %ld\n", self->_profile];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Key Role              : %ld\n", self->_keyRole];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Display Name          : %@\n", self->_displayName];
-  [v3 appendString:v6];
+  [string appendString:v6];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Meta Data             : %@\n", self->_metaData];
-  [v3 appendString:v7];
+  [string appendString:v7];
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Target Device         : %ld\n", self->_targetDeviceType];
-  [v3 appendString:v8];
+  [string appendString:v8];
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Enable VEP            : %d\n", self->_enableVehicleEnteredPasscode];
-  [v3 appendString:v9];
+  [string appendString:v9];
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Max PIN retries       : %ld\n", self->_maxRetriesForDeviceEnteredPasscode];
-  [v3 appendString:v10];
+  [string appendString:v10];
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"PIN length            : %lu\n", -[NSString length](self->_deviceEnteredPasscode, "length")];
-  [v3 appendString:v11];
+  [string appendString:v11];
 
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Prop. Entitlements    : %@\n", self->_proprietaryEntitlements];
-  [v3 appendString:v12];
+  [string appendString:v12];
 
   if (self->_mockRefreshInstanceCA)
   {
-    [v3 appendString:@"Mock Refresh of Instance CA requested"];
+    [string appendString:@"Mock Refresh of Instance CA requested"];
   }
 
-  return v3;
+  return string;
 }
 
 @end

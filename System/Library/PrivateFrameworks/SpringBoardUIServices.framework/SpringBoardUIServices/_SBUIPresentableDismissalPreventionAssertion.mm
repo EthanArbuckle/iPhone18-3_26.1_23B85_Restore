@@ -1,6 +1,6 @@
 @interface _SBUIPresentableDismissalPreventionAssertion
 - (NSString)description;
-- (_SBUIPresentableDismissalPreventionAssertion)initWithDismissalSource:(int64_t)a3 reason:(id)a4 invalidationHandler:(id)a5;
+- (_SBUIPresentableDismissalPreventionAssertion)initWithDismissalSource:(int64_t)source reason:(id)reason invalidationHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -15,21 +15,21 @@
   [(_SBUIPresentableDismissalPreventionAssertion *)&v3 dealloc];
 }
 
-- (_SBUIPresentableDismissalPreventionAssertion)initWithDismissalSource:(int64_t)a3 reason:(id)a4 invalidationHandler:(id)a5
+- (_SBUIPresentableDismissalPreventionAssertion)initWithDismissalSource:(int64_t)source reason:(id)reason invalidationHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if ([objc_opt_class() _isValidBannerDismissalSource:a3])
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if ([objc_opt_class() _isValidBannerDismissalSource:source])
   {
-    if (v9)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     [_SBUIPresentableDismissalPreventionAssertion initWithDismissalSource:a2 reason:self invalidationHandler:?];
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -38,13 +38,13 @@ LABEL_10:
   }
 
   [_SBUIPresentableDismissalPreventionAssertion initWithDismissalSource:a2 reason:self invalidationHandler:?];
-  if (!v9)
+  if (!reasonCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v10)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -58,12 +58,12 @@ LABEL_4:
   v12 = v11;
   if (v11)
   {
-    v11->_dismissalSource = a3;
-    v13 = [v9 copy];
+    v11->_dismissalSource = source;
+    v13 = [reasonCopy copy];
     reason = v12->_reason;
     v12->_reason = v13;
 
-    v15 = [v10 copy];
+    v15 = [handlerCopy copy];
     invalidationHandler = v12->_invalidationHandler;
     v12->_invalidationHandler = v15;
 
@@ -94,7 +94,7 @@ LABEL_4:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A9A79000, v6, OS_LOG_TYPE_DEFAULT, "Invalidated banner dismissal prevention assertion: %{public}@", &v7, 0xCu);
     }
   }

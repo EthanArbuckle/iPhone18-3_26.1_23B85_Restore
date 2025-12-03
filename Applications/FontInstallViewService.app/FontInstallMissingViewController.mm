@@ -1,71 +1,71 @@
 @interface FontInstallMissingViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)dismissViewWithMissingFonts:(id)a3;
-- (void)doInstall:(id)a3;
-- (void)doNotInstall:(id)a3;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
-- (void)unwindSegue:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)dismissViewWithMissingFonts:(id)fonts;
+- (void)doInstall:(id)install;
+- (void)doNotInstall:(id)install;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
+- (void)unwindSegue:(id)segue;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FontInstallMissingViewController
 
 - (void)viewDidLoad
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = FontInstallMissingViewController;
   [(FontInstallMissingViewController *)&v6 viewDidLoad];
   v2 = objc_opt_new();
-  installable = v8->installable;
-  v8->installable = v2;
+  installable = selfCopy->installable;
+  selfCopy->installable = v2;
 
   v4 = objc_opt_new();
-  notInstallable = v8->notInstallable;
-  v8->notInstallable = v4;
+  notInstallable = selfCopy->notInstallable;
+  selfCopy->notInstallable = v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v55 = self;
+  selfCopy = self;
   v54 = a2;
-  v53 = a3;
+  appearCopy = appear;
   v52.receiver = self;
   v52.super_class = FontInstallMissingViewController;
-  [(FontInstallMissingViewController *)&v52 viewWillAppear:a3];
-  v40 = v55;
-  v41 = [(FontInstallMissingViewController *)v55 tableView];
-  [v41 setDataSource:v40];
+  [(FontInstallMissingViewController *)&v52 viewWillAppear:appear];
+  v40 = selfCopy;
+  tableView = [(FontInstallMissingViewController *)selfCopy tableView];
+  [tableView setDataSource:v40];
 
-  v42 = v55;
-  v43 = [(FontInstallMissingViewController *)v55 tableView];
-  [v43 setDelegate:v42];
+  v42 = selfCopy;
+  tableView2 = [(FontInstallMissingViewController *)selfCopy tableView];
+  [tableView2 setDelegate:v42];
 
-  v44 = [(FontInstallMissingViewController *)v55 tableView];
-  [v44 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:headerReuseIdentifier];
+  tableView3 = [(FontInstallMissingViewController *)selfCopy tableView];
+  [tableView3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:headerReuseIdentifier];
 
-  v45 = [(FontInstallMissingViewController *)v55 tableView];
-  [v45 setEstimatedSectionHeaderHeight:100.0];
+  tableView4 = [(FontInstallMissingViewController *)selfCopy tableView];
+  [tableView4 setEstimatedSectionHeaderHeight:100.0];
 
-  v46 = [(FontInstallMissingViewController *)v55 tableView];
-  [v46 setSectionHeaderHeight:UITableViewAutomaticDimension];
+  tableView5 = [(FontInstallMissingViewController *)selfCopy tableView];
+  [tableView5 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
-  v48 = [(FontInstallMissingViewController *)v55 navigationController];
-  v47 = [v48 remoteController];
-  objc_storeWeak(&v55->remoteController, v47);
+  navigationController = [(FontInstallMissingViewController *)selfCopy navigationController];
+  remoteController = [navigationController remoteController];
+  objc_storeWeak(&selfCopy->remoteController, remoteController);
 
-  objc_storeStrong(&v55->output, &__NSArray0__struct);
-  if (![(NSMutableArray *)v55->installable count]&& ![(NSMutableArray *)v55->notInstallable count])
+  objc_storeStrong(&selfCopy->output, &__NSArray0__struct);
+  if (![(NSMutableArray *)selfCopy->installable count]&& ![(NSMutableArray *)selfCopy->notInstallable count])
   {
     memset(__b, 0, sizeof(__b));
-    WeakRetained = objc_loadWeakRetained(&v55->remoteController);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->remoteController);
     obj = [WeakRetained input];
 
     v39 = [obj countByEnumeratingWithState:__b objects:v56 count:16];
@@ -86,14 +86,14 @@
         location = [v51 objectForKeyedSubscript:@"providers"];
         if ([location count])
         {
-          installable = v55->installable;
+          installable = selfCopy->installable;
           v32 = [v51 mutableCopy];
           [(NSMutableArray *)installable addObject:?];
         }
 
         else
         {
-          [(NSMutableArray *)v55->notInstallable addObject:v51];
+          [(NSMutableArray *)selfCopy->notInstallable addObject:v51];
         }
 
         objc_storeStrong(&location, 0);
@@ -111,26 +111,26 @@
     }
   }
 
-  if ([(NSMutableArray *)v55->installable count])
+  if ([(NSMutableArray *)selfCopy->installable count])
   {
     v8 = +[NSBundle mainBundle];
     v7 = [NSBundle localizedStringForKey:v8 value:"localizedStringForKey:value:table:" table:@"DONT_INSTALL_TITLE"];
-    v6 = [(FontInstallMissingViewController *)v55 navigationItem];
-    v5 = [v6 leftBarButtonItem];
-    [v5 setTitle:v7];
+    navigationItem = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setTitle:v7];
 
-    v10 = [(FontInstallMissingViewController *)v55 navigationItem];
-    v9 = [v10 leftBarButtonItem];
-    [v9 setEnabled:1];
+    navigationItem2 = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    leftBarButtonItem2 = [navigationItem2 leftBarButtonItem];
+    [leftBarButtonItem2 setEnabled:1];
 
     v14 = +[NSBundle mainBundle];
     v13 = [(NSBundle *)v14 localizedStringForKey:@"DO_INSTALL_TITLE" value:&stru_10001CD88 table:0];
-    v12 = [(FontInstallMissingViewController *)v55 navigationItem];
-    v11 = [v12 rightBarButtonItem];
-    [v11 setTitle:v13];
+    navigationItem3 = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+    [rightBarButtonItem setTitle:v13];
 
     v18 = +[NSBundle mainBundle];
-    if ([(NSMutableArray *)v55->installable count]== 1)
+    if ([(NSMutableArray *)selfCopy->installable count]== 1)
     {
       v4 = @"INSTALLABLE_DETAIL_TITLE_SINGULAR";
     }
@@ -142,28 +142,28 @@
 
     v17 = [(NSBundle *)v18 localizedStringForKey:v4 value:&stru_10001CD88 table:0];
     v16 = [NSString localizedStringWithFormat:?];
-    v15 = [(FontInstallMissingViewController *)v55 navigationItem];
-    [v15 setTitle:v16];
+    navigationItem4 = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    [navigationItem4 setTitle:v16];
   }
 
   else
   {
-    v20 = [(FontInstallMissingViewController *)v55 navigationItem];
-    v19 = [v20 leftBarButtonItem];
-    [v19 setTitle:?];
+    navigationItem5 = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    leftBarButtonItem3 = [navigationItem5 leftBarButtonItem];
+    [leftBarButtonItem3 setTitle:?];
 
-    v22 = [(FontInstallMissingViewController *)v55 navigationItem];
-    v21 = [v22 leftBarButtonItem];
-    [v21 setEnabled:0];
+    navigationItem6 = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    leftBarButtonItem4 = [navigationItem6 leftBarButtonItem];
+    [leftBarButtonItem4 setEnabled:0];
 
     v26 = +[NSBundle mainBundle];
     v25 = [(NSBundle *)v26 localizedStringForKey:@"DONE_TITLE" value:&stru_10001CD88 table:?];
-    v24 = [(FontInstallMissingViewController *)v55 navigationItem];
-    v23 = [v24 rightBarButtonItem];
-    [v23 setTitle:v25];
+    navigationItem7 = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    rightBarButtonItem2 = [navigationItem7 rightBarButtonItem];
+    [rightBarButtonItem2 setTitle:v25];
 
     v30 = +[NSBundle mainBundle];
-    if ([(NSMutableArray *)v55->notInstallable count]== 1)
+    if ([(NSMutableArray *)selfCopy->notInstallable count]== 1)
     {
       v3 = @"CANT_INSTALL_DETAIL_TITLE_SINGULAR";
     }
@@ -175,50 +175,50 @@
 
     v29 = [(NSBundle *)v30 localizedStringForKey:v3 value:&stru_10001CD88 table:0];
     v28 = [NSString localizedStringWithFormat:?];
-    v27 = [(FontInstallMissingViewController *)v55 navigationItem];
-    [v27 setTitle:v28];
+    navigationItem8 = [(FontInstallMissingViewController *)selfCopy navigationItem];
+    [navigationItem8 setTitle:v28];
   }
 }
 
-- (void)dismissViewWithMissingFonts:(id)a3
+- (void)dismissViewWithMissingFonts:(id)fonts
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->output, location[0]);
-  [(FontInstallMissingViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+  objc_storeStrong(location, fonts);
+  objc_storeStrong(&selfCopy->output, location[0]);
+  [(FontInstallMissingViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  v4 = [(FontInstallMissingViewController *)self navigationController];
-  v5 = [v4 topViewController];
+  disappearCopy = disappear;
+  navigationController = [(FontInstallMissingViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v5 == v9)
+  if (topViewController == selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v9->remoteController);
-    [WeakRetained doneWithMissingFonts:v9->output withDismissAnimated:0];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->remoteController);
+    [WeakRetained doneWithMissingFonts:selfCopy->output withDismissAnimated:0];
   }
 
-  v6.receiver = v9;
+  v6.receiver = selfCopy;
   v6.super_class = FontInstallMissingViewController;
-  [(FontInstallMissingViewController *)&v6 viewDidDisappear:v7];
+  [(FontInstallMissingViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
-- (void)doInstall:(id)a3
+- (void)doInstall:(id)install
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, install);
   v16 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
-  obj = v18->installable;
+  obj = selfCopy->installable;
   v13 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v21 count:16];
   if (v13)
   {
@@ -258,17 +258,17 @@
     }
   }
 
-  [(FontInstallMissingViewController *)v18 dismissViewWithMissingFonts:v16];
+  [(FontInstallMissingViewController *)selfCopy dismissViewWithMissingFonts:v16];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)doNotInstall:(id)a3
+- (void)doNotInstall:(id)install
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, install);
   v7 = &_os_log_default;
   v6 = 2;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -280,103 +280,103 @@
   }
 
   objc_storeStrong(&v7, 0);
-  [(FontInstallMissingViewController *)v9 dismissViewWithMissingFonts:&__NSArray0__struct];
+  [(FontInstallMissingViewController *)selfCopy dismissViewWithMissingFonts:&__NSArray0__struct];
   objc_storeStrong(location, 0);
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, segue);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, sender);
   v9 = v10;
-  v8 = [location[0] destinationViewController];
-  v5 = [v9 font];
-  [v8 setFont:?];
+  destinationViewController = [location[0] destinationViewController];
+  font = [v9 font];
+  [destinationViewController setFont:?];
 
-  v7 = [v9 font];
-  v6 = [v7 objectForKeyedSubscript:@"displayName"];
-  [v8 setTitle:?];
+  font2 = [v9 font];
+  v6 = [font2 objectForKeyedSubscript:@"displayName"];
+  [destinationViewController setTitle:?];
 
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&destinationViewController, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)unwindSegue:(id)a3
+- (void)unwindSegue:(id)segue
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(FontInstallMissingViewController *)v5 tableView];
-  [v3 reloadData];
+  objc_storeStrong(location, segue);
+  tableView = [(FontInstallMissingViewController *)selfCopy tableView];
+  [tableView reloadData];
 
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(NSMutableArray *)v7->installable count]!= 0;
-  v4 = [(NSMutableArray *)v7->notInstallable count]!= 0;
+  objc_storeStrong(location, view);
+  v5 = [(NSMutableArray *)selfCopy->installable count]!= 0;
+  v4 = [(NSMutableArray *)selfCopy->notInstallable count]!= 0;
   objc_storeStrong(location, 0);
   return v5 + v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = a4;
+  objc_storeStrong(location, view);
+  sectionCopy = section;
   v6 = 0;
-  if (![(NSMutableArray *)v9->installable count])
+  if (![(NSMutableArray *)selfCopy->installable count])
   {
-    v7 = a4 + 1;
+    sectionCopy = section + 1;
   }
 
-  if (v7)
+  if (sectionCopy)
   {
-    if (v7 == 1)
+    if (sectionCopy == 1)
     {
-      v6 = [(NSMutableArray *)v9->notInstallable count];
+      v6 = [(NSMutableArray *)selfCopy->notInstallable count];
     }
   }
 
   else
   {
-    v6 = [(NSMutableArray *)v9->installable count];
+    v6 = [(NSMutableArray *)selfCopy->installable count];
   }
 
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, view);
+  sectionCopy = section;
   v18 = &stru_10001CD88;
-  if (![(NSMutableArray *)v21->installable count])
+  if (![(NSMutableArray *)selfCopy->installable count])
   {
-    ++v19;
+    ++sectionCopy;
   }
 
-  if (v19)
+  if (sectionCopy)
   {
-    if (v19 == 1)
+    if (sectionCopy == 1)
     {
       v14 = +[NSBundle mainBundle];
       v6 = [(NSBundle *)v14 localizedStringForKey:@"NOT_INSTALLABLE_HEADER" value:&stru_10001CD88 table:0];
@@ -394,15 +394,15 @@
   }
 
   v17 = [location[0] dequeueReusableHeaderFooterViewWithIdentifier:headerReuseIdentifier];
-  v9 = [v17 textLabel];
-  [v9 setLineBreakMode:?];
+  textLabel = [v17 textLabel];
+  [textLabel setLineBreakMode:?];
 
-  v10 = [v17 textLabel];
-  [v10 setNumberOfLines:0];
+  textLabel2 = [v17 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
   v11 = v18;
-  v12 = [v17 textLabel];
-  [v12 setText:v11];
+  textLabel3 = [v17 textLabel];
+  [textLabel3 setText:v11];
 
   v13 = v17;
   objc_storeStrong(&v17, 0);
@@ -412,57 +412,57 @@
   return v13;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, path);
   v31 = 0;
-  v30 = [v32 section];
-  if (![(NSMutableArray *)v34->installable count])
+  section = [v32 section];
+  if (![(NSMutableArray *)selfCopy->installable count])
   {
-    ++v30;
+    ++section;
   }
 
-  if (v30)
+  if (section)
   {
-    if (v30 == 1)
+    if (section == 1)
     {
       v4 = [location[0] dequeueReusableCellWithIdentifier:@"CannotInstall"];
       v5 = v31;
       v31 = v4;
 
-      v10 = -[NSMutableArray objectAtIndexedSubscript:](v34->notInstallable, "objectAtIndexedSubscript:", [v32 item]);
+      v10 = -[NSMutableArray objectAtIndexedSubscript:](selfCopy->notInstallable, "objectAtIndexedSubscript:", [v32 item]);
       v9 = [v10 objectForKeyedSubscript:@"displayName"];
-      v8 = [v31 textLabel];
-      [v8 setText:v9];
+      textLabel = [v31 textLabel];
+      [textLabel setText:v9];
     }
   }
 
   else
   {
-    v29 = -[NSMutableArray objectAtIndexedSubscript:](v34->installable, "objectAtIndexedSubscript:", [v32 item]);
+    v29 = -[NSMutableArray objectAtIndexedSubscript:](selfCopy->installable, "objectAtIndexedSubscript:", [v32 item]);
     v28 = [location[0] dequeueReusableCellWithIdentifier:@"Installable"];
     [v28 setFont:v29];
     v17 = [v29 objectForKeyedSubscript:@"displayName"];
-    v16 = [v28 fontName];
-    [v16 setText:v17];
+    fontName = [v28 fontName];
+    [fontName setText:v17];
 
     v27 = [v29 objectForKeyedSubscript:@"providers"];
     v26 = [v27 objectAtIndexedSubscript:?];
     v20 = +[UIScreen mainScreen];
     [(UIScreen *)v20 scale];
     v19 = [UIImage _applicationIconImageForBundleIdentifier:"_applicationIconImageForBundleIdentifier:format:scale:" format:v26 scale:?];
-    v18 = [v28 providerIcon];
-    [v18 setImage:v19];
+    providerIcon = [v28 providerIcon];
+    [providerIcon setImage:v19];
 
     v23 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v26 allowPlaceholder:0 error:0];
-    v22 = [v23 localizedName];
-    v21 = [v28 providerName];
-    [v21 setText:v22];
+    localizedName = [v23 localizedName];
+    providerName = [v28 providerName];
+    [providerName setText:localizedName];
 
     v25 = [v27 count] > 1;
     [v28 setAccessoryType:v25];
@@ -471,14 +471,14 @@
       v15 = +[NSBundle mainBundle];
       v14 = [(NSBundle *)v15 localizedStringForKey:@"PROVIDER_COUNT" value:&stru_10001CD88 table:0];
       v13 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v14, [v27 count] - 1);
-      v12 = [v28 providerCount];
-      [v12 setText:v13];
+      providerCount = [v28 providerCount];
+      [providerCount setText:v13];
     }
 
     else
     {
-      v11 = [v28 providerCount];
-      [v11 setText:&stru_10001CD88];
+      providerCount2 = [v28 providerCount];
+      [providerCount2 setText:&stru_10001CD88];
     }
 
     objc_storeStrong(&v31, v28);
@@ -496,28 +496,28 @@
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v9 = [v10 section];
-  if (![(NSMutableArray *)v12->installable count])
+  objc_storeStrong(&v10, path);
+  section = [v10 section];
+  if (![(NSMutableArray *)selfCopy->installable count])
   {
-    ++v9;
+    ++section;
   }
 
-  if (v9)
+  if (section)
   {
     v13 = 0;
   }
 
   else
   {
-    v8 = -[NSMutableArray objectAtIndexedSubscript:](v12->installable, "objectAtIndexedSubscript:", [v10 item]);
+    v8 = -[NSMutableArray objectAtIndexedSubscript:](selfCopy->installable, "objectAtIndexedSubscript:", [v10 item]);
     v7 = [v8 objectForKeyedSubscript:@"providers"];
     if ([v7 count] >= 2)
     {

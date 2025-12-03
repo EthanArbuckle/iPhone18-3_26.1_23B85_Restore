@@ -1,52 +1,52 @@
 @interface EKCalendarResourceChangeNotification
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4;
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error;
 - (BOOL)needsAlert;
-- (EKCalendarResourceChangeNotification)initWithType:(int64_t)a3;
+- (EKCalendarResourceChangeNotification)initWithType:(int64_t)type;
 @end
 
 @implementation EKCalendarResourceChangeNotification
 
-- (EKCalendarResourceChangeNotification)initWithType:(int64_t)a3
+- (EKCalendarResourceChangeNotification)initWithType:(int64_t)type
 {
   v4.receiver = self;
   v4.super_class = EKCalendarResourceChangeNotification;
-  return [(EKCalendarNotification *)&v4 initWithType:a3];
+  return [(EKCalendarNotification *)&v4 initWithType:type];
 }
 
 - (BOOL)needsAlert
 {
   v5.receiver = self;
   v5.super_class = EKCalendarResourceChangeNotification;
-  v3 = [(EKCalendarNotification *)&v5 needsAlert];
-  if (v3)
+  needsAlert = [(EKCalendarNotification *)&v5 needsAlert];
+  if (needsAlert)
   {
-    LOBYTE(v3) = ![(EKCalendarNotification *)self hiddenFromNotificationCenter];
+    LOBYTE(needsAlert) = ![(EKCalendarNotification *)self hiddenFromNotificationCenter];
   }
 
-  return v3;
+  return needsAlert;
 }
 
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EKCalendarResourceChangeNotification *)self resourceChangeFromEventStore:v6];
+  storeCopy = store;
+  v7 = [(EKCalendarResourceChangeNotification *)self resourceChangeFromEventStore:storeCopy];
   if (!v7)
   {
     v9 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
       [EKCalendarResourceChangeNotification acknowledgeWithEventStore:v9 error:?];
-      if (a4)
+      if (error)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_5:
       [MEMORY[0x1E696ABC0] errorWithCADResult:1010];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_8;
     }
 
@@ -54,7 +54,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v8 = [v6 removeResourceChange:v7 error:a4];
+  v8 = [storeCopy removeResourceChange:v7 error:error];
 LABEL_8:
 
   return v8;

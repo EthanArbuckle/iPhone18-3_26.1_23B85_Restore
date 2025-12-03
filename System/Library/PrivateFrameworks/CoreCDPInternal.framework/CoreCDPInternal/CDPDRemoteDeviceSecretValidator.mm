@@ -1,29 +1,29 @@
 @interface CDPDRemoteDeviceSecretValidator
 - (id)_decoratedDelegate;
 - (void)_decoratedDelegate;
-- (void)_retriableValidateCustodianRecoveryInfo:(id)a3 withCompletion:(id)a4;
-- (void)approveFromAnotherDeviceWithCompletion:(id)a3;
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 withCompletion:(id)a4;
+- (void)_retriableValidateCustodianRecoveryInfo:(id)info withCompletion:(id)completion;
+- (void)approveFromAnotherDeviceWithCompletion:(id)completion;
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking withCompletion:(id)completion;
 - (void)cancelApproveFromAnotherDevice;
-- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)a3;
-- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)a3 andSetSecret:(id)a4;
-- (void)setValidSecretHandler:(id)a3;
-- (void)supportedEscapeOfferMaskCompletion:(id)a3;
-- (void)validateCustodianRecoveryInfo:(id)a3 withCompletion:(id)a4;
+- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)offered;
+- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)offered andSetSecret:(id)secret;
+- (void)setValidSecretHandler:(id)handler;
+- (void)supportedEscapeOfferMaskCompletion:(id)completion;
+- (void)validateCustodianRecoveryInfo:(id)info withCompletion:(id)completion;
 @end
 
 @implementation CDPDRemoteDeviceSecretValidator
 
-- (void)setValidSecretHandler:(id)a3
+- (void)setValidSecretHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__CDPDRemoteDeviceSecretValidator_setValidSecretHandler___block_invoke;
   v7[3] = &unk_278E24D90;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v8 = v5;
   v6.receiver = self;
   v6.super_class = CDPDRemoteDeviceSecretValidator;
@@ -51,16 +51,16 @@ void __57__CDPDRemoteDeviceSecretValidator_setValidSecretHandler___block_invoke(
   }
 }
 
-- (void)approveFromAnotherDeviceWithCompletion:(id)a3
+- (void)approveFromAnotherDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CDPDRemoteDeviceSecretValidator approveFromAnotherDeviceWithCompletion:];
   }
 
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(completionCopy);
   requestToJoinCompletion = self->_requestToJoinCompletion;
   self->_requestToJoinCompletion = v6;
 
@@ -71,7 +71,7 @@ void __57__CDPDRemoteDeviceSecretValidator_setValidSecretHandler___block_invoke(
   aBlock[3] = &unk_278E24DB8;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  v9 = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
+  _decoratedDelegate = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__CDPDRemoteDeviceSecretValidator_approveFromAnotherDeviceWithCompletion___block_invoke_2;
@@ -79,7 +79,7 @@ void __57__CDPDRemoteDeviceSecretValidator_setValidSecretHandler___block_invoke(
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  [v9 remoteSecretValidator:self applyToJoinCircleWithJoinHandler:v11];
+  [_decoratedDelegate remoteSecretValidator:self applyToJoinCircleWithJoinHandler:v11];
 }
 
 void __74__CDPDRemoteDeviceSecretValidator_approveFromAnotherDeviceWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -193,10 +193,10 @@ LABEL_20:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateCustodianRecoveryInfo:(id)a3 withCompletion:(id)a4
+- (void)validateCustodianRecoveryInfo:(id)info withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x277CE4698]) initWithMaxRetries:1];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -204,7 +204,7 @@ LABEL_20:
   aBlock[2] = __80__CDPDRemoteDeviceSecretValidator_validateCustodianRecoveryInfo_withCompletion___block_invoke;
   aBlock[3] = &unk_278E24DE0;
   objc_copyWeak(&v19, &location);
-  v9 = v6;
+  v9 = infoCopy;
   v18 = v9;
   v10 = _Block_copy(aBlock);
   v13[0] = MEMORY[0x277D85DD0];
@@ -212,7 +212,7 @@ LABEL_20:
   v13[2] = __80__CDPDRemoteDeviceSecretValidator_validateCustodianRecoveryInfo_withCompletion___block_invoke_2;
   v13[3] = &unk_278E24E08;
   objc_copyWeak(&v16, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v15 = v11;
   v12 = v8;
   v14 = v12;
@@ -322,24 +322,24 @@ void __80__CDPDRemoteDeviceSecretValidator_validateCustodianRecoveryInfo_withCom
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_retriableValidateCustodianRecoveryInfo:(id)a3 withCompletion:(id)a4
+- (void)_retriableValidateCustodianRecoveryInfo:(id)info withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CE44D8];
-  v8 = a3;
-  v9 = [(CDPDDeviceSecretValidator *)self context];
-  v10 = [v7 analyticsEventWithContext:v9 eventName:*MEMORY[0x277CFD8B8] category:*MEMORY[0x277CFD930]];
+  infoCopy = info;
+  context = [(CDPDDeviceSecretValidator *)self context];
+  v10 = [v7 analyticsEventWithContext:context eventName:*MEMORY[0x277CFD8B8] category:*MEMORY[0x277CFD930]];
 
-  v11 = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
+  _decoratedDelegate = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __90__CDPDRemoteDeviceSecretValidator__retriableValidateCustodianRecoveryInfo_withCompletion___block_invoke;
   v14[3] = &unk_278E24AE8;
   v15 = v10;
-  v16 = v6;
-  v12 = v6;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
-  [v11 remoteSecretValidator:self attemptCustodianRecoveryWithInfo:v8 completion:v14];
+  [_decoratedDelegate remoteSecretValidator:self attemptCustodianRecoveryWithInfo:infoCopy completion:v14];
 }
 
 void __90__CDPDRemoteDeviceSecretValidator__retriableValidateCustodianRecoveryInfo_withCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -360,19 +360,19 @@ void __90__CDPDRemoteDeviceSecretValidator__retriableValidateCustodianRecoveryIn
   }
 }
 
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 withCompletion:(id)a4
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
+  completionCopy = completion;
+  piggybackingCopy = piggybacking;
+  _decoratedDelegate = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__CDPDRemoteDeviceSecretValidator_attemptToJoinCircleWithPiggybacking_withCompletion___block_invoke;
   v10[3] = &unk_278E24AE8;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 remoteSecretValidator:self attemptCircleJoinWithPiggybackingContext:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [_decoratedDelegate remoteSecretValidator:self attemptCircleJoinWithPiggybackingContext:piggybackingCopy completion:v10];
 }
 
 void __86__CDPDRemoteDeviceSecretValidator_attemptToJoinCircleWithPiggybacking_withCompletion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -408,27 +408,27 @@ void __86__CDPDRemoteDeviceSecretValidator_attemptToJoinCircleWithPiggybacking_w
     [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
   }
 
-  v4 = [(CDPDDeviceSecretValidator *)self delegate];
-  v5 = [v4 conformsToProtocol:&unk_285825AE8];
+  delegate = [(CDPDDeviceSecretValidator *)self delegate];
+  v5 = [delegate conformsToProtocol:&unk_285825AE8];
 
   if (v5)
   {
-    v6 = [(CDPDDeviceSecretValidator *)self delegate];
+    delegate2 = [(CDPDDeviceSecretValidator *)self delegate];
   }
 
   else
   {
-    v6 = 0;
+    delegate2 = 0;
   }
 
-  return v6;
+  return delegate2;
 }
 
 - (void)cancelApproveFromAnotherDevice
 {
   self->_isWaitingForRemoteApproval = 0;
-  v3 = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
-  [v3 cancelRemoteSecretValidatorApplicationToJoinCircle:self];
+  _decoratedDelegate = [(CDPDRemoteDeviceSecretValidator *)self _decoratedDelegate];
+  [_decoratedDelegate cancelRemoteSecretValidatorApplicationToJoinCircle:self];
 
   requestToJoinCompletion = self->_requestToJoinCompletion;
   if (requestToJoinCompletion)
@@ -439,7 +439,7 @@ void __86__CDPDRemoteDeviceSecretValidator_attemptToJoinCircleWithPiggybacking_w
   }
 }
 
-- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)a3
+- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)offered
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = _CDPLogSystem();
@@ -450,14 +450,14 @@ void __86__CDPDRemoteDeviceSecretValidator_attemptToJoinCircleWithPiggybacking_w
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "%s: was called", &v7, 0xCu);
   }
 
-  [(CDPDRemoteDeviceSecretValidator *)self resetAccountCDPStateWithEscapeOptionsOffered:a3 andSetSecret:0];
+  [(CDPDRemoteDeviceSecretValidator *)self resetAccountCDPStateWithEscapeOptionsOffered:offered andSetSecret:0];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)a3 andSetSecret:(id)a4
+- (void)resetAccountCDPStateWithEscapeOptionsOffered:(unint64_t)offered andSetSecret:(id)secret
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  secretCopy = secret;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -466,35 +466,35 @@ void __86__CDPDRemoteDeviceSecretValidator_attemptToJoinCircleWithPiggybacking_w
     _os_log_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEFAULT, "%s: was called", &v15, 0xCu);
   }
 
-  v8 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+  validSecretHandler = [(CDPDDeviceSecretValidator *)self validSecretHandler];
 
-  if (v8)
+  if (validSecretHandler)
   {
     v9 = objc_alloc_init(CDPDRemoteSecretValidationResult);
     [(CDPDRemoteSecretValidationResult *)v9 setUserDidReset:1];
     [(CDPDRemoteSecretValidationResult *)v9 setRequiredEscapeOffers:[(CDPDDeviceSecretValidator *)self supportedEscapeOfferMask]];
-    [(CDPDRemoteSecretValidationResult *)v9 setEscapeOffersPresentedMask:a3];
-    if (v6)
+    [(CDPDRemoteSecretValidationResult *)v9 setEscapeOffersPresentedMask:offered];
+    if (secretCopy)
     {
       v10 = objc_alloc(MEMORY[0x277CFD500]);
-      v11 = [v6 validatedSecret];
-      v12 = [v10 initWithValidatedSecret:v11 secretType:{objc_msgSend(v6, "secretType")}];
+      validatedSecret = [secretCopy validatedSecret];
+      v12 = [v10 initWithValidatedSecret:validatedSecret secretType:{objc_msgSend(secretCopy, "secretType")}];
       [(CDPDRemoteSecretValidationResult *)v9 setCachedSecretForReenrollment:v12];
     }
 
-    v13 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
-    (v13)[2](v13, v9, 0);
+    validSecretHandler2 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+    (validSecretHandler2)[2](validSecretHandler2, v9, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)supportedEscapeOfferMaskCompletion:(id)a3
+- (void)supportedEscapeOfferMaskCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    (*(a3 + 2))(v5, [(CDPDDeviceSecretValidator *)self supportedEscapeOfferMask]);
+    completionCopy = completion;
+    (*(completion + 2))(completionCopy, [(CDPDDeviceSecretValidator *)self supportedEscapeOfferMask]);
   }
 }
 
@@ -510,9 +510,9 @@ void __74__CDPDRemoteDeviceSecretValidator_approveFromAnotherDeviceWithCompletio
 - (void)_decoratedDelegate
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 delegate];
+  delegate = [self delegate];
   v5 = 138412290;
-  v6 = v3;
+  v6 = delegate;
   _os_log_debug_impl(&dword_24510B000, a2, OS_LOG_TYPE_DEBUG, "Fetching decorated delegate: %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];

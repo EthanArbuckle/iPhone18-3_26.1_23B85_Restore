@@ -1,33 +1,33 @@
 @interface SKRemoteTaskExecuter
-- (BOOL)waitWithError:(id *)a3;
-- (SKRemoteTaskExecuter)initWithTasks:(id)a3;
+- (BOOL)waitWithError:(id *)error;
+- (SKRemoteTaskExecuter)initWithTasks:(id)tasks;
 @end
 
 @implementation SKRemoteTaskExecuter
 
-- (SKRemoteTaskExecuter)initWithTasks:(id)a3
+- (SKRemoteTaskExecuter)initWithTasks:(id)tasks
 {
-  v5 = a3;
+  tasksCopy = tasks;
   v9.receiver = self;
   v9.super_class = SKRemoteTaskExecuter;
   v6 = [(SKRemoteTaskExecuter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tasks, a3);
+    objc_storeStrong(&v6->_tasks, tasks);
   }
 
   return v7;
 }
 
-- (BOOL)waitWithError:(id *)a3
+- (BOOL)waitWithError:(id *)error
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SKRemoteTaskExecuter *)self tasks];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  tasks = [(SKRemoteTaskExecuter *)self tasks];
+  v5 = [tasks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -38,17 +38,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tasks);
         }
 
-        if (![*(*(&v11 + 1) + 8 * i) waitWithError:a3])
+        if (![*(*(&v11 + 1) + 8 * i) waitWithError:error])
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [tasks countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

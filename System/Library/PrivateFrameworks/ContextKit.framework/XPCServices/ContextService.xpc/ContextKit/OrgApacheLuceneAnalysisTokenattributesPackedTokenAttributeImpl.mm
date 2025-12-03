@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneAnalysisTokenattributesPackedTokenAttributeImpl
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OrgApacheLuceneAnalysisTokenattributesPackedTokenAttributeImpl)init;
 - (id)clone;
 - (unint64_t)hash;
 - (void)clear;
-- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)a3;
+- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)impl;
 - (void)dealloc;
-- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)a3;
+- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)reflector;
 @end
 
 @implementation OrgApacheLuceneAnalysisTokenattributesPackedTokenAttributeImpl
@@ -36,25 +36,25 @@
 {
   v4.receiver = self;
   v4.super_class = OrgApacheLuceneAnalysisTokenattributesPackedTokenAttributeImpl;
-  v2 = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)&v4 clone];
+  clone = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)&v4 clone];
   objc_opt_class();
-  if (v2 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v2;
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (!a3)
+      if (!equal)
       {
         JreThrowNullPointerException();
       }
@@ -64,10 +64,10 @@
         JreThrowClassCastException();
       }
 
-      if (*(&self->super.termLength_ + 1) == *(a3 + 7) && self->startOffset_ == *(a3 + 8) && HIDWORD(self->type_) == *(a3 + 11) && self->positionIncrement_ == *(a3 + 12))
+      if (*(&self->super.termLength_ + 1) == *(equal + 7) && self->startOffset_ == *(equal + 8) && HIDWORD(self->type_) == *(equal + 11) && self->positionIncrement_ == *(equal + 12))
       {
         v5 = *&self->endOffset_;
-        v6 = *(a3 + 36);
+        v6 = *(equal + 36);
         if (v5)
         {
           v7 = [v5 isEqual:v6];
@@ -84,7 +84,7 @@
 LABEL_16:
           v9.receiver = self;
           v9.super_class = OrgApacheLuceneAnalysisTokenattributesPackedTokenAttributeImpl;
-          LOBYTE(v7) = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)&v9 isEqual:a3];
+          LOBYTE(v7) = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)&v9 isEqual:equal];
           return v7;
         }
       }
@@ -116,29 +116,29 @@ LABEL_16:
   return v7;
 }
 
-- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)a3
+- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)impl
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = OrgApacheLuceneAnalysisTokenattributesPackedTokenAttributeImpl;
-    [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)&v7 copyToWithOrgApacheLuceneUtilAttributeImpl:a3];
+    [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)&v7 copyToWithOrgApacheLuceneUtilAttributeImpl:impl];
     v6 = OrgApacheLuceneAnalysisTokenattributesOffsetAttribute_class_();
-    if (a3)
+    if (impl)
     {
-      if ([v6 isInstance:a3])
+      if ([v6 isInstance:impl])
       {
-        [a3 setOffsetWithInt:*(&self->super.termLength_ + 1) withInt:self->startOffset_];
-        if ([OrgApacheLuceneAnalysisTokenattributesPositionIncrementAttribute_class_() isInstance:a3])
+        [impl setOffsetWithInt:*(&self->super.termLength_ + 1) withInt:self->startOffset_];
+        if ([OrgApacheLuceneAnalysisTokenattributesPositionIncrementAttribute_class_() isInstance:impl])
         {
-          [a3 setPositionIncrementWithInt:HIDWORD(self->type_)];
-          if ([OrgApacheLuceneAnalysisTokenattributesPositionLengthAttribute_class_() isInstance:a3])
+          [impl setPositionIncrementWithInt:HIDWORD(self->type_)];
+          if ([OrgApacheLuceneAnalysisTokenattributesPositionLengthAttribute_class_() isInstance:impl])
           {
-            [a3 setPositionLengthWithInt:self->positionIncrement_];
-            if ([OrgApacheLuceneAnalysisTokenattributesTypeAttribute_class_() isInstance:a3])
+            [impl setPositionLengthWithInt:self->positionIncrement_];
+            if ([OrgApacheLuceneAnalysisTokenattributesTypeAttribute_class_() isInstance:impl])
             {
-              [a3 setTypeWithNSString:*&self->endOffset_];
+              [impl setTypeWithNSString:*&self->endOffset_];
               return;
             }
           }
@@ -154,7 +154,7 @@ LABEL_14:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!impl)
   {
     goto LABEL_14;
   }
@@ -164,35 +164,35 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  [a3 copyBufferWithCharArray:-[OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl buffer](self withInt:"buffer") withInt:{0, -[OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl length](self, "length")}];
-  *(a3 + 11) = HIDWORD(self->type_);
-  *(a3 + 12) = self->positionIncrement_;
-  *(a3 + 7) = *(&self->super.termLength_ + 1);
-  *(a3 + 8) = self->startOffset_;
+  [impl copyBufferWithCharArray:-[OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl buffer](self withInt:"buffer") withInt:{0, -[OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl length](self, "length")}];
+  *(impl + 11) = HIDWORD(self->type_);
+  *(impl + 12) = self->positionIncrement_;
+  *(impl + 7) = *(&self->super.termLength_ + 1);
+  *(impl + 8) = self->startOffset_;
   v5 = *&self->endOffset_;
 
-  JreStrongAssign((a3 + 36), v5);
+  JreStrongAssign((impl + 36), v5);
 }
 
-- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)a3
+- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)reflector
 {
   v9.receiver = self;
   v9.super_class = OrgApacheLuceneAnalysisTokenattributesPackedTokenAttributeImpl;
   [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)&v9 reflectWithWithOrgApacheLuceneUtilAttributeReflector:?];
-  if (!a3)
+  if (!reflector)
   {
     JreThrowNullPointerException();
   }
 
   v5 = OrgApacheLuceneAnalysisTokenattributesOffsetAttribute_class_();
-  [a3 reflectWithIOSClass:v5 withNSString:@"startOffset" withId:JavaLangInteger_valueOfWithInt_(*(&self->super.termLength_ + 1))];
+  [reflector reflectWithIOSClass:v5 withNSString:@"startOffset" withId:JavaLangInteger_valueOfWithInt_(*(&self->super.termLength_ + 1))];
   v6 = OrgApacheLuceneAnalysisTokenattributesOffsetAttribute_class_();
-  [a3 reflectWithIOSClass:v6 withNSString:@"endOffset" withId:JavaLangInteger_valueOfWithInt_(self->startOffset_)];
+  [reflector reflectWithIOSClass:v6 withNSString:@"endOffset" withId:JavaLangInteger_valueOfWithInt_(self->startOffset_)];
   v7 = OrgApacheLuceneAnalysisTokenattributesPositionIncrementAttribute_class_();
-  [a3 reflectWithIOSClass:v7 withNSString:@"positionIncrement" withId:JavaLangInteger_valueOfWithInt_(HIDWORD(self->type_))];
+  [reflector reflectWithIOSClass:v7 withNSString:@"positionIncrement" withId:JavaLangInteger_valueOfWithInt_(HIDWORD(self->type_))];
   v8 = OrgApacheLuceneAnalysisTokenattributesPositionLengthAttribute_class_();
-  [a3 reflectWithIOSClass:v8 withNSString:@"positionLength" withId:JavaLangInteger_valueOfWithInt_(self->positionIncrement_)];
-  [a3 reflectWithIOSClass:OrgApacheLuceneAnalysisTokenattributesTypeAttribute_class_() withNSString:@"type" withId:*&self->endOffset_];
+  [reflector reflectWithIOSClass:v8 withNSString:@"positionLength" withId:JavaLangInteger_valueOfWithInt_(self->positionIncrement_)];
+  [reflector reflectWithIOSClass:OrgApacheLuceneAnalysisTokenattributesTypeAttribute_class_() withNSString:@"type" withId:*&self->endOffset_];
 }
 
 - (void)dealloc

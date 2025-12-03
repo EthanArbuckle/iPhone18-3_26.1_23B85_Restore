@@ -1,31 +1,31 @@
 @interface CKConversationListNewMessageCollectionViewCell
 - (CKConversationListCollectionViewCellDelegate)delegate;
-- (CKConversationListNewMessageCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CKConversationListNewMessageCollectionViewCell)initWithFrame:(CGRect)frame;
 - (double)widthForDeterminingAvatarVisibility;
-- (void)didHoverOverCell:(id)a3;
-- (void)selectedDeleteButtonForConversation:(id)a3 inCell:(id)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)updateContentsForConversation:(id)a3;
+- (void)didHoverOverCell:(id)cell;
+- (void)selectedDeleteButtonForConversation:(id)conversation inCell:(id)cell;
+- (void)setSelected:(BOOL)selected;
+- (void)updateContentsForConversation:(id)conversation;
 - (void)updateFontSize;
 @end
 
 @implementation CKConversationListNewMessageCollectionViewCell
 
-- (CKConversationListNewMessageCollectionViewCell)initWithFrame:(CGRect)a3
+- (CKConversationListNewMessageCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CKConversationListNewMessageCollectionViewCell;
-  v3 = [(CKConversationListEmbeddedCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKConversationListEmbeddedCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKConversationListNewMessageCollectionViewCell *)v3 embeddedNewMessageTableViewCell];
-    [v5 setDelegate:v4];
+    embeddedNewMessageTableViewCell = [(CKConversationListNewMessageCollectionViewCell *)v3 embeddedNewMessageTableViewCell];
+    [embeddedNewMessageTableViewCell setDelegate:v4];
 
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 preferredDeleteButtonVisibilityForNewCompose];
+    preferredDeleteButtonVisibilityForNewCompose = [v6 preferredDeleteButtonVisibilityForNewCompose];
 
-    if (v7 == 2)
+    if (preferredDeleteButtonVisibilityForNewCompose == 2)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:v4 action:sel_didHoverOverCell_];
       [(CKConversationListNewMessageCollectionViewCell *)v4 addGestureRecognizer:v8];
@@ -35,55 +35,55 @@
   return v4;
 }
 
-- (void)didHoverOverCell:(id)a3
+- (void)didHoverOverCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(CKConversationListNewMessageCollectionViewCell *)self embeddedNewMessageTableViewCell];
-  [v5 didHoverOverCell:v4];
+  cellCopy = cell;
+  embeddedNewMessageTableViewCell = [(CKConversationListNewMessageCollectionViewCell *)self embeddedNewMessageTableViewCell];
+  [embeddedNewMessageTableViewCell didHoverOverCell:cellCopy];
 }
 
 - (void)updateFontSize
 {
-  v2 = [(CKConversationListNewMessageCollectionViewCell *)self embeddedNewMessageTableViewCell];
-  [v2 updateFontSize];
+  embeddedNewMessageTableViewCell = [(CKConversationListNewMessageCollectionViewCell *)self embeddedNewMessageTableViewCell];
+  [embeddedNewMessageTableViewCell updateFontSize];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = CKConversationListNewMessageCollectionViewCell;
   [(CKConversationListNewMessageCollectionViewCell *)&v6 setSelected:?];
-  v5 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-  [v5 setSelected:v3];
+  embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+  [embeddedTableViewCell setSelected:selectedCopy];
 }
 
-- (void)updateContentsForConversation:(id)a3
+- (void)updateContentsForConversation:(id)conversation
 {
-  v6 = a3;
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+  conversationCopy = conversation;
+  embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
 
-  if (v4)
+  if (embeddedTableViewCell)
   {
-    v5 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-    [v5 updateContentsForConversation:v6];
+    embeddedTableViewCell2 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+    [embeddedTableViewCell2 updateContentsForConversation:conversationCopy];
   }
 }
 
 - (double)widthForDeterminingAvatarVisibility
 {
-  v2 = [(CKConversationListNewMessageCollectionViewCell *)self delegate];
-  [v2 widthForDeterminingAvatarVisibility];
+  delegate = [(CKConversationListNewMessageCollectionViewCell *)self delegate];
+  [delegate widthForDeterminingAvatarVisibility];
   v4 = v3;
 
   return v4;
 }
 
-- (void)selectedDeleteButtonForConversation:(id)a3 inCell:(id)a4
+- (void)selectedDeleteButtonForConversation:(id)conversation inCell:(id)cell
 {
-  v5 = a3;
-  v6 = [(CKConversationListNewMessageCollectionViewCell *)self delegate];
-  [v6 selectedDeleteButtonForConversation:v5 inCell:self];
+  conversationCopy = conversation;
+  delegate = [(CKConversationListNewMessageCollectionViewCell *)self delegate];
+  [delegate selectedDeleteButtonForConversation:conversationCopy inCell:self];
 }
 
 - (CKConversationListCollectionViewCellDelegate)delegate

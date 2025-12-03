@@ -1,35 +1,35 @@
 @interface HKUnitPreferenceController
-+ (void)unitPreferenceControllerWithHealthStore:(id)a3 completion:(id)a4;
-- (HKUnitPreferenceController)initWithHealthStore:(id)a3;
-- (id)_changedKeysBetweenDictionary:(void *)a3 andDictionary:;
++ (void)unitPreferenceControllerWithHealthStore:(id)store completion:(id)completion;
+- (HKUnitPreferenceController)initWithHealthStore:(id)store;
+- (id)_changedKeysBetweenDictionary:(void *)dictionary andDictionary:;
 - (id)_generateDefaultHKUnitPreferences;
-- (id)_initWithHealthStore:(id *)a1 completion:(void *)a2;
-- (id)_lock_updatePreferredUnits:(id)a1;
-- (id)unitForObjectType:(id)a3;
-- (void)_fetchHKUnitPreferencesWithAttempt:(void *)a3 completion:;
-- (void)_initHKUnitPreferencesWithCompletion:(uint64_t)a1;
-- (void)_postNotificationWithChangedKeys:(uint64_t)a1;
-- (void)_refreshHKUnitPreferencesWithCompletion:(uint64_t)a1;
+- (id)_initWithHealthStore:(id *)store completion:(void *)completion;
+- (id)_lock_updatePreferredUnits:(id)units;
+- (id)unitForObjectType:(id)type;
+- (void)_fetchHKUnitPreferencesWithAttempt:(void *)attempt completion:;
+- (void)_initHKUnitPreferencesWithCompletion:(uint64_t)completion;
+- (void)_postNotificationWithChangedKeys:(uint64_t)keys;
+- (void)_refreshHKUnitPreferencesWithCompletion:(uint64_t)completion;
 - (void)dealloc;
-- (void)updatePreferredUnit:(id)a3 forObjectType:(id)a4;
+- (void)updatePreferredUnit:(id)unit forObjectType:(id)type;
 @end
 
 @implementation HKUnitPreferenceController
 
-+ (void)unitPreferenceControllerWithHealthStore:(id)a3 completion:(id)a4
++ (void)unitPreferenceControllerWithHealthStore:(id)store completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [HKUnitPreferenceController _initWithHealthStore:v6 completion:?];
+  completionCopy = completion;
+  storeCopy = store;
+  v7 = [HKUnitPreferenceController _initWithHealthStore:storeCopy completion:?];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__HKUnitPreferenceController_unitPreferenceControllerWithHealthStore_completion___block_invoke;
   v10[3] = &unk_1E73815B0;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
+  v9 = completionCopy;
   [(HKUnitPreferenceController *)v8 _initHKUnitPreferencesWithCompletion:v10];
 }
 
@@ -51,22 +51,22 @@ uint64_t __81__HKUnitPreferenceController_unitPreferenceControllerWithHealthStor
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
-  [v3 removeObserver:self name:@"HKUserPreferencesDidChangeNotification" object:self->_healthStore];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  [defaultCenter removeObserver:self name:@"HKUserPreferencesDidChangeNotification" object:self->_healthStore];
 
   v4.receiver = self;
   v4.super_class = HKUnitPreferenceController;
   [(HKUnitPreferenceController *)&v4 dealloc];
 }
 
-- (id)unitForObjectType:(id)a3
+- (id)unitForObjectType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
-  if (v4)
+  if (typeCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_unitPreferencesByObjectType objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_unitPreferencesByObjectType objectForKeyedSubscript:typeCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -78,28 +78,28 @@ uint64_t __81__HKUnitPreferenceController_unitPreferenceControllerWithHealthStor
   return v5;
 }
 
-- (void)updatePreferredUnit:(id)a3 forObjectType:(id)a4
+- (void)updatePreferredUnit:(id)unit forObjectType:(id)type
 {
-  if (a3)
+  if (unit)
   {
-    if (a4)
+    if (type)
     {
       v12[9] = v4;
       v12[10] = v5;
-      v8 = a4;
-      v9 = a3;
+      typeCopy = type;
+      unitCopy = unit;
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_unitPreferencesByObjectType setObject:v9 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_unitPreferencesByObjectType setObject:unitCopy forKeyedSubscript:typeCopy];
       healthStore = self->_healthStore;
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __64__HKUnitPreferenceController_updatePreferredUnit_forObjectType___block_invoke;
       v12[3] = &unk_1E7376A00;
       v12[4] = self;
-      [(HKHealthStore *)healthStore _setPreferredUnit:v9 forType:v8 completion:v12];
+      [(HKHealthStore *)healthStore _setPreferredUnit:unitCopy forType:typeCopy completion:v12];
 
       os_unfair_lock_unlock(&self->_lock);
-      v11 = [MEMORY[0x1E695DFD8] setWithObject:v8];
+      v11 = [MEMORY[0x1E695DFD8] setWithObject:typeCopy];
 
       [(HKUnitPreferenceController *)self _postNotificationWithChangedKeys:v11];
     }
@@ -178,47 +178,47 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
   }
 }
 
-- (id)_initWithHealthStore:(id *)a1 completion:(void *)a2
+- (id)_initWithHealthStore:(id *)store completion:(void *)completion
 {
-  v4 = a2;
-  if (a1)
+  completionCopy = completion;
+  if (store)
   {
-    v9.receiver = a1;
+    v9.receiver = store;
     v9.super_class = HKUnitPreferenceController;
     v5 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v5;
+    store = v5;
     if (v5)
     {
-      objc_storeStrong(v5 + 3, a2);
-      *(a1 + 4) = 0;
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:a1 selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+      objc_storeStrong(v5 + 3, completion);
+      *(store + 4) = 0;
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:store selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:a1 selector:sel__unitPreferencesDidUpdate_ name:@"HKUserPreferencesDidChangeNotification" object:a1[3]];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:store selector:sel__unitPreferencesDidUpdate_ name:@"HKUserPreferencesDidChangeNotification" object:store[3]];
     }
   }
 
-  return a1;
+  return store;
 }
 
-- (void)_initHKUnitPreferencesWithCompletion:(uint64_t)a1
+- (void)_initHKUnitPreferencesWithCompletion:(uint64_t)completion
 {
-  if (a1)
+  if (completion)
   {
     v6 = a2;
-    v3 = [(HKUnitPreferenceController *)a1 _generateDefaultHKUnitPreferences];
-    v4 = [v3 mutableCopy];
-    v5 = *(a1 + 8);
-    *(a1 + 8) = v4;
+    _generateDefaultHKUnitPreferences = [(HKUnitPreferenceController *)completion _generateDefaultHKUnitPreferences];
+    v4 = [_generateDefaultHKUnitPreferences mutableCopy];
+    v5 = *(completion + 8);
+    *(completion + 8) = v4;
 
-    [(HKUnitPreferenceController *)a1 _fetchHKUnitPreferencesWithAttempt:v6 completion:?];
+    [(HKUnitPreferenceController *)completion _fetchHKUnitPreferencesWithAttempt:v6 completion:?];
   }
 }
 
-- (HKUnitPreferenceController)initWithHealthStore:(id)a3
+- (HKUnitPreferenceController)initWithHealthStore:(id)store
 {
-  v3 = [HKUnitPreferenceController _initWithHealthStore:a3 completion:?];
+  v3 = [HKUnitPreferenceController _initWithHealthStore:store completion:?];
   v4 = v3;
   if (v3)
   {
@@ -228,32 +228,32 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
   return v4;
 }
 
-- (void)_postNotificationWithChangedKeys:(uint64_t)a1
+- (void)_postNotificationWithChangedKeys:(uint64_t)keys
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (keys)
   {
     v8 = @"HKUnitPreferenceControllerUnitPreferenceChangedKey";
     v9[0] = a2;
     v3 = MEMORY[0x1E695DF20];
     v4 = a2;
     v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v6 postNotificationName:@"HKUnitPreferenceControllerUnitPreferencesDidChangeNotification" object:a1 userInfo:v5];
+    [defaultCenter postNotificationName:@"HKUnitPreferenceControllerUnitPreferencesDidChangeNotification" object:keys userInfo:v5];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_lock_updatePreferredUnits:(id)a1
+- (id)_lock_updatePreferredUnits:(id)units
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (units)
   {
-    os_unfair_lock_assert_owner(a1 + 4);
-    v4 = [(HKUnitPreferenceController *)a1 _changedKeysBetweenDictionary:v3 andDictionary:?];
+    os_unfair_lock_assert_owner(units + 4);
+    v4 = [(HKUnitPreferenceController *)units _changedKeysBetweenDictionary:v3 andDictionary:?];
     if ([v4 count])
     {
       v16 = 0u;
@@ -277,7 +277,7 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
 
             v10 = *(*(&v14 + 1) + 8 * i);
             v11 = [v3 objectForKeyedSubscript:{v10, v14}];
-            [*(a1 + 1) setObject:v11 forKeyedSubscript:v10];
+            [*(units + 1) setObject:v11 forKeyedSubscript:v10];
           }
 
           v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -286,28 +286,28 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
         while (v7);
       }
 
-      a1 = v5;
+      units = v5;
     }
 
     else
     {
-      a1 = 0;
+      units = 0;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return units;
 }
 
-- (id)_changedKeysBetweenDictionary:(void *)a3 andDictionary:
+- (id)_changedKeysBetweenDictionary:(void *)dictionary andDictionary:
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dictionaryCopy = dictionary;
+  if (self)
   {
-    a1 = objc_alloc_init(MEMORY[0x1E695DFA8]);
+    self = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -329,11 +329,11 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
 
           v12 = *(*(&v18 + 1) + 8 * i);
           v13 = [v5 objectForKeyedSubscript:{v12, v18}];
-          v14 = [v6 objectForKeyedSubscript:v12];
+          v14 = [dictionaryCopy objectForKeyedSubscript:v12];
           v15 = v14;
           if (v13 != v14 && (!v14 || ([v13 isEqual:v14] & 1) == 0))
           {
-            [a1 addObject:v12];
+            [self addObject:v12];
           }
         }
 
@@ -346,30 +346,30 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (void)_fetchHKUnitPreferencesWithAttempt:(void *)a3 completion:
+- (void)_fetchHKUnitPreferencesWithAttempt:(void *)attempt completion:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  attemptCopy = attempt;
+  v6 = attemptCopy;
+  if (self)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __76__HKUnitPreferenceController__fetchHKUnitPreferencesWithAttempt_completion___block_invoke;
     v7[3] = &unk_1E73815D8;
     v9 = a2;
-    v7[4] = a1;
-    v8 = v5;
-    [(HKUnitPreferenceController *)a1 _refreshHKUnitPreferencesWithCompletion:v7];
+    v7[4] = self;
+    v8 = attemptCopy;
+    [(HKUnitPreferenceController *)self _refreshHKUnitPreferencesWithCompletion:v7];
   }
 }
 
 - (id)_generateDefaultHKUnitPreferences
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v32 = 0u;
@@ -454,12 +454,12 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
   return v27;
 }
 
-- (void)_refreshHKUnitPreferencesWithCompletion:(uint64_t)a1
+- (void)_refreshHKUnitPreferencesWithCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    v4 = *(a1 + 24);
+    v4 = *(completion + 24);
     v5 = MEMORY[0x1E695DFD8];
     v6 = _HKAllQuantityTypes();
     v7 = [v5 setWithArray:v6];
@@ -467,7 +467,7 @@ void __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___
     v8[1] = 3221225472;
     v8[2] = __70__HKUnitPreferenceController__refreshHKUnitPreferencesWithCompletion___block_invoke;
     v8[3] = &unk_1E7381600;
-    v8[4] = a1;
+    v8[4] = completion;
     v9 = v3;
     [v4 preferredUnitsForQuantityTypes:v7 completion:v8];
   }

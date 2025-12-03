@@ -1,10 +1,10 @@
 @interface SCNCommonProfileProgramGeneratorMetal
-- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 introspectionDataPtr:(void *)a5;
-- (__C3DFXProgram)_newProgramWithHashCodeWithFunctionConstants:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 introspectionDataPtr:(void *)a5;
-- (id)initAllowingHotReload:(BOOL)a3;
-- (id)splitInputOutputStructsIfNeededForSourceCode:(id)a3 generatedFromReplacementStrings:(id)a4 perPixelLighting:(BOOL)a5 clipDistanceCount:(unint64_t)a6 hasBezierCurveDeformer:(BOOL)a7;
+- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)code engineContext:(__C3DEngineContext *)context introspectionDataPtr:(void *)ptr;
+- (__C3DFXProgram)_newProgramWithHashCodeWithFunctionConstants:(__C3DProgramHashCode *)constants engineContext:(__C3DEngineContext *)context introspectionDataPtr:(void *)ptr;
+- (id)initAllowingHotReload:(BOOL)reload;
+- (id)splitInputOutputStructsIfNeededForSourceCode:(id)code generatedFromReplacementStrings:(id)strings perPixelLighting:(BOOL)lighting clipDistanceCount:(unint64_t)count hasBezierCurveDeformer:(BOOL)deformer;
 - (void)_loadSourceCode;
-- (void)collectShaderForProgram:(__C3DFXMetalProgram *)a3 hashCode:(id)a4 newVertexFunctionName:(id)a5 newFragmentFunctionName:(id)a6 sourceCodeBlock:(id)a7 additionalFileBlock:(id)a8;
+- (void)collectShaderForProgram:(__C3DFXMetalProgram *)program hashCode:(id)code newVertexFunctionName:(id)name newFragmentFunctionName:(id)functionName sourceCodeBlock:(id)block additionalFileBlock:(id)fileBlock;
 - (void)dealloc;
 - (void)emptyShaderCache;
 @end
@@ -13,9 +13,9 @@
 
 - (void)_loadSourceCode
 {
-  *a1 = 136315138;
+  *self = 136315138;
   *a2 = "range.rangeValue.length > 0";
-  OUTLINED_FUNCTION_1(&dword_21BEF7000, a2, a3, "Assertion '%s' failed. range not found", a1);
+  OUTLINED_FUNCTION_1(&dword_21BEF7000, a2, a3, "Assertion '%s' failed. range not found", self);
 }
 
 - (void)emptyShaderCache
@@ -26,7 +26,7 @@
   [(SCNCommonProfileProgramGenerator *)&v3 emptyShaderCache];
 }
 
-- (id)initAllowingHotReload:(BOOL)a3
+- (id)initAllowingHotReload:(BOOL)reload
 {
   v7.receiver = self;
   v7.super_class = SCNCommonProfileProgramGeneratorMetal;
@@ -34,7 +34,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_allowHotReload = a3;
+    v4->_allowHotReload = reload;
     v4->_useFunctionConstants = C3DStandardShadersUseFunctionConstants();
     [(SCNCommonProfileProgramGeneratorMetal *)v5 _loadSourceCode];
   }
@@ -49,7 +49,7 @@
   [(SCNCommonProfileProgramGenerator *)&v3 dealloc];
 }
 
-- (__C3DFXProgram)_newProgramWithHashCodeWithFunctionConstants:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 introspectionDataPtr:(void *)a5
+- (__C3DFXProgram)_newProgramWithHashCodeWithFunctionConstants:(__C3DProgramHashCode *)constants engineContext:(__C3DEngineContext *)context introspectionDataPtr:(void *)ptr
 {
   v47 = *MEMORY[0x277D85DE8];
   v44 = 0;
@@ -67,10 +67,10 @@
   v32 = 0u;
   v31 = 0u;
   v30 = 0u;
-  v29 = a3;
-  ShaderModifiers = C3DProgramHashCodeGetShaderModifiers(a3, 0);
+  constantsCopy = constants;
+  ShaderModifiers = C3DProgramHashCodeGetShaderModifiers(constants, 0);
   v8 = 0;
-  if (ShaderModifiers | C3DProgramHashCodeGetShaderModifiers(a3, 1))
+  if (ShaderModifiers | C3DProgramHashCodeGetShaderModifiers(constants, 1))
   {
     *&v30 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
     *(&v31 + 1) = [MEMORY[0x277CCAB68] stringWithCapacity:0];
@@ -78,7 +78,7 @@
     *(&v40 + 1) = [MEMORY[0x277CCAB68] stringWithCapacity:0];
     *&v41 = [MEMORY[0x277CCAB68] stringWithCapacity:0];
     *(&v41 + 1) = [MEMORY[0x277CCAB68] stringWithCapacity:0];
-    __InjectAllModifiersIfNeeded(&v29);
+    __InjectAllModifiersIfNeeded(&constantsCopy);
     v9 = C3DGetTextResourceWithNameAllowingHotReload(@"scn_metal");
     v10 = C3DGetTextResourceWithNameAllowingHotReload(@"scn_util.h");
     v11 = C3DGetTextResourceWithNameAllowingHotReload(@"scn_standard_lighting.h");
@@ -161,7 +161,7 @@
     v8 = [v21 stringByAppendingString:v20];
   }
 
-  NodeHashCode = C3DProgramHashCodeGetNodeHashCode(a3);
+  NodeHashCode = C3DProgramHashCodeGetNodeHashCode(constants);
   if ((NodeHashCode & 0x20) != 0)
   {
     v23 = scn_default_log();
@@ -171,7 +171,7 @@
     }
   }
 
-  ConstantsValues = C3DProgramHashCodeGetConstantsValues(a3);
+  ConstantsValues = C3DProgramHashCodeGetConstantsValues(constants);
   v25 = &kStandardPostTessellationVertexEntryPoint;
   if ((NodeHashCode & 4) == 0)
   {
@@ -179,19 +179,19 @@
   }
 
   v26 = C3DFXMetalProgramCreateFromSourceWithConstants(*v25, @"standard_frag", 0, v8, v30, *(&v30 + 1), ConstantsValues, 0);
-  HashCode = C3DProgramHashCodeGetHashCode(a3);
+  HashCode = C3DProgramHashCodeGetHashCode(constants);
   C3DFXMetalProgramUpdateHashWithCommonProfileHashCode(v26, HashCode);
   return v26;
 }
 
-- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 introspectionDataPtr:(void *)a5
+- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)code engineContext:(__C3DEngineContext *)context introspectionDataPtr:(void *)ptr
 {
-  v6 = a3;
+  codeCopy = code;
   *(&v215[2] + 4) = *MEMORY[0x277D85DE8];
   if (self->_useFunctionConstants)
   {
 
-    return [(SCNCommonProfileProgramGeneratorMetal *)self _newProgramWithHashCodeWithFunctionConstants:a3 engineContext:a4 introspectionDataPtr:a5];
+    return [(SCNCommonProfileProgramGeneratorMetal *)self _newProgramWithHashCodeWithFunctionConstants:code engineContext:context introspectionDataPtr:ptr];
   }
 
   v195 = 0u;
@@ -208,8 +208,8 @@
   v184 = 0u;
   v185 = 0u;
   v183 = 0u;
-  v181 = a3;
-  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{0, a4, a5}];
+  codeCopy2 = code;
+  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{0, context, ptr}];
   v182 = v9;
   v10 = 0;
   if (C3DShouldCollectGeneratedShaders())
@@ -233,25 +233,25 @@
   *&v193 = [MEMORY[0x277CCAB68] stringWithCapacity:0];
   *(&v193 + 1) = [MEMORY[0x277CCAB68] stringWithCapacity:0];
   *&v194 = [MEMORY[0x277CCAB68] stringWithCapacity:0];
-  Conditioners = C3DProgramHashCodeGetConditioners(v6);
-  IsOpaque = C3DProgramHashCodeIsOpaque(v6);
-  HasTexture = C3DProgramHashCodeGetEffectPropertyHasTexture(v6, 7u);
-  v12 = C3DProgramHashCodeGetEffectPropertyHasTexture(v6, 4u);
-  v13 = C3DProgramHashCodeGetEffectPropertyHasTexture(v6, 5u);
-  IsOne = C3DProgramHashCodeGlobalAlphaIsOne(v6);
-  HasConstantAlpha = C3DProgramHashCodeHasConstantAlpha(v6);
-  LightingEnabled = C3DProgramHashCodeGetLightingEnabled(v6);
-  CommonProfileHashCode = C3DProgramHashCodeGetCommonProfileHashCode(v6);
-  NodeHashCode = C3DProgramHashCodeGetNodeHashCode(v6);
+  Conditioners = C3DProgramHashCodeGetConditioners(codeCopy);
+  IsOpaque = C3DProgramHashCodeIsOpaque(codeCopy);
+  HasTexture = C3DProgramHashCodeGetEffectPropertyHasTexture(codeCopy, 7u);
+  v12 = C3DProgramHashCodeGetEffectPropertyHasTexture(codeCopy, 4u);
+  v13 = C3DProgramHashCodeGetEffectPropertyHasTexture(codeCopy, 5u);
+  IsOne = C3DProgramHashCodeGlobalAlphaIsOne(codeCopy);
+  HasConstantAlpha = C3DProgramHashCodeHasConstantAlpha(codeCopy);
+  LightingEnabled = C3DProgramHashCodeGetLightingEnabled(codeCopy);
+  CommonProfileHashCode = C3DProgramHashCodeGetCommonProfileHashCode(codeCopy);
+  NodeHashCode = C3DProgramHashCodeGetNodeHashCode(codeCopy);
   v177 = NodeHashCode;
   v157 = v13;
   v154 = v12;
-  v16 = (NodeHashCode & 4) != 0 && C3DEngineContextHasFeatures(a4, 16);
-  EffectPropertyHashCode = C3DProgramHashCodeGetEffectPropertyHashCode(v6, 2u);
+  v16 = (NodeHashCode & 4) != 0 && C3DEngineContextHasFeatures(context, 16);
+  EffectPropertyHashCode = C3DProgramHashCodeGetEffectPropertyHashCode(codeCopy, 2u);
   v155 = HasTexture;
   BYTE11(v194) = HasTexture & 1 | ((CommonProfileHashCode & 0x10) != 0);
-  RenderMode = C3DProgramHashCodeGetRenderMode(v6);
-  EyeCount = C3DProgramHashCodeGetEyeCount(v6);
+  RenderMode = C3DProgramHashCodeGetRenderMode(codeCopy);
+  EyeCount = C3DProgramHashCodeGetEyeCount(codeCopy);
   if (!RenderMode)
   {
     goto LABEL_23;
@@ -264,7 +264,7 @@
   }
 
   [v9 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedChar:", v19), @"USE_MULTIPLE_RENDERING"}];
-  MultiVertexOutputStreamGenerator = C3DProgramHashCodeGetMultiVertexOutputStreamGenerator(v6);
+  MultiVertexOutputStreamGenerator = C3DProgramHashCodeGetMultiVertexOutputStreamGenerator(codeCopy);
   if (MultiVertexOutputStreamGenerator == 2)
   {
     v21 = @"USE_VERTEX_AMPLIFICATION";
@@ -306,7 +306,7 @@ LABEL_23:
   }
 
   v23 = SCNMetalLanguageVersion();
-  Status = C3DSceneSourceGetStatus(v6);
+  Status = C3DSceneSourceGetStatus(codeCopy);
   if (v23 <= Status)
   {
     v25 = Status;
@@ -322,7 +322,7 @@ LABEL_23:
     v25 = 131073;
   }
 
-  VertexAmplificationEnabled = C3DEngineContextGetVertexAmplificationEnabled(a4);
+  VertexAmplificationEnabled = C3DEngineContextGetVertexAmplificationEnabled(context);
   v27 = 131074;
   if (v25 > 0x20002)
   {
@@ -335,10 +335,10 @@ LABEL_23:
   }
 
   v169 = v27;
-  v28 = __InjectAllModifiersIfNeeded(&v181);
+  v28 = __InjectAllModifiersIfNeeded(&codeCopy2);
   if ([v182 objectForKeyedSubscript:@"USE_MODIFIER_FRAMEBUFFER_COLOR0"])
   {
-    if (C3DEngineContextHasFeatures(a4, 2048))
+    if (C3DEngineContextHasFeatures(context, 2048))
     {
       [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"C3D_SUPPORTS_PROGRAMMABLE_BLENDING"];
     }
@@ -421,7 +421,7 @@ LABEL_52:
   v153 = v28;
   if ((CommonProfileHashCode & 0xE) == 2 && v34)
   {
-    IsEnabled = C3DProgramHashCodeGetEffectPropertyIsEnabled(v6, 3u);
+    IsEnabled = C3DProgramHashCodeGetEffectPropertyIsEnabled(codeCopy, 3u);
   }
 
   if ([v182 objectForKeyedSubscript:@"USE_SPECULAR"])
@@ -465,10 +465,10 @@ LABEL_52:
   WORD4(v194) = 0;
   HIDWORD(v194) = 0;
   BYTE8(v196) = 1;
-  AmbientLightingEnabled = C3DProgramHashCodeGetAmbientLightingEnabled(v6);
-  v170 = a4;
-  v171 = v6;
-  v179 = self;
+  AmbientLightingEnabled = C3DProgramHashCodeGetAmbientLightingEnabled(codeCopy);
+  contextCopy = context;
+  v171 = codeCopy;
+  selfCopy = self;
   v165 = CommonProfileHashCode & 0xF;
   v166 = v34;
   v38 = CommonProfileHashCode;
@@ -507,8 +507,8 @@ LABEL_82:
   }
 
 LABEL_83:
-  LightsMask = C3DProgramHashCodeGetLightsMask(v6);
-  LightsCount = C3DProgramHashCodeGetLightsCount(v6);
+  LightsMask = C3DProgramHashCodeGetLightsMask(codeCopy);
+  LightsCount = C3DProgramHashCodeGetLightsCount(codeCopy);
   if (LightsCount)
   {
     v46 = 0;
@@ -522,7 +522,7 @@ LABEL_83:
         goto LABEL_180;
       }
 
-      LightHashCode = C3DProgramHashCodeGetLightHashCode(v181, v46);
+      LightHashCode = C3DProgramHashCodeGetLightHashCode(codeCopy2, v46);
       v49 = LightHashCode;
       v50 = "true";
       if ((LightHashCode & 0x2000000) == 0)
@@ -567,7 +567,7 @@ LABEL_83:
       }
 
       v55 = v49 & 0x205;
-      C3DProgramHashCodeGetCommonProfileHashCode(v181);
+      C3DProgramHashCodeGetCommonProfileHashCode(codeCopy2);
       if (v55 == 513)
       {
         if (BYTE11(v194))
@@ -580,8 +580,8 @@ LABEL_83:
           v56 = 176;
         }
 
-        [(__C3DProgramHashCode *)*(&v181 + v56) appendFormat:@", texture2d<half> u_goboTexture%d\n", v46];
-        [(__C3DProgramHashCode *)*(&v181 + v56) appendFormat:@", sampler u_goboTexture%dSampler\n", v46];
+        [(__C3DProgramHashCode *)*(&codeCopy2 + v56) appendFormat:@", texture2d<half> u_goboTexture%d\n", v46];
+        [(__C3DProgramHashCode *)*(&codeCopy2 + v56) appendFormat:@", sampler u_goboTexture%dSampler\n", v46];
       }
 
       v57 = v49 >> 13;
@@ -618,9 +618,9 @@ LABEL_111:
       }
 
       HIDWORD(v194) = v62;
-      if (C3DProgramHashCodeGetRenderMode(v181))
+      if (C3DProgramHashCodeGetRenderMode(codeCopy2))
       {
-        v63 = C3DProgramHashCodeGetMultiVertexOutputStreamGenerator(v181);
+        v63 = C3DProgramHashCodeGetMultiVertexOutputStreamGenerator(codeCopy2);
         if (v63 == 1)
         {
           if (BYTE11(v194) == 1)
@@ -869,14 +869,14 @@ LABEL_180:
 
   [v182 setObject:@"uchar" forKeyedSubscript:@"C3DLightIndexType"];
   [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"C3D_USE_TEXTURE_FOR_LIGHT_INDICES"];
-  v6 = v171;
+  codeCopy = v171;
   v30 = CommonProfileHashCode & 0xF;
   v34 = v166;
   v38 = CommonProfileHashCode;
   v39 = Conditioners;
   if (C3DProgramHashCodeGetReflectionProbesEnabled(v171))
   {
-    if (C3DEngineContextHasFeatures(v170, 256))
+    if (C3DEngineContextHasFeatures(contextCopy, 256))
     {
       [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"C3D_SUPPORT_CUBE_ARRAY"];
     }
@@ -897,7 +897,7 @@ LABEL_180:
   }
 
   [v71 setObject:Description forKeyedSubscript:@"LIGHTING_MODEL"];
-  if (((C3DProgramHashCodeGetLocalLightingEnabled(v171) & 1) != 0 || C3DProgramHashCodeGetReflectionProbesEnabled(v171)) && C3DEngineContextIsClusteredShadingEnabled(v170))
+  if (((C3DProgramHashCodeGetLocalLightingEnabled(v171) & 1) != 0 || C3DProgramHashCodeGetReflectionProbesEnabled(v171)) && C3DEngineContextIsClusteredShadingEnabled(contextCopy))
   {
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_CLUSTERED_LIGHTING"];
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_POSITION"];
@@ -920,7 +920,7 @@ LABEL_192:
     BYTE11(v194) = 1;
   }
 
-  if (C3DProgramHashCodeHasFog(v6))
+  if (C3DProgramHashCodeHasFog(codeCopy))
   {
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_FOG"];
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_POSITION"];
@@ -932,7 +932,7 @@ LABEL_192:
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_POSITION"];
   }
 
-  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(v6, 0x13u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(v6, 0x14u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(v6, 4u))
+  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(codeCopy, 0x13u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(codeCopy, 0x14u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(codeCopy, 4u))
   {
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_FRESNEL"];
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_VIEW"];
@@ -960,7 +960,7 @@ LABEL_192:
 
   if (v34)
   {
-    ProbesLightingOrder = C3DProgramHashCodeGetProbesLightingOrder(v6);
+    ProbesLightingOrder = C3DProgramHashCodeGetProbesLightingOrder(codeCopy);
     if (ProbesLightingOrder)
     {
       v74 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:ProbesLightingOrder];
@@ -1018,7 +1018,7 @@ LABEL_226:
     [v183 addObject:@"USE_PER_VERTEX_LIGHTING"];
   }
 
-  if (C3DProgramHashCodeHasNormals(v6))
+  if (C3DProgramHashCodeHasNormals(codeCopy))
   {
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"HAS_NORMAL"];
   }
@@ -1029,12 +1029,12 @@ LABEL_226:
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_VERTEX_COLOR"];
   }
 
-  if (C3DProgramHashCodeUseDynamicBatching(v6))
+  if (C3DProgramHashCodeUseDynamicBatching(codeCopy))
   {
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_INSTANCING"];
   }
 
-  if (C3DProgramHashCodeUsePointRendering(v6))
+  if (C3DProgramHashCodeUsePointRendering(codeCopy))
   {
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_POSITION"];
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_POINT_RENDERING"];
@@ -1153,34 +1153,34 @@ LABEL_252:
     [v183 addObject:@"USE_OUTLINE"];
   }
 
-  if (C3DProgramHashCodeGetEffectPropertyHasTexture(v6, 8u))
+  if (C3DProgramHashCodeGetEffectPropertyHasTexture(codeCopy, 8u))
   {
-    __AddProperty(&v181, 8u, 1, 1);
+    __AddProperty(&codeCopy2, 8u, 1, 1);
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_AMBIENT_AS_AMBIENTOCCLUSION"];
   }
 
   else
   {
-    __AddProperty(&v181, 1u, 1, (v38 >= 0) & AmbientLightingEnabled);
+    __AddProperty(&codeCopy2, 1u, 1, (v38 >= 0) & AmbientLightingEnabled);
   }
 
-  __AddProperty(&v181, 2u, 2, 1);
-  __AddProperty(&v181, 3u, 3, (v162 | v154) & 1);
-  __AddProperty(&v181, 9u, 9, 1);
-  __AddProperty(&v181, 0, 0, 1);
-  __AddProperty(&v181, 6u, 6, 1);
-  __AddProperty(&v181, 7u, 7, v155);
+  __AddProperty(&codeCopy2, 2u, 2, 1);
+  __AddProperty(&codeCopy2, 3u, 3, (v162 | v154) & 1);
+  __AddProperty(&codeCopy2, 9u, 9, 1);
+  __AddProperty(&codeCopy2, 0, 0, 1);
+  __AddProperty(&codeCopy2, 6u, 6, 1);
+  __AddProperty(&codeCopy2, 7u, 7, v155);
   if (BYTE8(v183) == 1)
   {
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_TANGENT"];
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_BITANGENT"];
   }
 
-  __AddProperty(&v181, 0xAu, 10, v30 == 5);
-  __AddProperty(&v181, 0xBu, 11, v30 == 5);
+  __AddProperty(&codeCopy2, 0xAu, 10, v30 == 5);
+  __AddProperty(&codeCopy2, 0xBu, 11, v30 == 5);
   if (v30 == 5)
   {
-    v78 = C3DProgramHashCodeGetEffectPropertyIsEnabled(v6, 0xCu);
+    v78 = C3DProgramHashCodeGetEffectPropertyIsEnabled(codeCopy, 0xCu);
   }
 
   else
@@ -1188,9 +1188,9 @@ LABEL_252:
     v78 = 0;
   }
 
-  __AddProperty(&v181, 0xCu, 12, v78);
-  __AddProperty(&v181, 0xDu, 13, v78);
-  __AddProperty(&v181, 0xEu, 14, v78);
+  __AddProperty(&codeCopy2, 0xCu, 12, v78);
+  __AddProperty(&codeCopy2, 0xDu, 13, v78);
+  __AddProperty(&codeCopy2, 0xEu, 14, v78);
   if (BYTE8(v183) == 1)
   {
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_TANGENT"];
@@ -1198,7 +1198,7 @@ LABEL_252:
   }
 
   v79 = v157 & (IsOpaque ^ 1);
-  __AddProperty(&v181, 4u, 4, 1);
+  __AddProperty(&codeCopy2, 4u, 4, 1);
   if (BYTE8(v183) == 1)
   {
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_VIEW"];
@@ -1207,9 +1207,9 @@ LABEL_252:
   }
 
   v80 = (CommonProfileHashCode >> 11) & 0xF;
-  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(v6, 2u))
+  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(codeCopy, 2u))
   {
-    v81 = C3DProgramHashCodeGetEffectPropertyHashCode(v6, 2u);
+    v81 = C3DProgramHashCodeGetEffectPropertyHashCode(codeCopy, 2u);
     if (v81)
     {
       v82 = (v81 >> 5) & 1;
@@ -1239,7 +1239,7 @@ LABEL_252:
     v84 = v82 | HasConstantAlpha ^ 1;
   }
 
-  __AddProperty(&v181, 5u, 5, v84 & 1);
+  __AddProperty(&codeCopy2, 5u, 5, v84 & 1);
   if (v80 == 1 && [v182 objectForKeyedSubscript:@"USE_TRANSPARENT"])
   {
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_TRANSPARENCY_RGBZERO"];
@@ -1314,14 +1314,14 @@ LABEL_294:
     [v183 addObject:@"DIFFUSE_PREMULTIPLIED"];
   }
 
-  CustomSlotCount = C3DProgramHashCodeGetCustomSlotCount(v6);
+  CustomSlotCount = C3DProgramHashCodeGetCustomSlotCount(codeCopy);
   if (CustomSlotCount >= 1)
   {
     v88 = CustomSlotCount;
     for (i = 0; i != v88; ++i)
     {
-      CustomSlotSortedName = C3DProgramHashCodeGetCustomSlotSortedName(v6, i);
-      CustomSlotUVSet = C3DProgramHashCodeGetCustomSlotUVSet(v6, i);
+      CustomSlotSortedName = C3DProgramHashCodeGetCustomSlotSortedName(codeCopy, i);
+      CustomSlotUVSet = C3DProgramHashCodeGetCustomSlotUVSet(codeCopy, i);
       if (CustomSlotUVSet != -1)
       {
         v92 = CustomSlotUVSet;
@@ -1336,13 +1336,13 @@ LABEL_294:
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_DISCARD"];
   }
 
-  v93 = v179;
+  v93 = selfCopy;
   if (v183)
   {
     [v183 addObject:@"USE_DISCARD"];
   }
 
-  UVSetsCount = C3DProgramHashCodeGetUVSetsCount(v181);
+  UVSetsCount = C3DProgramHashCodeGetUVSetsCount(codeCopy2);
   if (UVSetsCount)
   {
     if (UVSetsCount >= 8)
@@ -1366,7 +1366,7 @@ LABEL_294:
       v97 = 0;
       do
       {
-        UVSetInfo = C3DProgramHashCodeGetUVSetInfo(v181, v96);
+        UVSetInfo = C3DProgramHashCodeGetUVSetInfo(codeCopy2, v96);
         [*(&v187 + 1) appendString:g_varyingTexCoordDecl[v96]];
         if (HIBYTE(UVSetInfo) == 255)
         {
@@ -1395,8 +1395,8 @@ LABEL_294:
     }
 
     [v182 setObject:&stru_282DCC058 forKeyedSubscript:@"USE_TEXCOORD"];
-    v6 = v171;
-    v93 = v179;
+    codeCopy = v171;
+    v93 = selfCopy;
   }
 
   else
@@ -1422,8 +1422,8 @@ LABEL_294:
     }
   }
 
-  v104 = C3DProgramHashCodeGetEffectPropertyHasTexture(v6, 0xFu);
-  __AddProperty(&v181, 0xFu, 15, v104);
+  v104 = C3DProgramHashCodeGetEffectPropertyHasTexture(codeCopy, 0xFu);
+  __AddProperty(&codeCopy2, 0xFu, 15, v104);
   if (v104)
   {
     [v182 setObject:&unk_282E0F8D0 forKeyedSubscript:@"USE_NORMAL"];
@@ -1514,7 +1514,7 @@ LABEL_294:
     v108 = &stru_282DCC058;
   }
 
-  __configureOpenSubdivSupport(&v181, v161, v6);
+  __configureOpenSubdivSupport(&codeCopy2, v161, codeCopy);
   if ([v182 objectForKeyedSubscript:@"HAS_NORMAL"] || objc_msgSend(v182, "objectForKeyedSubscript:", @"USE_OPENSUBDIV"))
   {
     [v182 setObject:@"1" forKeyedSubscript:@"HAS_OR_GENERATES_NORMAL"];
@@ -1648,25 +1648,25 @@ LABEL_379:
     v175 = v123;
     v124 = [v121 mutableCopy];
     v125 = [(NSArray *)v93->_injectionPointRanges count];
-    v126 = v170;
+    v126 = contextCopy;
     if (v125)
     {
       v127 = v125;
       v128 = 0;
       while (1)
       {
-        v129 = [-[NSArray objectAtIndexedSubscript:](v179->_injectionPointRanges objectAtIndexedSubscript:{v128), "rangeValue"}];
-        v131 = [(NSString *)v179->_originalSourceCode substringWithRange:v129, v130];
-        if (![(__CFString *)v131 hasPrefix:@"#import"])
+        v129 = [-[NSArray objectAtIndexedSubscript:](selfCopy->_injectionPointRanges objectAtIndexedSubscript:{v128), "rangeValue"}];
+        v130 = [(NSString *)selfCopy->_originalSourceCode substringWithRange:v129, v130];
+        if (![(__CFString *)v130 hasPrefix:@"#import"])
         {
           break;
         }
 
-        if (([(__CFString *)v131 containsString:@"C3D-Lighting.metal"]& 1) == 0)
+        if (([(__CFString *)v130 containsString:@"C3D-Lighting.metal"]& 1) == 0)
         {
           v132 = [v121 objectAtIndexedSubscript:v128];
           v133 = MEMORY[0x277CCACA8];
-          v149 = v131;
+          v149 = v130;
           goto LABEL_409;
         }
 
@@ -1677,7 +1677,7 @@ LABEL_414:
         }
       }
 
-      if ([v196 length] && -[__CFString containsString:](v131, "containsString:", @"__OpenSubdivDeclShared__"))
+      if ([v196 length] && -[__CFString containsString:](v130, "containsString:", @"__OpenSubdivDeclShared__"))
       {
         v132 = [v121 objectAtIndexedSubscript:v128];
         v133 = MEMORY[0x277CCACA8];
@@ -1688,7 +1688,7 @@ LABEL_409:
 
       else
       {
-        if (![*(&v195 + 1) length] || !-[__CFString containsString:](v131, "containsString:", @"__OpenSubdivDeclPerPatchType__"))
+        if (![*(&v195 + 1) length] || !-[__CFString containsString:](v130, "containsString:", @"__OpenSubdivDeclPerPatchType__"))
         {
           goto LABEL_414;
         }
@@ -1697,7 +1697,7 @@ LABEL_409:
         v136 = MEMORY[0x277CCACA8];
         v150 = [MEMORY[0x277CCACA8] stringWithFormat:@"#generate __OpenSubdivDeclShared__patchType%d.metal", C3DProgramHashCodeOpenSubdivPatchType(v171)];
         v137 = v136;
-        v126 = v170;
+        v126 = contextCopy;
         v134 = [v137 stringWithFormat:@"%@%@\n%@%@\n%@", @"#if 1 // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n", v135, @"#else // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n", v150, @"#endif // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n"];
       }
 
@@ -1706,17 +1706,17 @@ LABEL_409:
     }
 
 LABEL_415:
-    v138 = [(NSString *)v179->_originalSourceCode scn_stringByReplacingCharactersInRanges:v179->_injectionPointRanges withStrings:v124];
-    v139 = [(SCNCommonProfileProgramGeneratorMetal *)v179 splitInputOutputStructsIfNeededForSourceCode:v138 generatedFromReplacementStrings:v124 perPixelLighting:BYTE11(v194) clipDistanceCount:v167 hasBezierCurveDeformer:v178];
+    v138 = [(NSString *)selfCopy->_originalSourceCode scn_stringByReplacingCharactersInRanges:selfCopy->_injectionPointRanges withStrings:v124];
+    v139 = [(SCNCommonProfileProgramGeneratorMetal *)selfCopy splitInputOutputStructsIfNeededForSourceCode:v138 generatedFromReplacementStrings:v124 perPixelLighting:BYTE11(v194) clipDistanceCount:v167 hasBezierCurveDeformer:v178];
 
-    v6 = v171;
+    codeCopy = v171;
     v123 = v175;
   }
 
   else
   {
     v139 = 0;
-    v126 = v170;
+    v126 = contextCopy;
   }
 
   if ([v193 length])
@@ -1766,17 +1766,17 @@ LABEL_415:
   }
 
   v144 = C3DFXMetalProgramCreateFromSource(@"commonprofile_vert", @"commonprofile_frag", v176, v143, v139, v182, v183, v169, 0);
-  HashCode = C3DProgramHashCodeGetHashCode(v6);
+  HashCode = C3DProgramHashCodeGetHashCode(codeCopy);
   C3DFXMetalProgramUpdateHashWithCommonProfileHashCode(v144, HashCode);
   return v144;
 }
 
-- (id)splitInputOutputStructsIfNeededForSourceCode:(id)a3 generatedFromReplacementStrings:(id)a4 perPixelLighting:(BOOL)a5 clipDistanceCount:(unint64_t)a6 hasBezierCurveDeformer:(BOOL)a7
+- (id)splitInputOutputStructsIfNeededForSourceCode:(id)code generatedFromReplacementStrings:(id)strings perPixelLighting:(BOOL)lighting clipDistanceCount:(unint64_t)count hasBezierCurveDeformer:(BOOL)deformer
 {
-  v7 = a7;
-  v9 = a5;
+  deformerCopy = deformer;
+  lightingCopy = lighting;
   v52[4] = *MEMORY[0x277D85DE8];
-  if (a6 || a7)
+  if (count || deformer)
   {
     v11 = self->_commonProfileIORange.length + self->_commonProfileIORange.location;
     v44 = 0;
@@ -1790,15 +1790,15 @@ LABEL_415:
     v43[2] = __176__SCNCommonProfileProgramGeneratorMetal_splitInputOutputStructsIfNeededForSourceCode_generatedFromReplacementStrings_perPixelLighting_clipDistanceCount_hasBezierCurveDeformer___block_invoke;
     v43[3] = &unk_278300870;
     v43[4] = self;
-    v43[5] = a4;
+    v43[5] = strings;
     v43[6] = &v44;
     v43[7] = v11;
     [(NSArray *)injectionPointRanges enumerateObjectsUsingBlock:v43];
-    v13 = [a3 substringWithRange:{v45[4], v45[5]}];
+    v13 = [code substringWithRange:{v45[4], v45[5]}];
     v14 = [v13 length] - 19;
-    if (a6)
+    if (count)
     {
-      v15 = [v13 stringByReplacingCharactersInRange:v14 withString:{19, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"    float clipDistance [[clip_distance]] [%d];\n} commonprofile_io_vert;\n\n", a6)}];
+      v15 = [v13 stringByReplacingCharactersInRange:v14 withString:{19, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"    float clipDistance [[clip_distance]] [%d];\n} commonprofile_io_vert;\n\n", count)}];
     }
 
     else
@@ -1807,21 +1807,21 @@ LABEL_415:
     }
 
     v16 = v15;
-    if (v7)
+    if (deformerCopy)
     {
       v16 = [v15 stringByReplacingOccurrencesOfString:@"interpolant<float2 withString:{interpolation::perspective> bezierCurveUV;\n", @"float2 bezierCurveUV;\n"}];
     }
 
     v17 = v45[5] + v45[4];
-    v18 = [a3 rangeOfString:@"vertex commonprofile_io" options:0 range:{v17, objc_msgSend(a3, "length") - v17}];
+    v18 = [code rangeOfString:@"vertex commonprofile_io" options:0 range:{v17, objc_msgSend(code, "length") - v17}];
     v20 = v19;
-    v42 = [a3 rangeOfString:@"commonprofile_io out;" options:0 range:{v18 + v20, objc_msgSend(a3, "length") - (v18 + v20)}];
+    v42 = [code rangeOfString:@"commonprofile_io out;" options:0 range:{v18 + v20, objc_msgSend(code, "length") - (v18 + v20)}];
     v22 = v21;
-    if (v9)
+    if (lightingCopy)
     {
       v23 = v21;
       v24 = v16;
-      v25 = [a3 rangeOfString:@"commonprofile_io out;" options:0 range:{v17, objc_msgSend(a3, "length") - v17}];
+      v25 = [code rangeOfString:@"commonprofile_io out;" options:0 range:{v17, objc_msgSend(code, "length") - v17}];
       v27 = v26;
       v52[0] = [MEMORY[0x277CCAE60] valueWithRange:{v45[4], 0}];
       v52[1] = [MEMORY[0x277CCAE60] valueWithRange:{v25, v27}];
@@ -1832,17 +1832,17 @@ LABEL_415:
       v51[1] = @"commonprofile_io_vert out;";
       v51[2] = @"vertex commonprofile_io_vert";
       v51[3] = @"commonprofile_io_vert out;";
-      v29 = [a3 scn_stringByReplacingCharactersInRanges:v28 withStrings:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v51, 4)}];
+      v29 = [code scn_stringByReplacingCharactersInRanges:v28 withStrings:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v51, 4)}];
     }
 
     else
     {
-      v30 = [a3 rangeOfString:@"commonprofile_io out;" options:0 range:{v17, objc_msgSend(a3, "length") - v17}];
+      v30 = [code rangeOfString:@"commonprofile_io out;" options:0 range:{v17, objc_msgSend(code, "length") - v17}];
       v32 = v31;
       v41 = v16;
-      v33 = [a3 rangeOfString:@"commonprofile_io in;" options:0 range:{v17, objc_msgSend(a3, "length") - v17}];
+      v33 = [code rangeOfString:@"commonprofile_io in;" options:0 range:{v17, objc_msgSend(code, "length") - v17}];
       v35 = v34;
-      v36 = [a3 rangeOfString:@"commonprofile_io io" options:0 range:{v17, objc_msgSend(a3, "length") - v17}];
+      v36 = [code rangeOfString:@"commonprofile_io io" options:0 range:{v17, objc_msgSend(code, "length") - v17}];
       v38 = v37;
       v50[0] = [MEMORY[0x277CCAE60] valueWithRange:{v45[4], 0}];
       v50[1] = [MEMORY[0x277CCAE60] valueWithRange:{v30, v32}];
@@ -1857,14 +1857,14 @@ LABEL_415:
       v49[3] = @"commonprofile_io_vert io";
       v49[4] = @"vertex commonprofile_io_vert";
       v49[5] = @"commonprofile_io_vert out;";
-      v29 = [a3 scn_stringByReplacingCharactersInRanges:v39 withStrings:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v49, 6)}];
+      v29 = [code scn_stringByReplacingCharactersInRanges:v39 withStrings:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v49, 6)}];
     }
 
-    a3 = v29;
+    code = v29;
     _Block_object_dispose(&v44, 8);
   }
 
-  return a3;
+  return code;
 }
 
 unint64_t __176__SCNCommonProfileProgramGeneratorMetal_splitInputOutputStructsIfNeededForSourceCode_generatedFromReplacementStrings_perPixelLighting_clipDistanceCount_hasBezierCurveDeformer___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1891,16 +1891,16 @@ unint64_t __176__SCNCommonProfileProgramGeneratorMetal_splitInputOutputStructsIf
   return result;
 }
 
-- (void)collectShaderForProgram:(__C3DFXMetalProgram *)a3 hashCode:(id)a4 newVertexFunctionName:(id)a5 newFragmentFunctionName:(id)a6 sourceCodeBlock:(id)a7 additionalFileBlock:(id)a8
+- (void)collectShaderForProgram:(__C3DFXMetalProgram *)program hashCode:(id)code newVertexFunctionName:(id)name newFragmentFunctionName:(id)functionName sourceCodeBlock:(id)block additionalFileBlock:(id)fileBlock
 {
   v71 = *MEMORY[0x277D85DE8];
-  PreprocessorsMacros = C3DFXMetalProgramGetPreprocessorsMacros(a3);
-  cf = a3;
-  SourceCodeForShaderCollection = C3DFXMetalProgramGetSourceCodeForShaderCollection(a3);
+  PreprocessorsMacros = C3DFXMetalProgramGetPreprocessorsMacros(program);
+  cf = program;
+  SourceCodeForShaderCollection = C3DFXMetalProgramGetSourceCodeForShaderCollection(program);
   v12 = [SourceCodeForShaderCollection length];
   v13 = [SourceCodeForShaderCollection mutableCopy];
-  [v13 replaceOccurrencesOfString:@"commonprofile_vert" withString:a5 options:0 range:{0, v12}];
-  [v13 replaceOccurrencesOfString:@"commonprofile_frag" withString:a6 options:0 range:{0, v12}];
+  [v13 replaceOccurrencesOfString:@"commonprofile_vert" withString:name options:0 range:{0, v12}];
+  [v13 replaceOccurrencesOfString:@"commonprofile_frag" withString:functionName options:0 range:{0, v12}];
   v14 = [v13 length];
   v15 = [v13 rangeOfString:@"#if 1 // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n" options:2 range:{0, v14}];
   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1930,7 +1930,7 @@ unint64_t __176__SCNCommonProfileProgramGeneratorMetal_splitInputOutputStructsIf
         v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"_import/%@", v30];
         v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"#import %@", v31];
         v33 = C3DGetTextResourceWithNameAllowingHotReload(v28);
-        (*(a8 + 2))(a8, v33, v31);
+        (*(fileBlock + 2))(fileBlock, v33, v31);
         v13 = v58;
       }
 
@@ -1952,7 +1952,7 @@ unint64_t __176__SCNCommonProfileProgramGeneratorMetal_splitInputOutputStructsIf
         v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"#import %@", v36];
         v37 = v20 - v18;
         v13 = v58;
-        (*(a8 + 2))(a8, [v58 substringWithRange:{v18, v37}], v36);
+        (*(fileBlock + 2))(fileBlock, [v58 substringWithRange:{v18, v37}], v36);
       }
 
       [v13 replaceCharactersInRange:v23 withString:{v25, &stru_282DCC058}];
@@ -2043,9 +2043,9 @@ unint64_t __176__SCNCommonProfileProgramGeneratorMetal_splitInputOutputStructsIf
     }
   }
 
-  (*(a8 + 2))(a8, v38, [MEMORY[0x277CCACA8] stringWithFormat:@"_unifdef/%@.h", a4]);
+  (*(fileBlock + 2))(fileBlock, v38, [MEMORY[0x277CCACA8] stringWithFormat:@"_unifdef/%@.h", code]);
 
-  (*(a7 + 2))(a7, v39);
+  (*(block + 2))(block, v39);
 }
 
 - (void)_newProgramWithHashCode:(uint8_t *)buf engineContext:(_BYTE *)a2 introspectionDataPtr:(os_log_t)log .cold.2(uint8_t *buf, _BYTE *a2, os_log_t log)

@@ -3,15 +3,15 @@
 + (MPSNDArrayDescriptor)descriptorWithDataType:(MPSDataType)dataType dimensionSizes:(NSUInteger)dimension0;
 + (MPSNDArrayDescriptor)descriptorWithDataType:(MPSDataType)dataType shape:(NSArray *)shape;
 - (MPSDimensionSlice)sliceRangeForDimension:(NSUInteger)dimensionIndex;
-- (MPSNDArrayDescriptor)initWithDataType:(unsigned int)a3 dimensions:(unint64_t)a4 sizes:;
+- (MPSNDArrayDescriptor)initWithDataType:(unsigned int)type dimensions:(unint64_t)dimensions sizes:;
 - (NSUInteger)lengthOfDimension:(NSUInteger)dimensionIndex;
 - (id)getShape;
 - (vector_uchar16)dimensionOrder;
 - (void)dealloc;
-- (void)permuteWithDimensionOrder:(unint64_t *)a3;
+- (void)permuteWithDimensionOrder:(unint64_t *)order;
 - (void)reshapeWithDimensionCount:(NSUInteger)numberOfDimensions dimensionSizes:(NSUInteger *)dimensionSizes;
 - (void)reshapeWithShape:(NSArray *)shape;
-- (void)setLengthOfDimension:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)setLengthOfDimension:(unint64_t)dimension atIndex:(unint64_t)index;
 - (void)sliceDimension:(NSUInteger)dimensionIndex withSubrange:(MPSDimensionSlice)subRange;
 - (void)transposeDimension:(NSUInteger)dimensionIndex withDimension:(NSUInteger)dimensionIndex2;
 @end
@@ -27,49 +27,49 @@
 
   do
   {
-    v3 = self;
+    selfCopy = self;
     self = self->_child;
   }
 
   while (self);
-  v5 = *v3->_dimensionOrder;
-  return *&v3->_dimensionLengths[4 * (*(&v5 | dimensionIndex & 0xF) & 0xF)];
+  v5 = *selfCopy->_dimensionOrder;
+  return *&selfCopy->_dimensionLengths[4 * (*(&v5 | dimensionIndex & 0xF) & 0xF)];
 }
 
-- (void)setLengthOfDimension:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setLengthOfDimension:(unint64_t)dimension atIndex:(unint64_t)index
 {
-  if (self->_numberOfDimensions <= a4)
+  if (self->_numberOfDimensions <= index)
   {
-    v6 = self;
-    v7 = a3;
-    v8 = a4;
+    selfCopy = self;
+    dimensionCopy = dimension;
+    indexCopy = index;
     v10 = MTLReportFailureTypeEnabled();
-    LOBYTE(a4) = v8;
-    LODWORD(a3) = v7;
+    LOBYTE(index) = indexCopy;
+    LODWORD(dimension) = dimensionCopy;
     v11 = v10;
-    self = v6;
+    self = selfCopy;
     if (v11)
     {
       v12 = objc_opt_class();
       NSStringFromClass(v12);
       NSStringFromSelector(a2);
       MTLReportFailure();
-      LOBYTE(a4) = v8;
-      self = v6;
-      LODWORD(a3) = v7;
+      LOBYTE(index) = indexCopy;
+      self = selfCopy;
+      LODWORD(dimension) = dimensionCopy;
     }
   }
 
-  v4 = self;
+  selfCopy2 = self;
   do
   {
-    v5 = v4;
-    v4 = v4->_child;
+    v5 = selfCopy2;
+    selfCopy2 = selfCopy2->_child;
   }
 
-  while (v4);
+  while (selfCopy2);
   v13 = *v5->_dimensionOrder;
-  *&self->_dimensionLengths[4 * (*(&v13 | a4 & 0xF) & 0xF)] = a3;
+  *&self->_dimensionLengths[4 * (*(&v13 | index & 0xF) & 0xF)] = dimension;
 }
 
 - (MPSDimensionSlice)sliceRangeForDimension:(NSUInteger)dimensionIndex
@@ -84,13 +84,13 @@
   {
     do
     {
-      v3 = self;
+      selfCopy = self;
       self = self->_child;
     }
 
     while (self);
-    v7 = *v3->_dimensionOrder;
-    v4 = v3 + 4 * (*(&v7 | dimensionIndex & 0xF) & 0xF);
+    v7 = *selfCopy->_dimensionOrder;
+    v4 = selfCopy + 4 * (*(&v7 | dimensionIndex & 0xF) & 0xF);
     v5 = *(v4 + 20);
     v6 = *(v4 + 36);
   }
@@ -105,14 +105,14 @@
   length = subRange.length;
   start = subRange.start;
   v6 = dimensionIndex;
-  v8 = self;
+  selfCopy = self;
   do
   {
-    v9 = v8;
-    v8 = v8->_child;
+    v9 = selfCopy;
+    selfCopy = selfCopy->_child;
   }
 
-  while (v8);
+  while (selfCopy);
   if (*(v9 + 224) <= dimensionIndex)
   {
     v22 = a2;
@@ -210,17 +210,17 @@
   {
     v38 = v4;
     v39 = v5;
-    v6 = self;
+    selfCopy = self;
     do
     {
-      v7 = v6;
-      v6 = v6->_child;
+      v7 = selfCopy;
+      selfCopy = selfCopy->_child;
     }
 
-    while (v6);
+    while (selfCopy);
     if (*(v7 + 224) <= dimensionIndex)
     {
-      v21 = self;
+      selfCopy2 = self;
       v22 = dimensionIndex;
       v23 = dimensionIndex2;
       v24 = a2;
@@ -229,7 +229,7 @@
       dimensionIndex2 = v23;
       LOBYTE(dimensionIndex) = v22;
       v26 = v25;
-      self = v21;
+      self = selfCopy2;
       if (v26)
       {
         v27 = objc_opt_class();
@@ -237,7 +237,7 @@
         NSStringFromSelector(v24);
         MTLReportFailure();
         a2 = v24;
-        self = v21;
+        self = selfCopy2;
         dimensionIndex2 = v23;
         LOBYTE(dimensionIndex) = v22;
       }
@@ -245,7 +245,7 @@
 
     if (*(v7 + 224) <= dimensionIndex2)
     {
-      v28 = self;
+      selfCopy3 = self;
       v29 = dimensionIndex;
       v30 = dimensionIndex2;
       v31 = a2;
@@ -253,14 +253,14 @@
       LOBYTE(dimensionIndex2) = v30;
       LOBYTE(dimensionIndex) = v29;
       v33 = v32;
-      self = v28;
+      self = selfCopy3;
       if (v33)
       {
         v34 = objc_opt_class();
         NSStringFromClass(v34);
         NSStringFromSelector(v31);
         MTLReportFailure();
-        self = v28;
+        self = selfCopy3;
         LOBYTE(dimensionIndex2) = v30;
         LOBYTE(dimensionIndex) = v29;
       }
@@ -268,7 +268,7 @@
 
     if (*(*(v7 + 256) + 264) == 2)
     {
-      v8 = self;
+      selfCopy4 = self;
       v9 = dimensionIndex;
       v10 = dimensionIndex2;
       v11 = [MPSNDArrayDescriptor alloc];
@@ -284,7 +284,7 @@
       v18 = objc_msgSend_initWithDataType_dimensions_sizes_(v11, v17, v12, v13, v37);
       LOBYTE(dimensionIndex2) = v10;
       LOBYTE(dimensionIndex) = v9;
-      *(v18 + 268) = v8->_preferPackedRows;
+      *(v18 + 268) = selfCopy4->_preferPackedRows;
       *(v18 + 256) = v7;
       *(v7 + 248) = v18;
       *(v7 + 264) = 1;
@@ -301,17 +301,17 @@
   }
 }
 
-- (void)permuteWithDimensionOrder:(unint64_t *)a3
+- (void)permuteWithDimensionOrder:(unint64_t *)order
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   do
   {
-    v6 = v5;
-    v5 = v5->_child;
+    v6 = selfCopy;
+    selfCopy = selfCopy->_child;
   }
 
-  while (v5);
+  while (selfCopy);
   v7 = *(v6 + 224);
   MEMORY[0x28223BE20]();
   v9 = v32 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -321,7 +321,7 @@
     bzero(v32 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), v7);
     for (i = 0; i != v7; ++i)
     {
-      v12 = a3[i];
+      v12 = order[i];
       v9[v12] = 1;
       if (v12 >= *(v6 + 224) && MTLReportFailureTypeEnabled())
       {
@@ -343,7 +343,7 @@
       {
         v18 *= v9[v16];
         v34 = v17;
-        v15[a3[v16]] = *(&v34 | v16 & 0xF);
+        v15[order[v16]] = *(&v34 | v16 & 0xF);
         ++v16;
       }
 
@@ -415,26 +415,26 @@
   return result;
 }
 
-- (MPSNDArrayDescriptor)initWithDataType:(unsigned int)a3 dimensions:(unint64_t)a4 sizes:
+- (MPSNDArrayDescriptor)initWithDataType:(unsigned int)type dimensions:(unint64_t)dimensions sizes:
 {
   v18 = v4[2];
   v19 = v4[3];
   v16 = *v4;
   v17 = v4[1];
-  if (a4 >= 0x11)
+  if (dimensions >= 0x11)
   {
-    v8 = self;
+    selfCopy = self;
     v10 = MTLReportFailureTypeEnabled();
-    self = v8;
+    self = selfCopy;
     if (v10)
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v14 = NSStringFromSelector(a2);
-      v15 = a4;
+      dimensionsCopy = dimensions;
       v13 = v12;
       MTLReportFailure();
-      self = v8;
+      self = selfCopy;
     }
   }
 
@@ -456,12 +456,12 @@
     *&result->_sliceLengths[32] = v18;
     *&result->_sliceLengths[48] = v19;
     *result->_dimensionOrder = xmmword_22E37B090;
-    result->_dataType = a3;
+    result->_dataType = type;
     result->_child = 0;
     result->_parent = result;
     result->_transitionOp = 0;
     result->_preferPackedRows = 0;
-    result->_numberOfDimensions = a4;
+    result->_numberOfDimensions = dimensions;
     result->_rowBytes = 0;
   }
 
@@ -522,7 +522,7 @@
   v18 = v9;
   v19 = v11;
   v20 = v12;
-  v14 = [a1 alloc];
+  v14 = [self alloc];
   v25[0] = v18;
   v25[1] = v17;
   v25[2] = v19;
@@ -574,7 +574,7 @@
     v32 = v21;
   }
 
-  v22 = [a1 alloc];
+  v22 = [self alloc];
   v27 = objc_msgSend_count(shape, v23, v24, v25, v26);
   v42[2] = v34;
   v42[3] = v32;
@@ -822,7 +822,7 @@
   }
 
   v42 = v23;
-  v39 = [a1 alloc];
+  v39 = [self alloc];
   v46[0] = v45;
   v46[1] = v44;
   v46[2] = v42;
@@ -907,14 +907,14 @@
   v40 = v18;
   v42 = v17;
   v44 = v14;
-  v25 = self;
+  selfCopy = self;
   do
   {
-    v26 = v25;
-    v25 = v25->_child;
+    v26 = selfCopy;
+    selfCopy = selfCopy->_child;
   }
 
-  while (v25);
+  while (selfCopy);
   v38 = v16;
   v28 = *v26->_sliceLengths;
   v27 = *&v26->_sliceLengths[16];
@@ -989,14 +989,14 @@
   v26 = v10;
   v27 = v9;
   v28 = v7;
-  v13 = self;
+  selfCopy = self;
   do
   {
-    v14 = v13;
-    v13 = v13->_child;
+    v14 = selfCopy;
+    selfCopy = selfCopy->_child;
   }
 
-  while (v13);
+  while (selfCopy);
   v25 = v11;
   v15 = *v14->_sliceLengths;
   v16 = *&v14->_sliceLengths[16];

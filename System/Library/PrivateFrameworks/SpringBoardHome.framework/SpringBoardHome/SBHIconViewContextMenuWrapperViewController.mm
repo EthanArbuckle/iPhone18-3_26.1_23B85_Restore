@@ -1,12 +1,12 @@
 @interface SBHIconViewContextMenuWrapperViewController
 - (void)_applyContinuousCornerRadius;
-- (void)_applyPreferredContentSizeChange:(CGSize)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setContentViewController:(id)a3;
-- (void)setContinuousCornerRadius:(double)a3;
+- (void)_applyPreferredContentSizeChange:(CGSize)change;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setContentViewController:(id)controller;
+- (void)setContinuousCornerRadius:(double)radius;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBHIconViewContextMenuWrapperViewController
@@ -21,13 +21,13 @@
   self->_backgroundView = v3;
 
   v5 = self->_backgroundView;
-  v6 = [(SBHIconViewContextMenuWrapperViewController *)self view];
-  [v6 bounds];
+  view = [(SBHIconViewContextMenuWrapperViewController *)self view];
+  [view bounds];
   [(MTMaterialView *)v5 setFrame:?];
 
   v7 = self->_backgroundView;
-  v8 = [(SBHIconViewContextMenuWrapperViewController *)self groupNameBase];
-  [(MTMaterialView *)v7 setGroupNameBase:v8];
+  groupNameBase = [(SBHIconViewContextMenuWrapperViewController *)self groupNameBase];
+  [(MTMaterialView *)v7 setGroupNameBase:groupNameBase];
 
   v9 = self->_backgroundView;
   [(SBHIconViewContextMenuWrapperViewController *)self backgroundScale];
@@ -35,65 +35,65 @@
   [(MTMaterialView *)self->_backgroundView _setLayoutDebuggingIdentifier:@"backgroundView"];
   [(MTMaterialView *)self->_backgroundView setClipsToBounds:1];
   [(MTMaterialView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(SBHIconViewContextMenuWrapperViewController *)self view];
-  [v10 addSubview:self->_backgroundView];
+  view2 = [(SBHIconViewContextMenuWrapperViewController *)self view];
+  [view2 addSubview:self->_backgroundView];
 
   v11 = self->_backgroundView;
-  v12 = [(SBHIconViewContextMenuWrapperViewController *)self view];
-  v13 = SBHPinViewWithinView(v11, v12);
+  view3 = [(SBHIconViewContextMenuWrapperViewController *)self view];
+  v13 = SBHPinViewWithinView(v11, view3);
 
   [(SBHIconViewContextMenuWrapperViewController *)self _applyContinuousCornerRadius];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = SBHIconViewContextMenuWrapperViewController;
-  [(SBHIconViewContextMenuWrapperViewController *)&v3 viewWillAppear:a3];
+  [(SBHIconViewContextMenuWrapperViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = SBHIconViewContextMenuWrapperViewController;
-  [(SBHIconViewContextMenuWrapperViewController *)&v3 viewWillDisappear:a3];
+  [(SBHIconViewContextMenuWrapperViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_contentViewController != v5)
+  controllerCopy = controller;
+  if (self->_contentViewController != controllerCopy)
   {
-    v11 = v5;
+    v11 = controllerCopy;
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_layoutConstraints];
     layoutConstraints = self->_layoutConstraints;
     self->_layoutConstraints = 0;
 
-    v7 = [(SBHIconViewContextMenuWrapperViewController *)self view];
-    v8 = [(UIViewController *)v11 view];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(SBHIconViewContextMenuWrapperViewController *)self view];
+    view2 = [(UIViewController *)v11 view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SBHIconViewContextMenuWrapperViewController *)self bs_removeChildViewController:self->_contentViewController];
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     if (v11)
     {
       [(UIViewController *)v11 preferredContentSize];
       [(SBHIconViewContextMenuWrapperViewController *)self _applyPreferredContentSizeChange:?];
-      [(SBHIconViewContextMenuWrapperViewController *)self bs_addChildViewController:self->_contentViewController withSuperview:v7];
-      [v7 bringSubviewToFront:v8];
-      v9 = SBHPinViewWithinView(v8, v7);
+      [(SBHIconViewContextMenuWrapperViewController *)self bs_addChildViewController:self->_contentViewController withSuperview:view];
+      [view bringSubviewToFront:view2];
+      v9 = SBHPinViewWithinView(view2, view);
       v10 = self->_layoutConstraints;
       self->_layoutConstraints = v9;
     }
 
     [(SBHIconViewContextMenuWrapperViewController *)self _applyContinuousCornerRadius];
 
-    v5 = v11;
+    controllerCopy = v11;
   }
 }
 
-- (void)setContinuousCornerRadius:(double)a3
+- (void)setContinuousCornerRadius:(double)radius
 {
-  self->_continuousCornerRadius = a3;
+  self->_continuousCornerRadius = radius;
   if ([(SBHIconViewContextMenuWrapperViewController *)self isViewLoaded])
   {
 
@@ -101,18 +101,18 @@
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = SBHIconViewContextMenuWrapperViewController;
-  [(SBHIconViewContextMenuWrapperViewController *)&v13 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(SBHIconViewContextMenuWrapperViewController *)&v13 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __101__SBHIconViewContextMenuWrapperViewController_preferredContentSizeDidChangeForChildContentContainer___block_invoke;
   v10 = &unk_1E8088F18;
-  v11 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = containerCopy;
   v12 = v5;
   v6 = _Block_copy(&v7);
   if ([(SBHIconViewContextMenuWrapperViewController *)self isViewLoaded:v7])
@@ -134,12 +134,12 @@ uint64_t __101__SBHIconViewContextMenuWrapperViewController_preferredContentSize
   return [v1 _applyPreferredContentSizeChange:?];
 }
 
-- (void)_applyPreferredContentSizeChange:(CGSize)a3
+- (void)_applyPreferredContentSizeChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   v6 = *(MEMORY[0x1E695F060] + 8);
-  if (*MEMORY[0x1E695F060] == a3.width && v6 == height)
+  if (*MEMORY[0x1E695F060] == change.width && v6 == height)
   {
     v8 = [(UIViewController *)self->_contentViewController view:*MEMORY[0x1E695F060]];
     [v8 systemLayoutSizeFittingSize:{398.0, 0.0}];
@@ -148,21 +148,21 @@ uint64_t __101__SBHIconViewContextMenuWrapperViewController_preferredContentSize
   }
 
   [(SBHIconViewContextMenuWrapperViewController *)self setPreferredContentSize:width, height];
-  v11 = [(UIViewController *)self->_contentViewController view];
-  [v11 frame];
+  view = [(UIViewController *)self->_contentViewController view];
+  [view frame];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(UIViewController *)self->_contentViewController view];
-  [v16 setFrame:{v13, v15, width, height}];
+  view2 = [(UIViewController *)self->_contentViewController view];
+  [view2 setFrame:{v13, v15, width, height}];
 
   [(MTMaterialView *)self->_backgroundView frame];
   [(MTMaterialView *)self->_backgroundView setFrame:?];
-  v17 = [(SBHIconViewContextMenuWrapperViewController *)self view];
-  [v17 frame];
-  [v17 setFrame:?];
-  [v17 setNeedsLayout];
-  [v17 layoutIfNeeded];
+  view3 = [(SBHIconViewContextMenuWrapperViewController *)self view];
+  [view3 frame];
+  [view3 setFrame:?];
+  [view3 setNeedsLayout];
+  [view3 layoutIfNeeded];
 }
 
 - (void)_applyContinuousCornerRadius
@@ -173,12 +173,12 @@ uint64_t __101__SBHIconViewContextMenuWrapperViewController_preferredContentSize
     [(SBHIconViewContextMenuWrapperViewController *)self continuousCornerRadius];
     v4 = v3;
     v5 = objc_opt_new();
-    v6 = [(SBHIconViewContextMenuWrapperViewController *)self view];
-    [v5 bs_safeAddObject:v6];
+    view = [(SBHIconViewContextMenuWrapperViewController *)self view];
+    [v5 bs_safeAddObject:view];
 
-    v7 = [(SBHIconViewContextMenuWrapperViewController *)self contentViewController];
-    v8 = [v7 view];
-    [v5 bs_safeAddObject:v8];
+    contentViewController = [(SBHIconViewContextMenuWrapperViewController *)self contentViewController];
+    view2 = [contentViewController view];
+    [v5 bs_safeAddObject:view2];
 
     [v5 bs_safeAddObject:self->_backgroundView];
     v16 = 0u;

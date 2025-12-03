@@ -7,17 +7,17 @@
 
 - (unint64_t)chip_unsignedLongLongValue
 {
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
 
-  return strtoull(v1, 0, 0);
+  return strtoull(uTF8String, 0, 0);
 }
 
 - (id)hmmtr_sha256hash
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 UTF8String];
-  v2 = strlen(v1);
-  CC_SHA256(v1, v2, md);
+  uTF8String = [self UTF8String];
+  v2 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v2, md);
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {

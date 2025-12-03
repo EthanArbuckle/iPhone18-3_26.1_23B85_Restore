@@ -1,29 +1,29 @@
 @interface MetricDelegate
-- (void)metricMonitor:(id)a3 didEndWithError:(id)a4;
-- (void)metricMonitor:(id)a3 didUpdateWithMetrics:(id)a4;
-- (void)metricMonitorInterruptionDidBegin:(id)a3;
-- (void)metricMonitorInterruptionDidEnd:(id)a3;
+- (void)metricMonitor:(id)monitor didEndWithError:(id)error;
+- (void)metricMonitor:(id)monitor didUpdateWithMetrics:(id)metrics;
+- (void)metricMonitorInterruptionDidBegin:(id)begin;
+- (void)metricMonitorInterruptionDidEnd:(id)end;
 @end
 
 @implementation MetricDelegate
 
-- (void)metricMonitor:(id)a3 didEndWithError:(id)a4
+- (void)metricMonitor:(id)monitor didEndWithError:(id)error
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
-    [MetricDelegate metricMonitor:a4 didEndWithError:?];
+    [MetricDelegate metricMonitor:error didEndWithError:?];
   }
 }
 
-- (void)metricMonitor:(id)a3 didUpdateWithMetrics:(id)a4
+- (void)metricMonitor:(id)monitor didUpdateWithMetrics:(id)metrics
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
-    [MetricDelegate metricMonitor:a4 didUpdateWithMetrics:?];
+    [MetricDelegate metricMonitor:metrics didUpdateWithMetrics:?];
   }
 }
 
-- (void)metricMonitorInterruptionDidBegin:(id)a3
+- (void)metricMonitorInterruptionDidBegin:(id)begin
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
@@ -32,7 +32,7 @@
   }
 }
 
-- (void)metricMonitorInterruptionDidEnd:(id)a3
+- (void)metricMonitorInterruptionDidEnd:(id)end
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {

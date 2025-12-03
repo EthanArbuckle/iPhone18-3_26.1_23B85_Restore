@@ -1,9 +1,9 @@
 @interface TSKAnnotationAuthorStorage
-- (id)authorWithName:(id)a3;
+- (id)authorWithName:(id)name;
 - (id)nextAuthorColor;
 - (void)dealloc;
-- (void)p_addAuthor:(id)a3 isFromDocumentSupport:(BOOL)a4;
-- (void)removeAuthor:(id)a3;
+- (void)p_addAuthor:(id)author isFromDocumentSupport:(BOOL)support;
+- (void)removeAuthor:(id)author;
 @end
 
 @implementation TSKAnnotationAuthorStorage
@@ -15,23 +15,23 @@
   [(TSKAnnotationAuthorStorage *)&v3 dealloc];
 }
 
-- (void)p_addAuthor:(id)a3 isFromDocumentSupport:(BOOL)a4
+- (void)p_addAuthor:(id)author isFromDocumentSupport:(BOOL)support
 {
-  if (-[TSKAnnotationAuthorStorage authorWithName:](self, "authorWithName:", [a3 name]))
+  if (-[TSKAnnotationAuthorStorage authorWithName:](self, "authorWithName:", [author name]))
   {
-    if (!a4)
+    if (!support)
     {
-      v8 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAnnotationAuthorStorage p_addAuthor:isFromDocumentSupport:]"];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAnnotationAuthorStorage.mm"];
 
-      [v8 handleFailureInFunction:v9 file:v10 lineNumber:44 description:@"Cannot have two authors with the same name in a collection!"];
+      [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:44 description:@"Cannot have two authors with the same name in a collection!"];
     }
   }
 
   else
   {
-    if (!a4)
+    if (!support)
     {
       [(TSPObject *)self willModify];
     }
@@ -43,27 +43,27 @@
       self->mAuthors = mAuthors;
     }
 
-    [(NSMutableSet *)mAuthors addObject:a3];
+    [(NSMutableSet *)mAuthors addObject:author];
   }
 }
 
-- (void)removeAuthor:(id)a3
+- (void)removeAuthor:(id)author
 {
   [(TSPObject *)self willModify];
   mAuthors = self->mAuthors;
 
-  [(NSMutableSet *)mAuthors removeObject:a3];
+  [(NSMutableSet *)mAuthors removeObject:author];
 }
 
-- (id)authorWithName:(id)a3
+- (id)authorWithName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TSKAnnotationAuthorStorage *)self authors];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  authors = [(TSKAnnotationAuthorStorage *)self authors];
+  v5 = [(NSSet *)authors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -77,7 +77,7 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(authors);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
@@ -88,7 +88,7 @@ LABEL_3:
 
     if (v6 == ++v8)
     {
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSSet *)authors countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;

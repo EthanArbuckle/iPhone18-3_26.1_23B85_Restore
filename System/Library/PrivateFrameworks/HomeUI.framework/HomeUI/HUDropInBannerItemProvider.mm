@@ -1,44 +1,44 @@
 @interface HUDropInBannerItemProvider
 - (HUDropInBannerItemProvider)init;
-- (HUDropInBannerItemProvider)initWithHome:(id)a3 delegate:(id)a4;
+- (HUDropInBannerItemProvider)initWithHome:(id)home delegate:(id)delegate;
 - (HUDropInBannerItemProviderDelegate)delegate;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
 - (void)_notifyDelegate;
 - (void)_setupDropInDelegatesIfNeeded;
-- (void)device:(id)a3 didUpdateState:(int64_t)a4;
-- (void)executionEnvironmentDidBecomeActive:(id)a3;
-- (void)manager:(id)a3 didAddDevice:(id)a4;
-- (void)manager:(id)a3 didRemoveDevice:(id)a4;
-- (void)managerDidUpdateDevices:(id)a3;
-- (void)serverDisconnectedForDropInCenter:(id)a3;
-- (void)subscriber:(id)a3 didUpdateBulletins:(id)a4;
+- (void)device:(id)device didUpdateState:(int64_t)state;
+- (void)executionEnvironmentDidBecomeActive:(id)active;
+- (void)manager:(id)manager didAddDevice:(id)device;
+- (void)manager:(id)manager didRemoveDevice:(id)device;
+- (void)managerDidUpdateDevices:(id)devices;
+- (void)serverDisconnectedForDropInCenter:(id)center;
+- (void)subscriber:(id)subscriber didUpdateBulletins:(id)bulletins;
 @end
 
 @implementation HUDropInBannerItemProvider
 
 - (HUDropInBannerItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUDropInBannerItemProvider.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUDropInBannerItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUDropInBannerItemProvider.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUDropInBannerItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HUDropInBannerItemProvider)initWithHome:(id)a3 delegate:(id)a4
+- (HUDropInBannerItemProvider)initWithHome:(id)home delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = HUDropInBannerItemProvider;
   v9 = [(HFItemProvider *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     devices = v10->_devices;
     v10->_devices = MEMORY[0x277CBEBF8];
 
@@ -49,8 +49,8 @@
     v14 = objc_opt_new();
     [(HUDropInBannerItemProvider *)v10 setBannerItems:v14];
 
-    v15 = [MEMORY[0x277D14670] sharedInstance];
-    [v15 addObserver:v10];
+    mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+    [mEMORY[0x277D14670] addObserver:v10];
   }
 
   return v10;
@@ -59,17 +59,17 @@
 - (id)reloadItems
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D14670] sharedInstance];
-  v5 = [v4 isActive];
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  isActive = [mEMORY[0x277D14670] isActive];
 
-  if (v5)
+  if (isActive)
   {
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2112;
       v31 = v7;
       _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Execution env is active. Can set dropin delegates.", buf, 0x16u);
@@ -78,27 +78,27 @@
     [(HUDropInBannerItemProvider *)self _setupDropInDelegatesIfNeeded];
   }
 
-  v8 = [(HUDropInBannerItemProvider *)self dropInCenter];
+  dropInCenter = [(HUDropInBannerItemProvider *)self dropInCenter];
 
-  if (v8)
+  if (dropInCenter)
   {
-    v9 = [(HUDropInBannerItemProvider *)self dropInCenter];
-    v10 = [v9 deviceManager];
-    v11 = [v10 devices];
-    [(HUDropInBannerItemProvider *)self setDevices:v11];
+    dropInCenter2 = [(HUDropInBannerItemProvider *)self dropInCenter];
+    deviceManager = [dropInCenter2 deviceManager];
+    devices = [deviceManager devices];
+    [(HUDropInBannerItemProvider *)self setDevices:devices];
   }
 
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromSelector(a2);
-    v14 = [(HUDropInBannerItemProvider *)self devices];
+    devices2 = [(HUDropInBannerItemProvider *)self devices];
     *buf = 138412802;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2112;
     v31 = v13;
     v32 = 2112;
-    v33 = v14;
+    v33 = devices2;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@: %@ Dropin capable devices: %@", buf, 0x20u);
   }
 
@@ -106,25 +106,25 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = NSStringFromSelector(a2);
-    v17 = [(HUDropInBannerItemProvider *)self accessoryIdentifierToEventBulletinsMapping];
+    accessoryIdentifierToEventBulletinsMapping = [(HUDropInBannerItemProvider *)self accessoryIdentifierToEventBulletinsMapping];
     *buf = 138412802;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2112;
     v31 = v16;
     v32 = 2112;
-    v33 = v17;
+    v33 = accessoryIdentifierToEventBulletinsMapping;
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%@: %@ Event bulletins: %@", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
-  v18 = [(HUDropInBannerItemProvider *)self devices];
+  devices3 = [(HUDropInBannerItemProvider *)self devices];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __41__HUDropInBannerItemProvider_reloadItems__block_invoke_3;
   v26[3] = &unk_277DC4290;
   objc_copyWeak(v27, buf);
   v27[1] = a2;
-  v19 = [(HFItemProvider *)self reloadItemsWithObjects:v18 keyAdaptor:&__block_literal_global_281 itemAdaptor:&__block_literal_global_12_0 filter:0 itemMap:v26];
+  v19 = [(HFItemProvider *)self reloadItemsWithObjects:devices3 keyAdaptor:&__block_literal_global_281 itemAdaptor:&__block_literal_global_12_0 filter:0 itemMap:v26];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __41__HUDropInBannerItemProvider_reloadItems__block_invoke_17;
@@ -288,8 +288,8 @@ uint64_t __41__HUDropInBannerItemProvider_reloadItems__block_invoke_4_22(uint64_
 
 - (id)items
 {
-  v2 = [(HUDropInBannerItemProvider *)self bannerItems];
-  v3 = [v2 copy];
+  bannerItems = [(HUDropInBannerItemProvider *)self bannerItems];
+  v3 = [bannerItems copy];
 
   return v3;
 }
@@ -299,20 +299,20 @@ uint64_t __41__HUDropInBannerItemProvider_reloadItems__block_invoke_4_22(uint64_
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUDropInBannerItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B28];
   v8[0] = *MEMORY[0x277D13B48];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }
 
 - (void)_notifyDelegate
 {
-  v3 = [(HUDropInBannerItemProvider *)self delegate];
-  v4 = [v3 conformsToProtocol:&unk_282542A78];
+  delegate = [(HUDropInBannerItemProvider *)self delegate];
+  v4 = [delegate conformsToProtocol:&unk_282542A78];
 
   if (v4)
   {
@@ -331,7 +331,7 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
   [v2 didUpdateDropInAvailability:*(a1 + 32)];
 }
 
-- (void)executionEnvironmentDidBecomeActive:(id)a3
+- (void)executionEnvironmentDidBecomeActive:(id)active
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -339,7 +339,7 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
   {
     v6 = NSStringFromSelector(a2);
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@: %@ Execution env did become active", &v7, 0x16u);
@@ -356,153 +356,153 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
   {
     v5 = NSStringFromSelector(a2);
     v40 = 138412546;
-    v41 = self;
+    selfCopy5 = self;
     v42 = 2112;
     v43 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@ Setting up dropin delegates if needed", &v40, 0x16u);
   }
 
-  v6 = [(HUDropInBannerItemProvider *)self home];
-  v7 = [v6 hf_hasAtleastOneAudioAnalysisSupportedAccessory];
+  home = [(HUDropInBannerItemProvider *)self home];
+  hf_hasAtleastOneAudioAnalysisSupportedAccessory = [home hf_hasAtleastOneAudioAnalysisSupportedAccessory];
 
-  if (v7)
+  if (hf_hasAtleastOneAudioAnalysisSupportedAccessory)
   {
-    v8 = [(HUDropInBannerItemProvider *)self dropInCenter];
+    dropInCenter = [(HUDropInBannerItemProvider *)self dropInCenter];
 
-    if (!v8)
+    if (!dropInCenter)
     {
       v9 = objc_alloc(MEMORY[0x277D069B8]);
-      v10 = [(HUDropInBannerItemProvider *)self home];
-      v11 = [v10 uniqueIdentifier];
-      v12 = [v9 initWithHomeIdentifier:v11 queue:MEMORY[0x277D85CD0]];
+      home2 = [(HUDropInBannerItemProvider *)self home];
+      uniqueIdentifier = [home2 uniqueIdentifier];
+      v12 = [v9 initWithHomeIdentifier:uniqueIdentifier queue:MEMORY[0x277D85CD0]];
       [(HUDropInBannerItemProvider *)self setDropInCenter:v12];
 
       v13 = HFLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = NSStringFromSelector(a2);
-        v15 = [(HUDropInBannerItemProvider *)self dropInCenter];
+        dropInCenter2 = [(HUDropInBannerItemProvider *)self dropInCenter];
         v40 = 138412802;
-        v41 = self;
+        selfCopy5 = self;
         v42 = 2112;
         v43 = v14;
         v44 = 2112;
-        v45 = v15;
+        v45 = dropInCenter2;
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@: %@ Created DropIn center: %@", &v40, 0x20u);
       }
     }
 
-    v16 = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
+    lastKnownEventSubscriber = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
 
-    if (!v16)
+    if (!lastKnownEventSubscriber)
     {
-      v17 = [(HUDropInBannerItemProvider *)self home];
-      v18 = [v17 createHomeAudioAnalysisEventSubscriber];
-      [(HUDropInBannerItemProvider *)self setLastKnownEventSubscriber:v18];
+      home3 = [(HUDropInBannerItemProvider *)self home];
+      createHomeAudioAnalysisEventSubscriber = [home3 createHomeAudioAnalysisEventSubscriber];
+      [(HUDropInBannerItemProvider *)self setLastKnownEventSubscriber:createHomeAudioAnalysisEventSubscriber];
 
       v19 = HFLogForCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = NSStringFromSelector(a2);
-        v21 = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
+        lastKnownEventSubscriber2 = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
         v40 = 138412802;
-        v41 = self;
+        selfCopy5 = self;
         v42 = 2112;
         v43 = v20;
         v44 = 2112;
-        v45 = v21;
+        v45 = lastKnownEventSubscriber2;
         _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "%@: %@ Created Last known event subscriber: %@", &v40, 0x20u);
       }
 
-      v22 = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
-      [v22 setDelegate:self];
+      lastKnownEventSubscriber3 = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
+      [lastKnownEventSubscriber3 setDelegate:self];
     }
 
-    v23 = [(HUDropInBannerItemProvider *)self dropInCenter];
-    v24 = [v23 delegate];
+    dropInCenter3 = [(HUDropInBannerItemProvider *)self dropInCenter];
+    delegate = [dropInCenter3 delegate];
 
-    if (!v24)
+    if (!delegate)
     {
-      v25 = [(HUDropInBannerItemProvider *)self dropInCenter];
-      [v25 setDelegate:self];
+      dropInCenter4 = [(HUDropInBannerItemProvider *)self dropInCenter];
+      [dropInCenter4 setDelegate:self];
 
       v26 = HFLogForCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         v27 = NSStringFromSelector(a2);
-        v28 = [(HUDropInBannerItemProvider *)self dropInCenter];
-        v29 = [v28 delegate];
+        dropInCenter5 = [(HUDropInBannerItemProvider *)self dropInCenter];
+        delegate2 = [dropInCenter5 delegate];
         v40 = 138412802;
-        v41 = self;
+        selfCopy5 = self;
         v42 = 2112;
         v43 = v27;
         v44 = 2112;
-        v45 = v29;
+        v45 = delegate2;
         _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "%@: %@ DropIn center delegate set to %@", &v40, 0x20u);
       }
     }
 
-    v30 = [(HUDropInBannerItemProvider *)self dropInCenter];
-    v31 = [v30 deviceManager];
-    v32 = [v31 delegate];
+    dropInCenter6 = [(HUDropInBannerItemProvider *)self dropInCenter];
+    deviceManager = [dropInCenter6 deviceManager];
+    delegate3 = [deviceManager delegate];
 
-    if (!v32)
+    if (!delegate3)
     {
-      v33 = [(HUDropInBannerItemProvider *)self dropInCenter];
-      v34 = [v33 deviceManager];
-      [v34 setDelegate:self];
+      dropInCenter7 = [(HUDropInBannerItemProvider *)self dropInCenter];
+      deviceManager2 = [dropInCenter7 deviceManager];
+      [deviceManager2 setDelegate:self];
 
       v35 = HFLogForCategory();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         v36 = NSStringFromSelector(a2);
-        v37 = [(HUDropInBannerItemProvider *)self dropInCenter];
-        v38 = [v37 deviceManager];
-        v39 = [v38 delegate];
+        dropInCenter8 = [(HUDropInBannerItemProvider *)self dropInCenter];
+        deviceManager3 = [dropInCenter8 deviceManager];
+        delegate4 = [deviceManager3 delegate];
         v40 = 138412802;
-        v41 = self;
+        selfCopy5 = self;
         v42 = 2112;
         v43 = v36;
         v44 = 2112;
-        v45 = v39;
+        v45 = delegate4;
         _os_log_impl(&dword_20CEB6000, v35, OS_LOG_TYPE_DEFAULT, "%@: %@ DropIn device manager delegate set to %@", &v40, 0x20u);
       }
     }
   }
 }
 
-- (void)subscriber:(id)a3 didUpdateBulletins:(id)a4
+- (void)subscriber:(id)subscriber didUpdateBulletins:(id)bulletins
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  bulletinsCopy = bulletins;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [v6 firstObject];
-    v10 = [v9 accessoryIdentifier];
-    v11 = [v10 UUIDString];
+    firstObject = [bulletinsCopy firstObject];
+    accessoryIdentifier = [firstObject accessoryIdentifier];
+    uUIDString = [accessoryIdentifier UUIDString];
     v16 = 138413058;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v8;
     v20 = 2112;
-    v21 = v11;
+    v21 = uUIDString;
     v22 = 2112;
-    v23 = v6;
+    v23 = bulletinsCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@ Last Known Event Bulletins for accessory with identifier %@: %@", &v16, 0x2Au);
   }
 
-  v12 = [(HUDropInBannerItemProvider *)self accessoryIdentifierToEventBulletinsMapping];
-  v13 = [v6 firstObject];
-  v14 = [v13 accessoryIdentifier];
-  v15 = [v14 UUIDString];
-  [v12 na_safeSetObject:v6 forKey:v15];
+  accessoryIdentifierToEventBulletinsMapping = [(HUDropInBannerItemProvider *)self accessoryIdentifierToEventBulletinsMapping];
+  firstObject2 = [bulletinsCopy firstObject];
+  accessoryIdentifier2 = [firstObject2 accessoryIdentifier];
+  uUIDString2 = [accessoryIdentifier2 UUIDString];
+  [accessoryIdentifierToEventBulletinsMapping na_safeSetObject:bulletinsCopy forKey:uUIDString2];
 
   [(HUDropInBannerItemProvider *)self _notifyDelegate];
 }
 
-- (void)serverDisconnectedForDropInCenter:(id)a3
+- (void)serverDisconnectedForDropInCenter:(id)center
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -510,46 +510,46 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
   {
     v6 = NSStringFromSelector(a2);
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_error_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_ERROR, "%@: %@ Disconnected from DropIn process", &v7, 0x16u);
   }
 }
 
-- (void)managerDidUpdateDevices:(id)a3
+- (void)managerDidUpdateDevices:(id)devices
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v41 = self;
+    selfCopy3 = self;
     v42 = 2112;
     v43 = v6;
     v44 = 2112;
-    v45 = v4;
+    v45 = devicesCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@: %@ Device manager: %@", buf, 0x20u);
   }
 
-  v7 = [(HUDropInBannerItemProvider *)self dropInCenter];
-  v8 = [v7 deviceManager];
-  v9 = [v8 devices];
-  [(HUDropInBannerItemProvider *)self setDevices:v9];
+  dropInCenter = [(HUDropInBannerItemProvider *)self dropInCenter];
+  deviceManager = [dropInCenter deviceManager];
+  devices = [deviceManager devices];
+  [(HUDropInBannerItemProvider *)self setDevices:devices];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
-    v12 = [(HUDropInBannerItemProvider *)self devices];
+    devices2 = [(HUDropInBannerItemProvider *)self devices];
     *buf = 138412802;
-    v41 = self;
+    selfCopy3 = self;
     v42 = 2112;
     v43 = v11;
     v44 = 2112;
-    v45 = v12;
+    v45 = devices2;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@: %@ Devices available for drop-in: %@", buf, 0x20u);
   }
 
@@ -557,8 +557,8 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v13 = [(HUDropInBannerItemProvider *)self devices];
-  v14 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  devices3 = [(HUDropInBannerItemProvider *)self devices];
+  v14 = [devices3 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v14)
   {
     v15 = v14;
@@ -569,15 +569,15 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(devices3);
         }
 
         v18 = *(*(&v35 + 1) + 8 * i);
         v19 = [MEMORY[0x277CBEAA8] now];
         [v19 timeIntervalSince1970];
         v21 = v20;
-        v22 = [v18 stateExpiration];
-        [v22 timeIntervalSince1970];
+        stateExpiration = [v18 stateExpiration];
+        [stateExpiration timeIntervalSince1970];
         v24 = v23;
 
         if ([v18 state])
@@ -597,7 +597,7 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
           {
             v27 = NSStringFromSelector(a2);
             *buf = 138412802;
-            v41 = self;
+            selfCopy3 = self;
             v42 = 2112;
             v43 = v27;
             v44 = 2112;
@@ -616,16 +616,16 @@ void __45__HUDropInBannerItemProvider__notifyDelegate__block_invoke(uint64_t a1)
         }
 
         [v18 setDelegate:self];
-        v28 = [(HUDropInBannerItemProvider *)self home];
-        v29 = [v18 homeKitIdentifier];
-        v30 = [v28 hf_accessoryWithIdentifier:v29];
+        home = [(HUDropInBannerItemProvider *)self home];
+        homeKitIdentifier = [v18 homeKitIdentifier];
+        v30 = [home hf_accessoryWithIdentifier:homeKitIdentifier];
 
-        v31 = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
-        v32 = [v30 uniqueIdentifier];
-        [v31 subscribeLastKnownEventsForAccessory:v32 completion:&__block_literal_global_78_3];
+        lastKnownEventSubscriber = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
+        uniqueIdentifier = [v30 uniqueIdentifier];
+        [lastKnownEventSubscriber subscribeLastKnownEventsForAccessory:uniqueIdentifier completion:&__block_literal_global_78_3];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v15 = [devices3 countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v15);
@@ -699,31 +699,31 @@ void __54__HUDropInBannerItemProvider_managerDidUpdateDevices___block_invoke_76(
   }
 }
 
-- (void)manager:(id)a3 didAddDevice:(id)a4
+- (void)manager:(id)manager didAddDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v14 = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v8;
     v18 = 2112;
-    v19 = v6;
+    v19 = deviceCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@ Added Device: %@", &v14, 0x20u);
   }
 
-  [v6 setDelegate:self];
-  v9 = [(HUDropInBannerItemProvider *)self home];
-  v10 = [v6 homeKitIdentifier];
-  v11 = [v9 hf_accessoryWithIdentifier:v10];
+  [deviceCopy setDelegate:self];
+  home = [(HUDropInBannerItemProvider *)self home];
+  homeKitIdentifier = [deviceCopy homeKitIdentifier];
+  v11 = [home hf_accessoryWithIdentifier:homeKitIdentifier];
 
-  v12 = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
-  v13 = [v11 uniqueIdentifier];
-  [v12 subscribeLastKnownEventsForAccessory:v13 completion:&__block_literal_global_80];
+  lastKnownEventSubscriber = [(HUDropInBannerItemProvider *)self lastKnownEventSubscriber];
+  uniqueIdentifier = [v11 uniqueIdentifier];
+  [lastKnownEventSubscriber subscribeLastKnownEventsForAccessory:uniqueIdentifier completion:&__block_literal_global_80];
 
   [(HUDropInBannerItemProvider *)self _notifyDelegate];
 }
@@ -751,44 +751,44 @@ void __51__HUDropInBannerItemProvider_manager_didAddDevice___block_invoke(uint64
   }
 }
 
-- (void)manager:(id)a3 didRemoveDevice:(id)a4
+- (void)manager:(id)manager didRemoveDevice:(id)device
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v8;
     v13 = 2112;
-    v14 = v6;
+    v14 = deviceCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@ Removed Device: %@", &v9, 0x20u);
   }
 
-  [v6 setDelegate:0];
+  [deviceCopy setDelegate:0];
   [(HUDropInBannerItemProvider *)self _notifyDelegate];
 }
 
-- (void)device:(id)a3 didUpdateState:(int64_t)a4
+- (void)device:(id)device didUpdateState:(int64_t)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  deviceCopy = device;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [MEMORY[0x277D069B0] stringForDeviceState:a4];
+    v10 = [MEMORY[0x277D069B0] stringForDeviceState:state];
     v11 = 138413058;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v9;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v7;
+    v18 = deviceCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: %@ Updated Device state to %@ for device: %@", &v11, 0x2Au);
   }
 

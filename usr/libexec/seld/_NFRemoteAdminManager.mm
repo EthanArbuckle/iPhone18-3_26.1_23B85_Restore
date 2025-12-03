@@ -1,33 +1,33 @@
 @interface _NFRemoteAdminManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_NFRemoteAdminManager)init;
-- (void)cancelCardIngestionWithCompletion:(id)a3;
-- (void)connectToServer:(id)a3 initialClientRequestInfo:(id)a4 sessionToken:(id)a5 completion:(id)a6;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)deleteAllAppletsAndCleanupWithTSMWithCompletion:(id)a3;
-- (void)deleteAllSPAppletsAndCleanupWithTSMithCompletion:(id)a3;
-- (void)deleteAllWalletAppletsAndCleanupWithTSMWithCompletion:(id)a3;
-- (void)deleteAppletsAndCleanupWithTSM:(id)a3 sessionToken:(id)a4 completion:(id)a5;
-- (void)getAPNPublicTokenWithCompletion:(id)a3;
-- (void)getSELDInfoForBrokerWithCompletion:(id)a3;
-- (void)handleAppletStateChange:(id)a3;
-- (void)handleAppletsDeleted:(id)a3;
-- (void)handleCardIngestionStatus:(unint64_t)a3;
-- (void)handleCardSessionToken:(id)a3;
+- (void)cancelCardIngestionWithCompletion:(id)completion;
+- (void)connectToServer:(id)server initialClientRequestInfo:(id)info sessionToken:(id)token completion:(id)completion;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)deleteAllAppletsAndCleanupWithTSMWithCompletion:(id)completion;
+- (void)deleteAllSPAppletsAndCleanupWithTSMithCompletion:(id)completion;
+- (void)deleteAllWalletAppletsAndCleanupWithTSMWithCompletion:(id)completion;
+- (void)deleteAppletsAndCleanupWithTSM:(id)m sessionToken:(id)token completion:(id)completion;
+- (void)getAPNPublicTokenWithCompletion:(id)completion;
+- (void)getSELDInfoForBrokerWithCompletion:(id)completion;
+- (void)handleAppletStateChange:(id)change;
+- (void)handleAppletsDeleted:(id)deleted;
+- (void)handleCardIngestionStatus:(unint64_t)status;
+- (void)handleCardSessionToken:(id)token;
 - (void)hardwareStateDidChange;
-- (void)ingestCard:(id)a3 completion:(id)a4;
-- (void)nextRequestForServer:(id)a3 completion:(id)a4;
-- (void)powerObserverSystemHasPoweredOn:(id)a3;
-- (void)powerObserverSystemWillSleep:(id)a3;
-- (void)primaryRegionTopicWithCompletion:(id)a3;
-- (void)queueServerConnection:(id)a3 completion:(id)a4;
-- (void)queueServerConnectionForApplets:(id)a3 completion:(id)a4;
-- (void)registerForCallbacks:(id)a3;
-- (void)registrationInfoWithCompletion:(id)a3;
-- (void)setRegistrationInfo:(id)a3 primaryRegionTopic:(id)a4 completion:(id)a5;
-- (void)unregisterForCallbacks:(id)a3;
+- (void)ingestCard:(id)card completion:(id)completion;
+- (void)nextRequestForServer:(id)server completion:(id)completion;
+- (void)powerObserverSystemHasPoweredOn:(id)on;
+- (void)powerObserverSystemWillSleep:(id)sleep;
+- (void)primaryRegionTopicWithCompletion:(id)completion;
+- (void)queueServerConnection:(id)connection completion:(id)completion;
+- (void)queueServerConnectionForApplets:(id)applets completion:(id)completion;
+- (void)registerForCallbacks:(id)callbacks;
+- (void)registrationInfoWithCompletion:(id)completion;
+- (void)setRegistrationInfo:(id)info primaryRegionTopic:(id)topic completion:(id)completion;
+- (void)unregisterForCallbacks:(id)callbacks;
 @end
 
 @implementation _NFRemoteAdminManager
@@ -435,8 +435,8 @@
   if (!obj->_isRunning)
   {
     v2 = +[NFHardwareManager sharedHardwareManager];
-    v3 = [v2 getHwSupport];
-    if (v3 == 4)
+    getHwSupport = [v2 getHwSupport];
+    if (getHwSupport == 4)
     {
       v5 = +[NFHardwareManager sharedHardwareManager];
       [v5 unregisterEventListener:obj];
@@ -445,7 +445,7 @@
       obj->_waitForNFCDTransaction = 0;
     }
 
-    else if (v3 == 2)
+    else if (getHwSupport == 2)
     {
       v4 = +[NFHardwareManager sharedHardwareManager];
       [v4 unregisterEventListener:obj];
@@ -464,7 +464,7 @@ LABEL_8:
   objc_sync_exit(obj);
 }
 
-- (void)powerObserverSystemWillSleep:(id)a3
+- (void)powerObserverSystemWillSleep:(id)sleep
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -510,18 +510,18 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i System is sleeping", buf, 0x22u);
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  if (v14->_activeSession)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activeSession)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v15 = NFLogGetLogger();
     if (v15)
     {
       v16 = v15;
-      v17 = object_getClass(v14);
+      v17 = object_getClass(selfCopy);
       v18 = class_isMetaClass(v17);
-      v19 = object_getClassName(v14);
+      v19 = object_getClassName(selfCopy);
       v28 = sel_getName(a2);
       v20 = 45;
       if (v18)
@@ -536,7 +536,7 @@ LABEL_8:
     v21 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = object_getClass(v14);
+      v22 = object_getClass(selfCopy);
       if (class_isMetaClass(v22))
       {
         v23 = 43;
@@ -547,7 +547,7 @@ LABEL_8:
         v23 = 45;
       }
 
-      v24 = object_getClassName(v14);
+      v24 = object_getClassName(selfCopy);
       v25 = sel_getName(a2);
       *buf = 67109890;
       v30 = v23;
@@ -560,20 +560,20 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Aborting active session", buf, 0x22u);
     }
 
-    [(NFAdminSession *)v14->_activeSession abort:4];
-    activeSession = v14->_activeSession;
+    [(NFAdminSession *)selfCopy->_activeSession abort:4];
+    activeSession = selfCopy->_activeSession;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v14->_sessionWasAbortedOnSleep = 1;
+      selfCopy->_sessionWasAbortedOnSleep = 1;
     }
   }
 
-  [(NFPowerObserver *)v14->_powerObserver allowSleep];
-  objc_sync_exit(v14);
+  [(NFPowerObserver *)selfCopy->_powerObserver allowSleep];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)powerObserverSystemHasPoweredOn:(id)a3
+- (void)powerObserverSystemHasPoweredOn:(id)on
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -626,10 +626,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = [[NFServiceWhitelistChecker alloc] initWithConnection:v6];
+  connectionCopy = connection;
+  v7 = [[NFServiceWhitelistChecker alloc] initWithConnection:connectionCopy];
   if ([v7 remoteAdminAccess])
   {
     hardwareLoadComplete = self->_hardwareLoadComplete;
@@ -652,7 +652,7 @@ LABEL_8:
           v17 = 43;
         }
 
-        v10(6, "%c[%{public}s %{public}s]:%i Added connection from %{public}@ : %{public}@", v17, ClassName, Name, 990, v16, v6);
+        v10(6, "%c[%{public}s %{public}s]:%i Added connection from %{public}@ : %{public}@", v17, ClassName, Name, 990, v16, connectionCopy);
 
         a2 = v15;
       }
@@ -674,7 +674,7 @@ LABEL_8:
 
         v21 = object_getClassName(self);
         v22 = sel_getName(a2);
-        v23 = [v7 clientName];
+        clientName = [v7 clientName];
         *buf = 67110402;
         *&buf[4] = v20;
         *v62 = 2082;
@@ -684,33 +684,33 @@ LABEL_8:
         *&v62[20] = 1024;
         *&v62[22] = 990;
         *&v62[26] = 2114;
-        *&v62[28] = v23;
+        *&v62[28] = clientName;
         *&v62[36] = 2114;
-        *&v62[38] = v6;
+        *&v62[38] = connectionCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Added connection from %{public}@ : %{public}@", buf, 0x36u);
       }
 
       v24 = +[NFRemoteAdminManagerCallbacks interface];
-      [v6 setRemoteObjectInterface:v24];
+      [connectionCopy setRemoteObjectInterface:v24];
 
       v25 = +[NFRemoteAdminManagerInterface interface];
-      [v6 setExportedInterface:v25];
+      [connectionCopy setExportedInterface:v25];
 
-      [v6 setExportedObject:self];
+      [connectionCopy setExportedObject:self];
       v26 = [NFXPCConnectionUserInfoDictionary alloc];
-      v27 = [v7 clientName];
-      v28 = [v26 initWithServiceWhitelist:v7 clientName:v27];
+      clientName2 = [v7 clientName];
+      v28 = [v26 initWithServiceWhitelist:v7 clientName:clientName2];
 
       v29 = objc_opt_new();
       [v28 setObject:v29 forKeyedSubscript:@"ProxyObjects"];
 
-      [v6 setUserInfo:v28];
+      [connectionCopy setUserInfo:v28];
       *buf = 0;
       *v62 = buf;
       *&v62[8] = 0x3032000000;
       *&v62[16] = sub_10001CBAC;
       *&v62[24] = sub_10001CBBC;
-      v30 = v6;
+      v30 = connectionCopy;
       *&v62[32] = v30;
       v60[0] = _NSConcreteStackBlock;
       v60[1] = 3221225472;
@@ -793,10 +793,10 @@ LABEL_8:
       v36 = object_getClassName(self);
       v37 = sel_getName(a2);
       v38 = a2;
-      v39 = [v6 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       [v58 clientName];
-      v41 = v40 = v6;
-      v57 = v39;
+      v41 = v40 = connectionCopy;
+      v57 = processIdentifier;
       a2 = v38;
       v42 = 43;
       if (!v35)
@@ -806,7 +806,7 @@ LABEL_8:
 
       v33(3, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) missing entitlement: %s", v42, v36, v37, 981, v57, v41, "com.apple.seld.tsmmanager");
 
-      v6 = v40;
+      connectionCopy = v40;
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -826,9 +826,9 @@ LABEL_8:
 
       v45 = object_getClassName(self);
       v46 = sel_getName(a2);
-      v47 = [v6 processIdentifier];
+      processIdentifier2 = [connectionCopy processIdentifier];
       v7 = v58;
-      v48 = [v58 clientName];
+      clientName3 = [v58 clientName];
       *buf = 67110658;
       *&buf[4] = v44;
       *v62 = 2082;
@@ -838,9 +838,9 @@ LABEL_8:
       *&v62[20] = 1024;
       *&v62[22] = 981;
       *&v62[26] = 1024;
-      *&v62[28] = v47;
+      *&v62[28] = processIdentifier2;
       *&v62[32] = 2114;
-      *&v62[34] = v48;
+      *&v62[34] = clientName3;
       *&v62[42] = 2080;
       *&v62[44] = "com.apple.seld.tsmmanager";
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) missing entitlement: %s", buf, 0x3Cu);
@@ -858,9 +858,9 @@ LABEL_8:
   return v31;
 }
 
-- (void)registerForCallbacks:(id)a3
+- (void)registerForCallbacks:(id)callbacks
 {
-  v5 = a3;
+  callbacksCopy = callbacks;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -871,14 +871,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i Registering callback handler for %{public}@", v14, ClassName, Name, 1197, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i Registering callback handler for %{public}@", v14, ClassName, Name, 1197, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -898,7 +898,7 @@ LABEL_8:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v24 = v17;
     v25 = 2082;
@@ -908,19 +908,19 @@ LABEL_8:
     v29 = 1024;
     v30 = 1197;
     v31 = 2114;
-    v32 = v20;
+    v32 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Registering callback handler for %{public}@", buf, 0x2Cu);
   }
 
   v21 = self->_callbackHandlers;
   objc_sync_enter(v21);
   v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 processIdentifier]);
-  [(NSMutableDictionary *)self->_callbackHandlers setObject:v5 forKeyedSubscript:v22];
+  [(NSMutableDictionary *)self->_callbackHandlers setObject:callbacksCopy forKeyedSubscript:v22];
 
   objc_sync_exit(v21);
 }
 
-- (void)unregisterForCallbacks:(id)a3
+- (void)unregisterForCallbacks:(id)callbacks
 {
   v5 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -932,14 +932,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v12 = [v5 NF_clientName];
+    nF_clientName = [v5 NF_clientName];
     v13 = 45;
     if (isMetaClass)
     {
       v13 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i Unregistering callback handler for %{public}@", v13, ClassName, Name, 1213, v12);
+    v7(6, "%c[%{public}s %{public}s]:%i Unregistering callback handler for %{public}@", v13, ClassName, Name, 1213, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -959,7 +959,7 @@ LABEL_8:
 
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
-    v19 = [v5 NF_clientName];
+    nF_clientName2 = [v5 NF_clientName];
     *buf = 67110146;
     v21 = v16;
     v22 = 2082;
@@ -969,18 +969,18 @@ LABEL_8:
     v26 = 1024;
     v27 = 1213;
     v28 = 2114;
-    v29 = v19;
+    v29 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Unregistering callback handler for %{public}@", buf, 0x2Cu);
   }
 
   sub_10001CE14(self, v5);
 }
 
-- (void)setRegistrationInfo:(id)a3 primaryRegionTopic:(id)a4 completion:(id)a5
+- (void)setRegistrationInfo:(id)info primaryRegionTopic:(id)topic completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  topicCopy = topic;
+  completionCopy = completion;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -996,7 +996,7 @@ LABEL_8:
       v17 = 43;
     }
 
-    v13(6, "%c[%{public}s %{public}s]:%i theInfo=%{public}@, thePrimaryRegionTopic=%{public}@", v17, ClassName, Name, 1283, v9, v10);
+    v13(6, "%c[%{public}s %{public}s]:%i theInfo=%{public}@, thePrimaryRegionTopic=%{public}@", v17, ClassName, Name, 1283, infoCopy, topicCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1023,22 +1023,22 @@ LABEL_8:
     v38 = 1024;
     v39 = 1283;
     v40 = 2114;
-    v41 = v9;
+    v41 = infoCopy;
     v42 = 2114;
-    v43 = v10;
+    v43 = topicCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i theInfo=%{public}@, thePrimaryRegionTopic=%{public}@", buf, 0x36u);
   }
 
-  if (sub_100035CA4(self->_storage, v9, v10))
+  if (sub_100035CA4(self->_storage, infoCopy, topicCopy))
   {
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10002222C;
     v27[3] = &unk_100054B08;
     v27[4] = self;
-    v28 = v9;
-    v29 = v10;
+    v28 = infoCopy;
+    v29 = topicCopy;
     sub_100021878(self, v27);
   }
 
@@ -1051,46 +1051,46 @@ LABEL_8:
     v31 = v23;
     v24 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v25 = [v21 initWithDomain:v22 code:10 userInfo:v24];
-    (v11)[2](v11, v25);
+    (completionCopy)[2](completionCopy, v25);
   }
 }
 
-- (void)registrationInfoWithCompletion:(id)a3
+- (void)registrationInfoWithCompletion:(id)completion
 {
   storage = self->_storage;
-  v5 = a3;
+  completionCopy = completion;
   v6 = sub_1000355D0(storage);
-  (*(a3 + 2))(v5, v6, 0);
+  (*(completion + 2))(completionCopy, v6, 0);
 }
 
-- (void)primaryRegionTopicWithCompletion:(id)a3
+- (void)primaryRegionTopicWithCompletion:(id)completion
 {
   storage = self->_storage;
-  v5 = a3;
+  completionCopy = completion;
   v6 = sub_1000368E4(storage);
-  (*(a3 + 2))(v5, v6, 0);
+  (*(completion + 2))(completionCopy, v6, 0);
 }
 
-- (void)nextRequestForServer:(id)a3 completion:(id)a4
+- (void)nextRequestForServer:(id)server completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000229F8;
   v7[3] = &unk_100054B58;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  sub_100021878(v8, v7);
+  selfCopy = self;
+  serverCopy = server;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = serverCopy;
+  sub_100021878(selfCopy, v7);
 }
 
-- (void)connectToServer:(id)a3 initialClientRequestInfo:(id)a4 sessionToken:(id)a5 completion:(id)a6
+- (void)connectToServer:(id)server initialClientRequestInfo:(id)info sessionToken:(id)token completion:(id)completion
 {
-  v11 = a3;
-  v37 = a4;
-  v12 = a5;
-  v36 = a6;
+  serverCopy = server;
+  infoCopy = info;
+  tokenCopy = token;
+  completionCopy = completion;
   v13 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1099,11 +1099,11 @@ LABEL_8:
     v15 = Logger;
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
-    v18 = v12;
-    v19 = v11;
+    v18 = tokenCopy;
+    v19 = serverCopy;
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v22 = [v13 NF_clientName];
+    nF_clientName = [v13 NF_clientName];
     v23 = 45;
     if (isMetaClass)
     {
@@ -1111,9 +1111,9 @@ LABEL_8:
     }
 
     v35 = ClassName;
-    v11 = v19;
-    v12 = v18;
-    v15(6, "%c[%{public}s %{public}s]:%i Server connection request from %{public}@", v23, v35, Name, 1454, v22);
+    serverCopy = v19;
+    tokenCopy = v18;
+    v15(6, "%c[%{public}s %{public}s]:%i Server connection request from %{public}@", v23, v35, Name, 1454, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1133,7 +1133,7 @@ LABEL_8:
 
     v27 = object_getClassName(self);
     v28 = sel_getName(a2);
-    v29 = [v13 NF_clientName];
+    nF_clientName2 = [v13 NF_clientName];
     *buf = 67110146;
     v46 = v26;
     v47 = 2082;
@@ -1143,7 +1143,7 @@ LABEL_8:
     v51 = 1024;
     v52 = 1454;
     v53 = 2114;
-    v54 = v29;
+    v54 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Server connection request from %{public}@", buf, 0x2Cu);
   }
 
@@ -1153,23 +1153,23 @@ LABEL_8:
   v38[3] = &unk_100054BA8;
   v38[4] = self;
   v39 = v13;
-  v40 = v11;
-  v41 = v37;
-  v42 = v12;
-  v43 = v36;
+  v40 = serverCopy;
+  v41 = infoCopy;
+  v42 = tokenCopy;
+  v43 = completionCopy;
   v44 = a2;
-  v30 = v36;
-  v31 = v12;
-  v32 = v37;
-  v33 = v11;
+  v30 = completionCopy;
+  v31 = tokenCopy;
+  v32 = infoCopy;
+  v33 = serverCopy;
   v34 = v13;
   sub_100021878(self, v38);
 }
 
-- (void)queueServerConnection:(id)a3 completion:(id)a4
+- (void)queueServerConnection:(id)connection completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1182,9 +1182,9 @@ LABEL_8:
     Name = sel_getName(a2);
     [v9 NF_clientName];
     v16 = v9;
-    v17 = v8;
+    v17 = completionCopy;
     v18 = a2;
-    v20 = v19 = v7;
+    v20 = v19 = connectionCopy;
     v21 = 45;
     if (isMetaClass)
     {
@@ -1193,9 +1193,9 @@ LABEL_8:
 
     v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, Name, 1499, v20);
 
-    v7 = v19;
+    connectionCopy = v19;
     a2 = v18;
-    v8 = v17;
+    completionCopy = v17;
     v9 = v16;
   }
 
@@ -1216,7 +1216,7 @@ LABEL_8:
 
     v25 = object_getClassName(self);
     v26 = sel_getName(a2);
-    v27 = [v9 NF_clientName];
+    nF_clientName = [v9 NF_clientName];
     *buf = 67110146;
     v35 = v24;
     v36 = 2082;
@@ -1226,39 +1226,39 @@ LABEL_8:
     v40 = 1024;
     v41 = 1499;
     v42 = 2114;
-    v43 = v27;
+    v43 = nF_clientName;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v28 = self;
-  objc_sync_enter(v28);
-  apsInited = v28->_apsInited;
-  objc_sync_exit(v28);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  apsInited = selfCopy->_apsInited;
+  objc_sync_exit(selfCopy);
 
   if (apsInited)
   {
-    sub_100023F30(&v28->super.isa, v7, v8);
+    sub_100023F30(&selfCopy->super.isa, connectionCopy, completionCopy);
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100024828;
     v30[3] = &unk_100054BD0;
-    v30[4] = v28;
+    v30[4] = selfCopy;
     v33 = a2;
     v31 = v9;
-    v32 = v7;
-    sub_100021878(v28, v30);
+    v32 = connectionCopy;
+    sub_100021878(selfCopy, v30);
   }
 }
 
-- (void)queueServerConnectionForApplets:(id)a3 completion:(id)a4
+- (void)queueServerConnectionForApplets:(id)applets completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  appletsCopy = applets;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1271,9 +1271,9 @@ LABEL_8:
     Name = sel_getName(a2);
     [v9 NF_clientName];
     v16 = v9;
-    v17 = v8;
+    v17 = completionCopy;
     v18 = a2;
-    v20 = v19 = v7;
+    v20 = v19 = appletsCopy;
     v21 = 45;
     if (isMetaClass)
     {
@@ -1282,9 +1282,9 @@ LABEL_8:
 
     v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v21, ClassName, Name, 1566, v20);
 
-    v7 = v19;
+    appletsCopy = v19;
     a2 = v18;
-    v8 = v17;
+    completionCopy = v17;
     v9 = v16;
   }
 
@@ -1305,7 +1305,7 @@ LABEL_8:
 
     v25 = object_getClassName(self);
     v26 = sel_getName(a2);
-    v27 = [v9 NF_clientName];
+    nF_clientName = [v9 NF_clientName];
     *buf = 67110146;
     v35 = v24;
     v36 = 2082;
@@ -1315,39 +1315,39 @@ LABEL_8:
     v40 = 1024;
     v41 = 1566;
     v42 = 2114;
-    v43 = v27;
+    v43 = nF_clientName;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v28 = self;
-  objc_sync_enter(v28);
-  apsInited = v28->_apsInited;
-  objc_sync_exit(v28);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  apsInited = selfCopy->_apsInited;
+  objc_sync_exit(selfCopy);
 
   if (apsInited)
   {
-    sub_100024A04(v28, v7, v8);
+    sub_100024A04(selfCopy, appletsCopy, completionCopy);
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100025510;
     v30[3] = &unk_100054BD0;
-    v30[4] = v28;
+    v30[4] = selfCopy;
     v33 = a2;
     v31 = v9;
-    v32 = v7;
-    sub_100021878(v28, v30);
+    v32 = appletsCopy;
+    sub_100021878(selfCopy, v30);
   }
 }
 
-- (void)ingestCard:(id)a3 completion:(id)a4
+- (void)ingestCard:(id)card completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  cardCopy = card;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1360,8 +1360,8 @@ LABEL_8:
     Name = sel_getName(a2);
     [v9 NF_clientName];
     v16 = a2;
-    v17 = v8;
-    v19 = v18 = v7;
+    v17 = completionCopy;
+    v19 = v18 = cardCopy;
     v20 = 45;
     if (isMetaClass)
     {
@@ -1370,8 +1370,8 @@ LABEL_8:
 
     v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v20, ClassName, Name, 1744, v19);
 
-    v7 = v18;
-    v8 = v17;
+    cardCopy = v18;
+    completionCopy = v17;
     a2 = v16;
   }
 
@@ -1392,7 +1392,7 @@ LABEL_8:
 
     v24 = object_getClassName(self);
     v25 = sel_getName(a2);
-    v26 = [v9 NF_clientName];
+    nF_clientName = [v9 NF_clientName];
     *buf = 67110146;
     v36 = v23;
     v37 = 2082;
@@ -1402,7 +1402,7 @@ LABEL_8:
     v41 = 1024;
     v42 = 1744;
     v43 = 2114;
-    v44 = v26;
+    v44 = nF_clientName;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1410,20 +1410,20 @@ LABEL_8:
   v30[1] = 3221225472;
   v30[2] = sub_10002699C;
   v30[3] = &unk_100054C48;
-  v33 = v8;
+  v33 = completionCopy;
   v34 = a2;
   v30[4] = self;
   v31 = v9;
-  v32 = v7;
-  v27 = v8;
-  v28 = v7;
+  v32 = cardCopy;
+  v27 = completionCopy;
+  v28 = cardCopy;
   v29 = v9;
   sub_100021878(self, v30);
 }
 
-- (void)cancelCardIngestionWithCompletion:(id)a3
+- (void)cancelCardIngestionWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1434,14 +1434,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1789, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1789, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1461,7 +1461,7 @@ LABEL_8:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v28 = v17;
     v29 = 2082;
@@ -1471,7 +1471,7 @@ LABEL_8:
     v33 = 1024;
     v34 = 1789;
     v35 = 2114;
-    v36 = v20;
+    v36 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1481,16 +1481,16 @@ LABEL_8:
   v23[3] = &unk_100054C70;
   v23[4] = self;
   v24 = v6;
-  v25 = v5;
+  v25 = completionCopy;
   v26 = a2;
-  v21 = v5;
+  v21 = completionCopy;
   v22 = v6;
   sub_100021878(self, v23);
 }
 
-- (void)getSELDInfoForBrokerWithCompletion:(id)a3
+- (void)getSELDInfoForBrokerWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1501,14 +1501,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1836, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1836, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1528,7 +1528,7 @@ LABEL_8:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v28 = v17;
     v29 = 2082;
@@ -1538,7 +1538,7 @@ LABEL_8:
     v33 = 1024;
     v34 = 1836;
     v35 = 2114;
-    v36 = v20;
+    v36 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1548,16 +1548,16 @@ LABEL_8:
   v23[3] = &unk_100054C70;
   v23[4] = self;
   v24 = v6;
-  v25 = v5;
+  v25 = completionCopy;
   v26 = a2;
-  v21 = v5;
+  v21 = completionCopy;
   v22 = v6;
   sub_100021878(self, v23);
 }
 
-- (void)deleteAllAppletsAndCleanupWithTSMWithCompletion:(id)a3
+- (void)deleteAllAppletsAndCleanupWithTSMWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1568,14 +1568,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1895, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1895, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1595,7 +1595,7 @@ LABEL_8:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v28 = v17;
     v29 = 2082;
@@ -1605,7 +1605,7 @@ LABEL_8:
     v33 = 1024;
     v34 = 1895;
     v35 = 2114;
-    v36 = v20;
+    v36 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1615,16 +1615,16 @@ LABEL_8:
   v23[3] = &unk_100054C70;
   v23[4] = self;
   v24 = v6;
-  v25 = v5;
+  v25 = completionCopy;
   v26 = a2;
-  v21 = v5;
+  v21 = completionCopy;
   v22 = v6;
   sub_100021878(self, v23);
 }
 
-- (void)deleteAllWalletAppletsAndCleanupWithTSMWithCompletion:(id)a3
+- (void)deleteAllWalletAppletsAndCleanupWithTSMWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1635,14 +1635,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1913, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1913, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1662,7 +1662,7 @@ LABEL_8:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v28 = v17;
     v29 = 2082;
@@ -1672,7 +1672,7 @@ LABEL_8:
     v33 = 1024;
     v34 = 1913;
     v35 = 2114;
-    v36 = v20;
+    v36 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1682,16 +1682,16 @@ LABEL_8:
   v23[3] = &unk_100054C70;
   v23[4] = self;
   v24 = v6;
-  v25 = v5;
+  v25 = completionCopy;
   v26 = a2;
-  v21 = v5;
+  v21 = completionCopy;
   v22 = v6;
   sub_100021878(self, v23);
 }
 
-- (void)deleteAllSPAppletsAndCleanupWithTSMithCompletion:(id)a3
+- (void)deleteAllSPAppletsAndCleanupWithTSMithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1702,14 +1702,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1932, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 1932, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1729,7 +1729,7 @@ LABEL_8:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v28 = v17;
     v29 = 2082;
@@ -1739,7 +1739,7 @@ LABEL_8:
     v33 = 1024;
     v34 = 1932;
     v35 = 2114;
-    v36 = v20;
+    v36 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1749,18 +1749,18 @@ LABEL_8:
   v23[3] = &unk_100054C70;
   v23[4] = self;
   v24 = v6;
-  v25 = v5;
+  v25 = completionCopy;
   v26 = a2;
-  v21 = v5;
+  v21 = completionCopy;
   v22 = v6;
   sub_100021878(self, v23);
 }
 
-- (void)deleteAppletsAndCleanupWithTSM:(id)a3 sessionToken:(id)a4 completion:(id)a5
+- (void)deleteAppletsAndCleanupWithTSM:(id)m sessionToken:(id)token completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  mCopy = m;
+  tokenCopy = token;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1769,13 +1769,13 @@ LABEL_8:
     v14 = Logger;
     Class = object_getClass(self);
     isMetaClass = class_isMetaClass(Class);
-    v40 = v11;
-    v17 = v10;
-    v18 = v9;
+    v40 = completionCopy;
+    v17 = tokenCopy;
+    v18 = mCopy;
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
     [v12 NF_clientName];
-    v21 = self;
+    selfCopy = self;
     v23 = v22 = a2;
     v24 = 45;
     if (isMetaClass)
@@ -1784,13 +1784,13 @@ LABEL_8:
     }
 
     v39 = ClassName;
-    v9 = v18;
-    v10 = v17;
-    v11 = v40;
+    mCopy = v18;
+    tokenCopy = v17;
+    completionCopy = v40;
     v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v24, v39, Name, 1985, v23);
 
     a2 = v22;
-    self = v21;
+    self = selfCopy;
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1812,7 +1812,7 @@ LABEL_8:
     v29 = a2;
     v30 = v28;
     v31 = sel_getName(v29);
-    v32 = [v12 NF_clientName];
+    nF_clientName = [v12 NF_clientName];
     *buf = 67110146;
     v48 = v27;
     v49 = 2082;
@@ -1822,26 +1822,26 @@ LABEL_8:
     v53 = 1024;
     v54 = 1985;
     v55 = 2114;
-    v56 = v32;
+    v56 = nF_clientName;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v33 = self;
-  objc_sync_enter(v33);
-  apsInited = v33->_apsInited;
-  objc_sync_exit(v33);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  apsInited = selfCopy2->_apsInited;
+  objc_sync_exit(selfCopy2);
 
-  if (!v10 || apsInited)
+  if (!tokenCopy || apsInited)
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_10002A214;
     v41[3] = &unk_100054CE8;
-    v41[4] = v33;
-    v42 = v9;
-    v43 = v10;
-    v44 = v11;
-    sub_1000198F4(v33, v41);
+    v41[4] = selfCopy2;
+    v42 = mCopy;
+    v43 = tokenCopy;
+    v44 = completionCopy;
+    sub_1000198F4(selfCopy2, v41);
   }
 
   else
@@ -1852,13 +1852,13 @@ LABEL_8:
     v46 = @"System not yet initialized";
     v37 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v38 = [v35 initWithDomain:v36 code:2 userInfo:v37];
-    (*(v11 + 2))(v11, v38);
+    (*(completionCopy + 2))(completionCopy, v38);
   }
 }
 
-- (void)getAPNPublicTokenWithCompletion:(id)a3
+- (void)getAPNPublicTokenWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1869,14 +1869,14 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 NF_clientName];
+    nF_clientName = [v6 NF_clientName];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 2020, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v14, ClassName, Name, 2020, nF_clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1896,7 +1896,7 @@ LABEL_8:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 NF_clientName];
+    nF_clientName2 = [v6 NF_clientName];
     *buf = 67110146;
     v28 = v17;
     v29 = 2082;
@@ -1906,7 +1906,7 @@ LABEL_8:
     v33 = 1024;
     v34 = 2020;
     v35 = 2114;
-    v36 = v20;
+    v36 = nF_clientName2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1916,23 +1916,23 @@ LABEL_8:
   v23[3] = &unk_100054C70;
   v23[4] = self;
   v24 = v6;
-  v25 = v5;
+  v25 = completionCopy;
   v26 = a2;
-  v21 = v5;
+  v21 = completionCopy;
   v22 = v6;
   sub_100021878(self, v23);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   v6 = _os_activity_create(&_mh_execute_header, "connection:didReceivePublicToken:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   *state = 0;
   *&state[8] = 0;
   os_activity_scope_enter(v6, state);
   os_activity_scope_leave(state);
 
-  v7 = v5;
+  v7 = tokenCopy;
   v8 = v7;
   if (self)
   {
@@ -2051,11 +2051,11 @@ LABEL_8:
   sub_100017CF4(self);
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  topicCopy = topic;
+  infoCopy = info;
+  connectionCopy = connection;
   v12 = _os_activity_create(&_mh_execute_header, "connection:didReceiveMessageForTopic:userInfo:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   *state = 0;
   *&state[8] = 0;
@@ -2077,7 +2077,7 @@ LABEL_8:
       v17 = 43;
     }
 
-    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 2107, v9);
+    v14(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 2107, topicCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2106,7 +2106,7 @@ LABEL_8:
     v45 = 1024;
     v46 = 2107;
     v47 = 2114;
-    v48 = v9;
+    v48 = topicCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", state, 0x2Cu);
   }
 
@@ -2117,23 +2117,23 @@ LABEL_8:
   [v23 setDateFormat:@"yyyy-MM-dd HH:mm:ss z"];
   storage = self->_storage;
   v40[0] = @"APNClientConnected";
-  v26 = [v11 isConnected];
+  isConnected = [connectionCopy isConnected];
   v27 = &off_100057390;
-  if (v26)
+  if (isConnected)
   {
     v27 = &off_100057378;
   }
 
   v41[0] = v27;
   v40[1] = @"APNTopicsRegistered";
-  v28 = [v11 enabledTopics];
+  enabledTopics = [connectionCopy enabledTopics];
 
-  v41[1] = v28;
+  v41[1] = enabledTopics;
   v40[2] = @"CheckIn";
-  v39[0] = v9;
+  v39[0] = topicCopy;
   v38[0] = @"Reason";
   v38[1] = @"PushRxData";
-  v29 = [[NSDictionary alloc] initWithDictionary:v10];
+  v29 = [[NSDictionary alloc] initWithDictionary:infoCopy];
 
   v39[1] = v29;
   v38[2] = @"PushRxTime";
@@ -2143,18 +2143,18 @@ LABEL_8:
   v32 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:3];
   v41[2] = v32;
   v33 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:3];
-  sub_100037214(storage, v33, v9);
+  sub_100037214(storage, v33, topicCopy);
 
-  v37 = v9;
+  v37 = topicCopy;
   v34 = [NSArray arrayWithObjects:&v37 count:1];
   sub_10001CEC4(self, v34);
 
   [NFGeneralStatisticsCALogger updateAnalyticsGeneralTransactionStatistics:&off_1000574A8];
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -2164,7 +2164,7 @@ LABEL_8:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    if (v4)
+    if (statusCopy)
     {
       v13 = "connected";
     }
@@ -2201,7 +2201,7 @@ LABEL_8:
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
     *buf = 67110146;
-    if (v4)
+    if (statusCopy)
     {
       v20 = "connected";
     }
@@ -2224,17 +2224,17 @@ LABEL_8:
   }
 }
 
-- (void)handleCardSessionToken:(id)a3
+- (void)handleCardSessionToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = self->_callbackHandlers;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMutableDictionary *)self->_callbackHandlers allValues];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_callbackHandlers allValues];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2246,15 +2246,15 @@ LABEL_8:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) readerModeCardSessionToken:v4];
+        [*(*(&v11 + 1) + 8 * v10) readerModeCardSessionToken:tokenCopy];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -2263,7 +2263,7 @@ LABEL_8:
   objc_sync_exit(v5);
 }
 
-- (void)handleCardIngestionStatus:(unint64_t)a3
+- (void)handleCardIngestionStatus:(unint64_t)status
 {
   v5 = self->_callbackHandlers;
   objc_sync_enter(v5);
@@ -2271,8 +2271,8 @@ LABEL_8:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMutableDictionary *)self->_callbackHandlers allValues];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_callbackHandlers allValues];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2284,15 +2284,15 @@ LABEL_8:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) readerModeCardIngestionStatus:a3];
+        [*(*(&v11 + 1) + 8 * v10) readerModeCardIngestionStatus:status];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -2301,14 +2301,14 @@ LABEL_8:
   objc_sync_exit(v5);
 }
 
-- (void)handleAppletStateChange:(id)a3
+- (void)handleAppletStateChange:(id)change
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  changeCopy = change;
+  v6 = changeCopy;
+  if (changeCopy)
   {
     v39 = @"appletChanged";
-    v40 = v5;
+    v40 = changeCopy;
     v7 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -2363,8 +2363,8 @@ LABEL_8:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [(NSMutableDictionary *)self->_callbackHandlers allValues];
-    v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    allValues = [(NSMutableDictionary *)self->_callbackHandlers allValues];
+    v18 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v18)
     {
       v19 = v18;
@@ -2375,13 +2375,13 @@ LABEL_8:
         {
           if (*v25 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v24 + 1) + 8 * i) appletStateChange:v6];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v19 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v19);
@@ -2391,17 +2391,17 @@ LABEL_8:
   }
 }
 
-- (void)handleAppletsDeleted:(id)a3
+- (void)handleAppletsDeleted:(id)deleted
 {
-  v5 = a3;
-  if ([v5 count])
+  deletedCopy = deleted;
+  if ([deletedCopy count])
   {
     v6 = objc_opt_new();
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v7 = v5;
+    v7 = deletedCopy;
     v8 = [v7 countByEnumeratingWithState:&v35 objects:v52 count:16];
     if (v8)
     {
@@ -2483,8 +2483,8 @@ LABEL_8:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v24 = [(NSMutableDictionary *)self->_callbackHandlers allValues];
-    v25 = [v24 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    allValues = [(NSMutableDictionary *)self->_callbackHandlers allValues];
+    v25 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v25)
     {
       v26 = v25;
@@ -2495,13 +2495,13 @@ LABEL_8:
         {
           if (*v32 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v31 + 1) + 8 * j) appletsDeleted:v7];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v26 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v26);

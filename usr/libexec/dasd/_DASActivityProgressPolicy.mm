@@ -1,8 +1,8 @@
 @interface _DASActivityProgressPolicy
 + (id)policyInstance;
-- (BOOL)doSiblingTrackersOfActivity:(id)a3 satisfyMinimumHealth:(int64_t)a4;
+- (BOOL)doSiblingTrackersOfActivity:(id)activity satisfyMinimumHealth:(int64_t)health;
 - (_DASActivityProgressPolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASActivityProgressPolicy
@@ -38,13 +38,13 @@
   return v2;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
-  v6 = [(_DASProgressReportingMonitor *)self->_progressReportingMonitor trackerForActivity:v5];
+  activityCopy = activity;
+  v6 = [(_DASProgressReportingMonitor *)self->_progressReportingMonitor trackerForActivity:activityCopy];
   v7 = [_DASPolicyResponseRationale alloc];
-  v8 = [(_DASActivityProgressPolicy *)self policyName];
-  v9 = [(_DASPolicyResponseRationale *)v7 initWithPolicyName:v8];
+  policyName = [(_DASActivityProgressPolicy *)self policyName];
+  v9 = [(_DASPolicyResponseRationale *)v7 initWithPolicyName:policyName];
 
   if (!v6)
   {
@@ -61,7 +61,7 @@
     goto LABEL_8;
   }
 
-  if ([(_DASActivityProgressPolicy *)self doSiblingTrackersOfActivity:v5 satisfyMinimumHealth:1])
+  if ([(_DASActivityProgressPolicy *)self doSiblingTrackersOfActivity:activityCopy satisfyMinimumHealth:1])
   {
     [NSPredicate predicateWithFormat:@"tracker.siblingTrackers.health >= %@", &off_1001C9AD8];
     v10 = LABEL_6:;
@@ -81,13 +81,13 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)doSiblingTrackersOfActivity:(id)a3 satisfyMinimumHealth:(int64_t)a4
+- (BOOL)doSiblingTrackersOfActivity:(id)activity satisfyMinimumHealth:(int64_t)health
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  activityCopy = activity;
+  v7 = activityCopy;
+  if (activityCopy)
   {
-    v8 = -[_DASProgressReportingMonitor trackersForPID:](self->_progressReportingMonitor, "trackersForPID:", [v6 pid]);
+    v8 = -[_DASProgressReportingMonitor trackersForPID:](self->_progressReportingMonitor, "trackersForPID:", [activityCopy pid]);
     v9 = [(_DASProgressReportingMonitor *)self->_progressReportingMonitor trackerForActivity:v7];
     if (v8 && [v8 count])
     {
@@ -111,7 +111,7 @@ LABEL_9:
             }
 
             v15 = *(*(&v19 + 1) + 8 * i);
-            if (v15 != v9 && -[_DASActivityProgressPolicy isHealthState:atLeastAsHealthyAs:](self, "isHealthState:atLeastAsHealthyAs:", [*(*(&v19 + 1) + 8 * i) health], a4))
+            if (v15 != v9 && -[_DASActivityProgressPolicy isHealthState:atLeastAsHealthyAs:](self, "isHealthState:atLeastAsHealthyAs:", [*(*(&v19 + 1) + 8 * i) health], health))
             {
               log = self->_log;
               if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))

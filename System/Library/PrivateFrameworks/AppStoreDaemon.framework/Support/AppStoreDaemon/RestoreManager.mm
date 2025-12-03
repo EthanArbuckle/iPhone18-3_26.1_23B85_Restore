@@ -1,9 +1,9 @@
 @interface RestoreManager
 - (RestoreManager)init;
-- (void)_bootstrapWhenReadyWithInfo:(id)a3;
-- (void)_handleMonitorStateDidChangeNotification:(id)a3;
-- (void)_restoreCellularAccessChangedNotification:(id)a3;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
+- (void)_bootstrapWhenReadyWithInfo:(id)info;
+- (void)_handleMonitorStateDidChangeNotification:(id)notification;
+- (void)_restoreCellularAccessChangedNotification:(id)notification;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation RestoreManager
@@ -32,7 +32,7 @@
     v9 = v2;
     v20 = v9;
     dispatch_async(v8, block);
-    v10 = [kMBManagerRestoreStateChangedNotification UTF8String];
+    uTF8String = [kMBManagerRestoreStateChangedNotification UTF8String];
     v11 = v2->_dispatchQueue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
@@ -40,7 +40,7 @@
     handler[3] = &unk_10051FB68;
     v12 = v9;
     v18 = v12;
-    notify_register_dispatch(v10, v9 + 10, v11, handler);
+    notify_register_dispatch(uTF8String, v9 + 10, v11, handler);
     v13 = v2->_dispatchQueue;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -53,9 +53,9 @@
   return v2;
 }
 
-- (void)_bootstrapWhenReadyWithInfo:(id)a3
+- (void)_bootstrapWhenReadyWithInfo:(id)info
 {
-  selfa = a3;
+  selfa = info;
   v4 = sub_100006B78();
   v5 = sub_10028D40C(self);
   if (sub_10023D5E0(v4))
@@ -70,8 +70,8 @@
         if (selfa && (selfa[8] & 1) != 0)
         {
           v8 = +[BagService appstoredService];
-          v9 = [v8 lastBag];
-          v10 = [v9 BOOLForKey:@"preflightAccountsOnStartup" defaultValue:1];
+          lastBag = [v8 lastBag];
+          v10 = [lastBag BOOLForKey:@"preflightAccountsOnStartup" defaultValue:1];
 
           if (v10)
           {
@@ -212,7 +212,7 @@ LABEL_42:
     *&v61[4] = 1024;
     *&v61[6] = v19;
     v62 = 1024;
-    v63 = [v20 isConnected];
+    isConnected = [v20 isConnected];
     v64 = 1024;
     v65 = v5;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Not ready to bootstrap restore for reason: %{public}@. Setup complete: %d migrator complete: %d network available: %d bag loaded: %d", buf, 0x24u);
@@ -261,7 +261,7 @@ LABEL_42:
     *&v61[4] = 1024;
     *&v61[6] = v27;
     v62 = 1024;
-    v63 = v5;
+    isConnected = v5;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Creating network monitor to bootstrap restore for reason: %{public}@. Setup complete: %d migrator complete: %d bag loaded: %d", buf, 0x1Eu);
   }
 
@@ -299,7 +299,7 @@ LABEL_26:
       *&v61[4] = 1024;
       *&v61[6] = v34;
       v62 = 1024;
-      v63 = v5;
+      isConnected = v5;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Creating device monitor to bootstrap restore for reason: %{public}@. Setup complete: %d migrator complete: %d bag loaded: %d", buf, 0x1Eu);
     }
 
@@ -337,7 +337,7 @@ LABEL_26:
       *&v61[4] = 1024;
       *&v61[6] = v41;
       v62 = 1024;
-      v63 = 0;
+      isConnected = 0;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Creating bag monitor to bootstrap restore for reason: %{public}@. Setup complete: %d migrator complete: %d bag loaded: %d", buf, 0x1Eu);
     }
 
@@ -354,7 +354,7 @@ LABEL_26:
 LABEL_43:
 }
 
-- (void)_handleMonitorStateDidChangeNotification:(id)a3
+- (void)_handleMonitorStateDidChangeNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -365,7 +365,7 @@ LABEL_43:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_restoreCellularAccessChangedNotification:(id)a3
+- (void)_restoreCellularAccessChangedNotification:(id)notification
 {
   v4 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -383,28 +383,28 @@ LABEL_43:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting dialog task", buf, 0xCu);
   }
 
-  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v8];
-  v11 = [v10 present];
+  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
+  present = [v10 present];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100293054;
   v13[3] = &unk_10051E068;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [present addFinishBlock:v13];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface ClimateAppViewController
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (_TtC7Climate24ClimateAppViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (_TtC7Climate24ClimateAppViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)appMovedToForeground;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)loadView;
 - (void)settingsButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ClimateAppViewController
 
 - (void)settingsButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100084144();
 }
 
 - (void)appMovedToForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_100084744();
 }
 
-- (_TtC7Climate24ClimateAppViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Climate24ClimateAppViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -34,7 +34,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100084C44();
 }
 
@@ -48,42 +48,42 @@
   sub_10005D938();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ClimateAppViewController();
   v4 = v7.receiver;
-  [(ClimateAppViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(ClimateAppViewController *)&v7 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    [v5 setNavigationBarHidden:1];
+    v6 = navigationController;
+    [navigationController setNavigationBarHidden:1];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100087E14(a3);
+  selfCopy = self;
+  sub_100087E14(appear);
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100087FA8(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = sub_100087FA8(contextCopy);
 
   return self & 1;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000884A8(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_1000884A8(contextCopy, coordinatorCopy);
 }
 
 - (void)loadView
@@ -93,10 +93,10 @@
   swift_unknownObjectWeakInit();
   v7.receiver = v4;
   v7.super_class = v3;
-  v5 = self;
+  selfCopy = self;
   v6 = [(ClimateAppViewController *)&v7 initWithFrame:0.0, 0.0, 0.0, 0.0];
   swift_unknownObjectWeakAssign();
-  [(ClimateAppViewController *)v5 setView:v6, v7.receiver, v7.super_class];
+  [(ClimateAppViewController *)selfCopy setView:v6, v7.receiver, v7.super_class];
 }
 
 @end

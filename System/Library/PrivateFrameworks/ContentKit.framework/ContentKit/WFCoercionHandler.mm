@@ -1,26 +1,26 @@
 @interface WFCoercionHandler
-+ (id)asynchronousBlock:(id)a3 availabilityCheck:(id)a4;
-+ (id)block:(id)a3 availabilityCheck:(id)a4;
-+ (id)keyPath:(id)a3 availabilityCheck:(id)a4;
-+ (id)keyPath:(id)a3 unavailableIfNilOrEmpty:(BOOL)a4;
-- (BOOL)coercionIsAvailableForItem:(id)a3;
-- (WFCoercionHandler)initWithBlock:(id)a3 asynchronousBlock:(id)a4 keyPath:(id)a5 availabilityCheck:(id)a6;
-- (id)performSynchronousCoercionWithContentItem:(id)a3 forType:(id)a4 options:(id)a5 error:(id *)a6;
-- (void)performAsynchronousCoercionWithContentItem:(id)a3 forType:(id)a4 options:(id)a5 completionHandler:(id)a6;
++ (id)asynchronousBlock:(id)block availabilityCheck:(id)check;
++ (id)block:(id)block availabilityCheck:(id)check;
++ (id)keyPath:(id)path availabilityCheck:(id)check;
++ (id)keyPath:(id)path unavailableIfNilOrEmpty:(BOOL)empty;
+- (BOOL)coercionIsAvailableForItem:(id)item;
+- (WFCoercionHandler)initWithBlock:(id)block asynchronousBlock:(id)asynchronousBlock keyPath:(id)path availabilityCheck:(id)check;
+- (id)performSynchronousCoercionWithContentItem:(id)item forType:(id)type options:(id)options error:(id *)error;
+- (void)performAsynchronousCoercionWithContentItem:(id)item forType:(id)type options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation WFCoercionHandler
 
-- (void)performAsynchronousCoercionWithContentItem:(id)a3 forType:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)performAsynchronousCoercionWithContentItem:(id)item forType:(id)type options:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  itemCopy = item;
+  typeCopy = type;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v14 = handlerCopy;
   if (self->_asynchronousBlock)
   {
-    v15 = [[WFCoercionContext alloc] initWithRequestedType:v11 options:v12];
+    v15 = [[WFCoercionContext alloc] initWithRequestedType:typeCopy options:optionsCopy];
     asynchronousBlock = self->_asynchronousBlock;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -30,12 +30,12 @@
     v21 = v14;
     v17 = asynchronousBlock[2];
     v18 = v15;
-    v17(asynchronousBlock, v10, v18, v19);
+    v17(asynchronousBlock, itemCopy, v18, v19);
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -52,20 +52,20 @@ void __98__WFCoercionHandler_performAsynchronousCoercionWithContentItem_forType_
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)performSynchronousCoercionWithContentItem:(id)a3 forType:(id)a4 options:(id)a5 error:(id *)a6
+- (id)performSynchronousCoercionWithContentItem:(id)item forType:(id)type options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  typeCopy = type;
+  optionsCopy = options;
   if (self->_block)
   {
-    v12 = [[WFCoercionContext alloc] initWithRequestedType:v10 options:v11];
+    v12 = [[WFCoercionContext alloc] initWithRequestedType:typeCopy options:optionsCopy];
     v13 = (*(self->_block + 2))();
   }
 
   else if (self->_keyPath)
   {
-    v13 = [v9 valueForKeyPath:?];
+    v13 = [itemCopy valueForKeyPath:?];
   }
 
   else
@@ -78,12 +78,12 @@ void __98__WFCoercionHandler_performAsynchronousCoercionWithContentItem_forType_
   return v14;
 }
 
-- (BOOL)coercionIsAvailableForItem:(id)a3
+- (BOOL)coercionIsAvailableForItem:(id)item
 {
   availabilityCheck = self->_availabilityCheck;
   if (availabilityCheck)
   {
-    return availabilityCheck[2](availabilityCheck, a3);
+    return availabilityCheck[2](availabilityCheck, item);
   }
 
   else
@@ -92,16 +92,16 @@ void __98__WFCoercionHandler_performAsynchronousCoercionWithContentItem_forType_
   }
 }
 
-- (WFCoercionHandler)initWithBlock:(id)a3 asynchronousBlock:(id)a4 keyPath:(id)a5 availabilityCheck:(id)a6
+- (WFCoercionHandler)initWithBlock:(id)block asynchronousBlock:(id)asynchronousBlock keyPath:(id)path availabilityCheck:(id)check
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11 && !v12 && !v13)
+  blockCopy = block;
+  asynchronousBlockCopy = asynchronousBlock;
+  pathCopy = path;
+  checkCopy = check;
+  if (!blockCopy && !asynchronousBlockCopy && !pathCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFCoercion.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"block || asynchronousBlock || keyPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoercion.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"block || asynchronousBlock || keyPath"}];
   }
 
   v27.receiver = self;
@@ -109,19 +109,19 @@ void __98__WFCoercionHandler_performAsynchronousCoercionWithContentItem_forType_
   v15 = [(WFCoercionHandler *)&v27 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [blockCopy copy];
     block = v15->_block;
     v15->_block = v16;
 
-    v18 = [v12 copy];
+    v18 = [asynchronousBlockCopy copy];
     asynchronousBlock = v15->_asynchronousBlock;
     v15->_asynchronousBlock = v18;
 
-    v20 = [v13 copy];
+    v20 = [pathCopy copy];
     keyPath = v15->_keyPath;
     v15->_keyPath = v20;
 
-    v22 = [v14 copy];
+    v22 = [checkCopy copy];
     availabilityCheck = v15->_availabilityCheck;
     v15->_availabilityCheck = v22;
 
@@ -131,18 +131,18 @@ void __98__WFCoercionHandler_performAsynchronousCoercionWithContentItem_forType_
   return v15;
 }
 
-+ (id)keyPath:(id)a3 unavailableIfNilOrEmpty:(BOOL)a4
++ (id)keyPath:(id)path unavailableIfNilOrEmpty:(BOOL)empty
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  emptyCopy = empty;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (emptyCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __53__WFCoercionHandler_keyPath_unavailableIfNilOrEmpty___block_invoke;
     aBlock[3] = &unk_27834A5F0;
-    v12 = v6;
+    v12 = pathCopy;
     v8 = _Block_copy(aBlock);
   }
 
@@ -151,7 +151,7 @@ void __98__WFCoercionHandler_performAsynchronousCoercionWithContentItem_forType_
     v8 = 0;
   }
 
-  v9 = [a1 keyPath:v7 availabilityCheck:v8];
+  v9 = [self keyPath:v7 availabilityCheck:v8];
 
   return v9;
 }
@@ -175,29 +175,29 @@ uint64_t __53__WFCoercionHandler_keyPath_unavailableIfNilOrEmpty___block_invoke(
   return v4;
 }
 
-+ (id)keyPath:(id)a3 availabilityCheck:(id)a4
++ (id)keyPath:(id)path availabilityCheck:(id)check
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithBlock:0 asynchronousBlock:0 keyPath:v7 availabilityCheck:v6];
+  checkCopy = check;
+  pathCopy = path;
+  v8 = [[self alloc] initWithBlock:0 asynchronousBlock:0 keyPath:pathCopy availabilityCheck:checkCopy];
 
   return v8;
 }
 
-+ (id)asynchronousBlock:(id)a3 availabilityCheck:(id)a4
++ (id)asynchronousBlock:(id)block availabilityCheck:(id)check
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithBlock:0 asynchronousBlock:v7 keyPath:0 availabilityCheck:v6];
+  checkCopy = check;
+  blockCopy = block;
+  v8 = [[self alloc] initWithBlock:0 asynchronousBlock:blockCopy keyPath:0 availabilityCheck:checkCopy];
 
   return v8;
 }
 
-+ (id)block:(id)a3 availabilityCheck:(id)a4
++ (id)block:(id)block availabilityCheck:(id)check
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithBlock:v7 asynchronousBlock:0 keyPath:0 availabilityCheck:v6];
+  checkCopy = check;
+  blockCopy = block;
+  v8 = [[self alloc] initWithBlock:blockCopy asynchronousBlock:0 keyPath:0 availabilityCheck:checkCopy];
 
   return v8;
 }

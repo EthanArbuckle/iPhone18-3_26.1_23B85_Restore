@@ -1,6 +1,6 @@
 @interface FMAccessoryPairingConfirmationCard
-- (_TtC6FindMy34FMAccessoryPairingConfirmationCard)initWithContentView:(id)a3;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (_TtC6FindMy34FMAccessoryPairingConfirmationCard)initWithContentView:(id)view;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -31,20 +31,20 @@
   [(FMAccessoryPairingConfirmationCard *)&v2 viewDidLayoutSubviews];
 }
 
-- (_TtC6FindMy34FMAccessoryPairingConfirmationCard)initWithContentView:(id)a3
+- (_TtC6FindMy34FMAccessoryPairingConfirmationCard)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
   type metadata accessor for FMDiscoveredAccessoryAnnotation();
   if (swift_dynamicCastClass())
   {
     v6 = qword_1006AEB10;
-    v7 = a3;
+    viewCopy = view;
     swift_unknownObjectRetain();
     if (v6 != -1)
     {
@@ -52,7 +52,7 @@
     }
 
     v8 = String._bridgeToObjectiveC()();
-    v9 = [v7 dequeueReusableAnnotationViewWithIdentifier:v8 forAnnotation:a4];
+    v9 = [viewCopy dequeueReusableAnnotationViewWithIdentifier:v8 forAnnotation:annotation];
 
     swift_unknownObjectRelease();
   }

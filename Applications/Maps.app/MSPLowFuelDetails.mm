@@ -1,14 +1,14 @@
 @interface MSPLowFuelDetails
-- (id)_lowFuelImageDataForEngineType:(int)a3 isCarPlay:(BOOL)a4;
-- (id)initWithMapsSuggestionsEntry:(id)a3;
+- (id)_lowFuelImageDataForEngineType:(int)type isCarPlay:(BOOL)play;
+- (id)initWithMapsSuggestionsEntry:(id)entry;
 @end
 
 @implementation MSPLowFuelDetails
 
-- (id)_lowFuelImageDataForEngineType:(int)a3 isCarPlay:(BOOL)a4
+- (id)_lowFuelImageDataForEngineType:(int)type isCarPlay:(BOOL)play
 {
-  v4 = a4;
-  if (a3 == 1 || ((a3 >> 1) & 1) + (a3 & 1) + ((a3 >> 2) & 1) + ((a3 >> 3) & 1) >= 2)
+  playCopy = play;
+  if (type == 1 || ((type >> 1) & 1) + (type & 1) + ((type >> 2) & 1) + ((type >> 3) & 1) >= 2)
   {
     v5 = +[GEOFeatureStyleAttributes gasStationStyleAttributes];
   }
@@ -19,11 +19,11 @@
   }
 
   v6 = v5;
-  if (v4)
+  if (playCopy)
   {
     v7 = +[CarDisplayController sharedInstance];
-    v8 = [v7 screenTraitCollection];
-    [v8 displayScale];
+    screenTraitCollection = [v7 screenTraitCollection];
+    [screenTraitCollection displayScale];
     v10 = v9;
 
     v11 = 5;
@@ -37,9 +37,9 @@
     v11 = 2;
   }
 
-  v13 = [MKIconManager imageForStyle:v6 size:v11 forScale:1 format:0 transparent:0 transitMode:v4 isCarplay:v10];
+  v13 = [MKIconManager imageForStyle:v6 size:v11 forScale:1 format:0 transparent:0 transitMode:playCopy isCarplay:v10];
   v14 = v13;
-  if (v4)
+  if (playCopy)
   {
     v15 = UIImagePNGRepresentation(v13);
   }
@@ -59,19 +59,19 @@
   return v15;
 }
 
-- (id)initWithMapsSuggestionsEntry:(id)a3
+- (id)initWithMapsSuggestionsEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 stringForKey:@"MapsSuggestionsCarPlayEnergyBulletinTitle"];
-  v6 = [v4 stringForKey:@"MapsSuggestionsCarPlayEnergyBulletinSubtitle"];
-  v7 = [v4 numberForKey:@"MapsSuggestionsCarPlayEnergyBulletinEngineType"];
+  entryCopy = entry;
+  v5 = [entryCopy stringForKey:@"MapsSuggestionsCarPlayEnergyBulletinTitle"];
+  v6 = [entryCopy stringForKey:@"MapsSuggestionsCarPlayEnergyBulletinSubtitle"];
+  v7 = [entryCopy numberForKey:@"MapsSuggestionsCarPlayEnergyBulletinEngineType"];
   v8 = [(MSPLowFuelDetails *)self initWithTitle:v5 subtitle:v6 engineType:v7];
 
-  v9 = -[MSPLowFuelDetails _lowFuelImageDataForEngineType:isCarPlay:](v8, "_lowFuelImageDataForEngineType:isCarPlay:", [v4 engineType], 0);
+  v9 = -[MSPLowFuelDetails _lowFuelImageDataForEngineType:isCarPlay:](v8, "_lowFuelImageDataForEngineType:isCarPlay:", [entryCopy engineType], 0);
   [(MSPLowFuelDetails *)v8 setIconData:v9];
 
-  v10 = [v4 engineType];
-  v11 = [(MSPLowFuelDetails *)v8 _lowFuelImageDataForEngineType:v10 isCarPlay:1];
+  engineType = [entryCopy engineType];
+  v11 = [(MSPLowFuelDetails *)v8 _lowFuelImageDataForEngineType:engineType isCarPlay:1];
   [(MSPLowFuelDetails *)v8 setIconDataCarPlay:v11];
 
   return v8;

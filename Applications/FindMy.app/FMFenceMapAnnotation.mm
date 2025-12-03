@@ -6,29 +6,29 @@
 - (double)defaultRadius;
 - (double)defaultRegionDimension;
 - (void)coordinateUpdated;
-- (void)setCustomRadius:(double)a3;
-- (void)setOverlay:(id)a3;
+- (void)setCustomRadius:(double)radius;
+- (void)setOverlay:(id)overlay;
 @end
 
 @implementation FMFenceMapAnnotation
 
-- (void)setOverlay:(id)a3
+- (void)setOverlay:(id)overlay
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_overlay);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_overlay) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_overlay) = overlay;
+  overlayCopy = overlay;
 }
 
-- (void)setCustomRadius:(double)a3
+- (void)setCustomRadius:(double)radius
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_customRadius) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_customRadius) = radius;
+  selfCopy = self;
   sub_100486AA8();
 }
 
 - (NSString)displayAddress
 {
-  v2 = self;
+  selfCopy = self;
   sub_100486C44();
   v4 = v3;
 
@@ -47,16 +47,16 @@
 
 - ($36C413FA9838AAAFE3D584146D9E00E7)region
 {
-  v3 = self;
-  [(FMFenceMapAnnotation *)v3 coordinate];
-  MKCoordinateRegionMakeWithDistance(v5, *(&v3->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_customRadius) * 3.5, *(&v3->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_customRadius) * 3.5);
+  selfCopy = self;
+  [(FMFenceMapAnnotation *)selfCopy coordinate];
+  MKCoordinateRegionMakeWithDistance(v5, *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_customRadius) * 3.5, *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC6FindMy20FMFenceMapAnnotation_customRadius) * 3.5);
 
   return result;
 }
 
 - (double)defaultRegionDimension
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100486F38();
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (double)defaultRadius
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100487474();
 
   return v3;
@@ -86,7 +86,7 @@
 
 - (void)coordinateUpdated
 {
-  v2 = self;
+  selfCopy = self;
   sub_100487A68();
 }
 

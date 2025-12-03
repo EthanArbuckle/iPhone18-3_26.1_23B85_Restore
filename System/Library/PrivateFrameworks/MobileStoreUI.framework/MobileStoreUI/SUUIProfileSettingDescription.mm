@@ -1,5 +1,5 @@
 @interface SUUIProfileSettingDescription
-- (SUUIProfileSettingDescription)initWithViewElement:(id)a3 parent:(id)a4;
+- (SUUIProfileSettingDescription)initWithViewElement:(id)element parent:(id)parent;
 - (void)_fetchAccountInfo;
 - (void)_fetchProfilePhoto;
 - (void)dealloc;
@@ -8,11 +8,11 @@
 
 @implementation SUUIProfileSettingDescription
 
-- (SUUIProfileSettingDescription)initWithViewElement:(id)a3 parent:(id)a4
+- (SUUIProfileSettingDescription)initWithViewElement:(id)element parent:(id)parent
 {
   v8.receiver = self;
   v8.super_class = SUUIProfileSettingDescription;
-  v4 = [(SUUISettingDescription *)&v8 initWithViewElement:a3 parent:a4];
+  v4 = [(SUUISettingDescription *)&v8 initWithViewElement:element parent:parent];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCABD8]);
@@ -108,10 +108,10 @@ uint64_t __50__SUUIProfileSettingDescription__fetchAccountInfo__block_invoke_2(u
 
 - (void)_fetchProfilePhoto
 {
-  v3 = [(SUUISettingDescription *)self parent];
-  v4 = [v3 clientContext];
+  parent = [(SUUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
 
-  v5 = [[SUUIMediaSocialLoadProfilePhotoOperation alloc] initWithClientContext:v4];
+  v5 = [[SUUIMediaSocialLoadProfilePhotoOperation alloc] initWithClientContext:clientContext];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;

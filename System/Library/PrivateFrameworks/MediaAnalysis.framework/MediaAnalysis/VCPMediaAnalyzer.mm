@@ -1,71 +1,71 @@
 @interface VCPMediaAnalyzer
 + (BOOL)isBridgeVersionCompatible;
 + (Class)_getDistanceDescriptorClass;
-+ (id)classifyFaceObservation:(id)a3 withPersonsModel:(id)a4 error:(id *)a5;
-+ (id)loadPersonModelAtPath:(id)a3 error:(id *)a4;
-+ (id)personModelFilepathForPhotoLibrary:(id)a3;
++ (id)classifyFaceObservation:(id)observation withPersonsModel:(id)model error:(id *)error;
++ (id)loadPersonModelAtPath:(id)path error:(id *)error;
++ (id)personModelFilepathForPhotoLibrary:(id)library;
 + (id)sharedMediaAnalyzer;
-+ (unint64_t)faceprintRevisionForPersonModel:(id)a3;
-+ (void)getEmbeddingFormatForVersion:(unint64_t)a3 dimension:(int *)a4 type:(unint64_t *)a5 error:(id *)a6;
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)postProcessMovieHighlightDuration:(SEL)a3 withOptions:(id)a4;
-- (BOOL)cancelAnalysisWithRequestID:(int)a3;
++ (unint64_t)faceprintRevisionForPersonModel:(id)model;
++ (void)getEmbeddingFormatForVersion:(unint64_t)version dimension:(int *)dimension type:(unint64_t *)type error:(id *)error;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)postProcessMovieHighlightDuration:(SEL)duration withOptions:(id)options;
+- (BOOL)cancelAnalysisWithRequestID:(int)d;
 - (VCPMediaAnalyzer)init;
-- (id)_addClassificationResults:(id)a3 analysis:(id)a4;
-- (id)_analyzeOndemand:(id)a3 forAnalysisTypes:(unint64_t)a4 withExistingAnalysis:(id)a5 andOptions:(id)a6 storeAnalysis:(BOOL)a7 cancelBlock:(id)a8;
-- (id)_databaseForPhotoLibrary:(id)a3;
-- (id)_postProcessMovieHighlights:(id)a3 analysis:(id)a4 withOptions:(id)a5;
-- (id)_queryDistanceDescriptor:(Class)a3 ofAsset:(id)a4 withExistingAnalysis:(id)a5 andDatabase:(id)a6 timeRange:(id *)a7 lastFeature:(BOOL)a8 isDegraded:(BOOL *)a9;
-- (id)_requestAnalysis:(unint64_t)a3 forAsset:(id)a4 withExistingAnalysis:(id)a5 andDatabase:(id)a6 andOptions:(id)a7 cancelBlock:(id)a8;
-- (id)analyzeOndemand:(id)a3 pairedURL:(id)a4 forAnalysisTypes:(unint64_t)a5 error:(id *)a6;
+- (id)_addClassificationResults:(id)results analysis:(id)analysis;
+- (id)_analyzeOndemand:(id)ondemand forAnalysisTypes:(unint64_t)types withExistingAnalysis:(id)analysis andOptions:(id)options storeAnalysis:(BOOL)storeAnalysis cancelBlock:(id)block;
+- (id)_databaseForPhotoLibrary:(id)library;
+- (id)_postProcessMovieHighlights:(id)highlights analysis:(id)analysis withOptions:(id)options;
+- (id)_queryDistanceDescriptor:(Class)descriptor ofAsset:(id)asset withExistingAnalysis:(id)analysis andDatabase:(id)database timeRange:(id *)range lastFeature:(BOOL)feature isDegraded:(BOOL *)degraded;
+- (id)_requestAnalysis:(unint64_t)analysis forAsset:(id)asset withExistingAnalysis:(id)existingAnalysis andDatabase:(id)database andOptions:(id)options cancelBlock:(id)block;
+- (id)analyzeOndemand:(id)ondemand pairedURL:(id)l forAnalysisTypes:(unint64_t)types error:(id *)error;
 - (id)connection;
-- (id)curateMovieAssetsForCollection:(id)a3 withAlreadyCuratedAssets:(id)a4 andDesiredCount:(unint64_t)a5 allowOnDemand:(BOOL)a6;
-- (id)findTimeRangesFor:(id)a3 inAsset:(id)a4 withOptions:(id)a5 results:(id)a6 andError:(id *)a7;
-- (id)getAnalysisResultsForURLAsset:(id)a3;
-- (id)getFaceIDRanges:(id)a3 asset:(id)a4;
-- (id)getOverlapPersonRanges:(id)a3;
-- (id)getThumbnailTimerange:(id)a3;
-- (id)getTimeRangesForActionIDs:(id)a3 withResults:(id)a4;
-- (id)getTimeRangesForSceneIdentifiers:(id)a3 withResults:(id)a4;
-- (id)getTimeRangesForSoundIdentifiers:(id)a3 withResults:(id)a4;
-- (id)getTimeRangesForThumbnailIdentifiers:(id)a3 withResults:(id)a4;
-- (id)getTimeRangesInAsset:(id)a3 forAnimals:(id)a4 withAnalysis:(id)a5;
-- (id)getTimeRangesInAsset:(id)a3 forFaces:(id)a4 withAnalysis:(id)a5;
-- (id)getTimeRangesInAsset:(id)a3 forPersonLocalIdentifiers:(id)a4 withAnalysis:(id)a5;
-- (id)getTimeRangesWithSearchResults:(id)a3;
-- (id)loadAssetsFromPhotoLibrary:(id)a3 withAssetIdentifiers:(id)a4;
-- (id)loadEmbeddingSearchResultWithContext:(id)a3 forPhotoLibraryURL:(id)a4 fromAssets:(id)a5 withOptions:(id)a6;
-- (id)loadVideoAssetsFromPhotoLibraryURL:(id)a3 withAssetIdentifiers:(id)a4;
-- (id)mergeTimeRanges:(id)a3 mergeGap:(id)a4;
-- (id)postProcessTimeRanges:(id)a3 options:(id)a4;
-- (id)prepareContextsQueryEmbedding:(id)a3;
-- (id)rankAssetsWithContext:(id)a3 forAssetIdentifiers:(id)a4 forPhotoLibraryURL:(id)a5 withOptions:(id)a6 error:(id *)a7;
-- (id)requestAnalysis:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andError:(id *)a7;
-- (id)requestAnalysisTypes:(unint64_t)a3 forAssetWithResourceURLs:(id)a4 withOptions:(id)a5 error:(id *)a6;
-- (id)requestAnalysisTypes:(unint64_t)a3 forAssets:(id)a4 allowOndemand:(BOOL)a5 progressHandler:(id)a6 error:(id *)a7;
-- (id)requestLivePhotoEffectsForAssets:(id)a3 allowOnDemand:(BOOL)a4 flags:(unint64_t)a5;
-- (id)requestMovieHighlightsForAssets:(id)a3 withOptions:(id)a4;
-- (id)requestSearchResultsForAssets:(id)a3 forPhotoLibraryURL:(id)a4 withQueryEmbeddings:(id)a5 matchingScoreOnly:(BOOL)a6 options:(id)a7;
-- (id)requestSearchResultsForAssets:(id)a3 forPhotoLibraryURL:(id)a4 withQueryEmbeddings:(id)a5 options:(id)a6;
-- (id)searchForQuery:(id)a3 forAssets:(id)a4 withOptions:(id)a5 matchingScoreOnly:(BOOL)a6 isURLAsset:(BOOL)a7 analyses:(id)a8;
-- (int)findTimeRangesFor:(id)a3 inAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)findTimeRangesFor:(id)a3 inURLAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)findTimeRangesWithContext:(id)a3 inAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)findTimeRangesWithContext:(id)a3 inURLAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestAnalysesForAssets:(id)a3 analysisTypes:(unint64_t)a4 allowOndemand:(BOOL)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (int)requestAnalysis:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestAnalysisForAsset:(id)a3 analysisTypes:(unint64_t)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestAnalysisTypes:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 cancelBlock:(id)a7 analyses:(id)a8;
-- (int64_t)_getDatabaseSandboxExtensionForPhotoLibraryURL:(id)a3;
-- (int64_t)_getSandboxExtensionForMediaAnalysisDatabaseWithPhotoLibraryURL:(id)a3;
-- (unint64_t)_typesToRemove:(unint64_t)a3 requested:(unint64_t)a4;
-- (void)_checkDuplicate:(id)a3 withAsset:(id)a4 duplicate:(int64_t *)a5;
-- (void)_getSceneDescriptors:(id)a3 asDescriptorClass:(Class)a4 withSceneRange:(id *)a5 andAnalysisResults:(id)a6;
+- (id)curateMovieAssetsForCollection:(id)collection withAlreadyCuratedAssets:(id)assets andDesiredCount:(unint64_t)count allowOnDemand:(BOOL)demand;
+- (id)findTimeRangesFor:(id)for inAsset:(id)asset withOptions:(id)options results:(id)results andError:(id *)error;
+- (id)getAnalysisResultsForURLAsset:(id)asset;
+- (id)getFaceIDRanges:(id)ranges asset:(id)asset;
+- (id)getOverlapPersonRanges:(id)ranges;
+- (id)getThumbnailTimerange:(id)timerange;
+- (id)getTimeRangesForActionIDs:(id)ds withResults:(id)results;
+- (id)getTimeRangesForSceneIdentifiers:(id)identifiers withResults:(id)results;
+- (id)getTimeRangesForSoundIdentifiers:(id)identifiers withResults:(id)results;
+- (id)getTimeRangesForThumbnailIdentifiers:(id)identifiers withResults:(id)results;
+- (id)getTimeRangesInAsset:(id)asset forAnimals:(id)animals withAnalysis:(id)analysis;
+- (id)getTimeRangesInAsset:(id)asset forFaces:(id)faces withAnalysis:(id)analysis;
+- (id)getTimeRangesInAsset:(id)asset forPersonLocalIdentifiers:(id)identifiers withAnalysis:(id)analysis;
+- (id)getTimeRangesWithSearchResults:(id)results;
+- (id)loadAssetsFromPhotoLibrary:(id)library withAssetIdentifiers:(id)identifiers;
+- (id)loadEmbeddingSearchResultWithContext:(id)context forPhotoLibraryURL:(id)l fromAssets:(id)assets withOptions:(id)options;
+- (id)loadVideoAssetsFromPhotoLibraryURL:(id)l withAssetIdentifiers:(id)identifiers;
+- (id)mergeTimeRanges:(id)ranges mergeGap:(id)gap;
+- (id)postProcessTimeRanges:(id)ranges options:(id)options;
+- (id)prepareContextsQueryEmbedding:(id)embedding;
+- (id)rankAssetsWithContext:(id)context forAssetIdentifiers:(id)identifiers forPhotoLibraryURL:(id)l withOptions:(id)options error:(id *)error;
+- (id)requestAnalysis:(unint64_t)analysis forAssets:(id)assets withOptions:(id)options andProgressHandler:(id)handler andError:(id *)error;
+- (id)requestAnalysisTypes:(unint64_t)types forAssetWithResourceURLs:(id)ls withOptions:(id)options error:(id *)error;
+- (id)requestAnalysisTypes:(unint64_t)types forAssets:(id)assets allowOndemand:(BOOL)ondemand progressHandler:(id)handler error:(id *)error;
+- (id)requestLivePhotoEffectsForAssets:(id)assets allowOnDemand:(BOOL)demand flags:(unint64_t)flags;
+- (id)requestMovieHighlightsForAssets:(id)assets withOptions:(id)options;
+- (id)requestSearchResultsForAssets:(id)assets forPhotoLibraryURL:(id)l withQueryEmbeddings:(id)embeddings matchingScoreOnly:(BOOL)only options:(id)options;
+- (id)requestSearchResultsForAssets:(id)assets forPhotoLibraryURL:(id)l withQueryEmbeddings:(id)embeddings options:(id)options;
+- (id)searchForQuery:(id)query forAssets:(id)assets withOptions:(id)options matchingScoreOnly:(BOOL)only isURLAsset:(BOOL)asset analyses:(id)analyses;
+- (int)findTimeRangesFor:(id)for inAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)findTimeRangesFor:(id)for inURLAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)findTimeRangesWithContext:(id)context inAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)findTimeRangesWithContext:(id)context inURLAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestAnalysesForAssets:(id)assets analysisTypes:(unint64_t)types allowOndemand:(BOOL)ondemand progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestAnalysis:(unint64_t)analysis forAssets:(id)assets withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestAnalysisForAsset:(id)asset analysisTypes:(unint64_t)types progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestAnalysisTypes:(unint64_t)types forAssets:(id)assets withOptions:(id)options andProgressHandler:(id)handler cancelBlock:(id)block analyses:(id)analyses;
+- (int64_t)_getDatabaseSandboxExtensionForPhotoLibraryURL:(id)l;
+- (int64_t)_getSandboxExtensionForMediaAnalysisDatabaseWithPhotoLibraryURL:(id)l;
+- (unint64_t)_typesToRemove:(unint64_t)remove requested:(unint64_t)requested;
+- (void)_checkDuplicate:(id)duplicate withAsset:(id)asset duplicate:(int64_t *)a5;
+- (void)_getSceneDescriptors:(id)descriptors asDescriptorClass:(Class)class withSceneRange:(id *)range andAnalysisResults:(id)results;
 - (void)_setupMediaAnalysisServiceConnection;
-- (void)addVideoRankingSignalsToDictionary:(id)a3 fromPhotoLibraryURL:(id)a4 amongAssets:(id)a5;
-- (void)assetsFromPhotoLibrary:(id)a3 analyzedSinceDate:(id)a4 completionHandler:(id)a5;
+- (void)addVideoRankingSignalsToDictionary:(id)dictionary fromPhotoLibraryURL:(id)l amongAssets:(id)assets;
+- (void)assetsFromPhotoLibrary:(id)library analyzedSinceDate:(id)date completionHandler:(id)handler;
 - (void)dealloc;
-- (void)distanceFromAsset:(id)a3 timeRange:(id *)a4 toAsset:(id)a5 timeRange:(id *)a6 duplicate:(int64_t *)a7 distance:(float *)a8;
-- (void)distanceFromAsset:(id)a3 toAsset:(id)a4 duplicate:(int64_t *)a5 distance:(float *)a6;
+- (void)distanceFromAsset:(id)asset timeRange:(id *)range toAsset:(id)toAsset timeRange:(id *)timeRange duplicate:(int64_t *)duplicate distance:(float *)distance;
+- (void)distanceFromAsset:(id)asset toAsset:(id)toAsset duplicate:(int64_t *)duplicate distance:(float *)distance;
 @end
 
 @implementation VCPMediaAnalyzer
@@ -109,18 +109,18 @@
     sandboxQueue = v2->_sandboxQueue;
     v2->_sandboxQueue = v15;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sandboxHandles = v2->_sandboxHandles;
-    v2->_sandboxHandles = v17;
+    v2->_sandboxHandles = dictionary;
 
     atomic_store(0, &v2->_nextRequestID);
     v19 = dispatch_queue_create("com.apple.mediaanalysis.VCPMediaAnalyzer.cancelQueue", 0);
     cancelQueue = v2->_cancelQueue;
     v2->_cancelQueue = v19;
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     cancelTokens = v2->_cancelTokens;
-    v2->_cancelTokens = v21;
+    v2->_cancelTokens = dictionary2;
 
     if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
     {
@@ -160,36 +160,36 @@ void __39__VCPMediaAnalyzer_sharedMediaAnalyzer__block_invoke()
 
 + (BOOL)isBridgeVersionCompatible
 {
-  v2 = [a1 getUnifiedEmbeddingVersion];
+  getUnifiedEmbeddingVersion = [self getUnifiedEmbeddingVersion];
   v3 = objc_alloc_init(_MADObjCModelCatalogModel);
-  LOBYTE(v2) = [VCPImageBackboneAnalyzer isBridgeVersion:[VCPVideoTransformerBackbone embeddingVersionForRevision:[(_MADObjCModelCatalogModel *)v3 getBridgeEmbeddingVersion]] compatibleWithEmbeddingVersion:v2];
+  LOBYTE(getUnifiedEmbeddingVersion) = [VCPImageBackboneAnalyzer isBridgeVersion:[VCPVideoTransformerBackbone embeddingVersionForRevision:[(_MADObjCModelCatalogModel *)v3 getBridgeEmbeddingVersion]] compatibleWithEmbeddingVersion:getUnifiedEmbeddingVersion];
 
-  return v2;
+  return getUnifiedEmbeddingVersion;
 }
 
-+ (void)getEmbeddingFormatForVersion:(unint64_t)a3 dimension:(int *)a4 type:(unint64_t *)a5 error:(id *)a6
++ (void)getEmbeddingFormatForVersion:(unint64_t)version dimension:(int *)dimension type:(unint64_t *)type error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 5)
+  if ((version & 0xFFFFFFFFFFFFFFFDLL) == 5)
   {
-    if (a4)
+    if (dimension)
     {
-      *a4 = 512;
+      *dimension = 512;
     }
 
-    if (a5)
+    if (type)
     {
-      *a5 = 1;
+      *type = 1;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v7 = MEMORY[0x1E696ABC0];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"version %d is not supported", a4, a5, a3, *MEMORY[0x1E696A578]];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"version %d is not supported", dimension, type, version, *MEMORY[0x1E696A578]];
     v11[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a6 = [v7 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v9];
+    *error = [v7 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v9];
   }
 }
 
@@ -200,8 +200,8 @@ void __39__VCPMediaAnalyzer_sharedMediaAnalyzer__block_invoke()
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_sandboxHandles allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_sandboxHandles allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -212,7 +212,7 @@ void __39__VCPMediaAnalyzer_sharedMediaAnalyzer__block_invoke()
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6) longLongValue];
@@ -221,7 +221,7 @@ void __39__VCPMediaAnalyzer_sharedMediaAnalyzer__block_invoke()
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -298,9 +298,9 @@ void __56__VCPMediaAnalyzer__setupMediaAnalysisServiceConnection__block_invoke_8
   *(v1 + 72) = 0;
 }
 
-- (int64_t)_getSandboxExtensionForMediaAnalysisDatabaseWithPhotoLibraryURL:(id)a3
+- (int64_t)_getSandboxExtensionForMediaAnalysisDatabaseWithPhotoLibraryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   [(VCPMediaAnalyzer *)self _setupMediaAnalysisServiceConnection];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
@@ -328,7 +328,7 @@ void __56__VCPMediaAnalyzer__setupMediaAnalysisServiceConnection__block_invoke_8
   v14 = buf;
   v9 = v7;
   v13 = v9;
-  [v8 requestMediaAnalysisDatabaseAccessSandboxExtensionWithPhotoLibraryURL:v4 andReply:v12];
+  [v8 requestMediaAnalysisDatabaseAccessSandboxExtensionWithPhotoLibraryURL:lCopy andReply:v12];
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = *(v18 + 3);
@@ -415,22 +415,22 @@ LABEL_9:
   return connection;
 }
 
-- (int64_t)_getDatabaseSandboxExtensionForPhotoLibraryURL:(id)a3
+- (int64_t)_getDatabaseSandboxExtensionForPhotoLibraryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = -1;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(VCPMediaAnalyzer *)self connection];
+  connection = [(VCPMediaAnalyzer *)self connection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__VCPMediaAnalyzer__getDatabaseSandboxExtensionForPhotoLibraryURL___block_invoke;
   v15[3] = &unk_1E834C9A0;
   v7 = v5;
   v16 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v15];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v15];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__VCPMediaAnalyzer__getDatabaseSandboxExtensionForPhotoLibraryURL___block_invoke_905;
@@ -438,7 +438,7 @@ LABEL_9:
   v14 = &v17;
   v9 = v7;
   v13 = v9;
-  [v8 registerClient:@"VCPMediaAnalyzer" forPhotoLibraryURL:v4 withReply:v12];
+  [v8 registerClient:@"VCPMediaAnalyzer" forPhotoLibraryURL:lCopy withReply:v12];
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v18[3];
@@ -500,17 +500,17 @@ LABEL_9:
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_databaseForPhotoLibrary:(id)a3
+- (id)_databaseForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   sandboxQueue = self->_sandboxQueue;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke;
   v12 = &unk_1E834D238;
-  v6 = v4;
+  v6 = libraryCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   dispatch_sync(sandboxQueue, &v9);
   v7 = [VCPClientDatabaseManager sharedDatabaseForPhotoLibrary:v6, v9, v10, v11, v12];
 
@@ -555,20 +555,20 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_addClassificationResults:(id)a3 analysis:(id)a4
+- (id)_addClassificationResults:(id)results analysis:(id)analysis
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v26 = a4;
-  if (v5 && ([v5 vcp_modificationDate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  resultsCopy = results;
+  analysisCopy = analysis;
+  if (resultsCopy && ([resultsCopy vcp_modificationDate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = [v5 sceneClassifications];
-    v9 = [v8 countByEnumeratingWithState:&v27 objects:v34 count:16];
+    sceneClassifications = [resultsCopy sceneClassifications];
+    v9 = [sceneClassifications countByEnumeratingWithState:&v27 objects:v34 count:16];
     if (v9)
     {
       v10 = *v28;
@@ -578,7 +578,7 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sceneClassifications);
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
@@ -589,40 +589,40 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
             [v12 confidence];
             v15 = [v14 numberWithDouble:?];
             v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v12, "extendedSceneIdentifier")}];
-            v17 = [v16 stringValue];
-            [v7 setObject:v15 forKey:v17];
+            stringValue = [v16 stringValue];
+            [dictionary setObject:v15 forKey:stringValue];
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v27 objects:v34 count:16];
+        v9 = [sceneClassifications countByEnumeratingWithState:&v27 objects:v34 count:16];
       }
 
       while (v9);
     }
 
-    if (v7 && [v7 count])
+    if (dictionary && [dictionary count])
     {
-      if (v26)
+      if (analysisCopy)
       {
-        v18 = [v26 mutableCopy];
+        v18 = [analysisCopy mutableCopy];
       }
 
       else
       {
-        v20 = [MEMORY[0x1E695DF90] dictionary];
-        [v20 vcp_setVersion:75];
-        v21 = [v5 vcp_modificationDate];
-        [v20 vcp_setDateModified:v21];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary2 vcp_setVersion:75];
+        vcp_modificationDate = [resultsCopy vcp_modificationDate];
+        [dictionary2 vcp_setDateModified:vcp_modificationDate];
 
-        v22 = [MEMORY[0x1E695DF00] date];
-        [v20 vcp_setDateAnalyzed:v22];
+        date = [MEMORY[0x1E695DF00] date];
+        [dictionary2 vcp_setDateAnalyzed:date];
 
-        v18 = v20;
-        [v20 vcp_setFlags:0];
+        v18 = dictionary2;
+        [dictionary2 vcp_setFlags:0];
       }
 
       v31 = @"attributes";
-      v32 = v7;
+      v32 = dictionary;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v33 = v23;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
@@ -633,45 +633,45 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
 
     else
     {
-      v18 = v26;
+      v18 = analysisCopy;
     }
 
-    v19 = v26;
+    v19 = analysisCopy;
   }
 
   else
   {
-    v19 = v26;
-    v18 = v26;
+    v19 = analysisCopy;
+    v18 = analysisCopy;
   }
 
   return v18;
 }
 
-- (unint64_t)_typesToRemove:(unint64_t)a3 requested:(unint64_t)a4
+- (unint64_t)_typesToRemove:(unint64_t)remove requested:(unint64_t)requested
 {
-  v4 = a3 & ~a4 & 0xFFFFFFFFFFFFFF33;
-  if ((a3 & 0xC) == 4)
+  v4 = remove & ~requested & 0xFFFFFFFFFFFFFF33;
+  if ((remove & 0xC) == 4)
   {
     v5 = v4 | 4;
   }
 
   else
   {
-    v5 = a3 & ~a4 & 0xFFFFFFFFFFFFFF33;
+    v5 = remove & ~requested & 0xFFFFFFFFFFFFFF33;
   }
 
-  if ((a4 & 0xC) == 0)
+  if ((requested & 0xC) == 0)
   {
     v4 |= 0xCuLL;
   }
 
-  if ((a4 & 0xC) == 8)
+  if ((requested & 0xC) == 8)
   {
     v4 = v5;
   }
 
-  if ((a3 & 0xC0) == 0x40)
+  if ((remove & 0xC0) == 0x40)
   {
     v6 = v4 | 0x40;
   }
@@ -681,17 +681,17 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
     v6 = v4;
   }
 
-  if ((a4 & 0xC0) == 0)
+  if ((requested & 0xC0) == 0)
   {
     v4 |= 0xC0uLL;
   }
 
-  if ((a4 & 0xC0) == 0x80)
+  if ((requested & 0xC0) == 0x80)
   {
     v4 = v6;
   }
 
-  if ((a4 & 0x8000000000000) != 0)
+  if ((requested & 0x8000000000000) != 0)
   {
     return v4 & 0xFFFFF7FFBFFFFFF7;
   }
@@ -702,18 +702,18 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_postProcessMovieHighlights:(id)a3 analysis:(id)a4 withOptions:(id)a5
+- (id)_postProcessMovieHighlights:(id)highlights analysis:(id)analysis withOptions:(id)options
 {
   v167 = *MEMORY[0x1E69E9840];
-  v110 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  v111 = v8;
-  if (v8)
+  highlightsCopy = highlights;
+  analysisCopy = analysis;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  v111 = analysisCopy;
+  if (analysisCopy)
   {
-    v109 = v9;
-    v114 = [v9 objectForKeyedSubscript:@"MaxHighlightDuration"];
+    v109 = optionsCopy;
+    v114 = [optionsCopy objectForKeyedSubscript:@"MaxHighlightDuration"];
     v108 = [v10 objectForKeyedSubscript:@"HighlightBestTrim"];
     v113 = [v10 objectForKeyedSubscript:@"HighlightContexts"];
     v11 = [v10 objectForKeyedSubscript:@"HighlightPreferredRange"];
@@ -771,8 +771,8 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
       v114 = 0;
     }
 
-    v18 = [v111 vcp_results];
-    v19 = [v18 objectForKeyedSubscript:@"MovieHighlightResults"];
+    vcp_results = [v111 vcp_results];
+    v19 = [vcp_results objectForKeyedSubscript:@"MovieHighlightResults"];
     if (v19 || v113 && [v113 count])
     {
     }
@@ -786,7 +786,7 @@ void __45__VCPMediaAnalyzer__databaseForPhotoLibrary___block_invoke(uint64_t a1)
 
       if (v28)
       {
-        v8 = v111;
+        analysisCopy = v111;
 LABEL_131:
 
         v10 = v109;
@@ -794,7 +794,7 @@ LABEL_131:
       }
 
 LABEL_19:
-      if (([v110 vcp_isVideoSlowmo] & 1) != 0 || v113 && objc_msgSend(v113, "count") || (v147.start.flags & 1) == 0 || (v147.duration.flags & 1) == 0 || v147.duration.epoch || v147.duration.value < 0)
+      if (([highlightsCopy vcp_isVideoSlowmo] & 1) != 0 || v113 && objc_msgSend(v113, "count") || (v147.start.flags & 1) == 0 || (v147.duration.flags & 1) == 0 || v147.duration.epoch || v147.duration.value < 0)
       {
         v20 = 10.0;
       }
@@ -811,8 +811,8 @@ LABEL_19:
           v146 = 0u;
           v143 = 0u;
           v144 = 0u;
-          v29 = [v111 vcp_results];
-          v30 = [v29 objectForKeyedSubscript:@"MovieHighlightResults"];
+          vcp_results2 = [v111 vcp_results];
+          v30 = [vcp_results2 objectForKeyedSubscript:@"MovieHighlightResults"];
 
           v31 = [v30 countByEnumeratingWithState:&v143 objects:v166 count:16];
           if (v31)
@@ -868,13 +868,13 @@ LABEL_19:
 
           if (!v108 || ![v108 BOOLValue])
           {
-            v89 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v123 = 0u;
             v124 = 0u;
             v121 = 0u;
             v122 = 0u;
-            v90 = [v111 vcp_results];
-            v91 = [v90 objectForKeyedSubscript:@"MovieHighlightResults"];
+            vcp_results3 = [v111 vcp_results];
+            v91 = [vcp_results3 objectForKeyedSubscript:@"MovieHighlightResults"];
 
             v92 = [v91 countByEnumeratingWithState:&v121 objects:v148 count:16];
             if (v92)
@@ -897,7 +897,7 @@ LABEL_19:
                   [(NSNumber *)self->_minHighlightDuration floatValue];
                   if (v96 >= v97)
                   {
-                    [v89 addObject:v95];
+                    [array addObject:v95];
                   }
                 }
 
@@ -908,8 +908,8 @@ LABEL_19:
             }
 
             v98 = [v111 mutableCopy];
-            [v98 vcp_setResult:v89 forKey:@"MovieHighlightResults"];
-            v8 = v111;
+            [v98 vcp_setResult:array forKey:@"MovieHighlightResults"];
+            analysisCopy = v111;
 
             goto LABEL_131;
           }
@@ -943,9 +943,9 @@ LABEL_24:
           v39 = MEMORY[0x1E69E9C10];
           if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
           {
-            v40 = [v110 localIdentifier];
+            localIdentifier = [highlightsCopy localIdentifier];
             LODWORD(buf.start.value) = 138412290;
-            *(&buf.start.value + 4) = v40;
+            *(&buf.start.value + 4) = localIdentifier;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MediaAnalysis][%@] find time ranges matching highlight contexts", &buf, 0xCu);
           }
         }
@@ -961,8 +961,8 @@ LABEL_24:
           _os_signpost_emit_with_name_impl(&dword_1C9B70000, v43, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPMovieHighlightContexts", "", &buf, 2u);
         }
 
-        v44 = [v113 allKeys];
-        v45 = [v44 containsObject:&unk_1F49BDF78];
+        allKeys = [v113 allKeys];
+        v45 = [allKeys containsObject:&unk_1F49BDF78];
 
         if (v45)
         {
@@ -979,7 +979,7 @@ LABEL_24:
           v162 = v111;
           v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v162 count:1];
           v142 = 0;
-          v49 = [(VCPMediaAnalyzer *)self findTimeRangesFor:v113 inAsset:v110 withOptions:v25 results:v48 andError:&v142];
+          v49 = [(VCPMediaAnalyzer *)self findTimeRangesFor:v113 inAsset:highlightsCopy withOptions:v25 results:v48 andError:&v142];
           v50 = v142;
 
           v106 = [(VCPMediaAnalyzer *)self postProcessTimeRanges:v49 options:v25];
@@ -1012,13 +1012,13 @@ LABEL_24:
         v161 = v111;
         v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v161 count:1];
         v141 = v50;
-        v100 = [(VCPMediaAnalyzer *)self findTimeRangesFor:v113 inAsset:v110 withOptions:v54 results:v55 andError:&v141];
+        v100 = [(VCPMediaAnalyzer *)self findTimeRangesFor:v113 inAsset:highlightsCopy withOptions:v54 results:v55 andError:&v141];
         v101 = v141;
 
         v117 = [(VCPMediaAnalyzer *)self postProcessTimeRanges:v100 options:v54];
         if (v105 && [v105 count])
         {
-          v120 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v139 = 0u;
           v140 = 0u;
           v137 = 0u;
@@ -1091,7 +1091,7 @@ LABEL_24:
                       v65 = [v63 numberWithDouble:(v64 + 0.5) * 0.5];
                       v158[2] = v65;
                       v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v158 forKeys:v157 count:3];
-                      [v120 addObject:v66];
+                      [array2 addObject:v66];
                     }
 
                     v57 = [v119 countByEnumeratingWithState:&v133 objects:v159 count:16];
@@ -1107,7 +1107,7 @@ LABEL_24:
             while (v116);
           }
 
-          if (![v120 count])
+          if (![array2 count])
           {
             v127 = 0u;
             v128 = 0u;
@@ -1129,7 +1129,7 @@ LABEL_24:
 
                   v71 = [*(*(&v125 + 1) + 8 * n) mutableCopy];
                   [v71 setObject:&unk_1F49BB228 forKeyedSubscript:@"quality"];
-                  [v120 addObject:v71];
+                  [array2 addObject:v71];
                 }
 
                 v68 = [v67 countByEnumeratingWithState:&v125 objects:v156 count:16];
@@ -1255,13 +1255,13 @@ LABEL_114:
       }
 
       v83 = [v78 objectForKeyedSubscript:@"AllowOnDemand"];
-      v84 = [v83 BOOLValue];
+      bOOLValue = [v83 BOOLValue];
 
-      v85 = [v110 pixelWidth];
-      v86 = [v110 pixelHeight];
-      if (v84)
+      pixelWidth = [highlightsCopy pixelWidth];
+      pixelHeight = [highlightsCopy pixelHeight];
+      if (bOOLValue)
       {
-        v87 = v110;
+        v87 = highlightsCopy;
       }
 
       else
@@ -1269,7 +1269,7 @@ LABEL_114:
         v87 = 0;
       }
 
-      v8 = MediaAnalysisPostProcessMovieHighlights(v111, v80, v87, v85, v86);
+      analysisCopy = MediaAnalysisPostProcessMovieHighlights(v111, v80, v87, pixelWidth, pixelHeight);
 
       goto LABEL_131;
     }
@@ -1279,19 +1279,19 @@ LABEL_114:
 
 LABEL_132:
 
-  return v8;
+  return analysisCopy;
 }
 
-- (id)getOverlapPersonRanges:(id)a3
+- (id)getOverlapPersonRanges:(id)ranges
 {
   v60 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  rangesCopy = ranges;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v30;
+  obj = rangesCopy;
   v4 = [obj countByEnumeratingWithState:&v52 objects:v59 count:16];
   if (v4)
   {
@@ -1309,19 +1309,19 @@ LABEL_132:
         v8 = [v7 objectForKeyedSubscript:@"faceIdentifier"];
         if (v8)
         {
-          v9 = [v3 allKeys];
-          v10 = [v9 containsObject:v8];
+          allKeys = [dictionary allKeys];
+          v10 = [allKeys containsObject:v8];
 
           if (v10)
           {
-            v11 = [v3 objectForKeyedSubscript:v8];
+            v11 = [dictionary objectForKeyedSubscript:v8];
             [v11 addObject:v7];
           }
 
           else
           {
             v11 = [MEMORY[0x1E695DF70] arrayWithObject:v7];
-            [v3 setObject:v11 forKeyedSubscript:v8];
+            [dictionary setObject:v11 forKeyedSubscript:v8];
           }
         }
       }
@@ -1332,8 +1332,8 @@ LABEL_132:
     while (v4);
   }
 
-  v12 = [v3 allKeys];
-  v13 = [v12 count] < 2;
+  allKeys2 = [dictionary allKeys];
+  v13 = [allKeys2 count] < 2;
 
   if (v13)
   {
@@ -1342,21 +1342,21 @@ LABEL_132:
 
   else
   {
-    v37 = [MEMORY[0x1E695DF70] array];
-    v32 = [v3 allKeys];
-    v15 = [v32 objectAtIndexedSubscript:0];
-    v16 = [v3 objectForKeyedSubscript:v15];
+    array = [MEMORY[0x1E695DF70] array];
+    allKeys3 = [dictionary allKeys];
+    v15 = [allKeys3 objectAtIndexedSubscript:0];
+    v16 = [dictionary objectForKeyedSubscript:v15];
 
     v17 = 1;
     v18 = MEMORY[0x1E6960CC0];
     v36 = v16;
-    while (v17 < [v32 count])
+    while (v17 < [allKeys3 count])
     {
-      v19 = [v32 objectAtIndexedSubscript:v17];
+      v19 = [allKeys3 objectAtIndexedSubscript:v17];
       v31 = v17;
-      v33 = [v3 objectForKeyedSubscript:v19];
+      v33 = [dictionary objectForKeyedSubscript:v19];
 
-      v20 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
@@ -1417,7 +1417,7 @@ LABEL_132:
 
                   range = v41;
                   v29 = CMTimeRangeCopyAsDictionary(&range, 0);
-                  [v20 addObject:v29];
+                  [array2 addObject:v29];
                 }
 
                 v25 = [v24 countByEnumeratingWithState:&v43 objects:v57 count:16];
@@ -1434,20 +1434,20 @@ LABEL_132:
       }
 
       v17 = v31 + 1;
-      v36 = v20;
+      v36 = array2;
     }
   }
 
   return v36;
 }
 
-- (id)_analyzeOndemand:(id)a3 forAnalysisTypes:(unint64_t)a4 withExistingAnalysis:(id)a5 andOptions:(id)a6 storeAnalysis:(BOOL)a7 cancelBlock:(id)a8
+- (id)_analyzeOndemand:(id)ondemand forAnalysisTypes:(unint64_t)types withExistingAnalysis:(id)analysis andOptions:(id)options storeAnalysis:(BOOL)storeAnalysis cancelBlock:(id)block
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  storeAnalysisCopy = storeAnalysis;
+  ondemandCopy = ondemand;
+  analysisCopy = analysis;
+  optionsCopy = options;
+  blockCopy = block;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1459,18 +1459,18 @@ LABEL_132:
   block[1] = 3221225472;
   block[2] = __112__VCPMediaAnalyzer__analyzeOndemand_forAnalysisTypes_withExistingAnalysis_andOptions_storeAnalysis_cancelBlock___block_invoke;
   block[3] = &unk_1E8350C28;
-  v19 = v14;
+  v19 = ondemandCopy;
   v39 = v19;
-  v20 = v16;
+  v20 = optionsCopy;
   v40 = v20;
-  v44 = a4;
-  v21 = v15;
+  typesCopy = types;
+  v21 = analysisCopy;
   v41 = v21;
   v43 = &v45;
-  v22 = v17;
+  v22 = blockCopy;
   v42 = v22;
   dispatch_sync(analysisQueue, block);
-  if (v9)
+  if (storeAnalysisCopy)
   {
     v23 = v46[5];
     if (v23)
@@ -1485,7 +1485,7 @@ LABEL_132:
         v34 = &unk_1E834D210;
         v37 = &v45;
         v35 = v19;
-        v36 = self;
+        selfCopy = self;
         dispatch_async(storageQueue, &v31);
       }
     }
@@ -1495,9 +1495,9 @@ LABEL_132:
   [v25 floatValue];
   if (v26 != 0.0)
   {
-    v27 = [v19 vcp_isVideoSlowmo];
+    vcp_isVideoSlowmo = [v19 vcp_isVideoSlowmo];
 
-    if (!v27)
+    if (!vcp_isVideoSlowmo)
     {
       goto LABEL_10;
     }
@@ -1696,7 +1696,7 @@ void __112__VCPMediaAnalyzer__analyzeOndemand_forAnalysisTypes_withExistingAnaly
   dispatch_group_leave(*(*(a1 + 40) + 32));
 }
 
-- (id)requestAnalysisTypes:(unint64_t)a3 forAssetWithResourceURLs:(id)a4 withOptions:(id)a5 error:(id *)a6
+- (id)requestAnalysisTypes:(unint64_t)types forAssetWithResourceURLs:(id)ls withOptions:(id)options error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -1709,8 +1709,8 @@ void __112__VCPMediaAnalyzer__analyzeOndemand_forAnalysisTypes_withExistingAnaly
   v9[2] = __84__VCPMediaAnalyzer_requestAnalysisTypes_forAssetWithResourceURLs_withOptions_error___block_invoke;
   v9[3] = &unk_1E8350C78;
   v9[4] = &v10;
-  v9[5] = a6;
-  v6 = [VCPFullAnalysisURLProcessingTask taskForURLAsset:a4 withOptions:a5 analysisTypes:a3 progressHandler:0 completionHandler:v9];
+  v9[5] = error;
+  v6 = [VCPFullAnalysisURLProcessingTask taskForURLAsset:ls withOptions:options analysisTypes:types progressHandler:0 completionHandler:v9];
   [v6 run];
   v7 = v11[5];
 
@@ -1728,22 +1728,22 @@ void __84__VCPMediaAnalyzer_requestAnalysisTypes_forAssetWithResourceURLs_withOp
   **(a1 + 40) = v8;
 }
 
-- (id)analyzeOndemand:(id)a3 pairedURL:(id)a4 forAnalysisTypes:(unint64_t)a5 error:(id *)a6
+- (id)analyzeOndemand:(id)ondemand pairedURL:(id)l forAnalysisTypes:(unint64_t)types error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  ondemandCopy = ondemand;
+  lCopy = l;
   v24 = 0;
   v11 = *MEMORY[0x1E695DAA0];
-  [v9 getResourceValue:&v24 forKey:*MEMORY[0x1E695DAA0] error:0];
+  [ondemandCopy getResourceValue:&v24 forKey:*MEMORY[0x1E695DAA0] error:0];
   v12 = v24;
   v13 = *MEMORY[0x1E6982EE8];
   if (([v12 conformsToType:*MEMORY[0x1E6982EE8]] & 1) != 0 || (v14 = *MEMORY[0x1E6983080], objc_msgSend(v12, "conformsToType:", *MEMORY[0x1E6983080])))
   {
-    v15 = [VCPURLAsset movieAssetWithURL:v9];
+    v15 = [VCPURLAsset movieAssetWithURL:ondemandCopy];
     if (v15)
     {
-      v16 = [VCPMovieAnalyzer analyzerWithVCPAsset:v15 withExistingAnalysis:0 forAnalysisTypes:a5 withOptions:0];
+      v16 = [VCPMovieAnalyzer analyzerWithVCPAsset:v15 withExistingAnalysis:0 forAnalysisTypes:types withOptions:0];
       v17 = [v16 analyzeAsset:&__block_literal_global_929_0 streamed:0];
       if ([v16 status] == 2)
       {
@@ -1761,7 +1761,7 @@ void __84__VCPMediaAnalyzer_requestAnalysisTypes_forAssetWithResourceURLs_withOp
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v26 = v9;
+        v26 = ondemandCopy;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis][%@]Unable to open movie", buf, 0xCu);
       }
 
@@ -1791,10 +1791,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v10)
+  if (lCopy)
   {
     v23 = 0;
-    [v10 getResourceValue:&v23 forKey:v11 error:0];
+    [lCopy getResourceValue:&v23 forKey:v11 error:0];
     v20 = v23;
     if (([v20 conformsToType:v13] & 1) == 0 && !objc_msgSend(v20, "conformsToType:", v14))
     {
@@ -1807,12 +1807,12 @@ LABEL_13:
       goto LABEL_39;
     }
 
-    v21 = [VCPURLAsset livePhotoAssetWithImageURL:v9 andMovieURL:v10];
+    v21 = [VCPURLAsset livePhotoAssetWithImageURL:ondemandCopy andMovieURL:lCopy];
 
     if (v21)
     {
 LABEL_23:
-      v22 = [VCPPhotoAnalyzer analyzerWithVCPAsset:v21 forAnalysisTypes:a5];
+      v22 = [VCPPhotoAnalyzer analyzerWithVCPAsset:v21 forAnalysisTypes:types];
       v17 = [v22 analyzeAsset:&__block_literal_global_932 withOptions:0];
       if ([v22 status] == 2)
       {
@@ -1830,7 +1830,7 @@ LABEL_23:
 
   else
   {
-    v21 = [VCPURLAsset imageAssetWithURL:v9];
+    v21 = [VCPURLAsset imageAssetWithURL:ondemandCopy];
     if (v21)
     {
       goto LABEL_23;
@@ -1840,7 +1840,7 @@ LABEL_23:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v26 = v9;
+    v26 = ondemandCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis][%@]Failed to create asset", buf, 0xCu);
   }
 
@@ -1848,7 +1848,7 @@ LABEL_39:
   v17 = 0;
   v18 = -50;
 LABEL_14:
-  *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v18 userInfo:0];
+  *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v18 userInfo:0];
 
   v17 = 0;
 LABEL_15:
@@ -1856,30 +1856,30 @@ LABEL_15:
   return v17;
 }
 
-- (id)_requestAnalysis:(unint64_t)a3 forAsset:(id)a4 withExistingAnalysis:(id)a5 andDatabase:(id)a6 andOptions:(id)a7 cancelBlock:(id)a8
+- (id)_requestAnalysis:(unint64_t)analysis forAsset:(id)asset withExistingAnalysis:(id)existingAnalysis andDatabase:(id)database andOptions:(id)options cancelBlock:(id)block
 {
   v127[5] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v108 = a6;
-  v15 = a7;
-  v109 = a8;
-  v111 = [v13 localIdentifier];
-  v16 = [v15 objectForKeyedSubscript:@"AllowOnDemand"];
-  v110 = [v16 BOOLValue];
+  assetCopy = asset;
+  existingAnalysisCopy = existingAnalysis;
+  databaseCopy = database;
+  optionsCopy = options;
+  blockCopy = block;
+  localIdentifier = [assetCopy localIdentifier];
+  v16 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemand"];
+  bOOLValue = [v16 BOOLValue];
 
-  v17 = [v15 objectForKeyedSubscript:@"SkipMetaDataOnDemand"];
-  v107 = [v17 BOOLValue];
+  v17 = [optionsCopy objectForKeyedSubscript:@"SkipMetaDataOnDemand"];
+  bOOLValue2 = [v17 BOOLValue];
 
-  v18 = [v15 objectForKeyedSubscript:@"ScaledSlomoTime"];
-  v19 = [v18 BOOLValue];
+  v18 = [optionsCopy objectForKeyedSubscript:@"ScaledSlomoTime"];
+  bOOLValue3 = [v18 BOOLValue];
 
-  [v13 fetchPropertySetsIfNeeded];
-  if (a3 && MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
+  [assetCopy fetchPropertySetsIfNeeded];
+  if (analysis && MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v20 = MediaAnalysisTypeDescription(a3);
+    v20 = MediaAnalysisTypeDescription(analysis);
     *buf = 138412546;
-    v119 = v111;
+    v119 = localIdentifier;
     v120 = 2112;
     v121 = v20;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Received analysis request: %@", buf, 0x16u);
@@ -1889,18 +1889,18 @@ LABEL_15:
   {
 
 LABEL_7:
-    v14 = 0;
+    existingAnalysisCopy = 0;
     goto LABEL_8;
   }
 
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v30 = [v13 photoLibrary];
-    v31 = [v30 mad_fetchRequest];
+    photoLibrary = [assetCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
 
     v117 = 0;
     v116 = 0;
-    if ([v13 vcp_isLongMovie])
+    if ([assetCopy vcp_isLongMovie])
     {
       v32 = _os_feature_enabled_impl();
     }
@@ -1912,7 +1912,7 @@ LABEL_7:
 
     v114 = 0;
     v115 = 0;
-    v49 = [v13 localIdentifier];
+    localIdentifier2 = [assetCopy localIdentifier];
     if (v32)
     {
       v50 = 254;
@@ -1923,7 +1923,7 @@ LABEL_7:
       v50 = 1;
     }
 
-    [v31 fetchProcessingStatus:&v117 attempts:&v116 lastAttemptDate:&v115 nextAttemptDate:&v114 localIdentifier:v49 taskID:v50];
+    [mad_fetchRequest fetchProcessingStatus:&v117 attempts:&v116 lastAttemptDate:&v115 nextAttemptDate:&v114 localIdentifier:localIdentifier2 taskID:v50];
     v51 = v115;
     v52 = v114;
 
@@ -1937,7 +1937,7 @@ LABEL_7:
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v119 = v111;
+          v119 = localIdentifier;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis][%@] Analysis requested for failed asset", buf, 0xCu);
         }
 
@@ -1945,8 +1945,8 @@ LABEL_7:
         v55 = [MEMORY[0x1E696AD98] numberWithInt:75];
         v127[0] = v55;
         v126[1] = @"dateModified";
-        v56 = [v13 vcp_modificationDate];
-        v127[1] = v56;
+        vcp_modificationDate = [assetCopy vcp_modificationDate];
+        v127[1] = vcp_modificationDate;
         v127[2] = v51;
         v126[2] = @"dateAnalyzed";
         v126[3] = @"performedAnalysisTypes";
@@ -1960,17 +1960,17 @@ LABEL_7:
     }
 
 LABEL_51:
-    if ([v14 vcp_version] < 7)
+    if ([existingAnalysisCopy vcp_version] < 7)
     {
 
-      v14 = 0;
+      existingAnalysisCopy = 0;
     }
 
-    v57 = MediaAnalysisPostProcessAnalysis(v13, v14, v19 ^ 1);
+    v57 = MediaAnalysisPostProcessAnalysis(assetCopy, existingAnalysisCopy, bOOLValue3 ^ 1);
 
-    if ((a3 & 0x40000) == 0 || ([v57 vcp_types] & 0x40000) == 0)
+    if ((analysis & 0x40000) == 0 || ([v57 vcp_types] & 0x40000) == 0)
     {
-      v14 = v57;
+      existingAnalysisCopy = v57;
       goto LABEL_80;
     }
 
@@ -1986,15 +1986,15 @@ LABEL_51:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v61, OS_SIGNPOST_INTERVAL_BEGIN, v59, "VCPPostProcessMovieHighlights", "", buf, 2u);
     }
 
-    v63 = [v15 objectForKeyedSubscript:@"CaptionWithHighlight"];
+    v63 = [optionsCopy objectForKeyedSubscript:@"CaptionWithHighlight"];
     if ([v63 BOOLValue])
     {
-      v64 = [v57 vcp_results];
-      v65 = [v64 objectForKeyedSubscript:@"MiCaVideoCaptionResults"];
+      vcp_results = [v57 vcp_results];
+      v65 = [vcp_results objectForKeyedSubscript:@"MiCaVideoCaptionResults"];
       if (![v65 count])
       {
-        v106 = [v57 vcp_results];
-        v66 = [v106 objectForKeyedSubscript:@"VideoSegmentCaptionResults"];
+        vcp_results2 = [v57 vcp_results];
+        v66 = [vcp_results2 objectForKeyedSubscript:@"VideoSegmentCaptionResults"];
         if (![v66 count])
         {
           [v57 vcp_results];
@@ -2011,17 +2011,17 @@ LABEL_51:
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalyzer]Early termination - no caption available, set results to nil", buf, 2u);
             }
 
-            v14 = 0;
+            existingAnalysisCopy = 0;
             goto LABEL_74;
           }
 
 LABEL_65:
-          v67 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:v13 analysis:v57 withOptions:v15];
+          v67 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:assetCopy analysis:v57 withOptions:optionsCopy];
 
-          v68 = [v15 objectForKeyedSubscript:@"CaptionWithHighlight"];
-          v69 = [v68 BOOLValue];
+          v68 = [optionsCopy objectForKeyedSubscript:@"CaptionWithHighlight"];
+          bOOLValue4 = [v68 BOOLValue];
 
-          if (v69)
+          if (bOOLValue4)
           {
             v70 = MediaAnalysisAddCaptionToHighlightResults(v67);
 
@@ -2033,34 +2033,34 @@ LABEL_65:
             v57 = v67;
           }
 
-          v71 = [v15 objectForKeyedSubscript:@"PersonIDWithHighlight"];
-          v72 = [v71 BOOLValue];
+          v71 = [optionsCopy objectForKeyedSubscript:@"PersonIDWithHighlight"];
+          bOOLValue5 = [v71 BOOLValue];
 
-          if (v72)
+          if (bOOLValue5)
           {
-            v73 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v57 asset:v13];
+            v73 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v57 asset:assetCopy];
             v74 = MediaAnalysisAddFaceIDToHighlightResults(v57, v73);
 
             v57 = v74;
           }
 
-          v75 = [v15 objectForKeyedSubscript:@"MetadataWithHighlight"];
-          v76 = [v75 BOOLValue];
+          v75 = [optionsCopy objectForKeyedSubscript:@"MetadataWithHighlight"];
+          bOOLValue6 = [v75 BOOLValue];
 
-          if (v76)
+          if (bOOLValue6)
           {
-            v77 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v57 asset:v13];
+            v77 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v57 asset:assetCopy];
             v78 = MediaAnalysisAddMetadataToHighlightResults(v57, v77);
 
             v57 = v78;
           }
 
-          v79 = [v15 objectForKeyedSubscript:@"VideoSpeedControl"];
-          v80 = [v79 BOOLValue];
+          v79 = [optionsCopy objectForKeyedSubscript:@"VideoSpeedControl"];
+          bOOLValue7 = [v79 BOOLValue];
 
-          if (!v80)
+          if (!bOOLValue7)
           {
-            v14 = v57;
+            existingAnalysisCopy = v57;
 LABEL_76:
             v81 = VCPSignPostLog();
             v82 = v81;
@@ -2071,76 +2071,76 @@ LABEL_76:
             }
 
 LABEL_80:
-            if ((a3 & 0x4000) != 0 && [v13 isPhoto])
+            if ((analysis & 0x4000) != 0 && [assetCopy isPhoto])
             {
-              v83 = [(VCPMediaAnalyzer *)self _addClassificationResults:v13 analysis:v14];
+              v83 = [(VCPMediaAnalyzer *)self _addClassificationResults:assetCopy analysis:existingAnalysisCopy];
 
-              v14 = v83;
+              existingAnalysisCopy = v83;
             }
 
-            if (v14)
+            if (existingAnalysisCopy)
             {
               if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
               {
-                v84 = [v13 localIdentifier];
-                v85 = [v13 vcp_typeDescription];
-                v86 = [v14 vcp_analysisDescriptionWithResultDetails:1];
+                localIdentifier3 = [assetCopy localIdentifier];
+                vcp_typeDescription = [assetCopy vcp_typeDescription];
+                v86 = [existingAnalysisCopy vcp_analysisDescriptionWithResultDetails:1];
                 *buf = 138412802;
-                v119 = v84;
+                v119 = localIdentifier3;
                 v120 = 2112;
-                v121 = v85;
+                v121 = vcp_typeDescription;
                 v122 = 2112;
                 v123 = v86;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@][%@] existing analysis: %@", buf, 0x20u);
               }
 
-              v87 = [v14 vcp_dateModified];
-              v88 = [v13 vcp_modificationDate];
-              v89 = [v87 isEqualToDate:v88];
+              vcp_dateModified = [existingAnalysisCopy vcp_dateModified];
+              vcp_modificationDate2 = [assetCopy vcp_modificationDate];
+              v89 = [vcp_dateModified isEqualToDate:vcp_modificationDate2];
 
               if ((v89 & 1) == 0)
               {
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
-                  v93 = [v14 vcp_dateModified];
-                  v94 = [v93 description];
+                  vcp_dateModified2 = [existingAnalysisCopy vcp_dateModified];
+                  v94 = [vcp_dateModified2 description];
                   v95 = v94;
-                  v96 = [v94 UTF8String];
-                  v97 = [v13 vcp_modificationDate];
-                  v98 = [v97 description];
+                  uTF8String = [v94 UTF8String];
+                  vcp_modificationDate3 = [assetCopy vcp_modificationDate];
+                  v98 = [vcp_modificationDate3 description];
                   v99 = v98;
-                  v100 = [v98 UTF8String];
+                  uTF8String2 = [v98 UTF8String];
                   *buf = 138412802;
-                  v119 = v111;
+                  v119 = localIdentifier;
                   v120 = 2080;
-                  v121 = v96;
+                  v121 = uTF8String;
                   v122 = 2080;
-                  v123 = v100;
+                  v123 = uTF8String2;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Existing analysis based on old modification - (%s vs %s)", buf, 0x20u);
                 }
 
                 goto LABEL_7;
               }
 
-              if (!a3)
+              if (!analysis)
               {
                 goto LABEL_95;
               }
 
-              if (v110)
+              if (bOOLValue)
               {
-                v90 = MediaAnalysisStripOutdatedAnalysis(v13, v14);
+                v90 = MediaAnalysisStripOutdatedAnalysis(assetCopy, existingAnalysisCopy);
 
-                v14 = v90;
+                existingAnalysisCopy = v90;
               }
 
-              if ((a3 & ~[v14 vcp_types]) == 0)
+              if ((analysis & ~[existingAnalysisCopy vcp_types]) == 0)
               {
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
-                  v91 = MediaAnalysisTypeDescription([v14 vcp_types]);
+                  v91 = MediaAnalysisTypeDescription([existingAnalysisCopy vcp_types]);
                   *buf = 138412546;
-                  v119 = v111;
+                  v119 = localIdentifier;
                   v120 = 2112;
                   v121 = v91;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Existing analysis satisfies request (%@)", buf, 0x16u);
@@ -2151,58 +2151,58 @@ LABEL_80:
 
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
               {
-                v101 = MediaAnalysisTypeDescription([v14 vcp_types]);
+                v101 = MediaAnalysisTypeDescription([existingAnalysisCopy vcp_types]);
                 *buf = 138412546;
-                v119 = v111;
+                v119 = localIdentifier;
                 v120 = 2112;
                 v121 = v101;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Existing analysis doesn't satisfy request (%@)", buf, 0x16u);
               }
 
-              a3 &= ~[v14 vcp_types];
+              analysis &= ~[existingAnalysisCopy vcp_types];
             }
 
 LABEL_8:
-            if (v110)
+            if (bOOLValue)
             {
-              v21 = a3;
+              analysisCopy = analysis;
             }
 
             else
             {
-              v21 = 0;
+              analysisCopy = 0;
             }
 
-            if (((v110 | v107) & 1) == 0)
+            if (((bOOLValue | bOOLValue2) & 1) == 0)
             {
-              v21 = [(VCPMediaAnalyzer *)self _metaAnalysisTypesForAsset:v13]& a3;
+              analysisCopy = [(VCPMediaAnalyzer *)self _metaAnalysisTypesForAsset:assetCopy]& analysis;
             }
 
-            if (v21)
+            if (analysisCopy)
             {
               if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
               {
-                v22 = MediaAnalysisTypeDescription(v21);
+                v22 = MediaAnalysisTypeDescription(analysisCopy);
                 *buf = 138412546;
-                v119 = v111;
+                v119 = localIdentifier;
                 v120 = 2112;
                 v121 = v22;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis][%@] Generating analysis on-demand: %@", buf, 0x16u);
               }
 
-              v23 = [(VCPMediaAnalyzer *)self _analyzeOndemand:v13 forAnalysisTypes:v21 withExistingAnalysis:v14 andOptions:v15 storeAnalysis:v110 cancelBlock:v109];
-              if ((v21 & 0x40000) != 0)
+              v23 = [(VCPMediaAnalyzer *)self _analyzeOndemand:assetCopy forAnalysisTypes:analysisCopy withExistingAnalysis:existingAnalysisCopy andOptions:optionsCopy storeAnalysis:bOOLValue cancelBlock:blockCopy];
+              if ((analysisCopy & 0x40000) != 0)
               {
-                v24 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:v13 analysis:v23 withOptions:v15];
+                v24 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:assetCopy analysis:v23 withOptions:optionsCopy];
 
                 v23 = v24;
               }
 
-              v25 = MediaAnalysisMergeAnalysis(v14, v23);
-              v26 = [v15 objectForKeyedSubscript:@"CaptionWithHighlight"];
-              v27 = [v26 BOOLValue];
+              v25 = MediaAnalysisMergeAnalysis(existingAnalysisCopy, v23);
+              v26 = [optionsCopy objectForKeyedSubscript:@"CaptionWithHighlight"];
+              bOOLValue8 = [v26 BOOLValue];
 
-              if (v27)
+              if (bOOLValue8)
               {
                 v28 = MediaAnalysisAddCaptionToHighlightResults(v25);
 
@@ -2214,32 +2214,32 @@ LABEL_8:
                 v29 = v25;
               }
 
-              v37 = [v15 objectForKeyedSubscript:@"PersonIDWithHighlight"];
-              v38 = [v37 BOOLValue];
+              v37 = [optionsCopy objectForKeyedSubscript:@"PersonIDWithHighlight"];
+              bOOLValue9 = [v37 BOOLValue];
 
-              if (v38)
+              if (bOOLValue9)
               {
-                v39 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v29 asset:v13];
+                v39 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v29 asset:assetCopy];
                 v40 = MediaAnalysisAddFaceIDToHighlightResults(v29, v39);
 
                 v29 = v40;
               }
 
-              v41 = [v15 objectForKeyedSubscript:@"MetadataWithHighlight"];
-              v42 = [v41 BOOLValue];
+              v41 = [optionsCopy objectForKeyedSubscript:@"MetadataWithHighlight"];
+              bOOLValue10 = [v41 BOOLValue];
 
-              if (v42)
+              if (bOOLValue10)
               {
-                v43 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v29 asset:v13];
+                v43 = [(VCPMediaAnalyzer *)self getFaceIDRanges:v29 asset:assetCopy];
                 v44 = MediaAnalysisAddMetadataToHighlightResults(v29, v43);
 
                 v29 = v44;
               }
 
-              v45 = [v15 objectForKeyedSubscript:@"VideoSpeedControl"];
-              v46 = [v45 BOOLValue];
+              v45 = [optionsCopy objectForKeyedSubscript:@"VideoSpeedControl"];
+              bOOLValue11 = [v45 BOOLValue];
 
-              if (v46)
+              if (bOOLValue11)
               {
                 v47 = MediaAnalysisAddVideoSpeedControlResults(v29);
 
@@ -2250,7 +2250,7 @@ LABEL_8:
               {
                 v48 = MediaAnalysisTypeDescription([v29 vcp_types]);
                 *buf = 138412546;
-                v119 = v111;
+                v119 = localIdentifier;
                 v120 = 2112;
                 v121 = v48;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Analysis served: (%@)", buf, 0x16u);
@@ -2262,12 +2262,12 @@ LABEL_8:
             }
 
 LABEL_95:
-            v14 = v14;
-            v36 = v14;
+            existingAnalysisCopy = existingAnalysisCopy;
+            v36 = existingAnalysisCopy;
             goto LABEL_96;
           }
 
-          v14 = MediaAnalysisAddVideoSpeedControlResults(v57);
+          existingAnalysisCopy = MediaAnalysisAddVideoSpeedControlResults(v57);
 LABEL_74:
 
           goto LABEL_76;
@@ -2279,8 +2279,8 @@ LABEL_74:
   }
 
   v113 = 0;
-  v33 = [v108 isAssetBlacklisted:v111 blacklistDate:&v113];
-  v31 = v113;
+  v33 = [databaseCopy isAssetBlacklisted:localIdentifier blacklistDate:&v113];
+  mad_fetchRequest = v113;
   if (!v33)
   {
     goto LABEL_51;
@@ -2289,7 +2289,7 @@ LABEL_74:
   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v119 = v111;
+    v119 = localIdentifier;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis][%@] Analysis requested for blacklisted asset", buf, 0xCu);
   }
 
@@ -2297,9 +2297,9 @@ LABEL_74:
   v34 = [MEMORY[0x1E696AD98] numberWithInt:75];
   v125[0] = v34;
   v124[1] = @"dateModified";
-  v35 = [v13 vcp_modificationDate];
-  v125[1] = v35;
-  v125[2] = v31;
+  vcp_modificationDate4 = [assetCopy vcp_modificationDate];
+  v125[1] = vcp_modificationDate4;
+  v125[2] = mad_fetchRequest;
   v124[2] = @"dateAnalyzed";
   v124[3] = @"performedAnalysisTypes";
   v124[4] = @"flags";
@@ -2312,26 +2312,26 @@ LABEL_96:
   return v36;
 }
 
-- (id)getFaceIDRanges:(id)a3 asset:(id)a4
+- (id)getFaceIDRanges:(id)ranges asset:(id)asset
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v30 = a4;
-  v5 = [v30 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  rangesCopy = ranges;
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v26 = v6;
-  [v6 setIncludeTorsoAndFaceDetectionData:1];
+  v26 = librarySpecificFetchOptions;
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
   v46[0] = *MEMORY[0x1E6978D68];
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:1];
-  [v6 setFetchPropertySets:v7];
+  [librarySpecificFetchOptions setFetchPropertySets:v7];
 
-  [v6 setIncludedDetectionTypes:&unk_1F49BEFC8];
-  [v6 setIncludeMediaAnalysisProcessingRangeTypes:3];
-  v25 = [MEMORY[0x1E69787D0] fetchFacesInAsset:v30 options:v6];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEFC8];
+  [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
+  v25 = [MEMORY[0x1E69787D0] fetchFacesInAsset:assetCopy options:librarySpecificFetchOptions];
   if ([v25 count])
   {
-    v27 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -2351,8 +2351,8 @@ LABEL_96:
           }
 
           v10 = *(*(&v38 + 1) + 8 * i);
-          v11 = [v10 personLocalIdentifier];
-          v12 = v11 == 0;
+          personLocalIdentifier = [v10 personLocalIdentifier];
+          v12 = personLocalIdentifier == 0;
 
           if (!v12)
           {
@@ -2360,18 +2360,18 @@ LABEL_96:
             {
               v44 = v10;
               v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-              [(VCPMediaAnalyzer *)self getTimeRangesInAsset:v30 forFaces:v13 withAnalysis:v29];
+              [(VCPMediaAnalyzer *)self getTimeRangesInAsset:assetCopy forFaces:v13 withAnalysis:rangesCopy];
             }
 
             else
             {
               v43 = v10;
               v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
-              [(VCPMediaAnalyzer *)self getTimeRangesInAsset:v30 forAnimals:v13 withAnalysis:v29];
+              [(VCPMediaAnalyzer *)self getTimeRangesInAsset:assetCopy forAnimals:v13 withAnalysis:rangesCopy];
             }
             v14 = ;
 
-            v15 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v36 = 0u;
             v37 = 0u;
             v34 = 0u;
@@ -2393,7 +2393,7 @@ LABEL_96:
                   v20 = MEMORY[0x1E696B098];
                   CMTimeRangeMakeFromDictionary(&v33, *(*(&v34 + 1) + 8 * j));
                   v21 = [v20 valueWithCMTimeRange:&v33];
-                  [v15 addObject:v21];
+                  [array addObject:v21];
                 }
 
                 v17 = [v16 countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -2404,9 +2404,9 @@ LABEL_96:
 
             if ([v16 count])
             {
-              v22 = [(VCPMediaAnalyzer *)self mergeTimeRanges:v15 mergeGap:0];
-              v23 = [v10 personLocalIdentifier];
-              [v27 setObject:v22 forKeyedSubscript:v23];
+              v22 = [(VCPMediaAnalyzer *)self mergeTimeRanges:array mergeGap:0];
+              personLocalIdentifier2 = [v10 personLocalIdentifier];
+              [dictionary setObject:v22 forKeyedSubscript:personLocalIdentifier2];
             }
           }
         }
@@ -2426,23 +2426,23 @@ LABEL_96:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalyzer]People UUID add to Highlight - no face results", &v33, 2u);
     }
 
-    v27 = 0;
+    dictionary = 0;
   }
 
-  return v27;
+  return dictionary;
 }
 
-- (int)requestAnalysisForAsset:(id)a3 analysisTypes:(unint64_t)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (int)requestAnalysisForAsset:(id)asset analysisTypes:(unint64_t)types progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  v11 = [objc_opt_class() sharedMediaAnalyzer];
+  assetCopy = asset;
+  completionHandlerCopy = completionHandler;
+  sharedMediaAnalyzer = [objc_opt_class() sharedMediaAnalyzer];
 
-  if (v11 == self)
+  if (sharedMediaAnalyzer == self)
   {
-    v12 = [v9 photoLibrary];
-    v13 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v12];
+    photoLibrary = [assetCopy photoLibrary];
+    v13 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:photoLibrary];
 
     if (v13)
     {
@@ -2451,11 +2451,11 @@ LABEL_96:
       block[1] = 3221225472;
       block[2] = __92__VCPMediaAnalyzer_requestAnalysisForAsset_analysisTypes_progressHandler_completionHandler___block_invoke;
       block[3] = &unk_1E8350CA0;
-      v18 = v9;
+      v18 = assetCopy;
       v19 = v13;
-      v20 = self;
-      v22 = a4;
-      v21 = v10;
+      selfCopy = self;
+      typesCopy = types;
+      v21 = completionHandlerCopy;
       dispatch_async(v14, block);
     }
 
@@ -2463,13 +2463,13 @@ LABEL_96:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v15 = [v9 localIdentifier];
+        localIdentifier = [assetCopy localIdentifier];
         *buf = 138412290;
-        v24 = v15;
+        v24 = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] Failed to obtain database for Photo Library %@", buf, 0xCu);
       }
 
-      (*(v10 + 2))(v10, 0);
+      (*(completionHandlerCopy + 2))(completionHandlerCopy, 0);
     }
   }
 
@@ -2481,7 +2481,7 @@ LABEL_96:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] [MediaAnalyzer requestAnalysisForAsset] call from invalid instance", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0);
   }
 
   return -1;
@@ -2529,7 +2529,7 @@ void __92__VCPMediaAnalyzer_requestAnalysisForAsset_analysisTypes_progressHandle
   }
 }
 
-- (BOOL)cancelAnalysisWithRequestID:(int)a3
+- (BOOL)cancelAnalysisWithRequestID:(int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -2540,7 +2540,7 @@ void __92__VCPMediaAnalyzer_requestAnalysisForAsset_analysisTypes_progressHandle
   block[1] = 3221225472;
   block[2] = __48__VCPMediaAnalyzer_cancelAnalysisWithRequestID___block_invoke;
   block[3] = &unk_1E8350CC8;
-  v7 = a3;
+  dCopy = d;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(cancelQueue, block);
@@ -2591,15 +2591,15 @@ LABEL_8:
   }
 }
 
-- (void)assetsFromPhotoLibrary:(id)a3 analyzedSinceDate:(id)a4 completionHandler:(id)a5
+- (void)assetsFromPhotoLibrary:(id)library analyzedSinceDate:(id)date completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() sharedMediaAnalyzer];
+  libraryCopy = library;
+  dateCopy = date;
+  handlerCopy = handler;
+  sharedMediaAnalyzer = [objc_opt_class() sharedMediaAnalyzer];
 
-  if (v11 != self)
+  if (sharedMediaAnalyzer != self)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2612,15 +2612,15 @@ LABEL_8:
 
   if (![(NSNumber *)self->_standalone BOOLValue])
   {
-    v12 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v8];
+    v12 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:libraryCopy];
     if (!v12)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v14 = [v8 photoLibraryURL];
-        v15 = [v14 path];
+        photoLibraryURL = [libraryCopy photoLibraryURL];
+        path = [photoLibraryURL path];
         *buf = 138412290;
-        v26 = v15;
+        v26 = path;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] Failed to obtain database for Photo Library (%@)", buf, 0xCu);
       }
 
@@ -2629,22 +2629,22 @@ LABEL_8:
 
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
-      if (v9)
+      if (dateCopy)
       {
-        v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"dateAnalyzed >= %@", v9];
+        dateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"dateAnalyzed >= %@", dateCopy];
       }
 
       else
       {
-        v13 = 0;
+        dateCopy = 0;
       }
 
-      v22 = [v8 mad_fetchRequest];
-      v23 = [v22 fetchAnalysesWithLocalIdentifiers:0 predicate:v13];
+      mad_fetchRequest = [libraryCopy mad_fetchRequest];
+      v23 = [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:0 predicate:dateCopy];
 
-      v16 = [v23 allKeys];
+      allKeys = [v23 allKeys];
 
-      if (!v16)
+      if (!allKeys)
       {
         goto LABEL_20;
       }
@@ -2652,8 +2652,8 @@ LABEL_8:
 
     else
     {
-      v16 = [v12 queryAssetsAnalyzedSince:v9];
-      if (!v16)
+      allKeys = [v12 queryAssetsAnalyzedSince:dateCopy];
+      if (!allKeys)
       {
 LABEL_20:
 
@@ -2661,31 +2661,31 @@ LABEL_20:
       }
     }
 
-    v17 = [v8 fetchOptionsForMediaProcessingTaskID:PHMediaProcessingTaskIDForVCPTaskID(255) priority:0 algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:0 error:0.0];
+    v17 = [libraryCopy fetchOptionsForMediaProcessingTaskID:PHMediaProcessingTaskIDForVCPTaskID(255) priority:0 algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:0 error:0.0];
     v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
     v24 = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
     [v17 setSortDescriptors:v19];
 
-    v20 = [MEMORY[0x1E6978628] fetchAssetsWithLocalIdentifiers:v16 options:v17];
-    v21 = [v20 fetchedObjects];
-    v10[2](v10, v21);
+    v20 = [MEMORY[0x1E6978628] fetchAssetsWithLocalIdentifiers:allKeys options:v17];
+    fetchedObjects = [v20 fetchedObjects];
+    handlerCopy[2](handlerCopy, fetchedObjects);
 
     goto LABEL_7;
   }
 
 LABEL_6:
-  v10[2](v10, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_7:
 }
 
-- (void)_checkDuplicate:(id)a3 withAsset:(id)a4 duplicate:(int64_t *)a5
+- (void)_checkDuplicate:(id)duplicate withAsset:(id)asset duplicate:(int64_t *)a5
 {
-  v13 = a3;
-  v7 = a4;
+  duplicateCopy = duplicate;
+  assetCopy = asset;
   v8 = dispatch_semaphore_create(0);
-  v9 = [v13 vcp_fingerprint:v8];
-  v10 = [v7 vcp_fingerprint:v8];
+  v9 = [duplicateCopy vcp_fingerprint:v8];
+  v10 = [assetCopy vcp_fingerprint:v8];
   v11 = v10;
   v12 = -1;
   if (v9 && v10)
@@ -2696,17 +2696,17 @@ LABEL_7:
   *a5 = v12;
 }
 
-- (void)_getSceneDescriptors:(id)a3 asDescriptorClass:(Class)a4 withSceneRange:(id *)a5 andAnalysisResults:(id)a6
+- (void)_getSceneDescriptors:(id)descriptors asDescriptorClass:(Class)class withSceneRange:(id *)range andAnalysisResults:(id)results
 {
   v41 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v9 = a6;
+  descriptorsCopy = descriptors;
+  resultsCopy = results;
   v10 = MEMORY[0x1E6960CC0];
   v37 = **&MEMORY[0x1E6960CC0];
   v11 = objc_opt_class();
   v12 = &MediaAnalysisResultSceneprintAttributeKey;
-  v29 = a4;
-  if (v11 != a4)
+  classCopy = class;
+  if (v11 != class)
   {
     v12 = &MediaAnalysisResultFeatureVectorAttributeKey;
   }
@@ -2715,31 +2715,31 @@ LABEL_7:
   v13 = 0;
   *&v14 = 138413058;
   v28 = v14;
-  while ([v9 count] > v13)
+  while ([resultsCopy count] > v13)
   {
-    if (v13 == [v9 count] - 1)
+    if (v13 == [resultsCopy count] - 1)
     {
-      v15 = *&a5->var0.var3;
-      *&range.start.value = *&a5->var0.var0;
+      v15 = *&range->var0.var3;
+      *&range.start.value = *&range->var0.var0;
       *&range.start.epoch = v15;
-      *&range.duration.timescale = *&a5->var1.var1;
+      *&range.duration.timescale = *&range->var1.var1;
       CMTimeRangeGetEnd(&time1.start, &range);
       start = time1.start;
     }
 
     else
     {
-      v16 = [v9 objectAtIndexedSubscript:v13 + 1];
+      v16 = [resultsCopy objectAtIndexedSubscript:v13 + 1];
       v17 = [v16 objectForKeyedSubscript:@"start"];
       CMTimeMakeFromDictionary(&range.start, v17);
       start = range.start;
     }
 
     time1.start = v37;
-    v18 = *&a5->var0.var3;
-    *&range.start.value = *&a5->var0.var0;
+    v18 = *&range->var0.var3;
+    *&range.start.value = *&range->var0.var0;
     *&range.start.epoch = v18;
-    *&range.duration.timescale = *&a5->var1.var1;
+    *&range.duration.timescale = *&range->var1.var1;
     CMTimeRangeGetEnd(&time2.start, &range);
     if ((CMTimeCompare(&time1.start, &time2.start) & 0x80000000) == 0)
     {
@@ -2753,10 +2753,10 @@ LABEL_7:
     CMTimeSubtract(&time2.start, &lhs.start, &rhs);
     CMTimeRangeMake(&range, &time1.start, &time2.start);
     time2 = range;
-    v19 = *&a5->var0.var3;
-    *&lhs.start.value = *&a5->var0.var0;
+    v19 = *&range->var0.var3;
+    *&lhs.start.value = *&range->var0.var0;
     *&lhs.start.epoch = v19;
-    *&lhs.duration.timescale = *&a5->var1.var1;
+    *&lhs.duration.timescale = *&range->var1.var1;
     memset(&time1, 0, sizeof(time1));
     CMTimeRangeGetIntersection(&time1, &time2, &lhs);
     if ((time1.start.flags & 1) != 0 && (time1.duration.flags & 1) != 0 && !time1.duration.epoch && (time1.duration.value & 0x8000000000000000) == 0)
@@ -2766,19 +2766,19 @@ LABEL_7:
       lhs.start.epoch = *(v10 + 16);
       if (CMTimeCompare(&time2.start, &lhs.start))
       {
-        v20 = [v9 objectAtIndexedSubscript:v13];
+        v20 = [resultsCopy objectAtIndexedSubscript:v13];
         v21 = [v20 objectForKeyedSubscript:@"attributes"];
         v22 = [v21 objectForKeyedSubscript:v31];
 
         if (v22)
         {
-          v23 = [(objc_class *)v29 descriptorWithData:v22];
+          v23 = [(objc_class *)classCopy descriptorWithData:v22];
           if (!v23 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             v24 = [v22 length];
             v25 = [v22 description];
             LODWORD(time2.start.value) = v28;
-            *(&time2.start.value + 4) = v29;
+            *(&time2.start.value + 4) = classCopy;
             LOWORD(time2.start.flags) = 2112;
             *(&time2.start.flags + 2) = v31;
             HIWORD(time2.start.epoch) = 2048;
@@ -2795,7 +2795,7 @@ LABEL_7:
           v39[0] = v26;
           v39[1] = v23;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
-          [v30 addObject:v27];
+          [descriptorsCopy addObject:v27];
         }
       }
     }
@@ -2805,29 +2805,29 @@ LABEL_7:
   }
 }
 
-- (id)_queryDistanceDescriptor:(Class)a3 ofAsset:(id)a4 withExistingAnalysis:(id)a5 andDatabase:(id)a6 timeRange:(id *)a7 lastFeature:(BOOL)a8 isDegraded:(BOOL *)a9
+- (id)_queryDistanceDescriptor:(Class)descriptor ofAsset:(id)asset withExistingAnalysis:(id)analysis andDatabase:(id)database timeRange:(id *)range lastFeature:(BOOL)feature isDegraded:(BOOL *)degraded
 {
-  v9 = a8;
+  featureCopy = feature;
   v66[2] = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v58 = a6;
-  if (!v14)
+  assetCopy = asset;
+  analysisCopy = analysis;
+  databaseCopy = database;
+  if (!assetCopy)
   {
-    v59 = 0;
+    array = 0;
     goto LABEL_70;
   }
 
-  v59 = [MEMORY[0x1E695DF70] array];
-  if (objc_opt_class() == a3 && -[objc_class usePHAssetData](a3, "usePHAssetData") && [v14 mediaType] == 1)
+  array = [MEMORY[0x1E695DF70] array];
+  if (objc_opt_class() == descriptor && -[objc_class usePHAssetData](descriptor, "usePHAssetData") && [assetCopy mediaType] == 1)
   {
-    [v14 fetchPropertySetsIfNeeded];
-    if (objc_opt_class() == a3)
+    [assetCopy fetchPropertySetsIfNeeded];
+    if (objc_opt_class() == descriptor)
     {
-      v17 = [v14 sceneprintProperties];
-      v16 = [v17 sceneprint];
+      sceneprintProperties = [assetCopy sceneprintProperties];
+      sceneprint = [sceneprintProperties sceneprint];
 
-      if (!v16)
+      if (!sceneprint)
       {
 LABEL_17:
 
@@ -2837,14 +2837,14 @@ LABEL_17:
 
     else
     {
-      v16 = [v14 distanceIdentity];
-      if (!v16)
+      sceneprint = [assetCopy distanceIdentity];
+      if (!sceneprint)
       {
         goto LABEL_17;
       }
     }
 
-    v18 = [(objc_class *)a3 descriptorWithData:v16];
+    v18 = [(objc_class *)descriptor descriptorWithData:sceneprint];
     if (v18)
     {
       v65[0] = @"duration";
@@ -2856,11 +2856,11 @@ LABEL_17:
       v66[0] = v19;
       v66[1] = v18;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
-      [v59 addObject:v20];
+      [array addObject:v20];
 
-      if (a9)
+      if (degraded)
       {
-        *a9 = 0;
+        *degraded = 0;
       }
 
       goto LABEL_69;
@@ -2868,10 +2868,10 @@ LABEL_17:
 
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v21 = [v16 length];
-      [v16 description];
+      v21 = [sceneprint length];
+      [sceneprint description];
       LODWORD(time.start.value) = 138412802;
-      *(&time.start.value + 4) = a3;
+      *(&time.start.value + 4) = descriptor;
       LOWORD(time.start.flags) = 2048;
       *(&time.start.flags + 2) = v21;
       time.duration.value = HIWORD(time.start.epoch) = 2112;
@@ -2883,16 +2883,16 @@ LABEL_17:
   }
 
 LABEL_18:
-  v16 = v15;
-  if (!v16)
+  sceneprint = analysisCopy;
+  if (!sceneprint)
   {
     if ([(NSNumber *)self->_standalone BOOLValue])
     {
-      v16 = 0;
+      sceneprint = 0;
       goto LABEL_64;
     }
 
-    if (objc_opt_class() == a3)
+    if (objc_opt_class() == descriptor)
     {
       v31 = 46;
     }
@@ -2906,54 +2906,54 @@ LABEL_18:
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v31];
     v34 = [v32 setWithObject:v33];
 
-    if ([v14 mediaType] == 2)
+    if ([assetCopy mediaType] == 2)
     {
       [v34 addObject:&unk_1F49BE020];
     }
 
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
-      v35 = [v14 photoLibrary];
-      v36 = [v35 mad_fetchRequest];
+      photoLibrary = [assetCopy photoLibrary];
+      mad_fetchRequest = [photoLibrary mad_fetchRequest];
 
-      v37 = [v14 localIdentifier];
-      v16 = [v36 fetchAnalysisWithLocalIdentifier:v37 predicate:0 resultTypes:v34];
+      localIdentifier = [assetCopy localIdentifier];
+      sceneprint = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0 resultTypes:v34];
     }
 
     else
     {
-      v36 = [v14 localIdentifier];
-      v16 = [v58 queryAnalysisForAsset:v36 withTypes:v34];
+      mad_fetchRequest = [assetCopy localIdentifier];
+      sceneprint = [databaseCopy queryAnalysisForAsset:mad_fetchRequest withTypes:v34];
     }
 
-    if (!v16)
+    if (!sceneprint)
     {
       goto LABEL_64;
     }
   }
 
-  if ([v16 vcp_version] >= 7)
+  if ([sceneprint vcp_version] >= 7)
   {
-    v23 = [v14 vcp_modificationDate];
-    v24 = [v16 vcp_dateModified];
-    v25 = [v23 isEqualToDate:v24];
+    vcp_modificationDate = [assetCopy vcp_modificationDate];
+    vcp_dateModified = [sceneprint vcp_dateModified];
+    v25 = [vcp_modificationDate isEqualToDate:vcp_dateModified];
 
     if (v25)
     {
       v26 = objc_opt_class();
       v27 = &MediaAnalysisSceneprintResultsKey;
-      if (v26 != a3)
+      if (v26 != descriptor)
       {
         v27 = &MediaAnalysisFeatureVectorResultsKey;
       }
 
       v54 = *v27;
-      v28 = [v16 objectForKeyedSubscript:@"metadataRanges"];
+      v28 = [sceneprint objectForKeyedSubscript:@"metadataRanges"];
       v29 = [v28 objectForKeyedSubscript:v54];
 
-      if ([v14 mediaType] == 2)
+      if ([assetCopy mediaType] == 2)
       {
-        v30 = [v16 objectForKeyedSubscript:@"metadataRanges"];
+        v30 = [sceneprint objectForKeyedSubscript:@"metadataRanges"];
         v55 = [v30 objectForKeyedSubscript:@"SceneResults"];
 
         if (!v29)
@@ -2977,7 +2977,7 @@ LABEL_63:
       {
         if (v55)
         {
-          if (v9)
+          if (featureCopy)
           {
             [v55 lastObject];
           }
@@ -2988,13 +2988,13 @@ LABEL_63:
           }
           v38 = ;
           memset(&time, 0, sizeof(time));
-          v39 = a7;
-          if ((a7->var0.var2 & 1) == 0 || (a7->var1.var2 & 1) == 0 || a7->var1.var3 || a7->var1.var0 < 0 || (*&time1.start.value = *&a7->var1.var0, time1.start.epoch = a7->var1.var3, time2 = **&MEMORY[0x1E6960CC0], v52 = CMTimeCompare(&time1.start, &time2), v39 = a7, v52))
+          rangeCopy = range;
+          if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0 || (*&time1.start.value = *&range->var1.var0, time1.start.epoch = range->var1.var3, time2 = **&MEMORY[0x1E6960CC0], v52 = CMTimeCompare(&time1.start, &time2), rangeCopy = range, v52))
           {
-            v40 = *&v39->var0.var3;
-            *&time.start.value = *&v39->var0.var0;
+            v40 = *&rangeCopy->var0.var3;
+            *&time.start.value = *&rangeCopy->var0.var0;
             *&time.start.epoch = v40;
-            *&time.duration.timescale = *&v39->var1.var1;
+            *&time.duration.timescale = *&rangeCopy->var1.var1;
           }
 
           else
@@ -3003,12 +3003,12 @@ LABEL_63:
           }
 
           time1 = time;
-          [(VCPMediaAnalyzer *)self _getSceneDescriptors:v59 asDescriptorClass:a3 withSceneRange:&time1 andAnalysisResults:v29];
+          [(VCPMediaAnalyzer *)self _getSceneDescriptors:array asDescriptorClass:descriptor withSceneRange:&time1 andAnalysisResults:v29];
         }
 
         else
         {
-          if (v9)
+          if (featureCopy)
           {
             [v29 lastObject];
           }
@@ -3020,7 +3020,7 @@ LABEL_63:
           v38 = ;
           v41 = objc_opt_class();
           v42 = &MediaAnalysisResultSceneprintAttributeKey;
-          if (v41 != a3)
+          if (v41 != descriptor)
           {
             v42 = &MediaAnalysisResultFeatureVectorAttributeKey;
           }
@@ -3031,7 +3031,7 @@ LABEL_63:
 
           if (v44)
           {
-            v45 = [(objc_class *)a3 descriptorWithData:v44];
+            v45 = [(objc_class *)descriptor descriptorWithData:v44];
             if (v45)
             {
               v62[0] = @"duration";
@@ -3041,7 +3041,7 @@ LABEL_63:
               v63[0] = v46;
               v63[1] = v45;
               v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:2];
-              [v59 addObject:v47];
+              [array addObject:v47];
             }
 
             else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -3049,7 +3049,7 @@ LABEL_63:
               v53 = [v44 length];
               v48 = [v44 description];
               LODWORD(time.start.value) = 138413058;
-              *(&time.start.value + 4) = a3;
+              *(&time.start.value + 4) = descriptor;
               LOWORD(time.start.flags) = 2112;
               *(&time.start.flags + 2) = v54;
               HIWORD(time.start.epoch) = 2048;
@@ -3070,11 +3070,11 @@ LABEL_63:
   }
 
 LABEL_64:
-  if (a9)
+  if (degraded)
   {
-    if ([v14 isVideo])
+    if ([assetCopy isVideo])
     {
-      v50 = (~[v16 vcp_types] & 0x880) != 0;
+      v50 = (~[sceneprint vcp_types] & 0x880) != 0;
     }
 
     else
@@ -3082,14 +3082,14 @@ LABEL_64:
       v50 = 0;
     }
 
-    *a9 = v50;
+    *degraded = v50;
   }
 
 LABEL_69:
 
 LABEL_70:
 
-  return v59;
+  return array;
 }
 
 + (Class)_getDistanceDescriptorClass
@@ -3103,28 +3103,28 @@ LABEL_70:
   return v2;
 }
 
-- (void)distanceFromAsset:(id)a3 toAsset:(id)a4 duplicate:(int64_t *)a5 distance:(float *)a6
+- (void)distanceFromAsset:(id)asset toAsset:(id)toAsset duplicate:(int64_t *)duplicate distance:(float *)distance
 {
-  v10 = a3;
-  v11 = a4;
+  assetCopy = asset;
+  toAssetCopy = toAsset;
   {
     [VCPMediaAnalyzer distanceFromAsset:toAsset:duplicate:distance:]::kDescriptorClass = +[VCPMediaAnalyzer _getDistanceDescriptorClass];
   }
 
-  v12 = [objc_opt_class() sharedMediaAnalyzer];
+  sharedMediaAnalyzer = [objc_opt_class() sharedMediaAnalyzer];
 
-  if (v12 == self)
+  if (sharedMediaAnalyzer == self)
   {
-    v13 = [v10 photoLibrary];
-    v14 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v13];
+    photoLibrary = [assetCopy photoLibrary];
+    v14 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:photoLibrary];
 
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
       v44 = v14;
       *buf = 0;
       v52 = 0;
-      v43 = a6;
-      if ([v10 vcp_isLongMovie])
+      distanceCopy = distance;
+      if ([assetCopy vcp_isLongMovie])
       {
         if (_os_feature_enabled_impl())
         {
@@ -3142,20 +3142,20 @@ LABEL_70:
         v15 = 1;
       }
 
-      v17 = [v10 photoLibrary];
-      v18 = [v17 mad_fetchRequest];
+      photoLibrary2 = [assetCopy photoLibrary];
+      mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
 
       v51 = 0;
       v50 = 0;
-      v19 = [v10 localIdentifier];
-      [v18 fetchProcessingStatus:buf attempts:&v52 lastAttemptDate:&v51 nextAttemptDate:&v50 localIdentifier:v19 taskID:v15];
+      localIdentifier = [assetCopy localIdentifier];
+      [mad_fetchRequest fetchProcessingStatus:buf attempts:&v52 lastAttemptDate:&v51 nextAttemptDate:&v50 localIdentifier:localIdentifier taskID:v15];
       v20 = v51;
       v21 = v50;
 
-      v22 = [(NSNumber *)self->_standalone BOOLValue];
+      bOOLValue = [(NSNumber *)self->_standalone BOOLValue];
       if (*buf)
       {
-        v23 = v22;
+        v23 = bOOLValue;
       }
 
       else
@@ -3174,7 +3174,7 @@ LABEL_70:
         }
       }
 
-      if ([v11 vcp_isLongMovie])
+      if ([toAssetCopy vcp_isLongMovie])
       {
         v26 = _os_feature_enabled_impl();
       }
@@ -3186,7 +3186,7 @@ LABEL_70:
 
       v48 = v21;
       v49 = v20;
-      v27 = [v11 localIdentifier];
+      localIdentifier2 = [toAssetCopy localIdentifier];
       if (v26)
       {
         v28 = 254;
@@ -3197,14 +3197,14 @@ LABEL_70:
         v28 = 1;
       }
 
-      [v18 fetchProcessingStatus:buf attempts:&v52 lastAttemptDate:&v49 nextAttemptDate:&v48 localIdentifier:v27 taskID:v28];
+      [mad_fetchRequest fetchProcessingStatus:buf attempts:&v52 lastAttemptDate:&v49 nextAttemptDate:&v48 localIdentifier:localIdentifier2 taskID:v28];
       v29 = v49;
 
       v30 = v48;
-      v31 = [(NSNumber *)self->_standalone BOOLValue];
+      bOOLValue2 = [(NSNumber *)self->_standalone BOOLValue];
       if (*buf)
       {
-        v32 = v31;
+        v32 = bOOLValue2;
       }
 
       else
@@ -3222,8 +3222,8 @@ LABEL_70:
           v20 = v29;
           v21 = v30;
 LABEL_32:
-          *a5 = -1;
-          *v43 = -1.0;
+          *duplicate = -1;
+          *distanceCopy = -1.0;
 
 LABEL_47:
           v14 = v44;
@@ -3231,13 +3231,13 @@ LABEL_47:
         }
       }
 
-      a6 = v43;
+      distance = distanceCopy;
       v14 = v44;
 LABEL_34:
-      [(VCPMediaAnalyzer *)self _checkDuplicate:v10 withAsset:v11 duplicate:a5];
-      if (*a5 == 1)
+      [(VCPMediaAnalyzer *)self _checkDuplicate:assetCopy withAsset:toAssetCopy duplicate:duplicate];
+      if (*duplicate == 1)
       {
-        *a6 = 0.0;
+        *distance = 0.0;
 LABEL_48:
 
         goto LABEL_49;
@@ -3252,21 +3252,21 @@ LABEL_48:
         *buf = *MEMORY[0x1E6960CA8];
         v46 = v37;
         v47 = *(MEMORY[0x1E6960CA8] + 32);
-        v38 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:toAsset:duplicate:distance:]::kDescriptorClass ofAsset:v10 withExistingAnalysis:0 andDatabase:v14 timeRange:buf lastFeature:1 isDegraded:0];
+        v38 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:toAsset:duplicate:distance:]::kDescriptorClass ofAsset:assetCopy withExistingAnalysis:0 andDatabase:v14 timeRange:buf lastFeature:1 isDegraded:0];
         v39 = v36[1];
         *buf = *v36;
         v46 = v39;
         v47 = v36[2];
-        v40 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:toAsset:duplicate:distance:]::kDescriptorClass ofAsset:v11 withExistingAnalysis:0 andDatabase:v14 timeRange:buf lastFeature:0 isDegraded:0];
+        v40 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:toAsset:duplicate:distance:]::kDescriptorClass ofAsset:toAssetCopy withExistingAnalysis:0 andDatabase:v14 timeRange:buf lastFeature:0 isDegraded:0];
         if ([v38 count] && objc_msgSend(v40, "count"))
         {
-          [(VCPInterAssetAnalyzer *)v35 computeDistance:a6 fromArray:v38 toArray:v40];
+          [(VCPInterAssetAnalyzer *)v35 computeDistance:distance fromArray:v38 toArray:v40];
 LABEL_46:
 
           goto LABEL_47;
         }
 
-        if (![(VCPInterAssetAnalyzer *)v35 computeDistance:a6 withDescriptorClass:[VCPMediaAnalyzer distanceFromAsset:toAsset:duplicate:distance:]::kDescriptorClass fromAsset:v10 toAsset:v11])
+        if (![(VCPInterAssetAnalyzer *)v35 computeDistance:distance withDescriptorClass:[VCPMediaAnalyzer distanceFromAsset:toAsset:duplicate:distance:]::kDescriptorClass fromAsset:assetCopy toAsset:toAssetCopy])
         {
           goto LABEL_46;
         }
@@ -3278,7 +3278,7 @@ LABEL_46:
         v40 = 0;
       }
 
-      *a6 = -1.0;
+      *distance = -1.0;
       goto LABEL_46;
     }
 
@@ -3287,15 +3287,15 @@ LABEL_46:
       goto LABEL_34;
     }
 
-    v16 = [v10 localIdentifier];
-    if ([v14 isAssetBlacklisted:v16 blacklistDate:0])
+    localIdentifier3 = [assetCopy localIdentifier];
+    if ([v14 isAssetBlacklisted:localIdentifier3 blacklistDate:0])
     {
     }
 
     else
     {
-      v41 = [v11 localIdentifier];
-      v42 = [v14 isAssetBlacklisted:v41 blacklistDate:0];
+      localIdentifier4 = [toAssetCopy localIdentifier];
+      v42 = [v14 isAssetBlacklisted:localIdentifier4 blacklistDate:0];
 
       if (!v42)
       {
@@ -3303,8 +3303,8 @@ LABEL_46:
       }
     }
 
-    *a5 = -1;
-    *a6 = -1.0;
+    *duplicate = -1;
+    *distance = -1.0;
     goto LABEL_48;
   }
 
@@ -3317,30 +3317,30 @@ LABEL_46:
 LABEL_49:
 }
 
-- (void)distanceFromAsset:(id)a3 timeRange:(id *)a4 toAsset:(id)a5 timeRange:(id *)a6 duplicate:(int64_t *)a7 distance:(float *)a8
+- (void)distanceFromAsset:(id)asset timeRange:(id *)range toAsset:(id)toAsset timeRange:(id *)timeRange duplicate:(int64_t *)duplicate distance:(float *)distance
 {
-  v13 = a3;
-  v14 = a5;
+  assetCopy = asset;
+  toAssetCopy = toAsset;
   {
     [VCPMediaAnalyzer distanceFromAsset:timeRange:toAsset:timeRange:duplicate:distance:]::kDescriptorClass = +[VCPMediaAnalyzer _getDistanceDescriptorClass];
   }
 
-  v15 = [objc_opt_class() sharedMediaAnalyzer];
+  sharedMediaAnalyzer = [objc_opt_class() sharedMediaAnalyzer];
 
-  if (v15 == self)
+  if (sharedMediaAnalyzer == self)
   {
-    v16 = [v13 photoLibrary];
-    v17 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v16];
+    photoLibrary = [assetCopy photoLibrary];
+    v17 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:photoLibrary];
 
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
       v46 = v17;
-      v18 = [v13 photoLibrary];
-      v47 = [v18 mad_fetchRequest];
+      photoLibrary2 = [assetCopy photoLibrary];
+      mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
 
       buf.start.value = 0;
       LODWORD(range2.start.value) = 0;
-      if ([v13 vcp_isLongMovie])
+      if ([assetCopy vcp_isLongMovie])
       {
         v19 = _os_feature_enabled_impl();
       }
@@ -3352,7 +3352,7 @@ LABEL_49:
 
       v53 = 0;
       v54[0] = 0;
-      v21 = [v13 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       if (v19)
       {
         v22 = 254;
@@ -3363,14 +3363,14 @@ LABEL_49:
         v22 = 1;
       }
 
-      [v47 fetchProcessingStatus:&buf attempts:&range2 lastAttemptDate:v54 nextAttemptDate:&v53 localIdentifier:v21 taskID:v22];
+      [mad_fetchRequest fetchProcessingStatus:&buf attempts:&range2 lastAttemptDate:v54 nextAttemptDate:&v53 localIdentifier:localIdentifier taskID:v22];
       v23 = v54[0];
       v24 = v53;
 
-      v25 = [(NSNumber *)self->_standalone BOOLValue];
+      bOOLValue = [(NSNumber *)self->_standalone BOOLValue];
       if (buf.start.value)
       {
-        v26 = v25;
+        v26 = bOOLValue;
       }
 
       else
@@ -3378,10 +3378,10 @@ LABEL_49:
         v26 = 1;
       }
 
-      if ((v26 & 1) == 0 && ([MEMORY[0x1E695DF00] now], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v24, "compare:", v27), v27, v28 == 1) || ((buf.start.value = 0, LODWORD(range2.start.value) = 0, v23, v24, !objc_msgSend(v14, "vcp_isLongMovie")) ? (v29 = 0) : (v29 = _os_feature_enabled_impl()), (v51 = 0, v52 = 0, objc_msgSend(v14, "localIdentifier"), v30 = objc_claimAutoreleasedReturnValue(), !v29) ? (v31 = 1) : (v31 = 254), (objc_msgSend(v47, "fetchProcessingStatus:attempts:lastAttemptDate:nextAttemptDate:localIdentifier:taskID:", &buf, &range2, &v52, &v51, v30, v31), v23 = v52, v24 = v51, v30, v32 = -[NSNumber BOOLValue](self->_standalone, "BOOLValue"), !buf.start.value) ? (v33 = 1) : (v33 = v32), (v33 & 1) == 0 && (objc_msgSend(MEMORY[0x1E695DF00], "now"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v24, "compare:", v34), v34, v35 == 1)))
+      if ((v26 & 1) == 0 && ([MEMORY[0x1E695DF00] now], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v24, "compare:", v27), v27, v28 == 1) || ((buf.start.value = 0, LODWORD(range2.start.value) = 0, v23, v24, !objc_msgSend(toAssetCopy, "vcp_isLongMovie")) ? (v29 = 0) : (v29 = _os_feature_enabled_impl()), (v51 = 0, v52 = 0, objc_msgSend(toAssetCopy, "localIdentifier"), v30 = objc_claimAutoreleasedReturnValue(), !v29) ? (v31 = 1) : (v31 = 254), (objc_msgSend(mad_fetchRequest, "fetchProcessingStatus:attempts:lastAttemptDate:nextAttemptDate:localIdentifier:taskID:", &buf, &range2, &v52, &v51, v30, v31), v23 = v52, v24 = v51, v30, v32 = -[NSNumber BOOLValue](self->_standalone, "BOOLValue"), !buf.start.value) ? (v33 = 1) : (v33 = v32), (v33 & 1) == 0 && (objc_msgSend(MEMORY[0x1E695DF00], "now"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v24, "compare:", v34), v34, v35 == 1)))
       {
-        *a7 = -1;
-        *a8 = -1.0;
+        *duplicate = -1;
+        *distance = -1.0;
 
         v17 = v46;
 LABEL_50:
@@ -3391,30 +3391,30 @@ LABEL_50:
 
       v17 = v46;
 LABEL_34:
-      [(VCPMediaAnalyzer *)self _checkDuplicate:v13 withAsset:v14 duplicate:a7];
-      if (*a7)
+      [(VCPMediaAnalyzer *)self _checkDuplicate:assetCopy withAsset:toAssetCopy duplicate:duplicate];
+      if (*duplicate)
       {
-        if ([v13 mediaType] == 2)
+        if ([assetCopy mediaType] == 2)
         {
-          v36 = *&a4->var0.var3;
-          *&buf.start.value = *&a4->var0.var0;
+          v36 = *&range->var0.var3;
+          *&buf.start.value = *&range->var0.var0;
           *&buf.start.epoch = v36;
-          *&buf.duration.timescale = *&a4->var1.var1;
-          v37 = *&a6->var0.var3;
-          *&range2.start.value = *&a6->var0.var0;
+          *&buf.duration.timescale = *&range->var1.var1;
+          v37 = *&timeRange->var0.var3;
+          *&range2.start.value = *&timeRange->var0.var0;
           *&range2.start.epoch = v37;
-          *&range2.duration.timescale = *&a6->var1.var1;
+          *&range2.duration.timescale = *&timeRange->var1.var1;
           v38 = CMTimeRangeEqual(&buf, &range2);
-          *a7 = v38 != 0;
+          *duplicate = v38 != 0;
           if (v38)
           {
 LABEL_37:
-            *a8 = 0.0;
+            *distance = 0.0;
             goto LABEL_50;
           }
         }
 
-        else if (*a7 == 1)
+        else if (*duplicate == 1)
         {
           goto LABEL_37;
         }
@@ -3423,25 +3423,25 @@ LABEL_37:
       v39 = objc_alloc_init(VCPInterAssetAnalyzer);
       if (v39)
       {
-        v40 = *&a4->var0.var3;
-        *&buf.start.value = *&a4->var0.var0;
+        v40 = *&range->var0.var3;
+        *&buf.start.value = *&range->var0.var0;
         *&buf.start.epoch = v40;
-        *&buf.duration.timescale = *&a4->var1.var1;
-        v41 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:timeRange:toAsset:timeRange:duplicate:distance:]::kDescriptorClass ofAsset:v13 withExistingAnalysis:0 andDatabase:v17 timeRange:&buf lastFeature:1 isDegraded:0];
-        v42 = *&a6->var0.var3;
-        *&buf.start.value = *&a6->var0.var0;
+        *&buf.duration.timescale = *&range->var1.var1;
+        v41 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:timeRange:toAsset:timeRange:duplicate:distance:]::kDescriptorClass ofAsset:assetCopy withExistingAnalysis:0 andDatabase:v17 timeRange:&buf lastFeature:1 isDegraded:0];
+        v42 = *&timeRange->var0.var3;
+        *&buf.start.value = *&timeRange->var0.var0;
         *&buf.start.epoch = v42;
-        *&buf.duration.timescale = *&a6->var1.var1;
-        v43 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:timeRange:toAsset:timeRange:duplicate:distance:]::kDescriptorClass ofAsset:v14 withExistingAnalysis:0 andDatabase:v17 timeRange:&buf lastFeature:0 isDegraded:0];
+        *&buf.duration.timescale = *&timeRange->var1.var1;
+        v43 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:[VCPMediaAnalyzer distanceFromAsset:timeRange:toAsset:timeRange:duplicate:distance:]::kDescriptorClass ofAsset:toAssetCopy withExistingAnalysis:0 andDatabase:v17 timeRange:&buf lastFeature:0 isDegraded:0];
         if ([v41 count] && objc_msgSend(v43, "count"))
         {
-          [(VCPInterAssetAnalyzer *)v39 computeDistance:a8 fromArray:v41 toArray:v43];
+          [(VCPInterAssetAnalyzer *)v39 computeDistance:distance fromArray:v41 toArray:v43];
 LABEL_47:
 
           goto LABEL_50;
         }
 
-        if (![(VCPInterAssetAnalyzer *)v39 computeDistance:a8 withDescriptorClass:[VCPMediaAnalyzer distanceFromAsset:timeRange:toAsset:timeRange:duplicate:distance:]::kDescriptorClass fromAsset:v13 toAsset:v14])
+        if (![(VCPInterAssetAnalyzer *)v39 computeDistance:distance withDescriptorClass:[VCPMediaAnalyzer distanceFromAsset:timeRange:toAsset:timeRange:duplicate:distance:]::kDescriptorClass fromAsset:assetCopy toAsset:toAssetCopy])
         {
           goto LABEL_47;
         }
@@ -3453,7 +3453,7 @@ LABEL_47:
         v43 = 0;
       }
 
-      *a8 = -1.0;
+      *distance = -1.0;
       goto LABEL_47;
     }
 
@@ -3462,15 +3462,15 @@ LABEL_47:
       goto LABEL_34;
     }
 
-    v20 = [v13 localIdentifier];
-    if ([v17 isAssetBlacklisted:v20 blacklistDate:0])
+    localIdentifier2 = [assetCopy localIdentifier];
+    if ([v17 isAssetBlacklisted:localIdentifier2 blacklistDate:0])
     {
     }
 
     else
     {
-      v44 = [v14 localIdentifier];
-      v45 = [v17 isAssetBlacklisted:v44 blacklistDate:0];
+      localIdentifier3 = [toAssetCopy localIdentifier];
+      v45 = [v17 isAssetBlacklisted:localIdentifier3 blacklistDate:0];
 
       if (!v45)
       {
@@ -3478,8 +3478,8 @@ LABEL_47:
       }
     }
 
-    *a7 = -1;
-    *a8 = -1.0;
+    *duplicate = -1;
+    *distance = -1.0;
     goto LABEL_50;
   }
 
@@ -3492,50 +3492,50 @@ LABEL_47:
 LABEL_51:
 }
 
-- (int)requestAnalysisTypes:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 cancelBlock:(id)a7 analyses:(id)a8
+- (int)requestAnalysisTypes:(unint64_t)types forAssets:(id)assets withOptions:(id)options andProgressHandler:(id)handler cancelBlock:(id)block analyses:(id)analyses
 {
   v191 = *MEMORY[0x1E69E9840];
-  v157 = a4;
-  v12 = a5;
-  v152 = a6;
-  v146 = a7;
-  v145 = a8;
-  v149 = v12;
-  v13 = [v12 objectForKeyedSubscript:@"AllowOnDemand"];
-  v140 = [v13 BOOLValue];
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  blockCopy = block;
+  analysesCopy = analyses;
+  v149 = optionsCopy;
+  v13 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemand"];
+  bOOLValue = [v13 BOOLValue];
 
-  v148 = [v12 objectForKeyedSubscript:@"HighlightContexts"];
-  v141 = [v12 objectForKeyedSubscript:@"HighlightPreferredRange"];
+  v148 = [optionsCopy objectForKeyedSubscript:@"HighlightContexts"];
+  v141 = [optionsCopy objectForKeyedSubscript:@"HighlightPreferredRange"];
   if (v148 && [v148 count])
   {
-    v14 = a3 & 0xFFFFFFFBFEBDF363 | 0x40142089CLL;
+    v14 = types & 0xFFFFFFFBFEBDF363 | 0x40142089CLL;
     goto LABEL_6;
   }
 
-  v15 = [v12 objectForKeyedSubscript:@"HighlightPreferredRange"];
+  v15 = [optionsCopy objectForKeyedSubscript:@"HighlightPreferredRange"];
 
   if (v15)
   {
-    v14 = a3 & 0xFFFFFFFBFEBDF363 | 0x40142089CLL;
+    v14 = types & 0xFFFFFFFBFEBDF363 | 0x40142089CLL;
     if (v148)
     {
 LABEL_6:
       if ([v148 count])
       {
-        v14 = a3 & 0xFFFEF7FBFEBDF363 | 0x108040142089CLL;
+        v14 = types & 0xFFFEF7FBFEBDF363 | 0x108040142089CLL;
       }
     }
   }
 
   else
   {
-    v14 = a3 & 0xFFFFFFFFFFFFFBFFLL;
+    v14 = types & 0xFFFFFFFFFFFFFBFFLL;
   }
 
-  v16 = [v12 objectForKeyedSubscript:@"CaptionWithHighlight"];
-  v17 = [v16 BOOLValue];
+  v16 = [optionsCopy objectForKeyedSubscript:@"CaptionWithHighlight"];
+  bOOLValue2 = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue2)
   {
     if (+[VCPVideoCaptionAnalyzer mode]== 1)
     {
@@ -3554,19 +3554,19 @@ LABEL_6:
     }
   }
 
-  v20 = [v12 objectForKeyedSubscript:@"PersonIDWithHighlight"];
-  v21 = [v20 BOOLValue];
+  v20 = [optionsCopy objectForKeyedSubscript:@"PersonIDWithHighlight"];
+  bOOLValue3 = [v20 BOOLValue];
 
-  if (v21)
+  if (bOOLValue3)
   {
     v14 |= 0x20008uLL;
   }
 
-  v22 = [v12 objectForKeyedSubscript:@"MetadataWithHighlight"];
-  v23 = [v22 BOOLValue];
+  v22 = [optionsCopy objectForKeyedSubscript:@"MetadataWithHighlight"];
+  bOOLValue4 = [v22 BOOLValue];
 
   v24 = v14 | 0x80000024008;
-  if (!v23)
+  if (!bOOLValue4)
   {
     v24 = v14;
   }
@@ -3581,8 +3581,8 @@ LABEL_6:
     v25 = v24;
   }
 
-  v26 = [v148 allKeys];
-  v27 = [v26 containsObject:@"SearchQueryString"];
+  allKeys = [v148 allKeys];
+  v27 = [allKeys containsObject:@"SearchQueryString"];
 
   if (v27)
   {
@@ -3602,7 +3602,7 @@ LABEL_6:
   }
 
   v150 = v31;
-  if ((a3 & 0x400) != 0)
+  if ((types & 0x400) != 0)
   {
     v32 = objc_alloc_init(VCPInterAssetAnalyzer);
     if (v25)
@@ -3641,15 +3641,15 @@ LABEL_6:
     v142 = MediaAnalysisResultsTypesForAnalysisTypes(v25);
   }
 
-  if (v140 && !+[VCPDeviceInformation canRenderVariation])
+  if (bOOLValue && !+[VCPDeviceInformation canRenderVariation])
   {
     v25 &= ~0x100000uLL;
   }
 
-  v33 = [v157 objectAtIndexedSubscript:0];
-  v34 = [v33 photoLibrary];
+  v33 = [assetsCopy objectAtIndexedSubscript:0];
+  photoLibrary = [v33 photoLibrary];
   v139 = v25;
-  v143 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v34];
+  v143 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:photoLibrary];
 
   if (!v143 && MediaAnalysisLogLevel() >= 4)
   {
@@ -3662,7 +3662,7 @@ LABEL_6:
     }
   }
 
-  v158 = [VCPDatabaseBatchIterator iteratorForAssets:v157 withDatabaseReader:v143 resultTypes:v142 batchSize:100];
+  v158 = [VCPDatabaseBatchIterator iteratorForAssets:assetsCopy withDatabaseReader:v143 resultTypes:v142 batchSize:100];
   if (!v158)
   {
     v163 = 0;
@@ -3675,9 +3675,9 @@ LABEL_6:
     goto LABEL_194;
   }
 
-  if (v152)
+  if (handlerCopy)
   {
-    v152[2](v152, a3, 0.0);
+    handlerCopy[2](handlerCopy, types, 0.0);
   }
 
   v37 = 0;
@@ -3689,7 +3689,7 @@ LABEL_6:
   v165 = 0;
   v41 = 0;
   v156 = 0;
-  v42 = v140;
+  v42 = bOOLValue;
   if (!v148)
   {
     v42 = 1;
@@ -3700,18 +3700,18 @@ LABEL_6:
   {
     v163 = v39;
     v164 = v40;
-    if (![v158 next] || objc_msgSend(v157, "count") <= v37)
+    if (![v158 next] || objc_msgSend(assetsCopy, "count") <= v37)
     {
       break;
     }
 
     context = objc_autoreleasePoolPush();
-    v160 = [v158 asset];
-    v161 = [MEMORY[0x1E695DF90] dictionary];
+    asset = [v158 asset];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v175 = 0;
 
     v159 = v37 + 1;
-    if (!v161)
+    if (!dictionary)
     {
       v45 = 0;
       v162 = 0;
@@ -3721,20 +3721,20 @@ LABEL_6:
       goto LABEL_119;
     }
 
-    if (([v160 isMemberOfClass:objc_opt_class()] & 1) == 0)
+    if (([asset isMemberOfClass:objc_opt_class()] & 1) == 0)
     {
       goto LABEL_94;
     }
 
-    v43 = [v160 vcp_modificationDate];
-    v44 = v43 == 0;
+    vcp_modificationDate = [asset vcp_modificationDate];
+    v44 = vcp_modificationDate == 0;
 
     if (v44)
     {
       goto LABEL_94;
     }
 
-    if (v146 && (v146[2]() & 1) != 0)
+    if (blockCopy && (blockCopy[2]() & 1) != 0)
     {
       v45 = 0;
       v162 = 0;
@@ -3761,19 +3761,19 @@ LABEL_6:
           [v48 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"SkipMetaDataOnDemand"];
         }
 
-        v50 = [v158 analysis];
-        v51 = [(VCPMediaAnalyzer *)self _requestAnalysis:v47 forAsset:v160 withExistingAnalysis:v50 andDatabase:v143 andOptions:v48 cancelBlock:v146];
+        analysis = [v158 analysis];
+        v51 = [(VCPMediaAnalyzer *)self _requestAnalysis:v47 forAsset:asset withExistingAnalysis:analysis andDatabase:v143 andOptions:v48 cancelBlock:blockCopy];
 
         if (v51)
         {
-          [v161 addEntriesFromDictionary:v51];
-          if (([v161 vcp_flags] & 0x80000000) != 0)
+          [dictionary addEntriesFromDictionary:v51];
+          if (([dictionary vcp_flags] & 0x80000000) != 0)
           {
 
             goto LABEL_94;
           }
 
-          v52 = [v161 objectForKeyedSubscript:@"metadataRanges"];
+          v52 = [dictionary objectForKeyedSubscript:@"metadataRanges"];
         }
 
         else
@@ -3787,9 +3787,9 @@ LABEL_6:
         v52 = 0;
       }
 
-      if (!v146 || (v146[2]() & 1) == 0)
+      if (!blockCopy || (blockCopy[2]() & 1) == 0)
       {
-        if ((a3 & 0x400) == 0)
+        if ((types & 0x400) == 0)
         {
           v45 = 0;
           v162 = 0;
@@ -3801,11 +3801,11 @@ LABEL_6:
 
         if (!v52)
         {
-          v55 = [MEMORY[0x1E695DF90] dictionary];
-          if (v55)
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          if (dictionary2)
           {
-            v52 = v55;
-            [v161 setObject:? forKey:?];
+            v52 = dictionary2;
+            [dictionary setObject:? forKey:?];
             goto LABEL_80;
           }
 
@@ -3817,9 +3817,9 @@ LABEL_94:
           v165 = 0;
           v41 = 0;
 LABEL_95:
-          v66 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v161];
+          v66 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dictionary];
           v46 = v52;
-          if (a3 == 0x10000)
+          if (types == 0x10000)
           {
             v67 = 0;
           }
@@ -3842,7 +3842,7 @@ LABEL_95:
           {
             if ([v67 count])
             {
-              v70 = -[VCPMediaAnalyzer _typesToRemove:requested:](self, "_typesToRemove:requested:", [v66 vcp_types], a3);
+              v70 = -[VCPMediaAnalyzer _typesToRemove:requested:](self, "_typesToRemove:requested:", [v66 vcp_types], types);
               v168 = 0u;
               v169 = 0u;
               v166 = 0u;
@@ -3870,7 +3870,7 @@ LABEL_95:
                 while (v72);
               }
 
-              if ((a3 & 0x400) == 0)
+              if ((types & 0x400) == 0)
               {
                 [v67 removeObjectForKey:@"DistanceResults"];
               }
@@ -3882,16 +3882,16 @@ LABEL_95:
             }
           }
 
-          v75 = [(NSNumber *)self->_noResultStrip BOOLValue];
+          bOOLValue5 = [(NSNumber *)self->_noResultStrip BOOLValue];
           v76 = v66;
-          if (!v75)
+          if (!bOOLValue5)
           {
             v144 = MediaAnalysisStripInternalResultsFromAnalysis(v66);
             v76 = v144;
           }
 
-          [v145 addObject:v76];
-          if (!v75)
+          [analysesCopy addObject:v76];
+          if (!bOOLValue5)
           {
           }
 
@@ -3900,9 +3900,9 @@ LABEL_95:
             v41 = v41;
 
             v165 = v165;
-            v77 = v160;
+            v77 = asset;
 
-            v78 = v161;
+            v78 = dictionary;
             v45 = v45;
 
             v163 = v45;
@@ -3912,9 +3912,9 @@ LABEL_95:
             v155 = v165;
             v156 = v41;
 LABEL_120:
-            if (v152)
+            if (handlerCopy)
             {
-              v152[2](v152, a3, v159 * 100.0 / [v157 count]);
+              handlerCopy[2](handlerCopy, types, v159 * 100.0 / [assetsCopy count]);
             }
 
             v53 = 1;
@@ -3959,7 +3959,7 @@ LABEL_80:
           v63 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:v61 ofAsset:v164 withExistingAnalysis:v162 andDatabase:v143 timeRange:buf lastFeature:1 isDegraded:0];
 
           v156 = v63;
-          if (!v140 || [v63 count] && objc_msgSend(v155, "count"))
+          if (!bOOLValue || [v63 count] && objc_msgSend(v155, "count"))
           {
             goto LABEL_92;
           }
@@ -3967,7 +3967,7 @@ LABEL_80:
           v64 = v163;
           if (!v163)
           {
-            v64 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:v160];
+            v64 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:asset];
           }
 
           v163 = v64;
@@ -4044,9 +4044,9 @@ LABEL_92:
               v131 = MEMORY[0x1E69E9C10];
               if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
               {
-                v132 = [v160 localIdentifier];
+                localIdentifier = [asset localIdentifier];
                 *buf = 138412290;
-                *&buf[4] = v132;
+                *&buf[4] = localIdentifier;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to generate asset descriptor", buf, 0xCu);
               }
 
@@ -4060,9 +4060,9 @@ LABEL_92:
             v128 = MEMORY[0x1E69E9C10];
             if (os_log_type_enabled(v127, OS_LOG_TYPE_ERROR))
             {
-              v129 = [v160 localIdentifier];
+              localIdentifier2 = [asset localIdentifier];
               *buf = 138412290;
-              *&buf[4] = v129;
+              *&buf[4] = localIdentifier2;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to generate asset descriptor", buf, 0xCu);
             }
 
@@ -4081,7 +4081,7 @@ LABEL_160:
 
         v65 = 0;
 LABEL_126:
-        v79 = v161;
+        v79 = dictionary;
         if (!v139)
         {
           v79 = 0;
@@ -4095,15 +4095,15 @@ LABEL_126:
         *buf = *MEMORY[0x1E6960CA8];
         v189 = v81;
         v190 = *(MEMORY[0x1E6960CA8] + 32);
-        v165 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:v80 ofAsset:v160 withExistingAnalysis:v162 andDatabase:v143 timeRange:buf lastFeature:0 isDegraded:0];
+        v165 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:v80 ofAsset:asset withExistingAnalysis:v162 andDatabase:v143 timeRange:buf lastFeature:0 isDegraded:0];
         v82 = objc_opt_class();
         v83 = *(MEMORY[0x1E6960CA8] + 16);
         *buf = *MEMORY[0x1E6960CA8];
         v189 = v83;
         v190 = *(MEMORY[0x1E6960CA8] + 32);
-        v84 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:v82 ofAsset:v160 withExistingAnalysis:v162 andDatabase:v143 timeRange:buf lastFeature:0 isDegraded:&v175];
+        v84 = [(VCPMediaAnalyzer *)self _queryDistanceDescriptor:v82 ofAsset:asset withExistingAnalysis:v162 andDatabase:v143 timeRange:buf lastFeature:0 isDegraded:&v175];
         v41 = v84;
-        if (!v140 || [v84 count] && objc_msgSend(v165, "count"))
+        if (!bOOLValue || [v84 count] && objc_msgSend(v165, "count"))
         {
           v45 = 0;
 LABEL_132:
@@ -4119,14 +4119,14 @@ LABEL_132:
 
             else
             {
-              v106 = [MEMORY[0x1E695DF90] dictionary];
-              v108 = v106;
-              v136 = v106 != 0;
-              if (v106)
+              dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+              v108 = dictionary3;
+              v136 = dictionary3 != 0;
+              if (dictionary3)
               {
                 if ((v38 & 1) != 0 || v175 == 1)
                 {
-                  [v106 setObject:&unk_1F49BE038 forKey:@"flags"];
+                  [dictionary3 setObject:&unk_1F49BE038 forKey:@"flags"];
                 }
 
                 v178[0] = @"distance";
@@ -4138,11 +4138,11 @@ LABEL_132:
                 v111 = [MEMORY[0x1E696AD98] numberWithFloat:v110];
                 v179[1] = v111;
                 v178[2] = @"neighbor";
-                v112 = [v164 localIdentifier];
-                v179[2] = v112;
+                localIdentifier3 = [v164 localIdentifier];
+                v179[2] = localIdentifier3;
                 v178[3] = @"neighborDateModified";
-                v113 = [v164 vcp_modificationDate];
-                v179[3] = v113;
+                vcp_modificationDate2 = [v164 vcp_modificationDate];
+                v179[3] = vcp_modificationDate2;
                 v114 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v179 forKeys:v178 count:4];
                 [v108 setObject:v114 forKey:@"attributes"];
 
@@ -4150,7 +4150,7 @@ LABEL_132:
                 v115 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v177 count:1];
                 [v56 setObject:v115 forKey:@"DistanceResults"];
 
-                [v161 vcp_addTypes:1024];
+                [dictionary vcp_addTypes:1024];
               }
 
               v52 = v56;
@@ -4161,8 +4161,8 @@ LABEL_132:
           goto LABEL_95;
         }
 
-        v45 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:v160];
-        if (![v45 vcp_hasLocalPhoto:{objc_msgSend(v160, "hasAdjustments")}])
+        v45 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:asset];
+        if (![v45 vcp_hasLocalPhoto:{objc_msgSend(asset, "hasAdjustments")}])
         {
           goto LABEL_132;
         }
@@ -4176,7 +4176,7 @@ LABEL_145:
           }
 
           v171 = 0;
-          v85 = [(VCPInterAssetAnalyzer *)v138 generateDistanceDescriptor:&v171 withDescriptorClass:objc_opt_class() forAsset:v160 withResources:v45 lastFrame:0];
+          v85 = [(VCPInterAssetAnalyzer *)v138 generateDistanceDescriptor:&v171 withDescriptorClass:objc_opt_class() forAsset:asset withResources:v45 lastFrame:0];
           v86 = v171;
           v87 = v86;
           if (v85)
@@ -4209,9 +4209,9 @@ LABEL_149:
             v121 = MEMORY[0x1E69E9C10];
             if (os_log_type_enabled(v120, OS_LOG_TYPE_ERROR))
             {
-              v122 = [v160 localIdentifier];
+              localIdentifier4 = [asset localIdentifier];
               *buf = 138412290;
-              *&buf[4] = v122;
+              *&buf[4] = localIdentifier4;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to generate asset descriptor", buf, 0xCu);
             }
 
@@ -4222,7 +4222,7 @@ LABEL_164:
         else
         {
           v172 = 0;
-          v88 = [(VCPInterAssetAnalyzer *)v138 generateDistanceDescriptor:&v172 withDescriptorClass:objc_opt_class() forAsset:v160 withResources:v45 lastFrame:0];
+          v88 = [(VCPInterAssetAnalyzer *)v138 generateDistanceDescriptor:&v172 withDescriptorClass:objc_opt_class() forAsset:asset withResources:v45 lastFrame:0];
           v86 = v172;
           v89 = v86;
           if (v88)
@@ -4253,9 +4253,9 @@ LABEL_164:
             v104 = MEMORY[0x1E69E9C10];
             if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
             {
-              v105 = [v160 localIdentifier];
+              localIdentifier5 = [asset localIdentifier];
               *buf = 138412290;
-              *&buf[4] = v105;
+              *&buf[4] = localIdentifier5;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to generate asset descriptor", buf, 0xCu);
             }
 
@@ -4289,8 +4289,8 @@ LABEL_123:
     }
   }
 
-  v133 = [v157 count];
-  if (v133 == [v145 count])
+  v133 = [assetsCopy count];
+  if (v133 == [analysesCopy count])
   {
     v134 = 0;
     goto LABEL_195;
@@ -4310,31 +4310,31 @@ LABEL_196:
   return v134;
 }
 
-- (int)requestAnalysesForAssets:(id)a3 analysisTypes:(unint64_t)a4 allowOndemand:(BOOL)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (int)requestAnalysesForAssets:(id)assets analysisTypes:(unint64_t)types allowOndemand:(BOOL)ondemand progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v9 = a5;
+  ondemandCopy = ondemand;
   v19[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  assetsCopy = assets;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v18 = @"AllowOnDemand";
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v15 = [MEMORY[0x1E696AD98] numberWithBool:ondemandCopy];
   v19[0] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  LODWORD(a4) = [(VCPMediaAnalyzer *)self requestAnalysis:a4 forAssets:v12 withOptions:v16 andProgressHandler:v13 andCompletionHandler:v14];
+  LODWORD(types) = [(VCPMediaAnalyzer *)self requestAnalysis:types forAssets:assetsCopy withOptions:v16 andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
-  return a4;
+  return types;
 }
 
-- (int)requestAnalysis:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestAnalysis:(unint64_t)analysis forAssets:(id)assets withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [objc_opt_class() sharedMediaAnalyzer];
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  sharedMediaAnalyzer = [objc_opt_class() sharedMediaAnalyzer];
 
-  if (v16 != self)
+  if (sharedMediaAnalyzer != self)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -4345,32 +4345,32 @@ LABEL_196:
     goto LABEL_15;
   }
 
-  if (!v12 || ![v12 count])
+  if (!assetsCopy || ![assetsCopy count])
   {
 LABEL_15:
-    v15[2](v15, 0);
+    completionHandlerCopy[2](completionHandlerCopy, 0);
     add = -1;
     goto LABEL_16;
   }
 
-  v17 = [v13 objectForKeyedSubscript:@"AllowOnDemand"];
-  v18 = [v17 BOOLValue];
+  v17 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemand"];
+  bOOLValue = [v17 BOOLValue];
 
-  if (!self->_standalone || ([v13 objectForKeyedSubscript:@"Standalone"], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+  if (!self->_standalone || ([optionsCopy objectForKeyedSubscript:@"Standalone"], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
   {
-    v20 = [v13 objectForKeyedSubscript:@"Standalone"];
+    v20 = [optionsCopy objectForKeyedSubscript:@"Standalone"];
     standalone = self->_standalone;
     self->_standalone = v20;
   }
 
-  if (!self->_noResultStrip || ([v13 objectForKeyedSubscript:@"KeepPrivateResults"], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+  if (!self->_noResultStrip || ([optionsCopy objectForKeyedSubscript:@"KeepPrivateResults"], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
   {
-    v23 = [v13 objectForKeyedSubscript:@"KeepPrivateResults"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"KeepPrivateResults"];
     noResultStrip = self->_noResultStrip;
     self->_noResultStrip = v23;
   }
 
-  if (!(v18 & 1 | ![(NSNumber *)self->_standalone BOOLValue]))
+  if (!(bOOLValue & 1 | ![(NSNumber *)self->_standalone BOOLValue]))
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -4406,12 +4406,12 @@ LABEL_15:
   v34[2] = __98__VCPMediaAnalyzer_requestAnalysis_forAssets_withOptions_andProgressHandler_andCompletionHandler___block_invoke_3;
   v34[3] = &unk_1E8350D18;
   v34[4] = self;
-  v40 = a3;
-  v35 = v12;
-  v36 = v13;
-  v37 = v14;
+  analysisCopy = analysis;
+  v35 = assetsCopy;
+  v36 = optionsCopy;
+  v37 = handlerCopy;
   v38 = v28;
-  v39 = v15;
+  v39 = completionHandlerCopy;
   v41 = add;
   v32 = v28;
   dispatch_async(v31, v34);
@@ -4456,46 +4456,46 @@ void __98__VCPMediaAnalyzer_requestAnalysis_forAssets_withOptions_andProgressHan
   [v1 removeObjectForKey:?];
 }
 
-- (id)requestAnalysisTypes:(unint64_t)a3 forAssets:(id)a4 allowOndemand:(BOOL)a5 progressHandler:(id)a6 error:(id *)a7
+- (id)requestAnalysisTypes:(unint64_t)types forAssets:(id)assets allowOndemand:(BOOL)ondemand progressHandler:(id)handler error:(id *)error
 {
-  v9 = a5;
+  ondemandCopy = ondemand;
   v19[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v18 = @"AllowOnDemand";
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:ondemandCopy];
   v19[0] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  v16 = [(VCPMediaAnalyzer *)self requestAnalysis:a3 forAssets:v12 withOptions:v15 andProgressHandler:v13 andError:a7];
+  v16 = [(VCPMediaAnalyzer *)self requestAnalysis:types forAssets:assetsCopy withOptions:v15 andProgressHandler:handlerCopy andError:error];
 
   return v16;
 }
 
-- (id)requestAnalysis:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andError:(id *)a7
+- (id)requestAnalysis:(unint64_t)analysis forAssets:(id)assets withOptions:(id)options andProgressHandler:(id)handler andError:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 objectForKeyedSubscript:@"AllowOnDemand"];
-  v16 = [v15 BOOLValue];
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v15 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemand"];
+  bOOLValue = [v15 BOOLValue];
 
-  if (!self->_standalone || ([v13 objectForKeyedSubscript:@"Standalone"], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
+  if (!self->_standalone || ([optionsCopy objectForKeyedSubscript:@"Standalone"], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
   {
-    v18 = [v13 objectForKeyedSubscript:@"Standalone"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"Standalone"];
     standalone = self->_standalone;
     self->_standalone = v18;
   }
 
-  if (!self->_noResultStrip || ([v13 objectForKeyedSubscript:@"KeepPrivateResults"], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
+  if (!self->_noResultStrip || ([optionsCopy objectForKeyedSubscript:@"KeepPrivateResults"], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
   {
-    v21 = [v13 objectForKeyedSubscript:@"KeepPrivateResults"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"KeepPrivateResults"];
     noResultStrip = self->_noResultStrip;
     self->_noResultStrip = v21;
   }
 
-  v23 = [objc_opt_class() sharedMediaAnalyzer];
+  sharedMediaAnalyzer = [objc_opt_class() sharedMediaAnalyzer];
 
-  if (v23 != self)
+  if (sharedMediaAnalyzer != self)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -4503,19 +4503,19 @@ void __98__VCPMediaAnalyzer_requestAnalysis_forAssets_withOptions_andProgressHan
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] call from invalid instance", buf, 2u);
     }
 
-    v24 = 0;
+    array = 0;
     v25 = -18;
     goto LABEL_12;
   }
 
-  if (![v12 count])
+  if (![assetsCopy count])
   {
 LABEL_15:
-    v24 = 0;
+    array = 0;
     goto LABEL_16;
   }
 
-  if (!(v16 & 1 | ![(NSNumber *)self->_standalone BOOLValue]))
+  if (!(bOOLValue & 1 | ![(NSNumber *)self->_standalone BOOLValue]))
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -4523,19 +4523,19 @@ LABEL_15:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] on-demand analysis requested in standalone mode", v27, 2u);
     }
 
-    v24 = 0;
+    array = 0;
     v25 = -50;
     goto LABEL_12;
   }
 
-  v24 = [MEMORY[0x1E695DF70] array];
-  v25 = [(VCPMediaAnalyzer *)self requestAnalysisTypes:a3 forAssets:v12 withOptions:v13 andProgressHandler:v14 cancelBlock:&__block_literal_global_972 analyses:v24];
+  array = [MEMORY[0x1E695DF70] array];
+  v25 = [(VCPMediaAnalyzer *)self requestAnalysisTypes:analysis forAssets:assetsCopy withOptions:optionsCopy andProgressHandler:handlerCopy cancelBlock:&__block_literal_global_972 analyses:array];
   if (v25)
   {
 LABEL_12:
-    if (a7)
+    if (error)
     {
-      *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v25 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v25 userInfo:0];
     }
 
     goto LABEL_15;
@@ -4543,47 +4543,47 @@ LABEL_12:
 
 LABEL_16:
 
-  return v24;
+  return array;
 }
 
-- (id)curateMovieAssetsForCollection:(id)a3 withAlreadyCuratedAssets:(id)a4 andDesiredCount:(unint64_t)a5 allowOnDemand:(BOOL)a6
+- (id)curateMovieAssetsForCollection:(id)collection withAlreadyCuratedAssets:(id)assets andDesiredCount:(unint64_t)count allowOnDemand:(BOOL)demand
 {
-  v6 = a6;
+  demandCopy = demand;
   v107 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v76 = a4;
-  v64 = v9;
+  collectionCopy = collection;
+  assetsCopy = assets;
+  v64 = collectionCopy;
   {
     [VCPMediaAnalyzer curateMovieAssetsForCollection:withAlreadyCuratedAssets:andDesiredCount:allowOnDemand:]::kDescriptorClass = +[VCPMediaAnalyzer _getDistanceDescriptorClass];
   }
 
-  v10 = 0;
-  if (v9 && a5)
+  reverseObjectEnumerator = 0;
+  if (collectionCopy && count)
   {
-    if (v6 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+    if (demandCopy && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Warning: On demand analysis is not supported.", buf, 2u);
     }
 
-    v62 = [v9 photoLibrary];
+    photoLibrary = [collectionCopy photoLibrary];
     v11 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:?];
     if (v11)
     {
       v78 = v11;
-      v66 = [MEMORY[0x1E695DF70] array];
-      v59 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:v62 forTaskID:1];
-      v60 = [MEMORY[0x1E6978628] fetchAssetsInAssetCollection:v9 options:?];
-      v70 = [MEMORY[0x1E695DF90] dictionary];
+      array = [MEMORY[0x1E695DF70] array];
+      v59 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:photoLibrary forTaskID:1];
+      v60 = [MEMORY[0x1E6978628] fetchAssetsInAssetCollection:collectionCopy options:?];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       if (+[MADManagedPhotosAsset isMACDReadEnabled])
       {
-        v12 = [v9 photoLibrary];
-        v74 = [v12 mad_fetchRequest];
+        photoLibrary2 = [collectionCopy photoLibrary];
+        mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
       }
 
       else
       {
-        v74 = 0;
+        mad_fetchRequest = 0;
       }
 
       v97 = 0u;
@@ -4606,18 +4606,18 @@ LABEL_16:
 
             v17 = *(*(&v95 + 1) + 8 * i);
             v18 = objc_autoreleasePoolPush();
-            if ([v17 isVideo] && (objc_msgSend(v76, "containsObject:", v17) & 1) == 0)
+            if ([v17 isVideo] && (objc_msgSend(assetsCopy, "containsObject:", v17) & 1) == 0)
             {
               [v17 fetchPropertySetsIfNeeded];
-              v19 = [v17 localIdentifier];
+              localIdentifier = [v17 localIdentifier];
               if (+[MADManagedPhotosAsset isMACDReadEnabled])
               {
-                [v74 fetchAnalysisWithLocalIdentifier:v19 predicate:0];
+                [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
               }
 
               else
               {
-                [v78 queryAnalysisForAsset:v19];
+                [v78 queryAnalysisForAsset:localIdentifier];
               }
               v20 = ;
               v21 = MediaAnalysisPostProcessCurationScore(v17, v20);
@@ -4631,11 +4631,11 @@ LABEL_16:
                   if (*&v22 > 0.4)
                   {
                     v23 = [MEMORY[0x1E696AD98] numberWithFloat:?];
-                    v24 = [v70 objectForKey:v23];
+                    v24 = [dictionary objectForKey:v23];
                     if (!v24)
                     {
                       v24 = [MEMORY[0x1E695DFA8] set];
-                      [v70 setObject:v24 forKey:v23];
+                      [dictionary setObject:v24 forKey:v23];
                     }
 
                     [v24 addObject:v17];
@@ -4653,15 +4653,15 @@ LABEL_16:
         while (v14);
       }
 
-      v25 = [v70 allKeys];
-      v61 = [v25 sortedArrayUsingSelector:sel_compare_];
+      allKeys = [dictionary allKeys];
+      v61 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-      v26 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v27 = v76;
+      v27 = assetsCopy;
       v28 = [v27 countByEnumeratingWithState:&v91 objects:v105 count:16];
       v29 = MEMORY[0x1E6960CA8];
       if (v28)
@@ -4692,7 +4692,7 @@ LABEL_16:
                 v35 = v36;
               }
 
-              [v26 addObject:v35];
+              [array2 addObject:v35];
             }
 
             objc_autoreleasePoolPop(v33);
@@ -4714,10 +4714,10 @@ LABEL_16:
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v68 = v26;
-      v10 = [v61 reverseObjectEnumerator];
-      v69 = v10;
-      v56 = [v10 countByEnumeratingWithState:&v87 objects:v101 count:16];
+      v68 = array2;
+      reverseObjectEnumerator = [v61 reverseObjectEnumerator];
+      v69 = reverseObjectEnumerator;
+      v56 = [reverseObjectEnumerator countByEnumeratingWithState:&v87 objects:v101 count:16];
       if (v56)
       {
         v63 = 0;
@@ -4728,7 +4728,7 @@ LABEL_16:
           {
             if (*v88 != v57)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v37 = *(*(&v87 + 1) + 8 * k);
@@ -4736,7 +4736,7 @@ LABEL_16:
             v84 = 0u;
             v85 = 0u;
             v86 = 0u;
-            v38 = [v70 objectForKey:v37];
+            v38 = [dictionary objectForKey:v37];
             v67 = v38;
             v39 = [v38 countByEnumeratingWithState:&v83 objects:v100 count:16];
             if (v39)
@@ -4778,7 +4778,7 @@ LABEL_16:
                   v82 = 0u;
                   v79 = 0u;
                   v80 = 0u;
-                  v45 = v26;
+                  v45 = array2;
                   v46 = [v45 countByEnumeratingWithState:&v79 objects:v99 count:16];
                   if (!v46)
                   {
@@ -4805,8 +4805,8 @@ LABEL_16:
                         v63 = v50;
 LABEL_74:
 
-                        v26 = v68;
-                        v10 = v69;
+                        array2 = v68;
+                        reverseObjectEnumerator = v69;
                         goto LABEL_76;
                       }
 
@@ -4819,7 +4819,7 @@ LABEL_74:
                     }
 
                     v46 = [v45 countByEnumeratingWithState:&v79 objects:v99 count:{16, v51}];
-                    v26 = v68;
+                    array2 = v68;
                     if (v46)
                     {
                       continue;
@@ -4830,9 +4830,9 @@ LABEL_74:
 
 LABEL_69:
 
-                  v10 = v69;
-                  [v66 addObject:v41];
-                  if ([v66 count] == a5)
+                  reverseObjectEnumerator = v69;
+                  [array addObject:v41];
+                  if ([array count] == count)
                   {
                     v63 = 0;
                     v53 = 12;
@@ -4868,9 +4868,9 @@ LABEL_88:
                       v54 = 0;
                     }
 
-                    else if ([v66 count])
+                    else if ([array count])
                     {
-                      v54 = v66;
+                      v54 = array;
                     }
 
                     else
@@ -4878,7 +4878,7 @@ LABEL_88:
                       v54 = 0;
                     }
 
-                    v10 = v54;
+                    reverseObjectEnumerator = v54;
                     goto LABEL_93;
                   }
 
@@ -4894,7 +4894,7 @@ LABEL_88:
             }
           }
 
-          v56 = [v10 countByEnumeratingWithState:&v87 objects:v101 count:16];
+          v56 = [reverseObjectEnumerator countByEnumeratingWithState:&v87 objects:v101 count:16];
         }
 
         while (v56);
@@ -4911,71 +4911,71 @@ LABEL_88:
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v78 = 0;
-      v13 = [v9 localIdentifier];
+      localIdentifier2 = [collectionCopy localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v13;
+      *&buf[4] = localIdentifier2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis] Failed to obtain database for collection %@", buf, 0xCu);
 
-      v10 = 0;
+      reverseObjectEnumerator = 0;
       goto LABEL_94;
     }
 
-    v10 = 0;
+    reverseObjectEnumerator = 0;
 LABEL_95:
   }
 
-  return v10;
+  return reverseObjectEnumerator;
 }
 
-- (id)requestMovieHighlightsForAssets:(id)a3 withOptions:(id)a4
+- (id)requestMovieHighlightsForAssets:(id)assets withOptions:(id)options
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v54 = a4;
-  v59 = v5;
-  if ([v5 count])
+  assetsCopy = assets;
+  optionsCopy = options;
+  v59 = assetsCopy;
+  if ([assetsCopy count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 photoLibrary];
-    v8 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v7];
+    v6 = [assetsCopy objectAtIndexedSubscript:0];
+    photoLibrary = [v6 photoLibrary];
+    v8 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:photoLibrary];
 
     v52 = v8;
     if (v8)
     {
-      v9 = [v54 objectForKeyedSubscript:@"AllowOnDemand"];
-      v53 = [v9 BOOLValue];
+      v9 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemand"];
+      bOOLValue = [v9 BOOLValue];
 
-      v10 = [v54 objectForKeyedSubscript:@"ScaledSlomoTime"];
-      v49 = [v10 BOOLValue];
+      v10 = [optionsCopy objectForKeyedSubscript:@"ScaledSlomoTime"];
+      bOOLValue2 = [v10 BOOLValue];
 
-      v50 = [v54 objectForKeyedSubscript:@"HighlightContexts"];
-      v11 = [v50 allKeys];
-      v12 = [v11 containsObject:@"SearchQueryString"];
+      v50 = [optionsCopy objectForKeyedSubscript:@"HighlightContexts"];
+      allKeys = [v50 allKeys];
+      v12 = [allKeys containsObject:@"SearchQueryString"];
 
       if (v12)
       {
         v13 = [(VCPMediaAnalyzer *)self prepareContextsQueryEmbedding:v50];
 
-        v14 = [v54 mutableCopy];
+        v14 = [optionsCopy mutableCopy];
         [v14 setObject:v13 forKeyedSubscript:@"HighlightContexts"];
 
         v50 = v13;
-        v54 = v14;
+        optionsCopy = v14;
       }
 
       if (+[MADManagedPhotosAsset isMACDReadEnabled])
       {
-        v15 = [v59 firstObject];
-        v16 = [v15 photoLibrary];
-        v51 = [v16 mad_fetchRequest];
+        firstObject = [v59 firstObject];
+        photoLibrary2 = [firstObject photoLibrary];
+        mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
       }
 
       else
       {
-        v51 = 0;
+        mad_fetchRequest = 0;
       }
 
-      v56 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       for (i = 0; [v59 count] > i; ++i)
       {
         v61 = [v59 objectAtIndexedSubscript:?];
@@ -4995,21 +4995,21 @@ LABEL_95:
           {
             if (+[MADManagedPhotosAsset isMACDReadEnabled])
             {
-              v20 = [v61 localIdentifier];
-              [v51 fetchAnalysisWithLocalIdentifier:v20 predicate:0];
+              localIdentifier = [v61 localIdentifier];
+              [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
             }
 
             else
             {
-              v20 = [v61 localIdentifier];
-              [v52 queryAnalysisForAsset:v20];
+              localIdentifier = [v61 localIdentifier];
+              [v52 queryAnalysisForAsset:localIdentifier];
             }
             v57 = ;
 
             v17 = v61;
             if (([v57 vcp_types] & 0x80000040000) != 0)
             {
-              v21 = MediaAnalysisPostProcessAnalysis(v61, v57, v49 ^ 1);
+              v21 = MediaAnalysisPostProcessAnalysis(v61, v57, bOOLValue2 ^ 1);
 
               v22 = VCPSignPostLog();
               v23 = os_signpost_id_generate(v22);
@@ -5022,7 +5022,7 @@ LABEL_95:
                 _os_signpost_emit_with_name_impl(&dword_1C9B70000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "VCPPostProcessMovieHighlights", "", &buf, 2u);
               }
 
-              v19 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:v61 analysis:v21 withOptions:v54];
+              v19 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:v61 analysis:v21 withOptions:optionsCopy];
               v26 = VCPSignPostLog();
               v27 = v26;
               if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
@@ -5041,18 +5041,18 @@ LABEL_95:
             }
           }
 
-          if (((v19 == 0) & v53) == 1)
+          if (((v19 == 0) & bOOLValue) == 1)
           {
-            v28 = [(VCPMediaAnalyzer *)self _analyzeOndemand:v17 forAnalysisTypes:0x80000040000 withExistingAnalysis:v57 andOptions:v54 storeAnalysis:1 cancelBlock:&__block_literal_global_977_0];
-            v19 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:v17 analysis:v28 withOptions:v54];
+            v28 = [(VCPMediaAnalyzer *)self _analyzeOndemand:v17 forAnalysisTypes:0x80000040000 withExistingAnalysis:v57 andOptions:optionsCopy storeAnalysis:1 cancelBlock:&__block_literal_global_977_0];
+            v19 = [(VCPMediaAnalyzer *)self _postProcessMovieHighlights:v17 analysis:v28 withOptions:optionsCopy];
           }
 
           v68 = 0u;
           v69 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v29 = [v19 vcp_results];
-          obj = [v29 objectForKeyedSubscript:@"MovieHighlightResults"];
+          vcp_results = [v19 vcp_results];
+          obj = [vcp_results objectForKeyedSubscript:@"MovieHighlightResults"];
 
           v30 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
           if (v30)
@@ -5086,11 +5086,11 @@ LABEL_95:
                 v42 = [VCPVideoKeyFrameResult alloc];
                 v63.start = v64;
                 v43 = [(VCPVideoKeyFrameResult *)v42 initWithTime:&v63 andScore:COERCE_DOUBLE(__PAIR64__(HIDWORD(v64.value), v41))];
-                v44 = [(VCPMovieCurationResults *)v18 highlights];
+                highlights = [(VCPMovieCurationResults *)v18 highlights];
                 v45 = [VCPMovieHighlightResult alloc];
                 v63 = buf;
                 v46 = [(VCPMovieHighlightResult *)v45 initWithTimeRange:&v63 score:v43 andKeyFrame:COERCE_DOUBLE(__PAIR64__(buf.duration.flags, v36))];
-                [v44 addObject:v46];
+                [highlights addObject:v46];
 
                 v47 = [v19 mutableCopy];
                 [(VCPMovieCurationResults *)v18 setResults:v47];
@@ -5103,7 +5103,7 @@ LABEL_95:
           }
         }
 
-        [v56 addObject:v18];
+        [array addObject:v18];
 
         objc_autoreleasePoolPop(context);
       }
@@ -5117,7 +5117,7 @@ LABEL_95:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis] Failed to obtain database for assets", &buf, 2u);
       }
 
-      v56 = 0;
+      array = 0;
     }
   }
 
@@ -5129,26 +5129,26 @@ LABEL_95:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis][requestMovieHighlightsForAssets] 0 Assets", &buf, 2u);
     }
 
-    v56 = 0;
+    array = 0;
   }
 
-  return v56;
+  return array;
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)postProcessMovieHighlightDuration:(SEL)a3 withOptions:(id)a4
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)postProcessMovieHighlightDuration:(SEL)duration withOptions:(id)options
 {
   v76 = *MEMORY[0x1E69E9840];
-  v57 = a4;
+  optionsCopy = options;
   v7 = a5;
   v54 = [v7 objectForKeyedSubscript:@"HighlightTargetDuration"];
   v51 = [v7 objectForKeyedSubscript:@"HighlightTolerance"];
   v55 = [v7 objectForKeyedSubscript:@"HighlightIndex"];
   *&v56 = [v7 objectForKeyedSubscript:@"MaxHighlightDuration"];
   *(&v56 + 1) = [v7 objectForKeyedSubscript:@"HighlightBestTrim"];
-  if (v57)
+  if (optionsCopy)
   {
-    v8 = [v57 vcp_results];
-    v9 = [v8 objectForKeyedSubscript:@"MovieHighlightResults"];
+    vcp_results = [optionsCopy vcp_results];
+    v9 = [vcp_results objectForKeyedSubscript:@"MovieHighlightResults"];
   }
 
   else
@@ -5177,8 +5177,8 @@ LABEL_95:
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v15 = [v57 vcp_results];
-      v16 = [v15 objectForKeyedSubscript:@"MovieHighlightResults"];
+      vcp_results2 = [optionsCopy vcp_results];
+      v16 = [vcp_results2 objectForKeyedSubscript:@"MovieHighlightResults"];
 
       v17 = [v16 countByEnumeratingWithState:&v64 objects:v75 count:16];
       if (v17)
@@ -5253,7 +5253,7 @@ LABEL_95:
     }
 
 LABEL_61:
-    v44 = MediaAnalysisPostProcessMovieHighlights(v57, v28, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+    v44 = MediaAnalysisPostProcessMovieHighlights(optionsCopy, v28, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
     v45 = v44;
     if (v44 && ([v44 objectForKeyedSubscript:@"MovieHighlightResults"], v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "objectAtIndexedSubscript:", 0), v47 = objc_claimAutoreleasedReturnValue(), v46, v47))
     {
@@ -5349,8 +5349,8 @@ LABEL_61:
   {
     if (([v55 intValue] & 0x80000000) == 0)
     {
-      v23 = [v55 intValue];
-      if ([v9 count] > v23)
+      intValue = [v55 intValue];
+      if ([v9 count] > intValue)
       {
         v24 = [v9 objectAtIndexedSubscript:{objc_msgSend(v55, "intValue")}];
         CMTimeRangeMakeFromDictionary(retstr, v24);
@@ -5418,13 +5418,13 @@ LABEL_66:
   return result;
 }
 
-- (id)requestLivePhotoEffectsForAssets:(id)a3 allowOnDemand:(BOOL)a4 flags:(unint64_t)a5
+- (id)requestLivePhotoEffectsForAssets:(id)assets allowOnDemand:(BOOL)demand flags:(unint64_t)flags
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() sharedMediaAnalyzer];
+  demandCopy = demand;
+  assetsCopy = assets;
+  sharedMediaAnalyzer = [objc_opt_class() sharedMediaAnalyzer];
 
-  if (v8 != self)
+  if (sharedMediaAnalyzer != self)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
@@ -5447,12 +5447,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v7 || ![v7 count])
+  if (!assetsCopy || ![assetsCopy count])
   {
     goto LABEL_13;
   }
 
-  if ([(NSNumber *)self->_standalone BOOLValue]&& !v5)
+  if ([(NSNumber *)self->_standalone BOOLValue]&& !demandCopy)
   {
     if (MediaAnalysisLogLevel() < 4)
     {
@@ -5471,17 +5471,17 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v67 = v7;
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  v68 = v14;
+  v67 = assetsCopy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v68 = dictionary;
   v61 = MediaAnalysisResultsTypesForAnalysisTypes(0x100000);
-  v15 = [v7 objectAtIndexedSubscript:0];
-  v16 = [v15 photoLibrary];
+  v15 = [assetsCopy objectAtIndexedSubscript:0];
+  photoLibrary = [v15 photoLibrary];
 
-  v69 = v16;
-  [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v16];
-  v60 = v65 = v5;
-  v17 = [VCPDatabaseBatchIterator iteratorForAssets:v7 withDatabaseReader:v60 resultTypes:v61 batchSize:100];
+  v69 = photoLibrary;
+  [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:photoLibrary];
+  v60 = v65 = demandCopy;
+  v17 = [VCPDatabaseBatchIterator iteratorForAssets:assetsCopy withDatabaseReader:v60 resultTypes:v61 batchSize:100];
   v64 = 0;
   v18 = -1;
   v66 = v17;
@@ -5492,20 +5492,20 @@ LABEL_13:
       break;
     }
 
-    if ([v7 count] <= ++v18)
+    if ([assetsCopy count] <= ++v18)
     {
       break;
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = [v17 asset];
-    [v20 fetchPropertySetsIfNeeded];
-    v21 = [v17 analysis];
-    v22 = [v21 vcp_results];
-    v23 = [v22 objectForKeyedSubscript:@"LivePhotoEffectsResults"];
+    asset = [v17 asset];
+    [asset fetchPropertySetsIfNeeded];
+    analysis = [v17 analysis];
+    vcp_results = [analysis vcp_results];
+    v23 = [vcp_results objectForKeyedSubscript:@"LivePhotoEffectsResults"];
 
     v71 = v23;
-    v24 = [v21 vcp_types];
+    vcp_types = [analysis vcp_types];
     v25 = [v23 count];
     v26 = v25 != 0;
     v70 = v19;
@@ -5537,15 +5537,15 @@ LABEL_13:
       goto LABEL_41;
     }
 
-    v34 = [v69 librarySpecificFetchOptions];
-    [v34 setIncludedDetectionTypes:&unk_1F49BEFE0];
-    v63 = [MEMORY[0x1E69787D0] fetchFacesInAsset:v20 options:v34];
+    librarySpecificFetchOptions = [v69 librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEFE0];
+    v63 = [MEMORY[0x1E69787D0] fetchFacesInAsset:asset options:librarySpecificFetchOptions];
     v35 = [v63 count];
     v36 = v35 != 0;
-    if (!v35 && (v24 & 0xC) != 0)
+    if (!v35 && (vcp_types & 0xC) != 0)
     {
-      v37 = [v21 vcp_results];
-      v38 = [v37 objectForKeyedSubscript:@"FaceResults"];
+      vcp_results2 = [analysis vcp_results];
+      v38 = [vcp_results2 objectForKeyedSubscript:@"FaceResults"];
       v36 = v38 != 0;
     }
 
@@ -5553,8 +5553,8 @@ LABEL_13:
     if (v39)
     {
       *buf = 0;
-      v62 = v20;
-      v40 = [VCPPhotosAsset assetWithPHAsset:v20];
+      v62 = asset;
+      v40 = [VCPPhotosAsset assetWithPHAsset:asset];
       v72 = 0;
       v41 = [(VCPEffectsAnalyzer *)v39 analyzeAsset:v40 onDemand:1 cancel:&__block_literal_global_988 statsFlags:buf results:&v72];
       v42 = v72;
@@ -5577,13 +5577,13 @@ LABEL_13:
           v47 = [v46 objectForKeyedSubscript:@"attributes"];
 
           v48 = [v47 objectForKeyedSubscript:@"loopSuggestionState"];
-          v49 = [v48 intValue];
+          intValue = [v48 intValue];
 
           v50 = [v47 objectForKeyedSubscript:@"longExposureSuggestionState"];
           LODWORD(v48) = [v50 intValue];
 
           v31 = [v47 objectForKeyedSubscript:@"livePhotoEffectsRecipe"];
-          v32 = v49;
+          v32 = intValue;
           v51 = v47;
           v33 = v48;
 
@@ -5599,7 +5599,7 @@ LABEL_13:
         v44 = 0;
       }
 
-      v20 = v62;
+      asset = v62;
     }
 
     else
@@ -5614,31 +5614,31 @@ LABEL_13:
 LABEL_41:
       if (v26)
       {
-        v52 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v53 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v32];
-        [v52 setObject:v53 forKey:@"loopSuggestionState"];
+        [dictionary2 setObject:v53 forKey:@"loopSuggestionState"];
 
         v54 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v33];
-        [v52 setObject:v54 forKey:@"longExposureSuggestionState"];
+        [dictionary2 setObject:v54 forKey:@"longExposureSuggestionState"];
 
         if (v31)
         {
           v55 = [[VCPProtoLivePhotoEffectsRecipe alloc] initWithData:v31];
-          v56 = [(VCPProtoLivePhotoEffectsRecipe *)v55 exportToLegacyDictionary];
-          [v52 setObject:v56 forKey:@"livePhotoEffectsRecipe"];
+          exportToLegacyDictionary = [(VCPProtoLivePhotoEffectsRecipe *)v55 exportToLegacyDictionary];
+          [dictionary2 setObject:exportToLegacyDictionary forKey:@"livePhotoEffectsRecipe"];
         }
 
-        v57 = [v20 localIdentifier];
-        [v68 setObject:v52 forKey:v57];
+        localIdentifier = [asset localIdentifier];
+        [v68 setObject:dictionary2 forKey:localIdentifier];
       }
 
       v44 = 0;
     }
 
     v17 = v66;
-    v7 = v67;
-    v14 = v68;
-    v16 = v69;
+    assetsCopy = v67;
+    dictionary = v68;
+    photoLibrary = v69;
     objc_autoreleasePoolPop(v70);
   }
 
@@ -5650,7 +5650,7 @@ LABEL_41:
 
   else
   {
-    v58 = v14;
+    v58 = dictionary;
   }
 
   v12 = v58;
@@ -5660,57 +5660,57 @@ LABEL_14:
   return v12;
 }
 
-+ (id)personModelFilepathForPhotoLibrary:(id)a3
++ (id)personModelFilepathForPhotoLibrary:(id)library
 {
-  v3 = [a3 vcp_vipModelFilepathForVIPType:0];
+  v3 = [library vcp_vipModelFilepathForVIPType:0];
 
   return v3;
 }
 
-+ (id)loadPersonModelAtPath:(id)a3 error:(id *)a4
++ (id)loadPersonModelAtPath:(id)path error:(id *)error
 {
-  v4 = [VCPFaceIDModel loadVIPModelAtPath:a3 withVIPType:0 error:a4];
+  v4 = [VCPFaceIDModel loadVIPModelAtPath:path withVIPType:0 error:error];
 
   return v4;
 }
 
-+ (unint64_t)faceprintRevisionForPersonModel:(id)a3
++ (unint64_t)faceprintRevisionForPersonModel:(id)model
 {
-  v3 = [a3 configuration];
-  v4 = [v3 faceprintRequestRevision];
+  configuration = [model configuration];
+  faceprintRequestRevision = [configuration faceprintRequestRevision];
 
-  return v4;
+  return faceprintRequestRevision;
 }
 
-+ (id)classifyFaceObservation:(id)a3 withPersonsModel:(id)a4 error:(id *)a5
++ (id)classifyFaceObservation:(id)observation withPersonsModel:(id)model error:(id *)error
 {
-  v5 = [VCPFaceIDModel classifyFaceObservation:a3 withModel:a4 error:a5];
+  v5 = [VCPFaceIDModel classifyFaceObservation:observation withModel:model error:error];
 
   return v5;
 }
 
-- (id)getTimeRangesForSceneIdentifiers:(id)a3 withResults:(id)a4
+- (id)getTimeRangesForSceneIdentifiers:(id)identifiers withResults:(id)results
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v34 = a4;
-  v36 = v5;
-  if ([v5 count])
+  identifiersCopy = identifiers;
+  resultsCopy = results;
+  v36 = identifiersCopy;
+  if ([identifiersCopy count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [identifiersCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v40 = [MEMORY[0x1E695DF90] dictionary];
-      v33 = [MEMORY[0x1E695DF70] array];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      array = [MEMORY[0x1E695DF70] array];
       v31 = [MEMORY[0x1E695DFD8] setWithArray:v36];
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      obj = [v34 objectForKeyedSubscript:@"ClassificationResults"];
+      obj = [resultsCopy objectForKeyedSubscript:@"ClassificationResults"];
       v29 = [obj countByEnumeratingWithState:&v51 objects:v62 count:16];
       if (v29)
       {
@@ -5750,13 +5750,13 @@ LABEL_14:
 
                   v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(*(*(&v47 + 1) + 8 * j), "intValue")}];
                   [v41 addObject:v12];
-                  v13 = [v40 objectForKeyedSubscript:v12];
+                  v13 = [dictionary objectForKeyedSubscript:v12];
                   v14 = v13 == 0;
 
                   if (v14)
                   {
-                    v16 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-                    v17 = [v16 mad_allAncestorsForSceneId:{objc_msgSend(v12, "unsignedIntValue")}];
+                    vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+                    v17 = [vcp_sharedTaxonomy mad_allAncestorsForSceneId:{objc_msgSend(v12, "unsignedIntValue")}];
 
                     if (v17)
                     {
@@ -5789,7 +5789,7 @@ LABEL_14:
                         while (v19);
                       }
 
-                      [v40 setObject:v18 forKeyedSubscript:v12];
+                      [dictionary setObject:v18 forKeyedSubscript:v12];
                       [v41 unionSet:v18];
                     }
 
@@ -5801,7 +5801,7 @@ LABEL_14:
 
                   else
                   {
-                    v15 = [v40 objectForKeyedSubscript:v12];
+                    v15 = [dictionary objectForKeyedSubscript:v12];
                     [v41 unionSet:v15];
                   }
                 }
@@ -5818,7 +5818,7 @@ LABEL_14:
               CMTimeRangeMakeFromDictionary(&v42, dictionaryRepresentation);
               range = v42;
               v23 = CMTimeRangeCopyAsDictionary(&range, 0);
-              [v33 addObject:v23];
+              [array addObject:v23];
 
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
               {
@@ -5851,34 +5851,34 @@ LABEL_14:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "sceneIdentifer type expected to be NSNumber", &range, 2u);
       }
 
-      v33 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v33 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v33;
+  return array;
 }
 
-- (id)getTimeRangesForActionIDs:(id)a3 withResults:(id)a4
+- (id)getTimeRangesForActionIDs:(id)ds withResults:(id)results
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v32 = a4;
-  v36 = v5;
-  if ([v5 count])
+  dsCopy = ds;
+  resultsCopy = results;
+  v36 = dsCopy;
+  if ([dsCopy count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [dsCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v38 = [MEMORY[0x1E695DF70] array];
-      [v32 objectForKeyedSubscript:@"HumanActionClassificationResults"];
+      array = [MEMORY[0x1E695DF70] array];
+      [resultsCopy objectForKeyedSubscript:@"HumanActionClassificationResults"];
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
@@ -5919,23 +5919,23 @@ LABEL_14:
                   v13 = [v8 objectForKeyedSubscript:@"attributes"];
                   v14 = [v13 objectForKeyedSubscript:@"humanActions"];
 
-                  v15 = [v12 stringValue];
-                  v16 = [v14 objectForKeyedSubscript:v15];
+                  stringValue = [v12 stringValue];
+                  v16 = [v14 objectForKeyedSubscript:stringValue];
                   v17 = v16 == 0;
 
                   if (!v17)
                   {
-                    v18 = [v12 stringValue];
-                    v19 = [v14 objectForKeyedSubscript:v18];
+                    stringValue2 = [v12 stringValue];
+                    v19 = [v14 objectForKeyedSubscript:stringValue2];
                     [v19 floatValue];
                     v21 = v20;
 
-                    v22 = [v12 stringValue];
-                    v23 = VCPHumanActionOperatingPointFromActionID(v22);
+                    stringValue3 = [v12 stringValue];
+                    v23 = VCPHumanActionOperatingPointFromActionID(stringValue3);
                     if (v23)
                     {
-                      v24 = [v12 stringValue];
-                      v25 = VCPHumanActionOperatingPointFromActionID(v24);
+                      stringValue4 = [v12 stringValue];
+                      v25 = VCPHumanActionOperatingPointFromActionID(stringValue4);
                       [v25 floatValue];
                       v27 = v21 > v26;
 
@@ -5945,7 +5945,7 @@ LABEL_14:
                         CMTimeRangeMakeFromDictionary(&v40, v8);
                         range = v40;
                         v28 = CMTimeRangeCopyAsDictionary(&range, 0);
-                        [v38 addObject:v28];
+                        [array addObject:v28];
 
                         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                         {
@@ -5991,39 +5991,39 @@ LABEL_14:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "actionID type expected to be NSNumber", &range, 2u);
       }
 
-      v38 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v38 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v38;
+  return array;
 }
 
-- (id)getTimeRangesForSoundIdentifiers:(id)a3 withResults:(id)a4
+- (id)getTimeRangesForSoundIdentifiers:(id)identifiers withResults:(id)results
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v27 = a4;
-  v28 = v5;
-  if ([v5 count])
+  identifiersCopy = identifiers;
+  resultsCopy = results;
+  v28 = identifiersCopy;
+  if ([identifiersCopy count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [identifiersCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v33 = [objc_opt_class() mad_audioTaxonomy:0 useResultsKey:1];
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      obj = v27;
+      obj = resultsCopy;
       v25 = [obj countByEnumeratingWithState:&v46 objects:v57 count:16];
       if (v25)
       {
@@ -6039,9 +6039,9 @@ LABEL_14:
             }
 
             v10 = *(*(&v46 + 1) + 8 * i);
-            v11 = [v33 allValues];
+            allValues = [v33 allValues];
             v35 = v10;
-            v12 = [v11 containsObject:v10];
+            v12 = [allValues containsObject:v10];
 
             if (v12)
             {
@@ -6092,7 +6092,7 @@ LABEL_14:
                             CMTimeRangeMakeFromDictionary(&v37, v20);
                             range = v37;
                             v21 = CMTimeRangeCopyAsDictionary(&range, 0);
-                            [v8 addObject:v21];
+                            [array addObject:v21];
 
                             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
                             {
@@ -6140,39 +6140,39 @@ LABEL_14:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "soundIdentifier type expected to be NSNumber", &range, 2u);
       }
 
-      v8 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v8 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v8;
+  return array;
 }
 
-- (id)getTimeRangesForThumbnailIdentifiers:(id)a3 withResults:(id)a4
+- (id)getTimeRangesForThumbnailIdentifiers:(id)identifiers withResults:(id)results
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v20 = a4;
-  v21 = v5;
-  if ([v5 count])
+  identifiersCopy = identifiers;
+  resultsCopy = results;
+  v21 = identifiersCopy;
+  if ([identifiersCopy count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [identifiersCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v19 = [MEMORY[0x1E695DF70] array];
-      v8 = [v5 firstObject];
+      array = [MEMORY[0x1E695DF70] array];
+      firstObject = [identifiersCopy firstObject];
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v9 = [v20 objectForKeyedSubscript:@"VideoThumbnailResults"];
+      v9 = [resultsCopy objectForKeyedSubscript:@"VideoThumbnailResults"];
       v10 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v10)
       {
@@ -6190,7 +6190,7 @@ LABEL_14:
             v14 = [v13 objectForKeyedSubscript:@"attributes"];
             v15 = [v14 objectForKeyedSubscript:@"thumbnailID"];
 
-            if ([v15 isEqualToString:v8])
+            if ([v15 isEqualToString:firstObject])
             {
               memset(&v24, 0, sizeof(v24));
               v16 = [v13 objectForKeyedSubscript:@"start"];
@@ -6203,7 +6203,7 @@ LABEL_14:
                 CMTimeRangeMake(&v23, &buf.start, &duration);
                 buf = v23;
                 v17 = CMTimeRangeCopyAsDictionary(&buf, 0);
-                [v19 addObject:v17];
+                [array addObject:v17];
               }
 
               goto LABEL_20;
@@ -6231,40 +6231,40 @@ LABEL_20:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "soundIdentifier type expected to be NSNumber", &buf, 2u);
       }
 
-      v19 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v19 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v19;
+  return array;
 }
 
-- (id)getTimeRangesInAsset:(id)a3 forPersonLocalIdentifiers:(id)a4 withAnalysis:(id)a5
+- (id)getTimeRangesInAsset:(id)asset forPersonLocalIdentifiers:(id)identifiers withAnalysis:(id)analysis
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v7 = a4;
-  v31 = a5;
-  if ([v7 count])
+  assetCopy = asset;
+  identifiersCopy = identifiers;
+  analysisCopy = analysis;
+  if ([identifiersCopy count])
   {
-    v34 = [MEMORY[0x1E695DF70] array];
-    v33 = [MEMORY[0x1E695DF70] array];
-    v8 = [v32 photoLibrary];
-    v9 = [v8 librarySpecificFetchOptions];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    photoLibrary = [assetCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v30 = v9;
-    [v9 setIncludeTorsoAndFaceDetectionData:1];
+    v30 = librarySpecificFetchOptions;
+    [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
     v45[0] = *MEMORY[0x1E6978D68];
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-    [v9 setFetchPropertySets:v10];
+    [librarySpecificFetchOptions setFetchPropertySets:v10];
 
-    [v9 setIncludedDetectionTypes:&unk_1F49BEFF8];
-    [v9 setIncludeMediaAnalysisProcessingRangeTypes:3];
-    [MEMORY[0x1E69787D0] fetchFacesInAsset:v32 options:v9];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEFF8];
+    [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
+    [MEMORY[0x1E69787D0] fetchFacesInAsset:assetCopy options:librarySpecificFetchOptions];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -6283,42 +6283,42 @@ LABEL_20:
           }
 
           v14 = *(*(&v36 + 1) + 8 * i);
-          v15 = [v14 personLocalIdentifier];
-          v16 = v15 == 0;
+          personLocalIdentifier = [v14 personLocalIdentifier];
+          v16 = personLocalIdentifier == 0;
 
           if (!v16)
           {
-            v17 = [v14 personLocalIdentifier];
-            v18 = [v14 personLocalIdentifier];
-            v19 = [v18 componentsSeparatedByString:@"/"];
+            personLocalIdentifier2 = [v14 personLocalIdentifier];
+            personLocalIdentifier3 = [v14 personLocalIdentifier];
+            v19 = [personLocalIdentifier3 componentsSeparatedByString:@"/"];
 
             if ([v19 count])
             {
-              v20 = [v19 firstObject];
+              firstObject = [v19 firstObject];
 
-              v17 = v20;
+              personLocalIdentifier2 = firstObject;
             }
 
-            v21 = [v14 personLocalIdentifier];
-            if ([v7 containsObject:v21])
+            personLocalIdentifier4 = [v14 personLocalIdentifier];
+            if ([identifiersCopy containsObject:personLocalIdentifier4])
             {
 
               goto LABEL_13;
             }
 
-            v22 = [v7 containsObject:v17];
+            v22 = [identifiersCopy containsObject:personLocalIdentifier2];
 
             if (v22)
             {
 LABEL_13:
               if ([v14 detectionType] == 1)
               {
-                v23 = v34;
+                v23 = array;
               }
 
               else
               {
-                v23 = v33;
+                v23 = array2;
               }
 
               [v23 addObject:v14];
@@ -6334,54 +6334,54 @@ LABEL_13:
       while (v11);
     }
 
-    if (![v34 count] && !objc_msgSend(v33, "count") && MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
+    if (![array count] && !objc_msgSend(array2, "count") && MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v24 = [v32 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       *buf = 138412546;
-      v41 = v7;
+      v41 = identifiersCopy;
       v42 = 2112;
-      v43 = v24;
+      v43 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "MediaAnalyzer : no PHFaces found for persons %@ in asset %@", buf, 0x16u);
     }
 
-    v25 = [MEMORY[0x1E695DF70] array];
-    if ([v34 count])
+    array3 = [MEMORY[0x1E695DF70] array];
+    if ([array count])
     {
-      v26 = [(VCPMediaAnalyzer *)self getTimeRangesInAsset:v32 forFaces:v34 withAnalysis:v31];
-      [v25 addObjectsFromArray:v26];
+      v26 = [(VCPMediaAnalyzer *)self getTimeRangesInAsset:assetCopy forFaces:array withAnalysis:analysisCopy];
+      [array3 addObjectsFromArray:v26];
     }
 
-    if ([v33 count])
+    if ([array2 count])
     {
-      v27 = [(VCPMediaAnalyzer *)self getTimeRangesInAsset:v32 forAnimals:v33 withAnalysis:v31];
-      [v25 addObjectsFromArray:v27];
+      v27 = [(VCPMediaAnalyzer *)self getTimeRangesInAsset:assetCopy forAnimals:array2 withAnalysis:analysisCopy];
+      [array3 addObjectsFromArray:v27];
     }
   }
 
   else
   {
-    v25 = MEMORY[0x1E695E0F0];
+    array3 = MEMORY[0x1E695E0F0];
   }
 
-  return v25;
+  return array3;
 }
 
-- (id)getTimeRangesInAsset:(id)a3 forFaces:(id)a4 withAnalysis:(id)a5
+- (id)getTimeRangesInAsset:(id)asset forFaces:(id)faces withAnalysis:(id)analysis
 {
   v125 = *MEMORY[0x1E69E9840];
-  v76 = a3;
-  v78 = a4;
-  v79 = a5;
-  v7 = [v78 count];
+  assetCopy = asset;
+  facesCopy = faces;
+  analysisCopy = analysis;
+  v7 = [facesCopy count];
   v8 = MEMORY[0x1E695E0F0];
-  if (v79 && v7)
+  if (analysisCopy && v7)
   {
-    v77 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v105 = 0u;
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    obj = v78;
+    obj = facesCopy;
     v9 = [obj countByEnumeratingWithState:&v103 objects:v124 count:16];
     if (v9)
     {
@@ -6400,7 +6400,7 @@ LABEL_13:
           if ([v85 detectionType] == 1)
           {
             [v85 fetchPropertySetsIfNeeded];
-            v10 = [v79 objectForKeyedSubscript:@"metadataRanges"];
+            v10 = [analysisCopy objectForKeyedSubscript:@"metadataRanges"];
             v11 = [v10 objectForKeyedSubscript:@"FacePrintResults"];
 
             v101 = 0u;
@@ -6412,7 +6412,7 @@ LABEL_13:
             if (v12)
             {
               v84 = *v100;
-              v82 = -1;
+              intValue = -1;
               v13 = 1.0;
               while (2)
               {
@@ -6429,36 +6429,36 @@ LABEL_13:
 
                   v87 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v88 error:0];
                   v86 = [v87 decodeObjectOfClass:objc_opt_class() forKey:@"facePrint"];
-                  v17 = [v85 faceClusteringProperties];
-                  v18 = [v17 faceprint];
-                  v19 = [v18 faceprintData];
+                  faceClusteringProperties = [v85 faceClusteringProperties];
+                  faceprint = [faceClusteringProperties faceprint];
+                  faceprintData = [faceprint faceprintData];
 
-                  if (v19)
+                  if (faceprintData)
                   {
                     v20 = objc_alloc(MEMORY[0x1E6984520]);
                     v98 = 0;
-                    v21 = [v20 initWithState:v19 error:&v98];
+                    v21 = [v20 initWithState:faceprintData error:&v98];
                     v22 = v98;
                     if (!v21)
                     {
                       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                       {
-                        v70 = [v85 localIdentifier];
+                        localIdentifier = [v85 localIdentifier];
                         LODWORD(buf.start.value) = 138412546;
-                        *(&buf.start.value + 4) = v70;
+                        *(&buf.start.value + 4) = localIdentifier;
                         LOWORD(buf.start.flags) = 2112;
                         *(&buf.start.flags + 2) = v22;
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "MediaAnalyzer : failed to initalize faceprint data for face: %@. Error: %@", &buf, 0x16u);
                       }
 
                       v71 = 0;
-                      v72 = v77;
+                      v72 = array;
                       goto LABEL_80;
                     }
 
-                    v23 = [v21 faceprint];
+                    faceprint2 = [v21 faceprint];
                     v97 = v22;
-                    v24 = [v23 computeDistance:v86 withDistanceFunction:0 error:&v97];
+                    v24 = [faceprint2 computeDistance:v86 withDistanceFunction:0 error:&v97];
                     v25 = v97;
 
                     if (v24)
@@ -6469,7 +6469,7 @@ LABEL_13:
                       {
                         v28 = [v15 objectForKeyedSubscript:@"attributes"];
                         v29 = [v28 objectForKeyedSubscript:@"faceId"];
-                        v82 = [v29 intValue];
+                        intValue = [v29 intValue];
 
                         v13 = v27;
                       }
@@ -6479,9 +6479,9 @@ LABEL_13:
                     {
                       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                       {
-                        v31 = [v85 localIdentifier];
+                        localIdentifier2 = [v85 localIdentifier];
                         LODWORD(buf.start.value) = 138412546;
-                        *(&buf.start.value + 4) = v31;
+                        *(&buf.start.value + 4) = localIdentifier2;
                         LOWORD(buf.start.flags) = 2112;
                         *(&buf.start.flags + 2) = v25;
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "MediaAnalyzer : failed to compute distance for face: %@. Error: %@", &buf, 0x16u);
@@ -6501,9 +6501,9 @@ LABEL_13:
                   {
                     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                     {
-                      v30 = [v85 localIdentifier];
+                      localIdentifier3 = [v85 localIdentifier];
                       LODWORD(buf.start.value) = 138412290;
-                      *(&buf.start.value + 4) = v30;
+                      *(&buf.start.value + 4) = localIdentifier3;
                       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "MediaAnalyzer : Failed to get faceClusteringProperties.faceprint.faceprintData for face %@", &buf, 0xCu);
                     }
                   }
@@ -6524,7 +6524,7 @@ LABEL_13:
                 v96 = 0u;
                 v93 = 0u;
                 v94 = 0u;
-                v32 = [v79 objectForKeyedSubscript:@"metadataRanges"];
+                v32 = [analysisCopy objectForKeyedSubscript:@"metadataRanges"];
                 v33 = [v32 objectForKeyedSubscript:@"FaceResults"];
 
                 v34 = [v33 countByEnumeratingWithState:&v93 objects:v122 count:16];
@@ -6549,9 +6549,9 @@ LABEL_13:
                       {
                         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                         {
-                          v50 = [v76 localIdentifier];
+                          localIdentifier4 = [assetCopy localIdentifier];
                           LODWORD(buf.start.value) = 138412290;
-                          *(&buf.start.value + 4) = v50;
+                          *(&buf.start.value + 4) = localIdentifier4;
                           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "MediaAnalyzer getTimeRangesInAsset : video faceID not available for asset %@", &buf, 0xCu);
                         }
                       }
@@ -6560,14 +6560,14 @@ LABEL_13:
                       {
                         v41 = [v37 objectForKeyedSubscript:@"attributes"];
                         v42 = [v41 objectForKeyedSubscript:@"faceId"];
-                        v43 = [v42 intValue];
+                        intValue2 = [v42 intValue];
 
-                        if (v43 == v82)
+                        if (intValue2 == intValue)
                         {
                           memset(&buf, 0, sizeof(buf));
                           CMTimeRangeMakeFromDictionary(&buf, v37);
-                          v44 = [v85 personLocalIdentifier];
-                          v45 = v44 == 0;
+                          personLocalIdentifier = [v85 personLocalIdentifier];
+                          v45 = personLocalIdentifier == 0;
 
                           if (v45)
                           {
@@ -6579,8 +6579,8 @@ LABEL_13:
                             time = buf.duration;
                             v47 = CMTimeCopyAsDictionary(&time, 0);
                             v118[1] = v47;
-                            v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v118 forKeys:v117 count:2];
-                            [v77 addObject:v48];
+                            personLocalIdentifier2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v118 forKeys:v117 count:2];
+                            [array addObject:personLocalIdentifier2];
                           }
 
                           else
@@ -6594,10 +6594,10 @@ LABEL_13:
                             v47 = CMTimeCopyAsDictionary(&time, 0);
                             v120[1] = v47;
                             v119[2] = @"faceIdentifier";
-                            v48 = [v85 personLocalIdentifier];
-                            v120[2] = v48;
+                            personLocalIdentifier2 = [v85 personLocalIdentifier];
+                            v120[2] = personLocalIdentifier2;
                             v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v120 forKeys:v119 count:3];
-                            [v77 addObject:v49];
+                            [array addObject:v49];
                           }
 
                           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -6628,7 +6628,7 @@ LABEL_13:
                   v92 = 0u;
                   v89 = 0u;
                   v90 = 0u;
-                  v53 = [v79 objectForKeyedSubscript:@"metadataRanges"];
+                  v53 = [analysisCopy objectForKeyedSubscript:@"metadataRanges"];
                   v54 = [v53 objectForKeyedSubscript:@"TorsoResults"];
 
                   v55 = [v54 countByEnumeratingWithState:&v89 objects:v112 count:16];
@@ -6647,14 +6647,14 @@ LABEL_13:
                         v58 = *(*(&v89 + 1) + 8 * m);
                         v59 = [v58 objectForKeyedSubscript:@"attributes"];
                         v60 = [v59 objectForKeyedSubscript:@"faceId"];
-                        v61 = [v60 intValue];
+                        intValue3 = [v60 intValue];
 
-                        if (v61 == v82)
+                        if (intValue3 == intValue)
                         {
                           memset(&buf, 0, sizeof(buf));
                           CMTimeRangeMakeFromDictionary(&buf, v58);
-                          v62 = [v85 personLocalIdentifier];
-                          v63 = v62 == 0;
+                          personLocalIdentifier3 = [v85 personLocalIdentifier];
+                          v63 = personLocalIdentifier3 == 0;
 
                           if (v63)
                           {
@@ -6666,8 +6666,8 @@ LABEL_13:
                             time = buf.duration;
                             v65 = CMTimeCopyAsDictionary(&time, 0);
                             v109[1] = v65;
-                            v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v109 forKeys:v108 count:2];
-                            [v77 addObject:v66];
+                            personLocalIdentifier4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v109 forKeys:v108 count:2];
+                            [array addObject:personLocalIdentifier4];
                           }
 
                           else
@@ -6681,10 +6681,10 @@ LABEL_13:
                             v65 = CMTimeCopyAsDictionary(&time, 0);
                             v111[1] = v65;
                             v110[2] = @"faceIdentifier";
-                            v66 = [v85 personLocalIdentifier];
-                            v111[2] = v66;
+                            personLocalIdentifier4 = [v85 personLocalIdentifier];
+                            v111[2] = personLocalIdentifier4;
                             v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v111 forKeys:v110 count:3];
-                            [v77 addObject:v67];
+                            [array addObject:v67];
                           }
 
                           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -6734,7 +6734,7 @@ LABEL_66:
 
 LABEL_77:
 
-    v72 = v77;
+    v72 = array;
     if (v80)
     {
       v71 = 0;
@@ -6742,7 +6742,7 @@ LABEL_77:
 
     else
     {
-      v71 = v77;
+      v71 = array;
     }
 
 LABEL_80:
@@ -6752,22 +6752,22 @@ LABEL_80:
   return v8;
 }
 
-- (id)getTimeRangesInAsset:(id)a3 forAnimals:(id)a4 withAnalysis:(id)a5
+- (id)getTimeRangesInAsset:(id)asset forAnimals:(id)animals withAnalysis:(id)analysis
 {
   v98 = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v66 = a4;
-  v67 = a5;
-  v7 = [v66 count];
+  assetCopy = asset;
+  animalsCopy = animals;
+  analysisCopy = analysis;
+  v7 = [animalsCopy count];
   v8 = MEMORY[0x1E695E0F0];
-  if (v67 && v7)
+  if (analysisCopy && v7)
   {
-    v65 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v88 = 0u;
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    obj = v66;
+    obj = animalsCopy;
     v61 = [obj countByEnumeratingWithState:&v86 objects:v96 count:16];
     if (v61)
     {
@@ -6788,7 +6788,7 @@ LABEL_80:
           if ([v72 detectionType] == 3 || objc_msgSend(v72, "detectionType") == 4)
           {
             [v72 fetchPropertySetsIfNeeded];
-            v10 = [v67 objectForKeyedSubscript:@"metadataRanges"];
+            v10 = [analysisCopy objectForKeyedSubscript:@"metadataRanges"];
             v11 = [v10 objectForKeyedSubscript:@"AnimalPrintResults"];
 
             v84 = 0u;
@@ -6800,7 +6800,7 @@ LABEL_80:
             if (v12)
             {
               v73 = *v83;
-              v70 = -1;
+              intValue = -1;
               v13 = 1.0;
               while (2)
               {
@@ -6820,31 +6820,31 @@ LABEL_80:
                   {
                     v18 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v17 error:0];
                     v19 = [v18 decodeObjectOfClass:objc_opt_class() forKey:@"animalPrint"];
-                    v20 = [v72 faceClusteringProperties];
-                    v21 = [v20 faceprint];
-                    v22 = [v21 faceprintData];
+                    faceClusteringProperties = [v72 faceClusteringProperties];
+                    faceprint = [faceClusteringProperties faceprint];
+                    faceprintData = [faceprint faceprintData];
 
-                    if (v22)
+                    if (faceprintData)
                     {
                       v23 = objc_alloc(MEMORY[0x1E6984408]);
                       v81 = 0;
-                      v24 = [v23 initWithState:v22 error:&v81];
+                      v24 = [v23 initWithState:faceprintData error:&v81];
                       v25 = v81;
                       v26 = v25;
                       if (!v24)
                       {
                         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                         {
-                          v56 = [v72 localIdentifier];
+                          localIdentifier = [v72 localIdentifier];
                           LODWORD(buf.start.value) = 138412546;
-                          *(&buf.start.value + 4) = v56;
+                          *(&buf.start.value + 4) = localIdentifier;
                           LOWORD(buf.start.flags) = 2112;
                           *(&buf.start.flags + 2) = v26;
                           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "MediaAnalyzer : failed to initalize animalprint data for animal: %@. Error: %@", &buf, 0x16u);
                         }
 
                         v57 = 0;
-                        v58 = v65;
+                        v58 = array;
                         goto LABEL_70;
                       }
 
@@ -6860,7 +6860,7 @@ LABEL_80:
                         {
                           v31 = [v15 objectForKeyedSubscript:@"attributes"];
                           v32 = [v31 objectForKeyedSubscript:@"animalId"];
-                          v70 = [v32 intValue];
+                          intValue = [v32 intValue];
 
                           v13 = v30;
                         }
@@ -6870,9 +6870,9 @@ LABEL_80:
                       {
                         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                         {
-                          v35 = [v72 localIdentifier];
+                          localIdentifier2 = [v72 localIdentifier];
                           LODWORD(buf.start.value) = 138412546;
-                          *(&buf.start.value + 4) = v35;
+                          *(&buf.start.value + 4) = localIdentifier2;
                           LOWORD(buf.start.flags) = 2112;
                           *(&buf.start.flags + 2) = v28;
                           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "MediaAnalyzer : failed to compute distance for animal: %@. Error: %@", &buf, 0x16u);
@@ -6892,9 +6892,9 @@ LABEL_80:
                     {
                       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                       {
-                        v34 = [v72 localIdentifier];
+                        localIdentifier3 = [v72 localIdentifier];
                         LODWORD(buf.start.value) = 138412290;
-                        *(&buf.start.value + 4) = v34;
+                        *(&buf.start.value + 4) = localIdentifier3;
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "MediaAnalyzer : Failed to get faceClusteringProperties.faceprint.faceprintData for face %@", &buf, 0xCu);
                       }
                     }
@@ -6902,9 +6902,9 @@ LABEL_80:
 
                   else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                   {
-                    v33 = [v69 localIdentifier];
+                    localIdentifier4 = [assetCopy localIdentifier];
                     LODWORD(buf.start.value) = 138412290;
-                    *(&buf.start.value + 4) = v33;
+                    *(&buf.start.value + 4) = localIdentifier4;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "MediaAnalyzer : animal print data for asset is nil %@, ignore", &buf, 0xCu);
                   }
                 }
@@ -6924,7 +6924,7 @@ LABEL_80:
                 v79 = 0u;
                 v76 = 0u;
                 v77 = 0u;
-                v36 = [v67 objectForKeyedSubscript:@"metadataRanges"];
+                v36 = [analysisCopy objectForKeyedSubscript:@"metadataRanges"];
                 v37 = [v36 objectForKeyedSubscript:v60];
 
                 v38 = [v37 countByEnumeratingWithState:&v76 objects:v94 count:16];
@@ -6951,9 +6951,9 @@ LABEL_80:
                         v54 = MEMORY[0x1E69E9C10];
                         if (v53 >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                         {
-                          v55 = [v69 localIdentifier];
+                          localIdentifier5 = [assetCopy localIdentifier];
                           LODWORD(buf.start.value) = 138412290;
-                          *(&buf.start.value + 4) = v55;
+                          *(&buf.start.value + 4) = localIdentifier5;
                           _os_log_impl(&dword_1C9B70000, v54, OS_LOG_TYPE_DEFAULT, "MediaAnalyzer getTimeRangesInAsset : video animalID not available for asset %@", &buf, 0xCu);
                         }
                       }
@@ -6962,15 +6962,15 @@ LABEL_80:
                       {
                         v45 = [v41 objectForKeyedSubscript:@"attributes"];
                         v46 = [v45 objectForKeyedSubscript:@"animalId"];
-                        v47 = [v46 intValue];
+                        intValue2 = [v46 intValue];
 
-                        if (v47 == v70)
+                        if (intValue2 == intValue)
                         {
                           memset(&v75, 0, sizeof(v75));
                           CMTimeRangeMakeFromDictionary(&v75, v41);
                           buf = v75;
                           v48 = CMTimeRangeCopyAsDictionary(&buf, 0);
-                          [v65 addObject:v48];
+                          [array addObject:v48];
 
                           v49 = MediaAnalysisLogLevel();
                           v50 = MEMORY[0x1E69E9C10];
@@ -7030,7 +7030,7 @@ LABEL_53:
 
 LABEL_67:
 
-    v58 = v65;
+    v58 = array;
     if (v68)
     {
       v57 = 0;
@@ -7038,7 +7038,7 @@ LABEL_67:
 
     else
     {
-      v57 = v65;
+      v57 = array;
     }
 
 LABEL_70:
@@ -7048,10 +7048,10 @@ LABEL_70:
   return v8;
 }
 
-- (id)getTimeRangesWithSearchResults:(id)a3
+- (id)getTimeRangesWithSearchResults:(id)results
 {
   v51 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  resultsCopy = results;
   +[VCPFreeFormSearch getMinSimilarity];
   v4 = v3;
   +[VCPFreeFormSearch getMinSimilarityHighRecall];
@@ -7060,12 +7060,12 @@ LABEL_70:
   v8 = v7;
   +[VCPFreeFormSearch getHighSimilarityThreshold];
   v10 = v9;
-  v35 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   memset(&v43, 0, sizeof(v43));
-  if ([v34 count])
+  if ([resultsCopy count])
   {
-    v11 = [v34 lastObject];
-    CMTimeRangeMakeFromDictionary(&range, v11);
+    lastObject = [resultsCopy lastObject];
+    CMTimeRangeMakeFromDictionary(&range, lastObject);
     CMTimeRangeGetEnd(&v43, &range);
   }
 
@@ -7078,7 +7078,7 @@ LABEL_70:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v12 = v34;
+  v12 = resultsCopy;
   v13 = [v12 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v13)
   {
@@ -7184,7 +7184,7 @@ LABEL_31:
       v29 = [MEMORY[0x1E696AD98] numberWithFloat:v28];
       v49[2] = v29;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:3];
-      [v35 addObject:v30];
+      [array addObject:v30];
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
@@ -7214,27 +7214,27 @@ LABEL_31:
 
 LABEL_17:
 
-  return v35;
+  return array;
 }
 
-- (id)getAnalysisResultsForURLAsset:(id)a3
+- (id)getAnalysisResultsForURLAsset:(id)asset
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)searchForQuery:(id)a3 forAssets:(id)a4 withOptions:(id)a5 matchingScoreOnly:(BOOL)a6 isURLAsset:(BOOL)a7 analyses:(id)a8
+- (id)searchForQuery:(id)query forAssets:(id)assets withOptions:(id)options matchingScoreOnly:(BOOL)only isURLAsset:(BOOL)asset analyses:(id)analyses
 {
-  v9 = a7;
+  assetCopy = asset;
   v71 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v60 = a4;
-  v57 = a5;
-  v13 = a8;
-  v58 = v12;
-  v14 = [v13 count];
-  if (v14 != [v60 count])
+  queryCopy = query;
+  assetsCopy = assets;
+  optionsCopy = options;
+  analysesCopy = analyses;
+  v58 = queryCopy;
+  v14 = [analysesCopy count];
+  if (v14 != [assetsCopy count])
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -7242,9 +7242,9 @@ LABEL_17:
     }
 
     *buf = 134218240;
-    *&buf[4] = [v13 count];
+    *&buf[4] = [analysesCopy count];
     *&buf[12] = 2048;
-    *&buf[14] = [v60 count];
+    *&buf[14] = [assetsCopy count];
     v16 = MEMORY[0x1E69E9C10];
     v17 = "Analyses vs assets acount mismatch: %lu vs %lu";
     v18 = OS_LOG_TYPE_ERROR;
@@ -7261,7 +7261,7 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v20 = [v57 objectForKeyedSubscript:@"SearchQueryString"];
+  v20 = [optionsCopy objectForKeyedSubscript:@"SearchQueryString"];
 
   if (!v20)
   {
@@ -7295,30 +7295,30 @@ LABEL_46:
     }
   }
 
-  v15 = [v57 objectForKeyedSubscript:@"SearchQueryString"];
+  v15 = [optionsCopy objectForKeyedSubscript:@"SearchQueryString"];
   v54 = [(VCPTextEncoder *)textEncoder textEmbeddingForQuery:v15 useFP16:0];
 
 LABEL_13:
   if (self->_freeFormSearch || (v24 = objc_alloc_init(VCPFreeFormSearch), freeFormSearch = self->_freeFormSearch, self->_freeFormSearch = v24, freeFormSearch, self->_freeFormSearch))
   {
-    v59 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v26 = 0;
     *&v27 = 138412290;
     v53 = v27;
     while (1)
     {
-      if ([v13 count] <= v26)
+      if ([analysesCopy count] <= v26)
       {
-        v44 = [v57 objectForKeyedSubscript:@"MaxSearchResults"];
+        v44 = [optionsCopy objectForKeyedSubscript:@"MaxSearchResults"];
         if (v44)
         {
-          v45 = [v57 objectForKeyedSubscript:@"MaxSearchResults"];
-          v46 = [v45 intValue];
+          v45 = [optionsCopy objectForKeyedSubscript:@"MaxSearchResults"];
+          intValue = [v45 intValue];
         }
 
         else
         {
-          v46 = -1;
+          intValue = -1;
         }
 
         *buf = 0;
@@ -7327,8 +7327,8 @@ LABEL_13:
         v68 = __Block_byref_object_copy__53;
         v69 = __Block_byref_object_dispose__53;
         v70 = 0;
-        v47 = [v59 allKeys];
-        v48 = [v47 count] == 0;
+        allKeys = [dictionary allKeys];
+        v48 = [allKeys count] == 0;
 
         if (!v48)
         {
@@ -7338,11 +7338,11 @@ LABEL_13:
           block[2] = __95__VCPMediaAnalyzer_searchForQuery_forAssets_withOptions_matchingScoreOnly_isURLAsset_analyses___block_invoke;
           block[3] = &unk_1E8350D40;
           block[4] = self;
-          v62 = v59;
+          v62 = dictionary;
           v64 = buf;
           v63 = v54;
-          v66 = a6;
-          v65 = v46;
+          onlyCopy = only;
+          v65 = intValue;
           dispatch_sync(searchQueue, block);
         }
 
@@ -7352,17 +7352,17 @@ LABEL_13:
         goto LABEL_38;
       }
 
-      if (v9)
+      if (assetCopy)
       {
-        v28 = [v13 objectAtIndexedSubscript:v26];
+        vcp_results = [analysesCopy objectAtIndexedSubscript:v26];
       }
 
       else
       {
-        v29 = [v13 objectAtIndexedSubscript:v26];
-        v28 = [v29 vcp_results];
+        v29 = [analysesCopy objectAtIndexedSubscript:v26];
+        vcp_results = [v29 vcp_results];
 
-        v30 = [v13 objectAtIndexedSubscript:v26];
+        v30 = [analysesCopy objectAtIndexedSubscript:v26];
         LOBYTE(v29) = [v30 vcp_version] < 64;
 
         if (v29)
@@ -7371,28 +7371,28 @@ LABEL_13:
         }
       }
 
-      if (+[VCPMovieAnalyzer enableAudioVideoFusion](VCPMovieAnalyzer, "enableAudioVideoFusion") && +[MADEmbeddingStore includeAudioFusedVideoEmbeddings](MADEmbeddingStore, "includeAudioFusedVideoEmbeddings") && ([v28 objectForKeyedSubscript:@"AudioFusedVideoEmbeddingResults"], v31 = objc_claimAutoreleasedReturnValue(), v32 = v31 == 0, v31, !v32))
+      if (+[VCPMovieAnalyzer enableAudioVideoFusion](VCPMovieAnalyzer, "enableAudioVideoFusion") && +[MADEmbeddingStore includeAudioFusedVideoEmbeddings](MADEmbeddingStore, "includeAudioFusedVideoEmbeddings") && ([vcp_results objectForKeyedSubscript:@"AudioFusedVideoEmbeddingResults"], v31 = objc_claimAutoreleasedReturnValue(), v32 = v31 == 0, v31, !v32))
       {
-        v33 = [v28 objectForKeyedSubscript:@"AudioFusedVideoEmbeddingResults"];
-        v34 = [v60 objectAtIndexedSubscript:v26];
-        [v59 setObject:v33 forKeyedSubscript:v34];
+        v33 = [vcp_results objectForKeyedSubscript:@"AudioFusedVideoEmbeddingResults"];
+        v34 = [assetsCopy objectAtIndexedSubscript:v26];
+        [dictionary setObject:v33 forKeyedSubscript:v34];
       }
 
       else
       {
-        v35 = [v28 objectForKeyedSubscript:@"VideoEmbeddingResults"];
+        v35 = [vcp_results objectForKeyedSubscript:@"VideoEmbeddingResults"];
         v36 = v35 == 0;
 
         if (v36)
         {
-          v39 = [v28 objectForKeyedSubscript:@"ImageEmbeddingResults"];
+          v39 = [vcp_results objectForKeyedSubscript:@"ImageEmbeddingResults"];
           v40 = v39 == 0;
 
           if (v40)
           {
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
-              v43 = [v60 objectAtIndexedSubscript:v26];
+              v43 = [assetsCopy objectAtIndexedSubscript:v26];
               *buf = v53;
               *&buf[4] = v43;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "searchForQuery : missing embedding results for asset %@", buf, 0xCu);
@@ -7401,17 +7401,17 @@ LABEL_13:
 
           else
           {
-            v41 = [v28 objectForKeyedSubscript:@"ImageEmbeddingResults"];
-            v42 = [v60 objectAtIndexedSubscript:v26];
-            [v59 setObject:v41 forKeyedSubscript:v42];
+            v41 = [vcp_results objectForKeyedSubscript:@"ImageEmbeddingResults"];
+            v42 = [assetsCopy objectAtIndexedSubscript:v26];
+            [dictionary setObject:v41 forKeyedSubscript:v42];
           }
         }
 
         else
         {
-          v37 = [v28 objectForKeyedSubscript:@"VideoEmbeddingResults"];
-          v38 = [v60 objectAtIndexedSubscript:v26];
-          [v59 setObject:v37 forKeyedSubscript:v38];
+          v37 = [vcp_results objectForKeyedSubscript:@"VideoEmbeddingResults"];
+          v38 = [assetsCopy objectAtIndexedSubscript:v26];
+          [dictionary setObject:v37 forKeyedSubscript:v38];
         }
       }
 
@@ -7446,26 +7446,26 @@ void __95__VCPMediaAnalyzer_searchForQuery_forAssets_withOptions_matchingScoreOn
   }
 }
 
-- (id)loadAssetsFromPhotoLibrary:(id)a3 withAssetIdentifiers:(id)a4
+- (id)loadAssetsFromPhotoLibrary:(id)library withAssetIdentifiers:(id)identifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  libraryCopy = library;
+  identifiersCopy = identifiers;
+  allKeys = identifiersCopy;
+  if (!libraryCopy)
   {
-    v6 = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
-    if (!v8)
+    libraryCopy = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
+    if (!allKeys)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
-    v12 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:v6 forTaskID:1];
-    v13 = [MEMORY[0x1E6978628] fetchAssetsWithLocalIdentifiers:v8 options:v12];
+    v12 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:libraryCopy forTaskID:1];
+    v13 = [MEMORY[0x1E6978628] fetchAssetsWithLocalIdentifiers:allKeys options:v12];
     if ([v13 count])
     {
-      v14 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
@@ -7484,7 +7484,7 @@ LABEL_10:
               objc_enumerationMutation(v15);
             }
 
-            [v14 addObject:{*(*(&v22 + 1) + 8 * i), v22}];
+            [array addObject:{*(*(&v22 + 1) + 8 * i), v22}];
           }
 
           v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -7502,13 +7502,13 @@ LABEL_10:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] No available assets for search", buf, 2u);
       }
 
-      v14 = 0;
+      array = 0;
     }
 
     goto LABEL_24;
   }
 
-  if (v7)
+  if (identifiersCopy)
   {
     goto LABEL_10;
   }
@@ -7516,88 +7516,88 @@ LABEL_10:
 LABEL_5:
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v9 = [v6 mad_fetchRequest];
-    v10 = [v9 fetchAnalysesWithLocalIdentifiers:0 predicate:0];
-    v8 = [v10 allKeys];
+    mad_fetchRequest = [libraryCopy mad_fetchRequest];
+    v10 = [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:0 predicate:0];
+    allKeys = [v10 allKeys];
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v11 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v6];
-  v9 = v11;
+  v11 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:libraryCopy];
+  mad_fetchRequest = v11;
   if (v11)
   {
-    v8 = [v11 queryAssetsAnalyzedSince:0];
+    allKeys = [v11 queryAssetsAnalyzedSince:0];
     goto LABEL_9;
   }
 
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v20 = [v6 photoLibraryURL];
-    v21 = [v20 path];
+    photoLibraryURL = [libraryCopy photoLibraryURL];
+    path = [photoLibraryURL path];
     *buf = 138412290;
-    v28 = v21;
+    v28 = path;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] Failed to obtain database for Photo Library (%@)", buf, 0xCu);
   }
 
-  v14 = 0;
+  array = 0;
 LABEL_24:
 
+  return array;
+}
+
+- (id)requestSearchResultsForAssets:(id)assets forPhotoLibraryURL:(id)l withQueryEmbeddings:(id)embeddings options:(id)options
+{
+  assetsCopy = assets;
+  lCopy = l;
+  embeddingsCopy = embeddings;
+  optionsCopy = options;
+  v14 = -[VCPMediaAnalyzer requestSearchResultsForAssets:forPhotoLibraryURL:withQueryEmbeddings:matchingScoreOnly:options:](self, "requestSearchResultsForAssets:forPhotoLibraryURL:withQueryEmbeddings:matchingScoreOnly:options:", assetsCopy, lCopy, embeddingsCopy, [assetsCopy count] == 1, optionsCopy);
+
   return v14;
 }
 
-- (id)requestSearchResultsForAssets:(id)a3 forPhotoLibraryURL:(id)a4 withQueryEmbeddings:(id)a5 options:(id)a6
+- (id)requestSearchResultsForAssets:(id)assets forPhotoLibraryURL:(id)l withQueryEmbeddings:(id)embeddings matchingScoreOnly:(BOOL)only options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = -[VCPMediaAnalyzer requestSearchResultsForAssets:forPhotoLibraryURL:withQueryEmbeddings:matchingScoreOnly:options:](self, "requestSearchResultsForAssets:forPhotoLibraryURL:withQueryEmbeddings:matchingScoreOnly:options:", v10, v11, v12, [v10 count] == 1, v13);
-
-  return v14;
-}
-
-- (id)requestSearchResultsForAssets:(id)a3 forPhotoLibraryURL:(id)a4 withQueryEmbeddings:(id)a5 matchingScoreOnly:(BOOL)a6 options:(id)a7
-{
-  v8 = a6;
+  onlyCopy = only;
   v51 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v40 = a4;
-  v13 = a5;
-  v42 = a7;
-  v38 = v12;
-  v39 = v13;
-  v41 = [MEMORY[0x1E695DF20] dictionary];
-  if ([v13 count] || (objc_msgSend(v42, "objectForKeyedSubscript:", @"SearchQueryString"), v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+  assetsCopy = assets;
+  lCopy = l;
+  embeddingsCopy = embeddings;
+  optionsCopy = options;
+  v38 = assetsCopy;
+  v39 = embeddingsCopy;
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
+  if ([embeddingsCopy count] || (objc_msgSend(optionsCopy, "objectForKeyedSubscript:", @"SearchQueryString"), v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
-    if ([v12 count])
+    if ([assetsCopy count])
     {
-      v35 = [v12 mutableCopy];
+      v35 = [assetsCopy mutableCopy];
       [MEMORY[0x1E695DF70] array];
     }
 
     else
     {
-      if (v40)
+      if (lCopy)
       {
-        v15 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:v40];
+        vcp_defaultPhotoLibrary = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:lCopy];
       }
 
       else
       {
-        v15 = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
+        vcp_defaultPhotoLibrary = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
       }
 
-      v17 = v15;
-      v18 = [(VCPMediaAnalyzer *)self loadAssetsFromPhotoLibrary:v15 withAssetIdentifiers:0];
+      v17 = vcp_defaultPhotoLibrary;
+      v18 = [(VCPMediaAnalyzer *)self loadAssetsFromPhotoLibrary:vcp_defaultPhotoLibrary withAssetIdentifiers:0];
       v37 = [v18 mutableCopy];
 
       [MEMORY[0x1E695DF70] array];
     }
     v19 = ;
-    v20 = v8;
-    v21 = [MEMORY[0x1E695DF70] array];
+    v20 = onlyCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
@@ -7617,13 +7617,13 @@ LABEL_24:
           }
 
           v26 = *(*(&v43 + 1) + 8 * i);
-          v27 = [v26 localIdentifier];
-          v28 = v27 == 0;
+          localIdentifier = [v26 localIdentifier];
+          v28 = localIdentifier == 0;
 
           if (!v28)
           {
-            v29 = [v26 localIdentifier];
-            [v21 addObject:v29];
+            localIdentifier2 = [v26 localIdentifier];
+            [array addObject:localIdentifier2];
           }
         }
 
@@ -7645,10 +7645,10 @@ LABEL_24:
 
     else
     {
-      v33 = [v39 firstObject];
-      v32 = [(VCPMediaAnalyzer *)self searchForQuery:v33 forAssets:v21 withOptions:v42 matchingScoreOnly:v20 isURLAsset:0 analyses:v19];
+      firstObject = [v39 firstObject];
+      v32 = [(VCPMediaAnalyzer *)self searchForQuery:firstObject forAssets:array withOptions:optionsCopy matchingScoreOnly:v20 isURLAsset:0 analyses:v19];
 
-      v41 = v32;
+      dictionary = v32;
     }
 
     v16 = v32;
@@ -7668,19 +7668,19 @@ LABEL_24:
   return v16;
 }
 
-- (id)findTimeRangesFor:(id)a3 inAsset:(id)a4 withOptions:(id)a5 results:(id)a6 andError:(id *)a7
+- (id)findTimeRangesFor:(id)for inAsset:(id)asset withOptions:(id)options results:(id)results andError:(id *)error
 {
   v135 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v102 = a4;
-  v100 = a5;
-  v101 = a6;
-  v89 = [MEMORY[0x1E695DF90] dictionary];
+  forCopy = for;
+  assetCopy = asset;
+  optionsCopy = options;
+  resultsCopy = results;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  obj = v11;
+  obj = forCopy;
   v12 = [obj countByEnumeratingWithState:&v115 objects:v134 count:16];
   v13 = 0;
   if (!v12)
@@ -7698,11 +7698,11 @@ LABEL_24:
         objc_enumerationMutation(obj);
       }
 
-      v16 = [*(*(&v115 + 1) + 8 * i) intValue];
-      v17 = v16;
-      if (v16 > 3)
+      intValue = [*(*(&v115 + 1) + 8 * i) intValue];
+      v17 = intValue;
+      if (intValue > 3)
       {
-        switch(v16)
+        switch(intValue)
         {
           case 4:
             v13 |= 0x200010uLL;
@@ -7718,7 +7718,7 @@ LABEL_24:
 
       else
       {
-        switch(v16)
+        switch(intValue)
         {
           case 1:
             v13 |= 0x20008uLL;
@@ -7750,7 +7750,7 @@ LABEL_24:
   while (v12);
 LABEL_25:
 
-  v19 = [v100 objectForKeyedSubscript:@"SearchQueryString"];
+  v19 = [optionsCopy objectForKeyedSubscript:@"SearchQueryString"];
   v20 = v19 == 0;
 
   if (v20)
@@ -7770,21 +7770,21 @@ LABEL_96:
     goto LABEL_97;
   }
 
-  if (![v101 count])
+  if (![resultsCopy count])
   {
     v83 = +[VCPMediaAnalyzer sharedMediaAnalyzer];
-    v133 = v102;
+    v133 = assetCopy;
     v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v133 count:1];
-    v85 = [v83 requestAnalysis:v21 forAssets:v84 withOptions:0 andProgressHandler:0 andError:a7];
+    v85 = [v83 requestAnalysis:v21 forAssets:v84 withOptions:0 andProgressHandler:0 andError:error];
 
-    v101 = v85;
-    if (*a7 || ![v85 count])
+    resultsCopy = v85;
+    if (*error || ![v85 count])
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v86 = [v102 localIdentifier];
+        localIdentifier = [assetCopy localIdentifier];
         *buf = 138412290;
-        v123 = v86;
+        v123 = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "MediaAnalyzer failed to get results for asset %@", buf, 0xCu);
       }
 
@@ -7817,28 +7817,28 @@ LABEL_96:
       }
 
       v23 = *(*(&v111 + 1) + 8 * v94);
-      v24 = [v23 intValue];
-      v25 = v24;
-      if (v24 > 3)
+      intValue2 = [v23 intValue];
+      v25 = intValue2;
+      if (intValue2 > 3)
       {
-        switch(v24)
+        switch(intValue2)
         {
           case 4:
             v41 = [v92 objectForKeyedSubscript:v23];
-            v42 = [v101 firstObject];
-            v43 = [v42 objectForKeyedSubscript:@"metadataRanges"];
+            firstObject = [resultsCopy firstObject];
+            v43 = [firstObject objectForKeyedSubscript:@"metadataRanges"];
             v29 = [(VCPMediaAnalyzer *)self getTimeRangesForSoundIdentifiers:v41 withResults:v43];
 
             if (v29)
             {
               v44 = [MEMORY[0x1E696AD98] numberWithInteger:4];
-              v45 = [v44 stringValue];
-              [v89 setObject:v29 forKeyedSubscript:v45];
+              stringValue = [v44 stringValue];
+              [dictionary setObject:v29 forKeyedSubscript:stringValue];
             }
 
             break;
           case 5:
-            v51 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v109 = 0u;
             v110 = 0u;
             v107 = 0u;
@@ -7861,7 +7861,7 @@ LABEL_96:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v53 = [v52 vectors];
+                    vectors = [v52 vectors];
                   }
 
                   else
@@ -7892,14 +7892,14 @@ LABEL_96:
                     }
 
                     v130 = v52;
-                    v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v130 count:1];
+                    vectors = [MEMORY[0x1E695DEC8] arrayWithObjects:&v130 count:1];
                   }
 
                   v105 = 0u;
                   v106 = 0u;
                   v103 = 0u;
                   v104 = 0u;
-                  v54 = v53;
+                  v54 = vectors;
                   v55 = [v54 countByEnumeratingWithState:&v103 objects:v121 count:16];
                   if (v55)
                   {
@@ -7914,18 +7914,18 @@ LABEL_96:
                         }
 
                         v58 = *(*(&v103 + 1) + 8 * k);
-                        v59 = [v102 localIdentifier];
-                        v120 = v59;
+                        localIdentifier2 = [assetCopy localIdentifier];
+                        v120 = localIdentifier2;
                         v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v120 count:1];
-                        v61 = [(VCPMediaAnalyzer *)self searchForQuery:v58 forAssets:v60 withOptions:v100 matchingScoreOnly:1 isURLAsset:0 analyses:v101];
+                        v61 = [(VCPMediaAnalyzer *)self searchForQuery:v58 forAssets:v60 withOptions:optionsCopy matchingScoreOnly:1 isURLAsset:0 analyses:resultsCopy];
 
-                        v62 = [v102 localIdentifier];
-                        v63 = [v61 objectForKeyedSubscript:v62];
+                        localIdentifier3 = [assetCopy localIdentifier];
+                        v63 = [v61 objectForKeyedSubscript:localIdentifier3];
                         v64 = [(VCPMediaAnalyzer *)self getTimeRangesWithSearchResults:v63];
 
                         if (v64)
                         {
-                          [v51 addObjectsFromArray:v64];
+                          [array addObjectsFromArray:v64];
                         }
                       }
 
@@ -7949,21 +7949,21 @@ LABEL_96:
 LABEL_84:
 
             v71 = [MEMORY[0x1E696AD98] numberWithInteger:5];
-            v72 = [v71 stringValue];
-            [v89 setObject:v51 forKeyedSubscript:v72];
+            stringValue2 = [v71 stringValue];
+            [dictionary setObject:array forKeyedSubscript:stringValue2];
 
             goto LABEL_85;
           case 6:
             v32 = [v92 objectForKeyedSubscript:v23];
-            v33 = [v101 firstObject];
-            v34 = [v33 objectForKeyedSubscript:@"metadataRanges"];
+            firstObject2 = [resultsCopy firstObject];
+            v34 = [firstObject2 objectForKeyedSubscript:@"metadataRanges"];
             v29 = [(VCPMediaAnalyzer *)self getTimeRangesForThumbnailIdentifiers:v32 withResults:v34];
 
             if (v29)
             {
               v35 = [MEMORY[0x1E696AD98] numberWithInteger:6];
-              v36 = [v35 stringValue];
-              [v89 setObject:v29 forKeyedSubscript:v36];
+              stringValue3 = [v35 stringValue];
+              [dictionary setObject:v29 forKeyedSubscript:stringValue3];
             }
 
             break;
@@ -7976,46 +7976,46 @@ LABEL_59:
         goto LABEL_85;
       }
 
-      switch(v24)
+      switch(intValue2)
       {
         case 1:
           v37 = [v92 objectForKeyedSubscript:v23];
-          v38 = [v101 firstObject];
-          v29 = [(VCPMediaAnalyzer *)self getTimeRangesInAsset:v102 forPersonLocalIdentifiers:v37 withAnalysis:v38];
+          firstObject3 = [resultsCopy firstObject];
+          v29 = [(VCPMediaAnalyzer *)self getTimeRangesInAsset:assetCopy forPersonLocalIdentifiers:v37 withAnalysis:firstObject3];
 
           if (v29)
           {
             v39 = [MEMORY[0x1E696AD98] numberWithInteger:1];
-            v40 = [v39 stringValue];
-            [v89 setObject:v29 forKeyedSubscript:v40];
+            stringValue4 = [v39 stringValue];
+            [dictionary setObject:v29 forKeyedSubscript:stringValue4];
           }
 
           goto LABEL_59;
         case 2:
           v46 = [v92 objectForKeyedSubscript:v23];
-          v47 = [v101 firstObject];
-          v48 = [v47 objectForKeyedSubscript:@"metadataRanges"];
+          firstObject4 = [resultsCopy firstObject];
+          v48 = [firstObject4 objectForKeyedSubscript:@"metadataRanges"];
           v29 = [(VCPMediaAnalyzer *)self getTimeRangesForSceneIdentifiers:v46 withResults:v48];
 
           if (v29)
           {
             v49 = [MEMORY[0x1E696AD98] numberWithInteger:2];
-            v50 = [v49 stringValue];
-            [v89 setObject:v29 forKeyedSubscript:v50];
+            stringValue5 = [v49 stringValue];
+            [dictionary setObject:v29 forKeyedSubscript:stringValue5];
           }
 
           goto LABEL_59;
         case 3:
           v26 = [v92 objectForKeyedSubscript:v23];
-          v27 = [v101 firstObject];
-          v28 = [v27 objectForKeyedSubscript:@"metadataRanges"];
+          firstObject5 = [resultsCopy firstObject];
+          v28 = [firstObject5 objectForKeyedSubscript:@"metadataRanges"];
           v29 = [(VCPMediaAnalyzer *)self getTimeRangesForActionIDs:v26 withResults:v28];
 
           if (v29)
           {
             v30 = [MEMORY[0x1E696AD98] numberWithInteger:3];
-            v31 = [v30 stringValue];
-            [v89 setObject:v29 forKeyedSubscript:v31];
+            stringValue6 = [v30 stringValue];
+            [dictionary setObject:v29 forKeyedSubscript:stringValue6];
           }
 
           goto LABEL_59;
@@ -8049,46 +8049,46 @@ LABEL_85:
 
 LABEL_87:
 
-  v73 = [v100 objectForKeyedSubscript:@"SearchQueryString"];
+  v73 = [optionsCopy objectForKeyedSubscript:@"SearchQueryString"];
   v74 = v73 == 0;
 
   if (!v74)
   {
-    v75 = [v102 localIdentifier];
-    v119 = v75;
+    localIdentifier4 = [assetCopy localIdentifier];
+    v119 = localIdentifier4;
     v76 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v119 count:1];
-    v77 = [(VCPMediaAnalyzer *)self searchForQuery:0 forAssets:v76 withOptions:v100 matchingScoreOnly:1 isURLAsset:0 analyses:v101];
+    v77 = [(VCPMediaAnalyzer *)self searchForQuery:0 forAssets:v76 withOptions:optionsCopy matchingScoreOnly:1 isURLAsset:0 analyses:resultsCopy];
 
-    v78 = [v102 localIdentifier];
-    v79 = [v77 objectForKeyedSubscript:v78];
+    localIdentifier5 = [assetCopy localIdentifier];
+    v79 = [v77 objectForKeyedSubscript:localIdentifier5];
     v80 = [(VCPMediaAnalyzer *)self getTimeRangesWithSearchResults:v79];
 
     if (v80)
     {
-      v81 = [&unk_1F49BE050 stringValue];
-      [v89 setObject:v80 forKeyedSubscript:v81];
+      stringValue7 = [&unk_1F49BE050 stringValue];
+      [dictionary setObject:v80 forKeyedSubscript:stringValue7];
     }
   }
 
-  v82 = v89;
+  v82 = dictionary;
 LABEL_97:
 
   return v82;
 }
 
-- (int)findTimeRangesFor:(id)a3 inAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)findTimeRangesFor:(id)for inAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12 && v13 && ([v13 isVideo] & 1) != 0)
+  forCopy = for;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (forCopy && assetCopy && ([assetCopy isVideo] & 1) != 0)
   {
     add = atomic_fetch_add(&self->_nextRequestID.__a_.__a_value, 1u);
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0.0);
+      handlerCopy[2](handlerCopy, 0.0);
     }
 
     v18 = dispatch_get_global_queue(0, 0);
@@ -8097,17 +8097,17 @@ LABEL_97:
     v20[2] = __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHandler_andCompletionHandler___block_invoke;
     v20[3] = &unk_1E8350D68;
     v20[4] = self;
-    v21 = v12;
-    v22 = v13;
-    v23 = v14;
-    v24 = v15;
-    v25 = v16;
+    v21 = forCopy;
+    v22 = assetCopy;
+    v23 = optionsCopy;
+    v24 = handlerCopy;
+    v25 = completionHandlerCopy;
     dispatch_async(v18, v20);
   }
 
   else
   {
-    (*(v16 + 2))(v16, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0);
     add = -1;
   }
 
@@ -8272,24 +8272,24 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
   }
 }
 
-- (int)findTimeRangesFor:(id)a3 inURLAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)findTimeRangesFor:(id)for inURLAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
   v75 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v40 = a5;
-  v41 = a6;
-  v14 = a7;
-  v38 = v12;
-  v39 = v13;
-  if (v12 && v13)
+  forCopy = for;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v38 = forCopy;
+  v39 = assetCopy;
+  if (forCopy && assetCopy)
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *&buf[4] = v13;
+      *&buf[4] = assetCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = forCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MediaAnalysis] Received timeRange request for asset: %@ with query: %@", buf, 0x16u);
     }
 
@@ -8297,10 +8297,10 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v15 = v12;
-    v37 = v14;
+    v15 = forCopy;
+    v37 = completionHandlerCopy;
     v16 = [v15 countByEnumeratingWithState:&v66 objects:v74 count:16];
-    v36 = self;
+    selfCopy = self;
     v17 = 0;
     if (v16)
     {
@@ -8315,11 +8315,11 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
             objc_enumerationMutation(v15);
           }
 
-          v21 = [*(*(&v66 + 1) + 8 * i) intValue];
-          v22 = v21;
-          if (v21 > 3)
+          intValue = [*(*(&v66 + 1) + 8 * i) intValue];
+          v22 = intValue;
+          if (intValue > 3)
           {
-            switch(v21)
+            switch(intValue)
             {
               case 4:
                 v17 |= 0x200010uLL;
@@ -8335,7 +8335,7 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
 
           else
           {
-            switch(v21)
+            switch(intValue)
             {
               case 1:
                 v17 |= 8uLL;
@@ -8363,9 +8363,9 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
       while (v16);
     }
 
-    if (v41)
+    if (handlerCopy)
     {
-      v41[2](0.0);
+      handlerCopy[2](0.0);
     }
 
     *buf = 0;
@@ -8389,7 +8389,7 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
     v24 = v23;
     v62 = v24;
     v25 = _Block_copy(aBlock);
-    add = atomic_fetch_add(&v36->_nextRequestID.__a_.__a_value, 1u);
+    add = atomic_fetch_add(&selfCopy->_nextRequestID.__a_.__a_value, 1u);
     v27 = objc_alloc_init(VCPCancelToken);
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
@@ -8398,13 +8398,13 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
     v28 = v27;
     v60 = v28;
     v29 = _Block_copy(v59);
-    cancelQueue = v36->_cancelQueue;
+    cancelQueue = selfCopy->_cancelQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgressHandler_andCompletionHandler___block_invoke_3;
     block[3] = &unk_1E8350CF0;
     v58 = add;
-    block[4] = v36;
+    block[4] = selfCopy;
     v57 = v28;
     v42 = v28;
     dispatch_sync(cancelQueue, block);
@@ -8414,16 +8414,16 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
     v43[2] = __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgressHandler_andCompletionHandler___block_invoke_4;
     v43[3] = &unk_1E8350DB8;
     v52 = buf;
-    v43[4] = v36;
+    v43[4] = selfCopy;
     v44 = v39;
     v48 = v25;
     v49 = v29;
-    v45 = v40;
+    v45 = optionsCopy;
     v46 = v24;
     v53 = v64;
     v54 = v17;
     v47 = v15;
-    v50 = v41;
+    v50 = handlerCopy;
     v51 = v37;
     v55 = add;
     v32 = v24;
@@ -8434,7 +8434,7 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
     _Block_object_dispose(v64, 8);
     _Block_object_dispose(buf, 8);
 
-    v14 = v37;
+    completionHandlerCopy = v37;
   }
 
   else
@@ -8445,7 +8445,7 @@ void __98__VCPMediaAnalyzer_findTimeRangesFor_inAsset_withOptions_andProgressHan
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] [MediaAnalyzer findTimeRangesFor:inURLAsset] call with nil queries or resourceURL", buf, 2u);
     }
 
-    (*(v14 + 2))(v14, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0);
     add = -1;
   }
 
@@ -8915,41 +8915,41 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
   [v1 removeObjectForKey:?];
 }
 
-- (int)findTimeRangesWithContext:(id)a3 inAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)findTimeRangesWithContext:(id)context inAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a3 entities];
-  LODWORD(self) = [(VCPMediaAnalyzer *)self findTimeRangesFor:v16 inAsset:v12 withOptions:v13 andProgressHandler:v14 andCompletionHandler:v15];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  entities = [context entities];
+  LODWORD(self) = [(VCPMediaAnalyzer *)self findTimeRangesFor:entities inAsset:assetCopy withOptions:optionsCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return self;
 }
 
-- (int)findTimeRangesWithContext:(id)a3 inURLAsset:(id)a4 withOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)findTimeRangesWithContext:(id)context inURLAsset:(id)asset withOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a3 entities];
-  LODWORD(self) = [(VCPMediaAnalyzer *)self findTimeRangesFor:v16 inURLAsset:v12 withOptions:v13 andProgressHandler:v14 andCompletionHandler:v15];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  entities = [context entities];
+  LODWORD(self) = [(VCPMediaAnalyzer *)self findTimeRangesFor:entities inURLAsset:assetCopy withOptions:optionsCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return self;
 }
 
-- (id)postProcessTimeRanges:(id)a3 options:(id)a4
+- (id)postProcessTimeRanges:(id)ranges options:(id)options
 {
   v41 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
+  rangesCopy = ranges;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [v24 allKeys];
+  obj = [rangesCopy allKeys];
   v6 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v6)
   {
@@ -8964,13 +8964,13 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
         }
 
         v9 = *(*(&v34 + 1) + 8 * i);
-        v10 = [&unk_1F49BE068 stringValue];
-        v11 = [v9 isEqual:v10];
+        stringValue = [&unk_1F49BE068 stringValue];
+        v11 = [v9 isEqual:stringValue];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [&unk_1F49BE050 stringValue];
-          v13 = [v9 isEqual:v12];
+          stringValue2 = [&unk_1F49BE050 stringValue];
+          v13 = [v9 isEqual:stringValue2];
 
           if (v13)
           {
@@ -8978,7 +8978,7 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
             v33 = 0uLL;
             v30 = 0uLL;
             v31 = 0uLL;
-            v14 = [v24 objectForKeyedSubscript:v9];
+            v14 = [rangesCopy objectForKeyedSubscript:v9];
             v15 = [v14 countByEnumeratingWithState:&v30 objects:v39 count:16];
             if (v15)
             {
@@ -8992,7 +8992,7 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
                     objc_enumerationMutation(v14);
                   }
 
-                  [v5 addObject:*(*(&v30 + 1) + 8 * j)];
+                  [array2 addObject:*(*(&v30 + 1) + 8 * j)];
                 }
 
                 v15 = [v14 countByEnumeratingWithState:&v30 objects:v39 count:16];
@@ -9008,7 +9008,7 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
             v29 = 0uLL;
             v26 = 0uLL;
             v27 = 0uLL;
-            v14 = [v24 objectForKeyedSubscript:v9];
+            v14 = [rangesCopy objectForKeyedSubscript:v9];
             v18 = [v14 countByEnumeratingWithState:&v26 objects:v38 count:16];
             if (v18)
             {
@@ -9022,7 +9022,7 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
                     objc_enumerationMutation(v14);
                   }
 
-                  [v4 addObject:*(*(&v26 + 1) + 8 * k)];
+                  [array addObject:*(*(&v26 + 1) + 8 * k)];
                 }
 
                 v18 = [v14 countByEnumeratingWithState:&v26 objects:v38 count:16];
@@ -9040,14 +9040,14 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
     while (v6);
   }
 
-  if ([v5 count])
+  if ([array2 count])
   {
-    v21 = v5;
+    v21 = array2;
   }
 
   else
   {
-    v21 = v4;
+    v21 = array;
   }
 
   v22 = v21;
@@ -9055,18 +9055,18 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
   return v21;
 }
 
-- (id)getThumbnailTimerange:(id)a3
+- (id)getThumbnailTimerange:(id)timerange
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [&unk_1F49BE068 stringValue];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  timerangeCopy = timerange;
+  stringValue = [&unk_1F49BE068 stringValue];
+  v5 = [timerangeCopy objectForKeyedSubscript:stringValue];
 
   if ([v5 count])
   {
     memset(&v11, 0, sizeof(v11));
-    v6 = [v5 firstObject];
-    CMTimeRangeMakeFromDictionary(&v11, v6);
+    firstObject = [v5 firstObject];
+    CMTimeRangeMakeFromDictionary(&v11, firstObject);
 
     v10 = v11;
     v7 = [MEMORY[0x1E696B098] valueWithCMTimeRange:&v10];
@@ -9082,36 +9082,36 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
   return v8;
 }
 
-- (id)mergeTimeRanges:(id)a3 mergeGap:(id)a4
+- (id)mergeTimeRanges:(id)ranges mergeGap:(id)gap
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v23 = v6;
+  rangesCopy = ranges;
+  gapCopy = gap;
+  v23 = gapCopy;
   {
     CMTimeMakeWithSeconds(&[VCPMediaAnalyzer mergeTimeRanges:mergeGap:]::kMergeGap, 1.0, 600);
   }
 
   v34 = [VCPMediaAnalyzer mergeTimeRanges:mergeGap:]::kMergeGap;
   epoch = qword_1EC431560;
-  if (v6)
+  if (gapCopy)
   {
-    [v6 floatValue];
+    [gapCopy floatValue];
     CMTimeMakeWithSeconds(&v29.start, fmaxf(v7, 0.0), 600);
     v34 = *&v29.start.value;
     epoch = v29.start.epoch;
   }
 
-  if ([v5 count] <= 1)
+  if ([rangesCopy count] <= 1)
   {
-    v8 = v5;
-    v9 = v8;
+    v8 = rangesCopy;
+    array = v8;
     goto LABEL_25;
   }
 
-  v10 = [v5 sortedArrayUsingComparator:&__block_literal_global_1019_0];
+  v10 = [rangesCopy sortedArrayUsingComparator:&__block_literal_global_1019_0];
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   value = *MEMORY[0x1E6960CA8];
   flags = *(MEMORY[0x1E6960CA8] + 12);
   timescale = *(MEMORY[0x1E6960CA8] + 8);
@@ -9186,7 +9186,7 @@ void __101__VCPMediaAnalyzer_findTimeRangesFor_inURLAsset_withOptions_andProgres
         *&time1.duration.timescale = v24;
         time1.duration.epoch = v14;
         v19 = [MEMORY[0x1E696B098] valueWithCMTimeRange:&time1];
-        [v9 addObject:v19];
+        [array addObject:v19];
 
 LABEL_20:
         value = v29.start.value;
@@ -9231,11 +9231,11 @@ LABEL_24:
   *&v29.duration.timescale = v24;
   v29.duration.epoch = v14;
   v21 = [MEMORY[0x1E696B098] valueWithCMTimeRange:&v29];
-  [v9 addObject:v21];
+  [array addObject:v21];
 
 LABEL_25:
 
-  return v9;
+  return array;
 }
 
 uint64_t __45__VCPMediaAnalyzer_mergeTimeRanges_mergeGap___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -9297,22 +9297,22 @@ uint64_t __45__VCPMediaAnalyzer_mergeTimeRanges_mergeGap___block_invoke(uint64_t
   return v7;
 }
 
-- (id)loadVideoAssetsFromPhotoLibraryURL:(id)a3 withAssetIdentifiers:(id)a4
+- (id)loadVideoAssetsFromPhotoLibraryURL:(id)l withAssetIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:v6];
-  if (v7)
+  lCopy = l;
+  identifiersCopy = identifiers;
+  v8 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:lCopy];
+  if (identifiersCopy)
   {
     goto LABEL_7;
   }
 
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v9 = [v8 mad_fetchRequest];
-    v10 = [v9 fetchAnalysesWithLocalIdentifiers:0 predicate:0];
-    v7 = [v10 allKeys];
+    mad_fetchRequest = [v8 mad_fetchRequest];
+    v10 = [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:0 predicate:0];
+    identifiersCopy = [v10 allKeys];
 
 LABEL_6:
 LABEL_7:
@@ -9320,10 +9320,10 @@ LABEL_7:
     v13 = [MEMORY[0x1E696AE18] vcp_moviesPredicate:0];
     [v12 setPredicate:v13];
 
-    v14 = [MEMORY[0x1E6978628] fetchAssetsWithLocalIdentifiers:v7 options:v12];
+    v14 = [MEMORY[0x1E6978628] fetchAssetsWithLocalIdentifiers:identifiersCopy options:v12];
     if ([v14 count])
     {
-      v15 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
@@ -9342,7 +9342,7 @@ LABEL_7:
               objc_enumerationMutation(v16);
             }
 
-            [v15 addObject:{*(*(&v23 + 1) + 8 * i), v23}];
+            [array addObject:{*(*(&v23 + 1) + 8 * i), v23}];
           }
 
           v17 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -9360,46 +9360,46 @@ LABEL_7:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] No available assets for search", buf, 2u);
       }
 
-      v15 = 0;
+      array = 0;
     }
 
     goto LABEL_21;
   }
 
   v11 = [(VCPMediaAnalyzer *)self _databaseForPhotoLibrary:v8];
-  v9 = v11;
+  mad_fetchRequest = v11;
   if (v11)
   {
-    v7 = [v11 queryAssetsAnalyzedSince:0];
+    identifiersCopy = [v11 queryAssetsAnalyzedSince:0];
     goto LABEL_6;
   }
 
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v21 = [v8 photoLibraryURL];
-    v22 = [v21 path];
+    photoLibraryURL = [v8 photoLibraryURL];
+    path = [photoLibraryURL path];
     *buf = 138412290;
-    v29 = v22;
+    v29 = path;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] Failed to obtain database for Photo Library (%@)", buf, 0xCu);
   }
 
-  v15 = 0;
+  array = 0;
 LABEL_21:
 
-  return v15;
+  return array;
 }
 
-- (id)loadEmbeddingSearchResultWithContext:(id)a3 forPhotoLibraryURL:(id)a4 fromAssets:(id)a5 withOptions:(id)a6
+- (id)loadEmbeddingSearchResultWithContext:(id)context forPhotoLibraryURL:(id)l fromAssets:(id)assets withOptions:(id)options
 {
   v55 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v31 = a4;
-  v32 = a5;
-  v33 = a6;
-  v34 = v9;
-  if (v9 && ([v9 entities], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  contextCopy = context;
+  lCopy = l;
+  assetsCopy = assets;
+  optionsCopy = options;
+  v34 = contextCopy;
+  if (contextCopy && ([contextCopy entities], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    [v9 entities];
+    [contextCopy entities];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -9421,8 +9421,8 @@ LABEL_21:
           }
 
           v14 = *(*(&v42 + 1) + 8 * v13);
-          v15 = [v14 intValue];
-          if (v15 == 5)
+          intValue = [v14 intValue];
+          if (intValue == 5)
           {
             v40 = 0u;
             v41 = 0u;
@@ -9449,7 +9449,7 @@ LABEL_21:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v22 = [v21 vectors];
+                    vectors = [v21 vectors];
                   }
 
                   else
@@ -9476,10 +9476,10 @@ LABEL_21:
                     }
 
                     v52 = v21;
-                    v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
+                    vectors = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
                   }
 
-                  v19 = v22;
+                  v19 = vectors;
 
                   ++v20;
                   v11 = v19;
@@ -9512,7 +9512,7 @@ LABEL_27:
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              v47 = v15;
+              v47 = intValue;
               _os_log_impl(&dword_1C9B70000, v23, OS_LOG_TYPE_DEFAULT, "Unsupport query type %ld in search context for ranking", buf, 0xCu);
             }
           }
@@ -9527,48 +9527,48 @@ LABEL_27:
       while (v12);
     }
 
-    v28 = [(VCPMediaAnalyzer *)self requestSearchResultsForAssets:v32 forPhotoLibraryURL:v31 withQueryEmbeddings:v11 matchingScoreOnly:1 options:v33];
+    v28 = [(VCPMediaAnalyzer *)self requestSearchResultsForAssets:assetsCopy forPhotoLibraryURL:lCopy withQueryEmbeddings:v11 matchingScoreOnly:1 options:optionsCopy];
   }
 
   else
   {
-    v28 = [(VCPMediaAnalyzer *)self requestSearchResultsForAssets:v32 forPhotoLibraryURL:v31 withQueryEmbeddings:MEMORY[0x1E695E0F0] matchingScoreOnly:1 options:v33];
+    v28 = [(VCPMediaAnalyzer *)self requestSearchResultsForAssets:assetsCopy forPhotoLibraryURL:lCopy withQueryEmbeddings:MEMORY[0x1E695E0F0] matchingScoreOnly:1 options:optionsCopy];
   }
 
   return v28;
 }
 
-- (void)addVideoRankingSignalsToDictionary:(id)a3 fromPhotoLibraryURL:(id)a4 amongAssets:(id)a5
+- (void)addVideoRankingSignalsToDictionary:(id)dictionary fromPhotoLibraryURL:(id)l amongAssets:(id)assets
 {
   v94 = *MEMORY[0x1E69E9840];
-  v72 = a3;
-  v65 = a4;
-  v64 = a5;
-  if (![v64 count] && MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  assetsCopy = assets;
+  if (![assetsCopy count] && MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 0;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[VideoRankingSignals] No assets to search; skipping", buf, 2u);
   }
 
-  v66 = [VCPClientDatabaseManager sharedDatabaseForPhotoLibraryURL:v65];
+  v66 = [VCPClientDatabaseManager sharedDatabaseForPhotoLibraryURL:lCopy];
   v70 = MediaAnalysisResultsTypesForAnalysisTypes(128);
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v7 = [v64 firstObject];
-    v8 = [v7 photoLibrary];
-    v67 = [v8 mad_fetchRequest];
+    firstObject = [assetsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
   }
 
   else
   {
-    v67 = 0;
+    mad_fetchRequest = 0;
   }
 
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v64;
+  obj = assetsCopy;
   v9 = [obj countByEnumeratingWithState:&v81 objects:v93 count:16];
   if (v9)
   {
@@ -9586,22 +9586,22 @@ LABEL_27:
 
         v11 = *(*(&v81 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 localIdentifier];
+        localIdentifier = [v11 localIdentifier];
         if (+[MADManagedPhotosAsset isMACDReadEnabled])
         {
-          [v67 fetchAnalysisWithLocalIdentifier:v13 predicate:0 resultTypes:v70];
+          [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0 resultTypes:v70];
         }
 
         else
         {
-          [v66 queryAnalysisForAsset:v13 withTypes:v70];
+          [v66 queryAnalysisForAsset:localIdentifier withTypes:v70];
         }
         v14 = ;
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 vcp_results];
-          v17 = [v16 objectForKeyedSubscript:@"InterestingnessResults"];
+          vcp_results = [v14 vcp_results];
+          v17 = [vcp_results objectForKeyedSubscript:@"InterestingnessResults"];
           v18 = v17 == 0;
 
           if (v18)
@@ -9609,15 +9609,15 @@ LABEL_27:
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v92 = v13;
+              v92 = localIdentifier;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VideoRankingSignals][%@] Missing video signal interestingness from full analysis results", buf, 0xCu);
             }
           }
 
           else
           {
-            v19 = [v15 vcp_results];
-            v20 = [v19 objectForKeyedSubscript:@"InterestingnessResults"];
+            vcp_results2 = [v15 vcp_results];
+            v20 = [vcp_results2 objectForKeyedSubscript:@"InterestingnessResults"];
 
             v79 = 0u;
             v80 = 0u;
@@ -9667,7 +9667,7 @@ LABEL_27:
               v32 = v31;
             }
 
-            v33 = [v72 objectForKeyedSubscript:v13];
+            v33 = [dictionaryCopy objectForKeyedSubscript:localIdentifier];
             v34 = v33 == 0;
 
             if (v34)
@@ -9677,24 +9677,24 @@ LABEL_27:
               v37 = [MEMORY[0x1E696AD98] numberWithFloat:v35];
               v89 = v37;
               v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-              [v72 setObject:v40 forKey:v13];
+              [dictionaryCopy setObject:v40 forKey:localIdentifier];
             }
 
             else
             {
-              v36 = [v72 objectForKeyedSubscript:v13];
+              v36 = [dictionaryCopy objectForKeyedSubscript:localIdentifier];
               v37 = [v36 mutableCopy];
 
               *&v38 = v24 / v32;
               v39 = [MEMORY[0x1E696AD98] numberWithFloat:v38];
               [v37 setObject:v39 forKeyedSubscript:@"InterestingnessScore"];
 
-              [v72 setObject:v37 forKeyedSubscript:v13];
+              [dictionaryCopy setObject:v37 forKeyedSubscript:localIdentifier];
             }
           }
 
-          v41 = [v15 vcp_results];
-          v42 = [v41 objectForKeyedSubscript:@"QualityResults"];
+          vcp_results3 = [v15 vcp_results];
+          v42 = [vcp_results3 objectForKeyedSubscript:@"QualityResults"];
           v43 = v42 == 0;
 
           if (v43)
@@ -9702,7 +9702,7 @@ LABEL_27:
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v92 = v13;
+              v92 = localIdentifier;
               v29 = MEMORY[0x1E69E9C10];
               v30 = "[VideoRankingSignals][%@] Missing video signal quality from full analysis results";
               goto LABEL_52;
@@ -9711,8 +9711,8 @@ LABEL_27:
 
           else
           {
-            v44 = [v15 vcp_results];
-            v45 = [v44 objectForKeyedSubscript:@"QualityResults"];
+            vcp_results4 = [v15 vcp_results];
+            v45 = [vcp_results4 objectForKeyedSubscript:@"QualityResults"];
 
             v75 = 0u;
             v76 = 0u;
@@ -9762,7 +9762,7 @@ LABEL_27:
               v55 = v54;
             }
 
-            v56 = [v72 objectForKeyedSubscript:v13];
+            v56 = [dictionaryCopy objectForKeyedSubscript:localIdentifier];
             v57 = v56 == 0;
 
             if (v57)
@@ -9772,19 +9772,19 @@ LABEL_27:
               v60 = [MEMORY[0x1E696AD98] numberWithFloat:v58];
               v86 = v60;
               v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-              [v72 setObject:v63 forKey:v13];
+              [dictionaryCopy setObject:v63 forKey:localIdentifier];
             }
 
             else
             {
-              v59 = [v72 objectForKeyedSubscript:v13];
+              v59 = [dictionaryCopy objectForKeyedSubscript:localIdentifier];
               v60 = [v59 mutableCopy];
 
               *&v61 = v49 / v55;
               v62 = [MEMORY[0x1E696AD98] numberWithFloat:v61];
               [v60 setObject:v62 forKeyedSubscript:@"QualityScore"];
 
-              [v72 setObject:v60 forKeyedSubscript:v13];
+              [dictionaryCopy setObject:v60 forKeyedSubscript:localIdentifier];
             }
           }
         }
@@ -9792,7 +9792,7 @@ LABEL_27:
         else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v92 = v13;
+          v92 = localIdentifier;
           v29 = MEMORY[0x1E69E9C10];
           v30 = "[VideoRankingSignals][%@] No analysis results from MAD database, skip fetching";
 LABEL_52:
@@ -9811,44 +9811,44 @@ LABEL_52:
   }
 }
 
-- (id)rankAssetsWithContext:(id)a3 forAssetIdentifiers:(id)a4 forPhotoLibraryURL:(id)a5 withOptions:(id)a6 error:(id *)a7
+- (id)rankAssetsWithContext:(id)context forAssetIdentifiers:(id)identifiers forPhotoLibraryURL:(id)l withOptions:(id)options error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v33 = v13;
-  v34 = a6;
-  if (v12)
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  v33 = identifiersCopy;
+  optionsCopy = options;
+  if (contextCopy)
   {
-    v15 = [v12 entities];
-    if (v15)
+    entities = [contextCopy entities];
+    if (entities)
     {
 
 LABEL_5:
-      if (v14)
+      if (lCopy)
       {
-        v17 = v14;
+        systemPhotoLibraryURL = lCopy;
       }
 
       else
       {
-        v17 = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
+        systemPhotoLibraryURL = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
       }
 
-      v18 = v17;
-      v19 = [(VCPMediaAnalyzer *)self loadVideoAssetsFromPhotoLibraryURL:v17 withAssetIdentifiers:v13];
+      v18 = systemPhotoLibraryURL;
+      v19 = [(VCPMediaAnalyzer *)self loadVideoAssetsFromPhotoLibraryURL:systemPhotoLibraryURL withAssetIdentifiers:identifiersCopy];
       v20 = v19;
       if (v19 && [v19 count])
       {
-        v21 = [(VCPMediaAnalyzer *)self loadEmbeddingSearchResultWithContext:v12 forPhotoLibraryURL:v18 fromAssets:v20 withOptions:v34];
+        v21 = [(VCPMediaAnalyzer *)self loadEmbeddingSearchResultWithContext:contextCopy forPhotoLibraryURL:v18 fromAssets:v20 withOptions:optionsCopy];
         v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v23 = [[VideoRanker alloc] initWithCorpus:v21];
         v24 = v23;
         if (v23)
         {
-          v25 = [(VideoRanker *)v23 rankingScores];
-          v26 = [v25 mutableCopy];
+          rankingScores = [(VideoRanker *)v23 rankingScores];
+          v26 = [rankingScores mutableCopy];
 
           v22 = v26;
         }
@@ -9861,14 +9861,14 @@ LABEL_5:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to initialize BM25 video ranker, allow to skip adding BM25 ranking scores.", buf, 2u);
           }
 
-          if (a7)
+          if (error)
           {
             v32 = MEMORY[0x1E696ABC0];
             v36 = *MEMORY[0x1E696A578];
             v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to initialize BM25 video ranker."];
             v37 = v31;
             v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-            *a7 = [v32 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:?];
+            *error = [v32 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:?];
           }
         }
 
@@ -9882,7 +9882,7 @@ LABEL_5:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Empty search in assets fetched for videos.", buf, 2u);
       }
 
-      if (a7)
+      if (error)
       {
         v27 = MEMORY[0x1E696ABC0];
         v38 = *MEMORY[0x1E696A578];
@@ -9890,7 +9890,7 @@ LABEL_5:
         v39 = v21;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
         [v27 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v24];
-        *a7 = v22 = 0;
+        *error = v22 = 0;
 LABEL_29:
 
         goto LABEL_30;
@@ -9903,7 +9903,7 @@ LABEL_30:
     }
   }
 
-  v16 = [v34 objectForKeyedSubscript:@"SearchQueryString"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"SearchQueryString"];
 
   if (v16)
   {
@@ -9916,7 +9916,7 @@ LABEL_30:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Empty search context and no query string for search ranking.", buf, 2u);
   }
 
-  if (a7)
+  if (error)
   {
     v28 = MEMORY[0x1E696ABC0];
     v40 = *MEMORY[0x1E696A578];
@@ -9924,7 +9924,7 @@ LABEL_30:
     v41[0] = v18;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     [v28 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v20];
-    *a7 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_30;
   }
 
@@ -9934,18 +9934,18 @@ LABEL_31:
   return v22;
 }
 
-- (id)prepareContextsQueryEmbedding:(id)a3
+- (id)prepareContextsQueryEmbedding:(id)embedding
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  embeddingCopy = embedding;
   if (self->_textEncoder || (v5 = objc_alloc_init(VCPTextEncoder), textEncoder = self->_textEncoder, self->_textEncoder = v5, textEncoder, self->_textEncoder))
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v4 objectForKeyedSubscript:{@"SearchQueryString", 0}];
+    v8 = [embeddingCopy objectForKeyedSubscript:{@"SearchQueryString", 0}];
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
@@ -9960,7 +9960,7 @@ LABEL_31:
           }
 
           v12 = [(VCPTextEncoder *)self->_textEncoder textEmbeddingForQuery:*(*(&v15 + 1) + 8 * i) useFP16:1];
-          [v7 addObject:v12];
+          [array addObject:v12];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
@@ -9969,10 +9969,10 @@ LABEL_31:
       while (v9);
     }
 
-    v13 = [v4 mutableCopy];
-    if ([v7 count])
+    v13 = [embeddingCopy mutableCopy];
+    if ([array count])
     {
-      [v13 setObject:v7 forKey:&unk_1F49BE050];
+      [v13 setObject:array forKey:&unk_1F49BE050];
     }
 
     [v13 removeObjectForKey:@"SearchQueryString"];

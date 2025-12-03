@@ -1,9 +1,9 @@
 @interface TSCHChartAxisTickMarksLayoutItem
-- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)a3 outClipRect:(CGSize *)a4;
+- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)size outClipRect:(CGSize *)rect;
 - (CGRect)calcDrawingRect;
 - (CGRect)p_effectiveRootedLayoutRect;
 - (CGSize)calcMinSize;
-- (TSCHChartAxisTickMarksLayoutItem)initWithParent:(id)a3;
+- (TSCHChartAxisTickMarksLayoutItem)initWithParent:(id)parent;
 - (float)majorTickmarkLength;
 - (float)minorTickmarkLength;
 - (int)location;
@@ -11,11 +11,11 @@
 
 @implementation TSCHChartAxisTickMarksLayoutItem
 
-- (TSCHChartAxisTickMarksLayoutItem)initWithParent:(id)a3
+- (TSCHChartAxisTickMarksLayoutItem)initWithParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = TSCHChartAxisTickMarksLayoutItem;
-  return [(TSCHChartLayoutItem *)&v4 initWithParent:a3];
+  return [(TSCHChartLayoutItem *)&v4 initWithParent:parent];
 }
 
 - (float)majorTickmarkLength
@@ -649,7 +649,7 @@ LABEL_16:
   return result;
 }
 
-- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)a3 outClipRect:(CGSize *)a4
+- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)size outClipRect:(CGSize *)rect
 {
   v122 = *MEMORY[0x277D85DE8];
   v10 = *MEMORY[0x277CBF398];
@@ -664,7 +664,7 @@ LABEL_16:
   *&retstr->c = v17;
   v18 = *(v16 + 32);
   *&retstr->tx = v18;
-  v19 = objc_msgSend_parent(self, a3, *&v18, *&v17, v5);
+  v19 = objc_msgSend_parent(self, size, *&v18, *&v17, v5);
   v24 = objc_msgSend_model(self, v20, v21, v22, v23);
   v29 = objc_msgSend_axisID(v19, v25, v26, v27, v28);
   v34 = objc_msgSend_axisForID_(v24, v30, v31, v32, v33, v29);
@@ -693,10 +693,10 @@ LABEL_16:
             {
               case 1:
                 CGAffineTransformMakeRotation(&v117, 1.57079633);
-                v68 = rect;
+                rectCopy3 = rect;
                 CGAffineTransformMakeTranslation(&v118, rect, 0.0);
                 CGAffineTransformMakeScale(&v119, 1.0, -1.0);
-                v69 = 0.0;
+                rectCopy4 = 0.0;
                 goto LABEL_15;
               case 2:
                 CGAffineTransformMakeScale(&v117, 1.0, -1.0);
@@ -711,17 +711,17 @@ LABEL_16:
                 CGAffineTransformInvert(&v116, &v115);
                 v83 = x;
                 v84 = y;
-                v85 = rect;
+                rectCopy5 = rect;
                 goto LABEL_18;
               case 3:
                 CGAffineTransformMakeRotation(&v117, 1.57079633);
-                v68 = rect;
+                rectCopy3 = rect;
                 CGAffineTransformMakeTranslation(&v118, rect, 0.0);
                 CGAffineTransformMakeScale(&v119, -1.0, -1.0);
-                v69 = rect;
+                rectCopy4 = rect;
 LABEL_15:
                 v81 = height;
-                CGAffineTransformMakeTranslation(&v120, v69, height);
+                CGAffineTransformMakeTranslation(&v120, rectCopy4, height);
                 CGAffineTransformMakeTranslation(&v121, x, y);
                 sub_27628CF0C(&v117, 5, retstr);
                 v82 = *&retstr->c;
@@ -731,7 +731,7 @@ LABEL_15:
                 CGAffineTransformInvert(&v116, &v115);
                 v83 = x;
                 v84 = y;
-                v85 = v68;
+                rectCopy5 = rectCopy3;
 LABEL_18:
                 v87 = v81;
                 goto LABEL_19;
@@ -772,7 +772,7 @@ LABEL_22:
               CGAffineTransformInvert(&v116, &v115);
               v83 = x;
               v84 = y;
-              v85 = rect;
+              rectCopy5 = rect;
               v87 = height;
 LABEL_19:
               *&v65 = CGRectApplyAffineTransform(*&v83, &v116);
@@ -811,10 +811,10 @@ LABEL_23:
     a5->size.height = v13;
   }
 
-  if (a4)
+  if (rect)
   {
-    a4->width = v14;
-    a4->height = v15;
+    rect->width = v14;
+    rect->height = v15;
   }
 
   return result;

@@ -1,25 +1,25 @@
 @interface SVXQueuePerformer
 + (id)sharedMainQueuePerformer;
 - (NSString)description;
-- (SVXQueuePerformer)initWithIdentifier:(id)a3 qosClass:(unsigned int)a4 relativePriority:(int)a5 options:(unint64_t)a6;
-- (id)_initWithIdentifier:(id)a3 queue:(id)a4 options:(unint64_t)a5;
-- (void)_performBlock:(id)a3 withOptions:(unint64_t)a4;
-- (void)_performBlockSync:(id)a3 withOptions:(unint64_t)a4;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 afterDelay:(double)a4;
-- (void)performBlock:(id)a3 afterGroup:(id)a4;
-- (void)performBlock:(id)a3 withOptions:(unint64_t)a4;
-- (void)performBlockSync:(id)a3;
+- (SVXQueuePerformer)initWithIdentifier:(id)identifier qosClass:(unsigned int)class relativePriority:(int)priority options:(unint64_t)options;
+- (id)_initWithIdentifier:(id)identifier queue:(id)queue options:(unint64_t)options;
+- (void)_performBlock:(id)block withOptions:(unint64_t)options;
+- (void)_performBlockSync:(id)sync withOptions:(unint64_t)options;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block afterDelay:(double)delay;
+- (void)performBlock:(id)block afterGroup:(id)group;
+- (void)performBlock:(id)block withOptions:(unint64_t)options;
+- (void)performBlockSync:(id)sync;
 @end
 
 @implementation SVXQueuePerformer
 
-- (void)_performBlockSync:(id)a3 withOptions:(unint64_t)a4
+- (void)_performBlockSync:(id)sync withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = v6;
-  if ((v4 & 2) != 0 && (v7 = [(SVXQueuePerformer *)self _isExecutingInContext], v6 = v9, v7))
+  optionsCopy = options;
+  syncCopy = sync;
+  v9 = syncCopy;
+  if ((optionsCopy & 2) != 0 && (v7 = [(SVXQueuePerformer *)self _isExecutingInContext], syncCopy = v9, v7))
   {
     v8 = objc_autoreleasePoolPush();
     v9[2]();
@@ -28,16 +28,16 @@
 
   else
   {
-    dispatch_sync(self->_queue, v6);
+    dispatch_sync(self->_queue, syncCopy);
   }
 }
 
-- (void)_performBlock:(id)a3 withOptions:(unint64_t)a4
+- (void)_performBlock:(id)block withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = v6;
-  if ((v4 & 2) != 0 && (v7 = [(SVXQueuePerformer *)self _isExecutingInContext], v6 = v10, v7))
+  optionsCopy = options;
+  blockCopy = block;
+  v10 = blockCopy;
+  if ((optionsCopy & 2) != 0 && (v7 = [(SVXQueuePerformer *)self _isExecutingInContext], blockCopy = v10, v7))
   {
     v8 = objc_autoreleasePoolPush();
     v10[2]();
@@ -47,86 +47,86 @@
   else
   {
     queue = self->_queue;
-    if (v4)
+    if (optionsCopy)
     {
-      dispatch_sync(queue, v6);
+      dispatch_sync(queue, blockCopy);
     }
 
     else
     {
-      dispatch_async(queue, v6);
+      dispatch_async(queue, blockCopy);
     }
   }
 }
 
-- (id)_initWithIdentifier:(id)a3 queue:(id)a4 options:(unint64_t)a5
+- (id)_initWithIdentifier:(id)identifier queue:(id)queue options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = SVXQueuePerformer;
   v10 = [(SVXQueuePerformer *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    objc_storeStrong(&v10->_queue, a4);
-    v10->_options = a5;
+    objc_storeStrong(&v10->_queue, queue);
+    v10->_options = options;
   }
 
   return v10;
 }
 
-- (void)performBlockSync:(id)a3
+- (void)performBlockSync:(id)sync
 {
-  if (a3)
+  if (sync)
   {
-    [(SVXQueuePerformer *)self _performBlockSync:a3 withOptions:self->_options];
+    [(SVXQueuePerformer *)self _performBlockSync:sync withOptions:self->_options];
   }
 }
 
-- (void)performBlock:(id)a3 afterGroup:(id)a4
+- (void)performBlock:(id)block afterGroup:(id)group
 {
-  block = a3;
-  v6 = a4;
+  block = block;
+  groupCopy = group;
   if (block)
   {
-    if ((self->_options & 2) != 0 && !dispatch_group_wait(v6, 0))
+    if ((self->_options & 2) != 0 && !dispatch_group_wait(groupCopy, 0))
     {
       [(SVXQueuePerformer *)self _performBlock:block withOptions:self->_options];
     }
 
     else
     {
-      dispatch_group_notify(v6, self->_queue, block);
+      dispatch_group_notify(groupCopy, self->_queue, block);
     }
   }
 }
 
-- (void)performBlock:(id)a3 withOptions:(unint64_t)a4
+- (void)performBlock:(id)block withOptions:(unint64_t)options
 {
-  if (a3)
+  if (block)
   {
-    [(SVXQueuePerformer *)self _performBlock:a3 withOptions:a4];
+    [(SVXQueuePerformer *)self _performBlock:block withOptions:options];
   }
 }
 
-- (void)performBlock:(id)a3 afterDelay:(double)a4
+- (void)performBlock:(id)block afterDelay:(double)delay
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    block = v6;
-    if (a4 == 0.0)
+    block = blockCopy;
+    if (delay == 0.0)
     {
-      [(SVXQueuePerformer *)self _performBlock:v6 withOptions:self->_options];
+      [(SVXQueuePerformer *)self _performBlock:blockCopy withOptions:self->_options];
     }
 
     else
     {
-      v7 = dispatch_time(0, (a4 * 1000000000.0));
+      v7 = dispatch_time(0, (delay * 1000000000.0));
       dispatch_after(v7, self->_queue, block);
     }
   }
@@ -134,25 +134,25 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    [(SVXQueuePerformer *)self _performBlock:a3 withOptions:self->_options];
+    [(SVXQueuePerformer *)self _performBlock:block withOptions:self->_options];
   }
 }
 
-- (SVXQueuePerformer)initWithIdentifier:(id)a3 qosClass:(unsigned int)a4 relativePriority:(int)a5 options:(unint64_t)a6
+- (SVXQueuePerformer)initWithIdentifier:(id)identifier qosClass:(unsigned int)class relativePriority:(int)priority options:(unint64_t)options
 {
-  v11 = a3;
-  v12 = a3;
-  v13 = [v12 UTF8String];
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  uTF8String = [identifierCopy2 UTF8String];
   v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v15 = dispatch_queue_attr_make_with_qos_class(v14, a4, a5);
+  v15 = dispatch_queue_attr_make_with_qos_class(v14, class, priority);
 
-  v16 = dispatch_queue_create(v13, v15);
+  v16 = dispatch_queue_create(uTF8String, v15);
   dispatch_queue_set_specific(v16, SVXQueuePerformerIdentityKey, self, 0);
-  v17 = [(SVXQueuePerformer *)self _initWithIdentifier:v12 queue:v16 options:a6];
+  v17 = [(SVXQueuePerformer *)self _initWithIdentifier:identifierCopy2 queue:v16 options:options];
 
   return v17;
 }

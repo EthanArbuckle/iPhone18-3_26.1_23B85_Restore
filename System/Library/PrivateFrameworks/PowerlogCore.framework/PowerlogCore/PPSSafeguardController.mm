@@ -3,9 +3,9 @@
 - (BOOL)debug_forceEligibility;
 - (BOOL)debug_installDate;
 - (BOOL)debug_treatAsTestDevice;
-- (BOOL)handleTask:(id)a3;
+- (BOOL)handleTask:(id)task;
 - (BOOL)isTestDeviceForSafeguard;
-- (BOOL)upload:(BOOL *)a3;
+- (BOOL)upload:(BOOL *)upload;
 - (PPSSafeguardController)init;
 - (id)eligibilityRange;
 - (id)installDate;
@@ -17,7 +17,7 @@
 - (id)workQueue;
 - (unint64_t)isEligible;
 - (void)configureWithDefaultValues;
-- (void)configureWithDictionary:(id)a3;
+- (void)configureWithDictionary:(id)dictionary;
 - (void)registerDataCollectionActivity;
 - (void)setupDRTasking;
 - (void)unregisterDataCollectionActivity;
@@ -63,7 +63,7 @@ void __56__PPSSafeguardController_registerDataCollectionActivity__block_invoke_2
 {
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd") || !+[PLPlatform internalBuild])
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -78,13 +78,13 @@ void __56__PPSSafeguardController_registerDataCollectionActivity__block_invoke_2
     }
 
     self = v4;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)upload:(BOOL *)a3
+- (BOOL)upload:(BOOL *)upload
 {
   v65 = *MEMORY[0x1E69E9840];
   v4 = PLLogSubmission();
@@ -95,12 +95,12 @@ void __56__PPSSafeguardController_registerDataCollectionActivity__block_invoke_2
   }
 
   v5 = [[PLSubmissionConfig alloc] initWithReasonType:2 DRConfig:0];
-  v6 = [(PPSSafeguardController *)self dataDuration];
-  if (v6 != 86400)
+  dataDuration = [(PPSSafeguardController *)self dataDuration];
+  if (dataDuration != 86400)
   {
-    v7 = v6;
-    v8 = [(PLSubmissionConfig *)v5 endDate];
-    v9 = [v8 dateByAddingTimeInterval:-v7];
+    v7 = dataDuration;
+    endDate = [(PLSubmissionConfig *)v5 endDate];
+    v9 = [endDate dateByAddingTimeInterval:-v7];
     [(PLSubmissionConfig *)v5 setStartDate:v9];
 
     v10 = PLLogSubmission();
@@ -146,7 +146,7 @@ void __56__PPSSafeguardController_registerDataCollectionActivity__block_invoke_2
           _os_log_impl(&dword_1D8611000, v15, OS_LOG_TYPE_DEFAULT, "Finished preparing PLL", buf, 2u);
         }
 
-        if (*a3)
+        if (*upload)
         {
           p_super = PLLogSubmission();
           if (os_log_type_enabled(p_super, OS_LOG_TYPE_INFO))
@@ -171,7 +171,7 @@ void __56__PPSSafeguardController_registerDataCollectionActivity__block_invoke_2
           _os_log_impl(&dword_1D8611000, v18, OS_LOG_TYPE_DEFAULT, "Finished preparing MSS", buf, 2u);
         }
 
-        if (*a3)
+        if (*upload)
         {
           v46 = PLLogSubmission();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
@@ -196,11 +196,11 @@ LABEL_43:
       }
 
       v21 = MEMORY[0x1E696AEC0];
-      v22 = [v12 tagUUID];
-      v23 = [v21 stringWithFormat:@"%@Powerlog_%@/", @"/tmp/powerlog/cloud/", v22];
+      tagUUID = [v12 tagUUID];
+      v23 = [v21 stringWithFormat:@"%@Powerlog_%@/", @"/tmp/powerlog/cloud/", tagUUID];
 
-      v24 = [MEMORY[0x1E696AC08] defaultManager];
-      v25 = [v24 contentsOfDirectoryAtPath:v23 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v25 = [defaultManager contentsOfDirectoryAtPath:v23 error:0];
 
       if (v25 && [v25 count])
       {
@@ -208,50 +208,50 @@ LABEL_43:
         v27 = [MEMORY[0x1E695DFF8] fileURLWithPath:v23];
         v28 = [v26 archiveDirectoryAt:v27 deleteOriginal:1];
 
-        v29 = [v28 path];
-        [v12 setFilePath:v29];
+        path = [v28 path];
+        [v12 setFilePath:path];
 
         v30 = PLLogSubmission();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
-          v43 = [v12 filePath];
+          filePath = [v12 filePath];
           v44 = [v25 count];
           *buf = 138412546;
-          v61 = v43;
+          v61 = filePath;
           v62 = 1024;
           v63 = v44;
           _os_log_debug_impl(&dword_1D8611000, v30, OS_LOG_TYPE_DEBUG, "File to upload generated at %@ with %d files included.", buf, 0x12u);
         }
       }
 
-      v31 = [v12 filePath];
-      if (v31)
+      filePath2 = [v12 filePath];
+      if (filePath2)
       {
-        v32 = v31;
-        v33 = [v12 ckTagConfig];
-        if (v33)
+        v32 = filePath2;
+        ckTagConfig = [v12 ckTagConfig];
+        if (ckTagConfig)
         {
-          v34 = v33;
-          v35 = [v12 tagUUID];
+          v34 = ckTagConfig;
+          tagUUID2 = [v12 tagUUID];
 
-          if (v35)
+          if (tagUUID2)
           {
             v36 = objc_alloc_init(PPSSubmissionRecord);
-            v37 = [v12 contextDictionary];
-            [(PPSSubmissionRecord *)v36 setContextDictionary:v37];
+            contextDictionary = [v12 contextDictionary];
+            [(PPSSubmissionRecord *)v36 setContextDictionary:contextDictionary];
 
             [(PPSSubmissionRecord *)v36 setIsExpedited:1];
             v38 = MEMORY[0x1E695DFF8];
-            v39 = [v12 filePath];
-            v40 = [v38 fileURLWithPath:v39];
+            filePath3 = [v12 filePath];
+            v40 = [v38 fileURLWithPath:filePath3];
             [(PPSSubmissionRecord *)v36 setFilePath:v40];
 
             [(PPSSubmissionRecord *)v36 setFileType:@"gz"];
-            v41 = [v12 submissionCategory];
-            [(PPSSubmissionRecord *)v36 setIssueCategory:v41];
+            submissionCategory = [v12 submissionCategory];
+            [(PPSSubmissionRecord *)v36 setIssueCategory:submissionCategory];
 
-            v42 = [v12 getSubmitReasonTypeToReasonLog];
-            [(PPSSubmissionRecord *)v36 setIssueDescription:v42];
+            getSubmitReasonTypeToReasonLog = [v12 getSubmitReasonTypeToReasonLog];
+            [(PPSSubmissionRecord *)v36 setIssueDescription:getSubmitReasonTypeToReasonLog];
 
             [(PPSSubmissionRecord *)v36 setRecordType:@"attachment"];
             [(PPSSubmissionRecord *)v36 setTargetContainer:@"com.apple.perfpowerservices.tasking"];
@@ -298,11 +298,11 @@ LABEL_44:
   {
     if ([(PPSSafeguardController *)self debug_forceEligibility])
     {
-      v3 = PLLogSubmission();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+      installDate = PLLogSubmission();
+      if (os_log_type_enabled(installDate, OS_LOG_TYPE_INFO))
       {
         LOWORD(v32) = 0;
-        _os_log_impl(&dword_1D8611000, v3, OS_LOG_TYPE_INFO, "Forcing eligibility...", &v32, 2u);
+        _os_log_impl(&dword_1D8611000, installDate, OS_LOG_TYPE_INFO, "Forcing eligibility...", &v32, 2u);
       }
 
       v4 = 0;
@@ -311,40 +311,40 @@ LABEL_44:
 
     if ([(PPSSafeguardController *)self excludeTestDevices]&& [(PPSSafeguardController *)self isTestDeviceForSafeguard])
     {
-      v3 = PLLogSubmission();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+      installDate = PLLogSubmission();
+      if (os_log_type_enabled(installDate, OS_LOG_TYPE_INFO))
       {
         LOWORD(v32) = 0;
-        _os_log_impl(&dword_1D8611000, v3, OS_LOG_TYPE_INFO, "Excluding test device", &v32, 2u);
+        _os_log_impl(&dword_1D8611000, installDate, OS_LOG_TYPE_INFO, "Excluding test device", &v32, 2u);
       }
 
       v4 = 5;
       goto LABEL_42;
     }
 
-    v3 = [(PPSSafeguardController *)self installDate];
+    installDate = [(PPSSafeguardController *)self installDate];
     v5 = PLLogSubmission();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v32 = 138412290;
-      v33 = *&v3;
+      v33 = *&installDate;
       _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_INFO, "Date/time of last OS install: %@", &v32, 0xCu);
     }
 
-    v6 = [(PPSSafeguardController *)self todayRange];
-    v7 = [(PPSSafeguardController *)self lastSubmissionDate];
-    v8 = [v6 containsDate:v7];
+    todayRange = [(PPSSafeguardController *)self todayRange];
+    lastSubmissionDate = [(PPSSafeguardController *)self lastSubmissionDate];
+    v8 = [todayRange containsDate:lastSubmissionDate];
 
-    v9 = PLLogSubmission();
-    v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
+    currentDate = PLLogSubmission();
+    v10 = os_log_type_enabled(currentDate, OS_LOG_TYPE_INFO);
     if (v8)
     {
       if (v10)
       {
-        v11 = [(PPSSafeguardController *)self lastSubmissionDate];
+        lastSubmissionDate2 = [(PPSSafeguardController *)self lastSubmissionDate];
         v32 = 138412290;
-        v33 = *&v11;
-        _os_log_impl(&dword_1D8611000, v9, OS_LOG_TYPE_INFO, "Safeguard submission already performed on '%@'", &v32, 0xCu);
+        v33 = *&lastSubmissionDate2;
+        _os_log_impl(&dword_1D8611000, currentDate, OS_LOG_TYPE_INFO, "Safeguard submission already performed on '%@'", &v32, 0xCu);
       }
 
       v4 = 2;
@@ -354,22 +354,22 @@ LABEL_44:
     if (v10)
     {
       LOWORD(v32) = 0;
-      _os_log_impl(&dword_1D8611000, v9, OS_LOG_TYPE_INFO, "Device has not yet performed upload", &v32, 2u);
+      _os_log_impl(&dword_1D8611000, currentDate, OS_LOG_TYPE_INFO, "Device has not yet performed upload", &v32, 2u);
     }
 
-    v9 = [(PPSSafeguardController *)self currentDate];
-    v12 = [(PPSSafeguardController *)self eligibilityRange];
-    if (([v12 containsDate:v9] & 1) == 0)
+    currentDate = [(PPSSafeguardController *)self currentDate];
+    eligibilityRange = [(PPSSafeguardController *)self eligibilityRange];
+    if (([eligibilityRange containsDate:currentDate] & 1) == 0)
     {
       v14 = PLLogSubmission();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v26 = [v12 startDate];
-        v27 = [v12 endDate];
+        startDate = [eligibilityRange startDate];
+        endDate = [eligibilityRange endDate];
         v32 = 138412546;
-        v33 = *&v26;
+        v33 = *&startDate;
         v34 = 2112;
-        v35 = *&v27;
+        v35 = *&endDate;
         _os_log_impl(&dword_1D8611000, v14, OS_LOG_TYPE_INFO, "No install within eligibility range: ['%@', '%@']", &v32, 0x16u);
       }
 
@@ -377,28 +377,28 @@ LABEL_44:
       goto LABEL_40;
     }
 
-    v13 = [(PPSSafeguardController *)self uploadRange];
-    v14 = v13;
-    if (v13)
+    uploadRange = [(PPSSafeguardController *)self uploadRange];
+    v14 = uploadRange;
+    if (uploadRange)
     {
-      v15 = [v13 containsDate:v9];
+      v15 = [uploadRange containsDate:currentDate];
       v16 = PLLogSubmission();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
       if (v15)
       {
         if (v17)
         {
-          v18 = [v12 startDate];
-          v19 = [v12 endDate];
+          startDate2 = [eligibilityRange startDate];
+          endDate2 = [eligibilityRange endDate];
           v32 = 138412546;
-          v33 = *&v18;
+          v33 = *&startDate2;
           v34 = 2112;
-          v35 = *&v19;
+          v35 = *&endDate2;
           _os_log_impl(&dword_1D8611000, v16, OS_LOG_TYPE_INFO, "Device is within eligibility range: ['%@', '%@']", &v32, 0x16u);
         }
 
-        v20 = [MEMORY[0x1E695DF00] date];
-        [v20 timeIntervalSinceDate:v3];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:installDate];
         v22 = v21;
 
         [(PPSSafeguardController *)self minimumLiveOnTime];
@@ -438,12 +438,12 @@ LABEL_44:
 
       if (v17)
       {
-        v28 = [v14 startDate];
-        v29 = [v14 endDate];
+        startDate3 = [v14 startDate];
+        endDate3 = [v14 endDate];
         v32 = 138412546;
-        v33 = *&v28;
+        v33 = *&startDate3;
         v34 = 2112;
-        v35 = *&v29;
+        v35 = *&endDate3;
         _os_log_impl(&dword_1D8611000, v16, OS_LOG_TYPE_INFO, "Not currently within upload range: ['%@', '%@']", &v32, 0x16u);
       }
     }
@@ -466,13 +466,13 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v3 = PLLogSubmission();
+  installDate = PLLogSubmission();
   v4 = 1;
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(installDate, OS_LOG_TYPE_INFO))
   {
     LOWORD(v32) = 0;
     v4 = 1;
-    _os_log_impl(&dword_1D8611000, v3, OS_LOG_TYPE_INFO, "Disabled for eligiblity", &v32, 2u);
+    _os_log_impl(&dword_1D8611000, installDate, OS_LOG_TYPE_INFO, "Disabled for eligiblity", &v32, 2u);
   }
 
 LABEL_42:
@@ -495,10 +495,10 @@ LABEL_42:
   return v5 < 86400.0 && v4 != 0;
 }
 
-- (BOOL)handleTask:(id)a3
+- (BOOL)handleTask:(id)task
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  taskCopy = task;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3020000000;
@@ -508,23 +508,23 @@ LABEL_42:
   v25[2] = __37__PPSSafeguardController_handleTask___block_invoke;
   v25[3] = &unk_1E8519E68;
   v25[4] = &v26;
-  [v4 setExpirationHandler:v25];
-  v5 = [(PPSSafeguardController *)self isEligible];
-  v6 = v5;
-  if (v5 > 6)
+  [taskCopy setExpirationHandler:v25];
+  isEligible = [(PPSSafeguardController *)self isEligible];
+  v6 = isEligible;
+  if (isEligible > 6)
   {
     goto LABEL_18;
   }
 
-  if (((1 << v5) & 0x6E) != 0)
+  if (((1 << isEligible) & 0x6E) != 0)
   {
-    [v4 setTaskCompleted];
+    [taskCopy setTaskCompleted];
 LABEL_4:
     v7 = 0;
     goto LABEL_5;
   }
 
-  if (v5)
+  if (isEligible)
   {
 LABEL_18:
     v23 = PLLogSubmission();
@@ -541,17 +541,17 @@ LABEL_18:
   v7 = [(PPSSafeguardController *)self upload:v27 + 5];
 LABEL_5:
   [(PPSSafeguardController *)self reportEventToCA:v6 didUpload:v7];
-  if (v4)
+  if (taskCopy)
   {
     if (v7)
     {
       v8 = MEMORY[0x1E696AD98];
-      v9 = [(PPSSafeguardController *)self currentDate];
-      [v9 timeIntervalSince1970];
+      currentDate = [(PPSSafeguardController *)self currentDate];
+      [currentDate timeIntervalSince1970];
       v10 = [v8 numberWithDouble:?];
       [PLDefaults setObject:v10 forKey:@"PPSSafeguardDefaultLastSubmissionTime"];
 
-      [v4 setTaskCompleted];
+      [taskCopy setTaskCompleted];
     }
 
     else
@@ -564,7 +564,7 @@ LABEL_5:
       }
 
       v24 = 0;
-      v12 = [v4 setTaskExpiredWithRetryAfter:&v24 error:0.0];
+      v12 = [taskCopy setTaskExpiredWithRetryAfter:&v24 error:0.0];
       v13 = v24;
       if ((v12 & 1) == 0)
       {
@@ -574,7 +574,7 @@ LABEL_5:
           [(PPSSafeguardController *)v13 handleTask:v14, v15, v16, v17, v18, v19, v20];
         }
 
-        [v4 setTaskCompleted];
+        [taskCopy setTaskCompleted];
       }
     }
   }
@@ -595,13 +595,13 @@ LABEL_5:
 - (void)setupDRTasking
 {
   v3 = objc_alloc(MEMORY[0x1E699A070]);
-  v4 = [(PPSSafeguardController *)self workQueue];
+  workQueue = [(PPSSafeguardController *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__PPSSafeguardController_setupDRTasking__block_invoke;
   v7[3] = &unk_1E8519E90;
   v7[4] = self;
-  v5 = [v3 initWithTeamID:@"perfpowerservices.safeguard.config" targetQueue:v4 configProcessingBlock:v7];
+  v5 = [v3 initWithTeamID:@"perfpowerservices.safeguard.config" targetQueue:workQueue configProcessingBlock:v7];
   drConfigMonitor = self->_drConfigMonitor;
   self->_drConfigMonitor = v5;
 }
@@ -679,11 +679,11 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
   [PLDefaults setObject:0 forKey:@"PPSSafeguardDefaultLastSubmissionTime"];
 }
 
-- (void)configureWithDictionary:(id)a3
+- (void)configureWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = PLLogSubmission();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -691,7 +691,7 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
       [PPSSafeguardController configureWithDictionary:];
     }
 
-    v5 = [v3 objectForKeyedSubscript:@"PPSSafeguardParameterIsEnabled"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"PPSSafeguardParameterIsEnabled"];
     if (v5)
     {
       [PLDefaults setObject:v5 forKey:@"PPSSafeguardParameterIsEnabled"];
@@ -706,7 +706,7 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
       }
     }
 
-    v7 = [v3 objectForKeyedSubscript:@"PPSSafeguardParameterDataDuration"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"PPSSafeguardParameterDataDuration"];
     if (v7)
     {
       [PLDefaults setObject:v7 forKey:@"PPSSafeguardParameterDataDuration"];
@@ -721,7 +721,7 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
       }
     }
 
-    v9 = [v3 objectForKeyedSubscript:@"PPSSafeguardParameterMinimumLiveOnTime"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"PPSSafeguardParameterMinimumLiveOnTime"];
     if (v9)
     {
       [PLDefaults setObject:v9 forKey:@"PPSSafeguardParameterMinimumLiveOnTime"];
@@ -736,7 +736,7 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
       }
     }
 
-    v11 = [v3 objectForKeyedSubscript:@"PPSSafeguardParameterStartHour"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"PPSSafeguardParameterStartHour"];
     if (v11)
     {
       [PLDefaults setObject:v11 forKey:@"PPSSafeguardParameterStartHour"];
@@ -751,7 +751,7 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
       }
     }
 
-    v13 = [v3 objectForKeyedSubscript:@"PPSSafeguardParameterStopHour"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"PPSSafeguardParameterStopHour"];
     if (v13)
     {
       [PLDefaults setObject:v13 forKey:@"PPSSafeguardParameterStopHour"];
@@ -766,7 +766,7 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
       }
     }
 
-    v15 = [v3 objectForKeyedSubscript:@"PPSSafeguardParameterEligibilityDuration"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"PPSSafeguardParameterEligibilityDuration"];
     if (v15)
     {
       [PLDefaults setObject:v15 forKey:@"PPSSafeguardParameterEligibilityDuration"];
@@ -781,7 +781,7 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
       }
     }
 
-    v17 = [v3 objectForKeyedSubscript:@"PPSSafeguardParameterExcludeTestDevices"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"PPSSafeguardParameterExcludeTestDevices"];
     if (v17)
     {
       [PLDefaults setObject:v17 forKey:@"PPSSafeguardParameterExcludeTestDevices"];
@@ -802,9 +802,9 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
 
 - (id)installDate
 {
-  v2 = [(PPSSafeguardController *)self debug_installDate];
+  debug_installDate = [(PPSSafeguardController *)self debug_installDate];
   v3 = MEMORY[0x1E695DF00];
-  if (v2)
+  if (debug_installDate)
   {
     v4 = @"PPSSafeguardDebugParameterInstallDate";
   }
@@ -841,9 +841,9 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
 {
   v3 = objc_alloc(MEMORY[0x1E695DEE8]);
   v4 = [v3 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v5 = [(PPSSafeguardController *)self startHour];
-  v6 = [(PPSSafeguardController *)self currentDate];
-  v7 = [v4 dateBySettingHour:v5 minute:0 second:0 ofDate:v6 options:0];
+  startHour = [(PPSSafeguardController *)self startHour];
+  currentDate = [(PPSSafeguardController *)self currentDate];
+  v7 = [v4 dateBySettingHour:startHour minute:0 second:0 ofDate:currentDate options:0];
 
   return v7;
 }
@@ -852,19 +852,19 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
 {
   v3 = objc_alloc(MEMORY[0x1E695DEE8]);
   v4 = [v3 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v5 = [(PPSSafeguardController *)self stopHour];
-  v6 = [(PPSSafeguardController *)self currentDate];
-  v7 = [v4 dateBySettingHour:v5 minute:0 second:0 ofDate:v6 options:0];
+  stopHour = [(PPSSafeguardController *)self stopHour];
+  currentDate = [(PPSSafeguardController *)self currentDate];
+  v7 = [v4 dateBySettingHour:stopHour minute:0 second:0 ofDate:currentDate options:0];
 
   return v7;
 }
 
 - (id)eligibilityRange
 {
-  v3 = [(PPSSafeguardController *)self eligibilityDuration];
-  v4 = [(PPSSafeguardController *)self installDate];
-  v5 = [MEMORY[0x1E695DF00] nearestMidnightBeforeDate:v4];
-  v6 = [v5 dateByAddingTimeInterval:v3];
+  eligibilityDuration = [(PPSSafeguardController *)self eligibilityDuration];
+  installDate = [(PPSSafeguardController *)self installDate];
+  v5 = [MEMORY[0x1E695DF00] nearestMidnightBeforeDate:installDate];
+  v6 = [v5 dateByAddingTimeInterval:eligibilityDuration];
   v7 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v5 endDate:v6];
 
   return v7;
@@ -872,9 +872,9 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
 
 - (id)todayRange
 {
-  v2 = [(PPSSafeguardController *)self currentDate];
-  v3 = [MEMORY[0x1E695DF00] nearestMidnightBeforeDate:v2];
-  v4 = [MEMORY[0x1E695DF00] nearestMidnightAfterDate:v2];
+  currentDate = [(PPSSafeguardController *)self currentDate];
+  v3 = [MEMORY[0x1E695DF00] nearestMidnightBeforeDate:currentDate];
+  v4 = [MEMORY[0x1E695DF00] nearestMidnightAfterDate:currentDate];
   v5 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v3 endDate:v4];
 
   return v5;
@@ -882,13 +882,13 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
 
 - (id)uploadRange
 {
-  v3 = [(PPSSafeguardController *)self startDate];
-  v4 = [(PPSSafeguardController *)self stopDate];
-  v5 = v4;
+  startDate = [(PPSSafeguardController *)self startDate];
+  stopDate = [(PPSSafeguardController *)self stopDate];
+  v5 = stopDate;
   v6 = 0;
-  if (v3 && v4)
+  if (startDate && stopDate)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v3 endDate:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate endDate:stopDate];
   }
 
   return v6;
@@ -937,8 +937,8 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
   {
     if ([(PPSSafeguardController *)self isEnabled])
     {
-      v3 = [MEMORY[0x1E698E4C0] sharedScheduler];
-      v4 = [v3 taskRequestForIdentifier:@"com.apple.perfpowerservices.safeguard"];
+      mEMORY[0x1E698E4C0] = [MEMORY[0x1E698E4C0] sharedScheduler];
+      v4 = [mEMORY[0x1E698E4C0] taskRequestForIdentifier:@"com.apple.perfpowerservices.safeguard"];
 
       if (v4)
       {
@@ -950,8 +950,8 @@ void __40__PPSSafeguardController_setupDRTasking__block_invoke(uint64_t a1, void
           _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_INFO, "Unregistering safeguard collection activity ('%@')...", &v8, 0xCu);
         }
 
-        v6 = [MEMORY[0x1E698E4C0] sharedScheduler];
-        [v6 deregisterTaskWithIdentifier:@"com.apple.perfpowerservices.safeguard"];
+        mEMORY[0x1E698E4C0]2 = [MEMORY[0x1E698E4C0] sharedScheduler];
+        [mEMORY[0x1E698E4C0]2 deregisterTaskWithIdentifier:@"com.apple.perfpowerservices.safeguard"];
       }
     }
   }

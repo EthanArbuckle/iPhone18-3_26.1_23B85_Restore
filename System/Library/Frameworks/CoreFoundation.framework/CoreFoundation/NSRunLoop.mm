@@ -1,5 +1,5 @@
 @interface NSRunLoop
-- (id)_initWithRl:(id)a3 dperf:(id)a4 perft:(id)a5 info:(id)a6 ports:(id)a7;
+- (id)_initWithRl:(id)rl dperf:(id)dperf perft:(id)perft info:(id)info ports:(id)ports;
 - (void)_deallocHelper;
 @end
 
@@ -20,13 +20,13 @@
   objc_sync_exit(self);
 }
 
-- (id)_initWithRl:(id)a3 dperf:(id)a4 perft:(id)a5 info:(id)a6 ports:(id)a7
+- (id)_initWithRl:(id)rl dperf:(id)dperf perft:(id)perft info:(id)info ports:(id)ports
 {
-  self->_rl = a3;
-  self->_dperf = a4;
-  self->_perft = a5;
-  self->_info = a6;
-  self->_ports = a7;
+  self->_rl = rl;
+  self->_dperf = dperf;
+  self->_perft = perft;
+  self->_info = info;
+  self->_ports = ports;
   return self;
 }
 

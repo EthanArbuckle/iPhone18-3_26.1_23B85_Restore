@@ -1,36 +1,36 @@
 @interface MADVIVisualSearchResult
-- (MADVIVisualSearchResult)initWithCoder:(id)a3;
-- (MADVIVisualSearchResult)initWithResultItems:(id)a3 andUserFeedbackPayload:(id)a4;
+- (MADVIVisualSearchResult)initWithCoder:(id)coder;
+- (MADVIVisualSearchResult)initWithResultItems:(id)items andUserFeedbackPayload:(id)payload;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIVisualSearchResult
 
-- (MADVIVisualSearchResult)initWithResultItems:(id)a3 andUserFeedbackPayload:(id)a4
+- (MADVIVisualSearchResult)initWithResultItems:(id)items andUserFeedbackPayload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = MADVIVisualSearchResult;
   v9 = [(MADResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resultItems, a3);
-    objc_storeStrong(&v10->_userFeedbackPayload, a4);
+    objc_storeStrong(&v9->_resultItems, items);
+    objc_storeStrong(&v10->_userFeedbackPayload, payload);
   }
 
   return v10;
 }
 
-- (MADVIVisualSearchResult)initWithCoder:(id)a3
+- (MADVIVisualSearchResult)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MADVIVisualSearchResult;
-  v5 = [(MADResult *)&v14 initWithCoder:v4];
+  v5 = [(MADResult *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -39,11 +39,11 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ResultItems"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ResultItems"];
     resultItems = v5->_resultItems;
     v5->_resultItems = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserFeedbackPayload"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserFeedbackPayload"];
     userFeedbackPayload = v5->_userFeedbackPayload;
     v5->_userFeedbackPayload = v11;
   }
@@ -51,30 +51,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVIVisualSearchResult;
-  v4 = a3;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_resultItems forKey:{@"ResultItems", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_userFeedbackPayload forKey:@"UserFeedbackPayload"];
+  coderCopy = coder;
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_resultItems forKey:{@"ResultItems", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_userFeedbackPayload forKey:@"UserFeedbackPayload"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
   v6 = [(NSArray *)self->_resultItems description];
-  [v3 appendFormat:@"resultItems: %@ ", v6];
+  [string appendFormat:@"resultItems: %@ ", v6];
 
   v7 = [(NSData *)self->_userFeedbackPayload description];
-  [v3 appendFormat:@"userFeedbackPayload: %@>", v7];
+  [string appendFormat:@"userFeedbackPayload: %@>", v7];
 
-  return v3;
+  return string;
 }
 
 @end

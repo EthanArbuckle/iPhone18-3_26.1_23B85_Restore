@@ -1,88 +1,88 @@
 @interface SXDarkModeModifier
-- (SXDarkModeModifier)initWithPolicyHandler:(id)a3 configuration:(id)a4 namespacedObjectFactory:(id)a5;
-- (id)invertColor:(id)a3 defaultColor:(id)a4;
-- (id)invertedBorder:(id)a3;
-- (id)invertedComponent:(id)a3 context:(id)a4;
-- (id)invertedComponentShadow:(id)a3;
-- (id)invertedComponentStyle:(id)a3 context:(id)a4;
-- (id)invertedComponentTextStyleBackgroundColors:(id)a3 context:(id)a4;
-- (id)invertedComponentTextStyleForegroundColors:(id)a3 context:(id)a4;
-- (id)invertedDataTableBorder:(id)a3;
-- (id)invertedDataTableBorderSides:(id)a3;
-- (id)invertedDataTableCellStyle:(id)a3;
-- (id)invertedDataTableColumnStyle:(id)a3;
-- (id)invertedDataTableRowStyle:(id)a3;
-- (id)invertedDataTableStyle:(id)a3;
-- (id)invertedDocumentStyle:(id)a3 context:(id)a4;
-- (id)invertedDropCapStyle:(id)a3;
-- (id)invertedGradientFill:(id)a3;
-- (id)invertedLinearGradient:(id)a3;
-- (id)invertedStrokeStyle:(id)a3;
-- (id)invertedTextDecoration:(id)a3;
-- (id)invertedTextShadow:(id)a3;
-- (id)invertedTextStroke:(id)a3;
-- (id)invertedTextStyleBackgroundColors:(id)a3 context:(id)a4;
-- (id)invertedTextStyleForegroundColors:(id)a3 context:(id)a4;
-- (void)invertBackgroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6;
-- (void)invertBackgroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6;
-- (void)invertComponentStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6;
-- (void)invertForegroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6;
-- (void)invertForegroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6;
-- (void)modifyDOM:(id)a3 context:(id)a4;
+- (SXDarkModeModifier)initWithPolicyHandler:(id)handler configuration:(id)configuration namespacedObjectFactory:(id)factory;
+- (id)invertColor:(id)color defaultColor:(id)defaultColor;
+- (id)invertedBorder:(id)border;
+- (id)invertedComponent:(id)component context:(id)context;
+- (id)invertedComponentShadow:(id)shadow;
+- (id)invertedComponentStyle:(id)style context:(id)context;
+- (id)invertedComponentTextStyleBackgroundColors:(id)colors context:(id)context;
+- (id)invertedComponentTextStyleForegroundColors:(id)colors context:(id)context;
+- (id)invertedDataTableBorder:(id)border;
+- (id)invertedDataTableBorderSides:(id)sides;
+- (id)invertedDataTableCellStyle:(id)style;
+- (id)invertedDataTableColumnStyle:(id)style;
+- (id)invertedDataTableRowStyle:(id)style;
+- (id)invertedDataTableStyle:(id)style;
+- (id)invertedDocumentStyle:(id)style context:(id)context;
+- (id)invertedDropCapStyle:(id)style;
+- (id)invertedGradientFill:(id)fill;
+- (id)invertedLinearGradient:(id)gradient;
+- (id)invertedStrokeStyle:(id)style;
+- (id)invertedTextDecoration:(id)decoration;
+- (id)invertedTextShadow:(id)shadow;
+- (id)invertedTextStroke:(id)stroke;
+- (id)invertedTextStyleBackgroundColors:(id)colors context:(id)context;
+- (id)invertedTextStyleForegroundColors:(id)colors context:(id)context;
+- (void)invertBackgroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context;
+- (void)invertBackgroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context;
+- (void)invertComponentStyle:(id)style component:(id)component DOM:(id)m context:(id)context;
+- (void)invertForegroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context;
+- (void)invertForegroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context;
+- (void)modifyDOM:(id)m context:(id)context;
 @end
 
 @implementation SXDarkModeModifier
 
-- (SXDarkModeModifier)initWithPolicyHandler:(id)a3 configuration:(id)a4 namespacedObjectFactory:(id)a5
+- (SXDarkModeModifier)initWithPolicyHandler:(id)handler configuration:(id)configuration namespacedObjectFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = SXDarkModeModifier;
   v12 = [(SXDarkModeModifier *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_policyHandler, a3);
-    objc_storeStrong(&v13->_configuration, a4);
-    objc_storeStrong(&v13->_namespacedObjectFactory, a5);
+    objc_storeStrong(&v12->_policyHandler, handler);
+    objc_storeStrong(&v13->_configuration, configuration);
+    objc_storeStrong(&v13->_namespacedObjectFactory, factory);
   }
 
   return v13;
 }
 
-- (void)modifyDOM:(id)a3 context:(id)a4
+- (void)modifyDOM:(id)m context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  mCopy = m;
+  contextCopy = context;
   policyHandler = self->_policyHandler;
-  v9 = [v7 layoutOptions];
-  LODWORD(policyHandler) = [(SXDarkModePolicyHandler *)policyHandler shouldApplyDarkModeToDOM:v6 layoutOptions:v9];
+  layoutOptions = [contextCopy layoutOptions];
+  LODWORD(policyHandler) = [(SXDarkModePolicyHandler *)policyHandler shouldApplyDarkModeToDOM:mCopy layoutOptions:layoutOptions];
 
   if (policyHandler)
   {
     v10 = self->_policyHandler;
-    v11 = [v6 documentStyle];
-    v12 = [v7 layoutOptions];
-    LODWORD(v10) = [(SXDarkModePolicyHandler *)v10 shouldApplyDarkModeToDocumentStyle:v11 DOM:v6 layoutOptions:v12];
+    documentStyle = [mCopy documentStyle];
+    layoutOptions2 = [contextCopy layoutOptions];
+    LODWORD(v10) = [(SXDarkModePolicyHandler *)v10 shouldApplyDarkModeToDocumentStyle:documentStyle DOM:mCopy layoutOptions:layoutOptions2];
 
     if (v10)
     {
-      v13 = [v6 documentStyle];
-      v14 = [(SXDarkModeModifier *)self invertedDocumentStyle:v13 context:v7];
-      [v6 setDocumentStyle:v14];
+      documentStyle2 = [mCopy documentStyle];
+      v14 = [(SXDarkModeModifier *)self invertedDocumentStyle:documentStyle2 context:contextCopy];
+      [mCopy setDocumentStyle:v14];
     }
 
-    v15 = [v6 components];
+    components = [mCopy components];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __40__SXDarkModeModifier_modifyDOM_context___block_invoke;
     v16[3] = &unk_1E8500318;
-    v17 = v6;
-    v18 = self;
-    v19 = v7;
-    [v15 enumerateComponentsWithBlock:v16];
+    v17 = mCopy;
+    selfCopy = self;
+    v19 = contextCopy;
+    [components enumerateComponentsWithBlock:v16];
   }
 }
 
@@ -328,283 +328,283 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
   return v9;
 }
 
-- (void)invertComponentStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6
+- (void)invertComponentStyle:(id)style component:(id)component DOM:(id)m context:(id)context
 {
-  v20 = a5;
-  v10 = a6;
+  mCopy = m;
+  contextCopy = context;
   namespacedObjectFactory = self->_namespacedObjectFactory;
-  v12 = a4;
-  v13 = [a3 identifier];
-  v14 = [v12 identifier];
+  componentCopy = component;
+  identifier = [style identifier];
+  identifier2 = [componentCopy identifier];
 
-  v15 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForComponentStyle:v13 component:v14 DOM:v20];
+  v15 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForComponentStyle:identifier component:identifier2 DOM:mCopy];
 
   if (v15)
   {
-    v16 = [v20 componentStyles];
-    v17 = [v16 objectForKeyedSubscript:v15];
-    v18 = [(SXDarkModeModifier *)self invertedComponentStyle:v17 context:v10];
+    componentStyles = [mCopy componentStyles];
+    v17 = [componentStyles objectForKeyedSubscript:v15];
+    v18 = [(SXDarkModeModifier *)self invertedComponentStyle:v17 context:contextCopy];
 
     if (v18)
     {
-      v19 = [v20 componentStyles];
-      [v19 setObject:v18 forKeyedSubscript:v15];
+      componentStyles2 = [mCopy componentStyles];
+      [componentStyles2 setObject:v18 forKeyedSubscript:v15];
     }
   }
 }
 
-- (void)invertBackgroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6
+- (void)invertBackgroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context
 {
-  v23 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v23 analysis];
-  v14 = [v13 namespacedObjectReferences];
+  mCopy = m;
+  contextCopy = context;
+  componentCopy = component;
+  styleCopy = style;
+  analysis = [mCopy analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
 
   namespacedObjectFactory = self->_namespacedObjectFactory;
-  v16 = [v12 identifier];
+  identifier = [styleCopy identifier];
 
-  v17 = [v11 identifier];
+  identifier2 = [componentCopy identifier];
 
-  v18 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForComponentTextStyle:v16 component:v17 DOM:v23];
+  v18 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForComponentTextStyle:identifier component:identifier2 DOM:mCopy];
 
   if (v18)
   {
-    v19 = [v23 componentTextStyles];
-    v20 = [v19 objectForKeyedSubscript:v18];
-    v21 = [(SXDarkModeModifier *)self invertedComponentTextStyleBackgroundColors:v20 context:v10];
+    componentTextStyles = [mCopy componentTextStyles];
+    v20 = [componentTextStyles objectForKeyedSubscript:v18];
+    v21 = [(SXDarkModeModifier *)self invertedComponentTextStyleBackgroundColors:v20 context:contextCopy];
 
     if (v21)
     {
-      v22 = [v23 componentTextStyles];
-      [v22 setObject:v21 forKeyedSubscript:v18];
+      componentTextStyles2 = [mCopy componentTextStyles];
+      [componentTextStyles2 setObject:v21 forKeyedSubscript:v18];
     }
   }
 }
 
-- (void)invertForegroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6
+- (void)invertForegroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context
 {
-  v26 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v10 analysis];
-  v14 = [v13 namespacedObjectReferences];
+  componentCopy = component;
+  mCopy = m;
+  contextCopy = context;
+  styleCopy = style;
+  analysis = [mCopy analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
 
-  v15 = [v12 identifier];
-  v16 = [v26 identifier];
-  v17 = [v14 componentTextStyleIdentifierForNamespacedComponentTextStyleIdentifier:v15 component:v16];
+  identifier = [styleCopy identifier];
+  identifier2 = [componentCopy identifier];
+  v17 = [namespacedObjectReferences componentTextStyleIdentifierForNamespacedComponentTextStyleIdentifier:identifier component:identifier2];
 
-  v18 = [v12 identifier];
-  LODWORD(v16) = [v17 isEqualToString:v18];
+  identifier3 = [styleCopy identifier];
+  LODWORD(identifier2) = [v17 isEqualToString:identifier3];
 
-  if (v16)
+  if (identifier2)
   {
     namespacedObjectFactory = self->_namespacedObjectFactory;
-    v20 = [v12 identifier];
+    identifier4 = [styleCopy identifier];
 
-    v12 = [v26 identifier];
-    v21 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForComponentTextStyle:v20 component:v12 DOM:v10];
+    styleCopy = [componentCopy identifier];
+    identifier5 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForComponentTextStyle:identifier4 component:styleCopy DOM:mCopy];
 
-    v17 = v20;
+    v17 = identifier4;
   }
 
   else
   {
-    v21 = [v12 identifier];
+    identifier5 = [styleCopy identifier];
   }
 
-  if (v21)
+  if (identifier5)
   {
-    v22 = [v10 componentTextStyles];
-    v23 = [v22 objectForKeyedSubscript:v21];
-    v24 = [(SXDarkModeModifier *)self invertedComponentTextStyleForegroundColors:v23 context:v11];
+    componentTextStyles = [mCopy componentTextStyles];
+    v23 = [componentTextStyles objectForKeyedSubscript:identifier5];
+    v24 = [(SXDarkModeModifier *)self invertedComponentTextStyleForegroundColors:v23 context:contextCopy];
 
     if (v24)
     {
-      v25 = [v10 componentTextStyles];
-      [v25 setObject:v24 forKeyedSubscript:v21];
+      componentTextStyles2 = [mCopy componentTextStyles];
+      [componentTextStyles2 setObject:v24 forKeyedSubscript:identifier5];
     }
   }
 }
 
-- (void)invertBackgroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6
+- (void)invertBackgroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context
 {
-  v23 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v23 analysis];
-  v14 = [v13 namespacedObjectReferences];
+  mCopy = m;
+  contextCopy = context;
+  componentCopy = component;
+  styleCopy = style;
+  analysis = [mCopy analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
 
   namespacedObjectFactory = self->_namespacedObjectFactory;
-  v16 = [v12 identifier];
+  identifier = [styleCopy identifier];
 
-  v17 = [v11 identifier];
+  identifier2 = [componentCopy identifier];
 
-  v18 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForTextStyle:v16 component:v17 DOM:v23];
+  v18 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForTextStyle:identifier component:identifier2 DOM:mCopy];
 
   if (v18)
   {
-    v19 = [v23 textStyles];
-    v20 = [v19 objectForKeyedSubscript:v18];
-    v21 = [(SXDarkModeModifier *)self invertedTextStyleBackgroundColors:v20 context:v10];
+    textStyles = [mCopy textStyles];
+    v20 = [textStyles objectForKeyedSubscript:v18];
+    v21 = [(SXDarkModeModifier *)self invertedTextStyleBackgroundColors:v20 context:contextCopy];
 
     if (v21)
     {
-      v22 = [v23 textStyles];
-      [v22 setObject:v21 forKeyedSubscript:v18];
+      textStyles2 = [mCopy textStyles];
+      [textStyles2 setObject:v21 forKeyedSubscript:v18];
     }
   }
 }
 
-- (void)invertForegroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5 context:(id)a6
+- (void)invertForegroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m context:(id)context
 {
-  v27 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v27 analysis];
-  v14 = [v13 namespacedObjectReferences];
+  mCopy = m;
+  contextCopy = context;
+  componentCopy = component;
+  styleCopy = style;
+  analysis = [mCopy analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
 
-  v15 = [v11 identifier];
+  identifier = [componentCopy identifier];
 
-  v16 = [v12 identifier];
-  v17 = [v14 textStyleIdentifierForNamespacedTextStyleIdentifier:v16 component:v15];
+  identifier2 = [styleCopy identifier];
+  v17 = [namespacedObjectReferences textStyleIdentifierForNamespacedTextStyleIdentifier:identifier2 component:identifier];
 
-  v18 = [v12 identifier];
-  v19 = [v17 isEqualToString:v18];
+  identifier3 = [styleCopy identifier];
+  v19 = [v17 isEqualToString:identifier3];
 
   if (v19)
   {
     namespacedObjectFactory = self->_namespacedObjectFactory;
-    v21 = [v12 identifier];
+    identifier4 = [styleCopy identifier];
 
-    v22 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForTextStyle:v21 component:v15 DOM:v27];
-    v12 = v17;
-    v17 = v21;
+    identifier5 = [(SXNamespacedObjectFactory *)namespacedObjectFactory createNamespacedReferenceForTextStyle:identifier4 component:identifier DOM:mCopy];
+    styleCopy = v17;
+    v17 = identifier4;
   }
 
   else
   {
-    v22 = [v12 identifier];
+    identifier5 = [styleCopy identifier];
   }
 
-  if (v22)
+  if (identifier5)
   {
-    v23 = [v27 textStyles];
-    v24 = [v23 objectForKeyedSubscript:v22];
-    v25 = [(SXDarkModeModifier *)self invertedTextStyleForegroundColors:v24 context:v10];
+    textStyles = [mCopy textStyles];
+    v24 = [textStyles objectForKeyedSubscript:identifier5];
+    v25 = [(SXDarkModeModifier *)self invertedTextStyleForegroundColors:v24 context:contextCopy];
 
     if (v25)
     {
-      v26 = [v27 textStyles];
-      [v26 setObject:v25 forKeyedSubscript:v22];
+      textStyles2 = [mCopy textStyles];
+      [textStyles2 setObject:v25 forKeyedSubscript:identifier5];
     }
   }
 }
 
-- (id)invertedDocumentStyle:(id)a3 context:(id)a4
+- (id)invertedDocumentStyle:(id)style context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 JSONRepresentation];
-  v9 = v8;
-  if (!v8)
+  styleCopy = style;
+  contextCopy = context;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v9 = jSONRepresentation;
+  if (!jSONRepresentation)
   {
-    v8 = MEMORY[0x1E695E0F8];
+    jSONRepresentation = MEMORY[0x1E695E0F8];
   }
 
-  v10 = [v8 mutableCopy];
+  v10 = [jSONRepresentation mutableCopy];
 
-  v11 = [v6 backgroundColor];
-  v12 = [MEMORY[0x1E69DC888] blackColor];
-  v13 = [(SXDarkModeModifier *)self invertColor:v11 defaultColor:v12];
+  backgroundColor = [styleCopy backgroundColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v13 = [(SXDarkModeModifier *)self invertColor:backgroundColor defaultColor:blackColor];
   [v10 setObject:v13 forKeyedSubscript:@"backgroundColor"];
 
-  v14 = [v6 topBackgroundColor];
-  v15 = [MEMORY[0x1E69DC888] blackColor];
-  v16 = [(SXDarkModeModifier *)self invertColor:v14 defaultColor:v15];
+  topBackgroundColor = [styleCopy topBackgroundColor];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  v16 = [(SXDarkModeModifier *)self invertColor:topBackgroundColor defaultColor:blackColor2];
   [v10 setObject:v16 forKeyedSubscript:@"topBackgroundColor"];
 
-  v17 = [v6 topBackgroundGradient];
+  topBackgroundGradient = [styleCopy topBackgroundGradient];
 
-  if (v17)
+  if (topBackgroundGradient)
   {
-    v18 = [v6 topBackgroundGradient];
-    v19 = [(SXDarkModeModifier *)self invertedLinearGradient:v18];
+    topBackgroundGradient2 = [styleCopy topBackgroundGradient];
+    v19 = [(SXDarkModeModifier *)self invertedLinearGradient:topBackgroundGradient2];
     [v10 setObject:v19 forKeyedSubscript:@"topBackgroundGradient"];
   }
 
   v20 = [SXDocumentStyle alloc];
-  v21 = [v7 specVersion];
+  specVersion = [contextCopy specVersion];
 
-  v22 = [(SXJSONObject *)v20 initWithJSONObject:v10 andVersion:v21];
+  v22 = [(SXJSONObject *)v20 initWithJSONObject:v10 andVersion:specVersion];
 
   return v22;
 }
 
-- (id)invertedComponentStyle:(id)a3 context:(id)a4
+- (id)invertedComponentStyle:(id)style context:(id)context
 {
-  v6 = a3;
-  if (v6)
+  styleCopy = style;
+  if (styleCopy)
   {
-    v7 = a4;
-    v8 = [v6 JSONRepresentation];
-    v9 = [v8 mutableCopy];
+    contextCopy = context;
+    jSONRepresentation = [styleCopy JSONRepresentation];
+    v9 = [jSONRepresentation mutableCopy];
 
-    v10 = [v6 backgroundColor];
+    backgroundColor = [styleCopy backgroundColor];
 
-    if (v10)
+    if (backgroundColor)
     {
-      v11 = [v6 backgroundColor];
-      v12 = [(SXDarkModeModifier *)self invertColor:v11 defaultColor:0];
+      backgroundColor2 = [styleCopy backgroundColor];
+      v12 = [(SXDarkModeModifier *)self invertColor:backgroundColor2 defaultColor:0];
       [v9 setObject:v12 forKeyedSubscript:@"backgroundColor"];
     }
 
-    v13 = [v6 fill];
+    fill = [styleCopy fill];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v15 = [v6 fill];
-      v16 = [(SXDarkModeModifier *)self invertedGradientFill:v15];
+      fill2 = [styleCopy fill];
+      v16 = [(SXDarkModeModifier *)self invertedGradientFill:fill2];
       [v9 setObject:v16 forKeyedSubscript:@"fill"];
     }
 
-    v17 = [v6 shadow];
+    shadow = [styleCopy shadow];
 
-    if (v17)
+    if (shadow)
     {
-      v18 = [v6 shadow];
-      v19 = [(SXDarkModeModifier *)self invertedComponentShadow:v18];
+      shadow2 = [styleCopy shadow];
+      v19 = [(SXDarkModeModifier *)self invertedComponentShadow:shadow2];
       [v9 setObject:v19 forKeyedSubscript:@"shadow"];
     }
 
-    v20 = [v6 border];
+    border = [styleCopy border];
 
-    if (v20)
+    if (border)
     {
-      v21 = [v6 border];
-      v22 = [(SXDarkModeModifier *)self invertedBorder:v21];
+      border2 = [styleCopy border];
+      v22 = [(SXDarkModeModifier *)self invertedBorder:border2];
       [v9 setObject:v22 forKeyedSubscript:@"border"];
     }
 
-    v23 = [v6 tableStyle];
+    tableStyle = [styleCopy tableStyle];
 
-    if (v23)
+    if (tableStyle)
     {
-      v24 = [v6 tableStyle];
-      v25 = [(SXDarkModeModifier *)self invertedDataTableStyle:v24];
+      tableStyle2 = [styleCopy tableStyle];
+      v25 = [(SXDarkModeModifier *)self invertedDataTableStyle:tableStyle2];
       [v9 setObject:v25 forKeyedSubscript:@"tableStyle"];
     }
 
     v26 = [SXComponentStyle alloc];
-    v27 = [v7 specVersion];
+    specVersion = [contextCopy specVersion];
 
-    v28 = [(SXJSONObject *)v26 initWithJSONObject:v9 andVersion:v27];
+    v28 = [(SXJSONObject *)v26 initWithJSONObject:v9 andVersion:specVersion];
   }
 
   else
@@ -615,37 +615,37 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
   return v28;
 }
 
-- (id)invertedComponentTextStyleBackgroundColors:(id)a3 context:(id)a4
+- (id)invertedComponentTextStyleBackgroundColors:(id)colors context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  colorsCopy = colors;
+  contextCopy = context;
+  if (colorsCopy)
   {
-    v8 = [v6 JSONRepresentation];
-    v9 = [v8 mutableCopy];
+    jSONRepresentation = [colorsCopy JSONRepresentation];
+    v9 = [jSONRepresentation mutableCopy];
 
-    v10 = [v6 backgroundColor];
+    backgroundColor = [colorsCopy backgroundColor];
 
-    if (v10)
+    if (backgroundColor)
     {
-      v11 = [v6 backgroundColor];
-      v12 = [(SXDarkModeModifier *)self invertColor:v11 defaultColor:0];
+      backgroundColor2 = [colorsCopy backgroundColor];
+      v12 = [(SXDarkModeModifier *)self invertColor:backgroundColor2 defaultColor:0];
       [v9 setObject:v12 forKeyedSubscript:@"backgroundColor"];
     }
 
-    v13 = [v6 linkStyle];
+    linkStyle = [colorsCopy linkStyle];
 
-    if (v13)
+    if (linkStyle)
     {
-      v14 = [v6 linkStyle];
-      v15 = [(SXDarkModeModifier *)self invertedTextStyleBackgroundColors:v14 context:v7];
-      v16 = [v15 JSONRepresentation];
-      [v9 setObject:v16 forKeyedSubscript:@"linkStyle"];
+      linkStyle2 = [colorsCopy linkStyle];
+      v15 = [(SXDarkModeModifier *)self invertedTextStyleBackgroundColors:linkStyle2 context:contextCopy];
+      jSONRepresentation2 = [v15 JSONRepresentation];
+      [v9 setObject:jSONRepresentation2 forKeyedSubscript:@"linkStyle"];
     }
 
     v17 = [SXComponentTextStyle alloc];
-    v18 = [v7 specVersion];
-    v19 = [(SXJSONObject *)v17 initWithJSONObject:v9 andVersion:v18];
+    specVersion = [contextCopy specVersion];
+    v19 = [(SXJSONObject *)v17 initWithJSONObject:v9 andVersion:specVersion];
   }
 
   else
@@ -656,82 +656,82 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
   return v19;
 }
 
-- (id)invertedComponentTextStyleForegroundColors:(id)a3 context:(id)a4
+- (id)invertedComponentTextStyleForegroundColors:(id)colors context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  colorsCopy = colors;
+  contextCopy = context;
+  if (colorsCopy)
   {
-    v8 = [v6 JSONRepresentation];
-    v9 = [v8 mutableCopy];
+    jSONRepresentation = [colorsCopy JSONRepresentation];
+    v9 = [jSONRepresentation mutableCopy];
 
-    v10 = [v6 textColor];
+    textColor = [colorsCopy textColor];
 
-    if (v10)
+    if (textColor)
     {
-      v11 = [v6 textColor];
-      v12 = [(SXDarkModeModifier *)self invertColor:v11 defaultColor:0];
+      textColor2 = [colorsCopy textColor];
+      v12 = [(SXDarkModeModifier *)self invertColor:textColor2 defaultColor:0];
       [v9 setObject:v12 forKeyedSubscript:@"textColor"];
     }
 
-    v13 = [v6 stroke];
+    stroke = [colorsCopy stroke];
 
-    if (v13)
+    if (stroke)
     {
-      v14 = [v6 stroke];
-      v15 = [(SXDarkModeModifier *)self invertedTextStroke:v14];
+      stroke2 = [colorsCopy stroke];
+      v15 = [(SXDarkModeModifier *)self invertedTextStroke:stroke2];
       [v9 setObject:v15 forKeyedSubscript:@"stroke"];
     }
 
-    v16 = [v6 textShadow];
+    textShadow = [colorsCopy textShadow];
 
-    if (v16)
+    if (textShadow)
     {
-      v17 = [v6 textShadow];
-      v18 = [(SXDarkModeModifier *)self invertedTextStroke:v17];
+      textShadow2 = [colorsCopy textShadow];
+      v18 = [(SXDarkModeModifier *)self invertedTextStroke:textShadow2];
       [v9 setObject:v18 forKeyedSubscript:@"textShadow"];
     }
 
-    v19 = [v6 dropCapStyle];
+    dropCapStyle = [colorsCopy dropCapStyle];
 
-    if (v19)
+    if (dropCapStyle)
     {
-      v20 = [v6 dropCapStyle];
-      v21 = [(SXDarkModeModifier *)self invertedDropCapStyle:v20];
+      dropCapStyle2 = [colorsCopy dropCapStyle];
+      v21 = [(SXDarkModeModifier *)self invertedDropCapStyle:dropCapStyle2];
       [v9 setObject:v21 forKeyedSubscript:@"dropCapStyle"];
     }
 
-    v22 = [v6 underline];
+    underline = [colorsCopy underline];
 
-    if (v22)
+    if (underline)
     {
-      v23 = [v6 underline];
-      v24 = [(SXDarkModeModifier *)self invertedTextDecoration:v23];
+      underline2 = [colorsCopy underline];
+      v24 = [(SXDarkModeModifier *)self invertedTextDecoration:underline2];
       [v9 setObject:v24 forKeyedSubscript:@"underline"];
     }
 
-    v25 = [v6 strikethrough];
+    strikethrough = [colorsCopy strikethrough];
 
-    if (v25)
+    if (strikethrough)
     {
-      v26 = [v6 strikethrough];
-      v27 = [(SXDarkModeModifier *)self invertedTextDecoration:v26];
+      strikethrough2 = [colorsCopy strikethrough];
+      v27 = [(SXDarkModeModifier *)self invertedTextDecoration:strikethrough2];
       [v9 setObject:v27 forKeyedSubscript:@"strikethrough"];
     }
 
-    v28 = [v6 linkStyle];
+    linkStyle = [colorsCopy linkStyle];
 
-    if (v28)
+    if (linkStyle)
     {
-      v29 = [v6 linkStyle];
-      v30 = [(SXDarkModeModifier *)self invertedTextStyleForegroundColors:v29 context:v7];
-      v31 = [v30 JSONRepresentation];
-      [v9 setObject:v31 forKeyedSubscript:@"linkStyle"];
+      linkStyle2 = [colorsCopy linkStyle];
+      v30 = [(SXDarkModeModifier *)self invertedTextStyleForegroundColors:linkStyle2 context:contextCopy];
+      jSONRepresentation2 = [v30 JSONRepresentation];
+      [v9 setObject:jSONRepresentation2 forKeyedSubscript:@"linkStyle"];
     }
 
     v32 = [SXComponentTextStyle alloc];
-    v33 = [v7 specVersion];
-    v34 = [(SXJSONObject *)v32 initWithJSONObject:v9 andVersion:v33];
+    specVersion = [contextCopy specVersion];
+    v34 = [(SXJSONObject *)v32 initWithJSONObject:v9 andVersion:specVersion];
   }
 
   else
@@ -742,28 +742,28 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
   return v34;
 }
 
-- (id)invertedTextStyleBackgroundColors:(id)a3 context:(id)a4
+- (id)invertedTextStyleBackgroundColors:(id)colors context:(id)context
 {
-  v6 = a3;
-  if (v6)
+  colorsCopy = colors;
+  if (colorsCopy)
   {
-    v7 = a4;
-    v8 = [v6 JSONRepresentation];
-    v9 = [v8 mutableCopy];
+    contextCopy = context;
+    jSONRepresentation = [colorsCopy JSONRepresentation];
+    v9 = [jSONRepresentation mutableCopy];
 
-    v10 = [v6 backgroundColor];
+    backgroundColor = [colorsCopy backgroundColor];
 
-    if (v10)
+    if (backgroundColor)
     {
-      v11 = [v6 backgroundColor];
-      v12 = [(SXDarkModeModifier *)self invertColor:v11 defaultColor:0];
+      backgroundColor2 = [colorsCopy backgroundColor];
+      v12 = [(SXDarkModeModifier *)self invertColor:backgroundColor2 defaultColor:0];
       [v9 setObject:v12 forKeyedSubscript:@"backgroundColor"];
     }
 
     v13 = [SXTextStyle alloc];
-    v14 = [v7 specVersion];
+    specVersion = [contextCopy specVersion];
 
-    v15 = [(SXJSONObject *)v13 initWithJSONObject:v9 andVersion:v14];
+    v15 = [(SXJSONObject *)v13 initWithJSONObject:v9 andVersion:specVersion];
   }
 
   else
@@ -774,64 +774,64 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
   return v15;
 }
 
-- (id)invertedTextStyleForegroundColors:(id)a3 context:(id)a4
+- (id)invertedTextStyleForegroundColors:(id)colors context:(id)context
 {
-  v6 = a3;
-  if (v6)
+  colorsCopy = colors;
+  if (colorsCopy)
   {
-    v7 = a4;
-    v8 = [v6 JSONRepresentation];
-    v9 = [v8 mutableCopy];
+    contextCopy = context;
+    jSONRepresentation = [colorsCopy JSONRepresentation];
+    v9 = [jSONRepresentation mutableCopy];
 
-    v10 = [v6 textColor];
+    textColor = [colorsCopy textColor];
 
-    if (v10)
+    if (textColor)
     {
-      v11 = [v6 textColor];
-      v12 = [(SXDarkModeModifier *)self invertColor:v11 defaultColor:0];
+      textColor2 = [colorsCopy textColor];
+      v12 = [(SXDarkModeModifier *)self invertColor:textColor2 defaultColor:0];
       [v9 setObject:v12 forKeyedSubscript:@"textColor"];
     }
 
-    v13 = [v6 stroke];
+    stroke = [colorsCopy stroke];
 
-    if (v13)
+    if (stroke)
     {
-      v14 = [v6 stroke];
-      v15 = [(SXDarkModeModifier *)self invertedTextStroke:v14];
+      stroke2 = [colorsCopy stroke];
+      v15 = [(SXDarkModeModifier *)self invertedTextStroke:stroke2];
       [v9 setObject:v15 forKeyedSubscript:@"stroke"];
     }
 
-    v16 = [v6 textShadow];
+    textShadow = [colorsCopy textShadow];
 
-    if (v16)
+    if (textShadow)
     {
-      v17 = [v6 textShadow];
-      v18 = [(SXDarkModeModifier *)self invertedTextStroke:v17];
+      textShadow2 = [colorsCopy textShadow];
+      v18 = [(SXDarkModeModifier *)self invertedTextStroke:textShadow2];
       [v9 setObject:v18 forKeyedSubscript:@"textShadow"];
     }
 
-    v19 = [v6 underline];
+    underline = [colorsCopy underline];
 
-    if (v19)
+    if (underline)
     {
-      v20 = [v6 underline];
-      v21 = [(SXDarkModeModifier *)self invertedTextDecoration:v20];
+      underline2 = [colorsCopy underline];
+      v21 = [(SXDarkModeModifier *)self invertedTextDecoration:underline2];
       [v9 setObject:v21 forKeyedSubscript:@"underline"];
     }
 
-    v22 = [v6 strikethrough];
+    strikethrough = [colorsCopy strikethrough];
 
-    if (v22)
+    if (strikethrough)
     {
-      v23 = [v6 strikethrough];
-      v24 = [(SXDarkModeModifier *)self invertedTextDecoration:v23];
+      strikethrough2 = [colorsCopy strikethrough];
+      v24 = [(SXDarkModeModifier *)self invertedTextDecoration:strikethrough2];
       [v9 setObject:v24 forKeyedSubscript:@"strikethrough"];
     }
 
     v25 = [SXTextStyle alloc];
-    v26 = [v7 specVersion];
+    specVersion = [contextCopy specVersion];
 
-    v27 = [(SXJSONObject *)v25 initWithJSONObject:v9 andVersion:v26];
+    v27 = [(SXJSONObject *)v25 initWithJSONObject:v9 andVersion:specVersion];
   }
 
   else
@@ -842,104 +842,104 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
   return v27;
 }
 
-- (id)invertedTextStroke:(id)a3
+- (id)invertedTextStroke:(id)stroke
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  strokeCopy = stroke;
+  jSONRepresentation = [strokeCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 color];
+  color = [strokeCopy color];
 
-  if (v7)
+  if (color)
   {
-    v8 = [v4 color];
-    v9 = [(SXDarkModeModifier *)self invertColor:v8 defaultColor:0];
+    color2 = [strokeCopy color];
+    v9 = [(SXDarkModeModifier *)self invertColor:color2 defaultColor:0];
     [v6 setObject:v9 forKeyedSubscript:@"color"];
   }
 
   return v6;
 }
 
-- (id)invertedTextShadow:(id)a3
+- (id)invertedTextShadow:(id)shadow
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  shadowCopy = shadow;
+  jSONRepresentation = [shadowCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 color];
+  color = [shadowCopy color];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  v9 = [(SXDarkModeModifier *)self invertColor:v7 defaultColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v9 = [(SXDarkModeModifier *)self invertColor:color defaultColor:whiteColor];
   [v6 setObject:v9 forKeyedSubscript:@"color"];
 
   return v6;
 }
 
-- (id)invertedDropCapStyle:(id)a3
+- (id)invertedDropCapStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  styleCopy = style;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 textColor];
+  textColor = [styleCopy textColor];
 
-  if (v7)
+  if (textColor)
   {
-    v8 = [v4 textColor];
-    v9 = [(SXDarkModeModifier *)self invertColor:v8 defaultColor:0];
+    textColor2 = [styleCopy textColor];
+    v9 = [(SXDarkModeModifier *)self invertColor:textColor2 defaultColor:0];
     [v6 setObject:v9 forKeyedSubscript:@"textColor"];
   }
 
-  v10 = [v4 backgroundColor];
+  backgroundColor = [styleCopy backgroundColor];
 
-  if (v10)
+  if (backgroundColor)
   {
-    v11 = [v4 backgroundColor];
-    v12 = [(SXDarkModeModifier *)self invertColor:v11 defaultColor:0];
+    backgroundColor2 = [styleCopy backgroundColor];
+    v12 = [(SXDarkModeModifier *)self invertColor:backgroundColor2 defaultColor:0];
     [v6 setObject:v12 forKeyedSubscript:@"backgroundColor"];
   }
 
   return v6;
 }
 
-- (id)invertedTextDecoration:(id)a3
+- (id)invertedTextDecoration:(id)decoration
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  decorationCopy = decoration;
+  jSONRepresentation = [decorationCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 color];
+  color = [decorationCopy color];
 
-  if (v7)
+  if (color)
   {
-    v8 = [v4 color];
-    v9 = [(SXDarkModeModifier *)self invertColor:v8 defaultColor:0];
+    color2 = [decorationCopy color];
+    v9 = [(SXDarkModeModifier *)self invertColor:color2 defaultColor:0];
     [v6 setObject:v9 forKeyedSubscript:@"color"];
   }
 
   return v6;
 }
 
-- (id)invertedGradientFill:(id)a3
+- (id)invertedGradientFill:(id)fill
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  fillCopy = fill;
+  jSONRepresentation = [fillCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 colorStops];
+  colorStops = [fillCopy colorStops];
 
-  if (v7)
+  if (colorStops)
   {
     v21 = v6;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v4;
-    v9 = [v4 colorStops];
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v22 = fillCopy;
+    colorStops2 = [fillCopy colorStops];
+    v10 = [colorStops2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -950,60 +950,60 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(colorStops2);
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 JSONRepresentation];
-          v16 = [v15 mutableCopy];
+          jSONRepresentation2 = [v14 JSONRepresentation];
+          v16 = [jSONRepresentation2 mutableCopy];
 
-          v17 = [v14 color];
+          color = [v14 color];
 
-          if (v17)
+          if (color)
           {
-            v18 = [v14 color];
-            v19 = [(SXDarkModeModifier *)self invertColor:v18 defaultColor:0];
+            color2 = [v14 color];
+            v19 = [(SXDarkModeModifier *)self invertColor:color2 defaultColor:0];
             [v16 setObject:v19 forKeyedSubscript:@"color"];
           }
 
-          [v8 addObject:v16];
+          [array addObject:v16];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v11 = [colorStops2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v11);
     }
 
     v6 = v21;
-    [v21 setObject:v8 forKeyedSubscript:@"colorStops"];
+    [v21 setObject:array forKeyedSubscript:@"colorStops"];
 
-    v4 = v22;
+    fillCopy = v22;
   }
 
   return v6;
 }
 
-- (id)invertedLinearGradient:(id)a3
+- (id)invertedLinearGradient:(id)gradient
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  gradientCopy = gradient;
+  jSONRepresentation = [gradientCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 colorStops];
+  colorStops = [gradientCopy colorStops];
 
-  if (v7)
+  if (colorStops)
   {
     v21 = v6;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v4;
-    v9 = [v4 colorStops];
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v22 = gradientCopy;
+    colorStops2 = [gradientCopy colorStops];
+    v10 = [colorStops2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1014,250 +1014,250 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(colorStops2);
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 JSONRepresentation];
-          v16 = [v15 mutableCopy];
+          jSONRepresentation2 = [v14 JSONRepresentation];
+          v16 = [jSONRepresentation2 mutableCopy];
 
-          v17 = [v14 color];
+          color = [v14 color];
 
-          if (v17)
+          if (color)
           {
-            v18 = [v14 color];
-            v19 = [(SXDarkModeModifier *)self invertColor:v18 defaultColor:0];
+            color2 = [v14 color];
+            v19 = [(SXDarkModeModifier *)self invertColor:color2 defaultColor:0];
             [v16 setObject:v19 forKeyedSubscript:@"color"];
           }
 
-          [v8 addObject:v16];
+          [array addObject:v16];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v11 = [colorStops2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v11);
     }
 
     v6 = v21;
-    [v21 setObject:v8 forKeyedSubscript:@"colorStops"];
+    [v21 setObject:array forKeyedSubscript:@"colorStops"];
 
-    v4 = v22;
+    gradientCopy = v22;
   }
 
   return v6;
 }
 
-- (id)invertedComponentShadow:(id)a3
+- (id)invertedComponentShadow:(id)shadow
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  shadowCopy = shadow;
+  jSONRepresentation = [shadowCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 color];
+  color = [shadowCopy color];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  v9 = [(SXDarkModeModifier *)self invertColor:v7 defaultColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v9 = [(SXDarkModeModifier *)self invertColor:color defaultColor:whiteColor];
   [v6 setObject:v9 forKeyedSubscript:@"color"];
 
   return v6;
 }
 
-- (id)invertedBorder:(id)a3
+- (id)invertedBorder:(id)border
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  borderCopy = border;
+  jSONRepresentation = [borderCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 all];
+  v7 = [borderCopy all];
 
   if (v7)
   {
-    v8 = [v4 all];
+    v8 = [borderCopy all];
     v9 = [(SXDarkModeModifier *)self invertedStrokeStyle:v8];
     [v6 setObject:v9 forKeyedSubscript:@"all"];
   }
 
-  v10 = [v4 top];
+  v10 = [borderCopy top];
 
   if (v10)
   {
-    v11 = [v4 top];
+    v11 = [borderCopy top];
     v12 = [(SXDarkModeModifier *)self invertedStrokeStyle:v11];
     [v6 setObject:v12 forKeyedSubscript:@"top"];
   }
 
-  v13 = [v4 right];
+  right = [borderCopy right];
 
-  if (v13)
+  if (right)
   {
-    v14 = [v4 right];
-    v15 = [(SXDarkModeModifier *)self invertedStrokeStyle:v14];
+    right2 = [borderCopy right];
+    v15 = [(SXDarkModeModifier *)self invertedStrokeStyle:right2];
     [v6 setObject:v15 forKeyedSubscript:@"right"];
   }
 
-  v16 = [v4 bottom];
+  bottom = [borderCopy bottom];
 
-  if (v16)
+  if (bottom)
   {
-    v17 = [v4 bottom];
-    v18 = [(SXDarkModeModifier *)self invertedStrokeStyle:v17];
+    bottom2 = [borderCopy bottom];
+    v18 = [(SXDarkModeModifier *)self invertedStrokeStyle:bottom2];
     [v6 setObject:v18 forKeyedSubscript:@"bottom"];
   }
 
-  v19 = [v4 left];
+  left = [borderCopy left];
 
-  if (v19)
+  if (left)
   {
-    v20 = [v4 left];
-    v21 = [(SXDarkModeModifier *)self invertedStrokeStyle:v20];
+    left2 = [borderCopy left];
+    v21 = [(SXDarkModeModifier *)self invertedStrokeStyle:left2];
     [v6 setObject:v21 forKeyedSubscript:@"left"];
   }
 
   return v6;
 }
 
-- (id)invertedStrokeStyle:(id)a3
+- (id)invertedStrokeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  styleCopy = style;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 color];
+  color = [styleCopy color];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  v9 = [(SXDarkModeModifier *)self invertColor:v7 defaultColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v9 = [(SXDarkModeModifier *)self invertColor:color defaultColor:whiteColor];
   [v6 setObject:v9 forKeyedSubscript:@"color"];
 
   return v6;
 }
 
-- (id)invertedComponent:(id)a3 context:(id)a4
+- (id)invertedComponent:(id)component context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  contextCopy = context;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v9 = v6;
+  v9 = componentCopy;
   v10 = v9;
   v11 = v9;
   if (isKindOfClass)
   {
-    v12 = [(SXJSONObject *)v9 JSONRepresentation];
-    v13 = [v12 mutableCopy];
+    jSONRepresentation = [(SXJSONObject *)v9 JSONRepresentation];
+    v13 = [jSONRepresentation mutableCopy];
 
-    v14 = [(SXLineComponent *)v10 stroke];
+    stroke = [(SXLineComponent *)v10 stroke];
 
-    v15 = [(SXDarkModeModifier *)self invertedStrokeStyle:v14];
+    v15 = [(SXDarkModeModifier *)self invertedStrokeStyle:stroke];
     [v13 setObject:v15 forKeyedSubscript:@"stroke"];
 
     v16 = [SXLineComponent alloc];
-    v17 = [v7 specVersion];
-    v11 = [(SXJSONObject *)v16 initWithJSONObject:v13 andVersion:v17];
+    specVersion = [contextCopy specVersion];
+    v11 = [(SXJSONObject *)v16 initWithJSONObject:v13 andVersion:specVersion];
   }
 
   return v11;
 }
 
-- (id)invertedDataTableStyle:(id)a3
+- (id)invertedDataTableStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  styleCopy = style;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 headerRows];
+  headerRows = [styleCopy headerRows];
 
-  if (v7)
+  if (headerRows)
   {
-    v8 = [v4 headerRows];
-    v9 = [(SXDarkModeModifier *)self invertedDataTableRowStyle:v8];
+    headerRows2 = [styleCopy headerRows];
+    v9 = [(SXDarkModeModifier *)self invertedDataTableRowStyle:headerRows2];
     [v6 setObject:v9 forKeyedSubscript:@"headerRows"];
   }
 
-  v10 = [v4 headerColumns];
+  headerColumns = [styleCopy headerColumns];
 
-  if (v10)
+  if (headerColumns)
   {
-    v11 = [v4 headerColumns];
-    v12 = [(SXDarkModeModifier *)self invertedDataTableColumnStyle:v11];
+    headerColumns2 = [styleCopy headerColumns];
+    v12 = [(SXDarkModeModifier *)self invertedDataTableColumnStyle:headerColumns2];
     [v6 setObject:v12 forKeyedSubscript:@"headerColumns"];
   }
 
-  v13 = [v4 headerCells];
+  headerCells = [styleCopy headerCells];
 
-  if (v13)
+  if (headerCells)
   {
-    v14 = [v4 headerCells];
-    v15 = [(SXDarkModeModifier *)self invertedDataTableCellStyle:v14];
+    headerCells2 = [styleCopy headerCells];
+    v15 = [(SXDarkModeModifier *)self invertedDataTableCellStyle:headerCells2];
     [v6 setObject:v15 forKeyedSubscript:@"headerCells"];
   }
 
-  v16 = [v4 rows];
+  rows = [styleCopy rows];
 
-  if (v16)
+  if (rows)
   {
-    v17 = [v4 rows];
-    v18 = [(SXDarkModeModifier *)self invertedDataTableRowStyle:v17];
+    rows2 = [styleCopy rows];
+    v18 = [(SXDarkModeModifier *)self invertedDataTableRowStyle:rows2];
     [v6 setObject:v18 forKeyedSubscript:@"rows"];
   }
 
-  v19 = [v4 columns];
+  columns = [styleCopy columns];
 
-  if (v19)
+  if (columns)
   {
-    v20 = [v4 columns];
-    v21 = [(SXDarkModeModifier *)self invertedDataTableColumnStyle:v20];
+    columns2 = [styleCopy columns];
+    v21 = [(SXDarkModeModifier *)self invertedDataTableColumnStyle:columns2];
     [v6 setObject:v21 forKeyedSubscript:@"columns"];
   }
 
-  v22 = [v4 cells];
+  cells = [styleCopy cells];
 
-  if (v22)
+  if (cells)
   {
-    v23 = [v4 cells];
-    v24 = [(SXDarkModeModifier *)self invertedDataTableCellStyle:v23];
+    cells2 = [styleCopy cells];
+    v24 = [(SXDarkModeModifier *)self invertedDataTableCellStyle:cells2];
     [v6 setObject:v24 forKeyedSubscript:@"cells"];
   }
 
   return v6;
 }
 
-- (id)invertedDataTableRowStyle:(id)a3
+- (id)invertedDataTableRowStyle:(id)style
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  styleCopy = style;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 backgroundColor];
+  backgroundColor = [styleCopy backgroundColor];
 
-  if (v7)
+  if (backgroundColor)
   {
-    v8 = [v4 backgroundColor];
-    v9 = [(SXDarkModeModifier *)self invertColor:v8 defaultColor:0];
+    backgroundColor2 = [styleCopy backgroundColor];
+    v9 = [(SXDarkModeModifier *)self invertColor:backgroundColor2 defaultColor:0];
     [v6 setObject:v9 forKeyedSubscript:@"backgroundColor"];
   }
 
-  v10 = [v4 divider];
+  divider = [styleCopy divider];
 
-  if (v10)
+  if (divider)
   {
-    v11 = [v4 divider];
-    v12 = [(SXDarkModeModifier *)self invertedDataTableBorder:v11];
+    divider2 = [styleCopy divider];
+    v12 = [(SXDarkModeModifier *)self invertedDataTableBorder:divider2];
     [v6 setObject:v12 forKeyedSubscript:@"divider"];
   }
 
-  v13 = [v4 conditional];
+  conditional = [styleCopy conditional];
 
-  if (v13)
+  if (conditional)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = [v4 conditional];
-    v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    conditional2 = [styleCopy conditional];
+    v16 = [conditional2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1268,61 +1268,61 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
         {
           if (*v23 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(conditional2);
           }
 
           v20 = [(SXDarkModeModifier *)self invertedDataTableRowStyle:*(*(&v22 + 1) + 8 * i)];
-          [v14 addObject:v20];
+          [array addObject:v20];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [conditional2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v17);
     }
 
-    [v6 setObject:v14 forKeyedSubscript:@"conditional"];
+    [v6 setObject:array forKeyedSubscript:@"conditional"];
   }
 
   return v6;
 }
 
-- (id)invertedDataTableColumnStyle:(id)a3
+- (id)invertedDataTableColumnStyle:(id)style
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  styleCopy = style;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 backgroundColor];
+  backgroundColor = [styleCopy backgroundColor];
 
-  if (v7)
+  if (backgroundColor)
   {
-    v8 = [v4 backgroundColor];
-    v9 = [(SXDarkModeModifier *)self invertColor:v8 defaultColor:0];
+    backgroundColor2 = [styleCopy backgroundColor];
+    v9 = [(SXDarkModeModifier *)self invertColor:backgroundColor2 defaultColor:0];
     [v6 setObject:v9 forKeyedSubscript:@"backgroundColor"];
   }
 
-  v10 = [v4 divider];
+  divider = [styleCopy divider];
 
-  if (v10)
+  if (divider)
   {
-    v11 = [v4 divider];
-    v12 = [(SXDarkModeModifier *)self invertedDataTableBorder:v11];
+    divider2 = [styleCopy divider];
+    v12 = [(SXDarkModeModifier *)self invertedDataTableBorder:divider2];
     [v6 setObject:v12 forKeyedSubscript:@"divider"];
   }
 
-  v13 = [v4 conditional];
+  conditional = [styleCopy conditional];
 
-  if (v13)
+  if (conditional)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = [v4 conditional];
-    v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    conditional2 = [styleCopy conditional];
+    v16 = [conditional2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1333,61 +1333,61 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
         {
           if (*v23 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(conditional2);
           }
 
           v20 = [(SXDarkModeModifier *)self invertedDataTableColumnStyle:*(*(&v22 + 1) + 8 * i)];
-          [v14 addObject:v20];
+          [array addObject:v20];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [conditional2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v17);
     }
 
-    [v6 setObject:v14 forKeyedSubscript:@"conditional"];
+    [v6 setObject:array forKeyedSubscript:@"conditional"];
   }
 
   return v6;
 }
 
-- (id)invertedDataTableCellStyle:(id)a3
+- (id)invertedDataTableCellStyle:(id)style
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  styleCopy = style;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 backgroundColor];
+  backgroundColor = [styleCopy backgroundColor];
 
-  if (v7)
+  if (backgroundColor)
   {
-    v8 = [v4 backgroundColor];
-    v9 = [(SXDarkModeModifier *)self invertColor:v8 defaultColor:0];
+    backgroundColor2 = [styleCopy backgroundColor];
+    v9 = [(SXDarkModeModifier *)self invertColor:backgroundColor2 defaultColor:0];
     [v6 setObject:v9 forKeyedSubscript:@"backgroundColor"];
   }
 
-  v10 = [v4 border];
+  border = [styleCopy border];
 
-  if (v10)
+  if (border)
   {
-    v11 = [v4 border];
-    v12 = [(SXDarkModeModifier *)self invertedDataTableBorderSides:v11];
+    border2 = [styleCopy border];
+    v12 = [(SXDarkModeModifier *)self invertedDataTableBorderSides:border2];
     [v6 setObject:v12 forKeyedSubscript:@"border"];
   }
 
-  v13 = [v4 conditional];
+  conditional = [styleCopy conditional];
 
-  if (v13)
+  if (conditional)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = [v4 conditional];
-    v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    conditional2 = [styleCopy conditional];
+    v16 = [conditional2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1398,151 +1398,151 @@ uint64_t __40__SXDarkModeModifier_modifyDOM_context___block_invoke(uint64_t a1, 
         {
           if (*v23 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(conditional2);
           }
 
           v20 = [(SXDarkModeModifier *)self invertedDataTableCellStyle:*(*(&v22 + 1) + 8 * i)];
-          [v14 addObject:v20];
+          [array addObject:v20];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [conditional2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v17);
     }
 
-    [v6 setObject:v14 forKeyedSubscript:@"conditional"];
+    [v6 setObject:array forKeyedSubscript:@"conditional"];
   }
 
   return v6;
 }
 
-- (id)invertedDataTableBorder:(id)a3
+- (id)invertedDataTableBorder:(id)border
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  borderCopy = border;
+  jSONRepresentation = [borderCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 color];
+  color = [borderCopy color];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  v9 = [(SXDarkModeModifier *)self invertColor:v7 defaultColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v9 = [(SXDarkModeModifier *)self invertColor:color defaultColor:whiteColor];
   [v6 setObject:v9 forKeyedSubscript:@"color"];
 
   return v6;
 }
 
-- (id)invertedDataTableBorderSides:(id)a3
+- (id)invertedDataTableBorderSides:(id)sides
 {
-  v4 = a3;
-  v5 = [v4 JSONRepresentation];
-  v6 = [v5 mutableCopy];
+  sidesCopy = sides;
+  jSONRepresentation = [sidesCopy JSONRepresentation];
+  v6 = [jSONRepresentation mutableCopy];
 
-  v7 = [v4 top];
+  v7 = [sidesCopy top];
 
   if (v7)
   {
-    v8 = [v4 top];
+    v8 = [sidesCopy top];
     v9 = [(SXDarkModeModifier *)self invertedDataTableBorder:v8];
     [v6 setObject:v9 forKeyedSubscript:@"top"];
   }
 
-  v10 = [v4 right];
+  right = [sidesCopy right];
 
-  if (v10)
+  if (right)
   {
-    v11 = [v4 right];
-    v12 = [(SXDarkModeModifier *)self invertedDataTableBorder:v11];
+    right2 = [sidesCopy right];
+    v12 = [(SXDarkModeModifier *)self invertedDataTableBorder:right2];
     [v6 setObject:v12 forKeyedSubscript:@"right"];
   }
 
-  v13 = [v4 bottom];
+  bottom = [sidesCopy bottom];
 
-  if (v13)
+  if (bottom)
   {
-    v14 = [v4 bottom];
-    v15 = [(SXDarkModeModifier *)self invertedDataTableBorder:v14];
+    bottom2 = [sidesCopy bottom];
+    v15 = [(SXDarkModeModifier *)self invertedDataTableBorder:bottom2];
     [v6 setObject:v15 forKeyedSubscript:@"bottom"];
   }
 
-  v16 = [v4 left];
+  left = [sidesCopy left];
 
-  if (v16)
+  if (left)
   {
-    v17 = [v4 left];
-    v18 = [(SXDarkModeModifier *)self invertedDataTableBorder:v17];
+    left2 = [sidesCopy left];
+    v18 = [(SXDarkModeModifier *)self invertedDataTableBorder:left2];
     [v6 setObject:v18 forKeyedSubscript:@"left"];
   }
 
   return v6;
 }
 
-- (id)invertColor:(id)a3 defaultColor:(id)a4
+- (id)invertColor:(id)color defaultColor:(id)defaultColor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  colorCopy = color;
+  defaultColorCopy = defaultColor;
+  v8 = defaultColorCopy;
+  if (!colorCopy)
   {
-    v12 = [v7 hex];
+    v12 = [defaultColorCopy hex];
     goto LABEL_17;
   }
 
-  v9 = [(SXDarkModeConfiguration *)self->_configuration colors];
+  colors = [(SXDarkModeConfiguration *)self->_configuration colors];
 
-  if (!v9 || (-[SXDarkModeConfiguration colors](self->_configuration, "colors"), v10 = objc_claimAutoreleasedReturnValue(), [v6 hex], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, v10, !v12))
+  if (!colors || (-[SXDarkModeConfiguration colors](self->_configuration, "colors"), v10 = objc_claimAutoreleasedReturnValue(), [colorCopy hex], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, v10, !v12))
   {
     [(SXDarkModeConfiguration *)self->_configuration saturationThreshold];
     v14 = v13;
-    v15 = [(SXDarkModeConfiguration *)self->_configuration inversionBehavior];
-    if (v15 == 2)
+    inversionBehavior = [(SXDarkModeConfiguration *)self->_configuration inversionBehavior];
+    if (inversionBehavior == 2)
     {
       v20 = 0.0;
-      [v6 getHue:0 saturation:&v20 lightness:0 alpha:0];
+      [colorCopy getHue:0 saturation:&v20 lightness:0 alpha:0];
       v16 = v20;
       if (v20 <= v14)
       {
-        v17 = [v6 invertedLightness];
+        invertedLightness = [colorCopy invertedLightness];
         goto LABEL_14;
       }
     }
 
     else
     {
-      if (v15 != 1)
+      if (inversionBehavior != 1)
       {
-        if (v15)
+        if (inversionBehavior)
         {
           goto LABEL_15;
         }
 
         v20 = 0.0;
-        [v6 getHue:0 saturation:&v20 brightness:0 alpha:0];
+        [colorCopy getHue:0 saturation:&v20 brightness:0 alpha:0];
         v16 = v20;
         if (v20 > v14)
         {
           goto LABEL_15;
         }
 
-        v17 = [v6 invertedRGB];
+        invertedLightness = [colorCopy invertedRGB];
         goto LABEL_14;
       }
 
       v20 = 0.0;
-      [v6 getHue:0 saturation:&v20 brightness:0 alpha:0];
+      [colorCopy getHue:0 saturation:&v20 brightness:0 alpha:0];
       v16 = v20;
       if (v20 <= v14)
       {
-        v17 = [v6 invertedBrightness];
+        invertedLightness = [colorCopy invertedBrightness];
 LABEL_14:
-        v18 = v17;
+        v18 = invertedLightness;
 
-        v6 = v18;
+        colorCopy = v18;
       }
     }
 
 LABEL_15:
-    v12 = [v6 hex];
+    v12 = [colorCopy hex];
   }
 
 LABEL_17:

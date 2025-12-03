@@ -1,52 +1,52 @@
 @interface CLSNewLocationInformant
-+ (BOOL)doesRegion:(id)a3 containLocation:(id)a4;
-+ (BOOL)doesRegion:(id)a3 intersectOtherRegion:(id)a4;
-+ (CLLocationCoordinate2D)shiftedCoordinatesFromOriginalCoordinates:(CLLocationCoordinate2D)a3;
++ (BOOL)doesRegion:(id)region containLocation:(id)location;
++ (BOOL)doesRegion:(id)region intersectOtherRegion:(id)otherRegion;
++ (CLLocationCoordinate2D)shiftedCoordinatesFromOriginalCoordinates:(CLLocationCoordinate2D)coordinates;
 + (id)allPointOfInterestCategories;
-+ (id)businessItemsForRegion:(id)a3 poiCache:(id)a4;
-+ (id)filterBusinessItems:(id)a3 forCategories:(id)a4 blocklistCategories:(id)a5;
++ (id)businessItemsForRegion:(id)region poiCache:(id)cache;
++ (id)filterBusinessItems:(id)items forCategories:(id)categories blocklistCategories:(id)blocklistCategories;
 + (id)narrowPointOfInterestCategories;
-+ (id)searchBusinessItemsAtCoordinate:(CLLocationCoordinate2D)a3 forCategories:(id)a4 precision:(double)a5 inCache:(id)a6;
-+ (id)shiftedLocationFromOriginalLocation:(id)a3;
++ (id)searchBusinessItemsAtCoordinate:(CLLocationCoordinate2D)coordinate forCategories:(id)categories precision:(double)precision inCache:(id)cache;
++ (id)shiftedLocationFromOriginalLocation:(id)location;
 + (id)widePointOfInterestCategories;
 - (id)_regionOfInterestCategories;
 - (id)_regionOfInterestTraits;
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4;
-- (id)locationAreaOfInterestCluesForInputClue:(id)a3 aoiCache:(id)a4;
-- (id)locationRegionOfInterestCluesForInputClue:(id)a3 roiCache:(id)a4 natureCache:(id)a5;
-- (id)outputLocationCluesForOuputClueKey:(id)a3 inputClue:(id)a4 region:(id)a5 traits:(id)a6 categories:(id)a7 exactMatch:(BOOL)a8 precision:(double)a9 cache:(id)a10;
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block;
+- (id)locationAreaOfInterestCluesForInputClue:(id)clue aoiCache:(id)cache;
+- (id)locationRegionOfInterestCluesForInputClue:(id)clue roiCache:(id)cache natureCache:(id)natureCache;
+- (id)outputLocationCluesForOuputClueKey:(id)key inputClue:(id)clue region:(id)region traits:(id)traits categories:(id)categories exactMatch:(BOOL)match precision:(double)precision cache:(id)self0;
 @end
 
 @implementation CLSNewLocationInformant
 
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
+  investigationCopy = investigation;
   v7 = objc_alloc_init(v5);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [v6 clueCollection];
+  clueCollection = [investigationCopy clueCollection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __69__CLSNewLocationInformant_gatherCluesForInvestigation_progressBlock___block_invoke;
   v21[3] = &unk_2788A8078;
   v22 = v8;
   v10 = v8;
-  [v9 enumerateTimeClues:v21];
+  [clueCollection enumerateTimeClues:v21];
 
-  v11 = [v6 helper];
-  v12 = [v6 clueCollection];
+  helper = [investigationCopy helper];
+  clueCollection2 = [investigationCopy clueCollection];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__CLSNewLocationInformant_gatherCluesForInvestigation_progressBlock___block_invoke_2;
   v18[3] = &unk_2788A7C58;
   v18[4] = self;
-  v19 = v11;
+  v19 = helper;
   v13 = v7;
   v20 = v13;
-  v14 = v11;
-  [v12 enumerateLocationClues:v18];
+  v14 = helper;
+  [clueCollection2 enumerateLocationClues:v18];
 
   v15 = v20;
   v16 = v13;
@@ -81,40 +81,40 @@ void __69__CLSNewLocationInformant_gatherCluesForInvestigation_progressBlock___b
   [*(a1 + 48) addObjectsFromArray:v12];
 }
 
-- (id)locationRegionOfInterestCluesForInputClue:(id)a3 roiCache:(id)a4 natureCache:(id)a5
+- (id)locationRegionOfInterestCluesForInputClue:(id)clue roiCache:(id)cache natureCache:(id)natureCache
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clueCopy = clue;
+  cacheCopy = cache;
+  natureCacheCopy = natureCache;
   v11 = objc_opt_new();
   v12 = objc_opt_class();
-  v13 = [v8 region];
-  [v13 center];
-  v14 = [v12 searchBusinessItemsAtCoordinate:&unk_28449B3A0 forCategories:v9 precision:? inCache:?];
+  region = [clueCopy region];
+  [region center];
+  v14 = [v12 searchBusinessItemsAtCoordinate:&unk_28449B3A0 forCategories:cacheCopy precision:? inCache:?];
 
   if (v14)
   {
     if ([v14 count] > 0x95)
     {
-      v26 = [CLSOutputClue clueWithValue:@"Urban" forKey:@"Location ROI" confidence:1.0 relevance:1.0];
-      v51[0] = v8;
+      _regionOfInterestTraits = [CLSOutputClue clueWithValue:@"Urban" forKey:@"Location ROI" confidence:1.0 relevance:1.0];
+      v51[0] = clueCopy;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
-      [v26 addRelatedInputLocationClues:v27];
+      [_regionOfInterestTraits addRelatedInputLocationClues:v27];
 
-      [v11 addObject:v26];
+      [v11 addObject:_regionOfInterestTraits];
 LABEL_18:
 
       goto LABEL_19;
     }
 
     v15 = objc_opt_class();
-    v16 = [v8 region];
-    [v16 center];
+    region2 = [clueCopy region];
+    [region2 center];
     v18 = v17;
     v20 = v19;
-    v21 = [objc_opt_class() natureCategories];
-    v22 = [v15 searchBusinessItemsAtCoordinate:v21 forCategories:v10 precision:v18 inCache:{v20, 20000.0}];
+    natureCategories = [objc_opt_class() natureCategories];
+    v22 = [v15 searchBusinessItemsAtCoordinate:natureCategories forCategories:natureCacheCopy precision:v18 inCache:{v20, 20000.0}];
 
     if (!v22)
     {
@@ -125,14 +125,14 @@ LABEL_18:
     v46 = &v45;
     v47 = 0x2020000000;
     v48 = 1;
-    v23 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __90__CLSNewLocationInformant_locationRegionOfInterestCluesForInputClue_roiCache_natureCache___block_invoke;
     v41[3] = &unk_2788A7C20;
-    v40 = v8;
+    v40 = clueCopy;
     v42 = v40;
-    v24 = v23;
+    v24 = array;
     v43 = v24;
     v44 = &v45;
     [v22 enumerateObjectsUsingBlock:v41];
@@ -142,10 +142,10 @@ LABEL_18:
 LABEL_15:
 
       _Block_object_dispose(&v45, 8);
-      v26 = [(CLSNewLocationInformant *)self _regionOfInterestTraits];
-      v35 = [(CLSNewLocationInformant *)self _regionOfInterestCategories];
-      v36 = [v40 region];
-      v37 = [(CLSNewLocationInformant *)self outputLocationCluesForOuputClueKey:@"Location ROI" inputClue:v40 region:v36 traits:v26 categories:v35 exactMatch:0 precision:1000.0 cache:v9];
+      _regionOfInterestTraits = [(CLSNewLocationInformant *)self _regionOfInterestTraits];
+      _regionOfInterestCategories = [(CLSNewLocationInformant *)self _regionOfInterestCategories];
+      region3 = [v40 region];
+      v37 = [(CLSNewLocationInformant *)self outputLocationCluesForOuputClueKey:@"Location ROI" inputClue:v40 region:region3 traits:_regionOfInterestTraits categories:_regionOfInterestCategories exactMatch:0 precision:1000.0 cache:cacheCopy];
 
       if (v37)
       {
@@ -155,11 +155,11 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    v39 = [v40 placemark];
-    if (v39)
+    placemark = [v40 placemark];
+    if (placemark)
     {
-      v25 = [v39 inlandWater];
-      if (v25)
+      inlandWater = [placemark inlandWater];
+      if (inlandWater)
       {
 
 LABEL_10:
@@ -172,8 +172,8 @@ LABEL_10:
         goto LABEL_13;
       }
 
-      v28 = [v39 ocean];
-      v29 = v28 == 0;
+      ocean = [placemark ocean];
+      v29 = ocean == 0;
 
       if (!v29)
       {
@@ -181,8 +181,8 @@ LABEL_10:
       }
     }
 
-    v32 = [v39 ISOcountryCode];
-    v33 = [v32 isEqualToString:@"CN"];
+    iSOcountryCode = [placemark ISOcountryCode];
+    v33 = [iSOcountryCode isEqualToString:@"CN"];
 
     if (v33 != [MEMORY[0x277D3AD60] isCurrentRevGeoProviderAutoNavi])
     {
@@ -238,15 +238,15 @@ void __90__CLSNewLocationInformant_locationRegionOfInterestCluesForInputClue_roi
   *(*(*(a1 + 48) + 8) + 24) = 0;
 }
 
-- (id)locationAreaOfInterestCluesForInputClue:(id)a3 aoiCache:(id)a4
+- (id)locationAreaOfInterestCluesForInputClue:(id)clue aoiCache:(id)cache
 {
   v41[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clueCopy = clue;
+  cacheCopy = cache;
   v29 = objc_opt_new();
   v8 = MEMORY[0x277CBEB98];
-  v9 = [objc_opt_class() areaOfInterestCategories];
-  v10 = [v8 setWithArray:v9];
+  areaOfInterestCategories = [objc_opt_class() areaOfInterestCategories];
+  v10 = [v8 setWithArray:areaOfInterestCategories];
 
   v40[0] = &unk_28449B638;
   v40[1] = &unk_28449B650;
@@ -267,18 +267,18 @@ void __90__CLSNewLocationInformant_locationRegionOfInterestCluesForInputClue_roi
   v39[3] = @"Park";
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:4];
   v13 = objc_opt_class();
-  v14 = [v6 region];
-  [v14 center];
+  region = [clueCopy region];
+  [region center];
   v16 = v15;
   v18 = v17;
-  v19 = [objc_opt_class() areaOfInterestCategories];
-  v20 = [v13 searchBusinessItemsAtCoordinate:v19 forCategories:v7 precision:v16 inCache:{v18, 6000.0}];
+  areaOfInterestCategories2 = [objc_opt_class() areaOfInterestCategories];
+  v20 = [v13 searchBusinessItemsAtCoordinate:areaOfInterestCategories2 forCategories:cacheCopy precision:v16 inCache:{v18, 6000.0}];
 
   if (v20)
   {
     v21 = objc_opt_class();
-    v22 = [v6 location];
-    v23 = [v21 shiftedLocationFromOriginalLocation:v22];
+    location = [clueCopy location];
+    v23 = [v21 shiftedLocationFromOriginalLocation:location];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
@@ -286,10 +286,10 @@ void __90__CLSNewLocationInformant_locationRegionOfInterestCluesForInputClue_roi
     v30[3] = &unk_2788A7BC0;
     v31 = v10;
     v32 = v11;
-    v33 = self;
+    selfCopy = self;
     v34 = v23;
     v35 = v12;
-    v36 = v6;
+    v36 = clueCopy;
     v24 = v29;
     v37 = v24;
     v25 = v23;
@@ -339,32 +339,32 @@ void __76__CLSNewLocationInformant_locationAreaOfInterestCluesForInputClue_aoiCa
   }
 }
 
-- (id)outputLocationCluesForOuputClueKey:(id)a3 inputClue:(id)a4 region:(id)a5 traits:(id)a6 categories:(id)a7 exactMatch:(BOOL)a8 precision:(double)a9 cache:(id)a10
+- (id)outputLocationCluesForOuputClueKey:(id)key inputClue:(id)clue region:(id)region traits:(id)traits categories:(id)categories exactMatch:(BOOL)match precision:(double)precision cache:(id)self0
 {
   v70 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  v22 = [v17 placemark];
-  v23 = [v22 location];
+  keyCopy = key;
+  clueCopy = clue;
+  regionCopy = region;
+  traitsCopy = traits;
+  categoriesCopy = categories;
+  cacheCopy = cache;
+  placemark = [clueCopy placemark];
+  location = [placemark location];
 
-  if (v23)
+  if (location)
   {
     v24 = objc_opt_class();
-    [v23 coordinate];
+    [location coordinate];
     [v24 shiftedCoordinatesFromOriginalCoordinates:?];
     v26 = v25;
     v28 = v27;
     v29 = objc_opt_class();
-    [v18 center];
+    [regionCopy center];
     [v29 shiftedCoordinatesFromOriginalCoordinates:?];
     v31 = v30;
     v33 = v32;
-    v34 = [objc_opt_class() searchBusinessItemsAtCoordinate:v20 forCategories:v21 precision:v30 inCache:{v32, a9}];
-    v35 = v34;
+    v34 = [objc_opt_class() searchBusinessItemsAtCoordinate:categoriesCopy forCategories:cacheCopy precision:v30 inCache:{v32, precision}];
+    loggingConnection = v34;
     if (v34 && [v34 count])
     {
       v47 = objc_opt_new();
@@ -378,24 +378,24 @@ void __76__CLSNewLocationInformant_locationAreaOfInterestCluesForInputClue_aoiCa
       v54[2] = __124__CLSNewLocationInformant_outputLocationCluesForOuputClueKey_inputClue_region_traits_categories_exactMatch_precision_cache___block_invoke;
       v54[3] = &unk_2788A7B08;
       v54[4] = self;
-      v35 = v35;
-      v55 = v35;
+      loggingConnection = loggingConnection;
+      v55 = loggingConnection;
       v62 = v31;
       v63 = v33;
-      v56 = v18;
-      v66 = a8;
+      v56 = regionCopy;
+      matchCopy = match;
       v64 = v26;
       v65 = v28;
       v37 = v36;
       v57 = v37;
       p_buf = &buf;
-      v58 = v49;
-      v59 = v17;
+      v58 = keyCopy;
+      v59 = clueCopy;
       v38 = v47;
       v60 = v38;
-      v48 = v19;
-      [v19 enumerateKeysAndObjectsUsingBlock:v54];
-      v39 = [MEMORY[0x277CBEB18] array];
+      v48 = traitsCopy;
+      [traitsCopy enumerateKeysAndObjectsUsingBlock:v54];
+      array = [MEMORY[0x277CBEB18] array];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __124__CLSNewLocationInformant_outputLocationCluesForOuputClueKey_inputClue_region_traits_categories_exactMatch_precision_cache___block_invoke_2;
@@ -403,14 +403,14 @@ void __76__CLSNewLocationInformant_locationAreaOfInterestCluesForInputClue_aoiCa
       v40 = v37;
       v51 = v40;
       v53 = &buf;
-      v41 = v39;
+      v41 = array;
       v52 = v41;
       [v38 enumerateKeysAndObjectsUsingBlock:v50];
       v46 = v38;
       v42 = v52;
       v43 = v41;
 
-      v19 = v48;
+      traitsCopy = v48;
       _Block_object_dispose(&buf, 8);
 
       goto LABEL_8;
@@ -420,13 +420,13 @@ void __76__CLSNewLocationInformant_locationAreaOfInterestCluesForInputClue_aoiCa
   else
   {
     v44 = +[CLSLogging sharedLogging];
-    v35 = [v44 loggingConnection];
+    loggingConnection = [v44 loggingConnection];
 
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v17;
-      _os_log_error_impl(&dword_22F907000, v35, OS_LOG_TYPE_ERROR, "ERROR: inputLocationCluePlacemarkLocation is nil. %@", &buf, 0xCu);
+      *(&buf + 4) = clueCopy;
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "ERROR: inputLocationCluePlacemarkLocation is nil. %@", &buf, 0xCu);
     }
   }
 
@@ -697,47 +697,47 @@ void __54__CLSNewLocationInformant__regionOfInterestCategories__block_invoke()
   _regionOfInterestCategories_regionOfInterestsCategories = &unk_28449B340;
 }
 
-+ (BOOL)doesRegion:(id)a3 containLocation:(id)a4
++ (BOOL)doesRegion:(id)region containLocation:(id)location
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 center];
-  [v5 coordinate];
+  locationCopy = location;
+  regionCopy = region;
+  [regionCopy center];
+  [locationCopy coordinate];
   v8 = v7;
   v10 = v9;
 
   v16 = v8;
   CLLocationCoordinate2DGetDistanceFrom();
   v12 = v11;
-  [v6 radius];
+  [regionCopy radius];
   v14 = v13;
 
   return v12 < v14;
 }
 
-+ (BOOL)doesRegion:(id)a3 intersectOtherRegion:(id)a4
++ (BOOL)doesRegion:(id)region intersectOtherRegion:(id)otherRegion
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 center];
-  [v5 center];
+  otherRegionCopy = otherRegion;
+  regionCopy = region;
+  [regionCopy center];
+  [otherRegionCopy center];
   v16 = v7;
   v17 = v8;
   CLLocationCoordinate2DGetDistanceFrom();
   v10 = v9;
-  [v6 radius];
+  [regionCopy radius];
   v12 = v11;
 
-  [v5 radius];
+  [otherRegionCopy radius];
   v14 = v13;
 
   return v10 < v12 + v14;
 }
 
-+ (CLLocationCoordinate2D)shiftedCoordinatesFromOriginalCoordinates:(CLLocationCoordinate2D)a3
++ (CLLocationCoordinate2D)shiftedCoordinatesFromOriginalCoordinates:(CLLocationCoordinate2D)coordinates
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinates.longitude;
+  latitude = coordinates.latitude;
   v5 = +[CLSLocationShifter sharedLocationShifter];
   [v5 shiftedCoordinateForOriginalCoordinate:{latitude, longitude}];
   v8 = CLLocationCoordinate2DMake(v6, v7);
@@ -749,20 +749,20 @@ void __54__CLSNewLocationInformant__regionOfInterestCategories__block_invoke()
   return result;
 }
 
-+ (id)shiftedLocationFromOriginalLocation:(id)a3
++ (id)shiftedLocationFromOriginalLocation:(id)location
 {
-  [a3 coordinate];
-  [a1 shiftedCoordinatesFromOriginalCoordinates:?];
+  [location coordinate];
+  [self shiftedCoordinatesFromOriginalCoordinates:?];
   v6 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v4 longitude:v5];
 
   return v6;
 }
 
-+ (id)businessItemsForRegion:(id)a3 poiCache:(id)a4
++ (id)businessItemsForRegion:(id)region poiCache:(id)cache
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a4;
-  v7 = a3;
+  cacheCopy = cache;
+  regionCopy = region;
   v8 = GEOSpatialLookupAllCategories();
   v9 = [v5 arrayWithArray:v8];
 
@@ -770,25 +770,25 @@ void __54__CLSNewLocationInformant__regionOfInterestCategories__block_invoke()
   [v9 removeObject:&unk_28449B6E0];
   [v9 removeObject:&unk_28449B6F8];
   v10 = objc_opt_class();
-  [v7 center];
+  [regionCopy center];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v10 searchBusinessItemsAtCoordinate:v9 forCategories:v6 precision:v12 inCache:{v14, 100.0}];
+  v15 = [v10 searchBusinessItemsAtCoordinate:v9 forCategories:cacheCopy precision:v12 inCache:{v14, 100.0}];
 
   return v15;
 }
 
-+ (id)filterBusinessItems:(id)a3 forCategories:(id)a4 blocklistCategories:(id)a5
++ (id)filterBusinessItems:(id)items forCategories:(id)categories blocklistCategories:(id)blocklistCategories
 {
   v7 = MEMORY[0x277CBEB18];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 array];
-  v12 = [MEMORY[0x277CBEB98] setWithArray:v8];
+  blocklistCategoriesCopy = blocklistCategories;
+  categoriesCopy = categories;
+  itemsCopy = items;
+  array = [v7 array];
+  v12 = [MEMORY[0x277CBEB98] setWithArray:blocklistCategoriesCopy];
 
-  v13 = [MEMORY[0x277CBEB98] setWithArray:v9];
+  v13 = [MEMORY[0x277CBEB98] setWithArray:categoriesCopy];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -796,11 +796,11 @@ void __54__CLSNewLocationInformant__regionOfInterestCategories__block_invoke()
   v20[3] = &unk_2788A7B80;
   v21 = v12;
   v22 = v13;
-  v14 = v11;
+  v14 = array;
   v23 = v14;
   v15 = v13;
   v16 = v12;
-  [v10 enumerateObjectsUsingBlock:v20];
+  [itemsCopy enumerateObjectsUsingBlock:v20];
 
   v17 = v23;
   v18 = v14;
@@ -822,25 +822,25 @@ void __81__CLSNewLocationInformant_filterBusinessItems_forCategories_blocklistCa
   }
 }
 
-+ (id)searchBusinessItemsAtCoordinate:(CLLocationCoordinate2D)a3 forCategories:(id)a4 precision:(double)a5 inCache:(id)a6
++ (id)searchBusinessItemsAtCoordinate:(CLLocationCoordinate2D)coordinate forCategories:(id)categories precision:(double)precision inCache:(id)cache
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v10 = a4;
-  v11 = a6;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  categoriesCopy = categories;
+  cacheCopy = cache;
   v30.latitude = latitude;
   v30.longitude = longitude;
   if (CLLocationCoordinate2DIsValid(v30))
   {
     v12 = objc_alloc(MEMORY[0x277CBFBC8]);
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v12 initWithCenter:v14 radius:latitude identifier:{longitude, a5}];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [v12 initWithCenter:uUIDString radius:latitude identifier:{longitude, precision}];
 
-    v16 = [v11 businessItemsForRegion:v15];
+    v16 = [cacheCopy businessItemsForRegion:v15];
     if (v16)
     {
-      v17 = [MEMORY[0x277CBEB98] setWithArray:v10];
+      v17 = [MEMORY[0x277CBEB98] setWithArray:categoriesCopy];
       v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v16, "count")}];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
@@ -849,7 +849,7 @@ void __81__CLSNewLocationInformant_filterBusinessItems_forCategories_blocklistCa
       v26 = v17;
       v19 = v18;
       v27 = v19;
-      v20 = v17;
+      loggingConnection = v17;
       [v16 enumerateObjectsUsingBlock:v25];
       v21 = v27;
       v22 = v19;
@@ -858,12 +858,12 @@ void __81__CLSNewLocationInformant_filterBusinessItems_forCategories_blocklistCa
     else
     {
       v23 = +[CLSLogging sharedLogging];
-      v20 = [v23 loggingConnection];
+      loggingConnection = [v23 loggingConnection];
 
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F907000, v20, OS_LOG_TYPE_INFO, "Cannot find business items for region", buf, 2u);
+        _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Cannot find business items for region", buf, 2u);
       }
 
       v22 = 0;
@@ -934,7 +934,7 @@ void __58__CLSNewLocationInformant_narrowPointOfInterestCategories__block_invoke
   block[1] = 3221225472;
   block[2] = __55__CLSNewLocationInformant_allPointOfInterestCategories__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allPointOfInterestCategories_onceToken != -1)
   {
     dispatch_once(&allPointOfInterestCategories_onceToken, block);

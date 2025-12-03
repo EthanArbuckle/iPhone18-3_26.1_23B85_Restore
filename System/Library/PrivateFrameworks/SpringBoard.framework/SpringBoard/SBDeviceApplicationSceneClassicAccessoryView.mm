@@ -2,18 +2,18 @@
 - (BOOL)_isZoomed;
 - (BOOL)_rotationButtonShouldBeVisible;
 - (BOOL)_zoomButtonShouldBeVisible;
-- (SBDeviceApplicationSceneClassicAccessoryView)initWithFrame:(CGRect)a3 sceneHandle:(id)a4;
+- (SBDeviceApplicationSceneClassicAccessoryView)initWithFrame:(CGRect)frame sceneHandle:(id)handle;
 - (SBDeviceApplicationSceneClassicAccessoryViewDelegate)delegate;
-- (void)_changeZoom:(id)a3;
-- (void)_rotateApplicationScene:(id)a3;
-- (void)_sceneHandleDidUpdateClientSettings:(id)a3;
-- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4;
-- (void)_setupPositioningAndRotationForInterfaceOrientation:(int64_t)a3 offscreen:(BOOL)a4;
-- (void)_updateButtonVisibilityAnimated:(BOOL)a3;
-- (void)_updateOrientationFrom:(int64_t)a3 toOrientation:(int64_t)a4 animationSettings:(id)a5;
+- (void)_changeZoom:(id)zoom;
+- (void)_rotateApplicationScene:(id)scene;
+- (void)_sceneHandleDidUpdateClientSettings:(id)settings;
+- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)_setupPositioningAndRotationForInterfaceOrientation:(int64_t)orientation offscreen:(BOOL)offscreen;
+- (void)_updateButtonVisibilityAnimated:(BOOL)animated;
+- (void)_updateOrientationFrom:(int64_t)from toOrientation:(int64_t)orientation animationSettings:(id)settings;
 - (void)_updateRotationButton;
 - (void)_updateRotationButtonConstraints;
-- (void)_updateRotationButtonWithAnimationSettings:(id)a3;
+- (void)_updateRotationButtonWithAnimationSettings:(id)settings;
 - (void)_updateZoomButton;
 - (void)dealloc;
 - (void)invalidate;
@@ -22,24 +22,24 @@
 
 @implementation SBDeviceApplicationSceneClassicAccessoryView
 
-- (SBDeviceApplicationSceneClassicAccessoryView)initWithFrame:(CGRect)a3 sceneHandle:(id)a4
+- (SBDeviceApplicationSceneClassicAccessoryView)initWithFrame:(CGRect)frame sceneHandle:(id)handle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v92[4] = *MEMORY[0x277D85DE8];
-  v83 = a4;
+  handleCopy = handle;
   v91.receiver = self;
   v91.super_class = SBDeviceApplicationSceneClassicAccessoryView;
-  v10 = [(SBDeviceApplicationSceneClassicAccessoryView *)&v91 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SBDeviceApplicationSceneClassicAccessoryView *)&v91 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeStrong(&v10->_sceneHandle, a4);
-    v12 = [(SBDeviceApplicationSceneHandle *)v11->_sceneHandle sceneIfExists];
-    v13 = [v12 uiClientSettings];
-    v11->_buttonOrientation = [v13 interfaceOrientation];
+    objc_storeStrong(&height->_sceneHandle, handle);
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)v11->_sceneHandle sceneIfExists];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    v11->_buttonOrientation = [uiClientSettings interfaceOrientation];
 
     v14 = [MEMORY[0x277D75220] buttonWithType:0];
     zoomButton = v11->_zoomButton;
@@ -81,25 +81,25 @@
     [(BSUIOrientationTransformWrapperView *)v11->_transformWrapperView addContentView:v11->_buttonWrapperView];
     [(SBDeviceApplicationSceneClassicAccessoryView *)v11 addSubview:v11->_transformWrapperView];
     [(UIButton *)v11->_zoomButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v26 = [(UIButton *)v11->_zoomButton trailingAnchor];
-    v27 = [(UIView *)v11->_buttonWrapperView trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor = [(UIButton *)v11->_zoomButton trailingAnchor];
+    trailingAnchor2 = [(UIView *)v11->_buttonWrapperView trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     zoomButtonHorizontalConstraint = v11->_zoomButtonHorizontalConstraint;
     v11->_zoomButtonHorizontalConstraint = v28;
 
-    v30 = [(UIButton *)v11->_zoomButton bottomAnchor];
-    v31 = [(UIView *)v11->_buttonWrapperView bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    bottomAnchor = [(UIButton *)v11->_zoomButton bottomAnchor];
+    bottomAnchor2 = [(UIView *)v11->_buttonWrapperView bottomAnchor];
+    v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     zoomButtonVerticalConstraint = v11->_zoomButtonVerticalConstraint;
     v11->_zoomButtonVerticalConstraint = v32;
 
-    v34 = [(UIButton *)v11->_zoomButton widthAnchor];
-    v35 = [v34 constraintEqualToConstant:48.0];
+    widthAnchor = [(UIButton *)v11->_zoomButton widthAnchor];
+    v35 = [widthAnchor constraintEqualToConstant:48.0];
     zoomButtonWidthConstraint = v11->_zoomButtonWidthConstraint;
     v11->_zoomButtonWidthConstraint = v35;
 
-    v37 = [(UIButton *)v11->_zoomButton heightAnchor];
-    v38 = [v37 constraintEqualToConstant:48.0];
+    heightAnchor = [(UIButton *)v11->_zoomButton heightAnchor];
+    v38 = [heightAnchor constraintEqualToConstant:48.0];
     zoomButtonHeightConstraint = v11->_zoomButtonHeightConstraint;
     v11->_zoomButtonHeightConstraint = v38;
 
@@ -109,54 +109,54 @@
     [(NSLayoutConstraint *)v11->_zoomButtonHeightConstraint setActive:1];
     [(UIButton *)v11->_clockWiseRotationButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v11->_counterClockWiseRotationButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = [(UIButton *)v11->_clockWiseRotationButton widthAnchor];
-    v41 = [v40 constraintEqualToConstant:48.0];
+    widthAnchor2 = [(UIButton *)v11->_clockWiseRotationButton widthAnchor];
+    v41 = [widthAnchor2 constraintEqualToConstant:48.0];
     [v41 setActive:1];
 
-    v42 = [(UIButton *)v11->_clockWiseRotationButton heightAnchor];
-    v43 = [v42 constraintEqualToConstant:48.0];
+    heightAnchor2 = [(UIButton *)v11->_clockWiseRotationButton heightAnchor];
+    v43 = [heightAnchor2 constraintEqualToConstant:48.0];
     [v43 setActive:1];
 
-    v44 = [(UIButton *)v11->_clockWiseRotationButton topAnchor];
-    v45 = [(UIButton *)v11->_zoomButton topAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    topAnchor = [(UIButton *)v11->_clockWiseRotationButton topAnchor];
+    topAnchor2 = [(UIButton *)v11->_zoomButton topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
     rotationButtonTopConstraint = v11->_rotationButtonTopConstraint;
     v11->_rotationButtonTopConstraint = v46;
 
-    v48 = [(UIButton *)v11->_clockWiseRotationButton bottomAnchor];
-    v49 = [(UIButton *)v11->_zoomButton topAnchor];
-    v50 = [v48 constraintEqualToAnchor:v49 constant:-16.0];
+    bottomAnchor3 = [(UIButton *)v11->_clockWiseRotationButton bottomAnchor];
+    topAnchor3 = [(UIButton *)v11->_zoomButton topAnchor];
+    v50 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3 constant:-16.0];
     rotationButtonBottomConstraint = v11->_rotationButtonBottomConstraint;
     v11->_rotationButtonBottomConstraint = v50;
 
-    v52 = [(UIButton *)v11->_clockWiseRotationButton leadingAnchor];
-    v53 = [(UIButton *)v11->_zoomButton leadingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    leadingAnchor = [(UIButton *)v11->_clockWiseRotationButton leadingAnchor];
+    leadingAnchor2 = [(UIButton *)v11->_zoomButton leadingAnchor];
+    v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     rotationButtonLeadingConstraint = v11->_rotationButtonLeadingConstraint;
     v11->_rotationButtonLeadingConstraint = v54;
 
-    v56 = [(UIButton *)v11->_clockWiseRotationButton trailingAnchor];
-    v57 = [(UIButton *)v11->_zoomButton leadingAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57 constant:-16.0];
+    trailingAnchor3 = [(UIButton *)v11->_clockWiseRotationButton trailingAnchor];
+    leadingAnchor3 = [(UIButton *)v11->_zoomButton leadingAnchor];
+    v58 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:-16.0];
     rotationButtonTrailingConstraint = v11->_rotationButtonTrailingConstraint;
     v11->_rotationButtonTrailingConstraint = v58;
 
     v78 = MEMORY[0x277CCAAD0];
-    v82 = [(UIButton *)v11->_counterClockWiseRotationButton centerYAnchor];
-    v81 = [(UIButton *)v11->_clockWiseRotationButton centerYAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    centerYAnchor = [(UIButton *)v11->_counterClockWiseRotationButton centerYAnchor];
+    centerYAnchor2 = [(UIButton *)v11->_clockWiseRotationButton centerYAnchor];
+    v80 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v92[0] = v80;
-    v79 = [(UIButton *)v11->_counterClockWiseRotationButton centerXAnchor];
-    v60 = [(UIButton *)v11->_clockWiseRotationButton centerXAnchor];
-    v61 = [v79 constraintEqualToAnchor:v60];
+    centerXAnchor = [(UIButton *)v11->_counterClockWiseRotationButton centerXAnchor];
+    centerXAnchor2 = [(UIButton *)v11->_clockWiseRotationButton centerXAnchor];
+    v61 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v92[1] = v61;
-    v62 = [(UIButton *)v11->_counterClockWiseRotationButton heightAnchor];
-    v63 = [(UIButton *)v11->_clockWiseRotationButton heightAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    heightAnchor3 = [(UIButton *)v11->_counterClockWiseRotationButton heightAnchor];
+    heightAnchor4 = [(UIButton *)v11->_clockWiseRotationButton heightAnchor];
+    v64 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     v92[2] = v64;
-    v65 = [(UIButton *)v11->_counterClockWiseRotationButton widthAnchor];
-    v66 = [(UIButton *)v11->_clockWiseRotationButton heightAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66];
+    widthAnchor3 = [(UIButton *)v11->_counterClockWiseRotationButton widthAnchor];
+    heightAnchor5 = [(UIButton *)v11->_clockWiseRotationButton heightAnchor];
+    v67 = [widthAnchor3 constraintEqualToAnchor:heightAnchor5];
     v92[3] = v67;
     v68 = [MEMORY[0x277CBEA60] arrayWithObjects:v92 count:4];
     [v78 activateConstraints:v68];
@@ -168,7 +168,7 @@
     sceneHandleObserver = v11->_sceneHandleObserver;
     v11->_sceneHandleObserver = v69;
 
-    [v83 addObserver:v11->_sceneHandleObserver];
+    [handleCopy addObserver:v11->_sceneHandleObserver];
     v71 = v11->_sceneHandleObserver;
     v88[0] = MEMORY[0x277D85DD0];
     v88[1] = 3221225472;
@@ -262,13 +262,13 @@ void __74__SBDeviceApplicationSceneClassicAccessoryView_initWithFrame_sceneHandl
   [(SBDeviceApplicationSceneClassicAccessoryView *)self _setupPositioningAndRotationForInterfaceOrientation:self->_buttonOrientation offscreen:0];
 }
 
-- (void)_updateButtonVisibilityAnimated:(BOOL)a3
+- (void)_updateButtonVisibilityAnimated:(BOOL)animated
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityAnimated___block_invoke;
   v5[3] = &__block_descriptor_33_e21_v20__0__UIButton_8B16l;
-  v6 = a3;
+  animatedCopy = animated;
   v4 = MEMORY[0x223D6F7F0](v5, a2);
   (v4)[2](v4, self->_zoomButton, [(SBDeviceApplicationSceneClassicAccessoryView *)self _zoomButtonShouldBeVisible]);
   (v4)[2](v4, self->_clockWiseRotationButton, [(SBDeviceApplicationSceneClassicAccessoryView *)self _rotationButtonShouldBeVisible]);
@@ -322,16 +322,16 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
 
 - (BOOL)_isZoomed
 {
-  v2 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v3 = [v2 classicAppZoomedIn];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  classicAppZoomedIn = [application classicAppZoomedIn];
 
-  return v3;
+  return classicAppZoomedIn;
 }
 
 - (void)_updateZoomButton
 {
-  v3 = [(SBDeviceApplicationSceneClassicAccessoryView *)self _isZoomed];
-  if (v3)
+  _isZoomed = [(SBDeviceApplicationSceneClassicAccessoryView *)self _isZoomed];
+  if (_isZoomed)
   {
     v4 = @"scaleDown";
   }
@@ -341,7 +341,7 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
     v4 = @"scaleUp";
   }
 
-  if (v3)
+  if (_isZoomed)
   {
     v5 = @"scaleDownHighlight";
   }
@@ -357,17 +357,17 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
   [(UIButton *)self->_zoomButton setImage:v6 forState:1];
 }
 
-- (void)_changeZoom:(id)a3
+- (void)_changeZoom:(id)zoom
 {
-  v4 = [(SBDeviceApplicationSceneClassicAccessoryView *)self _isZoomed];
-  v5 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  [v5 _setClassicAppZoomedIn:!v4];
+  _isZoomed = [(SBDeviceApplicationSceneClassicAccessoryView *)self _isZoomed];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  [application _setClassicAppZoomedIn:!_isZoomed];
 
   [(SBDeviceApplicationSceneClassicAccessoryView *)self _updateZoomButton];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    if (v4)
+    if (_isZoomed)
     {
       v7 = 1;
     }
@@ -390,22 +390,22 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
 
 - (BOOL)_zoomButtonShouldBeVisible
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v4 = [v3 uiSettings];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  uiSettings = [sceneIfExists uiSettings];
 
-  v5 = [v4 isForeground];
-  v6 = [v4 deactivationReasons] & 0x28;
-  v7 = [v4 isOccluded];
-  v8 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
-  v9 = [v8 switcherController];
+  isForeground = [uiSettings isForeground];
+  v6 = [uiSettings deactivationReasons] & 0x28;
+  isOccluded = [uiSettings isOccluded];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  v10 = [v9 windowManagementContext];
-  v11 = [v10 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if (v11)
+  if (isChamoisOrFlexibleWindowing)
   {
-    v12 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-    v13 = [v12 classicAppPhoneAppRunningOnPad];
+    application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+    classicAppPhoneAppRunningOnPad = [application classicAppPhoneAppRunningOnPad];
 
     if (v6)
     {
@@ -414,12 +414,12 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
 
     else
     {
-      v14 = v5;
+      v14 = isForeground;
     }
 
     if (v14 == 1)
     {
-      v15 = (v7 | v13) ^ 1;
+      v15 = (isOccluded | classicAppPhoneAppRunningOnPad) ^ 1;
     }
 
     else
@@ -428,9 +428,9 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
     }
   }
 
-  else if (v5)
+  else if (isForeground)
   {
-    v15 = (v6 == 0) & (v7 ^ 1);
+    v15 = (v6 == 0) & (isOccluded ^ 1);
   }
 
   else
@@ -443,10 +443,10 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
 
 - (void)_updateRotationButton
 {
-  v3 = [(SBDeviceApplicationSceneClassicAccessoryView *)self sceneHandle];
-  v4 = [v3 currentInterfaceOrientation];
+  sceneHandle = [(SBDeviceApplicationSceneClassicAccessoryView *)self sceneHandle];
+  currentInterfaceOrientation = [sceneHandle currentInterfaceOrientation];
 
-  if (v4 == 1)
+  if (currentInterfaceOrientation == 1)
   {
     v5 = &OBJC_IVAR___SBDeviceApplicationSceneClassicAccessoryView__clockWiseRotationButton;
   }
@@ -456,8 +456,8 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
     v5 = &OBJC_IVAR___SBDeviceApplicationSceneClassicAccessoryView__counterClockWiseRotationButton;
   }
 
-  v6 = 2 * (v4 == 1);
-  if (v4 == 1)
+  v6 = 2 * (currentInterfaceOrientation == 1);
+  if (currentInterfaceOrientation == 1)
   {
     v7 = 0;
   }
@@ -525,34 +525,34 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
 
 - (BOOL)_rotationButtonShouldBeVisible
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v4 = [v3 uiSettings];
-  v5 = [v4 interfaceOrientationMode];
-  v8 = (v5 == 2 || v3 && ([v3 uiClientSettings], v6 = ;
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  uiSettings = [sceneIfExists uiSettings];
+  interfaceOrientationMode = [uiSettings interfaceOrientationMode];
+  v8 = (interfaceOrientationMode == 2 || sceneIfExists && ([sceneIfExists uiClientSettings], v6 = ;
   return v8;
 }
 
-- (void)_rotateApplicationScene:(id)a3
+- (void)_rotateApplicationScene:(id)scene
 {
   sceneHandle = self->_sceneHandle;
-  v5 = a3;
+  sceneCopy = scene;
   [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _setClassicAppPhoneOnPadPrefersLandscape:[(SBDeviceApplicationSceneHandle *)sceneHandle _classicAppPhoneOnPadPrefersLandscape]^ 1];
 
-  self->_rotatingFromButtonTap = v5 != 0;
-  v6 = [(SBDeviceApplicationSceneClassicAccessoryView *)self delegate];
-  [v6 noteApplicationClassicPhoneSceneOrientationPreferenceChangingForUserAction:self->_rotatingFromButtonTap];
+  self->_rotatingFromButtonTap = sceneCopy != 0;
+  delegate = [(SBDeviceApplicationSceneClassicAccessoryView *)self delegate];
+  [delegate noteApplicationClassicPhoneSceneOrientationPreferenceChangingForUserAction:self->_rotatingFromButtonTap];
 }
 
-- (void)_sceneHandleDidUpdateClientSettings:(id)a3
+- (void)_sceneHandleDidUpdateClientSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDeviceApplicationSceneClassicAccessoryView _sceneHandleDidUpdateClientSettings:];
   }
 
-  v5 = [v4 settingsDiff];
-  v6 = [v4 transitionContext];
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
   clientSettingsInspector = self->_clientSettingsInspector;
   if (!clientSettingsInspector)
   {
@@ -581,7 +581,7 @@ void __80__SBDeviceApplicationSceneClassicAccessoryView__updateButtonVisibilityA
     clientSettingsInspector = self->_clientSettingsInspector;
   }
 
-  [(UIApplicationSceneClientSettingsDiffInspector *)clientSettingsInspector inspectDiff:v5 withContext:v6];
+  [(UIApplicationSceneClientSettingsDiffInspector *)clientSettingsInspector inspectDiff:settingsDiff withContext:transitionContext];
 }
 
 void __84__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateClientSettings___block_invoke(uint64_t a1, void *a2)
@@ -627,10 +627,10 @@ void __84__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateCli
   }
 }
 
-- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4
+- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  diffCopy = diff;
+  settingsCopy = settings;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDeviceApplicationSceneClassicAccessoryView _sceneHandleDidUpdateSettingsWithDiff:previousSettings:];
@@ -672,7 +672,7 @@ void __84__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateCli
     sceneSettingsInspector = self->_sceneSettingsInspector;
   }
 
-  [(UIApplicationSceneSettingsDiffInspector *)sceneSettingsInspector inspectDiff:v6 withContext:0, v14, v15, v16, v17];
+  [(UIApplicationSceneSettingsDiffInspector *)sceneSettingsInspector inspectDiff:diffCopy withContext:0, v14, v15, v16, v17];
 }
 
 void __103__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateSettingsWithDiff_previousSettings___block_invoke(uint64_t a1)
@@ -711,23 +711,23 @@ void __103__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateSe
   }
 }
 
-- (void)_updateRotationButtonWithAnimationSettings:(id)a3
+- (void)_updateRotationButtonWithAnimationSettings:(id)settings
 {
-  v4 = a3;
-  if (!v4)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
-    v4 = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:1 toInterfaceOrientation:3];
+    settingsCopy = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:1 toInterfaceOrientation:3];
   }
 
-  v5 = [(SBDeviceApplicationSceneClassicAccessoryView *)self sceneHandle];
-  v6 = [v5 currentInterfaceOrientation];
+  sceneHandle = [(SBDeviceApplicationSceneClassicAccessoryView *)self sceneHandle];
+  currentInterfaceOrientation = [sceneHandle currentInterfaceOrientation];
 
   v7 = *(MEMORY[0x277CBF2C0] + 16);
   *&v31.a = *MEMORY[0x277CBF2C0];
   *&v31.c = v7;
   *&v31.tx = *(MEMORY[0x277CBF2C0] + 32);
-  v8 = dbl_21F8A6780[v6 == 1];
-  if (v6 == 1)
+  v8 = dbl_21F8A6780[currentInterfaceOrientation == 1];
+  if (currentInterfaceOrientation == 1)
   {
     v9 = &OBJC_IVAR___SBDeviceApplicationSceneClassicAccessoryView__clockWiseRotationButton;
   }
@@ -737,7 +737,7 @@ void __103__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateSe
     v9 = &OBJC_IVAR___SBDeviceApplicationSceneClassicAccessoryView__counterClockWiseRotationButton;
   }
 
-  if (v6 == 1)
+  if (currentInterfaceOrientation == 1)
   {
     v10 = &OBJC_IVAR___SBDeviceApplicationSceneClassicAccessoryView__counterClockWiseRotationButton;
   }
@@ -757,10 +757,10 @@ void __103__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateSe
   v28[3] = &unk_2783A92D8;
   v14 = v11;
   v29 = v14;
-  v30 = self;
+  selfCopy = self;
   [v13 performWithoutAnimation:v28];
   v15 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-  v16 = [MEMORY[0x277CF0D38] factoryWithSettings:v4 timingFunction:v15];
+  v16 = [MEMORY[0x277CF0D38] factoryWithSettings:settingsCopy timingFunction:v15];
   [v16 setAllowsAdditiveAnimations:1];
   v17 = MEMORY[0x277CF0D38];
   v24[0] = MEMORY[0x277D85DD0];
@@ -776,7 +776,7 @@ void __103__SBDeviceApplicationSceneClassicAccessoryView__sceneHandleDidUpdateSe
   v20[3] = &unk_2783A9940;
   v21 = v25;
   v22 = v26;
-  v23 = self;
+  selfCopy2 = self;
   v18 = v26;
   v19 = v25;
   [v17 animateWithFactory:v16 actions:v24 completion:v20];
@@ -826,24 +826,24 @@ uint64_t __91__SBDeviceApplicationSceneClassicAccessoryView__updateRotationButto
   return [*(a1 + 48) _updateRotationButton];
 }
 
-- (void)_updateOrientationFrom:(int64_t)a3 toOrientation:(int64_t)a4 animationSettings:(id)a5
+- (void)_updateOrientationFrom:(int64_t)from toOrientation:(int64_t)orientation animationSettings:(id)settings
 {
-  v8 = a5;
-  [v8 duration];
+  settingsCopy = settings;
+  [settingsCopy duration];
   v10 = v9 * 0.5;
-  [v8 delay];
+  [settingsCopy delay];
   v12 = v11;
 
-  [(BSUIOrientationTransformWrapperView *)self->_transformWrapperView setContentOrientation:a3];
-  [(BSUIOrientationTransformWrapperView *)self->_transformWrapperView setContainerOrientation:a4];
+  [(BSUIOrientationTransformWrapperView *)self->_transformWrapperView setContentOrientation:from];
+  [(BSUIOrientationTransformWrapperView *)self->_transformWrapperView setContainerOrientation:orientation];
   transformWrapperView = self->_transformWrapperView;
   [(SBDeviceApplicationSceneClassicAccessoryView *)self bounds];
   [(BSUIOrientationTransformWrapperView *)transformWrapperView setFrame:?];
   [(SBDeviceApplicationSceneClassicAccessoryView *)self layoutBelowIfNeeded];
   if (v10 <= 0.0)
   {
-    [(SBDeviceApplicationSceneClassicAccessoryView *)self _setupPositioningAndRotationForInterfaceOrientation:a4 offscreen:0];
-    self->_buttonOrientation = a4;
+    [(SBDeviceApplicationSceneClassicAccessoryView *)self _setupPositioningAndRotationForInterfaceOrientation:orientation offscreen:0];
+    self->_buttonOrientation = orientation;
   }
 
   else
@@ -853,13 +853,13 @@ uint64_t __91__SBDeviceApplicationSceneClassicAccessoryView__updateRotationButto
     v15[2] = __103__SBDeviceApplicationSceneClassicAccessoryView__updateOrientationFrom_toOrientation_animationSettings___block_invoke;
     v15[3] = &unk_2783A8BC8;
     v15[4] = self;
-    v15[5] = a3;
+    v15[5] = from;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __103__SBDeviceApplicationSceneClassicAccessoryView__updateOrientationFrom_toOrientation_animationSettings___block_invoke_2;
     v14[3] = &unk_2783B3C60;
     v14[4] = self;
-    v14[5] = a4;
+    v14[5] = orientation;
     *&v14[6] = v10;
     [MEMORY[0x277D75D18] animateWithDuration:0x10000 delay:v15 options:v14 animations:v10 completion:v12];
   }
@@ -903,11 +903,11 @@ uint64_t __103__SBDeviceApplicationSceneClassicAccessoryView__updateOrientationF
   return [v2 layoutBelowIfNeeded];
 }
 
-- (void)_setupPositioningAndRotationForInterfaceOrientation:(int64_t)a3 offscreen:(BOOL)a4
+- (void)_setupPositioningAndRotationForInterfaceOrientation:(int64_t)orientation offscreen:(BOOL)offscreen
 {
   v5 = 16.0;
   v6 = -16.0;
-  if ((a3 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     v7 = 16.0;
   }
@@ -917,12 +917,12 @@ uint64_t __103__SBDeviceApplicationSceneClassicAccessoryView__updateOrientationF
     v7 = -16.0;
   }
 
-  if ((a3 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     v6 = 16.0;
   }
 
-  if (a4)
+  if (offscreen)
   {
     v8 = v7;
   }
@@ -932,7 +932,7 @@ uint64_t __103__SBDeviceApplicationSceneClassicAccessoryView__updateOrientationF
     v8 = 16.0;
   }
 
-  if (a4)
+  if (offscreen)
   {
     v5 = v6;
   }

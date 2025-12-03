@@ -1,15 +1,15 @@
 @interface SCATCustomFocusingView
-- (BOOL)updateFocusState:(int64_t)a3;
-- (SCATCustomFocusingView)initWithFrame:(CGRect)a3;
+- (BOOL)updateFocusState:(int64_t)state;
+- (SCATCustomFocusingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SCATCustomFocusingView
 
-- (SCATCustomFocusingView)initWithFrame:(CGRect)a3
+- (SCATCustomFocusingView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SCATCustomFocusingView;
-  result = [(SCATCustomFocusingView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SCATCustomFocusingView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_focusState = -1;
@@ -18,15 +18,15 @@
   return result;
 }
 
-- (BOOL)updateFocusState:(int64_t)a3
+- (BOOL)updateFocusState:(int64_t)state
 {
   focusState = self->_focusState;
-  if (focusState != a3)
+  if (focusState != state)
   {
-    self->_focusState = a3;
+    self->_focusState = state;
   }
 
-  return focusState != a3;
+  return focusState != state;
 }
 
 @end

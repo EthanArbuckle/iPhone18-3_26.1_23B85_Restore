@@ -1,31 +1,31 @@
 @interface FPDeleteOperation
-- (FPDeleteOperation)initWithItems:(id)a3;
-- (id)replicateForItems:(id)a3;
+- (FPDeleteOperation)initWithItems:(id)items;
+- (id)replicateForItems:(id)items;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 @end
 
 @implementation FPDeleteOperation
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
-  v3 = a3;
-  v4 = [[FPDeleteOperation alloc] initWithItems:v3];
+  itemsCopy = items;
+  v4 = [[FPDeleteOperation alloc] initWithItems:itemsCopy];
 
   return v4;
 }
 
-- (FPDeleteOperation)initWithItems:(id)a3
+- (FPDeleteOperation)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = FPDeleteOperation;
-  v6 = [(FPActionOperation *)&v9 initWithItemsOfDifferentProviders:v5 action:@"Delete"];
+  v6 = [(FPActionOperation *)&v9 initWithItemsOfDifferentProviders:itemsCopy action:@"Delete"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
+    objc_storeStrong(&v6->_items, items);
     [(FPActionOperation *)v7 setSetupRemoteOperationService:1];
   }
 
@@ -35,14 +35,14 @@
 - (void)actionMain
 {
   v3 = [(NSArray *)self->_items fp_map:&__block_literal_global_316];
-  v4 = [(NSArray *)self->_items fp_itemIDs];
-  v5 = [(FPActionOperation *)self remoteServiceProxy];
+  fp_itemIDs = [(NSArray *)self->_items fp_itemIDs];
+  remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__FPDeleteOperation_actionMain__block_invoke_2;
   v6[3] = &unk_1E7939C00;
   v6[4] = self;
-  [v5 deleteItemsWithIDs:v4 baseVersions:v3 options:-2147483647 reply:v6];
+  [remoteServiceProxy deleteItemsWithIDs:fp_itemIDs baseVersions:v3 options:-2147483647 reply:v6];
 }
 
 void __31__FPDeleteOperation_actionMain__block_invoke_2(uint64_t a1, void *a2)
@@ -71,28 +71,28 @@ void __31__FPDeleteOperation_actionMain__block_invoke_2(uint64_t a1, void *a2)
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
-  [v4 deleteItems:self->_items];
+  stitcher2 = [(FPActionOperation *)self stitcher];
+  [stitcher2 deleteItems:self->_items];
 
-  v5 = [(FPActionOperation *)self stitcher];
-  [v5 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPActionOperation *)self stitcher];
-  [v8 finishWithItem:v7 error:v6];
+  errorCopy = error;
+  resultCopy = result;
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItem:resultCopy error:errorCopy];
 
-  v9 = [v6 fp_annotatedErrorWithItems:self->_items variant:@"Remove"];
+  v9 = [errorCopy fp_annotatedErrorWithItems:self->_items variant:@"Remove"];
 
   v10.receiver = self;
   v10.super_class = FPDeleteOperation;
-  [(FPActionOperation *)&v10 finishWithResult:v7 error:v9];
+  [(FPActionOperation *)&v10 finishWithResult:resultCopy error:v9];
 }
 
 void __31__FPDeleteOperation_actionMain__block_invoke_2_cold_1(void *a1)

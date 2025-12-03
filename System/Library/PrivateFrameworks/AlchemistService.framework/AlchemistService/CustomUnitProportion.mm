@@ -1,7 +1,7 @@
 @interface CustomUnitProportion
 + (id)baseUnit;
-- (_TtC16AlchemistService20CustomUnitProportion)initWithCoder:(id)a3;
-- (_TtC16AlchemistService20CustomUnitProportion)initWithSymbol:(id)a3 converter:(id)a4;
+- (_TtC16AlchemistService20CustomUnitProportion)initWithCoder:(id)coder;
+- (_TtC16AlchemistService20CustomUnitProportion)initWithSymbol:(id)symbol converter:(id)converter;
 @end
 
 @implementation CustomUnitProportion
@@ -14,19 +14,19 @@
   return v2;
 }
 
-- (_TtC16AlchemistService20CustomUnitProportion)initWithSymbol:(id)a3 converter:(id)a4
+- (_TtC16AlchemistService20CustomUnitProportion)initWithSymbol:(id)symbol converter:(id)converter
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CustomUnitProportion();
-  return [(NSDimension *)&v7 initWithSymbol:a3 converter:a4];
+  return [(NSDimension *)&v7 initWithSymbol:symbol converter:converter];
 }
 
-- (_TtC16AlchemistService20CustomUnitProportion)initWithCoder:(id)a3
+- (_TtC16AlchemistService20CustomUnitProportion)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CustomUnitProportion();
-  v4 = a3;
-  v5 = [(NSDimension *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NSDimension *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

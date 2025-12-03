@@ -1,10 +1,10 @@
 @interface TSDeviceInfoViewController
-- (TSDeviceInfoViewController)initWithOptions:(id)a3;
+- (TSDeviceInfoViewController)initWithOptions:(id)options;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)extractPhoneInfoFromOptions:(id)a3;
+- (id)extractPhoneInfoFromOptions:(id)options;
 - (id)getPhoneInfoFromCT;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_cancelButtonTapped;
 - (void)_doneButtonTapped;
 - (void)_shareIdentityTapped;
@@ -15,10 +15,10 @@
 
 @implementation TSDeviceInfoViewController
 
-- (id)extractPhoneInfoFromOptions:(id)a3
+- (id)extractPhoneInfoFromOptions:(id)options
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
@@ -44,7 +44,7 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v3 valueForKey:v10];
+        v11 = [optionsCopy valueForKey:v10];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 length])
         {
@@ -89,9 +89,9 @@
       goto LABEL_32;
     }
 
-    v7 = [v5 meInfoList];
-    v8 = v7;
-    if (!v7)
+    meInfoList = [v5 meInfoList];
+    v8 = meInfoList;
+    if (!meInfoList)
     {
       v9 = _TSLogDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -103,7 +103,7 @@
       goto LABEL_31;
     }
 
-    v9 = [v7 objectAtIndexedSubscript:0];
+    v9 = [meInfoList objectAtIndexedSubscript:0];
     v10 = 0;
     if ([v8 count]>= 2)
     {
@@ -133,28 +133,28 @@
       }
     }
 
-    v31 = [v9 IMEI];
-    v32 = [v31 length];
+    iMEI = [v9 IMEI];
+    v32 = [iMEI length];
 
     if (v32)
     {
-      v33 = [v9 IMEI];
+      iMEI2 = [v9 IMEI];
       goto LABEL_26;
     }
 
 LABEL_25:
-    v33 = &stru_28753DF48;
+    iMEI2 = &stru_28753DF48;
 LABEL_26:
     v44 = v10;
     v45 = v6;
     if (v10 && ([v10 IMEI], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "length"), v34, v35))
     {
-      v36 = [v10 IMEI];
+      iMEI3 = [v10 IMEI];
     }
 
     else
     {
-      v36 = &stru_28753DF48;
+      iMEI3 = &stru_28753DF48;
     }
 
     v49[0] = @"EidKey";
@@ -162,12 +162,12 @@ LABEL_26:
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:{2, v13}];
     v50[0] = v37;
     v48[0] = @"ImeiKey";
-    v48[1] = v33;
+    v48[1] = iMEI2;
     [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
-    v39 = v38 = v33;
+    v39 = v38 = iMEI2;
     v50[1] = v39;
     v47[0] = @"Imei2Key";
-    v47[1] = v36;
+    v47[1] = iMEI3;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
     v50[2] = v40;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:3];
@@ -193,10 +193,10 @@ LABEL_33:
   return v21;
 }
 
-- (TSDeviceInfoViewController)initWithOptions:(id)a3
+- (TSDeviceInfoViewController)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(TSDeviceInfoViewController *)self extractPhoneInfoFromOptions:v4];
+  optionsCopy = options;
+  v5 = [(TSDeviceInfoViewController *)self extractPhoneInfoFromOptions:optionsCopy];
   if ([v5 count])
   {
     v6 = v5;
@@ -204,8 +204,8 @@ LABEL_33:
 
   else
   {
-    v7 = [(TSDeviceInfoViewController *)self getPhoneInfoFromCT];
-    v6 = [v7 mutableCopy];
+    getPhoneInfoFromCT = [(TSDeviceInfoViewController *)self getPhoneInfoFromCT];
+    v6 = [getPhoneInfoFromCT mutableCopy];
 
     if (![v6 count])
     {
@@ -223,7 +223,7 @@ LABEL_33:
   v9 = v8 == 1;
   if (v8 == 1)
   {
-    v10 = [v4 valueForKey:@"EidKey"];
+    v10 = [optionsCopy valueForKey:@"EidKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -243,7 +243,7 @@ LABEL_33:
       v11 = 0;
     }
 
-    v22 = [v4 valueForKey:@"ImeiKey"];
+    v22 = [optionsCopy valueForKey:@"ImeiKey"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v22 length])
@@ -251,7 +251,7 @@ LABEL_33:
       v11 = @"IMEI";
     }
 
-    v14 = [v4 valueForKey:@"Imei2Key"];
+    v14 = [optionsCopy valueForKey:@"Imei2Key"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -282,7 +282,7 @@ LABEL_33:
     }
 
 LABEL_31:
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_32;
   }
 
@@ -323,16 +323,16 @@ LABEL_24:
 
   self = v24;
 
-  v27 = self;
+  selfCopy = self;
 LABEL_32:
 
-  return v27;
+  return selfCopy;
 }
 
 - (void)_doneButtonTapped
 {
-  v2 = [(TSDeviceInfoViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(TSDeviceInfoViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)viewDidLoad
@@ -345,39 +345,39 @@ LABEL_32:
   v4 = [v3 initWithFrame:1 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setEstimatedRowHeight:0.0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setEstimatedRowHeight:0.0];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setAllowsMultipleSelection:0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:0];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  v10 = [MEMORY[0x277D75348] clearColor];
-  [v9 setBackgroundColor:v10];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView5 setBackgroundColor:clearColor];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setDataSource:self];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setDataSource:self];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setDelegate:self];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setDelegate:self];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setScrollEnabled:0];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setScrollEnabled:0];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setEditing:0];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 setEditing:0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 setAllowsSelection:0];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 setAllowsSelection:0];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setSeparatorStyle:0];
+  tableView11 = [(OBTableWelcomeController *)self tableView];
+  [tableView11 setSeparatorStyle:0];
 
   if (self->_singleItemFlow)
   {
@@ -385,48 +385,48 @@ LABEL_32:
     doneButton = self->_doneButton;
     self->_doneButton = v17;
 
-    v19 = [(OBBaseWelcomeController *)self navigationItem];
-    [v19 setLeftBarButtonItem:self->_doneButton animated:1];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:self->_doneButton animated:1];
   }
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 reloadData];
+  tableView12 = [(OBTableWelcomeController *)self tableView];
+  [tableView12 reloadData];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  v22 = [v21 heightAnchor];
-  v23 = [(OBTableWelcomeController *)self tableView];
-  [v23 contentSize];
-  v25 = [v22 constraintEqualToConstant:v24];
+  tableView13 = [(OBTableWelcomeController *)self tableView];
+  heightAnchor = [tableView13 heightAnchor];
+  tableView14 = [(OBTableWelcomeController *)self tableView];
+  [tableView14 contentSize];
+  v25 = [heightAnchor constraintEqualToConstant:v24];
   [(TSDeviceInfoViewController *)self setHeightAnchor:v25];
 
-  v26 = [(TSDeviceInfoViewController *)self heightAnchor];
-  [v26 setActive:1];
+  heightAnchor2 = [(TSDeviceInfoViewController *)self heightAnchor];
+  [heightAnchor2 setActive:1];
 
   singleItemFlow = self->_singleItemFlow;
-  v28 = [(OBTableWelcomeController *)self tableView];
-  v29 = [v28 centerYAnchor];
-  v30 = [(TSDeviceInfoViewController *)self view];
-  v31 = [v30 centerYAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  tableView15 = [(OBTableWelcomeController *)self tableView];
+  centerYAnchor = [tableView15 centerYAnchor];
+  view = [(TSDeviceInfoViewController *)self view];
+  centerYAnchor2 = [view centerYAnchor];
+  v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v32 setActive:singleItemFlow];
 
   v33 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
-  v34 = [(TSDeviceInfoViewController *)self navigationController];
-  v35 = [v34 topViewController];
-  v36 = [v35 navigationItem];
-  [v36 setLeftBarButtonItem:v33 animated:0];
+  navigationController = [(TSDeviceInfoViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  navigationItem2 = [topViewController navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v33 animated:0];
 
-  v37 = [(TSDeviceInfoViewController *)self navigationController];
-  [v37 setModalPresentationStyle:2];
+  navigationController2 = [(TSDeviceInfoViewController *)self navigationController];
+  [navigationController2 setModalPresentationStyle:2];
 
-  v38 = [(TSDeviceInfoViewController *)self navigationController];
-  [v38 setModalTransitionStyle:0];
+  navigationController3 = [(TSDeviceInfoViewController *)self navigationController];
+  [navigationController3 setModalTransitionStyle:0];
 
   if (self->_isSharingIdentitySupported && !self->_singleItemFlow)
   {
-    v39 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     shareIdentityButton = self->_shareIdentityButton;
-    self->_shareIdentityButton = v39;
+    self->_shareIdentityButton = boldButton;
 
     [(OBBoldTrayButton *)self->_shareIdentityButton addTarget:self action:sel__shareIdentityTapped forControlEvents:64];
     v41 = self->_shareIdentityButton;
@@ -434,8 +434,8 @@ LABEL_32:
     v43 = [v42 localizedStringForKey:@"ESIM_IN_STORE_SIGNUP_BUTTON" value:&stru_28753DF48 table:@"Localizable"];
     [(OBBoldTrayButton *)v41 setTitle:v43 forState:0];
 
-    v44 = [(TSDeviceInfoViewController *)self buttonTray];
-    [v44 addButton:self->_shareIdentityButton];
+    buttonTray = [(TSDeviceInfoViewController *)self buttonTray];
+    [buttonTray addButton:self->_shareIdentityButton];
 
     [(OBBoldTrayButton *)self->_shareIdentityButton setEnabled:1];
   }
@@ -443,40 +443,40 @@ LABEL_32:
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(TSDeviceInfoViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(TSDeviceInfoViewController *)self view];
+  [view layoutIfNeeded];
 
-  v4 = [(TSDeviceInfoViewController *)self heightAnchor];
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 contentSize];
-  [v4 setConstant:v6];
+  heightAnchor = [(TSDeviceInfoViewController *)self heightAnchor];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView contentSize];
+  [heightAnchor setConstant:v6];
 
   v7.receiver = self;
   v7.super_class = TSDeviceInfoViewController;
   [(OBTableWelcomeController *)&v7 viewDidLayoutSubviews];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sortedInfo objectAtIndex:a4];
+  v5 = [(NSMutableArray *)self->_sortedInfo objectAtIndex:section];
   v6 = objc_alloc(MEMORY[0x277D75B48]);
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v8 = [v7 textLabel];
+  textLabel = [v7 textLabel];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  [v8 setFont:v9];
+  [textLabel setFont:v9];
 
-  v10 = [v7 textLabel];
-  [v10 setLineBreakMode:0];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setLineBreakMode:0];
 
-  v11 = [v7 textLabel];
-  [v11 setNumberOfLines:0];
+  textLabel3 = [v7 textLabel];
+  [textLabel3 setNumberOfLines:0];
 
-  v12 = [v7 textLabel];
-  [v12 setTextAlignment:1];
+  textLabel4 = [v7 textLabel];
+  [textLabel4 setTextAlignment:1];
 
   if (self->_singleItemFlow)
   {
-    v13 = [v7 textLabel];
+    textLabel5 = [v7 textLabel];
     v14 = MEMORY[0x277CCACA8];
     v15 = [v5 objectAtIndexedSubscript:1];
     [v14 stringWithFormat:@"%@", v15, v24];
@@ -526,37 +526,37 @@ LABEL_32:
       }
     }
 
-    v13 = [v7 textLabel];
+    textLabel5 = [v7 textLabel];
     v21 = MEMORY[0x277CCACA8];
     v15 = [v5 objectAtIndexedSubscript:1];
     [v21 stringWithFormat:@"%@ %@", v20, v15];
   }
   v22 = ;
-  [v13 setText:v22];
+  [textLabel5 setText:v22];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [[TSDeviceInfoCell alloc] initWithStyle:0 reuseIdentifier:@"deviceInfo"];
   sortedInfo = self->_sortedInfo;
-  v8 = [v5 section];
+  section = [pathCopy section];
 
-  v9 = [(NSMutableArray *)sortedInfo objectAtIndex:v8];
+  v9 = [(NSMutableArray *)sortedInfo objectAtIndex:section];
   v10 = [v9 objectAtIndexedSubscript:1];
   v11 = [v10 dataUsingEncoding:4];
 
   v12 = [MEMORY[0x277CBF750] filterWithName:@"CICode128BarcodeGenerator"];
   [v12 setDefaults];
   [v12 setValue:v11 forKey:@"inputMessage"];
-  v13 = [v12 outputImage];
-  if (v13)
+  outputImage = [v12 outputImage];
+  if (outputImage)
   {
-    v14 = v13;
-    v15 = [(TSDeviceInfoCell *)v6 contentView];
-    [v15 bounds];
+    v14 = outputImage;
+    contentView = [(TSDeviceInfoCell *)v6 contentView];
+    [contentView bounds];
     v17 = v16;
     [v14 extent];
     v19 = vcvtmd_s64_f64(v17 / v18);
@@ -565,20 +565,20 @@ LABEL_32:
     {
       [v14 extent];
       v21 = 70.0 / v20;
-      v22 = [v14 imageBySamplingNearest];
+      imageBySamplingNearest = [v14 imageBySamplingNearest];
 
       memset(&v50, 0, sizeof(v50));
       CGAffineTransformMakeScale(&v50, v19, v21);
       v49 = v50;
-      v23 = [v22 imageByApplyingTransform:&v49];
+      v23 = [imageBySamplingNearest imageByApplyingTransform:&v49];
       v24 = *MEMORY[0x277CDA5B8];
-      v25 = [(TSDeviceInfoCell *)v6 imageView];
-      v26 = [v25 layer];
-      [v26 setMagnificationFilter:v24];
+      imageView = [(TSDeviceInfoCell *)v6 imageView];
+      layer = [imageView layer];
+      [layer setMagnificationFilter:v24];
 
-      v27 = [(TSDeviceInfoCell *)v6 imageView];
+      imageView2 = [(TSDeviceInfoCell *)v6 imageView];
       v28 = [MEMORY[0x277D755B8] imageWithCIImage:v23];
-      [v27 setImage:v28];
+      [imageView2 setImage:v28];
 
       v29 = v6;
     }
@@ -627,8 +627,8 @@ LABEL_32:
 
 - (void)_cancelButtonTapped
 {
-  v2 = [(TSDeviceInfoViewController *)self delegate];
-  [v2 userDidTapCancel];
+  delegate = [(TSDeviceInfoViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
 - (TSSIMSetupFlowDelegate)delegate
@@ -641,7 +641,7 @@ LABEL_32:
 - (void)getPhoneInfoFromCT
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]Could not create CoreTelephonyClient! @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]Could not create CoreTelephonyClient! @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

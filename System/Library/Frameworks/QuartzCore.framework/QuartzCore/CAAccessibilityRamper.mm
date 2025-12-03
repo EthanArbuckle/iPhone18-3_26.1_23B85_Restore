@@ -1,11 +1,11 @@
 @interface CAAccessibilityRamper
-- (CAAccessibilityRamper)initWithDisplay:(id)a3;
-- (void)rampCallback:(id)a3;
+- (CAAccessibilityRamper)initWithDisplay:(id)display;
+- (void)rampCallback:(id)callback;
 @end
 
 @implementation CAAccessibilityRamper
 
-- (void)rampCallback:(id)a3
+- (void)rampCallback:(id)callback
 {
   v45 = *MEMORY[0x1E69E9840];
   [(CAAccessibilityRamper *)self axScaleBegin];
@@ -15,18 +15,18 @@
   [(CAWindowServerRamper *)self beginTime];
   if (v9 <= 0.0)
   {
-    [a3 targetTimestamp];
+    [callback targetTimestamp];
     [(CAWindowServerRamper *)self setBeginTime:?];
   }
 
-  [a3 targetTimestamp];
+  [callback targetTimestamp];
   v11 = v10;
   [(CAWindowServerRamper *)self beginTime];
   v13 = v11 - v12;
   [(CAWindowServerRamper *)self duration];
-  if (v13 / v14 > 1.0 || ([a3 targetTimestamp], v16 = v15, -[CAWindowServerRamper beginTime](self, "beginTime"), v18 = v16 - v17, -[CAWindowServerRamper duration](self, "duration"), v20 = v18 / v19, v21 = 0.0, v20 >= 0.0))
+  if (v13 / v14 > 1.0 || ([callback targetTimestamp], v16 = v15, -[CAWindowServerRamper beginTime](self, "beginTime"), v18 = v16 - v17, -[CAWindowServerRamper duration](self, "duration"), v20 = v18 / v19, v21 = 0.0, v20 >= 0.0))
   {
-    [a3 targetTimestamp];
+    [callback targetTimestamp];
     v23 = v22;
     [(CAWindowServerRamper *)self beginTime];
     v25 = v23 - v24;
@@ -35,7 +35,7 @@
     v21 = 1.0;
     if (v27 <= 1.0)
     {
-      [a3 targetTimestamp];
+      [callback targetTimestamp];
       v29 = v28;
       [(CAWindowServerRamper *)self beginTime];
       v31 = v29 - v30;
@@ -63,14 +63,14 @@
 
   if ((*&v34 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v36 = [(CAWindowServerRamper *)self display];
+    display = [(CAWindowServerRamper *)self display];
     *&v37 = v34;
-    [(CAWindowServerDisplay *)v36 setAccessibilityColorMatrix:&xmmword_183E31CC8 scale:v37];
+    [(CAWindowServerDisplay *)display setAccessibilityColorMatrix:&xmmword_183E31CC8 scale:v37];
   }
 
   if (v21 == 1.0)
   {
-    [a3 invalidate];
+    [callback invalidate];
     Current = CFRunLoopGetCurrent();
     CFRunLoopStop(Current);
     if (x_log_get_windowserver(void)::once != -1)
@@ -89,12 +89,12 @@
   }
 }
 
-- (CAAccessibilityRamper)initWithDisplay:(id)a3
+- (CAAccessibilityRamper)initWithDisplay:(id)display
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = CAAccessibilityRamper;
-  v3 = [(CAWindowServerRamper *)&v6 initWithDisplay:a3];
+  v3 = [(CAWindowServerRamper *)&v6 initWithDisplay:display];
   v4 = v3;
   if (v3)
   {

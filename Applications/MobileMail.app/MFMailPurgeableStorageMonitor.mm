@@ -1,5 +1,5 @@
 @interface MFMailPurgeableStorageMonitor
-- (MFMailPurgeableStorageMonitor)initWithPurgeableStorage:(id)a3;
+- (MFMailPurgeableStorageMonitor)initWithPurgeableStorage:(id)storage;
 - (void)_schedulePushPurgeableSpaceUpdate;
 - (void)dealloc;
 - (void)pushPurgeableStateUpdate;
@@ -15,9 +15,9 @@
   [(MFMailPurgeableStorageMonitor *)&v3 dealloc];
 }
 
-- (MFMailPurgeableStorageMonitor)initWithPurgeableStorage:(id)a3
+- (MFMailPurgeableStorageMonitor)initWithPurgeableStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = MFMailPurgeableStorageMonitor;
   v6 = [(MFMailPurgeableStorageMonitor *)&v9 init];
@@ -25,7 +25,7 @@
   if (v6)
   {
     v6->_serviceName = @"com.apple.mobilemail.CacheDelete";
-    objc_storeStrong(&v6->_purgeableStorage, a3);
+    objc_storeStrong(&v6->_purgeableStorage, storage);
     [(MFMailPurgeableStorageMonitor *)v7 _schedulePushPurgeableSpaceUpdate];
   }
 
@@ -59,7 +59,7 @@
   v16[1] = 3221225472;
   v17 = sub_1001E59B8;
   v18 = &unk_10064F8D8;
-  v19 = self;
+  selfCopy = self;
   v20 = &v21;
   v4 = v16;
   v5 = mach_absolute_time();
@@ -77,9 +77,9 @@
   v10 = MFLogGeneral();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MFMailPurgeableStorageMonitor *)self serviceName];
+    serviceName = [(MFMailPurgeableStorageMonitor *)self serviceName];
     *buf = 138412802;
-    v28 = v11;
+    v28 = serviceName;
     v29 = 2112;
     v30 = v9;
     v31 = 2048;

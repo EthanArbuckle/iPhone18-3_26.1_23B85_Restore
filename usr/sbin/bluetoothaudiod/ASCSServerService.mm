@@ -1,18 +1,18 @@
 @interface ASCSServerService
 - (ASCSServerService)init;
 - (unint64_t)subscriptionCount;
-- (void)codecConfigRequest:(id)a3;
+- (void)codecConfigRequest:(id)request;
 - (void)dealloc;
-- (void)enableRequest:(id)a3;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)qosConfigRequest:(id)a3;
-- (void)receiveObjectMessage:(unsigned __int8)a3 withEventObject:(id)a4;
-- (void)receivedCharacteristicReadRequest:(id)a3;
-- (void)receivedWriteRequest:(id)a3;
-- (void)receiverStartReadyRequest:(id)a3;
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4;
+- (void)enableRequest:(id)request;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)qosConfigRequest:(id)request;
+- (void)receiveObjectMessage:(unsigned __int8)message withEventObject:(id)object;
+- (void)receivedCharacteristicReadRequest:(id)request;
+- (void)receivedWriteRequest:(id)request;
+- (void)receiverStartReadyRequest:(id)request;
+- (void)respondToRequest:(id)request withResult:(int64_t)result;
 - (void)sendStreamingNotification;
 @end
 
@@ -52,8 +52,8 @@
     v24[1] = v2->_sourceASECharacteristic;
     v24[2] = v2->_ASEControlPointCharacteristic;
     v18 = [NSArray arrayWithObjects:v24 count:3];
-    v19 = [(Service *)v2 service];
-    [v19 setCharacteristics:v18];
+    service = [(Service *)v2 service];
+    [service setCharacteristics:v18];
 
     v20 = [[AudioStreamEndpoint alloc] initWithAudioEnpointType:0 aseID:1];
     sinkASE = v2->_sinkASE;
@@ -81,24 +81,24 @@
   [(ASCSServerService *)&v3 dealloc];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
-  v5 = [a4 firstObject];
-  [(ASCSServerService *)self receivedWriteRequest:v5];
+  firstObject = [requests firstObject];
+  [(ASCSServerService *)self receivedWriteRequest:firstObject];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v9 = a5;
-  v6 = [(ASCSServerService *)self sinkASECharacteristic];
-  if (v6 != v9)
+  characteristicCopy = characteristic;
+  sinkASECharacteristic = [(ASCSServerService *)self sinkASECharacteristic];
+  if (sinkASECharacteristic != characteristicCopy)
   {
-    v7 = [(ASCSServerService *)self sourceASECharacteristic];
-    if (v7 != v9)
+    sourceASECharacteristic = [(ASCSServerService *)self sourceASECharacteristic];
+    if (sourceASECharacteristic != characteristicCopy)
     {
-      v8 = [(ASCSServerService *)self ASEControlPointCharacteristic];
+      aSEControlPointCharacteristic = [(ASCSServerService *)self ASEControlPointCharacteristic];
 
-      if (v8 != v9)
+      if (aSEControlPointCharacteristic != characteristicCopy)
       {
         goto LABEL_9;
       }
@@ -116,18 +116,18 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v9 = a5;
-  v6 = [(ASCSServerService *)self sinkASECharacteristic];
-  if (v6 != v9)
+  characteristicCopy = characteristic;
+  sinkASECharacteristic = [(ASCSServerService *)self sinkASECharacteristic];
+  if (sinkASECharacteristic != characteristicCopy)
   {
-    v7 = [(ASCSServerService *)self sourceASECharacteristic];
-    if (v7 != v9)
+    sourceASECharacteristic = [(ASCSServerService *)self sourceASECharacteristic];
+    if (sourceASECharacteristic != characteristicCopy)
     {
-      v8 = [(ASCSServerService *)self ASEControlPointCharacteristic];
+      aSEControlPointCharacteristic = [(ASCSServerService *)self ASEControlPointCharacteristic];
 
-      if (v8 != v9)
+      if (aSEControlPointCharacteristic != characteristicCopy)
       {
         goto LABEL_9;
       }
@@ -145,26 +145,26 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)receivedWriteRequest:(id)a3
+- (void)receivedWriteRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 characteristic];
-    v8 = [v4 value];
+    characteristic = [requestCopy characteristic];
+    value = [requestCopy value];
     v19 = 138412546;
-    v20 = v7;
+    v20 = characteristic;
     v21 = 2112;
-    v22 = v8;
+    v22 = value;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ASCS received write request for characteristic %@ with data %@", &v19, 0x16u);
   }
 
-  v9 = [v4 characteristic];
-  v10 = [v9 UUID];
+  characteristic2 = [requestCopy characteristic];
+  uUID = [characteristic2 UUID];
   v11 = [CBUUID UUIDWithString:CBUUIDASEControlPointCharacteristicString];
-  v12 = [v10 isEqual:v11];
+  v12 = [uUID isEqual:v11];
 
   if (v12)
   {
@@ -172,14 +172,14 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v4 value];
+      value2 = [requestCopy value];
       v19 = 138412290;
-      v20 = v15;
+      v20 = value2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ASCS received write request for characteristic CBUUIDASEControlPointCharacteristicString with data %@", &v19, 0xCu);
     }
 
-    v16 = [v4 value];
-    v17 = [DataInputStream inputStreamWithData:v16 byteOrder:1];
+    value3 = [requestCopy value];
+    v17 = [DataInputStream inputStreamWithData:value3 byteOrder:1];
 
     LOBYTE(v19) = 0;
     [v17 readUint8:&v19];
@@ -202,15 +202,15 @@ LABEL_9:
 
       if (v19 == 3)
       {
-        v18 = [v4 value];
-        [(ASCSServerService *)self enableRequest:v18];
+        value4 = [requestCopy value];
+        [(ASCSServerService *)self enableRequest:value4];
         goto LABEL_28;
       }
 
       if (v19 == 4)
       {
-        v18 = [v4 value];
-        [(ASCSServerService *)self receiverStartReadyRequest:v18];
+        value4 = [requestCopy value];
+        [(ASCSServerService *)self receiverStartReadyRequest:value4];
         goto LABEL_28;
       }
     }
@@ -219,15 +219,15 @@ LABEL_9:
     {
       if (v19 == 5)
       {
-        v18 = [v4 value];
-        [(ASCSServerService *)self disableRequest:v18];
+        value4 = [requestCopy value];
+        [(ASCSServerService *)self disableRequest:value4];
         goto LABEL_28;
       }
 
       if (v19 == 6)
       {
-        v18 = [v4 value];
-        [(ASCSServerService *)self receiverStopReadyRequest:v18];
+        value4 = [requestCopy value];
+        [(ASCSServerService *)self receiverStopReadyRequest:value4];
         goto LABEL_28;
       }
     }
@@ -237,16 +237,16 @@ LABEL_9:
       switch(v19)
       {
         case 7u:
-          v18 = [v4 value];
-          [(ASCSServerService *)self updateMetadataRequest:v18];
+          value4 = [requestCopy value];
+          [(ASCSServerService *)self updateMetadataRequest:value4];
           goto LABEL_28;
         case 8u:
-          v18 = [v4 value];
-          [(ASCSServerService *)self releaseRequest:v18];
+          value4 = [requestCopy value];
+          [(ASCSServerService *)self releaseRequest:value4];
           goto LABEL_28;
         case 9u:
-          v18 = [v4 value];
-          [(ASCSServerService *)self releasedRequest:v18];
+          value4 = [requestCopy value];
+          [(ASCSServerService *)self releasedRequest:value4];
 LABEL_28:
 
           break;
@@ -258,31 +258,31 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  [(ASCSServerService *)self respondToRequest:v4 withResult:10];
+  [(ASCSServerService *)self respondToRequest:requestCopy withResult:10];
 LABEL_30:
 }
 
-- (void)receivedCharacteristicReadRequest:(id)a3
+- (void)receivedCharacteristicReadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 characteristic];
+    characteristic = [requestCopy characteristic];
     v22 = 138412290;
-    v23 = v7;
+    v23 = characteristic;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ASCS received read request for characteristic %@", &v22, 0xCu);
   }
 
-  v8 = [v4 characteristic];
-  v9 = [v8 UUID];
+  characteristic2 = [requestCopy characteristic];
+  uUID = [characteristic2 UUID];
   v10 = [CBUUID UUIDWithString:CBUUIDSinkASECharacteristicString];
-  v11 = [v9 isEqual:v10];
+  v11 = [uUID isEqual:v10];
 
   if (v11)
   {
-    v12 = [(AudioStreamEndpoint *)self->_sinkASE ASE_ID];
+    aSE_ID = [(AudioStreamEndpoint *)self->_sinkASE ASE_ID];
     v13 = [DataOutputStream outputStreamWithByteOrder:1];
     v14 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -290,19 +290,19 @@ LABEL_30:
       sinkASE = self->_sinkASE;
       v16 = v14;
       v17 = [AudioStreamEndpoint stateToString:[(AudioStreamEndpoint *)sinkASE state]];
-      v18 = [(AudioStreamEndpoint *)self->_sinkASE ASE_ID];
+      aSE_ID2 = [(AudioStreamEndpoint *)self->_sinkASE ASE_ID];
       v22 = 138412546;
       v23 = v17;
       v24 = 1024;
-      v25 = v18;
+      v25 = aSE_ID2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Sink ASE state: %@, ase ID: %d", &v22, 0x12u);
     }
 
-    [v13 writeUint8:v12];
-    v19 = [(AudioStreamEndpoint *)self->_sinkASE state];
-    if (v19 - 1 >= 6)
+    [v13 writeUint8:aSE_ID];
+    state = [(AudioStreamEndpoint *)self->_sinkASE state];
+    if (state - 1 >= 6)
     {
-      if (v19)
+      if (state)
       {
         v20 = 10;
         goto LABEL_8;
@@ -313,18 +313,18 @@ LABEL_30:
 
     v20 = 0;
 LABEL_8:
-    v21 = [v13 data];
-    [v4 setValue:v21];
+    data = [v13 data];
+    [requestCopy setValue:data];
 
-    [(ASCSServerService *)self respondToRequest:v4 withResult:v20];
+    [(ASCSServerService *)self respondToRequest:requestCopy withResult:v20];
   }
 }
 
-- (void)codecConfigRequest:(id)a3
+- (void)codecConfigRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v67 = 0;
-  [v4 readUint8:&v67];
+  [requestCopy readUint8:&v67];
   v66 = 0;
   v65 = 0;
   v5 = qword_1000A9FE0;
@@ -333,7 +333,7 @@ LABEL_8:
     *buf = 136315650;
     *&buf[4] = "[ASCSServerService codecConfigRequest:]";
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = requestCopy;
     v69 = 1024;
     v70 = v67;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Codec Config bytes %@ with %u ASE", buf, 0x1Cu);
@@ -345,7 +345,7 @@ LABEL_8:
     while (1)
     {
       v64 = 0;
-      [v4 readUint8:&v64];
+      [requestCopy readUint8:&v64];
       v7 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
       {
@@ -355,28 +355,28 @@ LABEL_8:
       }
 
       v63 = 0;
-      [v4 readUint8:&v63];
+      [requestCopy readUint8:&v63];
       v8 = v63;
-      v9 = [(ASCSServerService *)self sinkASE];
-      [v9 setTargetLatency:v8];
+      sinkASE = [(ASCSServerService *)self sinkASE];
+      [sinkASE setTargetLatency:v8];
 
       v62 = 0;
-      [v4 readUint8:&v62];
+      [requestCopy readUint8:&v62];
       v10 = v62;
-      v11 = [(ASCSServerService *)self sinkASE];
-      [v11 setPreferredPhy:v10];
+      sinkASE2 = [(ASCSServerService *)self sinkASE];
+      [sinkASE2 setPreferredPhy:v10];
 
       *buf = 0;
-      [v4 readUint40:buf];
+      [requestCopy readUint40:buf];
       v12 = *buf;
-      v13 = [(ASCSServerService *)self sinkASE];
-      [v13 setCodecID:v12];
+      sinkASE3 = [(ASCSServerService *)self sinkASE];
+      [sinkASE3 setCodecID:v12];
 
       v61 = 0;
-      [v4 readUint8:&v61];
+      [requestCopy readUint8:&v61];
       v14 = objc_alloc_init(NSMutableData);
-      [v4 readNumBytes:v61 toData:v14];
-      v15 = [v14 bytes];
+      [requestCopy readNumBytes:v61 toData:v14];
+      bytes = [v14 bytes];
       if (v61)
       {
         break;
@@ -390,9 +390,9 @@ LABEL_23:
       }
     }
 
-    v16 = v15;
+    v16 = bytes;
     v17 = 0;
-    v18 = v15 + 1;
+    v18 = bytes + 1;
     while (1)
     {
       v19 = v17 + 2;
@@ -403,8 +403,8 @@ LABEL_23:
         {
           v22 = v17 + 3;
           v27 = v16[v19];
-          v24 = [(ASCSServerService *)self sinkASE];
-          [v24 setSamplingFrequency:v27];
+          sinkASE4 = [(ASCSServerService *)self sinkASE];
+          [sinkASE4 setSamplingFrequency:v27];
           goto LABEL_21;
         }
 
@@ -412,8 +412,8 @@ LABEL_23:
         {
           v22 = v17 + 3;
           v25 = v16[v19];
-          v24 = [(ASCSServerService *)self sinkASE];
-          [v24 setFrameDuration:v25];
+          sinkASE4 = [(ASCSServerService *)self sinkASE];
+          [sinkASE4 setFrameDuration:v25];
           goto LABEL_21;
         }
       }
@@ -426,8 +426,8 @@ LABEL_23:
           case 3u:
             v60 = 0;
             __memcpy_chk();
-            v26 = [(ASCSServerService *)self sinkASE];
-            [v26 setAudioChanAllocMask:0];
+            sinkASE5 = [(ASCSServerService *)self sinkASE];
+            [sinkASE5 setAudioChanAllocMask:0];
 LABEL_19:
 
             LODWORD(v19) = v19 + v21;
@@ -435,14 +435,14 @@ LABEL_19:
           case 4u:
             LOWORD(v60) = 0;
             __memcpy_chk();
-            v26 = [(ASCSServerService *)self sinkASE];
-            [v26 setOctetsPerCodecFrame:0];
+            sinkASE5 = [(ASCSServerService *)self sinkASE];
+            [sinkASE5 setOctetsPerCodecFrame:0];
             goto LABEL_19;
           case 5u:
             v22 = v17 + 3;
             v23 = v16[v19];
-            v24 = [(ASCSServerService *)self sinkASE];
-            [v24 setCodecFramePerSdu:v23];
+            sinkASE4 = [(ASCSServerService *)self sinkASE];
+            [sinkASE4 setCodecFramePerSdu:v23];
 LABEL_21:
 
             LODWORD(v19) = v22;
@@ -489,9 +489,9 @@ LABEL_24:
   }
 
   v32 = +[ServerCommonAudioProfile instance];
-  v33 = [v29 data];
-  v34 = [(ASCSServerService *)self ASEControlPointCharacteristic];
-  [v32 updateValue:v33 forCharacteristic:v34 onSubscribedCentrals:0];
+  data = [v29 data];
+  aSEControlPointCharacteristic = [(ASCSServerService *)self ASEControlPointCharacteristic];
+  [v32 updateValue:data forCharacteristic:aSEControlPointCharacteristic onSubscribedCentrals:0];
 
   if (v67)
   {
@@ -499,72 +499,72 @@ LABEL_24:
     do
     {
       v59 = v35;
-      v36 = [(ASCSServerService *)self sinkASE];
-      [v36 setState:1];
+      sinkASE6 = [(ASCSServerService *)self sinkASE];
+      [sinkASE6 setState:1];
 
       v37 = [p_info + 56 outputStreamWithByteOrder:1];
 
-      v38 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint8:{objc_msgSend(v38, "ASE_ID")}];
+      sinkASE7 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint8:{objc_msgSend(sinkASE7, "ASE_ID")}];
 
-      v39 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint8:{objc_msgSend(v39, "state")}];
+      sinkASE8 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint8:{objc_msgSend(sinkASE8, "state")}];
 
-      v40 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint8:{objc_msgSend(v40, "framing")}];
+      sinkASE9 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint8:{objc_msgSend(sinkASE9, "framing")}];
 
-      v41 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint8:{objc_msgSend(v41, "preferredPhy")}];
+      sinkASE10 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint8:{objc_msgSend(sinkASE10, "preferredPhy")}];
 
-      v42 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint8:{objc_msgSend(v42, "preferredRetransmissionNumber")}];
+      sinkASE11 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint8:{objc_msgSend(sinkASE11, "preferredRetransmissionNumber")}];
 
-      v43 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint16:{objc_msgSend(v43, "maxTransportLatency")}];
+      sinkASE12 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint16:{objc_msgSend(sinkASE12, "maxTransportLatency")}];
 
-      v44 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint24:{objc_msgSend(v44, "minSupportedPresentationDelay")}];
+      sinkASE13 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint24:{objc_msgSend(sinkASE13, "minSupportedPresentationDelay")}];
 
-      v45 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint24:{objc_msgSend(v45, "maxSupportedPresentationDelay")}];
+      sinkASE14 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint24:{objc_msgSend(sinkASE14, "maxSupportedPresentationDelay")}];
 
-      v46 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint24:{objc_msgSend(v46, "minPreferredPresentationDelay")}];
+      sinkASE15 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint24:{objc_msgSend(sinkASE15, "minPreferredPresentationDelay")}];
 
-      v47 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint24:{objc_msgSend(v47, "maxPreferredPresentationDelay")}];
+      sinkASE16 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint24:{objc_msgSend(sinkASE16, "maxPreferredPresentationDelay")}];
 
-      v48 = [(ASCSServerService *)self sinkASE];
-      [v37 writeUint40:{objc_msgSend(v48, "codecID")}];
+      sinkASE17 = [(ASCSServerService *)self sinkASE];
+      [v37 writeUint40:{objc_msgSend(sinkASE17, "codecID")}];
 
-      v49 = [(ASCSServerService *)self sinkASE];
-      v50 = [v49 audioChanAllocMask];
+      sinkASE18 = [(ASCSServerService *)self sinkASE];
+      audioChanAllocMask = [sinkASE18 audioChanAllocMask];
 
-      v51 = [(ASCSServerService *)self sinkASE];
-      v52 = [v51 octetsPerCodecFrame];
+      sinkASE19 = [(ASCSServerService *)self sinkASE];
+      octetsPerCodecFrame = [sinkASE19 octetsPerCodecFrame];
 
       memset(&buf[2], 0, 17);
       *buf = 258;
-      v53 = [(ASCSServerService *)self sinkASE];
-      buf[2] = [v53 samplingFrequency];
+      sinkASE20 = [(ASCSServerService *)self sinkASE];
+      buf[2] = [sinkASE20 samplingFrequency];
       *&buf[3] = 514;
-      v54 = [(ASCSServerService *)self sinkASE];
-      buf[5] = [v54 frameDuration];
+      sinkASE21 = [(ASCSServerService *)self sinkASE];
+      buf[5] = [sinkASE21 frameDuration];
       *&buf[6] = 773;
-      *&buf[8] = v50;
+      *&buf[8] = audioChanAllocMask;
       p_info = (&OBJC_METACLASS___BluetoothAudiodXPCObject + 32);
       *&buf[12] = 1027;
-      *&buf[14] = v52;
+      *&buf[14] = octetsPerCodecFrame;
       *&buf[16] = 1281;
-      v55 = [(ASCSServerService *)self sinkASE];
-      buf[18] = [v55 codecFramePerSdu];
+      sinkASE22 = [(ASCSServerService *)self sinkASE];
+      buf[18] = [sinkASE22 codecFramePerSdu];
 
       [v37 writeUint8:19];
       [v37 writeBytes:buf length:19];
       v56 = +[ServerCommonAudioProfile instance];
-      v57 = [v37 data];
-      v58 = [(ASCSServerService *)self sinkASECharacteristic];
-      [v56 updateValue:v57 forCharacteristic:v58 onSubscribedCentrals:0];
+      data2 = [v37 data];
+      sinkASECharacteristic = [(ASCSServerService *)self sinkASECharacteristic];
+      [v56 updateValue:data2 forCharacteristic:sinkASECharacteristic onSubscribedCentrals:0];
 
       v35 = v59 + 1;
       v29 = v37;
@@ -579,27 +579,27 @@ LABEL_24:
   }
 }
 
-- (void)qosConfigRequest:(id)a3
+- (void)qosConfigRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v64 = "[ASCSServerService qosConfigRequest:]";
     v65 = 2112;
-    v66 = v4;
+    v66 = requestCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s QoS Config bytes %@", buf, 0x16u);
   }
 
   v6 = [DataOutputStream outputStreamWithByteOrder:1];
   v62 = 0;
-  [v4 readUint8:&v62];
+  [requestCopy readUint8:&v62];
   v61 = 0;
-  [v4 readUint8:&v61];
+  [requestCopy readUint8:&v61];
   v58 = 258;
-  v7 = [(ASCSServerService *)self sinkASE];
-  v59 = [v7 ASE_ID];
+  sinkASE = [(ASCSServerService *)self sinkASE];
+  aSE_ID = [sinkASE ASE_ID];
   v60 = 0;
 
   if (v62)
@@ -611,15 +611,15 @@ LABEL_24:
     {
       [v6 writeBytes:&v58 length:{5, v49}];
       v10 = +[ServerCommonAudioProfile instance];
-      v11 = [v6 data];
-      v12 = [(ASCSServerService *)self ASEControlPointCharacteristic];
-      [v10 updateValue:v11 forCharacteristic:v12 onSubscribedCentrals:0];
+      data = [v6 data];
+      aSEControlPointCharacteristic = [(ASCSServerService *)self ASEControlPointCharacteristic];
+      [v10 updateValue:data forCharacteristic:aSEControlPointCharacteristic onSubscribedCentrals:0];
 
-      v13 = [(ASCSServerService *)self sinkASE];
-      [v13 setState:2];
+      sinkASE2 = [(ASCSServerService *)self sinkASE];
+      [sinkASE2 setState:2];
 
       v57 = 0;
-      [v4 readUint8:&v57];
+      [requestCopy readUint8:&v57];
       v14 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
       {
@@ -629,56 +629,56 @@ LABEL_24:
       }
 
       v15 = v57;
-      v16 = [(ASCSServerService *)self sinkASE];
-      [v16 setCigID:v15];
+      sinkASE3 = [(ASCSServerService *)self sinkASE];
+      [sinkASE3 setCigID:v15];
 
       v56 = 0;
-      [v4 readUint8:&v56];
+      [requestCopy readUint8:&v56];
       v17 = v56;
-      v18 = [(ASCSServerService *)self sinkASE];
-      [v18 setCisID:v17];
+      sinkASE4 = [(ASCSServerService *)self sinkASE];
+      [sinkASE4 setCisID:v17];
 
       *buf = 0;
-      [v4 readUint24:buf];
+      [requestCopy readUint24:buf];
       v19 = *buf;
-      v20 = [(ASCSServerService *)self sinkASE];
-      [v20 setClientSduInterval:v19];
+      sinkASE5 = [(ASCSServerService *)self sinkASE];
+      [sinkASE5 setClientSduInterval:v19];
 
       v55 = 0;
-      [v4 readUint8:&v55];
+      [requestCopy readUint8:&v55];
       v21 = v55;
-      v22 = [(ASCSServerService *)self sinkASE];
-      [v22 setFraming:v21];
+      sinkASE6 = [(ASCSServerService *)self sinkASE];
+      [sinkASE6 setFraming:v21];
 
       v54 = 0;
-      [v4 readUint8:&v54];
+      [requestCopy readUint8:&v54];
       v23 = v54;
-      v24 = [(ASCSServerService *)self sinkASE];
-      [v24 setClientPHY:v23];
+      sinkASE7 = [(ASCSServerService *)self sinkASE];
+      [sinkASE7 setClientPHY:v23];
 
       v53 = 0;
-      [v4 readUint16:&v53];
+      [requestCopy readUint16:&v53];
       v25 = v53;
-      v26 = [(ASCSServerService *)self sinkASE];
-      [v26 setClientMaxSdu:v25];
+      sinkASE8 = [(ASCSServerService *)self sinkASE];
+      [sinkASE8 setClientMaxSdu:v25];
 
       v52 = 0;
-      [v4 readUint8:&v52];
+      [requestCopy readUint8:&v52];
       v27 = v52;
-      v28 = [(ASCSServerService *)self sinkASE];
-      [v28 setClientRetransmissionNumber:v27];
+      sinkASE9 = [(ASCSServerService *)self sinkASE];
+      [sinkASE9 setClientRetransmissionNumber:v27];
 
       v51 = 0;
-      [v4 readUint16:&v51];
+      [requestCopy readUint16:&v51];
       v29 = v51;
-      v30 = [(ASCSServerService *)self sinkASE];
-      [v30 setMaxTransportLatency:v29];
+      sinkASE10 = [(ASCSServerService *)self sinkASE];
+      [sinkASE10 setMaxTransportLatency:v29];
 
       v50 = 0;
-      [v4 readUint24:&v50];
+      [requestCopy readUint24:&v50];
       v31 = v50;
-      v32 = [(ASCSServerService *)self sinkASE];
-      [v32 setClientPresentationDelay:v31];
+      sinkASE11 = [(ASCSServerService *)self sinkASE];
+      [sinkASE11 setClientPresentationDelay:v31];
 
       ++v9;
     }
@@ -692,48 +692,48 @@ LABEL_24:
   {
     for (i = 0; i < v62; ++i)
     {
-      v35 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint8:{objc_msgSend(v35, "ASE_ID")}];
+      sinkASE12 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint8:{objc_msgSend(sinkASE12, "ASE_ID")}];
 
-      v36 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint8:{objc_msgSend(v36, "state")}];
+      sinkASE13 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint8:{objc_msgSend(sinkASE13, "state")}];
 
-      v37 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint8:{objc_msgSend(v37, "cigID")}];
+      sinkASE14 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint8:{objc_msgSend(sinkASE14, "cigID")}];
 
-      v38 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint8:{objc_msgSend(v38, "cisID")}];
+      sinkASE15 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint8:{objc_msgSend(sinkASE15, "cisID")}];
 
-      v39 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint24:{objc_msgSend(v39, "clientSduInterval")}];
+      sinkASE16 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint24:{objc_msgSend(sinkASE16, "clientSduInterval")}];
 
-      v40 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint8:{objc_msgSend(v40, "framing")}];
+      sinkASE17 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint8:{objc_msgSend(sinkASE17, "framing")}];
 
-      v41 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint8:{objc_msgSend(v41, "clientPHY")}];
+      sinkASE18 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint8:{objc_msgSend(sinkASE18, "clientPHY")}];
 
-      v42 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint16:{objc_msgSend(v42, "clientMaxSdu")}];
+      sinkASE19 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint16:{objc_msgSend(sinkASE19, "clientMaxSdu")}];
 
-      v43 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint8:{objc_msgSend(v43, "clientRetransmissionNumber")}];
+      sinkASE20 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint8:{objc_msgSend(sinkASE20, "clientRetransmissionNumber")}];
 
-      v44 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint16:{objc_msgSend(v44, "maxTransportLatency")}];
+      sinkASE21 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint16:{objc_msgSend(sinkASE21, "maxTransportLatency")}];
 
-      v45 = [(ASCSServerService *)self sinkASE];
-      [v33 writeUint24:{objc_msgSend(v45, "clientPresentationDelay")}];
+      sinkASE22 = [(ASCSServerService *)self sinkASE];
+      [v33 writeUint24:{objc_msgSend(sinkASE22, "clientPresentationDelay")}];
 
       v46 = +[ServerCommonAudioProfile instance];
-      v47 = [v33 data];
-      v48 = [(ASCSServerService *)self sinkASECharacteristic];
-      [v46 updateValue:v47 forCharacteristic:v48 onSubscribedCentrals:0];
+      data2 = [v33 data];
+      sinkASECharacteristic = [(ASCSServerService *)self sinkASECharacteristic];
+      [v46 updateValue:data2 forCharacteristic:sinkASECharacteristic onSubscribedCentrals:0];
     }
   }
 }
 
-- (void)enableRequest:(id)a3
+- (void)enableRequest:(id)request
 {
   v4 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -748,35 +748,35 @@ LABEL_24:
   [v5 writeUint8:0];
   [v5 writeUint8:0];
   v6 = +[ServerCommonAudioProfile instance];
-  v7 = [v5 data];
-  v8 = [(ASCSServerService *)self ASEControlPointCharacteristic];
-  [v6 updateValue:v7 forCharacteristic:v8 onSubscribedCentrals:0];
+  data = [v5 data];
+  aSEControlPointCharacteristic = [(ASCSServerService *)self ASEControlPointCharacteristic];
+  [v6 updateValue:data forCharacteristic:aSEControlPointCharacteristic onSubscribedCentrals:0];
 
-  v9 = [(ASCSServerService *)self sinkASE];
-  [v9 setState:3];
+  sinkASE = [(ASCSServerService *)self sinkASE];
+  [sinkASE setState:3];
 
-  v10 = [(ASCSServerService *)self sinkASE];
-  [v10 description];
+  sinkASE2 = [(ASCSServerService *)self sinkASE];
+  [sinkASE2 description];
 
   v11 = [DataOutputStream outputStreamWithByteOrder:1];
 
-  v12 = [(ASCSServerService *)self sinkASE];
-  [v11 writeUint8:{objc_msgSend(v12, "ASE_ID")}];
+  sinkASE3 = [(ASCSServerService *)self sinkASE];
+  [v11 writeUint8:{objc_msgSend(sinkASE3, "ASE_ID")}];
 
   [v11 writeUint8:3];
-  v13 = [(ASCSServerService *)self sinkASE];
-  [v11 writeUint8:{objc_msgSend(v13, "cigID")}];
+  sinkASE4 = [(ASCSServerService *)self sinkASE];
+  [v11 writeUint8:{objc_msgSend(sinkASE4, "cigID")}];
 
-  v14 = [(ASCSServerService *)self sinkASE];
-  [v11 writeUint8:{objc_msgSend(v14, "cisID")}];
+  sinkASE5 = [(ASCSServerService *)self sinkASE];
+  [v11 writeUint8:{objc_msgSend(sinkASE5, "cisID")}];
 
   v15 = +[ServerCommonAudioProfile instance];
-  v16 = [v11 data];
-  v17 = [(ASCSServerService *)self sinkASECharacteristic];
-  [v15 updateValue:v16 forCharacteristic:v17 onSubscribedCentrals:0];
+  data2 = [v11 data];
+  sinkASECharacteristic = [(ASCSServerService *)self sinkASECharacteristic];
+  [v15 updateValue:data2 forCharacteristic:sinkASECharacteristic onSubscribedCentrals:0];
 }
 
-- (void)receiverStartReadyRequest:(id)a3
+- (void)receiverStartReadyRequest:(id)request
 {
   v3 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -802,29 +802,29 @@ LABEL_24:
   }
 
   v4 = [DataOutputStream outputStreamWithByteOrder:1];
-  v5 = [(ASCSServerService *)self sinkASE];
-  [v4 writeUint8:{objc_msgSend(v5, "ASE_ID")}];
+  sinkASE = [(ASCSServerService *)self sinkASE];
+  [v4 writeUint8:{objc_msgSend(sinkASE, "ASE_ID")}];
 
   [v4 writeUint8:4];
-  v6 = [(ASCSServerService *)self sinkASE];
-  [v4 writeUint8:{objc_msgSend(v6, "cigID")}];
+  sinkASE2 = [(ASCSServerService *)self sinkASE];
+  [v4 writeUint8:{objc_msgSend(sinkASE2, "cigID")}];
 
-  v7 = [(ASCSServerService *)self sinkASE];
-  [v4 writeUint8:{objc_msgSend(v7, "cisID")}];
+  sinkASE3 = [(ASCSServerService *)self sinkASE];
+  [v4 writeUint8:{objc_msgSend(sinkASE3, "cisID")}];
 
-  v8 = [(ASCSServerService *)self sinkASE];
-  [v8 setState:4];
+  sinkASE4 = [(ASCSServerService *)self sinkASE];
+  [sinkASE4 setState:4];
 
   v9 = +[ServerCommonAudioProfile instance];
-  v10 = [v4 data];
-  v11 = [(ASCSServerService *)self sinkASECharacteristic];
-  [v9 updateValue:v10 forCharacteristic:v11 onSubscribedCentrals:0];
+  data = [v4 data];
+  sinkASECharacteristic = [(ASCSServerService *)self sinkASECharacteristic];
+  [v9 updateValue:data forCharacteristic:sinkASECharacteristic onSubscribedCentrals:0];
 }
 
-- (void)receiveObjectMessage:(unsigned __int8)a3 withEventObject:(id)a4
+- (void)receiveObjectMessage:(unsigned __int8)message withEventObject:(id)object
 {
-  v4 = a3;
-  v6 = a4;
+  messageCopy = message;
+  objectCopy = object;
   v7 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
@@ -833,7 +833,7 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  if (v4 == 1)
+  if (messageCopy == 1)
   {
     [(ASCSServerService *)self sendStreamingNotification];
   }
@@ -850,24 +850,24 @@ LABEL_24:
 
 - (unint64_t)subscriptionCount
 {
-  v3 = [(ASCSServerService *)self sinkASECharacteristic];
-  v4 = [v3 subscribedCentrals];
-  v5 = [v4 count];
-  v6 = [(ASCSServerService *)self sourceASECharacteristic];
-  v7 = [v6 subscribedCentrals];
-  v8 = &v5[[v7 count]];
-  v9 = [(ASCSServerService *)self ASEControlPointCharacteristic];
-  v10 = [v9 subscribedCentrals];
-  v11 = [v10 count];
+  sinkASECharacteristic = [(ASCSServerService *)self sinkASECharacteristic];
+  subscribedCentrals = [sinkASECharacteristic subscribedCentrals];
+  v5 = [subscribedCentrals count];
+  sourceASECharacteristic = [(ASCSServerService *)self sourceASECharacteristic];
+  subscribedCentrals2 = [sourceASECharacteristic subscribedCentrals];
+  v8 = &v5[[subscribedCentrals2 count]];
+  aSEControlPointCharacteristic = [(ASCSServerService *)self ASEControlPointCharacteristic];
+  subscribedCentrals3 = [aSEControlPointCharacteristic subscribedCentrals];
+  v11 = [subscribedCentrals3 count];
 
   return v11 + v8;
 }
 
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4
+- (void)respondToRequest:(id)request withResult:(int64_t)result
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = +[ServerCommonAudioProfile instance];
-  [v6 respondToRequest:v5 withResult:a4];
+  [v6 respondToRequest:requestCopy withResult:result];
 }
 
 @end

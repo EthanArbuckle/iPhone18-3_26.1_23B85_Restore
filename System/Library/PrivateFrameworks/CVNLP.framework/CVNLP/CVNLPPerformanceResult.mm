@@ -1,21 +1,21 @@
 @interface CVNLPPerformanceResult
-- (CVNLPPerformanceResult)initWithName:(id)a3;
+- (CVNLPPerformanceResult)initWithName:(id)name;
 - (id)description;
 - (id)dict;
 @end
 
 @implementation CVNLPPerformanceResult
 
-- (CVNLPPerformanceResult)initWithName:(id)a3
+- (CVNLPPerformanceResult)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = CVNLPPerformanceResult;
   v6 = [(CVNLPPerformanceResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;

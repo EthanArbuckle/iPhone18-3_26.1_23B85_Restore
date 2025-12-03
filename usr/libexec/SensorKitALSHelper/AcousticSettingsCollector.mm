@@ -1,7 +1,7 @@
 @interface AcousticSettingsCollector
 + (void)initialize;
 - (void)dealloc;
-- (void)launchEventRunActivity:(id)a3;
+- (void)launchEventRunActivity:(id)activity;
 - (void)readAudioLevelAndSamplesLifetimeSettings;
 - (void)readBackgroundSoundsSettings;
 - (void)readEnvironmentalSoundMeasurementSettings;
@@ -10,15 +10,15 @@
 - (void)readMonoAudioSettings;
 - (void)readMusicEQSettings;
 - (void)readMusicSoundCheckSettings;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
 @end
 
 @implementation AcousticSettingsCollector
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B260 = os_log_create("com.apple.SensorKit", "SRLogAcousticSettingsCollector");
   }
@@ -46,14 +46,14 @@
     self->_noiseSettings = noiseSettings;
   }
 
-  v4 = [(HUNoiseSettings *)noiseSettings noiseEnabled];
-  self->_environmentalSoundMeasurementEnabled = v4;
+  noiseEnabled = [(HUNoiseSettings *)noiseSettings noiseEnabled];
+  self->_environmentalSoundMeasurementEnabled = noiseEnabled;
   self->_noiseSettings = 0;
   v5 = qword_10002B260;
   if (os_log_type_enabled(qword_10002B260, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = noiseEnabled;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Watch > Settings > Noise, environmentalSoundMeasurementEnabled: %d", v6, 8u);
   }
 }
@@ -134,8 +134,8 @@
   self->_headphoneAccommodationsEnabled = [(PASettings *)paSettings personalMediaEnabled];
   self->_headphoneAccommodationsTuning = [-[PASettings personalMediaConfiguration](self->_paSettings "personalMediaConfiguration")];
   self->_headphoneAccommodationsBoosting = [-[PASettings personalMediaConfiguration](self->_paSettings "personalMediaConfiguration")];
-  v4 = [(PASettings *)self->_paSettings personalAudioAccommodationTypes];
-  self->_headphoneAccommodationsApplication = v4;
+  personalAudioAccommodationTypes = [(PASettings *)self->_paSettings personalAudioAccommodationTypes];
+  self->_headphoneAccommodationsApplication = personalAudioAccommodationTypes;
   self->_paSettings = 0;
   v5 = qword_10002B260;
   if (os_log_type_enabled(qword_10002B260, OS_LOG_TYPE_DEFAULT))
@@ -150,7 +150,7 @@
     v12 = 2048;
     v13 = headphoneAccommodationsBoosting;
     v14 = 2048;
-    v15 = v4;
+    v15 = personalAudioAccommodationTypes;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Settings > Accessibility > Audio/Visual > Headphone Accommodations, enabled: %d, tunning: %li, boosting: %li, application: %li", v9, 0x26u);
   }
 }
@@ -172,8 +172,8 @@
   self->_relativeVolume = v6;
   [(HUComfortSoundsSettings *)self->_comfortSoundsSettings mediaVolume];
   self->_relativeVolumeWithMedia = v7;
-  v8 = [(HUComfortSoundsSettings *)self->_comfortSoundsSettings stopsOnLock];
-  self->_stopOnLock = v8;
+  stopsOnLock = [(HUComfortSoundsSettings *)self->_comfortSoundsSettings stopsOnLock];
+  self->_stopOnLock = stopsOnLock;
   self->_comfortSoundsSettings = 0;
   v9 = qword_10002B260;
   if (os_log_type_enabled(qword_10002B260, OS_LOG_TYPE_DEFAULT))
@@ -194,7 +194,7 @@
     v22 = 1024;
     v23 = mixesWithMedia;
     v24 = 1024;
-    v25 = v8;
+    v25 = stopsOnLock;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Settings > Accessibility > Audio/Visual > Background Sounds, enabled: %d, sound name: %@, relative volume: %f, relative volume with media: %f, mix with media: %d, stop on lock: %d", v15, 0x32u);
   }
 }
@@ -280,19 +280,19 @@ LABEL_4:
     self->_playbackDefaults = playbackDefaults;
   }
 
-  v4 = [(MPPlaybackUserDefaults *)playbackDefaults soundCheckEnabled];
-  self->_soundCheckEnabled = v4;
+  soundCheckEnabled = [(MPPlaybackUserDefaults *)playbackDefaults soundCheckEnabled];
+  self->_soundCheckEnabled = soundCheckEnabled;
   self->_playbackDefaults = 0;
   v5 = qword_10002B260;
   if (os_log_type_enabled(qword_10002B260, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = soundCheckEnabled;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Settings > Apps > Music, sound check enabled %d", v6, 8u);
   }
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
   v4 = qword_10002B260;
   if (os_log_type_enabled(qword_10002B260, OS_LOG_TYPE_INFO))
@@ -335,14 +335,14 @@ LABEL_4:
     p_registrationTokenForAudioLevel = &self->_registrationTokenForAudioLevel;
     if (self->_registrationTokenForAudioLevel == -1)
     {
-      v12 = [ADAFDarwinNotificationKeyRLSStatusDidChange UTF8String];
+      uTF8String = [ADAFDarwinNotificationKeyRLSStatusDidChange UTF8String];
       v13 = self->_queue;
       *buf = _NSConcreteStackBlock;
       v38 = 3221225472;
       v39 = sub_1000045A0;
       v40 = &unk_100024A90;
       objc_copyWeak(&v41, &location);
-      v14 = notify_register_dispatch(v12, &self->_registrationTokenForAudioLevel, v13, buf);
+      v14 = notify_register_dispatch(uTF8String, &self->_registrationTokenForAudioLevel, v13, buf);
       if (v14 || *p_registrationTokenForAudioLevel == -1)
       {
         v15 = qword_10002B260;
@@ -363,14 +363,14 @@ LABEL_4:
     p_registrationTokenForSampleLifetime = &self->_registrationTokenForSampleLifetime;
     if (self->_registrationTokenForSampleLifetime == -1)
     {
-      v18 = [ADAFDarwinNotificationKey UTF8String];
+      uTF8String2 = [ADAFDarwinNotificationKey UTF8String];
       v19 = self->_queue;
       *handler = _NSConcreteStackBlock;
       v33 = 3221225472;
       v34 = sub_100004620;
       v35 = &unk_100024A90;
       objc_copyWeak(v36, &location);
-      v20 = notify_register_dispatch(v18, &self->_registrationTokenForSampleLifetime, v19, handler);
+      v20 = notify_register_dispatch(uTF8String2, &self->_registrationTokenForSampleLifetime, v19, handler);
       if (v20 || *p_registrationTokenForSampleLifetime == -1)
       {
         v21 = qword_10002B260;
@@ -396,7 +396,7 @@ LABEL_4:
   [(RDLaunchEvents *)launchEvents registerForXPCActivities:[NSArray arrayWithObjects:&v27 count:1]];
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
   v4 = qword_10002B260;
   if (os_log_type_enabled(qword_10002B260, OS_LOG_TYPE_DEBUG))
@@ -411,18 +411,18 @@ LABEL_4:
   [(RDLaunchEvents *)launchEvents unregisterForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)launchEventRunActivity:(id)a3
+- (void)launchEventRunActivity:(id)activity
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_queue;
   }
 
   dispatch_assert_queue_V2(&self->super);
-  if (a3)
+  if (activity)
   {
-    v5 = *(a3 + 1);
+    v5 = *(activity + 1);
   }
 
   else
@@ -436,8 +436,8 @@ LABEL_4:
     v8[1] = 3221225472;
     v8[2] = sub_1000055F0;
     v8[3] = &unk_100024A10;
-    v8[4] = a3;
-    sub_100004104(v4, v8);
+    v8[4] = activity;
+    sub_100004104(selfCopy, v8);
   }
 
   else
@@ -445,9 +445,9 @@ LABEL_4:
     v6 = qword_10002B260;
     if (os_log_type_enabled(qword_10002B260, OS_LOG_TYPE_FAULT))
     {
-      if (a3)
+      if (activity)
       {
-        v7 = *(a3 + 1);
+        v7 = *(activity + 1);
       }
 
       else
@@ -460,7 +460,7 @@ LABEL_4:
       _os_log_fault_impl(&_mh_execute_header, v6, OS_LOG_TYPE_FAULT, "Told to run unsupported XPC activity %{public}@", buf, 0xCu);
     }
 
-    [a3 markCompleted];
+    [activity markCompleted];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface CCSerializedSetDevice
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCSerializedSetDevice)initWithDeviceUUID:(id)a3 idsDeviceIdentifier:(id)a4 platformString:(id)a5 options:(id)a6 error:(id *)a7;
-- (CCSerializedSetDevice)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCSerializedSetDevice)initWithDeviceUUID:(id)d idsDeviceIdentifier:(id)identifier platformString:(id)string options:(id)options error:(id *)error;
+- (CCSerializedSetDevice)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)idsDeviceIdentifier;
 - (NSString)platformString;
 - (NSUUID)deviceUUID;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCSerializedSetDevice
 
-- (CCSerializedSetDevice)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCSerializedSetDevice)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"deviceUUID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deviceUUID"];
     if (v9)
     {
       objc_opt_class();
@@ -44,10 +44,10 @@
       v11 = v8;
     }
 
-    v14 = [v6 objectForKeyedSubscript:{@"idsDeviceIdentifier", v18}];
-    v15 = [v6 objectForKeyedSubscript:@"platformString"];
-    v16 = [v6 objectForKeyedSubscript:@"options"];
-    v13 = [[CCSerializedSetDevice alloc] initWithDeviceUUID:v9 idsDeviceIdentifier:v14 platformString:v15 options:v16 error:a4];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"idsDeviceIdentifier", v18}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"platformString"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"options"];
+    v13 = [[CCSerializedSetDevice alloc] initWithDeviceUUID:v9 idsDeviceIdentifier:v14 platformString:v15 options:v16 error:error];
 
 LABEL_9:
     v8 = v11;
@@ -66,21 +66,21 @@ LABEL_10:
   v3 = objc_opt_new();
   if (self->_raw_deviceUUID)
   {
-    v4 = [(CCSerializedSetDevice *)self deviceUUID];
-    v5 = [v4 UUIDString];
-    [v3 setObject:v5 forKeyedSubscript:@"deviceUUID"];
+    deviceUUID = [(CCSerializedSetDevice *)self deviceUUID];
+    uUIDString = [deviceUUID UUIDString];
+    [v3 setObject:uUIDString forKeyedSubscript:@"deviceUUID"];
   }
 
   if (self->_idsDeviceIdentifier)
   {
-    v6 = [(CCSerializedSetDevice *)self idsDeviceIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:@"idsDeviceIdentifier"];
+    idsDeviceIdentifier = [(CCSerializedSetDevice *)self idsDeviceIdentifier];
+    [v3 setObject:idsDeviceIdentifier forKeyedSubscript:@"idsDeviceIdentifier"];
   }
 
   if (self->_platformString)
   {
-    v7 = [(CCSerializedSetDevice *)self platformString];
-    [v3 setObject:v7 forKeyedSubscript:@"platformString"];
+    platformString = [(CCSerializedSetDevice *)self platformString];
+    [v3 setObject:platformString forKeyedSubscript:@"platformString"];
   }
 
   if (self->_hasOptions)
@@ -94,11 +94,11 @@ LABEL_10:
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_raw_deviceUUID)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] bytesValue:self->_raw_deviceUUID];
@@ -145,10 +145,10 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -315,11 +315,11 @@ LABEL_39:
       {
         v31 = objc_opt_class();
         NSStringFromClass(v31);
-        v33 = v32 = v5;
+        v33 = v32 = dataCopy;
         v34 = *&v6[*v9];
         v10 = CCSkipFieldErrorForMessage();
 
-        v5 = v32;
+        dataCopy = v32;
         goto LABEL_44;
       }
 
@@ -356,19 +356,19 @@ LABEL_51:
   return v39;
 }
 
-- (CCSerializedSetDevice)initWithDeviceUUID:(id)a3 idsDeviceIdentifier:(id)a4 platformString:(id)a5 options:(id)a6 error:(id *)a7
+- (CCSerializedSetDevice)initWithDeviceUUID:(id)d idsDeviceIdentifier:(id)identifier platformString:(id)string options:(id)options error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  stringCopy = string;
+  optionsCopy = options;
   v16 = objc_opt_new();
-  if (!v12)
+  if (!dCopy)
   {
     v18 = 0;
 LABEL_5:
-    v27 = self;
-    if (v13)
+    selfCopy = self;
+    if (identifierCopy)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -378,15 +378,15 @@ LABEL_5:
       {
 LABEL_17:
         CCSetError();
-        v22 = 0;
+        selfCopy2 = 0;
         v18 = v21;
 LABEL_19:
-        self = v27;
+        self = selfCopy;
         goto LABEL_20;
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v14)
+      if (!stringCopy)
       {
         goto LABEL_8;
       }
@@ -395,11 +395,11 @@ LABEL_19:
     else
     {
       v21 = v18;
-      if (!v14)
+      if (!stringCopy)
       {
 LABEL_8:
         v18 = v21;
-        if (!v15)
+        if (!optionsCopy)
         {
           goto LABEL_16;
         }
@@ -411,7 +411,7 @@ LABEL_14:
 
         if (v24)
         {
-          [v15 unsignedIntValue];
+          [optionsCopy unsignedIntValue];
           CCPBDataWriterWriteUint32Field();
           v18 = v21;
           goto LABEL_16;
@@ -428,18 +428,18 @@ LABEL_14:
     if (!v23)
     {
       CCSetError();
-      v22 = 0;
+      selfCopy2 = 0;
       goto LABEL_19;
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v15)
+    if (!optionsCopy)
     {
 LABEL_16:
-      v25 = [v16 immutableData];
-      self = [(CCItemMessage *)v27 initWithData:v25 error:a7];
+      immutableData = [v16 immutableData];
+      self = [(CCItemMessage *)selfCopy initWithData:immutableData error:error];
 
-      v22 = self;
+      selfCopy2 = self;
       goto LABEL_20;
     }
 
@@ -458,10 +458,10 @@ LABEL_16:
   }
 
   CCSetError();
-  v22 = 0;
+  selfCopy2 = 0;
 LABEL_20:
 
-  return v22;
+  return selfCopy2;
 }
 
 @end

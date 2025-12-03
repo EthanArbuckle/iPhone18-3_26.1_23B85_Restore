@@ -1,87 +1,87 @@
 @interface LNDisplayRepresentation
-- (BOOL)isEqual:(id)a3;
-- (LNDisplayRepresentation)initWithCoder:(id)a3;
-- (LNDisplayRepresentation)initWithTitle:(id)a3 snippetPluginModelData:(id)a4;
-- (LNDisplayRepresentation)initWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 synonyms:(id)a6 descriptionText:(id)a7 snippetPluginModel:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (LNDisplayRepresentation)initWithCoder:(id)coder;
+- (LNDisplayRepresentation)initWithTitle:(id)title snippetPluginModelData:(id)data;
+- (LNDisplayRepresentation)initWithTitle:(id)title subtitle:(id)subtitle image:(id)image synonyms:(id)synonyms descriptionText:(id)text snippetPluginModel:(id)model;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNDisplayRepresentation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNDisplayRepresentation *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(LNDisplayRepresentation *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(LNDisplayRepresentation *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(LNDisplayRepresentation *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v7 = [(LNDisplayRepresentation *)self image];
-  [v4 encodeObject:v7 forKey:@"image"];
+  image = [(LNDisplayRepresentation *)self image];
+  [coderCopy encodeObject:image forKey:@"image"];
 
-  v8 = [(LNDisplayRepresentation *)self synonyms];
-  [v4 encodeObject:v8 forKey:@"synonyms"];
+  synonyms = [(LNDisplayRepresentation *)self synonyms];
+  [coderCopy encodeObject:synonyms forKey:@"synonyms"];
 
-  v9 = [(LNDisplayRepresentation *)self descriptionText];
-  [v4 encodeObject:v9 forKey:@"descriptionText"];
+  descriptionText = [(LNDisplayRepresentation *)self descriptionText];
+  [coderCopy encodeObject:descriptionText forKey:@"descriptionText"];
 
-  v10 = [(LNDisplayRepresentation *)self snippetPluginModel];
-  [v4 encodeObject:v10 forKey:@"snippetPluginModel"];
+  snippetPluginModel = [(LNDisplayRepresentation *)self snippetPluginModel];
+  [coderCopy encodeObject:snippetPluginModel forKey:@"snippetPluginModel"];
 }
 
-- (LNDisplayRepresentation)initWithCoder:(id)a3
+- (LNDisplayRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"image"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"image"];
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"synonyms"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"synonyms"];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snippetPluginModel"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptionText"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snippetPluginModel"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptionText"];
     self = [(LNDisplayRepresentation *)self initWithTitle:v5 subtitle:v6 image:v11 synonyms:v15 descriptionText:v17 snippetPluginModel:v16];
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNDisplayRepresentation *)self title];
-  v4 = [v3 hash];
-  v5 = [(LNDisplayRepresentation *)self subtitle];
-  v6 = [v5 hash];
+  title = [(LNDisplayRepresentation *)self title];
+  v4 = [title hash];
+  subtitle = [(LNDisplayRepresentation *)self subtitle];
+  v6 = [subtitle hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -90,10 +90,10 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    v7 = [(LNDisplayRepresentation *)self title];
-    v8 = [(LNDisplayRepresentation *)v6 title];
-    v9 = v7;
-    v10 = v8;
+    title = [(LNDisplayRepresentation *)self title];
+    title2 = [(LNDisplayRepresentation *)v6 title];
+    v9 = title;
+    v10 = title2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -120,10 +120,10 @@ LABEL_53:
       }
     }
 
-    v16 = [(LNDisplayRepresentation *)self subtitle];
-    v17 = [(LNDisplayRepresentation *)v6 subtitle];
-    v14 = v16;
-    v18 = v17;
+    subtitle = [(LNDisplayRepresentation *)self subtitle];
+    subtitle2 = [(LNDisplayRepresentation *)v6 subtitle];
+    v14 = subtitle;
+    v18 = subtitle2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -155,10 +155,10 @@ LABEL_52:
       }
     }
 
-    v23 = [(LNDisplayRepresentation *)self image];
-    v24 = [(LNDisplayRepresentation *)v6 image];
-    v20 = v23;
-    v25 = v24;
+    image = [(LNDisplayRepresentation *)self image];
+    image2 = [(LNDisplayRepresentation *)v6 image];
+    v20 = image;
+    v25 = image2;
     v19 = v25;
     if (v20 == v25)
     {
@@ -183,10 +183,10 @@ LABEL_52:
     }
 
     v53 = v20;
-    v28 = [(LNDisplayRepresentation *)self synonyms];
-    v29 = [(LNDisplayRepresentation *)v6 synonyms];
-    v30 = v28;
-    v31 = v29;
+    synonyms = [(LNDisplayRepresentation *)self synonyms];
+    synonyms2 = [(LNDisplayRepresentation *)v6 synonyms];
+    v30 = synonyms;
+    v31 = synonyms2;
     v51 = v31;
     v52 = v30;
     if (v30 != v31)
@@ -218,10 +218,10 @@ LABEL_51:
           }
 
 LABEL_30:
-          v35 = [(LNDisplayRepresentation *)self descriptionText];
-          v36 = [(LNDisplayRepresentation *)v6 descriptionText];
-          v33 = v35;
-          v37 = v36;
+          descriptionText = [(LNDisplayRepresentation *)self descriptionText];
+          descriptionText2 = [(LNDisplayRepresentation *)v6 descriptionText];
+          v33 = descriptionText;
+          v37 = descriptionText2;
           v50 = v37;
           if (v33 != v37)
           {
@@ -266,10 +266,10 @@ LABEL_45:
 
           v48 = v33;
 LABEL_36:
-          v42 = [(LNDisplayRepresentation *)self snippetPluginModel];
-          v43 = [(LNDisplayRepresentation *)v6 snippetPluginModel];
-          v44 = v42;
-          v45 = v43;
+          snippetPluginModel = [(LNDisplayRepresentation *)self snippetPluginModel];
+          snippetPluginModel2 = [(LNDisplayRepresentation *)v6 snippetPluginModel];
+          v44 = snippetPluginModel;
+          v45 = snippetPluginModel2;
           v49 = v45;
           if (v44 == v45)
           {
@@ -329,29 +329,29 @@ LABEL_55:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNDisplayRepresentation *)self title];
-  v7 = [(LNDisplayRepresentation *)self subtitle];
-  v8 = [(LNDisplayRepresentation *)self image];
-  v9 = [(LNDisplayRepresentation *)self synonyms];
-  v10 = [(LNDisplayRepresentation *)self descriptionText];
-  v11 = [(LNDisplayRepresentation *)self snippetPluginModel];
-  v12 = [v3 stringWithFormat:@"<%@: %p, title: %@, subtitle: %@, image: %@, synonyms: %@, descriptionText: %@, snippetPluginModel: %@>", v5, self, v6, v7, v8, v9, v10, v11];
+  title = [(LNDisplayRepresentation *)self title];
+  subtitle = [(LNDisplayRepresentation *)self subtitle];
+  image = [(LNDisplayRepresentation *)self image];
+  synonyms = [(LNDisplayRepresentation *)self synonyms];
+  descriptionText = [(LNDisplayRepresentation *)self descriptionText];
+  snippetPluginModel = [(LNDisplayRepresentation *)self snippetPluginModel];
+  v12 = [v3 stringWithFormat:@"<%@: %p, title: %@, subtitle: %@, image: %@, synonyms: %@, descriptionText: %@, snippetPluginModel: %@>", v5, self, title, subtitle, image, synonyms, descriptionText, snippetPluginModel];
 
   return v12;
 }
 
-- (LNDisplayRepresentation)initWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 synonyms:(id)a6 descriptionText:(id)a7 snippetPluginModel:(id)a8
+- (LNDisplayRepresentation)initWithTitle:(id)title subtitle:(id)subtitle image:(id)image synonyms:(id)synonyms descriptionText:(id)text snippetPluginModel:(id)model
 {
-  v15 = a3;
-  v28 = a4;
-  v27 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v15)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  synonymsCopy = synonyms;
+  textCopy = text;
+  modelCopy = model;
+  if (!titleCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LNDisplayRepresentation.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDisplayRepresentation.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"title"}];
   }
 
   v29.receiver = self;
@@ -360,32 +360,32 @@ LABEL_55:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_title, a3);
-    objc_storeStrong(&v20->_subtitle, a4);
-    objc_storeStrong(&v20->_image, a5);
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v20->_subtitle, subtitle);
+    objc_storeStrong(&v20->_image, image);
+    v21 = [synonymsCopy copy];
     synonyms = v20->_synonyms;
     v20->_synonyms = v21;
 
-    objc_storeStrong(&v20->_descriptionText, a7);
-    objc_storeStrong(&v20->_snippetPluginModel, a8);
+    objc_storeStrong(&v20->_descriptionText, text);
+    objc_storeStrong(&v20->_snippetPluginModel, model);
     v23 = v20;
   }
 
   return v20;
 }
 
-- (LNDisplayRepresentation)initWithTitle:(id)a3 snippetPluginModelData:(id)a4
+- (LNDisplayRepresentation)initWithTitle:(id)title snippetPluginModelData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  titleCopy = title;
+  dataCopy = data;
+  if (!titleCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNDisplayRepresentation.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDisplayRepresentation.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"title"}];
   }
 
-  v9 = [(LNDisplayRepresentation *)self initWithTitle:v7 subtitle:0 image:0 synonyms:0 descriptionText:0 snippetPluginModel:v8];
+  v9 = [(LNDisplayRepresentation *)self initWithTitle:titleCopy subtitle:0 image:0 synonyms:0 descriptionText:0 snippetPluginModel:dataCopy];
 
   return v9;
 }

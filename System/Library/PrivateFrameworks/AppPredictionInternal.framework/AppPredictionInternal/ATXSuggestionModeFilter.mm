@@ -1,12 +1,12 @@
 @interface ATXSuggestionModeFilter
 + (ATXSuggestionModeFilter)sharedInstance;
 - (ATXSuggestionModeFilter)init;
-- (BOOL)currentModeConfigurationAllowsBundleId:(id)a3;
-- (BOOL)currentModeConfigurationAllowsSuggestion:(id)a3;
-- (void)_updateConfigurationWithModeUUID:(id)a3 notifyingObservers:(BOOL)a4;
+- (BOOL)currentModeConfigurationAllowsBundleId:(id)id;
+- (BOOL)currentModeConfigurationAllowsSuggestion:(id)suggestion;
+- (void)_updateConfigurationWithModeUUID:(id)d notifyingObservers:(BOOL)observers;
 - (void)registerForModeChanges;
-- (void)registerObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ATXSuggestionModeFilter
@@ -48,12 +48,12 @@ uint64_t __41__ATXSuggestionModeFilter_sharedInstance__block_invoke()
     lock = v2->_lock;
     v2->_lock = v6;
 
-    v8 = [MEMORY[0x277CEB440] sharedInstance];
+    mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
     client = v2->_client;
-    v2->_client = v8;
+    v2->_client = mEMORY[0x277CEB440];
 
-    v10 = [MEMORY[0x277D41C60] currentModeUUID];
-    [(ATXSuggestionModeFilter *)v2 _updateConfigurationWithModeUUID:v10 notifyingObservers:0];
+    currentModeUUID = [MEMORY[0x277D41C60] currentModeUUID];
+    [(ATXSuggestionModeFilter *)v2 _updateConfigurationWithModeUUID:currentModeUUID notifyingObservers:0];
   }
 
   return v2;
@@ -72,11 +72,11 @@ uint64_t __41__ATXSuggestionModeFilter_sharedInstance__block_invoke()
 
   objc_initWeak(&location, self);
   v8 = BiomeLibrary();
-  v9 = [v8 UserFocus];
-  v10 = [v9 ComputedMode];
-  v11 = [v10 atx_DSLPublisher];
+  userFocus = [v8 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  atx_DSLPublisher = [computedMode atx_DSLPublisher];
 
-  v12 = [v11 subscribeOn:self->_scheduler];
+  v12 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __49__ATXSuggestionModeFilter_registerForModeChanges__block_invoke_37;
@@ -139,7 +139,7 @@ LABEL_7:
   [WeakRetained _updateConfigurationWithModeUUID:v9 notifyingObservers:1];
 }
 
-- (BOOL)currentModeConfigurationAllowsBundleId:(id)a3
+- (BOOL)currentModeConfigurationAllowsBundleId:(id)id
 {
   v4 = ATXBundleIdReplacementForBundleId();
   if (ATXBundleIdIsFakeContainerBundleId())
@@ -209,11 +209,11 @@ void __66__ATXSuggestionModeFilter_currentModeConfigurationAllowsBundleId___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)currentModeConfigurationAllowsSuggestion:(id)a3
+- (BOOL)currentModeConfigurationAllowsSuggestion:(id)suggestion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [ATXSuggestionPreprocessor bundleIdAssociatedWithSuggestion:v4];
+  suggestionCopy = suggestion;
+  v5 = [ATXSuggestionPreprocessor bundleIdAssociatedWithSuggestion:suggestionCopy];
   if (!v5)
   {
     v8 = __atxlog_handle_blending();
@@ -227,7 +227,7 @@ void __66__ATXSuggestionModeFilter_currentModeConfigurationAllowsBundleId___bloc
 
   v6 = ATXBundleIdReplacementForBundleId();
 
-  v7 = v4;
+  v7 = suggestionCopy;
   v8 = v6;
   if (CFPreferencesGetAppBooleanValue(@"widgetKitDeveloperModeEnabled", @"com.apple.duetexpertd", 0))
   {
@@ -235,7 +235,7 @@ void __66__ATXSuggestionModeFilter_currentModeConfigurationAllowsBundleId___bloc
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 widgetBundleIdentifier];
+      widgetBundleIdentifier = [v9 widgetBundleIdentifier];
       if (CFPreferencesGetAppBooleanValue(@"widgetKitDeveloperModeEnabled", @"com.apple.duetexpertd", 0))
       {
         LOBYTE(keyExistsAndHasValidFormat) = 0;
@@ -245,17 +245,17 @@ void __66__ATXSuggestionModeFilter_currentModeConfigurationAllowsBundleId___bloc
           goto LABEL_11;
         }
 
-        v12 = [MEMORY[0x277CEB3B0] isDebuggingAllowedForExtensionBundleId:v11];
+        v12 = [MEMORY[0x277CEB3B0] isDebuggingAllowedForExtensionBundleId:widgetBundleIdentifier];
 
         if (v12)
         {
 LABEL_11:
-          v13 = __atxlog_handle_blending();
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          intent = __atxlog_handle_blending();
+          if (os_log_type_enabled(intent, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(keyExistsAndHasValidFormat) = 138412290;
             *(&keyExistsAndHasValidFormat + 4) = v7;
-            _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "ATXSuggestionModeFilter: WidgetKit Developer Mode is enabled and debugging is allowed for widget, allowing suggestion: %@", &keyExistsAndHasValidFormat, 0xCu);
+            _os_log_impl(&dword_2263AA000, intent, OS_LOG_TYPE_DEFAULT, "ATXSuggestionModeFilter: WidgetKit Developer Mode is enabled and debugging is allowed for widget, allowing suggestion: %@", &keyExistsAndHasValidFormat, 0xCu);
           }
 
           goto LABEL_22;
@@ -293,25 +293,25 @@ LABEL_27:
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&keyExistsAndHasValidFormat count:2];
   v18 = [v14 initWithArray:v17];
 
-  v19 = [v10 clientModelSpecification];
-  v20 = [v19 clientModelId];
-  LOBYTE(v16) = [v18 containsObject:v20];
+  clientModelSpecification = [v10 clientModelSpecification];
+  clientModelId = [clientModelSpecification clientModelId];
+  LOBYTE(v16) = [v18 containsObject:clientModelId];
 
   if (v16)
   {
-    v21 = [v10 atxActionExecutableObject];
-    v13 = [v21 intent];
+    atxActionExecutableObject = [v10 atxActionExecutableObject];
+    intent = [atxActionExecutableObject intent];
 
-    v22 = [v13 extensionBundleId];
-    if (![v22 isEqualToString:@"com.apple.DoNotDisturb.Intents"])
+    extensionBundleId = [intent extensionBundleId];
+    if (![extensionBundleId isEqualToString:@"com.apple.DoNotDisturb.Intents"])
     {
 
 LABEL_22:
       goto LABEL_23;
     }
 
-    v23 = [v13 _className];
-    v24 = [v23 isEqualToString:@"DNDToggleDoNotDisturbIntent"];
+    _className = [intent _className];
+    v24 = [_className isEqualToString:@"DNDToggleDoNotDisturbIntent"];
 
     if ((v24 & 1) == 0)
     {
@@ -439,44 +439,44 @@ LABEL_22:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ATXSuggestionModeFilter_registerObserver___block_invoke;
   v7[3] = &unk_27859B390;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ATXSuggestionModeFilter_removeObserver___block_invoke;
   v7[3] = &unk_27859B390;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)_updateConfigurationWithModeUUID:(id)a3 notifyingObservers:(BOOL)a4
+- (void)_updateConfigurationWithModeUUID:(id)d notifyingObservers:(BOOL)observers
 {
-  v6 = a3;
+  dCopy = d;
   lock = self->_lock;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__ATXSuggestionModeFilter__updateConfigurationWithModeUUID_notifyingObservers___block_invoke;
   v9[3] = &unk_27859B3B8;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  selfCopy = self;
+  observersCopy = observers;
+  v8 = dCopy;
   [(_PASLock *)lock runWithLockAcquired:v9];
 }
 

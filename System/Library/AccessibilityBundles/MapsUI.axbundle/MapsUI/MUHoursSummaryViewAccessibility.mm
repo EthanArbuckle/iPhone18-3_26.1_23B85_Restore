@@ -1,18 +1,18 @@
 @interface MUHoursSummaryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 @end
 
 @implementation MUHoursSummaryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_expanded" withType:"BOOL"];
-  [v3 validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_titleLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_hoursLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_openStateLabel" withType:"UIView<MULabelViewProtocol>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_expanded" withType:"BOOL"];
+  [validationsCopy validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_titleLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_hoursLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MUHoursSummaryView" hasInstanceVariable:@"_openStateLabel" withType:"UIView<MULabelViewProtocol>"];
 }
 
 - (id)accessibilityHint

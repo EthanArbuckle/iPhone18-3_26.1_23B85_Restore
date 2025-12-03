@@ -1,15 +1,15 @@
 @interface SKUIDeveloperInfo
-- (SKUIDeveloperInfo)initWithDeveloperDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKUIDeveloperInfo)initWithDeveloperDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)formattedAddressString;
 @end
 
 @implementation SKUIDeveloperInfo
 
-- (SKUIDeveloperInfo)initWithDeveloperDictionary:(id)a3
+- (SKUIDeveloperInfo)initWithDeveloperDictionary:(id)dictionary
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDeveloperInfo initWithDeveloperDictionary:];
@@ -20,7 +20,7 @@
   v5 = [(SKUIDeveloperInfo *)&v49 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"businessRegistrationId"];
+    v6 = [dictionaryCopy objectForKey:@"businessRegistrationId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       v5->_businessRegistrationIdentifier = v7;
     }
 
-    v9 = [v4 objectForKey:@"eCommerceRegistrationId"];
+    v9 = [dictionaryCopy objectForKey:@"eCommerceRegistrationId"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -39,7 +39,7 @@
       v5->_ecommerceRegistrationIdentifier = v10;
     }
 
-    v12 = [v4 objectForKey:@"person"];
+    v12 = [dictionaryCopy objectForKey:@"person"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -76,7 +76,7 @@
 LABEL_27:
 
 LABEL_28:
-      v27 = [v4 objectForKey:@"address"];
+      v27 = [dictionaryCopy objectForKey:@"address"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -139,7 +139,7 @@ LABEL_28:
           [v43 addObject:v44];
         }
 
-        v45 = [v4 objectForKey:@"addressLine2"];
+        v45 = [dictionaryCopy objectForKey:@"addressLine2"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -147,7 +147,7 @@ LABEL_28:
           [v43 addObject:v45];
         }
 
-        v9 = [v4 objectForKey:@"addressLine3"];
+        v9 = [dictionaryCopy objectForKey:@"addressLine3"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -252,9 +252,9 @@ LABEL_47:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAddressLines:self->_addressLines];
   [v4 setAdministrativeArea:self->_administrativeArea];
   [v4 setBusinessRegistrationIdentifier:self->_businessRegistrationIdentifier];

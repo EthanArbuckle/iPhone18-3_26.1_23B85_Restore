@@ -1,10 +1,10 @@
 @interface BKUIIndicatorViewController
 - (BKUIIndicatorViewController)init;
 - (void)_updateUI;
-- (void)setShouldShow:(BOOL)a3;
+- (void)setShouldShow:(BOOL)show;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKUIIndicatorViewController
@@ -58,15 +58,15 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(BKUIIndicatorViewController *)self physicalButtonView];
+  physicalButtonView = [(BKUIIndicatorViewController *)self physicalButtonView];
 
-  if (v3)
+  if (physicalButtonView)
   {
-    v4 = [(BKUIIndicatorViewController *)self physicalButtonView];
-    [v4 updateFrame];
+    physicalButtonView2 = [(BKUIIndicatorViewController *)self physicalButtonView];
+    [physicalButtonView2 updateFrame];
 
-    v5 = [(BKUIIndicatorViewController *)self physicalButtonView];
-    [v5 layoutIfNeeded];
+    physicalButtonView3 = [(BKUIIndicatorViewController *)self physicalButtonView];
+    [physicalButtonView3 layoutIfNeeded];
   }
 
   v6[0] = MEMORY[0x277D85DD0];
@@ -90,8 +90,8 @@ void __52__BKUIIndicatorViewController_viewDidLayoutSubviews__block_invoke(uint6
 
 - (void)_updateUI
 {
-  v3 = [(BKUIIndicatorViewController *)self physicalButtonView];
-  [v3 setAnimating:0];
+  physicalButtonView = [(BKUIIndicatorViewController *)self physicalButtonView];
+  [physicalButtonView setAnimating:0];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -111,20 +111,20 @@ void __40__BKUIIndicatorViewController__updateUI__block_invoke(uint64_t a1)
   [v4 setAnimating:v3];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = BKUIIndicatorViewController;
-  v7 = a4;
-  [(BKUIIndicatorViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BKUIIndicatorViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__BKUIIndicatorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_278D0A028;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __82__BKUIIndicatorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -134,12 +134,12 @@ void __82__BKUIIndicatorViewController_viewWillTransitionToSize_withTransitionCo
   [v2 layoutIfNeeded];
 }
 
-- (void)setShouldShow:(BOOL)a3
+- (void)setShouldShow:(BOOL)show
 {
-  self->_shouldShow = a3;
+  self->_shouldShow = show;
   [(BKUIIndicatorViewController *)self _updateUI];
-  v4 = [(BKUIIndicatorViewController *)self view];
-  [v4 layoutIfNeeded];
+  view = [(BKUIIndicatorViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 @end

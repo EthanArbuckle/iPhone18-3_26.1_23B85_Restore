@@ -4,24 +4,24 @@
 - (BOOL)_getWiFiEnabledFromPrefs;
 - (HSWiFiManager)init;
 - (id)_processIdentifier;
-- (void)_wifiCallBack:(unsigned int)a3;
+- (void)_wifiCallBack:(unsigned int)back;
 - (void)dealloc;
 @end
 
 @implementation HSWiFiManager
 
-- (void)_wifiCallBack:(unsigned int)a3
+- (void)_wifiCallBack:(unsigned int)back
 {
-  v3 = a3;
+  backCopy = back;
   v13[2] = *MEMORY[0x277D85DE8];
-  v5 = [(HSWiFiManager *)self _getWiFiEnabledFromPrefs];
-  v6 = [(HSWiFiManager *)self _getWiFiAssociated];
-  if (v3)
+  _getWiFiEnabledFromPrefs = [(HSWiFiManager *)self _getWiFiEnabledFromPrefs];
+  _getWiFiAssociated = [(HSWiFiManager *)self _getWiFiAssociated];
+  if (backCopy)
   {
-    v7 = v6;
-    if (v5 != [(HSWiFiManager *)self isWiFiEnabled]|| v7 != [(HSWiFiManager *)self isWiFiAssociated])
+    v7 = _getWiFiAssociated;
+    if (_getWiFiEnabledFromPrefs != [(HSWiFiManager *)self isWiFiEnabled]|| v7 != [(HSWiFiManager *)self isWiFiAssociated])
     {
-      [(HSWiFiManager *)self setWiFiEnabled:v5];
+      [(HSWiFiManager *)self setWiFiEnabled:_getWiFiEnabledFromPrefs];
       [(HSWiFiManager *)self setWiFiAssociated:v7];
       v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[HSWiFiManager isWiFiEnabled](self, "isWiFiEnabled")}];
       v12[0] = v8;
@@ -31,18 +31,18 @@
       v13[1] = @"HSWiFiManagerWiFiAssociatedUserInfoKey";
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v11 postNotificationName:@"HSWiFiManagerWiFiDidChangeNotification" object:self userInfo:v10];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"HSWiFiManagerWiFiDidChangeNotification" object:self userInfo:v10];
     }
   }
 }
 
 - (BOOL)_getWiFiAssociated
 {
-  v2 = [MEMORY[0x277D7FA90] sharedMonitor];
-  v3 = [v2 isWiFiAssociated];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  isWiFiAssociated = [mEMORY[0x277D7FA90] isWiFiAssociated];
 
-  return v3;
+  return isWiFiAssociated;
 }
 
 - (BOOL)_getWiFiEnabledFromPrefs
@@ -84,17 +84,17 @@ void __41__HSWiFiManager__getWiFiEnabledFromPrefs__block_invoke(uint64_t a1)
 
 - (id)_processIdentifier
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v3)
+  if (!bundleIdentifier)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = getprogname();
-    v3 = [v4 stringWithFormat:@"%s (%d)", v5, getpid()];
+    bundleIdentifier = [v4 stringWithFormat:@"%s (%d)", v5, getpid()];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (void)dealloc
@@ -119,8 +119,8 @@ void __41__HSWiFiManager__getWiFiEnabledFromPrefs__block_invoke(uint64_t a1)
     accessQueue = v2->_accessQueue;
     v2->_accessQueue = v3;
 
-    v5 = [(HSWiFiManager *)v2 _processIdentifier];
-    v6 = SCPreferencesCreate(*MEMORY[0x277CBECE8], v5, @"com.apple.wifi.plist");
+    _processIdentifier = [(HSWiFiManager *)v2 _processIdentifier];
+    v6 = SCPreferencesCreate(*MEMORY[0x277CBECE8], _processIdentifier, @"com.apple.wifi.plist");
     v2->_wifiPreferences = v6;
     v12.version = 0;
     memset(&v12.retain, 0, 24);
@@ -131,8 +131,8 @@ void __41__HSWiFiManager__getWiFiEnabledFromPrefs__block_invoke(uint64_t a1)
     SCPreferencesScheduleWithRunLoop(wifiPreferences, Main, *MEMORY[0x277CBF048]);
     v2->_wiFiEnabled = [(HSWiFiManager *)v2 _getWiFiEnabledFromPrefs];
     v2->_wiFiAssociated = 1;
-    v9 = [MEMORY[0x277D7FA90] sharedMonitor];
-    [v9 registerObserver:v2];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    [mEMORY[0x277D7FA90] registerObserver:v2];
 
     v10 = v2;
   }

@@ -1,66 +1,66 @@
 @interface TRIMAAssetMetadata
-+ (id)metadataWithDownloadSize:(unint64_t)a3 namespaceNameForEncryptionKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMetadata:(id)a3;
-- (TRIMAAssetMetadata)initWithDownloadSize:(unint64_t)a3 namespaceNameForEncryptionKey:(id)a4;
-- (id)copyWithReplacementDownloadSize:(unint64_t)a3;
-- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)a3;
++ (id)metadataWithDownloadSize:(unint64_t)size namespaceNameForEncryptionKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMetadata:(id)metadata;
+- (TRIMAAssetMetadata)initWithDownloadSize:(unint64_t)size namespaceNameForEncryptionKey:(id)key;
+- (id)copyWithReplacementDownloadSize:(unint64_t)size;
+- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)key;
 - (id)description;
 @end
 
 @implementation TRIMAAssetMetadata
 
-- (TRIMAAssetMetadata)initWithDownloadSize:(unint64_t)a3 namespaceNameForEncryptionKey:(id)a4
+- (TRIMAAssetMetadata)initWithDownloadSize:(unint64_t)size namespaceNameForEncryptionKey:(id)key
 {
-  v7 = a4;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = TRIMAAssetMetadata;
   v8 = [(TRIMAAssetMetadata *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_downloadSize = a3;
-    objc_storeStrong(&v8->_namespaceNameForEncryptionKey, a4);
+    v8->_downloadSize = size;
+    objc_storeStrong(&v8->_namespaceNameForEncryptionKey, key);
   }
 
   return v9;
 }
 
-+ (id)metadataWithDownloadSize:(unint64_t)a3 namespaceNameForEncryptionKey:(id)a4
++ (id)metadataWithDownloadSize:(unint64_t)size namespaceNameForEncryptionKey:(id)key
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithDownloadSize:a3 namespaceNameForEncryptionKey:v6];
+  keyCopy = key;
+  v7 = [[self alloc] initWithDownloadSize:size namespaceNameForEncryptionKey:keyCopy];
 
   return v7;
 }
 
-- (id)copyWithReplacementDownloadSize:(unint64_t)a3
+- (id)copyWithReplacementDownloadSize:(unint64_t)size
 {
   v5 = objc_alloc(objc_opt_class());
   namespaceNameForEncryptionKey = self->_namespaceNameForEncryptionKey;
 
-  return [v5 initWithDownloadSize:a3 namespaceNameForEncryptionKey:namespaceNameForEncryptionKey];
+  return [v5 initWithDownloadSize:size namespaceNameForEncryptionKey:namespaceNameForEncryptionKey];
 }
 
-- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)a3
+- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDownloadSize:self->_downloadSize namespaceNameForEncryptionKey:v4];
+  keyCopy = key;
+  v5 = [objc_alloc(objc_opt_class()) initWithDownloadSize:self->_downloadSize namespaceNameForEncryptionKey:keyCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToMetadata:(id)a3
+- (BOOL)isEqualToMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (downloadSize = self->_downloadSize, downloadSize == [v4 downloadSize]) && (v7 = self->_namespaceNameForEncryptionKey == 0, objc_msgSend(v5, "namespaceNameForEncryptionKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 != 0, v8, v7 != v9))
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy && (downloadSize = self->_downloadSize, downloadSize == [metadataCopy downloadSize]) && (v7 = self->_namespaceNameForEncryptionKey == 0, objc_msgSend(v5, "namespaceNameForEncryptionKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 != 0, v8, v7 != v9))
   {
     namespaceNameForEncryptionKey = self->_namespaceNameForEncryptionKey;
     if (namespaceNameForEncryptionKey)
     {
-      v11 = [v5 namespaceNameForEncryptionKey];
-      v12 = [(NSString *)namespaceNameForEncryptionKey isEqual:v11];
+      namespaceNameForEncryptionKey = [v5 namespaceNameForEncryptionKey];
+      v12 = [(NSString *)namespaceNameForEncryptionKey isEqual:namespaceNameForEncryptionKey];
     }
 
     else
@@ -77,18 +77,18 @@
   return v12 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIMAAssetMetadata *)self isEqualToMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIMAAssetMetadata *)self isEqualToMetadata:v5];
   }
 
   return v6;

@@ -1,17 +1,17 @@
 @interface UARPServiceMonitorMatchingRule
-- (UARPServiceMonitorMatchingRule)initWithMatchingRule:(id)a3 delegate:(id)a4;
+- (UARPServiceMonitorMatchingRule)initWithMatchingRule:(id)rule delegate:(id)delegate;
 - (void)dealloc;
-- (void)matchingService:(unsigned int)a3;
+- (void)matchingService:(unsigned int)service;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation UARPServiceMonitorMatchingRule
 
-- (UARPServiceMonitorMatchingRule)initWithMatchingRule:(id)a3 delegate:(id)a4
+- (UARPServiceMonitorMatchingRule)initWithMatchingRule:(id)rule delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  ruleCopy = rule;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = UARPServiceMonitorMatchingRule;
   v8 = [(UARPServiceMonitorMatchingRule *)&v22 init];
@@ -21,17 +21,17 @@
     v10 = *(v8 + 1);
     *(v8 + 1) = v9;
 
-    v11 = [v6 identifier];
-    v12 = [v11 copy];
+    identifier = [ruleCopy identifier];
+    v12 = [identifier copy];
     v13 = *(v8 + 2);
     *(v8 + 2) = v12;
 
-    v14 = [v6 matchingDictionary];
-    v15 = [v14 copy];
+    matchingDictionary = [ruleCopy matchingDictionary];
+    v15 = [matchingDictionary copy];
     v16 = *(v8 + 3);
     *(v8 + 3) = v15;
 
-    objc_storeStrong(v8 + 8, a4);
+    objc_storeStrong(v8 + 8, delegate);
     v17 = dispatch_queue_create("UARPUpdaterServiceMonitorMatchingRuleDelegate", 0);
     v18 = *(v8 + 6);
     *(v8 + 6) = v17;
@@ -94,10 +94,10 @@
   }
 }
 
-- (void)matchingService:(unsigned int)a3
+- (void)matchingService:(unsigned int)service
 {
   properties = 0;
-  IORegistryEntryCreateCFProperties(a3, &properties, kCFAllocatorDefault, 0);
+  IORegistryEntryCreateCFProperties(service, &properties, kCFAllocatorDefault, 0);
   if (properties)
   {
     CFRelease(properties);
@@ -109,7 +109,7 @@
   block[2] = sub_100010918;
   block[3] = &unk_1000407B0;
   block[4] = self;
-  v7 = a3;
+  serviceCopy = service;
   dispatch_async(delegateQueue, block);
 }
 

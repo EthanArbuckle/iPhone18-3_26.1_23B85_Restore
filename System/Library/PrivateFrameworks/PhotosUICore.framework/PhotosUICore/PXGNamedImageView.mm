@@ -1,6 +1,6 @@
 @interface PXGNamedImageView
 - (CGRect)clippingRect;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGNamedImageView
@@ -18,17 +18,17 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   userData = self->_userData;
   self->_userData = v4;
 
-  v6 = [(PXGNamedImageViewConfiguration *)self->_userData imageName];
-  if (v6)
+  imageName = [(PXGNamedImageViewConfiguration *)self->_userData imageName];
+  if (imageName)
   {
-    v7 = [(PXGNamedImageViewConfiguration *)self->_userData bundle];
-    v8 = [MEMORY[0x1E69DCAB8] px_imageNamed:v6 bundle:v7];
+    bundle = [(PXGNamedImageViewConfiguration *)self->_userData bundle];
+    v8 = [MEMORY[0x1E69DCAB8] px_imageNamed:imageName bundle:bundle];
   }
 
   else

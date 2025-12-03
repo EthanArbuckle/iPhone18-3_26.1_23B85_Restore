@@ -1,14 +1,14 @@
 @interface GroupActivitySharingController
 - (BOOL)startStagedActivity;
 - (NSString)shareSheetSessionID;
-- (_TtC22_GroupActivities_UIKit30GroupActivitySharingController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22_GroupActivities_UIKit30GroupActivitySharingController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)directlyCreateActivity;
-- (void)prepareForShareSheetSessionWithCompletion:(id)a3;
-- (void)registerWithResultHandler:(id)a3;
-- (void)setShareSheetSessionID:(id)a3;
-- (void)setStartStagedActivity:(BOOL)a3;
+- (void)prepareForShareSheetSessionWithCompletion:(id)completion;
+- (void)registerWithResultHandler:(id)handler;
+- (void)setShareSheetSessionID:(id)d;
+- (void)setStartStagedActivity:(BOOL)activity;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GroupActivitySharingController
@@ -16,7 +16,7 @@
 - (NSString)shareSheetSessionID
 {
   v2 = *((*MEMORY[0x277D85000] & **(&self->super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit30GroupActivitySharingController_controller)) + 0xD0);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v6 = v5;
 
@@ -33,9 +33,9 @@
   return v7;
 }
 
-- (void)setShareSheetSessionID:(id)a3
+- (void)setShareSheetSessionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -48,58 +48,58 @@
   }
 
   v7 = *((*MEMORY[0x277D85000] & **(&self->super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit30GroupActivitySharingController_controller)) + 0xD8);
-  v8 = self;
+  selfCopy = self;
   v7(v4, v6);
 }
 
 - (BOOL)startStagedActivity
 {
   v2 = *((*MEMORY[0x277D85000] & **(&self->super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit30GroupActivitySharingController_controller)) + 0xE8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4 & 1;
 }
 
-- (void)setStartStagedActivity:(BOOL)a3
+- (void)setStartStagedActivity:(BOOL)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = *((*MEMORY[0x277D85000] & **(&self->super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit30GroupActivitySharingController_controller)) + 0xF0);
-  v5 = self;
-  v4(v3);
+  selfCopy = self;
+  v4(activityCopy);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  GroupActivitySharingController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  GroupActivitySharingController.viewWillAppear(_:)(appear);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   GroupActivitySharingController.viewDidLoad()();
 }
 
-- (_TtC22_GroupActivities_UIKit30GroupActivitySharingController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22_GroupActivities_UIKit30GroupActivitySharingController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)registerWithResultHandler:(id)a3
+- (void)registerWithResultHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   GroupActivitySharingController.registerResultHandler(_:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> (), v5);
 }
 
-- (void)prepareForShareSheetSessionWithCompletion:(id)a3
+- (void)prepareForShareSheetSessionWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v3[2]();
 
   _Block_release(v3);
@@ -107,7 +107,7 @@
 
 - (void)directlyCreateActivity
 {
-  v2 = self;
+  selfCopy = self;
   GroupActivitySharingController.directlyCreateActivity()();
 }
 

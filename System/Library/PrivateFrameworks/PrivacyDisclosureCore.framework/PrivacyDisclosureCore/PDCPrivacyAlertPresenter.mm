@@ -1,13 +1,13 @@
 @interface PDCPrivacyAlertPresenter
 + (id)sharedPresenter;
 - (PDCPrivacyAlertPresenter)init;
-- (void)_activateAlertHandleForIdentity:(id)a3 settings:(id)a4 repsonseHandler:(id)a5;
-- (void)_ensureAppIsLaunchableWithIdentity:(id)a3 completion:(id)a4;
-- (void)activateRemoteAlertWithIdentity:(id)a3 requestHandle:(id)a4 forcePresent:(BOOL)a5 completionHandler:(id)a6;
-- (void)didCancelRequestHandle:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)_activateAlertHandleForIdentity:(id)identity settings:(id)settings repsonseHandler:(id)handler;
+- (void)_ensureAppIsLaunchableWithIdentity:(id)identity completion:(id)completion;
+- (void)activateRemoteAlertWithIdentity:(id)identity requestHandle:(id)handle forcePresent:(BOOL)present completionHandler:(id)handler;
+- (void)didCancelRequestHandle:(id)handle;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation PDCPrivacyAlertPresenter
@@ -43,9 +43,9 @@ uint64_t __43__PDCPrivacyAlertPresenter_sharedPresenter__block_invoke()
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     requestToAlertMap = v2->_requestToAlertMap;
-    v2->_requestToAlertMap = v6;
+    v2->_requestToAlertMap = weakToWeakObjectsMapTable;
 
     v8 = v2;
   }
@@ -53,12 +53,12 @@ uint64_t __43__PDCPrivacyAlertPresenter_sharedPresenter__block_invoke()
   return v2;
 }
 
-- (void)_ensureAppIsLaunchableWithIdentity:(id)a3 completion:(id)a4
+- (void)_ensureAppIsLaunchableWithIdentity:(id)identity completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v18 = 0;
-  v6 = [a3 findApplicationRecordWithError:&v18];
+  v6 = [identity findApplicationRecordWithError:&v18];
   v7 = v18;
   if ([v6 applicationMissingRequiredSINF])
   {
@@ -66,29 +66,29 @@ uint64_t __43__PDCPrivacyAlertPresenter_sharedPresenter__block_invoke()
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [v6 bundleIdentifier];
+      bundleIdentifier = [v6 bundleIdentifier];
       *buf = 138412290;
-      v20 = v10;
+      v20 = bundleIdentifier;
       _os_log_impl(&dword_25F701000, v9, OS_LOG_TYPE_INFO, "Request application repair for %@", buf, 0xCu);
     }
 
     v11 = objc_alloc(MEMORY[0x277CEC478]);
-    v12 = [v6 bundleIdentifier];
-    v13 = [v11 initWithBundleID:v12];
+    bundleIdentifier2 = [v6 bundleIdentifier];
+    v13 = [v11 initWithBundleID:bundleIdentifier2];
 
     [v13 setExitReason:16];
-    v14 = [MEMORY[0x277CEC480] defaultService];
+    defaultService = [MEMORY[0x277CEC480] defaultService];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __74__PDCPrivacyAlertPresenter__ensureAppIsLaunchableWithIdentity_completion___block_invoke;
     v16[3] = &unk_279AA1D40;
-    v17 = v5;
-    [v14 repairAppWithOptions:v13 replyHandler:v16];
+    v17 = completionCopy;
+    [defaultService repairAppWithOptions:v13 replyHandler:v16];
   }
 
   else
   {
-    (*(v5 + 2))(v5, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -109,23 +109,23 @@ void __74__PDCPrivacyAlertPresenter__ensureAppIsLaunchableWithIdentity_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)activateRemoteAlertWithIdentity:(id)a3 requestHandle:(id)a4 forcePresent:(BOOL)a5 completionHandler:(id)a6
+- (void)activateRemoteAlertWithIdentity:(id)identity requestHandle:(id)handle forcePresent:(BOOL)present completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identityCopy = identity;
+  handleCopy = handle;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __105__PDCPrivacyAlertPresenter_activateRemoteAlertWithIdentity_requestHandle_forcePresent_completionHandler___block_invoke;
   v16[3] = &unk_279AA1DB8;
   v16[4] = self;
-  v17 = v10;
-  v20 = a5;
-  v18 = v11;
-  v19 = v12;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v17 = identityCopy;
+  presentCopy = present;
+  v18 = handleCopy;
+  v19 = handlerCopy;
+  v13 = handleCopy;
+  v14 = identityCopy;
+  v15 = handlerCopy;
   [(PDCPrivacyAlertPresenter *)self _ensureAppIsLaunchableWithIdentity:v14 completion:v16];
 }
 
@@ -246,11 +246,11 @@ void __105__PDCPrivacyAlertPresenter_activateRemoteAlertWithIdentity_requestHand
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_activateAlertHandleForIdentity:(id)a3 settings:(id)a4 repsonseHandler:(id)a5
+- (void)_activateAlertHandleForIdentity:(id)identity settings:(id)settings repsonseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  settingsCopy = settings;
+  handlerCopy = handler;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2050000000;
@@ -308,8 +308,8 @@ void __105__PDCPrivacyAlertPresenter_activateRemoteAlertWithIdentity_requestHand
   v18 = v17;
   _Block_object_dispose(&v39, 8);
   v19 = [v17 alloc];
-  v20 = [MEMORY[0x277CF0B60] responderWithHandler:v10];
-  v21 = [v19 initWithInfo:v9 responder:v20];
+  v20 = [MEMORY[0x277CF0B60] responderWithHandler:handlerCopy];
+  v21 = [v19 initWithInfo:settingsCopy responder:v20];
 
   v22 = [MEMORY[0x277CBEB98] setWithObject:v21];
   [v16 setActions:v22];
@@ -377,7 +377,7 @@ void __105__PDCPrivacyAlertPresenter_activateRemoteAlertWithIdentity_requestHand
 
     v31 = v30;
     _Block_object_dispose(&v39, 8);
-    v32 = [v30 predicateForLaunchingApplicationIdentity:v8];
+    v32 = [v30 predicateForLaunchingApplicationIdentity:identityCopy];
     v33 = [objc_alloc(getSBSRemoteAlertPresentationTargetClass()) initWithTargetPredicate:v32];
     [v33 setShouldDismissInSwitcher:0];
     [v29 setPresentationTarget:v33];
@@ -386,17 +386,17 @@ void __105__PDCPrivacyAlertPresenter_activateRemoteAlertWithIdentity_requestHand
   [(SBSRemoteAlertHandle *)self->_alertHandle activateWithContext:v29];
 }
 
-- (void)didCancelRequestHandle:(id)a3
+- (void)didCancelRequestHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__PDCPrivacyAlertPresenter_didCancelRequestHandle___block_invoke;
   v7[3] = &unk_279AA1DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handleCopy;
+  v6 = handleCopy;
   dispatch_async(queue, v7);
 }
 
@@ -406,30 +406,30 @@ void __51__PDCPrivacyAlertPresenter_didCancelRequestHandle___block_invoke(uint64
   [v1 invalidate];
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activateCopy = activate;
   v4 = PDC_LOG_CHANNEL_PREFIXPrivacyDisclosureCore();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = v3;
+    v7 = activateCopy;
     _os_log_impl(&dword_25F701000, v4, OS_LOG_TYPE_INFO, "Did active remote alert, handle : [%p]", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = PDC_LOG_CHANNEL_PREFIXPrivacyDisclosureCore();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v13 = v4;
+    v13 = deactivateCopy;
     _os_log_impl(&dword_25F701000, v5, OS_LOG_TYPE_INFO, "Did deactive remote alert, handle : [%p]", buf, 0xCu);
   }
 
@@ -438,9 +438,9 @@ void __51__PDCPrivacyAlertPresenter_didCancelRequestHandle___block_invoke(uint64
   v9[1] = 3221225472;
   v9[2] = __59__PDCPrivacyAlertPresenter_remoteAlertHandleDidDeactivate___block_invoke;
   v9[3] = &unk_279AA1DE0;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = deactivateCopy;
+  selfCopy = self;
+  v7 = deactivateCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -457,20 +457,20 @@ void __59__PDCPrivacyAlertPresenter_remoteAlertHandleDidDeactivate___block_invok
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__PDCPrivacyAlertPresenter_remoteAlertHandle_didInvalidateWithError___block_invoke;
   block[3] = &unk_279AA1E08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handleCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = handleCopy;
   dispatch_async(queue, block);
 }
 

@@ -1,14 +1,14 @@
 @interface AKBorderMaskAnnotationRenderer
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGPath)_newClipMaskEOPathForAnnotation:(id)a3;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGPath)_newClipMaskEOPathForAnnotation:(id)annotation;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKBorderMaskAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF390];
   v4 = *(MEMORY[0x277CBF390] + 8);
@@ -21,7 +21,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -30,39 +30,39 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v48 = a3;
-  v10 = a6;
-  v11 = a5;
-  CGContextSaveGState(a4);
-  v12 = [v11 forDisplay];
+  annotationCopy = annotation;
+  nilCopy = nil;
+  optionsCopy = options;
+  CGContextSaveGState(context);
+  forDisplay = [optionsCopy forDisplay];
 
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v48 forDisplay:v12 pageControllerOrNil:v10];
-  [v48 rectangle];
-  if (v10 && CGRectIsInfinite(*&v13))
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:forDisplay pageControllerOrNil:nilCopy];
+  [annotationCopy rectangle];
+  if (nilCopy && CGRectIsInfinite(*&v13))
   {
-    v17 = [v10 controller];
-    v18 = [v17 undoController];
-    v19 = [v18 undoManager];
+    controller = [nilCopy controller];
+    undoController = [controller undoController];
+    undoManager = [undoController undoManager];
 
-    v20 = [v19 isUndoRegistrationEnabled];
-    if (v20)
+    isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
+    if (isUndoRegistrationEnabled)
     {
-      [v19 disableUndoRegistration];
+      [undoManager disableUndoRegistration];
     }
 
-    [v10 maxPageRect];
+    [nilCopy maxPageRect];
     x = v21;
     y = v23;
     width = v25;
     height = v27;
-    v29 = [v10 pageModelController];
-    v30 = [v29 cropAnnotation];
+    pageModelController = [nilCopy pageModelController];
+    cropAnnotation = [pageModelController cropAnnotation];
 
-    if (v30)
+    if (cropAnnotation)
     {
-      [v30 rectangle];
+      [cropAnnotation rectangle];
       v57.origin.x = v31;
       v57.origin.y = v32;
       v57.size.width = v33;
@@ -78,9 +78,9 @@
       height = v51.size.height;
     }
 
-    [v48 originalModelBaseScaleFactor];
+    [annotationCopy originalModelBaseScaleFactor];
     v36 = v35 * 50.0;
-    [v48 originalModelBaseScaleFactor];
+    [annotationCopy originalModelBaseScaleFactor];
     v38 = v37 * 10.0;
     v52.origin.x = x;
     v52.origin.y = y;
@@ -118,43 +118,43 @@
     v54.size.height = height;
     v55 = CGRectInset(v54, v41, v42);
     v56 = CGRectStandardize(v55);
-    [v48 setRectangle:{v56.origin.x, v56.origin.y, v56.size.width, v56.size.height}];
-    if (v20)
+    [annotationCopy setRectangle:{v56.origin.x, v56.origin.y, v56.size.width, v56.size.height}];
+    if (isUndoRegistrationEnabled)
     {
-      [v19 enableUndoRegistration];
+      [undoManager enableUndoRegistration];
     }
   }
 
-  v43 = [a1 _newClipMaskEOPathForAnnotation:v48];
-  v44 = [v48 fillColor];
-  v45 = v44;
-  if (!v44 || ([v44 akAlphaComponent], v46 < 0.01))
+  v43 = [self _newClipMaskEOPathForAnnotation:annotationCopy];
+  fillColor = [annotationCopy fillColor];
+  v45 = fillColor;
+  if (!fillColor || ([fillColor akAlphaComponent], v46 < 0.01))
   {
     v47 = [MEMORY[0x277D75348] akColorWithWhite:0.0 alpha:0.33];
 
     v45 = v47;
   }
 
-  CGContextSetFillColorWithColor(a4, [v45 CGColor]);
-  CGContextAddPath(a4, v43);
-  CGContextEOFillPath(a4);
+  CGContextSetFillColorWithColor(context, [v45 CGColor]);
+  CGContextAddPath(context, v43);
+  CGContextEOFillPath(context);
   CGPathRelease(v43);
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 rectangle];
+  y = inside.y;
+  x = inside.x;
+  [annotation rectangle];
   v7.x = x;
   v7.y = y;
   return !CGRectContainsPoint(v8, v7);
 }
 
-+ (CGPath)_newClipMaskEOPathForAnnotation:(id)a3
++ (CGPath)_newClipMaskEOPathForAnnotation:(id)annotation
 {
-  [a3 rectangle];
+  [annotation rectangle];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;

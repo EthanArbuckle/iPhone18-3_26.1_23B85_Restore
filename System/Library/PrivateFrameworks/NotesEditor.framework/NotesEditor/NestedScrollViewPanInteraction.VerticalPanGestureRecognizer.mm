@@ -1,5 +1,5 @@
 @interface NestedScrollViewPanInteraction.VerticalPanGestureRecognizer
-- (void)_scrollingChangedWithEvent:(id)a3;
+- (void)_scrollingChangedWithEvent:(id)event;
 - (void)reset;
 @end
 
@@ -19,11 +19,11 @@
   *(v4 + 1) = 0;
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_21543065C(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_21543065C(eventCopy);
 }
 
 @end

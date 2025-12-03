@@ -1,36 +1,36 @@
 @interface MOEngagementAndSuggestionAnalyticsManager
-+ (id)generateDefaultAnalyticsPayloadWithOnboardingStatus:(id)a3;
-- (BOOL)bundleHasPhotoOrMediaResources:(id)a3;
++ (id)generateDefaultAnalyticsPayloadWithOnboardingStatus:(id)status;
+- (BOOL)bundleHasPhotoOrMediaResources:(id)resources;
 - (BOOL)isReadyToSubmitDefaultAnalytics;
 - (BOOL)isReadyToSubmitWeeklyRotationAnalytics;
-- (MOEngagementAndSuggestionAnalyticsManager)initWithUniverse:(id)a3;
+- (MOEngagementAndSuggestionAnalyticsManager)initWithUniverse:(id)universe;
 - (double)isReadyToSubmitDefaultAnalytics;
-- (float)calculateAverageAgeInDaysForEventBundles:(id)a3 withSubmissionDate:(id)a4;
-- (float)calculateMaxAgeInDaysForEventBundles:(id)a3 withSubmissionDate:(id)a4;
-- (id)generateSuggestionEngagementAggregatedMetric:(id)a3 withDeviceType:(id)a4 appType:(id)a5 suggestionType:(id)a6 suggestionUIPlacement:(id)a7 analyticsAggregationWindowEnum:(id)a8 onboardingStatus:(id)a9;
-- (unint64_t)countActivityBundlesWithSameActionName:(id)a3;
-- (unint64_t)countEventBundlesWithBirthdayLabel:(id)a3;
-- (unint64_t)countEventBundlesWithHolidayLabel:(id)a3;
-- (unint64_t)countEventBundlesWithPersons:(id)a3;
-- (unint64_t)countEventBundlesWithResourceType:(unint64_t)a3 FromEventBudles:(id)a4;
-- (unint64_t)countEventBundlesWithSamePersons:(id)a3;
-- (unint64_t)countEventBundlesWithSamePlace:(id)a3 locationThreshold:(double)a4;
-- (unint64_t)countRepetitiveOutingBundles:(id)a3;
-- (unint64_t)countUniqueAnalyticsSuggestionTypesForEventBundles:(id)a3;
-- (void)_submitSuggestionPerformanceAnalyticsFromEventBundles:(id)a3 submitDefaultMetrics:(BOOL)a4 submitWeeklyRotationMetrics:(BOOL)a5 WithOnboardingStatus:(id)a6 andCompletionResult:(id)a7;
-- (void)_submitWeeklySuggestionPerformanceAnalyticsFromEventBundles:(id)a3 WithOnboardingStatus:(id)a4 andCompletionResult:(id)a5;
+- (float)calculateAverageAgeInDaysForEventBundles:(id)bundles withSubmissionDate:(id)date;
+- (float)calculateMaxAgeInDaysForEventBundles:(id)bundles withSubmissionDate:(id)date;
+- (id)generateSuggestionEngagementAggregatedMetric:(id)metric withDeviceType:(id)type appType:(id)appType suggestionType:(id)suggestionType suggestionUIPlacement:(id)placement analyticsAggregationWindowEnum:(id)enum onboardingStatus:(id)status;
+- (unint64_t)countActivityBundlesWithSameActionName:(id)name;
+- (unint64_t)countEventBundlesWithBirthdayLabel:(id)label;
+- (unint64_t)countEventBundlesWithHolidayLabel:(id)label;
+- (unint64_t)countEventBundlesWithPersons:(id)persons;
+- (unint64_t)countEventBundlesWithResourceType:(unint64_t)type FromEventBudles:(id)budles;
+- (unint64_t)countEventBundlesWithSamePersons:(id)persons;
+- (unint64_t)countEventBundlesWithSamePlace:(id)place locationThreshold:(double)threshold;
+- (unint64_t)countRepetitiveOutingBundles:(id)bundles;
+- (unint64_t)countUniqueAnalyticsSuggestionTypesForEventBundles:(id)bundles;
+- (void)_submitSuggestionPerformanceAnalyticsFromEventBundles:(id)bundles submitDefaultMetrics:(BOOL)metrics submitWeeklyRotationMetrics:(BOOL)rotationMetrics WithOnboardingStatus:(id)status andCompletionResult:(id)result;
+- (void)_submitWeeklySuggestionPerformanceAnalyticsFromEventBundles:(id)bundles WithOnboardingStatus:(id)status andCompletionResult:(id)result;
 - (void)setLastAnalyticsSubmissionDateForDefaultAnalyticsToNow;
 - (void)setLastAnalyticsSubmissionDateForWeeklyRotationMetricsToNow;
-- (void)submitEngagementAnalyticsWithOnboardingStatus:(id)a3 submitDefaultMetrics:(BOOL)a4 submitWeeklyRotationMetrics:(BOOL)a5 AndCompletionHandler:(id)a6;
-- (void)submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)a3 andCompletionHandler:(id)a4;
-- (void)submitSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)a3 submitDefaultMetrics:(BOOL)a4 submitWeeklyRotationMetrics:(BOOL)a5 AndCompletionHandler:(id)a6;
+- (void)submitEngagementAnalyticsWithOnboardingStatus:(id)status submitDefaultMetrics:(BOOL)metrics submitWeeklyRotationMetrics:(BOOL)rotationMetrics AndCompletionHandler:(id)handler;
+- (void)submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)status andCompletionHandler:(id)handler;
+- (void)submitSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)status submitDefaultMetrics:(BOOL)metrics submitWeeklyRotationMetrics:(BOOL)rotationMetrics AndCompletionHandler:(id)handler;
 @end
 
 @implementation MOEngagementAndSuggestionAnalyticsManager
 
-- (MOEngagementAndSuggestionAnalyticsManager)initWithUniverse:(id)a3
+- (MOEngagementAndSuggestionAnalyticsManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v40.receiver = self;
   v40.super_class = MOEngagementAndSuggestionAnalyticsManager;
   v5 = [(MOEngagementAndSuggestionAnalyticsManager *)&v40 init];
@@ -38,43 +38,43 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 getService:v7];
+    v8 = [universeCopy getService:v7];
     defaultsManager = v5->_defaultsManager;
     v5->_defaultsManager = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v4 getService:v11];
+    v12 = [universeCopy getService:v11];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v4 getService:v15];
+    v16 = [universeCopy getService:v15];
     engagementHistoryManager = v5->_engagementHistoryManager;
     v5->_engagementHistoryManager = v16;
 
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v4 getService:v19];
+    v20 = [universeCopy getService:v19];
     eventBundleStore = v5->_eventBundleStore;
     v5->_eventBundleStore = v20;
 
-    v22 = [(MOEngagementAndSuggestionAnalyticsManager *)v5 configurationManager];
+    configurationManager = [(MOEngagementAndSuggestionAnalyticsManager *)v5 configurationManager];
     LODWORD(v23) = 28.0;
-    [v22 getFloatSettingForKey:@"minimumTimeGapBetweenAnalyticsSubmissionsInDays" withFallback:v23];
+    [configurationManager getFloatSettingForKey:@"minimumTimeGapBetweenAnalyticsSubmissionsInDays" withFallback:v23];
     v5->_minimumTimeGapBetweenSubmissionsInDays = v24;
 
-    v25 = [(MOEngagementAndSuggestionAnalyticsManager *)v5 configurationManager];
+    configurationManager2 = [(MOEngagementAndSuggestionAnalyticsManager *)v5 configurationManager];
     LODWORD(v26) = 7.0;
-    [v25 getFloatSettingForKey:@"minimumTimeGapBetweenSubmissionsForWeeklyRotationMetricsInDaysKey" withFallback:v26];
+    [configurationManager2 getFloatSettingForKey:@"minimumTimeGapBetweenSubmissionsForWeeklyRotationMetricsInDaysKey" withFallback:v26];
     v5->_minimumTimeGapBetweenSubmissionsForWeeklyRotationMetricsInDays = v27;
 
     lastAnalyticsSubmissionDate = v5->_lastAnalyticsSubmissionDate;
     v5->_lastAnalyticsSubmissionDate = 0;
 
-    v29 = [(MOEngagementAndSuggestionAnalyticsManager *)v5 defaultsManager];
-    v30 = [v29 objectForKey:@"LastAnalyticsSubmissionDate"];
+    defaultsManager = [(MOEngagementAndSuggestionAnalyticsManager *)v5 defaultsManager];
+    v30 = [defaultsManager objectForKey:@"LastAnalyticsSubmissionDate"];
 
     if (v30)
     {
@@ -88,8 +88,8 @@
     lastAnalyticsSubmissionDateForWeeklyRotationMetrics = v5->_lastAnalyticsSubmissionDateForWeeklyRotationMetrics;
     v5->_lastAnalyticsSubmissionDateForWeeklyRotationMetrics = 0;
 
-    v32 = [(MOEngagementAndSuggestionAnalyticsManager *)v5 defaultsManager];
-    v33 = [v32 objectForKey:@"LastAnalyticsSubmissionDateForWeeklyRotationMetrics"];
+    defaultsManager2 = [(MOEngagementAndSuggestionAnalyticsManager *)v5 defaultsManager];
+    v33 = [defaultsManager2 objectForKey:@"LastAnalyticsSubmissionDateForWeeklyRotationMetrics"];
 
     if (v33)
     {
@@ -122,20 +122,20 @@
   return v5;
 }
 
-- (void)submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)a3 andCompletionHandler:(id)a4
+- (void)submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)status andCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  handlerCopy = handler;
   if ([(MOEngagementAndSuggestionAnalyticsManager *)self isReadyToSubmitDefaultAnalytics]|| [(MOEngagementAndSuggestionAnalyticsManager *)self isReadyToSubmitWeeklyRotationAnalytics])
   {
-    v8 = [(MOEngagementAndSuggestionAnalyticsManager *)self isReadyToSubmitDefaultAnalytics];
-    v9 = [(MOEngagementAndSuggestionAnalyticsManager *)self isReadyToSubmitWeeklyRotationAnalytics];
+    isReadyToSubmitDefaultAnalytics = [(MOEngagementAndSuggestionAnalyticsManager *)self isReadyToSubmitDefaultAnalytics];
+    isReadyToSubmitWeeklyRotationAnalytics = [(MOEngagementAndSuggestionAnalyticsManager *)self isReadyToSubmitWeeklyRotationAnalytics];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __136__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus_andCompletionHandler___block_invoke;
     v13[3] = &unk_100336198;
-    v14 = v7;
-    [(MOEngagementAndSuggestionAnalyticsManager *)self submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:v6 submitDefaultMetrics:v8 submitWeeklyRotationMetrics:v9 andCompletionHandler:v13];
+    v14 = handlerCopy;
+    [(MOEngagementAndSuggestionAnalyticsManager *)self submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:statusCopy submitDefaultMetrics:isReadyToSubmitDefaultAnalytics submitWeeklyRotationMetrics:isReadyToSubmitWeeklyRotationAnalytics andCompletionHandler:v13];
   }
 
   else
@@ -143,16 +143,16 @@
     v10 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(MOEngagementAndSuggestionAnalyticsManager *)self getLastAnalyticsSubmissionDateForDefaultAnalytics];
-      v12 = [(MOEngagementAndSuggestionAnalyticsManager *)self getLastAnalyticsSubmissionDateForWeeklyRotationMetrics];
+      getLastAnalyticsSubmissionDateForDefaultAnalytics = [(MOEngagementAndSuggestionAnalyticsManager *)self getLastAnalyticsSubmissionDateForDefaultAnalytics];
+      getLastAnalyticsSubmissionDateForWeeklyRotationMetrics = [(MOEngagementAndSuggestionAnalyticsManager *)self getLastAnalyticsSubmissionDateForWeeklyRotationMetrics];
       *buf = 138412546;
-      v16 = v11;
+      v16 = getLastAnalyticsSubmissionDateForDefaultAnalytics;
       v17 = 2112;
-      v18 = v12;
+      v18 = getLastAnalyticsSubmissionDateForWeeklyRotationMetrics;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "engagement/suggestion analytics submission was skipped. lastAnalyticsSubmissionDateForDefaultAnalytics=%@ ,lastAnalyticsSubmissionDateForWeeklyRotationMetrics=%@", buf, 0x16u);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -293,12 +293,12 @@ void __185__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAndSuggest
   v10();
 }
 
-- (void)submitEngagementAnalyticsWithOnboardingStatus:(id)a3 submitDefaultMetrics:(BOOL)a4 submitWeeklyRotationMetrics:(BOOL)a5 AndCompletionHandler:(id)a6
+- (void)submitEngagementAnalyticsWithOnboardingStatus:(id)status submitDefaultMetrics:(BOOL)metrics submitWeeklyRotationMetrics:(BOOL)rotationMetrics AndCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v38 = a3;
-  v10 = a6;
+  rotationMetricsCopy = rotationMetrics;
+  metricsCopy = metrics;
+  statusCopy = status;
+  handlerCopy = handler;
   v40 = objc_opt_new();
   context = objc_autoreleasePoolPush();
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
@@ -309,16 +309,16 @@ void __185__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAndSuggest
   }
 
   v12 = +[NSDate date];
-  v13 = [(MOEngagementAndSuggestionAnalyticsManager *)self engagementHistoryManager];
+  engagementHistoryManager = [(MOEngagementAndSuggestionAnalyticsManager *)self engagementHistoryManager];
   v14 = [v12 dateByAddingTimeInterval:-2419200.0];
   v60 = 0;
-  v39 = [v13 fetchSuggestionEngagementEventsFromAllDevicesWithTypes:&off_10036E238 fromStartDate:v14 toEndDate:v12 withError:&v60];
+  v39 = [engagementHistoryManager fetchSuggestionEngagementEventsFromAllDevicesWithTypes:&off_10036E238 fromStartDate:v14 toEndDate:v12 withError:&v60];
   v15 = v60;
 
-  v16 = [(MOEngagementAndSuggestionAnalyticsManager *)self engagementHistoryManager];
+  engagementHistoryManager2 = [(MOEngagementAndSuggestionAnalyticsManager *)self engagementHistoryManager];
   v17 = [v12 dateByAddingTimeInterval:-2419200.0];
   v59 = v15;
-  v18 = [v16 fetchAppEntryEngagementEventsFromAllDevicesWithTypes:&off_10036E250 fromStartDate:v17 toEndDate:v12 withError:&v59];
+  v18 = [engagementHistoryManager2 fetchAppEntryEngagementEventsFromAllDevicesWithTypes:&off_10036E250 fromStartDate:v17 toEndDate:v12 withError:&v59];
   v19 = v59;
 
   v20 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
@@ -332,7 +332,7 @@ void __185__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAndSuggest
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[submitEngagementAnalytics] Biome sink error:%@", buf, 0xCu);
     }
 
-    v10[2](v10, v19, 0);
+    handlerCopy[2](handlerCopy, v19, 0);
     objc_autoreleasePoolPop(context);
     goto LABEL_24;
   }
@@ -350,19 +350,19 @@ void __185__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAndSuggest
 
   v24 = objc_opt_new();
   v25 = v24;
-  if (v8 && v7)
+  if (metricsCopy && rotationMetricsCopy)
   {
     v26 = +[MOEngagementAndSuggestionAnalyticsParams allMetricsAggregationWindowMap];
   }
 
-  else if (v8)
+  else if (metricsCopy)
   {
     v26 = +[MOEngagementAndSuggestionAnalyticsParams defaultMetricsAggregationWindowMap];
   }
 
   else
   {
-    if (!v7)
+    if (!rotationMetricsCopy)
     {
       v27 = v24;
       goto LABEL_17;
@@ -398,13 +398,13 @@ LABEL_17:
     v54 = v30;
     v44 = v18;
     v45 = &off_10036E280;
-    v46 = v38;
+    v46 = statusCopy;
     v52 = buf;
     v47 = v39;
     v48 = &off_10036E2B0;
     v32 = v28;
     v49 = v32;
-    v50 = self;
+    selfCopy = self;
     v53 = &v55;
     v51 = &off_10036E298;
     [v27 enumerateKeysAndObjectsUsingBlock:v41];
@@ -426,13 +426,13 @@ LABEL_17:
       [MOEngagementAndSuggestionAnalyticsManager submitEngagementAnalyticsWithOnboardingStatus:v35 submitDefaultMetrics:? submitWeeklyRotationMetrics:? AndCompletionHandler:?];
     }
 
-    v10[2](v10, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   objc_autoreleasePoolPop(context);
   if (v36)
   {
-    (v10)[2](v10, 0, v40);
+    (handlerCopy)[2](handlerCopy, 0, v40);
   }
 
 LABEL_24:
@@ -1147,34 +1147,34 @@ BOOL __161__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAnalyticsW
   return v16;
 }
 
-- (id)generateSuggestionEngagementAggregatedMetric:(id)a3 withDeviceType:(id)a4 appType:(id)a5 suggestionType:(id)a6 suggestionUIPlacement:(id)a7 analyticsAggregationWindowEnum:(id)a8 onboardingStatus:(id)a9
+- (id)generateSuggestionEngagementAggregatedMetric:(id)metric withDeviceType:(id)type appType:(id)appType suggestionType:(id)suggestionType suggestionUIPlacement:(id)placement analyticsAggregationWindowEnum:(id)enum onboardingStatus:(id)status
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:a9];
+  metricCopy = metric;
+  typeCopy = type;
+  appTypeCopy = appType;
+  suggestionTypeCopy = suggestionType;
+  placementCopy = placement;
+  enumCopy = enum;
+  v20 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:status];
   LODWORD(v21) = 1120403456;
   v22 = [NSNumber numberWithFloat:v21];
   [v20 setObject:v22 forKeyedSubscript:@"scalingFactorForAnalyticsKey"];
 
-  v102 = v19;
-  [v20 setObject:v19 forKeyedSubscript:@"aggregationWindow"];
-  v107 = v15;
-  [v20 setObject:v15 forKeyedSubscript:@"deviceType"];
-  [v20 setObject:v16 forKeyedSubscript:@"appType"];
-  [v20 setObject:v17 forKeyedSubscript:@"suggestionType"];
-  [v20 setObject:v18 forKeyedSubscript:@"suggestionUIPlacement"];
+  v102 = enumCopy;
+  [v20 setObject:enumCopy forKeyedSubscript:@"aggregationWindow"];
+  v107 = typeCopy;
+  [v20 setObject:typeCopy forKeyedSubscript:@"deviceType"];
+  [v20 setObject:appTypeCopy forKeyedSubscript:@"appType"];
+  [v20 setObject:suggestionTypeCopy forKeyedSubscript:@"suggestionType"];
+  [v20 setObject:placementCopy forKeyedSubscript:@"suggestionUIPlacement"];
   v105 = v20;
   [v20 setObject:&off_10036C118 forKeyedSubscript:@"journalEntryType"];
-  v106 = v16;
-  v23 = [v16 intValue];
-  v104 = v17;
-  v24 = [v17 intValue];
-  v103 = v18;
-  v132 = [v18 intValue];
+  v106 = appTypeCopy;
+  intValue = [appTypeCopy intValue];
+  v104 = suggestionTypeCopy;
+  intValue2 = [suggestionTypeCopy intValue];
+  v103 = placementCopy;
+  intValue3 = [placementCopy intValue];
   v117 = objc_opt_new();
   v116 = objc_opt_new();
   v115 = objc_opt_new();
@@ -1183,7 +1183,7 @@ BOOL __161__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAnalyticsW
   v138 = 0u;
   v139 = 0u;
   v140 = 0u;
-  obj = v14;
+  obj = metricCopy;
   v111 = [obj countByEnumeratingWithState:&v137 objects:v142 count:16];
   if (!v111)
   {
@@ -1200,12 +1200,12 @@ BOOL __161__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAnalyticsW
   v120 = 0;
   v121 = 0;
   v119 = 0;
-  v127 = v24;
+  v127 = intValue2;
   v110 = *v138;
   v25 = @"identifier";
   v26 = &GEOPOICategoryGasStation_ptr;
   v27 = @"suggestionId";
-  v108 = v23;
+  v108 = intValue;
   do
   {
     v28 = 0;
@@ -1229,12 +1229,12 @@ BOOL __161__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAnalyticsW
 
       v32 = [v30 objectForKeyedSubscript:@"suggestionEvent"];
       v33 = [v32 objectForKeyedSubscript:@"type"];
-      v124 = [v33 intValue];
+      intValue4 = [v33 intValue];
 
       v118 = v32;
       v34 = [v32 objectForKeyedSubscript:@"clientIdentifier"];
       v112 = v34;
-      if (v23 == 1)
+      if (intValue == 1)
       {
         v130 = 1;
       }
@@ -1243,10 +1243,10 @@ BOOL __161__MOEngagementAndSuggestionAnalyticsManager_submitEngagementAnalyticsW
       {
         v35 = v34;
         v36 = v118;
-        if (v23 == 3)
+        if (intValue == 3)
         {
-          v37 = [v26[237] null];
-          if ([v35 isEqual:v37])
+          null = [v26[237] null];
+          if ([v35 isEqual:null])
           {
 LABEL_13:
             v130 = 0;
@@ -1260,14 +1260,14 @@ LABEL_13:
           goto LABEL_18;
         }
 
-        if (v23 != 2)
+        if (intValue != 2)
         {
           v130 = 0;
           goto LABEL_19;
         }
 
-        v37 = [v26[237] null];
-        if ([v112 isEqual:v37])
+        null = [v26[237] null];
+        if ([v112 isEqual:null])
         {
           goto LABEL_13;
         }
@@ -1281,15 +1281,15 @@ LABEL_18:
       v36 = v118;
 LABEL_19:
       v39 = [v36 objectForKeyedSubscript:@"viewContainerName"];
-      v40 = v132;
+      v40 = intValue3;
       v128 = v39;
-      if (v132 != 1)
+      if (intValue3 != 1)
       {
-        if (v132 == 3)
+        if (intValue3 == 3)
         {
           v43 = v39;
-          v41 = [v26[237] null];
-          if ([v43 isEqual:v41])
+          null2 = [v26[237] null];
+          if ([v43 isEqual:null2])
           {
 LABEL_28:
             v125 = 0;
@@ -1303,13 +1303,13 @@ LABEL_28:
           goto LABEL_31;
         }
 
-        if (v132 != 2)
+        if (intValue3 != 2)
         {
           goto LABEL_26;
         }
 
-        v41 = [v26[237] null];
-        if ([v128 isEqual:v41])
+        null2 = [v26[237] null];
+        if ([v128 isEqual:null2])
         {
           goto LABEL_28;
         }
@@ -1363,9 +1363,9 @@ LABEL_31:
           if (v48)
           {
             v49 = [v47 objectForKeyedSubscript:@"bundleSubType"];
-            v50 = [v49 intValue];
+            intValue5 = [v49 intValue];
 
-            v51 = [MOEngagementAndSuggestionAnalyticsParams isEventBundleSubType:v50 mappedToAnalyticsSuggestionType:v127];
+            v51 = [MOEngagementAndSuggestionAnalyticsParams isEventBundleSubType:intValue5 mappedToAnalyticsSuggestionType:v127];
           }
 
           else
@@ -1373,16 +1373,16 @@ LABEL_31:
             v51 = 0;
           }
 
-          if (v132 == 5)
+          if (intValue3 == 5)
           {
-            v52 = [v26[237] null];
-            if (([v128 isEqual:v52] & 1) == 0 && objc_msgSend(v128, "isEqualToString:", @"Recommended"))
+            null3 = [v26[237] null];
+            if (([v128 isEqual:null3] & 1) == 0 && objc_msgSend(v128, "isEqualToString:", @"Recommended"))
             {
               v57 = v26;
               v58 = v25;
               v53 = [v47 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
-              v54 = [v57[237] null];
-              if (([v53 isEqual:v54] & 1) == 0)
+              null4 = [v57[237] null];
+              if (([v53 isEqual:null4] & 1) == 0)
               {
                 v59 = [v47 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
                 if (v59)
@@ -1406,14 +1406,14 @@ LABEL_54:
             goto LABEL_55;
           }
 
-          if (v132 == 4)
+          if (intValue3 == 4)
           {
-            v52 = [v26[237] null];
-            if (([v128 isEqual:v52] & 1) == 0 && objc_msgSend(v128, "isEqualToString:", @"Recommended"))
+            null3 = [v26[237] null];
+            if (([v128 isEqual:null3] & 1) == 0 && objc_msgSend(v128, "isEqualToString:", @"Recommended"))
             {
               v53 = [v47 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
-              v54 = [v26[237] null];
-              if (([v53 isEqual:v54] & 1) == 0)
+              null4 = [v26[237] null];
+              if (([v53 isEqual:null4] & 1) == 0)
               {
                 v55 = [v47 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
                 v56 = [v55 intValue] < 6;
@@ -1433,11 +1433,11 @@ LABEL_55:
             continue;
           }
 
-          if (v124 <= 7)
+          if (intValue4 <= 7)
           {
-            if (v124 != 1)
+            if (intValue4 != 1)
             {
-              if (v124 == 6)
+              if (intValue4 == 6)
               {
                 ++v119;
               }
@@ -1471,7 +1471,7 @@ LABEL_77:
             goto LABEL_78;
           }
 
-          switch(v124)
+          switch(intValue4)
           {
             case 8:
               ++v121;
@@ -1550,7 +1550,7 @@ LABEL_78:
       while (v131);
 LABEL_81:
 
-      v23 = v108;
+      intValue = v108;
 LABEL_82:
 
 LABEL_83:
@@ -1615,10 +1615,10 @@ LABEL_87:
   return v105;
 }
 
-- (void)submitSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)a3 submitDefaultMetrics:(BOOL)a4 submitWeeklyRotationMetrics:(BOOL)a5 AndCompletionHandler:(id)a6
+- (void)submitSuggestionPerformanceAnalyticsWithOnboardingStatus:(id)status submitDefaultMetrics:(BOOL)metrics submitWeeklyRotationMetrics:(BOOL)rotationMetrics AndCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  statusCopy = status;
+  handlerCopy = handler;
   v12 = objc_opt_new();
   v13 = objc_autoreleasePoolPush();
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
@@ -1629,21 +1629,21 @@ LABEL_87:
   }
 
   v15 = [[MOEventBundleFetchOptions alloc] initWithDateInterval:0 ascending:1 limit:0 includeDeletedBundles:0 skipRanking:0];
-  v16 = [(MOEngagementAndSuggestionAnalyticsManager *)self eventBundleStore];
+  eventBundleStore = [(MOEngagementAndSuggestionAnalyticsManager *)self eventBundleStore];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __172__MOEngagementAndSuggestionAnalyticsManager_submitSuggestionPerformanceAnalyticsWithOnboardingStatus_submitDefaultMetrics_submitWeeklyRotationMetrics_AndCompletionHandler___block_invoke;
   v20[3] = &unk_10033F188;
-  v17 = v11;
+  v17 = handlerCopy;
   v23 = v17;
   v20[4] = self;
-  v24 = a4;
-  v25 = a5;
-  v18 = v10;
+  metricsCopy = metrics;
+  rotationMetricsCopy = rotationMetrics;
+  v18 = statusCopy;
   v21 = v18;
   v19 = v12;
   v22 = v19;
-  [v16 fetchEventBundleWithOptions:v15 CompletionHandler:v20];
+  [eventBundleStore fetchEventBundleWithOptions:v15 CompletionHandler:v20];
 
   objc_autoreleasePoolPop(v13);
 }
@@ -1699,25 +1699,25 @@ void __172__MOEngagementAndSuggestionAnalyticsManager_submitSuggestionPerformanc
   v8();
 }
 
-- (void)_submitSuggestionPerformanceAnalyticsFromEventBundles:(id)a3 submitDefaultMetrics:(BOOL)a4 submitWeeklyRotationMetrics:(BOOL)a5 WithOnboardingStatus:(id)a6 andCompletionResult:(id)a7
+- (void)_submitSuggestionPerformanceAnalyticsFromEventBundles:(id)bundles submitDefaultMetrics:(BOOL)metrics submitWeeklyRotationMetrics:(BOOL)rotationMetrics WithOnboardingStatus:(id)status andCompletionResult:(id)result
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  rotationMetricsCopy = rotationMetrics;
+  metricsCopy = metrics;
+  bundlesCopy = bundles;
+  statusCopy = status;
+  resultCopy = result;
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v11 count];
+    *(&buf + 4) = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Submitting suggestion performance metric for %lu bundles.", &buf, 0xCu);
   }
 
   v15 = +[NSDate date];
   v16 = objc_opt_new();
   v17 = v16;
-  if (v10 && v9)
+  if (metricsCopy && rotationMetricsCopy)
   {
     v18 = +[MOEngagementAndSuggestionAnalyticsParams allMetricsAggregationWindowMap];
 LABEL_10:
@@ -1726,13 +1726,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v10)
+  if (metricsCopy)
   {
     v18 = +[MOEngagementAndSuggestionAnalyticsParams defaultMetricsAggregationWindowMap];
     goto LABEL_10;
   }
 
-  if (v9)
+  if (rotationMetricsCopy)
   {
     v18 = +[MOEngagementAndSuggestionAnalyticsParams WeeklyRotationMetricsAggregationWindowMap];
     goto LABEL_10;
@@ -1752,14 +1752,14 @@ LABEL_11:
     v24[2] = __189__MOEngagementAndSuggestionAnalyticsManager__submitSuggestionPerformanceAnalyticsFromEventBundles_submitDefaultMetrics_submitWeeklyRotationMetrics_WithOnboardingStatus_andCompletionResult___block_invoke;
     v24[3] = &unk_10033F1D8;
     v25 = v15;
-    v26 = v11;
+    v26 = bundlesCopy;
     v21 = v20;
     v27 = v21;
-    v28 = v12;
+    v28 = statusCopy;
     p_buf = &buf;
     [v19 enumerateKeysAndObjectsUsingBlock:v24];
     v22 = [NSNumber numberWithUnsignedInteger:*(*(&buf + 1) + 24)];
-    [v13 setObject:v22 forKeyedSubscript:@"suggestionAnalyticsPayloadCount"];
+    [resultCopy setObject:v22 forKeyedSubscript:@"suggestionAnalyticsPayloadCount"];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -1772,7 +1772,7 @@ LABEL_11:
       [MOEngagementAndSuggestionAnalyticsManager submitEngagementAnalyticsWithOnboardingStatus:v23 submitDefaultMetrics:? submitWeeklyRotationMetrics:? AndCompletionHandler:?];
     }
 
-    [v13 setObject:&off_10036C130 forKeyedSubscript:@"suggestionAnalyticsPayloadCount"];
+    [resultCopy setObject:&off_10036C130 forKeyedSubscript:@"suggestionAnalyticsPayloadCount"];
   }
 }
 
@@ -2050,16 +2050,16 @@ LABEL_15:
   return v14;
 }
 
-- (void)_submitWeeklySuggestionPerformanceAnalyticsFromEventBundles:(id)a3 WithOnboardingStatus:(id)a4 andCompletionResult:(id)a5
+- (void)_submitWeeklySuggestionPerformanceAnalyticsFromEventBundles:(id)bundles WithOnboardingStatus:(id)status andCompletionResult:(id)result
 {
-  v65 = a3;
-  v76 = a4;
-  v60 = a5;
+  bundlesCopy = bundles;
+  statusCopy = status;
+  resultCopy = result;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v101 = [v65 count];
+    v101 = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Submitting weekly suggestion performance metric for %lu bundles.", buf, 0xCu);
   }
 
@@ -2089,19 +2089,19 @@ LABEL_15:
         v10 = *(*(&v95 + 1) + 8 * v9);
         context = objc_autoreleasePoolPush();
         v78 = v10;
-        v11 = [v10 intValue];
-        v12 = [MOEngagementAndSuggestionAnalyticsParams eventBundleVisibilityCategoryForUIForAnalyticsSuggestionUIVisibilityCategory:v11];
+        intValue = [v10 intValue];
+        v12 = [MOEngagementAndSuggestionAnalyticsParams eventBundleVisibilityCategoryForUIForAnalyticsSuggestionUIVisibilityCategory:intValue];
         v91[0] = _NSConcreteStackBlock;
         v91[1] = 3221225472;
         v91[2] = __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPerformanceAnalyticsFromEventBundles_WithOnboardingStatus_andCompletionResult___block_invoke;
         v91[3] = &unk_10033F200;
         v68 = v12;
         v92 = v68;
-        v94 = v11;
+        v94 = intValue;
         v71 = v64;
         v93 = v71;
         v67 = [NSPredicate predicateWithBlock:v91];
-        v79 = [v65 filteredArrayUsingPredicate:?];
+        v79 = [bundlesCopy filteredArrayUsingPredicate:?];
         v13 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
@@ -2136,23 +2136,23 @@ LABEL_15:
 
               v84 = v15;
               v16 = *(*(&v87 + 1) + 8 * v15);
-              v17 = [v16 intValue];
+              intValue2 = [v16 intValue];
               v86[0] = _NSConcreteStackBlock;
               v86[1] = 3221225472;
               v86[2] = __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPerformanceAnalyticsFromEventBundles_WithOnboardingStatus_andCompletionResult___block_invoke_262;
               v86[3] = &__block_descriptor_40_e40_B24__0__MOEventBundle_8__NSDictionary_16l;
-              v86[4] = v17;
+              v86[4] = intValue2;
               v83 = [NSPredicate predicateWithBlock:v86];
               v18 = [v79 filteredArrayUsingPredicate:?];
-              v19 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:v76];
+              v19 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:statusCopy];
               LODWORD(v20) = 1120403456;
               v21 = [NSNumber numberWithFloat:v20];
               [v19 setObject:v21 forKeyedSubscript:@"scalingFactorForAnalyticsKey"];
 
               [v19 setObject:v78 forKeyedSubscript:@"suggestionUIVisibilityCategory"];
               [v19 setObject:v16 forKeyedSubscript:@"suggestionType"];
-              v82 = v17;
-              if (v17 == 1)
+              v82 = intValue2;
+              if (intValue2 == 1)
               {
                 v22 = [NSNumber numberWithUnsignedInteger:[(MOEngagementAndSuggestionAnalyticsManager *)self countUniqueAnalyticsSuggestionTypesForEventBundles:v18]];
                 [v19 setObject:v22 forKeyedSubscript:@"uniqueSensedSuggestionTypeCount"];
@@ -2268,7 +2268,7 @@ LABEL_15:
   }
 
   v59 = [NSNumber numberWithUnsignedInteger:v81];
-  [v60 setObject:v59 forKeyedSubscript:@"weeklySuggestionAnalyticsPayloadCount"];
+  [resultCopy setObject:v59 forKeyedSubscript:@"weeklySuggestionAnalyticsPayloadCount"];
 }
 
 uint64_t __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPerformanceAnalyticsFromEventBundles_WithOnboardingStatus_andCompletionResult___block_invoke(uint64_t a1, void *a2)
@@ -2354,9 +2354,9 @@ BOOL __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPer
   return [MOEngagementAndSuggestionAnalyticsParams isEventBundleSubType:v3 mappedToAnalyticsSuggestionType:v4];
 }
 
-+ (id)generateDefaultAnalyticsPayloadWithOnboardingStatus:(id)a3
++ (id)generateDefaultAnalyticsPayloadWithOnboardingStatus:(id)status
 {
-  v3 = [MOEngagementAndSuggestionAnalyticsParams updateOnboardingStatusDictionaryKeys:a3];
+  v3 = [MOEngagementAndSuggestionAnalyticsParams updateOnboardingStatusDictionaryKeys:status];
   v4 = objc_opt_new();
   v5 = v4;
   if (v3)
@@ -2402,8 +2402,8 @@ BOOL __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPer
 - (void)setLastAnalyticsSubmissionDateForDefaultAnalyticsToNow
 {
   v3 = +[NSDate date];
-  v4 = [(MOEngagementAndSuggestionAnalyticsManager *)self defaultsManager];
-  [v4 setObject:v3 forKey:@"LastAnalyticsSubmissionDate"];
+  defaultsManager = [(MOEngagementAndSuggestionAnalyticsManager *)self defaultsManager];
+  [defaultsManager setObject:v3 forKey:@"LastAnalyticsSubmissionDate"];
 
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -2446,8 +2446,8 @@ BOOL __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPer
 - (void)setLastAnalyticsSubmissionDateForWeeklyRotationMetricsToNow
 {
   v3 = +[NSDate date];
-  v4 = [(MOEngagementAndSuggestionAnalyticsManager *)self defaultsManager];
-  [v4 setObject:v3 forKey:@"LastAnalyticsSubmissionDateForWeeklyRotationMetrics"];
+  defaultsManager = [(MOEngagementAndSuggestionAnalyticsManager *)self defaultsManager];
+  [defaultsManager setObject:v3 forKey:@"LastAnalyticsSubmissionDateForWeeklyRotationMetrics"];
 
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -2464,15 +2464,15 @@ BOOL __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPer
   self->_lastAnalyticsSubmissionDateForWeeklyRotationMetrics = v3;
 }
 
-- (unint64_t)countEventBundlesWithSamePlace:(id)a3 locationThreshold:(double)a4
+- (unint64_t)countEventBundlesWithSamePlace:(id)place locationThreshold:(double)threshold
 {
-  v5 = a3;
+  placeCopy = place;
   v33 = objc_opt_new();
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v5;
+  obj = placeCopy;
   v30 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v30)
   {
@@ -2487,19 +2487,19 @@ BOOL __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPer
         }
 
         v7 = *(*(&v42 + 1) + 8 * i);
-        v8 = [v7 place];
+        place = [v7 place];
 
-        if (v8)
+        if (place)
         {
           v31 = v7;
-          v9 = [v7 place];
-          v32 = [v9 placeKey];
+          place2 = [v7 place];
+          placeKey = [place2 placeKey];
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v10 = [v33 allKeys];
-          v11 = [v10 countByEnumeratingWithState:&v38 objects:v47 count:16];
+          allKeys = [v33 allKeys];
+          v11 = [allKeys countByEnumeratingWithState:&v38 objects:v47 count:16];
           if (v11)
           {
             v12 = v11;
@@ -2510,24 +2510,24 @@ BOOL __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPer
               {
                 if (*v39 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v15 = [v33 objectForKeyedSubscript:*(*(&v38 + 1) + 8 * j)];
-                v16 = [v15 firstObject];
-                v17 = [v16 place];
-                v18 = [v9 isSimilarToPlace:v17 locationThreshold:a4];
+                firstObject = [v15 firstObject];
+                place3 = [firstObject place];
+                v18 = [place2 isSimilarToPlace:place3 locationThreshold:threshold];
 
                 if (v18)
                 {
                   [v15 addObject:v31];
 
-                  v19 = v32;
+                  v19 = placeKey;
                   goto LABEL_17;
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v38 objects:v47 count:16];
+              v12 = [allKeys countByEnumeratingWithState:&v38 objects:v47 count:16];
               if (v12)
               {
                 continue;
@@ -2537,9 +2537,9 @@ BOOL __146__MOEngagementAndSuggestionAnalyticsManager__submitWeeklySuggestionPer
             }
           }
 
-          v10 = [NSMutableArray arrayWithObject:v31];
-          v19 = v32;
-          [v33 setObject:v10 forKeyedSubscript:v32];
+          allKeys = [NSMutableArray arrayWithObject:v31];
+          v19 = placeKey;
+          [v33 setObject:allKeys forKeyedSubscript:placeKey];
 LABEL_17:
         }
       }
@@ -2554,8 +2554,8 @@ LABEL_17:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v20 = [v33 allValues];
-  v21 = [v20 countByEnumeratingWithState:&v34 objects:v46 count:16];
+  allValues = [v33 allValues];
+  v21 = [allValues countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v21)
   {
     v22 = v21;
@@ -2567,7 +2567,7 @@ LABEL_17:
       {
         if (*v35 != v24)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allValues);
         }
 
         v26 = *(*(&v34 + 1) + 8 * k);
@@ -2577,7 +2577,7 @@ LABEL_17:
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v34 objects:v46 count:16];
+      v22 = [allValues countByEnumeratingWithState:&v34 objects:v46 count:16];
     }
 
     while (v22);
@@ -2591,15 +2591,15 @@ LABEL_17:
   return v23;
 }
 
-- (unint64_t)countEventBundlesWithSamePersons:(id)a3
+- (unint64_t)countEventBundlesWithSamePersons:(id)persons
 {
-  v3 = a3;
+  personsCopy = persons;
   v52 = objc_opt_new();
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v3;
+  obj = personsCopy;
   v53 = [obj countByEnumeratingWithState:&v76 objects:v84 count:16];
   if (v53)
   {
@@ -2619,12 +2619,12 @@ LABEL_17:
         v6 = *(*(&v76 + 1) + 8 * v5);
         v7 = v4[236];
         v8 = objc_opt_new();
-        v9 = [v6 persons];
-        if (v9)
+        persons = [v6 persons];
+        if (persons)
         {
-          v10 = v9;
-          v11 = [v6 persons];
-          v12 = [v11 count];
+          v10 = persons;
+          persons2 = [v6 persons];
+          v12 = [persons2 count];
 
           if (v12)
           {
@@ -2632,8 +2632,8 @@ LABEL_17:
             v75 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v13 = [v6 persons];
-            v14 = [v13 countByEnumeratingWithState:&v72 objects:v83 count:16];
+            persons3 = [v6 persons];
+            v14 = [persons3 countByEnumeratingWithState:&v72 objects:v83 count:16];
             if (v14)
             {
               v15 = v14;
@@ -2644,20 +2644,20 @@ LABEL_17:
                 {
                   if (*v73 != v16)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(persons3);
                   }
 
                   v18 = *(*(&v72 + 1) + 8 * i);
-                  v19 = [v18 contactIdentifier];
+                  contactIdentifier = [v18 contactIdentifier];
 
-                  if (v19)
+                  if (contactIdentifier)
                   {
-                    v20 = [v18 contactIdentifier];
-                    [v8 addObject:v20];
+                    contactIdentifier2 = [v18 contactIdentifier];
+                    [v8 addObject:contactIdentifier2];
                   }
                 }
 
-                v15 = [v13 countByEnumeratingWithState:&v72 objects:v83 count:16];
+                v15 = [persons3 countByEnumeratingWithState:&v72 objects:v83 count:16];
               }
 
               while (v15);
@@ -2687,15 +2687,15 @@ LABEL_17:
               }
 
               v58 = *(*(&v68 + 1) + 8 * j);
-              v24 = [v58 firstObject];
+              firstObject = [v58 firstObject];
               v25 = v4[236];
               v26 = objc_opt_new();
-              v27 = [v24 persons];
-              if (v27)
+              persons4 = [firstObject persons];
+              if (persons4)
               {
-                v28 = v27;
-                v29 = [v24 persons];
-                v30 = [v29 count];
+                v28 = persons4;
+                persons5 = [firstObject persons];
+                v30 = [persons5 count];
 
                 if (v30)
                 {
@@ -2703,8 +2703,8 @@ LABEL_17:
                   v67 = 0u;
                   v64 = 0u;
                   v65 = 0u;
-                  v31 = [v24 persons];
-                  v32 = [v31 countByEnumeratingWithState:&v64 objects:v81 count:16];
+                  persons6 = [firstObject persons];
+                  v32 = [persons6 countByEnumeratingWithState:&v64 objects:v81 count:16];
                   if (v32)
                   {
                     v33 = v32;
@@ -2715,20 +2715,20 @@ LABEL_17:
                       {
                         if (*v65 != v34)
                         {
-                          objc_enumerationMutation(v31);
+                          objc_enumerationMutation(persons6);
                         }
 
                         v36 = *(*(&v64 + 1) + 8 * k);
-                        v37 = [v36 contactIdentifier];
+                        contactIdentifier3 = [v36 contactIdentifier];
 
-                        if (v37)
+                        if (contactIdentifier3)
                         {
-                          v38 = [v36 contactIdentifier];
-                          [v26 addObject:v38];
+                          contactIdentifier4 = [v36 contactIdentifier];
+                          [v26 addObject:contactIdentifier4];
                         }
                       }
 
-                      v33 = [v31 countByEnumeratingWithState:&v64 objects:v81 count:16];
+                      v33 = [persons6 countByEnumeratingWithState:&v64 objects:v81 count:16];
                     }
 
                     while (v33);
@@ -2814,15 +2814,15 @@ LABEL_44:
   return v45;
 }
 
-- (unint64_t)countRepetitiveOutingBundles:(id)a3
+- (unint64_t)countRepetitiveOutingBundles:(id)bundles
 {
-  v4 = a3;
+  bundlesCopy = bundles;
   v30 = objc_opt_new();
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v4;
+  obj = bundlesCopy;
   v32 = [obj countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v32)
   {
@@ -2837,13 +2837,13 @@ LABEL_44:
         }
 
         v6 = *(*(&v46 + 1) + 8 * i);
-        v7 = [v6 place];
+        place = [v6 place];
 
-        if (v7)
+        if (place)
         {
           v34 = v6;
           v36 = i;
-          v8 = [v6 place];
+          place2 = [v6 place];
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
@@ -2864,9 +2864,9 @@ LABEL_44:
                 }
 
                 v14 = *(*(&v42 + 1) + 8 * j);
-                v15 = [v14 firstObject];
-                v16 = [v15 place];
-                v17 = [v8 isSimilarToPlace:v16 locationThreshold:200.0];
+                firstObject = [v14 firstObject];
+                place3 = [firstObject place];
+                v17 = [place2 isSimilarToPlace:place3 locationThreshold:200.0];
 
                 if (v17)
                 {
@@ -2957,15 +2957,15 @@ LABEL_17:
   return v19;
 }
 
-- (BOOL)bundleHasPhotoOrMediaResources:(id)a3
+- (BOOL)bundleHasPhotoOrMediaResources:(id)resources
 {
-  v3 = a3;
-  v4 = [v3 resources];
-  if (v4)
+  resourcesCopy = resources;
+  resources = [resourcesCopy resources];
+  if (resources)
   {
-    v5 = v4;
-    v6 = [v3 resources];
-    v7 = [v6 count];
+    v5 = resources;
+    resources2 = [resourcesCopy resources];
+    v7 = [resources2 count];
 
     if (v7)
     {
@@ -2973,8 +2973,8 @@ LABEL_17:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [v3 resources];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      resources3 = [resourcesCopy resources];
+      v9 = [resources3 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2985,7 +2985,7 @@ LABEL_17:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(resources3);
             }
 
             v13 = *(*(&v15 + 1) + 8 * i);
@@ -2996,7 +2996,7 @@ LABEL_17:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [resources3 countByEnumeratingWithState:&v15 objects:v19 count:16];
           LOBYTE(v7) = 0;
           if (v10)
           {
@@ -3024,16 +3024,16 @@ LABEL_16:
   return v7;
 }
 
-- (unint64_t)countActivityBundlesWithSameActionName:(id)a3
+- (unint64_t)countActivityBundlesWithSameActionName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v3;
+  v6 = nameCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
@@ -3049,20 +3049,20 @@ LABEL_16:
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 action];
-        v13 = [v12 actionName];
+        action = [v11 action];
+        actionName = [action actionName];
 
-        if (v13 && [v13 length])
+        if (actionName && [actionName length])
         {
-          v14 = [v4 objectForKeyedSubscript:v13];
+          v14 = [v4 objectForKeyedSubscript:actionName];
 
           if (!v14)
           {
             v15 = objc_opt_new();
-            [v4 setObject:v15 forKeyedSubscript:v13];
+            [v4 setObject:v15 forKeyedSubscript:actionName];
           }
 
-          v16 = [v4 objectForKeyedSubscript:v13];
+          v16 = [v4 objectForKeyedSubscript:actionName];
           [v16 addObject:v11];
         }
 
@@ -3087,8 +3087,8 @@ LABEL_16:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [v4 allValues];
-  v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  allValues = [v4 allValues];
+  v18 = [allValues countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v18)
   {
     v19 = v18;
@@ -3100,7 +3100,7 @@ LABEL_16:
       {
         if (*v26 != v21)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allValues);
         }
 
         v23 = *(*(&v25 + 1) + 8 * j);
@@ -3110,7 +3110,7 @@ LABEL_16:
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v19 = [allValues countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v19);
@@ -3124,14 +3124,14 @@ LABEL_16:
   return v20;
 }
 
-- (unint64_t)countEventBundlesWithHolidayLabel:(id)a3
+- (unint64_t)countEventBundlesWithHolidayLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [labelCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3143,23 +3143,23 @@ LABEL_16:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(labelCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 rankingDictionary];
-        if (v10)
+        rankingDictionary = [v9 rankingDictionary];
+        if (rankingDictionary)
         {
-          v11 = v10;
-          v12 = [v9 rankingDictionary];
-          v13 = [v12 objectForKeyedSubscript:@"useHolidayLabel"];
-          v14 = [v13 BOOLValue];
+          v11 = rankingDictionary;
+          rankingDictionary2 = [v9 rankingDictionary];
+          v13 = [rankingDictionary2 objectForKeyedSubscript:@"useHolidayLabel"];
+          bOOLValue = [v13 BOOLValue];
 
-          v6 += v14 & 1;
+          v6 += bOOLValue & 1;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [labelCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -3173,14 +3173,14 @@ LABEL_16:
   return v6;
 }
 
-- (unint64_t)countEventBundlesWithBirthdayLabel:(id)a3
+- (unint64_t)countEventBundlesWithBirthdayLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [labelCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3192,23 +3192,23 @@ LABEL_16:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(labelCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 rankingDictionary];
-        if (v10)
+        rankingDictionary = [v9 rankingDictionary];
+        if (rankingDictionary)
         {
-          v11 = v10;
-          v12 = [v9 rankingDictionary];
-          v13 = [v12 objectForKeyedSubscript:@"useBirthdayLabel"];
-          v14 = [v13 BOOLValue];
+          v11 = rankingDictionary;
+          rankingDictionary2 = [v9 rankingDictionary];
+          v13 = [rankingDictionary2 objectForKeyedSubscript:@"useBirthdayLabel"];
+          bOOLValue = [v13 BOOLValue];
 
-          v6 += v14 & 1;
+          v6 += bOOLValue & 1;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [labelCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -3222,14 +3222,14 @@ LABEL_16:
   return v6;
 }
 
-- (unint64_t)countEventBundlesWithPersons:(id)a3
+- (unint64_t)countEventBundlesWithPersons:(id)persons
 {
-  v3 = a3;
+  personsCopy = persons;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [personsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3241,16 +3241,16 @@ LABEL_16:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(personsCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 persons];
-        if (v10)
+        persons = [v9 persons];
+        if (persons)
         {
-          v11 = v10;
-          v12 = [v9 persons];
-          v13 = [v12 count];
+          v11 = persons;
+          persons2 = [v9 persons];
+          v13 = [persons2 count];
 
           if (v13)
           {
@@ -3259,7 +3259,7 @@ LABEL_16:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [personsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -3273,14 +3273,14 @@ LABEL_16:
   return v6;
 }
 
-- (unint64_t)countEventBundlesWithResourceType:(unint64_t)a3 FromEventBudles:(id)a4
+- (unint64_t)countEventBundlesWithResourceType:(unint64_t)type FromEventBudles:(id)budles
 {
-  v5 = a4;
+  budlesCopy = budles;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v6 = [budlesCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3292,16 +3292,16 @@ LABEL_16:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(budlesCopy);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 resources];
-        if (v12)
+        resources = [v11 resources];
+        if (resources)
         {
-          v13 = v12;
-          v14 = [v11 resources];
-          v15 = [v14 count];
+          v13 = resources;
+          resources2 = [v11 resources];
+          v15 = [resources2 count];
 
           if (v15)
           {
@@ -3309,8 +3309,8 @@ LABEL_16:
             v25 = 0u;
             v22 = 0u;
             v23 = 0u;
-            v16 = [v11 resources];
-            v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            resources3 = [v11 resources];
+            v17 = [resources3 countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v17)
             {
               v18 = v17;
@@ -3321,17 +3321,17 @@ LABEL_16:
                 {
                   if (*v23 != v19)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(resources3);
                   }
 
-                  if ([*(*(&v22 + 1) + 8 * j) type] == a3)
+                  if ([*(*(&v22 + 1) + 8 * j) type] == type)
                   {
                     ++v8;
                     goto LABEL_18;
                   }
                 }
 
-                v18 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+                v18 = [resources3 countByEnumeratingWithState:&v22 objects:v30 count:16];
                 if (v18)
                 {
                   continue;
@@ -3346,7 +3346,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [budlesCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
@@ -3360,18 +3360,18 @@ LABEL_18:
   return v8;
 }
 
-- (float)calculateAverageAgeInDaysForEventBundles:(id)a3 withSubmissionDate:(id)a4
+- (float)calculateAverageAgeInDaysForEventBundles:(id)bundles withSubmissionDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  bundlesCopy = bundles;
+  dateCopy = date;
   v7 = 0.0;
-  if ([v5 count])
+  if ([bundlesCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = bundlesCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -3390,8 +3390,8 @@ LABEL_18:
           v14 = *(*(&v19 + 1) + 8 * i);
           if ([v14 bundleSuperType] != 7 && objc_msgSend(v14, "bundleSuperType") != 6)
           {
-            v15 = [v14 endDate];
-            [v6 timeIntervalSinceDate:v15];
+            endDate = [v14 endDate];
+            [dateCopy timeIntervalSinceDate:endDate];
             v17 = v16 / 86400.0;
 
             v7 = v7 + v17;
@@ -3423,18 +3423,18 @@ LABEL_18:
   return v7;
 }
 
-- (float)calculateMaxAgeInDaysForEventBundles:(id)a3 withSubmissionDate:(id)a4
+- (float)calculateMaxAgeInDaysForEventBundles:(id)bundles withSubmissionDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  bundlesCopy = bundles;
+  dateCopy = date;
   v7 = 0.0;
-  if ([v5 count])
+  if ([bundlesCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = bundlesCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -3454,8 +3454,8 @@ LABEL_18:
           v14 = *(*(&v19 + 1) + 8 * i);
           if ([v14 bundleSuperType] != 7 && objc_msgSend(v14, "bundleSuperType") != 6)
           {
-            v15 = [v14 endDate];
-            [v6 timeIntervalSinceDate:v15];
+            endDate = [v14 endDate];
+            [dateCopy timeIntervalSinceDate:endDate];
             v17 = v16 / 86400.0;
 
             if (v7 < v17)
@@ -3486,16 +3486,16 @@ LABEL_18:
   return v7;
 }
 
-- (unint64_t)countUniqueAnalyticsSuggestionTypesForEventBundles:(id)a3
+- (unint64_t)countUniqueAnalyticsSuggestionTypesForEventBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v4 = objc_opt_new();
   v16 = +[MOEngagementAndSuggestionAnalyticsParams sensedAnalyticsSuggestionTypes];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = bundlesCopy;
   v18 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v18)
   {
@@ -3561,7 +3561,7 @@ LABEL_18:
 
 - (double)isReadyToSubmitDefaultAnalytics
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v4 = 134217984;
   v5 = v2;
   _os_log_debug_impl(&_mh_execute_header, a2, OS_LOG_TYPE_DEBUG, "Default Engagement and suggestion analytics were never submitted. Setting lastAnalyticsSubmissionDateForDefaultAnalytics to now to hold out for the next %.1f days", &v4, 0xCu);

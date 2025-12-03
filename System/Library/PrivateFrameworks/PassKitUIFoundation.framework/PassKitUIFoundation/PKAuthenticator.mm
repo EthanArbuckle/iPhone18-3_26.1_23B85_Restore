@@ -1,51 +1,51 @@
 @interface PKAuthenticator
 + (BOOL)_isAccessibilityUserIntentEnabled;
-+ (BOOL)canPerformPSD2StyleBuyForAccessControlRef:(__SecAccessControl *)a3;
-+ (BOOL)isUserIntentAvailableWithStyle:(int64_t)a3;
++ (BOOL)canPerformPSD2StyleBuyForAccessControlRef:(__SecAccessControl *)ref;
++ (BOOL)isUserIntentAvailableWithStyle:(int64_t)style;
 + (BOOL)secureIndicatorVisible;
 + (id)trackSecureIndicatorVisibility;
 + (int64_t)userIntentStyle;
-+ (unint64_t)_currentStateForMechanisms:(id)a3;
-+ (unint64_t)cachedStateForPolicy:(int64_t)a3;
-+ (unint64_t)currentStateForAccessControl:(__SecAccessControl *)a3;
-+ (unint64_t)currentStateForPolicy:(int64_t)a3;
-+ (void)consumeSharedRootContextWithCompletion:(id)a3;
-+ (void)currentStateForRequest:(id)a3 completion:(id)a4;
-+ (void)performWhenSecureIndicatorRemoved:(id)a3;
-+ (void)resetSharedRootContextWithCompletion:(id)a3;
++ (unint64_t)_currentStateForMechanisms:(id)mechanisms;
++ (unint64_t)cachedStateForPolicy:(int64_t)policy;
++ (unint64_t)currentStateForAccessControl:(__SecAccessControl *)control;
++ (unint64_t)currentStateForPolicy:(int64_t)policy;
++ (void)consumeSharedRootContextWithCompletion:(id)completion;
++ (void)currentStateForRequest:(id)request completion:(id)completion;
++ (void)performWhenSecureIndicatorRemoved:(id)removed;
++ (void)resetSharedRootContextWithCompletion:(id)completion;
 - (BOOL)_delegateSupportsPasscodePresentation;
 - (BOOL)_delegateSupportsPassphrasePresentation;
 - (BOOL)fingerPresent;
 - (BOOL)passcodeActive;
 - (BOOL)passcodeWasPresented;
 - (BOOL)passphraseActive;
-- (PKAuthenticator)initWithDelegate:(id)a3;
+- (PKAuthenticator)initWithDelegate:(id)delegate;
 - (PKAuthenticatorDelegate)delegate;
 - (id)_context;
-- (id)_optionsForEvaluationRequest:(id)a3 withEvaluationContext:(id)a4;
-- (id)_swapContext:(id)a3 withOptions:(unint64_t)a4;
+- (id)_optionsForEvaluationRequest:(id)request withEvaluationContext:(id)context;
+- (id)_swapContext:(id)context withOptions:(unint64_t)options;
 - (int64_t)coachingState;
 - (int64_t)evaluationState;
 - (unint64_t)authenticationIdentifier;
-- (void)_evaluateEvaluationContext:(id)a3;
-- (void)_handleInstructionsForRequest:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)accessExternalizedContextWithCompletion:(id)a3;
+- (void)_evaluateEvaluationContext:(id)context;
+- (void)_handleInstructionsForRequest:(id)request withContext:(id)context completion:(id)completion;
+- (void)accessExternalizedContextWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)evaluateRequest:(id)a3 withCompletion:(id)a4;
+- (void)evaluateRequest:(id)request withCompletion:(id)completion;
 - (void)fallbackToSystemPasscodeUI;
 - (void)invalidate;
-- (void)registerSecureIndicatorProvider:(id)a3;
+- (void)registerSecureIndicatorProvider:(id)provider;
 - (void)restartEvaluation;
-- (void)setDelegate:(id)a3;
-- (void)unregisterSecureIndicatorProvider:(id)a3;
-- (void)waitForSecureIndicatorProvider:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)unregisterSecureIndicatorProvider:(id)provider;
+- (void)waitForSecureIndicatorProvider:(id)provider;
 @end
 
 @implementation PKAuthenticator
 
-- (PKAuthenticator)initWithDelegate:(id)a3
+- (PKAuthenticator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKAuthenticator;
   v5 = [(PKAuthenticator *)&v8 init];
@@ -53,7 +53,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -63,15 +63,15 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   [(PKAuthenticatorEvaluationContext *)self->_context invalidate];
-  v3 = [(PKAuthenticatorEvaluationContext *)self->_context hoistCompletionHandler];
-  v4 = v3;
-  if (v3)
+  hoistCompletionHandler = [(PKAuthenticatorEvaluationContext *)self->_context hoistCompletionHandler];
+  v4 = hoistCompletionHandler;
+  if (hoistCompletionHandler)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __26__PKAuthenticator_dealloc__block_invoke;
     block[3] = &unk_2799FFB20;
-    v17 = v3;
+    v17 = hoistCompletionHandler;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -118,38 +118,38 @@ void __26__PKAuthenticator_dealloc__block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-+ (void)consumeSharedRootContextWithCompletion:(id)a3
++ (void)consumeSharedRootContextWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[PKAuthenticatorSharedRootContext sharedInstance];
-  [v4 consumeWithCompletion:v3];
+  [v4 consumeWithCompletion:completionCopy];
 }
 
-+ (void)resetSharedRootContextWithCompletion:(id)a3
++ (void)resetSharedRootContextWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[PKAuthenticatorSharedRootContext sharedInstance];
-  [v4 resetWithCompletion:v3];
+  [v4 resetWithCompletion:completionCopy];
 }
 
-+ (BOOL)isUserIntentAvailableWithStyle:(int64_t)a3
++ (BOOL)isUserIntentAvailableWithStyle:(int64_t)style
 {
   v4 = +[PKAuthenticatorSharedRootContext sharedInstance];
-  v5 = [v4 userIntentAvailabilityState];
+  userIntentAvailabilityState = [v4 userIntentAvailabilityState];
 
-  if ((a3 - 2) >= 2)
+  if ((style - 2) >= 2)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       return 0;
     }
 
-    return ((v5 - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    return ((userIntentAvailabilityState - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
   else
   {
-    return v5 == 1;
+    return userIntentAvailabilityState == 1;
   }
 }
 
@@ -174,7 +174,7 @@ void __26__PKAuthenticator_dealloc__block_invoke(uint64_t a1)
     return 0;
   }
 
-  if (![a1 _isAccessibilityUserIntentEnabled])
+  if (![self _isAccessibilityUserIntentEnabled])
   {
     return 1;
   }
@@ -192,7 +192,7 @@ void __26__PKAuthenticator_dealloc__block_invoke(uint64_t a1)
   return -1;
 }
 
-+ (unint64_t)currentStateForPolicy:(int64_t)a3
++ (unint64_t)currentStateForPolicy:(int64_t)policy
 {
   v13 = 0;
   v14 = &v13;
@@ -200,7 +200,7 @@ void __26__PKAuthenticator_dealloc__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v5 = _LAPolicyContainerForPKPolicy(a3);
+  v5 = _LAPolicyContainerForPKPolicy(policy);
   v7 = v6;
   if ((v6 & 0x100) != 0)
   {
@@ -214,7 +214,7 @@ void __26__PKAuthenticator_dealloc__block_invoke(uint64_t a1)
     _AccessPreflightContext(HIDWORD(v6) & 1, v12);
   }
 
-  v8 = [a1 _currentStateForMechanisms:v14[5]];
+  v8 = [self _currentStateForMechanisms:v14[5]];
   if ((v7 & 0x100000000) == 0)
   {
     v9 = CACurrentMediaTime();
@@ -224,7 +224,7 @@ void __26__PKAuthenticator_dealloc__block_invoke(uint64_t a1)
     v11[3] = &__block_descriptor_56_e29_v16__0__NSMutableDictionary_8l;
     v11[4] = v8;
     *&v11[5] = v9;
-    v11[6] = a3;
+    v11[6] = policy;
     _AccessAuthenticatorStateCache(v11);
   }
 
@@ -272,10 +272,10 @@ void __41__PKAuthenticator_currentStateForPolicy___block_invoke_489(void *a1, vo
   [v4 setObject:v5 forKeyedSubscript:v6];
 }
 
-+ (void)currentStateForRequest:(id)a3 completion:(id)a4
++ (void)currentStateForRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = _LAPolicyContainerForPKPolicy([a3 policy]);
+  completionCopy = completion;
+  v7 = _LAPolicyContainerForPKPolicy([request policy]);
   if ((v8 & 0x100) != 0)
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -284,14 +284,14 @@ void __41__PKAuthenticator_currentStateForPolicy___block_invoke_489(void *a1, vo
     v9[3] = &unk_279A001C8;
     v11 = v7;
     v12 = v8;
-    v10 = v6;
-    v13 = a1;
+    v10 = completionCopy;
+    selfCopy = self;
     _AccessPreflightContext(0, v9);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -344,7 +344,7 @@ void __53__PKAuthenticator_currentStateForRequest_completion___block_invoke_2(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)currentStateForAccessControl:(__SecAccessControl *)a3
++ (unint64_t)currentStateForAccessControl:(__SecAccessControl *)control
 {
   v7 = 0;
   v8 = &v7;
@@ -357,9 +357,9 @@ void __53__PKAuthenticator_currentStateForRequest_completion___block_invoke_2(ui
   v6[2] = __48__PKAuthenticator_currentStateForAccessControl___block_invoke;
   v6[3] = &unk_279A001F0;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = control;
   _AccessPreflightContext(0, v6);
-  v4 = [a1 _currentStateForMechanisms:v8[5]];
+  v4 = [self _currentStateForMechanisms:v8[5]];
   _Block_object_dispose(&v7, 8);
 
   return v4;
@@ -393,16 +393,16 @@ void __48__PKAuthenticator_currentStateForAccessControl___block_invoke(uint64_t 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)canPerformPSD2StyleBuyForAccessControlRef:(__SecAccessControl *)a3
++ (BOOL)canPerformPSD2StyleBuyForAccessControlRef:(__SecAccessControl *)ref
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (ref)
   {
-    CFRetain(a3);
-    v4 = [PKAuthenticator currentStateForAccessControl:a3];
+    CFRetain(ref);
+    v4 = [PKAuthenticator currentStateForAccessControl:ref];
     v5 = v4 & [PKAuthenticator currentStateForPolicy:2]& 0xELL;
     v6 = v5 != 0;
-    CFRelease(a3);
+    CFRelease(ref);
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -430,12 +430,12 @@ void __48__PKAuthenticator_currentStateForAccessControl___block_invoke(uint64_t 
   return v6;
 }
 
-+ (unint64_t)_currentStateForMechanisms:(id)a3
++ (unint64_t)_currentStateForMechanisms:(id)mechanisms
 {
-  v3 = a3;
-  if ([v3 count])
+  mechanismsCopy = mechanisms;
+  if ([mechanismsCopy count])
   {
-    if ([v3 containsObject:&unk_286FD0F98])
+    if ([mechanismsCopy containsObject:&unk_286FD0F98])
     {
       v4 = 2;
     }
@@ -445,12 +445,12 @@ void __48__PKAuthenticator_currentStateForAccessControl___block_invoke(uint64_t 
       v4 = 0;
     }
 
-    if ([v3 containsObject:&unk_286FD0F80])
+    if ([mechanismsCopy containsObject:&unk_286FD0F80])
     {
       v4 |= 8uLL;
     }
 
-    v5 = [v3 containsObject:&unk_286FD0FB0];
+    v5 = [mechanismsCopy containsObject:&unk_286FD0FB0];
     v6 = v4 | 4;
     if (!v5)
     {
@@ -476,7 +476,7 @@ void __48__PKAuthenticator_currentStateForAccessControl___block_invoke(uint64_t 
   return v7;
 }
 
-+ (unint64_t)cachedStateForPolicy:(int64_t)a3
++ (unint64_t)cachedStateForPolicy:(int64_t)policy
 {
   v13 = 0;
   v14 = &v13;
@@ -484,7 +484,7 @@ void __48__PKAuthenticator_currentStateForAccessControl___block_invoke(uint64_t 
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  _LAPolicyContainerForPKPolicy(a3);
+  _LAPolicyContainerForPKPolicy(policy);
   if ((v5 & 0x100000000) == 0)
   {
     v12[0] = MEMORY[0x277D85DD0];
@@ -492,13 +492,13 @@ void __48__PKAuthenticator_currentStateForAccessControl___block_invoke(uint64_t 
     v12[2] = __40__PKAuthenticator_cachedStateForPolicy___block_invoke;
     v12[3] = &unk_279A00218;
     v12[4] = &v13;
-    v12[5] = a3;
+    v12[5] = policy;
     _AccessAuthenticatorStateCache(v12);
   }
 
   if (!v14[5])
   {
-    v8 = [a1 currentStateForPolicy:a3];
+    v8 = [self currentStateForPolicy:policy];
 LABEL_8:
     v7 = v8;
     goto LABEL_9;
@@ -510,7 +510,7 @@ LABEL_8:
   [v14[5] getValue:&v10];
   if (v6 - v11 >= 0.2)
   {
-    v8 = [a1 currentStateForPolicy:{a3, v6 - v11}];
+    v8 = [self currentStateForPolicy:{policy, v6 - v11}];
     goto LABEL_8;
   }
 
@@ -543,18 +543,18 @@ void __40__PKAuthenticator_cachedStateForPolicy___block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (id)_swapContext:(id)a3 withOptions:(unint64_t)a4
+- (id)_swapContext:(id)context withOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   p_context = &self->_context;
   context = self->_context;
-  v33 = v7;
+  v33 = contextCopy;
   if (self->_invalidated)
   {
-    if (v7 | context)
+    if (contextCopy | context)
     {
       v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
       v11 = v10;
@@ -562,7 +562,7 @@ void __40__PKAuthenticator_cachedStateForPolicy___block_invoke(uint64_t a1, void
       {
         [v10 addObject:?];
         v12 = *p_context;
-        if (!v7)
+        if (!contextCopy)
         {
           goto LABEL_13;
         }
@@ -571,15 +571,15 @@ void __40__PKAuthenticator_cachedStateForPolicy___block_invoke(uint64_t a1, void
       else
       {
         v12 = 0;
-        if (!v7)
+        if (!contextCopy)
         {
           goto LABEL_13;
         }
       }
 
-      if (v12 != v7)
+      if (v12 != contextCopy)
       {
-        [v11 addObject:v7];
+        [v11 addObject:contextCopy];
         v12 = *p_context;
       }
 
@@ -590,13 +590,13 @@ LABEL_13:
 
         WeakRetained = 0;
         v14 = 0;
-        v13 = 0;
+        contextCopy2 = 0;
         goto LABEL_15;
       }
 
 LABEL_9:
       os_unfair_lock_unlock(&self->_lock);
-      v13 = 0;
+      contextCopy2 = 0;
       v14 = 0;
       v16 = 0;
       goto LABEL_25;
@@ -607,26 +607,26 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (context == v7)
+  if (context == contextCopy)
   {
     goto LABEL_8;
   }
 
-  v13 = context;
-  v14 = v7;
-  objc_storeStrong(&self->_context, a3);
+  contextCopy2 = context;
+  v14 = contextCopy;
+  objc_storeStrong(&self->_context, context);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = 0;
 LABEL_15:
   ++self->_authenticationIdentifier;
   os_unfair_lock_unlock(&self->_lock);
-  if (v13)
+  if (contextCopy2)
   {
-    [(PKAuthenticatorEvaluationContext *)v13 setDelegate:0 resetPriorDelegate:v14 == 0];
-    [(PKAuthenticatorEvaluationContext *)v13 invalidateWithIntent:(v4 & 2 | v14) != 0];
-    v17 = [(PKAuthenticatorEvaluationContext *)v13 hoistCompletionHandler];
-    v18 = v17;
-    if ((v4 & 1) == 0 && v17)
+    [(PKAuthenticatorEvaluationContext *)contextCopy2 setDelegate:0 resetPriorDelegate:v14 == 0];
+    [(PKAuthenticatorEvaluationContext *)contextCopy2 invalidateWithIntent:(optionsCopy & 2 | v14) != 0];
+    hoistCompletionHandler = [(PKAuthenticatorEvaluationContext *)contextCopy2 hoistCompletionHandler];
+    v18 = hoistCompletionHandler;
+    if ((optionsCopy & 1) == 0 && hoistCompletionHandler)
     {
       v19 = [MEMORY[0x277D37DB8] responseWithResult:2];
       (v18)[2](v18, v19);
@@ -635,10 +635,10 @@ LABEL_15:
 
   if (v14)
   {
-    v20 = [v14 request];
-    v21 = [v20 useLegacyAuthenticator];
+    request = [v14 request];
+    useLegacyAuthenticator = [request useLegacyAuthenticator];
 
-    if ((v21 & 1) == 0)
+    if ((useLegacyAuthenticator & 1) == 0)
     {
       [v14 _updateEvaluationState];
     }
@@ -674,11 +674,11 @@ LABEL_25:
 
         v27 = *(*(&v34 + 1) + 8 * i);
         [v27 invalidate];
-        v28 = [v27 hoistCompletionHandler];
-        if (v28)
+        hoistCompletionHandler2 = [v27 hoistCompletionHandler];
+        if (hoistCompletionHandler2)
         {
           v29 = [MEMORY[0x277D37DB8] responseWithResult:2];
-          (v28)[2](v28, v29);
+          (hoistCompletionHandler2)[2](hoistCompletionHandler2, v29);
         }
       }
 
@@ -688,19 +688,19 @@ LABEL_25:
     while (v24);
   }
 
-  v30 = v13;
+  v30 = contextCopy2;
   v31 = *MEMORY[0x277D85DE8];
-  return v13;
+  return contextCopy2;
 }
 
-- (id)_optionsForEvaluationRequest:(id)a3 withEvaluationContext:(id)a4
+- (id)_optionsForEvaluationRequest:(id)request withEvaluationContext:(id)context
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v8 setObject:MEMORY[0x277CBEC10] forKeyedSubscript:&unk_286FD1028];
-  if (([v6 passcodeOnly] & 1) == 0)
+  if (([requestCopy passcodeOnly] & 1) == 0)
   {
     if (PKPearlIsAvailable())
     {
@@ -720,9 +720,9 @@ LABEL_25:
     [v8 setObject:MEMORY[0x277CBEC10] forKeyedSubscript:&unk_286FD10A0];
   }
 
-  v10 = [(PKAuthenticator *)self _delegateSupportsPasscodePresentation];
+  _delegateSupportsPasscodePresentation = [(PKAuthenticator *)self _delegateSupportsPasscodePresentation];
   v11 = MEMORY[0x277CBEC38];
-  if (v10)
+  if (_delegateSupportsPasscodePresentation)
   {
     v41 = &unk_286FD0F68;
     v42[0] = MEMORY[0x277CBEC38];
@@ -740,11 +740,11 @@ LABEL_25:
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v14 setObject:v8 forKeyedSubscript:&unk_286FD10B8];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "maxBiometryFailures")}];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "maxBiometryFailures")}];
   [v14 setObject:v15 forKeyedSubscript:&unk_286FD10D0];
 
   v16 = MEMORY[0x277CCABB0];
-  v17 = [v7 isPolicySupported] && objc_msgSend(v7, "policy") == 1004 && objc_msgSend(v6, "accessControlRef") != 0;
+  v17 = [contextCopy isPolicySupported] && objc_msgSend(contextCopy, "policy") == 1004 && objc_msgSend(requestCopy, "accessControlRef") != 0;
   v18 = [v16 numberWithInt:v17];
   [v14 setObject:v18 forKeyedSubscript:&unk_286FD10E8];
 
@@ -752,91 +752,91 @@ LABEL_25:
   [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_286FD1100];
   [v14 setObject:&unk_286FD1028 forKeyedSubscript:&unk_286FD1118];
   [v14 setObject:v19 forKeyedSubscript:&unk_286FD1130];
-  v20 = [v6 processName];
+  processName = [requestCopy processName];
 
-  if (v20)
+  if (processName)
   {
-    v21 = [v6 processName];
-    [v14 setObject:v21 forKeyedSubscript:&unk_286FD1148];
+    processName2 = [requestCopy processName];
+    [v14 setObject:processName2 forKeyedSubscript:&unk_286FD1148];
   }
 
-  v22 = [v6 reason];
+  reason = [requestCopy reason];
 
-  if (v22)
+  if (reason)
   {
-    v23 = [v6 reason];
-    [v14 setObject:v23 forKeyedSubscript:&unk_286FD0F80];
+    reason2 = [requestCopy reason];
+    [v14 setObject:reason2 forKeyedSubscript:&unk_286FD0F80];
   }
 
-  v24 = [v6 processIdentifier];
+  processIdentifier = [requestCopy processIdentifier];
 
-  if (v24)
+  if (processIdentifier)
   {
-    v25 = [v6 processIdentifier];
-    [v14 setObject:v25 forKeyedSubscript:&unk_286FD1160];
+    processIdentifier2 = [requestCopy processIdentifier];
+    [v14 setObject:processIdentifier2 forKeyedSubscript:&unk_286FD1160];
   }
 
-  if ([v7 isPolicySupported])
+  if ([contextCopy isPolicySupported])
   {
-    v26 = [v7 policy];
-    if (v26 == 1017 || v26 == 1006)
+    policy = [contextCopy policy];
+    if (policy == 1017 || policy == 1006)
     {
-      v27 = [v6 PINTitle];
-      if ([v27 length])
+      pINTitle = [requestCopy PINTitle];
+      if ([pINTitle length])
       {
-        [v14 setObject:v27 forKeyedSubscript:&unk_286FD1178];
+        [v14 setObject:pINTitle forKeyedSubscript:&unk_286FD1178];
       }
 
-      v28 = [v6 PINLength];
-      if (v28)
+      pINLength = [requestCopy PINLength];
+      if (pINLength)
       {
-        [v14 setObject:v28 forKeyedSubscript:&unk_286FD1190];
+        [v14 setObject:pINLength forKeyedSubscript:&unk_286FD1190];
       }
     }
   }
 
-  if ([v7 forceApplePayCheck])
+  if ([contextCopy forceApplePayCheck])
   {
     [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_286FD11A8];
   }
 
-  if ([v7 forceSkipUserIntent])
+  if ([contextCopy forceSkipUserIntent])
   {
     [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_286FD11C0];
   }
 
-  if (([v6 policy] - 2) <= 7)
+  if (([requestCopy policy] - 2) <= 7)
   {
     [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_286FD11D8];
   }
 
-  v29 = [v6 physicalButtonTitle];
+  physicalButtonTitle = [requestCopy physicalButtonTitle];
 
-  if (v29)
+  if (physicalButtonTitle)
   {
-    v30 = [v6 physicalButtonTitle];
-    [v14 setObject:v30 forKeyedSubscript:&unk_286FD11F0];
+    physicalButtonTitle2 = [requestCopy physicalButtonTitle];
+    [v14 setObject:physicalButtonTitle2 forKeyedSubscript:&unk_286FD11F0];
   }
 
-  v31 = [v6 passcodeTitle];
+  passcodeTitle = [requestCopy passcodeTitle];
 
-  if (v31)
+  if (passcodeTitle)
   {
-    v32 = [v6 passcodeTitle];
-    [v14 setObject:v32 forKeyedSubscript:&unk_286FD1208];
+    passcodeTitle2 = [requestCopy passcodeTitle];
+    [v14 setObject:passcodeTitle2 forKeyedSubscript:&unk_286FD1208];
   }
 
-  v33 = [v6 fallbackOptionTitle];
-  v34 = [v33 length];
+  fallbackOptionTitle = [requestCopy fallbackOptionTitle];
+  v34 = [fallbackOptionTitle length];
 
   if (v34)
   {
     [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_286FD1220];
-    v35 = [v6 fallbackOptionTitle];
-    [v14 setObject:v35 forKeyedSubscript:&unk_286FD0FB0];
+    fallbackOptionTitle2 = [requestCopy fallbackOptionTitle];
+    [v14 setObject:fallbackOptionTitle2 forKeyedSubscript:&unk_286FD0FB0];
   }
 
-  if ([v6 useLocationBasedAuthorization])
+  if ([requestCopy useLocationBasedAuthorization])
   {
     [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_286FD1238];
   }
@@ -848,28 +848,28 @@ LABEL_25:
   return v36;
 }
 
-- (void)_handleInstructionsForRequest:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)_handleInstructionsForRequest:(id)request withContext:(id)context completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
-- (void)_evaluateEvaluationContext:(id)a3
+- (void)_evaluateEvaluationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [(PKAuthenticator *)self _optionsForEvaluationRequest:v5 withEvaluationContext:v4];
+  contextCopy = context;
+  request = [contextCopy request];
+  v6 = [(PKAuthenticator *)self _optionsForEvaluationRequest:request withEvaluationContext:contextCopy];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__PKAuthenticator__evaluateEvaluationContext___block_invoke;
   v9[3] = &unk_279A00240;
   objc_copyWeak(&v12, &location);
-  v7 = v5;
+  v7 = request;
   v10 = v7;
-  v8 = v4;
+  v8 = contextCopy;
   v11 = v8;
   [v8 evaluateWithOptions:v6 completion:v9];
 
@@ -1026,11 +1026,11 @@ LABEL_36:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)evaluateRequest:(id)a3 withCompletion:(id)a4
+- (void)evaluateRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[PKAuthenticatorEvaluationContext alloc] initWithRequest:v6 completionHandler:v7 forAuthenticator:self];
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = [[PKAuthenticatorEvaluationContext alloc] initWithRequest:requestCopy completionHandler:completionCopy forAuthenticator:self];
   if (![(PKAuthenticatorEvaluationContext *)v8 isInvalidated])
   {
     v9 = [(PKAuthenticator *)self _swapContext:v8];
@@ -1058,12 +1058,12 @@ LABEL_36:
     v18[2] = __50__PKAuthenticator_evaluateRequest_withCompletion___block_invoke_3;
     v18[3] = &unk_279A002E0;
     objc_copyWeak(&v22, &location);
-    v19 = v6;
+    v19 = requestCopy;
     v11 = v8;
     v20 = v11;
     v21 = v23;
     [v10 addOperation:v18];
-    v12 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __50__PKAuthenticator_evaluateRequest_withCompletion___block_invoke_5;
@@ -1071,7 +1071,7 @@ LABEL_36:
     objc_copyWeak(&v17, &location);
     v16 = v23;
     v15 = v11;
-    v13 = [v10 evaluateWithInput:v12 completion:v14];
+    v13 = [v10 evaluateWithInput:null completion:v14];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v22);
@@ -1165,8 +1165,8 @@ void __50__PKAuthenticator_evaluateRequest_withCompletion___block_invoke_5(uint6
 
 - (void)fallbackToSystemPasscodeUI
 {
-  v2 = [(PKAuthenticator *)self _context];
-  [v2 fallbackToPasscode];
+  _context = [(PKAuthenticator *)self _context];
+  [_context fallbackToPasscode];
 }
 
 - (void)restartEvaluation
@@ -1175,12 +1175,12 @@ void __50__PKAuthenticator_evaluateRequest_withCompletion___block_invoke_5(uint6
   context = self->_context;
   if (context)
   {
-    v6 = [(PKAuthenticatorEvaluationContext *)context request];
-    v4 = [(PKAuthenticatorEvaluationContext *)self->_context hoistCompletionHandler];
+    request = [(PKAuthenticatorEvaluationContext *)context request];
+    hoistCompletionHandler = [(PKAuthenticatorEvaluationContext *)self->_context hoistCompletionHandler];
     os_unfair_lock_unlock(&self->_lock);
-    if (v6)
+    if (request)
     {
-      if ([v6 useLegacyAuthenticator])
+      if ([request useLegacyAuthenticator])
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         if (objc_opt_respondsToSelector())
@@ -1189,34 +1189,34 @@ void __50__PKAuthenticator_evaluateRequest_withCompletion___block_invoke_5(uint6
         }
       }
 
-      [(PKAuthenticator *)self evaluateRequest:v6 withCompletion:v4];
+      [(PKAuthenticator *)self evaluateRequest:request withCompletion:hoistCompletionHandler];
     }
 
     else
     {
-      v6 = 0;
+      request = 0;
     }
   }
 
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v6 = 0;
-    v4 = 0;
+    request = 0;
+    hoistCompletionHandler = 0;
   }
 }
 
-- (void)accessExternalizedContextWithCompletion:(id)a3
+- (void)accessExternalizedContextWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKAuthenticator *)self _context];
+  completionCopy = completion;
+  _context = [(PKAuthenticator *)self _context];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__PKAuthenticator_accessExternalizedContextWithCompletion___block_invoke;
   v7[3] = &unk_279A00330;
-  v8 = v4;
-  v6 = v4;
-  [v5 accessLAContext:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [_context accessLAContext:v7];
 }
 
 void __59__PKAuthenticator_accessExternalizedContextWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1282,9 +1282,9 @@ void __59__PKAuthenticator_accessExternalizedContextWithCompletion___block_invok
   return authenticationIdentifier;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   os_unfair_lock_lock(&self->_lock);
   objc_storeWeak(&self->_delegate, obj);
   if (self->_invalidated)
@@ -1304,50 +1304,50 @@ void __59__PKAuthenticator_accessExternalizedContextWithCompletion___block_invok
 
 - (int64_t)evaluationState
 {
-  v2 = [(PKAuthenticator *)self _context];
-  v3 = [v2 evaluationState];
+  _context = [(PKAuthenticator *)self _context];
+  evaluationState = [_context evaluationState];
 
-  return v3;
+  return evaluationState;
 }
 
 - (int64_t)coachingState
 {
-  v2 = [(PKAuthenticator *)self _context];
-  v3 = [v2 coachingState];
+  _context = [(PKAuthenticator *)self _context];
+  coachingState = [_context coachingState];
 
-  return v3;
+  return coachingState;
 }
 
 - (BOOL)fingerPresent
 {
-  v2 = [(PKAuthenticator *)self _context];
-  v3 = [v2 fingerPresent];
+  _context = [(PKAuthenticator *)self _context];
+  fingerPresent = [_context fingerPresent];
 
-  return v3;
+  return fingerPresent;
 }
 
 - (BOOL)passcodeActive
 {
-  v2 = [(PKAuthenticator *)self _context];
-  v3 = [v2 passcodeActive];
+  _context = [(PKAuthenticator *)self _context];
+  passcodeActive = [_context passcodeActive];
 
-  return v3;
+  return passcodeActive;
 }
 
 - (BOOL)passphraseActive
 {
-  v2 = [(PKAuthenticator *)self _context];
-  v3 = [v2 passphraseActive];
+  _context = [(PKAuthenticator *)self _context];
+  passphraseActive = [_context passphraseActive];
 
-  return v3;
+  return passphraseActive;
 }
 
 - (BOOL)passcodeWasPresented
 {
-  v2 = [(PKAuthenticator *)self _context];
-  v3 = [v2 presentationFlags];
+  _context = [(PKAuthenticator *)self _context];
+  presentationFlags = [_context presentationFlags];
 
-  return (v3 & 0x180) != 0;
+  return (presentationFlags & 0x180) != 0;
 }
 
 - (BOOL)_delegateSupportsPasscodePresentation
@@ -1381,10 +1381,10 @@ void __59__PKAuthenticator_accessExternalizedContextWithCompletion___block_invok
   return v2;
 }
 
-+ (void)performWhenSecureIndicatorRemoved:(id)a3
++ (void)performWhenSecureIndicatorRemoved:(id)removed
 {
-  v7 = a3;
-  if (v7)
+  removedCopy = removed;
+  if (removedCopy)
   {
     os_unfair_lock_lock(&_SecureIndicatorLock);
     if (_SecureIndicatorVisibleCount)
@@ -1399,7 +1399,7 @@ void __59__PKAuthenticator_accessExternalizedContextWithCompletion___block_invok
         v3 = _SecureIndicatorDismissedCompletions;
       }
 
-      v6 = MEMORY[0x25F8AAFE0](v7);
+      v6 = MEMORY[0x25F8AAFE0](removedCopy);
       [v3 addObject:v6];
 
       os_unfair_lock_unlock(&_SecureIndicatorLock);
@@ -1408,7 +1408,7 @@ void __59__PKAuthenticator_accessExternalizedContextWithCompletion___block_invok
     else
     {
       os_unfair_lock_unlock(&_SecureIndicatorLock);
-      v7[2]();
+      removedCopy[2]();
     }
   }
 
@@ -1511,16 +1511,16 @@ uint64_t __81__PKAuthenticator_PKAuthenticatorSecureIndicator__trackSecureIndica
   return result;
 }
 
-- (void)registerSecureIndicatorProvider:(id)a3
+- (void)registerSecureIndicatorProvider:(id)provider
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     __break(1u);
   }
 
-  v5 = v4;
+  v5 = providerCopy;
   os_unfair_lock_lock(&self->_lock);
   secureIndicatorProviders = self->_secureIndicatorProviders;
   if (!secureIndicatorProviders)
@@ -1573,13 +1573,13 @@ uint64_t __81__PKAuthenticator_PKAuthenticatorSecureIndicator__trackSecureIndica
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterSecureIndicatorProvider:(id)a3
+- (void)unregisterSecureIndicatorProvider:(id)provider
 {
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_secureIndicatorProviders removeObjectIdenticalTo:v4];
+    [(NSMutableArray *)self->_secureIndicatorProviders removeObjectIdenticalTo:providerCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -1589,10 +1589,10 @@ uint64_t __81__PKAuthenticator_PKAuthenticatorSecureIndicator__trackSecureIndica
   }
 }
 
-- (void)waitForSecureIndicatorProvider:(id)a3
+- (void)waitForSecureIndicatorProvider:(id)provider
 {
-  v10 = a3;
-  if (!v10)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     __break(1u);
     return;
@@ -1604,8 +1604,8 @@ uint64_t __81__PKAuthenticator_PKAuthenticatorSecureIndicator__trackSecureIndica
     secureIndicatorProviders = self->_secureIndicatorProviders;
     if (secureIndicatorProviders)
     {
-      v5 = [(NSMutableArray *)secureIndicatorProviders lastObject];
-      if (v5)
+      lastObject = [(NSMutableArray *)secureIndicatorProviders lastObject];
+      if (lastObject)
       {
         goto LABEL_7;
       }
@@ -1614,10 +1614,10 @@ uint64_t __81__PKAuthenticator_PKAuthenticatorSecureIndicator__trackSecureIndica
 
   if (self->_invalidated)
   {
-    v5 = 0;
+    lastObject = 0;
 LABEL_7:
     os_unfair_lock_unlock(&self->_lock);
-    v10[2](v10, v5);
+    providerCopy[2](providerCopy, lastObject);
 
     return;
   }
@@ -1632,7 +1632,7 @@ LABEL_7:
     secureIndicatorProviderCompletions = self->_secureIndicatorProviderCompletions;
   }
 
-  v9 = MEMORY[0x25F8AAFE0](v10);
+  v9 = MEMORY[0x25F8AAFE0](providerCopy);
   [(NSMutableArray *)secureIndicatorProviderCompletions addObject:v9];
 
   os_unfair_lock_unlock(&self->_lock);

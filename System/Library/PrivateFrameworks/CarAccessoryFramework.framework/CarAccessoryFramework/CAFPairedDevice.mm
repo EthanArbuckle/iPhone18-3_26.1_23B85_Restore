@@ -1,22 +1,22 @@
 @interface CAFPairedDevice
-- (CAFPairedDevice)initWithDictionary:(id)a3;
-- (CAFPairedDevice)initWithIdentifier:(id)a3 name:(id)a4 sortOrder:(unsigned __int16)a5 state:(unsigned __int8)a6;
+- (CAFPairedDevice)initWithDictionary:(id)dictionary;
+- (CAFPairedDevice)initWithIdentifier:(id)identifier name:(id)name sortOrder:(unsigned __int16)order state:(unsigned __int8)state;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFPairedDevice
 
-- (CAFPairedDevice)initWithDictionary:(id)a3
+- (CAFPairedDevice)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = CAFPairedDevice;
   v5 = [(CAFPairedDevice *)&v17 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"identifier"];
+    v6 = [dictionaryCopy objectForKey:@"identifier"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_identifier = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"name"];
+    v9 = [dictionaryCopy objectForKey:@"name"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
     v5->_name = v10;
 
     objc_opt_class();
-    v12 = [v4 objectForKey:@"sortOrder"];
+    v12 = [dictionaryCopy objectForKey:@"sortOrder"];
     if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v13 = v12;
@@ -59,7 +59,7 @@
 
     v5->_sortOrder = [v13 unsignedShortValue];
     objc_opt_class();
-    v14 = [v4 objectForKey:@"state"];
+    v14 = [dictionaryCopy objectForKey:@"state"];
     if (v14 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v15 = v14;
@@ -76,20 +76,20 @@
   return v5;
 }
 
-- (CAFPairedDevice)initWithIdentifier:(id)a3 name:(id)a4 sortOrder:(unsigned __int16)a5 state:(unsigned __int8)a6
+- (CAFPairedDevice)initWithIdentifier:(id)identifier name:(id)name sortOrder:(unsigned __int16)order state:(unsigned __int8)state
 {
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = CAFPairedDevice;
   v13 = [(CAFPairedDevice *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v14->_name, a4);
-    v14->_sortOrder = a5;
-    v14->_state = a6;
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_name, name);
+    v14->_sortOrder = order;
+    v14->_state = state;
   }
 
   return v14;
@@ -99,23 +99,23 @@
 {
   v13[4] = *MEMORY[0x277D85DE8];
   v12[0] = @"identifier";
-  v3 = [(CAFPairedDevice *)self identifier];
-  v4 = v3;
-  if (!v3)
+  identifier = [(CAFPairedDevice *)self identifier];
+  null = identifier;
+  if (!identifier)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"name";
-  v5 = [(CAFPairedDevice *)self name];
-  v6 = v5;
-  if (!v5)
+  name = [(CAFPairedDevice *)self name];
+  null2 = name;
+  if (!name)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"sortOrder";
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[CAFPairedDevice sortOrder](self, "sortOrder")}];
   v13[2] = v7;
@@ -124,11 +124,11 @@
   v13[3] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:4];
 
-  if (!v5)
+  if (!name)
   {
   }
 
-  if (!v3)
+  if (!identifier)
   {
   }
 
@@ -141,9 +141,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFPairedDevice *)self identifier];
-  v6 = [(CAFPairedDevice *)self name];
-  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %hu, %@: %hhu }>", v4, self, @"identifier", v5, @"name", v6, @"sortOrder", -[CAFPairedDevice sortOrder](self, "sortOrder"), @"state", -[CAFPairedDevice state](self, "state")];
+  identifier = [(CAFPairedDevice *)self identifier];
+  name = [(CAFPairedDevice *)self name];
+  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %hu, %@: %hhu }>", v4, self, @"identifier", identifier, @"name", name, @"sortOrder", -[CAFPairedDevice sortOrder](self, "sortOrder"), @"state", -[CAFPairedDevice state](self, "state")];
 
   return v7;
 }

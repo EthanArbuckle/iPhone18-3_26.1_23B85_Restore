@@ -1,10 +1,10 @@
 @interface GCGenericDeviceRumbleModelBuilder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceRumbleModelBuilder)init;
 - (id)build;
 - (unint64_t)hash;
 - (void)build;
-- (void)initializeWithModel:(id)a3;
+- (void)initializeWithModel:(id)model;
 - (void)reset;
 @end
 
@@ -19,20 +19,20 @@
   return v2;
 }
 
-- (void)initializeWithModel:(id)a3
+- (void)initializeWithModel:(id)model
 {
-  v4 = a3;
-  [v4 dispatchFrequency];
+  modelCopy = model;
+  [modelCopy dispatchFrequency];
   [(GCGenericDeviceRumbleModelBuilder *)self setDispatchFrequency:?];
-  v5 = [v4 actuators];
-  [(GCGenericDeviceRumbleModelBuilder *)self setActuators:v5];
+  actuators = [modelCopy actuators];
+  [(GCGenericDeviceRumbleModelBuilder *)self setActuators:actuators];
 
-  v6 = [v4 nodes];
-  [(GCGenericDeviceRumbleModelBuilder *)self setNodes:v6];
+  nodes = [modelCopy nodes];
+  [(GCGenericDeviceRumbleModelBuilder *)self setNodes:nodes];
 
-  v7 = [v4 outputs];
+  outputs = [modelCopy outputs];
 
-  [(GCGenericDeviceRumbleModelBuilder *)self setOutputs:v7];
+  [(GCGenericDeviceRumbleModelBuilder *)self setOutputs:outputs];
 }
 
 - (void)reset
@@ -55,33 +55,33 @@
   }
 
   v3[2] = v5;
-  v6 = [(GCGenericDeviceRumbleModelBuilder *)self actuators];
-  if (!v6)
+  actuators = [(GCGenericDeviceRumbleModelBuilder *)self actuators];
+  if (!actuators)
   {
     [GCGenericDeviceRumbleModelBuilder build];
   }
 
-  v7 = [v6 copy];
+  v7 = [actuators copy];
   v8 = *(v3 + 2);
   *(v3 + 2) = v7;
 
-  v9 = [(GCGenericDeviceRumbleModelBuilder *)self nodes];
-  if (!v9)
+  nodes = [(GCGenericDeviceRumbleModelBuilder *)self nodes];
+  if (!nodes)
   {
     [GCGenericDeviceRumbleModelBuilder build];
   }
 
-  v10 = [v9 copy];
+  v10 = [nodes copy];
   v11 = *(v3 + 3);
   *(v3 + 3) = v10;
 
-  v12 = [(GCGenericDeviceRumbleModelBuilder *)self outputs];
-  if (!v12)
+  outputs = [(GCGenericDeviceRumbleModelBuilder *)self outputs];
+  if (!outputs)
   {
     [GCGenericDeviceRumbleModelBuilder build];
   }
 
-  v13 = [v12 copy];
+  v13 = [outputs copy];
   v14 = *(v3 + 4);
   *(v3 + 4) = v13;
 
@@ -90,25 +90,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [objc_opt_class() modelClass];
+  modelClass = [objc_opt_class() modelClass];
 
-  return [v2 hash];
+  return [modelClass hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqual:self];
+    v5 = [equalCopy isEqual:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GCGenericDeviceRumbleModelBuilder;
-    v5 = [(GCGenericDeviceRumbleModelBuilder *)&v8 isEqual:v4];
+    v5 = [(GCGenericDeviceRumbleModelBuilder *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -119,7 +119,7 @@
 - (void)build
 {
   OUTLINED_FUNCTION_3();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_2();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

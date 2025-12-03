@@ -1,7 +1,7 @@
 @interface AAUIAchievementDetailTransitionAnimator
-- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)a3 detailViewController:(id)a4 shouldPlayFlipInAnimation:(BOOL)a5 initialBadgeFrame:(CGRect)a6 conversionView:(id)a7 didStartAnimationBlock:(id)a8 didFinishAnimationBlock:(id)a9;
-- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)a3 detailViewController:(id)a4 shouldPlayFlipInAnimation:(BOOL)a5 initialBadgeFrame:(CGRect)a6 conversionView:(id)a7 willStartAnimationBlock:(id)a8 presentAlongsideBlock:(id)a9 dismissAlongsideBlock:(id)a10 completionBlock:(id)a11;
-- (BOOL)isPresentingWithContext:(id)a3;
+- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)controller detailViewController:(id)viewController shouldPlayFlipInAnimation:(BOOL)animation initialBadgeFrame:(CGRect)frame conversionView:(id)view didStartAnimationBlock:(id)block didFinishAnimationBlock:(id)animationBlock;
+- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)controller detailViewController:(id)viewController shouldPlayFlipInAnimation:(BOOL)animation initialBadgeFrame:(CGRect)frame conversionView:(id)view willStartAnimationBlock:(id)block presentAlongsideBlock:(id)alongsideBlock dismissAlongsideBlock:(id)self0 completionBlock:(id)self1;
+- (BOOL)isPresentingWithContext:(id)context;
 - (CGAffineTransform)finalBadgeTransform;
 - (CGAffineTransform)finalPresentingVCTransform;
 - (CGAffineTransform)initialBadgeTransform;
@@ -9,63 +9,63 @@
 - (CGPoint)initialBadgeCenter;
 - (CGRect)finalBadgeFrame;
 - (CGRect)initialBadgeFrame;
-- (void)animateDismissalWithContext:(id)a3;
-- (void)animatePresentationWithContext:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)prepareForAnimationsWithContext:(id)a3;
-- (void)reducedMotionAnimateDismissalWithContext:(id)a3;
-- (void)reducedMotionAnimatePresentationWithContext:(id)a3;
-- (void)setFinalBadgeTransform:(CGAffineTransform *)a3;
-- (void)setFinalPresentingVCTransform:(CGAffineTransform *)a3;
-- (void)setInitialBadgeTransform:(CGAffineTransform *)a3;
+- (void)animateDismissalWithContext:(id)context;
+- (void)animatePresentationWithContext:(id)context;
+- (void)animateTransition:(id)transition;
+- (void)prepareForAnimationsWithContext:(id)context;
+- (void)reducedMotionAnimateDismissalWithContext:(id)context;
+- (void)reducedMotionAnimatePresentationWithContext:(id)context;
+- (void)setFinalBadgeTransform:(CGAffineTransform *)transform;
+- (void)setFinalPresentingVCTransform:(CGAffineTransform *)transform;
+- (void)setInitialBadgeTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation AAUIAchievementDetailTransitionAnimator
 
-- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)a3 detailViewController:(id)a4 shouldPlayFlipInAnimation:(BOOL)a5 initialBadgeFrame:(CGRect)a6 conversionView:(id)a7 willStartAnimationBlock:(id)a8 presentAlongsideBlock:(id)a9 dismissAlongsideBlock:(id)a10 completionBlock:(id)a11
+- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)controller detailViewController:(id)viewController shouldPlayFlipInAnimation:(BOOL)animation initialBadgeFrame:(CGRect)frame conversionView:(id)view willStartAnimationBlock:(id)block presentAlongsideBlock:(id)alongsideBlock dismissAlongsideBlock:(id)self0 completionBlock:(id)self1
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v45 = a3;
-  v21 = a4;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  viewCopy = view;
+  blockCopy = block;
+  alongsideBlockCopy = alongsideBlock;
+  dismissAlongsideBlockCopy = dismissAlongsideBlock;
+  completionBlockCopy = completionBlock;
   v47.receiver = self;
   v47.super_class = AAUIAchievementDetailTransitionAnimator;
   v27 = [(AAUIAchievementDetailTransitionAnimator *)&v47 init];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_presentingViewController, a3);
-    objc_storeStrong(&v28->_detailViewController, a4);
-    objc_storeStrong(&v28->_conversionView, a7);
+    objc_storeStrong(&v27->_presentingViewController, controller);
+    objc_storeStrong(&v28->_detailViewController, viewController);
+    objc_storeStrong(&v28->_conversionView, view);
     v28->_initialBadgeFrame.origin.x = x;
     v28->_initialBadgeFrame.origin.y = y;
     v28->_initialBadgeFrame.size.width = width;
     v28->_initialBadgeFrame.size.height = height;
-    v29 = [v23 copy];
+    v29 = [blockCopy copy];
     willStartAnimationBlock = v28->_willStartAnimationBlock;
     v28->_willStartAnimationBlock = v29;
 
-    v31 = [v24 copy];
+    v31 = [alongsideBlockCopy copy];
     presentBlock = v28->_presentBlock;
     v28->_presentBlock = v31;
 
-    v33 = [v25 copy];
+    v33 = [dismissAlongsideBlockCopy copy];
     dismissBlock = v28->_dismissBlock;
     v28->_dismissBlock = v33;
 
-    v35 = [v26 copy];
+    v35 = [completionBlockCopy copy];
     completionBlock = v28->_completionBlock;
     v28->_completionBlock = v35;
 
-    v37 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v28->_isWatch = [v37 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    v28->_isWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
     if (v28->_isWatch)
     {
@@ -86,10 +86,10 @@
     }
 
     *&v28->_finalPresentingVCTransform.tx = v40;
-    v28->_shouldPlayFlipInAnimation = a5;
+    v28->_shouldPlayFlipInAnimation = animation;
     v28->_shouldDismissGracefullyForTextSizeChange = 0;
-    v42 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v42 addObserver:v28 selector:sel_textSizeDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v28 selector:sel_textSizeDidChange_ name:*MEMORY[0x277D76810] object:0];
 
     v28->_reduceMotion = UIAccessibilityIsReduceMotionEnabled();
     v28->_shouldAdjustForInset = 1;
@@ -98,23 +98,23 @@
   return v28;
 }
 
-- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)a3 detailViewController:(id)a4 shouldPlayFlipInAnimation:(BOOL)a5 initialBadgeFrame:(CGRect)a6 conversionView:(id)a7 didStartAnimationBlock:(id)a8 didFinishAnimationBlock:(id)a9
+- (AAUIAchievementDetailTransitionAnimator)initWithPresentingViewController:(id)controller detailViewController:(id)viewController shouldPlayFlipInAnimation:(BOOL)animation initialBadgeFrame:(CGRect)frame conversionView:(id)view didStartAnimationBlock:(id)block didFinishAnimationBlock:(id)animationBlock
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a5;
-  v19 = a8;
-  v20 = a9;
-  v21 = [(AAUIAchievementDetailTransitionAnimator *)self initWithPresentingViewController:a3 detailViewController:a4 shouldPlayFlipInAnimation:v15 initialBadgeFrame:a7 conversionView:0 willStartAnimationBlock:0 presentAlongsideBlock:x dismissAlongsideBlock:y completionBlock:width, height, 0, 0];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  animationCopy = animation;
+  blockCopy = block;
+  animationBlockCopy = animationBlock;
+  v21 = [(AAUIAchievementDetailTransitionAnimator *)self initWithPresentingViewController:controller detailViewController:viewController shouldPlayFlipInAnimation:animationCopy initialBadgeFrame:view conversionView:0 willStartAnimationBlock:0 presentAlongsideBlock:x dismissAlongsideBlock:y completionBlock:width, height, 0, 0];
   if (v21)
   {
-    v22 = [v19 copy];
+    v22 = [blockCopy copy];
     didStartAnimationBlock = v21->_didStartAnimationBlock;
     v21->_didStartAnimationBlock = v22;
 
-    v24 = [v20 copy];
+    v24 = [animationBlockCopy copy];
     didFinishAnimationBlock = v21->_didFinishAnimationBlock;
     v21->_didFinishAnimationBlock = v24;
   }
@@ -122,29 +122,29 @@
   return v21;
 }
 
-- (BOOL)isPresentingWithContext:(id)a3
+- (BOOL)isPresentingWithContext:(id)context
 {
-  v4 = [a3 viewControllerForKey:*MEMORY[0x277D77240]];
+  v4 = [context viewControllerForKey:*MEMORY[0x277D77240]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 topViewController];
+    topViewController = [v4 topViewController];
 
-    v4 = v5;
+    v4 = topViewController;
   }
 
-  v6 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  v7 = v4 == v6;
+  detailViewController = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  v7 = v4 == detailViewController;
 
   return v7;
 }
 
-- (void)prepareForAnimationsWithContext:(id)a3
+- (void)prepareForAnimationsWithContext:(id)context
 {
-  v4 = [a3 containerView];
-  v5 = [(AAUIAchievementDetailTransitionAnimator *)self conversionView];
+  containerView = [context containerView];
+  conversionView = [(AAUIAchievementDetailTransitionAnimator *)self conversionView];
   [(AAUIAchievementDetailTransitionAnimator *)self initialBadgeFrame];
-  [v5 convertRect:v4 toView:?];
+  [conversionView convertRect:containerView toView:?];
   x = v6;
   y = v8;
   width = v10;
@@ -152,8 +152,8 @@
 
   if (self->_shouldAdjustForInset)
   {
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v16 = v15;
 
     if (v16 == 3.0)
@@ -177,8 +177,8 @@
     height = v34.size.height;
   }
 
-  v18 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  [v18 badgeFrame];
+  detailViewController = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  [detailViewController badgeFrame];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -216,109 +216,109 @@
   [(AAUIAchievementDetailTransitionAnimator *)self setFinalBadgeFrame:v20, v22, v24, v26];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v6 = a3;
+  transitionCopy = transition;
   v4 = [(AAUIAchievementDetailTransitionAnimator *)self isPresentingWithContext:?];
-  v5 = [(AAUIAchievementDetailTransitionAnimator *)self reduceMotion];
+  reduceMotion = [(AAUIAchievementDetailTransitionAnimator *)self reduceMotion];
   if (v4)
   {
-    if (v5)
+    if (reduceMotion)
     {
-      [(AAUIAchievementDetailTransitionAnimator *)self reducedMotionAnimatePresentationWithContext:v6];
+      [(AAUIAchievementDetailTransitionAnimator *)self reducedMotionAnimatePresentationWithContext:transitionCopy];
     }
 
     else
     {
-      [(AAUIAchievementDetailTransitionAnimator *)self animatePresentationWithContext:v6];
+      [(AAUIAchievementDetailTransitionAnimator *)self animatePresentationWithContext:transitionCopy];
     }
   }
 
-  else if (v5)
+  else if (reduceMotion)
   {
-    [(AAUIAchievementDetailTransitionAnimator *)self reducedMotionAnimateDismissalWithContext:v6];
+    [(AAUIAchievementDetailTransitionAnimator *)self reducedMotionAnimateDismissalWithContext:transitionCopy];
   }
 
   else
   {
-    [(AAUIAchievementDetailTransitionAnimator *)self animateDismissalWithContext:v6];
+    [(AAUIAchievementDetailTransitionAnimator *)self animateDismissalWithContext:transitionCopy];
   }
 }
 
-- (void)reducedMotionAnimatePresentationWithContext:(id)a3
+- (void)reducedMotionAnimatePresentationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
+  contextCopy = context;
+  containerView = [contextCopy containerView];
+  v6 = [contextCopy viewControllerForKey:*MEMORY[0x277D77230]];
   [(AAUIAchievementDetailTransitionAnimator *)self setPresentingViewController:v6];
 
-  v7 = [v4 viewForKey:*MEMORY[0x277D77248]];
-  v8 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-  v9 = [v8 view];
-  [v9 setAlpha:1.0];
+  v7 = [contextCopy viewForKey:*MEMORY[0x277D77248]];
+  presentingViewController = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+  view = [presentingViewController view];
+  [view setAlpha:1.0];
 
   [v7 setAlpha:0.0];
-  [v5 addSubview:v7];
-  [v5 bounds];
+  [containerView addSubview:v7];
+  [containerView bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  v19 = [v18 view];
-  [v19 setFrame:{v11, v13, v15, v17}];
+  detailViewController = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  view2 = [detailViewController view];
+  [view2 setFrame:{v11, v13, v15, v17}];
 
-  v20 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  v21 = [v20 view];
-  [v21 layoutIfNeeded];
+  detailViewController2 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  view3 = [detailViewController2 view];
+  [view3 layoutIfNeeded];
 
-  v22 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  v23 = [v22 badgeView];
+  detailViewController3 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  badgeView = [detailViewController3 badgeView];
 
-  [v5 addSubview:v23];
-  [(AAUIAchievementDetailTransitionAnimator *)self prepareForAnimationsWithContext:v4];
+  [containerView addSubview:badgeView];
+  [(AAUIAchievementDetailTransitionAnimator *)self prepareForAnimationsWithContext:contextCopy];
   [(AAUIAchievementDetailTransitionAnimator *)self finalBadgeFrame];
-  [v23 setFrame:?];
-  [v23 setNeedsLayout];
-  [v23 layoutIfNeeded];
-  [v23 resizeBadgeForCurrentViewSize];
+  [badgeView setFrame:?];
+  [badgeView setNeedsLayout];
+  [badgeView layoutIfNeeded];
+  [badgeView resizeBadgeForCurrentViewSize];
   [(AAUIAchievementDetailTransitionAnimator *)self finalBadgeTransform];
   v49[0] = v49[3];
   v49[1] = v49[4];
   v49[2] = v49[5];
-  [v23 setTransform:v49];
-  [v23 setPaused:0];
-  v24 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  [v24 placeBadgeViewInContainer];
+  [badgeView setTransform:v49];
+  [badgeView setPaused:0];
+  detailViewController4 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  [detailViewController4 placeBadgeViewInContainer];
 
-  v25 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-  v26 = [v25 navigationItem];
-  v27 = [v26 _weeTitle];
+  presentingViewController2 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+  navigationItem = [presentingViewController2 navigationItem];
+  _weeTitle = [navigationItem _weeTitle];
 
-  if (v27)
+  if (_weeTitle)
   {
-    v28 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v29 = [v28 navigationItem];
-    v30 = [v29 _weeTitle];
+    presentingViewController3 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationItem2 = [presentingViewController3 navigationItem];
+    _weeTitle2 = [navigationItem2 _weeTitle];
     presentingViewControllerWeeTitle = self->_presentingViewControllerWeeTitle;
-    self->_presentingViewControllerWeeTitle = v30;
+    self->_presentingViewControllerWeeTitle = _weeTitle2;
 
-    v32 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v33 = [v32 navigationItem];
-    [v33 _setWeeTitle:0];
+    presentingViewController4 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationItem3 = [presentingViewController4 navigationItem];
+    [navigationItem3 _setWeeTitle:0];
 
-    v34 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v35 = [v34 navigationController];
-    v36 = [v35 navigationBar];
-    [v36 setNeedsLayout];
+    presentingViewController5 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController = [presentingViewController5 navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setNeedsLayout];
 
-    v37 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v38 = [v37 navigationController];
-    v39 = [v38 navigationBar];
-    [v39 layoutIfNeeded];
+    presentingViewController6 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController2 = [presentingViewController6 navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 layoutIfNeeded];
   }
 
-  [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:v4];
+  [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:contextCopy];
   v41 = v40;
   v42 = MEMORY[0x277D75D18];
   v47[0] = MEMORY[0x277D85DD0];
@@ -331,8 +331,8 @@
   v45[1] = 3221225472;
   v45[2] = __87__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimatePresentationWithContext___block_invoke_2;
   v45[3] = &unk_278C43948;
-  v46 = v4;
-  v43 = v4;
+  v46 = contextCopy;
+  v43 = contextCopy;
   v44 = v7;
   [v42 animateWithDuration:v47 animations:v45 completion:v41];
 }
@@ -348,95 +348,95 @@ uint64_t __87__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimatePrese
   return [v4 setAlpha:1.0];
 }
 
-- (void)animatePresentationWithContext:(id)a3
+- (void)animatePresentationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
+  contextCopy = context;
+  containerView = [contextCopy containerView];
+  v6 = [contextCopy viewControllerForKey:*MEMORY[0x277D77230]];
   [(AAUIAchievementDetailTransitionAnimator *)self setPresentingViewController:v6];
 
-  v7 = [v4 viewForKey:*MEMORY[0x277D77248]];
-  v8 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-  v9 = [v8 view];
-  [v9 setAlpha:1.0];
+  v7 = [contextCopy viewForKey:*MEMORY[0x277D77248]];
+  presentingViewController = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+  view = [presentingViewController view];
+  [view setAlpha:1.0];
 
   [v7 setAlpha:0.0];
-  [v5 addSubview:v7];
-  [v5 layoutIfNeeded];
-  v10 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  v11 = [v10 badgeView];
+  [containerView addSubview:v7];
+  [containerView layoutIfNeeded];
+  detailViewController = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  badgeView = [detailViewController badgeView];
 
-  [v5 addSubview:v11];
-  [(AAUIAchievementDetailTransitionAnimator *)self prepareForAnimationsWithContext:v4];
+  [containerView addSubview:badgeView];
+  [(AAUIAchievementDetailTransitionAnimator *)self prepareForAnimationsWithContext:contextCopy];
   [(AAUIAchievementDetailTransitionAnimator *)self finalBadgeFrame];
-  [v11 setFrame:?];
-  [v11 setNeedsLayout];
-  [v11 layoutIfNeeded];
-  [v11 resizeBadgeForCurrentViewSize];
+  [badgeView setFrame:?];
+  [badgeView setNeedsLayout];
+  [badgeView layoutIfNeeded];
+  [badgeView resizeBadgeForCurrentViewSize];
   [(AAUIAchievementDetailTransitionAnimator *)self initialBadgeTransform];
   v44[0] = v44[3];
   v44[1] = v44[4];
   v44[2] = v44[5];
-  [v11 setTransform:v44];
+  [badgeView setTransform:v44];
   [(AAUIAchievementDetailTransitionAnimator *)self initialBadgeCenter];
-  [v11 setCenter:?];
+  [badgeView setCenter:?];
   if ([(AAUIAchievementDetailTransitionAnimator *)self shouldPlayFlipInAnimation])
   {
-    [v11 playFlipInAnimation];
+    [badgeView playFlipInAnimation];
   }
 
-  [v11 setPaused:0];
-  [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:v4];
+  [badgeView setPaused:0];
+  [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:contextCopy];
   v13 = v12;
-  v14 = [(AAUIAchievementDetailTransitionAnimator *)self presentBlock];
+  presentBlock = [(AAUIAchievementDetailTransitionAnimator *)self presentBlock];
 
-  if (v14)
+  if (presentBlock)
   {
-    v15 = [(AAUIAchievementDetailTransitionAnimator *)self presentBlock];
-    v15[2](v13);
+    presentBlock2 = [(AAUIAchievementDetailTransitionAnimator *)self presentBlock];
+    presentBlock2[2](v13);
   }
 
-  v16 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-  v17 = [v16 navigationItem];
-  v18 = [v17 _weeTitle];
+  presentingViewController2 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+  navigationItem = [presentingViewController2 navigationItem];
+  _weeTitle = [navigationItem _weeTitle];
 
-  if (v18)
+  if (_weeTitle)
   {
-    v19 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v20 = [v19 navigationItem];
-    v21 = [v20 _weeTitle];
+    presentingViewController3 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationItem2 = [presentingViewController3 navigationItem];
+    _weeTitle2 = [navigationItem2 _weeTitle];
     presentingViewControllerWeeTitle = self->_presentingViewControllerWeeTitle;
-    self->_presentingViewControllerWeeTitle = v21;
+    self->_presentingViewControllerWeeTitle = _weeTitle2;
 
-    v23 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v24 = [v23 navigationItem];
-    [v24 _setWeeTitle:0];
+    presentingViewController4 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationItem3 = [presentingViewController4 navigationItem];
+    [navigationItem3 _setWeeTitle:0];
 
-    v25 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v26 = [v25 navigationController];
-    v27 = [v26 navigationBar];
-    [v27 setNeedsLayout];
+    presentingViewController5 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController = [presentingViewController5 navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setNeedsLayout];
 
-    v28 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v29 = [v28 navigationController];
-    v30 = [v29 navigationBar];
-    [v30 layoutIfNeeded];
+    presentingViewController6 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController2 = [presentingViewController6 navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 layoutIfNeeded];
   }
 
-  v31 = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
+  didStartAnimationBlock = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
 
-  if (v31)
+  if (didStartAnimationBlock)
   {
-    v32 = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
-    v32[2]();
+    didStartAnimationBlock2 = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
+    didStartAnimationBlock2[2]();
   }
 
-  v33 = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
+  willStartAnimationBlock = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
 
-  if (v33)
+  if (willStartAnimationBlock)
   {
-    v34 = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
-    v34[2](v34, 1);
+    willStartAnimationBlock2 = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
+    willStartAnimationBlock2[2](willStartAnimationBlock2, 1);
   }
 
   v35 = MEMORY[0x277D75D18];
@@ -446,15 +446,15 @@ uint64_t __87__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimatePrese
   v41[3] = &unk_278C43970;
   v41[4] = self;
   v42 = v7;
-  v43 = v11;
+  v43 = badgeView;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __74__AAUIAchievementDetailTransitionAnimator_animatePresentationWithContext___block_invoke_5;
   v39[3] = &unk_278C43998;
   v39[4] = self;
-  v40 = v4;
-  v36 = v4;
-  v37 = v11;
+  v40 = contextCopy;
+  v36 = contextCopy;
+  v37 = badgeView;
   v38 = v7;
   [v35 animateKeyframesWithDuration:0 delay:v41 options:v39 animations:v13 completion:0.0];
 }
@@ -576,53 +576,53 @@ void __74__AAUIAchievementDetailTransitionAnimator_animatePresentationWithContex
   }
 }
 
-- (void)reducedMotionAnimateDismissalWithContext:(id)a3
+- (void)reducedMotionAnimateDismissalWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  if ([v4 presentationStyle] == -1)
+  contextCopy = context;
+  containerView = [contextCopy containerView];
+  if ([contextCopy presentationStyle] == -1)
   {
-    v6 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v7 = [v6 view];
-    [v7 setAlpha:0.0];
+    presentingViewController = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    view = [presentingViewController view];
+    [view setAlpha:0.0];
 
-    v8 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v9 = [v8 view];
+    presentingViewController2 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    view2 = [presentingViewController2 view];
     v10 = *(MEMORY[0x277CBF2C0] + 16);
     v34[0] = *MEMORY[0x277CBF2C0];
     v34[1] = v10;
     v34[2] = *(MEMORY[0x277CBF2C0] + 32);
-    [v9 setTransform:v34];
+    [view2 setTransform:v34];
 
-    v11 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v12 = [v11 view];
-    [v5 addSubview:v12];
+    presentingViewController3 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    view3 = [presentingViewController3 view];
+    [containerView addSubview:view3];
   }
 
-  v13 = [v4 viewForKey:*MEMORY[0x277D77238]];
-  [v5 addSubview:v13];
-  [v5 layoutIfNeeded];
-  [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:v4];
+  v13 = [contextCopy viewForKey:*MEMORY[0x277D77238]];
+  [containerView addSubview:v13];
+  [containerView layoutIfNeeded];
+  [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:contextCopy];
   v15 = v14;
   presentingViewControllerWeeTitle = self->_presentingViewControllerWeeTitle;
   if (presentingViewControllerWeeTitle)
   {
-    v17 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v18 = [v17 navigationItem];
-    [v18 _setWeeTitle:presentingViewControllerWeeTitle];
+    presentingViewController4 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationItem = [presentingViewController4 navigationItem];
+    [navigationItem _setWeeTitle:presentingViewControllerWeeTitle];
 
     v19 = self->_presentingViewControllerWeeTitle;
     self->_presentingViewControllerWeeTitle = 0;
 
-    v20 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v21 = [v20 navigationController];
-    v22 = [v21 navigationBar];
-    [v22 setNeedsLayout];
+    presentingViewController5 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController = [presentingViewController5 navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setNeedsLayout];
 
-    v23 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v24 = [v23 navigationController];
-    v25 = [v24 navigationBar];
-    [v25 layoutIfNeeded];
+    presentingViewController6 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController2 = [presentingViewController6 navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 layoutIfNeeded];
   }
 
   v26 = MEMORY[0x277D75D18];
@@ -631,13 +631,13 @@ void __74__AAUIAchievementDetailTransitionAnimator_animatePresentationWithContex
   v31[2] = __84__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimateDismissalWithContext___block_invoke;
   v31[3] = &unk_278C437B0;
   v32 = v13;
-  v33 = self;
+  selfCopy = self;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __84__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimateDismissalWithContext___block_invoke_2;
   v29[3] = &unk_278C43948;
-  v30 = v4;
-  v27 = v4;
+  v30 = contextCopy;
+  v27 = contextCopy;
   v28 = v13;
   [v26 animateWithDuration:v31 animations:v29 completion:v15];
 }
@@ -650,115 +650,115 @@ void __84__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimateDismissal
   [v2 setAlpha:1.0];
 }
 
-- (void)animateDismissalWithContext:(id)a3
+- (void)animateDismissalWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  if ([v4 presentationStyle] == -1)
+  contextCopy = context;
+  containerView = [contextCopy containerView];
+  if ([contextCopy presentationStyle] == -1)
   {
-    v6 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v7 = [v6 view];
-    [v7 setAlpha:0.0];
+    presentingViewController = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    view = [presentingViewController view];
+    [view setAlpha:0.0];
 
-    v8 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v9 = [v8 view];
+    presentingViewController2 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    view2 = [presentingViewController2 view];
     v10 = *(MEMORY[0x277CBF2C0] + 16);
     v70 = *MEMORY[0x277CBF2C0];
     v71 = v10;
     v72 = *(MEMORY[0x277CBF2C0] + 32);
-    [v9 setTransform:&v70];
+    [view2 setTransform:&v70];
 
-    v11 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v12 = [v11 view];
-    [v5 addSubview:v12];
+    presentingViewController3 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    view3 = [presentingViewController3 view];
+    [containerView addSubview:view3];
   }
 
-  v13 = [v4 viewForKey:*MEMORY[0x277D77238]];
-  [v5 addSubview:v13];
-  [v5 layoutIfNeeded];
-  v14 = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
-  v15 = [v14 badgeView];
+  v13 = [contextCopy viewForKey:*MEMORY[0x277D77238]];
+  [containerView addSubview:v13];
+  [containerView layoutIfNeeded];
+  detailViewController = [(AAUIAchievementDetailTransitionAnimator *)self detailViewController];
+  badgeView = [detailViewController badgeView];
 
-  if (-[AAUIAchievementDetailTransitionAnimator shouldDismissGracefullyForTextSizeChange](self, "shouldDismissGracefullyForTextSizeChange") || ([v5 addSubview:v15], objc_msgSend(v15, "setTranslatesAutoresizingMaskIntoConstraints:", 1), -[AAUIAchievementDetailTransitionAnimator finalBadgeCenter](self, "finalBadgeCenter"), objc_msgSend(v15, "setCenter:"), -[AAUIAchievementDetailTransitionAnimator finalBadgeTransform](self, "finalBadgeTransform"), v70 = v67, v71 = v68, v72 = v69, objc_msgSend(v15, "setTransform:", &v70), objc_msgSend(v15, "playFlipOutAnimation"), v17 = v16, v16 < 2.22044605e-16))
+  if (-[AAUIAchievementDetailTransitionAnimator shouldDismissGracefullyForTextSizeChange](self, "shouldDismissGracefullyForTextSizeChange") || ([containerView addSubview:badgeView], objc_msgSend(badgeView, "setTranslatesAutoresizingMaskIntoConstraints:", 1), -[AAUIAchievementDetailTransitionAnimator finalBadgeCenter](self, "finalBadgeCenter"), objc_msgSend(badgeView, "setCenter:"), -[AAUIAchievementDetailTransitionAnimator finalBadgeTransform](self, "finalBadgeTransform"), v70 = v67, v71 = v68, v72 = v69, objc_msgSend(badgeView, "setTransform:", &v70), objc_msgSend(badgeView, "playFlipOutAnimation"), v17 = v16, v16 < 2.22044605e-16))
   {
-    [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:v4];
+    [(AAUIAchievementDetailTransitionAnimator *)self transitionDuration:contextCopy];
     v17 = v18;
   }
 
   [(AAUIAchievementDetailTransitionAnimator *)self finalPresentingVCTransform];
-  v19 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-  v20 = [v19 view];
+  presentingViewController4 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+  view4 = [presentingViewController4 view];
   v70 = v64;
   v71 = v65;
   v72 = v66;
-  [v20 setTransform:&v70];
+  [view4 setTransform:&v70];
 
-  v21 = [(AAUIAchievementDetailTransitionAnimator *)self isWatch];
-  v22 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-  v23 = [v22 view];
-  v24 = v23;
-  if (v21)
+  isWatch = [(AAUIAchievementDetailTransitionAnimator *)self isWatch];
+  presentingViewController5 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+  view5 = [presentingViewController5 view];
+  view6 = view5;
+  if (isWatch)
   {
-    [v23 setNeedsLayout];
+    [view5 setNeedsLayout];
 
-    v22 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v24 = [v22 view];
-    [v24 layoutIfNeeded];
+    presentingViewController5 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    view6 = [presentingViewController5 view];
+    [view6 layoutIfNeeded];
   }
 
   else
   {
-    [v23 setAlpha:0.0];
+    [view5 setAlpha:0.0];
   }
 
-  v25 = [(AAUIAchievementDetailTransitionAnimator *)self dismissBlock];
+  dismissBlock = [(AAUIAchievementDetailTransitionAnimator *)self dismissBlock];
 
-  if (v25)
+  if (dismissBlock)
   {
-    v26 = [(AAUIAchievementDetailTransitionAnimator *)self dismissBlock];
-    v26[2](v17);
+    dismissBlock2 = [(AAUIAchievementDetailTransitionAnimator *)self dismissBlock];
+    dismissBlock2[2](v17);
   }
 
   presentingViewControllerWeeTitle = self->_presentingViewControllerWeeTitle;
   if (presentingViewControllerWeeTitle)
   {
-    v28 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v29 = [v28 navigationItem];
-    [v29 _setWeeTitle:presentingViewControllerWeeTitle];
+    presentingViewController6 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationItem = [presentingViewController6 navigationItem];
+    [navigationItem _setWeeTitle:presentingViewControllerWeeTitle];
 
     v30 = self->_presentingViewControllerWeeTitle;
     self->_presentingViewControllerWeeTitle = 0;
 
-    v31 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v32 = [v31 navigationController];
-    v33 = [v32 navigationBar];
-    [v33 setNeedsLayout];
+    presentingViewController7 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController = [presentingViewController7 navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setNeedsLayout];
 
-    v34 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
-    v35 = [v34 navigationController];
-    v36 = [v35 navigationBar];
-    [v36 layoutIfNeeded];
+    presentingViewController8 = [(AAUIAchievementDetailTransitionAnimator *)self presentingViewController];
+    navigationController2 = [presentingViewController8 navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 layoutIfNeeded];
   }
 
-  v37 = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
+  didStartAnimationBlock = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
 
-  if (v37)
+  if (didStartAnimationBlock)
   {
-    v38 = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
-    v38[2]();
+    didStartAnimationBlock2 = [(AAUIAchievementDetailTransitionAnimator *)self didStartAnimationBlock];
+    didStartAnimationBlock2[2]();
   }
 
-  v39 = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
+  willStartAnimationBlock = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
 
-  if (v39)
+  if (willStartAnimationBlock)
   {
-    v40 = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
-    v40[2](v40, 0);
+    willStartAnimationBlock2 = [(AAUIAchievementDetailTransitionAnimator *)self willStartAnimationBlock];
+    willStartAnimationBlock2[2](willStartAnimationBlock2, 0);
   }
 
-  v41 = [(AAUIAchievementDetailTransitionAnimator *)self shouldDismissGracefullyForTextSizeChange];
+  shouldDismissGracefullyForTextSizeChange = [(AAUIAchievementDetailTransitionAnimator *)self shouldDismissGracefullyForTextSizeChange];
   v42 = MEMORY[0x277D75D18];
-  if (v41)
+  if (shouldDismissGracefullyForTextSizeChange)
   {
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
@@ -766,16 +766,16 @@ void __84__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimateDismissal
     v53[3] = &unk_278C43970;
     v43 = &v54;
     v54 = v13;
-    v55 = v15;
-    v56 = self;
+    v55 = badgeView;
+    selfCopy = self;
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __71__AAUIAchievementDetailTransitionAnimator_animateDismissalWithContext___block_invoke_9;
     v49[3] = &unk_278C439C0;
     v50 = v55;
-    v51 = v4;
-    v52 = self;
-    v44 = v4;
+    v51 = contextCopy;
+    selfCopy2 = self;
+    v44 = contextCopy;
     v45 = v13;
     [v42 animateKeyframesWithDuration:1 delay:v53 options:v49 animations:v17 completion:0.0];
 
@@ -791,15 +791,15 @@ void __84__AAUIAchievementDetailTransitionAnimator_reducedMotionAnimateDismissal
     v43 = v62;
     v62[0] = v13;
     v62[1] = self;
-    v63 = v15;
+    v63 = badgeView;
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __71__AAUIAchievementDetailTransitionAnimator_animateDismissalWithContext___block_invoke_5;
     v57[3] = &unk_278C439C0;
     v58 = v63;
-    v59 = v4;
-    v60 = self;
-    v47 = v4;
+    v59 = contextCopy;
+    selfCopy3 = self;
+    v47 = contextCopy;
     v48 = v13;
     [v42 animateKeyframesWithDuration:1 delay:v61 options:v57 animations:v17 completion:0.0];
 
@@ -996,11 +996,11 @@ void __71__AAUIAchievementDetailTransitionAnimator_animateDismissalWithContext__
   return self;
 }
 
-- (void)setInitialBadgeTransform:(CGAffineTransform *)a3
+- (void)setInitialBadgeTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_initialBadgeTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_initialBadgeTransform.c = *&transform->c;
   *&self->_initialBadgeTransform.tx = v4;
   *&self->_initialBadgeTransform.a = v3;
 }
@@ -1014,11 +1014,11 @@ void __71__AAUIAchievementDetailTransitionAnimator_animateDismissalWithContext__
   return self;
 }
 
-- (void)setFinalBadgeTransform:(CGAffineTransform *)a3
+- (void)setFinalBadgeTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_finalBadgeTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_finalBadgeTransform.c = *&transform->c;
   *&self->_finalBadgeTransform.tx = v4;
   *&self->_finalBadgeTransform.a = v3;
 }
@@ -1045,11 +1045,11 @@ void __71__AAUIAchievementDetailTransitionAnimator_animateDismissalWithContext__
   return self;
 }
 
-- (void)setFinalPresentingVCTransform:(CGAffineTransform *)a3
+- (void)setFinalPresentingVCTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_finalPresentingVCTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_finalPresentingVCTransform.c = *&transform->c;
   *&self->_finalPresentingVCTransform.tx = v4;
   *&self->_finalPresentingVCTransform.a = v3;
 }

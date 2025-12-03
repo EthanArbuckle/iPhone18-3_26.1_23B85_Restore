@@ -1,11 +1,11 @@
 @interface SXCloseActionActivityProvider
-- (id)activityGroupForAction:(id)a3;
-- (id)initWithViewControllerPresenting:(void *)a3 handler:;
+- (id)activityGroupForAction:(id)action;
+- (id)initWithViewControllerPresenting:(void *)presenting handler:;
 @end
 
 @implementation SXCloseActionActivityProvider
 
-- (id)activityGroupForAction:(id)a3
+- (id)activityGroupForAction:(id)action
 {
   v4 = [[SXActionActivityGroup alloc] initWithTitle:0];
   v5 = [SXBlockActionActivity alloc];
@@ -22,24 +22,24 @@
   return v4;
 }
 
-- (id)initWithViewControllerPresenting:(void *)a3 handler:
+- (id)initWithViewControllerPresenting:(void *)presenting handler:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  presentingCopy = presenting;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = SXCloseActionActivityProvider;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, presenting);
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __56__SXCloseActionActivityProvider_activityGroupForAction___block_invoke(uint64_t a1)

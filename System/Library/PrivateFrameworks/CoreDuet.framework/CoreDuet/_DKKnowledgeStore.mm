@@ -1,35 +1,35 @@
 @interface _DKKnowledgeStore
-+ (id)_knowledgeStoreWithStoreDirectory:(uint64_t)a3 readOnly:;
++ (id)_knowledgeStoreWithStoreDirectory:(uint64_t)directory readOnly:;
 + (id)knowledgeStore;
 + (id)knowledgeStoreWithDirectReadOnlyAccess;
 + (id)knowledgeStoreWithDirectReadWriteAccess;
 + (id)userKnowledgeStore;
 + (id)userKnowledgeStoreWithDirectReadOnlyAccess;
 + (id)userKnowledgeStoreWithDirectReadWriteAccess;
-- (BOOL)deleteObjects:(id)a3 error:(id *)a4;
-- (BOOL)deleteRemoteState:(id *)a3;
-- (BOOL)isSyncPolicyDisabledForFeature:(unint64_t)a3 transportType:(int64_t)a4;
-- (BOOL)saveObjects:(id)a3 error:(id *)a4;
-- (BOOL)synchronizeWithError:(id *)a3;
-- (BOOL)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 error:(id *)a5;
+- (BOOL)deleteObjects:(id)objects error:(id *)error;
+- (BOOL)deleteRemoteState:(id *)state;
+- (BOOL)isSyncPolicyDisabledForFeature:(unint64_t)feature transportType:(int64_t)type;
+- (BOOL)saveObjects:(id)objects error:(id *)error;
+- (BOOL)synchronizeWithError:(id *)error;
+- (BOOL)synchronizeWithUrgency:(unint64_t)urgency client:(id)client error:(id *)error;
 - (_DKKnowledgeStore)init;
-- (_DKKnowledgeStore)initWithKnowledgeStoreHandle:(id)a3 readOnly:(BOOL)a4;
-- (id)_sanitizeObjectsBeforeSaving:(id *)a1;
+- (_DKKnowledgeStore)initWithKnowledgeStoreHandle:(id)handle readOnly:(BOOL)only;
+- (id)_sanitizeObjectsBeforeSaving:(id *)saving;
 - (id)deviceUUID;
-- (id)executeQuery:(id)a3 error:(id *)a4;
-- (id)knowledgeSynchronizingHandleWithError:(id *)a1;
-- (id)sourceDeviceIdentityFromObject:(id)a3 error:(id *)a4;
-- (id)sourceDeviceIdentityWithError:(id *)a3;
-- (unint64_t)deleteAllEventsInEventStream:(id)a3 error:(id *)a4;
-- (unint64_t)deleteAllEventsMatchingPredicate:(id)a3 error:(id *)a4;
-- (void)deleteAllEventsInEventStream:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5;
-- (void)deleteAllEventsMatchingPredicate:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5;
-- (void)deleteObjects:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5;
-- (void)disableSyncPolicyForFeature:(unint64_t)a3 transportType:(int64_t)a4;
-- (void)executeQuery:(id)a3 responseQueue:(id)a4;
-- (void)executeQuery:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5;
-- (void)saveObjects:(id)a3 tracker:(id)a4 responseQueue:(id)a5 withCompletion:(id)a6;
-- (void)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 responseQueue:(id)a5 completion:(id)a6;
+- (id)executeQuery:(id)query error:(id *)error;
+- (id)knowledgeSynchronizingHandleWithError:(id *)error;
+- (id)sourceDeviceIdentityFromObject:(id)object error:(id *)error;
+- (id)sourceDeviceIdentityWithError:(id *)error;
+- (unint64_t)deleteAllEventsInEventStream:(id)stream error:(id *)error;
+- (unint64_t)deleteAllEventsMatchingPredicate:(id)predicate error:(id *)error;
+- (void)deleteAllEventsInEventStream:(id)stream responseQueue:(id)queue withCompletion:(id)completion;
+- (void)deleteAllEventsMatchingPredicate:(id)predicate responseQueue:(id)queue withCompletion:(id)completion;
+- (void)deleteObjects:(id)objects responseQueue:(id)queue withCompletion:(id)completion;
+- (void)disableSyncPolicyForFeature:(unint64_t)feature transportType:(int64_t)type;
+- (void)executeQuery:(id)query responseQueue:(id)queue;
+- (void)executeQuery:(id)query responseQueue:(id)queue withCompletion:(id)completion;
+- (void)saveObjects:(id)objects tracker:(id)tracker responseQueue:(id)queue withCompletion:(id)completion;
+- (void)synchronizeWithUrgency:(unint64_t)urgency client:(id)client responseQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation _DKKnowledgeStore
@@ -37,7 +37,7 @@
 + (id)knowledgeStore
 {
   v3 = +[_DKXPCKnowledgeStore XPCKnowledgeStore];
-  v4 = [[a1 alloc] initWithKnowledgeStoreHandle:v3 readOnly:0];
+  v4 = [[self alloc] initWithKnowledgeStoreHandle:v3 readOnly:0];
 
   return v4;
 }
@@ -45,7 +45,7 @@
 + (id)userKnowledgeStore
 {
   v3 = +[_DKXPCKnowledgeStore XPCUserKnowledgeStore];
-  v4 = [[a1 alloc] initWithKnowledgeStoreHandle:v3 readOnly:0];
+  v4 = [[self alloc] initWithKnowledgeStoreHandle:v3 readOnly:0];
 
   return v4;
 }
@@ -54,7 +54,7 @@
 {
   v3 = +[_DKXPCKnowledgeStore XPCKnowledgeStore];
   v4 = +[_CDPaths knowledgeDirectory];
-  v5 = [a1 knowledgeStoreWithDirectReadOnlyAccessWithXPCStore:v3 storeDirectory:v4];
+  v5 = [self knowledgeStoreWithDirectReadOnlyAccessWithXPCStore:v3 storeDirectory:v4];
 
   return v5;
 }
@@ -63,7 +63,7 @@
 {
   v3 = +[_DKXPCKnowledgeStore XPCUserKnowledgeStore];
   v4 = +[_CDPaths userKnowledgeDirectory];
-  v5 = [a1 knowledgeStoreWithDirectReadOnlyAccessWithXPCStore:v3 storeDirectory:v4];
+  v5 = [self knowledgeStoreWithDirectReadOnlyAccessWithXPCStore:v3 storeDirectory:v4];
 
   return v5;
 }
@@ -71,20 +71,20 @@
 + (id)userKnowledgeStoreWithDirectReadWriteAccess
 {
   v3 = +[_CDPaths userKnowledgeDirectory];
-  v4 = [(_DKKnowledgeStore *)a1 _knowledgeStoreWithStoreDirectory:v3 readOnly:0];
+  v4 = [(_DKKnowledgeStore *)self _knowledgeStoreWithStoreDirectory:v3 readOnly:0];
 
   return v4;
 }
 
-+ (id)_knowledgeStoreWithStoreDirectory:(uint64_t)a3 readOnly:
++ (id)_knowledgeStoreWithStoreDirectory:(uint64_t)directory readOnly:
 {
   v4 = a2;
   v5 = objc_opt_self();
-  v6 = [_DKKnowledgeStorage storageWithDirectory:v4 readOnly:a3];
+  v6 = [_DKKnowledgeStorage storageWithDirectory:v4 readOnly:directory];
 
   if (v6)
   {
-    v7 = [[v5 alloc] initWithKnowledgeStoreHandle:v6 readOnly:a3];
+    v7 = [[v5 alloc] initWithKnowledgeStoreHandle:v6 readOnly:directory];
   }
 
   else
@@ -104,20 +104,20 @@
 + (id)knowledgeStoreWithDirectReadWriteAccess
 {
   v3 = +[_CDPaths knowledgeDirectory];
-  v4 = [(_DKKnowledgeStore *)a1 _knowledgeStoreWithStoreDirectory:v3 readOnly:0];
+  v4 = [(_DKKnowledgeStore *)self _knowledgeStoreWithStoreDirectory:v3 readOnly:0];
 
   return v4;
 }
 
-- (_DKKnowledgeStore)initWithKnowledgeStoreHandle:(id)a3 readOnly:(BOOL)a4
+- (_DKKnowledgeStore)initWithKnowledgeStoreHandle:(id)handle readOnly:(BOOL)only
 {
-  v7 = a3;
+  handleCopy = handle;
   v17.receiver = self;
   v17.super_class = _DKKnowledgeStore;
   v8 = [(_DKKnowledgeStore *)&v17 init];
   if (v8)
   {
-    if (!a4)
+    if (!only)
     {
       v9 = +[_DKRateLimitPolicyEnforcer rateLimitPolicyEnforcer];
       rateLimitEnforcer = v8->_rateLimitEnforcer;
@@ -133,7 +133,7 @@
     defaultQueue = v8->_defaultQueue;
     v8->_defaultQueue = v14;
 
-    objc_storeStrong(&v8->_knowledgeStoreHandle, a3);
+    objc_storeStrong(&v8->_knowledgeStoreHandle, handle);
   }
 
   return v8;
@@ -147,12 +147,12 @@
   return v4;
 }
 
-- (BOOL)saveObjects:(id)a3 error:(id *)a4
+- (BOOL)saveObjects:(id)objects error:(id *)error
 {
-  v6 = a3;
-  if ([_CDDecommissionUtils isRequestAllowed:a4])
+  objectsCopy = objects;
+  if ([_CDDecommissionUtils isRequestAllowed:error])
   {
-    v9 = [_CDDecommissionUtils filterEvents:v6];
+    v9 = [_CDDecommissionUtils filterEvents:objectsCopy];
 
     v10 = _os_activity_create(&dword_191750000, "CoreDuet: saveObjects sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v14.opaque[0] = 0;
@@ -176,7 +176,7 @@
         knowledgeStoreHandle = 0;
       }
 
-      v7 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle saveObjects:v12 error:a4];
+      v7 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle saveObjects:v12 error:error];
       v9 = 0;
     }
 
@@ -186,7 +186,7 @@
       v7 = 1;
     }
 
-    v6 = v9;
+    objectsCopy = v9;
   }
 
   else
@@ -197,18 +197,18 @@
   return v7;
 }
 
-- (void)saveObjects:(id)a3 tracker:(id)a4 responseQueue:(id)a5 withCompletion:(id)a6
+- (void)saveObjects:(id)objects tracker:(id)tracker responseQueue:(id)queue withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectsCopy = objects;
+  trackerCopy = tracker;
+  queueCopy = queue;
+  completionCopy = completion;
   v37 = 0;
   v14 = [_CDDecommissionUtils isRequestAllowed:&v37];
   v15 = v37;
   if (v14)
   {
-    v22 = [_CDDecommissionUtils filterEvents:v10];
+    v22 = [_CDDecommissionUtils filterEvents:objectsCopy];
 
     v23 = _os_activity_create(&dword_191750000, "CoreDuet: saveObjects async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     block.opaque[0] = 0;
@@ -232,22 +232,22 @@
         knowledgeStoreHandle = 0;
       }
 
-      defaultQueue = v12;
-      if (!v12)
+      defaultQueue = queueCopy;
+      if (!queueCopy)
       {
         defaultQueue = self->_defaultQueue;
       }
 
-      [(_DKKnowledgeQuerying *)knowledgeStoreHandle saveObjects:v21 tracker:v11 responseQueue:defaultQueue withCompletion:v13];
-      v10 = 0;
+      [(_DKKnowledgeQuerying *)knowledgeStoreHandle saveObjects:v21 tracker:trackerCopy responseQueue:defaultQueue withCompletion:completionCopy];
+      objectsCopy = 0;
     }
 
     else
     {
-      if (v13)
+      if (completionCopy)
       {
-        v27 = v12;
-        if (!v12)
+        v27 = queueCopy;
+        if (!queueCopy)
         {
           v27 = self->_defaultQueue;
         }
@@ -256,7 +256,7 @@
         v32[1] = 3221225472;
         v32[2] = __70___DKKnowledgeStore_saveObjects_tracker_responseQueue_withCompletion___block_invoke_2;
         v32[3] = &unk_1E7367840;
-        v33 = v13;
+        v33 = completionCopy;
         v28 = v32;
         v29 = v27;
         v30 = os_transaction_create();
@@ -271,16 +271,16 @@
       }
 
       objc_autoreleasePoolPop(v24);
-      v10 = v22;
+      objectsCopy = v22;
     }
 
     goto LABEL_6;
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v16 = v12;
-    if (!v12)
+    v16 = queueCopy;
+    if (!queueCopy)
     {
       v16 = self->_defaultQueue;
     }
@@ -289,7 +289,7 @@
     v34[1] = 3221225472;
     v34[2] = __70___DKKnowledgeStore_saveObjects_tracker_responseQueue_withCompletion___block_invoke;
     v34[3] = &unk_1E7367818;
-    v36 = v13;
+    v36 = completionCopy;
     v35 = v15;
     v17 = v34;
     v18 = v16;
@@ -308,10 +308,10 @@ LABEL_6:
   }
 }
 
-- (BOOL)deleteObjects:(id)a3 error:(id *)a4
+- (BOOL)deleteObjects:(id)objects error:(id *)error
 {
-  v6 = a3;
-  if ([_CDDecommissionUtils isRequestAllowed:a4])
+  objectsCopy = objects;
+  if ([_CDDecommissionUtils isRequestAllowed:error])
   {
     v7 = _os_activity_create(&dword_191750000, "CoreDuet: deleteObjects sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v11.opaque[0] = 0;
@@ -319,10 +319,10 @@ LABEL_6:
     os_activity_scope_enter(v7, &v11);
     os_activity_scope_leave(&v11);
 
-    if ([v6 count])
+    if ([objectsCopy count])
     {
-      [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer creditForDeletion:v6];
-      v8 = [(_DKKnowledgeQuerying *)self->_knowledgeStoreHandle deleteObjects:v6 error:a4];
+      [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer creditForDeletion:objectsCopy];
+      v8 = [(_DKKnowledgeQuerying *)self->_knowledgeStoreHandle deleteObjects:objectsCopy error:error];
     }
 
     else
@@ -346,23 +346,23 @@ LABEL_6:
   return v8;
 }
 
-- (void)deleteObjects:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5
+- (void)deleteObjects:(id)objects responseQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  queueCopy = queue;
+  completionCopy = completion;
   v32 = 0;
   v11 = [_CDDecommissionUtils isRequestAllowed:&v32];
   v12 = v32;
   if (!v11)
   {
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_17;
     }
 
-    defaultQueue = v9;
-    if (!v9)
+    defaultQueue = queueCopy;
+    if (!queueCopy)
     {
       defaultQueue = self->_defaultQueue;
     }
@@ -371,7 +371,7 @@ LABEL_6:
     v29[1] = 3221225472;
     v29[2] = __64___DKKnowledgeStore_deleteObjects_responseQueue_withCompletion___block_invoke;
     v29[3] = &unk_1E7367818;
-    v31 = v10;
+    v31 = completionCopy;
     v30 = v12;
     v16 = v29;
     v17 = defaultQueue;
@@ -397,16 +397,16 @@ LABEL_16:
   os_activity_scope_enter(v13, &state);
   os_activity_scope_leave(&state);
 
-  if ([v8 count])
+  if ([objectsCopy count])
   {
-    [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer creditForDeletion:v8];
-    v14 = v9;
-    if (!v9)
+    [(_DKRateLimitPolicyEnforcer *)self->_rateLimitEnforcer creditForDeletion:objectsCopy];
+    v14 = queueCopy;
+    if (!queueCopy)
     {
       v14 = self->_defaultQueue;
     }
 
-    [(_DKKnowledgeQuerying *)self->_knowledgeStoreHandle deleteObjects:v8 responseQueue:v14 withCompletion:v10];
+    [(_DKKnowledgeQuerying *)self->_knowledgeStoreHandle deleteObjects:objectsCopy responseQueue:v14 withCompletion:completionCopy];
     goto LABEL_17;
   }
 
@@ -417,10 +417,10 @@ LABEL_16:
     _os_log_impl(&dword_191750000, v21, OS_LOG_TYPE_INFO, "Early out because no valid objects were provided.", &state, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v22 = v9;
-    if (!v9)
+    v22 = queueCopy;
+    if (!queueCopy)
     {
       v22 = self->_defaultQueue;
     }
@@ -429,7 +429,7 @@ LABEL_16:
     v27[1] = 3221225472;
     v27[2] = __64___DKKnowledgeStore_deleteObjects_responseQueue_withCompletion___block_invoke_8;
     v27[3] = &unk_1E7367840;
-    v28 = v10;
+    v28 = completionCopy;
     v23 = v27;
     v24 = v22;
     v25 = os_transaction_create();
@@ -449,10 +449,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (id)executeQuery:(id)a3 error:(id *)a4
+- (id)executeQuery:(id)query error:(id *)error
 {
-  v6 = a3;
-  if ([_CDDecommissionUtils isRequestAllowed:a4])
+  queryCopy = query;
+  if ([_CDDecommissionUtils isRequestAllowed:error])
   {
     v7 = _os_activity_create(&dword_191750000, "CoreDuet: executeQuery sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v11.opaque[0] = 0;
@@ -470,7 +470,7 @@ LABEL_17:
       knowledgeStoreHandle = 0;
     }
 
-    v9 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle executeQuery:v6 error:a4];
+    v9 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle executeQuery:queryCopy error:error];
   }
 
   else
@@ -481,11 +481,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)executeQuery:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5
+- (void)executeQuery:(id)query responseQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  queueCopy = queue;
+  completionCopy = completion;
   v24 = 0;
   v11 = [_CDDecommissionUtils isRequestAllowed:&v24];
   v12 = v24;
@@ -507,19 +507,19 @@ LABEL_17:
       knowledgeStoreHandle = 0;
     }
 
-    defaultQueue = v9;
-    if (!v9)
+    defaultQueue = queueCopy;
+    if (!queueCopy)
     {
       defaultQueue = self->_defaultQueue;
     }
 
-    [(_DKKnowledgeQuerying *)knowledgeStoreHandle executeQuery:v8 responseQueue:defaultQueue withCompletion:v10];
+    [(_DKKnowledgeQuerying *)knowledgeStoreHandle executeQuery:queryCopy responseQueue:defaultQueue withCompletion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v16 = v9;
-    if (!v9)
+    v16 = queueCopy;
+    if (!queueCopy)
     {
       v16 = self->_defaultQueue;
     }
@@ -528,7 +528,7 @@ LABEL_17:
     v21[1] = 3221225472;
     v21[2] = __63___DKKnowledgeStore_executeQuery_responseQueue_withCompletion___block_invoke;
     v21[3] = &unk_1E7367818;
-    v23 = v10;
+    v23 = completionCopy;
     v22 = v12;
     v17 = v21;
     v18 = v16;
@@ -544,10 +544,10 @@ LABEL_17:
   }
 }
 
-- (void)executeQuery:(id)a3 responseQueue:(id)a4
+- (void)executeQuery:(id)query responseQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  queryCopy = query;
+  queueCopy = queue;
   if ([_CDDecommissionUtils isRequestAllowed:0])
   {
     [_DKKnowledgeStore executeQuery:responseQueue:];
@@ -563,10 +563,10 @@ LABEL_17:
   }
 }
 
-- (unint64_t)deleteAllEventsInEventStream:(id)a3 error:(id *)a4
+- (unint64_t)deleteAllEventsInEventStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  if ([_CDDecommissionUtils isRequestAllowed:a4])
+  streamCopy = stream;
+  if ([_CDDecommissionUtils isRequestAllowed:error])
   {
     v7 = _os_activity_create(&dword_191750000, "CoreDuet: deleteAllEventsInEventStream sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v11.opaque[0] = 0;
@@ -584,7 +584,7 @@ LABEL_17:
       knowledgeStoreHandle = 0;
     }
 
-    v9 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsInEventStream:v6 error:a4];
+    v9 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsInEventStream:streamCopy error:error];
   }
 
   else
@@ -595,11 +595,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)deleteAllEventsInEventStream:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5
+- (void)deleteAllEventsInEventStream:(id)stream responseQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  streamCopy = stream;
+  queueCopy = queue;
+  completionCopy = completion;
   v24 = 0;
   v11 = [_CDDecommissionUtils isRequestAllowed:&v24];
   v12 = v24;
@@ -621,19 +621,19 @@ LABEL_17:
       knowledgeStoreHandle = 0;
     }
 
-    defaultQueue = v9;
-    if (!v9)
+    defaultQueue = queueCopy;
+    if (!queueCopy)
     {
       defaultQueue = self->_defaultQueue;
     }
 
-    [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsInEventStream:v8 responseQueue:defaultQueue withCompletion:v10];
+    [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsInEventStream:streamCopy responseQueue:defaultQueue withCompletion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v16 = v9;
-    if (!v9)
+    v16 = queueCopy;
+    if (!queueCopy)
     {
       v16 = self->_defaultQueue;
     }
@@ -642,7 +642,7 @@ LABEL_17:
     v21[1] = 3221225472;
     v21[2] = __79___DKKnowledgeStore_deleteAllEventsInEventStream_responseQueue_withCompletion___block_invoke;
     v21[3] = &unk_1E7367818;
-    v23 = v10;
+    v23 = completionCopy;
     v22 = v12;
     v17 = v21;
     v18 = v16;
@@ -658,10 +658,10 @@ LABEL_17:
   }
 }
 
-- (unint64_t)deleteAllEventsMatchingPredicate:(id)a3 error:(id *)a4
+- (unint64_t)deleteAllEventsMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
-  if ([_CDDecommissionUtils isRequestAllowed:a4])
+  predicateCopy = predicate;
+  if ([_CDDecommissionUtils isRequestAllowed:error])
   {
     v7 = _os_activity_create(&dword_191750000, "CoreDuet: deleteAllEventsMatchingPredicate sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v11.opaque[0] = 0;
@@ -679,7 +679,7 @@ LABEL_17:
       knowledgeStoreHandle = 0;
     }
 
-    v9 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsMatchingPredicate:v6 error:a4];
+    v9 = [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsMatchingPredicate:predicateCopy error:error];
   }
 
   else
@@ -690,11 +690,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)deleteAllEventsMatchingPredicate:(id)a3 responseQueue:(id)a4 withCompletion:(id)a5
+- (void)deleteAllEventsMatchingPredicate:(id)predicate responseQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  queueCopy = queue;
+  completionCopy = completion;
   v24 = 0;
   v11 = [_CDDecommissionUtils isRequestAllowed:&v24];
   v12 = v24;
@@ -716,19 +716,19 @@ LABEL_17:
       knowledgeStoreHandle = 0;
     }
 
-    defaultQueue = v9;
-    if (!v9)
+    defaultQueue = queueCopy;
+    if (!queueCopy)
     {
       defaultQueue = self->_defaultQueue;
     }
 
-    [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsMatchingPredicate:v8 responseQueue:defaultQueue withCompletion:v10];
+    [(_DKKnowledgeQuerying *)knowledgeStoreHandle deleteAllEventsMatchingPredicate:predicateCopy responseQueue:defaultQueue withCompletion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v16 = v9;
-    if (!v9)
+    v16 = queueCopy;
+    if (!queueCopy)
     {
       v16 = self->_defaultQueue;
     }
@@ -737,7 +737,7 @@ LABEL_17:
     v21[1] = 3221225472;
     v21[2] = __83___DKKnowledgeStore_deleteAllEventsMatchingPredicate_responseQueue_withCompletion___block_invoke;
     v21[3] = &unk_1E7367818;
-    v23 = v10;
+    v23 = completionCopy;
     v22 = v12;
     v17 = v21;
     v18 = v16;
@@ -753,7 +753,7 @@ LABEL_17:
   }
 }
 
-- (BOOL)synchronizeWithError:(id *)a3
+- (BOOL)synchronizeWithError:(id *)error
 {
   v3 = [_CDDecommissionUtils isRequestAllowed:?];
   if (v3)
@@ -765,10 +765,10 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 error:(id *)a5
+- (BOOL)synchronizeWithUrgency:(unint64_t)urgency client:(id)client error:(id *)error
 {
-  v8 = a4;
-  if ([_CDDecommissionUtils isRequestAllowed:a5])
+  clientCopy = client;
+  if ([_CDDecommissionUtils isRequestAllowed:error])
   {
     v11 = _os_activity_create(&dword_191750000, "CoreDuet: synchronizeWithUrgency", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v15.opaque[0] = 0;
@@ -783,11 +783,11 @@ LABEL_17:
       _os_log_impl(&dword_191750000, v12, OS_LOG_TYPE_INFO, "Starting synchronizeWithUrgency.", &v15, 2u);
     }
 
-    v13 = [(_DKKnowledgeStore *)&self->super.isa knowledgeSynchronizingHandleWithError:a5];
+    v13 = [(_DKKnowledgeStore *)&self->super.isa knowledgeSynchronizingHandleWithError:error];
     v14 = v13;
     if (v13)
     {
-      v9 = [v13 synchronizeWithUrgency:a3 client:v8 error:a5];
+      v9 = [v13 synchronizeWithUrgency:urgency client:clientCopy error:error];
     }
 
     else
@@ -804,11 +804,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 responseQueue:(id)a5 completion:(id)a6
+- (void)synchronizeWithUrgency:(unint64_t)urgency client:(id)client responseQueue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  clientCopy = client;
+  queueCopy = queue;
+  completionCopy = completion;
   v36 = 0;
   v13 = [_CDDecommissionUtils isRequestAllowed:&v36];
   v14 = v36;
@@ -826,19 +826,19 @@ LABEL_17:
 
     if (v21)
     {
-      defaultQueue = v11;
-      if (!v11)
+      defaultQueue = queueCopy;
+      if (!queueCopy)
       {
         defaultQueue = self->_defaultQueue;
       }
 
-      [v21 synchronizeWithUrgency:a3 client:v10 responseQueue:defaultQueue completion:v12];
+      [v21 synchronizeWithUrgency:urgency client:clientCopy responseQueue:defaultQueue completion:completionCopy];
     }
 
-    else if (v12)
+    else if (completionCopy)
     {
-      v24 = v11;
-      if (!v11)
+      v24 = queueCopy;
+      if (!queueCopy)
       {
         v24 = self->_defaultQueue;
       }
@@ -847,7 +847,7 @@ LABEL_17:
       v29[1] = 3221225472;
       v29[2] = __76___DKKnowledgeStore_synchronizeWithUrgency_client_responseQueue_completion___block_invoke_2;
       v29[3] = &unk_1E7367818;
-      v31 = v12;
+      v31 = completionCopy;
       v16 = v16;
       v30 = v16;
       v25 = v29;
@@ -866,10 +866,10 @@ LABEL_17:
     goto LABEL_6;
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v15 = v11;
-    if (!v11)
+    v15 = queueCopy;
+    if (!queueCopy)
     {
       v15 = self->_defaultQueue;
     }
@@ -878,7 +878,7 @@ LABEL_17:
     v33[1] = 3221225472;
     v33[2] = __76___DKKnowledgeStore_synchronizeWithUrgency_client_responseQueue_completion___block_invoke;
     v33[3] = &unk_1E7367818;
-    v35 = v12;
+    v35 = completionCopy;
     v16 = v14;
     v34 = v16;
     v17 = v33;
@@ -900,7 +900,7 @@ LABEL_6:
   }
 }
 
-- (BOOL)deleteRemoteState:(id *)a3
+- (BOOL)deleteRemoteState:(id *)state
 {
   v3 = [_CDDecommissionUtils isRequestAllowed:?];
   if (v3)
@@ -912,24 +912,24 @@ LABEL_6:
   return v3;
 }
 
-- (id)sourceDeviceIdentityFromObject:(id)a3 error:(id *)a4
+- (id)sourceDeviceIdentityFromObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  if ([_CDDecommissionUtils isRequestAllowed:a4])
+  objectCopy = object;
+  if ([_CDDecommissionUtils isRequestAllowed:error])
   {
-    v6 = [v5 source];
-    v7 = [v6 syncDeviceID];
+    source = [objectCopy source];
+    syncDeviceID = [source syncDeviceID];
   }
 
   else
   {
-    v7 = 0;
+    syncDeviceID = 0;
   }
 
-  return v7;
+  return syncDeviceID;
 }
 
-- (id)sourceDeviceIdentityWithError:(id *)a3
+- (id)sourceDeviceIdentityWithError:(id *)error
 {
   if ([_CDDecommissionUtils isRequestAllowed:?])
   {
@@ -939,21 +939,21 @@ LABEL_6:
     os_activity_scope_enter(v5, &v13);
     os_activity_scope_leave(&v13);
 
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!sourceDeviceIdentityWithError__sourceDeviceID)
     {
-      v7 = [(_DKKnowledgeStore *)&v6->super.isa knowledgeSynchronizingHandleWithError:a3];
+      v7 = [(_DKKnowledgeStore *)&selfCopy->super.isa knowledgeSynchronizingHandleWithError:error];
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 sourceDeviceIdentityWithError:a3];
+        v9 = [v7 sourceDeviceIdentityWithError:error];
         v10 = sourceDeviceIdentityWithError__sourceDeviceID;
         sourceDeviceIdentityWithError__sourceDeviceID = v9;
       }
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     v11 = sourceDeviceIdentityWithError__sourceDeviceID;
   }
@@ -976,22 +976,22 @@ LABEL_6:
     os_activity_scope_enter(v3, &state);
     os_activity_scope_leave(&state);
 
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!deviceUUID_deviceUUID)
     {
       v12 = 0;
-      v5 = [(_DKKnowledgeStore *)&v4->super.isa knowledgeSynchronizingHandleWithError:?];
+      v5 = [(_DKKnowledgeStore *)&selfCopy->super.isa knowledgeSynchronizingHandleWithError:?];
       v6 = v12;
       if (v5)
       {
-        v7 = [v5 deviceUUID];
+        deviceUUID = [v5 deviceUUID];
         v8 = deviceUUID_deviceUUID;
-        deviceUUID_deviceUUID = v7;
+        deviceUUID_deviceUUID = deviceUUID;
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     v9 = deviceUUID_deviceUUID;
   }
@@ -1010,12 +1010,12 @@ LABEL_6:
   return v9;
 }
 
-- (void)disableSyncPolicyForFeature:(unint64_t)a3 transportType:(int64_t)a4
+- (void)disableSyncPolicyForFeature:(unint64_t)feature transportType:(int64_t)type
 {
   if (+[_CDDecommissionUtils isCompletelyDisabled])
   {
-    v7 = +[_CDLogging knowledgeChannel];
-    if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_ERROR))
+    selfCopy = +[_CDLogging knowledgeChannel];
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       [_DKKnowledgeStore disableSyncPolicyForFeature:transportType:];
     }
@@ -1029,21 +1029,21 @@ LABEL_6:
     os_activity_scope_enter(v8, &state);
     os_activity_scope_leave(&state);
 
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v11 = 0;
-    v9 = [(_DKKnowledgeStore *)&v7->super.isa knowledgeSynchronizingHandleWithError:?];
+    v9 = [(_DKKnowledgeStore *)&selfCopy->super.isa knowledgeSynchronizingHandleWithError:?];
     v10 = v11;
     if (v9)
     {
-      [v9 disableSyncPolicyForFeature:a3 transportType:a4];
+      [v9 disableSyncPolicyForFeature:feature transportType:type];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)isSyncPolicyDisabledForFeature:(unint64_t)a3 transportType:(int64_t)a4
+- (BOOL)isSyncPolicyDisabledForFeature:(unint64_t)feature transportType:(int64_t)type
 {
   if (+[_CDDecommissionUtils isCompletelyDisabled])
   {
@@ -1064,32 +1064,32 @@ LABEL_6:
     os_activity_scope_enter(v9, &state);
     os_activity_scope_leave(&state);
 
-    v10 = self;
-    objc_sync_enter(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v14 = 0;
-    v11 = [(_DKKnowledgeStore *)&v10->super.isa knowledgeSynchronizingHandleWithError:?];
+    v11 = [(_DKKnowledgeStore *)&selfCopy->super.isa knowledgeSynchronizingHandleWithError:?];
     v12 = v14;
     if (v11)
     {
-      isSyncPolicyDisabledForFeature_transportType__disabled = [v11 isSyncPolicyDisabledForFeature:a3 transportType:a4];
+      isSyncPolicyDisabledForFeature_transportType__disabled = [v11 isSyncPolicyDisabledForFeature:feature transportType:type];
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     v8 = isSyncPolicyDisabledForFeature_transportType__disabled;
   }
 
   return v8 & 1;
 }
 
-- (id)_sanitizeObjectsBeforeSaving:(id *)a1
+- (id)_sanitizeObjectsBeforeSaving:(id *)saving
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (saving)
   {
-    v4 = [a1[2] filterObjectsByEnforcingRateLimit:v3];
-    a1 = [a1[3] enforcePrivacy:v4];
-    v5 = [a1 count];
+    v4 = [saving[2] filterObjectsByEnforcingRateLimit:v3];
+    saving = [saving[3] enforcePrivacy:v4];
+    v5 = [saving count];
     if (v5 != [v3 count])
     {
       v6 = +[_CDLogging knowledgeChannel];
@@ -1098,12 +1098,12 @@ LABEL_6:
         v10 = 134218240;
         v11 = [v3 count];
         v12 = 2048;
-        v13 = [a1 count];
+        v13 = [saving count];
         _os_log_impl(&dword_191750000, v6, OS_LOG_TYPE_INFO, "Save of %lu objects filtered/sanitized to %lu objects.", &v10, 0x16u);
       }
     }
 
-    if (![a1 count])
+    if (![saving count])
     {
       v7 = +[_CDLogging knowledgeChannel];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1116,18 +1116,18 @@ LABEL_6:
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return saving;
 }
 
-- (id)knowledgeSynchronizingHandleWithError:(id *)a1
+- (id)knowledgeSynchronizingHandleWithError:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (error)
   {
-    v3 = a1;
-    if ([a1[1] conformsToProtocol:&unk_1F05FA700])
+    errorCopy = error;
+    if ([error[1] conformsToProtocol:&unk_1F05FA700])
     {
-      a1 = v3[1];
+      error = errorCopy[1];
     }
 
     else
@@ -1141,13 +1141,13 @@ LABEL_6:
         *a2 = [v4 errorWithDomain:@"com.apple.coreduet.knowledge" code:5 userInfo:v5];
       }
 
-      a1 = 0;
+      error = 0;
     }
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return error;
 }
 
 - (uint64_t)executeQuery:responseQueue:.cold.2()

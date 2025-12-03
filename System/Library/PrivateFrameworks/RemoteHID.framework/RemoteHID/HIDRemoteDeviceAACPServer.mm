@@ -1,35 +1,35 @@
 @interface HIDRemoteDeviceAACPServer
-- (BOOL)createRemoteDevice:(id)a3 deviceID:(unint64_t)a4 property:(id)a5;
-- (HIDRemoteDeviceAACPServer)initWithQueue:(id)a3;
+- (BOOL)createRemoteDevice:(id)device deviceID:(unint64_t)d property:(id)property;
+- (HIDRemoteDeviceAACPServer)initWithQueue:(id)queue;
 - (id)description;
-- (int)remoteDeviceGetReport:(id)a3 type:(int64_t)a4 reportID:(unsigned __int8)a5 report:(id)a6;
-- (int)remoteDeviceSetReport:(id)a3 type:(int64_t)a4 reportID:(unsigned __int8)a5 report:(id)a6;
-- (int)sendMessageBTDevice:(BTDeviceImpl *)a3 data:(char *)a4 size:(unint64_t)a5 transportVersion:(unsigned __int8)a6 side:(unsigned __int8)a7;
-- (os_state_data_s)stateHandler:(os_state_hints_s *)a3;
+- (int)remoteDeviceGetReport:(id)report type:(int64_t)type reportID:(unsigned __int8)d report:(id)a6;
+- (int)remoteDeviceSetReport:(id)report type:(int64_t)type reportID:(unsigned __int8)d report:(id)a6;
+- (int)sendMessageBTDevice:(BTDeviceImpl *)device data:(char *)data size:(unint64_t)size transportVersion:(unsigned __int8)version side:(unsigned __int8)side;
+- (os_state_data_s)stateHandler:(os_state_hints_s *)handler;
 - (void)activate;
-- (void)addBTDevice:(BTDeviceImpl *)a3;
-- (void)btAccessoryEventHandler:(BTDeviceImpl *)a3 event:(int)a4 state:(int)a5;
-- (void)btDeviceMessageHandler:(BTDeviceImpl *)a3 type:(int)a4 data:(char *)a5 size:(unint64_t)a6;
-- (void)btServiceEventHandler:(BTDeviceImpl *)a3 services:(unsigned int)a4 eventType:(int)a5 event:(unsigned int)a6 result:(int)a7;
+- (void)addBTDevice:(BTDeviceImpl *)device;
+- (void)btAccessoryEventHandler:(BTDeviceImpl *)handler event:(int)event state:(int)state;
+- (void)btDeviceMessageHandler:(BTDeviceImpl *)handler type:(int)type data:(char *)data size:(unint64_t)size;
+- (void)btServiceEventHandler:(BTDeviceImpl *)handler services:(unsigned int)services eventType:(int)type event:(unsigned int)event result:(int)result;
 - (void)btSessionCreate;
-- (void)btSessionEventHandler:(BTSessionImpl *)a3 event:(int)a4 result:(int)a5;
-- (void)btSessionInit:(BTSessionImpl *)a3;
+- (void)btSessionEventHandler:(BTSessionImpl *)handler event:(int)event result:(int)result;
+- (void)btSessionInit:(BTSessionImpl *)init;
 - (void)cancel;
 - (void)dealloc;
 - (void)removeAllBTDevices;
-- (void)removeBTDevice:(BTDeviceImpl *)a3;
-- (void)setMobileBluetoothInterface:(MobileBluetoothInterface *)a3;
-- (void)timeSyncEnable:(BOOL)a3 forEndpointID:(unint64_t)a4;
+- (void)removeBTDevice:(BTDeviceImpl *)device;
+- (void)setMobileBluetoothInterface:(MobileBluetoothInterface *)interface;
+- (void)timeSyncEnable:(BOOL)enable forEndpointID:(unint64_t)d;
 @end
 
 @implementation HIDRemoteDeviceAACPServer
 
-- (HIDRemoteDeviceAACPServer)initWithQueue:(id)a3
+- (HIDRemoteDeviceAACPServer)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = HIDRemoteDeviceAACPServer;
-  v5 = [(HIDRemoteDeviceServer *)&v12 initWithQueue:v4];
+  v5 = [(HIDRemoteDeviceServer *)&v12 initWithQueue:queueCopy];
   if (v5)
   {
     v6 = dispatch_queue_create("com.apple.hidrc.bluetooth", 0);
@@ -59,7 +59,7 @@
   [(HIDRemoteDeviceAACPServer *)&v4 dealloc];
 }
 
-- (void)setMobileBluetoothInterface:(MobileBluetoothInterface *)a3
+- (void)setMobileBluetoothInterface:(MobileBluetoothInterface *)interface
 {
   mb = self->_mb;
   if (mb)
@@ -67,7 +67,7 @@
     MEMORY[0x26671F420](mb, 0x81C40B8603338);
   }
 
-  self->_mb = a3;
+  self->_mb = interface;
 }
 
 - (id)description
@@ -85,12 +85,12 @@
 - (void)activate
 {
   [(HIDRemoteDeviceAACPServer *)self btSessionCreate];
-  v3 = [(HIDRemoteDeviceAACPServer *)self btQueue];
+  btQueue = [(HIDRemoteDeviceAACPServer *)self btQueue];
   v5 = MEMORY[0x277D85DD0];
   v6 = 3221225472;
   v7 = __37__HIDRemoteDeviceAACPServer_activate__block_invoke;
   v8 = &unk_279AFD190;
-  v9 = self;
+  selfCopy = self;
   self->_stateHandler = os_state_add_handler();
 
   v4.receiver = self;
@@ -126,11 +126,11 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)btSessionInit:(BTSessionImpl *)a3
+- (void)btSessionInit:(BTSessionImpl *)init
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  self->_session = a3;
-  if ((*(self->_mb->var0 + 2))(self->_mb, a3, &self->_manager))
+  self->_session = init;
+  if ((*(self->_mb->var0 + 2))(self->_mb, init, &self->_manager))
   {
     v4 = RemoteHIDLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -207,32 +207,32 @@ LABEL_14:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)btSessionEventHandler:(BTSessionImpl *)a3 event:(int)a4 result:(int)a5
+- (void)btSessionEventHandler:(BTSessionImpl *)handler event:(int)event result:(int)result
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = RemoteHIDLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v19 = a3;
+    handlerCopy = handler;
     v20 = 1024;
-    v21 = a4;
+    eventCopy = event;
     v22 = 1024;
-    v23 = a5;
+    resultCopy = result;
     _os_log_impl(&dword_261D9C000, v9, OS_LOG_TYPE_DEFAULT, "btSessionEventHandler session:%p event:%d result:%d", buf, 0x18u);
   }
 
-  switch(a4)
+  switch(event)
   {
     case 2:
       [(HIDRemoteDeviceAACPServer *)self removeAllBTDevices];
-      v14 = [(HIDRemoteDeviceServer *)self queue];
-      dispatch_async_and_wait(v14, &__block_literal_global);
+      queue = [(HIDRemoteDeviceServer *)self queue];
+      dispatch_async_and_wait(queue, &__block_literal_global);
 
       self->_session = 0;
       self->_manager = 0;
       v10 = dispatch_time(0, 1000000000);
-      v11 = [(HIDRemoteDeviceAACPServer *)self btQueue];
+      btQueue = [(HIDRemoteDeviceAACPServer *)self btQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __64__HIDRemoteDeviceAACPServer_btSessionEventHandler_event_result___block_invoke_3;
@@ -240,7 +240,7 @@ LABEL_14:
       v16[4] = self;
       v12 = v16;
 LABEL_10:
-      dispatch_after(v10, v11, v12);
+      dispatch_after(v10, btQueue, v12);
 
       break;
     case 1:
@@ -249,14 +249,14 @@ LABEL_10:
 
       break;
     case 0:
-      if (!a5)
+      if (!result)
       {
-        [(HIDRemoteDeviceAACPServer *)self btSessionInit:a3];
+        [(HIDRemoteDeviceAACPServer *)self btSessionInit:handler];
         break;
       }
 
       v10 = dispatch_time(0, 1000000000);
-      v11 = [(HIDRemoteDeviceAACPServer *)self btQueue];
+      btQueue = [(HIDRemoteDeviceAACPServer *)self btQueue];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __64__HIDRemoteDeviceAACPServer_btSessionEventHandler_event_result___block_invoke;
@@ -269,11 +269,11 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBTDevice:(BTDeviceImpl *)a3
+- (void)addBTDevice:(BTDeviceImpl *)device
 {
   *&v16[5] = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v5 = (*(self->_mb->var0 + 4))(self->_mb, self->_manager, a3, 20, &v14);
+  v5 = (*(self->_mb->var0 + 4))(self->_mb, self->_manager, device, 20, &v14);
   v6 = RemoteHIDLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -317,7 +317,7 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  v7 = [(HIDRemoteEndpoint *)[HIDAACPRemoteEndpoint alloc] initWithID:a3];
+  v7 = [(HIDRemoteEndpoint *)[HIDAACPRemoteEndpoint alloc] initWithID:device];
   [(HIDAACPRemoteEndpoint *)v7 setServer:self];
   v8 = [(HIDRemoteDeviceServer *)self getEndpoint:[(HIDRemoteEndpoint *)v7 endpointID]];
   v9 = v8 == 0;
@@ -331,7 +331,7 @@ LABEL_10:
     }
 
     *buf = 134217984;
-    *v16 = a3;
+    *v16 = device;
     v11 = "HID AACP device:%p";
   }
 
@@ -344,7 +344,7 @@ LABEL_10:
     }
 
     *buf = 134217984;
-    *v16 = a3;
+    *v16 = device;
     v11 = "HID AACP device:%p already connected";
   }
 
@@ -353,9 +353,9 @@ LABEL_18:
 
   [(HIDRemoteDeviceServer *)self connectEndpoint:v7];
   v13[0] = 0xAAA00200AAAAAAAALL;
-  [(HIDRemoteDeviceAACPServer *)self sendMessageBTDevice:a3 data:v13 size:8 transportVersion:0 side:0];
-  [(HIDRemoteDeviceAACPServer *)self sendMessageBTDevice:a3 data:v13 size:8 transportVersion:1 side:0];
-  if ([(HIDRemoteDeviceAACPServer *)self sendMessageBTDevice:a3 data:v13 size:8 transportVersion:1 side:1])
+  [(HIDRemoteDeviceAACPServer *)self sendMessageBTDevice:device data:v13 size:8 transportVersion:0 side:0];
+  [(HIDRemoteDeviceAACPServer *)self sendMessageBTDevice:device data:v13 size:8 transportVersion:1 side:0];
+  if ([(HIDRemoteDeviceAACPServer *)self sendMessageBTDevice:device data:v13 size:8 transportVersion:1 side:1])
   {
     RemoteHIDLog();
     objc_claimAutoreleasedReturnValue();
@@ -367,10 +367,10 @@ LABEL_20:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int)sendMessageBTDevice:(BTDeviceImpl *)a3 data:(char *)a4 size:(unint64_t)a5 transportVersion:(unsigned __int8)a6 side:(unsigned __int8)a7
+- (int)sendMessageBTDevice:(BTDeviceImpl *)device data:(char *)data size:(unint64_t)size transportVersion:(unsigned __int8)version side:(unsigned __int8)side
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (version)
   {
     v8 = 0x100000;
   }
@@ -382,7 +382,7 @@ LABEL_20:
 
   v32 = 0;
   v33 = 0;
-  if (a5 < 8)
+  if (size < 8)
   {
     v18 = 0;
 LABEL_28:
@@ -390,31 +390,31 @@ LABEL_28:
     goto LABEL_17;
   }
 
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  *a4 = 0;
-  *(a4 + 1) = ++generation;
-  a4[3] = 2 * (a7 & 1);
+  versionCopy = version;
+  sizeCopy = size;
+  dataCopy = data;
+  *data = 0;
+  *(data + 1) = ++generation;
+  data[3] = 2 * (side & 1);
   v13 = RemoteHIDLogPackets();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v35 = a3;
+    deviceCopy = device;
     v36 = 1040;
-    v37 = v10;
+    v37 = sizeCopy;
     v38 = 2096;
-    v39 = v11;
+    v39 = dataCopy;
     _os_log_debug_impl(&dword_261D9C000, v13, OS_LOG_TYPE_DEBUG, "[%p] send packet:%{RemoteHID:packet}.*P", buf, 0x1Cu);
   }
 
-  if (v9)
+  if (versionCopy)
   {
-    encodeHeader(v11, v10, 0, 0, &v32, 1);
+    encodeHeader(dataCopy, sizeCopy, 0, 0, &v32, 1);
     if (v14)
     {
-      v15 = v10 - 4;
-      encode(v11 + 1, v10 - 4, 0, 0, &v33, 0, 1);
+      v15 = sizeCopy - 4;
+      encode(dataCopy + 1, sizeCopy - 4, 0, 0, &v33, 0, 1);
       if (v16)
       {
         v17 = [MEMORY[0x277CBEB28] dataWithLength:v33 + v32];
@@ -422,19 +422,19 @@ LABEL_28:
         if (v17)
         {
           v19 = v17;
-          encodeHeader(v11, v10, [v18 mutableBytes], objc_msgSend(v18, "length"), &v32, 0);
+          encodeHeader(dataCopy, sizeCopy, [v18 mutableBytes], objc_msgSend(v18, "length"), &v32, 0);
           if (v20)
           {
             v21 = v18;
-            v22 = [v18 mutableBytes];
+            mutableBytes = [v18 mutableBytes];
             v23 = v32;
             v24 = [v18 length];
-            encode(v11 + 1, v15, (v22 + v23), (v24 - v32), &v33, 0, 0);
+            encode(dataCopy + 1, v15, (mutableBytes + v23), (v24 - v32), &v33, 0, 0);
             if (v25)
             {
               v26 = v18;
-              v11 = [v18 mutableBytes];
-              v10 = [v18 length];
+              dataCopy = [v18 mutableBytes];
+              sizeCopy = [v18 length];
               v27 = v18;
               goto LABEL_15;
             }
@@ -492,7 +492,7 @@ LABEL_27:
 
   v27 = 0;
 LABEL_15:
-  v28 = (*(self->_mb->var0 + 6))(self->_mb, self->_manager, v8, a3, v11, v10);
+  v28 = (*(self->_mb->var0 + 6))(self->_mb, self->_manager, v8, device, dataCopy, sizeCopy);
   if (v28)
   {
     v18 = v27;
@@ -507,30 +507,30 @@ LABEL_17:
   return v28;
 }
 
-- (void)removeBTDevice:(BTDeviceImpl *)a3
+- (void)removeBTDevice:(BTDeviceImpl *)device
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = RemoteHIDLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    deviceCopy = device;
     _os_log_impl(&dword_261D9C000, v5, OS_LOG_TYPE_DEFAULT, "HID AACP device remove:0x%llx", &v7, 0xCu);
   }
 
-  [(HIDRemoteDeviceServer *)self disconnectEndpointID:a3];
+  [(HIDRemoteDeviceServer *)self disconnectEndpointID:device];
   v6 = *MEMORY[0x277D85DE8];
 }
 
 - (void)removeAllBTDevices
 {
-  v3 = [(HIDRemoteDeviceServer *)self endpoints];
+  endpoints = [(HIDRemoteDeviceServer *)self endpoints];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__HIDRemoteDeviceAACPServer_removeAllBTDevices__block_invoke;
   v4[3] = &unk_279AFD200;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [endpoints enumerateObjectsUsingBlock:v4];
 }
 
 void __47__HIDRemoteDeviceAACPServer_removeAllBTDevices__block_invoke(uint64_t a1, void *a2)
@@ -539,7 +539,7 @@ void __47__HIDRemoteDeviceAACPServer_removeAllBTDevices__block_invoke(uint64_t a
   [*(a1 + 32) removeBTDevice:{objc_msgSend(v3, "endpointID")}];
 }
 
-- (void)btDeviceMessageHandler:(BTDeviceImpl *)a3 type:(int)a4 data:(char *)a5 size:(unint64_t)a6
+- (void)btDeviceMessageHandler:(BTDeviceImpl *)handler type:(int)type data:(char *)data size:(unint64_t)size
 {
   *&v25[13] = *MEMORY[0x277D85DE8];
   v11 = [(HIDRemoteDeviceServer *)self getEndpoint:?];
@@ -555,15 +555,15 @@ void __47__HIDRemoteDeviceAACPServer_removeAllBTDevices__block_invoke(uint64_t a
     goto LABEL_16;
   }
 
-  if (a4 == 0x100000)
+  if (type == 0x100000)
   {
-    decodeHeader(a5, a6, [(NSMutableData *)self->_decodeBuff mutableBytes], [(NSMutableData *)self->_decodeBuff length]);
+    decodeHeader(data, size, [(NSMutableData *)self->_decodeBuff mutableBytes], [(NSMutableData *)self->_decodeBuff length]);
     if (v12)
     {
-      if (decode(a5, a6, ([(NSMutableData *)self->_decodeBuff mutableBytes]+ 4), [(NSMutableData *)self->_decodeBuff length]- 4, &v20, 0))
+      if (decode(data, size, ([(NSMutableData *)self->_decodeBuff mutableBytes]+ 4), [(NSMutableData *)self->_decodeBuff length]- 4, &v20, 0))
       {
-        a5 = [(NSMutableData *)self->_decodeBuff mutableBytes];
-        a6 = v20 + 4;
+        data = [(NSMutableData *)self->_decodeBuff mutableBytes];
+        size = v20 + 4;
         goto LABEL_6;
       }
 
@@ -582,13 +582,13 @@ void __47__HIDRemoteDeviceAACPServer_removeAllBTDevices__block_invoke(uint64_t a
     {
       v19 = mach_absolute_time();
       *buf = 134218754;
-      *&buf[4] = a3;
+      *&buf[4] = handler;
       v22 = 2048;
       *v23 = v19;
       *&v23[8] = 1040;
-      *&v23[10] = a6;
+      *&v23[10] = size;
       v24 = 2096;
-      *v25 = a5;
+      *v25 = data;
       _os_log_error_impl(&dword_261D9C000, v16, OS_LOG_TYPE_ERROR, "[%p] encoded packet - timestamp:%lld packet:%{RemoteHID:encodedpacket}.*P", buf, 0x26u);
     }
 
@@ -603,82 +603,82 @@ LABEL_6:
   {
     v15 = mach_absolute_time();
     *buf = 134219010;
-    *&buf[4] = a3;
+    *&buf[4] = handler;
     v22 = 1024;
-    *v23 = a4;
+    *v23 = type;
     *&v23[4] = 2048;
     *&v23[6] = v15;
     v24 = 1040;
-    *v25 = a6;
+    *v25 = size;
     v25[2] = 2096;
-    *&v25[3] = a5;
+    *&v25[3] = data;
     _os_log_debug_impl(&dword_261D9C000, v13, OS_LOG_TYPE_DEBUG, "[%p] receive packet - type:0x%x timestamp:%lld packet:%{RemoteHID:packet}.*P", buf, 0x2Cu);
   }
 
-  [(HIDRemoteDeviceServer *)self endpointMessageHandler:v11 data:a5 size:a6];
+  [(HIDRemoteDeviceServer *)self endpointMessageHandler:v11 data:data size:size];
 LABEL_9:
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)btServiceEventHandler:(BTDeviceImpl *)a3 services:(unsigned int)a4 eventType:(int)a5 event:(unsigned int)a6 result:(int)a7
+- (void)btServiceEventHandler:(BTDeviceImpl *)handler services:(unsigned int)services eventType:(int)type event:(unsigned int)event result:(int)result
 {
   v22 = *MEMORY[0x277D85DE8];
   v13 = RemoteHIDLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v15[0] = 67109888;
-    v15[1] = a4;
+    v15[1] = services;
     v16 = 1024;
-    v17 = a5;
+    typeCopy = type;
     v18 = 1024;
-    v19 = a6;
+    eventCopy = event;
     v20 = 1024;
-    v21 = a7;
+    resultCopy = result;
     _os_log_debug_impl(&dword_261D9C000, v13, OS_LOG_TYPE_DEBUG, "btServiceEventHandler services:0x%x eventType:%d event:%d result:%d", v15, 0x1Au);
   }
 
-  if ((a4 & 0x80000) != 0)
+  if ((services & 0x80000) != 0)
   {
-    if (a6 != 11 || a7 | a5)
+    if (event != 11 || result | type)
     {
-      if (a5 == 1 && a6 == 12)
+      if (type == 1 && event == 12)
       {
-        [(HIDRemoteDeviceAACPServer *)self removeBTDevice:a3];
+        [(HIDRemoteDeviceAACPServer *)self removeBTDevice:handler];
       }
     }
 
     else
     {
-      [(HIDRemoteDeviceAACPServer *)self addBTDevice:a3];
+      [(HIDRemoteDeviceAACPServer *)self addBTDevice:handler];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)btAccessoryEventHandler:(BTDeviceImpl *)a3 event:(int)a4 state:(int)a5
+- (void)btAccessoryEventHandler:(BTDeviceImpl *)handler event:(int)event state:(int)state
 {
   *&v29[5] = *MEMORY[0x277D85DE8];
   v9 = RemoteHIDLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134218496;
-    v27 = a3;
+    handlerCopy4 = handler;
     v28 = 1024;
-    *v29 = a4;
+    *v29 = event;
     v29[2] = 1024;
-    *&v29[3] = a5;
+    *&v29[3] = state;
     _os_log_impl(&dword_261D9C000, v9, OS_LOG_TYPE_INFO, "btAccessoryEventHandler device:%p event:%d state:%d", buf, 0x18u);
   }
 
-  if (a4 == 8)
+  if (event == 8)
   {
     v15 = RemoteHIDLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v27 = a3;
+      handlerCopy4 = handler;
       _os_log_impl(&dword_261D9C000, v15, OS_LOG_TYPE_DEFAULT, "TIMESYNC_NOT_AVAILABLE device:%p", buf, 0xCu);
     }
 
@@ -687,23 +687,23 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (a4 == 7)
+  if (event == 7)
   {
     v10 = RemoteHIDLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v27 = a3;
+      handlerCopy4 = handler;
       _os_log_impl(&dword_261D9C000, v10, OS_LOG_TYPE_DEFAULT, "TIMESYNC_AVAILABLE device:%p", buf, 0xCu);
     }
 
-    v11 = (*(self->_mb->var0 + 8))(self->_mb, self->_manager, a3, &self->_tsID);
+    v11 = (*(self->_mb->var0 + 8))(self->_mb, self->_manager, handler, &self->_tsID);
     v12 = RemoteHIDLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       tsID = self->_tsID;
       *buf = 134218240;
-      v27 = a3;
+      handlerCopy4 = handler;
       v28 = 2048;
       *v29 = tsID;
       _os_log_impl(&dword_261D9C000, v12, OS_LOG_TYPE_DEFAULT, "BTAccessoryManagerGetTimeSyncId device:%p tsID:0x%llx", buf, 0x16u);
@@ -730,14 +730,14 @@ LABEL_14:
     v25[1] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
-    v19 = [(HIDRemoteDeviceServer *)self endpoints];
+    endpoints = [(HIDRemoteDeviceServer *)self endpoints];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __65__HIDRemoteDeviceAACPServer_btAccessoryEventHandler_event_state___block_invoke;
     v22[3] = &unk_279AFD200;
     v20 = v18;
     v23 = v20;
-    [v19 enumerateObjectsUsingBlock:v22];
+    [endpoints enumerateObjectsUsingBlock:v22];
 
 LABEL_15:
   }
@@ -756,34 +756,34 @@ void __65__HIDRemoteDeviceAACPServer_btAccessoryEventHandler_event_state___block
   [v3 enumerateObjectsUsingBlock:v4];
 }
 
-- (int)remoteDeviceSetReport:(id)a3 type:(int64_t)a4 reportID:(unsigned __int8)a5 report:(id)a6
+- (int)remoteDeviceSetReport:(id)report type:(int64_t)type reportID:(unsigned __int8)d report:(id)a6
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  reportCopy = report;
   v10 = a6;
   v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(v10, "length") + 9}];
   v12 = RemoteHIDLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v21 = 134218498;
-    v22 = [v9 deviceID];
+    deviceID = [reportCopy deviceID];
     v23 = 2048;
-    v24 = a4;
+    typeCopy = type;
     v25 = 2112;
     v26 = v10;
     _os_log_debug_impl(&dword_261D9C000, v12, OS_LOG_TYPE_DEBUG, "remoteDeviceSetReport deviceID:0x%llx type:%ld report:%@", &v21, 0x20u);
   }
 
   v13 = v11;
-  v14 = [v11 bytes];
+  bytes = [v11 bytes];
   v15 = v10;
-  memcpy((v14 + 9), [v10 bytes], objc_msgSend(v10, "length"));
-  *(v14 + 4) = *(v14 + 4) & 0xFFFFFF80 | [v9 deviceID] & 0x7F;
-  *(v14 + 4) = (([v10 length] << 7) + 640) & 0x1FF80 | *(v14 + 4) & 0xFF80007F | 0x60000;
-  *(v14 + 8) = a4;
-  v16 = [v9 endpointID];
+  memcpy((bytes + 9), [v10 bytes], objc_msgSend(v10, "length"));
+  *(bytes + 4) = *(bytes + 4) & 0xFFFFFF80 | [reportCopy deviceID] & 0x7F;
+  *(bytes + 4) = (([v10 length] << 7) + 640) & 0x1FF80 | *(bytes + 4) & 0xFF80007F | 0x60000;
+  *(bytes + 8) = type;
+  endpointID = [reportCopy endpointID];
   v17 = v11;
-  v18 = -[HIDRemoteDeviceAACPServer sendMessageBTDevice:data:size:transportVersion:side:](self, "sendMessageBTDevice:data:size:transportVersion:side:", v16, [v11 bytes], objc_msgSend(v11, "length"), objc_msgSend(v9, "transportVersion"), objc_msgSend(v9, "side"));
+  v18 = -[HIDRemoteDeviceAACPServer sendMessageBTDevice:data:size:transportVersion:side:](self, "sendMessageBTDevice:data:size:transportVersion:side:", endpointID, [v11 bytes], objc_msgSend(v11, "length"), objc_msgSend(reportCopy, "transportVersion"), objc_msgSend(reportCopy, "side"));
   if (v18)
   {
     RemoteHIDLog();
@@ -796,13 +796,13 @@ void __65__HIDRemoteDeviceAACPServer_btAccessoryEventHandler_event_state___block
   return v18;
 }
 
-- (BOOL)createRemoteDevice:(id)a3 deviceID:(unint64_t)a4 property:(id)a5
+- (BOOL)createRemoteDevice:(id)device deviceID:(unint64_t)d property:(id)property
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  [v9 setObject:@"BT-AACP" forKeyedSubscript:@"Transport"];
-  [v9 setObject:&unk_28744E840 forKeyedSubscript:@"RequestTimeout"];
+  deviceCopy = device;
+  propertyCopy = property;
+  [propertyCopy setObject:@"BT-AACP" forKeyedSubscript:@"Transport"];
+  [propertyCopy setObject:&unk_28744E840 forKeyedSubscript:@"RequestTimeout"];
   *&v10 = 0xAAAAAAAAAAAAAAAALL;
   *(&v10 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *(v21 + 15) = v10;
@@ -821,44 +821,44 @@ void __65__HIDRemoteDeviceAACPServer_btAccessoryEventHandler_event_state___block
   v20[1] = v10;
   v20[2] = v10;
   v20[0] = v10;
-  if (!(*(self->_mb->var0 + 11))(self->_mb, [v8 endpointID], v20, 255))
+  if (!(*(self->_mb->var0 + 11))(self->_mb, [deviceCopy endpointID], v20, 255))
   {
     v19 = -21846;
     v18 = -1431655766;
     if (!(*(self->_mb->var0 + 12))(self->_mb, v20, &v18))
     {
       v11 = [MEMORY[0x277CBEA90] dataWithBytes:&v18 length:6];
-      [v9 setObject:v11 forKeyedSubscript:@"BT_ADDR"];
+      [propertyCopy setObject:v11 forKeyedSubscript:@"BT_ADDR"];
     }
   }
 
-  v12 = [v9 objectForKeyedSubscript:@"VendorID"];
+  v12 = [propertyCopy objectForKeyedSubscript:@"VendorID"];
   v13 = v12 == 0;
 
   if (v13)
   {
-    [v9 setObject:&unk_28744E858 forKeyedSubscript:@"VendorID"];
+    [propertyCopy setObject:&unk_28744E858 forKeyedSubscript:@"VendorID"];
   }
 
   v17.receiver = self;
   v17.super_class = HIDRemoteDeviceAACPServer;
-  v14 = [(HIDRemoteDeviceServer *)&v17 createRemoteDevice:v8 deviceID:a4 property:v9];
+  v14 = [(HIDRemoteDeviceServer *)&v17 createRemoteDevice:deviceCopy deviceID:d property:propertyCopy];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (int)remoteDeviceGetReport:(id)a3 type:(int64_t)a4 reportID:(unsigned __int8)a5 report:(id)a6
+- (int)remoteDeviceGetReport:(id)report type:(int64_t)type reportID:(unsigned __int8)d report:(id)a6
 {
-  v8 = a4;
-  v10 = a3;
+  typeCopy = type;
+  reportCopy = report;
   v11 = a6;
   v12 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:10];
-  v13 = [v12 bytes];
-  *(v13 + 4) = *(v13 + 4) & 0xFF800000 | [v10 deviceID] & 0x7F | 0x80300;
-  *(v13 + 8) = v8;
-  *(v13 + 9) = a5;
-  v14 = -[HIDRemoteDeviceAACPServer sendMessageBTDevice:data:size:transportVersion:side:](self, "sendMessageBTDevice:data:size:transportVersion:side:", [v10 endpointID], objc_msgSend(v12, "bytes"), objc_msgSend(v12, "length"), objc_msgSend(v10, "transportVersion"), objc_msgSend(v10, "side"));
+  bytes = [v12 bytes];
+  *(bytes + 4) = *(bytes + 4) & 0xFF800000 | [reportCopy deviceID] & 0x7F | 0x80300;
+  *(bytes + 8) = typeCopy;
+  *(bytes + 9) = d;
+  v14 = -[HIDRemoteDeviceAACPServer sendMessageBTDevice:data:size:transportVersion:side:](self, "sendMessageBTDevice:data:size:transportVersion:side:", [reportCopy endpointID], objc_msgSend(v12, "bytes"), objc_msgSend(v12, "length"), objc_msgSend(reportCopy, "transportVersion"), objc_msgSend(reportCopy, "side"));
   if (v14)
   {
     RemoteHIDLog();
@@ -870,9 +870,9 @@ void __65__HIDRemoteDeviceAACPServer_btAccessoryEventHandler_event_state___block
   return v14;
 }
 
-- (void)timeSyncEnable:(BOOL)a3 forEndpointID:(unint64_t)a4
+- (void)timeSyncEnable:(BOOL)enable forEndpointID:(unint64_t)d
 {
-  v5 = a3;
+  enableCopy = enable;
   v20 = *MEMORY[0x277D85DE8];
   manager = self->_manager;
   v7 = BTAccessoryManagerSensorStreamTimeSyncEnable();
@@ -883,9 +883,9 @@ void __65__HIDRemoteDeviceAACPServer_btAccessoryEventHandler_event_state___block
     if (v9)
     {
       v14 = 67109632;
-      v15 = v5;
+      v15 = enableCopy;
       v16 = 2048;
-      v17 = a4;
+      dCopy2 = d;
       v18 = 1024;
       v19 = v7;
       v10 = "Couldn't set %u timesync for device:%p status:%d";
@@ -899,9 +899,9 @@ LABEL_6:
   else if (v9)
   {
     v14 = 67109376;
-    v15 = v5;
+    v15 = enableCopy;
     v16 = 2048;
-    v17 = a4;
+    dCopy2 = d;
     v10 = "Set %u timesync for device:%p";
     v11 = v8;
     v12 = 18;
@@ -911,7 +911,7 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (os_state_data_s)stateHandler:(os_state_hints_s *)a3
+- (os_state_data_s)stateHandler:(os_state_hints_s *)handler
 {
   v16 = 0;
   v17 = &v16;
@@ -919,20 +919,20 @@ LABEL_6:
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = objc_opt_new();
-  if (a3->var2 - 4 < 0xFFFFFFFE)
+  if (handler->var2 - 4 < 0xFFFFFFFE)
   {
     v11 = 0;
     v7 = 0;
     goto LABEL_9;
   }
 
-  v5 = [(HIDRemoteDeviceServer *)self endpoints];
+  endpoints = [(HIDRemoteDeviceServer *)self endpoints];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __42__HIDRemoteDeviceAACPServer_stateHandler___block_invoke;
   v15[3] = &unk_279AFD250;
   v15[4] = &v16;
-  [v5 enumerateObjectsUsingBlock:v15];
+  [endpoints enumerateObjectsUsingBlock:v15];
 
   v6 = v17[5];
   v14 = 0;

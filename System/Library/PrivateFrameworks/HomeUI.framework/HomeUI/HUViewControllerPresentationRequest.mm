@@ -1,6 +1,6 @@
 @interface HUViewControllerPresentationRequest
-+ (id)requestWithViewController:(id)a3;
-- (HUViewControllerPresentationRequest)initWithViewController:(id)a3;
++ (id)requestWithViewController:(id)controller;
+- (HUViewControllerPresentationRequest)initWithViewController:(id)controller;
 - (id)asGeneric;
 @end
 
@@ -14,24 +14,24 @@
   return v2;
 }
 
-+ (id)requestWithViewController:(id)a3
++ (id)requestWithViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [[HUViewControllerPresentationRequest alloc] initWithViewController:v3];
+  controllerCopy = controller;
+  v4 = [[HUViewControllerPresentationRequest alloc] initWithViewController:controllerCopy];
 
   return v4;
 }
 
-- (HUViewControllerPresentationRequest)initWithViewController:(id)a3
+- (HUViewControllerPresentationRequest)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = HUViewControllerPresentationRequest;
   v6 = [(HUViewControllerPresentationRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
     v7->_animated = 1;
   }
 

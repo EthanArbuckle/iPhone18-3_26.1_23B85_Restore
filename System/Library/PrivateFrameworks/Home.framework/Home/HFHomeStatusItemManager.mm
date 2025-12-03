@@ -1,52 +1,52 @@
 @interface HFHomeStatusItemManager
-- (HFHomeStatusItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HFHomeStatusItemManager)initWithRoom:(id)a3 delegate:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)matchingItemForHomeKitObject:(id)a3;
+- (HFHomeStatusItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HFHomeStatusItemManager)initWithRoom:(id)room delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_itemsToHideInSet:(id)set;
+- (id)matchingItemForHomeKitObject:(id)object;
 - (id)statusItems;
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3;
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items;
 - (void)_invalidateItemsIfNecessary;
 - (void)_updateInvalidationTimer;
 @end
 
 @implementation HFHomeStatusItemManager
 
-- (HFHomeStatusItemManager)initWithRoom:(id)a3 delegate:(id)a4
+- (HFHomeStatusItemManager)initWithRoom:(id)room delegate:(id)delegate
 {
-  v7 = a3;
+  roomCopy = room;
   v11.receiver = self;
   v11.super_class = HFHomeStatusItemManager;
-  v8 = [(HFItemManager *)&v11 initWithDelegate:a4 sourceItem:0];
+  v8 = [(HFItemManager *)&v11 initWithDelegate:delegate sourceItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_room, a3);
+    objc_storeStrong(&v8->_room, room);
   }
 
   return v9;
 }
 
-- (HFHomeStatusItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HFHomeStatusItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithRoom_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HFHomeStatusItemManager.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HFHomeStatusItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomeStatusItemManager.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HFHomeStatusItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = [HFStatusItemProvider alloc];
-  v6 = [(HFHomeStatusItemManager *)self room];
-  v7 = [(HFStatusItemProvider *)v5 initWithHome:v4 room:v6];
+  room = [(HFHomeStatusItemManager *)self room];
+  v7 = [(HFStatusItemProvider *)v5 initWithHome:homeCopy room:room];
 
   [(HFHomeStatusItemManager *)self setStatusItemProvider:v7];
-  v8 = [(HFHomeStatusItemManager *)self statusItemProvider];
-  v12[0] = v8;
+  statusItemProvider = [(HFHomeStatusItemManager *)self statusItemProvider];
+  v12[0] = statusItemProvider;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -54,16 +54,16 @@
   return v9;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  v4 = [(HFItemManager *)self allItems];
+  allItems = [(HFItemManager *)self allItems];
   v17.receiver = self;
   v17.super_class = HFHomeStatusItemManager;
-  v5 = [(HFItemManager *)&v17 _itemsToHideInSet:v4];
+  v5 = [(HFItemManager *)&v17 _itemsToHideInSet:allItems];
   v6 = [v5 mutableCopy];
 
-  v7 = [(HFItemManager *)self allItems];
-  v8 = [v7 na_setByRemovingObjectsFromSet:v6];
+  allItems2 = [(HFItemManager *)self allItems];
+  v8 = [allItems2 na_setByRemovingObjectsFromSet:v6];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -98,25 +98,25 @@ void __45__HFHomeStatusItemManager__itemsToHideInSet___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items
 {
   v4.receiver = self;
   v4.super_class = HFHomeStatusItemManager;
-  [(HFItemManager *)&v4 _didFinishUpdateTransactionWithAffectedItems:a3];
+  [(HFItemManager *)&v4 _didFinishUpdateTransactionWithAffectedItems:items];
   [(HFHomeStatusItemManager *)self _updateInvalidationTimer];
 }
 
-- (id)matchingItemForHomeKitObject:(id)a3
+- (id)matchingItemForHomeKitObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self allItems];
+  objectCopy = object;
+  allItems = [(HFItemManager *)self allItems];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__HFHomeStatusItemManager_matchingItemForHomeKitObject___block_invoke;
   v12[3] = &unk_277DF4B70;
-  v6 = v4;
+  v6 = objectCopy;
   v13 = v6;
-  v7 = [v5 na_firstObjectPassingTest:v12];
+  v7 = [allItems na_firstObjectPassingTest:v12];
 
   if (v7)
   {
@@ -193,8 +193,8 @@ LABEL_11:
 
 - (id)statusItems
 {
-  v2 = [(HFItemManager *)self allItems];
-  v3 = [v2 na_filter:&__block_literal_global_166];
+  allItems = [(HFItemManager *)self allItems];
+  v3 = [allItems na_filter:&__block_literal_global_166];
 
   return v3;
 }
@@ -211,22 +211,22 @@ uint64_t __38__HFHomeStatusItemManager_statusItems__block_invoke(uint64_t a1, vo
 - (void)_updateInvalidationTimer
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HFHomeStatusItemManager *)self statusItems];
-  v4 = [v3 na_filter:&__block_literal_global_25_12];
-  v5 = [v4 allObjects];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_28_4];
+  statusItems = [(HFHomeStatusItemManager *)self statusItems];
+  v4 = [statusItems na_filter:&__block_literal_global_25_12];
+  allObjects = [v4 allObjects];
+  v6 = [allObjects sortedArrayUsingComparator:&__block_literal_global_28_4];
 
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 invalidationDate];
+    firstObject = [v6 firstObject];
+    invalidationDate = [firstObject invalidationDate];
 
-    v9 = [(HFHomeStatusItemManager *)self invalidationTimer];
-    if (v9 && (-[HFHomeStatusItemManager invalidationTimer](self, "invalidationTimer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isValid], v10, v9, v11))
+    invalidationTimer = [(HFHomeStatusItemManager *)self invalidationTimer];
+    if (invalidationTimer && (-[HFHomeStatusItemManager invalidationTimer](self, "invalidationTimer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isValid], v10, invalidationTimer, v11))
     {
-      v12 = [(HFHomeStatusItemManager *)self invalidationTimer];
-      v13 = [v12 fireDate];
-      v14 = [v13 isEqualToDate:v8];
+      invalidationTimer2 = [(HFHomeStatusItemManager *)self invalidationTimer];
+      fireDate = [invalidationTimer2 fireDate];
+      v14 = [fireDate isEqualToDate:invalidationDate];
 
       if ((v14 & 1) == 0)
       {
@@ -234,14 +234,14 @@ uint64_t __38__HFHomeStatusItemManager_statusItems__block_invoke(uint64_t a1, vo
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v29 = self;
+          selfCopy3 = self;
           v30 = 2112;
-          v31 = v8;
+          v31 = invalidationDate;
           _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@ Updating item invalidation timer to fire at date: %@", buf, 0x16u);
         }
 
-        v16 = [(HFHomeStatusItemManager *)self invalidationTimer];
-        [v16 setFireDate:v8];
+        invalidationTimer3 = [(HFHomeStatusItemManager *)self invalidationTimer];
+        [invalidationTimer3 setFireDate:invalidationDate];
       }
     }
 
@@ -251,13 +251,13 @@ uint64_t __38__HFHomeStatusItemManager_statusItems__block_invoke(uint64_t a1, vo
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2112;
-        v31 = v8;
+        v31 = invalidationDate;
         _os_log_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_DEFAULT, "%@ Scheduling item invalidation timer to fire at date: %@", buf, 0x16u);
       }
 
-      [v8 timeIntervalSinceNow];
+      [invalidationDate timeIntervalSinceNow];
       v19 = v18;
       objc_initWeak(buf, self);
       v20 = MEMORY[0x277CBEBB8];
@@ -276,20 +276,20 @@ uint64_t __38__HFHomeStatusItemManager_statusItems__block_invoke(uint64_t a1, vo
 
   else
   {
-    v22 = [(HFHomeStatusItemManager *)self invalidationTimer];
+    invalidationTimer4 = [(HFHomeStatusItemManager *)self invalidationTimer];
 
-    if (v22)
+    if (invalidationTimer4)
     {
       v23 = HFLogForCategory(0x2CuLL);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_20D9BF000, v23, OS_LOG_TYPE_DEFAULT, "%@ Clearing item invalidation timer due to reason: No items pending invalidation.", buf, 0xCu);
       }
 
-      v24 = [(HFHomeStatusItemManager *)self invalidationTimer];
-      [v24 invalidate];
+      invalidationTimer5 = [(HFHomeStatusItemManager *)self invalidationTimer];
+      [invalidationTimer5 invalidate];
 
       [(HFHomeStatusItemManager *)self setInvalidationTimer:0];
     }
@@ -364,15 +364,15 @@ void __51__HFHomeStatusItemManager__updateInvalidationTimer__block_invoke_30(uin
 - (void)_invalidateItemsIfNecessary
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [(HFHomeStatusItemManager *)self statusItems];
-  v5 = [v4 na_filter:&__block_literal_global_33_3];
+  statusItems = [(HFHomeStatusItemManager *)self statusItems];
+  v5 = [statusItems na_filter:&__block_literal_global_33_3];
 
   [v5 na_each:&__block_literal_global_37_5];
   v6 = HFLogForCategory(0x2CuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "%@ Invalidating status items: %@", &v9, 0x16u);

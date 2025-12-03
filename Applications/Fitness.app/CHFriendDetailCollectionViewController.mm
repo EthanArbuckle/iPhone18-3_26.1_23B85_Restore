@@ -1,85 +1,85 @@
 @interface CHFriendDetailCollectionViewController
 - (BOOL)_isDataHidden;
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3;
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller;
 - (BOOL)_shouldShowCompetitionAcceptAction;
 - (BOOL)_shouldShowCompetitionRequestAction;
 - (BOOL)_shouldShowCompetitionRulesAction;
 - (BOOL)_shouldShowExerciseAndStandCells;
 - (BOOL)_shouldShowStepsAndDistanceCells;
-- (CGSize)_sizeForGoalCell:(id)a3 withPreferredWidth:(double)a4 availableWidth:(double)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CHFriendDetailCollectionViewController)initWithFriendListManager:(id)a3 friendManager:(id)a4 friend:(id)a5 snapshot:(id)a6 snapshotDate:(id)a7 achievementsDataProvider:(id)a8 workoutDataProvider:(id)a9 workoutFormattingManager:(id)a10 formattingManager:(id)a11 badgeImageFactory:(id)a12 healthStore:(id)a13 fitnessAppContext:(id)a14;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_fontForSectionHeaderType:(int64_t)a3;
+- (CGSize)_sizeForGoalCell:(id)cell withPreferredWidth:(double)width availableWidth:(double)availableWidth;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CHFriendDetailCollectionViewController)initWithFriendListManager:(id)manager friendManager:(id)friendManager friend:(id)friend snapshot:(id)snapshot snapshotDate:(id)date achievementsDataProvider:(id)provider workoutDataProvider:(id)dataProvider workoutFormattingManager:(id)self0 formattingManager:(id)self1 badgeImageFactory:(id)self2 healthStore:(id)self3 fitnessAppContext:(id)self4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_fontForSectionHeaderType:(int64_t)type;
 - (id)_transformFriendAchievementsToACHAchievements;
-- (id)_workoutsForFriend:(id)a3 snapshot:(id)a4;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_friendDataWasUpdated:(id)a3;
-- (void)_infoButtonTapped:(id)a3;
-- (void)_logMessageComposeResult:(int64_t)a3 messageComposeViewController:(id)a4;
+- (id)_workoutsForFriend:(id)friend snapshot:(id)snapshot;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_friendDataWasUpdated:(id)updated;
+- (void)_infoButtonTapped:(id)tapped;
+- (void)_logMessageComposeResult:(int64_t)result messageComposeViewController:(id)controller;
 - (void)_populateAchievements;
 - (void)_reloadData;
-- (void)_sendMessageButtonTapped:(id)a3;
+- (void)_sendMessageButtonTapped:(id)tapped;
 - (void)_setupCellSizes;
 - (void)_setupCells;
 - (void)_setupNumberOfItemsInSection;
-- (void)_showShareOptions:(id)a3;
+- (void)_showShareOptions:(id)options;
 - (void)_updateSharingTextForMe;
-- (void)achievementsView:(id)a3 didTapAchievement:(id)a4 cell:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)achievementsView:(id)view didTapAchievement:(id)achievement cell:(id)cell;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)dealloc;
-- (void)friendDetailActionListView:(id)a3 didSelectActionType:(int64_t)a4;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)friendDetailActionListView:(id)view didSelectActionType:(int64_t)type;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CHFriendDetailCollectionViewController
 
-- (CHFriendDetailCollectionViewController)initWithFriendListManager:(id)a3 friendManager:(id)a4 friend:(id)a5 snapshot:(id)a6 snapshotDate:(id)a7 achievementsDataProvider:(id)a8 workoutDataProvider:(id)a9 workoutFormattingManager:(id)a10 formattingManager:(id)a11 badgeImageFactory:(id)a12 healthStore:(id)a13 fitnessAppContext:(id)a14
+- (CHFriendDetailCollectionViewController)initWithFriendListManager:(id)manager friendManager:(id)friendManager friend:(id)friend snapshot:(id)snapshot snapshotDate:(id)date achievementsDataProvider:(id)provider workoutDataProvider:(id)dataProvider workoutFormattingManager:(id)self0 formattingManager:(id)self1 badgeImageFactory:(id)self2 healthStore:(id)self3 fitnessAppContext:(id)self4
 {
-  v50 = a3;
-  v39 = a4;
-  v49 = a4;
-  v48 = a5;
-  v47 = a6;
-  v19 = a7;
-  v46 = a8;
-  v45 = a9;
-  v44 = a10;
+  managerCopy = manager;
+  friendManagerCopy = friendManager;
+  friendManagerCopy2 = friendManager;
+  friendCopy = friend;
+  snapshotCopy = snapshot;
+  dateCopy = date;
+  providerCopy = provider;
+  dataProviderCopy = dataProvider;
+  formattingManagerCopy = formattingManager;
   v43 = a11;
-  v42 = a12;
-  v20 = a13;
-  v41 = a14;
+  factoryCopy = factory;
+  storeCopy = store;
+  contextCopy = context;
   v52.receiver = self;
   v52.super_class = CHFriendDetailCollectionViewController;
   v21 = [(CHFriendDetailCollectionViewController *)&v52 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_friendListManager, a3);
-    objc_storeStrong(&v22->_friendManager, v39);
-    objc_storeStrong(&v22->_friend, a5);
+    objc_storeStrong(&v21->_friendListManager, manager);
+    objc_storeStrong(&v22->_friendManager, friendManagerCopy);
+    objc_storeStrong(&v22->_friend, friend);
     objc_storeStrong(&v22->_formattingManager, a11);
-    objc_storeStrong(&v22->_workoutFormattingManager, a10);
-    objc_storeStrong(&v22->_imageFactory, a12);
-    objc_storeStrong(&v22->_achievementsDataProvider, a8);
-    objc_storeStrong(&v22->_activitySnapshot, a6);
-    v23 = v19;
-    if (!v19)
+    objc_storeStrong(&v22->_workoutFormattingManager, formattingManager);
+    objc_storeStrong(&v22->_imageFactory, factory);
+    objc_storeStrong(&v22->_achievementsDataProvider, provider);
+    objc_storeStrong(&v22->_activitySnapshot, snapshot);
+    v23 = dateCopy;
+    if (!dateCopy)
     {
       v23 = +[NSDate date];
     }
 
     objc_storeStrong(&v22->_snapshotDate, v23);
-    if (!v19)
+    if (!dateCopy)
     {
     }
 
@@ -95,25 +95,25 @@
     v22->_todaysFriendWorkouts = v26;
 
     v22->_dataIsHidden = [(CHFriendDetailCollectionViewController *)v22 _isDataHidden];
-    objc_storeStrong(&v22->_workoutDataProvider, a9);
+    objc_storeStrong(&v22->_workoutDataProvider, dataProvider);
     v22->_pairedWatchSupportsCompetitions = FIDeviceMeetsMinimumOSVersionGlory();
-    v28 = [[_HKWheelchairUseCharacteristicCache alloc] initWithHealthStore:v20];
+    v28 = [[_HKWheelchairUseCharacteristicCache alloc] initWithHealthStore:storeCopy];
     wheelchairUseCharacteristicCache = v22->_wheelchairUseCharacteristicCache;
     v22->_wheelchairUseCharacteristicCache = v28;
 
     [(_HKWheelchairUseCharacteristicCache *)v22->_wheelchairUseCharacteristicCache addObserver:v22];
     v22->_iAmWheelchairUser = [(_HKWheelchairUseCharacteristicCache *)v22->_wheelchairUseCharacteristicCache isWheelchairUser];
     v22->_experienceType = FIExperienceTypeWithHealthStore();
-    objc_storeStrong(&v22->_fitnessAppContext, a14);
+    objc_storeStrong(&v22->_fitnessAppContext, context);
     v30 = objc_alloc_init(ACHAchievementLocalizationProvider);
     achievementLocProvider = v22->_achievementLocProvider;
     v22->_achievementLocProvider = v30;
 
-    v32 = [(FIUIFormattingManager *)v22->_formattingManager unitManager];
-    v33 = v32;
-    if (v32)
+    unitManager = [(FIUIFormattingManager *)v22->_formattingManager unitManager];
+    v33 = unitManager;
+    if (unitManager)
     {
-      if ([v32 conformsToProtocol:&OBJC_PROTOCOL___ACHUnitManager])
+      if ([unitManager conformsToProtocol:&OBJC_PROTOCOL___ACHUnitManager])
       {
         [(ACHAchievementLocalizationProvider *)v22->_achievementLocProvider setAchUnitManager:v33];
       }
@@ -130,8 +130,8 @@
       }
     }
 
-    v35 = [(ASFriend *)v22->_friend displayName];
-    [(ACHAchievementLocalizationProvider *)v22->_achievementLocProvider setName:v35];
+    displayName = [(ASFriend *)v22->_friend displayName];
+    [(ACHAchievementLocalizationProvider *)v22->_achievementLocProvider setName:displayName];
 
     if (v22->_isMe)
     {
@@ -140,8 +140,8 @@
 
     else
     {
-      v36 = [(ASFriend *)v22->_friend currentSnapshot];
-      -[ACHAchievementLocalizationProvider setWheelchairUser:](v22->_achievementLocProvider, "setWheelchairUser:", [v36 wheelchairUse] == 2);
+      currentSnapshot = [(ASFriend *)v22->_friend currentSnapshot];
+      -[ACHAchievementLocalizationProvider setWheelchairUser:](v22->_achievementLocProvider, "setWheelchairUser:", [currentSnapshot wheelchairUse] == 2);
     }
   }
 
@@ -157,26 +157,26 @@
   {
     v3 = +[NSBundle mainBundle];
     v4 = [v3 localizedStringForKey:@"ME" value:&stru_1008680E8 table:@"Localizable"];
-    v5 = [NSString stringWithFormat:@"•%@", v4];
+    displayName = [NSString stringWithFormat:@"•%@", v4];
   }
 
   else
   {
-    v5 = [(ASFriend *)self->_friend displayName];
+    displayName = [(ASFriend *)self->_friend displayName];
   }
 
-  v6 = [(CHFriendDetailCollectionViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  navigationItem = [(CHFriendDetailCollectionViewController *)self navigationItem];
+  [navigationItem setTitle:displayName];
 
-  v7 = [(CHFriendDetailCollectionViewController *)self navigationItem];
-  [v7 setLargeTitleDisplayMode:2];
+  navigationItem2 = [(CHFriendDetailCollectionViewController *)self navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:2];
 
-  [(CHFriendDetailCollectionViewController *)self setTitle:v5];
+  [(CHFriendDetailCollectionViewController *)self setTitle:displayName];
   if (self->_isMe)
   {
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:9 target:self action:"_showShareOptions:"];
-    v9 = [(CHFriendDetailCollectionViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem3 = [(CHFriendDetailCollectionViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:v8];
 
     objc_initWeak(&location, self);
     v10 = kASGatewayStatusChangedNotificationKey;
@@ -219,12 +219,12 @@
       [v8 addObject:v16];
     }
 
-    v17 = [(CHFriendDetailCollectionViewController *)self navigationItem];
-    [v17 setRightBarButtonItems:v8];
+    navigationItem4 = [(CHFriendDetailCollectionViewController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItems:v8];
 
-    v18 = [(ASFriend *)self->_friend as_detailedSharingDurationString];
+    as_detailedSharingDurationString = [(ASFriend *)self->_friend as_detailedSharingDurationString];
     sharingInfoText = self->_sharingInfoText;
-    self->_sharingInfoText = v18;
+    self->_sharingInfoText = as_detailedSharingDurationString;
   }
 
   v20 = +[NSNotificationCenter defaultCenter];
@@ -249,8 +249,8 @@
 
   [(UICollectionView *)self->_collectionView setAllowsSelection:1];
   [(UICollectionView *)self->_collectionView setAlwaysBounceVertical:1];
-  v26 = [(CHFriendDetailCollectionViewController *)self view];
-  [v26 addSubview:self->_collectionView];
+  view = [(CHFriendDetailCollectionViewController *)self view];
+  [view addSubview:self->_collectionView];
 
   [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Cell"];
   [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header"];
@@ -262,8 +262,8 @@
   v4.receiver = self;
   v4.super_class = CHFriendDetailCollectionViewController;
   [(CHFriendDetailCollectionViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(CHFriendDetailCollectionViewController *)self view];
-  [v3 bounds];
+  view = [(CHFriendDetailCollectionViewController *)self view];
+  [view bounds];
   [(UICollectionView *)self->_collectionView setFrame:?];
 }
 
@@ -282,14 +282,14 @@
 {
   if (FIDeviceMeetsMinimumOSVersionDaytona())
   {
-    v3 = [(CHFriendManager *)self->_friendManager activitySharingClient];
+    activitySharingClient = [(CHFriendManager *)self->_friendManager activitySharingClient];
     v4 = [NSNumber numberWithLongLong:[(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot snapshotIndex]];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10012BAAC;
     v8[3] = &unk_10083AC40;
     v8[4] = self;
-    [v3 areMultipleDevicesSharingDataForSnapshotIndex:v4 completion:v8];
+    [activitySharingClient areMultipleDevicesSharingDataForSnapshotIndex:v4 completion:v8];
   }
 
   else
@@ -304,9 +304,9 @@
 - (BOOL)_isDataHidden
 {
   v3 = self->_friend;
-  v4 = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot endDate];
-  snapshotDate = v4;
-  if (!v4)
+  endDate = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot endDate];
+  snapshotDate = endDate;
+  if (!endDate)
   {
     snapshotDate = self->_snapshotDate;
   }
@@ -331,8 +331,8 @@
   todaysAchievements = self->_todaysAchievements;
   self->_todaysAchievements = v3;
 
-  v5 = [(NSSet *)self->_todaysAchievements allObjects];
-  v6 = [v5 mutableCopy];
+  allObjects = [(NSSet *)self->_todaysAchievements allObjects];
+  v6 = [allObjects mutableCopy];
 
   AAUISortAchievementsByMostRecentEarnedDate();
   [(CHHorizontalScrollingAchievementsView *)self->_achievementsCell setAchievements:v6];
@@ -340,10 +340,10 @@
 
 - (id)_transformFriendAchievementsToACHAchievements
 {
-  v3 = [(ASFriend *)self->_friend friendAchievements];
-  v26 = self;
+  friendAchievements = [(ASFriend *)self->_friend friendAchievements];
+  selfCopy = self;
   v4 = [NSNumber numberWithLongLong:[(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot snapshotIndex]];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [friendAchievements objectForKeyedSubscript:v4];
 
   if ([v5 count])
   {
@@ -372,7 +372,7 @@
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 templateUniqueName];
+        templateUniqueName = [v11 templateUniqueName];
         v13 = ASIsCompetitionVictoryTemplate();
 
         if (v13)
@@ -386,9 +386,9 @@
 
         else
         {
-          achievementsDataProvider = v26->_achievementsDataProvider;
-          v16 = [v11 templateUniqueName];
-          v14 = [(AAUIAchievementsDataProvider *)achievementsDataProvider achievementForTemplateUniqueName:v16];
+          achievementsDataProvider = selfCopy->_achievementsDataProvider;
+          templateUniqueName2 = [v11 templateUniqueName];
+          v14 = [(AAUIAchievementsDataProvider *)achievementsDataProvider achievementForTemplateUniqueName:templateUniqueName2];
 
           if (!v14)
           {
@@ -397,9 +397,9 @@
         }
 
         v17 = [v6 hk_map:&stru_10083CF50];
-        v18 = [v14 template];
-        v19 = [v18 uniqueName];
-        v20 = [v17 containsObject:v19];
+        template = [v14 template];
+        uniqueName = [template uniqueName];
+        v20 = [v17 containsObject:uniqueName];
 
         if (v20)
         {
@@ -450,8 +450,8 @@ LABEL_20:
     self->_threeRingCell = v3;
   }
 
-  v187 = self;
-  v179 = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
+  selfCopy = self;
+  activitySummary = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
   if (self->_dataIsHidden)
   {
     [(CHFriendDetailThreeRingCell *)self->_threeRingCell setHidden:1];
@@ -461,16 +461,16 @@ LABEL_20:
   activitySnapshot = self->_activitySnapshot;
   if (activitySnapshot)
   {
-    v6 = [(_HKFitnessFriendActivitySnapshot *)activitySnapshot hasCarriedForwardGoals];
+    hasCarriedForwardGoals = [(_HKFitnessFriendActivitySnapshot *)activitySnapshot hasCarriedForwardGoals];
     v7 = self->_threeRingCell;
-    if (v6)
+    if (hasCarriedForwardGoals)
     {
       [(CHFriendDetailThreeRingCell *)v7 setActivitySummary:0 animated:1];
-      -[CHFriendDetailThreeRingCell setIsStandalonePhoneFitnessMode:](self->_threeRingCell, "setIsStandalonePhoneFitnessMode:", [v179 _isStandalonePhoneSummary]);
+      -[CHFriendDetailThreeRingCell setIsStandalonePhoneFitnessMode:](self->_threeRingCell, "setIsStandalonePhoneFitnessMode:", [activitySummary _isStandalonePhoneSummary]);
       goto LABEL_11;
     }
 
-    v8 = v179;
+    v8 = activitySummary;
   }
 
   else
@@ -488,109 +488,109 @@ LABEL_11:
     self->_dateCell = v9;
   }
 
-  v11 = [(ASFriend *)self->_friend as_simpleHiddenFromString];
-  v183 = v11;
-  v12 = self;
+  as_simpleHiddenFromString = [(ASFriend *)self->_friend as_simpleHiddenFromString];
+  v183 = as_simpleHiddenFromString;
+  selfCopy2 = self;
   v13 = self->_dateCell;
-  if (!v187->_dataIsHidden || v11 == 0)
+  if (!selfCopy->_dataIsHidden || as_simpleHiddenFromString == 0)
   {
-    v15 = [FIUIDateFormattingUtilities stringWithDayNameAndShortMonthFromDate:v187->_snapshotDate];
+    v15 = [FIUIDateFormattingUtilities stringWithDayNameAndShortMonthFromDate:selfCopy->_snapshotDate];
     [(CHFriendDetailDateCell *)v13 setText:v15];
 
-    v12 = v187;
+    selfCopy2 = selfCopy;
   }
 
   else
   {
-    [(CHFriendDetailDateCell *)v187->_dateCell setText:?];
+    [(CHFriendDetailDateCell *)selfCopy->_dateCell setText:?];
   }
 
-  competitionScoreCell = v12->_competitionScoreCell;
+  competitionScoreCell = selfCopy2->_competitionScoreCell;
   if (!competitionScoreCell)
   {
     v17 = [[CHFriendDetailCompetitionScoreCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v18 = v12->_competitionScoreCell;
-    v12->_competitionScoreCell = v17;
+    v18 = selfCopy2->_competitionScoreCell;
+    selfCopy2->_competitionScoreCell = v17;
 
-    competitionScoreCell = v12->_competitionScoreCell;
+    competitionScoreCell = selfCopy2->_competitionScoreCell;
   }
 
-  v19 = v12->_friend;
-  v20 = [(ASFriend *)v19 currentCompetition];
-  [(CHFriendDetailCompetitionScoreCell *)competitionScoreCell setFriend:v19 competition:v20];
+  v19 = selfCopy2->_friend;
+  currentCompetition = [(ASFriend *)v19 currentCompetition];
+  [(CHFriendDetailCompetitionScoreCell *)competitionScoreCell setFriend:v19 competition:currentCompetition];
 
-  if (!v187->_competitionGraphCell)
+  if (!selfCopy->_competitionGraphCell)
   {
     v21 = [[CHFriendDetailCompetitionGraphCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    competitionGraphCell = v187->_competitionGraphCell;
-    v187->_competitionGraphCell = v21;
+    competitionGraphCell = selfCopy->_competitionGraphCell;
+    selfCopy->_competitionGraphCell = v21;
   }
 
-  v23 = [(ASFriend *)v187->_friend currentCompetition];
-  [(CHFriendDetailCompetitionGraphCell *)v187->_competitionGraphCell setCompetition:v23];
+  currentCompetition2 = [(ASFriend *)selfCopy->_friend currentCompetition];
+  [(CHFriendDetailCompetitionGraphCell *)selfCopy->_competitionGraphCell setCompetition:currentCompetition2];
 
-  competitionTotalWinsCell = v187->_competitionTotalWinsCell;
+  competitionTotalWinsCell = selfCopy->_competitionTotalWinsCell;
   if (!competitionTotalWinsCell)
   {
     v25 = [[CHFriendDetailCompetitionTotalWinsCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v26 = v187->_competitionTotalWinsCell;
-    v187->_competitionTotalWinsCell = v25;
+    v26 = selfCopy->_competitionTotalWinsCell;
+    selfCopy->_competitionTotalWinsCell = v25;
 
-    competitionTotalWinsCell = v187->_competitionTotalWinsCell;
+    competitionTotalWinsCell = selfCopy->_competitionTotalWinsCell;
   }
 
-  v27 = v187->_friend;
-  v28 = [(ASFriend *)v27 currentCompetition];
-  [(CHFriendDetailCompetitionTotalWinsCell *)competitionTotalWinsCell setFriend:v27 competition:v28];
+  v27 = selfCopy->_friend;
+  currentCompetition3 = [(ASFriend *)v27 currentCompetition];
+  [(CHFriendDetailCompetitionTotalWinsCell *)competitionTotalWinsCell setFriend:v27 competition:currentCompetition3];
 
-  moveCell = v187->_moveCell;
+  moveCell = selfCopy->_moveCell;
   if (!moveCell)
   {
     v30 = [[CHFriendDetailGoalCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v31 = v187->_moveCell;
-    v187->_moveCell = v30;
+    v31 = selfCopy->_moveCell;
+    selfCopy->_moveCell = v30;
 
-    moveCell = v187->_moveCell;
+    moveCell = selfCopy->_moveCell;
   }
 
   v32 = +[ARUIMetricColors energyColors];
-  v33 = [v32 nonGradientTextColor];
-  [(CHFriendDetailGoalCell *)moveCell setKeyColor:v33];
+  nonGradientTextColor = [v32 nonGradientTextColor];
+  [(CHFriendDetailGoalCell *)moveCell setKeyColor:nonGradientTextColor];
 
-  v34 = v187->_moveCell;
+  v34 = selfCopy->_moveCell;
   v35 = +[NSBundle mainBundle];
   v36 = [v35 localizedStringForKey:@"MOVE" value:&stru_1008680E8 table:@"Localizable"];
   [(CHFriendDetailGoalCell *)v34 setTitle:v36];
 
-  if ([(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot isAmm])
+  if ([(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot isAmm])
   {
-    v37 = v187->_moveCell;
-    [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot mmv];
+    v37 = selfCopy->_moveCell;
+    [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot mmv];
     v38 = [NSNumber numberWithDouble:?];
-    [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot mmg];
+    [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot mmg];
     v39 = [NSNumber numberWithDouble:?];
-    v40 = +[NSBundle mainBundle];
-    v41 = [v40 localizedStringForKey:@"MIN" value:&stru_1008680E8 table:@"Localizable"];
+    localizedUppercaseString = +[NSBundle mainBundle];
+    v41 = [localizedUppercaseString localizedStringForKey:@"MIN" value:&stru_1008680E8 table:@"Localizable"];
     [(CHFriendDetailGoalCell *)v37 setCurrentValue:v38 goalValue:v39 unitString:v41];
 
-    v42 = v187;
+    v42 = selfCopy;
   }
 
   else
   {
-    formattingManager = v187->_formattingManager;
-    [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot energyBurned];
+    formattingManager = selfCopy->_formattingManager;
+    [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot energyBurned];
     [(FIUIFormattingManager *)formattingManager energyBurnedInUserUnitForCalories:?];
     v38 = [NSNumber numberWithDouble:?];
-    v44 = v187->_formattingManager;
-    [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot energyBurnedGoal];
+    v44 = selfCopy->_formattingManager;
+    [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot energyBurnedGoal];
     [(FIUIFormattingManager *)v44 energyBurnedInUserUnitForCalories:?];
     v39 = [NSNumber numberWithDouble:?];
-    v45 = [(FIUIFormattingManager *)v187->_formattingManager localizedShortActiveEnergyUnitString];
-    v40 = [v45 localizedUppercaseString];
+    localizedShortActiveEnergyUnitString = [(FIUIFormattingManager *)selfCopy->_formattingManager localizedShortActiveEnergyUnitString];
+    localizedUppercaseString = [localizedShortActiveEnergyUnitString localizedUppercaseString];
 
-    v42 = v187;
-    [(CHFriendDetailGoalCell *)v187->_moveCell setCurrentValue:v38 goalValue:v39 unitString:v40];
+    v42 = selfCopy;
+    [(CHFriendDetailGoalCell *)selfCopy->_moveCell setCurrentValue:v38 goalValue:v39 unitString:localizedUppercaseString];
   }
 
   exerciseCell = v42->_exerciseCell;
@@ -604,31 +604,31 @@ LABEL_11:
   }
 
   v49 = +[ARUIMetricColors briskColors];
-  v50 = [v49 nonGradientTextColor];
-  [(CHFriendDetailGoalCell *)exerciseCell setKeyColor:v50];
+  nonGradientTextColor2 = [v49 nonGradientTextColor];
+  [(CHFriendDetailGoalCell *)exerciseCell setKeyColor:nonGradientTextColor2];
 
-  v51 = v187->_exerciseCell;
+  v51 = selfCopy->_exerciseCell;
   v52 = +[NSBundle mainBundle];
   v53 = [v52 localizedStringForKey:@"EXERCISE" value:&stru_1008680E8 table:@"Localizable"];
   [(CHFriendDetailGoalCell *)v51 setTitle:v53];
 
-  v54 = v187->_exerciseCell;
-  [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot briskMinutes];
+  v54 = selfCopy->_exerciseCell;
+  [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot briskMinutes];
   v55 = [NSNumber numberWithDouble:?];
-  [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot briskMinutesGoal];
+  [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot briskMinutesGoal];
   v56 = [NSNumber numberWithDouble:?];
   v57 = +[NSBundle mainBundle];
   v58 = [v57 localizedStringForKey:@"MIN" value:&stru_1008680E8 table:@"Localizable"];
   [(CHFriendDetailGoalCell *)v54 setCurrentValue:v55 goalValue:v56 unitString:v58];
 
-  if (v187->_isMe)
+  if (selfCopy->_isMe)
   {
-    iAmWheelchairUser = v187->_iAmWheelchairUser;
+    iAmWheelchairUser = selfCopy->_iAmWheelchairUser;
   }
 
   else
   {
-    [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot wheelchairUse];
+    [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot wheelchairUse];
     iAmWheelchairUser = FIUIIsWheelchairUserForWheelchairUse();
   }
 
@@ -639,56 +639,56 @@ LABEL_11:
   }
 
   v184 = v60;
-  standCell = v187->_standCell;
+  standCell = selfCopy->_standCell;
   if (!standCell)
   {
     v62 = [[CHFriendDetailGoalCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v63 = v187->_standCell;
-    v187->_standCell = v62;
+    v63 = selfCopy->_standCell;
+    selfCopy->_standCell = v62;
 
-    standCell = v187->_standCell;
+    standCell = selfCopy->_standCell;
   }
 
   v64 = +[ARUIMetricColors sedentaryColors];
-  v65 = [v64 nonGradientTextColor];
-  [(CHFriendDetailGoalCell *)standCell setKeyColor:v65];
+  nonGradientTextColor3 = [v64 nonGradientTextColor];
+  [(CHFriendDetailGoalCell *)standCell setKeyColor:nonGradientTextColor3];
 
-  v66 = v187->_standCell;
+  v66 = selfCopy->_standCell;
   v67 = +[NSBundle mainBundle];
   v68 = [@"STAND" stringByAppendingString:v184];
   v69 = [v67 localizedStringForKey:v68 value:&stru_1008680E8 table:@"Localizable"];
   [(CHFriendDetailGoalCell *)v66 setTitle:v69];
 
-  v70 = v187->_standCell;
-  [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot activeHours];
+  v70 = selfCopy->_standCell;
+  [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot activeHours];
   v71 = [NSNumber numberWithDouble:?];
-  [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot activeHoursGoal];
+  [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot activeHoursGoal];
   v72 = [NSNumber numberWithDouble:?];
   v73 = +[NSBundle mainBundle];
   v74 = [v73 localizedStringForKey:@"HRS" value:&stru_1008680E8 table:@"Localizable"];
   [(CHFriendDetailGoalCell *)v70 setCurrentValue:v71 goalValue:v72 unitString:v74];
 
-  stepCell = v187->_stepCell;
+  stepCell = selfCopy->_stepCell;
   if (!stepCell)
   {
     v76 = [[CHFriendDetailGoalCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v77 = v187->_stepCell;
-    v187->_stepCell = v76;
+    v77 = selfCopy->_stepCell;
+    selfCopy->_stepCell = v76;
 
-    stepCell = v187->_stepCell;
+    stepCell = selfCopy->_stepCell;
   }
 
   v78 = +[UIColor lightGrayColor];
   [(CHFriendDetailGoalCell *)stepCell setKeyColor:v78];
 
-  v79 = v187->_stepCell;
+  v79 = selfCopy->_stepCell;
   v80 = +[NSBundle mainBundle];
   v81 = [@"STEPS_LABEL" stringByAppendingString:v184];
   v82 = [v80 localizedStringForKey:v81 value:&stru_1008680E8 table:@"Localizable"];
   [(CHFriendDetailGoalCell *)v79 setTitle:v82];
 
-  v83 = v187->_stepCell;
-  v84 = v187->_activitySnapshot;
+  v83 = selfCopy->_stepCell;
+  v84 = selfCopy->_activitySnapshot;
   if (iAmWheelchairUser)
   {
     [(_HKFitnessFriendActivitySnapshot *)v84 pushCount];
@@ -702,38 +702,38 @@ LABEL_11:
   v85 = [NSNumber numberWithDouble:?];
   [(CHFriendDetailGoalCell *)v83 setCurrentValue:v85];
 
-  distanceCell = v187->_distanceCell;
+  distanceCell = selfCopy->_distanceCell;
   if (!distanceCell)
   {
     v87 = [[CHFriendDetailGoalCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v88 = v187->_distanceCell;
-    v187->_distanceCell = v87;
+    v88 = selfCopy->_distanceCell;
+    selfCopy->_distanceCell = v87;
 
-    distanceCell = v187->_distanceCell;
+    distanceCell = selfCopy->_distanceCell;
   }
 
   v89 = +[UIColor lightGrayColor];
   [(CHFriendDetailGoalCell *)distanceCell setKeyColor:v89];
 
-  v90 = v187->_distanceCell;
+  v90 = selfCopy->_distanceCell;
   v91 = +[NSBundle mainBundle];
   v92 = [v91 localizedStringForKey:@"DISTANCE_LABEL" value:&stru_1008680E8 table:@"Localizable"];
   [(CHFriendDetailGoalCell *)v90 setTitle:v92];
 
-  v93 = [(FIUIFormattingManager *)v187->_formattingManager unitManager];
-  [(_HKFitnessFriendActivitySnapshot *)v187->_activitySnapshot walkingAndRunningDistance];
-  [v93 distanceInUserDistanceUnitForDistanceInMeters:1 distanceType:?];
+  unitManager = [(FIUIFormattingManager *)selfCopy->_formattingManager unitManager];
+  [(_HKFitnessFriendActivitySnapshot *)selfCopy->_activitySnapshot walkingAndRunningDistance];
+  [unitManager distanceInUserDistanceUnitForDistanceInMeters:1 distanceType:?];
   v182 = [NSNumber numberWithDouble:?];
 
-  v94 = [(FIUIFormattingManager *)v187->_formattingManager localizedShortUnitStringForDistanceType:1];
-  v181 = [v94 localizedUppercaseString];
+  v94 = [(FIUIFormattingManager *)selfCopy->_formattingManager localizedShortUnitStringForDistanceType:1];
+  localizedUppercaseString2 = [v94 localizedUppercaseString];
 
-  v95 = v187;
-  [(CHFriendDetailGoalCell *)v187->_distanceCell setCurrentValue:v182 unitString:v181];
-  [(CHFriendDetailGoalCell *)v187->_distanceCell setHidden:iAmWheelchairUser];
-  v96 = v187->_todaysFriendWorkouts;
+  v95 = selfCopy;
+  [(CHFriendDetailGoalCell *)selfCopy->_distanceCell setCurrentValue:v182 unitString:localizedUppercaseString2];
+  [(CHFriendDetailGoalCell *)selfCopy->_distanceCell setHidden:iAmWheelchairUser];
+  v96 = selfCopy->_todaysFriendWorkouts;
   v97 = v96;
-  if (v187->_isMe)
+  if (selfCopy->_isMe)
   {
     v197 = 0u;
     v198 = 0u;
@@ -754,9 +754,9 @@ LABEL_11:
           }
 
           v102 = *(*(&v195 + 1) + 8 * i);
-          workoutDataProvider = v187->_workoutDataProvider;
-          v104 = [v102 UUID];
-          [v102 setIsWatchWorkout:{-[CHWorkoutDataProvider isWatchWorkout:](workoutDataProvider, "isWatchWorkout:", v104)}];
+          workoutDataProvider = selfCopy->_workoutDataProvider;
+          uUID = [v102 UUID];
+          [v102 setIsWatchWorkout:{-[CHWorkoutDataProvider isWatchWorkout:](workoutDataProvider, "isWatchWorkout:", uUID)}];
         }
 
         v99 = [(NSArray *)v98 countByEnumeratingWithState:&v195 objects:v213 count:16];
@@ -765,13 +765,13 @@ LABEL_11:
       while (v99);
     }
 
-    v95 = v187;
+    v95 = selfCopy;
   }
 
   objc_initWeak(&location, v95);
   v105 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](v97, "count")}];
-  workoutCellsArray = v187->_workoutCellsArray;
-  v187->_workoutCellsArray = v105;
+  workoutCellsArray = selfCopy->_workoutCellsArray;
+  selfCopy->_workoutCellsArray = v105;
 
   v192 = 0u;
   v193 = 0u;
@@ -794,18 +794,18 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v113 = [*(*(&v190 + 1) + 8 * j) hkWorkoutFromFriendWorkout];
-        v114 = [[CHWorkoutCellImageLabelView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-        fitnessAppContext = v187->_fitnessAppContext;
-        workoutFormattingManager = v187->_workoutFormattingManager;
+        hkWorkoutFromFriendWorkout = [*(*(&v190 + 1) + 8 * j) hkWorkoutFromFriendWorkout];
+        height = [[CHWorkoutCellImageLabelView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+        fitnessAppContext = selfCopy->_fitnessAppContext;
+        workoutFormattingManager = selfCopy->_workoutFormattingManager;
         v188[0] = _NSConcreteStackBlock;
         v188[1] = 3221225472;
         v188[2] = sub_10012D900;
         v188[3] = &unk_10083A710;
         objc_copyWeak(&v189, &location);
-        [(CHWorkoutCellImageLabelView *)v114 setWorkout:v113 fitnessAppContext:fitnessAppContext formattingManager:workoutFormattingManager achievementCount:0 completion:v188];
-        [(CHWorkoutCellImageLabelView *)v114 setShowsSeparator:1];
-        [(NSMutableArray *)v187->_workoutCellsArray addObject:v114];
+        [(CHWorkoutCellImageLabelView *)height setWorkout:hkWorkoutFromFriendWorkout fitnessAppContext:fitnessAppContext formattingManager:workoutFormattingManager achievementCount:0 completion:v188];
+        [(CHWorkoutCellImageLabelView *)height setShowsSeparator:1];
+        [(NSMutableArray *)selfCopy->_workoutCellsArray addObject:height];
         objc_destroyWeak(&v189);
       }
 
@@ -815,28 +815,28 @@ LABEL_11:
     while (v107);
   }
 
-  v117 = [(NSMutableArray *)v187->_workoutCellsArray lastObject];
-  [v117 setShowsSeparator:0];
+  lastObject = [(NSMutableArray *)selfCopy->_workoutCellsArray lastObject];
+  [lastObject setShowsSeparator:0];
 
   v118 = [CHHorizontalScrollingAchievementsView alloc];
   v119 = CGRectZero.origin.y;
   v120 = CGRectZero.size.width;
   v121 = CGRectZero.size.height;
-  v122 = [(CHHorizontalScrollingAchievementsView *)v118 initWithFrame:v187->_imageFactory badgeImageFactory:v187->_achievementLocProvider locProvider:CGRectZero.origin.x, v119, v120, v121];
-  achievementsCell = v187->_achievementsCell;
-  v187->_achievementsCell = v122;
+  v121 = [(CHHorizontalScrollingAchievementsView *)v118 initWithFrame:selfCopy->_imageFactory badgeImageFactory:selfCopy->_achievementLocProvider locProvider:CGRectZero.origin.x, v119, v120, v121];
+  achievementsCell = selfCopy->_achievementsCell;
+  selfCopy->_achievementsCell = v121;
 
-  [(CHHorizontalScrollingAchievementsView *)v187->_achievementsCell setDelegate:v187];
-  [(CHHorizontalScrollingAchievementsView *)v187->_achievementsCell setScrollViewContentInset:0.0, 16.0, 0.0, 16.0];
-  v124 = [(NSSet *)v187->_todaysAchievements allObjects];
-  [(CHHorizontalScrollingAchievementsView *)v187->_achievementsCell setAchievements:v124];
+  [(CHHorizontalScrollingAchievementsView *)selfCopy->_achievementsCell setDelegate:selfCopy];
+  [(CHHorizontalScrollingAchievementsView *)selfCopy->_achievementsCell setScrollViewContentInset:0.0, 16.0, 0.0, 16.0];
+  allObjects = [(NSSet *)selfCopy->_todaysAchievements allObjects];
+  [(CHHorizontalScrollingAchievementsView *)selfCopy->_achievementsCell setAchievements:allObjects];
 
-  v125 = v187;
+  v125 = selfCopy;
   v126 = objc_alloc_init(NSMutableAttributedString);
-  if (v187->_sharingInfoText)
+  if (selfCopy->_sharingInfoText)
   {
     v127 = [NSAttributedString alloc];
-    sharingInfoText = v187->_sharingInfoText;
+    sharingInfoText = selfCopy->_sharingInfoText;
     v210[0] = NSFontAttributeName;
     v129 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     v211[0] = v129;
@@ -847,13 +847,13 @@ LABEL_11:
     v132 = [v127 initWithString:sharingInfoText attributes:v131];
     [v126 appendAttributedString:v132];
 
-    v125 = v187;
+    v125 = selfCopy;
   }
 
   if (([(ASFriend *)v125->_friend hasPendingCompetitionRequestFromMe]& 1) != 0 || [(ASFriend *)v125->_friend isCompetitionActive])
   {
     v133 = [(ASFriend *)v125->_friend as_competitionStatusBreadcrumbStringForExperienceType:v125->_experienceType];
-    v134 = [NSString stringWithFormat:@"\n%@", v133];
+    v133 = [NSString stringWithFormat:@"\n%@", v133];
     v135 = [NSAttributedString alloc];
     v208[0] = NSFontAttributeName;
     v136 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -862,54 +862,54 @@ LABEL_11:
     v137 = +[UIColor as_darkCompetitionGold];
     v209[1] = v137;
     v138 = [NSDictionary dictionaryWithObjects:v209 forKeys:v208 count:2];
-    v139 = [v135 initWithString:v134 attributes:v138];
+    v139 = [v135 initWithString:v133 attributes:v138];
     [v126 appendAttributedString:v139];
 
-    v125 = v187;
+    v125 = selfCopy;
   }
 
   v140 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, v119, v120, v121}];
   sharingInfoSizingLabel = v125->_sharingInfoSizingLabel;
   v125->_sharingInfoSizingLabel = v140;
 
-  p_isa = &v187->super.super.super.isa;
-  [(UILabel *)v187->_sharingInfoSizingLabel setAttributedText:v126];
-  [(UILabel *)v187->_sharingInfoSizingLabel setNumberOfLines:0];
+  p_isa = &selfCopy->super.super.super.isa;
+  [(UILabel *)selfCopy->_sharingInfoSizingLabel setAttributedText:v126];
+  [(UILabel *)selfCopy->_sharingInfoSizingLabel setNumberOfLines:0];
   v143 = objc_alloc_init(NSMutableArray);
   v144 = objc_alloc_init(NSMutableArray);
-  if ([(CHFriendDetailCollectionViewController *)v187 _shouldShowCompetitionRequestAction])
+  if ([(CHFriendDetailCollectionViewController *)selfCopy _shouldShowCompetitionRequestAction])
   {
     v145 = +[NSBundle mainBundle];
     v146 = [v145 localizedStringForKey:@"COMPETITION_SEND_ACTION_TITLE" value:&stru_1008680E8 table:@"Localizable"];
-    v147 = [(ASFriend *)v187->_friend displayName];
-    v148 = [NSString localizedStringWithFormat:v146, v147];
+    displayName = [(ASFriend *)selfCopy->_friend displayName];
+    v147 = [NSString localizedStringWithFormat:v146, displayName];
 
     [v143 addObject:&off_10086E3B0];
-    [v144 addObject:v148];
+    [v144 addObject:v147];
   }
 
-  else if ([(CHFriendDetailCollectionViewController *)v187 _shouldShowCompetitionAcceptAction])
+  else if ([(CHFriendDetailCollectionViewController *)selfCopy _shouldShowCompetitionAcceptAction])
   {
     v149 = +[NSBundle mainBundle];
-    v148 = [v149 localizedStringForKey:@"COMPETITION_ACCEPT_ACTION_TITLE" value:&stru_1008680E8 table:@"Localizable"];
+    v147 = [v149 localizedStringForKey:@"COMPETITION_ACCEPT_ACTION_TITLE" value:&stru_1008680E8 table:@"Localizable"];
 
     [v143 addObject:&off_10086E3C8];
-    [v144 addObject:v148];
+    [v144 addObject:v147];
   }
 
   else
   {
-    if (![(CHFriendDetailCollectionViewController *)v187 _shouldShowCompetitionRulesAction])
+    if (![(CHFriendDetailCollectionViewController *)selfCopy _shouldShowCompetitionRulesAction])
     {
       goto LABEL_74;
     }
 
-    v148 = [(ASFriend *)v187->_friend as_competitionLearnMoreDetailActionForExperienceType:v187->_experienceType];
+    v147 = [(ASFriend *)selfCopy->_friend as_competitionLearnMoreDetailActionForExperienceType:selfCopy->_experienceType];
     [v143 addObject:&off_10086E3E0];
-    [v144 addObject:v148];
+    [v144 addObject:v147];
   }
 
-  p_isa = &v187->super.super.super.isa;
+  p_isa = &selfCopy->super.super.super.isa;
 LABEL_74:
   if ([p_isa _shouldShowMuteAction])
   {
@@ -929,7 +929,7 @@ LABEL_74:
     [v143 addObject:&off_10086E3F8];
     [v144 addObject:v151];
 
-    p_isa = &v187->super.super.super.isa;
+    p_isa = &selfCopy->super.super.super.isa;
   }
 
   if ([p_isa[4] canSeeMyActivityData])
@@ -952,65 +952,65 @@ LABEL_74:
 
   [v143 addObject:&off_10086E428];
   [v144 addObject:v180];
-  v154 = [[CHFriendDetailActionListView alloc] initWithFrame:CGRectZero.origin.x, v119, v120, v121];
-  actionListCell = v187->_actionListCell;
-  v187->_actionListCell = v154;
+  v1212 = [[CHFriendDetailActionListView alloc] initWithFrame:CGRectZero.origin.x, v119, v120, v121];
+  actionListCell = selfCopy->_actionListCell;
+  selfCopy->_actionListCell = v1212;
 
-  [(CHFriendDetailActionListView *)v187->_actionListCell setDelegate:v187];
-  [(CHFriendDetailActionListView *)v187->_actionListCell configureWithActionTypes:v143 labelTexts:v144 footerText:v126];
+  [(CHFriendDetailActionListView *)selfCopy->_actionListCell setDelegate:selfCopy];
+  [(CHFriendDetailActionListView *)selfCopy->_actionListCell configureWithActionTypes:v143 labelTexts:v144 footerText:v126];
   v156 = [[NSMutableArray alloc] initWithCapacity:10];
-  itemsArray = v187->_itemsArray;
-  v187->_itemsArray = v156;
+  itemsArray = selfCopy->_itemsArray;
+  selfCopy->_itemsArray = v156;
 
-  v158 = v187->_itemsArray;
-  v159 = v187->_dateCell;
-  v207[0] = v187->_threeRingCell;
+  v158 = selfCopy->_itemsArray;
+  v159 = selfCopy->_dateCell;
+  v207[0] = selfCopy->_threeRingCell;
   v207[1] = v159;
   v160 = [NSArray arrayWithObjects:v207 count:2];
   [(NSMutableArray *)v158 addObject:v160];
 
-  v161 = v187->_itemsArray;
-  v206 = v187->_competitionScoreCell;
+  v161 = selfCopy->_itemsArray;
+  v206 = selfCopy->_competitionScoreCell;
   v162 = [NSArray arrayWithObjects:&v206 count:1];
   [(NSMutableArray *)v161 addObject:v162];
 
-  v163 = v187->_itemsArray;
-  v205 = v187->_competitionGraphCell;
+  v163 = selfCopy->_itemsArray;
+  v205 = selfCopy->_competitionGraphCell;
   v164 = [NSArray arrayWithObjects:&v205 count:1];
   [(NSMutableArray *)v163 addObject:v164];
 
-  v165 = v187->_itemsArray;
-  v204 = v187->_competitionTotalWinsCell;
+  v165 = selfCopy->_itemsArray;
+  v204 = selfCopy->_competitionTotalWinsCell;
   v166 = [NSArray arrayWithObjects:&v204 count:1];
   [(NSMutableArray *)v165 addObject:v166];
 
-  v167 = v187->_itemsArray;
-  v203 = v187->_moveCell;
+  v167 = selfCopy->_itemsArray;
+  v203 = selfCopy->_moveCell;
   v168 = [NSArray arrayWithObjects:&v203 count:1];
   [(NSMutableArray *)v167 addObject:v168];
 
-  v169 = v187->_itemsArray;
-  v170 = v187->_standCell;
-  v202[0] = v187->_exerciseCell;
+  v169 = selfCopy->_itemsArray;
+  v170 = selfCopy->_standCell;
+  v202[0] = selfCopy->_exerciseCell;
   v202[1] = v170;
   v171 = [NSArray arrayWithObjects:v202 count:2];
   [(NSMutableArray *)v169 addObject:v171];
 
-  v172 = v187->_itemsArray;
-  v173 = v187->_distanceCell;
-  v201[0] = v187->_stepCell;
+  v172 = selfCopy->_itemsArray;
+  v173 = selfCopy->_distanceCell;
+  v201[0] = selfCopy->_stepCell;
   v201[1] = v173;
   v174 = [NSArray arrayWithObjects:v201 count:2];
   [(NSMutableArray *)v172 addObject:v174];
 
-  [(NSMutableArray *)v187->_itemsArray addObject:v187->_workoutCellsArray];
-  v175 = v187->_itemsArray;
-  v200 = v187->_achievementsCell;
+  [(NSMutableArray *)selfCopy->_itemsArray addObject:selfCopy->_workoutCellsArray];
+  v175 = selfCopy->_itemsArray;
+  v200 = selfCopy->_achievementsCell;
   v176 = [NSArray arrayWithObjects:&v200 count:1];
   [(NSMutableArray *)v175 addObject:v176];
 
-  v177 = v187->_itemsArray;
-  v199 = v187->_actionListCell;
+  v177 = selfCopy->_itemsArray;
+  v199 = selfCopy->_actionListCell;
   v178 = [NSArray arrayWithObjects:&v199 count:1];
   [(NSMutableArray *)v177 addObject:v178];
 
@@ -1024,28 +1024,28 @@ LABEL_74:
   self->_numItemsInSectionArray = v3;
 
   [(NSMutableArray *)self->_numItemsInSectionArray addObject:&off_10086E440];
-  v5 = [(ASFriend *)self->_friend isCompetitionActive];
+  isCompetitionActive = [(ASFriend *)self->_friend isCompetitionActive];
   v6 = self->_numItemsInSectionArray;
-  v7 = [NSNumber numberWithUnsignedInteger:v5];
+  v7 = [NSNumber numberWithUnsignedInteger:isCompetitionActive];
   [(NSMutableArray *)v6 addObject:v7];
 
-  v8 = [(ASFriend *)self->_friend isCompetitionActive];
+  isCompetitionActive2 = [(ASFriend *)self->_friend isCompetitionActive];
   v9 = self->_numItemsInSectionArray;
-  v10 = [NSNumber numberWithUnsignedInteger:v8];
+  v10 = [NSNumber numberWithUnsignedInteger:isCompetitionActive2];
   [(NSMutableArray *)v9 addObject:v10];
 
   if (([(ASFriend *)self->_friend isCompetitionActive]& 1) != 0)
   {
-    v11 = 1;
+    hasCompetitionHistory = 1;
   }
 
   else
   {
-    v11 = [(ASFriend *)self->_friend hasCompetitionHistory];
+    hasCompetitionHistory = [(ASFriend *)self->_friend hasCompetitionHistory];
   }
 
   v12 = self->_numItemsInSectionArray;
-  v13 = [NSNumber numberWithUnsignedInteger:v11];
+  v13 = [NSNumber numberWithUnsignedInteger:hasCompetitionHistory];
   [(NSMutableArray *)v12 addObject:v13];
 
   [(NSMutableArray *)self->_numItemsInSectionArray addObject:&off_10086E458];
@@ -1098,11 +1098,11 @@ LABEL_74:
   sizesArray = self->_sizesArray;
   self->_sizesArray = v3;
 
-  v5 = [(CHFriendDetailCollectionViewController *)self view];
-  [v5 bounds];
+  view = [(CHFriendDetailCollectionViewController *)self view];
+  [view bounds];
   v7 = v6;
 
-  v8 = [(CHFriendDetailCollectionViewController *)self view];
+  view2 = [(CHFriendDetailCollectionViewController *)self view];
   UIFloorToViewScale();
   v10 = v9;
 
@@ -1225,18 +1225,18 @@ LABEL_74:
   v67 = [NSArray arrayWithObjects:&v97 count:1];
   [(NSMutableArray *)v66 addObject:v67];
 
-  v68 = [(UILabel *)self->_sharingInfoSizingLabel text];
+  text = [(UILabel *)self->_sharingInfoSizingLabel text];
 
-  if (v68)
+  if (text)
   {
-    v69 = [(CHFriendDetailCollectionViewController *)self view];
-    [v69 valueForSmallWidth:32.0 mediumWidth:40.0 largeWidth:40.0];
+    view3 = [(CHFriendDetailCollectionViewController *)self view];
+    [view3 valueForSmallWidth:32.0 mediumWidth:40.0 largeWidth:40.0];
     v71 = v70;
 
     [(UILabel *)self->_sharingInfoSizingLabel sizeThatFits:v7 - v71 * 2.0, 1.79769313e308];
     v73 = v72;
-    v74 = [(UILabel *)self->_sharingInfoSizingLabel font];
-    [v74 _scaledValueForValue:12.0];
+    font = [(UILabel *)self->_sharingInfoSizingLabel font];
+    [font _scaledValueForValue:12.0];
     v76 = v75;
 
     v77 = v73 + v76 * 2.0;
@@ -1255,33 +1255,33 @@ LABEL_74:
   [(NSMutableArray *)v80 addObject:v81];
 }
 
-- (CGSize)_sizeForGoalCell:(id)a3 withPreferredWidth:(double)a4 availableWidth:(double)a5
+- (CGSize)_sizeForGoalCell:(id)cell withPreferredWidth:(double)width availableWidth:(double)availableWidth
 {
-  v7 = a3;
-  [v7 sizeThatFits:{a5, 1.79769313e308}];
-  if (v8 <= a4)
+  cellCopy = cell;
+  [cellCopy sizeThatFits:{availableWidth, 1.79769313e308}];
+  if (v8 <= width)
   {
-    a5 = a4;
+    availableWidth = width;
   }
 
   v9 = objc_opt_class();
 
   [v9 preferredHeight];
   v11 = v10;
-  v12 = a5;
+  availableWidthCopy = availableWidth;
   result.height = v11;
-  result.width = v12;
+  result.width = availableWidthCopy;
   return result;
 }
 
-- (id)_fontForSectionHeaderType:(int64_t)a3
+- (id)_fontForSectionHeaderType:(int64_t)type
 {
-  if ((a3 - 2) < 9 || a3 == 0)
+  if ((type - 2) < 9 || type == 0)
   {
     v3 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v6 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     v7 = [v6 fontDescriptorWithSymbolicTraits:0x8000];
@@ -1302,50 +1302,50 @@ LABEL_74:
   [(UICollectionView *)collectionView reloadData];
 }
 
-- (void)_infoButtonTapped:(id)a3
+- (void)_infoButtonTapped:(id)tapped
 {
-  v4 = [(ASFriend *)self->_friend contact];
-  v5 = [v4 linkedContactStoreIdentifier];
+  contact = [(ASFriend *)self->_friend contact];
+  linkedContactStoreIdentifier = [contact linkedContactStoreIdentifier];
 
-  if (v5)
+  if (linkedContactStoreIdentifier)
   {
-    v6 = objc_alloc_init(CNContactStore);
-    v7 = [(ASFriend *)self->_friend contact];
-    v8 = [v7 linkedContactStoreIdentifier];
+    primaryDestinationForMessaging = objc_alloc_init(CNContactStore);
+    contact2 = [(ASFriend *)self->_friend contact];
+    linkedContactStoreIdentifier2 = [contact2 linkedContactStoreIdentifier];
     v9 = [CNContactViewController descriptorForRequiredKeys:CNContactEmailAddressesKey];
     v21[2] = v9;
     v10 = [NSArray arrayWithObjects:v21 count:3];
-    v11 = [v6 unifiedContactWithIdentifier:v8 keysToFetch:v10 error:0];
+    v11 = [primaryDestinationForMessaging unifiedContactWithIdentifier:linkedContactStoreIdentifier2 keysToFetch:v10 error:0];
 
     v12 = [CNContactViewController viewControllerForContact:v11];
   }
 
   else
   {
-    v13 = [(ASFriend *)self->_friend contact];
-    v6 = [v13 primaryDestinationForMessaging];
+    contact3 = [(ASFriend *)self->_friend contact];
+    primaryDestinationForMessaging = [contact3 primaryDestinationForMessaging];
 
-    v14 = [CNContact contactWithDisplayName:0 emailOrPhoneNumber:v6];
+    v14 = [CNContact contactWithDisplayName:0 emailOrPhoneNumber:primaryDestinationForMessaging];
     v12 = [CNContactViewController viewControllerForUnknownContact:v14];
   }
 
   [v12 setDelegate:self];
   v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismissContactInfo"];
-  v16 = [v12 navigationItem];
-  [v16 setLeftBarButtonItem:v15];
+  navigationItem = [v12 navigationItem];
+  [navigationItem setLeftBarButtonItem:v15];
 
   v17 = [[UINavigationController alloc] initWithRootViewController:v12];
   contactNavigationController = self->_contactNavigationController;
   self->_contactNavigationController = v17;
 
   v19 = +[UIColor systemBlueColor];
-  v20 = [(UINavigationController *)self->_contactNavigationController view];
-  [v20 setTintColor:v19];
+  view = [(UINavigationController *)self->_contactNavigationController view];
+  [view setTintColor:v19];
 
   [(CHFriendDetailCollectionViewController *)self presentViewController:self->_contactNavigationController animated:1 completion:0];
 }
 
-- (void)_sendMessageButtonTapped:(id)a3
+- (void)_sendMessageButtonTapped:(id)tapped
 {
   ASLoggingInitialize();
   v4 = ASLogDefault;
@@ -1355,21 +1355,21 @@ LABEL_74:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Send Message tapped on the phone. Launching to messages app.", v8, 2u);
   }
 
-  v5 = [(ASFriend *)self->_friend contact];
-  v6 = [v5 primaryDestinationForMessaging];
+  contact = [(ASFriend *)self->_friend contact];
+  primaryDestinationForMessaging = [contact primaryDestinationForMessaging];
 
-  if (v6)
+  if (primaryDestinationForMessaging)
   {
-    v9 = v6;
+    v9 = primaryDestinationForMessaging;
     v7 = [NSArray arrayWithObjects:&v9 count:1];
     ASLaunchToMessagesWithRecipients();
   }
 }
 
-- (void)_showShareOptions:(id)a3
+- (void)_showShareOptions:(id)options
 {
-  v4 = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
-  v5 = sub_1000B841C(v4, self->_snapshotDate, self->_iAmWheelchairUser);
+  activitySummary = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
+  v5 = sub_1000B841C(activitySummary, self->_snapshotDate, self->_iAmWheelchairUser);
 
   v6 = sub_1000B86E8(self->_snapshotDate);
   sharingImage = self->_sharingImage;
@@ -1393,7 +1393,7 @@ LABEL_74:
   [(CHFriendDetailCollectionViewController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
   if (self->_sharingImage && self->_sharingText)
   {
@@ -1413,33 +1413,33 @@ LABEL_74:
   return v4;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   activitySnapshot = self->_activitySnapshot;
   dataIsHidden = self->_dataIsHidden;
-  v8 = [(NSMutableArray *)self->_numItemsInSectionArray objectAtIndexedSubscript:a4];
-  v9 = [v8 integerValue];
+  v8 = [(NSMutableArray *)self->_numItemsInSectionArray objectAtIndexedSubscript:section];
+  integerValue = [v8 integerValue];
 
-  if ((dataIsHidden || !activitySnapshot) && ![(CHFriendDetailCollectionViewController *)self _shouldShowWhileDataIsHiddenForSection:a4])
+  if ((dataIsHidden || !activitySnapshot) && ![(CHFriendDetailCollectionViewController *)self _shouldShowWhileDataIsHiddenForSection:section])
   {
     return 0;
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:pathCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v7 contentView];
-  v9 = [v8 subviews];
+  contentView = [v7 contentView];
+  subviews = [contentView subviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1450,42 +1450,42 @@ LABEL_74:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v18 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 
-  v14 = -[NSMutableArray objectAtIndexedSubscript:](self->_itemsArray, "objectAtIndexedSubscript:", [v6 section]);
-  v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  v14 = -[NSMutableArray objectAtIndexedSubscript:](self->_itemsArray, "objectAtIndexedSubscript:", [pathCopy section]);
+  v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   [v7 bounds];
   [v15 setFrame:?];
-  v16 = [v7 contentView];
-  [v16 addSubview:v15];
+  contentView2 = [v7 contentView];
+  [contentView2 addSubview:v15];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  if (![a4 isEqualToString:UICollectionElementKindSectionHeader])
+  viewCopy = view;
+  pathCopy = path;
+  if (![kind isEqualToString:UICollectionElementKindSectionHeader])
   {
-    v10 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"Footer" forIndexPath:v9];
+    v10 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"Footer" forIndexPath:pathCopy];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v28 = [v10 subviews];
-    v29 = [v28 countByEnumeratingWithState:&v70 objects:v78 count:16];
+    subviews = [v10 subviews];
+    v29 = [subviews countByEnumeratingWithState:&v70 objects:v78 count:16];
     if (v29)
     {
       v30 = v29;
@@ -1496,21 +1496,21 @@ LABEL_74:
         {
           if (*v71 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v70 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v70 objects:v78 count:16];
+        v30 = [subviews countByEnumeratingWithState:&v70 objects:v78 count:16];
       }
 
       while (v30);
     }
 
-    v33 = [(CHFriendDetailCollectionViewController *)self collectionView:v8 numberOfItemsInSection:8];
-    v34 = [(CHFriendDetailCollectionViewController *)self collectionView:v8 numberOfItemsInSection:7];
-    if ([v9 section] == 8 || v33 <= 0 && (objc_msgSend(v9, "section") == 7 || v34 <= 0 && objc_msgSend(v9, "section") == 6) || objc_msgSend(v9, "section") == 9)
+    v33 = [(CHFriendDetailCollectionViewController *)self collectionView:viewCopy numberOfItemsInSection:8];
+    v34 = [(CHFriendDetailCollectionViewController *)self collectionView:viewCopy numberOfItemsInSection:7];
+    if ([pathCopy section] == 8 || v33 <= 0 && (objc_msgSend(pathCopy, "section") == 7 || v34 <= 0 && objc_msgSend(pathCopy, "section") == 6) || objc_msgSend(pathCopy, "section") == 9)
     {
       v35 = 0.0;
     }
@@ -1530,7 +1530,7 @@ LABEL_74:
 
     v52 = v34 > 0 && v33 < 1;
     v53 = v34 > 0 || v33 > 0;
-    if ((v33 < 1 || [v9 section] != 8) && (!v52 || objc_msgSend(v9, "section") != 7) && (v53 || objc_msgSend(v9, "section") != 6) && objc_msgSend(v9, "section") != 9 && (objc_msgSend(v9, "section") != 1 || (-[ASFriend isCompetitionActive](self->_friend, "isCompetitionActive") & 1) == 0))
+    if ((v33 < 1 || [pathCopy section] != 8) && (!v52 || objc_msgSend(pathCopy, "section") != 7) && (v53 || objc_msgSend(pathCopy, "section") != 6) && objc_msgSend(pathCopy, "section") != 9 && (objc_msgSend(pathCopy, "section") != 1 || (-[ASFriend isCompetitionActive](self->_friend, "isCompetitionActive") & 1) == 0))
     {
       [v10 addSubview:v17];
     }
@@ -1538,15 +1538,15 @@ LABEL_74:
     goto LABEL_58;
   }
 
-  v10 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:v9];
+  v10 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:pathCopy];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v11 = [v10 contentView];
-  v12 = [v11 subviews];
+  contentView = [v10 contentView];
+  subviews2 = [contentView subviews];
 
-  v13 = [v12 countByEnumeratingWithState:&v74 objects:v79 count:16];
+  v13 = [subviews2 countByEnumeratingWithState:&v74 objects:v79 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1557,19 +1557,19 @@ LABEL_74:
       {
         if (*v75 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(subviews2);
         }
 
         [*(*(&v74 + 1) + 8 * j) removeFromSuperview];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v74 objects:v79 count:16];
+      v14 = [subviews2 countByEnumeratingWithState:&v74 objects:v79 count:16];
     }
 
     while (v14);
   }
 
-  if ([v9 section] == 7)
+  if ([pathCopy section] == 7)
   {
     v17 = objc_alloc_init(UILabel);
     v18 = +[NSBundle mainBundle];
@@ -1587,23 +1587,23 @@ LABEL_74:
     MaxY = CGRectGetMaxY(v81);
     [v17 bounds];
     v23 = MaxY - CGRectGetHeight(v82);
-    v24 = [v17 font];
-    [v24 descender];
+    font = [v17 font];
+    [font descender];
     v26 = v23 - v25;
-    [v8 bounds];
+    [viewCopy bounds];
     v27 = CGRectGetWidth(v83) - 16.0 - 16.0;
     [v17 bounds];
     [v17 setFrame:{16.0, v26, v27, CGRectGetHeight(v84)}];
 
 LABEL_57:
-    v68 = [v10 contentView];
-    [v68 addSubview:v17];
+    contentView2 = [v10 contentView];
+    [contentView2 addSubview:v17];
 
 LABEL_58:
     goto LABEL_59;
   }
 
-  if ([v9 section] == 8)
+  if ([pathCopy section] == 8)
   {
     v17 = objc_alloc_init(UILabel);
     v36 = +[NSBundle mainBundle];
@@ -1621,20 +1621,20 @@ LABEL_58:
     CGRectGetHeight(v85);
     [v17 bounds];
     CGRectGetHeight(v86);
-    v40 = [(CHFriendDetailCollectionViewController *)self view];
+    view = [(CHFriendDetailCollectionViewController *)self view];
     UIRoundToViewScale();
     v42 = v41;
 
-    [v8 bounds];
+    [viewCopy bounds];
     v43 = CGRectGetWidth(v87) - 16.0 - 16.0;
     [v17 bounds];
     [v17 setFrame:{16.0, v42, v43, CGRectGetHeight(v88)}];
     goto LABEL_57;
   }
 
-  if ([v9 section] != 4)
+  if ([pathCopy section] != 4)
   {
-    if ([v9 section] == 1)
+    if ([pathCopy section] == 1)
     {
       v17 = objc_alloc_init(UILabel);
       v54 = +[NSBundle mainBundle];
@@ -1644,22 +1644,22 @@ LABEL_58:
       v56 = +[UIColor secondaryLabelColor];
       [v17 setTextColor:v56];
 
-      v47 = self;
+      selfCopy3 = self;
       v48 = 1;
     }
 
     else
     {
-      if ([v9 section] != 3)
+      if ([pathCopy section] != 3)
       {
         goto LABEL_59;
       }
 
       v17 = objc_alloc_init(UILabel);
-      v57 = [(ASFriend *)self->_friend isCompetitionActive];
+      isCompetitionActive = [(ASFriend *)self->_friend isCompetitionActive];
       v58 = +[NSBundle mainBundle];
       v59 = v58;
-      if (v57)
+      if (isCompetitionActive)
       {
         v60 = @"COMPETITION_TOTAL_WINS_HEADER_ACTIVE";
       }
@@ -1675,7 +1675,7 @@ LABEL_58:
       v62 = +[UIColor secondaryLabelColor];
       [v17 setTextColor:v62];
 
-      v47 = self;
+      selfCopy3 = self;
       v48 = 3;
     }
 
@@ -1692,18 +1692,18 @@ LABEL_58:
     v46 = +[UIColor secondaryLabelColor];
     [v17 setTextColor:v46];
 
-    v47 = self;
+    selfCopy3 = self;
     v48 = 4;
 LABEL_56:
-    v63 = [(CHFriendDetailCollectionViewController *)v47 _fontForSectionHeaderType:v48];
+    v63 = [(CHFriendDetailCollectionViewController *)selfCopy3 _fontForSectionHeaderType:v48];
     [v17 setFont:v63];
 
     [v17 sizeToFit];
-    v64 = [v17 font];
-    [v64 _scaledValueForValue:30.0];
+    font2 = [v17 font];
+    [font2 _scaledValueForValue:30.0];
     v66 = v65;
 
-    [v8 bounds];
+    [viewCopy bounds];
     v67 = CGRectGetWidth(v91) + 16.0 * -2.0;
     [v17 bounds];
     [v17 setFrame:{16.0, 0.0, v67, CGRectGetHeight(v92)}];
@@ -1716,32 +1716,32 @@ LABEL_59:
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v11 = a4;
-  v5 = [v11 section] == 7;
-  v6 = v11;
+  pathCopy = path;
+  v5 = [pathCopy section] == 7;
+  v6 = pathCopy;
   if (v5)
   {
-    v7 = -[NSArray objectAtIndexedSubscript:](self->_todaysFriendWorkouts, "objectAtIndexedSubscript:", [v11 row]);
-    v8 = [v7 hkWorkoutFromFriendWorkout];
-    v9 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
-    v10 = [v9 isSeymourWorkout:v8];
+    v7 = -[NSArray objectAtIndexedSubscript:](self->_todaysFriendWorkouts, "objectAtIndexedSubscript:", [pathCopy row]);
+    hkWorkoutFromFriendWorkout = [v7 hkWorkoutFromFriendWorkout];
+    seymourCatalogItemDataProvider = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
+    v10 = [seymourCatalogItemDataProvider isSeymourWorkout:hkWorkoutFromFriendWorkout];
 
     if (v10)
     {
-      [(CHFitnessAppContext *)self->_fitnessAppContext navigateToWorkout:v8];
+      [(CHFitnessAppContext *)self->_fitnessAppContext navigateToWorkout:hkWorkoutFromFriendWorkout];
     }
 
-    v6 = v11;
+    v6 = pathCopy;
   }
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  viewCopy = view;
+  layoutCopy = layout;
+  if (!index)
   {
     if (self->_dataIsHidden)
     {
@@ -1761,12 +1761,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a5 == 9)
+  if (index == 9)
   {
     goto LABEL_8;
   }
 
-  if (a5 == 8 && [(NSSet *)self->_todaysAchievements count])
+  if (index == 8 && [(NSSet *)self->_todaysAchievements count])
   {
     goto LABEL_7;
   }
@@ -1788,12 +1788,12 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   sizesArray = self->_sizesArray;
-  v6 = a5;
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](sizesArray, "objectAtIndexedSubscript:", [v6 section]);
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](sizesArray, "objectAtIndexedSubscript:", [pathCopy section]);
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
@@ -1808,22 +1808,22 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
-  v8 = [(CHFriendDetailCollectionViewController *)self _fontForSectionHeaderType:a5];
+  viewCopy = view;
+  v8 = [(CHFriendDetailCollectionViewController *)self _fontForSectionHeaderType:section];
   if (self->_dataIsHidden)
   {
     height = 0.0;
-    if (![(CHFriendDetailCollectionViewController *)self _shouldShowWhileDataIsHiddenForSection:a5])
+    if (![(CHFriendDetailCollectionViewController *)self _shouldShowWhileDataIsHiddenForSection:section])
     {
       goto LABEL_17;
     }
   }
 
-  if (a5 <= 3)
+  if (section <= 3)
   {
-    if (a5 == 1)
+    if (section == 1)
     {
       v10 = 30.0;
       if (([(ASFriend *)self->_friend isCompetitionActive]& 1) != 0)
@@ -1832,7 +1832,7 @@ LABEL_9:
       }
     }
 
-    else if (a5 == 3)
+    else if (section == 3)
     {
       v10 = 30.0;
       if (([(ASFriend *)self->_friend isCompetitionActive]& 1) != 0 || ([(ASFriend *)self->_friend hasCompetitionHistory]& 1) != 0)
@@ -1844,13 +1844,13 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  if (a5 == 4)
+  if (section == 4)
   {
     v10 = 24.0;
     goto LABEL_16;
   }
 
-  if (a5 == 7)
+  if (section == 7)
   {
     v10 = 28.0;
     if ([(NSArray *)self->_todaysFriendWorkouts count])
@@ -1864,7 +1864,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a5 != 8 || ![(NSSet *)self->_todaysAchievements count])
+  if (section != 8 || ![(NSSet *)self->_todaysAchievements count])
   {
     goto LABEL_19;
   }
@@ -1874,7 +1874,7 @@ LABEL_16:
   [v8 _scaledValueForValue:v10];
   height = v11;
 LABEL_17:
-  [v7 bounds];
+  [viewCopy bounds];
   width = CGRectGetWidth(v16);
 LABEL_20:
 
@@ -1885,25 +1885,25 @@ LABEL_20:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = a5 + 1;
+  viewCopy = view;
+  v7 = section + 1;
   do
   {
     v8 = v7;
-    v9 = [v6 numberOfSections];
-    if (v8 >= v9)
+    numberOfSections = [viewCopy numberOfSections];
+    if (v8 >= numberOfSections)
     {
       break;
     }
 
-    v10 = [v6 numberOfItemsInSection:v8];
+    v10 = [viewCopy numberOfItemsInSection:v8];
     v7 = v8 + 1;
   }
 
   while (v10 < 1);
-  if (a5 == 2 || (v13 = [v6 numberOfItemsInSection:a5], v8 >= v9) || a5 < 1 || v13 < 1)
+  if (section == 2 || (v13 = [viewCopy numberOfItemsInSection:section], v8 >= numberOfSections) || section < 1 || v13 < 1)
   {
     p_height = &CGSizeZero.height;
     width = CGSizeZero.width;
@@ -1911,7 +1911,7 @@ LABEL_20:
 
   else
   {
-    [v6 bounds];
+    [viewCopy bounds];
     width = CGRectGetWidth(v18);
     if (qword_1008F9B68 != -1)
     {
@@ -1930,47 +1930,47 @@ LABEL_20:
   return result;
 }
 
-- (id)_workoutsForFriend:(id)a3 snapshot:(id)a4
+- (id)_workoutsForFriend:(id)friend snapshot:(id)snapshot
 {
-  v5 = a4;
-  v6 = [a3 friendWorkouts];
-  v7 = [v5 snapshotIndex];
+  snapshotCopy = snapshot;
+  friendWorkouts = [friend friendWorkouts];
+  snapshotIndex = [snapshotCopy snapshotIndex];
 
-  v8 = [NSNumber numberWithLongLong:v7];
-  v9 = [v6 objectForKeyedSubscript:v8];
-  v10 = [v9 allObjects];
-  v11 = [v10 sortedArrayUsingComparator:&stru_10083CF90];
+  v8 = [NSNumber numberWithLongLong:snapshotIndex];
+  v9 = [friendWorkouts objectForKeyedSubscript:v8];
+  allObjects = [v9 allObjects];
+  v11 = [allObjects sortedArrayUsingComparator:&stru_10083CF90];
 
   return v11;
 }
 
-- (void)_friendDataWasUpdated:(id)a3
+- (void)_friendDataWasUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   if (self->_isMe)
   {
     v5 = [(ASFriendListSectionManager *)self->_friendListManager me];
-    v6 = self->_friend;
+    uUID = self->_friend;
     self->_friend = v5;
   }
 
   else
   {
-    v6 = [(ASFriend *)self->_friend UUID];
-    v7 = [(ASFriendListSectionManager *)self->_friendListManager friendWithUUID:v6];
+    uUID = [(ASFriend *)self->_friend UUID];
+    v7 = [(ASFriendListSectionManager *)self->_friendListManager friendWithUUID:uUID];
     v8 = self->_friend;
     self->_friend = v7;
 
-    v9 = [(ASFriend *)self->_friend as_detailedSharingDurationString];
+    as_detailedSharingDurationString = [(ASFriend *)self->_friend as_detailedSharingDurationString];
     sharingInfoText = self->_sharingInfoText;
-    self->_sharingInfoText = v9;
+    self->_sharingInfoText = as_detailedSharingDurationString;
 
-    v11 = [(ASFriend *)self->_friend displayName];
-    v12 = [(CHFriendDetailCollectionViewController *)self navigationItem];
-    [v12 setTitle:v11];
+    displayName = [(ASFriend *)self->_friend displayName];
+    navigationItem = [(CHFriendDetailCollectionViewController *)self navigationItem];
+    [navigationItem setTitle:displayName];
 
-    v13 = [(ASFriend *)self->_friend displayName];
-    [(CHFriendDetailCollectionViewController *)self setTitle:v13];
+    displayName2 = [(ASFriend *)self->_friend displayName];
+    [(CHFriendDetailCollectionViewController *)self setTitle:displayName2];
   }
 
   v14 = self->_friend;
@@ -1987,8 +1987,8 @@ LABEL_20:
   {
     if (self->_todaysAchievements)
     {
-      v20 = [(ASFriend *)self->_friend friendAchievements];
-      v21 = [v20 mutableCopy];
+      friendAchievements = [(ASFriend *)self->_friend friendAchievements];
+      v21 = [friendAchievements mutableCopy];
 
       todaysAchievements = self->_todaysAchievements;
       v30[0] = _NSConcreteStackBlock;
@@ -2006,9 +2006,9 @@ LABEL_20:
 
   else
   {
-    v25 = [(ASFriend *)self->_friend friendAchievements];
+    friendAchievements2 = [(ASFriend *)self->_friend friendAchievements];
     v26 = [NSNumber numberWithLongLong:[(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot snapshotIndex]];
-    v27 = [v25 objectForKeyedSubscript:v26];
+    v27 = [friendAchievements2 objectForKeyedSubscript:v26];
     v28 = [v27 mutableCopy];
     v29 = self->_todaysAchievements;
     self->_todaysAchievements = v28;
@@ -2020,32 +2020,32 @@ LABEL_20:
   [(CHFriendDetailCollectionViewController *)self _reloadData];
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v5 = a3;
-  v6 = [(CHFriendDetailCollectionViewController *)self navigationController];
-  v7 = [v6 topViewController];
+  controllerCopy = controller;
+  navigationController = [(CHFriendDetailCollectionViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v7 == v5)
+  if (topViewController == controllerCopy)
   {
-    v9 = [(CHFriendDetailCollectionViewController *)self navigationController];
-    v8 = [v9 popViewControllerAnimated:1];
+    navigationController2 = [(CHFriendDetailCollectionViewController *)self navigationController];
+    v8 = [navigationController2 popViewControllerAnimated:1];
   }
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  [v6 dismissViewControllerAnimated:1 completion:0];
-  [(CHFriendDetailCollectionViewController *)self _logMessageComposeResult:a4 messageComposeViewController:v6];
+  controllerCopy = controller;
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  [(CHFriendDetailCollectionViewController *)self _logMessageComposeResult:result messageComposeViewController:controllerCopy];
 
   [CHFriendInboxTableViewController addFriendViewControllerDidDismiss:]_0();
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v8 = a5;
-  v9 = a6;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -2060,26 +2060,26 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller
 {
-  v3 = [(CHFriendDetailCollectionViewController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(CHFriendDetailCollectionViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)achievementsView:(id)a3 didTapAchievement:(id)a4 cell:(id)a5
+- (void)achievementsView:(id)view didTapAchievement:(id)achievement cell:(id)cell
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CHFriendDetailCollectionViewController *)self navigationController];
-  [v9 setDelegate:self];
+  cellCopy = cell;
+  achievementCopy = achievement;
+  navigationController = [(CHFriendDetailCollectionViewController *)self navigationController];
+  [navigationController setDelegate:self];
 
-  v10 = [[CHAchievementDetailViewController alloc] initWithAchievement:v8 locProvider:self->_achievementLocProvider formatsForFriend:!self->_isMe forDayView:0 forModalPresentation:0 shouldShowCelebration:0];
-  v11 = [v7 contentView];
-  [v11 bounds];
+  v10 = [[CHAchievementDetailViewController alloc] initWithAchievement:achievementCopy locProvider:self->_achievementLocProvider formatsForFriend:!self->_isMe forDayView:0 forModalPresentation:0 shouldShowCelebration:0];
+  contentView = [cellCopy contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -2090,7 +2090,7 @@ LABEL_20:
   v30[1] = 3221225472;
   v30[2] = sub_10013049C;
   v30[3] = &unk_10083A8B0;
-  v31 = v7;
+  v31 = cellCopy;
   v25 = _NSConcreteStackBlock;
   v26 = 3221225472;
   v27 = sub_1001304A8;
@@ -2105,29 +2105,29 @@ LABEL_20:
   [v24 pushViewController:v10 animated:1];
 }
 
-- (void)friendDetailActionListView:(id)a3 didSelectActionType:(int64_t)a4
+- (void)friendDetailActionListView:(id)view didSelectActionType:(int64_t)type
 {
-  v75 = a3;
+  viewCopy = view;
   v6 = self->_friend;
-  v7 = [(ASFriend *)v6 displayName];
-  v8 = [NSString stringWithString:v7];
+  displayName = [(ASFriend *)v6 displayName];
+  v8 = [NSString stringWithString:displayName];
 
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (!a4)
+    if (!type)
     {
-      v29 = [(ASFriend *)v6 isMuted];
+      isMuted = [(ASFriend *)v6 isMuted];
       ASLoggingInitialize();
       v30 = ASLogDefault;
       if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
       {
         v31 = v30;
-        v32 = [(ASFriend *)v6 UUID];
-        v33 = v29 ^ 1;
+        uUID = [(ASFriend *)v6 UUID];
+        v33 = isMuted ^ 1;
         *buf = 67109634;
-        *v92 = v29 ^ 1;
+        *v92 = isMuted ^ 1;
         *&v92[4] = 2114;
-        *&v92[6] = v32;
+        *&v92[6] = uUID;
         *&v92[14] = 2112;
         *&v92[16] = v6;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Setting mute status to %d for friend: %{public}@ - %@", buf, 0x1Cu);
@@ -2135,7 +2135,7 @@ LABEL_20:
 
       else
       {
-        v33 = v29 ^ 1;
+        v33 = isMuted ^ 1;
       }
 
       friendManager = self->_friendManager;
@@ -2143,26 +2143,26 @@ LABEL_20:
       v88[1] = 3221225472;
       v88[2] = sub_100131168;
       v88[3] = &unk_10083D008;
-      v90 = v29;
+      v90 = isMuted;
       v89 = v8;
       [(CHFriendManager *)friendManager setMuteEnabled:v33 forFriend:v6 completion:v88];
 
       goto LABEL_29;
     }
 
-    if (a4 != 1)
+    if (type != 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         objc_initWeak(&location, self);
         ASLoggingInitialize();
         v9 = ASLogDefault;
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(ASFriend *)self->_friend UUID];
+          uUID2 = [(ASFriend *)self->_friend UUID];
           v11 = self->_friend;
           *buf = 138543618;
-          *v92 = v10;
+          *v92 = uUID2;
           *&v92[8] = 2112;
           *&v92[10] = v11;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Removing friend: %{public}@ - %@", buf, 0x16u);
@@ -2200,14 +2200,14 @@ LABEL_20:
       goto LABEL_29;
     }
 
-    v49 = [(ASFriend *)v6 isMyActivityDataCurrentlyHidden];
+    isMyActivityDataCurrentlyHidden = [(ASFriend *)v6 isMyActivityDataCurrentlyHidden];
     v87[0] = _NSConcreteStackBlock;
     v87[1] = 3221225472;
     v87[2] = sub_100131498;
     v87[3] = &unk_10083D030;
     v87[4] = self;
     v50 = objc_retainBlock(v87);
-    if (v49)
+    if (isMyActivityDataCurrentlyHidden)
     {
       goto LABEL_17;
     }
@@ -2216,9 +2216,9 @@ LABEL_20:
     {
       v63 = ActivitySharingBundle();
       v64 = [v63 localizedStringForKey:@"COMPETITION_IN_PROGRESS_HIDING_NOT_ALLOWED" value:&stru_1008680E8 table:@"Localizable"];
-      v65 = [(ASFriend *)self->_friend displayName];
-      v66 = [(ASFriend *)self->_friend displayName];
-      v55 = [NSString stringWithFormat:v64, v65, v66];
+      displayName2 = [(ASFriend *)self->_friend displayName];
+      displayName3 = [(ASFriend *)self->_friend displayName];
+      v55 = [NSString stringWithFormat:v64, displayName2, displayName3];
 
       (v50[2])(v50, v55);
     }
@@ -2233,11 +2233,11 @@ LABEL_17:
         if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
         {
           v52 = v51;
-          v53 = [(ASFriend *)v6 UUID];
+          uUID3 = [(ASFriend *)v6 UUID];
           *buf = 67109634;
-          *v92 = v49;
+          *v92 = isMyActivityDataCurrentlyHidden;
           *&v92[4] = 2114;
-          *&v92[6] = v53;
+          *&v92[6] = uUID3;
           *&v92[14] = 2112;
           *&v92[16] = v6;
           _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Setting hiding status to %d for friend: %{public}@ - %@", buf, 0x1Cu);
@@ -2248,18 +2248,18 @@ LABEL_17:
         v84[1] = 3221225472;
         v84[2] = sub_100131648;
         v84[3] = &unk_10083D008;
-        v86 = v49 ^ 1;
+        v86 = isMyActivityDataCurrentlyHidden ^ 1;
         v85 = v8;
-        [(CHFriendManager *)v54 setActivityDataVisible:v49 toFriend:v6 completion:v84];
+        [(CHFriendManager *)v54 setActivityDataVisible:isMyActivityDataCurrentlyHidden toFriend:v6 completion:v84];
         v55 = v85;
         goto LABEL_28;
       }
 
       v67 = ActivitySharingBundle();
       v68 = [v67 localizedStringForKey:@"COMPETITION_SENT_HIDING_NOT_ALLOWED" value:&stru_1008680E8 table:@"Localizable"];
-      v69 = [(ASFriend *)self->_friend displayName];
-      v70 = [(ASFriend *)self->_friend displayName];
-      v55 = [NSString stringWithFormat:v68, v69, v70];
+      displayName4 = [(ASFriend *)self->_friend displayName];
+      displayName5 = [(ASFriend *)self->_friend displayName];
+      v55 = [NSString stringWithFormat:v68, displayName4, displayName5];
 
       (v50[2])(v50, v55);
     }
@@ -2269,18 +2269,18 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 3:
       pairedWatchSupportsCompetitions = self->_pairedWatchSupportsCompetitions;
-      v74 = [(ASFriend *)self->_friend as_competitionSendConfirmationTitle];
+      as_competitionSendConfirmationTitle = [(ASFriend *)self->_friend as_competitionSendConfirmationTitle];
       if (pairedWatchSupportsCompetitions)
       {
         v73 = [(ASFriend *)self->_friend as_competitionSendConfirmationMessageForExperienceType:self->_experienceType];
         v35 = +[NSBundle mainBundle];
         v36 = [v35 localizedStringForKey:v73 value:&stru_1008680E8 table:@"Localizable"];
-        v37 = [(ASFriend *)self->_friend displayName];
-        v72 = [NSString stringWithFormat:v36, v37];
+        displayName6 = [(ASFriend *)self->_friend displayName];
+        v72 = [NSString stringWithFormat:v36, displayName6];
 
         v38 = +[NSBundle mainBundle];
         v39 = [v38 localizedStringForKey:@"SHARING_CANCEL" value:&stru_1008680E8 table:@"Localizable"];
@@ -2288,25 +2288,25 @@ LABEL_28:
 
         v40 = ActivitySharingBundle();
         v41 = [v40 localizedStringForKey:@"COMPETITION_SEND_CONFIRMATION_SEND_ACTION" value:&stru_1008680E8 table:@"Localizable"];
-        v42 = [(ASFriend *)self->_friend displayName];
-        v43 = [NSString stringWithFormat:v41, v42];
+        displayName7 = [(ASFriend *)self->_friend displayName];
+        v43 = [NSString stringWithFormat:v41, displayName7];
         v77[0] = _NSConcreteStackBlock;
         v77[1] = 3221225472;
         v77[2] = sub_100131D18;
         v77[3] = &unk_10083D080;
         v77[4] = self;
         v78 = v8;
-        v79 = v74;
-        v44 = v74;
+        v79 = as_competitionSendConfirmationTitle;
+        v44 = as_competitionSendConfirmationTitle;
         v45 = [UIAlertAction actionWithTitle:v43 style:0 handler:v77];
 
-        v46 = [(ASFriend *)self->_friend as_competitionLearnMorePopupAction];
+        as_competitionLearnMorePopupAction = [(ASFriend *)self->_friend as_competitionLearnMorePopupAction];
         v76[0] = _NSConcreteStackBlock;
         v76[1] = 3221225472;
         v76[2] = sub_1001325F0;
         v76[3] = &unk_10083B990;
         v76[4] = self;
-        v47 = [UIAlertAction actionWithTitle:v46 style:0 handler:v76];
+        v47 = [UIAlertAction actionWithTitle:as_competitionLearnMorePopupAction style:0 handler:v76];
 
         v48 = [UIAlertController alertControllerWithTitle:v44 message:v72 preferredStyle:1];
         [v48 addAction:v71];
@@ -2321,7 +2321,7 @@ LABEL_28:
         v57 = +[NSBundle mainBundle];
         v58 = [v57 localizedStringForKey:@"COMPETITION_SEND_UPGRADE_WATCH" value:&stru_1008680E8 table:@"Localizable"];
 
-        v59 = [UIAlertController alertControllerWithTitle:v74 message:v58 preferredStyle:1];
+        v59 = [UIAlertController alertControllerWithTitle:as_competitionSendConfirmationTitle message:v58 preferredStyle:1];
         v60 = +[NSBundle mainBundle];
         v61 = [v60 localizedStringForKey:@"OK" value:&stru_1008680E8 table:@"Localizable"];
         v62 = [UIAlertAction actionWithTitle:v61 style:0 handler:0];
@@ -2352,16 +2352,16 @@ LABEL_29:
 
 - (BOOL)_shouldShowExerciseAndStandCells
 {
-  v2 = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
-  v3 = [v2 _isStandalonePhoneSummary];
+  activitySummary = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
+  _isStandalonePhoneSummary = [activitySummary _isStandalonePhoneSummary];
 
-  return v3 ^ 1;
+  return _isStandalonePhoneSummary ^ 1;
 }
 
 - (BOOL)_shouldShowStepsAndDistanceCells
 {
-  v3 = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
-  v4 = [v3 _isStandalonePhoneSummary];
+  activitySummary = [(_HKFitnessFriendActivitySnapshot *)self->_activitySnapshot activitySummary];
+  _isStandalonePhoneSummary = [activitySummary _isStandalonePhoneSummary];
 
   if (self->_isMe)
   {
@@ -2374,7 +2374,7 @@ LABEL_29:
     iAmWheelchairUser = FIUIIsWheelchairUserForWheelchairUse();
   }
 
-  return v4 & iAmWheelchairUser ^ 1;
+  return _isStandalonePhoneSummary & iAmWheelchairUser ^ 1;
 }
 
 - (BOOL)_shouldShowCompetitionRequestAction
@@ -2389,11 +2389,11 @@ LABEL_29:
     return 0;
   }
 
-  v3 = [(ASFriend *)self->_friend contact];
-  v4 = [v3 relationship];
-  v5 = [v4 supportsCompetitions];
+  contact = [(ASFriend *)self->_friend contact];
+  relationship = [contact relationship];
+  supportsCompetitions = [relationship supportsCompetitions];
 
-  if (!v5 || ![(ASFriend *)self->_friend supportsCompetitions])
+  if (!supportsCompetitions || ![(ASFriend *)self->_friend supportsCompetitions])
   {
     return 0;
   }
@@ -2433,12 +2433,12 @@ LABEL_29:
   return [(ASFriend *)v4 hasPendingCompetitionRequestFromMe];
 }
 
-- (void)_logMessageComposeResult:(int64_t)a3 messageComposeViewController:(id)a4
+- (void)_logMessageComposeResult:(int64_t)result messageComposeViewController:(id)controller
 {
-  if (a3 == 1)
+  if (result == 1)
   {
-    v5 = [a4 recipients];
-    [v5 count];
+    recipients = [controller recipients];
+    [recipients count];
 
     FIActivityAnalyticsSubmission();
   }

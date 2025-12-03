@@ -1,32 +1,32 @@
 @interface ULMeasurementMO_deprecated
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
 - (optional<ULMeasurementDO>)convertToDO;
 @end
 
 @implementation ULMeasurementMO_deprecated
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
-  v5 = [[ULMeasurementMO_deprecated alloc] initWithContext:a4];
-  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v7 = [v6 UUIDString];
-  [(ULMeasurementMO_deprecated *)v5 setRecordingUUID:v7];
+  v5 = [[ULMeasurementMO_deprecated alloc] initWithContext:context];
+  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o];
+  uUIDString = [v6 UUIDString];
+  [(ULMeasurementMO_deprecated *)v5 setRecordingUUID:uUIDString];
 
-  [(ULMeasurementMO_deprecated *)v5 setScanCFTimestamp:*(a3 + 2)];
-  [(ULMeasurementMO_deprecated *)v5 setScanMCTimestamp:*(a3 + 3)];
-  [(ULMeasurementMO_deprecated *)v5 setFlags:*(a3 + 28)];
-  CLMicroLocationProto::Measurement::ByteSize((a3 + 32));
+  [(ULMeasurementMO_deprecated *)v5 setScanCFTimestamp:*(o + 2)];
+  [(ULMeasurementMO_deprecated *)v5 setScanMCTimestamp:*(o + 3)];
+  [(ULMeasurementMO_deprecated *)v5 setFlags:*(o + 28)];
+  CLMicroLocationProto::Measurement::ByteSize((o + 32));
   operator new[]();
 }
 
 - (optional<ULMeasurementDO>)convertToDO
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(ULMeasurementMO_deprecated *)self recordingUUID];
-  v5 = v4;
-  if (v4)
+  recordingUUID = [(ULMeasurementMO_deprecated *)self recordingUUID];
+  v5 = recordingUUID;
+  if (recordingUUID)
   {
-    [v4 boostUUID];
+    [recordingUUID boostUUID];
   }
 
   else
@@ -40,23 +40,23 @@
   {
     [(ULMeasurementMO_deprecated *)self scanCFTimestamp];
     v7 = v6;
-    v8 = [(ULMeasurementMO_deprecated *)self scanMCTimestamp];
-    v9 = [(ULMeasurementMO_deprecated *)self flags];
-    v10 = [(ULMeasurementMO_deprecated *)self data];
-    v11 = v10;
-    v12 = [v10 bytes];
-    v13 = [(ULMeasurementMO_deprecated *)self data];
-    [v13 length];
-    LOBYTE(v12) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v18, v12);
+    scanMCTimestamp = [(ULMeasurementMO_deprecated *)self scanMCTimestamp];
+    flags = [(ULMeasurementMO_deprecated *)self flags];
+    data = [(ULMeasurementMO_deprecated *)self data];
+    v11 = data;
+    bytes = [data bytes];
+    data2 = [(ULMeasurementMO_deprecated *)self data];
+    [data2 length];
+    LOBYTE(bytes) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v18, bytes);
 
-    if (v12)
+    if (bytes)
     {
       if ((v23 & 1) == 0)
       {
         std::__throw_bad_optional_access[abi:ne200100]();
       }
 
-      ULMeasurementDO::ULMeasurementDO(buf, v21, v22, v8, v18, v9 | 0x100000000, v7);
+      ULMeasurementDO::ULMeasurementDO(buf, v21, v22, scanMCTimestamp, v18, flags | 0x100000000, v7);
       ULMeasurementDO::ULMeasurementDO(retstr, buf);
       *(&retstr[1].var0.var4 + 40) = 1;
       CLMicroLocationProto::Measurement::~Measurement(&v20);

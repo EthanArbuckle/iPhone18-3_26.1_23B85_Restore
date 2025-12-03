@@ -1,25 +1,25 @@
 @interface UIDictationSubstring
-- (UIDictationSubstring)initWithString:(id)a3 range:(_NSRange)a4 enclosingRange:(_NSRange)a5;
+- (UIDictationSubstring)initWithString:(id)string range:(_NSRange)range enclosingRange:(_NSRange)enclosingRange;
 - (_NSRange)enclosingRange;
 - (_NSRange)range;
 @end
 
 @implementation UIDictationSubstring
 
-- (UIDictationSubstring)initWithString:(id)a3 range:(_NSRange)a4 enclosingRange:(_NSRange)a5
+- (UIDictationSubstring)initWithString:(id)string range:(_NSRange)range enclosingRange:(_NSRange)enclosingRange
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4.length;
-  v8 = a4.location;
-  v11 = a3;
+  length = enclosingRange.length;
+  location = enclosingRange.location;
+  v7 = range.length;
+  v8 = range.location;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = UIDictationSubstring;
   v12 = [(UIDictationSubstring *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_string, a3);
+    objc_storeStrong(&v12->_string, string);
     v13->_range.location = v8;
     v13->_range.length = v7;
     v13->_enclosingRange.location = location;

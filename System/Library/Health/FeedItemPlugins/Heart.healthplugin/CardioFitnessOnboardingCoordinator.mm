@@ -1,6 +1,6 @@
 @interface CardioFitnessOnboardingCoordinator
 - (_TtC5Heart34CardioFitnessOnboardingCoordinator)init;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation CardioFitnessOnboardingCoordinator
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_29D82D3D4();
 }
 

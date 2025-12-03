@@ -1,25 +1,25 @@
 @interface CBSParseBookMetadataOperation
-- (CBSParseBookMetadataOperation)initWithBook:(id)a3 parseImage:(BOOL)a4;
+- (CBSParseBookMetadataOperation)initWithBook:(id)book parseImage:(BOOL)image;
 - (void)main;
-- (void)parseBookContentsOperationDidFinish:(id)a3;
-- (void)parseContentsFilePathOperationDidFinish:(id)a3;
-- (void)updateAuthor:(id)a3;
-- (void)updateTitle:(id)a3;
+- (void)parseBookContentsOperationDidFinish:(id)finish;
+- (void)parseContentsFilePathOperationDidFinish:(id)finish;
+- (void)updateAuthor:(id)author;
+- (void)updateTitle:(id)title;
 @end
 
 @implementation CBSParseBookMetadataOperation
 
-- (CBSParseBookMetadataOperation)initWithBook:(id)a3 parseImage:(BOOL)a4
+- (CBSParseBookMetadataOperation)initWithBook:(id)book parseImage:(BOOL)image
 {
-  v7 = a3;
+  bookCopy = book;
   v11.receiver = self;
   v11.super_class = CBSParseBookMetadataOperation;
   v8 = [(CBSParseBookMetadataOperation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_book, a3);
-    v9->mParseImage = a4;
+    objc_storeStrong(&v8->_book, book);
+    v9->mParseImage = image;
   }
 
   return v9;
@@ -28,41 +28,41 @@
 - (void)main
 {
   v3 = [CBSParseOPFFilePathOperation alloc];
-  v4 = [(CBSParseBookMetadataOperation *)self book];
-  v5 = [v4 path];
-  v7 = [(CBSParseOPFFilePathOperation *)v3 initWithBookFilePath:v5];
+  book = [(CBSParseBookMetadataOperation *)self book];
+  path = [book path];
+  v7 = [(CBSParseOPFFilePathOperation *)v3 initWithBookFilePath:path];
 
   [(CBSParseOPFFilePathOperation *)v7 addTarget:self selector:"parseContentsFilePathOperationDidFinish:" forOperationEvents:6];
   v6 = +[CATOperationQueue crk_backgroundQueue];
   [v6 addOperation:v7];
 }
 
-- (void)parseContentsFilePathOperationDidFinish:(id)a3
+- (void)parseContentsFilePathOperationDidFinish:(id)finish
 {
-  v17 = a3;
-  v4 = [v17 error];
+  finishCopy = finish;
+  error = [finishCopy error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [v17 error];
-    [(CBSParseBookMetadataOperation *)self endOperationWithError:v5];
+    error2 = [finishCopy error];
+    [(CBSParseBookMetadataOperation *)self endOperationWithError:error2];
   }
 
   else
   {
-    v6 = [v17 resultObject];
+    resultObject = [finishCopy resultObject];
 
-    if (v6)
+    if (resultObject)
     {
       v7 = [CBSParseOPFPackageContentsOperation alloc];
-      v8 = [v17 resultObject];
-      v9 = [(CBSParseBookMetadataOperation *)self book];
-      v10 = [v9 webURL];
-      v11 = [v10 host];
-      v12 = [(CBSParseBookMetadataOperation *)self book];
-      v13 = [v12 webURL];
-      v14 = [v13 lastPathComponent];
-      v15 = [(CBSParseOPFPackageContentsOperation *)v7 initWithOPFFilePath:v8 identifierType:v11 identifier:v14];
+      resultObject2 = [finishCopy resultObject];
+      book = [(CBSParseBookMetadataOperation *)self book];
+      webURL = [book webURL];
+      host = [webURL host];
+      book2 = [(CBSParseBookMetadataOperation *)self book];
+      webURL2 = [book2 webURL];
+      lastPathComponent = [webURL2 lastPathComponent];
+      v15 = [(CBSParseOPFPackageContentsOperation *)v7 initWithOPFFilePath:resultObject2 identifierType:host identifier:lastPathComponent];
 
       [(CBSParseOPFPackageContentsOperation *)v15 addTarget:self selector:"parseBookContentsOperationDidFinish:" forOperationEvents:6];
       v16 = +[CATOperationQueue crk_backgroundQueue];
@@ -76,38 +76,38 @@
   }
 }
 
-- (void)parseBookContentsOperationDidFinish:(id)a3
+- (void)parseBookContentsOperationDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 error];
+  finishCopy = finish;
+  error = [finishCopy error];
 
-  if (v5)
+  if (error)
   {
-    v13 = [v4 error];
+    error2 = [finishCopy error];
 
-    [(CBSParseBookMetadataOperation *)self endOperationWithError:v13];
+    [(CBSParseBookMetadataOperation *)self endOperationWithError:error2];
   }
 
   else
   {
-    v13 = [v4 resultObject];
+    error2 = [finishCopy resultObject];
 
-    v6 = [v13 title];
+    title = [error2 title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v13 title];
-      [(CBSParseBookMetadataOperation *)self updateTitle:v7];
+      title2 = [error2 title];
+      [(CBSParseBookMetadataOperation *)self updateTitle:title2];
 
-      v8 = [v13 author];
-      [(CBSParseBookMetadataOperation *)self updateAuthor:v8];
+      author = [error2 author];
+      [(CBSParseBookMetadataOperation *)self updateAuthor:author];
 
       if (self->mParseImage)
       {
-        v9 = [v13 coverImagePath];
-        v10 = [NSData dataWithContentsOfFile:v9];
-        v11 = [(CBSParseBookMetadataOperation *)self book];
-        [v11 setImage:v10];
+        coverImagePath = [error2 coverImagePath];
+        v10 = [NSData dataWithContentsOfFile:coverImagePath];
+        book = [(CBSParseBookMetadataOperation *)self book];
+        [book setImage:v10];
       }
 
       [(CBSParseBookMetadataOperation *)self endOperationWithResultObject:0];
@@ -121,23 +121,23 @@
   }
 }
 
-- (void)updateTitle:(id)a3
+- (void)updateTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
-    v4 = a3;
-    v5 = [(CBSParseBookMetadataOperation *)self book];
-    [v5 setTitle:v4];
+    titleCopy = title;
+    book = [(CBSParseBookMetadataOperation *)self book];
+    [book setTitle:titleCopy];
   }
 }
 
-- (void)updateAuthor:(id)a3
+- (void)updateAuthor:(id)author
 {
-  if (a3)
+  if (author)
   {
-    v4 = a3;
-    v5 = [(CBSParseBookMetadataOperation *)self book];
-    [v5 setAuthor:v4];
+    authorCopy = author;
+    book = [(CBSParseBookMetadataOperation *)self book];
+    [book setAuthor:authorCopy];
   }
 }
 

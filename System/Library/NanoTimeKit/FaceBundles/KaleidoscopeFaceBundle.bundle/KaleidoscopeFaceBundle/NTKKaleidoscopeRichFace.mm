@@ -1,7 +1,7 @@
 @interface NTKKaleidoscopeRichFace
 + (id)_complicationSlotDescriptors;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (id)editOptionSectionControllerForContext:(id)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (id)editOptionSectionControllerForContext:(id)context;
 @end
 
 @implementation NTKKaleidoscopeRichFace
@@ -27,7 +27,7 @@
   return v10;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTopLeft;
   v5[1] = NTKComplicationSlotTopRight;
@@ -36,41 +36,41 @@
   return v3;
 }
 
-- (id)editOptionSectionControllerForContext:(id)a3
+- (id)editOptionSectionControllerForContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 faceView];
-  v6 = [v4 tableViewProvider];
-  v7 = [v4 collection];
-  v8 = [v4 inGallery];
-  v9 = [v4 externalAssets];
-  v10 = [v4 requestingViewController];
+  contextCopy = context;
+  faceView = [contextCopy faceView];
+  tableViewProvider = [contextCopy tableViewProvider];
+  collection = [contextCopy collection];
+  inGallery = [contextCopy inGallery];
+  externalAssets = [contextCopy externalAssets];
+  requestingViewController = [contextCopy requestingViewController];
 
-  v11 = [v7 mode];
-  if (![NTKCFaceDetailKaleidoscopeContentSectionController hasSectionForFace:self forEditMode:v11])
+  mode = [collection mode];
+  if (![NTKCFaceDetailKaleidoscopeContentSectionController hasSectionForFace:self forEditMode:mode])
   {
-    if ([NTKCFaceDetailKaleidoscopeStyleSectionController hasSectionForFace:self forEditMode:v11])
+    if ([NTKCFaceDetailKaleidoscopeStyleSectionController hasSectionForFace:self forEditMode:mode])
     {
-      v12 = [[NTKCFaceDetailKaleidoscopeStyleSectionController alloc] initWithTableViewController:v6 face:self inGallery:v8 editOptionCollection:v7 faceView:v5];
+      v12 = [[NTKCFaceDetailKaleidoscopeStyleSectionController alloc] initWithTableViewController:tableViewProvider face:self inGallery:inGallery editOptionCollection:collection faceView:faceView];
       goto LABEL_8;
     }
 
     goto LABEL_7;
   }
 
-  if ([NTKCFaceDetailKaleidoscopeContentSectionController supressesSectionForExternalAssets:v9])
+  if ([NTKCFaceDetailKaleidoscopeContentSectionController supressesSectionForExternalAssets:externalAssets])
   {
 LABEL_7:
     v12 = 0;
     goto LABEL_8;
   }
 
-  v12 = [[NTKCFaceDetailKaleidoscopeContentSectionController alloc] initWithTableViewController:v6 face:self inGallery:v8 editOptionCollection:v7 faceView:v5];
-  [(NTKCFaceDetailKaleidoscopeStyleSectionController *)v12 setParentViewController:v10];
-  if (v9)
+  v12 = [[NTKCFaceDetailKaleidoscopeContentSectionController alloc] initWithTableViewController:tableViewProvider face:self inGallery:inGallery editOptionCollection:collection faceView:faceView];
+  [(NTKCFaceDetailKaleidoscopeStyleSectionController *)v12 setParentViewController:requestingViewController];
+  if (externalAssets)
   {
-    v13 = [v9 firstObject];
-    [(NTKCFaceDetailKaleidoscopeStyleSectionController *)v12 setExternalAsset:v13];
+    firstObject = [externalAssets firstObject];
+    [(NTKCFaceDetailKaleidoscopeStyleSectionController *)v12 setExternalAsset:firstObject];
   }
 
 LABEL_8:

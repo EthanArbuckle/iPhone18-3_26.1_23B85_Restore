@@ -1,13 +1,13 @@
 @interface BWMonocularDepthConfiguration
-- (BWMonocularDepthConfiguration)initWithInferenceType:(int)a3 monocularDepthType:(unsigned int)a4;
+- (BWMonocularDepthConfiguration)initWithInferenceType:(int)type monocularDepthType:(unsigned int)depthType;
 - (id)description;
 @end
 
 @implementation BWMonocularDepthConfiguration
 
-- (BWMonocularDepthConfiguration)initWithInferenceType:(int)a3 monocularDepthType:(unsigned int)a4
+- (BWMonocularDepthConfiguration)initWithInferenceType:(int)type monocularDepthType:(unsigned int)depthType
 {
-  if (a3 != 106)
+  if (type != 106)
   {
     return 0;
   }
@@ -22,14 +22,14 @@
     return result;
   }
 
-  if (a4 == 2)
+  if (depthType == 2)
   {
     v8 = 3;
   }
 
   else
   {
-    if (a4 != 1)
+    if (depthType != 1)
     {
       return result;
     }
@@ -37,7 +37,7 @@
     v8 = 2;
   }
 
-  result->_monocularDepthType = a4;
+  result->_monocularDepthType = depthType;
   result->_depthPrioritization = v8;
   return result;
 }

@@ -1,18 +1,18 @@
 @interface MapsDebugTableRow
-+ (void)registerCellsInCollectionView:(id)a3;
++ (void)registerCellsInCollectionView:(id)view;
 - (MapsDebugTableRow)init;
 - (MapsDebugTableSection)section;
 - (UIListContentConfiguration)cellContentConfiguration;
-- (id)cellForCollectionView:(id)a3 forIndexPath:(id)a4;
-- (id)cellForTableView:(id)a3;
+- (id)cellForCollectionView:(id)view forIndexPath:(id)path;
+- (id)cellForTableView:(id)view;
 - (int64_t)cellStyle;
 - (void)_clearAllControlTargetsForReuse;
-- (void)addControlThatNeedsClearingTargetOnReuse:(id)a3;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
+- (void)addControlThatNeedsClearingTargetOnReuse:(id)reuse;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setCurrentCell:(id)a3;
+- (void)setCurrentCell:(id)cell;
 @end
 
 @implementation MapsDebugTableRow
@@ -24,65 +24,65 @@
   return WeakRetained;
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
-  v25 = a3;
-  v4 = [(MapsDebugTableRow *)self configureCollectionViewCellBlock];
+  cellCopy = cell;
+  configureCollectionViewCellBlock = [(MapsDebugTableRow *)self configureCollectionViewCellBlock];
 
-  if (v4)
+  if (configureCollectionViewCellBlock)
   {
-    v5 = [(MapsDebugTableRow *)self cellContentConfiguration];
-    v6 = [(MapsDebugTableRow *)self title];
-    [v5 setText:v6];
+    cellContentConfiguration = [(MapsDebugTableRow *)self cellContentConfiguration];
+    title = [(MapsDebugTableRow *)self title];
+    [cellContentConfiguration setText:title];
 
-    v7 = [(MapsDebugTableRow *)self subtitle];
-    [v5 setSecondaryText:v7];
+    subtitle = [(MapsDebugTableRow *)self subtitle];
+    [cellContentConfiguration setSecondaryText:subtitle];
 
-    v8 = [(MapsDebugTableRow *)self configureCollectionViewCellBlock];
-    (v8)[2](v8, v25, v5);
+    configureCollectionViewCellBlock2 = [(MapsDebugTableRow *)self configureCollectionViewCellBlock];
+    (configureCollectionViewCellBlock2)[2](configureCollectionViewCellBlock2, cellCopy, cellContentConfiguration);
 
-    [v25 setContentConfiguration:v5];
-    v9 = [v25 contentView];
-    [v9 setAccessibilityIdentifier:@"TextLabel"];
+    [cellCopy setContentConfiguration:cellContentConfiguration];
+    contentView = [cellCopy contentView];
+    [contentView setAccessibilityIdentifier:@"TextLabel"];
 
-    v10 = [(MapsDebugTableRow *)self title];
-    v11 = [v25 contentView];
-    [v11 setAccessibilityLabel:v10];
+    title2 = [(MapsDebugTableRow *)self title];
+    contentView2 = [cellCopy contentView];
+    [contentView2 setAccessibilityLabel:title2];
   }
 
   else
   {
-    v12 = [v25 contentConfiguration];
+    contentConfiguration = [cellCopy contentConfiguration];
 
-    if (v12)
+    if (contentConfiguration)
     {
-      [v25 setContentConfiguration:0];
-      [v25 setupContentView];
+      [cellCopy setContentConfiguration:0];
+      [cellCopy setupContentView];
     }
 
-    v13 = [(MapsDebugTableRow *)self title];
-    v14 = [v25 textLabel];
-    [v14 setText:v13];
+    title3 = [(MapsDebugTableRow *)self title];
+    textLabel = [cellCopy textLabel];
+    [textLabel setText:title3];
 
-    LODWORD(v14) = [(MapsDebugTableRow *)self deprecated];
-    v15 = [(MapsDebugTableRow *)self subtitle];
-    v16 = v15;
-    if (v14)
+    LODWORD(textLabel) = [(MapsDebugTableRow *)self deprecated];
+    subtitle2 = [(MapsDebugTableRow *)self subtitle];
+    v16 = subtitle2;
+    if (textLabel)
     {
-      v17 = [v15 length];
+      v17 = [subtitle2 length];
 
       if (v17)
       {
-        v18 = [(MapsDebugTableRow *)self subtitle];
-        v19 = [v18 stringByAppendingString:@" - DEPRECATED (SOON TO BE REMOVED)"];
-        v20 = [v25 detailTextLabel];
-        [v20 setText:v19];
+        subtitle3 = [(MapsDebugTableRow *)self subtitle];
+        v19 = [subtitle3 stringByAppendingString:@" - DEPRECATED (SOON TO BE REMOVED)"];
+        detailTextLabel = [cellCopy detailTextLabel];
+        [detailTextLabel setText:v19];
       }
 
       else
       {
-        v18 = [v25 detailTextLabel];
-        [v18 setText:@"DEPRECATED (SOON TO BE REMOVED)"];
+        subtitle3 = [cellCopy detailTextLabel];
+        [subtitle3 setText:@"DEPRECATED (SOON TO BE REMOVED)"];
       }
 
       v22 = +[UIColor systemRedColor];
@@ -90,39 +90,39 @@
 
     else
     {
-      v21 = [v25 detailTextLabel];
-      [v21 setText:v16];
+      detailTextLabel2 = [cellCopy detailTextLabel];
+      [detailTextLabel2 setText:v16];
 
       v22 = +[UIColor labelColor];
     }
 
     v23 = v22;
-    v24 = [v25 detailTextLabel];
-    [v24 setTextColor:v23];
+    detailTextLabel3 = [cellCopy detailTextLabel];
+    [detailTextLabel3 setTextColor:v23];
 
-    v5 = [v25 textLabel];
-    [v5 setAdjustsFontSizeToFitWidth:1];
+    cellContentConfiguration = [cellCopy textLabel];
+    [cellContentConfiguration setAdjustsFontSizeToFitWidth:1];
   }
 }
 
-- (id)cellForCollectionView:(id)a3 forIndexPath:(id)a4
+- (id)cellForCollectionView:(id)view forIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = [v10 traitCollection];
-  v12 = [v11 userInterfaceIdiom];
+  traitCollection = [v10 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v12 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    v13 = [v10 contentView];
-    v14 = [v10 contentView];
-    v15 = [v14 heightAnchor];
-    v16 = [v15 constraintGreaterThanOrEqualToConstant:44.0];
-    [v13 addConstraint:v16];
+    contentView = [v10 contentView];
+    contentView2 = [v10 contentView];
+    heightAnchor = [contentView2 heightAnchor];
+    v16 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
+    [contentView addConstraint:v16];
   }
 
   [(MapsDebugTableRow *)self configureCollectionViewCell:v10];
@@ -134,8 +134,8 @@
 
 - (UIListContentConfiguration)cellContentConfiguration
 {
-  v3 = [(MapsDebugTableRow *)self subtitle];
-  if ([v3 length] || -[MapsDebugTableRow deprecated](self, "deprecated"))
+  subtitle = [(MapsDebugTableRow *)self subtitle];
+  if ([subtitle length] || -[MapsDebugTableRow deprecated](self, "deprecated"))
   {
     v4 = +[UIListContentConfiguration subtitleCellConfiguration];
   }
@@ -152,8 +152,8 @@
 
 - (int64_t)cellStyle
 {
-  v3 = [(MapsDebugTableRow *)self subtitle];
-  if ([v3 length])
+  subtitle = [(MapsDebugTableRow *)self subtitle];
+  if ([subtitle length])
   {
     v4 = 3;
   }
@@ -171,32 +171,32 @@
   return v4;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v32 = a3;
-  v4 = [(MapsDebugTableRow *)self cellContentConfiguration];
-  v5 = [(MapsDebugTableRow *)self title];
-  if (v4)
+  cellCopy = cell;
+  cellContentConfiguration = [(MapsDebugTableRow *)self cellContentConfiguration];
+  title = [(MapsDebugTableRow *)self title];
+  if (cellContentConfiguration)
   {
-    [v4 setText:v5];
+    [cellContentConfiguration setText:title];
 
-    v6 = [(MapsDebugTableRow *)self deprecated];
-    v7 = [(MapsDebugTableRow *)self subtitle];
-    v8 = v7;
-    if (v6)
+    deprecated = [(MapsDebugTableRow *)self deprecated];
+    subtitle = [(MapsDebugTableRow *)self subtitle];
+    v8 = subtitle;
+    if (deprecated)
     {
-      v9 = [v7 length];
+      v9 = [subtitle length];
 
       if (v9)
       {
-        v10 = [(MapsDebugTableRow *)self subtitle];
-        v11 = [v10 stringByAppendingString:@" - DEPRECATED (SOON TO BE REMOVED)"];
-        [v4 setSecondaryText:v11];
+        subtitle2 = [(MapsDebugTableRow *)self subtitle];
+        v11 = [subtitle2 stringByAppendingString:@" - DEPRECATED (SOON TO BE REMOVED)"];
+        [cellContentConfiguration setSecondaryText:v11];
       }
 
       else
       {
-        [v4 setSecondaryText:@"DEPRECATED (SOON TO BE REMOVED)"];
+        [cellContentConfiguration setSecondaryText:@"DEPRECATED (SOON TO BE REMOVED)"];
       }
 
       v19 = +[UIColor systemRedColor];
@@ -204,42 +204,42 @@
 
     else
     {
-      [v4 setSecondaryText:v7];
+      [cellContentConfiguration setSecondaryText:subtitle];
 
       v19 = +[UIColor labelColor];
     }
 
     v22 = v19;
-    v23 = [v4 secondaryTextProperties];
-    [v23 setColor:v22];
+    secondaryTextProperties = [cellContentConfiguration secondaryTextProperties];
+    [secondaryTextProperties setColor:v22];
 
-    v24 = [v4 textProperties];
+    textProperties = [cellContentConfiguration textProperties];
   }
 
   else
   {
-    v12 = [v32 textLabel];
-    [v12 setText:v5];
+    textLabel = [cellCopy textLabel];
+    [textLabel setText:title];
 
-    LODWORD(v12) = [(MapsDebugTableRow *)self deprecated];
-    v13 = [(MapsDebugTableRow *)self subtitle];
-    v14 = v13;
-    if (v12)
+    LODWORD(textLabel) = [(MapsDebugTableRow *)self deprecated];
+    subtitle3 = [(MapsDebugTableRow *)self subtitle];
+    v14 = subtitle3;
+    if (textLabel)
     {
-      v15 = [v13 length];
+      v15 = [subtitle3 length];
 
       if (v15)
       {
-        v16 = [(MapsDebugTableRow *)self subtitle];
-        v17 = [v16 stringByAppendingString:@" - DEPRECATED (SOON TO BE REMOVED)"];
-        v18 = [v32 detailTextLabel];
-        [v18 setText:v17];
+        subtitle4 = [(MapsDebugTableRow *)self subtitle];
+        v17 = [subtitle4 stringByAppendingString:@" - DEPRECATED (SOON TO BE REMOVED)"];
+        detailTextLabel = [cellCopy detailTextLabel];
+        [detailTextLabel setText:v17];
       }
 
       else
       {
-        v16 = [v32 detailTextLabel];
-        [v16 setText:@"DEPRECATED (SOON TO BE REMOVED)"];
+        subtitle4 = [cellCopy detailTextLabel];
+        [subtitle4 setText:@"DEPRECATED (SOON TO BE REMOVED)"];
       }
 
       v21 = +[UIColor systemRedColor];
@@ -247,58 +247,58 @@
 
     else
     {
-      v20 = [v32 detailTextLabel];
-      [v20 setText:v14];
+      detailTextLabel2 = [cellCopy detailTextLabel];
+      [detailTextLabel2 setText:v14];
 
       v21 = +[UIColor labelColor];
     }
 
     v25 = v21;
-    v26 = [v32 detailTextLabel];
-    [v26 setTextColor:v25];
+    detailTextLabel3 = [cellCopy detailTextLabel];
+    [detailTextLabel3 setTextColor:v25];
 
-    v24 = [v32 textLabel];
+    textProperties = [cellCopy textLabel];
   }
 
-  v27 = v24;
-  [v24 setAdjustsFontSizeToFitWidth:1];
+  v27 = textProperties;
+  [textProperties setAdjustsFontSizeToFitWidth:1];
 
-  v28 = [(MapsDebugTableRow *)self configureBlock];
+  configureBlock = [(MapsDebugTableRow *)self configureBlock];
 
-  if (v28)
+  if (configureBlock)
   {
-    v29 = [(MapsDebugTableRow *)self configureBlock];
-    (v29)[2](v29, v32, v4);
+    configureBlock2 = [(MapsDebugTableRow *)self configureBlock];
+    (configureBlock2)[2](configureBlock2, cellCopy, cellContentConfiguration);
   }
 
-  v30 = [v32 textLabel];
-  [v30 setAccessibilityIdentifier:@"TextLabel"];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setAccessibilityIdentifier:@"TextLabel"];
 
-  v31 = [v32 detailTextLabel];
-  [v31 setAccessibilityIdentifier:@"DetailTextLabel"];
+  detailTextLabel4 = [cellCopy detailTextLabel];
+  [detailTextLabel4 setAccessibilityIdentifier:@"DetailTextLabel"];
 
-  [v32 setContentConfiguration:v4];
+  [cellCopy setContentConfiguration:cellContentConfiguration];
 }
 
-- (id)cellForTableView:(id)a3
+- (id)cellForTableView:(id)view
 {
-  v4 = a3;
-  v5 = [objc_opt_class() reuseIdentifier];
-  v6 = [v4 dequeueReusableCellWithIdentifier:v5];
+  viewCopy = view;
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v6 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier];
 
   if (!v6)
   {
-    v6 = [[UITableViewCell alloc] initWithStyle:-[MapsDebugTableRow cellStyle](self reuseIdentifier:{"cellStyle"), v5}];
-    v7 = [v6 traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    v6 = [[UITableViewCell alloc] initWithStyle:-[MapsDebugTableRow cellStyle](self reuseIdentifier:{"cellStyle"), reuseIdentifier}];
+    traitCollection = [v6 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v8 == 5)
+    if (userInterfaceIdiom == 5)
     {
-      v9 = [v6 contentView];
-      v10 = [v6 contentView];
-      v11 = [v10 heightAnchor];
-      v12 = [v11 constraintGreaterThanOrEqualToConstant:34.0];
-      [v9 addConstraint:v12];
+      contentView = [v6 contentView];
+      contentView2 = [v6 contentView];
+      heightAnchor = [contentView2 heightAnchor];
+      v12 = [heightAnchor constraintGreaterThanOrEqualToConstant:34.0];
+      [contentView addConstraint:v12];
     }
   }
 
@@ -344,37 +344,37 @@
   [(NSMutableArray *)self->_controlsToClearTargetsFromOnReuse removeAllObjects];
 }
 
-- (void)addControlThatNeedsClearingTargetOnReuse:(id)a3
+- (void)addControlThatNeedsClearingTargetOnReuse:(id)reuse
 {
-  v4 = a3;
+  reuseCopy = reuse;
   controlsToClearTargetsFromOnReuse = self->_controlsToClearTargetsFromOnReuse;
-  v8 = v4;
+  v8 = reuseCopy;
   if (!controlsToClearTargetsFromOnReuse)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_controlsToClearTargetsFromOnReuse;
     self->_controlsToClearTargetsFromOnReuse = v6;
 
-    v4 = v8;
+    reuseCopy = v8;
     controlsToClearTargetsFromOnReuse = self->_controlsToClearTargetsFromOnReuse;
   }
 
-  [(NSMutableArray *)controlsToClearTargetsFromOnReuse addObject:v4];
+  [(NSMutableArray *)controlsToClearTargetsFromOnReuse addObject:reuseCopy];
 }
 
-- (void)setCurrentCell:(id)a3
+- (void)setCurrentCell:(id)cell
 {
-  v5 = a3;
-  if (self->_currentCell != v5)
+  cellCopy = cell;
+  if (self->_currentCell != cellCopy)
   {
-    v6 = v5;
-    if (!v5)
+    v6 = cellCopy;
+    if (!cellCopy)
     {
       [(MapsDebugTableRow *)self _clearAllControlTargetsForReuse];
     }
 
-    objc_storeStrong(&self->_currentCell, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_currentCell, cell);
+    cellCopy = v6;
   }
 }
 
@@ -407,9 +407,9 @@
   return result;
 }
 
-+ (void)registerCellsInCollectionView:(id)a3
++ (void)registerCellsInCollectionView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -445,7 +445,7 @@
         v9 = *(*(&v12 + 1) + 8 * v8);
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v9);
-        [v3 registerClass:v10 forCellWithReuseIdentifier:v11];
+        [viewCopy registerClass:v10 forCellWithReuseIdentifier:v11];
 
         v8 = v8 + 1;
       }

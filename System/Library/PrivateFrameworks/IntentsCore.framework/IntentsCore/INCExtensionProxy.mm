@@ -1,23 +1,23 @@
 @interface INCExtensionProxy
-+ (id)_errorAggregation:(id)a3 innerError:(id)a4;
++ (id)_errorAggregation:(id)aggregation innerError:(id)error;
 + (void)initialize;
-- (BOOL)_extensionProcessHasEntitlement:(id)a3;
+- (BOOL)_extensionProcessHasEntitlement:(id)entitlement;
 - (BOOL)_isExtensionBeingDebugged;
-- (BOOL)_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:(id)a3;
-- (BOOL)_shouldForwardToAppWithIntent:(id)a3 intentResponse:(id)a4;
+- (BOOL)_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:(id)handler;
+- (BOOL)_shouldForwardToAppWithIntent:(id)intent intentResponse:(id)response;
 - (BOOL)shouldResetRequestAfterHandle;
-- (id)_initWithConnection:(id)a3 extension:(id)a4 vendorRemote:(id)a5 auditTokenValue:(id)a6;
-- (id)_processIntent:(id)a3 intentResponse:(id)a4 withCacheItems:(id)a5;
-- (void)_issueSandboxExtensionsForFileURLsIfNeededToIntent:(id)a3;
-- (void)confirmIntentWithCompletionHandler:(id)a3;
-- (void)getDefaultValueForParameterNamed:(id)a3 completionHandler:(id)a4;
-- (void)getOptionsForParameterNamed:(id)a3 completionHandler:(id)a4;
-- (void)getOptionsForParameterNamed:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
-- (void)handleIntentWithCompletionHandler:(id)a3;
-- (void)prewarmAppWithIntent:(id)a3 completionHandler:(id)a4;
-- (void)resolveIntentSlotKeyPath:(id)a3 completionHandler:(id)a4;
-- (void)resolveIntentSlotKeyPaths:(id)a3 completionHandler:(id)a4;
-- (void)startSendingUpdatesToObserver:(id)a3;
+- (id)_initWithConnection:(id)connection extension:(id)extension vendorRemote:(id)remote auditTokenValue:(id)value;
+- (id)_processIntent:(id)intent intentResponse:(id)response withCacheItems:(id)items;
+- (void)_issueSandboxExtensionsForFileURLsIfNeededToIntent:(id)intent;
+- (void)confirmIntentWithCompletionHandler:(id)handler;
+- (void)getDefaultValueForParameterNamed:(id)named completionHandler:(id)handler;
+- (void)getOptionsForParameterNamed:(id)named completionHandler:(id)handler;
+- (void)getOptionsForParameterNamed:(id)named searchTerm:(id)term completionHandler:(id)handler;
+- (void)handleIntentWithCompletionHandler:(id)handler;
+- (void)prewarmAppWithIntent:(id)intent completionHandler:(id)handler;
+- (void)resolveIntentSlotKeyPath:(id)path completionHandler:(id)handler;
+- (void)resolveIntentSlotKeyPaths:(id)paths completionHandler:(id)handler;
+- (void)startSendingUpdatesToObserver:(id)observer;
 - (void)stopSendingUpdates;
 @end
 
@@ -25,36 +25,36 @@
 
 - (BOOL)_isExtensionBeingDebugged
 {
-  v2 = [(INCExtensionProxy *)self _extension];
-  v3 = [v2 _plugIn];
-  v4 = ([v3 userElection] >> 8) & 1;
+  _extension = [(INCExtensionProxy *)self _extension];
+  _plugIn = [_extension _plugIn];
+  v4 = ([_plugIn userElection] >> 8) & 1;
 
   return v4;
 }
 
-- (void)_issueSandboxExtensionsForFileURLsIfNeededToIntent:(id)a3
+- (void)_issueSandboxExtensionsForFileURLsIfNeededToIntent:(id)intent
 {
   auditTokenValue = self->_auditTokenValue;
   if (auditTokenValue)
   {
     memset(v5, 0, sizeof(v5));
-    v4 = a3;
+    intentCopy = intent;
     [(NSValue *)auditTokenValue getValue:v5 size:32];
     INIssueSandboxExtensionsForFileURLEnumerableToProcess();
   }
 }
 
-- (BOOL)_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:(id)a3
+- (BOOL)_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(INCExtensionProxy *)self _connection];
-  v6 = [v5 _transaction];
+  handlerCopy = handler;
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
 
-  v7 = [v6 currentIntent];
-  v8 = [(INCExtensionProxy *)self _extension];
-  v9 = [v8 _intents_intentsRestrictedWhileProtectedDataUnavailable];
-  v10 = [v7 _className];
-  if (![v9 containsObject:v10])
+  currentIntent = [_transaction currentIntent];
+  _extension = [(INCExtensionProxy *)self _extension];
+  _intents_intentsRestrictedWhileProtectedDataUnavailable = [_extension _intents_intentsRestrictedWhileProtectedDataUnavailable];
+  _className = [currentIntent _className];
+  if (![_intents_intentsRestrictedWhileProtectedDataUnavailable containsObject:_className])
   {
 
     goto LABEL_5;
@@ -69,13 +69,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [(INCExtensionConnection *)self->_connection _queue];
+  _queue = [(INCExtensionConnection *)self->_connection _queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__INCExtensionProxy__isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler___block_invoke;
   block[3] = &unk_2797E7FF0;
-  v16 = v4;
-  dispatch_async(v12, block);
+  v16 = handlerCopy;
+  dispatch_async(_queue, block);
 
   v13 = 1;
 LABEL_6:
@@ -93,32 +93,32 @@ void __91__INCExtensionProxy__isIntentRestrictedWhileProtectedDataUnavailableWit
   }
 }
 
-- (id)_processIntent:(id)a3 intentResponse:(id)a4 withCacheItems:(id)a5
+- (id)_processIntent:(id)intent intentResponse:(id)response withCacheItems:(id)items
 {
   v43 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v7 = a4;
-  v8 = a5;
+  intentCopy = intent;
+  responseCopy = response;
+  itemsCopy = items;
   v9 = *MEMORY[0x277CD38C8];
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v7 backingStore];
+    backingStore = [responseCopy backingStore];
     *buf = 136315394;
     v40 = "[INCExtensionProxy _processIntent:intentResponse:withCacheItems:]";
     v41 = 2112;
-    v42 = v11;
+    v42 = backingStore;
     _os_log_impl(&dword_255503000, v10, OS_LOG_TYPE_INFO, "%s intentResponse.backingStore = %@", buf, 0x16u);
   }
 
-  v26 = v7;
+  v26 = responseCopy;
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v13 = dispatch_group_create();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v8;
+  obj = itemsCopy;
   v14 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v14)
   {
@@ -141,7 +141,7 @@ void __91__INCExtensionProxy__isIntentRestrictedWhileProtectedDataUnavailableWit
         v30[2] = __66__INCExtensionProxy__processIntent_intentResponse_withCacheItems___block_invoke;
         v30[3] = &unk_2797E7FC8;
         v31 = v12;
-        v32 = self;
+        selfCopy = self;
         v33 = v13;
         [v19 deserializeCacheItem:v18 completion:v30];
       }
@@ -161,15 +161,15 @@ void __91__INCExtensionProxy__isIntentRestrictedWhileProtectedDataUnavailableWit
       *buf = 136315394;
       v40 = "[INCExtensionProxy _processIntent:intentResponse:withCacheItems:]";
       v41 = 2112;
-      v42 = v27;
+      v42 = intentCopy;
       _os_log_error_impl(&dword_255503000, v21, OS_LOG_TYPE_ERROR, "%s Image caching timed out for intent:%@", buf, 0x16u);
     }
   }
 
   if ([(INCExtensionProxy *)self shouldCache])
   {
-    v22 = [MEMORY[0x277CD3AD0] sharedCache];
-    [v26 _intents_updateContainerWithCache:v22];
+    mEMORY[0x277CD3AD0] = [MEMORY[0x277CD3AD0] sharedCache];
+    [v26 _intents_updateContainerWithCache:mEMORY[0x277CD3AD0]];
   }
 
   v23 = [v12 copy];
@@ -269,44 +269,44 @@ void __66__INCExtensionProxy__processIntent_intentResponse_withCacheItems___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_extensionProcessHasEntitlement:(id)a3
+- (BOOL)_extensionProcessHasEntitlement:(id)entitlement
 {
   memset(v6, 0, sizeof(v6));
   auditTokenValue = self->_auditTokenValue;
-  v4 = a3;
+  entitlementCopy = entitlement;
   [(NSValue *)auditTokenValue getValue:v6 size:32];
   LOBYTE(auditTokenValue) = INProcessHasEntitlement();
 
   return auditTokenValue;
 }
 
-- (BOOL)_shouldForwardToAppWithIntent:(id)a3 intentResponse:(id)a4
+- (BOOL)_shouldForwardToAppWithIntent:(id)intent intentResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 _shouldForwardIntentToApp] && (objc_msgSend(v7, "_type") == 1 || -[INCExtensionProxy _extensionProcessHasEntitlement:](self, "_extensionProcessHasEntitlement:", *MEMORY[0x277CD3850])))
+  intentCopy = intent;
+  responseCopy = response;
+  if ([responseCopy _shouldForwardIntentToApp] && (objc_msgSend(responseCopy, "_type") == 1 || -[INCExtensionProxy _extensionProcessHasEntitlement:](self, "_extensionProcessHasEntitlement:", *MEMORY[0x277CD3850])))
   {
-    v8 = 1;
+    _shouldForwardToAppOnSucccess = 1;
   }
 
-  else if ([v7 _intentResponseCode] == 4)
+  else if ([responseCopy _intentResponseCode] == 4)
   {
-    v8 = [v6 _shouldForwardToAppOnSucccess];
+    _shouldForwardToAppOnSucccess = [intentCopy _shouldForwardToAppOnSucccess];
   }
 
   else
   {
-    v8 = 0;
+    _shouldForwardToAppOnSucccess = 0;
   }
 
-  return v8;
+  return _shouldForwardToAppOnSucccess;
 }
 
-- (void)prewarmAppWithIntent:(id)a3 completionHandler:(id)a4
+- (void)prewarmAppWithIntent:(id)intent completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 _intents_launchIdForCurrentPlatform];
+  handlerCopy = handler;
+  _intents_launchIdForCurrentPlatform = [intent _intents_launchIdForCurrentPlatform];
   v23[1] = 0;
   INExtractAppInfoFromSiriLaunchId();
   v8 = 0;
@@ -326,7 +326,7 @@ void __66__INCExtensionProxy__processIntent_intentResponse_withCacheItems___bloc
       _os_log_error_impl(&dword_255503000, v11, OS_LOG_TYPE_ERROR, "%s Unable to create application record: %@", buf, 0x16u);
     }
 
-    v6[2](v6, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
   }
 
   else
@@ -339,17 +339,17 @@ void __66__INCExtensionProxy__processIntent_intentResponse_withCacheItems___bloc
     v25[1] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
-    v15 = [(INCExtensionProxy *)self _connection];
-    v16 = [v15 _queue];
+    _connection = [(INCExtensionProxy *)self _connection];
+    _queue = [_connection _queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__INCExtensionProxy_prewarmAppWithIntent_completionHandler___block_invoke;
     block[3] = &unk_2797E8140;
     v20 = v14;
     v21 = v8;
-    v22 = v6;
+    v22 = handlerCopy;
     v17 = v14;
-    dispatch_async(v16, block);
+    dispatch_async(_queue, block);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -368,22 +368,22 @@ void __60__INCExtensionProxy_prewarmAppWithIntent_completionHandler___block_invo
   [v2 openApplication:v4 withOptions:v3 completion:v5];
 }
 
-- (id)_initWithConnection:(id)a3 extension:(id)a4 vendorRemote:(id)a5 auditTokenValue:(id)a6
+- (id)_initWithConnection:(id)connection extension:(id)extension vendorRemote:(id)remote auditTokenValue:(id)value
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  extensionCopy = extension;
+  remoteCopy = remote;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = INCExtensionProxy;
   v15 = [(INCExtensionProxy *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_extension, a4);
-    objc_storeStrong(&v16->_vendorRemote, a5);
-    objc_storeStrong(&v16->_connection, a3);
-    objc_storeStrong(&v16->_auditTokenValue, a6);
+    objc_storeStrong(&v15->_extension, extension);
+    objc_storeStrong(&v16->_vendorRemote, remote);
+    objc_storeStrong(&v16->_connection, connection);
+    objc_storeStrong(&v16->_auditTokenValue, value);
     v16->_shouldCache = 1;
   }
 
@@ -392,79 +392,79 @@ void __60__INCExtensionProxy_prewarmAppWithIntent_completionHandler___block_invo
 
 - (void)stopSendingUpdates
 {
-  v3 = [(INCExtensionProxy *)self _connection];
-  v7 = [v3 _transaction];
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
 
-  v4 = [v7 currentIntent];
-  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v4];
-  v5 = [objc_alloc(MEMORY[0x277CD41F0]) initWithIntent:v4];
-  v6 = [(INCExtensionProxy *)self _connection];
-  [v6 requestTimeoutInterval];
+  currentIntent = [_transaction currentIntent];
+  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
+  v5 = [objc_alloc(MEMORY[0x277CD41F0]) initWithIntent:currentIntent];
+  _connection2 = [(INCExtensionProxy *)self _connection];
+  [_connection2 requestTimeoutInterval];
   [v5 setRequestTimeout:?];
 
   [v5 executeRemotelyWithVendorRemote:self->_vendorRemote completionHandler:&__block_literal_global_62];
 }
 
-- (void)startSendingUpdatesToObserver:(id)a3
+- (void)startSendingUpdatesToObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(INCExtensionProxy *)self _connection];
-  v11 = [v5 _transaction];
+  observerCopy = observer;
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
 
-  v6 = [v11 currentIntent];
-  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v6];
+  currentIntent = [_transaction currentIntent];
+  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
   v7 = objc_alloc(MEMORY[0x277CD41C8]);
-  v8 = [(INCExtensionProxy *)self _connection];
-  v9 = [v7 initWithIntent:v6 endpointProvider:v8 observer:v4];
+  _connection2 = [(INCExtensionProxy *)self _connection];
+  v9 = [v7 initWithIntent:currentIntent endpointProvider:_connection2 observer:observerCopy];
 
-  v10 = [(INCExtensionProxy *)self _connection];
-  [v10 requestTimeoutInterval];
+  _connection3 = [(INCExtensionProxy *)self _connection];
+  [_connection3 requestTimeoutInterval];
   [v9 setRequestTimeout:?];
 
   [v9 executeRemotelyWithVendorRemote:self->_vendorRemote completionHandler:&__block_literal_global_757];
 }
 
-- (void)handleIntentWithCompletionHandler:(id)a3
+- (void)handleIntentWithCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(INCExtensionProxy *)self _connection];
-  v6 = [v5 _transaction];
+  handlerCopy = handler;
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
 
-  v7 = [v6 currentIntent];
-  if ([v7 _executionContext] != 9 || !-[INCExtensionProxy _isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:](self, "_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:", v4))
+  currentIntent = [_transaction currentIntent];
+  if ([currentIntent _executionContext] != 9 || !-[INCExtensionProxy _isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:](self, "_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:", handlerCopy))
   {
     v8 = *MEMORY[0x277CD38C8];
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [v7 backingStore];
+      backingStore = [currentIntent backingStore];
       *buf = 136315394;
       v31 = "[INCExtensionProxy handleIntentWithCompletionHandler:]";
       v32 = 2112;
-      v33 = v10;
+      v33 = backingStore;
       _os_log_impl(&dword_255503000, v9, OS_LOG_TYPE_INFO, "%s intent.backingStore = %@", buf, 0x16u);
     }
 
-    [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v7];
-    v11 = [[INCExtensionTransactionState alloc] initWithType:4 intent:v7 intentResponse:0 userActivities:0];
-    [v6 setState:v11];
+    [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
+    v11 = [[INCExtensionTransactionState alloc] initWithType:4 intent:currentIntent intentResponse:0 userActivities:0];
+    [_transaction setState:v11];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __55__INCExtensionProxy_handleIntentWithCompletionHandler___block_invoke;
     v26[3] = &unk_2797E7EB8;
     v26[4] = self;
-    v12 = v7;
+    v12 = currentIntent;
     v27 = v12;
-    v28 = v6;
-    v13 = v4;
+    v28 = _transaction;
+    v13 = handlerCopy;
     v29 = v13;
     v14 = MEMORY[0x259C36E60](v26);
     [(INCExtensionConnection *)self->_connection _startRequestTimerWithExtensionProxy:self];
     v15 = [objc_alloc(MEMORY[0x277CD3CB0]) initWithIntent:v12];
-    v16 = [(INCExtensionProxy *)self _connection];
-    [v16 requestTimeoutInterval];
+    _connection2 = [(INCExtensionProxy *)self _connection];
+    [_connection2 requestTimeoutInterval];
     [v15 setRequestTimeout:?];
 
     vendorRemote = self->_vendorRemote;
@@ -686,38 +686,38 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmIntentWithCompletionHandler:(id)a3
+- (void)confirmIntentWithCompletionHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(INCExtensionProxy *)self _connection];
-  v6 = [v5 _transaction];
+  handlerCopy = handler;
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
 
-  v7 = [v6 currentIntent];
-  if ([v7 _executionContext] != 9 || !-[INCExtensionProxy _isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:](self, "_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:", v4))
+  currentIntent = [_transaction currentIntent];
+  if ([currentIntent _executionContext] != 9 || !-[INCExtensionProxy _isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:](self, "_isIntentRestrictedWhileProtectedDataUnavailableWithCompletionHandler:", handlerCopy))
   {
-    [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v7];
-    v8 = [[INCExtensionTransactionState alloc] initWithType:2 intent:v7 intentResponse:0 userActivities:0];
-    [v6 setState:v8];
+    [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
+    v8 = [[INCExtensionTransactionState alloc] initWithType:2 intent:currentIntent intentResponse:0 userActivities:0];
+    [_transaction setState:v8];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __56__INCExtensionProxy_confirmIntentWithCompletionHandler___block_invoke;
     v33[3] = &unk_2797E7E18;
     v33[4] = self;
-    v9 = v7;
+    v9 = currentIntent;
     v34 = v9;
-    v36 = v4;
-    v35 = v6;
+    v36 = handlerCopy;
+    v35 = _transaction;
     v10 = MEMORY[0x259C36E60](v33);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v9 privatePlayMediaIntentData];
-      v12 = [v11 shouldSuppressCommonWholeHouseAudioRoutes];
-      v13 = [v12 BOOLValue];
+      privatePlayMediaIntentData = [v9 privatePlayMediaIntentData];
+      shouldSuppressCommonWholeHouseAudioRoutes = [privatePlayMediaIntentData shouldSuppressCommonWholeHouseAudioRoutes];
+      bOOLValue = [shouldSuppressCommonWholeHouseAudioRoutes BOOLValue];
 
-      if (!v13)
+      if (!bOOLValue)
       {
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
@@ -728,16 +728,16 @@ LABEL_7:
         v16 = v9;
         v31 = v16;
         v17 = MEMORY[0x259C36E60](v30);
-        v18 = [v16 airPlayRouteIds];
-        if ([v18 count])
+        airPlayRouteIds = [v16 airPlayRouteIds];
+        if ([airPlayRouteIds count])
         {
-          (v17)[2](v17, v18);
+          (v17)[2](v17, airPlayRouteIds);
         }
 
         else
         {
-          v19 = [v16 hashedRouteUIDs];
-          if ([v19 count])
+          hashedRouteUIDs = [v16 hashedRouteUIDs];
+          if ([hashedRouteUIDs count])
           {
             v20 = *MEMORY[0x277CD38C8];
             if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
@@ -745,7 +745,7 @@ LABEL_7:
               *buf = 136315394;
               v38 = "[INCExtensionProxy confirmIntentWithCompletionHandler:]";
               v39 = 2112;
-              v40 = v19;
+              v40 = hashedRouteUIDs;
               _os_log_impl(&dword_255503000, v20, OS_LOG_TYPE_INFO, "%s Have encryptedAirPlayRouteIds: %@, will attempt decoding", buf, 0x16u);
             }
 
@@ -757,7 +757,7 @@ LABEL_7:
             v28 = v17;
             v22 = &v29;
             v29 = v15;
-            INCDecodeHashedRouteUIDs(v19, v27);
+            INCDecodeHashedRouteUIDs(hashedRouteUIDs, v27);
           }
 
           else
@@ -1099,23 +1099,23 @@ void __56__INCExtensionProxy_confirmIntentWithCompletionHandler___block_invoke_3
   }
 }
 
-- (void)resolveIntentSlotKeyPaths:(id)a3 completionHandler:(id)a4
+- (void)resolveIntentSlotKeyPaths:(id)paths completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(INCExtensionProxy *)self _connection];
-  v9 = [v8 _transaction];
+  handlerCopy = handler;
+  pathsCopy = paths;
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
 
-  v10 = [v9 currentIntent];
-  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v10];
-  v11 = [[INCExtensionTransactionState alloc] initWithType:1 intent:v10 intentResponse:0 userActivities:0];
-  [v9 setState:v11];
+  currentIntent = [_transaction currentIntent];
+  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
+  v11 = [[INCExtensionTransactionState alloc] initWithType:1 intent:currentIntent intentResponse:0 userActivities:0];
+  [_transaction setState:v11];
 
   [(INCExtensionConnection *)self->_connection _startRequestTimerWithExtensionProxy:self];
-  v12 = [objc_alloc(MEMORY[0x277CD3F98]) initWithIntent:v10 parameterNames:v7];
+  v12 = [objc_alloc(MEMORY[0x277CD3F98]) initWithIntent:currentIntent parameterNames:pathsCopy];
 
-  v13 = [(INCExtensionProxy *)self _connection];
-  [v13 requestTimeoutInterval];
+  _connection2 = [(INCExtensionProxy *)self _connection];
+  [_connection2 requestTimeoutInterval];
   [v12 setRequestTimeout:?];
 
   vendorRemote = self->_vendorRemote;
@@ -1124,8 +1124,8 @@ void __56__INCExtensionProxy_confirmIntentWithCompletionHandler___block_invoke_3
   v16[2] = __65__INCExtensionProxy_resolveIntentSlotKeyPaths_completionHandler___block_invoke;
   v16[3] = &unk_2797E7DA0;
   v16[4] = self;
-  v17 = v6;
-  v15 = v6;
+  v17 = handlerCopy;
+  v15 = handlerCopy;
   [v12 executeRemotelyWithVendorRemote:vendorRemote completionHandler:v16];
 }
 
@@ -1203,22 +1203,22 @@ void __65__INCExtensionProxy_resolveIntentSlotKeyPaths_completionHandler___block
   }
 }
 
-- (void)resolveIntentSlotKeyPath:(id)a3 completionHandler:(id)a4
+- (void)resolveIntentSlotKeyPath:(id)path completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INCExtensionProxy *)self _connection];
-  v9 = [v8 _transaction];
+  pathCopy = path;
+  handlerCopy = handler;
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
 
-  v10 = [v9 currentIntent];
-  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v10];
-  v11 = [[INCExtensionTransactionState alloc] initWithType:1 intent:v10 intentResponse:0 userActivities:0];
-  [v9 setState:v11];
+  currentIntent = [_transaction currentIntent];
+  [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
+  v11 = [[INCExtensionTransactionState alloc] initWithType:1 intent:currentIntent intentResponse:0 userActivities:0];
+  [_transaction setState:v11];
 
   [(INCExtensionConnection *)self->_connection _startRequestTimerWithExtensionProxy:self];
-  v12 = [objc_alloc(MEMORY[0x277CD3F98]) initWithIntent:v10 parameterName:v6];
-  v13 = [(INCExtensionProxy *)self _connection];
-  [v13 requestTimeoutInterval];
+  v12 = [objc_alloc(MEMORY[0x277CD3F98]) initWithIntent:currentIntent parameterName:pathCopy];
+  _connection2 = [(INCExtensionProxy *)self _connection];
+  [_connection2 requestTimeoutInterval];
   [v12 setRequestTimeout:?];
 
   vendorRemote = self->_vendorRemote;
@@ -1226,11 +1226,11 @@ void __65__INCExtensionProxy_resolveIntentSlotKeyPaths_completionHandler___block
   v17[1] = 3221225472;
   v17[2] = __64__INCExtensionProxy_resolveIntentSlotKeyPath_completionHandler___block_invoke;
   v17[3] = &unk_2797E7D50;
-  v18 = v6;
-  v19 = self;
-  v20 = v7;
-  v15 = v7;
-  v16 = v6;
+  v18 = pathCopy;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = pathCopy;
   [v12 executeRemotelyWithVendorRemote:vendorRemote completionHandler:v17];
 }
 
@@ -1320,29 +1320,29 @@ void __64__INCExtensionProxy_resolveIntentSlotKeyPath_completionHandler___block_
   }
 }
 
-- (void)getDefaultValueForParameterNamed:(id)a3 completionHandler:(id)a4
+- (void)getDefaultValueForParameterNamed:(id)named completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  namedCopy = named;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(INCExtensionProxy *)self _connection];
-    v9 = [v8 _transaction];
+    _connection = [(INCExtensionProxy *)self _connection];
+    _transaction = [_connection _transaction];
 
-    v10 = [v9 currentIntent];
-    v11 = [v10 _codableDescription];
-    v12 = [v11 attributeByName:v6];
+    currentIntent = [_transaction currentIntent];
+    _codableDescription = [currentIntent _codableDescription];
+    v12 = [_codableDescription attributeByName:namedCopy];
 
     if ([v12 objectClass])
     {
-      [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v10];
-      v13 = [[INCExtensionTransactionState alloc] initWithType:1 intent:v10 intentResponse:0 userActivities:0];
-      [v9 setState:v13];
+      [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
+      v13 = [[INCExtensionTransactionState alloc] initWithType:1 intent:currentIntent intentResponse:0 userActivities:0];
+      [_transaction setState:v13];
 
       [(INCExtensionConnection *)self->_connection _startRequestTimerWithExtensionProxy:self];
-      v14 = [objc_alloc(MEMORY[0x277CD3C50]) initWithIntent:v10 parameterName:v6];
-      v15 = [(INCExtensionProxy *)self _connection];
-      [v15 requestTimeoutInterval];
+      v14 = [objc_alloc(MEMORY[0x277CD3C50]) initWithIntent:currentIntent parameterName:namedCopy];
+      _connection2 = [(INCExtensionProxy *)self _connection];
+      [_connection2 requestTimeoutInterval];
       [v14 setRequestTimeout:?];
 
       vendorRemote = self->_vendorRemote;
@@ -1351,16 +1351,16 @@ void __64__INCExtensionProxy_resolveIntentSlotKeyPath_completionHandler___block_
       v18[2] = __72__INCExtensionProxy_getDefaultValueForParameterNamed_completionHandler___block_invoke;
       v18[3] = &unk_2797E7D28;
       v18[4] = self;
-      v19 = v6;
+      v19 = namedCopy;
       v20 = v12;
-      v21 = v7;
+      v21 = handlerCopy;
       [v14 executeRemotelyWithVendorRemote:vendorRemote completionHandler:v18];
     }
 
     else
     {
       v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"INCExtensionErrorDomain" code:1400 userInfo:0];
-      (*(v7 + 2))(v7, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, v17);
     }
   }
 }
@@ -1510,30 +1510,30 @@ LABEL_21:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getOptionsForParameterNamed:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)getOptionsForParameterNamed:(id)named searchTerm:(id)term completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  namedCopy = named;
+  termCopy = term;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(INCExtensionProxy *)self _connection];
-    v12 = [v11 _transaction];
+    _connection = [(INCExtensionProxy *)self _connection];
+    _transaction = [_connection _transaction];
 
-    v13 = [v12 currentIntent];
-    v14 = [v13 _codableDescription];
-    v15 = [v14 attributeByName:v8];
+    currentIntent = [_transaction currentIntent];
+    _codableDescription = [currentIntent _codableDescription];
+    v15 = [_codableDescription attributeByName:namedCopy];
 
     if ([v15 objectClass])
     {
-      [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:v13];
-      v16 = [[INCExtensionTransactionState alloc] initWithType:1 intent:v13 intentResponse:0 userActivities:0];
-      [v12 setState:v16];
+      [(INCExtensionProxy *)self _issueSandboxExtensionsForFileURLsIfNeededToIntent:currentIntent];
+      v16 = [[INCExtensionTransactionState alloc] initWithType:1 intent:currentIntent intentResponse:0 userActivities:0];
+      [_transaction setState:v16];
 
       [(INCExtensionConnection *)self->_connection _startRequestTimerWithExtensionProxy:self];
-      v17 = [objc_alloc(MEMORY[0x277CD3C58]) initWithIntent:v13 parameterName:v8 searchTerm:v9];
-      v18 = [(INCExtensionProxy *)self _connection];
-      [v18 requestTimeoutInterval];
+      v17 = [objc_alloc(MEMORY[0x277CD3C58]) initWithIntent:currentIntent parameterName:namedCopy searchTerm:termCopy];
+      _connection2 = [(INCExtensionProxy *)self _connection];
+      [_connection2 requestTimeoutInterval];
       [v17 setRequestTimeout:?];
 
       vendorRemote = self->_vendorRemote;
@@ -1542,8 +1542,8 @@ LABEL_21:
       v21[2] = __78__INCExtensionProxy_getOptionsForParameterNamed_searchTerm_completionHandler___block_invoke;
       v21[3] = &unk_2797E7CD8;
       v21[4] = self;
-      v22 = v8;
-      v24 = v10;
+      v22 = namedCopy;
+      v24 = handlerCopy;
       v23 = v15;
       [v17 executeRemotelyWithVendorRemote:vendorRemote completionHandler:v21];
     }
@@ -1551,7 +1551,7 @@ LABEL_21:
     else
     {
       v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"INCExtensionErrorDomain" code:1400 userInfo:0];
-      (*(v10 + 2))(v10, 0, v20);
+      (*(handlerCopy + 2))(handlerCopy, 0, v20);
     }
   }
 }
@@ -1658,18 +1658,18 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getOptionsForParameterNamed:(id)a3 completionHandler:(id)a4
+- (void)getOptionsForParameterNamed:(id)named completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__INCExtensionProxy_getOptionsForParameterNamed_completionHandler___block_invoke;
     v8[3] = &unk_2797E7CA8;
-    v9 = v6;
-    [(INCExtensionProxy *)self getOptionsForParameterNamed:a3 searchTerm:0 completionHandler:v8];
+    v9 = handlerCopy;
+    [(INCExtensionProxy *)self getOptionsForParameterNamed:named searchTerm:0 completionHandler:v8];
   }
 }
 
@@ -1683,42 +1683,42 @@ void __67__INCExtensionProxy_getOptionsForParameterNamed_completionHandler___blo
 
 - (BOOL)shouldResetRequestAfterHandle
 {
-  v2 = [(INCExtensionProxy *)self _connection];
-  v3 = [v2 _transaction];
-  v4 = [v3 shouldResetRequestAfterHandle];
+  _connection = [(INCExtensionProxy *)self _connection];
+  _transaction = [_connection _transaction];
+  shouldResetRequestAfterHandle = [_transaction shouldResetRequestAfterHandle];
 
-  return v4;
+  return shouldResetRequestAfterHandle;
 }
 
-+ (id)_errorAggregation:(id)a3 innerError:(id)a4
++ (id)_errorAggregation:(id)aggregation innerError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  aggregationCopy = aggregation;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (aggregationCopy)
   {
-    if (v6)
+    if (errorCopy)
     {
-      v8 = [v5 userInfo];
-      v9 = [v8 mutableCopy];
+      userInfo = [aggregationCopy userInfo];
+      v9 = [userInfo mutableCopy];
 
-      v10 = [v5 underlyingErrors];
-      v11 = [v10 arrayByAddingObject:v7];
+      underlyingErrors = [aggregationCopy underlyingErrors];
+      v11 = [underlyingErrors arrayByAddingObject:v7];
 
       [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCA578]];
       v12 = MEMORY[0x277CCA9B8];
-      v13 = [v5 domain];
-      v14 = [v12 errorWithDomain:v13 code:objc_msgSend(v5 userInfo:{"code"), v9}];
+      domain = [aggregationCopy domain];
+      v14 = [v12 errorWithDomain:domain code:objc_msgSend(aggregationCopy userInfo:{"code"), v9}];
 
       goto LABEL_7;
     }
 
-    v15 = v5;
+    v15 = aggregationCopy;
   }
 
   else
   {
-    v15 = v6;
+    v15 = errorCopy;
   }
 
   v14 = v15;
@@ -1729,7 +1729,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     INLogInitIfNeeded();

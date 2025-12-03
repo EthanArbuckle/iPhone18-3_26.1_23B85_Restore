@@ -1,11 +1,11 @@
 @interface CKUploadRequestMetadata
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKRoughlyEquivalentProperties)equivalencyProperties;
-- (CKUploadRequestMetadata)initWithCoder:(id)a3;
-- (CKUploadRequestMetadata)initWithRepairZoneRecordID:(id)a3 databaseScope:(int64_t)a4 recordID:(id)a5 recordType:(id)a6 fieldName:(id)a7;
+- (CKUploadRequestMetadata)initWithCoder:(id)coder;
+- (CKUploadRequestMetadata)initWithRepairZoneRecordID:(id)d databaseScope:(int64_t)scope recordID:(id)iD recordType:(id)type fieldName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKUploadRequestMetadata
@@ -17,37 +17,37 @@
   v7[0] = objc_opt_class();
   v7[1] = objc_opt_class();
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v4, v7, 2);
-  sub_1886CEE50(a1, v3, v5, 0, 1);
+  sub_1886CEE50(self, v3, v5, 0, 1);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (CKUploadRequestMetadata)initWithRepairZoneRecordID:(id)a3 databaseScope:(int64_t)a4 recordID:(id)a5 recordType:(id)a6 fieldName:(id)a7
+- (CKUploadRequestMetadata)initWithRepairZoneRecordID:(id)d databaseScope:(int64_t)scope recordID:(id)iD recordType:(id)type fieldName:(id)name
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  nameCopy = name;
   v35.receiver = self;
   v35.super_class = CKUploadRequestMetadata;
   v16 = [(CKUploadRequestMetadata *)&v35 init];
   v19 = v16;
   if (v16)
   {
-    v16->_databaseScope = a4;
-    v20 = objc_msgSend_copy(v13, v17, v18);
+    v16->_databaseScope = scope;
+    v20 = objc_msgSend_copy(iDCopy, v17, v18);
     recordID = v19->_recordID;
     v19->_recordID = v20;
 
-    v24 = objc_msgSend_copy(v14, v22, v23);
+    v24 = objc_msgSend_copy(typeCopy, v22, v23);
     recordType = v19->_recordType;
     v19->_recordType = v24;
 
-    v28 = objc_msgSend_copy(v15, v26, v27);
+    v28 = objc_msgSend_copy(nameCopy, v26, v27);
     fieldName = v19->_fieldName;
     v19->_fieldName = v28;
 
-    v32 = objc_msgSend_copy(v12, v30, v31);
+    v32 = objc_msgSend_copy(dCopy, v30, v31);
     repairZoneRecordID = v19->_repairZoneRecordID;
     v19->_repairZoneRecordID = v32;
   }
@@ -55,9 +55,9 @@
   return v19;
 }
 
-- (CKUploadRequestMetadata)initWithCoder:(id)a3
+- (CKUploadRequestMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = CKUploadRequestMetadata;
   v5 = [(CKUploadRequestMetadata *)&v30 init];
@@ -65,29 +65,29 @@
   {
     v6 = objc_autoreleasePoolPush();
     v7 = NSStringFromSelector(sel_databaseScope);
-    v5->_databaseScope = objc_msgSend_decodeIntegerForKey_(v4, v8, v7);
+    v5->_databaseScope = objc_msgSend_decodeIntegerForKey_(coderCopy, v8, v7);
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_recordID);
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v9, v10);
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v9, v10);
     recordID = v5->_recordID;
     v5->_recordID = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_recordType);
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v14, v15);
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v14, v15);
     recordType = v5->_recordType;
     v5->_recordType = v17;
 
     v19 = objc_opt_class();
     v20 = NSStringFromSelector(sel_fieldName);
-    v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v19, v20);
+    v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v19, v20);
     fieldName = v5->_fieldName;
     v5->_fieldName = v22;
 
     v24 = objc_opt_class();
     v25 = NSStringFromSelector(sel_repairZoneRecordID);
-    v27 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v26, v24, v25);
+    v27 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v26, v24, v25);
     repairZoneRecordID = v5->_repairZoneRecordID;
     v5->_repairZoneRecordID = v27;
 
@@ -122,29 +122,29 @@
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v30 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_databaseScope(self, v5, v6);
   v8 = NSStringFromSelector(sel_databaseScope);
-  objc_msgSend_encodeInteger_forKey_(v30, v9, v7, v8);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_recordID(self, v10, v11);
   v13 = NSStringFromSelector(sel_recordID);
-  objc_msgSend_encodeObject_forKey_(v30, v14, v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v12, v13);
 
   v17 = objc_msgSend_recordType(self, v15, v16);
   v18 = NSStringFromSelector(sel_recordType);
-  objc_msgSend_encodeObject_forKey_(v30, v19, v17, v18);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v17, v18);
 
   v22 = objc_msgSend_fieldName(self, v20, v21);
   v23 = NSStringFromSelector(sel_fieldName);
-  objc_msgSend_encodeObject_forKey_(v30, v24, v22, v23);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v22, v23);
 
   v27 = objc_msgSend_repairZoneRecordID(self, v25, v26);
   v28 = NSStringFromSelector(sel_repairZoneRecordID);
-  objc_msgSend_encodeObject_forKey_(v30, v29, v27, v28);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v29, v27, v28);
 
   objc_autoreleasePoolPop(v4);
 }
@@ -164,10 +164,10 @@
   return v22 ^ v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v44 = 1;
   }
@@ -175,9 +175,9 @@
   else
   {
     v5 = objc_opt_class();
-    if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+    if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
     {
-      v7 = v4;
+      v7 = equalCopy;
       v10 = objc_msgSend_databaseScope(self, v8, v9);
       if (v10 != objc_msgSend_databaseScope(v7, v11, v12))
       {

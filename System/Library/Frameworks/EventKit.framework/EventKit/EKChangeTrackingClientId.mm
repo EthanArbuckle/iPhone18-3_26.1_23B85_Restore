@@ -1,24 +1,24 @@
 @interface EKChangeTrackingClientId
 - (CADChangeTrackingClientId)CADChangeTrackingClientId;
-- (EKChangeTrackingClientId)initWithCustomClientId:(id)a3 suffix:(id)a4;
+- (EKChangeTrackingClientId)initWithCustomClientId:(id)id suffix:(id)suffix;
 @end
 
 @implementation EKChangeTrackingClientId
 
-- (EKChangeTrackingClientId)initWithCustomClientId:(id)a3 suffix:(id)a4
+- (EKChangeTrackingClientId)initWithCustomClientId:(id)id suffix:(id)suffix
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  suffixCopy = suffix;
   v14.receiver = self;
   v14.super_class = EKChangeTrackingClientId;
   v8 = [(EKChangeTrackingClientId *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [idCopy copy];
     customClientId = v8->_customClientId;
     v8->_customClientId = v9;
 
-    v11 = [v7 copy];
+    v11 = [suffixCopy copy];
     suffix = v8->_suffix;
     v8->_suffix = v11;
   }
@@ -28,26 +28,26 @@
 
 - (CADChangeTrackingClientId)CADChangeTrackingClientId
 {
-  v3 = [(EKChangeTrackingClientId *)self customClientId];
+  customClientId = [(EKChangeTrackingClientId *)self customClientId];
 
-  if (v3)
+  if (customClientId)
   {
     v4 = objc_alloc(MEMORY[0x1E6992310]);
-    v5 = [(EKChangeTrackingClientId *)self customClientId];
-    v6 = [v4 initWithCustomClientId:v5];
+    customClientId2 = [(EKChangeTrackingClientId *)self customClientId];
+    v6 = [v4 initWithCustomClientId:customClientId2];
 LABEL_5:
     v9 = v6;
 
     goto LABEL_6;
   }
 
-  v7 = [(EKChangeTrackingClientId *)self suffix];
+  suffix = [(EKChangeTrackingClientId *)self suffix];
 
-  if (v7)
+  if (suffix)
   {
     v8 = objc_alloc(MEMORY[0x1E6992310]);
-    v5 = [(EKChangeTrackingClientId *)self suffix];
-    v6 = [v8 initWithSuffix:v5];
+    customClientId2 = [(EKChangeTrackingClientId *)self suffix];
+    v6 = [v8 initWithSuffix:customClientId2];
     goto LABEL_5;
   }
 

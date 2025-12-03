@@ -1,17 +1,17 @@
 @interface PGMovieDeduper
-- (id)deduplicatedItemsWithItems:(id)a3 debugInfo:(id)a4 progressBlock:(id)a5;
+- (id)deduplicatedItemsWithItems:(id)items debugInfo:(id)info progressBlock:(id)block;
 @end
 
 @implementation PGMovieDeduper
 
-- (id)deduplicatedItemsWithItems:(id)a3 debugInfo:(id)a4 progressBlock:(id)a5
+- (id)deduplicatedItemsWithItems:(id)items debugInfo:(id)info progressBlock:(id)block
 {
   v137 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v94 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  infoCopy = info;
+  blockCopy = block;
   v10 = 0.0;
-  v113 = _Block_copy(v9);
+  v113 = _Block_copy(blockCopy);
   if (v113)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -42,7 +42,7 @@
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v13 = v8;
+  v13 = itemsCopy;
   v14 = [v13 countByEnumeratingWithState:&v126 objects:v136 count:16];
   if (!v14)
   {
@@ -89,9 +89,9 @@ LABEL_10:
   v21 = [v13 sortedArrayUsingDescriptors:v20];
   v100 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v21, "count")}];
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v23 = [v21 lastObject];
-  v24 = [MEMORY[0x277D267F0] sharedMediaAnalyzer];
-  v108 = [(PGDeduper *)self identifiersOfRequiredItems];
+  lastObject = [v21 lastObject];
+  mEMORY[0x277D267F0] = [MEMORY[0x277D267F0] sharedMediaAnalyzer];
+  identifiersOfRequiredItems = [(PGDeduper *)self identifiersOfRequiredItems];
   v25 = [v21 count];
   v122 = 0u;
   v123 = 0u;
@@ -153,11 +153,11 @@ LABEL_19:
 
     v93 = v31;
     v97 = *(*(&v122 + 1) + 8 * v31);
-    v33 = [v97 creationDate];
-    v34 = v33;
+    creationDate = [v97 creationDate];
+    v34 = creationDate;
     if (v96)
     {
-      [v33 timeIntervalSinceDate:?];
+      [creationDate timeIntervalSinceDate:?];
       v36 = v35 >= 180.0;
     }
 
@@ -168,13 +168,13 @@ LABEL_19:
 
     v37 = v97;
     v95 = v34;
-    if (!v36 && v97 != v23)
+    if (!v36 && v97 != lastObject)
     {
       goto LABEL_93;
     }
 
     v90 = v36;
-    if (v97 != v23)
+    if (v97 != lastObject)
     {
       v36 = 1;
     }
@@ -192,7 +192,7 @@ LABEL_19:
 
     context = objc_autoreleasePoolPush();
     v121 = 0;
-    v110 = [v24 requestAnalysis:66560 forAssets:v22 withOptions:0 andProgressHandler:0 andError:&v121];
+    v110 = [mEMORY[0x277D267F0] requestAnalysis:66560 forAssets:v22 withOptions:0 andProgressHandler:0 andError:&v121];
     v88 = v121;
     if (v113)
     {
@@ -257,15 +257,15 @@ LABEL_110:
     }
 
     v99 = v41;
-    v81 = v24;
-    v82 = v23;
+    v81 = mEMORY[0x277D267F0];
+    v82 = lastObject;
     v83 = v22;
     v84 = v20;
-    v85 = v9;
-    v86 = v8;
+    v85 = blockCopy;
+    v86 = itemsCopy;
     v42 = 0;
-    v43 = 0;
-    v44 = 0;
+    isFavorite = 0;
+    isVideo = 0;
     v45 = 0;
     v46 = 0;
     v47 = v30 / v40;
@@ -277,8 +277,8 @@ LABEL_110:
     {
       for (i = 0; i != v109; ++i)
       {
-        v51 = v44;
-        v111 = v43;
+        v51 = isVideo;
+        v111 = isFavorite;
         if (*v118 != v103)
         {
           objc_enumerationMutation(v99);
@@ -308,8 +308,8 @@ LABEL_110:
         v59 = v46;
         if (v58)
         {
-          v60 = [v58 firstObject];
-          v61 = [v60 objectForKeyedSubscript:v102];
+          firstObject = [v58 firstObject];
+          v61 = [firstObject objectForKeyedSubscript:v102];
           v62 = [v61 objectForKeyedSubscript:v101];
           [v62 doubleValue];
           v64 = v63 < 0.1;
@@ -320,13 +320,13 @@ LABEL_110:
           v64 = 0;
         }
 
-        v44 = [v52 isVideo];
-        v43 = [v52 isFavorite];
-        v65 = [v52 clsIdentifier];
-        v66 = [v108 containsObject:v65];
+        isVideo = [v52 isVideo];
+        isFavorite = [v52 isFavorite];
+        clsIdentifier = [v52 clsIdentifier];
+        v66 = [identifiersOfRequiredItems containsObject:clsIdentifier];
 
         v46 = v59;
-        if (!v59 || !v64 || ((v51 | v44) & 1) == 0)
+        if (!v59 || !v64 || ((v51 | isVideo) & 1) == 0)
         {
           v39 = v104;
           if (v59)
@@ -334,7 +334,7 @@ LABEL_110:
             [v100 addObject:v59];
             if ([v104 count])
             {
-              [v94 dedupItems:v104 toItem:v59 withDedupingType:3];
+              [infoCopy dedupItems:v104 toItem:v59 withDedupingType:3];
               [v104 removeAllObjects];
             }
           }
@@ -347,7 +347,7 @@ LABEL_68:
           goto LABEL_73;
         }
 
-        v67 = v111 & (v43 ^ 1);
+        v67 = v111 & (isFavorite ^ 1);
         v68 = v67 ^ 1;
         if (v67)
         {
@@ -361,7 +361,7 @@ LABEL_68:
           {
             if (v56 > v49)
             {
-              v68 = v44;
+              v68 = isVideo;
             }
 
             else
@@ -426,12 +426,12 @@ LABEL_73:
                 _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
               }
 
-              v9 = v85;
-              v8 = v86;
+              blockCopy = v85;
+              itemsCopy = v86;
               v22 = v83;
               v20 = v84;
-              v24 = v81;
-              v23 = v82;
+              mEMORY[0x277D267F0] = v81;
+              lastObject = v82;
               v77 = obj;
               goto LABEL_110;
             }
@@ -452,7 +452,7 @@ LABEL_73:
       break;
     }
 
-    v23 = v82;
+    lastObject = v82;
     v34 = v95;
     if (v46)
     {
@@ -460,26 +460,26 @@ LABEL_73:
       v73 = [v39 count];
       v22 = v83;
       v20 = v84;
-      v24 = v81;
+      mEMORY[0x277D267F0] = v81;
       v29 = MEMORY[0x277D86220];
       v30 = 0.5;
       if (v73)
       {
-        [v94 dedupItems:v39 toItem:v46 withDedupingType:3];
+        [infoCopy dedupItems:v39 toItem:v46 withDedupingType:3];
         [v39 removeAllObjects];
       }
 
-      v9 = v85;
-      v8 = v86;
+      blockCopy = v85;
+      itemsCopy = v86;
     }
 
     else
     {
-      v9 = v85;
-      v8 = v86;
+      blockCopy = v85;
+      itemsCopy = v86;
       v22 = v83;
       v20 = v84;
-      v24 = v81;
+      mEMORY[0x277D267F0] = v81;
       v29 = MEMORY[0x277D86220];
       v30 = 0.5;
     }
@@ -492,7 +492,7 @@ LABEL_89:
     [v22 removeAllObjects];
     v37 = v97;
     v74 = !v90;
-    if (v97 != v23)
+    if (v97 != lastObject)
     {
       v74 = 1;
     }

@@ -1,34 +1,34 @@
 @interface _GCControllerInputComponentDescription
-- (BOOL)update:(id)a3 withContext:(id)a4;
+- (BOOL)update:(id)update withContext:(id)context;
 - (_GCControllerInputComponentDescription)init;
-- (_GCControllerInputComponentDescription)initWithCoder:(id)a3;
-- (_GCControllerInputComponentDescription)initWithIdentifier:(id)a3 controllerInputs:(id)a4 bindings:(id)a5;
-- (id)createWithContext:(id)a3;
-- (id)materializeWithContext:(id)a3;
-- (void)_applyBinding:(id)a3 toComponent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_GCControllerInputComponentDescription)initWithCoder:(id)coder;
+- (_GCControllerInputComponentDescription)initWithIdentifier:(id)identifier controllerInputs:(id)inputs bindings:(id)bindings;
+- (id)createWithContext:(id)context;
+- (id)materializeWithContext:(id)context;
+- (void)_applyBinding:(id)binding toComponent:(id)component;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCControllerInputComponentDescription
 
-- (_GCControllerInputComponentDescription)initWithIdentifier:(id)a3 controllerInputs:(id)a4 bindings:(id)a5
+- (_GCControllerInputComponentDescription)initWithIdentifier:(id)identifier controllerInputs:(id)inputs bindings:(id)bindings
 {
-  v8 = a4;
+  inputsCopy = inputs;
   v19.receiver = self;
   v19.super_class = _GCControllerInputComponentDescription;
-  v9 = a5;
-  v10 = a3;
+  bindingsCopy = bindings;
+  identifierCopy = identifier;
   v11 = [(_GCControllerInputComponentDescription *)&v19 init];
-  v12 = [v10 copyWithZone:{0, v19.receiver, v19.super_class}];
+  v12 = [identifierCopy copyWithZone:{0, v19.receiver, v19.super_class}];
 
   identifier = v11->_identifier;
   v11->_identifier = v12;
 
   controllerInputDescriptions = v11->_controllerInputDescriptions;
-  v11->_controllerInputDescriptions = v8;
-  v15 = v8;
+  v11->_controllerInputDescriptions = inputsCopy;
+  v15 = inputsCopy;
 
-  v16 = [v9 copy];
+  v16 = [bindingsCopy copy];
   bindingDescriptions = v11->_bindingDescriptions;
   v11->_bindingDescriptions = v16;
 
@@ -42,40 +42,40 @@
   return 0;
 }
 
-- (_GCControllerInputComponentDescription)initWithCoder:(id)a3
+- (_GCControllerInputComponentDescription)initWithCoder:(id)coder
 {
   v4 = initWithCoder__onceToken_0;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     [_GCControllerInputComponentDescription initWithCoder:];
   }
 
   v6 = GCIPCObjectIdentifier_Classes();
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
 
   v8 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"input"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"input"];
 
-  v10 = [v5 decodeObjectOfClasses:initWithCoder__BindingClasses_0 forKey:@"bindings"];
+  v10 = [coderCopy decodeObjectOfClasses:initWithCoder__BindingClasses_0 forKey:@"bindings"];
 
   v11 = [(_GCControllerInputComponentDescription *)self initWithIdentifier:v7 controllerInputs:v9 bindings:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_controllerInputDescriptions forKey:@"input"];
-  [v5 encodeObject:self->_bindingDescriptions forKey:@"bindings"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_controllerInputDescriptions forKey:@"input"];
+  [coderCopy encodeObject:self->_bindingDescriptions forKey:@"bindings"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   materializedInputComponent = self->_materializedInputComponent;
   if (materializedInputComponent)
   {
@@ -102,7 +102,7 @@ LABEL_5:
         objc_enumerationMutation(v8);
       }
 
-      v13 = [*(*(&v20 + 1) + 8 * v12) materializeWithContext:{v4, v20}];
+      v13 = [*(*(&v20 + 1) + 8 * v12) materializeWithContext:{contextCopy, v20}];
       if (!v13)
       {
         break;
@@ -127,7 +127,7 @@ LABEL_5:
   v15 = [v7 count];
   if (v15 == [(NSArray *)self->_bindingDescriptions count])
   {
-    v16 = [(_GCControllerInputComponentDescription *)self createWithContext:v4];
+    v16 = [(_GCControllerInputComponentDescription *)self createWithContext:contextCopy];
     v17 = self->_materializedInputComponent;
     self->_materializedInputComponent = v16;
 
@@ -150,25 +150,25 @@ LABEL_15:
   return v6;
 }
 
-- (id)createWithContext:(id)a3
+- (id)createWithContext:(id)context
 {
-  v4 = [(GCDevicePhysicalInputDescription *)self->_controllerInputDescriptions makeFacadeParameters];
-  v5 = [(_GCControllerInputDescription *)self->_controllerInputDescriptions elements];
-  v6 = [v5 gc_arrayByTransformingElementsUsingBlock:&__block_literal_global_224_0];
+  makeFacadeParameters = [(GCDevicePhysicalInputDescription *)self->_controllerInputDescriptions makeFacadeParameters];
+  elements = [(_GCControllerInputDescription *)self->_controllerInputDescriptions elements];
+  v6 = [elements gc_arrayByTransformingElementsUsingBlock:&__block_literal_global_224_0];
 
-  v7 = [[_GCControllerInputComponent alloc] initWithIdentifier:self->_identifier templateFacadeParameters:v4 templateElementParameters:v6];
+  v7 = [[_GCControllerInputComponent alloc] initWithIdentifier:self->_identifier templateFacadeParameters:makeFacadeParameters templateElementParameters:v6];
 
   return v7;
 }
 
-- (BOOL)update:(id)a3 withContext:(id)a4
+- (BOOL)update:(id)update withContext:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
-  v10 = [(_GCControllerInputComponentDescription *)self identifier];
-  v11 = [v9 isEqual:v10];
+  updateCopy = update;
+  contextCopy = context;
+  identifier = [updateCopy identifier];
+  identifier2 = [(_GCControllerInputComponentDescription *)self identifier];
+  v11 = [identifier isEqual:identifier2];
 
   if ((v11 & 1) == 0)
   {
@@ -195,7 +195,7 @@ LABEL_5:
         objc_enumerationMutation(v13);
       }
 
-      v18 = [*(*(&v24 + 1) + 8 * v17) materializeWithContext:{v8, v24}];
+      v18 = [*(*(&v24 + 1) + 8 * v17) materializeWithContext:{contextCopy, v24}];
       if (!v18)
       {
         break;
@@ -221,26 +221,26 @@ LABEL_5:
   v21 = [(NSArray *)self->_bindingDescriptions count];
   if (v20 == v21)
   {
-    [(_GCControllerInputComponentDescription *)self _applyBinding:v12 toComponent:v7];
+    [(_GCControllerInputComponentDescription *)self _applyBinding:v12 toComponent:updateCopy];
   }
 
   v22 = *MEMORY[0x1E69E9840];
   return v20 == v21;
 }
 
-- (void)_applyBinding:(id)a3 toComponent:(id)a4
+- (void)_applyBinding:(id)binding toComponent:(id)component
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 conformsToProtocol:&unk_1F4E94BA0])
+  bindingCopy = binding;
+  componentCopy = component;
+  if ([componentCopy conformsToProtocol:&unk_1F4E94BA0])
   {
-    [v6 setGamepadEventSource:0];
+    [componentCopy setGamepadEventSource:0];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v5;
+    v7 = bindingCopy;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
@@ -258,7 +258,7 @@ LABEL_5:
           v12 = *(*(&v24 + 1) + 8 * i);
           if ([v12 conformsToProtocol:&unk_1F4E97280])
           {
-            [v6 setGamepadEventSource:v12];
+            [componentCopy setGamepadEventSource:v12];
           }
         }
 
@@ -269,14 +269,14 @@ LABEL_5:
     }
   }
 
-  if ([v6 conformsToProtocol:&unk_1F4E9EE30])
+  if ([componentCopy conformsToProtocol:&unk_1F4E9EE30])
   {
-    [v6 setCollectionEventSource:0];
+    [componentCopy setCollectionEventSource:0];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = v5;
+    v13 = bindingCopy;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v14)
     {
@@ -294,7 +294,7 @@ LABEL_5:
           v18 = *(*(&v20 + 1) + 8 * j);
           if ([v18 conformsToProtocol:{&unk_1F4E9D8A0, v20}])
           {
-            [v6 setCollectionEventSource:v18];
+            [componentCopy setCollectionEventSource:v18];
           }
         }
 

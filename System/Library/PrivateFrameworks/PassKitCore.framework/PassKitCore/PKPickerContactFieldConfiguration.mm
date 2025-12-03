@@ -1,22 +1,22 @@
 @interface PKPickerContactFieldConfiguration
-- (PKPickerContactFieldConfiguration)initWithCoder:(id)a3;
-- (PKPickerContactFieldConfiguration)initWithDictionary:(id)a3;
+- (PKPickerContactFieldConfiguration)initWithCoder:(id)coder;
+- (PKPickerContactFieldConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPickerContactFieldConfiguration
 
-- (PKPickerContactFieldConfiguration)initWithDictionary:(id)a3
+- (PKPickerContactFieldConfiguration)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = PKPickerContactFieldConfiguration;
   v5 = [(PKContactFieldConfiguration *)&v23 initWithType:2];
   if (v5)
   {
-    v6 = [v4 PKArrayForKey:@"items"];
+    v6 = [dictionaryCopy PKArrayForKey:@"items"];
     v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
     v19 = 0u;
     v20 = 0u;
@@ -74,22 +74,22 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPickerContactFieldConfiguration;
-  v4 = a3;
-  [(PKContactFieldConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_pickerItems forKey:{@"items", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKContactFieldConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_pickerItems forKey:{@"items", v5.receiver, v5.super_class}];
 }
 
-- (PKPickerContactFieldConfiguration)initWithCoder:(id)a3
+- (PKPickerContactFieldConfiguration)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPickerContactFieldConfiguration;
-  v5 = [(PKContactFieldConfiguration *)&v12 initWithCoder:v4];
+  v5 = [(PKContactFieldConfiguration *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -97,7 +97,7 @@
     v13[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v6 initWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"items"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"items"];
     pickerItems = v5->_pickerItems;
     v5->_pickerItems = v9;
   }

@@ -1,20 +1,20 @@
 @interface PFCloudKitImporterWorkItem
-- (PFCloudKitImporterWorkItem)initWithOptions:(id)a3 request:(id)a4;
+- (PFCloudKitImporterWorkItem)initWithOptions:(id)options request:(id)request;
 - (void)dealloc;
-- (void)doWorkForStore:(id)a3 inMonitor:(id)a4 completion:(id)a5;
+- (void)doWorkForStore:(id)store inMonitor:(id)monitor completion:(id)completion;
 @end
 
 @implementation PFCloudKitImporterWorkItem
 
-- (PFCloudKitImporterWorkItem)initWithOptions:(id)a3 request:(id)a4
+- (PFCloudKitImporterWorkItem)initWithOptions:(id)options request:(id)request
 {
   v8.receiver = self;
   v8.super_class = PFCloudKitImporterWorkItem;
   v6 = [(PFCloudKitImporterWorkItem *)&v8 init];
   if (v6)
   {
-    v6->_options = a3;
-    v6->_request = a4;
+    v6->_options = options;
+    v6->_request = request;
   }
 
   return v6;
@@ -30,7 +30,7 @@
   [(PFCloudKitImporterWorkItem *)&v3 dealloc];
 }
 
-- (void)doWorkForStore:(id)a3 inMonitor:(id)a4 completion:(id)a5
+- (void)doWorkForStore:(id)store inMonitor:(id)monitor completion:(id)completion
 {
   objc_opt_class();
 

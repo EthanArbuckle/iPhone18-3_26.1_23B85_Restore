@@ -1,22 +1,22 @@
 @interface CNContactContainerPickerCell
 - (CNContactContainerPickerCell)init;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CNContactContainerPickerCell
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = CNContactContainerPickerCell;
-  [(CNContactContainerPickerCell *)&v15 updateConfigurationUsingState:v4];
-  v5 = [(CNContactContainerPickerCell *)self defaultContentConfiguration];
-  v6 = [(CNContactContainerPickerCell *)self contentConfiguration];
-  v7 = [v6 text];
-  [v5 setText:v7];
+  [(CNContactContainerPickerCell *)&v15 updateConfigurationUsingState:stateCopy];
+  defaultContentConfiguration = [(CNContactContainerPickerCell *)self defaultContentConfiguration];
+  contentConfiguration = [(CNContactContainerPickerCell *)self contentConfiguration];
+  text = [contentConfiguration text];
+  [defaultContentConfiguration setText:text];
 
-  if ([v4 isHighlighted])
+  if ([stateCopy isHighlighted])
   {
     if (![(CNContactContainerPickerCell *)self allowsDeselection])
     {
@@ -26,39 +26,39 @@
 
   else
   {
-    v8 = [v4 isSelected];
+    isSelected = [stateCopy isSelected];
     if (![(CNContactContainerPickerCell *)self allowsDeselection])
     {
 LABEL_7:
-      v9 = [MEMORY[0x1E69DC888] grayColor];
-      v10 = [MEMORY[0x1E69DC888] grayColor];
+      grayColor = [MEMORY[0x1E69DC888] grayColor];
+      grayColor2 = [MEMORY[0x1E69DC888] grayColor];
       v11 = @"link.circle.fill";
       goto LABEL_8;
     }
 
-    if ((v8 & 1) == 0)
+    if ((isSelected & 1) == 0)
     {
-      v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-      v10 = 0;
+      grayColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      grayColor2 = 0;
       v11 = @"circle";
       goto LABEL_8;
     }
   }
 
-  v9 = 0;
-  v10 = 0;
+  grayColor = 0;
+  grayColor2 = 0;
   v11 = @"checkmark.circle.fill";
 LABEL_8:
   v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:v11];
-  [v5 setImage:v12];
+  [defaultContentConfiguration setImage:v12];
 
-  v13 = [v5 imageProperties];
-  [v13 setTintColor:v9];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setTintColor:grayColor];
 
-  v14 = [v5 textProperties];
-  [v14 setColor:v10];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:grayColor2];
 
-  [(CNContactContainerPickerCell *)self setContentConfiguration:v5];
+  [(CNContactContainerPickerCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 - (CNContactContainerPickerCell)init

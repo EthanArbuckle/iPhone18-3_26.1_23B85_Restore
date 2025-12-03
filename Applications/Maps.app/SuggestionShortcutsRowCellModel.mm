@@ -1,19 +1,19 @@
 @interface SuggestionShortcutsRowCellModel
 - (BOOL)_shouldFetchMissingImage;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)vibrantBackground;
-- (SuggestionShortcutsRowCellModel)initWithMapsFavoriteItem:(id)a3;
-- (SuggestionShortcutsRowCellModel)initWithMapsSuggestionsEntry:(id)a3;
+- (SuggestionShortcutsRowCellModel)initWithMapsFavoriteItem:(id)item;
+- (SuggestionShortcutsRowCellModel)initWithMapsSuggestionsEntry:(id)entry;
 - (id)_maps_diffableDataSourceIdentifier;
 - (id)image;
 - (id)subtitleColor;
 - (unint64_t)hash;
-- (void)_fetchImageWithImageCount:(unint64_t)a3 retryCount:(unint64_t)a4;
-- (void)_setFetchedImage:(id)a3;
+- (void)_fetchImageWithImageCount:(unint64_t)count retryCount:(unint64_t)retryCount;
+- (void)_setFetchedImage:(id)image;
 - (void)_updateTitlesFromEntry;
 - (void)dealloc;
 - (void)fetchImageIfMissing;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SuggestionShortcutsRowCellModel
@@ -28,13 +28,13 @@
   }
 
   v5 = *v4;
-  v6 = [*(&self->super.super.isa + v5) title];
-  v7 = [v6 copy];
+  title = [*(&self->super.super.isa + v5) title];
+  v7 = [title copy];
   title = self->_title;
   self->_title = v7;
 
-  v11 = [*(&self->super.super.isa + v5) subtitle];
-  v9 = [v11 copy];
+  subtitle = [*(&self->super.super.isa + v5) subtitle];
+  v9 = [subtitle copy];
   subtitle = self->_subtitle;
   self->_subtitle = v9;
 }
@@ -116,9 +116,9 @@ LABEL_8:
     v4 = &OBJC_IVAR___SuggestionShortcutsRowCellModel__entry;
   }
 
-  v5 = [*(&self->super.super.isa + *v4) uniqueIdentifier];
+  uniqueIdentifier = [*(&self->super.super.isa + *v4) uniqueIdentifier];
 
-  return v5;
+  return uniqueIdentifier;
 }
 
 - (void)dealloc
@@ -148,14 +148,14 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(ShortcutsRowCellModel *)self observers];
-  v5 = [v4 allObservers];
+  observers = [(ShortcutsRowCellModel *)self observers];
+  allObservers = [observers allObservers];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5;
+  v6 = allObservers;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -194,15 +194,15 @@ LABEL_14:
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_1019289B8 == a6)
+  if (off_1019289B8 == context)
   {
-    if ([NSThread isMainThread:a3])
+    if ([NSThread isMainThread:path])
     {
       [(SuggestionShortcutsRowCellModel *)self _updateTitlesFromEntry];
-      v7 = [(ShortcutsRowCellModel *)self observers];
-      [v7 shortcutsRowCellModelDidUpdate:self];
+      observers = [(ShortcutsRowCellModel *)self observers];
+      [observers shortcutsRowCellModelDidUpdate:self];
     }
 
     else
@@ -220,63 +220,63 @@ LABEL_14:
   {
     v8.receiver = self;
     v8.super_class = SuggestionShortcutsRowCellModel;
-    [(SuggestionShortcutsRowCellModel *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SuggestionShortcutsRowCellModel *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_setFetchedImage:(id)a3
+- (void)_setFetchedImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_image != v5)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (self->_image != imageCopy)
   {
-    v9 = v5;
-    v7 = [(UIImage *)v5 isEqual:?];
+    v9 = imageCopy;
+    v7 = [(UIImage *)imageCopy isEqual:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_image, a3);
-      v8 = [(ShortcutsRowCellModel *)self observers];
-      [v8 shortcutsRowCellModelDidUpdate:self];
+      objc_storeStrong(&self->_image, image);
+      observers = [(ShortcutsRowCellModel *)self observers];
+      [observers shortcutsRowCellModelDidUpdate:self];
 
       v6 = v9;
     }
   }
 }
 
-- (void)_fetchImageWithImageCount:(unint64_t)a3 retryCount:(unint64_t)a4
+- (void)_fetchImageWithImageCount:(unint64_t)count retryCount:(unint64_t)retryCount
 {
-  if (a4 <= 4 && self->_imageCount == a3)
+  if (retryCount <= 4 && self->_imageCount == count)
   {
     objc_initWeak(&location, self);
     if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
       v7 = +[MapsUIImageCache sharedCache];
       entry = self->_entry;
-      v9 = [(SuggestionShortcutsRowCellModel *)self vibrantBackground];
+      vibrantBackground = [(SuggestionShortcutsRowCellModel *)self vibrantBackground];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1005E6E9C;
       v18[3] = &unk_101623478;
       v10 = v19;
       objc_copyWeak(v19, &location);
-      v19[1] = a3;
-      [v7 getImageForRowFavorite:entry inverted:v9 completion:v18];
+      v19[1] = count;
+      [v7 getImageForRowFavorite:entry inverted:vibrantBackground completion:v18];
     }
 
     else
     {
       v7 = +[MapsUIImageCache sharedCache];
       entryLegacy = self->_entryLegacy;
-      v12 = [(SuggestionShortcutsRowCellModel *)self vibrantBackground];
+      vibrantBackground2 = [(SuggestionShortcutsRowCellModel *)self vibrantBackground];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_1005E6F9C;
       v16[3] = &unk_101623478;
       v10 = v17;
       objc_copyWeak(v17, &location);
-      v17[1] = a3;
-      [v7 getImageForRowSuggestion:entryLegacy inverted:v12 completion:v16];
+      v17[1] = count;
+      [v7 getImageForRowSuggestion:entryLegacy inverted:vibrantBackground2 completion:v16];
     }
 
     objc_destroyWeak(v10);
@@ -286,8 +286,8 @@ LABEL_14:
     v14[2] = sub_1005E709C;
     v14[3] = &unk_10164CBF8;
     objc_copyWeak(v15, &location);
-    v15[1] = a3;
-    v15[2] = a4;
+    v15[1] = count;
+    v15[2] = retryCount;
     dispatch_after(v13, &_dispatch_main_q, v14);
     objc_destroyWeak(v15);
     objc_destroyWeak(&location);
@@ -311,16 +311,16 @@ LABEL_14:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
@@ -331,15 +331,15 @@ LABEL_14:
     }
 
     v9 = *(&self->super.super.isa + *v8);
-    v10 = [(SuggestionShortcutsRowCellModel *)v6 entry];
-    if (v9 == v10)
+    entry = [(SuggestionShortcutsRowCellModel *)v6 entry];
+    if (v9 == entry)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v9 isEqual:v10];
+      v11 = [v9 isEqual:entry];
     }
   }
 
@@ -351,11 +351,11 @@ LABEL_14:
   return v11;
 }
 
-- (SuggestionShortcutsRowCellModel)initWithMapsFavoriteItem:(id)a3
+- (SuggestionShortcutsRowCellModel)initWithMapsFavoriteItem:(id)item
 {
-  v5 = a3;
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v6 length];
+  itemCopy = item;
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v7 = [uniqueIdentifier length];
 
   if (v7)
   {
@@ -365,7 +365,7 @@ LABEL_14:
     p_isa = &v8->super.super.isa;
     if (v8)
     {
-      objc_storeStrong(&v8->_entry, a3);
+      objc_storeStrong(&v8->_entry, item);
       [p_isa[8] addObserver:p_isa forKeyPath:@"title" options:0 context:off_1019289B8];
       [p_isa[8] addObserver:p_isa forKeyPath:@"subtitle" options:0 context:off_1019289B8];
       [p_isa _updateTitlesFromEntry];
@@ -377,22 +377,22 @@ LABEL_14:
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (SuggestionShortcutsRowCellModel)initWithMapsSuggestionsEntry:(id)a3
+- (SuggestionShortcutsRowCellModel)initWithMapsSuggestionsEntry:(id)entry
 {
-  v5 = a3;
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v6 length];
+  entryCopy = entry;
+  uniqueIdentifier = [entryCopy uniqueIdentifier];
+  v7 = [uniqueIdentifier length];
 
   if (v7)
   {
@@ -402,7 +402,7 @@ LABEL_14:
     p_isa = &v8->super.super.isa;
     if (v8)
     {
-      objc_storeStrong(&v8->_entryLegacy, a3);
+      objc_storeStrong(&v8->_entryLegacy, entry);
       [p_isa[7] addObserver:p_isa forKeyPath:@"title" options:0 context:off_1019289B8];
       [p_isa[7] addObserver:p_isa forKeyPath:@"subtitle" options:0 context:off_1019289B8];
       [p_isa _updateTitlesFromEntry];
@@ -414,15 +414,15 @@ LABEL_14:
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

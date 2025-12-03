@@ -8,19 +8,19 @@
 - (Class)headerOverrideClass;
 - (NSDirectionalEdgeInsets)additionalGroupInsets;
 - (double)_internalInterGroupSpacing;
-- (id)_activityItemProviderForResult:(id)a3;
-- (id)_additionalMenuElementsForResult:(id)a3;
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5;
-- (id)itemProviderForSearchResult:(id)a3;
-- (id)layoutGroupWithEnvironment:(id)a3;
-- (id)previewViewControllerForResult:(id)a3;
+- (id)_activityItemProviderForResult:(id)result;
+- (id)_additionalMenuElementsForResult:(id)result;
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind;
+- (id)itemProviderForSearchResult:(id)result;
+- (id)layoutGroupWithEnvironment:(id)environment;
+- (id)previewViewControllerForResult:(id)result;
 - (id)sectionSubtitle;
 - (unint64_t)contentMode;
-- (void)_filterControlTapped:(id)a3;
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5;
-- (void)saveAttachmentForResult:(id)a3;
-- (void)setContentMode:(unint64_t)a3;
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4;
+- (void)_filterControlTapped:(id)tapped;
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth;
+- (void)saveAttachmentForResult:(id)result;
+- (void)setContentMode:(unint64_t)mode;
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path;
 @end
 
 @implementation CKPhotosSearchController
@@ -44,16 +44,16 @@
 
 - (unint64_t)contentMode
 {
-  v2 = [(CKSearchController *)self queryController];
-  v3 = [v2 contentMode];
+  queryController = [(CKSearchController *)self queryController];
+  contentMode = [queryController contentMode];
 
-  return v3;
+  return contentMode;
 }
 
-- (void)setContentMode:(unint64_t)a3
+- (void)setContentMode:(unint64_t)mode
 {
-  v4 = [(CKSearchController *)self queryController];
-  [v4 setContentMode:a3];
+  queryController = [(CKSearchController *)self queryController];
+  [queryController setContentMode:mode];
 }
 
 + (id)sectionTitle
@@ -66,23 +66,23 @@
 
 - (id)sectionSubtitle
 {
-  v2 = [(CKSearchController *)self results];
-  v3 = [v2 firstObject];
-  v4 = [v3 item];
-  v5 = [v4 attributeSet];
-  v6 = [v5 contentCreationDate];
+  results = [(CKSearchController *)self results];
+  firstObject = [results firstObject];
+  item = [firstObject item];
+  attributeSet = [item attributeSet];
+  contentCreationDate = [attributeSet contentCreationDate];
 
   v7 = +[CKPhotosSearchController relativeDateFormatter];
-  v8 = [v7 stringFromDate:v6];
+  v8 = [v7 stringFromDate:contentCreationDate];
   v9 = MEMORY[0x1E696AEC0];
   v10 = CKFrameworkBundle();
   v11 = [v10 localizedStringForKey:@"LAST_UPDATED_TIMESTAMP" value:&stru_1F04268F8 table:@"ChatKit"];
   v12 = [v9 stringWithFormat:v11, v8];
 
-  v13 = [MEMORY[0x1E69DC668] sharedApplication];
-  v14 = [v13 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v14 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v15 = @"\u200F";
   }
@@ -145,10 +145,10 @@ uint64_t __49__CKPhotosSearchController_relativeDateFormatter__block_invoke()
 
   else
   {
-    v7 = [(CKSearchController *)self mode];
+    mode = [(CKSearchController *)self mode];
     v8 = +[CKUIBehavior sharedBehaviors];
     v3 = v8;
-    if (v7 == 3)
+    if (mode == 3)
     {
       [v8 searchPhotosInterItemSpacingDetailsView];
     }
@@ -206,29 +206,29 @@ uint64_t __49__CKPhotosSearchController_relativeDateFormatter__block_invoke()
   return v3;
 }
 
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  kindCopy = kind;
   v11 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
-  v12 = [v10 isEqualToString:v11];
+  v12 = [kindCopy isEqualToString:v11];
 
   if (v12)
   {
     v13 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
     v14 = +[CKDetailsSearchResultsFooterCell reuseIdentifier];
-    v15 = [v8 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:v9];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:pathCopy];
 
     v16 = MEMORY[0x1E696AEC0];
     v17 = CKFrameworkBundle();
     v18 = [v17 localizedStringForKey:@"SEE_ALL_PHOTOS_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v19 = [v16 stringWithFormat:v18];
 
-    v20 = [MEMORY[0x1E69DC668] sharedApplication];
-    v21 = [v20 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v22 = @"\u200F";
     }
@@ -241,32 +241,32 @@ uint64_t __49__CKPhotosSearchController_relativeDateFormatter__block_invoke()
     v23 = [(__CFString *)v22 stringByAppendingString:v19];
 
     [v15 setTitle:v23];
-    v24 = [objc_opt_class() sectionIdentifier];
-    [v15 setSectionIdentifier:v24];
+    sectionIdentifier = [objc_opt_class() sectionIdentifier];
+    [v15 setSectionIdentifier:sectionIdentifier];
     goto LABEL_6;
   }
 
   v26 = +[CKSearchAvatarSupplementryView supplementaryViewType];
-  v27 = [v10 isEqualToString:v26];
+  v27 = [kindCopy isEqualToString:v26];
 
   if (v27)
   {
     v28 = +[CKSearchAvatarSupplementryView supplementaryViewType];
     v29 = +[CKSearchAvatarSupplementryView reuseIdentifier];
-    v15 = [v8 dequeueReusableSupplementaryViewOfKind:v28 withReuseIdentifier:v29 forIndexPath:v9];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v28 withReuseIdentifier:v29 forIndexPath:pathCopy];
 
-    v30 = [v9 row];
-    v31 = [(CKSearchController *)self results];
-    v32 = [v31 count];
+    v30 = [pathCopy row];
+    results = [(CKSearchController *)self results];
+    v32 = [results count];
 
     if (v30 < v32)
     {
-      v33 = [(CKSearchController *)self results];
-      v24 = [v33 objectAtIndex:{objc_msgSend(v9, "row")}];
+      results2 = [(CKSearchController *)self results];
+      sectionIdentifier = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v34 = [CKSpotlightQueryResultUtilities contactForResult:v24];
+      v34 = [CKSpotlightQueryResultUtilities contactForResult:sectionIdentifier];
       [v15 setContact:v34];
-      [v15 setAssociatedResult:v24];
+      [v15 setAssociatedResult:sectionIdentifier];
       [v15 setParentContentType:0];
 
 LABEL_6:
@@ -276,16 +276,16 @@ LABEL_6:
   else
   {
     v35 = +[CKPhotosSearchResultsModeHeaderReusableView supplementaryViewType];
-    v36 = [v10 isEqualToString:v35];
+    v36 = [kindCopy isEqualToString:v35];
 
     if (v36)
     {
       v37 = +[CKPhotosSearchResultsModeHeaderReusableView supplementaryViewType];
       v38 = +[CKPhotosSearchResultsModeHeaderReusableView reuseIdentifier];
-      v15 = [v8 dequeueReusableSupplementaryViewOfKind:v37 withReuseIdentifier:v38 forIndexPath:v9];
+      v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v37 withReuseIdentifier:v38 forIndexPath:pathCopy];
 
-      v24 = [v15 control];
-      [v24 addTarget:self action:sel__filterControlTapped_ forControlEvents:4096];
+      sectionIdentifier = [v15 control];
+      [sectionIdentifier addTarget:self action:sel__filterControlTapped_ forControlEvents:4096];
       goto LABEL_6;
     }
 
@@ -295,14 +295,14 @@ LABEL_6:
   return v15;
 }
 
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v16 = v6;
-  v8 = [v7 row];
-  v9 = [(CKSearchController *)self results];
-  v10 = [v9 count];
+  neededCopy = needed;
+  pathCopy = path;
+  v16 = neededCopy;
+  v8 = [pathCopy row];
+  results = [(CKSearchController *)self results];
+  v10 = [results count];
 
   if (v8 >= v10)
   {
@@ -311,11 +311,11 @@ LABEL_6:
 
   else
   {
-    v11 = [(CKSearchController *)self results];
-    v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+    results2 = [(CKSearchController *)self results];
+    v12 = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v13 = [v16 associatedResult];
-    v14 = [v12 isEqual:v13];
+    associatedResult = [v16 associatedResult];
+    v14 = [v12 isEqual:associatedResult];
 
     if ((v14 & 1) == 0)
     {
@@ -327,34 +327,34 @@ LABEL_6:
   }
 }
 
-- (void)_filterControlTapped:(id)a3
+- (void)_filterControlTapped:(id)tapped
 {
-  v4 = [a3 selectedSegmentIndex];
-  if (v4 == 1)
+  selectedSegmentIndex = [tapped selectedSegmentIndex];
+  if (selectedSegmentIndex == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = 2 * (v4 == 2);
+    v5 = 2 * (selectedSegmentIndex == 2);
   }
 
   if ([(CKPhotosSearchController *)self contentMode]!= v5)
   {
     [(CKPhotosSearchController *)self setContentMode:v5];
-    v6 = [(CKSearchController *)self currentSearchText];
-    [(CKSearchController *)self searchWithText:v6 mode:[(CKSearchController *)self mode]];
+    currentSearchText = [(CKSearchController *)self currentSearchText];
+    [(CKSearchController *)self searchWithText:currentSearchText mode:[(CKSearchController *)self mode]];
   }
 }
 
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth
 {
   if ([(CKSearchController *)self mode]== 2 || [(CKSearchController *)self mode]== 4)
   {
-    if (a5)
+    if (layoutWidth)
     {
-      if (a5 == 2)
+      if (layoutWidth == 2)
       {
         if (CKIsRunningInMacCatalyst())
         {
@@ -373,10 +373,10 @@ LABEL_6:
           v11 = 4;
         }
 
-        if (!a3)
+        if (!width)
         {
 LABEL_14:
-          if (!a4)
+          if (!count)
           {
             return;
           }
@@ -389,7 +389,7 @@ LABEL_14:
       {
         v9 = 0.33;
         v11 = 3;
-        if (!a3)
+        if (!width)
         {
           goto LABEL_14;
         }
@@ -400,13 +400,13 @@ LABEL_14:
     {
       v9 = 0.5;
       v11 = 2;
-      if (!a3)
+      if (!width)
       {
         goto LABEL_14;
       }
     }
 
-    *a3 = v9;
+    *width = v9;
     goto LABEL_14;
   }
 
@@ -414,24 +414,24 @@ LABEL_14:
   {
     v12.receiver = self;
     v12.super_class = CKPhotosSearchController;
-    [(CKMessageTypeSearchController *)&v12 fractionalWidth:a3 count:a4 forLayoutWidth:a5];
+    [(CKMessageTypeSearchController *)&v12 fractionalWidth:width count:count forLayoutWidth:layoutWidth];
     return;
   }
 
-  if (a3)
+  if (width)
   {
-    *a3 = 0.33;
+    *width = 0.33;
   }
 
-  if (a4)
+  if (count)
   {
     v11 = 3;
 LABEL_22:
-    *a4 = v11;
+    *count = v11;
   }
 }
 
-- (id)layoutGroupWithEnvironment:(id)a3
+- (id)layoutGroupWithEnvironment:(id)environment
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v27 = 0;
@@ -452,8 +452,8 @@ LABEL_22:
     v9 = [v7 absoluteDimension:?];
 
     v10 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v9 heightDimension:v9];
-    v11 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-    if (v11 == 1)
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection == 1)
     {
       v12 = 3;
     }
@@ -464,7 +464,7 @@ LABEL_22:
     }
 
     v13 = -6.0;
-    if (v11 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v13 = 6.0;
     }
@@ -494,9 +494,9 @@ LABEL_22:
   return v23;
 }
 
-- (id)_additionalMenuElementsForResult:(id)a3
+- (id)_additionalMenuElementsForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.and.arrow.down"];
   objc_initWeak(&location, self);
   if (CKIsRunningInMacCatalyst())
@@ -518,14 +518,14 @@ LABEL_22:
   v15[2] = __61__CKPhotosSearchController__additionalMenuElementsForResult___block_invoke;
   v15[3] = &unk_1E72EBF48;
   objc_copyWeak(&v17, &location);
-  v9 = v4;
+  v9 = resultCopy;
   v16 = v9;
   v10 = [v8 actionWithTitle:v7 image:v5 identifier:0 handler:v15];
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = v11;
+  array = [MEMORY[0x1E695DF70] array];
+  v12 = array;
   if (v10)
   {
-    [v11 addObject:v10];
+    [array addObject:v10];
   }
 
   v13 = [v12 copy];
@@ -542,30 +542,30 @@ void __61__CKPhotosSearchController__additionalMenuElementsForResult___block_inv
   [WeakRetained saveAttachmentForResult:*(a1 + 32)];
 }
 
-- (id)previewViewControllerForResult:(id)a3
+- (id)previewViewControllerForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (CKIsRunningInMacCatalyst())
   {
-    v5 = [MEMORY[0x1E697A0D0] requestPreviewMockSceneActivation];
+    requestPreviewMockSceneActivation = [MEMORY[0x1E697A0D0] requestPreviewMockSceneActivation];
   }
 
   else
   {
-    v5 = objc_alloc_init(CKQLPreviewController);
+    requestPreviewMockSceneActivation = objc_alloc_init(CKQLPreviewController);
   }
 
-  v6 = v5;
-  v7 = [(CKSearchController *)self qlPreviewDataSource];
-  v8 = [(CKSearchController *)self results];
-  [v7 setPreviewItems:v8];
+  v6 = requestPreviewMockSceneActivation;
+  qlPreviewDataSource = [(CKSearchController *)self qlPreviewDataSource];
+  results = [(CKSearchController *)self results];
+  [qlPreviewDataSource setPreviewItems:results];
 
-  v9 = [(CKSearchController *)self qlPreviewDataSource];
-  [(QLPreviewController *)v6 setDataSource:v9];
+  qlPreviewDataSource2 = [(CKSearchController *)self qlPreviewDataSource];
+  [(QLPreviewController *)v6 setDataSource:qlPreviewDataSource2];
 
   [(QLPreviewController *)v6 reloadData];
-  v10 = [(CKSearchController *)self results];
-  v11 = [v10 indexOfObject:v4];
+  results2 = [(CKSearchController *)self results];
+  v11 = [results2 indexOfObject:resultCopy];
 
   [(QLPreviewController *)v6 setCurrentPreviewItemIndex:v11];
   [(QLPreviewController *)v6 refreshCurrentPreviewItem];
@@ -574,12 +574,12 @@ void __61__CKPhotosSearchController__additionalMenuElementsForResult___block_inv
   return v6;
 }
 
-- (id)itemProviderForSearchResult:(id)a3
+- (id)itemProviderForSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v17.receiver = self;
   v17.super_class = CKPhotosSearchController;
-  v5 = [(CKMessageTypeSearchController *)&v17 itemProviderForSearchResult:v4];
+  v5 = [(CKMessageTypeSearchController *)&v17 itemProviderForSearchResult:resultCopy];
   if (!v5)
   {
 LABEL_6:
@@ -587,13 +587,13 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v6 = [v4 item];
-  v7 = [v6 attributeSet];
-  v8 = [v7 contentURL];
+  item = [resultCopy item];
+  attributeSet = [item attributeSet];
+  contentURL = [attributeSet contentURL];
 
-  if (v8)
+  if (contentURL)
   {
-    v9 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:v8];
+    v9 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:contentURL];
     v10 = v9;
     if (v9)
     {
@@ -634,19 +634,19 @@ uint64_t __56__CKPhotosSearchController_itemProviderForSearchResult___block_invo
   return 0;
 }
 
-- (id)_activityItemProviderForResult:(id)a3
+- (id)_activityItemProviderForResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v5 = [v4 cachedPreviewForQueryResult:v3];
+  v5 = [v4 cachedPreviewForQueryResult:resultCopy];
 
   if (v5)
   {
-    v6 = [v3 item];
-    v7 = [v6 attributeSet];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
 
-    v8 = [v7 contentURL];
-    v9 = [v7 __ck_spotlightItemSnippet];
+    contentURL = [attributeSet contentURL];
+    __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
     v10 = objc_alloc_init(MEMORY[0x1E696EC58]);
     v11 = IMUTITypeForFilename();
     [v10 setType:v11];
@@ -655,7 +655,7 @@ uint64_t __56__CKPhotosSearchController_itemProviderForSearchResult___block_invo
     [v10 setThumbnail:v12];
     v13 = objc_alloc_init(MEMORY[0x1E696ECA0]);
     [v13 setSpecialization:v10];
-    v14 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:v8 metadata:v13];
+    v14 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:contentURL metadata:v13];
   }
 
   else
@@ -666,22 +666,22 @@ uint64_t __56__CKPhotosSearchController_itemProviderForSearchResult___block_invo
   return v14;
 }
 
-- (void)saveAttachmentForResult:(id)a3
+- (void)saveAttachmentForResult:(id)result
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 item];
-  v5 = [v4 attributeSet];
+  resultCopy = result;
+  item = [resultCopy item];
+  attributeSet = [item attributeSet];
 
-  v6 = [v5 contentURL];
-  v7 = [v3 item];
+  contentURL = [attributeSet contentURL];
+  item2 = [resultCopy item];
 
-  v8 = [v7 uniqueIdentifier];
+  uniqueIdentifier = [item2 uniqueIdentifier];
 
-  v9 = [v5 ownerIdentifier];
-  v10 = [v5 contentCreationDate];
+  ownerIdentifier = [attributeSet ownerIdentifier];
+  contentCreationDate = [attributeSet contentCreationDate];
   v11 = [CKAttachmentItem alloc];
-  v12 = [(CKAttachmentItem *)v11 initWithFileURL:v6 size:v8 transferGUID:v9 guid:v10 createdDate:0 shareURL:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v12 = [(CKAttachmentItem *)v11 initWithFileURL:contentURL size:uniqueIdentifier transferGUID:ownerIdentifier guid:contentCreationDate createdDate:0 shareURL:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v13 = [CKAttachmentSaver alloc];
   v16[0] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
@@ -692,8 +692,8 @@ uint64_t __56__CKPhotosSearchController_itemProviderForSearchResult___block_invo
 
 - (NSDirectionalEdgeInsets)additionalGroupInsets
 {
-  v3 = [(CKSearchController *)self delegate];
-  [v3 parentMarginInsetsForSearchController:self];
+  delegate = [(CKSearchController *)self delegate];
+  [delegate parentMarginInsetsForSearchController:self];
   v5 = v4;
   v7 = v6;
 

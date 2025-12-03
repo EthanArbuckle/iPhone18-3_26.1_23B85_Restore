@@ -3,8 +3,8 @@
 - (double)cardStackTransitioningCoverSourceExtraXOffset;
 - (id)cardStackTransitioningCoverSourceHide;
 - (id)coverAnimationSourceView;
-- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)a3;
-- (void)setCardStackTransitioningCoverSourceExtraXOffset:(double)a3;
+- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)view;
+- (void)setCardStackTransitioningCoverSourceExtraXOffset:(double)offset;
 @end
 
 @implementation SwiftUICoverAnimationProvider
@@ -16,11 +16,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCardStackTransitioningCoverSourceExtraXOffset:(double)a3
+- (void)setCardStackTransitioningCoverSourceExtraXOffset:(double)offset
 {
   v5 = OBJC_IVAR____TtC11BookStoreUI29SwiftUICoverAnimationProvider_cardStackTransitioningCoverSourceExtraXOffset;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = offset;
 }
 
 - (_TtC11BookStoreUI29SwiftUICoverAnimationProvider)init
@@ -30,21 +30,21 @@
   return result;
 }
 
-- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)a3
+- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  SwiftUICoverAnimationProvider.cardStackTransitioningCoverSourceReplaceReferenceView(_:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  SwiftUICoverAnimationProvider.cardStackTransitioningCoverSourceReplaceReferenceView(_:)(viewCopy);
 }
 
 - (id)cardStackTransitioningCoverSourceHide
 {
   v7 = 0;
-  v2 = self;
+  selfCopy = self;
   sub_6620C(&qword_3C27A8);
   sub_2C44D8();
   v3 = swift_allocObject();
-  *(v3 + 16) = v2;
+  *(v3 + 16) = selfCopy;
   aBlock[4] = sub_149508;
   aBlock[5] = v3;
   aBlock[0] = _NSConcreteStackBlock;
@@ -59,7 +59,7 @@
 - (id)coverAnimationSourceView
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC11BookStoreUI29SwiftUICoverAnimationProvider_sourceReferenceView);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
 
   v5 = sub_2C5F68();

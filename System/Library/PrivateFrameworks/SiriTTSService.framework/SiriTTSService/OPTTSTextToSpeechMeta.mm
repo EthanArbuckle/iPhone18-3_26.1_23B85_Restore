@@ -1,8 +1,8 @@
 @interface OPTTSTextToSpeechMeta
-- (OPTTSTextToSpeechMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechMeta *)a4 verify:(BOOL)a5;
+- (OPTTSTextToSpeechMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechMeta *)root verify:(BOOL)verify;
 - (OPTTSTextToSpeechResource)resource;
 - (OPTTSTextToSpeechVoice)voice;
-- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
@@ -37,32 +37,32 @@ apple::aiml::flatbuffers2::DetachedBuffer *__37__OPTTSTextToSpeechMeta_flatbuffD
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechMeta>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(OPTTSTextToSpeechMeta *)self voice];
-  v6 = [v5 addObjectToBuffer:a3];
+  voice = [(OPTTSTextToSpeechMeta *)self voice];
+  v6 = [voice addObjectToBuffer:buffer];
 
-  v7 = [(OPTTSTextToSpeechMeta *)self resource];
-  v8 = [v7 addObjectToBuffer:a3];
+  resource = [(OPTTSTextToSpeechMeta *)self resource];
+  v8 = [resource addObjectToBuffer:buffer];
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v9 = *(a3 + 5);
-  v10 = *(a3 + 6);
-  v11 = *(a3 + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v9 = *(buffer + 5);
+  v10 = *(buffer + 6);
+  v11 = *(buffer + 4);
   if (v6)
   {
-    v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v6);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v12);
+    v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v6);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v12);
   }
 
   if (v8)
   {
-    v13 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v8);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v13);
+    v13 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v8);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v13);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v11 - v10 + v9);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v11 - v10 + v9);
 }
 
 - (OPTTSTextToSpeechResource)resource
@@ -115,10 +115,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__37__OPTTSTextToSpeechMeta_flatbuffD
   return v3;
 }
 
-- (OPTTSTextToSpeechMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechMeta *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechMeta *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTextToSpeechMeta;
   v10 = [(OPTTSTextToSpeechMeta *)&v25 init];
@@ -127,35 +127,35 @@ apple::aiml::flatbuffers2::DetachedBuffer *__37__OPTTSTextToSpeechMeta_flatbuffD
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

@@ -1,19 +1,19 @@
 @interface PNWidgetAssetsSuggester
-- (PNWidgetAssetsSuggester)initWithAssets:(id)a3 photoLibrary:(id)a4 widgetIdentifier:(id)a5;
+- (PNWidgetAssetsSuggester)initWithAssets:(id)assets photoLibrary:(id)library widgetIdentifier:(id)identifier;
 - (id)_predicateForFeaturedSuggestions;
 - (id)createSuggestions;
-- (id)fetchSuggestionsWithOptions:(id)a3;
+- (id)fetchSuggestionsWithOptions:(id)options;
 - (void)removePreviousSuggestions;
 @end
 
 @implementation PNWidgetAssetsSuggester
 
-- (id)fetchSuggestionsWithOptions:(id)a3
+- (id)fetchSuggestionsWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
-  v21 = v4;
-  v5 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:v4];
+  v21 = optionsCopy;
+  v5 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:optionsCopy];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v5 count])
   {
@@ -22,11 +22,11 @@
     {
       v8 = objc_autoreleasePoolPush();
       v9 = [v5 objectAtIndex:v7];
-      v10 = [v9 featuresProperties];
-      v11 = [v10 objectForKeyedSubscript:@"widgetIdentifier"];
+      featuresProperties = [v9 featuresProperties];
+      v11 = [featuresProperties objectForKeyedSubscript:@"widgetIdentifier"];
 
-      v12 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
-      v13 = [v12 isEqualToString:v11];
+      widgetIdentifier = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
+      v13 = [widgetIdentifier isEqualToString:v11];
 
       if (v13)
       {
@@ -41,10 +41,10 @@
   }
 
   v14 = objc_alloc(MEMORY[0x1E69788E0]);
-  v15 = [(PNWidgetAssetsSuggester *)self photoLibrary];
-  v16 = [v5 fetchType];
-  v17 = [v5 fetchPropertySets];
-  v18 = [v14 initWithObjects:v6 photoLibrary:v15 fetchType:v16 fetchPropertySets:v17 identifier:0 registerIfNeeded:0];
+  photoLibrary = [(PNWidgetAssetsSuggester *)self photoLibrary];
+  fetchType = [v5 fetchType];
+  fetchPropertySets = [v5 fetchPropertySets];
+  v18 = [v14 initWithObjects:v6 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
 
   objc_autoreleasePoolPop(context);
 
@@ -72,17 +72,17 @@
 - (void)removePreviousSuggestions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(PNWidgetAssetsSuggester *)self photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PNWidgetAssetsSuggester *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setWantsIncrementalChangeDetails:0];
-  v5 = [(PNWidgetAssetsSuggester *)self _predicateForFeaturedSuggestions];
-  [v4 setPredicate:v5];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  _predicateForFeaturedSuggestions = [(PNWidgetAssetsSuggester *)self _predicateForFeaturedSuggestions];
+  [librarySpecificFetchOptions setPredicate:_predicateForFeaturedSuggestions];
 
-  v6 = [(PNWidgetAssetsSuggester *)self fetchSuggestionsWithOptions:v4];
+  v6 = [(PNWidgetAssetsSuggester *)self fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v6 count])
   {
-    v7 = [(PNWidgetAssetsSuggester *)self photoLibrary];
+    photoLibrary2 = [(PNWidgetAssetsSuggester *)self photoLibrary];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__PNWidgetAssetsSuggester_removePreviousSuggestions__block_invoke;
@@ -90,7 +90,7 @@
     v8 = v6;
     v21 = v8;
     v19 = 0;
-    v9 = [v7 performChangesAndWait:v20 error:&v19];
+    v9 = [photoLibrary2 performChangesAndWait:v20 error:&v19];
     v10 = v19;
 
     v11 = PLMemoriesGetLog();
@@ -99,10 +99,10 @@
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
+        widgetIdentifier = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
         v14 = [v8 count];
         *buf = 138412546;
-        v23 = v13;
+        v23 = widgetIdentifier;
         v24 = 1024;
         LODWORD(v25) = v14;
         v15 = "[PNWidgetAssetsSuggester] widgetIdentifier: %@, deleted %d suggestions.";
@@ -116,9 +116,9 @@ LABEL_7:
 
     else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
+      widgetIdentifier = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
       *buf = 138412546;
-      v23 = v13;
+      v23 = widgetIdentifier;
       v24 = 2112;
       v25 = v10;
       v15 = "[PNWidgetAssetsSuggester] Failed to remove suggestions for widgetIdentifier %@, error: %@.";
@@ -133,8 +133,8 @@ LABEL_7:
 - (id)createSuggestions
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PNWidgetAssetsSuggester *)self assets];
-  v4 = [v3 count];
+  assets = [(PNWidgetAssetsSuggester *)self assets];
+  v4 = [assets count];
 
   v5 = PLMemoriesGetLog();
   v6 = v5;
@@ -142,32 +142,32 @@ LABEL_7:
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
-      v8 = [(PNWidgetAssetsSuggester *)self assets];
+      widgetIdentifier = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
+      assets2 = [(PNWidgetAssetsSuggester *)self assets];
       *buf = 138412546;
-      v27 = v7;
+      v27 = widgetIdentifier;
       v28 = 1024;
-      LODWORD(v29) = [v8 count];
+      LODWORD(v29) = [assets2 count];
       _os_log_impl(&dword_1C6F5C000, v6, OS_LOG_TYPE_DEFAULT, "[PNWidgetAssetsSuggester] Widget id: %@, eligibleAssets: %d.", buf, 0x12u);
     }
 
     v9 = objc_alloc(MEMORY[0x1E695DF70]);
-    v10 = [(PNWidgetAssetsSuggester *)self assets];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+    assets3 = [(PNWidgetAssetsSuggester *)self assets];
+    v11 = [v9 initWithCapacity:{objc_msgSend(assets3, "count")}];
 
-    v12 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
-    v13 = [(PNWidgetAssetsSuggester *)self photoLibrary];
+    widgetIdentifier2 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
+    photoLibrary = [(PNWidgetAssetsSuggester *)self photoLibrary];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __44__PNWidgetAssetsSuggester_createSuggestions__block_invoke;
     v23[3] = &unk_1E82A2708;
     v23[4] = self;
-    v14 = v12;
+    v14 = widgetIdentifier2;
     v24 = v14;
     v6 = v11;
     v25 = v6;
     v22 = 0;
-    v15 = [v13 performChangesAndWait:v23 error:&v22];
+    v15 = [photoLibrary performChangesAndWait:v23 error:&v22];
     v16 = v22;
 
     if (v15)
@@ -180,9 +180,9 @@ LABEL_7:
       v19 = PLMemoriesGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
+        widgetIdentifier3 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
         *buf = 138412546;
-        v27 = v20;
+        v27 = widgetIdentifier3;
         v28 = 2112;
         v29 = v16;
         _os_log_impl(&dword_1C6F5C000, v19, OS_LOG_TYPE_ERROR, "[PNWidgetAssetsSuggester] Failed to create suggestions for widgetIdentifier %@, error: %@.", buf, 0x16u);
@@ -196,9 +196,9 @@ LABEL_7:
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
+      widgetIdentifier4 = [(PNWidgetAssetsSuggester *)self widgetIdentifier];
       *buf = 138412290;
-      v27 = v18;
+      v27 = widgetIdentifier4;
       _os_log_impl(&dword_1C6F5C000, v6, OS_LOG_TYPE_ERROR, "[PNWidgetAssetsSuggester] No eligible assets for %@.", buf, 0xCu);
     }
 
@@ -264,20 +264,20 @@ void __44__PNWidgetAssetsSuggester_createSuggestions__block_invoke(uint64_t a1)
   }
 }
 
-- (PNWidgetAssetsSuggester)initWithAssets:(id)a3 photoLibrary:(id)a4 widgetIdentifier:(id)a5
+- (PNWidgetAssetsSuggester)initWithAssets:(id)assets photoLibrary:(id)library widgetIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetsCopy = assets;
+  libraryCopy = library;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = PNWidgetAssetsSuggester;
   v12 = [(PNWidgetAssetsSuggester *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assets, a3);
-    objc_storeStrong(&v13->_photoLibrary, a4);
-    objc_storeStrong(&v13->_widgetIdentifier, a5);
+    objc_storeStrong(&v12->_assets, assets);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    objc_storeStrong(&v13->_widgetIdentifier, identifier);
   }
 
   return v13;

@@ -1,7 +1,7 @@
 @interface PNVisualOutliers
-+ (BOOL)isAsset:(id)a3 similarToAnyAssets:(id)a4 withinThresholdType:(int64_t)a5;
-+ (id)assetsDistancesSummary:(id)a3 inAssets:(id)a4 withinThresholdType:(int64_t)a5;
-+ (id)outlierScoresForAssets:(id)a3;
++ (BOOL)isAsset:(id)asset similarToAnyAssets:(id)assets withinThresholdType:(int64_t)type;
++ (id)assetsDistancesSummary:(id)summary inAssets:(id)assets withinThresholdType:(int64_t)type;
++ (id)outlierScoresForAssets:(id)assets;
 + (id)requiredFetchPropertySets;
 @end
 
@@ -15,30 +15,30 @@
   return v2;
 }
 
-+ (id)assetsDistancesSummary:(id)a3 inAssets:(id)a4 withinThresholdType:(int64_t)a5
++ (id)assetsDistancesSummary:(id)summary inAssets:(id)assets withinThresholdType:(int64_t)type
 {
   sub_1C6F65BE8(0, &qword_1EDD0FA70);
   v7 = sub_1C7550B5C();
-  v8 = a3;
-  static VisualOutliers.assetsDistancesSummary(for:in:with:)(v8, v7, a5);
+  summaryCopy = summary;
+  static VisualOutliers.assetsDistancesSummary(for:in:with:)(summaryCopy, v7, type);
 
   v9 = sub_1C755048C();
 
   return v9;
 }
 
-+ (BOOL)isAsset:(id)a3 similarToAnyAssets:(id)a4 withinThresholdType:(int64_t)a5
++ (BOOL)isAsset:(id)asset similarToAnyAssets:(id)assets withinThresholdType:(int64_t)type
 {
   sub_1C6F65BE8(0, &qword_1EDD0FA70);
   v7 = sub_1C7550B5C();
-  v8 = a3;
-  static VisualOutliers.isSimilarToAnyAssetInAssets(for:in:with:)(v8, v7, a5);
-  LOBYTE(a5) = v9;
+  assetCopy = asset;
+  static VisualOutliers.isSimilarToAnyAssetInAssets(for:in:with:)(assetCopy, v7, type);
+  LOBYTE(type) = v9;
 
-  return a5 & 1;
+  return type & 1;
 }
 
-+ (id)outlierScoresForAssets:(id)a3
++ (id)outlierScoresForAssets:(id)assets
 {
   sub_1C6F65BE8(0, &qword_1EDD0FA70);
   v3 = sub_1C7550B5C();

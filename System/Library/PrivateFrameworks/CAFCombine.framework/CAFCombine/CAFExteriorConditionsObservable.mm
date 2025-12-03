@@ -1,18 +1,18 @@
 @interface CAFExteriorConditionsObservable
 - (NSString)description;
-- (void)exteriorConditionsService:(id)a3 didUpdateAqi:(id)a4;
-- (void)exteriorConditionsService:(id)a3 didUpdateIcyConditions:(unsigned __int8)a4;
-- (void)exteriorConditionsService:(id)a3 didUpdateTemperature:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)exteriorConditionsService:(id)service didUpdateAqi:(id)aqi;
+- (void)exteriorConditionsService:(id)service didUpdateIcyConditions:(unsigned __int8)conditions;
+- (void)exteriorConditionsService:(id)service didUpdateTemperature:(id)temperature;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFExteriorConditionsObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFExteriorConditionsObservable.description.getter();
   v5 = v4;
 
@@ -21,7 +21,7 @@
   return v6;
 }
 
-- (void)exteriorConditionsService:(id)a3 didUpdateTemperature:(id)a4
+- (void)exteriorConditionsService:(id)service didUpdateTemperature:(id)temperature
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo17NSUnitTemperatureCGMd, &_s10Foundation11MeasurementVySo17NSUnitTemperatureCGMR);
   v7 = *(v6 - 8);
@@ -30,27 +30,27 @@
   v10 = &v13 - v9;
   type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitTemperature, 0x277CCAE48);
   static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  CAFExteriorConditionsObservable.exteriorConditionsService(_:didUpdateTemperature:)(v12, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFExteriorConditionsObservable.exteriorConditionsService(_:didUpdateTemperature:)(selfCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)exteriorConditionsService:(id)a3 didUpdateIcyConditions:(unsigned __int8)a4
+- (void)exteriorConditionsService:(id)service didUpdateIcyConditions:(unsigned __int8)conditions
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFExteriorConditionsObservable.exteriorConditionsService(_:didUpdateIcyConditions:)();
 }
 
-- (void)exteriorConditionsService:(id)a3 didUpdateAqi:(id)a4
+- (void)exteriorConditionsService:(id)service didUpdateAqi:(id)aqi
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo17CAFUnitAirQualityCGSgMd, &_s10Foundation11MeasurementVySo17CAFUnitAirQualityCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (aqi)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for CAFUnitAirQuality, 0x277CF8760);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -67,32 +67,32 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFExteriorConditionsObservable.exteriorConditionsService(_:didUpdateAqi:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFExteriorConditionsObservable.exteriorConditionsService(_:didUpdateAqi:)(selfCopy, v10);
 
   outlined destroy of Measurement<CAFUnitAirQuality>?(v10);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFExteriorConditionsObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFExteriorConditionsObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFExteriorConditionsObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFExteriorConditionsObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFExteriorConditionsObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

@@ -1,7 +1,7 @@
 @interface CTSweetgumUsageInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTSweetgumUsageInfo)init;
-- (CTSweetgumUsageInfo)initWithCoder:(id)a3;
+- (CTSweetgumUsageInfo)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -25,18 +25,18 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSweetgumUsageInfo *)self accountMetrics];
-  [v3 appendFormat:@" accountMetrics=%@", v4];
+  accountMetrics = [(CTSweetgumUsageInfo *)self accountMetrics];
+  [v3 appendFormat:@" accountMetrics=%@", accountMetrics];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -46,18 +46,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CTSweetgumUsageInfo *)self accountMetrics];
-      v6 = [(CTSweetgumUsageInfo *)v4 accountMetrics];
-      if (v5 == v6)
+      accountMetrics = [(CTSweetgumUsageInfo *)self accountMetrics];
+      accountMetrics2 = [(CTSweetgumUsageInfo *)equalCopy accountMetrics];
+      if (accountMetrics == accountMetrics2)
       {
         v9 = 1;
       }
 
       else
       {
-        v7 = [(CTSweetgumUsageInfo *)self accountMetrics];
-        v8 = [(CTSweetgumUsageInfo *)v4 accountMetrics];
-        v9 = [v7 isEqual:v8];
+        accountMetrics3 = [(CTSweetgumUsageInfo *)self accountMetrics];
+        accountMetrics4 = [(CTSweetgumUsageInfo *)equalCopy accountMetrics];
+        v9 = [accountMetrics3 isEqual:accountMetrics4];
       }
     }
 
@@ -70,9 +70,9 @@
   return v9;
 }
 
-- (CTSweetgumUsageInfo)initWithCoder:(id)a3
+- (CTSweetgumUsageInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CTSweetgumUsageInfo;
   v5 = [(CTSweetgumUsageInfo *)&v12 init];
@@ -81,7 +81,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"account_metrics"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"account_metrics"];
     accountMetrics = v5->_accountMetrics;
     v5->_accountMetrics = v9;
   }

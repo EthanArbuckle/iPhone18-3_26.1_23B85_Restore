@@ -1,6 +1,6 @@
 @interface IMRemoteIntentFileDownloadObserver
 + (id)sharedObserver;
-- (BOOL)isDownloadingTransferGUID:(id)a3;
+- (BOOL)isDownloadingTransferGUID:(id)d;
 @end
 
 @implementation IMRemoteIntentFileDownloadObserver
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (BOOL)isDownloadingTransferGUID:(id)a3
+- (BOOL)isDownloadingTransferGUID:(id)d
 {
   sub_1A88C82E8();
-  v4 = self;
+  selfCopy = self;
   sub_1A88C8A58();
 
   return v6;

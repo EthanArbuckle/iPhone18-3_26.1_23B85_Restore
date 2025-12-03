@@ -1,28 +1,28 @@
 @interface _MTLRasterizationRateMap
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)parameterBufferSizeAndAlign;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalGranularity;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)screenSize;
 - (MTLDevice)device;
-- (_MTLRasterizationRateMap)initWithDevice:(id)a3 descriptor:(id)a4;
-- (id)formattedDescription:(unint64_t)a3;
+- (_MTLRasterizationRateMap)initWithDevice:(id)device descriptor:(id)descriptor;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
 @implementation _MTLRasterizationRateMap
 
-- (_MTLRasterizationRateMap)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MTLRasterizationRateMap)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = _MTLRasterizationRateMap;
   v6 = [(_MTLRasterizationRateMap *)&v11 init];
   if (v6)
   {
-    *(v6 + 1) = a3;
-    *(v6 + 2) = [a4 label];
-    if (a4)
+    *(v6 + 1) = device;
+    *(v6 + 2) = [descriptor label];
+    if (descriptor)
     {
-      [a4 screenSize];
+      [descriptor screenSize];
     }
 
     else
@@ -33,9 +33,9 @@
 
     *(v6 + 24) = v9;
     *(v6 + 5) = v10;
-    *(v6 + 5) = [a4 layerCount];
-    *(v6 + 6) = [a4 mutability];
-    [a4 minFactor];
+    *(v6 + 5) = [descriptor layerCount];
+    *(v6 + 6) = [descriptor mutability];
+    [descriptor minFactor];
     *(v6 + 14) = v7;
   }
 
@@ -79,7 +79,7 @@
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer
 {
   if (self)
   {
@@ -92,10 +92,10 @@
   return self;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v18[24] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v15 = 0;
   v16 = 0;
   v17 = 0;
@@ -104,7 +104,7 @@
     [(_MTLRasterizationRateMap *)self physicalGranularity];
   }
 
-  v5 = [(_MTLRasterizationRateMap *)self parameterBufferSizeAndAlign];
+  parameterBufferSizeAndAlign = [(_MTLRasterizationRateMap *)self parameterBufferSizeAndAlign];
   v7 = v6;
   v8 = MEMORY[0x1E696AEC0];
   v14.receiver = self;
@@ -137,7 +137,7 @@
   v18[17] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
   v18[18] = v4;
   v18[19] = @"parameterBuffer.size =";
-  v18[20] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+  v18[20] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:parameterBufferSizeAndAlign];
   v18[21] = v4;
   v18[22] = @"parameterBuffer.align =";
   v18[23] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];

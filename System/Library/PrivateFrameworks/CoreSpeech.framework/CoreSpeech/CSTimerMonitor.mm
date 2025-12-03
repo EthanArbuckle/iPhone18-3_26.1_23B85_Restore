@@ -1,14 +1,14 @@
 @interface CSTimerMonitor
 + (id)sharedInstance;
-- (BOOL)_isSleepTimer:(id)a3;
+- (BOOL)_isSleepTimer:(id)timer;
 - (CSTimerMonitor)init;
 - (int64_t)timerState;
-- (void)_notifyObserver:(id)a3 timerIsFiringState:(int64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer timerIsFiringState:(int64_t)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)_timerDismissed:(id)a3;
-- (void)_timerIsFiring:(id)a3;
-- (void)_timerStateReset:(id)a3;
+- (void)_timerDismissed:(id)dismissed;
+- (void)_timerIsFiring:(id)firing;
+- (void)_timerStateReset:(id)reset;
 - (void)initializeTimerState;
 @end
 
@@ -33,27 +33,27 @@
   return v3;
 }
 
-- (void)_notifyObserver:(id)a3 timerIsFiringState:(int64_t)a4
+- (void)_notifyObserver:(id)observer timerIsFiringState:(int64_t)state
 {
-  v6 = a3;
-  self->_timerFiringState = a4;
-  [(CSTimerMonitor *)self notifyObserver:v6];
+  observerCopy = observer;
+  self->_timerFiringState = state;
+  [(CSTimerMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 CSTimerMonitor:self didReceiveTimerChanged:a4];
+    [observerCopy CSTimerMonitor:self didReceiveTimerChanged:state];
   }
 }
 
-- (void)_timerStateReset:(id)a3
+- (void)_timerStateReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[CSTimerMonitor _timerStateReset:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = resetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %@", buf, 0x16u);
   }
 
@@ -68,16 +68,16 @@
   }
 }
 
-- (void)_timerDismissed:(id)a3
+- (void)_timerDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[CSTimerMonitor _timerDismissed:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = dismissedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %@", buf, 0x16u);
   }
 
@@ -92,20 +92,20 @@
   }
 }
 
-- (void)_timerIsFiring:(id)a3
+- (void)_timerIsFiring:(id)firing
 {
-  v4 = a3;
+  firingCopy = firing;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[CSTimerMonitor _timerIsFiring:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = firingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %@", buf, 0x16u);
   }
 
-  if (![(CSTimerMonitor *)self _isSleepTimer:v4]&& self->_timerFiringState != 1)
+  if (![(CSTimerMonitor *)self _isSleepTimer:firingCopy]&& self->_timerFiringState != 1)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -116,10 +116,10 @@
   }
 }
 
-- (BOOL)_isSleepTimer:(id)a3
+- (BOOL)_isSleepTimer:(id)timer
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
+  timerCopy = timer;
+  userInfo = [timerCopy userInfo];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -146,7 +146,7 @@
     __break(1u);
   }
 
-  v7 = [v4 objectForKey:*v5];
+  v7 = [userInfo objectForKey:*v5];
 
   v17 = 0u;
   v18 = 0u;
@@ -166,10 +166,10 @@
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) sound];
-        v13 = [v12 interruptAudio];
+        sound = [*(*(&v15 + 1) + 8 * i) sound];
+        interruptAudio = [sound interruptAudio];
 
-        if (v13)
+        if (interruptAudio)
         {
           LOBYTE(v9) = 1;
           goto LABEL_14;
@@ -228,9 +228,9 @@ LABEL_14:
   self->_timerFiringState = 0;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -289,13 +289,13 @@ LABEL_14:
 
 - (void)initializeTimerState
 {
-  v3 = [(MTTimerManager *)self->_timerManager timers];
+  timers = [(MTTimerManager *)self->_timerManager timers];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004E730;
   v6[3] = &unk_100250B18;
   v6[4] = self;
-  v4 = [v3 addSuccessBlock:v6];
+  v4 = [timers addSuccessBlock:v6];
   v5 = [v4 addFailureBlock:&stru_10024F278];
 }
 

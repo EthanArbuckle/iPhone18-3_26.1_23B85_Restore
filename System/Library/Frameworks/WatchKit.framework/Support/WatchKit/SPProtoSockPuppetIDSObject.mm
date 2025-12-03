@@ -1,12 +1,12 @@
 @interface SPProtoSockPuppetIDSObject
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoSockPuppetIDSObject
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = SPProtoSockPuppetIDSObject;
   v3 = [(SPProtoSockPuppetIDSObject *)&v7 description];
-  v4 = [(SPProtoSockPuppetIDSObject *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SPProtoSockPuppetIDSObject *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -43,9 +43,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   type = self->_type;
   PBDataWriterWriteInt32Field();
   objectData = self->_objectData;
@@ -56,40 +56,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[6] = self->_type;
-  v5 = v4;
-  [v4 setObjectData:self->_objectData];
+  toCopy = to;
+  toCopy[6] = self->_type;
+  v5 = toCopy;
+  [toCopy setObjectData:self->_objectData];
   if (self->_receiver)
   {
     [v5 setReceiver:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[6] = self->_type;
-  v6 = [(NSData *)self->_objectData copyWithZone:a3];
+  v6 = [(NSData *)self->_objectData copyWithZone:zone];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;
 
-  v8 = [(NSString *)self->_receiver copyWithZone:a3];
+  v8 = [(NSString *)self->_receiver copyWithZone:zone];
   v9 = *(v5 + 2);
   *(v5 + 2) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_type == *(v4 + 6) && ((objectData = self->_objectData, !(objectData | v4[1])) || -[NSData isEqual:](objectData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_type == *(equalCopy + 6) && ((objectData = self->_objectData, !(objectData | equalCopy[1])) || -[NSData isEqual:](objectData, "isEqual:")))
   {
     receiver = self->_receiver;
-    if (receiver | v4[2])
+    if (receiver | equalCopy[2])
     {
       v7 = [(NSString *)receiver isEqual:?];
     }
@@ -115,21 +115,21 @@
   return v4 ^ [(NSString *)self->_receiver hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_type = v4[6];
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  self->_type = fromCopy[6];
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SPProtoSockPuppetIDSObject *)self setObjectData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SPProtoSockPuppetIDSObject *)self setReceiver:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

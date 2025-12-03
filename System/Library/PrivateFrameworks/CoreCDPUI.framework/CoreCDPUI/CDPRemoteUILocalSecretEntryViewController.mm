@@ -3,13 +3,13 @@
 - (CGSize)preferredContentSize;
 - (id)pinInstructionsPrompt;
 - (void)_startAnimating;
-- (void)didAcceptEnteredPIN:(id)a3;
+- (void)didAcceptEnteredPIN:(id)n;
 - (void)didCancelEnteringPIN;
 - (void)pinInstructionsPrompt;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CDPRemoteUILocalSecretEntryViewController
@@ -27,10 +27,10 @@
     [v4 setEditPaneClass:objc_opt_class()];
     [v4 setProperty:v3 forKey:*MEMORY[0x277D401B8]];
     [(DevicePINController *)v3 setSpecifier:v4];
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(DevicePINController *)v3 setNumericPIN:0];
       [(CDPRemoteUILocalSecretEntryViewController *)v3 setModalPresentationStyle:2];
@@ -45,19 +45,19 @@
   v12.receiver = self;
   v12.super_class = CDPRemoteUILocalSecretEntryViewController;
   [(PSDetailController *)&v12 viewDidLoad];
-  v3 = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
-  v4 = [v3 inputItems];
-  v5 = [v4 firstObject];
+  extensionContext = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"forceInlineMode"];
+  userInfo = [firstObject userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"forceInlineMode"];
   self->_finished = [v7 BOOLValue];
 
-  v8 = [v5 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"title"];
-  v10 = [v9 stringValue];
+  userInfo2 = [firstObject userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:@"title"];
+  stringValue = [v9 stringValue];
   titleText = self->_titleText;
-  self->_titleText = v10;
+  self->_titleText = stringValue;
 }
 
 - (id)pinInstructionsPrompt
@@ -70,73 +70,73 @@
       [(CDPRemoteUILocalSecretEntryViewController *)self pinInstructionsPrompt];
     }
 
-    v4 = self->_titleText;
+    localizedString = self->_titleText;
   }
 
   else
   {
     v5 = [MEMORY[0x277CFD508] builderForKey:@"LOCAL_SECRET_ENTRY_REASON"];
     v6 = [v5 addSecretType:1];
-    v7 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v8 = [v7 deviceClass];
-    v9 = [v6 addDeviceClass:v8];
-    v4 = [v9 localizedString];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
+    v9 = [v6 addDeviceClass:deviceClass];
+    localizedString = [v9 localizedString];
   }
 
-  return v4;
+  return localizedString;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = CDPRemoteUILocalSecretEntryViewController;
-  [(DevicePINController *)&v9 viewWillAppear:a3];
-  v4 = [(CDPRemoteUILocalSecretEntryViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
+  [(DevicePINController *)&v9 viewWillAppear:appear];
+  navigationController = [(CDPRemoteUILocalSecretEntryViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v6 == self)
+  if (firstObject == self)
   {
-    v7 = [(CDPRemoteUILocalSecretEntryViewController *)self navigationController];
-    v8 = [v7 navigationBar];
-    [v8 _setBackgroundOpacity:0.0];
+    navigationController2 = [(CDPRemoteUILocalSecretEntryViewController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar _setBackgroundOpacity:0.0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CDPRemoteUILocalSecretEntryViewController;
-  [(DevicePINController *)&v6 viewWillDisappear:a3];
+  [(DevicePINController *)&v6 viewWillDisappear:disappear];
   if (!*(&self->_finished + 1))
   {
     *(&self->_finished + 1) = 1;
-    v4 = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
+    extensionContext = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
-    [v4 cancelRequestWithError:v5];
+    [extensionContext cancelRequestWithError:v5];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CDPRemoteUILocalSecretEntryViewController;
-  [(DevicePINController *)&v5 viewDidDisappear:a3];
+  [(DevicePINController *)&v5 viewDidDisappear:disappear];
   if (!self->_finished)
   {
     if ([(NSString *)self->_titleText length])
     {
-      v4 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-      [v4 stopAnimatingForIdentifier:@"localSecretValidator"];
+      mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+      [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:@"localSecretValidator"];
     }
   }
 }
 
 - (void)_startAnimating
 {
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v4 = [(CDPRemoteUILocalSecretEntryViewController *)self navigationItem];
-  [v3 startAnimatingInNavItem:v4 forIdentifier:@"localSecretValidator" hideBackButton:1];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [(CDPRemoteUILocalSecretEntryViewController *)self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"localSecretValidator" hideBackButton:1];
 
   v5 = *MEMORY[0x277D3FBE8];
   [*(&self->super.super.super.super.super.super.super.isa + v5) resignFirstResponder];
@@ -145,14 +145,14 @@
   [v6 setUserInteractionEnabled:0];
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nCopy = n;
   *(&self->_finished + 1) = 1;
   v12 = 0;
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  [v5 unlockScreenTypeWithOutSimplePasscodeType:&v12];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unlockScreenTypeWithOutSimplePasscodeType:&v12];
 
   if (v12 == -1)
   {
@@ -174,37 +174,37 @@
     [(CDPRemoteUILocalSecretEntryViewController *)self _startAnimating];
   }
 
-  if (v4)
+  if (nCopy)
   {
-    v7 = objc_alloc_init(MEMORY[0x277CCA9D8]);
+    extensionContext2 = objc_alloc_init(MEMORY[0x277CCA9D8]);
     v14[0] = @"localSecret";
     v14[1] = @"secretType";
-    v15[0] = v4;
+    v15[0] = nCopy;
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
     v15[1] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    [v7 setUserInfo:v9];
+    [extensionContext2 setUserInfo:v9];
 
-    v10 = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
-    v13 = v7;
+    extensionContext = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
+    v13 = extensionContext2;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
-    [v10 completeRequestReturningItems:v11 completionHandler:&__block_literal_global_4];
+    [extensionContext completeRequestReturningItems:v11 completionHandler:&__block_literal_global_4];
   }
 
   else
   {
-    v7 = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
-    [v7 cancelRequestWithError:v10];
+    extensionContext2 = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
+    extensionContext = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
+    [extensionContext2 cancelRequestWithError:extensionContext];
   }
 }
 
 - (void)didCancelEnteringPIN
 {
   *(&self->_finished + 1) = 1;
-  v3 = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
+  extensionContext = [(CDPRemoteUILocalSecretEntryViewController *)self extensionContext];
   v2 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
-  [v3 cancelRequestWithError:v2];
+  [extensionContext cancelRequestWithError:v2];
 }
 
 - (CGSize)preferredContentSize

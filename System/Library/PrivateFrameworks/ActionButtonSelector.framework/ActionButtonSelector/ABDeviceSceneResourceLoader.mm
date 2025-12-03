@@ -1,12 +1,12 @@
 @interface ABDeviceSceneResourceLoader
 + (id)sharedLoader;
 - (ABDeviceSceneResourceLoader)init;
-- (ABDeviceSceneResourceLoadingCancellable)loadResourcesWithCompletion:(uint64_t)a1;
+- (ABDeviceSceneResourceLoadingCancellable)loadResourcesWithCompletion:(uint64_t)completion;
 - (BOOL)_loadResources;
 - (BOOL)areResourcesLoaded;
 - (double)sceneModel;
 - (uint64_t)sceneView;
-- (void)_didCancelWithToken:(id)a3 completion:(id)a4;
+- (void)_didCancelWithToken:(id)token completion:(id)completion;
 - (void)_doCleanup;
 - (void)releaseResources;
 @end
@@ -44,9 +44,9 @@ uint64_t __43__ABDeviceSceneResourceLoader_sharedLoader__block_invoke()
     completions = v2->_completions;
     v2->_completions = v3;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     cancellables = v2->_cancellables;
-    v2->_cancellables = v5;
+    v2->_cancellables = weakObjectsHashTable;
   }
 
   return v2;
@@ -57,30 +57,30 @@ uint64_t __43__ABDeviceSceneResourceLoader_sharedLoader__block_invoke()
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   ABLoadDeviceSceneModel(v3, location);
   __move_assignment_8_8_s0_s8_s16_S_s24_s32_s40_s48_s56_s64_s72_t80w64(&self->_sceneModel, location);
-  v4 = [MEMORY[0x277D75348] redColor];
-  ABDeviceSceneButtonModelSetColor(v10, v4, 0.1);
+  redColor = [MEMORY[0x277D75348] redColor];
+  ABDeviceSceneButtonModelSetColor(v10, redColor, 0.1);
 
   [(SCNView *)self->_sceneView setScene:self->_sceneModel.scene];
   objc_initWeak(location, self);
   sceneView = self->_sceneView;
-  v6 = [(SCNView *)sceneView scene];
+  scene = [(SCNView *)sceneView scene];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__ABDeviceSceneResourceLoader__loadResources__block_invoke;
   v8[3] = &unk_278BFFD70;
   objc_copyWeak(&v9, location);
-  LOBYTE(sceneView) = [(SCNView *)sceneView prepareObject:v6 shouldAbortBlock:v8];
+  LOBYTE(sceneView) = [(SCNView *)sceneView prepareObject:scene shouldAbortBlock:v8];
   objc_destroyWeak(&v9);
 
   objc_destroyWeak(location);
   return sceneView;
 }
 
-- (ABDeviceSceneResourceLoadingCancellable)loadResourcesWithCompletion:(uint64_t)a1
+- (ABDeviceSceneResourceLoadingCancellable)loadResourcesWithCompletion:(uint64_t)completion
 {
   v37[2] = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (!a1)
+  if (!completion)
   {
 LABEL_10:
     v7 = 0;
@@ -90,7 +90,7 @@ LABEL_10:
   v4 = ABLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = *(a1 + 24) - 1;
+    v5 = *(completion + 24) - 1;
     if (v5 > 2)
     {
       v6 = @"Empty";
@@ -102,13 +102,13 @@ LABEL_10:
     }
 
     *buf = 138543618;
-    *&buf[4] = a1;
+    *&buf[4] = completion;
     *&buf[12] = 2114;
     *&buf[14] = v6;
     _os_log_impl(&dword_23DE18000, v4, OS_LOG_TYPE_DEFAULT, "(%{public}@) requested scene resources, current state is (%{public}@)", buf, 0x16u);
   }
 
-  if (*(a1 + 24) == 2)
+  if (*(completion + 24) == 2)
   {
     if (v3)
     {
@@ -120,7 +120,7 @@ LABEL_10:
 
   v8 = [v3 copy];
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, completion);
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3042000000;
@@ -140,24 +140,24 @@ LABEL_10:
   objc_storeWeak((*&buf[8] + 40), v7);
   if (v3)
   {
-    v10 = *(a1 + 8);
+    v10 = *(completion + 8);
     v11 = MEMORY[0x23EF01A70](v3);
     [v10 addObject:v11];
   }
 
-  if (*(a1 + 24) != 1)
+  if (*(completion + 24) != 1)
   {
     v12 = ABLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *v32 = 138543362;
-      v33 = a1;
+      completionCopy = completion;
       _os_log_impl(&dword_23DE18000, v12, OS_LOG_TYPE_DEFAULT, "(%{public}@) begin loading scene resources", v32, 0xCu);
     }
 
-    v14 = (a1 + 32);
-    v13 = *(a1 + 32);
-    *(a1 + 24) = 1;
+    v14 = (completion + 32);
+    v13 = *(completion + 32);
+    *(completion + 24) = 1;
     if (!v13)
     {
       v15 = dispatch_get_global_queue(21, 0);
@@ -167,20 +167,20 @@ LABEL_10:
     }
 
     v18 = objc_alloc(MEMORY[0x277CDBB20]);
-    v19 = [MEMORY[0x277D759A0] mainScreen];
-    [v19 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v20 = [v18 initWithFrame:?];
-    v21 = *(a1 + 48);
-    *(a1 + 48) = v20;
+    v21 = *(completion + 48);
+    *(completion + 48) = v20;
 
-    [*(a1 + 48) setAntialiasingMode:2];
-    [*(a1 + 48) setJitteringEnabled:1];
-    v22 = [MEMORY[0x277D75348] blackColor];
-    [*(a1 + 48) setBackgroundColor:v22];
+    [*(completion + 48) setAntialiasingMode:2];
+    [*(completion + 48) setJitteringEnabled:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [*(completion + 48) setBackgroundColor:blackColor];
 
-    v23 = [*(a1 + 48) layer];
-    [v23 setAllowsDisplayCompositing:0];
-    [(ABDeviceSceneResourceLoader *)v23 loadResourcesWithCompletion:v14, &v26, &location];
+    layer = [*(completion + 48) layer];
+    [layer setAllowsDisplayCompositing:0];
+    [(ABDeviceSceneResourceLoader *)layer loadResourcesWithCompletion:v14, &v26, &location];
   }
 
   objc_destroyWeak(&v30);
@@ -225,30 +225,30 @@ void __59__ABDeviceSceneResourceLoader_loadResourcesWithCompletion___block_invok
 - (void)releaseResources
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = ABLogger();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = [MEMORY[0x277CCABB0] numberWithInteger:a1[3]];
+      v3 = [MEMORY[0x277CCABB0] numberWithInteger:self[3]];
       *buf = 138543618;
-      v11 = a1;
+      selfCopy = self;
       v12 = 2114;
       v13 = v3;
       _os_log_impl(&dword_23DE18000, v2, OS_LOG_TYPE_DEFAULT, "(%{public}@) release scene resource, current state is (%{public}@)", buf, 0x16u);
     }
 
-    v4 = a1[3];
+    v4 = self[3];
     if (v4 == 2)
     {
-      [a1 _doCleanup];
+      [self _doCleanup];
     }
 
     else if (v4 == 1)
     {
-      [a1 setShouldAbortLoading:1];
-      objc_initWeak(buf, a1);
-      v5 = a1[1];
+      [self setShouldAbortLoading:1];
+      objc_initWeak(buf, self);
+      v5 = self[1];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __47__ABDeviceSceneResourceLoader_releaseResources__block_invoke;
@@ -288,20 +288,20 @@ uint64_t __45__ABDeviceSceneResourceLoader__loadResources__block_invoke(uint64_t
   return v3;
 }
 
-- (void)_didCancelWithToken:(id)a3 completion:(id)a4
+- (void)_didCancelWithToken:(id)token completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  tokenCopy = token;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     completions = self->_completions;
-    v10 = MEMORY[0x23EF01A70](v7);
+    v10 = MEMORY[0x23EF01A70](completionCopy);
     [(NSMutableOrderedSet *)completions removeObject:v10];
   }
 
-  [(NSHashTable *)self->_cancellables removeObject:v6];
+  [(NSHashTable *)self->_cancellables removeObject:tokenCopy];
   if (![(NSHashTable *)self->_cancellables count]&& self->_state == 1)
   {
     v11 = ABLogger();
@@ -319,7 +319,7 @@ uint64_t __45__ABDeviceSceneResourceLoader__loadResources__block_invoke(uint64_t
       }
 
       v15 = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v13;
       _os_log_impl(&dword_23DE18000, v11, OS_LOG_TYPE_DEFAULT, "(%{public}@) cancel scene resource loading, current state is (%{public}@)", &v15, 0x16u);
@@ -344,9 +344,9 @@ uint64_t __45__ABDeviceSceneResourceLoader__loadResources__block_invoke(uint64_t
 
 - (double)sceneModel
 {
-  if (a1)
+  if (self)
   {
-    return __copy_constructor_8_8_s0_s8_s16_S_s24_s32_s40_s48_s56_s64_s72_t80w64(a2, (a1 + 56));
+    return __copy_constructor_8_8_s0_s8_s16_S_s24_s32_s40_s48_s56_s64_s72_t80w64(a2, (self + 56));
   }
 
   result = 0.0;

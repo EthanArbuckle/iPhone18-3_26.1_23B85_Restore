@@ -1,22 +1,22 @@
 @interface ConversationParaphraseResultXPC
 - (_TtC14SiriKitRuntime31ConversationParaphraseResultXPC)init;
-- (_TtC14SiriKitRuntime31ConversationParaphraseResultXPC)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC14SiriKitRuntime31ConversationParaphraseResultXPC)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ConversationParaphraseResultXPC
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ConversationParaphraseResultXPC.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ConversationParaphraseResultXPC.encode(with:)(coderCopy);
 }
 
-- (_TtC14SiriKitRuntime31ConversationParaphraseResultXPC)initWithCoder:(id)a3
+- (_TtC14SiriKitRuntime31ConversationParaphraseResultXPC)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized ConversationParaphraseResultXPC.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized ConversationParaphraseResultXPC.init(coder:)(coderCopy);
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface TTRIRemindersBoardColumnDragItem
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 - (_TtC9Reminders32TTRIRemindersBoardColumnDragItem)init;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 @end
 
 @implementation TTRIRemindersBoardColumnDragItem
@@ -13,9 +13,9 @@
   return result;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100139D84(v7, v8);
 
@@ -24,12 +24,12 @@
   v11 = [v9 internalErrorWithDebugDescription:v10];
 
   swift_willThrow();
-  if (a5)
+  if (error)
   {
     v12 = _convertErrorToNSError(_:)();
 
     v13 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -39,11 +39,11 @@
   return 0;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   _Block_copy(v5);
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1002DF358(v5);
   _Block_release(v5);
   _Block_release(v5);

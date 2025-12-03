@@ -1,8 +1,8 @@
 @interface HUIEQChartModel
 - (CGPoint)value;
 - (_TtP9HearingUI23HUIEQChartModelDelegate_)delegate;
-- (void)setPointsWith_value:(CGPoint)a3;
-- (void)setValue:(CGPoint)a3;
+- (void)setPointsWith_value:(CGPoint)with_value;
+- (void)setValue:(CGPoint)value;
 @end
 
 @implementation HUIEQChartModel
@@ -11,7 +11,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_2521A506C();
 
   v4 = v6;
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (void)setValue:(CGPoint)a3
+- (void)setValue:(CGPoint)value
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_2521A507C();
 }
 
@@ -37,9 +37,9 @@
   return Strong;
 }
 
-- (void)setPointsWith_value:(CGPoint)a3
+- (void)setPointsWith_value:(CGPoint)with_value
 {
-  v3 = self;
+  selfCopy = self;
   sub_2521A3DD4();
 }
 

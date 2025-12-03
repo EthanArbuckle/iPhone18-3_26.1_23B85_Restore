@@ -1,28 +1,28 @@
 @interface PXVideoScrubberController
 - (AVPlayerItem)currentPlayerItem;
 - (PXVideoScrubberController)init;
-- (PXVideoScrubberController)initWithTarget:(id)a3 estimatedDuration:(double)a4;
+- (PXVideoScrubberController)initWithTarget:(id)target estimatedDuration:(double)duration;
 - (PXVideoScrubberControllerDelegate)delegate;
 - (double)_duration;
-- (double)_lengthForDuration:(double)a3;
-- (double)_progressForTime:(double)a3;
-- (double)_timeForProgress:(double)a3;
+- (double)_lengthForDuration:(double)duration;
+- (double)_progressForTime:(double)time;
+- (double)_timeForProgress:(double)progress;
 - (double)length;
 - (double)playheadProgress;
 - (float)playRate;
 - (void)_addObservers;
-- (void)_handleTimeoutCallbackForSeekRequest:(id)a3;
-- (void)_playerDidChange:(id)a3;
+- (void)_handleTimeoutCallbackForSeekRequest:(id)request;
+- (void)_playerDidChange:(id)change;
 - (void)_playerItemDidChange;
 - (void)_playerItemDurationDidChange;
 - (void)_removeObservers;
-- (void)_seekRequest:(id)a3 didFinish:(BOOL)a4;
-- (void)_seekToTime:(double)a3;
-- (void)_setActiveSeekRequest:(id)a3;
-- (void)_setAvPlayerCurrentTime:(id *)a3;
-- (void)_setAvPlayerDuration:(id *)a3;
-- (void)_setPlayheadProgress:(double)a3 andSeekVideoPlayer:(BOOL)a4;
-- (void)_setPlayheadTime:(double)a3;
+- (void)_seekRequest:(id)request didFinish:(BOOL)finish;
+- (void)_seekToTime:(double)time;
+- (void)_setActiveSeekRequest:(id)request;
+- (void)_setAvPlayerCurrentTime:(id *)time;
+- (void)_setAvPlayerDuration:(id *)duration;
+- (void)_setPlayheadProgress:(double)progress andSeekVideoPlayer:(BOOL)player;
+- (void)_setPlayheadTime:(double)time;
 - (void)_updateAvPlayerCurrentTimeIfNeeded;
 - (void)_updateAvPlayerDurationIfNeeded;
 - (void)_updateIfNeeded;
@@ -30,22 +30,22 @@
 - (void)beginSeeking;
 - (void)dealloc;
 - (void)endSeeking;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PXVideoScrubberController
 
-- (void)_setAvPlayerDuration:(id *)a3
+- (void)_setAvPlayerDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->$95D729B680665BEAEFA1D6FCA8238556::value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->$95D729B680665BEAEFA1D6FCA8238556::value = *&duration->var0;
   self->$95D729B680665BEAEFA1D6FCA8238556::epoch = var3;
 }
 
-- (void)_setAvPlayerCurrentTime:(id *)a3
+- (void)_setAvPlayerCurrentTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->$95D729B680665BEAEFA1D6FCA8238556::value = *&a3->var0;
+  var3 = time->var3;
+  *&self->$95D729B680665BEAEFA1D6FCA8238556::value = *&time->var0;
   self->$95D729B680665BEAEFA1D6FCA8238556::epoch = var3;
 }
 
@@ -135,17 +135,17 @@ void __63__PXVideoScrubberController__updateAvPlayerCurrentTimeIfNeeded__block_i
     self->_needsUpdate = 0;
     [(PXVideoScrubberController *)self _updateAvPlayerCurrentTimeIfNeeded];
     [(PXVideoScrubberController *)self _updateAvPlayerDurationIfNeeded];
-    v4 = [(PXVideoScrubberController *)self _activeSeekRequest];
-    if (v4)
+    _activeSeekRequest = [(PXVideoScrubberController *)self _activeSeekRequest];
+    if (_activeSeekRequest)
     {
-      v5 = [(PXVideoScrubberController *)self _pendingSeekRequest];
-      v6 = v5;
-      if (!v5)
+      _pendingSeekRequest = [(PXVideoScrubberController *)self _pendingSeekRequest];
+      v6 = _pendingSeekRequest;
+      if (!_pendingSeekRequest)
       {
-        v5 = v4;
+        _pendingSeekRequest = _activeSeekRequest;
       }
 
-      [v5 seekTime];
+      [_pendingSeekRequest seekTime];
       [(PXVideoScrubberController *)self _progressForTime:?];
       [(PXVideoScrubberController *)self _setPlayheadProgress:0 andSeekVideoPlayer:?];
     }
@@ -161,62 +161,62 @@ void __63__PXVideoScrubberController__updateAvPlayerCurrentTimeIfNeeded__block_i
 
     if (self->_videoScrubberDelegateFlags.respondsToDidUpdate)
     {
-      v7 = [(PXVideoScrubberController *)self delegate];
-      [v7 videoScrubberControllerDidUpdate:self];
+      delegate = [(PXVideoScrubberController *)self delegate];
+      [delegate videoScrubberControllerDidUpdate:self];
     }
 
     if (self->_needsUpdate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXVideoScrubberController.m" lineNumber:393 description:{@"Invalid parameter not satisfying: %@", @"!_needsUpdate"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoScrubberController.m" lineNumber:393 description:{@"Invalid parameter not satisfying: %@", @"!_needsUpdate"}];
     }
   }
 }
 
-- (void)_setPlayheadTime:(double)a3
+- (void)_setPlayheadTime:(double)time
 {
-  if (self->__playheadTime != a3)
+  if (self->__playheadTime != time)
   {
-    self->__playheadTime = a3;
+    self->__playheadTime = time;
     [(PXVideoScrubberController *)self _invalidate];
 
     [(PXVideoScrubberController *)self _updateIfNeeded];
   }
 }
 
-- (double)_lengthForDuration:(double)a3
+- (double)_lengthForDuration:(double)duration
 {
   if (!self->_videoScrubberDelegateFlags.respondsToLengthForDuration)
   {
-    return a3 * 60.0;
+    return duration * 60.0;
   }
 
-  v5 = [(PXVideoScrubberController *)self delegate];
-  [v5 videoScrubberController:self lengthForDuration:a3];
+  delegate = [(PXVideoScrubberController *)self delegate];
+  [delegate videoScrubberController:self lengthForDuration:duration];
   v7 = v6;
 
   return v7;
 }
 
-- (double)_progressForTime:(double)a3
+- (double)_progressForTime:(double)time
 {
   [(PXVideoScrubberController *)self _duration];
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
-    v5 = a3;
+    timeCopy = time;
   }
 
   else
   {
-    v5 = 0.0;
+    timeCopy = 0.0;
   }
 
-  if (v4 < v5)
+  if (v4 < timeCopy)
   {
-    v5 = v4;
+    timeCopy = v4;
   }
 
-  v6 = v5 / v4;
+  v6 = timeCopy / v4;
   if (v4 <= 0.0)
   {
     return 0.0;
@@ -228,25 +228,25 @@ void __63__PXVideoScrubberController__updateAvPlayerCurrentTimeIfNeeded__block_i
   }
 }
 
-- (double)_timeForProgress:(double)a3
+- (double)_timeForProgress:(double)progress
 {
-  if (a3 < 0.0)
+  if (progress < 0.0)
   {
-    a3 = 0.0;
+    progress = 0.0;
   }
 
-  if (a3 <= 1.0)
+  if (progress <= 1.0)
   {
-    v3 = a3;
+    progressCopy = progress;
   }
 
   else
   {
-    v3 = 1.0;
+    progressCopy = 1.0;
   }
 
   [(PXVideoScrubberController *)self _duration];
-  return v3 * v4;
+  return progressCopy * v4;
 }
 
 - (double)_duration
@@ -289,12 +289,12 @@ void __63__PXVideoScrubberController__updateAvPlayerCurrentTimeIfNeeded__block_i
   [(PXVideoScrubberController *)self _updateIfNeeded];
 }
 
-- (void)_playerDidChange:(id)a3
+- (void)_playerDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXVideoScrubberController *)self target];
+  changeCopy = change;
+  target = [(PXVideoScrubberController *)self target];
 
-  if (v5 == v4)
+  if (target == changeCopy)
   {
     [(PXVideoScrubberController *)self _invalidateAvPlayerCurrentTime];
 
@@ -304,8 +304,8 @@ void __63__PXVideoScrubberController__updateAvPlayerCurrentTimeIfNeeded__block_i
 
 - (void)_removeObservers
 {
-  v3 = [(PXVideoScrubberController *)self target];
-  [v3 removeTimeObserver:self->_playerObserver];
+  target = [(PXVideoScrubberController *)self target];
+  [target removeTimeObserver:self->_playerObserver];
 
   playerObserver = self->_playerObserver;
   self->_playerObserver = 0;
@@ -314,8 +314,8 @@ void __63__PXVideoScrubberController__updateAvPlayerCurrentTimeIfNeeded__block_i
 - (void)_addObservers
 {
   objc_initWeak(&location, self);
-  v3 = [(PXVideoScrubberController *)self target];
-  objc_initWeak(&from, v3);
+  target = [(PXVideoScrubberController *)self target];
+  objc_initWeak(&from, target);
 
   v4 = objc_loadWeakRetained(&from);
   CMTimeMakeWithSeconds(&v12, 0.03, 100);
@@ -344,111 +344,111 @@ void __42__PXVideoScrubberController__addObservers__block_invoke(uint64_t a1)
   [WeakRetained _playerDidChange:v2];
 }
 
-- (void)_setActiveSeekRequest:(id)a3
+- (void)_setActiveSeekRequest:(id)request
 {
-  v5 = a3;
-  if (self->__activeSeekRequest != v5)
+  requestCopy = request;
+  if (self->__activeSeekRequest != requestCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__activeSeekRequest, a3);
+    v6 = requestCopy;
+    objc_storeStrong(&self->__activeSeekRequest, request);
     [(PXVideoScrubberController *)self _invalidate];
-    v5 = v6;
+    requestCopy = v6;
   }
 }
 
-- (void)_handleTimeoutCallbackForSeekRequest:(id)a3
+- (void)_handleTimeoutCallbackForSeekRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v6 = v4;
-    v5 = [(PXVideoScrubberController *)self _activeSeekRequest];
+    v6 = requestCopy;
+    _activeSeekRequest = [(PXVideoScrubberController *)self _activeSeekRequest];
 
-    v4 = v6;
-    if (v5 == v6)
+    requestCopy = v6;
+    if (_activeSeekRequest == v6)
     {
       [(PXVideoScrubberController *)self _updateSeeking];
-      v4 = v6;
+      requestCopy = v6;
     }
   }
 }
 
-- (void)_seekRequest:(id)a3 didFinish:(BOOL)a4
+- (void)_seekRequest:(id)request didFinish:(BOOL)finish
 {
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v7 = v5;
-    v6 = [(PXVideoScrubberController *)self _activeSeekRequest];
+    v7 = requestCopy;
+    _activeSeekRequest = [(PXVideoScrubberController *)self _activeSeekRequest];
 
-    v5 = v7;
-    if (v6 == v7)
+    requestCopy = v7;
+    if (_activeSeekRequest == v7)
     {
       [(PXVideoScrubberController *)self _setActiveSeekRequest:0];
       [(PXVideoScrubberController *)self _updateSeeking];
-      v5 = v7;
+      requestCopy = v7;
     }
   }
 }
 
 - (void)_updateSeeking
 {
-  v3 = [(PXVideoScrubberController *)self _activeSeekRequest];
-  v4 = [(PXVideoScrubberController *)self target];
-  if (v3)
+  _activeSeekRequest = [(PXVideoScrubberController *)self _activeSeekRequest];
+  target = [(PXVideoScrubberController *)self target];
+  if (_activeSeekRequest)
   {
-    v5 = [(PXVideoScrubberController *)self _pendingSeekRequest];
+    _pendingSeekRequest = [(PXVideoScrubberController *)self _pendingSeekRequest];
 
-    if (v5)
+    if (_pendingSeekRequest)
     {
-      v6 = [MEMORY[0x1E695DF00] date];
-      v7 = [v3 dateCreated];
-      [v6 timeIntervalSinceDate:v7];
+      date = [MEMORY[0x1E695DF00] date];
+      dateCreated = [_activeSeekRequest dateCreated];
+      [date timeIntervalSinceDate:dateCreated];
       v9 = v8;
 
       if (v9 >= 60.0 || v9 < 0.0)
       {
-        [v4 cancelPendingSeeks];
+        [target cancelPendingSeeks];
         [(PXVideoScrubberController *)self _setActiveSeekRequest:0];
 
-        v3 = 0;
+        _activeSeekRequest = 0;
       }
     }
   }
 
-  v10 = [(PXVideoScrubberController *)self _pendingSeekRequest];
-  v11 = [v4 playerStatus];
-  if (v10)
+  _pendingSeekRequest2 = [(PXVideoScrubberController *)self _pendingSeekRequest];
+  playerStatus = [target playerStatus];
+  if (_pendingSeekRequest2)
   {
-    v12 = v11;
-    [v10 seekTime];
+    v12 = playerStatus;
+    [_pendingSeekRequest2 seekTime];
     v14 = v13;
     v36 = 0uLL;
     v37 = 0;
-    if (v4)
+    if (target)
     {
-      [v4 currentItemDuration];
+      [target currentItemDuration];
     }
 
     memset(&time, 0, sizeof(time));
     CMTimeMakeWithSeconds(&time, v14, 100);
     if (self->_videoScrubberDelegateFlags.respondsToDesiredSeekTime)
     {
-      v15 = [(PXVideoScrubberController *)self delegate];
+      delegate = [(PXVideoScrubberController *)self delegate];
       v34 = time;
-      [v15 videoScrubberController:self desiredSeekTime:&v34];
+      [delegate videoScrubberController:self desiredSeekTime:&v34];
     }
 
-    if (!v3 && v12 == 1)
+    if (!_activeSeekRequest && v12 == 1)
     {
-      v16 = v10;
+      v16 = _pendingSeekRequest2;
       [(PXVideoScrubberController *)self _setActiveSeekRequest:v16];
       [(PXVideoScrubberController *)self _setPendingSeekRequest:0];
       objc_initWeak(&location, self);
       objc_initWeak(&from, v16);
-      v17 = [v4 playerItem];
+      playerItem = [target playerItem];
       v31 = time;
-      if ([v17 px_loadedTimeRangesContainTime:&v31])
+      if ([playerItem px_loadedTimeRangesContainTime:&v31])
       {
         *&v34.value = *MEMORY[0x1E6960CC0];
         epoch = *(MEMORY[0x1E6960CC0] + 16);
@@ -471,7 +471,7 @@ void __42__PXVideoScrubberController__addObservers__block_invoke(uint64_t a1)
       v31 = time;
       v27 = v34;
       v26 = v34;
-      [v4 videoScrubberController:self seekToTime:&v31 toleranceBefore:&v27 toleranceAfter:&v26 completionHandler:v28];
+      [target videoScrubberController:self seekToTime:&v31 toleranceBefore:&v27 toleranceAfter:&v26 completionHandler:v28];
       v19 = dispatch_time(0, 60000000000);
       v20 = MEMORY[0x1E69E9820];
       v21 = 3221225472;
@@ -521,11 +521,11 @@ void __43__PXVideoScrubberController__updateSeeking__block_invoke_2(uint64_t a1)
   [WeakRetained _seekRequest:v2 didFinish:*(a1 + 48)];
 }
 
-- (void)_seekToTime:(double)a3
+- (void)_seekToTime:(double)time
 {
   v5 = [PXScrubberSeekRequest alloc];
-  v6 = [(PXVideoScrubberController *)self target];
-  v7 = [(PXScrubberSeekRequest *)v5 initWithTarget:v6 seekTime:a3];
+  target = [(PXVideoScrubberController *)self target];
+  v7 = [(PXScrubberSeekRequest *)v5 initWithTarget:target seekTime:time];
 
   [(PXVideoScrubberController *)self _setPendingSeekRequest:v7];
   [(PXVideoScrubberController *)self _updateSeeking];
@@ -533,8 +533,8 @@ void __43__PXVideoScrubberController__updateSeeking__block_invoke_2(uint64_t a1)
 
 - (float)playRate
 {
-  v2 = [(PXVideoScrubberController *)self target];
-  [v2 playRate];
+  target = [(PXVideoScrubberController *)self target];
+  [target playRate];
   v4 = v3;
 
   return v4;
@@ -542,10 +542,10 @@ void __43__PXVideoScrubberController__updateSeeking__block_invoke_2(uint64_t a1)
 
 - (AVPlayerItem)currentPlayerItem
 {
-  v2 = [(PXVideoScrubberController *)self target];
-  v3 = [v2 playerItem];
+  target = [(PXVideoScrubberController *)self target];
+  playerItem = [target playerItem];
 
-  return v3;
+  return playerItem;
 }
 
 - (void)endSeeking
@@ -564,12 +564,12 @@ void __43__PXVideoScrubberController__updateSeeking__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setPlayheadProgress:(double)a3 andSeekVideoPlayer:(BOOL)a4
+- (void)_setPlayheadProgress:(double)progress andSeekVideoPlayer:(BOOL)player
 {
-  v4 = a4;
-  [(PXVideoScrubberController *)self _timeForProgress:a3];
+  playerCopy = player;
+  [(PXVideoScrubberController *)self _timeForProgress:progress];
   v7 = v6;
-  if (v4)
+  if (playerCopy)
   {
     [(PXVideoScrubberController *)self _seekToTime:v6];
   }
@@ -590,11 +590,11 @@ void __43__PXVideoScrubberController__updateSeeking__block_invoke_2(uint64_t a1)
   [(PXVideoScrubberController *)self estimatedDuration];
   Seconds = v3;
   memset(&v9, 0, sizeof(v9));
-  v5 = [(PXVideoScrubberController *)self target];
-  v6 = v5;
-  if (v5)
+  target = [(PXVideoScrubberController *)self target];
+  v6 = target;
+  if (target)
   {
-    [v5 currentItemDuration];
+    [target currentItemDuration];
   }
 
   else
@@ -612,9 +612,9 @@ void __43__PXVideoScrubberController__updateSeeking__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -635,41 +635,41 @@ void __43__PXVideoScrubberController__updateSeeking__block_invoke_2(uint64_t a1)
   [(PXVideoScrubberController *)&v3 dealloc];
 }
 
-- (PXVideoScrubberController)initWithTarget:(id)a3 estimatedDuration:(double)a4
+- (PXVideoScrubberController)initWithTarget:(id)target estimatedDuration:(double)duration
 {
-  v8 = a3;
+  targetCopy = target;
   v22.receiver = self;
   v22.super_class = PXVideoScrubberController;
   v9 = [(PXVideoScrubberController *)&v22 init];
   if (v9)
   {
-    if (!v8)
+    if (!targetCopy)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:v9 file:@"PXVideoScrubberController.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"target != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PXVideoScrubberController.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"target != nil"}];
     }
 
-    *(v9 + 16) = a4;
-    objc_storeStrong(v9 + 15, a3);
+    *(v9 + 16) = duration;
+    objc_storeStrong(v9 + 15, target);
     objc_initWeak(&location, v9);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __62__PXVideoScrubberController_initWithTarget_estimatedDuration___block_invoke;
     v19[3] = &unk_1E774C318;
     objc_copyWeak(&v20, &location);
-    [v8 setDurationChangeHandler:v19];
+    [targetCopy setDurationChangeHandler:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __62__PXVideoScrubberController_initWithTarget_estimatedDuration___block_invoke_2;
     v17[3] = &unk_1E774C318;
     objc_copyWeak(&v18, &location);
-    [v8 setStatusChangeHandler:v17];
+    [targetCopy setStatusChangeHandler:v17];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__PXVideoScrubberController_initWithTarget_estimatedDuration___block_invoke_3;
     v15[3] = &unk_1E774C318;
     objc_copyWeak(&v16, &location);
-    [v8 setPlayerItemChangeHandler:v15];
+    [targetCopy setPlayerItemChangeHandler:v15];
     v9[104] = 1;
     v9[105] = 1;
     v9[106] = 1;
@@ -713,8 +713,8 @@ void __62__PXVideoScrubberController_initWithTarget_estimatedDuration___block_in
 
 - (PXVideoScrubberController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXVideoScrubberController.m" lineNumber:63 description:{@"%s is not available as initializer", "-[PXVideoScrubberController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoScrubberController.m" lineNumber:63 description:{@"%s is not available as initializer", "-[PXVideoScrubberController init]"}];
 
   abort();
 }

@@ -1,11 +1,11 @@
 @interface IMBActionBubbleView
-- (_TtC8Business19IMBActionBubbleView)initWithCoder:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (_TtC8Business19IMBActionBubbleView)initWithCoder:(id)coder;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation IMBActionBubbleView
 
-- (_TtC8Business19IMBActionBubbleView)initWithCoder:(id)a3
+- (_TtC8Business19IMBActionBubbleView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8Business19IMBActionBubbleView_tapIndicator;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for IMBAuthenticationTapIndicator()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -14,26 +14,26 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_100005A24(0, &qword_1000F2A68, UITouch_ptr);
   sub_100080BF0();
   sub_1000AC26C();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   isa = sub_1000AC25C().super.isa;
 
-  v10.receiver = v7;
+  v10.receiver = selfCopy;
   v10.super_class = type metadata accessor for IMBActionBubbleView();
-  [(IMBBubbleView *)&v10 touchesBegan:isa withEvent:v6];
+  [(IMBBubbleView *)&v10 touchesBegan:isa withEvent:eventCopy];
 
-  v9 = [*(&v7->super.super.super.super.isa + OBJC_IVAR____TtC8Business19IMBActionBubbleView_tapIndicator) layer];
+  layer = [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC8Business19IMBActionBubbleView_tapIndicator) layer];
   if (qword_1000EED88 != -1)
   {
     swift_once();
   }
 
-  [v9 setBackgroundColor:qword_1000FBE90];
+  [layer setBackgroundColor:qword_1000FBE90];
 }
 
 @end

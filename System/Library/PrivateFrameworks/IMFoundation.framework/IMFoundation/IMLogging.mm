@@ -2,34 +2,34 @@
 + (id)dateFormatter;
 + (id)logFileDirectory;
 + (id)timeFormatter;
-+ (void)logAtLevel:(int)a3 type:(id)a4 category:(id)a5 insertProcessInfo:(BOOL)a6 simpleLogString:(id)a7 format:(id)a8 arguments:(char *)a9 time:(unint64_t)a10;
-+ (void)logString:(id)a3 toFolder:(id)a4 toFileNamed:(id)a5;
++ (void)logAtLevel:(int)level type:(id)type category:(id)category insertProcessInfo:(BOOL)info simpleLogString:(id)string format:(id)format arguments:(char *)arguments time:(unint64_t)self0;
++ (void)logString:(id)string toFolder:(id)folder toFileNamed:(id)named;
 @end
 
 @implementation IMLogging
 
-+ (void)logAtLevel:(int)a3 type:(id)a4 category:(id)a5 insertProcessInfo:(BOOL)a6 simpleLogString:(id)a7 format:(id)a8 arguments:(char *)a9 time:(unint64_t)a10
++ (void)logAtLevel:(int)level type:(id)type category:(id)category insertProcessInfo:(BOOL)info simpleLogString:(id)string format:(id)format arguments:(char *)arguments time:(unint64_t)self0
 {
-  v12 = a6;
-  v45 = a5;
-  v15 = a7;
-  v16 = a8;
-  v17 = a4;
-  v18 = IMCreateStringFromDate(a10);
+  infoCopy = info;
+  categoryCopy = category;
+  stringCopy = string;
+  formatCopy = format;
+  typeCopy = type;
+  v18 = IMCreateStringFromDate(time);
   v19 = objc_alloc(MEMORY[0x1E696AD60]);
   v21 = objc_msgSend_initWithString_(v19, v20, v18);
-  if (v15)
+  if (stringCopy)
   {
-    FormatString = v15;
+    FormatString = stringCopy;
   }
 
   else
   {
-    FormatString = _IMFastCreateFormatString(v16, a9);
+    FormatString = _IMFastCreateFormatString(formatCopy, arguments);
   }
 
   v30 = FormatString;
-  if (dword_1EAED83A0 >= a3)
+  if (dword_1EAED83A0 >= level)
   {
     _IMLog(@"%@", v23, v24, v25, v26, v27, v28, v29, FormatString);
   }
@@ -40,16 +40,16 @@
   }
 
   v31 = qword_1EAED92B8;
-  if (objc_msgSend_length(v45, v32, v33))
+  if (objc_msgSend_length(categoryCopy, v32, v33))
   {
-    v35 = v45;
+    v35 = categoryCopy;
 
     v31 = v35;
   }
 
   v36 = objc_msgSend_stringByAppendingString_(v31, v34, @".log");
   objc_msgSend_appendString_(v21, v37, @" ");
-  if (v12)
+  if (infoCopy)
   {
     v39 = qword_1EAED92B8;
     v40 = getpid();
@@ -62,7 +62,7 @@
   }
 
   objc_msgSend_appendString_(v21, v42, @"\n");
-  objc_msgSend_logString_toFolder_toFileNamed_(a1, v43, v21, v17, v36);
+  objc_msgSend_logString_toFolder_toFileNamed_(self, v43, v21, typeCopy, v36);
 }
 
 + (id)logFileDirectory
@@ -115,11 +115,11 @@
   return v8;
 }
 
-+ (void)logString:(id)a3 toFolder:(id)a4 toFileNamed:(id)a5
++ (void)logString:(id)string toFolder:(id)folder toFileNamed:(id)named
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  folderCopy = folder;
+  namedCopy = named;
   if (qword_1EAED92F0 != -1)
   {
     sub_1959D604C();
@@ -130,13 +130,13 @@
   v15[1] = 3221225472;
   v15[2] = sub_1959C03F8;
   v15[3] = &unk_1E7439838;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v19 = a1;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = folderCopy;
+  v17 = namedCopy;
+  v18 = stringCopy;
+  selfCopy = self;
+  v12 = stringCopy;
+  v13 = namedCopy;
+  v14 = folderCopy;
   dispatch_async(v11, v15);
 }
 

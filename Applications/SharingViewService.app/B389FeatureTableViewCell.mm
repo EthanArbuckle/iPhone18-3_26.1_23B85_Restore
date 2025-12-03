@@ -1,13 +1,13 @@
 @interface B389FeatureTableViewCell
-- (_TtC18SharingViewService24B389FeatureTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18SharingViewService24B389FeatureTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation B389FeatureTableViewCell
 
-- (_TtC18SharingViewService24B389FeatureTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18SharingViewService24B389FeatureTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -24,7 +24,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000171C0();
 }
 

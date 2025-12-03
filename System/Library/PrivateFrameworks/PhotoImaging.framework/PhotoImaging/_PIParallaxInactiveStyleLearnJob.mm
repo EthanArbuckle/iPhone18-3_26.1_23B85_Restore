@@ -1,6 +1,6 @@
 @interface _PIParallaxInactiveStyleLearnJob
-- (BOOL)complete:(id *)a3;
-- (BOOL)render:(id *)a3;
+- (BOOL)complete:(id *)complete;
+- (BOOL)render:(id *)render;
 - (CGRect)learnFrame;
 - (id)result;
 @end
@@ -23,32 +23,32 @@
 - (id)result
 {
   v3 = [_PIParallaxInactiveStyleLearnResult alloc];
-  v4 = [(_PIParallaxInactiveStyleLearnJob *)self styleData];
+  styleData = [(_PIParallaxInactiveStyleLearnJob *)self styleData];
   [(_PIParallaxInactiveStyleLearnJob *)self learnFrame];
-  v5 = [(_PIParallaxInactiveStyleLearnResult *)v3 initWithStyleData:v4 frame:?];
+  v5 = [(_PIParallaxInactiveStyleLearnResult *)v3 initWithStyleData:styleData frame:?];
 
   return v5;
 }
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   dispatch_group_wait(self->_learnGroup, 0xFFFFFFFFFFFFFFFFLL);
-  v5 = [(_PIParallaxInactiveStyleLearnJob *)self styleData];
+  styleData = [(_PIParallaxInactiveStyleLearnJob *)self styleData];
 
-  if (!v5)
+  if (!styleData)
   {
     v6 = MEMORY[0x1E69B3A48];
-    v7 = [(_PIParallaxInactiveStyleLearnJob *)self learnError];
-    *a3 = [v6 errorWithCode:2 reason:@"Error learning inactive style" object:0 underlyingError:v7];
+    learnError = [(_PIParallaxInactiveStyleLearnJob *)self learnError];
+    *complete = [v6 errorWithCode:2 reason:@"Error learning inactive style" object:0 underlyingError:learnError];
   }
 
-  return v5 != 0;
+  return styleData != 0;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v81 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v57 = NUAssertLogger_18502();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -70,8 +70,8 @@
         v65 = dispatch_get_specific(*v59);
         v66 = MEMORY[0x1E696AF00];
         v67 = v65;
-        v68 = [v66 callStackSymbols];
-        v69 = [v68 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v66 callStackSymbols];
+        v69 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v65;
         v79 = 2114;
@@ -82,8 +82,8 @@
 
     else if (v62)
     {
-      v63 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v64 = [v63 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v64 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v64;
       _os_log_error_impl(&dword_1C7694000, v61, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -92,33 +92,33 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [(_PIParallaxInactiveStyleLearnJob *)self inactiveStyleLearnRequest];
-  v6 = [v5 fromBuffer];
-  v7 = [v5 toBuffer];
-  v8 = v7;
-  if (v6 && v7)
+  inactiveStyleLearnRequest = [(_PIParallaxInactiveStyleLearnJob *)self inactiveStyleLearnRequest];
+  fromBuffer = [inactiveStyleLearnRequest fromBuffer];
+  toBuffer = [inactiveStyleLearnRequest toBuffer];
+  v8 = toBuffer;
+  if (fromBuffer && toBuffer)
   {
-    v9 = [(NURenderJob *)self renderer:a3];
+    v9 = [(NURenderJob *)self renderer:render];
     if (v9)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v10 = v9;
-        v11 = [v10 context];
-        v12 = [v10 device];
-        v13 = [v10 commandQueue];
-        v14 = v13;
-        v75 = v12;
-        if (v12 && v13)
+        context = [v10 context];
+        device = [v10 device];
+        commandQueue = [v10 commandQueue];
+        v14 = commandQueue;
+        v75 = device;
+        if (device && commandQueue)
         {
-          v74 = v11;
-          [v5 sourceFrame];
+          v74 = context;
+          [inactiveStyleLearnRequest sourceFrame];
           v16 = v15;
           v18 = v17;
           v20 = v19;
           v22 = v21;
-          [v5 targetFrame];
+          [inactiveStyleLearnRequest targetFrame];
           v84.origin.x = v23;
           v84.origin.y = v24;
           v84.size.width = v25;
@@ -132,8 +132,8 @@
           y = v83.origin.y;
           width = v83.size.width;
           height = v83.size.height;
-          [v6 size];
-          [v6 size];
+          [fromBuffer size];
+          [fromBuffer size];
           [v8 size];
           [v8 size];
           NURectNormalize();
@@ -157,10 +157,10 @@
           v44 = v43;
           v46 = v45;
           v47 = [PIParallaxInactiveStyleEngine alloc];
-          v48 = v12;
+          v48 = device;
           v49 = v14;
           v50 = [(PIParallaxInactiveStyleEngine *)v47 initWithMetalDevice:v48 commandQueue:v14];
-          v51 = [(PIParallaxInactiveStyleEngine *)v50 prepareForLearningWithImageSize:a3 error:v36, v38];
+          v51 = [(PIParallaxInactiveStyleEngine *)v50 prepareForLearningWithImageSize:render error:v36, v38];
           if (v51)
           {
             v52 = dispatch_group_create();
@@ -168,35 +168,35 @@
             self->_learnGroup = v52;
 
             dispatch_group_enter(self->_learnGroup);
-            v54 = [v6 CVPixelBuffer];
-            v55 = [v8 CVPixelBuffer];
+            cVPixelBuffer = [fromBuffer CVPixelBuffer];
+            cVPixelBuffer2 = [v8 CVPixelBuffer];
             v76[0] = MEMORY[0x1E69E9820];
             v76[1] = 3221225472;
             v76[2] = __43___PIParallaxInactiveStyleLearnJob_render___block_invoke;
             v76[3] = &unk_1E82AB7A0;
             v76[4] = self;
-            [(PIParallaxInactiveStyleEngine *)v50 learnStyleFromPixelBuffer:v54 rect:v55 toPixelBuffer:v76 rect:v32 completion:v34, v36, v38, v40, v42, v44, v46];
+            [(PIParallaxInactiveStyleEngine *)v50 learnStyleFromPixelBuffer:cVPixelBuffer rect:cVPixelBuffer2 toPixelBuffer:v76 rect:v32 completion:v34, v36, v38, v40, v42, v44, v46];
             self->_learnFrame.origin.x = v73;
             self->_learnFrame.origin.y = v72;
             self->_learnFrame.size.width = v71;
             self->_learnFrame.size.height = v70;
           }
 
-          v11 = v74;
+          context = v74;
         }
 
         else
         {
-          v49 = v13;
-          [MEMORY[0x1E69B3A48] invalidError:@"Missing required Metal resources" object:v11];
-          *a3 = LOBYTE(v51) = 0;
+          v49 = commandQueue;
+          [MEMORY[0x1E69B3A48] invalidError:@"Missing required Metal resources" object:context];
+          *render = LOBYTE(v51) = 0;
         }
       }
 
       else
       {
         [MEMORY[0x1E69B3A48] invalidError:@"Unexpected renderer class" object:v9];
-        *a3 = LOBYTE(v51) = 0;
+        *render = LOBYTE(v51) = 0;
       }
     }
 
@@ -208,8 +208,8 @@
 
   else
   {
-    [MEMORY[0x1E69B3A48] missingError:@"Missing required pixel buffers" object:v5];
-    *a3 = LOBYTE(v51) = 0;
+    [MEMORY[0x1E69B3A48] missingError:@"Missing required pixel buffers" object:inactiveStyleLearnRequest];
+    *render = LOBYTE(v51) = 0;
   }
 
   return v51;

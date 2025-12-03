@@ -1,16 +1,16 @@
 @interface SBSRemoteAlertActivationContext
-+ (id)activationContextWithLegacyAlertOptions:(id)a3;
++ (id)activationContextWithLegacyAlertOptions:(id)options;
 - (SBSRemoteAlertActivationContext)init;
-- (SBSRemoteAlertActivationContext)initWithActions:(id)a3 presentationTarget:(id)a4 userInfo:(id)a5;
-- (SBSRemoteAlertActivationContext)initWithCoder:(id)a3;
-- (SBSRemoteAlertActivationContext)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSRemoteAlertActivationContext)initWithActions:(id)actions presentationTarget:(id)target userInfo:(id)info;
+- (SBSRemoteAlertActivationContext)initWithCoder:(id)coder;
+- (SBSRemoteAlertActivationContext)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setLegacyAlertOptions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setLegacyAlertOptions:(id)options;
 @end
 
 @implementation SBSRemoteAlertActivationContext
@@ -23,26 +23,26 @@
   return v4;
 }
 
-- (SBSRemoteAlertActivationContext)initWithActions:(id)a3 presentationTarget:(id)a4 userInfo:(id)a5
+- (SBSRemoteAlertActivationContext)initWithActions:(id)actions presentationTarget:(id)target userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionsCopy = actions;
+  targetCopy = target;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = SBSRemoteAlertActivationContext;
   v11 = [(SBSRemoteAlertActivationContext *)&v20 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 bundleIdentifier];
-    v11->_shouldEmbedOverShieldedApps = [v13 isEqualToString:@"com.apple.LocalAuthenticationUIService"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v11->_shouldEmbedOverShieldedApps = [bundleIdentifier isEqualToString:@"com.apple.LocalAuthenticationUIService"];
 
-    v14 = [v8 copy];
+    v14 = [actionsCopy copy];
     actions = v11->_actions;
     v11->_actions = v14;
 
-    objc_storeStrong(&v11->_presentationTarget, a4);
-    v16 = [v10 copy];
+    objc_storeStrong(&v11->_presentationTarget, target);
+    v16 = [infoCopy copy];
     userInfo = v11->_userInfo;
     v11->_userInfo = v16;
 
@@ -54,18 +54,18 @@
   return v11;
 }
 
-+ (id)activationContextWithLegacyAlertOptions:(id)a3
++ (id)activationContextWithLegacyAlertOptions:(id)options
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setLegacyAlertOptions:v4];
+  optionsCopy = options;
+  v5 = objc_alloc_init(self);
+  [v5 setLegacyAlertOptions:optionsCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithActions:presentationTarget:userInfo:", self->_actions, self->_presentationTarget, self->_userInfo}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithActions:presentationTarget:userInfo:", self->_actions, self->_presentationTarget, self->_userInfo}];
   v5 = v4;
   if (v4)
   {
@@ -83,9 +83,9 @@
   return v5;
 }
 
-- (SBSRemoteAlertActivationContext)initWithXPCDictionary:(id)a3
+- (SBSRemoteAlertActivationContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeSetOfBSXPCEncodableObjectsFromXPCDictionaryWithKey();
   v6 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey();
   v7 = BSDeserializeCFValueFromXPCDictionaryWithKey();
@@ -100,32 +100,32 @@
     reason = v8->_reason;
     v8->_reason = v11;
 
-    v8->_activatingForSiri = xpc_dictionary_get_BOOL(v4, "activatingForSiri");
+    v8->_activatingForSiri = xpc_dictionary_get_BOOL(dictionaryCopy, "activatingForSiri");
     objc_opt_class();
     v13 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
     activityContinuationIdentifier = v8->_activityContinuationIdentifier;
     v8->_activityContinuationIdentifier = v13;
 
-    v8->_switcherEligible = xpc_dictionary_get_BOOL(v4, "switcherEligible");
-    v8->_shouldInvalidateWhenDeactivated = xpc_dictionary_get_BOOL(v4, "shouldInvalidateWhenDeactivated");
-    v8->_shouldDismissPresentedBanners = xpc_dictionary_get_BOOL(v4, "shouldDismissPresentedBanners");
-    v8->_shouldStashPictureInPictureIfNeeded = xpc_dictionary_get_BOOL(v4, "shouldStashPictureInPictureIfNeeded");
-    v8->_presentationMode = xpc_dictionary_get_int64(v4, "presentationMode");
-    v8->_initialSupportedInterfaceOrientations = xpc_dictionary_get_int64(v4, "initialSupportedInterfaceOrientations");
+    v8->_switcherEligible = xpc_dictionary_get_BOOL(dictionaryCopy, "switcherEligible");
+    v8->_shouldInvalidateWhenDeactivated = xpc_dictionary_get_BOOL(dictionaryCopy, "shouldInvalidateWhenDeactivated");
+    v8->_shouldDismissPresentedBanners = xpc_dictionary_get_BOOL(dictionaryCopy, "shouldDismissPresentedBanners");
+    v8->_shouldStashPictureInPictureIfNeeded = xpc_dictionary_get_BOOL(dictionaryCopy, "shouldStashPictureInPictureIfNeeded");
+    v8->_presentationMode = xpc_dictionary_get_int64(dictionaryCopy, "presentationMode");
+    v8->_initialSupportedInterfaceOrientations = xpc_dictionary_get_int64(dictionaryCopy, "initialSupportedInterfaceOrientations");
     objc_opt_class();
     v15 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
     preferredSceneDeactivationReason = v8->_preferredSceneDeactivationReason;
     v8->_preferredSceneDeactivationReason = v15;
 
-    v8->_shouldEmbedOverShieldedApps = xpc_dictionary_get_BOOL(v4, "shouldEmbedOverShieldedApps");
+    v8->_shouldEmbedOverShieldedApps = xpc_dictionary_get_BOOL(dictionaryCopy, "shouldEmbedOverShieldedApps");
   }
 
   return v8;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   if (self->_reason)
   {
     BSSerializeStringToXPCDictionaryWithKey();
@@ -180,16 +180,16 @@ id __59__SBSRemoteAlertActivationContext_encodeWithXPCDictionary___block_invoke(
   return v0;
 }
 
-- (SBSRemoteAlertActivationContext)initWithCoder:(id)a3
+- (SBSRemoteAlertActivationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"actions"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"actions"];
 
   v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"presentationTarget"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"presentationTarget"];
 
   if (v8)
   {
@@ -205,52 +205,52 @@ id __59__SBSRemoteAlertActivationContext_encodeWithXPCDictionary___block_invoke(
 
   if (v12)
   {
-    v13 = [v4 decodePropertyListForKey:@"legacyOptions"];
+    v13 = [coderCopy decodePropertyListForKey:@"legacyOptions"];
     if ([v13 isNSDictionary])
     {
       objc_storeStrong(&v12->_legacyAlertOptions, v13);
     }
 
-    v14 = [v4 decodePropertyListForKey:@"userInfo"];
+    v14 = [coderCopy decodePropertyListForKey:@"userInfo"];
     if ([v14 isNSDictionary])
     {
       objc_storeStrong(&v12->_userInfo, v14);
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v12->_reason;
     v12->_reason = v15;
 
-    v12->_activatingForSiri = [v4 decodeBoolForKey:@"activatingForSiri"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityContinuationIdentifier"];
+    v12->_activatingForSiri = [coderCopy decodeBoolForKey:@"activatingForSiri"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityContinuationIdentifier"];
     activityContinuationIdentifier = v12->_activityContinuationIdentifier;
     v12->_activityContinuationIdentifier = v17;
 
-    v12->_switcherEligible = [v4 decodeBoolForKey:@"switcherEligible"];
-    v12->_shouldInvalidateWhenDeactivated = [v4 decodeBoolForKey:@"shouldInvalidateWhenDeactivated"];
-    v12->_shouldDismissPresentedBanners = [v4 decodeBoolForKey:@"shouldDismissPresentedBanners"];
-    v12->_shouldStashPictureInPictureIfNeeded = [v4 decodeBoolForKey:@"shouldStashPictureInPictureIfNeeded"];
-    v12->_presentationMode = [v4 decodeIntegerForKey:@"presentationMode"];
-    v12->_initialSupportedInterfaceOrientations = [v4 decodeIntegerForKey:@"initialSupportedInterfaceOrientations"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredSceneDeactivationReason"];
+    v12->_switcherEligible = [coderCopy decodeBoolForKey:@"switcherEligible"];
+    v12->_shouldInvalidateWhenDeactivated = [coderCopy decodeBoolForKey:@"shouldInvalidateWhenDeactivated"];
+    v12->_shouldDismissPresentedBanners = [coderCopy decodeBoolForKey:@"shouldDismissPresentedBanners"];
+    v12->_shouldStashPictureInPictureIfNeeded = [coderCopy decodeBoolForKey:@"shouldStashPictureInPictureIfNeeded"];
+    v12->_presentationMode = [coderCopy decodeIntegerForKey:@"presentationMode"];
+    v12->_initialSupportedInterfaceOrientations = [coderCopy decodeIntegerForKey:@"initialSupportedInterfaceOrientations"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredSceneDeactivationReason"];
     preferredSceneDeactivationReason = v12->_preferredSceneDeactivationReason;
     v12->_preferredSceneDeactivationReason = v19;
 
-    v12->_shouldEmbedOverShieldedApps = [v4 decodeBoolForKey:@"shouldEmbedOverShieldedApps"];
+    v12->_shouldEmbedOverShieldedApps = [coderCopy decodeBoolForKey:@"shouldEmbedOverShieldedApps"];
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   actions = self->_actions;
-  v14 = v4;
+  v14 = coderCopy;
   if (actions)
   {
-    v6 = [(NSSet *)actions allObjects];
-    [v14 encodeObject:v6 forKey:@"actions"];
+    allObjects = [(NSSet *)actions allObjects];
+    [v14 encodeObject:allObjects forKey:@"actions"];
   }
 
   activityContinuationIdentifier = self->_activityContinuationIdentifier;
@@ -307,56 +307,56 @@ id __59__SBSRemoteAlertActivationContext_encodeWithXPCDictionary___block_invoke(
 
 - (id)succinctDescription
 {
-  v2 = [(SBSRemoteAlertActivationContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSRemoteAlertActivationContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSRemoteAlertActivationContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSRemoteAlertActivationContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSRemoteAlertActivationContext *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_reason withName:@"reason"];
-  v6 = [v4 appendObject:self->_actions withName:@"actions"];
-  v7 = [v4 appendObject:self->_activityContinuationIdentifier withName:@"activityContinuationIdentifier" skipIfNil:1];
-  v8 = [v4 appendObject:self->_legacyAlertOptions withName:@"legacyAlertOptions" skipIfNil:1];
+  succinctDescriptionBuilder = [(SBSRemoteAlertActivationContext *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_reason withName:@"reason"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_actions withName:@"actions"];
+  v7 = [succinctDescriptionBuilder appendObject:self->_activityContinuationIdentifier withName:@"activityContinuationIdentifier" skipIfNil:1];
+  v8 = [succinctDescriptionBuilder appendObject:self->_legacyAlertOptions withName:@"legacyAlertOptions" skipIfNil:1];
   v9 = [(SBSRemoteAlertPresentationTarget *)self->_presentationTarget description];
-  v10 = [v4 appendObject:v9 withName:@"presentationTarget"];
+  v10 = [succinctDescriptionBuilder appendObject:v9 withName:@"presentationTarget"];
 
-  v11 = [v4 appendBool:self->_shouldEmbedOverShieldedApps withName:@"shouldEmbedOverShieldedApps" ifEqualTo:1];
-  v12 = [v4 appendBool:self->_activatingForSiri withName:@"activatingForSiri"];
-  v13 = [v4 appendBool:self->_shouldInvalidateWhenDeactivated withName:@"shouldInvalidateWhenDeactivated"];
-  v14 = [v4 appendBool:self->_shouldDismissPresentedBanners withName:@"shouldDismissPresentedBanners" ifEqualTo:1];
-  v15 = [v4 appendBool:self->_shouldStashPictureInPictureIfNeeded withName:@"shouldStashPictureInPictureIfNeeded" ifEqualTo:1];
-  v16 = [v4 appendInteger:self->_presentationMode withName:@"presentationMode"];
+  v11 = [succinctDescriptionBuilder appendBool:self->_shouldEmbedOverShieldedApps withName:@"shouldEmbedOverShieldedApps" ifEqualTo:1];
+  v12 = [succinctDescriptionBuilder appendBool:self->_activatingForSiri withName:@"activatingForSiri"];
+  v13 = [succinctDescriptionBuilder appendBool:self->_shouldInvalidateWhenDeactivated withName:@"shouldInvalidateWhenDeactivated"];
+  v14 = [succinctDescriptionBuilder appendBool:self->_shouldDismissPresentedBanners withName:@"shouldDismissPresentedBanners" ifEqualTo:1];
+  v15 = [succinctDescriptionBuilder appendBool:self->_shouldStashPictureInPictureIfNeeded withName:@"shouldStashPictureInPictureIfNeeded" ifEqualTo:1];
+  v16 = [succinctDescriptionBuilder appendInteger:self->_presentationMode withName:@"presentationMode"];
   if (self->_initialSupportedInterfaceOrientations)
   {
     v17 = BSInterfaceOrientationMaskDescription();
-    v18 = [v4 appendObject:v17 withName:@"initialSupportedInterfaceOrientations"];
+    v18 = [succinctDescriptionBuilder appendObject:v17 withName:@"initialSupportedInterfaceOrientations"];
   }
 
   v19 = [(NSDictionary *)self->_userInfo description];
-  v20 = [v4 appendObject:v19 withName:0];
+  v20 = [succinctDescriptionBuilder appendObject:v19 withName:0];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)setLegacyAlertOptions:(id)a3
+- (void)setLegacyAlertOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   legacyAlertOptions = self->_legacyAlertOptions;
-  if (legacyAlertOptions != v4)
+  if (legacyAlertOptions != optionsCopy)
   {
-    v13 = v4;
-    if (![(NSDictionary *)legacyAlertOptions isEqualToDictionary:v4])
+    v13 = optionsCopy;
+    if (![(NSDictionary *)legacyAlertOptions isEqualToDictionary:optionsCopy])
     {
       v6 = [(NSDictionary *)v13 copy];
       v7 = self->_legacyAlertOptions;
@@ -364,17 +364,17 @@ id __59__SBSRemoteAlertActivationContext_encodeWithXPCDictionary___block_invoke(
 
       if (self->_legacyAlertOptions)
       {
-        v8 = [(SBSRemoteAlertActivationContext *)self reason];
+        reason = [(SBSRemoteAlertActivationContext *)self reason];
 
-        if (!v8)
+        if (!reason)
         {
           v9 = [(NSDictionary *)self->_legacyAlertOptions bs_safeStringForKey:@"CustomActivationReason"];
           [(SBSRemoteAlertActivationContext *)self setReason:v9];
         }
 
-        v10 = [(SBSRemoteAlertActivationContext *)self activityContinuationIdentifier];
+        activityContinuationIdentifier = [(SBSRemoteAlertActivationContext *)self activityContinuationIdentifier];
 
-        if (!v10)
+        if (!activityContinuationIdentifier)
         {
           v11 = [(NSDictionary *)self->_legacyAlertOptions bs_safeStringForKey:@"ActivityContinuationIdentifier"];
           if (v11)

@@ -1,18 +1,18 @@
 @interface CSDateViewComponent
-- (BOOL)_valueCheckForMask:(void *)a1;
+- (BOOL)_valueCheckForMask:(void *)mask;
 - (CSDateViewComponent)init;
 - (NSNumber)pageIndex;
-- (id)_pageIndexForInternalPageIndex:(uint64_t)a1;
-- (id)combiningWithEquivalent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_pageIndexForInternalPageIndex:(uint64_t)index;
+- (id)combiningWithEquivalent:(id)equivalent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)_internalPageIndexForPageIndex:(uint64_t)result;
 - (void)_internalPageIndex;
-- (void)_setValueForInternalPageIndex:(int)a3 hidesTime:(int)a4 constrainsTime:(int)a5 usesCompactTime:;
-- (void)setConstrainsTimeHeight:(BOOL)a3;
-- (void)setHidesTime:(BOOL)a3;
-- (void)setPageIndex:(id)a3;
-- (void)setShowCompactTime:(BOOL)a3;
-- (void)setVibrantAndCentered:(int64_t)a3;
+- (void)_setValueForInternalPageIndex:(int)index hidesTime:(int)time constrainsTime:(int)constrainsTime usesCompactTime:;
+- (void)setConstrainsTimeHeight:(BOOL)height;
+- (void)setHidesTime:(BOOL)time;
+- (void)setPageIndex:(id)index;
+- (void)setShowCompactTime:(BOOL)time;
+- (void)setVibrantAndCentered:(int64_t)centered;
 @end
 
 @implementation CSDateViewComponent
@@ -34,44 +34,44 @@
 
 - (NSNumber)pageIndex
 {
-  v3 = [(CSDateViewComponent *)self _internalPageIndex];
+  _internalPageIndex = [(CSDateViewComponent *)self _internalPageIndex];
 
-  return [(CSDateViewComponent *)self _pageIndexForInternalPageIndex:v3];
+  return [(CSDateViewComponent *)self _pageIndexForInternalPageIndex:_internalPageIndex];
 }
 
 - (void)_internalPageIndex
 {
   if (result)
   {
-    v1 = [result value];
-    v2 = [v1 unsignedIntegerValue];
+    value = [result value];
+    unsignedIntegerValue = [value unsignedIntegerValue];
 
-    return (v2 & 3);
+    return (unsignedIntegerValue & 3);
   }
 
   return result;
 }
 
-- (id)combiningWithEquivalent:(id)a3
+- (id)combiningWithEquivalent:(id)equivalent
 {
-  v4 = a3;
-  if ([v4 hidesTime])
+  equivalentCopy = equivalent;
+  if ([equivalentCopy hidesTime])
   {
     [(CSDateViewComponent *)self setHidesTime:1];
   }
 
-  if ([v4 constrainsTimeHeight])
+  if ([equivalentCopy constrainsTimeHeight])
   {
     [(CSDateViewComponent *)self setConstrainsTimeHeight:1];
   }
 
-  [v4 vibrantAndCentered];
+  [equivalentCopy vibrantAndCentered];
   if (BSSettingFlagIsYes())
   {
     [(CSDateViewComponent *)self setVibrantAndCentered:1];
   }
 
-  if ([v4 showCompactTime])
+  if ([equivalentCopy showCompactTime])
   {
     [(CSDateViewComponent *)self setShowCompactTime:1];
   }
@@ -79,11 +79,11 @@
   return self;
 }
 
-- (void)setPageIndex:(id)a3
+- (void)setPageIndex:(id)index
 {
-  v6 = a3;
-  v4 = [(CSDateViewComponent *)self pageIndex];
-  if ([v6 isEqual:v4])
+  indexCopy = index;
+  pageIndex = [(CSDateViewComponent *)self pageIndex];
+  if ([indexCopy isEqual:pageIndex])
   {
     v5 = [(CSComponent *)self hasValueForProperty:4];
 
@@ -97,47 +97,47 @@
   {
   }
 
-  [(CSDateViewComponent *)self setPageIndex:v6];
+  [(CSDateViewComponent *)self setPageIndex:indexCopy];
 LABEL_3:
 }
 
-- (void)setHidesTime:(BOOL)a3
+- (void)setHidesTime:(BOOL)time
 {
-  if ([(CSDateViewComponent *)self hidesTime]!= a3 || ![(CSComponent *)self hasValueForProperty:4])
+  if ([(CSDateViewComponent *)self hidesTime]!= time || ![(CSComponent *)self hasValueForProperty:4])
   {
-    [(CSDateViewComponent *)self setHidesTime:a3];
+    [(CSDateViewComponent *)self setHidesTime:time];
   }
 }
 
-- (void)setConstrainsTimeHeight:(BOOL)a3
+- (void)setConstrainsTimeHeight:(BOOL)height
 {
-  if ([(CSDateViewComponent *)self constrainsTimeHeight]!= a3 || ![(CSComponent *)self hasValueForProperty:4])
+  if ([(CSDateViewComponent *)self constrainsTimeHeight]!= height || ![(CSComponent *)self hasValueForProperty:4])
   {
-    [(CSDateViewComponent *)self setConstrainsTimeHeight:a3];
+    [(CSDateViewComponent *)self setConstrainsTimeHeight:height];
   }
 }
 
-- (void)setShowCompactTime:(BOOL)a3
+- (void)setShowCompactTime:(BOOL)time
 {
-  if ([(CSDateViewComponent *)self showCompactTime]!= a3 || ![(CSComponent *)self hasValueForProperty:4])
+  if ([(CSDateViewComponent *)self showCompactTime]!= time || ![(CSComponent *)self hasValueForProperty:4])
   {
-    [(CSDateViewComponent *)self setShowCompactTime:a3];
+    [(CSDateViewComponent *)self setShowCompactTime:time];
   }
 }
 
-- (void)setVibrantAndCentered:(int64_t)a3
+- (void)setVibrantAndCentered:(int64_t)centered
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= centered)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:centered];
   }
 }
 
-- (id)_pageIndexForInternalPageIndex:(uint64_t)a1
+- (id)_pageIndexForInternalPageIndex:(uint64_t)index
 {
   v5 = 0;
-  if (a1 && (a2 - 4) >= 0xFFFFFFFFFFFFFFFDLL)
+  if (index && (a2 - 4) >= 0xFFFFFFFFFFFFFFFDLL)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:{a2 - 2, v2}];
   }
@@ -145,11 +145,11 @@ LABEL_3:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CSDateViewComponent;
-  v4 = [(CSComponent *)&v6 copyWithZone:a3];
+  v4 = [(CSComponent *)&v6 copyWithZone:zone];
   [v4 setStretch:{-[CSDateViewComponent stretch](self, "stretch")}];
   return v4;
 }
@@ -158,57 +158,57 @@ LABEL_3:
 {
   if (result)
   {
-    v3 = [a2 integerValue];
-    if ((v3 - 2) < 0xFFFFFFFFFFFFFFFDLL || a2 == 0)
+    integerValue = [a2 integerValue];
+    if ((integerValue - 2) < 0xFFFFFFFFFFFFFFFDLL || a2 == 0)
     {
       return 0;
     }
 
     else
     {
-      return v3 + 2;
+      return integerValue + 2;
     }
   }
 
   return result;
 }
 
-- (void)_setValueForInternalPageIndex:(int)a3 hidesTime:(int)a4 constrainsTime:(int)a5 usesCompactTime:
+- (void)_setValueForInternalPageIndex:(int)index hidesTime:(int)time constrainsTime:(int)constrainsTime usesCompactTime:
 {
-  if (a1)
+  if (self)
   {
     v6 = 4;
-    if (!a3)
+    if (!index)
     {
       v6 = 0;
     }
 
     v7 = 8;
-    if (!a4)
+    if (!time)
     {
       v7 = 0;
     }
 
     v8 = 16;
-    if (!a5)
+    if (!constrainsTime)
     {
       v8 = 0;
     }
 
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6 & 0xFFFFFFFFFFFFFFFCLL | a2 & 3 | v7 | v8];
-    [a1 setValue:v9];
+    [self setValue:v9];
   }
 }
 
-- (BOOL)_valueCheckForMask:(void *)a1
+- (BOOL)_valueCheckForMask:(void *)mask
 {
-  if (!a1)
+  if (!mask)
   {
     return 0;
   }
 
-  v3 = [a1 value];
-  v4 = ([v3 unsignedIntegerValue] & a2) != 0;
+  value = [mask value];
+  v4 = ([value unsignedIntegerValue] & a2) != 0;
 
   return v4;
 }

@@ -2,7 +2,7 @@
 + (id)defaultAlertPresentationContext;
 + (id)defaultControlCenterPresentationContext;
 + (id)defaultControlCenterPresentationContextProtectingSensitiveUI;
-- (CCUIContentModulePresentationContext)initWithEnvironment:(int64_t)a3;
+- (CCUIContentModulePresentationContext)initWithEnvironment:(int64_t)environment;
 @end
 
 @implementation CCUIContentModulePresentationContext
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __79__CCUIContentModulePresentationContext_defaultControlCenterPresentationContext__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultControlCenterPresentationContext_onceToken != -1)
   {
     dispatch_once(&defaultControlCenterPresentationContext_onceToken, block);
@@ -39,7 +39,7 @@ uint64_t __79__CCUIContentModulePresentationContext_defaultControlCenterPresenta
   block[1] = 3221225472;
   block[2] = __100__CCUIContentModulePresentationContext_defaultControlCenterPresentationContextProtectingSensitiveUI__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultControlCenterPresentationContextProtectingSensitiveUI_onceToken != -1)
   {
     dispatch_once(&defaultControlCenterPresentationContextProtectingSensitiveUI_onceToken, block);
@@ -65,7 +65,7 @@ uint64_t __100__CCUIContentModulePresentationContext_defaultControlCenterPresent
   block[1] = 3221225472;
   block[2] = __71__CCUIContentModulePresentationContext_defaultAlertPresentationContext__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultAlertPresentationContext_onceToken[0] != -1)
   {
     dispatch_once(defaultAlertPresentationContext_onceToken, block);
@@ -85,14 +85,14 @@ uint64_t __71__CCUIContentModulePresentationContext_defaultAlertPresentationCont
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (CCUIContentModulePresentationContext)initWithEnvironment:(int64_t)a3
+- (CCUIContentModulePresentationContext)initWithEnvironment:(int64_t)environment
 {
   v5.receiver = self;
   v5.super_class = CCUIContentModulePresentationContext;
   result = [(CCUIContentModulePresentationContext *)&v5 init];
   if (result)
   {
-    result->_environment = a3;
+    result->_environment = environment;
   }
 
   return result;

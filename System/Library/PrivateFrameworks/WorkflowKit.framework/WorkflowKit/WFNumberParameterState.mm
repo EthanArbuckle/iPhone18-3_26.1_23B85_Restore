@@ -1,32 +1,32 @@
 @interface WFNumberParameterState
-- (BOOL)isEqual:(id)a3;
-- (WFNumberParameterState)initWithNumber:(id)a3;
-- (WFNumberParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFNumberParameterState)initWithNumber:(id)number;
+- (WFNumberParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFNumberParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v7 = a5;
-  v8 = [(WFNumberParameterState *)self number];
-  (*(a5 + 2))(v7, v8, 0);
+  valueHandlerCopy = valueHandler;
+  number = [(WFNumberParameterState *)self number];
+  (*(valueHandler + 2))(valueHandlerCopy, number, 0);
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFNumberParameterState *)self number];
-  v3 = [v2 hash];
+  number = [(WFNumberParameterState *)self number];
+  v3 = [number hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -36,9 +36,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFNumberParameterState *)v4 number];
-      v6 = [(WFNumberParameterState *)self number];
-      v7 = [v5 isEqualToNumber:v6];
+      number = [(WFNumberParameterState *)equalCopy number];
+      number2 = [(WFNumberParameterState *)self number];
+      v7 = [number isEqualToNumber:number2];
     }
 
     else
@@ -50,31 +50,31 @@
   return v7;
 }
 
-- (WFNumberParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFNumberParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v6 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(WFNumberParameterState *)self initWithNumber:v6];
-    v7 = self;
+    self = [(WFNumberParameterState *)self initWithNumber:representationCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (WFNumberParameterState)initWithNumber:(id)a3
+- (WFNumberParameterState)initWithNumber:(id)number
 {
-  v6 = a3;
-  if (!v6)
+  numberCopy = number;
+  if (!numberCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFNumberParameterState.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"number != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFNumberParameterState.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"number != nil"}];
   }
 
   v12.receiver = self;
@@ -83,7 +83,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_number, a3);
+    objc_storeStrong(&v7->_number, number);
     v9 = v8;
   }
 

@@ -1,15 +1,15 @@
 @interface CRSequenceDecoder
-- (id)storageWithError:(id *)a3;
+- (id)storageWithError:(id *)error;
 @end
 
 @implementation CRSequenceDecoder
 
-- (id)storageWithError:(id *)a3
+- (id)storageWithError:(id *)error
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC9Coherence17CRSequenceDecoder_getStorage);
   v3 = *&self->super.encoded[OBJC_IVAR____TtC9Coherence17CRSequenceDecoder_getStorage];
   v5 = *&self->super.encoded[OBJC_IVAR____TtC9Coherence15CRStringDecoder_encoded + 8];
-  v6 = self;
+  selfCopy = self;
 
   v4(v10, v7);
 

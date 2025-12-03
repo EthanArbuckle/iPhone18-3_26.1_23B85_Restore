@@ -9,7 +9,7 @@
 
 - (uint64_t)isFolderShare
 {
-  v1 = [a1 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+  v1 = [self objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
   v2 = [v1 isEqual:*MEMORY[0x277CFAD00]];
 
   return v2;
@@ -18,17 +18,17 @@
 - (id)brc_sharedRootExtension
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [a1 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
-  if ([v2 isEqualToString:*MEMORY[0x277CFAD00]])
+  br_pathExtension = [self objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+  if ([br_pathExtension isEqualToString:*MEMORY[0x277CFAD00]])
   {
     v3 = 0;
   }
 
   else
   {
-    if (!v2)
+    if (!br_pathExtension)
     {
-      v4 = [a1 objectForKeyedSubscript:*MEMORY[0x277CBC098]];
+      v4 = [self objectForKeyedSubscript:*MEMORY[0x277CBC098]];
       v5 = brc_bread_crumbs();
       v6 = brc_default_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -40,11 +40,11 @@
         _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEFAULT, "[WARNING] share has no CKShareTypeKey, using extension from CKShareTitleKey (%@)%@", &v9, 0x16u);
       }
 
-      v2 = [v4 br_pathExtension];
+      br_pathExtension = [v4 br_pathExtension];
     }
 
-    v2 = v2;
-    v3 = v2;
+    br_pathExtension = br_pathExtension;
+    v3 = br_pathExtension;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -55,8 +55,8 @@
 - (id)brc_sharedRootDisplayName
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [a1 objectForKeyedSubscript:*MEMORY[0x277CBC098]];
-  v3 = [a1 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+  v2 = [self objectForKeyedSubscript:*MEMORY[0x277CBC098]];
+  v3 = [self objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
 
   if (v3)
   {
@@ -70,18 +70,18 @@ LABEL_3:
 
   else
   {
-    v5 = [v2 brc_stringByDeletingPathExtension];
+    brc_stringByDeletingPathExtension = [v2 brc_stringByDeletingPathExtension];
 
-    v2 = v5;
-    if (v5)
+    v2 = brc_stringByDeletingPathExtension;
+    if (brc_stringByDeletingPathExtension)
     {
       goto LABEL_3;
     }
   }
 
-  v2 = [a1 URL];
-  v6 = [v2 fragment];
-  v4 = [v6 brc_mangledNameFromURLFragment:1];
+  v2 = [self URL];
+  fragment = [v2 fragment];
+  v4 = [fragment brc_mangledNameFromURLFragment:1];
 
 LABEL_6:
   if (!v4)
@@ -93,10 +93,10 @@ LABEL_6:
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [a1 share];
-      v11 = [v10 recordID];
+      share = [self share];
+      recordID = [share recordID];
       v17 = 138412802;
-      v18 = v11;
+      v18 = recordID;
       v19 = 2112;
       v20 = v4;
       v21 = 2112;
@@ -105,10 +105,10 @@ LABEL_6:
     }
   }
 
-  v12 = [a1 brc_sharedRootExtension];
-  if (v12)
+  brc_sharedRootExtension = [self brc_sharedRootExtension];
+  if (brc_sharedRootExtension)
   {
-    v13 = [v4 stringByAppendingPathExtension:v12];
+    v13 = [v4 stringByAppendingPathExtension:brc_sharedRootExtension];
   }
 
   else
@@ -131,21 +131,21 @@ LABEL_6:
   {
     v8 = [v6 br_displayFilenameWithExtensionHidden:0];
 
-    [a1 setObject:v8 forKeyedSubscript:*MEMORY[0x277CBC098]];
+    [self setObject:v8 forKeyedSubscript:*MEMORY[0x277CBC098]];
     v9 = *MEMORY[0x277CFAD00];
     v10 = *MEMORY[0x277CBC0A0];
 
-    [a1 setObject:v9 forKeyedSubscript:v10];
+    [self setObject:v9 forKeyedSubscript:v10];
   }
 
   else
   {
     v11 = [v6 br_displayFilenameWithExtensionHidden:1];
-    [a1 setObject:v11 forKeyedSubscript:*MEMORY[0x277CBC098]];
+    [self setObject:v11 forKeyedSubscript:*MEMORY[0x277CBC098]];
 
-    v12 = [v7 br_pathExtension];
+    br_pathExtension = [v7 br_pathExtension];
 
-    [a1 setObject:v12 forKeyedSubscript:*MEMORY[0x277CBC0A0]];
+    [self setObject:br_pathExtension forKeyedSubscript:*MEMORY[0x277CBC0A0]];
   }
 }
 

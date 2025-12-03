@@ -1,12 +1,12 @@
 @interface UAFAssetSetMetadata
-+ (BOOL)isValid:(id)a3 error:(id *)a4;
-+ (id)OSThirdPartyCompatibilityVersion:(id)a3;
++ (BOOL)isValid:(id)valid error:(id *)error;
++ (id)OSThirdPartyCompatibilityVersion:(id)version;
 + (id)OSVersion;
-+ (id)fromAssetDir:(id)a3 error:(id *)a4;
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4;
++ (id)fromAssetDir:(id)dir error:(id *)error;
++ (id)fromContentsOfURL:(id)l error:(id *)error;
 + (id)supportedFileVersions;
-- (BOOL)OSSupported:(id)a3;
-- (UAFAssetSetMetadata)initWithDictionary:(id)a3;
+- (BOOL)OSSupported:(id)supported;
+- (UAFAssetSetMetadata)initWithDictionary:(id)dictionary;
 @end
 
 @implementation UAFAssetSetMetadata
@@ -61,39 +61,39 @@ void __32__UAFAssetSetMetadata_OSVersion__block_invoke()
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isValid:(id)a3 error:(id *)a4
++ (BOOL)isValid:(id)valid error:(id *)error
 {
   v56[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  validCopy = valid;
   v6 = +[UAFAssetSetMetadata supportedFileVersions];
-  v7 = [UAFConfiguration isValid:v5 fileType:@"AssetSetMetadata" fileVersions:v6 error:a4];
+  v7 = [UAFConfiguration isValid:validCopy fileType:@"AssetSetMetadata" fileVersions:v6 error:error];
 
-  if (!v7 || ![UAFConfiguration isValidValue:v5 key:@"MinOSVersion" kind:objc_opt_class() required:0 error:a4])
+  if (!v7 || ![UAFConfiguration isValidValue:validCopy key:@"MinOSVersion" kind:objc_opt_class() required:0 error:error])
   {
     goto LABEL_25;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"MinOSVersion"];
+  v8 = [validCopy objectForKeyedSubscript:@"MinOSVersion"];
   if (v8)
   {
     v9 = v8;
-    v10 = [v5 objectForKeyedSubscript:@"MinOSVersion"];
+    v10 = [validCopy objectForKeyedSubscript:@"MinOSVersion"];
     v11 = [UAFPlatform versionComponentsFromString:v10];
 
     if (!v11)
     {
-      if (a4)
+      if (error)
       {
         v17 = MEMORY[0x1E696ABC0];
         v18 = *MEMORY[0x1E696A578];
-        if (*a4)
+        if (*error)
         {
           v55[0] = *MEMORY[0x1E696A578];
           v19 = MEMORY[0x1E696AEC0];
-          v20 = [v5 objectForKeyedSubscript:@"MinOSVersion"];
+          v20 = [validCopy objectForKeyedSubscript:@"MinOSVersion"];
           v21 = [v19 stringWithFormat:@"MinOSVersion %@ is not a valid version", v20];
           v55[1] = *MEMORY[0x1E696AA08];
-          v22 = *a4;
+          v22 = *error;
           v56[0] = v21;
           v56[1] = v22;
           v23 = MEMORY[0x1E695DF20];
@@ -106,7 +106,7 @@ void __32__UAFAssetSetMetadata_OSVersion__block_invoke()
         {
           v53 = *MEMORY[0x1E696A578];
           v36 = MEMORY[0x1E696AEC0];
-          v20 = [v5 objectForKeyedSubscript:@"MinOSVersion"];
+          v20 = [validCopy objectForKeyedSubscript:@"MinOSVersion"];
           v21 = [v36 stringWithFormat:@"MinOSVersion %@ is not a valid version", v20];
           v54 = v21;
           v23 = MEMORY[0x1E695DF20];
@@ -116,7 +116,7 @@ void __32__UAFAssetSetMetadata_OSVersion__block_invoke()
         }
 
         v37 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:v26];
-        *a4 = [v17 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v37];
+        *error = [v17 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v37];
       }
 
       v38 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -125,7 +125,7 @@ void __32__UAFAssetSetMetadata_OSVersion__block_invoke()
         goto LABEL_24;
       }
 
-      v39 = [v5 objectForKeyedSubscript:@"MinOSVersion"];
+      v39 = [validCopy objectForKeyedSubscript:@"MinOSVersion"];
       *buf = 136315394;
       v50 = "+[UAFAssetSetMetadata isValid:error:]";
       v51 = 2112;
@@ -135,35 +135,35 @@ void __32__UAFAssetSetMetadata_OSVersion__block_invoke()
     }
   }
 
-  if (![UAFConfiguration isValidValue:v5 key:@"MaxOSVersion" kind:objc_opt_class() required:0 error:a4])
+  if (![UAFConfiguration isValidValue:validCopy key:@"MaxOSVersion" kind:objc_opt_class() required:0 error:error])
   {
 LABEL_25:
     v16 = 0;
     goto LABEL_26;
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"MaxOSVersion"];
+  v12 = [validCopy objectForKeyedSubscript:@"MaxOSVersion"];
   if (v12)
   {
     v13 = v12;
-    v14 = [v5 objectForKeyedSubscript:@"MaxOSVersion"];
+    v14 = [validCopy objectForKeyedSubscript:@"MaxOSVersion"];
     v15 = [UAFPlatform versionComponentsFromString:v14];
 
     if (!v15)
     {
-      if (a4)
+      if (error)
       {
         v27 = MEMORY[0x1E696ABC0];
         v28 = *MEMORY[0x1E696A578];
-        if (*a4)
+        if (*error)
         {
           v47[0] = *MEMORY[0x1E696A578];
           v29 = MEMORY[0x1E696AEC0];
-          v30 = [v5 objectForKeyedSubscript:@"MaxOSVersion"];
+          v30 = [validCopy objectForKeyedSubscript:@"MaxOSVersion"];
           v31 = [v29 stringWithFormat:@"MaxOSVersion %@ is not a valid version", v30];
           v47[1] = *MEMORY[0x1E696AA08];
           v48[0] = v31;
-          v48[1] = *a4;
+          v48[1] = *error;
           v32 = MEMORY[0x1E695DF20];
           v33 = v48;
           v34 = v47;
@@ -174,7 +174,7 @@ LABEL_25:
         {
           v45 = *MEMORY[0x1E696A578];
           v41 = MEMORY[0x1E696AEC0];
-          v30 = [v5 objectForKeyedSubscript:@"MaxOSVersion"];
+          v30 = [validCopy objectForKeyedSubscript:@"MaxOSVersion"];
           v31 = [v41 stringWithFormat:@"MaxOSVersion %@ is not a valid version", v30];
           v46 = v31;
           v32 = MEMORY[0x1E695DF20];
@@ -184,7 +184,7 @@ LABEL_25:
         }
 
         v42 = [v32 dictionaryWithObjects:v33 forKeys:v34 count:v35];
-        *a4 = [v27 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v42];
+        *error = [v27 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v42];
       }
 
       v38 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -193,7 +193,7 @@ LABEL_25:
         goto LABEL_24;
       }
 
-      v39 = [v5 objectForKeyedSubscript:@"MaxOSVersion"];
+      v39 = [validCopy objectForKeyedSubscript:@"MaxOSVersion"];
       *buf = 136315394;
       v50 = "+[UAFAssetSetMetadata isValid:error:]";
       v51 = 2112;
@@ -207,30 +207,30 @@ LABEL_24:
     }
   }
 
-  v16 = [UAFConfiguration isValidValue:v5 key:@"ThirdPartyCompatibilityVersion" kind:objc_opt_class() required:0 error:a4];
+  v16 = [UAFConfiguration isValidValue:validCopy key:@"ThirdPartyCompatibilityVersion" kind:objc_opt_class() required:0 error:error];
 LABEL_26:
 
   v43 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4
++ (id)fromContentsOfURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  lCopy = l;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v18 = 0;
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5 error:&v18];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v18];
   v7 = v18;
   v8 = v7;
-  if (a4)
+  if (error)
   {
     v9 = v7;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v6)
@@ -245,7 +245,7 @@ LABEL_26:
 
   if (v10)
   {
-    if ([UAFAssetSetMetadata isValid:v6 error:a4])
+    if ([UAFAssetSetMetadata isValid:v6 error:error])
     {
       v15 = [[UAFAssetSetMetadata alloc] initWithDictionary:v6];
       goto LABEL_15;
@@ -257,7 +257,7 @@ LABEL_26:
       *buf = 136315394;
       v20 = "+[UAFAssetSetMetadata fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v12 = "%s Failed to validate UAFAssetSetMetadata dictionary from %@";
       v13 = v11;
       v14 = 22;
@@ -273,7 +273,7 @@ LABEL_26:
       *buf = 136315650;
       v20 = "+[UAFAssetSetMetadata fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v23 = 2112;
       v24 = v8;
       v12 = "%s Failed to load UAFAssetSetMetadata dictionary from %@: %@";
@@ -292,46 +292,46 @@ LABEL_15:
   return v15;
 }
 
-+ (id)fromAssetDir:(id)a3 error:(id *)a4
++ (id)fromAssetDir:(id)dir error:(id *)error
 {
-  v5 = [a3 URLByAppendingPathComponent:@"metadata.plist"];
-  v6 = [UAFAssetSetMetadata fromContentsOfURL:v5 error:a4];
+  v5 = [dir URLByAppendingPathComponent:@"metadata.plist"];
+  v6 = [UAFAssetSetMetadata fromContentsOfURL:v5 error:error];
 
   return v6;
 }
 
-+ (id)OSThirdPartyCompatibilityVersion:(id)a3
++ (id)OSThirdPartyCompatibilityVersion:(id)version
 {
-  v3 = a3;
-  v4 = [v3 autoAssetType];
+  versionCopy = version;
+  autoAssetType = [versionCopy autoAssetType];
 
-  if (v4)
+  if (autoAssetType)
   {
     v5 = MEMORY[0x1E69B1960];
-    v6 = [v3 autoAssetType];
-    v4 = [v5 compatibilityVersionStringForAssetType:v6];
+    autoAssetType2 = [versionCopy autoAssetType];
+    autoAssetType = [v5 compatibilityVersionStringForAssetType:autoAssetType2];
   }
 
-  return v4;
+  return autoAssetType;
 }
 
-- (UAFAssetSetMetadata)initWithDictionary:(id)a3
+- (UAFAssetSetMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = UAFAssetSetMetadata;
   v5 = [(UAFAssetSetMetadata *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"MinOSVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"MinOSVersion"];
     minOSVersion = v5->_minOSVersion;
     v5->_minOSVersion = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"MaxOSVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"MaxOSVersion"];
     maxOSVersion = v5->_maxOSVersion;
     v5->_maxOSVersion = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"ThirdPartyCompatibilityVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"ThirdPartyCompatibilityVersion"];
     thirdPartyCompatibilityVersion = v5->_thirdPartyCompatibilityVersion;
     v5->_thirdPartyCompatibilityVersion = v10;
 
@@ -341,10 +341,10 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)OSSupported:(id)a3
+- (BOOL)OSSupported:(id)supported
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  supportedCopy = supported;
   if (*&self->_minOSVersion == 0 && !self->_thirdPartyCompatibilityVersion)
   {
     goto LABEL_15;
@@ -375,11 +375,11 @@ LABEL_15:
     {
       if (self->_thirdPartyCompatibilityVersion)
       {
-        v13 = [UAFAssetSetMetadata OSThirdPartyCompatibilityVersion:v4];
+        v13 = [UAFAssetSetMetadata OSThirdPartyCompatibilityVersion:supportedCopy];
         if (v13)
         {
           v14 = v13;
-          v15 = [UAFAssetSetMetadata OSThirdPartyCompatibilityVersion:v4];
+          v15 = [UAFAssetSetMetadata OSThirdPartyCompatibilityVersion:supportedCopy];
           v11 = [v15 isEqualToString:self->_thirdPartyCompatibilityVersion];
 
           goto LABEL_16;

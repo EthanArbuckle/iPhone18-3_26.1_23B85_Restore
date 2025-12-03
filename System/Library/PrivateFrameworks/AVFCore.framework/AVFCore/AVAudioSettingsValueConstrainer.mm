@@ -1,16 +1,16 @@
 @interface AVAudioSettingsValueConstrainer
 - (AVAudioSettingsValueConstrainer)init;
-- (float)_getAvailableOutputSampleRateFor:(float)a3 rounding:(int64_t)a4;
-- (float)applicableOutputSampleRateForDesiredSampleRate:(float)a3 rounding:(int64_t)a4;
+- (float)_getAvailableOutputSampleRateFor:(float)for rounding:(int64_t)rounding;
+- (float)applicableOutputSampleRateForDesiredSampleRate:(float)rate rounding:(int64_t)rounding;
 - (void)_buildApplicableDataRatesForSampleRates;
 - (void)_buildAudioConverter;
 - (void)dealloc;
-- (void)setInputPropertiesFromASBD:(AudioStreamBasicDescription *)a3;
-- (void)setOutputBitsPerChannel:(unsigned int)a3;
-- (void)setOutputChannelCount:(unsigned int)a3;
-- (void)setOutputFormat:(unsigned int)a3;
-- (void)setOutputFormatFlags:(unsigned int)a3;
-- (void)setOutputSampleRate:(float)a3;
+- (void)setInputPropertiesFromASBD:(AudioStreamBasicDescription *)d;
+- (void)setOutputBitsPerChannel:(unsigned int)channel;
+- (void)setOutputChannelCount:(unsigned int)count;
+- (void)setOutputFormat:(unsigned int)format;
+- (void)setOutputFormatFlags:(unsigned int)flags;
+- (void)setOutputSampleRate:(float)rate;
 @end
 
 @implementation AVAudioSettingsValueConstrainer
@@ -125,13 +125,13 @@
         [*(*(&v37 + 1) + 8 * i) minimum];
         self->_outputASBD.mSampleRate = v11;
         [(AVAudioSettingsValueConstrainer *)self _buildAudioConverter];
-        v12 = [(AVAudioSettingsValueConstrainer *)self _fetchApplicableOutputDataRates];
-        [(NSMutableArray *)self->_applicableOutputDataRatesForSampleRate addObject:v12];
+        _fetchApplicableOutputDataRates = [(AVAudioSettingsValueConstrainer *)self _fetchApplicableOutputDataRates];
+        [(NSMutableArray *)self->_applicableOutputDataRatesForSampleRate addObject:_fetchApplicableOutputDataRates];
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v13 = [v12 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v13 = [_fetchApplicableOutputDataRates countByEnumeratingWithState:&v33 objects:v42 count:16];
         if (v13)
         {
           v14 = v13;
@@ -142,7 +142,7 @@
             {
               if (*v34 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(_fetchApplicableOutputDataRates);
               }
 
               v17 = *(*(&v33 + 1) + 8 * j);
@@ -152,7 +152,7 @@
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v33 objects:v42 count:16];
+            v14 = [_fetchApplicableOutputDataRates countByEnumeratingWithState:&v33 objects:v42 count:16];
           }
 
           while (v14);
@@ -230,74 +230,74 @@
   self->_needApplicableParameters = 0;
 }
 
-- (void)setInputPropertiesFromASBD:(AudioStreamBasicDescription *)a3
+- (void)setInputPropertiesFromASBD:(AudioStreamBasicDescription *)d
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_inputASBD.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&d->mSampleRate;
+  v4 = *&d->mBytesPerPacket;
+  *&self->_inputASBD.mBitsPerChannel = *&d->mBitsPerChannel;
   *&self->_inputASBD.mBytesPerPacket = v4;
   *&self->_inputASBD.mSampleRate = v3;
   self->_needNewConverter = 1;
 }
 
-- (void)setOutputSampleRate:(float)a3
+- (void)setOutputSampleRate:(float)rate
 {
-  v3 = a3;
-  if (self->_outputASBD.mSampleRate != v3)
+  rateCopy = rate;
+  if (self->_outputASBD.mSampleRate != rateCopy)
   {
-    self->_outputASBD.mSampleRate = v3;
+    self->_outputASBD.mSampleRate = rateCopy;
     self->_needNewConverter = 1;
   }
 }
 
-- (void)setOutputFormat:(unsigned int)a3
+- (void)setOutputFormat:(unsigned int)format
 {
-  if (self->_outputASBD.mFormatID != a3)
+  if (self->_outputASBD.mFormatID != format)
   {
-    self->_outputASBD.mFormatID = a3;
+    self->_outputASBD.mFormatID = format;
     self->_needNewConverter = 1;
   }
 }
 
-- (void)setOutputFormatFlags:(unsigned int)a3
+- (void)setOutputFormatFlags:(unsigned int)flags
 {
-  if (self->_outputASBD.mFormatFlags != a3)
+  if (self->_outputASBD.mFormatFlags != flags)
   {
-    self->_outputASBD.mFormatFlags = a3;
+    self->_outputASBD.mFormatFlags = flags;
     self->_needNewConverter = 1;
   }
 }
 
-- (void)setOutputBitsPerChannel:(unsigned int)a3
+- (void)setOutputBitsPerChannel:(unsigned int)channel
 {
-  if (self->_outputASBD.mBitsPerChannel != a3)
+  if (self->_outputASBD.mBitsPerChannel != channel)
   {
-    self->_outputASBD.mBitsPerChannel = a3;
+    self->_outputASBD.mBitsPerChannel = channel;
     self->_needNewConverter = 1;
   }
 }
 
-- (void)setOutputChannelCount:(unsigned int)a3
+- (void)setOutputChannelCount:(unsigned int)count
 {
-  if (self->_outputASBD.mChannelsPerFrame != a3)
+  if (self->_outputASBD.mChannelsPerFrame != count)
   {
-    self->_outputASBD.mChannelsPerFrame = a3;
+    self->_outputASBD.mChannelsPerFrame = count;
     self->_needNewConverter = 1;
   }
 }
 
-- (float)applicableOutputSampleRateForDesiredSampleRate:(float)a3 rounding:(int64_t)a4
+- (float)applicableOutputSampleRateForDesiredSampleRate:(float)rate rounding:(int64_t)rounding
 {
   [(AVAudioSettingsValueConstrainer *)self _bringUpToDate];
-  v7 = [(AVAudioSettingsValueConstrainer *)self outputDataRate];
-  if (v7)
+  outputDataRate = [(AVAudioSettingsValueConstrainer *)self outputDataRate];
+  if (outputDataRate)
   {
-    v9 = indexOfValueInAudioValueRangeArray(self->_availableOutputDataRates, a4, v7);
+    v9 = indexOfValueInAudioValueRangeArray(self->_availableOutputDataRates, rounding, outputDataRate);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = [(NSMutableArray *)self->_applicableOutputSampleRatesForDataRate objectAtIndex:v9];
-      v11 = indexOfValueInAudioValueRangeArray(v10, a4, a3);
-      a3 = 0.0;
+      v11 = indexOfValueInAudioValueRangeArray(v10, rounding, rate);
+      rate = 0.0;
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [objc_msgSend(v10 objectAtIndex:{v11), "minimum"}];
@@ -305,27 +305,27 @@
       }
     }
 
-    return a3;
+    return rate;
   }
 
   else
   {
-    *&v8 = a3;
+    *&v8 = rate;
 
-    [(AVAudioSettingsValueConstrainer *)self _getAvailableOutputSampleRateFor:a4 rounding:v8];
+    [(AVAudioSettingsValueConstrainer *)self _getAvailableOutputSampleRateFor:rounding rounding:v8];
   }
 
   return result;
 }
 
-- (float)_getAvailableOutputSampleRateFor:(float)a3 rounding:(int64_t)a4
+- (float)_getAvailableOutputSampleRateFor:(float)for rounding:(int64_t)rounding
 {
   [(AVAudioSettingsValueConstrainer *)self _bringUpToDate];
   availableOutputSampleRates = self->_availableOutputSampleRates;
   if (availableOutputSampleRates)
   {
-    v8 = indexOfValueInAudioValueRangeArray(availableOutputSampleRates, a4, a3);
-    a3 = 0.0;
+    v8 = indexOfValueInAudioValueRangeArray(availableOutputSampleRates, rounding, for);
+    for = 0.0;
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [-[NSArray objectAtIndex:](availableOutputSampleRates objectAtIndex:{v8), "minimum"}];
@@ -333,7 +333,7 @@
     }
   }
 
-  return a3;
+  return for;
 }
 
 @end

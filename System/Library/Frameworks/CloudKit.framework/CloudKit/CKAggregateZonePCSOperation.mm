@@ -1,16 +1,16 @@
 @interface CKAggregateZonePCSOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKAggregateZonePCSOperation)init;
-- (CKAggregateZonePCSOperation)initWithSourceZoneIDs:(id)a3 targetZone:(id)a4;
+- (CKAggregateZonePCSOperation)initWithSourceZoneIDs:(id)ds targetZone:(id)zone;
 - (id)activityCreate;
 - (id)aggregateZonePCSCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)setAggregateZonePCSCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)setAggregateZonePCSCompletionBlock:(id)block;
 @end
 
 @implementation CKAggregateZonePCSOperation
@@ -22,18 +22,18 @@
   return [(CKOperation *)&v3 init];
 }
 
-- (CKAggregateZonePCSOperation)initWithSourceZoneIDs:(id)a3 targetZone:(id)a4
+- (CKAggregateZonePCSOperation)initWithSourceZoneIDs:(id)ds targetZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  zoneCopy = zone;
   v12 = objc_msgSend_init(self, v8, v9);
   if (v12)
   {
-    v13 = objc_msgSend_copy(v6, v10, v11);
+    v13 = objc_msgSend_copy(dsCopy, v10, v11);
     sourceZoneIDs = v12->_sourceZoneIDs;
     v12->_sourceZoneIDs = v13;
 
-    v17 = objc_msgSend_copy(v7, v15, v16);
+    v17 = objc_msgSend_copy(zoneCopy, v15, v16);
     targetZone = v12->_targetZone;
     v12->_targetZone = v17;
   }
@@ -41,9 +41,9 @@
   return v12;
 }
 
-- (void)setAggregateZonePCSCompletionBlock:(id)a3
+- (void)setAggregateZonePCSCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -57,16 +57,16 @@
     v12[2] = sub_1885FAA44;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     aggregateZonePCSCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_aggregateZonePCSCompletionBlock != v6)
+  if (self->_aggregateZonePCSCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     aggregateZonePCSCompletionBlock = self->_aggregateZonePCSCompletionBlock;
     self->_aggregateZonePCSCompletionBlock = v9;
 LABEL_9:
@@ -109,30 +109,30 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_sourceZoneIDs(self, v5, v6);
-  objc_msgSend_setSourceZoneIDs_(v4, v8, v7);
+  objc_msgSend_setSourceZoneIDs_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_targetZone(self, v9, v10);
-  objc_msgSend_setTargetZone_(v4, v12, v11);
+  objc_msgSend_setTargetZone_(infoCopy, v12, v11);
 
   v13.receiver = self;
   v13.super_class = CKAggregateZonePCSOperation;
-  [(CKDatabaseOperation *)&v13 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v13 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v13.receiver = self;
   v13.super_class = CKAggregateZonePCSOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_sourceZoneIDs(v4, v5, v6, v13.receiver, v13.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_sourceZoneIDs(infoCopy, v5, v6, v13.receiver, v13.super_class);
   objc_msgSend_setSourceZoneIDs_(self, v8, v7);
 
-  v11 = objc_msgSend_targetZone(v4, v9, v10);
+  v11 = objc_msgSend_targetZone(infoCopy, v9, v10);
 
   objc_msgSend_setTargetZone_(self, v12, v11);
 }
@@ -152,10 +152,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_database(self, a2, a3);
+  v5 = objc_msgSend_database(self, a2, run);
   v8 = objc_msgSend_scope(v5, v6, v7);
 
   if (v8 != 1)
@@ -182,13 +182,13 @@ LABEL_14:
 
         v30 = objc_msgSend_targetZone(self, v28, v29);
         v33 = objc_msgSend_zoneID(v30, v31, v32);
-        v35 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v34, v33, a3);
+        v35 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v34, v33, run);
 
         if (v35)
         {
           v37.receiver = self;
           v37.super_class = CKAggregateZonePCSOperation;
-          result = [(CKDatabaseOperation *)&v37 CKOperationShouldRun:a3];
+          result = [(CKDatabaseOperation *)&v37 CKOperationShouldRun:run];
           goto LABEL_18;
         }
 
@@ -208,7 +208,7 @@ LABEL_8:
           objc_enumerationMutation(v14);
         }
 
-        if (!objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, *(*(&v38 + 1) + 8 * v27), a3))
+        if (!objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, *(*(&v38 + 1) + 8 * v27), run))
         {
           break;
         }
@@ -229,7 +229,7 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!run)
   {
     goto LABEL_17;
   }
@@ -237,15 +237,15 @@ LABEL_8:
   v11 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v9, @"CKErrorDomain", 12, @"You can't execute this operation in the public database");
   v12 = v11;
   result = 0;
-  *a3 = v11;
+  *run = v11;
 LABEL_18:
   v36 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -314,7 +314,7 @@ LABEL_18:
   if (v38)
   {
     v43 = objc_msgSend_aggregateZonePCSCompletionBlock(self, v39, v40);
-    if (v4)
+    if (errorCopy)
     {
       v44 = 0;
     }
@@ -324,10 +324,10 @@ LABEL_18:
       v44 = objc_msgSend_targetZone(self, v41, v42);
     }
 
-    v45 = objc_msgSend_CKClientSuitableError(v4, v41, v42);
+    v45 = objc_msgSend_CKClientSuitableError(errorCopy, v41, v42);
     (v43)[2](v43, v44, v45);
 
-    if (!v4)
+    if (!errorCopy)
     {
     }
 
@@ -336,7 +336,7 @@ LABEL_18:
 
   v47.receiver = self;
   v47.super_class = CKAggregateZonePCSOperation;
-  [(CKOperation *)&v47 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v47 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -413,10 +413,10 @@ LABEL_18:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -460,7 +460,7 @@ LABEL_18:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKAggregateZonePCSOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }

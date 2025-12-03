@@ -1,20 +1,20 @@
 @interface OKMediaEventClusterPredicate
-- (OKMediaEventClusterPredicate)initWithType:(unint64_t)a3;
-- (double)floatingAverageDistanceDeltaForItem:(id)a3 inArray:(id)a4;
-- (double)floatingAverageTimeDeltaForItem:(id)a3 inArray:(id)a4;
-- (double)maximumDistanceBetweenLocations:(id)a3;
-- (id)barycenterOfLocations:(id)a3;
-- (id)clusterDateStringForPeriodFrom:(id)a3 to:(id)a4;
-- (id)clusterLocationStringForLocations:(id)a3;
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4;
-- (id)eventNameForDate:(id)a3;
+- (OKMediaEventClusterPredicate)initWithType:(unint64_t)type;
+- (double)floatingAverageDistanceDeltaForItem:(id)item inArray:(id)array;
+- (double)floatingAverageTimeDeltaForItem:(id)item inArray:(id)array;
+- (double)maximumDistanceBetweenLocations:(id)locations;
+- (id)barycenterOfLocations:(id)locations;
+- (id)clusterDateStringForPeriodFrom:(id)from to:(id)to;
+- (id)clusterLocationStringForLocations:(id)locations;
+- (id)evaluateItems:(id)items progressBlock:(id)block;
+- (id)eventNameForDate:(id)date;
 - (id)title;
 - (void)dealloc;
 @end
 
 @implementation OKMediaEventClusterPredicate
 
-- (OKMediaEventClusterPredicate)initWithType:(unint64_t)a3
+- (OKMediaEventClusterPredicate)initWithType:(unint64_t)type
 {
   v14.receiver = self;
   v14.super_class = OKMediaEventClusterPredicate;
@@ -22,13 +22,13 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    -[OKMediaClusterPredicate setUniqueID:](v4, "setUniqueID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%lu", @"event", a3]);
+    v4->_type = type;
+    -[OKMediaClusterPredicate setUniqueID:](v4, "setUniqueID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%lu", @"event", type]);
     [(OKMediaClusterPredicate *)v5 setCategory:6];
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v7 = *MEMORY[0x277CBE690];
-    v8 = [v6 objectForKey:*MEMORY[0x277CBE690]];
-    -[OKMediaEventClusterPredicate setCountryName:](v5, "setCountryName:", [v6 displayNameForKey:v7 value:v8]);
+    v8 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+    -[OKMediaEventClusterPredicate setCountryName:](v5, "setCountryName:", [currentLocale displayNameForKey:v7 value:v8]);
     v9 = MEMORY[0x277D62808];
     if (*MEMORY[0x277D62808] >= 7)
     {
@@ -77,7 +77,7 @@
   [(OKMediaClusterPredicate *)&v5 dealloc];
 }
 
-- (id)eventNameForDate:(id)a3
+- (id)eventNameForDate:(id)date
 {
   if (![(OKMediaEventClusterPredicate *)self calendarEventsDictionary])
   {
@@ -85,8 +85,8 @@
   }
 
   v5 = [objc_msgSend(MEMORY[0x277CBEA80] "currentCalendar")];
-  v6 = [(OKMediaEventClusterPredicate *)self calendarEventsDictionary];
-  v7 = -[NSDictionary objectForKey:](v6, "objectForKey:", [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v5, "year")]);
+  calendarEventsDictionary = [(OKMediaEventClusterPredicate *)self calendarEventsDictionary];
+  v7 = -[NSDictionary objectForKey:](calendarEventsDictionary, "objectForKey:", [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v5, "year")]);
   if (!v7)
   {
     return 0;
@@ -113,18 +113,18 @@
   return [v10 firstObject];
 }
 
-- (id)clusterDateStringForPeriodFrom:(id)a3 to:(id)a4
+- (id)clusterDateStringForPeriodFrom:(id)from to:(id)to
 {
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(OKMediaEventClusterPredicate *)self calendarEventsDictionary])
   {
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
-    v9 = [v8 components:30 fromDate:a3];
-    v10 = [v8 components:30 fromDate:a4];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v9 = [currentCalendar components:30 fromDate:from];
+    v10 = [currentCalendar components:30 fromDate:to];
     [v9 setTimeZone:{objc_msgSend(MEMORY[0x277CBEBB0], "timeZoneWithName:", @"GMT"}];
     [v10 setTimeZone:{objc_msgSend(MEMORY[0x277CBEBB0], "timeZoneWithName:", @"GMT"}];
-    v11 = [v8 dateFromComponents:v9];
-    v12 = [objc_msgSend(v8 dateFromComponents:{v10), "dateByAddingTimeInterval:", 86400.0}];
+    v11 = [currentCalendar dateFromComponents:v9];
+    v12 = [objc_msgSend(currentCalendar dateFromComponents:{v10), "dateByAddingTimeInterval:", 86400.0}];
     if (([objc_msgSend(v11 earlierDate:{v12), "isEqualToDate:", v12}] & 1) == 0)
     {
       do
@@ -132,7 +132,7 @@
         v13 = [(OKMediaEventClusterPredicate *)self eventNameForDate:v11];
         if (v13)
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         v11 = [v11 dateByAddingTimeInterval:86400.0];
@@ -142,30 +142,30 @@
     }
   }
 
-  if ([v7 count])
+  if ([array count])
   {
 
-    return [v7 firstObject];
+    return [array firstObject];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEA80] currentCalendar];
-    v16 = [v15 components:28 fromDate:a3];
-    v17 = [v15 components:28 fromDate:a4];
-    v18 = [a3 shortWeekDescription];
-    v19 = v18;
-    if (!v18)
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    v16 = [currentCalendar2 components:28 fromDate:from];
+    v17 = [currentCalendar2 components:28 fromDate:to];
+    shortWeekDescription = [from shortWeekDescription];
+    v19 = shortWeekDescription;
+    if (!shortWeekDescription)
     {
       v20 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v20 setDateFormat:@"MMMM dd"];
-      v19 = [v20 stringFromDate:a3];
+      v19 = [v20 stringFromDate:from];
     }
 
-    v21 = [v16 year];
-    if (v21 == [v17 year] && (v22 = objc_msgSend(v16, "month"), v22 == objc_msgSend(v17, "month")) && (v23 = objc_msgSend(v16, "day"), v23 == objc_msgSend(v17, "day")))
+    year = [v16 year];
+    if (year == [v17 year] && (v22 = objc_msgSend(v16, "month"), v22 == objc_msgSend(v17, "month")) && (v23 = objc_msgSend(v16, "day"), v23 == objc_msgSend(v17, "day")))
     {
-      if (v18)
+      if (shortWeekDescription)
       {
         return v19;
       }
@@ -179,17 +179,17 @@
 
     else
     {
-      v24 = [a4 shortWeekDescription];
-      if (v24)
+      shortWeekDescription2 = [to shortWeekDescription];
+      if (shortWeekDescription2)
       {
-        return [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"%@ to %@", @"%@ to %@", @"Localizable", v19, v24];
+        return [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"%@ to %@", @"%@ to %@", @"Localizable", v19, shortWeekDescription2];
       }
 
-      v25 = [v16 month];
-      v26 = [v17 month];
+      month = [v16 month];
+      month2 = [v17 month];
       v27 = objc_alloc_init(MEMORY[0x277CCA968]);
       v28 = v27;
-      if (v25 == v26)
+      if (month == month2)
       {
         v29 = @"dd, yyyy";
       }
@@ -205,17 +205,17 @@
       v32 = @"%@ to %@";
     }
 
-    v33 = [v30 stringWithFormat:objc_msgSend(v31, "localizedStringForKey:value:table:", v32, v32, @"Localizable", v19, objc_msgSend(v28, "stringFromDate:", a4)];
+    v33 = [v30 stringWithFormat:objc_msgSend(v31, "localizedStringForKey:value:table:", v32, v32, @"Localizable", v19, objc_msgSend(v28, "stringFromDate:", to)];
 
     return v33;
   }
 }
 
-- (double)maximumDistanceBetweenLocations:(id)a3
+- (double)maximumDistanceBetweenLocations:(id)locations
 {
   v42 = *MEMORY[0x277D85DE8];
   v4 = 0.0;
-  if ([a3 count])
+  if ([locations count])
   {
     v5 = CLLocationCoordinate2DMake(NAN, NAN);
     latitude = v5.latitude;
@@ -227,7 +227,7 @@
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v11 = [a3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    v11 = [locations countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v11)
     {
       v12 = v11;
@@ -238,7 +238,7 @@
         {
           if (*v37 != v13)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(locations);
           }
 
           v15 = *(*(&v36 + 1) + 8 * i);
@@ -257,7 +257,7 @@
           }
         }
 
-        v12 = [a3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v12 = [locations countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v12);
@@ -268,7 +268,7 @@ LABEL_11:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v20 = [a3 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    v20 = [locations countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v20)
     {
       v21 = v20;
@@ -279,7 +279,7 @@ LABEL_11:
         {
           if (*v33 != v22)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(locations);
           }
 
           v24 = *(*(&v32 + 1) + 8 * j);
@@ -299,7 +299,7 @@ LABEL_11:
           }
         }
 
-        v21 = [a3 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v21 = [locations countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v21);
@@ -323,7 +323,7 @@ LABEL_11:
   return v4;
 }
 
-- (id)clusterLocationStringForLocations:(id)a3
+- (id)clusterLocationStringForLocations:(id)locations
 {
   v13 = 0;
   v14 = &v13;
@@ -331,14 +331,14 @@ LABEL_11:
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  if ([a3 count])
+  if ([locations count])
   {
-    [(OKMediaEventClusterPredicate *)self maximumDistanceBetweenLocations:a3];
+    [(OKMediaEventClusterPredicate *)self maximumDistanceBetweenLocations:locations];
     v6 = v5;
-    v7 = [a3 firstObject];
+    firstObject = [locations firstObject];
     v8 = MEMORY[0x277D62788];
     [MEMORY[0x277D62788] recommendedAccuracy];
-    v9 = [v8 operationWithLocation:v7 accuracy:?];
+    v9 = [v8 operationWithLocation:firstObject accuracy:?];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __66__OKMediaEventClusterPredicate_clusterLocationStringForLocations___block_invoke;
@@ -416,17 +416,17 @@ LABEL_15:
   return [v3 localizedStringForKey:v4 value:v4 table:@"Localizable"];
 }
 
-- (double)floatingAverageTimeDeltaForItem:(id)a3 inArray:(id)a4
+- (double)floatingAverageTimeDeltaForItem:(id)item inArray:(id)array
 {
-  v6 = [a4 indexOfObject:?];
-  v7 = [objc_msgSend(objc_msgSend(a3 "metadata")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "metadata")];
+  v6 = [array indexOfObject:?];
+  v7 = [objc_msgSend(objc_msgSend(item "metadata")];
+  v8 = [objc_msgSend(objc_msgSend(item "metadata")];
   if (v6)
   {
     v9 = v6;
     do
     {
-      if ([objc_msgSend(objc_msgSend(objc_msgSend(a4 objectAtIndex:{v9), "metadata"), "creationDate"), "compare:", v7}] != 1)
+      if ([objc_msgSend(objc_msgSend(objc_msgSend(array objectAtIndex:{v9), "metadata"), "creationDate"), "compare:", v7}] != 1)
       {
         break;
       }
@@ -442,7 +442,7 @@ LABEL_15:
     v9 = 0;
   }
 
-  while (v6 < [a4 count] - 1 && objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(a4, "objectAtIndex:", v6), "metadata"), "creationDate"), "compare:", v8) == -1)
+  while (v6 < [array count] - 1 && objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(array, "objectAtIndex:", v6), "metadata"), "creationDate"), "compare:", v8) == -1)
   {
     ++v6;
   }
@@ -453,7 +453,7 @@ LABEL_15:
     v11 = v9;
     do
     {
-      [objc_msgSend(objc_msgSend(objc_msgSend(a4 objectAtIndex:{v11 + 1), "metadata"), "creationDate"), "timeIntervalSinceDate:", objc_msgSend(objc_msgSend(objc_msgSend(a4, "objectAtIndex:", v11), "metadata"), "creationDate")}];
+      [objc_msgSend(objc_msgSend(objc_msgSend(array objectAtIndex:{v11 + 1), "metadata"), "creationDate"), "timeIntervalSinceDate:", objc_msgSend(objc_msgSend(objc_msgSend(array, "objectAtIndex:", v11), "metadata"), "creationDate")}];
       v10 = v10 + fabs(v12);
       ++v11;
     }
@@ -464,17 +464,17 @@ LABEL_15:
   return v10 / (v6 + -1.0 - v9);
 }
 
-- (double)floatingAverageDistanceDeltaForItem:(id)a3 inArray:(id)a4
+- (double)floatingAverageDistanceDeltaForItem:(id)item inArray:(id)array
 {
-  v6 = [a4 indexOfObject:?];
-  v7 = [objc_msgSend(objc_msgSend(a3 "metadata")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "metadata")];
+  v6 = [array indexOfObject:?];
+  v7 = [objc_msgSend(objc_msgSend(item "metadata")];
+  v8 = [objc_msgSend(objc_msgSend(item "metadata")];
   if (v6)
   {
     v9 = v6;
     do
     {
-      if ([objc_msgSend(objc_msgSend(objc_msgSend(a4 objectAtIndex:{v9), "metadata"), "creationDate"), "compare:", v7}] != 1)
+      if ([objc_msgSend(objc_msgSend(objc_msgSend(array objectAtIndex:{v9), "metadata"), "creationDate"), "compare:", v7}] != 1)
       {
         break;
       }
@@ -490,7 +490,7 @@ LABEL_15:
     v9 = 0;
   }
 
-  while (v6 < [a4 count] - 1 && objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(a4, "objectAtIndex:", v6), "metadata"), "creationDate"), "compare:", v8) == -1)
+  while (v6 < [array count] - 1 && objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(array, "objectAtIndex:", v6), "metadata"), "creationDate"), "compare:", v8) == -1)
   {
     ++v6;
   }
@@ -501,7 +501,7 @@ LABEL_15:
     v11 = v9;
     do
     {
-      [objc_msgSend(objc_msgSend(objc_msgSend(a4 objectAtIndex:{v11 + 1), "metadata"), "location"), "distanceFromLocation:", objc_msgSend(objc_msgSend(objc_msgSend(a4, "objectAtIndex:", v11), "metadata"), "location")}];
+      [objc_msgSend(objc_msgSend(objc_msgSend(array objectAtIndex:{v11 + 1), "metadata"), "location"), "distanceFromLocation:", objc_msgSend(objc_msgSend(objc_msgSend(array, "objectAtIndex:", v11), "metadata"), "location")}];
       v10 = v10 + v12;
       ++v11;
     }
@@ -512,14 +512,14 @@ LABEL_15:
   return v10 / (v6 + -1.0 - v9);
 }
 
-- (id)barycenterOfLocations:(id)a3
+- (id)barycenterOfLocations:(id)locations
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  result = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  result = [locations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (result)
   {
     v5 = result;
@@ -533,7 +533,7 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(locations);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -551,7 +551,7 @@ LABEL_15:
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [locations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -569,18 +569,18 @@ LABEL_15:
   return result;
 }
 
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4
+- (id)evaluateItems:(id)items progressBlock:(id)block
 {
   v118 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_autoreleasePoolPush();
   v8 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"creationDate" ascending:1];
-  v9 = [a3 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v8)}];
+  v9 = [items sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v8)}];
   if (!self->_type)
   {
     v10 = v9;
     v82 = v7;
-    v84 = self;
+    selfCopy = self;
     v11 = objc_alloc_init(OKMediaCluster);
     if ([v10 count] >= 2)
     {
@@ -609,7 +609,7 @@ LABEL_15:
     v86 = v10;
     [v6 addObject:v11];
 
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
@@ -634,7 +634,7 @@ LABEL_15:
             [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v23 "items")];
             if (v24 > 43200.0)
             {
-              [v18 addObject:v23];
+              [array addObject:v23];
             }
           }
         }
@@ -649,7 +649,7 @@ LABEL_15:
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v25 = [v18 countByEnumeratingWithState:&v104 objects:v116 count:16];
+    v25 = [array countByEnumeratingWithState:&v104 objects:v116 count:16];
     if (v25)
     {
       v26 = v25;
@@ -660,7 +660,7 @@ LABEL_15:
         {
           if (*v105 != v27)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(array);
           }
 
           v29 = *(*(&v104 + 1) + 8 * j);
@@ -679,7 +679,7 @@ LABEL_15:
           [v6 insertObject:v32 atIndex:v30 + 1];
         }
 
-        v26 = [v18 countByEnumeratingWithState:&v104 objects:v116 count:16];
+        v26 = [array countByEnumeratingWithState:&v104 objects:v116 count:16];
       }
 
       while (v26);
@@ -750,7 +750,7 @@ LABEL_15:
       while (v33 < [v6 count]);
     }
 
-    v51 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v100 = 0u;
     v101 = 0u;
     v102 = 0u;
@@ -775,7 +775,7 @@ LABEL_15:
             [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v56 "items")];
             if (v57 > 43200.0)
             {
-              [v51 addObject:v56];
+              [array2 addObject:v56];
             }
           }
         }
@@ -790,7 +790,7 @@ LABEL_15:
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v58 = [v51 countByEnumeratingWithState:&v96 objects:v114 count:16];
+    v58 = [array2 countByEnumeratingWithState:&v96 objects:v114 count:16];
     if (v58)
     {
       v59 = v58;
@@ -801,7 +801,7 @@ LABEL_15:
         {
           if (*v97 != v60)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(array2);
           }
 
           v62 = *(*(&v96 + 1) + 8 * m);
@@ -820,13 +820,13 @@ LABEL_15:
           [v6 insertObject:v65 atIndex:v63 + 1];
         }
 
-        v59 = [v51 countByEnumeratingWithState:&v96 objects:v114 count:16];
+        v59 = [array2 countByEnumeratingWithState:&v96 objects:v114 count:16];
       }
 
       while (v59);
     }
 
-    v83 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
@@ -853,8 +853,8 @@ LABEL_15:
             v89 = 0u;
             v90 = 0u;
             v91 = 0u;
-            v70 = [v67 items];
-            v71 = [v70 countByEnumeratingWithState:&v88 objects:v112 count:16];
+            items = [v67 items];
+            v71 = [items countByEnumeratingWithState:&v88 objects:v112 count:16];
             if (v71)
             {
               v72 = v71;
@@ -865,7 +865,7 @@ LABEL_15:
                 {
                   if (*v89 != v73)
                   {
-                    objc_enumerationMutation(v70);
+                    objc_enumerationMutation(items);
                   }
 
                   v75 = *(*(&v88 + 1) + 8 * ii);
@@ -875,14 +875,14 @@ LABEL_15:
                   }
                 }
 
-                v72 = [v70 countByEnumeratingWithState:&v88 objects:v112 count:16];
+                v72 = [items countByEnumeratingWithState:&v88 objects:v112 count:16];
               }
 
               while (v72);
             }
 
-            self = v84;
-            v76 = [(OKMediaEventClusterPredicate *)v84 clusterLocationStringForLocations:v69];
+            self = selfCopy;
+            v76 = [(OKMediaEventClusterPredicate *)selfCopy clusterLocationStringForLocations:v69];
 
             if (v76)
             {
@@ -901,7 +901,7 @@ LABEL_15:
 
           else
           {
-            [v83 addObject:v67];
+            [array3 addObject:v67];
           }
         }
 
@@ -911,24 +911,24 @@ LABEL_15:
       while (v87);
     }
 
-    [v6 removeObjectsInArray:v83];
+    [v6 removeObjectsInArray:array3];
     v7 = v82;
   }
 
   objc_autoreleasePoolPop(v7);
-  v79 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v80 = [v6 count] - 1;
   if (v80 >= 0)
   {
     do
     {
-      [v79 addObject:{objc_msgSend(v6, "objectAtIndex:", v80--)}];
+      [array4 addObject:{objc_msgSend(v6, "objectAtIndex:", v80--)}];
     }
 
     while (v80 != -1);
   }
 
-  return v79;
+  return array4;
 }
 
 @end

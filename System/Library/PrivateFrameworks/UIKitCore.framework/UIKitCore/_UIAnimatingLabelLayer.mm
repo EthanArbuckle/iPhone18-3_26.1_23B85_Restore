@@ -1,22 +1,22 @@
 @interface _UIAnimatingLabelLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 @end
 
 @implementation _UIAnimatingLabelLayer
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"variantWeight"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"variantWeight"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS____UIAnimatingLabelLayer;
-    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, keyCopy);
   }
 
   return v5;

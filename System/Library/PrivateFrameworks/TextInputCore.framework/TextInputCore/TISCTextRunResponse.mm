@@ -1,6 +1,6 @@
 @interface TISCTextRunResponse
-+ (id)textRunResponseByMergingResponses:(id)a3;
-+ (id)textRunResponseWithFont:(__CTFont *)a3;
++ (id)textRunResponseByMergingResponses:(id)responses;
++ (id)textRunResponseWithFont:(__CTFont *)font;
 - (void)dealloc;
 @end
 
@@ -15,19 +15,19 @@
   [(TISCTextRunResponse *)&v3 dealloc];
 }
 
-+ (id)textRunResponseByMergingResponses:(id)a3
++ (id)textRunResponseByMergingResponses:(id)responses
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] == 1)
+  responsesCopy = responses;
+  if ([responsesCopy count] == 1)
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [responsesCopy objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v5 = [v3 firstObject];
-    Count = CFArrayGetCount([v5 ctLines]);
+    firstObject = [responsesCopy firstObject];
+    Count = CFArrayGetCount([firstObject ctLines]);
 
     theArray = CFArrayCreateMutable(0, Count, MEMORY[0x277CBF128]);
     v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:Count];
@@ -40,8 +40,8 @@
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v10 = v3;
-        v11 = v3;
+        v10 = responsesCopy;
+        v11 = responsesCopy;
         v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v12)
         {
@@ -76,7 +76,7 @@
         CFArrayAppendValue(theArray, v18);
         CFRelease(v18);
         CFRelease(Mutable);
-        v3 = v10;
+        responsesCopy = v10;
       }
     }
 
@@ -85,8 +85,8 @@
     v4[1] = theArray;
     v4[2] = v7;
 
-    v21 = [v3 firstObject];
-    v4[3] = CFRetain([v21 font]);
+    firstObject2 = [responsesCopy firstObject];
+    v4[3] = CFRetain([firstObject2 font]);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -94,7 +94,7 @@
   return v4;
 }
 
-+ (id)textRunResponseWithFont:(__CTFont *)a3
++ (id)textRunResponseWithFont:(__CTFont *)font
 {
   v4 = objc_opt_new();
   v4[1] = CFArrayCreateMutable(0, 0, MEMORY[0x277CBF128]);
@@ -102,7 +102,7 @@
   v6 = v4[2];
   v4[2] = v5;
 
-  v4[3] = CFRetain(a3);
+  v4[3] = CFRetain(font);
 
   return v4;
 }

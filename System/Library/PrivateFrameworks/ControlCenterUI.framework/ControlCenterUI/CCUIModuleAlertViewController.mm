@@ -1,34 +1,34 @@
 @interface CCUIModuleAlertViewController
-- (CCUIModuleAlertViewController)initWithModuleIdentifier:(id)a3 presentationOptions:(id)a4 mainViewController:(id)a5;
+- (CCUIModuleAlertViewController)initWithModuleIdentifier:(id)identifier presentationOptions:(id)options mainViewController:(id)controller;
 - (CCUIModuleAlertViewControllerDelegate)delegate;
-- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)a3;
-- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)a3;
-- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)a3;
-- (void)contentModuleContainerViewControllerDismissPresentedContent:(id)a3;
+- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)controller;
+- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)controller;
+- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)controller;
+- (void)contentModuleContainerViewControllerDismissPresentedContent:(id)content;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CCUIModuleAlertViewController
 
-- (CCUIModuleAlertViewController)initWithModuleIdentifier:(id)a3 presentationOptions:(id)a4 mainViewController:(id)a5
+- (CCUIModuleAlertViewController)initWithModuleIdentifier:(id)identifier presentationOptions:(id)options mainViewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  optionsCopy = options;
+  controllerCopy = controller;
+  if (!identifierCopy)
   {
     [CCUIModuleAlertViewController initWithModuleIdentifier:a2 presentationOptions:self mainViewController:?];
   }
 
-  v12 = [v11 moduleInstanceManager];
-  v13 = [v12 loadAlertModuleWithBundleIdentifier:v9];
+  moduleInstanceManager = [controllerCopy moduleInstanceManager];
+  v13 = [moduleInstanceManager loadAlertModuleWithBundleIdentifier:identifierCopy];
   if (!v13)
   {
-    [CCUIModuleAlertViewController initWithModuleIdentifier:a2 presentationOptions:self mainViewController:v9];
+    [CCUIModuleAlertViewController initWithModuleIdentifier:a2 presentationOptions:self mainViewController:identifierCopy];
   }
 
   v34.receiver = self;
@@ -36,36 +36,36 @@
   v14 = [(CCUIModuleAlertViewController *)&v34 initWithNibName:0 bundle:0];
   if (v14)
   {
-    v15 = [v9 copy];
+    v15 = [identifierCopy copy];
     moduleIdentifier = v14->_moduleIdentifier;
     v14->_moduleIdentifier = v15;
 
-    v17 = [v10 copy];
+    v17 = [optionsCopy copy];
     presentationOptions = v14->_presentationOptions;
     v14->_presentationOptions = v17;
 
-    v32 = v11;
+    v32 = controllerCopy;
     objc_storeStrong(&v14->_moduleInstance, v13);
     v19 = [CCUIContentModuleContainerViewController alloc];
-    v31 = [(CCUIModuleInstance *)v14->_moduleInstance metadata];
-    v20 = [v31 moduleIdentifier];
-    v33 = v10;
+    metadata = [(CCUIModuleInstance *)v14->_moduleInstance metadata];
+    moduleIdentifier = [metadata moduleIdentifier];
+    v33 = optionsCopy;
     v21 = objc_alloc(MEMORY[0x277CCAD78]);
-    v22 = [(CCUIModuleInstance *)v14->_moduleInstance uniqueIdentifier];
-    v23 = [v21 initWithUUIDString:v22];
-    v24 = [(CCUIModuleInstance *)v14->_moduleInstance module];
+    uniqueIdentifier = [(CCUIModuleInstance *)v14->_moduleInstance uniqueIdentifier];
+    v23 = [v21 initWithUUIDString:uniqueIdentifier];
+    module = [(CCUIModuleInstance *)v14->_moduleInstance module];
     [MEMORY[0x277CFC958] defaultAlertPresentationContext];
     v25 = v13;
-    v27 = v26 = v12;
-    v28 = [(CCUIContentModuleContainerViewController *)v19 initWithModuleIdentifier:v20 uniqueIdentifier:v23 contentModule:v24 presentationContext:v27 contentRenderingMode:0];
+    v27 = v26 = moduleInstanceManager;
+    v28 = [(CCUIContentModuleContainerViewController *)v19 initWithModuleIdentifier:moduleIdentifier uniqueIdentifier:v23 contentModule:module presentationContext:v27 contentRenderingMode:0];
     moduleContainerViewController = v14->_moduleContainerViewController;
     v14->_moduleContainerViewController = v28;
 
-    v12 = v26;
+    moduleInstanceManager = v26;
     v13 = v25;
 
-    v11 = v32;
-    v10 = v33;
+    controllerCopy = v32;
+    optionsCopy = v33;
 
     [(CCUIContentModuleContainerViewController *)v14->_moduleContainerViewController setDelegate:v14];
     [(CCUIModuleAlertViewController *)v14 addChildViewController:v14->_moduleContainerViewController];
@@ -85,9 +85,9 @@
   v15.receiver = self;
   v15.super_class = CCUIModuleAlertViewController;
   [(CCUIModuleAlertViewController *)&v15 viewDidLoad];
-  v3 = [MEMORY[0x277CFC968] _auxiliaryMaterialView];
+  _auxiliaryMaterialView = [MEMORY[0x277CFC968] _auxiliaryMaterialView];
   blurView = self->_blurView;
-  self->_blurView = v3;
+  self->_blurView = _auxiliaryMaterialView;
 
   v5 = self->_blurView;
   v6 = objc_opt_class();
@@ -96,23 +96,23 @@
 
   [(MTMaterialView *)self->_blurView setWeighting:0.0];
   [(MTMaterialView *)self->_blurView setAutoresizingMask:18];
-  v8 = [(CCUIModuleAlertViewController *)self view];
-  [v8 addSubview:self->_blurView];
+  view = [(CCUIModuleAlertViewController *)self view];
+  [view addSubview:self->_blurView];
 
   v9 = objc_alloc(MEMORY[0x277CFC9D0]);
-  v10 = [(CCUIModuleAlertViewController *)self view];
-  [v10 bounds];
+  view2 = [(CCUIModuleAlertViewController *)self view];
+  [view2 bounds];
   v11 = [v9 initWithFrame:?];
   contentView = self->_contentView;
   self->_contentView = v11;
 
   [(UIView *)self->_contentView setAutoresizingMask:18];
-  v13 = [(CCUIModuleAlertViewController *)self view];
-  [v13 addSubview:self->_contentView];
+  view3 = [(CCUIModuleAlertViewController *)self view];
+  [view3 addSubview:self->_contentView];
 
-  v14 = [(CCUIContentModuleContainerViewController *)self->_moduleContainerViewController view];
-  [v14 setAutoresizingMask:18];
-  [(UIView *)self->_contentView addSubview:v14];
+  view4 = [(CCUIContentModuleContainerViewController *)self->_moduleContainerViewController view];
+  [view4 setAutoresizingMask:18];
+  [(UIView *)self->_contentView addSubview:view4];
 }
 
 - (void)viewWillLayoutSubviews
@@ -122,43 +122,43 @@
   [(CCUIModuleAlertViewController *)&v4 viewWillLayoutSubviews];
   if (![(CCUIContentModuleContainerViewController *)self->_moduleContainerViewController isExpanded])
   {
-    v3 = [(CCUIContentModuleContainerViewController *)self->_moduleContainerViewController contentViewController];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || [v3 shouldBeginTransitionToExpandedContentModule])
+    contentViewController = [(CCUIContentModuleContainerViewController *)self->_moduleContainerViewController contentViewController];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || [contentViewController shouldBeginTransitionToExpandedContentModule])
     {
       [(CCUIContentModuleContainerViewController *)self->_moduleContainerViewController setExpanded:1];
       if (objc_opt_respondsToSelector())
       {
-        [v3 willTransitionToExpandedContentMode:1];
+        [contentViewController willTransitionToExpandedContentMode:1];
       }
 
       [(CCUIContentModuleContainerViewController *)self->_moduleContainerViewController transitionToExpandedMode:1];
       if (objc_opt_respondsToSelector())
       {
-        [v3 didTransitionToExpandedContentMode:1];
+        [contentViewController didTransitionToExpandedContentMode:1];
       }
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIModuleAlertViewController;
-  [(CCUIModuleAlertViewController *)&v4 viewDidAppear:a3];
+  [(CCUIModuleAlertViewController *)&v4 viewDidAppear:appear];
   [(MTMaterialView *)self->_blurView setContentReplacedWithSnapshot:UIAccessibilityIsReduceTransparencyEnabled()];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIModuleAlertViewController;
-  [(CCUIModuleAlertViewController *)&v4 viewWillDisappear:a3];
+  [(CCUIModuleAlertViewController *)&v4 viewWillDisappear:disappear];
   [(MTMaterialView *)self->_blurView setContentReplacedWithSnapshot:0];
 }
 
-- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)a3
+- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)controller
 {
-  v3 = [(CCUIModuleAlertViewController *)self compactModeSourceViewForContentModuleContainerViewController:a3];
+  v3 = [(CCUIModuleAlertViewController *)self compactModeSourceViewForContentModuleContainerViewController:controller];
   [v3 bounds];
   v5 = v4;
   v7 = v6;
@@ -176,10 +176,10 @@
   return result;
 }
 
-- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)a3
+- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)controller
 {
-  v3 = [(CCUIModuleAlertViewController *)self view];
-  [v3 bounds];
+  view = [(CCUIModuleAlertViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -196,7 +196,7 @@
   return result;
 }
 
-- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)a3
+- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)controller
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -205,7 +205,7 @@
   return result;
 }
 
-- (void)contentModuleContainerViewControllerDismissPresentedContent:(id)a3
+- (void)contentModuleContainerViewControllerDismissPresentedContent:(id)content
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;

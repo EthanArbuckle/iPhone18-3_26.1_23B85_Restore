@@ -1,20 +1,20 @@
 @interface TSSetupAssistantSIMSetupFlow
-+ (void)needsToRun:(id)a3;
++ (void)needsToRun:(id)run;
 - (TSSetupAssistantSIMSetupFlow)init;
-- (TSSetupAssistantSIMSetupFlow)initWithIccid:(id)a3 showAddPlan:(BOOL)a4 forceDualSIMSetup:(BOOL)a5 allowDismiss:(BOOL)a6;
+- (TSSetupAssistantSIMSetupFlow)initWithIccid:(id)iccid showAddPlan:(BOOL)plan forceDualSIMSetup:(BOOL)setup allowDismiss:(BOOL)dismiss;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
 - (void)dealloc;
-- (void)firstViewController:(id)a3;
-- (void)setCancelNavigationBarItems:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)setCancelNavigationBarItems:(id)items;
 @end
 
 @implementation TSSetupAssistantSIMSetupFlow
 
-+ (void)needsToRun:(id)a3
++ (void)needsToRun:(id)run
 {
-  v3 = a3;
-  if (v3)
+  runCopy = run;
+  if (runCopy)
   {
     if (+[TSUtilities hasCellularBaseband])
     {
@@ -23,13 +23,13 @@
       v5[1] = 3221225472;
       v5[2] = __43__TSSetupAssistantSIMSetupFlow_needsToRun___block_invoke;
       v5[3] = &unk_279B44E98;
-      v6 = v3;
+      v6 = runCopy;
       [v4 planItemsWithCompletion:v5];
     }
 
     else
     {
-      (*(v3 + 2))(v3, 0);
+      (*(runCopy + 2))(runCopy, 0);
     }
   }
 }
@@ -68,16 +68,16 @@ void __43__TSSetupAssistantSIMSetupFlow_needsToRun___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (TSSetupAssistantSIMSetupFlow)initWithIccid:(id)a3 showAddPlan:(BOOL)a4 forceDualSIMSetup:(BOOL)a5 allowDismiss:(BOOL)a6
+- (TSSetupAssistantSIMSetupFlow)initWithIccid:(id)iccid showAddPlan:(BOOL)plan forceDualSIMSetup:(BOOL)setup allowDismiss:(BOOL)dismiss
 {
-  v6 = a6;
+  dismissCopy = dismiss;
   v23 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  iccidCopy = iccid;
   v12 = _TSLogDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v20[0] = 67109378;
-    v20[1] = v6;
+    v20[1] = dismissCopy;
     v21 = 2080;
     v22 = "[TSSetupAssistantSIMSetupFlow initWithIccid:showAddPlan:forceDualSIMSetup:allowDismiss:]";
     _os_log_impl(&dword_262AA8000, v12, OS_LOG_TYPE_DEFAULT, "allowDismiss: %d @%s", v20, 0x12u);
@@ -87,10 +87,10 @@ void __43__TSSetupAssistantSIMSetupFlow_needsToRun___block_invoke(uint64_t a1)
   v14 = v13;
   if (v13)
   {
-    v13->_showAddPlan = a4;
-    objc_storeStrong(&v13->_iccid, a3);
-    v14->_forceDualSIMSetup = a5;
-    if (v6)
+    v13->_showAddPlan = plan;
+    objc_storeStrong(&v13->_iccid, iccid);
+    v14->_forceDualSIMSetup = setup;
+    if (dismissCopy)
     {
       v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v14 action:sel_userDidTapCancel];
       cancelButton = v14->_cancelButton;
@@ -138,14 +138,14 @@ void __43__TSSetupAssistantSIMSetupFlow_needsToRun___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     if (+[TSUtilities isPad])
     {
-      v4[2](v4, 0);
+      controllerCopy[2](controllerCopy, 0);
     }
 
     else
@@ -155,7 +155,7 @@ void __43__TSSetupAssistantSIMSetupFlow_needsToRun___block_invoke(uint64_t a1)
       v5[1] = 3221225472;
       v5[2] = __52__TSSetupAssistantSIMSetupFlow_firstViewController___block_invoke;
       v5[3] = &unk_279B44EE8;
-      v6 = v4;
+      v6 = controllerCopy;
       objc_copyWeak(&v7, &location);
       [TSSetupAssistantSIMSetupFlow needsToRun:v5];
       objc_destroyWeak(&v7);
@@ -208,9 +208,9 @@ void __52__TSSetupAssistantSIMSetupFlow_firstViewController___block_invoke_2(uin
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -235,13 +235,13 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v4 usesType];
-    if (v11 == 2)
+    usesType = [fromCopy usesType];
+    if (usesType == 2)
     {
       v18 = MEMORY[0x277CBEB18];
       v19 = +[TSCellularPlanManagerCache sharedInstance];
-      v20 = [v19 getDanglingPlanItems];
-      v21 = [v18 arrayWithArray:v20];
+      getDanglingPlanItems = [v19 getDanglingPlanItems];
+      v21 = [v18 arrayWithArray:getDanglingPlanItems];
       danglingPlanItems = self->_danglingPlanItems;
       self->_danglingPlanItems = v21;
 
@@ -261,9 +261,9 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    if (v11 != 1)
+    if (usesType != 1)
     {
-      if (!v11)
+      if (!usesType)
       {
         v6 = [TSCellularPlanUsesViewController alloc];
         v7 = 2;
@@ -309,17 +309,17 @@ LABEL_8:
   return v9;
 }
 
-- (void)setCancelNavigationBarItems:(id)a3
+- (void)setCancelNavigationBarItems:(id)items
 {
   if (self->_cancelButton)
   {
-    v4 = a3;
-    v5 = [v4 navigationItem];
-    [v5 setHidesBackButton:1 animated:0];
+    itemsCopy = items;
+    navigationItem = [itemsCopy navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
 
-    v6 = [v4 navigationItem];
+    navigationItem2 = [itemsCopy navigationItem];
 
-    [v6 setLeftBarButtonItem:self->_cancelButton];
+    [navigationItem2 setLeftBarButtonItem:self->_cancelButton];
   }
 }
 

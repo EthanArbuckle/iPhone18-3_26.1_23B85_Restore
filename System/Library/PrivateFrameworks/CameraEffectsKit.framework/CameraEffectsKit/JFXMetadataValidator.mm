@@ -1,8 +1,8 @@
 @interface JFXMetadataValidator
 - (JFXMetadataValidator)init;
 - (void)reset;
-- (void)validateARImageData:(id)a3;
-- (void)validateFaceTrackedARFrame:(id)a3;
+- (void)validateARImageData:(id)data;
+- (void)validateFaceTrackedARFrame:(id)frame;
 @end
 
 @implementation JFXMetadataValidator
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (void)validateARImageData:(id)a3
+- (void)validateARImageData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v5 = JFXLog_metadata();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -34,9 +34,9 @@
     }
   }
 
-  v6 = [v4 faceData];
+  faceData = [dataCopy faceData];
 
-  if (!v6)
+  if (!faceData)
   {
     v10 = JFXLog_metadata();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -47,9 +47,9 @@
     goto LABEL_11;
   }
 
-  v7 = [v4 faceData];
-  v8 = [v7 detectedFaces];
-  v9 = [v8 count];
+  faceData2 = [dataCopy faceData];
+  detectedFaces = [faceData2 detectedFaces];
+  v9 = [detectedFaces count];
 
   if ([(JFXMetadataValidator *)self faceDataDetectedFacesCount]!= v9)
   {
@@ -66,15 +66,15 @@ LABEL_11:
   }
 }
 
-- (void)validateFaceTrackedARFrame:(id)a3
+- (void)validateFaceTrackedARFrame:(id)frame
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a3 anchors];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  anchors = [frame anchors];
+  v5 = [anchors countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -87,7 +87,7 @@ LABEL_11:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(anchors);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -103,7 +103,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [anchors countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);

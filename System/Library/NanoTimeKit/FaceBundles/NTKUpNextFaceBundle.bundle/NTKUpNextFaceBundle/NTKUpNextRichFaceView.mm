@@ -1,23 +1,23 @@
 @interface NTKUpNextRichFaceView
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 @end
 
 @implementation NTKUpNextRichFaceView
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
+  complicationCopy = complication;
+  slotCopy = slot;
   v12.receiver = self;
   v12.super_class = NTKUpNextRichFaceView;
-  v10 = [(NTKUpNextFaceView *)&v12 _newLegacyViewForComplication:v8 family:a4 slot:v9];
+  v10 = [(NTKUpNextFaceView *)&v12 _newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
   if (!v10)
   {
-    if ([v9 isEqualToString:NTKComplicationSlotTopLeft])
+    if ([slotCopy isEqualToString:NTKComplicationSlotTopLeft])
     {
-      v10 = +[NTKRichComplicationCircularBaseView viewWithLegacyComplicationType:](NTKRichComplicationCircularBaseView, "viewWithLegacyComplicationType:", [v8 complicationType]);
+      v10 = +[NTKRichComplicationCircularBaseView viewWithLegacyComplicationType:](NTKRichComplicationCircularBaseView, "viewWithLegacyComplicationType:", [complicationCopy complicationType]);
     }
 
     else
@@ -29,30 +29,30 @@
   return v10;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = NTKUpNextRichFaceView;
-  [(NTKUpNextFaceView *)&v9 _configureComplicationView:v6 forSlot:a4];
+  [(NTKUpNextFaceView *)&v9 _configureComplicationView:viewCopy forSlot:slot];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 transitionToMonochromeWithFraction:0.0];
+    [viewCopy transitionToMonochromeWithFraction:0.0];
   }
 
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationCircularView])
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationCircularView])
   {
-    v7 = v6;
+    v7 = viewCopy;
     v8 = +[UIColor clearColor];
     [v7 setPlatterColor:v8];
   }
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotTopLeft])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotTopLeft])
   {
     v5 = &dword_0 + 1;
   }
@@ -61,7 +61,7 @@
   {
     v7.receiver = self;
     v7.super_class = NTKUpNextRichFaceView;
-    v5 = [(NTKUpNextRichFaceView *)&v7 _keylineStyleForComplicationSlot:v4];
+    v5 = [(NTKUpNextRichFaceView *)&v7 _keylineStyleForComplicationSlot:slotCopy];
   }
 
   return v5;

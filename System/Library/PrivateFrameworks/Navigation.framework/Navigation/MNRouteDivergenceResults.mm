@@ -35,14 +35,14 @@
         v11 = v10;
         [v7 locationCoordinate];
         v13 = v12;
-        v14 = [v7 resultType];
+        resultType = [v7 resultType];
         v15 = @"None";
-        if (v14 == 1)
+        if (resultType == 1)
         {
           v15 = @"Divergence";
         }
 
-        if (v14 == 2)
+        if (resultType == 2)
         {
           v15 = @"Convergence";
         }

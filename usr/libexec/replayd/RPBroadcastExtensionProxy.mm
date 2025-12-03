@@ -1,22 +1,22 @@
 @interface RPBroadcastExtensionProxy
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)a3;
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)a3;
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)extension;
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)establishConnectionWithHandler:(id)a3;
-- (void)finishBroadcastWithError:(id)a3;
+- (void)establishConnectionWithHandler:(id)handler;
+- (void)finishBroadcastWithError:(id)error;
 - (void)invalidateConnection;
 - (void)ping;
-- (void)processPayload:(id)a3 completion:(id)a4;
-- (void)setupNewConnection:(id)a3;
-- (void)updateBroadcastURL:(id)a3;
-- (void)updateServiceInfo:(id)a3;
+- (void)processPayload:(id)payload completion:(id)completion;
+- (void)setupNewConnection:(id)connection;
+- (void)updateBroadcastURL:(id)l;
+- (void)updateServiceInfo:(id)info;
 @end
 
 @implementation RPBroadcastExtensionProxy
 
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)a3
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v9.receiver = self;
   v9.super_class = RPBroadcastExtensionProxy;
   v5 = [(RPBroadcastExtensionProxy *)&v9 init];
@@ -38,18 +38,18 @@
 
     [(NSXPCListener *)v5->_listener resume];
     [(NSXPCListener *)v5->_listener setDelegate:v5];
-    v7 = [(NSXPCListener *)v5->_listener endpoint];
-    [(RPBroadcastExtensionProxy *)v5 setListenerEndpoint:v7];
+    endpoint = [(NSXPCListener *)v5->_listener endpoint];
+    [(RPBroadcastExtensionProxy *)v5 setListenerEndpoint:endpoint];
 
-    [(RPBroadcastExtensionProxy *)v5 setBroadcastUploadExtension:v4];
+    [(RPBroadcastExtensionProxy *)v5 setBroadcastUploadExtension:extensionCopy];
   }
 
   return v5;
 }
 
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)a3
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v8.receiver = self;
   v8.super_class = RPBroadcastExtensionProxy;
   v5 = [(RPBroadcastExtensionProxy *)&v8 init];
@@ -68,7 +68,7 @@
 
     if (!v5->_connection)
     {
-      v6 = [[NSXPCConnection alloc] initWithListenerEndpoint:v4];
+      v6 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
       [(RPBroadcastExtensionProxy *)v5 setupNewConnection:v6];
     }
   }
@@ -85,7 +85,7 @@
     v6 = 1024;
     v7 = 63;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -94,9 +94,9 @@
   [(RPBroadcastExtensionProxy *)&v3 dealloc];
 }
 
-- (void)establishConnectionWithHandler:(id)a3
+- (void)establishConnectionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -106,7 +106,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d establishing connection to extension", buf, 0x12u);
   }
 
-  [(RPBroadcastExtensionProxy *)self setConnectionReadyHandler:v4];
+  [(RPBroadcastExtensionProxy *)self setConnectionReadyHandler:handlerCopy];
   v5 = objc_alloc_init(NSExtensionItem);
   broadcastUploadExtension = self->_broadcastUploadExtension;
   v11 = v5;
@@ -116,8 +116,8 @@
   v9[2] = sub_100010164;
   v9[3] = &unk_1000A15C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NSExtension *)broadcastUploadExtension beginExtensionRequestWithInputItems:v7 completion:v9];
 }
 
@@ -131,7 +131,7 @@
     v10 = 1024;
     v11 = 100;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = connection;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p invalidating connection=%p with extension", &v8, 0x26u);
@@ -153,16 +153,16 @@
   errorHandler = self->_errorHandler;
   self->_errorHandler = 0;
 
-  v7 = [(RPBroadcastExtensionProxy *)self broadcastUploadExtension];
-  [v7 _kill:9];
+  broadcastUploadExtension = [(RPBroadcastExtensionProxy *)self broadcastUploadExtension];
+  [broadcastUploadExtension _kill:9];
 
   [(RPBroadcastExtensionProxy *)self setBroadcastUploadExtension:0];
 }
 
-- (void)setupNewConnection:(id)a3
+- (void)setupNewConnection:(id)connection
 {
-  v4 = a3;
-  [(RPBroadcastExtensionProxy *)self setConnection:v4];
+  connectionCopy = connection;
+  [(RPBroadcastExtensionProxy *)self setConnection:connectionCopy];
   [(NSXPCConnection *)self->_connection setExportedObject:self];
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPBroadcastDaemonProtocol];
   [(NSXPCConnection *)self->_connection setExportedInterface:v5];
@@ -183,9 +183,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)updateServiceInfo:(id)a3
+- (void)updateServiceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -198,13 +198,13 @@
   serviceInfoHandler = self->_serviceInfoHandler;
   if (serviceInfoHandler)
   {
-    serviceInfoHandler[2](serviceInfoHandler, v4);
+    serviceInfoHandler[2](serviceInfoHandler, infoCopy);
   }
 }
 
-- (void)updateBroadcastURL:(id)a3
+- (void)updateBroadcastURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -217,7 +217,7 @@
   broadcastURLHandler = self->_broadcastURLHandler;
   if (broadcastURLHandler)
   {
-    broadcastURLHandler[2](broadcastURLHandler, v4);
+    broadcastURLHandler[2](broadcastURLHandler, lCopy);
   }
 }
 
@@ -240,9 +240,9 @@
 
   v4 = +[NSXPCConnection currentConnection];
   v5 = +[RPFeatureFlagUtility sharedInstance];
-  v6 = [v5 screenRecordingPassthroughCamera];
+  screenRecordingPassthroughCamera = [v5 screenRecordingPassthroughCamera];
 
-  if (v6)
+  if (screenRecordingPassthroughCamera)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -251,7 +251,7 @@
       v12 = 1024;
       v13 = 172;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
       v17 = v4;
       v7 = " [INFO] %{public}s:%d %p connection=%p";
@@ -272,7 +272,7 @@ LABEL_13:
       v12 = 1024;
       v13 = 170;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
       v17 = v4;
       v18 = 1024;
@@ -284,9 +284,9 @@ LABEL_13:
   }
 }
 
-- (void)finishBroadcastWithError:(id)a3
+- (void)finishBroadcastWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446722;
@@ -294,21 +294,21 @@ LABEL_13:
     v8 = 1024;
     v9 = 177;
     v10 = 2112;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d received finish request from service due to error %@", &v6, 0x1Cu);
   }
 
   errorHandler = self->_errorHandler;
   if (errorHandler)
   {
-    errorHandler[2](errorHandler, v4);
+    errorHandler[2](errorHandler, errorCopy);
   }
 }
 
-- (void)processPayload:(id)a3 completion:(id)a4
+- (void)processPayload:(id)payload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   connection = self->_connection;
   v11 = _NSConcreteStackBlock;
@@ -320,7 +320,7 @@ LABEL_13:
   v10 = v9;
   if (v9)
   {
-    [v9 processPayload:v6 completion:{v7, v11, v12, v13, v14}];
+    [v9 processPayload:payloadCopy completion:{completionCopy, v11, v12, v13, v14}];
   }
 
   objc_destroyWeak(&v15);

@@ -1,57 +1,57 @@
 @interface MUCGPDFSquareAnnotationAdaptor
-+ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4;
-+ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)a3 forPage:(CGPDFPage *)a4;
++ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page;
++ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)annotation forPage:(CGPDFPage *)page;
 @end
 
 @implementation MUCGPDFSquareAnnotationAdaptor
 
-+ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4
++ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page
 {
   v5 = [MUPDFAnnotationAdaptorHelper newAKAnnotationFromCGPDFAnnotation:?];
   if (!v5)
   {
     CGPDFDictionary = CGPDFAnnotationGetCGPDFDictionary();
     v5 = objc_opt_new();
-    [MUPDFAnnotationAdaptorHelper migrateAKStrokedAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:a4];
-    [MUPDFAnnotationAdaptorHelper migrateAKFilledAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:a4];
-    [MUPDFAnnotationAdaptorHelper migrateAKRectangularShapeAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:a4];
-    [MUPDFAnnotationAdaptorHelper migrateAKTextAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:a4];
+    [MUPDFAnnotationAdaptorHelper migrateAKStrokedAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:page];
+    [MUPDFAnnotationAdaptorHelper migrateAKFilledAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:page];
+    [MUPDFAnnotationAdaptorHelper migrateAKRectangularShapeAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:page];
+    [MUPDFAnnotationAdaptorHelper migrateAKTextAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:page];
   }
 
   return v5;
 }
 
-+ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)a3 forPage:(CGPDFPage *)a4
++ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)annotation forPage:(CGPDFPage *)page
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [v6 setObject:@"/Annot" forKey:@"/Type"];
-  [v6 setObject:@"/Square" forKey:@"/Subtype"];
-  [MUPDFAnnotationAdaptorHelper addBoundsOfAnnotation:v5 forPage:a4 toDictionary:v6];
-  [MUPDFAnnotationAdaptorHelper addModificationDateOfAnnotation:v5 toDictionary:v6];
-  [MUPDFAnnotationAdaptorHelper addFlagsOfAnnotation:v5 toDictionary:v6];
-  [MUPDFAnnotationAdaptorHelper addContentsStringOfAnnotation:v5 toDictionary:v6];
-  [MUPDFAnnotationAdaptorHelper addBorderStyleOfAnnotation:v5 toDictionary:v6];
-  if ([v5 conformsToAKStrokedAnnotationProtocol])
+  annotationCopy = annotation;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"/Annot" forKey:@"/Type"];
+  [dictionary setObject:@"/Square" forKey:@"/Subtype"];
+  [MUPDFAnnotationAdaptorHelper addBoundsOfAnnotation:annotationCopy forPage:page toDictionary:dictionary];
+  [MUPDFAnnotationAdaptorHelper addModificationDateOfAnnotation:annotationCopy toDictionary:dictionary];
+  [MUPDFAnnotationAdaptorHelper addFlagsOfAnnotation:annotationCopy toDictionary:dictionary];
+  [MUPDFAnnotationAdaptorHelper addContentsStringOfAnnotation:annotationCopy toDictionary:dictionary];
+  [MUPDFAnnotationAdaptorHelper addBorderStyleOfAnnotation:annotationCopy toDictionary:dictionary];
+  if ([annotationCopy conformsToAKStrokedAnnotationProtocol])
   {
-    v7 = [v5 strokeColor];
-    [MUPDFAnnotationAdaptorHelper addRGBColor:v7 forKey:@"/C" toDictionary:v6];
+    strokeColor = [annotationCopy strokeColor];
+    [MUPDFAnnotationAdaptorHelper addRGBColor:strokeColor forKey:@"/C" toDictionary:dictionary];
   }
 
-  [MUPDFAnnotationAdaptorHelper addTextLabelOfAnnotation:v5 toDictionary:v6];
-  if ([v5 conformsToAKFilledAnnotationProtocol])
+  [MUPDFAnnotationAdaptorHelper addTextLabelOfAnnotation:annotationCopy toDictionary:dictionary];
+  if ([annotationCopy conformsToAKFilledAnnotationProtocol])
   {
-    v8 = [v5 fillColor];
-    if (v8)
+    fillColor = [annotationCopy fillColor];
+    if (fillColor)
     {
-      [MUPDFAnnotationAdaptorHelper addRGBColor:v8 forKey:@"/IC" toDictionary:v6];
+      [MUPDFAnnotationAdaptorHelper addRGBColor:fillColor forKey:@"/IC" toDictionary:dictionary];
     }
   }
 
-  [MUPDFAnnotationAdaptorHelper addAppearanceStreamOfAnnotation:v5 forPage:a4 toDictionary:v6];
-  [MUPDFAnnotationAdaptorHelper addAKAnnotation:v5 toAnnotationDictionary:v6];
+  [MUPDFAnnotationAdaptorHelper addAppearanceStreamOfAnnotation:annotationCopy forPage:page toDictionary:dictionary];
+  [MUPDFAnnotationAdaptorHelper addAKAnnotation:annotationCopy toAnnotationDictionary:dictionary];
 
-  return v6;
+  return dictionary;
 }
 
 @end

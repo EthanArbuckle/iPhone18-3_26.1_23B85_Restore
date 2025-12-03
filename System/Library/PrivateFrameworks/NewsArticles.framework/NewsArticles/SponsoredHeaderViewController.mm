@@ -1,13 +1,13 @@
 @interface SponsoredHeaderViewController
-- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4;
+- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection;
 - (void)viewDidLoad;
 @end
 
 @implementation SponsoredHeaderViewController
 
-- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12NewsArticles29SponsoredHeaderViewController_label;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCC10]) init];
@@ -24,11 +24,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(SponsoredHeaderViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 addSubview_];
+    v4 = view;
+    [view addSubview_];
   }
 
   else
@@ -37,19 +37,19 @@
   }
 }
 
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = self;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1D7AF5678(width, height);
   v10 = v9;
 
   return v10;
 }
 
-- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles29SponsoredHeaderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

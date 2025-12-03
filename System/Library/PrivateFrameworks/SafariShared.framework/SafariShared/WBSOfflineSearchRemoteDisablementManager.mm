@@ -1,7 +1,7 @@
 @interface WBSOfflineSearchRemoteDisablementManager
 + (WBSOfflineSearchRemoteDisablementManager)sharedManager;
 - (WBSOfflineSearchRemoteDisablementManager)init;
-- (void)areOfflineSearchSuggestionsDisabled:(id)a3;
+- (void)areOfflineSearchSuggestionsDisabled:(id)disabled;
 @end
 
 @implementation WBSOfflineSearchRemoteDisablementManager
@@ -32,15 +32,15 @@ void __57__WBSOfflineSearchRemoteDisablementManager_sharedManager__block_invoke(
   v2 = [(WBSOfflineSearchRemoteDisablementManager *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] safari_safariSharedBundle];
-    v4 = [v3 URLForResource:@"WBSOfflineSearchRemoteDisablementDefaultConfig" withExtension:@"plist"];
+    safari_safariSharedBundle = [MEMORY[0x1E696AAE8] safari_safariSharedBundle];
+    v4 = [safari_safariSharedBundle URLForResource:@"WBSOfflineSearchRemoteDisablementDefaultConfig" withExtension:@"plist"];
 
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 safari_settingsDirectoryURL];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
 
     v7 = objc_alloc(MEMORY[0x1E69C89E0]);
     v8 = objc_opt_class();
-    v9 = [v7 initWithDataFormat:0 builtInListURL:v4 downloadsDirectoryURL:v6 resourceName:@"OfflineSearchRemoteDisablement" resourceVersion:@"1" updateDateDefaultsKey:@"WBSOfflineSearchDisablementKey" updateInterval:86400.0 snapshotClass:v8 snapshotTransformerClass:objc_opt_class()];
+    v9 = [v7 initWithDataFormat:0 builtInListURL:v4 downloadsDirectoryURL:safari_settingsDirectoryURL resourceName:@"OfflineSearchRemoteDisablement" resourceVersion:@"1" updateDateDefaultsKey:@"WBSOfflineSearchDisablementKey" updateInterval:86400.0 snapshotClass:v8 snapshotTransformerClass:objc_opt_class()];
     remotelyUpdatableDataController = v2->_remotelyUpdatableDataController;
     v2->_remotelyUpdatableDataController = v9;
 
@@ -51,15 +51,15 @@ void __57__WBSOfflineSearchRemoteDisablementManager_sharedManager__block_invoke(
   return v2;
 }
 
-- (void)areOfflineSearchSuggestionsDisabled:(id)a3
+- (void)areOfflineSearchSuggestionsDisabled:(id)disabled
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C8A48] sharedObserver];
-  v6 = [v5 isGoogleEnabledSearchEngine];
+  disabledCopy = disabled;
+  mEMORY[0x1E69C8A48] = [MEMORY[0x1E69C8A48] sharedObserver];
+  isGoogleEnabledSearchEngine = [mEMORY[0x1E69C8A48] isGoogleEnabledSearchEngine];
 
-  if ((v6 & 1) == 0)
+  if ((isGoogleEnabledSearchEngine & 1) == 0)
   {
-    v4[2](v4, 0);
+    disabledCopy[2](disabledCopy, 0);
   }
 
   remotelyUpdatableDataController = self->_remotelyUpdatableDataController;
@@ -67,8 +67,8 @@ void __57__WBSOfflineSearchRemoteDisablementManager_sharedManager__block_invoke(
   v9[1] = 3221225472;
   v9[2] = __80__WBSOfflineSearchRemoteDisablementManager_areOfflineSearchSuggestionsDisabled___block_invoke;
   v9[3] = &unk_1E7FC87F8;
-  v10 = v4;
-  v8 = v4;
+  v10 = disabledCopy;
+  v8 = disabledCopy;
   [(WBSRemotelyUpdatableDataController *)remotelyUpdatableDataController accessSnapshotLoadingItIfNeeded:v9];
 }
 

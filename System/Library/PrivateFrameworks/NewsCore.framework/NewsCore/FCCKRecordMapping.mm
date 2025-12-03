@@ -1,28 +1,28 @@
 @interface FCCKRecordMapping
 - (BOOL)hasChanges;
-- (FCCKRecordMapping)initWithFromZoneSchema:(id)a3 toZoneSchema:(id)a4 fromRecordSchema:(id)a5 toRecordSchema:(id)a6 recordIDMapping:(id)a7;
+- (FCCKRecordMapping)initWithFromZoneSchema:(id)schema toZoneSchema:(id)zoneSchema fromRecordSchema:(id)recordSchema toRecordSchema:(id)toRecordSchema recordIDMapping:(id)mapping;
 @end
 
 @implementation FCCKRecordMapping
 
-- (FCCKRecordMapping)initWithFromZoneSchema:(id)a3 toZoneSchema:(id)a4 fromRecordSchema:(id)a5 toRecordSchema:(id)a6 recordIDMapping:(id)a7
+- (FCCKRecordMapping)initWithFromZoneSchema:(id)schema toZoneSchema:(id)zoneSchema fromRecordSchema:(id)recordSchema toRecordSchema:(id)toRecordSchema recordIDMapping:(id)mapping
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  schemaCopy = schema;
+  zoneSchemaCopy = zoneSchema;
+  recordSchemaCopy = recordSchema;
+  toRecordSchemaCopy = toRecordSchema;
+  mappingCopy = mapping;
   v21.receiver = self;
   v21.super_class = FCCKRecordMapping;
   v17 = [(FCCKRecordMapping *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_fromZoneSchema, a3);
-    objc_storeStrong(&v18->_toZoneSchema, a4);
-    objc_storeStrong(&v18->_fromRecordSchema, a5);
-    objc_storeStrong(&v18->_toRecordSchema, a6);
-    objc_storeStrong(&v18->_recordIDMapping, a7);
+    objc_storeStrong(&v17->_fromZoneSchema, schema);
+    objc_storeStrong(&v18->_toZoneSchema, zoneSchema);
+    objc_storeStrong(&v18->_fromRecordSchema, recordSchema);
+    objc_storeStrong(&v18->_toRecordSchema, toRecordSchema);
+    objc_storeStrong(&v18->_recordIDMapping, mapping);
   }
 
   return v18;
@@ -31,31 +31,31 @@
 - (BOOL)hasChanges
 {
   v3 = MEMORY[0x1E69E58C0];
-  v4 = [(FCCKRecordMapping *)self fromZoneSchema];
-  v5 = [(FCCKRecordMapping *)self toZoneSchema];
-  if ([v3 nf_object:v4 isEqualToObject:v5])
+  fromZoneSchema = [(FCCKRecordMapping *)self fromZoneSchema];
+  toZoneSchema = [(FCCKRecordMapping *)self toZoneSchema];
+  if ([v3 nf_object:fromZoneSchema isEqualToObject:toZoneSchema])
   {
     v6 = MEMORY[0x1E69E58C0];
-    v7 = [(FCCKRecordMapping *)self fromRecordSchema];
-    v8 = [(FCCKRecordMapping *)self toRecordSchema];
-    if ([v6 nf_object:v7 isEqualToObject:v8])
+    fromRecordSchema = [(FCCKRecordMapping *)self fromRecordSchema];
+    toRecordSchema = [(FCCKRecordMapping *)self toRecordSchema];
+    if ([v6 nf_object:fromRecordSchema isEqualToObject:toRecordSchema])
     {
-      v9 = [(FCCKRecordMapping *)self recordIDMapping];
-      v10 = [v9 hasChanges];
+      recordIDMapping = [(FCCKRecordMapping *)self recordIDMapping];
+      hasChanges = [recordIDMapping hasChanges];
     }
 
     else
     {
-      v10 = 1;
+      hasChanges = 1;
     }
   }
 
   else
   {
-    v10 = 1;
+    hasChanges = 1;
   }
 
-  return v10;
+  return hasChanges;
 }
 
 @end

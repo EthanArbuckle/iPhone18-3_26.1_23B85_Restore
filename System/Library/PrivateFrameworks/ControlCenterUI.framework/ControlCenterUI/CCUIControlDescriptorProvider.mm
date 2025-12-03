@@ -1,24 +1,24 @@
 @interface CCUIControlDescriptorProvider
 - (CCUIControlDescriptorProvider)init;
-- (CCUIControlDescriptorProvider)initWithWidgetExtensionProvider:(id)a3;
-- (id)descriptorFor:(id)a3;
+- (CCUIControlDescriptorProvider)initWithWidgetExtensionProvider:(id)provider;
+- (id)descriptorFor:(id)for;
 @end
 
 @implementation CCUIControlDescriptorProvider
 
-- (CCUIControlDescriptorProvider)initWithWidgetExtensionProvider:(id)a3
+- (CCUIControlDescriptorProvider)initWithWidgetExtensionProvider:(id)provider
 {
-  *(&self->super.isa + OBJC_IVAR___CCUIControlDescriptorProvider_widgetExtensionProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR___CCUIControlDescriptorProvider_widgetExtensionProvider) = provider;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ControlDescriptorProvider();
-  v4 = a3;
+  providerCopy = provider;
   return [(CCUIControlDescriptorProvider *)&v6 init];
 }
 
-- (id)descriptorFor:(id)a3
+- (id)descriptorFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
+  forCopy = for;
+  selfCopy = self;
   v6 = sub_21EAA9180();
 
   return v6;

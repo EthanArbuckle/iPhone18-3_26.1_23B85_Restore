@@ -1,19 +1,19 @@
 @interface ShelfFooterTitleButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateConfiguration;
 @end
 
 @implementation ShelfFooterTitleButton
 
-- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v8 = type metadata accessor for ShelfFooterTitleButton.Style(0);
   __chkstk_darwin(v8);
@@ -34,7 +34,7 @@
   return v14;
 }
 
-- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension22ShelfFooterTitleButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension22ShelfFooterTitleButton_leadingIconView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(UIImageView) init];
@@ -47,7 +47,7 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005AEC18();
 }
 
@@ -60,17 +60,17 @@
   sub_1005AEA60(v4);
   sub_10000CF78(v4, v4[3]);
   sub_10076422C();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_10076E0EC();
 
   sub_10000CD74(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1005AF744(width, height);
   v8 = v7;
 

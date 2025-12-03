@@ -1,34 +1,34 @@
 @interface PMLSparseVector
-+ (id)sparseVectorEmptyWithLength:(unint64_t)a3;
-+ (id)sparseVectorFromDense:(const float *)a3 length:(unint64_t)a4;
-+ (id)sparseVectorFromDense:(id)a3;
-+ (id)sparseVectorFromNumbers:(id)a3;
-+ (id)sparseVectorFromNumbers:(id)a3 indices:(id)a4 length:(unint64_t)a5;
-+ (id)sparseVectorWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 block:(id)a5;
-+ (void)sparseVectorWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 isSparseIndexInt64:(BOOL)a5 sparseIndices:(const void *)a6 sparseValues:(const float *)a7 toDenseValues:(float *)a8 withLength:(unint64_t)a9;
-- (PMLSparseVector)initWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 indices:(int64_t *)a5 values:(float *)a6;
-- (PMLSparseVector)initWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 indicesData:(id)a5 valuesData:(id)a6;
++ (id)sparseVectorEmptyWithLength:(unint64_t)length;
++ (id)sparseVectorFromDense:(const float *)dense length:(unint64_t)length;
++ (id)sparseVectorFromDense:(id)dense;
++ (id)sparseVectorFromNumbers:(id)numbers;
++ (id)sparseVectorFromNumbers:(id)numbers indices:(id)indices length:(unint64_t)length;
++ (id)sparseVectorWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values block:(id)block;
++ (void)sparseVectorWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values isSparseIndexInt64:(BOOL)int64 sparseIndices:(const void *)indices sparseValues:(const float *)sparseValues toDenseValues:(float *)denseValues withLength:(unint64_t)withLength;
+- (PMLSparseVector)initWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values indices:(int64_t *)indices values:(float *)a6;
+- (PMLSparseVector)initWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values indicesData:(id)data valuesData:(id)valuesData;
 - (PMLSparseVector)vectorWithConstantColumn;
 - (float)maxAbsValue;
 - (float)maxValue;
 - (float)minValue;
-- (float)valueAtIndex:(unint64_t)a3;
+- (float)valueAtIndex:(unint64_t)index;
 - (id)indicesAsUInt16Data;
 - (id)indicesData;
-- (id)quantizedValuesAsUInt8DataWithMin:(float)a3 max:(float)a4;
+- (id)quantizedValuesAsUInt8DataWithMin:(float)min max:(float)max;
 - (id)valuesData;
-- (void)addStartId:(int64_t)a3 endId:(int64_t)a4 paddingId:(int64_t)a5 withMaxVectorLength:(unint64_t)a6;
+- (void)addStartId:(int64_t)id endId:(int64_t)endId paddingId:(int64_t)paddingId withMaxVectorLength:(unint64_t)length;
 - (void)applyOneHotNormalization;
 - (void)convertToBagOfIds;
 - (void)dealloc;
-- (void)enumerateNonZeroValuesWithBlock:(id)a3;
-- (void)processNonZeroValuesInPlaceWithBlock:(id)a3;
-- (void)scaleInPlaceWithInversedFactor:(float)a3;
-- (void)scaleWithVectorNormalization:(int64_t)a3;
-- (void)setLength:(unint64_t)a3;
-- (void)setNumberOfNonZeroValues:(unint64_t)a3;
-- (void)setSparseIndices:(int64_t *)a3;
-- (void)setSparseValues:(float *)a3;
+- (void)enumerateNonZeroValuesWithBlock:(id)block;
+- (void)processNonZeroValuesInPlaceWithBlock:(id)block;
+- (void)scaleInPlaceWithInversedFactor:(float)factor;
+- (void)scaleWithVectorNormalization:(int64_t)normalization;
+- (void)setLength:(unint64_t)length;
+- (void)setNumberOfNonZeroValues:(unint64_t)values;
+- (void)setSparseIndices:(int64_t *)indices;
+- (void)setSparseValues:(float *)values;
 @end
 
 @implementation PMLSparseVector
@@ -47,13 +47,13 @@
   return v6;
 }
 
-- (float)valueAtIndex:(unint64_t)a3
+- (float)valueAtIndex:(unint64_t)index
 {
   v5 = 0.0;
   if ([(PMLSparseVector *)self numberOfNonZeroValues])
   {
     v6 = 0;
-    while ([(PMLSparseVector *)self sparseIndices][8 * v6] != a3)
+    while ([(PMLSparseVector *)self sparseIndices][8 * v6] != index)
     {
       if (++v6 >= [(PMLSparseVector *)self numberOfNonZeroValues])
       {
@@ -67,11 +67,11 @@
   return v5;
 }
 
-- (void)addStartId:(int64_t)a3 endId:(int64_t)a4 paddingId:(int64_t)a5 withMaxVectorLength:(unint64_t)a6
+- (void)addStartId:(int64_t)id endId:(int64_t)endId paddingId:(int64_t)paddingId withMaxVectorLength:(unint64_t)length
 {
   if (self->_length == self->_numberOfNonZeroValues)
   {
-    if (a6)
+    if (length)
     {
       goto LABEL_3;
     }
@@ -79,22 +79,22 @@
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"_length == _numberOfNonZeroValues"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"_length == _numberOfNonZeroValues"}];
 
-    if (a6)
+    if (length)
     {
       goto LABEL_3;
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:349 description:{@"Invalid parameter not satisfying: %@", @"maxVectorLength"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:349 description:{@"Invalid parameter not satisfying: %@", @"maxVectorLength"}];
 
 LABEL_3:
-  if (self->_length >= a6)
+  if (self->_length >= length)
   {
-    length = a6;
+    length = length;
   }
 
   else
@@ -102,58 +102,58 @@ LABEL_3:
     length = self->_length;
   }
 
-  self->_length = a6;
-  [(PMLSparseVector *)self setNumberOfNonZeroValues:a6];
-  if (a3)
+  self->_length = length;
+  [(PMLSparseVector *)self setNumberOfNonZeroValues:length];
+  if (id)
   {
-    if (length >= a6 - 1)
+    if (length >= length - 1)
     {
-      v13 = a6 - 1;
+      lengthCopy = length - 1;
     }
 
     else
     {
-      v13 = length;
+      lengthCopy = length;
     }
 
-    memmove(self->_sparseValues + 1, self->_sparseValues, 4 * v13);
+    memmove(self->_sparseValues + 1, self->_sparseValues, 4 * lengthCopy);
     sparseValues = self->_sparseValues;
-    self->_sparseIndices[v13] = v13;
-    *sparseValues = a3;
+    self->_sparseIndices[lengthCopy] = lengthCopy;
+    *sparseValues = id;
   }
 
-  if (a3)
+  if (id)
   {
-    v15 = length + 1;
+    lengthCopy2 = length + 1;
   }
 
   else
   {
-    v15 = length;
+    lengthCopy2 = length;
   }
 
-  if (v15 < a6)
+  if (lengthCopy2 < length)
   {
-    v16 = v15;
+    v16 = lengthCopy2;
     sparseIndices = self->_sparseIndices;
     v18 = self->_sparseValues;
     do
     {
       sparseIndices[v16] = v16;
-      v18[v16++] = a5;
+      v18[v16++] = paddingId;
     }
 
-    while (v16 < a6);
+    while (v16 < length);
   }
 
-  if (a4)
+  if (endId)
   {
-    if (v15 >= a6 - 1)
+    if (lengthCopy2 >= length - 1)
     {
-      v15 = a6 - 1;
+      lengthCopy2 = length - 1;
     }
 
-    self->_sparseValues[v15] = a4;
+    self->_sparseValues[lengthCopy2] = endId;
   }
 }
 
@@ -177,7 +177,7 @@ LABEL_3:
   }
 }
 
-- (void)processNonZeroValuesInPlaceWithBlock:(id)a3
+- (void)processNonZeroValuesInPlaceWithBlock:(id)block
 {
   if (self->_numberOfNonZeroValues)
   {
@@ -185,7 +185,7 @@ LABEL_3:
     sparseValues = self->_sparseValues;
     do
     {
-      v7 = (*(a3 + 2))(a3, self->_sparseIndices[v5], sparseValues[v5]);
+      v7 = (*(block + 2))(block, self->_sparseIndices[v5], sparseValues[v5]);
       sparseValues = self->_sparseValues;
       sparseValues[v5++] = v7;
     }
@@ -194,14 +194,14 @@ LABEL_3:
   }
 }
 
-- (void)enumerateNonZeroValuesWithBlock:(id)a3
+- (void)enumerateNonZeroValuesWithBlock:(id)block
 {
   if (self->_numberOfNonZeroValues)
   {
     v5 = 0;
     do
     {
-      (*(a3 + 2))(a3, self->_sparseIndices[v5], self->_sparseValues[v5]);
+      (*(block + 2))(block, self->_sparseIndices[v5], self->_sparseValues[v5]);
       ++v5;
     }
 
@@ -209,12 +209,12 @@ LABEL_3:
   }
 }
 
-- (void)setSparseIndices:(int64_t *)a3
+- (void)setSparseIndices:(int64_t *)indices
 {
   sparseIndices = self->_sparseIndices;
   if (sparseIndices)
   {
-    v6 = sparseIndices == a3;
+    v6 = sparseIndices == indices;
   }
 
   else
@@ -224,22 +224,22 @@ LABEL_3:
 
   if (v6)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"_sparseIndices == NULL || _sparseIndices != sparseIndices"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"_sparseIndices == NULL || _sparseIndices != sparseIndices"}];
 
     sparseIndices = self->_sparseIndices;
   }
 
   free(sparseIndices);
-  self->_sparseIndices = a3;
+  self->_sparseIndices = indices;
 }
 
-- (void)setSparseValues:(float *)a3
+- (void)setSparseValues:(float *)values
 {
   sparseValues = self->_sparseValues;
   if (sparseValues)
   {
-    v6 = sparseValues == a3;
+    v6 = sparseValues == values;
   }
 
   else
@@ -249,57 +249,57 @@ LABEL_3:
 
   if (v6)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:265 description:{@"Invalid parameter not satisfying: %@", @"_sparseValues == NULL || _sparseValues != sparseValues"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:265 description:{@"Invalid parameter not satisfying: %@", @"_sparseValues == NULL || _sparseValues != sparseValues"}];
 
     sparseValues = self->_sparseValues;
   }
 
   free(sparseValues);
-  self->_sparseValues = a3;
+  self->_sparseValues = values;
 }
 
-- (void)setNumberOfNonZeroValues:(unint64_t)a3
+- (void)setNumberOfNonZeroValues:(unint64_t)values
 {
-  if (self->_length < a3)
+  if (self->_length < values)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"_length >= numberOfNonZeroValues"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"_length >= numberOfNonZeroValues"}];
   }
 
-  self->_numberOfNonZeroValues = a3;
-  self->_sparseIndices = reallocf(self->_sparseIndices, 8 * a3);
-  self->_sparseValues = reallocf(self->_sparseValues, 4 * a3);
+  self->_numberOfNonZeroValues = values;
+  self->_sparseIndices = reallocf(self->_sparseIndices, 8 * values);
+  self->_sparseValues = reallocf(self->_sparseValues, 4 * values);
 }
 
-- (void)setLength:(unint64_t)a3
+- (void)setLength:(unint64_t)length
 {
-  if (self->_numberOfNonZeroValues > a3)
+  if (self->_numberOfNonZeroValues > length)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"length >= _numberOfNonZeroValues"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"length >= _numberOfNonZeroValues"}];
   }
 
-  self->_length = a3;
+  self->_length = length;
 }
 
-- (void)scaleWithVectorNormalization:(int64_t)a3
+- (void)scaleWithVectorNormalization:(int64_t)normalization
 {
-  if (a3 > 1)
+  if (normalization > 1)
   {
-    if (a3 == 2)
+    if (normalization == 2)
     {
       [(PMLSparseVector *)self l2norm];
       goto LABEL_17;
     }
 
-    if (a3 == 3)
+    if (normalization == 3)
     {
       [(PMLSparseVector *)self maxAbsValue];
       goto LABEL_17;
     }
 
-    if (a3 != 4)
+    if (normalization != 4)
     {
       goto LABEL_12;
     }
@@ -310,7 +310,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(normalization)
   {
     case -1:
       return;
@@ -359,9 +359,9 @@ LABEL_12:
   }
 }
 
-- (void)scaleInPlaceWithInversedFactor:(float)a3
+- (void)scaleInPlaceWithInversedFactor:(float)factor
 {
-  if (a3 > 0.0)
+  if (factor > 0.0)
   {
     numberOfNonZeroValues_low = LODWORD(self->_numberOfNonZeroValues);
     sparseValues = self->_sparseValues;
@@ -438,7 +438,7 @@ LABEL_12:
   return result;
 }
 
-- (id)quantizedValuesAsUInt8DataWithMin:(float)a3 max:(float)a4
+- (id)quantizedValuesAsUInt8DataWithMin:(float)min max:(float)max
 {
   numberOfNonZeroValues = self->_numberOfNonZeroValues;
   if (numberOfNonZeroValues)
@@ -455,7 +455,7 @@ LABEL_12:
       v9 = 0;
       do
       {
-        v8[v9] = vcvtms_s32_f32((self->_sparseValues[v9] - a3) / ((a4 - a3) / 255.0));
+        v8[v9] = vcvtms_s32_f32((self->_sparseValues[v9] - min) / ((max - min) / 255.0));
         ++v9;
         v10 = self->_numberOfNonZeroValues;
       }
@@ -483,8 +483,8 @@ LABEL_12:
 {
   if (self->_length >= 0xFFFF)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:137 description:@"Too big vector."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:137 description:@"Too big vector."];
   }
 
   numberOfNonZeroValues = self->_numberOfNonZeroValues;
@@ -595,18 +595,18 @@ LABEL_12:
   [(PMLSparseVector *)&v3 dealloc];
 }
 
-- (PMLSparseVector)initWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 indices:(int64_t *)a5 values:(float *)a6
+- (PMLSparseVector)initWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values indices:(int64_t *)indices values:(float *)a6
 {
-  if (a4 && (!a5 || !a6))
+  if (values && (!indices || !a6))
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"numberOfNonZeroValues == 0 || (indices && values)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"numberOfNonZeroValues == 0 || (indices && values)"}];
   }
 
-  if (a3 < a4)
+  if (length < values)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"length>=numberOfNonZeroValues"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLSparseVector.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"length>=numberOfNonZeroValues"}];
   }
 
   v15.receiver = self;
@@ -614,84 +614,84 @@ LABEL_12:
   result = [(PMLSparseVector *)&v15 init];
   if (result)
   {
-    result->_length = a3;
-    result->_numberOfNonZeroValues = a4;
-    result->_sparseIndices = a5;
+    result->_length = length;
+    result->_numberOfNonZeroValues = values;
+    result->_sparseIndices = indices;
     result->_sparseValues = a6;
   }
 
   return result;
 }
 
-- (PMLSparseVector)initWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 indicesData:(id)a5 valuesData:(id)a6
+- (PMLSparseVector)initWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values indicesData:(id)data valuesData:(id)valuesData
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = [a5 bytes];
-  v14 = [v12 bytes];
+  dataCopy = data;
+  valuesDataCopy = valuesData;
+  bytes = [data bytes];
+  bytes2 = [valuesDataCopy bytes];
 
-  return [(PMLSparseVector *)self initWithLength:a3 numberOfNonZeroValues:a4 indices:v13 values:v14];
+  return [(PMLSparseVector *)self initWithLength:length numberOfNonZeroValues:values indices:bytes values:bytes2];
 }
 
-+ (id)sparseVectorFromNumbers:(id)a3 indices:(id)a4 length:(unint64_t)a5
++ (id)sparseVectorFromNumbers:(id)numbers indices:(id)indices length:(unint64_t)length
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  numbersCopy = numbers;
+  indicesCopy = indices;
+  if ([numbersCopy count])
   {
-    v10 = malloc_type_calloc([v8 count], 8uLL, 0x100004000313F17uLL);
-    v11 = malloc_type_calloc([v8 count], 4uLL, 0x100004052888210uLL);
-    if ([v8 count])
+    v10 = malloc_type_calloc([numbersCopy count], 8uLL, 0x100004000313F17uLL);
+    v11 = malloc_type_calloc([numbersCopy count], 4uLL, 0x100004052888210uLL);
+    if ([numbersCopy count])
     {
       v12 = 0;
       v13 = 0;
       do
       {
-        v14 = [v8 objectAtIndex:v12];
+        v14 = [numbersCopy objectAtIndex:v12];
         [v14 floatValue];
         v16 = v15;
 
-        v17 = [v9 objectAtIndex:v12];
-        v18 = [v17 unsignedIntegerValue];
+        v17 = [indicesCopy objectAtIndex:v12];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
 
         if (v16 != 0.0)
         {
-          v10[v13] = v18;
+          v10[v13] = unsignedIntegerValue;
           v11[v13++] = v16;
         }
 
         ++v12;
       }
 
-      while (v12 < [v8 count]);
+      while (v12 < [numbersCopy count]);
     }
 
-    v19 = [a1 alloc];
-    v20 = [v8 count];
+    v19 = [self alloc];
+    v20 = [numbersCopy count];
     v21 = v19;
-    v22 = a5;
+    lengthCopy2 = length;
     v23 = v10;
     v24 = v11;
   }
 
   else
   {
-    v21 = [a1 alloc];
-    v22 = a5;
+    v21 = [self alloc];
+    lengthCopy2 = length;
     v20 = 0;
     v23 = 0;
     v24 = 0;
   }
 
-  v25 = [v21 initWithLength:v22 numberOfNonZeroValues:v20 indices:v23 values:v24];
+  v25 = [v21 initWithLength:lengthCopy2 numberOfNonZeroValues:v20 indices:v23 values:v24];
 
   return v25;
 }
 
-+ (id)sparseVectorFromNumbers:(id)a3
++ (id)sparseVectorFromNumbers:(id)numbers
 {
-  v4 = a3;
-  v5 = malloc_type_calloc([v4 count], 4uLL, 0x100004052888210uLL);
+  numbersCopy = numbers;
+  v5 = malloc_type_calloc([numbersCopy count], 4uLL, 0x100004052888210uLL);
   if (!v5)
   {
     v12 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE728] reason:@"malloc failed" userInfo:0];
@@ -699,110 +699,110 @@ LABEL_12:
   }
 
   v6 = v5;
-  if ([v4 count])
+  if ([numbersCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [v4 objectAtIndexedSubscript:v7];
+      v8 = [numbersCopy objectAtIndexedSubscript:v7];
       [v8 floatValue];
       v6[v7] = v9;
 
       ++v7;
     }
 
-    while (v7 < [v4 count]);
+    while (v7 < [numbersCopy count]);
   }
 
-  v10 = [a1 sparseVectorFromDense:v6 length:{objc_msgSend(v4, "count")}];
+  v10 = [self sparseVectorFromDense:v6 length:{objc_msgSend(numbersCopy, "count")}];
   free(v6);
 
   return v10;
 }
 
-+ (void)sparseVectorWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 isSparseIndexInt64:(BOOL)a5 sparseIndices:(const void *)a6 sparseValues:(const float *)a7 toDenseValues:(float *)a8 withLength:(unint64_t)a9
++ (void)sparseVectorWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values isSparseIndexInt64:(BOOL)int64 sparseIndices:(const void *)indices sparseValues:(const float *)sparseValues toDenseValues:(float *)denseValues withLength:(unint64_t)withLength
 {
-  v12 = a5;
+  int64Copy = int64;
   v24 = *MEMORY[0x277D85DE8];
-  if (a9 != a3)
+  if (withLength != length)
   {
     v15 = PML_LogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v20 = 134218240;
-      v21 = a3;
+      lengthCopy = length;
       v22 = 2048;
-      v23 = a9;
+      withLengthCopy = withLength;
       _os_log_impl(&dword_260D68000, v15, OS_LOG_TYPE_INFO, "PMLSparseVector: dimensions do not match between source sparse vector (%llu) and destination dense vector (%llu)", &v20, 0x16u);
     }
   }
 
-  if (a3 == a4)
+  if (length == values)
   {
-    if (a3 >= a9)
+    if (length >= withLength)
     {
-      v16 = a9;
+      lengthCopy2 = withLength;
     }
 
     else
     {
-      v16 = a3;
+      lengthCopy2 = length;
     }
 
-    memcpy(a8, a7, 4 * v16);
-    if (a3 < a9)
+    memcpy(denseValues, sparseValues, 4 * lengthCopy2);
+    if (length < withLength)
     {
-      bzero(&a8[v16], 4 * (a9 - v16));
+      bzero(&denseValues[lengthCopy2], 4 * (withLength - lengthCopy2));
     }
   }
 
   else
   {
-    bzero(a8, 4 * a9);
-    if (a4)
+    bzero(denseValues, 4 * withLength);
+    if (values)
     {
       v17 = 0;
       do
       {
-        if (v12)
+        if (int64Copy)
         {
-          v18 = *(a6 + v17);
+          v18 = *(indices + v17);
         }
 
         else
         {
-          v18 = *(a6 + v17);
+          v18 = *(indices + v17);
         }
 
-        if (v18 < a9)
+        if (v18 < withLength)
         {
-          a8[v18] = a7[v17];
+          denseValues[v18] = sparseValues[v17];
         }
 
         ++v17;
       }
 
-      while (a4 != v17);
+      while (values != v17);
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)sparseVectorWithLength:(unint64_t)a3 numberOfNonZeroValues:(unint64_t)a4 block:(id)a5
++ (id)sparseVectorWithLength:(unint64_t)length numberOfNonZeroValues:(unint64_t)values block:(id)block
 {
-  v7 = a5;
-  if (a4)
+  blockCopy = block;
+  if (values)
   {
-    v8 = malloc_type_malloc(8 * a4, 0x100004000313F17uLL);
-    v9 = malloc_type_malloc(4 * a4, 0x100004052888210uLL);
-    v7[2](v7, v8, v9);
-    v10 = [[PMLSparseVector alloc] initWithLength:a3 numberOfNonZeroValues:a4 indices:v8 values:v9];
+    v8 = malloc_type_malloc(8 * values, 0x100004000313F17uLL);
+    v9 = malloc_type_malloc(4 * values, 0x100004052888210uLL);
+    blockCopy[2](blockCopy, v8, v9);
+    v10 = [[PMLSparseVector alloc] initWithLength:length numberOfNonZeroValues:values indices:v8 values:v9];
   }
 
   else
   {
-    v10 = [PMLSparseVector sparseVectorEmptyWithLength:a3];
+    v10 = [PMLSparseVector sparseVectorEmptyWithLength:length];
   }
 
   v11 = v10;
@@ -810,34 +810,34 @@ LABEL_12:
   return v11;
 }
 
-+ (id)sparseVectorEmptyWithLength:(unint64_t)a3
++ (id)sparseVectorEmptyWithLength:(unint64_t)length
 {
-  v3 = [[a1 alloc] initWithLength:a3 numberOfNonZeroValues:0 indices:0 values:0];
+  v3 = [[self alloc] initWithLength:length numberOfNonZeroValues:0 indices:0 values:0];
 
   return v3;
 }
 
-+ (id)sparseVectorFromDense:(id)a3
++ (id)sparseVectorFromDense:(id)dense
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 ptr];
-  v8 = [v6 count];
+  denseCopy = dense;
+  denseCopy2 = dense;
+  v7 = [denseCopy2 ptr];
+  v8 = [denseCopy2 count];
 
-  return [a1 sparseVectorFromDense:v7 length:v8];
+  return [self sparseVectorFromDense:v7 length:v8];
 }
 
-+ (id)sparseVectorFromDense:(const float *)a3 length:(unint64_t)a4
++ (id)sparseVectorFromDense:(const float *)dense length:(unint64_t)length
 {
-  if (!a4)
+  if (!length)
   {
     goto LABEL_12;
   }
 
   v7 = 0;
-  for (i = 0; i != a4; ++i)
+  for (i = 0; i != length; ++i)
   {
-    if (a3[i] != 0.0)
+    if (dense[i] != 0.0)
     {
       ++v7;
     }
@@ -851,7 +851,7 @@ LABEL_12:
     v12 = 0;
     do
     {
-      v13 = a3[v11];
+      v13 = dense[v11];
       if (v13 != 0.0)
       {
         v9[v12] = v11;
@@ -861,14 +861,14 @@ LABEL_12:
       ++v11;
     }
 
-    while (a4 != v11);
-    v14 = [[a1 alloc] initWithLength:a4 numberOfNonZeroValues:v7 indices:v9 values:v10];
+    while (length != v11);
+    v14 = [[self alloc] initWithLength:length numberOfNonZeroValues:v7 indices:v9 values:v10];
   }
 
   else
   {
 LABEL_12:
-    v14 = [a1 sparseVectorEmptyWithLength:a4];
+    v14 = [self sparseVectorEmptyWithLength:length];
   }
 
   return v14;

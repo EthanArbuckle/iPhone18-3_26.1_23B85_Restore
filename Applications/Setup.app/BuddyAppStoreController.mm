@@ -1,8 +1,8 @@
 @interface BuddyAppStoreController
 - (BuddyAppStoreController)init;
 - (BuddyFindMyDisabledAlertPresenter)findMyDisabledAlertPresenter;
-- (void)_continuePressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_continuePressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -35,60 +35,60 @@
 
 - (void)viewDidLoad
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v12.receiver = self;
   v12.super_class = BuddyAppStoreController;
   [(BuddyAppStoreController *)&v12 viewDidLoad];
-  v2 = [(BuddyAppStoreController *)v14 navigationItem];
-  [v2 setHidesBackButton:1];
+  navigationItem = [(BuddyAppStoreController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v3 = [(BuddyAppStoreController *)v14 suspendTask];
-  v4 = [(BuddySuspendTask *)v3 message];
+  suspendTask = [(BuddyAppStoreController *)selfCopy suspendTask];
+  message = [(BuddySuspendTask *)suspendTask message];
 
-  if (v4)
+  if (message)
   {
-    v5 = [(BuddyAppStoreController *)v14 headerView];
-    v6 = [(BuddyAppStoreController *)v14 suspendTask];
-    v7 = [(BuddySuspendTask *)v6 message];
-    [v5 setDetailText:v7];
+    headerView = [(BuddyAppStoreController *)selfCopy headerView];
+    suspendTask2 = [(BuddyAppStoreController *)selfCopy suspendTask];
+    message2 = [(BuddySuspendTask *)suspendTask2 message];
+    [headerView setDetailText:message2];
   }
 
-  v8 = v14;
+  v8 = selfCopy;
   v9 = +[NSBundle mainBundle];
   v10 = [(NSBundle *)v9 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v8 addBoldButton:v10 action:"_continuePressed:"];
 
-  v11 = [(BuddyAppStoreController *)v14 view];
-  [v11 setUserInteractionEnabled:0];
+  view = [(BuddyAppStoreController *)selfCopy view];
+  [view setUserInteractionEnabled:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = BuddyAppStoreController;
-  [(BuddyAppStoreController *)&v5 viewDidAppear:a3];
-  v3 = [(BuddyAppStoreController *)v8 findMyDisabledAlertPresenter];
-  [(BuddyFindMyDisabledAlertPresenter *)v3 presentFindMyDisabledAlertIfNeededOnViewController:v8];
+  [(BuddyAppStoreController *)&v5 viewDidAppear:appear];
+  findMyDisabledAlertPresenter = [(BuddyAppStoreController *)selfCopy findMyDisabledAlertPresenter];
+  [(BuddyFindMyDisabledAlertPresenter *)findMyDisabledAlertPresenter presentFindMyDisabledAlertIfNeededOnViewController:selfCopy];
 
-  v4 = [(BuddyAppStoreController *)v8 view];
-  [v4 setUserInteractionEnabled:1];
+  view = [(BuddyAppStoreController *)selfCopy view];
+  [view setUserInteractionEnabled:1];
 }
 
-- (void)_continuePressed:(id)a3
+- (void)_continuePressed:(id)pressed
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppStoreController *)v6 buddyPreferencesExcludedFromBackup];
-  [(BYPreferencesController *)v3 setObject:&__kCFBooleanTrue forKey:@"AppStorePresented"];
+  objc_storeStrong(location, pressed);
+  buddyPreferencesExcludedFromBackup = [(BuddyAppStoreController *)selfCopy buddyPreferencesExcludedFromBackup];
+  [(BYPreferencesController *)buddyPreferencesExcludedFromBackup setObject:&__kCFBooleanTrue forKey:@"AppStorePresented"];
 
-  v4 = [(BuddyWelcomeController *)v6 delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:v6];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }

@@ -1,10 +1,10 @@
 @interface EvaluationVFXView
 - (CGRect)bounds;
 - (_TtC13HearingTestUI17EvaluationVFXView)init;
-- (_TtC13HearingTestUI17EvaluationVFXView)initWithCoder:(id)a3;
-- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)a3;
-- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)a3 options:(id)a4;
-- (void)setBounds:(CGRect)a3;
+- (_TtC13HearingTestUI17EvaluationVFXView)initWithCoder:(id)coder;
+- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)frame;
+- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)frame options:(id)options;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation EvaluationVFXView
@@ -38,12 +38,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   sub_20CE13B84();
   sub_20CE13B74();
   sub_20CE13B24();
@@ -54,7 +54,7 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for EvaluationVFXView();
-  v8 = self;
+  selfCopy = self;
   [(EvaluationVFXView *)&v9 setBounds:x, y, width, height];
   sub_20CDA57FC();
 }
@@ -74,7 +74,7 @@
   return v2;
 }
 
-- (_TtC13HearingTestUI17EvaluationVFXView)initWithCoder:(id)a3
+- (_TtC13HearingTestUI17EvaluationVFXView)initWithCoder:(id)coder
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -84,11 +84,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20CDA6E94();
 }
 
-- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)a3 options:(id)a4
+- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)frame options:(id)options
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -103,7 +103,7 @@
   return result;
 }
 
-- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)a3
+- (_TtC13HearingTestUI17EvaluationVFXView)initWithFrame:(CGRect)frame
 {
   sub_20CE13B84();
   sub_20CE13B74();

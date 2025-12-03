@@ -1,17 +1,17 @@
 @interface MedicationShapeView
-- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithCoder:(id)a3;
-- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithFrame:(CGRect)a3;
+- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithCoder:(id)coder;
+- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation MedicationShapeView
 
-- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithFrame:(CGRect)a3
+- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC27HealthMedicationsExperience19MedicationShapeView_shadowLayer) = 0;
   v8 = OBJC_IVAR____TtC27HealthMedicationsExperience19MedicationShapeView_config;
   v9 = type metadata accessor for MedicationVisualizationConfig(0);
@@ -21,7 +21,7 @@
   return [(MedicationShapeView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithCoder:(id)a3
+- (_TtC27HealthMedicationsExperience19MedicationShapeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC27HealthMedicationsExperience19MedicationShapeView_shadowLayer) = 0;
   v4 = OBJC_IVAR____TtC27HealthMedicationsExperience19MedicationShapeView_config;
@@ -34,7 +34,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D16526EC();
 }
 

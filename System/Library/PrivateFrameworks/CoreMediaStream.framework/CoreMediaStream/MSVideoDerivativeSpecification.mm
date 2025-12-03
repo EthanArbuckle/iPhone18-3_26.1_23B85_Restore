@@ -1,29 +1,29 @@
 @interface MSVideoDerivativeSpecification
-+ (id)videoDerivativeSpecificationsWithDictionaryArray:(id)a3;
-- (MSVideoDerivativeSpecification)initWithDictionary:(id)a3;
++ (id)videoDerivativeSpecificationsWithDictionaryArray:(id)array;
+- (MSVideoDerivativeSpecification)initWithDictionary:(id)dictionary;
 @end
 
 @implementation MSVideoDerivativeSpecification
 
-- (MSVideoDerivativeSpecification)initWithDictionary:(id)a3
+- (MSVideoDerivativeSpecification)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MSVideoDerivativeSpecification;
   v5 = [(MSVideoDerivativeSpecification *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"cellular"];
+    v6 = [dictionaryCopy objectForKey:@"cellular"];
     v5->_useCellular = [v6 BOOLValue];
 
-    v7 = [v4 objectForKey:@"powerRequired"];
+    v7 = [dictionaryCopy objectForKey:@"powerRequired"];
     v5->_powerRequired = [v7 BOOLValue];
 
-    v8 = [v4 objectForKey:@"bitRate"];
+    v8 = [dictionaryCopy objectForKey:@"bitRate"];
     [v8 floatValue];
     v5->_bitRate = v9;
 
-    v10 = [v4 objectForKey:@"videoType"];
+    v10 = [dictionaryCopy objectForKey:@"videoType"];
     v5->_videoType = v10;
     if ([(NSString *)v10 isEqualToString:@"PosterFrame"])
     {
@@ -54,10 +54,10 @@ LABEL_9:
   return v5;
 }
 
-+ (id)videoDerivativeSpecificationsWithDictionaryArray:(id)a3
++ (id)videoDerivativeSpecificationsWithDictionaryArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -65,7 +65,7 @@ LABEL_9:
   v8[3] = &unk_278E927F0;
   v6 = v5;
   v9 = v6;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [arrayCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }

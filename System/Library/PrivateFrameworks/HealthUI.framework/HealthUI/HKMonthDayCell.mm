@@ -1,21 +1,21 @@
 @interface HKMonthDayCell
 + (double)dayLabelFontSize;
 - (BOOL)_representsWeekendDay;
-- (HKMonthDayCell)initWithDateCache:(id)a3;
-- (void)_setCircleState:(int64_t)a3;
+- (HKMonthDayCell)initWithDateCache:(id)cache;
+- (void)_setCircleState:(int64_t)state;
 - (void)_updateFontAndCircle;
-- (void)pressToTransition:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)updateWithDate:(id)a3 dayOfMonth:(int64_t)a4;
+- (void)pressToTransition:(BOOL)transition;
+- (void)setSelected:(BOOL)selected;
+- (void)updateWithDate:(id)date dayOfMonth:(int64_t)month;
 @end
 
 @implementation HKMonthDayCell
 
-- (HKMonthDayCell)initWithDateCache:(id)a3
+- (HKMonthDayCell)initWithDateCache:(id)cache
 {
   v6.receiver = self;
   v6.super_class = HKMonthDayCell;
-  v3 = [(HKCalendarDayCell *)&v6 initWithDateCache:a3];
+  v3 = [(HKCalendarDayCell *)&v6 initWithDateCache:cache];
   v4 = v3;
   if (v3)
   {
@@ -63,21 +63,21 @@
   [(HKCalendarDayCell *)self circleSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(HKCalendarDayCell *)self circle];
-  [v11 setBounds:{0.0, 0.0, v8, v10}];
+  circle = [(HKCalendarDayCell *)self circle];
+  [circle setBounds:{0.0, 0.0, v8, v10}];
 }
 
-- (void)_setCircleState:(int64_t)a3
+- (void)_setCircleState:(int64_t)state
 {
-  self->_circleState = a3;
-  if (a3 == 2)
+  self->_circleState = state;
+  if (state == 2)
   {
-    v9 = [(HKCalendarDayCell *)self circle];
-    [v9 setHidden:0];
+    circle = [(HKCalendarDayCell *)self circle];
+    [circle setHidden:0];
 
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v11 = [(HKCalendarDayCell *)self date];
-    v12 = [v10 isDateInToday:v11];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [(HKCalendarDayCell *)self date];
+    v12 = [currentCalendar isDateInToday:date];
 
     if (v12)
     {
@@ -89,61 +89,61 @@
       [MEMORY[0x1E69DC888] labelColor];
     }
     v13 = ;
-    v14 = [v13 CGColor];
+    cGColor = [v13 CGColor];
 
-    v5 = [(HKCalendarDayCell *)self circle];
-    v15 = v5;
-    v6 = v14;
+    circle2 = [(HKCalendarDayCell *)self circle];
+    circle5 = circle2;
+    v6 = cGColor;
 LABEL_11:
-    [v5 setBackgroundColor:v6];
+    [circle2 setBackgroundColor:v6];
     goto LABEL_12;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3)
+    if (state)
     {
       return;
     }
 
-    v4 = [(HKCalendarDayCell *)self circle];
-    [v4 setHidden:1];
+    circle3 = [(HKCalendarDayCell *)self circle];
+    [circle3 setHidden:1];
 
-    v5 = [(HKCalendarDayCell *)self circle];
-    v15 = v5;
+    circle2 = [(HKCalendarDayCell *)self circle];
+    circle5 = circle2;
     v6 = 0;
     goto LABEL_11;
   }
 
-  v7 = [(HKCalendarDayCell *)self circle];
-  [v7 setHidden:0];
+  circle4 = [(HKCalendarDayCell *)self circle];
+  [circle4 setHidden:0];
 
-  v15 = [(HKCalendarDayCell *)self circle];
-  v8 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [v15 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
+  circle5 = [(HKCalendarDayCell *)self circle];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [circle5 setBackgroundColor:{objc_msgSend(systemGrayColor, "CGColor")}];
 
 LABEL_12:
 }
 
 - (BOOL)_representsWeekendDay
 {
-  v3 = [(HKCalendarDayCell *)self dateCache];
+  dateCache = [(HKCalendarDayCell *)self dateCache];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_dayOfWeek];
-  v5 = [v3 isDayOfWeekNumberOnWeekend:v4];
+  v5 = [dateCache isDayOfWeekNumberOnWeekend:v4];
 
   return v5;
 }
 
-- (void)updateWithDate:(id)a3 dayOfMonth:(int64_t)a4
+- (void)updateWithDate:(id)date dayOfMonth:(int64_t)month
 {
   v12.receiver = self;
   v12.super_class = HKMonthDayCell;
-  v6 = a3;
-  [(HKCalendarDayCell *)&v12 updateWithDate:v6 dayOfMonth:a4];
+  dateCopy = date;
+  [(HKCalendarDayCell *)&v12 updateWithDate:dateCopy dayOfMonth:month];
   [(HKMonthDayCell *)self _setCircleState:0, v12.receiver, v12.super_class];
   [(HKMonthDayCell *)self setSelected:0];
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v7 component:512 fromDate:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [currentCalendar component:512 fromDate:dateCopy];
 
   self->_dayOfWeek = v8;
   if ([(HKCalendarDayCell *)self representsToday])
@@ -169,31 +169,31 @@ LABEL_12:
   [(HKCalendarDayCell *)self setTextColor:v9];
 
   [(HKMonthDayCell *)self _updateFontAndCircle];
-  v11 = [(HKCalendarDayCell *)self textColor];
-  [(HKCalendarDayCell *)self updateDateTextForDayNumber:a4 textColor:v11];
+  textColor = [(HKCalendarDayCell *)self textColor];
+  [(HKCalendarDayCell *)self updateDateTextForDayNumber:month textColor:textColor];
 }
 
-- (void)pressToTransition:(BOOL)a3
+- (void)pressToTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   if ([(HKMonthDayCell *)self circleState]!= 2)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setAnimationDuration:0.3];
-    [(HKMonthDayCell *)self _setCircleState:v3];
+    [(HKMonthDayCell *)self _setCircleState:transitionCopy];
     v5 = MEMORY[0x1E6979518];
 
     [v5 commit];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = HKMonthDayCell;
   [(HKCalendarDayCell *)&v6 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
     v5 = 2;
   }

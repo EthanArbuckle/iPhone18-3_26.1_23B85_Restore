@@ -1,23 +1,23 @@
 @interface SBLogoutProgressViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateViewData;
 @end
 
 @implementation SBLogoutProgressViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_goodbyeLabel" withType:"UILabel"];
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_savingDocumentsLabel" withType:"UILabel"];
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_savingDocumentsMoreLabel" withType:"UILabel"];
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_blameAppNameLabel" withType:"UILabel"];
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_blameAppIconView" withType:"UIImageView"];
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_userAvatarView" withType:"UIImageView"];
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_userContact" withType:"CNContact"];
-  [v3 validateClass:@"SBLogoutProgressView" hasInstanceMethod:@"_updateViewData" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUILegibilityLabel" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_goodbyeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_savingDocumentsLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_savingDocumentsMoreLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_blameAppNameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_blameAppIconView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_userAvatarView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceVariable:@"_userContact" withType:"CNContact"];
+  [validationsCopy validateClass:@"SBLogoutProgressView" hasInstanceMethod:@"_updateViewData" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUILegibilityLabel" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

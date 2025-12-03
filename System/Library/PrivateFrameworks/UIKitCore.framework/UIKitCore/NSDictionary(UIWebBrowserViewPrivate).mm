@@ -7,14 +7,14 @@
 
 - (uint64_t)_web_messageLineNumber
 {
-  v1 = [a1 objectForKey:@"lineNumber"];
+  v1 = [self objectForKey:@"lineNumber"];
 
   return [v1 intValue];
 }
 
 - (uint64_t)_web_messageType
 {
-  v2 = [a1 objectForKey:@"MessageLevel"];
+  v2 = [self objectForKey:@"MessageLevel"];
   if ([v2 isEqualToString:@"TipMessageLevel"])
   {
     v3 = 2;
@@ -35,7 +35,7 @@
     v3 = 16;
   }
 
-  v4 = [a1 objectForKey:@"MessageSource"];
+  v4 = [self objectForKey:@"MessageSource"];
   if ([v4 isEqualToString:@"HTMLMessageSource"])
   {
     v5 = 32;

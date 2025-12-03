@@ -1,80 +1,80 @@
 @interface CKMentionsController
 - (BOOL)allowsMentions;
-- (BOOL)attributedString:(id)a3 nextCharacterRangeFromRange:(_NSRange)a4 containsPossibleChild:(id)a5;
-- (BOOL)attributedString:(id)a3 shouldAddAutoCompleteAttributeForRange:(_NSRange)a4;
+- (BOOL)attributedString:(id)string nextCharacterRangeFromRange:(_NSRange)range containsPossibleChild:(id)child;
+- (BOOL)attributedString:(id)string shouldAddAutoCompleteAttributeForRange:(_NSRange)range;
 - (BOOL)canSuggestSupplementalItemsForCurrentSelection;
-- (BOOL)isValidPrefixCharacter:(unsigned __int16)a3;
-- (BOOL)range:(_NSRange)a3 hasValidPrefixCharacterForString:(id)a4;
-- (BOOL)shouldUpdateMentionsInRange:(_NSRange)a3 withReplacementText:(id)a4;
-- (BOOL)shouldUpdateMentionsInTextView:(id)a3 inRange:(_NSRange)a4 withReplacementText:(id)a5;
+- (BOOL)isValidPrefixCharacter:(unsigned __int16)character;
+- (BOOL)range:(_NSRange)range hasValidPrefixCharacterForString:(id)string;
+- (BOOL)shouldUpdateMentionsInRange:(_NSRange)range withReplacementText:(id)text;
+- (BOOL)shouldUpdateMentionsInTextView:(id)view inRange:(_NSRange)range withReplacementText:(id)text;
 - (CGRect)anchorRect;
 - (CKMentionSuggestionView)mentionSuggestionView;
-- (CKMentionsController)initWithEntryTextView:(id)a3 conversation:(id)a4;
+- (CKMentionsController)initWithEntryTextView:(id)view conversation:(id)conversation;
 - (CKMentionsControllerTextEffectsDelegate)textEffectsDelegate;
 - (CKPaddleOverlayView)paddleOverlayView;
-- (_NSRange)_rangeFromUITextRange:(id)a3;
+- (_NSRange)_rangeFromUITextRange:(id)range;
 - (_NSRange)lastFoundMentionRange;
 - (_NSRange)rangeOfTappedMention;
-- (id)_nodeForMentionNodeId:(id)a3;
-- (id)_nodeIdForMentionNode:(id)a3;
-- (id)entitiesForKey:(id)a3;
-- (id)suggestionView:(id)a3 entityAtIndex:(unint64_t)a4;
-- (id)suggestionView:(id)a3 indexPathOfEntityWithIdentifier:(id)a4;
-- (unint64_t)numberOfSuggestionsInSuggestionView:(id)a3 forSection:(unint64_t)a4;
-- (void)_enumerateAllAutomaticConfirmedMentionsInAttributedString:(id)a3 usingBlock:(id)a4;
-- (void)_enumerateNode:(id)a3 parentNodes:(id)a4 enumerator:(id)a5;
+- (id)_nodeForMentionNodeId:(id)id;
+- (id)_nodeIdForMentionNode:(id)node;
+- (id)entitiesForKey:(id)key;
+- (id)suggestionView:(id)view entityAtIndex:(unint64_t)index;
+- (id)suggestionView:(id)view indexPathOfEntityWithIdentifier:(id)identifier;
+- (unint64_t)numberOfSuggestionsInSuggestionView:(id)view forSection:(unint64_t)section;
+- (void)_enumerateAllAutomaticConfirmedMentionsInAttributedString:(id)string usingBlock:(id)block;
+- (void)_enumerateNode:(id)node parentNodes:(id)nodes enumerator:(id)enumerator;
 - (void)_populateSupplementalLexiconAsynchronously;
-- (void)_updateMentionsLexiconWithItems:(id)a3;
+- (void)_updateMentionsLexiconWithItems:(id)items;
 - (void)acceptAutomaticMentionConfirmation;
-- (void)associateEntity:(id)a3 withKey:(id)a4;
+- (void)associateEntity:(id)entity withKey:(id)key;
 - (void)cancelChooseSupplementalItemToInsert;
 - (void)checkForMentions;
-- (void)checkForMentionsInAttributedString:(id)a3 inTextView:(id)a4;
-- (void)checkForMentionsInAttributedString:(id)a3 textViewToUpdate:(id)a4 restoreSelectedRange:(_NSRange)a5;
-- (void)chooseSupplementalItemToInsert:(id)a3 replacementRange:(id)a4 completionHandler:(id)a5;
-- (void)configureAttributedString:(id)a3 inTextView:(id)a4 forMentionOverrideInRange:(_NSRange)a5 shouldOverride:(BOOL)a6;
-- (void)confirmAutomaticMention:(id)a3 inTextView:(id)a4 isSending:(BOOL)a5 selectedRange:(_NSRange *)a6;
-- (void)didDismissPaddleOverlayView:(id)a3;
-- (void)didFinishAnimatingMentionWithAnimationIdentifier:(id)a3;
+- (void)checkForMentionsInAttributedString:(id)string inTextView:(id)view;
+- (void)checkForMentionsInAttributedString:(id)string textViewToUpdate:(id)update restoreSelectedRange:(_NSRange)range;
+- (void)chooseSupplementalItemToInsert:(id)insert replacementRange:(id)range completionHandler:(id)handler;
+- (void)configureAttributedString:(id)string inTextView:(id)view forMentionOverrideInRange:(_NSRange)range shouldOverride:(BOOL)override;
+- (void)confirmAutomaticMention:(id)mention inTextView:(id)view isSending:(BOOL)sending selectedRange:(_NSRange *)range;
+- (void)didDismissPaddleOverlayView:(id)view;
+- (void)didFinishAnimatingMentionWithAnimationIdentifier:(id)identifier;
 - (void)didSetAttributedTextOfTextView;
-- (void)didTapMentionAtCharacterIndex:(double)a3;
-- (void)dismissPaddleOverlayIfNecessaryForText:(id)a3;
-- (void)insertMentionByName:(id)a3;
-- (void)insertMentionWithEntity:(id)a3 replacementRange:(_NSRange)a4 fallbackName:(id)a5 source:(unsigned __int8)a6;
-- (void)insertSupplementalItem:(id)a3 forString:(id)a4 replacementRange:(id)a5;
-- (void)insertionPointEnteredRange:(_NSRange)a3 forMention:(id)a4 withEntities:(id)a5;
-- (void)insertionPointEnteredRange:(id)a3 string:(id)a4 supplementalItems:(id)a5;
+- (void)didTapMentionAtCharacterIndex:(double)index;
+- (void)dismissPaddleOverlayIfNecessaryForText:(id)text;
+- (void)insertMentionByName:(id)name;
+- (void)insertMentionWithEntity:(id)entity replacementRange:(_NSRange)range fallbackName:(id)name source:(unsigned __int8)source;
+- (void)insertSupplementalItem:(id)item forString:(id)string replacementRange:(id)range;
+- (void)insertionPointEnteredRange:(_NSRange)range forMention:(id)mention withEntities:(id)entities;
+- (void)insertionPointEnteredRange:(id)range string:(id)string supplementalItems:(id)items;
 - (void)insertionPointExitedRangeWithSupplementalItems;
 - (void)localeChanged;
 - (void)reloadMentionsData;
 - (void)reloadMentionsDataIfNecessary;
-- (void)replaceAttributedText:(id)a3 inTextView:(id)a4 atIndex:(unint64_t)a5 updatedSelectedRange:(_NSRange *)a6 replacementRange:(_NSRange *)a7;
-- (void)resetStyleInAttributedString:(id)a3 inTextView:(id)a4 andApplyStyleUsingBlock:(id)a5;
-- (void)setShowMentionSuggestions:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)showMentionSuggestionsForEntities:(id)a3 replacementRange:(_NSRange)a4;
-- (void)suggestionView:(id)a3 didSelectEntity:(id)a4;
-- (void)suggestionViewDidSelectEntity:(id)a3;
+- (void)replaceAttributedText:(id)text inTextView:(id)view atIndex:(unint64_t)index updatedSelectedRange:(_NSRange *)range replacementRange:(_NSRange *)replacementRange;
+- (void)resetStyleInAttributedString:(id)string inTextView:(id)view andApplyStyleUsingBlock:(id)block;
+- (void)setShowMentionSuggestions:(BOOL)suggestions animated:(BOOL)animated completion:(id)completion;
+- (void)showMentionSuggestionsForEntities:(id)entities replacementRange:(_NSRange)range;
+- (void)suggestionView:(id)view didSelectEntity:(id)entity;
+- (void)suggestionViewDidSelectEntity:(id)entity;
 - (void)updateMentionsAssociations;
-- (void)updateTextViewIfNecessary:(id)a3 withAttributedString:(id)a4;
-- (void)updateTextViewIfNecessary:(id)a3 withAttributedString:(id)a4 selectedRange:(_NSRange)a5;
-- (void)updateTypingAttributesIfNeededForTextView:(id)a3;
+- (void)updateTextViewIfNecessary:(id)necessary withAttributedString:(id)string;
+- (void)updateTextViewIfNecessary:(id)necessary withAttributedString:(id)string selectedRange:(_NSRange)range;
+- (void)updateTypingAttributesIfNeededForTextView:(id)view;
 @end
 
 @implementation CKMentionsController
 
 - (BOOL)canSuggestSupplementalItemsForCurrentSelection
 {
-  v3 = [(CKMentionsController *)self textView];
-  v4 = [v3 attributedText];
+  textView = [(CKMentionsController *)self textView];
+  attributedText = [textView attributedText];
 
-  if ([v4 length])
+  if ([attributedText length])
   {
-    v5 = [(CKMentionsController *)self textView];
-    v6 = [v5 selectedRange];
+    textView2 = [(CKMentionsController *)self textView];
+    selectedRange = [textView2 selectedRange];
 
-    if (v6)
+    if (selectedRange)
     {
-      v7 = v6 - 1;
+      v7 = selectedRange - 1;
     }
 
     else
@@ -82,7 +82,7 @@
       v7 = 0;
     }
 
-    v8 = [v4 length];
+    v8 = [attributedText length];
     if (v7 >= v8 - 1)
     {
       v9 = v8 - 1;
@@ -93,7 +93,7 @@
       v9 = v7;
     }
 
-    v10 = ![CKMentionsUtilities attributedString:v4 containsConfirmedMentionInRange:v9, 1];
+    v10 = ![CKMentionsUtilities attributedString:attributedText containsConfirmedMentionInRange:v9, 1];
   }
 
   else
@@ -104,22 +104,22 @@
   return v10;
 }
 
-- (CKMentionsController)initWithEntryTextView:(id)a3 conversation:(id)a4
+- (CKMentionsController)initWithEntryTextView:(id)view conversation:(id)conversation
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  conversationCopy = conversation;
   v16.receiver = self;
   v16.super_class = CKMentionsController;
   v9 = [(CKMentionsController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textView, a3);
-    objc_storeStrong(&v10->_conversation, a4);
-    [v7 setMentionsDelegate:v10];
+    objc_storeStrong(&v9->_textView, view);
+    objc_storeStrong(&v10->_conversation, conversation);
+    [viewCopy setMentionsDelegate:v10];
     v11 = [CKMentionsAnimationController alloc];
-    v12 = [(CKMentionsController *)v10 textView];
-    v13 = [(CKMentionsAnimationController *)v11 initWithEntryTextView:v12];
+    textView = [(CKMentionsController *)v10 textView];
+    v13 = [(CKMentionsAnimationController *)v11 initWithEntryTextView:textView];
     mentionsAnimationController = v10->_mentionsAnimationController;
     v10->_mentionsAnimationController = v13;
 
@@ -129,28 +129,28 @@
   return v10;
 }
 
-- (unint64_t)numberOfSuggestionsInSuggestionView:(id)a3 forSection:(unint64_t)a4
+- (unint64_t)numberOfSuggestionsInSuggestionView:(id)view forSection:(unint64_t)section
 {
-  v5 = a3;
-  v6 = [(CKMentionsController *)self mentionSuggestionView];
+  viewCopy = view;
+  mentionSuggestionView = [(CKMentionsController *)self mentionSuggestionView];
 
-  if (v6 != v5)
+  if (mentionSuggestionView != viewCopy)
   {
     return 0;
   }
 
-  v8 = [(CKMentionsController *)self currentMentionSuggestions];
-  v9 = [v8 count];
+  currentMentionSuggestions = [(CKMentionsController *)self currentMentionSuggestions];
+  v9 = [currentMentionSuggestions count];
 
   return v9;
 }
 
-- (id)suggestionView:(id)a3 entityAtIndex:(unint64_t)a4
+- (id)suggestionView:(id)view entityAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(CKMentionsController *)self mentionSuggestionView];
+  viewCopy = view;
+  mentionSuggestionView = [(CKMentionsController *)self mentionSuggestionView];
 
-  if (v7 != v6)
+  if (mentionSuggestionView != viewCopy)
   {
     v8 = 0;
 LABEL_5:
@@ -158,13 +158,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(CKMentionsController *)self currentMentionSuggestions];
-  v10 = [v9 count];
+  currentMentionSuggestions = [(CKMentionsController *)self currentMentionSuggestions];
+  v10 = [currentMentionSuggestions count];
 
-  if (v10 > a4)
+  if (v10 > index)
   {
-    v7 = [(CKMentionsController *)self currentMentionSuggestions];
-    v8 = [v7 objectAtIndex:a4];
+    mentionSuggestionView = [(CKMentionsController *)self currentMentionSuggestions];
+    v8 = [mentionSuggestionView objectAtIndex:index];
     goto LABEL_5;
   }
 
@@ -174,28 +174,28 @@ LABEL_6:
   return v8;
 }
 
-- (id)suggestionView:(id)a3 indexPathOfEntityWithIdentifier:(id)a4
+- (id)suggestionView:(id)view indexPathOfEntityWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v8 = [(CKMentionsController *)self mentionSuggestionView];
+  mentionSuggestionView = [(CKMentionsController *)self mentionSuggestionView];
 
-  if (v8 == v6)
+  if (mentionSuggestionView == viewCopy)
   {
-    v9 = [(CKMentionsController *)self currentMentionSuggestions];
+    currentMentionSuggestions = [(CKMentionsController *)self currentMentionSuggestions];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __71__CKMentionsController_suggestionView_indexPathOfEntityWithIdentifier___block_invoke;
     v12[3] = &unk_1E72F1440;
-    v13 = v7;
+    v13 = identifierCopy;
     v14 = &v15;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [currentMentionSuggestions enumerateObjectsUsingBlock:v12];
   }
 
   v10 = v16[5];
@@ -221,21 +221,21 @@ void __71__CKMentionsController_suggestionView_indexPathOfEntityWithIdentifier__
   }
 }
 
-- (void)suggestionView:(id)a3 didSelectEntity:(id)a4
+- (void)suggestionView:(id)view didSelectEntity:(id)entity
 {
-  v7 = a4;
-  v5 = [(CKMentionsController *)self didSelectEntityCompletionHandler];
+  entityCopy = entity;
+  didSelectEntityCompletionHandler = [(CKMentionsController *)self didSelectEntityCompletionHandler];
 
-  if (v5)
+  if (didSelectEntityCompletionHandler)
   {
-    v6 = [(CKMentionsController *)self didSelectEntityCompletionHandler];
+    didSelectEntityCompletionHandler2 = [(CKMentionsController *)self didSelectEntityCompletionHandler];
     [(CKMentionsController *)self setDidSelectEntityCompletionHandler:0];
-    (v6)[2](v6, v7);
+    (didSelectEntityCompletionHandler2)[2](didSelectEntityCompletionHandler2, entityCopy);
   }
 
   else
   {
-    [(CKMentionsController *)self suggestionViewDidSelectEntity:v7];
+    [(CKMentionsController *)self suggestionViewDidSelectEntity:entityCopy];
   }
 }
 
@@ -250,8 +250,8 @@ void __71__CKMentionsController_suggestionView_indexPathOfEntityWithIdentifier__
     [(CKMentionSuggestionView *)self->_mentionSuggestionView setClipsToBounds:1];
     [(CKMentionSuggestionView *)self->_mentionSuggestionView setDataSource:self];
     [(CKMentionSuggestionView *)self->_mentionSuggestionView setDelegate:self];
-    v5 = [(CKMentionsController *)self textView];
-    [v5 setNeedsLayout];
+    textView = [(CKMentionsController *)self textView];
+    [textView setNeedsLayout];
   }
 
   v6 = self->_mentionSuggestionView;
@@ -259,20 +259,20 @@ void __71__CKMentionsController_suggestionView_indexPathOfEntityWithIdentifier__
   return v6;
 }
 
-- (_NSRange)_rangeFromUITextRange:(id)a3
+- (_NSRange)_rangeFromUITextRange:(id)range
 {
-  v4 = a3;
-  v5 = [(CKMentionsController *)self textView];
-  v6 = [(CKMentionsController *)self textView];
-  v7 = [v6 beginningOfDocument];
-  v8 = [v4 start];
-  v9 = [v5 offsetFromPosition:v7 toPosition:v8];
+  rangeCopy = range;
+  textView = [(CKMentionsController *)self textView];
+  textView2 = [(CKMentionsController *)self textView];
+  beginningOfDocument = [textView2 beginningOfDocument];
+  start = [rangeCopy start];
+  v9 = [textView offsetFromPosition:beginningOfDocument toPosition:start];
 
-  v10 = [(CKMentionsController *)self textView];
-  v11 = [v4 start];
-  v12 = [v4 end];
+  textView3 = [(CKMentionsController *)self textView];
+  start2 = [rangeCopy start];
+  v12 = [rangeCopy end];
 
-  v13 = [v10 offsetFromPosition:v11 toPosition:v12];
+  v13 = [textView3 offsetFromPosition:start2 toPosition:v12];
   v14 = v9;
   v15 = v13;
   result.length = v15;
@@ -282,23 +282,23 @@ void __71__CKMentionsController_suggestionView_indexPathOfEntityWithIdentifier__
 
 - (CGRect)anchorRect
 {
-  v3 = [(CKMentionsController *)self textView];
-  [v3 textContainerInset];
+  textView = [(CKMentionsController *)self textView];
+  [textView textContainerInset];
   v5 = v4;
   v7 = v6;
   [(CKMentionsController *)self rangeOfTappedMention];
   if (v8)
   {
-    v9 = [v3 textLayoutManager];
-    v10 = [v9 documentRange];
-    v11 = [v10 location];
-    v12 = [v9 locationFromLocation:v11 withOffset:{-[CKMentionsController rangeOfTappedMention](self, "rangeOfTappedMention")}];
+    textLayoutManager = [textView textLayoutManager];
+    documentRange = [textLayoutManager documentRange];
+    location = [documentRange location];
+    v12 = [textLayoutManager locationFromLocation:location withOffset:{-[CKMentionsController rangeOfTappedMention](self, "rangeOfTappedMention")}];
 
     [(CKMentionsController *)self rangeOfTappedMention];
-    v14 = [v9 locationFromLocation:v12 withOffset:v13];
+    v14 = [textLayoutManager locationFromLocation:v12 withOffset:v13];
     v15 = [objc_alloc(MEMORY[0x1E69DB848]) initWithLocation:v12 endLocation:v14];
-    v16 = [v9 documentRange];
-    [v9 ensureLayoutForRange:v16];
+    documentRange2 = [textLayoutManager documentRange];
+    [textLayoutManager ensureLayoutForRange:documentRange2];
 
     v35 = 0;
     v36 = &v35;
@@ -311,13 +311,13 @@ void __71__CKMentionsController_suggestionView_indexPathOfEntityWithIdentifier__
     v34[2] = __34__CKMentionsController_anchorRect__block_invoke;
     v34[3] = &unk_1E72F1468;
     v34[4] = &v35;
-    [v9 enumerateTextSegmentsInRange:v15 type:0 options:0 usingBlock:v34];
+    [textLayoutManager enumerateTextSegmentsInRange:v15 type:0 options:0 usingBlock:v34];
     v17 = v36[4];
     v18 = v36[5];
     v19 = v36[6];
     v20 = v36[7];
-    v21 = [(CKMentionsController *)self textView];
-    [v3 convertRect:v21 toView:{v7 + v17, v5 + v18, v19, v20}];
+    textView2 = [(CKMentionsController *)self textView];
+    [textView convertRect:textView2 toView:{v7 + v17, v5 + v18, v19, v20}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -360,14 +360,14 @@ uint64_t __34__CKMentionsController_anchorRect__block_invoke(uint64_t a1, double
   if (!self->_paddleOverlayView && [(CKMentionsController *)self shouldShowMentionSuggestions])
   {
     v3 = [CKPaddleOverlayView alloc];
-    v4 = [(CKMentionsController *)self mentionSuggestionView];
+    mentionSuggestionView = [(CKMentionsController *)self mentionSuggestionView];
     [(CKMentionsController *)self anchorRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(CKMentionsController *)self textView];
-    v14 = [(CKPaddleOverlayView *)v3 initWithOverlayView:v4 atAnchorRect:v13 inView:self delegate:v6, v8, v10, v12];
+    textView = [(CKMentionsController *)self textView];
+    v14 = [(CKPaddleOverlayView *)v3 initWithOverlayView:mentionSuggestionView atAnchorRect:textView inView:self delegate:v6, v8, v10, v12];
     paddleOverlayView = self->_paddleOverlayView;
     self->_paddleOverlayView = v14;
   }
@@ -377,34 +377,34 @@ uint64_t __34__CKMentionsController_anchorRect__block_invoke(uint64_t a1, double
   return v16;
 }
 
-- (BOOL)isValidPrefixCharacter:(unsigned __int16)a3
+- (BOOL)isValidPrefixCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   if (![(CKMentionsController *)self languageHasSpaces])
   {
     return 1;
   }
 
-  v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  if ([v4 characterIsMember:v3])
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  if ([whitespaceAndNewlineCharacterSet characterIsMember:characterCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    v5 = [v6 characterIsMember:v3];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    v5 = [punctuationCharacterSet characterIsMember:characterCopy];
   }
 
   return v5;
 }
 
-- (BOOL)range:(_NSRange)a3 hasValidPrefixCharacterForString:(id)a4
+- (BOOL)range:(_NSRange)range hasValidPrefixCharacterForString:(id)string
 {
-  location = a3.location;
-  v6 = a4;
-  v7 = v6;
+  location = range.location;
+  stringCopy = string;
+  v7 = stringCopy;
   if (!location || (v8 = location - 1, location == 1))
   {
     v9 = 1;
@@ -412,7 +412,7 @@ uint64_t __34__CKMentionsController_anchorRect__block_invoke(uint64_t a1, double
 
   else
   {
-    v9 = ([v6 characterAtIndex:location - 1] != 64 || location >= 2 && (v8 = location - 2, location - 2 < objc_msgSend(v7, "length"))) && -[CKMentionsController isValidPrefixCharacter:](self, "isValidPrefixCharacter:", objc_msgSend(v7, "characterAtIndex:", v8));
+    v9 = ([stringCopy characterAtIndex:location - 1] != 64 || location >= 2 && (v8 = location - 2, location - 2 < objc_msgSend(v7, "length"))) && -[CKMentionsController isValidPrefixCharacter:](self, "isValidPrefixCharacter:", objc_msgSend(v7, "characterAtIndex:", v8));
   }
 
   return v9;
@@ -420,45 +420,45 @@ uint64_t __34__CKMentionsController_anchorRect__block_invoke(uint64_t a1, double
 
 - (BOOL)allowsMentions
 {
-  v2 = [(CKMentionsController *)self conversation];
-  v3 = [v2 allowsMentions];
+  conversation = [(CKMentionsController *)self conversation];
+  allowsMentions = [conversation allowsMentions];
 
-  return v3;
+  return allowsMentions;
 }
 
 - (void)checkForMentions
 {
-  v3 = [(CKMentionsController *)self textView];
-  v4 = [v3 attributedText];
-  v6 = [v4 mutableCopy];
+  textView = [(CKMentionsController *)self textView];
+  attributedText = [textView attributedText];
+  v6 = [attributedText mutableCopy];
 
-  LODWORD(v4) = +[CKMentionsUtilities supportsSupplementalLexiconMentions];
-  v5 = [(CKMentionsController *)self textView];
-  if (v4)
+  LODWORD(attributedText) = +[CKMentionsUtilities supportsSupplementalLexiconMentions];
+  textView2 = [(CKMentionsController *)self textView];
+  if (attributedText)
   {
-    [(CKMentionsController *)self resetStyleInAttributedString:v6 inTextView:v5 andApplyStyleUsingBlock:&__block_literal_global_91];
+    [(CKMentionsController *)self resetStyleInAttributedString:v6 inTextView:textView2 andApplyStyleUsingBlock:&__block_literal_global_91];
   }
 
   else
   {
-    [(CKMentionsController *)self checkForMentionsInAttributedString:v6 inTextView:v5];
+    [(CKMentionsController *)self checkForMentionsInAttributedString:v6 inTextView:textView2];
   }
 }
 
-- (void)_enumerateNode:(id)a3 parentNodes:(id)a4 enumerator:(id)a5
+- (void)_enumerateNode:(id)node parentNodes:(id)nodes enumerator:(id)enumerator
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 arrayByAddingObject:v8];
+  nodeCopy = node;
+  enumeratorCopy = enumerator;
+  v10 = [nodes arrayByAddingObject:nodeCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [v8 children];
-  v12 = [v11 allValues];
+  children = [nodeCopy children];
+  allValues = [children allValues];
 
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v13 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -469,19 +469,19 @@ LABEL_3:
     {
       if (*v19 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(allValues);
       }
 
       v17 = *(*(&v18 + 1) + 8 * v16);
-      if (!v9[2](v9, v17, v10))
+      if (!enumeratorCopy[2](enumeratorCopy, v17, v10))
       {
         break;
       }
 
-      [(CKMentionsController *)self _enumerateNode:v17 parentNodes:v10 enumerator:v9];
+      [(CKMentionsController *)self _enumerateNode:v17 parentNodes:v10 enumerator:enumeratorCopy];
       if (v14 == ++v16)
       {
-        v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v14 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v14)
         {
           goto LABEL_3;
@@ -493,10 +493,10 @@ LABEL_3:
   }
 }
 
-- (id)_nodeIdForMentionNode:(id)a3
+- (id)_nodeIdForMentionNode:(id)node
 {
-  v4 = a3;
-  if (v4)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -504,14 +504,14 @@ LABEL_3:
     v14 = __Block_byref_object_copy__28;
     v15 = __Block_byref_object_dispose__28;
     v16 = objc_alloc_init(CKMentionAutoCompleteNodeId);
-    v5 = [(CKMentionsController *)self entityTree];
+    entityTree = [(CKMentionsController *)self entityTree];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __46__CKMentionsController__nodeIdForMentionNode___block_invoke;
     v8[3] = &unk_1E72F1490;
-    v9 = v4;
+    v9 = nodeCopy;
     v10 = &v11;
-    [(CKMentionsController *)self _enumerateNode:v5 parentNodes:MEMORY[0x1E695E0F0] enumerator:v8];
+    [(CKMentionsController *)self _enumerateNode:entityTree parentNodes:MEMORY[0x1E695E0F0] enumerator:v8];
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -583,17 +583,17 @@ BOOL __46__CKMentionsController__nodeIdForMentionNode___block_invoke(uint64_t a1
   return v8 != v5;
 }
 
-- (id)_nodeForMentionNodeId:(id)a3
+- (id)_nodeForMentionNodeId:(id)id
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKMentionsController *)self entityTree];
+  idCopy = id;
+  entityTree = [(CKMentionsController *)self entityTree];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 keys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keys = [idCopy keys];
+  v7 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -601,12 +601,12 @@ BOOL __46__CKMentionsController__nodeIdForMentionNode___block_invoke(uint64_t a1
     while (2)
     {
       v10 = 0;
-      v11 = v5;
+      v11 = entityTree;
       do
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keys);
         }
 
         v12 = [v11 childWithKey:*(*(&v15 + 1) + 8 * v10)];
@@ -617,14 +617,14 @@ BOOL __46__CKMentionsController__nodeIdForMentionNode___block_invoke(uint64_t a1
           goto LABEL_11;
         }
 
-        v5 = v12;
+        entityTree = v12;
 
         ++v10;
-        v11 = v5;
+        v11 = entityTree;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -634,18 +634,18 @@ BOOL __46__CKMentionsController__nodeIdForMentionNode___block_invoke(uint64_t a1
     }
   }
 
-  v13 = v5;
+  v13 = entityTree;
 LABEL_11:
 
   return v13;
 }
 
-- (void)dismissPaddleOverlayIfNecessaryForText:(id)a3
+- (void)dismissPaddleOverlayIfNecessaryForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (!+[CKMentionsUtilities supportsSupplementalLexiconMentions])
   {
-    if ([v4 attribute:*MEMORY[0x1E69A70C8] existsInRange:{0, objc_msgSend(v4, "length")}])
+    if ([textCopy attribute:*MEMORY[0x1E69A70C8] existsInRange:{0, objc_msgSend(textCopy, "length")}])
     {
       goto LABEL_6;
     }
@@ -662,52 +662,52 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)checkForMentionsInAttributedString:(id)a3 textViewToUpdate:(id)a4 restoreSelectedRange:(_NSRange)a5
+- (void)checkForMentionsInAttributedString:(id)string textViewToUpdate:(id)update restoreSelectedRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
-  v10 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  updateCopy = update;
   if ([(CKMentionsController *)self allowsMentions])
   {
     if (![(CKMentionsController *)self isUpdatingMentionAttributedText])
     {
-      v11 = [v10 markedTextRange];
+      markedTextRange = [updateCopy markedTextRange];
 
-      if (!v11)
+      if (!markedTextRange)
       {
         v32[0] = [(CKMentionsController *)self lastFoundMentionRange];
         v32[1] = v12;
-        [CKMentionsUtilities configureAttributedStringForMentionsChecking:v9 excludingRange:v32];
-        [(CKMentionsController *)self dismissPaddleOverlayIfNecessaryForText:v9];
+        [CKMentionsUtilities configureAttributedStringForMentionsChecking:stringCopy excludingRange:v32];
+        [(CKMentionsController *)self dismissPaddleOverlayIfNecessaryForText:stringCopy];
         v30[0] = 0;
         v30[1] = v30;
         v30[2] = 0x3032000000;
         v30[3] = __Block_byref_object_copy__28;
         v30[4] = __Block_byref_object_dispose__28;
-        v31 = [(CKMentionsController *)self entityTree];
+        entityTree = [(CKMentionsController *)self entityTree];
         v28[0] = 0;
         v28[1] = v28;
         v28[2] = 0x3010000000;
         v28[3] = &unk_190F92BB2;
         v29 = xmmword_190DCEFA0;
-        v13 = [v9 string];
-        v14 = [v9 string];
-        v15 = [v14 length];
+        string = [stringCopy string];
+        string2 = [stringCopy string];
+        v15 = [string2 length];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __97__CKMentionsController_checkForMentionsInAttributedString_textViewToUpdate_restoreSelectedRange___block_invoke;
         v20[3] = &unk_1E72F14B8;
-        v16 = v9;
+        v16 = stringCopy;
         v24 = v30;
         v25 = v28;
         v21 = v16;
-        v22 = self;
+        selfCopy = self;
         v26 = location;
         v27 = length;
-        v17 = v10;
+        v17 = updateCopy;
         v23 = v17;
-        [v13 enumerateSubstringsInRange:0 options:v15 usingBlock:{2, v20}];
+        [string enumerateSubstringsInRange:0 options:v15 usingBlock:{2, v20}];
 
         v18 = location;
         v19 = length;
@@ -867,40 +867,40 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)checkForMentionsInAttributedString:(id)a3 inTextView:(id)a4
+- (void)checkForMentionsInAttributedString:(id)string inTextView:(id)view
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [v6 selectedRange];
-  [(CKMentionsController *)self checkForMentionsInAttributedString:v9 textViewToUpdate:v6 restoreSelectedRange:v7, v8];
+  viewCopy = view;
+  stringCopy = string;
+  selectedRange = [viewCopy selectedRange];
+  [(CKMentionsController *)self checkForMentionsInAttributedString:stringCopy textViewToUpdate:viewCopy restoreSelectedRange:selectedRange, v8];
 }
 
-- (void)updateTextViewIfNecessary:(id)a3 withAttributedString:(id)a4
+- (void)updateTextViewIfNecessary:(id)necessary withAttributedString:(id)string
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [v9 selectedRange];
-  [(CKMentionsController *)self updateTextViewIfNecessary:v9 withAttributedString:v6 selectedRange:v7, v8];
+  stringCopy = string;
+  necessaryCopy = necessary;
+  selectedRange = [necessaryCopy selectedRange];
+  [(CKMentionsController *)self updateTextViewIfNecessary:necessaryCopy withAttributedString:stringCopy selectedRange:selectedRange, v8];
 }
 
-- (void)updateTextViewIfNecessary:(id)a3 withAttributedString:(id)a4 selectedRange:(_NSRange)a5
+- (void)updateTextViewIfNecessary:(id)necessary withAttributedString:(id)string selectedRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a4;
-  v9 = [(CKMentionsController *)self textView];
-  v10 = [v9 markedTextRange];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  textView = [(CKMentionsController *)self textView];
+  markedTextRange = [textView markedTextRange];
 
-  if (!v10)
+  if (!markedTextRange)
   {
-    v11 = [(CKMentionsController *)self textView];
-    v12 = [v11 attributedText];
-    v13 = [v8 isEqual:v12];
+    textView2 = [(CKMentionsController *)self textView];
+    attributedText = [textView2 attributedText];
+    v13 = [stringCopy isEqual:attributedText];
 
     if (v13)
     {
-      v14 = [(CKMentionsController *)self mentionsAnimationController];
-      [v14 updateMentionAttributes:v8];
+      mentionsAnimationController = [(CKMentionsController *)self mentionsAnimationController];
+      [mentionsAnimationController updateMentionAttributes:stringCopy];
     }
 
     else
@@ -909,8 +909,8 @@ LABEL_22:
       v17 = 3221225472;
       v18 = __85__CKMentionsController_updateTextViewIfNecessary_withAttributedString_selectedRange___block_invoke;
       v19 = &unk_1E72ECCD0;
-      v20 = self;
-      v21 = v8;
+      selfCopy = self;
+      v21 = stringCopy;
       v22 = location;
       v23 = length;
       v15 = _Block_copy(&v16);
@@ -953,38 +953,38 @@ uint64_t __85__CKMentionsController_updateTextViewIfNecessary_withAttributedStri
   return [v9 setIsUpdatingMentionAttributedText:0];
 }
 
-- (void)updateTypingAttributesIfNeededForTextView:(id)a3
+- (void)updateTypingAttributesIfNeededForTextView:(id)view
 {
-  v13 = a3;
-  v3 = [v13 textColor];
+  viewCopy = view;
+  textColor = [viewCopy textColor];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 entryFieldTextColor];
-  v7 = [v3 isEqual:v6];
+  theme = [v4 theme];
+  entryFieldTextColor = [theme entryFieldTextColor];
+  v7 = [textColor isEqual:entryFieldTextColor];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v13 typingAttributes];
-    v9 = [v8 mutableCopy];
+    typingAttributes = [viewCopy typingAttributes];
+    v9 = [typingAttributes mutableCopy];
 
     v10 = +[CKUIBehavior sharedBehaviors];
-    v11 = [v10 theme];
-    v12 = [v11 entryFieldTextColor];
-    [v9 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+    theme2 = [v10 theme];
+    entryFieldTextColor2 = [theme2 entryFieldTextColor];
+    [v9 setObject:entryFieldTextColor2 forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-    [v13 setTypingAttributes:v9];
+    [viewCopy setTypingAttributes:v9];
   }
 }
 
-- (void)didFinishAnimatingMentionWithAnimationIdentifier:(id)a3
+- (void)didFinishAnimatingMentionWithAnimationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKMentionsController *)self textView];
-  v6 = [v5 attributedText];
-  v7 = [v6 mutableCopy];
+  identifierCopy = identifier;
+  textView = [(CKMentionsController *)self textView];
+  attributedText = [textView attributedText];
+  v7 = [attributedText mutableCopy];
 
-  v8 = [(CKMentionsController *)self mentionsAnimationController];
-  v9 = [v8 finishedAnimationIdentifiersDuringMarkedText];
+  mentionsAnimationController = [(CKMentionsController *)self mentionsAnimationController];
+  finishedAnimationIdentifiersDuringMarkedText = [mentionsAnimationController finishedAnimationIdentifiersDuringMarkedText];
 
   v10 = *MEMORY[0x1E69A70D0];
   v11 = [v7 length];
@@ -992,27 +992,27 @@ uint64_t __85__CKMentionsController_updateTextViewIfNecessary_withAttributedStri
   v19[1] = 3221225472;
   v19[2] = __73__CKMentionsController_didFinishAnimatingMentionWithAnimationIdentifier___block_invoke;
   v19[3] = &unk_1E72F14E0;
-  v12 = v4;
+  v12 = identifierCopy;
   v20 = v12;
-  v13 = v9;
+  v13 = finishedAnimationIdentifiersDuringMarkedText;
   v21 = v13;
   v14 = v7;
   v22 = v14;
   [v14 enumerateAttribute:v10 inRange:0 options:v11 usingBlock:{2, v19}];
-  v15 = [(CKMentionsController *)self textView];
-  v16 = [v15 markedTextRange];
+  textView2 = [(CKMentionsController *)self textView];
+  markedTextRange = [textView2 markedTextRange];
 
-  if (v16)
+  if (markedTextRange)
   {
     [(CKMentionsAnimationController *)self->_mentionsAnimationController markAnimationIdentifierAsFinishedButPendingAmongMarkedText:v12];
     [(CKMentionsAnimationController *)self->_mentionsAnimationController updateMentionAttributes:v14];
   }
 
-  v17 = [(CKMentionsController *)self textView];
-  [(CKMentionsController *)self updateTextViewIfNecessary:v17 withAttributedString:v14];
+  textView3 = [(CKMentionsController *)self textView];
+  [(CKMentionsController *)self updateTextViewIfNecessary:textView3 withAttributedString:v14];
 
-  v18 = [(CKMentionsController *)self textEffectsDelegate];
-  [v18 mentionsControllerDidFinishAnimation:self];
+  textEffectsDelegate = [(CKMentionsController *)self textEffectsDelegate];
+  [textEffectsDelegate mentionsControllerDidFinishAnimation:self];
 }
 
 uint64_t __73__CKMentionsController_didFinishAnimatingMentionWithAnimationIdentifier___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -1028,40 +1028,40 @@ uint64_t __73__CKMentionsController_didFinishAnimatingMentionWithAnimationIdenti
   return result;
 }
 
-- (void)resetStyleInAttributedString:(id)a3 inTextView:(id)a4 andApplyStyleUsingBlock:(id)a5
+- (void)resetStyleInAttributedString:(id)string inTextView:(id)view andApplyStyleUsingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  viewCopy = view;
+  blockCopy = block;
   if ([(CKMentionsController *)self allowsMentions])
   {
     if (![(CKMentionsController *)self isUpdatingMentionAttributedText])
     {
-      v11 = [v9 markedTextRange];
+      markedTextRange = [viewCopy markedTextRange];
 
-      if (!v11)
+      if (!markedTextRange)
       {
         v23[0] = [(CKMentionsController *)self lastFoundMentionRange];
         v23[1] = v12;
-        [CKMentionsUtilities configureAttributedStringForMentionsChecking:v8 excludingRange:v23];
-        [(CKMentionsController *)self dismissPaddleOverlayIfNecessaryForText:v8];
+        [CKMentionsUtilities configureAttributedStringForMentionsChecking:stringCopy excludingRange:v23];
+        [(CKMentionsController *)self dismissPaddleOverlayIfNecessaryForText:stringCopy];
         v13 = *MEMORY[0x1E69A70F8];
-        v14 = [v8 string];
-        v15 = [v14 length];
+        string = [stringCopy string];
+        v15 = [string length];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __88__CKMentionsController_resetStyleInAttributedString_inTextView_andApplyStyleUsingBlock___block_invoke;
         v20[3] = &unk_1E72F14E0;
         v20[4] = self;
-        v16 = v8;
+        v16 = stringCopy;
         v21 = v16;
-        v17 = v9;
+        v17 = viewCopy;
         v22 = v17;
         [v16 enumerateAttribute:v13 inRange:0 options:v15 usingBlock:{2, v20}];
 
-        v10[2](v10);
-        v18 = [v17 selectedRange];
-        [(CKMentionsController *)self updateTextViewIfNecessary:v17 withAttributedString:v16 selectedRange:v18, v19];
+        blockCopy[2](blockCopy);
+        selectedRange = [v17 selectedRange];
+        [(CKMentionsController *)self updateTextViewIfNecessary:v17 withAttributedString:v16 selectedRange:selectedRange, v19];
       }
     }
   }
@@ -1090,19 +1090,19 @@ void __88__CKMentionsController_resetStyleInAttributedString_inTextView_andApply
   }
 }
 
-- (void)insertionPointEnteredRange:(_NSRange)a3 forMention:(id)a4 withEntities:(id)a5
+- (void)insertionPointEnteredRange:(_NSRange)range forMention:(id)mention withEntities:(id)entities
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  mentionCopy = mention;
+  entitiesCopy = entities;
   [(CKMentionsController *)self setLastFoundMentionRange:location, length];
-  [(CKMentionsController *)self setCurrentMentionSuggestions:v10];
-  v11 = [(CKMentionsController *)self textView];
-  v12 = [v11 attributedText];
-  v13 = [v12 mutableCopy];
+  [(CKMentionsController *)self setCurrentMentionSuggestions:entitiesCopy];
+  textView = [(CKMentionsController *)self textView];
+  attributedText = [textView attributedText];
+  v13 = [attributedText mutableCopy];
 
-  v14 = [(CKMentionsController *)self textView];
+  textView2 = [(CKMentionsController *)self textView];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__CKMentionsController_insertionPointEnteredRange_forMention_withEntities___block_invoke;
@@ -1110,13 +1110,13 @@ void __88__CKMentionsController_resetStyleInAttributedString_inTextView_andApply
   v23 = location;
   v24 = length;
   v19 = v13;
-  v20 = v10;
-  v21 = self;
-  v22 = v9;
-  v15 = v9;
-  v16 = v10;
+  v20 = entitiesCopy;
+  selfCopy = self;
+  v22 = mentionCopy;
+  v15 = mentionCopy;
+  v16 = entitiesCopy;
   v17 = v13;
-  [(CKMentionsController *)self resetStyleInAttributedString:v17 inTextView:v14 andApplyStyleUsingBlock:v18];
+  [(CKMentionsController *)self resetStyleInAttributedString:v17 inTextView:textView2 andApplyStyleUsingBlock:v18];
 }
 
 void __75__CKMentionsController_insertionPointEnteredRange_forMention_withEntities___block_invoke(uint64_t a1)
@@ -1171,30 +1171,30 @@ LABEL_11:
   }
 }
 
-- (void)showMentionSuggestionsForEntities:(id)a3 replacementRange:(_NSRange)a4
+- (void)showMentionSuggestionsForEntities:(id)entities replacementRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if ([v7 count])
+  length = range.length;
+  location = range.location;
+  entitiesCopy = entities;
+  if ([entitiesCopy count])
   {
-    [(CKMentionsController *)self setCurrentMentionSuggestions:v7];
+    [(CKMentionsController *)self setCurrentMentionSuggestions:entitiesCopy];
     [(CKMentionsController *)self setRangeOfTappedMention:location, length];
     [(CKMentionsController *)self setShowMentionSuggestions:1 animated:1 completion:0];
   }
 }
 
-- (void)didTapMentionAtCharacterIndex:(double)a3
+- (void)didTapMentionAtCharacterIndex:(double)index
 {
   if ([(CKMentionsController *)self allowsMentions])
   {
-    v5 = [(CKMentionsController *)self textView];
-    v6 = [v5 attributedText];
-    v7 = [v6 mutableCopy];
+    textView = [(CKMentionsController *)self textView];
+    attributedText = [textView attributedText];
+    v7 = [attributedText mutableCopy];
 
     v15 = 0;
     v16 = 0;
-    v8 = [v7 attribute:*MEMORY[0x1E69A70C8] atIndex:a3 longestEffectiveRange:&v15 inRange:{0, objc_msgSend(v7, "length")}];
+    v8 = [v7 attribute:*MEMORY[0x1E69A70C8] atIndex:index longestEffectiveRange:&v15 inRange:{0, objc_msgSend(v7, "length")}];
     if (([v7 attribute:*MEMORY[0x1E69A70F8] existsInRange:{v15, v16}] & 1) == 0)
     {
       v9 = [v7 attribute:*MEMORY[0x1E69A7110] atIndex:v15 effectiveRange:0];
@@ -1206,13 +1206,13 @@ LABEL_11:
 
       else
       {
-        v12 = [v7 string];
-        v11 = [v12 substringWithRange:{v15, v16}];
+        string = [v7 string];
+        v11 = [string substringWithRange:{v15, v16}];
       }
 
       if (+[CKMentionsUtilities supportsSupplementalLexiconMentions])
       {
-        v13 = [(CKMentionsController *)self currentMentionSuggestions];
+        currentMentionSuggestions = [(CKMentionsController *)self currentMentionSuggestions];
       }
 
       else
@@ -1220,128 +1220,128 @@ LABEL_11:
         v14 = [(CKMentionsController *)self entitiesForKey:v11];
         if ([v14 count])
         {
-          v13 = [v14 allObjects];
+          currentMentionSuggestions = [v14 allObjects];
         }
 
         else
         {
-          v13 = 0;
+          currentMentionSuggestions = 0;
         }
       }
 
-      [(CKMentionsController *)self showMentionSuggestionsForEntities:v13 replacementRange:v15, v16];
+      [(CKMentionsController *)self showMentionSuggestionsForEntities:currentMentionSuggestions replacementRange:v15, v16];
     }
   }
 }
 
-- (void)configureAttributedString:(id)a3 inTextView:(id)a4 forMentionOverrideInRange:(_NSRange)a5 shouldOverride:(BOOL)a6
+- (void)configureAttributedString:(id)string inTextView:(id)view forMentionOverrideInRange:(_NSRange)range shouldOverride:(BOOL)override
 {
-  v6 = a6;
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
-  *&v22 = [a4 selectedRange];
+  overrideCopy = override;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  *&v22 = [view selectedRange];
   *(&v22 + 1) = v12;
   v21 = v22;
-  if (location < [v11 length])
+  if (location < [stringCopy length])
   {
-    v13 = [(CKMentionsController *)self textView];
-    [(CKMentionsController *)self replaceAttributedText:v11 inTextView:v13 atIndex:location updatedSelectedRange:&v22 replacementRange:&v21];
+    textView = [(CKMentionsController *)self textView];
+    [(CKMentionsController *)self replaceAttributedText:stringCopy inTextView:textView atIndex:location updatedSelectedRange:&v22 replacementRange:&v21];
 
     if (length >= 2)
     {
       v14 = location + length;
-      v15 = [v11 length];
+      v15 = [stringCopy length];
       if (v14 >= v15 - 1)
       {
         v14 = v15 - 1;
       }
 
-      v16 = [(CKMentionsController *)self textView];
-      [(CKMentionsController *)self replaceAttributedText:v11 inTextView:v16 atIndex:v14 updatedSelectedRange:&v22 replacementRange:&v21];
+      textView2 = [(CKMentionsController *)self textView];
+      [(CKMentionsController *)self replaceAttributedText:stringCopy inTextView:textView2 atIndex:v14 updatedSelectedRange:&v22 replacementRange:&v21];
     }
   }
 
-  v17 = [(CKMentionsController *)self textView];
-  [(CKMentionsController *)self updateTextViewIfNecessary:v17 withAttributedString:v11 selectedRange:v22];
+  textView3 = [(CKMentionsController *)self textView];
+  [(CKMentionsController *)self updateTextViewIfNecessary:textView3 withAttributedString:stringCopy selectedRange:v22];
 
-  if (v6)
+  if (overrideCopy)
   {
-    v18 = [v11 attributedSubstringFromRange:v21];
-    v19 = [v18 string];
+    v18 = [stringCopy attributedSubstringFromRange:v21];
+    string = [v18 string];
 
-    if ([v19 length] && objc_msgSend(v19, "characterAtIndex:", 0) == 64)
+    if ([string length] && objc_msgSend(string, "characterAtIndex:", 0) == 64)
     {
-      [v11 addAttribute:*MEMORY[0x1E69A7108] value:v19 range:v21];
+      [stringCopy addAttribute:*MEMORY[0x1E69A7108] value:string range:v21];
     }
   }
 
-  v20 = [(CKMentionsController *)self textView];
-  [(CKMentionsController *)self checkForMentionsInAttributedString:v11 inTextView:v20];
+  textView4 = [(CKMentionsController *)self textView];
+  [(CKMentionsController *)self checkForMentionsInAttributedString:stringCopy inTextView:textView4];
 }
 
-- (void)replaceAttributedText:(id)a3 inTextView:(id)a4 atIndex:(unint64_t)a5 updatedSelectedRange:(_NSRange *)a6 replacementRange:(_NSRange *)a7
+- (void)replaceAttributedText:(id)text inTextView:(id)view atIndex:(unint64_t)index updatedSelectedRange:(_NSRange *)range replacementRange:(_NSRange *)replacementRange
 {
-  v11 = a3;
-  v12 = a4;
+  textCopy = text;
+  viewCopy = view;
   v20 = 0;
   v21 = 0;
-  v13 = [v11 attribute:*MEMORY[0x1E69A70F8] atIndex:a5 longestEffectiveRange:&v20 inRange:{0, objc_msgSend(v11, "length")}];
+  v13 = [textCopy attribute:*MEMORY[0x1E69A70F8] atIndex:index longestEffectiveRange:&v20 inRange:{0, objc_msgSend(textCopy, "length")}];
 
   if (v13)
   {
-    v14 = [v11 attribute:*MEMORY[0x1E69A7100] atIndex:v20 longestEffectiveRange:0 inRange:{v20, v21}];
+    v14 = [textCopy attribute:*MEMORY[0x1E69A7100] atIndex:v20 longestEffectiveRange:0 inRange:{v20, v21}];
     v15 = [v14 length];
     v16 = v20;
-    if (v15 && a7->location > v20)
+    if (v15 && replacementRange->location > v20)
     {
       v17 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v14];
-      [v11 deleteCharactersInRange:{v20, v21}];
-      [v11 insertAttributedString:v17 atIndex:v20];
+      [textCopy deleteCharactersInRange:{v20, v21}];
+      [textCopy insertAttributedString:v17 atIndex:v20];
       v18 = v20;
-      a6->location = [v17 length] + v18;
+      range->location = [v17 length] + v18;
       v19 = [v17 length];
       v21 = v19;
-      a7->location = v20;
-      a7->length = v19;
+      replacementRange->location = v20;
+      replacementRange->length = v19;
 
       v16 = v20;
     }
 
-    [CKMentionsUtilities configureAttributedString:v11 inTextView:v12 forNoMentionInRange:v16, v21];
+    [CKMentionsUtilities configureAttributedString:textCopy inTextView:viewCopy forNoMentionInRange:v16, v21];
   }
 }
 
-- (BOOL)shouldUpdateMentionsInRange:(_NSRange)a3 withReplacementText:(id)a4
+- (BOOL)shouldUpdateMentionsInRange:(_NSRange)range withReplacementText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  if (-[CKMentionsController allowsMentions](self, "allowsMentions") && (location | length || [v7 length]))
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  if (-[CKMentionsController allowsMentions](self, "allowsMentions") && (location | length || [textCopy length]))
   {
-    v8 = [(CKMentionsController *)self textView];
-    v9 = [(CKMentionsController *)self shouldUpdateMentionsInTextView:v8 inRange:location withReplacementText:length, v7];
+    textView = [(CKMentionsController *)self textView];
+    textCopy = [(CKMentionsController *)self shouldUpdateMentionsInTextView:textView inRange:location withReplacementText:length, textCopy];
   }
 
   else
   {
-    v9 = 1;
+    textCopy = 1;
   }
 
-  return v9;
+  return textCopy;
 }
 
-- (BOOL)shouldUpdateMentionsInTextView:(id)a3 inRange:(_NSRange)a4 withReplacementText:(id)a5
+- (BOOL)shouldUpdateMentionsInTextView:(id)view inRange:(_NSRange)range withReplacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 attributedText];
-  v12 = [v11 mutableCopy];
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  attributedText = [viewCopy attributedText];
+  v12 = [attributedText mutableCopy];
 
-  v13 = [v10 length];
-  v14 = [v10 length];
+  v13 = [textCopy length];
+  v14 = [textCopy length];
 
   if (v14)
   {
@@ -1359,7 +1359,7 @@ LABEL_11:
     v17 = 0;
     v18 = 1;
 LABEL_14:
-    [(CKMentionsController *)self configureAttributedString:v12 inTextView:v9 forMentionOverrideInRange:location shouldOverride:length, v18];
+    [(CKMentionsController *)self configureAttributedString:v12 inTextView:viewCopy forMentionOverrideInRange:location shouldOverride:length, v18];
     goto LABEL_16;
   }
 
@@ -1381,16 +1381,16 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)attributedString:(id)a3 shouldAddAutoCompleteAttributeForRange:(_NSRange)a4
+- (BOOL)attributedString:(id)string shouldAddAutoCompleteAttributeForRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v6 = *MEMORY[0x1E69A7108];
-  v7 = a3;
-  v8 = [v7 attribute:v6 atIndex:location effectiveRange:0];
-  v9 = [v7 string];
+  stringCopy = string;
+  v8 = [stringCopy attribute:v6 atIndex:location effectiveRange:0];
+  string = [stringCopy string];
 
-  v10 = [v9 substringWithRange:{location, length}];
+  v10 = [string substringWithRange:{location, length}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1406,74 +1406,74 @@ LABEL_16:
   return v11;
 }
 
-- (void)insertMentionByName:(id)a3
+- (void)insertMentionByName:(id)name
 {
-  v19 = a3;
-  v4 = [(CKMentionsController *)self allowsMentions];
-  v5 = v19;
-  if (v4)
+  nameCopy = name;
+  allowsMentions = [(CKMentionsController *)self allowsMentions];
+  v5 = nameCopy;
+  if (allowsMentions)
   {
-    v6 = [v19 mentionsSafeText];
-    if ([v19 length] && objc_msgSend(v6, "length"))
+    mentionsSafeText = [nameCopy mentionsSafeText];
+    if ([nameCopy length] && objc_msgSend(mentionsSafeText, "length"))
     {
-      v7 = [(CKMentionsController *)self textView];
-      v8 = [(CKMentionsController *)self entitiesForKey:v6];
-      v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v19];
+      textView = [(CKMentionsController *)self textView];
+      v8 = [(CKMentionsController *)self entitiesForKey:mentionsSafeText];
+      v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:nameCopy];
       if ([v8 count] == 1)
       {
-        v10 = [v8 anyObject];
-        v11 = [v10 defaultIMHandle];
-        v12 = [v11 ID];
+        anyObject = [v8 anyObject];
+        defaultIMHandle = [anyObject defaultIMHandle];
+        v12 = [defaultIMHandle ID];
 
         if ([v12 length])
         {
-          v13 = [v19 length];
+          v13 = [nameCopy length];
           [v9 ck_removeAnimatedTextEffectsFromRange:{0, v13}];
           [v9 addAttribute:*MEMORY[0x1E69A70F8] value:v12 range:{0, v13}];
-          [CKMentionsUtilities configureAttributedString:v9 inTextView:v7 forConfirmedMentionInRange:0 needingAnimation:v13, 1];
+          [CKMentionsUtilities configureAttributedString:v9 inTextView:textView forConfirmedMentionInRange:0 needingAnimation:v13, 1];
         }
       }
 
       else
       {
-        +[CKMentionsUtilities configureAttributedString:inTextView:forUnconfirmedMentionInRange:](CKMentionsUtilities, "configureAttributedString:inTextView:forUnconfirmedMentionInRange:", v9, v7, 0, [v19 length]);
+        +[CKMentionsUtilities configureAttributedString:inTextView:forUnconfirmedMentionInRange:](CKMentionsUtilities, "configureAttributedString:inTextView:forUnconfirmedMentionInRange:", v9, textView, 0, [nameCopy length]);
       }
 
       if ([(CKMentionsController *)self languageHasSpaces])
       {
         v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:@" "];
-        [CKMentionsUtilities configureAttributedString:v14 inTextView:v7 forNoMentionInRange:0, 1];
+        [CKMentionsUtilities configureAttributedString:v14 inTextView:textView forNoMentionInRange:0, 1];
         [v9 appendAttributedString:v14];
-        v15 = [v7 attributedText];
-        v16 = [v15 mutableCopy];
+        attributedText = [textView attributedText];
+        v16 = [attributedText mutableCopy];
 
-        v17 = [v7 selectedRange];
-        [v16 insertAttributedString:v9 atIndex:v17 + v18];
-        [v7 setAttributedText:v16];
-        [(CKMentionsController *)self updateTextViewIfNecessary:v7 withAttributedString:v16];
+        selectedRange = [textView selectedRange];
+        [v16 insertAttributedString:v9 atIndex:selectedRange + v18];
+        [textView setAttributedText:v16];
+        [(CKMentionsController *)self updateTextViewIfNecessary:textView withAttributedString:v16];
       }
     }
 
-    v5 = v19;
+    v5 = nameCopy;
   }
 }
 
-- (void)insertMentionWithEntity:(id)a3 replacementRange:(_NSRange)a4 fallbackName:(id)a5 source:(unsigned __int8)a6
+- (void)insertMentionWithEntity:(id)entity replacementRange:(_NSRange)range fallbackName:(id)name source:(unsigned __int8)source
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
+  sourceCopy = source;
+  length = range.length;
+  location = range.location;
+  entityCopy = entity;
+  nameCopy = name;
   [(CKMentionsController *)self setShowMentionSuggestions:0 animated:1 completion:0];
-  v13 = [(CKMentionsController *)self textView];
-  v14 = [v13 attributedText];
-  v15 = [v14 mutableCopy];
+  textView = [(CKMentionsController *)self textView];
+  attributedText = [textView attributedText];
+  v15 = [attributedText mutableCopy];
 
   [v15 ck_removeAnimatedTextEffectsFromRange:{location, length}];
-  v16 = v12;
+  v16 = nameCopy;
   v17 = v16;
-  if (v6)
+  if (sourceCopy)
   {
     v18 = [v15 attribute:*MEMORY[0x1E69A7110] atIndex:location effectiveRange:0];
     v19 = v18;
@@ -1490,32 +1490,32 @@ LABEL_16:
   }
 
   v20 = [v15 attributedSubstringFromRange:{location, length}];
-  v21 = [v20 string];
+  string = [v20 string];
 
   [v15 replaceCharactersInRange:location withString:{length, v17}];
   v33 = location;
   v34 = [v17 length];
-  [CKMentionsUtilities replaceAttributedString:v15 withEntity:v11 fromInputText:v17 inRange:location updatingRange:v34, &v33];
-  v22 = [(CKMentionsController *)self textView];
-  [CKMentionsUtilities configureAttributedString:v15 inTextView:v22 withOriginalText:v21 inRange:v33, v34];
+  [CKMentionsUtilities replaceAttributedString:v15 withEntity:entityCopy fromInputText:v17 inRange:location updatingRange:v34, &v33];
+  textView2 = [(CKMentionsController *)self textView];
+  [CKMentionsUtilities configureAttributedString:v15 inTextView:textView2 withOriginalText:string inRange:v33, v34];
 
-  v23 = [(CKMentionsController *)self textView];
-  [CKMentionsUtilities configureAttributedString:v15 inTextView:v23 forConfirmedMentionInRange:v33 needingAnimation:v34, 1];
+  textView3 = [(CKMentionsController *)self textView];
+  [CKMentionsUtilities configureAttributedString:v15 inTextView:textView3 forConfirmedMentionInRange:v33 needingAnimation:v34, 1];
 
-  v24 = [(CKMentionsController *)self textView];
-  [v24 selectedRange];
+  textView4 = [(CKMentionsController *)self textView];
+  [textView4 selectedRange];
   v26 = v25;
 
   v27 = v34 + v33;
-  if (v6)
+  if (sourceCopy)
   {
     if (v27 == [v15 length] && -[CKMentionsController languageHasSpaces](self, "languageHasSpaces"))
     {
       v28 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:@" "];
       v31 = v34;
       v32 = v33;
-      v29 = [(CKMentionsController *)self textView];
-      [CKMentionsUtilities configureAttributedString:v28 inTextView:v29 forNoMentionInRange:0, 1];
+      textView5 = [(CKMentionsController *)self textView];
+      [CKMentionsUtilities configureAttributedString:v28 inTextView:textView5 forNoMentionInRange:0, 1];
 
       [v15 insertAttributedString:v28 atIndex:v31 + v32];
       v27 = [v15 length];
@@ -1527,58 +1527,58 @@ LABEL_16:
     }
   }
 
-  v30 = [(CKMentionsController *)self textView];
-  [(CKMentionsController *)self checkForMentionsInAttributedString:v15 textViewToUpdate:v30 restoreSelectedRange:v27, v26];
+  textView6 = [(CKMentionsController *)self textView];
+  [(CKMentionsController *)self checkForMentionsInAttributedString:v15 textViewToUpdate:textView6 restoreSelectedRange:v27, v26];
 }
 
-- (void)suggestionViewDidSelectEntity:(id)a3
+- (void)suggestionViewDidSelectEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(CKMentionsController *)self textView];
-  v11 = [v5 attributedText];
+  entityCopy = entity;
+  textView = [(CKMentionsController *)self textView];
+  attributedText = [textView attributedText];
 
-  v6 = [(CKMentionsController *)self rangeOfTappedMention];
+  rangeOfTappedMention = [(CKMentionsController *)self rangeOfTappedMention];
   v8 = v7;
-  if (v7 > [v11 length])
+  if (v7 > [attributedText length])
   {
-    v8 = [v11 length];
+    v8 = [attributedText length];
   }
 
-  if (v8 + v6 > [v11 length])
+  if (v8 + rangeOfTappedMention > [attributedText length])
   {
-    v8 = [v11 length] - v6;
+    v8 = [attributedText length] - rangeOfTappedMention;
   }
 
-  v9 = [v11 attributedSubstringFromRange:{v6, v8}];
-  v10 = [v9 string];
+  v9 = [attributedText attributedSubstringFromRange:{rangeOfTappedMention, v8}];
+  string = [v9 string];
 
-  [(CKMentionsController *)self insertMentionWithEntity:v4 replacementRange:v6 fallbackName:v8 source:v10, 1];
+  [(CKMentionsController *)self insertMentionWithEntity:entityCopy replacementRange:rangeOfTappedMention fallbackName:v8 source:string, 1];
 }
 
 - (void)acceptAutomaticMentionConfirmation
 {
   if (!+[CKMentionsUtilities supportsSupplementalLexiconMentions])
   {
-    v5 = [(CKMentionsController *)self textView];
-    v3 = [v5 attributedText];
-    v4 = [v3 mutableCopy];
+    textView = [(CKMentionsController *)self textView];
+    attributedText = [textView attributedText];
+    v4 = [attributedText mutableCopy];
 
-    [(CKMentionsController *)self confirmAutomaticMention:v4 inTextView:v5 isSending:1 selectedRange:0];
-    [(CKMentionsController *)self updateTextViewIfNecessary:v5 withAttributedString:v4];
+    [(CKMentionsController *)self confirmAutomaticMention:v4 inTextView:textView isSending:1 selectedRange:0];
+    [(CKMentionsController *)self updateTextViewIfNecessary:textView withAttributedString:v4];
   }
 }
 
-- (void)_enumerateAllAutomaticConfirmedMentionsInAttributedString:(id)a3 usingBlock:(id)a4
+- (void)_enumerateAllAutomaticConfirmedMentionsInAttributedString:(id)string usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __93__CKMentionsController__enumerateAllAutomaticConfirmedMentionsInAttributedString_usingBlock___block_invoke;
   v8[3] = &unk_1E72F1530;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 ck_textKit2_enumerateAllAutomaticConfirmedMentionsUsingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [string ck_textKit2_enumerateAllAutomaticConfirmedMentionsUsingBlock:v8];
 }
 
 void __93__CKMentionsController__enumerateAllAutomaticConfirmedMentionsInAttributedString_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -1605,21 +1605,21 @@ void __93__CKMentionsController__enumerateAllAutomaticConfirmedMentionsInAttribu
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)confirmAutomaticMention:(id)a3 inTextView:(id)a4 isSending:(BOOL)a5 selectedRange:(_NSRange *)a6
+- (void)confirmAutomaticMention:(id)mention inTextView:(id)view isSending:(BOOL)sending selectedRange:(_NSRange *)range
 {
-  v10 = a3;
-  v11 = a4;
+  mentionCopy = mention;
+  viewCopy = view;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__CKMentionsController_confirmAutomaticMention_inTextView_isSending_selectedRange___block_invoke;
   v14[3] = &unk_1E72F1558;
-  v19 = a5;
-  v15 = v11;
-  v16 = self;
-  v17 = v10;
-  v18 = a6;
-  v12 = v10;
-  v13 = v11;
+  sendingCopy = sending;
+  v15 = viewCopy;
+  selfCopy = self;
+  v17 = mentionCopy;
+  rangeCopy = range;
+  v12 = mentionCopy;
+  v13 = viewCopy;
   [(CKMentionsController *)self _enumerateAllAutomaticConfirmedMentionsInAttributedString:v12 usingBlock:v14];
 }
 
@@ -1702,40 +1702,40 @@ void __83__CKMentionsController_confirmAutomaticMention_inTextView_isSending_sel
   }
 }
 
-- (BOOL)attributedString:(id)a3 nextCharacterRangeFromRange:(_NSRange)a4 containsPossibleChild:(id)a5
+- (BOOL)attributedString:(id)string nextCharacterRangeFromRange:(_NSRange)range containsPossibleChild:(id)child
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  childCopy = child;
   v10 = location + length;
-  if ([v8 length] >= v10 + 1)
+  if ([stringCopy length] >= v10 + 1)
   {
-    v12 = [v8 string];
-    v13 = [v12 substringWithRange:{v10, 1}];
-    v14 = [v13 mentionsSafeText];
+    string = [stringCopy string];
+    v13 = [string substringWithRange:{v10, 1}];
+    mentionsSafeText = [v13 mentionsSafeText];
 
-    v15 = [v9 children];
-    v16 = [v15 objectForKey:v14];
+    children = [childCopy children];
+    v16 = [children objectForKey:mentionsSafeText];
 
-    v17 = [v16 possibleEntities];
-    v18 = [v9 entities];
-    v19 = [v18 anyObject];
-    v20 = [v17 containsObject:v19];
+    possibleEntities = [v16 possibleEntities];
+    entities = [childCopy entities];
+    anyObject = [entities anyObject];
+    v20 = [possibleEntities containsObject:anyObject];
 
     if (v20)
     {
-      v21 = [v9 entities];
-      v22 = [v21 anyObject];
-      v23 = [v22 defaultIMHandle];
-      v24 = [v23 firstName];
+      entities2 = [childCopy entities];
+      anyObject2 = [entities2 anyObject];
+      defaultIMHandle = [anyObject2 defaultIMHandle];
+      firstName = [defaultIMHandle firstName];
 
-      v25 = [v9 entities];
-      v26 = [v25 anyObject];
-      v27 = [v26 defaultIMHandle];
-      v28 = [v27 lastName];
+      entities3 = [childCopy entities];
+      anyObject3 = [entities3 anyObject];
+      defaultIMHandle2 = [anyObject3 defaultIMHandle];
+      lastName = [defaultIMHandle2 lastName];
 
-      if ([CKEntity string:v24 hasPrefix:v14]|| [CKEntity string:v28 hasPrefix:v14])
+      if ([CKEntity string:firstName hasPrefix:mentionsSafeText]|| [CKEntity string:lastName hasPrefix:mentionsSafeText])
       {
         LOBYTE(v11) = 1;
         goto LABEL_10;
@@ -1748,10 +1748,10 @@ void __83__CKMentionsController_confirmAutomaticMention_inTextView_isSending_sel
       goto LABEL_12;
     }
 
-    v24 = [v16 possibleEntities];
-    v28 = [v9 entities];
-    v29 = [v28 anyObject];
-    v11 = [v24 containsObject:v29] ^ 1;
+    firstName = [v16 possibleEntities];
+    lastName = [childCopy entities];
+    anyObject4 = [lastName anyObject];
+    v11 = [firstName containsObject:anyObject4] ^ 1;
 
 LABEL_10:
 LABEL_12:
@@ -1781,25 +1781,25 @@ LABEL_13:
   }
 }
 
-- (void)setShowMentionSuggestions:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setShowMentionSuggestions:(BOOL)suggestions animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
+  suggestionsCopy = suggestions;
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  completionCopy = completion;
   v8 = +[CKMentionsUtilities isPredictionBarAvailableForMentions];
-  v9 = [(CKMentionsController *)self currentMentionSuggestions];
-  v10 = [v9 count];
+  currentMentionSuggestions = [(CKMentionsController *)self currentMentionSuggestions];
+  v10 = [currentMentionSuggestions count];
 
   if (v8 && v10 <= 1)
   {
-    v17 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    textView4 = IMLogHandleForCategory();
+    if (os_log_type_enabled(textView4, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
       v23 = @"NO";
       v24 = 2112;
       v25 = @"YES";
-      _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Not showing mentions paddle isDisambiguation:%@, isPredictionBarEnabled:%@", buf, 0x16u);
+      _os_log_impl(&dword_19020E000, textView4, OS_LOG_TYPE_INFO, "Not showing mentions paddle isDisambiguation:%@, isPredictionBarEnabled:%@", buf, 0x16u);
     }
 
 LABEL_12:
@@ -1807,46 +1807,46 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([(CKMentionsController *)self allowsMentions]&& [(CKMentionsController *)self showingMentionsSuggestions]!= v5)
+  if ([(CKMentionsController *)self allowsMentions]&& [(CKMentionsController *)self showingMentionsSuggestions]!= suggestionsCopy)
   {
-    [(CKMentionsController *)self setShowingMentionsSuggestions:v5];
-    [(CKMentionsController *)self setPreventShowingCalloutMenu:v5];
-    if (v5)
+    [(CKMentionsController *)self setShowingMentionsSuggestions:suggestionsCopy];
+    [(CKMentionsController *)self setPreventShowingCalloutMenu:suggestionsCopy];
+    if (suggestionsCopy)
     {
-      v12 = [(CKMentionsController *)self textView];
-      [v12 setNeedsLayout];
+      textView = [(CKMentionsController *)self textView];
+      [textView setNeedsLayout];
 
-      v13 = [(CKMentionsController *)self textView];
-      [v13 layoutIfNeeded];
+      textView2 = [(CKMentionsController *)self textView];
+      [textView2 layoutIfNeeded];
 
-      v14 = [(CKMentionsController *)self textView];
-      [v14 _dismissEditMenu];
+      textView3 = [(CKMentionsController *)self textView];
+      [textView3 _dismissEditMenu];
 
       v15 = CKIsRunningInMacCatalyst() == 0;
-      v16 = [(CKMentionsController *)self paddleOverlayView];
+      paddleOverlayView = [(CKMentionsController *)self paddleOverlayView];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __70__CKMentionsController_setShowMentionSuggestions_animated_completion___block_invoke;
       v20[3] = &unk_1E72ED1F0;
-      v21 = v7;
-      [v16 showPaddleAnimated:v15 completion:v20];
+      v21 = completionCopy;
+      [paddleOverlayView showPaddleAnimated:v15 completion:v20];
 
       goto LABEL_15;
     }
 
     [(CKPaddleOverlayView *)self->_paddleOverlayView dismiss];
-    v19 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-    [v19 textInputTraitsDidChange];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    [activeKeyboard textInputTraitsDidChange];
 
-    v17 = [(CKMentionsController *)self textView];
-    [v17 setNeedsLayout];
+    textView4 = [(CKMentionsController *)self textView];
+    [textView4 setNeedsLayout];
     goto LABEL_12;
   }
 
 LABEL_13:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_15:
@@ -1869,9 +1869,9 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
   if ([(CKMentionsController *)self allowsMentions])
   {
     v3 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v4 = [(CKMentionsController *)self conversation];
-    v5 = [v4 recipients];
-    v6 = [v3 initWithCapacity:{objc_msgSend(v5, "count")}];
+    conversation = [(CKMentionsController *)self conversation];
+    recipients = [conversation recipients];
+    v6 = [v3 initWithCapacity:{objc_msgSend(recipients, "count")}];
     [(CKMentionsController *)self setEntityHandles:v6];
 
     if (+[CKMentionsUtilities supportsSupplementalLexiconMentions])
@@ -1881,10 +1881,10 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v7 = [(CKMentionsController *)self conversation];
-      v8 = [v7 recipients];
+      conversation2 = [(CKMentionsController *)self conversation];
+      recipients2 = [conversation2 recipients];
 
-      v9 = [v8 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v9 = [recipients2 countByEnumeratingWithState:&v37 objects:v43 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1895,20 +1895,20 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
           {
             if (*v38 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(recipients2);
             }
 
-            v13 = [*(*(&v37 + 1) + 8 * i) defaultIMHandle];
-            v14 = [v13 ID];
+            defaultIMHandle = [*(*(&v37 + 1) + 8 * i) defaultIMHandle];
+            v14 = [defaultIMHandle ID];
 
             if ([v14 length])
             {
-              v15 = [(CKMentionsController *)self entityHandles];
-              [v15 addObject:v14];
+              entityHandles = [(CKMentionsController *)self entityHandles];
+              [entityHandles addObject:v14];
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v37 objects:v43 count:16];
+          v10 = [recipients2 countByEnumeratingWithState:&v37 objects:v43 count:16];
         }
 
         while (v10);
@@ -1927,10 +1927,10 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v18 = [(CKMentionsController *)self conversation];
-      v8 = [v18 recipients];
+      conversation3 = [(CKMentionsController *)self conversation];
+      recipients2 = [conversation3 recipients];
 
-      v19 = [v8 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v19 = [recipients2 countByEnumeratingWithState:&v33 objects:v42 count:16];
       if (v19)
       {
         v20 = v19;
@@ -1941,7 +1941,7 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
           {
             if (*v34 != v21)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(recipients2);
             }
 
             v23 = *(*(&v33 + 1) + 8 * j);
@@ -1951,8 +1951,8 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
               v32 = 0u;
               v29 = 0u;
               v30 = 0u;
-              v24 = [v23 mentionTokens];
-              v25 = [v24 countByEnumeratingWithState:&v29 objects:v41 count:16];
+              mentionTokens = [v23 mentionTokens];
+              v25 = [mentionTokens countByEnumeratingWithState:&v29 objects:v41 count:16];
               if (v25)
               {
                 v26 = v25;
@@ -1963,13 +1963,13 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
                   {
                     if (*v30 != v27)
                     {
-                      objc_enumerationMutation(v24);
+                      objc_enumerationMutation(mentionTokens);
                     }
 
                     [(CKMentionsController *)self associateEntity:v23 withKey:*(*(&v29 + 1) + 8 * k)];
                   }
 
-                  v26 = [v24 countByEnumeratingWithState:&v29 objects:v41 count:16];
+                  v26 = [mentionTokens countByEnumeratingWithState:&v29 objects:v41 count:16];
                 }
 
                 while (v26);
@@ -1977,7 +1977,7 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
             }
           }
 
-          v20 = [v8 countByEnumeratingWithState:&v33 objects:v42 count:16];
+          v20 = [recipients2 countByEnumeratingWithState:&v33 objects:v42 count:16];
         }
 
         while (v20);
@@ -1994,13 +1994,13 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
   v5 = v4;
 
   v6 = MEMORY[0x1E695D0B0];
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v39 = [v6 scopeWithPointSize:0 scale:0 rightToLeft:v5 style:{v5, v8}];
 
   v9 = objc_alloc(MEMORY[0x1E695D098]);
-  v10 = [MEMORY[0x1E695D0A8] defaultSettings];
-  v38 = [v9 initWithSettings:v10];
+  defaultSettings = [MEMORY[0x1E695D0A8] defaultSettings];
+  v38 = [v9 initWithSettings:defaultSettings];
 
   v11 = *MEMORY[0x1E695C240];
   v58[0] = *MEMORY[0x1E695C230];
@@ -2011,8 +2011,8 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
   v13 = *MEMORY[0x1E695C358];
   v58[4] = *MEMORY[0x1E695C348];
   v58[5] = v13;
-  v14 = [MEMORY[0x1E695D098] descriptorForRequiredKeys];
-  v58[6] = v14;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D098] descriptorForRequiredKeys];
+  v58[6] = descriptorForRequiredKeys;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:7];
 
   v15 = dispatch_group_create();
@@ -2021,27 +2021,27 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
 
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = IMLogHandleForCategory();
-  v34 = self;
+  selfCopy = self;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [(CKMentionsController *)self conversation];
-    v20 = [v19 recipients];
+    conversation = [(CKMentionsController *)self conversation];
+    recipients = [conversation recipients];
     *buf = 134217984;
-    v57 = [v20 count];
+    v57 = [recipients count];
     _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Dispatching %llu entities to be rendered for mentions", buf, 0xCu);
 
-    self = v34;
+    self = selfCopy;
   }
 
   v51 = 0u;
   v52 = 0u;
   v50 = 0u;
   v49 = 0u;
-  v21 = [(CKMentionsController *)self conversation];
-  v22 = [v21 recipients];
+  conversation2 = [(CKMentionsController *)self conversation];
+  recipients2 = [conversation2 recipients];
 
-  obj = v22;
-  v23 = [v22 countByEnumeratingWithState:&v49 objects:v55 count:16];
+  obj = recipients2;
+  v23 = [recipients2 countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v23)
   {
     v24 = v23;
@@ -2087,7 +2087,7 @@ uint64_t __70__CKMentionsController_setShowMentionSuggestions_animated_completio
   v40[2] = __66__CKMentionsController__populateSupplementalLexiconAsynchronously__block_invoke_240;
   v40[3] = &unk_1E72EB8D0;
   v41 = v17;
-  v42 = v34;
+  v42 = selfCopy;
   v33 = v17;
   dispatch_group_notify(v15, MEMORY[0x1E69E96A0], v40);
 }
@@ -2130,58 +2130,58 @@ uint64_t __66__CKMentionsController__populateSupplementalLexiconAsynchronously__
   return [*(a1 + 40) _updateMentionsLexiconWithItems:*(a1 + 32)];
 }
 
-- (void)_updateMentionsLexiconWithItems:(id)a3
+- (void)_updateMentionsLexiconWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [objc_alloc(MEMORY[0x1E69DD768]) initWithItems:v4 searchPrefixes:1];
+  v5 = [objc_alloc(MEMORY[0x1E69DD768]) initWithItems:itemsCopy searchPrefixes:1];
 
   [(CKMentionsController *)self setMentionsLexicon:v5];
-  v6 = [(CKMentionsController *)self mentionsLexicon];
-  v7 = [(CKMentionsController *)self textView];
-  [v7 setSupplementalLexicon:v6];
+  mentionsLexicon = [(CKMentionsController *)self mentionsLexicon];
+  textView = [(CKMentionsController *)self textView];
+  [textView setSupplementalLexicon:mentionsLexicon];
 
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.crop.circle"];
-  v9 = [(CKMentionsController *)self textView];
-  [v9 setSupplementalLexiconAmbiguousItemIcon:v8];
+  textView2 = [(CKMentionsController *)self textView];
+  [textView2 setSupplementalLexiconAmbiguousItemIcon:v8];
 
-  v10 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  [v10 textInputTraitsDidChange];
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  [activeKeyboard textInputTraitsDidChange];
 }
 
-- (void)associateEntity:(id)a3 withKey:(id)a4
+- (void)associateEntity:(id)entity withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  entityCopy = entity;
+  keyCopy = key;
+  if (keyCopy)
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__28;
     v23 = __Block_byref_object_dispose__28;
-    v24 = [(CKMentionsController *)self entityTree];
-    v8 = [v7 length];
+    entityTree = [(CKMentionsController *)self entityTree];
+    v8 = [keyCopy length];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __48__CKMentionsController_associateEntity_withKey___block_invoke;
     v16[3] = &unk_1E72F15A8;
     v18 = &v19;
-    v9 = v6;
+    v9 = entityCopy;
     v17 = v9;
-    [v7 enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v16}];
+    [keyCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v16}];
     [v20[5] addEntity:v9];
-    v10 = [v9 defaultIMHandle];
-    v11 = [v10 ID];
+    defaultIMHandle = [v9 defaultIMHandle];
+    v11 = [defaultIMHandle ID];
 
     if ([v11 length])
     {
-      v12 = [(CKMentionsController *)self entityHandles];
-      [v12 addObject:v11];
+      entityHandles = [(CKMentionsController *)self entityHandles];
+      [entityHandles addObject:v11];
     }
 
-    v13 = [(CKMentionsController *)self entityDictionary];
-    v14 = [v13 objectForKey:v7];
+    entityDictionary = [(CKMentionsController *)self entityDictionary];
+    v14 = [entityDictionary objectForKey:keyCopy];
 
     if (v14)
     {
@@ -2193,8 +2193,8 @@ uint64_t __66__CKMentionsController__populateSupplementalLexiconAsynchronously__
       v14 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v9, 0}];
     }
 
-    v15 = [(CKMentionsController *)self entityDictionary];
-    [v15 setObject:v14 forKey:v7];
+    entityDictionary2 = [(CKMentionsController *)self entityDictionary];
+    [entityDictionary2 setObject:v14 forKey:keyCopy];
 
     _Block_object_dispose(&v19, 8);
   }
@@ -2219,33 +2219,33 @@ void __48__CKMentionsController_associateEntity_withKey___block_invoke(uint64_t 
   *(v5 + 40) = v4;
 }
 
-- (id)entitiesForKey:(id)a3
+- (id)entitiesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKMentionsController *)self entityDictionary];
-  v6 = [v4 mentionsSafeText];
+  keyCopy = key;
+  entityDictionary = [(CKMentionsController *)self entityDictionary];
+  mentionsSafeText = [keyCopy mentionsSafeText];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [entityDictionary objectForKey:mentionsSafeText];
 
   return v7;
 }
 
 - (void)didSetAttributedTextOfTextView
 {
-  v2 = [(CKMentionsController *)self mentionsAnimationController];
-  [v2 didSetAttributedTextOfTextView];
+  mentionsAnimationController = [(CKMentionsController *)self mentionsAnimationController];
+  [mentionsAnimationController didSetAttributedTextOfTextView];
 }
 
-- (void)insertSupplementalItem:(id)a3 forString:(id)a4 replacementRange:(id)a5
+- (void)insertSupplementalItem:(id)item forString:(id)string replacementRange:(id)range
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = [(CKMentionsController *)self _rangeFromUITextRange:a5];
+  itemCopy = item;
+  stringCopy = string;
+  v9 = [(CKMentionsController *)self _rangeFromUITextRange:range];
   v11 = v10;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v14 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"CKSupplementalItemEntityAttributeName"];
+    userInfo = [itemCopy userInfo];
+    v13 = [userInfo objectForKeyedSubscript:@"CKSupplementalItemEntityAttributeName"];
   }
 
   else
@@ -2253,7 +2253,7 @@ void __48__CKMentionsController_associateEntity_withKey___block_invoke(uint64_t 
     v13 = 0;
   }
 
-  [(CKMentionsController *)self insertMentionWithEntity:v13 replacementRange:v9 fallbackName:v11 source:v8, 0];
+  [(CKMentionsController *)self insertMentionWithEntity:v13 replacementRange:v9 fallbackName:v11 source:stringCopy, 0];
   if ([(CKMentionsController *)self allowsMentions])
   {
     if (![(CKMentionsController *)self isUpdatingMentionAttributedText])
@@ -2265,21 +2265,21 @@ void __48__CKMentionsController_associateEntity_withKey___block_invoke(uint64_t 
   }
 }
 
-- (void)insertionPointEnteredRange:(id)a3 string:(id)a4 supplementalItems:(id)a5
+- (void)insertionPointEnteredRange:(id)range string:(id)string supplementalItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(CKMentionsController *)self _rangeFromUITextRange:a3];
+  itemsCopy = items;
+  stringCopy = string;
+  v10 = [(CKMentionsController *)self _rangeFromUITextRange:range];
   v12 = v11;
-  v14 = [v8 __imArrayByApplyingBlock:&__block_literal_global_250];
+  v14 = [itemsCopy __imArrayByApplyingBlock:&__block_literal_global_250];
 
-  [(CKMentionsController *)self insertionPointEnteredRange:v10 forMention:v12 withEntities:v9, v14];
+  [(CKMentionsController *)self insertionPointEnteredRange:v10 forMention:v12 withEntities:stringCopy, v14];
   if (![(CKMentionsController *)self showingMentionsSuggestions])
   {
-    v13 = [(CKMentionsController *)self currentTappedCharacterIndex];
-    if (v13 >= v10 && v13 - v10 < v12)
+    currentTappedCharacterIndex = [(CKMentionsController *)self currentTappedCharacterIndex];
+    if (currentTappedCharacterIndex >= v10 && currentTappedCharacterIndex - v10 < v12)
     {
-      [(CKMentionsController *)self didTapMentionAtCharacterIndex:v13];
+      [(CKMentionsController *)self didTapMentionAtCharacterIndex:currentTappedCharacterIndex];
       [(CKMentionsController *)self setCurrentTappedCharacterIndex:0x7FFFFFFFFFFFFFFFLL];
     }
   }
@@ -2305,29 +2305,29 @@ id __76__CKMentionsController_insertionPointEnteredRange_string_supplementalItem
 - (void)insertionPointExitedRangeWithSupplementalItems
 {
   [(CKMentionsController *)self setLastFoundMentionRange:0x7FFFFFFFFFFFFFFFLL, 0];
-  v3 = [(CKMentionsController *)self textView];
-  v4 = [v3 attributedText];
-  v6 = [v4 mutableCopy];
+  textView = [(CKMentionsController *)self textView];
+  attributedText = [textView attributedText];
+  v6 = [attributedText mutableCopy];
 
-  v5 = [(CKMentionsController *)self textView];
-  [(CKMentionsController *)self resetStyleInAttributedString:v6 inTextView:v5 andApplyStyleUsingBlock:&__block_literal_global_252];
+  textView2 = [(CKMentionsController *)self textView];
+  [(CKMentionsController *)self resetStyleInAttributedString:v6 inTextView:textView2 andApplyStyleUsingBlock:&__block_literal_global_252];
 }
 
-- (void)chooseSupplementalItemToInsert:(id)a3 replacementRange:(id)a4 completionHandler:(id)a5
+- (void)chooseSupplementalItemToInsert:(id)insert replacementRange:(id)range completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CKMentionsController *)self _rangeFromUITextRange:a4];
+  insertCopy = insert;
+  handlerCopy = handler;
+  v10 = [(CKMentionsController *)self _rangeFromUITextRange:range];
   v12 = v11;
-  v13 = [v8 __imArrayByApplyingBlock:&__block_literal_global_254];
+  v13 = [insertCopy __imArrayByApplyingBlock:&__block_literal_global_254];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __90__CKMentionsController_chooseSupplementalItemToInsert_replacementRange_completionHandler___block_invoke_2;
   v20 = &unk_1E72F1618;
-  v21 = v8;
-  v22 = v9;
-  v14 = v8;
-  v15 = v9;
+  v21 = insertCopy;
+  v22 = handlerCopy;
+  v14 = insertCopy;
+  v15 = handlerCopy;
   v16 = _Block_copy(&v17);
   [(CKMentionsController *)self setDidSelectEntityCompletionHandler:v16, v17, v18, v19, v20];
   [(CKMentionsController *)self showMentionSuggestionsForEntities:v13 replacementRange:v10, v12];
@@ -2408,19 +2408,19 @@ BOOL __90__CKMentionsController_chooseSupplementalItemToInsert_replacementRange_
 
 - (void)localeChanged
 {
-  v3 = [MEMORY[0x1E69DD0E8] currentInputMode];
-  if (v3)
+  currentInputMode = [MEMORY[0x1E69DD0E8] currentInputMode];
+  if (currentInputMode)
   {
     v4 = MEMORY[0x1E695DF58];
-    v9 = v3;
-    v5 = [v3 primaryLanguage];
-    v6 = [v4 localeWithLocaleIdentifier:v5];
-    v7 = [v6 languageCode];
+    v9 = currentInputMode;
+    primaryLanguage = [currentInputMode primaryLanguage];
+    v6 = [v4 localeWithLocaleIdentifier:primaryLanguage];
+    languageCode = [v6 languageCode];
 
     v8 = +[CKMentionsUtilities languagesWithoutSpaces];
-    self->_languageHasSpaces = [v8 containsObject:v7] ^ 1;
+    self->_languageHasSpaces = [v8 containsObject:languageCode] ^ 1;
 
-    v3 = v9;
+    currentInputMode = v9;
   }
 
   else
@@ -2429,26 +2429,26 @@ BOOL __90__CKMentionsController_chooseSupplementalItemToInsert_replacementRange_
   }
 }
 
-- (void)didDismissPaddleOverlayView:(id)a3
+- (void)didDismissPaddleOverlayView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CKMentionsController *)self setPreventShowingCalloutMenu:0];
   paddleOverlayView = self->_paddleOverlayView;
 
-  if (paddleOverlayView == v4)
+  if (paddleOverlayView == viewCopy)
   {
     self->_paddleOverlayView = 0;
   }
 
   if (self->_mentionSuggestionView)
   {
-    v6 = [(CKMentionsController *)self didSelectEntityCompletionHandler];
+    didSelectEntityCompletionHandler = [(CKMentionsController *)self didSelectEntityCompletionHandler];
 
-    if (v6)
+    if (didSelectEntityCompletionHandler)
     {
-      v7 = [(CKMentionsController *)self didSelectEntityCompletionHandler];
+      didSelectEntityCompletionHandler2 = [(CKMentionsController *)self didSelectEntityCompletionHandler];
       [(CKMentionsController *)self setDidSelectEntityCompletionHandler:0];
-      v7[2](v7, 0);
+      didSelectEntityCompletionHandler2[2](didSelectEntityCompletionHandler2, 0);
     }
 
     [(CKMentionsController *)self setShowingMentionsSuggestions:0];

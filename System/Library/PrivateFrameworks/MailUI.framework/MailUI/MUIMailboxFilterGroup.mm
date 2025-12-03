@@ -1,17 +1,17 @@
 @interface MUIMailboxFilterGroup
-+ (id)groupWithName:(id)a3 combinator:(int64_t)a4 selectionCardinality:(int64_t)a5 filters:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (MUIMailboxFilterGroup)initWithName:(id)a3 combinator:(int64_t)a4 selectionCardinality:(int64_t)a5 filters:(id)a6;
++ (id)groupWithName:(id)name combinator:(int64_t)combinator selectionCardinality:(int64_t)cardinality filters:(id)filters;
+- (BOOL)isEqual:(id)equal;
+- (MUIMailboxFilterGroup)initWithName:(id)name combinator:(int64_t)combinator selectionCardinality:(int64_t)cardinality filters:(id)filters;
 - (unint64_t)hash;
 @end
 
 @implementation MUIMailboxFilterGroup
 
-- (MUIMailboxFilterGroup)initWithName:(id)a3 combinator:(int64_t)a4 selectionCardinality:(int64_t)a5 filters:(id)a6
+- (MUIMailboxFilterGroup)initWithName:(id)name combinator:(int64_t)combinator selectionCardinality:(int64_t)cardinality filters:(id)filters
 {
-  v11 = a3;
-  v12 = a6;
-  if (!v12)
+  nameCopy = name;
+  filtersCopy = filters;
+  if (!filtersCopy)
   {
     [MUIMailboxFilterGroup initWithName:a2 combinator:self selectionCardinality:? filters:?];
   }
@@ -21,26 +21,26 @@
   v13 = [(MUIMailboxFilterGroup *)&v19 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v16 = [v12 copy];
+    v16 = [filtersCopy copy];
     filters = v13->_filters;
     v13->_filters = v16;
 
-    v13->_combinator = a4;
-    v13->_selectionCardinality = a5;
+    v13->_combinator = combinator;
+    v13->_selectionCardinality = cardinality;
   }
 
   return v13;
 }
 
-+ (id)groupWithName:(id)a3 combinator:(int64_t)a4 selectionCardinality:(int64_t)a5 filters:(id)a6
++ (id)groupWithName:(id)name combinator:(int64_t)combinator selectionCardinality:(int64_t)cardinality filters:(id)filters
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithName:v11 combinator:a4 selectionCardinality:a5 filters:v10];
+  filtersCopy = filters;
+  nameCopy = name;
+  v12 = [[self alloc] initWithName:nameCopy combinator:combinator selectionCardinality:cardinality filters:filtersCopy];
 
   return v12;
 }
@@ -52,8 +52,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(MUIMailboxFilterGroup *)self filters];
-  v4 = [v3 ef_prefix:3];
+  filters = [(MUIMailboxFilterGroup *)self filters];
+  v4 = [filters ef_prefix:3];
 
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
@@ -84,21 +84,21 @@
     v7 = 0;
   }
 
-  v10 = [(MUIMailboxFilterGroup *)self name];
-  v11 = [v10 hash];
-  v12 = [(MUIMailboxFilterGroup *)self combinator];
-  v13 = [(MUIMailboxFilterGroup *)self selectionCardinality];
+  name = [(MUIMailboxFilterGroup *)self name];
+  v11 = [name hash];
+  combinator = [(MUIMailboxFilterGroup *)self combinator];
+  selectionCardinality = [(MUIMailboxFilterGroup *)self selectionCardinality];
 
-  return v11 ^ v7 ^ v12 ^ v13;
+  return v11 ^ v7 ^ combinator ^ selectionCardinality;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v5)
+    if (self == equalCopy)
     {
       v16 = 1;
       goto LABEL_18;
@@ -108,21 +108,21 @@
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
-      v8 = [(MUIMailboxFilterGroup *)self name];
-      if (!v8)
+      name = [(MUIMailboxFilterGroup *)self name];
+      if (!name)
       {
-        v3 = [(MUIMailboxFilterGroup *)v7 name];
-        if (!v3)
+        name2 = [(MUIMailboxFilterGroup *)v7 name];
+        if (!name2)
         {
           goto LABEL_8;
         }
       }
 
-      v9 = [(MUIMailboxFilterGroup *)self name];
-      v10 = [(MUIMailboxFilterGroup *)v7 name];
-      v11 = [v9 isEqualToString:v10];
+      name3 = [(MUIMailboxFilterGroup *)self name];
+      name4 = [(MUIMailboxFilterGroup *)v7 name];
+      v11 = [name3 isEqualToString:name4];
 
-      if (v8)
+      if (name)
       {
 
         if (v11)
@@ -137,12 +137,12 @@
         if (v11)
         {
 LABEL_8:
-          v12 = [(MUIMailboxFilterGroup *)self filters];
-          v13 = [(MUIMailboxFilterGroup *)v7 filters];
-          if ([v12 isEqual:v13] && (v14 = -[MUIMailboxFilterGroup combinator](self, "combinator"), v14 == -[MUIMailboxFilterGroup combinator](v7, "combinator")))
+          filters = [(MUIMailboxFilterGroup *)self filters];
+          filters2 = [(MUIMailboxFilterGroup *)v7 filters];
+          if ([filters isEqual:filters2] && (v14 = -[MUIMailboxFilterGroup combinator](self, "combinator"), v14 == -[MUIMailboxFilterGroup combinator](v7, "combinator")))
           {
-            v15 = [(MUIMailboxFilterGroup *)self selectionCardinality];
-            v16 = v15 == [(MUIMailboxFilterGroup *)v7 selectionCardinality];
+            selectionCardinality = [(MUIMailboxFilterGroup *)self selectionCardinality];
+            v16 = selectionCardinality == [(MUIMailboxFilterGroup *)v7 selectionCardinality];
           }
 
           else

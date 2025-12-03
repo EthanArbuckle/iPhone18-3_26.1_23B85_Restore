@@ -1,9 +1,9 @@
 @interface EQKitMathMLMToken
-- (EQKitMathMLMToken)initWithContent:(id)a3;
-- (EQKitMathMLMToken)initWithString:(id)a3 environment:(id)a4;
+- (EQKitMathMLMToken)initWithContent:(id)content;
+- (EQKitMathMLMToken)initWithString:(id)string environment:(id)environment;
 - (NSString)description;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)schemataTokenString;
 - (unsigned)schemataUnicharOrNul;
 - (void)dealloc;
@@ -11,14 +11,14 @@
 
 @implementation EQKitMathMLMToken
 
-- (EQKitMathMLMToken)initWithString:(id)a3 environment:(id)a4
+- (EQKitMathMLMToken)initWithString:(id)string environment:(id)environment
 {
   v12.receiver = self;
   v12.super_class = EQKitMathMLMToken;
-  v8 = [(EQKitMathMLMToken *)&v12 init:a3];
+  v8 = [(EQKitMathMLMToken *)&v12 init:string];
   if (v8)
   {
-    v9 = sub_275C95134(a3, v5, v6, v7);
+    v9 = sub_275C95134(string, v5, v6, v7);
     v10 = *&v8->mFlags & 0xFC;
     if (v9)
     {
@@ -29,16 +29,16 @@
     else
     {
       *&v8->mFlags = v10 | 1;
-      v8->mContent.mString = a3;
+      v8->mContent.mString = string;
     }
   }
 
   return v8;
 }
 
-- (EQKitMathMLMToken)initWithContent:(id)a3
+- (EQKitMathMLMToken)initWithContent:(id)content
 {
-  if (a3)
+  if (content)
   {
     v7.receiver = self;
     v7.super_class = EQKitMathMLMToken;
@@ -47,7 +47,7 @@
     if (v4)
     {
       *&v4->mFlags = *&v4->mFlags & 0xFC | 2;
-      v4->mContent.mString = a3;
+      v4->mContent.mString = content;
     }
   }
 
@@ -60,11 +60,11 @@
   return v5;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  if (sub_275CB5A8C(a3))
+  if (sub_275CB5A8C(node))
   {
-    sub_275CB5B94(a3, 1, &__p);
+    sub_275CB5B94(node, 1, &__p);
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
     if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
@@ -77,7 +77,7 @@
     }
 
     v16 = v12;
-    v17 = objc_msgSend_environment(a4, v13, v14, v15);
+    v17 = objc_msgSend_environment(parser, v13, v14, v15);
     v19 = objc_msgSend_initWithString_environment_(self, v18, v16, v17);
 
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
@@ -90,7 +90,7 @@
 
   else
   {
-    v21 = objc_msgSend_parseChildrenAsTokenContentFromXMLNode_(a4, v7, a3, v8);
+    v21 = objc_msgSend_parseChildrenAsTokenContentFromXMLNode_(parser, v7, node, v8);
 
     return MEMORY[0x2821F9670](self, sel_initWithContent_, v21, v22);
   }

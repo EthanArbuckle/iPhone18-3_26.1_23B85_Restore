@@ -1,20 +1,20 @@
 @interface LargeDayNavigationWrapperView
-- (LargeDayNavigationWrapperView)initWithNavigationView:(id)a3;
+- (LargeDayNavigationWrapperView)initWithNavigationView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation LargeDayNavigationWrapperView
 
-- (LargeDayNavigationWrapperView)initWithNavigationView:(id)a3
+- (LargeDayNavigationWrapperView)initWithNavigationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = LargeDayNavigationWrapperView;
   v6 = [(LargeDayNavigationWrapperView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationView, a3);
+    objc_storeStrong(&v6->_navigationView, view);
     [(LargeDayNavigationWrapperView *)v7 addSubview:v7->_navigationView];
   }
 

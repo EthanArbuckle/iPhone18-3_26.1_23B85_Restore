@@ -1,22 +1,22 @@
 @interface RMStatusReporter
-- (RMStatusReporter)initWithStatusEngine:(id)a3 onlyIfNeeded:(BOOL)a4;
-- (id)statusReportReturningError:(id *)a3;
+- (RMStatusReporter)initWithStatusEngine:(id)engine onlyIfNeeded:(BOOL)needed;
+- (id)statusReportReturningError:(id *)error;
 - (void)acknowledgeStatusSent;
 @end
 
 @implementation RMStatusReporter
 
-- (RMStatusReporter)initWithStatusEngine:(id)a3 onlyIfNeeded:(BOOL)a4
+- (RMStatusReporter)initWithStatusEngine:(id)engine onlyIfNeeded:(BOOL)needed
 {
-  v7 = a3;
+  engineCopy = engine;
   v12.receiver = self;
   v12.super_class = RMStatusReporter;
   v8 = [(RMStatusReporter *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_statusEngine, a3);
-    v9->_onlyIfNeeded = a4;
+    objc_storeStrong(&v8->_statusEngine, engine);
+    v9->_onlyIfNeeded = needed;
     statusQueryResult = v9->_statusQueryResult;
     v9->_statusQueryResult = 0;
   }
@@ -24,30 +24,30 @@
   return v9;
 }
 
-- (id)statusReportReturningError:(id *)a3
+- (id)statusReportReturningError:(id *)error
 {
-  v5 = [(RMStatusReporter *)self onlyIfNeeded];
-  v6 = [(RMStatusReporter *)self statusEngine];
-  v7 = v6;
-  if (v5)
+  onlyIfNeeded = [(RMStatusReporter *)self onlyIfNeeded];
+  statusEngine = [(RMStatusReporter *)self statusEngine];
+  v7 = statusEngine;
+  if (onlyIfNeeded)
   {
-    [v6 queryForUnacknowledgedStatusSubscriptions];
+    [statusEngine queryForUnacknowledgedStatusSubscriptions];
   }
 
   else
   {
-    [v6 queryForStatusSubscriptions];
+    [statusEngine queryForStatusSubscriptions];
   }
   v8 = ;
   [(RMStatusReporter *)self setStatusQueryResult:v8];
 
-  v9 = [(RMStatusReporter *)self statusQueryResult];
-  LOBYTE(v8) = [v9 hasStatusToReport];
+  statusQueryResult = [(RMStatusReporter *)self statusQueryResult];
+  LOBYTE(v8) = [statusQueryResult hasStatusToReport];
 
   if (v8)
   {
-    v10 = [(RMStatusReporter *)self statusQueryResult];
-    v11 = [v10 protocolStatusReportWithFullReport:{-[RMStatusReporter onlyIfNeeded](self, "onlyIfNeeded") ^ 1}];
+    statusQueryResult2 = [(RMStatusReporter *)self statusQueryResult];
+    v11 = [statusQueryResult2 protocolStatusReportWithFullReport:{-[RMStatusReporter onlyIfNeeded](self, "onlyIfNeeded") ^ 1}];
 
     v18 = 0;
     v12 = [v11 serializeAsDataWithType:1 error:&v18];
@@ -65,10 +65,10 @@
         sub_10006A02C(v13, v15);
       }
 
-      if (a3 && v13)
+      if (error && v13)
       {
         v16 = v13;
-        *a3 = v13;
+        *error = v13;
       }
     }
   }
@@ -89,14 +89,14 @@
 
 - (void)acknowledgeStatusSent
 {
-  v3 = [(RMStatusReporter *)self statusQueryResult];
-  v4 = [v3 hasStatusToReport];
+  statusQueryResult = [(RMStatusReporter *)self statusQueryResult];
+  hasStatusToReport = [statusQueryResult hasStatusToReport];
 
-  if (v4)
+  if (hasStatusToReport)
   {
-    v6 = [(RMStatusReporter *)self statusEngine];
-    v5 = [(RMStatusReporter *)self statusQueryResult];
-    [v6 acknowledgeStatusSubscriptions:v5];
+    statusEngine = [(RMStatusReporter *)self statusEngine];
+    statusQueryResult2 = [(RMStatusReporter *)self statusQueryResult];
+    [statusEngine acknowledgeStatusSubscriptions:statusQueryResult2];
   }
 }
 

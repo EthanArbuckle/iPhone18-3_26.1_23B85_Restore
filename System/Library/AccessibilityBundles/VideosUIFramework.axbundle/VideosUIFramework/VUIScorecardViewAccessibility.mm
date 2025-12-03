@@ -1,17 +1,17 @@
 @interface VUIScorecardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation VUIScorecardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIScorecardView" hasProperty:@"delegate" withType:"@"];
-  [v3 validateClass:@"VideosUI.UnifiedOverlayView" conformsToProtocol:@"VUIScorecardViewDelegate"];
-  [v3 validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"scoreboardViewModel" withSwiftType:"Optional<VUISportsScoreboardViewModel>"];
-  [v3 validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"scores" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIScorecardView" hasProperty:@"delegate" withType:"@"];
+  [validationsCopy validateClass:@"VideosUI.UnifiedOverlayView" conformsToProtocol:@"VUIScorecardViewDelegate"];
+  [validationsCopy validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"scoreboardViewModel" withSwiftType:"Optional<VUISportsScoreboardViewModel>"];
+  [validationsCopy validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"scores" withType:"@"];
 }
 
 - (id)accessibilityLabel
@@ -38,12 +38,12 @@
     if (v9)
     {
       v10 = v9;
-      v11 = 0;
+      accessibilityLabel = 0;
       v12 = *v26;
       do
       {
         v13 = 0;
-        v14 = v11;
+        v14 = accessibilityLabel;
         do
         {
           if (*v26 != v12)
@@ -65,10 +65,10 @@
           v17 = v16;
           v20 = AXLabelForElements();
           v21 = @"__AXStringForVariablesSentinel";
-          v11 = __UIAXStringForVariables();
+          accessibilityLabel = __UIAXStringForVariables();
 
           ++v13;
-          v14 = v11;
+          v14 = accessibilityLabel;
         }
 
         while (v10 != v13);
@@ -80,7 +80,7 @@
 
     else
     {
-      v11 = 0;
+      accessibilityLabel = 0;
     }
 
     v3 = v23;
@@ -90,12 +90,12 @@
   {
     v29.receiver = self;
     v29.super_class = VUIScorecardViewAccessibility;
-    v11 = [(VUIScorecardViewAccessibility *)&v29 accessibilityLabel];
+    accessibilityLabel = [(VUIScorecardViewAccessibility *)&v29 accessibilityLabel];
   }
 
   v18 = *MEMORY[0x29EDCA608];
 
-  return v11;
+  return accessibilityLabel;
 }
 
 void *__51__VUIScorecardViewAccessibility_accessibilityLabel__block_invoke(uint64_t a1, void *a2)

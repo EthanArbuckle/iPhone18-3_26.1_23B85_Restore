@@ -1,20 +1,20 @@
 @interface DebugInformationWrapper
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DebugInformationWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  DebugInformationWrapper.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  DebugInformationWrapper.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   DebugInformationWrapper.copy(with:)(v6);
 
   sub_18E1E15F4(v6, v6[3]);

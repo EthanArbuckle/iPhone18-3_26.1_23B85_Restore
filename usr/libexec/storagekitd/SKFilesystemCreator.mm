@@ -1,6 +1,6 @@
 @interface SKFilesystemCreator
-- (BOOL)createWithVolumes:(id)a3 error:(id *)a4;
-- (BOOL)setupTaskUpdateHandlerWithClient:(id)a3 taskPairs:(id)a4 error:(id *)a5;
+- (BOOL)createWithVolumes:(id)volumes error:(id *)error;
+- (BOOL)setupTaskUpdateHandlerWithClient:(id)client taskPairs:(id)pairs error:(id *)error;
 - (SKFilesystemCreator)init;
 @end
 
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (BOOL)setupTaskUpdateHandlerWithClient:(id)a3 taskPairs:(id)a4 error:(id *)a5
+- (BOOL)setupTaskUpdateHandlerWithClient:(id)client taskPairs:(id)pairs error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  clientCopy = client;
+  pairsCopy = pairs;
+  if (clientCopy)
   {
     v9 = dispatch_semaphore_create(0);
     v19 = 0;
@@ -38,7 +38,7 @@
     v17[1] = 3221225472;
     v17[2] = sub_10002760C;
     v17[3] = &unk_100049878;
-    v18 = v8;
+    v18 = pairsCopy;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100027A0C;
@@ -46,13 +46,13 @@
     v16 = &v19;
     v10 = v9;
     v15 = v10;
-    [v7 setTaskUpdateHandler:v17 replyHandler:v14];
+    [clientCopy setTaskUpdateHandler:v17 replyHandler:v14];
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v11 = v20[5];
     v12 = v11 == 0;
-    if (a5 && v11)
+    if (error && v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
 
     _Block_object_dispose(&v19, 8);
@@ -66,9 +66,9 @@
   return v12;
 }
 
-- (BOOL)createWithVolumes:(id)a3 error:(id *)a4
+- (BOOL)createWithVolumes:(id)volumes error:(id *)error
 {
-  v66 = a3;
+  volumesCopy = volumes;
   v72 = objc_opt_new();
   v73 = objc_opt_new();
   v4 = sub_10000BFD0();
@@ -77,19 +77,19 @@
     *buf = 136315394;
     *&buf[4] = "[SKFilesystemCreator createWithVolumes:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v66;
+    *&buf[14] = volumesCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: Creating volumes %@", buf, 0x16u);
   }
 
   v77 = +[FSClient sharedInstance];
   group = dispatch_group_create();
-  if ([(SKFilesystemCreator *)self setupTaskUpdateHandlerWithClient:v77 taskPairs:v73 error:a4])
+  if ([(SKFilesystemCreator *)self setupTaskUpdateHandlerWithClient:v77 taskPairs:v73 error:error])
   {
     v95 = 0u;
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    obj = v66;
+    obj = volumesCopy;
     v75 = [(SKWaitableAggregate *)obj countByEnumeratingWithState:&v93 objects:v102 count:16];
     if (v75)
     {
@@ -111,10 +111,10 @@ LABEL_6:
 
         v79 = v5;
         v7 = *(*(&v93 + 1) + 8 * v5);
-        v8 = [v7 filesystem];
-        v9 = [v8 isExtension];
+        filesystem = [v7 filesystem];
+        isExtension = [filesystem isExtension];
 
-        if (v9)
+        if (isExtension)
         {
           if (!v77)
           {
@@ -129,14 +129,14 @@ LABEL_6:
             goto LABEL_33;
           }
 
-          v10 = [v7 disk];
-          v11 = [v10 diskIdentifier];
-          v12 = [FSBlockDeviceResource proxyResourceForBSDName:v11 isWritable:1];
+          disk = [v7 disk];
+          diskIdentifier = [disk diskIdentifier];
+          v12 = [FSBlockDeviceResource proxyResourceForBSDName:diskIdentifier isWritable:1];
 
           v13 = [SKFSTaskPair alloc];
           v14 = [SKFSTaskMessageHandler alloc];
-          v15 = [(SKFilesystemCreator *)self progress];
-          v16 = [(SKFSTaskMessageHandler *)v14 initWithProgress:v15 dispatchGroup:group];
+          progress = [(SKFilesystemCreator *)self progress];
+          v16 = [(SKFSTaskMessageHandler *)v14 initWithProgress:progress dispatchGroup:group];
           v17 = [(SKFSTaskPair *)v13 initWithMessageHandler:v16];
 
           v18 = v73;
@@ -144,10 +144,10 @@ LABEL_6:
           [v18 addObject:v17];
           objc_sync_exit(v18);
 
-          v19 = [v7 filesystem];
-          v20 = [v19 bundle];
-          v21 = [v20 bundleIdentifier];
-          v22 = sub_1000253B4(v21, 1, a4);
+          filesystem2 = [v7 filesystem];
+          bundle = [filesystem2 bundle];
+          bundleIdentifier = [bundle bundleIdentifier];
+          v22 = sub_1000253B4(bundleIdentifier, 1, error);
 
           if (!v22)
           {
@@ -164,34 +164,34 @@ LABEL_33:
             goto LABEL_34;
           }
 
-          v23 = [v7 name];
-          v24 = [FSTaskOption option:@"v" value:v23];
+          name = [v7 name];
+          v24 = [FSTaskOption option:@"v" value:name];
           [v22 addOption:v24];
 
-          v25 = [v7 filesystem];
-          v26 = [v25 majorType];
-          LODWORD(v24) = [v26 isEqualToString:@"apfs"];
+          filesystem3 = [v7 filesystem];
+          majorType = [filesystem3 majorType];
+          LODWORD(v24) = [majorType isEqualToString:@"apfs"];
 
           if (v24)
           {
-            v27 = [v7 filesystem];
-            v28 = [v27 isCaseSensitive] ? @"e" : @"i";
+            filesystem4 = [v7 filesystem];
+            v28 = [filesystem4 isCaseSensitive] ? @"e" : @"i";
             v29 = [FSTaskOption optionWithoutValue:v28];
             [v22 addOption:v29];
 
             v30 = [FSTaskOption optionWithoutValue:@"w"];
             [v22 addOption:v30];
 
-            v31 = [v7 filesystem];
-            LODWORD(v29) = [v31 isEncrypted];
+            filesystem5 = [v7 filesystem];
+            LODWORD(v29) = [filesystem5 isEncrypted];
 
             if (v29)
             {
               v32 = [FSTaskOption optionWithoutValue:@"E"];
               [v22 addOption:v32];
 
-              v33 = [v7 password];
-              v34 = [FSTaskOption option:@"S" value:v33];
+              password = [v7 password];
+              v34 = [FSTaskOption option:@"S" value:password];
               [v22 addOption:v34];
             }
           }
@@ -211,11 +211,11 @@ LABEL_33:
           v91 = obj;
           v35 = objc_retainBlock(v89);
           dispatch_group_enter(group);
-          v36 = [v7 filesystem];
-          v37 = [v36 bundle];
-          v38 = [v37 bundleIdentifier];
-          v39 = [(SKFSTaskPair *)v17 receiver];
-          v40 = [v39 getConnection];
+          filesystem6 = [v7 filesystem];
+          bundle2 = [filesystem6 bundle];
+          bundleIdentifier2 = [bundle2 bundleIdentifier];
+          receiver = [(SKFSTaskPair *)v17 receiver];
+          getConnection = [receiver getConnection];
           v84[0] = _NSConcreteStackBlock;
           v84[1] = 3221225472;
           v85[0] = sub_1000287C8;
@@ -226,7 +226,7 @@ LABEL_33:
           v87 = v42;
           v43 = v35;
           v88 = v43;
-          [v77 formatResource:v42 usingBundle:v38 options:v22 connection:v40 replyHandler:v84];
+          [v77 formatResource:v42 usingBundle:bundleIdentifier2 options:v22 connection:getConnection replyHandler:v84];
 
           _Block_object_dispose(buf, 8);
         }
@@ -234,16 +234,16 @@ LABEL_33:
         else
         {
           v44 = [SKRemoteAPFSFormatTask alloc];
-          v45 = [v7 name];
-          v46 = [v7 disk];
-          v47 = [v7 filesystem];
-          v48 = [v47 isCaseSensitive];
-          v49 = [v7 password];
-          v42 = [(SKRemoteAPFSFormatTask *)v44 initWithName:v45 disk:v46 caseSensitive:v48 password:v49];
+          name2 = [v7 name];
+          disk2 = [v7 disk];
+          filesystem7 = [v7 filesystem];
+          isCaseSensitive = [filesystem7 isCaseSensitive];
+          password2 = [v7 password];
+          v42 = [(SKRemoteAPFSFormatTask *)v44 initWithName:name2 disk:disk2 caseSensitive:isCaseSensitive password:password2];
 
-          v50 = [(SKFilesystemCreator *)self progress];
-          v51 = [(SKRemoteAPFSFormatTask *)v42 progress];
-          [v50 addChild:v51 withPendingUnitCount:{0x64 / -[SKWaitableAggregate count](obj, "count")}];
+          progress2 = [(SKFilesystemCreator *)self progress];
+          progress3 = [(SKRemoteAPFSFormatTask *)v42 progress];
+          [progress2 addChild:progress3 withPendingUnitCount:{0x64 / -[SKWaitableAggregate count](obj, "count")}];
 
           v52 = [SKTaskLineParser alloc];
           v83[0] = _NSConcreteStackBlock;
@@ -307,7 +307,7 @@ LABEL_33:
     if (v12)
     {
       v63 = [SKError errorWithCode:352 underlyingError:v12];
-      LOBYTE(v61) = [SKError failWithError:v63 error:a4];
+      LOBYTE(v61) = [SKError failWithError:v63 error:error];
     }
 
     obj = v60;

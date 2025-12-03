@@ -1,52 +1,52 @@
 @interface LSBundleURLRelationshipPrecondition
 - (BOOL)isMet;
-- (LSBundleURLRelationshipPrecondition)initWithCoder:(id)a3;
-- (LSBundleURLRelationshipPrecondition)initWithURL:(id)a3 bundleIdentifier:(id)a4 placeholderFetchBehavior:(int64_t)a5 requiredRelationship:(int64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (LSBundleURLRelationshipPrecondition)initWithCoder:(id)coder;
+- (LSBundleURLRelationshipPrecondition)initWithURL:(id)l bundleIdentifier:(id)identifier placeholderFetchBehavior:(int64_t)behavior requiredRelationship:(int64_t)relationship;
+- (void)encodeWithCoder:(id)coder;
 - (void)isMet;
 @end
 
 @implementation LSBundleURLRelationshipPrecondition
 
-- (LSBundleURLRelationshipPrecondition)initWithURL:(id)a3 bundleIdentifier:(id)a4 placeholderFetchBehavior:(int64_t)a5 requiredRelationship:(int64_t)a6
+- (LSBundleURLRelationshipPrecondition)initWithURL:(id)l bundleIdentifier:(id)identifier placeholderFetchBehavior:(int64_t)behavior requiredRelationship:(int64_t)relationship
 {
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = LSBundleURLRelationshipPrecondition;
   v12 = [(LSBundleURLRelationshipPrecondition *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [lCopy copy];
     url = v12->_url;
     v12->_url = v13;
 
-    v15 = [v11 copy];
+    v15 = [identifierCopy copy];
     bundleIdentifier = v12->_bundleIdentifier;
     v12->_bundleIdentifier = v15;
 
-    v12->_placeholderFetchBehavior = a5;
-    v12->_requiredRelationship = a6;
+    v12->_placeholderFetchBehavior = behavior;
+    v12->_requiredRelationship = relationship;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_url forKey:@"url"];
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v4 encodeInteger:self->_placeholderFetchBehavior forKey:@"placeholderFetchBehavior"];
-  [v4 encodeInteger:self->_requiredRelationship forKey:@"requiredRelationship"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_url forKey:@"url"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeInteger:self->_placeholderFetchBehavior forKey:@"placeholderFetchBehavior"];
+  [coderCopy encodeInteger:self->_requiredRelationship forKey:@"requiredRelationship"];
 }
 
-- (LSBundleURLRelationshipPrecondition)initWithCoder:(id)a3
+- (LSBundleURLRelationshipPrecondition)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v7 = -[LSBundleURLRelationshipPrecondition initWithURL:bundleIdentifier:placeholderFetchBehavior:requiredRelationship:](self, "initWithURL:bundleIdentifier:placeholderFetchBehavior:requiredRelationship:", v5, v6, [v4 decodeIntegerForKey:@"placeholderFetchBehavior"], objc_msgSend(v4, "decodeIntegerForKey:", @"requiredRelationship"));
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v7 = -[LSBundleURLRelationshipPrecondition initWithURL:bundleIdentifier:placeholderFetchBehavior:requiredRelationship:](self, "initWithURL:bundleIdentifier:placeholderFetchBehavior:requiredRelationship:", v5, v6, [coderCopy decodeIntegerForKey:@"placeholderFetchBehavior"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"requiredRelationship"));
 
   return v7;
 }
@@ -94,14 +94,14 @@
         if (v18)
         {
           v20 = [v16 objectForKey:v13];
-          v21 = [v20 BOOLValue];
+          bOOLValue = [v20 BOOLValue];
 
-          if (v21)
+          if (bOOLValue)
           {
-            v22 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
             v23 = self->_url;
             v35 = v19;
-            v24 = [v22 getRelationship:&v43 ofDirectoryAtURL:v23 toItemAtURL:v11 error:&v35];
+            v24 = [defaultManager getRelationship:&v43 ofDirectoryAtURL:v23 toItemAtURL:v11 error:&v35];
             v25 = v35;
 
             v19 = v25;
@@ -194,8 +194,8 @@ LABEL_24:
 - (void)isMet
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = *(a1 + 8);
-  v4 = *(a1 + 16);
+  v3 = *(self + 8);
+  v4 = *(self + 16);
   v6 = 138412802;
   v7 = v3;
   v8 = 2112;

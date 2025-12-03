@@ -1,15 +1,15 @@
 @interface PeoplePickerController
-- (void)hostViewController:(id)a3 didPrepareToHost:(id)a4;
+- (void)hostViewController:(id)controller didPrepareToHost:(id)host;
 @end
 
 @implementation PeoplePickerController
 
-- (void)hostViewController:(id)a3 didPrepareToHost:(id)a4
+- (void)hostViewController:(id)controller didPrepareToHost:(id)host
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PeoplePickerController.hostViewController(_:didPrepareToHost:)(v6, v7);
+  controllerCopy = controller;
+  hostCopy = host;
+  selfCopy = self;
+  PeoplePickerController.hostViewController(_:didPrepareToHost:)(controllerCopy, hostCopy);
 }
 
 @end

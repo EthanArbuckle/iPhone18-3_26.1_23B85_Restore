@@ -1,20 +1,20 @@
 @interface PGFeatureExtractorTaboo
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorTaboo
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [a3 sceneClassifications];
+  sceneClassifications = [entity sceneClassifications];
   v6 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorTaboo featureLength](self, "featureLength")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = sceneClassifications;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {

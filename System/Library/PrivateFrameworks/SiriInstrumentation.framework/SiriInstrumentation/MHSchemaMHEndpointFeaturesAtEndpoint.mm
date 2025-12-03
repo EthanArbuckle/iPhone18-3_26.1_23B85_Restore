@@ -1,51 +1,51 @@
 @interface MHSchemaMHEndpointFeaturesAtEndpoint
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithDictionary:(id)a3;
-- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithDictionary:(id)dictionary;
+- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAcousticEndpointerScore:(BOOL)a3;
-- (void)setHasClientSilenceFramesCountInNs:(BOOL)a3;
-- (void)setHasClientSilenceProbability:(BOOL)a3;
-- (void)setHasEndOfSentenceLikelihood:(BOOL)a3;
-- (void)setHasRcEndOfSentenceLikelihood:(BOOL)a3;
-- (void)setHasRcServerFeaturesLatency:(BOOL)a3;
-- (void)setHasRcTrailingSilenceDuration:(BOOL)a3;
-- (void)setHasRcWordCount:(BOOL)a3;
-- (void)setHasServerFeaturesLatencyInNs:(BOOL)a3;
-- (void)setHasSilencePosterior:(BOOL)a3;
-- (void)setHasSilencePosteriorFrameCountInNs:(BOOL)a3;
-- (void)setHasWordCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAcousticEndpointerScore:(BOOL)score;
+- (void)setHasClientSilenceFramesCountInNs:(BOOL)ns;
+- (void)setHasClientSilenceProbability:(BOOL)probability;
+- (void)setHasEndOfSentenceLikelihood:(BOOL)likelihood;
+- (void)setHasRcEndOfSentenceLikelihood:(BOOL)likelihood;
+- (void)setHasRcServerFeaturesLatency:(BOOL)latency;
+- (void)setHasRcTrailingSilenceDuration:(BOOL)duration;
+- (void)setHasRcWordCount:(BOOL)count;
+- (void)setHasServerFeaturesLatencyInNs:(BOOL)ns;
+- (void)setHasSilencePosterior:(BOOL)posterior;
+- (void)setHasSilencePosteriorFrameCountInNs:(BOOL)ns;
+- (void)setHasWordCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHEndpointFeaturesAtEndpoint
 
-- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithDictionary:(id)a3
+- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = MHSchemaMHEndpointFeaturesAtEndpoint;
   v5 = [(MHSchemaMHEndpointFeaturesAtEndpoint *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trailingSilenceDurationInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"trailingSilenceDurationInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointFeaturesAtEndpoint setTrailingSilenceDurationInNs:](v5, "setTrailingSilenceDurationInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"clientSilenceFramesCountInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"clientSilenceFramesCountInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointFeaturesAtEndpoint setClientSilenceFramesCountInNs:](v5, "setClientSilenceFramesCountInNs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"endOfSentenceLikelihood"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"endOfSentenceLikelihood"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,21 +53,21 @@
       [(MHSchemaMHEndpointFeaturesAtEndpoint *)v5 setEndOfSentenceLikelihood:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"wordCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"wordCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointFeaturesAtEndpoint setWordCount:](v5, "setWordCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"serverFeaturesLatencyInNs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"serverFeaturesLatencyInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointFeaturesAtEndpoint setServerFeaturesLatencyInNs:](v5, "setServerFeaturesLatencyInNs:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"clientSilenceProbability"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"clientSilenceProbability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(MHSchemaMHEndpointFeaturesAtEndpoint *)v5 setClientSilenceProbability:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"rcTrailingSilenceDuration"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"rcTrailingSilenceDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
     }
 
     v27 = v6;
-    v13 = [v4 objectForKeyedSubscript:{@"rcEndOfSentenceLikelihood", v12}];
+    v13 = [dictionaryCopy objectForKeyedSubscript:{@"rcEndOfSentenceLikelihood", v12}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
     }
 
     v26 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"rcWordCount"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"rcWordCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     }
 
     v25 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"rcServerFeaturesLatency"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"rcServerFeaturesLatency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
 
     v23 = v11;
     v24 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"silencePosterior"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"silencePosterior"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,7 +118,7 @@
     }
 
     v17 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"acousticEndpointerScore"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"acousticEndpointerScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,7 +126,7 @@
       [(MHSchemaMHEndpointFeaturesAtEndpoint *)v5 setAcousticEndpointerScore:?];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"silencePosteriorFrameCountInNs"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"silencePosteriorFrameCountInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,30 +140,30 @@
   return v5;
 }
 
-- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithJSON:(id)a3
+- (MHSchemaMHEndpointFeaturesAtEndpoint)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHEndpointFeaturesAtEndpoint *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHEndpointFeaturesAtEndpoint *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHEndpointFeaturesAtEndpoint *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -176,14 +176,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x800) != 0)
   {
     v7 = MEMORY[0x1E696AD98];
     [(MHSchemaMHEndpointFeaturesAtEndpoint *)self acousticEndpointerScore];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"acousticEndpointerScore"];
+    [dictionary setObject:v8 forKeyedSubscript:@"acousticEndpointerScore"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -204,7 +204,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointFeaturesAtEndpoint clientSilenceFramesCountInNs](self, "clientSilenceFramesCountInNs")}];
-  [v3 setObject:v9 forKeyedSubscript:@"clientSilenceFramesCountInNs"];
+  [dictionary setObject:v9 forKeyedSubscript:@"clientSilenceFramesCountInNs"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -222,7 +222,7 @@ LABEL_20:
   v10 = MEMORY[0x1E696AD98];
   [(MHSchemaMHEndpointFeaturesAtEndpoint *)self clientSilenceProbability];
   v11 = [v10 numberWithFloat:?];
-  [v3 setObject:v11 forKeyedSubscript:@"clientSilenceProbability"];
+  [dictionary setObject:v11 forKeyedSubscript:@"clientSilenceProbability"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -240,7 +240,7 @@ LABEL_21:
   v12 = MEMORY[0x1E696AD98];
   [(MHSchemaMHEndpointFeaturesAtEndpoint *)self endOfSentenceLikelihood];
   v13 = [v12 numberWithFloat:?];
-  [v3 setObject:v13 forKeyedSubscript:@"endOfSentenceLikelihood"];
+  [dictionary setObject:v13 forKeyedSubscript:@"endOfSentenceLikelihood"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -258,7 +258,7 @@ LABEL_22:
   v14 = MEMORY[0x1E696AD98];
   [(MHSchemaMHEndpointFeaturesAtEndpoint *)self rcEndOfSentenceLikelihood];
   v15 = [v14 numberWithFloat:?];
-  [v3 setObject:v15 forKeyedSubscript:@"rcEndOfSentenceLikelihood"];
+  [dictionary setObject:v15 forKeyedSubscript:@"rcEndOfSentenceLikelihood"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -274,7 +274,7 @@ LABEL_7:
 
 LABEL_23:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointFeaturesAtEndpoint rcServerFeaturesLatency](self, "rcServerFeaturesLatency")}];
-  [v3 setObject:v16 forKeyedSubscript:@"rcServerFeaturesLatency"];
+  [dictionary setObject:v16 forKeyedSubscript:@"rcServerFeaturesLatency"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -290,7 +290,7 @@ LABEL_8:
 
 LABEL_24:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointFeaturesAtEndpoint rcTrailingSilenceDuration](self, "rcTrailingSilenceDuration")}];
-  [v3 setObject:v17 forKeyedSubscript:@"rcTrailingSilenceDuration"];
+  [dictionary setObject:v17 forKeyedSubscript:@"rcTrailingSilenceDuration"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -306,7 +306,7 @@ LABEL_9:
 
 LABEL_25:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHEndpointFeaturesAtEndpoint rcWordCount](self, "rcWordCount")}];
-  [v3 setObject:v18 forKeyedSubscript:@"rcWordCount"];
+  [dictionary setObject:v18 forKeyedSubscript:@"rcWordCount"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -322,7 +322,7 @@ LABEL_10:
 
 LABEL_26:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointFeaturesAtEndpoint serverFeaturesLatencyInNs](self, "serverFeaturesLatencyInNs")}];
-  [v3 setObject:v19 forKeyedSubscript:@"serverFeaturesLatencyInNs"];
+  [dictionary setObject:v19 forKeyedSubscript:@"serverFeaturesLatencyInNs"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -340,7 +340,7 @@ LABEL_27:
   v20 = MEMORY[0x1E696AD98];
   [(MHSchemaMHEndpointFeaturesAtEndpoint *)self silencePosterior];
   v21 = [v20 numberWithFloat:?];
-  [v3 setObject:v21 forKeyedSubscript:@"silencePosterior"];
+  [dictionary setObject:v21 forKeyedSubscript:@"silencePosterior"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -358,7 +358,7 @@ LABEL_28:
   v22 = MEMORY[0x1E696AD98];
   [(MHSchemaMHEndpointFeaturesAtEndpoint *)self silencePosteriorFrameCountInNs];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"silencePosteriorFrameCountInNs"];
+  [dictionary setObject:v23 forKeyedSubscript:@"silencePosteriorFrameCountInNs"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -374,19 +374,19 @@ LABEL_13:
 
 LABEL_29:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointFeaturesAtEndpoint trailingSilenceDurationInNs](self, "trailingSilenceDurationInNs")}];
-  [v3 setObject:v24 forKeyedSubscript:@"trailingSilenceDurationInNs"];
+  [dictionary setObject:v24 forKeyedSubscript:@"trailingSilenceDurationInNs"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_14:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHEndpointFeaturesAtEndpoint wordCount](self, "wordCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"wordCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"wordCount"];
   }
 
 LABEL_15:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -722,16 +722,16 @@ LABEL_43:
   return v6 ^ v5 ^ v11 ^ v12 ^ v13 ^ v18 ^ v19 ^ v24 ^ v25 ^ v26 ^ v31 ^ v32 ^ v37;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   has = self->_has;
-  v6 = v4[42];
+  v6 = equalCopy[42];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_53;
@@ -740,13 +740,13 @@ LABEL_43:
   if (*&has)
   {
     trailingSilenceDurationInNs = self->_trailingSilenceDurationInNs;
-    if (trailingSilenceDurationInNs != [v4 trailingSilenceDurationInNs])
+    if (trailingSilenceDurationInNs != [equalCopy trailingSilenceDurationInNs])
     {
       goto LABEL_53;
     }
 
     has = self->_has;
-    v6 = v4[42];
+    v6 = equalCopy[42];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -755,13 +755,13 @@ LABEL_43:
     if (v8)
     {
       clientSilenceFramesCountInNs = self->_clientSilenceFramesCountInNs;
-      if (clientSilenceFramesCountInNs != [v4 clientSilenceFramesCountInNs])
+      if (clientSilenceFramesCountInNs != [equalCopy clientSilenceFramesCountInNs])
       {
         goto LABEL_53;
       }
 
       has = self->_has;
-      v6 = v4[42];
+      v6 = equalCopy[42];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -770,14 +770,14 @@ LABEL_43:
       if (v10)
       {
         endOfSentenceLikelihood = self->_endOfSentenceLikelihood;
-        [v4 endOfSentenceLikelihood];
+        [equalCopy endOfSentenceLikelihood];
         if (endOfSentenceLikelihood != v12)
         {
           goto LABEL_53;
         }
 
         has = self->_has;
-        v6 = v4[42];
+        v6 = equalCopy[42];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -786,13 +786,13 @@ LABEL_43:
         if (v13)
         {
           wordCount = self->_wordCount;
-          if (wordCount != [v4 wordCount])
+          if (wordCount != [equalCopy wordCount])
           {
             goto LABEL_53;
           }
 
           has = self->_has;
-          v6 = v4[42];
+          v6 = equalCopy[42];
         }
 
         v15 = (*&has >> 4) & 1;
@@ -801,13 +801,13 @@ LABEL_43:
           if (v15)
           {
             serverFeaturesLatencyInNs = self->_serverFeaturesLatencyInNs;
-            if (serverFeaturesLatencyInNs != [v4 serverFeaturesLatencyInNs])
+            if (serverFeaturesLatencyInNs != [equalCopy serverFeaturesLatencyInNs])
             {
               goto LABEL_53;
             }
 
             has = self->_has;
-            v6 = v4[42];
+            v6 = equalCopy[42];
           }
 
           v17 = (*&has >> 5) & 1;
@@ -816,14 +816,14 @@ LABEL_43:
             if (v17)
             {
               clientSilenceProbability = self->_clientSilenceProbability;
-              [v4 clientSilenceProbability];
+              [equalCopy clientSilenceProbability];
               if (clientSilenceProbability != v19)
               {
                 goto LABEL_53;
               }
 
               has = self->_has;
-              v6 = v4[42];
+              v6 = equalCopy[42];
             }
 
             v20 = (*&has >> 6) & 1;
@@ -832,13 +832,13 @@ LABEL_43:
               if (v20)
               {
                 rcTrailingSilenceDuration = self->_rcTrailingSilenceDuration;
-                if (rcTrailingSilenceDuration != [v4 rcTrailingSilenceDuration])
+                if (rcTrailingSilenceDuration != [equalCopy rcTrailingSilenceDuration])
                 {
                   goto LABEL_53;
                 }
 
                 has = self->_has;
-                v6 = v4[42];
+                v6 = equalCopy[42];
               }
 
               v22 = (*&has >> 7) & 1;
@@ -847,14 +847,14 @@ LABEL_43:
                 if (v22)
                 {
                   rcEndOfSentenceLikelihood = self->_rcEndOfSentenceLikelihood;
-                  [v4 rcEndOfSentenceLikelihood];
+                  [equalCopy rcEndOfSentenceLikelihood];
                   if (rcEndOfSentenceLikelihood != v24)
                   {
                     goto LABEL_53;
                   }
 
                   has = self->_has;
-                  v6 = v4[42];
+                  v6 = equalCopy[42];
                 }
 
                 v25 = (*&has >> 8) & 1;
@@ -863,13 +863,13 @@ LABEL_43:
                   if (v25)
                   {
                     rcWordCount = self->_rcWordCount;
-                    if (rcWordCount != [v4 rcWordCount])
+                    if (rcWordCount != [equalCopy rcWordCount])
                     {
                       goto LABEL_53;
                     }
 
                     has = self->_has;
-                    v6 = v4[42];
+                    v6 = equalCopy[42];
                   }
 
                   v27 = (*&has >> 9) & 1;
@@ -878,13 +878,13 @@ LABEL_43:
                     if (v27)
                     {
                       rcServerFeaturesLatency = self->_rcServerFeaturesLatency;
-                      if (rcServerFeaturesLatency != [v4 rcServerFeaturesLatency])
+                      if (rcServerFeaturesLatency != [equalCopy rcServerFeaturesLatency])
                       {
                         goto LABEL_53;
                       }
 
                       has = self->_has;
-                      v6 = v4[42];
+                      v6 = equalCopy[42];
                     }
 
                     v29 = (*&has >> 10) & 1;
@@ -893,14 +893,14 @@ LABEL_43:
                       if (v29)
                       {
                         silencePosterior = self->_silencePosterior;
-                        [v4 silencePosterior];
+                        [equalCopy silencePosterior];
                         if (silencePosterior != v31)
                         {
                           goto LABEL_53;
                         }
 
                         has = self->_has;
-                        v6 = v4[42];
+                        v6 = equalCopy[42];
                       }
 
                       v32 = (*&has >> 11) & 1;
@@ -909,20 +909,20 @@ LABEL_43:
                         if (v32)
                         {
                           acousticEndpointerScore = self->_acousticEndpointerScore;
-                          [v4 acousticEndpointerScore];
+                          [equalCopy acousticEndpointerScore];
                           if (acousticEndpointerScore != v34)
                           {
                             goto LABEL_53;
                           }
 
                           has = self->_has;
-                          v6 = v4[42];
+                          v6 = equalCopy[42];
                         }
 
                         v35 = (*&has >> 12) & 1;
                         if (v35 == ((v6 >> 12) & 1))
                         {
-                          if (!v35 || (silencePosteriorFrameCountInNs = self->_silencePosteriorFrameCountInNs, [v4 silencePosteriorFrameCountInNs], silencePosteriorFrameCountInNs == v37))
+                          if (!v35 || (silencePosteriorFrameCountInNs = self->_silencePosteriorFrameCountInNs, [equalCopy silencePosteriorFrameCountInNs], silencePosteriorFrameCountInNs == v37))
                           {
                             v38 = 1;
                             goto LABEL_54;
@@ -947,9 +947,9 @@ LABEL_54:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1122,9 +1122,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setHasSilencePosteriorFrameCountInNs:(BOOL)a3
+- (void)setHasSilencePosteriorFrameCountInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 4096;
   }
@@ -1137,9 +1137,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasAcousticEndpointerScore:(BOOL)a3
+- (void)setHasAcousticEndpointerScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2048;
   }
@@ -1152,9 +1152,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasSilencePosterior:(BOOL)a3
+- (void)setHasSilencePosterior:(BOOL)posterior
 {
-  if (a3)
+  if (posterior)
   {
     v3 = 1024;
   }
@@ -1167,9 +1167,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasRcServerFeaturesLatency:(BOOL)a3
+- (void)setHasRcServerFeaturesLatency:(BOOL)latency
 {
-  if (a3)
+  if (latency)
   {
     v3 = 512;
   }
@@ -1182,9 +1182,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasRcWordCount:(BOOL)a3
+- (void)setHasRcWordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -1197,9 +1197,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRcEndOfSentenceLikelihood:(BOOL)a3
+- (void)setHasRcEndOfSentenceLikelihood:(BOOL)likelihood
 {
-  if (a3)
+  if (likelihood)
   {
     v3 = 128;
   }
@@ -1212,9 +1212,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRcTrailingSilenceDuration:(BOOL)a3
+- (void)setHasRcTrailingSilenceDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 64;
   }
@@ -1227,9 +1227,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasClientSilenceProbability:(BOOL)a3
+- (void)setHasClientSilenceProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 32;
   }
@@ -1242,9 +1242,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasServerFeaturesLatencyInNs:(BOOL)a3
+- (void)setHasServerFeaturesLatencyInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -1257,9 +1257,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasWordCount:(BOOL)a3
+- (void)setHasWordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -1272,9 +1272,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasEndOfSentenceLikelihood:(BOOL)a3
+- (void)setHasEndOfSentenceLikelihood:(BOOL)likelihood
 {
-  if (a3)
+  if (likelihood)
   {
     v3 = 4;
   }
@@ -1287,9 +1287,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasClientSilenceFramesCountInNs:(BOOL)a3
+- (void)setHasClientSilenceFramesCountInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }

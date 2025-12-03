@@ -1,16 +1,16 @@
 @interface ClientOfLocalNoteServer
-+ (void)setMonitor:(id)a3;
-- (ClientOfLocalNoteServer)initWithClientConnection:(id)a3 configuration:(distnoted_configuration *)a4;
++ (void)setMonitor:(id)monitor;
+- (ClientOfLocalNoteServer)initWithClientConnection:(id)connection configuration:(distnoted_configuration *)configuration;
 - (NSString)processName;
-- (void)addInvalidationHandler:(id)a3;
+- (void)addInvalidationHandler:(id)handler;
 - (void)dealloc;
 - (void)dump;
-- (void)enqueuePost:(id)a3;
+- (void)enqueuePost:(id)post;
 - (void)flushQueue;
-- (void)handlePost:(id)a3 userInfo:(id)a4;
+- (void)handlePost:(id)post userInfo:(id)info;
 - (void)invalidate;
-- (void)postNotification:(__CFString *)a3 object:(__CFString *)a4 token:(unint64_t)a5 options:(unint64_t)a6 immediate:(unsigned __int8)a7 userInfo:(id)a8;
-- (void)start:(id)a3;
+- (void)postNotification:(__CFString *)notification object:(__CFString *)object token:(unint64_t)token options:(unint64_t)options immediate:(unsigned __int8)immediate userInfo:(id)info;
+- (void)start:(id)start;
 - (void)startMonitoring;
 @end
 
@@ -92,12 +92,12 @@
   self->_queue = xpc_array_create(0, 0);
 }
 
-+ (void)setMonitor:(id)a3
++ (void)setMonitor:(id)monitor
 {
-  if (qword_10000CC40 != a3)
+  if (qword_10000CC40 != monitor)
   {
 
-    qword_10000CC40 = a3;
+    qword_10000CC40 = monitor;
   }
 }
 
@@ -132,7 +132,7 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v14 = self;
+    selfCopy = self;
     obj = [(_NSDNXPCServer *)self->_parent allClients];
     v4 = [obj countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v4)
@@ -174,18 +174,18 @@
     v13 = xpc_dictionary_create(keys, values, 2uLL);
     xpc_release(v12);
     xpc_release(v3);
-    [(_NSDNXPCConnection *)v14->_client sendMessage:v13];
+    [(_NSDNXPCConnection *)selfCopy->_client sendMessage:v13];
     xpc_release(v13);
   }
 }
 
-- (ClientOfLocalNoteServer)initWithClientConnection:(id)a3 configuration:(distnoted_configuration *)a4
+- (ClientOfLocalNoteServer)initWithClientConnection:(id)connection configuration:(distnoted_configuration *)configuration
 {
   v15.receiver = self;
   v15.super_class = ClientOfLocalNoteServer;
   v6 = [(ClientOfLocalNoteServer *)&v15 init];
-  v6->_pid = xpc_connection_get_pid(a3);
-  v6->_pid = xpc_connection_get_pid(a3);
+  v6->_pid = xpc_connection_get_pid(connection);
+  v6->_pid = xpc_connection_get_pid(connection);
   v13 = 0u;
   v14 = 0u;
   xpc_connection_get_audit_token();
@@ -197,9 +197,9 @@
   v6->_invalidHandlers = objc_opt_new();
   v6->_suspended = 0;
   v6->_registrar = CFXNotificationRegistrarCreate();
-  v6->_parent = a4->var1;
+  v6->_parent = configuration->var1;
   v6->_queue = xpc_array_create(0, 0);
-  v6->_client = [[_NSDNXPCConnection alloc] initWithPeerConnection:a3];
+  v6->_client = [[_NSDNXPCConnection alloc] initWithPeerConnection:connection];
   v8 = v6;
   client = v6->_client;
   v12[0] = _NSConcreteStackBlock;
@@ -215,18 +215,18 @@
   v11[2] = sub_100002714;
   v11[3] = &unk_1000084B0;
   v11[4] = v6;
-  v11[5] = a4;
+  v11[5] = configuration;
   [(_NSDNXPCConnection *)v6->_client setHandleMessage:v11];
   return v6;
 }
 
-- (void)addInvalidationHandler:(id)a3
+- (void)addInvalidationHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   [(NSMutableArray *)self->_invalidHandlers addObject:v4];
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   started = self->_started;
   self->_started = started + 1;
@@ -236,14 +236,14 @@
     if (v5)
     {
       v6 = v5;
-      [(_NSDNXPCConnection *)v5 start:a3];
+      [(_NSDNXPCConnection *)v5 start:start];
     }
   }
 }
 
-- (void)enqueuePost:(id)a3
+- (void)enqueuePost:(id)post
 {
-  xpc_array_append_value(self->_queue, a3);
+  xpc_array_append_value(self->_queue, post);
   if (xpc_array_get_count(self->_queue) >= 0x1F4)
   {
     pid = self->_pid;
@@ -252,17 +252,17 @@
   }
 }
 
-- (void)postNotification:(__CFString *)a3 object:(__CFString *)a4 token:(unint64_t)a5 options:(unint64_t)a6 immediate:(unsigned __int8)a7 userInfo:(id)a8
+- (void)postNotification:(__CFString *)notification object:(__CFString *)object token:(unint64_t)token options:(unint64_t)options immediate:(unsigned __int8)immediate userInfo:(id)info
 {
-  if (a3)
+  if (notification)
   {
-    if (a4)
+    if (object)
     {
-      v10 = a7;
-      v14 = CFGetTypeID(a4);
+      immediateCopy = immediate;
+      v14 = CFGetTypeID(object);
       if (v14 == CFStringGetTypeID())
       {
-        v15 = CFGetTypeID(a4);
+        v15 = CFGetTypeID(object);
         if (v15 == CFStringGetTypeID())
         {
           v28 = 0;
@@ -272,15 +272,15 @@
           keys[1] = "version";
           values[1] = xpc_uint64_create(1uLL);
           keys[2] = "token";
-          values[2] = xpc_uint64_create(a5);
+          values[2] = xpc_uint64_create(token);
           keys[3] = "name";
           values[3] = _CFXPCCreateXPCObjectFromCFObject();
           keys[4] = "object";
           values[4] = _CFXPCCreateXPCObjectFromCFObject();
-          if (a8)
+          if (info)
           {
             v28 = "userinfo";
-            v26 = xpc_retain(a8);
+            v26 = xpc_retain(info);
             v16 = 6;
           }
 
@@ -299,9 +299,9 @@
           }
 
           while (v19 != v18);
-          if (v10 || (a6 & 1) != 0 || !self->_suspended)
+          if (immediateCopy || (options & 1) != 0 || !self->_suspended)
           {
-            if (v10 || (a6 & 1) != 0)
+            if (immediateCopy || (options & 1) != 0)
             {
               [(ClientOfLocalNoteServer *)self flushQueue];
             }
@@ -310,9 +310,9 @@
             goto LABEL_24;
           }
 
-          if (a6 != 8)
+          if (options != 8)
           {
-            if (a6 == 2 || (a6 & 4) == 0)
+            if (options == 2 || (options & 4) == 0)
             {
               goto LABEL_24;
             }
@@ -325,7 +325,7 @@
             v24[1] = 3221225472;
             v24[2] = sub_100003880;
             v24[3] = &unk_1000084D8;
-            v24[6] = a5;
+            v24[6] = token;
             v24[7] = string;
             v24[8] = v22;
             v24[4] = v17;
@@ -344,11 +344,11 @@ LABEL_24:
   }
 }
 
-- (void)handlePost:(id)a3 userInfo:(id)a4
+- (void)handlePost:(id)post userInfo:(id)info
 {
-  xpc_dictionary_get_value(a3, "name");
+  xpc_dictionary_get_value(post, "name");
   v6 = _CFXPCCreateCFObjectFromXPCObject();
-  xpc_dictionary_get_value(a3, "object");
+  xpc_dictionary_get_value(post, "object");
   v7 = _CFXPCCreateCFObjectFromXPCObject();
   v8 = v7;
   if (v6)
@@ -363,7 +363,7 @@ LABEL_24:
 
   if (!v9)
   {
-    [+[ClientOfLocalNoteServer monitor](ClientOfLocalNoteServer forward:"forward:", a3];
+    [+[ClientOfLocalNoteServer monitor](ClientOfLocalNoteServer forward:"forward:", post];
     bzero(v11, 0x810uLL);
     v11[1] = &v12;
     registrar = self->_registrar;

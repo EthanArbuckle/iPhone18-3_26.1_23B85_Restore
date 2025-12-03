@@ -1,18 +1,18 @@
 @interface MKCompassButton
 + (MKCompassButton)compassButtonWithMapView:(MKMapView *)mapView;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (MKCompassButton)initWithFrame:(CGRect)a3 mapView:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (MKCompassButton)initWithFrame:(CGRect)frame mapView:(id)view;
 - (MKMapView)mapView;
 - (void)_updateVisibility;
-- (void)addInteraction:(id)a3;
+- (void)addInteraction:(id)interaction;
 - (void)dealloc;
-- (void)didTapCompassGesture:(id)a3;
+- (void)didTapCompassGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)mapViewDidUpdateYawNotification:(id)a3;
-- (void)removeInteraction:(id)a3;
-- (void)setCompassSize:(int64_t)a3;
+- (void)mapViewDidUpdateYawNotification:(id)notification;
+- (void)removeInteraction:(id)interaction;
+- (void)setCompassSize:(int64_t)size;
 - (void)setCompassVisibility:(MKFeatureVisibility)compassVisibility;
 - (void)setMapView:(MKMapView *)mapView;
 @end
@@ -43,9 +43,9 @@
       visible = self->_visible;
     }
 
-    v7 = [(MKCompassButton *)self window];
+    window = [(MKCompassButton *)self window];
 
-    if (v7)
+    if (window)
     {
       if (((visible ^ [(MKCompassButton *)self isHidden]) & 1) == 0)
       {
@@ -104,51 +104,51 @@
   return WeakRetained;
 }
 
-- (void)removeInteraction:(id)a3
+- (void)removeInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MKCompassView *)self->_compassView removeInteraction:v4];
+    [(MKCompassView *)self->_compassView removeInteraction:interactionCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MKCompassButton;
-    [(MKCompassButton *)&v5 removeInteraction:v4];
+    [(MKCompassButton *)&v5 removeInteraction:interactionCopy];
   }
 }
 
-- (void)addInteraction:(id)a3
+- (void)addInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MKCompassView *)self->_compassView addInteraction:v4];
+    [(MKCompassView *)self->_compassView addInteraction:interactionCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MKCompassButton;
-    [(MKCompassButton *)&v5 addInteraction:v4];
+    [(MKCompassButton *)&v5 addInteraction:interactionCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MKCompassView *)self->_compassView intrinsicContentSize:a3.width];
+  [(MKCompassView *)self->_compassView intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(MKCompassView *)self->_compassView intrinsicContentSize:a3.width];
+  [(MKCompassView *)self->_compassView intrinsicContentSize:size.width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -196,38 +196,38 @@ uint64_t __36__MKCompassButton__updateVisibility__block_invoke_2(uint64_t result
   return result;
 }
 
-- (void)didTapCompassGesture:(id)a3
+- (void)didTapCompassGesture:(id)gesture
 {
-  v5 = a3;
-  if ([v5 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_mapView);
-    [WeakRetained _handleCompassTap:v5];
+    [WeakRetained _handleCompassTap:gestureCopy];
   }
 }
 
-- (void)mapViewDidUpdateYawNotification:(id)a3
+- (void)mapViewDidUpdateYawNotification:(id)notification
 {
-  v8 = [a3 userInfo];
-  v4 = [v8 objectForKeyedSubscript:@"MKMapViewDidUpdateYawDegreesKey"];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"MKMapViewDidUpdateYawDegreesKey"];
   [v4 doubleValue];
   v6 = v5;
 
   [(MKCompassView *)self->_compassView setMapHeading:v6];
-  v7 = [v8 objectForKeyedSubscript:@"MKMapViewDidUpdateYawVisibleKey"];
+  v7 = [userInfo objectForKeyedSubscript:@"MKMapViewDidUpdateYawVisibleKey"];
   self->_visible = [v7 BOOLValue];
 
   [(MKCompassButton *)self _updateVisibility];
 }
 
-- (void)setCompassSize:(int64_t)a3
+- (void)setCompassSize:(int64_t)size
 {
-  if (self->_compassSize != a3)
+  if (self->_compassSize != size)
   {
-    self->_compassSize = a3;
+    self->_compassSize = size;
     compassView = self->_compassView;
-    v7 = [(MKCompassButton *)self traitCollection];
-    -[MKCompassView setCompassViewSize:style:](compassView, "setCompassViewSize:style:", a3, [v7 userInterfaceStyle] != 2);
+    traitCollection = [(MKCompassButton *)self traitCollection];
+    -[MKCompassView setCompassViewSize:style:](compassView, "setCompassViewSize:style:", size, [traitCollection userInterfaceStyle] != 2);
 
     [(MKCompassButton *)self invalidateIntrinsicContentSize];
   }
@@ -256,9 +256,9 @@ uint64_t __36__MKCompassButton__updateVisibility__block_invoke_2(uint64_t result
       v6 = objc_loadWeakRetained(&self->_mapView);
       [(MKMapView *)v6 _stopPostingCompassUpdateNotifications];
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v8 = objc_loadWeakRetained(&self->_mapView);
-      [v7 removeObserver:self name:@"MKMapViewDidUpdateYawNotification" object:v8];
+      [defaultCenter removeObserver:self name:@"MKMapViewDidUpdateYawNotification" object:v8];
     }
 
     self->_visible = 0;
@@ -267,9 +267,9 @@ uint64_t __36__MKCompassButton__updateVisibility__block_invoke_2(uint64_t result
 
     if (obj)
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v11 = objc_loadWeakRetained(&self->_mapView);
-      [v10 addObserver:self selector:sel_mapViewDidUpdateYawNotification_ name:@"MKMapViewDidUpdateYawNotification" object:v11];
+      [defaultCenter2 addObserver:self selector:sel_mapViewDidUpdateYawNotification_ name:@"MKMapViewDidUpdateYawNotification" object:v11];
 
       v12 = objc_loadWeakRetained(&self->_mapView);
       if (v12)
@@ -295,40 +295,40 @@ uint64_t __36__MKCompassButton__updateVisibility__block_invoke_2(uint64_t result
   [(MKCompassButton *)&v4 dealloc];
 }
 
-- (MKCompassButton)initWithFrame:(CGRect)a3 mapView:(id)a4
+- (MKCompassButton)initWithFrame:(CGRect)frame mapView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = MKCompassButton;
-  v10 = [(MKCompassButton *)&v17 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(MKCompassButton *)&v17 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = [MKCompassView alloc];
-    [(MKCompassButton *)v10 bounds];
+    [(MKCompassButton *)height bounds];
     v12 = [(MKCompassView *)v11 initWithFrame:?];
-    compassView = v10->_compassView;
-    v10->_compassView = v12;
+    compassView = height->_compassView;
+    height->_compassView = v12;
 
     if (_MKLinkedOnOrAfterReleaseSet(3081))
     {
-      [(MKCompassView *)v10->_compassView setCompassViewSize:1 style:1];
+      [(MKCompassView *)height->_compassView setCompassViewSize:1 style:1];
     }
 
-    [(MKCompassView *)v10->_compassView setAutoresizingMask:18];
-    [(MKCompassButton *)v10 setAutoresizesSubviews:1];
-    [(MKCompassButton *)v10 addSubview:v10->_compassView];
-    v14 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v10 action:sel_didTapCompassGesture_];
-    [(MKCompassButton *)v10 addGestureRecognizer:v14];
-    [(MKCompassButton *)v10 setMapView:v9];
+    [(MKCompassView *)height->_compassView setAutoresizingMask:18];
+    [(MKCompassButton *)height setAutoresizesSubviews:1];
+    [(MKCompassButton *)height addSubview:height->_compassView];
+    v14 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:height action:sel_didTapCompassGesture_];
+    [(MKCompassButton *)height addGestureRecognizer:v14];
+    [(MKCompassButton *)height setMapView:viewCopy];
     v15 = +[MKUsageCounter sharedCounter];
     [v15 count:2];
   }
 
-  return v10;
+  return height;
 }
 
 + (MKCompassButton)compassButtonWithMapView:(MKMapView *)mapView
@@ -336,7 +336,7 @@ uint64_t __36__MKCompassButton__updateVisibility__block_invoke_2(uint64_t result
   v4 = mapView;
   v5 = _MKLinkedOnOrAfterReleaseSet(3081);
   v6 = MKCompassViewDiameterForSize(v5);
-  v7 = [[a1 alloc] initWithFrame:v4 mapView:{0.0, 0.0, v6, v6}];
+  v7 = [[self alloc] initWithFrame:v4 mapView:{0.0, 0.0, v6, v6}];
 
   return v7;
 }

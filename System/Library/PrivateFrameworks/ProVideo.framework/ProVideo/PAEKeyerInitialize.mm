@@ -1,16 +1,16 @@
 @interface PAEKeyerInitialize
-+ (void)addCorner:(const Vec3f *)a3 toSamples:(void *)a4 corner:(const Vec3f *)a5 clrScreen:(int)a6 clrA:(int)a7 clrB:(int)a8;
-+ (void)setInitialSamples:(void *)a3 autokeySetupUtil:(id)a4 sampleBoxHalfDim:(float)a5;
-- (BOOL)calculateInitialMatteWithInfo:(id *)a3 omSamples:(void *)a4 colorPrimaries:(int)a5 screenColor:(int *)a6 minGreenHueAngle:(float)a7 maxGreenHueAngle:(float)a8 greenChroma:(float)a9 minBlueHueAngle:(float)a10 maxBlueHueAngle:(float)a11 blueChroma:(float)a12 histoPercentageIncluded:(float)a13 use32x32x32:(BOOL)a14 simpleKey:(BOOL)a15;
-- (BOOL)findSampleRectsWithInfo:(id *)a3 screenColor:(int *)a4 colorPrimaries:(int)a5 width:(int)a6 height:(int)a7 minGreenHueAngle:(float)a8 maxGreenHueAngle:(float)a9 greenChroma:(float)a10 minBlueHueAngle:(float)a11 maxBlueHueAngle:(float)a12 blueChroma:(float)a13 histoPercentageIncluded:(float)a14 omSamples:(void *)a15 viewingSetupMatte:(BOOL)a16 use32x32Histogram:(BOOL)a17 simpleKey:(BOOL)a18;
-- (PAEKeyerInitialize)initWithAPIManager:(id)a3 keyer:(id)a4;
-- (void)calculateInitialSamples:(void *)a3 percentageOfBaseColorIncluded:(float)a4 use32x32x32:(BOOL)a5 autokeySetupUtil:(id)a6 samples:(void *)a7 scale:(float)a8;
++ (void)addCorner:(const Vec3f *)corner toSamples:(void *)samples corner:(const Vec3f *)a5 clrScreen:(int)screen clrA:(int)a clrB:(int)b;
++ (void)setInitialSamples:(void *)samples autokeySetupUtil:(id)util sampleBoxHalfDim:(float)dim;
+- (BOOL)calculateInitialMatteWithInfo:(id *)info omSamples:(void *)samples colorPrimaries:(int)primaries screenColor:(int *)color minGreenHueAngle:(float)angle maxGreenHueAngle:(float)hueAngle greenChroma:(float)chroma minBlueHueAngle:(float)self0 maxBlueHueAngle:(float)self1 blueChroma:(float)self2 histoPercentageIncluded:(float)self3 use32x32x32:(BOOL)self4 simpleKey:(BOOL)self5;
+- (BOOL)findSampleRectsWithInfo:(id *)info screenColor:(int *)color colorPrimaries:(int)primaries width:(int)width height:(int)height minGreenHueAngle:(float)angle maxGreenHueAngle:(float)hueAngle greenChroma:(float)self0 minBlueHueAngle:(float)self1 maxBlueHueAngle:(float)self2 blueChroma:(float)self3 histoPercentageIncluded:(float)self4 omSamples:(void *)self5 viewingSetupMatte:(BOOL)self6 use32x32Histogram:(BOOL)self7 simpleKey:(BOOL)self8;
+- (PAEKeyerInitialize)initWithAPIManager:(id)manager keyer:(id)keyer;
+- (void)calculateInitialSamples:(void *)samples percentageOfBaseColorIncluded:(float)included use32x32x32:(BOOL)use32x32x32 autokeySetupUtil:(id)util samples:(void *)a7 scale:(float)scale;
 - (void)dealloc;
 @end
 
 @implementation PAEKeyerInitialize
 
-- (PAEKeyerInitialize)initWithAPIManager:(id)a3 keyer:(id)a4
+- (PAEKeyerInitialize)initWithAPIManager:(id)manager keyer:(id)keyer
 {
   v10.receiver = self;
   v10.super_class = PAEKeyerInitialize;
@@ -18,9 +18,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_apiManager = a3;
-    v8 = a4;
-    v7->_keyer = a4;
+    v6->_apiManager = manager;
+    keyerCopy = keyer;
+    v7->_keyer = keyer;
   }
 
   return v7;
@@ -33,22 +33,22 @@
   [(PAEKeyerInitialize *)&v3 dealloc];
 }
 
-+ (void)addCorner:(const Vec3f *)a3 toSamples:(void *)a4 corner:(const Vec3f *)a5 clrScreen:(int)a6 clrA:(int)a7 clrB:(int)a8
++ (void)addCorner:(const Vec3f *)corner toSamples:(void *)samples corner:(const Vec3f *)a5 clrScreen:(int)screen clrA:(int)a clrB:(int)b
 {
-  v9 = vadd_f32(*a3->var0, *a5->var0);
-  v10 = a3->var0[2] + a5->var0[2];
-  v8 = v9.f32[a6];
-  if (v8 > v9.f32[a7] && v8 > v9.f32[a8])
+  v9 = vadd_f32(*corner->var0, *a5->var0);
+  v10 = corner->var0[2] + a5->var0[2];
+  v8 = v9.f32[screen];
+  if (v8 > v9.f32[a] && v8 > v9.f32[b])
   {
-    std::vector<Vec3f>::push_back[abi:ne200100](a4, &v9);
+    std::vector<Vec3f>::push_back[abi:ne200100](samples, &v9);
   }
 }
 
-+ (void)setInitialSamples:(void *)a3 autokeySetupUtil:(id)a4 sampleBoxHalfDim:(float)a5
++ (void)setInitialSamples:(void *)samples autokeySetupUtil:(id)util sampleBoxHalfDim:(float)dim
 {
-  v8 = [a4 getSamplesNb];
-  v9 = [a4 getInitialSamples];
-  if (v8 < 1)
+  getSamplesNb = [util getSamplesNb];
+  getInitialSamples = [util getInitialSamples];
+  if (getSamplesNb < 1)
   {
     v12 = 0.0;
     v11 = 0.0;
@@ -63,9 +63,9 @@
     {
       v13 = 0.0;
       v14 = 0.0;
-      if (a4)
+      if (util)
       {
-        [a4 getInitialSample:v10 usingArray:{v9, 0.0, 0.0}];
+        [util getInitialSample:v10 usingArray:{getInitialSamples, 0.0, 0.0}];
         v14 = v30;
         v13 = v31;
       }
@@ -75,11 +75,11 @@
       v10 = (v10 + 1);
     }
 
-    while (v8 != v10);
+    while (getSamplesNb != v10);
   }
 
-  v29 = -a5;
-  v30 = -a5;
+  v29 = -dim;
+  v30 = -dim;
   if (v12 >= v11)
   {
     v15 = 1;
@@ -100,36 +100,36 @@
     v16 = 2;
   }
 
-  v31 = -a5;
-  v28[0] = -a5;
-  v28[1] = -a5;
-  v28[2] = a5;
-  v27[0] = -a5;
-  v27[1] = a5;
-  v27[2] = -a5;
-  v26[0] = -a5;
-  v26[1] = a5;
-  v26[2] = a5;
-  *v25 = a5;
-  *&v25[1] = -a5;
-  *&v25[2] = -a5;
-  *v24 = a5;
-  *&v24[1] = -a5;
-  *&v24[2] = a5;
-  *v23 = a5;
-  *&v23[1] = a5;
-  *&v23[2] = -a5;
-  *v22 = a5;
-  *&v22[1] = a5;
-  *&v22[2] = a5;
-  if (v8 >= 1)
+  v31 = -dim;
+  v28[0] = -dim;
+  v28[1] = -dim;
+  v28[2] = dim;
+  v27[0] = -dim;
+  v27[1] = dim;
+  v27[2] = -dim;
+  v26[0] = -dim;
+  v26[1] = dim;
+  v26[2] = dim;
+  *v25 = dim;
+  *&v25[1] = -dim;
+  *&v25[2] = -dim;
+  *v24 = dim;
+  *&v24[1] = -dim;
+  *&v24[2] = dim;
+  *v23 = dim;
+  *&v23[1] = dim;
+  *&v23[2] = -dim;
+  *v22 = dim;
+  *&v22[1] = dim;
+  *&v22[2] = dim;
+  if (getSamplesNb >= 1)
   {
     v17 = 0;
     do
     {
-      if (a4)
+      if (util)
       {
-        [a4 getInitialSample:v17 usingArray:v9];
+        [util getInitialSample:v17 usingArray:getInitialSamples];
         v18 = *&v20;
       }
 
@@ -143,47 +143,47 @@
       v19 = *(&v20 + v15);
       if (v19 > v18 && v19 > *(&v20 + v16))
       {
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:&v29 clrScreen:v15 clrA:0 clrB:v16];
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:v28 clrScreen:v15 clrA:0 clrB:v16];
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:v27 clrScreen:v15 clrA:0 clrB:v16];
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:v26 clrScreen:v15 clrA:0 clrB:v16];
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:v25 clrScreen:v15 clrA:0 clrB:v16];
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:v24 clrScreen:v15 clrA:0 clrB:v16];
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:v23 clrScreen:v15 clrA:0 clrB:v16];
-        [PAEKeyerInitialize addCorner:&v20 toSamples:a3 corner:v22 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:&v29 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:v28 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:v27 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:v26 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:v25 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:v24 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:v23 clrScreen:v15 clrA:0 clrB:v16];
+        [PAEKeyerInitialize addCorner:&v20 toSamples:samples corner:v22 clrScreen:v15 clrA:0 clrB:v16];
       }
 
       v17 = (v17 + 1);
     }
 
-    while (v8 != v17);
+    while (getSamplesNb != v17);
   }
 }
 
-- (void)calculateInitialSamples:(void *)a3 percentageOfBaseColorIncluded:(float)a4 use32x32x32:(BOOL)a5 autokeySetupUtil:(id)a6 samples:(void *)a7 scale:(float)a8
+- (void)calculateInitialSamples:(void *)samples percentageOfBaseColorIncluded:(float)included use32x32x32:(BOOL)use32x32x32 autokeySetupUtil:(id)util samples:(void *)a7 scale:(float)scale
 {
-  v30 = *&a8;
-  v10 = a5;
+  v30 = *&scale;
+  use32x32x32Copy = use32x32x32;
   __p = 0;
   v34 = 0;
   v35 = 0;
-  if (a4 != 0.0)
+  if (included != 0.0)
   {
     if ([(PAEKeyer *)self->_keyer is3DHistoExpandedForHDR])
     {
-      ColorHisto::calculateCenterSamplesHDR(a3, &__p, a4);
+      ColorHisto::calculateCenterSamplesHDR(samples, &__p, included);
     }
 
     else
     {
-      ColorHisto::calculateCenterSamples(a3, &__p, a4);
+      ColorHisto::calculateCenterSamples(samples, &__p, included);
     }
   }
 
   v29 = a7;
   v15 = __p;
   v14 = v34;
-  if (v10)
+  if (use32x32x32Copy)
   {
     v16 = 0.015625;
   }
@@ -193,14 +193,14 @@
     v16 = 0.0078125;
   }
 
-  [a6 clearInitialSamples];
+  [util clearInitialSamples];
   v17 = v14 - v15;
   if (((v14 - v15) >> 2) >= 1)
   {
     v18 = 0;
     v19 = (v17 >> 2) & 0x7FFFFFFF;
-    v20 = !v10;
-    if (v10)
+    v20 = !use32x32x32Copy;
+    if (use32x32x32Copy)
     {
       v21 = 7;
     }
@@ -272,7 +272,7 @@
         v32 = v32 * *&v30;
       }
 
-      [a6 addInitialSample:&v31];
+      [util addInitialSample:&v31];
       ++v18;
     }
 
@@ -281,7 +281,7 @@
 
   HIDWORD(v28) = HIDWORD(v30);
   *&v28 = v16 * *&v30;
-  [PAEKeyerInitialize setInitialSamples:v29 autokeySetupUtil:a6 sampleBoxHalfDim:v28];
+  [PAEKeyerInitialize setInitialSamples:v29 autokeySetupUtil:util sampleBoxHalfDim:v28];
   if (__p)
   {
     v34 = __p;
@@ -289,7 +289,7 @@
   }
 }
 
-- (BOOL)calculateInitialMatteWithInfo:(id *)a3 omSamples:(void *)a4 colorPrimaries:(int)a5 screenColor:(int *)a6 minGreenHueAngle:(float)a7 maxGreenHueAngle:(float)a8 greenChroma:(float)a9 minBlueHueAngle:(float)a10 maxBlueHueAngle:(float)a11 blueChroma:(float)a12 histoPercentageIncluded:(float)a13 use32x32x32:(BOOL)a14 simpleKey:(BOOL)a15
+- (BOOL)calculateInitialMatteWithInfo:(id *)info omSamples:(void *)samples colorPrimaries:(int)primaries screenColor:(int *)color minGreenHueAngle:(float)angle maxGreenHueAngle:(float)hueAngle greenChroma:(float)chroma minBlueHueAngle:(float)self0 maxBlueHueAngle:(float)self1 blueChroma:(float)self2 histoPercentageIncluded:(float)self3 use32x32x32:(BOOL)self4 simpleKey:(BOOL)self5
 {
   if ([(PAEKeyer *)self->_keyer is3DHistoExpandedForHDR])
   {
@@ -305,13 +305,13 @@
   HGColorClamp::HGColorClamp(v16, 0.0, v15);
 }
 
-- (BOOL)findSampleRectsWithInfo:(id *)a3 screenColor:(int *)a4 colorPrimaries:(int)a5 width:(int)a6 height:(int)a7 minGreenHueAngle:(float)a8 maxGreenHueAngle:(float)a9 greenChroma:(float)a10 minBlueHueAngle:(float)a11 maxBlueHueAngle:(float)a12 blueChroma:(float)a13 histoPercentageIncluded:(float)a14 omSamples:(void *)a15 viewingSetupMatte:(BOOL)a16 use32x32Histogram:(BOOL)a17 simpleKey:(BOOL)a18
+- (BOOL)findSampleRectsWithInfo:(id *)info screenColor:(int *)color colorPrimaries:(int)primaries width:(int)width height:(int)height minGreenHueAngle:(float)angle maxGreenHueAngle:(float)hueAngle greenChroma:(float)self0 minBlueHueAngle:(float)self1 maxBlueHueAngle:(float)self2 blueChroma:(float)self3 histoPercentageIncluded:(float)self4 omSamples:(void *)self5 viewingSetupMatte:(BOOL)self6 use32x32Histogram:(BOOL)self7 simpleKey:(BOOL)self8
 {
-  v19 = *&a3->var2;
-  v24 = *&a3->var0.var0;
+  v19 = *&info->var2;
+  v24 = *&info->var0.var0;
   v25 = v19;
-  var4 = a3->var4;
-  if (!a15)
+  var4 = info->var4;
+  if (!samples)
   {
     operator new();
   }
@@ -320,7 +320,7 @@
   v21[1] = v25;
   v22 = var4;
   v23 = 3;
-  return [(PAEKeyerInitialize *)self calculateInitialMatteWithInfo:v21 omSamples:a15 colorPrimaries:*&a5 screenColor:a4 minGreenHueAngle:a17 maxGreenHueAngle:a18 greenChroma:COERCE_DOUBLE(__PAIR64__(DWORD1(v24) minBlueHueAngle:LODWORD(a8))) maxBlueHueAngle:COERCE_DOUBLE(__PAIR64__(DWORD1(v25) blueChroma:LODWORD(a9))) histoPercentageIncluded:*&a10 use32x32x32:*&a11 simpleKey:*&a12, *&a13, *&a14];
+  return [(PAEKeyerInitialize *)self calculateInitialMatteWithInfo:v21 omSamples:samples colorPrimaries:*&primaries screenColor:color minGreenHueAngle:histogram maxGreenHueAngle:key greenChroma:COERCE_DOUBLE(__PAIR64__(DWORD1(v24) minBlueHueAngle:LODWORD(angle))) maxBlueHueAngle:COERCE_DOUBLE(__PAIR64__(DWORD1(v25) blueChroma:LODWORD(hueAngle))) histoPercentageIncluded:*&chroma use32x32x32:*&blueHueAngle simpleKey:*&maxBlueHueAngle, *&blueChroma, *&included];
 }
 
 @end

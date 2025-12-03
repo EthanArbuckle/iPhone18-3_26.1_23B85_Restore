@@ -1,77 +1,77 @@
 @interface UITabSidebarItem
-+ (id)itemFromRequest:(id)a3;
++ (id)itemFromRequest:(id)request;
 - (BOOL)_shouldUpdateImageForSelectedStateChange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)accessories;
 - (UIBackgroundConfiguration)backgroundConfiguration;
 - (UIContentConfiguration)contentConfiguration;
-- (id)_initWithItem:(id)a3;
-- (id)_initWithRequest:(id)a3;
+- (id)_initWithItem:(id)item;
+- (id)_initWithRequest:(id)request;
 - (id)_resolvedAccessories;
-- (id)_resolvedImageForState:(id)a3;
-- (id)_updatedItemUsingState:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_resolvedImageForState:(id)state;
+- (id)_updatedItemUsingState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultBackgroundConfiguration;
 - (id)defaultContentConfiguration;
 @end
 
 @implementation UITabSidebarItem
 
-- (id)_initWithRequest:(id)a3
+- (id)_initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v32.receiver = self;
   v32.super_class = UITabSidebarItem;
   v5 = [(UITabSidebarItem *)&v32 init];
   if (v5)
   {
-    v6 = [v4 tab];
-    v7 = [v4 action];
-    v8 = [v4 _cell];
-    v9 = [v8 defaultContentConfiguration];
-    v10 = [v8 defaultBackgroundConfiguration];
+    v6 = [requestCopy tab];
+    action = [requestCopy action];
+    _cell = [requestCopy _cell];
+    defaultContentConfiguration = [_cell defaultContentConfiguration];
+    defaultBackgroundConfiguration = [_cell defaultBackgroundConfiguration];
     if (v6)
     {
-      v11 = [(UITab *)v6 title];
-      [(UIListContentConfiguration *)v9 setText:v11];
+      title = [(UITab *)v6 title];
+      [(UIListContentConfiguration *)defaultContentConfiguration setText:title];
 
-      v12 = [(UITab *)v6 subtitle];
-      [(UIListContentConfiguration *)v9 setSecondaryText:v12];
+      subtitle = [(UITab *)v6 subtitle];
+      [(UIListContentConfiguration *)defaultContentConfiguration setSecondaryText:subtitle];
 
-      if (([v4 _attributes] & 1) == 0)
+      if (([requestCopy _attributes] & 1) == 0)
       {
-        v13 = [(UITab *)v6 image];
-        [(UIListContentConfiguration *)v9 setImage:v13];
+        image = [(UITab *)v6 image];
+        [(UIListContentConfiguration *)defaultContentConfiguration setImage:image];
       }
 
-      v14 = [(UITab *)v6 _isAction];
+      _isAction = [(UITab *)v6 _isAction];
     }
 
-    else if (v7)
+    else if (action)
     {
-      v15 = [(UIMenuElement *)v7 title];
-      [(UIListContentConfiguration *)v9 setText:v15];
+      title2 = [(UIMenuElement *)action title];
+      [(UIListContentConfiguration *)defaultContentConfiguration setText:title2];
 
-      v16 = [(UIMenuElement *)v7 subtitle];
-      [(UIListContentConfiguration *)v9 setSecondaryText:v16];
+      subtitle2 = [(UIMenuElement *)action subtitle];
+      [(UIListContentConfiguration *)defaultContentConfiguration setSecondaryText:subtitle2];
 
-      v17 = [(UIMenuElement *)v7 image];
-      [(UIListContentConfiguration *)v9 setImage:v17];
+      image2 = [(UIMenuElement *)action image];
+      [(UIListContentConfiguration *)defaultContentConfiguration setImage:image2];
 
-      v14 = 1;
+      _isAction = 1;
     }
 
     else
     {
-      v14 = 0;
+      _isAction = 0;
     }
 
     v18 = +[_UITraitMonochromaticTreatment _sidebarListMonochromaticTreatment];
-    if (v14 && !v18)
+    if (_isAction && !v18)
     {
       v19 = +[UIColor tintColor];
-      v20 = [(UIListContentConfiguration *)v9 textProperties];
-      [v20 setColor:v19];
+      textProperties = [(UIListContentConfiguration *)defaultContentConfiguration textProperties];
+      [textProperties setColor:v19];
     }
 
     tab = v5->_tab;
@@ -79,80 +79,80 @@
     v22 = v6;
 
     action = v5->_action;
-    v5->_action = v7;
-    v24 = v7;
+    v5->_action = action;
+    v24 = action;
 
-    objc_storeStrong(&v5->_contentConfiguration, v9);
-    objc_storeStrong(&v5->_backgroundConfiguration, v10);
+    objc_storeStrong(&v5->_contentConfiguration, defaultContentConfiguration);
+    objc_storeStrong(&v5->_backgroundConfiguration, defaultBackgroundConfiguration);
     defaultContentConfiguration = v5->_defaultContentConfiguration;
-    v5->_defaultContentConfiguration = v9;
-    v26 = v9;
+    v5->_defaultContentConfiguration = defaultContentConfiguration;
+    v26 = defaultContentConfiguration;
 
     defaultBackgroundConfiguration = v5->_defaultBackgroundConfiguration;
-    v5->_defaultBackgroundConfiguration = v10;
-    v28 = v10;
+    v5->_defaultBackgroundConfiguration = defaultBackgroundConfiguration;
+    v28 = defaultBackgroundConfiguration;
 
-    v29 = [v8 configurationState];
+    configurationState = [_cell configurationState];
     configurationState = v5->_configurationState;
-    v5->_configurationState = v29;
+    v5->_configurationState = configurationState;
 
-    v5->_attributes = [v4 _attributes];
+    v5->_attributes = [requestCopy _attributes];
   }
 
   return v5;
 }
 
-- (id)_initWithItem:(id)a3
+- (id)_initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = UITabSidebarItem;
   v5 = [(UITabSidebarItem *)&v19 init];
   if (v5)
   {
-    v6 = [v4 tab];
+    v6 = [itemCopy tab];
     tab = v5->_tab;
     v5->_tab = v6;
 
-    v8 = [v4 action];
+    action = [itemCopy action];
     action = v5->_action;
-    v5->_action = v8;
+    v5->_action = action;
 
-    v10 = [v4 configurationState];
+    configurationState = [itemCopy configurationState];
     configurationState = v5->_configurationState;
-    v5->_configurationState = v10;
+    v5->_configurationState = configurationState;
 
-    v12 = [v4 contentConfiguration];
+    contentConfiguration = [itemCopy contentConfiguration];
     contentConfiguration = v5->_contentConfiguration;
-    v5->_contentConfiguration = v12;
+    v5->_contentConfiguration = contentConfiguration;
 
-    v14 = [v4 backgroundConfiguration];
+    backgroundConfiguration = [itemCopy backgroundConfiguration];
     backgroundConfiguration = v5->_backgroundConfiguration;
-    v5->_backgroundConfiguration = v14;
+    v5->_backgroundConfiguration = backgroundConfiguration;
 
-    v16 = [v4 accessories];
+    accessories = [itemCopy accessories];
     accessories = v5->_accessories;
-    v5->_accessories = v16;
+    v5->_accessories = accessories;
 
-    objc_storeStrong(&v5->_defaultContentConfiguration, *(v4 + 1));
-    objc_storeStrong(&v5->_defaultBackgroundConfiguration, *(v4 + 2));
-    v5->_attributes = *(v4 + 3);
+    objc_storeStrong(&v5->_defaultContentConfiguration, *(itemCopy + 1));
+    objc_storeStrong(&v5->_defaultBackgroundConfiguration, *(itemCopy + 2));
+    v5->_attributes = *(itemCopy + 3);
   }
 
   return v5;
 }
 
-+ (id)itemFromRequest:(id)a3
++ (id)itemFromRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[self alloc] _initWithRequest:requestCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 _initWithItem:self];
 }
@@ -181,8 +181,8 @@
 - (id)defaultContentConfiguration
 {
   defaultContentConfiguration = self->_defaultContentConfiguration;
-  v3 = [(UITabSidebarItem *)self configurationState];
-  v4 = [(UIListContentConfiguration *)defaultContentConfiguration updatedConfigurationForState:v3];
+  configurationState = [(UITabSidebarItem *)self configurationState];
+  v4 = [(UIListContentConfiguration *)defaultContentConfiguration updatedConfigurationForState:configurationState];
 
   return v4;
 }
@@ -190,21 +190,21 @@
 - (id)defaultBackgroundConfiguration
 {
   defaultBackgroundConfiguration = self->_defaultBackgroundConfiguration;
-  v3 = [(UITabSidebarItem *)self configurationState];
-  v4 = [(UIBackgroundConfiguration *)defaultBackgroundConfiguration updatedConfigurationForState:v3];
+  configurationState = [(UITabSidebarItem *)self configurationState];
+  v4 = [(UIBackgroundConfiguration *)defaultBackgroundConfiguration updatedConfigurationForState:configurationState];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5 == self)
       {
@@ -326,22 +326,22 @@ LABEL_35:
   return v12;
 }
 
-- (id)_updatedItemUsingState:(id)a3
+- (id)_updatedItemUsingState:(id)state
 {
-  v5 = a3;
-  v6 = [(UITabSidebarItem *)self configurationState];
-  v7 = [v6 isSelected];
+  stateCopy = state;
+  configurationState = [(UITabSidebarItem *)self configurationState];
+  isSelected = [configurationState isSelected];
 
-  LODWORD(v6) = [v5 isSelected];
-  objc_storeStrong(&self->_configurationState, a3);
-  if (v7 != v6 && [(UITabSidebarItem *)self _shouldUpdateImageForSelectedStateChange]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  LODWORD(configurationState) = [stateCopy isSelected];
+  objc_storeStrong(&self->_configurationState, state);
+  if (isSelected != configurationState && [(UITabSidebarItem *)self _shouldUpdateImageForSelectedStateChange]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = [(UITabSidebarItem *)self copy];
-    v9 = [(UITabSidebarItem *)self contentConfiguration];
-    v10 = [(UITabSidebarItem *)self _resolvedImageForState:v5];
-    [v9 setImage:v10];
+    contentConfiguration = [(UITabSidebarItem *)self contentConfiguration];
+    v10 = [(UITabSidebarItem *)self _resolvedImageForState:stateCopy];
+    [contentConfiguration setImage:v10];
 
-    [(UITabSidebarItem *)v8 setContentConfiguration:v9];
+    [(UITabSidebarItem *)v8 setContentConfiguration:contentConfiguration];
   }
 
   else
@@ -354,7 +354,7 @@ LABEL_35:
     self = v8;
   }
 
-  v11 = self;
+  selfCopy = self;
 
   return self;
 }
@@ -365,44 +365,44 @@ LABEL_35:
 
   if (v3)
   {
-    v4 = [(UITabSidebarItem *)self tab];
+    action2 = [(UITabSidebarItem *)self tab];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 selectedImage];
-    LOBYTE(v5) = v7 != 0;
+    v6 = action2;
+    selectedImage = [action2 selectedImage];
+    LOBYTE(action) = selectedImage != 0;
 
-    return v5;
+    return action;
   }
 
-  v5 = [(UITabSidebarItem *)self action];
+  action = [(UITabSidebarItem *)self action];
 
-  if (v5)
+  if (action)
   {
-    v4 = [(UITabSidebarItem *)self action];
+    action2 = [(UITabSidebarItem *)self action];
     goto LABEL_5;
   }
 
-  return v5;
+  return action;
 }
 
-- (id)_resolvedImageForState:(id)a3
+- (id)_resolvedImageForState:(id)state
 {
   if (self->_attributes)
   {
     goto LABEL_11;
   }
 
-  v4 = [a3 isSelected];
+  isSelected = [state isSelected];
   v5 = [(UITabSidebarItem *)self tab];
 
   if (v5)
   {
-    if (!v4 || (-[UITabSidebarItem tab](self, "tab"), v6 = objc_claimAutoreleasedReturnValue(), [v6 selectedImage], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+    if (!isSelected || (-[UITabSidebarItem tab](self, "tab"), v6 = objc_claimAutoreleasedReturnValue(), [v6 selectedImage], image = objc_claimAutoreleasedReturnValue(), v6, !image))
     {
-      v8 = [(UITabSidebarItem *)self tab];
+      action2 = [(UITabSidebarItem *)self tab];
 LABEL_10:
-      v11 = v8;
-      v7 = [v8 image];
+      v11 = action2;
+      image = [action2 image];
 
       goto LABEL_12;
     }
@@ -410,30 +410,30 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v9 = [(UITabSidebarItem *)self action];
+  action = [(UITabSidebarItem *)self action];
 
-  if (!v9)
+  if (!action)
   {
 LABEL_11:
-    v7 = 0;
+    image = 0;
     goto LABEL_12;
   }
 
-  if (!v4 || (-[UITabSidebarItem action](self, "action"), v10 = objc_claimAutoreleasedReturnValue(), [v10 selectedImage], v7 = objc_claimAutoreleasedReturnValue(), v10, !v7))
+  if (!isSelected || (-[UITabSidebarItem action](self, "action"), v10 = objc_claimAutoreleasedReturnValue(), [v10 selectedImage], image = objc_claimAutoreleasedReturnValue(), v10, !image))
   {
-    v8 = [(UITabSidebarItem *)self action];
+    action2 = [(UITabSidebarItem *)self action];
     goto LABEL_10;
   }
 
 LABEL_12:
 
-  return v7;
+  return image;
 }
 
 - (id)_resolvedAccessories
 {
-  v3 = [(UITabSidebarItem *)self accessories];
-  v4 = [v3 mutableCopy];
+  accessories = [(UITabSidebarItem *)self accessories];
+  v4 = [accessories mutableCopy];
 
   if (qword_1ED4A08E0 != -1)
   {
@@ -479,9 +479,9 @@ LABEL_12:
   }
 
   v11 = [(UITabSidebarItem *)self tab];
-  v12 = [v11 _isGroup];
+  _isGroup = [v11 _isGroup];
 
-  if (v12)
+  if (_isGroup)
   {
     if ((self->_attributes & 2) != 0)
     {
@@ -490,9 +490,9 @@ LABEL_12:
 
     v13 = objc_alloc_init(UICellAccessoryOutlineDisclosure);
     v14 = [(UITabSidebarItem *)self tab];
-    v15 = [v14 _isSidebarDestination];
+    _isSidebarDestination = [v14 _isSidebarDestination];
 
-    if (v15)
+    if (_isSidebarDestination)
     {
       v16 = 2;
     }
@@ -507,9 +507,9 @@ LABEL_12:
   }
 
   v17 = [(UITabSidebarItem *)self tab];
-  v18 = [v17 _canBeReordered];
+  _canBeReordered = [v17 _canBeReordered];
 
-  if (v18)
+  if (_canBeReordered)
   {
     v19 = objc_alloc_init(UICellAccessoryReorder);
     [(UICellAccessory *)v19 setDisplayedState:1];
@@ -518,19 +518,19 @@ LABEL_12:
   }
 
   v20 = [(UITabSidebarItem *)self tab];
-  v21 = [v20 allowsHiding];
+  allowsHiding = [v20 allowsHiding];
 
-  if (v21)
+  if (allowsHiding)
   {
     v13 = objc_alloc_init(UICellAccessoryMultiselect);
     [(UICellAccessory *)v13 setDisplayedState:1];
     if (v7)
     {
-      v22 = [v7 tintColor];
-      [(UICellAccessory *)v13 setTintColor:v22];
+      tintColor = [v7 tintColor];
+      [(UICellAccessory *)v13 setTintColor:tintColor];
 
-      v23 = [v7 backgroundColor];
-      [(UICellAccessoryOutlineDisclosure *)v13 setBackgroundColor:v23];
+      backgroundColor = [v7 backgroundColor];
+      [(UICellAccessoryOutlineDisclosure *)v13 setBackgroundColor:backgroundColor];
     }
 
 LABEL_24:
@@ -539,11 +539,11 @@ LABEL_24:
 
 LABEL_25:
   v24 = [(UITabSidebarItem *)self tab];
-  v25 = [v24 badgeValue];
+  badgeValue = [v24 badgeValue];
 
-  if (!(([v25 length] == 0) | v8 & 1))
+  if (!(([badgeValue length] == 0) | v8 & 1))
   {
-    v26 = [[UICellAccessoryLabel alloc] initWithText:v25];
+    v26 = [[UICellAccessoryLabel alloc] initWithText:badgeValue];
     [v4 addObject:v26];
   }
 

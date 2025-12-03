@@ -1,7 +1,7 @@
 @interface MUWebPlacecardBridge
 - (_TtC6MapsUI20MUWebPlacecardBridge)init;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
 @end
 
 @implementation MUWebPlacecardBridge
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC6MapsUI20MUWebPlacecardBridge_currentNavigation);
-  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI20MUWebPlacecardBridge_currentNavigation) = a4;
-  v4 = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI20MUWebPlacecardBridge_currentNavigation) = navigation;
+  navigationCopy = navigation;
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s6MapsUI20MUWebPlacecardBridgeC7webView_9didFinishySo05WKWebG0C_So12WKNavigationCSgtF_0(v6);
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
+  _s6MapsUI20MUWebPlacecardBridgeC7webView_9didFinishySo05WKWebG0C_So12WKNavigationCSgtF_0(viewCopy);
 }
 
 @end

@@ -6,9 +6,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(THNotesNoSearchResultContainerView *)self sizeProvider];
+  sizeProvider = [(THNotesNoSearchResultContainerView *)self sizeProvider];
 
-  [(THNotesNoSearchResultsContainerSizeProvider *)v3 sizeForContainerView:self];
+  [(THNotesNoSearchResultsContainerSizeProvider *)sizeProvider sizeForContainerView:self];
   result.height = v5;
   result.width = v4;
   return result;

@@ -4,13 +4,13 @@
 - (RadioRecentStationsController)init;
 - (id)_newRecentStationsRequest;
 - (void)_createStationGroups;
-- (void)_handleRecentStationsResponse:(id)a3 fromRequest:(id)a4 pendingRecentStations:(id)a5 isInitialCacheLoad:(BOOL)a6;
-- (void)_insertPendingRecentStation:(id)a3;
+- (void)_handleRecentStationsResponse:(id)response fromRequest:(id)request pendingRecentStations:(id)stations isInitialCacheLoad:(BOOL)load;
+- (void)_insertPendingRecentStation:(id)station;
 - (void)_postStationsDidChangeNotification;
-- (void)insertPendingRecentStation:(id)a3;
-- (void)insertPendingRecentStationDictionary:(id)a3;
-- (void)refreshWithCompletionHandler:(id)a3;
-- (void)removePendingRecentStation:(id)a3;
+- (void)insertPendingRecentStation:(id)station;
+- (void)insertPendingRecentStationDictionary:(id)dictionary;
+- (void)refreshWithCompletionHandler:(id)handler;
+- (void)removePendingRecentStation:(id)station;
 @end
 
 @implementation RadioRecentStationsController
@@ -27,14 +27,14 @@
     v2->_accessQueue = v3;
 
     v2->_hasValidStationGroups = 1;
-    v5 = [(RadioRecentStationsController *)v2 _newRecentStationsRequest];
+    _newRecentStationsRequest = [(RadioRecentStationsController *)v2 _newRecentStationsRequest];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __37__RadioRecentStationsController_init__block_invoke;
     v8[3] = &unk_279AEA978;
     v9 = v2;
-    v10 = v5;
-    v6 = v5;
+    v10 = _newRecentStationsRequest;
+    v6 = _newRecentStationsRequest;
     [v6 getCachedRecentStationsResponseWithCompletionHandler:v8];
   }
 
@@ -92,9 +92,9 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
   [v2 postNotificationName:@"RadioRecentStationsControllerStationsDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_insertPendingRecentStation:(id)a3
+- (void)_insertPendingRecentStation:(id)station
 {
-  v8 = a3;
+  stationCopy = station;
   v4 = [(NSMutableArray *)self->_pendingRecentStations containsObject:?];
   pendingRecentStations = self->_pendingRecentStations;
   if (!pendingRecentStations)
@@ -106,7 +106,7 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
     pendingRecentStations = self->_pendingRecentStations;
   }
 
-  [(NSMutableArray *)pendingRecentStations insertObject:v8 atIndex:0];
+  [(NSMutableArray *)pendingRecentStations insertObject:stationCopy atIndex:0];
   if ((v4 & 1) == 0)
   {
     self->_hasValidStationGroups = 0;
@@ -114,24 +114,24 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
   }
 }
 
-- (void)_handleRecentStationsResponse:(id)a3 fromRequest:(id)a4 pendingRecentStations:(id)a5 isInitialCacheLoad:(BOOL)a6
+- (void)_handleRecentStationsResponse:(id)response fromRequest:(id)request pendingRecentStations:(id)stations isInitialCacheLoad:(BOOL)load
 {
   v52 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v10)
+  responseCopy = response;
+  requestCopy = request;
+  stationsCopy = stations;
+  v13 = stationsCopy;
+  if (responseCopy)
   {
-    v30 = self;
-    v31 = v12;
-    [v10 stationGroups];
+    selfCopy = self;
+    v31 = stationsCopy;
+    [responseCopy stationGroups];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     obj = v49 = 0u;
     v34 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
-    v32 = v11;
+    v32 = requestCopy;
     v14 = 0;
     v15 = 0;
     if (v34)
@@ -148,12 +148,12 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
 
           v36 = *(*(&v46 + 1) + 8 * i);
           v37 = v14;
-          v17 = [v36 stationDictionaries];
+          stationDictionaries = [v36 stationDictionaries];
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v18 = [v17 countByEnumeratingWithState:&v42 objects:v50 count:16];
+          v18 = [stationDictionaries countByEnumeratingWithState:&v42 objects:v50 count:16];
           if (v18)
           {
             v19 = v18;
@@ -165,7 +165,7 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
               {
                 if (*v43 != v21)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(stationDictionaries);
                 }
 
                 v23 = *(*(&v42 + 1) + 8 * j);
@@ -179,14 +179,14 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
                 {
                   if (!v20)
                   {
-                    v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v17, "count")}];
+                    v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(stationDictionaries, "count")}];
                   }
 
                   [v20 addObject:v24];
                 }
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v42 objects:v50 count:16];
+              v19 = [stationDictionaries countByEnumeratingWithState:&v42 objects:v50 count:16];
             }
 
             while (v19);
@@ -205,8 +205,8 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
 
           v25 = objc_alloc_init(RadioMutableRecentStationsGroup);
           -[RadioMutableRecentStationsGroup setActive:](v25, "setActive:", [v36 isActive]);
-          v26 = [v36 localizedTitle];
-          [(RadioMutableRecentStationsGroup *)v25 setLocalizedTitle:v26];
+          localizedTitle = [v36 localizedTitle];
+          [(RadioMutableRecentStationsGroup *)v25 setLocalizedTitle:localizedTitle];
 
           [(RadioMutableRecentStationsGroup *)v25 setStations:v20];
           if (v25)
@@ -226,20 +226,20 @@ void __67__RadioRecentStationsController__postStationsDidChangeNotification__blo
       while (v34);
     }
 
-    accessQueue = v30->_accessQueue;
+    accessQueue = selfCopy->_accessQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __116__RadioRecentStationsController__handleRecentStationsResponse_fromRequest_pendingRecentStations_isInitialCacheLoad___block_invoke;
     block[3] = &unk_279AEAA18;
-    block[4] = v30;
-    v41 = a6;
+    block[4] = selfCopy;
+    loadCopy = load;
     v13 = v31;
     v39 = v31;
     v40 = v14;
     v28 = v14;
     dispatch_barrier_async(accessQueue, block);
 
-    v11 = v32;
+    requestCopy = v32;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -340,8 +340,8 @@ LABEL_21:
     v3 = 0;
   }
 
-  v4 = [v3 array];
-  v5 = [v4 mutableCopy];
+  array = [v3 array];
+  v5 = [array mutableCopy];
 
   v26 = 0;
   v27 = &v26;
@@ -364,7 +364,7 @@ LABEL_21:
     v7 = v5;
     v21 = &v26;
     v18 = v7;
-    v19 = self;
+    selfCopy = self;
     [(NSArray *)serverRecentStationGroups enumerateObjectsUsingBlock:v17];
     if (v23[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -389,10 +389,10 @@ LABEL_20:
       if (v11)
       {
         v13 = [v11 mutableCopy];
-        v14 = [v13 stations];
-        if ([v14 count])
+        stations = [v13 stations];
+        if ([stations count])
         {
-          v15 = [v7 arrayByAddingObjectsFromArray:v14];
+          v15 = [v7 arrayByAddingObjectsFromArray:stations];
         }
 
         else
@@ -469,11 +469,11 @@ void __53__RadioRecentStationsController__createStationGroups__block_invoke(void
   [v11 addObject:v12];
 }
 
-- (void)removePendingRecentStation:(id)a3
+- (void)removePendingRecentStation:(id)station
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stationCopy = station;
+  v5 = stationCopy;
+  if (stationCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -481,7 +481,7 @@ void __53__RadioRecentStationsController__createStationGroups__block_invoke(void
     v7[2] = __60__RadioRecentStationsController_removePendingRecentStation___block_invoke;
     v7[3] = &unk_279AEACA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = stationCopy;
     dispatch_barrier_async(accessQueue, v7);
   }
 }
@@ -512,22 +512,22 @@ void __60__RadioRecentStationsController_removePendingRecentStation___block_invo
   }
 }
 
-- (void)refreshWithCompletionHandler:(id)a3
+- (void)refreshWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(NSMutableArray *)self->_pendingRecentStations copy];
-  v6 = [(RadioRecentStationsController *)self _newRecentStationsRequest];
+  _newRecentStationsRequest = [(RadioRecentStationsController *)self _newRecentStationsRequest];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__RadioRecentStationsController_refreshWithCompletionHandler___block_invoke;
   v10[3] = &unk_279AEA9A0;
   v10[4] = self;
-  v11 = v6;
+  v11 = _newRecentStationsRequest;
   v12 = v5;
-  v13 = v4;
-  v7 = v4;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
-  v9 = v6;
+  v9 = _newRecentStationsRequest;
   [v9 startWithCompletionHandler:v10];
 }
 
@@ -547,19 +547,19 @@ void __62__RadioRecentStationsController_refreshWithCompletionHandler___block_in
   }
 }
 
-- (void)insertPendingRecentStationDictionary:(id)a3
+- (void)insertPendingRecentStationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __70__RadioRecentStationsController_insertPendingRecentStationDictionary___block_invoke;
     v7[3] = &unk_279AEACA0;
-    v8 = v4;
-    v9 = self;
+    v8 = dictionaryCopy;
+    selfCopy = self;
     dispatch_barrier_async(accessQueue, v7);
   }
 }
@@ -577,11 +577,11 @@ void __70__RadioRecentStationsController_insertPendingRecentStationDictionary___
   }
 }
 
-- (void)insertPendingRecentStation:(id)a3
+- (void)insertPendingRecentStation:(id)station
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stationCopy = station;
+  v5 = stationCopy;
+  if (stationCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -589,7 +589,7 @@ void __70__RadioRecentStationsController_insertPendingRecentStationDictionary___
     v7[2] = __60__RadioRecentStationsController_insertPendingRecentStation___block_invoke;
     v7[3] = &unk_279AEACA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = stationCopy;
     dispatch_barrier_async(accessQueue, v7);
   }
 }
@@ -597,12 +597,12 @@ void __70__RadioRecentStationsController_insertPendingRecentStationDictionary___
 - (NSArray)stations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(RadioRecentStationsController *)self stationGroups];
+  stationGroups = [(RadioRecentStationsController *)self stationGroups];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [stationGroups countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -614,22 +614,22 @@ void __70__RadioRecentStationsController_insertPendingRecentStationDictionary___
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(stationGroups);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) stations];
-        if ([v8 count])
+        stations = [*(*(&v11 + 1) + 8 * i) stations];
+        if ([stations count])
         {
           if (!v5)
           {
-            v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+            v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(stations, "count")}];
           }
 
-          [v5 addObjectsFromArray:v8];
+          [v5 addObjectsFromArray:stations];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [stationGroups countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);

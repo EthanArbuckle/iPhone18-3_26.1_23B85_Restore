@@ -1,36 +1,36 @@
 @interface DMCCodeUtilities
-+ (BOOL)_checkValidityOfStaticCode:(__SecCode *)a3 path:(id)a4;
-+ (BOOL)_verifyCodeIdentity:(id)a3 composedIdentifier:(id)a4;
-+ (BOOL)_verifyCodeIdentity:(id)a3 other:(id)a4;
-+ (BOOL)verifySignatureForAuditToken:(id *)a3 codeIdentity:(id)a4;
-+ (BOOL)verifySignatureForAuditToken:(id *)a3 composedIdentifier:(id)a4;
-+ (BOOL)verifySignatureForPath:(id)a3 codeIdentity:(id)a4;
-+ (BOOL)verifySignatureForPath:(id)a3 composedIdentifier:(id)a4;
-+ (__SecCode)_staticCodeFromPath:(id)a3;
-+ (id)_codeIdentityForSigningInfo:(id)a3 path:(id)a4;
-+ (id)_codeIdentityFromSecTask:(__SecTask *)a3 path:(id)a4;
-+ (id)_codeSigningIDFromSecTask:(__SecTask *)a3;
-+ (id)_signingInfoForStaticCode:(__SecCode *)a3 path:(id)a4;
-+ (id)_teamIDFromSecTask:(__SecTask *)a3;
-+ (id)codeIdentityForAuditToken:(id *)a3;
-+ (id)codeIdentityForPath:(id)a3;
++ (BOOL)_checkValidityOfStaticCode:(__SecCode *)code path:(id)path;
++ (BOOL)_verifyCodeIdentity:(id)identity composedIdentifier:(id)identifier;
++ (BOOL)_verifyCodeIdentity:(id)identity other:(id)other;
++ (BOOL)verifySignatureForAuditToken:(id *)token codeIdentity:(id)identity;
++ (BOOL)verifySignatureForAuditToken:(id *)token composedIdentifier:(id)identifier;
++ (BOOL)verifySignatureForPath:(id)path codeIdentity:(id)identity;
++ (BOOL)verifySignatureForPath:(id)path composedIdentifier:(id)identifier;
++ (__SecCode)_staticCodeFromPath:(id)path;
++ (id)_codeIdentityForSigningInfo:(id)info path:(id)path;
++ (id)_codeIdentityFromSecTask:(__SecTask *)task path:(id)path;
++ (id)_codeSigningIDFromSecTask:(__SecTask *)task;
++ (id)_signingInfoForStaticCode:(__SecCode *)code path:(id)path;
++ (id)_teamIDFromSecTask:(__SecTask *)task;
++ (id)codeIdentityForAuditToken:(id *)token;
++ (id)codeIdentityForPath:(id)path;
 @end
 
 @implementation DMCCodeUtilities
 
-+ (id)codeIdentityForPath:(id)a3
++ (id)codeIdentityForPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _staticCodeFromPath:v4];
+  pathCopy = path;
+  v5 = [self _staticCodeFromPath:pathCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [a1 _signingInfoForStaticCode:v5 path:v4];
+    v7 = [self _signingInfoForStaticCode:v5 path:pathCopy];
     CFRelease(v6);
     if (v7)
     {
-      v8 = [a1 _codeIdentityForSigningInfo:v7 path:v4];
+      v8 = [self _codeIdentityForSigningInfo:v7 path:pathCopy];
       v9 = v8;
       if (v8)
       {
@@ -43,7 +43,7 @@
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           v16 = 138543362;
-          v17 = v4;
+          v17 = pathCopy;
           _os_log_impl(&dword_1B1630000, v13, OS_LOG_TYPE_ERROR, "Could not create code identity for path: %{public}@", &v16, 0xCu);
         }
       }
@@ -55,7 +55,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v16 = 138543362;
-        v17 = v4;
+        v17 = pathCopy;
         _os_log_impl(&dword_1B1630000, v12, OS_LOG_TYPE_ERROR, "Could not create signing info for path: %{public}@", &v16, 0xCu);
       }
 
@@ -69,7 +69,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v16 = 138543362;
-      v17 = v4;
+      v17 = pathCopy;
       _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_ERROR, "Could not create static code ref for path: %{public}@", &v16, 0xCu);
     }
 
@@ -81,23 +81,23 @@
   return v9;
 }
 
-+ (id)codeIdentityForAuditToken:(id *)a3
++ (id)codeIdentityForAuditToken:(id *)token
 {
   v5 = *MEMORY[0x1E695E480];
-  v6 = *&a3->var0[4];
-  *v17.val = *a3->var0;
+  v6 = *&token->var0[4];
+  *v17.val = *token->var0;
   *&v17.val[4] = v6;
   v7 = SecTaskCreateWithAuditToken(v5, &v17);
   if (v7)
   {
     v8 = v7;
-    v9 = *&a3->var0[4];
-    *v17.val = *a3->var0;
+    v9 = *&token->var0[4];
+    *v17.val = *token->var0;
     *&v17.val[4] = v9;
-    v10 = [a1 _pathFromAuditToken:&v17];
+    v10 = [self _pathFromAuditToken:&v17];
     if (v10)
     {
-      v11 = [a1 _codeIdentityFromSecTask:v8 path:v10];
+      v11 = [self _codeIdentityFromSecTask:v8 path:v10];
       CFRelease(v8);
       if (v11)
       {
@@ -143,13 +143,13 @@
   return v11;
 }
 
-+ (BOOL)verifySignatureForPath:(id)a3 composedIdentifier:(id)a4
++ (BOOL)verifySignatureForPath:(id)path composedIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a1 codeIdentityForPath:a3];
+  identifierCopy = identifier;
+  v7 = [self codeIdentityForPath:path];
   if (v7)
   {
-    v8 = [a1 _verifyCodeIdentity:v7 composedIdentifier:v6];
+    v8 = [self _verifyCodeIdentity:v7 composedIdentifier:identifierCopy];
   }
 
   else
@@ -160,13 +160,13 @@
   return v8;
 }
 
-+ (BOOL)verifySignatureForPath:(id)a3 codeIdentity:(id)a4
++ (BOOL)verifySignatureForPath:(id)path codeIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = [a1 codeIdentityForPath:a3];
+  identityCopy = identity;
+  v7 = [self codeIdentityForPath:path];
   if (v7)
   {
-    v8 = [a1 _verifyCodeIdentity:v7 other:v6];
+    v8 = [self _verifyCodeIdentity:v7 other:identityCopy];
   }
 
   else
@@ -177,16 +177,16 @@
   return v8;
 }
 
-+ (BOOL)verifySignatureForAuditToken:(id *)a3 composedIdentifier:(id)a4
++ (BOOL)verifySignatureForAuditToken:(id *)token composedIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = *&a3->var0[4];
-  v11[0] = *a3->var0;
+  identifierCopy = identifier;
+  v7 = *&token->var0[4];
+  v11[0] = *token->var0;
   v11[1] = v7;
-  v8 = [a1 codeIdentityForAuditToken:v11];
+  v8 = [self codeIdentityForAuditToken:v11];
   if (v8)
   {
-    v9 = [a1 _verifyCodeIdentity:v8 composedIdentifier:v6];
+    v9 = [self _verifyCodeIdentity:v8 composedIdentifier:identifierCopy];
   }
 
   else
@@ -197,16 +197,16 @@
   return v9;
 }
 
-+ (BOOL)verifySignatureForAuditToken:(id *)a3 codeIdentity:(id)a4
++ (BOOL)verifySignatureForAuditToken:(id *)token codeIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = *&a3->var0[4];
-  v11[0] = *a3->var0;
+  identityCopy = identity;
+  v7 = *&token->var0[4];
+  v11[0] = *token->var0;
   v11[1] = v7;
-  v8 = [a1 codeIdentityForAuditToken:v11];
+  v8 = [self codeIdentityForAuditToken:v11];
   if (v8)
   {
-    v9 = [a1 _verifyCodeIdentity:v8 other:v6];
+    v9 = [self _verifyCodeIdentity:v8 other:identityCopy];
   }
 
   else
@@ -217,11 +217,11 @@
   return v9;
 }
 
-+ (__SecCode)_staticCodeFromPath:(id)a3
++ (__SecCode)_staticCodeFromPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
+  pathCopy = path;
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   staticCode = 0;
   v5 = SecStaticCodeCreateWithPath(v4, 0, &staticCode);
   v6 = staticCode;
@@ -245,7 +245,7 @@
       v11 = v9;
       v12 = [v10 numberWithInt:v8];
       *buf = 138543618;
-      v17 = v3;
+      v17 = pathCopy;
       v18 = 2112;
       v19 = v12;
       _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_ERROR, "Failed to create SecStaticCodeRef from path: %{public}@, error: %@", buf, 0x16u);
@@ -263,18 +263,18 @@
   return v6;
 }
 
-+ (BOOL)_checkValidityOfStaticCode:(__SecCode *)a3 path:(id)a4
++ (BOOL)_checkValidityOfStaticCode:(__SecCode *)code path:(id)path
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = SecStaticCodeCheckValidity(a3, 0, 0);
+  pathCopy = path;
+  v6 = SecStaticCodeCheckValidity(code, 0, 0);
   if (v6 == -66996)
   {
     v12 = *DMCLogObjects();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v28 = v5;
+      v28 = pathCopy;
       _os_log_impl(&dword_1B1630000, v12, OS_LOG_TYPE_DEBUG, "Need to validate path using MIS: %{public}@", buf, 0xCu);
     }
 
@@ -335,16 +335,16 @@ LABEL_14:
   return v22;
 }
 
-+ (id)_signingInfoForStaticCode:(__SecCode *)a3 path:(id)a4
++ (id)_signingInfoForStaticCode:(__SecCode *)code path:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a1 _checkValidityOfStaticCode:a3 path:a4])
+  if (![self _checkValidityOfStaticCode:code path:path])
   {
     goto LABEL_8;
   }
 
   information = 0;
-  v5 = SecCodeCopySigningInformation(a3, 2u, &information);
+  v5 = SecCodeCopySigningInformation(code, 2u, &information);
   if (v5 || (v6 = information) == 0)
   {
     v7 = *DMCLogObjects();
@@ -372,17 +372,17 @@ LABEL_8:
   return v6;
 }
 
-+ (id)_codeIdentityForSigningInfo:(id)a3 path:(id)a4
++ (id)_codeIdentityForSigningInfo:(id)info path:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E697B080]];
+  infoCopy = info;
+  pathCopy = path;
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697B080]];
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:*MEMORY[0x1E697B070]];
+    v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697B070]];
     if (v8)
     {
-      v9 = [[DMCCodeIdentity alloc] initWithCodeSigningID:v8 teamID:v7 path:v6];
+      v9 = [[DMCCodeIdentity alloc] initWithCodeSigningID:v8 teamID:v7 path:pathCopy];
     }
 
     else
@@ -413,16 +413,16 @@ LABEL_8:
   return v9;
 }
 
-+ (id)_codeIdentityFromSecTask:(__SecTask *)a3 path:(id)a4
++ (id)_codeIdentityFromSecTask:(__SecTask *)task path:(id)path
 {
-  v6 = a4;
-  v7 = [a1 _teamIDFromSecTask:a3];
+  pathCopy = path;
+  v7 = [self _teamIDFromSecTask:task];
   if (v7)
   {
-    v8 = [a1 _codeSigningIDFromSecTask:a3];
+    v8 = [self _codeSigningIDFromSecTask:task];
     if (v8)
     {
-      v9 = [[DMCCodeIdentity alloc] initWithCodeSigningID:v8 teamID:v7 path:v6];
+      v9 = [[DMCCodeIdentity alloc] initWithCodeSigningID:v8 teamID:v7 path:pathCopy];
     }
 
     else
@@ -453,7 +453,7 @@ LABEL_8:
   return v9;
 }
 
-+ (id)_teamIDFromSecTask:(__SecTask *)a3
++ (id)_teamIDFromSecTask:(__SecTask *)task
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = SecTaskCopyTeamIdentifier();
@@ -483,11 +483,11 @@ LABEL_8:
   return v3;
 }
 
-+ (id)_codeSigningIDFromSecTask:(__SecTask *)a3
++ (id)_codeSigningIDFromSecTask:(__SecTask *)task
 {
   v16 = *MEMORY[0x1E69E9840];
   error = 0;
-  v3 = SecTaskCopySigningIdentifier(a3, &error);
+  v3 = SecTaskCopySigningIdentifier(task, &error);
   v4 = error;
   if (v3)
   {
@@ -550,20 +550,20 @@ LABEL_14:
   return v3;
 }
 
-+ (BOOL)_verifyCodeIdentity:(id)a3 composedIdentifier:(id)a4
++ (BOOL)_verifyCodeIdentity:(id)identity composedIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 teamID];
+  identityCopy = identity;
+  identifierCopy = identifier;
+  teamID = [identifierCopy teamID];
 
-  if (!v7)
+  if (!teamID)
   {
     v15 = *DMCLogObjects();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v22 = 138543362;
-      v23 = v6;
+      v23 = identifierCopy;
       v16 = "Missing team-id when verifying composed identifier: %{public}@";
       v17 = v15;
       v18 = 12;
@@ -576,9 +576,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [v5 codeSigningID];
-  v9 = [v6 bundleID];
-  if (([v8 isEqualToString:v9] & 1) == 0)
+  codeSigningID = [identityCopy codeSigningID];
+  bundleID = [identifierCopy bundleID];
+  if (([codeSigningID isEqualToString:bundleID] & 1) == 0)
   {
 
 LABEL_10:
@@ -586,9 +586,9 @@ LABEL_10:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v22 = 138543618;
-      v23 = v5;
+      v23 = identityCopy;
       v24 = 2114;
-      v25 = v6;
+      v25 = identifierCopy;
       v16 = "Cannot verify identifiers: %{public}@ - %{public}@";
       v17 = v19;
       v18 = 22;
@@ -598,9 +598,9 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v10 = [v5 teamID];
-  v11 = [v6 teamID];
-  v12 = [v10 isEqualToString:v11];
+  teamID2 = [identityCopy teamID];
+  teamID3 = [identifierCopy teamID];
+  v12 = [teamID2 isEqualToString:teamID3];
 
   if (!v12)
   {
@@ -621,12 +621,12 @@ LABEL_14:
   return v14;
 }
 
-+ (BOOL)_verifyCodeIdentity:(id)a3 other:(id)a4
++ (BOOL)_verifyCodeIdentity:(id)identity other:(id)other
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 verifyAgainst:v6];
+  identityCopy = identity;
+  otherCopy = other;
+  v7 = [identityCopy verifyAgainst:otherCopy];
   v8 = *DMCLogObjects();
   if (v7)
   {
@@ -645,9 +645,9 @@ LABEL_6:
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v15 = 138543618;
-    v16 = v5;
+    v16 = identityCopy;
     v17 = 2114;
-    v18 = v6;
+    v18 = otherCopy;
     v9 = "Cannot verify code signing identifiers: %{public}@ - %{public}@";
     v10 = v8;
     v11 = OS_LOG_TYPE_ERROR;

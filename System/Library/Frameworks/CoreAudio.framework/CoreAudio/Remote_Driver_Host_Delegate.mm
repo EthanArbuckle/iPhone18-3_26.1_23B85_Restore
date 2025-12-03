@@ -1,19 +1,19 @@
 @interface Remote_Driver_Host_Delegate
 - (id).cxx_construct;
-- (id)init_with_remote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)a3;
-- (int)delete_storage_settings:(__CFString *)a3;
-- (int)write_storage_settings:(__CFString *)a3 storage_data:(void *)a4;
-- (pair<int,)copy_storage_settings:(__CFString *)a3;
+- (id)init_with_remote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)init_with_remote_plugin;
+- (int)delete_storage_settings:(__CFString *)delete_storage_settings;
+- (int)write_storage_settings:(__CFString *)write_storage_settings storage_data:(void *)storage_data;
+- (pair<int,)copy_storage_settings:(__CFString *)copy_storage_settings;
 - (shared_ptr<HALS_UCRemotePlugIn>)remote_plugin;
 - (uint64_t)object_properties_changed:(NSObject  *){objcproto17OS_dispatch_queue} data:(id)&;
-- (uint64_t)object_properties_changed:(uint64_t *)a1 data:;
+- (uint64_t)object_properties_changed:(uint64_t *)object_properties_changed data:;
 - (uint64_t)request_config_change:(NSObject  *){objcproto17OS_dispatch_queue} change_action:(id)& change_token:;
-- (uint64_t)request_config_change:(uint64_t *)a1 change_action:change_token:;
-- (void)object_properties_changed:(unsigned int)a3 data:(id)a4;
+- (uint64_t)request_config_change:(uint64_t *)request_config_change change_action:change_token:;
+- (void)object_properties_changed:(unsigned int)object_properties_changed data:(id)data;
 - (void)object_properties_changed:data:;
-- (void)request_config_change:(unsigned int)a3 change_action:(unint64_t)a4 change_token:(unint64_t)a5;
+- (void)request_config_change:(unsigned int)request_config_change change_action:(unint64_t)change_action change_token:(unint64_t)change_token;
 - (void)request_config_change:change_action:change_token:;
-- (void)setRemote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)a3;
+- (void)setRemote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)remote_plugin;
 - (void)teardown;
 @end
 
@@ -26,10 +26,10 @@
   return self;
 }
 
-- (void)setRemote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)a3
+- (void)setRemote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)remote_plugin
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *remote_plugin.__ptr_;
+  v3 = *(remote_plugin.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -59,7 +59,7 @@
   return result;
 }
 
-- (int)delete_storage_settings:(__CFString *)a3
+- (int)delete_storage_settings:(__CFString *)delete_storage_settings
 {
   v20 = *MEMORY[0x1E69E9840];
   [(Remote_Driver_Host_Delegate *)self remote_plugin];
@@ -82,7 +82,7 @@
     }
 
     block[4] = &v11;
-    v10 = a3;
+    delete_storage_settingsCopy = delete_storage_settings;
     v4 = atomic_load(&v18);
     if (v4)
     {
@@ -114,7 +114,7 @@
   return v5;
 }
 
-- (pair<int,)copy_storage_settings:(__CFString *)a3
+- (pair<int,)copy_storage_settings:(__CFString *)copy_storage_settings
 {
   v26 = *MEMORY[0x1E69E9840];
   [(Remote_Driver_Host_Delegate *)self remote_plugin];
@@ -140,7 +140,7 @@
       atomic_fetch_add_explicit(&v22->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v12 = a3;
+    copy_storage_settingsCopy = copy_storage_settings;
     v10[4] = &v17;
     v10[5] = &v13;
     v4 = atomic_load(&v24);
@@ -181,11 +181,11 @@
   return result;
 }
 
-- (int)write_storage_settings:(__CFString *)a3 storage_data:(void *)a4
+- (int)write_storage_settings:(__CFString *)write_storage_settings storage_data:(void *)storage_data
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = 560947818;
-  if (a4)
+  if (storage_data)
   {
     [(Remote_Driver_Host_Delegate *)self remote_plugin];
     if (v18)
@@ -207,8 +207,8 @@
       }
 
       v10[4] = &v14;
-      v12 = a4;
-      v13 = a3;
+      storage_dataCopy = storage_data;
+      write_storage_settingsCopy = write_storage_settings;
       v7 = atomic_load(&v21);
       if (v7)
       {
@@ -236,7 +236,7 @@
   return v4;
 }
 
-- (void)request_config_change:(unsigned int)a3 change_action:(unint64_t)a4 change_token:(unint64_t)a5
+- (void)request_config_change:(unsigned int)request_config_change change_action:(unint64_t)change_action change_token:(unint64_t)change_token
 {
   v26 = *MEMORY[0x1E69E9840];
   [(Remote_Driver_Host_Delegate *)self remote_plugin];
@@ -278,9 +278,9 @@
       atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v18 = a3;
-    v19 = a4;
-    v20 = a5;
+    request_config_changeCopy = request_config_change;
+    change_actionCopy = change_action;
+    change_tokenCopy = change_token;
     v11 = v9;
     dispatch_group_async(v11, v10, block);
 
@@ -306,10 +306,10 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)request_config_change:(uint64_t *)a1 change_action:change_token:
+- (uint64_t)request_config_change:(uint64_t *)request_config_change change_action:change_token:
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *request_config_change;
+  *request_config_change = 0;
   if (v2)
   {
     v3 = *(v2 + 8);
@@ -321,20 +321,20 @@
     MEMORY[0x1E12C1730](v2, 0x1020C40992E6479);
   }
 
-  return a1;
+  return request_config_change;
 }
 
 - (uint64_t)request_config_change:(NSObject  *){objcproto17OS_dispatch_queue} change_action:(id)& change_token:
 {
-  v2 = a1;
-  [Remote_Driver_Host_Delegate request_config_change:change_action:change_token:]::$_8::operator()(a1);
-  return std::unique_ptr<-[Remote_Driver_Host_Delegate request_config_change:change_action:change_token:]::$_8>::~unique_ptr[abi:ne200100](&v2);
+  selfCopy = self;
+  [Remote_Driver_Host_Delegate request_config_change:change_action:change_token:]::$_8::operator()(self);
+  return std::unique_ptr<-[Remote_Driver_Host_Delegate request_config_change:change_action:change_token:]::$_8>::~unique_ptr[abi:ne200100](&selfCopy);
 }
 
 - (void)request_config_change:change_action:change_token:
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (*(*a1 + 752))
+  if (*(*self + 752))
   {
     operator new();
   }
@@ -342,7 +342,7 @@
   v2 = atomic_load(StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics_initialized);
   if ((v2 & 1) == 0)
   {
-    AMCP::Log::AMCP_Scope_Registry::initialize(a1);
+    AMCP::Log::AMCP_Scope_Registry::initialize(self);
   }
 
   v3 = **StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics;
@@ -365,7 +365,7 @@
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v7 = *(a1 + 4);
+    v7 = *(self + 4);
     v8 = 136315650;
     v9 = "HALS_UCRemotePlugIn.mm";
     v10 = 1024;
@@ -378,10 +378,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)object_properties_changed:(unsigned int)a3 data:(id)a4
+- (void)object_properties_changed:(unsigned int)object_properties_changed data:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dataCopy = data;
   [(Remote_Driver_Host_Delegate *)self remote_plugin];
   if (v16)
   {
@@ -391,7 +391,7 @@
       atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v7 = v6;
+    v7 = dataCopy;
     v8 = atomic_load(&v23);
     if (v8)
     {
@@ -424,7 +424,7 @@
       atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v20 = a3;
+    object_properties_changedCopy = object_properties_changed;
     v21 = v9;
     v13 = v11;
     dispatch_group_async(v13, v12, block);
@@ -456,10 +456,10 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)object_properties_changed:(uint64_t *)a1 data:
+- (uint64_t)object_properties_changed:(uint64_t *)object_properties_changed data:
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *object_properties_changed;
+  *object_properties_changed = 0;
   if (v2)
   {
 
@@ -472,26 +472,26 @@
     MEMORY[0x1E12C1730](v2, 0x10A0C405C5CD52DLL);
   }
 
-  return a1;
+  return object_properties_changed;
 }
 
 - (uint64_t)object_properties_changed:(NSObject  *){objcproto17OS_dispatch_queue} data:(id)&
 {
-  v2 = a1;
-  [Remote_Driver_Host_Delegate object_properties_changed:data:]::$_7::operator()(a1);
-  return std::unique_ptr<-[Remote_Driver_Host_Delegate object_properties_changed:data:]::$_7>::~unique_ptr[abi:ne200100](&v2);
+  selfCopy = self;
+  [Remote_Driver_Host_Delegate object_properties_changed:data:]::$_7::operator()(self);
+  return std::unique_ptr<-[Remote_Driver_Host_Delegate object_properties_changed:data:]::$_7>::~unique_ptr[abi:ne200100](&selfCopy);
 }
 
 - (void)object_properties_changed:data:
 {
   v18 = *MEMORY[0x1E69E9840];
-  [*(a1 + 24) bytes];
-  [*(a1 + 24) length];
-  v2 = *(*a1 + 752);
+  [*(self + 24) bytes];
+  [*(self + 24) length];
+  v2 = *(*self + 752);
   if (v2)
   {
     v3 = *v2;
-    v4 = *(a1 + 16);
+    v4 = *(self + 16);
     v5 = *MEMORY[0x1E69E9840];
 
     v3();
@@ -525,7 +525,7 @@
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v11 = *(a1 + 16);
+      v11 = *(self + 16);
       v12 = 136315650;
       v13 = "HALS_UCRemotePlugIn.mm";
       v14 = 1024;
@@ -550,12 +550,12 @@
   }
 }
 
-- (id)init_with_remote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)a3
+- (id)init_with_remote_plugin:(shared_ptr<HALS_UCRemotePlugIn>)init_with_remote_plugin
 {
-  ptr = a3.__ptr_;
+  ptr = init_with_remote_plugin.__ptr_;
   v10.receiver = self;
   v10.super_class = Remote_Driver_Host_Delegate;
-  v4 = [(Remote_Driver_Host_Delegate *)&v10 init:a3.__ptr_];
+  v4 = [(Remote_Driver_Host_Delegate *)&v10 init:init_with_remote_plugin.__ptr_];
   v5 = v4;
   if (v4)
   {

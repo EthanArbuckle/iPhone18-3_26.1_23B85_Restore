@@ -1,6 +1,6 @@
 @interface PXWidgetSpec
 - (CGSize)interWidgetSpacing;
-- (PXWidgetSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 detailsOptions:(unint64_t)a5;
+- (PXWidgetSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options detailsOptions:(unint64_t)detailsOptions;
 - (UIEdgeInsets)contentGuideInsets;
 @end
 
@@ -28,14 +28,14 @@
   return result;
 }
 
-- (PXWidgetSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 detailsOptions:(unint64_t)a5
+- (PXWidgetSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options detailsOptions:(unint64_t)detailsOptions
 {
   v8.receiver = self;
   v8.super_class = PXWidgetSpec;
-  v6 = [(PXWidgetSpec *)&v8 initWithExtendedTraitCollection:a3 options:a4];
+  v6 = [(PXWidgetSpec *)&v8 initWithExtendedTraitCollection:collection options:options];
   if (v6)
   {
-    v6->_detailsOptions = a5;
+    v6->_detailsOptions = detailsOptions;
     PXFontScaleForTextStyle();
   }
 

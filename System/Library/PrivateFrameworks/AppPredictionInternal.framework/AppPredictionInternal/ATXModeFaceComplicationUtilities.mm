@@ -1,17 +1,17 @@
 @interface ATXModeFaceComplicationUtilities
-+ (double)complicationScoreForAppLaunch:(id)a3 environment:(id)a4;
++ (double)complicationScoreForAppLaunch:(id)launch environment:(id)environment;
 @end
 
 @implementation ATXModeFaceComplicationUtilities
 
-+ (double)complicationScoreForAppLaunch:(id)a3 environment:(id)a4
++ (double)complicationScoreForAppLaunch:(id)launch environment:(id)environment
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  launchCopy = launch;
+  environmentCopy = environment;
+  if ([launchCopy length])
   {
-    v7 = [v6 appLaunchCounts];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    appLaunchCounts = [environmentCopy appLaunchCounts];
+    v8 = [appLaunchCounts objectForKeyedSubscript:launchCopy];
 
     if ([v8 rawLaunchCount])
     {

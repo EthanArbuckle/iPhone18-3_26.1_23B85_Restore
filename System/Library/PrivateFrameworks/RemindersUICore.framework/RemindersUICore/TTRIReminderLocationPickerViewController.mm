@@ -1,5 +1,5 @@
 @interface TTRIReminderLocationPickerViewController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (MKMapView)mapView;
 - (UIBarButtonItem)doneButton;
 - (UISegmentedControl)alarmProximitySegmentedControl;
@@ -7,26 +7,26 @@
 - (UIView)bottomControlsContainerView;
 - (UIView)contentView;
 - (UIView)mapAndDragRadiusContainerView;
-- (_TtC15RemindersUICore40TTRIReminderLocationPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)alarmProximitySegmentedControlDidChange:(id)a3;
+- (_TtC15RemindersUICore40TTRIReminderLocationPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)alarmProximitySegmentedControlDidChange:(id)change;
 - (void)dealloc;
-- (void)mapDragRadiusView:(id)a3 didUpdateRegion:(id)a4;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)setContentViewMinHeightConstraint:(id)a3;
+- (void)mapDragRadiusView:(id)view didUpdateRegion:(id)region;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)setContentViewMinHeightConstraint:(id)constraint;
 - (void)stopHoldingCurrentContentViewHeight;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation TTRIReminderLocationPickerViewController
@@ -35,7 +35,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(self + OBJC_IVAR____TtC15RemindersUICore40TTRIReminderLocationPickerViewController_keyboardHideDeferredHandlingTimer);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 invalidate];
@@ -48,36 +48,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D583380();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21D583CAC(a3);
+  selfCopy = self;
+  sub_21D583CAC(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21D58531C(a3);
+  selfCopy = self;
+  sub_21D58531C(appear);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_21D585878(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21D585878(controller);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(TTRIReminderLocationPickerViewController *)&v7 viewWillDisappear:v3];
+  [(TTRIReminderLocationPickerViewController *)&v7 viewWillDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC15RemindersUICore40TTRIReminderLocationPickerViewController_searchBar];
   if (v5)
   {
@@ -100,67 +100,67 @@
   sub_21D585B48(0, 0.0);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_21DBF5D5C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_21D585E0C(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_21D585E0C(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_21DBF5D5C();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_21D588800(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_21D588800(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_21DBF5D5C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v10 = a3;
-  v11 = self;
-  sub_21D586174(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21D586174(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v5 = sub_21DBFA16C();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_21D57BB34(v5, v7);
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_21D588AE0();
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -175,11 +175,11 @@
   }
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_21D588BE4();
   v8 = v7;
 
@@ -188,11 +188,11 @@
   return v8;
 }
 
-- (void)mapDragRadiusView:(id)a3 didUpdateRegion:(id)a4
+- (void)mapDragRadiusView:(id)view didUpdateRegion:(id)region
 {
-  v6 = a4;
-  v5 = self;
-  sub_21D57C94C(v6);
+  regionCopy = region;
+  selfCopy = self;
+  sub_21D57C94C(regionCopy);
 }
 
 - (UIView)contentView
@@ -202,11 +202,11 @@
   return Strong;
 }
 
-- (void)setContentViewMinHeightConstraint:(id)a3
+- (void)setContentViewMinHeightConstraint:(id)constraint
 {
   v4 = *(self + OBJC_IVAR____TtC15RemindersUICore40TTRIReminderLocationPickerViewController_contentViewMinHeightConstraint);
-  *(self + OBJC_IVAR____TtC15RemindersUICore40TTRIReminderLocationPickerViewController_contentViewMinHeightConstraint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15RemindersUICore40TTRIReminderLocationPickerViewController_contentViewMinHeightConstraint) = constraint;
+  constraintCopy = constraint;
 }
 
 - (UITableView)tableView
@@ -251,10 +251,10 @@
   return Strong;
 }
 
-- (void)alarmProximitySegmentedControlDidChange:(id)a3
+- (void)alarmProximitySegmentedControlDidChange:(id)change
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_21DBFBC1C();
   swift_unknownObjectRelease();
   sub_21D586AB4();
@@ -264,29 +264,29 @@
 
 - (void)stopHoldingCurrentContentViewHeight
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D5871C8();
 }
 
-- (_TtC15RemindersUICore40TTRIReminderLocationPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore40TTRIReminderLocationPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_21D57CC40();
 
   return (v4 & 1) == 0;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_21D5891BC();
 }
 

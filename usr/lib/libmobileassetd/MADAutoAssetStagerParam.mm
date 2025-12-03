@@ -1,67 +1,67 @@
 @interface MADAutoAssetStagerParam
-- (MADAutoAssetStagerParam)initWithCoder:(id)a3;
-- (MADAutoAssetStagerParam)initWithParamType:(int64_t)a3 withSafeSummary:(id)a4 withStagingClientRequest:(id)a5 withBaseForStagingDescriptors:(id)a6 withJobInformation:(id)a7 withAutoAssetCatalog:(id)a8 withOperationError:(id)a9 withAssetType:(id)a10 withAssetSelector:(id)a11 withSetIdentifierConfiguration:(id)a12 withEntriesWhenTargeting:(id)a13 withTimerUUID:(id)a14 withAlreadyDownloaded:(id)a15 withSetConfigurations:(id)a16 withSetTargets:(id)a17 withScheduledJobs:(id)a18 withDownloadedDescriptor:(id)a19;
+- (MADAutoAssetStagerParam)initWithCoder:(id)coder;
+- (MADAutoAssetStagerParam)initWithParamType:(int64_t)type withSafeSummary:(id)summary withStagingClientRequest:(id)request withBaseForStagingDescriptors:(id)descriptors withJobInformation:(id)information withAutoAssetCatalog:(id)catalog withOperationError:(id)error withAssetType:(id)self0 withAssetSelector:(id)self1 withSetIdentifierConfiguration:(id)self2 withEntriesWhenTargeting:(id)self3 withTimerUUID:(id)self4 withAlreadyDownloaded:(id)self5 withSetConfigurations:(id)self6 withSetTargets:(id)self7 withScheduledJobs:(id)self8 withDownloadedDescriptor:(id)self9;
 - (id)_summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateSafeSummary;
 @end
 
 @implementation MADAutoAssetStagerParam
 
-- (MADAutoAssetStagerParam)initWithParamType:(int64_t)a3 withSafeSummary:(id)a4 withStagingClientRequest:(id)a5 withBaseForStagingDescriptors:(id)a6 withJobInformation:(id)a7 withAutoAssetCatalog:(id)a8 withOperationError:(id)a9 withAssetType:(id)a10 withAssetSelector:(id)a11 withSetIdentifierConfiguration:(id)a12 withEntriesWhenTargeting:(id)a13 withTimerUUID:(id)a14 withAlreadyDownloaded:(id)a15 withSetConfigurations:(id)a16 withSetTargets:(id)a17 withScheduledJobs:(id)a18 withDownloadedDescriptor:(id)a19
+- (MADAutoAssetStagerParam)initWithParamType:(int64_t)type withSafeSummary:(id)summary withStagingClientRequest:(id)request withBaseForStagingDescriptors:(id)descriptors withJobInformation:(id)information withAutoAssetCatalog:(id)catalog withOperationError:(id)error withAssetType:(id)self0 withAssetSelector:(id)self1 withSetIdentifierConfiguration:(id)self2 withEntriesWhenTargeting:(id)self3 withTimerUUID:(id)self4 withAlreadyDownloaded:(id)self5 withSetConfigurations:(id)self6 withSetTargets:(id)self7 withScheduledJobs:(id)self8 withDownloadedDescriptor:(id)self9
 {
-  v50 = a4;
-  v34 = a5;
-  v49 = a5;
-  v48 = a6;
-  v35 = a7;
-  v47 = a7;
-  v46 = a8;
-  v45 = a9;
-  v44 = a10;
-  v43 = a11;
-  v42 = a12;
-  v41 = a13;
-  v40 = a14;
-  v39 = a15;
-  v38 = a16;
-  v37 = a17;
-  v23 = a18;
-  v24 = a19;
+  summaryCopy = summary;
+  requestCopy = request;
+  requestCopy2 = request;
+  descriptorsCopy = descriptors;
+  informationCopy = information;
+  informationCopy2 = information;
+  catalogCopy = catalog;
+  errorCopy = error;
+  assetTypeCopy = assetType;
+  selectorCopy = selector;
+  configurationCopy = configuration;
+  targetingCopy = targeting;
+  dCopy = d;
+  downloadedCopy = downloaded;
+  configurationsCopy = configurations;
+  targetsCopy = targets;
+  jobsCopy = jobs;
+  descriptorCopy = descriptor;
   v51.receiver = self;
   v51.super_class = MADAutoAssetStagerParam;
   v25 = [(MADAutoAssetStagerParam *)&v51 init];
   v26 = v25;
   if (v25)
   {
-    v25->_paramType = a3;
-    objc_storeStrong(&v25->_stagingClientRequest, v34);
-    objc_storeStrong(&v26->_baseForStagingDescriptors, a6);
-    objc_storeStrong(&v26->_jobInformation, v35);
-    objc_storeStrong(&v26->_autoAssetCatalog, a8);
-    objc_storeStrong(&v26->_operationError, a9);
-    objc_storeStrong(&v26->_assetType, a10);
-    objc_storeStrong(&v26->_assetSelector, a11);
-    objc_storeStrong(&v26->_setIdentifierConfiguration, a12);
-    objc_storeStrong(&v26->_alreadyDownloaded, a15);
-    objc_storeStrong(&v26->_setConfigurations, a16);
-    objc_storeStrong(&v26->_entriesWhenTargeting, a13);
-    objc_storeStrong(&v26->_timerUUID, a14);
-    objc_storeStrong(&v26->_setTargets, a17);
-    objc_storeStrong(&v26->_scheduledJobs, a18);
-    objc_storeStrong(&v26->_downloadedDescriptor, a19);
-    v27 = [(MADAutoAssetStagerParam *)v26 _summary];
-    v28 = v27;
-    if (v50)
+    v25->_paramType = type;
+    objc_storeStrong(&v25->_stagingClientRequest, requestCopy);
+    objc_storeStrong(&v26->_baseForStagingDescriptors, descriptors);
+    objc_storeStrong(&v26->_jobInformation, informationCopy);
+    objc_storeStrong(&v26->_autoAssetCatalog, catalog);
+    objc_storeStrong(&v26->_operationError, error);
+    objc_storeStrong(&v26->_assetType, assetType);
+    objc_storeStrong(&v26->_assetSelector, selector);
+    objc_storeStrong(&v26->_setIdentifierConfiguration, configuration);
+    objc_storeStrong(&v26->_alreadyDownloaded, downloaded);
+    objc_storeStrong(&v26->_setConfigurations, configurations);
+    objc_storeStrong(&v26->_entriesWhenTargeting, targeting);
+    objc_storeStrong(&v26->_timerUUID, d);
+    objc_storeStrong(&v26->_setTargets, targets);
+    objc_storeStrong(&v26->_scheduledJobs, jobs);
+    objc_storeStrong(&v26->_downloadedDescriptor, descriptor);
+    _summary = [(MADAutoAssetStagerParam *)v26 _summary];
+    v28 = _summary;
+    if (summaryCopy)
     {
-      if (v27)
+      if (_summary)
       {
-        v29 = [[NSString alloc] initWithFormat:@"%@+++%@", v50, v27];
+        v29 = [[NSString alloc] initWithFormat:@"%@+++%@", summaryCopy, _summary];
       }
 
       else
       {
-        v29 = v50;
+        v29 = summaryCopy;
       }
 
       paramSafeSummary = v26->_paramSafeSummary;
@@ -71,7 +71,7 @@
     }
 
     v30 = v26->_paramSafeSummary;
-    v26->_paramSafeSummary = v27;
+    v26->_paramSafeSummary = _summary;
 
     v28 = v26->_paramSafeSummary;
     if (!v28)
@@ -84,20 +84,20 @@ LABEL_9:
   return v26;
 }
 
-- (MADAutoAssetStagerParam)initWithCoder:(id)a3
+- (MADAutoAssetStagerParam)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v60.receiver = self;
   v60.super_class = MADAutoAssetStagerParam;
   v5 = [(MADAutoAssetStagerParam *)&v60 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paramSafeSummary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paramSafeSummary"];
     paramSafeSummary = v5->_paramSafeSummary;
     v5->_paramSafeSummary = v6;
 
-    v5->_paramType = [v4 decodeInt64ForKey:@"paramType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingClientRequest"];
+    v5->_paramType = [coderCopy decodeInt64ForKey:@"paramType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingClientRequest"];
     stagingClientRequest = v5->_stagingClientRequest;
     v5->_stagingClientRequest = v8;
 
@@ -106,11 +106,11 @@ LABEL_9:
     v67[1] = objc_opt_class();
     v11 = [NSArray arrayWithObjects:v67 count:2];
     v12 = [v10 initWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"baseForStagingDescriptors"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"baseForStagingDescriptors"];
     baseForStagingDescriptors = v5->_baseForStagingDescriptors;
     v5->_baseForStagingDescriptors = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jobInformation"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jobInformation"];
     jobInformation = v5->_jobInformation;
     v5->_jobInformation = v15;
 
@@ -130,23 +130,23 @@ LABEL_9:
     v66[12] = objc_opt_class();
     v18 = [NSArray arrayWithObjects:v66 count:13];
     v19 = [v17 initWithArray:v18];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"autoAssetCatalog"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"autoAssetCatalog"];
     autoAssetCatalog = v5->_autoAssetCatalog;
     v5->_autoAssetCatalog = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationError"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationError"];
     operationError = v5->_operationError;
     v5->_operationError = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
     assetType = v5->_assetType;
     v5->_assetType = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
     assetSelector = v5->_assetSelector;
     v5->_assetSelector = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setIdentifierConfiguration"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setIdentifierConfiguration"];
     setIdentifierConfiguration = v5->_setIdentifierConfiguration;
     v5->_setIdentifierConfiguration = v28;
 
@@ -155,7 +155,7 @@ LABEL_9:
     v65[1] = objc_opt_class();
     v31 = [NSArray arrayWithObjects:v65 count:2];
     v32 = [v30 initWithArray:v31];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"alreadyDownloaded"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"alreadyDownloaded"];
     alreadyDownloaded = v5->_alreadyDownloaded;
     v5->_alreadyDownloaded = v33;
 
@@ -164,7 +164,7 @@ LABEL_9:
     v64[1] = objc_opt_class();
     v36 = [NSArray arrayWithObjects:v64 count:2];
     v37 = [v35 initWithArray:v36];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"setConfigurations"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"setConfigurations"];
     setConfigurations = v5->_setConfigurations;
     v5->_setConfigurations = v38;
 
@@ -173,11 +173,11 @@ LABEL_9:
     v63[1] = objc_opt_class();
     v41 = [NSArray arrayWithObjects:v63 count:2];
     v42 = [v40 initWithArray:v41];
-    v43 = [v4 decodeObjectOfClasses:v42 forKey:@"entriesWhenTargeting"];
+    v43 = [coderCopy decodeObjectOfClasses:v42 forKey:@"entriesWhenTargeting"];
     entriesWhenTargeting = v5->_entriesWhenTargeting;
     v5->_entriesWhenTargeting = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timerUUID"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timerUUID"];
     timerUUID = v5->_timerUUID;
     v5->_timerUUID = v45;
 
@@ -186,7 +186,7 @@ LABEL_9:
     v62[1] = objc_opt_class();
     v48 = [NSArray arrayWithObjects:v62 count:2];
     v49 = [v47 initWithArray:v48];
-    v50 = [v4 decodeObjectOfClasses:v49 forKey:@"setTargets"];
+    v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"setTargets"];
     setTargets = v5->_setTargets;
     v5->_setTargets = v50;
 
@@ -195,11 +195,11 @@ LABEL_9:
     v61[1] = objc_opt_class();
     v53 = [NSArray arrayWithObjects:v61 count:2];
     v54 = [v52 initWithArray:v53];
-    v55 = [v4 decodeObjectOfClasses:v54 forKey:@"scheduledJobs"];
+    v55 = [coderCopy decodeObjectOfClasses:v54 forKey:@"scheduledJobs"];
     scheduledJobs = v5->_scheduledJobs;
     v5->_scheduledJobs = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadedDescriptor"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadedDescriptor"];
     downloadedDescriptor = v5->_downloadedDescriptor;
     v5->_downloadedDescriptor = v57;
   }
@@ -207,78 +207,78 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetStagerParam *)self paramSafeSummary];
-  [v4 encodeObject:v5 forKey:@"paramSafeSummary"];
+  coderCopy = coder;
+  paramSafeSummary = [(MADAutoAssetStagerParam *)self paramSafeSummary];
+  [coderCopy encodeObject:paramSafeSummary forKey:@"paramSafeSummary"];
 
-  [v4 encodeInt64:-[MADAutoAssetStagerParam paramType](self forKey:{"paramType"), @"paramType"}];
-  v6 = [(MADAutoAssetStagerParam *)self stagingClientRequest];
-  [v4 encodeObject:v6 forKey:@"stagingClientRequest"];
+  [coderCopy encodeInt64:-[MADAutoAssetStagerParam paramType](self forKey:{"paramType"), @"paramType"}];
+  stagingClientRequest = [(MADAutoAssetStagerParam *)self stagingClientRequest];
+  [coderCopy encodeObject:stagingClientRequest forKey:@"stagingClientRequest"];
 
-  v7 = [(MADAutoAssetStagerParam *)self baseForStagingDescriptors];
-  [v4 encodeObject:v7 forKey:@"baseForStagingDescriptors"];
+  baseForStagingDescriptors = [(MADAutoAssetStagerParam *)self baseForStagingDescriptors];
+  [coderCopy encodeObject:baseForStagingDescriptors forKey:@"baseForStagingDescriptors"];
 
-  v8 = [(MADAutoAssetStagerParam *)self jobInformation];
-  [v4 encodeObject:v8 forKey:@"jobInformation"];
+  jobInformation = [(MADAutoAssetStagerParam *)self jobInformation];
+  [coderCopy encodeObject:jobInformation forKey:@"jobInformation"];
 
-  v9 = [(MADAutoAssetStagerParam *)self autoAssetCatalog];
-  [v4 encodeObject:v9 forKey:@"autoAssetCatalog"];
+  autoAssetCatalog = [(MADAutoAssetStagerParam *)self autoAssetCatalog];
+  [coderCopy encodeObject:autoAssetCatalog forKey:@"autoAssetCatalog"];
 
-  v10 = [(MADAutoAssetStagerParam *)self operationError];
-  [v4 encodeObject:v10 forKey:@"operationError"];
+  operationError = [(MADAutoAssetStagerParam *)self operationError];
+  [coderCopy encodeObject:operationError forKey:@"operationError"];
 
-  v11 = [(MADAutoAssetStagerParam *)self assetType];
-  [v4 encodeObject:v11 forKey:@"assetType"];
+  assetType = [(MADAutoAssetStagerParam *)self assetType];
+  [coderCopy encodeObject:assetType forKey:@"assetType"];
 
-  v12 = [(MADAutoAssetStagerParam *)self assetSelector];
-  [v4 encodeObject:v12 forKey:@"assetSelector"];
+  assetSelector = [(MADAutoAssetStagerParam *)self assetSelector];
+  [coderCopy encodeObject:assetSelector forKey:@"assetSelector"];
 
-  v13 = [(MADAutoAssetStagerParam *)self setIdentifierConfiguration];
-  [v4 encodeObject:v13 forKey:@"setIdentifierConfiguration"];
+  setIdentifierConfiguration = [(MADAutoAssetStagerParam *)self setIdentifierConfiguration];
+  [coderCopy encodeObject:setIdentifierConfiguration forKey:@"setIdentifierConfiguration"];
 
-  v14 = [(MADAutoAssetStagerParam *)self alreadyDownloaded];
-  [v4 encodeObject:v14 forKey:@"alreadyDownloaded"];
+  alreadyDownloaded = [(MADAutoAssetStagerParam *)self alreadyDownloaded];
+  [coderCopy encodeObject:alreadyDownloaded forKey:@"alreadyDownloaded"];
 
-  v15 = [(MADAutoAssetStagerParam *)self setConfigurations];
-  [v4 encodeObject:v15 forKey:@"entriesWhenTargeting"];
+  setConfigurations = [(MADAutoAssetStagerParam *)self setConfigurations];
+  [coderCopy encodeObject:setConfigurations forKey:@"entriesWhenTargeting"];
 
-  v16 = [(MADAutoAssetStagerParam *)self entriesWhenTargeting];
-  [v4 encodeObject:v16 forKey:@"setConfigurations"];
+  entriesWhenTargeting = [(MADAutoAssetStagerParam *)self entriesWhenTargeting];
+  [coderCopy encodeObject:entriesWhenTargeting forKey:@"setConfigurations"];
 
-  v17 = [(MADAutoAssetStagerParam *)self timerUUID];
-  [v4 encodeObject:v17 forKey:@"timerUUID"];
+  timerUUID = [(MADAutoAssetStagerParam *)self timerUUID];
+  [coderCopy encodeObject:timerUUID forKey:@"timerUUID"];
 
-  v18 = [(MADAutoAssetStagerParam *)self setTargets];
-  [v4 encodeObject:v18 forKey:@"setTargets"];
+  setTargets = [(MADAutoAssetStagerParam *)self setTargets];
+  [coderCopy encodeObject:setTargets forKey:@"setTargets"];
 
-  v19 = [(MADAutoAssetStagerParam *)self scheduledJobs];
-  [v4 encodeObject:v19 forKey:@"scheduledJobs"];
+  scheduledJobs = [(MADAutoAssetStagerParam *)self scheduledJobs];
+  [coderCopy encodeObject:scheduledJobs forKey:@"scheduledJobs"];
 
-  v20 = [(MADAutoAssetStagerParam *)self downloadedDescriptor];
-  [v4 encodeObject:v20 forKey:@"downloadedDescriptor"];
+  downloadedDescriptor = [(MADAutoAssetStagerParam *)self downloadedDescriptor];
+  [coderCopy encodeObject:downloadedDescriptor forKey:@"downloadedDescriptor"];
 }
 
 - (id)_summary
 {
-  v4 = [(MADAutoAssetStagerParam *)self paramType];
-  if (v4 <= 4)
+  paramType = [(MADAutoAssetStagerParam *)self paramType];
+  if (paramType <= 4)
   {
-    if (v4 <= 1)
+    if (paramType <= 1)
     {
-      if (!v4)
+      if (!paramType)
       {
         v12 = 0;
         goto LABEL_42;
       }
 
-      if (v4 == 1)
+      if (paramType == 1)
       {
         v13 = [NSString alloc];
-        v6 = [(MADAutoAssetStagerParam *)self stagingClientRequest];
-        v10 = [v6 summary];
-        v14 = [v13 initWithFormat:@"STAGING_CLIENT_REQUEST|stagingClientRequest:%@", v10];
+        stagingClientRequest = [(MADAutoAssetStagerParam *)self stagingClientRequest];
+        summary = [stagingClientRequest summary];
+        v14 = [v13 initWithFormat:@"STAGING_CLIENT_REQUEST|stagingClientRequest:%@", summary];
 LABEL_25:
         v12 = v14;
         goto LABEL_26;
@@ -287,59 +287,59 @@ LABEL_25:
       goto LABEL_30;
     }
 
-    if (v4 == 2)
+    if (paramType == 2)
     {
       v30 = [NSString alloc];
-      v17 = [(MADAutoAssetStagerParam *)self jobInformation];
-      v18 = [v17 summary];
-      v19 = [(MADAutoAssetStagerParam *)self downloadedDescriptor];
-      if (v19)
+      jobInformation = [(MADAutoAssetStagerParam *)self jobInformation];
+      summary2 = [jobInformation summary];
+      downloadedDescriptor = [(MADAutoAssetStagerParam *)self downloadedDescriptor];
+      if (downloadedDescriptor)
       {
-        v41 = [(MADAutoAssetStagerParam *)self downloadedDescriptor];
-        v31 = [v41 summary];
+        downloadedDescriptor2 = [(MADAutoAssetStagerParam *)self downloadedDescriptor];
+        summary3 = [downloadedDescriptor2 summary];
       }
 
       else
       {
-        v31 = @"N";
+        summary3 = @"N";
       }
 
-      v35 = [(MADAutoAssetStagerParam *)self operationError];
-      if (v35)
+      operationError = [(MADAutoAssetStagerParam *)self operationError];
+      if (operationError)
       {
         v36 = [NSString alloc];
-        v37 = [(MADAutoAssetStagerParam *)self operationError];
-        v38 = [MADAutoAssetClientRequest responseErrorSummary:v37];
+        operationError2 = [(MADAutoAssetStagerParam *)self operationError];
+        v38 = [MADAutoAssetClientRequest responseErrorSummary:operationError2];
         v39 = [v36 initWithFormat:@"operationError:%@", v38];
-        v12 = [v30 initWithFormat:@"STAGING_JOB_INFORMATION|jobInformation:%@|downloadedDescriptor:%@[%@]", v18, v31, v39];
+        v12 = [v30 initWithFormat:@"STAGING_JOB_INFORMATION|jobInformation:%@|downloadedDescriptor:%@[%@]", summary2, summary3, v39];
       }
 
       else
       {
-        v12 = [v30 initWithFormat:@"STAGING_JOB_INFORMATION|jobInformation:%@|downloadedDescriptor:%@[%@]", v18, v31, @"SUCCESS"];
+        v12 = [v30 initWithFormat:@"STAGING_JOB_INFORMATION|jobInformation:%@|downloadedDescriptor:%@[%@]", summary2, summary3, @"SUCCESS"];
       }
 
-      if (v19)
+      if (downloadedDescriptor)
       {
       }
     }
 
     else
     {
-      if (v4 != 3)
+      if (paramType != 3)
       {
         v8 = [NSString alloc];
-        v6 = [(MADAutoAssetStagerParam *)self assetType];
-        v7 = [v8 initWithFormat:@"STAGING_ASSET_TYPE|assetType:%@", v6];
+        stagingClientRequest = [(MADAutoAssetStagerParam *)self assetType];
+        v7 = [v8 initWithFormat:@"STAGING_ASSET_TYPE|assetType:%@", stagingClientRequest];
         goto LABEL_28;
       }
 
       p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt;
       v16 = [NSString alloc];
-      v17 = [(MADAutoAssetStagerParam *)self autoAssetCatalog];
-      v18 = [v17 safeSummary];
-      v19 = [(MADAutoAssetStagerParam *)self operationError];
-      if (v19)
+      jobInformation = [(MADAutoAssetStagerParam *)self autoAssetCatalog];
+      summary2 = [jobInformation safeSummary];
+      downloadedDescriptor = [(MADAutoAssetStagerParam *)self operationError];
+      if (downloadedDescriptor)
       {
         v20 = [NSString alloc];
         p_weak_ivar_lyt = [(MADAutoAssetStagerParam *)self operationError];
@@ -352,10 +352,10 @@ LABEL_25:
         v21 = @"SUCCESS";
       }
 
-      v34 = [(MADAutoAssetStagerParam *)self baseForStagingDescriptors];
-      v12 = [v16 initWithFormat:@"STAGING_AUTO_ASSET_CATALOG|autoAssetCatalog:%@[%@]|baseForStaging:%ld", v18, v21, objc_msgSend(v34, "count")];
+      baseForStagingDescriptors = [(MADAutoAssetStagerParam *)self baseForStagingDescriptors];
+      v12 = [v16 initWithFormat:@"STAGING_AUTO_ASSET_CATALOG|autoAssetCatalog:%@[%@]|baseForStaging:%ld", summary2, v21, objc_msgSend(baseForStagingDescriptors, "count")];
 
-      if (v19)
+      if (downloadedDescriptor)
       {
       }
     }
@@ -363,54 +363,54 @@ LABEL_25:
 
   else
   {
-    if (v4 <= 7)
+    if (paramType <= 7)
     {
-      if (v4 == 5)
+      if (paramType == 5)
       {
         v32 = [NSString alloc];
-        v6 = [(MADAutoAssetStagerParam *)self assetSelector];
-        v10 = [v6 summary];
-        v14 = [v32 initWithFormat:@"STAGING_ASSET_SELECTOR|assetSelector:%@", v10];
+        stagingClientRequest = [(MADAutoAssetStagerParam *)self assetSelector];
+        summary = [stagingClientRequest summary];
+        v14 = [v32 initWithFormat:@"STAGING_ASSET_SELECTOR|assetSelector:%@", summary];
       }
 
       else
       {
-        if (v4 != 6)
+        if (paramType != 6)
         {
           v5 = [NSString alloc];
-          v6 = [(MADAutoAssetStagerParam *)self entriesWhenTargeting];
-          v7 = [v5 initWithFormat:@"STAGING_SET_TARGETS|entriesWhenTargeting:%ld", objc_msgSend(v6, "count")];
+          stagingClientRequest = [(MADAutoAssetStagerParam *)self entriesWhenTargeting];
+          v7 = [v5 initWithFormat:@"STAGING_SET_TARGETS|entriesWhenTargeting:%ld", objc_msgSend(stagingClientRequest, "count")];
 LABEL_28:
           v12 = v7;
           goto LABEL_29;
         }
 
         v22 = [NSString alloc];
-        v6 = [(MADAutoAssetStagerParam *)self setIdentifierConfiguration];
-        v10 = [v6 summary];
-        v14 = [v22 initWithFormat:@"SET_CONFIGURATION|setConfiguration:%@", v10];
+        stagingClientRequest = [(MADAutoAssetStagerParam *)self setIdentifierConfiguration];
+        summary = [stagingClientRequest summary];
+        v14 = [v22 initWithFormat:@"SET_CONFIGURATION|setConfiguration:%@", summary];
       }
 
       goto LABEL_25;
     }
 
-    if (v4 == 8)
+    if (paramType == 8)
     {
       v33 = [NSString alloc];
-      v6 = [(MADAutoAssetStagerParam *)self timerUUID];
-      v7 = [v33 initWithFormat:@"TIMER_UUID|timerUUID:%@", v6];
+      stagingClientRequest = [(MADAutoAssetStagerParam *)self timerUUID];
+      v7 = [v33 initWithFormat:@"TIMER_UUID|timerUUID:%@", stagingClientRequest];
       goto LABEL_28;
     }
 
-    if (v4 != 9)
+    if (paramType != 9)
     {
-      if (v4 == 10)
+      if (paramType == 10)
       {
         v9 = [NSString alloc];
-        v6 = [(MADAutoAssetStagerParam *)self stagingClientRequest];
-        v10 = [v6 summary];
-        v11 = [(MADAutoAssetStagerParam *)self baseForStagingDescriptors];
-        v12 = [v9 initWithFormat:@"STAGING_CLIENT_DOWNLOAD_REQUEST|stagingClientRequest:%@|baseForStaging:%ld", v10, objc_msgSend(v11, "count")];
+        stagingClientRequest = [(MADAutoAssetStagerParam *)self stagingClientRequest];
+        summary = [stagingClientRequest summary];
+        baseForStagingDescriptors2 = [(MADAutoAssetStagerParam *)self baseForStagingDescriptors];
+        v12 = [v9 initWithFormat:@"STAGING_CLIENT_DOWNLOAD_REQUEST|stagingClientRequest:%@|baseForStaging:%ld", summary, objc_msgSend(baseForStagingDescriptors2, "count")];
 
 LABEL_26:
 LABEL_29:
@@ -424,16 +424,16 @@ LABEL_30:
     }
 
     v42 = [NSString alloc];
-    v17 = [(MADAutoAssetStagerParam *)self alreadyDownloaded];
-    v23 = [v17 count];
-    v18 = [(MADAutoAssetStagerParam *)self setConfigurations];
-    v24 = [v18 count];
-    v25 = [(MADAutoAssetStagerParam *)self entriesWhenTargeting];
-    v26 = [v25 count];
-    v27 = [(MADAutoAssetStagerParam *)self setTargets];
-    v28 = [v27 count];
-    v29 = [(MADAutoAssetStagerParam *)self scheduledJobs];
-    v12 = [v42 initWithFormat:@"STAGING_ALREADY_DOWNLOADED|alreadyDownloaded:%ld|setConfigurations:%ld|entriesWhenTargeting:%ld|setTargets:%ld|scheduledJobs:%ld", v23, v24, v26, v28, objc_msgSend(v29, "count")];
+    jobInformation = [(MADAutoAssetStagerParam *)self alreadyDownloaded];
+    v23 = [jobInformation count];
+    summary2 = [(MADAutoAssetStagerParam *)self setConfigurations];
+    v24 = [summary2 count];
+    entriesWhenTargeting = [(MADAutoAssetStagerParam *)self entriesWhenTargeting];
+    v26 = [entriesWhenTargeting count];
+    setTargets = [(MADAutoAssetStagerParam *)self setTargets];
+    v28 = [setTargets count];
+    scheduledJobs = [(MADAutoAssetStagerParam *)self scheduledJobs];
+    v12 = [v42 initWithFormat:@"STAGING_ALREADY_DOWNLOADED|alreadyDownloaded:%ld|setConfigurations:%ld|entriesWhenTargeting:%ld|setTargets:%ld|scheduledJobs:%ld", v23, v24, v26, v28, objc_msgSend(scheduledJobs, "count")];
   }
 
 LABEL_42:
@@ -443,12 +443,12 @@ LABEL_42:
 
 - (void)updateSafeSummary
 {
-  v3 = [(MADAutoAssetStagerParam *)self _summary];
-  [(MADAutoAssetStagerParam *)self setParamSafeSummary:v3];
+  _summary = [(MADAutoAssetStagerParam *)self _summary];
+  [(MADAutoAssetStagerParam *)self setParamSafeSummary:_summary];
 
-  v4 = [(MADAutoAssetStagerParam *)self paramSafeSummary];
+  paramSafeSummary = [(MADAutoAssetStagerParam *)self paramSafeSummary];
 
-  if (!v4)
+  if (!paramSafeSummary)
   {
 
     [(MADAutoAssetStagerParam *)self setParamSafeSummary:&stru_4BD3F0];

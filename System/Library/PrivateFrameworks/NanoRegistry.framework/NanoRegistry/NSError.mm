@@ -1,12 +1,12 @@
 @interface NSError
-+ (uint64_t)nr_isPlistObject:(uint64_t)a1;
-+ (void)nr_filteredPlistArray:(uint64_t)a1;
-+ (void)nr_filteredPlistDictionary:(uint64_t)a1;
++ (uint64_t)nr_isPlistObject:(uint64_t)object;
++ (void)nr_filteredPlistArray:(uint64_t)array;
++ (void)nr_filteredPlistDictionary:(uint64_t)dictionary;
 @end
 
 @implementation NSError
 
-+ (void)nr_filteredPlistDictionary:(uint64_t)a1
++ (void)nr_filteredPlistDictionary:(uint64_t)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -115,7 +115,7 @@ LABEL_26:
   return v3;
 }
 
-+ (uint64_t)nr_isPlistObject:(uint64_t)a1
++ (uint64_t)nr_isPlistObject:(uint64_t)object
 {
   v15 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -183,7 +183,7 @@ uint64_t __47__NSError_NRSafeDescription__nr_isPlistObject___block_invoke()
   return MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-+ (void)nr_filteredPlistArray:(uint64_t)a1
++ (void)nr_filteredPlistArray:(uint64_t)array
 {
   v24 = *MEMORY[0x1E69E9840];
   v2 = a2;

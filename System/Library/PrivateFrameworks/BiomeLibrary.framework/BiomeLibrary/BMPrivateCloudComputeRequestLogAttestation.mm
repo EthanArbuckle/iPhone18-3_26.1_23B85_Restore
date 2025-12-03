@@ -1,38 +1,38 @@
 @interface BMPrivateCloudComputeRequestLogAttestation
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMPrivateCloudComputeRequestLogAttestation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMPrivateCloudComputeRequestLogAttestation)initWithNode:(id)a3 nodeState:(id)a4 attestationBundle:(id)a5 proxiedBy:(id)a6 requestExecutionLogFinalized:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMPrivateCloudComputeRequestLogAttestation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMPrivateCloudComputeRequestLogAttestation)initWithNode:(id)node nodeState:(id)state attestationBundle:(id)bundle proxiedBy:(id)by requestExecutionLogFinalized:(id)finalized;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPrivateCloudComputeRequestLogAttestation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
-    v7 = [v5 node];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    node = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
+    node2 = [v5 node];
+    v8 = node2;
+    if (node == node2)
     {
     }
 
     else
     {
-      v9 = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
-      v10 = [v5 node];
-      v11 = [v9 isEqual:v10];
+      node3 = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
+      node4 = [v5 node];
+      v11 = [node3 isEqual:node4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
-    v14 = [v5 nodeState];
-    v15 = v14;
-    if (v13 == v14)
+    nodeState = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
+    nodeState2 = [v5 nodeState];
+    v15 = nodeState2;
+    if (nodeState == nodeState2)
     {
     }
 
     else
     {
-      v16 = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
-      v17 = [v5 nodeState];
-      v18 = [v16 isEqual:v17];
+      nodeState3 = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
+      nodeState4 = [v5 nodeState];
+      v18 = [nodeState3 isEqual:nodeState4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
-    v20 = [v5 attestationBundle];
-    v21 = v20;
-    if (v19 == v20)
+    attestationBundle = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
+    attestationBundle2 = [v5 attestationBundle];
+    v21 = attestationBundle2;
+    if (attestationBundle == attestationBundle2)
     {
     }
 
     else
     {
-      v22 = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
-      v23 = [v5 attestationBundle];
-      v24 = [v22 isEqual:v23];
+      attestationBundle3 = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
+      attestationBundle4 = [v5 attestationBundle];
+      v24 = [attestationBundle3 isEqual:attestationBundle4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
-    v26 = [v5 proxiedBy];
-    v27 = v26;
-    if (v25 == v26)
+    proxiedBy = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
+    proxiedBy2 = [v5 proxiedBy];
+    v27 = proxiedBy2;
+    if (proxiedBy == proxiedBy2)
     {
     }
 
     else
     {
-      v28 = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
-      v29 = [v5 proxiedBy];
-      v30 = [v28 isEqual:v29];
+      proxiedBy3 = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
+      proxiedBy4 = [v5 proxiedBy];
+      v30 = [proxiedBy3 isEqual:proxiedBy4];
 
       if (!v30)
       {
@@ -105,8 +105,8 @@
 
     if (-[BMPrivateCloudComputeRequestLogAttestation hasRequestExecutionLogFinalized](self, "hasRequestExecutionLogFinalized") && [v5 hasRequestExecutionLogFinalized])
     {
-      v31 = [(BMPrivateCloudComputeRequestLogAttestation *)self requestExecutionLogFinalized];
-      v12 = v31 ^ [v5 requestExecutionLogFinalized] ^ 1;
+      requestExecutionLogFinalized = [(BMPrivateCloudComputeRequestLogAttestation *)self requestExecutionLogFinalized];
+      v12 = requestExecutionLogFinalized ^ [v5 requestExecutionLogFinalized] ^ 1;
 LABEL_25:
 
       goto LABEL_26;
@@ -126,10 +126,10 @@ LABEL_26:
 - (id)jsonDictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
-  v4 = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
-  v5 = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
-  v6 = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
+  node = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
+  nodeState = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
+  attestationBundle = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
+  proxiedBy = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
   if ([(BMPrivateCloudComputeRequestLogAttestation *)self hasRequestExecutionLogFinalized])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMPrivateCloudComputeRequestLogAttestation requestExecutionLogFinalized](self, "requestExecutionLogFinalized")}];
@@ -141,59 +141,59 @@ LABEL_26:
   }
 
   v18[0] = @"node";
-  v8 = v3;
-  if (!v3)
+  null = node;
+  if (!node)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v8;
-  v22[0] = v8;
+  v17 = null;
+  v22[0] = null;
   v18[1] = @"nodeState";
-  v9 = v4;
-  if (!v4)
+  null2 = nodeState;
+  if (!nodeState)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[1] = v9;
+  v22[1] = null2;
   v18[2] = @"attestationBundle";
-  if (v5)
+  if (attestationBundle)
   {
-    v23 = v5;
+    v23 = attestationBundle;
     v19 = @"attestationString";
-    v10 = v5;
+    null4 = attestationBundle;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
-    v23 = v16;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v23 = null3;
     v19 = @"attestationString";
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v10;
+  v24 = null4;
   v20 = @"proxiedBy";
-  v11 = v6;
-  if (!v6)
+  null5 = proxiedBy;
+  if (!proxiedBy)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v11;
+  v25 = null5;
   v21 = @"requestExecutionLogFinalized";
-  v12 = v7;
+  null6 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v12;
+  v26 = null6;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v18 count:6];
   if (v7)
   {
-    if (v6)
+    if (proxiedBy)
     {
       goto LABEL_17;
     }
@@ -202,10 +202,10 @@ LABEL_26:
   else
   {
 
-    if (v6)
+    if (proxiedBy)
     {
 LABEL_17:
-      if (v5)
+      if (attestationBundle)
       {
         goto LABEL_18;
       }
@@ -214,17 +214,17 @@ LABEL_17:
     }
   }
 
-  if (v5)
+  if (attestationBundle)
   {
 LABEL_18:
-    if (v4)
+    if (nodeState)
     {
       goto LABEL_19;
     }
 
 LABEL_26:
 
-    if (v3)
+    if (node)
     {
       goto LABEL_20;
     }
@@ -234,13 +234,13 @@ LABEL_26:
 
 LABEL_25:
 
-  if (!v4)
+  if (!nodeState)
   {
     goto LABEL_26;
   }
 
 LABEL_19:
-  if (v3)
+  if (node)
   {
     goto LABEL_20;
   }
@@ -253,29 +253,29 @@ LABEL_20:
   return v13;
 }
 
-- (BMPrivateCloudComputeRequestLogAttestation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMPrivateCloudComputeRequestLogAttestation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"node"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"node"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"nodeState"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"nodeState"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v17 = 0;
           goto LABEL_27;
         }
 
-        v38 = a4;
+        errorCopy = error;
         v28 = objc_alloc(MEMORY[0x1E696ABC0]);
         v29 = *MEMORY[0x1E698F240];
         v48 = *MEMORY[0x1E696A578];
@@ -284,7 +284,7 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
         v41 = 0;
         v17 = 0;
-        *v38 = [v28 initWithDomain:v29 code:2 userInfo:v11];
+        *errorCopy = [v28 initWithDomain:v29 code:2 userInfo:v11];
         goto LABEL_26;
       }
 
@@ -296,9 +296,9 @@ LABEL_4:
       v41 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"attestationBundle"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"attestationBundle"];
     v39 = v8;
-    v40 = self;
+    selfCopy = self;
     if (v10)
     {
       v11 = v10;
@@ -306,7 +306,7 @@ LABEL_4:
 
     else
     {
-      v11 = [v6 objectForKeyedSubscript:@"attestationString"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"attestationString"];
       if (!v11)
       {
         goto LABEL_13;
@@ -319,14 +319,14 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
           v17 = 0;
           goto LABEL_26;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v46 = *MEMORY[0x1E696A578];
@@ -336,11 +336,11 @@ LABEL_4:
         v27 = [v25 initWithDomain:v26 code:2 userInfo:v12];
         v18 = 0;
         v17 = 0;
-        *v24 = v27;
+        *errorCopy2 = v27;
 LABEL_25:
 
         v8 = v39;
-        self = v40;
+        self = selfCopy;
 LABEL_26:
 
         goto LABEL_27;
@@ -349,14 +349,14 @@ LABEL_26:
       v11 = v11;
       v37 = v11;
 LABEL_16:
-      v12 = [v6 objectForKeyedSubscript:@"proxiedBy"];
-      v13 = a4;
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"proxiedBy"];
+      errorCopy3 = error;
       if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v14 = 0;
             v17 = 0;
@@ -372,7 +372,7 @@ LABEL_16:
           v31 = [v35 initWithDomain:v30 code:2 userInfo:v15];
           v14 = 0;
           v17 = 0;
-          *v13 = v31;
+          *errorCopy3 = v31;
           goto LABEL_23;
         }
 
@@ -384,13 +384,13 @@ LABEL_16:
         v14 = 0;
       }
 
-      v15 = [v6 objectForKeyedSubscript:@"requestExecutionLogFinalized"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"requestExecutionLogFinalized"];
       if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v13)
+          if (errorCopy3)
           {
             v36 = objc_alloc(MEMORY[0x1E696ABC0]);
             v34 = *MEMORY[0x1E698F240];
@@ -398,7 +398,7 @@ LABEL_16:
             v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"requestExecutionLogFinalized"];
             v43 = v32;
             v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-            *v13 = [v36 initWithDomain:v34 code:2 userInfo:v33];
+            *errorCopy3 = [v36 initWithDomain:v34 code:2 userInfo:v33];
           }
 
           v16 = 0;
@@ -414,8 +414,8 @@ LABEL_16:
         v16 = 0;
       }
 
-      v17 = [(BMPrivateCloudComputeRequestLogAttestation *)v40 initWithNode:v39 nodeState:v41 attestationBundle:v37 proxiedBy:v14 requestExecutionLogFinalized:v16];
-      v40 = v17;
+      v17 = [(BMPrivateCloudComputeRequestLogAttestation *)selfCopy initWithNode:v39 nodeState:v41 attestationBundle:v37 proxiedBy:v14 requestExecutionLogFinalized:v16];
+      selfCopy = v17;
 LABEL_23:
 
 LABEL_24:
@@ -435,14 +435,14 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v17 = 0;
     goto LABEL_28;
   }
 
-  v21 = a4;
+  errorCopy4 = error;
   v22 = objc_alloc(MEMORY[0x1E696ABC0]);
   v23 = *MEMORY[0x1E698F240];
   v50 = *MEMORY[0x1E696A578];
@@ -451,7 +451,7 @@ LABEL_13:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
   v8 = 0;
   v17 = 0;
-  *v21 = [v22 initWithDomain:v23 code:2 userInfo:v9];
+  *errorCopy4 = [v22 initWithDomain:v23 code:2 userInfo:v9];
 LABEL_27:
 
 LABEL_28:
@@ -463,50 +463,50 @@ LABEL_28:
 {
   v3 = objc_opt_new();
   [(BMPrivateCloudComputeRequestLogAttestation *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_node)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_nodeState)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_attestationBundle)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_proxiedBy)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasRequestExecutionLogFinalized)
   {
     requestExecutionLogFinalized = self->_requestExecutionLogFinalized;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMPrivateCloudComputeRequestLogAttestation;
   v5 = [(BMEventBase *)&v29 init];
@@ -515,12 +515,12 @@ LABEL_28:
     goto LABEL_46;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -531,18 +531,18 @@ LABEL_28:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -560,9 +560,9 @@ LABEL_28:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -609,18 +609,18 @@ LABEL_37:
             while (1)
             {
               v30 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v30 & 0x7F) << v16;
@@ -638,7 +638,7 @@ LABEL_37:
               }
             }
 
-            v22 = (v18 != 0) & ~[v4 hasError];
+            v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_43:
             v5->_requestExecutionLogFinalized = v22;
             goto LABEL_38;
@@ -651,13 +651,13 @@ LABEL_43:
       }
 
 LABEL_38:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_45:
     v27 = 0;
@@ -675,37 +675,37 @@ LABEL_46:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
-  v5 = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
-  v6 = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
-  v7 = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
+  node = [(BMPrivateCloudComputeRequestLogAttestation *)self node];
+  nodeState = [(BMPrivateCloudComputeRequestLogAttestation *)self nodeState];
+  attestationBundle = [(BMPrivateCloudComputeRequestLogAttestation *)self attestationBundle];
+  proxiedBy = [(BMPrivateCloudComputeRequestLogAttestation *)self proxiedBy];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMPrivateCloudComputeRequestLogAttestation requestExecutionLogFinalized](self, "requestExecutionLogFinalized")}];
-  v9 = [v3 initWithFormat:@"BMPrivateCloudComputeRequestLogAttestation with node: %@, nodeState: %@, attestationBundle: %@, proxiedBy: %@, requestExecutionLogFinalized: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMPrivateCloudComputeRequestLogAttestation with node: %@, nodeState: %@, attestationBundle: %@, proxiedBy: %@, requestExecutionLogFinalized: %@", node, nodeState, attestationBundle, proxiedBy, v8];
 
   return v9;
 }
 
-- (BMPrivateCloudComputeRequestLogAttestation)initWithNode:(id)a3 nodeState:(id)a4 attestationBundle:(id)a5 proxiedBy:(id)a6 requestExecutionLogFinalized:(id)a7
+- (BMPrivateCloudComputeRequestLogAttestation)initWithNode:(id)node nodeState:(id)state attestationBundle:(id)bundle proxiedBy:(id)by requestExecutionLogFinalized:(id)finalized
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nodeCopy = node;
+  stateCopy = state;
+  bundleCopy = bundle;
+  byCopy = by;
+  finalizedCopy = finalized;
   v20.receiver = self;
   v20.super_class = BMPrivateCloudComputeRequestLogAttestation;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_node, a3);
-    objc_storeStrong(&v17->_nodeState, a4);
-    objc_storeStrong(&v17->_attestationBundle, a5);
-    objc_storeStrong(&v17->_proxiedBy, a6);
-    if (v16)
+    objc_storeStrong(&v17->_node, node);
+    objc_storeStrong(&v17->_nodeState, state);
+    objc_storeStrong(&v17->_attestationBundle, bundle);
+    objc_storeStrong(&v17->_proxiedBy, by);
+    if (finalizedCopy)
     {
       v17->_hasRequestExecutionLogFinalized = 1;
-      v17->_requestExecutionLogFinalized = [v16 BOOLValue];
+      v17->_requestExecutionLogFinalized = [finalizedCopy BOOLValue];
     }
 
     else
@@ -759,9 +759,9 @@ LABEL_46:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -769,8 +769,8 @@ LABEL_46:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMPrivateCloudComputeRequestLogAttestation alloc] initByReadFrom:v7];
     v4 = v8;

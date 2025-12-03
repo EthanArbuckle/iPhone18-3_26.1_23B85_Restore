@@ -5,7 +5,7 @@
 - (_PXGAssetImageCacheEntry)init;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setCgImage:(CGImage *)a3;
+- (void)setCgImage:(CGImage *)image;
 @end
 
 @implementation _PXGAssetImageCacheEntry
@@ -59,8 +59,8 @@
 
 - (void)prepareForReuse
 {
-  v3 = [(_PXGAssetImageCacheEntry *)self requestIDs];
-  [v3 removeAllIndexes];
+  requestIDs = [(_PXGAssetImageCacheEntry *)self requestIDs];
+  [requestIDs removeAllIndexes];
 
   [(_PXGAssetImageCacheEntry *)self setAsset:0];
   [(_PXGAssetImageCacheEntry *)self setCgImage:0];
@@ -70,15 +70,15 @@
   [(_PXGAssetImageCacheEntry *)self setTargetSize:v4, v5];
 }
 
-- (void)setCgImage:(CGImage *)a3
+- (void)setCgImage:(CGImage *)image
 {
   cgImage = self->_cgImage;
-  if (cgImage != a3)
+  if (cgImage != image)
   {
     CGImageRelease(cgImage);
-    self->_cgImage = a3;
+    self->_cgImage = image;
 
-    CGImageRetain(a3);
+    CGImageRetain(image);
   }
 }
 

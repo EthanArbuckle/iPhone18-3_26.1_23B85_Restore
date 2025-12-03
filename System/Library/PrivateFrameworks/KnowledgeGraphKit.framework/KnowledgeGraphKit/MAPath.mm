@@ -1,60 +1,60 @@
 @interface MAPath
 + (id)path;
-+ (id)pathWithEdges:(id)a3;
-- (BOOL)containsNode:(id)a3;
-- (BOOL)isEqualToPath:(id)a3;
++ (id)pathWithEdges:(id)edges;
+- (BOOL)containsNode:(id)node;
+- (BOOL)isEqualToPath:(id)path;
 - (MAPath)init;
 - (double)edgesWeight;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)edgeAtIndex:(unint64_t)a3;
-- (id)edgesForLabel:(id)a3;
+- (id)edgeAtIndex:(unint64_t)index;
+- (id)edgesForLabel:(id)label;
 - (id)graphRepresentation;
-- (id)nodeAtIndex:(unint64_t)a3;
-- (id)nodesForLabel:(id)a3;
+- (id)nodeAtIndex:(unint64_t)index;
+- (id)nodesForLabel:(id)label;
 - (id)sourceNode;
 - (id)targetNode;
 - (unint64_t)nodesCount;
-- (void)addFirstEdge:(id)a3;
-- (void)addLastEdge:(id)a3;
-- (void)enumerateWithBlock:(id)a3;
+- (void)addFirstEdge:(id)edge;
+- (void)addLastEdge:(id)edge;
+- (void)enumerateWithBlock:(id)block;
 - (void)removeAllEdges;
 - (void)removeFirstEdge;
 - (void)removeLastEdge;
-- (void)setEdges:(id)a3;
+- (void)setEdges:(id)edges;
 @end
 
 @implementation MAPath
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v18 = 0;
-  v5 = [(MAPath *)self sourceNode];
+  sourceNode = [(MAPath *)self sourceNode];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = self->_edges;
-  v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  targetNode = self->_edges;
+  v7 = [(NSMutableArray *)targetNode countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v15;
 LABEL_3:
     v10 = 0;
-    v11 = v5;
+    v11 = sourceNode;
     while (1)
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(targetNode);
       }
 
       v12 = *(*(&v14 + 1) + 8 * v10);
-      v4[2](v4, v11, v12, &v18);
-      v5 = [v12 oppositeNode:{v11, v14}];
+      blockCopy[2](blockCopy, v11, v12, &v18);
+      sourceNode = [v12 oppositeNode:{v11, v14}];
 
       if (v18)
       {
@@ -62,10 +62,10 @@ LABEL_3:
       }
 
       ++v10;
-      v11 = v5;
+      v11 = sourceNode;
       if (v8 == v10)
       {
-        v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [(NSMutableArray *)targetNode countByEnumeratingWithState:&v14 objects:v19 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -80,10 +80,10 @@ LABEL_3:
   {
 LABEL_9:
 
-    v6 = [(MAPath *)self targetNode];
-    if (v6)
+    targetNode = [(MAPath *)self targetNode];
+    if (targetNode)
     {
-      v4[2](v4, v6, 0, &v18);
+      blockCopy[2](blockCopy, targetNode, 0, &v18);
     }
   }
 
@@ -93,14 +93,14 @@ LABEL_9:
 - (id)graphRepresentation
 {
   v3 = +[MAGraph graph];
-  v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __29__MAPath_graphRepresentation__block_invoke;
   v15[3] = &unk_2797FF360;
   v5 = v3;
   v16 = v5;
-  v6 = v4;
+  v6 = strongToStrongObjectsMapTable;
   v17 = v6;
   [(MAPath *)self enumerateWithBlock:v15];
   v12[0] = MEMORY[0x277D85DD0];
@@ -162,18 +162,18 @@ void __29__MAPath_graphRepresentation__block_invoke_2(uint64_t a1, uint64_t a2, 
   objc_sync_exit(obj);
 }
 
-- (void)setEdges:(id)a3
+- (void)setEdges:(id)edges
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableArray *)v5->_edges removeAllObjects];
+  edgesCopy = edges;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_edges removeAllObjects];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v4;
+  v6 = edgesCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -188,7 +188,7 @@ void __29__MAPath_graphRepresentation__block_invoke_2(uint64_t a1, uint64_t a2, 
           objc_enumerationMutation(v6);
         }
 
-        [(MAPath *)v5 addLastEdge:*(*(&v11 + 1) + 8 * v9++), v11];
+        [(MAPath *)selfCopy addLastEdge:*(*(&v11 + 1) + 8 * v9++), v11];
       }
 
       while (v7 != v9);
@@ -198,7 +198,7 @@ void __29__MAPath_graphRepresentation__block_invoke_2(uint64_t a1, uint64_t a2, 
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -222,81 +222,81 @@ void __29__MAPath_graphRepresentation__block_invoke_2(uint64_t a1, uint64_t a2, 
   objc_sync_exit(obj);
 }
 
-- (void)addLastEdge:(id)a3
+- (void)addLastEdge:(id)edge
 {
-  v14 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)v4->_edges count];
-  edges = v4->_edges;
+  edgeCopy = edge;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableArray *)selfCopy->_edges count];
+  edges = selfCopy->_edges;
   if (v5)
   {
-    v7 = [(NSMutableArray *)edges lastObject];
-    v8 = [v14 commonNode:v7];
+    lastObject = [(NSMutableArray *)edges lastObject];
+    v8 = [edgeCopy commonNode:lastObject];
     if (v8)
     {
-      [(NSMutableArray *)v4->_edges addObject:v14];
-      nodes = v4->_nodes;
-      v10 = [v14 oppositeNode:v8];
+      [(NSMutableArray *)selfCopy->_edges addObject:edgeCopy];
+      nodes = selfCopy->_nodes;
+      v10 = [edgeCopy oppositeNode:v8];
       [(NSMutableSet *)nodes addObject:v10];
     }
 
     else
     {
-      [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidPath" format:{@"Edge does not connect to %@", v7}];
+      [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidPath" format:{@"Edge does not connect to %@", lastObject}];
     }
   }
 
   else
   {
-    [(NSMutableArray *)edges addObject:v14];
-    v11 = v4->_nodes;
-    v12 = [v14 sourceNode];
-    [(NSMutableSet *)v11 addObject:v12];
+    [(NSMutableArray *)edges addObject:edgeCopy];
+    v11 = selfCopy->_nodes;
+    sourceNode = [edgeCopy sourceNode];
+    [(NSMutableSet *)v11 addObject:sourceNode];
 
-    v13 = v4->_nodes;
-    v7 = [v14 targetNode];
-    [(NSMutableSet *)v13 addObject:v7];
+    v13 = selfCopy->_nodes;
+    lastObject = [edgeCopy targetNode];
+    [(NSMutableSet *)v13 addObject:lastObject];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addFirstEdge:(id)a3
+- (void)addFirstEdge:(id)edge
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)v4->_edges count];
-  edges = v4->_edges;
+  edgeCopy = edge;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableArray *)selfCopy->_edges count];
+  edges = selfCopy->_edges;
   if (v5)
   {
-    v7 = [(NSMutableArray *)edges firstObject];
-    v8 = [v9 commonNode:v7];
+    firstObject = [(NSMutableArray *)edges firstObject];
+    v8 = [edgeCopy commonNode:firstObject];
 
     if (v8)
     {
-      [(NSMutableArray *)v4->_edges insertObject:v9 atIndex:0];
+      [(NSMutableArray *)selfCopy->_edges insertObject:edgeCopy atIndex:0];
     }
 
     else
     {
-      [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidPath" format:{@"Edge does not connect to %@", v7}];
+      [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidPath" format:{@"Edge does not connect to %@", firstObject}];
     }
   }
 
   else
   {
-    [(NSMutableArray *)edges addObject:v9];
+    [(NSMutableArray *)edges addObject:edgeCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)containsNode:(id)a3
+- (BOOL)containsNode:(id)node
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodeCopy = node;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -317,8 +317,8 @@ void __29__MAPath_graphRepresentation__block_invoke_2(uint64_t a1, uint64_t a2, 
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 sourceNode];
-        if ([v11 isEqual:v4])
+        sourceNode = [v10 sourceNode];
+        if ([sourceNode isEqual:nodeCopy])
         {
 
 LABEL_13:
@@ -326,8 +326,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v12 = [v10 targetNode];
-        v13 = [v12 isEqual:v4];
+        targetNode = [v10 targetNode];
+        v13 = [targetNode isEqual:nodeCopy];
 
         if (v13)
         {
@@ -410,48 +410,48 @@ LABEL_14:
   return result;
 }
 
-- (id)edgeAtIndex:(unint64_t)a3
+- (id)edgeAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_edges count]<= a3)
+  if ([(NSMutableArray *)self->_edges count]<= index)
   {
-    [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidIndex" format:{@"Out of bounds path edge index %ld", a3}];
+    [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidIndex" format:{@"Out of bounds path edge index %ld", index}];
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_edges objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_edges objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (id)nodeAtIndex:(unint64_t)a3
+- (id)nodeAtIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
-    v5 = [(MAPath *)self sourceNode];
+    sourceNode = [(MAPath *)self sourceNode];
     goto LABEL_5;
   }
 
-  if ([(MAPath *)self nodesCount]- 1 == a3)
+  if ([(MAPath *)self nodesCount]- 1 == index)
   {
-    v5 = [(MAPath *)self targetNode];
+    sourceNode = [(MAPath *)self targetNode];
 LABEL_5:
-    v6 = v5;
+    sourceNode2 = sourceNode;
     goto LABEL_6;
   }
 
-  if ([(MAPath *)self nodesCount]> a3)
+  if ([(MAPath *)self nodesCount]> index)
   {
-    v8 = [(NSMutableArray *)self->_edges objectAtIndex:a3];
-    v9 = [(NSMutableArray *)self->_edges objectAtIndex:a3 - 1];
-    v6 = [v8 sourceNode];
-    v10 = [v9 sourceNode];
-    if (([v6 isSameNodeAsNode:v10] & 1) == 0)
+    v8 = [(NSMutableArray *)self->_edges objectAtIndex:index];
+    v9 = [(NSMutableArray *)self->_edges objectAtIndex:index - 1];
+    sourceNode2 = [v8 sourceNode];
+    sourceNode3 = [v9 sourceNode];
+    if (([sourceNode2 isSameNodeAsNode:sourceNode3] & 1) == 0)
     {
-      v11 = [v9 targetNode];
-      v12 = [v6 isSameNodeAsNode:v11];
+      targetNode = [v9 targetNode];
+      v12 = [sourceNode2 isSameNodeAsNode:targetNode];
 
       if (v12)
       {
@@ -461,31 +461,31 @@ LABEL_14:
       }
 
       [v8 targetNode];
-      v6 = v10 = v6;
+      sourceNode2 = sourceNode3 = sourceNode2;
     }
 
     goto LABEL_14;
   }
 
-  [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidIndex" format:{@"Out of bounds path node index %ld", a3}];
-  v6 = 0;
+  [MEMORY[0x277CBEAD8] raise:@"MAPathInvalidIndex" format:{@"Out of bounds path node index %ld", index}];
+  sourceNode2 = 0;
 LABEL_6:
 
-  return v6;
+  return sourceNode2;
 }
 
-- (id)edgesForLabel:(id)a3
+- (id)edgesForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = [MEMORY[0x277CBEB58] set];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __24__MAPath_edgesForLabel___block_invoke;
   v13 = &unk_2797FF360;
-  v14 = v4;
+  v14 = labelCopy;
   v15 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = labelCopy;
   [(MAPath *)self enumerateWithBlock:&v10];
   v8 = [MEMORY[0x277CBEB98] setWithSet:{v6, v10, v11, v12, v13}];
 
@@ -509,18 +509,18 @@ void __24__MAPath_edgesForLabel___block_invoke(uint64_t a1, void *a2, void *a3)
   }
 }
 
-- (id)nodesForLabel:(id)a3
+- (id)nodesForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = [MEMORY[0x277CBEB58] set];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __24__MAPath_nodesForLabel___block_invoke;
   v13 = &unk_2797FF360;
-  v14 = v4;
+  v14 = labelCopy;
   v15 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = labelCopy;
   [(MAPath *)self enumerateWithBlock:&v10];
   v8 = [MEMORY[0x277CBEB98] setWithSet:{v6, v10, v11, v12, v13}];
 
@@ -548,27 +548,27 @@ void __24__MAPath_nodesForLabel___block_invoke(uint64_t a1, void *a2, void *a3)
   if ([(NSMutableArray *)self->_edges count])
   {
     v3 = [(NSMutableArray *)self->_edges count];
-    v4 = [(NSMutableArray *)self->_edges lastObject];
-    v5 = v4;
+    lastObject = [(NSMutableArray *)self->_edges lastObject];
+    v5 = lastObject;
     if (v3 == 1)
     {
-      v6 = [v4 targetNode];
+      targetNode = [lastObject targetNode];
     }
 
     else
     {
       v7 = [(NSMutableArray *)self->_edges objectAtIndex:[(NSMutableArray *)self->_edges count]- 2];
       v8 = [v5 commonNode:v7];
-      v6 = [v5 oppositeNode:v8];
+      targetNode = [v5 oppositeNode:v8];
     }
   }
 
   else
   {
-    v6 = 0;
+    targetNode = 0;
   }
 
-  return v6;
+  return targetNode;
 }
 
 - (id)sourceNode
@@ -576,32 +576,32 @@ void __24__MAPath_nodesForLabel___block_invoke(uint64_t a1, void *a2, void *a3)
   if ([(NSMutableArray *)self->_edges count])
   {
     v3 = [(NSMutableArray *)self->_edges count];
-    v4 = [(NSMutableArray *)self->_edges firstObject];
-    v5 = v4;
+    firstObject = [(NSMutableArray *)self->_edges firstObject];
+    v5 = firstObject;
     if (v3 == 1)
     {
-      v6 = [v4 sourceNode];
+      sourceNode = [firstObject sourceNode];
     }
 
     else
     {
       v7 = [(NSMutableArray *)self->_edges objectAtIndex:1];
       v8 = [v5 commonNode:v7];
-      v6 = [v5 oppositeNode:v8];
+      sourceNode = [v5 oppositeNode:v8];
     }
   }
 
   else
   {
-    v6 = 0;
+    sourceNode = 0;
   }
 
-  return v6;
+  return sourceNode;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:self->_edges];
   v6 = v4[1];
   v4[1] = v5;
@@ -609,11 +609,11 @@ void __24__MAPath_nodesForLabel___block_invoke(uint64_t a1, void *a2, void *a3)
   return v4;
 }
 
-- (BOOL)isEqualToPath:(id)a3
+- (BOOL)isEqualToPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MAPath *)self nodesCount];
-  if (v5 != [v4 nodesCount] || (v6 = -[MAPath edgesCount](self, "edgesCount"), v6 != objc_msgSend(v4, "edgesCount")))
+  pathCopy = path;
+  nodesCount = [(MAPath *)self nodesCount];
+  if (nodesCount != [pathCopy nodesCount] || (v6 = -[MAPath edgesCount](self, "edgesCount"), v6 != objc_msgSend(pathCopy, "edgesCount")))
   {
 LABEL_12:
     v14 = 0;
@@ -626,7 +626,7 @@ LABEL_12:
     do
     {
       v8 = [(MAPath *)self nodeAtIndex:v7];
-      v9 = [v4 nodeAtIndex:v7];
+      v9 = [pathCopy nodeAtIndex:v7];
       v10 = [v8 isEqualToNode:v9];
 
       if ((v10 & 1) == 0)
@@ -644,7 +644,7 @@ LABEL_12:
     do
     {
       v12 = [(MAPath *)self edgeAtIndex:v11];
-      v13 = [v4 edgeAtIndex:v11];
+      v13 = [pathCopy edgeAtIndex:v11];
       v14 = [v12 isEqualToEdge:v13];
 
       if ((v14 & 1) == 0)
@@ -670,12 +670,12 @@ LABEL_13:
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __21__MAPath_description__block_invoke;
   v6[3] = &unk_2797FF338;
-  v4 = v3;
+  v4 = string;
   v7 = v4;
   [(MAPath *)self enumerateWithBlock:v6];
 
@@ -735,11 +735,11 @@ void __21__MAPath_description__block_invoke(uint64_t a1, void *a2, void *a3)
   return v2;
 }
 
-+ (id)pathWithEdges:(id)a3
++ (id)pathWithEdges:(id)edges
 {
-  v3 = a3;
+  edgesCopy = edges;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setEdges:v3];
+  [v4 setEdges:edgesCopy];
 
   return v4;
 }

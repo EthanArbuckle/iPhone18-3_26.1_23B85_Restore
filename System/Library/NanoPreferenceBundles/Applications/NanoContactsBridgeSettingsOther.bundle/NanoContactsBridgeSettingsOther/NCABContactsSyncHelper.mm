@@ -1,17 +1,17 @@
 @interface NCABContactsSyncHelper
 + (id)localDeviceContactsCount;
-+ (int)_contactsCountStatusForFamilyMember:(id)a3;
-+ (int)contactsCountStatusForFamilyMember:(id)a3 contactsSyncAndNetworkAccessEnabled:(BOOL)a4;
-+ (void)triggerContactsSyncForFamilyMember:(id)a3;
++ (int)_contactsCountStatusForFamilyMember:(id)member;
++ (int)contactsCountStatusForFamilyMember:(id)member contactsSyncAndNetworkAccessEnabled:(BOOL)enabled;
++ (void)triggerContactsSyncForFamilyMember:(id)member;
 @end
 
 @implementation NCABContactsSyncHelper
 
-+ (int)contactsCountStatusForFamilyMember:(id)a3 contactsSyncAndNetworkAccessEnabled:(BOOL)a4
++ (int)contactsCountStatusForFamilyMember:(id)member contactsSyncAndNetworkAccessEnabled:(BOOL)enabled
 {
-  if (a4)
+  if (enabled)
   {
-    return [a1 _contactsCountStatusForFamilyMember:a3];
+    return [self _contactsCountStatusForFamilyMember:member];
   }
 
   else
@@ -20,15 +20,15 @@
   }
 }
 
-+ (int)_contactsCountStatusForFamilyMember:(id)a3
++ (int)_contactsCountStatusForFamilyMember:(id)member
 {
-  v3 = [CNContactStore storeForFamilyMember:a3];
+  v3 = [CNContactStore storeForFamilyMember:member];
   v4 = [[CNContactFetchRequest alloc] initWithKeysToFetch:&__NSArray0__struct];
   v20 = 0;
   v5 = [v3 contactCountForFetchRequest:v4 error:&v20];
   v6 = v20;
-  v7 = [v5 unsignedIntegerValue];
-  v8 = v7 != 0;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  v8 = unsignedIntegerValue != 0;
   v9 = NCABCSH_ContactCounts_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -37,13 +37,13 @@
     v23 = 2114;
     v24 = v5;
     v25 = 1024;
-    v26 = v7 != 0;
+    v26 = unsignedIntegerValue != 0;
     v27 = 2114;
     v28 = v6;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}s - contactCountNumber: %{public}@ -> hasContacts: %d, error: %{public}@", buf, 0x26u);
   }
 
-  if (v6 || v7)
+  if (v6 || unsignedIntegerValue)
   {
     v10 = v5;
     if (v6)
@@ -59,8 +59,8 @@
     v10 = [v3 contactCountForFetchRequest:v4 error:&v19];
     v6 = v19;
 
-    v11 = [v10 unsignedIntegerValue];
-    v8 = v11 != 0;
+    unsignedIntegerValue2 = [v10 unsignedIntegerValue];
+    v8 = unsignedIntegerValue2 != 0;
     v12 = NCABCSH_ContactCounts_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -69,7 +69,7 @@
       v23 = 2114;
       v24 = v10;
       v25 = 1024;
-      v26 = v11 != 0;
+      v26 = unsignedIntegerValue2 != 0;
       v27 = 2114;
       v28 = v6;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}s - RETRIED with shouldFailIfAccountNotYetSynced; contactCountNumber: %{public}@ -> hasContacts: %d, error: %{public}@", buf, 0x26u);
@@ -94,16 +94,16 @@ LABEL_12:
     goto LABEL_24;
   }
 
-  v14 = [v6 domain];
-  if (![v14 isEqual:CNErrorDomain])
+  domain = [v6 domain];
+  if (![domain isEqual:CNErrorDomain])
   {
 
     goto LABEL_20;
   }
 
-  v15 = [v6 code];
+  code = [v6 code];
 
-  if (v15 != &stru_3D8.segname[7])
+  if (code != &stru_3D8.segname[7])
   {
 LABEL_20:
     v16 = NCABCSH_ContactCounts_log();
@@ -163,16 +163,16 @@ LABEL_24:
   return v4;
 }
 
-+ (void)triggerContactsSyncForFamilyMember:(id)a3
++ (void)triggerContactsSyncForFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = NCABCSH_ContactCounts_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
     v6 = "+[NCABContactsSyncHelper triggerContactsSyncForFamilyMember:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = memberCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: %@", &v5, 0x16u);
   }
 

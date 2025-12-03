@@ -24,9 +24,9 @@
 - (TUContactsDataSource)contactsDataSource
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 contactStore];
+  contactStore = [v2 contactStore];
 
-  return v3;
+  return contactStore;
 }
 
 - (TUCallProviderManager)providerManager

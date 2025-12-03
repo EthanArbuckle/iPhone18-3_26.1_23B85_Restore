@@ -1,13 +1,13 @@
 @interface NGMMessageHasher
-+ (id)computeHashForMessage:(id)a3;
++ (id)computeHashForMessage:(id)message;
 @end
 
 @implementation NGMMessageHasher
 
-+ (id)computeHashForMessage:(id)a3
++ (id)computeHashForMessage:(id)message
 {
-  v3 = a3;
-  v4 = [[NGMPBOuterMessage alloc] initWithData:v3];
+  messageCopy = message;
+  v4 = [[NGMPBOuterMessage alloc] initWithData:messageCopy];
 
   if (!v4)
   {
@@ -16,25 +16,25 @@
 
   if ([(NGMPBOuterMessage *)v4 hasEncryptedPayload])
   {
-    v5 = [(NGMPBOuterMessage *)v4 encryptedPayload];
-    if (v5 && [(NGMPBOuterMessage *)v4 hasEphemeralPubKey])
+    encryptedPayload = [(NGMPBOuterMessage *)v4 encryptedPayload];
+    if (encryptedPayload && [(NGMPBOuterMessage *)v4 hasEphemeralPubKey])
     {
-      v6 = [(NGMPBOuterMessage *)v4 ephemeralPubKey];
-      if (v6 && [(NGMPBOuterMessage *)v4 hasSignature])
+      ephemeralPubKey = [(NGMPBOuterMessage *)v4 ephemeralPubKey];
+      if (ephemeralPubKey && [(NGMPBOuterMessage *)v4 hasSignature])
       {
-        v7 = [(NGMPBOuterMessage *)v4 signature];
+        signature = [(NGMPBOuterMessage *)v4 signature];
 
-        if (v7)
+        if (signature)
         {
-          v8 = objc_alloc_init(MEMORY[0x277CBEB28]);
-          v9 = [(NGMPBOuterMessage *)v4 encryptedPayload];
-          [v8 appendData:v9];
+          tetraMessage2 = objc_alloc_init(MEMORY[0x277CBEB28]);
+          encryptedPayload2 = [(NGMPBOuterMessage *)v4 encryptedPayload];
+          [tetraMessage2 appendData:encryptedPayload2];
 
-          v10 = [(NGMPBOuterMessage *)v4 ephemeralPubKey];
-          [v8 appendData:v10];
+          ephemeralPubKey2 = [(NGMPBOuterMessage *)v4 ephemeralPubKey];
+          [tetraMessage2 appendData:ephemeralPubKey2];
 
           v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:32];
-          CC_SHA256([v8 bytes], objc_msgSend(v8, "length"), objc_msgSend(v11, "bytes"));
+          CC_SHA256([tetraMessage2 bytes], objc_msgSend(tetraMessage2, "length"), objc_msgSend(v11, "bytes"));
 LABEL_14:
 
           goto LABEL_16;
@@ -48,12 +48,12 @@ LABEL_14:
 LABEL_11:
   if ([(NGMPBOuterMessage *)v4 hasTetraMessage])
   {
-    v12 = [(NGMPBOuterMessage *)v4 tetraMessage];
+    tetraMessage = [(NGMPBOuterMessage *)v4 tetraMessage];
 
-    if (v12)
+    if (tetraMessage)
     {
-      v8 = [(NGMPBOuterMessage *)v4 tetraMessage];
-      v11 = [_TtC17MessageProtection18TetraMessageHasher hashMessage:v8];
+      tetraMessage2 = [(NGMPBOuterMessage *)v4 tetraMessage];
+      v11 = [_TtC17MessageProtection18TetraMessageHasher hashMessage:tetraMessage2];
       goto LABEL_14;
     }
   }

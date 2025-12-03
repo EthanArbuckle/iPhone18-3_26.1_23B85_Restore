@@ -1,23 +1,23 @@
 @interface ABNamePredicate
 - (ABNamePredicate)init;
 - (BOOL)isValid;
-- (id)_matchClauseForColumns:(id)a3 requiringAllTerms:(BOOL)a4;
+- (id)_matchClauseForColumns:(id)columns requiringAllTerms:(BOOL)terms;
 - (id)_personNameKeys;
 - (id)_personNonNameKeys;
-- (id)ab_metadataForMatchingRow:(CPSqliteStatement *)a3 columnOffset:(int)a4;
-- (id)emphasizedExcerptStringForMatchString:(id)a3;
+- (id)ab_metadataForMatchingRow:(CPSqliteStatement *)row columnOffset:(int)offset;
+- (id)emphasizedExcerptStringForMatchString:(id)string;
 - (id)predicateFormat;
-- (id)queryJoinsInCompound:(BOOL)a3 predicateIdentifier:(int)a4;
-- (id)querySelectPropertiesForPredicateIdentifier:(int)a3;
-- (id)queryWhereStringForPredicateIdentifier:(int)a3;
-- (void)ab_bindJoinClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5;
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5;
+- (id)queryJoinsInCompound:(BOOL)compound predicateIdentifier:(int)identifier;
+- (id)querySelectPropertiesForPredicateIdentifier:(int)identifier;
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier;
+- (void)ab_bindJoinClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier;
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier;
 - (void)dealloc;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setAddressBook:(void *)a3;
-- (void)setGroup:(void *)a3;
-- (void)setName:(id)a3;
-- (void)setSource:(void *)a3;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setAddressBook:(void *)book;
+- (void)setGroup:(void *)group;
+- (void)setName:(id)name;
+- (void)setSource:(void *)source;
 - (void)tokenizations;
 @end
 
@@ -60,63 +60,63 @@
   [(ABPredicate *)&v5 dealloc];
 }
 
-- (void)setAddressBook:(void *)a3
+- (void)setAddressBook:(void *)book
 {
   addressBook = self->_addressBook;
-  if (addressBook != a3)
+  if (addressBook != book)
   {
     if (addressBook)
     {
       CFRelease(addressBook);
     }
 
-    if (a3)
+    if (book)
     {
-      CFRetain(a3);
+      CFRetain(book);
     }
 
-    self->_addressBook = a3;
+    self->_addressBook = book;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   name = self->_name;
-  if (name != a3)
+  if (name != name)
   {
 
-    self->_name = [a3 copy];
+    self->_name = [name copy];
     tokenizations = self->_tokenizations;
 
     ABTokenListRemoveAllTokens(tokenizations);
   }
 }
 
-- (void)setGroup:(void *)a3
+- (void)setGroup:(void *)group
 {
-  if (a3)
+  if (group)
   {
-    a3 = [MEMORY[0x1E695DEC8] arrayWithObject:?];
+    group = [MEMORY[0x1E695DEC8] arrayWithObject:?];
   }
 
-  [(ABNamePredicate *)self setGroups:a3];
+  [(ABNamePredicate *)self setGroups:group];
 }
 
-- (void)setSource:(void *)a3
+- (void)setSource:(void *)source
 {
-  if (a3)
+  if (source)
   {
-    a3 = [MEMORY[0x1E695DEC8] arrayWithObject:?];
+    source = [MEMORY[0x1E695DEC8] arrayWithObject:?];
   }
 
-  [(ABNamePredicate *)self setSources:a3];
+  [(ABNamePredicate *)self setSources:source];
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
   if ([(ABNamePredicate *)self addressBook])
   {
-    if (!a3)
+    if (!identifier)
     {
       return;
     }
@@ -125,13 +125,13 @@
   else
   {
     [(ABNamePredicate *)a2 setAccountIdentifier:?];
-    if (!a3)
+    if (!identifier)
     {
       return;
     }
   }
 
-  v6 = ABAddressBookCopyArrayOfAllSourcesWithAccountIdentifier([(ABNamePredicate *)self addressBook], a3);
+  v6 = ABAddressBookCopyArrayOfAllSourcesWithAccountIdentifier([(ABNamePredicate *)self addressBook], identifier);
   if (v6)
   {
     v7 = v6;
@@ -153,16 +153,16 @@
 
 - (BOOL)isValid
 {
-  v2 = [(ABNamePredicate *)self tokenizations];
-  if (v2)
+  tokenizations = [(ABNamePredicate *)self tokenizations];
+  if (tokenizations)
   {
-    LOBYTE(v2) = ABTokenListGetCount(v2) > 0;
+    LOBYTE(tokenizations) = ABTokenListGetCount(tokenizations) > 0;
   }
 
-  return v2;
+  return tokenizations;
 }
 
-- (id)ab_metadataForMatchingRow:(CPSqliteStatement *)a3 columnOffset:(int)a4
+- (id)ab_metadataForMatchingRow:(CPSqliteStatement *)row columnOffset:(int)offset
 {
   v20[3] = *MEMORY[0x1E69E9840];
   if (!ABCFTSIsEnabled())
@@ -170,11 +170,11 @@
     return 0;
   }
 
-  v7 = sqlite3_column_int(a3->var1, a4);
-  v8 = *sqlite3_column_blob(a3->var1, a4 + 1);
+  v7 = sqlite3_column_int(row->var1, offset);
+  v8 = *sqlite3_column_blob(row->var1, offset + 1);
   if ([(ABNamePredicate *)self generateExceprts])
   {
-    v9 = sqlite3_column_text(a3->var1, a4 + 2);
+    v9 = sqlite3_column_text(row->var1, offset + 2);
     if (v9)
     {
       v10 = v9;
@@ -213,10 +213,10 @@
   return [v12 dictionaryWithObjects:v13 forKeys:v14 count:v15];
 }
 
-- (id)emphasizedExcerptStringForMatchString:(id)a3
+- (id)emphasizedExcerptStringForMatchString:(id)string
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v6 = [a3 componentsSeparatedByString:@"\n"];
+  v6 = [string componentsSeparatedByString:@"\n"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke;
@@ -257,9 +257,9 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
   [*(a1 + 40) appendAttributedString:v6];
 }
 
-- (id)querySelectPropertiesForPredicateIdentifier:(int)a3
+- (id)querySelectPropertiesForPredicateIdentifier:(int)identifier
 {
-  v3 = *&a3;
+  v3 = *&identifier;
   v10[2] = *MEMORY[0x1E69E9840];
   if (!ABCFTSIsEnabled())
   {
@@ -288,15 +288,15 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
   return [v5 arrayWithObjects:v6 count:v7];
 }
 
-- (id)_matchClauseForColumns:(id)a3 requiringAllTerms:(BOOL)a4
+- (id)_matchClauseForColumns:(id)columns requiringAllTerms:(BOOL)terms
 {
-  v4 = a4;
+  termsCopy = terms;
   v7 = [MEMORY[0x1E696AD60] stringWithString:@" MATCH ' "];
-  v8 = [(ABNamePredicate *)self tokenizations];
-  if (ABTokenListGetCount(v8))
+  tokenizations = [(ABNamePredicate *)self tokenizations];
+  if (ABTokenListGetCount(tokenizations))
   {
     v9 = 0;
-    if (v4)
+    if (termsCopy)
     {
       v10 = @" AND ";
     }
@@ -314,7 +314,7 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
       }
 
       objc_msgSend(v7, "appendFormat:", @"(");
-      if ([a3 count])
+      if ([columns count])
       {
         v11 = 0;
         do
@@ -324,63 +324,63 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
             [v7 appendFormat:@" OR "];
           }
 
-          [v7 appendFormat:@"%@:' || ? || '", objc_msgSend(a3, "objectAtIndex:", v11++)];
+          [v7 appendFormat:@"%@:' || ? || '", objc_msgSend(columns, "objectAtIndex:", v11++)];
         }
 
-        while (v11 < [a3 count]);
+        while (v11 < [columns count]);
       }
 
       [v7 appendFormat:@""]);
       ++v9;
     }
 
-    while (v9 < ABTokenListGetCount(v8));
+    while (v9 < ABTokenListGetCount(tokenizations));
   }
 
   [v7 appendFormat:@"'"];
   return v7;
 }
 
-- (id)queryJoinsInCompound:(BOOL)a3 predicateIdentifier:(int)a4
+- (id)queryJoinsInCompound:(BOOL)compound predicateIdentifier:(int)identifier
 {
-  v4 = *&a4;
+  v4 = *&identifier;
   v17[1] = *MEMORY[0x1E69E9840];
   if (!ABCFTSIsEnabled())
   {
     return 0;
   }
 
-  v6 = [MEMORY[0x1E696AD60] string];
-  [v6 appendFormat:@"LEFT JOIN "];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"LEFT JOIN "];
   if ([(ABNamePredicate *)self matchPersonOrCompanyNamesExclusively])
   {
-    v7 = [(ABNamePredicate *)self _personNameKeys];
-    objc_msgSend(v6, "appendFormat:", @"(select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonFullTextSearch join ABPerson on ABPerson.rowid=ABPersonFullTextSearch.rowid WHERE ABPersonFullTextSearch.Organization MATCH ? and Kind=%@"), kABPersonKindOrganization;
-    [v6 appendFormat:@" UNION "];
-    [v6 appendFormat:@"select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonFullTextSearch join ABPerson on ABPerson.rowid=ABPersonFullTextSearch.rowid WHERE ABPersonFullTextSearch "];
-    [v6 appendString:{-[ABNamePredicate _matchClauseForColumns:requiringAllTerms:](self, "_matchClauseForColumns:requiringAllTerms:", v7, 1)}];
-    [v6 appendFormat:@" AND Kind=%@"], kABPersonKindPerson);
+    _personNameKeys = [(ABNamePredicate *)self _personNameKeys];
+    objc_msgSend(string, "appendFormat:", @"(select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonFullTextSearch join ABPerson on ABPerson.rowid=ABPersonFullTextSearch.rowid WHERE ABPersonFullTextSearch.Organization MATCH ? and Kind=%@"), kABPersonKindOrganization;
+    [string appendFormat:@" UNION "];
+    [string appendFormat:@"select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonFullTextSearch join ABPerson on ABPerson.rowid=ABPersonFullTextSearch.rowid WHERE ABPersonFullTextSearch "];
+    [string appendString:{-[ABNamePredicate _matchClauseForColumns:requiringAllTerms:](self, "_matchClauseForColumns:requiringAllTerms:", _personNameKeys, 1)}];
+    [string appendFormat:@" AND Kind=%@"], kABPersonKindPerson);
   }
 
   else if (self->_matchSmartDialerFormatsExclusively)
   {
-    objc_msgSend(v6, "appendFormat:", @"(select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonSmartDialerFullTextSearch), ?) as Rank, ab_cf_tokenizer_sd_matched_properties(matchinfo(ABPersonSmartDialerFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonSmartDialerFullTextSearch join ABPerson on ABPerson.rowid=ABPersonSmartDialerFullTextSearch.rowid WHERE ABPersonSmartDialerFullTextSearch MATCH ?");
-    [v6 appendFormat:@" UNION "];
-    [v6 appendFormat:@"select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonFullTextSearch join ABPerson on ABPerson.rowid=ABPersonFullTextSearch.rowid WHERE ABPersonFullTextSearch.Phone MATCH ?"], v16);
+    objc_msgSend(string, "appendFormat:", @"(select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonSmartDialerFullTextSearch), ?) as Rank, ab_cf_tokenizer_sd_matched_properties(matchinfo(ABPersonSmartDialerFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonSmartDialerFullTextSearch join ABPerson on ABPerson.rowid=ABPersonSmartDialerFullTextSearch.rowid WHERE ABPersonSmartDialerFullTextSearch MATCH ?");
+    [string appendFormat:@" UNION "];
+    [string appendFormat:@"select ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, 1 as HasFTSMatch from ABPersonFullTextSearch join ABPerson on ABPerson.rowid=ABPersonFullTextSearch.rowid WHERE ABPersonFullTextSearch.Phone MATCH ?"], v16);
   }
 
   else
   {
-    v9 = [(ABNamePredicate *)self tokenizations];
-    v10 = [(ABNamePredicate *)self generateExceprts];
+    tokenizations = [(ABNamePredicate *)self tokenizations];
+    generateExceprts = [(ABNamePredicate *)self generateExceprts];
     v11 = &stru_1F2FE2718;
     v12 = @"snippet(ABPersonFullTextSearch, '\n', '\n', '…', ab_cf_tokenizer_select_snippet_column(matchinfo(ABPersonFullTextSearch)), -5) as MatchedSnippet,";
-    if (!v10)
+    if (!generateExceprts)
     {
       v12 = &stru_1F2FE2718;
     }
 
-    objc_msgSend(v6, "appendFormat:", @"(select fts.ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, %@ 1 as HasFTSMatch from ABPersonFullTextSearch fts "), v12;
+    objc_msgSend(string, "appendFormat:", @"(select fts.ROWID as RankRow, ab_cf_tokenizer_namerank(matchinfo(ABPersonFullTextSearch), ?) as Rank, ab_cf_tokenizer_matched_properties(matchinfo(ABPersonFullTextSearch), ?) as MatchedColumns, %@ 1 as HasFTSMatch from ABPersonFullTextSearch fts "), v12;
     if ([(NSArray *)[(ABNamePredicate *)self scopedContactIdentifiers] count])
     {
       v11 = objc_msgSend(MEMORY[0x1E696AD60], "stringWithString:", @"fts.rowid IN(");
@@ -409,36 +409,36 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
       [(__CFString *)v11 appendString:@" AND"]);
     }
 
-    [v6 appendFormat:@"where %@ ABPersonFullTextSearch MATCH ' ' || ? || ' ", v11];
+    [string appendFormat:@"where %@ ABPersonFullTextSearch MATCH ' ' || ? || ' ", v11];
     if (!self->_matchWholeWords)
     {
-      objc_msgSend(v6, "appendString:", @" OR (");
-      if (ABTokenListGetCount(v9) >= 1)
+      objc_msgSend(string, "appendString:", @" OR (");
+      if (ABTokenListGetCount(tokenizations) >= 1)
       {
         v15 = 0;
         do
         {
           if (v15)
           {
-            [v6 appendString:@" AND "];
+            [string appendString:@" AND "];
           }
 
-          [v6 appendString:@" ' || ? || ' "];
+          [string appendString:@" ' || ? || ' "];
           ++v15;
         }
 
-        while (v15 < ABTokenListGetCount(v9));
+        while (v15 < ABTokenListGetCount(tokenizations));
       }
 
-      [v6 appendString:@""]);
+      [string appendString:@""]);
     }
 
-    [v6 appendString:@" '"];
-    [v6 appendString:@""]);
+    [string appendString:@" '"];
+    [string appendString:@""]);
   }
 
-  [v6 appendFormat:@" AS RankResults_%d ON abp.ROWID=RankResults_%d.RankRow ", v4, v4];
-  v17[0] = v6;
+  [string appendFormat:@" AS RankResults_%d ON abp.ROWID=RankResults_%d.RankRow ", v4, v4];
+  v17[0] = string;
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
 }
 
@@ -476,9 +476,9 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
   return [v15 arrayWithObjects:{v14, v13, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, ABCPersonNameForProperty(kABPersonDateProperty), @"SupplementalCompositeNameTerms", 0}];
 }
 
-- (id)queryWhereStringForPredicateIdentifier:(int)a3
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier
 {
-  v3 = *&a3;
+  v3 = *&identifier;
   v5 = objc_opt_new();
   tokenizationSortKeys = self->_tokenizationSortKeys;
   if (tokenizationSortKeys)
@@ -538,59 +538,59 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
   return v5;
 }
 
-- (void)ab_bindJoinClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5
+- (void)ab_bindJoinClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier
 {
   v83 = *MEMORY[0x1E69E9840];
   if (ABCFTSIsEnabled())
   {
-    v6 = [(ABNamePredicate *)self tokenizations];
-    v7 = [MEMORY[0x1E696AD60] string];
-    Count = ABTokenListGetCount(v6);
+    tokenizations = [(ABNamePredicate *)self tokenizations];
+    string = [MEMORY[0x1E696AD60] string];
+    Count = ABTokenListGetCount(tokenizations);
     Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
     CFAutorelease(Mutable);
     if (Count)
     {
       for (i = 0; i != Count; ++i)
       {
-        TokenAtIndex = ABTokenListGetTokenAtIndex(v6, i);
-        v12 = [(ABNamePredicate *)self matchWholeWords];
+        TokenAtIndex = ABTokenListGetTokenAtIndex(tokenizations, i);
+        matchWholeWords = [(ABNamePredicate *)self matchWholeWords];
         v13 = @"*";
-        if (v12)
+        if (matchWholeWords)
         {
           v13 = &stru_1F2FE2718;
         }
 
-        [v7 appendFormat:@"##&%@%@ ", TokenAtIndex, v13];
+        [string appendFormat:@"##&%@%@ ", TokenAtIndex, v13];
         CFArrayAppendValue(Mutable, TokenAtIndex);
       }
     }
 
     v14 = Mutable;
     v76 = Count;
-    if ([v7 length])
+    if ([string length])
     {
       if (self->_matchPersonOrCompanyNamesExclusively)
       {
-        var1 = a3->var1;
-        v16 = *a4;
+        var1 = statement->var1;
+        v16 = *offset;
         v17 = CFRetain(Mutable);
         v18 = MEMORY[0x1E695D7C0];
         sqlite3_bind_blob(var1, v16, v17, 8, MEMORY[0x1E695D7C0]);
-        LODWORD(var1) = *a4 + 1;
-        *a4 = var1;
-        v19 = a3->var1;
+        LODWORD(var1) = *offset + 1;
+        *offset = var1;
+        v19 = statement->var1;
         v20 = CFRetain(Mutable);
         sqlite3_bind_blob(v19, var1, v20, 8, v18);
-        LODWORD(var1) = *a4 + 1;
-        *a4 = var1;
-        v21 = a3->var1;
+        LODWORD(var1) = *offset + 1;
+        *offset = var1;
+        v21 = statement->var1;
         v22 = _CPCreateUTF8StringFromCFString();
         sqlite3_bind_text(v21, var1, v22, -1, MEMORY[0x1E69E9B38]);
-        ++*a4;
-        v23 = [(ABNamePredicate *)self _personNameKeys];
-        v24 = [v23 count];
+        ++*offset;
+        _personNameKeys = [(ABNamePredicate *)self _personNameKeys];
+        v24 = [_personNameKeys count];
         v25 = CFArrayCreateMutable(0, v24 * Count, MEMORY[0x1E695E9C0]);
-        if ([v23 count])
+        if ([_personNameKeys count])
         {
           v26 = 0;
           do
@@ -601,22 +601,22 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
             ++v26;
           }
 
-          while (v26 < [v23 count]);
+          while (v26 < [_personNameKeys count]);
         }
 
-        v27 = a3->var1;
-        v28 = *a4;
+        v27 = statement->var1;
+        v28 = *offset;
         v29 = CFRetain(v25);
         v30 = MEMORY[0x1E695D7C0];
         sqlite3_bind_blob(v27, v28, v29, 8, MEMORY[0x1E695D7C0]);
-        LODWORD(v27) = *a4 + 1;
-        *a4 = v27;
-        v31 = a3->var1;
+        LODWORD(v27) = *offset + 1;
+        *offset = v27;
+        v31 = statement->var1;
         v32 = CFRetain(v25);
         v33 = v31;
-        v34 = v23;
+        v34 = _personNameKeys;
         sqlite3_bind_blob(v33, v27, v32, 8, v30);
-        ++*a4;
+        ++*offset;
         CFRelease(v25);
         if (Count)
         {
@@ -627,27 +627,27 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
               v36 = 0;
               do
               {
-                v37 = ABTokenListGetTokenAtIndex(v6, j);
+                v37 = ABTokenListGetTokenAtIndex(tokenizations, j);
                 v38 = MEMORY[0x1E696AEC0];
-                v39 = [(ABNamePredicate *)self matchWholeWords];
+                matchWholeWords2 = [(ABNamePredicate *)self matchWholeWords];
                 v40 = @"*";
-                if (v39)
+                if (matchWholeWords2)
                 {
                   v40 = &stru_1F2FE2718;
                 }
 
                 [v38 stringWithFormat:@"##&%@%@ ", v37, v40];
-                v41 = a3->var1;
-                v42 = *a4;
+                v41 = statement->var1;
+                v42 = *offset;
                 v43 = _CPCreateUTF8StringFromCFString();
                 v44 = v41;
-                v34 = v23;
+                v34 = _personNameKeys;
                 sqlite3_bind_text(v44, v42, v43, -1, MEMORY[0x1E69E9B38]);
-                ++*a4;
+                ++*offset;
                 ++v36;
               }
 
-              while (v36 < [v23 count]);
+              while (v36 < [_personNameKeys count]);
             }
           }
         }
@@ -656,41 +656,41 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
       else
       {
         matchSmartDialerFormatsExclusively = self->_matchSmartDialerFormatsExclusively;
-        v46 = a3->var1;
-        v47 = *a4;
+        v46 = statement->var1;
+        v47 = *offset;
         v48 = CFRetain(v14);
         v49 = MEMORY[0x1E695D7C0];
         sqlite3_bind_blob(v46, v47, v48, 8, MEMORY[0x1E695D7C0]);
-        LODWORD(v46) = *a4 + 1;
-        *a4 = v46;
-        v50 = a3->var1;
+        LODWORD(v46) = *offset + 1;
+        *offset = v46;
+        v50 = statement->var1;
         v51 = CFRetain(v14);
         sqlite3_bind_blob(v50, v46, v51, 8, v49);
-        v52 = *a4 + 1;
-        *a4 = v52;
+        v52 = *offset + 1;
+        *offset = v52;
         if (matchSmartDialerFormatsExclusively)
         {
-          v53 = a3->var1;
+          v53 = statement->var1;
           v54 = _CPCreateUTF8StringFromCFString();
           v55 = MEMORY[0x1E69E9B38];
           sqlite3_bind_text(v53, v52, v54, -1, MEMORY[0x1E69E9B38]);
-          LODWORD(v53) = *a4 + 1;
-          *a4 = v53;
-          v56 = a3->var1;
+          LODWORD(v53) = *offset + 1;
+          *offset = v53;
+          v56 = statement->var1;
           v57 = CFRetain(v14);
           v58 = MEMORY[0x1E695D7C0];
           sqlite3_bind_blob(v56, v53, v57, 8, MEMORY[0x1E695D7C0]);
-          LODWORD(v53) = *a4 + 1;
-          *a4 = v53;
-          v59 = a3->var1;
+          LODWORD(v53) = *offset + 1;
+          *offset = v53;
+          v59 = statement->var1;
           v60 = CFRetain(v14);
           sqlite3_bind_blob(v59, v53, v60, 8, v58);
-          LODWORD(v53) = *a4 + 1;
-          *a4 = v53;
-          v61 = a3->var1;
+          LODWORD(v53) = *offset + 1;
+          *offset = v53;
+          v61 = statement->var1;
           v62 = _CPCreateUTF8StringFromCFString();
           sqlite3_bind_text(v61, v53, v62, -1, v55);
-          ++*a4;
+          ++*offset;
         }
 
         else
@@ -701,8 +701,8 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
             v81 = 0u;
             v78 = 0u;
             v79 = 0u;
-            v63 = [(ABNamePredicate *)self scopedContactIdentifiers];
-            v64 = [(NSArray *)v63 countByEnumeratingWithState:&v78 objects:v82 count:16];
+            scopedContactIdentifiers = [(ABNamePredicate *)self scopedContactIdentifiers];
+            v64 = [(NSArray *)scopedContactIdentifiers countByEnumeratingWithState:&v78 objects:v82 count:16];
             if (v64)
             {
               v65 = v64;
@@ -713,36 +713,36 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
                 {
                   if (*v79 != v66)
                   {
-                    objc_enumerationMutation(v63);
+                    objc_enumerationMutation(scopedContactIdentifiers);
                   }
 
-                  sqlite3_bind_int(a3->var1, *a4, [*(*(&v78 + 1) + 8 * k) intValue]);
-                  ++*a4;
+                  sqlite3_bind_int(statement->var1, *offset, [*(*(&v78 + 1) + 8 * k) intValue]);
+                  ++*offset;
                 }
 
-                v65 = [(NSArray *)v63 countByEnumeratingWithState:&v78 objects:v82 count:16];
+                v65 = [(NSArray *)scopedContactIdentifiers countByEnumeratingWithState:&v78 objects:v82 count:16];
               }
 
               while (v65);
             }
           }
 
-          v68 = a3->var1;
-          v69 = *a4;
+          v68 = statement->var1;
+          v69 = *offset;
           v70 = _CPCreateUTF8StringFromCFString();
           sqlite3_bind_text(v68, v69, v70, -1, MEMORY[0x1E69E9B38]);
-          ++*a4;
+          ++*offset;
           if (Count && !self->_matchWholeWords)
           {
             v71 = 0;
             do
             {
-              [MEMORY[0x1E696AEC0] stringWithFormat:@"##&%@ ", ABTokenListGetTokenAtIndex(v6, v71)];
-              v72 = a3->var1;
-              v73 = *a4;
+              [MEMORY[0x1E696AEC0] stringWithFormat:@"##&%@ ", ABTokenListGetTokenAtIndex(tokenizations, v71)];
+              v72 = statement->var1;
+              v73 = *offset;
               v74 = _CPCreateUTF8StringFromCFString();
               sqlite3_bind_text(v72, v73, v74, -1, MEMORY[0x1E69E9B38]);
-              ++*a4;
+              ++*offset;
               ++v71;
             }
 
@@ -754,9 +754,9 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
   }
 }
 
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier
 {
-  if ([(NSArray *)self->_groups count:a3])
+  if ([(NSArray *)self->_groups count:statement])
   {
     v8 = 1;
   }
@@ -766,19 +766,19 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
     v8 = [(NSArray *)self->_sources count]!= 0;
   }
 
-  ABAddressBookBindWhereClauseForLinkedPeopleInGroupsAndSources(v8, [(ABNamePredicate *)self groups], [(ABNamePredicate *)self sources], a3->var1, a4);
+  ABAddressBookBindWhereClauseForLinkedPeopleInGroupsAndSources(v8, [(ABNamePredicate *)self groups], [(ABNamePredicate *)self sources], statement->var1, offset);
   if ((ABCFTSIsEnabled() & 1) == 0)
   {
     tokenizationSortKeys = self->_tokenizationSortKeys;
 
-    bindTokenizations(a3, tokenizationSortKeys, a4);
+    bindTokenizations(statement, tokenizationSortKeys, offset);
   }
 }
 
 - (id)predicateFormat
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ABNamePredicate *)self name];
+  name = [(ABNamePredicate *)self name];
   v5 = @"YES";
   if ([(ABNamePredicate *)self matchWholeWords])
   {
@@ -815,7 +815,7 @@ void __57__ABNamePredicate_emphasizedExcerptStringForMatchString___block_invoke(
     v5 = @"NO";
   }
 
-  return [v3 stringWithFormat:@"ABNamePredicate %p - Name matching <%@> - Match whole words <%@> - Match name only <%@> - Match smart dialer format only <%@> - Match preferred name <%@> - Sources <%@> - Groups <%@>", self, v4, v6, v7, v8, v5, -[ABNamePredicate sources](self, "sources"), -[ABNamePredicate groups](self, "groups")];
+  return [v3 stringWithFormat:@"ABNamePredicate %p - Name matching <%@> - Match whole words <%@> - Match name only <%@> - Match smart dialer format only <%@> - Match preferred name <%@> - Sources <%@> - Groups <%@>", self, name, v6, v7, v8, v5, -[ABNamePredicate sources](self, "sources"), -[ABNamePredicate groups](self, "groups")];
 }
 
 - (uint64_t)setAccountIdentifier:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

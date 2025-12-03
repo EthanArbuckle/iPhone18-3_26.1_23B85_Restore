@@ -1,8 +1,8 @@
 @interface _OSBatteryData
 + (id)sharedInstance;
 - (_OSBatteryData)init;
-- (id)batteryLevelByTimeSlot:(unint64_t)a3 dayType:(unint64_t)a4;
-- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)a3 aggregatedOverTimeWidth:(unint64_t)a4 withError:(id *)a5;
+- (id)batteryLevelByTimeSlot:(unint64_t)slot dayType:(unint64_t)type;
+- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)days aggregatedOverTimeWidth:(unint64_t)width withError:(id *)error;
 - (void)resetState;
 @end
 
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_100010344;
   block[3] = &unk_100094818;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000B69C8 != -1)
   {
     dispatch_once(&qword_1000B69C8, block);
@@ -61,7 +61,7 @@
   _objc_release_x1();
 }
 
-- (id)batteryLevelByTimeSlot:(unint64_t)a3 dayType:(unint64_t)a4
+- (id)batteryLevelByTimeSlot:(unint64_t)slot dayType:(unint64_t)type
 {
   v46 = 0;
   v47 = &v46;
@@ -69,8 +69,8 @@
   v49 = sub_10000322C;
   v50 = sub_100003558;
   v51 = +[NSMutableArray array];
-  v7 = 0x5A0 / a3;
-  if (a3 <= 0x5A0)
+  v7 = 0x5A0 / slot;
+  if (slot <= 0x5A0)
   {
     v8 = 0;
     do
@@ -84,9 +84,9 @@
     while (v7 > v8);
   }
 
-  v23 = self;
-  v24 = a3;
-  v25 = a4;
+  selfCopy = self;
+  slotCopy = slot;
+  typeCopy = type;
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x3032000000;
@@ -111,35 +111,35 @@
   v40 = 0;
   v10 = +[NSTimeZone localTimeZone];
   v27 = BiomeLibrary();
-  v26 = [v27 Device];
-  v11 = [v26 Power];
-  v12 = [v11 BatteryLevel];
-  v13 = [v12 publisher];
+  device = [v27 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  publisher = [batteryLevel publisher];
   v14 = BiomeLibrary();
-  v15 = [v14 Device];
-  v16 = [v15 TimeZone];
-  v17 = [v16 publisher];
-  v18 = [v13 orderedMergeWithOther:v17 comparator:&stru_100094CB8];
+  device2 = [v14 Device];
+  timeZone = [device2 TimeZone];
+  publisher2 = [timeZone publisher];
+  v18 = [publisher orderedMergeWithOther:publisher2 comparator:&stru_100094CB8];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_1000108D0;
   v38[3] = &unk_100094B80;
-  v38[4] = v23;
+  v38[4] = selfCopy;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100010934;
   v28[3] = &unk_100094CE0;
   v30 = v39;
-  v28[4] = v23;
+  v28[4] = selfCopy;
   v19 = v10;
-  v36 = v24;
+  v36 = slotCopy;
   v37 = v7;
   v29 = v19;
   v31 = v44;
   v32 = v42;
   v33 = v41;
   v34 = &v46;
-  v35 = v25;
+  v35 = typeCopy;
   v20 = [v18 sinkWithCompletion:v38 receiveInput:v28];
 
   v21 = v47[5];
@@ -154,19 +154,19 @@
   return v21;
 }
 
-- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)a3 aggregatedOverTimeWidth:(unint64_t)a4 withError:(id *)a5
+- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)days aggregatedOverTimeWidth:(unint64_t)width withError:(id *)error
 {
   v9 = +[NSDate date];
   v10 = +[NSCalendar currentCalendar];
   v11 = v10;
-  if (a3 == 2)
+  if (days == 2)
   {
     v13 = 16;
     v12 = [v10 dateBySettingUnit:16 value:2 ofDate:v9 options:4];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (days == 1)
   {
     v12 = [OSIntelligenceUtilities midnightDateFrom:v9];
     v13 = 8;
@@ -187,9 +187,9 @@ LABEL_7:
 
   else
   {
-    v26 = a5;
+    errorCopy = error;
     v27 = v11;
-    v17 = [(_OSBatteryData *)self batteryLevelByTimeSlot:a4 dayType:a3];
+    v17 = [(_OSBatteryData *)self batteryLevelByTimeSlot:width dayType:days];
     v16 = +[NSMutableArray array];
     if ([v17 count])
     {
@@ -213,9 +213,9 @@ LABEL_7:
       while (1)
       {
         v22 = [v16 objectAtIndexedSubscript:v21];
-        v23 = [v22 integerValue];
+        integerValue = [v22 integerValue];
 
-        if (v23)
+        if (integerValue)
         {
           break;
         }
@@ -233,7 +233,7 @@ LABEL_7:
     else
     {
 LABEL_16:
-      *v26 = [NSError errorWithDomain:@"com.apple.OSIntelligence" code:3 userInfo:0];
+      *errorCopy = [NSError errorWithDomain:@"com.apple.OSIntelligence" code:3 userInfo:0];
     }
 
     v11 = v27;

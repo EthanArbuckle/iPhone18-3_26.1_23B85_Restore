@@ -1,9 +1,9 @@
 @interface MSXPCService
-+ (id)remoteProxyForXPCInterface:(id)a3 connectionErrorHandler:(id)a4;
-- (MSXPCService)initWithRemoteObjectInterface:(id)a3;
++ (id)remoteProxyForXPCInterface:(id)interface connectionErrorHandler:(id)handler;
+- (MSXPCService)initWithRemoteObjectInterface:(id)interface;
 - (id)connection;
-- (id)newConnectionForInterface:(id)a3;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)newConnectionForInterface:(id)interface;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -39,9 +39,9 @@
   [(MSXPCService *)&v3 dealloc];
 }
 
-- (MSXPCService)initWithRemoteObjectInterface:(id)a3
+- (MSXPCService)initWithRemoteObjectInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v12.receiver = self;
   v12.super_class = MSXPCService;
   v6 = [(MSXPCService *)&v12 init];
@@ -53,44 +53,44 @@
     lock = v7->_lock;
     v7->_lock = v8;
 
-    objc_storeStrong(&v7->_remoteObjectInterface, a3);
+    objc_storeStrong(&v7->_remoteObjectInterface, interface);
     v10 = v7;
   }
 
   return v7;
 }
 
-+ (id)remoteProxyForXPCInterface:(id)a3 connectionErrorHandler:(id)a4
++ (id)remoteProxyForXPCInterface:(id)interface connectionErrorHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() remoteProxyForXPCInterface:v5 shouldLaunchMobileMail:1 connectionErrorHandler:v6];
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  v7 = [objc_opt_class() remoteProxyForXPCInterface:interfaceCopy shouldLaunchMobileMail:1 connectionErrorHandler:handlerCopy];
 
   return v7;
 }
 
-- (id)newConnectionForInterface:(id)a3
+- (id)newConnectionForInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = [MSXPCConnection alloc];
-  v6 = [v4 protocol];
-  v7 = [(MSXPCConnection *)v5 initWithProtocol:v6];
+  protocol = [interfaceCopy protocol];
+  v7 = [(MSXPCConnection *)v5 initWithProtocol:protocol];
 
   [(MSXPCConnection *)v7 setShouldLaunchMobileMail:[(MSXPCService *)self shouldLaunchMobileMail]];
-  [(MSXPCConnection *)v7 setRemoteObjectInterface:v4];
+  [(MSXPCConnection *)v7 setRemoteObjectInterface:interfaceCopy];
 
   return v7;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __50__MSXPCService_remoteObjectProxyWithErrorHandler___block_invoke;
   v13 = &unk_1E855F1F0;
-  v5 = v4;
-  v14 = self;
+  v5 = handlerCopy;
+  selfCopy = self;
   v15 = v5;
   v6 = MEMORY[0x1DA71BD00](&v10);
   v7 = [(MSXPCService *)self connection:v10];

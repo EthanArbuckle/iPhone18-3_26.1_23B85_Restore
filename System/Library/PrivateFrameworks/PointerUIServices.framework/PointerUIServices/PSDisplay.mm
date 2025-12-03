@@ -1,9 +1,9 @@
 @interface PSDisplay
 + (id)builtinDisplay;
-+ (id)displayWithHardwareIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PSDisplay)initWithCoder:(id)a3;
-- (id)_initWithHardwareIdentifier:(id)a3;
++ (id)displayWithHardwareIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (PSDisplay)initWithCoder:(id)coder;
+- (id)_initWithHardwareIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -31,12 +31,12 @@ void __27__PSDisplay_builtinDisplay__block_invoke()
   *(builtinDisplay___builtin + 8) = 1;
 }
 
-+ (id)displayWithHardwareIdentifier:(id)a3
++ (id)displayWithHardwareIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = [[PSDisplay alloc] _initWithHardwareIdentifier:v3];
+    v4 = [[PSDisplay alloc] _initWithHardwareIdentifier:identifierCopy];
   }
 
   else
@@ -49,15 +49,15 @@ void __27__PSDisplay_builtinDisplay__block_invoke()
   return v5;
 }
 
-- (id)_initWithHardwareIdentifier:(id)a3
+- (id)_initWithHardwareIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PSDisplay;
   v5 = [(PSDisplay *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     hardwareIdentifier = v5->_hardwareIdentifier;
     v5->_hardwareIdentifier = v6;
   }
@@ -65,10 +65,10 @@ void __27__PSDisplay_builtinDisplay__block_invoke()
   return v5;
 }
 
-- (PSDisplay)initWithCoder:(id)a3
+- (PSDisplay)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hardwareIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardwareIdentifier"];
 
   v6 = [PSDisplay displayWithHardwareIdentifier:v5];
 
@@ -90,10 +90,10 @@ void __27__PSDisplay_builtinDisplay__block_invoke()
   return v2 ^ [(NSString *)self->_hardwareIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -101,10 +101,10 @@ void __27__PSDisplay_builtinDisplay__block_invoke()
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && self->_builtin == v4->_builtin)
+    if (v5 == objc_opt_class() && self->_builtin == equalCopy->_builtin)
     {
       hardwareIdentifier = self->_hardwareIdentifier;
-      v7 = v4->_hardwareIdentifier;
+      v7 = equalCopy->_hardwareIdentifier;
       v8 = BSEqualStrings();
     }
 

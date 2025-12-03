@@ -3,7 +3,7 @@
 - (RFSelfAuthExtensionHelper)init;
 - (id).cxx_construct;
 - (int64_t)getPersonalizationInfo;
-- (int64_t)getSignedTicketAndStore:(BOOL)a3;
+- (int64_t)getSignedTicketAndStore:(BOOL)store;
 - (void)dealloc;
 - (void)resetAll;
 @end
@@ -67,10 +67,10 @@
   }
 }
 
-- (int64_t)getSignedTicketAndStore:(BOOL)a3
+- (int64_t)getSignedTicketAndStore:(BOOL)store
 {
-  v3 = a3;
-  SignedTicketAndStore = BasebandRFDiagnostics::getSignedTicketAndStore(self->fBasebandDiagnostics.__ptr_, a3);
+  storeCopy = store;
+  SignedTicketAndStore = BasebandRFDiagnostics::getSignedTicketAndStore(self->fBasebandDiagnostics.__ptr_, store);
   if (SignedTicketAndStore > 5)
   {
     v5 = -99;
@@ -85,7 +85,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109378;
-    v8[1] = v3;
+    v8[1] = storeCopy;
     v9 = 2080;
     v10 = BasebandRFDiagnostics::asString();
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Get signed tiket with APTag(=%d) and store:  %s", v8, 0x12u);

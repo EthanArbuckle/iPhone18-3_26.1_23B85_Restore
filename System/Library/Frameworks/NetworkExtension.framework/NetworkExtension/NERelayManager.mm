@@ -2,8 +2,8 @@
 + (NERelayManager)sharedManager;
 + (id)configurationManager;
 + (id)loadedManagers;
-+ (id)mapError:(uint64_t)a1;
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3;
++ (id)mapError:(uint64_t)error;
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler;
 + (void)loadAllManagersFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (BOOL)isDNSFailoverAllowed;
 - (BOOL)isEnabled;
@@ -19,17 +19,17 @@
 - (NSString)appBundleIdentifier;
 - (NSString)localizedDescription;
 - (NSUUID)identifier;
-- (_BYTE)initWithGrade:(void *)a1;
-- (void)createEmptyConfigurationWithGrade:(void *)a1;
-- (void)getLastClientErrors:(double)a3 completionHandler:(id)a4;
+- (_BYTE)initWithGrade:(void *)grade;
+- (void)createEmptyConfigurationWithGrade:(void *)grade;
+- (void)getLastClientErrors:(double)errors completionHandler:(id)handler;
 - (void)loadFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)setExcludedDomains:(NSArray *)excludedDomains;
-- (void)setExcludedFQDNs:(id)a3;
+- (void)setExcludedFQDNs:(id)ns;
 - (void)setLocalizedDescription:(NSString *)localizedDescription;
 - (void)setMatchDomains:(NSArray *)matchDomains;
-- (void)setMatchFQDNs:(id)a3;
+- (void)setMatchFQDNs:(id)ns;
 - (void)setOnDemandRules:(NSArray *)onDemandRules;
 - (void)setRelays:(NSArray *)relays;
 @end
@@ -50,8 +50,8 @@
     self = objc_getProperty(self, a2, 16, 1);
   }
 
-  v2 = [(NERelayManager *)self payloadInfo];
-  v3 = v2 != 0;
+  payloadInfo = [(NERelayManager *)self payloadInfo];
+  v3 = payloadInfo != 0;
 
   return v3;
 }
@@ -81,11 +81,11 @@
 - (void)setLocalizedDescription:(NSString *)localizedDescription
 {
   v8 = localizedDescription;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(selfCopy, v5, 16, 1);
   }
 
   else
@@ -96,16 +96,16 @@
   v7 = Property;
   [v7 setName:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)localizedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -114,21 +114,21 @@
   }
 
   v5 = Property;
-  v6 = [v5 name];
+  name = [v5 name];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return name;
 }
 
 - (void)setOnDemandRules:(NSArray *)onDemandRules
 {
   v9 = onDemandRules;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(selfCopy, v5, 16, 1);
   }
 
   else
@@ -137,19 +137,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 relay];
-  [v8 setOnDemandRules:v9];
+  relay = [v7 relay];
+  [relay setOnDemandRules:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)onDemandRules
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -158,22 +158,22 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 onDemandRules];
+  relay = [v5 relay];
+  onDemandRules = [relay onDemandRules];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return onDemandRules;
 }
 
-- (void)setExcludedFQDNs:(id)a3
+- (void)setExcludedFQDNs:(id)ns
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  nsCopy = ns;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(selfCopy, v5, 16, 1);
   }
 
   else
@@ -182,19 +182,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 relay];
-  [v8 setExcludedFQDNs:v9];
+  relay = [v7 relay];
+  [relay setExcludedFQDNs:nsCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)excludedFQDNs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -203,22 +203,22 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 excludedFQDNs];
+  relay = [v5 relay];
+  excludedFQDNs = [relay excludedFQDNs];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return excludedFQDNs;
 }
 
-- (void)setMatchFQDNs:(id)a3
+- (void)setMatchFQDNs:(id)ns
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  nsCopy = ns;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(selfCopy, v5, 16, 1);
   }
 
   else
@@ -227,19 +227,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 relay];
-  [v8 setMatchFQDNs:v9];
+  relay = [v7 relay];
+  [relay setMatchFQDNs:nsCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)matchFQDNs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -248,22 +248,22 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 matchFQDNs];
+  relay = [v5 relay];
+  matchFQDNs = [relay matchFQDNs];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return matchFQDNs;
 }
 
 - (void)setExcludedDomains:(NSArray *)excludedDomains
 {
   v9 = excludedDomains;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(selfCopy, v5, 16, 1);
   }
 
   else
@@ -272,19 +272,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 relay];
-  [v8 setExcludedDomains:v9];
+  relay = [v7 relay];
+  [relay setExcludedDomains:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)excludedDomains
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -293,22 +293,22 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 excludedDomains];
+  relay = [v5 relay];
+  excludedDomains = [relay excludedDomains];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return excludedDomains;
 }
 
 - (void)setMatchDomains:(NSArray *)matchDomains
 {
   v9 = matchDomains;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(selfCopy, v5, 16, 1);
   }
 
   else
@@ -317,19 +317,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 relay];
-  [v8 setMatchDomains:v9];
+  relay = [v7 relay];
+  [relay setMatchDomains:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)matchDomains
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -338,22 +338,22 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 matchDomains];
+  relay = [v5 relay];
+  matchDomains = [relay matchDomains];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return matchDomains;
 }
 
 - (void)setRelays:(NSArray *)relays
 {
   v9 = relays;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(selfCopy, v5, 16, 1);
   }
 
   else
@@ -362,19 +362,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 relay];
-  [v8 setRelays:v9];
+  relay = [v7 relay];
+  [relay setRelays:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)relays
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -383,21 +383,21 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 relays];
+  relay = [v5 relay];
+  relays = [relay relays];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return relays;
 }
 
 - (BOOL)isDNSFailoverAllowed
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -406,20 +406,20 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 isDNSFailoverAllowed];
+  relay = [v5 relay];
+  isDNSFailoverAllowed = [relay isDNSFailoverAllowed];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return isDNSFailoverAllowed;
 }
 
 - (BOOL)isUIToggleEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -428,20 +428,20 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 isUIToggleEnabled];
+  relay = [v5 relay];
+  isUIToggleEnabled = [relay isUIToggleEnabled];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return isUIToggleEnabled;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 16, 1);
+    Property = objc_getProperty(selfCopy, v3, 16, 1);
   }
 
   else
@@ -450,31 +450,31 @@
   }
 
   v5 = Property;
-  v6 = [v5 relay];
-  v7 = [v6 isEnabled];
+  relay = [v5 relay];
+  isEnabled = [relay isEnabled];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return isEnabled;
 }
 
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5 && v5->_hasLoaded)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && selfCopy->_hasLoaded)
   {
     v6 = +[NERelayManager loadedManagers];
-    v5->_notificationSent = 0;
+    selfCopy->_notificationSent = 0;
     v7 = +[NERelayManager configurationManager];
-    v9 = objc_getProperty(v5, v8, 16, 1);
+    v9 = objc_getProperty(selfCopy, v8, 16, 1);
     v10 = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __57__NERelayManager_saveToPreferencesWithCompletionHandler___block_invoke_2;
     v13[3] = &unk_1E7F0B628;
-    v13[4] = v5;
+    v13[4] = selfCopy;
     v14 = v4;
     [v7 saveConfiguration:v9 withCompletionQueue:v10 handler:v13];
 
@@ -497,7 +497,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __57__NERelayManager_saveToPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -721,24 +721,24 @@ void __32__NERelayManager_loadedManagers__block_invoke_3(uint64_t a1)
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5 && objc_getProperty(v5, v6, 16, 1))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && objc_getProperty(selfCopy, v6, 16, 1))
   {
-    v8 = objc_getProperty(v5, v7, 16, 1);
-    v9 = [v8 payloadInfo];
+    v8 = objc_getProperty(selfCopy, v7, 16, 1);
+    payloadInfo = [v8 payloadInfo];
 
-    if (!v9)
+    if (!payloadInfo)
     {
       v11 = +[NERelayManager configurationManager];
-      v13 = objc_getProperty(v5, v12, 16, 1);
+      v13 = objc_getProperty(selfCopy, v12, 16, 1);
       v14 = MEMORY[0x1E69E96A0];
       v15 = MEMORY[0x1E69E96A0];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __61__NERelayManager_removeFromPreferencesWithCompletionHandler___block_invoke_3;
       v16[3] = &unk_1E7F0B628;
-      v16[4] = v5;
+      v16[4] = selfCopy;
       v17 = v4;
       [v11 removeConfiguration:v13 withCompletionQueue:v14 handler:v16];
 
@@ -771,7 +771,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __61__NERelayManager_removeFromPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -867,9 +867,9 @@ LABEL_12:
   v4 = completionHandler;
   if (v4)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5 && v5->_isShared)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy && selfCopy->_isShared)
     {
       v6 = +[NERelayManager configurationManager];
       v7 = MEMORY[0x1E69E96A0];
@@ -878,7 +878,7 @@ LABEL_12:
       v17[1] = 3221225472;
       v17[2] = __59__NERelayManager_loadFromPreferencesWithCompletionHandler___block_invoke;
       v17[3] = &unk_1E7F0B5B0;
-      v17[4] = v5;
+      v17[4] = selfCopy;
       v18 = v4;
       [v6 loadConfigurationsWithCompletionQueue:v7 handler:v17];
       v9 = &v18;
@@ -887,9 +887,9 @@ LABEL_12:
     else
     {
       v6 = +[NERelayManager configurationManager];
-      if (v5)
+      if (selfCopy)
       {
-        Property = objc_getProperty(v5, v10, 16, 1);
+        Property = objc_getProperty(selfCopy, v10, 16, 1);
       }
 
       else
@@ -898,20 +898,20 @@ LABEL_12:
       }
 
       v7 = Property;
-      v12 = [v7 identifier];
+      identifier = [v7 identifier];
       v13 = MEMORY[0x1E69E96A0];
       v14 = MEMORY[0x1E69E96A0];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __59__NERelayManager_loadFromPreferencesWithCompletionHandler___block_invoke_3;
       v15[3] = &unk_1E7F0B5D8;
-      v15[4] = v5;
+      v15[4] = selfCopy;
       v16 = v4;
-      [v6 loadConfigurationWithID:v12 withCompletionQueue:v13 handler:v15];
+      [v6 loadConfigurationWithID:identifier withCompletionQueue:v13 handler:v15];
       v9 = &v16;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1128,69 +1128,69 @@ void __59__NERelayManager_loadFromPreferencesWithCompletionHandler___block_invok
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)mapError:(uint64_t)a1
++ (id)mapError:(uint64_t)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 domain];
-  v4 = [v3 isEqual:@"NEConfigurationErrorDomain"];
+  domain = [v2 domain];
+  v4 = [domain isEqual:@"NEConfigurationErrorDomain"];
 
   if (!v4)
   {
-    v6 = @"Unknown.";
+    localizedDescription = @"Unknown.";
     goto LABEL_12;
   }
 
-  v5 = [v2 code];
-  if (v5 > 0x15)
+  code = [v2 code];
+  if (code > 0x15)
   {
     goto LABEL_10;
   }
 
-  if (((1 << v5) & 0x301D40) != 0 || v5 == 7)
+  if (((1 << code) & 0x301D40) != 0 || code == 7)
   {
     goto LABEL_11;
   }
 
-  if (v5 != 9)
+  if (code != 9)
   {
 LABEL_10:
-    if (v5 - 1 < 4)
+    if (code - 1 < 4)
     {
 LABEL_11:
-      v6 = [v2 localizedDescription];
+      localizedDescription = [v2 localizedDescription];
       goto LABEL_12;
     }
 
-    if (v5 == 5)
+    if (code == 5)
     {
-      v6 = [v2 localizedDescription];
+      localizedDescription = [v2 localizedDescription];
       v8 = 3;
       goto LABEL_13;
     }
 
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [v2 localizedDescription];
-    v6 = [v13 stringWithFormat:@"Unknown: %@", v14];
+    localizedDescription2 = [v2 localizedDescription];
+    localizedDescription = [v13 stringWithFormat:@"Unknown: %@", localizedDescription2];
 
 LABEL_12:
     v8 = 1;
 LABEL_13:
     v9 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A578];
-    v17[0] = v6;
+    v17[0] = localizedDescription;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v9 errorWithDomain:@"NERelayErrorDomain" code:v8 userInfo:v10];
 
     goto LABEL_14;
   }
 
-  v6 = ne_log_obj();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  localizedDescription = ne_log_obj();
+  if (os_log_type_enabled(localizedDescription, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEFAULT, "The configuration was not saved because it was unchanged from the previously saved version", buf, 2u);
+    _os_log_impl(&dword_1BA83C000, localizedDescription, OS_LOG_TYPE_DEFAULT, "The configuration was not saved because it was unchanged from the previously saved version", buf, 2u);
   }
 
   v7 = 0;
@@ -1201,39 +1201,39 @@ LABEL_14:
   return v7;
 }
 
-- (void)createEmptyConfigurationWithGrade:(void *)a1
+- (void)createEmptyConfigurationWithGrade:(void *)grade
 {
-  if (a1)
+  if (grade)
   {
-    v2 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v2 infoDictionary];
-    v14 = [v3 objectForKey:*MEMORY[0x1E695E120]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v14 = [infoDictionary objectForKey:*MEMORY[0x1E695E120]];
 
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle2 bundleIdentifier];
 
     if (!v14)
     {
-      v6 = [MEMORY[0x1E696AAE8] mainBundle];
-      v7 = [v6 infoDictionary];
-      v14 = [v7 objectForKey:*MEMORY[0x1E695E4F8]];
+      mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+      infoDictionary2 = [mainBundle3 infoDictionary];
+      v14 = [infoDictionary2 objectForKey:*MEMORY[0x1E695E4F8]];
     }
 
     v8 = [[NEConfiguration alloc] initWithName:v14 grade:2];
-    objc_setProperty_atomic(a1, v9, v8, 16);
+    objc_setProperty_atomic(grade, v9, v8, 16);
 
     v10 = objc_alloc_init(NERelayConfiguration);
-    [objc_getProperty(a1 v11];
+    [objc_getProperty(grade v11];
 
-    [objc_getProperty(a1 v12];
-    [objc_getProperty(a1 v13];
+    [objc_getProperty(grade v12];
+    [objc_getProperty(grade v13];
   }
 }
 
-- (void)getLastClientErrors:(double)a3 completionHandler:(id)a4
+- (void)getLastClientErrors:(double)errors completionHandler:(id)handler
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v5, 16, 1);
@@ -1246,18 +1246,18 @@ LABEL_14:
 
   v11[0] = 0;
   v11[1] = 0;
-  v8 = [Property identifier];
-  [v8 getUUIDBytes:v11];
+  identifier = [Property identifier];
+  [identifier getUUIDBytes:v11];
 
   if (ne_session_create())
   {
-    v10 = v6;
+    v10 = handlerCopy;
     ne_session_get_info();
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1394,17 +1394,17 @@ LABEL_29:
   return v13;
 }
 
-- (_BYTE)initWithGrade:(void *)a1
+- (_BYTE)initWithGrade:(void *)grade
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!grade)
   {
 LABEL_7:
     v1 = 0;
     goto LABEL_9;
   }
 
-  v7.receiver = a1;
+  v7.receiver = grade;
   v7.super_class = NERelayManager;
   v1 = objc_msgSendSuper2(&v7, sel_init);
   if (v1)
@@ -1434,17 +1434,17 @@ LABEL_9:
   return v1;
 }
 
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   objc_opt_self();
   g_noAppFilter_28397 = 1;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__NERelayManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E7F0B510;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [NERelayManager loadAllManagersFromPreferencesWithCompletionHandler:v5];
 }
 

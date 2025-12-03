@@ -1,19 +1,19 @@
 @interface TSUSparseArray
 + (id)array;
-- (BOOL)hasObjectForKey:(unint64_t)a3;
+- (BOOL)hasObjectForKey:(unint64_t)key;
 - (NSIndexSet)populatedKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)objectForKey:(unint64_t)a3;
+- (id)objectForKey:(unint64_t)key;
 - (unint64_t)maxIndexForCurrentDepth;
 - (unint64_t)maxKey;
 - (unint64_t)minKey;
-- (void)addObjectsFromArray:(id)a3;
+- (void)addObjectsFromArray:(id)array;
 - (void)clear;
 - (void)dealloc;
-- (void)foreach:(id)a3;
+- (void)foreach:(id)foreach;
 - (void)increaseDepth;
-- (void)setObject:(id)a3 forKey:(unint64_t)a4;
+- (void)setObject:(id)object forKey:(unint64_t)key;
 @end
 
 @implementation TSUSparseArray
@@ -102,10 +102,10 @@
   return ~(-1 << v3);
 }
 
-- (id)objectForKey:(unint64_t)a3
+- (id)objectForKey:(unint64_t)key
 {
   depth = self->_depth;
-  if (depth && (v6 = [(TSUSparseArray *)self maxIndexForCurrentDepth], v6 >= a3))
+  if (depth && (v6 = [(TSUSparseArray *)self maxIndexForCurrentDepth], v6 >= key))
   {
     __chkstk_darwin(v6);
     v9 = &v18 - v8;
@@ -114,8 +114,8 @@
     v12 = depth;
     do
     {
-      *&v9[8 * v11] = a3;
-      a3 >>= 8;
+      *&v9[8 * v11] = key;
+      key >>= 8;
       --v11;
       --v12;
     }
@@ -201,13 +201,13 @@ LABEL_12:
   operator new();
 }
 
-- (void)setObject:(id)a3 forKey:(unint64_t)a4
+- (void)setObject:(id)object forKey:(unint64_t)key
 {
-  v16 = a3;
+  objectCopy = object;
   while (1)
   {
-    v6 = [(TSUSparseArray *)self maxIndexForCurrentDepth];
-    if (v6 >= a4)
+    maxIndexForCurrentDepth = [(TSUSparseArray *)self maxIndexForCurrentDepth];
+    if (maxIndexForCurrentDepth >= key)
     {
       if (self->_depth)
       {
@@ -218,8 +218,8 @@ LABEL_12:
     [(TSUSparseArray *)self increaseDepth];
   }
 
-  __chkstk_darwin(v6);
-  v8 = &v16 - v7;
+  __chkstk_darwin(maxIndexForCurrentDepth);
+  v8 = &objectCopy - v7;
   depth = self->_depth;
   if (depth)
   {
@@ -227,8 +227,8 @@ LABEL_12:
     v11 = self->_depth;
     do
     {
-      *&v8[8 * v10] = a4;
-      a4 >>= 8;
+      *&v8[8 * v10] = key;
+      key >>= 8;
       --v10;
       --v11;
     }
@@ -267,37 +267,37 @@ LABEL_12:
 
   while (v14 < v13);
 LABEL_17:
-  self->_nonNilCount += sub_10028CAD4(topPage, v16, *&v8[8 * v13]);
-  v15 = v16;
+  self->_nonNilCount += sub_10028CAD4(topPage, objectCopy, *&v8[8 * v13]);
+  v15 = objectCopy;
 }
 
-- (BOOL)hasObjectForKey:(unint64_t)a3
+- (BOOL)hasObjectForKey:(unint64_t)key
 {
-  v3 = [(TSUSparseArray *)self objectForKey:a3];
+  v3 = [(TSUSparseArray *)self objectForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)foreach:(id)a3
+- (void)foreach:(id)foreach
 {
-  v4 = a3;
+  foreachCopy = foreach;
   topPage = self->_topPage;
   if (topPage)
   {
     v6 = 0;
-    (*(topPage->var0 + 5))(topPage, v4, 0, &v6);
+    (*(topPage->var0 + 5))(topPage, foreachCopy, 0, &v6);
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10028CC58;
   v3[3] = &unk_10184F9D0;
   v3[4] = self;
-  [a3 foreach:v3];
+  [array foreach:v3];
 }
 
 - (void)clear
@@ -356,7 +356,7 @@ LABEL_17:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   *(v4 + 24) = self->_depth;

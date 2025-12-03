@@ -1,19 +1,19 @@
 @interface _UIInterfaceActionBlendingSeparatorView
 - (_UIInterfaceActionBlendingSeparatorView)init;
-- (_UIInterfaceActionBlendingSeparatorView)initWithTopLevelFilters:(id)a3 compositingColors:(id)a4 compositingFilterModes:(id)a5;
+- (_UIInterfaceActionBlendingSeparatorView)initWithTopLevelFilters:(id)filters compositingColors:(id)colors compositingFilterModes:(id)modes;
 - (void)_updateContentDirectionalInsets;
-- (void)setConstantSizedAxis:(int64_t)a3;
-- (void)setHorizontalLineLeadingInset:(double)a3;
+- (void)setConstantSizedAxis:(int64_t)axis;
+- (void)setHorizontalLineLeadingInset:(double)inset;
 - (void)updateConstraints;
 @end
 
 @implementation _UIInterfaceActionBlendingSeparatorView
 
-- (_UIInterfaceActionBlendingSeparatorView)initWithTopLevelFilters:(id)a3 compositingColors:(id)a4 compositingFilterModes:(id)a5
+- (_UIInterfaceActionBlendingSeparatorView)initWithTopLevelFilters:(id)filters compositingColors:(id)colors compositingFilterModes:(id)modes
 {
   v9.receiver = self;
   v9.super_class = _UIInterfaceActionBlendingSeparatorView;
-  v5 = [(_UIBlendingHighlightView *)&v9 initWithTopLevelFilters:a3 compositingColors:a4 compositingFilterModes:a5];
+  v5 = [(_UIBlendingHighlightView *)&v9 initWithTopLevelFilters:filters compositingColors:colors compositingFilterModes:modes];
   if (v5)
   {
     v6 = [[_UIInterfaceActionSeparatorConstraintController alloc] initWithSeparatorView:v5];
@@ -35,18 +35,18 @@
   return v5;
 }
 
-- (void)setHorizontalLineLeadingInset:(double)a3
+- (void)setHorizontalLineLeadingInset:(double)inset
 {
-  if (self->_horizontalLineLeadingInset != a3)
+  if (self->_horizontalLineLeadingInset != inset)
   {
-    self->_horizontalLineLeadingInset = a3;
+    self->_horizontalLineLeadingInset = inset;
     [(_UIInterfaceActionBlendingSeparatorView *)self _updateContentDirectionalInsets];
   }
 }
 
-- (void)setConstantSizedAxis:(int64_t)a3
+- (void)setConstantSizedAxis:(int64_t)axis
 {
-  [(_UIInterfaceActionSeparatorConstraintController *)self->_separatorViewConstraints setConstantSizedAxis:a3];
+  [(_UIInterfaceActionSeparatorConstraintController *)self->_separatorViewConstraints setConstantSizedAxis:axis];
 
   [(_UIInterfaceActionBlendingSeparatorView *)self _updateContentDirectionalInsets];
 }
@@ -61,9 +61,9 @@
 
 - (void)_updateContentDirectionalInsets
 {
-  v3 = [(_UIInterfaceActionBlendingSeparatorView *)self constantSizedAxis];
+  constantSizedAxis = [(_UIInterfaceActionBlendingSeparatorView *)self constantSizedAxis];
   v4 = 0.0;
-  if (v3 == 1)
+  if (constantSizedAxis == 1)
   {
     [(_UIInterfaceActionBlendingSeparatorView *)self horizontalLineLeadingInset];
     v4 = v5 + 0.0;

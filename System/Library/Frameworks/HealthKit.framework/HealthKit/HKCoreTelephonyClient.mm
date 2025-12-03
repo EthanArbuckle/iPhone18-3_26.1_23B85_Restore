@@ -1,22 +1,22 @@
 @interface HKCoreTelephonyClient
-- (BOOL)isEmergencyServicePhoneNumber:(id)a3;
+- (BOOL)isEmergencyServicePhoneNumber:(id)number;
 - (HKCoreTelephonyClient)init;
-- (HKCoreTelephonyClient)initWithQueue:(id)a3;
+- (HKCoreTelephonyClient)initWithQueue:(id)queue;
 - (void)activeSubscriptionsDidChange;
 - (void)dealloc;
-- (void)fetchMobileCountryCodeFromCellularWithCompletion:(id)a3;
+- (void)fetchMobileCountryCodeFromCellularWithCompletion:(id)completion;
 - (void)invalidateCachedCountryCode;
-- (void)onForeground:(id)a3;
-- (void)plmnChanged:(id)a3 plmn:(id)a4;
+- (void)onForeground:(id)foreground;
+- (void)plmnChanged:(id)changed plmn:(id)plmn;
 - (void)simLessSubscriptionsDidChange;
 - (void)subscriptionInfoDidChange;
 @end
 
 @implementation HKCoreTelephonyClient
 
-- (HKCoreTelephonyClient)initWithQueue:(id)a3
+- (HKCoreTelephonyClient)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = HKCoreTelephonyClient;
   v6 = [(HKCoreTelephonyClient *)&v12 init];
@@ -24,14 +24,14 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:v7->_queue];
     client = v7->_client;
     v7->_client = v8;
 
     [(CoreTelephonyClient *)v7->_client setDelegate:v7];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel_onForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_onForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
   }
 
   return v7;
@@ -47,23 +47,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = HKCoreTelephonyClient;
   [(HKCoreTelephonyClient *)&v4 dealloc];
 }
 
-- (void)fetchMobileCountryCodeFromCellularWithCompletion:(id)a3
+- (void)fetchMobileCountryCodeFromCellularWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSString *)self->_cachedCountryCode copy];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v4[2](v4, v5, 0);
+    completionCopy[2](completionCopy, v5, 0);
   }
 
   else
@@ -74,7 +74,7 @@
     v7[2] = __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletion___block_invoke;
     v7[3] = &unk_1E73801A8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(CoreTelephonyClient *)client getCurrentDataSubscriptionContext:v7];
   }
 }
@@ -108,9 +108,9 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)isEmergencyServicePhoneNumber:(id)a3
+- (BOOL)isEmergencyServicePhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   client = self->_client;
   v15 = 0;
   v6 = [(CoreTelephonyClient *)client getCurrentDataSubscriptionContextSync:&v15];
@@ -131,7 +131,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   {
     v10 = self->_client;
     v14 = 0;
-    v9 = [(CoreTelephonyClient *)v10 isEmergencyNumberWithWhitelistIncluded:v6 number:v4 error:&v14];
+    v9 = [(CoreTelephonyClient *)v10 isEmergencyNumberWithWhitelistIncluded:v6 number:numberCopy error:&v14];
     v11 = v14;
     if (v11)
     {
@@ -158,7 +158,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)onForeground:(id)a3
+- (void)onForeground:(id)foreground
 {
   v11 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -166,7 +166,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_INFO))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2082;
     v10 = "[HKCoreTelephonyClient onForeground:]";
     _os_log_impl(&dword_19197B000, v4, OS_LOG_TYPE_INFO, "[%{public}@.%{public}s] flushing caches", &v7, 0x16u);
@@ -180,7 +180,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)plmnChanged:(id)a3 plmn:(id)a4
+- (void)plmnChanged:(id)changed plmn:(id)plmn
 {
   v11 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -188,7 +188,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_INFO))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2082;
     v10 = "[HKCoreTelephonyClient plmnChanged:plmn:]";
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_INFO, "[%{public}@.%{public}s]", &v7, 0x16u);
@@ -206,7 +206,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_INFO))
   {
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2082;
     v8 = "[HKCoreTelephonyClient subscriptionInfoDidChange]";
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_INFO, "[%{public}@.%{public}s]", &v5, 0x16u);
@@ -224,7 +224,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_INFO))
   {
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2082;
     v8 = "[HKCoreTelephonyClient activeSubscriptionsDidChange]";
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_INFO, "[%{public}@.%{public}s]", &v5, 0x16u);
@@ -242,7 +242,7 @@ void __74__HKCoreTelephonyClient_fetchMobileCountryCodeFromCellularWithCompletio
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_INFO))
   {
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2082;
     v8 = "[HKCoreTelephonyClient simLessSubscriptionsDidChange]";
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_INFO, "[%{public}@.%{public}s]", &v5, 0x16u);

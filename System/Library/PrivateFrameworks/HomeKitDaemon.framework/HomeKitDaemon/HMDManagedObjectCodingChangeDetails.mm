@@ -1,14 +1,14 @@
 @interface HMDManagedObjectCodingChangeDetails
 - (id)changedAttributeKeys;
 - (id)changedRelationshipKeys;
-- (void)addChangedRelationshipCodingKey:(uint64_t)a1;
+- (void)addChangedRelationshipCodingKey:(uint64_t)key;
 @end
 
 @implementation HMDManagedObjectCodingChangeDetails
 
 - (id)changedAttributeKeys
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   if (v1)
   {
     v2 = v1;
@@ -24,7 +24,7 @@
 
 - (id)changedRelationshipKeys
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (v1)
   {
     v2 = v1;
@@ -38,12 +38,12 @@
   return v2;
 }
 
-- (void)addChangedRelationshipCodingKey:(uint64_t)a1
+- (void)addChangedRelationshipCodingKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    v4 = *(a1 + 16);
+    v4 = *(key + 16);
     v7 = v3;
     if (v4)
     {
@@ -53,8 +53,8 @@
     else
     {
       v5 = [MEMORY[0x277CBEB58] setWithObject:v3];
-      v6 = *(a1 + 16);
-      *(a1 + 16) = v5;
+      v6 = *(key + 16);
+      *(key + 16) = v5;
     }
 
     v3 = v7;

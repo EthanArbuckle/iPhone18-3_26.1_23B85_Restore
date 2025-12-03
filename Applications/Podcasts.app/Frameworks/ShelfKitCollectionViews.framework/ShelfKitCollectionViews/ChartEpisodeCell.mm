@@ -1,5 +1,5 @@
 @interface ChartEpisodeCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)didMoveToWindow;
 - (void)prepareForReuse;
 @end
@@ -12,23 +12,23 @@
   v8.super_class = swift_getObjectType();
   v2 = v8.receiver;
   [(ChartEpisodeCell *)&v8 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [v3 screen];
-    [v5 scale];
+    v4 = window;
+    screen = [window screen];
+    [screen scale];
     v7 = v6;
 
     *&v2[OBJC_IVAR____TtC23ShelfKitCollectionViews16ChartEpisodeCell_displayScale] = v7;
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_F7614(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_F7614(attributesCopy);
 
   return v6;
 }

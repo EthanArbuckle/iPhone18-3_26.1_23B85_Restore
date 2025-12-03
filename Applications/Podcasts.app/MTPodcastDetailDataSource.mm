@@ -1,7 +1,7 @@
 @interface MTPodcastDetailDataSource
-+ (id)predicateForPodcast:(id)a3 sectionType:(unint64_t)a4;
-+ (id)sortDescriptorsForPodcastUuid:(id)a3;
-- (MTPodcastDetailDataSource)initWithPodcastUuid:(id)a3;
++ (id)predicateForPodcast:(id)podcast sectionType:(unint64_t)type;
++ (id)sortDescriptorsForPodcastUuid:(id)uuid;
+- (MTPodcastDetailDataSource)initWithPodcastUuid:(id)uuid;
 - (MTPodcastDetailDataSourceDelegate)delegate;
 - (id)createSectionForDarkPlacard;
 - (id)createSectionForEmptyOverlay;
@@ -14,37 +14,37 @@
 - (id)podcast;
 - (id)savedSections;
 - (id)unplayedSections;
-- (unint64_t)indexForSection:(id)a3;
-- (void)episodeSection:(id)a3 didChangeObject:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6 newIndex:(unint64_t)a7;
+- (unint64_t)indexForSection:(id)section;
+- (void)episodeSection:(id)section didChangeObject:(id)object atIndex:(unint64_t)index forChangeType:(unint64_t)type newIndex:(unint64_t)newIndex;
 - (void)reloadData;
-- (void)sectionDidChangeContent:(id)a3;
-- (void)sectionWillChangeContent:(id)a3;
-- (void)setSelectedTab:(unint64_t)a3;
+- (void)sectionDidChangeContent:(id)content;
+- (void)sectionWillChangeContent:(id)content;
+- (void)setSelectedTab:(unint64_t)tab;
 @end
 
 @implementation MTPodcastDetailDataSource
 
-- (MTPodcastDetailDataSource)initWithPodcastUuid:(id)a3
+- (MTPodcastDetailDataSource)initWithPodcastUuid:(id)uuid
 {
-  v5 = a3;
+  uuidCopy = uuid;
   v9.receiver = self;
   v9.super_class = MTPodcastDetailDataSource;
   v6 = [(MTPodcastDetailDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_podcastUuid, a3);
+    objc_storeStrong(&v6->_podcastUuid, uuid);
     v7->_showOnlyRssContent = 0;
   }
 
   return v7;
 }
 
-- (void)setSelectedTab:(unint64_t)a3
+- (void)setSelectedTab:(unint64_t)tab
 {
-  if (self->_selectedTab != a3 || !self->_sections)
+  if (self->_selectedTab != tab || !self->_sections)
   {
-    self->_selectedTab = a3;
+    self->_selectedTab = tab;
     [(MTPodcastDetailDataSource *)self reloadData];
   }
 }
@@ -54,26 +54,26 @@
   selectedTab = self->_selectedTab;
   if (selectedTab == 2)
   {
-    v4 = [(MTPodcastDetailDataSource *)self savedSections];
+    savedSections = [(MTPodcastDetailDataSource *)self savedSections];
   }
 
   else if (selectedTab == 1)
   {
-    v4 = [(MTPodcastDetailDataSource *)self feedSections];
+    savedSections = [(MTPodcastDetailDataSource *)self feedSections];
   }
 
   else if (selectedTab)
   {
-    v4 = 0;
+    savedSections = 0;
   }
 
   else
   {
-    v4 = [(MTPodcastDetailDataSource *)self unplayedSections];
+    savedSections = [(MTPodcastDetailDataSource *)self unplayedSections];
   }
 
   sections = self->_sections;
-  self->_sections = v4;
+  self->_sections = savedSections;
 }
 
 - (id)podcast
@@ -81,8 +81,8 @@
   if (self->_podcastUuid)
   {
     v3 = +[MTDB sharedInstance];
-    v4 = [v3 mainQueueContext];
-    v5 = [v4 podcastForUuid:self->_podcastUuid];
+    mainQueueContext = [v3 mainQueueContext];
+    v5 = [mainQueueContext podcastForUuid:self->_podcastUuid];
   }
 
   else
@@ -95,14 +95,14 @@
 
 - (id)unplayedSections
 {
-  v3 = [(MTPodcastDetailDataSource *)self createSectionForUnplayed];
-  v9[0] = v3;
-  v4 = [(MTPodcastDetailDataSource *)self createSectionForOtherEpisodes];
-  v9[1] = v4;
-  v5 = [(MTPodcastDetailDataSource *)self createSectionForEmptyOverlay];
-  v9[2] = v5;
-  v6 = [(MTPodcastDetailDataSource *)self createSectionForPlayedToBeDeleted];
-  v9[3] = v6;
+  createSectionForUnplayed = [(MTPodcastDetailDataSource *)self createSectionForUnplayed];
+  v9[0] = createSectionForUnplayed;
+  createSectionForOtherEpisodes = [(MTPodcastDetailDataSource *)self createSectionForOtherEpisodes];
+  v9[1] = createSectionForOtherEpisodes;
+  createSectionForEmptyOverlay = [(MTPodcastDetailDataSource *)self createSectionForEmptyOverlay];
+  v9[2] = createSectionForEmptyOverlay;
+  createSectionForPlayedToBeDeleted = [(MTPodcastDetailDataSource *)self createSectionForPlayedToBeDeleted];
+  v9[3] = createSectionForPlayedToBeDeleted;
   v7 = [NSArray arrayWithObjects:v9 count:4];
 
   return v7;
@@ -110,8 +110,8 @@
 
 - (id)feedSections
 {
-  v2 = [(MTPodcastDetailDataSource *)self createSectionForFeed];
-  v5 = v2;
+  createSectionForFeed = [(MTPodcastDetailDataSource *)self createSectionForFeed];
+  v5 = createSectionForFeed;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
@@ -119,112 +119,112 @@
 
 - (id)savedSections
 {
-  v2 = [(MTPodcastDetailDataSource *)self createSectionForIsFromiTunesSync];
-  v5 = v2;
+  createSectionForIsFromiTunesSync = [(MTPodcastDetailDataSource *)self createSectionForIsFromiTunesSync];
+  v5 = createSectionForIsFromiTunesSync;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
 }
 
-- (unint64_t)indexForSection:(id)a3
+- (unint64_t)indexForSection:(id)section
 {
-  v4 = a3;
-  v5 = [(MTPodcastDetailDataSource *)self sections];
-  v6 = [v5 indexOfObject:v4];
+  sectionCopy = section;
+  sections = [(MTPodcastDetailDataSource *)self sections];
+  v6 = [sections indexOfObject:sectionCopy];
 
   return v6;
 }
 
-- (void)sectionWillChangeContent:(id)a3
+- (void)sectionWillChangeContent:(id)content
 {
-  v4 = a3;
-  v5 = [(MTPodcastDetailDataSource *)self delegate];
-  [v5 sectionWillChangeContent:v4];
+  contentCopy = content;
+  delegate = [(MTPodcastDetailDataSource *)self delegate];
+  [delegate sectionWillChangeContent:contentCopy];
 }
 
-- (void)sectionDidChangeContent:(id)a3
+- (void)sectionDidChangeContent:(id)content
 {
-  v4 = a3;
-  v5 = [(MTPodcastDetailDataSource *)self delegate];
-  [v5 sectionDidChangeContent:v4];
+  contentCopy = content;
+  delegate = [(MTPodcastDetailDataSource *)self delegate];
+  [delegate sectionDidChangeContent:contentCopy];
 }
 
-- (void)episodeSection:(id)a3 didChangeObject:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6 newIndex:(unint64_t)a7
+- (void)episodeSection:(id)section didChangeObject:(id)object atIndex:(unint64_t)index forChangeType:(unint64_t)type newIndex:(unint64_t)newIndex
 {
-  v12 = a4;
-  v13 = a3;
-  v14 = [(MTPodcastDetailDataSource *)self indexForSection:v13];
+  objectCopy = object;
+  sectionCopy = section;
+  v14 = [(MTPodcastDetailDataSource *)self indexForSection:sectionCopy];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = +[IMLogger sharedLogger];
-    [v19 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Classes/ViewControllers/PodcastsTab/PodcastDetail/MTPodcastDetailDataSource.m" lineNumber:145 format:{@"Observed change for object %@ in section %@ but can't find the section index", v12, v13}];
+    [v19 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Classes/ViewControllers/PodcastsTab/PodcastDetail/MTPodcastDetailDataSource.m" lineNumber:145 format:{@"Observed change for object %@ in section %@ but can't find the section index", objectCopy, sectionCopy}];
   }
 
   else
   {
     v15 = v14;
-    if (a5 == -1)
+    if (index == -1)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = [NSIndexPath indexPathForRow:a5 inSection:v14];
+      v16 = [NSIndexPath indexPathForRow:index inSection:v14];
     }
 
     v19 = v16;
-    if (a7 == -1)
+    if (newIndex == -1)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = [NSIndexPath indexPathForRow:a7 inSection:v15];
+      v17 = [NSIndexPath indexPathForRow:newIndex inSection:v15];
     }
 
-    v18 = [(MTPodcastDetailDataSource *)self delegate];
-    [v18 episodeSection:v13 didChangeObject:v12 atIndexPath:v19 forChangeType:a6 newIndexPath:v17];
+    delegate = [(MTPodcastDetailDataSource *)self delegate];
+    [delegate episodeSection:sectionCopy didChangeObject:objectCopy atIndexPath:v19 forChangeType:type newIndexPath:v17];
 
-    v12 = v18;
-    v13 = v17;
+    objectCopy = delegate;
+    sectionCopy = v17;
   }
 }
 
-+ (id)sortDescriptorsForPodcastUuid:(id)a3
++ (id)sortDescriptorsForPodcastUuid:(id)uuid
 {
-  v3 = a3;
+  uuidCopy = uuid;
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainQueueContext];
+  mainQueueContext = [v4 mainQueueContext];
 
-  v6 = [v5 podcastForUuid:v3];
+  v6 = [mainQueueContext podcastForUuid:uuidCopy];
 
   if (v6)
   {
-    v7 = [v6 sortDescriptorsForSortOrder];
+    sortDescriptorsForSortOrder = [v6 sortDescriptorsForSortOrder];
   }
 
   else
   {
-    v7 = &__NSArray0__struct;
+    sortDescriptorsForSortOrder = &__NSArray0__struct;
   }
 
-  return v7;
+  return sortDescriptorsForSortOrder;
 }
 
 - (id)createSectionForUnplayed
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainQueueContext];
+  mainQueueContext = [v3 mainQueueContext];
 
-  v5 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v6 = [v4 podcastForUuid:v5];
+  podcastUuid = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v6 = [mainQueueContext podcastForUuid:podcastUuid];
 
   v7 = objc_opt_new();
   v8 = objc_opt_class();
-  v9 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v10 = [v8 sortDescriptorsForPodcastUuid:v9];
+  podcastUuid2 = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v10 = [v8 sortDescriptorsForPodcastUuid:podcastUuid2];
   [v7 setSortDescriptors:v10];
 
   [v7 setSectionType:1];
@@ -240,10 +240,10 @@
 - (id)createSectionForOtherEpisodes
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainQueueContext];
+  mainQueueContext = [v3 mainQueueContext];
 
-  v5 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v6 = [v4 podcastForUuid:v5];
+  podcastUuid = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v6 = [mainQueueContext podcastForUuid:podcastUuid];
 
   v7 = objc_opt_new();
   if (v6)
@@ -253,8 +253,8 @@
   }
 
   v9 = objc_opt_class();
-  v10 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v11 = [v9 sortDescriptorsForPodcastUuid:v10];
+  podcastUuid2 = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v11 = [v9 sortDescriptorsForPodcastUuid:podcastUuid2];
   [v7 setSortDescriptors:v11];
 
   v12 = +[NSBundle mainBundle];
@@ -295,18 +295,18 @@
 - (id)createSectionForPlayedToBeDeleted
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainQueueContext];
+  mainQueueContext = [v3 mainQueueContext];
 
-  v5 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v6 = [v4 podcastForUuid:v5];
+  podcastUuid = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v6 = [mainQueueContext podcastForUuid:podcastUuid];
 
   v7 = objc_opt_new();
   v8 = [objc_opt_class() predicateForPodcast:v6 sectionType:4];
   [v7 setPredicate:v8];
 
   v9 = objc_opt_class();
-  v10 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v11 = [v9 sortDescriptorsForPodcastUuid:v10];
+  podcastUuid2 = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v11 = [v9 sortDescriptorsForPodcastUuid:podcastUuid2];
   [v7 setSortDescriptors:v11];
 
   v12 = +[NSBundle mainBundle];
@@ -323,18 +323,18 @@
 - (id)createSectionForIsFromiTunesSync
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainQueueContext];
+  mainQueueContext = [v3 mainQueueContext];
 
-  v5 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v6 = [v4 podcastForUuid:v5];
+  podcastUuid = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v6 = [mainQueueContext podcastForUuid:podcastUuid];
 
   v7 = objc_opt_new();
   v8 = [objc_opt_class() predicateForPodcast:v6 sectionType:7];
   [v7 setPredicate:v8];
 
   v9 = objc_opt_class();
-  v10 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v11 = [v9 sortDescriptorsForPodcastUuid:v10];
+  podcastUuid2 = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v11 = [v9 sortDescriptorsForPodcastUuid:podcastUuid2];
   [v7 setSortDescriptors:v11];
 
   v12 = +[NSBundle mainBundle];
@@ -351,10 +351,10 @@
 - (id)createSectionForFeed
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainQueueContext];
+  mainQueueContext = [v3 mainQueueContext];
 
-  v5 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v6 = [v4 podcastForUuid:v5];
+  podcastUuid = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v6 = [mainQueueContext podcastForUuid:podcastUuid];
 
   v7 = objc_opt_new();
   v8 = [objc_opt_class() predicateForPodcast:v6 sectionType:6];
@@ -368,8 +368,8 @@
 
   [v7 setPredicate:v8];
   v11 = objc_opt_class();
-  v12 = [(MTPodcastDetailDataSource *)self podcastUuid];
-  v13 = [v11 sortDescriptorsForPodcastUuid:v12];
+  podcastUuid2 = [(MTPodcastDetailDataSource *)self podcastUuid];
+  v13 = [v11 sortDescriptorsForPodcastUuid:podcastUuid2];
   [v7 setSortDescriptors:v13];
 
   [v7 setSectionType:6];
@@ -380,86 +380,86 @@
   return v7;
 }
 
-+ (id)predicateForPodcast:(id)a3 sectionType:(unint64_t)a4
++ (id)predicateForPodcast:(id)podcast sectionType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [v5 deletePlayedEpisodesResolvedValue];
+  podcastCopy = podcast;
+  deletePlayedEpisodesResolvedValue = [podcastCopy deletePlayedEpisodesResolvedValue];
   v7 = 0;
-  if (a4 <= 6)
+  if (type <= 6)
   {
-    if (a4 > 3)
+    if (type > 3)
     {
-      if (a4 == 4)
+      if (type == 4)
       {
-        v9 = [v5 uuid];
-        v11 = [MTEpisode predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:v9 deletePlayedEpisodes:v6];
+        uuid = [podcastCopy uuid];
+        v11 = [MTEpisode predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:uuid deletePlayedEpisodes:deletePlayedEpisodesResolvedValue];
       }
 
       else
       {
-        if (a4 != 6)
+        if (type != 6)
         {
           goto LABEL_25;
         }
 
-        v9 = [v5 uuid];
-        v11 = [MTEpisode predicateForEpisodesInFeedForPodcastUuid:v9];
+        uuid = [podcastCopy uuid];
+        v11 = [MTEpisode predicateForEpisodesInFeedForPodcastUuid:uuid];
       }
     }
 
     else
     {
-      if (a4 != 1)
+      if (type != 1)
       {
-        if (a4 != 3)
+        if (type != 3)
         {
           goto LABEL_25;
         }
 
-        v8 = [v5 uuid];
-        v9 = [MTEpisode predicateForEpisodesOnPodcastUuid:v8 deletePlayedEpisodes:v6];
+        uuid2 = [podcastCopy uuid];
+        uuid = [MTEpisode predicateForEpisodesOnPodcastUuid:uuid2 deletePlayedEpisodes:deletePlayedEpisodesResolvedValue];
 
-        v10 = [v5 uuid];
-        v7 = [MTEpisode predicateForOtherEpisodesOnPodcastUuid:v10 baseEpisodesPredicate:v9 deletePlayedEpisodes:v6];
+        uuid3 = [podcastCopy uuid];
+        v7 = [MTEpisode predicateForOtherEpisodesOnPodcastUuid:uuid3 baseEpisodesPredicate:uuid deletePlayedEpisodes:deletePlayedEpisodesResolvedValue];
 
         goto LABEL_24;
       }
 
-      v9 = [v5 uuid];
-      v11 = [MTEpisode predicateForEpisodesOnPodcastUuid:v9 deletePlayedEpisodes:v6];
+      uuid = [podcastCopy uuid];
+      v11 = [MTEpisode predicateForEpisodesOnPodcastUuid:uuid deletePlayedEpisodes:deletePlayedEpisodesResolvedValue];
     }
 
     goto LABEL_23;
   }
 
-  if (a4 <= 10)
+  if (type <= 10)
   {
-    if (a4 == 7)
+    if (type == 7)
     {
-      v9 = [v5 uuid];
-      v11 = [MTEpisode predicateForEpisodesIsFromiTunesSyncOnPodcastUuid:v9];
+      uuid = [podcastCopy uuid];
+      v11 = [MTEpisode predicateForEpisodesIsFromiTunesSyncOnPodcastUuid:uuid];
     }
 
     else
     {
-      if (a4 != 9)
+      if (type != 9)
       {
         goto LABEL_25;
       }
 
-      v9 = [v5 uuid];
-      v11 = [MTEpisode predicateForUserEpisodesOnPodcastUuid:v9 episodeLimit:0 deletePlayedEpisodes:v6 limitToDownloadBehaviorAutomatic:0];
+      uuid = [podcastCopy uuid];
+      v11 = [MTEpisode predicateForUserEpisodesOnPodcastUuid:uuid episodeLimit:0 deletePlayedEpisodes:deletePlayedEpisodesResolvedValue limitToDownloadBehaviorAutomatic:0];
     }
 
     goto LABEL_23;
   }
 
-  if (a4 == 11)
+  if (type == 11)
   {
-    v9 = [v5 nextEpisodeUuid];
-    if (v9)
+    uuid = [podcastCopy nextEpisodeUuid];
+    if (uuid)
     {
-      [MTEpisode predicateForEpisodeUuid:v9];
+      [MTEpisode predicateForEpisodeUuid:uuid];
     }
 
     else
@@ -472,13 +472,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (a4 != 12)
+  if (type != 12)
   {
     goto LABEL_25;
   }
 
-  v9 = [v5 uuid];
-  v12 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v9];
+  uuid = [podcastCopy uuid];
+  v12 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:uuid];
   v13 = [MTEpisode predicateForVisuallyPlayed:0];
   v7 = [v12 AND:v13];
 

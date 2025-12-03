@@ -1,39 +1,39 @@
 @interface SRSensorWriterWrapper
 + (id)writerInstance;
 - (BOOL)isReady;
-- (void)publishSessionStats:(id)a3 withSessionStartTime:(BOOL)a4;
-- (void)write:(id)a3;
-- (void)write:(id)a3 withTimeStamp:(id)a4;
+- (void)publishSessionStats:(id)stats withSessionStartTime:(BOOL)time;
+- (void)write:(id)write;
+- (void)write:(id)write withTimeStamp:(id)stamp;
 @end
 
 @implementation SRSensorWriterWrapper
 
-- (void)publishSessionStats:(id)a3 withSessionStartTime:(BOOL)a4
+- (void)publishSessionStats:(id)stats withSessionStartTime:(BOOL)time
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = [v6 generateDataForSR];
-  if (v4)
+  timeCopy = time;
+  statsCopy = stats;
+  generateDataForSR = [statsCopy generateDataForSR];
+  if (timeCopy)
   {
-    v7 = [v9 binarySampleRepresentation];
-    v8 = [v6 startTime];
+    binarySampleRepresentation = [generateDataForSR binarySampleRepresentation];
+    startTime = [statsCopy startTime];
 
-    [(SRSensorWriterWrapper *)self write:v7 withTimeStamp:v8];
+    [(SRSensorWriterWrapper *)self write:binarySampleRepresentation withTimeStamp:startTime];
   }
 
   else
   {
 
-    v7 = [v9 binarySampleRepresentation];
-    [(SRSensorWriterWrapper *)self write:v7];
+    binarySampleRepresentation = [generateDataForSR binarySampleRepresentation];
+    [(SRSensorWriterWrapper *)self write:binarySampleRepresentation];
   }
 }
 
-- (void)write:(id)a3 withTimeStamp:(id)a4
+- (void)write:(id)write withTimeStamp:(id)stamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  stampCopy = stamp;
+  writeCopy = write;
   v8 = IXADefaultLogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -43,17 +43,17 @@
     _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = +[SRSensorWriterWrapper writerInstance];
-  [v6 srAbsoluteTime];
+  [stampCopy srAbsoluteTime];
   v12 = v11;
 
   v19 = 0;
-  [v10 provideSampleData:v7 timestamp:&v19 error:v12];
+  [v10 provideSampleData:writeCopy timestamp:&v19 error:v12];
 
   v13 = v19;
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   v14 = IXADefaultLogFacility();
   v15 = v14;
@@ -81,10 +81,10 @@ LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  writeCopy = write;
   v5 = IXADefaultLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -94,14 +94,14 @@ LABEL_9:
     _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = +[SRSensorWriterWrapper writerInstance];
   v14 = 0;
-  [v7 provideSampleData:v4 error:&v14];
+  [v7 provideSampleData:writeCopy error:&v14];
 
   v8 = v14;
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v9 = IXADefaultLogFacility();
   v10 = v9;
@@ -133,13 +133,13 @@ LABEL_9:
 {
   v11 = *MEMORY[0x277D85DE8];
   v2 = +[SRSensorWriterWrapper writerInstance];
-  v3 = [v2 isMonitoring];
+  isMonitoring = [v2 isMonitoring];
 
   v4 = IXADefaultLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v7 = @"not ready";
-    if (v3)
+    if (isMonitoring)
     {
       v7 = @"ready";
     }
@@ -151,7 +151,7 @@ LABEL_9:
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isMonitoring;
 }
 
 + (id)writerInstance

@@ -1,10 +1,10 @@
 @interface PLAssetsdMigrationService
-+ (BOOL)applyBackupExclusionToFileProviderDocumentStorage:(id *)a3;
-+ (id)photosFileProviderManagerDocumentStorageURL:(id *)a3;
-- (PLAssetsdMigrationService)initWithLibraryServicesManager:(id)a3;
++ (BOOL)applyBackupExclusionToFileProviderDocumentStorage:(id *)storage;
++ (id)photosFileProviderManagerDocumentStorageURL:(id *)l;
+- (PLAssetsdMigrationService)initWithLibraryServicesManager:(id)manager;
 - (void)_migrateWellknownLibraries;
-- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)a3 reply:(id)a4;
-- (void)dataMigrationWillFinishWithReply:(id)a3;
+- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)type reply:(id)reply;
+- (void)dataMigrationWillFinishWithReply:(id)reply;
 @end
 
 @implementation PLAssetsdMigrationService
@@ -116,16 +116,16 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)dataMigrationWillFinishWithReply:(id)a3
+- (void)dataMigrationWillFinishWithReply:(id)reply
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v12 = 0u;
   *sel = 0u;
   v11 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v11) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v11) = enabled;
+  if (enabled)
   {
     *(&v11 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: dataMigrationWillFinishWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -144,7 +144,7 @@ LABEL_12:
 
   pl_dispatch_once();
   [(PLAssetsdMigrationService *)self _migrateWellknownLibraries];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
   if (v11 == 1)
   {
     os_activity_scope_leave((&v12 + 8));
@@ -290,16 +290,16 @@ LABEL_6:
   [*(a1 + 48) stillAlive];
 }
 
-- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)a3 reply:(id)a4
+- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)type reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v24 = 0u;
   *sel = 0u;
   v23 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v23) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v23) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: cleanupModelForDataMigrationForRestoreType:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v23 + 1);
@@ -311,14 +311,14 @@ LABEL_6:
   v10 = PLMigrationGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 2)
+    if ((type - 1) > 2)
     {
       v11 = @"none";
     }
 
     else
     {
-      v11 = off_1E7573E80[a3 - 1];
+      v11 = off_1E7573E80[type - 1];
     }
 
     v12 = v11;
@@ -337,8 +337,8 @@ LABEL_6:
   block[2] = __78__PLAssetsdMigrationService_cleanupModelForDataMigrationForRestoreType_reply___block_invoke;
   block[3] = &unk_1E7575338;
   block[4] = self;
-  v22 = a3;
-  v15 = v6;
+  typeCopy = type;
+  v15 = replyCopy;
   v21 = v15;
   dispatch_async(dataMigratordQueue, block);
 
@@ -373,11 +373,11 @@ uint64_t __78__PLAssetsdMigrationService_cleanupModelForDataMigrationForRestoreT
   return v4();
 }
 
-- (PLAssetsdMigrationService)initWithLibraryServicesManager:(id)a3
+- (PLAssetsdMigrationService)initWithLibraryServicesManager:(id)manager
 {
   v12.receiver = self;
   v12.super_class = PLAssetsdMigrationService;
-  v3 = [(PLAbstractLibraryServicesManagerService *)&v12 initWithLibraryServicesManager:a3];
+  v3 = [(PLAbstractLibraryServicesManagerService *)&v12 initWithLibraryServicesManager:manager];
   if (v3)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -396,11 +396,11 @@ uint64_t __78__PLAssetsdMigrationService_cleanupModelForDataMigrationForRestoreT
   return v3;
 }
 
-+ (BOOL)applyBackupExclusionToFileProviderDocumentStorage:(id *)a3
++ (BOOL)applyBackupExclusionToFileProviderDocumentStorage:(id *)storage
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v3 = [a1 photosFileProviderManagerDocumentStorageURL:&v13];
+  v3 = [self photosFileProviderManagerDocumentStorageURL:&v13];
   v4 = v13;
   if (v3)
   {
@@ -427,15 +427,15 @@ uint64_t __78__PLAssetsdMigrationService_cleanupModelForDataMigrationForRestoreT
   return v5;
 }
 
-+ (id)photosFileProviderManagerDocumentStorageURL:(id *)a3
++ (id)photosFileProviderManagerDocumentStorageURL:(id *)l
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = [objc_alloc(MEMORY[0x1E6967510]) _initWithProviderIdentifier:@"com.apple.mobileslideshow.PhotosFileProvider" groupName:@"group.com.apple.mobileslideshow.PhotosFileProvider"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 documentStorageURL];
-    if (v6)
+    documentStorageURL = [v4 documentStorageURL];
+    if (documentStorageURL)
     {
       goto LABEL_8;
     }
@@ -462,16 +462,16 @@ uint64_t __78__PLAssetsdMigrationService_cleanupModelForDataMigrationForRestoreT
 
   v12 = [v9 dictionaryWithObjects:v10 forKeys:v11 count:1];
   v13 = [v7 errorWithDomain:v8 code:41003 userInfo:v12];
-  if (a3)
+  if (l)
   {
     v13 = v13;
-    *a3 = v13;
+    *l = v13;
   }
 
-  v6 = 0;
+  documentStorageURL = 0;
 LABEL_8:
 
-  return v6;
+  return documentStorageURL;
 }
 
 @end

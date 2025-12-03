@@ -1,5 +1,5 @@
 @interface SbsyncTask
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
 - (void)main;
 @end
 
@@ -51,8 +51,8 @@
   v119 = v9;
 
   v12 = [SbsyncTaskRequestEncoder alloc];
-  v13 = [(Bag *)self->_bag amsBag];
-  v14 = [(SbsyncTaskRequestEncoder *)v12 initWithBag:v13];
+  amsBag = [(Bag *)self->_bag amsBag];
+  v14 = [(SbsyncTaskRequestEncoder *)v12 initWithBag:amsBag];
 
   if (self->_account)
   {
@@ -62,11 +62,11 @@
       v16 = self->_logKey;
       account = self->_account;
       v18 = v16;
-      v19 = [(ACAccount *)account ams_DSID];
+      ams_DSID = [(ACAccount *)account ams_DSID];
       *buf = 138412546;
       *&buf[4] = v16;
       v132 = 2114;
-      v133 = v19;
+      v133 = ams_DSID;
       v20 = "[%@] Starting with provided account: %{public}@";
 LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, v20, buf, 0x16u);
@@ -76,9 +76,9 @@ LABEL_15:
   else
   {
     v21 = +[ACAccountStore ams_sharedAccountStore];
-    v22 = [v21 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v21 ams_activeiTunesAccount];
     v23 = self->_account;
-    self->_account = v22;
+    self->_account = ams_activeiTunesAccount;
 
     v15 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -86,11 +86,11 @@ LABEL_15:
       v24 = self->_logKey;
       v25 = self->_account;
       v18 = v24;
-      v19 = [(ACAccount *)v25 ams_DSID];
+      ams_DSID = [(ACAccount *)v25 ams_DSID];
       *buf = 138412546;
       *&buf[4] = v24;
       v132 = 2114;
-      v133 = v19;
+      v133 = ams_DSID;
       v20 = "[%@] Starting with active account: %{public}@";
       goto LABEL_15;
     }
@@ -99,8 +99,8 @@ LABEL_15:
   v26 = self->_account;
   if (v26 && v5)
   {
-    v27 = [(ACAccount *)self->_account ams_DSID];
-    self->_initialSubscriptionStatus = sub_1002A18B4(SbsyncTask, v27, v5);
+    ams_DSID2 = [(ACAccount *)self->_account ams_DSID];
+    self->_initialSubscriptionStatus = sub_1002A18B4(SbsyncTask, ams_DSID2, v5);
 
     v26 = self->_account;
   }
@@ -132,10 +132,10 @@ LABEL_15:
   }
 
   v122 = v30;
-  v32 = [(ACAccount *)self->_account ams_DSID];
+  ams_DSID3 = [(ACAccount *)self->_account ams_DSID];
   syncType = self->_syncType;
   v34 = self->_logKey;
-  v35 = v32;
+  v35 = ams_DSID3;
   objc_opt_self();
   v130 = 0;
   v129 = 0;
@@ -164,8 +164,8 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "[%@] Getting sbsync data with transactionType: %ld", buf, 0x16u);
   }
 
-  v41 = [v35 longLongValue];
-  sub_1000106A4(v37, v41, v39, 0, 0, 0, 0, 0, 0, &v130, &v129);
+  longLongValue = [v35 longLongValue];
+  sub_1000106A4(v37, longLongValue, v39, 0, 0, 0, 0, 0, 0, &v130, &v129);
   if (v42)
   {
     v43 = [NSString stringWithFormat:@"Failed to generate sbsync data. Fairplay error status: %d", v42];
@@ -277,8 +277,8 @@ LABEL_54:
 
     if (has_internal_content)
     {
-      v67 = [(NSNumber *)self->_subscriptionDuration stringValue];
-      [v61 setValue:v67 forHTTPHeaderField:@"X-iTMS-ValidityDurationInSeconds"];
+      stringValue = [(NSNumber *)self->_subscriptionDuration stringValue];
+      [v61 setValue:stringValue forHTTPHeaderField:@"X-iTMS-ValidityDurationInSeconds"];
     }
   }
 
@@ -295,8 +295,8 @@ LABEL_54:
       v77 = v76;
       if (v76)
       {
-        v78 = [v76 userInfo];
-        v79 = [v78 objectForKeyedSubscript:@"AMSServerErrorCode"];
+        userInfo = [v76 userInfo];
+        v79 = [userInfo objectForKeyedSubscript:@"AMSServerErrorCode"];
 
         if (v79 && [v79 isEqualToNumber:&off_100547938])
         {
@@ -322,8 +322,8 @@ LABEL_82:
         goto LABEL_83;
       }
 
-      v83 = [v68 object];
-      v91 = [v83 objectForKeyedSubscript:@"subKeyBag"];
+      object = [v68 object];
+      v91 = [object objectForKeyedSubscript:@"subKeyBag"];
 
       if (!v91)
       {
@@ -342,11 +342,11 @@ LABEL_82:
         goto LABEL_84;
       }
 
-      v116 = [v83 objectForKeyedSubscript:@"subKeyBag"];
+      v116 = [object objectForKeyedSubscript:@"subKeyBag"];
       v92 = [[NSData alloc] initWithBase64EncodedString:v116 options:0];
-      v93 = [(ACAccount *)self->_account ams_DSID];
+      ams_DSID4 = [(ACAccount *)self->_account ams_DSID];
       v94 = self->_logKey;
-      v115 = v93;
+      v115 = ams_DSID4;
       v95 = v94;
       v123 = v92;
       v111 = objc_opt_self();
@@ -375,7 +375,7 @@ LABEL_82:
       sub_100018980();
       if (v100)
       {
-        v101 = [NSString stringWithFormat:@"Failed to import sbsync data. Fairplay error status: %d", v100];
+        v100 = [NSString stringWithFormat:@"Failed to import sbsync data. Fairplay error status: %d", v100];
         v102 = ASDErrorWithTitleAndMessage();
 
         v112 = 0;
@@ -392,9 +392,9 @@ LABEL_82:
           goto LABEL_104;
         }
 
-        v101 = sub_1002A1D0C(v111, v130, v128);
+        v100 = sub_1002A1D0C(v111, v130, v128);
         v103 = v115;
-        v112 = sub_1002A18B4(SbsyncTask, v115, v101);
+        v112 = sub_1002A18B4(SbsyncTask, v115, v100);
         sub_1000660A8(v130);
       }
 
@@ -452,8 +452,8 @@ LABEL_81:
 
     else
     {
-      v81 = [v74 userInfo];
-      v75 = [v81 objectForKeyedSubscript:@"AMSServerErrorCode"];
+      userInfo2 = [v74 userInfo];
+      v75 = [userInfo2 objectForKeyedSubscript:@"AMSServerErrorCode"];
 
       if (!v75 || ![v75 isEqualToNumber:&off_100547938])
       {
@@ -471,7 +471,7 @@ LABEL_80:
 
   v68 = 0;
 LABEL_83:
-  v83 = 0;
+  object = 0;
   v54 = 0;
 LABEL_84:
 
@@ -520,12 +520,12 @@ LABEL_85:
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  requestCopy = request;
+  completionCopy = completion;
   v14 = off_100506460;
   if (self)
   {
@@ -553,7 +553,7 @@ LABEL_85:
     *buf = 138412546;
     v22 = logKey;
     v23 = 2114;
-    v24 = v12;
+    v24 = requestCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%@] Presenting dialog request: %{public}@", buf, 0x16u);
   }
 
@@ -562,9 +562,9 @@ LABEL_85:
   v19[2] = sub_1002A1BD4;
   v19[3] = &unk_10051E068;
   v19[4] = self;
-  v20 = v13;
-  v18 = v13;
-  [v15 presentDialogRequest:v12 resultHandler:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [v15 presentDialogRequest:requestCopy resultHandler:v19];
 }
 
 @end

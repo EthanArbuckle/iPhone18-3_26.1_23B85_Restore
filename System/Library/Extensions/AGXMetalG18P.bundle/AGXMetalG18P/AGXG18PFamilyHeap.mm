@@ -1,17 +1,17 @@
 @interface AGXG18PFamilyHeap
-- (AGXG18PFamilyHeap)initWithDevice:(id)a3 descriptor:(id)a4;
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newBufferWithDescriptor:(id)a3;
-- (id)newBufferWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 atOffset:(unint64_t)a5;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 atOffset:(unint64_t)a4;
+- (AGXG18PFamilyHeap)initWithDevice:(id)device descriptor:(id)descriptor;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newBufferWithDescriptor:(id)descriptor;
+- (id)newBufferWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options atOffset:(unint64_t)offset;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor atOffset:(unint64_t)offset;
 - (void)dealloc;
-- (void)emitHeapResourceInfoSignpost:(id)a3;
+- (void)emitHeapResourceInfoSignpost:(id)signpost;
 @end
 
 @implementation AGXG18PFamilyHeap
@@ -24,7 +24,7 @@
   [(IOGPUMetalHeap *)&v3 dealloc];
 }
 
-- (void)emitHeapResourceInfoSignpost:(id)a3
+- (void)emitHeapResourceInfoSignpost:(id)signpost
 {
   v34 = *MEMORY[0x29EDCA608];
   {
@@ -33,18 +33,18 @@
       v7 = MEMORY[0x29EDC5638];
       v8 = *(&self->super.super.super.super.super.isa + v6) + *MEMORY[0x29EDC5638];
       v9 = *(v8 + 12);
-      v10 = [*(v8 + 11) UTF8String];
+      uTF8String = [*(v8 + 11) UTF8String];
       v11 = *(&self->super.super.super.super.super.isa + *MEMORY[0x29EDC5620]);
       v12 = *(&self->super.super.super.super.super.isa + v6) + *v7;
       v13 = (*(v12 + 19) << 48) | (*(v12 + 18) << 32);
       v14 = v13 & 0xFFFFFFFF00000000 | [*(v12 + 10) registryID];
       v15 = *(&self->super.super.super.super.super.isa + v6);
-      v16 = [a3 UTF8String];
+      uTF8String2 = [signpost UTF8String];
       v17 = *(*(&self->super.super.super.super.super.isa + v6) + *v7 + 72);
       v18 = 134350850;
       v19 = v9;
       v20 = 2082;
-      v21 = v10;
+      v21 = uTF8String;
       v22 = 2050;
       v23 = v11;
       v24 = 2050;
@@ -54,7 +54,7 @@
       v28 = 2050;
       v29 = v15;
       v30 = 2082;
-      v31 = v16;
+      v31 = uTF8String2;
       v32 = 2050;
       v33 = v17;
       _os_signpost_emit_with_name_impl(&dword_29CA13000, v3, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Metal Heap Resource", "GlobalID=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  Label=%{public,signpost.description:attribute}s \t\t\t\t\t\t\t  Size=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  HeapInfoPacked1=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  HeapInfoPacked2=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  ObjectPtr=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  Action=%{public,signpost.description:attribute}s \t\t\t\t\t\t\t  GPUVA=%{public,signpost.description:attribute}llu", &v18, 0x52u);
@@ -62,27 +62,27 @@
   }
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   if ([(_MTLHeap *)self storageMode]!= 2)
   {
     return 0;
   }
 
-  v9 = [(IOGPUMetalHeap *)self device];
-  [(MTLDevice *)v9 heapAccelerationStructureSizeAndAlignWithSize:a3];
-  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithHeap:self length:a3 alignment:v10 options:[(_MTLHeap *)self resourceOptions] atOffset:a4];
+  device = [(IOGPUMetalHeap *)self device];
+  [(MTLDevice *)device heapAccelerationStructureSizeAndAlignWithSize:size];
+  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithHeap:self length:size alignment:v10 options:[(_MTLHeap *)self resourceOptions] atOffset:offset];
   if (result)
   {
     v12 = result;
-    if (([(MTLDevice *)v9 buildBVHForRIA]& 1) != 0)
+    if (([(MTLDevice *)device buildBVHForRIA]& 1) != 0)
     {
-      v13 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithBuffer:v12 device:v9 length:a3 resourceIndex:a5];
+      v13 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithBuffer:v12 device:device length:size resourceIndex:index];
     }
 
     else
     {
-      v13 = [[AGXG18PFamilyRayTracingAccelerationStructureSW alloc] initWithBuffer:v12 offset:0 device:v9 resourceIndex:a5];
+      v13 = [[AGXG18PFamilyRayTracingAccelerationStructureSW alloc] initWithBuffer:v12 offset:0 device:device resourceIndex:index];
     }
 
     v14 = v13;
@@ -93,49 +93,49 @@
   return result;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
-  v7 = [(IOGPUMetalHeap *)self device];
-  if (v7)
+  device = [(IOGPUMetalHeap *)self device];
+  if (device)
   {
-    [(MTLDevice *)v7 accelerationStructureSizesWithDescriptor:a3];
+    [(MTLDevice *)device accelerationStructureSizesWithDescriptor:descriptor];
   }
 
-  return [(AGXG18PFamilyHeap *)self newAccelerationStructureWithSize:0 offset:a4 resourceIndex:0];
+  return [(AGXG18PFamilyHeap *)self newAccelerationStructureWithSize:0 offset:offset resourceIndex:0];
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
-  v5 = [(IOGPUMetalHeap *)self device];
-  if (v5)
+  device = [(IOGPUMetalHeap *)self device];
+  if (device)
   {
-    [(MTLDevice *)v5 accelerationStructureSizesWithDescriptor:a3];
+    [(MTLDevice *)device accelerationStructureSizesWithDescriptor:descriptor];
   }
 
   return [(AGXG18PFamilyHeap *)self newAccelerationStructureWithSize:0 resourceIndex:0];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
   if ([(_MTLHeap *)self storageMode]!= 2)
   {
     return 0;
   }
 
-  v7 = [(IOGPUMetalHeap *)self device];
-  [(MTLDevice *)v7 heapAccelerationStructureSizeAndAlignWithSize:a3];
-  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithHeap:self length:a3 alignment:v8 options:[(_MTLHeap *)self resourceOptions]];
+  device = [(IOGPUMetalHeap *)self device];
+  [(MTLDevice *)device heapAccelerationStructureSizeAndAlignWithSize:size];
+  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithHeap:self length:size alignment:v8 options:[(_MTLHeap *)self resourceOptions]];
   if (result)
   {
     v10 = result;
-    if (([(MTLDevice *)v7 buildBVHForRIA]& 1) != 0)
+    if (([(MTLDevice *)device buildBVHForRIA]& 1) != 0)
     {
-      v11 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithBuffer:v10 device:v7 length:a3 resourceIndex:a4];
+      v11 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithBuffer:v10 device:device length:size resourceIndex:index];
     }
 
     else
     {
-      v11 = [[AGXG18PFamilyRayTracingAccelerationStructureSW alloc] initWithBuffer:v10 offset:0 device:v7 resourceIndex:a4];
+      v11 = [[AGXG18PFamilyRayTracingAccelerationStructureSW alloc] initWithBuffer:v10 offset:0 device:device resourceIndex:index];
     }
 
     v12 = v11;
@@ -146,63 +146,63 @@
   return result;
 }
 
-- (id)newBufferWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newBufferWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
-  v7 = [a3 length];
-  v8 = [a3 alignment];
-  v9 = [a3 pointerTag];
+  v7 = [descriptor length];
+  alignment = [descriptor alignment];
+  pointerTag = [descriptor pointerTag];
   v10 = [AGXG18PFamilyBuffer alloc];
-  v11 = [(_MTLHeap *)self resourceOptions];
+  resourceOptions = [(_MTLHeap *)self resourceOptions];
 
-  return [(AGXBuffer *)v10 initWithHeap:self length:v7 alignment:v8 pointerTag:v9 options:v11 atOffset:a4];
+  return [(AGXBuffer *)v10 initWithHeap:self length:v7 alignment:alignment pointerTag:pointerTag options:resourceOptions atOffset:offset];
 }
 
-- (id)newBufferWithDescriptor:(id)a3
+- (id)newBufferWithDescriptor:(id)descriptor
 {
-  v5 = [a3 length];
-  v6 = [a3 alignment];
-  v7 = [a3 pointerTag];
+  v5 = [descriptor length];
+  alignment = [descriptor alignment];
+  pointerTag = [descriptor pointerTag];
   v8 = [AGXG18PFamilyBuffer alloc];
-  v9 = [(_MTLHeap *)self resourceOptions];
+  resourceOptions = [(_MTLHeap *)self resourceOptions];
 
-  return [(AGXBuffer *)v8 initWithHeap:self length:v5 alignment:v6 pointerTag:v7 options:v9];
+  return [(AGXBuffer *)v8 initWithHeap:self length:v5 alignment:alignment pointerTag:pointerTag options:resourceOptions];
 }
 
-- (id)newTextureWithDescriptor:(id)a3 atOffset:(unint64_t)a4
+- (id)newTextureWithDescriptor:(id)descriptor atOffset:(unint64_t)offset
 {
   v7 = [AGXG18PFamilyTexture alloc];
 
-  return [(AGXTexture *)v7 initWithHeap:self desc:a3 atOffset:a4];
+  return [(AGXTexture *)v7 initWithHeap:self desc:descriptor atOffset:offset];
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 atOffset:(unint64_t)a5
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options atOffset:(unint64_t)offset
 {
   v9 = [AGXG18PFamilyBuffer alloc];
 
-  return [(AGXBuffer *)v9 initWithHeap:self length:a3 options:a4 atOffset:a5];
+  return [(AGXBuffer *)v9 initWithHeap:self length:length options:options atOffset:offset];
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
   v5 = [AGXG18PFamilyTexture alloc];
 
-  return [(AGXTexture *)v5 initWithHeap:self desc:a3];
+  return [(AGXTexture *)v5 initWithHeap:self desc:descriptor];
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
   v7 = [AGXG18PFamilyBuffer alloc];
 
-  return [(AGXBuffer *)v7 initWithHeap:self length:a3 options:a4];
+  return [(AGXBuffer *)v7 initWithHeap:self length:length options:options];
 }
 
-- (AGXG18PFamilyHeap)initWithDevice:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyHeap)initWithDevice:(id)device descriptor:(id)descriptor
 {
-  if ([a4 validateWithDevice:?])
+  if ([descriptor validateWithDevice:?])
   {
-    v7 = [a4 descriptorPrivate];
-    v8 = v7;
-    v9 = v7[10];
+    descriptorPrivate = [descriptor descriptorPrivate];
+    v8 = descriptorPrivate;
+    v9 = descriptorPrivate[10];
     if (v9 == 102)
     {
       v10 = 0x10000;
@@ -228,16 +228,16 @@
       v11 = *MEMORY[0x29EDCA6D0];
     }
 
-    v12 = *v7;
-    v13 = (v11 + *v7 - 1) / v11;
+    v12 = *descriptorPrivate;
+    v13 = (v11 + *descriptorPrivate - 1) / v11;
     v24[0] = 0;
-    HIDWORD(v24[0]) = (v7[2] != 0) << 10;
+    HIDWORD(v24[0]) = (descriptorPrivate[2] != 0) << 10;
     v24[1] = 0x100010001;
     v25 = 16777473;
     v14 = v13 * v11;
     v26 = 0;
     v27 = 0;
-    v28 = [a4 pinnedGPUAddress];
+    pinnedGPUAddress = [descriptor pinnedGPUAddress];
     v29 = v12;
     v30 = v11;
     v32 = 0u;
@@ -248,8 +248,8 @@
     v35 = 0;
     v15 = v8[1] == 2;
     v16 = v8[2] != 0;
-    v17 = ([a4 hazardTrackingMode] & 3) << 8;
-    if ((*(*(a3 + 106) + 16456) & 0x10) != 0)
+    v17 = ([descriptor hazardTrackingMode] & 3) << 8;
+    if ((*(*(device + 106) + 16456) & 0x10) != 0)
     {
       v17 = 512;
     }
@@ -278,7 +278,7 @@
 
     v23.receiver = self;
     v23.super_class = AGXG18PFamilyHeap;
-    result = [(IOGPUMetalHeap *)&v23 initWithDevice:a3 size:v14 options:v18 | v19 & 0x1600000 args:v24 argsSize:104 desc:a4];
+    result = [(IOGPUMetalHeap *)&v23 initWithDevice:device size:v14 options:v18 | v19 & 0x1600000 args:v24 argsSize:104 desc:descriptor];
     if (result)
     {
       v22 = result;

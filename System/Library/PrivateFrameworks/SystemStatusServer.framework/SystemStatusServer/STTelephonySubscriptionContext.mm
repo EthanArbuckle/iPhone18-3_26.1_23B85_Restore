@@ -1,7 +1,7 @@
 @interface STTelephonySubscriptionContext
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -10,40 +10,40 @@
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonySubscriptionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonySubscriptionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(STTelephonySubscriptionContext *)self subscriptionInfo];
-  v5 = [v4 succinctDescription];
-  [v3 appendString:v5 withName:@"subscriptionInfo"];
+  subscriptionInfo = [(STTelephonySubscriptionContext *)self subscriptionInfo];
+  succinctDescription = [subscriptionInfo succinctDescription];
+  [v3 appendString:succinctDescription withName:@"subscriptionInfo"];
 
   v6 = STTelephonyDataConnectionTypeDebugName([(STTelephonySubscriptionContext *)self modemDataConnectionType]);
   [v3 appendString:v6 withName:@"modemDataConnectionType"];
 
-  v7 = [(STTelephonySubscriptionContext *)self cachedCTOperatorName];
-  [v3 appendString:v7 withName:@"cachedCTOperatorName"];
+  cachedCTOperatorName = [(STTelephonySubscriptionContext *)self cachedCTOperatorName];
+  [v3 appendString:cachedCTOperatorName withName:@"cachedCTOperatorName"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonySubscriptionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonySubscriptionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -51,8 +51,8 @@
   v10[3] = &unk_279D34B18;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -73,14 +73,14 @@ void __72__STTelephonySubscriptionContext_descriptionBuilderWithMultilinePrefix_
   [v7 appendString:v8 withName:@"cachedCTOperatorName"];
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     v4 = MEMORY[0x277CF0C00];
-    v5 = a3;
-    v6 = [v4 builderWithObject:v3];
+    prefixCopy = prefix;
+    v6 = [v4 builderWithObject:selfCopy];
     [v6 setUseDebugDescription:1];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
@@ -88,13 +88,13 @@ void __72__STTelephonySubscriptionContext_descriptionBuilderWithMultilinePrefix_
     v13 = &unk_279D34B18;
     v7 = v6;
     v14 = v7;
-    v15 = v3;
-    [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:&v10];
+    v15 = selfCopy;
+    [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:&v10];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  v8 = [(STTelephonySubscriptionContext *)v3 build:a3];
+  v8 = [(STTelephonySubscriptionContext *)selfCopy build:prefix];
 
   return v8;
 }

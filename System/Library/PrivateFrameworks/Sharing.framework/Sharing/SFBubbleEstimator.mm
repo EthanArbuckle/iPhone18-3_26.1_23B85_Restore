@@ -1,39 +1,39 @@
 @interface SFBubbleEstimator
-+ (id)estimatorWithEnter:(int64_t)a3 exit:(int64_t)a4;
-+ (id)estimatorWithEnter:(int64_t)a3 exit:(int64_t)a4 threshold:(double)a5;
++ (id)estimatorWithEnter:(int64_t)enter exit:(int64_t)exit;
++ (id)estimatorWithEnter:(int64_t)enter exit:(int64_t)exit threshold:(double)threshold;
 - (BOOL)shouldExpandBubble;
 - (double)velocity;
 - (double)velocitySmoothed;
-- (int64_t)updateWithRSSI:(int64_t)a3;
-- (void)setThresholdSeconds:(double)a3;
+- (int64_t)updateWithRSSI:(int64_t)i;
+- (void)setThresholdSeconds:(double)seconds;
 @end
 
 @implementation SFBubbleEstimator
 
-+ (id)estimatorWithEnter:(int64_t)a3 exit:(int64_t)a4
++ (id)estimatorWithEnter:(int64_t)enter exit:(int64_t)exit
 {
   v4 = 0;
-  if (a4 <= a3 && (a4 & a3) < 0)
+  if (exit <= enter && (exit & enter) < 0)
   {
     v4 = objc_alloc_init(SFBubbleEstimator);
-    [(SFBubbleEstimator *)v4 setRssiEnter:a3];
-    [(SFBubbleEstimator *)v4 setRssiExit:a4];
+    [(SFBubbleEstimator *)v4 setRssiEnter:enter];
+    [(SFBubbleEstimator *)v4 setRssiExit:exit];
   }
 
   return v4;
 }
 
-+ (id)estimatorWithEnter:(int64_t)a3 exit:(int64_t)a4 threshold:(double)a5
++ (id)estimatorWithEnter:(int64_t)enter exit:(int64_t)exit threshold:(double)threshold
 {
-  if ((a4 & a3) < 0 != v5)
+  if ((exit & enter) < 0 != v5)
   {
     v6 = 0;
-    if (a4 <= a3 && a5 > 0.0)
+    if (exit <= enter && threshold > 0.0)
     {
       v6 = objc_alloc_init(SFBubbleEstimator);
-      [(SFBubbleEstimator *)v6 setRssiEnter:a3];
-      [(SFBubbleEstimator *)v6 setRssiExit:a4];
-      [(SFBubbleEstimator *)v6 setThresholdSeconds:a5];
+      [(SFBubbleEstimator *)v6 setRssiEnter:enter];
+      [(SFBubbleEstimator *)v6 setRssiExit:exit];
+      [(SFBubbleEstimator *)v6 setThresholdSeconds:threshold];
     }
   }
 
@@ -45,9 +45,9 @@
   return v6;
 }
 
-- (int64_t)updateWithRSSI:(int64_t)a3
+- (int64_t)updateWithRSSI:(int64_t)i
 {
-  if (a3 < 0)
+  if (i < 0)
   {
     rssiQueue = self->_rssiQueue;
     if (!rssiQueue)
@@ -59,11 +59,11 @@
       rssiQueue = self->_rssiQueue;
     }
 
-    [(SFRSSIQueue *)rssiQueue addSample:mach_absolute_time() atTicks:a3];
-    v9 = [(SFBubbleEstimator *)self shouldExpandBubble];
+    [(SFRSSIQueue *)rssiQueue addSample:mach_absolute_time() atTicks:i];
+    shouldExpandBubble = [(SFBubbleEstimator *)self shouldExpandBubble];
     if (self->_insideBubble)
     {
-      if (self->_rssiExit > a3)
+      if (self->_rssiExit > i)
       {
         *&self->_insideBubble = 0;
         self->_thresholdStartTicks = -1;
@@ -85,12 +85,12 @@
     else
     {
       rssiEnter = self->_rssiEnter;
-      if (v9)
+      if (shouldExpandBubble)
       {
         rssiEnter -= 2;
       }
 
-      if (rssiEnter <= a3)
+      if (rssiEnter <= i)
       {
         v3 = 1;
         self->_insideBubble = 1;
@@ -153,14 +153,14 @@
   return result;
 }
 
-- (void)setThresholdSeconds:(double)a3
+- (void)setThresholdSeconds:(double)seconds
 {
-  if (a3 < 0.0)
+  if (seconds < 0.0)
   {
-    a3 = 0.0;
+    seconds = 0.0;
   }
 
-  self->_thresholdSeconds = a3;
+  self->_thresholdSeconds = seconds;
 }
 
 @end

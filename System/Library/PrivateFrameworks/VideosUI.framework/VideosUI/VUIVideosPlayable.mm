@@ -1,13 +1,13 @@
 @interface VUIVideosPlayable
-+ (BOOL)isMediaCharacteristicAnAudioVariantID:(id)a3;
++ (BOOL)isMediaCharacteristicAnAudioVariantID:(id)d;
 + (id)_sharedPlayableAllowList;
 + (id)knownAudioVariantIDs;
-+ (id)videosPlayableFromSerializedData:(id)a3;
-+ (id)videosPlayableFromSerializedSharedData:(id)a3;
-+ (id)videosPlayablesFromDictionaries:(id)a3 andMetadataDictionary:(id)a4;
++ (id)videosPlayableFromSerializedData:(id)data;
++ (id)videosPlayableFromSerializedSharedData:(id)data;
++ (id)videosPlayablesFromDictionaries:(id)dictionaries andMetadataDictionary:(id)dictionary;
 - (BOOL)containsEligiblePlaybackMode;
 - (BOOL)isAmbientVideo;
-- (BOOL)isMediaCharacteristicAnAudioVariantID:(id)a3;
+- (BOOL)isMediaCharacteristicAnAudioVariantID:(id)d;
 - (BOOL)isMovie;
 - (BOOL)isiTunesPurchaseOrRental;
 - (NSArray)knownAudioVariantIDs;
@@ -22,32 +22,32 @@
 - (NSURL)playbackURL;
 - (VUIExtrasInfo)extrasInfo;
 - (VUIRouterDataSource)upsellRouterDataSource;
-- (VUIVideosPlayable)initWithDictionary:(id)a3 andMetadataDictionary:(id)a4;
+- (VUIVideosPlayable)initWithDictionary:(id)dictionary andMetadataDictionary:(id)metadataDictionary;
 - (id)_allPlaybackModes;
 - (id)serializedData;
 - (id)serializedSharedData;
 - (unint64_t)playableType;
 - (unint64_t)sourceRef;
-- (void)setHlsURL:(id)a3;
-- (void)setVpafMetrics:(id)a3;
+- (void)setHlsURL:(id)l;
+- (void)setVpafMetrics:(id)metrics;
 @end
 
 @implementation VUIVideosPlayable
 
-+ (id)videosPlayablesFromDictionaries:(id)a3 andMetadataDictionary:(id)a4
++ (id)videosPlayablesFromDictionaries:(id)dictionaries andMetadataDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dictionariesCopy = dictionaries;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [dictionariesCopy count])
   {
     v7 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v5;
+    v8 = dictionariesCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -64,7 +64,7 @@
 
           v13 = *(*(&v18 + 1) + 8 * i);
           v14 = [VUIVideosPlayable alloc];
-          v15 = [(VUIVideosPlayable *)v14 initWithDictionary:v13 andMetadataDictionary:v6, v18];
+          v15 = [(VUIVideosPlayable *)v14 initWithDictionary:v13 andMetadataDictionary:dictionaryCopy, v18];
           [v7 addObject:v15];
         }
 
@@ -85,10 +85,10 @@
   return v16;
 }
 
-- (VUIVideosPlayable)initWithDictionary:(id)a3 andMetadataDictionary:(id)a4
+- (VUIVideosPlayable)initWithDictionary:(id)dictionary andMetadataDictionary:(id)metadataDictionary
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  metadataDictionaryCopy = metadataDictionary;
   v13.receiver = self;
   v13.super_class = VUIVideosPlayable;
   v9 = [(VUIVideosPlayable *)&v13 init];
@@ -97,13 +97,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v9->_videosPlayableDict, a3);
-      if (v8)
+      objc_storeStrong(&v9->_videosPlayableDict, dictionary);
+      if (metadataDictionaryCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [[VUIContentMetadata alloc] initWithDictionary:v8];
+          v10 = [[VUIContentMetadata alloc] initWithDictionary:metadataDictionaryCopy];
           metadata = v9->_metadata;
           v9->_metadata = v10;
         }
@@ -146,19 +146,19 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
 - (id)serializedData
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIContentMetadata *)self->_metadata backingDictionary];
-  v4 = v3;
-  if (v3)
+  backingDictionary = [(VUIContentMetadata *)self->_metadata backingDictionary];
+  v4 = backingDictionary;
+  if (backingDictionary)
   {
-    v5 = v3;
+    dictionary = backingDictionary;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v6 = v5;
+  v6 = dictionary;
 
   videosPlayableDict = self->_videosPlayableDict;
   v12[0] = @"videosPlayable";
@@ -175,13 +175,13 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
 - (id)serializedSharedData
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [objc_opt_class() _sharedPlayableAllowList];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  _sharedPlayableAllowList = [objc_opt_class() _sharedPlayableAllowList];
+  v5 = [_sharedPlayableAllowList countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -192,37 +192,37 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_sharedPlayableAllowList);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = [(NSDictionary *)self->_videosPlayableDict objectForKeyedSubscript:v9];
-        [v3 vui_setObjectIfNotNil:v10 forKey:v9];
+        [dictionary vui_setObjectIfNotNil:v10 forKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v6 = [_sharedPlayableAllowList countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(VUIContentMetadata *)self->_metadata backingDictionary];
-  v12 = v11;
-  if (v11)
+  backingDictionary = [(VUIContentMetadata *)self->_metadata backingDictionary];
+  v12 = backingDictionary;
+  if (backingDictionary)
   {
-    v13 = v11;
+    dictionary2 = backingDictionary;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v14 = v13;
+  v14 = dictionary2;
 
   v23[0] = @"videosPlayable";
   v23[1] = @"contentMetadata";
-  v24[0] = v3;
+  v24[0] = dictionary;
   v24[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v18 = 0;
@@ -231,10 +231,10 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
   return v16;
 }
 
-+ (id)videosPlayableFromSerializedData:(id)a3
++ (id)videosPlayableFromSerializedData:(id)data
 {
   v8 = 0;
-  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v8];
+  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v8];
   v4 = [v3 vui_dictionaryForKey:@"videosPlayable"];
   v5 = [v3 vui_dictionaryForKey:@"contentMetadata"];
   v6 = [[VUIVideosPlayable alloc] initWithDictionary:v4 andMetadataDictionary:v5];
@@ -242,20 +242,20 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
   return v6;
 }
 
-+ (id)videosPlayableFromSerializedSharedData:(id)a3
++ (id)videosPlayableFromSerializedSharedData:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
   v25 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v25];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v25];
   v5 = v25;
   v6 = [v4 vui_dictionaryForKey:@"videosPlayable"];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [a1 _sharedPlayableAllowList];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  _sharedPlayableAllowList = [self _sharedPlayableAllowList];
+  v9 = [_sharedPlayableAllowList countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -266,15 +266,15 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_sharedPlayableAllowList);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
         v14 = [v6 objectForKeyedSubscript:v13];
-        [v7 vui_setObjectIfNotNil:v14 forKey:v13];
+        [dictionary vui_setObjectIfNotNil:v14 forKey:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v10 = [_sharedPlayableAllowList countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v10);
@@ -284,66 +284,66 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
   v16 = v15;
   if (v15)
   {
-    v17 = v15;
+    dictionary2 = v15;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v18 = v17;
+  v18 = dictionary2;
 
-  v19 = [[VUIVideosPlayable alloc] initWithDictionary:v7 andMetadataDictionary:v18];
+  v19 = [[VUIVideosPlayable alloc] initWithDictionary:dictionary andMetadataDictionary:v18];
 
   return v19;
 }
 
 - (BOOL)isMovie
 {
-  v2 = [(VUIVideosPlayable *)self mediaType];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 isEqualToString:@"movie"];
+  mediaType = [(VUIVideosPlayable *)self mediaType];
+  lowercaseString = [mediaType lowercaseString];
+  v4 = [lowercaseString isEqualToString:@"movie"];
 
   return v4;
 }
 
 - (NSURL)artworkURL
 {
-  v3 = [(VUIVideosPlayable *)self metadata];
-  v4 = [v3 artworkURLFormat];
+  metadata = [(VUIVideosPlayable *)self metadata];
+  artworkURLFormat = [metadata artworkURLFormat];
 
-  if (v4 && [v4 length])
+  if (artworkURLFormat && [artworkURLFormat length])
   {
-    v5 = [(VUIVideosPlayable *)self metadata];
-    v6 = [v5 artworkWidth];
-    [v6 doubleValue];
+    metadata2 = [(VUIVideosPlayable *)self metadata];
+    artworkWidth = [metadata2 artworkWidth];
+    [artworkWidth doubleValue];
     v8 = v7;
 
-    v9 = [(VUIVideosPlayable *)self metadata];
-    v10 = [v9 artworkHeight];
+    metadata3 = [(VUIVideosPlayable *)self metadata];
+    artworkHeight = [metadata3 artworkHeight];
   }
 
   else
   {
-    v11 = [(VUIVideosPlayable *)self metadata];
-    v12 = [v11 previewFrameURLFormat];
+    metadata4 = [(VUIVideosPlayable *)self metadata];
+    previewFrameURLFormat = [metadata4 previewFrameURLFormat];
 
-    v13 = [(VUIVideosPlayable *)self metadata];
-    v14 = [v13 previewFrameWidth];
-    [v14 doubleValue];
+    metadata5 = [(VUIVideosPlayable *)self metadata];
+    previewFrameWidth = [metadata5 previewFrameWidth];
+    [previewFrameWidth doubleValue];
     v8 = v15;
 
-    v9 = [(VUIVideosPlayable *)self metadata];
-    v10 = [v9 previewFrameHeight];
-    v4 = v12;
+    metadata3 = [(VUIVideosPlayable *)self metadata];
+    artworkHeight = [metadata3 previewFrameHeight];
+    artworkURLFormat = previewFrameURLFormat;
   }
 
-  [v10 doubleValue];
+  [artworkHeight doubleValue];
   v17 = v16;
 
   v18 = 0;
-  if ([v4 length] && v8 > 0.0 && v17 > 0.0)
+  if ([artworkURLFormat length] && v8 > 0.0 && v17 > 0.0)
   {
     if (v8 >= v17)
     {
@@ -359,8 +359,8 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
     v21 = v8 * v20;
     v22 = v17 * v20;
     v23 = MEMORY[0x1E69DF720];
-    v24 = [MEMORY[0x1E69DF6D0] formatForOpaqueImage];
-    v18 = [v23 URLFromSource:v4 extension:v24 p3Specifier:0 cropCode:0 imageSize:0 displayScaleIsPointMultiplier:0 centerGrowth:v21 focusSizeIncrease:{v22, 0.0}];
+    formatForOpaqueImage = [MEMORY[0x1E69DF6D0] formatForOpaqueImage];
+    v18 = [v23 URLFromSource:artworkURLFormat extension:formatForOpaqueImage p3Specifier:0 cropCode:0 imageSize:0 displayScaleIsPointMultiplier:0 centerGrowth:v21 focusSizeIncrease:{v22, 0.0}];
   }
 
   return v18;
@@ -368,29 +368,29 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
 
 - (NSURL)playbackURL
 {
-  v3 = [(VUIVideosPlayable *)self hlsURL];
-  if (!v3)
+  hlsURL = [(VUIVideosPlayable *)self hlsURL];
+  if (!hlsURL)
   {
-    v3 = [(NSDictionary *)self->_videosPlayableDict vui_URLForKey:@"playbackUrl"];
+    hlsURL = [(NSDictionary *)self->_videosPlayableDict vui_URLForKey:@"playbackUrl"];
   }
 
-  return v3;
+  return hlsURL;
 }
 
 - (NSString)sharedWatchId
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIVideosPlayable *)self sharedWatchUrl];
-  if (v3)
+  sharedWatchUrl = [(VUIVideosPlayable *)self sharedWatchUrl];
+  if (sharedWatchUrl)
   {
     v4 = objc_alloc(MEMORY[0x1E696AF20]);
-    v5 = [(VUIVideosPlayable *)self sharedWatchUrl];
-    v6 = [v4 initWithURL:v5 resolvingAgainstBaseURL:1];
+    sharedWatchUrl2 = [(VUIVideosPlayable *)self sharedWatchUrl];
+    playbackURL = [v4 initWithURL:sharedWatchUrl2 resolvingAgainstBaseURL:1];
 
-    if (v6)
+    if (playbackURL)
     {
-      v7 = [v6 queryItems];
-      v8 = [v7 mutableCopy];
+      queryItems = [playbackURL queryItems];
+      v8 = [queryItems mutableCopy];
       v9 = v8;
       if (v8)
       {
@@ -424,12 +424,12 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
             }
 
             v18 = *(*(&v22 + 1) + 8 * i);
-            v19 = [v18 name];
-            v20 = [v19 isEqualToString:@"sharedWatchId"];
+            name = [v18 name];
+            v20 = [name isEqualToString:@"sharedWatchId"];
 
             if (v20)
             {
-              v11 = [v18 value];
+              value = [v18 value];
 
               goto LABEL_20;
             }
@@ -452,27 +452,27 @@ void __45__VUIVideosPlayable__sharedPlayableAllowList__block_invoke()
   if (![(VUIVideosPlayable *)self useSharedPlayableForCowatching])
   {
 LABEL_18:
-    v11 = 0;
+    value = 0;
     goto LABEL_21;
   }
 
-  v6 = [(VUIVideosPlayable *)self playbackURL];
-  v11 = [v6 absoluteString];
+  playbackURL = [(VUIVideosPlayable *)self playbackURL];
+  value = [playbackURL absoluteString];
 LABEL_20:
 
 LABEL_21:
 
-  return v11;
+  return value;
 }
 
-- (void)setHlsURL:(id)a3
+- (void)setHlsURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     videosPlayableDict = self->_videosPlayableDict;
-    v5 = a3;
+    lCopy = l;
     v8 = [(NSDictionary *)videosPlayableDict mutableCopy];
-    [v8 setObject:v5 forKey:@"hlsUrl"];
+    [v8 setObject:lCopy forKey:@"hlsUrl"];
 
     v6 = [v8 copy];
     v7 = self->_videosPlayableDict;
@@ -502,35 +502,35 @@ LABEL_21:
 - (NSArray)startTimeInfos
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(VUIVideosPlayable *)self resumeTime];
-  v5 = [(VUIVideosPlayable *)self mainContentRelativeResumeTime];
-  v6 = [(VUIVideosPlayable *)self referenceID];
-  if (v4)
+  resumeTime = [(VUIVideosPlayable *)self resumeTime];
+  mainContentRelativeResumeTime = [(VUIVideosPlayable *)self mainContentRelativeResumeTime];
+  referenceID = [(VUIVideosPlayable *)self referenceID];
+  if (resumeTime)
   {
     v7 = [VUIMediaStartTimeInfo alloc];
-    v8 = [(VUIVideosPlayable *)self resumeTimeTimestamp];
-    v9 = [(VUIMediaStartTimeInfo *)v7 initWithStartTime:v4 timestamp:v8 type:0 source:@"UTS/JS"];
+    resumeTimeTimestamp = [(VUIVideosPlayable *)self resumeTimeTimestamp];
+    v9 = [(VUIMediaStartTimeInfo *)v7 initWithStartTime:resumeTime timestamp:resumeTimeTimestamp type:0 source:@"UTS/JS"];
 
     [v3 addObject:v9];
   }
 
-  if (v5)
+  if (mainContentRelativeResumeTime)
   {
     v10 = [VUIMediaStartTimeInfo alloc];
-    v11 = [(VUIVideosPlayable *)self mainContentRelativeResumeTimeTimestamp];
-    v12 = [(VUIMediaStartTimeInfo *)v10 initWithStartTime:v5 timestamp:v11 type:1 source:@"UTS/JS"];
+    mainContentRelativeResumeTimeTimestamp = [(VUIVideosPlayable *)self mainContentRelativeResumeTimeTimestamp];
+    v12 = [(VUIMediaStartTimeInfo *)v10 initWithStartTime:mainContentRelativeResumeTime timestamp:mainContentRelativeResumeTimeTimestamp type:1 source:@"UTS/JS"];
 
     [v3 addObject:v12];
   }
 
-  if ([v6 length])
+  if ([referenceID length])
   {
     v13 = +[VUIStreamingBookmarkCache sharedInstance];
     v23 = 0;
     v24 = 0;
     v21 = 0;
     v22 = 0;
-    [v13 resumeTimeInfoForReferenceID:v6 outAbsoluteResumeTime:&v24 outAbsoluteTimestamp:&v23 outMainContentRelativeResumeTime:&v22 outMainContentRelativeTimestamp:&v21];
+    [v13 resumeTimeInfoForReferenceID:referenceID outAbsoluteResumeTime:&v24 outAbsoluteTimestamp:&v23 outMainContentRelativeResumeTime:&v22 outMainContentRelativeTimestamp:&v21];
     v14 = v24;
     v15 = v23;
     v16 = v22;
@@ -584,14 +584,14 @@ LABEL_21:
   return v3;
 }
 
-- (void)setVpafMetrics:(id)a3
+- (void)setVpafMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
     videosPlayableDict = self->_videosPlayableDict;
-    v5 = a3;
+    metricsCopy = metrics;
     v8 = [(NSDictionary *)videosPlayableDict mutableCopy];
-    [v8 setObject:v5 forKey:@"vpafMetrics"];
+    [v8 setObject:metricsCopy forKey:@"vpafMetrics"];
 
     v6 = [v8 copy];
     v7 = self->_videosPlayableDict;
@@ -613,8 +613,8 @@ LABEL_21:
 
       else
       {
-        v7 = [(VUIVideosPlayable *)self mediaType];
-        v8 = [v7 isEqualToString:@"Movie"];
+        mediaType = [(VUIVideosPlayable *)self mediaType];
+        v8 = [mediaType isEqualToString:@"Movie"];
         v9 = VUIStoreMediaItemRTCServiceIdentifierMoviePurchase_iOS_cloud;
         if (!v8)
         {
@@ -623,14 +623,14 @@ LABEL_21:
 
         v4 = *v9;
 
-        v3 = v7;
+        v3 = mediaType;
       }
     }
 
     else
     {
-      v5 = [(VUIVideosPlayable *)self mediaMetrics];
-      v6 = [v5 count];
+      mediaMetrics = [(VUIVideosPlayable *)self mediaMetrics];
+      v6 = [mediaMetrics count];
 
       if (!v6)
       {
@@ -803,13 +803,13 @@ LABEL_9:
 
 - (BOOL)isiTunesPurchaseOrRental
 {
-  v2 = self;
-  v3 = [(VUIVideosPlayable *)self buyParams];
-  v4 = [(VUIVideosPlayable *)v2 rentalID];
-  LOBYTE(v2) = [(VUIVideosPlayable *)v2 isFamilySharingContent];
-  LOBYTE(v2) = (([v3 length] | v4) != 0) | v2;
+  selfCopy = self;
+  buyParams = [(VUIVideosPlayable *)self buyParams];
+  rentalID = [(VUIVideosPlayable *)selfCopy rentalID];
+  LOBYTE(selfCopy) = [(VUIVideosPlayable *)selfCopy isFamilySharingContent];
+  LOBYTE(selfCopy) = (([buyParams length] | rentalID) != 0) | selfCopy;
 
-  return v2 & 1;
+  return selfCopy & 1;
 }
 
 - (NSArray)knownAudioVariantIDs
@@ -822,28 +822,28 @@ LABEL_9:
 + (id)knownAudioVariantIDs
 {
   v2 = +[VUIFeaturesConfiguration sharedInstance];
-  v3 = [v2 nowPlayingConfig];
-  v4 = [v3 mediaCharacteristicsToLocalize];
+  nowPlayingConfig = [v2 nowPlayingConfig];
+  mediaCharacteristicsToLocalize = [nowPlayingConfig mediaCharacteristicsToLocalize];
 
-  return v4;
+  return mediaCharacteristicsToLocalize;
 }
 
-- (BOOL)isMediaCharacteristicAnAudioVariantID:(id)a3
+- (BOOL)isMediaCharacteristicAnAudioVariantID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isMediaCharacteristicAnAudioVariantID:v3];
+  dCopy = d;
+  v4 = [objc_opt_class() isMediaCharacteristicAnAudioVariantID:dCopy];
 
   return v4;
 }
 
-+ (BOOL)isMediaCharacteristicAnAudioVariantID:(id)a3
++ (BOOL)isMediaCharacteristicAnAudioVariantID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [a1 knownAudioVariantIDs];
-    v6 = [v5 containsObject:v4];
+    knownAudioVariantIDs = [self knownAudioVariantIDs];
+    v6 = [knownAudioVariantIDs containsObject:dCopy];
 
     if (v6)
     {
@@ -853,14 +853,14 @@ LABEL_9:
     else
     {
       v8 = +[VUIFeaturesConfiguration sharedInstance];
-      v9 = [v8 nowPlayingConfig];
-      v10 = [v9 audioIDPrefixes];
+      nowPlayingConfig = [v8 nowPlayingConfig];
+      audioIDPrefixes = [nowPlayingConfig audioIDPrefixes];
 
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v11 = v10;
+      v11 = audioIDPrefixes;
       v7 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
@@ -874,7 +874,7 @@ LABEL_9:
               objc_enumerationMutation(v11);
             }
 
-            if ([v4 hasPrefix:{*(*(&v15 + 1) + 8 * i), v15}])
+            if ([dCopy hasPrefix:{*(*(&v15 + 1) + 8 * i), v15}])
             {
               LOBYTE(v7) = 1;
               goto LABEL_15;
@@ -913,16 +913,16 @@ LABEL_15:
 
 - (BOOL)isAmbientVideo
 {
-  v2 = [(VUIVideosPlayable *)self utsEntityType];
-  v3 = [v2 isEqualToString:@"AmbientVideo"];
+  utsEntityType = [(VUIVideosPlayable *)self utsEntityType];
+  v3 = [utsEntityType isEqualToString:@"AmbientVideo"];
 
   return v3;
 }
 
 - (BOOL)containsEligiblePlaybackMode
 {
-  v2 = [(VUIVideosPlayable *)self _allPlaybackModes];
-  v3 = ([v2 containsObject:@"Monoscopic"] & 1) != 0 || objc_msgSend(v2, "count") == 0;
+  _allPlaybackModes = [(VUIVideosPlayable *)self _allPlaybackModes];
+  v3 = ([_allPlaybackModes containsObject:@"Monoscopic"] & 1) != 0 || objc_msgSend(_allPlaybackModes, "count") == 0;
 
   return v3;
 }
@@ -940,8 +940,8 @@ LABEL_15:
   {
     v5 = MEMORY[0x1E696AD98];
     v6 = +[VUIFeaturesConfiguration sharedInstance];
-    v7 = [v6 livePostPlayConfig];
-    [v7 dismissPlaybackDelay];
+    livePostPlayConfig = [v6 livePostPlayConfig];
+    [livePostPlayConfig dismissPlaybackDelay];
     v4 = [v5 numberWithDouble:?];
   }
 

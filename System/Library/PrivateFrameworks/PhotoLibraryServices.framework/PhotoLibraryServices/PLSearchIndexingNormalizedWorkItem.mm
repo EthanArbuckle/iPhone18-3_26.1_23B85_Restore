@@ -1,27 +1,27 @@
 @interface PLSearchIndexingNormalizedWorkItem
-+ (id)coalesceWorkItemA:(id)a3 itemB:(id)a4;
-- (PLSearchIndexingNormalizedWorkItem)initWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5 entityToIndex:(unint64_t)a6 timestamp:(id)a7;
++ (id)coalesceWorkItemA:(id)a itemB:(id)b;
+- (PLSearchIndexingNormalizedWorkItem)initWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags entityToIndex:(unint64_t)index timestamp:(id)timestamp;
 @end
 
 @implementation PLSearchIndexingNormalizedWorkItem
 
-- (PLSearchIndexingNormalizedWorkItem)initWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5 entityToIndex:(unint64_t)a6 timestamp:(id)a7
+- (PLSearchIndexingNormalizedWorkItem)initWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags entityToIndex:(unint64_t)index timestamp:(id)timestamp
 {
-  v12 = a3;
-  v13 = a7;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
   v20.receiver = self;
   v20.super_class = PLSearchIndexingNormalizedWorkItem;
   v14 = [(PLSearchIndexingNormalizedWorkItem *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v14->_jobType = a4;
-    v14->_jobFlags = a5;
-    v14->_entityToIndex = a6;
-    v17 = [v13 copy];
+    v14->_jobType = type;
+    v14->_jobFlags = flags;
+    v14->_entityToIndex = index;
+    v17 = [timestampCopy copy];
     timestamp = v14->_timestamp;
     v14->_timestamp = v17;
   }
@@ -29,80 +29,80 @@
   return v14;
 }
 
-+ (id)coalesceWorkItemA:(id)a3 itemB:(id)a4
++ (id)coalesceWorkItemA:(id)a itemB:(id)b
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v7 identifier];
-  if ([v8 isEqualToString:v9])
+  aCopy = a;
+  bCopy = b;
+  identifier = [aCopy identifier];
+  identifier2 = [bCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v10 = [v6 entityToIndex];
-    v11 = [v7 entityToIndex];
+    entityToIndex = [aCopy entityToIndex];
+    entityToIndex2 = [bCopy entityToIndex];
 
-    if (v10 != v11)
+    if (entityToIndex != entityToIndex2)
     {
       v27 = 0;
       goto LABEL_18;
     }
 
-    v12 = [v6 timestamp];
-    v13 = [v7 timestamp];
-    v14 = [v12 compare:v13];
+    timestamp = [aCopy timestamp];
+    timestamp2 = [bCopy timestamp];
+    v14 = [timestamp compare:timestamp2];
 
     if (v14 == -1)
     {
-      v15 = v6;
+      v15 = aCopy;
     }
 
     else
     {
-      v15 = v7;
+      v15 = bCopy;
     }
 
     if (v14 == -1)
     {
-      v16 = v7;
+      v16 = bCopy;
     }
 
     else
     {
-      v16 = v6;
+      v16 = aCopy;
     }
 
-    v8 = v15;
-    v9 = v16;
-    if (([v9 isRemoval] & 1) != 0 || objc_msgSend(v8, "isRemoval") && (objc_msgSend(v9, "isInsert") & 1) == 0)
+    identifier = v15;
+    identifier2 = v16;
+    if (([identifier2 isRemoval] & 1) != 0 || objc_msgSend(identifier, "isRemoval") && (objc_msgSend(identifier2, "isInsert") & 1) == 0)
     {
-      v17 = [a1 alloc];
-      v18 = [v8 identifier];
-      v19 = [v6 jobType];
-      v20 = [v8 entityToIndex];
-      v21 = [v8 timestamp];
+      v17 = [self alloc];
+      v8Identifier = [identifier identifier];
+      jobType = [aCopy jobType];
+      entityToIndex3 = [identifier entityToIndex];
+      timestamp3 = [identifier timestamp];
       v22 = v17;
-      v23 = v18;
-      v24 = v19;
+      v23 = v8Identifier;
+      v24 = jobType;
       v25 = 1;
-      v26 = v20;
+      v26 = entityToIndex3;
     }
 
     else
     {
-      v33 = [a1 alloc];
-      v18 = [v8 identifier];
-      v28 = [v6 jobType];
-      v29 = [v9 jobFlags];
-      v30 = [v8 jobFlags];
-      v31 = [v8 entityToIndex];
-      v21 = [v8 timestamp];
-      v25 = v30 | v29;
+      v33 = [self alloc];
+      v8Identifier = [identifier identifier];
+      jobType2 = [aCopy jobType];
+      jobFlags = [identifier2 jobFlags];
+      jobFlags2 = [identifier jobFlags];
+      entityToIndex4 = [identifier entityToIndex];
+      timestamp3 = [identifier timestamp];
+      v25 = jobFlags2 | jobFlags;
       v22 = v33;
-      v23 = v18;
-      v24 = v28;
-      v26 = v31;
+      v23 = v8Identifier;
+      v24 = jobType2;
+      v26 = entityToIndex4;
     }
 
-    v27 = [v22 initWithIdentifier:v23 jobType:v24 jobFlags:v25 entityToIndex:v26 timestamp:v21];
+    v27 = [v22 initWithIdentifier:v23 jobType:v24 jobFlags:v25 entityToIndex:v26 timestamp:timestamp3];
   }
 
   else

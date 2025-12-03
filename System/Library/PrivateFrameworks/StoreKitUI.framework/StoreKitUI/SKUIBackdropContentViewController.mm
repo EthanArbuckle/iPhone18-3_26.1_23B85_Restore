@@ -1,15 +1,15 @@
 @interface SKUIBackdropContentViewController
-- (SKUIBackdropContentViewController)initWithContentViewController:(id)a3;
+- (SKUIBackdropContentViewController)initWithContentViewController:(id)controller;
 - (void)loadView;
-- (void)setBackdropViewPrivateStyle:(int64_t)a3;
-- (void)setContentViewController:(id)a3;
+- (void)setBackdropViewPrivateStyle:(int64_t)style;
+- (void)setContentViewController:(id)controller;
 @end
 
 @implementation SKUIBackdropContentViewController
 
-- (SKUIBackdropContentViewController)initWithContentViewController:(id)a3
+- (SKUIBackdropContentViewController)initWithContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBackdropContentViewController initWithContentViewController:];
@@ -23,7 +23,7 @@
   {
     v5->_backdropViewPrivateStyle = 10060;
     [(SKUIBackdropContentViewController *)v5 setModalPresentationStyle:17];
-    [(SKUIBackdropContentViewController *)v6 setContentViewController:v4];
+    [(SKUIBackdropContentViewController *)v6 setContentViewController:controllerCopy];
   }
 
   return v6;
@@ -34,58 +34,58 @@
   v6.receiver = self;
   v6.super_class = SKUIBackdropContentViewController;
   [(SKUIBackdropContentViewController *)&v6 loadView];
-  v3 = [(SKUIBackdropContentViewController *)self view];
+  view = [(SKUIBackdropContentViewController *)self view];
   v4 = objc_alloc(MEMORY[0x277D75DE8]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:self->_backdropViewPrivateStyle privateStyle:?];
   [v5 setAutoresizingMask:18];
-  [v3 addSubview:v5];
+  [view addSubview:v5];
 }
 
-- (void)setBackdropViewPrivateStyle:(int64_t)a3
+- (void)setBackdropViewPrivateStyle:(int64_t)style
 {
-  if (self->_backdropViewPrivateStyle != a3)
+  if (self->_backdropViewPrivateStyle != style)
   {
-    self->_backdropViewPrivateStyle = a3;
+    self->_backdropViewPrivateStyle = style;
     if ([(SKUIBackdropContentViewController *)self isViewLoaded])
     {
-      v5 = [(SKUIBackdropContentViewController *)self view];
-      [v5 transitionToPrivateStyle:a3];
+      view = [(SKUIBackdropContentViewController *)self view];
+      [view transitionToPrivateStyle:style];
     }
   }
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_contentViewController != v5)
+  controllerCopy = controller;
+  if (self->_contentViewController != controllerCopy)
   {
-    v10 = v5;
-    v6 = [(UIViewController *)v5 parentViewController];
+    v10 = controllerCopy;
+    parentViewController = [(UIViewController *)controllerCopy parentViewController];
 
-    if (v6 == self)
+    if (parentViewController == self)
     {
       [(UIViewController *)v10 willMoveToParentViewController:0];
-      v7 = [(UIViewController *)v10 view];
-      [v7 removeFromSuperview];
+      view = [(UIViewController *)v10 view];
+      [view removeFromSuperview];
 
       [(UIViewController *)v10 removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->_contentViewController, a3);
-    v5 = v10;
+    objc_storeStrong(&self->_contentViewController, controller);
+    controllerCopy = v10;
     if (self->_contentViewController)
     {
       [(SKUIBackdropContentViewController *)self addChildViewController:?];
-      v8 = [(SKUIBackdropContentViewController *)self view];
-      v9 = [(UIViewController *)self->_contentViewController view];
-      [v8 bounds];
-      [v9 setFrame:?];
-      [v9 setAutoresizingMask:18];
-      [v8 addSubview:v9];
+      view2 = [(SKUIBackdropContentViewController *)self view];
+      view3 = [(UIViewController *)self->_contentViewController view];
+      [view2 bounds];
+      [view3 setFrame:?];
+      [view3 setAutoresizingMask:18];
+      [view2 addSubview:view3];
       [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
 
-      v5 = v10;
+      controllerCopy = v10;
     }
   }
 }

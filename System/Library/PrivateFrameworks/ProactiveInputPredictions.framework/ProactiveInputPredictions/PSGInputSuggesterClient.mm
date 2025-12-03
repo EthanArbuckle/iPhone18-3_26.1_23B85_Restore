@@ -1,52 +1,52 @@
 @interface PSGInputSuggesterClient
-+ (BOOL)_allowSingleCharacterContactsAutocompleteTriggerForLanguage:(id)a3;
-+ (BOOL)_shouldGenerateWordBoundaryPredictionsForContext:(id)a3 localeIdentifier:(id)a4;
-+ (BOOL)_zkwItemsContainsOnlyTextualResponses:(id)a3;
++ (BOOL)_allowSingleCharacterContactsAutocompleteTriggerForLanguage:(id)language;
++ (BOOL)_shouldGenerateWordBoundaryPredictionsForContext:(id)context localeIdentifier:(id)identifier;
++ (BOOL)_zkwItemsContainsOnlyTextualResponses:(id)responses;
 + (PSGInputSuggesterClient)sharedInstance;
-+ (id)_getContactsAutocompleteItemForQueryField:(id)a3 searchTerm:(id)a4 localeIdentifier:(id)a5;
-+ (id)_getQueryFieldFromTextContentType:(id)a3;
++ (id)_getContactsAutocompleteItemForQueryField:(id)field searchTerm:(id)term localeIdentifier:(id)identifier;
++ (id)_getQueryFieldFromTextContentType:(id)type;
 - (PSGInputSuggesterClient)init;
-- (PSGInputSuggesterClient)initWithStructuredInfoCache:(id)a3;
-- (id)_appConnectionTriggerForTextContentType:(id)a3;
-- (id)_cachedStructuredSuggestionsForContext:(id)a3 localeIdentifier:(id)a4 maxSuggestions:(unint64_t)a5;
-- (id)_combineMLAndRKItems:(id)a3 mlItems:(id)a4;
-- (id)_fillSuggestionsForResponseItems:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 recipientNames:(id)a6 bundleIdentifier:(id)a7 timeoutSeconds:(double)a8 structuredInfoFetchLimit:(unint64_t)a9 availableApps:(id)a10 textualResponseLimit:(unint64_t)a11 structuredInfoLimit:(unint64_t)a12 totalSuggestionsLimit:(unint64_t)a13 explanationSet:(id)a14 error:(id *)a15;
+- (PSGInputSuggesterClient)initWithStructuredInfoCache:(id)cache;
+- (id)_appConnectionTriggerForTextContentType:(id)type;
+- (id)_cachedStructuredSuggestionsForContext:(id)context localeIdentifier:(id)identifier maxSuggestions:(unint64_t)suggestions;
+- (id)_combineMLAndRKItems:(id)items mlItems:(id)mlItems;
+- (id)_fillSuggestionsForResponseItems:(id)items localeIdentifier:(id)identifier recipients:(id)recipients recipientNames:(id)names bundleIdentifier:(id)bundleIdentifier timeoutSeconds:(double)seconds structuredInfoFetchLimit:(unint64_t)limit availableApps:(id)self0 textualResponseLimit:(unint64_t)self1 structuredInfoLimit:(unint64_t)self2 totalSuggestionsLimit:(unint64_t)self3 explanationSet:(id)self4 error:(id *)self5;
 - (id)_getFTLinkShareTrigger;
-- (id)_getWordBoundaryResultForRequest:(id)a3 explanationSet:(id)a4;
-- (id)_getZKWResultsForRequest:(id)a3 explanationSet:(id)a4;
-- (id)_logTriggerForItems:(id)a3 request:(id)a4;
-- (id)_maybeModifyTrigger:(id)a3 bundleIdentifier:(id)a4;
-- (id)_rewriteMoneyAttributes:(id)a3;
-- (id)_rkResponsesForContext:(id)a3 conversationTurns:(id)a4 languageID:(id)a5 maximumResponses:(unint64_t)a6 shouldDisableAutoCaps:(BOOL)a7 adaptationContextID:(id)a8;
-- (id)_textualSuggestionsAndTriggersForRequest:(id)a3 explanationSet:(id)a4;
-- (id)_wordBoundaryPredictionsForContext:(id)a3 localeIdentifier:(id)a4 textContentType:(id)a5 recipientNames:(id)a6 availableApps:(id)a7 request:(id)a8 explanationSet:(id)a9;
-- (void)inputSuggestionsWithRequest:(id)a3 completion:(id)a4;
-- (void)logEngagement:(id)a3 request:(id)a4 position:(unint64_t)a5;
-- (void)logImpression:(id)a3 request:(id)a4;
-- (void)logPrediction:(id)a3 request:(id)a4 latencyMillis:(double)a5;
-- (void)logTrigger:(id)a3 request:(id)a4;
-- (void)warmUpWithCompletion:(id)a3;
+- (id)_getWordBoundaryResultForRequest:(id)request explanationSet:(id)set;
+- (id)_getZKWResultsForRequest:(id)request explanationSet:(id)set;
+- (id)_logTriggerForItems:(id)items request:(id)request;
+- (id)_maybeModifyTrigger:(id)trigger bundleIdentifier:(id)identifier;
+- (id)_rewriteMoneyAttributes:(id)attributes;
+- (id)_rkResponsesForContext:(id)context conversationTurns:(id)turns languageID:(id)d maximumResponses:(unint64_t)responses shouldDisableAutoCaps:(BOOL)caps adaptationContextID:(id)iD;
+- (id)_textualSuggestionsAndTriggersForRequest:(id)request explanationSet:(id)set;
+- (id)_wordBoundaryPredictionsForContext:(id)context localeIdentifier:(id)identifier textContentType:(id)type recipientNames:(id)names availableApps:(id)apps request:(id)request explanationSet:(id)set;
+- (void)inputSuggestionsWithRequest:(id)request completion:(id)completion;
+- (void)logEngagement:(id)engagement request:(id)request position:(unint64_t)position;
+- (void)logImpression:(id)impression request:(id)request;
+- (void)logPrediction:(id)prediction request:(id)request latencyMillis:(double)millis;
+- (void)logTrigger:(id)trigger request:(id)request;
+- (void)warmUpWithCompletion:(id)completion;
 @end
 
 @implementation PSGInputSuggesterClient
 
-- (void)warmUpWithCompletion:(id)a3
+- (void)warmUpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
-  [v5 warmUpWithCompletion:v4];
+  completionCopy = completion;
+  _remoteObjectProxy = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy warmUpWithCompletion:completionCopy];
 }
 
-- (id)_logTriggerForItems:(id)a3 request:(id)a4
+- (id)_logTriggerForItems:(id)items request:(id)request
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  requestCopy = request;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -62,16 +62,16 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 structuredInfoSuggestion];
+        structuredInfoSuggestion = [v13 structuredInfoSuggestion];
 
-        if (v14)
+        if (structuredInfoSuggestion)
         {
-          v15 = [v13 structuredInfoSuggestion];
-          v16 = [v15 proactiveTrigger];
+          structuredInfoSuggestion2 = [v13 structuredInfoSuggestion];
+          proactiveTrigger = [structuredInfoSuggestion2 proactiveTrigger];
 
-          if (v16)
+          if (proactiveTrigger)
           {
-            [(PSGInputSuggesterClient *)self logTrigger:v16 request:v7];
+            [(PSGInputSuggesterClient *)self logTrigger:proactiveTrigger request:requestCopy];
             goto LABEL_12;
           }
         }
@@ -87,51 +87,51 @@
     }
   }
 
-  v16 = 0;
+  proactiveTrigger = 0;
 LABEL_12:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return proactiveTrigger;
 }
 
-- (void)logEngagement:(id)a3 request:(id)a4 position:(unint64_t)a5
+- (void)logEngagement:(id)engagement request:(id)request position:(unint64_t)position
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
-  [v10 logEngagement:v9 request:v8 position:a5];
+  requestCopy = request;
+  engagementCopy = engagement;
+  _remoteObjectProxy = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy logEngagement:engagementCopy request:requestCopy position:position];
 }
 
-- (void)logImpression:(id)a3 request:(id)a4
+- (void)logImpression:(id)impression request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
-  [v8 logImpression:v7 request:v6];
+  requestCopy = request;
+  impressionCopy = impression;
+  _remoteObjectProxy = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy logImpression:impressionCopy request:requestCopy];
 }
 
-- (void)logPrediction:(id)a3 request:(id)a4 latencyMillis:(double)a5
+- (void)logPrediction:(id)prediction request:(id)request latencyMillis:(double)millis
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
-  [v10 logPrediction:v9 request:v8 latencyMillis:a5];
+  requestCopy = request;
+  predictionCopy = prediction;
+  _remoteObjectProxy = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy logPrediction:predictionCopy request:requestCopy latencyMillis:millis];
 }
 
-- (void)logTrigger:(id)a3 request:(id)a4
+- (void)logTrigger:(id)trigger request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
-  [v8 logTrigger:v7 request:v6];
+  requestCopy = request;
+  triggerCopy = trigger;
+  _remoteObjectProxy = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy logTrigger:triggerCopy request:requestCopy];
 }
 
-- (void)inputSuggestionsWithRequest:(id)a3 completion:(id)a4
+- (void)inputSuggestionsWithRequest:(id)request completion:(id)completion
 {
   v92 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = psg_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -145,33 +145,33 @@ LABEL_12:
   }
 
   v83 = mach_absolute_time();
-  v9 = [v6 localeIdentifier];
-  v10 = v9;
-  if (v9)
+  localeIdentifier = [requestCopy localeIdentifier];
+  v10 = localeIdentifier;
+  if (localeIdentifier)
   {
-    v11 = v9;
+    localeIdentifier2 = localeIdentifier;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    v11 = [v12 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier2 = [currentLocale localeIdentifier];
   }
 
   v13 = +[PSGUtilities sharedInstance];
-  v14 = [v13 prewarmCacheForLocale:v11 usingQueue:inputSuggestionsWithRequest_completion__prewarmQueue];
+  v14 = [v13 prewarmCacheForLocale:localeIdentifier2 usingQueue:inputSuggestionsWithRequest_completion__prewarmQueue];
 
   v15 = objc_opt_new();
-  v16 = [v6 textContentType];
-  v17 = [v16 length];
+  textContentType = [requestCopy textContentType];
+  v17 = [textContentType length];
 
   if (v17)
   {
-    v18 = psg_default_log_handle();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    contextBeforeInput = psg_default_log_handle();
+    if (os_log_type_enabled(contextBeforeInput, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_debug_impl(&dword_260D18000, v18, OS_LOG_TYPE_DEBUG, "Skip prefix-based structured info cache lookup for tagged text field.", buf, 2u);
+      _os_log_debug_impl(&dword_260D18000, contextBeforeInput, OS_LOG_TYPE_DEBUG, "Skip prefix-based structured info cache lookup for tagged text field.", buf, 2u);
     }
 
     v19 = 0;
@@ -179,15 +179,15 @@ LABEL_12:
 
   else
   {
-    v18 = [v6 contextBeforeInput];
-    v20 = [v6 localeIdentifier];
-    v19 = -[PSGInputSuggesterClient _cachedStructuredSuggestionsForContext:localeIdentifier:maxSuggestions:](self, "_cachedStructuredSuggestionsForContext:localeIdentifier:maxSuggestions:", v18, v20, [v6 structuredInfoLimit]);
+    contextBeforeInput = [requestCopy contextBeforeInput];
+    localeIdentifier3 = [requestCopy localeIdentifier];
+    v19 = -[PSGInputSuggesterClient _cachedStructuredSuggestionsForContext:localeIdentifier:maxSuggestions:](self, "_cachedStructuredSuggestionsForContext:localeIdentifier:maxSuggestions:", contextBeforeInput, localeIdentifier3, [requestCopy structuredInfoLimit]);
   }
 
   v21 = [v19 count];
   v22 = psg_default_log_handle();
   v23 = v22;
-  v82 = self;
+  selfCopy = self;
   if (v21)
   {
     v24 = -1.0;
@@ -207,8 +207,8 @@ LABEL_12:
   else
   {
     v80 = v14;
-    v81 = v11;
-    v79 = v7;
+    v81 = localeIdentifier2;
+    v79 = completionCopy;
     v29 = os_signpost_id_generate(v22);
 
     v30 = psg_default_log_handle();
@@ -220,7 +220,7 @@ LABEL_12:
     }
 
     v32 = mach_absolute_time();
-    v33 = [(PSGInputSuggesterClient *)self _textualSuggestionsAndTriggersForRequest:v6 explanationSet:v15];
+    v33 = [(PSGInputSuggesterClient *)self _textualSuggestionsAndTriggersForRequest:requestCopy explanationSet:v15];
 
     v28 = *&inputSuggestionsWithRequest_completion__timeMillisMultiplier * (mach_absolute_time() - v32);
     v34 = psg_default_log_handle();
@@ -269,12 +269,12 @@ LABEL_12:
         _os_log_impl(&dword_260D18000, v44, OS_LOG_TYPE_DEFAULT, "[Client] Triggered %tu item(s)", buf, 0xCu);
       }
 
-      v73 = [(PSGInputSuggesterClient *)self _logTriggerForItems:v33 request:v6];
+      v73 = [(PSGInputSuggesterClient *)self _logTriggerForItems:v33 request:requestCopy];
       v74 = mach_absolute_time();
-      v46 = [v6 textContentType];
-      v47 = [v46 length];
+      textContentType2 = [requestCopy textContentType];
+      v47 = [textContentType2 length];
 
-      v48 = [v6 structuredInfoLimit];
+      structuredInfoLimit = [requestCopy structuredInfoLimit];
       v49 = 100;
       if (v47)
       {
@@ -287,9 +287,9 @@ LABEL_12:
         v50 = 0.2;
       }
 
-      if (v49 <= v48)
+      if (v49 <= structuredInfoLimit)
       {
-        v51 = v48;
+        v51 = structuredInfoLimit;
       }
 
       else
@@ -297,18 +297,18 @@ LABEL_12:
         v51 = v49;
       }
 
-      v52 = [v6 recipients];
-      v53 = [v6 recipientNames];
-      v54 = [v6 bundleIdentifier];
-      v55 = [v6 availableApps];
-      v56 = self;
-      v57 = [v6 textualResponseLimit];
-      v58 = [v6 structuredInfoLimit];
+      recipients = [requestCopy recipients];
+      recipientNames = [requestCopy recipientNames];
+      bundleIdentifier = [requestCopy bundleIdentifier];
+      availableApps = [requestCopy availableApps];
+      selfCopy2 = self;
+      textualResponseLimit = [requestCopy textualResponseLimit];
+      structuredInfoLimit2 = [requestCopy structuredInfoLimit];
       v87 = 0;
-      v72 = [v6 totalSuggestionsLimit];
-      v59 = v56;
+      totalSuggestionsLimit = [requestCopy totalSuggestionsLimit];
+      v59 = selfCopy2;
       v15 = v77;
-      v23 = [(PSGInputSuggesterClient *)v59 _fillSuggestionsForResponseItems:v33 localeIdentifier:v81 recipients:v52 recipientNames:v53 bundleIdentifier:v54 timeoutSeconds:v51 structuredInfoFetchLimit:v50 availableApps:v55 textualResponseLimit:v57 structuredInfoLimit:v58 totalSuggestionsLimit:v72 explanationSet:v77 error:&v87];
+      v23 = [(PSGInputSuggesterClient *)v59 _fillSuggestionsForResponseItems:v33 localeIdentifier:v81 recipients:recipients recipientNames:recipientNames bundleIdentifier:bundleIdentifier timeoutSeconds:v51 structuredInfoFetchLimit:v50 availableApps:availableApps textualResponseLimit:textualResponseLimit structuredInfoLimit:structuredInfoLimit2 totalSuggestionsLimit:totalSuggestionsLimit explanationSet:v77 error:&v87];
       v26 = v87;
 
       v60 = (mach_absolute_time() - v74);
@@ -319,15 +319,15 @@ LABEL_12:
         v84[1] = 3221225472;
         v84[2] = __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___block_invoke_129;
         v84[3] = &unk_279ABD090;
-        v84[4] = v82;
-        v85 = v6;
+        v84[4] = selfCopy;
+        v85 = requestCopy;
         v86 = v73;
         [v77 enumerateExplanationCodeWithBlock:v84];
       }
 
       v24 = v61 * v60;
       v62 = psg_default_log_handle();
-      v7 = v79;
+      completionCopy = v79;
       v14 = v80;
       v41 = v75;
       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
@@ -357,10 +357,10 @@ LABEL_12:
 
       v26 = 0;
       v23 = v33;
-      v7 = v79;
+      completionCopy = v79;
     }
 
-    v11 = v81;
+    localeIdentifier2 = v81;
     v64 = psg_default_log_handle();
     v65 = v64;
     if (v41 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v64))
@@ -396,7 +396,7 @@ LABEL_56:
   [(PSGInputSuggestionsResponse *)v68 setServingTimeMillis:v24];
   if (-[NSObject count](v23, "count") || ([v15 hasPETLoggingData] & 1) != 0)
   {
-    [(PSGInputSuggesterClient *)v82 logPrediction:v68 request:v6 latencyMillis:v67];
+    [(PSGInputSuggesterClient *)selfCopy logPrediction:v68 request:requestCopy latencyMillis:v67];
   }
 
   else
@@ -417,7 +417,7 @@ LABEL_56:
     _os_log_impl(&dword_260D18000, v69, OS_LOG_TYPE_DEFAULT, "[Client] Total prediction time: %.1f ms", buf, 0xCu);
   }
 
-  v7[2](v7, v68, v26);
+  completionCopy[2](completionCopy, v68, v26);
   if (v14)
   {
     dispatch_block_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
@@ -446,14 +446,14 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   inputSuggestionsWithRequest_completion__prewarmQueue = v0;
 }
 
-- (id)_cachedStructuredSuggestionsForContext:(id)a3 localeIdentifier:(id)a4 maxSuggestions:(unint64_t)a5
+- (id)_cachedStructuredSuggestionsForContext:(id)context localeIdentifier:(id)identifier maxSuggestions:(unint64_t)suggestions
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  contextCopy = context;
+  identifierCopy = identifier;
+  if ([contextCopy length] && objc_msgSend(identifierCopy, "length"))
   {
-    v10 = [(PSGStructuredInfoSuggestionCache *)self->_structuredSuggestionCache searchWithContext:v8 localeIdentifier:v9 maxSuggestions:a5];
+    v10 = [(PSGStructuredInfoSuggestionCache *)self->_structuredSuggestionCache searchWithContext:contextCopy localeIdentifier:identifierCopy maxSuggestions:suggestions];
     if ([v10 count])
     {
       v11 = objc_opt_new();
@@ -505,23 +505,23 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   return v11;
 }
 
-- (id)_appConnectionTriggerForTextContentType:(id)a3
+- (id)_appConnectionTriggerForTextContentType:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  typeCopy = type;
+  if ([typeCopy length])
   {
     v4 = psg_default_log_handle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = typeCopy;
       _os_log_debug_impl(&dword_260D18000, v4, OS_LOG_TYPE_DEBUG, "Client creating an app connection trigger for tagged text field: %@", &v11, 0xCu);
     }
 
     v5 = objc_opt_new();
     [v5 setValue:@"triggerTypeConnections" forKey:*MEMORY[0x277D23050]];
-    [v5 setValue:v3 forKey:@"textContentTypeTag"];
+    [v5 setValue:typeCopy forKey:@"textContentTypeTag"];
     v6 = [[PSGProactiveTrigger alloc] initWithSourceType:2 category:@"TaggedTextFieldMeCard" attributes:v5];
     v7 = [[PSGStructuredInfoSuggestion alloc] initWithProactiveTrigger:v6 portraitItem:0 operationalItem:0];
     v8 = [[PSGInputSuggestionsResponseItem alloc] initWithTextualResponseSuggestion:0 structuredInfoSuggestion:v7];
@@ -537,11 +537,11 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   return v8;
 }
 
-- (id)_textualSuggestionsAndTriggersForRequest:(id)a3 explanationSet:(id)a4
+- (id)_textualSuggestionsAndTriggersForRequest:(id)request explanationSet:(id)set
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  setCopy = set;
   v8 = psg_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -549,10 +549,10 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
     _os_log_debug_impl(&dword_260D18000, v8, OS_LOG_TYPE_DEBUG, "Client called to _textualSuggestionsAndTriggersForRequest", &v23, 2u);
   }
 
-  v9 = [v6 conversationTurns];
-  v10 = [v9 lastObject];
+  conversationTurns = [requestCopy conversationTurns];
+  lastObject = [conversationTurns lastObject];
 
-  if (v10 && ([v10 senderID], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, !v12))
+  if (lastObject && ([lastObject senderID], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, !v12))
   {
     v16 = psg_default_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -566,7 +566,7 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
 
   else
   {
-    v13 = [(_PASLRUCache *)self->_triggeringCache objectForKey:v6];
+    v13 = [(_PASLRUCache *)self->_triggeringCache objectForKey:requestCopy];
     if (v13)
     {
       v14 = v13;
@@ -584,14 +584,14 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
 
     else
     {
-      if ([v6 isDocumentEmpty])
+      if ([requestCopy isDocumentEmpty])
       {
-        [(PSGInputSuggesterClient *)self _getZKWResultsForRequest:v6 explanationSet:v7];
+        [(PSGInputSuggesterClient *)self _getZKWResultsForRequest:requestCopy explanationSet:setCopy];
       }
 
       else
       {
-        [(PSGInputSuggesterClient *)self _getWordBoundaryResultForRequest:v6 explanationSet:v7];
+        [(PSGInputSuggesterClient *)self _getWordBoundaryResultForRequest:requestCopy explanationSet:setCopy];
       }
       v14 = ;
       v18 = psg_default_log_handle();
@@ -605,9 +605,9 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
         _os_log_debug_impl(&dword_260D18000, v18, OS_LOG_TYPE_DEBUG, "[Client] got %tu textual suggestions or triggers: %@", &v23, 0x16u);
       }
 
-      if ([v14 count] || (objc_msgSend(v7, "hasTriggeringXPCTimeout") & 1) == 0)
+      if ([v14 count] || (objc_msgSend(setCopy, "hasTriggeringXPCTimeout") & 1) == 0)
       {
-        [(_PASLRUCache *)self->_triggeringCache setObject:v14 forKey:v6];
+        [(_PASLRUCache *)self->_triggeringCache setObject:v14 forKey:requestCopy];
       }
     }
 
@@ -620,20 +620,20 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   return v17;
 }
 
-- (id)_getWordBoundaryResultForRequest:(id)a3 explanationSet:(id)a4
+- (id)_getWordBoundaryResultForRequest:(id)request explanationSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contextBeforeInput];
+  requestCopy = request;
+  setCopy = set;
+  contextBeforeInput = [requestCopy contextBeforeInput];
 
-  if (v8)
+  if (contextBeforeInput)
   {
-    v9 = [v6 contextBeforeInput];
-    v10 = [v6 localeIdentifier];
-    v11 = [v6 textContentType];
-    v12 = [v6 recipientNames];
-    v13 = [v6 availableApps];
-    v14 = [(PSGInputSuggesterClient *)self _wordBoundaryPredictionsForContext:v9 localeIdentifier:v10 textContentType:v11 recipientNames:v12 availableApps:v13 request:v6 explanationSet:v7];
+    contextBeforeInput2 = [requestCopy contextBeforeInput];
+    localeIdentifier = [requestCopy localeIdentifier];
+    textContentType = [requestCopy textContentType];
+    recipientNames = [requestCopy recipientNames];
+    availableApps = [requestCopy availableApps];
+    v14 = [(PSGInputSuggesterClient *)self _wordBoundaryPredictionsForContext:contextBeforeInput2 localeIdentifier:localeIdentifier textContentType:textContentType recipientNames:recipientNames availableApps:availableApps request:requestCopy explanationSet:setCopy];
   }
 
   else
@@ -651,14 +651,14 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   return v14;
 }
 
-- (id)_getZKWResultsForRequest:(id)a3 explanationSet:(id)a4
+- (id)_getZKWResultsForRequest:(id)request explanationSet:(id)set
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v37 = a4;
-  v6 = [v5 responseContext];
-  v38 = [v5 textContentType];
-  if (![v6 length] && !objc_msgSend(v38, "length"))
+  requestCopy = request;
+  setCopy = set;
+  responseContext = [requestCopy responseContext];
+  textContentType = [requestCopy textContentType];
+  if (![responseContext length] && !objc_msgSend(textContentType, "length"))
   {
     v7 = psg_default_log_handle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -671,14 +671,14 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   v8 = psg_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 length];
-    v10 = [v5 localeIdentifier];
+    v9 = [responseContext length];
+    localeIdentifier = [requestCopy localeIdentifier];
     *buf = 134218498;
     *&buf[4] = v9;
     *&buf[12] = 2112;
-    *&buf[14] = v38;
+    *&buf[14] = textContentType;
     *&buf[22] = 2112;
-    v47 = v10;
+    v47 = localeIdentifier;
     _os_log_impl(&dword_260D18000, v8, OS_LOG_TYPE_INFO, "Response context length: %tu, text content type: %@, locale: %@", buf, 0x20u);
   }
 
@@ -688,7 +688,7 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   v47 = __Block_byref_object_copy__697;
   v48 = __Block_byref_object_dispose__698;
   v49 = 0;
-  if (![v6 length] && (objc_msgSend(v5, "conversationTurns"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count") == 0, v11, v12))
+  if (![responseContext length] && (objc_msgSend(requestCopy, "conversationTurns"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count") == 0, v11, v12))
   {
     v23 = 0;
   }
@@ -696,7 +696,7 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
   else
   {
     v13 = dispatch_semaphore_create(0);
-    v14 = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
+    _remoteObjectProxy = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __67__PSGInputSuggesterClient__getZKWResultsForRequest_explanationSet___block_invoke;
@@ -704,17 +704,17 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
     v42 = buf;
     v15 = v13;
     v41 = v15;
-    [v14 inputSuggestionsWithRequest:v5 completion:v40];
+    [_remoteObjectProxy inputSuggestionsWithRequest:requestCopy completion:v40];
 
-    v16 = [v5 bundleIdentifier];
-    v17 = [v5 responseKitConversationTurns];
-    v18 = [v5 localeIdentifier];
-    v19 = [v5 adaptationContextID];
-    v20 = [v5 shouldDisableAutoCaps];
-    v21 = [v5 textualResponseLimit];
-    v22 = [v5 structuredInfoLimit];
-    LOBYTE(v36) = [v5 isResponseContextBlacklisted];
-    v23 = [(PSGInputSuggesterClient *)self _responseKitPredictionsForContext:v6 bundleIdentifier:v16 conversationTurns:v17 languageID:v18 adaptationContextID:v19 shouldDisableAutoCaps:v20 maximumResponses:v22 + v21 isBlacklisted:v36];
+    bundleIdentifier = [requestCopy bundleIdentifier];
+    responseKitConversationTurns = [requestCopy responseKitConversationTurns];
+    localeIdentifier2 = [requestCopy localeIdentifier];
+    adaptationContextID = [requestCopy adaptationContextID];
+    shouldDisableAutoCaps = [requestCopy shouldDisableAutoCaps];
+    textualResponseLimit = [requestCopy textualResponseLimit];
+    structuredInfoLimit = [requestCopy structuredInfoLimit];
+    LOBYTE(v36) = [requestCopy isResponseContextBlacklisted];
+    v23 = [(PSGInputSuggesterClient *)self _responseKitPredictionsForContext:responseContext bundleIdentifier:bundleIdentifier conversationTurns:responseKitConversationTurns languageID:localeIdentifier2 adaptationContextID:adaptationContextID shouldDisableAutoCaps:shouldDisableAutoCaps maximumResponses:structuredInfoLimit + textualResponseLimit isBlacklisted:v36];
 
     if ([MEMORY[0x277D425A0] waitForSemaphore:v15 timeoutSeconds:0.1] == 1)
     {
@@ -726,12 +726,12 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
         _os_log_impl(&dword_260D18000, v24, OS_LOG_TYPE_DEFAULT, "[ZKW] timed out trying to fetch ML results (threshold: %.3f s)", v44, 0xCu);
       }
 
-      [(PSGInputSuggesterClient *)self logErrorForRequest:v5 trigger:0 errorType:2];
-      [v37 pushInternalExplanationCode:7];
+      [(PSGInputSuggesterClient *)self logErrorForRequest:requestCopy trigger:0 errorType:2];
+      [setCopy pushInternalExplanationCode:7];
     }
   }
 
-  if ([v38 length] && (objc_msgSend(v5, "textContentType"), v25 = objc_claimAutoreleasedReturnValue(), -[PSGInputSuggesterClient _appConnectionTriggerForTextContentType:](self, "_appConnectionTriggerForTextContentType:", v25), v26 = objc_claimAutoreleasedReturnValue(), v25, v26))
+  if ([textContentType length] && (objc_msgSend(requestCopy, "textContentType"), v25 = objc_claimAutoreleasedReturnValue(), -[PSGInputSuggesterClient _appConnectionTriggerForTextContentType:](self, "_appConnectionTriggerForTextContentType:", v25), v26 = objc_claimAutoreleasedReturnValue(), v25, v26))
   {
     v43 = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
@@ -750,7 +750,7 @@ void __66__PSGInputSuggesterClient_inputSuggestionsWithRequest_completion___bloc
     v26 = 0;
   }
 
-  if ([v6 length] || !objc_msgSend(objc_opt_class(), "_zkwItemsContainsOnlyTextualResponses:", v27))
+  if ([responseContext length] || !objc_msgSend(objc_opt_class(), "_zkwItemsContainsOnlyTextualResponses:", v27))
   {
     v32 = psg_default_log_handle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -827,32 +827,32 @@ LABEL_8:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_combineMLAndRKItems:(id)a3 mlItems:(id)a4
+- (id)_combineMLAndRKItems:(id)items mlItems:(id)mlItems
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  mlItemsCopy = mlItems;
   v7 = psg_default_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v43 = [v5 count];
+    v43 = [itemsCopy count];
     v44 = 2048;
-    v45 = [v6 count];
+    v45 = [mlItemsCopy count];
     _os_log_debug_impl(&dword_260D18000, v7, OS_LOG_TYPE_DEBUG, "[Client] combining %tu rk item(s) & %tu ml item(s)", buf, 0x16u);
   }
 
-  if ([v6 count])
+  if ([mlItemsCopy count])
   {
-    if ([v5 count])
+    if ([itemsCopy count])
     {
-      v35 = v6;
-      v36 = v5;
+      v35 = mlItemsCopy;
+      v36 = itemsCopy;
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v8 = v5;
+      v8 = itemsCopy;
       v9 = [v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v9)
       {
@@ -868,13 +868,13 @@ LABEL_8:
             }
 
             v13 = *(*(&v37 + 1) + 8 * i);
-            v14 = [v13 textualResponseSuggestion];
-            if (v14)
+            textualResponseSuggestion = [v13 textualResponseSuggestion];
+            if (textualResponseSuggestion)
             {
-              v15 = v14;
-              v16 = [v13 textualResponseSuggestion];
-              v17 = [v16 responseCategory];
-              v18 = [v17 isEqualToString:@"QueryAlternative"];
+              v15 = textualResponseSuggestion;
+              textualResponseSuggestion2 = [v13 textualResponseSuggestion];
+              responseCategory = [textualResponseSuggestion2 responseCategory];
+              v18 = [responseCategory isEqualToString:@"QueryAlternative"];
 
               if (v18)
               {
@@ -889,29 +889,29 @@ LABEL_8:
               }
             }
 
-            v19 = [v13 structuredInfoSuggestion];
-            if (v19)
+            structuredInfoSuggestion = [v13 structuredInfoSuggestion];
+            if (structuredInfoSuggestion)
             {
-              v20 = v19;
-              v21 = [v13 structuredInfoSuggestion];
-              v22 = [v21 proactiveTrigger];
+              v20 = structuredInfoSuggestion;
+              structuredInfoSuggestion2 = [v13 structuredInfoSuggestion];
+              proactiveTrigger = [structuredInfoSuggestion2 proactiveTrigger];
 
-              if (v22)
+              if (proactiveTrigger)
               {
                 v24 = psg_default_log_handle();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
                 {
-                  v25 = [v13 structuredInfoSuggestion];
-                  v26 = [v25 proactiveTrigger];
-                  v27 = [v26 triggerAttributes];
+                  structuredInfoSuggestion3 = [v13 structuredInfoSuggestion];
+                  proactiveTrigger2 = [structuredInfoSuggestion3 proactiveTrigger];
+                  triggerAttributes = [proactiveTrigger2 triggerAttributes];
                   *buf = 138412290;
-                  v43 = v27;
+                  v43 = triggerAttributes;
                   _os_log_impl(&dword_260D18000, v24, OS_LOG_TYPE_INFO, "[Client] rk proactive trigger (%@) found, discarding ml results", buf, 0xCu);
                 }
 
 LABEL_29:
-                v6 = v35;
-                v5 = v36;
+                mlItemsCopy = v35;
+                itemsCopy = v36;
 
                 v23 = psg_default_log_handle();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -938,7 +938,7 @@ LABEL_29:
       }
 
       v23 = psg_default_log_handle();
-      v6 = v35;
+      mlItemsCopy = v35;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
         v34 = [v35 count];
@@ -948,7 +948,7 @@ LABEL_29:
       }
 
       v8 = v35;
-      v5 = v36;
+      itemsCopy = v36;
     }
 
     else
@@ -956,13 +956,13 @@ LABEL_29:
       v23 = psg_default_log_handle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v6 count];
+        v33 = [mlItemsCopy count];
         *buf = 134217984;
         v43 = v33;
         _os_log_debug_impl(&dword_260D18000, v23, OS_LOG_TYPE_DEBUG, "[Client] no rk responses and using ml results (%tu)", buf, 0xCu);
       }
 
-      v8 = v6;
+      v8 = mlItemsCopy;
     }
   }
 
@@ -971,13 +971,13 @@ LABEL_29:
     v23 = psg_default_log_handle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v31 = [v5 count];
+      v31 = [itemsCopy count];
       *buf = 134217984;
       v43 = v31;
       _os_log_debug_impl(&dword_260D18000, v23, OS_LOG_TYPE_DEBUG, "[Client] no ml items, returning rk results (%tu)", buf, 0xCu);
     }
 
-    v8 = v5;
+    v8 = itemsCopy;
   }
 
 LABEL_31:
@@ -987,25 +987,25 @@ LABEL_31:
   return v8;
 }
 
-- (id)_wordBoundaryPredictionsForContext:(id)a3 localeIdentifier:(id)a4 textContentType:(id)a5 recipientNames:(id)a6 availableApps:(id)a7 request:(id)a8 explanationSet:(id)a9
+- (id)_wordBoundaryPredictionsForContext:(id)context localeIdentifier:(id)identifier textContentType:(id)type recipientNames:(id)names availableApps:(id)apps request:(id)request explanationSet:(id)set
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v53 = a7;
-  v52 = a8;
-  v54 = a9;
-  if (![v15 length] || !objc_msgSend(v16, "length"))
+  contextCopy = context;
+  identifierCopy = identifier;
+  typeCopy = type;
+  namesCopy = names;
+  appsCopy = apps;
+  requestCopy = request;
+  setCopy = set;
+  if (![contextCopy length] || !objc_msgSend(identifierCopy, "length"))
   {
     v20 = psg_default_log_handle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      *&buf[4] = [v15 length];
+      *&buf[4] = [contextCopy length];
       *&buf[12] = 2112;
-      *&buf[14] = v16;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_260D18000, v20, OS_LOG_TYPE_DEFAULT, "Tried to get word boundary predications but either locale or context were missing {context length: %tu locale: %@}", buf, 0x16u);
     }
 
@@ -1016,31 +1016,31 @@ LABEL_31:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    *&buf[4] = [v15 length];
+    *&buf[4] = [contextCopy length];
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = identifierCopy;
     *&buf[22] = 2048;
-    v64 = [v18 count];
+    v64 = [namesCopy count];
     LOWORD(v65) = 2112;
-    *(&v65 + 2) = v17;
+    *(&v65 + 2) = typeCopy;
     _os_log_impl(&dword_260D18000, v19, OS_LOG_TYPE_DEFAULT, "Context length: %tu, locale: %@, recipientNames count: %tu, textContentType: %@", buf, 0x2Au);
   }
 
-  if (![v18 count])
+  if (![namesCopy count])
   {
 LABEL_13:
-    v20 = [objc_opt_class() _getQueryFieldFromTextContentType:v17];
+    v20 = [objc_opt_class() _getQueryFieldFromTextContentType:typeCopy];
     if (v20)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v29 = [v15 stringByTrimmingCharactersInSet:v28];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v29 = [contextCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       v30 = [v29 stringByReplacingOccurrencesOfString:@"​" withString:&stru_287343650];
 
       objc_autoreleasePoolPop(v27);
       if ([v30 length])
       {
-        v31 = [objc_opt_class() _getContactsAutocompleteItemForQueryField:v20 searchTerm:v30 localeIdentifier:v16];
+        v31 = [objc_opt_class() _getContactsAutocompleteItemForQueryField:v20 searchTerm:v30 localeIdentifier:identifierCopy];
         v32 = v31;
         if (v31)
         {
@@ -1058,12 +1058,12 @@ LABEL_13:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        *&buf[4] = v17;
+        *&buf[4] = typeCopy;
         _os_log_debug_impl(&dword_260D18000, v30, OS_LOG_TYPE_DEBUG, "Unsupported textContentType for Keyboard Contacts Autocomplete: %@", buf, 0xCu);
       }
     }
 
-    if ([v17 length])
+    if ([typeCopy length])
     {
       v33 = psg_default_log_handle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -1079,7 +1079,7 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (([objc_opt_class() _shouldGenerateWordBoundaryPredictionsForContext:v15 localeIdentifier:v16] & 1) == 0)
+    if (([objc_opt_class() _shouldGenerateWordBoundaryPredictionsForContext:contextCopy localeIdentifier:identifierCopy] & 1) == 0)
     {
       v33 = psg_default_log_handle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -1098,7 +1098,7 @@ LABEL_31:
     *&v65 = __Block_byref_object_dispose__698;
     *(&v65 + 1) = 0;
     v34 = dispatch_semaphore_create(0);
-    v35 = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
+    _remoteObjectProxy = [(PSGInputSuggesterClient *)self _remoteObjectProxy];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __147__PSGInputSuggesterClient__wordBoundaryPredictionsForContext_localeIdentifier_textContentType_recipientNames_availableApps_request_explanationSet___block_invoke;
@@ -1106,12 +1106,12 @@ LABEL_31:
     v57 = buf;
     v36 = v34;
     v56 = v36;
-    [v35 inputSuggestionsWithRequest:v52 completion:v55];
+    [_remoteObjectProxy inputSuggestionsWithRequest:requestCopy completion:v55];
 
     v50 = +[PSGWordBoundaryFSTGrammar sharedInstance];
-    v37 = [v50 triggerAttributesForContext:v15 localeIdentifier:v16];
-    v38 = [v52 bundleIdentifier];
-    v51 = [(PSGInputSuggesterClient *)self _maybeModifyTrigger:v37 bundleIdentifier:v38];
+    v37 = [v50 triggerAttributesForContext:contextCopy localeIdentifier:identifierCopy];
+    bundleIdentifier = [requestCopy bundleIdentifier];
+    v51 = [(PSGInputSuggesterClient *)self _maybeModifyTrigger:v37 bundleIdentifier:bundleIdentifier];
 
     if (v51)
     {
@@ -1144,8 +1144,8 @@ LABEL_31:
           _os_log_impl(&dword_260D18000, v44, OS_LOG_TYPE_DEFAULT, "[WordBoundary] Timed out trying to fetch ml results (threshold: %.3f s)", v59, 0xCu);
         }
 
-        [(PSGInputSuggesterClient *)self logErrorForRequest:v52 trigger:0 errorType:1];
-        [v54 pushInternalExplanationCode:7];
+        [(PSGInputSuggesterClient *)self logErrorForRequest:requestCopy trigger:0 errorType:1];
+        [setCopy pushInternalExplanationCode:7];
       }
 
       else
@@ -1185,7 +1185,7 @@ LABEL_47:
 
   v20 = +[PSGNameMentionsHandler sharedInstance];
   v21 = objc_autoreleasePoolPush();
-  v22 = [v20 getNameMentionsTriggerForContext:v15 recipientNames:v18 availableApps:v53 localeIdentifier:v16 explanationSet:v54];
+  v22 = [v20 getNameMentionsTriggerForContext:contextCopy recipientNames:namesCopy availableApps:appsCopy localeIdentifier:identifierCopy explanationSet:setCopy];
   objc_autoreleasePoolPop(v21);
   if (!v22)
   {
@@ -1255,20 +1255,20 @@ LABEL_5:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_maybeModifyTrigger:(id)a3 bundleIdentifier:(id)a4
+- (id)_maybeModifyTrigger:(id)trigger bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  triggerCopy = trigger;
+  identifierCopy = identifier;
   if (_maybeModifyTrigger_bundleIdentifier___pasOnceToken14 != -1)
   {
     dispatch_once(&_maybeModifyTrigger_bundleIdentifier___pasOnceToken14, &__block_literal_global_91);
   }
 
   v8 = _maybeModifyTrigger_bundleIdentifier___pasExprOnceResult;
-  v9 = [(PSGInputSuggesterClient *)self _getFTLinkShareTrigger];
-  v10 = [v6 isEqualToDictionary:v9];
+  _getFTLinkShareTrigger = [(PSGInputSuggesterClient *)self _getFTLinkShareTrigger];
+  v10 = [triggerCopy isEqualToDictionary:_getFTLinkShareTrigger];
 
-  if (v10 && [v7 length] && objc_msgSend(v8, "containsObject:", v7))
+  if (v10 && [identifierCopy length] && objc_msgSend(v8, "containsObject:", identifierCopy))
   {
     v11 = psg_default_log_handle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -1282,7 +1282,7 @@ LABEL_5:
 
   else
   {
-    v12 = v6;
+    v12 = triggerCopy;
   }
 
   return v12;
@@ -1333,41 +1333,41 @@ void __49__PSGInputSuggesterClient__getFTLinkShareTrigger__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fillSuggestionsForResponseItems:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 recipientNames:(id)a6 bundleIdentifier:(id)a7 timeoutSeconds:(double)a8 structuredInfoFetchLimit:(unint64_t)a9 availableApps:(id)a10 textualResponseLimit:(unint64_t)a11 structuredInfoLimit:(unint64_t)a12 totalSuggestionsLimit:(unint64_t)a13 explanationSet:(id)a14 error:(id *)a15
+- (id)_fillSuggestionsForResponseItems:(id)items localeIdentifier:(id)identifier recipients:(id)recipients recipientNames:(id)names bundleIdentifier:(id)bundleIdentifier timeoutSeconds:(double)seconds structuredInfoFetchLimit:(unint64_t)limit availableApps:(id)self0 textualResponseLimit:(unint64_t)self1 structuredInfoLimit:(unint64_t)self2 totalSuggestionsLimit:(unint64_t)self3 explanationSet:(id)self4 error:(id *)self5
 {
-  v20 = a12;
-  v21 = a13;
+  infoLimitCopy3 = infoLimit;
+  suggestionsLimitCopy3 = suggestionsLimit;
   v87 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v61 = a4;
-  v60 = a5;
-  v59 = a6;
-  v58 = a7;
-  v57 = a10;
-  v56 = a14;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  recipientsCopy = recipients;
+  namesCopy = names;
+  bundleIdentifierCopy = bundleIdentifier;
+  appsCopy = apps;
+  setCopy = set;
   v55 = +[PSGProactiveTriggerHandler sharedInstance];
   v23 = objc_opt_new();
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v24 = v22;
+  v24 = itemsCopy;
   v64 = [v24 countByEnumeratingWithState:&v76 objects:v86 count:16];
   if (v64)
   {
     v25 = 0;
     v26 = 0;
-    if (a12 >= a13)
+    if (infoLimit >= suggestionsLimit)
     {
-      v27 = a13;
+      infoLimitCopy2 = suggestionsLimit;
     }
 
     else
     {
-      v27 = a12;
+      infoLimitCopy2 = infoLimit;
     }
 
-    v62 = v27;
+    v62 = infoLimitCopy2;
     v63 = *v77;
     obj = v24;
     do
@@ -1379,12 +1379,12 @@ void __49__PSGInputSuggesterClient__getFTLinkShareTrigger__block_invoke()
           objc_enumerationMutation(obj);
         }
 
-        v29 = [*(*(&v76 + 1) + 8 * i) structuredInfoSuggestion];
-        if (v29)
+        structuredInfoSuggestion = [*(*(&v76 + 1) + 8 * i) structuredInfoSuggestion];
+        if (structuredInfoSuggestion)
         {
-          v67 = v29;
-          v30 = [v29 proactiveTrigger];
-          v31 = [v55 handleTrigger:v30 localeIdentifier:v61 bundleIdentifier:v58 recipients:v60 recipientNames:v59 availableApps:v57 timeoutSeconds:a8 fetchLimit:a9 maxSuggestions:v20 explanationSet:v56 error:a15];
+          v67 = structuredInfoSuggestion;
+          proactiveTrigger = [structuredInfoSuggestion proactiveTrigger];
+          v31 = [v55 handleTrigger:proactiveTrigger localeIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy recipients:recipientsCopy recipientNames:namesCopy availableApps:appsCopy timeoutSeconds:seconds fetchLimit:limit maxSuggestions:infoLimitCopy3 explanationSet:setCopy error:error];
 
           v74 = 0u;
           v75 = 0u;
@@ -1459,8 +1459,8 @@ void __49__PSGInputSuggesterClient__getFTLinkShareTrigger__block_invoke()
 LABEL_25:
 
           v26 = v36;
-          v20 = a12;
-          v29 = v67;
+          infoLimitCopy3 = infoLimit;
+          structuredInfoSuggestion = v67;
         }
       }
 
@@ -1482,7 +1482,7 @@ LABEL_25:
       goto LABEL_45;
     }
 
-    v21 = a13;
+    suggestionsLimitCopy3 = suggestionsLimit;
   }
 
   else
@@ -1518,11 +1518,11 @@ LABEL_45:
       }
 
       v48 = *(*(&v68 + 1) + 8 * j);
-      v49 = [v48 textualResponseSuggestion];
+      textualResponseSuggestion = [v48 textualResponseSuggestion];
 
-      if (v49)
+      if (textualResponseSuggestion)
       {
-        if (v45 >= a11 || [v23 count] >= v21)
+        if (v45 >= responseLimit || [v23 count] >= suggestionsLimitCopy3)
         {
           goto LABEL_42;
         }
@@ -1555,25 +1555,25 @@ LABEL_46:
   return v23;
 }
 
-- (id)_rewriteMoneyAttributes:(id)a3
+- (id)_rewriteMoneyAttributes:(id)attributes
 {
   v35 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D22FF8];
-  v4 = [a3 objectForKey:*MEMORY[0x277D22FF8]];
+  v4 = [attributes objectForKey:*MEMORY[0x277D22FF8]];
   if ([v4 count])
   {
     v5 = [v4 objectForKey:*MEMORY[0x277D46C08]];
     if ([v5 count])
     {
       v29 = v4;
-      v6 = [MEMORY[0x277CBEB38] dictionary];
-      [v6 setValue:*MEMORY[0x277D46C00] forKey:*MEMORY[0x277D23050]];
-      v7 = [MEMORY[0x277CBEB38] dictionary];
-      v8 = [MEMORY[0x277CBEB18] array];
-      [v7 setValue:v8 forKey:@"Currency"];
-      v26 = v7;
-      v27 = v6;
-      [v6 setValue:v7 forKey:*v3];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setValue:*MEMORY[0x277D46C00] forKey:*MEMORY[0x277D23050]];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      array = [MEMORY[0x277CBEB18] array];
+      [dictionary2 setValue:array forKey:@"Currency"];
+      v26 = dictionary2;
+      v27 = dictionary;
+      [dictionary setValue:dictionary2 forKey:*v3];
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
@@ -1600,18 +1600,18 @@ LABEL_46:
             {
               v15 = MEMORY[0x277CBEB38];
               v16 = v14;
-              v17 = [v15 dictionary];
-              v18 = [v16 currency];
-              [v17 setObject:v18 forKey:@"CurrencyType"];
+              dictionary3 = [v15 dictionary];
+              currency = [v16 currency];
+              [dictionary3 setObject:currency forKey:@"CurrencyType"];
 
               v19 = objc_alloc(MEMORY[0x277CCACA8]);
               [v16 value];
               v21 = v20;
 
               v22 = [v19 initWithFormat:@"%.2f", v21];
-              [v17 setObject:v22 forKey:@"CurrencyValue"];
+              [dictionary3 setObject:v22 forKey:@"CurrencyValue"];
 
-              [v8 addObject:v17];
+              [array addObject:dictionary3];
             }
           }
 
@@ -1642,12 +1642,12 @@ LABEL_46:
   return v23;
 }
 
-- (id)_rkResponsesForContext:(id)a3 conversationTurns:(id)a4 languageID:(id)a5 maximumResponses:(unint64_t)a6 shouldDisableAutoCaps:(BOOL)a7 adaptationContextID:(id)a8
+- (id)_rkResponsesForContext:(id)context conversationTurns:(id)turns languageID:(id)d maximumResponses:(unint64_t)responses shouldDisableAutoCaps:(BOOL)caps adaptationContextID:(id)iD
 {
-  v9 = a7;
-  v13 = a4;
-  v14 = a8;
-  if (v9)
+  capsCopy = caps;
+  turnsCopy = turns;
+  iDCopy = iD;
+  if (capsCopy)
   {
     v15 = 704;
   }
@@ -1657,28 +1657,28 @@ LABEL_46:
     v15 = 576;
   }
 
-  v16 = a5;
-  v17 = a3;
-  v18 = [v13 count];
-  v19 = [MEMORY[0x277D46BD8] sharedManager];
-  v20 = v19;
+  dCopy = d;
+  contextCopy = context;
+  v18 = [turnsCopy count];
+  mEMORY[0x277D46BD8] = [MEMORY[0x277D46BD8] sharedManager];
+  v20 = mEMORY[0x277D46BD8];
   if (v18)
   {
-    [v19 responsesForMessage:v17 maximumResponses:a6 forConversationHistory:v13 withLanguage:v16 options:v15];
+    [mEMORY[0x277D46BD8] responsesForMessage:contextCopy maximumResponses:responses forConversationHistory:turnsCopy withLanguage:dCopy options:v15];
   }
 
   else
   {
-    [v19 responsesForMessage:v17 maximumResponses:a6 forContext:v14 withLanguage:v16 options:v15];
+    [mEMORY[0x277D46BD8] responsesForMessage:contextCopy maximumResponses:responses forContext:iDCopy withLanguage:dCopy options:v15];
   }
   v21 = ;
 
   return v21;
 }
 
-- (PSGInputSuggesterClient)initWithStructuredInfoCache:(id)a3
+- (PSGInputSuggesterClient)initWithStructuredInfoCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v15.receiver = self;
   v15.super_class = PSGInputSuggesterClient;
   v6 = [(PSGInputSuggesterClient *)&v15 init];
@@ -1691,7 +1691,7 @@ LABEL_46:
     clientHelper = v6->_clientHelper;
     v6->_clientHelper = v10;
 
-    objc_storeStrong(&v6->_structuredSuggestionCache, a3);
+    objc_storeStrong(&v6->_structuredSuggestionCache, cache);
     v12 = [objc_alloc(MEMORY[0x277D425D0]) initWithCountLimit:3];
     triggeringCache = v6->_triggeringCache;
     v6->_triggeringCache = v12;
@@ -1736,10 +1736,10 @@ void __55__PSGInputSuggesterClient_initWithStructuredInfoCache___block_invoke()
   return v4;
 }
 
-+ (BOOL)_zkwItemsContainsOnlyTextualResponses:(id)a3
++ (BOOL)_zkwItemsContainsOnlyTextualResponses:(id)responses
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  responsesCopy = responses;
   v4 = psg_default_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -1751,7 +1751,7 @@ void __55__PSGInputSuggesterClient_initWithStructuredInfoCache___block_invoke()
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = responsesCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
@@ -1767,18 +1767,18 @@ void __55__PSGInputSuggesterClient_initWithStructuredInfoCache___block_invoke()
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 structuredInfoSuggestion];
+        structuredInfoSuggestion = [v10 structuredInfoSuggestion];
 
-        if (v11)
+        if (structuredInfoSuggestion)
         {
           v13 = psg_default_log_handle();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v10 structuredInfoSuggestion];
-            v17 = [v16 proactiveTrigger];
-            v18 = [v17 triggerCategory];
+            structuredInfoSuggestion2 = [v10 structuredInfoSuggestion];
+            proactiveTrigger = [structuredInfoSuggestion2 proactiveTrigger];
+            triggerCategory = [proactiveTrigger triggerCategory];
             *buf = 138412290;
-            v24 = v18;
+            v24 = triggerCategory;
             _os_log_debug_impl(&dword_260D18000, v13, OS_LOG_TYPE_DEBUG, "--- found one of category: %@", buf, 0xCu);
           }
 
@@ -1804,24 +1804,24 @@ LABEL_15:
   return v12;
 }
 
-+ (id)_getContactsAutocompleteItemForQueryField:(id)a3 searchTerm:(id)a4 localeIdentifier:(id)a5
++ (id)_getContactsAutocompleteItemForQueryField:(id)field searchTerm:(id)term localeIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  if ([v9 rangeOfCharacterFromSet:v11 options:0 range:{0, 1}] == 0x7FFFFFFFFFFFFFFFLL)
+  fieldCopy = field;
+  termCopy = term;
+  identifierCopy = identifier;
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  if ([termCopy rangeOfCharacterFromSet:decimalDigitCharacterSet options:0 range:{0, 1}] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v9 length] != 1)
+    if ([termCopy length] != 1)
     {
 LABEL_5:
       v20[0] = *MEMORY[0x277D23050];
       v20[1] = @"SearchField";
       v21[0] = @"ContactsAutocomplete";
-      v21[1] = v8;
+      v21[1] = fieldCopy;
       v20[2] = @"SearchTerm";
-      v21[2] = v9;
+      v21[2] = termCopy;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
       v14 = [[PSGProactiveTrigger alloc] initWithSourceType:2 category:@"TaggedTextFieldContactsAutocomplete" attributes:v13];
       v15 = [[PSGStructuredInfoSuggestion alloc] initWithProactiveTrigger:v14 portraitItem:0 operationalItem:0];
@@ -1830,10 +1830,10 @@ LABEL_5:
       goto LABEL_12;
     }
 
-    v12 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v10];
+    v12 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:identifierCopy];
     v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]];
 
-    if ([a1 _allowSingleCharacterContactsAutocompleteTriggerForLanguage:v13])
+    if ([self _allowSingleCharacterContactsAutocompleteTriggerForLanguage:v13])
     {
 
       goto LABEL_5;
@@ -1843,7 +1843,7 @@ LABEL_5:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v23 = v10;
+      v23 = identifierCopy;
       _os_log_debug_impl(&dword_260D18000, v17, OS_LOG_TYPE_DEBUG, "Single character SearchTerm for locale %@. Suppress ContactsAutocomplete trigger.", buf, 0xCu);
     }
   }
@@ -1866,33 +1866,33 @@ LABEL_12:
   return v16;
 }
 
-+ (BOOL)_allowSingleCharacterContactsAutocompleteTriggerForLanguage:(id)a3
++ (BOOL)_allowSingleCharacterContactsAutocompleteTriggerForLanguage:(id)language
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"zh"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ko"))
+  languageCopy = language;
+  if ([languageCopy hasPrefix:@"zh"] & 1) != 0 || (objc_msgSend(languageCopy, "isEqualToString:", @"ko"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ja"];
+    v4 = [languageCopy isEqualToString:@"ja"];
   }
 
   return v4;
 }
 
-+ (id)_getQueryFieldFromTextContentType:(id)a3
++ (id)_getQueryFieldFromTextContentType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (_getQueryFieldFromTextContentType__once != -1)
   {
     dispatch_once(&_getQueryFieldFromTextContentType__once, &__block_literal_global_111);
   }
 
-  if ([v3 length])
+  if ([typeCopy length])
   {
-    v4 = [_getQueryFieldFromTextContentType__map objectForKeyedSubscript:v3];
+    v4 = [_getQueryFieldFromTextContentType__map objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -1919,20 +1919,20 @@ void __61__PSGInputSuggesterClient__getQueryFieldFromTextContentType___block_inv
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_shouldGenerateWordBoundaryPredictionsForContext:(id)a3 localeIdentifier:(id)a4
++ (BOOL)_shouldGenerateWordBoundaryPredictionsForContext:(id)context localeIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([a4 hasPrefix:@"zh"])
+  contextCopy = context;
+  if ([identifier hasPrefix:@"zh"])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v5 rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(v5, "length") - 1}];
-    v9 = [v5 substringWithRange:{v7, v8}];
-    v10 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v6 = [v9 rangeOfCharacterFromSet:v10] != 0x7FFFFFFFFFFFFFFFLL;
+    v7 = [contextCopy rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(contextCopy, "length") - 1}];
+    v9 = [contextCopy substringWithRange:{v7, v8}];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v6 = [v9 rangeOfCharacterFromSet:whitespaceCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v6;
@@ -1944,7 +1944,7 @@ void __61__PSGInputSuggesterClient__getQueryFieldFromTextContentType___block_inv
   block[1] = 3221225472;
   block[2] = __41__PSGInputSuggesterClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken4 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken4, block);

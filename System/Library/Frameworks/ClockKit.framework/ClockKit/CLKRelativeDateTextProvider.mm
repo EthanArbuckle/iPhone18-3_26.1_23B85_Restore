@@ -1,27 +1,27 @@
 @interface CLKRelativeDateTextProvider
-+ (BOOL)_configureComponentsFormatter:(id)a3 fallbackIndex:(unint64_t)a4 style:(int64_t)a5;
-+ (BOOL)_configureRelativeFormatter:(id)a3 fallbackIndex:(unint64_t)a4 style:(int64_t)a5;
++ (BOOL)_configureComponentsFormatter:(id)formatter fallbackIndex:(unint64_t)index style:(int64_t)style;
++ (BOOL)_configureRelativeFormatter:(id)formatter fallbackIndex:(unint64_t)index style:(int64_t)style;
 + (CLKRelativeDateTextProvider)textProviderWithDate:(NSDate *)date relativeToDate:(NSDate *)relativeToDate style:(CLKRelativeDateStyle)style units:(NSCalendarUnit)calendarUnits;
 - (BOOL)_validate;
-- (BOOL)isEqual:(id)a3;
-- (CLKRelativeDateTextProvider)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLKRelativeDateTextProvider)initWithCoder:(id)coder;
 - (CLKRelativeDateTextProvider)initWithDate:(NSDate *)date relativeToDate:(NSDate *)relativeDate style:(CLKRelativeDateStyle)style units:(NSCalendarUnit)calendarUnits;
 - (id)JSONObjectRepresentation;
-- (id)_componentsForDate:(id)a3 visibleUnits:(unint64_t *)a4;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4;
+- (id)_componentsForDate:(id)date visibleUnits:(unint64_t *)units;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style;
 - (id)_sessionCacheKey;
 - (id)_signPrefixString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)_timePeriodForElapsedTime:(double)a3;
+- (int64_t)_timePeriodForElapsedTime:(double)time;
 - (int64_t)_updateFrequency;
 - (unint64_t)hash;
 - (void)_configureFormatterForTimerStyle;
 - (void)_endSession;
-- (void)_startSessionWithDate:(id)a3;
+- (void)_startSessionWithDate:(id)date;
 - (void)_validate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)finalize;
 @end
 
@@ -33,11 +33,11 @@
   v11 = relativeDate;
   v15.receiver = self;
   v15.super_class = CLKRelativeDateTextProvider;
-  v12 = [(CLKTextProvider *)&v15 initPrivate];
-  v13 = v12;
-  if (v12)
+  initPrivate = [(CLKTextProvider *)&v15 initPrivate];
+  v13 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKRelativeDateTextProvider *)v12 setDate:v10];
+    [(CLKRelativeDateTextProvider *)initPrivate setDate:v10];
     [(CLKRelativeDateTextProvider *)v13 setRelativeToDate:v11];
     [(CLKRelativeDateTextProvider *)v13 setRelativeDateStyle:style];
     [(CLKRelativeDateTextProvider *)v13 setCalendarUnits:calendarUnits];
@@ -52,16 +52,16 @@
 {
   v10 = relativeToDate;
   v11 = date;
-  v12 = [[a1 alloc] initWithDate:v11 relativeToDate:v10 style:style units:calendarUnits];
+  v12 = [[self alloc] initWithDate:v11 relativeToDate:v10 style:style units:calendarUnits];
 
   return v12;
 }
 
-- (void)_startSessionWithDate:(id)a3
+- (void)_startSessionWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   relativeToDate = self->_relativeToDate;
-  v11 = v4;
+  v11 = dateCopy;
   if (relativeToDate)
   {
     v6 = relativeToDate;
@@ -69,8 +69,8 @@
     v11 = v6;
   }
 
-  v7 = [(CLKRelativeDateTextProvider *)self date];
-  [v7 timeIntervalSinceDate:v11];
+  date = [(CLKRelativeDateTextProvider *)self date];
+  [date timeIntervalSinceDate:v11];
   self->_elapsedTime = v8;
 
   self->_sessionTimePeriod = [(CLKRelativeDateTextProvider *)self _timePeriodForElapsedTime:self->_elapsedTime];
@@ -100,14 +100,14 @@
   sessionCacheKey = self->_sessionCacheKey;
   if (!sessionCacheKey)
   {
-    v4 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     sessionVisibleUnits = self->_sessionVisibleUnits;
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __47__CLKRelativeDateTextProvider__sessionCacheKey__block_invoke;
     v15 = &unk_278A1F070;
-    v16 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = string;
     v17 = v6;
     v18 = 0;
     v7 = 0x38u;
@@ -241,10 +241,10 @@ LABEL_21:
   [v6 appendFormat:@"%@%@", v7, v10];
 }
 
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style
 {
   v82[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  styleCopy = style;
   if (!self->_date)
   {
     goto LABEL_50;
@@ -276,7 +276,7 @@ LABEL_21:
         relativeDateTimeFormatter = self->_relativeDateTimeFormatter;
       }
 
-      if ([CLKRelativeDateTextProvider _configureRelativeFormatter:relativeDateTimeFormatter fallbackIndex:a3 style:relativeDateStyle]&& self->_sessionComponents)
+      if ([CLKRelativeDateTextProvider _configureRelativeFormatter:relativeDateTimeFormatter fallbackIndex:index style:relativeDateStyle]&& self->_sessionComponents)
       {
         v15 = [(NSRelativeDateTimeFormatter *)self->_relativeDateTimeFormatter localizedStringFromDateComponents:?];
 LABEL_46:
@@ -300,7 +300,7 @@ LABEL_41:
       formatter = self->_formatter;
     }
 
-    if ([CLKRelativeDateTextProvider _configureComponentsFormatter:formatter fallbackIndex:a3 style:relativeDateStyle]&& self->_sessionComponents)
+    if ([CLKRelativeDateTextProvider _configureComponentsFormatter:formatter fallbackIndex:index style:relativeDateStyle]&& self->_sessionComponents)
     {
       [(NSDateComponentsFormatter *)self->_formatter setAllowedUnits:sessionVisibleUnits];
       v15 = [(NSDateComponentsFormatter *)self->_formatter stringFromDateComponents:self->_sessionComponents];
@@ -313,12 +313,12 @@ LABEL_41:
   v11 = self->_wantsSubseconds || self->_twoDigitMinuteZeroPadding;
   LODWORD(v16) = 0;
   wantsSubsecondsAsDashes = self->_wantsSubsecondsAsDashes;
-  if (a3 <= 2)
+  if (index <= 2)
   {
-    if (a3)
+    if (index)
     {
       v18 = 0;
-      if (a3 == 2)
+      if (index == 2)
       {
         LODWORD(v16) = 0;
         v18 = 1;
@@ -354,10 +354,10 @@ LABEL_29:
       v22 = disableSmallCapUnits;
       v23 = sessionVisibleUnits;
       v24 = v11;
-      v25 = v6;
+      v25 = styleCopy;
       v26 = _TimeAdjustedForDigitalDisplay_leastSignificantDigits[(121 * ((v20 * 1000.0) - 100 * (((v20 * 1000.0) / 0x64) & 0x3FFFFFFF))) >> 12];
       v27 = arc4random_uniform(3u) + v26;
-      v6 = v25;
+      styleCopy = v25;
       v11 = v24;
       sessionVisibleUnits = v23;
       disableSmallCapUnits = v22;
@@ -384,10 +384,10 @@ LABEL_29:
     goto LABEL_41;
   }
 
-  if (a3 != 3)
+  if (index != 3)
   {
     v18 = 0;
-    if (a3 == 4)
+    if (index == 4)
     {
       goto LABEL_50;
     }
@@ -414,37 +414,37 @@ LABEL_28:
 LABEL_47:
   if (self->_relativeToDate || (sessionVisibleUnits & 0x80) == 0)
   {
-    v31 = [v6 font];
+    font = [styleCopy font];
   }
 
   else
   {
-    v31 = [v6 monospacedDigitsFont];
+    font = [styleCopy monospacedDigitsFont];
   }
 
-  v33 = v31;
-  v34 = [(CLKTextProvider *)self fontFeatures];
+  v33 = font;
+  fontFeatures = [(CLKTextProvider *)self fontFeatures];
 
-  if (v34)
+  if (fontFeatures)
   {
-    v35 = [(CLKTextProvider *)self fontFeatures];
-    v36 = [v33 CLKFontByApplyingFeatureSettings:v35];
+    fontFeatures2 = [(CLKTextProvider *)self fontFeatures];
+    v36 = [v33 CLKFontByApplyingFeatureSettings:fontFeatures2];
 
     v33 = v36;
   }
 
-  v37 = [MEMORY[0x277CBEAF8] currentLocale];
-  v38 = [v16 lowercaseStringWithLocale:v37];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v38 = [v16 lowercaseStringWithLocale:currentLocale];
 
-  v79 = v6;
+  v79 = styleCopy;
   if (relativeDateStyle != 2 && !disableSmallCapUnits)
   {
-    v39 = [v33 CLKFontWithLocalizedLowerCaseSmallCaps];
+    cLKFontWithLocalizedLowerCaseSmallCaps = [v33 CLKFontWithLocalizedLowerCaseSmallCaps];
 
-    v40 = [MEMORY[0x277CBEAF8] currentLocale];
-    v41 = [v38 uppercaseStringWithLocale:v40];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    v41 = [v38 uppercaseStringWithLocale:currentLocale2];
 
-    v33 = v39;
+    v33 = cLKFontWithLocalizedLowerCaseSmallCaps;
     v38 = v41;
   }
 
@@ -467,15 +467,15 @@ LABEL_47:
   }
 
   v46 = [v79 uppercase] & disableSmallCapUnits | v44;
-  v47 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale3 = [MEMORY[0x277CBEAF8] currentLocale];
   if (v46)
   {
-    [v38 uppercaseStringWithLocale:v47];
+    [v38 uppercaseStringWithLocale:currentLocale3];
   }
 
   else
   {
-    [v38 lowercaseStringWithLocale:v47];
+    [v38 lowercaseStringWithLocale:currentLocale3];
   }
   v48 = ;
 
@@ -500,13 +500,13 @@ LABEL_47:
   {
     v75 = v50;
     v76 = v53;
-    v55 = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
-    v56 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    [v55 formUnionWithCharacterSet:v56];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:decimalDigitCharacterSet];
 
     v78 = v51;
     v57 = [MEMORY[0x277CCAC80] scannerWithString:v51];
-    [v57 setCharactersToBeSkipped:v55];
+    [v57 setCharactersToBeSkipped:whitespaceAndNewlineCharacterSet];
     [v33 pointSize];
     v59 = v58 + -2.0;
     v60 = v58 * 0.75;
@@ -517,7 +517,7 @@ LABEL_47:
 
     v61 = [v33 fontWithSize:v60];
     v80 = 0;
-    v62 = [v57 scanUpToCharactersFromSet:v55 intoString:&v80];
+    v62 = [v57 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v80];
     v63 = v80;
     v64 = v63;
     if (v62)
@@ -527,7 +527,7 @@ LABEL_47:
         v65 = [v64 length];
         [v54 addAttribute:v52 value:v61 range:{objc_msgSend(v57, "scanLocation") - v65, v65}];
         v80 = v64;
-        v66 = [v57 scanUpToCharactersFromSet:v55 intoString:&v80];
+        v66 = [v57 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v80];
         v67 = v80;
 
         v64 = v67;
@@ -549,22 +549,22 @@ LABEL_47:
   if (v50)
   {
     v68 = objc_alloc(MEMORY[0x277CCA898]);
-    v69 = [(CLKRelativeDateTextProvider *)self _signPrefixString];
-    v70 = [v68 initWithString:v69 attributes:v53];
+    _signPrefixString = [(CLKRelativeDateTextProvider *)self _signPrefixString];
+    v70 = [v68 initWithString:_signPrefixString attributes:v53];
 
     [v54 insertAttributedString:v70 atIndex:0];
   }
 
-  v6 = v79;
+  styleCopy = v79;
   if ([v79 shouldEmbedTintColors])
   {
-    v71 = [(CLKTextProvider *)self tintColor];
+    tintColor = [(CLKTextProvider *)self tintColor];
 
-    if (v71)
+    if (tintColor)
     {
       v72 = *MEMORY[0x277D740C0];
-      v73 = [(CLKTextProvider *)self tintColor];
-      [v54 addAttribute:v72 value:v73 range:{0, objc_msgSend(v54, "length")}];
+      tintColor2 = [(CLKTextProvider *)self tintColor];
+      [v54 addAttribute:v72 value:tintColor2 range:{0, objc_msgSend(v54, "length")}];
     }
   }
 
@@ -575,9 +575,9 @@ LABEL_85:
   return v32;
 }
 
-- (int64_t)_timePeriodForElapsedTime:(double)a3
+- (int64_t)_timePeriodForElapsedTime:(double)time
 {
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
     return 3;
   }
@@ -628,8 +628,8 @@ LABEL_85:
 {
   v10.receiver = self;
   v10.super_class = CLKRelativeDateTextProvider;
-  v3 = [(CLKTextProvider *)&v10 _validate];
-  if (v3)
+  _validate = [(CLKTextProvider *)&v10 _validate];
+  if (_validate)
   {
     if (self->_date)
     {
@@ -674,8 +674,8 @@ LABEL_85:
       _Block_object_dispose(&v15, 8);
       if (v7)
       {
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(_validate) = 1;
+        return _validate;
       }
 
       v8 = CLKLoggingObjectForDomain(10);
@@ -694,10 +694,10 @@ LABEL_85:
       }
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(_validate) = 0;
   }
 
-  return v3;
+  return _validate;
 }
 
 - (int64_t)_updateFrequency
@@ -729,14 +729,14 @@ LABEL_85:
   return 1;
 }
 
-- (id)_componentsForDate:(id)a3 visibleUnits:(unint64_t *)a4
+- (id)_componentsForDate:(id)date visibleUnits:(unint64_t *)units
 {
-  v6 = a3;
-  v7 = v6;
+  dateCopy = date;
+  v7 = dateCopy;
   calendarUnits = self->_calendarUnits;
   wantsSubseconds = self->_wantsSubseconds;
   relativeDateStyle = self->_relativeDateStyle;
-  v29 = a4;
+  unitsCopy = units;
   if (relativeDateStyle > 2)
   {
     if (relativeDateStyle != 3 && relativeDateStyle != 5)
@@ -747,7 +747,7 @@ LABEL_85:
 LABEL_12:
     calendarUnits |= (calendarUnits >> 1) & 0x40;
 LABEL_13:
-    v12 = [v6 earlierDate:self->_date];
+    v12 = [dateCopy earlierDate:self->_date];
     v13 = [v7 laterDate:self->_date];
     goto LABEL_14;
   }
@@ -778,12 +778,12 @@ LABEL_56:
     goto LABEL_13;
   }
 
-  v12 = v6;
+  v12 = dateCopy;
   v13 = self->_date;
 LABEL_14:
   v14 = v13;
-  v15 = [MEMORY[0x277CBEA80] currentCalendar];
-  v16 = [v15 components:calendarUnits fromDate:v12 toDate:v14 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v16 = [currentCalendar components:calendarUnits fromDate:v12 toDate:v14 options:0];
 
   if (!wantsSubseconds)
   {
@@ -872,7 +872,7 @@ LABEL_14:
     v36[3] = v20;
   }
 
-  if (v29)
+  if (unitsCopy)
   {
     v22 = self->_relativeDateStyle;
     if (v22 > 2)
@@ -880,7 +880,7 @@ LABEL_14:
       if (v22 != 3 && v22 != 5)
       {
 LABEL_52:
-        *v29 = v20;
+        *unitsCopy = v20;
         goto LABEL_53;
       }
     }
@@ -982,33 +982,33 @@ uint64_t __63__CLKRelativeDateTextProvider__componentsForDate_visibleUnits___blo
   return result;
 }
 
-+ (BOOL)_configureComponentsFormatter:(id)a3 fallbackIndex:(unint64_t)a4 style:(int64_t)a5
++ (BOOL)_configureComponentsFormatter:(id)formatter fallbackIndex:(unint64_t)index style:(int64_t)style
 {
-  v7 = a3;
-  v8 = v7;
+  formatterCopy = formatter;
+  v8 = formatterCopy;
   v9 = 0;
-  if (a5 > 2)
+  if (style > 2)
   {
-    switch(a5)
+    switch(style)
     {
       case 3:
-        a4 += 2;
+        index += 2;
         break;
       case 5:
         break;
       case 4:
-        ++a4;
+        ++index;
         goto LABEL_8;
       default:
         goto LABEL_16;
     }
 
 LABEL_12:
-    [v7 setZeroFormattingBehavior:2];
-    if (a4 < 4)
+    [formatterCopy setZeroFormattingBehavior:2];
+    if (index < 4)
     {
-      v10 = qword_2370A43F0[a4];
-      v11 = qword_2370A4410[a4];
+      v10 = qword_2370A43F0[index];
+      v11 = qword_2370A4410[index];
       goto LABEL_14;
     }
 
@@ -1017,19 +1017,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!a5)
+  if (!style)
   {
-    ++a4;
+    ++index;
     goto LABEL_12;
   }
 
-  if (a5 == 1)
+  if (style == 1)
   {
 LABEL_8:
-    [v7 setZeroFormattingBehavior:2];
-    if (a4 < 3)
+    [formatterCopy setZeroFormattingBehavior:2];
+    if (index < 3)
     {
-      v10 = 3 - a4;
+      v10 = 3 - index;
       v11 = 1;
 LABEL_14:
       [v8 setUnitsStyle:v10];
@@ -1046,27 +1046,27 @@ LABEL_16:
   return v9;
 }
 
-+ (BOOL)_configureRelativeFormatter:(id)a3 fallbackIndex:(unint64_t)a4 style:(int64_t)a5
++ (BOOL)_configureRelativeFormatter:(id)formatter fallbackIndex:(unint64_t)index style:(int64_t)style
 {
-  v7 = a3;
-  v8 = v7;
-  if (a5 == 7)
+  formatterCopy = formatter;
+  v8 = formatterCopy;
+  if (style == 7)
   {
-    v9 = a4 + 1;
+    indexCopy = index + 1;
   }
 
   else
   {
-    v9 = a4;
+    indexCopy = index;
   }
 
-  [v7 setDateTimeStyle:0];
-  if (v9 <= 2)
+  [formatterCopy setDateTimeStyle:0];
+  if (indexCopy <= 2)
   {
-    [v8 setUnitsStyle:qword_2370A4430[v9]];
+    [v8 setUnitsStyle:qword_2370A4430[indexCopy]];
   }
 
-  return v9 < 3;
+  return indexCopy < 3;
 }
 
 - (void)_configureFormatterForTimerStyle
@@ -1097,11 +1097,11 @@ LABEL_16:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CLKRelativeDateTextProvider;
-  v4 = [(CLKTextProvider *)&v7 copyWithZone:a3];
+  v4 = [(CLKTextProvider *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4 != self)
   {
@@ -1122,12 +1122,12 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKRelativeDateTextProvider;
-  v5 = [(CLKTextProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_date, v4[25]) && self->_relativeDateStyle == v4[27] && self->_calendarUnits == v4[28] && CLKEqualObjects(self->_relativeToDate, v4[26]) && self->_twoDigitMinuteZeroPadding == *(v4 + 188) && self->_showLeadingMinutes == *(v4 + 189) && self->_wantsSubseconds == *(v4 + 190) && self->_wantsSubsecondsAsDashes == *(v4 + 191) && self->_disableSmallCapUnits == *(v4 + 185) && self->_shrinkUnitsInCJK == *(v4 + 186) && self->_disableOffsetPrefix == *(v4 + 187) && self->_pauseTimerAtZero == *(v4 + 192);
+  v5 = [(CLKTextProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_date, equalCopy[25]) && self->_relativeDateStyle == equalCopy[27] && self->_calendarUnits == equalCopy[28] && CLKEqualObjects(self->_relativeToDate, equalCopy[26]) && self->_twoDigitMinuteZeroPadding == *(equalCopy + 188) && self->_showLeadingMinutes == *(equalCopy + 189) && self->_wantsSubseconds == *(equalCopy + 190) && self->_wantsSubsecondsAsDashes == *(equalCopy + 191) && self->_disableSmallCapUnits == *(equalCopy + 185) && self->_shrinkUnitsInCJK == *(equalCopy + 186) && self->_disableOffsetPrefix == *(equalCopy + 187) && self->_pauseTimerAtZero == *(equalCopy + 192);
 
   return v5;
 }
@@ -1141,69 +1141,69 @@ LABEL_16:
   return v4 + ([(NSDate *)self->_relativeToDate hash]<< 8) + (self->_twoDigitMinuteZeroPadding << 9) + (self->_showLeadingMinutes << 10) + (self->_wantsSubseconds << 11) + (self->_disableSmallCapUnits << 12) + (self->_disableOffsetPrefix << 13) + (self->_pauseTimerAtZero << 14) + (self->_shrinkUnitsInCJK << 15);
 }
 
-- (CLKRelativeDateTextProvider)initWithCoder:(id)a3
+- (CLKRelativeDateTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLKRelativeDateTextProvider;
-  v5 = [(CLKTextProvider *)&v11 initWithCoder:v4];
+  v5 = [(CLKTextProvider *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v5->_relativeDateStyle = [v4 decodeIntegerForKey:@"_style"];
-    v5->_calendarUnits = [v4 decodeIntegerForKey:@"_units"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_relativeToDate"];
+    v5->_relativeDateStyle = [coderCopy decodeIntegerForKey:@"_style"];
+    v5->_calendarUnits = [coderCopy decodeIntegerForKey:@"_units"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_relativeToDate"];
     relativeToDate = v5->_relativeToDate;
     v5->_relativeToDate = v8;
 
-    v5->_twoDigitMinuteZeroPadding = [v4 decodeBoolForKey:@"_twoDigitiMinuteZeroPadding"];
-    v5->_showLeadingMinutes = [v4 decodeBoolForKey:@"_showLeadingMinutes"];
-    v5->_wantsSubseconds = [v4 decodeBoolForKey:@"_wantsSubseconds"];
-    v5->_disableSmallCapUnits = [v4 decodeBoolForKey:@"_disableSmallCapUnits"];
-    v5->_shrinkUnitsInCJK = [v4 decodeBoolForKey:@"_shrinkUnitsInCJK"];
-    v5->_disableOffsetPrefix = [v4 decodeBoolForKey:@"_disableOffsetPrefix"];
-    v5->_pauseTimerAtZero = [v4 decodeBoolForKey:@"_pauseTimerAtZero"];
+    v5->_twoDigitMinuteZeroPadding = [coderCopy decodeBoolForKey:@"_twoDigitiMinuteZeroPadding"];
+    v5->_showLeadingMinutes = [coderCopy decodeBoolForKey:@"_showLeadingMinutes"];
+    v5->_wantsSubseconds = [coderCopy decodeBoolForKey:@"_wantsSubseconds"];
+    v5->_disableSmallCapUnits = [coderCopy decodeBoolForKey:@"_disableSmallCapUnits"];
+    v5->_shrinkUnitsInCJK = [coderCopy decodeBoolForKey:@"_shrinkUnitsInCJK"];
+    v5->_disableOffsetPrefix = [coderCopy decodeBoolForKey:@"_disableOffsetPrefix"];
+    v5->_pauseTimerAtZero = [coderCopy decodeBoolForKey:@"_pauseTimerAtZero"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKRelativeDateTextProvider;
-  v4 = a3;
-  [(CLKTextProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_date forKey:{@"_date", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_relativeDateStyle forKey:@"_style"];
-  [v4 encodeInteger:self->_calendarUnits forKey:@"_units"];
-  [v4 encodeObject:self->_relativeToDate forKey:@"_relativeToDate"];
-  [v4 encodeBool:self->_twoDigitMinuteZeroPadding forKey:@"_twoDigitiMinuteZeroPadding"];
-  [v4 encodeBool:self->_showLeadingMinutes forKey:@"_showLeadingMinutes"];
-  [v4 encodeBool:self->_wantsSubseconds forKey:@"_wantsSubseconds"];
-  [v4 encodeBool:self->_disableSmallCapUnits forKey:@"_disableSmallCapUnits"];
-  [v4 encodeBool:self->_shrinkUnitsInCJK forKey:@"_shrinkUnitsInCJK"];
-  [v4 encodeBool:self->_disableOffsetPrefix forKey:@"_disableOffsetPrefix"];
-  [v4 encodeBool:self->_pauseTimerAtZero forKey:@"_pauseTimerAtZero"];
+  coderCopy = coder;
+  [(CLKTextProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_date forKey:{@"_date", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_relativeDateStyle forKey:@"_style"];
+  [coderCopy encodeInteger:self->_calendarUnits forKey:@"_units"];
+  [coderCopy encodeObject:self->_relativeToDate forKey:@"_relativeToDate"];
+  [coderCopy encodeBool:self->_twoDigitMinuteZeroPadding forKey:@"_twoDigitiMinuteZeroPadding"];
+  [coderCopy encodeBool:self->_showLeadingMinutes forKey:@"_showLeadingMinutes"];
+  [coderCopy encodeBool:self->_wantsSubseconds forKey:@"_wantsSubseconds"];
+  [coderCopy encodeBool:self->_disableSmallCapUnits forKey:@"_disableSmallCapUnits"];
+  [coderCopy encodeBool:self->_shrinkUnitsInCJK forKey:@"_shrinkUnitsInCJK"];
+  [coderCopy encodeBool:self->_disableOffsetPrefix forKey:@"_disableOffsetPrefix"];
+  [coderCopy encodeBool:self->_pauseTimerAtZero forKey:@"_pauseTimerAtZero"];
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = CLKRelativeDateTextProvider;
-  v5 = [(CLKTextProvider *)&v15 _initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKTextProvider *)&v15 _initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"date"];
+    v6 = [representationCopy objectForKeyedSubscript:@"date"];
     v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithJSONObjectRepresentation:v6];
     v8 = v5[25];
     v5[25] = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"relativeToDate"];
+    v9 = [representationCopy objectForKeyedSubscript:@"relativeToDate"];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithJSONObjectRepresentation:v9];
@@ -1211,7 +1211,7 @@ LABEL_16:
       v5[26] = v10;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"relativeDateStyle"];
+    v12 = [representationCopy objectForKeyedSubscript:@"relativeDateStyle"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1219,7 +1219,7 @@ LABEL_16:
     }
 
     v5[27] = [v12 intValue];
-    v13 = [v4 objectForKeyedSubscript:@"calendarUnits"];
+    v13 = [representationCopy objectForKeyedSubscript:@"calendarUnits"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1237,24 +1237,24 @@ LABEL_16:
 {
   v10.receiver = self;
   v10.super_class = CLKRelativeDateTextProvider;
-  v3 = [(CLKTextProvider *)&v10 JSONObjectRepresentation];
-  v4 = [(NSDate *)self->_date JSONObjectRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"date"];
+  jSONObjectRepresentation = [(CLKTextProvider *)&v10 JSONObjectRepresentation];
+  jSONObjectRepresentation2 = [(NSDate *)self->_date JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:jSONObjectRepresentation2 forKeyedSubscript:@"date"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_relativeDateStyle];
-  [v3 setObject:v5 forKeyedSubscript:@"relativeDateStyle"];
+  [jSONObjectRepresentation setObject:v5 forKeyedSubscript:@"relativeDateStyle"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_calendarUnits];
-  [v3 setObject:v6 forKeyedSubscript:@"calendarUnits"];
+  [jSONObjectRepresentation setObject:v6 forKeyedSubscript:@"calendarUnits"];
 
   relativeToDate = self->_relativeToDate;
   if (relativeToDate)
   {
-    v8 = [(NSDate *)relativeToDate JSONObjectRepresentation];
-    [v3 setObject:v8 forKeyedSubscript:@"relativeToDate"];
+    jSONObjectRepresentation3 = [(NSDate *)relativeToDate JSONObjectRepresentation];
+    [jSONObjectRepresentation setObject:jSONObjectRepresentation3 forKeyedSubscript:@"relativeToDate"];
   }
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 - (void)_sessionAttributedTextForIndex:(NSObject *)a1 withStyle:.cold.1(NSObject *a1)

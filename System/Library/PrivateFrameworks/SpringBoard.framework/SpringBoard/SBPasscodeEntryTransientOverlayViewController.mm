@@ -1,44 +1,44 @@
 @interface SBPasscodeEntryTransientOverlayViewController
 - (BOOL)shouldAutorotate;
-- (SBPasscodeEntryTransientOverlayViewController)initWithAuthenticationController:(id)a3;
+- (SBPasscodeEntryTransientOverlayViewController)initWithAuthenticationController:(id)controller;
 - (SBPasscodeEntryTransientOverlayViewControllerDelegate)delegate;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
 - (int)_preferredStatusBarVisibility;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_attemptUnlock:(id)a3 passcode:(id)a4;
-- (void)_passcodeLockViewPasscodeEntered:(id)a3 authenticationType:(unint64_t)a4;
+- (void)_attemptUnlock:(id)unlock passcode:(id)passcode;
+- (void)_passcodeLockViewPasscodeEntered:(id)entered authenticationType:(unint64_t)type;
 - (void)_updatePrototypeSettings;
-- (void)handleFailedAuthenticationRequest:(id)a3 error:(id)a4;
-- (void)handleSuccessfulAuthenticationRequest:(id)a3;
-- (void)handleWillShowKeyboard:(BOOL)a3;
-- (void)passcodeLockViewCancelButtonPressed:(id)a3;
-- (void)passcodeLockViewEmergencyCallButtonPressed:(id)a3;
-- (void)passcodeLockViewPasscodeDidChange:(id)a3;
-- (void)setShowEmergencyCallButton:(BOOL)a3;
-- (void)setUnlockDestination:(id)a3;
-- (void)setUseBiometricPresentation:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleFailedAuthenticationRequest:(id)request error:(id)error;
+- (void)handleSuccessfulAuthenticationRequest:(id)request;
+- (void)handleWillShowKeyboard:(BOOL)keyboard;
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed;
+- (void)passcodeLockViewEmergencyCallButtonPressed:(id)pressed;
+- (void)passcodeLockViewPasscodeDidChange:(id)change;
+- (void)setShowEmergencyCallButton:(BOOL)button;
+- (void)setUnlockDestination:(id)destination;
+- (void)setUseBiometricPresentation:(BOOL)presentation;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBPasscodeEntryTransientOverlayViewController
 
-- (SBPasscodeEntryTransientOverlayViewController)initWithAuthenticationController:(id)a3
+- (SBPasscodeEntryTransientOverlayViewController)initWithAuthenticationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SBPasscodeEntryTransientOverlayViewController;
   v6 = [(SBTransientOverlayViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authenticationController, a3);
+    objc_storeStrong(&v6->_authenticationController, controller);
     v7->_intent = 2;
     v7->_overridePresentationOrientation = 0;
     v9.receiver = v7;
@@ -51,10 +51,10 @@
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6.receiver = self;
     v6.super_class = SBPasscodeEntryTransientOverlayViewController;
@@ -74,10 +74,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7.receiver = self;
     v7.super_class = SBPasscodeEntryTransientOverlayViewController;
@@ -109,10 +109,10 @@
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
@@ -122,11 +122,11 @@
   return [(SBTransientOverlayViewController *)&v6 shouldAutorotate];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBPasscodeEntryTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v5 viewDidDisappear:a3];
+  [(SBTransientOverlayViewController *)&v5 viewDidDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -140,8 +140,8 @@
   v5.super_class = SBPasscodeEntryTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v5 viewDidLayoutSubviews];
   passcodeView = self->_passcodeView;
-  v4 = [(SBTransientOverlayViewController *)self contentView];
-  [v4 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   [(SBUIPasscodeViewWithLockScreenStyle *)passcodeView setFrame:?];
 }
 
@@ -150,19 +150,19 @@
   v23.receiver = self;
   v23.super_class = SBPasscodeEntryTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v23 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   v8 = [[SBUIPasscodeViewWithLockScreenStyle alloc] initWithFrame:1 includeBlur:&__block_literal_global_219 passcodeViewGenerator:v4, v5, v6, v7];
   passcodeView = self->_passcodeView;
   self->_passcodeView = v8;
 
-  v10 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-  [v10 setDelegate:self];
-  [v10 setShowsEmergencyCallButton:self->_showEmergencyCallButton];
-  [v10 setUnlockDestination:self->_unlockDestination];
-  [v10 setUsesBiometricPresentation:self->_useBiometricPresentation];
-  [v10 setShowsProudLock:SBSIsSystemApertureAvailable() ^ 1];
-  if ([v10 supportsPoseidonCoaching])
+  passcodeView = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+  [passcodeView setDelegate:self];
+  [passcodeView setShowsEmergencyCallButton:self->_showEmergencyCallButton];
+  [passcodeView setUnlockDestination:self->_unlockDestination];
+  [passcodeView setUsesBiometricPresentation:self->_useBiometricPresentation];
+  [passcodeView setShowsProudLock:SBSIsSystemApertureAvailable() ^ 1];
+  if ([passcodeView supportsPoseidonCoaching])
   {
     v11 = objc_alloc_init(MEMORY[0x277D02C58]);
     poseidonViewController = self->_poseidonViewController;
@@ -173,16 +173,16 @@
     v18 = 3221225472;
     v19 = __60__SBPasscodeEntryTransientOverlayViewController_viewDidLoad__block_invoke_2;
     v20 = &unk_2783A9460;
-    v21 = v10;
-    v22 = self;
+    v21 = passcodeView;
+    selfCopy = self;
     [(SBPasscodeEntryTransientOverlayViewController *)self bs_addChildViewController:v13 animated:0 transitionBlock:&v17];
   }
 
-  [v3 addSubview:{self->_passcodeView, v17, v18, v19, v20}];
-  v14 = [MEMORY[0x277D02C20] rootSettings];
-  v15 = [v14 pearlSettings];
+  [contentView addSubview:{self->_passcodeView, v17, v18, v19, v20}];
+  rootSettings = [MEMORY[0x277D02C20] rootSettings];
+  pearlSettings = [rootSettings pearlSettings];
   pearlSettings = self->_pearlSettings;
-  self->_pearlSettings = v15;
+  self->_pearlSettings = pearlSettings;
 
   [(CSLockScreenPearlSettings *)self->_pearlSettings addKeyObserver:self];
   [(SBPasscodeEntryTransientOverlayViewController *)self _updatePrototypeSettings];
@@ -203,52 +203,52 @@ void __60__SBPasscodeEntryTransientOverlayViewController_viewDidLoad__block_invo
   v8[2]();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = SBPasscodeEntryTransientOverlayViewController;
-  [(SBPasscodeEntryTransientOverlayViewController *)&v11 viewWillAppear:a3];
+  [(SBPasscodeEntryTransientOverlayViewController *)&v11 viewWillAppear:appear];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained passcodeEntryTransientOverlayViewControllerDidDetectFaceOcclusionsSinceScreenOn:self])
   {
-    v5 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-    [v5 noteFaceHasBeenOccluded];
+    passcodeView = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+    [passcodeView noteFaceHasBeenOccluded];
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained passcodeEntryTransientOverlayViewControllerDidDetectBottomFaceOcclusionsSinceScreenOn:self])
   {
-    v6 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-    [v6 noteBottomFaceHasBeenOccluded];
+    passcodeView2 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+    [passcodeView2 noteBottomFaceHasBeenOccluded];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained passcodeEntryTransientOverlayViewControllerStatusText];
+    passcodeEntryTransientOverlayViewControllerStatusText = [WeakRetained passcodeEntryTransientOverlayViewControllerStatusText];
   }
 
   else
   {
-    v7 = 0;
+    passcodeEntryTransientOverlayViewControllerStatusText = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [WeakRetained passcodeEntryTransientOverlayViewControllerStatusSubtitleText];
+    passcodeEntryTransientOverlayViewControllerStatusSubtitleText = [WeakRetained passcodeEntryTransientOverlayViewControllerStatusSubtitleText];
   }
 
   else
   {
-    v8 = 0;
+    passcodeEntryTransientOverlayViewControllerStatusSubtitleText = 0;
   }
 
-  if (v7 | v8)
+  if (passcodeEntryTransientOverlayViewControllerStatusText | passcodeEntryTransientOverlayViewControllerStatusSubtitleText)
   {
-    v9 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-    [v9 updateStatusText:v7 subtitle:v8 animated:0];
+    passcodeView3 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+    [passcodeView3 updateStatusText:passcodeEntryTransientOverlayViewControllerStatusText subtitle:passcodeEntryTransientOverlayViewControllerStatusSubtitleText animated:0];
   }
 
-  v10 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-  [v10 becomeFirstResponder];
+  passcodeView4 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+  [passcodeView4 becomeFirstResponder];
 }
 
 - (int)_preferredStatusBarVisibility
@@ -258,29 +258,29 @@ void __60__SBPasscodeEntryTransientOverlayViewController_viewDidLoad__block_invo
     return 0;
   }
 
-  v3 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  v4 = [v3 coachingActive];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  coachingActive = [poseidonContainerViewController coachingActive];
 
-  return v4 & 1;
+  return coachingActive & 1;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = SBPasscodeEntryTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-  v9 = [v8 supportsPoseidonCoaching];
+  [(SBTransientOverlayViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  passcodeView = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+  supportsPoseidonCoaching = [passcodeView supportsPoseidonCoaching];
 
-  if (v9 && self->_keyboardVisible)
+  if (supportsPoseidonCoaching && self->_keyboardVisible)
   {
     v10 = SBFWindowForViewControllerTransition();
     v11 = (([v10 _toWindowOrientation] - 2) & 0xFFFFFFFFFFFFFFFDLL) != 0;
-    v12 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-    [v12 showCoaching:v11];
+    poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+    [poseidonContainerViewController showCoaching:v11];
   }
 }
 
@@ -439,7 +439,7 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
   return [v3 completeTransition:1];
 }
 
-- (void)handleSuccessfulAuthenticationRequest:(id)a3
+- (void)handleSuccessfulAuthenticationRequest:(id)request
 {
   WeakRetained = objc_loadWeakRetained(&self->_passcodeRequester);
   [WeakRetained resetForSuccess];
@@ -449,7 +449,7 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
   objc_storeWeak(&self->_passcodeRequester, 0);
 }
 
-- (void)handleFailedAuthenticationRequest:(id)a3 error:(id)a4
+- (void)handleFailedAuthenticationRequest:(id)request error:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_passcodeRequester);
   [WeakRetained resetForFailedPasscode];
@@ -459,31 +459,31 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
   objc_storeWeak(&self->_passcodeRequester, 0);
 }
 
-- (void)handleWillShowKeyboard:(BOOL)a3
+- (void)handleWillShowKeyboard:(BOOL)keyboard
 {
-  if (self->_keyboardVisible != a3)
+  if (self->_keyboardVisible != keyboard)
   {
-    self->_keyboardVisible = a3;
+    self->_keyboardVisible = keyboard;
   }
 
-  if (a3)
+  if (keyboard)
   {
-    v4 = [(SBPasscodeEntryTransientOverlayViewController *)self interfaceOrientation];
-    if (v4 == 4 || v4 == 2)
+    interfaceOrientation = [(SBPasscodeEntryTransientOverlayViewController *)self interfaceOrientation];
+    if (interfaceOrientation == 4 || interfaceOrientation == 2)
     {
-      v5 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-      [v5 showCoaching:0];
+      poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+      [poseidonContainerViewController showCoaching:0];
     }
   }
 }
 
-- (void)passcodeLockViewPasscodeDidChange:(id)a3
+- (void)passcodeLockViewPasscodeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(SBTransientOverlayViewController *)self setNeedsIdleTimerReset];
-  v5 = [v4 passcode];
+  passcode = [changeCopy passcode];
 
-  v6 = [v5 length];
+  v6 = [passcode length];
   authenticationController = self->_authenticationController;
   if (v6)
   {
@@ -498,7 +498,7 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
   }
 }
 
-- (void)passcodeLockViewCancelButtonPressed:(id)a3
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -507,7 +507,7 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
   }
 }
 
-- (void)passcodeLockViewEmergencyCallButtonPressed:(id)a3
+- (void)passcodeLockViewEmergencyCallButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -516,65 +516,65 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_pearlSettings == a3)
+  if (self->_pearlSettings == settings)
   {
     [(SBPasscodeEntryTransientOverlayViewController *)self _updatePrototypeSettings];
   }
 }
 
-- (void)setShowEmergencyCallButton:(BOOL)a3
+- (void)setShowEmergencyCallButton:(BOOL)button
 {
-  if (self->_showEmergencyCallButton != a3)
+  if (self->_showEmergencyCallButton != button)
   {
-    self->_showEmergencyCallButton = a3;
-    v4 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-    [v4 setShowsEmergencyCallButton:self->_showEmergencyCallButton];
+    self->_showEmergencyCallButton = button;
+    passcodeView = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+    [passcodeView setShowsEmergencyCallButton:self->_showEmergencyCallButton];
   }
 }
 
-- (void)setUnlockDestination:(id)a3
+- (void)setUnlockDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   unlockDestination = self->_unlockDestination;
-  if (unlockDestination != v4)
+  if (unlockDestination != destinationCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)unlockDestination isEqualToString:v4];
-    v4 = v10;
+    v10 = destinationCopy;
+    v6 = [(NSString *)unlockDestination isEqualToString:destinationCopy];
+    destinationCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
       v8 = self->_unlockDestination;
       self->_unlockDestination = v7;
 
-      v9 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-      [v9 setUnlockDestination:self->_unlockDestination];
+      passcodeView = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+      [passcodeView setUnlockDestination:self->_unlockDestination];
 
-      v4 = v10;
+      destinationCopy = v10;
     }
   }
 }
 
-- (void)setUseBiometricPresentation:(BOOL)a3
+- (void)setUseBiometricPresentation:(BOOL)presentation
 {
-  if (self->_useBiometricPresentation != a3)
+  if (self->_useBiometricPresentation != presentation)
   {
-    self->_useBiometricPresentation = a3;
-    v4 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
-    [v4 setUsesBiometricPresentation:self->_useBiometricPresentation];
+    self->_useBiometricPresentation = presentation;
+    passcodeView = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+    [passcodeView setUsesBiometricPresentation:self->_useBiometricPresentation];
   }
 }
 
-- (void)_attemptUnlock:(id)a3 passcode:(id)a4
+- (void)_attemptUnlock:(id)unlock passcode:(id)passcode
 {
-  v6 = a3;
-  v7 = a4;
+  unlockCopy = unlock;
+  passcodeCopy = passcode;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v7 length];
+  v9 = [passcodeCopy length];
   [(SBFUserAuthenticationController *)self->_authenticationController addAsFirstResponder:self];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained passcodeEntryTransientOverlayViewController:self authenticatePasscode:v7])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained passcodeEntryTransientOverlayViewController:self authenticatePasscode:passcodeCopy])
   {
     [(SBFUserAuthenticationController *)self->_authenticationController removeResponder:self];
   }
@@ -585,7 +585,7 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
     v10 = objc_alloc(MEMORY[0x277D65DF0]);
     if (v9)
     {
-      v11 = [v10 initForPasscode:v7 source:0];
+      v11 = [v10 initForPasscode:passcodeCopy source:0];
     }
 
     else
@@ -598,16 +598,16 @@ uint64_t __101__SBPasscodeEntryTransientOverlayViewController_newTransientOverla
     v27[1] = 3221225472;
     v27[2] = __73__SBPasscodeEntryTransientOverlayViewController__attemptUnlock_passcode___block_invoke;
     v27[3] = &unk_2783A92D8;
-    v13 = v6;
+    v13 = unlockCopy;
     v28 = v13;
-    v29 = self;
+    selfCopy = self;
     v14 = MEMORY[0x223D6F7F0](v27);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __73__SBPasscodeEntryTransientOverlayViewController__attemptUnlock_passcode___block_invoke_2;
     v24[3] = &unk_2783A92D8;
     v25 = v13;
-    v26 = self;
+    selfCopy2 = self;
     v15 = MEMORY[0x223D6F7F0](v24);
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
@@ -635,9 +635,9 @@ uint64_t __73__SBPasscodeEntryTransientOverlayViewController__attemptUnlock_pass
   return result;
 }
 
-- (void)_passcodeLockViewPasscodeEntered:(id)a3 authenticationType:(unint64_t)a4
+- (void)_passcodeLockViewPasscodeEntered:(id)entered authenticationType:(unint64_t)type
 {
-  v6 = a3;
+  enteredCopy = entered;
   if (!self->_attemptingUnlock)
   {
     self->_attemptingUnlock = 1;
@@ -646,9 +646,9 @@ uint64_t __73__SBPasscodeEntryTransientOverlayViewController__attemptUnlock_pass
     block[1] = 3221225472;
     block[2] = __101__SBPasscodeEntryTransientOverlayViewController__passcodeLockViewPasscodeEntered_authenticationType___block_invoke;
     block[3] = &unk_2783AB2A8;
-    v11 = a4;
-    v9 = v6;
-    v10 = self;
+    typeCopy = type;
+    v9 = enteredCopy;
+    selfCopy = self;
     dispatch_after(v7, MEMORY[0x277D85CD0], block);
   }
 }
@@ -682,13 +682,13 @@ void __101__SBPasscodeEntryTransientOverlayViewController__passcodeLockViewPassc
     [(CSLockScreenPearlSettings *)pearlSettings proudLockControllerViewControllerConfiguration];
   }
 
-  v4 = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
+  passcodeView = [(SBUIPasscodeViewWithLockScreenStyle *)self->_passcodeView passcodeView];
   v5[2] = v8;
   v5[3] = v9;
   v5[4] = v10;
   v5[0] = v6;
   v5[1] = v7;
-  [v4 setProudLockConfiguration:v5];
+  [passcodeView setProudLockConfiguration:v5];
 }
 
 - (SBPasscodeEntryTransientOverlayViewControllerDelegate)delegate

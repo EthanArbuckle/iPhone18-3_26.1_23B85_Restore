@@ -1,15 +1,15 @@
 @interface PKPassBucketView
 - (id)description;
-- (int64_t)_backgroundForBucketTemplate:(id)a3;
+- (int64_t)_backgroundForBucketTemplate:(id)template;
 - (void)_measureAndFitEvenlySizedSubviews;
 - (void)_measureAndFitVariablySizedSubviews;
-- (void)_presentRecursiveDiff:(id)a3 inView:(id)a4 forSubviewAtIndex:(unint64_t)a5 withSubviews:(id)a6 completion:(id)a7;
+- (void)_presentRecursiveDiff:(id)diff inView:(id)view forSubviewAtIndex:(unint64_t)index withSubviews:(id)subviews completion:(id)completion;
 - (void)_updateSubviews;
 - (void)layoutSubviews;
-- (void)setBucket:(id)a3;
-- (void)setBucketTemplate:(id)a3;
-- (void)setColorProfile:(id)a3;
-- (void)setPass:(id)a3;
+- (void)setBucket:(id)bucket;
+- (void)setBucketTemplate:(id)template;
+- (void)setColorProfile:(id)profile;
+- (void)setPass:(id)pass;
 @end
 
 @implementation PKPassBucketView
@@ -20,9 +20,9 @@
   if (!self->_fieldViews)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [MEMORY[0x1E696AD18] pk_strongPointerPersonalityToWeakObjectsMapTable];
+    pk_strongPointerPersonalityToWeakObjectsMapTable = [MEMORY[0x1E696AD18] pk_strongPointerPersonalityToWeakObjectsMapTable];
     templateToOriginalValueFontMap = self->_templateToOriginalValueFontMap;
-    self->_templateToOriginalValueFontMap = v4;
+    self->_templateToOriginalValueFontMap = pk_strongPointerPersonalityToWeakObjectsMapTable;
 
     bucket = self->_bucket;
     v27[0] = MEMORY[0x1E69E9820];
@@ -71,8 +71,8 @@
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [v17 field];
-        if (![v18 foreignReferenceType])
+        field = [v17 field];
+        if (![field foreignReferenceType])
         {
           [v17 setHidden:0];
 LABEL_16:
@@ -80,14 +80,14 @@ LABEL_16:
           goto LABEL_18;
         }
 
-        v19 = [v18 label];
-        if (v19)
+        label = [field label];
+        if (label)
         {
-          v20 = v19;
-          v21 = [v18 value];
+          v20 = label;
+          value = [field value];
 
-          [v17 setHidden:v21 == 0];
-          if (v21)
+          [v17 setHidden:value == 0];
+          if (value)
           {
             goto LABEL_16;
           }
@@ -141,8 +141,8 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
     [(PKPassBucketView *)self _updateSubviews];
     [(PKPassBucketView *)self bounds];
     v4 = v3;
-    v5 = [(PKPassBucketTemplate *)self->_bucketTemplate bucketAlignment];
-    if (v5 == 3)
+    bucketAlignment = [(PKPassBucketTemplate *)self->_bucketTemplate bucketAlignment];
+    if (bucketAlignment == 3)
     {
       [(PKPassBucketView *)self _measureAndFitEvenlySizedSubviews];
     }
@@ -192,7 +192,7 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
       v11 = v17 / (v8 - 1);
     }
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((bucketAlignment & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v58 = 0u;
       v59 = 0u;
@@ -236,9 +236,9 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    else if (v5)
+    else if (bucketAlignment)
     {
-      if (v5 != 1)
+      if (bucketAlignment != 1)
       {
         return;
       }
@@ -331,34 +331,34 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
 - (void)_measureAndFitEvenlySizedSubviews
 {
   v68 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPassBucketTemplate *)self->_bucketTemplate defaultFieldTemplate];
+  defaultFieldTemplate = [(PKPassBucketTemplate *)self->_bucketTemplate defaultFieldTemplate];
   v4 = [(NSMutableArray *)self->_currentFieldViews count];
   [(PKPassBucketTemplate *)self->_bucketTemplate minFieldPadding];
   v6 = v5;
   [(PKPassBucketTemplate *)self->_bucketTemplate bucketRect];
   v8 = v7 - (v4 - 1) * v6;
   v9 = v4;
-  v10 = [v3 valueFont];
-  [v10 pointSize];
+  valueFont = [defaultFieldTemplate valueFont];
+  [valueFont pointSize];
   v12 = v11;
 
-  v13 = [v3 labelFont];
-  [v13 xHeight];
+  labelFont = [defaultFieldTemplate labelFont];
+  [labelFont xHeight];
   v15 = v14;
-  v16 = [v3 valueFont];
-  [v16 xHeight];
+  valueFont2 = [defaultFieldTemplate valueFont];
+  [valueFont2 xHeight];
   v18 = 1.0;
   if (v15 / v17 <= 1.0)
   {
-    v19 = [v3 labelFont];
-    [v19 xHeight];
+    labelFont2 = [defaultFieldTemplate labelFont];
+    [labelFont2 xHeight];
     v21 = v20;
-    v22 = [v3 valueFont];
-    [v22 xHeight];
+    valueFont3 = [defaultFieldTemplate valueFont];
+    [valueFont3 xHeight];
     v18 = v21 / v23;
   }
 
-  v55 = v3;
+  v55 = defaultFieldTemplate;
   v24 = v8 / v9;
 
   v64 = 0u;
@@ -383,19 +383,19 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
         }
 
         v31 = *(*(&v62 + 1) + 8 * i);
-        v32 = [v31 fieldTemplate];
-        v33 = [(NSMapTable *)self->_templateToOriginalValueFontMap objectForKey:v32];
-        if (!v33)
+        fieldTemplate = [v31 fieldTemplate];
+        valueFont4 = [(NSMapTable *)self->_templateToOriginalValueFontMap objectForKey:fieldTemplate];
+        if (!valueFont4)
         {
-          v33 = [v32 valueFont];
+          valueFont4 = [fieldTemplate valueFont];
         }
 
-        [v32 setValueFont:v33];
-        [v31 setFieldTemplate:v32];
+        [fieldTemplate setValueFont:valueFont4];
+        [v31 setFieldTemplate:fieldTemplate];
         [(PKPassBucketTemplate *)self->_bucketTemplate bucketRect];
         [v31 sizeThatFits:{v34, v35}];
-        v36 = [v31 valueLabel];
-        [v36 bounds];
+        valueLabel = [v31 valueLabel];
+        [valueLabel bounds];
         v38 = v37;
 
         if (v38 > v24)
@@ -447,14 +447,14 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
         }
 
         v47 = *(*(&v58 + 1) + 8 * j);
-        v48 = [v47 fieldTemplate];
+        fieldTemplate2 = [v47 fieldTemplate];
         v49 = MEMORY[0x1E69DB878];
-        v50 = [v48 valueFont];
-        v51 = [v50 fontDescriptor];
-        v52 = [v49 fontWithDescriptor:v51 size:v29];
+        valueFont5 = [fieldTemplate2 valueFont];
+        fontDescriptor = [valueFont5 fontDescriptor];
+        v52 = [v49 fontWithDescriptor:fontDescriptor size:v29];
 
-        [v48 setValueFont:v52];
-        [v47 setFieldTemplate:v48];
+        [fieldTemplate2 setValueFont:v52];
+        [v47 setFieldTemplate:fieldTemplate2];
         [(PKPassBucketTemplate *)self->_bucketTemplate bucketRect];
         v54 = v53;
         [v47 sizeThatFits:{v24, v53}];
@@ -470,41 +470,41 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
 
 - (void)_measureAndFitVariablySizedSubviews
 {
-  v2 = self;
+  selfCopy = self;
   v117 = *MEMORY[0x1E69E9840];
   v3 = [(NSMutableArray *)self->_currentFieldViews count];
   v4 = 456;
-  [(PKPassBucketTemplate *)v2->_bucketTemplate minFieldPadding];
+  [(PKPassBucketTemplate *)selfCopy->_bucketTemplate minFieldPadding];
   v6 = v5;
-  [(PKPassBucketTemplate *)v2->_bucketTemplate bucketRect];
+  [(PKPassBucketTemplate *)selfCopy->_bucketTemplate bucketRect];
   v8 = v7;
   v99 = v3;
   v9 = (v3 - 1);
-  v10 = [(PKPassBucketTemplate *)v2->_bucketTemplate defaultFieldTemplate];
-  v11 = [v10 labelFont];
-  [v11 xHeight];
+  defaultFieldTemplate = [(PKPassBucketTemplate *)selfCopy->_bucketTemplate defaultFieldTemplate];
+  labelFont = [defaultFieldTemplate labelFont];
+  [labelFont xHeight];
   v13 = v12;
-  v14 = [v10 valueFont];
-  [v14 xHeight];
+  valueFont = [defaultFieldTemplate valueFont];
+  [valueFont xHeight];
   v16 = 1.0;
   if (v13 / v15 <= 1.0)
   {
-    v17 = [v10 labelFont];
-    [v17 xHeight];
+    labelFont2 = [defaultFieldTemplate labelFont];
+    [labelFont2 xHeight];
     v19 = v18;
-    v20 = [v10 valueFont];
-    [v20 xHeight];
+    valueFont2 = [defaultFieldTemplate valueFont];
+    [valueFont2 xHeight];
     v16 = v19 / v21;
   }
 
-  v100 = v10;
+  v100 = defaultFieldTemplate;
   v22 = v8 - v9 * v6;
 
   v113 = 0u;
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  obj = v2->_currentFieldViews;
+  obj = selfCopy->_currentFieldViews;
   v23 = [(NSMutableArray *)obj countByEnumeratingWithState:&v111 objects:v116 count:16];
   if (v23)
   {
@@ -527,26 +527,26 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
         }
 
         v32 = *(*(&v111 + 1) + 8 * v31);
-        v33 = [v32 fieldTemplate];
-        v34 = [*(&v2->super.super.super.isa + v29[801]) objectForKey:v33];
-        if (!v34)
+        fieldTemplate = [v32 fieldTemplate];
+        valueFont3 = [*(&selfCopy->super.super.super.isa + v29[801]) objectForKey:fieldTemplate];
+        if (!valueFont3)
         {
-          v34 = [v33 valueFont];
+          valueFont3 = [fieldTemplate valueFont];
         }
 
-        [v33 setValueFont:v34];
-        [v32 setFieldTemplate:v33];
-        [*(&v2->super.super.super.isa + v4) bucketRect];
+        [fieldTemplate setValueFont:valueFont3];
+        [v32 setFieldTemplate:fieldTemplate];
+        [*(&selfCopy->super.super.super.isa + v4) bucketRect];
         [v32 sizeThatFits:{v35, v36}];
         v38 = v37;
         [v32 setFrame:{v26, v27, v37, v39}];
         v40 = v38;
-        if (([v33 valueCanWrap] & 1) == 0)
+        if (([fieldTemplate valueCanWrap] & 1) == 0)
         {
-          v41 = [v32 valueLabel];
-          [v41 attributedText];
+          valueLabel = [v32 valueLabel];
+          [valueLabel attributedText];
           v42 = v25;
-          v43 = v2;
+          v43 = selfCopy;
           v44 = v4;
           v46 = v45 = v29;
           [v46 size];
@@ -554,15 +554,15 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
 
           v29 = v45;
           v4 = v44;
-          v2 = v43;
+          selfCopy = v43;
           v25 = v42;
           v24 = v101;
         }
 
         v30 = v30 + v38;
-        v48 = [v32 labelLabel];
-        v49 = [v48 attributedText];
-        [v49 size];
+        labelLabel = [v32 labelLabel];
+        attributedText = [labelLabel attributedText];
+        [attributedText size];
         v51 = ceil(v50);
 
         if (v51 < v40)
@@ -599,33 +599,33 @@ void __35__PKPassBucketView__updateSubviews__block_invoke(uint64_t a1, void *a2,
     v53 = v100;
     while (1)
     {
-      v54 = [(PKPassBucketView *)v2 _fieldViewsByWidth];
-      v55 = [v54 lastObject];
+      _fieldViewsByWidth = [(PKPassBucketView *)selfCopy _fieldViewsByWidth];
+      lastObject = [_fieldViewsByWidth lastObject];
 
-      v56 = [v55 fieldTemplate];
-      v57 = [v56 valueCanWrap];
+      fieldTemplate2 = [lastObject fieldTemplate];
+      valueCanWrap = [fieldTemplate2 valueCanWrap];
 
-      if (!v57)
+      if (!valueCanWrap)
       {
         break;
       }
 
-      [v55 frame];
+      [lastObject frame];
       if (v52 >= v58)
       {
         break;
       }
 
-      [v55 frame];
+      [lastObject frame];
       v60 = v59;
       v62 = v61;
       v64 = v30 - v63;
       v65 = v63 - v52;
-      [*(&v2->super.super.super.isa + v4) bucketRect];
+      [*(&selfCopy->super.super.super.isa + v4) bucketRect];
       v67 = v66;
-      [v55 invalidateCachedFieldSize];
-      [v55 sizeThatFits:{v65, v67}];
-      [v55 setFrame:{v60, v62, v65, v68}];
+      [lastObject invalidateCachedFieldSize];
+      [lastObject sizeThatFits:{v65, v67}];
+      [lastObject setFrame:{v60, v62, v65, v68}];
       v30 = v64 + v65;
 
       if (v30 <= v22)
@@ -639,8 +639,8 @@ LABEL_26:
   v69 = 1.0;
   if (v30 > v22 && v28 > 0.0)
   {
-    v70 = [v53 valueFont];
-    [v70 pointSize];
+    valueFont4 = [v53 valueFont];
+    [valueFont4 pointSize];
     v72 = v71;
 
     if ((v22 - (v30 - v28)) / v28 >= v102)
@@ -657,7 +657,7 @@ LABEL_26:
     v110 = 0u;
     v107 = 0u;
     v108 = 0u;
-    obja = v2->_currentFieldViews;
+    obja = selfCopy->_currentFieldViews;
     v73 = [(NSMutableArray *)obja countByEnumeratingWithState:&v107 objects:v115 count:16];
     if (v73)
     {
@@ -678,15 +678,15 @@ LABEL_26:
           }
 
           v81 = *(*(&v107 + 1) + 8 * i);
-          v82 = [v81 fieldTemplate];
+          fieldTemplate3 = [v81 fieldTemplate];
           v83 = MEMORY[0x1E69DB878];
-          v84 = [v82 valueFont];
-          v85 = [v84 fontDescriptor];
-          v86 = [v83 fontWithDescriptor:v85 size:v76];
-          [v82 setValueFont:v86];
+          valueFont5 = [fieldTemplate3 valueFont];
+          fontDescriptor = [valueFont5 fontDescriptor];
+          v86 = [v83 fontWithDescriptor:fontDescriptor size:v76];
+          [fieldTemplate3 setValueFont:v86];
 
-          [v81 setFieldTemplate:v82];
-          [*(&v2->super.super.super.isa + v4) bucketRect];
+          [v81 setFieldTemplate:fieldTemplate3];
+          [*(&selfCopy->super.super.super.isa + v4) bucketRect];
           [v81 sizeThatFits:{v87, v88}];
           v90 = v89;
           [v81 setFrame:{v78, v79, v89, v91}];
@@ -709,13 +709,13 @@ LABEL_26:
 
   if (v30 > v22)
   {
-    v92 = [(PKPassBucketView *)v2 _fieldViewsByWidth];
+    _fieldViewsByWidth2 = [(PKPassBucketView *)selfCopy _fieldViewsByWidth];
     v93 = 0;
-    v94 = [v92 count] - 1;
+    v94 = [_fieldViewsByWidth2 count] - 1;
     do
     {
       v95 = v93;
-      v93 = [v92 objectAtIndex:v94];
+      v93 = [_fieldViewsByWidth2 objectAtIndex:v94];
 
       [v93 frame];
       memset(&remainder, 0, sizeof(remainder));
@@ -723,11 +723,11 @@ LABEL_26:
       CGRectDivide(v118, &slice, &remainder, v30 - v22, CGRectMaxXEdge);
       [v93 setFrame:{remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height}];
       width = slice.size.width;
-      v97 = [v93 valueLabel];
-      [v97 setAdjustsFontSizeToFitWidth:1];
+      valueLabel2 = [v93 valueLabel];
+      [valueLabel2 setAdjustsFontSizeToFitWidth:1];
 
-      v98 = [v93 valueLabel];
-      [v98 setMinimumScaleFactor:v69];
+      valueLabel3 = [v93 valueLabel];
+      [valueLabel3 setMinimumScaleFactor:v69];
 
       if (!v94)
       {
@@ -782,48 +782,48 @@ LABEL_26:
   return v13;
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v5 = a3;
-  if (self->_pass != v5)
+  passCopy = pass;
+  if (self->_pass != passCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pass, a3);
-    v5 = v6;
+    v6 = passCopy;
+    objc_storeStrong(&self->_pass, pass);
+    passCopy = v6;
   }
 }
 
-- (void)setBucketTemplate:(id)a3
+- (void)setBucketTemplate:(id)template
 {
-  v5 = a3;
-  if (self->_bucketTemplate != v5)
+  templateCopy = template;
+  if (self->_bucketTemplate != templateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_bucketTemplate, a3);
+    v6 = templateCopy;
+    objc_storeStrong(&self->_bucketTemplate, template);
     self->_background = [(PKPassBucketView *)self _backgroundForBucketTemplate:self->_bucketTemplate];
-    v5 = v6;
+    templateCopy = v6;
   }
 }
 
-- (void)setColorProfile:(id)a3
+- (void)setColorProfile:(id)profile
 {
-  v5 = a3;
-  if (self->_colorProfile != v5)
+  profileCopy = profile;
+  if (self->_colorProfile != profileCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_colorProfile, a3);
-    v5 = v6;
+    v6 = profileCopy;
+    objc_storeStrong(&self->_colorProfile, profile);
+    profileCopy = v6;
   }
 }
 
-- (void)setBucket:(id)a3
+- (void)setBucket:(id)bucket
 {
-  v5 = a3;
-  if (self->_bucket != v5)
+  bucketCopy = bucket;
+  if (self->_bucket != bucketCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_bucket, a3);
-    v5 = v6;
+    v6 = bucketCopy;
+    objc_storeStrong(&self->_bucket, bucket);
+    bucketCopy = v6;
   }
 }
 
@@ -856,23 +856,23 @@ uint64_t __38__PKPassBucketView__fieldViewsByWidth__block_invoke(uint64_t a1, vo
   }
 }
 
-- (int64_t)_backgroundForBucketTemplate:(id)a3
+- (int64_t)_backgroundForBucketTemplate:(id)template
 {
-  if ([a3 sitsOnStripImage])
+  if ([template sitsOnStripImage])
   {
-    v4 = [(PKPass *)self->_pass displayProfile];
-    v5 = [v4 showsStripImage];
+    displayProfile = [(PKPass *)self->_pass displayProfile];
+    showsStripImage = [displayProfile showsStripImage];
 
-    if (v5)
+    if (showsStripImage)
     {
       return 1;
     }
   }
 
-  v7 = [(PKPass *)self->_pass displayProfile];
-  v8 = [v7 showsBackgroundImage];
+  displayProfile2 = [(PKPass *)self->_pass displayProfile];
+  showsBackgroundImage = [displayProfile2 showsBackgroundImage];
 
-  if (v8)
+  if (showsBackgroundImage)
   {
     return 2;
   }
@@ -883,34 +883,34 @@ uint64_t __38__PKPassBucketView__fieldViewsByWidth__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_presentRecursiveDiff:(id)a3 inView:(id)a4 forSubviewAtIndex:(unint64_t)a5 withSubviews:(id)a6 completion:(id)a7
+- (void)_presentRecursiveDiff:(id)diff inView:(id)view forSubviewAtIndex:(unint64_t)index withSubviews:(id)subviews completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([v14 count] <= a5)
+  diffCopy = diff;
+  viewCopy = view;
+  subviewsCopy = subviews;
+  completionCopy = completion;
+  if ([subviewsCopy count] <= index)
   {
-    if (v15)
+    if (completionCopy)
     {
-      v15[2](v15);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v16 = [v14 objectAtIndexedSubscript:a5];
+    v16 = [subviewsCopy objectAtIndexedSubscript:index];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __91__PKPassBucketView__presentRecursiveDiff_inView_forSubviewAtIndex_withSubviews_completion___block_invoke;
     v17[3] = &unk_1E8013998;
     objc_copyWeak(v22, &location);
-    v18 = v12;
-    v19 = v13;
-    v22[1] = a5;
-    v20 = v14;
-    v21 = v15;
+    v18 = diffCopy;
+    v19 = viewCopy;
+    v22[1] = index;
+    v20 = subviewsCopy;
+    v21 = completionCopy;
     [v16 presentDiff:v18 inView:v19 completion:v17];
 
     objc_destroyWeak(v22);

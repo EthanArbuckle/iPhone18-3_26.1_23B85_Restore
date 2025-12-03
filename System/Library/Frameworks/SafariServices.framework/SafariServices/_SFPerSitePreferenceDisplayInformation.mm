@@ -1,19 +1,19 @@
 @interface _SFPerSitePreferenceDisplayInformation
-+ (id)displayInformationForPerSitePreference:(id)a3;
++ (id)displayInformationForPerSitePreference:(id)preference;
 + (void)_buildMapIfNeeded;
-- (id)_initWithLocalizedSiteSpecificSettingsTitle:(id)a3 localizedAllWebsiteSettingsTitle:(id)a4 localizedClearAllSettingsPrompt:(id)a5 displayOption:(unint64_t)a6;
+- (id)_initWithLocalizedSiteSpecificSettingsTitle:(id)title localizedAllWebsiteSettingsTitle:(id)settingsTitle localizedClearAllSettingsPrompt:(id)prompt displayOption:(unint64_t)option;
 @end
 
 @implementation _SFPerSitePreferenceDisplayInformation
 
-+ (id)displayInformationForPerSitePreference:(id)a3
++ (id)displayInformationForPerSitePreference:(id)preference
 {
-  v4 = a3;
-  [a1 _buildMapIfNeeded];
+  preferenceCopy = preference;
+  [self _buildMapIfNeeded];
   v5 = preferenceToDisplayInformation;
-  v6 = [v4 identifier];
+  identifier = [preferenceCopy identifier];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [v5 objectForKeyedSubscript:identifier];
 
   return v7;
 }
@@ -22,9 +22,9 @@
 {
   if (!preferenceToDisplayInformation)
   {
-    v2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v3 = preferenceToDisplayInformation;
-    preferenceToDisplayInformation = v2;
+    preferenceToDisplayInformation = dictionary;
 
     v4 = [_SFPerSitePreferenceDisplayInformation alloc];
     v5 = _WBSLocalizedString();
@@ -86,29 +86,29 @@
   }
 }
 
-- (id)_initWithLocalizedSiteSpecificSettingsTitle:(id)a3 localizedAllWebsiteSettingsTitle:(id)a4 localizedClearAllSettingsPrompt:(id)a5 displayOption:(unint64_t)a6
+- (id)_initWithLocalizedSiteSpecificSettingsTitle:(id)title localizedAllWebsiteSettingsTitle:(id)settingsTitle localizedClearAllSettingsPrompt:(id)prompt displayOption:(unint64_t)option
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  settingsTitleCopy = settingsTitle;
+  promptCopy = prompt;
   v22.receiver = self;
   v22.super_class = _SFPerSitePreferenceDisplayInformation;
   v13 = [(_SFPerSitePreferenceDisplayInformation *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     localizedSiteSpecificSettingsTitle = v13->_localizedSiteSpecificSettingsTitle;
     v13->_localizedSiteSpecificSettingsTitle = v14;
 
-    v16 = [v11 copy];
+    v16 = [settingsTitleCopy copy];
     localizedAllWebsiteSettingsTitle = v13->_localizedAllWebsiteSettingsTitle;
     v13->_localizedAllWebsiteSettingsTitle = v16;
 
-    v18 = [v12 copy];
+    v18 = [promptCopy copy];
     localizedClearAllSettingsPrompt = v13->_localizedClearAllSettingsPrompt;
     v13->_localizedClearAllSettingsPrompt = v18;
 
-    v13->_displayOption = a6;
+    v13->_displayOption = option;
     v20 = v13;
   }
 

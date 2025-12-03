@@ -1,14 +1,14 @@
 @interface CAReporter
 - (CAReporter)initWithNewReporterID;
-- (CAReporter)initWithReporterID:(int64_t)a3 serviceType:(unsigned __int16)a4;
+- (CAReporter)initWithReporterID:(int64_t)d serviceType:(unsigned __int16)type;
 - (NSDictionary)configuration;
 - (int64_t)reporterID;
 - (unsigned)serviceType;
 - (void)dealloc;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 - (void)start;
 - (void)stop;
-- (void)updateWithReporterID:(int64_t)a3;
+- (void)updateWithReporterID:(int64_t)d;
 @end
 
 @implementation CAReporter
@@ -18,8 +18,8 @@
   v20 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
   {
-    v13 = [(CAReporter *)self swiftReporter];
-    [v13 start];
+    swiftReporter = [(CAReporter *)self swiftReporter];
+    [swiftReporter start];
     v3 = *MEMORY[0x29EDCA608];
   }
 
@@ -64,8 +64,8 @@
   v20 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
   {
-    v13 = [(CAReporter *)self swiftReporter];
-    [v13 stop];
+    swiftReporter = [(CAReporter *)self swiftReporter];
+    [swiftReporter stop];
     v3 = *MEMORY[0x29EDCA608];
   }
 
@@ -112,32 +112,32 @@
     return self->_reporterID;
   }
 
-  v3 = [(CAReporter *)self swiftReporter];
-  v4 = [v3 reporterID];
+  swiftReporter = [(CAReporter *)self swiftReporter];
+  reporterID = [swiftReporter reporterID];
 
-  return v4;
+  return reporterID;
 }
 
-- (CAReporter)initWithReporterID:(int64_t)a3 serviceType:(unsigned __int16)a4
+- (CAReporter)initWithReporterID:(int64_t)d serviceType:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v43[1] = *MEMORY[0x29EDCA608];
   if (!_os_feature_enabled_impl())
   {
     v10 = *AA_ClientCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = CAReportingUtilityGenerateServiceNameFromServiceType(v4);
+      v11 = CAReportingUtilityGenerateServiceNameFromServiceType(typeCopy);
       *buf = 136316162;
       v37 = "CAReportingClient.mm";
       v38 = 1024;
       v39 = 145;
       v40 = 1024;
-      *v41 = a3;
+      *v41 = d;
       *&v41[4] = 2112;
       *&v41[6] = v11;
       *&v41[14] = 1024;
-      *&v41[16] = v4;
+      *&v41[16] = typeCopy;
       _os_log_impl(&dword_296C89000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d initWithReporterID: serviceType: { reporterID=%i, servicename=%@, servicetype=%i }", buf, 0x28u);
     }
 
@@ -146,40 +146,40 @@
 
     if (!v13)
     {
-      if (a3)
+      if (d)
       {
         v34.receiver = self;
         v34.super_class = CAReporter;
         v14 = [(CAReporter *)&v34 init];
-        v7 = v14;
+        selfCopy = v14;
         if (v14)
         {
-          v14->_reporterID = a3;
+          v14->_reporterID = d;
           v15 = *AA_ClientCategory();
-          *(v7 + 8) = os_signpost_id_make_with_pointer(v15, v7 + 16);
+          *(selfCopy + 8) = os_signpost_id_make_with_pointer(v15, selfCopy + 16);
 
-          *(v7 + 6) = v4;
-          *(v7 + 9) = 256;
+          *(selfCopy + 6) = typeCopy;
+          *(selfCopy + 9) = 256;
           v16 = [CAReportingPerformanceObject alloc];
           v17 = MEMORY[0x29EDBA070];
-          v18 = [MEMORY[0x29EDBA0B0] processInfo];
-          v19 = [v17 numberWithInt:{objc_msgSend(v18, "processIdentifier")}];
+          processInfo = [MEMORY[0x29EDBA0B0] processInfo];
+          v19 = [v17 numberWithInt:{objc_msgSend(processInfo, "processIdentifier")}];
           v43[0] = v19;
           v20 = [MEMORY[0x29EDB8D80] arrayWithObjects:v43 count:1];
           v21 = [(CAReportingPerformanceObject *)v16 initWithProcessIdentifiers:v20];
-          v22 = *(v7 + 7);
-          *(v7 + 7) = v21;
+          v22 = *(selfCopy + 7);
+          *(selfCopy + 7) = v21;
 
           v23 = objc_opt_new();
-          v24 = *(v7 + 5);
-          *(v7 + 5) = v23;
+          v24 = *(selfCopy + 5);
+          *(selfCopy + 5) = v23;
 
           v25 = *AA_ClientCategory();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
-            v26 = *(v7 + 2);
-            v27 = CAReportingUtilityGenerateServiceNameFromServiceType(*(v7 + 6));
-            v28 = *(v7 + 6);
+            v26 = *(selfCopy + 2);
+            v27 = CAReportingUtilityGenerateServiceNameFromServiceType(*(selfCopy + 6));
+            v28 = *(selfCopy + 6);
             *buf = 136316162;
             v37 = "CAReportingClient.mm";
             v38 = 1024;
@@ -194,7 +194,7 @@
           }
 
           v29 = +[CAReportingClient sharedInstance];
-          [v29 addReporter:v7];
+          [v29 addReporter:selfCopy];
         }
 
         goto LABEL_13;
@@ -212,32 +212,32 @@
     }
 
     v30 = 0;
-    v7 = self;
+    selfCopy = self;
     goto LABEL_18;
   }
 
   v35.receiver = self;
   v35.super_class = CAReporter;
-  v7 = [(CAReporter *)&v35 init];
-  if (v7)
+  selfCopy = [(CAReporter *)&v35 init];
+  if (selfCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x29EDBFAA8]) initWithReporterID:a3];
-    v9 = *(v7 + 4);
-    *(v7 + 4) = v8;
+    v8 = [objc_alloc(MEMORY[0x29EDBFAA8]) initWithReporterID:d];
+    v9 = *(selfCopy + 4);
+    *(selfCopy + 4) = v8;
 
-    if (!*(v7 + 4))
+    if (!*(selfCopy + 4))
     {
       v30 = 0;
       goto LABEL_18;
     }
 
-    *(v7 + 2) = a3;
-    *(v7 + 6) = v4;
+    *(selfCopy + 2) = d;
+    *(selfCopy + 6) = typeCopy;
   }
 
 LABEL_13:
-  v7 = v7;
-  v30 = v7;
+  selfCopy = selfCopy;
+  v30 = selfCopy;
 LABEL_18:
 
   v32 = *MEMORY[0x29EDCA608];
@@ -254,9 +254,9 @@ LABEL_18:
     v3 = [(CAReporter *)&v15 init];
     if (v3)
     {
-      v4 = [objc_alloc(MEMORY[0x29EDBFAA8]) initWithNewReporterID];
+      initWithNewReporterID = [objc_alloc(MEMORY[0x29EDBFAA8]) initWithNewReporterID];
       swiftReporter = v3->_swiftReporter;
-      v3->_swiftReporter = v4;
+      v3->_swiftReporter = initWithNewReporterID;
 
       v6 = v3->_swiftReporter;
       if (!v6)
@@ -314,24 +314,24 @@ LABEL_11:
   return v7;
 }
 
-- (void)updateWithReporterID:(int64_t)a3
+- (void)updateWithReporterID:(int64_t)d
 {
   if (_os_feature_enabled_impl())
   {
     obj = [(CAReporter *)self swiftReporter];
-    [obj setReporterID:a3];
+    [obj setReporterID:d];
   }
 
   else
   {
-    if (!a3)
+    if (!d)
     {
       return;
     }
 
     obj = gReportingClient;
     objc_sync_enter(obj);
-    self->_reporterID = a3;
+    self->_reporterID = d;
     objc_sync_exit(obj);
   }
 }
@@ -343,16 +343,16 @@ LABEL_11:
     return self->_serviceType;
   }
 
-  v3 = [(CAReporter *)self swiftReporter];
-  v4 = [v3 serviceType];
+  swiftReporter = [(CAReporter *)self swiftReporter];
+  serviceType = [swiftReporter serviceType];
 
-  return v4;
+  return serviceType;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v34 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  configurationCopy = configuration;
   if (!_os_feature_enabled_impl())
   {
     v6 = gReportingClient;
@@ -374,9 +374,9 @@ LABEL_20:
 
     else
     {
-      if (v4 && [v4 count])
+      if (configurationCopy && [configurationCopy count])
       {
-        v7 = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:v4];
+        v7 = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:configurationCopy];
         v8 = [v7 objectForKeyedSubscript:@"MXHostApplicationDisplayID"];
 
         if (v8)
@@ -387,11 +387,11 @@ LABEL_20:
 
         if (self->_internalConfiguration)
         {
-          v10 = [(CAReporter *)self internalConfiguration];
-          [v10 addEntriesFromDictionary:v7];
+          internalConfiguration = [(CAReporter *)self internalConfiguration];
+          [internalConfiguration addEntriesFromDictionary:v7];
 
-          v11 = [(CAReporter *)self perfObject];
-          [v11 setConfiguration:self->_internalConfiguration];
+          perfObject = [(CAReporter *)self perfObject];
+          [perfObject setConfiguration:self->_internalConfiguration];
 
           v12 = *AA_ClientCategory();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -404,26 +404,26 @@ LABEL_20:
             v30 = 2048;
             v31 = reporterID;
             v32 = 2112;
-            v33 = v4;
+            v33 = configurationCopy;
             _os_log_impl(&dword_296C89000, v12, OS_LOG_TYPE_DEBUG, "%25s:%-5d Setting configuration { careporter_id=%lli, newConfiguration=%@ }", &v26, 0x26u);
           }
 
           v14 = +[CAReportingClient sharedInstance];
-          v15 = [v14 connection];
-          v16 = v15 == 0;
+          connection = [v14 connection];
+          v16 = connection == 0;
 
           if (v16)
           {
             v23 = *AA_ClientCategory();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
-              v24 = [(CAReporter *)self reporterID];
+              reporterID = [(CAReporter *)self reporterID];
               v26 = 136315650;
               v27 = "CAReportingClient.mm";
               v28 = 1024;
               v29 = 344;
               v30 = 2048;
-              v31 = v24;
+              v31 = reporterID;
               _os_log_impl(&dword_296C89000, v23, OS_LOG_TYPE_DEFAULT, "%25s:%-5d CAReportingClient XPC connection is nil { careporter_id=%lli }", &v26, 0x1Cu);
             }
           }
@@ -433,17 +433,17 @@ LABEL_20:
             if (_os_feature_enabled_impl())
             {
               v17 = +[CAReportingClient sharedInstance];
-              v18 = [v17 connection];
-              v19 = [v18 _unboostingRemoteObjectProxy];
-              [v19 setWithConfiguration:v7 for:{-[CAReporter reporterID](self, "reporterID")}];
+              connection2 = [v17 connection];
+              _unboostingRemoteObjectProxy = [connection2 _unboostingRemoteObjectProxy];
+              [_unboostingRemoteObjectProxy setWithConfiguration:v7 for:{-[CAReporter reporterID](self, "reporterID")}];
             }
 
             else
             {
               v17 = +[CAReportingClient sharedInstance];
-              v18 = [v17 connection];
-              v19 = [v18 _unboostingRemoteObjectProxy];
-              [v19 setConfiguration:v7 forReporterID:{-[CAReporter reporterID](self, "reporterID")}];
+              connection2 = [v17 connection];
+              _unboostingRemoteObjectProxy = [connection2 _unboostingRemoteObjectProxy];
+              [_unboostingRemoteObjectProxy setConfiguration:v7 forReporterID:{-[CAReporter reporterID](self, "reporterID")}];
             }
           }
         }
@@ -482,8 +482,8 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v5 = [(CAReporter *)self swiftReporter];
-  [v5 setConfiguration:v4];
+  swiftReporter = [(CAReporter *)self swiftReporter];
+  [swiftReporter setConfiguration:configurationCopy];
 
 LABEL_29:
   v25 = *MEMORY[0x29EDCA608];
@@ -494,8 +494,8 @@ LABEL_29:
   v16 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(CAReporter *)self swiftReporter];
-    v4 = [v3 configuration];
+    swiftReporter = [(CAReporter *)self swiftReporter];
+    configuration = [swiftReporter configuration];
   }
 
   else
@@ -515,13 +515,13 @@ LABEL_29:
       _os_log_impl(&dword_296C89000, v6, OS_LOG_TYPE_DEBUG, "%25s:%-5d Getting configuration { careporter_id=%lli }", &v10, 0x1Cu);
     }
 
-    v4 = [MEMORY[0x29EDB8DC0] dictionaryWithDictionary:self->_internalConfiguration];
+    configuration = [MEMORY[0x29EDB8DC0] dictionaryWithDictionary:self->_internalConfiguration];
     objc_sync_exit(v5);
   }
 
   v8 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return configuration;
 }
 
 - (void)dealloc

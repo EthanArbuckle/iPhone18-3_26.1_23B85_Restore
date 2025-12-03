@@ -2,14 +2,14 @@
 - (BOOL)isTiled;
 - (CGImage)unslicedImage;
 - (CGSize)unslicedSize;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
-- (id)copySharedBlockDataWithPixelFormat:(int)a3;
-- (id)imageForSliceIndex:(int64_t)a3;
-- (id)maskForSliceIndex:(int64_t)a3;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
+- (id)copySharedBlockDataWithPixelFormat:(int)format;
+- (id)imageForSliceIndex:(int64_t)index;
+- (id)maskForSliceIndex:(int64_t)index;
 - (id)metrics;
-- (uint64_t)newImageFromCSIDataSlice:(unint64_t)a3 ofBitmap:(uint64_t)a4 usingColorspace:(CGColorSpace *)a5;
+- (uint64_t)newImageFromCSIDataSlice:(unint64_t)slice ofBitmap:(uint64_t)bitmap usingColorspace:(CGColorSpace *)colorspace;
 - (void)dealloc;
-- (void)setSharedBlockData:(id)a3;
+- (void)setSharedBlockData:(id)data;
 @end
 
 @implementation _CUIThemePixelRendition
@@ -77,25 +77,25 @@
   return result;
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
-  v4 = a3;
+  headerCopy = header;
   v151.receiver = self;
   v151.super_class = _CUIThemePixelRendition;
-  v5 = [(CUIThemeRendition *)&v151 _initWithCSIHeader:a3 version:*&a4];
-  var0 = v4->var11.var0;
+  v5 = [(CUIThemeRendition *)&v151 _initWithCSIHeader:header version:*&version];
+  var0 = headerCopy->var11.var0;
   if (!var0)
   {
     return v5;
   }
 
   v7 = 0;
-  aSize_8 = v4->var11.var1;
-  v8 = &v4->var11.var1[var0 + 1] + v4->var10;
+  aSize_8 = headerCopy->var11.var1;
+  v8 = &headerCopy->var11.var1[var0 + 1] + headerCopy->var10;
   v9 = 1;
   height = NSZeroSize.height;
   v139 = v8;
-  p_var0 = &v4->var0;
+  p_var0 = &headerCopy->var0;
   do
   {
     v11 = (v8 + aSize_8[v7]);
@@ -106,8 +106,8 @@
     }
 
     v13 = v11[1];
-    v14 = [v5 renditionFlags];
-    *v14 = *v14 & 0xFFFFFFFD | (2 * ((v13 >> 1) & 1));
+    renditionFlags = [v5 renditionFlags];
+    *renditionFlags = *renditionFlags & 0xFFFFFFFD | (2 * ((v13 >> 1) & 1));
     if ((v9 & 1) == 0)
     {
       _CUILog(4, "Warning: Ignoring extra images found in CSI", v15, v16, v17, v18, v19, v20, v134);
@@ -115,7 +115,7 @@
     }
 
     v138 = v11;
-    var10 = v4->var10;
+    var10 = headerCopy->var10;
     if (!var10)
     {
       goto LABEL_128;
@@ -524,11 +524,11 @@ LABEL_81:
       *(v5 + 45) = [(CUIRenditionMetrics *)v104 initWithImageSize:v106 defaultImageSize:v107 edgeBottomLeft:Width edgeTopRight:v33 contentBottomLeft:v149 contentTopRight:v150 baseline:v148.width auxiliary1BottomLeft:v148.height auxiliary1TopRight:v147.width auxiliary2BottomLeft:v147.height auxiliary2TopRight:v108 scalesVertically:v109 scalesHorizontally:v110 scale:v111, v112, *&v146.width, *&v146.height, *&v145.width, *&v145.height, v105, *&v143.width, *&v143.height, *&v142.width, *&v142.height, *&v141.width, *&v141.height, *&v140.width, *&v140.height, v113];
     }
 
-    v114 = [v5 type];
+    type = [v5 type];
     v116 = v153.height;
     v115 = v153.width;
     v117 = *&v156[16];
-    if (v114 == 3)
+    if (type == 3)
     {
       v118 = *v168;
     }
@@ -539,7 +539,7 @@ LABEL_81:
     }
 
     v119 = v168 + 1;
-    if (v114 != 3)
+    if (type != 3)
     {
       v119 = &v156[24];
     }
@@ -600,7 +600,7 @@ LABEL_81:
 
     v9 = 0;
     *(v5 + 46) = -[CUIRenditionSliceInformation initWithRenditionType:destinationRect:topLeftInset:bottomRightInset:]([CUIRenditionSliceInformation alloc], "initWithRenditionType:destinationRect:topLeftInset:bottomRightInset:", [v5 type], 0.0, 0.0, Width, v33, v115, v116, v118, v120);
-    v4 = p_var0;
+    headerCopy = p_var0;
     v7 = 1;
   }
 
@@ -608,56 +608,56 @@ LABEL_81:
   return v5;
 }
 
-- (id)copySharedBlockDataWithPixelFormat:(int)a3
+- (id)copySharedBlockDataWithPixelFormat:(int)format
 {
-  if (a3 > 2)
+  if (format > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&self->super.super.isa + *off_1E72514F8[a3]);
+    return *(&self->super.super.isa + *off_1E72514F8[format]);
   }
 }
 
-- (void)setSharedBlockData:(id)a3
+- (void)setSharedBlockData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
 LABEL_5:
     cachedBlockDataBGRX = self->_cachedBlockDataBGRX;
-    if (cachedBlockDataBGRX == a3)
+    if (cachedBlockDataBGRX == data)
     {
       return;
     }
 
     v4 = 0;
-    self->_cachedBlockDataBGRX = a3;
+    self->_cachedBlockDataBGRX = data;
     goto LABEL_12;
   }
 
-  v4 = *(a3 + 3);
+  v4 = *(data + 3);
   switch(v4)
   {
     case 2:
       cachedBlockDataBGRX = self->_cachedBlockDataGray;
-      if (cachedBlockDataBGRX == a3)
+      if (cachedBlockDataBGRX == data)
       {
         return;
       }
 
-      self->_cachedBlockDataGray = a3;
+      self->_cachedBlockDataGray = data;
       v4 = 2;
       break;
     case 1:
       cachedBlockDataBGRX = self->_cachedBlockDataRGBX;
-      if (cachedBlockDataBGRX == a3)
+      if (cachedBlockDataBGRX == data)
       {
         return;
       }
 
-      self->_cachedBlockDataRGBX = a3;
+      self->_cachedBlockDataRGBX = data;
       v4 = 1;
       break;
     case 0:
@@ -679,33 +679,33 @@ LABEL_12:
   dispatch_async(v6, v7);
 }
 
-- (id)imageForSliceIndex:(int64_t)a3
+- (id)imageForSliceIndex:(int64_t)index
 {
-  if (a3 < 0 || self->_nimages <= a3)
+  if (index < 0 || self->_nimages <= index)
   {
-    _CUILog(4, "Invalid slice index %ld for rendition", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(4, "Invalid slice index %ld for rendition", index, v3, v4, v5, v6, v7, index);
     return 0;
   }
 
   else
   {
-    v9 = self->_image[a3];
+    v9 = self->_image[index];
 
     return [CUIImage imageWithCGImage:v9];
   }
 }
 
-- (id)maskForSliceIndex:(int64_t)a3
+- (id)maskForSliceIndex:(int64_t)index
 {
-  if (a3 < 0 || self->_nimages <= a3)
+  if (index < 0 || self->_nimages <= index)
   {
-    _CUILog(4, "Invalid slice index %ld for rendition", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(4, "Invalid slice index %ld for rendition", index, v3, v4, v5, v6, v7, index);
     return 0;
   }
 
   else
   {
-    v8 = self->_image[a3];
+    v8 = self->_image[index];
     *decode = xmmword_18E021C10;
     Width = CGImageGetWidth(v8);
     Height = CGImageGetHeight(v8);
@@ -729,25 +729,25 @@ LABEL_12:
     return [(CUIThemeRendition *)self subtype]== 30 || [(CUIThemeRendition *)self subtype]== 11;
   }
 
-  v4 = [(CUIThemeRendition *)self name];
-  _CUILog(1, "WARNING: -isTiled called on rendition named: %@, which is not a one-part or nine-part image, but the method is only meaningful for one-part and nine-part images. Returning NO.", v5, v6, v7, v8, v9, v10, v4);
+  name = [(CUIThemeRendition *)self name];
+  _CUILog(1, "WARNING: -isTiled called on rendition named: %@, which is not a one-part or nine-part image, but the method is only meaningful for one-part and nine-part images. Returning NO.", v5, v6, v7, v8, v9, v10, name);
   return 0;
 }
 
-- (uint64_t)newImageFromCSIDataSlice:(unint64_t)a3 ofBitmap:(uint64_t)a4 usingColorspace:(CGColorSpace *)a5
+- (uint64_t)newImageFromCSIDataSlice:(unint64_t)slice ofBitmap:(uint64_t)bitmap usingColorspace:(CGColorSpace *)colorspace
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v15 = [objc_msgSend(a1 "srcData")];
+  v15 = [objc_msgSend(self "srcData")];
   v17 = v15[3];
   v16 = v15[4];
   v18 = 4;
   v77 = 4;
   LODWORD(bitsPerComponent) = 8;
-  v19 = HIDWORD(a3);
+  v19 = HIDWORD(slice);
   v76 = 1;
   v20 = v15[6];
   if (v20 == 1095911234)
@@ -779,8 +779,8 @@ LABEL_12:
     {
       bitmapInfoa = +[NSAssertionHandler currentHandler];
       v24 = objc_opt_class();
-      v25 = a3;
-      v26 = a4;
+      sliceCopy = slice;
+      bitmapCopy = bitmap;
       v27 = a2;
       v28 = v19;
       v29 = v16;
@@ -792,22 +792,22 @@ LABEL_12:
       v16 = v29;
       v19 = v28;
       a2 = v27;
-      a4 = v26;
-      a3 = v25;
-      [(NSAssertionHandler *)bitmapInfoa handleFailureInMethod:sel_newImageFromCSIDataSlice_ofBitmap_usingColorspace_ object:a1 file:@"CUIThemeRendition.m" lineNumber:3530 description:@"CoreUI: [%@ %@] unknown pixel format %d"];
+      bitmap = bitmapCopy;
+      slice = sliceCopy;
+      [(NSAssertionHandler *)bitmapInfoa handleFailureInMethod:sel_newImageFromCSIDataSlice_ofBitmap_usingColorspace_ object:self file:@"CUIThemeRendition.m" lineNumber:3530 description:@"CoreUI: [%@ %@] unknown pixel format %d"];
       v22 = 0;
       v18 = 4;
       goto LABEL_22;
     }
   }
 
-  v21 = *(a4 + 8);
+  v21 = *(bitmap + 8);
   if (v21 <= 0xC && ((1 << v21) & 0x10A0) != 0)
   {
 LABEL_9:
     v77 = 4;
     LODWORD(bitsPerComponent) = 8;
-    if ((*(a4 + 4) & 2) != 0)
+    if ((*(bitmap + 4) & 2) != 0)
     {
       v22 = 8198;
     }
@@ -865,7 +865,7 @@ LABEL_9:
   }
 
 LABEL_22:
-  if (!v19 || !a3)
+  if (!v19 || !slice)
   {
     _CUILog(4, "CoreUI: degenerate slice geometry", v9, v10, v11, v12, v13, v14, decode);
     return 0;
@@ -873,13 +873,13 @@ LABEL_22:
 
   bitmapInfo = v22;
   v32 = v17;
-  v33 = *(a4 + 8);
-  v34 = [a1 renditionFlags];
-  *v34 = *v34 & 0xFFFFFFC3 | (4 * (v33 & 0xF));
-  v41 = *(a4 + 8);
+  v33 = *(bitmap + 8);
+  renditionFlags = [self renditionFlags];
+  *renditionFlags = *renditionFlags & 0xFFFFFFC3 | (4 * (v33 & 0xF));
+  v41 = *(bitmap + 8);
   if (v41 > 0xC)
   {
-    _CUILog(4, "[CUIThemeRendition newImageFromCSIDataSlice:ofBitmap:] Unsupported pixel format in CSI got %d", v35, v36, v37, v38, v39, v40, *(a4 + 8));
+    _CUILog(4, "[CUIThemeRendition newImageFromCSIDataSlice:ofBitmap:] Unsupported pixel format in CSI got %d", v35, v36, v37, v38, v39, v40, *(bitmap + 8));
     v53 = 0;
     goto LABEL_50;
   }
@@ -898,21 +898,21 @@ LABEL_22:
 LABEL_26:
     v44 = objc_alloc_init(CSIHelper);
     *&v44->slice.x = a2;
-    *&v44->slice.width = a3;
+    *&v44->slice.width = slice;
     v44->slice.y = v42;
-    v44->csiData = [a1 srcData];
-    v44->bmp = a4;
+    v44->csiData = [self srcData];
+    v44->bmp = bitmap;
     v44->renditionLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v44->rendition, a1);
+    objc_storeWeak(&v44->rendition, self);
     v44->blockDataCacheKeyRGBX = 0;
     v44->blockDataCacheKeyGray = 0;
     v44->blockDataCacheKeyBGRX = 0;
     objc_storeWeak(&v44->sharedBlockDataBGRX, 0);
     objc_storeWeak(&v44->sharedBlockDataRGBX, 0);
     objc_storeWeak(&v44->sharedBlockDataGray, 0);
-    v44->sourceRowbytes = [a1 sourceRowbytes];
+    v44->sourceRowbytes = [self sourceRowbytes];
     v45 = *(v44 + 120) & 0xFE;
-    if (*(a4 + 8) != 1)
+    if (*(bitmap + 8) != 1)
     {
       ++v45;
     }
@@ -932,7 +932,7 @@ LABEL_26:
         goto LABEL_51;
       }
 
-      _CUILog(4, "CoreUI: failed to create image provider for %d %d componentType %d colorSpace %@ options %@", v46, v47, v48, v49, v50, v51, a3);
+      _CUILog(4, "CoreUI: failed to create image provider for %d %d componentType %d colorSpace %@ options %@", v46, v47, v48, v49, v50, v51, slice);
       v53 = 0;
       goto LABEL_50;
     }
@@ -943,19 +943,19 @@ LABEL_26:
     goto LABEL_36;
   }
 
-  v60 = a4 + v18 * (a2 + v32 * v42);
-  if ([a1 sourceRowbytes])
+  v60 = bitmap + v18 * (a2 + v32 * v42);
+  if ([self sourceRowbytes])
   {
-    v61 = [a1 sourceRowbytes];
+    sourceRowbytes = [self sourceRowbytes];
 LABEL_61:
-    AlignedBytesPerRow = v61;
+    AlignedBytesPerRow = sourceRowbytes;
     goto LABEL_62;
   }
 
   AlignedBytesPerRow = v18 * v32;
   if (v15[6] == 1195456544)
   {
-    v61 = CGBitmapGetAlignedBytesPerRow();
+    sourceRowbytes = CGBitmapGetAlignedBytesPerRow();
     goto LABEL_61;
   }
 
@@ -967,11 +967,11 @@ LABEL_36:
   v53 = Direct;
   if (Direct)
   {
-    v56 = *(a4 + 8);
+    v56 = *(bitmap + 8);
     v57 = v56 == 12 || v56 == 7;
     if (!v57)
     {
-      ImageAtIndex = CGImageCreate(a3, v19, bitsPerComponent, 8 * v18, AlignedBytesPerRow, a5, bitmapInfo, Direct, 0, 1, kCGRenderingIntentDefault);
+      ImageAtIndex = CGImageCreate(slice, v19, bitsPerComponent, 8 * v18, AlignedBytesPerRow, colorspace, bitmapInfo, Direct, 0, 1, kCGRenderingIntentDefault);
       goto LABEL_51;
     }
 
@@ -992,7 +992,7 @@ LABEL_51:
   CGImageProviderRelease();
   if (!ImageAtIndex)
   {
-    v62 = CUIConvertCompressionTypeToString(*(a4 + 8));
+    v62 = CUIConvertCompressionTypeToString(*(bitmap + 8));
     _CUILog(4, "CoreUI: failed to create an image because of a bad pixel format or failure to create an appropriate image provider for encoding '%s'", v63, v64, v65, v66, v67, v68, v62);
   }
 

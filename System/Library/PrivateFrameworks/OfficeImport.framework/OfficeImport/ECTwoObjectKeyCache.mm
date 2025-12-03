@@ -1,7 +1,7 @@
 @interface ECTwoObjectKeyCache
 - (ECTwoObjectKeyCache)init;
-- (id)objectForKey1:(id)a3 key2:(id)a4;
-- (void)setObject:(id)a3 forKey1:(id)a4 key2:(id)a5;
+- (id)objectForKey1:(id)key1 key2:(id)key2;
+- (void)setObject:(id)object forKey1:(id)key1 key2:(id)key2;
 @end
 
 @implementation ECTwoObjectKeyCache
@@ -21,30 +21,30 @@
   return v2;
 }
 
-- (id)objectForKey1:(id)a3 key2:(id)a4
+- (id)objectForKey1:(id)key1 key2:(id)key2
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->mCache objectForKey:a3];
-  v8 = [v7 objectForKey:v6];
+  key2Copy = key2;
+  v7 = [(NSMutableDictionary *)self->mCache objectForKey:key1];
+  v8 = [v7 objectForKey:key2Copy];
 
   return v8;
 }
 
-- (void)setObject:(id)a3 forKey1:(id)a4 key2:(id)a5
+- (void)setObject:(id)object forKey1:(id)key1 key2:(id)key2
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v11 && v8)
+  objectCopy = object;
+  key1Copy = key1;
+  key2Copy = key2;
+  if (objectCopy && key1Copy)
   {
-    v10 = [(NSMutableDictionary *)self->mCache objectForKey:v8];
+    v10 = [(NSMutableDictionary *)self->mCache objectForKey:key1Copy];
     if (!v10)
     {
       v10 = +[ECPointerNilKeyDictionary dictionary];
       [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
     }
 
-    [v10 setObject:v11 forKey:v9];
+    [v10 setObject:objectCopy forKey:key2Copy];
   }
 }
 

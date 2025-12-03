@@ -1,16 +1,16 @@
 @interface BAAgentSystemProxy
 - (BAAgentSystemProxy)init;
-- (BOOL)applicationEventPerformedWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)applicationPrepareWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)applicationShouldTriggerPeriodicWithIdentifier:(id)a3 bundleURLPath:(id)a4 error:(id *)a5;
-- (BOOL)updateAppStoreProgressObservationWithConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)applicationEventPerformedWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)applicationPrepareWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)applicationShouldTriggerPeriodicWithIdentifier:(id)identifier bundleURLPath:(id)path error:(id *)error;
+- (BOOL)updateAppStoreProgressObservationWithConfiguration:(id)configuration error:(id *)error;
 - (uint64_t)_setupConnection;
 - (void)_connectionInvalidated;
 - (void)_ensureConnection;
 - (void)_resendProgressConfigurationAfterInterruption;
 - (void)invalidate;
-- (void)receiveAppStoreProgressWithAppBundleIdentifier:(id)a3 progressInfo:(id)a4;
-- (void)runDebugCommand:(id)a3;
+- (void)receiveAppStoreProgressWithAppBundleIdentifier:(id)identifier progressInfo:(id)info;
+- (void)runDebugCommand:(id)command;
 @end
 
 @implementation BAAgentSystemProxy
@@ -212,13 +212,13 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
 
 - (void)_connectionInvalidated
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 3);
-    objc_setProperty_atomic(a1, v2, 0, 16);
-    objc_setProperty_atomic(a1, v3, 0, 24);
+    os_unfair_lock_lock(self + 3);
+    objc_setProperty_atomic(self, v2, 0, 16);
+    objc_setProperty_atomic(self, v3, 0, 24);
 
-    os_unfair_lock_unlock(a1 + 3);
+    os_unfair_lock_unlock(self + 3);
   }
 }
 
@@ -242,39 +242,39 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
 
 - (void)_ensureConnection
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 2);
-    if (!OUTLINED_FUNCTION_7_0(a1, v2))
+    os_unfair_lock_lock(self + 2);
+    if (!OUTLINED_FUNCTION_7_0(self, v2))
     {
-      [(BAAgentSystemProxy *)a1 _setupConnection];
+      [(BAAgentSystemProxy *)self _setupConnection];
     }
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(self + 2);
   }
 }
 
 - (void)_resendProgressConfigurationAfterInterruption
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 3);
+    os_unfair_lock_lock(self + 3);
     v4 = OUTLINED_FUNCTION_8_0(v2, v3);
     if (v4)
     {
       v6 = OUTLINED_FUNCTION_8_0(v4, v5);
-      objc_setProperty_atomic(a1, v7, 0, 24);
-      os_unfair_lock_unlock(a1 + 3);
+      objc_setProperty_atomic(self, v7, 0, 24);
+      os_unfair_lock_unlock(self + 3);
       if (v6)
       {
-        v8 = [(BAAppStoreProgressConfiguration *)v6 appBundleIdentifiers];
-        v9 = [v8 count];
+        appBundleIdentifiers = [(BAAppStoreProgressConfiguration *)v6 appBundleIdentifiers];
+        v9 = [appBundleIdentifiers count];
 
         if (v9)
         {
           v18 = 0;
-          v10 = [(os_unfair_lock_s *)a1 updateAppStoreProgressObservationWithConfiguration:v6 error:&v18];
+          v10 = [(os_unfair_lock_s *)self updateAppStoreProgressObservationWithConfiguration:v6 error:&v18];
           v11 = v18;
           if ((v10 & 1) == 0)
           {
@@ -287,13 +287,13 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
               _os_log_impl(&dword_236E28000, v12, OS_LOG_TYPE_INFO, "Error occured updating progress observer after a connection interruption - Error: %{public}@", buf, 0xCu);
             }
 
-            os_unfair_lock_lock(a1 + 3);
+            os_unfair_lock_lock(self + 3);
             if (!OUTLINED_FUNCTION_8_0(v14, v15))
             {
-              objc_setProperty_atomic(a1, v16, v6, 24);
+              objc_setProperty_atomic(self, v16, v6, 24);
             }
 
-            os_unfair_lock_unlock(a1 + 3);
+            os_unfair_lock_unlock(self + 3);
           }
         }
       }
@@ -301,7 +301,7 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
 
     else
     {
-      os_unfair_lock_unlock(a1 + 3);
+      os_unfair_lock_unlock(self + 3);
       v6 = 0;
     }
   }
@@ -309,9 +309,9 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)applicationPrepareWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)applicationPrepareWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   [(BAAgentSystemProxy *)self _ensureConnection];
   v34 = 0;
   v35 = &v34;
@@ -339,23 +339,23 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   v25 = &unk_278A0CFA0;
   v26 = &v32;
   v27 = &v34;
-  [v12 applicationPrepareWithDescriptor:v6 completionHandler:v23];
+  [v12 applicationPrepareWithDescriptor:descriptorCopy completionHandler:v23];
 
-  if (a4)
+  if (error)
   {
     v13 = v35[5];
-    *a4 = v13;
+    *error = v13;
   }
 
   OUTLINED_FUNCTION_5_0(v13, v14, v15, v16, v17, v18, v19, v20, v22, v23[0], v23[1], v24, v25, v26, v27, v28[0], v28[1], v29, v30, v31, v32, v33);
   OUTLINED_FUNCTION_11_0();
 
-  return a4;
+  return error;
 }
 
-- (BOOL)applicationEventPerformedWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)applicationEventPerformedWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   [(BAAgentSystemProxy *)self _ensureConnection];
   v34 = 0;
   v35 = &v34;
@@ -383,24 +383,24 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   v25 = &unk_278A0CFA0;
   v26 = &v32;
   v27 = &v34;
-  [v12 applicationEventPerformedWithDescriptor:v6 completionHandler:v23];
+  [v12 applicationEventPerformedWithDescriptor:descriptorCopy completionHandler:v23];
 
-  if (a4)
+  if (error)
   {
     v13 = v35[5];
-    *a4 = v13;
+    *error = v13;
   }
 
   OUTLINED_FUNCTION_5_0(v13, v14, v15, v16, v17, v18, v19, v20, v22, v23[0], v23[1], v24, v25, v26, v27, v28[0], v28[1], v29, v30, v31, v32, v33);
   OUTLINED_FUNCTION_11_0();
 
-  return a4;
+  return error;
 }
 
-- (BOOL)applicationShouldTriggerPeriodicWithIdentifier:(id)a3 bundleURLPath:(id)a4 error:(id *)a5
+- (BOOL)applicationShouldTriggerPeriodicWithIdentifier:(id)identifier bundleURLPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   [(BAAgentSystemProxy *)self _ensureConnection];
   v29 = 0;
   v30 = &v29;
@@ -430,11 +430,11 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   v20 = &unk_278A0CFA0;
   v21 = v27;
   v22 = &v29;
-  [v15 applicationShouldTriggerPeriodicWithIdentifier:v8 bundleURLPath:v9 completionHandler:v18];
+  [v15 applicationShouldTriggerPeriodicWithIdentifier:identifierCopy bundleURLPath:pathCopy completionHandler:v18];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v30[5];
+    *error = v30[5];
   }
 
   v16 = *(v28 + 24);
@@ -444,9 +444,9 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   return v16;
 }
 
-- (void)runDebugCommand:(id)a3
+- (void)runDebugCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   [(BAAgentSystemProxy *)self _ensureConnection];
   if (self)
   {
@@ -459,12 +459,12 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   }
 
   v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_3];
-  [v7 runDebugCommand:v4 reply:&__block_literal_global_72];
+  [v7 runDebugCommand:commandCopy reply:&__block_literal_global_72];
 }
 
-- (BOOL)updateAppStoreProgressObservationWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)updateAppStoreProgressObservationWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   [(BAAgentSystemProxy *)self _ensureConnection];
   v35 = 0;
   v36 = &v35;
@@ -475,7 +475,7 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   os_unfair_lock_lock(&self->_progressObserverLock);
   if (self)
   {
-    objc_setProperty_atomic(self, v7, v6, 24);
+    objc_setProperty_atomic(self, v7, configurationCopy, 24);
     os_unfair_lock_unlock(&self->_progressObserverLock);
     v9 = OUTLINED_FUNCTION_7_0(self, v8);
   }
@@ -498,24 +498,24 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
   v26 = &unk_278A0CFA0;
   v27 = &v33;
   v28 = &v35;
-  [v13 updateAppStoreProgressObservationWithConfiguration:v6 completionHandler:v24];
+  [v13 updateAppStoreProgressObservationWithConfiguration:configurationCopy completionHandler:v24];
 
-  if (a4)
+  if (error)
   {
     v14 = v36[5];
-    *a4 = v14;
+    *error = v14;
   }
 
   OUTLINED_FUNCTION_5_0(v14, v15, v16, v17, v18, v19, v20, v21, v23, v24[0], v24[1], v25, v26, v27, v28, v29[0], v29[1], v30, v31, v32, v33, v34);
   OUTLINED_FUNCTION_12_0();
 
-  return a4;
+  return error;
 }
 
-- (void)receiveAppStoreProgressWithAppBundleIdentifier:(id)a3 progressInfo:(id)a4
+- (void)receiveAppStoreProgressWithAppBundleIdentifier:(id)identifier progressInfo:(id)info
 {
-  v6 = a4;
-  v10 = a3;
+  infoCopy = info;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_progressObserverLock);
   if (self)
   {
@@ -529,7 +529,7 @@ void __38__BAAgentSystemProxy__setupConnection__block_invoke_2(uint64_t a1)
 
   v9 = Property;
   os_unfair_lock_unlock(&self->_progressObserverLock);
-  [(BAAppStoreProgressConfiguration *)v9 invokeHandlerWithAppBundleIdentifier:v10 progressInfo:v6];
+  [(BAAppStoreProgressConfiguration *)v9 invokeHandlerWithAppBundleIdentifier:identifierCopy progressInfo:infoCopy];
 }
 
 @end

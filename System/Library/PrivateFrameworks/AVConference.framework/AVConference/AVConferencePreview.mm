@@ -4,68 +4,68 @@
 - (AVConferencePreviewClientDelegate)delegate;
 - (BOOL)isCameraZoomAvailable;
 - (BOOL)isPreviewRunning;
-- (BOOL)setRootPreviewLayer:(id)a3 front:(BOOL)a4;
+- (BOOL)setRootPreviewLayer:(id)layer front:(BOOL)front;
 - (double)currentZoomFactor;
 - (double)maxZoomFactor;
 - (id)localCameraUID;
-- (id)localScreenAttributesForVideoAttributes:(id)a3;
+- (id)localScreenAttributesForVideoAttributes:(id)attributes;
 - (id)localVideoAttributes;
-- (id)localVideoLayer:(BOOL)a3;
-- (id)newXPCObjectForFenceHandle:(id *)a3 forLayerHost:(id)a4;
+- (id)localVideoLayer:(BOOL)layer;
+- (id)newXPCObjectForFenceHandle:(id *)handle forLayerHost:(id)host;
 - (unsigned)localCamera;
-- (void)applyTransform:(CATransform3D *)a3 forLayer:(id)a4;
+- (void)applyTransform:(CATransform3D *)transform forLayer:(id)layer;
 - (void)beginPIPToPreviewAnimation;
 - (void)beginPreviewToPIPAnimation;
-- (void)cameraCFramingAvailabilityDidChange:(BOOL)a3;
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3;
-- (void)cameraDidBecomeInterruptedForForUniqueID:(id)a3 reason:(int64_t)a4;
-- (void)cameraZoomAvailabilityDidChange:(BOOL)a3 currentZoomFactor:(double)a4 maxZoomFactor:(double)a5;
-- (void)cleanupPreviewLayerHost:(id *)a3;
-- (void)connectLayer:(id)a3 layerHost:(id)a4 withContextId:(unsigned int)a5;
-- (void)connectLayer:(id)a3 withSlot:(unsigned int)a4;
-- (void)createPreviewCALayerHostForRootLayer:(id)a3 withContextId:(unsigned int)a4 front:(BOOL)a5;
+- (void)cameraCFramingAvailabilityDidChange:(BOOL)change;
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d;
+- (void)cameraDidBecomeInterruptedForForUniqueID:(id)d reason:(int64_t)reason;
+- (void)cameraZoomAvailabilityDidChange:(BOOL)change currentZoomFactor:(double)factor maxZoomFactor:(double)zoomFactor;
+- (void)cleanupPreviewLayerHost:(id *)host;
+- (void)connectLayer:(id)layer layerHost:(id)host withContextId:(unsigned int)id;
+- (void)connectLayer:(id)layer withSlot:(unsigned int)slot;
+- (void)createPreviewCALayerHostForRootLayer:(id)layer withContextId:(unsigned int)id front:(BOOL)front;
 - (void)currentZoomFactor;
 - (void)dealloc;
 - (void)deregisterBlocksForDelegateNotifications;
-- (void)didChangeLocalCameraUID:(id)a3;
-- (void)didChangeLocalScreenAttributes:(id)a3;
-- (void)didChangeLocalVideoAttributes:(id)a3;
-- (void)didDetectSensitiveContentWithAnalysis:(id)a3;
-- (void)didGetSnapshot:(id)a3;
+- (void)didChangeLocalCameraUID:(id)d;
+- (void)didChangeLocalScreenAttributes:(id)attributes;
+- (void)didChangeLocalVideoAttributes:(id)attributes;
+- (void)didDetectSensitiveContentWithAnalysis:(id)analysis;
+- (void)didGetSnapshot:(id)snapshot;
 - (void)didPausePreview;
 - (void)didReceiveCommError;
-- (void)didReceiveErrorFromCameraUniqueID:(id)a3 error:(id)a4;
+- (void)didReceiveErrorFromCameraUniqueID:(id)d error:(id)error;
 - (void)didStartPreview;
 - (void)didStopPreview;
 - (void)endPIPToPreviewAnimation;
 - (void)endPreviewToPIPAnimation;
-- (void)followSystemCameraDidChange:(BOOL)a3;
+- (void)followSystemCameraDidChange:(BOOL)change;
 - (void)getSnapshot;
 - (void)isCameraZoomAvailable;
 - (void)isPreviewRunning;
 - (void)maxZoomFactor;
-- (void)notifyCenterStageEnabled:(BOOL)a3;
+- (void)notifyCenterStageEnabled:(BOOL)enabled;
 - (void)pausePreview;
 - (void)registerBlocksForDelegateNotifications;
 - (void)resetLayersAfterServerDisconnect;
 - (void)resetLocalCameraAfterServerDisconnect;
 - (void)restartPreview;
-- (void)setBounds:(CGRect)a3 forLayerHost:(id)a4;
-- (void)setCameraZoomFactor:(double)a3;
-- (void)setCameraZoomFactor:(double)a3 withRate:(double)a4;
-- (void)setCinematicFramingEnabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFollowSystemCameraEnabled:(BOOL)a3;
-- (void)setLocalCamera:(unsigned int)a3;
-- (void)setLocalCameraWithUID:(id)a3;
-- (void)setLocalScreenAttributes:(id)a3;
-- (void)setLocalVideoAttributes:(id)a3;
-- (void)setLocalVideoLayer:(id)a3 front:(BOOL)a4;
-- (void)setLocalVideoLayerHost:(id)a3 front:(BOOL)a4;
-- (void)setMultiCamEnabled:(BOOL)a3;
-- (void)setMultiCamSubviewPosition:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds forLayerHost:(id)host;
+- (void)setCameraZoomFactor:(double)factor;
+- (void)setCameraZoomFactor:(double)factor withRate:(double)rate;
+- (void)setCinematicFramingEnabled:(BOOL)enabled;
+- (void)setDelegate:(id)delegate;
+- (void)setFollowSystemCameraEnabled:(BOOL)enabled;
+- (void)setLocalCamera:(unsigned int)camera;
+- (void)setLocalCameraWithUID:(id)d;
+- (void)setLocalScreenAttributes:(id)attributes;
+- (void)setLocalVideoAttributes:(id)attributes;
+- (void)setLocalVideoLayer:(id)layer front:(BOOL)front;
+- (void)setLocalVideoLayerHost:(id)host front:(BOOL)front;
+- (void)setMultiCamEnabled:(BOOL)enabled;
+- (void)setMultiCamSubviewPosition:(CGRect)position;
 - (void)startPreview;
-- (void)startPreviewUnpausing:(BOOL)a3;
+- (void)startPreviewUnpausing:(BOOL)unpausing;
 - (void)stopPreview;
 @end
 
@@ -100,7 +100,7 @@ id __31__AVConferencePreview_delegate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   block[6] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -109,7 +109,7 @@ id __31__AVConferencePreview_delegate__block_invoke(uint64_t a1)
   block[2] = __35__AVConferencePreview_setDelegate___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = delegate;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -348,7 +348,7 @@ uint64_t __37__AVConferencePreview_didStopPreview__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didChangeLocalCameraUID:(id)a3
+- (void)didChangeLocalCameraUID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -357,7 +357,7 @@ uint64_t __37__AVConferencePreview_didStopPreview__block_invoke(uint64_t a1)
   block[2] = __47__AVConferencePreview_didChangeLocalCameraUID___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -395,7 +395,7 @@ uint64_t __47__AVConferencePreview_didChangeLocalCameraUID___block_invoke(uint64
   return result;
 }
 
-- (void)didChangeLocalVideoAttributes:(id)a3
+- (void)didChangeLocalVideoAttributes:(id)attributes
 {
   block[6] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -404,7 +404,7 @@ uint64_t __47__AVConferencePreview_didChangeLocalCameraUID___block_invoke(uint64
   block[2] = __53__AVConferencePreview_didChangeLocalVideoAttributes___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = attributes;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -442,7 +442,7 @@ uint64_t __53__AVConferencePreview_didChangeLocalVideoAttributes___block_invoke(
   return result;
 }
 
-- (void)didChangeLocalScreenAttributes:(id)a3
+- (void)didChangeLocalScreenAttributes:(id)attributes
 {
   block[6] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -451,7 +451,7 @@ uint64_t __53__AVConferencePreview_didChangeLocalVideoAttributes___block_invoke(
   block[2] = __54__AVConferencePreview_didChangeLocalScreenAttributes___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = attributes;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -489,7 +489,7 @@ uint64_t __54__AVConferencePreview_didChangeLocalScreenAttributes___block_invoke
   return result;
 }
 
-- (void)didReceiveErrorFromCameraUniqueID:(id)a3 error:(id)a4
+- (void)didReceiveErrorFromCameraUniqueID:(id)d error:(id)error
 {
   v5[7] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -498,8 +498,8 @@ uint64_t __54__AVConferencePreview_didChangeLocalScreenAttributes___block_invoke
   v5[2] = __63__AVConferencePreview_didReceiveErrorFromCameraUniqueID_error___block_invoke;
   v5[3] = &unk_1E85F3E30;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = error;
   dispatch_async(avConferencePreviewNotificationQueue, v5);
 }
 
@@ -577,7 +577,7 @@ uint64_t __42__AVConferencePreview_didReceiveCommError__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)didGetSnapshot:(id)a3
+- (void)didGetSnapshot:(id)snapshot
 {
   block[6] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -586,7 +586,7 @@ uint64_t __42__AVConferencePreview_didReceiveCommError__block_invoke(uint64_t a1
   block[2] = __38__AVConferencePreview_didGetSnapshot___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = snapshot;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -628,7 +628,7 @@ void __38__AVConferencePreview_didGetSnapshot___block_invoke(uint64_t a1)
   }
 }
 
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -637,7 +637,7 @@ void __38__AVConferencePreview_didGetSnapshot___block_invoke(uint64_t a1)
   block[2] = __59__AVConferencePreview_cameraDidBecomeAvailableForUniqueID___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -680,7 +680,7 @@ void __59__AVConferencePreview_cameraDidBecomeAvailableForUniqueID___block_invok
   }
 }
 
-- (void)cameraDidBecomeInterruptedForForUniqueID:(id)a3 reason:(int64_t)a4
+- (void)cameraDidBecomeInterruptedForForUniqueID:(id)d reason:(int64_t)reason
 {
   v5[7] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -689,8 +689,8 @@ void __59__AVConferencePreview_cameraDidBecomeAvailableForUniqueID___block_invok
   v5[2] = __71__AVConferencePreview_cameraDidBecomeInterruptedForForUniqueID_reason___block_invoke;
   v5[3] = &unk_1E85F50D8;
   v5[5] = self;
-  v5[6] = a4;
-  v5[4] = a3;
+  v5[6] = reason;
+  v5[4] = d;
   dispatch_async(avConferencePreviewNotificationQueue, v5);
 }
 
@@ -734,7 +734,7 @@ void __71__AVConferencePreview_cameraDidBecomeInterruptedForForUniqueID_reason__
   }
 }
 
-- (void)cameraZoomAvailabilityDidChange:(BOOL)a3 currentZoomFactor:(double)a4 maxZoomFactor:(double)a5
+- (void)cameraZoomAvailabilityDidChange:(BOOL)change currentZoomFactor:(double)factor maxZoomFactor:(double)zoomFactor
 {
   v8 = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -742,10 +742,10 @@ void __71__AVConferencePreview_cameraDidBecomeInterruptedForForUniqueID_reason__
   block[1] = 3221225472;
   block[2] = __87__AVConferencePreview_cameraZoomAvailabilityDidChange_currentZoomFactor_maxZoomFactor___block_invoke;
   block[3] = &unk_1E85F8FC8;
-  v7 = a3;
+  changeCopy = change;
   block[4] = self;
-  *&block[5] = a4;
-  *&block[6] = a5;
+  *&block[5] = factor;
+  *&block[6] = zoomFactor;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -798,7 +798,7 @@ void __87__AVConferencePreview_cameraZoomAvailabilityDidChange_currentZoomFactor
   }
 }
 
-- (void)cameraCFramingAvailabilityDidChange:(BOOL)a3
+- (void)cameraCFramingAvailabilityDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -806,7 +806,7 @@ void __87__AVConferencePreview_cameraZoomAvailabilityDidChange_currentZoomFactor
   block[1] = 3221225472;
   block[2] = __59__AVConferencePreview_cameraCFramingAvailabilityDidChange___block_invoke;
   block[3] = &unk_1E85F37A0;
-  v5 = a3;
+  changeCopy = change;
   block[4] = self;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
@@ -855,7 +855,7 @@ void __59__AVConferencePreview_cameraCFramingAvailabilityDidChange___block_invok
   }
 }
 
-- (void)followSystemCameraDidChange:(BOOL)a3
+- (void)followSystemCameraDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -863,7 +863,7 @@ void __59__AVConferencePreview_cameraCFramingAvailabilityDidChange___block_invok
   block[1] = 3221225472;
   block[2] = __51__AVConferencePreview_followSystemCameraDidChange___block_invoke;
   block[3] = &unk_1E85F37A0;
-  v5 = a3;
+  changeCopy = change;
   block[4] = self;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
@@ -912,7 +912,7 @@ void __51__AVConferencePreview_followSystemCameraDidChange___block_invoke(uint64
   }
 }
 
-- (void)didDetectSensitiveContentWithAnalysis:(id)a3
+- (void)didDetectSensitiveContentWithAnalysis:(id)analysis
 {
   block[6] = *MEMORY[0x1E69E9840];
   avConferencePreviewNotificationQueue = self->avConferencePreviewNotificationQueue;
@@ -921,7 +921,7 @@ void __51__AVConferencePreview_followSystemCameraDidChange___block_invoke(uint64
   block[2] = __61__AVConferencePreview_didDetectSensitiveContentWithAnalysis___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = analysis;
   dispatch_async(avConferencePreviewNotificationQueue, block);
 }
 
@@ -955,27 +955,27 @@ void __61__AVConferencePreview_didDetectSensitiveContentWithAnalysis___block_inv
   }
 }
 
-- (void)applyTransform:(CATransform3D *)a3 forLayer:(id)a4
+- (void)applyTransform:(CATransform3D *)transform forLayer:(id)layer
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (layer)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
-    v4 = *&a3->m33;
-    v13 = *&a3->m31;
+    v4 = *&transform->m33;
+    v13 = *&transform->m31;
     v14 = v4;
-    v5 = *&a3->m43;
-    v15 = *&a3->m41;
+    v5 = *&transform->m43;
+    v15 = *&transform->m41;
     v16 = v5;
-    v6 = *&a3->m13;
-    v9 = *&a3->m11;
+    v6 = *&transform->m13;
+    v9 = *&transform->m11;
     v10 = v6;
-    v7 = *&a3->m23;
-    v11 = *&a3->m21;
+    v7 = *&transform->m23;
+    v11 = *&transform->m21;
     v8[2] = __47__AVConferencePreview_applyTransform_forLayer___block_invoke;
     v8[3] = &unk_1E85F8FF0;
-    v8[4] = a4;
+    v8[4] = layer;
     v12 = v7;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
@@ -1011,17 +1011,17 @@ uint64_t __47__AVConferencePreview_applyTransform_forLayer___block_invoke(uint64
   return [MEMORY[0x1E6979518] commit];
 }
 
-- (void)connectLayer:(id)a3 withSlot:(unsigned int)a4
+- (void)connectLayer:(id)layer withSlot:(unsigned int)slot
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (layer && slot)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __45__AVConferencePreview_connectLayer_withSlot___block_invoke;
     v11[3] = &unk_1E85F38B8;
-    v11[4] = a3;
-    v12 = a4;
+    v11[4] = layer;
+    slotCopy = slot;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -1029,7 +1029,7 @@ uint64_t __47__AVConferencePreview_applyTransform_forLayer___block_invoke(uint64
       v7 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [a3 name];
+        name = [layer name];
         *buf = 136316418;
         v14 = v6;
         v15 = 2080;
@@ -1037,11 +1037,11 @@ uint64_t __47__AVConferencePreview_applyTransform_forLayer___block_invoke(uint64
         v17 = 1024;
         v18 = 370;
         v19 = 1024;
-        *v20 = a4;
+        *v20 = slot;
         *&v20[4] = 2048;
-        *&v20[6] = a3;
+        *&v20[6] = layer;
         v21 = 2112;
-        v22 = v8;
+        v22 = name;
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d Connected slot %u to layer %p named %@", buf, 0x36u);
       }
     }
@@ -1060,9 +1060,9 @@ uint64_t __47__AVConferencePreview_applyTransform_forLayer___block_invoke(uint64
       v17 = 1024;
       v18 = 358;
       v19 = 2048;
-      *v20 = a3;
+      *v20 = layer;
       *&v20[8] = 1024;
-      *&v20[10] = a4;
+      *&v20[10] = slot;
       _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, "AVConferencePreview [%s] %s:%d Invalid layer or slot: layer=%p, slot=%u", buf, 0x2Cu);
     }
   }
@@ -2052,7 +2052,7 @@ uint64_t __61__AVConferencePreview_registerBlocksForDelegateNotifications__block
   objc_sync_enter(v3);
   if (!_avConferencePreviewSingleton)
   {
-    _avConferencePreviewSingleton = objc_alloc_init(a1);
+    _avConferencePreviewSingleton = objc_alloc_init(self);
   }
 
   objc_sync_exit(v3);
@@ -2200,7 +2200,7 @@ uint64_t __61__AVConferencePreview_registerBlocksForDelegateNotifications__block
       v10 = 1024;
       v11 = 800;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d @:@ AVConferencePreview-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -2228,7 +2228,7 @@ uint64_t __61__AVConferencePreview_registerBlocksForDelegateNotifications__block
       v15 = 1024;
       v16 = 838;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d self=%p", buf, 0x26u);
     }
   }
@@ -2254,7 +2254,7 @@ uint64_t __61__AVConferencePreview_registerBlocksForDelegateNotifications__block
       v15 = 1024;
       v16 = 859;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d @:@ AVConferencePreview-startPreview (%p)", buf, 0x26u);
     }
   }
@@ -2329,9 +2329,9 @@ LABEL_11:
   [*(*(a1 + 32) + 8) sendMessageAsync:"previewStartPreview" arguments:v12 reply:0];
 }
 
-- (void)startPreviewUnpausing:(BOOL)a3
+- (void)startPreviewUnpausing:(BOOL)unpausing
 {
-  v3 = a3;
+  unpausingCopy = unpausing;
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2346,9 +2346,9 @@ LABEL_11:
       v11 = 1024;
       v12 = 864;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 1024;
-      v16 = v3;
+      v16 = unpausingCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d !!Deprecating!! Client is recommanded to use startPreview instead. AVConferencePreview startPreviewUnpausing, self %p, unpause=%d.", &v7, 0x2Cu);
     }
   }
@@ -2374,7 +2374,7 @@ LABEL_11:
       v15 = 1024;
       v16 = 871;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d self=%p", buf, 0x26u);
     }
   }
@@ -2400,7 +2400,7 @@ LABEL_11:
       v15 = 1024;
       v16 = 885;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d @:@ AVConferencePreview-pausePreview (%p)", buf, 0x26u);
     }
   }
@@ -2424,7 +2424,7 @@ LABEL_11:
       v15 = 1024;
       v16 = 892;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d self=%p", buf, 0x26u);
     }
   }
@@ -2450,7 +2450,7 @@ LABEL_11:
       v15 = 1024;
       v16 = 908;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d @:@ AVConferencePreview-stopPreview (%p)", buf, 0x26u);
     }
   }
@@ -2737,9 +2737,9 @@ double __36__AVConferencePreview_maxZoomFactor__block_invoke(uint64_t a1)
   _os_log_error_impl(v0, v1, v2, v3, v4, v5);
 }
 
-- (void)setLocalVideoLayer:(id)a3 front:(BOOL)a4
+- (void)setLocalVideoLayer:(id)layer front:(BOOL)front
 {
-  v4 = a4;
+  frontCopy = front;
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2754,9 +2754,9 @@ double __36__AVConferencePreview_maxZoomFactor__block_invoke(uint64_t a1)
       v16 = 1024;
       v17 = 987;
       v18 = 2048;
-      v19 = a3;
+      layerCopy = layer;
       v20 = 1024;
-      v21 = v4;
+      v21 = frontCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d layer=%p, front=%d", buf, 0x2Cu);
     }
   }
@@ -2767,8 +2767,8 @@ double __36__AVConferencePreview_maxZoomFactor__block_invoke(uint64_t a1)
   block[2] = __48__AVConferencePreview_setLocalVideoLayer_front___block_invoke;
   block[3] = &unk_1E85F37C8;
   block[4] = self;
-  block[5] = a3;
-  v11 = v4;
+  block[5] = layer;
+  v11 = frontCopy;
   dispatch_async(avConferencePreviewQueue, block);
 }
 
@@ -2840,7 +2840,7 @@ void __48__AVConferencePreview_setLocalVideoLayer_front___block_invoke_2(uint64_
   }
 }
 
-- (id)localVideoLayer:(BOOL)a3
+- (id)localVideoLayer:(BOOL)layer
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -2854,7 +2854,7 @@ void __48__AVConferencePreview_setLocalVideoLayer_front___block_invoke_2(uint64_
   v6[1] = 3221225472;
   v6[2] = __39__AVConferencePreview_localVideoLayer___block_invoke;
   v6[3] = &unk_1E85F7890;
-  v7 = a3;
+  layerCopy = layer;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(avConferencePreviewQueue, v6);
@@ -2875,21 +2875,21 @@ uint64_t __39__AVConferencePreview_localVideoLayer___block_invoke(uint64_t resul
   return result;
 }
 
-- (id)newXPCObjectForFenceHandle:(id *)a3 forLayerHost:(id)a4
+- (id)newXPCObjectForFenceHandle:(id *)handle forLayerHost:(id)host
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handle)
   {
     goto LABEL_5;
   }
 
-  v7 = [MEMORY[0x1E6979370] newFenceFromDefaultServer];
-  *a3 = v7;
-  if (v7)
+  newFenceFromDefaultServer = [MEMORY[0x1E6979370] newFenceFromDefaultServer];
+  *handle = newFenceFromDefaultServer;
+  if (newFenceFromDefaultServer)
   {
-    if ([objc_msgSend(a4 "context")])
+    if ([objc_msgSend(host "context")])
     {
-      result = [*a3 createXPCRepresentation];
+      result = [*handle createXPCRepresentation];
       if (result)
       {
         return result;
@@ -2912,7 +2912,7 @@ uint64_t __39__AVConferencePreview_localVideoLayer___block_invoke(uint64_t resul
         goto LABEL_5;
       }
 
-      v12 = *a3;
+      v12 = *handle;
       v19 = 136316418;
       v20 = v10;
       v21 = 2080;
@@ -2922,9 +2922,9 @@ uint64_t __39__AVConferencePreview_localVideoLayer___block_invoke(uint64_t resul
       v25 = 2048;
       v26 = v12;
       v27 = 2048;
-      v28 = a4;
+      selfCopy = host;
       v29 = 2048;
-      v30 = [a4 context];
+      context = [host context];
       v13 = "AVConferencePreview [%s] %s:%d Failed to add fence=%p for layer=%p with context=%p";
       v14 = v11;
       v15 = 58;
@@ -2954,7 +2954,7 @@ uint64_t __39__AVConferencePreview_localVideoLayer___block_invoke(uint64_t resul
         goto LABEL_5;
       }
 
-      v18 = *a3;
+      v18 = *handle;
       v19 = 136316930;
       v20 = v16;
       v21 = 2080;
@@ -2964,13 +2964,13 @@ uint64_t __39__AVConferencePreview_localVideoLayer___block_invoke(uint64_t resul
       v25 = 2112;
       v26 = v9;
       v27 = 2048;
-      v28 = self;
+      selfCopy = self;
       v29 = 2048;
-      v30 = v18;
+      context = v18;
       v31 = 2048;
-      v32 = a4;
+      hostCopy2 = host;
       v33 = 2048;
-      v34 = [a4 context];
+      context2 = [host context];
       v13 = "AVConferencePreview [%s] %s:%d %@(%p) Failed to add fence=%p for layer=%p with context=%p";
       v14 = v17;
       v15 = 78;
@@ -2985,24 +2985,24 @@ uint64_t __39__AVConferencePreview_localVideoLayer___block_invoke(uint64_t resul
   }
 
 LABEL_5:
-  result = *a3;
-  if (*a3)
+  result = *handle;
+  if (*handle)
   {
     [result invalidate];
 
     result = 0;
-    *a3 = 0;
+    *handle = 0;
   }
 
   return result;
 }
 
-- (void)setBounds:(CGRect)a3 forLayerHost:(id)a4
+- (void)setBounds:(CGRect)bounds forLayerHost:(id)host
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v73 = *MEMORY[0x1E69E9840];
   caLayerHostFront = self->_caLayerHostFront;
   if (objc_opt_class() == self)
@@ -3031,17 +3031,17 @@ LABEL_5:
         v55 = 2112;
         v56 = v14;
         v57 = 2048;
-        v58 = a4;
+        selfCopy2 = host;
         v59 = 2048;
         v60 = caLayerFront;
         v61 = 2048;
-        v62 = caLayerBack;
+        hostCopy2 = caLayerBack;
         v63 = 2048;
         v64 = v17;
         v65 = 2048;
         v66 = caLayerHostBack;
         v67 = 1024;
-        LODWORD(v68) = caLayerHostFront == a4;
+        LODWORD(v68) = caLayerHostFront == host;
         v19 = "AVConferencePreview [%s] %s:%d bounds=%@ layerHost=%p caLayerFront=%p caLayerBack=%p caLayerHostFront=%p caLayerHostBack=%p front=%d";
         v20 = v13;
         v21 = 94;
@@ -3087,11 +3087,11 @@ LABEL_11:
         v55 = 2112;
         v56 = v11;
         v57 = 2048;
-        v58 = self;
+        selfCopy2 = self;
         v59 = 2112;
         v60 = v24;
         v61 = 2048;
-        v62 = a4;
+        hostCopy2 = host;
         v63 = 2048;
         v64 = v25;
         v65 = 2048;
@@ -3101,7 +3101,7 @@ LABEL_11:
         v69 = 2048;
         v70 = v28;
         v71 = 1024;
-        v72 = caLayerHostFront == a4;
+        v72 = caLayerHostFront == host;
         v19 = "AVConferencePreview [%s] %s:%d %@(%p) bounds=%@ layerHost=%p caLayerFront=%p caLayerBack=%p caLayerHostFront=%p caLayerHostBack=%p front=%d";
         v20 = v23;
         v21 = 114;
@@ -3118,16 +3118,16 @@ LABEL_11:
     v76.size.width = width;
     v76.size.height = height;
     v29 = NSStringFromRect(v76);
-    v30 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:caLayerHostFront == a4];
-    v31 = v30;
-    if (v30)
+    host = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:caLayerHostFront == host];
+    v31 = host;
+    if (host)
     {
       v48[0] = @"videoSlotFacing";
       v48[1] = @"conferenceVisualRectangle";
-      v49[0] = v30;
+      v49[0] = host;
       v49[1] = v29;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
-      v33 = [(AVConferencePreview *)self newXPCObjectForFenceHandle:&v47 forLayerHost:a4];
+      v33 = [(AVConferencePreview *)self newXPCObjectForFenceHandle:&v47 forLayerHost:host];
       if (v33)
       {
         v34 = v33;
@@ -3233,7 +3233,7 @@ LABEL_31:
       v55 = 2112;
       v56 = v37;
       v57 = 2048;
-      v58 = self;
+      selfCopy2 = self;
       v59 = 2112;
       v60 = v46;
       v41 = "AVConferencePreview [%s] %s:%d %@(%p) Invalid root layer bounds=%@, skip bounds configuration";
@@ -3244,10 +3244,10 @@ LABEL_31:
   }
 }
 
-- (void)createPreviewCALayerHostForRootLayer:(id)a3 withContextId:(unsigned int)a4 front:(BOOL)a5
+- (void)createPreviewCALayerHostForRootLayer:(id)layer withContextId:(unsigned int)id front:(BOOL)front
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!layer || !id)
   {
     [AVConferencePreview createPreviewCALayerHostForRootLayer:withContextId:front:];
 LABEL_28:
@@ -3255,30 +3255,30 @@ LABEL_28:
     goto LABEL_24;
   }
 
-  v7 = a5;
+  frontCopy = front;
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10 = "Back";
-  if (v7)
+  if (frontCopy)
   {
     v10 = "Front";
   }
 
-  v11 = [v9 initWithFormat:@"AVCPreviewVideoCALayerHost%sFor%p", v10, a3];
-  if (!v11)
+  layer = [v9 initWithFormat:@"AVCPreviewVideoCALayerHost%sFor%p", v10, layer];
+  if (!layer)
   {
     [AVConferencePreview createPreviewCALayerHostForRootLayer:withContextId:front:];
     goto LABEL_28;
   }
 
-  v12 = v11;
-  [a3 bounds];
+  v12 = layer;
+  [layer bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
   p_caLayerHostFront = &self->_caLayerHostFront;
   p_caLayerHostBack = &self->_caLayerHostBack;
-  if (v7)
+  if (frontCopy)
   {
     v23 = 40;
   }
@@ -3288,7 +3288,7 @@ LABEL_28:
     v23 = 48;
   }
 
-  if (v7)
+  if (frontCopy)
   {
     v24 = &self->_caLayerHostFront;
   }
@@ -3311,9 +3311,9 @@ LABEL_28:
   block[1] = 3221225472;
   block[2] = __80__AVConferencePreview_createPreviewCALayerHostForRootLayer_withContextId_front___block_invoke;
   block[3] = &unk_1E85F9040;
-  block[5] = a3;
+  block[5] = layer;
   block[6] = v24;
-  v39 = a4;
+  idCopy = id;
   block[7] = v14;
   block[8] = v16;
   block[9] = v18;
@@ -3339,11 +3339,11 @@ LABEL_28:
         v45 = 2048;
         v46 = v29;
         v47 = 2048;
-        v48 = v30;
+        selfCopy = v30;
         v49 = 2048;
-        v50 = a3;
+        layerCopy = layer;
         v51 = 1024;
-        LODWORD(v52) = a4;
+        LODWORD(v52) = id;
         v31 = "AVConferencePreview [%s] %s:%d AVConferencePreview: createPreviewCALayerHostForRootLayer caLayerHostFront=%p caLayerHostBack=%p rootLayer=%p contextId=%u";
         v32 = v28;
         v33 = 64;
@@ -3382,15 +3382,15 @@ LABEL_23:
         v45 = 2112;
         v46 = v26;
         v47 = 2048;
-        v48 = self;
+        selfCopy = self;
         v49 = 2048;
-        v50 = caLayerHostFront;
+        layerCopy = caLayerHostFront;
         v51 = 2048;
         v52 = caLayerHostBack;
         v53 = 2048;
-        v54 = a3;
+        layerCopy2 = layer;
         v55 = 1024;
-        v56 = a4;
+        idCopy2 = id;
         v31 = "AVConferencePreview [%s] %s:%d %@(%p) AVConferencePreview: createPreviewCALayerHostForRootLayer caLayerHostFront=%p caLayerHostBack=%p rootLayer=%p contextId=%u";
         v32 = v35;
         v33 = 84;
@@ -3423,9 +3423,9 @@ uint64_t __80__AVConferencePreview_createPreviewCALayerHostForRootLayer_withCont
   return [v7 synchronize];
 }
 
-- (void)setLocalVideoLayerHost:(id)a3 front:(BOOL)a4
+- (void)setLocalVideoLayerHost:(id)host front:(BOOL)front
 {
-  v4 = a4;
+  frontCopy = front;
   v42 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -3435,13 +3435,13 @@ uint64_t __80__AVConferencePreview_createPreviewCALayerHostForRootLayer_withCont
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 bounds];
+        [host bounds];
         v10 = NSStringFromRect(v43);
-        [a3 frame];
+        [host frame];
         v11 = NSStringFromRect(v44);
-        [objc_msgSend(a3 "superlayer")];
+        [objc_msgSend(host "superlayer")];
         v12 = NSStringFromRect(v45);
-        [objc_msgSend(a3 "superlayer")];
+        [objc_msgSend(host "superlayer")];
         *buf = 136317186;
         v25 = v8;
         v26 = 2080;
@@ -3449,9 +3449,9 @@ uint64_t __80__AVConferencePreview_createPreviewCALayerHostForRootLayer_withCont
         v28 = 1024;
         v29 = 1178;
         v30 = 2048;
-        v31 = a3;
+        hostCopy = host;
         v32 = 1024;
-        *v33 = v4;
+        *v33 = frontCopy;
         *&v33[4] = 2112;
         *&v33[6] = v10;
         *&v33[14] = 2112;
@@ -3487,13 +3487,13 @@ LABEL_11:
       v17 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 bounds];
+        [host bounds];
         v18 = NSStringFromRect(v47);
-        [a3 frame];
+        [host frame];
         v19 = NSStringFromRect(v48);
-        [objc_msgSend(a3 "superlayer")];
+        [objc_msgSend(host "superlayer")];
         v20 = NSStringFromRect(v49);
-        [objc_msgSend(a3 "superlayer")];
+        [objc_msgSend(host "superlayer")];
         *buf = 136317698;
         v25 = v16;
         v26 = 2080;
@@ -3501,13 +3501,13 @@ LABEL_11:
         v28 = 1024;
         v29 = 1178;
         v30 = 2112;
-        v31 = v7;
+        hostCopy = v7;
         v32 = 2048;
         *v33 = self;
         *&v33[8] = 2048;
-        *&v33[10] = a3;
+        *&v33[10] = host;
         *&v33[18] = 1024;
-        *&v33[20] = v4;
+        *&v33[20] = frontCopy;
         v34 = 2112;
         v35 = v18;
         v36 = 2112;
@@ -3530,8 +3530,8 @@ LABEL_11:
   block[2] = __52__AVConferencePreview_setLocalVideoLayerHost_front___block_invoke;
   block[3] = &unk_1E85F37C8;
   block[4] = self;
-  block[5] = a3;
-  v23 = v4;
+  block[5] = host;
+  v23 = frontCopy;
   dispatch_async(avConferencePreviewQueue, block);
 }
 
@@ -3856,7 +3856,7 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)setLocalCamera:(unsigned int)a3
+- (void)setLocalCamera:(unsigned int)camera
 {
   v13 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -3921,7 +3921,7 @@ void __60__AVConferencePreview_resetLocalCameraAfterServerDisconnect__block_invo
   [*(*(a1 + 32) + 8) sendMessageAsync:"previewSetLocalCamera" arguments:v5];
 }
 
-- (void)setLocalCameraWithUID:(id)a3
+- (void)setLocalCameraWithUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -3937,14 +3937,14 @@ void __60__AVConferencePreview_resetLocalCameraAfterServerDisconnect__block_invo
       v15 = 1024;
       v16 = 1249;
       v17 = 2112;
-      v18 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d requestedCameraUniqueID = %@", buf, 0x26u);
     }
   }
 
-  if (a3)
+  if (d)
   {
-    if ([a3 isEqualToString:self->_localCameraUID])
+    if ([d isEqualToString:self->_localCameraUID])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -3966,7 +3966,7 @@ void __60__AVConferencePreview_resetLocalCameraAfterServerDisconnect__block_invo
     else
     {
 
-      self->_localCameraUID = a3;
+      self->_localCameraUID = d;
       avConferencePreviewQueue = self->avConferencePreviewQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -3993,9 +3993,9 @@ void __45__AVConferencePreview_setLocalCameraWithUID___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 8) sendMessageAsync:"previewSetLocalCamera" arguments:v2];
 }
 
-- (void)setFollowSystemCameraEnabled:(BOOL)a3
+- (void)setFollowSystemCameraEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -4010,7 +4010,7 @@ void __45__AVConferencePreview_setLocalCameraWithUID___block_invoke(uint64_t a1)
       v10 = 1024;
       v11 = 1270;
       v12 = 1024;
-      v13 = v3;
+      v13 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d enabled=%d", &v6, 0x22u);
     }
   }
@@ -4087,7 +4087,7 @@ id __37__AVConferencePreview_localCameraUID__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLocalVideoAttributes:(id)a3
+- (void)setLocalVideoAttributes:(id)attributes
 {
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4096,9 +4096,9 @@ id __37__AVConferencePreview_localCameraUID__block_invoke(uint64_t a1)
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (attributes)
       {
-        v7 = [objc_msgSend(a3 "description")];
+        v7 = [objc_msgSend(attributes "description")];
       }
 
       else
@@ -4124,7 +4124,7 @@ id __37__AVConferencePreview_localCameraUID__block_invoke(uint64_t a1)
   v9[2] = __47__AVConferencePreview_setLocalVideoAttributes___block_invoke;
   v9[3] = &unk_1E85F37F0;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = attributes;
   dispatch_async(avConferencePreviewQueue, v9);
 }
 
@@ -4196,7 +4196,7 @@ VideoAttributes *__43__AVConferencePreview_localVideoAttributes__block_invoke(ui
   return result;
 }
 
-- (void)setLocalScreenAttributes:(id)a3
+- (void)setLocalScreenAttributes:(id)attributes
 {
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4205,9 +4205,9 @@ VideoAttributes *__43__AVConferencePreview_localVideoAttributes__block_invoke(ui
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (attributes)
       {
-        v7 = [objc_msgSend(a3 "description")];
+        v7 = [objc_msgSend(attributes "description")];
       }
 
       else
@@ -4232,7 +4232,7 @@ VideoAttributes *__43__AVConferencePreview_localVideoAttributes__block_invoke(ui
   v9[1] = 3221225472;
   v9[2] = __48__AVConferencePreview_setLocalScreenAttributes___block_invoke;
   v9[3] = &unk_1E85F37F0;
-  v9[4] = a3;
+  v9[4] = attributes;
   v9[5] = self;
   dispatch_async(avConferencePreviewQueue, v9);
 }
@@ -4278,7 +4278,7 @@ void __48__AVConferencePreview_setLocalScreenAttributes___block_invoke(uint64_t 
   [*(*(a1 + 40) + 8) sendMessageAsync:"previewSetLocalScreenAttributes" arguments:v8 reply:0];
 }
 
-- (id)localScreenAttributesForVideoAttributes:(id)a3
+- (id)localScreenAttributesForVideoAttributes:(id)attributes
 {
   v25 = *MEMORY[0x1E69E9840];
   v11 = 0;
@@ -4294,7 +4294,7 @@ void __48__AVConferencePreview_setLocalScreenAttributes___block_invoke(uint64_t 
   block[3] = &unk_1E85F3E08;
   block[5] = self;
   block[6] = &v11;
-  block[4] = a3;
+  block[4] = attributes;
   dispatch_sync(avConferencePreviewQueue, block);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -4471,7 +4471,7 @@ uint64_t __63__AVConferencePreview_localScreenAttributesForVideoAttributes___blo
   }
 }
 
-- (void)setCameraZoomFactor:(double)a3
+- (void)setCameraZoomFactor:(double)factor
 {
   v16 = *MEMORY[0x1E69E9840];
   avConferencePreviewQueue = self->avConferencePreviewQueue;
@@ -4480,7 +4480,7 @@ uint64_t __63__AVConferencePreview_localScreenAttributesForVideoAttributes___blo
   v7[2] = __43__AVConferencePreview_setCameraZoomFactor___block_invoke;
   v7[3] = &unk_1E85F40E0;
   v7[4] = self;
-  *&v7[5] = a3;
+  *&v7[5] = factor;
   dispatch_async(avConferencePreviewQueue, v7);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -4495,7 +4495,7 @@ uint64_t __63__AVConferencePreview_localScreenAttributesForVideoAttributes___blo
       v12 = 1024;
       v13 = 1549;
       v14 = 2048;
-      v15 = a3;
+      factorCopy = factor;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d cameraZoomFactor=%f", buf, 0x26u);
     }
   }
@@ -4528,7 +4528,7 @@ void __43__AVConferencePreview_setCameraZoomFactor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCameraZoomFactor:(double)a3 withRate:(double)a4
+- (void)setCameraZoomFactor:(double)factor withRate:(double)rate
 {
   v20 = *MEMORY[0x1E69E9840];
   avConferencePreviewQueue = self->avConferencePreviewQueue;
@@ -4537,8 +4537,8 @@ void __43__AVConferencePreview_setCameraZoomFactor___block_invoke(uint64_t a1)
   block[2] = __52__AVConferencePreview_setCameraZoomFactor_withRate___block_invoke;
   block[3] = &unk_1E85F4090;
   block[4] = self;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = factor;
+  *&block[6] = rate;
   dispatch_async(avConferencePreviewQueue, block);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -4553,9 +4553,9 @@ void __43__AVConferencePreview_setCameraZoomFactor___block_invoke(uint64_t a1)
       v14 = 1024;
       v15 = 1568;
       v16 = 2048;
-      v17 = a3;
+      factorCopy = factor;
       v18 = 2048;
-      v19 = a4;
+      rateCopy = rate;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d cameraZoomFactor=%f with rate=%f", buf, 0x30u);
     }
   }
@@ -4589,16 +4589,16 @@ void __52__AVConferencePreview_setCameraZoomFactor_withRate___block_invoke(uint6
   }
 }
 
-- (void)setCinematicFramingEnabled:(BOOL)a3
+- (void)setCinematicFramingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   avConferencePreviewQueue = self->avConferencePreviewQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__AVConferencePreview_setCinematicFramingEnabled___block_invoke;
   v7[3] = &unk_1E85F37A0;
-  v8 = a3;
+  enabledCopy2 = enabled;
   v7[4] = self;
   dispatch_async(avConferencePreviewQueue, v7);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4614,7 +4614,7 @@ void __52__AVConferencePreview_setCameraZoomFactor_withRate___block_invoke(uint6
       v13 = 1024;
       v14 = 1585;
       v15 = 1024;
-      v16 = v3;
+      v16 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d enabled=%d", buf, 0x22u);
     }
   }
@@ -4631,16 +4631,16 @@ uint64_t __50__AVConferencePreview_setCinematicFramingEnabled___block_invoke(uin
   return [*(*(a1 + 32) + 8) sendMessageAsync:"previewCameraCinematicFraming" arguments:objc_msgSend(MEMORY[0x1E695DF20] reply:{"dictionaryWithObjects:forKeys:count:", v5, v4, 2), 0}];
 }
 
-- (void)notifyCenterStageEnabled:(BOOL)a3
+- (void)notifyCenterStageEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   avConferencePreviewQueue = self->avConferencePreviewQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__AVConferencePreview_notifyCenterStageEnabled___block_invoke;
   v7[3] = &unk_1E85F37A0;
-  v8 = a3;
+  enabledCopy2 = enabled;
   v7[4] = self;
   dispatch_async(avConferencePreviewQueue, v7);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4656,7 +4656,7 @@ uint64_t __50__AVConferencePreview_setCinematicFramingEnabled___block_invoke(uin
       v13 = 1024;
       v14 = 1601;
       v15 = 1024;
-      v16 = v3;
+      v16 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d enabled=%d", buf, 0x22u);
     }
   }
@@ -4673,9 +4673,9 @@ uint64_t __48__AVConferencePreview_notifyCenterStageEnabled___block_invoke(uint6
   return [*(*(a1 + 32) + 8) sendMessageAsync:"previewCameraCinematicFraming" arguments:objc_msgSend(MEMORY[0x1E695DF20] reply:{"dictionaryWithObjects:forKeys:count:", v5, v4, 2), 0}];
 }
 
-- (void)setMultiCamEnabled:(BOOL)a3
+- (void)setMultiCamEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -4690,18 +4690,18 @@ uint64_t __48__AVConferencePreview_notifyCenterStageEnabled___block_invoke(uint6
       v10 = 1024;
       v11 = 1620;
       v12 = 1024;
-      v13 = v3;
+      v13 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d enabled=%d", &v6, 0x22u);
     }
   }
 }
 
-- (void)setMultiCamSubviewPosition:(CGRect)a3
+- (void)setMultiCamSubviewPosition:(CGRect)position
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -4790,21 +4790,21 @@ uint64_t ___AVConferencePreview_DidReceiveFirstPreviewFrameFromCamera_block_invo
   return result;
 }
 
-- (void)connectLayer:(id)a3 layerHost:(id)a4 withContextId:(unsigned int)a5
+- (void)connectLayer:(id)layer layerHost:(id)host withContextId:(unsigned int)id
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (host)
   {
-    v5 = *&a5;
-    if ([a4 superlayer] == a3)
+    v5 = *&id;
+    if ([host superlayer] == layer)
     {
-      if ([a4 contextId] != v5)
+      if ([host contextId] != v5)
       {
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __60__AVConferencePreview_connectLayer_layerHost_withContextId___block_invoke;
         v11[3] = &unk_1E85F38B8;
-        v11[4] = a4;
+        v11[4] = host;
         v12 = v5;
         dispatch_async(MEMORY[0x1E69E96A0], v11);
       }
@@ -4812,11 +4812,11 @@ uint64_t ___AVConferencePreview_DidReceiveFirstPreviewFrameFromCamera_block_invo
 
     else
     {
-      [(AVConferencePreview *)self createPreviewCALayerHostForRootLayer:a3 withContextId:v5 front:self->_caLayerHostFront == a4];
+      [(AVConferencePreview *)self createPreviewCALayerHostForRootLayer:layer withContextId:v5 front:self->_caLayerHostFront == host];
     }
 
-    [a3 bounds];
-    [(AVConferencePreview *)self setBounds:a4 forLayerHost:?];
+    [layer bounds];
+    [(AVConferencePreview *)self setBounds:host forLayerHost:?];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v9 = VRTraceErrorLogLevelToCSTR();
@@ -4832,19 +4832,19 @@ uint64_t ___AVConferencePreview_DidReceiveFirstPreviewFrameFromCamera_block_invo
         v19 = 1024;
         v20 = v5;
         v21 = 2048;
-        v22 = a3;
+        layerCopy = layer;
         v23 = 2048;
-        v24 = a4;
+        hostCopy = host;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVConferencePreview [%s] %s:%d Connected contextId=%u to layer=%p layerHost=%p", buf, 0x36u);
       }
     }
   }
 }
 
-- (BOOL)setRootPreviewLayer:(id)a3 front:(BOOL)a4
+- (BOOL)setRootPreviewLayer:(id)layer front:(BOOL)front
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (front)
   {
     v5 = 24;
   }
@@ -4855,18 +4855,18 @@ uint64_t ___AVConferencePreview_DidReceiveFirstPreviewFrameFromCamera_block_invo
   }
 
   v6 = *(&self->super.isa + v5);
-  if (v6 != a3)
+  if (v6 != layer)
   {
-    v7 = a4;
+    frontCopy = front;
     v9 = 48;
-    if (a4)
+    if (front)
     {
       v9 = 40;
     }
 
     [(AVConferencePreview *)self cleanupPreviewLayerHost:self + v9];
     v10 = *(&self->super.isa + v5);
-    *(&self->super.isa + v5) = a3;
+    *(&self->super.isa + v5) = layer;
 
     if (objc_opt_class() == self)
     {
@@ -4882,9 +4882,9 @@ uint64_t ___AVConferencePreview_DidReceiveFirstPreviewFrameFromCamera_block_invo
           OUTLINED_FUNCTION_5_9();
           v29 = 979;
           v30 = 2048;
-          v31 = a3;
+          layerCopy = layer;
           v32 = v14;
-          *v33 = v7;
+          *v33 = frontCopy;
           *&v33[4] = 2048;
           *&v33[6] = v15;
           *&v33[14] = 2048;
@@ -4922,13 +4922,13 @@ LABEL_17:
           OUTLINED_FUNCTION_5_9();
           v29 = 979;
           v30 = 2112;
-          v31 = v11;
+          layerCopy = v11;
           v32 = 2048;
           *v33 = self;
           *&v33[8] = 2048;
-          *&v33[10] = a3;
+          *&v33[10] = layer;
           *&v33[18] = v22;
-          *&v33[20] = v7;
+          *&v33[20] = frontCopy;
           v34 = 2048;
           v35 = v23;
           v36 = 2048;
@@ -4942,16 +4942,16 @@ LABEL_17:
     }
   }
 
-  return v6 != a3;
+  return v6 != layer;
 }
 
-- (void)cleanupPreviewLayerHost:(id *)a3
+- (void)cleanupPreviewLayerHost:(id *)host
 {
-  if (*a3)
+  if (*host)
   {
-    [*a3 removeFromSuperlayer];
+    [*host removeFromSuperlayer];
 
-    *a3 = 0;
+    *host = 0;
   }
 }
 

@@ -8,8 +8,8 @@
 - (id)requirementDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)self userDefaultsKey];
-  v4 = [v2 stringWithFormat:@"The value of the notifications user defaults key %@ must be YES", v3];
+  userDefaultsKey = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)self userDefaultsKey];
+  v4 = [v2 stringWithFormat:@"The value of the notifications user defaults key %@ must be YES", userDefaultsKey];
 
   return v4;
 }

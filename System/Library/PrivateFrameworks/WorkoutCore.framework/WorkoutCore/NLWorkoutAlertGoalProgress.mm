@@ -1,34 +1,34 @@
 @interface NLWorkoutAlertGoalProgress
-+ (id)goalProgressAlertWithGoal:(id)a3 distanceType:(unint64_t)a4 alertType:(int64_t)a5 currentValue:(double)a6;
-- (id)_localizedDescriptionForProModeWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4;
++ (id)goalProgressAlertWithGoal:(id)goal distanceType:(unint64_t)type alertType:(int64_t)alertType currentValue:(double)value;
+- (id)_localizedDescriptionForProModeWithUnitStyle:(unint64_t)style formattingManager:(id)manager;
 - (id)description;
-- (id)goalCompletionStringWithUnitStyle:(unint64_t)a3 decimalTrimmingMode:(unint64_t)a4 formattingManager:(id)a5 textCase:(unint64_t)a6;
+- (id)goalCompletionStringWithUnitStyle:(unint64_t)style decimalTrimmingMode:(unint64_t)mode formattingManager:(id)manager textCase:(unint64_t)case;
 - (id)goalProgressString;
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4;
-- (id)spokenDescriptionWithFormattingManager:(id)a3;
-- (id)spokenUserDataWithFormattingManager:(id)a3;
-- (unint64_t)optimalUnitStyleFittingWidth:(double)a3 withFont:(id)a4 formattingManager:(id)a5;
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager;
+- (id)spokenDescriptionWithFormattingManager:(id)manager;
+- (id)spokenUserDataWithFormattingManager:(id)manager;
+- (unint64_t)optimalUnitStyleFittingWidth:(double)width withFont:(id)font formattingManager:(id)manager;
 @end
 
 @implementation NLWorkoutAlertGoalProgress
 
-+ (id)goalProgressAlertWithGoal:(id)a3 distanceType:(unint64_t)a4 alertType:(int64_t)a5 currentValue:(double)a6
++ (id)goalProgressAlertWithGoal:(id)goal distanceType:(unint64_t)type alertType:(int64_t)alertType currentValue:(double)value
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
-  v14 = a5;
-  v13 = a6;
+  objc_storeStrong(location, goal);
+  typeCopy = type;
+  alertTypeCopy = alertType;
+  valueCopy = value;
   v12 = objc_alloc_init(NLWorkoutAlertGoalProgress);
-  [(NLWorkoutAlert *)v12 setType:a5];
-  [(NLWorkoutAlertGoalProgress *)v12 setDistanceType:v15];
-  [(NLWorkoutAlertGoalProgress *)v12 setCurrentValue:v13];
+  [(NLWorkoutAlert *)v12 setType:alertType];
+  [(NLWorkoutAlertGoalProgress *)v12 setDistanceType:typeCopy];
+  [(NLWorkoutAlertGoalProgress *)v12 setCurrentValue:valueCopy];
   [(NLWorkoutAlertGoalProgress *)v12 setGoal:location[0]];
-  v10 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(NLWorkoutAlert *)v12 setEventDate:?];
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](date);
   v11 = MEMORY[0x277D82BE0](v12);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
@@ -36,79 +36,79 @@
   return v11;
 }
 
-- (unint64_t)optimalUnitStyleFittingWidth:(double)a3 withFont:(id)a4 formattingManager:(id)a5
+- (unint64_t)optimalUnitStyleFittingWidth:(double)width withFont:(id)font formattingManager:(id)manager
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = *&a3;
+  location[1] = *&width;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, font);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, manager);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v5 = [(NLWorkoutAlertGoalProgress *)v9 _localizedDescriptionForProModeWithUnitStyle:v7 formattingManager:location];
+  objc_storeStrong(&location, manager);
+  v5 = [(NLWorkoutAlertGoalProgress *)selfCopy _localizedDescriptionForProModeWithUnitStyle:styleCopy formattingManager:location];
   objc_storeStrong(&location, 0);
 
   return v5;
 }
 
-- (id)goalCompletionStringWithUnitStyle:(unint64_t)a3 decimalTrimmingMode:(unint64_t)a4 formattingManager:(id)a5 textCase:(unint64_t)a6
+- (id)goalCompletionStringWithUnitStyle:(unint64_t)style decimalTrimmingMode:(unint64_t)mode formattingManager:(id)manager textCase:(unint64_t)case
 {
-  v55 = self;
+  selfCopy = self;
   v54 = a2;
-  v53 = a3;
-  v52 = a4;
+  styleCopy = style;
+  modeCopy = mode;
   location = 0;
-  objc_storeStrong(&location, a5);
-  v50 = a6;
+  objc_storeStrong(&location, manager);
+  caseCopy = case;
   v49 = MEMORY[0x277D82BE0](&stru_28225A4E8);
   v48 = 0;
-  v42 = [(NLWorkoutAlertGoalProgress *)v55 goal];
-  v43 = [(NLSessionActivityGoal *)v42 goalTypeIdentifier];
-  MEMORY[0x277D82BD8](v42);
-  if (v43)
+  goal = [(NLWorkoutAlertGoalProgress *)selfCopy goal];
+  goalTypeIdentifier = [(NLSessionActivityGoal *)goal goalTypeIdentifier];
+  MEMORY[0x277D82BD8](goal);
+  if (goalTypeIdentifier)
   {
-    switch(v43)
+    switch(goalTypeIdentifier)
     {
       case 1:
         v37 = location;
-        [(NLWorkoutAlertGoalProgress *)v55 currentValue];
+        [(NLWorkoutAlertGoalProgress *)selfCopy currentValue];
         v36 = v6;
-        v38 = [location unitManager];
-        v7 = [v38 userDistanceUnitForDistanceType:v55->_distanceType];
-        v8 = [v37 localizedStringWithDistanceInMeters:v7 distanceUnit:0 unitStyle:3 decimalPrecision:4 roundingMode:v52 decimalTrimmingMode:v36];
+        unitManager = [location unitManager];
+        v7 = [unitManager userDistanceUnitForDistanceType:selfCopy->_distanceType];
+        v8 = [v37 localizedStringWithDistanceInMeters:v7 distanceUnit:0 unitStyle:3 decimalPrecision:4 roundingMode:modeCopy decimalTrimmingMode:v36];
         v9 = v49;
         v49 = v8;
         MEMORY[0x277D82BD8](v9);
-        MEMORY[0x277D82BD8](v38);
-        v39 = [location unitManager];
-        v40 = [v39 userDistanceUnitForDistanceType:v55->_distanceType];
-        MEMORY[0x277D82BD8](v39);
+        MEMORY[0x277D82BD8](unitManager);
+        unitManager2 = [location unitManager];
+        v40 = [unitManager2 userDistanceUnitForDistanceType:selfCopy->_distanceType];
+        MEMORY[0x277D82BD8](unitManager2);
         v47 = v40;
-        if (v53 == 3)
+        if (styleCopy == 3)
         {
           v31 = MEMORY[0x277CCD7E8];
-          v32 = [MEMORY[0x277CCDAB0] meterUnit];
-          v46 = [v31 quantityWithUnit:v55->_currentValue doubleValue:?];
-          MEMORY[0x277D82BD8](v32);
+          meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+          v46 = [v31 quantityWithUnit:selfCopy->_currentValue doubleValue:?];
+          MEMORY[0x277D82BD8](meterUnit);
           v33 = v46;
           v34 = MEMORY[0x20F2E8320](v47);
           [v33 doubleValueForUnit:?];
           v35 = v10;
           MEMORY[0x277D82BD8](v34);
           v45[1] = v35;
-          v11 = [location localizedLongUnitStringForDistanceUnit:v47 distanceInUnit:v50 textCase:*&v35];
+          v11 = [location localizedLongUnitStringForDistanceUnit:v47 distanceInUnit:caseCopy textCase:*&v35];
           v12 = v48;
           v48 = v11;
           MEMORY[0x277D82BD8](v12);
@@ -117,7 +117,7 @@
 
         else
         {
-          v13 = [location localizedShortUnitStringForDistanceUnit:v47 textCase:v50];
+          v13 = [location localizedShortUnitStringForDistanceUnit:v47 textCase:caseCopy];
           v14 = v48;
           v48 = v13;
           MEMORY[0x277D82BD8](v14);
@@ -125,17 +125,17 @@
 
         break;
       case 2:
-        if (v53 == 3)
+        if (styleCopy == 3)
         {
           v30 = location;
-          [(NLWorkoutAlertGoalProgress *)v55 currentValue];
+          [(NLWorkoutAlertGoalProgress *)selfCopy currentValue];
           v15 = [v30 stringWithDuration:6 durationFormat:?];
         }
 
         else
         {
           v29 = location;
-          [(NLWorkoutAlertGoalProgress *)v55 currentValue];
+          [(NLWorkoutAlertGoalProgress *)selfCopy currentValue];
           v15 = [v29 stringWithDuration:2 durationFormat:?];
         }
 
@@ -145,17 +145,17 @@
         break;
       case 3:
         v27 = MEMORY[0x277CCD7E8];
-        v28 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-        [(NLWorkoutAlertGoalProgress *)v55 currentValue];
-        v45[0] = [v27 quantityWithUnit:v28 doubleValue:?];
-        MEMORY[0x277D82BD8](v28);
+        kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+        [(NLWorkoutAlertGoalProgress *)selfCopy currentValue];
+        v45[0] = [v27 quantityWithUnit:kilocalorieUnit doubleValue:?];
+        MEMORY[0x277D82BD8](kilocalorieUnit);
         v17 = [location localizedStringWithActiveEnergy:v45[0] unitStyle:0];
         v18 = v49;
         v49 = v17;
         MEMORY[0x277D82BD8](v18);
-        if (v53 == 3)
+        if (styleCopy == 3)
         {
-          v19 = [location localizedLongActiveEnergyUnitStringWithTextCase:v50];
+          v19 = [location localizedLongActiveEnergyUnitStringWithTextCase:caseCopy];
           v20 = v48;
           v48 = v19;
           MEMORY[0x277D82BD8](v20);
@@ -164,12 +164,12 @@
         else
         {
           v25 = location;
-          v26 = [location localizedShortActiveEnergyUnitString];
-          v21 = [v25 applyTextCase:v50 toString:?];
+          localizedShortActiveEnergyUnitString = [location localizedShortActiveEnergyUnitString];
+          v21 = [v25 applyTextCase:caseCopy toString:?];
           v22 = v48;
           v48 = v21;
           MEMORY[0x277D82BD8](v22);
-          MEMORY[0x277D82BD8](v26);
+          MEMORY[0x277D82BD8](localizedShortActiveEnergyUnitString);
         }
 
         objc_storeStrong(v45, 0);
@@ -187,24 +187,24 @@
   return v24;
 }
 
-- (id)_localizedDescriptionForProModeWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4
+- (id)_localizedDescriptionForProModeWithUnitStyle:(unint64_t)style formattingManager:(id)manager
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, manager);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [(NLWorkoutAlertGoalProgress *)v14 goalProgressString];
-  v8 = [NLWorkoutAlertGoalProgress splitStringOnNewlines:v9];
+  goalProgressString = [(NLWorkoutAlertGoalProgress *)selfCopy goalProgressString];
+  v8 = [NLWorkoutAlertGoalProgress splitStringOnNewlines:goalProgressString];
   [v10 addObjectsFromArray:v8];
   v5 = v10;
-  v6 = [(NLWorkoutAlertGoalProgress *)v14 goalCompletionStringWithUnitStyle:v12 decimalTrimmingMode:1 formattingManager:location textCase:?];
+  v6 = [(NLWorkoutAlertGoalProgress *)selfCopy goalCompletionStringWithUnitStyle:styleCopy decimalTrimmingMode:1 formattingManager:location textCase:?];
   [v5 addObject:?];
   MEMORY[0x277D82BD8](v6);
   v7 = MEMORY[0x277D82BE0](v10);
   objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&goalProgressString, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&location, 0);
 
@@ -213,15 +213,15 @@
 
 - (id)goalProgressString
 {
-  v5 = [(NLWorkoutAlert *)self type];
-  if (v5 == 7)
+  type = [(NLWorkoutAlert *)self type];
+  if (type == 7)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v4 localizedStringForKey:@"GOAL_PROGRESS_HALFWAY" value:&stru_28225A4E8 table:@"Localizable"];
     MEMORY[0x277D82BD8](v4);
   }
 
-  else if (v5 == 13)
+  else if (type == 13)
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v3 localizedStringForKey:@"GOAL_PROGRESS_COMPLETION" value:&stru_28225A4E8 table:@"Localizable"];
@@ -238,22 +238,22 @@
 
 - (id)description
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v4 = MEMORY[0x277CCACA8];
   v5 = NLWorkoutAlertTypeString([(NLWorkoutAlert *)self type]);
-  v6 = [v4 stringWithFormat:@"NLWorkoutAlertGoalProgress(eventType=%@, currentValue=%f)", v5, *&v8->_currentValue];
+  v6 = [v4 stringWithFormat:@"NLWorkoutAlertGoalProgress(eventType=%@, currentValue=%f)", v5, *&selfCopy->_currentValue];
   MEMORY[0x277D82BD8](v5);
   v2 = v6;
 
   return v2;
 }
 
-- (id)spokenDescriptionWithFormattingManager:(id)a3
+- (id)spokenDescriptionWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  v6 = NLWorkoutAlertGoalProgress.spokenDescription(with:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  v6 = NLWorkoutAlertGoalProgress.spokenDescription(with:)(managerCopy);
   v8 = v7;
 
   v9 = MEMORY[0x20F2E6C00](v6, v8);
@@ -261,11 +261,11 @@
   return v9;
 }
 
-- (id)spokenUserDataWithFormattingManager:(id)a3
+- (id)spokenUserDataWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  NLWorkoutAlertGoalProgress.spokenUserData(with:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  NLWorkoutAlertGoalProgress.spokenUserData(with:)(managerCopy);
 
   v6.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
 

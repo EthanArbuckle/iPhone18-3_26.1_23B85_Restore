@@ -6,24 +6,24 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v4 = [HFStateDumpBuilder builderWithObject:a1 context:a3];
-  v5 = [a1 request];
-  [v4 setObject:v5 forKeyedSubscript:@"request"];
+  v4 = [HFStateDumpBuilder builderWithObject:self context:a3];
+  request = [self request];
+  [v4 setObject:request forKeyedSubscript:@"request"];
 
-  v6 = [a1 error];
+  error = [self error];
 
-  if (v6)
+  if (error)
   {
-    v7 = [a1 error];
-    [v4 setObject:v7 forKeyedSubscript:@"error"];
+    error2 = [self error];
+    [v4 setObject:error2 forKeyedSubscript:@"error"];
   }
 
   else
   {
-    v7 = [a1 request];
-    v8 = [v7 characteristic];
-    v9 = [v8 value];
-    [v4 setObject:v9 forKeyedSubscript:@"newValue"];
+    error2 = [self request];
+    characteristic = [error2 characteristic];
+    value = [characteristic value];
+    [v4 setObject:value forKeyedSubscript:@"newValue"];
   }
 
   return v4;

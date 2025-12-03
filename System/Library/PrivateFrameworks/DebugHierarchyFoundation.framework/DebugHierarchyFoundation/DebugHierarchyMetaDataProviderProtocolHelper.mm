@@ -1,13 +1,13 @@
 @interface DebugHierarchyMetaDataProviderProtocolHelper
-+ (BOOL)classImplementsRequiredEnumDescriptionMethods:(Class)a3;
-+ (BOOL)classImplementsRequiredOptionDescriptionMethods:(Class)a3;
-+ (id)debugHierarchyEnumDescriptionsOnClass:(Class)a3;
-+ (id)debugHierarchyOptionDescriptionsOnClass:(Class)a3;
++ (BOOL)classImplementsRequiredEnumDescriptionMethods:(Class)methods;
++ (BOOL)classImplementsRequiredOptionDescriptionMethods:(Class)methods;
++ (id)debugHierarchyEnumDescriptionsOnClass:(Class)class;
++ (id)debugHierarchyOptionDescriptionsOnClass:(Class)class;
 @end
 
 @implementation DebugHierarchyMetaDataProviderProtocolHelper
 
-+ (BOOL)classImplementsRequiredEnumDescriptionMethods:(Class)a3
++ (BOOL)classImplementsRequiredEnumDescriptionMethods:(Class)methods
 {
   if (objc_opt_respondsToSelector())
   {
@@ -22,7 +22,7 @@
   return v3 & 1;
 }
 
-+ (BOOL)classImplementsRequiredOptionDescriptionMethods:(Class)a3
++ (BOOL)classImplementsRequiredOptionDescriptionMethods:(Class)methods
 {
   if (objc_opt_respondsToSelector())
   {
@@ -37,44 +37,44 @@
   return v3 & 1;
 }
 
-+ (id)debugHierarchyEnumDescriptionsOnClass:(Class)a3
++ (id)debugHierarchyEnumDescriptionsOnClass:(Class)class
 {
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(objc_class *)a3 debugHierarchyEnumDescriptions];
+    debugHierarchyEnumDescriptions = [(objc_class *)class debugHierarchyEnumDescriptions];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v4 = [(objc_class *)a3 fallback_debugHierarchyEnumDescriptions];
+    debugHierarchyEnumDescriptions = [(objc_class *)class fallback_debugHierarchyEnumDescriptions];
   }
 
   else
   {
-    v4 = 0;
+    debugHierarchyEnumDescriptions = 0;
   }
 
-  return v4;
+  return debugHierarchyEnumDescriptions;
 }
 
-+ (id)debugHierarchyOptionDescriptionsOnClass:(Class)a3
++ (id)debugHierarchyOptionDescriptionsOnClass:(Class)class
 {
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(objc_class *)a3 debugHierarchyOptionDescriptions];
+    debugHierarchyOptionDescriptions = [(objc_class *)class debugHierarchyOptionDescriptions];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v4 = [(objc_class *)a3 fallback_debugHierarchyOptionDescriptions];
+    debugHierarchyOptionDescriptions = [(objc_class *)class fallback_debugHierarchyOptionDescriptions];
   }
 
   else
   {
-    v4 = 0;
+    debugHierarchyOptionDescriptions = 0;
   }
 
-  return v4;
+  return debugHierarchyOptionDescriptions;
 }
 
 @end

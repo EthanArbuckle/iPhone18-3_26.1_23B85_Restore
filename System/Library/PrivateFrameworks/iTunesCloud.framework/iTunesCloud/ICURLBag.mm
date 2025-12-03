@@ -1,14 +1,14 @@
 @interface ICURLBag
 + (NSArray)_allBagKeys;
-- (BOOL)BOOLValueForBagKey:(id)a3;
-- (BOOL)_shouldMescalSignBodyForURL:(id)a3 withSignatureConfiguration:(id)a4;
+- (BOOL)BOOLValueForBagKey:(id)key;
+- (BOOL)_shouldMescalSignBodyForURL:(id)l withSignatureConfiguration:(id)configuration;
 - (BOOL)canPostKeybagSyncData;
-- (BOOL)hasValueForBagKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasValueForBagKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
-- (BOOL)isTrustedHostForURL:(id)a3;
-- (BOOL)shouldAppendDeviceGUIDForURL:(id)a3;
-- (BOOL)shouldAppendMachineDataHeadersForURL:(id)a3;
+- (BOOL)isTrustedHostForURL:(id)l;
+- (BOOL)shouldAppendDeviceGUIDForURL:(id)l;
+- (BOOL)shouldAppendMachineDataHeadersForURL:(id)l;
 - (ICURLBagEnhancedAudioConfiguration)enhancedAudioConfiguration;
 - (ICURLBagLibraryDAAPConfiguration)libraryDAAPConfiguration;
 - (ICURLBagRadioConfiguration)radioConfiguration;
@@ -16,29 +16,29 @@
 - (NSDictionary)_propertyListRepresentation;
 - (NSSet)GUIDURLSchemes;
 - (NSString)storefrontHeaderSuffix;
-- (id)_initWithDictionary:(id)a3;
-- (id)_initWithDictionary:(id)a3 amsBag:(id)a4 requestDate:(id)a5 expirationDate:(id)a6 serverCorrelationKey:(id)a7 serverEnvironment:(id)a8 profileName:(id)a9 profileVersion:(id)a10 sourceAccountDSID:(id)a11;
-- (id)_initWithPropertyListRepresentation:(id)a3;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)_initWithDictionary:(id)dictionary amsBag:(id)bag requestDate:(id)date expirationDate:(id)expirationDate serverCorrelationKey:(id)key serverEnvironment:(id)environment profileName:(id)name profileVersion:(id)self0 sourceAccountDSID:(id)self1;
+- (id)_initWithPropertyListRepresentation:(id)representation;
 - (id)_knownIncorrectValues;
 - (id)_knownOptionalBagKeys;
-- (id)_urlStringFromBagStringValue:(id)a3;
-- (id)_valueForBagKey:(id)a3;
-- (id)arrayForBagKey:(id)a3;
-- (id)dictionaryForBagKey:(id)a3;
-- (id)mescalConfigurationForRequest:(id)a3;
-- (id)mescalConfigurationForRequestURL:(id)a3;
-- (id)mescalConfigurationForResponse:(id)a3;
-- (id)mescalConfigurationForResponseURL:(id)a3;
-- (id)numberForBagKey:(id)a3;
-- (id)stringForBagKey:(id)a3;
-- (id)urlForBagKey:(id)a3;
-- (id)valuesForBagKeys:(id)a3;
-- (int64_t)int64ValueForBagKey:(id)a3;
-- (void)_logMissingKey:(id)a3;
+- (id)_urlStringFromBagStringValue:(id)value;
+- (id)_valueForBagKey:(id)key;
+- (id)arrayForBagKey:(id)key;
+- (id)dictionaryForBagKey:(id)key;
+- (id)mescalConfigurationForRequest:(id)request;
+- (id)mescalConfigurationForRequestURL:(id)l;
+- (id)mescalConfigurationForResponse:(id)response;
+- (id)mescalConfigurationForResponseURL:(id)l;
+- (id)numberForBagKey:(id)key;
+- (id)stringForBagKey:(id)key;
+- (id)urlForBagKey:(id)key;
+- (id)valuesForBagKeys:(id)keys;
+- (int64_t)int64ValueForBagKey:(id)key;
+- (void)_logMissingKey:(id)key;
 - (void)_validateGUIDURLConfigIfNeeded;
-- (void)createAMSSnapshotBagWithCompletion:(id)a3;
-- (void)setGUIDURLRegexPatterns:(id)a3;
-- (void)setGUIDURLSchemes:(id)a3;
+- (void)createAMSSnapshotBagWithCompletion:(id)completion;
+- (void)setGUIDURLRegexPatterns:(id)patterns;
+- (void)setGUIDURLSchemes:(id)schemes;
 @end
 
 @implementation ICURLBag
@@ -106,8 +106,8 @@ uint64_t __33__ICURLBag__knownOptionalBagKeys__block_invoke()
 - (void)_validateGUIDURLConfigIfNeeded
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(ICURLBag *)self GUIDURLRegexPatterns];
-  if (!v3 || (v4 = v3, [(ICURLBag *)self GUIDURLSchemes], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  gUIDURLRegexPatterns = [(ICURLBag *)self GUIDURLRegexPatterns];
+  if (!gUIDURLRegexPatterns || (v4 = gUIDURLRegexPatterns, [(ICURLBag *)self GUIDURLSchemes], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
     v6 = [(ICURLBag *)self dictionaryForBagKey:@"guid-urls"];
     if (_NSIsNSDictionary())
@@ -259,12 +259,12 @@ void __33__ICURLBag__knownIncorrectValues__block_invoke()
   _knownIncorrectValues_sKnownIncorrectValues = MEMORY[0x1E695E0F8];
 }
 
-- (void)_logMissingKey:(id)a3
+- (void)_logMissingKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICURLBag *)self _knownOptionalBagKeys];
-  if (([v5 containsObject:v4] & 1) == 0)
+  keyCopy = key;
+  _knownOptionalBagKeys = [(ICURLBag *)self _knownOptionalBagKeys];
+  if (([_knownOptionalBagKeys containsObject:keyCopy] & 1) == 0)
   {
     v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -272,9 +272,9 @@ void __33__ICURLBag__knownIncorrectValues__block_invoke()
       profileName = self->_profileName;
       profileVersion = self->_profileVersion;
       v9 = 138544130;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = keyCopy;
       v13 = 2114;
       v14 = profileName;
       v15 = 2114;
@@ -284,18 +284,18 @@ void __33__ICURLBag__knownIncorrectValues__block_invoke()
   }
 }
 
-- (id)_urlStringFromBagStringValue:(id)a3
+- (id)_urlStringFromBagStringValue:(id)value
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"{"];
-  v28 = v3;
+  valueCopy = value;
+  v4 = [valueCopy rangeOfString:@"{"];
+  v28 = valueCopy;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v4;
     *&v5 = 138543874;
     v27 = v5;
-    v7 = v3;
+    v7 = valueCopy;
     while (1)
     {
       v8 = [v7 rangeOfString:@"}" options:0 range:{v6 + 1, objc_msgSend(v7, "length", v27) + ~v6}];
@@ -335,7 +335,7 @@ void __33__ICURLBag__knownIncorrectValues__block_invoke()
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *buf = v27;
-          v31 = self;
+          selfCopy = self;
           v32 = 2114;
           v33 = v15;
           v34 = 2114;
@@ -344,47 +344,47 @@ void __33__ICURLBag__knownIncorrectValues__block_invoke()
         }
       }
 
-      v21 = [v19 value];
-      v22 = v21;
+      value = [v19 value];
+      v22 = value;
       v23 = &stru_1F2C4A680;
-      if (v21)
+      if (value)
       {
-        v23 = v21;
+        v23 = value;
       }
 
       v24 = v23;
 
       v25 = [v10 stringByReplacingCharactersInRange:v12 withString:{v14 + 1, v24}];
 
-      v3 = [v7 stringByReplacingCharactersInRange:v6 withString:{v9 + 1, v25}];
+      valueCopy = [v7 stringByReplacingCharactersInRange:v6 withString:{v9 + 1, v25}];
 
-      v6 = [v3 rangeOfString:@"{"];
-      v7 = v3;
+      v6 = [valueCopy rangeOfString:@"{"];
+      v7 = valueCopy;
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_19;
       }
     }
 
-    v3 = v7;
+    valueCopy = v7;
   }
 
 LABEL_19:
 
-  return v3;
+  return valueCopy;
 }
 
-- (BOOL)_shouldMescalSignBodyForURL:(id)a3 withSignatureConfiguration:(id)a4
+- (BOOL)_shouldMescalSignBodyForURL:(id)l withSignatureConfiguration:(id)configuration
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  lCopy = l;
+  configurationCopy = configuration;
+  v8 = configurationCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (lCopy && configurationCopy)
   {
-    v10 = [v6 absoluteString];
-    v11 = [v6 lastPathComponent];
+    absoluteString = [lCopy absoluteString];
+    lastPathComponent = [lCopy lastPathComponent];
     if (_NSIsNSDictionary())
     {
       v46 = 0u;
@@ -397,12 +397,12 @@ LABEL_19:
       {
         v14 = v13;
         v33 = v8;
-        v34 = v6;
+        v34 = lCopy;
         v15 = *v45;
-        v38 = v11;
-        v39 = v10;
+        v38 = lastPathComponent;
+        v39 = absoluteString;
         v36 = v12;
-        v37 = self;
+        selfCopy = self;
         v35 = *v45;
         while (2)
         {
@@ -416,13 +416,13 @@ LABEL_19:
             }
 
             v17 = *(*(&v44 + 1) + 8 * v16);
-            if (_NSIsNSString() && [v10 rangeOfString:v17] != 0x7FFFFFFFFFFFFFFFLL)
+            if (_NSIsNSString() && [absoluteString rangeOfString:v17] != 0x7FFFFFFFFFFFFFFFLL)
             {
               v43 = v17;
               v18 = [v12 objectForKey:v17];
               if (_NSIsNSArray())
               {
-                if ([v18 containsObject:v11])
+                if ([v18 containsObject:lastPathComponent])
                 {
 
 LABEL_34:
@@ -438,7 +438,7 @@ LABEL_34:
                 {
                   v20 = v18;
                   v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v20, "count")}];
-                  v21 = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
+                  uppercaseLetterCharacterSet = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
                   v48 = 0u;
                   v49 = 0u;
                   v50 = 0u;
@@ -459,17 +459,17 @@ LABEL_34:
                         }
 
                         v27 = [*(*(&v48 + 1) + 8 * i) mutableCopy];
-                        v28 = [v27 rangeOfCharacterFromSet:v21 options:0 range:{0, objc_msgSend(v27, "length")}];
+                        v28 = [v27 rangeOfCharacterFromSet:uppercaseLetterCharacterSet options:0 range:{0, objc_msgSend(v27, "length")}];
                         if (v28 != 0x7FFFFFFFFFFFFFFFLL)
                         {
-                          for (j = v28; j != 0x7FFFFFFFFFFFFFFFLL; j = [v27 rangeOfCharacterFromSet:v21 options:0 range:{j + 2, objc_msgSend(v27, "length") - (j + 2)}])
+                          for (j = v28; j != 0x7FFFFFFFFFFFFFFFLL; j = [v27 rangeOfCharacterFromSet:uppercaseLetterCharacterSet options:0 range:{j + 2, objc_msgSend(v27, "length") - (j + 2)}])
                           {
                             [v27 insertString:@"-" atIndex:j];
                           }
                         }
 
-                        v30 = [v27 lowercaseString];
-                        [v19 addObject:v30];
+                        lowercaseString = [v27 lowercaseString];
+                        [v19 addObject:lowercaseString];
                       }
 
                       v24 = [v22 countByEnumeratingWithState:&v48 objects:v53 count:16];
@@ -478,17 +478,17 @@ LABEL_34:
                     while (v24);
                   }
 
-                  self = v37;
-                  [(NSMutableDictionary *)v37->_convertedActionsCache setObject:v19 forKey:v43];
-                  v11 = v38;
-                  v10 = v39;
+                  self = selfCopy;
+                  [(NSMutableDictionary *)selfCopy->_convertedActionsCache setObject:v19 forKey:v43];
+                  lastPathComponent = v38;
+                  absoluteString = v39;
                   v15 = v35;
                   v12 = v36;
                   v14 = v40;
                 }
 
                 os_unfair_lock_unlock(&self->_lock);
-                v31 = [v19 containsObject:v11];
+                v31 = [v19 containsObject:lastPathComponent];
 
                 v16 = v41;
                 if (v31)
@@ -518,7 +518,7 @@ LABEL_34:
         v9 = 0;
 LABEL_35:
         v8 = v33;
-        v6 = v34;
+        lCopy = v34;
       }
 
       else
@@ -550,9 +550,9 @@ LABEL_35:
   amsBag = self->_amsBag;
   if (amsBag)
   {
-    v7 = [(AMSSnapshotBag *)amsBag compile];
+    compile = [(AMSSnapshotBag *)amsBag compile];
     v21 = 0;
-    v8 = [v7 resultWithError:&v21];
+    v8 = [compile resultWithError:&v21];
     v9 = v21;
 
     if (v8)
@@ -566,7 +566,7 @@ LABEL_35:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = v9;
         _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_ERROR, "%{public}@ Failed to serialize ams bag. err=%{public}@", buf, 0x16u);
@@ -617,27 +617,27 @@ LABEL_35:
   return v4;
 }
 
-- (id)_initWithPropertyListRepresentation:(id)a3
+- (id)_initWithPropertyListRepresentation:(id)representation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v23 = [v4 ic_dictionaryValueForKey:@"bag_dictionary"];
-  v5 = [v4 ic_numberValueForKey:@"request_time"];
+  representationCopy = representation;
+  v23 = [representationCopy ic_dictionaryValueForKey:@"bag_dictionary"];
+  v5 = [representationCopy ic_numberValueForKey:@"request_time"];
   [v5 doubleValue];
   v7 = v6;
 
   v22 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v7];
-  v8 = [v4 ic_numberValueForKey:@"expiration_time"];
+  v8 = [representationCopy ic_numberValueForKey:@"expiration_time"];
   [v8 doubleValue];
   v10 = v9;
 
   v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v10];
-  v20 = [v4 ic_stringValueForKey:@"server_correlation_key"];
-  v19 = [v4 ic_stringValueForKey:@"server_environment"];
-  v11 = [v4 ic_stringValueForKey:@"profile_name"];
-  v12 = [v4 ic_stringValueForKey:@"profile_version"];
-  v13 = [v4 ic_numberValueForKey:@"aource_account_dsid"];
-  v14 = [v4 ic_dataValueForKey:@"ams_bag_data"];
+  v20 = [representationCopy ic_stringValueForKey:@"server_correlation_key"];
+  v19 = [representationCopy ic_stringValueForKey:@"server_environment"];
+  v11 = [representationCopy ic_stringValueForKey:@"profile_name"];
+  v12 = [representationCopy ic_stringValueForKey:@"profile_version"];
+  v13 = [representationCopy ic_numberValueForKey:@"aource_account_dsid"];
+  v14 = [representationCopy ic_dataValueForKey:@"ams_bag_data"];
 
   if (!v14)
   {
@@ -653,7 +653,7 @@ LABEL_6:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create ams bag from data", buf, 0xCu);
     }
 
@@ -666,38 +666,38 @@ LABEL_7:
   return v18;
 }
 
-- (id)_valueForBagKey:(id)a3
+- (id)_valueForBagKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICURLBag *)self bagValues];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  bagValues = [(ICURLBag *)self bagValues];
+  v6 = [bagValues objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setGUIDURLSchemes:(id)a3
+- (void)setGUIDURLSchemes:(id)schemes
 {
-  v4 = a3;
+  schemesCopy = schemes;
   os_unfair_lock_lock(&self->_lock);
   GUIDURLSchemes = self->_GUIDURLSchemes;
-  self->_GUIDURLSchemes = v4;
+  self->_GUIDURLSchemes = schemesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setGUIDURLRegexPatterns:(id)a3
+- (void)setGUIDURLRegexPatterns:(id)patterns
 {
-  v4 = a3;
+  patternsCopy = patterns;
   os_unfair_lock_lock(&self->_lock);
   GUIDURLRegexPatterns = self->_GUIDURLRegexPatterns;
-  self->_GUIDURLRegexPatterns = v4;
+  self->_GUIDURLRegexPatterns = patternsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)createAMSSnapshotBagWithCompletion:(id)a3
+- (void)createAMSSnapshotBagWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_amsBag;
   if (v5)
   {
@@ -708,17 +708,17 @@ LABEL_7:
   else
   {
     v8 = objc_alloc_init(MEMORY[0x1E698CB38]);
-    v9 = [(ICURLBag *)self bagValues];
-    [v8 setData:v9];
+    bagValues = [(ICURLBag *)self bagValues];
+    [v8 setData:bagValues];
 
-    v10 = [(ICURLBag *)self expirationDate];
-    [v8 setExpirationDate:v10];
+    expirationDate = [(ICURLBag *)self expirationDate];
+    [v8 setExpirationDate:expirationDate];
 
-    v11 = [(ICURLBag *)self profileName];
-    [v8 setProfile:v11];
+    profileName = [(ICURLBag *)self profileName];
+    [v8 setProfile:profileName];
 
-    v12 = [(ICURLBag *)self profileVersion];
-    [v8 setProfileVersion:v12];
+    profileVersion = [(ICURLBag *)self profileVersion];
+    [v8 setProfileVersion:profileVersion];
 
     v13 = 0;
     v6 = [v8 buildWithError:&v13];
@@ -729,14 +729,14 @@ LABEL_7:
     }
   }
 
-  v4[2](v4, v6, v7);
+  completionCopy[2](completionCopy, v6, v7);
 }
 
-- (BOOL)isTrustedHostForURL:(id)a3
+- (BOOL)isTrustedHostForURL:(id)l
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [a3 host];
-  if (![v4 length])
+  host = [l host];
+  if (![host length])
   {
     v20 = 0;
     goto LABEL_25;
@@ -795,7 +795,7 @@ LABEL_14:
     }
   }
 
-  if ([v13 hasPrefix:v10] && (objc_msgSend(v4, "hasSuffix:", v13) & 1) != 0)
+  if ([v13 hasPrefix:v10] && (objc_msgSend(host, "hasSuffix:", v13) & 1) != 0)
   {
 LABEL_19:
     v20 = 1;
@@ -804,9 +804,9 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (![v13 hasPrefix:v11] || (objc_msgSend(v13, "substringFromIndex:", 1), v14 = v9, v15 = v6, v16 = v10, v17 = v11, v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v4, "hasSuffix:", v18), v18, v11 = v17, v10 = v16, v6 = v15, v9 = v14, (v19 & 1) == 0))
+  if (![v13 hasPrefix:v11] || (objc_msgSend(v13, "substringFromIndex:", 1), v14 = v9, v15 = v6, v16 = v10, v17 = v11, v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(host, "hasSuffix:", v18), v18, v11 = v17, v10 = v16, v6 = v15, v9 = v14, (v19 & 1) == 0))
   {
-    if (![v4 caseInsensitiveCompare:v13])
+    if (![host caseInsensitiveCompare:v13])
     {
       goto LABEL_19;
     }
@@ -830,15 +830,15 @@ LABEL_25:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (ICURLBagLibraryDAAPConfiguration)libraryDAAPConfiguration
@@ -857,9 +857,9 @@ LABEL_25:
   return v3;
 }
 
-- (id)mescalConfigurationForResponse:(id)a3
+- (id)mescalConfigurationForResponse:(id)response
 {
-  v4 = [a3 URL];
+  v4 = [response URL];
   if (v4 && ([(ICURLBag *)self dictionaryForBagKey:@"sign-sap-response"], v5 = objc_claimAutoreleasedReturnValue(), v6 = [(ICURLBag *)self _shouldMescalSignBodyForURL:v4 withSignatureConfiguration:v5], v5, v6))
   {
     v7 = objc_alloc_init(ICURLBagMescalConfiguration);
@@ -874,13 +874,13 @@ LABEL_25:
   return v7;
 }
 
-- (id)mescalConfigurationForResponseURL:(id)a3
+- (id)mescalConfigurationForResponseURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = MEMORY[0x1E695AC70];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithURL:v5 MIMEType:0 expectedContentLength:0 textEncodingName:0];
+    lCopy = l;
+    v6 = [[v4 alloc] initWithURL:lCopy MIMEType:0 expectedContentLength:0 textEncodingName:0];
 
     v7 = [(ICURLBag *)self mescalConfigurationForResponse:v6];
   }
@@ -893,15 +893,15 @@ LABEL_25:
   return v7;
 }
 
-- (id)mescalConfigurationForRequest:(id)a3
+- (id)mescalConfigurationForRequest:(id)request
 {
   v96 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [v5 absoluteString];
-  v9 = [v5 lastPathComponent];
+  absoluteString = [v5 absoluteString];
+  lastPathComponent = [v5 lastPathComponent];
   v10 = [(ICURLBag *)self dictionaryForBagKey:@"sign-sap-request"];
   v11 = [(ICURLBag *)self _shouldMescalSignBodyForURL:v5 withSignatureConfiguration:v10];
 
@@ -919,9 +919,9 @@ LABEL_25:
     if (v14)
     {
       v15 = v14;
-      v64 = v9;
+      v64 = lastPathComponent;
       v66 = v5;
-      v62 = v4;
+      v62 = requestCopy;
       v16 = *v88;
       while (2)
       {
@@ -933,12 +933,12 @@ LABEL_25:
           }
 
           v18 = *(*(&v87 + 1) + 8 * i);
-          if (_NSIsNSString() && [v8 rangeOfString:v18] != 0x7FFFFFFFFFFFFFFFLL)
+          if (_NSIsNSString() && [absoluteString rangeOfString:v18] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v20 = [v13 objectForKey:v18];
             if (_NSIsNSDictionary())
             {
-              v21 = [v20 objectForKey:v9];
+              v21 = [v20 objectForKey:lastPathComponent];
               v5 = v66;
               if (_NSIsNSDictionary())
               {
@@ -975,7 +975,7 @@ LABEL_25:
                     while (v24);
                   }
 
-                  v9 = v64;
+                  lastPathComponent = v64;
                   v5 = v66;
                   v21 = v55;
                   v20 = v56;
@@ -1012,7 +1012,7 @@ LABEL_25:
                     while (v29);
                   }
 
-                  v9 = v64;
+                  lastPathComponent = v64;
                   v5 = v66;
                   v21 = v55;
                   v20 = v56;
@@ -1028,13 +1028,13 @@ LABEL_25:
                 v19 = 0;
               }
 
-              v4 = v62;
+              requestCopy = v62;
             }
 
             else
             {
               v19 = 0;
-              v4 = v62;
+              requestCopy = v62;
               v5 = v66;
             }
 
@@ -1052,7 +1052,7 @@ LABEL_25:
       }
 
       v19 = 0;
-      v4 = v62;
+      requestCopy = v62;
       v5 = v66;
     }
 
@@ -1125,7 +1125,7 @@ LABEL_52:
 
   v69 = v19;
   v36 = [v35 objectForKey:@"actions"];
-  if (!_NSIsNSArray() || ![v36 containsObject:v9])
+  if (!_NSIsNSArray() || ![v36 containsObject:lastPathComponent])
   {
 
     v19 = v69;
@@ -1145,14 +1145,14 @@ LABEL_52:
 
   else
   {
-    v42 = [v4 HTTPMethod];
-    v57 = [v42 isEqualToString:@"POST"];
+    hTTPMethod = [requestCopy HTTPMethod];
+    v57 = [hTTPMethod isEqualToString:@"POST"];
   }
 
   v43 = v36;
   v59 = [v35 objectForKey:@"fields"];
-  v63 = v4;
-  v65 = v9;
+  v63 = requestCopy;
+  v65 = lastPathComponent;
   v67 = v5;
   if (_NSIsNSArray())
   {
@@ -1184,8 +1184,8 @@ LABEL_52:
       while (v46);
     }
 
-    v4 = v63;
-    v9 = v65;
+    requestCopy = v63;
+    lastPathComponent = v65;
     v5 = v67;
     v43 = v36;
   }
@@ -1221,8 +1221,8 @@ LABEL_52:
       while (v52);
     }
 
-    v4 = v63;
-    v9 = v65;
+    requestCopy = v63;
+    lastPathComponent = v65;
     v5 = v67;
     v43 = v61;
   }
@@ -1246,18 +1246,18 @@ LABEL_59:
   return v38;
 }
 
-- (id)mescalConfigurationForRequestURL:(id)a3
+- (id)mescalConfigurationForRequestURL:(id)l
 {
-  v4 = [MEMORY[0x1E695AC68] requestWithURL:a3];
+  v4 = [MEMORY[0x1E695AC68] requestWithURL:l];
   v5 = [(ICURLBag *)self mescalConfigurationForRequest:v4];
 
   return v5;
 }
 
-- (BOOL)shouldAppendMachineDataHeadersForURL:(id)a3
+- (BOOL)shouldAppendMachineDataHeadersForURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 host];
+  host = [l host];
   v5 = [(ICURLBag *)self arrayForBagKey:@"amd-domains"];
   if (_NSIsNSArray())
   {
@@ -1286,7 +1286,7 @@ LABEL_59:
           {
             if ([v11 hasPrefix:@"."])
             {
-              if ([v4 hasSuffix:v11])
+              if ([host hasSuffix:v11])
               {
                 goto LABEL_19;
               }
@@ -1296,7 +1296,7 @@ LABEL_59:
             {
               v12 = 1;
               v13 = [v11 substringFromIndex:1];
-              v14 = [v4 hasSuffix:v13];
+              v14 = [host hasSuffix:v13];
 
               if (v14)
               {
@@ -1304,7 +1304,7 @@ LABEL_59:
               }
             }
 
-            else if (![v11 caseInsensitiveCompare:v4])
+            else if (![v11 caseInsensitiveCompare:host])
             {
 LABEL_19:
               v12 = 1;
@@ -1341,21 +1341,21 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)shouldAppendDeviceGUIDForURL:(id)a3
+- (BOOL)shouldAppendDeviceGUIDForURL:(id)l
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   [(ICURLBag *)self _validateGUIDURLConfigIfNeeded];
-  v5 = [(ICURLBag *)self GUIDURLRegexPatterns];
-  if (![v5 count])
+  gUIDURLRegexPatterns = [(ICURLBag *)self GUIDURLRegexPatterns];
+  if (![gUIDURLRegexPatterns count])
   {
 
     goto LABEL_13;
   }
 
-  v6 = [(ICURLBag *)self GUIDURLSchemes];
-  v7 = [v4 scheme];
-  v8 = [v6 containsObject:v7];
+  gUIDURLSchemes = [(ICURLBag *)self GUIDURLSchemes];
+  scheme = [lCopy scheme];
+  v8 = [gUIDURLSchemes containsObject:scheme];
 
   if (!v8)
   {
@@ -1364,14 +1364,14 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v9 = [v4 absoluteString];
-  v10 = [v9 length];
+  absoluteString = [lCopy absoluteString];
+  v10 = [absoluteString length];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [(ICURLBag *)self GUIDURLRegexPatterns];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  gUIDURLRegexPatterns2 = [(ICURLBag *)self GUIDURLRegexPatterns];
+  v12 = [gUIDURLRegexPatterns2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1382,17 +1382,17 @@ LABEL_13:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(gUIDURLRegexPatterns2);
         }
 
-        if ([*(*(&v18 + 1) + 8 * i) rangeOfFirstMatchInString:v9 options:0 range:{0, v10}] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([*(*(&v18 + 1) + 8 * i) rangeOfFirstMatchInString:absoluteString options:0 range:{0, v10}] != 0x7FFFFFFFFFFFFFFFLL)
         {
           v16 = 1;
           goto LABEL_15;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [gUIDURLRegexPatterns2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v13)
       {
         continue;
@@ -1409,14 +1409,14 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)BOOLValueForBagKey:(id)a3
+- (BOOL)BOOLValueForBagKey:(id)key
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   amsBag = self->_amsBag;
   if (amsBag)
   {
-    v6 = [(AMSSnapshotBag *)amsBag BOOLForKey:v4];
+    v6 = [(AMSSnapshotBag *)amsBag BOOLForKey:keyCopy];
     v22 = 0;
     v7 = [v6 valueWithError:&v22];
     v8 = v22;
@@ -1424,7 +1424,7 @@ LABEL_16:
     if (v8)
     {
 
-      v9 = [(AMSSnapshotBag *)self->_amsBag stringForKey:v4];
+      v9 = [(AMSSnapshotBag *)self->_amsBag stringForKey:keyCopy];
       v21 = 0;
       v10 = [v9 valueWithError:&v21];
       v8 = v21;
@@ -1435,9 +1435,9 @@ LABEL_16:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v24 = self;
+          selfCopy2 = self;
           v25 = 2114;
-          v26 = v4;
+          v26 = keyCopy;
           v27 = 2114;
           v28 = v8;
           _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load value for bag key '%{public}@'. err=%{public}@", buf, 0x20u);
@@ -1465,10 +1465,10 @@ LABEL_16:
     v8 = 0;
   }
 
-  v10 = [(ICURLBag *)self _valueForBagKey:v4];
+  v10 = [(ICURLBag *)self _valueForBagKey:keyCopy];
   if (!v10)
   {
-    [(ICURLBag *)self _logMissingKey:v4];
+    [(ICURLBag *)self _logMissingKey:keyCopy];
     goto LABEL_17;
   }
 
@@ -1481,9 +1481,9 @@ LABEL_13:
       profileName = self->_profileName;
       v14 = objc_opt_class();
       *buf = 138544130;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
-      v26 = v4;
+      v26 = keyCopy;
       v27 = 2114;
       v28 = profileName;
       v29 = 2114;
@@ -1494,34 +1494,34 @@ LABEL_13:
 
     v16 = MEMORY[0x1E69B13D8];
     v17 = *MEMORY[0x1E69B1350];
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Number)", v4, self->_profileName, objc_opt_class()];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Number)", keyCopy, self->_profileName, objc_opt_class()];
     [v16 snapshotWithDomain:v17 type:@"Bug" subType:@"ICURLBag" context:v18 triggerThresholdValues:&stru_1F2C4A680 events:0 completion:0];
 
     v10 = 0;
   }
 
 LABEL_17:
-  v19 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  return v19;
+  return bOOLValue;
 }
 
-- (int64_t)int64ValueForBagKey:(id)a3
+- (int64_t)int64ValueForBagKey:(id)key
 {
-  v3 = [(ICURLBag *)self numberForBagKey:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(ICURLBag *)self numberForBagKey:key];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (id)numberForBagKey:(id)a3
+- (id)numberForBagKey:(id)key
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   amsBag = self->_amsBag;
   if (amsBag)
   {
-    v6 = [(AMSSnapshotBag *)amsBag integerForKey:v4];
+    v6 = [(AMSSnapshotBag *)amsBag integerForKey:keyCopy];
     v18 = 0;
     v7 = [v6 valueWithError:&v18];
     v8 = v18;
@@ -1532,9 +1532,9 @@ LABEL_17:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2114;
-        v22 = v4;
+        v22 = keyCopy;
         v23 = 2114;
         v24 = v8;
         _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load value for bag key '%{public}@'. err=%{public}@", buf, 0x20u);
@@ -1552,10 +1552,10 @@ LABEL_17:
     v8 = 0;
   }
 
-  v7 = [(ICURLBag *)self _valueForBagKey:v4];
+  v7 = [(ICURLBag *)self _valueForBagKey:keyCopy];
   if (!v7)
   {
-    [(ICURLBag *)self _logMissingKey:v4];
+    [(ICURLBag *)self _logMissingKey:keyCopy];
     goto LABEL_15;
   }
 
@@ -1568,9 +1568,9 @@ LABEL_10:
       profileName = self->_profileName;
       v12 = objc_opt_class();
       *buf = 138544130;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
-      v22 = v4;
+      v22 = keyCopy;
       v23 = 2114;
       v24 = profileName;
       v25 = 2114;
@@ -1581,7 +1581,7 @@ LABEL_10:
 
     v14 = MEMORY[0x1E69B13D8];
     v15 = *MEMORY[0x1E69B1350];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Number)", v4, self->_profileName, objc_opt_class()];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Number)", keyCopy, self->_profileName, objc_opt_class()];
     [v14 snapshotWithDomain:v15 type:@"Bug" subType:@"ICURLBag" context:v16 triggerThresholdValues:&stru_1F2C4A680 events:0 completion:0];
 
     v7 = 0;
@@ -1592,14 +1592,14 @@ LABEL_15:
   return v7;
 }
 
-- (id)urlForBagKey:(id)a3
+- (id)urlForBagKey:(id)key
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   amsBag = self->_amsBag;
   if (amsBag)
   {
-    v6 = [(AMSSnapshotBag *)amsBag URLForKey:v4];
+    v6 = [(AMSSnapshotBag *)amsBag URLForKey:keyCopy];
     v26 = 0;
     v7 = [v6 valueWithError:&v26];
     v8 = v26;
@@ -1610,9 +1610,9 @@ LABEL_15:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v28 = self;
+        selfCopy3 = self;
         v29 = 2114;
-        v30 = v4;
+        v30 = keyCopy;
         v31 = 2114;
         v32 = v8;
         _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load value for bag key '%{public}@'. err=%{public}@", buf, 0x20u);
@@ -1630,12 +1630,12 @@ LABEL_15:
     v8 = 0;
   }
 
-  v10 = [(ICURLBag *)self _valueForBagKey:v4];
+  v10 = [(ICURLBag *)self _valueForBagKey:keyCopy];
   if (!v10)
   {
 LABEL_19:
 
-    [(ICURLBag *)self _logMissingKey:v4];
+    [(ICURLBag *)self _logMissingKey:keyCopy];
     goto LABEL_20;
   }
 
@@ -1650,9 +1650,9 @@ LABEL_19:
     {
       profileName = self->_profileName;
       *buf = 138544130;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 2114;
-      v30 = v4;
+      v30 = keyCopy;
       v31 = 2114;
       v32 = profileName;
       v33 = 2114;
@@ -1662,7 +1662,7 @@ LABEL_19:
 
     v22 = MEMORY[0x1E69B13D8];
     v23 = *MEMORY[0x1E69B1350];
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create url for bag key '%@' in profile '%@': '%@'", v4, self->_profileName, v10];
+    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create url for bag key '%@' in profile '%@': '%@'", keyCopy, self->_profileName, v10];
     [v22 snapshotWithDomain:v23 type:@"Bug" subType:@"ICURLBag" context:v24 triggerThresholdValues:&stru_1F2C4A680 events:0 completion:0];
 
     goto LABEL_19;
@@ -1681,9 +1681,9 @@ LABEL_12:
     v14 = self->_profileName;
     v15 = objc_opt_class();
     *buf = 138544130;
-    v28 = self;
+    selfCopy3 = self;
     v29 = 2114;
-    v30 = v4;
+    v30 = keyCopy;
     v31 = 2114;
     v32 = v14;
     v33 = 2114;
@@ -1694,7 +1694,7 @@ LABEL_12:
 
   v17 = MEMORY[0x1E69B13D8];
   v18 = *MEMORY[0x1E69B1350];
-  v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected URL)", v4, self->_profileName, objc_opt_class()];
+  v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected URL)", keyCopy, self->_profileName, objc_opt_class()];
   [v17 snapshotWithDomain:v18 type:@"Bug" subType:@"ICURLBag" context:v19 triggerThresholdValues:&stru_1F2C4A680 events:0 completion:0];
 
 LABEL_20:
@@ -1704,20 +1704,20 @@ LABEL_21:
   return v7;
 }
 
-- (id)dictionaryForBagKey:(id)a3
+- (id)dictionaryForBagKey:(id)key
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   amsBag = self->_amsBag;
   if (!amsBag)
   {
     v8 = 0;
 LABEL_9:
-    v7 = [(ICURLBag *)self _valueForBagKey:v4];
+    v7 = [(ICURLBag *)self _valueForBagKey:keyCopy];
     goto LABEL_10;
   }
 
-  v6 = [(AMSSnapshotBag *)amsBag dictionaryForKey:v4];
+  v6 = [(AMSSnapshotBag *)amsBag dictionaryForKey:keyCopy];
   v24 = 0;
   v7 = [v6 valueWithError:&v24];
   v8 = v24;
@@ -1728,9 +1728,9 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
-      v28 = v4;
+      v28 = keyCopy;
       v29 = 2114;
       v30 = v8;
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load value for bag key '%{public}@'. err=%{public}@", buf, 0x20u);
@@ -1751,7 +1751,7 @@ LABEL_10:
     v21[2] = __32__ICURLBag_dictionaryForBagKey___block_invoke;
     v21[3] = &unk_1E7BF8B48;
     v22 = v10;
-    v23 = self;
+    selfCopy2 = self;
     v11 = v10;
     [v7 enumerateKeysAndObjectsUsingBlock:v21];
     v12 = [v11 copy];
@@ -1769,9 +1769,9 @@ LABEL_10:
         profileName = self->_profileName;
         v15 = objc_opt_class();
         *buf = 138544130;
-        v26 = self;
+        selfCopy3 = self;
         v27 = 2114;
-        v28 = v4;
+        v28 = keyCopy;
         v29 = 2114;
         v30 = profileName;
         v31 = 2114;
@@ -1782,7 +1782,7 @@ LABEL_10:
 
       v17 = MEMORY[0x1E69B13D8];
       v18 = *MEMORY[0x1E69B1350];
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Dictionary)", v4, self->_profileName, objc_opt_class()];
+      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Dictionary)", keyCopy, self->_profileName, objc_opt_class()];
       [v17 snapshotWithDomain:v18 type:@"Bug" subType:@"ICURLBag" context:v19 triggerThresholdValues:&stru_1F2C4A680 events:0 completion:0];
 
       v7 = 0;
@@ -1791,7 +1791,7 @@ LABEL_10:
 
   else
   {
-    [(ICURLBag *)self _logMissingKey:v4];
+    [(ICURLBag *)self _logMissingKey:keyCopy];
   }
 
   return v7;
@@ -1814,14 +1814,14 @@ void __32__ICURLBag_dictionaryForBagKey___block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (id)arrayForBagKey:(id)a3
+- (id)arrayForBagKey:(id)key
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   amsBag = self->_amsBag;
   if (amsBag)
   {
-    v6 = [(AMSSnapshotBag *)amsBag arrayForKey:v4];
+    v6 = [(AMSSnapshotBag *)amsBag arrayForKey:keyCopy];
     v18 = 0;
     v7 = [v6 valueWithError:&v18];
     v8 = v18;
@@ -1832,9 +1832,9 @@ void __32__ICURLBag_dictionaryForBagKey___block_invoke(uint64_t a1, void *a2, vo
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2114;
-        v22 = v4;
+        v22 = keyCopy;
         v23 = 2114;
         v24 = v8;
         _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load value for bag key '%{public}@'. err=%{public}@", buf, 0x20u);
@@ -1852,10 +1852,10 @@ void __32__ICURLBag_dictionaryForBagKey___block_invoke(uint64_t a1, void *a2, vo
     v8 = 0;
   }
 
-  v7 = [(ICURLBag *)self _valueForBagKey:v4];
+  v7 = [(ICURLBag *)self _valueForBagKey:keyCopy];
   if (!v7)
   {
-    [(ICURLBag *)self _logMissingKey:v4];
+    [(ICURLBag *)self _logMissingKey:keyCopy];
     goto LABEL_15;
   }
 
@@ -1868,9 +1868,9 @@ LABEL_10:
       profileName = self->_profileName;
       v12 = objc_opt_class();
       *buf = 138544130;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
-      v22 = v4;
+      v22 = keyCopy;
       v23 = 2114;
       v24 = profileName;
       v25 = 2114;
@@ -1881,7 +1881,7 @@ LABEL_10:
 
     v14 = MEMORY[0x1E69B13D8];
     v15 = *MEMORY[0x1E69B1350];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Array)", v4, self->_profileName, objc_opt_class()];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected Array)", keyCopy, self->_profileName, objc_opt_class()];
     [v14 snapshotWithDomain:v15 type:@"Bug" subType:@"ICURLBag" context:v16 triggerThresholdValues:&stru_1F2C4A680 events:0 completion:0];
 
     v7 = 0;
@@ -1892,20 +1892,20 @@ LABEL_15:
   return v7;
 }
 
-- (id)stringForBagKey:(id)a3
+- (id)stringForBagKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   amsBag = self->_amsBag;
   if (!amsBag)
   {
     v8 = 0;
 LABEL_9:
-    v7 = [(ICURLBag *)self _valueForBagKey:v4];
+    v7 = [(ICURLBag *)self _valueForBagKey:keyCopy];
     goto LABEL_10;
   }
 
-  v6 = [(AMSSnapshotBag *)amsBag stringForKey:v4];
+  v6 = [(AMSSnapshotBag *)amsBag stringForKey:keyCopy];
   v19 = 0;
   v7 = [v6 valueWithError:&v19];
   v8 = v19;
@@ -1916,9 +1916,9 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
-      v23 = v4;
+      v23 = keyCopy;
       v24 = 2114;
       v25 = v8;
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load value for bag key '%{public}@'. err=%{public}@", buf, 0x20u);
@@ -1948,9 +1948,9 @@ LABEL_10:
         profileName = self->_profileName;
         v13 = objc_opt_class();
         *buf = 138544130;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2114;
-        v23 = v4;
+        v23 = keyCopy;
         v24 = 2114;
         v25 = profileName;
         v26 = 2114;
@@ -1961,7 +1961,7 @@ LABEL_10:
 
       v15 = MEMORY[0x1E69B13D8];
       v16 = *MEMORY[0x1E69B1350];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected String)", v4, self->_profileName, objc_opt_class()];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found unexpected type for bag key '%@' in profile '%@': '%@' (expected String)", keyCopy, self->_profileName, objc_opt_class()];
       [v15 snapshotWithDomain:v16 type:@"Bug" subType:@"ICURLBag" context:v17 triggerThresholdValues:&stru_1F2C4A680 events:0 completion:0];
 
       v7 = 0;
@@ -1970,30 +1970,30 @@ LABEL_10:
 
   else
   {
-    [(ICURLBag *)self _logMissingKey:v4];
+    [(ICURLBag *)self _logMissingKey:keyCopy];
   }
 
   return v7;
 }
 
-- (BOOL)hasValueForBagKey:(id)a3
+- (BOOL)hasValueForBagKey:(id)key
 {
-  v3 = [(ICURLBag *)self _valueForBagKey:a3];
+  v3 = [(ICURLBag *)self _valueForBagKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)valuesForBagKeys:(id)a3
+- (id)valuesForBagKeys:(id)keys
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  keysCopy = keys;
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -2027,71 +2027,71 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(ICURLBag *)self bagValues];
-  v6 = [v4 bagValues];
+  equalCopy = equal;
+  bagValues = [(ICURLBag *)self bagValues];
+  bagValues2 = [equalCopy bagValues];
 
-  if (v5 == v6)
+  if (bagValues == bagValues2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [bagValues isEqual:bagValues2];
   }
 
   return v7;
 }
 
-- (id)_initWithDictionary:(id)a3 amsBag:(id)a4 requestDate:(id)a5 expirationDate:(id)a6 serverCorrelationKey:(id)a7 serverEnvironment:(id)a8 profileName:(id)a9 profileVersion:(id)a10 sourceAccountDSID:(id)a11
+- (id)_initWithDictionary:(id)dictionary amsBag:(id)bag requestDate:(id)date expirationDate:(id)expirationDate serverCorrelationKey:(id)key serverEnvironment:(id)environment profileName:(id)name profileVersion:(id)self0 sourceAccountDSID:(id)self1
 {
-  v17 = a3;
-  v45 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  dictionaryCopy = dictionary;
+  bagCopy = bag;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  keyCopy = key;
+  environmentCopy = environment;
+  nameCopy = name;
+  versionCopy = version;
+  dCopy = d;
   v46.receiver = self;
   v46.super_class = ICURLBag;
   v25 = [(ICURLBag *)&v46 init];
   if (v25)
   {
-    v26 = [v17 copy];
+    v26 = [dictionaryCopy copy];
     bagValues = v25->_bagValues;
     v25->_bagValues = v26;
 
-    objc_storeStrong(&v25->_amsBag, a4);
-    v28 = [v18 copy];
+    objc_storeStrong(&v25->_amsBag, bag);
+    v28 = [dateCopy copy];
     requestDate = v25->_requestDate;
     v25->_requestDate = v28;
 
-    v30 = [v19 copy];
+    v30 = [expirationDateCopy copy];
     expirationDate = v25->_expirationDate;
     v25->_expirationDate = v30;
 
-    v32 = [v20 copy];
+    v32 = [keyCopy copy];
     serverCorrelationKey = v25->_serverCorrelationKey;
     v25->_serverCorrelationKey = v32;
 
-    v34 = [v21 copy];
+    v34 = [environmentCopy copy];
     serverEnvironment = v25->_serverEnvironment;
     v25->_serverEnvironment = v34;
 
-    v36 = [v22 copy];
+    v36 = [nameCopy copy];
     profileName = v25->_profileName;
     v25->_profileName = v36;
 
-    v38 = [v23 copy];
+    v38 = [versionCopy copy];
     profileVersion = v25->_profileVersion;
     v25->_profileVersion = v38;
 
-    v40 = [v24 copy];
+    v40 = [dCopy copy];
     sourceAccountDSID = v25->_sourceAccountDSID;
     v25->_sourceAccountDSID = v40;
 
@@ -2104,13 +2104,13 @@ LABEL_10:
   return v25;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [v4 now];
   v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:14400.0];
-  v8 = [(ICURLBag *)self _initWithDictionary:v5 amsBag:0 requestDate:v6 expirationDate:v7 serverCorrelationKey:0 serverEnvironment:0 profileName:0 profileVersion:0 sourceAccountDSID:0];
+  v8 = [(ICURLBag *)self _initWithDictionary:dictionaryCopy amsBag:0 requestDate:v6 expirationDate:v7 serverCorrelationKey:0 serverEnvironment:0 profileName:0 profileVersion:0 sourceAccountDSID:0];
 
   return v8;
 }

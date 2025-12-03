@@ -1,11 +1,11 @@
 @interface _WKMockTKSmartCard
-- (_WKMockTKSmartCard)initWithService:(void *)a3;
-- (void)transmitRequest:(id)a3 reply:(id)a4;
+- (_WKMockTKSmartCard)initWithService:(void *)service;
+- (void)transmitRequest:(id)request reply:(id)reply;
 @end
 
 @implementation _WKMockTKSmartCard
 
-- (_WKMockTKSmartCard)initWithService:(void *)a3
+- (_WKMockTKSmartCard)initWithService:(void *)service
 {
   v10.receiver = self;
   v10.super_class = _WKMockTKSmartCard;
@@ -13,8 +13,8 @@
   v6 = v4;
   if (v4)
   {
-    v7 = *a3;
-    *a3 = 0;
+    v7 = *service;
+    *service = 0;
     m_ptr = v4->m_service.m_impl.m_ptr;
     v6->m_service.m_impl.m_ptr = v7;
     if (m_ptr)
@@ -30,7 +30,7 @@
   return v6;
 }
 
-- (void)transmitRequest:(id)a3 reply:(id)a4
+- (void)transmitRequest:(id)request reply:(id)reply
 {
   m_ptr = self->m_service.m_impl.m_ptr;
   if (!m_ptr || (v5 = *(m_ptr + 1)) == 0)
@@ -105,7 +105,7 @@ LABEL_29:
 
   v11 = 0;
 LABEL_20:
-  (*(a4 + 2))(a4, v11, 0);
+  (*(reply + 2))(reply, v11, 0);
   if (v11)
   {
   }

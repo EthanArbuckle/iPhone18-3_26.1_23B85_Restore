@@ -1,85 +1,85 @@
 @interface _MRContentItemProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAnimatedArtworkPreviewFrames:(id)a3;
-- (void)addAnimatedArtworks:(id)a3;
-- (void)addAvailableAnimatedArtworkFormats:(id)a3;
-- (void)addAvailableArtworkFormats:(id)a3;
-- (void)addAvailableLanguageOptions:(id)a3;
-- (void)addAvailableRemoteArtworkFormats:(id)a3;
-- (void)addCurrentLanguageOptions:(id)a3;
-- (void)addDataArtworks:(id)a3;
-- (void)addRemoteArtworks:(id)a3;
-- (void)addSections:(id)a3;
-- (void)addTranscriptAlignments:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasArtworkDataWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnimatedArtworkPreviewFrames:(id)frames;
+- (void)addAnimatedArtworks:(id)artworks;
+- (void)addAvailableAnimatedArtworkFormats:(id)formats;
+- (void)addAvailableArtworkFormats:(id)formats;
+- (void)addAvailableLanguageOptions:(id)options;
+- (void)addAvailableRemoteArtworkFormats:(id)formats;
+- (void)addCurrentLanguageOptions:(id)options;
+- (void)addDataArtworks:(id)artworks;
+- (void)addRemoteArtworks:(id)artworks;
+- (void)addSections:(id)sections;
+- (void)addTranscriptAlignments:(id)alignments;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasArtworkDataWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRContentItemProtobuf
 
-- (void)addAvailableLanguageOptions:(id)a3
+- (void)addAvailableLanguageOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   availableLanguageOptions = self->_availableLanguageOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!availableLanguageOptions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_availableLanguageOptions;
     self->_availableLanguageOptions = v6;
 
-    v4 = v8;
+    optionsCopy = v8;
     availableLanguageOptions = self->_availableLanguageOptions;
   }
 
-  [(NSMutableArray *)availableLanguageOptions addObject:v4];
+  [(NSMutableArray *)availableLanguageOptions addObject:optionsCopy];
 }
 
-- (void)addCurrentLanguageOptions:(id)a3
+- (void)addCurrentLanguageOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   currentLanguageOptions = self->_currentLanguageOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!currentLanguageOptions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_currentLanguageOptions;
     self->_currentLanguageOptions = v6;
 
-    v4 = v8;
+    optionsCopy = v8;
     currentLanguageOptions = self->_currentLanguageOptions;
   }
 
-  [(NSMutableArray *)currentLanguageOptions addObject:v4];
+  [(NSMutableArray *)currentLanguageOptions addObject:optionsCopy];
 }
 
-- (void)addSections:(id)a3
+- (void)addSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
-  v8 = v4;
+  v8 = sectionsCopy;
   if (!sections)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sections;
     self->_sections = v6;
 
-    v4 = v8;
+    sectionsCopy = v8;
     sections = self->_sections;
   }
 
-  [(NSMutableArray *)sections addObject:v4];
+  [(NSMutableArray *)sections addObject:sectionsCopy];
 }
 
-- (void)setHasArtworkDataWidth:(BOOL)a3
+- (void)setHasArtworkDataWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -92,148 +92,148 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAvailableArtworkFormats:(id)a3
+- (void)addAvailableArtworkFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   availableArtworkFormats = self->_availableArtworkFormats;
-  v8 = v4;
+  v8 = formatsCopy;
   if (!availableArtworkFormats)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_availableArtworkFormats;
     self->_availableArtworkFormats = v6;
 
-    v4 = v8;
+    formatsCopy = v8;
     availableArtworkFormats = self->_availableArtworkFormats;
   }
 
-  [(NSMutableArray *)availableArtworkFormats addObject:v4];
+  [(NSMutableArray *)availableArtworkFormats addObject:formatsCopy];
 }
 
-- (void)addAvailableRemoteArtworkFormats:(id)a3
+- (void)addAvailableRemoteArtworkFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   availableRemoteArtworkFormats = self->_availableRemoteArtworkFormats;
-  v8 = v4;
+  v8 = formatsCopy;
   if (!availableRemoteArtworkFormats)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_availableRemoteArtworkFormats;
     self->_availableRemoteArtworkFormats = v6;
 
-    v4 = v8;
+    formatsCopy = v8;
     availableRemoteArtworkFormats = self->_availableRemoteArtworkFormats;
   }
 
-  [(NSMutableArray *)availableRemoteArtworkFormats addObject:v4];
+  [(NSMutableArray *)availableRemoteArtworkFormats addObject:formatsCopy];
 }
 
-- (void)addDataArtworks:(id)a3
+- (void)addDataArtworks:(id)artworks
 {
-  v4 = a3;
+  artworksCopy = artworks;
   dataArtworks = self->_dataArtworks;
-  v8 = v4;
+  v8 = artworksCopy;
   if (!dataArtworks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dataArtworks;
     self->_dataArtworks = v6;
 
-    v4 = v8;
+    artworksCopy = v8;
     dataArtworks = self->_dataArtworks;
   }
 
-  [(NSMutableArray *)dataArtworks addObject:v4];
+  [(NSMutableArray *)dataArtworks addObject:artworksCopy];
 }
 
-- (void)addRemoteArtworks:(id)a3
+- (void)addRemoteArtworks:(id)artworks
 {
-  v4 = a3;
+  artworksCopy = artworks;
   remoteArtworks = self->_remoteArtworks;
-  v8 = v4;
+  v8 = artworksCopy;
   if (!remoteArtworks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_remoteArtworks;
     self->_remoteArtworks = v6;
 
-    v4 = v8;
+    artworksCopy = v8;
     remoteArtworks = self->_remoteArtworks;
   }
 
-  [(NSMutableArray *)remoteArtworks addObject:v4];
+  [(NSMutableArray *)remoteArtworks addObject:artworksCopy];
 }
 
-- (void)addTranscriptAlignments:(id)a3
+- (void)addTranscriptAlignments:(id)alignments
 {
-  v4 = a3;
+  alignmentsCopy = alignments;
   transcriptAlignments = self->_transcriptAlignments;
-  v8 = v4;
+  v8 = alignmentsCopy;
   if (!transcriptAlignments)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_transcriptAlignments;
     self->_transcriptAlignments = v6;
 
-    v4 = v8;
+    alignmentsCopy = v8;
     transcriptAlignments = self->_transcriptAlignments;
   }
 
-  [(NSMutableArray *)transcriptAlignments addObject:v4];
+  [(NSMutableArray *)transcriptAlignments addObject:alignmentsCopy];
 }
 
-- (void)addAvailableAnimatedArtworkFormats:(id)a3
+- (void)addAvailableAnimatedArtworkFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   availableAnimatedArtworkFormats = self->_availableAnimatedArtworkFormats;
-  v8 = v4;
+  v8 = formatsCopy;
   if (!availableAnimatedArtworkFormats)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_availableAnimatedArtworkFormats;
     self->_availableAnimatedArtworkFormats = v6;
 
-    v4 = v8;
+    formatsCopy = v8;
     availableAnimatedArtworkFormats = self->_availableAnimatedArtworkFormats;
   }
 
-  [(NSMutableArray *)availableAnimatedArtworkFormats addObject:v4];
+  [(NSMutableArray *)availableAnimatedArtworkFormats addObject:formatsCopy];
 }
 
-- (void)addAnimatedArtworkPreviewFrames:(id)a3
+- (void)addAnimatedArtworkPreviewFrames:(id)frames
 {
-  v4 = a3;
+  framesCopy = frames;
   animatedArtworkPreviewFrames = self->_animatedArtworkPreviewFrames;
-  v8 = v4;
+  v8 = framesCopy;
   if (!animatedArtworkPreviewFrames)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_animatedArtworkPreviewFrames;
     self->_animatedArtworkPreviewFrames = v6;
 
-    v4 = v8;
+    framesCopy = v8;
     animatedArtworkPreviewFrames = self->_animatedArtworkPreviewFrames;
   }
 
-  [(NSMutableArray *)animatedArtworkPreviewFrames addObject:v4];
+  [(NSMutableArray *)animatedArtworkPreviewFrames addObject:framesCopy];
 }
 
-- (void)addAnimatedArtworks:(id)a3
+- (void)addAnimatedArtworks:(id)artworks
 {
-  v4 = a3;
+  artworksCopy = artworks;
   animatedArtworks = self->_animatedArtworks;
-  v8 = v4;
+  v8 = artworksCopy;
   if (!animatedArtworks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_animatedArtworks;
     self->_animatedArtworks = v6;
 
-    v4 = v8;
+    artworksCopy = v8;
     animatedArtworks = self->_animatedArtworks;
   }
 
-  [(NSMutableArray *)animatedArtworks addObject:v4];
+  [(NSMutableArray *)animatedArtworks addObject:artworksCopy];
 }
 
 - (id)description
@@ -242,8 +242,8 @@
   v8.receiver = self;
   v8.super_class = _MRContentItemProtobuf;
   v4 = [(_MRContentItemProtobuf *)&v8 description];
-  v5 = [(_MRContentItemProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRContentItemProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -251,19 +251,19 @@
 - (id)dictionaryRepresentation
 {
   v121 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v7 = [(_MRContentItemMetadataProtobuf *)metadata dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"metadata"];
+    dictionaryRepresentation = [(_MRContentItemMetadataProtobuf *)metadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
   artworkData = self->_artworkData;
@@ -300,8 +300,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v109 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v109 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v109 objects:v120 count:16];
@@ -335,8 +335,8 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v105 + 1) + 8 * j) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation3 = [*(*(&v105 + 1) + 8 * j) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation3];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v105 objects:v119 count:16];
@@ -351,8 +351,8 @@
   lyrics = self->_lyrics;
   if (lyrics)
   {
-    v25 = [(_MRLyricsItemProtobuf *)lyrics dictionaryRepresentation];
-    [v4 setObject:v25 forKey:@"lyrics"];
+    dictionaryRepresentation4 = [(_MRLyricsItemProtobuf *)lyrics dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"lyrics"];
   }
 
   if ([(NSMutableArray *)self->_sections count])
@@ -377,8 +377,8 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v101 + 1) + 8 * k) dictionaryRepresentation];
-          [v26 addObject:v32];
+          dictionaryRepresentation5 = [*(*(&v101 + 1) + 8 * k) dictionaryRepresentation];
+          [v26 addObject:dictionaryRepresentation5];
         }
 
         v29 = [(NSMutableArray *)v27 countByEnumeratingWithState:&v101 objects:v118 count:16];
@@ -469,8 +469,8 @@
             objc_enumerationMutation(v44);
           }
 
-          v49 = [*(*(&v97 + 1) + 8 * m) dictionaryRepresentation];
-          [v43 addObject:v49];
+          dictionaryRepresentation6 = [*(*(&v97 + 1) + 8 * m) dictionaryRepresentation];
+          [v43 addObject:dictionaryRepresentation6];
         }
 
         v46 = [(NSMutableArray *)v44 countByEnumeratingWithState:&v97 objects:v117 count:16];
@@ -504,8 +504,8 @@
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v93 + 1) + 8 * n) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation7 = [*(*(&v93 + 1) + 8 * n) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation7];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v93 objects:v116 count:16];
@@ -539,8 +539,8 @@
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v89 + 1) + 8 * ii) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation8 = [*(*(&v89 + 1) + 8 * ii) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation8];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v89 objects:v115 count:16];
@@ -580,8 +580,8 @@
             objc_enumerationMutation(v66);
           }
 
-          v71 = [*(*(&v85 + 1) + 8 * jj) dictionaryRepresentation];
-          [v65 addObject:v71];
+          dictionaryRepresentation9 = [*(*(&v85 + 1) + 8 * jj) dictionaryRepresentation];
+          [v65 addObject:dictionaryRepresentation9];
         }
 
         v68 = [(NSMutableArray *)v66 countByEnumeratingWithState:&v85 objects:v114 count:16];
@@ -615,8 +615,8 @@
             objc_enumerationMutation(v73);
           }
 
-          v78 = [*(*(&v81 + 1) + 8 * kk) dictionaryRepresentation];
-          [v72 addObject:v78];
+          dictionaryRepresentation10 = [*(*(&v81 + 1) + 8 * kk) dictionaryRepresentation];
+          [v72 addObject:dictionaryRepresentation10];
         }
 
         v75 = [(NSMutableArray *)v73 countByEnumeratingWithState:&v81 objects:v113 count:16];
@@ -633,10 +633,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v130 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -1023,101 +1023,101 @@
   v74 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v50 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    [v50 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if (self->_metadata)
   {
-    [v50 setMetadata:?];
+    [toCopy setMetadata:?];
   }
 
   if (self->_artworkData)
   {
-    [v50 setArtworkData:?];
+    [toCopy setArtworkData:?];
   }
 
   if (self->_info)
   {
-    [v50 setInfo:?];
+    [toCopy setInfo:?];
   }
 
   if ([(_MRContentItemProtobuf *)self availableLanguageOptionsCount])
   {
-    [v50 clearAvailableLanguageOptions];
-    v4 = [(_MRContentItemProtobuf *)self availableLanguageOptionsCount];
-    if (v4)
+    [toCopy clearAvailableLanguageOptions];
+    availableLanguageOptionsCount = [(_MRContentItemProtobuf *)self availableLanguageOptionsCount];
+    if (availableLanguageOptionsCount)
     {
-      v5 = v4;
+      v5 = availableLanguageOptionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRContentItemProtobuf *)self availableLanguageOptionsAtIndex:i];
-        [v50 addAvailableLanguageOptions:v7];
+        [toCopy addAvailableLanguageOptions:v7];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self currentLanguageOptionsCount])
   {
-    [v50 clearCurrentLanguageOptions];
-    v8 = [(_MRContentItemProtobuf *)self currentLanguageOptionsCount];
-    if (v8)
+    [toCopy clearCurrentLanguageOptions];
+    currentLanguageOptionsCount = [(_MRContentItemProtobuf *)self currentLanguageOptionsCount];
+    if (currentLanguageOptionsCount)
     {
-      v9 = v8;
+      v9 = currentLanguageOptionsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(_MRContentItemProtobuf *)self currentLanguageOptionsAtIndex:j];
-        [v50 addCurrentLanguageOptions:v11];
+        [toCopy addCurrentLanguageOptions:v11];
       }
     }
   }
 
   if (self->_lyrics)
   {
-    [v50 setLyrics:?];
+    [toCopy setLyrics:?];
   }
 
   if ([(_MRContentItemProtobuf *)self sectionsCount])
   {
-    [v50 clearSections];
-    v12 = [(_MRContentItemProtobuf *)self sectionsCount];
-    if (v12)
+    [toCopy clearSections];
+    sectionsCount = [(_MRContentItemProtobuf *)self sectionsCount];
+    if (sectionsCount)
     {
-      v13 = v12;
+      v13 = sectionsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(_MRContentItemProtobuf *)self sectionsAtIndex:k];
-        [v50 addSections:v15];
+        [toCopy addSections:v15];
       }
     }
   }
 
   if (self->_parentIdentifier)
   {
-    [v50 setParentIdentifier:?];
+    [toCopy setParentIdentifier:?];
   }
 
-  v16 = v50;
+  v16 = toCopy;
   if (self->_ancestorIdentifier)
   {
-    [v50 setAncestorIdentifier:?];
-    v16 = v50;
+    [toCopy setAncestorIdentifier:?];
+    v16 = toCopy;
   }
 
   if (self->_queueIdentifier)
   {
-    [v50 setQueueIdentifier:?];
-    v16 = v50;
+    [toCopy setQueueIdentifier:?];
+    v16 = toCopy;
   }
 
   if (self->_requestIdentifier)
   {
-    [v50 setRequestIdentifier:?];
-    v16 = v50;
+    [toCopy setRequestIdentifier:?];
+    v16 = toCopy;
   }
 
   has = self->_has;
@@ -1136,147 +1136,147 @@
 
   if (self->_associatedParticipantIdentifier)
   {
-    [v50 setAssociatedParticipantIdentifier:?];
+    [toCopy setAssociatedParticipantIdentifier:?];
   }
 
   if ([(_MRContentItemProtobuf *)self availableArtworkFormatsCount])
   {
-    [v50 clearAvailableArtworkFormats];
-    v18 = [(_MRContentItemProtobuf *)self availableArtworkFormatsCount];
-    if (v18)
+    [toCopy clearAvailableArtworkFormats];
+    availableArtworkFormatsCount = [(_MRContentItemProtobuf *)self availableArtworkFormatsCount];
+    if (availableArtworkFormatsCount)
     {
-      v19 = v18;
+      v19 = availableArtworkFormatsCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(_MRContentItemProtobuf *)self availableArtworkFormatsAtIndex:m];
-        [v50 addAvailableArtworkFormats:v21];
+        [toCopy addAvailableArtworkFormats:v21];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self availableRemoteArtworkFormatsCount])
   {
-    [v50 clearAvailableRemoteArtworkFormats];
-    v22 = [(_MRContentItemProtobuf *)self availableRemoteArtworkFormatsCount];
-    if (v22)
+    [toCopy clearAvailableRemoteArtworkFormats];
+    availableRemoteArtworkFormatsCount = [(_MRContentItemProtobuf *)self availableRemoteArtworkFormatsCount];
+    if (availableRemoteArtworkFormatsCount)
     {
-      v23 = v22;
+      v23 = availableRemoteArtworkFormatsCount;
       for (n = 0; n != v23; ++n)
       {
         v25 = [(_MRContentItemProtobuf *)self availableRemoteArtworkFormatsAtIndex:n];
-        [v50 addAvailableRemoteArtworkFormats:v25];
+        [toCopy addAvailableRemoteArtworkFormats:v25];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self dataArtworksCount])
   {
-    [v50 clearDataArtworks];
-    v26 = [(_MRContentItemProtobuf *)self dataArtworksCount];
-    if (v26)
+    [toCopy clearDataArtworks];
+    dataArtworksCount = [(_MRContentItemProtobuf *)self dataArtworksCount];
+    if (dataArtworksCount)
     {
-      v27 = v26;
+      v27 = dataArtworksCount;
       for (ii = 0; ii != v27; ++ii)
       {
         v29 = [(_MRContentItemProtobuf *)self dataArtworksAtIndex:ii];
-        [v50 addDataArtworks:v29];
+        [toCopy addDataArtworks:v29];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self remoteArtworksCount])
   {
-    [v50 clearRemoteArtworks];
-    v30 = [(_MRContentItemProtobuf *)self remoteArtworksCount];
-    if (v30)
+    [toCopy clearRemoteArtworks];
+    remoteArtworksCount = [(_MRContentItemProtobuf *)self remoteArtworksCount];
+    if (remoteArtworksCount)
     {
-      v31 = v30;
+      v31 = remoteArtworksCount;
       for (jj = 0; jj != v31; ++jj)
       {
         v33 = [(_MRContentItemProtobuf *)self remoteArtworksAtIndex:jj];
-        [v50 addRemoteArtworks:v33];
+        [toCopy addRemoteArtworks:v33];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self transcriptAlignmentsCount])
   {
-    [v50 clearTranscriptAlignments];
-    v34 = [(_MRContentItemProtobuf *)self transcriptAlignmentsCount];
-    if (v34)
+    [toCopy clearTranscriptAlignments];
+    transcriptAlignmentsCount = [(_MRContentItemProtobuf *)self transcriptAlignmentsCount];
+    if (transcriptAlignmentsCount)
     {
-      v35 = v34;
+      v35 = transcriptAlignmentsCount;
       for (kk = 0; kk != v35; ++kk)
       {
         v37 = [(_MRContentItemProtobuf *)self transcriptAlignmentsAtIndex:kk];
-        [v50 addTranscriptAlignments:v37];
+        [toCopy addTranscriptAlignments:v37];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self availableAnimatedArtworkFormatsCount])
   {
-    [v50 clearAvailableAnimatedArtworkFormats];
-    v38 = [(_MRContentItemProtobuf *)self availableAnimatedArtworkFormatsCount];
-    if (v38)
+    [toCopy clearAvailableAnimatedArtworkFormats];
+    availableAnimatedArtworkFormatsCount = [(_MRContentItemProtobuf *)self availableAnimatedArtworkFormatsCount];
+    if (availableAnimatedArtworkFormatsCount)
     {
-      v39 = v38;
+      v39 = availableAnimatedArtworkFormatsCount;
       for (mm = 0; mm != v39; ++mm)
       {
         v41 = [(_MRContentItemProtobuf *)self availableAnimatedArtworkFormatsAtIndex:mm];
-        [v50 addAvailableAnimatedArtworkFormats:v41];
+        [toCopy addAvailableAnimatedArtworkFormats:v41];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self animatedArtworkPreviewFramesCount])
   {
-    [v50 clearAnimatedArtworkPreviewFrames];
-    v42 = [(_MRContentItemProtobuf *)self animatedArtworkPreviewFramesCount];
-    if (v42)
+    [toCopy clearAnimatedArtworkPreviewFrames];
+    animatedArtworkPreviewFramesCount = [(_MRContentItemProtobuf *)self animatedArtworkPreviewFramesCount];
+    if (animatedArtworkPreviewFramesCount)
     {
-      v43 = v42;
+      v43 = animatedArtworkPreviewFramesCount;
       for (nn = 0; nn != v43; ++nn)
       {
         v45 = [(_MRContentItemProtobuf *)self animatedArtworkPreviewFramesAtIndex:nn];
-        [v50 addAnimatedArtworkPreviewFrames:v45];
+        [toCopy addAnimatedArtworkPreviewFrames:v45];
       }
     }
   }
 
   if ([(_MRContentItemProtobuf *)self animatedArtworksCount])
   {
-    [v50 clearAnimatedArtworks];
-    v46 = [(_MRContentItemProtobuf *)self animatedArtworksCount];
-    if (v46)
+    [toCopy clearAnimatedArtworks];
+    animatedArtworksCount = [(_MRContentItemProtobuf *)self animatedArtworksCount];
+    if (animatedArtworksCount)
     {
-      v47 = v46;
+      v47 = animatedArtworksCount;
       for (i1 = 0; i1 != v47; ++i1)
       {
         v49 = [(_MRContentItemProtobuf *)self animatedArtworksAtIndex:i1];
-        [v50 addAnimatedArtworks:v49];
+        [toCopy addAnimatedArtworks:v49];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v150 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 104);
   *(v5 + 104) = v6;
 
-  v8 = [(_MRContentItemMetadataProtobuf *)self->_metadata copyWithZone:a3];
+  v8 = [(_MRContentItemMetadataProtobuf *)self->_metadata copyWithZone:zone];
   v9 = *(v5 + 128);
   *(v5 + 128) = v8;
 
-  v10 = [(NSData *)self->_artworkData copyWithZone:a3];
+  v10 = [(NSData *)self->_artworkData copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_info copyWithZone:a3];
+  v12 = [(NSString *)self->_info copyWithZone:zone];
   v13 = *(v5 + 112);
   *(v5 + 112) = v12;
 
@@ -1299,7 +1299,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v135 + 1) + 8 * i) copyWithZone:a3];
+        v19 = [*(*(&v135 + 1) + 8 * i) copyWithZone:zone];
         [v5 addAvailableLanguageOptions:v19];
       }
 
@@ -1328,7 +1328,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v131 + 1) + 8 * j) copyWithZone:a3];
+        v25 = [*(*(&v131 + 1) + 8 * j) copyWithZone:zone];
         [v5 addCurrentLanguageOptions:v25];
       }
 
@@ -1338,7 +1338,7 @@
     while (v22);
   }
 
-  v26 = [(_MRLyricsItemProtobuf *)self->_lyrics copyWithZone:a3];
+  v26 = [(_MRLyricsItemProtobuf *)self->_lyrics copyWithZone:zone];
   v27 = *(v5 + 120);
   *(v5 + 120) = v26;
 
@@ -1361,7 +1361,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v127 + 1) + 8 * k) copyWithZone:a3];
+        v33 = [*(*(&v127 + 1) + 8 * k) copyWithZone:zone];
         [v5 addSections:v33];
       }
 
@@ -1371,19 +1371,19 @@
     while (v30);
   }
 
-  v34 = [(NSString *)self->_parentIdentifier copyWithZone:a3];
+  v34 = [(NSString *)self->_parentIdentifier copyWithZone:zone];
   v35 = *(v5 + 136);
   *(v5 + 136) = v34;
 
-  v36 = [(NSString *)self->_ancestorIdentifier copyWithZone:a3];
+  v36 = [(NSString *)self->_ancestorIdentifier copyWithZone:zone];
   v37 = *(v5 + 8);
   *(v5 + 8) = v36;
 
-  v38 = [(NSString *)self->_queueIdentifier copyWithZone:a3];
+  v38 = [(NSString *)self->_queueIdentifier copyWithZone:zone];
   v39 = *(v5 + 144);
   *(v5 + 144) = v38;
 
-  v40 = [(NSString *)self->_requestIdentifier copyWithZone:a3];
+  v40 = [(NSString *)self->_requestIdentifier copyWithZone:zone];
   v41 = *(v5 + 160);
   *(v5 + 160) = v40;
 
@@ -1401,7 +1401,7 @@
     *(v5 + 184) |= 1u;
   }
 
-  v43 = [(NSString *)self->_associatedParticipantIdentifier copyWithZone:a3];
+  v43 = [(NSString *)self->_associatedParticipantIdentifier copyWithZone:zone];
   v44 = *(v5 + 48);
   *(v5 + 48) = v43;
 
@@ -1424,7 +1424,7 @@
           objc_enumerationMutation(v45);
         }
 
-        v50 = [*(*(&v123 + 1) + 8 * m) copyWithZone:a3];
+        v50 = [*(*(&v123 + 1) + 8 * m) copyWithZone:zone];
         [v5 addAvailableArtworkFormats:v50];
       }
 
@@ -1453,7 +1453,7 @@
           objc_enumerationMutation(v51);
         }
 
-        v56 = [*(*(&v119 + 1) + 8 * n) copyWithZone:a3];
+        v56 = [*(*(&v119 + 1) + 8 * n) copyWithZone:zone];
         [v5 addAvailableRemoteArtworkFormats:v56];
       }
 
@@ -1482,7 +1482,7 @@
           objc_enumerationMutation(v57);
         }
 
-        v62 = [*(*(&v115 + 1) + 8 * ii) copyWithZone:a3];
+        v62 = [*(*(&v115 + 1) + 8 * ii) copyWithZone:zone];
         [v5 addDataArtworks:v62];
       }
 
@@ -1511,7 +1511,7 @@
           objc_enumerationMutation(v63);
         }
 
-        v68 = [*(*(&v111 + 1) + 8 * jj) copyWithZone:a3];
+        v68 = [*(*(&v111 + 1) + 8 * jj) copyWithZone:zone];
         [v5 addRemoteArtworks:v68];
       }
 
@@ -1540,7 +1540,7 @@
           objc_enumerationMutation(v69);
         }
 
-        v74 = [*(*(&v107 + 1) + 8 * kk) copyWithZone:a3];
+        v74 = [*(*(&v107 + 1) + 8 * kk) copyWithZone:zone];
         [v5 addTranscriptAlignments:v74];
       }
 
@@ -1569,7 +1569,7 @@
           objc_enumerationMutation(v75);
         }
 
-        v80 = [*(*(&v103 + 1) + 8 * mm) copyWithZone:a3];
+        v80 = [*(*(&v103 + 1) + 8 * mm) copyWithZone:zone];
         [v5 addAvailableAnimatedArtworkFormats:v80];
       }
 
@@ -1598,7 +1598,7 @@
           objc_enumerationMutation(v81);
         }
 
-        v86 = [*(*(&v99 + 1) + 8 * nn) copyWithZone:a3];
+        v86 = [*(*(&v99 + 1) + 8 * nn) copyWithZone:zone];
         [v5 addAnimatedArtworkPreviewFrames:v86];
       }
 
@@ -1627,7 +1627,7 @@
           objc_enumerationMutation(v87);
         }
 
-        v92 = [*(*(&v95 + 1) + 8 * i1) copyWithZone:{a3, v95}];
+        v92 = [*(*(&v95 + 1) + 8 * i1) copyWithZone:{zone, v95}];
         [v5 addAnimatedArtworks:v92];
       }
 
@@ -1641,16 +1641,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 13))
+  if (identifier | *(equalCopy + 13))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -1659,7 +1659,7 @@
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 16))
+  if (metadata | *(equalCopy + 16))
   {
     if (![(_MRContentItemMetadataProtobuf *)metadata isEqual:?])
     {
@@ -1668,7 +1668,7 @@
   }
 
   artworkData = self->_artworkData;
-  if (artworkData | *(v4 + 4))
+  if (artworkData | *(equalCopy + 4))
   {
     if (![(NSData *)artworkData isEqual:?])
     {
@@ -1677,7 +1677,7 @@
   }
 
   info = self->_info;
-  if (info | *(v4 + 14))
+  if (info | *(equalCopy + 14))
   {
     if (![(NSString *)info isEqual:?])
     {
@@ -1686,7 +1686,7 @@
   }
 
   availableLanguageOptions = self->_availableLanguageOptions;
-  if (availableLanguageOptions | *(v4 + 9))
+  if (availableLanguageOptions | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)availableLanguageOptions isEqual:?])
     {
@@ -1695,7 +1695,7 @@
   }
 
   currentLanguageOptions = self->_currentLanguageOptions;
-  if (currentLanguageOptions | *(v4 + 11))
+  if (currentLanguageOptions | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)currentLanguageOptions isEqual:?])
     {
@@ -1704,7 +1704,7 @@
   }
 
   lyrics = self->_lyrics;
-  if (lyrics | *(v4 + 15))
+  if (lyrics | *(equalCopy + 15))
   {
     if (![(_MRLyricsItemProtobuf *)lyrics isEqual:?])
     {
@@ -1713,7 +1713,7 @@
   }
 
   sections = self->_sections;
-  if (sections | *(v4 + 21))
+  if (sections | *(equalCopy + 21))
   {
     if (![(NSMutableArray *)sections isEqual:?])
     {
@@ -1722,7 +1722,7 @@
   }
 
   parentIdentifier = self->_parentIdentifier;
-  if (parentIdentifier | *(v4 + 17))
+  if (parentIdentifier | *(equalCopy + 17))
   {
     if (![(NSString *)parentIdentifier isEqual:?])
     {
@@ -1731,7 +1731,7 @@
   }
 
   ancestorIdentifier = self->_ancestorIdentifier;
-  if (ancestorIdentifier | *(v4 + 1))
+  if (ancestorIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)ancestorIdentifier isEqual:?])
     {
@@ -1740,7 +1740,7 @@
   }
 
   queueIdentifier = self->_queueIdentifier;
-  if (queueIdentifier | *(v4 + 18))
+  if (queueIdentifier | *(equalCopy + 18))
   {
     if (![(NSString *)queueIdentifier isEqual:?])
     {
@@ -1749,7 +1749,7 @@
   }
 
   requestIdentifier = self->_requestIdentifier;
-  if (requestIdentifier | *(v4 + 20))
+  if (requestIdentifier | *(equalCopy + 20))
   {
     if (![(NSString *)requestIdentifier isEqual:?])
     {
@@ -1757,16 +1757,16 @@
     }
   }
 
-  v17 = *(v4 + 184);
+  v17 = *(equalCopy + 184);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 184) & 2) == 0 || self->_artworkDataWidth != *(v4 + 11))
+    if ((*(equalCopy + 184) & 2) == 0 || self->_artworkDataWidth != *(equalCopy + 11))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 184) & 2) != 0)
+  else if ((*(equalCopy + 184) & 2) != 0)
   {
 LABEL_54:
     v27 = 0;
@@ -1775,25 +1775,25 @@ LABEL_54:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 184) & 1) == 0 || self->_artworkDataHeight != *(v4 + 10))
+    if ((*(equalCopy + 184) & 1) == 0 || self->_artworkDataHeight != *(equalCopy + 10))
     {
       goto LABEL_54;
     }
   }
 
-  else if (*(v4 + 184))
+  else if (*(equalCopy + 184))
   {
     goto LABEL_54;
   }
 
   associatedParticipantIdentifier = self->_associatedParticipantIdentifier;
-  if (associatedParticipantIdentifier | *(v4 + 6) && ![(NSString *)associatedParticipantIdentifier isEqual:?])
+  if (associatedParticipantIdentifier | *(equalCopy + 6) && ![(NSString *)associatedParticipantIdentifier isEqual:?])
   {
     goto LABEL_54;
   }
 
   availableArtworkFormats = self->_availableArtworkFormats;
-  if (availableArtworkFormats | *(v4 + 8))
+  if (availableArtworkFormats | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)availableArtworkFormats isEqual:?])
     {
@@ -1802,7 +1802,7 @@ LABEL_54:
   }
 
   availableRemoteArtworkFormats = self->_availableRemoteArtworkFormats;
-  if (availableRemoteArtworkFormats | *(v4 + 10))
+  if (availableRemoteArtworkFormats | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)availableRemoteArtworkFormats isEqual:?])
     {
@@ -1811,7 +1811,7 @@ LABEL_54:
   }
 
   dataArtworks = self->_dataArtworks;
-  if (dataArtworks | *(v4 + 12))
+  if (dataArtworks | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)dataArtworks isEqual:?])
     {
@@ -1820,7 +1820,7 @@ LABEL_54:
   }
 
   remoteArtworks = self->_remoteArtworks;
-  if (remoteArtworks | *(v4 + 19))
+  if (remoteArtworks | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)remoteArtworks isEqual:?])
     {
@@ -1829,7 +1829,7 @@ LABEL_54:
   }
 
   transcriptAlignments = self->_transcriptAlignments;
-  if (transcriptAlignments | *(v4 + 22))
+  if (transcriptAlignments | *(equalCopy + 22))
   {
     if (![(NSMutableArray *)transcriptAlignments isEqual:?])
     {
@@ -1838,7 +1838,7 @@ LABEL_54:
   }
 
   availableAnimatedArtworkFormats = self->_availableAnimatedArtworkFormats;
-  if (availableAnimatedArtworkFormats | *(v4 + 7))
+  if (availableAnimatedArtworkFormats | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)availableAnimatedArtworkFormats isEqual:?])
     {
@@ -1847,7 +1847,7 @@ LABEL_54:
   }
 
   animatedArtworkPreviewFrames = self->_animatedArtworkPreviewFrames;
-  if (animatedArtworkPreviewFrames | *(v4 + 2))
+  if (animatedArtworkPreviewFrames | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)animatedArtworkPreviewFrames isEqual:?])
     {
@@ -1856,7 +1856,7 @@ LABEL_54:
   }
 
   animatedArtworks = self->_animatedArtworks;
-  if (animatedArtworks | *(v4 + 3))
+  if (animatedArtworks | *(equalCopy + 3))
   {
     v27 = [(NSMutableArray *)animatedArtworks isEqual:?];
   }
@@ -1917,17 +1917,17 @@ LABEL_55:
   return v23 ^ [(NSMutableArray *)self->_animatedArtworks hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v121 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 13))
+  fromCopy = from;
+  if (*(fromCopy + 13))
   {
     [(_MRContentItemProtobuf *)self setIdentifier:?];
   }
 
   metadata = self->_metadata;
-  v6 = *(v4 + 16);
+  v6 = *(fromCopy + 16);
   if (metadata)
   {
     if (v6)
@@ -1941,12 +1941,12 @@ LABEL_55:
     [(_MRContentItemProtobuf *)self setMetadata:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_MRContentItemProtobuf *)self setArtworkData:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(_MRContentItemProtobuf *)self setInfo:?];
   }
@@ -1955,7 +1955,7 @@ LABEL_55:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v7 = *(v4 + 9);
+  v7 = *(fromCopy + 9);
   v8 = [v7 countByEnumeratingWithState:&v106 objects:v120 count:16];
   if (v8)
   {
@@ -1983,7 +1983,7 @@ LABEL_55:
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v12 = *(v4 + 11);
+  v12 = *(fromCopy + 11);
   v13 = [v12 countByEnumeratingWithState:&v102 objects:v119 count:16];
   if (v13)
   {
@@ -2008,7 +2008,7 @@ LABEL_55:
   }
 
   lyrics = self->_lyrics;
-  v18 = *(v4 + 15);
+  v18 = *(fromCopy + 15);
   if (lyrics)
   {
     if (v18)
@@ -2026,7 +2026,7 @@ LABEL_55:
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v19 = *(v4 + 21);
+  v19 = *(fromCopy + 21);
   v20 = [v19 countByEnumeratingWithState:&v98 objects:v118 count:16];
   if (v20)
   {
@@ -2050,41 +2050,41 @@ LABEL_55:
     while (v21);
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(_MRContentItemProtobuf *)self setParentIdentifier:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(_MRContentItemProtobuf *)self setAncestorIdentifier:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(_MRContentItemProtobuf *)self setQueueIdentifier:?];
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(_MRContentItemProtobuf *)self setRequestIdentifier:?];
   }
 
-  v24 = *(v4 + 184);
+  v24 = *(fromCopy + 184);
   if ((v24 & 2) != 0)
   {
-    self->_artworkDataWidth = *(v4 + 11);
+    self->_artworkDataWidth = *(fromCopy + 11);
     *&self->_has |= 2u;
-    v24 = *(v4 + 184);
+    v24 = *(fromCopy + 184);
   }
 
   if (v24)
   {
-    self->_artworkDataHeight = *(v4 + 10);
+    self->_artworkDataHeight = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(_MRContentItemProtobuf *)self setAssociatedParticipantIdentifier:?];
   }
@@ -2093,7 +2093,7 @@ LABEL_55:
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v25 = *(v4 + 8);
+  v25 = *(fromCopy + 8);
   v26 = [v25 countByEnumeratingWithState:&v94 objects:v117 count:16];
   if (v26)
   {
@@ -2121,7 +2121,7 @@ LABEL_55:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v30 = *(v4 + 10);
+  v30 = *(fromCopy + 10);
   v31 = [v30 countByEnumeratingWithState:&v90 objects:v116 count:16];
   if (v31)
   {
@@ -2149,7 +2149,7 @@ LABEL_55:
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v35 = *(v4 + 12);
+  v35 = *(fromCopy + 12);
   v36 = [v35 countByEnumeratingWithState:&v86 objects:v115 count:16];
   if (v36)
   {
@@ -2177,7 +2177,7 @@ LABEL_55:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v40 = *(v4 + 19);
+  v40 = *(fromCopy + 19);
   v41 = [v40 countByEnumeratingWithState:&v82 objects:v114 count:16];
   if (v41)
   {
@@ -2205,7 +2205,7 @@ LABEL_55:
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v45 = *(v4 + 22);
+  v45 = *(fromCopy + 22);
   v46 = [v45 countByEnumeratingWithState:&v78 objects:v113 count:16];
   if (v46)
   {
@@ -2233,7 +2233,7 @@ LABEL_55:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v50 = *(v4 + 7);
+  v50 = *(fromCopy + 7);
   v51 = [v50 countByEnumeratingWithState:&v74 objects:v112 count:16];
   if (v51)
   {
@@ -2261,7 +2261,7 @@ LABEL_55:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v55 = *(v4 + 2);
+  v55 = *(fromCopy + 2);
   v56 = [v55 countByEnumeratingWithState:&v70 objects:v111 count:16];
   if (v56)
   {
@@ -2289,7 +2289,7 @@ LABEL_55:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v60 = *(v4 + 3);
+  v60 = *(fromCopy + 3);
   v61 = [v60 countByEnumeratingWithState:&v66 objects:v110 count:16];
   if (v61)
   {

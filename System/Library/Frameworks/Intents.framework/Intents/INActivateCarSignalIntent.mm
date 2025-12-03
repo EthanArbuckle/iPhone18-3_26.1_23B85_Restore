@@ -5,17 +5,17 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setCarName:(id)a3;
-- (void)setSignals:(unint64_t)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setCarName:(id)name;
+- (void)setSignals:(unint64_t)signals;
 @end
 
 @implementation INActivateCarSignalIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INActivateCarSignalIntent *)self _typedBackingStore:a3];
+  v6 = [(INActivateCarSignalIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"carName";
-  v3 = [(INActivateCarSignalIntent *)self carName];
-  v4 = v3;
-  if (!v3)
+  carName = [(INActivateCarSignalIntent *)self carName];
+  null = carName;
+  if (!carName)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"signals";
-  v11[0] = v4;
+  v11[0] = null;
   v5 = INCarSignalOptionsGetNames([(INActivateCarSignalIntent *)self signals]);
-  v6 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (!v5)
   {
   }
 
-  if (!v3)
+  if (!carName)
   {
   }
 
@@ -55,17 +55,17 @@
   return v7;
 }
 
-- (void)setSignals:(unint64_t)a3
+- (void)setSignals:(unint64_t)signals
 {
-  v5 = [(INActivateCarSignalIntent *)self _typedBackingStore];
-  [v5 clearSignals];
+  _typedBackingStore = [(INActivateCarSignalIntent *)self _typedBackingStore];
+  [_typedBackingStore clearSignals];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__INActivateCarSignalIntent_setSignals___block_invoke;
   v6[3] = &unk_1E7288628;
   v6[4] = self;
-  INCarSignalOptionsEnumerateBackingTypes(a3, v6);
+  INCarSignalOptionsEnumerateBackingTypes(signals, v6);
 }
 
 void __40__INActivateCarSignalIntent_setSignals___block_invoke(uint64_t a1, uint64_t a2)
@@ -76,16 +76,16 @@ void __40__INActivateCarSignalIntent_setSignals___block_invoke(uint64_t a1, uint
 
 - (INCarSignalOptions)signals
 {
-  v3 = [(INActivateCarSignalIntent *)self _typedBackingStore];
-  v4 = [v3 signalsCount];
+  _typedBackingStore = [(INActivateCarSignalIntent *)self _typedBackingStore];
+  signalsCount = [_typedBackingStore signalsCount];
 
   v5 = 0;
-  if (v4)
+  if (signalsCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != signalsCount; ++i)
     {
-      v7 = [(INActivateCarSignalIntent *)self _typedBackingStore];
-      v8 = [v7 signalsAtIndex:i];
+      _typedBackingStore2 = [(INActivateCarSignalIntent *)self _typedBackingStore];
+      v8 = [_typedBackingStore2 signalsAtIndex:i];
       v9 = v5 | 1;
       if (v8 != 1)
       {
@@ -107,20 +107,20 @@ void __40__INActivateCarSignalIntent_setSignals___block_invoke(uint64_t a1, uint
   return v5;
 }
 
-- (void)setCarName:(id)a3
+- (void)setCarName:(id)name
 {
-  v4 = a3;
-  v6 = [(INActivateCarSignalIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INActivateCarSignalIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setCarName:v5];
+  [_typedBackingStore setCarName:v5];
 }
 
 - (INSpeakableString)carName
 {
-  v2 = [(INActivateCarSignalIntent *)self _typedBackingStore];
-  v3 = [v2 carName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INActivateCarSignalIntent *)self _typedBackingStore];
+  carName = [_typedBackingStore carName];
+  v4 = INIntentSlotValueTransformFromDataString(carName);
 
   return v4;
 }
@@ -141,28 +141,28 @@ void __40__INActivateCarSignalIntent_setSignals___block_invoke(uint64_t a1, uint
   return v8;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INActivateCarSignalIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INActivateCarSignalIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INActivateCarSignalIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INActivateCarSignalIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

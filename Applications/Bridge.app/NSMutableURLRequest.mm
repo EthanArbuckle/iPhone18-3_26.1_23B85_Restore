@@ -1,80 +1,80 @@
 @interface NSMutableURLRequest
-- (BOOL)s3_encryptAESWithPlaintext:(id)a3 ciphertext:(id *)a4 key:(id *)a5 iv:(id *)a6;
-- (id)AWSStringToSignWithHTTPVerb:(id)a3 contentMD5:(id)a4 contentType:(id)a5 date:(id)a6 canonicalizedResource:(id)a7;
-- (id)_formatHTTPDate:(id)a3;
-- (id)_secureRandomOfLength:(unint64_t)a3;
-- (id)s3_decryptAESWithCiphertext:(id)a3 key:(id)a4 iv:(id)a5;
-- (id)s3_encryptPlaintext:(id)a3;
-- (void)s3_setS3HeadersWithContent:(id)a3 accessConfig:(id)a4;
+- (BOOL)s3_encryptAESWithPlaintext:(id)plaintext ciphertext:(id *)ciphertext key:(id *)key iv:(id *)iv;
+- (id)AWSStringToSignWithHTTPVerb:(id)verb contentMD5:(id)d5 contentType:(id)type date:(id)date canonicalizedResource:(id)resource;
+- (id)_formatHTTPDate:(id)date;
+- (id)_secureRandomOfLength:(unint64_t)length;
+- (id)s3_decryptAESWithCiphertext:(id)ciphertext key:(id)key iv:(id)iv;
+- (id)s3_encryptPlaintext:(id)plaintext;
+- (void)s3_setS3HeadersWithContent:(id)content accessConfig:(id)config;
 @end
 
 @implementation NSMutableURLRequest
 
-- (id)_formatHTTPDate:(id)a3
+- (id)_formatHTTPDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   [v4 setDateFormat:@"E, d MMM yyyy HH:mm:ss zzz"];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateCopy];
 
   return v5;
 }
 
-- (id)AWSStringToSignWithHTTPVerb:(id)a3 contentMD5:(id)a4 contentType:(id)a5 date:(id)a6 canonicalizedResource:(id)a7
+- (id)AWSStringToSignWithHTTPVerb:(id)verb contentMD5:(id)d5 contentType:(id)type date:(id)date canonicalizedResource:(id)resource
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(NSMutableURLRequest *)self _formatHTTPDate:a6];
-  v15 = [NSString stringWithFormat:@"%@\n\n%@\n%@\n%@", v13, v12, v14, v11];
+  resourceCopy = resource;
+  typeCopy = type;
+  verbCopy = verb;
+  v14 = [(NSMutableURLRequest *)self _formatHTTPDate:date];
+  resourceCopy = [NSString stringWithFormat:@"%@\n\n%@\n%@\n%@", verbCopy, typeCopy, v14, resourceCopy];
 
-  return v15;
+  return resourceCopy;
 }
 
-- (id)_secureRandomOfLength:(unint64_t)a3
+- (id)_secureRandomOfLength:(unint64_t)length
 {
   v4 = [NSMutableData dataWithLength:?];
-  SecRandomCopyBytes(kSecRandomDefault, a3, [v4 mutableBytes]);
+  SecRandomCopyBytes(kSecRandomDefault, length, [v4 mutableBytes]);
 
   return v4;
 }
 
-- (BOOL)s3_encryptAESWithPlaintext:(id)a3 ciphertext:(id *)a4 key:(id *)a5 iv:(id *)a6
+- (BOOL)s3_encryptAESWithPlaintext:(id)plaintext ciphertext:(id *)ciphertext key:(id *)key iv:(id *)iv
 {
-  v10 = a3;
-  *a4 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", [v10 length] + 16);
+  plaintextCopy = plaintext;
+  *ciphertext = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", [plaintextCopy length] + 16);
   v18 = 0;
-  *a6 = [(NSMutableURLRequest *)self _secureRandomOfLength:16];
+  *iv = [(NSMutableURLRequest *)self _secureRandomOfLength:16];
   v11 = [(NSMutableURLRequest *)self _secureRandomOfLength:16];
-  *a5 = v11;
-  v12 = [v11 bytes];
-  v13 = [*a6 bytes];
-  v14 = [v10 bytes];
-  v15 = [v10 length];
+  *key = v11;
+  bytes = [v11 bytes];
+  bytes2 = [*iv bytes];
+  bytes3 = [plaintextCopy bytes];
+  v15 = [plaintextCopy length];
 
-  v16 = CCCrypt(0, 0, 1u, v12, 0x10uLL, v13, v14, v15, [*a4 mutableBytes], objc_msgSend(*a4, "length"), &v18);
+  v16 = CCCrypt(0, 0, 1u, bytes, 0x10uLL, bytes2, bytes3, v15, [*ciphertext mutableBytes], objc_msgSend(*ciphertext, "length"), &v18);
   if (!v16)
   {
-    [*a4 setLength:v18];
+    [*ciphertext setLength:v18];
   }
 
   return v16 == 0;
 }
 
-- (id)s3_decryptAESWithCiphertext:(id)a3 key:(id)a4 iv:(id)a5
+- (id)s3_decryptAESWithCiphertext:(id)ciphertext key:(id)key iv:(id)iv
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", [v9 length]);
+  ivCopy = iv;
+  keyCopy = key;
+  ciphertextCopy = ciphertext;
+  v10 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", [ciphertextCopy length]);
   v18 = 0;
-  v11 = [v8 bytes];
+  bytes = [keyCopy bytes];
 
-  v12 = [v7 bytes];
-  v13 = [v9 bytes];
-  v14 = [v9 length];
+  bytes2 = [ivCopy bytes];
+  bytes3 = [ciphertextCopy bytes];
+  v14 = [ciphertextCopy length];
 
-  v15 = CCCrypt(1u, 0, 1u, v11, 0x10uLL, v12, v13, v14, [v10 mutableBytes], objc_msgSend(v10, "length"), &v18);
+  v15 = CCCrypt(1u, 0, 1u, bytes, 0x10uLL, bytes2, bytes3, v14, [v10 mutableBytes], objc_msgSend(v10, "length"), &v18);
   v16 = 0;
   if (!v15)
   {
@@ -85,9 +85,9 @@
   return v16;
 }
 
-- (id)s3_encryptPlaintext:(id)a3
+- (id)s3_encryptPlaintext:(id)plaintext
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [plaintext dataUsingEncoding:4];
   v19 = 0;
   v20 = 0;
   v18 = 0;
@@ -118,59 +118,59 @@
   return v15;
 }
 
-- (void)s3_setS3HeadersWithContent:(id)a3 accessConfig:(id)a4
+- (void)s3_setS3HeadersWithContent:(id)content accessConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 gzipContent];
-  v9 = v8;
-  if (!v8)
+  contentCopy = content;
+  configCopy = config;
+  gzipContent = [contentCopy gzipContent];
+  content = gzipContent;
+  if (!gzipContent)
   {
-    v9 = [v6 content];
+    content = [contentCopy content];
   }
 
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v9 length]);
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [content length]);
   [(NSMutableURLRequest *)self setValue:v10 forHTTPHeaderField:@"Content-Length"];
 
-  if (!v8)
+  if (!gzipContent)
   {
   }
 
-  v11 = [v6 mimeType];
-  [(NSMutableURLRequest *)self setValue:v11 forHTTPHeaderField:@"Content-Type"];
+  mimeType = [contentCopy mimeType];
+  [(NSMutableURLRequest *)self setValue:mimeType forHTTPHeaderField:@"Content-Type"];
 
-  v12 = [v6 gzipContent];
-  if (v12)
+  gzipContent2 = [contentCopy gzipContent];
+  if (gzipContent2)
   {
-    [(NSMutableURLRequest *)self setHTTPBody:v12];
+    [(NSMutableURLRequest *)self setHTTPBody:gzipContent2];
   }
 
   else
   {
-    v13 = [v6 content];
-    [(NSMutableURLRequest *)self setHTTPBody:v13];
+    content2 = [contentCopy content];
+    [(NSMutableURLRequest *)self setHTTPBody:content2];
   }
 
   [(NSMutableURLRequest *)self setHTTPMethod:@"PUT"];
   v14 = objc_opt_new();
-  v15 = [v6 bucket];
-  v16 = [v6 filename];
-  v27 = [(NSMutableURLRequest *)self AWSCanonicalizedResourceWithBucket:v15 FileName:v16];
+  bucket = [contentCopy bucket];
+  filename = [contentCopy filename];
+  v27 = [(NSMutableURLRequest *)self AWSCanonicalizedResourceWithBucket:bucket FileName:filename];
 
-  v17 = [v6 mimeType];
-  v18 = [(NSMutableURLRequest *)self AWSStringToSignWithHTTPVerb:@"PUT" contentMD5:0 contentType:v17 date:v14 canonicalizedResource:v27];
+  mimeType2 = [contentCopy mimeType];
+  v18 = [(NSMutableURLRequest *)self AWSStringToSignWithHTTPVerb:@"PUT" contentMD5:0 contentType:mimeType2 date:v14 canonicalizedResource:v27];
 
-  v19 = [v7 AWSSecretAccessKey];
-  v20 = [v19 UTF8String];
-  v21 = [v7 AWSSecretAccessKey];
-  CCHmac(0, v20, [v21 lengthOfBytesUsingEncoding:4], objc_msgSend(v18, "UTF8String"), objc_msgSend(v18, "lengthOfBytesUsingEncoding:", 4), macOut);
+  aWSSecretAccessKey = [configCopy AWSSecretAccessKey];
+  uTF8String = [aWSSecretAccessKey UTF8String];
+  aWSSecretAccessKey2 = [configCopy AWSSecretAccessKey];
+  CCHmac(0, uTF8String, [aWSSecretAccessKey2 lengthOfBytesUsingEncoding:4], objc_msgSend(v18, "UTF8String"), objc_msgSend(v18, "lengthOfBytesUsingEncoding:", 4), macOut);
 
   v22 = [NSData dataWithBytes:macOut length:20];
   v23 = [v22 base64EncodedStringWithOptions:0];
 
-  v24 = [v7 AWSAccessKeyID];
+  aWSAccessKeyID = [configCopy AWSAccessKeyID];
 
-  v25 = [NSString stringWithFormat:@"AWS %@:%@", v24, v23];
+  v25 = [NSString stringWithFormat:@"AWS %@:%@", aWSAccessKeyID, v23];
 
   [(NSMutableURLRequest *)self setValue:v25 forHTTPHeaderField:@"Authorization"];
   v26 = [(NSMutableURLRequest *)self _formatHTTPDate:v14];

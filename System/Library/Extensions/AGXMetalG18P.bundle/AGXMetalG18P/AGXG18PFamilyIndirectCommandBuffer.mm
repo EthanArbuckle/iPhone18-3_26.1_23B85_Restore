@@ -1,30 +1,30 @@
 @interface AGXG18PFamilyIndirectCommandBuffer
-- (AGXG18PFamilyIndirectCommandBuffer)initWithDevice:(id)a3 descriptor:(id)a4 count:(unint64_t)a5 options:(unint64_t)a6 isSuballocDisabled:(BOOL)a7;
-- (id)indirectComputeCommandAtIndex:(unint64_t)a3;
-- (id)indirectRenderCommandAtIndex:(unint64_t)a3;
+- (AGXG18PFamilyIndirectCommandBuffer)initWithDevice:(id)device descriptor:(id)descriptor count:(unint64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled;
+- (id)indirectComputeCommandAtIndex:(unint64_t)index;
+- (id)indirectRenderCommandAtIndex:(unint64_t)index;
 - (unint64_t)resourceIndex;
 - (void)dealloc;
-- (void)resetWithRange:(_NSRange)a3;
+- (void)resetWithRange:(_NSRange)range;
 @end
 
 @implementation AGXG18PFamilyIndirectCommandBuffer
 
-- (void)resetWithRange:(_NSRange)a3
+- (void)resetWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   type = self->_type;
   if (type)
   {
     if (type == 1)
     {
       v6.render = self->_impl;
-      v7 = [(IOGPUMetalBuffer *)self->_buffer contents];
+      contents = [(IOGPUMetalBuffer *)self->_buffer contents];
       v13[0] = MEMORY[0x29EDCA5F8];
       v13[1] = 3221225472;
       v14 = ___ZN3AGX25IndirectCommandBufferGen4INS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesEE13resetCommandsEP19AGXG18PFamilyBufferjj_block_invoke;
       v15 = &__block_descriptor_40_e27_v32__0_PatchLocation_IIIQ_8l;
-      v16 = v7;
+      v16 = contents;
       v8 = *(v6.render + 36);
       v17 = *(v6.render + 35) + v8 * location;
       v18 = v8 * length;
@@ -60,7 +60,7 @@
     buffer = self->_buffer;
     render = self->_impl.render;
 
-    AGX::IndirectComputeCommandBufferGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::resetCommands(render, buffer, a3.location, a3.length);
+    AGX::IndirectComputeCommandBufferGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::resetCommands(render, buffer, range.location, range.length);
   }
 }
 
@@ -82,16 +82,16 @@
   return 0;
 }
 
-- (id)indirectComputeCommandAtIndex:(unint64_t)a3
+- (id)indirectComputeCommandAtIndex:(unint64_t)index
 {
-  v3 = [[AGXG18PFamilyIndirectComputeCommand alloc] initWithEncoder:self->_encoder.render withIndex:a3];
+  v3 = [[AGXG18PFamilyIndirectComputeCommand alloc] initWithEncoder:self->_encoder.render withIndex:index];
 
   return v3;
 }
 
-- (id)indirectRenderCommandAtIndex:(unint64_t)a3
+- (id)indirectRenderCommandAtIndex:(unint64_t)index
 {
-  v3 = [[AGXG18PFamilyIndirectRenderCommand alloc] initWithEncoder:self->_encoder.render withIndex:a3];
+  v3 = [[AGXG18PFamilyIndirectRenderCommand alloc] initWithEncoder:self->_encoder.render withIndex:index];
 
   return v3;
 }
@@ -165,16 +165,16 @@ LABEL_15:
   [(IOGPUMetalIndirectCommandBuffer *)&v10 dealloc];
 }
 
-- (AGXG18PFamilyIndirectCommandBuffer)initWithDevice:(id)a3 descriptor:(id)a4 count:(unint64_t)a5 options:(unint64_t)a6 isSuballocDisabled:(BOOL)a7
+- (AGXG18PFamilyIndirectCommandBuffer)initWithDevice:(id)device descriptor:(id)descriptor count:(unint64_t)count options:(unint64_t)options isSuballocDisabled:(BOOL)disabled
 {
-  v12 = [a4 commandTypes];
+  commandTypes = [descriptor commandTypes];
   self->_impl.render = 0;
-  v343 = a6;
+  optionsCopy = options;
   self->_encoder.render = 0;
-  atomic_fetch_or(a3 + 108, 0x2000uLL);
-  v342 = v12 & 0x60;
-  v345 = a6 & 0x800000;
-  if ((v12 & 0x60) == 0)
+  atomic_fetch_or(device + 108, 0x2000uLL);
+  v342 = commandTypes & 0x60;
+  v345 = options & 0x800000;
+  if ((commandTypes & 0x60) == 0)
   {
     self->_type = 1;
     v16 = malloc_type_calloc(0x1C0uLL, 1uLL, 0x10200406122012DuLL);
@@ -185,27 +185,27 @@ LABEL_15:
     }
 
     v17 = v16;
-    *v16 = a5;
+    *v16 = count;
     v16[399] = v345 == 0;
     *(v16 + 51) = 0;
     *(v16 + 52) = 0;
     v16[424] = 0;
     *(v16 + 54) = 0;
     v16[396] = 0;
-    if ([a4 inheritPipelineState])
+    if ([descriptor inheritPipelineState])
     {
       v17[396] = 1;
     }
 
     v17[397] = 0;
-    if ([a4 inheritBuffers])
+    if ([descriptor inheritBuffers])
     {
       v17[397] = 1;
     }
 
     *(v17 + 100) = 0;
-    *(v17 + 200) = *(v17 + 200) & 0xFFFE | [a4 inheritDepthStencilState] ^ 1;
-    if ([a4 inheritDepthBias])
+    *(v17 + 200) = *(v17 + 200) & 0xFFFE | [descriptor inheritDepthStencilState] ^ 1;
+    if ([descriptor inheritDepthBias])
     {
       v18 = 0;
     }
@@ -216,7 +216,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFFFD | v18;
-    if ([a4 inheritDepthTestBounds])
+    if ([descriptor inheritDepthTestBounds])
     {
       v19 = 0;
     }
@@ -227,7 +227,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFFFB | v19;
-    if ([a4 inheritDepthClipMode])
+    if ([descriptor inheritDepthClipMode])
     {
       v20 = 0;
     }
@@ -238,7 +238,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFFF7 | v20;
-    if ([a4 inheritCullMode])
+    if ([descriptor inheritCullMode])
     {
       v21 = 0;
     }
@@ -249,7 +249,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFFEF | v21;
-    if ([a4 inheritStencilReferenceValues])
+    if ([descriptor inheritStencilReferenceValues])
     {
       v22 = 0;
     }
@@ -260,7 +260,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFFDF | v22;
-    if ([a4 inheritFrontFacingWinding])
+    if ([descriptor inheritFrontFacingWinding])
     {
       v23 = 0;
     }
@@ -271,7 +271,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFFBF | v23;
-    if ([a4 inheritTriangleFillMode])
+    if ([descriptor inheritTriangleFillMode])
     {
       v24 = 0;
     }
@@ -282,7 +282,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFF7F | v24;
-    if ([a4 inheritBlendColor])
+    if ([descriptor inheritBlendColor])
     {
       v25 = 0;
     }
@@ -293,7 +293,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFEFF | v25;
-    if ([a4 inheritScissorRects])
+    if ([descriptor inheritScissorRects])
     {
       v26 = 0;
     }
@@ -304,7 +304,7 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFDFF | v26;
-    if ([a4 inheritViewports])
+    if ([descriptor inheritViewports])
     {
       v27 = 0;
     }
@@ -315,27 +315,27 @@ LABEL_15:
     }
 
     *(v17 + 200) = *(v17 + 200) & 0xFBFF | v27;
-    if (![a4 inheritDepthStencilState] || !objc_msgSend(a4, "inheritDepthBias") || !objc_msgSend(a4, "inheritDepthTestBounds") || !objc_msgSend(a4, "inheritDepthClipMode") || !objc_msgSend(a4, "inheritCullMode") || !objc_msgSend(a4, "inheritStencilReferenceValues") || !objc_msgSend(a4, "inheritFrontFacingWinding") || !objc_msgSend(a4, "inheritTriangleFillMode") || !objc_msgSend(a4, "inheritBlendColor") || !objc_msgSend(a4, "inheritScissorRects") || (objc_msgSend(a4, "inheritViewports") & 1) == 0)
+    if (![descriptor inheritDepthStencilState] || !objc_msgSend(descriptor, "inheritDepthBias") || !objc_msgSend(descriptor, "inheritDepthTestBounds") || !objc_msgSend(descriptor, "inheritDepthClipMode") || !objc_msgSend(descriptor, "inheritCullMode") || !objc_msgSend(descriptor, "inheritStencilReferenceValues") || !objc_msgSend(descriptor, "inheritFrontFacingWinding") || !objc_msgSend(descriptor, "inheritTriangleFillMode") || !objc_msgSend(descriptor, "inheritBlendColor") || !objc_msgSend(descriptor, "inheritScissorRects") || (objc_msgSend(descriptor, "inheritViewports") & 1) == 0)
     {
-      atomic_fetch_or(a3 + 108, 0x4000uLL);
+      atomic_fetch_or(device + 108, 0x4000uLL);
     }
 
-    v17[404] = [a4 maxScissorRectCount];
-    v17[405] = [a4 maxViewportCount];
-    v28 = [a4 commandTypes];
-    v17[441] = (v28 & 2) != 0;
-    v17[442] = (v28 & 0xC) != 0;
-    v29 = (v28 & 0x180) != 0;
-    v17[440] = (v28 & 0xF) != 0;
+    v17[404] = [descriptor maxScissorRectCount];
+    v17[405] = [descriptor maxViewportCount];
+    commandTypes2 = [descriptor commandTypes];
+    v17[441] = (commandTypes2 & 2) != 0;
+    v17[442] = (commandTypes2 & 0xC) != 0;
+    v29 = (commandTypes2 & 0x180) != 0;
+    v17[440] = (commandTypes2 & 0xF) != 0;
     v17[443] = v29;
-    if ((v28 & 0xF) != 0)
+    if ((commandTypes2 & 0xF) != 0)
     {
       v29 = 0;
     }
 
     v17[444] = v29;
     *(v17 + 108) = 31;
-    if ([a4 supportDynamicAttributeStride])
+    if ([descriptor supportDynamicAttributeStride])
     {
       v30 = v17[397] ^ 1;
     }
@@ -347,15 +347,15 @@ LABEL_15:
 
     v17[445] = v30 & 1;
     v17[398] = 0;
-    if ([a4 supportRayTracing])
+    if ([descriptor supportRayTracing])
     {
       v17[398] = 1;
     }
 
     *(v17 + 109) = 1;
     *(v17 + 1) = 0;
-    v335 = *(*(a3 + 106) + 7068);
-    v66 = [a4 commandTypes];
+    v335 = *(*(device + 106) + 7068);
+    commandTypes3 = [descriptor commandTypes];
     if (*(v17 + 100))
     {
       v67 = 28;
@@ -438,13 +438,13 @@ LABEL_15:
       v75 = v73;
     }
 
-    v76 = 16 * (v66 & 1);
-    if ((v66 & 2) != 0)
+    v76 = 16 * (commandTypes3 & 1);
+    if ((commandTypes3 & 2) != 0)
     {
       v76 = 28;
     }
 
-    if ((v66 & 0xC) != 0)
+    if ((commandTypes3 & 0xC) != 0)
     {
       v76 = 36;
     }
@@ -459,7 +459,7 @@ LABEL_15:
       v77 = v76;
     }
 
-    if ((v66 & 0x180) != 0)
+    if ((commandTypes3 & 0x180) != 0)
     {
       v78 = v77;
     }
@@ -500,10 +500,10 @@ LABEL_15:
     v334 = v81;
     if (v17[397])
     {
-      v336 = 0;
-      v337 = 0;
-      v82 = 0;
-      v339 = 0;
+      maxObjectBufferBindCount = 0;
+      maxFragmentBufferBindCount = 0;
+      maxMeshBufferBindCount = 0;
+      maxVertexBufferBindCount = 0;
       v83 = 0;
       v84 = *(v17 + 50);
       v85 = *(v17 + 50);
@@ -512,14 +512,14 @@ LABEL_15:
 
     else
     {
-      v339 = [a4 maxVertexBufferBindCount];
-      v337 = [a4 maxFragmentBufferBindCount];
-      v336 = [a4 maxObjectBufferBindCount];
-      v82 = [a4 maxMeshBufferBindCount];
+      maxVertexBufferBindCount = [descriptor maxVertexBufferBindCount];
+      maxFragmentBufferBindCount = [descriptor maxFragmentBufferBindCount];
+      maxObjectBufferBindCount = [descriptor maxObjectBufferBindCount];
+      maxMeshBufferBindCount = [descriptor maxMeshBufferBindCount];
       v86 = v17[396];
       v85 = *(v17 + 100);
       v84 = v85;
-      v83 = 8 * v82;
+      v83 = 8 * maxMeshBufferBindCount;
     }
 
     v87 = v75 + v340;
@@ -678,12 +678,12 @@ LABEL_15:
 
     v317 = v102;
     v318 = v107;
-    v110 = v98 + v98 * a5;
-    v111 = v104 * a5;
-    v319 = (v110 + v89 * a5 + 443) & 0xFFFFFFC0;
+    v110 = v98 + v98 * count;
+    v111 = v104 * count;
+    v319 = (v110 + v89 * count + 443) & 0xFFFFFFC0;
     if (v17[440])
     {
-      v112 = v319 + v104 * a5;
+      v112 = v319 + v104 * count;
     }
 
     else
@@ -704,7 +704,7 @@ LABEL_15:
     v320 = v113;
     if (v17[440])
     {
-      v114 = v104 * a5;
+      v114 = v104 * count;
     }
 
     else
@@ -712,7 +712,7 @@ LABEL_15:
       v114 = 0;
     }
 
-    v115 = v319 + v104 * a5 + v114;
+    v115 = v319 + v104 * count + v114;
     if (v105 == 1)
     {
       v314 = v115;
@@ -722,7 +722,7 @@ LABEL_15:
       if ((v17[397] & 1) == 0)
       {
 LABEL_199:
-        v116 = 8 * v339;
+        v116 = 8 * maxVertexBufferBindCount;
         if (v17[440])
         {
           v117 = v115;
@@ -742,7 +742,7 @@ LABEL_199:
         v313 = v117;
         if (v17[440])
         {
-          v118 = 8 * v339 * a5;
+          v118 = 8 * maxVertexBufferBindCount * count;
         }
 
         else
@@ -753,10 +753,10 @@ LABEL_199:
         v119 = v115 + v118;
         if (v17[443])
         {
-          HIDWORD(v311) = 8 * v336;
+          HIDWORD(v311) = 8 * maxObjectBufferBindCount;
           LODWORD(v321) = v115 + v118;
-          HIDWORD(v321) = v119 + 8 * v336 * a5;
-          v119 = HIDWORD(v321) + v83 * a5;
+          HIDWORD(v321) = v119 + 8 * maxObjectBufferBindCount * count;
+          v119 = HIDWORD(v321) + v83 * count;
         }
 
         else
@@ -767,14 +767,14 @@ LABEL_199:
         }
 
         LODWORD(v312) = v119;
-        LODWORD(v311) = 8 * v337;
-        v115 = v119 + 8 * v337 * a5;
+        LODWORD(v311) = 8 * maxFragmentBufferBindCount;
+        v115 = v119 + 8 * maxFragmentBufferBindCount * count;
 LABEL_213:
         v120 = *(v17 + 1);
         v121 = 152 - v120;
         v330 = v79;
         v329 = v88;
-        v328 = v82;
+        v328 = maxMeshBufferBindCount;
         v326 = v87;
         v327 = v83;
         v324 = v108;
@@ -784,7 +784,7 @@ LABEL_213:
         {
           LODWORD(v122) = v115 - v120;
           HIDWORD(v122) = 152 - v120;
-          v123 = v115 + v121 * a5;
+          v123 = v115 + v121 * count;
           if (v86)
           {
             v120 = *(v17 + 1);
@@ -792,10 +792,10 @@ LABEL_213:
             if (v17[443])
             {
               v310 = v123 - v120;
-              v124 = v121 * a5;
-              v125 = v121 * a5 + v123;
+              v124 = v121 * count;
+              v125 = v121 * count + v123;
               v309 = v125 - v120;
-              v126 = v125 + v121 * a5;
+              v126 = v125 + v121 * count;
 LABEL_219:
               v307 = v121;
               v308 = v126 - v120;
@@ -831,7 +831,7 @@ LABEL_232:
 
               if (v17[440])
               {
-                v138 = 16 * a5;
+                v138 = 16 * count;
               }
 
               else
@@ -854,7 +854,7 @@ LABEL_232:
               {
                 v302 = v139;
                 v303 = (v17[405] << 6) + 16 * v17[404] + 60;
-                v139 += v303 * a5;
+                v139 += v303 * count;
               }
 
               if ((v84 & 2) != 0)
@@ -877,8 +877,8 @@ LABEL_232:
                 v143 = -1;
               }
 
-              v144 = v139 + ((v84 << 30 >> 31) & (12 * a5));
-              v145 = 8 * a5;
+              v144 = v139 + ((v84 << 30 >> 31) & (12 * count));
+              v145 = 8 * count;
               if ((v84 & 4) != 0)
               {
                 v146 = v144;
@@ -904,7 +904,7 @@ LABEL_232:
               {
                 v149 = 16 * v17[404];
                 v150 = v148;
-                v148 += v149 * a5;
+                v148 += v149 * count;
               }
 
               else
@@ -937,7 +937,7 @@ LABEL_232:
 
               if (v17[443])
               {
-                v155 = 52 * a5;
+                v155 = 52 * count;
               }
 
               else
@@ -946,7 +946,7 @@ LABEL_232:
               }
 
               v156 = v148 + v155;
-              v338 = a3;
+              deviceCopy = device;
               v332 = v147;
               v300 = v150;
               v298 = v146;
@@ -956,8 +956,8 @@ LABEL_232:
               if (v17[445] == 1)
               {
                 v160 = (v156 + 7) & 0xFFFFFFF8;
-                v161 = 4 * v339;
-                v156 = v160 + 4 * v339 * a5;
+                v161 = 4 * maxVertexBufferBindCount;
+                v156 = v160 + 4 * maxVertexBufferBindCount * count;
               }
 
               else
@@ -993,15 +993,15 @@ LABEL_232:
               }
 
               v165 = v156 + v145;
-              v166 = v156 + v145 + 16 * a5;
+              v166 = v156 + v145 + 16 * count;
               if (v17[443])
               {
                 v167 = *(v17 + 108);
                 v168 = 4 * v167;
                 v169 = 4 * v167 + 4;
-                v170 = v166 + v169 * a5;
+                v170 = v166 + v169 * count;
                 v171 = v166;
-                v166 = v170 + 4 * v167 * a5;
+                v166 = v170 + 4 * v167 * count;
               }
 
               else
@@ -1014,14 +1014,14 @@ LABEL_232:
               }
 
               *(v17 + 4) = v162;
-              *(v17 + 6) = v339;
-              *(v17 + 7) = v337;
+              *(v17 + 6) = maxVertexBufferBindCount;
+              *(v17 + 7) = maxFragmentBufferBindCount;
               *(v17 + 8) = v140;
               *(v17 + 9) = v315;
               *(v17 + 10) = v159;
               *(v17 + 11) = v317;
               *(v17 + 22) = v334;
-              *(v17 + 24) = v336;
+              *(v17 + 24) = maxObjectBufferBindCount;
               *(v17 + 26) = v318;
               *(v17 + 27) = v167;
               *(v17 + 28) = v328;
@@ -1074,7 +1074,7 @@ LABEL_232:
               }
 
               *(v17 + 1) = v173;
-              *(v17 + 5) = a5;
+              *(v17 + 5) = count;
               *(v17 + 3) = 0u;
               *(v17 + 4) = 0u;
               *(v17 + 10) = 0;
@@ -1124,13 +1124,13 @@ LABEL_232:
               }
 
               v65 = 8;
-              a3 = v338;
-              v64 = v343;
+              device = deviceCopy;
+              v64 = optionsCopy;
               goto LABEL_291;
             }
 
             v308 = v123 - v120;
-            v129 = v123 + v121 * a5;
+            v129 = v123 + v121 * count;
             v128 = -1;
             v130 = -1;
             v310 = -1;
@@ -1142,20 +1142,20 @@ LABEL_226:
           }
 
           v128 = v123 | 0x2800000000;
-          v131 = v123 + 40 * a5;
+          v131 = v123 + 40 * count;
           v120 = *(v17 + 1);
           v121 = 152 - v120;
           if (v17[443])
           {
             v310 = v131 - v120;
-            v124 = v121 * a5;
-            v132 = v121 * a5 + v131;
+            v124 = v121 * count;
+            v132 = v121 * count + v131;
             v309 = v132 - v120;
-            v126 = v132 + v121 * a5;
+            v126 = v132 + v121 * count;
 LABEL_222:
             v133 = v126;
-            v134 = 40 * a5;
-            v304 = v126 + 40 * a5;
+            v134 = 40 * count;
+            v304 = v126 + 40 * count;
             v135 = v126 + v134 + v134;
             v307 = v121;
             v308 = v135 - v120;
@@ -1170,7 +1170,7 @@ LABEL_231:
           }
 
           v308 = v131 - v120;
-          v129 = v131 + v121 * a5;
+          v129 = v131 + v121 * count;
         }
 
         else
@@ -1178,10 +1178,10 @@ LABEL_231:
           if (v105)
           {
             v310 = v115 - v120;
-            v124 = v121 * a5;
-            v127 = v121 * a5 + v115;
+            v124 = v121 * count;
+            v127 = v121 * count + v115;
             v309 = v127 - v120;
-            v126 = v127 + v121 * a5;
+            v126 = v127 + v121 * count;
             v128 = -1;
             v122 = -1;
             if (v86)
@@ -1193,7 +1193,7 @@ LABEL_231:
           }
 
           v308 = v115 - v120;
-          v129 = v115 + v121 * a5;
+          v129 = v115 + v121 * count;
           v122 = -1;
           if (v86)
           {
@@ -1206,7 +1206,7 @@ LABEL_231:
           v128 = -1;
         }
 
-        v134 = 40 * a5;
+        v134 = 40 * count;
         v309 = -1;
         v310 = -1;
         v306 = -1;
@@ -1245,30 +1245,30 @@ LABEL_231:
   }
 
   v14 = v13;
-  *v13 = a5;
+  *v13 = count;
   v13[27] = v345 == 0;
   *(v13 + 17) = 0;
   *(v13 + 18) = 0;
   v13[152] = 0;
   v13[24] = 0;
-  if ([a4 inheritPipelineState])
+  if ([descriptor inheritPipelineState])
   {
     v14[24] = 1;
   }
 
   v14[25] = 0;
-  if ([a4 inheritBuffers])
+  if ([descriptor inheritBuffers])
   {
     v14[25] = 1;
   }
 
   v14[26] = 0;
-  if ([a4 supportRayTracing])
+  if ([descriptor supportRayTracing])
   {
     v14[26] = 1;
   }
 
-  if ([a4 supportDynamicAttributeStride])
+  if ([descriptor supportDynamicAttributeStride])
   {
     v15 = v14[25] ^ 1;
   }
@@ -1280,33 +1280,33 @@ LABEL_231:
 
   v14[160] = v15 & 1;
   *(v14 + 4) = 0x100000000;
-  v31 = [a4 commandTypes];
+  commandTypes4 = [descriptor commandTypes];
   v32 = v14[24];
   v33 = v14[25];
   v34 = v14[160];
   if (v33)
   {
-    v35 = 0;
+    maxKernelBufferBindCount = 0;
     v36 = v14[160];
     v37 = v14[24];
   }
 
   else
   {
-    v35 = [a4 maxKernelBufferBindCount];
+    maxKernelBufferBindCount = [descriptor maxKernelBufferBindCount];
     v37 = v14[24];
     v36 = v14[160];
   }
 
   v38 = (((2 * v32) | (4 * v33)) | (8 * v34)) & 0xE | 1;
-  v39 = 48 * a5 + 139;
+  v39 = 48 * count + 139;
   v40 = v39 & 0xFFFFFFE0;
-  v41 = ((v39 | 0x18) + 8 * v35 * a5) & 0xFFFFFFE0;
+  v41 = ((v39 | 0x18) + 8 * maxKernelBufferBindCount * count) & 0xFFFFFFE0;
   v42 = *(v14 + 1);
   v43 = 280 - v42;
   v44 = v41 - v42;
-  v45 = v41 + (280 - v42) * a5;
-  v46 = ((v45 + 31) & 0xFFFFFFE0) + 24 * a5;
+  v45 = v41 + (280 - v42) * count;
+  v46 = ((v45 + 31) & 0xFFFFFFE0) + 24 * count;
   if (v37)
   {
     v47 = -1;
@@ -1333,10 +1333,10 @@ LABEL_231:
   }
 
   v49 = (v46 + 7) & 0xFFFFFFF8;
-  v50 = v49 + 4 * v35 * a5;
+  v50 = v49 + 4 * maxKernelBufferBindCount * count;
   if (v36)
   {
-    v51 = 4 * v35;
+    v51 = 4 * maxKernelBufferBindCount;
   }
 
   else
@@ -1351,8 +1351,8 @@ LABEL_231:
   }
 
   v52 = (v46 + 63) & 0xFFFFFFC0;
-  v53 = v52 + 192 * a5;
-  v54 = 8 * a5;
+  v53 = v52 + 192 * count;
+  v54 = 8 * count;
   v55 = v37 & 1;
   if (v37)
   {
@@ -1361,7 +1361,7 @@ LABEL_231:
 
   else
   {
-    v56 = v53 + 152 * a5;
+    v56 = v53 + 152 * count;
   }
 
   if (v55)
@@ -1379,12 +1379,12 @@ LABEL_231:
     v54 = 0;
   }
 
-  v58 = (v53 + 152 * a5 + v54 + 31) & 0xFFFFFFE0;
-  v59 = v58 + 32 * a5;
-  v60 = (48 * a5 + 108) + 512;
-  if (v60 <= (v59 + a5))
+  v58 = (v53 + 152 * count + v54 + 31) & 0xFFFFFFE0;
+  v59 = v58 + 32 * count;
+  v60 = (48 * count + 108) + 512;
+  if (v60 <= (v59 + count))
   {
-    v60 = (v59 + a5);
+    v60 = (v59 + count);
   }
 
   *(v14 + 2) = v60;
@@ -1418,16 +1418,16 @@ LABEL_231:
     v61 = v63 + v62;
   }
 
-  v64 = v343;
+  v64 = optionsCopy;
   *(v14 + 7) = v38;
-  *(v14 + 8) = a5;
-  *(v14 + 9) = v35;
-  *(v14 + 10) = v31;
+  *(v14 + 8) = count;
+  *(v14 + 9) = maxKernelBufferBindCount;
+  *(v14 + 10) = commandTypes4;
   *(v14 + 11) = v61;
   *(v14 + 6) = 0x680000002CLL;
   *(v14 + 14) = 48;
   *(v14 + 15) = v40;
-  *(v14 + 16) = 8 * v35;
+  *(v14 + 16) = 8 * maxKernelBufferBindCount;
   *(v14 + 17) = v44;
   *(v14 + 18) = v43;
   *(v14 + 19) = v47;
@@ -1458,7 +1458,7 @@ LABEL_291:
   *&v353 = v174;
   v354 = ((16 * v64) & 0x8000000 | (v345 << 7)) ^ 0x48000000;
   v355 = 0;
-  v175 = [(IOGPUMetalResource *)[AGXG18PFamilyBuffer alloc] initWithDevice:a3 options:v64 | 0x20000 args:v347 argsSize:104];
+  v175 = [(IOGPUMetalResource *)[AGXG18PFamilyBuffer alloc] initWithDevice:device options:v64 | 0x20000 args:v347 argsSize:104];
   self->_buffer = v175;
   if (!v175)
   {
@@ -1500,7 +1500,7 @@ LABEL_297:
   v179 = self->_buffer;
   v346.receiver = self;
   v346.super_class = AGXG18PFamilyIndirectCommandBuffer;
-  v180 = [(IOGPUMetalIndirectCommandBuffer *)&v346 initWithBuffer:v179 descriptor:a4 maxCommandCount:a5];
+  v180 = [(IOGPUMetalIndirectCommandBuffer *)&v346 initWithBuffer:v179 descriptor:descriptor maxCommandCount:count];
   v181 = v180;
   if (!v180)
   {
@@ -1523,19 +1523,19 @@ LABEL_297:
   {
     render = v181->_impl.render;
     v188 = v181->_buffer;
-    v189 = [(IOGPUMetalBuffer *)v188 contents];
+    contents = [(IOGPUMetalBuffer *)v188 contents];
     v190 = *(render + 60);
     v191 = *(render + 44);
-    *v189 = *(render + 28);
-    *(v189 + 16) = v191;
-    *(v189 + 32) = v190;
+    *contents = *(render + 28);
+    *(contents + 16) = v191;
+    *(contents + 32) = v190;
     v192 = *(render + 92);
     v193 = *(render + 108);
     v194 = *(render + 76);
-    *(v189 + 96) = *(render + 124);
-    *(v189 + 64) = v192;
-    *(v189 + 80) = v193;
-    *(v189 + 48) = v194;
+    *(contents + 96) = *(render + 124);
+    *(contents + 64) = v192;
+    *(contents + 80) = v193;
+    *(contents + 48) = v194;
     v195 = *(&v188->super.super.super.super.super.super._label + v176);
     *&v358[12] = 0u;
     v357 = 0u;
@@ -1543,7 +1543,7 @@ LABEL_297:
     *&v358[12] = 0x3000000A5;
     v360 = 0;
     v359 = 0;
-    v196 = (v189 + *(render + 84));
+    v196 = (contents + *(render + 84));
     v197 = *render * *(render + 88);
     v198 = v197 & 0xFFFFFFFC;
     v199 = v197 & 3;
@@ -1560,7 +1560,7 @@ LABEL_316:
       AGX::IndirectComputeCommandBufferGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::resetCommands(render, v188, 0, *render);
       v208.render = v181->_impl;
       v209 = v181->_buffer;
-      AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v357, (*(a3 + 106) + 12584), [a4 resourceIndex]);
+      AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v357, (*(device + 106) + 12584), [descriptor resourceIndex]);
       v210 = *(v208.render + 17);
       *(v208.render + 17) = v357;
       *&v357 = v210;
@@ -1654,10 +1654,10 @@ LABEL_314:
 LABEL_323:
   v217 = v181->_impl.render;
   v218 = v181->_buffer;
-  v219 = [(IOGPUMetalBuffer *)v218 contents];
+  contents2 = [(IOGPUMetalBuffer *)v218 contents];
   memcpy([(IOGPUMetalBuffer *)v218 contents], v217 + 4, 0x17CuLL);
   v220 = *v217 * v217[36];
-  v221 = (v219 + v217[35]);
+  v221 = (contents2 + v217[35]);
   LODWORD(v357) = 0x20000000;
   memset_pattern4(v221, &v357, v220);
   *&v221[v220] = 671088640;
@@ -1665,7 +1665,7 @@ LABEL_323:
   v222 = *(&v218->super.super.super.super.super.super._label + v176);
   if (*(v217 + 440) == 1)
   {
-    v223 = (v219 + v217[43]);
+    v223 = (contents2 + v217[43]);
     v224 = *v217 * v217[44];
     v225 = v224 & 0xFFFFFFFFFFFFFFFCLL;
     v226 = v224 & 3;
@@ -1679,7 +1679,7 @@ LABEL_323:
 
   if (*(v217 + 443) == 1)
   {
-    v227 = (v219 + v217[47]);
+    v227 = (contents2 + v217[47]);
     v228 = *v217 * v217[48];
     v229 = v228 & 0xFFFFFFFFFFFFFFFCLL;
     v230 = v228 & 3;
@@ -1690,7 +1690,7 @@ LABEL_323:
       *&v227[v229] = 0;
     }
 
-    v231 = (v219 + v217[51]);
+    v231 = (contents2 + v217[51]);
     v232 = *v217 * v217[52];
     v233 = v232 & 0xFFFFFFFFFFFFFFFCLL;
     v234 = v232 & 3;
@@ -1702,7 +1702,7 @@ LABEL_323:
     }
   }
 
-  v235 = (v219 + v217[39]);
+  v235 = (contents2 + v217[39]);
   v236 = *v217 * v217[40];
   v237 = v236 & 0xFFFFFFFFFFFFFFFCLL;
   v238 = v236 & 3;
@@ -1759,7 +1759,7 @@ LABEL_343:
       v249 = 0;
     }
 
-    AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (v219 + v217[43] + v217[44] * v243), v247, v222 + v217[55] + v217[56] * v243, v248, 0, 0, v249, v239, v240, v241, v242, 0, 0xFFFFFFFFLL);
+    AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (contents2 + v217[43] + v217[44] * v243), v247, v222 + v217[55] + v217[56] * v243, v248, 0, 0, v249, v239, v240, v241, v242, 0, 0xFFFFFFFFLL);
 LABEL_347:
     if (*(v217 + 443) == 1)
     {
@@ -1785,7 +1785,7 @@ LABEL_347:
         v251 = v222 + v217[65] + v217[66] * v243;
       }
 
-      AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (v219 + v217[47] + v217[48] * v243), v250, v222 + v217[57] + v217[58] * v243, v251, 0, v222 + v217[97] + v217[98] * v243, 0, 0.0, v240, v241, v242, &v357, 0xFFFFFFFFLL);
+      AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (contents2 + v217[47] + v217[48] * v243), v250, v222 + v217[57] + v217[58] * v243, v251, 0, v222 + v217[97] + v217[98] * v243, 0, 0.0, v240, v241, v242, &v357, 0xFFFFFFFFLL);
       v256 = 0;
       if ((*(v217 + 397) & 1) == 0)
       {
@@ -1802,7 +1802,7 @@ LABEL_347:
         v257 = v222 + v217[67] + v217[68] * v243;
       }
 
-      AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (v219 + v217[51] + v217[52] * v243), v256, v222 + v217[59] + v217[60] * v243, v257, 0, 0, 0, v252, v253, v254, v255, 0, 0xFFFFFFFFLL);
+      AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (contents2 + v217[51] + v217[52] * v243), v256, v222 + v217[59] + v217[60] * v243, v257, 0, 0, 0, v252, v253, v254, v255, 0, 0xFFFFFFFFLL);
     }
 
     if (*(v217 + 397))
@@ -1825,7 +1825,7 @@ LABEL_347:
       v244 = v222 + v217[69] + v217[70] * v243;
     }
 
-    AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (v219 + v217[39] + v217[40] * v243), v258, v222 + v217[61] + v217[62] * v243, v244, 0, 0, 0, v239, v240, v241, v242, 0, 0xFFFFFFFFLL);
+    AGX::IndirectExecutionCommonGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::emitABIStateLoadProgram(v246, (contents2 + v217[39] + v217[40] * v243), v258, v222 + v217[61] + v217[62] * v243, v244, 0, 0, 0, v239, v240, v241, v242, 0, 0xFFFFFFFFLL);
     ++v243;
     LODWORD(v245) = *v217;
   }
@@ -1842,7 +1842,7 @@ LABEL_347:
     v260 = vdup_n_s32(0x7200000u);
     do
     {
-      v261 = (v219 + 28 + v217[37] + v217[38] * v259);
+      v261 = (contents2 + 28 + v217[37] + v217[38] * v259);
       *v261 = 0xFFFFFFFF00000002;
       v261[1] = v260;
       ++v259;
@@ -1859,7 +1859,7 @@ LABEL_368:
         p_label = &v344->super.super.super.super.super.super._label;
         do
         {
-          v264 = v219 + v217[81] + v217[82] * v262;
+          v264 = contents2 + v217[81] + v217[82] * v262;
           v265 = *(v217 + 50);
           if (*(v217 + 396))
           {
@@ -1880,7 +1880,7 @@ LABEL_368:
           if ((v267 & 2) != 0)
           {
             v268 = v217[75] + v217[76] * v262;
-            v269 = v219 + v268;
+            v269 = contents2 + v268;
             *v269 = 0;
             *(v269 + 8) = 0;
             v270 = *(p_label + v176) + v268;
@@ -1893,7 +1893,7 @@ LABEL_368:
           if ((v267 & 4) != 0)
           {
             v271 = v217[77] + v217[78] * v262;
-            *(v219 + v271) = 0x3F80000000000000;
+            *(contents2 + v271) = 0x3F80000000000000;
             v272 = *(p_label + v176) + v271;
             *(v264 + 12) |= 0x1000000u;
             *(v264 + 48) = (v272 >> 16) & 0xFFFF0000;
@@ -1915,7 +1915,7 @@ LABEL_379:
       if (v245)
       {
         v273 = &v344->super.super.super.super.super.super._label;
-        v274 = v219 + 56;
+        v274 = contents2 + 56;
         v275 = v217[61];
         v276 = v217[62];
         if (*(v217 + 443) == 1)
@@ -1999,7 +1999,7 @@ LABEL_379:
 LABEL_394:
   v287.render = v181->_impl;
   v288 = v181->_buffer;
-  AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v357, (*(a3 + 106) + 12584), [a4 resourceIndex]);
+  AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v357, (*(device + 106) + 12584), [descriptor resourceIndex]);
   v289 = *(v287.render + 51);
   *(v287.render + 51) = v357;
   *&v357 = v289;

@@ -1,23 +1,23 @@
 @interface NavTrafficIncidentViewComposer
-+ (id)imageForMNTrafficIncidentAlert:(id)a3 view:(id)a4;
-+ (void)configureDetailsView:(id)a3 withGEORouteIncident:(id)a4;
-+ (void)configureDetailsView:(id)a3 withTrafficIncidentAlert:(id)a4;
-+ (void)configureDetailsView:(id)a3 withTrafficIncidentFeature:(id)a4;
-+ (void)configureHeaderView:(id)a3 withTrafficIncidentAlert:(id)a4;
-+ (void)configureHeaderView:(id)a3 withTrafficIncidentFeature:(id)a4;
++ (id)imageForMNTrafficIncidentAlert:(id)alert view:(id)view;
++ (void)configureDetailsView:(id)view withGEORouteIncident:(id)incident;
++ (void)configureDetailsView:(id)view withTrafficIncidentAlert:(id)alert;
++ (void)configureDetailsView:(id)view withTrafficIncidentFeature:(id)feature;
++ (void)configureHeaderView:(id)view withTrafficIncidentAlert:(id)alert;
++ (void)configureHeaderView:(id)view withTrafficIncidentFeature:(id)feature;
 @end
 
 @implementation NavTrafficIncidentViewComposer
 
-+ (void)configureDetailsView:(id)a3 withGEORouteIncident:(id)a4
++ (void)configureDetailsView:(id)view withGEORouteIncident:(id)incident
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  viewCopy = view;
+  incidentCopy = incident;
+  v6 = incidentCopy;
+  if (incidentCopy)
   {
-    v7 = [v5 info];
-    [v10 setPrimaryLabelText:v7];
+    info = [incidentCopy info];
+    [viewCopy setPrimaryLabelText:info];
 
     if (qword_10195DCD8 != -1)
     {
@@ -26,26 +26,26 @@
 
     v8 = [[NSDate alloc] initWithTimeIntervalSince1970:{objc_msgSend(v6, "updateTime") * 0.001}];
     v9 = [qword_10195DCD0 lastUpdatedUIStringForDate:v8];
-    [v10 setSecondaryLabelText:v9];
+    [viewCopy setSecondaryLabelText:v9];
   }
 
   else
   {
-    [v10 setPrimaryLabelText:0];
-    [v10 setSecondaryLabelText:0];
+    [viewCopy setPrimaryLabelText:0];
+    [viewCopy setSecondaryLabelText:0];
   }
 }
 
-+ (void)configureDetailsView:(id)a3 withTrafficIncidentFeature:(id)a4
++ (void)configureDetailsView:(id)view withTrafficIncidentFeature:(id)feature
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v5 info];
-  [v11 setPrimaryLabelText:v6];
+  viewCopy = view;
+  featureCopy = feature;
+  info = [featureCopy info];
+  [viewCopy setPrimaryLabelText:info];
 
-  v7 = [v5 lastUpdatedDate];
+  lastUpdatedDate = [featureCopy lastUpdatedDate];
 
-  if (v7)
+  if (lastUpdatedDate)
   {
     if (qword_10195DCC8 != -1)
     {
@@ -53,273 +53,273 @@
     }
 
     v8 = qword_10195DCC0;
-    v9 = [v5 lastUpdatedDate];
-    v10 = [v8 lastUpdatedUIStringForDate:v9];
-    [v11 setSecondaryLabelText:v10];
+    lastUpdatedDate2 = [featureCopy lastUpdatedDate];
+    v10 = [v8 lastUpdatedUIStringForDate:lastUpdatedDate2];
+    [viewCopy setSecondaryLabelText:v10];
   }
 
   else
   {
-    [v11 setSecondaryLabelText:0];
+    [viewCopy setSecondaryLabelText:0];
   }
 }
 
-+ (void)configureDetailsView:(id)a3 withTrafficIncidentAlert:(id)a4
++ (void)configureDetailsView:(id)view withTrafficIncidentAlert:(id)alert
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 bannerDescription];
-  v8 = [v7 length];
+  viewCopy = view;
+  alertCopy = alert;
+  bannerDescription = [alertCopy bannerDescription];
+  v8 = [bannerDescription length];
 
   if (v8)
   {
-    v9 = [v6 bannerDescription];
-    [v11 setPrimaryLabelText:v9];
+    bannerDescription2 = [alertCopy bannerDescription];
+    [viewCopy setPrimaryLabelText:bannerDescription2];
   }
 
   else
   {
-    v10 = [v6 incident];
+    incident = [alertCopy incident];
 
-    if (!v10)
+    if (!incident)
     {
       goto LABEL_6;
     }
 
-    v9 = [v6 incident];
-    [a1 configureDetailsView:v11 withGEORouteIncident:v9];
+    bannerDescription2 = [alertCopy incident];
+    [self configureDetailsView:viewCopy withGEORouteIncident:bannerDescription2];
   }
 
 LABEL_6:
 }
 
-+ (void)configureHeaderView:(id)a3 withTrafficIncidentFeature:(id)a4
++ (void)configureHeaderView:(id)view withTrafficIncidentFeature:(id)feature
 {
-  v27 = a3;
-  v5 = a4;
-  if ([v5 isRestrictionIncident])
+  viewCopy = view;
+  featureCopy = feature;
+  if ([featureCopy isRestrictionIncident])
   {
-    v6 = [v5 restrictionTitle];
-    v7 = [v27 primaryLabel];
-    [v7 setText:v6];
+    restrictionTitle = [featureCopy restrictionTitle];
+    primaryLabel = [viewCopy primaryLabel];
+    [primaryLabel setText:restrictionTitle];
 
-    v8 = [v5 restrictionCombinedDetails];
+    restrictionCombinedDetails = [featureCopy restrictionCombinedDetails];
 LABEL_5:
-    v13 = v8;
-    v14 = [v27 secondaryLabel];
-    [v14 setText:v13];
+    secondaryLabel2 = restrictionCombinedDetails;
+    secondaryLabel = [viewCopy secondaryLabel];
+    [secondaryLabel setText:secondaryLabel2];
 
     goto LABEL_6;
   }
 
-  v9 = [v5 title];
-  v10 = [v27 primaryLabel];
-  [v10 setText:v9];
+  title = [featureCopy title];
+  primaryLabel2 = [viewCopy primaryLabel];
+  [primaryLabel2 setText:title];
 
-  v11 = [v5 subtitle];
-  v12 = [v11 length];
+  subtitle = [featureCopy subtitle];
+  v12 = [subtitle length];
 
   if (v12)
   {
-    v8 = [v5 subtitle];
+    restrictionCombinedDetails = [featureCopy subtitle];
     goto LABEL_5;
   }
 
-  v13 = [v27 secondaryLabel];
-  [v13 setText:0];
+  secondaryLabel2 = [viewCopy secondaryLabel];
+  [secondaryLabel2 setText:0];
 LABEL_6:
 
-  v15 = [v5 artwork];
+  artwork = [featureCopy artwork];
 
-  if (v15)
+  if (artwork)
   {
-    v16 = [v5 artwork];
-    v17 = [v27 traitCollection];
+    artwork2 = [featureCopy artwork];
+    traitCollection = [viewCopy traitCollection];
     v18 = ImageForArtwork();
-    [v27 setImageSource:v18];
+    [viewCopy setImageSource:v18];
   }
 
   else
   {
-    v19 = v27;
-    v20 = [v19 window];
-    v21 = [v20 screen];
-    if (v21)
+    v19 = viewCopy;
+    window = [v19 window];
+    screen = [window screen];
+    if (screen)
     {
-      v22 = [v19 window];
-      v23 = [v22 screen];
-      [v23 nativeScale];
+      window2 = [v19 window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
       v25 = v24;
     }
 
     else
     {
-      v22 = +[UIScreen mainScreen];
-      [v22 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
       v25 = v26;
     }
 
-    v16 = sub_10095510C(v5, 4, v25);
-    [v19 setImageSource:v16];
+    artwork2 = sub_10095510C(featureCopy, 4, v25);
+    [v19 setImageSource:artwork2];
   }
 
-  [v27 setShowDismissButton:1];
+  [viewCopy setShowDismissButton:1];
 }
 
-+ (void)configureHeaderView:(id)a3 withTrafficIncidentAlert:(id)a4
++ (void)configureHeaderView:(id)view withTrafficIncidentAlert:(id)alert
 {
-  v22 = a3;
-  v5 = a4;
-  v6 = [v5 alertTitles];
-  v7 = [v6 firstObject];
-  v8 = [v22 primaryLabel];
-  [v8 setText:v7];
+  viewCopy = view;
+  alertCopy = alert;
+  alertTitles = [alertCopy alertTitles];
+  firstObject = [alertTitles firstObject];
+  primaryLabel = [viewCopy primaryLabel];
+  [primaryLabel setText:firstObject];
 
-  v9 = [v5 alertDescriptions];
-  v10 = [v9 count];
+  alertDescriptions = [alertCopy alertDescriptions];
+  v10 = [alertDescriptions count];
 
   if (v10)
   {
-    v11 = [v5 alertDescriptions];
-    v12 = [v11 firstObject];
-    v13 = [v22 secondaryLabel];
-    [v13 setText:v12];
+    alertDescriptions2 = [alertCopy alertDescriptions];
+    firstObject2 = [alertDescriptions2 firstObject];
+    secondaryLabel = [viewCopy secondaryLabel];
+    [secondaryLabel setText:firstObject2];
   }
 
   else
   {
-    v11 = [v22 secondaryLabel];
-    [v11 setText:0];
+    alertDescriptions2 = [viewCopy secondaryLabel];
+    [alertDescriptions2 setText:0];
   }
 
-  v14 = [NavTrafficIncidentViewComposer imageForMNTrafficIncidentAlert:v5 view:v22];
-  [v22 setImageSource:v14];
+  v14 = [NavTrafficIncidentViewComposer imageForMNTrafficIncidentAlert:alertCopy view:viewCopy];
+  [viewCopy setImageSource:v14];
 
-  [v22 setShowDismissButton:{objc_msgSend(v5, "includeDismissButton")}];
-  v15 = [v5 defaultButtonInfo];
-  if (v15)
+  [viewCopy setShowDismissButton:{objc_msgSend(alertCopy, "includeDismissButton")}];
+  defaultButtonInfo = [alertCopy defaultButtonInfo];
+  if (defaultButtonInfo)
   {
     v16 = 1;
   }
 
   else
   {
-    [v5 alertDisplayDuration];
+    [alertCopy alertDisplayDuration];
     v16 = v17 == 0.0;
   }
 
-  v18 = [v22 dismissButton];
-  [v18 setProgressionHidden:v16];
+  dismissButton = [viewCopy dismissButton];
+  [dismissButton setProgressionHidden:v16];
 
-  [v5 alertDisplayDuration];
+  [alertCopy alertDisplayDuration];
   v20 = v19;
-  v21 = [v22 dismissButton];
-  [v21 setAnimationDuration:v20];
+  dismissButton2 = [viewCopy dismissButton];
+  [dismissButton2 setAnimationDuration:v20];
 }
 
-+ (id)imageForMNTrafficIncidentAlert:(id)a3 view:(id)a4
++ (id)imageForMNTrafficIncidentAlert:(id)alert view:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 artwork];
+  alertCopy = alert;
+  viewCopy = view;
+  artwork = [alertCopy artwork];
 
-  if (v8)
+  if (artwork)
   {
     v9 = sub_1008EB5E0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 artwork];
+      artwork2 = [alertCopy artwork];
       v41 = 134349314;
-      v42 = a1;
+      selfCopy4 = self;
       v43 = 2112;
-      v44 = v10;
+      v44 = artwork2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Initializing using artwork %@", &v41, 0x16u);
     }
 
-    v11 = [v6 artwork];
-    v12 = [v7 traitCollection];
+    artwork3 = [alertCopy artwork];
+    traitCollection = [viewCopy traitCollection];
     v13 = ImageForArtwork();
     goto LABEL_5;
   }
 
-  v15 = [v6 incident];
+  incident = [alertCopy incident];
 
-  if (v15)
+  if (incident)
   {
     v16 = sub_1008EB5E0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [v6 incident];
+      incident2 = [alertCopy incident];
       v41 = 134349314;
-      v42 = a1;
+      selfCopy4 = self;
       v43 = 2112;
-      v44 = v17;
+      v44 = incident2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Initializing using incident type %@", &v41, 0x16u);
     }
 
-    v11 = [v6 incident];
-    v18 = v7;
-    v19 = [v18 window];
-    v20 = [v19 screen];
-    if (v20)
+    artwork3 = [alertCopy incident];
+    v18 = viewCopy;
+    window = [v18 window];
+    screen = [window screen];
+    if (screen)
     {
-      v21 = [v18 window];
-      v22 = [v21 screen];
-      [v22 nativeScale];
+      window2 = [v18 window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
       v24 = v23;
     }
 
     else
     {
-      v21 = +[UIScreen mainScreen];
-      [v21 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
       v24 = v35;
     }
 
-    v14 = sub_100955280(v11, v24);
+    v14 = sub_100955280(artwork3, v24);
     goto LABEL_20;
   }
 
-  v25 = [v6 originalRoute];
-  if ([v25 isEVRoute])
+  originalRoute = [alertCopy originalRoute];
+  if ([originalRoute isEVRoute])
   {
-    v26 = [v6 alertType];
+    alertType = [alertCopy alertType];
 
-    if (v26 != 6)
+    if (alertType != 6)
     {
       v27 = sub_1008EB5E0();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v41 = 134349056;
-        v42 = a1;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[%{public}p] Initializing using VKTrafficIncidentTypeBatteryReroute", &v41, 0xCu);
       }
 
-      v28 = v7;
-      v29 = [v28 window];
-      v30 = [v29 screen];
-      if (v30)
+      v28 = viewCopy;
+      window3 = [v28 window];
+      screen3 = [window3 screen];
+      if (screen3)
       {
-        v31 = [v28 window];
-        v32 = [v31 screen];
-        [v32 nativeScale];
+        window4 = [v28 window];
+        screen4 = [window4 screen];
+        [screen4 nativeScale];
         v34 = v33;
       }
 
       else
       {
-        v31 = +[UIScreen mainScreen];
-        [v31 nativeScale];
+        window4 = +[UIScreen mainScreen];
+        [window4 nativeScale];
         v34 = v38;
       }
 
-      v39 = [v6 artwork];
-      v11 = [v39 icon];
+      artwork4 = [alertCopy artwork];
+      artwork3 = [artwork4 icon];
 
-      v12 = [v11 styleAttributes];
-      if (v12)
+      traitCollection = [artwork3 styleAttributes];
+      if (traitCollection)
       {
-        v40 = [[GEOFeatureStyleAttributes alloc] initWithGEOStyleAttributes:v12];
+        v40 = [[GEOFeatureStyleAttributes alloc] initWithGEOStyleAttributes:traitCollection];
         v14 = [MKIconManager imageForStyle:v40 size:4 forScale:0 format:v34];
 
         if (v14)
@@ -346,9 +346,9 @@ LABEL_20:
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
   {
     v41 = 134349312;
-    v42 = a1;
+    selfCopy4 = self;
     v43 = 2048;
-    v44 = v6;
+    v44 = alertCopy;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "[%{public}p] No GEORouteIncident to configure header for MNTrafficIncidentAlert %p", &v41, 0x16u);
   }
 

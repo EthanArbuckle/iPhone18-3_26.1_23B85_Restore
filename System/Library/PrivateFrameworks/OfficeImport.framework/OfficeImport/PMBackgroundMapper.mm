@@ -1,18 +1,18 @@
 @interface PMBackgroundMapper
 - (CGRect)slideRect;
-- (PMBackgroundMapper)initWithOadBackground:(id)a3 parent:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (PMBackgroundMapper)initWithOadBackground:(id)background parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation PMBackgroundMapper
 
 - (CGRect)slideRect
 {
-  v2 = [(CMMapper *)self root];
+  root = [(CMMapper *)self root];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 slideSize];
+    [root slideSize];
     v4 = v3;
     v6 = v5;
     v7 = 0.0;
@@ -38,25 +38,25 @@
   return result;
 }
 
-- (PMBackgroundMapper)initWithOadBackground:(id)a3 parent:(id)a4
+- (PMBackgroundMapper)initWithOadBackground:(id)background parent:(id)parent
 {
-  v7 = a3;
+  backgroundCopy = background;
   v11.receiver = self;
   v11.super_class = PMBackgroundMapper;
-  v8 = [(CMMapper *)&v11 initWithParent:a4];
+  v8 = [(CMMapper *)&v11 initWithParent:parent];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->mBackground, a3);
+    objc_storeStrong(&v8->mBackground, background);
   }
 
   return v9;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v21 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   [(PMBackgroundMapper *)self slideRect];
   if (self->mBackground)
   {
@@ -67,26 +67,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [(OADBackground *)self->mBackground fill];
+      fill = [(OADBackground *)self->mBackground fill];
       v16 = objc_alloc_init(CMDrawableStyle);
-      v17 = [[CMImageFillMapper alloc] initWithOadFill:v15 bounds:self parent:v11, v12, v13, v14];
+      v17 = [[CMImageFillMapper alloc] initWithOadFill:fill bounds:self parent:v11, v12, v13, v14];
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ([v15 technique], v18 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v18, (isKindOfClass))
+      if (objc_opt_isKindOfClass() & 1) != 0 && ([fill technique], v18 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v18, (isKindOfClass))
       {
         v20 = [OIXMLElement elementWithType:9];
-        [(CMImageFillMapper *)v17 mapImageFillAt:v20 toStyle:v16 withState:v6];
+        [(CMImageFillMapper *)v17 mapImageFillAt:v20 toStyle:v16 withState:stateCopy];
       }
 
       else
       {
         v20 = [OIXMLElement elementWithType:3];
-        [(CMImageFillMapper *)v17 mapNonImageFillAt:v21 toStyle:v16 withState:v6];
+        [(CMImageFillMapper *)v17 mapNonImageFillAt:atCopy toStyle:v16 withState:stateCopy];
       }
 
       [(CMStyle *)v16 appendPositionInfoFromRect:v11, v12, v13, v14];
       [(CMStyle *)v16 appendPropertyForName:0x286EF5C90 stringValue:0x286EFDE70];
       [(CMMapper *)self addStyleUsingGlobalCacheTo:v20 style:v16];
-      [v21 addChild:v20];
+      [atCopy addChild:v20];
     }
   }
 }

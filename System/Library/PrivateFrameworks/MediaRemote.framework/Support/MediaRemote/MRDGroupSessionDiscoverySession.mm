@@ -2,14 +2,14 @@
 - (MRDGroupSession)session;
 - (NSArray)availableOutputDevices;
 - (NSString)description;
-- (id)addOutputDevicesChangedCallback:(id)a3;
-- (void)handleGroupSessionServerStart:(id)a3;
-- (void)handleGroupSessionServerStop:(id)a3;
-- (void)handleSystemGroupSessionStart:(id)a3;
-- (void)handleSystemGroupSessionStop:(id)a3;
-- (void)removeOutputDevicesChangedCallback:(id)a3;
-- (void)session:(id)a3 didChangeState:(int64_t)a4;
-- (void)session:(id)a3 didUpdateParticipants:(id)a4;
+- (id)addOutputDevicesChangedCallback:(id)callback;
+- (void)handleGroupSessionServerStart:(id)start;
+- (void)handleGroupSessionServerStop:(id)stop;
+- (void)handleSystemGroupSessionStart:(id)start;
+- (void)handleSystemGroupSessionStop:(id)stop;
+- (void)removeOutputDevicesChangedCallback:(id)callback;
+- (void)session:(id)session didChangeState:(int64_t)state;
+- (void)session:(id)session didUpdateParticipants:(id)participants;
 @end
 
 @implementation MRDGroupSessionDiscoverySession
@@ -17,7 +17,7 @@
 - (NSArray)availableOutputDevices
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC12mediaremoted31MRDGroupSessionDiscoverySession_lock);
-  v3 = self;
+  selfCopy = self;
   sub_1001BC5A8(&qword_1005216D8, &unk_10044EBD0);
   sub_100013378(sub_10001340C);
 
@@ -30,14 +30,14 @@
 - (MRDGroupSession)session
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC12mediaremoted31MRDGroupSessionDiscoverySession_lock);
-  v3 = self;
+  selfCopy = self;
   sub_1001BC5A8(&qword_100521740, &qword_10044EBE0);
   sub_100013378(sub_1001C9600);
 
   return v5;
 }
 
-- (id)addOutputDevicesChangedCallback:(id)a3
+- (id)addOutputDevicesChangedCallback:(id)callback
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -46,19 +46,19 @@
   v10 = &v20[-((v9 + 15) & 0xFFFFFFFFFFFFFFF0)];
   __chkstk_darwin(v8);
   v12 = &v20[-v11];
-  v13 = _Block_copy(a3);
+  v13 = _Block_copy(callback);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = self;
+  selfCopy = self;
   _Block_copy(v13);
   UUID.init()();
-  v16 = *(&v15->super.isa + OBJC_IVAR____TtC12mediaremoted31MRDGroupSessionDiscoverySession_lock);
-  v21 = v15;
+  v16 = *(&selfCopy->super.isa + OBJC_IVAR____TtC12mediaremoted31MRDGroupSessionDiscoverySession_lock);
+  v21 = selfCopy;
   v22 = v12;
   v23 = sub_1001C9334;
   v24 = v14;
   sub_100013378(sub_1001C95E8);
-  (*((swift_isaMask & v15->super.isa) + 0x88))();
+  (*((swift_isaMask & selfCopy->super.isa) + 0x88))();
   sub_100013424();
   isa = Array._bridgeToObjectiveC()().super.isa;
 
@@ -72,10 +72,10 @@
   return v18;
 }
 
-- (void)removeOutputDevicesChangedCallback:(id)a3
+- (void)removeOutputDevicesChangedCallback:(id)callback
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1001C49B0(v5);
@@ -85,7 +85,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C4CC4();
 
   v3 = String._bridgeToObjectiveC()();
@@ -93,49 +93,49 @@
   return v3;
 }
 
-- (void)session:(id)a3 didChangeState:(int64_t)a4
+- (void)session:(id)session didChangeState:(int64_t)state
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1001C4FBC(a3, a4);
+  selfCopy = self;
+  sub_1001C4FBC(session, state);
   swift_unknownObjectRelease();
 }
 
-- (void)session:(id)a3 didUpdateParticipants:(id)a4
+- (void)session:(id)session didUpdateParticipants:(id)participants
 {
   sub_1001BC5A8(&unk_100522CB0, &unk_10044EC00);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1001C5290(a3);
+  selfCopy = self;
+  sub_1001C5290(session);
   swift_unknownObjectRelease();
 }
 
-- (void)handleGroupSessionServerStart:(id)a3
+- (void)handleGroupSessionServerStart:(id)start
 {
-  v4 = a3;
-  v5 = self;
+  startCopy = start;
+  selfCopy = self;
   sub_1001C8694();
 }
 
-- (void)handleGroupSessionServerStop:(id)a3
+- (void)handleGroupSessionServerStop:(id)stop
 {
-  v4 = a3;
-  v5 = self;
+  stopCopy = stop;
+  selfCopy = self;
   sub_1001C883C();
 }
 
-- (void)handleSystemGroupSessionStart:(id)a3
+- (void)handleSystemGroupSessionStart:(id)start
 {
-  v4 = a3;
-  v5 = self;
+  startCopy = start;
+  selfCopy = self;
   sub_1001C8A1C();
 }
 
-- (void)handleSystemGroupSessionStop:(id)a3
+- (void)handleSystemGroupSessionStop:(id)stop
 {
-  v4 = a3;
-  v5 = self;
+  stopCopy = stop;
+  selfCopy = self;
   sub_1001C8BC4();
 }
 

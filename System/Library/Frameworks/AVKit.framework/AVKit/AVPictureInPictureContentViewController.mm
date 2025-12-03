@@ -1,5 +1,5 @@
 @interface AVPictureInPictureContentViewController
-- (AVPictureInPictureContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AVPictureInPictureContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (AVPictureInPictureContentViewControllerDelegate)delegate;
 - (AVPictureInPictureController)pictureInPictureController;
 - (AVPictureInPictureControllerContentSource)contentSource;
@@ -11,11 +11,11 @@
 - (id)avkit_pictureInPictureViewController;
 - (void)_observeSourceView;
 - (void)_removeFromParent;
-- (void)_setLastKnownIsVisible:(BOOL)a3 videoRectInWindow:(CGRect)a4;
-- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)a3;
-- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)a3;
-- (void)setContentSource:(id)a3;
-- (void)setPlayerController:(id)a3;
+- (void)_setLastKnownIsVisible:(BOOL)visible videoRectInWindow:(CGRect)window;
+- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)controller;
+- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)controller;
+- (void)setContentSource:(id)source;
+- (void)setPlayerController:(id)controller;
 - (void)startObservingSourceView;
 - (void)stopObservingSourceView;
 @end
@@ -66,20 +66,20 @@
 - (void)_removeFromParent
 {
   [(AVPictureInPictureContentViewController *)self willMoveToParentViewController:0];
-  v3 = [(AVPictureInPictureContentViewController *)self view];
-  [v3 removeFromSuperview];
+  view = [(AVPictureInPictureContentViewController *)self view];
+  [view removeFromSuperview];
 
   [(AVPictureInPictureContentViewController *)self removeFromParentViewController];
 }
 
-- (void)_setLastKnownIsVisible:(BOOL)a3 videoRectInWindow:(CGRect)a4
+- (void)_setLastKnownIsVisible:(BOOL)visible videoRectInWindow:(CGRect)window
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  if ([(AVPictureInPictureContentViewController *)self lastKnownIsVisible]== a3)
+  height = window.size.height;
+  width = window.size.width;
+  y = window.origin.y;
+  x = window.origin.x;
+  visibleCopy = visible;
+  if ([(AVPictureInPictureContentViewController *)self lastKnownIsVisible]== visible)
   {
     [(AVPictureInPictureContentViewController *)self lastKnownVideoRectInWindow];
     v18.origin.x = v10;
@@ -91,7 +91,7 @@
     v17.size.width = width;
     v17.size.height = height;
     v14 = CGRectEqualToRect(v17, v18);
-    [(AVPictureInPictureContentViewController *)self setLastKnownIsVisible:v8];
+    [(AVPictureInPictureContentViewController *)self setLastKnownIsVisible:visibleCopy];
     [(AVPictureInPictureContentViewController *)self setLastKnownVideoRectInWindow:x, y, width, height];
     if (v14)
     {
@@ -101,112 +101,112 @@
 
   else
   {
-    [(AVPictureInPictureContentViewController *)self setLastKnownIsVisible:v8];
+    [(AVPictureInPictureContentViewController *)self setLastKnownIsVisible:visibleCopy];
     [(AVPictureInPictureContentViewController *)self setLastKnownVideoRectInWindow:x, y, width, height];
   }
 
-  v15 = [(AVPictureInPictureContentViewController *)self pictureInPictureController];
-  [v15 contentSourceVideoRectInWindowChanged];
+  pictureInPictureController = [(AVPictureInPictureContentViewController *)self pictureInPictureController];
+  [pictureInPictureController contentSourceVideoRectInWindowChanged];
 }
 
 - (void)_observeSourceView
 {
-  v3 = [(AVPictureInPictureContentViewController *)self avkit_isVisible];
+  avkit_isVisible = [(AVPictureInPictureContentViewController *)self avkit_isVisible];
   [(AVPictureInPictureContentViewController *)self avkit_videoRectInWindow];
 
-  [(AVPictureInPictureContentViewController *)self _setLastKnownIsVisible:v3 videoRectInWindow:?];
+  [(AVPictureInPictureContentViewController *)self _setLastKnownIsVisible:avkit_isVisible videoRectInWindow:?];
 }
 
-- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)a3
+- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVPictureInPictureContentViewController *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [(AVPictureInPictureContentViewController *)self parentViewController];
 
-  if (v5 == v4)
+  if (parentViewController == controllerCopy)
   {
 
     [(AVPictureInPictureContentViewController *)self _removeFromParent];
   }
 }
 
-- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)a3
+- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)controller
 {
-  v18 = a3;
-  v4 = [(AVPictureInPictureContentViewController *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [(AVPictureInPictureContentViewController *)self parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
     [(AVPictureInPictureContentViewController *)self _removeFromParent];
   }
 
-  [v18 addChildViewController:self];
-  v5 = [v18 view];
-  [v5 bounds];
+  [controllerCopy addChildViewController:self];
+  view = [controllerCopy view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(AVPictureInPictureContentViewController *)self view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view2 = [(AVPictureInPictureContentViewController *)self view];
+  [view2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(AVPictureInPictureContentViewController *)self view];
-  [v15 setAutoresizingMask:18];
+  view3 = [(AVPictureInPictureContentViewController *)self view];
+  [view3 setAutoresizingMask:18];
 
-  v16 = [v18 view];
-  v17 = [(AVPictureInPictureContentViewController *)self view];
-  [v16 addSubview:v17];
+  view4 = [controllerCopy view];
+  view5 = [(AVPictureInPictureContentViewController *)self view];
+  [view4 addSubview:view5];
 
-  [(AVPictureInPictureContentViewController *)self didMoveToParentViewController:v18];
+  [(AVPictureInPictureContentViewController *)self didMoveToParentViewController:controllerCopy];
 }
 
 - (id)avkit_pictureInPictureViewController
 {
-  v3 = [(AVPictureInPictureContentViewController *)self pictureInPictureViewController];
-  if (!v3)
+  pictureInPictureViewController = [(AVPictureInPictureContentViewController *)self pictureInPictureViewController];
+  if (!pictureInPictureViewController)
   {
-    v3 = objc_alloc_init(AVPictureInPictureViewController);
-    [(AVPictureInPictureContentViewController *)self setPictureInPictureViewController:v3];
+    pictureInPictureViewController = objc_alloc_init(AVPictureInPictureViewController);
+    [(AVPictureInPictureContentViewController *)self setPictureInPictureViewController:pictureInPictureViewController];
   }
 
-  return v3;
+  return pictureInPictureViewController;
 }
 
 - (UIWindow)avkit_window
 {
-  v2 = [(AVPictureInPictureContentViewController *)self contentSource];
-  v3 = [v2 activeSourceView];
-  v4 = [v3 window];
+  contentSource = [(AVPictureInPictureContentViewController *)self contentSource];
+  activeSourceView = [contentSource activeSourceView];
+  window = [activeSourceView window];
 
-  return v4;
+  return window;
 }
 
 - (BOOL)avkit_isVisible
 {
-  v3 = [(AVPictureInPictureContentViewController *)self delegate];
+  delegate = [(AVPictureInPictureContentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVPictureInPictureContentViewController *)self delegate];
-    v6 = [(AVPictureInPictureContentViewController *)self contentSource];
-    v7 = [v6 activeSourceView];
-    LOBYTE(v8) = [v5 pictureInPictureContentViewController:self isViewVisible:v7];
+    delegate2 = [(AVPictureInPictureContentViewController *)self delegate];
+    contentSource = [(AVPictureInPictureContentViewController *)self contentSource];
+    activeSourceView = [contentSource activeSourceView];
+    LOBYTE(v8) = [delegate2 pictureInPictureContentViewController:self isViewVisible:activeSourceView];
   }
 
   else
   {
-    v5 = [(AVPictureInPictureContentViewController *)self contentSource];
-    v7 = [v5 activeSourceView];
-    v9 = [v7 window];
-    if (v9 && ([v7 isHiddenOrHasHiddenAncestor] & 1) == 0)
+    delegate2 = [(AVPictureInPictureContentViewController *)self contentSource];
+    activeSourceView = [delegate2 activeSourceView];
+    window = [activeSourceView window];
+    if (window && ([activeSourceView isHiddenOrHasHiddenAncestor] & 1) == 0)
     {
-      [v7 bounds];
-      [v9 convertRect:v7 fromView:?];
+      [activeSourceView bounds];
+      [window convertRect:activeSourceView fromView:?];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      [v9 bounds];
+      [window bounds];
       v25.origin.x = v18;
       v25.origin.y = v19;
       v25.size.width = v20;
@@ -224,7 +224,7 @@
       LOBYTE(v8) = 0;
     }
 
-    v6 = v7;
+    contentSource = activeSourceView;
   }
 
   return v8;
@@ -232,13 +232,13 @@
 
 - (CGRect)avkit_videoRectInWindow
 {
-  v3 = [(AVPictureInPictureContentViewController *)self delegate];
+  delegate = [(AVPictureInPictureContentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVPictureInPictureContentViewController *)self delegate];
-    [v5 pictureInPictureContentViewControllerVideoFrameInWindow:self];
+    delegate2 = [(AVPictureInPictureContentViewController *)self delegate];
+    [delegate2 pictureInPictureContentViewControllerVideoFrameInWindow:self];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -247,19 +247,19 @@
 
   else
   {
-    v5 = [(AVPictureInPictureContentViewController *)self contentSource];
-    v14 = [v5 activeSourceView];
-    v15 = [v14 window];
-    v16 = [(AVPictureInPictureContentViewController *)self contentSource];
-    v17 = [v16 activeSourceView];
-    [v17 bounds];
+    delegate2 = [(AVPictureInPictureContentViewController *)self contentSource];
+    activeSourceView = [delegate2 activeSourceView];
+    window = [activeSourceView window];
+    contentSource = [(AVPictureInPictureContentViewController *)self contentSource];
+    activeSourceView2 = [contentSource activeSourceView];
+    [activeSourceView2 bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(AVPictureInPictureContentViewController *)self contentSource];
-    v27 = [v26 activeSourceView];
-    [v15 convertRect:v27 fromView:{v19, v21, v23, v25}];
+    contentSource2 = [(AVPictureInPictureContentViewController *)self contentSource];
+    activeSourceView3 = [contentSource2 activeSourceView];
+    [window convertRect:activeSourceView3 fromView:{v19, v21, v23, v25}];
     v7 = v28;
     v9 = v29;
     v11 = v30;
@@ -279,8 +279,8 @@
 
 - (void)stopObservingSourceView
 {
-  v3 = [(AVPictureInPictureContentViewController *)self observeSourceViewTimer];
-  [v3 invalidate];
+  observeSourceViewTimer = [(AVPictureInPictureContentViewController *)self observeSourceViewTimer];
+  [observeSourceViewTimer invalidate];
 
   [(AVPictureInPictureContentViewController *)self setObserveSourceViewTimer:0];
 }
@@ -335,9 +335,9 @@ void __67__AVPictureInPictureContentViewController_startObservingSourceView__blo
   }
 }
 
-- (void)setContentSource:(id)a3
+- (void)setContentSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_contentSource);
 
   v5 = obj;
@@ -348,22 +348,22 @@ void __67__AVPictureInPictureContentViewController_startObservingSourceView__blo
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
-  if (self->_playerController != v5)
+  controllerCopy = controller;
+  if (self->_playerController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_playerController, a3);
-    v5 = v6;
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_playerController, controller);
+    controllerCopy = v6;
   }
 }
 
-- (AVPictureInPictureContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AVPictureInPictureContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AVPictureInPictureContentViewController;
-  v4 = [(AVPictureInPictureContentViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AVPictureInPictureContentViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {

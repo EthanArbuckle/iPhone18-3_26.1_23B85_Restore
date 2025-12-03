@@ -1,38 +1,38 @@
 @interface ARSkeleton2D
-- (ARSkeleton2D)initWithCoder:(id)a3;
-- (ARSkeleton2D)initWithDetectedSkeleton:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isJointTracked:(int64_t)a3;
+- (ARSkeleton2D)initWithCoder:(id)coder;
+- (ARSkeleton2D)initWithDetectedSkeleton:(id)skeleton;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isJointTracked:(int64_t)tracked;
 - (simd_float2)landmarkForJointNamed:(ARSkeletonJointName)jointName;
 @end
 
 @implementation ARSkeleton2D
 
-- (ARSkeleton2D)initWithDetectedSkeleton:(id)a3
+- (ARSkeleton2D)initWithDetectedSkeleton:(id)skeleton
 {
-  v5 = a3;
+  skeletonCopy = skeleton;
   v9.receiver = self;
   v9.super_class = ARSkeleton2D;
-  v6 = [(ARSkeleton *)&v9 initPrivate];
-  v7 = v6;
-  if (v6)
+  initPrivate = [(ARSkeleton *)&v9 initPrivate];
+  v7 = initPrivate;
+  if (initPrivate)
   {
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(initPrivate + 3, skeleton);
   }
 
   return v7;
 }
 
-- (BOOL)isJointTracked:(int64_t)a3
+- (BOOL)isJointTracked:(int64_t)tracked
 {
-  if (a3 < 0)
+  if (tracked < 0)
   {
     return 0;
   }
 
-  if ([(ABPK2DDetectionResult *)self->_skeleton jointCount]- 1 >= a3)
+  if ([(ABPK2DDetectionResult *)self->_skeleton jointCount]- 1 >= tracked)
   {
-    return *([(ABPK2DDetectionResult *)self->_skeleton jointTrackingStates]+ 4 * a3) != 0;
+    return *([(ABPK2DDetectionResult *)self->_skeleton jointTrackingStates]+ 4 * tracked) != 0;
   }
 
   return 0;
@@ -41,8 +41,8 @@
 - (simd_float2)landmarkForJointNamed:(ARSkeletonJointName)jointName
 {
   v4 = jointName;
-  v5 = [(ARSkeleton2D *)self definition];
-  v6 = [v5 indexForJointName:v4];
+  definition = [(ARSkeleton2D *)self definition];
+  v6 = [definition indexForJointName:v4];
 
   if (v6 >= [(ARSkeleton2D *)self jointCount])
   {
@@ -52,29 +52,29 @@
   return [(ARSkeleton2D *)self jointLandmarks][8 * v6];
 }
 
-- (ARSkeleton2D)initWithCoder:(id)a3
+- (ARSkeleton2D)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ARSkeleton2D;
-  v5 = [(ARSkeleton *)&v9 initPrivate];
-  if (v5)
+  initPrivate = [(ARSkeleton *)&v9 initPrivate];
+  if (initPrivate)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"skeleton"];
-    skeleton = v5->_skeleton;
-    v5->_skeleton = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"skeleton"];
+    skeleton = initPrivate->_skeleton;
+    initPrivate->_skeleton = v6;
   }
 
-  return v5;
+  return initPrivate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ABPK2DDetectionResult *)self->_skeleton isEqual:v4[3]];
+    v5 = [(ABPK2DDetectionResult *)self->_skeleton isEqual:equalCopy[3]];
   }
 
   else

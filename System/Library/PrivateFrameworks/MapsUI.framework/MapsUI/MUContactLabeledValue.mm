@@ -1,5 +1,5 @@
 @interface MUContactLabeledValue
-- (MUContactLabeledValue)initWithContactLabeledValue:(id)a3 type:(int64_t)a4;
+- (MUContactLabeledValue)initWithContactLabeledValue:(id)value type:(int64_t)type;
 - (NSString)titleString;
 - (NSString)valueString;
 - (id)glyphName;
@@ -22,20 +22,20 @@
   }
 }
 
-- (MUContactLabeledValue)initWithContactLabeledValue:(id)a3 type:(int64_t)a4
+- (MUContactLabeledValue)initWithContactLabeledValue:(id)value type:(int64_t)type
 {
-  v7 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = MUContactLabeledValue;
   v8 = [(MUContactLabeledValue *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a4;
-    objc_storeStrong(&v8->_labeledValue, a3);
-    v10 = [(MUContactLabeledValue *)v9 glyphName];
+    v8->_type = type;
+    objc_storeStrong(&v8->_labeledValue, value);
+    glyphName = [(MUContactLabeledValue *)v9 glyphName];
     symbolName = v9->_symbolName;
-    v9->_symbolName = v10;
+    v9->_symbolName = glyphName;
   }
 
   return v9;
@@ -57,19 +57,19 @@
 
 - (NSString)valueString
 {
-  v3 = [(CNLabeledValue *)self->_labeledValue value];
+  value = [(CNLabeledValue *)self->_labeledValue value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(CNLabeledValue *)self->_labeledValue value];
-  v6 = v5;
+  value2 = [(CNLabeledValue *)self->_labeledValue value];
+  v6 = value2;
   if (isKindOfClass)
   {
-    v7 = [v5 stringValue];
+    stringValue = [value2 stringValue];
 
     v8 = *MEMORY[0x1E695E480];
-    v9 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-    v10 = [v9 countryCode];
+    mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+    countryCode = [mEMORY[0x1E69A1CD8] countryCode];
     v11 = CFPhoneNumberCreate();
 
     if (v11)
@@ -98,8 +98,8 @@
   if (self->_type == 3)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v7 = [(CNLabeledValue *)self->_labeledValue value];
-    String = [v14 _mapkit_shortenedURLStringForFullURLString:v7];
+    stringValue = [(CNLabeledValue *)self->_labeledValue value];
+    String = [v14 _mapkit_shortenedURLStringForFullURLString:stringValue];
 LABEL_9:
 
     goto LABEL_10;

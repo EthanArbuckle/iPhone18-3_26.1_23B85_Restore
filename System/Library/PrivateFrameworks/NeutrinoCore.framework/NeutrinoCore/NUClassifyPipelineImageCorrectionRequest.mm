@@ -1,6 +1,6 @@
 @interface NUClassifyPipelineImageCorrectionRequest
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -19,17 +19,17 @@
   v7.receiver = self;
   v7.super_class = NUClassifyPipelineImageCorrectionRequest;
   v3 = [(NURenderRequest *)&v7 description];
-  v4 = [(NUClassifyPipelineImageCorrectionRequest *)self scalePolicy];
-  v5 = [v3 stringByAppendingFormat:@" Scale Policy: %@", v4];
+  scalePolicy = [(NUClassifyPipelineImageCorrectionRequest *)self scalePolicy];
+  v5 = [v3 stringByAppendingFormat:@" Scale Policy: %@", scalePolicy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUClassifyPipelineImageCorrectionRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

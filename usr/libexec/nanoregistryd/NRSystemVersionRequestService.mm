@@ -1,59 +1,59 @@
 @interface NRSystemVersionRequestService
 - (BOOL)_shouldBroadcastVersion;
-- (NRSystemVersionRequestService)initWithServiceRegistry:(id)a3;
+- (NRSystemVersionRequestService)initWithServiceRegistry:(id)registry;
 - (void)broadcastVersionChangeToDisconnectedWatches;
-- (void)remoteObject:(id)a3 receivedSystemVersionBroadcast:(id)a4 fromDeviceID:(id)a5;
+- (void)remoteObject:(id)object receivedSystemVersionBroadcast:(id)broadcast fromDeviceID:(id)d;
 - (void)sendCloudVersionMessageToCompanion;
 - (void)sendVersionRequestToCompanion;
-- (void)updateVersions:(id)a3 withDeviceUUID:(id)a4;
+- (void)updateVersions:(id)versions withDeviceUUID:(id)d;
 @end
 
 @implementation NRSystemVersionRequestService
 
-- (NRSystemVersionRequestService)initWithServiceRegistry:(id)a3
+- (NRSystemVersionRequestService)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = NRSystemVersionRequestService;
   v6 = [(NRSystemVersionRequestService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceRegistry, a3);
+    objc_storeStrong(&v6->_serviceRegistry, registry);
   }
 
   return v7;
 }
 
-- (void)updateVersions:(id)a3 withDeviceUUID:(id)a4
+- (void)updateVersions:(id)versions withDeviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  versionsCopy = versions;
+  dCopy = d;
   v8 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000CEAB8;
   v11[3] = &unk_100179250;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = versionsCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = versionsCopy;
   [v8 grabRegistryWithWriteBlockAsync:v11];
 }
 
 - (void)sendVersionRequestToCompanion
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getPairedDevices];
+  getPairedDevices = [v2 getPairedDevices];
 
   v30 = objc_alloc_init(NSMutableSet);
-  v28 = [v3 firstObject];
-  v27 = [v28 objectForKeyedSubscript:NRDevicePropertyPairingID];
+  firstObject = [getPairedDevices firstObject];
+  v27 = [firstObject objectForKeyedSubscript:NRDevicePropertyPairingID];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = getPairedDevices;
   v4 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v4)
   {
@@ -76,8 +76,8 @@
       v9 = *(*(&v36 + 1) + 8 * v8);
       v10 = [v9 objectForKeyedSubscript:v7];
       v11 = +[NRPairedDeviceRegistry sharedInstance];
-      v12 = [v11 secureProperties];
-      v13 = [v12 objectForKeyedSubscript:v10];
+      secureProperties = [v11 secureProperties];
+      v13 = [secureProperties objectForKeyedSubscript:v10];
 
       if (v13)
       {
@@ -116,7 +116,7 @@ LABEL_9:
   while (v17);
 LABEL_15:
 
-  v18 = [v28 objectForKeyedSubscript:NRDevicePropertyIsAltAccount];
+  v18 = [firstObject objectForKeyedSubscript:NRDevicePropertyIsAltAccount];
 
   v19 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   if (v18)
@@ -170,11 +170,11 @@ LABEL_15:
   v6 = +[NRPairedDeviceRegistry sharedInstance];
   v7 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v8 = [v6 getAllDevicesWithArchivedDevicesMatching:v7];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [v9 objectForKeyedSubscript:_NRDevicePropertyMigrationIDSCloudIdentifier];
+    v10 = [firstObject objectForKeyedSubscript:_NRDevicePropertyMigrationIDSCloudIdentifier];
     v11 = v10;
     if (v10 && [v10 length])
     {
@@ -199,7 +199,7 @@ LABEL_16:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v9;
+        v19 = firstObject;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "NRDevice: %@ has no cloudIDs. Unable to send system versions", &v18, 0xCu);
       }
     }
@@ -261,11 +261,11 @@ LABEL_17:
 
 - (void)broadcastVersionChangeToDisconnectedWatches
 {
-  v3 = [(NRSystemVersionRequestService *)self _shouldBroadcastVersion];
+  _shouldBroadcastVersion = [(NRSystemVersionRequestService *)self _shouldBroadcastVersion];
   v4 = nr_daemon_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
-  if (v3)
+  if (_shouldBroadcastVersion)
   {
     if (v5)
     {
@@ -434,22 +434,22 @@ LABEL_37:
   }
 }
 
-- (void)remoteObject:(id)a3 receivedSystemVersionBroadcast:(id)a4 fromDeviceID:(id)a5
+- (void)remoteObject:(id)object receivedSystemVersionBroadcast:(id)broadcast fromDeviceID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
+  dCopy = d;
+  broadcastCopy = broadcast;
   v9 = +[NRPairedDeviceRegistry sharedInstance];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000D01C0;
   v14[3] = &unk_1001795A0;
-  v15 = v7;
-  v10 = v7;
+  v15 = dCopy;
+  v10 = dCopy;
   v11 = [v9 getAllDevicesWithArchivedAltAccountDevicesMatching:v14];
 
-  v12 = [v11 firstObject];
-  v13 = [v12 objectForKeyedSubscript:NRDevicePropertyPairingID];
-  [(NRSystemVersionRequestService *)self updateVersions:v8 withDeviceUUID:v13];
+  firstObject = [v11 firstObject];
+  v13 = [firstObject objectForKeyedSubscript:NRDevicePropertyPairingID];
+  [(NRSystemVersionRequestService *)self updateVersions:broadcastCopy withDeviceUUID:v13];
 }
 
 @end

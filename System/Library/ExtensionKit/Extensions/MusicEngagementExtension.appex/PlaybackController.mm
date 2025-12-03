@@ -1,16 +1,16 @@
 @interface PlaybackController
 - (_TtC9MusicCore18PlaybackController)init;
-- (id)requestedPropertySetForEngine:(id)a3;
-- (void)engine:(id)a3 didEndSharedListeningSessionWithError:(id)a4;
-- (void)engine:(id)a3 didFailToPlayFirstItem:(id)a4 withError:(id)a5;
-- (void)engine:(id)a3 didPauseForLeaseEndWithError:(id)a4;
-- (void)engine:(id)a3 didReceiveSharedListeningEvent:(id)a4;
-- (void)engine:(id)a3 requiresAuthorizationToPlayItem:(id)a4 reason:(int64_t)a5 authorizationHandler:(id)a6;
+- (id)requestedPropertySetForEngine:(id)engine;
+- (void)engine:(id)engine didEndSharedListeningSessionWithError:(id)error;
+- (void)engine:(id)engine didFailToPlayFirstItem:(id)item withError:(id)error;
+- (void)engine:(id)engine didPauseForLeaseEndWithError:(id)error;
+- (void)engine:(id)engine didReceiveSharedListeningEvent:(id)event;
+- (void)engine:(id)engine requiresAuthorizationToPlayItem:(id)item reason:(int64_t)reason authorizationHandler:(id)handler;
 @end
 
 @implementation PlaybackController
 
-- (id)requestedPropertySetForEngine:(id)a3
+- (id)requestedPropertySetForEngine:(id)engine
 {
   if (one-time initialization token for properties != -1)
   {
@@ -22,61 +22,61 @@
   return v4;
 }
 
-- (void)engine:(id)a3 didReceiveSharedListeningEvent:(id)a4
+- (void)engine:(id)engine didReceiveSharedListeningEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized PlaybackController.engine(_:didReceive:)(v7);
+  engineCopy = engine;
+  eventCopy = event;
+  selfCopy = self;
+  specialized PlaybackController.engine(_:didReceive:)(eventCopy);
 }
 
-- (void)engine:(id)a3 didEndSharedListeningSessionWithError:(id)a4
+- (void)engine:(id)engine didEndSharedListeningSessionWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  specialized PlaybackController.engine(_:didEndSharedListeningSessionWithError:)(a4);
+  engineCopy = engine;
+  selfCopy = self;
+  errorCopy = error;
+  specialized PlaybackController.engine(_:didEndSharedListeningSessionWithError:)(error);
 }
 
-- (void)engine:(id)a3 didPauseForLeaseEndWithError:(id)a4
+- (void)engine:(id)engine didPauseForLeaseEndWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  specialized PlaybackController.engine(_:didPauseForLeaseEndWithError:)(a4);
+  engineCopy = engine;
+  selfCopy = self;
+  errorCopy = error;
+  specialized PlaybackController.engine(_:didPauseForLeaseEndWithError:)(error);
 }
 
-- (void)engine:(id)a3 didFailToPlayFirstItem:(id)a4 withError:(id)a5
+- (void)engine:(id)engine didFailToPlayFirstItem:(id)item withError:(id)error
 {
   type metadata accessor for UIAction(0, &lazy cache variable for type metadata for OS_dispatch_queue);
   v8 = swift_allocObject();
-  v8[2] = a5;
+  v8[2] = error;
   v8[3] = self;
-  v8[4] = a4;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = v10;
-  v14 = v11;
-  v13 = v9;
+  v8[4] = item;
+  itemCopy = item;
+  errorCopy = error;
+  selfCopy = self;
+  v12 = errorCopy;
+  v14 = selfCopy;
+  v13 = itemCopy;
   static OS_dispatch_queue.asyncOnMainIfNeeded(_:)(closure #1 in PlaybackController.engine(_:didFailToPlayFirstItem:withError:)partial apply, v8);
 }
 
-- (void)engine:(id)a3 requiresAuthorizationToPlayItem:(id)a4 reason:(int64_t)a5 authorizationHandler:(id)a6
+- (void)engine:(id)engine requiresAuthorizationToPlayItem:(id)item reason:(int64_t)reason authorizationHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   type metadata accessor for UIAction(0, &lazy cache variable for type metadata for OS_dispatch_queue);
   v11 = swift_allocObject();
-  v11[2] = a5;
+  v11[2] = reason;
   v11[3] = self;
-  v11[4] = a4;
+  v11[4] = item;
   v11[5] = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool, @unowned NSError?) -> ();
   v11[6] = v10;
-  v12 = a4;
-  v14 = self;
-  v13 = v12;
+  itemCopy = item;
+  selfCopy = self;
+  v13 = itemCopy;
 
   static OS_dispatch_queue.asyncOnMainIfNeeded(_:)(closure #1 in PlaybackController.engine(_:requiresAuthorizationToPlay:reason:authorizationHandler:)partial apply, v11);
 }

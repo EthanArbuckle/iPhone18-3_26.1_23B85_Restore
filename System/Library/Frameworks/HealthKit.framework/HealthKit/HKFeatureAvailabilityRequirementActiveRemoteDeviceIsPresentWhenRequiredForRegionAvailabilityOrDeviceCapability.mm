@@ -1,6 +1,6 @@
 @interface HKFeatureAvailabilityRequirementActiveRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapability
-- (BOOL)isEqual:(id)a3;
-- (id)isSatisfiedWithOnboardingEligibility:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)isSatisfiedWithOnboardingEligibility:(id)eligibility error:(id *)error;
 - (id)requiredEntitlements;
 - (id)requirementDescription;
 @end
@@ -10,8 +10,8 @@
 - (id)requirementDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
-  v4 = [v2 stringWithFormat:@"An active paired device must be present as determined by %@", v3];
+  featureIdentifier = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
+  v4 = [v2 stringWithFormat:@"An active paired device must be present as determined by %@", featureIdentifier];
 
   return v4;
 }
@@ -19,8 +19,8 @@
 - (id)requiredEntitlements
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
-  v3 = [HKFeatureAvailabilityRequirementEntitlement featureAvailabilityReadEntitlementForFeatureIdentifier:v2];
+  featureIdentifier = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
+  v3 = [HKFeatureAvailabilityRequirementEntitlement featureAvailabilityReadEntitlementForFeatureIdentifier:featureIdentifier];
   v7[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
@@ -29,20 +29,20 @@
   return v4;
 }
 
-- (id)isSatisfiedWithOnboardingEligibility:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithOnboardingEligibility:(id)eligibility error:(id *)error
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = ([a3 ineligibilityReasons] & 2) == 0;
+  v5 = ([eligibility ineligibilityReasons] & 2) == 0;
 
   return [v4 numberWithInt:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = HKFeatureAvailabilityRequirementActiveRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapability;
-  if ([(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 isEqual:v4])
+  if ([(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 isEqual:equalCopy])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

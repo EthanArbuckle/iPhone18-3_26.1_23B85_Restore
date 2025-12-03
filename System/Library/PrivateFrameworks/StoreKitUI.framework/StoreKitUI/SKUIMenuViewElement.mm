@@ -2,20 +2,20 @@
 - (BOOL)isEnabled;
 - (NSArray)menuItemTitles;
 - (SKUIItemViewElement)titleItem;
-- (SKUIMenuViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIMenuViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)selectedItemIndex;
-- (void)_enumerateItemElementsUsingBlock:(id)a3;
-- (void)dispatchEventOfType:(unint64_t)a3 forItemAtIndex:(int64_t)a4;
+- (void)_enumerateItemElementsUsingBlock:(id)block;
+- (void)dispatchEventOfType:(unint64_t)type forItemAtIndex:(int64_t)index;
 @end
 
 @implementation SKUIMenuViewElement
 
-- (SKUIMenuViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIMenuViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMenuViewElement initWithDOMElement:parent:elementFactory:];
@@ -23,10 +23,10 @@
 
   v15.receiver = self;
   v15.super_class = SKUIMenuViewElement;
-  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"disabled"];
+    v12 = [elementCopy getAttribute:@"disabled"];
     if ([v12 length])
     {
       v13 = [v12 BOOLValue] ^ 1;
@@ -43,14 +43,14 @@
   return v11;
 }
 
-- (void)dispatchEventOfType:(unint64_t)a3 forItemAtIndex:(int64_t)a4
+- (void)dispatchEventOfType:(unint64_t)type forItemAtIndex:(int64_t)index
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__SKUIMenuViewElement_dispatchEventOfType_forItemAtIndex___block_invoke;
   v4[3] = &__block_descriptor_48_e36_v32__0__SKUIItemViewElement_8Q16_B24l;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = index;
+  v4[5] = type;
   [(SKUIMenuViewElement *)self _enumerateItemElementsUsingBlock:v4];
 }
 
@@ -67,12 +67,12 @@ uint64_t __58__SKUIMenuViewElement_dispatchEventOfType_forItemAtIndex___block_in
 
 - (NSArray)menuItemTitles
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__SKUIMenuViewElement_menuItemTitles__block_invoke;
   v6[3] = &unk_2781FCC40;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIMenuViewElement *)self _enumerateItemElementsUsingBlock:v6];
 
@@ -151,16 +151,16 @@ void __32__SKUIMenuViewElement_titleItem__block_invoke(uint64_t a1, void *a2, ui
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUIMenuViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_enabled = v4->_enabled;
+    self->_enabled = elementCopy->_enabled;
   }
 
   return v6;
@@ -181,9 +181,9 @@ void __32__SKUIMenuViewElement_titleItem__block_invoke(uint64_t a1, void *a2, ui
   return [(SKUIViewElement *)&v6 isEnabled];
 }
 
-- (void)_enumerateItemElementsUsingBlock:(id)a3
+- (void)_enumerateItemElementsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -192,7 +192,7 @@ void __32__SKUIMenuViewElement_titleItem__block_invoke(uint64_t a1, void *a2, ui
   v6[1] = 3221225472;
   v6[2] = __56__SKUIMenuViewElement__enumerateItemElementsUsingBlock___block_invoke;
   v6[3] = &unk_2781FC588;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];

@@ -1,37 +1,37 @@
 @interface MADAnalyticsManager
 + (id)getAnalyticsManager;
-+ (id)getTestAnalyticsManager:(id)a3;
++ (id)getTestAnalyticsManager:(id)manager;
 - (BOOL)eventRecordingEnabled;
-- (BOOL)saveEventToDisk:(id)a3;
-- (BOOL)shouldRecordEventForAssetType:(id)a3;
+- (BOOL)saveEventToDisk:(id)disk;
+- (BOOL)shouldRecordEventForAssetType:(id)type;
 - (MADAnalyticsManager)init;
-- (MADAnalyticsManager)initWithPath:(id)a3;
-- (id)copyEventFromPath:(id)a3;
-- (id)nilToNoneString:(id)a3;
-- (id)recordCacheDeleteAttempt:(int64_t)a3 timeTakenSecs:(double)a4 cacheDeleteUrgency:(int64_t)a5 results:(id)a6 targetPurgeVolume:(id)a7 triggeringOperation:(int64_t)a8;
-- (id)recordEventWithName:(id)a3 assetType:(id)a4 payload:(id)a5;
-- (id)recordMobileAssetPromotionAttempt:(id)a3 assetType:(id)a4 assetVersion:(id)a5 osPromotion:(BOOL)a6 successfullyPromoted:(BOOL)a7 withReason:(int64_t)a8;
-- (id)recordMobileAssetPurgeAttempt:(id)a3 withUrgency:(int)a4 withBytesPurged:(int64_t)a5 withResult:(int64_t)a6 withDir:(id)a7 withRetentionPolicy:(int64_t)a8 withReason:(id)a9;
-- (id)recordMobileAssetScheduler:(int64_t)a3 forSelector:(id)a4 withXpcID:(id)a5 forPushJob:(id)a6 forSetJob:(id)a7 inSchedulerState:(int64_t)a8 inXPCState:(id)a9 didJobFail:(id)a10;
-- (id)recordMobileAssetSecureAttempt:(id)a3 assetType:(id)a4 assetVersion:(id)a5 clientName:(id)a6 operation:(int64_t)a7 secureReason:(id)a8 fromLocation:(id)a9 sucessfullyPersonalized:(BOOL)a10 personalizeFailureReason:(id)a11 sucessfullyMounted:(BOOL)a12 mountingFailureReason:(id)a13 successfullyGrafted:(BOOL)a14 graftingFailureReason:(id)a15 successfullyMappedToExclave:(BOOL)a16 mapToExclaveFailureReason:(id)a17;
-- (id)recordPushNotification:(id)a3 assetType:(id)a4 cloudChannel:(id)a5 forPopulationType:(int64_t)a6 userInitiated:(BOOL)a7 interestAcrossTerm:(BOOL)a8 lockAcrossReboot:(BOOL)a9 lockAcrossTermination:(BOOL)a10;
-- (id)recordPushNotification:(id)a3 assetType:(id)a4 cloudChannels:(id)a5 forPopulationType:(int64_t)a6 userInitiated:(BOOL)a7 interestAcrossTerm:(BOOL)a8 lockAcrossReboot:(BOOL)a9 lockAcrossTermination:(BOOL)a10;
-- (id)removePrefix:(id)a3 fromString:(id)a4;
-- (id)yesNoString:(BOOL)a3;
-- (void)_queue_setEvent:(id)a3;
+- (MADAnalyticsManager)initWithPath:(id)path;
+- (id)copyEventFromPath:(id)path;
+- (id)nilToNoneString:(id)string;
+- (id)recordCacheDeleteAttempt:(int64_t)attempt timeTakenSecs:(double)secs cacheDeleteUrgency:(int64_t)urgency results:(id)results targetPurgeVolume:(id)volume triggeringOperation:(int64_t)operation;
+- (id)recordEventWithName:(id)name assetType:(id)type payload:(id)payload;
+- (id)recordMobileAssetPromotionAttempt:(id)attempt assetType:(id)type assetVersion:(id)version osPromotion:(BOOL)promotion successfullyPromoted:(BOOL)promoted withReason:(int64_t)reason;
+- (id)recordMobileAssetPurgeAttempt:(id)attempt withUrgency:(int)urgency withBytesPurged:(int64_t)purged withResult:(int64_t)result withDir:(id)dir withRetentionPolicy:(int64_t)policy withReason:(id)reason;
+- (id)recordMobileAssetScheduler:(int64_t)scheduler forSelector:(id)selector withXpcID:(id)d forPushJob:(id)job forSetJob:(id)setJob inSchedulerState:(int64_t)state inXPCState:(id)cState didJobFail:(id)self0;
+- (id)recordMobileAssetSecureAttempt:(id)attempt assetType:(id)type assetVersion:(id)version clientName:(id)name operation:(int64_t)operation secureReason:(id)reason fromLocation:(id)location sucessfullyPersonalized:(BOOL)self0 personalizeFailureReason:(id)self1 sucessfullyMounted:(BOOL)self2 mountingFailureReason:(id)self3 successfullyGrafted:(BOOL)self4 graftingFailureReason:(id)self5 successfullyMappedToExclave:(BOOL)self6 mapToExclaveFailureReason:(id)self7;
+- (id)recordPushNotification:(id)notification assetType:(id)type cloudChannel:(id)channel forPopulationType:(int64_t)populationType userInitiated:(BOOL)initiated interestAcrossTerm:(BOOL)term lockAcrossReboot:(BOOL)reboot lockAcrossTermination:(BOOL)self0;
+- (id)recordPushNotification:(id)notification assetType:(id)type cloudChannels:(id)channels forPopulationType:(int64_t)populationType userInitiated:(BOOL)initiated interestAcrossTerm:(BOOL)term lockAcrossReboot:(BOOL)reboot lockAcrossTermination:(BOOL)self0;
+- (id)removePrefix:(id)prefix fromString:(id)string;
+- (id)yesNoString:(BOOL)string;
+- (void)_queue_setEvent:(id)event;
 - (void)_queue_submitAllEvents;
-- (void)_queue_submitEvent:(id)a3;
+- (void)_queue_submitEvent:(id)event;
 - (void)analyticsPreferences;
-- (void)changeReportingLevel:(int64_t)a3;
-- (void)recordDownloadAttemptForAssetType:(id)a3 clientName:(id)a4 baseUrl:(id)a5 relativePath:(id)a6 purpose:(id)a7 result:(id)a8 analyticsFileType:(id)a9 isAutoDownload:(BOOL)a10 isPallas:(BOOL)a11 pallasAssetAudience:(id)a12 isUserPriority:(BOOL)a13 bytesWritten:(id)a14 bytesTransferredEst:(id)a15 additionalData:(id)a16;
-- (void)recordDownloadAttemptForAssetType:(id)a3 clientName:(id)a4 baseUrl:(id)a5 relativePath:(id)a6 purpose:(id)a7 result:(id)a8 analyticsFileType:(id)a9 isAutoDownload:(BOOL)a10 isPallas:(BOOL)a11 pallasAssetAudience:(id)a12 isUserPriority:(BOOL)a13 bytesWritten:(id)a14 bytesTransferredEst:(id)a15 brainVersion:(id)a16 withTaskMetrics:(id)a17 withOptions:(id)a18 additionalData:(id)a19;
-- (void)recordDownloadSuccessForAssetType:(id)a3 notificationSuffix:(id)a4 fileType:(id)a5;
+- (void)changeReportingLevel:(int64_t)level;
+- (void)recordDownloadAttemptForAssetType:(id)type clientName:(id)name baseUrl:(id)url relativePath:(id)path purpose:(id)purpose result:(id)result analyticsFileType:(id)fileType isAutoDownload:(BOOL)self0 isPallas:(BOOL)self1 pallasAssetAudience:(id)self2 isUserPriority:(BOOL)self3 bytesWritten:(id)self4 bytesTransferredEst:(id)self5 additionalData:(id)self6;
+- (void)recordDownloadAttemptForAssetType:(id)type clientName:(id)name baseUrl:(id)url relativePath:(id)path purpose:(id)purpose result:(id)result analyticsFileType:(id)fileType isAutoDownload:(BOOL)self0 isPallas:(BOOL)self1 pallasAssetAudience:(id)self2 isUserPriority:(BOOL)self3 bytesWritten:(id)self4 bytesTransferredEst:(id)self5 brainVersion:(id)self6 withTaskMetrics:(id)self7 withOptions:(id)self8 additionalData:(id)self9;
+- (void)recordDownloadSuccessForAssetType:(id)type notificationSuffix:(id)suffix fileType:(id)fileType;
 - (void)removeAllEvents;
-- (void)removeEvent:(id)a3;
-- (void)removeEventsWithName:(id)a3;
-- (void)setEvent:(id)a3;
+- (void)removeEvent:(id)event;
+- (void)removeEventsWithName:(id)name;
+- (void)setEvent:(id)event;
 - (void)submitAllEvents;
-- (void)submitEvent:(id)a3;
+- (void)submitEvent:(id)event;
 @end
 
 @implementation MADAnalyticsManager
@@ -98,9 +98,9 @@
   return v2;
 }
 
-- (MADAnalyticsManager)initWithPath:(id)a3
+- (MADAnalyticsManager)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = MADAnalyticsManager;
   v5 = [(MADAnalyticsManager *)&v19 init];
@@ -115,7 +115,7 @@
     coreEventSubmitter = v5->_coreEventSubmitter;
     v5->_coreEventSubmitter = v9;
 
-    v11 = [v4 copy];
+    v11 = [pathCopy copy];
     savePath = v5->_savePath;
     v5->_savePath = v11;
 
@@ -161,15 +161,15 @@ void __42__MADAnalyticsManager_getAnalyticsManager__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (id)getTestAnalyticsManager:(id)a3
++ (id)getTestAnalyticsManager:(id)manager
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __47__MADAnalyticsManager_getTestAnalyticsManager___block_invoke;
   block[3] = &unk_4B2AA0;
-  v9 = a3;
+  managerCopy = manager;
   v3 = getTestAnalyticsManager__controlManagerOnce;
-  v4 = v9;
+  v4 = managerCopy;
   if (v3 != -1)
   {
     dispatch_once(&getTestAnalyticsManager__controlManagerOnce, block);
@@ -188,12 +188,12 @@ uint64_t __47__MADAnalyticsManager_getTestAnalyticsManager___block_invoke(uint64
   return _objc_release_x1();
 }
 
-- (id)copyEventFromPath:(id)a3
+- (id)copyEventFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v26 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v26];
+  v5 = [v4 attributesOfItemAtPath:pathCopy error:&v26];
   v6 = v26;
   v7 = v6;
   if (v5)
@@ -218,7 +218,7 @@ uint64_t __47__MADAnalyticsManager_getTestAnalyticsManager___block_invoke(uint64
       }
 
       *buf = 138543618;
-      v28 = v3;
+      v28 = pathCopy;
       v29 = 2114;
       v30 = v19;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Invalid file type found for even at path: %{public}@ [%{public}@] (skipping)", buf, 0x16u);
@@ -230,7 +230,7 @@ uint64_t __47__MADAnalyticsManager_getTestAnalyticsManager___block_invoke(uint64
   }
 
   v25 = 0;
-  v13 = [NSData dataWithContentsOfFile:v3 options:0 error:&v25];
+  v13 = [NSData dataWithContentsOfFile:pathCopy options:0 error:&v25];
   v14 = v25;
   v7 = v14;
   if (!v13 || v14)
@@ -245,7 +245,7 @@ uint64_t __47__MADAnalyticsManager_getTestAnalyticsManager___block_invoke(uint64
       }
 
       *buf = 138543618;
-      v28 = v3;
+      v28 = pathCopy;
       v29 = 2114;
       v30 = v20;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Failed to read contents of event file: %{public}@ (%{public}@)", buf, 0x16u);
@@ -275,7 +275,7 @@ LABEL_24:
       }
 
       *buf = 138543618;
-      v28 = v3;
+      v28 = pathCopy;
       v29 = 2114;
       v30 = v23;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Invalid event data for :%{public}@ (%{public}@)", buf, 0x16u);
@@ -292,9 +292,9 @@ LABEL_25:
   return v21;
 }
 
-- (BOOL)saveEventToDisk:(id)a3
+- (BOOL)saveEventToDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v11 = 0;
   v12 = &v11;
@@ -305,15 +305,15 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = __39__MADAnalyticsManager_saveEventToDisk___block_invoke;
   block[3] = &unk_4B2BD0;
-  v9 = v4;
+  v9 = diskCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = diskCopy;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(diskCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return diskCopy;
 }
 
 void __39__MADAnalyticsManager_saveEventToDisk___block_invoke(uint64_t a1)
@@ -440,26 +440,26 @@ LABEL_13:
   }
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(stateQueue);
-  [(MADAnalyticsManager *)self saveEventToDisk:v5];
+  [(MADAnalyticsManager *)self saveEventToDisk:eventCopy];
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __35__MADAnalyticsManager_removeEvent___block_invoke;
   v7[3] = &unk_4B2B18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -665,9 +665,9 @@ void __43__MADAnalyticsManager_analyticsPreferences__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeEventsWithName:(id)a3
+- (void)removeEventsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -675,8 +675,8 @@ void __43__MADAnalyticsManager_analyticsPreferences__block_invoke(uint64_t a1)
   v7[2] = __44__MADAnalyticsManager_removeEventsWithName___block_invoke;
   v7[3] = &unk_4B2B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -991,18 +991,18 @@ LABEL_27:
   objc_sync_exit(v23);
 }
 
-- (void)submitEvent:(id)a3
+- (void)submitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __35__MADAnalyticsManager_submitEvent___block_invoke;
   v7[3] = &unk_4B2B18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -1110,12 +1110,12 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)changeReportingLevel:(int64_t)a3
+- (void)changeReportingLevel:(int64_t)level
 {
   dispatch_assert_queue_not_V2(self->_stateQueue);
-  if (a3)
+  if (level)
   {
-    self->_reportingLevel = a3;
+    self->_reportingLevel = level;
   }
 }
 
@@ -1252,12 +1252,12 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_queue_setEvent:(id)a3
+- (void)_queue_setEvent:(id)event
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(stateQueue);
-  [(MADAnalyticsEventSubmitter *)self->_coreEventSubmitter setEvent:v5];
+  [(MADAnalyticsEventSubmitter *)self->_coreEventSubmitter setEvent:eventCopy];
 }
 
 - (void)_queue_submitAllEvents
@@ -1268,22 +1268,22 @@ LABEL_25:
   [(MADAnalyticsEventSubmitter *)coreEventSubmitter submitAllEvents];
 }
 
-- (void)_queue_submitEvent:(id)a3
+- (void)_queue_submitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
   if ([(MADAnalyticsManager *)self eventRecordingEnabled])
   {
-    [(MADAnalyticsEventSubmitter *)self->_coreEventSubmitter submitEvent:v4];
+    [(MADAnalyticsEventSubmitter *)self->_coreEventSubmitter submitEvent:eventCopy];
   }
 }
 
-- (id)nilToNoneString:(id)a3
+- (id)nilToNoneString:(id)string
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  stringCopy = string;
+  if (stringCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   else
@@ -1294,9 +1294,9 @@ LABEL_25:
   return v4;
 }
 
-- (id)yesNoString:(BOOL)a3
+- (id)yesNoString:(BOOL)string
 {
-  if (a3)
+  if (string)
   {
     return @"yes";
   }
@@ -1307,25 +1307,25 @@ LABEL_25:
   }
 }
 
-- (id)removePrefix:(id)a3 fromString:(id)a4
+- (id)removePrefix:(id)prefix fromString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 hasPrefix:v5] || (objc_msgSend(v6, "stringByReplacingOccurrencesOfString:withString:options:range:", v5, &stru_4BD3F0, 8, 0, objc_msgSend(v6, "length")), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  prefixCopy = prefix;
+  stringCopy = string;
+  if (![stringCopy hasPrefix:prefixCopy] || (objc_msgSend(stringCopy, "stringByReplacingOccurrencesOfString:withString:options:range:", prefixCopy, &stru_4BD3F0, 8, 0, objc_msgSend(stringCopy, "length")), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = v6;
+    v7 = stringCopy;
   }
 
   return v7;
 }
 
-- (BOOL)shouldRecordEventForAssetType:(id)a3
+- (BOOL)shouldRecordEventForAssetType:(id)type
 {
-  v4 = a3;
-  v5 = [(MADAnalyticsManager *)self assetTypeEventTracker];
-  objc_sync_enter(v5);
-  v6 = [(MADAnalyticsManager *)self assetTypeEventTracker];
-  v7 = [v6 objectForKey:v4];
+  typeCopy = type;
+  assetTypeEventTracker = [(MADAnalyticsManager *)self assetTypeEventTracker];
+  objc_sync_enter(assetTypeEventTracker);
+  assetTypeEventTracker2 = [(MADAnalyticsManager *)self assetTypeEventTracker];
+  v7 = [assetTypeEventTracker2 objectForKey:typeCopy];
 
   if (v7)
   {
@@ -1343,30 +1343,30 @@ LABEL_25:
     v8 = 1;
   }
 
-  v9 = [(MADAnalyticsManager *)self assetTypeEventTracker];
+  assetTypeEventTracker3 = [(MADAnalyticsManager *)self assetTypeEventTracker];
   v10 = [NSNumber numberWithInt:v8];
-  [v9 setSafeObject:v10 forKey:v4];
+  [assetTypeEventTracker3 setSafeObject:v10 forKey:typeCopy];
 
   v11 = 1;
 LABEL_7:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(assetTypeEventTracker);
   return v11;
 }
 
-- (id)recordEventWithName:(id)a3 assetType:(id)a4 payload:(id)a5
+- (id)recordEventWithName:(id)name assetType:(id)type payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && ![(MADAnalyticsManager *)self shouldRecordEventForAssetType:v9])
+  nameCopy = name;
+  typeCopy = type;
+  payloadCopy = payload;
+  if (typeCopy && ![(MADAnalyticsManager *)self shouldRecordEventForAssetType:typeCopy])
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [MADAnalyticsEvent eventWithName:v8 payload:v10];
+    v11 = [MADAnalyticsEvent eventWithName:nameCopy payload:payloadCopy];
     if (v11)
     {
       [(MADAnalyticsManager *)self setEvent:v11];
@@ -1376,7 +1376,7 @@ LABEL_7:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138543362;
-          v16 = v8;
+          v16 = nameCopy;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[ANALYTICS] {recordEventWithName} Automatically submitting event due to reportingLevel being immediate. eventName: %{public}@", &v15, 0xCu);
         }
 
@@ -1390,9 +1390,9 @@ LABEL_7:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v15 = 138543618;
-        v16 = v10;
+        v16 = payloadCopy;
         v17 = 2114;
-        v18 = v8;
+        v18 = nameCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "[ANALYTICS] {recordEventWithName} Could not extract Event from payload:%{public}@ and eventName:%{public}@", &v15, 0x16u);
       }
     }
@@ -1401,18 +1401,18 @@ LABEL_7:
   return v11;
 }
 
-- (void)recordDownloadSuccessForAssetType:(id)a3 notificationSuffix:(id)a4 fileType:(id)a5
+- (void)recordDownloadSuccessForAssetType:(id)type notificationSuffix:(id)suffix fileType:(id)fileType
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MADAnalyticsManager *)self nilToNoneString:a3];
+  fileTypeCopy = fileType;
+  suffixCopy = suffix;
+  v10 = [(MADAnalyticsManager *)self nilToNoneString:type];
   v16 = [(MADAnalyticsManager *)self removePrefix:@"com.apple.MobileAsset." fromString:v10];
 
-  v11 = [(MADAnalyticsManager *)self nilToNoneString:v9];
+  v11 = [(MADAnalyticsManager *)self nilToNoneString:suffixCopy];
 
   v12 = [(MADAnalyticsManager *)self removePrefix:@"." fromString:v11];
 
-  v13 = [(MADAnalyticsManager *)self nilToNoneString:v8];
+  v13 = [(MADAnalyticsManager *)self nilToNoneString:fileTypeCopy];
 
   v14 = objc_alloc_init(NSMutableDictionary);
   [v14 setSafeObject:v16 forKey:@"AssetType"];
@@ -1587,63 +1587,63 @@ LABEL_16:
   }
 }
 
-- (void)recordDownloadAttemptForAssetType:(id)a3 clientName:(id)a4 baseUrl:(id)a5 relativePath:(id)a6 purpose:(id)a7 result:(id)a8 analyticsFileType:(id)a9 isAutoDownload:(BOOL)a10 isPallas:(BOOL)a11 pallasAssetAudience:(id)a12 isUserPriority:(BOOL)a13 bytesWritten:(id)a14 bytesTransferredEst:(id)a15 additionalData:(id)a16
+- (void)recordDownloadAttemptForAssetType:(id)type clientName:(id)name baseUrl:(id)url relativePath:(id)path purpose:(id)purpose result:(id)result analyticsFileType:(id)fileType isAutoDownload:(BOOL)self0 isPallas:(BOOL)self1 pallasAssetAudience:(id)self2 isUserPriority:(BOOL)self3 bytesWritten:(id)self4 bytesTransferredEst:(id)self5 additionalData:(id)self6
 {
-  LOBYTE(v17) = a13;
-  LOWORD(v16) = __PAIR16__(a11, a10);
-  [(MADAnalyticsManager *)self recordDownloadAttemptForAssetType:a3 clientName:a4 baseUrl:a5 relativePath:a6 purpose:a7 result:a8 analyticsFileType:a9 isAutoDownload:v16 isPallas:a12 pallasAssetAudience:v17 isUserPriority:a14 bytesWritten:a15 bytesTransferredEst:@"unknown" brainVersion:0 withTaskMetrics:0 withOptions:a16 additionalData:?];
+  LOBYTE(v17) = priority;
+  LOWORD(v16) = __PAIR16__(pallas, download);
+  [(MADAnalyticsManager *)self recordDownloadAttemptForAssetType:type clientName:name baseUrl:url relativePath:path purpose:purpose result:result analyticsFileType:fileType isAutoDownload:v16 isPallas:audience pallasAssetAudience:v17 isUserPriority:written bytesWritten:est bytesTransferredEst:@"unknown" brainVersion:0 withTaskMetrics:0 withOptions:data additionalData:?];
 }
 
-- (void)recordDownloadAttemptForAssetType:(id)a3 clientName:(id)a4 baseUrl:(id)a5 relativePath:(id)a6 purpose:(id)a7 result:(id)a8 analyticsFileType:(id)a9 isAutoDownload:(BOOL)a10 isPallas:(BOOL)a11 pallasAssetAudience:(id)a12 isUserPriority:(BOOL)a13 bytesWritten:(id)a14 bytesTransferredEst:(id)a15 brainVersion:(id)a16 withTaskMetrics:(id)a17 withOptions:(id)a18 additionalData:(id)a19
+- (void)recordDownloadAttemptForAssetType:(id)type clientName:(id)name baseUrl:(id)url relativePath:(id)path purpose:(id)purpose result:(id)result analyticsFileType:(id)fileType isAutoDownload:(BOOL)self0 isPallas:(BOOL)self1 pallasAssetAudience:(id)self2 isUserPriority:(BOOL)self3 bytesWritten:(id)self4 bytesTransferredEst:(id)self5 brainVersion:(id)self6 withTaskMetrics:(id)self7 withOptions:(id)self8 additionalData:(id)self9
 {
-  v94 = a12;
-  v106 = a14;
-  v104 = a15;
-  v93 = a17;
-  v103 = a18;
-  v108 = a19;
-  v22 = a16;
-  v23 = a9;
-  v24 = a8;
-  v25 = a7;
-  v26 = a6;
-  v27 = a5;
-  v28 = a4;
-  v29 = [(MADAnalyticsManager *)self nilToNoneString:a3];
+  audienceCopy = audience;
+  writtenCopy = written;
+  estCopy = est;
+  metricsCopy = metrics;
+  optionsCopy = options;
+  dataCopy = data;
+  versionCopy = version;
+  fileTypeCopy = fileType;
+  resultCopy = result;
+  purposeCopy = purpose;
+  pathCopy = path;
+  urlCopy = url;
+  nameCopy = name;
+  v29 = [(MADAnalyticsManager *)self nilToNoneString:type];
   v110 = [(MADAnalyticsManager *)self removePrefix:@"com.apple.MobileAsset." fromString:v29];
 
-  v30 = [(MADAnalyticsManager *)self nilToNoneString:v24];
+  v30 = [(MADAnalyticsManager *)self nilToNoneString:resultCopy];
 
   v102 = [(MADAnalyticsManager *)self removePrefix:@"MADownload" fromString:v30];
 
-  v31 = [(MADAnalyticsManager *)self nilToNoneString:v25];
+  v31 = [(MADAnalyticsManager *)self nilToNoneString:purposeCopy];
 
-  v32 = [(MADAnalyticsManager *)self nilToNoneString:v28];
+  v32 = [(MADAnalyticsManager *)self nilToNoneString:nameCopy];
 
-  v98 = [(MADAnalyticsManager *)self nilToNoneString:v23];
+  v98 = [(MADAnalyticsManager *)self nilToNoneString:fileTypeCopy];
 
-  v33 = v106;
-  v100 = [(MADAnalyticsManager *)self nilToNoneString:v27];
+  v33 = writtenCopy;
+  v100 = [(MADAnalyticsManager *)self nilToNoneString:urlCopy];
 
-  v96 = [(MADAnalyticsManager *)self nilToNoneString:v26];
+  v96 = [(MADAnalyticsManager *)self nilToNoneString:pathCopy];
 
-  v34 = [(MADAnalyticsManager *)self nilToNoneString:v22];
+  v34 = [(MADAnalyticsManager *)self nilToNoneString:versionCopy];
 
-  if (!v106)
+  if (!writtenCopy)
   {
     v33 = [[NSNumber alloc] initWithLongLong:0];
   }
 
-  v35 = v104;
-  if (!v104)
+  v35 = estCopy;
+  if (!estCopy)
   {
     v35 = [[NSNumber alloc] initWithLongLong:0];
   }
 
-  v95 = [(MADAnalyticsManager *)self yesNoString:a11];
-  v36 = [(MADAnalyticsManager *)self yesNoString:a10];
-  v92 = self;
-  v37 = [(MADAnalyticsManager *)self yesNoString:a13];
+  v95 = [(MADAnalyticsManager *)self yesNoString:pallas];
+  v36 = [(MADAnalyticsManager *)self yesNoString:download];
+  selfCopy = self;
+  v37 = [(MADAnalyticsManager *)self yesNoString:priority];
   v38 = objc_alloc_init(NSMutableDictionary);
   [v38 setSafeObject:v110 forKey:@"AssetType"];
   v91 = v32;
@@ -1656,14 +1656,14 @@ LABEL_16:
   v88 = v36;
   [v38 setSafeObject:v36 forKey:@"IsAutoDownload"];
   p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt;
-  v43 = v93;
-  v42 = v94;
-  if (v94)
+  v43 = metricsCopy;
+  v42 = audienceCopy;
+  if (audienceCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v38 setSafeObject:v94 forKey:@"PallasAssetAudience"];
+      [v38 setSafeObject:audienceCopy forKey:@"PallasAssetAudience"];
     }
   }
 
@@ -1682,7 +1682,7 @@ LABEL_16:
   [v38 setSafeObject:@"NO" forKey:@"BaseAssetVersion"];
   [v38 setSafeObject:@"NO" forKey:@"WasAssetPatchingAttempted"];
   v111 = v38;
-  if (v93 && ([v93 transactionMetrics], (v44 = objc_claimAutoreleasedReturnValue()) != 0) && (v45 = v44, objc_msgSend(v93, "transactionMetrics"), v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "count"), v46, v40 = v38, v45, v47) && (objc_msgSend(v93, "transactionMetrics"), v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "lastObject"), v49 = objc_claimAutoreleasedReturnValue(), v48, v40 = v38, v49))
+  if (metricsCopy && ([metricsCopy transactionMetrics], (v44 = objc_claimAutoreleasedReturnValue()) != 0) && (v45 = v44, objc_msgSend(metricsCopy, "transactionMetrics"), v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "count"), v46, v40 = v38, v45, v47) && (objc_msgSend(metricsCopy, "transactionMetrics"), v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "lastObject"), v49 = objc_claimAutoreleasedReturnValue(), v48, v40 = v38, v49))
   {
     v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v49 isCellular]);
     [v38 setSafeObject:v50 forKey:@"CellularAccessRequest"];
@@ -1713,13 +1713,13 @@ LABEL_16:
     [v40 setSafeObject:v49 forKey:@"MultipathRequest"];
   }
 
-  if (v103)
+  if (optionsCopy)
   {
-    v57 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v103 allowsCellularAccess]);
+    v57 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [optionsCopy allowsCellularAccess]);
     v58 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v57 integerValue]);
     [v38 setSafeObject:v58 forKey:@"CellularAccessResponse"];
 
-    v59 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v103 allowsExpensiveAccess]);
+    v59 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [optionsCopy allowsExpensiveAccess]);
     v60 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v59 integerValue]);
     [v38 setSafeObject:v60 forKey:@"ExpensiveNetworkAccessResponse"];
 
@@ -1727,7 +1727,7 @@ LABEL_16:
     {
       if (objc_opt_respondsToSelector())
       {
-        v61 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v103 allowsConstrainedAccess]);
+        v61 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [optionsCopy allowsConstrainedAccess]);
         v62 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v61 integerValue]);
         [v38 setSafeObject:v62 forKey:@"ConstrainedNetworkAccessResponse"];
       }
@@ -1735,7 +1735,7 @@ LABEL_16:
   }
 
   v63 = v110;
-  if (v108)
+  if (dataCopy)
   {
     v105 = v35;
     v107 = v33;
@@ -1743,7 +1743,7 @@ LABEL_16:
     v116 = 0u;
     v113 = 0u;
     v114 = 0u;
-    v64 = v108;
+    v64 = dataCopy;
     v65 = [v64 countByEnumeratingWithState:&v113 objects:v119 count:16];
     if (!v65)
     {
@@ -1836,8 +1836,8 @@ LABEL_38:
       {
 LABEL_40:
 
-        v43 = v93;
-        v42 = v94;
+        v43 = metricsCopy;
+        v42 = audienceCopy;
         v35 = v105;
         v33 = v107;
         v63 = v110;
@@ -1846,20 +1846,20 @@ LABEL_40:
     }
   }
 
-  v79 = v92;
-  if ([(MADAnalyticsManager *)v92 eventRecordingEnabled])
+  v79 = selfCopy;
+  if ([(MADAnalyticsManager *)selfCopy eventRecordingEnabled])
   {
     v80 = v111;
-    if ([(MADAnalyticsManager *)v92 overrideClientNameAsTestTool])
+    if ([(MADAnalyticsManager *)selfCopy overrideClientNameAsTestTool])
     {
       [v111 setSafeObject:@"TestTool" forKey:@"ClientName"];
-      v81 = v103;
+      v81 = optionsCopy;
     }
 
     else
     {
-      v81 = v103;
-      if ([(MADAnalyticsManager *)v92 prependClientNameWithTestTool])
+      v81 = optionsCopy;
+      if ([(MADAnalyticsManager *)selfCopy prependClientNameWithTestTool])
       {
         v83 = [v111 safeObjectForKey:@"ClientName" ofClass:objc_opt_class()];
         if (v83)
@@ -1875,7 +1875,7 @@ LABEL_40:
           [v111 setSafeObject:@"TestTool" forKey:@"ClientName"];
         }
 
-        v79 = v92;
+        v79 = selfCopy;
       }
     }
 
@@ -1889,7 +1889,7 @@ LABEL_40:
         _os_log_impl(&dword_0, v85, OS_LOG_TYPE_DEBUG, "Recording event for: %{public}@", buf, 0xCu);
       }
 
-      v79 = v92;
+      v79 = selfCopy;
     }
 
     v86 = [(MADAnalyticsManager *)v79 recordEventWithName:@"com.apple.mobileassetd.Download.Attempt" assetType:v63 payload:v80];
@@ -1898,7 +1898,7 @@ LABEL_40:
   else
   {
     v82 = _MADLog(@"Analytics");
-    v81 = v103;
+    v81 = optionsCopy;
     v80 = v111;
     if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
     {
@@ -1909,58 +1909,58 @@ LABEL_40:
   }
 }
 
-- (id)recordCacheDeleteAttempt:(int64_t)a3 timeTakenSecs:(double)a4 cacheDeleteUrgency:(int64_t)a5 results:(id)a6 targetPurgeVolume:(id)a7 triggeringOperation:(int64_t)a8
+- (id)recordCacheDeleteAttempt:(int64_t)attempt timeTakenSecs:(double)secs cacheDeleteUrgency:(int64_t)urgency results:(id)results targetPurgeVolume:(id)volume triggeringOperation:(int64_t)operation
 {
-  v12 = a7;
-  v13 = a6;
+  volumeCopy = volume;
+  resultsCopy = results;
   v14 = objc_alloc_init(NSMutableDictionary);
-  v15 = [v13 reclaimUnlockedUnreferencedAutoAssetCount];
-  v16 = [v13 reclaimUnlockedReferencedAutoAssetCount];
-  v17 = [v13 reclaimUnlockedUnreferencedAutoAssetSpace];
-  v18 = [v13 reclaimUnlockedReferencedAutoAssetSpace];
-  v19 = [NSNumber numberWithLongLong:a3];
+  reclaimUnlockedUnreferencedAutoAssetCount = [resultsCopy reclaimUnlockedUnreferencedAutoAssetCount];
+  reclaimUnlockedReferencedAutoAssetCount = [resultsCopy reclaimUnlockedReferencedAutoAssetCount];
+  reclaimUnlockedUnreferencedAutoAssetSpace = [resultsCopy reclaimUnlockedUnreferencedAutoAssetSpace];
+  reclaimUnlockedReferencedAutoAssetSpace = [resultsCopy reclaimUnlockedReferencedAutoAssetSpace];
+  v19 = [NSNumber numberWithLongLong:attempt];
   [v14 setSafeObject:v19 forKey:@"TargetingReclaimAmount"];
 
-  v20 = [NSNumber numberWithDouble:a4];
+  v20 = [NSNumber numberWithDouble:secs];
   [v14 setSafeObject:v20 forKey:@"TotalCacheDeleteTime"];
 
-  v21 = [NSNumber numberWithLong:a5];
+  v21 = [NSNumber numberWithLong:urgency];
   [v14 setSafeObject:v21 forKey:@"CacheDeleteUrgency"];
 
-  v22 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 reclaimV2AssetSpace]);
+  v22 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [resultsCopy reclaimV2AssetSpace]);
   [v14 setSafeObject:v22 forKey:@"ReclaimV2AssetSpace"];
 
-  v23 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 reclaimV2AssetCount]);
+  v23 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [resultsCopy reclaimV2AssetCount]);
   [v14 setSafeObject:v23 forKey:@"ReclaimV2AssetCount"];
 
-  v24 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 reclaimLockedNeverRemoveAutoAssetCount]);
+  v24 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [resultsCopy reclaimLockedNeverRemoveAutoAssetCount]);
   [v14 setSafeObject:v24 forKey:@"ReclaimLockedNeverRemoveAutoAssetCount"];
 
-  v25 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 reclaimLockedNeverRemoveAutoAssetSpace]);
+  v25 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [resultsCopy reclaimLockedNeverRemoveAutoAssetSpace]);
   [v14 setSafeObject:v25 forKey:@"ReclaimLockedNeverRemoveAutoAssetSpace"];
 
-  v26 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 reclaimLockedOverridableAutoAssetCount]);
+  v26 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [resultsCopy reclaimLockedOverridableAutoAssetCount]);
   [v14 setSafeObject:v26 forKey:@"ReclaimLockedOverridableAutoAssetCount"];
 
-  v27 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 reclaimLockedOverridableAutoAssetSpace]);
+  v27 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [resultsCopy reclaimLockedOverridableAutoAssetSpace]);
   [v14 setSafeObject:v27 forKey:@"ReclaimLockedOverridableAutoAssetSpace"];
 
-  v28 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 reclaimStagedAutoAssetCount]);
+  v28 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [resultsCopy reclaimStagedAutoAssetCount]);
   [v14 setSafeObject:v28 forKey:@"ReclaimStagedAutoAssetCount"];
 
-  v29 = [v13 reclaimStagedAutoAssetSpace];
-  v30 = [NSNumber numberWithLong:v29];
+  reclaimStagedAutoAssetSpace = [resultsCopy reclaimStagedAutoAssetSpace];
+  v30 = [NSNumber numberWithLong:reclaimStagedAutoAssetSpace];
   [v14 setSafeObject:v30 forKey:@"ReclaimStagedAutoAssetSpace"];
 
-  v31 = [NSNumber numberWithLong:&v15[v16]];
+  v31 = [NSNumber numberWithLong:&reclaimUnlockedUnreferencedAutoAssetCount[reclaimUnlockedReferencedAutoAssetCount]];
   [v14 setSafeObject:v31 forKey:@"ReclaimUnlockedAutoAssetCount"];
 
-  v32 = [NSNumber numberWithLong:&v17[v18]];
+  v32 = [NSNumber numberWithLong:&reclaimUnlockedUnreferencedAutoAssetSpace[reclaimUnlockedReferencedAutoAssetSpace]];
   [v14 setSafeObject:v32 forKey:@"ReclaimUnlockedAutoAssetSpace"];
 
-  if (v12)
+  if (volumeCopy)
   {
-    v33 = v12;
+    v33 = volumeCopy;
   }
 
   else
@@ -1968,7 +1968,7 @@ LABEL_40:
     v33 = @"/private/var";
   }
 
-  [v14 setSafeObject:v33 forKey:{@"TargetingVolume", a8}];
+  [v14 setSafeObject:v33 forKey:{@"TargetingVolume", operation}];
 
   v34 = convertGarbageCollectionOperationToString(v38);
   [v14 setSafeObject:v34 forKey:@"TriggeringOperation"];
@@ -1978,39 +1978,39 @@ LABEL_40:
   return v35;
 }
 
-- (id)recordMobileAssetSecureAttempt:(id)a3 assetType:(id)a4 assetVersion:(id)a5 clientName:(id)a6 operation:(int64_t)a7 secureReason:(id)a8 fromLocation:(id)a9 sucessfullyPersonalized:(BOOL)a10 personalizeFailureReason:(id)a11 sucessfullyMounted:(BOOL)a12 mountingFailureReason:(id)a13 successfullyGrafted:(BOOL)a14 graftingFailureReason:(id)a15 successfullyMappedToExclave:(BOOL)a16 mapToExclaveFailureReason:(id)a17
+- (id)recordMobileAssetSecureAttempt:(id)attempt assetType:(id)type assetVersion:(id)version clientName:(id)name operation:(int64_t)operation secureReason:(id)reason fromLocation:(id)location sucessfullyPersonalized:(BOOL)self0 personalizeFailureReason:(id)self1 sucessfullyMounted:(BOOL)self2 mountingFailureReason:(id)self3 successfullyGrafted:(BOOL)self4 graftingFailureReason:(id)self5 successfullyMappedToExclave:(BOOL)self6 mapToExclaveFailureReason:(id)self7
 {
-  HIDWORD(v47) = a16;
-  LODWORD(v47) = a10;
-  v21 = a4;
-  v52 = a11;
-  v22 = a13;
-  v23 = a15;
-  v51 = a17;
-  v24 = a9;
-  v25 = a8;
-  v26 = a6;
-  v27 = a5;
-  v28 = a3;
+  HIDWORD(v47) = exclave;
+  LODWORD(v47) = personalized;
+  typeCopy = type;
+  failureReasonCopy = failureReason;
+  mountingFailureReasonCopy = mountingFailureReason;
+  graftingFailureReasonCopy = graftingFailureReason;
+  exclaveFailureReasonCopy = exclaveFailureReason;
+  locationCopy = location;
+  reasonCopy = reason;
+  nameCopy = name;
+  versionCopy = version;
+  attemptCopy = attempt;
   v29 = objc_alloc_init(NSMutableDictionary);
-  [v29 setSafeObject:v28 forKey:@"AssetSpecifier"];
+  [v29 setSafeObject:attemptCopy forKey:@"AssetSpecifier"];
 
-  [v29 setSafeObject:v21 forKey:@"AssetType"];
-  [v29 setSafeObject:v27 forKey:@"AssetVersion"];
+  [v29 setSafeObject:typeCopy forKey:@"AssetType"];
+  [v29 setSafeObject:versionCopy forKey:@"AssetVersion"];
 
-  [v29 setSafeObject:v26 forKey:@"ClientName"];
-  v30 = [NSNumber numberWithInteger:a7];
-  v31 = [v30 stringValue];
-  [v29 setSafeObject:v31 forKey:@"Operation"];
+  [v29 setSafeObject:nameCopy forKey:@"ClientName"];
+  v30 = [NSNumber numberWithInteger:operation];
+  stringValue = [v30 stringValue];
+  [v29 setSafeObject:stringValue forKey:@"Operation"];
 
-  [v29 setSafeObject:v25 forKey:@"SecureReason"];
-  [v29 setSafeObject:v24 forKey:@"FromLocation"];
+  [v29 setSafeObject:reasonCopy forKey:@"SecureReason"];
+  [v29 setSafeObject:locationCopy forKey:@"FromLocation"];
 
-  if ((a7 & 0xFFFFFFFFFFFFFFFDLL) == 4)
+  if ((operation & 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
-    if (v22)
+    if (mountingFailureReasonCopy)
     {
-      v32 = v22;
+      v32 = mountingFailureReasonCopy;
     }
 
     else
@@ -2019,15 +2019,15 @@ LABEL_40:
     }
 
     [v29 setSafeObject:v32 forKey:{@"MountingFailureReason", v47}];
-    v33 = [NSNumber numberWithBool:a12];
+    v33 = [NSNumber numberWithBool:mounted];
     [v29 setSafeObject:v33 forKey:@"MountingResult"];
   }
 
-  if (a7 == 5 || a7 == 3)
+  if (operation == 5 || operation == 3)
   {
-    if (v23)
+    if (graftingFailureReasonCopy)
     {
-      v34 = v23;
+      v34 = graftingFailureReasonCopy;
     }
 
     else
@@ -2036,22 +2036,22 @@ LABEL_40:
     }
 
     [v29 setSafeObject:v34 forKey:{@"GraftingFailureReason", v47}];
-    v35 = [NSNumber numberWithBool:a14];
+    v35 = [NSNumber numberWithBool:grafted];
     [v29 setSafeObject:v35 forKey:@"GraftingResult"];
 
-    v37 = v51;
-    v36 = v52;
+    v37 = exclaveFailureReasonCopy;
+    v36 = failureReasonCopy;
   }
 
   else
   {
-    v37 = v51;
-    v36 = v52;
-    if ((a7 - 7) <= 1)
+    v37 = exclaveFailureReasonCopy;
+    v36 = failureReasonCopy;
+    if ((operation - 7) <= 1)
     {
-      if (v52)
+      if (failureReasonCopy)
       {
-        v42 = v52;
+        v42 = failureReasonCopy;
       }
 
       else
@@ -2063,7 +2063,7 @@ LABEL_40:
       v43 = [NSNumber numberWithBool:v48];
       [v29 setSafeObject:v43 forKey:@"PersonalizeResult"];
 
-      v39 = self;
+      selfCopy2 = self;
       goto LABEL_22;
     }
   }
@@ -2072,8 +2072,8 @@ LABEL_40:
   v38 = [NSNumber numberWithBool:0];
   [v29 setSafeObject:v38 forKey:@"PersonalizeResult"];
 
-  v39 = self;
-  if ((a7 - 1) <= 1)
+  selfCopy2 = self;
+  if ((operation - 1) <= 1)
   {
     if (v37)
     {
@@ -2098,153 +2098,153 @@ LABEL_22:
 
   [v29 setSafeObject:@"N/A" forKey:@"MapExclaveFailureReason"];
 LABEL_23:
-  v45 = [(MADAnalyticsManager *)v39 recordEventWithName:@"com.apple.mobileassetd.Secure.Attempt" assetType:v21 payload:v29];
+  v45 = [(MADAnalyticsManager *)selfCopy2 recordEventWithName:@"com.apple.mobileassetd.Secure.Attempt" assetType:typeCopy payload:v29];
 
   return v45;
 }
 
-- (id)recordPushNotification:(id)a3 assetType:(id)a4 cloudChannels:(id)a5 forPopulationType:(int64_t)a6 userInitiated:(BOOL)a7 interestAcrossTerm:(BOOL)a8 lockAcrossReboot:(BOOL)a9 lockAcrossTermination:(BOOL)a10
+- (id)recordPushNotification:(id)notification assetType:(id)type cloudChannels:(id)channels forPopulationType:(int64_t)populationType userInitiated:(BOOL)initiated interestAcrossTerm:(BOOL)term lockAcrossReboot:(BOOL)reboot lockAcrossTermination:(BOOL)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v16 = a4;
-  v17 = a3;
-  v18 = [a5 componentsJoinedByString:{@", "}];
-  LOWORD(v21) = __PAIR16__(a10, a9);
-  v19 = [(MADAnalyticsManager *)self recordPushNotification:v17 assetType:v16 cloudChannel:v18 forPopulationType:a6 userInitiated:v11 interestAcrossTerm:v10 lockAcrossReboot:v21 lockAcrossTermination:?];
+  termCopy = term;
+  initiatedCopy = initiated;
+  typeCopy = type;
+  notificationCopy = notification;
+  v18 = [channels componentsJoinedByString:{@", "}];
+  LOWORD(v21) = __PAIR16__(termination, reboot);
+  v19 = [(MADAnalyticsManager *)self recordPushNotification:notificationCopy assetType:typeCopy cloudChannel:v18 forPopulationType:populationType userInitiated:initiatedCopy interestAcrossTerm:termCopy lockAcrossReboot:v21 lockAcrossTermination:?];
 
   return v19;
 }
 
-- (id)recordPushNotification:(id)a3 assetType:(id)a4 cloudChannel:(id)a5 forPopulationType:(int64_t)a6 userInitiated:(BOOL)a7 interestAcrossTerm:(BOOL)a8 lockAcrossReboot:(BOOL)a9 lockAcrossTermination:(BOOL)a10
+- (id)recordPushNotification:(id)notification assetType:(id)type cloudChannel:(id)channel forPopulationType:(int64_t)populationType userInitiated:(BOOL)initiated interestAcrossTerm:(BOOL)term lockAcrossReboot:(BOOL)reboot lockAcrossTermination:(BOOL)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  termCopy = term;
+  initiatedCopy = initiated;
+  channelCopy = channel;
+  typeCopy = type;
+  notificationCopy = notification;
   v18 = objc_alloc_init(NSMutableDictionary);
-  [v18 setSafeObject:v17 forKey:@"AssetSpecifier"];
+  [v18 setSafeObject:notificationCopy forKey:@"AssetSpecifier"];
 
-  [v18 setSafeObject:v16 forKey:@"AssetType"];
-  [v18 setSafeObject:v15 forKey:@"CloudChannel"];
+  [v18 setSafeObject:typeCopy forKey:@"AssetType"];
+  [v18 setSafeObject:channelCopy forKey:@"CloudChannel"];
 
-  v19 = [NSNumber numberWithInteger:a6];
+  v19 = [NSNumber numberWithInteger:populationType];
   [v18 setSafeObject:v19 forKey:@"PopulationType"];
 
-  v20 = [NSNumber numberWithBool:v11];
+  v20 = [NSNumber numberWithBool:initiatedCopy];
   [v18 setSafeObject:v20 forKey:@"UserInitiated"];
 
-  v21 = [NSNumber numberWithBool:v10];
+  v21 = [NSNumber numberWithBool:termCopy];
   [v18 setSafeObject:v21 forKey:@"LockAcrossTermination"];
 
-  v22 = [NSNumber numberWithBool:a9];
+  v22 = [NSNumber numberWithBool:reboot];
   [v18 setSafeObject:v22 forKey:@"LockAcrossReboot"];
 
-  v23 = [NSNumber numberWithBool:a10];
+  v23 = [NSNumber numberWithBool:termination];
   [v18 setSafeObject:v23 forKey:@"LockAcrossTermination"];
 
-  v24 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.notifications.push" assetType:v16 payload:v18];
+  v24 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.notifications.push" assetType:typeCopy payload:v18];
 
   return v24;
 }
 
-- (id)recordMobileAssetPromotionAttempt:(id)a3 assetType:(id)a4 assetVersion:(id)a5 osPromotion:(BOOL)a6 successfullyPromoted:(BOOL)a7 withReason:(int64_t)a8
+- (id)recordMobileAssetPromotionAttempt:(id)attempt assetType:(id)type assetVersion:(id)version osPromotion:(BOOL)promotion successfullyPromoted:(BOOL)promoted withReason:(int64_t)reason
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  promotedCopy = promoted;
+  promotionCopy = promotion;
+  versionCopy = version;
+  typeCopy = type;
+  attemptCopy = attempt;
   v17 = objc_alloc_init(NSMutableDictionary);
-  [v17 setSafeObject:v16 forKey:@"AssetSpecifier"];
+  [v17 setSafeObject:attemptCopy forKey:@"AssetSpecifier"];
 
-  [v17 setSafeObject:v15 forKey:@"AssetType"];
-  [v17 setSafeObject:v14 forKey:@"AssetVersion"];
+  [v17 setSafeObject:typeCopy forKey:@"AssetType"];
+  [v17 setSafeObject:versionCopy forKey:@"AssetVersion"];
 
-  v18 = [NSNumber numberWithBool:v10];
+  v18 = [NSNumber numberWithBool:promotionCopy];
   [v17 setSafeObject:v18 forKey:@"OSPromotion"];
 
-  v19 = [NSNumber numberWithBool:v9];
+  v19 = [NSNumber numberWithBool:promotedCopy];
   [v17 setSafeObject:v19 forKey:@"StagingPromotionResult"];
 
-  v20 = [NSNumber numberWithInteger:a8];
+  v20 = [NSNumber numberWithInteger:reason];
   [v17 setSafeObject:v20 forKey:@"FailureReason"];
 
-  v21 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.Staging.Promotion" assetType:v15 payload:v17];
+  v21 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.Staging.Promotion" assetType:typeCopy payload:v17];
 
   return v21;
 }
 
-- (id)recordMobileAssetPurgeAttempt:(id)a3 withUrgency:(int)a4 withBytesPurged:(int64_t)a5 withResult:(int64_t)a6 withDir:(id)a7 withRetentionPolicy:(int64_t)a8 withReason:(id)a9
+- (id)recordMobileAssetPurgeAttempt:(id)attempt withUrgency:(int)urgency withBytesPurged:(int64_t)purged withResult:(int64_t)result withDir:(id)dir withRetentionPolicy:(int64_t)policy withReason:(id)reason
 {
-  v13 = *&a4;
-  v16 = a9;
-  v17 = a7;
-  v18 = a3;
+  v13 = *&urgency;
+  reasonCopy = reason;
+  dirCopy = dir;
+  attemptCopy = attempt;
   v19 = objc_opt_new();
-  v20 = [v18 assetType];
-  [v19 setSafeObject:v20 forKey:@"AssetType"];
+  assetType = [attemptCopy assetType];
+  [v19 setSafeObject:assetType forKey:@"AssetType"];
 
-  v21 = [v18 assetSpecifier];
-  [v19 setSafeObject:v21 forKey:@"AssetSpecifier"];
+  assetSpecifier = [attemptCopy assetSpecifier];
+  [v19 setSafeObject:assetSpecifier forKey:@"AssetSpecifier"];
 
-  v22 = [v18 assetVersion];
-  [v19 setSafeObject:v22 forKey:@"AssetVersion"];
+  assetVersion = [attemptCopy assetVersion];
+  [v19 setSafeObject:assetVersion forKey:@"AssetVersion"];
 
-  [v19 setSafeObject:v17 forKey:@"Directory"];
-  [v19 setSafeObject:v16 forKey:@"PurgeReason"];
+  [v19 setSafeObject:dirCopy forKey:@"Directory"];
+  [v19 setSafeObject:reasonCopy forKey:@"PurgeReason"];
 
   v23 = [NSNumber numberWithInt:v13];
   [v19 setSafeObject:v23 forKey:@"CacheDeleteUrgency"];
 
-  v24 = [NSNumber numberWithLongLong:a5];
+  v24 = [NSNumber numberWithLongLong:purged];
   [v19 setSafeObject:v24 forKey:@"TotalBytesPurged"];
 
-  v25 = [NSNumber numberWithInteger:a8];
+  v25 = [NSNumber numberWithInteger:policy];
   [v19 setSafeObject:v25 forKey:@"RetentionPolicy"];
 
-  v26 = [NSNumber numberWithInteger:a6];
+  v26 = [NSNumber numberWithInteger:result];
   [v19 setSafeObject:v26 forKey:@"Result"];
 
-  v27 = [v18 assetType];
+  assetType2 = [attemptCopy assetType];
 
-  v28 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.Purge.Attempt" assetType:v27 payload:v19];
+  v28 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.Purge.Attempt" assetType:assetType2 payload:v19];
 
   return v28;
 }
 
-- (id)recordMobileAssetScheduler:(int64_t)a3 forSelector:(id)a4 withXpcID:(id)a5 forPushJob:(id)a6 forSetJob:(id)a7 inSchedulerState:(int64_t)a8 inXPCState:(id)a9 didJobFail:(id)a10
+- (id)recordMobileAssetScheduler:(int64_t)scheduler forSelector:(id)selector withXpcID:(id)d forPushJob:(id)job forSetJob:(id)setJob inSchedulerState:(int64_t)state inXPCState:(id)cState didJobFail:(id)self0
 {
-  v15 = a10;
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
+  failCopy = fail;
+  cStateCopy = cState;
+  setJobCopy = setJob;
+  jobCopy = job;
+  dCopy = d;
+  selectorCopy = selector;
   v21 = objc_alloc_init(NSMutableDictionary);
-  if (a3 != -1)
+  if (scheduler != -1)
   {
-    v22 = [NSNumber numberWithInteger:a3];
+    v22 = [NSNumber numberWithInteger:scheduler];
     [v21 setSafeObject:v22 forKey:@"activitySeconds"];
   }
 
-  v23 = [v20 summary];
-  [v21 setSafeObject:v23 forKey:@"assetSelector"];
+  summary = [selectorCopy summary];
+  [v21 setSafeObject:summary forKey:@"assetSelector"];
 
-  [v21 setSafeObject:v19 forKey:@"xpcID"];
-  [v21 setSafeObject:v16 forKey:@"xpcState"];
+  [v21 setSafeObject:dCopy forKey:@"xpcID"];
+  [v21 setSafeObject:cStateCopy forKey:@"xpcState"];
 
-  [v21 setSafeObject:v15 forKey:@"jobFailed"];
+  [v21 setSafeObject:failCopy forKey:@"jobFailed"];
   v24 = [NSNumber numberWithInteger:v29];
   [v21 setSafeObject:v24 forKey:@"schedulerState"];
 
-  [v21 setSafeObject:v18 forKey:@"isPush"];
-  [v21 setSafeObject:v17 forKey:@"iSSet"];
+  [v21 setSafeObject:jobCopy forKey:@"isPush"];
+  [v21 setSafeObject:setJobCopy forKey:@"iSSet"];
 
-  v25 = [v20 assetType];
+  assetType = [selectorCopy assetType];
 
-  v26 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.Scheduler" assetType:v25 payload:v21];
+  v26 = [(MADAnalyticsManager *)self recordEventWithName:@"com.apple.mobileassetd.Scheduler" assetType:assetType payload:v21];
 
   return v26;
 }

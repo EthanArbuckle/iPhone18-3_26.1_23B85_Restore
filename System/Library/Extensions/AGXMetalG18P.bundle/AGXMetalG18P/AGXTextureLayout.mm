@@ -1,19 +1,19 @@
 @interface AGXTextureLayout
 - ($71D83D51AB0F57F7CF166351F850C832)watermark;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)copyGranularity;
-- (AGXTextureLayout)initWithDevice:(id)a3 descriptor:(id)a4 isHeapOrBufferBacked:(BOOL)a5;
-- (void)copyFromLinearBytes:(const void *)a3 linearOffset:(unint64_t)a4 linearBytesPerRow:(unint64_t)a5 linearBytesPerImage:(unint64_t)a6 toTextureMemory:(void *)a7 textureSlice:(unint64_t)a8 textureLevel:(unint64_t)a9 textureRegion:(id *)a10;
-- (void)copyFromTextureMemory:(const void *)a3 textureSlice:(unint64_t)a4 textureLevel:(unint64_t)a5 textureRegion:(id *)a6 toLinearBytes:(void *)a7 linearOffset:(unint64_t)a8 linearBytesPerRow:(unint64_t)a9 linearBytesPerImage:(unint64_t)a10;
+- (AGXTextureLayout)initWithDevice:(id)device descriptor:(id)descriptor isHeapOrBufferBacked:(BOOL)backed;
+- (void)copyFromLinearBytes:(const void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)image toTextureMemory:(void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)self0;
+- (void)copyFromTextureMemory:(const void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)region toLinearBytes:(void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)self0;
 - (void)dealloc;
-- (void)initializeTextureMemory:(void *)a3;
+- (void)initializeTextureMemory:(void *)memory;
 @end
 
 @implementation AGXTextureLayout
 
-- (void)copyFromTextureMemory:(const void *)a3 textureSlice:(unint64_t)a4 textureLevel:(unint64_t)a5 textureRegion:(id *)a6 toLinearBytes:(void *)a7 linearOffset:(unint64_t)a8 linearBytesPerRow:(unint64_t)a9 linearBytesPerImage:(unint64_t)a10
+- (void)copyFromTextureMemory:(const void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)region toLinearBytes:(void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)self0
 {
-  v26 = a5;
-  v27 = a4;
+  levelCopy = level;
+  sliceCopy = slice;
   impl = self->_impl;
   v15 = impl[73];
   if (v15 && *(v15 + 1304))
@@ -29,7 +29,7 @@
       v17 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getPlaneSize<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)1>(impl, 0, 0);
     }
 
-    v18 = a3 + v17;
+    v18 = memory + v17;
     v19 = self->_impl;
     v20 = v19[73];
     if (v19[21] && (IOSurfaceGetSliceCount() & 0xFFFFFFFELL) != 0)
@@ -56,15 +56,15 @@
   }
 
   v23 = self->_impl;
-  v23[39] = a3;
+  v23[39] = memory;
   v23[9] = 0;
   (*(*v23 + 16))(v23, a2);
-  AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::readRegion(self->_impl, a6->var0.var0, a6->var0.var1, a6->var0.var2, a6->var1.var0, a6->var1.var1, a6->var1.var2, v27, v26, a7 + a8, a9, a10);
+  AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::readRegion(self->_impl, region->var0.var0, region->var0.var1, region->var0.var2, region->var1.var0, region->var1.var1, region->var1.var2, sliceCopy, levelCopy, bytes + offset, row, image);
 }
 
-- (void)copyFromLinearBytes:(const void *)a3 linearOffset:(unint64_t)a4 linearBytesPerRow:(unint64_t)a5 linearBytesPerImage:(unint64_t)a6 toTextureMemory:(void *)a7 textureSlice:(unint64_t)a8 textureLevel:(unint64_t)a9 textureRegion:(id *)a10
+- (void)copyFromLinearBytes:(const void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)image toTextureMemory:(void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)self0
 {
-  v27 = a8;
+  sliceCopy = slice;
   impl = self->_impl;
   v15 = impl[73];
   if (v15 && *(v15 + 1304))
@@ -80,7 +80,7 @@
       v17 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getPlaneSize<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)1>(impl, 0, 0);
     }
 
-    v18 = a7 + v17;
+    v18 = memory + v17;
     v19 = self->_impl;
     v20 = v19[73];
     if (v19[21] && (IOSurfaceGetSliceCount() & 0xFFFFFFFELL) != 0)
@@ -107,13 +107,13 @@
   }
 
   v23 = self->_impl;
-  v23[39] = a7;
+  v23[39] = memory;
   v23[9] = 0;
   (*(*v23 + 16))(v23, a2);
-  AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::writeRegion(self->_impl, a10->var0.var0, a10->var0.var1, a10->var0.var2, a10->var1.var0, a10->var1.var1, a10->var1.var2, v27, a9, a3 + a4, a5, a6);
+  AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::writeRegion(self->_impl, region->var0.var0, region->var0.var1, region->var0.var2, region->var1.var0, region->var1.var1, region->var1.var2, sliceCopy, level, bytes + offset, row, image);
 }
 
-- (void)initializeTextureMemory:(void *)a3
+- (void)initializeTextureMemory:(void *)memory
 {
   impl = self->_impl;
   v4 = impl[73];
@@ -130,7 +130,7 @@
       v8 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getPlaneSize<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)1>(impl, 0, 0);
     }
 
-    v9 = a3 + v8;
+    v9 = memory + v8;
     v10 = self->_impl;
     v11 = v10[73];
     if (v10[21] && (IOSurfaceGetSliceCount() & 0xFFFFFFFELL) != 0)
@@ -199,7 +199,7 @@
   if (!*(var1 + 584))
   {
     v8 = *(var1 + 216);
-    v9 = *(var1 + 220);
+    selfCopy = *(var1 + 220);
     goto LABEL_24;
   }
 
@@ -224,9 +224,9 @@
       self = BYTE1(v14[0]);
     }
 
-    v9 = self;
+    selfCopy = self;
     v8 = CompressedTileWidthOfPlane;
-    v13 = self;
+    selfCopy2 = self;
     LODWORD(v14[0]) = CompressedTileWidthOfPlane;
     retstr = v6;
     if (*v4 == 56)
@@ -244,15 +244,15 @@ LABEL_17:
           goto LABEL_24;
         }
 
-        v9 >>= 1;
-        v13 = v9;
+        selfCopy >>= 1;
+        selfCopy2 = selfCopy;
       }
 
       LODWORD(v14[0]) = v8 >> 1;
     }
 
-    v12 = &v13;
-    v8 = v9;
+    v12 = &selfCopy2;
+    v8 = selfCopy;
     goto LABEL_23;
   }
 
@@ -261,13 +261,13 @@ LABEL_17:
   LODWORD(v14[0]) = 16;
   if (v10 != 56)
   {
-    v13 = 16;
-    v9 = 16;
+    selfCopy2 = 16;
+    selfCopy = 16;
     goto LABEL_17;
   }
 
-  v9 = 8;
-  v13 = 8;
+  selfCopy = 8;
+  selfCopy2 = 8;
 LABEL_11:
   switch(v5)
   {
@@ -276,12 +276,12 @@ LABEL_16:
       v12 = v14;
 LABEL_23:
       *v12 = v8 >> 1;
-      v9 = v13;
+      selfCopy = selfCopy2;
       v8 = v14[0];
       break;
     case 4:
 LABEL_15:
-      v13 = v9 >> 1;
+      selfCopy2 = selfCopy >> 1;
       goto LABEL_16;
     case 8:
       v8 >>= 1;
@@ -291,17 +291,17 @@ LABEL_15:
 
 LABEL_24:
   retstr->var0 = v8;
-  retstr->var1 = v9;
+  retstr->var1 = selfCopy;
   retstr->var2 = 1;
   return self;
 }
 
-- (AGXTextureLayout)initWithDevice:(id)a3 descriptor:(id)a4 isHeapOrBufferBacked:(BOOL)a5
+- (AGXTextureLayout)initWithDevice:(id)device descriptor:(id)descriptor isHeapOrBufferBacked:(BOOL)backed
 {
   v44.receiver = self;
   v44.super_class = AGXTextureLayout;
   v8 = [IOGPUMetalTextureLayout initWithDevice:sel_initWithDevice_descriptor_ descriptor:?];
-  if (!v8 || ((v9 = [a4 descriptorPrivate], v10 = v9, v11 = *(v9 + 96), v11 == 2) ? (v14 = 0) : (v11 == 1 ? (LOBYTE(v11) = 9) : (LOBYTE(v11) = 0), (v12 = *(v9 + 152), v12 != 2) ? (v13 = v12 == 1) : (v13 = 2), v12 != 3 ? (v14 = v13) : (v14 = 3)), (v15 = v11 & 0xFB, !*(v9 + 128)) ? (v16 = 2) : (v16 = v15), (v17 = *(v9 + 8) - 1, v17 > 0x289) ? (v18 = &texFormatUnsupported) : (v18 = *(&off_29F342380 + v17)), (v19 = v16 | ((*(v18 + 60) & 0xC) != 0), v20 = v19 & 0xEB, v21 = *(v9 + 176), v22 = v19 | 0x10, v16 & 2 | v14) ? (v23 = v20) : (v23 = v22), v21 == 2 ? (v24 = v23) : (v24 = v20), (v25 = malloc_type_calloc(0x288uLL, 1uLL, 0x10E1040DA59F5FCuLL), (v8->_impl = v25) == 0) || ((v26 = *v10, v27 = *(v10 + 8), v28 = *(v10 + 104), v29 = *(v10 + 168) - 1, v29 > 9) ? (v30 = 0) : (v30 = dword_29D2F7A6C[v29]), (v31 = *(v10 + 208), (*(v10 + 72) - 1) < 4) ? (v32 = *(v10 + 72)) : (v32 = 0), (v33 = *(v10 + 84), v34 = *(v10 + 16), v35 = *(v10 + 24), v36 = *(v10 + 32), v37 = *(v10 + 40), v38 = *(v10 + 48), v39 = *(v10 + 56), v40 = *(v10 + 112) & 0xFLL, (v27 - 1) > 0x289) ? (v41 = &texFormatUnsupported) : (v41 = *(&off_29F342380 + (v27 - 1))), *AGX::TextureGen4<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::TextureGen4(v25, *(a3 + 106), 0, 2, v26, v41, v27, v28, 0.0, v31, (v14 << 8) | (v21 << 32) | v24, v30, v32, v33, v34, v35, v36, v37, v38, v39, 0, 0, 0, v40, 0, 0, 0, 0, 0, v37, !a5, 0, a5, v43, 0) = off_2A23FA3D8, (*(v8->_impl + 200) & 1) == 0)))
+  if (!v8 || ((v9 = [descriptor descriptorPrivate], v10 = v9, v11 = *(v9 + 96), v11 == 2) ? (v14 = 0) : (v11 == 1 ? (LOBYTE(v11) = 9) : (LOBYTE(v11) = 0), (v12 = *(v9 + 152), v12 != 2) ? (v13 = v12 == 1) : (v13 = 2), v12 != 3 ? (v14 = v13) : (v14 = 3)), (v15 = v11 & 0xFB, !*(v9 + 128)) ? (v16 = 2) : (v16 = v15), (v17 = *(v9 + 8) - 1, v17 > 0x289) ? (v18 = &texFormatUnsupported) : (v18 = *(&off_29F342380 + v17)), (v19 = v16 | ((*(v18 + 60) & 0xC) != 0), v20 = v19 & 0xEB, v21 = *(v9 + 176), v22 = v19 | 0x10, v16 & 2 | v14) ? (v23 = v20) : (v23 = v22), v21 == 2 ? (v24 = v23) : (v24 = v20), (v25 = malloc_type_calloc(0x288uLL, 1uLL, 0x10E1040DA59F5FCuLL), (v8->_impl = v25) == 0) || ((v26 = *v10, v27 = *(v10 + 8), v28 = *(v10 + 104), v29 = *(v10 + 168) - 1, v29 > 9) ? (v30 = 0) : (v30 = dword_29D2F7A6C[v29]), (v31 = *(v10 + 208), (*(v10 + 72) - 1) < 4) ? (v32 = *(v10 + 72)) : (v32 = 0), (v33 = *(v10 + 84), v34 = *(v10 + 16), v35 = *(v10 + 24), v36 = *(v10 + 32), v37 = *(v10 + 40), v38 = *(v10 + 48), v39 = *(v10 + 56), v40 = *(v10 + 112) & 0xFLL, (v27 - 1) > 0x289) ? (v41 = &texFormatUnsupported) : (v41 = *(&off_29F342380 + (v27 - 1))), *AGX::TextureGen4<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::TextureGen4(v25, *(device + 106), 0, 2, v26, v41, v27, v28, 0.0, v31, (v14 << 8) | (v21 << 32) | v24, v30, v32, v33, v34, v35, v36, v37, v38, v39, 0, 0, 0, v40, 0, 0, 0, 0, 0, v37, !backed, 0, backed, v43, 0) = off_2A23FA3D8, (*(v8->_impl + 200) & 1) == 0)))
   {
 
     return 0;

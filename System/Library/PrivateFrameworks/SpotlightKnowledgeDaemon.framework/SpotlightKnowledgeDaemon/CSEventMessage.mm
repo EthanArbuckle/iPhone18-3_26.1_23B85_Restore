@@ -1,5 +1,5 @@
 @interface CSEventMessage
-- (CSEventMessage)initWithMessage:(id)a3;
+- (CSEventMessage)initWithMessage:(id)message;
 - (id)description;
 - (uint64_t)isManaged;
 - (void)dealloc;
@@ -7,19 +7,19 @@
 
 @implementation CSEventMessage
 
-- (CSEventMessage)initWithMessage:(id)a3
+- (CSEventMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = CSEventMessage;
   v5 = [(CSEventMessage *)&v12 init];
   if (v5)
   {
-    v5->_msg_id = xpc_dictionary_get_uint64(v4, "msg_id");
-    v5->_journalIno = xpc_dictionary_get_uint64(v4, "j_ino");
-    v5->_tocIno = xpc_dictionary_get_uint64(v4, "toc_ino");
-    v5->_event = xpc_dictionary_get_uint64(v4, "je");
-    uint64 = xpc_dictionary_get_uint64(v4, "i_pc_pr");
+    v5->_msg_id = xpc_dictionary_get_uint64(messageCopy, "msg_id");
+    v5->_journalIno = xpc_dictionary_get_uint64(messageCopy, "j_ino");
+    v5->_tocIno = xpc_dictionary_get_uint64(messageCopy, "toc_ino");
+    v5->_event = xpc_dictionary_get_uint64(messageCopy, "je");
+    uint64 = xpc_dictionary_get_uint64(messageCopy, "i_pc_pr");
     if (uint64)
     {
       if (uint64 == 3)
@@ -53,18 +53,18 @@
     }
 
     v5->_indexType = v8;
-    v5->_journalNumber = xpc_dictionary_get_uint64(v4, "j_num");
-    v5->_dev = xpc_dictionary_get_uint64(v4, "j_dev");
-    v5->_toc_size = xpc_dictionary_get_uint64(v4, "toc_s");
-    v5->_isManaged = xpc_dictionary_get_BOOL(v4, "j_managed");
-    string = xpc_dictionary_get_string(v4, "j_name");
+    v5->_journalNumber = xpc_dictionary_get_uint64(messageCopy, "j_num");
+    v5->_dev = xpc_dictionary_get_uint64(messageCopy, "j_dev");
+    v5->_toc_size = xpc_dictionary_get_uint64(messageCopy, "toc_s");
+    v5->_isManaged = xpc_dictionary_get_BOOL(messageCopy, "j_managed");
+    string = xpc_dictionary_get_string(messageCopy, "j_name");
     v5->_journalName = string;
     if (string)
     {
       v5->_journalName = strdup(string);
     }
 
-    v10 = xpc_dictionary_get_string(v4, "j_cookie");
+    v10 = xpc_dictionary_get_string(messageCopy, "j_cookie");
     v5->_journalCookie = v10;
     if (v10)
     {
@@ -151,9 +151,9 @@
 
 - (uint64_t)isManaged
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

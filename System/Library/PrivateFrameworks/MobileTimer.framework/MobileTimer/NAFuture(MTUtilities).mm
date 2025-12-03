@@ -11,7 +11,7 @@
   v4[1] = 3221225472;
   v4[2] = __44__NAFuture_MTUtilities__mtFinishWithFuture___block_invoke;
   v4[3] = &unk_1E7B0E668;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 addCompletionBlock:v4];
 }
 
@@ -32,7 +32,7 @@
   v13 = a3;
   v6 = v5;
   v11 = v6;
-  v7 = [a1 addCompletionBlock:v10];
+  v7 = [self addCompletionBlock:v10];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v15[5];
 

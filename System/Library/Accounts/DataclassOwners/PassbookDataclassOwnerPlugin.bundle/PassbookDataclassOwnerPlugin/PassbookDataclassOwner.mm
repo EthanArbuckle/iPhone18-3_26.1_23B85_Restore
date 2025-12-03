@@ -1,8 +1,8 @@
 @interface PassbookDataclassOwner
 + (id)dataclasses;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
 - (_TtC28PassbookDataclassOwnerPlugin22PassbookDataclassOwner)init;
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4;
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass;
 @end
 
 @implementation PassbookDataclassOwner
@@ -21,7 +21,7 @@
   return v5.super.isa;
 }
 
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass
 {
   if (sub_1AA4())
   {
@@ -36,18 +36,18 @@
   return v4.super.isa;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  if (a5)
+  if (children)
   {
     sub_2754();
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  v14 = sub_1F5C(a3);
+  actionCopy = action;
+  accountCopy = account;
+  dataclassCopy = dataclass;
+  selfCopy = self;
+  v14 = sub_1F5C(action);
 
   return v14 & 1;
 }

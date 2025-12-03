@@ -29,7 +29,7 @@
 
 - (NSArray)suggestedFolderDestinations
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A4415C();
 
   sub_2159F7DA8(0, &unk_2811A28A0);
@@ -40,7 +40,7 @@
 
 - (NSString)destinationFolderTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A44830();
 
   v3 = sub_215A70500();

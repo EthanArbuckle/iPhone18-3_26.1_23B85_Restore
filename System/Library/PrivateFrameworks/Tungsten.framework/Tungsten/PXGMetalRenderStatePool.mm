@@ -1,9 +1,9 @@
 @interface PXGMetalRenderStatePool
-- (PXGMetalRenderStatePool)initWithDevice:(id)a3 queue:(id)a4;
+- (PXGMetalRenderStatePool)initWithDevice:(id)device queue:(id)queue;
 - (id)checkoutRenderState;
-- (void)_checkinRenderState:(id)a3;
+- (void)_checkinRenderState:(id)state;
 - (void)clearReusePool;
-- (void)setDevice:(id)a3;
+- (void)setDevice:(id)device;
 @end
 
 @implementation PXGMetalRenderStatePool
@@ -14,13 +14,13 @@
   v3 = self->_device;
   if (v3)
   {
-    v4 = [(NSMutableArray *)self->_reusableRenderStates px_popFirst];
-    if (!v4)
+    px_popFirst = [(NSMutableArray *)self->_reusableRenderStates px_popFirst];
+    if (!px_popFirst)
     {
-      v4 = [[PXGReusableMetalRenderState alloc] initWithDevice:self->_device];
+      px_popFirst = [[PXGReusableMetalRenderState alloc] initWithDevice:self->_device];
     }
 
-    v5 = [[PXGMetalRenderStatePoolEntry alloc] initWithReusableRenderState:v4 pool:self];
+    v5 = [[PXGMetalRenderStatePoolEntry alloc] initWithReusableRenderState:px_popFirst pool:self];
   }
 
   else
@@ -31,28 +31,28 @@
   return v5;
 }
 
-- (void)_checkinRenderState:(id)a3
+- (void)_checkinRenderState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [v6 device];
+  device = [stateCopy device];
   device = self->_device;
 
-  if (v4 == device)
+  if (device == device)
   {
-    [(NSMutableArray *)self->_reusableRenderStates addObject:v6];
+    [(NSMutableArray *)self->_reusableRenderStates addObject:stateCopy];
   }
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v5 = a3;
-  if (self->_device != v5)
+  deviceCopy = device;
+  if (self->_device != deviceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_device, a3);
+    v6 = deviceCopy;
+    objc_storeStrong(&self->_device, device);
     [(PXGMetalRenderStatePool *)self clearReusePool];
-    v5 = v6;
+    deviceCopy = v6;
   }
 }
 
@@ -64,18 +64,18 @@
   [(NSMutableArray *)reusableRenderStates removeAllObjects];
 }
 
-- (PXGMetalRenderStatePool)initWithDevice:(id)a3 queue:(id)a4
+- (PXGMetalRenderStatePool)initWithDevice:(id)device queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = PXGMetalRenderStatePool;
   v9 = [(PXGMetalRenderStatePool *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
     reusableRenderStates = v10->_reusableRenderStates;
     v10->_reusableRenderStates = v11;

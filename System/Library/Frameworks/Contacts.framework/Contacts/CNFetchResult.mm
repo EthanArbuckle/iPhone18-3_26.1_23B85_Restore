@@ -1,22 +1,22 @@
 @interface CNFetchResult
-- (CNFetchResult)initWithValue:(id)a3 currentHistoryToken:(id)a4;
+- (CNFetchResult)initWithValue:(id)value currentHistoryToken:(id)token;
 - (id)description;
 @end
 
 @implementation CNFetchResult
 
-- (CNFetchResult)initWithValue:(id)a3 currentHistoryToken:(id)a4
+- (CNFetchResult)initWithValue:(id)value currentHistoryToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  tokenCopy = token;
   v15.receiver = self;
   v15.super_class = CNFetchResult;
   v9 = [(CNFetchResult *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_value, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_value, value);
+    v11 = [tokenCopy copy];
     currentHistoryToken = v10->_currentHistoryToken;
     v10->_currentHistoryToken = v11;
 
@@ -29,15 +29,15 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNFetchResult *)self value];
-  v5 = [v3 appendName:@"value" object:v4];
+  value = [(CNFetchResult *)self value];
+  v5 = [v3 appendName:@"value" object:value];
 
-  v6 = [(CNFetchResult *)self currentHistoryToken];
-  v7 = [v3 appendName:@"currentHistoryToken" object:v6];
+  currentHistoryToken = [(CNFetchResult *)self currentHistoryToken];
+  v7 = [v3 appendName:@"currentHistoryToken" object:currentHistoryToken];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

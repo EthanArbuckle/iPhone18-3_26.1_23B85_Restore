@@ -1,31 +1,31 @@
 @interface CellularNrSDMActivation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsTriggerCause:(id)a3;
+- (int)StringAsTriggerCause:(id)cause;
 - (int)triggerCause;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApNrRecomm:(BOOL)a3;
-- (void)setHasApNrRecommConfFactor:(BOOL)a3;
-- (void)setHasDurationInPrevState:(BOOL)a3;
-- (void)setHasFr1MeasDisabled:(BOOL)a3;
-- (void)setHasFr2MeasDisabled:(BOOL)a3;
-- (void)setHasPrevFr1MeasDisabled:(BOOL)a3;
-- (void)setHasPrevFr2MeasDisabled:(BOOL)a3;
-- (void)setHasSib24Configured:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTriggerCause:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasApNrRecomm:(BOOL)recomm;
+- (void)setHasApNrRecommConfFactor:(BOOL)factor;
+- (void)setHasDurationInPrevState:(BOOL)state;
+- (void)setHasFr1MeasDisabled:(BOOL)disabled;
+- (void)setHasFr2MeasDisabled:(BOOL)disabled;
+- (void)setHasPrevFr1MeasDisabled:(BOOL)disabled;
+- (void)setHasPrevFr2MeasDisabled:(BOOL)disabled;
+- (void)setHasSib24Configured:(BOOL)configured;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTriggerCause:(BOOL)cause;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrSDMActivation
 
-- (void)setHasFr1MeasDisabled:(BOOL)a3
+- (void)setHasFr1MeasDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 64;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasFr2MeasDisabled:(BOOL)a3
+- (void)setHasFr2MeasDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 128;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPrevFr1MeasDisabled:(BOOL)a3
+- (void)setHasPrevFr1MeasDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 256;
   }
@@ -68,9 +68,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPrevFr2MeasDisabled:(BOOL)a3
+- (void)setHasPrevFr2MeasDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 512;
   }
@@ -96,9 +96,9 @@
   }
 }
 
-- (void)setHasTriggerCause:(BOOL)a3
+- (void)setHasTriggerCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 8;
   }
@@ -111,65 +111,65 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsTriggerCause:(id)a3
+- (int)StringAsTriggerCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_POOR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_POOR"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
   {
     v4 = 11;
   }
@@ -182,9 +182,9 @@
   return v4;
 }
 
-- (void)setHasApNrRecomm:(BOOL)a3
+- (void)setHasApNrRecomm:(BOOL)recomm
 {
-  if (a3)
+  if (recomm)
   {
     v3 = 16;
   }
@@ -197,9 +197,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasApNrRecommConfFactor:(BOOL)a3
+- (void)setHasApNrRecommConfFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 32;
   }
@@ -212,9 +212,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSib24Configured:(BOOL)a3
+- (void)setHasSib24Configured:(BOOL)configured
 {
-  if (a3)
+  if (configured)
   {
     v3 = 1024;
   }
@@ -227,9 +227,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasDurationInPrevState:(BOOL)a3
+- (void)setHasDurationInPrevState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -242,9 +242,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -262,8 +262,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrSDMActivation;
   v3 = [(CellularNrSDMActivation *)&v7 description];
-  v4 = [(CellularNrSDMActivation *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrSDMActivation *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -448,9 +448,9 @@ LABEL_13:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -606,14 +606,14 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 18) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 18) |= 1u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -632,8 +632,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 30) = self->_fr1MeasDisabled;
-  *(v4 + 18) |= 0x40u;
+  *(toCopy + 30) = self->_fr1MeasDisabled;
+  *(toCopy + 18) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -647,8 +647,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  *(v4 + 31) = self->_fr2MeasDisabled;
-  *(v4 + 18) |= 0x80u;
+  *(toCopy + 31) = self->_fr2MeasDisabled;
+  *(toCopy + 18) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -662,8 +662,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  *(v4 + 32) = self->_prevFr1MeasDisabled;
-  *(v4 + 18) |= 0x100u;
+  *(toCopy + 32) = self->_prevFr1MeasDisabled;
+  *(toCopy + 18) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -677,8 +677,8 @@ LABEL_6:
   }
 
 LABEL_20:
-  *(v4 + 33) = self->_prevFr2MeasDisabled;
-  *(v4 + 18) |= 0x200u;
+  *(toCopy + 33) = self->_prevFr2MeasDisabled;
+  *(toCopy + 18) |= 0x200u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -692,8 +692,8 @@ LABEL_7:
   }
 
 LABEL_21:
-  *(v4 + 6) = self->_triggerCause;
-  *(v4 + 18) |= 8u;
+  *(toCopy + 6) = self->_triggerCause;
+  *(toCopy + 18) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -707,8 +707,8 @@ LABEL_8:
   }
 
 LABEL_22:
-  *(v4 + 28) = self->_apNrRecomm;
-  *(v4 + 18) |= 0x10u;
+  *(toCopy + 28) = self->_apNrRecomm;
+  *(toCopy + 18) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -722,8 +722,8 @@ LABEL_9:
   }
 
 LABEL_23:
-  *(v4 + 29) = self->_apNrRecommConfFactor;
-  *(v4 + 18) |= 0x20u;
+  *(toCopy + 29) = self->_apNrRecommConfFactor;
+  *(toCopy + 18) |= 0x20u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -737,8 +737,8 @@ LABEL_10:
   }
 
 LABEL_24:
-  *(v4 + 34) = self->_sib24Configured;
-  *(v4 + 18) |= 0x400u;
+  *(toCopy + 34) = self->_sib24Configured;
+  *(toCopy + 18) |= 0x400u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -752,21 +752,21 @@ LABEL_11:
   }
 
 LABEL_25:
-  *(v4 + 4) = self->_durationInPrevState;
-  *(v4 + 18) |= 2u;
+  *(toCopy + 4) = self->_durationInPrevState;
+  *(toCopy + 18) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
-    *(v4 + 5) = self->_subsId;
-    *(v4 + 18) |= 4u;
+    *(toCopy + 5) = self->_subsId;
+    *(toCopy + 18) |= 4u;
   }
 
 LABEL_13:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -923,19 +923,19 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_78;
   }
 
   has = self->_has;
-  v6 = *(v4 + 18);
+  v6 = *(equalCopy + 18);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_78;
     }
@@ -953,16 +953,16 @@ LABEL_12:
       goto LABEL_78;
     }
 
-    v7 = *(v4 + 30);
+    v7 = *(equalCopy + 30);
     if (self->_fr1MeasDisabled)
     {
-      if ((*(v4 + 30) & 1) == 0)
+      if ((*(equalCopy + 30) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 30))
+    else if (*(equalCopy + 30))
     {
       goto LABEL_78;
     }
@@ -980,16 +980,16 @@ LABEL_12:
       goto LABEL_78;
     }
 
-    v8 = *(v4 + 31);
+    v8 = *(equalCopy + 31);
     if (self->_fr2MeasDisabled)
     {
-      if ((*(v4 + 31) & 1) == 0)
+      if ((*(equalCopy + 31) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 31))
+    else if (*(equalCopy + 31))
     {
       goto LABEL_78;
     }
@@ -1002,61 +1002,61 @@ LABEL_12:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 18) & 0x100) == 0)
+    if ((*(equalCopy + 18) & 0x100) == 0)
     {
       goto LABEL_78;
     }
 
-    v9 = *(v4 + 32);
+    v9 = *(equalCopy + 32);
     if (self->_prevFr1MeasDisabled)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 18) & 0x100) != 0)
+  else if ((*(equalCopy + 18) & 0x100) != 0)
   {
     goto LABEL_78;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 18) & 0x200) == 0)
+    if ((*(equalCopy + 18) & 0x200) == 0)
     {
       goto LABEL_78;
     }
 
-    v10 = *(v4 + 33);
+    v10 = *(equalCopy + 33);
     if (self->_prevFr2MeasDisabled)
     {
-      if ((*(v4 + 33) & 1) == 0)
+      if ((*(equalCopy + 33) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 33))
+    else if (*(equalCopy + 33))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 18) & 0x200) != 0)
+  else if ((*(equalCopy + 18) & 0x200) != 0)
   {
     goto LABEL_78;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_triggerCause != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_triggerCause != *(equalCopy + 6))
     {
       goto LABEL_78;
     }
@@ -1074,16 +1074,16 @@ LABEL_12:
       goto LABEL_78;
     }
 
-    v11 = *(v4 + 28);
+    v11 = *(equalCopy + 28);
     if (self->_apNrRecomm)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_78;
     }
@@ -1101,16 +1101,16 @@ LABEL_12:
       goto LABEL_78;
     }
 
-    v12 = *(v4 + 29);
+    v12 = *(equalCopy + 29);
     if (self->_apNrRecommConfFactor)
     {
-      if ((*(v4 + 29) & 1) == 0)
+      if ((*(equalCopy + 29) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 29))
+    else if (*(equalCopy + 29))
     {
       goto LABEL_78;
     }
@@ -1123,7 +1123,7 @@ LABEL_12:
 
   if ((*&self->_has & 0x400) == 0)
   {
-    if ((*(v4 + 18) & 0x400) == 0)
+    if ((*(equalCopy + 18) & 0x400) == 0)
     {
       goto LABEL_48;
     }
@@ -1133,21 +1133,21 @@ LABEL_78:
     goto LABEL_79;
   }
 
-  if ((*(v4 + 18) & 0x400) == 0)
+  if ((*(equalCopy + 18) & 0x400) == 0)
   {
     goto LABEL_78;
   }
 
-  v13 = *(v4 + 34);
+  v13 = *(equalCopy + 34);
   if (self->_sib24Configured)
   {
-    if ((*(v4 + 34) & 1) == 0)
+    if ((*(equalCopy + 34) & 1) == 0)
     {
       goto LABEL_78;
     }
   }
 
-  else if (*(v4 + 34))
+  else if (*(equalCopy + 34))
   {
     goto LABEL_78;
   }
@@ -1155,7 +1155,7 @@ LABEL_78:
 LABEL_48:
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_durationInPrevState != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_durationInPrevState != *(equalCopy + 4))
     {
       goto LABEL_78;
     }
@@ -1168,7 +1168,7 @@ LABEL_48:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_subsId != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_subsId != *(equalCopy + 5))
     {
       goto LABEL_78;
     }
@@ -1339,15 +1339,15 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 18);
+  fromCopy = from;
+  v5 = *(fromCopy + 18);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 18);
+    v5 = *(fromCopy + 18);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -1365,9 +1365,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_fr1MeasDisabled = *(v4 + 30);
+  self->_fr1MeasDisabled = *(fromCopy + 30);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -1380,9 +1380,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_fr2MeasDisabled = *(v4 + 31);
+  self->_fr2MeasDisabled = *(fromCopy + 31);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 0x100) == 0)
   {
 LABEL_5:
@@ -1395,9 +1395,9 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_prevFr1MeasDisabled = *(v4 + 32);
+  self->_prevFr1MeasDisabled = *(fromCopy + 32);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 0x200) == 0)
   {
 LABEL_6:
@@ -1410,9 +1410,9 @@ LABEL_6:
   }
 
 LABEL_20:
-  self->_prevFr2MeasDisabled = *(v4 + 33);
+  self->_prevFr2MeasDisabled = *(fromCopy + 33);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -1425,9 +1425,9 @@ LABEL_7:
   }
 
 LABEL_21:
-  self->_triggerCause = *(v4 + 6);
+  self->_triggerCause = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -1440,9 +1440,9 @@ LABEL_8:
   }
 
 LABEL_22:
-  self->_apNrRecomm = *(v4 + 28);
+  self->_apNrRecomm = *(fromCopy + 28);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -1455,9 +1455,9 @@ LABEL_9:
   }
 
 LABEL_23:
-  self->_apNrRecommConfFactor = *(v4 + 29);
+  self->_apNrRecommConfFactor = *(fromCopy + 29);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 0x400) == 0)
   {
 LABEL_10:
@@ -1470,9 +1470,9 @@ LABEL_10:
   }
 
 LABEL_24:
-  self->_sib24Configured = *(v4 + 34);
+  self->_sib24Configured = *(fromCopy + 34);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 18);
+  v5 = *(fromCopy + 18);
   if ((v5 & 2) == 0)
   {
 LABEL_11:
@@ -1485,12 +1485,12 @@ LABEL_11:
   }
 
 LABEL_25:
-  self->_durationInPrevState = *(v4 + 4);
+  self->_durationInPrevState = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 18) & 4) != 0)
+  if ((*(fromCopy + 18) & 4) != 0)
   {
 LABEL_12:
-    self->_subsId = *(v4 + 5);
+    self->_subsId = *(fromCopy + 5);
     *&self->_has |= 4u;
   }
 

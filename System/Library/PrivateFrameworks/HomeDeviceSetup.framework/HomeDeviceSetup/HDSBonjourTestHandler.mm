@@ -1,7 +1,7 @@
 @interface HDSBonjourTestHandler
 - (HDSBonjourTestHandler)init;
-- (void)_handleStart:(id)a3 responseHandler:(id)a4;
-- (void)_handleStop:(id)a3 responseHandler:(id)a4;
+- (void)_handleStart:(id)start responseHandler:(id)handler;
+- (void)_handleStop:(id)stop responseHandler:(id)handler;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -84,17 +84,17 @@ void __35__HDSBonjourTestHandler_invalidate__block_invoke(uint64_t a1)
   *(v2 + 8) = 0;
 }
 
-- (void)_handleStart:(id)a3 responseHandler:(id)a4
+- (void)_handleStart:(id)start responseHandler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  handlerCopy = handler;
   if (gLogCategory_HDSBonjourTest <= 30 && (gLogCategory_HDSBonjourTest != -1 || _LogCategory_Initialize()))
   {
     [HDSBonjourTestHandler _handleStart:responseHandler:];
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"bjtID"];
+  v8 = [startCopy objectForKeyedSubscript:@"bjtID"];
   if (v8)
   {
     [(CUBonjourAdvertiser *)self->_advertiser invalidate];
@@ -114,7 +114,7 @@ void __35__HDSBonjourTestHandler_invalidate__block_invoke(uint64_t a1)
     [(CUBonjourAdvertiser *)self->_advertiser setName:v8];
     [(CUBonjourAdvertiser *)self->_advertiser setPort:9];
     [(CUBonjourAdvertiser *)self->_advertiser activate];
-    (*(v7 + 2))(v7, 0, 0, MEMORY[0x277CBEC10]);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x277CBEC10]);
   }
 
   else
@@ -125,23 +125,23 @@ void __35__HDSBonjourTestHandler_invalidate__block_invoke(uint64_t a1)
       [HDSBonjourTestHandler _handleStart:responseHandler:];
     }
 
-    (*(v7 + 2))(v7, v12, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v12, 0, 0);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStop:(id)a3 responseHandler:(id)a4
+- (void)_handleStop:(id)stop responseHandler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
+  stopCopy = stop;
+  handlerCopy = handler;
   if (gLogCategory_HDSBonjourTest <= 30 && (gLogCategory_HDSBonjourTest != -1 || _LogCategory_Initialize()))
   {
     [HDSBonjourTestHandler _handleStop:responseHandler:];
   }
 
   [(HDSBonjourTestHandler *)self invalidate];
-  (*(v6 + 2))(v6, 0, 0, MEMORY[0x277CBEC10]);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x277CBEC10]);
 }
 
 @end

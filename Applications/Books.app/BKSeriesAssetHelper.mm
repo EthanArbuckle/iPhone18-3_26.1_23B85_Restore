@@ -1,14 +1,14 @@
 @interface BKSeriesAssetHelper
-+ (signed)mappedAssetContentTypeFromRawItemType:(id)a3;
++ (signed)mappedAssetContentTypeFromRawItemType:(id)type;
 - (BKSeriesAssetHelper)init;
 @end
 
 @implementation BKSeriesAssetHelper
 
-+ (signed)mappedAssetContentTypeFromRawItemType:(id)a3
++ (signed)mappedAssetContentTypeFromRawItemType:(id)type
 {
-  v3 = a3;
-  v4 = _s5Books17SeriesAssetHelperC06mappedC11ContentType4fromSo07BKAssetfG0VSo8NSNumberC_tFZ_0(v3);
+  typeCopy = type;
+  v4 = _s5Books17SeriesAssetHelperC06mappedC11ContentType4fromSo07BKAssetfG0VSo8NSNumberC_tFZ_0(typeCopy);
 
   return v4;
 }

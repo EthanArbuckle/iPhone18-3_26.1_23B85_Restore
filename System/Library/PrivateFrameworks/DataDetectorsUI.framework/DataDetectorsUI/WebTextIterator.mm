@@ -1,13 +1,13 @@
 @interface WebTextIterator
-- (id)dd_doUrlificationForQuery:(void *)a3 forResults:(void *)a4 referenceDate:(void *)a5 document:(_BYTE *)a6 DOMWasModified:(uint64_t)a7 relevantResults:(void *)a8 URLificationBlock:;
-- (uint64_t)dd_newQueryStopRange:(void *)a1;
+- (id)dd_doUrlificationForQuery:(void *)query forResults:(void *)results referenceDate:(void *)date document:(_BYTE *)document DOMWasModified:(uint64_t)modified relevantResults:(void *)relevantResults URLificationBlock:;
+- (uint64_t)dd_newQueryStopRange:(void *)range;
 @end
 
 @implementation WebTextIterator
 
-- (uint64_t)dd_newQueryStopRange:(void *)a1
+- (uint64_t)dd_newQueryStopRange:(void *)range
 {
-  if (!a1)
+  if (!range)
   {
     return 0;
   }
@@ -15,37 +15,37 @@
   Predefined = CFCharacterSetGetPredefined(kCFCharacterSetWhitespaceAndNewline);
   v4 = CFCharacterSetGetPredefined(kCFCharacterSetNewline);
   v24 = DDScanQueryCreate();
-  if (([a1 atEnd] & 1) == 0)
+  if (([range atEnd] & 1) == 0)
   {
     alloc = *MEMORY[0x277CBECE8];
     v5 = -1;
     do
     {
       v6 = v5++;
-      v7 = [a1 currentTextLength];
-      if (v7)
+      currentTextLength = [range currentTextLength];
+      if (currentTextLength)
       {
-        v8 = v7;
+        v8 = currentTextLength;
         v23 = v6;
         v25 = v5;
-        v9 = [a1 currentTextPointer];
+        currentTextPointer = [range currentTextPointer];
         v10 = 0;
         v11 = 0;
         v12 = 0;
         v13 = 0;
         do
         {
-          if (!CFCharacterSetIsCharacterMember(Predefined, *(v9 + 2 * v10)))
+          if (!CFCharacterSetIsCharacterMember(Predefined, *(currentTextPointer + 2 * v10)))
           {
-            v19 = CFStringCreateWithCharacters(alloc, [a1 currentTextPointer], objc_msgSend(a1, "currentTextLength"));
+            v19 = CFStringCreateWithCharacters(alloc, [range currentTextPointer], objc_msgSend(range, "currentTextLength"));
             v5 = v25;
             DDScanQueryAddTextFragment();
             CFRelease(v19);
             goto LABEL_26;
           }
 
-          IsCharacterMember = CFCharacterSetIsCharacterMember(v4, *(v9 + 2 * v10));
-          v15 = *(v9 + 2 * v10);
+          IsCharacterMember = CFCharacterSetIsCharacterMember(v4, *(currentTextPointer + 2 * v10));
+          v15 = *(currentTextPointer + 2 * v10);
           v16 = (v15 == 9) | v13;
           if (IsCharacterMember)
           {
@@ -115,30 +115,30 @@
         if (a2 && v6 > 999)
         {
 LABEL_28:
-          *a2 = [a1 currentRange];
+          *a2 = [range currentRange];
           return v24;
         }
       }
 
 LABEL_26:
-      [a1 advance];
+      [range advance];
     }
 
-    while (([a1 atEnd] & 1) == 0);
+    while (([range atEnd] & 1) == 0);
   }
 
   return v24;
 }
 
-- (id)dd_doUrlificationForQuery:(void *)a3 forResults:(void *)a4 referenceDate:(void *)a5 document:(_BYTE *)a6 DOMWasModified:(uint64_t)a7 relevantResults:(void *)a8 URLificationBlock:
+- (id)dd_doUrlificationForQuery:(void *)query forResults:(void *)results referenceDate:(void *)date document:(_BYTE *)document DOMWasModified:(uint64_t)modified relevantResults:(void *)relevantResults URLificationBlock:
 {
   v179 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v137 = a4;
-  v146 = a5;
-  v139 = a8;
-  v167 = a1;
-  if (!a1)
+  queryCopy = query;
+  resultsCopy = results;
+  dateCopy = date;
+  relevantResultsCopy = relevantResults;
+  selfCopy = self;
+  if (!self)
   {
     goto LABEL_137;
   }
@@ -150,8 +150,8 @@ LABEL_26:
   v175 = 0u;
   v176 = 0u;
   v177 = 0u;
-  v129 = v12;
-  obj = v12;
+  v129 = queryCopy;
+  obj = queryCopy;
   v14 = [obj countByEnumeratingWithState:&v174 objects:v178 count:16];
   if (v14)
   {
@@ -206,17 +206,17 @@ LABEL_26:
   }
 
   v26 = v172;
-  v27 = [v167 dd_collectDDRangesForQuery:a2 forResults:v172];
+  v27 = [selfCopy dd_collectDDRangesForQuery:a2 forResults:v172];
   if (!v27)
   {
-    a1 = 0;
-    v12 = v129;
+    self = 0;
+    queryCopy = v129;
     v120 = v128;
     goto LABEL_136;
   }
 
   v28 = [v172 count];
-  v12 = v129;
+  queryCopy = v129;
   if ([v27 count] != v28)
   {
     DDLog();
@@ -234,7 +234,7 @@ LABEL_130:
     v121 = 0;
     v168 = 0;
     v118 = 0;
-    v119 = a6;
+    documentCopy3 = document;
     v120 = v128;
     goto LABEL_133;
   }
@@ -256,8 +256,8 @@ LABEL_130:
     v34 = [v26 objectAtIndex:{v31, v124, MatchedString}];
     v152 = v31;
     v35 = [v27 objectAtIndex:v31];
-    v36 = [MEMORY[0x277CBEB68] null];
-    v37 = [v35 isEqual:v36];
+    null = [MEMORY[0x277CBEB68] null];
+    v37 = [v35 isEqual:null];
 
     if (!v37)
     {
@@ -278,10 +278,10 @@ LABEL_130:
       v150 = QueryRangeForURLification >> 16;
       v136 = v39;
       v45 = [v13 objectAtIndex:v152];
-      v46 = [v45 dd_stringValue];
+      dd_stringValue = [v45 dd_stringValue];
 
-      v143 = v46;
-      v142 = v139[2](v139, v34, v46, v137, cf);
+      v143 = dd_stringValue;
+      v142 = relevantResultsCopy[2](relevantResultsCopy, v34, dd_stringValue, resultsCopy, cf);
       if (!v142)
       {
         v32 = v44;
@@ -294,16 +294,16 @@ LABEL_124:
       }
 
       v47 = [v35 objectAtIndex:0];
-      v48 = [v35 lastObject];
+      lastObject = [v35 lastObject];
       v141 = v47;
-      v49 = [v47 node];
-      v140 = v48;
-      v50 = [v48 node];
+      node = [v47 node];
+      v140 = lastObject;
+      node2 = [lastObject node];
       context = objc_autoreleasePoolPush();
       v173 = 0;
-      v160 = v49;
-      v149 = v50;
-      v51 = [v49 dd_searchForLinkRemovingExistingDDLinksWithEndNode:v50 didModifyDOM:&v173];
+      v160 = node;
+      v149 = node2;
+      v51 = [node dd_searchForLinkRemovingExistingDDLinksWithEndNode:node2 didModifyDOM:&v173];
       v131 = v173;
       v132 = v51;
       if (v51)
@@ -335,16 +335,16 @@ LABEL_123:
       while (1)
       {
         v154 = [v35 objectAtIndex:v56 - v54];
-        v57 = [v154 node];
+        node3 = [v154 node];
         v58 = v56 <= v55 ? v55 : v56;
         while (v58 != v56)
         {
           v59 = v56 + 1;
           v60 = [v35 objectAtIndex:1 - v150 + v56];
-          v61 = [v60 node];
+          node4 = [v60 node];
 
           v56 = v59;
-          if (v61 != v57)
+          if (node4 != node3)
           {
             v58 = v59 - 1;
             break;
@@ -352,7 +352,7 @@ LABEL_123:
         }
 
         v62 = v163;
-        if (v163 == v57)
+        if (v163 == node3)
         {
           obja = 0;
         }
@@ -365,7 +365,7 @@ LABEL_123:
             [v163 setData:v63];
           }
 
-          v64 = v57;
+          v64 = node3;
           obja = [v64 data];
           v166 = 0;
           v52 = 0;
@@ -373,8 +373,8 @@ LABEL_123:
           v62 = v64;
         }
 
-        v165 = [v57 parentNode];
-        if (v57 == v160)
+        parentNode = [node3 parentNode];
+        if (node3 == v160)
         {
           v65 = [v141 startOffset] + v138;
         }
@@ -385,7 +385,7 @@ LABEL_123:
         }
 
         v163 = v62;
-        if (v57 == v149)
+        if (node3 == v149)
         {
           v66 = [v140 startOffset] + (v136 >> 32);
           v68 = v162;
@@ -412,7 +412,7 @@ LABEL_123:
 
         v151 = v66;
         v169 = v52;
-        if (v57 == v160 && v30 == v57)
+        if (node3 == v160 && v30 == node3)
         {
           v71 = v68;
         }
@@ -423,7 +423,7 @@ LABEL_123:
         }
 
         v147 = v66 - v67;
-        if (v30 == v57)
+        if (v30 == node3)
         {
           v72 = v66 - v67;
         }
@@ -436,10 +436,10 @@ LABEL_123:
         v164 = v72;
         if (!qword_280B122A0)
         {
-          v73 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-          v74 = [v73 invertedSet];
+          whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+          invertedSet = [whitespaceAndNewlineCharacterSet invertedSet];
           v75 = qword_280B122A0;
-          qword_280B122A0 = v74;
+          qword_280B122A0 = invertedSet;
         }
 
         v76 = v65 - v71;
@@ -521,8 +521,8 @@ LABEL_122:
           [v169 substringWithRange:{v166, v89}];
         }
         v93 = ;
-        v94 = [v146 createTextNode:v93];
-        v95 = [v165 insertBefore:v94 refChild:v57];
+        v94 = [dateCopy createTextNode:v93];
+        v95 = [parentNode insertBefore:v94 refChild:node3];
 
         v84 = v144;
         v90 = v169;
@@ -541,8 +541,8 @@ LABEL_122:
       }
 
       v157 = [v96 substringWithRange:{v97, v84}];
-      v98 = [v146 createTextNode:v157];
-      v99 = [v146 createElement:@"a"];
+      v98 = [dateCopy createTextNode:v157];
+      v99 = [dateCopy createElement:@"a"];
       if (objc_opt_respondsToSelector())
       {
         if (objc_opt_respondsToSelector())
@@ -556,14 +556,14 @@ LABEL_122:
           v100 = obja ? obja : v90;
           if (v144 == [v100 length])
           {
-            v101 = [v163 parentElement];
-            v102 = [v101 getAttributeNode:@"color"];
+            parentElement = [v163 parentElement];
+            v102 = [parentElement getAttributeNode:@"color"];
 
             if (v102)
             {
-              v103 = [v102 style];
-              v104 = [v103 cssText];
-              [v99 setAttribute:@"style" value:v104];
+              style = [v102 style];
+              cssText = [style cssText];
+              [v99 setAttribute:@"style" value:cssText];
             }
 
             v90 = v169;
@@ -573,7 +573,7 @@ LABEL_122:
       }
 
       v105 = [v99 appendChild:v98];
-      v106 = [v165 insertBefore:v99 refChild:v57];
+      v106 = [parentNode insertBefore:v99 refChild:node3];
       [v99 setAttribute:@"x-apple-data-detectors" value:@"true"];
       v107 = DDResultGetCategory() - 1;
       if (v107 > 4)
@@ -601,12 +601,12 @@ LABEL_122:
       v110 = v164 < v109;
       if (v164 >= v109)
       {
-        v113 = [v57 data];
-        v114 = [v113 length];
+        data = [node3 data];
+        v114 = [data length];
 
         if (v114)
         {
-          [v57 setData:&stru_282C1E0A8];
+          [node3 setData:&stru_282C1E0A8];
         }
 
         v163 = 0;
@@ -634,14 +634,14 @@ LABEL_122:
           v166 = v164;
           v169 = v159;
 LABEL_118:
-          if (v30 == v57)
+          if (v30 == node3)
           {
             v116 = v147 + v111;
           }
 
           else
           {
-            v115 = v57;
+            v115 = node3;
 
             v30 = v115;
             v116 = v151;
@@ -680,15 +680,15 @@ LABEL_125:
     v118 = v163;
     [v163 setData:v117];
 
-    v12 = v129;
-    v119 = a6;
+    queryCopy = v129;
+    documentCopy3 = document;
     v120 = v128;
   }
 
   else
   {
-    v12 = v129;
-    v119 = a6;
+    queryCopy = v129;
+    documentCopy3 = document;
     v120 = v128;
     v118 = v163;
   }
@@ -696,19 +696,19 @@ LABEL_125:
   v121 = v135;
 LABEL_133:
 
-  if (v119)
+  if (documentCopy3)
   {
-    *v119 = v121 & 1;
+    *documentCopy3 = v121 & 1;
   }
 
-  a1 = v120;
+  self = v120;
 
 LABEL_136:
 LABEL_137:
 
   v122 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 @end

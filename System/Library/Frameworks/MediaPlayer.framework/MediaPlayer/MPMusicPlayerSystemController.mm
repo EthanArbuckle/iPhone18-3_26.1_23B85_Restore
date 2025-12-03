@@ -4,21 +4,21 @@
 - (id)_queueDescriptor;
 - (int64_t)playbackState;
 - (void)_establishConnectionIfNeeded;
-- (void)onSystemServer:(id)a3;
-- (void)openToPlayQueueDescriptor:(id)a3;
+- (void)onSystemServer:(id)server;
+- (void)openToPlayQueueDescriptor:(id)descriptor;
 @end
 
 @implementation MPMusicPlayerSystemController
 
-- (void)onSystemServer:(id)a3
+- (void)onSystemServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__MPMusicPlayerSystemController_onSystemServer___block_invoke;
   v6[3] = &unk_1E7680C80;
-  v7 = v4;
-  v5 = v4;
+  v7 = serverCopy;
+  v5 = serverCopy;
   [(MPMusicPlayerController *)self onServer:v6];
 }
 
@@ -35,9 +35,9 @@
   }
 
   v2 = +[MPMusicPlayerControllerSystemCache sharedCache];
-  v3 = [v2 hasCachedData];
+  hasCachedData = [v2 hasCachedData];
 
-  if (!v3)
+  if (!hasCachedData)
   {
     return 0;
   }
@@ -51,21 +51,21 @@
   {
     v6.receiver = self;
     v6.super_class = MPMusicPlayerSystemController;
-    v3 = [(MPMusicPlayerController *)&v6 _nowPlaying];
+    _nowPlaying = [(MPMusicPlayerController *)&v6 _nowPlaying];
   }
 
   else if ([(MPMusicPlayerSystemController *)self _shouldAccessCache])
   {
     v5 = +[MPMusicPlayerControllerSystemCache sharedCache];
-    v3 = [v5 nowPlaying];
+    _nowPlaying = [v5 nowPlaying];
   }
 
   else
   {
-    v3 = 0;
+    _nowPlaying = 0;
   }
 
-  return v3;
+  return _nowPlaying;
 }
 
 - (id)_queueDescriptor
@@ -74,21 +74,21 @@
   {
     v6.receiver = self;
     v6.super_class = MPMusicPlayerSystemController;
-    v3 = [(MPMusicPlayerController *)&v6 _queueDescriptor];
+    _queueDescriptor = [(MPMusicPlayerController *)&v6 _queueDescriptor];
   }
 
   else if ([(MPMusicPlayerSystemController *)self _shouldAccessCache])
   {
     v5 = +[MPMusicPlayerControllerSystemCache sharedCache];
-    v3 = [v5 queueDescriptor];
+    _queueDescriptor = [v5 queueDescriptor];
   }
 
   else
   {
-    v3 = 0;
+    _queueDescriptor = 0;
   }
 
-  return v3;
+  return _queueDescriptor;
 }
 
 - (void)_establishConnectionIfNeeded
@@ -253,11 +253,11 @@ void __61__MPMusicPlayerSystemController__establishConnectionIfNeeded__block_inv
   [WeakRetained _clearConnection];
 }
 
-- (void)openToPlayQueueDescriptor:(id)a3
+- (void)openToPlayQueueDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
-  v6 = os_signpost_id_make_with_pointer(v5, v4);
+  v6 = os_signpost_id_make_with_pointer(v5, descriptorCopy);
 
   v7 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v8 = v7;
@@ -267,7 +267,7 @@ void __61__MPMusicPlayerSystemController__establishConnectionIfNeeded__block_inv
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "openToPlayQueueDescriptor", &unk_1A2797D62, buf, 2u);
   }
 
-  [(MPMusicPlayerController *)self setQueueWithDescriptor:v4];
+  [(MPMusicPlayerController *)self setQueueWithDescriptor:descriptorCopy];
   v9 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v10 = v9;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))

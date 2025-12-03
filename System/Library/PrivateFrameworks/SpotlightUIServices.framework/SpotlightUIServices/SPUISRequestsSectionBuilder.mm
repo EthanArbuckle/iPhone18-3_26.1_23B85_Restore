@@ -19,35 +19,35 @@
 - (unint64_t)buildMaxInitiallyVisibleResults
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISSectionBuilder *)self section];
-  v5 = [v4 results];
+  section = [(SPUISSectionBuilder *)self section];
+  results = [section results];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__SPUISRequestsSectionBuilder_buildMaxInitiallyVisibleResults__block_invoke;
   v13[3] = &unk_279D0BEE8;
   v6 = v3;
   v14 = v6;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [results enumerateObjectsUsingBlock:v13];
 
-  v7 = [v6 count];
-  if (!v7)
+  buildMaxInitiallyVisibleResults = [v6 count];
+  if (!buildMaxInitiallyVisibleResults)
   {
     v12.receiver = self;
     v12.super_class = SPUISRequestsSectionBuilder;
-    v7 = [(SPUISSectionBuilder *)&v12 buildMaxInitiallyVisibleResults];
+    buildMaxInitiallyVisibleResults = [(SPUISSectionBuilder *)&v12 buildMaxInitiallyVisibleResults];
   }
 
   v11.receiver = self;
   v11.super_class = SPUISRequestsSectionBuilder;
-  v8 = [(SPUISSectionBuilder *)&v11 buildMaxInitiallyVisibleResults];
-  if (v7 >= v8)
+  buildMaxInitiallyVisibleResults2 = [(SPUISSectionBuilder *)&v11 buildMaxInitiallyVisibleResults];
+  if (buildMaxInitiallyVisibleResults >= buildMaxInitiallyVisibleResults2)
   {
-    v9 = v8;
+    v9 = buildMaxInitiallyVisibleResults2;
   }
 
   else
   {
-    v9 = v7;
+    v9 = buildMaxInitiallyVisibleResults;
   }
 
   return v9;

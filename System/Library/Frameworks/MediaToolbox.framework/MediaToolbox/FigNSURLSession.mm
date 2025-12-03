@@ -1,5 +1,5 @@
 @interface FigNSURLSession
-- (FigNSURLSession)initWithClientBundleIdentifier:(id)a3 clientPersonaIdentifier:(id)a4 dispatchQueue:(id)a5 useNWLoader:(BOOL)a6;
+- (FigNSURLSession)initWithClientBundleIdentifier:(id)identifier clientPersonaIdentifier:(id)personaIdentifier dispatchQueue:(id)queue useNWLoader:(BOOL)loader;
 - (FigOpaqueAssertion)acquireAssertion;
 - (unsigned)acquireOSTransaction;
 - (void)acquireAssertion;
@@ -22,7 +22,7 @@
     }
 
     [(FigNSURLSession *)self setAssertionCount:[(FigNSURLSession *)self assertionCount]+ 1];
-    v4 = self;
+    selfCopy = self;
     weakAssertion = self->_weakAssertion;
     if (weakAssertion)
     {
@@ -36,76 +36,76 @@
   return v7;
 }
 
-- (FigNSURLSession)initWithClientBundleIdentifier:(id)a3 clientPersonaIdentifier:(id)a4 dispatchQueue:(id)a5 useNWLoader:(BOOL)a6
+- (FigNSURLSession)initWithClientBundleIdentifier:(id)identifier clientPersonaIdentifier:(id)personaIdentifier dispatchQueue:(id)queue useNWLoader:(BOOL)loader
 {
-  v6 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!identifier)
   {
     [FigNSURLSession initWithClientBundleIdentifier:? clientPersonaIdentifier:? dispatchQueue:? useNWLoader:?];
     goto LABEL_19;
   }
 
-  if (!a5)
+  if (!queue)
   {
     [FigNSURLSession initWithClientBundleIdentifier:? clientPersonaIdentifier:? dispatchQueue:? useNWLoader:?];
     goto LABEL_19;
   }
 
-  v8 = a6;
+  loaderCopy = loader;
   v19.receiver = self;
   v19.super_class = FigNSURLSession;
   v11 = [(FigNSURLSession *)&v19 init];
-  v6 = v11;
+  selfCopy = v11;
   if (!v11)
   {
-    return v6;
+    return selfCopy;
   }
 
-  v11->_usesNWLoader = v8;
-  v11->_clientBundleIdentifier = a3;
-  v6->_clientPersonaIdentifier = a4;
-  dispatch_retain(a5);
-  v6->_dispatchQueue = a5;
-  v12 = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
-  v6->_configuration = v12;
-  if (!v12)
+  v11->_usesNWLoader = loaderCopy;
+  v11->_clientBundleIdentifier = identifier;
+  selfCopy->_clientPersonaIdentifier = personaIdentifier;
+  dispatch_retain(queue);
+  selfCopy->_dispatchQueue = queue;
+  ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
+  selfCopy->_configuration = ephemeralSessionConfiguration;
+  if (!ephemeralSessionConfiguration)
   {
     [FigNSURLSession initWithClientBundleIdentifier:? clientPersonaIdentifier:? dispatchQueue:? useNWLoader:?];
     goto LABEL_19;
   }
 
-  [(NSURLSessionConfiguration *)v12 set_timingDataOptions:-1];
-  if (v6->_usesNWLoader)
+  [(NSURLSessionConfiguration *)ephemeralSessionConfiguration set_timingDataOptions:-1];
+  if (selfCopy->_usesNWLoader)
   {
-    [(NSURLSessionConfiguration *)v6->_configuration set_usesNWLoader:v8];
+    [(NSURLSessionConfiguration *)selfCopy->_configuration set_usesNWLoader:loaderCopy];
   }
 
-  NSURLSessionDataDelegate = _FigHTTPRequestSessionCreateNSURLSessionDataDelegate(0, &v6->_dataDelegate);
+  NSURLSessionDataDelegate = _FigHTTPRequestSessionCreateNSURLSessionDataDelegate(0, &selfCopy->_dataDelegate);
   v14 = NSURLSessionDataDelegate;
-  if (!v6->_dataDelegate)
+  if (!selfCopy->_dataDelegate)
   {
     [FigNSURLSession initWithClientBundleIdentifier:&v20 clientPersonaIdentifier:? dispatchQueue:? useNWLoader:?];
     goto LABEL_19;
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E696ADC8]);
-  v6->_opQueue = v15;
+  selfCopy->_opQueue = v15;
   if (!v15)
   {
     [FigNSURLSession initWithClientBundleIdentifier:? clientPersonaIdentifier:? dispatchQueue:? useNWLoader:?];
     goto LABEL_19;
   }
 
-  [(NSOperationQueue *)v15 setUnderlyingQueue:a5];
-  v16 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v6->_configuration delegate:v6->_dataDelegate delegateQueue:v6->_opQueue];
-  v6->_session = v16;
+  [(NSOperationQueue *)v15 setUnderlyingQueue:queue];
+  v16 = [MEMORY[0x1E695AC78] sessionWithConfiguration:selfCopy->_configuration delegate:selfCopy->_dataDelegate delegateQueue:selfCopy->_opQueue];
+  selfCopy->_session = v16;
   if (!v16)
   {
     [FigNSURLSession initWithClientBundleIdentifier:? clientPersonaIdentifier:? dispatchQueue:? useNWLoader:?];
 LABEL_19:
     if (!v20)
     {
-      return v6;
+      return selfCopy;
     }
 
     goto LABEL_11;
@@ -119,7 +119,7 @@ LABEL_11:
     return 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (unsigned)acquireOSTransaction

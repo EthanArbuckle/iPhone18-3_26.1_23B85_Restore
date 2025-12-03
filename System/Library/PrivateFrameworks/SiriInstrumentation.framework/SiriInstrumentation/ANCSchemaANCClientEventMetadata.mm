@@ -1,25 +1,25 @@
 @interface ANCSchemaANCClientEventMetadata
-- (ANCSchemaANCClientEventMetadata)initWithDictionary:(id)a3;
-- (ANCSchemaANCClientEventMetadata)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ANCSchemaANCClientEventMetadata)initWithDictionary:(id)dictionary;
+- (ANCSchemaANCClientEventMetadata)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ANCSchemaANCClientEventMetadata
 
-- (ANCSchemaANCClientEventMetadata)initWithDictionary:(id)a3
+- (ANCSchemaANCClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ANCSchemaANCClientEventMetadata;
   v5 = [(ANCSchemaANCClientEventMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ancId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ancId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ANCSchemaANCClientEventMetadata *)v5 setAncId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ANCSchemaANCClientEventMetadata)initWithJSON:(id)a3
+- (ANCSchemaANCClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ANCSchemaANCClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ANCSchemaANCClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ANCSchemaANCClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ancId)
   {
-    v4 = [(ANCSchemaANCClientEventMetadata *)self ancId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ancId = [(ANCSchemaANCClientEventMetadata *)self ancId];
+    dictionaryRepresentation = [ancId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ancId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ancId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ancId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ancId"];
     }
   }
 
   if (self->_requestId)
   {
-    v7 = [(ANCSchemaANCClientEventMetadata *)self requestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    requestId = [(ANCSchemaANCClientEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ANCSchemaANCClientEventMetadata *)self ancId];
-  v6 = [v4 ancId];
-  if ((v5 != 0) == (v6 == 0))
+  ancId = [(ANCSchemaANCClientEventMetadata *)self ancId];
+  ancId2 = [equalCopy ancId];
+  if ((ancId != 0) == (ancId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ANCSchemaANCClientEventMetadata *)self ancId];
-  if (v7)
+  ancId3 = [(ANCSchemaANCClientEventMetadata *)self ancId];
+  if (ancId3)
   {
-    v8 = v7;
-    v9 = [(ANCSchemaANCClientEventMetadata *)self ancId];
-    v10 = [v4 ancId];
-    v11 = [v9 isEqual:v10];
+    v8 = ancId3;
+    ancId4 = [(ANCSchemaANCClientEventMetadata *)self ancId];
+    ancId5 = [equalCopy ancId];
+    v11 = [ancId4 isEqual:ancId5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(ANCSchemaANCClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) != (v6 == 0))
+  ancId = [(ANCSchemaANCClientEventMetadata *)self requestId];
+  ancId2 = [equalCopy requestId];
+  if ((ancId != 0) != (ancId2 == 0))
   {
-    v12 = [(ANCSchemaANCClientEventMetadata *)self requestId];
-    if (!v12)
+    requestId = [(ANCSchemaANCClientEventMetadata *)self requestId];
+    if (!requestId)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ANCSchemaANCClientEventMetadata *)self requestId];
-    v15 = [v4 requestId];
-    v16 = [v14 isEqual:v15];
+    v13 = requestId;
+    requestId2 = [(ANCSchemaANCClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v16 = [requestId2 isEqual:requestId3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ANCSchemaANCClientEventMetadata *)self ancId];
+  toCopy = to;
+  ancId = [(ANCSchemaANCClientEventMetadata *)self ancId];
 
-  if (v4)
+  if (ancId)
   {
-    v5 = [(ANCSchemaANCClientEventMetadata *)self ancId];
+    ancId2 = [(ANCSchemaANCClientEventMetadata *)self ancId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ANCSchemaANCClientEventMetadata *)self requestId];
+  requestId = [(ANCSchemaANCClientEventMetadata *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(ANCSchemaANCClientEventMetadata *)self requestId];
+    requestId2 = [(ANCSchemaANCClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ANCSchemaANCClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ANCSchemaANCClientEventMetadata *)self ancId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  ancId = [(ANCSchemaANCClientEventMetadata *)self ancId];
+  v7 = [ancId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ANCSchemaANCClientEventMetadata *)self deleteAncId];
   }
 
-  v9 = [(ANCSchemaANCClientEventMetadata *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(ANCSchemaANCClientEventMetadata *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ANCSchemaANCClientEventMetadata *)self deleteRequestId];
   }

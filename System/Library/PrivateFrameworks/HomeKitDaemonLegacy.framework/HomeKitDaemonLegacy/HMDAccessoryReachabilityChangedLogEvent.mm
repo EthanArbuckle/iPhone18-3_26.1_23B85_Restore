@@ -1,40 +1,40 @@
 @interface HMDAccessoryReachabilityChangedLogEvent
 - (HMDAccessoryReachabilityChangedLogEvent)init;
 - (NSDictionary)coreAnalyticsEventDictionary;
-- (id)__initWithReachable:(BOOL)a3 changed:(BOOL)a4 duration:(double)a5 accessory:(id)a6 transportReport:(id)a7;
+- (id)__initWithReachable:(BOOL)reachable changed:(BOOL)changed duration:(double)duration accessory:(id)accessory transportReport:(id)report;
 @end
 
 @implementation HMDAccessoryReachabilityChangedLogEvent
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCABB0];
   [(HMDAccessoryReachabilityChangedLogEvent *)self duration];
   v6 = [v4 numberWithInteger:v5];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryReachabilityChangedLogEvent accessoryBatteryPowered](self, "accessoryBatteryPowered")}];
-  [v3 setObject:v7 forKeyedSubscript:@"accessoryBatteryPowered"];
+  [dictionary setObject:v7 forKeyedSubscript:@"accessoryBatteryPowered"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryReachabilityChangedLogEvent accessoryBridged](self, "accessoryBridged")}];
-  [v3 setObject:v8 forKeyedSubscript:@"accessoryBridged"];
+  [dictionary setObject:v8 forKeyedSubscript:@"accessoryBridged"];
 
-  v9 = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryCategory];
-  [v3 setObject:v9 forKeyedSubscript:@"accessoryCategory"];
+  accessoryCategory = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryCategory];
+  [dictionary setObject:accessoryCategory forKeyedSubscript:@"accessoryCategory"];
 
-  v10 = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryFirmwareVersion];
-  [v3 setObject:v10 forKeyedSubscript:@"accessoryFirmwareVersion"];
+  accessoryFirmwareVersion = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryFirmwareVersion];
+  [dictionary setObject:accessoryFirmwareVersion forKeyedSubscript:@"accessoryFirmwareVersion"];
 
-  v11 = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryManufacturer];
-  [v3 setObject:v11 forKeyedSubscript:@"accessoryManufacturer"];
+  accessoryManufacturer = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryManufacturer];
+  [dictionary setObject:accessoryManufacturer forKeyedSubscript:@"accessoryManufacturer"];
 
-  v12 = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryModel];
-  [v3 setObject:v12 forKeyedSubscript:@"accessoryModel"];
+  accessoryModel = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryModel];
+  [dictionary setObject:accessoryModel forKeyedSubscript:@"accessoryModel"];
 
-  v13 = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryNumber];
-  [v3 setObject:v13 forKeyedSubscript:@"accessoryNumber"];
+  accessoryNumber = [(HMDAccessoryReachabilityChangedLogEvent *)self accessoryNumber];
+  [dictionary setObject:accessoryNumber forKeyedSubscript:@"accessoryNumber"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryReachabilityChangedLogEvent batteryLow](self, "batteryLow")}];
-  [v3 setObject:v14 forKeyedSubscript:@"batteryLow"];
+  [dictionary setObject:v14 forKeyedSubscript:@"batteryLow"];
 
   if ([(HMDAccessoryReachabilityChangedLogEvent *)self changed])
   {
@@ -46,31 +46,31 @@
     v15 = &unk_286627DF0;
   }
 
-  [v3 setObject:v15 forKeyedSubscript:@"changeCount"];
-  [v3 setObject:v6 forKeyedSubscript:@"duration"];
+  [dictionary setObject:v15 forKeyedSubscript:@"changeCount"];
+  [dictionary setObject:v6 forKeyedSubscript:@"duration"];
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
-  v18 = [v16 numberWithBool:{objc_msgSend(v17, "hasAdvertisement")}];
-  [v3 setObject:v18 forKeyedSubscript:@"hasAdvertisement"];
+  transportReport = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
+  v18 = [v16 numberWithBool:{objc_msgSend(transportReport, "hasAdvertisement")}];
+  [dictionary setObject:v18 forKeyedSubscript:@"hasAdvertisement"];
 
-  v19 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
-  v20 = [v19 protocol];
-  [v3 setObject:v20 forKeyedSubscript:@"protocol"];
+  transportReport2 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
+  protocol = [transportReport2 protocol];
+  [dictionary setObject:protocol forKeyedSubscript:@"protocol"];
 
-  v21 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
-  v22 = [v21 protocolVersion];
-  [v3 setObject:v22 forKeyedSubscript:@"protocolVersion"];
+  transportReport3 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
+  protocolVersion = [transportReport3 protocolVersion];
+  [dictionary setObject:protocolVersion forKeyedSubscript:@"protocolVersion"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryReachabilityChangedLogEvent reachable](self, "reachable")}];
-  [v3 setObject:v23 forKeyedSubscript:@"reachable"];
+  [dictionary setObject:v23 forKeyedSubscript:@"reachable"];
 
-  v24 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
-  v25 = [v24 reason];
-  [v3 setObject:v25 forKeyedSubscript:@"reason"];
+  transportReport4 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
+  reason = [transportReport4 reason];
+  [dictionary setObject:reason forKeyedSubscript:@"reason"];
 
-  v26 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
-  v27 = [v26 linkType];
-  [v3 setObject:v27 forKeyedSubscript:@"transport"];
+  transportReport5 = [(HMDAccessoryReachabilityChangedLogEvent *)self transportReport];
+  linkType = [transportReport5 linkType];
+  [dictionary setObject:linkType forKeyedSubscript:@"transport"];
 
   if ([(HMDAccessoryReachabilityChangedLogEvent *)self reachable])
   {
@@ -82,49 +82,49 @@
     v28 = @"reachableDuration";
   }
 
-  [v3 setObject:v6 forKeyedSubscript:v28];
-  v29 = [v3 copy];
+  [dictionary setObject:v6 forKeyedSubscript:v28];
+  v29 = [dictionary copy];
 
   return v29;
 }
 
-- (id)__initWithReachable:(BOOL)a3 changed:(BOOL)a4 duration:(double)a5 accessory:(id)a6 transportReport:(id)a7
+- (id)__initWithReachable:(BOOL)reachable changed:(BOOL)changed duration:(double)duration accessory:(id)accessory transportReport:(id)report
 {
-  v12 = a6;
-  v13 = a7;
+  accessoryCopy = accessory;
+  reportCopy = report;
   v28.receiver = self;
   v28.super_class = HMDAccessoryReachabilityChangedLogEvent;
   v14 = [(HMMLogEvent *)&v28 init];
   v15 = v14;
   if (v14)
   {
-    v14->_reachable = a3;
-    v14->_changed = a4;
-    v14->_duration = a5;
-    v14->_accessoryBridged = [v12 isPrimary] ^ 1;
-    v15->_accessoryBatteryPowered = [v12 hasBattery];
+    v14->_reachable = reachable;
+    v14->_changed = changed;
+    v14->_duration = duration;
+    v14->_accessoryBridged = [accessoryCopy isPrimary] ^ 1;
+    v15->_accessoryBatteryPowered = [accessoryCopy hasBattery];
     v15->_batteryLow = 0;
-    objc_storeStrong(&v15->_transportReport, a7);
-    v16 = [v12 metricLoggingVendorDetails];
-    v17 = [v16 model];
+    objc_storeStrong(&v15->_transportReport, report);
+    metricLoggingVendorDetails = [accessoryCopy metricLoggingVendorDetails];
+    model = [metricLoggingVendorDetails model];
     accessoryModel = v15->_accessoryModel;
-    v15->_accessoryModel = v17;
+    v15->_accessoryModel = model;
 
-    v19 = [v16 manufacturer];
+    manufacturer = [metricLoggingVendorDetails manufacturer];
     accessoryManufacturer = v15->_accessoryManufacturer;
-    v15->_accessoryManufacturer = v19;
+    v15->_accessoryManufacturer = manufacturer;
 
-    v21 = [v16 category];
+    category = [metricLoggingVendorDetails category];
     accessoryCategory = v15->_accessoryCategory;
-    v15->_accessoryCategory = v21;
+    v15->_accessoryCategory = category;
 
-    v23 = [v16 firmwareVersion];
+    firmwareVersion = [metricLoggingVendorDetails firmwareVersion];
     accessoryFirmwareVersion = v15->_accessoryFirmwareVersion;
-    v15->_accessoryFirmwareVersion = v23;
+    v15->_accessoryFirmwareVersion = firmwareVersion;
 
-    v25 = [v16 differentiationNumber];
+    differentiationNumber = [metricLoggingVendorDetails differentiationNumber];
     accessoryNumber = v15->_accessoryNumber;
-    v15->_accessoryNumber = v25;
+    v15->_accessoryNumber = differentiationNumber;
   }
 
   return v15;

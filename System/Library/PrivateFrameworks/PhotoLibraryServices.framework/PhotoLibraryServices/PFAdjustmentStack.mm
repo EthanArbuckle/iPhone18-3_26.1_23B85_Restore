@@ -1,21 +1,21 @@
 @interface PFAdjustmentStack
-+ (BOOL)isValidEnvelopeDictionary:(id)a3 errors:(id)a4;
++ (BOOL)isValidEnvelopeDictionary:(id)dictionary errors:(id)errors;
 - (PFAdjustmentStack)init;
-- (PFAdjustmentStack)initWithAdjustments:(id)a3;
-- (PFAdjustmentStack)initWithEnvelopeDictionary:(id)a3;
-- (id)adjustmentsWithIdentifier:(id)a3;
+- (PFAdjustmentStack)initWithAdjustments:(id)adjustments;
+- (PFAdjustmentStack)initWithEnvelopeDictionary:(id)dictionary;
+- (id)adjustmentsWithIdentifier:(id)identifier;
 - (id)envelopeDictionary;
-- (id)firstAdjustmentWithIdentifier:(id)a3;
+- (id)firstAdjustmentWithIdentifier:(id)identifier;
 @end
 
 @implementation PFAdjustmentStack
 
-- (id)adjustmentsWithIdentifier:(id)a3
+- (id)adjustmentsWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
-  if (v4)
+  if (identifierCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -37,8 +37,8 @@
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          if ([v12 isEqual:v4])
+          identifier = [v11 identifier];
+          if ([identifier isEqual:identifierCopy])
           {
             [v5 addObject:v11];
           }
@@ -56,11 +56,11 @@
   return v13;
 }
 
-- (id)firstAdjustmentWithIdentifier:(id)a3
+- (id)firstAdjustmentWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v14 = 0u;
     v15 = 0u;
@@ -81,8 +81,8 @@
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
-          v10 = [v9 identifier];
-          if ([v10 isEqual:v4])
+          identifier = [v9 identifier];
+          if ([identifier isEqual:identifierCopy])
           {
             v6 = v9;
 
@@ -111,10 +111,10 @@ LABEL_12:
   return v6;
 }
 
-- (PFAdjustmentStack)initWithAdjustments:(id)a3
+- (PFAdjustmentStack)initWithAdjustments:(id)adjustments
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  adjustmentsCopy = adjustments;
   v5 = [(PFAdjustmentStack *)self init];
   if (v5)
   {
@@ -123,13 +123,13 @@ LABEL_12:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v4;
-    v7 = v4;
+    v21 = adjustmentsCopy;
+    v7 = adjustmentsCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
-      v10 = 0;
+      orderedSet = 0;
       v11 = *v23;
       do
       {
@@ -142,17 +142,17 @@ LABEL_12:
 
           v13 = *(*(&v22 + 1) + 8 * i);
           [v6 addObject:v13];
-          v14 = [v13 maskUUID];
+          maskUUID = [v13 maskUUID];
 
-          if (v14)
+          if (maskUUID)
           {
-            if (!v10)
+            if (!orderedSet)
             {
-              v10 = [MEMORY[0x1E695DFA0] orderedSet];
+              orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
             }
 
-            v15 = [v13 maskUUID];
-            [v10 addObject:v15];
+            maskUUID2 = [v13 maskUUID];
+            [orderedSet addObject:maskUUID2];
           }
         }
 
@@ -164,21 +164,21 @@ LABEL_12:
 
     else
     {
-      v10 = 0;
+      orderedSet = 0;
     }
 
     v16 = [MEMORY[0x1E695DEC8] arrayWithArray:v6];
     adjustments = v5->_adjustments;
     v5->_adjustments = v16;
 
-    if (v10)
+    if (orderedSet)
     {
-      v18 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:v10];
+      v18 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:orderedSet];
       maskUUIDs = v5->_maskUUIDs;
       v5->_maskUUIDs = v18;
     }
 
-    v4 = v21;
+    adjustmentsCopy = v21;
   }
 
   return v5;
@@ -224,8 +224,8 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) archiveDictionary];
-        [v3 addObject:v9];
+        archiveDictionary = [*(*(&v12 + 1) + 8 * i) archiveDictionary];
+        [v3 addObject:archiveDictionary];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -234,28 +234,28 @@ LABEL_12:
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  [v10 setObject:&unk_1F0FBEDA0 forKeyedSubscript:PFAdjustmentEnvelopeEnvelopeVersionKey];
-  [v10 setObject:v3 forKeyedSubscript:PFAdjustmentEnvelopeAdjustmentsKey];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F0FBEDA0 forKeyedSubscript:PFAdjustmentEnvelopeEnvelopeVersionKey];
+  [dictionary setObject:v3 forKeyedSubscript:PFAdjustmentEnvelopeAdjustmentsKey];
 
-  return v10;
+  return dictionary;
 }
 
-- (PFAdjustmentStack)initWithEnvelopeDictionary:(id)a3
+- (PFAdjustmentStack)initWithEnvelopeDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v28.receiver = self;
     v28.super_class = PFAdjustmentStack;
     v5 = [(PFAdjustmentStack *)&v28 init];
     if (v5)
     {
-      v23 = v4;
-      v6 = [v4 objectForKeyedSubscript:PFAdjustmentEnvelopeAdjustmentsKey];
-      v7 = [MEMORY[0x1E695DF70] array];
-      v8 = [MEMORY[0x1E695DFA0] orderedSet];
+      v23 = dictionaryCopy;
+      v6 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentEnvelopeAdjustmentsKey];
+      array = [MEMORY[0x1E695DF70] array];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -285,11 +285,11 @@ LABEL_12:
             }
 
             v15 = v14;
-            [v7 addObject:v14];
-            v16 = [(PFAdjustment *)v15 maskUUID];
-            if (v16)
+            [array addObject:v14];
+            maskUUID = [(PFAdjustment *)v15 maskUUID];
+            if (maskUUID)
             {
-              [v8 addObject:v16];
+              [orderedSet addObject:maskUUID];
             }
           }
 
@@ -303,46 +303,46 @@ LABEL_12:
         }
       }
 
-      v17 = [MEMORY[0x1E695DEC8] arrayWithArray:v7];
+      v17 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
       adjustments = v5->_adjustments;
       v5->_adjustments = v17;
 
-      if (v8)
+      if (orderedSet)
       {
-        v19 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:v8];
+        v19 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:orderedSet];
         maskUUIDs = v5->_maskUUIDs;
         v5->_maskUUIDs = v19;
 LABEL_17:
-        v4 = v23;
+        dictionaryCopy = v23;
       }
 
       else
       {
-        v4 = v23;
+        dictionaryCopy = v23;
       }
     }
 
     self = v5;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"envelope must not be nil"];
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-+ (BOOL)isValidEnvelopeDictionary:(id)a3 errors:(id)a4
++ (BOOL)isValidEnvelopeDictionary:(id)dictionary errors:(id)errors
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([PFAdjustmentSerialization validateArchive:v5 containsEntryWithKey:PFAdjustmentEnvelopeEnvelopeVersionKey ofType:objc_opt_class() errors:v6])
+  dictionaryCopy = dictionary;
+  errorsCopy = errors;
+  if ([PFAdjustmentSerialization validateArchive:dictionaryCopy containsEntryWithKey:PFAdjustmentEnvelopeEnvelopeVersionKey ofType:objc_opt_class() errors:errorsCopy])
   {
-    v7 = [v5 objectForKeyedSubscript:PFAdjustmentEnvelopeEnvelopeVersionKey];
+    v7 = [dictionaryCopy objectForKeyedSubscript:PFAdjustmentEnvelopeEnvelopeVersionKey];
     if ([v7 unsignedIntegerValue] != 1)
     {
       v15 = MEMORY[0x1E696ABC0];
@@ -350,7 +350,7 @@ LABEL_17:
       v24[0] = v7;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v16 = [v15 errorWithDomain:@"PFAdjustmentErrorDomain" code:4 userInfo:v8];
-      [v6 addObject:v16];
+      [errorsCopy addObject:v16];
 
       v14 = 0;
 LABEL_20:
@@ -358,9 +358,9 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if ([PFAdjustmentSerialization validateArchive:v5 containsEntryWithKey:PFAdjustmentEnvelopeAdjustmentsKey ofType:objc_opt_class() errors:v6])
+    if ([PFAdjustmentSerialization validateArchive:dictionaryCopy containsEntryWithKey:PFAdjustmentEnvelopeAdjustmentsKey ofType:objc_opt_class() errors:errorsCopy])
     {
-      [v5 objectForKeyedSubscript:PFAdjustmentEnvelopeAdjustmentsKey];
+      [dictionaryCopy objectForKeyedSubscript:PFAdjustmentEnvelopeAdjustmentsKey];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -380,7 +380,7 @@ LABEL_20:
             }
 
             v13 = *(*(&v18 + 1) + 8 * i);
-            if (![PFAdjustmentSerialization validateValue:v13 isOfType:objc_opt_class() errors:v6, v18]|| ![PFAdjustment isValidArchiveDictionary:v13 errors:v6])
+            if (![PFAdjustmentSerialization validateValue:v13 isOfType:objc_opt_class() errors:errorsCopy, v18]|| ![PFAdjustment isValidArchiveDictionary:v13 errors:errorsCopy])
             {
               v14 = 0;
               goto LABEL_19;

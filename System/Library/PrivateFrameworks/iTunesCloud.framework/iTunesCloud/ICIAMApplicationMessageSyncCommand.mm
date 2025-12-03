@@ -1,27 +1,27 @@
 @interface ICIAMApplicationMessageSyncCommand
-- (BOOL)isEqual:(id)a3;
-- (id)commandTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)commandTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCommandType:(id)a3;
+- (int)StringAsCommandType:(id)type;
 - (int)commandType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCommandType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCommandType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMApplicationMessageSyncCommand
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[7] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[7] & 2) != 0)
   {
-    self->_commandType = v4[6];
+    self->_commandType = fromCopy[6];
     *&self->_has |= 2u;
   }
 
@@ -86,31 +86,31 @@ LABEL_9:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_commandType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_commandType != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   applicationMessage = self->_applicationMessage;
-  if (applicationMessage | *(v4 + 2))
+  if (applicationMessage | *(equalCopy + 2))
   {
     if (![(ICIAMApplicationMessage *)applicationMessage isEqual:?])
     {
@@ -120,13 +120,13 @@ LABEL_14:
     }
 
     has = self->_has;
-    v6 = *(v4 + 28);
+    v6 = *(equalCopy + 28);
   }
 
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_commandSerialNumber != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_commandSerialNumber != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
@@ -139,9 +139,9 @@ LABEL_15:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -149,7 +149,7 @@ LABEL_15:
     *(v5 + 28) |= 2u;
   }
 
-  v7 = [(ICIAMApplicationMessage *)self->_applicationMessage copyWithZone:a3];
+  v7 = [(ICIAMApplicationMessage *)self->_applicationMessage copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -162,55 +162,55 @@ LABEL_15:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[6] = self->_commandType;
-    *(v4 + 28) |= 2u;
+    toCopy[6] = self->_commandType;
+    *(toCopy + 28) |= 2u;
   }
 
   if (self->_applicationMessage)
   {
-    v5 = v4;
-    [v4 setApplicationMessage:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setApplicationMessage:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_commandSerialNumber;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = self->_commandSerialNumber;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_applicationMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     commandType = self->_commandType;
@@ -224,23 +224,23 @@ LABEL_15:
       v5 = off_1E7BF4E98[commandType];
     }
 
-    [v3 setObject:v5 forKey:@"commandType"];
+    [dictionary setObject:v5 forKey:@"commandType"];
   }
 
   applicationMessage = self->_applicationMessage;
   if (applicationMessage)
   {
-    v7 = [(ICIAMApplicationMessage *)applicationMessage dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"applicationMessage"];
+    dictionaryRepresentation = [(ICIAMApplicationMessage *)applicationMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"applicationMessage"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_commandSerialNumber];
-    [v3 setObject:v8 forKey:@"commandSerialNumber"];
+    [dictionary setObject:v8 forKey:@"commandSerialNumber"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -249,31 +249,31 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = ICIAMApplicationMessageSyncCommand;
   v4 = [(ICIAMApplicationMessageSyncCommand *)&v8 description];
-  v5 = [(ICIAMApplicationMessageSyncCommand *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMApplicationMessageSyncCommand *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsCommandType:(id)a3
+- (int)StringAsCommandType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Add"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Add"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Remove"])
+  else if ([typeCopy isEqualToString:@"Remove"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RemoveAll"])
+  else if ([typeCopy isEqualToString:@"RemoveAll"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Reset"])
+  else if ([typeCopy isEqualToString:@"Reset"])
   {
     v4 = 3;
   }
@@ -286,24 +286,24 @@ LABEL_15:
   return v4;
 }
 
-- (id)commandTypeAsString:(int)a3
+- (id)commandTypeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7BF4E98[a3];
+    v4 = off_1E7BF4E98[string];
   }
 
   return v4;
 }
 
-- (void)setHasCommandType:(BOOL)a3
+- (void)setHasCommandType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

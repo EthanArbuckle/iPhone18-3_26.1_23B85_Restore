@@ -1,17 +1,17 @@
 @interface ADSecurityService
 + (id)sharedService;
 - (ADSecurityService)init;
-- (void)_accountDidChange:(id)a3;
-- (void)_dispatchCallbackForProcessedData:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)_dispatchCallbackForProcessedDataMap:(id)a3 errorMap:(id)a4 completion:(id)a5;
-- (void)_retrieveKeyAndSaltWithCompletion:(id)a3;
-- (void)internalAuthAppleConnectServiceTicket:(id)a3;
-- (void)internalAuthSessionToken:(id)a3;
-- (void)processData:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5;
-- (void)processDataMap:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5;
-- (void)setInternalAuthAppleConnectServiceTicket:(id)a3 completion:(id)a4;
-- (void)setInternalAuthSessionToken:(id)a3 completion:(id)a4;
-- (void)setKeychainValue:(id)a3 forKey:(id)a4 accountIdentifier:(id)a5 completion:(id)a6;
+- (void)_accountDidChange:(id)change;
+- (void)_dispatchCallbackForProcessedData:(id)data error:(id)error completion:(id)completion;
+- (void)_dispatchCallbackForProcessedDataMap:(id)map errorMap:(id)errorMap completion:(id)completion;
+- (void)_retrieveKeyAndSaltWithCompletion:(id)completion;
+- (void)internalAuthAppleConnectServiceTicket:(id)ticket;
+- (void)internalAuthSessionToken:(id)token;
+- (void)processData:(id)data usingProcedure:(int64_t)procedure completion:(id)completion;
+- (void)processDataMap:(id)map usingProcedure:(int64_t)procedure completion:(id)completion;
+- (void)setInternalAuthAppleConnectServiceTicket:(id)ticket completion:(id)completion;
+- (void)setInternalAuthSessionToken:(id)token completion:(id)completion;
+- (void)setKeychainValue:(id)value forKey:(id)key accountIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation ADSecurityService
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (void)_accountDidChange:(id)a3
+- (void)_accountDidChange:(id)change
 {
   v3 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -43,181 +43,181 @@
   [v4 postNotificationName:@"ADSecurityServiceEncryptionKeyDidChangeNotification" object:0];
 }
 
-- (void)_retrieveKeyAndSaltWithCompletion:(id)a3
+- (void)_retrieveKeyAndSaltWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = +[ADCommandCenter sharedCommandCenter];
-    v6 = [v5 _queue];
+    _queue = [v5 _queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001C05E8;
     block[3] = &unk_10051E088;
     v9 = v5;
-    v10 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = completionCopy;
     v7 = v5;
-    dispatch_async(v6, block);
+    dispatch_async(_queue, block);
   }
 }
 
-- (void)_dispatchCallbackForProcessedDataMap:(id)a3 errorMap:(id)a4 completion:(id)a5
+- (void)_dispatchCallbackForProcessedDataMap:(id)map errorMap:(id)errorMap completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  mapCopy = map;
+  errorMapCopy = errorMap;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001C0878;
     block[3] = &unk_10051E088;
-    v16 = v10;
-    v14 = v8;
-    v15 = v9;
+    v16 = completionCopy;
+    v14 = mapCopy;
+    v15 = errorMapCopy;
     dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)_dispatchCallbackForProcessedData:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_dispatchCallbackForProcessedData:(id)data error:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  dataCopy = data;
+  errorCopy = error;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001C0974;
     block[3] = &unk_10051E088;
-    v16 = v10;
-    v14 = v8;
-    v15 = v9;
+    v16 = completionCopy;
+    v14 = dataCopy;
+    v15 = errorCopy;
     dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)internalAuthSessionToken:(id)a3
+- (void)internalAuthSessionToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[ADPreferences sharedPreferences];
-  v6 = [v5 internalAuthSessionToken];
+  internalAuthSessionToken = [v5 internalAuthSessionToken];
 
-  if (v4)
+  if (tokenCopy)
   {
     callbackQueue = self->_callbackQueue;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1001C0A68;
     v8[3] = &unk_10051E038;
-    v10 = v4;
-    v9 = v6;
+    v10 = tokenCopy;
+    v9 = internalAuthSessionToken;
     dispatch_async(callbackQueue, v8);
   }
 }
 
-- (void)internalAuthAppleConnectServiceTicket:(id)a3
+- (void)internalAuthAppleConnectServiceTicket:(id)ticket
 {
-  v4 = a3;
+  ticketCopy = ticket;
   v5 = +[ADPreferences sharedPreferences];
-  v6 = [v5 internalAuthAppleConnectServiceTicket];
+  internalAuthAppleConnectServiceTicket = [v5 internalAuthAppleConnectServiceTicket];
 
-  if (v4)
+  if (ticketCopy)
   {
     callbackQueue = self->_callbackQueue;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1001C0B5C;
     v8[3] = &unk_10051E038;
-    v10 = v4;
-    v9 = v6;
+    v10 = ticketCopy;
+    v9 = internalAuthAppleConnectServiceTicket;
     dispatch_async(callbackQueue, v8);
   }
 }
 
-- (void)setInternalAuthSessionToken:(id)a3 completion:(id)a4
+- (void)setInternalAuthSessionToken:(id)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
   v8 = +[ADPreferences sharedPreferences];
-  [v8 setInternalAuthSessionToken:v7];
+  [v8 setInternalAuthSessionToken:tokenCopy];
 
-  if (v6)
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001C0C4C;
     block[3] = &unk_10051CF58;
-    v11 = v6;
+    v11 = completionCopy;
     dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)setInternalAuthAppleConnectServiceTicket:(id)a3 completion:(id)a4
+- (void)setInternalAuthAppleConnectServiceTicket:(id)ticket completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  ticketCopy = ticket;
   v8 = +[ADPreferences sharedPreferences];
-  [v8 setInternalAuthAppleConnectServiceTicket:v7];
+  [v8 setInternalAuthAppleConnectServiceTicket:ticketCopy];
 
-  if (v6)
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001C0D38;
     block[3] = &unk_10051CF58;
-    v11 = v6;
+    v11 = completionCopy;
     dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)setKeychainValue:(id)a3 forKey:(id)a4 accountIdentifier:(id)a5 completion:(id)a6
+- (void)setKeychainValue:(id)value forKey:(id)key accountIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  keyCopy = key;
+  identifierCopy = identifier;
+  completionCopy = completion;
   keychainQueue = self->_keychainQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C0E5C;
   block[3] = &unk_10051D2A0;
-  v20 = v10;
-  v21 = v12;
-  v23 = self;
-  v24 = v13;
-  v22 = v11;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
-  v18 = v10;
+  v20 = valueCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
+  v24 = completionCopy;
+  v22 = keyCopy;
+  v15 = completionCopy;
+  v16 = keyCopy;
+  v17 = identifierCopy;
+  v18 = valueCopy;
   dispatch_async(keychainQueue, block);
 }
 
-- (void)processDataMap:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5
+- (void)processDataMap:(id)map usingProcedure:(int64_t)procedure completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  mapCopy = map;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (mapCopy)
     {
       procedureQueue = self->_procedureQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1001C1118;
       block[3] = &unk_10051C0D8;
-      v17 = a4;
-      v14 = v8;
-      v15 = self;
-      v16 = v9;
+      procedureCopy = procedure;
+      v14 = mapCopy;
+      selfCopy = self;
+      v16 = completionCopy;
       dispatch_async(procedureQueue, block);
 
       v11 = v14;
@@ -229,35 +229,35 @@
       v11 = [AFError errorWithCode:1603];
       v19 = v11;
       v12 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-      [(ADSecurityService *)self _dispatchCallbackForProcessedDataMap:0 errorMap:v12 completion:v9];
+      [(ADSecurityService *)self _dispatchCallbackForProcessedDataMap:0 errorMap:v12 completion:completionCopy];
     }
   }
 }
 
-- (void)processData:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5
+- (void)processData:(id)data usingProcedure:(int64_t)procedure completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  dataCopy = data;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (dataCopy)
     {
       procedureQueue = self->_procedureQueue;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1001C1C3C;
       v12[3] = &unk_10051C0D8;
-      v16 = a4;
-      v13 = v8;
-      v14 = self;
-      v15 = v9;
+      procedureCopy = procedure;
+      v13 = dataCopy;
+      selfCopy = self;
+      v15 = completionCopy;
       dispatch_async(procedureQueue, v12);
     }
 
     else
     {
       v11 = [AFError errorWithCode:1603];
-      [(ADSecurityService *)self _dispatchCallbackForProcessedData:0 error:v11 completion:v9];
+      [(ADSecurityService *)self _dispatchCallbackForProcessedData:0 error:v11 completion:completionCopy];
     }
   }
 }

@@ -1,44 +1,44 @@
 @interface NavigationBarContentView
-- ($F24F406B2B787EFB06265DBA3D28CBD5)titleViewLargeTitleHeightRange:(id)a3;
-- (BOOL)_item:(id)a3 addSymbolEffect:(id)a4 options:(id)a5 animated:(BOOL)a6;
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5;
-- (BOOL)_item:(id)a3 removeSymbolEffectOfType:(id)a4 options:(id)a5 animated:(BOOL)a6;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)titleViewLargeTitleHeightRange:(id)range;
+- (BOOL)_item:(id)_item addSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated;
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated;
+- (BOOL)_item:(id)_item removeSymbolEffectOfType:(id)type options:(id)options animated:(BOOL)animated;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)compactMetrics;
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
 - (NSString)description;
-- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)a3 compact:(BOOL)a4;
+- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)button compact:(BOOL)compact;
 - (UIEdgeInsets)layoutMargins;
-- (_TtC5UIKit24NavigationBarContentView)initWithFrame:(CGRect)a3;
-- (double)titleViewContentBaseHeight:(id)a3;
-- (double)titleViewContentBaselineOffsetFromTop:(id)a3;
-- (double)titleViewFloatingTabBarHeight:(id)a3;
-- (id)_contextMenuInteractionForItem:(id)a3;
-- (id)_traitCollectionForChildEnvironment:(id)a3;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)tintColorForButtonBarButton:(id)a3;
-- (id)titleViewBackButtonMenu:(id)a3;
-- (unint64_t)edgesPaddingBarButtonItem:(id)a3;
-- (void)__backButtonAction:(id)a3;
-- (void)_clippedSafeAreaCornerInsetsDidChangeFromOldCornerInsets:(id)a3;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5;
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3;
+- (_TtC5UIKit24NavigationBarContentView)initWithFrame:(CGRect)frame;
+- (double)titleViewContentBaseHeight:(id)height;
+- (double)titleViewContentBaselineOffsetFromTop:(id)top;
+- (double)titleViewFloatingTabBarHeight:(id)height;
+- (id)_contextMenuInteractionForItem:(id)item;
+- (id)_traitCollectionForChildEnvironment:(id)environment;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)tintColorForButtonBarButton:(id)button;
+- (id)titleViewBackButtonMenu:(id)menu;
+- (unint64_t)edgesPaddingBarButtonItem:(id)item;
+- (void)__backButtonAction:(id)action;
+- (void)_clippedSafeAreaCornerInsetsDidChangeFromOldCornerInsets:(id)insets;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options;
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets;
 - (void)backButtonTitleDidChange;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)setBackButtonMaximumWidth:(double)a3;
-- (void)setBackIndicatorImage:(id)a3;
+- (void)setBackButtonMaximumWidth:(double)width;
+- (void)setBackIndicatorImage:(id)image;
 - (void)tintColorDidChange;
-- (void)titleView:(id)a3 needsUpdatedContentOverlayRects:(id)a4;
-- (void)titleViewChangedHeight:(id)a3;
-- (void)titleViewChangedLayout:(id)a3;
-- (void)titleViewChangedPreferredDisplaySize:(id)a3;
-- (void)titleViewChangedStandardDisplayItems:(id)a3;
-- (void)titleViewChangedTabBarSizingDisposition:(id)a3;
+- (void)titleView:(id)view needsUpdatedContentOverlayRects:(id)rects;
+- (void)titleViewChangedHeight:(id)height;
+- (void)titleViewChangedLayout:(id)layout;
+- (void)titleViewChangedPreferredDisplaySize:(id)size;
+- (void)titleViewChangedStandardDisplayItems:(id)items;
+- (void)titleViewChangedTabBarSizingDisposition:(id)disposition;
 - (void)updateProperties;
 @end
 
@@ -46,23 +46,23 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B496C4();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B4E2A4();
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  layerCopy = layer;
   v5 = v6.receiver;
-  [(UIView *)&v6 layoutSublayersOfLayer:v4];
+  [(UIView *)&v6 layoutSublayersOfLayer:layerCopy];
   swift_beginAccess();
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -72,22 +72,22 @@
   swift_endAccess();
 }
 
-- (id)_traitCollectionForChildEnvironment:(id)a3
+- (id)_traitCollectionForChildEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_188B51D40(a3);
+  selfCopy = self;
+  v6 = sub_188B51D40(environment);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v11.receiver = self;
   v11.super_class = swift_getObjectType();
   v7 = v11.receiver;
@@ -99,11 +99,11 @@
   }
 }
 
-- (id)tintColorForButtonBarButton:(id)a3
+- (id)tintColorForButtonBarButton:(id)button
 {
-  v3 = [objc_opt_self() tintColor];
+  tintColor = [objc_opt_self() tintColor];
 
-  return v3;
+  return tintColor;
 }
 
 - (BOOL)compactMetrics
@@ -122,7 +122,7 @@
   return self;
 }
 
-- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)a3 compact:(BOOL)a4
+- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)button compact:(BOOL)compact
 {
   v4 = 0.0;
   v5 = 0.0;
@@ -135,7 +135,7 @@
   return result;
 }
 
-- (unint64_t)edgesPaddingBarButtonItem:(id)a3
+- (unint64_t)edgesPaddingBarButtonItem:(id)item
 {
   result = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_visualProvider);
   if (result)
@@ -146,28 +146,28 @@
   return result;
 }
 
-- (void)titleView:(id)a3 needsUpdatedContentOverlayRects:(id)a4
+- (void)titleView:(id)view needsUpdatedContentOverlayRects:(id)rects
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_188CD7114(v6, v7);
+  viewCopy = view;
+  rectsCopy = rects;
+  selfCopy = self;
+  sub_188CD7114(viewCopy, rectsCopy);
 }
 
-- (void)titleViewChangedHeight:(id)a3
+- (void)titleViewChangedHeight:(id)height
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_augmentedTitleViewHost);
   if (v3 && *(v3 + OBJC_IVAR____TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost_augmentedTitleView))
   {
-    v5 = a3;
-    v6 = self;
+    heightCopy = height;
+    selfCopy = self;
     sub_188AEA3E4();
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
@@ -183,21 +183,21 @@
   return 0;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_188EBC4A4(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_188EBC4A4(event, x, y);
 
   return v10;
 }
 
-- (void)__backButtonAction:(id)a3
+- (void)__backButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_188EC201C();
 }
 
@@ -216,11 +216,11 @@
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188EBE658(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188EBE658(viewCopy);
 }
 
 - (UIEdgeInsets)layoutMargins
@@ -243,85 +243,85 @@
   return result;
 }
 
-- (void)_clippedSafeAreaCornerInsetsDidChangeFromOldCornerInsets:(id)a3
+- (void)_clippedSafeAreaCornerInsetsDidChangeFromOldCornerInsets:(id)insets
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(UIView *)&v5 _clippedSafeAreaCornerInsetsDidChangeFromOldCornerInsets:a3.var1];
+  [(UIView *)&v5 _clippedSafeAreaCornerInsetsDidChangeFromOldCornerInsets:insets.var1];
   [v4 setNeedsLayout];
 }
 
-- (void)setBackIndicatorImage:(id)a3
+- (void)setBackIndicatorImage:(id)image
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView__backIndicatorImage);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView__backIndicatorImage) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView__backIndicatorImage) = image;
+  imageCopy = image;
 }
 
-- (void)setBackButtonMaximumWidth:(double)a3
+- (void)setBackButtonMaximumWidth:(double)width
 {
   ObjectType = swift_getObjectType();
-  if (a3 < 0.0)
+  if (width < 0.0)
   {
-    a3 = 0.0;
+    width = 0.0;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = self;
+  selfCopy = self;
   [(_UIBarContentView *)&v8 backButtonMaximumWidth];
-  if (a3 != v7)
+  if (width != v7)
   {
-    *(&v6->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView__backButtonMaximumWidth) = a3;
-    [(UIView *)v6 setNeedsLayout:v8.receiver];
+    *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView__backButtonMaximumWidth) = width;
+    [(UIView *)selfCopy setNeedsLayout:v8.receiver];
   }
 }
 
 - (void)backButtonTitleDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B34820();
 }
 
-- (BOOL)_item:(id)a3 addSymbolEffect:(id)a4 options:(id)a5 animated:(BOOL)a6
+- (BOOL)_item:(id)_item addSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  v14 = sub_188EBF450(v10, v11, v12, a6, &selRef_addSymbolEffect_options_animated_);
+  _itemCopy = _item;
+  effectCopy = effect;
+  optionsCopy = options;
+  selfCopy = self;
+  v14 = sub_188EBF450(_itemCopy, effectCopy, optionsCopy, animated, &selRef_addSymbolEffect_options_animated_);
 
   return v14;
 }
 
-- (BOOL)_item:(id)a3 removeSymbolEffectOfType:(id)a4 options:(id)a5 animated:(BOOL)a6
+- (BOOL)_item:(id)_item removeSymbolEffectOfType:(id)type options:(id)options animated:(BOOL)animated
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  v14 = sub_188EBF450(v10, v11, v12, a6, &selRef_removeSymbolEffectOfType_options_animated_);
+  _itemCopy = _item;
+  typeCopy = type;
+  optionsCopy = options;
+  selfCopy = self;
+  v14 = sub_188EBF450(_itemCopy, typeCopy, optionsCopy, animated, &selRef_removeSymbolEffectOfType_options_animated_);
 
   return v14;
 }
 
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_188EBF570(v8, v9, a5);
+  _itemCopy = _item;
+  optionsCopy = options;
+  selfCopy = self;
+  v11 = sub_188EBF570(_itemCopy, optionsCopy, animated);
 
   return v11;
 }
 
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options
 {
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_backButtonItem);
   if (v5)
   {
-    v6 = v5 == a3;
+    v6 = v5 == _item;
   }
 
   else
@@ -331,43 +331,43 @@
 
   if (v6)
   {
-    [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_backButton) applyContentTransition:a4 options:a5];
+    [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_backButton) applyContentTransition:transition options:options];
   }
 }
 
-- (id)_contextMenuInteractionForItem:(id)a3
+- (id)_contextMenuInteractionForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 view];
-  if (v4)
+  itemCopy = item;
+  view = [itemCopy view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     objc_opt_self();
-    v6 = swift_dynamicCastObjCClass();
-    if (v6)
+    contextMenuInteraction = swift_dynamicCastObjCClass();
+    if (contextMenuInteraction)
     {
       v7 = v5;
-      v6 = [v6 contextMenuInteraction];
+      contextMenuInteraction = [contextMenuInteraction contextMenuInteraction];
     }
 
     else
     {
-      v7 = v3;
-      v3 = v5;
+      v7 = itemCopy;
+      itemCopy = v5;
     }
   }
 
   else
   {
-    v6 = 0;
+    contextMenuInteraction = 0;
   }
 
-  return v6;
+  return contextMenuInteraction;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_188EBF7C8();
 
   v3 = sub_18A4A7258();
@@ -384,22 +384,22 @@
   sub_188EBFC40();
 }
 
-- (_TtC5UIKit24NavigationBarContentView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit24NavigationBarContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (double)titleViewFloatingTabBarHeight:(id)a3
+- (double)titleViewFloatingTabBarHeight:(id)height
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_188AEA5A0();
 
   return v4;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)titleViewLargeTitleHeightRange:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)titleViewLargeTitleHeightRange:(id)range
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_largeTitleHeightRange);
   v4 = *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_largeTitleHeightRange);
@@ -408,68 +408,68 @@
   return result;
 }
 
-- (double)titleViewContentBaselineOffsetFromTop:(id)a3
+- (double)titleViewContentBaselineOffsetFromTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_188EBFEB4(v4);
+  topCopy = top;
+  selfCopy = self;
+  v6 = sub_188EBFEB4(topCopy);
 
   return v6;
 }
 
-- (double)titleViewContentBaseHeight:(id)a3
+- (double)titleViewContentBaseHeight:(id)height
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_188AECA30();
 
   return v4;
 }
 
-- (void)titleViewChangedTabBarSizingDisposition:(id)a3
+- (void)titleViewChangedTabBarSizingDisposition:(id)disposition
 {
-  v3 = self;
+  selfCopy = self;
   sub_188EBDD14(0);
 }
 
-- (void)titleViewChangedLayout:(id)a3
+- (void)titleViewChangedLayout:(id)layout
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit24NavigationBarContentView_augmentedTitleViewHost);
   if (v3 && *(v3 + OBJC_IVAR____TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost_augmentedTitleView))
   {
-    v5 = a3;
-    v6 = self;
+    layoutCopy = layout;
+    selfCopy = self;
     sub_188AEA3E4();
-    [(UIView *)v6 setNeedsLayout];
+    [(UIView *)selfCopy setNeedsLayout];
   }
 }
 
-- (void)titleViewChangedStandardDisplayItems:(id)a3
+- (void)titleViewChangedStandardDisplayItems:(id)items
 {
-  v4 = a3;
-  v5 = self;
+  itemsCopy = items;
+  selfCopy = self;
   sub_188EC246C();
 }
 
-- (void)titleViewChangedPreferredDisplaySize:(id)a3
+- (void)titleViewChangedPreferredDisplaySize:(id)size
 {
-  v3 = self;
+  selfCopy = self;
   sub_188BEBE14(0);
 }
 
-- (id)titleViewBackButtonMenu:(id)a3
+- (id)titleViewBackButtonMenu:(id)menu
 {
-  v4 = a3;
-  v5 = self;
+  menuCopy = menu;
+  selfCopy = self;
   v6 = sub_188EC2510();
 
   return v6;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   v10 = sub_188EC2608();
 
   return v10;

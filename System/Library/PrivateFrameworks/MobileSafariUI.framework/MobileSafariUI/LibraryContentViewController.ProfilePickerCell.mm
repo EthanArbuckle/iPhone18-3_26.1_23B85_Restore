@@ -1,12 +1,12 @@
 @interface LibraryContentViewController.ProfilePickerCell
-- (_TtCC14MobileSafariUI28LibraryContentViewController17ProfilePickerCell)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtCC14MobileSafariUI28LibraryContentViewController17ProfilePickerCell)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)handleTap;
 @end
 
 @implementation LibraryContentViewController.ProfilePickerCell
 
-- (_TtCC14MobileSafariUI28LibraryContentViewController17ProfilePickerCell)initWithCoder:(id)a3
+- (_TtCC14MobileSafariUI28LibraryContentViewController17ProfilePickerCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtCC14MobileSafariUI28LibraryContentViewController17ProfilePickerCell_profile) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtCC14MobileSafariUI28LibraryContentViewController17ProfilePickerCell_menu) = 0;
@@ -17,21 +17,21 @@
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_2159F8038();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_215A70100();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v12[-1] - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_215A700F0();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_215A700E0();
   v10 = _s17ProfilePickerCellCMa();
-  v13.receiver = v8;
+  v13.receiver = selfCopy;
   v13.super_class = v10;
   [(LibraryContentViewController.ProfilePickerCell *)&v13 _bridgedUpdateConfigurationUsingState:v9];
 

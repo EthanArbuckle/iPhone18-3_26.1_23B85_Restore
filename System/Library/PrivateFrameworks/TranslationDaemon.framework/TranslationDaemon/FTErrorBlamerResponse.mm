@@ -1,18 +1,18 @@
 @interface FTErrorBlamerResponse
-- (FTErrorBlamerResponse)initWithFlatbuffData:(id)a3 root:(const ErrorBlamerResponse *)a4 verify:(BOOL)a5;
+- (FTErrorBlamerResponse)initWithFlatbuffData:(id)data root:(const ErrorBlamerResponse *)root verify:(BOOL)verify;
 - (NSString)blamer_report;
 - (NSString)return_str;
-- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int)return_code;
 @end
 
 @implementation FTErrorBlamerResponse
 
-- (FTErrorBlamerResponse)initWithFlatbuffData:(id)a3 root:(const ErrorBlamerResponse *)a4 verify:(BOOL)a5
+- (FTErrorBlamerResponse)initWithFlatbuffData:(id)data root:(const ErrorBlamerResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTErrorBlamerResponse;
   v10 = [(FTErrorBlamerResponse *)&v25 init];
@@ -21,35 +21,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -136,39 +136,39 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTErrorBlamerResponse *)self return_code];
-  v6 = [(FTErrorBlamerResponse *)self return_str];
-  v7 = v6;
-  if (!v6)
+  return_code = [(FTErrorBlamerResponse *)self return_code];
+  return_str = [(FTErrorBlamerResponse *)self return_str];
+  v7 = return_str;
+  if (!return_str)
   {
-    v6 = &stru_284834138;
+    return_str = &stru_284834138;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)return_str UTF8String];
+  v9 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  v11 = [(FTErrorBlamerResponse *)self blamer_report];
-  v12 = v11;
-  if (!v11)
+  blamer_report = [(FTErrorBlamerResponse *)self blamer_report];
+  v12 = blamer_report;
+  if (!blamer_report)
   {
-    v11 = &stru_284834138;
+    blamer_report = &stru_284834138;
   }
 
-  v13 = [(__CFString *)v11 UTF8String];
-  v14 = strlen(v13);
-  LODWORD(v13) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v13, v14);
+  uTF8String2 = [(__CFString *)blamer_report UTF8String];
+  v14 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v14);
 
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 10);
-  v16 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v13);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 10);
+  v16 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, return_code, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, uTF8String2);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v16 + v15);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v16 + v15);
 }
 
 - (id)flatbuffData

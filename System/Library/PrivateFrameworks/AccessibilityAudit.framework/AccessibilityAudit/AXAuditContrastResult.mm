@@ -23,12 +23,12 @@
 
 - (NSArray)compareColors
 {
-  v3 = [(AXAuditContrastResult *)self textColor];
-  v4 = [(AXAuditContrastResult *)self primaryColor];
-  v5 = [(AXAuditContrastResult *)self secondaryColor];
-  if (v3)
+  textColor = [(AXAuditContrastResult *)self textColor];
+  primaryColor = [(AXAuditContrastResult *)self primaryColor];
+  secondaryColor = [(AXAuditContrastResult *)self secondaryColor];
+  if (textColor)
   {
-    if (!v4)
+    if (!primaryColor)
     {
       v7 = 0;
       v10 = 0;
@@ -36,23 +36,23 @@
       goto LABEL_11;
     }
 
-    v6 = [v3 isEqualToString:v4];
-    v7 = v3;
-    if ((v6 & (v5 != 0)) != 0)
+    v6 = [textColor isEqualToString:primaryColor];
+    v7 = textColor;
+    if ((v6 & (secondaryColor != 0)) != 0)
     {
-      v8 = v5;
+      v8 = secondaryColor;
     }
 
     else
     {
-      v8 = v4;
+      v8 = primaryColor;
     }
   }
 
   else
   {
-    v7 = v4;
-    v8 = v5;
+    v7 = primaryColor;
+    v8 = secondaryColor;
   }
 
   v9 = v8;
@@ -70,20 +70,20 @@ LABEL_11:
 
 - (NSString)summary
 {
-  v3 = [(AXAuditContrastResult *)self classification];
-  if (v3 == 15 || (v4 = 0.0, v3 == 12))
+  classification = [(AXAuditContrastResult *)self classification];
+  if (classification == 15 || (v4 = 0.0, classification == 12))
   {
     [(AXAuditContrastResult *)self fontSize];
     v4 = v5;
   }
 
-  v6 = [(AXAuditContrastResult *)self textColor];
+  textColor = [(AXAuditContrastResult *)self textColor];
 
-  if (v6)
+  if (textColor)
   {
-    v7 = [(AXAuditContrastResult *)self primaryColor];
+    primaryColor = [(AXAuditContrastResult *)self primaryColor];
 
-    if (!v7)
+    if (!primaryColor)
     {
 LABEL_16:
       v13 = 0;
@@ -98,8 +98,8 @@ LABEL_16:
     v8 = @"colorsComparisonFormatter";
   }
 
-  v7 = AXAuditLocString(v8, 0);
-  if (!v7)
+  primaryColor = AXAuditLocString(v8, 0);
+  if (!primaryColor)
   {
     goto LABEL_16;
   }
@@ -114,22 +114,22 @@ LABEL_16:
   v11 = objc_alloc(MEMORY[0x277CCAB68]);
   [(AXAuditContrastResult *)self ratio];
   v13 = [v11 initWithFormat:v9, v12];
-  v14 = [(AXAuditContrastResult *)self compareColors];
-  if ([v14 count] == 2)
+  compareColors = [(AXAuditContrastResult *)self compareColors];
+  if ([compareColors count] == 2)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v14 objectAtIndexedSubscript:0];
-    v17 = [v14 objectAtIndexedSubscript:1];
-    v18 = [v15 stringWithFormat:v7, v16, v17];
+    v16 = [compareColors objectAtIndexedSubscript:0];
+    v17 = [compareColors objectAtIndexedSubscript:1];
+    v18 = [v15 stringWithFormat:primaryColor, v16, v17];
 
-    v7 = v18;
+    primaryColor = v18;
   }
 
   if (v10)
   {
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:v10, *&v4];
 
-    [v13 appendString:v7];
+    [v13 appendString:primaryColor];
     if (v19)
     {
       [v13 appendString:v19];
@@ -138,7 +138,7 @@ LABEL_16:
 
   else
   {
-    [v13 appendString:v7];
+    [v13 appendString:primaryColor];
   }
 
 LABEL_19:
@@ -149,36 +149,36 @@ LABEL_19:
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(AXAuditContrastResult *)self classification];
+  classification = [(AXAuditContrastResult *)self classification];
   v16.receiver = self;
   v16.super_class = AXAuditContrastResult;
   v5 = [(AXAuditContrastResult *)&v16 description];
-  [v3 appendFormat:@"[%ld] %@, ", v4, v5];
+  [v3 appendFormat:@"[%ld] %@, ", classification, v5];
 
   [(AXAuditContrastResult *)self ratio];
   [v3 appendFormat:@"Ratio:%.2f ", v6];
-  v7 = [(AXAuditContrastResult *)self textColor];
+  textColor = [(AXAuditContrastResult *)self textColor];
 
-  if (v7)
+  if (textColor)
   {
-    v8 = [(AXAuditContrastResult *)self textColor];
-    [v3 appendFormat:@"Text:%@ ", v8];
+    textColor2 = [(AXAuditContrastResult *)self textColor];
+    [v3 appendFormat:@"Text:%@ ", textColor2];
   }
 
-  v9 = [(AXAuditContrastResult *)self primaryColor];
+  primaryColor = [(AXAuditContrastResult *)self primaryColor];
 
-  if (v9)
+  if (primaryColor)
   {
-    v10 = [(AXAuditContrastResult *)self primaryColor];
-    [v3 appendFormat:@"PrimaryColor:%@ ", v10];
+    primaryColor2 = [(AXAuditContrastResult *)self primaryColor];
+    [v3 appendFormat:@"PrimaryColor:%@ ", primaryColor2];
   }
 
-  v11 = [(AXAuditContrastResult *)self secondaryColor];
+  secondaryColor = [(AXAuditContrastResult *)self secondaryColor];
 
-  if (v11)
+  if (secondaryColor)
   {
-    v12 = [(AXAuditContrastResult *)self secondaryColor];
-    [v3 appendFormat:@"SecondaryColor:%@ ", v12];
+    secondaryColor2 = [(AXAuditContrastResult *)self secondaryColor];
+    [v3 appendFormat:@"SecondaryColor:%@ ", secondaryColor2];
   }
 
   [(AXAuditContrastResult *)self fontSize];

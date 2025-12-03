@@ -1,46 +1,46 @@
 @interface CSAttSiriTCUGenerator
-- (BOOL)_shouldDropPackage:(id)a3;
-- (BOOL)_shouldProcessResultCandidateForTask:(id)a3;
+- (BOOL)_shouldDropPackage:(id)package;
+- (BOOL)_shouldProcessResultCandidateForTask:(id)task;
 - (CSAttSiriEndpointerNode)endpointerNode;
 - (CSAttSiriTCUGenerator)init;
 - (CSAttSiriTCUGeneratorDelegate)delegate;
 - (CSAttSiriUresNode)uresNode;
 - (id)_generateNewTRPId;
-- (id)_generateSingleTCU:(id)a3 withRequestID:(id)a4 uresInvocationType:(id)a5;
-- (id)_generateTCUs:(id)a3 withRequestID:(id)a4 uresInvocationType:(id)a5;
-- (id)_generateTCUsFromExistingTCUs:(id)a3;
-- (int64_t)_getPhraseTypeFromUresInvocationType:(id)a3;
-- (void)_deliverTRPCandidatePackage:(id)a3;
-- (void)_deliverTRPDetected:(id)a3 withTRPId:(id)a4;
-- (void)_emitSpeechStopDetectedWithTrpId:(id)a3 withHostTime:(unint64_t)a4;
-- (void)_emitTRPCreatedEventWithTRPId:(id)a3 withResultCandidateId:(id)a4 withRequestId:(id)a5;
-- (void)_emitTRPRequestLinkEventWithTRPId:(id)a3 withRequestId:(id)a4;
+- (id)_generateSingleTCU:(id)u withRequestID:(id)d uresInvocationType:(id)type;
+- (id)_generateTCUs:(id)us withRequestID:(id)d uresInvocationType:(id)type;
+- (id)_generateTCUsFromExistingTCUs:(id)us;
+- (int64_t)_getPhraseTypeFromUresInvocationType:(id)type;
+- (void)_deliverTRPCandidatePackage:(id)package;
+- (void)_deliverTRPDetected:(id)detected withTRPId:(id)id;
+- (void)_emitSpeechStopDetectedWithTrpId:(id)id withHostTime:(unint64_t)time;
+- (void)_emitTRPCreatedEventWithTRPId:(id)id withResultCandidateId:(id)candidateId withRequestId:(id)requestId;
+- (void)_emitTRPRequestLinkEventWithTRPId:(id)id withRequestId:(id)requestId;
 - (void)_enforceLastEagerRCSelection;
-- (void)_generateTCUCandidateWithRefershedScoresForTrpIdAsync:(id)a3;
-- (void)_processMultiUserResultCandidate:(id)a3 withId:(id)a4 isScoreRefreshAllowed:(BOOL)a5;
-- (void)_processResultCandidate:(id)a3 withId:(id)a4 uresInvocationType:(id)a5 isScoreRefreshAllowed:(BOOL)a6;
-- (void)_reportEndpointMetrics:(id)a3 forTrpId:(id)a4;
+- (void)_generateTCUCandidateWithRefershedScoresForTrpIdAsync:(id)async;
+- (void)_processMultiUserResultCandidate:(id)candidate withId:(id)id isScoreRefreshAllowed:(BOOL)allowed;
+- (void)_processResultCandidate:(id)candidate withId:(id)id uresInvocationType:(id)type isScoreRefreshAllowed:(BOOL)allowed;
+- (void)_reportEndpointMetrics:(id)metrics forTrpId:(id)id;
 - (void)_reset;
-- (void)_sendSelectedTrpId:(id)a3 endpointerMetrics:(id)a4;
-- (void)_updateRefreshScoresForPackage:(id)a3;
-- (void)_updateTcuCache:(id)a3;
-- (void)addRecognitionTaskCompletionReceiver:(id)a3;
-- (void)addTCUReceiver:(id)a3;
-- (void)addTRPCandidateExecutionStateReceiver:(id)a3;
-- (void)attSiriNode:(id)a3 didDetectEndpointEventAtTime:(double)a4 eventType:(int64_t)a5 withMetrics:(id)a6 usesAutomaticEndpointing:(BOOL)a7;
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6;
-- (void)attSiriNode:(id)a3 selectedTRPId:(id)a4 withMetrics:(id)a5;
-- (void)didCompleteRecognitionTaskWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6;
-- (void)didReceiveFinalResultWithRequestId:(id)a3 speechPackage:(id)a4 taskName:(id)a5;
-- (void)didReceiveResultCandidateWithRequestId:(id)a3 rcId:(unint64_t)a4 inputOrigin:(id)a5 speechPackage:(id)a6 duration:(double)a7 taskName:(id)a8;
-- (void)processTCUUpdateMessage:(id)a3;
-- (void)registerEagerResultAnalyzer:(id)a3;
-- (void)registerUresNode:(id)a3;
+- (void)_sendSelectedTrpId:(id)id endpointerMetrics:(id)metrics;
+- (void)_updateRefreshScoresForPackage:(id)package;
+- (void)_updateTcuCache:(id)cache;
+- (void)addRecognitionTaskCompletionReceiver:(id)receiver;
+- (void)addTCUReceiver:(id)receiver;
+- (void)addTRPCandidateExecutionStateReceiver:(id)receiver;
+- (void)attSiriNode:(id)node didDetectEndpointEventAtTime:(double)time eventType:(int64_t)type withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing;
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing;
+- (void)attSiriNode:(id)node selectedTRPId:(id)id withMetrics:(id)metrics;
+- (void)didCompleteRecognitionTaskWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error;
+- (void)didReceiveFinalResultWithRequestId:(id)id speechPackage:(id)package taskName:(id)name;
+- (void)didReceiveResultCandidateWithRequestId:(id)id rcId:(unint64_t)rcId inputOrigin:(id)origin speechPackage:(id)package duration:(double)duration taskName:(id)name;
+- (void)processTCUUpdateMessage:(id)message;
+- (void)registerEagerResultAnalyzer:(id)analyzer;
+- (void)registerUresNode:(id)node;
 - (void)reset;
-- (void)setMhId:(id)a3;
-- (void)startWithRecordContext:(id)a3 withRequestId:(id)a4;
-- (void)updateAFTMOperationalStatus:(BOOL)a3 forRequestId:(id)a4;
-- (void)updateInvocationType:(id)a3 forRequestId:(id)a4;
+- (void)setMhId:(id)id;
+- (void)startWithRecordContext:(id)context withRequestId:(id)id;
+- (void)updateAFTMOperationalStatus:(BOOL)status forRequestId:(id)id;
+- (void)updateInvocationType:(id)type forRequestId:(id)id;
 @end
 
 @implementation CSAttSiriTCUGenerator
@@ -66,10 +66,10 @@
   return WeakRetained;
 }
 
-- (id)_generateTCUsFromExistingTCUs:(id)a3
+- (id)_generateTCUsFromExistingTCUs:(id)us
 {
-  v3 = a3;
-  if (!v3)
+  usCopy = us;
+  if (!usCopy)
   {
     v4 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_ERROR))
@@ -83,16 +83,16 @@
   return 0;
 }
 
-- (void)_reportEndpointMetrics:(id)a3 forTrpId:(id)a4
+- (void)_reportEndpointMetrics:(id)metrics forTrpId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  idCopy = id;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = [(CSAttSiriTCUGenerator *)self tcuReceivers];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v44 count:16];
+  tcuReceivers = [(CSAttSiriTCUGenerator *)self tcuReceivers];
+  v9 = [tcuReceivers countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v9)
   {
     v10 = v9;
@@ -104,7 +104,7 @@
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(tcuReceivers);
         }
 
         v13 = *(*(&v34 + 1) + 8 * v12);
@@ -113,7 +113,7 @@
           v14 = *(*(&v34 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
-            [v13 attSiriNode:self selectedTRPId:v7 withMetrics:v6];
+            [v13 attSiriNode:self selectedTRPId:idCopy withMetrics:metricsCopy];
           }
         }
 
@@ -121,7 +121,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v44 count:16];
+      v10 = [tcuReceivers countByEnumeratingWithState:&v34 objects:v44 count:16];
     }
 
     while (v10);
@@ -129,8 +129,8 @@
 
   if (!self->_isMultiUserRequest)
   {
-    v16 = [(CSAttSiriTCUCache *)self->_tcuCache getTCUPackageWithTrpId:v7];
-    v21 = [v16 speechPackage];
+    v16 = [(CSAttSiriTCUCache *)self->_tcuCache getTCUPackageWithTrpId:idCopy];
+    speechPackage = [v16 speechPackage];
     goto LABEL_16;
   }
 
@@ -138,36 +138,36 @@
   if (multiUserTrpCache && self->_requestId)
   {
     v16 = [(NSMutableDictionary *)multiUserTrpCache objectForKeyedSubscript:?];
-    v17 = [v16 trpCandidateList];
-    v18 = [v17 firstObject];
-    v19 = [v18 tcuList];
-    v20 = [v19 firstObject];
-    v21 = [v20 speechPackage];
+    trpCandidateList = [v16 trpCandidateList];
+    firstObject = [trpCandidateList firstObject];
+    tcuList = [firstObject tcuList];
+    firstObject2 = [tcuList firstObject];
+    speechPackage = [firstObject2 speechPackage];
 
 LABEL_16:
     v38[0] = @"leadingSilence";
-    [CSAttSiriSpeechPackageHelper getFirstTokenLeadingSilenceFromSpeechPackage:v21];
+    [CSAttSiriSpeechPackageHelper getFirstTokenLeadingSilenceFromSpeechPackage:speechPackage];
     v23 = [NSNumber numberWithDouble:v22 * 1000.0];
     v39[0] = v23;
     v38[1] = @"trailingSilence";
-    [CSAttSiriSpeechPackageHelper getLastTokenTrailingSilenceFromSpeechPackage:v21];
+    [CSAttSiriSpeechPackageHelper getLastTokenTrailingSilenceFromSpeechPackage:speechPackage];
     v25 = [NSNumber numberWithDouble:v24 * 1000.0];
     v39[1] = v25;
     v38[2] = @"endTime";
-    [CSAttSiriSpeechPackageHelper getLastTokenEndTimeFromSpeechPackage:v21];
+    [CSAttSiriSpeechPackageHelper getLastTokenEndTimeFromSpeechPackage:speechPackage];
     v27 = [NSNumber numberWithDouble:v26 * 1000.0];
     v39[2] = v27;
     v28 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:3];
 
     [(CSEndpointDelayReporter *)self->_epdDelayReporter setStopRecordingHostTime:mach_absolute_time()];
     epdDelayReporter = self->_epdDelayReporter;
-    [v6 totalAudioRecorded];
+    [metricsCopy totalAudioRecorded];
     [(CSEndpointDelayReporter *)epdDelayReporter setEndpointTimeInMs:?];
-    -[CSEndpointDelayReporter setEndpointBufferHostTime:](self->_epdDelayReporter, "setEndpointBufferHostTime:", [v6 endpointBufferHostTime]);
+    -[CSEndpointDelayReporter setEndpointBufferHostTime:](self->_epdDelayReporter, "setEndpointBufferHostTime:", [metricsCopy endpointBufferHostTime]);
     v30 = self->_epdDelayReporter;
-    [CSAttSiriSpeechPackageHelper getLastTokenSilenceStartFromSpeechPackage:v21];
+    [CSAttSiriSpeechPackageHelper getLastTokenSilenceStartFromSpeechPackage:speechPackage];
     [(CSEndpointDelayReporter *)v30 setUserSpeakingEndedTimeInMs:v31 * 1000.0];
-    [(CSEndpointDelayReporter *)self->_epdDelayReporter setSpeechRecognizedContext:v28 withEndpointerMetrics:v6 withTrpId:v7];
+    [(CSEndpointDelayReporter *)self->_epdDelayReporter setSpeechRecognizedContext:v28 withEndpointerMetrics:metricsCopy withTrpId:idCopy];
     [(CSEndpointDelayReporter *)self->_epdDelayReporter reportEndpointDelayIfNeed];
 
     goto LABEL_19;
@@ -187,47 +187,47 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)_emitSpeechStopDetectedWithTrpId:(id)a3 withHostTime:(unint64_t)a4
+- (void)_emitSpeechStopDetectedWithTrpId:(id)id withHostTime:(unint64_t)time
 {
-  v6 = a3;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010A718;
   block[3] = &unk_1002533C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = idCopy;
+  timeCopy = time;
+  v8 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_emitTRPCreatedEventWithTRPId:(id)a3 withResultCandidateId:(id)a4 withRequestId:(id)a5
+- (void)_emitTRPCreatedEventWithTRPId:(id)id withResultCandidateId:(id)candidateId withRequestId:(id)requestId
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  candidateIdCopy = candidateId;
+  requestIdCopy = requestId;
   v11 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_INFO))
   {
     v22 = 136315906;
     v23 = "[CSAttSiriTCUGenerator _emitTRPCreatedEventWithTRPId:withResultCandidateId:withRequestId:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = idCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = candidateIdCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = requestIdCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s emitting SELF logging event TRPCreated with TRPId: %@, resultCandidateId: %@, requestId: %@", &v22, 0x2Au);
   }
 
   v12 = objc_alloc_init(MHSchemaMHTRPCreated);
   v13 = [SISchemaUUID alloc];
-  v14 = [[NSUUID alloc] initWithUUIDString:v8];
+  v14 = [[NSUUID alloc] initWithUUIDString:idCopy];
   v15 = [v13 initWithNSUUID:v14];
   [v12 setTrpId:v15];
 
-  [v12 setResultCandidateId:v9];
+  [v12 setResultCandidateId:candidateIdCopy];
   v16 = objc_alloc_init(MHSchemaMHClientEvent);
   v17 = objc_alloc_init(MHSchemaMHClientEventMetadata);
   v18 = [SISchemaUUID alloc];
@@ -241,31 +241,31 @@ LABEL_19:
   [v21 emitMessage:v16];
 }
 
-- (void)_emitTRPRequestLinkEventWithTRPId:(id)a3 withRequestId:(id)a4
+- (void)_emitTRPRequestLinkEventWithTRPId:(id)id withRequestId:(id)requestId
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  requestIdCopy = requestId;
   v7 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_INFO))
   {
     v16 = 136315650;
     v17 = "[CSAttSiriTCUGenerator _emitTRPRequestLinkEventWithTRPId:withRequestId:]";
     v18 = 2112;
-    v19 = v5;
+    v19 = idCopy;
     v20 = 2112;
-    v21 = v6;
+    v21 = requestIdCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s emitting SELF logging event TRPRequestLink with TRPId: %@, requestId: %@", &v16, 0x20u);
   }
 
   v8 = objc_alloc_init(SISchemaTRPRequestLink);
   [v8 setSource:2];
   v9 = [SISchemaUUID alloc];
-  v10 = [[NSUUID alloc] initWithUUIDString:v5];
+  v10 = [[NSUUID alloc] initWithUUIDString:idCopy];
   v11 = [v9 initWithNSUUID:v10];
   [v8 setTrpId:v11];
 
   v12 = [SISchemaUUID alloc];
-  v13 = [[NSUUID alloc] initWithUUIDString:v6];
+  v13 = [[NSUUID alloc] initWithUUIDString:requestIdCopy];
   v14 = [v12 initWithNSUUID:v13];
   [v8 setRequestId:v14];
 
@@ -273,137 +273,137 @@ LABEL_19:
   [v15 emitMessage:v8];
 }
 
-- (void)didCompleteRecognitionTaskWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6
+- (void)didCompleteRecognitionTaskWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(CSAttSiriTCUGenerator *)self queue];
+  statisticsCopy = statistics;
+  idCopy = id;
+  errorCopy = error;
+  queue = [(CSAttSiriTCUGenerator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010AE44;
   block[3] = &unk_100253558;
-  v20 = v10;
-  v21 = a5;
+  v20 = statisticsCopy;
+  modeCopy = mode;
   block[4] = self;
-  v18 = v12;
-  v19 = v11;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
-  dispatch_async(v13, block);
+  v18 = errorCopy;
+  v19 = idCopy;
+  v14 = statisticsCopy;
+  v15 = idCopy;
+  v16 = errorCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)didReceiveFinalResultWithRequestId:(id)a3 speechPackage:(id)a4 taskName:(id)a5
+- (void)didReceiveFinalResultWithRequestId:(id)id speechPackage:(id)package taskName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  packageCopy = package;
+  nameCopy = name;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10010B168;
   v15[3] = &unk_100252F38;
-  v16 = v10;
-  v17 = self;
-  v18 = v9;
-  v19 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = nameCopy;
+  selfCopy = self;
+  v18 = packageCopy;
+  v19 = idCopy;
+  v12 = idCopy;
+  v13 = packageCopy;
+  v14 = nameCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)didReceiveResultCandidateWithRequestId:(id)a3 rcId:(unint64_t)a4 inputOrigin:(id)a5 speechPackage:(id)a6 duration:(double)a7 taskName:(id)a8
+- (void)didReceiveResultCandidateWithRequestId:(id)id rcId:(unint64_t)rcId inputOrigin:(id)origin speechPackage:(id)package duration:(double)duration taskName:(id)name
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a8;
+  idCopy = id;
+  packageCopy = package;
+  nameCopy = name;
   queue = self->_queue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10010B334;
   v18[3] = &unk_100252F38;
-  v19 = v13;
-  v20 = self;
-  v21 = v12;
-  v22 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
+  v19 = nameCopy;
+  selfCopy = self;
+  v21 = packageCopy;
+  v22 = idCopy;
+  v15 = idCopy;
+  v16 = packageCopy;
+  v17 = nameCopy;
   dispatch_async(queue, v18);
 }
 
-- (void)attSiriNode:(id)a3 didDetectEndpointEventAtTime:(double)a4 eventType:(int64_t)a5 withMetrics:(id)a6 usesAutomaticEndpointing:(BOOL)a7
+- (void)attSiriNode:(id)node didDetectEndpointEventAtTime:(double)time eventType:(int64_t)type withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing
 {
-  v11 = a6;
+  metricsCopy = metrics;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010B4D0;
   block[3] = &unk_100252C40;
-  v18 = a7;
-  v16 = a4;
+  endpointingCopy = endpointing;
+  timeCopy = time;
   block[4] = self;
-  v15 = v11;
-  v17 = a5;
-  v13 = v11;
+  v15 = metricsCopy;
+  typeCopy = type;
+  v13 = metricsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)attSiriNode:(id)a3 selectedTRPId:(id)a4 withMetrics:(id)a5
+- (void)attSiriNode:(id)node selectedTRPId:(id)id withMetrics:(id)metrics
 {
-  v7 = a4;
-  v8 = a5;
+  idCopy = id;
+  metricsCopy = metrics;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010B810;
   block[3] = &unk_100253680;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = idCopy;
+  v14 = metricsCopy;
+  v10 = metricsCopy;
+  v11 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)registerEagerResultAnalyzer:(id)a3
+- (void)registerEagerResultAnalyzer:(id)analyzer
 {
-  v4 = a3;
+  analyzerCopy = analyzer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010B9E0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = analyzerCopy;
+  v6 = analyzerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing
 {
-  v7 = a5;
+  metricsCopy = metrics;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10010BA84;
   v10[3] = &unk_100253C48;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = metricsCopy;
+  v9 = metricsCopy;
   dispatch_async(queue, v10);
 }
 
-- (void)_updateRefreshScoresForPackage:(id)a3
+- (void)_updateRefreshScoresForPackage:(id)package
 {
-  v4 = [a3 tcuList];
-  v5 = [v4 firstObject];
-  v6 = [v5 siriIntendedInfo];
+  tcuList = [package tcuList];
+  firstObject = [tcuList firstObject];
+  siriIntendedInfo = [firstObject siriIntendedInfo];
 
-  v7 = [v6 invocationType];
-  if (!v7)
+  invocationType = [siriIntendedInfo invocationType];
+  if (!invocationType)
   {
     goto LABEL_10;
   }
@@ -426,7 +426,7 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s isAftmModelOperational:%u", &v14, 0x12u);
   }
 
-  if (self->_isSDSDAftmOperational && ([v6 aftmScore], v11 < 0.0))
+  if (self->_isSDSDAftmOperational && ([siriIntendedInfo aftmScore], v11 < 0.0))
   {
     v12 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
@@ -448,29 +448,29 @@ LABEL_10:
   self->_shouldRefreshScores = v13;
 }
 
-- (void)_generateTCUCandidateWithRefershedScoresForTrpIdAsync:(id)a3
+- (void)_generateTCUCandidateWithRefershedScoresForTrpIdAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010BD68;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(queue, v7);
 }
 
-- (int64_t)_getPhraseTypeFromUresInvocationType:(id)a3
+- (int64_t)_getPhraseTypeFromUresInvocationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToNumber:&off_10025E678])
+  typeCopy = type;
+  if ([typeCopy isEqualToNumber:&off_10025E678])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToNumber:&off_10025E690])
+  else if ([typeCopy isEqualToNumber:&off_10025E690])
   {
     v4 = 2;
   }
@@ -483,26 +483,26 @@ LABEL_10:
   return v4;
 }
 
-- (id)_generateSingleTCU:(id)a3 withRequestID:(id)a4 uresInvocationType:(id)a5
+- (id)_generateSingleTCU:(id)u withRequestID:(id)d uresInvocationType:(id)type
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dCopy = d;
+  typeCopy = type;
+  uCopy = u;
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
-  v13 = v8;
-  [v10 utteranceStart];
+  v13 = dCopy;
+  [uCopy utteranceStart];
   v15 = v14;
-  v16 = [v10 recognition];
-  [v16 processedAudioDuration];
+  recognition = [uCopy recognition];
+  [recognition processedAudioDuration];
   v18 = v15 + v17;
 
   v19 = objc_alloc(sub_10010C110());
   speechEvent = self->_speechEvent;
-  v21 = [(CSAttSiriTCUGenerator *)self _getPhraseTypeFromUresInvocationType:v9];
+  v21 = [(CSAttSiriTCUGenerator *)self _getPhraseTypeFromUresInvocationType:typeCopy];
 
-  v22 = [v19 initWithTcuId:v12 requestId:v13 tcuState:1 speechEvent:speechEvent voiceTriggerPhraseType:v21 siriIntendedInfo:0 prevTCUIds:v15 startAudioTimeStampInMs:v18 endAudioTimeStampInMs:0 speechPackage:v10];
+  v22 = [v19 initWithTcuId:uUIDString requestId:v13 tcuState:1 speechEvent:speechEvent voiceTriggerPhraseType:v21 siriIntendedInfo:0 prevTCUIds:v15 startAudioTimeStampInMs:v18 endAudioTimeStampInMs:0 speechPackage:uCopy];
   v23 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
@@ -527,27 +527,27 @@ LABEL_10:
   return v22;
 }
 
-- (id)_generateTCUs:(id)a3 withRequestID:(id)a4 uresInvocationType:(id)a5
+- (id)_generateTCUs:(id)us withRequestID:(id)d uresInvocationType:(id)type
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dCopy = d;
+  typeCopy = type;
+  usCopy = us;
   v11 = objc_alloc_init(NSMutableArray);
   v12 = +[NSUUID UUID];
-  v13 = [v12 UUIDString];
+  uUIDString = [v12 UUIDString];
 
-  v14 = v8;
-  [v10 utteranceStart];
+  v14 = dCopy;
+  [usCopy utteranceStart];
   v16 = v15;
-  v17 = [v10 recognition];
-  [v17 processedAudioDuration];
+  recognition = [usCopy recognition];
+  [recognition processedAudioDuration];
   v19 = v16 + v18;
 
   v20 = objc_alloc(sub_10010C110());
   speechEvent = self->_speechEvent;
-  v22 = [(CSAttSiriTCUGenerator *)self _getPhraseTypeFromUresInvocationType:v9];
+  v22 = [(CSAttSiriTCUGenerator *)self _getPhraseTypeFromUresInvocationType:typeCopy];
 
-  v23 = [v20 initWithTcuId:v13 requestId:v14 tcuState:1 speechEvent:speechEvent voiceTriggerPhraseType:v22 siriIntendedInfo:0 prevTCUIds:v16 startAudioTimeStampInMs:v19 endAudioTimeStampInMs:0 speechPackage:v10];
+  v23 = [v20 initWithTcuId:uUIDString requestId:v14 tcuState:1 speechEvent:speechEvent voiceTriggerPhraseType:v22 siriIntendedInfo:0 prevTCUIds:v16 startAudioTimeStampInMs:v19 endAudioTimeStampInMs:0 speechPackage:usCopy];
   v24 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_INFO))
   {
@@ -593,15 +593,15 @@ LABEL_10:
 - (id)_generateNewTRPId
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_deliverTRPDetected:(id)a3 withTRPId:(id)a4
+- (void)_deliverTRPDetected:(id)detected withTRPId:(id)id
 {
-  v6 = a3;
-  v26 = a4;
+  detectedCopy = detected;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_shouldRefreshScores)
   {
@@ -611,26 +611,26 @@ LABEL_10:
       *buf = 136315394;
       *&buf[4] = "[CSAttSiriTCUGenerator _deliverTRPDetected:withTRPId:]";
       *&buf[12] = 2112;
-      *&buf[14] = v26;
+      *&buf[14] = idCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Trigger new TCU candidate for trpId: %@", buf, 0x16u);
     }
 
-    [(CSAttSiriTCUGenerator *)self _generateTCUCandidateWithRefershedScoresForTrpIdAsync:v26];
+    [(CSAttSiriTCUGenerator *)self _generateTCUCandidateWithRefershedScoresForTrpIdAsync:idCopy];
     self->_shouldRefreshScores = 0;
   }
 
   else
   {
-    if (v6)
+    if (detectedCopy)
     {
-      v8 = [v6 endpointBufferHostTime];
-      [v6 totalAudioRecorded];
+      endpointBufferHostTime = [detectedCopy endpointBufferHostTime];
+      [detectedCopy totalAudioRecorded];
       v10 = v9;
     }
 
     else
     {
-      v8 = mach_absolute_time();
+      endpointBufferHostTime = mach_absolute_time();
       v11 = [(CSAttSiriTCUCache *)self->_tcuCache getTCUPackageWithTrpId:self->_lastTRPIdForSegment];
       [v11 endAudioTimeStampInMs];
       v13 = v12;
@@ -638,7 +638,7 @@ LABEL_10:
       v10 = v13 - v14;
     }
 
-    v15 = v8;
+    v15 = endpointBufferHostTime;
     v16 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
     {
@@ -669,13 +669,13 @@ LABEL_10:
 
     v18 = v17;
     _Block_object_dispose(&v31, 8);
-    v19 = [[v17 alloc] initWithGeneratedHostTime:v15 lastTRPCandidateId:v26 trpDetectedAudioTimeStamp:self->_requestId requestId:v10];
+    v19 = [[v17 alloc] initWithGeneratedHostTime:v15 lastTRPCandidateId:idCopy trpDetectedAudioTimeStamp:self->_requestId requestId:v10];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = [(CSAttSiriTCUGenerator *)self tcuReceivers];
-    v21 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    tcuReceivers = [(CSAttSiriTCUGenerator *)self tcuReceivers];
+    v21 = [tcuReceivers countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v21)
     {
       v22 = *v28;
@@ -685,7 +685,7 @@ LABEL_10:
         {
           if (*v28 != v22)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(tcuReceivers);
           }
 
           v24 = *(*(&v27 + 1) + 8 * i);
@@ -695,17 +695,17 @@ LABEL_10:
           }
         }
 
-        v21 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v21 = [tcuReceivers countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v21);
     }
 
-    -[CSAttSiriTCUGenerator _emitSpeechStopDetectedWithTrpId:withHostTime:](self, "_emitSpeechStopDetectedWithTrpId:withHostTime:", v26, [v6 endpointHostTime]);
+    -[CSAttSiriTCUGenerator _emitSpeechStopDetectedWithTrpId:withHostTime:](self, "_emitSpeechStopDetectedWithTrpId:withHostTime:", idCopy, [detectedCopy endpointHostTime]);
     self->_trpDetectDelivered = 1;
-    if (v6)
+    if (detectedCopy)
     {
-      [(CSAttSiriTCUGenerator *)self _reportEndpointMetrics:v6 forTrpId:v26];
+      [(CSAttSiriTCUGenerator *)self _reportEndpointMetrics:detectedCopy forTrpId:idCopy];
     }
 
     else
@@ -721,16 +721,16 @@ LABEL_10:
   }
 }
 
-- (void)_deliverTRPCandidatePackage:(id)a3
+- (void)_deliverTRPCandidatePackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   v5 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v18 = "[CSAttSiriTCUGenerator _deliverTRPCandidatePackage:]";
     v19 = 2112;
-    v20 = v4;
+    v20 = packageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s trpCandidateInfo:%@", buf, 0x16u);
   }
 
@@ -738,8 +738,8 @@ LABEL_10:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(CSAttSiriTCUGenerator *)self tcuReceivers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tcuReceivers = [(CSAttSiriTCUGenerator *)self tcuReceivers];
+  v7 = [tcuReceivers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -751,20 +751,20 @@ LABEL_10:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tcuReceivers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 didGenerateTRPCandidatePackage:v4];
+          [v11 didGenerateTRPCandidatePackage:packageCopy];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [tcuReceivers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -773,32 +773,32 @@ LABEL_10:
   self->_trpCandidateDelivered = 1;
 }
 
-- (void)_updateTcuCache:(id)a3
+- (void)_updateTcuCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v5 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v9 = "[CSAttSiriTCUGenerator _updateTcuCache:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = cacheCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s trpCandidateInfo:%@", buf, 0x16u);
   }
 
-  v6 = [v4 tcuList];
+  tcuList = [cacheCopy tcuList];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010D008;
   v7[3] = &unk_100251C20;
   v7[4] = self;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [tcuList enumerateObjectsUsingBlock:v7];
 }
 
-- (BOOL)_shouldDropPackage:(id)a3
+- (BOOL)_shouldDropPackage:(id)package
 {
-  v4 = [a3 isFinal];
-  v5 = [(CSAttSiriTCUCache *)self->_tcuCache cachedTCUCount];
+  isFinal = [package isFinal];
+  cachedTCUCount = [(CSAttSiriTCUCache *)self->_tcuCache cachedTCUCount];
   v6 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
@@ -808,19 +808,19 @@ LABEL_10:
     v11 = 1024;
     v12 = trpDetectDelivered;
     v13 = 1024;
-    v14 = v4;
+    v14 = isFinal;
     v15 = 1024;
-    v16 = v5 != 0;
+    v16 = cachedTCUCount != 0;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s trpDetectDelivered:%u isFinalRC:%u anyCachedRC:%u", &v9, 0x1Eu);
   }
 
   result = self->_trpDetectDelivered;
-  if (!result && ((v4 ^ 1) & 1) == 0)
+  if (!result && ((isFinal ^ 1) & 1) == 0)
   {
     result = 0;
     if (self->_shouldEnforceLastEagerRCSelection)
     {
-      if (v5)
+      if (cachedTCUCount)
       {
         [(CSAttSiriTCUGenerator *)self _enforceLastEagerRCSelection];
         return 1;
@@ -842,22 +842,22 @@ LABEL_10:
   }
 
   v4 = [(CSAttSiriTCUCache *)self->_tcuCache getTCUPackageWithTrpId:self->_lastTRPIdForSegment];
-  v5 = [v4 speechPackage];
+  speechPackage = [v4 speechPackage];
   self->_shouldRefreshScores = 0;
-  [(CSAttSiriTCUGenerator *)self _doTrpTcuMappingWithTrpid:self->_lastTRPIdForSegment speechPackage:v5 forceTrpSelection:1];
+  [(CSAttSiriTCUGenerator *)self _doTrpTcuMappingWithTrpid:self->_lastTRPIdForSegment speechPackage:speechPackage forceTrpSelection:1];
 }
 
-- (void)_sendSelectedTrpId:(id)a3 endpointerMetrics:(id)a4
+- (void)_sendSelectedTrpId:(id)id endpointerMetrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  metricsCopy = metrics;
   v8 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[CSAttSiriTCUGenerator _sendSelectedTrpId:endpointerMetrics:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = idCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "KeyLog - %s Sending selected TRPId %@ to delegates", &v11, 0x16u);
     v8 = CSLogCategoryRequest;
   }
@@ -871,7 +871,7 @@ LABEL_10:
       v11 = 136315394;
       v12 = "[CSAttSiriTCUGenerator _sendSelectedTrpId:endpointerMetrics:]";
       v13 = 2112;
-      v14 = v6;
+      v14 = idCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Ignore TRP selection for trpId: %@, since TRPDetect is already sent", &v11, 0x16u);
     }
   }
@@ -883,39 +883,39 @@ LABEL_10:
       v11 = 136315394;
       v12 = "[CSAttSiriTCUGenerator _sendSelectedTrpId:endpointerMetrics:]";
       v13 = 2112;
-      v14 = v6;
+      v14 = idCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Received selected trpId: %@ sending TRPDetect msg", &v11, 0x16u);
     }
 
-    [(CSAttSiriTCUGenerator *)self _deliverTRPDetected:v7 withTRPId:v6];
+    [(CSAttSiriTCUGenerator *)self _deliverTRPDetected:metricsCopy withTRPId:idCopy];
   }
 }
 
-- (void)_processResultCandidate:(id)a3 withId:(id)a4 uresInvocationType:(id)a5 isScoreRefreshAllowed:(BOOL)a6
+- (void)_processResultCandidate:(id)candidate withId:(id)id uresInvocationType:(id)type isScoreRefreshAllowed:(BOOL)allowed
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  allowedCopy = allowed;
+  candidateCopy = candidate;
+  idCopy = id;
+  typeCopy = type;
   v13 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v10 isFinal];
-    v16 = [v10 rawRecognition];
-    v17 = [v16 oneBestTranscript];
+    isFinal = [candidateCopy isFinal];
+    rawRecognition = [candidateCopy rawRecognition];
+    oneBestTranscript = [rawRecognition oneBestTranscript];
     *buf = 136315906;
     v37 = "[CSAttSiriTCUGenerator _processResultCandidate:withId:uresInvocationType:isScoreRefreshAllowed:]";
     v38 = 1024;
-    *v39 = v15;
+    *v39 = isFinal;
     *&v39[4] = 2112;
-    *&v39[6] = v17;
+    *&v39[6] = oneBestTranscript;
     *&v39[14] = 1024;
-    *&v39[16] = v6;
+    *&v39[16] = allowedCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "KeyLog - %s isFinal:%u utterance:%@ isScoreRefreshAllowed:%u", buf, 0x22u);
   }
 
-  if ([(CSAttSiriTCUGenerator *)self _shouldDropPackage:v10])
+  if ([(CSAttSiriTCUGenerator *)self _shouldDropPackage:candidateCopy])
   {
     v18 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
@@ -926,11 +926,11 @@ LABEL_10:
     }
   }
 
-  else if (v10)
+  else if (candidateCopy)
   {
-    v19 = [(CSAttSiriTCUGenerator *)self _generateNewTRPId];
-    objc_storeStrong(&self->_lastTRPIdForSegment, v19);
-    v20 = [(CSAttSiriTCUGenerator *)self _generateTCUs:v10 withRequestID:v11 uresInvocationType:v12];
+    _generateNewTRPId = [(CSAttSiriTCUGenerator *)self _generateNewTRPId];
+    objc_storeStrong(&self->_lastTRPIdForSegment, _generateNewTRPId);
+    v20 = [(CSAttSiriTCUGenerator *)self _generateTCUs:candidateCopy withRequestID:idCopy uresInvocationType:typeCopy];
     v21 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
     {
@@ -955,18 +955,18 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s TRPCandidateInfo :%@", buf, 0x16u);
     }
 
-    v25 = [v10 resultCandidateId];
+    resultCandidateId = [candidateCopy resultCandidateId];
     TCUPruner = self->_TCUPruner;
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_10010DAEC;
     v31 = &unk_100251BF8;
-    v32 = self;
-    v33 = v11;
-    v34 = v25;
-    v35 = v6;
+    selfCopy = self;
+    v33 = idCopy;
+    v34 = resultCandidateId;
+    v35 = allowedCopy;
     [(CSTCUPruner *)TCUPruner processTRPCandidateInfo:v23 requestId:v33 withCompletion:&v28];
-    [(CSAttSiriTCUGenerator *)self _doTrpTcuMappingWithTrpid:self->_lastTRPIdForSegment speechPackage:v10 forceTrpSelection:0, v28, v29, v30, v31, v32];
+    [(CSAttSiriTCUGenerator *)self _doTrpTcuMappingWithTrpid:self->_lastTRPIdForSegment speechPackage:candidateCopy forceTrpSelection:0, v28, v29, v30, v31, selfCopy];
   }
 
   else
@@ -981,23 +981,23 @@ LABEL_10:
   }
 }
 
-- (void)_processMultiUserResultCandidate:(id)a3 withId:(id)a4 isScoreRefreshAllowed:(BOOL)a5
+- (void)_processMultiUserResultCandidate:(id)candidate withId:(id)id isScoreRefreshAllowed:(BOOL)allowed
 {
-  v7 = a3;
-  v8 = a4;
+  candidateCopy = candidate;
+  idCopy = id;
   v9 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[CSAttSiriTCUGenerator _processMultiUserResultCandidate:withId:isScoreRefreshAllowed:]";
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = idCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s requestId: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (candidateCopy)
   {
-    v10 = [(CSAttSiriTCUGenerator *)self _generateNewTRPId];
+    _generateNewTRPId = [(CSAttSiriTCUGenerator *)self _generateNewTRPId];
     v11 = +[NSMutableArray array];
     if (!self->_multiUserTrpCache)
     {
@@ -1029,15 +1029,15 @@ LABEL_10:
     v48 = buf;
     v44[4] = self;
     v49 = &v50;
-    v14 = v8;
+    v14 = idCopy;
     v45 = v14;
     v15 = v11;
     v46 = v15;
-    [v7 enumerateKeysAndObjectsUsingBlock:v44];
+    [candidateCopy enumerateKeysAndObjectsUsingBlock:v44];
     if (*(v51 + 24) == 1)
     {
-      v16 = [(NSMutableArray *)self->_multiUserTrpIdList lastObject];
-      v17 = [(CSTrpTcuMapper *)self->_tcuTrpMapper getMatchingRelaxedEPMetricsForTrp:v16];
+      lastObject = [(NSMutableArray *)self->_multiUserTrpIdList lastObject];
+      v17 = [(CSTrpTcuMapper *)self->_tcuTrpMapper getMatchingRelaxedEPMetricsForTrp:lastObject];
       v18 = CSLogCategoryRequest;
       if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
       {
@@ -1050,7 +1050,7 @@ LABEL_10:
 
       if (v17)
       {
-        [(CSAttSiriTCUGenerator *)self _sendSelectedTrpId:v16 endpointerMetrics:v17];
+        [(CSAttSiriTCUGenerator *)self _sendSelectedTrpId:lastObject endpointerMetrics:v17];
       }
     }
 
@@ -1072,7 +1072,7 @@ LABEL_10:
         v20 = v59[3];
       }
 
-      v35 = v10;
+      v35 = _generateNewTRPId;
       v21 = v20;
       _Block_object_dispose(&v58, 8);
       v22 = [v20 alloc];
@@ -1080,7 +1080,7 @@ LABEL_10:
       v40[1] = 3221225472;
       v40[2] = sub_10010E778;
       v40[3] = &unk_100251BD0;
-      v23 = v10;
+      v23 = _generateNewTRPId;
       v41 = v23;
       v24 = v14;
       v42 = v24;
@@ -1092,13 +1092,13 @@ LABEL_10:
         [(NSMutableArray *)self->_multiUserTrpIdList addObject:v23];
         [(NSMutableDictionary *)self->_multiUserTrpCache setValue:v26 forKey:v24];
         v33 = v23;
-        v34 = v8;
+        v34 = idCopy;
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v27 = [(CSAttSiriTCUGenerator *)self tcuReceivers];
-        v28 = [v27 countByEnumeratingWithState:&v36 objects:v62 count:16];
+        tcuReceivers = [(CSAttSiriTCUGenerator *)self tcuReceivers];
+        v28 = [tcuReceivers countByEnumeratingWithState:&v36 objects:v62 count:16];
         if (v28)
         {
           v29 = *v37;
@@ -1108,7 +1108,7 @@ LABEL_10:
             {
               if (*v37 != v29)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(tcuReceivers);
               }
 
               v31 = *(*(&v36 + 1) + 8 * i);
@@ -1118,13 +1118,13 @@ LABEL_10:
               }
             }
 
-            v28 = [v27 countByEnumeratingWithState:&v36 objects:v62 count:16];
+            v28 = [tcuReceivers countByEnumeratingWithState:&v36 objects:v62 count:16];
           }
 
           while (v28);
         }
 
-        v8 = v34;
+        idCopy = v34;
         self->_trpCandidateDelivered = 1;
         if (*(v55 + 24) == 1)
         {
@@ -1143,8 +1143,8 @@ LABEL_10:
         }
       }
 
-      v10 = v35;
-      v16 = v41;
+      _generateNewTRPId = v35;
+      lastObject = v41;
     }
 
     _Block_object_dispose(&v50, 8);
@@ -1165,10 +1165,10 @@ LABEL_10:
   }
 }
 
-- (BOOL)_shouldProcessResultCandidateForTask:(id)a3
+- (BOOL)_shouldProcessResultCandidateForTask:(id)task
 {
-  v3 = a3;
-  v4 = ([v3 isEqualToString:CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskSiriDictation);
+  taskCopy = task;
+  v4 = ([taskCopy isEqualToString:CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging] & 1) != 0 || objc_msgSend(taskCopy, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskSiriDictation);
   v5 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
@@ -1214,136 +1214,136 @@ LABEL_10:
   [(CSTrpTcuMapper *)self->_tcuTrpMapper resetForNewRequest];
 }
 
-- (void)processTCUUpdateMessage:(id)a3
+- (void)processTCUUpdateMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010EB44;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addRecognitionTaskCompletionReceiver:(id)a3
+- (void)addRecognitionTaskCompletionReceiver:(id)receiver
 {
-  v4 = a3;
-  v5 = [(CSAttSiriTCUGenerator *)self queue];
+  receiverCopy = receiver;
+  queue = [(CSAttSiriTCUGenerator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010EF18;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = receiverCopy;
+  selfCopy = self;
+  v6 = receiverCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)addTRPCandidateExecutionStateReceiver:(id)a3
+- (void)addTRPCandidateExecutionStateReceiver:(id)receiver
 {
-  v4 = a3;
-  v5 = [(CSAttSiriTCUGenerator *)self queue];
+  receiverCopy = receiver;
+  queue = [(CSAttSiriTCUGenerator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010F068;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = receiverCopy;
+  selfCopy = self;
+  v6 = receiverCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)addTCUReceiver:(id)a3
+- (void)addTCUReceiver:(id)receiver
 {
-  v4 = a3;
-  v5 = [(CSAttSiriTCUGenerator *)self queue];
+  receiverCopy = receiver;
+  queue = [(CSAttSiriTCUGenerator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010F1B8;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = receiverCopy;
+  selfCopy = self;
+  v6 = receiverCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)updateInvocationType:(id)a3 forRequestId:(id)a4
+- (void)updateInvocationType:(id)type forRequestId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010F3C0;
   block[3] = &unk_100253680;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = idCopy;
+  selfCopy = self;
+  v14 = typeCopy;
+  v9 = typeCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)updateAFTMOperationalStatus:(BOOL)a3 forRequestId:(id)a4
+- (void)updateAFTMOperationalStatus:(BOOL)status forRequestId:(id)id
 {
-  v6 = a4;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010F5B8;
   block[3] = &unk_100253900;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = idCopy;
+  selfCopy = self;
+  statusCopy = status;
+  v8 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)setMhId:(id)a3
+- (void)setMhId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010F79C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)startWithRecordContext:(id)a3 withRequestId:(id)a4
+- (void)startWithRecordContext:(id)context withRequestId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010F8CC;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = idCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)registerUresNode:(id)a3
+- (void)registerUresNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010FAA8;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nodeCopy;
+  v6 = nodeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1432,7 +1432,7 @@ LABEL_10:
     }
 
     self = v3;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
@@ -1445,10 +1445,10 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%s Medoc feature flag disabled!", buf, 0xCu);
     }
 
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 @end

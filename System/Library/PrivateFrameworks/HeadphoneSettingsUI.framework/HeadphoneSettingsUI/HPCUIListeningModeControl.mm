@@ -1,41 +1,41 @@
 @interface HPCUIListeningModeControl
 - (BOOL)farFieldSessionOnGoing;
-- (BOOL)needsResetUI:(id)a3;
-- (BOOL)setListeningMode:(unsigned int)a3;
+- (BOOL)needsResetUI:(id)i;
+- (BOOL)setListeningMode:(unsigned int)mode;
 - (BOOL)updateModeOffSupported;
-- (HPCUIListeningModeControl)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HPCUIListeningModeControl)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)_validSegmentCount;
-- (id)_errorStringForFailedToSelectIndex:(int64_t)a3;
+- (id)_errorStringForFailedToSelectIndex:(int64_t)index;
 - (id)farFieldOngoingErrorString;
-- (id)getListeningModeString:(int)a3;
-- (int)_modeForIndex:(int64_t)a3;
-- (int)getListeningModeFromIndex:(int64_t)a3;
-- (int64_t)_indexForMode:(int)a3;
-- (int64_t)getIndexFromListeningMode:(int)a3;
-- (void)_handleListeningModeSetFailure:(int)a3 index:(int64_t)a4;
+- (id)getListeningModeString:(int)string;
+- (int)_modeForIndex:(int64_t)index;
+- (int)getListeningModeFromIndex:(int64_t)index;
+- (int64_t)_indexForMode:(int)mode;
+- (int64_t)getIndexFromListeningMode:(int)mode;
+- (void)_handleListeningModeSetFailure:(int)failure index:(int64_t)index;
 - (void)_updateLabelLayoutForBounds;
 - (void)addModeLabels;
 - (void)addModeOptions;
 - (void)initCommon;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)refreshListeningMode;
 - (void)resetUI;
-- (void)segmentControlValueChanged:(id)a3;
-- (void)setListeningModeConfigs:(unsigned int)a3;
-- (void)settingsChangedHandler:(id)a3;
+- (void)segmentControlValueChanged:(id)changed;
+- (void)setListeningModeConfigs:(unsigned int)configs;
+- (void)settingsChangedHandler:(id)handler;
 - (void)setupConstraints;
 - (void)startObservingChanges;
-- (void)updateListeningModeForSyncSelection:(id)a3;
+- (void)updateListeningModeForSyncSelection:(id)selection;
 @end
 
 @implementation HPCUIListeningModeControl
 
-- (HPCUIListeningModeControl)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HPCUIListeningModeControl)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HPCUIListeningModeControl;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:0];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:0];
   v5 = v4;
   if (v4)
   {
@@ -49,40 +49,40 @@
 {
   self->_autoANCSupported = 0;
   self->_modeOffSupported = 1;
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   modeControlLabelXPositionConstraints = self->_modeControlLabelXPositionConstraints;
-  self->_modeControlLabelXPositionConstraints = v3;
+  self->_modeControlLabelXPositionConstraints = array;
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   labelWidthConstraints = self->_labelWidthConstraints;
-  self->_labelWidthConstraints = v5;
+  self->_labelWidthConstraints = array2;
 
-  v8 = [(HPCUIListeningModeControl *)self contentView];
-  v7 = [v8 layer];
-  [v7 setMasksToBounds:0];
+  contentView = [(HPCUIListeningModeControl *)self contentView];
+  layer = [contentView layer];
+  [layer setMasksToBounds:0];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v10.receiver = self;
   v10.super_class = HPCUIListeningModeControl;
-  v4 = a3;
-  [(PSTableCell *)&v10 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v10 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"Headphone_Manager.HeadphoneDevice"];
+  v6 = [userInfo objectForKeyedSubscript:@"Headphone_Manager.HeadphoneDevice"];
   device = self->_device;
   self->_device = v6;
 
   if (self->_device)
   {
     [(HPCUIListeningModeControl *)self startObservingChanges];
-    v8 = [(HPMHeadphoneDevice *)self->_device cbDevice];
-    self->_autoANCSupported = [v8 autoAncCapability] != 0;
+    cbDevice = [(HPMHeadphoneDevice *)self->_device cbDevice];
+    self->_autoANCSupported = [cbDevice autoAncCapability] != 0;
 
     self->_modeOffSupported = [(HPCUIListeningModeControl *)self updateModeOffSupported];
-    v9 = [(HPMHeadphoneDevice *)self->_device name];
-    NSLog(&cfstr_ListeningModeR.isa, v9, self->_autoANCSupported, self->_modeOffSupported);
+    name = [(HPMHeadphoneDevice *)self->_device name];
+    NSLog(&cfstr_ListeningModeR.isa, name, self->_autoANCSupported, self->_modeOffSupported);
   }
 
   else
@@ -132,8 +132,8 @@
     [(UISegmentedControl *)v5 addAction:v6 forControlEvents:4096];
   }
 
-  v7 = [(HPCUIListeningModeControl *)self contentView];
-  [v7 addSubview:self->_segmentedControl];
+  contentView = [(HPCUIListeningModeControl *)self contentView];
+  [contentView addSubview:self->_segmentedControl];
 
   [(UISegmentedControl *)self->_segmentedControl removeAllSegments];
   v8 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:25.0];
@@ -142,10 +142,10 @@
   {
     v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"person.closed.fill"];
     v11 = MEMORY[0x1E69DCAD8];
-    v12 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v27[0] = v12;
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    v27[1] = v13;
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v27[0] = systemGrayColor;
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v27[1] = labelColor;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
     v15 = [v11 configurationWithPaletteColors:v14];
     v16 = [v10 imageByApplyingSymbolConfiguration:v15];
@@ -201,10 +201,10 @@
     self->_labelTransparency = v6;
   }
 
-  v8 = [MEMORY[0x1E695DF58] currentLocale];
-  v9 = [v8 objectForKey:*MEMORY[0x1E695D9B0]];
-  v10 = [v9 lowercaseString];
-  v11 = [v10 isEqualToString:@"en"];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v9 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
+  lowercaseString = [v9 lowercaseString];
+  v11 = [lowercaseString isEqualToString:@"en"];
 
   if (v11)
   {
@@ -231,8 +231,8 @@
 
     [(UILabel *)labelOff sizeToFit];
     [(UILabel *)self->_labelOff setAccessibilityIdentifier:@"Off"];
-    v19 = [(HPCUIListeningModeControl *)self contentView];
-    [v19 addSubview:self->_labelOff];
+    contentView = [(HPCUIListeningModeControl *)self contentView];
+    [contentView addSubview:self->_labelOff];
   }
 
   if (!self->_labelNoiseCancellation)
@@ -261,14 +261,14 @@
     [(UILabel *)self->_labelUnableToSetListeningMode setAlpha:0.01];
   }
 
-  v27 = [(HPCUIListeningModeControl *)self contentView];
-  [v27 addSubview:self->_labelTransparency];
+  contentView2 = [(HPCUIListeningModeControl *)self contentView];
+  [contentView2 addSubview:self->_labelTransparency];
 
-  v28 = [(HPCUIListeningModeControl *)self contentView];
-  [v28 addSubview:self->_labelNoiseCancellation];
+  contentView3 = [(HPCUIListeningModeControl *)self contentView];
+  [contentView3 addSubview:self->_labelNoiseCancellation];
 
-  v29 = [(HPCUIListeningModeControl *)self contentView];
-  [v29 addSubview:self->_labelUnableToSetListeningMode];
+  contentView4 = [(HPCUIListeningModeControl *)self contentView];
+  [contentView4 addSubview:self->_labelUnableToSetListeningMode];
 
   NSLog(&cfstr_ListeningModeA_1.isa);
   if (self->_autoANCSupported)
@@ -288,8 +288,8 @@
 
     [(UILabel *)labelAutoANC sizeToFit];
     [(UILabel *)self->_labelAutoANC setAccessibilityIdentifier:@"Adaptive"];
-    v36 = [(HPCUIListeningModeControl *)self contentView];
-    [v36 addSubview:self->_labelAutoANC];
+    contentView5 = [(HPCUIListeningModeControl *)self contentView];
+    [contentView5 addSubview:self->_labelAutoANC];
 
     NSLog(&cfstr_ListeningModeA_2.isa);
   }
@@ -301,47 +301,47 @@
   v5.receiver = self;
   v5.super_class = HPCUIListeningModeControl;
   [(PSTableCell *)&v5 layoutSubviews];
-  v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [(HPCUIListeningModeControl *)self setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [(HPCUIListeningModeControl *)self setBackgroundColor:systemGroupedBackgroundColor];
 
   [(HPCUIListeningModeControl *)self _updateLabelLayoutForBounds];
-  v4 = [(HPCUIListeningModeControl *)self layer];
-  [v4 setMasksToBounds:0];
+  layer = [(HPCUIListeningModeControl *)self layer];
+  [layer setMasksToBounds:0];
 }
 
 - (void)setupConstraints
 {
   v116[4] = *MEMORY[0x1E69E9840];
-  v3 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
-  v4 = [v3 count];
+  modeControlLabelXPositionConstraints = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
+  v4 = [modeControlLabelXPositionConstraints count];
 
   if (!v4)
   {
     NSLog(&cfstr_ListeningModeS.isa);
     v101 = MEMORY[0x1E696ACD8];
-    v107 = [(UISegmentedControl *)self->_segmentedControl topAnchor];
-    v110 = [(HPCUIListeningModeControl *)self contentView];
-    v105 = [v110 topAnchor];
-    v104 = [v107 constraintEqualToAnchor:v105];
+    topAnchor = [(UISegmentedControl *)self->_segmentedControl topAnchor];
+    contentView = [(HPCUIListeningModeControl *)self contentView];
+    topAnchor2 = [contentView topAnchor];
+    v104 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v116[0] = v104;
-    v103 = [(UISegmentedControl *)self->_segmentedControl heightAnchor];
-    v102 = [v103 constraintEqualToConstant:50.0];
+    heightAnchor = [(UISegmentedControl *)self->_segmentedControl heightAnchor];
+    v102 = [heightAnchor constraintEqualToConstant:50.0];
     v116[1] = v102;
-    v5 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
-    v6 = [(HPCUIListeningModeControl *)self contentView];
-    v7 = [v6 leadingAnchor];
-    v8 = [v5 constraintEqualToAnchor:v7];
+    leadingAnchor = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
+    contentView2 = [(HPCUIListeningModeControl *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v116[2] = v8;
-    v9 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-    v10 = [(HPCUIListeningModeControl *)self contentView];
-    v11 = [v10 trailingAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+    contentView3 = [(HPCUIListeningModeControl *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v116[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v116 count:4];
     [v101 activateConstraints:v13];
 
-    v14 = [(HPCUIListeningModeControl *)self contentView];
-    [v14 frame];
+    contentView4 = [(HPCUIListeningModeControl *)self contentView];
+    [contentView4 frame];
     v16 = v15;
     [(HPCUIListeningModeControl *)self _validSegmentCount];
     v18 = v16 / v17;
@@ -350,153 +350,153 @@
     if (self->_modeOffSupported)
     {
       v20 = MEMORY[0x1E696ACD8];
-      v21 = [(UILabel *)self->_labelOff topAnchor];
-      v22 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22 constant:5.0];
+      topAnchor3 = [(UILabel *)self->_labelOff topAnchor];
+      bottomAnchor = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+      v23 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:5.0];
       v115[0] = v23;
-      v24 = [(UILabel *)self->_labelOff bottomAnchor];
-      v25 = [(HPCUIListeningModeControl *)self contentView];
-      v26 = [v25 bottomAnchor];
-      v27 = [v24 constraintLessThanOrEqualToAnchor:v26];
+      bottomAnchor2 = [(UILabel *)self->_labelOff bottomAnchor];
+      contentView5 = [(HPCUIListeningModeControl *)self contentView];
+      bottomAnchor3 = [contentView5 bottomAnchor];
+      v27 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
       v115[1] = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v115 count:2];
       [v20 activateConstraints:v28];
 
-      v29 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
-      v30 = [(UILabel *)self->_labelOff centerXAnchor];
-      v31 = [(HPCUIListeningModeControl *)self contentView];
-      v32 = [v31 leadingAnchor];
-      v33 = [v30 constraintEqualToAnchor:v32 constant:v18 * 0.5];
-      [v29 addObject:v33];
+      modeControlLabelXPositionConstraints2 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
+      centerXAnchor = [(UILabel *)self->_labelOff centerXAnchor];
+      contentView6 = [(HPCUIListeningModeControl *)self contentView];
+      leadingAnchor3 = [contentView6 leadingAnchor];
+      v33 = [centerXAnchor constraintEqualToAnchor:leadingAnchor3 constant:v18 * 0.5];
+      [modeControlLabelXPositionConstraints2 addObject:v33];
 
-      v34 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
-      v35 = [(UILabel *)self->_labelOff widthAnchor];
-      v36 = [v35 constraintEqualToConstant:v18];
-      [v34 addObject:v36];
+      labelWidthConstraints = [(HPCUIListeningModeControl *)self labelWidthConstraints];
+      widthAnchor = [(UILabel *)self->_labelOff widthAnchor];
+      v36 = [widthAnchor constraintEqualToConstant:v18];
+      [labelWidthConstraints addObject:v36];
 
       v19 = v18 + v19;
     }
 
     v37 = MEMORY[0x1E696ACD8];
-    v38 = [(UILabel *)self->_labelTransparency topAnchor];
-    v39 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:5.0];
+    topAnchor4 = [(UILabel *)self->_labelTransparency topAnchor];
+    bottomAnchor4 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+    v40 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:5.0];
     v114[0] = v40;
-    v41 = [(UILabel *)self->_labelTransparency bottomAnchor];
-    v42 = [(HPCUIListeningModeControl *)self contentView];
-    v43 = [v42 bottomAnchor];
-    v44 = [v41 constraintLessThanOrEqualToAnchor:v43];
+    bottomAnchor5 = [(UILabel *)self->_labelTransparency bottomAnchor];
+    contentView7 = [(HPCUIListeningModeControl *)self contentView];
+    bottomAnchor6 = [contentView7 bottomAnchor];
+    v44 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6];
     v114[1] = v44;
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v114 count:2];
     [v37 activateConstraints:v45];
 
-    v46 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
-    v47 = [(UILabel *)self->_labelTransparency centerXAnchor];
-    v48 = [(HPCUIListeningModeControl *)self contentView];
-    v49 = [v48 leadingAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49 constant:v19];
-    [v46 addObject:v50];
+    modeControlLabelXPositionConstraints3 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
+    centerXAnchor2 = [(UILabel *)self->_labelTransparency centerXAnchor];
+    contentView8 = [(HPCUIListeningModeControl *)self contentView];
+    leadingAnchor4 = [contentView8 leadingAnchor];
+    v50 = [centerXAnchor2 constraintEqualToAnchor:leadingAnchor4 constant:v19];
+    [modeControlLabelXPositionConstraints3 addObject:v50];
 
-    v51 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
-    v52 = [(UILabel *)self->_labelTransparency widthAnchor];
-    v53 = [v52 constraintEqualToConstant:v18];
-    [v51 addObject:v53];
+    labelWidthConstraints2 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
+    widthAnchor2 = [(UILabel *)self->_labelTransparency widthAnchor];
+    v53 = [widthAnchor2 constraintEqualToConstant:v18];
+    [labelWidthConstraints2 addObject:v53];
 
     v54 = v18 + v19;
     if (self->_autoANCSupported)
     {
       v55 = MEMORY[0x1E696ACD8];
-      v56 = [(UILabel *)self->_labelAutoANC topAnchor];
-      v57 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-      v58 = [v56 constraintEqualToAnchor:v57 constant:5.0];
+      topAnchor5 = [(UILabel *)self->_labelAutoANC topAnchor];
+      bottomAnchor7 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+      v58 = [topAnchor5 constraintEqualToAnchor:bottomAnchor7 constant:5.0];
       v113[0] = v58;
-      v59 = [(UILabel *)self->_labelAutoANC bottomAnchor];
-      v60 = [(HPCUIListeningModeControl *)self contentView];
-      v61 = [v60 bottomAnchor];
-      v62 = [v59 constraintLessThanOrEqualToAnchor:v61];
+      bottomAnchor8 = [(UILabel *)self->_labelAutoANC bottomAnchor];
+      contentView9 = [(HPCUIListeningModeControl *)self contentView];
+      bottomAnchor9 = [contentView9 bottomAnchor];
+      v62 = [bottomAnchor8 constraintLessThanOrEqualToAnchor:bottomAnchor9];
       v113[1] = v62;
       v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:2];
       [v55 activateConstraints:v63];
 
-      v64 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
-      v65 = [(UILabel *)self->_labelAutoANC centerXAnchor];
-      v66 = [(HPCUIListeningModeControl *)self contentView];
-      v67 = [v66 leadingAnchor];
-      v68 = [v65 constraintEqualToAnchor:v67 constant:v54];
-      [v64 addObject:v68];
+      modeControlLabelXPositionConstraints4 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
+      centerXAnchor3 = [(UILabel *)self->_labelAutoANC centerXAnchor];
+      contentView10 = [(HPCUIListeningModeControl *)self contentView];
+      leadingAnchor5 = [contentView10 leadingAnchor];
+      v68 = [centerXAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:v54];
+      [modeControlLabelXPositionConstraints4 addObject:v68];
 
-      v69 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
-      v70 = [(UILabel *)self->_labelAutoANC widthAnchor];
-      v71 = [v70 constraintEqualToConstant:v18];
-      [v69 addObject:v71];
+      labelWidthConstraints3 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
+      widthAnchor3 = [(UILabel *)self->_labelAutoANC widthAnchor];
+      v71 = [widthAnchor3 constraintEqualToConstant:v18];
+      [labelWidthConstraints3 addObject:v71];
 
       v54 = v18 + v54;
     }
 
     v108 = MEMORY[0x1E696ACD8];
-    v72 = [(UILabel *)self->_labelNoiseCancellation topAnchor];
-    v73 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-    v74 = [v72 constraintEqualToAnchor:v73 constant:5.0];
+    topAnchor6 = [(UILabel *)self->_labelNoiseCancellation topAnchor];
+    bottomAnchor10 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+    v74 = [topAnchor6 constraintEqualToAnchor:bottomAnchor10 constant:5.0];
     v112[0] = v74;
-    v75 = [(UILabel *)self->_labelNoiseCancellation bottomAnchor];
-    v76 = [(HPCUIListeningModeControl *)self contentView];
-    v77 = [v76 bottomAnchor];
-    v78 = [v75 constraintLessThanOrEqualToAnchor:v77];
+    bottomAnchor11 = [(UILabel *)self->_labelNoiseCancellation bottomAnchor];
+    contentView11 = [(HPCUIListeningModeControl *)self contentView];
+    bottomAnchor12 = [contentView11 bottomAnchor];
+    v78 = [bottomAnchor11 constraintLessThanOrEqualToAnchor:bottomAnchor12];
     v112[1] = v78;
     v79 = [MEMORY[0x1E695DEC8] arrayWithObjects:v112 count:2];
     [v108 activateConstraints:v79];
 
-    v80 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
-    v81 = [(UILabel *)self->_labelNoiseCancellation widthAnchor];
-    v82 = [v81 constraintEqualToConstant:v18];
-    [v80 addObject:v82];
+    labelWidthConstraints4 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
+    widthAnchor4 = [(UILabel *)self->_labelNoiseCancellation widthAnchor];
+    v82 = [widthAnchor4 constraintEqualToConstant:v18];
+    [labelWidthConstraints4 addObject:v82];
 
     v106 = MEMORY[0x1E696ACD8];
-    v109 = [(UILabel *)self->_labelUnableToSetListeningMode topAnchor];
-    v83 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-    v84 = [v109 constraintEqualToAnchor:v83 constant:5.0];
+    topAnchor7 = [(UILabel *)self->_labelUnableToSetListeningMode topAnchor];
+    bottomAnchor13 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+    v84 = [topAnchor7 constraintEqualToAnchor:bottomAnchor13 constant:5.0];
     v111[0] = v84;
-    v85 = [(UILabel *)self->_labelUnableToSetListeningMode leadingAnchor];
-    v86 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
-    v87 = [v85 constraintEqualToAnchor:v86];
+    leadingAnchor6 = [(UILabel *)self->_labelUnableToSetListeningMode leadingAnchor];
+    leadingAnchor7 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
+    v87 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v111[1] = v87;
-    v88 = [(UILabel *)self->_labelUnableToSetListeningMode trailingAnchor];
-    v89 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-    v90 = [v88 constraintEqualToAnchor:v89];
+    trailingAnchor3 = [(UILabel *)self->_labelUnableToSetListeningMode trailingAnchor];
+    trailingAnchor4 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+    v90 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v111[2] = v90;
     v91 = [MEMORY[0x1E695DEC8] arrayWithObjects:v111 count:3];
     [v106 activateConstraints:v91];
 
-    v92 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
-    v93 = [(UILabel *)self->_labelNoiseCancellation centerXAnchor];
-    v94 = [(HPCUIListeningModeControl *)self contentView];
-    v95 = [v94 leadingAnchor];
-    v96 = [v93 constraintEqualToAnchor:v95 constant:v54];
-    [v92 addObject:v96];
+    modeControlLabelXPositionConstraints5 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
+    centerXAnchor4 = [(UILabel *)self->_labelNoiseCancellation centerXAnchor];
+    contentView12 = [(HPCUIListeningModeControl *)self contentView];
+    leadingAnchor8 = [contentView12 leadingAnchor];
+    v96 = [centerXAnchor4 constraintEqualToAnchor:leadingAnchor8 constant:v54];
+    [modeControlLabelXPositionConstraints5 addObject:v96];
 
     v97 = MEMORY[0x1E696ACD8];
-    v98 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
-    [v97 activateConstraints:v98];
+    modeControlLabelXPositionConstraints6 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
+    [v97 activateConstraints:modeControlLabelXPositionConstraints6];
 
     v99 = MEMORY[0x1E696ACD8];
-    v100 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
-    [v99 activateConstraints:v100];
+    labelWidthConstraints5 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
+    [v99 activateConstraints:labelWidthConstraints5];
   }
 }
 
-- (int)getListeningModeFromIndex:(int64_t)a3
+- (int)getListeningModeFromIndex:(int64_t)index
 {
   v5 = [(HPCUIListeningModeControl *)self _modeForIndex:?];
   v6 = v5;
   v7 = [(HPCUIListeningModeControl *)self getListeningModeString:v5];
-  NSLog(&cfstr_ListeningModeG.isa, a3, v7);
+  NSLog(&cfstr_ListeningModeG.isa, index, v7);
 
   return v6;
 }
 
-- (int64_t)getIndexFromListeningMode:(int)a3
+- (int64_t)getIndexFromListeningMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v5 = [(HPCUIListeningModeControl *)self _indexForMode:?];
   v6 = [(HPCUIListeningModeControl *)self getListeningModeString:v3];
   NSLog(&cfstr_ListeningModeG_0.isa, v6, v5);
@@ -504,36 +504,36 @@
   return v5;
 }
 
-- (id)getListeningModeString:(int)a3
+- (id)getListeningModeString:(int)string
 {
-  if ((a3 - 1) > 3)
+  if ((string - 1) > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7970D38[a3 - 1];
+    return off_1E7970D38[string - 1];
   }
 }
 
-- (void)settingsChangedHandler:(id)a3
+- (void)settingsChangedHandler:(id)handler
 {
-  NSLog(&cfstr_ListeningModeS_0.isa, a2, a3);
+  NSLog(&cfstr_ListeningModeS_0.isa, a2, handler);
 
   [(HPCUIListeningModeControl *)self refreshListeningMode];
 }
 
 - (void)refreshListeningMode
 {
-  v3 = [(HPMHeadphoneDevice *)self->_device listeningMode];
-  v4 = [(HPCUIListeningModeControl *)self getListeningModeString:v3];
+  listeningMode = [(HPMHeadphoneDevice *)self->_device listeningMode];
+  v4 = [(HPCUIListeningModeControl *)self getListeningModeString:listeningMode];
   NSLog(&cfstr_ListeningModeR_1.isa, v4);
 
-  [(UISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:[(HPCUIListeningModeControl *)self getIndexFromListeningMode:v3]];
+  [(UISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:[(HPCUIListeningModeControl *)self getIndexFromListeningMode:listeningMode]];
   LODWORD(v4) = self->_autoANCSupported;
   v5 = objc_alloc(MEMORY[0x1E695DF20]);
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:listeningMode];
   v7 = @"ListeningModesValueOnly";
   if (v4)
   {
@@ -548,18 +548,18 @@
 
   v10 = [v5 initWithObjectsAndKeys:{v6, v7, 0}];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:v8 object:0 userInfo:v10];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:v8 object:0 userInfo:v10];
 }
 
-- (void)segmentControlValueChanged:(id)a3
+- (void)segmentControlValueChanged:(id)changed
 {
-  v4 = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
-  v5 = [(HPCUIListeningModeControl *)self getListeningModeFromIndex:v4];
-  NSLog(&cfstr_ListeningModeS_1.isa, v4, v5);
+  selectedSegmentIndex = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
+  v5 = [(HPCUIListeningModeControl *)self getListeningModeFromIndex:selectedSegmentIndex];
+  NSLog(&cfstr_ListeningModeS_1.isa, selectedSegmentIndex, v5);
   if ([(HPCUIListeningModeControl *)self farFieldSessionOnGoing]|| ([(HPMHeadphoneDevice *)self->_device setIsUpdatingDeviceConfig:1], ![(HPCUIListeningModeControl *)self setListeningMode:v5]))
   {
-    [(HPCUIListeningModeControl *)self _handleListeningModeSetFailure:v5 index:v4];
+    [(HPCUIListeningModeControl *)self _handleListeningModeSetFailure:v5 index:selectedSegmentIndex];
   }
 
   autoANCSupported = self->_autoANCSupported;
@@ -579,8 +579,8 @@
 
   v12 = [v7 initWithObjectsAndKeys:{v8, v9, 0}];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:v10 object:0 userInfo:v12];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:v10 object:0 userInfo:v12];
 }
 
 - (void)resetUI
@@ -596,9 +596,9 @@
     [(UILabel *)self->_labelNoiseCancellation removeFromSuperview];
     [(UILabel *)self->_labelUnableToSetListeningMode removeFromSuperview];
     [(UILabel *)self->_labelAutoANC removeFromSuperview];
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     modeControlLabelXPositionConstraints = self->_modeControlLabelXPositionConstraints;
-    self->_modeControlLabelXPositionConstraints = v3;
+    self->_modeControlLabelXPositionConstraints = array;
 
     [(HPCUIListeningModeControl *)self addModeOptions];
     [(HPCUIListeningModeControl *)self addModeLabels];
@@ -619,8 +619,8 @@
 - (void)_updateLabelLayoutForBounds
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(HPCUIListeningModeControl *)self contentView];
-  [v3 bounds];
+  contentView = [(HPCUIListeningModeControl *)self contentView];
+  [contentView bounds];
   v5 = v4;
   [(HPCUIListeningModeControl *)self _validSegmentCount];
   v7 = v5 / v6;
@@ -629,8 +629,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  modeControlLabelXPositionConstraints = [(HPCUIListeningModeControl *)self modeControlLabelXPositionConstraints];
+  v9 = [modeControlLabelXPositionConstraints countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -643,7 +643,7 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(modeControlLabelXPositionConstraints);
         }
 
         [*(*(&v16 + 1) + 8 * v13) setConstant:v11];
@@ -652,31 +652,31 @@
       }
 
       while (v10 != v13);
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [modeControlLabelXPositionConstraints countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(HPCUIListeningModeControl *)self labelWidthConstraints];
+  labelWidthConstraints = [(HPCUIListeningModeControl *)self labelWidthConstraints];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__HPCUIListeningModeControl__updateLabelLayoutForBounds__block_invoke;
   v15[3] = &__block_descriptor_40_e28_v16__0__NSLayoutConstraint_8l;
   *&v15[4] = v7;
-  [v14 bs_each:v15];
+  [labelWidthConstraints bs_each:v15];
 }
 
-- (void)_handleListeningModeSetFailure:(int)a3 index:(int64_t)a4
+- (void)_handleListeningModeSetFailure:(int)failure index:(int64_t)index
 {
-  v5 = *&a3;
+  v5 = *&failure;
   [(HPCUIListeningModeControl *)self setUserInteractionEnabled:0];
-  v7 = [(HPMHeadphoneDevice *)self->_device listeningMode];
-  v8 = [(HPCUIListeningModeControl *)self _errorStringForFailedToSelectIndex:a4];
+  listeningMode = [(HPMHeadphoneDevice *)self->_device listeningMode];
+  v8 = [(HPCUIListeningModeControl *)self _errorStringForFailedToSelectIndex:index];
   [(UILabel *)self->_labelUnableToSetListeningMode setText:v8];
-  [(UISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:[(HPCUIListeningModeControl *)self getIndexFromListeningMode:v7]];
+  [(UISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:[(HPCUIListeningModeControl *)self getIndexFromListeningMode:listeningMode]];
   v9 = [(HPCUIListeningModeControl *)self getListeningModeString:v5];
-  v10 = [(HPCUIListeningModeControl *)self getListeningModeString:v7];
+  v10 = [(HPCUIListeningModeControl *)self getListeningModeString:listeningMode];
   NSLog(&cfstr_ListeningModeN.isa, v9, v10, [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex]);
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -753,11 +753,11 @@ uint64_t __66__HPCUIListeningModeControl__handleListeningModeSetFailure_index___
   return result;
 }
 
-- (id)_errorStringForFailedToSelectIndex:(int64_t)a3
+- (id)_errorStringForFailedToSelectIndex:(int64_t)index
 {
   if ([(HPCUIListeningModeControl *)self farFieldSessionOnGoing])
   {
-    v5 = [(HPCUIListeningModeControl *)self farFieldOngoingErrorString];
+    farFieldOngoingErrorString = [(HPCUIListeningModeControl *)self farFieldOngoingErrorString];
     goto LABEL_9;
   }
 
@@ -765,35 +765,35 @@ uint64_t __66__HPCUIListeningModeControl__handleListeningModeSetFailure_index___
   {
     if (self->_modeOffSupported)
     {
-      if (a3 == 2)
+      if (index == 2)
       {
 LABEL_6:
-        v5 = [(HPCUIListeningModeControl *)self localizedBothBudsInEarAdaptiveString];
+        farFieldOngoingErrorString = [(HPCUIListeningModeControl *)self localizedBothBudsInEarAdaptiveString];
         goto LABEL_9;
       }
     }
 
-    else if (a3 == 1)
+    else if (index == 1)
     {
       goto LABEL_6;
     }
   }
 
-  v5 = [(HPCUIListeningModeControl *)self localizedBothBudsInEarNCString];
+  farFieldOngoingErrorString = [(HPCUIListeningModeControl *)self localizedBothBudsInEarNCString];
 LABEL_9:
 
-  return v5;
+  return farFieldOngoingErrorString;
 }
 
-- (void)setListeningModeConfigs:(unsigned int)a3
+- (void)setListeningModeConfigs:(unsigned int)configs
 {
-  v3 = *&a3;
+  v3 = *&configs;
   [(HPMHeadphoneDevice *)self->_device setListeningModeConfigs:?];
   v7 = objc_opt_new();
   [v7 setListeningModeConfigs:v3];
   v5 = objc_opt_new();
-  v6 = [(HPMHeadphoneDevice *)self->_device cbDevice];
-  [v5 modifyDevice:v6 settings:v7 completion:&__block_literal_global_8];
+  cbDevice = [(HPMHeadphoneDevice *)self->_device cbDevice];
+  [v5 modifyDevice:cbDevice settings:v7 completion:&__block_literal_global_8];
 }
 
 void __53__HPCUIListeningModeControl_setListeningModeConfigs___block_invoke(uint64_t a1, void *a2)
@@ -813,12 +813,12 @@ void __53__HPCUIListeningModeControl_setListeningModeConfigs___block_invoke(uint
   }
 }
 
-- (BOOL)setListeningMode:(unsigned int)a3
+- (BOOL)setListeningMode:(unsigned int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v5 = dispatch_group_create();
-  v6 = [(HPCUIListeningModeControl *)self device];
-  v7 = [v6 listeningMode];
+  device = [(HPCUIListeningModeControl *)self device];
+  listeningMode = [device listeningMode];
 
   v29 = 0;
   v30 = &v29;
@@ -835,14 +835,14 @@ void __53__HPCUIListeningModeControl_setListeningModeConfigs___block_invoke(uint
   v10 = dispatch_get_global_queue(0, 0);
   [v9 setDispatchQueue:v10];
 
-  v11 = [(HPCUIListeningModeControl *)self device];
-  [v11 setIsUpdatingDeviceConfig:1];
+  device2 = [(HPCUIListeningModeControl *)self device];
+  [device2 setIsUpdatingDeviceConfig:1];
 
-  v12 = [(HPCUIListeningModeControl *)self device];
-  [v12 setListeningMode:v3];
+  device3 = [(HPCUIListeningModeControl *)self device];
+  [device3 setListeningMode:v3];
 
-  v13 = [(HPCUIListeningModeControl *)self device];
-  v14 = [v13 cbDevice];
+  device4 = [(HPCUIListeningModeControl *)self device];
+  cbDevice = [device4 cbDevice];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __46__HPCUIListeningModeControl_setListeningMode___block_invoke;
@@ -850,10 +850,10 @@ void __53__HPCUIListeningModeControl_setListeningModeConfigs___block_invoke(uint
   v20[4] = self;
   v22 = &v29;
   v23 = &v25;
-  v24 = v7;
+  v24 = listeningMode;
   v15 = v5;
   v21 = v15;
-  [v9 modifyDevice:v14 settings:v8 completion:v20];
+  [v9 modifyDevice:cbDevice settings:v8 completion:v20];
 
   v16 = dispatch_time(0, 100000000);
   dispatch_group_wait(v15, v16);
@@ -910,20 +910,20 @@ void __46__HPCUIListeningModeControl_setListeningMode___block_invoke(uint64_t a1
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (int)_modeForIndex:(int64_t)a3
+- (int)_modeForIndex:(int64_t)index
 {
   swift_getObjectType();
   MEMORY[0x1E69E5928](self);
-  v7 = HPCUIListeningModeControl._modeForIndex(_:)(a3);
+  v7 = HPCUIListeningModeControl._modeForIndex(_:)(index);
   MEMORY[0x1E69E5920](self);
   return v7;
 }
 
-- (int64_t)_indexForMode:(int)a3
+- (int64_t)_indexForMode:(int)mode
 {
   swift_getObjectType();
   MEMORY[0x1E69E5928](self);
-  v7 = HPCUIListeningModeControl._indexForMode(_:)(a3);
+  v7 = HPCUIListeningModeControl._indexForMode(_:)(mode);
   MEMORY[0x1E69E5920](self);
   return v7;
 }
@@ -936,24 +936,24 @@ void __46__HPCUIListeningModeControl_setListeningMode___block_invoke(uint64_t a1
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)updateListeningModeForSyncSelection:(id)a3
+- (void)updateListeningModeForSyncSelection:(id)selection
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](selection);
   MEMORY[0x1E69E5928](self);
   HPCUIListeningModeControl.updateListeningModeForSyncSelection(_:)();
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](selection);
 }
 
-- (BOOL)needsResetUI:(id)a3
+- (BOOL)needsResetUI:(id)i
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](i);
   MEMORY[0x1E69E5928](self);
-  HPCUIListeningModeControl.needsResetUI(_:)(a3);
+  HPCUIListeningModeControl.needsResetUI(_:)(i);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](i);
   return sub_1AC3090FC() & 1;
 }
 

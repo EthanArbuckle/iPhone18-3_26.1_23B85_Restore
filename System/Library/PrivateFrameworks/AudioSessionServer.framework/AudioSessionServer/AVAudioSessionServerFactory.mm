@@ -1,24 +1,24 @@
 @interface AVAudioSessionServerFactory
-+ (id)createServerWithAudioControlQueue:(id)a3 delegate:(id)a4;
-+ (id)createServerWithDelegate:(id)a3 audioControlQueue:(id)a4;
++ (id)createServerWithAudioControlQueue:(id)queue delegate:(id)delegate;
++ (id)createServerWithDelegate:(id)delegate audioControlQueue:(id)queue;
 @end
 
 @implementation AVAudioSessionServerFactory
 
-+ (id)createServerWithAudioControlQueue:(id)a3 delegate:(id)a4
++ (id)createServerWithAudioControlQueue:(id)queue delegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[AVAudioSessionServerPriv alloc] initWithAudioControlQueue:v5 delegate:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v7 = [[AVAudioSessionServerPriv alloc] initWithAudioControlQueue:queueCopy delegate:delegateCopy];
 
   return v7;
 }
 
-+ (id)createServerWithDelegate:(id)a3 audioControlQueue:(id)a4
++ (id)createServerWithDelegate:(id)delegate audioControlQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[AVAudioSessionServerPriv alloc] initWithAudioControlQueue:v6 delegate:v5];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v7 = [[AVAudioSessionServerPriv alloc] initWithAudioControlQueue:queueCopy delegate:delegateCopy];
 
   return v7;
 }

@@ -18,7 +18,7 @@
   v5[2] = __95__WBSAppLink_SafariServicesExtras___sf_decideOpenStrategyAndCallCompletionHandlerOnMainThread___block_invoke;
   v5[3] = &unk_1E8495410;
   v5[4] = v6;
-  [a1 decideOpenStrategyWithCompletionHandler:v5];
+  [self decideOpenStrategyWithCompletionHandler:v5];
   _Block_object_dispose(v6, 8);
 }
 

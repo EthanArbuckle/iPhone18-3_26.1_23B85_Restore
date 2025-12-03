@@ -1,15 +1,15 @@
 @interface ABSearchOperation
-+ (id)personPredicateWithNameLike:(id)a3 inSource:(void *)a4 includeSourceInResults:(BOOL)a5 includePhotosInResults:(BOOL)a6 addressBook:(void *)a7;
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4;
-- (void)_mainThread_tellDelegateSearchFoundMatch:(void *)a3;
++ (id)personPredicateWithNameLike:(id)like inSource:(void *)source includeSourceInResults:(BOOL)results includePhotosInResults:(BOOL)inResults addressBook:(void *)book;
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record;
+- (void)_mainThread_tellDelegateSearchFoundMatch:(void *)match;
 - (void)cancel;
 - (void)dealloc;
 - (void)internalSearchAddressBook;
 - (void)main;
-- (void)setAddressBook:(void *)a3;
-- (void)setDelegate:(id)a3;
-- (void)setInternalSearchAddressBook:(void *)a3;
-- (void)setProgressBlock:(id)a3;
+- (void)setAddressBook:(void *)book;
+- (void)setDelegate:(id)delegate;
+- (void)setInternalSearchAddressBook:(void *)book;
+- (void)setProgressBlock:(id)block;
 @end
 
 @implementation ABSearchOperation
@@ -33,40 +33,40 @@
   [(ABSearchOperation *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     [(ABSearchOperation *)self setProgressBlock:0];
   }
 
-  self->_delegate = a3;
+  self->_delegate = delegate;
 }
 
-- (void)setProgressBlock:(id)a3
+- (void)setProgressBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     [(ABSearchOperation *)self setDelegate:0];
   }
 
   progressBlock = self->_progressBlock;
-  if (progressBlock != a3)
+  if (progressBlock != block)
   {
 
-    self->_progressBlock = [a3 copy];
+    self->_progressBlock = [block copy];
     self->_progressBlockThread = [MEMORY[0x1E696AF00] currentThread];
   }
 }
 
-- (void)setAddressBook:(void *)a3
+- (void)setAddressBook:(void *)book
 {
   addressBook = self->_addressBook;
-  if (addressBook != a3)
+  if (addressBook != book)
   {
-    if (a3)
+    if (book)
     {
-      CFRetain(a3);
+      CFRetain(book);
       addressBook = self->_addressBook;
     }
 
@@ -75,7 +75,7 @@
       CFRelease(addressBook);
     }
 
-    self->_addressBook = a3;
+    self->_addressBook = book;
   }
 }
 
@@ -100,14 +100,14 @@
   return self->_internalSearchAddressBook;
 }
 
-- (void)setInternalSearchAddressBook:(void *)a3
+- (void)setInternalSearchAddressBook:(void *)book
 {
   internalSearchAddressBook = self->_internalSearchAddressBook;
-  if (internalSearchAddressBook != a3)
+  if (internalSearchAddressBook != book)
   {
-    if (a3)
+    if (book)
     {
-      CFRetain(a3);
+      CFRetain(book);
       internalSearchAddressBook = self->_internalSearchAddressBook;
     }
 
@@ -116,7 +116,7 @@
       CFRelease(internalSearchAddressBook);
     }
 
-    self->_internalSearchAddressBook = a3;
+    self->_internalSearchAddressBook = book;
   }
 }
 
@@ -150,13 +150,13 @@
     {
       if ([(ABSearchOperation *)self delegate])
       {
-        v3 = [MEMORY[0x1E6996818] mainThreadScheduler];
+        mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
         v5[0] = MEMORY[0x1E69E9820];
         v5[1] = 3221225472;
         v5[2] = __25__ABSearchOperation_main__block_invoke;
         v5[3] = &unk_1E7CCCD60;
         v5[4] = self;
-        [v3 performBlock:v5];
+        [mainThreadScheduler performBlock:v5];
       }
 
       else
@@ -177,16 +177,16 @@ uint64_t __25__ABSearchOperation_main__block_invoke(uint64_t a1)
   return [v2 searchOperation:v3 didFindMatches:0 moreComing:0];
 }
 
-- (void)_mainThread_tellDelegateSearchFoundMatch:(void *)a3
+- (void)_mainThread_tellDelegateSearchFoundMatch:(void *)match
 {
   if (([(ABSearchOperation *)self isCancelled]& 1) == 0)
   {
-    RecordID = ABRecordGetRecordID(a3);
-    PersonWithRecordID = a3;
+    RecordID = ABRecordGetRecordID(match);
+    PersonWithRecordID = match;
     if (RecordID != -1)
     {
       v7 = RecordID;
-      ABAddressBookAddRecord([(ABSearchOperation *)self addressBook], a3, 0);
+      ABAddressBookAddRecord([(ABSearchOperation *)self addressBook], match, 0);
       PersonWithRecordID = ABAddressBookGetPersonWithRecordID([(ABSearchOperation *)self addressBook], v7);
     }
 
@@ -200,31 +200,31 @@ uint64_t __25__ABSearchOperation_main__block_invoke(uint64_t a1)
 
       else if ([(ABSearchOperation *)self progressBlock])
       {
-        v9 = [(ABSearchOperation *)self progressBlock];
-        v9[2](v9, self, v8, 1);
+        progressBlock = [(ABSearchOperation *)self progressBlock];
+        progressBlock[2](progressBlock, self, v8, 1);
       }
     }
   }
 
-  if (a3)
+  if (match)
   {
 
-    CFRelease(a3);
+    CFRelease(match);
   }
 }
 
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record
 {
-  v6 = [(ABSearchOperation *)self internalSearchAddressBook];
-  v7 = [(ABSearchOperation *)self addressBook];
-  if (v6 == v7)
+  internalSearchAddressBook = [(ABSearchOperation *)self internalSearchAddressBook];
+  addressBook = [(ABSearchOperation *)self addressBook];
+  if (internalSearchAddressBook == addressBook)
   {
-    v8 = CFRetain(a4);
+    v8 = CFRetain(record);
   }
 
   else
   {
-    v8 = ABPersonCopy(a4);
+    v8 = ABPersonCopy(record);
   }
 
   v9 = v8;
@@ -235,8 +235,8 @@ uint64_t __25__ABSearchOperation_main__block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [MEMORY[0x1E696AF00] isMainThread];
-    if (v6 == v7 || v10)
+    isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+    if (internalSearchAddressBook == addressBook || isMainThread)
     {
       [(ABSearchOperation *)self _mainThread_tellDelegateSearchFoundMatch:v9];
     }
@@ -259,13 +259,13 @@ uint64_t __25__ABSearchOperation_main__block_invoke(uint64_t a1)
   return [(ABSearchOperation *)self isCancelled]^ 1;
 }
 
-+ (id)personPredicateWithNameLike:(id)a3 inSource:(void *)a4 includeSourceInResults:(BOOL)a5 includePhotosInResults:(BOOL)a6 addressBook:(void *)a7
++ (id)personPredicateWithNameLike:(id)like inSource:(void *)source includeSourceInResults:(BOOL)results includePhotosInResults:(BOOL)inResults addressBook:(void *)book
 {
-  v8 = a6;
-  v9 = a5;
-  if (a4)
+  inResultsCopy = inResults;
+  resultsCopy = results;
+  if (source)
   {
-    v11 = [MEMORY[0x1E695DEC8] arrayWithObject:a4];
+    v11 = [MEMORY[0x1E695DEC8] arrayWithObject:source];
   }
 
   else
@@ -273,7 +273,7 @@ uint64_t __25__ABSearchOperation_main__block_invoke(uint64_t a1)
     v11 = 0;
   }
 
-  return [ABPredicate personPredicateWithNameLike:a3 groups:0 sources:v11 includeSourceInResults:v9 includePhotosInResults:v8 addressBook:a7];
+  return [ABPredicate personPredicateWithNameLike:like groups:0 sources:v11 includeSourceInResults:resultsCopy includePhotosInResults:inResultsCopy addressBook:book];
 }
 
 @end

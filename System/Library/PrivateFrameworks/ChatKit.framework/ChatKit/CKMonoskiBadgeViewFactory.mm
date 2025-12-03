@@ -1,11 +1,11 @@
 @interface CKMonoskiBadgeViewFactory
-+ (id)badgeViewWithSupportsGradient:(BOOL)a3;
++ (id)badgeViewWithSupportsGradient:(BOOL)gradient;
 - (_TtC7ChatKit25CKMonoskiBadgeViewFactory)init;
 @end
 
 @implementation CKMonoskiBadgeViewFactory
 
-+ (id)badgeViewWithSupportsGradient:(BOOL)a3
++ (id)badgeViewWithSupportsGradient:(BOOL)gradient
 {
   sub_190A4CB00();
 

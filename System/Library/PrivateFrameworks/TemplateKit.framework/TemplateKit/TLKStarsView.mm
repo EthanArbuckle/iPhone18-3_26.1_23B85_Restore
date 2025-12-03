@@ -1,8 +1,8 @@
 @interface TLKStarsView
 - (TLKStarsView)init;
-- (void)setFont:(id)a3;
-- (void)setStarRating:(double)a3;
-- (void)setUseCompactMode:(BOOL)a3;
+- (void)setFont:(id)font;
+- (void)setStarRating:(double)rating;
+- (void)setUseCompactMode:(BOOL)mode;
 - (void)updateStarImages;
 @end
 
@@ -32,30 +32,30 @@
   return v2;
 }
 
-- (void)setStarRating:(double)a3
+- (void)setStarRating:(double)rating
 {
-  if (self->_starRating != a3)
+  if (self->_starRating != rating)
   {
-    self->_starRating = a3;
+    self->_starRating = rating;
     [(TLKStarsView *)self updateStarImages];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_font] & 1) == 0)
+  fontCopy = font;
+  if (([fontCopy isEqual:self->_font] & 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     [(TLKStarsView *)self updateStarImages];
   }
 }
 
-- (void)setUseCompactMode:(BOOL)a3
+- (void)setUseCompactMode:(BOOL)mode
 {
-  if (self->_useCompactMode != a3)
+  if (self->_useCompactMode != mode)
   {
-    self->_useCompactMode = a3;
+    self->_useCompactMode = mode;
     [(TLKStarsView *)self updateStarImages];
   }
 }
@@ -75,13 +75,13 @@
       }
     }
 
-    v8 = [(TLKStarsView *)self arrangedSubviews];
-    v9 = [v8 objectAtIndexedSubscript:i - 1];
+    arrangedSubviews = [(TLKStarsView *)self arrangedSubviews];
+    v9 = [arrangedSubviews objectAtIndexedSubscript:i - 1];
 
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:v4];
     [v9 setSymbolScale:1];
-    v11 = [(TLKStarsView *)self font];
-    [v9 setSymbolFont:v11];
+    font = [(TLKStarsView *)self font];
+    [v9 setSymbolFont:font];
 
     v12 = [[TLKImage alloc] initWithImage:v10];
     [(TLKImage *)v12 setIsTemplate:1];

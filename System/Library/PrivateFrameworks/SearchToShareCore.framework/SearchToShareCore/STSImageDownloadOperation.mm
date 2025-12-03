@@ -1,46 +1,46 @@
 @interface STSImageDownloadOperation
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (STSImageDownloadOperation)initWithRequest:(id)a3 session:(id)a4 begin:(id)a5 progress:(id)a6 completion:(id)a7;
+- (STSImageDownloadOperation)initWithRequest:(id)request session:(id)session begin:(id)begin progress:(id)progress completion:(id)completion;
 - (void)_markAsCompleted;
 - (void)cancel;
-- (void)completedWithResponse:(id)a3 location:(id)a4 timingData:(id)a5 error:(id)a6;
+- (void)completedWithResponse:(id)response location:(id)location timingData:(id)data error:(id)error;
 - (void)main;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
-- (void)updateProgressWithTotalBytesWritten:(int64_t)a3 totalBytesExpectedToWrite:(int64_t)a4;
+- (void)updateProgressWithTotalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
 @end
 
 @implementation STSImageDownloadOperation
 
-- (STSImageDownloadOperation)initWithRequest:(id)a3 session:(id)a4 begin:(id)a5 progress:(id)a6 completion:(id)a7
+- (STSImageDownloadOperation)initWithRequest:(id)request session:(id)session begin:(id)begin progress:(id)progress completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  requestCopy = request;
+  sessionCopy = session;
+  beginCopy = begin;
+  progressCopy = progress;
+  completionCopy = completion;
   v29.receiver = self;
   v29.super_class = STSImageDownloadOperation;
   v18 = [(STSImageDownloadOperation *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_request, a3);
-    v20 = [v15 copy];
+    objc_storeStrong(&v18->_request, request);
+    v20 = [beginCopy copy];
     begin = v19->_begin;
     v19->_begin = v20;
 
-    v22 = [v16 copy];
+    v22 = [progressCopy copy];
     progress = v19->_progress;
     v19->_progress = v22;
 
-    v24 = MEMORY[0x266751FB0](v17);
+    v24 = MEMORY[0x266751FB0](completionCopy);
     completion = v19->_completion;
     v19->_completion = v24;
 
-    v26 = [v14 downloadTaskWithRequest:v13];
+    v26 = [sessionCopy downloadTaskWithRequest:requestCopy];
     task = v19->_task;
     v19->_task = v26;
   }
@@ -79,25 +79,25 @@
 
 - (BOOL)isExecuting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  executing = v2->_executing;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  executing = selfCopy->_executing;
+  objc_sync_exit(selfCopy);
 
   return executing;
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if ([(STSImageDownloadOperation *)self isExecuting]!= a3)
+  if ([(STSImageDownloadOperation *)self isExecuting]!= executing)
   {
     [(STSImageDownloadOperation *)self willChangeValueForKey:@"isExecuting"];
-    v5 = self;
-    objc_sync_enter(v5);
-    v5->_executing = a3;
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_executing = executing;
+    objc_sync_exit(selfCopy);
 
-    [(STSImageDownloadOperation *)v5 didChangeValueForKey:@"isExecuting"];
+    [(STSImageDownloadOperation *)selfCopy didChangeValueForKey:@"isExecuting"];
   }
 }
 
@@ -111,50 +111,50 @@
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  finished = v2->_finished;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  finished = selfCopy->_finished;
+  objc_sync_exit(selfCopy);
 
   return finished;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if ([(STSImageDownloadOperation *)self isFinished]!= a3)
+  if ([(STSImageDownloadOperation *)self isFinished]!= finished)
   {
     [(STSImageDownloadOperation *)self willChangeValueForKey:@"isFinished"];
-    v5 = self;
-    objc_sync_enter(v5);
-    v5->_finished = a3;
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_finished = finished;
+    objc_sync_exit(selfCopy);
 
-    [(STSImageDownloadOperation *)v5 didChangeValueForKey:@"isFinished"];
+    [(STSImageDownloadOperation *)selfCopy didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)updateProgressWithTotalBytesWritten:(int64_t)a3 totalBytesExpectedToWrite:(int64_t)a4
+- (void)updateProgressWithTotalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
   progress = self->_progress;
   if (progress)
   {
-    progress[2](progress, a3, a4);
+    progress[2](progress, written, write);
   }
 }
 
-- (void)completedWithResponse:(id)a3 location:(id)a4 timingData:(id)a5 error:(id)a6
+- (void)completedWithResponse:(id)response location:(id)location timingData:(id)data error:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  responseCopy = response;
+  locationCopy = location;
+  dataCopy = data;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v10 statusCode];
-    v15 = v14;
-    if (v11 && v14 == 200)
+    statusCode = [responseCopy statusCode];
+    v15 = statusCode;
+    if (locationCopy && statusCode == 200)
     {
       goto LABEL_8;
     }
@@ -168,13 +168,13 @@
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v13;
+    v27 = errorCopy;
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "image downloaded error %@", buf, 0xCu);
   }
 
 LABEL_8:
   v23 = 0;
-  [v11 getResourceValue:&v23 forKey:*MEMORY[0x277CBE838] error:0];
+  [locationCopy getResourceValue:&v23 forKey:*MEMORY[0x277CBE838] error:0];
   v16 = v23;
   v24[0] = @"STSImageDownloadOperationStatusCode";
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
@@ -189,9 +189,9 @@ LABEL_8:
   v25[1] = v19;
   v24[1] = @"STSImageDownloadOperationSize";
   v24[2] = @"STSImageDownloadOperationTimingData";
-  if (v12)
+  if (dataCopy)
   {
-    v20 = v12;
+    v20 = dataCopy;
   }
 
   else
@@ -205,7 +205,7 @@ LABEL_8:
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, v10, v11, v21, v13);
+    completion[2](completion, responseCopy, locationCopy, v21, errorCopy);
   }
 
   [(STSImageDownloadOperation *)self _markAsCompleted];

@@ -11,7 +11,7 @@
 
 - (id)_EX_objectAtIndex:()ExtensionKitAdditions ofClass:
 {
-  v1 = [a1 objectAtIndex:?];
+  v1 = [self objectAtIndex:?];
   if (objc_opt_isKindOfClass())
   {
     v2 = v1;
@@ -29,34 +29,34 @@
 {
   v5 = objc_opt_class();
 
-  return [a1 _EX_objectAtIndex:a3 ofClass:v5];
+  return [self _EX_objectAtIndex:a3 ofClass:v5];
 }
 
 - (uint64_t)_EX_arrayAtIndex:()ExtensionKitAdditions
 {
   v5 = objc_opt_class();
 
-  return [a1 _EX_objectAtIndex:a3 ofClass:v5];
+  return [self _EX_objectAtIndex:a3 ofClass:v5];
 }
 
 - (uint64_t)_EX_stringAtIndex:()ExtensionKitAdditions
 {
   v5 = objc_opt_class();
 
-  return [a1 _EX_objectAtIndex:a3 ofClass:v5];
+  return [self _EX_objectAtIndex:a3 ofClass:v5];
 }
 
 - (uint64_t)_EX_BOOLAtIndex:()ExtensionKitAdditions
 {
-  v3 = [a1 _EX_objectAtIndex:a3 ofClass:objc_opt_class()];
-  v4 = [v3 BOOLValue];
+  v3 = [self _EX_objectAtIndex:a3 ofClass:objc_opt_class()];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (uint64_t)_EX_BOOLAtIndex:()ExtensionKitAdditions defaultValue:
 {
-  v5 = [a1 _EX_objectAtIndex:a3 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectAtIndex:a3 ofClass:objc_opt_class()];
   v6 = v5;
   if (v5)
   {

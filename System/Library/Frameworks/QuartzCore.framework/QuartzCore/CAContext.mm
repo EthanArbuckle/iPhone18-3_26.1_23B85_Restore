@@ -1,47 +1,47 @@
 @interface CAContext
-+ (CAContext)contextWithId:(unsigned int)a3;
++ (CAContext)contextWithId:(unsigned int)id;
 + (id)allContexts;
 + (id)currentContext;
-+ (id)localContextWithOptions:(id)a3;
-+ (id)objectForSlot:(unsigned int)a3;
-+ (id)remoteContextWithOptions:(id)a3;
-+ (void)setCreateCacheBlock:(id)a3;
-+ (void)setDrawInContextBlock:(id)a3;
-+ (void)setFinalizeContextBlock:(id)a3;
-- (BOOL)addFence:(id)a3;
-- (BOOL)addFence:(id)a3 completion:(id)a4;
-- (BOOL)addFence:(id)a3 completionHandler:(id)a4;
++ (id)localContextWithOptions:(id)options;
++ (id)objectForSlot:(unsigned int)slot;
++ (id)remoteContextWithOptions:(id)options;
++ (void)setCreateCacheBlock:(id)block;
++ (void)setDrawInContextBlock:(id)block;
++ (void)setFinalizeContextBlock:(id)block;
+- (BOOL)addFence:(id)fence;
+- (BOOL)addFence:(id)fence completion:(id)completion;
+- (BOOL)addFence:(id)fence completionHandler:(id)handler;
 - (BOOL)colorMatchUntaggedContent;
 - (BOOL)isSecure;
-- (BOOL)waitForCommitId:(unsigned int)a3 timeout:(double)a4;
-- (BOOL)waitForRenderingWithTimeout:(double)a3;
-- (CAContext)initWithOptions:(id)a3 localContext:(BOOL)a4;
+- (BOOL)waitForCommitId:(unsigned int)id timeout:(double)timeout;
+- (BOOL)waitForRenderingWithTimeout:(double)timeout;
+- (CAContext)initWithOptions:(id)options localContext:(BOOL)context;
 - (NSString)contentsFormat;
 - (float)desiredDynamicRange;
 - (id)debugDescription;
-- (id)initRemoteWithOptions:(id)a3;
+- (id)initRemoteWithOptions:(id)options;
 - (unsigned)commitId;
 - (unsigned)createFencePort;
-- (unsigned)createImageSlot:(CGSize)a3 hasAlpha:(BOOL)a4;
+- (unsigned)createImageSlot:(CGSize)slot hasAlpha:(BOOL)alpha;
 - (unsigned)createSlot;
-- (unsigned)hitTestContext:(CGPoint)a3;
+- (unsigned)hitTestContext:(CGPoint)context;
 - (void)dealloc;
 - (void)invalidateFences;
-- (void)requestClientGlitch:(double)a3;
-- (void)requestServerGlitch:(double)a3;
-- (void)setAnnotation:(id)a3;
-- (void)setColorMatchUntaggedContent:(BOOL)a3;
-- (void)setColorSpace:(CGColorSpace *)a3;
-- (void)setContentsFormat:(id)a3;
-- (void)setDesiredDynamicRange:(float)a3;
-- (void)setFence:(unsigned int)a3 count:(unsigned int)a4;
-- (void)setFencePort:(unsigned int)a3;
-- (void)setFencePort:(unsigned int)a3 commitHandler:(id)a4;
-- (void)setLevel:(float)a3;
+- (void)requestClientGlitch:(double)glitch;
+- (void)requestServerGlitch:(double)glitch;
+- (void)setAnnotation:(id)annotation;
+- (void)setColorMatchUntaggedContent:(BOOL)content;
+- (void)setColorSpace:(CGColorSpace *)space;
+- (void)setContentsFormat:(id)format;
+- (void)setDesiredDynamicRange:(float)range;
+- (void)setFence:(unsigned int)fence count:(unsigned int)count;
+- (void)setFencePort:(unsigned int)port;
+- (void)setFencePort:(unsigned int)port commitHandler:(id)handler;
+- (void)setLevel:(float)level;
 - (void)setPayload:(id)Copy;
-- (void)setSecure:(BOOL)a3;
-- (void)setZombifyOnInvalidate:(BOOL)a3;
-- (void)transferSlot:(unsigned int)a3 toContextWithId:(unsigned int)a4;
+- (void)setSecure:(BOOL)secure;
+- (void)setZombifyOnInvalidate:(BOOL)invalidate;
+- (void)transferSlot:(unsigned int)slot toContextWithId:(unsigned int)id;
 @end
 
 @implementation CAContext
@@ -272,8 +272,8 @@ LABEL_13:
     return 0;
   }
 
-  v11 = [(CAFenceHandle *)v9 _copyPort];
-  if (v11)
+  _copyPort = [(CAFenceHandle *)v9 _copyPort];
+  if (_copyPort)
   {
     v12 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v12)
@@ -283,14 +283,14 @@ LABEL_13:
 
     if ((CA::Transaction::add_fence(v12, *(self->_impl + 2), v10, 0) & 1) == 0)
     {
-      mach_port_deallocate(*MEMORY[0x1E69E9A60], v11);
-      v11 = 0;
+      mach_port_deallocate(*MEMORY[0x1E69E9A60], _copyPort);
+      _copyPort = 0;
     }
   }
 
   [v10 invalidate];
 
-  return v11;
+  return _copyPort;
 }
 
 - (void)dealloc
@@ -309,29 +309,29 @@ LABEL_13:
   [(CAContext *)&v4 dealloc];
 }
 
-- (BOOL)waitForCommitId:(unsigned int)a3 timeout:(double)a4
+- (BOOL)waitForCommitId:(unsigned int)id timeout:(double)timeout
 {
-  if (a4 >= INFINITY)
+  if (timeout >= INFINITY)
   {
     v6 = 0x7FFFFFFF;
   }
 
   else
   {
-    v6 = (a4 * 1000.0 + 0.5);
+    v6 = (timeout * 1000.0 + 0.5);
   }
 
-  if (a4 <= INFINITY)
+  if (timeout <= INFINITY)
   {
     v7 = v6;
   }
 
   else
   {
-    v7 = (a4 * 1000.0 + 0.5);
+    v7 = (timeout * 1000.0 + 0.5);
   }
 
-  v8 = CA::Context::synchronize(self->_impl, a3, v7, 0);
+  v8 = CA::Context::synchronize(self->_impl, id, v7, 0);
   if (v8)
   {
     CA::Context::ping(self->_impl);
@@ -340,23 +340,23 @@ LABEL_13:
   return v8;
 }
 
-- (void)requestServerGlitch:(double)a3
+- (void)requestServerGlitch:(double)glitch
 {
   v3 = *(self->_impl + 2);
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:glitch];
 
   CA::Transaction::add_command(0x1B, v3, 0, v4, v5);
 }
 
-- (void)requestClientGlitch:(double)a3
+- (void)requestClientGlitch:(double)glitch
 {
   v3 = *(self->_impl + 2);
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:glitch];
 
   CA::Transaction::add_command(0x1A, v3, 0, v4, v5);
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
   impl = self->_impl;
   pthread_mutex_lock((impl + 16));
@@ -366,9 +366,9 @@ LABEL_13:
     CFRelease(v5);
   }
 
-  if (a3)
+  if (annotation)
   {
-    Copy = CFStringCreateCopy(*MEMORY[0x1E695E480], a3);
+    Copy = CFStringCreateCopy(*MEMORY[0x1E695E480], annotation);
   }
 
   else
@@ -382,10 +382,10 @@ LABEL_13:
   pthread_mutex_unlock((impl + 16));
 }
 
-- (unsigned)hitTestContext:(CGPoint)a3
+- (unsigned)hitTestContext:(CGPoint)context
 {
-  y = a3.y;
-  x = a3.x;
+  y = context.y;
+  x = context.x;
   v20 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   v6 = *(impl + 13);
@@ -398,7 +398,7 @@ LABEL_13:
 
     v9 = *(impl + 40);
     *v19 = *MEMORY[0x1E69E99E0];
-    *&v19[8] = a3;
+    *&v19[8] = context;
     reply_port = mig_get_reply_port();
     *&v18.msgh_bits = 5395;
     v18.msgh_remote_port = v9;
@@ -538,21 +538,21 @@ LABEL_27:
   return v8;
 }
 
-- (void)transferSlot:(unsigned int)a3 toContextWithId:(unsigned int)a4
+- (void)transferSlot:(unsigned int)slot toContextWithId:(unsigned int)id
 {
   v9 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  valuePtr = a4;
+  valuePtr = id;
   v6 = CFNumberCreate(0, kCFNumberIntType, &valuePtr);
-  CA::Transaction::add_command(0xD, impl[2], a3, v6, v7);
+  CA::Transaction::add_command(0xD, impl[2], slot, v6, v7);
   CFRelease(v6);
 }
 
-- (unsigned)createImageSlot:(CGSize)a3 hasAlpha:(BOOL)a4
+- (unsigned)createImageSlot:(CGSize)slot hasAlpha:(BOOL)alpha
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  alphaCopy = alpha;
+  height = slot.height;
+  width = slot.width;
   if (CADeviceUseCIF10::once != -1)
   {
     dispatch_once(&CADeviceUseCIF10::once, &__block_literal_global_12623);
@@ -561,7 +561,7 @@ LABEL_27:
   v8 = CADeviceUseCIF10::enable_cif10;
   impl = self->_impl;
 
-  return CA::Context::new_image_slot(impl, width, height, v4, v8);
+  return CA::Context::new_image_slot(impl, width, height, alphaCopy, v8);
 }
 
 - (void)invalidateFences
@@ -613,7 +613,7 @@ LABEL_27:
   }
 }
 
-- (void)setFence:(unsigned int)a3 count:(unsigned int)a4
+- (void)setFence:(unsigned int)fence count:(unsigned int)count
 {
   v6 = *MEMORY[0x1E69E9840];
   if (x_log_get_api::once[0] != -1)
@@ -629,9 +629,9 @@ LABEL_27:
   }
 }
 
-- (void)setFencePort:(unsigned int)a3 commitHandler:(id)a4
+- (void)setFencePort:(unsigned int)port commitHandler:(id)handler
 {
-  v6 = [CAFenceHandle _newEphemeralHandleWithPort:a3];
+  v6 = [CAFenceHandle _newEphemeralHandleWithPort:port];
   StatusReg = _ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3));
   v8 = *(StatusReg + 576);
   v10 = v6;
@@ -649,15 +649,15 @@ LABEL_27:
       v9 = CA::Transaction::create(0);
     }
 
-    CA::Transaction::add_commit_handler(v9, a4, 3);
+    CA::Transaction::add_commit_handler(v9, handler, 3);
   }
 
   [v10 invalidate];
 }
 
-- (void)setFencePort:(unsigned int)a3
+- (void)setFencePort:(unsigned int)port
 {
-  v4 = [CAFenceHandle _newEphemeralHandleWithPort:a3];
+  v4 = [CAFenceHandle _newEphemeralHandleWithPort:port];
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   v6 = v4;
   if (!v5)
@@ -670,7 +670,7 @@ LABEL_27:
   [v6 invalidate];
 }
 
-- (BOOL)addFence:(id)a3 completion:(id)a4
+- (BOOL)addFence:(id)fence completion:(id)completion
 {
   v7 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v7)
@@ -680,10 +680,10 @@ LABEL_27:
 
   v8 = *(self->_impl + 2);
 
-  return CA::Transaction::add_fence(v7, v8, a3, a4);
+  return CA::Transaction::add_fence(v7, v8, fence, completion);
 }
 
-- (BOOL)addFence:(id)a3 completionHandler:(id)a4
+- (BOOL)addFence:(id)fence completionHandler:(id)handler
 {
   v8[5] = *MEMORY[0x1E69E9840];
   v5 = *(self->_impl + 2);
@@ -691,17 +691,17 @@ LABEL_27:
   v8[1] = 3221225472;
   v8[2] = __40__CAContext_addFence_completionHandler___block_invoke;
   v8[3] = &unk_1E6DFA538;
-  v8[4] = a4;
+  v8[4] = handler;
   v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v6)
   {
     v6 = CA::Transaction::create(0);
   }
 
-  return CA::Transaction::add_fence(v6, v5, a3, v8);
+  return CA::Transaction::add_fence(v6, v5, fence, v8);
 }
 
-- (BOOL)addFence:(id)a3
+- (BOOL)addFence:(id)fence
 {
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v5)
@@ -711,19 +711,19 @@ LABEL_27:
 
   v6 = *(self->_impl + 2);
 
-  return CA::Transaction::add_fence(v5, v6, a3, 0);
+  return CA::Transaction::add_fence(v5, v6, fence, 0);
 }
 
-- (BOOL)waitForRenderingWithTimeout:(double)a3
+- (BOOL)waitForRenderingWithTimeout:(double)timeout
 {
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     v4 = 0;
   }
 
-  else if (a3 <= 2147483.0)
+  else if (timeout <= 2147483.0)
   {
-    v4 = (a3 * 1000.0);
+    v4 = (timeout * 1000.0);
   }
 
   else
@@ -883,7 +883,7 @@ LABEL_28:
   return v5;
 }
 
-- (void)setDesiredDynamicRange:(float)a3
+- (void)setDesiredDynamicRange:(float)range
 {
   v18 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -892,7 +892,7 @@ LABEL_28:
   {
     pthread_mutex_lock((v5 + 72));
     v6 = *(impl + 13);
-    *(v6 + 308) = a3;
+    *(v6 + 308) = range;
 
     pthread_mutex_unlock((v6 + 72));
   }
@@ -909,7 +909,7 @@ LABEL_28:
     v17 = 0;
     *reply_port = 0u;
     *&reply_port[20] = *MEMORY[0x1E69E99E0];
-    *&reply_port[28] = a3;
+    *&reply_port[28] = range;
     v8 = mig_get_reply_port();
     *&reply_port[4] = v7;
     *&reply_port[8] = v8;
@@ -985,7 +985,7 @@ LABEL_28:
         v13 = *(impl + 1);
         v14 = mach_error_string(v11);
         v15 = 134218754;
-        *reply_port = a3;
+        *reply_port = range;
         *&reply_port[8] = 1024;
         *&reply_port[10] = v13;
         *&reply_port[14] = 1024;
@@ -1145,16 +1145,16 @@ LABEL_27:
   return v5;
 }
 
-- (void)setSecure:(BOOL)a3
+- (void)setSecure:(BOOL)secure
 {
-  v3 = a3;
+  secureCopy = secure;
   v19 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   v5 = *(impl + 13);
   if (v5)
   {
     pthread_mutex_lock((v5 + 72));
-    if (v3)
+    if (secureCopy)
     {
       v6 = 4;
     }
@@ -1182,7 +1182,7 @@ LABEL_27:
     v18 = 0;
     *reply_port = 0u;
     *&reply_port[20] = *MEMORY[0x1E69E99E0];
-    *&reply_port[28] = a3;
+    *&reply_port[28] = secure;
     v9 = mig_get_reply_port();
     *&reply_port[4] = v8;
     *&reply_port[8] = v9;
@@ -1258,7 +1258,7 @@ LABEL_27:
         v14 = *(impl + 1);
         v15 = mach_error_string(v12);
         v16 = 67109890;
-        *reply_port = v3;
+        *reply_port = secureCopy;
         *&reply_port[4] = 1024;
         *&reply_port[6] = v14;
         *&reply_port[10] = 1024;
@@ -1271,14 +1271,14 @@ LABEL_27:
   }
 }
 
-- (void)setLevel:(float)a3
+- (void)setLevel:(float)level
 {
   v7 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  valuePtr = a3;
-  if (*(impl + 54) != a3)
+  valuePtr = level;
+  if (*(impl + 54) != level)
   {
-    *(impl + 54) = a3;
+    *(impl + 54) = level;
     v4 = CFNumberCreate(0, kCFNumberFloatType, &valuePtr);
     CA::Transaction::add_command(0xA, *(impl + 2), valuePtr, v4, v5);
     CFRelease(v4);
@@ -1310,9 +1310,9 @@ LABEL_27:
   pthread_mutex_unlock((impl + 16));
 }
 
-- (void)setZombifyOnInvalidate:(BOOL)a3
+- (void)setZombifyOnInvalidate:(BOOL)invalidate
 {
-  if (a3)
+  if (invalidate)
   {
     v3 = 256;
   }
@@ -1325,9 +1325,9 @@ LABEL_27:
   *(self->_impl + 257) = *(self->_impl + 257) & 0xFEFF | v3;
 }
 
-- (void)setContentsFormat:(id)a3
+- (void)setContentsFormat:(id)format
 {
-  v4 = CA::Render::Layer::contents_format_from_string(a3, a2);
+  v4 = CA::Render::Layer::contents_format_from_string(format, a2);
   impl = self->_impl;
   pthread_mutex_lock((impl + 16));
   if (impl[256] != v4)
@@ -1366,16 +1366,16 @@ LABEL_27:
   return *v2;
 }
 
-- (void)setColorMatchUntaggedContent:(BOOL)a3
+- (void)setColorMatchUntaggedContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v19 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   v5 = *(impl + 13);
   if (v5)
   {
     pthread_mutex_lock((v5 + 72));
-    if (v3)
+    if (contentCopy)
     {
       v6 = 2;
     }
@@ -1403,7 +1403,7 @@ LABEL_27:
     v18 = 0;
     *reply_port = 0u;
     *&reply_port[20] = *MEMORY[0x1E69E99E0];
-    *&reply_port[28] = a3;
+    *&reply_port[28] = content;
     v9 = mig_get_reply_port();
     *&reply_port[4] = v8;
     *&reply_port[8] = v9;
@@ -1479,7 +1479,7 @@ LABEL_27:
         v14 = *(impl + 1);
         v15 = mach_error_string(v12);
         v16 = 67109890;
-        *reply_port = v3;
+        *reply_port = contentCopy;
         *&reply_port[4] = 1024;
         *&reply_port[6] = v14;
         *&reply_port[10] = 1024;
@@ -1639,12 +1639,12 @@ LABEL_27:
   return v5;
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  v3 = a3;
+  spaceCopy = space;
   v10 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  if (!a3)
+  if (!space)
   {
     if (x_log_get_api::once[0] != -1)
     {
@@ -1660,14 +1660,14 @@ LABEL_27:
       _os_log_error_impl(&dword_183AA6000, v5, OS_LOG_TYPE_ERROR, "NULL color space set on context (%x)\n", v9, 8u);
     }
 
-    v3 = CAGetColorSpace(36);
+    spaceCopy = CAGetColorSpace(36);
   }
 
   pthread_mutex_lock((impl + 16));
   if ((CGColorSpaceEqualToColorSpace() & 1) == 0)
   {
     CGColorSpaceRelease(*(impl + 14));
-    *(impl + 14) = CGColorSpaceRetain(v3);
+    *(impl + 14) = CGColorSpaceRetain(spaceCopy);
     *(impl + 257) |= 0x20u;
     v6 = *(impl + 12);
     if (v6)
@@ -1687,9 +1687,9 @@ LABEL_27:
   pthread_mutex_unlock((impl + 16));
 }
 
-- (id)initRemoteWithOptions:(id)a3
+- (id)initRemoteWithOptions:(id)options
 {
-  v3 = [(CAContext *)self initWithOptions:a3 localContext:0];
+  v3 = [(CAContext *)self initWithOptions:options localContext:0];
   p_isa = &v3->super.isa;
   if (v3)
   {
@@ -1713,7 +1713,7 @@ LABEL_27:
   return p_isa;
 }
 
-- (CAContext)initWithOptions:(id)a3 localContext:(BOOL)a4
+- (CAContext)initWithOptions:(id)options localContext:(BOOL)context
 {
   v4 = MEMORY[0x1EEE9AC00](self);
   v6 = v5;
@@ -1851,86 +1851,86 @@ LABEL_25:
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
-  [v3 appendFormat:@"<%@:%p; contextId = 0x%x", NSStringFromClass(v4), self, -[CAContext contextId](self, "contextId")];
+  [string appendFormat:@"<%@:%p; contextId = 0x%x", NSStringFromClass(v4), self, -[CAContext contextId](self, "contextId")];
   if ([(CAContext *)self colorSpace])
   {
     v5 = CGColorSpaceCopyICCProfileDescription();
     if (v5)
     {
       v6 = v5;
-      [v3 appendFormat:@"; colorSpace = %@", v5];
+      [string appendFormat:@"; colorSpace = %@", v5];
       CFRelease(v6);
     }
   }
 
   if ([(CAContext *)self commitPriority])
   {
-    [v3 appendFormat:@"; commitPriority = %u", -[CAContext commitPriority](self, "commitPriority")];
+    [string appendFormat:@"; commitPriority = %u", -[CAContext commitPriority](self, "commitPriority")];
   }
 
-  [v3 appendFormat:@"; contentsFormat = %@", -[CAContext contentsFormat](self, "contentsFormat")];
+  [string appendFormat:@"; contentsFormat = %@", -[CAContext contentsFormat](self, "contentsFormat")];
   [(CAContext *)self level];
   if (v7 != 0.0)
   {
     [(CAContext *)self level];
-    [v3 appendFormat:@"; level = %f", v8];
+    [string appendFormat:@"; level = %f", v8];
   }
 
   if ([(CAContext *)self isSecure])
   {
-    [v3 appendString:@"; secure"];
+    [string appendString:@"; secure"];
   }
 
-  [v3 appendString:@">"];
-  return v3;
+  [string appendString:@">"];
+  return string;
 }
 
-+ (void)setCreateCacheBlock:(id)a3
++ (void)setCreateCacheBlock:(id)block
 {
-  if (CA::Context::_create_cache_callback != a3)
+  if (CA::Context::_create_cache_callback != block)
   {
     _Block_release(CA::Context::_create_cache_callback);
-    CA::Context::_create_cache_callback = _Block_copy(a3);
+    CA::Context::_create_cache_callback = _Block_copy(block);
   }
 }
 
-+ (void)setFinalizeContextBlock:(id)a3
++ (void)setFinalizeContextBlock:(id)block
 {
-  if (CA::Context::_finalize_context_callback != a3)
+  if (CA::Context::_finalize_context_callback != block)
   {
     _Block_release(CA::Context::_finalize_context_callback);
-    CA::Context::_finalize_context_callback = _Block_copy(a3);
+    CA::Context::_finalize_context_callback = _Block_copy(block);
   }
 }
 
-+ (void)setDrawInContextBlock:(id)a3
++ (void)setDrawInContextBlock:(id)block
 {
-  if (CA::Context::_draw_in_context_callback != a3)
+  if (CA::Context::_draw_in_context_callback != block)
   {
     _Block_release(CA::Context::_draw_in_context_callback);
-    CA::Context::_draw_in_context_callback = _Block_copy(a3);
+    CA::Context::_draw_in_context_callback = _Block_copy(block);
   }
 }
 
-+ (id)objectForSlot:(unsigned int)a3
++ (id)objectForSlot:(unsigned int)slot
 {
-  v3 = [[CASlotProxy alloc] initWithName:*&a3];
+  v3 = [[CASlotProxy alloc] initWithName:*&slot];
 
   return v3;
 }
 
-+ (id)remoteContextWithOptions:(id)a3
++ (id)remoteContextWithOptions:(id)options
 {
-  v3 = [[CAContext alloc] initRemoteWithOptions:a3];
+  v3 = [[CAContext alloc] initRemoteWithOptions:options];
 
   return v3;
 }
 
-+ (id)localContextWithOptions:(id)a3
++ (id)localContextWithOptions:(id)options
 {
-  v3 = [[CAContext alloc] initWithOptions:a3 localContext:1];
+  v3 = [[CAContext alloc] initWithOptions:options localContext:1];
 
   return v3;
 }
@@ -1957,9 +1957,9 @@ LABEL_25:
   return *(v3 + 80);
 }
 
-+ (CAContext)contextWithId:(unsigned int)a3
++ (CAContext)contextWithId:(unsigned int)id
 {
-  v3 = CA::Context::retain_context_with_client_id(*&a3);
+  v3 = CA::Context::retain_context_with_client_id(*&id);
   if (!v3)
   {
     return 0;
@@ -1982,7 +1982,7 @@ LABEL_25:
 
 + (id)allContexts
 {
-  result = CA::Context::retain_objc_contexts(a1);
+  result = CA::Context::retain_objc_contexts(self);
   if (result)
   {
 

@@ -1,65 +1,65 @@
 @interface PLPhotosHighlightGenerator
-+ (BOOL)_shouldUpdateKeyAssetForParentHighlight:(id)a3 withPrivateKeyAssetObjectID:(id)a4 andSharedKeyAssetObjectID:(id)a5;
-+ (BOOL)assetEligibleForCuration:(id)a3;
-+ (BOOL)assetEligibleForRecents:(id)a3;
-+ (double)curationScoreForAsset:(id)a3;
-+ (id)_bestAssetInAssets:(id)a3 fallback:(BOOL)a4;
-+ (id)_provisionalKeyAssetForDayGroupHighlight:(id)a3 sharingConsideration:(int64_t)a4;
-+ (id)_provisionalKeyAssetForDayHighlight:(id)a3 sharingConsideration:(int64_t)a4;
-+ (id)_provisionalKeyAssetForMonthAndYearHighlight:(id)a3 sharingConsideration:(int64_t)a4;
++ (BOOL)_shouldUpdateKeyAssetForParentHighlight:(id)highlight withPrivateKeyAssetObjectID:(id)d andSharedKeyAssetObjectID:(id)iD;
++ (BOOL)assetEligibleForCuration:(id)curation;
++ (BOOL)assetEligibleForRecents:(id)recents;
++ (double)curationScoreForAsset:(id)asset;
++ (id)_bestAssetInAssets:(id)assets fallback:(BOOL)fallback;
++ (id)_provisionalKeyAssetForDayGroupHighlight:(id)highlight sharingConsideration:(int64_t)consideration;
++ (id)_provisionalKeyAssetForDayHighlight:(id)highlight sharingConsideration:(int64_t)consideration;
++ (id)_provisionalKeyAssetForMonthAndYearHighlight:(id)highlight sharingConsideration:(int64_t)consideration;
 + (id)lastHighlightTitlesUpdateDay;
 + (id)lastRecentHighlightUpdateDate;
-+ (id)provisionalKeyAssetForHighlight:(id)a3 sharingConsideration:(int64_t)a4;
++ (id)provisionalKeyAssetForHighlight:(id)highlight sharingConsideration:(int64_t)consideration;
 + (id)userDefaults;
-+ (void)_updateMixedSharingCompositionKeyAssetRelationshipForHighlight:(id)a3;
-+ (void)_updateParentHighlightNeedingNewKeyAsset:(id)a3 withProvisionalKeyAssetPrivate:(id)a4 andProvisionalKeyAssetShared:(id)a5 updatedHighlights:(id)a6;
-+ (void)_updateTitlesForHighlight:(id)a3 dateRangeTitleGenerator:(id)a4 options:(unint64_t)a5 filter:(unsigned __int16)a6;
-+ (void)setLastHighlightTitlesUpdateDay:(id)a3;
-+ (void)setLastRecentHighlightUpdateDate:(id)a3;
-+ (void)updateKeyAssetForHighlights:(id)a3;
-+ (void)updateTitleForHighlights:(id)a3 forKind:(unsigned __int16)a4 forceUpdateLocale:(BOOL)a5 dateRangeTitleGenerator:(id)a6;
-+ (void)updateTitlesForHighlight:(id)a3 dateRangeTitleGenerator:(id)a4 options:(unint64_t)a5;
-- (BOOL)_highlightShouldNotBeVisible:(id)a3 sharingConsideration:(int64_t)a4;
-- (BOOL)_setVisibilityStateForHighlight:(id)a3 shouldForceUpdate:(BOOL)a4 sharingConsideration:(int64_t)a5;
-- (BOOL)_updateHighlightProperties:(id)a3 fromHighlightCluster:(id)a4;
-- (BOOL)setVisibilityStateForHighlight:(id)a3 shouldForceUpdate:(BOOL)a4;
-- (BOOL)shouldForceVisibilityStateUpdateForHighlight:(id)a3 highlightCluster:(id)a4;
++ (void)_updateMixedSharingCompositionKeyAssetRelationshipForHighlight:(id)highlight;
++ (void)_updateParentHighlightNeedingNewKeyAsset:(id)asset withProvisionalKeyAssetPrivate:(id)private andProvisionalKeyAssetShared:(id)shared updatedHighlights:(id)highlights;
++ (void)_updateTitlesForHighlight:(id)highlight dateRangeTitleGenerator:(id)generator options:(unint64_t)options filter:(unsigned __int16)filter;
++ (void)setLastHighlightTitlesUpdateDay:(id)day;
++ (void)setLastRecentHighlightUpdateDate:(id)date;
++ (void)updateKeyAssetForHighlights:(id)highlights;
++ (void)updateTitleForHighlights:(id)highlights forKind:(unsigned __int16)kind forceUpdateLocale:(BOOL)locale dateRangeTitleGenerator:(id)generator;
++ (void)updateTitlesForHighlight:(id)highlight dateRangeTitleGenerator:(id)generator options:(unint64_t)options;
+- (BOOL)_highlightShouldNotBeVisible:(id)visible sharingConsideration:(int64_t)consideration;
+- (BOOL)_setVisibilityStateForHighlight:(id)highlight shouldForceUpdate:(BOOL)update sharingConsideration:(int64_t)consideration;
+- (BOOL)_updateHighlightProperties:(id)properties fromHighlightCluster:(id)cluster;
+- (BOOL)setVisibilityStateForHighlight:(id)highlight shouldForceUpdate:(BOOL)update;
+- (BOOL)shouldForceVisibilityStateUpdateForHighlight:(id)highlight highlightCluster:(id)cluster;
 - (NSDateInterval)recentHighlightsDateInterval;
 - (PLMomentGenerationDataManagement)dataManager;
 - (PLPhotosHighlightClusterGenerator)highlightClusterGenerator;
-- (PLPhotosHighlightGenerator)initWithDataManager:(id)a3 frequentLocationManager:(id)a4 localCreationDateCreator:(id)a5 dateRangeTitleGenerator:(id)a6;
-- (id)_collectMomentsRequiringReprocessingFromMoments:(id)a3 withAllMoments:(id)a4;
+- (PLPhotosHighlightGenerator)initWithDataManager:(id)manager frequentLocationManager:(id)locationManager localCreationDateCreator:(id)creator dateRangeTitleGenerator:(id)generator;
+- (id)_collectMomentsRequiringReprocessingFromMoments:(id)moments withAllMoments:(id)allMoments;
 - (id)_fetchAllMoments;
 - (id)_fetchMomentsRequiringLocationProcessingWhenCoreRoutineIsAvailable;
 - (id)_fetchMomentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable;
 - (id)_fetchMomentsRequiringLocationProcessingWhenFrequentLocationsChanged;
-- (id)_highlightMomentClustersForMoments:(id)a3 excludingMomentIds:(id)a4;
-- (id)_highlightToReuseForMoments:(id)a3;
-- (id)_insertDayGroupPhotosHighlightCluster:(id)a3;
-- (id)_recentHighlightsDateIntervalWithDate:(id)a3;
+- (id)_highlightMomentClustersForMoments:(id)moments excludingMomentIds:(id)ids;
+- (id)_highlightToReuseForMoments:(id)moments;
+- (id)_insertDayGroupPhotosHighlightCluster:(id)cluster;
+- (id)_recentHighlightsDateIntervalWithDate:(id)date;
 - (id)fetchAllOngoingTripDayGroupHighlights;
 - (id)fetchAllRecentHighlights;
-- (id)updateElectedEventForUpdatedMonths:(id)a3;
-- (void)_consumeHighlightItemListChanges:(id)a3 forKind:(unsigned __int16)a4 rule:(id)a5 resultBlock:(id)a6;
-- (void)_insertDayPhotosHighlightCluster:(id)a3;
+- (id)updateElectedEventForUpdatedMonths:(id)months;
+- (void)_consumeHighlightItemListChanges:(id)changes forKind:(unsigned __int16)kind rule:(id)rule resultBlock:(id)block;
+- (void)_insertDayPhotosHighlightCluster:(id)cluster;
 - (void)_resetProperties;
-- (void)_updateDayGroupHighlight:(id)a3 withNewAssets:(id)a4;
-- (void)_updateDayHighlight:(id)a3 withNewAssets:(id)a4;
-- (void)beginGenerationWithAssets:(id)a3 hiddenAssets:(id)a4;
+- (void)_updateDayGroupHighlight:(id)highlight withNewAssets:(id)assets;
+- (void)_updateDayHighlight:(id)highlight withNewAssets:(id)assets;
+- (void)beginGenerationWithAssets:(id)assets hiddenAssets:(id)hiddenAssets;
 - (void)cleanupEmptyHighlights;
 - (void)finishGeneration;
-- (void)generateHighlightListForUpdatedHighlights:(id)a3 deletedHighlights:(id)a4;
-- (void)generateHighlightsForUpsertedMoments:(id)a3 frequentLocationsDidChange:(BOOL)a4;
-- (void)markHighlightNeedingNewKeyAssetsWithAsset:(id)a3;
+- (void)generateHighlightListForUpdatedHighlights:(id)highlights deletedHighlights:(id)deletedHighlights;
+- (void)generateHighlightsForUpsertedMoments:(id)moments frequentLocationsDidChange:(BOOL)change;
+- (void)markHighlightNeedingNewKeyAssetsWithAsset:(id)asset;
 - (void)processCachedLocationOfInterest;
 - (void)processRecentHighlights;
 - (void)processUnprocessedMomentLocations;
-- (void)registerHighlightsWithDeletedMoments:(id)a3;
-- (void)resetDayGroupCurationForAsset:(id)a3;
-- (void)resetPreviousRecentHighlightCurationForHighlight:(id)a3;
-- (void)updateCurationForHighlight:(id)a3 withAssetsBelongingToCuration:(id)a4;
+- (void)registerHighlightsWithDeletedMoments:(id)moments;
+- (void)resetDayGroupCurationForAsset:(id)asset;
+- (void)resetPreviousRecentHighlightCurationForHighlight:(id)highlight;
+- (void)updateCurationForHighlight:(id)highlight withAssetsBelongingToCuration:(id)curation;
 - (void)updateHighlightTitles;
-- (void)updateRecentHighlightCurationForHighlight:(id)a3;
+- (void)updateRecentHighlightCurationForHighlight:(id)highlight;
 @end
 
 @implementation PLPhotosHighlightGenerator
@@ -71,25 +71,25 @@
   return WeakRetained;
 }
 
-- (id)_collectMomentsRequiringReprocessingFromMoments:(id)a3 withAllMoments:(id)a4
+- (id)_collectMomentsRequiringReprocessingFromMoments:(id)moments withAllMoments:(id)allMoments
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  momentsCopy = moments;
+  allMomentsCopy = allMoments;
   Current = CFAbsoluteTimeGetCurrent();
-  v43 = [v5 mutableCopy];
-  v8 = [v6 count];
+  v43 = [momentsCopy mutableCopy];
+  v8 = [allMomentsCopy count];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v5;
+  obj = momentsCopy;
   v45 = [obj countByEnumeratingWithState:&v46 objects:v62 count:16];
   if (v45)
   {
     v9 = *v47;
     v36 = v8 - 1;
-    v37 = v6;
+    v37 = allMomentsCopy;
     v38 = *v47;
     do
     {
@@ -102,30 +102,30 @@
         }
 
         v11 = *(*(&v46 + 1) + 8 * v10);
-        v12 = [v11 highlight];
-        if (v12)
+        highlight = [v11 highlight];
+        if (highlight)
         {
           v13 = PLMomentsGetLog();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v44 = [v11 uuid];
-            v42 = [v11 startDate];
-            v14 = [v42 debugDescription];
-            v41 = [v11 endDate];
-            v15 = [v41 debugDescription];
-            v16 = [v12 uuid];
-            v40 = [v12 startDate];
-            v17 = [v40 debugDescription];
-            v18 = [v12 endDate];
-            v19 = [v18 debugDescription];
+            uuid = [v11 uuid];
+            startDate = [v11 startDate];
+            v14 = [startDate debugDescription];
+            endDate = [v11 endDate];
+            v15 = [endDate debugDescription];
+            uuid2 = [highlight uuid];
+            startDate2 = [highlight startDate];
+            v17 = [startDate2 debugDescription];
+            endDate2 = [highlight endDate];
+            v19 = [endDate2 debugDescription];
             *buf = 138544643;
-            v51 = v44;
+            v51 = uuid;
             v52 = 2113;
             v53 = v14;
             v54 = 2113;
             v55 = *&v15;
             v56 = 2114;
-            v57 = v16;
+            v57 = uuid2;
             v58 = 2113;
             v59 = v17;
             v60 = 2113;
@@ -133,7 +133,7 @@
             _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "[HighlightsGeneration] Trying to reprocess a moment that is still connected to a highlight. Moment: %{public}@, %{private}@, %{private}@, Highlight: %{public}@, %{private}@, %{private}@", buf, 0x3Eu);
 
             v9 = v38;
-            v6 = v37;
+            allMomentsCopy = v37;
           }
 
           [v43 removeObject:v11];
@@ -141,7 +141,7 @@
 
         else
         {
-          v20 = [v6 indexOfObject:v11];
+          v20 = [allMomentsCopy indexOfObject:v11];
           v21 = v20;
           if (v20)
           {
@@ -150,13 +150,13 @@
               goto LABEL_10;
             }
 
-            v22 = [v6 objectAtIndexedSubscript:v20 - 1];
-            v23 = [v22 highlight];
-            v24 = v23;
-            if (v23 && ![v23 type])
+            v22 = [allMomentsCopy objectAtIndexedSubscript:v20 - 1];
+            highlight2 = [v22 highlight];
+            v24 = highlight2;
+            if (highlight2 && ![highlight2 type])
             {
-              v25 = [v24 moments];
-              [v43 unionSet:v25];
+              moments = [v24 moments];
+              [v43 unionSet:moments];
             }
 
             v9 = v38;
@@ -164,13 +164,13 @@
 
           if (v21 < v36)
           {
-            v26 = [v6 objectAtIndexedSubscript:v21 + 1];
-            v27 = [v26 highlight];
-            v28 = v27;
-            if (v27 && ![v27 type])
+            v26 = [allMomentsCopy objectAtIndexedSubscript:v21 + 1];
+            highlight3 = [v26 highlight];
+            v28 = highlight3;
+            if (highlight3 && ![highlight3 type])
             {
-              v29 = [v28 moments];
-              [v43 unionSet:v29];
+              moments2 = [v28 moments];
+              [v43 unionSet:moments2];
             }
           }
         }
@@ -206,20 +206,20 @@ LABEL_10:
   return v43;
 }
 
-- (id)_highlightMomentClustersForMoments:(id)a3 excludingMomentIds:(id)a4
+- (id)_highlightMomentClustersForMoments:(id)moments excludingMomentIds:(id)ids
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v30 = [MEMORY[0x1E695DF70] array];
-  v28 = v6;
-  v7 = [v6 mutableCopy];
+  momentsCopy = moments;
+  idsCopy = ids;
+  array = [MEMORY[0x1E695DF70] array];
+  v28 = idsCopy;
+  v7 = [idsCopy mutableCopy];
   v8 = [MEMORY[0x1E695DFA8] set];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v5;
+  v9 = momentsCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v10)
   {
@@ -236,16 +236,16 @@ LABEL_10:
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v14 uniqueObjectID];
-        if (([v7 containsObject:v15] & 1) == 0)
+        uniqueObjectID = [v14 uniqueObjectID];
+        if (([v7 containsObject:uniqueObjectID] & 1) == 0)
         {
-          [v7 addObject:v15];
-          v16 = [v14 highlight];
-          v17 = v16;
-          if (v16)
+          [v7 addObject:uniqueObjectID];
+          highlight = [v14 highlight];
+          v17 = highlight;
+          if (highlight)
           {
-            v18 = [v16 uniqueObjectID];
-            if ([v8 containsObject:v18])
+            uniqueObjectID2 = [highlight uniqueObjectID];
+            if ([v8 containsObject:uniqueObjectID2])
             {
 
               v19 = 0;
@@ -254,7 +254,7 @@ LABEL_16:
               goto LABEL_17;
             }
 
-            [v8 addObject:v18];
+            [v8 addObject:uniqueObjectID2];
             [v17 momentsSortedByTime];
             v22 = v11;
             v23 = v12;
@@ -280,13 +280,13 @@ LABEL_16:
 
             v21 = [PLMomentCluster alloc];
             v36 = v14;
-            v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
-            v19 = [(PLMomentCluster *)v21 initWithMoments:v18];
+            uniqueObjectID2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
+            v19 = [(PLMomentCluster *)v21 initWithMoments:uniqueObjectID2];
           }
 
           if (v19)
           {
-            [v30 addObject:v19];
+            [array addObject:v19];
           }
 
           goto LABEL_16;
@@ -301,55 +301,55 @@ LABEL_17:
     while (v11);
   }
 
-  return v30;
+  return array;
 }
 
 - (id)_fetchMomentsRequiringLocationProcessingWhenFrequentLocationsChanged
 {
-  v2 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v5 = 0;
-  v3 = [v2 momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:&v5];
+  v3 = [dataManager momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:&v5];
 
   return v3;
 }
 
 - (id)_fetchMomentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable
 {
-  v2 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v5 = 0;
-  v3 = [v2 momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable:&v5];
+  v3 = [dataManager momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable:&v5];
 
   return v3;
 }
 
 - (id)_fetchMomentsRequiringLocationProcessingWhenCoreRoutineIsAvailable
 {
-  v2 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v5 = 0;
-  v3 = [v2 momentsRequiringLocationProcessingWhenCoreRoutineIsAvailable:&v5];
+  v3 = [dataManager momentsRequiringLocationProcessingWhenCoreRoutineIsAvailable:&v5];
 
   return v3;
 }
 
 - (id)_fetchAllMoments
 {
-  v2 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v5 = 0;
-  v3 = [v2 allMomentsWithError:&v5];
+  v3 = [dataManager allMomentsWithError:&v5];
 
   return v3;
 }
 
-- (id)_recentHighlightsDateIntervalWithDate:(id)a3
+- (id)_recentHighlightsDateIntervalWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   recentHighlightsDateInterval = self->_recentHighlightsDateInterval;
   if (!recentHighlightsDateInterval)
   {
-    v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v7 = [v6 pl_endOfPreviousDayForDate:v4];
-    v8 = [v6 pl_dateByAddingDays:1 toDate:v4];
-    v9 = [v6 pl_endOfDayForDate:v8];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v7 = [currentCalendar pl_endOfPreviousDayForDate:dateCopy];
+    v8 = [currentCalendar pl_dateByAddingDays:1 toDate:dateCopy];
+    v9 = [currentCalendar pl_endOfDayForDate:v8];
     v10 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v7 endDate:v9];
     v11 = self->_recentHighlightsDateInterval;
     self->_recentHighlightsDateInterval = v10;
@@ -383,16 +383,16 @@ LABEL_17:
   v4 = [MEMORY[0x1E695DFA8] set];
   v5 = [MEMORY[0x1E695DFA8] set];
   v85 = [MEMORY[0x1E695DFA8] set];
-  v6 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v114 = 0;
-  v7 = [v6 allEmptyPhotosHighlightsOfKind:0 error:&v114];
+  v7 = [dataManager allEmptyPhotosHighlightsOfKind:0 error:&v114];
   v8 = v114;
 
   if (v7)
   {
-    v9 = [(PLPhotosHighlightGenerator *)self dataManager];
+    dataManager2 = [(PLPhotosHighlightGenerator *)self dataManager];
     v113 = v8;
-    v10 = [v9 allEmptyPhotosHighlightsOfKind:3 error:&v113];
+    v10 = [dataManager2 allEmptyPhotosHighlightsOfKind:3 error:&v113];
     v11 = v113;
 
     if (v10)
@@ -414,11 +414,11 @@ LABEL_17:
         }
 
         v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY childPhotosHighlights IN (%@)", v4];
-        v76 = self;
-        v16 = [(PLPhotosHighlightGenerator *)self dataManager];
+        selfCopy = self;
+        dataManager3 = [(PLPhotosHighlightGenerator *)self dataManager];
         v112 = v11;
         v78 = v15;
-        v17 = [v16 allPhotosHighlightsOfKind:1 withPredicate:v15 error:&v112];
+        v17 = [dataManager3 allPhotosHighlightsOfKind:1 withPredicate:v15 error:&v112];
         v82 = v112;
 
         v81 = v4;
@@ -443,17 +443,17 @@ LABEL_17:
               }
 
               v23 = *(*(&v108 + 1) + 8 * i);
-              v24 = [v23 childPhotosHighlights];
-              v25 = [v24 _pl_map:&__block_literal_global_101];
+              childPhotosHighlights = [v23 childPhotosHighlights];
+              v25 = [childPhotosHighlights _pl_map:&__block_literal_global_101];
 
               if ([v25 isSubsetOfSet:v18])
               {
                 v26 = PLMomentsGetLog();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                 {
-                  v27 = [v23 uuid];
+                  uuid = [v23 uuid];
                   *buf = 138412290;
-                  v122 = v27;
+                  v122 = uuid;
                   v28 = v26;
                   v29 = "[HighlightsGeneration] Month %@ will be empty. Cleaning up.";
 LABEL_19:
@@ -473,9 +473,9 @@ LABEL_19:
                 v26 = PLMomentsGetLog();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                 {
-                  v27 = [v23 uuid];
+                  uuid = [v23 uuid];
                   *buf = 138412290;
-                  v122 = v27;
+                  v122 = uuid;
                   v28 = v26;
                   v29 = "[HighlightsGeneration] Month %@ is empty. Cleaning up.";
                   goto LABEL_19;
@@ -506,10 +506,10 @@ LABEL_21:
           }
 
           v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY childPhotosHighlights IN (%@)", v5];
-          v34 = [(PLPhotosHighlightGenerator *)v76 dataManager];
+          dataManager4 = [(PLPhotosHighlightGenerator *)selfCopy dataManager];
           v107 = v82;
           v77 = v33;
-          [v34 allPhotosHighlightsOfKind:2 withPredicate:v33 error:&v107];
+          [dataManager4 allPhotosHighlightsOfKind:2 withPredicate:v33 error:&v107];
           v36 = v35 = v5;
           v74 = v107;
 
@@ -534,17 +534,17 @@ LABEL_21:
                 }
 
                 v42 = *(*(&v103 + 1) + 8 * j);
-                v43 = [v42 childPhotosHighlights];
-                v44 = [v43 _pl_map:&__block_literal_global_107_48629];
+                childPhotosHighlights2 = [v42 childPhotosHighlights];
+                v44 = [childPhotosHighlights2 _pl_map:&__block_literal_global_107_48629];
 
                 if ([v44 isSubsetOfSet:v37])
                 {
                   v45 = PLMomentsGetLog();
                   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
                   {
-                    v46 = [v42 uuid];
+                    uuid2 = [v42 uuid];
                     *buf = 138412290;
-                    v122 = v46;
+                    v122 = uuid2;
                     v47 = v45;
                     v48 = "[HighlightsGeneration] Year %@ will be empty. Cleaning up.";
 LABEL_37:
@@ -562,9 +562,9 @@ LABEL_37:
                   v45 = PLMomentsGetLog();
                   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
                   {
-                    v46 = [v42 uuid];
+                    uuid2 = [v42 uuid];
                     *buf = 138412290;
-                    v122 = v46;
+                    v122 = uuid2;
                     v47 = v45;
                     v48 = "[HighlightsGeneration] Year %@ is empty. Cleaning up.";
                     goto LABEL_37;
@@ -764,21 +764,21 @@ LABEL_39:
   }
 
   v4 = +[PLMomentGenerationUtils today];
-  v5 = [objc_opt_class() lastHighlightTitlesUpdateDay];
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [v6 components:4 fromDate:v4];
-  v8 = [v6 components:4 fromDate:v5];
-  v9 = [v7 year];
+  lastHighlightTitlesUpdateDay = [objc_opt_class() lastHighlightTitlesUpdateDay];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [currentCalendar components:4 fromDate:v4];
+  v8 = [currentCalendar components:4 fromDate:lastHighlightTitlesUpdateDay];
+  year = [v7 year];
   v37 = v8;
-  if (v9 == [v8 year])
+  if (year == [v8 year])
   {
-    v10 = [v5 dateByAddingTimeInterval:-604800.0];
+    v10 = [lastHighlightTitlesUpdateDay dateByAddingTimeInterval:-604800.0];
   }
 
   else
   {
     v44 = 0;
-    [v6 rangeOfUnit:4 startDate:&v44 interval:0 forDate:v5];
+    [currentCalendar rangeOfUnit:4 startDate:&v44 interval:0 forDate:lastHighlightTitlesUpdateDay];
     v10 = v44;
   }
 
@@ -793,14 +793,14 @@ LABEL_39:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
   v15 = [v13 andPredicateWithSubpredicates:v14];
 
-  v16 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v43 = 0;
-  v17 = [v16 allPhotosHighlightsWithPredicate:v15 error:&v43];
+  v17 = [dataManager allPhotosHighlightsWithPredicate:v15 error:&v43];
   v18 = v43;
 
   v19 = PLMomentsGetLog();
   v20 = v19;
-  v34 = v6;
+  v34 = currentCalendar;
   if (v18)
   {
     v21 = v17;
@@ -816,7 +816,7 @@ LABEL_39:
   else
   {
     v31 = v7;
-    v32 = v5;
+    v32 = lastHighlightTitlesUpdateDay;
     v33 = v4;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -863,7 +863,7 @@ LABEL_39:
     v4 = v33;
     [objc_opt_class() setLastHighlightTitlesUpdateDay:v33];
     v7 = v31;
-    v5 = v32;
+    lastHighlightTitlesUpdateDay = v32;
     v22 = v37;
   }
 }
@@ -890,16 +890,16 @@ LABEL_39:
   WeakRetained = objc_loadWeakRetained(&self->_dataManager);
   [WeakRetained fetchLocationsOfInterestIfNeeded];
   v90 = WeakRetained;
-  v8 = [WeakRetained routineIsAvailable];
+  routineIsAvailable = [WeakRetained routineIsAvailable];
   v88 = [MEMORY[0x1E695DFA8] set];
-  v9 = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
+  currentFrequentLocations = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
 
   v86 = v6;
-  if (v9)
+  if (currentFrequentLocations)
   {
-    v10 = [(PLPhotosHighlightGenerator *)self _fetchAllMoments];
-    v11 = [(PLPhotosHighlightGenerator *)self dataManager];
-    v12 = [objc_opt_class() processingMomentsFromMoments:v10];
+    _fetchAllMoments = [(PLPhotosHighlightGenerator *)self _fetchAllMoments];
+    dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
+    v12 = [objc_opt_class() processingMomentsFromMoments:_fetchAllMoments];
 
     v103 = [(PLFrequentLocationManager *)self->_frequentLocationManager frequentLocationsDidChangeFromUpdateWithMoments:v12];
     if (v103)
@@ -921,16 +921,16 @@ LABEL_39:
   }
 
   v14 = @"unavailable";
-  if (v8)
+  if (routineIsAvailable)
   {
-    v15 = [(PLPhotosHighlightGenerator *)self _fetchMomentsRequiringLocationProcessingWhenCoreRoutineIsAvailable];
-    [v88 addObjectsFromArray:v15];
+    _fetchMomentsRequiringLocationProcessingWhenCoreRoutineIsAvailable = [(PLPhotosHighlightGenerator *)self _fetchMomentsRequiringLocationProcessingWhenCoreRoutineIsAvailable];
+    [v88 addObjectsFromArray:_fetchMomentsRequiringLocationProcessingWhenCoreRoutineIsAvailable];
 
     v14 = @"available";
   }
 
   v16 = @"available";
-  if (!v9)
+  if (!currentFrequentLocations)
   {
     v16 = @"unavailable";
   }
@@ -944,8 +944,8 @@ LABEL_39:
 
   v19 = v18;
   v20 = [v88 count];
-  v21 = PLMomentsGetLog();
-  v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
+  currentFrequentLocations2 = PLMomentsGetLog();
+  v22 = os_log_type_enabled(currentFrequentLocations2, OS_LOG_TYPE_DEFAULT);
   v87 = v19;
   if (v20)
   {
@@ -957,13 +957,13 @@ LABEL_39:
       v125 = *&v17;
       v126 = 2112;
       v127 = v19;
-      _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "[HighlightsGeneration] Running periodic maintenance task to update moment processed locations, routine %@ and frequent locations %@ (%@)", buf, 0x20u);
+      _os_log_impl(&dword_19BF1F000, currentFrequentLocations2, OS_LOG_TYPE_DEFAULT, "[HighlightsGeneration] Running periodic maintenance task to update moment processed locations, routine %@ and frequent locations %@ (%@)", buf, 0x20u);
     }
 
     v84 = v17;
 
-    v81 = self;
-    v21 = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
+    selfCopy = self;
+    currentFrequentLocations2 = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
     v101 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v114 = 0u;
     v115 = 0u;
@@ -977,7 +977,7 @@ LABEL_39:
       v25 = v23;
       v26 = 0;
       v27 = *v115;
-      v102 = v21;
+      v102 = currentFrequentLocations2;
       v89 = *v115;
       do
       {
@@ -1016,30 +1016,30 @@ LABEL_39:
 
           v98 = v30;
           v99 = v26;
-          v34 = [v29 assets];
-          v35 = [v34 anyObject];
-          v36 = [v35 assetComparisonSortDescriptors];
-          v37 = v36;
+          assets = [v29 assets];
+          anyObject = [assets anyObject];
+          assetComparisonSortDescriptors = [anyObject assetComparisonSortDescriptors];
+          v37 = assetComparisonSortDescriptors;
           v38 = MEMORY[0x1E695E0F0];
-          if (v36)
+          if (assetComparisonSortDescriptors)
           {
-            v38 = v36;
+            v38 = assetComparisonSortDescriptors;
           }
 
           v39 = v38;
 
           v96 = v39;
-          v97 = v34;
-          v40 = [v34 sortedArrayUsingDescriptors:v39];
-          v94 = [[PLCompactMomentClustering alloc] initWithDataManager:v24 frequentLocations:v21];
+          v97 = assets;
+          v40 = [assets sortedArrayUsingDescriptors:v39];
+          v94 = [[PLCompactMomentClustering alloc] initWithDataManager:v24 frequentLocations:currentFrequentLocations2];
           v95 = v40;
           v100 = [(PLCompactMomentClustering *)v94 createAssetClustersForAssetsInDay:v40];
           v41 = [v100 count];
           if (v41 == 1)
           {
-            v42 = [v29 processedLocation];
-            [PLMomentGenerationUtils processLocationIfNecessaryInMoment:v29 usingManager:v24 frequentLocations:v21 frequentLocationsDidChange:v103];
-            v43 = v42 == [v29 processedLocation];
+            processedLocation = [v29 processedLocation];
+            [PLMomentGenerationUtils processLocationIfNecessaryInMoment:v29 usingManager:v24 frequentLocations:currentFrequentLocations2 frequentLocationsDidChange:v103];
+            v43 = processedLocation == [v29 processedLocation];
             v45 = v98;
             v44 = v99;
             if (v43)
@@ -1048,8 +1048,8 @@ LABEL_39:
             }
 
             v93 = v28;
-            v46 = [v29 uniqueObjectID];
-            [v101 addObject:v46];
+            uniqueObjectID = [v29 uniqueObjectID];
+            [v101 addObject:uniqueObjectID];
           }
 
           else
@@ -1058,9 +1058,9 @@ LABEL_39:
             v48 = PLMomentsGetLog();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
             {
-              v49 = [v29 uuid];
+              uuid = [v29 uuid];
               *buf = 138412546;
-              v123 = v49;
+              v123 = uuid;
               v124 = 1024;
               LODWORD(v125) = v47;
               _os_log_impl(&dword_19BF1F000, v48, OS_LOG_TYPE_INFO, "[HighlightsGeneration] Split assets in moment with uuid %@ into %d separate moments", buf, 0x12u);
@@ -1077,7 +1077,7 @@ LABEL_39:
             if (v51)
             {
               v52 = v51;
-              v46 = 0;
+              uniqueObjectID = 0;
               v53 = 0;
               v54 = *v110;
               do
@@ -1090,14 +1090,14 @@ LABEL_39:
                   }
 
                   v56 = *(*(&v109 + 1) + 8 * i);
-                  v57 = [v56 assets];
-                  v58 = [v57 count];
+                  assets2 = [v56 assets];
+                  v58 = [assets2 count];
 
                   if (v58 > v53)
                   {
                     v59 = v56;
 
-                    v46 = v59;
+                    uniqueObjectID = v59;
                     v53 = v58;
                   }
                 }
@@ -1110,7 +1110,7 @@ LABEL_39:
 
             else
             {
-              v46 = 0;
+              uniqueObjectID = 0;
             }
 
             v107 = 0u;
@@ -1134,7 +1134,7 @@ LABEL_39:
                   }
 
                   v65 = *(*(&v105 + 1) + 8 * j);
-                  if (v65 == v46)
+                  if (v65 == uniqueObjectID)
                   {
                     v66 = v29;
                   }
@@ -1147,9 +1147,9 @@ LABEL_39:
                   v67 = v66;
                   v68 = [PLAssetCollectionGenerator createMomentOrUpdateForAssetCluster:v65 affectedMoment:v67 dataManager:v90];
                   [PLMomentGenerationUtils processLocationIfNecessaryInMoment:v68 usingManager:v90 frequentLocations:v102 frequentLocationsDidChange:v103];
-                  v69 = [v29 uniqueObjectID];
+                  uniqueObjectID2 = [v29 uniqueObjectID];
 
-                  [v101 addObject:v69];
+                  [v101 addObject:uniqueObjectID2];
                 }
 
                 v62 = [v60 countByEnumeratingWithState:&v105 objects:v119 count:16];
@@ -1158,12 +1158,12 @@ LABEL_39:
               while (v62);
             }
 
-            v21 = v102;
+            currentFrequentLocations2 = v102;
             v27 = v89;
             v25 = v91;
             v45 = v98;
             v44 = v99;
-            v34 = v97;
+            assets = v97;
           }
 
           v28 = v93;
@@ -1187,12 +1187,12 @@ LABEL_62:
     if (v70)
     {
       v72 = [MEMORY[0x1E695DFD8] set];
-      [(PLPhotosHighlightGenerator *)v81 beginGenerationWithAssets:v72 hiddenAssets:MEMORY[0x1E695E0F0]];
+      [(PLPhotosHighlightGenerator *)selfCopy beginGenerationWithAssets:v72 hiddenAssets:MEMORY[0x1E695E0F0]];
 
       v73 = [MEMORY[0x1E695DFD8] setWithArray:v70];
-      [(PLPhotosHighlightGenerator *)v81 generateHighlightsForUpsertedMoments:v73 frequentLocationsDidChange:v103];
+      [(PLPhotosHighlightGenerator *)selfCopy generateHighlightsForUpsertedMoments:v73 frequentLocationsDidChange:v103];
 
-      [(PLPhotosHighlightGenerator *)v81 finishGeneration];
+      [(PLPhotosHighlightGenerator *)selfCopy finishGeneration];
       v74 = mach_absolute_time();
       numer = info.numer;
       denom = info.denom;
@@ -1242,7 +1242,7 @@ LABEL_62:
       v125 = *&v17;
       v126 = 2112;
       v127 = v87;
-      _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "[HighlightsGeneration] Periodic maintenance task to update moment processed locations completed without processing any moments, routine %@ and frequent locations %@ (%@)", buf, 0x20u);
+      _os_log_impl(&dword_19BF1F000, currentFrequentLocations2, OS_LOG_TYPE_DEFAULT, "[HighlightsGeneration] Periodic maintenance task to update moment processed locations completed without processing any moments, routine %@ and frequent locations %@ (%@)", buf, 0x20u);
     }
   }
 }
@@ -1267,8 +1267,8 @@ LABEL_62:
   [WeakRetained fetchLocationsOfInterestIfNeeded];
   if ([WeakRetained routineIsAvailable])
   {
-    v9 = [WeakRetained locationsOfInterest];
-    v10 = [v9 count];
+    locationsOfInterest = [WeakRetained locationsOfInterest];
+    v10 = [locationsOfInterest count];
     if (!v10)
     {
       v13 = PLMomentsGetLog();
@@ -1336,7 +1336,7 @@ LABEL_70:
         {
           v66 = *v82;
           v18 = *MEMORY[0x1E6985C30];
-          v64 = v9;
+          v64 = locationsOfInterest;
           do
           {
             for (i = 0; i != v68; ++i)
@@ -1347,9 +1347,9 @@ LABEL_70:
               }
 
               v20 = *(*(&v81 + 1) + 8 * i);
-              v21 = [v20 approximateLocation];
+              approximateLocation = [v20 approximateLocation];
               v22 = v67;
-              if (!v21)
+              if (!approximateLocation)
               {
                 goto LABEL_37;
               }
@@ -1358,7 +1358,7 @@ LABEL_70:
               v80 = 0u;
               v77 = 0u;
               v78 = 0u;
-              v23 = v9;
+              v23 = locationsOfInterest;
               v24 = [v23 countByEnumeratingWithState:&v77 objects:v89 count:16];
               if (v24)
               {
@@ -1376,17 +1376,17 @@ LABEL_70:
                     }
 
                     v30 = *(*(&v77 + 1) + 8 * j);
-                    [v30 distanceFromLocation:v21];
+                    [v30 distanceFromLocation:approximateLocation];
                     v32 = v31;
                     if (v31 <= 50.0 && v31 < v28)
                     {
-                      v34 = [v30 type];
-                      if (v34 == 1)
+                      type = [v30 type];
+                      if (type == 1)
                       {
                         v27 = 4;
                       }
 
-                      else if (!v34)
+                      else if (!type)
                       {
                         v27 = 3;
                       }
@@ -1407,7 +1407,7 @@ LABEL_70:
               }
 
               v35 = [v20 processedLocation] == v27;
-              v9 = v64;
+              locationsOfInterest = v64;
               v22 = v65;
               if (!v35)
               {
@@ -1533,11 +1533,11 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  v9 = PLMomentsGetLog();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  locationsOfInterest = PLMomentsGetLog();
+  if (os_log_type_enabled(locationsOfInterest, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "[HighlightsGeneration] Periodic maintenance task to update cached location of interest could not run: CoreRoutine is not available", buf, 2u);
+    _os_log_impl(&dword_19BF1F000, locationsOfInterest, OS_LOG_TYPE_DEFAULT, "[HighlightsGeneration] Periodic maintenance task to update cached location of interest could not run: CoreRoutine is not available", buf, 2u);
   }
 
 LABEL_73:
@@ -1557,13 +1557,13 @@ LABEL_73:
   recentHighlightsDateInterval = self->_recentHighlightsDateInterval;
   self->_recentHighlightsDateInterval = 0;
 
-  v5 = [(PLPhotosHighlightGenerator *)self fetchAllRecentHighlights];
+  fetchAllRecentHighlights = [(PLPhotosHighlightGenerator *)self fetchAllRecentHighlights];
   v6 = [MEMORY[0x1E695DFA8] set];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v7 = v5;
+  v7 = fetchAllRecentHighlights;
   v8 = [v7 countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v8)
   {
@@ -1578,8 +1578,8 @@ LABEL_73:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v51 + 1) + 8 * i) moments];
-        [v6 unionSet:v12];
+        moments = [*(*(&v51 + 1) + 8 * i) moments];
+        [v6 unionSet:moments];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v51 objects:v58 count:16];
@@ -1590,13 +1590,13 @@ LABEL_73:
 
   v40 = v7;
 
-  v42 = self;
-  v13 = [(PLPhotosHighlightGenerator *)self fetchAllOngoingTripDayGroupHighlights];
+  selfCopy = self;
+  fetchAllOngoingTripDayGroupHighlights = [(PLPhotosHighlightGenerator *)self fetchAllOngoingTripDayGroupHighlights];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v47 objects:v57 count:16];
+  v14 = [fetchAllOngoingTripDayGroupHighlights countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1607,7 +1607,7 @@ LABEL_73:
       {
         if (*v48 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(fetchAllOngoingTripDayGroupHighlights);
         }
 
         v18 = *(*(&v47 + 1) + 8 * j);
@@ -1615,8 +1615,8 @@ LABEL_73:
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v19 = [v18 childDayGroupPhotosHighlights];
-        v20 = [v19 countByEnumeratingWithState:&v43 objects:v56 count:16];
+        childDayGroupPhotosHighlights = [v18 childDayGroupPhotosHighlights];
+        v20 = [childDayGroupPhotosHighlights countByEnumeratingWithState:&v43 objects:v56 count:16];
         if (v20)
         {
           v21 = v20;
@@ -1627,33 +1627,33 @@ LABEL_73:
             {
               if (*v44 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(childDayGroupPhotosHighlights);
               }
 
-              v24 = [*(*(&v43 + 1) + 8 * k) moments];
-              [v6 unionSet:v24];
+              moments2 = [*(*(&v43 + 1) + 8 * k) moments];
+              [v6 unionSet:moments2];
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v43 objects:v56 count:16];
+            v21 = [childDayGroupPhotosHighlights countByEnumeratingWithState:&v43 objects:v56 count:16];
           }
 
           while (v21);
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v47 objects:v57 count:16];
+      v15 = [fetchAllOngoingTripDayGroupHighlights countByEnumeratingWithState:&v47 objects:v57 count:16];
     }
 
     while (v15);
   }
 
-  p_isa = &v42->super.isa;
+  p_isa = &selfCopy->super.isa;
   if (+[PLAggregationProcessor isEnabled])
   {
     v26 = +[PLAggregationProcessor allowedStartDateToAggregate];
-    v27 = [objc_opt_class() lastRecentHighlightUpdateDate];
-    v28 = [MEMORY[0x1E695DF00] distantPast];
-    v29 = [v27 isEqualToDate:v28];
+    lastRecentHighlightUpdateDate = [objc_opt_class() lastRecentHighlightUpdateDate];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    v29 = [lastRecentHighlightUpdateDate isEqualToDate:distantPast];
 
     if (v29)
     {
@@ -1667,7 +1667,7 @@ LABEL_73:
     else
     {
       +[PLAggregationProcessor timeIntervalOfRecentContentToIgnore];
-      v32 = [v27 dateByAddingTimeInterval:-v31];
+      v32 = [lastRecentHighlightUpdateDate dateByAddingTimeInterval:-v31];
       if ([v32 compare:v26] == -1)
       {
         v30 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v32 endDate:v26];
@@ -1684,17 +1684,17 @@ LABEL_73:
       }
     }
 
-    v33 = [(PLPhotosHighlightGenerator *)v42 dataManager];
-    v34 = [v33 momentsIntersectingDateInterval:v30];
+    dataManager = [(PLPhotosHighlightGenerator *)selfCopy dataManager];
+    v34 = [dataManager momentsIntersectingDateInterval:v30];
 
     [v6 addObjectsFromArray:v34];
-    p_isa = &v42->super.isa;
+    p_isa = &selfCopy->super.isa;
 LABEL_33:
   }
 
-  v35 = [p_isa _fetchAllMoments];
-  v36 = [p_isa dataManager];
-  v37 = [objc_opt_class() processingMomentsFromMoments:v35];
+  _fetchAllMoments = [p_isa _fetchAllMoments];
+  dataManager2 = [p_isa dataManager];
+  v37 = [objc_opt_class() processingMomentsFromMoments:_fetchAllMoments];
 
   v38 = [p_isa[3] frequentLocationsDidChangeFromUpdateWithMoments:v37];
   v39 = [MEMORY[0x1E695DFD8] set];
@@ -1727,8 +1727,8 @@ LABEL_33:
         }
 
         v3 = *(*(&v31 + 1) + 8 * i);
-        v4 = [v3 moments];
-        v5 = [v4 count];
+        moments = [v3 moments];
+        v5 = [moments count];
         if (v5)
         {
           v23 = v5;
@@ -1738,7 +1738,7 @@ LABEL_33:
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v7 = v4;
+          v7 = moments;
           v8 = [v7 countByEnumeratingWithState:&v27 objects:v41 count:16];
           if (v8)
           {
@@ -1760,8 +1760,8 @@ LABEL_33:
                   [v6 appendString:{@", "}];
                 }
 
-                v14 = [v13 uuid];
-                [v6 appendString:v14];
+                uuid = [v13 uuid];
+                [v6 appendString:uuid];
 
                 v10 = 1;
               }
@@ -1777,9 +1777,9 @@ LABEL_33:
           v3 = v26;
           if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
           {
-            v16 = [v26 uuid];
+            uuid2 = [v26 uuid];
             *buf = 138412802;
-            v36 = v16;
+            v36 = uuid2;
             v37 = 2048;
             v38 = v23;
             v39 = 2112;
@@ -1797,95 +1797,95 @@ LABEL_33:
     while (v25);
   }
 
-  v17 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-  v18 = [v17 count];
+  highlightsNeedingNewKeyAsset = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+  v18 = [highlightsNeedingNewKeyAsset count];
 
   if (v18)
   {
     v19 = objc_opt_class();
-    v20 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v19 updateKeyAssetForHighlights:v20];
+    highlightsNeedingNewKeyAsset2 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [v19 updateKeyAssetForHighlights:highlightsNeedingNewKeyAsset2];
   }
 
   [(PLPhotosHighlightGenerator *)self setDidCallBeginGeneration:0];
 }
 
-- (BOOL)_updateHighlightProperties:(id)a3 fromHighlightCluster:(id)a4
+- (BOOL)_updateHighlightProperties:(id)properties fromHighlightCluster:(id)cluster
 {
-  v5 = a3;
-  v6 = a4;
-  v21 = [v5 startDate];
-  v20 = [v5 endDate];
-  LODWORD(a4) = [v5 type];
-  v7 = [v5 kind];
-  v16 = [v5 category];
-  v18 = [v5 startTimeZoneOffset];
-  v19 = [v5 endTimeZoneOffset];
-  v8 = [v6 startDate];
-  v9 = [v6 endDate];
-  v10 = [v6 type];
-  v11 = [v6 kind];
-  v12 = [v6 category];
-  v13 = [v6 startTimeZoneOffset];
-  v17 = [v6 endTimeZoneOffset];
+  propertiesCopy = properties;
+  clusterCopy = cluster;
+  startDate = [propertiesCopy startDate];
+  endDate = [propertiesCopy endDate];
+  LODWORD(cluster) = [propertiesCopy type];
+  kind = [propertiesCopy kind];
+  category = [propertiesCopy category];
+  startTimeZoneOffset = [propertiesCopy startTimeZoneOffset];
+  endTimeZoneOffset = [propertiesCopy endTimeZoneOffset];
+  startDate2 = [clusterCopy startDate];
+  endDate2 = [clusterCopy endDate];
+  type = [clusterCopy type];
+  kind2 = [clusterCopy kind];
+  category2 = [clusterCopy category];
+  startTimeZoneOffset2 = [clusterCopy startTimeZoneOffset];
+  endTimeZoneOffset2 = [clusterCopy endTimeZoneOffset];
 
-  v14 = a4 != v10;
-  if (a4 != v10)
+  v14 = cluster != type;
+  if (cluster != type)
   {
-    [v5 setType:v10];
+    [propertiesCopy setType:type];
   }
 
-  if (v7 != v11)
+  if (kind != kind2)
   {
-    [v5 setKind:v11];
+    [propertiesCopy setKind:kind2];
     v14 = 1;
   }
 
-  if (v16 != v12)
+  if (category != category2)
   {
-    [v5 setCategory:v12];
+    [propertiesCopy setCategory:category2];
     v14 = 1;
   }
 
-  if (([v21 isEqualToDate:v8] & 1) == 0)
+  if (([startDate isEqualToDate:startDate2] & 1) == 0)
   {
-    [v5 setStartDate:v8];
+    [propertiesCopy setStartDate:startDate2];
     v14 = 1;
   }
 
-  if (([v20 isEqualToDate:v9] & 1) == 0)
+  if (([endDate isEqualToDate:endDate2] & 1) == 0)
   {
-    [v5 setEndDate:v9];
+    [propertiesCopy setEndDate:endDate2];
     v14 = 1;
   }
 
-  if (v18 != v13)
+  if (startTimeZoneOffset != startTimeZoneOffset2)
   {
-    [v5 setStartTimeZoneOffset:v13];
+    [propertiesCopy setStartTimeZoneOffset:startTimeZoneOffset2];
     v14 = 1;
   }
 
-  if (v19 != v17)
+  if (endTimeZoneOffset != endTimeZoneOffset2)
   {
-    [v5 setEndTimeZoneOffset:?];
+    [propertiesCopy setEndTimeZoneOffset:?];
     v14 = 1;
   }
 
   return v14;
 }
 
-- (id)_insertDayGroupPhotosHighlightCluster:(id)a3
+- (id)_insertDayGroupPhotosHighlightCluster:(id)cluster
 {
   v66 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v4 = [v54 moments];
+  clusterCopy = cluster;
+  moments = [clusterCopy moments];
   v55 = objc_alloc_init(MEMORY[0x1E696AB50]);
   v5 = [MEMORY[0x1E695DFA8] set];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v6 = v4;
+  v6 = moments;
   v7 = [v6 countByEnumeratingWithState:&v60 objects:v65 count:16];
   if (v7)
   {
@@ -1900,19 +1900,19 @@ LABEL_33:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v60 + 1) + 8 * i) highlight];
-        v12 = v11;
-        if (v11 && ([v11 isDeleted] & 1) == 0)
+        highlight = [*(*(&v60 + 1) + 8 * i) highlight];
+        v12 = highlight;
+        if (highlight && ([highlight isDeleted] & 1) == 0)
         {
           [v5 addObject:v12];
-          v13 = [v12 parentDayGroupPhotosHighlight];
-          v14 = v13;
-          if (v13)
+          parentDayGroupPhotosHighlight = [v12 parentDayGroupPhotosHighlight];
+          v14 = parentDayGroupPhotosHighlight;
+          if (parentDayGroupPhotosHighlight)
           {
-            if (([v13 isDeleted] & 1) == 0)
+            if (([parentDayGroupPhotosHighlight isDeleted] & 1) == 0)
             {
-              v15 = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
-              v16 = [v15 containsObject:v14];
+              upsertedHighlights = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
+              v16 = [upsertedHighlights containsObject:v14];
 
               if ((v16 & 1) == 0)
               {
@@ -1929,51 +1929,51 @@ LABEL_33:
     while (v8);
   }
 
-  v17 = [v55 anyObject];
-  v18 = v17;
-  if (v17 && ![v17 isDeleted])
+  anyObject = [v55 anyObject];
+  v18 = anyObject;
+  if (anyObject && ![anyObject isDeleted])
   {
     v21 = 0;
   }
 
   else
   {
-    v19 = [(PLPhotosHighlightGenerator *)self dataManager];
-    v20 = [v19 insertNewPhotosHighlight];
+    dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
+    insertNewPhotosHighlight = [dataManager insertNewPhotosHighlight];
 
-    [v20 setPromotionScore:0.3];
+    [insertNewPhotosHighlight setPromotionScore:0.3];
     v21 = 1;
-    v18 = v20;
+    v18 = insertNewPhotosHighlight;
   }
 
-  v22 = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
-  [v22 addObject:v18];
+  upsertedHighlights2 = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
+  [upsertedHighlights2 addObject:v18];
 
-  v23 = v54;
-  v24 = (v21 & 1) != 0 || [(PLPhotosHighlightGenerator *)self shouldForceVisibilityStateUpdateForHighlight:v18 highlightCluster:v54];
-  v25 = [(PLPhotosHighlightGenerator *)self _updateHighlightProperties:v18 fromHighlightCluster:v54];
-  v26 = [(PLPhotosHighlightGenerator *)self highlightsWithDeletedAssets];
-  v53 = [v26 containsObject:v18];
+  v23 = clusterCopy;
+  v24 = (v21 & 1) != 0 || [(PLPhotosHighlightGenerator *)self shouldForceVisibilityStateUpdateForHighlight:v18 highlightCluster:clusterCopy];
+  v25 = [(PLPhotosHighlightGenerator *)self _updateHighlightProperties:v18 fromHighlightCluster:clusterCopy];
+  highlightsWithDeletedAssets = [(PLPhotosHighlightGenerator *)self highlightsWithDeletedAssets];
+  v53 = [highlightsWithDeletedAssets containsObject:v18];
 
-  v27 = [v54 assets];
-  v28 = v27;
+  assets = [clusterCopy assets];
+  v28 = assets;
   if ((v21 & 1) == 0)
   {
-    v29 = [v27 count];
-    v30 = [v18 dayGroupAssets];
-    if ([v30 count] == v29 && (objc_msgSend(v30, "isEqualToSet:", v28) & 1) != 0)
+    v29 = [assets count];
+    dayGroupAssets = [v18 dayGroupAssets];
+    if ([dayGroupAssets count] == v29 && (objc_msgSend(dayGroupAssets, "isEqualToSet:", v28) & 1) != 0)
     {
       if (!v25)
       {
         v51 = v25;
         v31 = v5;
-        v32 = [v18 childDayGroupPhotosHighlights];
+        childDayGroupPhotosHighlights = [v18 childDayGroupPhotosHighlights];
         v33 = v31;
         v34 = [v31 count];
-        if (v34 == [v32 count])
+        if (v34 == [childDayGroupPhotosHighlights count])
         {
           v35 = v33;
-          v36 = [v33 isEqualToSet:v32];
+          v36 = [v33 isEqualToSet:childDayGroupPhotosHighlights];
 
           v25 = v51;
           if (v36)
@@ -2001,9 +2001,9 @@ LABEL_50:
     v50 = v24;
     v52 = v25;
     v48 = [v28 mutableCopy];
-    [v48 minusSet:v30];
-    v49 = v30;
-    v39 = [v30 mutableCopy];
+    [v48 minusSet:dayGroupAssets];
+    v49 = dayGroupAssets;
+    v39 = [dayGroupAssets mutableCopy];
     [v39 minusSet:v28];
     v58 = 0u;
     v59 = 0u;
@@ -2034,13 +2034,13 @@ LABEL_50:
     }
 
     v28 = v48;
-    v23 = v54;
+    v23 = clusterCopy;
     v24 = v50;
     v25 = v52;
   }
 
-  v45 = [v23 assets];
-  [v18 setDayGroupAssets:v45];
+  assets2 = [v23 assets];
+  [v18 setDayGroupAssets:assets2];
 
   [v18 setChildDayGroupPhotosHighlights:v5];
   v37 = 1;
@@ -2069,11 +2069,11 @@ LABEL_42:
   return v18;
 }
 
-- (void)_insertDayPhotosHighlightCluster:(id)a3
+- (void)_insertDayPhotosHighlightCluster:(id)cluster
 {
-  v33 = a3;
-  v4 = [v33 moments];
-  v5 = [(PLPhotosHighlightGenerator *)self _highlightToReuseForMoments:v4];
+  clusterCopy = cluster;
+  moments = [clusterCopy moments];
+  v5 = [(PLPhotosHighlightGenerator *)self _highlightToReuseForMoments:moments];
   v6 = v5;
   if (v5 && ![v5 isDeleted])
   {
@@ -2082,43 +2082,43 @@ LABEL_42:
 
   else
   {
-    v7 = [(PLPhotosHighlightGenerator *)self dataManager];
-    v8 = [v7 insertNewPhotosHighlight];
+    dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
+    insertNewPhotosHighlight = [dataManager insertNewPhotosHighlight];
 
-    [v8 setPromotionScore:0.3];
+    [insertNewPhotosHighlight setPromotionScore:0.3];
     v9 = 1;
-    v6 = v8;
+    v6 = insertNewPhotosHighlight;
   }
 
-  v10 = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
-  [v10 addObject:v6];
+  upsertedHighlights = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
+  [upsertedHighlights addObject:v6];
 
-  v30 = [v6 category];
-  v31 = [v33 category];
-  v32 = (v9 & 1) != 0 || [(PLPhotosHighlightGenerator *)self shouldForceVisibilityStateUpdateForHighlight:v6 highlightCluster:v33];
-  v11 = [(PLPhotosHighlightGenerator *)self _updateHighlightProperties:v6 fromHighlightCluster:v33];
-  v12 = [(PLPhotosHighlightGenerator *)self highlightsWithDeletedAssets];
-  v29 = [v12 containsObject:v6];
+  category = [v6 category];
+  category2 = [clusterCopy category];
+  v32 = (v9 & 1) != 0 || [(PLPhotosHighlightGenerator *)self shouldForceVisibilityStateUpdateForHighlight:v6 highlightCluster:clusterCopy];
+  v11 = [(PLPhotosHighlightGenerator *)self _updateHighlightProperties:v6 fromHighlightCluster:clusterCopy];
+  highlightsWithDeletedAssets = [(PLPhotosHighlightGenerator *)self highlightsWithDeletedAssets];
+  v29 = [highlightsWithDeletedAssets containsObject:v6];
 
-  v13 = [v33 assets];
-  v14 = v13;
+  assets = [clusterCopy assets];
+  assets3 = assets;
   if (v9)
   {
     goto LABEL_16;
   }
 
-  v15 = [v13 count];
-  v16 = [v6 assets];
-  if ([v16 count] != v15 || !objc_msgSend(v16, "isEqualToSet:", v14))
+  v15 = [assets count];
+  assets2 = [v6 assets];
+  if ([assets2 count] != v15 || !objc_msgSend(assets2, "isEqualToSet:", assets3))
   {
-    v25 = [v14 mutableCopy];
-    [v25 minusSet:v16];
+    v25 = [assets3 mutableCopy];
+    [v25 minusSet:assets2];
 
-    v14 = v25;
+    assets3 = v25;
 LABEL_16:
-    v20 = v14;
-    v14 = [v33 assets];
-    [v6 setAssets:v14];
+    v20 = assets3;
+    assets3 = [clusterCopy assets];
+    [v6 setAssets:assets3];
     v21 = 1;
 LABEL_17:
 
@@ -2134,16 +2134,16 @@ LABEL_35:
     goto LABEL_17;
   }
 
-  v17 = v4;
+  v17 = moments;
   v18 = [v17 count];
-  v19 = [v6 moments];
-  if (v18 != [v19 count])
+  moments2 = [v6 moments];
+  if (v18 != [moments2 count])
   {
 
     goto LABEL_35;
   }
 
-  v28 = [v19 isEqualToSet:v17];
+  v28 = [moments2 isEqualToSet:v17];
 
   v20 = 0;
   v21 = 0;
@@ -2153,22 +2153,22 @@ LABEL_35:
   if ((v28 & 1) == 0)
   {
 LABEL_18:
-    [v6 setMoments:v4];
+    [v6 setMoments:moments];
     v23 = 1;
     v22 = v20;
     v24 = v21;
   }
 
-  if (v31 == 1)
+  if (category2 == 1)
   {
     [(PLPhotosHighlightGenerator *)self updateRecentHighlightCurationForHighlight:v6];
   }
 
-  else if (v30 == 1)
+  else if (category == 1)
   {
     [(PLPhotosHighlightGenerator *)self resetPreviousRecentHighlightCurationForHighlight:v6];
-    v26 = [v6 assets];
-    [(PLPhotosHighlightGenerator *)self updateCurationForHighlight:v6 withAssetsBelongingToCuration:v26];
+    assets4 = [v6 assets];
+    [(PLPhotosHighlightGenerator *)self updateCurationForHighlight:v6 withAssetsBelongingToCuration:assets4];
   }
 
   else if ((v9 & 1) != 0 || ([v22 count] != 0) | v29 & 1 || (objc_msgSend(v6, "missingKeyAssetForKindShared") & 1) != 0 || objc_msgSend(v6, "missingKeyAssetForKindPrivate"))
@@ -2184,17 +2184,17 @@ LABEL_18:
   }
 }
 
-- (id)_highlightToReuseForMoments:(id)a3
+- (id)_highlightToReuseForMoments:(id)moments
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  momentsCopy = moments;
   v39 = [MEMORY[0x1E695DFA8] set];
-  v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v4;
+  obj = momentsCopy;
   v6 = [obj countByEnumeratingWithState:&v59 objects:v70 count:16];
   if (v6)
   {
@@ -2209,25 +2209,25 @@ LABEL_18:
         }
 
         v9 = *(*(&v59 + 1) + 8 * i);
-        v10 = [v9 highlight];
-        v11 = v10;
-        if (v10)
+        highlight = [v9 highlight];
+        v11 = highlight;
+        if (highlight)
         {
-          if (([v10 isDeleted] & 1) == 0)
+          if (([highlight isDeleted] & 1) == 0)
           {
-            v12 = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
-            v13 = [v12 containsObject:v11];
+            upsertedHighlights = [(PLPhotosHighlightGenerator *)self upsertedHighlights];
+            v13 = [upsertedHighlights containsObject:v11];
 
             if ((v13 & 1) == 0)
             {
-              v14 = [v5 objectForKey:v11];
-              v15 = [v14 unsignedIntegerValue];
+              v14 = [strongToStrongObjectsMapTable objectForKey:v11];
+              unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-              v16 = [v9 assets];
-              v17 = [v16 count];
+              assets = [v9 assets];
+              v17 = [assets count];
 
-              v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17 + v15];
-              [v5 setObject:v18 forKey:v11];
+              v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17 + unsignedIntegerValue];
+              [strongToStrongObjectsMapTable setObject:v18 forKey:v11];
 
               [v39 addObject:v11];
             }
@@ -2264,7 +2264,7 @@ LABEL_18:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v20 = v5;
+  v20 = strongToStrongObjectsMapTable;
   v21 = 0;
   v22 = [v20 countByEnumeratingWithState:&v42 objects:v69 count:16];
   if (v22)
@@ -2284,23 +2284,23 @@ LABEL_18:
 
         v25 = *(*(&v42 + 1) + 8 * v24);
         v26 = [v20 objectForKey:{v25, v38}];
-        v27 = [v25 startDate];
+        startDate = [v25 startDate];
         if (v21)
         {
-          v28 = v19[2](v19, v26, v27);
+          v28 = v19[2](v19, v26, startDate);
           if (!v28)
           {
             v32 = PLMomentsGetLog();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
-              v33 = [v21 uuid];
-              v34 = [v25 uuid];
+              uuid = [v21 uuid];
+              uuid2 = [v25 uuid];
               *buf = v38;
-              v64 = v27;
+              v64 = startDate;
               v65 = 2112;
-              v66 = v33;
+              v66 = uuid;
               v67 = 2112;
-              v68 = v34;
+              v68 = uuid2;
               _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Picking between two highlights to reuse that start on the same date(%@) bestHighlight:(%@) currentHighlight:(%@)", buf, 0x20u);
             }
 
@@ -2315,7 +2315,7 @@ LABEL_18:
 
         v29 = v25;
 
-        objc_storeStrong(v54 + 5, v27);
+        objc_storeStrong(v54 + 5, startDate);
         v30 = v48;
         v31 = v26;
         v32 = v30[5];
@@ -2355,11 +2355,11 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   return v6;
 }
 
-- (void)generateHighlightsForUpsertedMoments:(id)a3 frequentLocationsDidChange:(BOOL)a4
+- (void)generateHighlightsForUpsertedMoments:(id)moments frequentLocationsDidChange:(BOOL)change
 {
-  v111 = a4;
+  changeCopy = change;
   v145 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  momentsCopy = moments;
   v6 = PLMomentGenerationGetLog();
   if (![(PLPhotosHighlightGenerator *)self didCallBeginGeneration])
   {
@@ -2400,12 +2400,12 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   }
 
   v16 = mach_absolute_time();
-  v112 = [(PLPhotosHighlightGenerator *)self highlightClusterGenerator];
+  highlightClusterGenerator = [(PLPhotosHighlightGenerator *)self highlightClusterGenerator];
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v17 = v5;
+  v17 = momentsCopy;
   v18 = [v17 countByEnumeratingWithState:&v129 objects:v144 count:16];
   if (v18)
   {
@@ -2490,11 +2490,11 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
 
     else
     {
-      v35 = v111;
+      v35 = changeCopy;
     }
 
-    v36 = [(PLHighlightHierarchy *)self->_entitiesToUpdate moments];
-    v37 = [v112 highlightClustersIntersectingMoments:v36 includeAllTripHighlightClusters:v35];
+    moments = [(PLHighlightHierarchy *)self->_entitiesToUpdate moments];
+    v37 = [highlightClusterGenerator highlightClustersIntersectingMoments:moments includeAllTripHighlightClusters:v35];
 
     v38 = [MEMORY[0x1E695DFA8] set];
     v124 = 0u;
@@ -2516,8 +2516,8 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
             objc_enumerationMutation(v39);
           }
 
-          v44 = [*(*(&v124 + 1) + 8 * j) moments];
-          [v38 unionSet:v44];
+          moments2 = [*(*(&v124 + 1) + 8 * j) moments];
+          [v38 unionSet:moments2];
         }
 
         v41 = [v39 countByEnumeratingWithState:&v124 objects:v143 count:16];
@@ -2526,8 +2526,8 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
       while (v41);
     }
 
-    v45 = [(PLHighlightHierarchy *)self->_entitiesToUpdate moments];
-    [v38 minusSet:v45];
+    moments3 = [(PLHighlightHierarchy *)self->_entitiesToUpdate moments];
+    [v38 minusSet:moments3];
 
     if ([v38 count])
     {
@@ -2637,13 +2637,13 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
         }
 
         v69 = *(*(&v116 + 1) + 8 * m);
-        v70 = [v69 kind];
-        if (v70 == 3)
+        kind = [v69 kind];
+        if (kind == 3)
         {
           v71 = [(PLPhotosHighlightGenerator *)self _insertDayGroupPhotosHighlightCluster:v69];
         }
 
-        else if (!v70)
+        else if (!kind)
         {
           [(PLPhotosHighlightGenerator *)self _insertDayPhotosHighlightCluster:v69];
         }
@@ -2687,12 +2687,12 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   self->_highlightsToDelete = v80;
 
   v82 = self->_highlightsToDelete;
-  v83 = [(PLHighlightHierarchy *)self->_entitiesToUpdate dayHighlights];
-  [(NSMutableSet *)v82 unionSet:v83];
+  dayHighlights = [(PLHighlightHierarchy *)self->_entitiesToUpdate dayHighlights];
+  [(NSMutableSet *)v82 unionSet:dayHighlights];
 
   v84 = self->_highlightsToDelete;
-  v85 = [(PLHighlightHierarchy *)self->_entitiesToUpdate dayGroupHighlights];
-  [(NSMutableSet *)v84 unionSet:v85];
+  dayGroupHighlights = [(PLHighlightHierarchy *)self->_entitiesToUpdate dayGroupHighlights];
+  [(NSMutableSet *)v84 unionSet:dayGroupHighlights];
 
   [(NSMutableSet *)self->_highlightsToDelete minusSet:self->_upsertedHighlights];
   v86 = v78;
@@ -2708,8 +2708,8 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   }
 
   v90 = mach_absolute_time();
-  v91 = [(NSMutableSet *)self->_upsertedHighlights allObjects];
-  [(PLPhotosHighlightGenerator *)self generateHighlightListForUpdatedHighlights:v91 deletedHighlights:self->_highlightsToDelete];
+  allObjects = [(NSMutableSet *)self->_upsertedHighlights allObjects];
+  [(PLPhotosHighlightGenerator *)self generateHighlightListForUpdatedHighlights:allObjects deletedHighlights:self->_highlightsToDelete];
 
   v92 = mach_absolute_time();
   v94 = v115.numer;
@@ -2762,23 +2762,23 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
 - (PLPhotosHighlightClusterGenerator)highlightClusterGenerator
 {
   v3 = [PLPhotosHighlightClusterGenerator alloc];
-  v4 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   frequentLocationManager = self->_frequentLocationManager;
-  v6 = [(PLPhotosHighlightGenerator *)self recentHighlightsDateInterval];
-  v7 = [(PLPhotosHighlightClusterGenerator *)v3 initWithDataManager:v4 frequentLocationManager:frequentLocationManager recentHighlightDateInterval:v6 localCreationDateCreator:self->_localCreationDateCreator];
+  recentHighlightsDateInterval = [(PLPhotosHighlightGenerator *)self recentHighlightsDateInterval];
+  v7 = [(PLPhotosHighlightClusterGenerator *)v3 initWithDataManager:dataManager frequentLocationManager:frequentLocationManager recentHighlightDateInterval:recentHighlightsDateInterval localCreationDateCreator:self->_localCreationDateCreator];
 
   return v7;
 }
 
-- (void)registerHighlightsWithDeletedMoments:(id)a3
+- (void)registerHighlightsWithDeletedMoments:(id)moments
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  momentsCopy = moments;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [momentsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2789,34 +2789,34 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(momentsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 kind];
-        if (v10 == 3)
+        kind = [v9 kind];
+        if (kind == 3)
         {
           [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayGroupHighlight:v9];
         }
 
-        else if (!v10)
+        else if (!kind)
         {
           [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayHighlight:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [momentsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)beginGenerationWithAssets:(id)a3 hiddenAssets:(id)a4
+- (void)beginGenerationWithAssets:(id)assets hiddenAssets:(id)hiddenAssets
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  hiddenAssetsCopy = hiddenAssets;
   v8 = PLMomentGenerationGetLog();
   if ([(PLPhotosHighlightGenerator *)self didCallBeginGeneration]&& os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
   {
@@ -2830,7 +2830,7 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = v6;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v10)
   {
@@ -2846,16 +2846,16 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        v15 = [v14 highlightBeingAssets];
-        v16 = [v14 dayGroupHighlightBeingAssets];
-        if (v15)
+        highlightBeingAssets = [v14 highlightBeingAssets];
+        dayGroupHighlightBeingAssets = [v14 dayGroupHighlightBeingAssets];
+        if (highlightBeingAssets)
         {
-          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayHighlight:v15];
+          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayHighlight:highlightBeingAssets];
         }
 
-        if (v16)
+        if (dayGroupHighlightBeingAssets)
         {
-          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayGroupHighlight:v16];
+          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayGroupHighlight:dayGroupHighlightBeingAssets];
         }
       }
 
@@ -2869,7 +2869,7 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = v7;
+  v17 = hiddenAssetsCopy;
   v18 = [v17 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v18)
   {
@@ -2886,25 +2886,25 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
 
         v22 = *(*(&v25 + 1) + 8 * j);
         [(PLPhotosHighlightGenerator *)self markHighlightNeedingNewKeyAssetsWithAsset:v22, v25];
-        v23 = [v22 highlightBeingAssets];
-        if (v23)
+        highlightBeingAssets2 = [v22 highlightBeingAssets];
+        if (highlightBeingAssets2)
         {
           [v22 setHighlightBeingAssets:0];
           [v22 setHighlightBeingSummaryAssets:0];
           [v22 setHighlightBeingExtendedAssets:0];
-          [v23 removeAssetData:v22];
-          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayHighlight:v23];
-          [(NSMutableSet *)self->_highlightsWithDeletedAssets addObject:v23];
+          [highlightBeingAssets2 removeAssetData:v22];
+          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayHighlight:highlightBeingAssets2];
+          [(NSMutableSet *)self->_highlightsWithDeletedAssets addObject:highlightBeingAssets2];
         }
 
-        v24 = [v22 dayGroupHighlightBeingAssets];
-        if (v24)
+        dayGroupHighlightBeingAssets2 = [v22 dayGroupHighlightBeingAssets];
+        if (dayGroupHighlightBeingAssets2)
         {
           [v22 setDayGroupHighlightBeingAssets:0];
           [v22 setDayGroupHighlightBeingExtendedAssets:0];
-          [v24 removeAssetData:v22];
-          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayGroupHighlight:v24];
-          [(NSMutableSet *)self->_highlightsWithDeletedAssets addObject:v24];
+          [dayGroupHighlightBeingAssets2 removeAssetData:v22];
+          [(PLHighlightHierarchy *)self->_entitiesToUpdate addDayGroupHighlight:dayGroupHighlightBeingAssets2];
+          [(NSMutableSet *)self->_highlightsWithDeletedAssets addObject:dayGroupHighlightBeingAssets2];
         }
       }
 
@@ -2941,12 +2941,12 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   self->_highlightsToDelete = v12;
 }
 
-- (PLPhotosHighlightGenerator)initWithDataManager:(id)a3 frequentLocationManager:(id)a4 localCreationDateCreator:(id)a5 dateRangeTitleGenerator:(id)a6
+- (PLPhotosHighlightGenerator)initWithDataManager:(id)manager frequentLocationManager:(id)locationManager localCreationDateCreator:(id)creator dateRangeTitleGenerator:(id)generator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  creatorCopy = creator;
+  generatorCopy = generator;
   v16.receiver = self;
   v16.super_class = PLPhotosHighlightGenerator;
   v14 = [(PLPhotosHighlightGenerator *)&v16 init];
@@ -2954,10 +2954,10 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   {
     if (v14)
     {
-      objc_storeWeak(&v14->_dataManager, v10);
-      objc_storeStrong(&v14->_frequentLocationManager, a4);
-      objc_storeStrong(&v14->_localCreationDateCreator, a5);
-      objc_storeStrong(&v14->_dateRangeTitleGenerator, a6);
+      objc_storeWeak(&v14->_dataManager, managerCopy);
+      objc_storeStrong(&v14->_frequentLocationManager, locationManager);
+      objc_storeStrong(&v14->_localCreationDateCreator, creator);
+      objc_storeStrong(&v14->_dateRangeTitleGenerator, generator);
       [(PLPhotosHighlightGenerator *)v14 _resetProperties];
     }
   }
@@ -2978,101 +2978,101 @@ uint64_t __58__PLPhotosHighlightGenerator__highlightToReuseForMoments___block_in
   return v2;
 }
 
-+ (void)setLastRecentHighlightUpdateDate:(id)a3
++ (void)setLastRecentHighlightUpdateDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 userDefaults];
-  [v5 setObject:v4 forKey:@"lastRecentHighlightUpdateDate"];
+  dateCopy = date;
+  userDefaults = [self userDefaults];
+  [userDefaults setObject:dateCopy forKey:@"lastRecentHighlightUpdateDate"];
 }
 
 + (id)lastRecentHighlightUpdateDate
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 objectForKey:@"lastRecentHighlightUpdateDate"];
+  userDefaults = [self userDefaults];
+  v3 = [userDefaults objectForKey:@"lastRecentHighlightUpdateDate"];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    distantPast = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  v6 = v5;
+  v6 = distantPast;
 
   return v6;
 }
 
-+ (void)setLastHighlightTitlesUpdateDay:(id)a3
++ (void)setLastHighlightTitlesUpdateDay:(id)day
 {
-  v4 = a3;
-  v5 = [a1 userDefaults];
-  [v5 setObject:v4 forKey:@"lastHighlightTitlesUpdateDate"];
+  dayCopy = day;
+  userDefaults = [self userDefaults];
+  [userDefaults setObject:dayCopy forKey:@"lastHighlightTitlesUpdateDate"];
 }
 
 + (id)lastHighlightTitlesUpdateDay
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 objectForKey:@"lastHighlightTitlesUpdateDate"];
+  userDefaults = [self userDefaults];
+  v3 = [userDefaults objectForKey:@"lastHighlightTitlesUpdateDate"];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    date = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v6 = v5;
+  v6 = date;
 
   return v6;
 }
 
-+ (void)_updateTitlesForHighlight:(id)a3 dateRangeTitleGenerator:(id)a4 options:(unint64_t)a5 filter:(unsigned __int16)a6
++ (void)_updateTitlesForHighlight:(id)highlight dateRangeTitleGenerator:(id)generator options:(unint64_t)options filter:(unsigned __int16)filter
 {
-  v6 = a6;
-  v19 = a3;
-  v9 = a4;
-  if (v6)
+  filterCopy = filter;
+  highlightCopy = highlight;
+  generatorCopy = generator;
+  if (filterCopy)
   {
-    if (v6 == 2)
+    if (filterCopy == 2)
     {
-      v11 = [v19 titleShared];
+      titleShared = [highlightCopy titleShared];
     }
 
     else
     {
-      v10 = v19;
-      if (v6 != 1)
+      v10 = highlightCopy;
+      if (filterCopy != 1)
       {
         v12 = 0;
         goto LABEL_9;
       }
 
-      v11 = [v19 title];
+      titleShared = [highlightCopy title];
     }
   }
 
   else
   {
-    v11 = [v19 titleMixed];
+    titleShared = [highlightCopy titleMixed];
   }
 
-  v10 = v19;
-  v12 = v11;
+  v10 = highlightCopy;
+  v12 = titleShared;
 LABEL_9:
-  v13 = [PLPhotosHighlightTitleGenerator titleForHighlight:v10 filter:v6 dateRangeTitleGenerator:v9 options:a5];
+  v13 = [PLPhotosHighlightTitleGenerator titleForHighlight:v10 filter:filterCopy dateRangeTitleGenerator:generatorCopy options:options];
   if (_os_feature_enabled_impl())
   {
-    v14 = [v19 type];
-    if (v14 <= 4 && ((1 << v14) & 0x16) != 0)
+    type = [highlightCopy type];
+    if (type <= 4 && ((1 << type) & 0x16) != 0)
     {
-      v15 = [PLPhotosHighlightTitleGenerator titleForHighlight:v19 filter:v6 dateRangeTitleGenerator:v9 options:a5 | 0x10];
-      if ([(__CFString *)v13 length]|| [(__CFString *)v15 length])
+      0x10 = [PLPhotosHighlightTitleGenerator titleForHighlight:highlightCopy filter:filterCopy dateRangeTitleGenerator:generatorCopy options:options | 0x10];
+      if ([(__CFString *)v13 length]|| [(__CFString *)0x10 length])
       {
         if (v13)
         {
@@ -3084,9 +3084,9 @@ LABEL_9:
           v16 = &stru_1F0F06D80;
         }
 
-        if (v15)
+        if (0x10)
         {
-          v17 = v15;
+          v17 = 0x10;
         }
 
         else
@@ -3108,41 +3108,41 @@ LABEL_9:
 
   if (([v12 isEqualToString:v13] & 1) == 0 && (objc_msgSend(v12, "length") || -[__CFString length](v13, "length")))
   {
-    if (v6)
+    if (filterCopy)
     {
-      if (v6 == 2)
+      if (filterCopy == 2)
       {
-        [v19 setTitleShared:v13];
+        [highlightCopy setTitleShared:v13];
       }
 
-      else if (v6 == 1)
+      else if (filterCopy == 1)
       {
-        [v19 setTitle:v13];
+        [highlightCopy setTitle:v13];
       }
     }
 
     else
     {
-      [v19 setTitleMixed:v13];
+      [highlightCopy setTitleMixed:v13];
     }
   }
 }
 
-+ (void)updateTitlesForHighlight:(id)a3 dateRangeTitleGenerator:(id)a4 options:(unint64_t)a5
++ (void)updateTitlesForHighlight:(id)highlight dateRangeTitleGenerator:(id)generator options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
-  [a1 _updateTitlesForHighlight:v9 dateRangeTitleGenerator:v8 options:a5 filter:1];
-  [a1 _updateTitlesForHighlight:v9 dateRangeTitleGenerator:v8 options:a5 filter:2];
-  [a1 _updateTitlesForHighlight:v9 dateRangeTitleGenerator:v8 options:a5 filter:0];
+  generatorCopy = generator;
+  highlightCopy = highlight;
+  [self _updateTitlesForHighlight:highlightCopy dateRangeTitleGenerator:generatorCopy options:options filter:1];
+  [self _updateTitlesForHighlight:highlightCopy dateRangeTitleGenerator:generatorCopy options:options filter:2];
+  [self _updateTitlesForHighlight:highlightCopy dateRangeTitleGenerator:generatorCopy options:options filter:0];
 }
 
-- (void)_updateDayGroupHighlight:(id)a3 withNewAssets:(id)a4
+- (void)_updateDayGroupHighlight:(id)highlight withNewAssets:(id)assets
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DFA8] setWithSet:v7];
+  highlightCopy = highlight;
+  assetsCopy = assets;
+  v8 = [MEMORY[0x1E695DFA8] setWithSet:assetsCopy];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __79__PLPhotosHighlightGenerator_Curation___updateDayGroupHighlight_withNewAssets___block_invoke;
@@ -3155,7 +3155,7 @@ LABEL_9:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v7;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v11)
   {
@@ -3173,12 +3173,12 @@ LABEL_9:
         v15 = *(*(&v19 + 1) + 8 * i);
         [(PLPhotosHighlightGenerator *)self markHighlightNeedingNewKeyAssetsWithAsset:v15, v19];
         v16 = [v8 containsObject:v15];
-        v17 = v6;
+        v17 = highlightCopy;
         if ((v16 & 1) == 0)
         {
-          v18 = [v15 dayGroupHighlightBeingExtendedAssets];
+          dayGroupHighlightBeingExtendedAssets = [v15 dayGroupHighlightBeingExtendedAssets];
 
-          if (!v18)
+          if (!dayGroupHighlightBeingExtendedAssets)
           {
             continue;
           }
@@ -3204,12 +3204,12 @@ uint64_t __79__PLPhotosHighlightGenerator_Curation___updateDayGroupHighlight_wit
   return v3;
 }
 
-- (void)_updateDayHighlight:(id)a3 withNewAssets:(id)a4
+- (void)_updateDayHighlight:(id)highlight withNewAssets:(id)assets
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DFA8] setWithSet:v7];
+  highlightCopy = highlight;
+  assetsCopy = assets;
+  v8 = [MEMORY[0x1E695DFA8] setWithSet:assetsCopy];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __74__PLPhotosHighlightGenerator_Curation___updateDayHighlight_withNewAssets___block_invoke;
@@ -3218,17 +3218,17 @@ uint64_t __79__PLPhotosHighlightGenerator_Curation___updateDayGroupHighlight_wit
   v9 = [MEMORY[0x1E696AE18] predicateWithBlock:v25];
   [v8 filterUsingPredicate:v9];
 
-  v10 = [v6 type];
+  type = [highlightCopy type];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v7;
+  v11 = assetsCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
-    v14 = v10 - 7;
+    v14 = type - 7;
     v15 = *v22;
     do
     {
@@ -3252,23 +3252,23 @@ uint64_t __79__PLPhotosHighlightGenerator_Curation___updateDayGroupHighlight_wit
 
         if ([v8 containsObject:{v17, v21}])
         {
-          [v17 setHighlightBeingSummaryAssets:v6];
-          v18 = v6;
+          [v17 setHighlightBeingSummaryAssets:highlightCopy];
+          v18 = highlightCopy;
 LABEL_15:
           [v17 setHighlightBeingExtendedAssets:v18];
           continue;
         }
 
-        v19 = [v17 highlightBeingSummaryAssets];
+        highlightBeingSummaryAssets = [v17 highlightBeingSummaryAssets];
 
-        if (v19)
+        if (highlightBeingSummaryAssets)
         {
           [v17 setHighlightBeingSummaryAssets:0];
         }
 
-        v20 = [v17 highlightBeingExtendedAssets];
+        highlightBeingExtendedAssets = [v17 highlightBeingExtendedAssets];
 
-        if (v20)
+        if (highlightBeingExtendedAssets)
         {
           v18 = 0;
           goto LABEL_15;
@@ -3290,111 +3290,111 @@ uint64_t __74__PLPhotosHighlightGenerator_Curation___updateDayHighlight_withNewA
   return v3;
 }
 
-- (void)markHighlightNeedingNewKeyAssetsWithAsset:(id)a3
+- (void)markHighlightNeedingNewKeyAssetsWithAsset:(id)asset
 {
-  v20 = a3;
-  v4 = [v20 highlightBeingKeyAssetPrivate];
-  v5 = [v20 dayGroupHighlightBeingKeyAssetPrivate];
-  v6 = [v20 monthHighlightBeingKeyAssetPrivate];
-  v7 = [v20 yearHighlightBeingKeyAssetPrivate];
-  v8 = [v20 highlightBeingKeyAssetShared];
-  v9 = [v20 dayGroupHighlightBeingKeyAssetShared];
-  v10 = [v20 monthHighlightBeingKeyAssetShared];
-  v11 = [v20 yearHighlightBeingKeyAssetShared];
-  if (v4)
+  assetCopy = asset;
+  highlightBeingKeyAssetPrivate = [assetCopy highlightBeingKeyAssetPrivate];
+  dayGroupHighlightBeingKeyAssetPrivate = [assetCopy dayGroupHighlightBeingKeyAssetPrivate];
+  monthHighlightBeingKeyAssetPrivate = [assetCopy monthHighlightBeingKeyAssetPrivate];
+  yearHighlightBeingKeyAssetPrivate = [assetCopy yearHighlightBeingKeyAssetPrivate];
+  highlightBeingKeyAssetShared = [assetCopy highlightBeingKeyAssetShared];
+  dayGroupHighlightBeingKeyAssetShared = [assetCopy dayGroupHighlightBeingKeyAssetShared];
+  monthHighlightBeingKeyAssetShared = [assetCopy monthHighlightBeingKeyAssetShared];
+  yearHighlightBeingKeyAssetShared = [assetCopy yearHighlightBeingKeyAssetShared];
+  if (highlightBeingKeyAssetPrivate)
   {
-    [v20 setHighlightBeingKeyAssetPrivate:0];
-    v12 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v12 addObject:v4];
+    [assetCopy setHighlightBeingKeyAssetPrivate:0];
+    highlightsNeedingNewKeyAsset = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset addObject:highlightBeingKeyAssetPrivate];
   }
 
-  if (v5)
+  if (dayGroupHighlightBeingKeyAssetPrivate)
   {
-    [v20 setDayGroupHighlightBeingKeyAssetPrivate:0];
-    v13 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v13 addObject:v5];
+    [assetCopy setDayGroupHighlightBeingKeyAssetPrivate:0];
+    highlightsNeedingNewKeyAsset2 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset2 addObject:dayGroupHighlightBeingKeyAssetPrivate];
   }
 
-  if (v6)
+  if (monthHighlightBeingKeyAssetPrivate)
   {
-    [v20 setMonthHighlightBeingKeyAssetPrivate:0];
-    v14 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v14 addObject:v6];
+    [assetCopy setMonthHighlightBeingKeyAssetPrivate:0];
+    highlightsNeedingNewKeyAsset3 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset3 addObject:monthHighlightBeingKeyAssetPrivate];
   }
 
-  if (v7)
+  if (yearHighlightBeingKeyAssetPrivate)
   {
-    [v20 setYearHighlightBeingKeyAssetPrivate:0];
-    v15 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v15 addObject:v7];
+    [assetCopy setYearHighlightBeingKeyAssetPrivate:0];
+    highlightsNeedingNewKeyAsset4 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset4 addObject:yearHighlightBeingKeyAssetPrivate];
   }
 
-  if (v8)
+  if (highlightBeingKeyAssetShared)
   {
-    [v20 setHighlightBeingKeyAssetShared:0];
-    v16 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v16 addObject:v8];
+    [assetCopy setHighlightBeingKeyAssetShared:0];
+    highlightsNeedingNewKeyAsset5 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset5 addObject:highlightBeingKeyAssetShared];
   }
 
-  if (v9)
+  if (dayGroupHighlightBeingKeyAssetShared)
   {
-    [v20 setDayGroupHighlightBeingKeyAssetShared:0];
-    v17 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v17 addObject:v9];
+    [assetCopy setDayGroupHighlightBeingKeyAssetShared:0];
+    highlightsNeedingNewKeyAsset6 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset6 addObject:dayGroupHighlightBeingKeyAssetShared];
   }
 
-  if (v10)
+  if (monthHighlightBeingKeyAssetShared)
   {
-    [v20 setMonthHighlightBeingKeyAssetShared:0];
-    v18 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v18 addObject:v10];
+    [assetCopy setMonthHighlightBeingKeyAssetShared:0];
+    highlightsNeedingNewKeyAsset7 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset7 addObject:monthHighlightBeingKeyAssetShared];
   }
 
-  if (v11)
+  if (yearHighlightBeingKeyAssetShared)
   {
-    [v20 setYearHighlightBeingKeyAssetShared:0];
-    v19 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-    [v19 addObject:v11];
+    [assetCopy setYearHighlightBeingKeyAssetShared:0];
+    highlightsNeedingNewKeyAsset8 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+    [highlightsNeedingNewKeyAsset8 addObject:yearHighlightBeingKeyAssetShared];
   }
 }
 
-- (BOOL)_highlightShouldNotBeVisible:(id)a3 sharingConsideration:(int64_t)a4
+- (BOOL)_highlightShouldNotBeVisible:(id)visible sharingConsideration:(int64_t)consideration
 {
-  v5 = a3;
-  [v5 promotionScore];
+  visibleCopy = visible;
+  [visibleCopy promotionScore];
   if (v6 != 0.2)
   {
-    v8 = [v5 kind];
-    if (v8 == 3)
+    kind = [visibleCopy kind];
+    if (kind == 3)
     {
-      switch(a4)
+      switch(consideration)
       {
         case 2:
-          v9 = [v5 dayGroupExtendedAssetsCount];
+          dayGroupExtendedAssetsCount = [visibleCopy dayGroupExtendedAssetsCount];
           goto LABEL_18;
         case 1:
-          v9 = [v5 dayGroupExtendedAssetsCountShared];
+          dayGroupExtendedAssetsCount = [visibleCopy dayGroupExtendedAssetsCountShared];
           goto LABEL_18;
         case 0:
-          v9 = [v5 dayGroupExtendedAssetsCountPrivate];
+          dayGroupExtendedAssetsCount = [visibleCopy dayGroupExtendedAssetsCountPrivate];
           goto LABEL_18;
       }
     }
 
-    else if (!v8)
+    else if (!kind)
     {
-      switch(a4)
+      switch(consideration)
       {
         case 2:
-          v9 = [v5 extendedCount];
+          dayGroupExtendedAssetsCount = [visibleCopy extendedCount];
           goto LABEL_18;
         case 1:
-          v9 = [v5 extendedCountShared];
+          dayGroupExtendedAssetsCount = [visibleCopy extendedCountShared];
           goto LABEL_18;
         case 0:
-          v9 = [v5 extendedCountPrivate];
+          dayGroupExtendedAssetsCount = [visibleCopy extendedCountPrivate];
 LABEL_18:
-          v7 = v9 == 0;
+          v7 = dayGroupExtendedAssetsCount == 0;
           goto LABEL_19;
       }
     }
@@ -3409,39 +3409,39 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)_setVisibilityStateForHighlight:(id)a3 shouldForceUpdate:(BOOL)a4 sharingConsideration:(int64_t)a5
+- (BOOL)_setVisibilityStateForHighlight:(id)highlight shouldForceUpdate:(BOOL)update sharingConsideration:(int64_t)consideration
 {
-  v6 = a4;
-  v8 = a3;
-  if (a5 > 2)
+  updateCopy = update;
+  highlightCopy = highlight;
+  if (consideration > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = off_1E756ACA8[a5];
+    v9 = off_1E756ACA8[consideration];
   }
 
   v10 = v9;
-  v11 = [v8 type];
-  v12 = [v8 valueForKey:v10];
-  v13 = [v12 unsignedShortValue];
+  type = [highlightCopy type];
+  v12 = [highlightCopy valueForKey:v10];
+  unsignedShortValue = [v12 unsignedShortValue];
 
-  v14 = [v8 sharingComposition];
-  if (a5 == 2 || v14 == 2 || !a5 && !v14 || (v15 = 0, a5 == 1) && v14 == 1)
+  sharingComposition = [highlightCopy sharingComposition];
+  if (consideration == 2 || sharingComposition == 2 || !consideration && !sharingComposition || (v15 = 0, consideration == 1) && sharingComposition == 1)
   {
-    if ([(PLPhotosHighlightGenerator *)self _highlightShouldNotBeVisible:v8 sharingConsideration:a5])
+    if ([(PLPhotosHighlightGenerator *)self _highlightShouldNotBeVisible:highlightCopy sharingConsideration:consideration])
     {
 LABEL_11:
       v15 = 0;
       goto LABEL_12;
     }
 
-    v19 = [v8 category] != 1 && v11 != 5;
+    v19 = [highlightCopy category] != 1 && type != 5;
     if (v19)
     {
-      v15 = v13;
+      v15 = unsignedShortValue;
     }
 
     else
@@ -3449,14 +3449,14 @@ LABEL_11:
       v15 = 1;
     }
 
-    if (v19 && v6)
+    if (v19 && updateCopy)
     {
-      if (v11 > 7)
+      if (type > 7)
       {
         goto LABEL_13;
       }
 
-      if (((1 << v11) & 0x16) != 0)
+      if (((1 << type) & 0x16) != 0)
       {
         if (_os_feature_enabled_impl())
         {
@@ -3471,10 +3471,10 @@ LABEL_11:
 
       else
       {
-        if (((1 << v11) & 0x89) == 0)
+        if (((1 << type) & 0x89) == 0)
         {
           v16 = 0;
-          if (v11 != 6)
+          if (type != 6)
           {
             goto LABEL_15;
           }
@@ -3489,10 +3489,10 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (v13 != v15)
+  if (unsignedShortValue != v15)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v15];
-    [v8 setValue:v17 forKey:v10];
+    [highlightCopy setValue:v17 forKey:v10];
 
     v16 = 1;
     goto LABEL_15;
@@ -3505,29 +3505,29 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)setVisibilityStateForHighlight:(id)a3 shouldForceUpdate:(BOOL)a4
+- (BOOL)setVisibilityStateForHighlight:(id)highlight shouldForceUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PLPhotosHighlightGenerator *)self _setVisibilityStateForHighlight:v6 shouldForceUpdate:v4 sharingConsideration:0];
-  v8 = [(PLPhotosHighlightGenerator *)self _setVisibilityStateForHighlight:v6 shouldForceUpdate:v4 sharingConsideration:1];
-  LOBYTE(v4) = [(PLPhotosHighlightGenerator *)self _setVisibilityStateForHighlight:v6 shouldForceUpdate:v4 sharingConsideration:2];
+  updateCopy = update;
+  highlightCopy = highlight;
+  v7 = [(PLPhotosHighlightGenerator *)self _setVisibilityStateForHighlight:highlightCopy shouldForceUpdate:updateCopy sharingConsideration:0];
+  v8 = [(PLPhotosHighlightGenerator *)self _setVisibilityStateForHighlight:highlightCopy shouldForceUpdate:updateCopy sharingConsideration:1];
+  LOBYTE(updateCopy) = [(PLPhotosHighlightGenerator *)self _setVisibilityStateForHighlight:highlightCopy shouldForceUpdate:updateCopy sharingConsideration:2];
 
-  return v7 || v8 || v4;
+  return v7 || v8 || updateCopy;
 }
 
-- (BOOL)shouldForceVisibilityStateUpdateForHighlight:(id)a3 highlightCluster:(id)a4
+- (BOOL)shouldForceVisibilityStateUpdateForHighlight:(id)highlight highlightCluster:(id)cluster
 {
-  v6 = a3;
-  v7 = a4;
+  highlightCopy = highlight;
+  clusterCopy = cluster;
   v10 = 1;
-  if ([v6 enrichmentState])
+  if ([highlightCopy enrichmentState])
   {
-    v8 = [v6 category];
-    if (v8 == [v7 category])
+    category = [highlightCopy category];
+    if (category == [clusterCopy category])
     {
-      v9 = [v6 type];
-      if (v9 == [v7 type] && (objc_msgSend(v6, "visibilityState") || !-[PLPhotosHighlightGenerator _highlightTypeSupportsVisibilityStateDayOnly:](self, "_highlightTypeSupportsVisibilityStateDayOnly:", v9)))
+      type = [highlightCopy type];
+      if (type == [clusterCopy type] && (objc_msgSend(highlightCopy, "visibilityState") || !-[PLPhotosHighlightGenerator _highlightTypeSupportsVisibilityStateDayOnly:](self, "_highlightTypeSupportsVisibilityStateDayOnly:", type)))
       {
         v10 = 0;
       }
@@ -3537,66 +3537,66 @@ LABEL_15:
   return v10;
 }
 
-- (void)resetDayGroupCurationForAsset:(id)a3
+- (void)resetDayGroupCurationForAsset:(id)asset
 {
-  v6 = a3;
-  [(PLPhotosHighlightGenerator *)self markHighlightNeedingNewKeyAssetsWithAsset:v6];
-  v4 = [v6 dayGroupHighlightBeingAssets];
+  assetCopy = asset;
+  [(PLPhotosHighlightGenerator *)self markHighlightNeedingNewKeyAssetsWithAsset:assetCopy];
+  dayGroupHighlightBeingAssets = [assetCopy dayGroupHighlightBeingAssets];
 
-  if (v4)
+  if (dayGroupHighlightBeingAssets)
   {
-    [v6 setDayGroupHighlightBeingAssets:0];
+    [assetCopy setDayGroupHighlightBeingAssets:0];
   }
 
-  v5 = [v6 dayGroupHighlightBeingExtendedAssets];
+  dayGroupHighlightBeingExtendedAssets = [assetCopy dayGroupHighlightBeingExtendedAssets];
 
-  if (v5)
+  if (dayGroupHighlightBeingExtendedAssets)
   {
-    [v6 setDayGroupHighlightBeingExtendedAssets:0];
+    [assetCopy setDayGroupHighlightBeingExtendedAssets:0];
   }
 }
 
-- (void)updateCurationForHighlight:(id)a3 withAssetsBelongingToCuration:(id)a4
+- (void)updateCurationForHighlight:(id)highlight withAssetsBelongingToCuration:(id)curation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 kind];
-  if ((v8 - 1) < 2)
+  highlightCopy = highlight;
+  curationCopy = curation;
+  kind = [highlightCopy kind];
+  if ((kind - 1) < 2)
   {
     v10 = PLMomentsGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 uuid];
+      uuid = [highlightCopy uuid];
       v21 = 138412290;
-      v22 = v11;
+      v22 = uuid;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Trying to update curation on a non-supported highlight kind: %@", &v21, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  if (v8 == 3)
+  if (kind == 3)
   {
-    [(PLPhotosHighlightGenerator *)self _updateDayGroupHighlight:v6 withNewAssets:v7];
-    v9 = [v6 dayGroupExtendedAssets];
+    [(PLPhotosHighlightGenerator *)self _updateDayGroupHighlight:highlightCopy withNewAssets:curationCopy];
+    dayGroupExtendedAssets = [highlightCopy dayGroupExtendedAssets];
     goto LABEL_10;
   }
 
-  if (v8)
+  if (kind)
   {
 LABEL_8:
     v12 = 0;
     goto LABEL_14;
   }
 
-  [(PLPhotosHighlightGenerator *)self _updateDayHighlight:v6 withNewAssets:v7];
-  v9 = [v6 extendedAssets];
+  [(PLPhotosHighlightGenerator *)self _updateDayHighlight:highlightCopy withNewAssets:curationCopy];
+  dayGroupExtendedAssets = [highlightCopy extendedAssets];
 LABEL_10:
-  v13 = v9;
-  if (v9)
+  v13 = dayGroupExtendedAssets;
+  if (dayGroupExtendedAssets)
   {
-    v14 = v9;
+    v14 = dayGroupExtendedAssets;
   }
 
   else
@@ -3609,24 +3609,24 @@ LABEL_10:
 LABEL_14:
   if ([v12 count])
   {
-    [v6 promotionScore];
+    [highlightCopy promotionScore];
     if (v15 < 0.3)
     {
-      [v6 setPromotionScore:?];
+      [highlightCopy setPromotionScore:?];
     }
 
-    v16 = [v6 sharingComposition];
-    if (!v16)
+    sharingComposition = [highlightCopy sharingComposition];
+    if (!sharingComposition)
     {
       v17 = 0;
 LABEL_23:
-      v18 = [v6 keyAssetForKindPrivate];
-      if (([v6 missingKeyAssetForKindPrivate] & 1) != 0 || !objc_msgSend(v12, "containsObject:", v18))
+      keyAssetForKindPrivate = [highlightCopy keyAssetForKindPrivate];
+      if (([highlightCopy missingKeyAssetForKindPrivate] & 1) != 0 || !objc_msgSend(v12, "containsObject:", keyAssetForKindPrivate))
       {
         goto LABEL_31;
       }
 
-      v19 = [objc_opt_class() assetEligibleForCuration:v18];
+      v19 = [objc_opt_class() assetEligibleForCuration:keyAssetForKindPrivate];
 
       if ((v17 & v19) != 1)
       {
@@ -3634,10 +3634,10 @@ LABEL_23:
       }
 
 LABEL_26:
-      v18 = [v6 keyAssetForKindShared];
-      if (([v6 missingKeyAssetForKindShared] & 1) == 0 && objc_msgSend(v12, "containsObject:", v18))
+      keyAssetForKindPrivate = [highlightCopy keyAssetForKindShared];
+      if (([highlightCopy missingKeyAssetForKindShared] & 1) == 0 && objc_msgSend(v12, "containsObject:", keyAssetForKindPrivate))
       {
-        LOBYTE(v19) = [objc_opt_class() assetEligibleForCuration:v18];
+        LOBYTE(v19) = [objc_opt_class() assetEligibleForCuration:keyAssetForKindPrivate];
 
 LABEL_29:
         if (v19)
@@ -3651,18 +3651,18 @@ LABEL_29:
 LABEL_31:
 
 LABEL_32:
-      v20 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-      [v20 addObject:v6];
+      highlightsNeedingNewKeyAsset = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+      [highlightsNeedingNewKeyAsset addObject:highlightCopy];
 
       goto LABEL_33;
     }
 
-    if (v16 == 1)
+    if (sharingComposition == 1)
     {
       goto LABEL_26;
     }
 
-    if (v16 == 2)
+    if (sharingComposition == 2)
     {
       v17 = 1;
       goto LABEL_23;
@@ -3671,25 +3671,25 @@ LABEL_32:
 
   else
   {
-    [v6 setPromotionScore:0.2];
+    [highlightCopy setPromotionScore:0.2];
   }
 
 LABEL_33:
 }
 
-+ (id)_bestAssetInAssets:(id)a3 fallback:(BOOL)a4
++ (id)_bestAssetInAssets:(id)assets fallback:(BOOL)fallback
 {
-  v4 = a4;
+  fallbackCopy = fallback;
   v41[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  assetsCopy = assets;
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
   v41[0] = v7;
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
   v41[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  v10 = [v6 sortedArrayUsingDescriptors:v9];
+  v10 = [assetsCopy sortedArrayUsingDescriptors:v9];
 
-  v11 = [v6 count];
+  v11 = [assetsCopy count];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -3722,9 +3722,9 @@ LABEL_6:
       }
 
       v20 = *(*(&v35 + 1) + 8 * v19);
-      if ([a1 assetEligibleForCuration:v20])
+      if ([self assetEligibleForCuration:v20])
       {
-        [a1 curationScoreForAsset:v20];
+        [self curationScoreForAsset:v20];
         v22 = v21;
         if (!v15 || v18 < v21)
         {
@@ -3758,7 +3758,7 @@ LABEL_6:
     v15 = 0;
   }
 
-  if (!v15 && v4)
+  if (!v15 && fallbackCopy)
   {
     v33 = 0u;
     v34 = 0u;
@@ -3804,13 +3804,13 @@ LABEL_30:
   return v15;
 }
 
-+ (BOOL)assetEligibleForCuration:(id)a3
++ (BOOL)assetEligibleForCuration:(id)curation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 visibilityStateIsEqualToState:0])
+  curationCopy = curation;
+  v5 = curationCopy;
+  if (curationCopy && [curationCopy visibilityStateIsEqualToState:0])
   {
-    [a1 curationScoreForAsset:v5];
+    [self curationScoreForAsset:v5];
     v7 = v6 >= 0.5;
   }
 
@@ -3822,13 +3822,13 @@ LABEL_30:
   return v7;
 }
 
-+ (double)curationScoreForAsset:(id)a3
++ (double)curationScoreForAsset:(id)asset
 {
-  v3 = a3;
-  [v3 curationScore];
+  assetCopy = asset;
+  [assetCopy curationScore];
   v5 = v4;
   v6 = 0.25;
-  if ([v3 kindSubtype] != 10 && (objc_msgSend(v3, "isScreenRecording") & 1) == 0)
+  if ([assetCopy kindSubtype] != 10 && (objc_msgSend(assetCopy, "isScreenRecording") & 1) == 0)
   {
     if (fabs(v5) <= 2.22044605e-16)
     {
@@ -3844,17 +3844,17 @@ LABEL_30:
   return v6;
 }
 
-+ (id)_provisionalKeyAssetForMonthAndYearHighlight:(id)a3 sharingConsideration:(int64_t)a4
++ (id)_provisionalKeyAssetForMonthAndYearHighlight:(id)highlight sharingConsideration:(int64_t)consideration
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  highlightCopy = highlight;
   v26 = [MEMORY[0x1E695DFA8] set];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [v5 childPhotosHighlights];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  childPhotosHighlights = [highlightCopy childPhotosHighlights];
+  v7 = [childPhotosHighlights countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v7)
   {
     goto LABEL_31;
@@ -3870,47 +3870,47 @@ LABEL_30:
     {
       if (*v30 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(childPhotosHighlights);
       }
 
       v12 = *(*(&v29 + 1) + 8 * v11);
-      if (a4 > 2)
+      if (consideration > 2)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = off_1E756ACA8[a4];
+        v13 = off_1E756ACA8[consideration];
       }
 
       v14 = v13;
       v15 = [v12 valueForKey:v14];
-      v16 = [v15 unsignedShortValue];
+      unsignedShortValue = [v15 unsignedShortValue];
 
-      v17 = [v5 kind];
-      if ((v17 - 1) < 2)
+      kind = [highlightCopy kind];
+      if ((kind - 1) < 2)
       {
-        if ((v16 & 0xFFFE) != 2)
+        if ((unsignedShortValue & 0xFFFE) != 2)
         {
           goto LABEL_19;
         }
 
-        switch(a4)
+        switch(consideration)
         {
           case 2:
-            v22 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v22 handleFailureInMethod:a2 object:a1 file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:621 description:@"Invalid sharing consideration for provisional key asset."];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:621 description:@"Invalid sharing consideration for provisional key asset."];
 
             break;
           case 1:
-            v19 = [v12 keyAssetForKindShared];
+            keyAssetForKindShared = [v12 keyAssetForKindShared];
             goto LABEL_22;
           case 0:
-            v19 = [v12 keyAssetForKindPrivate];
+            keyAssetForKindShared = [v12 keyAssetForKindPrivate];
 LABEL_22:
-            v18 = v19;
-            if (v19)
+            currentHandler2 = keyAssetForKindShared;
+            if (keyAssetForKindShared)
             {
               [v12 promotionScore];
               v21 = v20;
@@ -3921,7 +3921,7 @@ LABEL_22:
                   [v26 removeAllObjects];
                 }
 
-                [v26 addObject:v18];
+                [v26 addObject:currentHandler2];
                 v10 = v21;
               }
             }
@@ -3929,14 +3929,14 @@ LABEL_22:
             goto LABEL_13;
         }
 
-        v18 = 0;
+        currentHandler2 = 0;
         goto LABEL_13;
       }
 
-      if (!v17 || v17 == 3)
+      if (!kind || kind == 3)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:a1 file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:604 description:@"Invalid kind for provisional key asset."];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:604 description:@"Invalid kind for provisional key asset."];
 LABEL_13:
       }
 
@@ -3946,7 +3946,7 @@ LABEL_19:
     }
 
     while (v8 != v11);
-    v23 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v23 = [childPhotosHighlights countByEnumeratingWithState:&v29 objects:v33 count:16];
     v8 = v23;
   }
 
@@ -3960,25 +3960,25 @@ LABEL_31:
 
   else
   {
-    [a1 _bestAssetInAssets:v26 fallback:1];
+    [self _bestAssetInAssets:v26 fallback:1];
   }
   v24 = ;
 
   return v24;
 }
 
-+ (id)_provisionalKeyAssetForDayGroupHighlight:(id)a3 sharingConsideration:(int64_t)a4
++ (id)_provisionalKeyAssetForDayGroupHighlight:(id)highlight sharingConsideration:(int64_t)consideration
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  highlightCopy = highlight;
   v8 = [MEMORY[0x1E695DFA8] set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v23 = v7;
-  v9 = [v7 childDayGroupPhotosHighlights];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v23 = highlightCopy;
+  childDayGroupPhotosHighlights = [highlightCopy childDayGroupPhotosHighlights];
+  v10 = [childDayGroupPhotosHighlights countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v10)
   {
     goto LABEL_21;
@@ -3993,13 +3993,13 @@ LABEL_31:
     {
       if (*v25 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(childDayGroupPhotosHighlights);
       }
 
-      if (a4 == 2)
+      if (consideration == 2)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:a1 file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:553 description:@"Invalid sharing consideration for provisional key asset."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:553 description:@"Invalid sharing consideration for provisional key asset."];
 
 LABEL_18:
         v17 = 0;
@@ -4007,23 +4007,23 @@ LABEL_18:
       }
 
       v15 = *(*(&v24 + 1) + 8 * i);
-      if (a4 == 1)
+      if (consideration == 1)
       {
-        v16 = [*(*(&v24 + 1) + 8 * i) keyAssetForKindShared];
+        keyAssetForKindShared = [*(*(&v24 + 1) + 8 * i) keyAssetForKindShared];
       }
 
       else
       {
-        if (a4)
+        if (consideration)
         {
           goto LABEL_18;
         }
 
-        v16 = [*(*(&v24 + 1) + 8 * i) keyAssetForKindPrivate];
+        keyAssetForKindShared = [*(*(&v24 + 1) + 8 * i) keyAssetForKindPrivate];
       }
 
-      v17 = v16;
-      if (v16)
+      v17 = keyAssetForKindShared;
+      if (keyAssetForKindShared)
       {
         [v15 promotionScore];
         v19 = v18;
@@ -4042,7 +4042,7 @@ LABEL_18:
 LABEL_19:
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v11 = [childDayGroupPhotosHighlights countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v11);
@@ -4055,37 +4055,37 @@ LABEL_21:
 
   else
   {
-    [a1 _bestAssetInAssets:v8 fallback:1];
+    [self _bestAssetInAssets:v8 fallback:1];
   }
   v21 = ;
 
   return v21;
 }
 
-+ (id)_provisionalKeyAssetForDayHighlight:(id)a3 sharingConsideration:(int64_t)a4
++ (id)_provisionalKeyAssetForDayHighlight:(id)highlight sharingConsideration:(int64_t)consideration
 {
-  v7 = a3;
-  v8 = [v7 sharingComposition];
-  if (a4 == 2 || v8 == 2)
+  highlightCopy = highlight;
+  sharingComposition = [highlightCopy sharingComposition];
+  if (consideration == 2 || sharingComposition == 2)
   {
-    switch(a4)
+    switch(consideration)
     {
       case 2:
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:a1 file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:527 description:@"Invalid sharing consideration for provisional key asset."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotosHighlightGenerator+Curation.m" lineNumber:527 description:@"Invalid sharing consideration for provisional key asset."];
 
         break;
       case 1:
 LABEL_12:
-        v10 = [v7 extendedAssetsShared];
+        extendedAssetsShared = [highlightCopy extendedAssetsShared];
         goto LABEL_13;
       case 0:
 LABEL_11:
-        v10 = [v7 extendedAssetsPrivate];
+        extendedAssetsShared = [highlightCopy extendedAssetsPrivate];
 LABEL_13:
-        v11 = v10;
+        v11 = extendedAssetsShared;
 LABEL_16:
-        v9 = [a1 _bestAssetInAssets:v11 fallback:0];
+        v9 = [self _bestAssetInAssets:v11 fallback:0];
 
         goto LABEL_17;
     }
@@ -4094,13 +4094,13 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!a4 && !v8)
+  if (!consideration && !sharingComposition)
   {
     goto LABEL_11;
   }
 
   v9 = 0;
-  if (a4 == 1 && v8 == 1)
+  if (consideration == 1 && sharingComposition == 1)
   {
     goto LABEL_12;
   }
@@ -4110,25 +4110,25 @@ LABEL_17:
   return v9;
 }
 
-+ (id)provisionalKeyAssetForHighlight:(id)a3 sharingConsideration:(int64_t)a4
++ (id)provisionalKeyAssetForHighlight:(id)highlight sharingConsideration:(int64_t)consideration
 {
-  v6 = a3;
-  v7 = [v6 kind];
-  if ((v7 - 1) < 2)
+  highlightCopy = highlight;
+  kind = [highlightCopy kind];
+  if ((kind - 1) < 2)
   {
-    v8 = [a1 _provisionalKeyAssetForMonthAndYearHighlight:v6 sharingConsideration:a4];
+    v8 = [self _provisionalKeyAssetForMonthAndYearHighlight:highlightCopy sharingConsideration:consideration];
     goto LABEL_7;
   }
 
-  if (v7 == 3)
+  if (kind == 3)
   {
-    v8 = [a1 _provisionalKeyAssetForDayGroupHighlight:v6 sharingConsideration:a4];
+    v8 = [self _provisionalKeyAssetForDayGroupHighlight:highlightCopy sharingConsideration:consideration];
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!kind)
   {
-    v8 = [a1 _provisionalKeyAssetForDayHighlight:v6 sharingConsideration:a4];
+    v8 = [self _provisionalKeyAssetForDayHighlight:highlightCopy sharingConsideration:consideration];
 LABEL_7:
     v9 = v8;
     goto LABEL_8;
@@ -4140,10 +4140,10 @@ LABEL_8:
   return v9;
 }
 
-+ (void)updateKeyAssetForHighlights:(id)a3
++ (void)updateKeyAssetForHighlights:(id)highlights
 {
   v39[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  highlightsCopy = highlights;
   v38[0] = &unk_1F0FBD078;
   v38[1] = &unk_1F0FBD0A8;
   v39[0] = &unk_1F0FBD090;
@@ -4153,15 +4153,15 @@ LABEL_8:
   v39[2] = &unk_1F0FBD0F0;
   v39[3] = &unk_1F0FBD120;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:4];
-  v25 = v4;
-  v6 = [v4 allObjects];
+  v25 = highlightsCopy;
+  allObjects = [highlightsCopy allObjects];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __68__PLPhotosHighlightGenerator_Curation__updateKeyAssetForHighlights___block_invoke;
   v33[3] = &unk_1E756E530;
   v24 = v5;
   v34 = v24;
-  v7 = [v6 sortedArrayUsingComparator:v33];
+  v7 = [allObjects sortedArrayUsingComparator:v33];
 
   v8 = [MEMORY[0x1E695DFA8] set];
   v29 = 0u;
@@ -4175,7 +4175,7 @@ LABEL_8:
     v11 = v10;
     v12 = *v30;
     v27 = *v30;
-    v28 = a1;
+    selfCopy = self;
     v26 = v9;
     do
     {
@@ -4189,11 +4189,11 @@ LABEL_8:
         v14 = *(*(&v29 + 1) + 8 * i);
         if (([v8 containsObject:v14] & 1) == 0 && (objc_msgSend(v14, "isDeleted") & 1) == 0)
         {
-          v15 = [v14 keyAssetForKindPrivate];
-          v16 = [v15 uniqueObjectID];
+          keyAssetForKindPrivate = [v14 keyAssetForKindPrivate];
+          uniqueObjectID = [keyAssetForKindPrivate uniqueObjectID];
 
-          v17 = [v14 keyAssetForKindShared];
-          v18 = [v17 uniqueObjectID];
+          keyAssetForKindShared = [v14 keyAssetForKindShared];
+          uniqueObjectID2 = [keyAssetForKindShared uniqueObjectID];
 
           v19 = [objc_opt_class() provisionalKeyAssetForHighlight:v14 sharingConsideration:0];
           v20 = [objc_opt_class() provisionalKeyAssetForHighlight:v14 sharingConsideration:1];
@@ -4202,30 +4202,30 @@ LABEL_8:
           if (v19 | v20)
           {
             [objc_opt_class() _updateMixedSharingCompositionKeyAssetRelationshipForHighlight:v14];
-            v21 = [v14 parentPhotosHighlight];
-            if ([a1 _shouldUpdateKeyAssetForParentHighlight:v21 withPrivateKeyAssetObjectID:v16 andSharedKeyAssetObjectID:v18])
+            parentPhotosHighlight = [v14 parentPhotosHighlight];
+            if ([self _shouldUpdateKeyAssetForParentHighlight:parentPhotosHighlight withPrivateKeyAssetObjectID:uniqueObjectID andSharedKeyAssetObjectID:uniqueObjectID2])
             {
-              [a1 _updateParentHighlightNeedingNewKeyAsset:v21 withProvisionalKeyAssetPrivate:v19 andProvisionalKeyAssetShared:v20 updatedHighlights:v8];
+              [self _updateParentHighlightNeedingNewKeyAsset:parentPhotosHighlight withProvisionalKeyAssetPrivate:v19 andProvisionalKeyAssetShared:v20 updatedHighlights:v8];
             }
 
-            v22 = [v14 parentDayGroupPhotosHighlight];
-            if ([a1 _shouldUpdateKeyAssetForParentHighlight:v22 withPrivateKeyAssetObjectID:v16 andSharedKeyAssetObjectID:v18])
+            parentDayGroupPhotosHighlight = [v14 parentDayGroupPhotosHighlight];
+            if ([self _shouldUpdateKeyAssetForParentHighlight:parentDayGroupPhotosHighlight withPrivateKeyAssetObjectID:uniqueObjectID andSharedKeyAssetObjectID:uniqueObjectID2])
             {
-              [v28 _updateParentHighlightNeedingNewKeyAsset:v22 withProvisionalKeyAssetPrivate:v19 andProvisionalKeyAssetShared:v20 updatedHighlights:v8];
+              [selfCopy _updateParentHighlightNeedingNewKeyAsset:parentDayGroupPhotosHighlight withProvisionalKeyAssetPrivate:v19 andProvisionalKeyAssetShared:v20 updatedHighlights:v8];
             }
 
-            a1 = v28;
+            self = selfCopy;
             v9 = v26;
           }
 
           else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [v14 uuid];
+            uuid = [v14 uuid];
             *buf = 138412290;
-            v36 = v23;
+            v36 = uuid;
             _os_log_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "No provisonal key asset found for highlight: %@", buf, 0xCu);
 
-            a1 = v28;
+            self = selfCopy;
           }
 
           v12 = v27;
@@ -4267,77 +4267,77 @@ uint64_t __68__PLPhotosHighlightGenerator_Curation__updateKeyAssetForHighlights_
   return v11;
 }
 
-+ (void)_updateParentHighlightNeedingNewKeyAsset:(id)a3 withProvisionalKeyAssetPrivate:(id)a4 andProvisionalKeyAssetShared:(id)a5 updatedHighlights:(id)a6
++ (void)_updateParentHighlightNeedingNewKeyAsset:(id)asset withProvisionalKeyAssetPrivate:(id)private andProvisionalKeyAssetShared:(id)shared updatedHighlights:(id)highlights
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  assetCopy = asset;
+  privateCopy = private;
+  sharedCopy = shared;
+  highlightsCopy = highlights;
+  if (!privateCopy)
   {
-    v15 = 0;
-    if (v12)
+    uniqueObjectID = 0;
+    if (sharedCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v17 = 0;
+    uniqueObjectID2 = 0;
     goto LABEL_6;
   }
 
-  v14 = [v10 keyAssetForKindPrivate];
-  v15 = [v14 uniqueObjectID];
+  keyAssetForKindPrivate = [assetCopy keyAssetForKindPrivate];
+  uniqueObjectID = [keyAssetForKindPrivate uniqueObjectID];
 
-  [v10 setKeyAssetForKindPrivate:v11];
-  if (!v12)
+  [assetCopy setKeyAssetForKindPrivate:privateCopy];
+  if (!sharedCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v16 = [v10 keyAssetForKindShared];
-  v17 = [v16 uniqueObjectID];
+  keyAssetForKindShared = [assetCopy keyAssetForKindShared];
+  uniqueObjectID2 = [keyAssetForKindShared uniqueObjectID];
 
-  [v10 setKeyAssetForKindShared:v12];
+  [assetCopy setKeyAssetForKindShared:sharedCopy];
 LABEL_6:
-  [objc_opt_class() _updateMixedSharingCompositionKeyAssetRelationshipForHighlight:v10];
-  if (([v10 missingKeyAssetForKindPrivate] & 1) == 0 && (objc_msgSend(v10, "missingKeyAssetForKindShared") & 1) == 0)
+  [objc_opt_class() _updateMixedSharingCompositionKeyAssetRelationshipForHighlight:assetCopy];
+  if (([assetCopy missingKeyAssetForKindPrivate] & 1) == 0 && (objc_msgSend(assetCopy, "missingKeyAssetForKindShared") & 1) == 0)
   {
-    [v13 addObject:v10];
+    [highlightsCopy addObject:assetCopy];
   }
 
-  v18 = [v10 parentPhotosHighlight];
-  if ([v18 isEqual:v10])
+  parentPhotosHighlight = [assetCopy parentPhotosHighlight];
+  if ([parentPhotosHighlight isEqual:assetCopy])
   {
     v19 = PLMomentsGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v10 objectID];
+      objectID = [assetCopy objectID];
       v21 = 138543362;
-      v22 = v20;
+      v22 = objectID;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Ignoring call to update parent highlight (parent is set to self) for: %{public}@", &v21, 0xCu);
     }
   }
 
-  else if ([a1 _shouldUpdateKeyAssetForParentHighlight:v18 withPrivateKeyAssetObjectID:v15 andSharedKeyAssetObjectID:v17])
+  else if ([self _shouldUpdateKeyAssetForParentHighlight:parentPhotosHighlight withPrivateKeyAssetObjectID:uniqueObjectID andSharedKeyAssetObjectID:uniqueObjectID2])
   {
-    [a1 _updateParentHighlightNeedingNewKeyAsset:v18 withProvisionalKeyAssetPrivate:v11 andProvisionalKeyAssetShared:v12 updatedHighlights:v13];
+    [self _updateParentHighlightNeedingNewKeyAsset:parentPhotosHighlight withProvisionalKeyAssetPrivate:privateCopy andProvisionalKeyAssetShared:sharedCopy updatedHighlights:highlightsCopy];
   }
 }
 
-+ (void)_updateMixedSharingCompositionKeyAssetRelationshipForHighlight:(id)a3
++ (void)_updateMixedSharingCompositionKeyAssetRelationshipForHighlight:(id)highlight
 {
-  v17 = a3;
-  v4 = [v17 keyAssetForKindPrivate];
-  if (v4 && (v5 = v4, [v17 keyAssetForKindShared], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  highlightCopy = highlight;
+  keyAssetForKindPrivate = [highlightCopy keyAssetForKindPrivate];
+  if (keyAssetForKindPrivate && (v5 = keyAssetForKindPrivate, [highlightCopy keyAssetForKindShared], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     v7 = MEMORY[0x1E695DFD8];
-    v8 = [v17 keyAssetForKindShared];
-    v9 = [v17 keyAssetForKindPrivate];
-    v10 = [v7 setWithObjects:{v8, v9, 0}];
-    v11 = [a1 _bestAssetInAssets:v10 fallback:1];
+    keyAssetForKindShared = [highlightCopy keyAssetForKindShared];
+    keyAssetForKindPrivate2 = [highlightCopy keyAssetForKindPrivate];
+    v10 = [v7 setWithObjects:{keyAssetForKindShared, keyAssetForKindPrivate2, 0}];
+    v11 = [self _bestAssetInAssets:v10 fallback:1];
 
     if ([v11 hasLibraryScope])
     {
@@ -4349,40 +4349,40 @@ LABEL_6:
       v12 = 1;
     }
 
-    [v17 setMixedSharingCompositionKeyAssetRelationship:v12];
+    [highlightCopy setMixedSharingCompositionKeyAssetRelationship:v12];
   }
 
   else
   {
-    v13 = [v17 keyAssetForKindShared];
+    keyAssetForKindShared2 = [highlightCopy keyAssetForKindShared];
 
-    if (v13)
+    if (keyAssetForKindShared2)
     {
-      v14 = v17;
+      v14 = highlightCopy;
       v15 = 2;
     }
 
     else
     {
-      v16 = [v17 keyAssetForKindPrivate];
+      keyAssetForKindPrivate3 = [highlightCopy keyAssetForKindPrivate];
 
-      v14 = v17;
-      v15 = v16 != 0;
+      v14 = highlightCopy;
+      v15 = keyAssetForKindPrivate3 != 0;
     }
 
     [v14 setMixedSharingCompositionKeyAssetRelationship:v15];
   }
 }
 
-+ (BOOL)_shouldUpdateKeyAssetForParentHighlight:(id)a3 withPrivateKeyAssetObjectID:(id)a4 andSharedKeyAssetObjectID:(id)a5
++ (BOOL)_shouldUpdateKeyAssetForParentHighlight:(id)highlight withPrivateKeyAssetObjectID:(id)d andSharedKeyAssetObjectID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  highlightCopy = highlight;
+  dCopy = d;
+  iDCopy = iD;
   v14 = 1;
-  if (!v7 || !v8 || ([v7 keyAssetForKindPrivate], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "uniqueObjectID"), v11 = objc_claimAutoreleasedReturnValue(), v10, LOBYTE(v10) = objc_msgSend(v11, "isEqual:", v8), v11, (v10 & 1) == 0))
+  if (!highlightCopy || !dCopy || ([highlightCopy keyAssetForKindPrivate], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "uniqueObjectID"), v11 = objc_claimAutoreleasedReturnValue(), v10, LOBYTE(v10) = objc_msgSend(v11, "isEqual:", dCopy), v11, (v10 & 1) == 0))
   {
-    if (!v7 || !v9 || ([v7 keyAssetForKindShared], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "uniqueObjectID"), v13 = objc_claimAutoreleasedReturnValue(), v12, LOBYTE(v12) = objc_msgSend(v13, "isEqual:", v9), v13, (v12 & 1) == 0))
+    if (!highlightCopy || !iDCopy || ([highlightCopy keyAssetForKindShared], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "uniqueObjectID"), v13 = objc_claimAutoreleasedReturnValue(), v12, LOBYTE(v12) = objc_msgSend(v13, "isEqual:", iDCopy), v13, (v12 & 1) == 0))
     {
       v14 = 0;
     }
@@ -4391,21 +4391,21 @@ LABEL_6:
   return v14;
 }
 
-- (void)resetPreviousRecentHighlightCurationForHighlight:(id)a3
+- (void)resetPreviousRecentHighlightCurationForHighlight:(id)highlight
 {
-  v3 = a3;
-  [v3 setKeyAssetForKindPrivate:0];
-  [v3 setSummaryAssets:0];
-  [v3 setExtendedAssets:0];
+  highlightCopy = highlight;
+  [highlightCopy setKeyAssetForKindPrivate:0];
+  [highlightCopy setSummaryAssets:0];
+  [highlightCopy setExtendedAssets:0];
 }
 
-- (void)updateRecentHighlightCurationForHighlight:(id)a3
+- (void)updateRecentHighlightCurationForHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = [v4 assets];
-  if ([v5 count])
+  highlightCopy = highlight;
+  assets = [highlightCopy assets];
+  if ([assets count])
   {
-    v6 = [MEMORY[0x1E695DFA8] setWithSet:v5];
+    v6 = [MEMORY[0x1E695DFA8] setWithSet:assets];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationForHighlight___block_invoke;
@@ -4414,9 +4414,9 @@ LABEL_6:
     v7 = [MEMORY[0x1E696AE18] predicateWithBlock:v8];
     [v6 filterUsingPredicate:v7];
 
-    [v4 setSummaryAssets:v6];
-    [v4 setExtendedAssets:v6];
-    [v4 setPromotionScore:0.3];
+    [highlightCopy setSummaryAssets:v6];
+    [highlightCopy setExtendedAssets:v6];
+    [highlightCopy setPromotionScore:0.3];
   }
 }
 
@@ -4431,9 +4431,9 @@ uint64_t __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationF
 - (id)fetchAllOngoingTripDayGroupHighlights
 {
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.type == %lu", 4];
-  v4 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v8 = 0;
-  v5 = [v4 allPhotosHighlightsOfKind:3 withPredicate:v3 error:&v8];
+  v5 = [dataManager allPhotosHighlightsOfKind:3 withPredicate:v3 error:&v8];
 
   v6 = [MEMORY[0x1E695DFD8] setWithArray:v5];
 
@@ -4443,10 +4443,10 @@ uint64_t __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationF
 - (id)fetchAllRecentHighlights
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PLPhotosHighlightGenerator *)self recentHighlightsDateInterval];
-  v4 = [v3 startDate];
+  recentHighlightsDateInterval = [(PLPhotosHighlightGenerator *)self recentHighlightsDateInterval];
+  startDate = [recentHighlightsDateInterval startDate];
 
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.startDate >= %@", v4];
+  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.startDate >= %@", startDate];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.category == %lu", 1];
   v7 = MEMORY[0x1E696AB28];
   v15[0] = v6;
@@ -4454,20 +4454,20 @@ uint64_t __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationF
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v9 = [v7 orPredicateWithSubpredicates:v8];
 
-  v10 = [(PLPhotosHighlightGenerator *)self dataManager];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v14 = 0;
-  v11 = [v10 allPhotosHighlightsOfKind:0 withPredicate:v9 error:&v14];
+  v11 = [dataManager allPhotosHighlightsOfKind:0 withPredicate:v9 error:&v14];
 
   v12 = [MEMORY[0x1E695DFD8] setWithArray:v11];
 
   return v12;
 }
 
-+ (BOOL)assetEligibleForRecents:(id)a3
++ (BOOL)assetEligibleForRecents:(id)recents
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 visibilityStateIsEqualToState:0] && objc_msgSend(v4, "kindSubtype") != 10)
+  recentsCopy = recents;
+  v4 = recentsCopy;
+  if (recentsCopy && [recentsCopy visibilityStateIsEqualToState:0] && objc_msgSend(v4, "kindSubtype") != 10)
   {
     v5 = [v4 isScreenRecording] ^ 1;
   }
@@ -4480,20 +4480,20 @@ uint64_t __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationF
   return v5;
 }
 
-- (void)_consumeHighlightItemListChanges:(id)a3 forKind:(unsigned __int16)a4 rule:(id)a5 resultBlock:(id)a6
+- (void)_consumeHighlightItemListChanges:(id)changes forKind:(unsigned __int16)kind rule:(id)rule resultBlock:(id)block
 {
-  v70 = a4;
+  kindCopy = kind;
   v102 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v72 = a5;
-  v66 = a6;
-  v71 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  changesCopy = changes;
+  ruleCopy = rule;
+  blockCopy = block;
+  v71 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(changesCopy, "count")}];
   v10 = [MEMORY[0x1E695DFA8] set];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v11 = v9;
+  v11 = changesCopy;
   v12 = [v11 countByEnumeratingWithState:&v87 objects:v101 count:16];
   if (v12)
   {
@@ -4516,18 +4516,18 @@ uint64_t __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationF
         v16 = *(*(&v87 + 1) + 8 * v15);
         if ([v16 isCandidateForReuse])
         {
-          v17 = [v16 parentHighlightItem];
+          parentHighlightItem = [v16 parentHighlightItem];
           v18 = PLMomentsGetLog();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
-            [v17 uuid];
+            [parentHighlightItem uuid];
             v20 = v19 = v10;
-            [v17 startDate];
+            [parentHighlightItem startDate];
             v22 = v21 = v11;
-            v23 = [v17 endDate];
+            endDate = [parentHighlightItem endDate];
             v24 = v16;
             v25 = v15;
-            v26 = v23;
+            v26 = endDate;
             *buf = 138413058;
             v94 = v24;
             v95 = 2112;
@@ -4535,7 +4535,7 @@ uint64_t __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationF
             v97 = 2112;
             v98 = v22;
             v99 = 2112;
-            v100 = v23;
+            v100 = endDate;
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_INFO, "[HighlightsGeneration] Need to delete: %@ [%@]-(%@-%@)", buf, 0x2Au);
 
             v15 = v25;
@@ -4545,55 +4545,55 @@ uint64_t __80__PLPhotosHighlightGenerator_Recent__updateRecentHighlightCurationF
             v13 = v74;
           }
 
-          [v10 addObject:v17];
+          [v10 addObject:parentHighlightItem];
           goto LABEL_10;
         }
 
         if (([v16 hasChanges] & 1) != 0 || objc_msgSend(v16, "isNewList"))
         {
-          v27 = [v16 sortedChildHighlightItems];
-          v28 = [v27 count];
+          sortedChildHighlightItems = [v16 sortedChildHighlightItems];
+          v28 = [sortedChildHighlightItems count];
 
           if (v28)
           {
             if ([v16 isNewList])
             {
-              v29 = [(PLPhotosHighlightGenerator *)self dataManager];
-              v30 = [v29 insertNewPhotosHighlight];
+              dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
+              insertNewPhotosHighlight = [dataManager insertNewPhotosHighlight];
 
-              [v30 setPromotionScore:0.3];
+              [insertNewPhotosHighlight setPromotionScore:0.3];
             }
 
             else
             {
-              v30 = [v16 parentHighlightItem];
+              insertNewPhotosHighlight = [v16 parentHighlightItem];
             }
 
-            v31 = [(PLPhotosHighlightGenerator *)self dateRangeTitleGenerator];
+            dateRangeTitleGenerator = [(PLPhotosHighlightGenerator *)self dateRangeTitleGenerator];
             v85[0] = MEMORY[0x1E69E9820];
             v85[1] = 3221225472;
             v85[2] = __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemListChanges_forKind_rule_resultBlock___block_invoke;
             v85[3] = &unk_1E7576E70;
-            v32 = v30;
+            v32 = insertNewPhotosHighlight;
             v86 = v32;
-            [v72 titlesForHighlightItemList:v16 dateRangeTitleGenerator:v31 resultBlock:v85];
+            [ruleCopy titlesForHighlightItemList:v16 dateRangeTitleGenerator:dateRangeTitleGenerator resultBlock:v85];
 
-            [v32 setKind:v70];
-            v33 = [v16 startDate];
-            [v32 setStartDate:v33];
+            [v32 setKind:kindCopy];
+            startDate = [v16 startDate];
+            [v32 setStartDate:startDate];
 
-            v34 = [v16 endDate];
-            [v32 setEndDate:v34];
+            endDate2 = [v16 endDate];
+            [v32 setEndDate:endDate2];
 
-            v35 = [v16 addedHighlightItems];
-            if ([v35 count])
+            addedHighlightItems = [v16 addedHighlightItems];
+            if ([addedHighlightItems count])
             {
 
               goto LABEL_22;
             }
 
-            v36 = [v16 removedHighlightItems];
-            v37 = [v36 count];
+            removedHighlightItems = [v16 removedHighlightItems];
+            v37 = [removedHighlightItems count];
 
             if (v37)
             {
@@ -4604,8 +4604,8 @@ LABEL_22:
               v81 = 0u;
               v82 = 0u;
               v75 = v16;
-              v38 = [v16 sortedChildHighlightItems];
-              v39 = [v38 countByEnumeratingWithState:&v81 objects:v92 count:16];
+              sortedChildHighlightItems2 = [v16 sortedChildHighlightItems];
+              v39 = [sortedChildHighlightItems2 countByEnumeratingWithState:&v81 objects:v92 count:16];
               if (v39)
               {
                 v40 = v39;
@@ -4616,38 +4616,38 @@ LABEL_22:
                   {
                     if (*v82 != v41)
                     {
-                      objc_enumerationMutation(v38);
+                      objc_enumerationMutation(sortedChildHighlightItems2);
                     }
 
                     v43 = *(*(&v81 + 1) + 8 * i);
-                    v44 = [v43 parentPhotosHighlight];
-                    v45 = [v44 isEqual:v32];
+                    parentPhotosHighlight = [v43 parentPhotosHighlight];
+                    v45 = [parentPhotosHighlight isEqual:v32];
 
                     if ((v45 & 1) == 0)
                     {
-                      v46 = [v43 keyAssetForKindPrivate];
-                      v47 = [v46 monthHighlightBeingKeyAssetPrivate];
+                      keyAssetForKindPrivate = [v43 keyAssetForKindPrivate];
+                      monthHighlightBeingKeyAssetPrivate = [keyAssetForKindPrivate monthHighlightBeingKeyAssetPrivate];
 
-                      if (v47)
+                      if (monthHighlightBeingKeyAssetPrivate)
                       {
-                        v48 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-                        [v48 addObject:v47];
+                        highlightsNeedingNewKeyAsset = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+                        [highlightsNeedingNewKeyAsset addObject:monthHighlightBeingKeyAssetPrivate];
                       }
 
-                      v49 = [v43 keyAssetForKindShared];
-                      v50 = [v49 monthHighlightBeingKeyAssetShared];
+                      keyAssetForKindShared = [v43 keyAssetForKindShared];
+                      monthHighlightBeingKeyAssetShared = [keyAssetForKindShared monthHighlightBeingKeyAssetShared];
 
-                      if (v50)
+                      if (monthHighlightBeingKeyAssetShared)
                       {
-                        v51 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-                        [v51 addObject:v50];
+                        highlightsNeedingNewKeyAsset2 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+                        [highlightsNeedingNewKeyAsset2 addObject:monthHighlightBeingKeyAssetShared];
                       }
 
                       [v43 setParentPhotosHighlight:v32];
                     }
                   }
 
-                  v40 = [v38 countByEnumeratingWithState:&v81 objects:v92 count:16];
+                  v40 = [sortedChildHighlightItems2 countByEnumeratingWithState:&v81 objects:v92 count:16];
                 }
 
                 while (v40);
@@ -4673,30 +4673,30 @@ LABEL_22:
                     }
 
                     v56 = *(*(&v77 + 1) + 8 * j);
-                    v57 = [v56 keyAssetForKindShared];
-                    v58 = [v32 keyAssetForKindShared];
-                    v59 = v58;
-                    if (v57 == v58)
+                    keyAssetForKindShared2 = [v56 keyAssetForKindShared];
+                    keyAssetForKindShared3 = [v32 keyAssetForKindShared];
+                    v59 = keyAssetForKindShared3;
+                    if (keyAssetForKindShared2 == keyAssetForKindShared3)
                     {
                     }
 
                     else
                     {
-                      v60 = [v56 keyAssetForKindPrivate];
-                      v61 = [v32 keyAssetForKindPrivate];
+                      keyAssetForKindPrivate2 = [v56 keyAssetForKindPrivate];
+                      keyAssetForKindPrivate3 = [v32 keyAssetForKindPrivate];
 
-                      if (v60 != v61)
+                      if (keyAssetForKindPrivate2 != keyAssetForKindPrivate3)
                       {
                         goto LABEL_45;
                       }
                     }
 
-                    v62 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-                    [v62 addObject:v32];
+                    highlightsNeedingNewKeyAsset3 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+                    [highlightsNeedingNewKeyAsset3 addObject:v32];
 
 LABEL_45:
-                    v63 = [v56 parentPhotosHighlight];
-                    v64 = [v63 isEqual:v32];
+                    parentPhotosHighlight2 = [v56 parentPhotosHighlight];
+                    v64 = [parentPhotosHighlight2 isEqual:v32];
 
                     if (v64)
                     {
@@ -4717,8 +4717,8 @@ LABEL_45:
 
             if (([v16 isNewList] & 1) != 0 || (objc_msgSend(v32, "missingKeyAssetForKindPrivate") & 1) != 0 || objc_msgSend(v32, "missingKeyAssetForKindShared"))
             {
-              v65 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-              [v65 addObject:v32];
+              highlightsNeedingNewKeyAsset4 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+              [highlightsNeedingNewKeyAsset4 addObject:v32];
             }
 
             [v32 bumpHighlightVersion];
@@ -4732,11 +4732,11 @@ LABEL_45:
 
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
           {
-            v17 = [v16 parentHighlightItem];
+            parentHighlightItem = [v16 parentHighlightItem];
             *buf = 138412546;
             v94 = v16;
             v95 = 2112;
-            v96 = v17;
+            v96 = parentHighlightItem;
             _os_log_fault_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "Tring to generate a month/year with 0 child: %@ - %@", buf, 0x16u);
 LABEL_10:
           }
@@ -4753,7 +4753,7 @@ LABEL_55:
     while (v13);
   }
 
-  v66[2](v66, v71, v10);
+  blockCopy[2](blockCopy, v71, v10);
 }
 
 void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemListChanges_forKind_rule_resultBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -4764,11 +4764,11 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
   [*(a1 + 32) setSubtitle:v6];
 }
 
-- (void)generateHighlightListForUpdatedHighlights:(id)a3 deletedHighlights:(id)a4
+- (void)generateHighlightListForUpdatedHighlights:(id)highlights deletedHighlights:(id)deletedHighlights
 {
   v138 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v58 = a4;
+  highlightsCopy = highlights;
+  deletedHighlightsCopy = deletedHighlights;
   v57 = objc_alloc_init(PLMonthGroupingRule);
   v61 = [[PLHighlightItemClusterer alloc] initWithRule:v57];
   v123 = 0;
@@ -4783,19 +4783,19 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
   v120 = __Block_byref_object_copy__102376;
   v121 = __Block_byref_object_dispose__102377;
   v122 = 0;
-  v52 = v5;
-  v59 = [MEMORY[0x1E695DFD8] setWithArray:v5];
-  v6 = [(PLPhotosHighlightGenerator *)self dataManager];
+  v52 = highlightsCopy;
+  v59 = [MEMORY[0x1E695DFD8] setWithArray:highlightsCopy];
+  dataManager = [(PLPhotosHighlightGenerator *)self dataManager];
   v116[0] = MEMORY[0x1E69E9820];
   v116[1] = 3221225472;
   v116[2] = __106__PLPhotosHighlightGenerator_MonthsAndYears__generateHighlightListForUpdatedHighlights_deletedHighlights___block_invoke;
   v116[3] = &unk_1E7575270;
   v116[4] = &v123;
   v116[5] = &v117;
-  [(PLHighlightItemClusterer *)v61 restoreExistingHighlightItemListsFromUpdatedHighlightItems:v59 deletedHighlightItems:v58 usingModelReader:v6 progressBlock:0 restoreBlock:v116];
+  [(PLHighlightItemClusterer *)v61 restoreExistingHighlightItemListsFromUpdatedHighlightItems:v59 deletedHighlightItems:deletedHighlightsCopy usingModelReader:dataManager progressBlock:0 restoreBlock:v116];
 
-  v7 = [v118[5] allObjects];
-  v56 = [(PLHighlightItemClusterer *)v61 processHighlightItems:v7 withRestoredHighlightItemLists:v124[5] progressBlock:0];
+  allObjects = [v118[5] allObjects];
+  v56 = [(PLHighlightItemClusterer *)v61 processHighlightItems:allObjects withRestoredHighlightItemLists:v124[5] progressBlock:0];
 
   v110 = 0;
   v111 = &v110;
@@ -4835,8 +4835,8 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v99 + 1) + 8 * i) parentHighlightItem];
-        [v66 addObject:v12];
+        parentHighlightItem = [*(*(&v99 + 1) + 8 * i) parentHighlightItem];
+        [v66 addObject:parentHighlightItem];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v99 objects:v137 count:16];
@@ -4846,8 +4846,8 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
   }
 
   [v66 addObjectsFromArray:v111[5]];
-  v13 = [v66 allObjects];
-  v60 = [(PLPhotosHighlightGenerator *)self updateElectedEventForUpdatedMonths:v13];
+  allObjects2 = [v66 allObjects];
+  v60 = [(PLPhotosHighlightGenerator *)self updateElectedEventForUpdatedMonths:allObjects2];
 
   if ([v111[5] count] || objc_msgSend(v105[5], "count") || objc_msgSend(v60, "count"))
   {
@@ -4869,14 +4869,14 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
     v16 = [MEMORY[0x1E695DFA8] setWithArray:v111[5]];
     [v16 addObjectsFromArray:v60];
     v17 = v105[5];
-    v18 = [(PLPhotosHighlightGenerator *)self dataManager];
+    dataManager2 = [(PLPhotosHighlightGenerator *)self dataManager];
     v92[0] = MEMORY[0x1E69E9820];
     v92[1] = 3221225472;
     v92[2] = __106__PLPhotosHighlightGenerator_MonthsAndYears__generateHighlightListForUpdatedHighlights_deletedHighlights___block_invoke_3;
     v92[3] = &unk_1E7575270;
     v92[4] = buf;
     v92[5] = &v93;
-    [(PLHighlightItemClusterer *)v15 restoreExistingHighlightItemListsFromUpdatedHighlightItems:v16 deletedHighlightItems:v17 usingModelReader:v18 progressBlock:0 restoreBlock:v92];
+    [(PLHighlightItemClusterer *)v15 restoreExistingHighlightItemListsFromUpdatedHighlightItems:v16 deletedHighlightItems:v17 usingModelReader:dataManager2 progressBlock:0 restoreBlock:v92];
     v51 = v16;
     v54 = v15;
 
@@ -4886,8 +4886,8 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
     v89 = __Block_byref_object_copy__102376;
     v90 = __Block_byref_object_dispose__102377;
     v91 = 0;
-    v19 = [v94[5] allObjects];
-    v53 = [(PLHighlightItemClusterer *)v15 processHighlightItems:v19 withRestoredHighlightItemLists:*(*&buf[8] + 40) progressBlock:0];
+    allObjects3 = [v94[5] allObjects];
+    v53 = [(PLHighlightItemClusterer *)v15 processHighlightItems:allObjects3 withRestoredHighlightItemLists:*(*&buf[8] + 40) progressBlock:0];
 
     v85[0] = MEMORY[0x1E69E9820];
     v85[1] = 3221225472;
@@ -4914,8 +4914,8 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
             objc_enumerationMutation(v21);
           }
 
-          v25 = [*(*(&v81 + 1) + 8 * j) parentHighlightItem];
-          [v20 addObject:v25];
+          parentHighlightItem2 = [*(*(&v81 + 1) + 8 * j) parentHighlightItem];
+          [v20 addObject:parentHighlightItem2];
         }
 
         v22 = [v21 countByEnumeratingWithState:&v81 objects:v132 count:16];
@@ -4955,8 +4955,8 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
             v74 = 0u;
             v75 = 0u;
             v76 = 0u;
-            v31 = [v29 childPhotosHighlights];
-            v32 = [v31 countByEnumeratingWithState:&v73 objects:v130 count:16];
+            childPhotosHighlights = [v29 childPhotosHighlights];
+            v32 = [childPhotosHighlights countByEnumeratingWithState:&v73 objects:v130 count:16];
             if (v32)
             {
               v33 = *v74;
@@ -4966,7 +4966,7 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
                 {
                   if (*v74 != v33)
                   {
-                    objc_enumerationMutation(v31);
+                    objc_enumerationMutation(childPhotosHighlights);
                   }
 
                   v35 = [*(*(&v73 + 1) + 8 * k) valueForKey:{v30, v51}];
@@ -4979,7 +4979,7 @@ void __104__PLPhotosHighlightGenerator_MonthsAndYears___consumeHighlightItemList
                   }
                 }
 
-                v32 = [v31 countByEnumeratingWithState:&v73 objects:v130 count:16];
+                v32 = [childPhotosHighlights countByEnumeratingWithState:&v73 objects:v130 count:16];
                 if (v32)
                 {
                   continue;
@@ -5000,15 +5000,15 @@ LABEL_34:
               [v29 setValue:v39 forKey:v30];
 
               [v29 bumpHighlightVersion];
-              v40 = [v29 sharingComposition];
-              if (v40)
+              sharingComposition = [v29 sharingComposition];
+              if (sharingComposition)
               {
-                if (v40 == 1)
+                if (sharingComposition == 1)
                 {
                   goto LABEL_39;
                 }
 
-                if (v40 != 2)
+                if (sharingComposition != 2)
                 {
                   goto LABEL_43;
                 }
@@ -5016,21 +5016,21 @@ LABEL_34:
                 if (([v29 missingKeyAssetForKindPrivate] & 1) == 0)
                 {
 LABEL_39:
-                  v41 = [v29 missingKeyAssetForKindShared];
+                  missingKeyAssetForKindShared = [v29 missingKeyAssetForKindShared];
 LABEL_41:
-                  if (!v41)
+                  if (!missingKeyAssetForKindShared)
                   {
                     goto LABEL_43;
                   }
                 }
 
-                v42 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-                [v42 addObject:v29];
+                highlightsNeedingNewKeyAsset = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+                [highlightsNeedingNewKeyAsset addObject:v29];
 
                 goto LABEL_43;
               }
 
-              v41 = [v29 missingKeyAssetForKindPrivate];
+              missingKeyAssetForKindShared = [v29 missingKeyAssetForKindPrivate];
               goto LABEL_41;
             }
 
@@ -5078,15 +5078,15 @@ LABEL_43:
         v47 = PLMomentsGetLog();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
-          v48 = [v46 uuid];
-          v49 = [v46 startDate];
-          v50 = [v46 endDate];
+          uuid = [v46 uuid];
+          startDate = [v46 startDate];
+          endDate = [v46 endDate];
           *buf = 138412802;
-          *&buf[4] = v48;
+          *&buf[4] = uuid;
           *&buf[12] = 2112;
-          *&buf[14] = v49;
+          *&buf[14] = startDate;
           *&buf[22] = 2112;
-          v134 = v50;
+          v134 = endDate;
           _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_INFO, "[HighlightsGeneration] Deleting month: [%@]-(%@-%@)", buf, 0x20u);
         }
 
@@ -5199,18 +5199,18 @@ void __106__PLPhotosHighlightGenerator_MonthsAndYears__generateHighlightListForU
   }
 }
 
-- (id)updateElectedEventForUpdatedMonths:(id)a3
+- (id)updateElectedEventForUpdatedMonths:(id)months
 {
   v93 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v49 = [MEMORY[0x1E695DF70] array];
+  monthsCopy = months;
+  array = [MEMORY[0x1E695DF70] array];
   v43 = objc_alloc_init(PLMonthGroupingRule);
   v50 = [[PLHighlightItemPromoter alloc] initWithRule:v43];
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  obj = v3;
+  obj = monthsCopy;
   v46 = [obj countByEnumeratingWithState:&v85 objects:v92 count:16];
   if (v46)
   {
@@ -5235,8 +5235,8 @@ void __106__PLPhotosHighlightGenerator_MonthsAndYears__generateHighlightListForU
           v84 = 0u;
           v81 = 0u;
           v82 = 0u;
-          v4 = [v53 childPhotosHighlights];
-          v5 = [v4 countByEnumeratingWithState:&v81 objects:v91 count:16];
+          childPhotosHighlights = [v53 childPhotosHighlights];
+          v5 = [childPhotosHighlights countByEnumeratingWithState:&v81 objects:v91 count:16];
           if (!v5)
           {
 
@@ -5258,9 +5258,9 @@ LABEL_19:
             v67 = 0x2020000000;
             v68 = 0;
             v14 = [PLHighlightItemList alloc];
-            v15 = [v53 childPhotosHighlights];
-            v16 = [v15 allObjects];
-            v17 = [(PLHighlightItemList *)v14 initWithParentHighlightItem:v53 childHighlightItems:v16];
+            childPhotosHighlights2 = [v53 childPhotosHighlights];
+            allObjects = [childPhotosHighlights2 allObjects];
+            v17 = [(PLHighlightItemList *)v14 initWithParentHighlightItem:v53 childHighlightItems:allObjects];
 
             v64[0] = MEMORY[0x1E69E9820];
             v64[1] = 3221225472;
@@ -5291,12 +5291,12 @@ LABEL_19:
 
               if (v18 && (([v53 missingKeyAssetForKindPrivate] & 1) != 0 || objc_msgSend(v53, "missingKeyAssetForKindShared")))
               {
-                v23 = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
-                [v23 addObject:v53];
+                highlightsNeedingNewKeyAsset = [(PLPhotosHighlightGenerator *)self highlightsNeedingNewKeyAsset];
+                [highlightsNeedingNewKeyAsset addObject:v53];
               }
 
               [v53 bumpHighlightVersion];
-              [v49 addObject:v53];
+              [array addObject:v53];
             }
 
             v62 = 0u;
@@ -5318,8 +5318,8 @@ LABEL_19:
                   }
 
                   v28 = *(*(&v60 + 1) + 8 * j);
-                  v29 = [v28 type];
-                  if ((v29 - 1) < 2u || v29 == 4)
+                  type = [v28 type];
+                  if ((type - 1) < 2u || type == 4)
                   {
                     v31 = 2;
                   }
@@ -5358,8 +5358,8 @@ LABEL_19:
                   }
 
                   v37 = *(*(&v56 + 1) + 8 * k);
-                  v38 = [v37 type];
-                  v40 = v38 != 4 && (v38 - 3) < 0xFFFEu;
+                  type2 = [v37 type];
+                  v40 = type2 != 4 && (type2 - 3) < 0xFFFEu;
                   v41 = [MEMORY[0x1E696AD98] numberWithInt:v40];
                   [v37 setValue:v41 forKey:v55];
                 }
@@ -5386,24 +5386,24 @@ LABEL_19:
             {
               if (*v82 != v8)
               {
-                objc_enumerationMutation(v4);
+                objc_enumerationMutation(childPhotosHighlights);
               }
 
               v10 = *(*(&v81 + 1) + 8 * m);
               v11 = [v10 enrichmentState] != 0;
               v12 = [v10 valueForKey:v55];
-              v13 = [v12 unsignedShortValue];
+              unsignedShortValue = [v12 unsignedShortValue];
 
-              if ((v13 & 0xFFFE) == 2)
+              if ((unsignedShortValue & 0xFFFE) == 2)
               {
                 [v54 addObject:v10];
               }
 
               v7 |= v11;
-              v6 |= (v13 & 0xFFFE) == 2;
+              v6 |= (unsignedShortValue & 0xFFFE) == 2;
             }
 
-            v5 = [v4 countByEnumeratingWithState:&v81 objects:v91 count:16];
+            v5 = [childPhotosHighlights countByEnumeratingWithState:&v81 objects:v91 count:16];
           }
 
           while (v5);
@@ -5428,7 +5428,7 @@ LABEL_55:
     while (v46);
   }
 
-  return v49;
+  return array;
 }
 
 void __81__PLPhotosHighlightGenerator_MonthsAndYears__updateElectedEventForUpdatedMonths___block_invoke(void *a1, void *a2, void *a3, char a4)
@@ -5448,15 +5448,15 @@ void __81__PLPhotosHighlightGenerator_MonthsAndYears__updateElectedEventForUpdat
   *(*(a1[6] + 8) + 24) = a4;
 }
 
-+ (void)updateTitleForHighlights:(id)a3 forKind:(unsigned __int16)a4 forceUpdateLocale:(BOOL)a5 dateRangeTitleGenerator:(id)a6
++ (void)updateTitleForHighlights:(id)highlights forKind:(unsigned __int16)kind forceUpdateLocale:(BOOL)locale dateRangeTitleGenerator:(id)generator
 {
-  v22 = a5;
-  v7 = a4;
+  localeCopy = locale;
+  kindCopy = kind;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v23 = a6;
+  highlightsCopy = highlights;
+  generatorCopy = generator;
   v9 = off_1E7560908;
-  if (v7 != 1)
+  if (kindCopy != 1)
   {
     v9 = off_1E7561178;
   }
@@ -5466,7 +5466,7 @@ void __81__PLPhotosHighlightGenerator_MonthsAndYears__updateElectedEventForUpdat
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v8;
+  obj = highlightsCopy;
   v11 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
@@ -5485,16 +5485,16 @@ void __81__PLPhotosHighlightGenerator_MonthsAndYears__updateElectedEventForUpdat
         v15 = *(*(&v25 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
         v17 = [PLHighlightItemList alloc];
-        v18 = [v15 childPhotosHighlights];
-        v19 = [v18 allObjects];
-        v20 = [(PLHighlightItemList *)v17 initWithParentHighlightItem:v15 childHighlightItems:v19];
+        childPhotosHighlights = [v15 childPhotosHighlights];
+        allObjects = [childPhotosHighlights allObjects];
+        v20 = [(PLHighlightItemList *)v17 initWithParentHighlightItem:v15 childHighlightItems:allObjects];
 
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __121__PLPhotosHighlightGenerator_MonthsAndYears__updateTitleForHighlights_forKind_forceUpdateLocale_dateRangeTitleGenerator___block_invoke;
         v24[3] = &unk_1E7576E70;
         v24[4] = v15;
-        [v10 titlesForHighlightItemList:v20 dateRangeTitleGenerator:v23 forceUpdateLocale:v22 resultBlock:v24];
+        [v10 titlesForHighlightItemList:v20 dateRangeTitleGenerator:generatorCopy forceUpdateLocale:localeCopy resultBlock:v24];
 
         objc_autoreleasePoolPop(v16);
         ++v14;

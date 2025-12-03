@@ -1,84 +1,84 @@
 @interface CHSynthesisStyleInventory
 + (BOOL)clear;
-+ (BOOL)isSimpleMathPattern:(id)a3;
++ (BOOL)isSimpleMathPattern:(id)pattern;
 + (BOOL)shouldBypassGating;
 + (id)_defaultInventoryStorageURL;
 + (id)_formatVersion;
 + (id)_groupContainerURL;
 + (id)_mathCharacterSet;
-+ (id)concatenateStyleSamples:(id)a3;
-+ (id)concatenatedSampleWithDrawings:(id)a3 transcriptions:(id)a4;
-+ (id)normalizeAndAlignStyleSamples:(id)a3;
++ (id)concatenateStyleSamples:(id)samples;
++ (id)concatenatedSampleWithDrawings:(id)drawings transcriptions:(id)transcriptions;
++ (id)normalizeAndAlignStyleSamples:(id)samples;
 + (id)relativePath;
-+ (id)remainingCharacterSetFromPromptCharacterSet:(id)a3 withSample:(id)a4;
-+ (id)statusWithInventory:(id)a3;
-+ (id)styleSamplesWithDrawings:(id)a3 transcriptions:(id)a4;
-+ (int64_t)maxStyleSampleLengthForPrompt:(id)a3 script:(int64_t)a4;
-+ (void)decomposeSamples:(id)a3 drawings:(id *)a4 contents:(id *)a5;
-- (BOOL)_unsafeHasLowSampleCountForCharacters:(id)a3 minimumSampleCount:(int64_t)a4;
-- (BOOL)_unsafeSupportsPersonalizationForScript:(int64_t)a3;
-- (BOOL)containsSampleWithStrokeIdentifiers:(id)a3;
-- (BOOL)containsSampleWithTranscription:(id)a3 strokeIdentifiers:(id)a4;
++ (id)remainingCharacterSetFromPromptCharacterSet:(id)set withSample:(id)sample;
++ (id)statusWithInventory:(id)inventory;
++ (id)styleSamplesWithDrawings:(id)drawings transcriptions:(id)transcriptions;
++ (int64_t)maxStyleSampleLengthForPrompt:(id)prompt script:(int64_t)script;
++ (void)decomposeSamples:(id)samples drawings:(id *)drawings contents:(id *)contents;
+- (BOOL)_unsafeHasLowSampleCountForCharacters:(id)characters minimumSampleCount:(int64_t)count;
+- (BOOL)_unsafeSupportsPersonalizationForScript:(int64_t)script;
+- (BOOL)containsSampleWithStrokeIdentifiers:(id)identifiers;
+- (BOOL)containsSampleWithTranscription:(id)transcription strokeIdentifiers:(id)identifiers;
 - (BOOL)hasAllDigits;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isTokenAcceptable:(id)a3 script:(int64_t)a4;
-- (BOOL)needsStylePredictionUpdateForScript:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isTokenAcceptable:(id)acceptable script:(int64_t)script;
+- (BOOL)needsStylePredictionUpdateForScript:(int64_t)script;
 - (BOOL)save;
-- (BOOL)shouldForceInventoryDefaultStyleWithOptions:(id)a3;
-- (BOOL)supportsPersonalizationForScript:(int64_t)a3;
+- (BOOL)shouldForceInventoryDefaultStyleWithOptions:(id)options;
+- (BOOL)supportsPersonalizationForScript:(int64_t)script;
 - (CHSynthesisModelHashes)synthesisModelHashes;
 - (CHSynthesisStyleInventory)init;
-- (CHSynthesisStyleInventory)initWithCoder:(id)a3;
-- (CHSynthesisStyleInventory)initWithStyles:(id)a3 sampleCountByCharacter:(id)a4 storageURL:(id)a5 synthesisModelHashes:(id)a6 currentSamplingTimestep:(int64_t)a7 characterStyleTimestamp:(double)a8 fastPathCharacterStyles:(id)a9 characterInventoryVersion:(int64_t)a10;
-- (CHSynthesisStyleInventory)initWithURL:(id)a3;
+- (CHSynthesisStyleInventory)initWithCoder:(id)coder;
+- (CHSynthesisStyleInventory)initWithStyles:(id)styles sampleCountByCharacter:(id)character storageURL:(id)l synthesisModelHashes:(id)hashes currentSamplingTimestep:(int64_t)timestep characterStyleTimestamp:(double)timestamp fastPathCharacterStyles:(id)characterStyles characterInventoryVersion:(int64_t)self0;
+- (CHSynthesisStyleInventory)initWithURL:(id)l;
 - (NSDate)lastSavedDate;
 - (double)lastCharacterStyleTimestamp;
 - (id).cxx_construct;
 - (id)_unsafeSamplesWithStylePrediction;
 - (id)characterCoverage;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)coverageMaskWithPrompt:(id)a3 script:(int64_t)a4 coveredCharacters:(id)a5;
-- (id)defaultStyleSamplesForPrompt:(id)a3 script:(int64_t)a4 maxStyleSampleLength:(int64_t)a5;
-- (id)defaultUserStyleSampleForScript:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)coverageMaskWithPrompt:(id)prompt script:(int64_t)script coveredCharacters:(id)characters;
+- (id)defaultStyleSamplesForPrompt:(id)prompt script:(int64_t)script maxStyleSampleLength:(int64_t)length;
+- (id)defaultUserStyleSampleForScript:(int64_t)script;
 - (id)fastPathCharacterStylesWithVariations;
-- (id)highestCharacterCoverageStyleSampleForPrompt:(id)a3 script:(int64_t)a4 styles:(id)a5;
-- (id)nearestInventorySamplesToSample:(id)a3 prompt:(id)a4 maxStyleSampleLength:(int64_t)a5;
-- (id)personalizedStyleSamplesForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 samplingAlgorithm:(unint64_t)a6 maxStyleSampleLength:(int64_t)a7;
+- (id)highestCharacterCoverageStyleSampleForPrompt:(id)prompt script:(int64_t)script styles:(id)styles;
+- (id)nearestInventorySamplesToSample:(id)sample prompt:(id)prompt maxStyleSampleLength:(int64_t)length;
+- (id)personalizedStyleSamplesForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script samplingAlgorithm:(unint64_t)algorithm maxStyleSampleLength:(int64_t)length;
 - (id)samplesWithoutStylePrediction;
-- (id)shortStringHeuristicStyleSampleForPrompt:(id)a3 script:(int64_t)a4 styles:(id)a5 maxNumOfSamples:(unint64_t)a6;
-- (id)styleCharCoverageForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 maxStyleSampleLength:(int64_t)a6;
-- (id)styleSampleOptionsForRequest:(id)a3 script:(int64_t)a4;
-- (id)styleSamplesForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 samplingAlgorithm:(unint64_t)a6;
-- (id)styleSamplesForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 samplingAlgorithm:(unint64_t)a6 maxNumOfSamples:(unint64_t)a7;
+- (id)shortStringHeuristicStyleSampleForPrompt:(id)prompt script:(int64_t)script styles:(id)styles maxNumOfSamples:(unint64_t)samples;
+- (id)styleCharCoverageForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script maxStyleSampleLength:(int64_t)length;
+- (id)styleSampleOptionsForRequest:(id)request script:(int64_t)script;
+- (id)styleSamplesForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script samplingAlgorithm:(unint64_t)algorithm;
+- (id)styleSamplesForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script samplingAlgorithm:(unint64_t)algorithm maxNumOfSamples:(unint64_t)samples;
 - (unint64_t)countOfStyleSamples;
-- (unint64_t)countOfStyleSamplesForScript:(int64_t)a3;
-- (void)_safelyRunBlock:(id)a3;
-- (void)_unsafeAddSample:(id)a3;
-- (void)_unsafeRemoveSample:(id)a3;
-- (void)_unsafeUpdateCharacterCoverageWithAddedSample:(id)a3;
-- (void)_unsafeUpdateCharacterCoverageWithRemovedSample:(id)a3;
-- (void)addSample:(id)a3;
-- (void)addSampleOfSynthesizedCharacter:(id)a3 transcription:(id)a4 key:(unsigned int)a5 version:(int64_t)a6;
-- (void)addSamplesIfNeededWithTokenizedMathResult:(id)a3 drawing:(id)a4 strokeIdentifiers:(id)a5;
-- (void)addSamplesIfNeededWithTokenizedTextResult:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6;
-- (void)addSamplesWithArray:(id)a3;
+- (unint64_t)countOfStyleSamplesForScript:(int64_t)script;
+- (void)_safelyRunBlock:(id)block;
+- (void)_unsafeAddSample:(id)sample;
+- (void)_unsafeRemoveSample:(id)sample;
+- (void)_unsafeUpdateCharacterCoverageWithAddedSample:(id)sample;
+- (void)_unsafeUpdateCharacterCoverageWithRemovedSample:(id)sample;
+- (void)addSample:(id)sample;
+- (void)addSampleOfSynthesizedCharacter:(id)character transcription:(id)transcription key:(unsigned int)key version:(int64_t)version;
+- (void)addSamplesIfNeededWithTokenizedMathResult:(id)result drawing:(id)drawing strokeIdentifiers:(id)identifiers;
+- (void)addSamplesIfNeededWithTokenizedTextResult:(id)result drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers;
+- (void)addSamplesWithArray:(id)array;
 - (void)cleanupFastPathCharacters;
-- (void)clearSamplesEmbeddingVectorForScript:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateStyleSamplesUsingBlock:(id)a3;
-- (void)removeSample:(id)a3;
-- (void)removeSamplesContainingStrokeIdentifiers:(id)a3;
+- (void)clearSamplesEmbeddingVectorForScript:(int64_t)script;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateStyleSamplesUsingBlock:(id)block;
+- (void)removeSample:(id)sample;
+- (void)removeSamplesContainingStrokeIdentifiers:(id)identifiers;
 - (void)removeStyleSamplesIfNeeded;
-- (void)removeStyleSamplesIfNeededWithMaximumSize:(int64_t)a3 minimumSampleCountByCharacter:(int64_t)a4;
+- (void)removeStyleSamplesIfNeededWithMaximumSize:(int64_t)size minimumSampleCountByCharacter:(int64_t)character;
 - (void)reset;
 - (void)resetCurrentSamplingTimestep;
 - (void)saveIfNeeded;
-- (void)setSupportsPersonalizationForScript:(int64_t)a3 value:(BOOL)a4;
-- (void)updateSamplingCountForSample:(id)a3;
-- (void)updateStylePredictionsWithSamplesToUpdate:(id)a3 toRemove:(id)a4;
-- (void)updateSynthesisModelHashKo:(id)a3;
-- (void)updateSynthesisModelHashLatin:(id)a3;
-- (void)updateSynthesisModelHashZhJa:(id)a3;
+- (void)setSupportsPersonalizationForScript:(int64_t)script value:(BOOL)value;
+- (void)updateSamplingCountForSample:(id)sample;
+- (void)updateStylePredictionsWithSamplesToUpdate:(id)update toRemove:(id)remove;
+- (void)updateSynthesisModelHashKo:(id)ko;
+- (void)updateSynthesisModelHashLatin:(id)latin;
+- (void)updateSynthesisModelHashZhJa:(id)ja;
 @end
 
 @implementation CHSynthesisStyleInventory
@@ -186,10 +186,10 @@
   return v3;
 }
 
-+ (int64_t)maxStyleSampleLengthForPrompt:(id)a3 script:(int64_t)a4
++ (int64_t)maxStyleSampleLengthForPrompt:(id)prompt script:(int64_t)script
 {
-  v5 = a3;
-  v9 = objc_msgSend_synthesisLengthForString_script_(CHSynthesisStyleSample, v6, v5, a4, v7, v8);
+  promptCopy = prompt;
+  v9 = objc_msgSend_synthesisLengthForString_script_(CHSynthesisStyleSample, v6, promptCopy, script, v7, v8);
   if (v9 >= objc_msgSend__shortConfigLength(CHSynthesisStyleInventory, v10, v11, v12, v13, v14))
   {
     v20 = objc_msgSend__longConfigLength(CHSynthesisStyleInventory, v15, v16, v17, v18, v19);
@@ -272,11 +272,11 @@ LABEL_13:
   return v21;
 }
 
-+ (id)remainingCharacterSetFromPromptCharacterSet:(id)a3 withSample:(id)a4
++ (id)remainingCharacterSetFromPromptCharacterSet:(id)set withSample:(id)sample
 {
-  v5 = a4;
-  v11 = objc_msgSend_mutableCopy(a3, v6, v7, v8, v9, v10);
-  v17 = objc_msgSend_characterCoverage(v5, v12, v13, v14, v15, v16);
+  sampleCopy = sample;
+  v11 = objc_msgSend_mutableCopy(set, v6, v7, v8, v9, v10);
+  v17 = objc_msgSend_characterCoverage(sampleCopy, v12, v13, v14, v15, v16);
   objc_msgSend_minusSet_(v11, v18, v17, v19, v20, v21);
 
   return v11;
@@ -290,17 +290,17 @@ LABEL_13:
   return v12;
 }
 
-- (CHSynthesisStyleInventory)initWithURL:(id)a3
+- (CHSynthesisStyleInventory)initWithURL:(id)l
 {
   v124 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v119 = 0;
-  v10 = objc_msgSend_checkResourceIsReachableAndReturnError_(v5, v6, &v119, v7, v8, v9);
+  v10 = objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v6, &v119, v7, v8, v9);
   v11 = v119;
   v16 = v11;
   if (v10)
   {
-    v17 = objc_msgSend_dataWithContentsOfURL_(MEMORY[0x1E695DEF0], v12, v5, v13, v14, v15);
+    v17 = objc_msgSend_dataWithContentsOfURL_(MEMORY[0x1E695DEF0], v12, lCopy, v13, v14, v15);
     v18 = MEMORY[0x1E696ACD0];
     v19 = objc_opt_class();
     v118 = v16;
@@ -323,7 +323,7 @@ LABEL_13:
     v26 = qword_1EA84DC98;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v32 = objc_msgSend_absoluteString(v5, v27, v28, v29, v30, v31);
+      v32 = objc_msgSend_absoluteString(lCopy, v27, v28, v29, v30, v31);
       *buf = 138412546;
       v121 = v32;
       v122 = 2112;
@@ -393,7 +393,7 @@ LABEL_20:
 
   v33->_characterInventoryVersion = 1;
   v66 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v61, v62, v63, v64, v65);
-  v72 = objc_msgSend_URLByDeletingLastPathComponent(v5, v67, v68, v69, v70, v71);
+  v72 = objc_msgSend_URLByDeletingLastPathComponent(lCopy, v67, v68, v69, v70, v71);
   v116 = 0;
   objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v66, v73, v72, 1, 0, &v116);
   v74 = v116;
@@ -430,7 +430,7 @@ LABEL_19:
   v24 = 0;
   v25 = v33;
 LABEL_26:
-  objc_storeStrong(&v25->_inventoryStorageURL, a3);
+  objc_storeStrong(&v25->_inventoryStorageURL, l);
   v82 = objc_msgSend_now(MEMORY[0x1E695DF00], v77, v78, v79, v80, v81);
   lastSavedDate = v25->_lastSavedDate;
   v25->_lastSavedDate = v82;
@@ -510,41 +510,41 @@ LABEL_36:
   return v114;
 }
 
-- (CHSynthesisStyleInventory)initWithStyles:(id)a3 sampleCountByCharacter:(id)a4 storageURL:(id)a5 synthesisModelHashes:(id)a6 currentSamplingTimestep:(int64_t)a7 characterStyleTimestamp:(double)a8 fastPathCharacterStyles:(id)a9 characterInventoryVersion:(int64_t)a10
+- (CHSynthesisStyleInventory)initWithStyles:(id)styles sampleCountByCharacter:(id)character storageURL:(id)l synthesisModelHashes:(id)hashes currentSamplingTimestep:(int64_t)timestep characterStyleTimestamp:(double)timestamp fastPathCharacterStyles:(id)characterStyles characterInventoryVersion:(int64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a9;
+  stylesCopy = styles;
+  characterCopy = character;
+  lCopy = l;
+  hashesCopy = hashes;
+  characterStylesCopy = characterStyles;
   v69.receiver = self;
   v69.super_class = CHSynthesisStyleInventory;
   v27 = [(CHSynthesisStyleInventory *)&v69 init];
   if (v27)
   {
-    v28 = objc_msgSend_mutableCopy(v17, v22, v23, v24, v25, v26);
+    v28 = objc_msgSend_mutableCopy(stylesCopy, v22, v23, v24, v25, v26);
     styles = v27->_styles;
     v27->_styles = v28;
 
-    v35 = objc_msgSend_mutableCopy(v18, v30, v31, v32, v33, v34);
+    v35 = objc_msgSend_mutableCopy(characterCopy, v30, v31, v32, v33, v34);
     sampleCountByCharacter = v27->_sampleCountByCharacter;
     v27->_sampleCountByCharacter = v35;
 
-    v42 = objc_msgSend_copy(v19, v37, v38, v39, v40, v41);
+    v42 = objc_msgSend_copy(lCopy, v37, v38, v39, v40, v41);
     inventoryStorageURL = v27->_inventoryStorageURL;
     v27->_inventoryStorageURL = v42;
 
-    v49 = objc_msgSend_copy(v20, v44, v45, v46, v47, v48);
+    v49 = objc_msgSend_copy(hashesCopy, v44, v45, v46, v47, v48);
     synthesisModelHashes = v27->_synthesisModelHashes;
     v27->_synthesisModelHashes = v49;
 
-    v27->_currentSamplingTimestep = a7;
-    v27->_characterStyleTimestamp = a8;
-    v56 = objc_msgSend_mutableCopy(v21, v51, v52, v53, v54, v55);
+    v27->_currentSamplingTimestep = timestep;
+    v27->_characterStyleTimestamp = timestamp;
+    v56 = objc_msgSend_mutableCopy(characterStylesCopy, v51, v52, v53, v54, v55);
     fastPathCharacterStyles = v27->_fastPathCharacterStyles;
     v27->_fastPathCharacterStyles = v56;
 
-    v27->_characterInventoryVersion = a10;
+    v27->_characterInventoryVersion = version;
     v63 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v58, v59, v60, v61, v62);
     supportsPersonalization = v27->_supportsPersonalization;
     v27->_supportsPersonalization = v63;
@@ -558,10 +558,10 @@ LABEL_36:
   return v27;
 }
 
-- (CHSynthesisStyleInventory)initWithCoder:(id)a3
+- (CHSynthesisStyleInventory)initWithCoder:(id)coder
 {
   v105 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v99.receiver = self;
   v99.super_class = CHSynthesisStyleInventory;
   v5 = [(CHSynthesisStyleInventory *)&v99 init];
@@ -571,7 +571,7 @@ LABEL_36:
   }
 
   v6 = objc_opt_class();
-  v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"formatVersion", v8, v9);
+  v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"formatVersion", v8, v9);
   v11 = objc_opt_class();
   v17 = objc_msgSend__formatVersion(v11, v12, v13, v14, v15, v16);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v18, v17, v19, v20, v21);
@@ -588,21 +588,21 @@ LABEL_36:
     v27 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v24, v100, 6, v25, v26);
     v32 = objc_msgSend_setWithArray_(v23, v28, v27, v29, v30, v31);
 
-    v36 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v33, v32, @"styleSamples", v34, v35);
+    v36 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v33, v32, @"styleSamples", v34, v35);
     styles = v5->_styles;
     v5->_styles = v36;
 
-    v41 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v38, v32, @"sampleCountByCharacter", v39, v40);
+    v41 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v38, v32, @"sampleCountByCharacter", v39, v40);
     sampleCountByCharacter = v5->_sampleCountByCharacter;
     v5->_sampleCountByCharacter = v41;
 
     v43 = objc_opt_class();
-    v47 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v44, v43, @"inventoryStorageURL", v45, v46);
+    v47 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v44, v43, @"inventoryStorageURL", v45, v46);
     inventoryStorageURL = v5->_inventoryStorageURL;
     v5->_inventoryStorageURL = v47;
 
     v49 = objc_opt_class();
-    v53 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v50, v49, @"synthesisModelHashes", v51, v52);
+    v53 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v50, v49, @"synthesisModelHashes", v51, v52);
     synthesisModelHashes = v5->_synthesisModelHashes;
     v5->_synthesisModelHashes = v53;
 
@@ -614,13 +614,13 @@ LABEL_36:
       v5->_synthesisModelHashes = v62;
     }
 
-    v5->_currentSamplingTimestep = objc_msgSend_decodeIntegerForKey_(v4, v55, @"currentSamplingTimestep", v56, v57, v58);
-    v5->_characterStyleTimestamp = objc_msgSend_decodeIntegerForKey_(v4, v64, @"characterStyleTimestamp", v65, v66, v67);
-    v71 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v68, v32, @"fastPathCharacterStyles", v69, v70);
+    v5->_currentSamplingTimestep = objc_msgSend_decodeIntegerForKey_(coderCopy, v55, @"currentSamplingTimestep", v56, v57, v58);
+    v5->_characterStyleTimestamp = objc_msgSend_decodeIntegerForKey_(coderCopy, v64, @"characterStyleTimestamp", v65, v66, v67);
+    v71 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v68, v32, @"fastPathCharacterStyles", v69, v70);
     fastPathCharacterStyles = v5->_fastPathCharacterStyles;
     v5->_fastPathCharacterStyles = v71;
 
-    v5->_characterInventoryVersion = objc_msgSend_decodeIntegerForKey_(v4, v73, @"fastPathCharacterInventoryVersion", v74, v75, v76);
+    v5->_characterInventoryVersion = objc_msgSend_decodeIntegerForKey_(coderCopy, v73, @"fastPathCharacterInventoryVersion", v74, v75, v76);
     if (qword_1EA84DC48 != -1)
     {
       dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -703,21 +703,21 @@ LABEL_21:
   return v89;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v38 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v10 = objc_msgSend__formatVersion(v4, v5, v6, v7, v8, v9);
-  objc_msgSend_encodeObject_forKey_(v38, v11, v10, @"formatVersion", v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, v10, @"formatVersion", v12, v13);
 
-  objc_msgSend_encodeObject_forKey_(v38, v14, self->_styles, @"styleSamples", v15, v16);
-  objc_msgSend_encodeObject_forKey_(v38, v17, self->_sampleCountByCharacter, @"sampleCountByCharacter", v18, v19);
-  objc_msgSend_encodeObject_forKey_(v38, v20, self->_inventoryStorageURL, @"inventoryStorageURL", v21, v22);
-  objc_msgSend_encodeObject_forKey_(v38, v23, self->_synthesisModelHashes, @"synthesisModelHashes", v24, v25);
-  objc_msgSend_encodeInteger_forKey_(v38, v26, self->_currentSamplingTimestep, @"currentSamplingTimestep", v27, v28);
-  objc_msgSend_encodeInteger_forKey_(v38, v29, self->_characterStyleTimestamp, @"characterStyleTimestamp", v30, v31);
-  objc_msgSend_encodeObject_forKey_(v38, v32, self->_fastPathCharacterStyles, @"fastPathCharacterStyles", v33, v34);
-  objc_msgSend_encodeInteger_forKey_(v38, v35, self->_characterInventoryVersion, @"fastPathCharacterInventoryVersion", v36, v37);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, self->_styles, @"styleSamples", v15, v16);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, self->_sampleCountByCharacter, @"sampleCountByCharacter", v18, v19);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, self->_inventoryStorageURL, @"inventoryStorageURL", v21, v22);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v23, self->_synthesisModelHashes, @"synthesisModelHashes", v24, v25);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v26, self->_currentSamplingTimestep, @"currentSamplingTimestep", v27, v28);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v29, self->_characterStyleTimestamp, @"characterStyleTimestamp", v30, v31);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, self->_fastPathCharacterStyles, @"fastPathCharacterStyles", v33, v34);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v35, self->_characterInventoryVersion, @"fastPathCharacterInventoryVersion", v36, v37);
 }
 
 - (NSDate)lastSavedDate
@@ -751,20 +751,20 @@ LABEL_21:
   objc_msgSend__safelyRunBlock_(self, a2, v5, v2, v3, v4);
 }
 
-- (void)updateSamplingCountForSample:(id)a3
+- (void)updateSamplingCountForSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_18376FE78;
   v10[3] = &unk_1E6DDC818;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = sampleCopy;
+  v5 = sampleCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSynthesisStyleInventory alloc];
   v10 = objc_msgSend_styles(self, v5, v6, v7, v8, v9);
@@ -1027,10 +1027,10 @@ LABEL_52:
   objc_msgSend__safelyRunBlock_(self, a2, v5, v2, v3, v4);
 }
 
-- (BOOL)containsSampleWithTranscription:(id)a3 strokeIdentifiers:(id)a4
+- (BOOL)containsSampleWithTranscription:(id)transcription strokeIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  transcriptionCopy = transcription;
+  identifiersCopy = identifiers;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1040,11 +1040,11 @@ LABEL_52:
   v15[2] = sub_183770CB8;
   v15[3] = &unk_1E6DDD968;
   v15[4] = self;
-  v16 = v7;
-  v17 = v6;
+  v16 = identifiersCopy;
+  v17 = transcriptionCopy;
   v18 = &v19;
-  v8 = v6;
-  v9 = v7;
+  v8 = transcriptionCopy;
+  v9 = identifiersCopy;
   objc_msgSend__safelyRunBlock_(self, v10, v15, v11, v12, v13);
   LOBYTE(self) = *(v20 + 24);
 
@@ -1052,9 +1052,9 @@ LABEL_52:
   return self;
 }
 
-- (BOOL)containsSampleWithStrokeIdentifiers:(id)a3
+- (BOOL)containsSampleWithStrokeIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1064,9 +1064,9 @@ LABEL_52:
   v11[2] = sub_183770E7C;
   v11[3] = &unk_1E6DDC840;
   v11[4] = self;
-  v12 = v4;
+  v12 = identifiersCopy;
   v13 = &v14;
-  v5 = v4;
+  v5 = identifiersCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v11, v7, v8, v9);
   LOBYTE(self) = *(v15 + 24);
 
@@ -1074,17 +1074,17 @@ LABEL_52:
   return self;
 }
 
-- (void)removeSamplesContainingStrokeIdentifiers:(id)a3
+- (void)removeSamplesContainingStrokeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8, v9))
+  identifiersCopy = identifiers;
+  if (objc_msgSend_count(identifiersCopy, v5, v6, v7, v8, v9))
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_183770FC8;
     v14[3] = &unk_1E6DDC818;
     v14[4] = self;
-    v15 = v4;
+    v15 = identifiersCopy;
     objc_msgSend__safelyRunBlock_(self, v10, v14, v11, v12, v13);
   }
 }
@@ -1111,10 +1111,10 @@ LABEL_52:
   objc_msgSend__safelyRunBlock_(self, v4, v8, v5, v6, v7);
 }
 
-- (void)_unsafeAddSample:(id)a3
+- (void)_unsafeAddSample:(id)sample
 {
   v155 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sampleCopy = sample;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -1123,13 +1123,13 @@ LABEL_52:
   v5 = qword_1EA84DC98;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = objc_msgSend_transcription(v4, v6, v7, v8, v9, v10);
+    v11 = objc_msgSend_transcription(sampleCopy, v6, v7, v8, v9, v10);
     v151 = 138739971;
     v152 = v11;
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEFAULT, "Inventory data ingestion: Initiating style sample addition with string: %{sensitive}@", &v151, 0xCu);
   }
 
-  if (!v4)
+  if (!sampleCopy)
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -1155,19 +1155,19 @@ LABEL_52:
     goto LABEL_20;
   }
 
-  v17 = objc_msgSend_transcription(v4, v12, v13, v14, v15, v16);
-  v23 = objc_msgSend_strokeIdentifiers(v4, v18, v19, v20, v21, v22);
+  v17 = objc_msgSend_transcription(sampleCopy, v12, v13, v14, v15, v16);
+  v23 = objc_msgSend_strokeIdentifiers(sampleCopy, v18, v19, v20, v21, v22);
   v27 = objc_msgSend_containsSampleWithTranscription_strokeIdentifiers_(self, v24, v17, v23, v25, v26);
 
   if (!v27)
   {
-    v46 = objc_msgSend_strokeIdentifiers(v4, v28, v29, v30, v31, v32);
+    v46 = objc_msgSend_strokeIdentifiers(sampleCopy, v28, v29, v30, v31, v32);
     objc_msgSend_removeSamplesContainingStrokeIdentifiers_(self, v47, v46, v48, v49, v50);
 
-    v56 = objc_msgSend_transcription(v4, v51, v52, v53, v54, v55);
-    v62 = objc_msgSend_drawing(v4, v57, v58, v59, v60, v61);
-    v68 = objc_msgSend_script(v4, v63, v64, v65, v66, v67);
-    v74 = objc_msgSend_strokeIdentifiers(v4, v69, v70, v71, v72, v73);
+    v56 = objc_msgSend_transcription(sampleCopy, v51, v52, v53, v54, v55);
+    v62 = objc_msgSend_drawing(sampleCopy, v57, v58, v59, v60, v61);
+    v68 = objc_msgSend_script(sampleCopy, v63, v64, v65, v66, v67);
+    v74 = objc_msgSend_strokeIdentifiers(sampleCopy, v69, v70, v71, v72, v73);
     v33 = objc_msgSend_sampleWithTranscription_drawing_script_strokeIdentifiers_(CHSynthesisStyleSample, v75, v56, v62, v68, v74);
 
     v81 = objc_msgSend_currentSamplingTimestep(self, v76, v77, v78, v79, v80);
@@ -1256,8 +1256,8 @@ LABEL_19:
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
   {
 LABEL_9:
-    v39 = objc_msgSend_transcription(v4, v34, v35, v36, v37, v38);
-    v45 = objc_msgSend_strokeIdentifiers(v4, v40, v41, v42, v43, v44);
+    v39 = objc_msgSend_transcription(sampleCopy, v34, v35, v36, v37, v38);
+    v45 = objc_msgSend_strokeIdentifiers(sampleCopy, v40, v41, v42, v43, v44);
     v151 = 138740227;
     v152 = v39;
     v153 = 2112;
@@ -1268,57 +1268,57 @@ LABEL_9:
 LABEL_20:
 }
 
-- (void)addSample:(id)a3
+- (void)addSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1837719C8;
   v10[3] = &unk_1E6DDC818;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = sampleCopy;
+  v5 = sampleCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
-- (void)addSamplesWithArray:(id)a3
+- (void)addSamplesWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_183771A80;
   v10[3] = &unk_1E6DDC818;
-  v11 = v4;
-  v12 = self;
-  v5 = v4;
+  v11 = arrayCopy;
+  selfCopy = self;
+  v5 = arrayCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
-- (void)removeSample:(id)a3
+- (void)removeSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_183771C40;
   v10[3] = &unk_1E6DDC818;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = sampleCopy;
+  v5 = sampleCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
-- (void)_unsafeRemoveSample:(id)a3
+- (void)_unsafeRemoveSample:(id)sample
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  objc_msgSend__unsafeUpdateCharacterCoverageWithRemovedSample_(self, v5, v4, v6, v7, v8);
+  sampleCopy = sample;
+  objc_msgSend__unsafeUpdateCharacterCoverageWithRemovedSample_(self, v5, sampleCopy, v6, v7, v8);
   v14 = objc_msgSend_styles(self, v9, v10, v11, v12, v13);
-  v20 = objc_msgSend_strokeIdentifiers(v4, v15, v16, v17, v18, v19);
+  v20 = objc_msgSend_strokeIdentifiers(sampleCopy, v15, v16, v17, v18, v19);
   objc_msgSend_removeObjectForKey_(v14, v21, v20, v22, v23, v24);
 
   v30 = objc_msgSend_supportsPersonalization(self, v25, v26, v27, v28, v29);
   v31 = MEMORY[0x1E696AD98];
-  v37 = objc_msgSend_script(v4, v32, v33, v34, v35, v36);
+  v37 = objc_msgSend_script(sampleCopy, v32, v33, v34, v35, v36);
   v42 = objc_msgSend_numberWithInteger_(v31, v38, v37, v39, v40, v41);
   objc_msgSend_removeObjectForKey_(v30, v43, v42, v44, v45, v46);
 
@@ -1330,7 +1330,7 @@ LABEL_20:
   v47 = qword_1EA84DC98;
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
-    v53 = objc_msgSend_transcription(v4, v48, v49, v50, v51, v52);
+    v53 = objc_msgSend_transcription(sampleCopy, v48, v49, v50, v51, v52);
     v54 = 138739971;
     v55 = v53;
     _os_log_impl(&dword_18366B000, v47, OS_LOG_TYPE_DEFAULT, "Inventory data ingestion: removing style sample with string: %{sensitive}@", &v54, 0xCu);
@@ -1358,10 +1358,10 @@ LABEL_20:
   return v5;
 }
 
-- (void)_unsafeUpdateCharacterCoverageWithAddedSample:(id)a3
+- (void)_unsafeUpdateCharacterCoverageWithAddedSample:(id)sample
 {
   v73 = *MEMORY[0x1E69E9840];
-  objc_msgSend_characterCoverage(a3, a2, a3, v3, v4, v5);
+  objc_msgSend_characterCoverage(sample, a2, sample, v3, v4, v5);
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
@@ -1411,10 +1411,10 @@ LABEL_20:
   }
 }
 
-- (void)_unsafeUpdateCharacterCoverageWithRemovedSample:(id)a3
+- (void)_unsafeUpdateCharacterCoverageWithRemovedSample:(id)sample
 {
   v173 = *MEMORY[0x1E69E9840];
-  objc_msgSend_characterCoverage(a3, a2, a3, v3, v4, v5);
+  objc_msgSend_characterCoverage(sample, a2, sample, v3, v4, v5);
   v166 = 0u;
   v167 = 0u;
   v164 = 0u;
@@ -1607,15 +1607,15 @@ LABEL_27:
   }
 }
 
-- (BOOL)_unsafeHasLowSampleCountForCharacters:(id)a3 minimumSampleCount:(int64_t)a4
+- (BOOL)_unsafeHasLowSampleCountForCharacters:(id)characters minimumSampleCount:(int64_t)count
 {
   v37 = *MEMORY[0x1E69E9840];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = a3;
-  v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v32, v36, 16, v8);
+  charactersCopy = characters;
+  v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(charactersCopy, v7, &v32, v36, 16, v8);
   if (v14)
   {
     v15 = *v33;
@@ -1625,13 +1625,13 @@ LABEL_27:
       {
         if (*v33 != v15)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(charactersCopy);
         }
 
         v17 = *(*(&v32 + 1) + 8 * i);
         v18 = objc_msgSend_sampleCountByCharacter(self, v9, v10, v11, v12, v13, v32);
         v23 = objc_msgSend_objectForKeyedSubscript_(v18, v19, v17, v20, v21, v22);
-        v29 = objc_msgSend_integerValue(v23, v24, v25, v26, v27, v28) > a4;
+        v29 = objc_msgSend_integerValue(v23, v24, v25, v26, v27, v28) > count;
 
         if (!v29)
         {
@@ -1640,7 +1640,7 @@ LABEL_27:
         }
       }
 
-      v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v9, &v32, v36, 16, v13);
+      v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(charactersCopy, v9, &v32, v36, 16, v13);
       if (v14)
       {
         continue;
@@ -1656,12 +1656,12 @@ LABEL_11:
   return v30;
 }
 
-- (BOOL)isTokenAcceptable:(id)a3 script:(int64_t)a4
+- (BOOL)isTokenAcceptable:(id)acceptable script:(int64_t)script
 {
   v95 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v11 = v5;
-  if (a4 == 2)
+  acceptableCopy = acceptable;
+  v11 = acceptableCopy;
+  if (script == 2)
   {
     v12 = 1;
   }
@@ -1671,9 +1671,9 @@ LABEL_11:
     v12 = 3;
   }
 
-  if (a4 == 1)
+  if (script == 1)
   {
-    v13 = (objc_msgSend_properties(v5, v6, v7, v8, v9, v10) >> 2) & 1;
+    v13 = (objc_msgSend_properties(acceptableCopy, v6, v7, v8, v9, v10) >> 2) & 1;
   }
 
   else
@@ -1786,67 +1786,67 @@ LABEL_18:
   return v62;
 }
 
-- (void)addSamplesIfNeededWithTokenizedTextResult:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6
+- (void)addSamplesIfNeededWithTokenizedTextResult:(id)result drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  resultCopy = result;
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = sub_183773048;
   v20[3] = &unk_1E6DDD9E0;
-  v21 = v10;
-  v22 = v12;
-  v24 = v11;
-  v25 = a5;
-  v23 = self;
-  v13 = v11;
-  v14 = v12;
-  v15 = v10;
+  v21 = resultCopy;
+  v22 = identifiersCopy;
+  v24 = drawingCopy;
+  scriptCopy = script;
+  selfCopy = self;
+  v13 = drawingCopy;
+  v14 = identifiersCopy;
+  v15 = resultCopy;
   objc_msgSend__safelyRunBlock_(self, v16, v20, v17, v18, v19);
 }
 
-+ (BOOL)isSimpleMathPattern:(id)a3
++ (BOOL)isSimpleMathPattern:(id)pattern
 {
-  v3 = a3;
+  patternCopy = pattern;
   v9 = objc_msgSend__mathCharacterSet(CHSynthesisStyleInventory, v4, v5, v6, v7, v8);
-  v10 = sub_1837A4F0C(v3, v9);
+  v10 = sub_1837A4F0C(patternCopy, v9);
 
   return v10;
 }
 
-- (void)addSamplesIfNeededWithTokenizedMathResult:(id)a3 drawing:(id)a4 strokeIdentifiers:(id)a5
+- (void)addSamplesIfNeededWithTokenizedMathResult:(id)result drawing:(id)drawing strokeIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_183773888;
   v18[3] = &unk_1E6DDC868;
-  v19 = v8;
-  v20 = v10;
-  v21 = self;
-  v22 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v19 = resultCopy;
+  v20 = identifiersCopy;
+  selfCopy = self;
+  v22 = drawingCopy;
+  v11 = drawingCopy;
+  v12 = identifiersCopy;
+  v13 = resultCopy;
   objc_msgSend__safelyRunBlock_(self, v14, v18, v15, v16, v17);
 }
 
-- (void)updateStylePredictionsWithSamplesToUpdate:(id)a3 toRemove:(id)a4
+- (void)updateStylePredictionsWithSamplesToUpdate:(id)update toRemove:(id)remove
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  removeCopy = remove;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_183773DD8;
   v14[3] = &unk_1E6DDC890;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v8 = v7;
-  v9 = v6;
+  v15 = updateCopy;
+  selfCopy = self;
+  v17 = removeCopy;
+  v8 = removeCopy;
+  v9 = updateCopy;
   objc_msgSend__safelyRunBlock_(self, v10, v14, v11, v12, v13);
 }
 
@@ -1909,7 +1909,7 @@ LABEL_18:
   return v36;
 }
 
-- (BOOL)needsStylePredictionUpdateForScript:(int64_t)a3
+- (BOOL)needsStylePredictionUpdateForScript:(int64_t)script
 {
   v9 = 0;
   v10 = &v9;
@@ -1921,25 +1921,25 @@ LABEL_18:
   v8[3] = &unk_1E6DDDB20;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = script;
   objc_msgSend__safelyRunBlock_(self, a2, v8, v3, v4, v5);
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-+ (id)normalizeAndAlignStyleSamples:(id)a3
++ (id)normalizeAndAlignStyleSamples:(id)samples
 {
   v101 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  samplesCopy = samples;
   v4 = MEMORY[0x1E695DF70];
-  v10 = objc_msgSend_count(v3, v5, v6, v7, v8, v9, v3);
+  v10 = objc_msgSend_count(samplesCopy, v5, v6, v7, v8, v9, samplesCopy);
   v15 = objc_msgSend_arrayWithCapacity_(v4, v11, v10, v12, v13, v14);
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v3;
+  obj = samplesCopy;
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v16, &v96, v100, 16, v17);
   if (v23)
   {
@@ -2006,11 +2006,11 @@ LABEL_11:
   return v15;
 }
 
-+ (id)concatenateStyleSamples:(id)a3
++ (id)concatenateStyleSamples:(id)samples
 {
   v134 = *MEMORY[0x1E69E9840];
-  v125 = a3;
-  if (objc_msgSend_count(v125, v3, v4, v5, v6, v7))
+  samplesCopy = samples;
+  if (objc_msgSend_count(samplesCopy, v3, v4, v5, v6, v7))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -2021,21 +2021,21 @@ LABEL_11:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v133 = objc_msgSend_count(v125, v9, v10, v11, v12, v13);
+      v133 = objc_msgSend_count(samplesCopy, v9, v10, v11, v12, v13);
       _os_log_impl(&dword_18366B000, v8, OS_LOG_TYPE_DEFAULT, "Style Sampling: concatenating %lu samples", buf, 0xCu);
     }
 
     v14 = objc_alloc_init(CHDrawing);
     v20 = objc_msgSend_array(MEMORY[0x1E695DF70], v15, v16, v17, v18, v19);
     v26 = objc_msgSend_set(MEMORY[0x1E695DFA8], v21, v22, v23, v24, v25);
-    v32 = objc_msgSend_firstObject(v125, v27, v28, v29, v30, v31);
+    v32 = objc_msgSend_firstObject(samplesCopy, v27, v28, v29, v30, v31);
     v38 = objc_msgSend_script(v32, v33, v34, v35, v36, v37);
 
     v129 = 0u;
     v130 = 0u;
     v127 = 0u;
     v128 = 0u;
-    obj = v125;
+    obj = samplesCopy;
     v46 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v39, &v127, v131, 16, v40);
     if (v46)
     {
@@ -2147,14 +2147,14 @@ LABEL_11:
   return v123;
 }
 
-+ (void)decomposeSamples:(id)a3 drawings:(id *)a4 contents:(id *)a5
++ (void)decomposeSamples:(id)samples drawings:(id *)drawings contents:(id *)contents
 {
-  v7 = a3;
+  samplesCopy = samples;
   v8 = MEMORY[0x1E695DF70];
-  v14 = objc_msgSend_count(v7, v9, v10, v11, v12, v13);
+  v14 = objc_msgSend_count(samplesCopy, v9, v10, v11, v12, v13);
   v19 = objc_msgSend_arrayWithCapacity_(v8, v15, v14, v16, v17, v18);
   v20 = MEMORY[0x1E695DF70];
-  v26 = objc_msgSend_count(v7, v21, v22, v23, v24, v25);
+  v26 = objc_msgSend_count(samplesCopy, v21, v22, v23, v24, v25);
   v31 = objc_msgSend_arrayWithCapacity_(v20, v27, v26, v28, v29, v30);
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
@@ -2164,10 +2164,10 @@ LABEL_11:
   v41 = v32;
   v33 = v31;
   v42 = v33;
-  objc_msgSend_enumerateObjectsUsingBlock_(v7, v34, v40, v35, v36, v37);
-  if (a4)
+  objc_msgSend_enumerateObjectsUsingBlock_(samplesCopy, v34, v40, v35, v36, v37);
+  if (drawings)
   {
-    if (v7)
+    if (samplesCopy)
     {
       v38 = v32;
     }
@@ -2177,12 +2177,12 @@ LABEL_11:
       v38 = 0;
     }
 
-    *a4 = v38;
+    *drawings = v38;
   }
 
-  if (a5)
+  if (contents)
   {
-    if (v7)
+    if (samplesCopy)
     {
       v39 = v33;
     }
@@ -2192,48 +2192,48 @@ LABEL_11:
       v39 = 0;
     }
 
-    *a5 = v39;
+    *contents = v39;
   }
 }
 
-+ (id)styleSamplesWithDrawings:(id)a3 transcriptions:(id)a4
++ (id)styleSamplesWithDrawings:(id)drawings transcriptions:(id)transcriptions
 {
-  v5 = a3;
-  v6 = a4;
+  drawingsCopy = drawings;
+  transcriptionsCopy = transcriptions;
   v7 = MEMORY[0x1E695DF70];
-  v13 = objc_msgSend_count(v5, v8, v9, v10, v11, v12);
+  v13 = objc_msgSend_count(drawingsCopy, v8, v9, v10, v11, v12);
   v18 = objc_msgSend_arrayWithCapacity_(v7, v14, v13, v15, v16, v17);
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = sub_183775418;
   v28[3] = &unk_1E6DDDA30;
-  v19 = v6;
+  v19 = transcriptionsCopy;
   v29 = v19;
   v20 = v18;
   v30 = v20;
-  objc_msgSend_enumerateObjectsUsingBlock_(v5, v21, v28, v22, v23, v24);
+  objc_msgSend_enumerateObjectsUsingBlock_(drawingsCopy, v21, v28, v22, v23, v24);
   v25 = v30;
   v26 = v20;
 
   return v20;
 }
 
-+ (id)concatenatedSampleWithDrawings:(id)a3 transcriptions:(id)a4
++ (id)concatenatedSampleWithDrawings:(id)drawings transcriptions:(id)transcriptions
 {
-  v6 = objc_msgSend_styleSamplesWithDrawings_transcriptions_(CHSynthesisStyleInventory, a2, a3, a4, v4, v5);
+  v6 = objc_msgSend_styleSamplesWithDrawings_transcriptions_(CHSynthesisStyleInventory, a2, drawings, transcriptions, v4, v5);
   v11 = objc_msgSend_concatenateStyleSamples_(CHSynthesisStyleInventory, v7, v6, v8, v9, v10);
 
   return v11;
 }
 
-- (id)nearestInventorySamplesToSample:(id)a3 prompt:(id)a4 maxStyleSampleLength:(int64_t)a5
+- (id)nearestInventorySamplesToSample:(id)sample prompt:(id)prompt maxStyleSampleLength:(int64_t)length
 {
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  sampleCopy = sample;
+  promptCopy = prompt;
   v61 = objc_msgSend_array(MEMORY[0x1E695DF70], v10, v11, v12, v13, v14);
-  v20 = objc_msgSend_script(v8, v15, v16, v17, v18, v19);
-  v24 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v21, v9, v20, v22, v23);
+  v20 = objc_msgSend_script(sampleCopy, v15, v16, v17, v18, v19);
+  v24 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v21, promptCopy, v20, v22, v23);
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -2242,8 +2242,8 @@ LABEL_11:
   v25 = qword_1EA84DC98;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = objc_msgSend_transcription(v8, v26, v27, v28, v29, v30);
-    v37 = objc_msgSend_transcription(v8, v32, v33, v34, v35, v36);
+    v31 = objc_msgSend_transcription(sampleCopy, v26, v27, v28, v29, v30);
+    v37 = objc_msgSend_transcription(sampleCopy, v32, v33, v34, v35, v36);
     *buf = 138740227;
     v69 = v31;
     v70 = 2048;
@@ -2256,12 +2256,12 @@ LABEL_11:
   v62[2] = sub_183775904;
   v62[3] = &unk_1E6DDDA58;
   v62[4] = self;
-  v43 = v8;
+  v43 = sampleCopy;
   v63 = v43;
   v44 = v24;
   v64 = v44;
-  v67 = a5;
-  v45 = v9;
+  lengthCopy = length;
+  v45 = promptCopy;
   v65 = v45;
   v46 = v61;
   v66 = v46;
@@ -2296,11 +2296,11 @@ LABEL_8:
   return v46;
 }
 
-- (id)highestCharacterCoverageStyleSampleForPrompt:(id)a3 script:(int64_t)a4 styles:(id)a5
+- (id)highestCharacterCoverageStyleSampleForPrompt:(id)prompt script:(int64_t)script styles:(id)styles
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  promptCopy = prompt;
+  stylesCopy = styles;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -2310,13 +2310,13 @@ LABEL_8:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138740227;
-    *&buf[4] = v8;
+    *&buf[4] = promptCopy;
     *&buf[12] = 2048;
-    *&buf[14] = objc_msgSend_length(v8, v11, v12, v13, v14, v15);
+    *&buf[14] = objc_msgSend_length(promptCopy, v11, v12, v13, v14, v15);
     _os_log_impl(&dword_18366B000, v10, OS_LOG_TYPE_DEFAULT, "Style Sampling: get highest character coverage style sample for prompt: %{sensitive}@ with length: %lu", buf, 0x16u);
   }
 
-  v19 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v16, v8, a4, v17, v18);
+  v19 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v16, promptCopy, script, v17, v18);
   v25 = objc_msgSend_characterCoverage(self, v20, v21, v22, v23, v24);
   v30 = objc_msgSend_intersectsSet_(v19, v26, v25, v27, v28, v29);
 
@@ -2332,9 +2332,9 @@ LABEL_8:
     v61 = 3221225472;
     v62 = sub_18377686C;
     v63 = &unk_1E6DDC8B8;
-    v64 = v9;
-    v68 = a4;
-    v65 = v8;
+    v64 = stylesCopy;
+    scriptCopy = script;
+    v65 = promptCopy;
     v66 = v19;
     v67 = buf;
     objc_msgSend__safelyRunBlock_(self, v31, &v60, v32, v33, v34);
@@ -2388,11 +2388,11 @@ LABEL_14:
   return v58;
 }
 
-- (id)shortStringHeuristicStyleSampleForPrompt:(id)a3 script:(int64_t)a4 styles:(id)a5 maxNumOfSamples:(unint64_t)a6
+- (id)shortStringHeuristicStyleSampleForPrompt:(id)prompt script:(int64_t)script styles:(id)styles maxNumOfSamples:(unint64_t)samples
 {
   v60 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  promptCopy = prompt;
+  stylesCopy = styles;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -2402,13 +2402,13 @@ LABEL_14:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138740227;
-    *&buf[4] = v10;
+    *&buf[4] = promptCopy;
     *&buf[12] = 2048;
-    *&buf[14] = objc_msgSend_length(v10, v13, v14, v15, v16, v17);
+    *&buf[14] = objc_msgSend_length(promptCopy, v13, v14, v15, v16, v17);
     _os_log_impl(&dword_18366B000, v12, OS_LOG_TYPE_DEFAULT, "Style Sampling: get highest character coverage style sample for prompt: %{sensitive}@ with length: %lu", buf, 0x16u);
   }
 
-  v21 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v18, v10, a4, v19, v20);
+  v21 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v18, promptCopy, script, v19, v20);
   v27 = objc_msgSend_characterCoverage(self, v22, v23, v24, v25, v26);
   v32 = objc_msgSend_intersectsSet_(v21, v28, v27, v29, v30, v31);
 
@@ -2424,9 +2424,9 @@ LABEL_14:
     v50[1] = 3221225472;
     v50[2] = sub_183776D88;
     v50[3] = &unk_1E6DDDA80;
-    v51 = v11;
-    v54 = a4;
-    v55 = a6;
+    v51 = stylesCopy;
+    scriptCopy = script;
+    samplesCopy = samples;
     v52 = v21;
     v53 = buf;
     objc_msgSend__safelyRunBlock_(self, v33, v50, v34, v35, v36);
@@ -2444,7 +2444,7 @@ LABEL_14:
   return v48;
 }
 
-- (id)defaultUserStyleSampleForScript:(int64_t)a3
+- (id)defaultUserStyleSampleForScript:(int64_t)script
 {
   v42 = *MEMORY[0x1E69E9840];
   if (qword_1EA84DC48 != -1)
@@ -2470,7 +2470,7 @@ LABEL_14:
   v31[2] = sub_1837779B0;
   v31[3] = &unk_1E6DDDB20;
   v31[5] = buf;
-  v31[6] = a3;
+  v31[6] = script;
   v31[4] = self;
   objc_msgSend__safelyRunBlock_(self, v6, v31, v7, v8, v9);
   if (qword_1EA84DC48 == -1)
@@ -2507,11 +2507,11 @@ LABEL_8:
   return v29;
 }
 
-- (id)styleCharCoverageForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 maxStyleSampleLength:(int64_t)a6
+- (id)styleCharCoverageForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script maxStyleSampleLength:(int64_t)length
 {
   v101 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  sampleCopy = sample;
+  promptCopy = prompt;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -2521,20 +2521,20 @@ LABEL_8:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138740227;
-    *&buf[4] = v11;
+    *&buf[4] = promptCopy;
     *&buf[12] = 2048;
-    *&buf[14] = objc_msgSend_length(v11, v13, v14, v15, v16, v17);
+    *&buf[14] = objc_msgSend_length(promptCopy, v13, v14, v15, v16, v17);
     _os_log_impl(&dword_18366B000, v12, OS_LOG_TYPE_DEFAULT, "Style Sampling: Using style + character coverage algorithm to find style sample for prompt: %{sensitive}@ with length: %lu", buf, 0x16u);
   }
 
-  v23 = v10;
-  if (!v10)
+  v23 = sampleCopy;
+  if (!sampleCopy)
   {
-    v23 = objc_msgSend_defaultUserStyleSampleForScript_(self, v18, a5, v20, v21, v22);
+    v23 = objc_msgSend_defaultUserStyleSampleForScript_(self, v18, script, v20, v21, v22);
   }
 
   v80 = objc_msgSend_array(MEMORY[0x1E695DF70], v18, v19, v20, v21, v22);
-  v27 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v24, v11, a5, v25, v26, v23);
+  v27 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v24, promptCopy, script, v25, v26, v23);
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -2550,13 +2550,13 @@ LABEL_8:
   v89[4] = self;
   v29 = v23;
   v90 = v29;
-  v30 = v11;
+  v30 = promptCopy;
   v91 = v30;
-  v94 = a6;
+  lengthCopy = length;
   v31 = v80;
   v92 = v31;
   objc_msgSend__safelyRunBlock_(self, v32, v89, v33, v34, v35);
-  if (v10)
+  if (sampleCopy)
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -2649,22 +2649,22 @@ LABEL_19:
   return v78;
 }
 
-- (id)styleSamplesForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 samplingAlgorithm:(unint64_t)a6
+- (id)styleSamplesForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script samplingAlgorithm:(unint64_t)algorithm
 {
-  v10 = a3;
-  v11 = a4;
-  v15 = objc_msgSend_maxStyleSampleLengthForPrompt_script_(CHSynthesisStyleInventory, v12, v11, a5, v13, v14);
-  v17 = objc_msgSend_personalizedStyleSamplesForInputSample_prompt_script_samplingAlgorithm_maxStyleSampleLength_(self, v16, v10, v11, a5, a6, v15);
+  sampleCopy = sample;
+  promptCopy = prompt;
+  v15 = objc_msgSend_maxStyleSampleLengthForPrompt_script_(CHSynthesisStyleInventory, v12, promptCopy, script, v13, v14);
+  v17 = objc_msgSend_personalizedStyleSamplesForInputSample_prompt_script_samplingAlgorithm_maxStyleSampleLength_(self, v16, sampleCopy, promptCopy, script, algorithm, v15);
 
   return v17;
 }
 
-- (id)personalizedStyleSamplesForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 samplingAlgorithm:(unint64_t)a6 maxStyleSampleLength:(int64_t)a7
+- (id)personalizedStyleSamplesForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script samplingAlgorithm:(unint64_t)algorithm maxStyleSampleLength:(int64_t)length
 {
   v70 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  switch(a6)
+  sampleCopy = sample;
+  promptCopy = prompt;
+  switch(algorithm)
   {
     case 2uLL:
       if (qword_1EA84DC48 != -1)
@@ -2681,7 +2681,7 @@ LABEL_19:
 
       v41 = objc_msgSend_styles(self, v36, v37, v38, v39, v40);
       v47 = objc_msgSend_allValues(v41, v42, v43, v44, v45, v46);
-      v20 = objc_msgSend_shortStringHeuristicStyleSampleForPrompt_script_styles_maxNumOfSamples_(self, v48, v13, a5, v47, 1);
+      v20 = objc_msgSend_shortStringHeuristicStyleSampleForPrompt_script_styles_maxNumOfSamples_(self, v48, promptCopy, script, v47, 1);
 
       if (!objc_msgSend_count(v20, v49, v50, v51, v52, v53))
       {
@@ -2730,7 +2730,7 @@ LABEL_20:
 
       v20 = objc_msgSend_styles(self, v15, v16, v17, v18, v19);
       v26 = objc_msgSend_allValues(v20, v21, v22, v23, v24, v25);
-      v29 = objc_msgSend_highestCharacterCoverageStyleSampleForPrompt_script_styles_(self, v27, v13, a5, v26, v28);
+      v29 = objc_msgSend_highestCharacterCoverageStyleSampleForPrompt_script_styles_(self, v27, promptCopy, script, v26, v28);
       goto LABEL_19;
   }
 
@@ -2743,7 +2743,7 @@ LABEL_20:
   if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
   {
     v68 = 134217984;
-    v69 = a6;
+    algorithmCopy2 = algorithm;
     _os_log_impl(&dword_18366B000, v65, OS_LOG_TYPE_ERROR, "Style Sampling: algorithm: %lu is not a supported sampling algorithm", &v68, 0xCu);
   }
 
@@ -2764,7 +2764,7 @@ LABEL_20:
   {
 LABEL_27:
     v68 = 134217984;
-    v69 = a6;
+    algorithmCopy2 = algorithm;
     v31 = "Style Sampling: algorithm: %lu is not a supported sampling algorithm";
     v32 = v30;
     v33 = OS_LOG_TYPE_FAULT;
@@ -2775,31 +2775,31 @@ LABEL_28:
 
 LABEL_29:
 
-  v64 = objc_msgSend_styleCharCoverageForInputSample_prompt_script_maxStyleSampleLength_(self, v66, v12, v13, a5, a7);
+  v64 = objc_msgSend_styleCharCoverageForInputSample_prompt_script_maxStyleSampleLength_(self, v66, sampleCopy, promptCopy, script, length);
 LABEL_30:
 
   return v64;
 }
 
-- (void)setSupportsPersonalizationForScript:(int64_t)a3 value:(BOOL)a4
+- (void)setSupportsPersonalizationForScript:(int64_t)script value:(BOOL)value
 {
-  v17 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, a4, a4, v4, v5);
+  v17 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, value, value, v4, v5);
   supportsPersonalization = self->_supportsPersonalization;
-  v13 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v9, a3, v10, v11, v12);
+  v13 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v9, script, v10, v11, v12);
   objc_msgSend_setObject_forKeyedSubscript_(supportsPersonalization, v14, v17, v13, v15, v16);
 }
 
-- (BOOL)_unsafeSupportsPersonalizationForScript:(int64_t)a3
+- (BOOL)_unsafeSupportsPersonalizationForScript:(int64_t)script
 {
   v87 = *MEMORY[0x1E69E9840];
   supportsPersonalization = self->_supportsPersonalization;
-  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a3, v3, v4, v5);
+  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, script, v3, v4, v5);
   v14 = objc_msgSend_objectForKeyedSubscript_(supportsPersonalization, v10, v9, v11, v12, v13);
   v20 = objc_msgSend_BOOLValue(v14, v15, v16, v17, v18, v19);
 
   if (!v20)
   {
-    switch(a3)
+    switch(script)
     {
       case 2:
         v78 = 0u;
@@ -2871,7 +2871,7 @@ LABEL_19:
         _Block_object_dispose(v81, 8);
         _Block_object_dispose(&v82, 8);
 LABEL_24:
-        objc_msgSend_setSupportsPersonalizationForScript_value_(self, v21, a3, v38 & 1, v24, v25);
+        objc_msgSend_setSupportsPersonalizationForScript_value_(self, v21, script, v38 & 1, v24, v25);
         return v38 & 1;
       case 3:
         if (qword_1EA84CEE8 != -1)
@@ -2894,14 +2894,14 @@ LABEL_24:
   }
 
   v26 = self->_supportsPersonalization;
-  v27 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v21, a3, v23, v24, v25);
+  v27 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v21, script, v23, v24, v25);
   v32 = objc_msgSend_objectForKeyedSubscript_(v26, v28, v27, v29, v30, v31);
   LOBYTE(v38) = objc_msgSend_BOOLValue(v32, v33, v34, v35, v36, v37);
 
   return v38 & 1;
 }
 
-- (BOOL)supportsPersonalizationForScript:(int64_t)a3
+- (BOOL)supportsPersonalizationForScript:(int64_t)script
 {
   v9 = 0;
   v10 = &v9;
@@ -2913,18 +2913,18 @@ LABEL_24:
   v8[3] = &unk_1E6DDDB20;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = script;
   objc_msgSend__safelyRunBlock_(self, a2, v8, v3, v4, v5);
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (id)defaultStyleSamplesForPrompt:(id)a3 script:(int64_t)a4 maxStyleSampleLength:(int64_t)a5
+- (id)defaultStyleSamplesForPrompt:(id)prompt script:(int64_t)script maxStyleSampleLength:(int64_t)length
 {
   v216 = *MEMORY[0x1E69E9840];
-  v198 = a3;
-  switch(a4)
+  promptCopy = prompt;
+  switch(script)
   {
     case 3:
       v200[0] = MEMORY[0x1E69E9820];
@@ -2934,15 +2934,15 @@ LABEL_24:
       v200[4] = self;
       objc_msgSend__safelyRunBlock_(self, v7, v200, v8, v9, v10);
       v64 = objc_alloc(MEMORY[0x1E695DF70]);
-      v70 = objc_msgSend_length(v198, v65, v66, v67, v68, v69);
+      v70 = objc_msgSend_length(promptCopy, v65, v66, v67, v68, v69);
       v196 = objc_msgSend_initWithCapacity_(v64, v71, v70, v72, v73, v74);
       (*(*self->_koPrototypes.__ptr_ + 24))(buf);
-      v195 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v75, v198, 3, v76, v77);
+      v195 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v75, promptCopy, 3, v76, v77);
       v88 = objc_msgSend_copy(v195, v78, v79, v80, v81, v82);
       v90 = *&buf[0];
       if (*&buf[0] != (buf + 8))
       {
-        v197 = a5;
+        lengthCopy = length;
         v91 = 0;
         *&v89 = 67109120;
         v194 = v89;
@@ -2967,7 +2967,7 @@ LABEL_24:
           if (v117 < objc_msgSend_count(v88, v118, v119, v120, v121, v122))
           {
             v128 = v116 + v115;
-            if (v128 <= v197)
+            if (v128 <= lengthCopy)
             {
               (*(*self->_koPrototypes.__ptr_ + 16))(__p);
               if (*&__p[0] == *(&__p[0] + 1))
@@ -3086,9 +3086,9 @@ LABEL_24:
       v204[4] = self;
       objc_msgSend__safelyRunBlock_(self, v7, v204, v8, v9, v10);
       v35 = objc_alloc(MEMORY[0x1E695DF70]);
-      v41 = objc_msgSend_length(v198, v36, v37, v38, v39, v40);
+      v41 = objc_msgSend_length(promptCopy, v36, v37, v38, v39, v40);
       v46 = objc_msgSend_initWithCapacity_(v35, v42, v41, v43, v44, v45);
-      v52 = objc_msgSend_length(v198, v47, v48, v49, v50, v51);
+      v52 = objc_msgSend_length(promptCopy, v47, v48, v49, v50, v51);
       v201[0] = MEMORY[0x1E69E9820];
       v201[1] = 3221225472;
       v201[2] = sub_18377A2CC;
@@ -3097,7 +3097,7 @@ LABEL_24:
       v53 = v46;
       v202 = v53;
       v203 = 2;
-      objc_msgSend_enumerateCodepointsInRange_usingBlock_(v198, v54, 0, v52, v201, v55);
+      objc_msgSend_enumerateCodepointsInRange_usingBlock_(promptCopy, v54, 0, v52, v201, v55);
       if (qword_1EA84DC48 != -1)
       {
         dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -3123,7 +3123,7 @@ LABEL_24:
         v208 = 0u;
         v205 = 0u;
         v206 = 0u;
-        v214[0] = v198;
+        v214[0] = promptCopy;
         v214[1] = @"Hello";
         v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v7, v214, 2, v9, v10);
         v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v205, v215, 16, v13);
@@ -3184,7 +3184,7 @@ LABEL_24:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           LODWORD(buf[0]) = 138739971;
-          *(buf + 4) = v198;
+          *(buf + 4) = promptCopy;
           _os_log_impl(&dword_18366B000, v23, OS_LOG_TYPE_ERROR, "Default style samples for prompt: _defaultStyleFastPathBlock returned nil or incomplete result for prompt: %{sensitive}@", buf, 0xCu);
         }
 
@@ -3218,21 +3218,21 @@ LABEL_63:
   return v34;
 }
 
-- (id)styleSamplesForInputSample:(id)a3 prompt:(id)a4 script:(int64_t)a5 samplingAlgorithm:(unint64_t)a6 maxNumOfSamples:(unint64_t)a7
+- (id)styleSamplesForInputSample:(id)sample prompt:(id)prompt script:(int64_t)script samplingAlgorithm:(unint64_t)algorithm maxNumOfSamples:(unint64_t)samples
 {
-  v12 = a3;
-  v13 = a4;
-  v17 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v14, v13, a5, v15, v16);
+  sampleCopy = sample;
+  promptCopy = prompt;
+  v17 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v14, promptCopy, script, v15, v16);
   v23 = objc_msgSend_characterCoverage(self, v18, v19, v20, v21, v22);
   v28 = objc_msgSend_intersectsSet_(v17, v24, v23, v25, v26, v27);
 
   if (v28)
   {
-    if (a6 == 2)
+    if (algorithm == 2)
     {
       v34 = objc_msgSend_styles(self, v29, v30, v31, v32, v33);
       v40 = objc_msgSend_allValues(v34, v35, v36, v37, v38, v39);
-      v42 = objc_msgSend_shortStringHeuristicStyleSampleForPrompt_script_styles_maxNumOfSamples_(self, v41, v13, a5, v40, a7);
+      v42 = objc_msgSend_shortStringHeuristicStyleSampleForPrompt_script_styles_maxNumOfSamples_(self, v41, promptCopy, script, v40, samples);
 
       v43 = objc_alloc(MEMORY[0x1E695DEC8]);
       v47 = objc_msgSend_initWithArray_copyItems_(v43, v44, v42, 1, v45, v46);
@@ -3253,10 +3253,10 @@ LABEL_19:
       goto LABEL_23;
     }
 
-    if (a7 == 1)
+    if (samples == 1)
     {
 LABEL_18:
-      v47 = objc_msgSend_styleSamplesForInputSample_prompt_script_samplingAlgorithm_(self, v29, v12, v13, 1, a6);
+      v47 = objc_msgSend_styleSamplesForInputSample_prompt_script_samplingAlgorithm_(self, v29, sampleCopy, promptCopy, 1, algorithm);
       goto LABEL_19;
     }
 
@@ -3316,10 +3316,10 @@ LABEL_23:
   return v47;
 }
 
-- (BOOL)shouldForceInventoryDefaultStyleWithOptions:(id)a3
+- (BOOL)shouldForceInventoryDefaultStyleWithOptions:(id)options
 {
-  v3 = a3;
-  if (os_variant_has_internal_diagnostics() && objc_msgSend_forceInventoryDefaultStyle(v3, v4, v5, v6, v7, v8))
+  optionsCopy = options;
+  if (os_variant_has_internal_diagnostics() && objc_msgSend_forceInventoryDefaultStyle(optionsCopy, v4, v5, v6, v7, v8))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -3343,21 +3343,21 @@ LABEL_23:
   }
 }
 
-- (id)styleSampleOptionsForRequest:(id)a3 script:(int64_t)a4
+- (id)styleSampleOptionsForRequest:(id)request script:(int64_t)script
 {
   v256 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v12 = objc_msgSend_options(v6, v7, v8, v9, v10, v11);
+  requestCopy = request;
+  v12 = objc_msgSend_options(requestCopy, v7, v8, v9, v10, v11);
   v216 = objc_msgSend_copy(v12, v13, v14, v15, v16, v17);
 
-  if (!objc_msgSend_requestType(v6, v18, v19, v20, v21, v22))
+  if (!objc_msgSend_requestType(requestCopy, v18, v19, v20, v21, v22))
   {
-    v28 = objc_msgSend_options(v6, v23, v24, v25, v26, v27);
+    v28 = objc_msgSend_options(requestCopy, v23, v24, v25, v26, v27);
     isFastPath = objc_msgSend_isFastPath(v28, v29, v30, v31, v32, v33);
 
     if ((isFastPath & 1) == 0)
     {
-      v40 = objc_msgSend_string(v6, v35, v36, v37, v38, v39);
+      v40 = objc_msgSend_string(requestCopy, v35, v36, v37, v38, v39);
       v46 = objc_msgSend_length(v40, v41, v42, v43, v44, v45);
 
       if (!v46)
@@ -3375,7 +3375,7 @@ LABEL_23:
         }
       }
 
-      v53 = objc_msgSend_string(v6, v47, v48, v49, v50, v51);
+      v53 = objc_msgSend_string(requestCopy, v47, v48, v49, v50, v51);
       v59 = objc_msgSend_length(v53, v54, v55, v56, v57, v58) == 0;
 
       if (v59)
@@ -3401,15 +3401,15 @@ LABEL_23:
       v61 = qword_1EA84DC98;
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
-        v67 = objc_msgSend_string(v6, v62, v63, v64, v65, v66);
+        v67 = objc_msgSend_string(requestCopy, v62, v63, v64, v65, v66);
         v73 = objc_msgSend_length(v67, v68, v69, v70, v71, v72);
         *buf = 134217984;
         v237 = v73;
         _os_log_impl(&dword_18366B000, v61, OS_LOG_TYPE_DEFAULT, "Style Sampling: request sent to the inventory to find a style sample for text prompt with length: %lu", buf, 0xCu);
       }
 
-      v79 = objc_msgSend_string(v6, v74, v75, v76, v77, v78);
-      v83 = objc_msgSend_maxStyleSampleLengthForPrompt_script_(CHSynthesisStyleInventory, v80, v79, a4, v81, v82);
+      v79 = objc_msgSend_string(requestCopy, v74, v75, v76, v77, v78);
+      v83 = objc_msgSend_maxStyleSampleLengthForPrompt_script_(CHSynthesisStyleInventory, v80, v79, script, v81, v82);
 
       v232 = 0;
       v233 = &v232;
@@ -3426,10 +3426,10 @@ LABEL_23:
       v219[2] = sub_18377B3DC;
       v219[3] = &unk_1E6DDDB70;
       v219[4] = self;
-      v84 = v6;
+      v84 = requestCopy;
       v220 = v84;
       v222 = &v232;
-      v224 = a4;
+      scriptCopy = script;
       v85 = v216;
       v221 = v85;
       v223 = &v226;
@@ -3450,7 +3450,7 @@ LABEL_23:
         }
 
         v100 = objc_msgSend_string(v84, v95, v96, v97, v98, v99);
-        v103 = objc_msgSend_defaultStyleSamplesForPrompt_script_maxStyleSampleLength_(self, v101, v100, a4, v83, v102);
+        v103 = objc_msgSend_defaultStyleSamplesForPrompt_script_maxStyleSampleLength_(self, v101, v100, script, v83, v102);
         v104 = v227[5];
         v227[5] = v103;
       }
@@ -3472,30 +3472,30 @@ LABEL_23:
         objc_msgSend_setStyleContents_(v85, v117, v112, v118, v119, v120);
         v212 = v112;
         v214 = objc_msgSend_componentsJoinedByString_(v112, v121, @" ", v122, v123, v124);
-        v211 = objc_msgSend_synthesisLengthForString_script_(CHSynthesisStyleSample, v125, v214, a4, v126, v127);
+        v211 = objc_msgSend_synthesisLengthForString_script_(CHSynthesisStyleSample, v125, v214, script, v126, v127);
         v133 = objc_msgSend_string(v84, v128, v129, v130, v131, v132);
-        v210 = objc_msgSend_synthesisLengthForString_script_(CHSynthesisStyleSample, v134, v133, a4, v135, v136);
+        v210 = objc_msgSend_synthesisLengthForString_script_(CHSynthesisStyleSample, v134, v133, script, v135, v136);
 
-        v215 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v137, v214, a4, v138, v139);
+        v215 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v137, v214, script, v138, v139);
         v145 = objc_msgSend_string(v84, v140, v141, v142, v143, v144);
-        v149 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v146, v145, a4, v147, v148);
+        v149 = objc_msgSend_characterCoverageWithString_script_(CHSynthesisStyleSample, v146, v145, script, v147, v148);
 
         v155 = objc_msgSend_string(v84, v150, v151, v152, v153, v154);
-        v213 = objc_msgSend_coverageMaskWithPrompt_script_coveredCharacters_(self, v156, v155, a4, v215, v157);
+        v213 = objc_msgSend_coverageMaskWithPrompt_script_coveredCharacters_(self, v156, v155, script, v215, v157);
 
         v163 = objc_msgSend_mutableCopy(v149, v158, v159, v160, v161, v162);
         objc_msgSend_minusSet_(v163, v164, v215, v165, v166, v167);
-        if (a4 > 3)
+        if (script > 3)
         {
           v209 = 0;
         }
 
         else
         {
-          v209 = off_1E6DDDCF0[a4];
+          v209 = off_1E6DDDCF0[script];
         }
 
-        v172 = objc_msgSend_countOfStyleSamplesForScript_(self, v168, a4, v169, v170, v171);
+        v172 = objc_msgSend_countOfStyleSamplesForScript_(self, v168, script, v169, v170, v171);
         v178 = objc_msgSend_count(v149, v173, v174, v175, v176, v177);
         v184 = objc_msgSend_count(v163, v179, v180, v181, v182, v183);
         v190 = objc_msgSend_count(v149, v185, v186, v187, v188, v189);
@@ -3552,29 +3552,29 @@ LABEL_23:
   return v216;
 }
 
-- (id)coverageMaskWithPrompt:(id)a3 script:(int64_t)a4 coveredCharacters:(id)a5
+- (id)coverageMaskWithPrompt:(id)prompt script:(int64_t)script coveredCharacters:(id)characters
 {
-  v7 = a3;
-  v8 = a5;
+  promptCopy = prompt;
+  charactersCopy = characters;
   v14 = objc_msgSend_string(MEMORY[0x1E696AD60], v9, v10, v11, v12, v13);
-  v20 = objc_msgSend_length(v7, v15, v16, v17, v18, v19);
+  v20 = objc_msgSend_length(promptCopy, v15, v16, v17, v18, v19);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = sub_18377B898;
   v27[3] = &unk_1E6DDDB98;
-  v30 = a4;
-  v21 = v8;
+  scriptCopy = script;
+  v21 = charactersCopy;
   v28 = v21;
   v22 = v14;
   v29 = v22;
-  objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v7, v23, 0, v20, 2, v27);
+  objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(promptCopy, v23, 0, v20, 2, v27);
   v24 = v29;
   v25 = v22;
 
   return v22;
 }
 
-- (unint64_t)countOfStyleSamplesForScript:(int64_t)a3
+- (unint64_t)countOfStyleSamplesForScript:(int64_t)script
 {
   v9 = 0;
   v10 = &v9;
@@ -3585,7 +3585,7 @@ LABEL_23:
   v8[2] = sub_18377BA50;
   v8[3] = &unk_1E6DDDB20;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = script;
   v8[4] = self;
   objc_msgSend__safelyRunBlock_(self, a2, v8, v3, v4, v5);
   v6 = v10[3];
@@ -3611,10 +3611,10 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -3632,8 +3632,8 @@ LABEL_23:
       v11[1] = 3221225472;
       v11[2] = sub_18377BD3C;
       v11[3] = &unk_1E6DDC840;
-      v12 = v4;
-      v13 = self;
+      v12 = equalCopy;
+      selfCopy = self;
       v14 = &v15;
       objc_msgSend__safelyRunBlock_(self, v5, v11, v6, v7, v8);
       v9 = *(v16 + 24);
@@ -3650,14 +3650,14 @@ LABEL_23:
   return v9 & 1;
 }
 
-- (void)clearSamplesEmbeddingVectorForScript:(int64_t)a3
+- (void)clearSamplesEmbeddingVectorForScript:(int64_t)script
 {
   v30 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = objc_msgSend_styles(self, a2, a3, v3, v4, v5, 0);
+  v7 = objc_msgSend_styles(self, a2, script, v3, v4, v5, 0);
   v13 = objc_msgSend_allValues(v7, v8, v9, v10, v11, v12);
 
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v25, v29, 16, v15);
@@ -3674,7 +3674,7 @@ LABEL_23:
         }
 
         v24 = *(*(&v25 + 1) + 8 * i);
-        if (objc_msgSend_script(v24, v16, v17, v18, v19, v20) == a3)
+        if (objc_msgSend_script(v24, v16, v17, v18, v19, v20) == script)
         {
           objc_msgSend_clearEmbeddingVector(v24, v16, v17, v18, v19, v20);
         }
@@ -3687,42 +3687,42 @@ LABEL_23:
   }
 }
 
-- (void)updateSynthesisModelHashLatin:(id)a3
+- (void)updateSynthesisModelHashLatin:(id)latin
 {
-  v4 = a3;
+  latinCopy = latin;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_18377C1C8;
   v10[3] = &unk_1E6DDC818;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = latinCopy;
+  v5 = latinCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
-- (void)updateSynthesisModelHashZhJa:(id)a3
+- (void)updateSynthesisModelHashZhJa:(id)ja
 {
-  v4 = a3;
+  jaCopy = ja;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_18377C314;
   v10[3] = &unk_1E6DDC818;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = jaCopy;
+  v5 = jaCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
-- (void)updateSynthesisModelHashKo:(id)a3
+- (void)updateSynthesisModelHashKo:(id)ko
 {
-  v4 = a3;
+  koCopy = ko;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_18377C460;
   v10[3] = &unk_1E6DDC818;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = koCopy;
+  v5 = koCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
@@ -3796,21 +3796,21 @@ LABEL_23:
   objc_msgSend__safelyRunBlock_(self, a2, v5, v2, v3, v4);
 }
 
-- (void)addSampleOfSynthesizedCharacter:(id)a3 transcription:(id)a4 key:(unsigned int)a5 version:(int64_t)a6
+- (void)addSampleOfSynthesizedCharacter:(id)character transcription:(id)transcription key:(unsigned int)key version:(int64_t)version
 {
-  v10 = a3;
-  v11 = a4;
+  characterCopy = character;
+  transcriptionCopy = transcription;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_18377CBA0;
   v18[3] = &unk_1E6DDDC38;
-  v22 = a5;
+  keyCopy = key;
   v18[4] = self;
-  v19 = v11;
-  v20 = v10;
-  v21 = a6;
-  v12 = v10;
-  v13 = v11;
+  v19 = transcriptionCopy;
+  v20 = characterCopy;
+  versionCopy = version;
+  v12 = characterCopy;
+  v13 = transcriptionCopy;
   objc_msgSend__safelyRunBlock_(self, v14, v18, v15, v16, v17);
 }
 
@@ -3918,16 +3918,16 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)removeStyleSamplesIfNeededWithMaximumSize:(int64_t)a3 minimumSampleCountByCharacter:(int64_t)a4
+- (void)removeStyleSamplesIfNeededWithMaximumSize:(int64_t)size minimumSampleCountByCharacter:(int64_t)character
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_18377D0B4;
   v6[3] = &unk_1E6DDC8E0;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  objc_msgSend__safelyRunBlock_(self, a2, v6, a4, v4, v5);
+  v6[5] = size;
+  v6[6] = character;
+  objc_msgSend__safelyRunBlock_(self, a2, v6, character, v4, v5);
 }
 
 - (BOOL)hasAllDigits
@@ -3948,20 +3948,20 @@ LABEL_18:
   return v5;
 }
 
-+ (id)statusWithInventory:(id)a3
++ (id)statusWithInventory:(id)inventory
 {
-  v3 = a3;
-  v9 = CHHasHandwritingGenerationAllowed(v3, v4, v5, v6, v7, v8);
+  inventoryCopy = inventory;
+  v9 = CHHasHandwritingGenerationAllowed(inventoryCopy, v4, v5, v6, v7, v8);
   v15 = objc_msgSend_modelStatus(CHPersonalizedSynthesisModelStatus, v10, v11, v12, v13, v14);
   v16 = [CHSynthesisStyleInventoryStatus alloc];
   IsGenerationAllowed_personalizedSynthesisModelState = objc_msgSend_initWithIsGenerationAllowed_personalizedSynthesisModelState_(v16, v17, v9, v15, v18, v19);
   if (os_variant_has_internal_diagnostics())
   {
     v21 = [CHSynthesisStyleInventoryStatus alloc];
-    hasAllDigits = objc_msgSend_hasAllDigits(v3, v22, v23, v24, v25, v26);
-    v33 = objc_msgSend_countOfStyleSamples(v3, v28, v29, v30, v31, v32);
-    v39 = objc_msgSend_characterCoverage(v3, v34, v35, v36, v37, v38);
-    v45 = objc_msgSend_inventoryStorageURL(v3, v40, v41, v42, v43, v44);
+    hasAllDigits = objc_msgSend_hasAllDigits(inventoryCopy, v22, v23, v24, v25, v26);
+    v33 = objc_msgSend_countOfStyleSamples(inventoryCopy, v28, v29, v30, v31, v32);
+    v39 = objc_msgSend_characterCoverage(inventoryCopy, v34, v35, v36, v37, v38);
+    v45 = objc_msgSend_inventoryStorageURL(inventoryCopy, v40, v41, v42, v43, v44);
     v51 = objc_msgSend_relativePath(CHSynthesisStyleInventory, v46, v47, v48, v49, v50);
     hasAllDigits_styleSampleCount_samplesWithoutStylePredictionCount_characterCoverage_inventoryStorageURL_inventoryRelativePath = objc_msgSend_initWithIsGenerationAllowed_personalizedSynthesisModelState_hasAllDigits_styleSampleCount_samplesWithoutStylePredictionCount_characterCoverage_inventoryStorageURL_inventoryRelativePath_(v21, v52, v9, v15, hasAllDigits, v33, -1, v39, v45, v51);
 
@@ -3971,26 +3971,26 @@ LABEL_18:
   return IsGenerationAllowed_personalizedSynthesisModelState;
 }
 
-- (void)enumerateStyleSamplesUsingBlock:(id)a3
+- (void)enumerateStyleSamplesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_18377DDB8;
   v10[3] = &unk_1E6DDCE50;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = blockCopy;
+  v5 = blockCopy;
   objc_msgSend__safelyRunBlock_(self, v6, v10, v7, v8, v9);
 }
 
-- (void)_safelyRunBlock:(id)a3
+- (void)_safelyRunBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   label = dispatch_queue_get_label(0);
   if (!strcmp(label, "com.apple.CoreHandwriting.CHSynthesisStyleInventoryQueue") || (objc_msgSend__workQueue(self, v6, v7, v8, v9, v10), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   else
@@ -4000,7 +4000,7 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = sub_18377DFA0;
     block[3] = &unk_1E6DDC908;
-    v19 = v4;
+    v19 = blockCopy;
     dispatch_sync(v17, block);
   }
 }

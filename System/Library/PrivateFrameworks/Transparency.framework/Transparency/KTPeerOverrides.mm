@@ -1,26 +1,26 @@
 @interface KTPeerOverrides
 + (id)listPeerOverrides;
-+ (void)clearPeerOverride:(id)a3 application:(id)a4;
-+ (void)setPeerOverride:(id)a3 application:(id)a4 state:(id)a5;
++ (void)clearPeerOverride:(id)override application:(id)application;
++ (void)setPeerOverride:(id)override application:(id)application state:(id)state;
 @end
 
 @implementation KTPeerOverrides
 
-+ (void)setPeerOverride:(id)a3 application:(id)a4 state:(id)a5
++ (void)setPeerOverride:(id)override application:(id)application state:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  overrideCopy = override;
+  applicationCopy = application;
+  stateCopy = state;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__KTPeerOverrides_setPeerOverride_application_state___block_invoke;
   v13[3] = &unk_1E8701168;
-  v14 = v7;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v14 = overrideCopy;
+  v15 = applicationCopy;
+  v16 = stateCopy;
+  v10 = stateCopy;
+  v11 = applicationCopy;
+  v12 = overrideCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v13 errorHandler:&__block_literal_global];
 }
 
@@ -51,18 +51,18 @@ uint64_t __53__KTPeerOverrides_setPeerOverride_application_state___block_invoke_
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)clearPeerOverride:(id)a3 application:(id)a4
++ (void)clearPeerOverride:(id)override application:(id)application
 {
-  v5 = a3;
-  v6 = a4;
+  overrideCopy = override;
+  applicationCopy = application;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__KTPeerOverrides_clearPeerOverride_application___block_invoke;
   v9[3] = &unk_1E87011D0;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = overrideCopy;
+  v11 = applicationCopy;
+  v7 = applicationCopy;
+  v8 = overrideCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v9 errorHandler:&__block_literal_global_34];
 }
 

@@ -1,20 +1,20 @@
 @interface HMIHomeTask
-- (HMIHomeTask)initWithTaskID:(int)a3 homeUUID:(id)a4 timeout:(double)a5;
+- (HMIHomeTask)initWithTaskID:(int)d homeUUID:(id)iD timeout:(double)timeout;
 @end
 
 @implementation HMIHomeTask
 
-- (HMIHomeTask)initWithTaskID:(int)a3 homeUUID:(id)a4 timeout:(double)a5
+- (HMIHomeTask)initWithTaskID:(int)d homeUUID:(id)iD timeout:(double)timeout
 {
-  v7 = *&a3;
-  v9 = a4;
+  v7 = *&d;
+  iDCopy = iD;
   v13.receiver = self;
   v13.super_class = HMIHomeTask;
-  v10 = [(HMITask *)&v13 initWithTaskID:v7 timeout:a5];
+  v10 = [(HMITask *)&v13 initWithTaskID:v7 timeout:timeout];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_homeUUID, a4);
+    objc_storeStrong(&v10->_homeUUID, iD);
   }
 
   return v11;

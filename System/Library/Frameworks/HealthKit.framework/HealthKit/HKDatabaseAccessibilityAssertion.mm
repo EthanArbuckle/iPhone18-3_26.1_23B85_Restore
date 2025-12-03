@@ -1,25 +1,25 @@
 @interface HKDatabaseAccessibilityAssertion
-- (HKDatabaseAccessibilityAssertion)initWithCoder:(id)a3;
-- (HKDatabaseAccessibilityAssertion)initWithOwnerIdentifier:(id)a3 uuidString:(id)a4;
+- (HKDatabaseAccessibilityAssertion)initWithCoder:(id)coder;
+- (HKDatabaseAccessibilityAssertion)initWithOwnerIdentifier:(id)identifier uuidString:(id)string;
 - (HKHealthStore)healthStore;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
 @implementation HKDatabaseAccessibilityAssertion
 
-- (HKDatabaseAccessibilityAssertion)initWithOwnerIdentifier:(id)a3 uuidString:(id)a4
+- (HKDatabaseAccessibilityAssertion)initWithOwnerIdentifier:(id)identifier uuidString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  stringCopy = string;
   v14.receiver = self;
   v14.super_class = HKDatabaseAccessibilityAssertion;
   v9 = [(HKDatabaseAccessibilityAssertion *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ownerIdentifier, a3);
-    v11 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v8];
+    objc_storeStrong(&v9->_ownerIdentifier, identifier);
+    v11 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:stringCopy];
     UUID = v10->_UUID;
     v10->_UUID = v11;
 
@@ -33,34 +33,34 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19197B000, a2, OS_LOG_TYPE_ERROR, "Attempted to invalidate an invalid assertion %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   ownerIdentifier = self->_ownerIdentifier;
-  v7 = v4;
+  v7 = coderCopy;
   if (ownerIdentifier)
   {
-    [v4 encodeObject:ownerIdentifier forKey:@"OwnerIdentifier"];
-    v4 = v7;
+    [coderCopy encodeObject:ownerIdentifier forKey:@"OwnerIdentifier"];
+    coderCopy = v7;
   }
 
   UUID = self->_UUID;
   if (UUID)
   {
     [v7 encodeObject:UUID forKey:@"UniqueIdentifier"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (HKDatabaseAccessibilityAssertion)initWithCoder:(id)a3
+- (HKDatabaseAccessibilityAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (![v4 containsValueForKey:@"OwnerIdentifier"])
+  coderCopy = coder;
+  if (![coderCopy containsValueForKey:@"OwnerIdentifier"])
   {
     _HKInitializeLogging();
     v5 = HKLogAssertions();
@@ -72,8 +72,8 @@
     goto LABEL_9;
   }
 
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OwnerIdentifier"];
-  if (([v4 containsValueForKey:@"UniqueIdentifier"] & 1) == 0)
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OwnerIdentifier"];
+  if (([coderCopy containsValueForKey:@"UniqueIdentifier"] & 1) == 0)
   {
     _HKInitializeLogging();
     v10 = HKLogAssertions();
@@ -83,21 +83,21 @@
     }
 
 LABEL_9:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UniqueIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UniqueIdentifier"];
   UUID = self->_UUID;
   self->_UUID = v6;
 
-  v8 = [(NSUUID *)self->_UUID UUIDString];
-  self = [(HKDatabaseAccessibilityAssertion *)self initWithOwnerIdentifier:v5 uuidString:v8];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  self = [(HKDatabaseAccessibilityAssertion *)self initWithOwnerIdentifier:v5 uuidString:uUIDString];
 
-  v9 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
 - (HKHealthStore)healthStore

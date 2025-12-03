@@ -28,8 +28,8 @@
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB28]);
-  v5 = [(MKHTTPHeaders *)self->_headers responseHeadersData];
-  [v4 appendData:v5];
+  responseHeadersData = [(MKHTTPHeaders *)self->_headers responseHeadersData];
+  [v4 appendData:responseHeadersData];
 
   if (self->_body)
   {

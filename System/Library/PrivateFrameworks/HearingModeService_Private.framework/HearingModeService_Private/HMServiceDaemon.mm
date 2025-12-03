@@ -1,21 +1,21 @@
 @interface HMServiceDaemon
 + (id)sharedHMServiceDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (HMServiceDaemon)init;
 - (void)_activate;
-- (void)_modifyDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_reportDeviceRecordChange:(id)a3;
-- (void)_reportDeviceRecordLost:(id)a3;
-- (void)_reportValidAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5;
-- (void)_triggerDiagnosticCheckForIdentifier:(id)a3 completion:(id)a4;
+- (void)_modifyDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion;
+- (void)_reportDeviceRecordChange:(id)change;
+- (void)_reportDeviceRecordLost:(id)lost;
+- (void)_reportValidAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error;
+- (void)_triggerDiagnosticCheckForIdentifier:(id)identifier completion:(id)completion;
 - (void)_update;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
 - (void)invalidate;
-- (void)reportDeviceRecordChange:(id)a3;
-- (void)reportDeviceRecordLost:(id)a3;
-- (void)reportDiagnosticRecordChange:(id)a3;
-- (void)reportValidAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5;
+- (void)reportDeviceRecordChange:(id)change;
+- (void)reportDeviceRecordLost:(id)lost;
+- (void)reportDiagnosticRecordChange:(id)change;
+- (void)reportValidAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error;
 @end
 
 @implementation HMServiceDaemon
@@ -140,9 +140,9 @@ uint64_t __27__HMServiceDaemon_activate__block_invoke(uint64_t a1)
   v5 = +[HMDeviceManager sharedInstance];
   [v5 setDispatchQueue:self->_dispatchQueue];
 
-  v6 = [(HMServiceDaemon *)self internalAAServicesDaemon];
+  internalAAServicesDaemon = [(HMServiceDaemon *)self internalAAServicesDaemon];
   v7 = +[HMDeviceManager sharedInstance];
-  [v7 setInternalAAServicesDaemon:v6];
+  [v7 setInternalAAServicesDaemon:internalAAServicesDaemon];
 
   v8 = +[HMDeviceManager sharedInstance];
   [v8 activate];
@@ -179,9 +179,9 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
   [v5 invalidate];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28643E8B0];
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
   v8 = objc_opt_class();
@@ -191,7 +191,7 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
   v10 = objc_alloc_init(HMServiceXPCConnection);
   [(HMServiceXPCConnection *)v10 setDaemon:self];
   [(HMServiceXPCConnection *)v10 setDispatchQueue:self->_dispatchQueue];
-  [(HMServiceXPCConnection *)v10 setXpcCnx:v5];
+  [(HMServiceXPCConnection *)v10 setXpcCnx:connectionCopy];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -203,73 +203,73 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
   }
 
   [(NSMutableSet *)xpcConnections addObject:v10];
-  [v5 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v14 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28643C700];
-  [v5 setExportedInterface:v14];
+  [connectionCopy setExportedInterface:v14];
 
-  [v5 setExportedObject:v10];
+  [connectionCopy setExportedObject:v10];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__HMServiceDaemon_listener_shouldAcceptNewConnection___block_invoke;
   v16[3] = &unk_2796EFEC8;
   v16[4] = self;
   v16[5] = v10;
-  [v5 setInvalidationHandler:v16];
-  [v5 setRemoteObjectInterface:v6];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v16];
+  [connectionCopy setRemoteObjectInterface:v6];
+  [connectionCopy resume];
   if (gLogCategory_HMServiceDaemon <= 20 && (gLogCategory_HMServiceDaemon != -1 || _LogCategory_Initialize()))
   {
-    [HMServiceDaemon listener:v5 shouldAcceptNewConnection:?];
+    [HMServiceDaemon listener:connectionCopy shouldAcceptNewConnection:?];
   }
 
   return 1;
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v6 = v4;
+  invalidatedCopy = invalidated;
+  v6 = invalidatedCopy;
   if (gLogCategory_HMServiceDaemon <= 20)
   {
-    if (gLogCategory_HMServiceDaemon != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (gLogCategory_HMServiceDaemon != -1 || (v5 = _LogCategory_Initialize(), invalidatedCopy = v6, v5))
     {
-      [HMServiceDaemon _xpcConnectionInvalidated:v4];
-      v4 = v6;
+      [HMServiceDaemon _xpcConnectionInvalidated:invalidatedCopy];
+      invalidatedCopy = v6;
     }
   }
 
-  [v4 xpcConnectionInvalidated];
+  [invalidatedCopy xpcConnectionInvalidated];
   [(NSMutableSet *)self->_xpcConnections removeObject:v6];
   [(HMServiceDaemon *)self _update];
 }
 
-- (void)_modifyDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_modifyDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  configCopy = config;
   v10 = +[HMDeviceManager sharedInstance];
-  [v10 _modifyDeviceConfiguration:v9 identifier:v8 completion:v7];
+  [v10 _modifyDeviceConfiguration:configCopy identifier:identifierCopy completion:completionCopy];
 }
 
-- (void)reportDeviceRecordChange:(id)a3
+- (void)reportDeviceRecordChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__HMServiceDaemon_reportDeviceRecordChange___block_invoke;
   v7[3] = &unk_2796EFEC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportDeviceRecordChange:(id)a3
+- (void)_reportDeviceRecordChange:(id)change
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -290,10 +290,10 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 hearingModeClient];
-        if (v11)
+        hearingModeClient = [v10 hearingModeClient];
+        if (hearingModeClient)
         {
-          [v10 clientReportHMDeviceRecordChanged:v4];
+          [v10 clientReportHMDeviceRecordChanged:changeCopy];
         }
       }
 
@@ -306,24 +306,24 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportDeviceRecordLost:(id)a3
+- (void)reportDeviceRecordLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HMServiceDaemon_reportDeviceRecordLost___block_invoke;
   v7[3] = &unk_2796EFEC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lostCopy;
+  v6 = lostCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportDeviceRecordLost:(id)a3
+- (void)_reportDeviceRecordLost:(id)lost
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -344,7 +344,7 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) clientReportHMDeviceRecordLost:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) clientReportHMDeviceRecordLost:{lostCopy, v11}];
       }
 
       while (v7 != v9);
@@ -357,10 +357,10 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportDiagnosticRecordChange:(id)a3
+- (void)reportDiagnosticRecordChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -381,12 +381,12 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 hearingModeClient];
-        v12 = [v11 internalFlags];
+        hearingModeClient = [v10 hearingModeClient];
+        internalFlags = [hearingModeClient internalFlags];
 
-        if (v12)
+        if (internalFlags)
         {
-          [v10 clientReportDiagnosticRecord:v4];
+          [v10 clientReportDiagnosticRecord:changeCopy];
         }
       }
 
@@ -399,32 +399,32 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportValidAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5
+- (void)reportValidAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  audiogramsCopy = audiograms;
+  invalidAudiogramsCopy = invalidAudiograms;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HMServiceDaemon_reportValidAudiograms_invalidAudiograms_error___block_invoke;
   v15[3] = &unk_2796F0168;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = audiogramsCopy;
+  v17 = invalidAudiogramsCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = invalidAudiogramsCopy;
+  v14 = audiogramsCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)_reportValidAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5
+- (void)_reportValidAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  audiogramsCopy = audiograms;
+  invalidAudiogramsCopy = invalidAudiograms;
+  errorCopy = error;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -445,10 +445,10 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        v17 = [v16 hearingModeClient];
-        if (v17)
+        hearingModeClient = [v16 hearingModeClient];
+        if (hearingModeClient)
         {
-          [v16 clientReportValidAudiograms:v8 invalidAudiograms:v9 error:v10];
+          [v16 clientReportValidAudiograms:audiogramsCopy invalidAudiograms:invalidAudiogramsCopy error:errorCopy];
         }
       }
 
@@ -461,12 +461,12 @@ void __29__HMServiceDaemon_invalidate__block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_triggerDiagnosticCheckForIdentifier:(id)a3 completion:(id)a4
+- (void)_triggerDiagnosticCheckForIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = +[HMDeviceManager sharedInstance];
-  [v7 _triggerDiagnosticCheckForIdentifier:v6 completion:v5];
+  [v7 _triggerDiagnosticCheckForIdentifier:identifierCopy completion:completionCopy];
 }
 
 - (void)_xpcConnectionInvalidated:(void *)a1 .cold.1(void *a1)

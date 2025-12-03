@@ -1,22 +1,22 @@
 @interface DynamicTypeTextField
 - (BOOL)jet_isTextExtraTall;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (UIEdgeInsets)jet_languageAwareOutsets;
 - (UIFont)font;
 - (int64_t)jet_textLength;
 - (int64_t)textAlignment;
-- (void)setFont:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFont:(id)font;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DynamicTypeTextField
 
 - (BOOL)jet_isTextExtraTall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E01C398();
 
   return v3 & 1;
@@ -24,7 +24,7 @@
 
 - (UIEdgeInsets)jet_languageAwareOutsets
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E01C51C();
   v4 = v3;
   v6 = v5;
@@ -44,7 +44,7 @@
 
 - (int64_t)jet_textLength
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E01C5DC();
 
   return v3;
@@ -52,47 +52,47 @@
 
 - (UIFont)font
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E2D2410();
 
   return v3;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E2D24B8(a3);
+  fontCopy = font;
+  selfCopy = self;
+  sub_24E2D24B8(font);
 }
 
 - (int64_t)textAlignment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E2D25BC();
 
   return v3;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  v4 = self;
-  sub_24E2D2648(a3);
+  selfCopy = self;
+  sub_24E2D2648(alignment);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E2D27B8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E2D27B8(change);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
+  height = fitting.height;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_24E2D2AF0(a4, width, height);
+  selfCopy = self;
+  sub_24E2D2AF0(in, width, height);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -110,7 +110,7 @@
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
   v3 = sub_24E2D2D48();
   result.size.height = v6;
@@ -120,7 +120,7 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
   v3 = sub_24E2D2D48();
   result.size.height = v6;

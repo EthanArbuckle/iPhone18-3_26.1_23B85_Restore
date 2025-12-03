@@ -1,9 +1,9 @@
 @interface FigStillDepthProcessorANE
 - (FigStillDepthProcessorANE)init;
-- (FigStillDepthProcessorANE)initWithParameters:(depthProcessorParameters *)a3 commandQueue:(id)a4;
-- (int)convertDepth:(__CVBuffer *)a3 toDisparity:(__CVBuffer *)a4;
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 parametersDictionary:(id)a5 outputDisparityBuffer:(__CVBuffer *)a6;
-- (int)scaleInputDepth:(__CVBuffer *)a3 toDisparity:(__CVBuffer *)a4;
+- (FigStillDepthProcessorANE)initWithParameters:(depthProcessorParameters *)parameters commandQueue:(id)queue;
+- (int)convertDepth:(__CVBuffer *)depth toDisparity:(__CVBuffer *)disparity;
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer;
+- (int)scaleInputDepth:(__CVBuffer *)depth toDisparity:(__CVBuffer *)disparity;
 - (void)dealloc;
 @end
 
@@ -18,9 +18,9 @@
   return v7;
 }
 
-- (FigStillDepthProcessorANE)initWithParameters:(depthProcessorParameters *)a3 commandQueue:(id)a4
+- (FigStillDepthProcessorANE)initWithParameters:(depthProcessorParameters *)parameters commandQueue:(id)queue
 {
-  v5 = a4;
+  queueCopy = queue;
   v29.receiver = self;
   v29.super_class = FigStillDepthProcessorANE;
   v6 = [(FigStillDepthProcessorANE *)&v29 init];
@@ -34,7 +34,7 @@
   v8 = objc_opt_class();
   v13 = objc_msgSend_bundleForClass_(v7, v9, v8, v10, v11, v12);
   v14 = objc_alloc(MEMORY[0x29EDC0A40]);
-  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v14, v15, v13, v5, v16, v17);
+  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v14, v15, v13, queueCopy, v16, v17);
   v19 = *(v6 + 1);
   *(v6 + 1) = inited;
 
@@ -64,14 +64,14 @@ LABEL_7:
   return v27;
 }
 
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 parametersDictionary:(id)a5 outputDisparityBuffer:(__CVBuffer *)a6
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer
 {
-  v12 = a5;
-  if (a3)
+  dictionaryCopy = dictionary;
+  if (buffer)
   {
-    if (a6)
+    if (disparityBuffer)
     {
-      if (!objc_msgSend_convertDepth_toDisparity_(self, v9, a3, a6, v10, v11))
+      if (!objc_msgSend_convertDepth_toDisparity_(self, v9, buffer, disparityBuffer, v10, v11))
       {
         self->_disparityQualityScore = 1.0;
         self->_disparityQualityIsHigh = 1;
@@ -126,12 +126,12 @@ LABEL_9:
   return v21;
 }
 
-- (int)scaleInputDepth:(__CVBuffer *)a3 toDisparity:(__CVBuffer *)a4
+- (int)scaleInputDepth:(__CVBuffer *)depth toDisparity:(__CVBuffer *)disparity
 {
-  v7 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, a2, a3, 55, 17, 0);
+  v7 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, a2, depth, 55, 17, 0);
   if (v7)
   {
-    v11 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v6, a4, 25, 23, 0);
+    v11 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v6, disparity, 25, 23, 0);
     if (v11)
     {
       v12 = objc_msgSend_scaleFromDepth_toDisparity_(self->_depthScaling, v8, v7, v11, v9, v10);
@@ -158,25 +158,25 @@ LABEL_9:
   return v12;
 }
 
-- (int)convertDepth:(__CVBuffer *)a3 toDisparity:(__CVBuffer *)a4
+- (int)convertDepth:(__CVBuffer *)depth toDisparity:(__CVBuffer *)disparity
 {
-  if (a3)
+  if (depth)
   {
-    if (a4)
+    if (disparity)
     {
-      if (CVPixelBufferGetPixelFormatType(a3) == 1717855600)
+      if (CVPixelBufferGetPixelFormatType(depth) == 1717855600)
       {
-        if (CVPixelBufferGetPixelFormatType(a4) == 1751411059)
+        if (CVPixelBufferGetPixelFormatType(disparity) == 1751411059)
         {
-          if (CVPixelBufferGetWidth(a3))
+          if (CVPixelBufferGetWidth(depth))
           {
-            if (CVPixelBufferGetHeight(a3))
+            if (CVPixelBufferGetHeight(depth))
             {
-              if (CVPixelBufferGetWidth(a4))
+              if (CVPixelBufferGetWidth(disparity))
               {
-                if (CVPixelBufferGetHeight(a4))
+                if (CVPixelBufferGetHeight(disparity))
                 {
-                  objc_msgSend_scaleInputDepth_toDisparity_(self, v7, a3, a4, v8, v9);
+                  objc_msgSend_scaleInputDepth_toDisparity_(self, v7, depth, disparity, v8, v9);
                   objc_msgSend_waitForSchedule(self->_metalContext, v10, v11, v12, v13, v14);
                 }
 

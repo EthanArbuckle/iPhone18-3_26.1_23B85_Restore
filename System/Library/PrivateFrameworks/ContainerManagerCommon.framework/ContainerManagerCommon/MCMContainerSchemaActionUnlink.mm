@@ -1,25 +1,25 @@
 @interface MCMContainerSchemaActionUnlink
 + (id)actionIdentifier;
-- (BOOL)performWithError:(id *)a3;
-- (MCMContainerSchemaActionUnlink)initWithPathArgument:(id)a3 context:(id)a4;
+- (BOOL)performWithError:(id *)error;
+- (MCMContainerSchemaActionUnlink)initWithPathArgument:(id)argument context:(id)context;
 - (NSString)description;
 @end
 
 @implementation MCMContainerSchemaActionUnlink
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   url = self->_url;
   v13[0] = 0;
   v5 = [(MCMContainerSchemaActionBase *)self fixAndRetryIfPermissionsErrorWithURL:url error:v13 duringBlock:&__block_literal_global_2650];
   v6 = v13[0];
-  v7 = [v6 domain];
-  if ([v7 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v6 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v8 = [v6 code];
+    code = [v6 code];
 
-    if (v8 == 2)
+    if (code == 2)
     {
 
       v6 = 0;
@@ -32,7 +32,7 @@
   {
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v5;
   }
@@ -46,7 +46,7 @@
   {
     v10 = v6;
     v5 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_10:
@@ -69,27 +69,27 @@ uint64_t __51__MCMContainerSchemaActionUnlink_performWithError___block_invoke(ui
 - (NSString)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() actionIdentifier];
-  v4 = [(NSURL *)self->_url path];
-  v5 = [v3 stringByAppendingFormat:@" [%@]", v4];
+  actionIdentifier = [objc_opt_class() actionIdentifier];
+  path = [(NSURL *)self->_url path];
+  v5 = [actionIdentifier stringByAppendingFormat:@" [%@]", path];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (MCMContainerSchemaActionUnlink)initWithPathArgument:(id)a3 context:(id)a4
+- (MCMContainerSchemaActionUnlink)initWithPathArgument:(id)argument context:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  argumentCopy = argument;
   v12.receiver = self;
   v12.super_class = MCMContainerSchemaActionUnlink;
-  v7 = [(MCMContainerSchemaActionBase *)&v12 initWithContext:a4];
+  v7 = [(MCMContainerSchemaActionBase *)&v12 initWithContext:context];
   if (v7)
   {
-    v8 = [v6 fileURL];
+    fileURL = [argumentCopy fileURL];
     url = v7->_url;
-    v7->_url = v8;
+    v7->_url = fileURL;
 
     if (!v7->_url)
     {

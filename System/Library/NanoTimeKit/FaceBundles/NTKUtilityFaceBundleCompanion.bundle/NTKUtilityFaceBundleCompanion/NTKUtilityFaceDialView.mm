@@ -1,24 +1,24 @@
 @interface NTKUtilityFaceDialView
-- (NTKUtilityFaceDialView)initWithDevice:(id)a3;
+- (NTKUtilityFaceDialView)initWithDevice:(id)device;
 - (void)layoutSubviews;
-- (void)setConfig:(id)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)transitionFromConfig:(id)a3 toConfig:(id)a4 withFraction:(double)a5;
+- (void)setConfig:(id)config;
+- (void)setStyle:(unint64_t)style;
+- (void)transitionFromConfig:(id)config toConfig:(id)toConfig withFraction:(double)fraction;
 @end
 
 @implementation NTKUtilityFaceDialView
 
-- (NTKUtilityFaceDialView)initWithDevice:(id)a3
+- (NTKUtilityFaceDialView)initWithDevice:(id)device
 {
-  v5 = a3;
-  [v5 screenBounds];
+  deviceCopy = device;
+  [deviceCopy screenBounds];
   v20.receiver = self;
   v20.super_class = NTKUtilityFaceDialView;
   v6 = [(NTKUtilityFaceDialView *)&v20 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = [UIImageView alloc];
     [(CLKDevice *)v7->_device screenBounds];
     v9 = [v8 initWithFrame:?];
@@ -40,7 +40,7 @@
     v7->_dialImageView = v15;
 
     [(UIImageView *)v7->_dialImageView setContentMode:4];
-    v17 = [NTKUtilityFaceDialFactory dialImageForDevice:v5];
+    v17 = [NTKUtilityFaceDialFactory dialImageForDevice:deviceCopy];
     v18 = [v17 imageWithRenderingMode:2];
     [(UIImageView *)v7->_dialImageView setImage:v18];
 
@@ -66,9 +66,9 @@
   [(UIImageView *)dialImageView setFrame:?];
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
-  self->_transitionFrom = a3;
+  self->_transitionFrom = config;
   numberImageView = self->_numberImageView;
   device = self->_device;
   v6 = [NTKUtilityFaceDialFactory numbersImageForStyle:"numbersImageForStyle:typeface:device:" typeface:? device:?];
@@ -81,28 +81,28 @@
   [(UIImageView *)transitionNumberImageView setAlpha:0.0];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_transitionFrom.style = a3;
+  self->_transitionFrom.style = style;
   language = self->_transitionFrom.language;
   [(NTKUtilityFaceDialView *)self setConfig:?];
 }
 
-- (void)transitionFromConfig:(id)a3 toConfig:(id)a4 withFraction:(double)a5
+- (void)transitionFromConfig:(id)config toConfig:(id)toConfig withFraction:(double)fraction
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  if (a5 == 1.0)
+  var1 = toConfig.var1;
+  var0 = toConfig.var0;
+  if (fraction == 1.0)
   {
 
-    [(NTKUtilityFaceDialView *)self setConfig:a4.var0, a4.var1];
+    [(NTKUtilityFaceDialView *)self setConfig:toConfig.var0, toConfig.var1];
   }
 
   else
   {
-    if (self->_transitionFrom.style != a3.var0 || self->_transitionFrom.language != a3.var1)
+    if (self->_transitionFrom.style != config.var0 || self->_transitionFrom.language != config.var1)
     {
-      self->_transitionFrom = a3;
+      self->_transitionFrom = config;
       numberImageView = self->_numberImageView;
       device = self->_device;
       v12 = [NTKUtilityFaceDialFactory numbersImageForStyle:"numbersImageForStyle:typeface:device:" typeface:? device:?];
@@ -122,10 +122,10 @@
       [(UIImageView *)self->_transitionNumberImageView setContentMode:4];
     }
 
-    [(UIImageView *)self->_numberImageView setAlpha:1.0 - a5];
+    [(UIImageView *)self->_numberImageView setAlpha:1.0 - fraction];
     v16 = self->_transitionNumberImageView;
 
-    [(UIImageView *)v16 setAlpha:a5];
+    [(UIImageView *)v16 setAlpha:fraction];
   }
 }
 

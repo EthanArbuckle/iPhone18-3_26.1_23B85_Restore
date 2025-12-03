@@ -1,53 +1,53 @@
 @interface ICCRIndexElement
-+ (id)elementWithInteger:(int64_t)a3 replica:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (ICCRIndexElement)initWithInteger:(int64_t)a3 replica:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
++ (id)elementWithInteger:(int64_t)integer replica:(id)replica;
+- (BOOL)isEqual:(id)equal;
+- (ICCRIndexElement)initWithInteger:(int64_t)integer replica:(id)replica;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation ICCRIndexElement
 
-+ (id)elementWithInteger:(int64_t)a3 replica:(id)a4
++ (id)elementWithInteger:(int64_t)integer replica:(id)replica
 {
-  v5 = a4;
-  v6 = [[ICCRIndexElement alloc] initWithInteger:a3 replica:v5];
+  replicaCopy = replica;
+  v6 = [[ICCRIndexElement alloc] initWithInteger:integer replica:replicaCopy];
 
   return v6;
 }
 
-- (ICCRIndexElement)initWithInteger:(int64_t)a3 replica:(id)a4
+- (ICCRIndexElement)initWithInteger:(int64_t)integer replica:(id)replica
 {
-  v7 = a4;
+  replicaCopy = replica;
   v11.receiver = self;
   v11.super_class = ICCRIndexElement;
   v8 = [(ICCRIndexElement *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_replica, a4);
-    v9->_integer = a3;
+    objc_storeStrong(&v8->_replica, replica);
+    v9->_integer = integer;
   }
 
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ICCRIndexElement *)self integer];
-  if (v5 == [v4 integer])
+  compareCopy = compare;
+  integer = [(ICCRIndexElement *)self integer];
+  if (integer == [compareCopy integer])
   {
-    v6 = [(ICCRIndexElement *)self replica];
-    v7 = [v4 replica];
-    v8 = [v6 CR_compare:v7];
+    replica = [(ICCRIndexElement *)self replica];
+    replica2 = [compareCopy replica];
+    v8 = [replica CR_compare:replica2];
   }
 
   else
   {
-    v9 = [(ICCRIndexElement *)self integer];
-    if (v9 < [v4 integer])
+    integer2 = [(ICCRIndexElement *)self integer];
+    if (integer2 < [compareCopy integer])
     {
       v8 = -1;
     }
@@ -61,18 +61,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICCRIndexElement *)self replica];
-    v6 = [v4 replica];
-    if ([v5 isEqual:v6])
+    replica = [(ICCRIndexElement *)self replica];
+    replica2 = [equalCopy replica];
+    if ([replica isEqual:replica2])
     {
-      v7 = [(ICCRIndexElement *)self integer];
-      v8 = v7 == [v4 integer];
+      integer = [(ICCRIndexElement *)self integer];
+      v8 = integer == [equalCopy integer];
     }
 
     else
@@ -91,19 +91,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ICCRIndexElement *)self replica];
-  v4 = [v3 hash];
-  v5 = [(ICCRIndexElement *)self integer];
+  replica = [(ICCRIndexElement *)self replica];
+  v4 = [replica hash];
+  integer = [(ICCRIndexElement *)self integer];
 
-  return v5 ^ v4;
+  return integer ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICCRIndexElement allocWithZone:a3];
-  v5 = [(ICCRIndexElement *)self integer];
-  v6 = [(ICCRIndexElement *)self replica];
-  v7 = [(ICCRIndexElement *)v4 initWithInteger:v5 replica:v6];
+  v4 = [ICCRIndexElement allocWithZone:zone];
+  integer = [(ICCRIndexElement *)self integer];
+  replica = [(ICCRIndexElement *)self replica];
+  v7 = [(ICCRIndexElement *)v4 initWithInteger:integer replica:replica];
 
   return v7;
 }

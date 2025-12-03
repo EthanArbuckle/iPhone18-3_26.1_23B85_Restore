@@ -2,25 +2,25 @@
 - (BOOL)isDownloaded;
 - (BOOL)isFolder;
 - (BOOL)requiresCrossDeviceCopy;
-- (FPURLOperationLocator)initWithCoder:(id)a3;
-- (FPURLOperationLocator)initWithObject:(id)a3;
+- (FPURLOperationLocator)initWithCoder:(id)coder;
+- (FPURLOperationLocator)initWithObject:(id)object;
 - (id)description;
 - (id)filename;
 - (id)identifier;
 - (id)parentIdentifier;
 - (unint64_t)size;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isDownloaded;
 - (void)size;
 @end
 
 @implementation FPURLOperationLocator
 
-- (FPURLOperationLocator)initWithObject:(id)a3
+- (FPURLOperationLocator)initWithObject:(id)object
 {
   v4.receiver = self;
   v4.super_class = FPURLOperationLocator;
-  result = [(FPActionOperationLocator *)&v4 initWithObject:a3];
+  result = [(FPActionOperationLocator *)&v4 initWithObject:object];
   if (result)
   {
     result->_size = -1;
@@ -31,35 +31,35 @@
 
 - (id)description
 {
-  v2 = [(FPActionOperationLocator *)self asURL];
-  v3 = [v2 path];
+  asURL = [(FPActionOperationLocator *)self asURL];
+  path = [asURL path];
 
-  return v3;
+  return path;
 }
 
 - (id)identifier
 {
-  v2 = [(FPActionOperationLocator *)self asURL];
-  v3 = comparablePathFromURL(v2);
+  asURL = [(FPActionOperationLocator *)self asURL];
+  v3 = comparablePathFromURL(asURL);
 
   return v3;
 }
 
 - (id)parentIdentifier
 {
-  v2 = [(FPActionOperationLocator *)self asURL];
-  v3 = [v2 URLByDeletingLastPathComponent];
-  v4 = comparablePathFromURL(v3);
+  asURL = [(FPActionOperationLocator *)self asURL];
+  uRLByDeletingLastPathComponent = [asURL URLByDeletingLastPathComponent];
+  v4 = comparablePathFromURL(uRLByDeletingLastPathComponent);
 
   return v4;
 }
 
 - (id)filename
 {
-  v2 = [(FPActionOperationLocator *)self asURL];
-  v3 = [v2 lastPathComponent];
+  asURL = [(FPActionOperationLocator *)self asURL];
+  lastPathComponent = [asURL lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (unint64_t)size
@@ -68,23 +68,23 @@
   if (result == -1)
   {
     v10 = 0;
-    v4 = [(FPActionOperationLocator *)self asURL];
-    v5 = [v4 startAccessingSecurityScopedResource];
+    asURL = [(FPActionOperationLocator *)self asURL];
+    startAccessingSecurityScopedResource = [asURL startAccessingSecurityScopedResource];
     v9 = 0;
-    v6 = [v4 fp_getSize:&v10 error:&v9];
+    v6 = [asURL fp_getSize:&v10 error:&v9];
     v7 = v9;
     if ((v6 & 1) == 0)
     {
       v8 = fp_current_or_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [(FPURLOperationLocator *)v4 size];
+        [(FPURLOperationLocator *)asURL size];
       }
     }
 
-    if (v5)
+    if (startAccessingSecurityScopedResource)
     {
-      [v4 stopAccessingSecurityScopedResource];
+      [asURL stopAccessingSecurityScopedResource];
     }
 
     self->_size = v10;
@@ -97,17 +97,17 @@
 
 - (BOOL)isDownloaded
 {
-  v2 = [(FPActionOperationLocator *)self asURL];
-  v3 = [v2 startAccessingSecurityScopedResource];
+  asURL = [(FPActionOperationLocator *)self asURL];
+  startAccessingSecurityScopedResource = [asURL startAccessingSecurityScopedResource];
   v9 = 0;
-  v4 = [v2 fp_isDatalessWithError:&v9];
+  v4 = [asURL fp_isDatalessWithError:&v9];
   v5 = v9;
   if (v4)
   {
-    if (v3)
+    if (startAccessingSecurityScopedResource)
     {
 LABEL_3:
-      [v2 stopAccessingSecurityScopedResource];
+      [asURL stopAccessingSecurityScopedResource];
     }
   }
 
@@ -116,60 +116,60 @@ LABEL_3:
     v8 = fp_current_or_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(FPURLOperationLocator *)v2 isDownloaded];
+      [(FPURLOperationLocator *)asURL isDownloaded];
     }
 
-    if (v3)
+    if (startAccessingSecurityScopedResource)
     {
       goto LABEL_3;
     }
   }
 
-  v6 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v6 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (BOOL)isFolder
 {
-  v2 = [(FPActionOperationLocator *)self asURL];
-  v3 = [v2 fp_isFolder];
+  asURL = [(FPActionOperationLocator *)self asURL];
+  fp_isFolder = [asURL fp_isFolder];
 
-  return v3;
+  return fp_isFolder;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FPURLOperationLocator;
-  [(FPActionOperationLocator *)&v11 encodeWithCoder:v4];
+  [(FPActionOperationLocator *)&v11 encodeWithCoder:coderCopy];
   if (self->_attachSandboxExtensionOnXPCEncoding)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MEMORY[0x1E696AC08] defaultManager];
-      v6 = [(FPActionOperationLocator *)self asURL];
-      v7 = [v6 path];
-      v8 = [v5 isWritableFileAtPath:v7];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      asURL = [(FPActionOperationLocator *)self asURL];
+      path = [asURL path];
+      v8 = [defaultManager isWritableFileAtPath:path];
 
-      v9 = [(FPActionOperationLocator *)self asURL];
-      v10 = [FPSandboxingURLWrapper wrapperWithURL:v9 readonly:v8 ^ 1u error:0];
-      [v4 encodeObject:v10 forKey:@"sburl"];
+      asURL2 = [(FPActionOperationLocator *)self asURL];
+      v10 = [FPSandboxingURLWrapper wrapperWithURL:asURL2 readonly:v8 ^ 1u error:0];
+      [coderCopy encodeObject:v10 forKey:@"sburl"];
     }
   }
 }
 
-- (FPURLOperationLocator)initWithCoder:(id)a3
+- (FPURLOperationLocator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FPURLOperationLocator;
-  v5 = [(FPActionOperationLocator *)&v10 initWithCoder:v4];
+  v5 = [(FPActionOperationLocator *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sburl"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sburl"];
     v7 = v6;
     if (v6)
     {
@@ -183,20 +183,20 @@ LABEL_3:
 
 - (BOOL)requiresCrossDeviceCopy
 {
-  v2 = [(FPActionOperationLocator *)self asURL];
+  asURL = [(FPActionOperationLocator *)self asURL];
   v5 = 0;
-  [v2 getResourceValue:&v5 forKey:*MEMORY[0x1E695DD98] error:0];
+  [asURL getResourceValue:&v5 forKey:*MEMORY[0x1E695DD98] error:0];
   v3 = v5;
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2 ^ 1;
+  LOBYTE(asURL) = [v3 BOOLValue];
+  return asURL ^ 1;
 }
 
 - (void)size
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [a1 fp_shortDescription];
-  v4 = [a2 fp_prettyDescription];
+  fp_shortDescription = [self fp_shortDescription];
+  fp_prettyDescription = [a2 fp_prettyDescription];
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_1_1(&dword_1AAAE1000, v5, v6, "[DEBUG] Failed to determine size of item at %@ (%@)", v7, v8, v9, v10, v12);
 
@@ -206,8 +206,8 @@ LABEL_3:
 - (void)isDownloaded
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [a1 fp_shortDescription];
-  v4 = [a2 fp_prettyDescription];
+  fp_shortDescription = [self fp_shortDescription];
+  fp_prettyDescription = [a2 fp_prettyDescription];
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_1_1(&dword_1AAAE1000, v5, v6, "[DEBUG] Failed to determine dataless status of item at %@ (%@)", v7, v8, v9, v10, v12);
 

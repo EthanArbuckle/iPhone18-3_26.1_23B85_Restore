@@ -1,23 +1,23 @@
 @interface AAPCommandCheckRestriction
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation AAPCommandCheckRestriction
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v41 = sub_C1E8;
   v42 = &unk_20748;
-  v43 = self;
-  v44 = a3;
-  v4 = [(AAPCommandCheckRestriction *)self launchId];
-  if (v4)
+  selfCopy = self;
+  completionCopy = completion;
+  launchId = [(AAPCommandCheckRestriction *)self launchId];
+  if (launchId)
   {
-    v5 = v4;
-    v6 = [(AAPCommandCheckRestriction *)self executionEnvironment];
-    if ([v6 isEqualToString:SAAppsLaunchAppSTARK_EXECUTION_ENVValue])
+    v5 = launchId;
+    executionEnvironment = [(AAPCommandCheckRestriction *)self executionEnvironment];
+    if ([executionEnvironment isEqualToString:SAAppsLaunchAppSTARK_EXECUTION_ENVValue])
     {
       v7 = +[FBSOpenApplicationService dashboardService];
     }
@@ -40,7 +40,7 @@
         v47 = 2114;
         v48 = v12;
         v49 = 2048;
-        v50 = self;
+        selfCopy6 = self;
         v51 = 2112;
         v52 = v5;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> app (%@) can be launched", buf, 0x2Au);
@@ -67,23 +67,23 @@
       if (v16)
       {
         v17 = v16;
-        v18 = [v16 isRestricted];
+        isRestricted = [v16 isRestricted];
         v14 = AFSiriLogContextPlugin;
         v19 = os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_INFO);
-        if (v18)
+        if (isRestricted)
         {
           if (v19)
           {
             v20 = objc_opt_class();
             v21 = v39;
             v22 = FBSOpenApplicationErrorCodeToString();
-            v23 = [v17 isRestricted];
+            isRestricted2 = [v17 isRestricted];
             *buf = 136316674;
             v46 = "[AAPCommandCheckRestriction performWithCompletion:]";
             v47 = 2114;
             v48 = v20;
             v49 = 2048;
-            v50 = self;
+            selfCopy6 = self;
             v51 = 2112;
             v52 = v5;
             v53 = 2048;
@@ -91,7 +91,7 @@
             v55 = 2112;
             v56 = v22;
             v57 = 1024;
-            v58 = v23;
+            v58 = isRestricted2;
             v24 = "%s com.apple.siri.applications: <%{public}@:%p> app (%@) can not be launched with result=%li(%@) restricted=%i";
             v25 = v14;
             v26 = 68;
@@ -111,7 +111,7 @@ LABEL_28:
           v47 = 2114;
           v48 = v34;
           v49 = 2048;
-          v50 = self;
+          selfCopy6 = self;
           v51 = 2112;
           v52 = v5;
           v53 = 2048;
@@ -136,7 +136,7 @@ LABEL_28:
           v47 = 2114;
           v48 = v31;
           v49 = 2048;
-          v50 = self;
+          selfCopy6 = self;
           v51 = 2112;
           v52 = v5;
           v53 = 2048;
@@ -167,7 +167,7 @@ LABEL_29:
           v47 = 2114;
           v48 = v28;
           v49 = 2048;
-          v50 = self;
+          selfCopy6 = self;
           v51 = 2112;
           v52 = v5;
           v53 = 2048;
@@ -203,8 +203,8 @@ LABEL_32:
   v9 = SACommandFailed;
 LABEL_33:
   v37 = objc_alloc_init(v9);
-  v38 = [v37 dictionary];
-  v41(v40, v38);
+  dictionary = [v37 dictionary];
+  v41(v40, dictionary);
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface PUIStyleColor
 + (PUIStyleColor)vibrantMaterialColor;
 + (PUIStyleColor)vibrantMonochromeColor;
-+ (id)identifierForColorWithValues:(id)a3 style:(unint64_t)a4;
-+ (id)styleStringForStyle:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToColor:(id)a3;
++ (id)identifierForColorWithValues:(id)values style:(unint64_t)style;
++ (id)styleStringForStyle:(unint64_t)style;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToColor:(id)color;
 - (BOOL)isLUTBackedColor;
 - (BOOL)isVibrantMaterialColor;
 - (BOOL)isVibrantMonochromeColor;
 - (BOOL)requiresVibrancyEffectView;
 - (NSString)description;
-- (PUIStyleColor)initWithBSXPCCoder:(id)a3;
-- (PUIStyleColor)initWithCoder:(id)a3;
-- (PUIStyleColor)initWithColor:(id)a3 preferredStyle:(unint64_t)a4 localizedName:(id)a5 suggested:(BOOL)a6;
-- (PUIStyleColor)initWithHue:(double)a3 saturation:(double)a4 luminance:(double)a5 alpha:(double)a6 preferredStyle:(unint64_t)a7 localizedName:(id)a8 suggested:(BOOL)a9;
-- (PUIStyleColor)initWithIdentifier:(id)a3 color:(id)a4 colorValues:(id)a5 preferredStyle:(unint64_t)a6 localizedName:(id)a7 suggested:(BOOL)a8;
-- (PUIStyleColor)initWithIdentifier:(id)a3 color:(id)a4 preferredStyle:(unint64_t)a5;
-- (PUIStyleColor)initWithLUTIdentifier:(id)a3;
-- (PUIStyleColor)initWithPosterColor:(id)a3;
+- (PUIStyleColor)initWithBSXPCCoder:(id)coder;
+- (PUIStyleColor)initWithCoder:(id)coder;
+- (PUIStyleColor)initWithColor:(id)color preferredStyle:(unint64_t)style localizedName:(id)name suggested:(BOOL)suggested;
+- (PUIStyleColor)initWithHue:(double)hue saturation:(double)saturation luminance:(double)luminance alpha:(double)alpha preferredStyle:(unint64_t)style localizedName:(id)name suggested:(BOOL)suggested;
+- (PUIStyleColor)initWithIdentifier:(id)identifier color:(id)color colorValues:(id)values preferredStyle:(unint64_t)style localizedName:(id)name suggested:(BOOL)suggested;
+- (PUIStyleColor)initWithIdentifier:(id)identifier color:(id)color preferredStyle:(unint64_t)style;
+- (PUIStyleColor)initWithLUTIdentifier:(id)identifier;
+- (PUIStyleColor)initWithPosterColor:(id)color;
 - (id)colors;
-- (id)contentStylePreferringVibrancy:(BOOL)a3;
+- (id)contentStylePreferringVibrancy:(BOOL)vibrancy;
 - (id)copyAsSuggestedColor;
-- (id)copyWithAlpha:(double)a3;
-- (id)copyWithLuminance:(double)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)copyWithAlpha:(double)alpha;
+- (id)copyWithLuminance:(double)luminance;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)hsbValues;
 - (id)hslValues;
 - (id)lutIdentifier;
 - (id)vibrancyConfiguration;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIStyleColor
@@ -78,15 +78,15 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
   vibrantMonochromeColor_vibrantMonochromeColor = v1;
 }
 
-+ (id)styleStringForStyle:(unint64_t)a3
++ (id)styleStringForStyle:(unint64_t)style
 {
   v3 = @"default";
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = @"regular";
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     return @"vibrant";
   }
@@ -97,30 +97,30 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
   }
 }
 
-+ (id)identifierForColorWithValues:(id)a3 style:(unint64_t)a4
++ (id)identifierForColorWithValues:(id)values style:(unint64_t)style
 {
-  v5 = a3;
-  v6 = [objc_opt_class() styleStringForStyle:a4];
-  v7 = [v5 identifier];
+  valuesCopy = values;
+  v6 = [objc_opt_class() styleStringForStyle:style];
+  identifier = [valuesCopy identifier];
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, v7];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, identifier];
 
   return v8;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v5 = [(PUIStyleColor *)self color];
+  color = [(PUIStyleColor *)self color];
   if (objc_opt_respondsToSelector())
   {
-    v6 = v5;
+    v6 = color;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PUIStyleColor;
-    v6 = [(PUIStyleColor *)&v9 forwardingTargetForSelector:a3];
+    v6 = [(PUIStyleColor *)&v9 forwardingTargetForSelector:selector];
   }
 
   v7 = v6;
@@ -128,80 +128,80 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
   return v7;
 }
 
-- (PUIStyleColor)initWithHue:(double)a3 saturation:(double)a4 luminance:(double)a5 alpha:(double)a6 preferredStyle:(unint64_t)a7 localizedName:(id)a8 suggested:(BOOL)a9
+- (PUIStyleColor)initWithHue:(double)hue saturation:(double)saturation luminance:(double)luminance alpha:(double)alpha preferredStyle:(unint64_t)style localizedName:(id)name suggested:(BOOL)suggested
 {
-  v9 = a9;
-  v16 = a8;
-  v17 = [[PUIColorValues alloc] initWithHue:a3 saturation:a4 luminance:a5 alpha:a6];
-  v18 = [(PUIColorValues *)v17 color];
-  v19 = [objc_opt_class() identifierForColorWithValues:v17 style:a7];
-  v20 = [(PUIStyleColor *)self initWithIdentifier:v19 color:v18 colorValues:v17 preferredStyle:a7 localizedName:v16 suggested:v9];
+  suggestedCopy = suggested;
+  nameCopy = name;
+  v17 = [[PUIColorValues alloc] initWithHue:hue saturation:saturation luminance:luminance alpha:alpha];
+  color = [(PUIColorValues *)v17 color];
+  v19 = [objc_opt_class() identifierForColorWithValues:v17 style:style];
+  v20 = [(PUIStyleColor *)self initWithIdentifier:v19 color:color colorValues:v17 preferredStyle:style localizedName:nameCopy suggested:suggestedCopy];
 
   return v20;
 }
 
-- (PUIStyleColor)initWithColor:(id)a3 preferredStyle:(unint64_t)a4 localizedName:(id)a5 suggested:(BOOL)a6
+- (PUIStyleColor)initWithColor:(id)color preferredStyle:(unint64_t)style localizedName:(id)name suggested:(BOOL)suggested
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[PUIColorValues alloc] initWithColor:v11];
-  v13 = [objc_opt_class() identifierForColorWithValues:v12 style:a4];
-  v14 = [(PUIStyleColor *)self initWithIdentifier:v13 color:v11 colorValues:v12 preferredStyle:a4 localizedName:v10 suggested:v6];
+  suggestedCopy = suggested;
+  nameCopy = name;
+  colorCopy = color;
+  v12 = [[PUIColorValues alloc] initWithColor:colorCopy];
+  v13 = [objc_opt_class() identifierForColorWithValues:v12 style:style];
+  v14 = [(PUIStyleColor *)self initWithIdentifier:v13 color:colorCopy colorValues:v12 preferredStyle:style localizedName:nameCopy suggested:suggestedCopy];
 
   return v14;
 }
 
-- (PUIStyleColor)initWithIdentifier:(id)a3 color:(id)a4 preferredStyle:(unint64_t)a5
+- (PUIStyleColor)initWithIdentifier:(id)identifier color:(id)color preferredStyle:(unint64_t)style
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PUIColorValues alloc] initWithColor:v8];
-  v11 = [(PUIStyleColor *)self initWithIdentifier:v9 color:v8 colorValues:v10 preferredStyle:a5];
+  colorCopy = color;
+  identifierCopy = identifier;
+  v10 = [[PUIColorValues alloc] initWithColor:colorCopy];
+  v11 = [(PUIStyleColor *)self initWithIdentifier:identifierCopy color:colorCopy colorValues:v10 preferredStyle:style];
 
   return v11;
 }
 
-- (PUIStyleColor)initWithPosterColor:(id)a3
+- (PUIStyleColor)initWithPosterColor:(id)color
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 color];
-  v7 = [v4 colorValues];
-  v8 = [v4 preferredStyle];
-  v9 = [v4 localizedName];
-  v10 = [v4 isSuggested];
+  colorCopy = color;
+  identifier = [colorCopy identifier];
+  color = [colorCopy color];
+  colorValues = [colorCopy colorValues];
+  preferredStyle = [colorCopy preferredStyle];
+  localizedName = [colorCopy localizedName];
+  isSuggested = [colorCopy isSuggested];
 
-  v11 = [(PUIStyleColor *)self initWithIdentifier:v5 color:v6 colorValues:v7 preferredStyle:v8 localizedName:v9 suggested:v10];
+  v11 = [(PUIStyleColor *)self initWithIdentifier:identifier color:color colorValues:colorValues preferredStyle:preferredStyle localizedName:localizedName suggested:isSuggested];
   return v11;
 }
 
-- (PUIStyleColor)initWithLUTIdentifier:(id)a3
+- (PUIStyleColor)initWithLUTIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"lutColor-", a3];
-  v5 = [(PUIStyleColor *)self initWithIdentifier:v4 color:0 preferredStyle:0];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"lutColor-", identifier];
+  v5 = [(PUIStyleColor *)self initWithIdentifier:identifier color:0 preferredStyle:0];
 
   return v5;
 }
 
-- (PUIStyleColor)initWithIdentifier:(id)a3 color:(id)a4 colorValues:(id)a5 preferredStyle:(unint64_t)a6 localizedName:(id)a7 suggested:(BOOL)a8
+- (PUIStyleColor)initWithIdentifier:(id)identifier color:(id)color colorValues:(id)values preferredStyle:(unint64_t)style localizedName:(id)name suggested:(BOOL)suggested
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  identifierCopy = identifier;
+  colorCopy = color;
+  valuesCopy = values;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = PUIStyleColor;
   v18 = [(PUIStyleColor *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [identifierCopy copy];
     identifier = v18->_identifier;
     v18->_identifier = v19;
 
-    if (v15)
+    if (colorCopy)
     {
-      v21 = [v15 copy];
+      v21 = [colorCopy copy];
       color = v18->_color;
       v18->_color = v21;
     }
@@ -209,18 +209,18 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
     else
     {
       color = [objc_opt_class() vibrantMaterialColor];
-      v23 = [color color];
+      color = [color color];
       v24 = v18->_color;
-      v18->_color = v23;
+      v18->_color = color;
     }
 
-    objc_storeStrong(&v18->_colorValues, a5);
-    v18->_preferredStyle = a6;
-    v25 = [v17 copy];
+    objc_storeStrong(&v18->_colorValues, values);
+    v18->_preferredStyle = style;
+    v25 = [nameCopy copy];
     localizedName = v18->_localizedName;
     v18->_localizedName = v25;
 
-    v18->_suggested = a8;
+    v18->_suggested = suggested;
   }
 
   return v18;
@@ -228,29 +228,29 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
 
 - (BOOL)isVibrantMaterialColor
 {
-  v3 = [objc_opt_class() vibrantMaterialColor];
-  LOBYTE(self) = v3 == self;
+  vibrantMaterialColor = [objc_opt_class() vibrantMaterialColor];
+  LOBYTE(self) = vibrantMaterialColor == self;
 
   return self;
 }
 
 - (BOOL)isVibrantMonochromeColor
 {
-  v3 = [objc_opt_class() vibrantMonochromeColor];
-  LOBYTE(self) = v3 == self;
+  vibrantMonochromeColor = [objc_opt_class() vibrantMonochromeColor];
+  LOBYTE(self) = vibrantMonochromeColor == self;
 
   return self;
 }
 
 - (BOOL)isLUTBackedColor
 {
-  v2 = [(PUIStyleColor *)self identifier];
-  v3 = [v2 hasPrefix:@"lutColor-"];
+  identifier = [(PUIStyleColor *)self identifier];
+  v3 = [identifier hasPrefix:@"lutColor-"];
 
   return v3;
 }
 
-- (id)copyWithLuminance:(double)a3
+- (id)copyWithLuminance:(double)luminance
 {
   if ([(PUIStyleColor *)self isVibrantMonochromeColor]|| [(PUIStyleColor *)self isVibrantMaterialColor]|| [(PUIStyleColor *)self isLUTBackedColor])
   {
@@ -260,21 +260,21 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
 
   else
   {
-    v5 = [(PUIStyleColor *)self colorValues];
+    colorValues = [(PUIStyleColor *)self colorValues];
 
-    if (v5)
+    if (colorValues)
     {
-      v6 = [(PUIStyleColor *)self colorValues];
-      v7 = [v6 hslValues];
+      colorValues2 = [(PUIStyleColor *)self colorValues];
+      hslValues = [colorValues2 hslValues];
 
       v8 = objc_alloc(objc_opt_class());
-      [v7 hue];
+      [hslValues hue];
       v10 = v9;
-      [v7 saturation];
+      [hslValues saturation];
       v12 = v11;
-      v13 = [(PUIStyleColor *)self colorValues];
-      [v13 alpha];
-      v15 = [v8 initWithHue:-[PUIStyleColor preferredStyle](self saturation:"preferredStyle") luminance:-[PUIStyleColor isSuggested](self alpha:"isSuggested") preferredStyle:v10 suggested:{v12, a3, v14}];
+      colorValues3 = [(PUIStyleColor *)self colorValues];
+      [colorValues3 alpha];
+      v15 = [v8 initWithHue:-[PUIStyleColor preferredStyle](self saturation:"preferredStyle") luminance:-[PUIStyleColor isSuggested](self alpha:"isSuggested") preferredStyle:v10 suggested:{v12, luminance, v14}];
 
       return v15;
     }
@@ -288,7 +288,7 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
   }
 }
 
-- (id)copyWithAlpha:(double)a3
+- (id)copyWithAlpha:(double)alpha
 {
   if ([(PUIStyleColor *)self isVibrantMonochromeColor]|| [(PUIStyleColor *)self isVibrantMaterialColor]|| [(PUIStyleColor *)self isLUTBackedColor])
   {
@@ -298,12 +298,12 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
 
   else
   {
-    v5 = [(PUIStyleColor *)self color];
-    v6 = [v5 colorWithAlphaComponent:a3];
+    color = [(PUIStyleColor *)self color];
+    v6 = [color colorWithAlphaComponent:alpha];
     v7 = objc_alloc(objc_opt_class());
-    v8 = [(PUIStyleColor *)self preferredStyle];
-    v9 = [(PUIStyleColor *)self localizedName];
-    v10 = [v7 initWithColor:v6 preferredStyle:v8 localizedName:v9 suggested:{-[PUIStyleColor isSuggested](self, "isSuggested")}];
+    preferredStyle = [(PUIStyleColor *)self preferredStyle];
+    localizedName = [(PUIStyleColor *)self localizedName];
+    v10 = [v7 initWithColor:v6 preferredStyle:preferredStyle localizedName:localizedName suggested:{-[PUIStyleColor isSuggested](self, "isSuggested")}];
 
     return v10;
   }
@@ -311,26 +311,26 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
 
 - (id)hsbValues
 {
-  v2 = [(PUIStyleColor *)self colorValues];
-  v3 = [v2 hsbValues];
+  colorValues = [(PUIStyleColor *)self colorValues];
+  hsbValues = [colorValues hsbValues];
 
-  return v3;
+  return hsbValues;
 }
 
 - (id)hslValues
 {
-  v2 = [(PUIStyleColor *)self colorValues];
-  v3 = [v2 hslValues];
+  colorValues = [(PUIStyleColor *)self colorValues];
+  hslValues = [colorValues hslValues];
 
-  return v3;
+  return hslValues;
 }
 
 - (id)lutIdentifier
 {
   if ([(PUIStyleColor *)self isLUTBackedColor])
   {
-    v3 = [(PUIStyleColor *)self identifier];
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"lutColor-", "length")}];
+    identifier = [(PUIStyleColor *)self identifier];
+    v4 = [identifier substringFromIndex:{objc_msgSend(@"lutColor-", "length")}];
   }
 
   else
@@ -344,27 +344,27 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
 - (id)copyAsSuggestedColor
 {
   v3 = [PUIStyleColor alloc];
-  v4 = [(PUIStyleColor *)self identifier];
-  v5 = [(PUIStyleColor *)self color];
-  v6 = [(PUIStyleColor *)self colorValues];
-  v7 = [(PUIStyleColor *)self preferredStyle];
-  v8 = [(PUIStyleColor *)self localizedName];
-  v9 = [(PUIStyleColor *)v3 initWithIdentifier:v4 color:v5 colorValues:v6 preferredStyle:v7 localizedName:v8 suggested:1];
+  identifier = [(PUIStyleColor *)self identifier];
+  color = [(PUIStyleColor *)self color];
+  colorValues = [(PUIStyleColor *)self colorValues];
+  preferredStyle = [(PUIStyleColor *)self preferredStyle];
+  localizedName = [(PUIStyleColor *)self localizedName];
+  v9 = [(PUIStyleColor *)v3 initWithIdentifier:identifier color:color colorValues:colorValues preferredStyle:preferredStyle localizedName:localizedName suggested:1];
 
   return v9;
 }
 
-- (BOOL)isEquivalentToColor:(id)a3
+- (BOOL)isEquivalentToColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PUIStyleColor *)self identifier];
-  v6 = [v4 identifier];
+  colorCopy = color;
+  identifier = [(PUIStyleColor *)self identifier];
+  identifier2 = [colorCopy identifier];
   v7 = BSEqualStrings();
 
   if (v7)
   {
-    v8 = [(PUIStyleColor *)self localizedName];
-    v9 = [v4 localizedName];
+    localizedName = [(PUIStyleColor *)self localizedName];
+    localizedName2 = [colorCopy localizedName];
     v10 = BSEqualStrings();
   }
 
@@ -376,9 +376,9 @@ void __39__PUIStyleColor_vibrantMonochromeColor__block_invoke()
   return v10;
 }
 
-- (id)contentStylePreferringVibrancy:(BOOL)a3
+- (id)contentStylePreferringVibrancy:(BOOL)vibrancy
 {
-  v3 = a3;
+  vibrancyCopy = vibrancy;
   v18[1] = *MEMORY[0x1E69E9840];
   if ([(PUIStyleColor *)self isVibrantMaterialColor])
   {
@@ -397,23 +397,23 @@ LABEL_5:
   if ([(PUIStyleColor *)self isLUTBackedColor])
   {
     v8 = [PUIStyleLUT alloc];
-    v9 = [(PUIStyleColor *)self lutIdentifier];
-    v6 = [(PUIStyleLUT *)v8 initWithLUTIdentifier:v9];
+    lutIdentifier = [(PUIStyleColor *)self lutIdentifier];
+    v6 = [(PUIStyleLUT *)v8 initWithLUTIdentifier:lutIdentifier];
 
     goto LABEL_6;
   }
 
-  v10 = [(PUIStyleColor *)self requiresVibrancyEffectView];
-  if (v10 || !v3)
+  requiresVibrancyEffectView = [(PUIStyleColor *)self requiresVibrancyEffectView];
+  if (requiresVibrancyEffectView || !vibrancyCopy)
   {
-    if (!v10)
+    if (!requiresVibrancyEffectView)
     {
       goto LABEL_14;
     }
 
 LABEL_16:
-    v13 = [(PUIStyleColor *)self colorValues];
-    [v13 alpha];
+    colorValues = [(PUIStyleColor *)self colorValues];
+    [colorValues alpha];
     v12 = v14;
 
     v11 = 1;
@@ -430,8 +430,8 @@ LABEL_14:
   v12 = 0.0;
 LABEL_17:
   v15 = [PUIStyleDiscreteColors alloc];
-  v16 = [(PUIStyleColor *)self color];
-  v18[0] = v16;
+  color = [(PUIStyleColor *)self color];
+  v18[0] = color;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v6 = [(PUIStyleDiscreteColors *)v15 initWithColors:v17 vibrant:v11 supportsVariation:1 variationValue:v12];
 
@@ -443,8 +443,8 @@ LABEL_6:
 
 - (BOOL)requiresVibrancyEffectView
 {
-  v3 = [(PUIStyleColor *)self colorValues];
-  [v3 alpha];
+  colorValues = [(PUIStyleColor *)self colorValues];
+  [colorValues alpha];
 
   return !BSFloatIsOne() || [(PUIStyleColor *)self preferredStyle]== 2;
 }
@@ -454,7 +454,7 @@ LABEL_6:
   if ([(PUIStyleColor *)self isVibrantMaterialColor])
   {
     v3 = objc_alloc(MEMORY[0x1E698E810]);
-    v4 = [(PUIStyleColor *)self color];
+    color = [(PUIStyleColor *)self color];
     v5 = v3;
     v6 = 0;
   }
@@ -462,18 +462,18 @@ LABEL_6:
   else if ([(PUIStyleColor *)self isVibrantMonochromeColor])
   {
     v7 = objc_alloc(MEMORY[0x1E698E810]);
-    v4 = [(PUIStyleColor *)self color];
+    color = [(PUIStyleColor *)self color];
     v5 = v7;
     v6 = 2;
   }
 
   else
   {
-    v8 = [(PUIStyleColor *)self isLUTBackedColor];
+    isLUTBackedColor = [(PUIStyleColor *)self isLUTBackedColor];
     v9 = objc_alloc(MEMORY[0x1E698E810]);
-    v4 = [(PUIStyleColor *)self color];
+    color = [(PUIStyleColor *)self color];
     v5 = v9;
-    if (v8)
+    if (isLUTBackedColor)
     {
       v6 = 3;
     }
@@ -484,7 +484,7 @@ LABEL_6:
     }
   }
 
-  v10 = [v5 initWithEffectType:v6 backgroundType:0 color:v4];
+  v10 = [v5 initWithEffectType:v6 backgroundType:0 color:color];
 
   return v10;
 }
@@ -492,17 +492,17 @@ LABEL_6:
 - (id)colors
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PUIStyleColor *)self color];
-  v5[0] = v2;
+  color = [(PUIStyleColor *)self color];
+  v5[0] = color;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -514,11 +514,11 @@ LABEL_6:
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if ([(PUIStyleColor *)self isEquivalentToColor:v7])
       {
-        v8 = [(PUIStyleColor *)self isSuggested];
-        v9 = v8 ^ [(PUIStyleColor *)v7 isSuggested]^ 1;
+        isSuggested = [(PUIStyleColor *)self isSuggested];
+        v9 = isSuggested ^ [(PUIStyleColor *)v7 isSuggested]^ 1;
       }
 
       else
@@ -539,11 +539,11 @@ LABEL_6:
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(MEMORY[0x1E698E6B8]);
-  v4 = [(PUIStyleColor *)self identifier];
-  v5 = [v3 appendString:v4];
+  identifier = [(PUIStyleColor *)self identifier];
+  v5 = [v3 appendString:identifier];
 
-  v6 = [(PUIStyleColor *)self localizedName];
-  v7 = [v3 appendString:v6];
+  localizedName = [(PUIStyleColor *)self localizedName];
+  v7 = [v3 appendString:localizedName];
 
   v8 = [v3 appendBool:{-[PUIStyleColor isSuggested](self, "isSuggested")}];
   v9 = [v3 hash];
@@ -558,7 +558,7 @@ LABEL_6:
   v8 = 3221225472;
   v9 = __28__PUIStyleColor_description__block_invoke;
   v10 = &unk_1E78548A0;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -567,30 +567,30 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(PUIStyleColor *)self identifier];
-  [v8 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(PUIStyleColor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(PUIStyleColor *)self color];
-  [v8 encodeObject:v5 forKey:@"color"];
+  color = [(PUIStyleColor *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUIStyleColor preferredStyle](self, "preferredStyle")}];
-  [v8 encodeObject:v6 forKey:@"preferredStyle"];
+  [coderCopy encodeObject:v6 forKey:@"preferredStyle"];
 
-  [v8 encodeBool:self->_suggested forKey:@"suggested"];
+  [coderCopy encodeBool:self->_suggested forKey:@"suggested"];
   if (self->_localizedName)
   {
-    v7 = [(PUIStyleColor *)self localizedName];
-    [v8 encodeObject:v7 forKey:@"localizedName"];
+    localizedName = [(PUIStyleColor *)self localizedName];
+    [coderCopy encodeObject:localizedName forKey:@"localizedName"];
   }
 }
 
-- (PUIStyleColor)initWithCoder:(id)a3
+- (PUIStyleColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if ([v5 isEqualToString:@"vibrantMaterialColor"])
   {
     v6 = +[PUIStyleColor vibrantMaterialColor];
@@ -601,15 +601,15 @@ LABEL_6:
     if (![v5 isEqualToString:@"vibrantMonochromeColor"])
     {
       v8 = objc_opt_self();
-      v9 = [v4 decodeObjectOfClass:v8 forKey:@"color"];
+      v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"color"];
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
-      v11 = [v10 unsignedIntegerValue];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-      v12 = [v4 decodeBoolForKey:@"suggested"];
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+      v12 = [coderCopy decodeBoolForKey:@"suggested"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
       v14 = [[PUIColorValues alloc] initWithColor:v9];
-      v7 = [[PUIStyleColor alloc] initWithIdentifier:v5 color:v9 colorValues:v14 preferredStyle:v11 localizedName:v13 suggested:v12];
+      v7 = [[PUIStyleColor alloc] initWithIdentifier:v5 color:v9 colorValues:v14 preferredStyle:unsignedIntegerValue localizedName:v13 suggested:v12];
 
       goto LABEL_7;
     }
@@ -623,30 +623,30 @@ LABEL_7:
   return v7;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(PUIStyleColor *)self identifier];
-  [v8 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(PUIStyleColor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(PUIStyleColor *)self color];
-  [v8 encodeObject:v5 forKey:@"color"];
+  color = [(PUIStyleColor *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUIStyleColor preferredStyle](self, "preferredStyle")}];
-  [v8 encodeObject:v6 forKey:@"preferredStyle"];
+  [coderCopy encodeObject:v6 forKey:@"preferredStyle"];
 
-  [v8 encodeBool:-[PUIStyleColor isSuggested](self forKey:{"isSuggested"), @"suggested"}];
+  [coderCopy encodeBool:-[PUIStyleColor isSuggested](self forKey:{"isSuggested"), @"suggested"}];
   if (self->_localizedName)
   {
-    v7 = [(PUIStyleColor *)self localizedName];
-    [v8 encodeObject:v7 forKey:@"localizedName"];
+    localizedName = [(PUIStyleColor *)self localizedName];
+    [coderCopy encodeObject:localizedName forKey:@"localizedName"];
   }
 }
 
-- (PUIStyleColor)initWithBSXPCCoder:(id)a3
+- (PUIStyleColor)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if ([v5 isEqualToString:@"vibrantMaterialColor"])
   {
     v6 = +[PUIStyleColor vibrantMaterialColor];
@@ -657,15 +657,15 @@ LABEL_7:
     if (![v5 isEqualToString:@"vibrantMonochromeColor"])
     {
       v8 = objc_opt_self();
-      v9 = [v4 decodeObjectOfClass:v8 forKey:@"color"];
+      v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"color"];
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
-      v11 = [v10 unsignedIntegerValue];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-      v12 = [v4 decodeBoolForKey:@"suggested"];
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+      v12 = [coderCopy decodeBoolForKey:@"suggested"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
       v14 = [[PUIColorValues alloc] initWithColor:v9];
-      v7 = [[PUIStyleColor alloc] initWithIdentifier:v5 color:v9 colorValues:v14 preferredStyle:v11 localizedName:v13 suggested:v12];
+      v7 = [[PUIStyleColor alloc] initWithIdentifier:v5 color:v9 colorValues:v14 preferredStyle:unsignedIntegerValue localizedName:v13 suggested:v12];
 
       goto LABEL_7;
     }
@@ -679,17 +679,17 @@ LABEL_7:
   return v7;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v10 = a3;
-  v4 = [(PUIStyleColor *)self identifier];
-  v5 = [v10 appendObject:v4 withName:@"identifier"];
+  formatterCopy = formatter;
+  identifier = [(PUIStyleColor *)self identifier];
+  v5 = [formatterCopy appendObject:identifier withName:@"identifier"];
 
-  v6 = [(PUIStyleColor *)self color];
-  v7 = [v10 appendObject:v6 withName:@"color"];
+  color = [(PUIStyleColor *)self color];
+  v7 = [formatterCopy appendObject:color withName:@"color"];
 
-  v8 = [v10 appendUnsignedInteger:-[PUIStyleColor preferredStyle](self withName:{"preferredStyle"), @"preferredStyle"}];
-  v9 = [v10 appendBool:-[PUIStyleColor isSuggested](self withName:"isSuggested") ifEqualTo:{@"isSuggested", 1}];
+  v8 = [formatterCopy appendUnsignedInteger:-[PUIStyleColor preferredStyle](self withName:{"preferredStyle"), @"preferredStyle"}];
+  v9 = [formatterCopy appendBool:-[PUIStyleColor isSuggested](self withName:"isSuggested") ifEqualTo:{@"isSuggested", 1}];
 }
 
 @end

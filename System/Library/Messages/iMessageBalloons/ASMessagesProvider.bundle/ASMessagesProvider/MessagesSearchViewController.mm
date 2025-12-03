@@ -12,16 +12,16 @@
   v2 = v5.receiver;
   [(SearchViewController *)&v5 viewDidLoad];
   [*&v2[OBJC_IVAR____TtC18ASMessagesProvider20SearchViewController_searchController] setObscuresBackgroundDuringPresentation:{0, v5.receiver, v5.super_class}];
-  v3 = [v2 navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
+  navigationItem = [v2 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  v4 = [v2 navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationItem2 = [v2 navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_5CF00C();
 }
 

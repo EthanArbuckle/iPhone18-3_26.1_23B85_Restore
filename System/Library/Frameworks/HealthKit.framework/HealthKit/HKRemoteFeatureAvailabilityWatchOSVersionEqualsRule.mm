@@ -1,14 +1,14 @@
 @interface HKRemoteFeatureAvailabilityWatchOSVersionEqualsRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
-- (void)setTargetVersion:(id *)a3;
+- (void)processUserInfo:(id)info;
+- (void)setTargetVersion:(id *)version;
 @end
 
 @implementation HKRemoteFeatureAvailabilityWatchOSVersionEqualsRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"OperatingSystemVersion"];
+  v4 = [info objectForKeyedSubscript:@"OperatingSystemVersion"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -30,11 +30,11 @@
 - (BOOL)evaluate
 {
   [(HKRemoteFeatureAvailabilityWatchOSVersionEqualsRule *)self targetVersion];
-  v3 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    [v3 watchOSVersion];
+    [dataSource watchOSVersion];
   }
 
   else
@@ -47,10 +47,10 @@
   return v5;
 }
 
-- (void)setTargetVersion:(id *)a3
+- (void)setTargetVersion:(id *)version
 {
-  var2 = a3->var2;
-  *&self->_targetVersion.majorVersion = *&a3->var0;
+  var2 = version->var2;
+  *&self->_targetVersion.majorVersion = *&version->var0;
   self->_targetVersion.patchVersion = var2;
 }
 

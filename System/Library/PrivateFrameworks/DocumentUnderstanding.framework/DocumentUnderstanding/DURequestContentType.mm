@@ -12,9 +12,9 @@
 + (_TtC21DocumentUnderstanding20DURequestContentType)posTags;
 + (_TtC21DocumentUnderstanding20DURequestContentType)userInterfaceUnderstanding;
 + (_TtC21DocumentUnderstanding20DURequestContentType)wikiDataTopic;
-- (BOOL)isEqual:(id)a3;
-- (_TtC21DocumentUnderstanding20DURequestContentType)initWithAbilitiesToUnion:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_TtC21DocumentUnderstanding20DURequestContentType)initWithAbilitiesToUnion:(id)union;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation DURequestContentType
@@ -123,18 +123,18 @@
   return v2;
 }
 
-- (_TtC21DocumentUnderstanding20DURequestContentType)initWithAbilitiesToUnion:(id)a3
+- (_TtC21DocumentUnderstanding20DURequestContentType)initWithAbilitiesToUnion:(id)union
 {
   swift_getObjectType();
   sub_232CE9FE0();
   return DURequestContentType.init(abilitiesToUnion:)();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_232CEA420();
     swift_unknownObjectRelease();
@@ -143,7 +143,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DURequestContentType.isEqual(_:)();
@@ -152,9 +152,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   DURequestContentType.copy(with:)(v6);
 
   sub_232B203C8(v6, v6[3]);

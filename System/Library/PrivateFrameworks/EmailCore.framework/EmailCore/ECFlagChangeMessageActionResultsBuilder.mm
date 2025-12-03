@@ -11,9 +11,9 @@
   v2 = [(ECFlagChangeMessageActionResultsBuilder *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     completedUIDs = v2->_completedUIDs;
-    v2->_completedUIDs = v3;
+    v2->_completedUIDs = indexSet;
   }
 
   return v2;

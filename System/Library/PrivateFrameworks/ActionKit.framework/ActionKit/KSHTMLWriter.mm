@@ -1,32 +1,32 @@
 @interface KSHTMLWriter
-+ (BOOL)isDocTypeXHTML:(id)a3;
-- (BOOL)canWriteElementInline:(id)a3;
-- (BOOL)elementCanBeEmpty:(id)a3;
++ (BOOL)isDocTypeXHTML:(id)l;
+- (BOOL)canWriteElementInline:(id)inline;
+- (BOOL)elementCanBeEmpty:(id)empty;
 - (BOOL)hasCurrentAttributes;
 - (BOOL)topElementIsList;
-- (BOOL)validateElement:(id)a3;
-- (KSHTMLWriter)initWithOutputWriter:(id)a3;
-- (KSHTMLWriter)initWithOutputWriter:(id)a3 docType:(id)a4 encoding:(unint64_t)a5;
+- (BOOL)validateElement:(id)element;
+- (KSHTMLWriter)initWithOutputWriter:(id)writer;
+- (KSHTMLWriter)initWithOutputWriter:(id)writer docType:(id)type encoding:(unint64_t)encoding;
 - (id)currentAttributes;
 - (id)currentElementClassName;
-- (id)validateAttribute:(id)a3 value:(id)a4 ofElement:(id)a5;
+- (id)validateAttribute:(id)attribute value:(id)value ofElement:(id)element;
 - (void)closeEmptyElementTag;
-- (void)pushAttribute:(id)a3 value:(id)a4;
-- (void)setDocType:(id)a3;
-- (void)startAnchorElementWithHref:(id)a3 title:(id)a4 target:(id)a5 rel:(id)a6;
-- (void)startDocumentWithDocType:(id)a3 encoding:(unint64_t)a4;
-- (void)startElement:(id)a3 idName:(id)a4 className:(id)a5;
-- (void)startJavascriptElementWithSrc:(id)a3;
-- (void)startStyleElementWithType:(id)a3;
-- (void)writeHTMLFormat:(id)a3;
-- (void)writeImageWithSrc:(id)a3 alt:(id)a4 width:(id)a5 height:(id)a6;
-- (void)writeJavascript:(id)a3 useCDATA:(BOOL)a4;
-- (void)writeJavascriptWithSrc:(id)a3 charset:(id)a4;
-- (void)writeJavascriptWithSrc:(id)a3 encoding:(unint64_t)a4;
+- (void)pushAttribute:(id)attribute value:(id)value;
+- (void)setDocType:(id)type;
+- (void)startAnchorElementWithHref:(id)href title:(id)title target:(id)target rel:(id)rel;
+- (void)startDocumentWithDocType:(id)type encoding:(unint64_t)encoding;
+- (void)startElement:(id)element idName:(id)name className:(id)className;
+- (void)startJavascriptElementWithSrc:(id)src;
+- (void)startStyleElementWithType:(id)type;
+- (void)writeHTMLFormat:(id)format;
+- (void)writeImageWithSrc:(id)src alt:(id)alt width:(id)width height:(id)height;
+- (void)writeJavascript:(id)javascript useCDATA:(BOOL)a;
+- (void)writeJavascriptWithSrc:(id)src charset:(id)charset;
+- (void)writeJavascriptWithSrc:(id)src encoding:(unint64_t)encoding;
 - (void)writeLineBreak;
-- (void)writeLinkWithHref:(id)a3 type:(id)a4 rel:(id)a5 title:(id)a6 media:(id)a7;
-- (void)writeParamElementWithName:(id)a3 value:(id)a4;
-- (void)writeStyleElementWithCSSString:(id)a3;
+- (void)writeLinkWithHref:(id)href type:(id)type rel:(id)rel title:(id)title media:(id)media;
+- (void)writeParamElementWithName:(id)name value:(id)value;
+- (void)writeStyleElementWithCSSString:(id)string;
 @end
 
 @implementation KSHTMLWriter
@@ -47,21 +47,21 @@
   }
 }
 
-- (id)validateAttribute:(id)a3 value:(id)a4 ofElement:(id)a5
+- (id)validateAttribute:(id)attribute value:(id)value ofElement:(id)element
 {
-  v8 = a3;
-  v9 = a5;
+  attributeCopy = attribute;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = KSHTMLWriter;
-  v10 = [(KSXMLWriter *)&v14 validateAttribute:v8 value:a4 ofElement:v9];
+  v10 = [(KSXMLWriter *)&v14 validateAttribute:attributeCopy value:value ofElement:elementCopy];
   if (v10)
   {
-    if ([v9 isEqualToString:@"li"])
+    if ([elementCopy isEqualToString:@"li"])
     {
-      if ([v8 isEqualToString:@"value"])
+      if ([attributeCopy isEqualToString:@"value"])
       {
-        v11 = [(KSXMLWriter *)self topElement];
-        v12 = [v11 isEqualToString:@"ol"];
+        topElement = [(KSXMLWriter *)self topElement];
+        v12 = [topElement isEqualToString:@"ol"];
 
         if ((v12 & 1) == 0)
         {
@@ -75,16 +75,16 @@
   return v10;
 }
 
-- (BOOL)validateElement:(id)a3
+- (BOOL)validateElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v7.receiver = self;
   v7.super_class = KSHTMLWriter;
-  if ([(KSXMLWriter *)&v7 validateElement:v4])
+  if ([(KSXMLWriter *)&v7 validateElement:elementCopy])
   {
     if ([(KSHTMLWriter *)self topElementIsList])
     {
-      v5 = [v4 isEqualToString:@"li"];
+      v5 = [elementCopy isEqualToString:@"li"];
     }
 
     else
@@ -101,17 +101,17 @@
   return v5;
 }
 
-- (BOOL)canWriteElementInline:(id)a3
+- (BOOL)canWriteElementInline:(id)inline
 {
-  v4 = a3;
-  v5 = [v4 length];
+  inlineCopy = inline;
+  v5 = [inlineCopy length];
   if (v5 > 4)
   {
     if (v5 <= 6)
     {
       if (v5 == 5)
       {
-        if ([v4 isEqualToString:@"small"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"input"))
+        if ([inlineCopy isEqualToString:@"small"] & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"input"))
         {
           goto LABEL_47;
         }
@@ -121,7 +121,7 @@
 
       else
       {
-        if ([v4 isEqualToString:@"strong"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"select") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"button") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"object") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"applet"))
+        if ([inlineCopy isEqualToString:@"strong"] & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"select") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"button") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"object") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"applet"))
         {
           goto LABEL_47;
         }
@@ -151,7 +151,7 @@
   {
     if (v5 == 3)
     {
-      if ([v4 isEqualToString:@"img"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"sup") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"sub") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"big") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"del") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"ins") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"dfn") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"map") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"var") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"bdo"))
+      if ([inlineCopy isEqualToString:@"img"] & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"sup") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"sub") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"big") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"del") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"ins") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"dfn") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"map") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"var") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"bdo"))
       {
         goto LABEL_47;
       }
@@ -161,7 +161,7 @@
 
     else
     {
-      if ([v4 isEqualToString:@"span"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"font") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"abbr") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"cite") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"code"))
+      if ([inlineCopy isEqualToString:@"span"] & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"font") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"abbr") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"cite") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"code"))
       {
         goto LABEL_47;
       }
@@ -174,7 +174,7 @@
 
   if (v5 == 1)
   {
-    if ([v4 isEqualToString:@"a"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"b") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"i") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"u"))
+    if ([inlineCopy isEqualToString:@"a"] & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"b") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"i") & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"u"))
     {
       goto LABEL_47;
     }
@@ -188,18 +188,18 @@
 LABEL_48:
     v9.receiver = self;
     v9.super_class = KSHTMLWriter;
-    v7 = [(KSXMLWriter *)&v9 canWriteElementInline:v4];
+    v7 = [(KSXMLWriter *)&v9 canWriteElementInline:inlineCopy];
     goto LABEL_49;
   }
 
-  if ([v4 isEqualToString:@"br"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"em"))
+  if ([inlineCopy isEqualToString:@"br"] & 1) != 0 || (objc_msgSend(inlineCopy, "isEqualToString:", @"em"))
   {
     goto LABEL_47;
   }
 
   v6 = @"tt";
 LABEL_46:
-  if (([v4 isEqualToString:v6] & 1) == 0)
+  if (([inlineCopy isEqualToString:v6] & 1) == 0)
   {
     goto LABEL_48;
   }
@@ -211,17 +211,17 @@ LABEL_49:
   return v7;
 }
 
-- (BOOL)elementCanBeEmpty:(id)a3
+- (BOOL)elementCanBeEmpty:(id)empty
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"br"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"img") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"hr") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"meta") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"link") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"input") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"base") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"basefont") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"param") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"area"))
+  emptyCopy = empty;
+  if ([emptyCopy isEqualToString:@"br"] & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"img") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"hr") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"meta") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"link") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"input") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"base") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"basefont") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"param") & 1) != 0 || (objc_msgSend(emptyCopy, "isEqualToString:", @"area"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"source"];
+    v4 = [emptyCopy isEqualToString:@"source"];
   }
 
   return v4;
@@ -229,71 +229,71 @@ LABEL_49:
 
 - (BOOL)topElementIsList
 {
-  v2 = [(KSXMLWriter *)self topElement];
-  if ([v2 isEqualToString:@"ul"])
+  topElement = [(KSXMLWriter *)self topElement];
+  if ([topElement isEqualToString:@"ul"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"ol"];
+    v3 = [topElement isEqualToString:@"ol"];
   }
 
   return v3;
 }
 
-- (void)startStyleElementWithType:(id)a3
+- (void)startStyleElementWithType:(id)type
 {
-  if (a3)
+  if (type)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"type" value:a3];
+    [(KSHTMLWriter *)self pushAttribute:@"type" value:type];
   }
 
   [(KSXMLWriter *)self startElement:@"style"];
 }
 
-- (void)writeStyleElementWithCSSString:(id)a3
+- (void)writeStyleElementWithCSSString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(KSHTMLWriter *)self startStyleElementWithType:@"text/css"];
-  [(KSXMLWriter *)self writeString:v4];
+  [(KSXMLWriter *)self writeString:stringCopy];
 
   [(KSXMLWriter *)self endElement];
 }
 
-- (void)writeParamElementWithName:(id)a3 value:(id)a4
+- (void)writeParamElementWithName:(id)name value:(id)value
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  nameCopy = name;
+  valueCopy = value;
+  if (nameCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"name" value:v7];
+    [(KSHTMLWriter *)self pushAttribute:@"name" value:nameCopy];
   }
 
-  if (v6)
+  if (valueCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"value" value:v6];
+    [(KSHTMLWriter *)self pushAttribute:@"value" value:valueCopy];
   }
 
   [(KSXMLWriter *)self startElement:@"param"];
   [(KSXMLWriter *)self endElement];
 }
 
-- (void)startJavascriptElementWithSrc:(id)a3
+- (void)startJavascriptElementWithSrc:(id)src
 {
-  v6 = a3;
-  v4 = [(KSHTMLWriter *)self docType];
-  v5 = [v4 isEqualToString:KSHTMLWriterDocTypeHTML_5];
+  srcCopy = src;
+  docType = [(KSHTMLWriter *)self docType];
+  v5 = [docType isEqualToString:KSHTMLWriterDocTypeHTML_5];
 
   if ((v5 & 1) == 0)
   {
     [(KSHTMLWriter *)self pushAttribute:@"type" value:@"text/javascript"];
   }
 
-  if (v6)
+  if (srcCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"src" value:v6];
+    [(KSHTMLWriter *)self pushAttribute:@"src" value:srcCopy];
     [(KSXMLWriter *)self startElement:@"script"];
   }
 
@@ -305,134 +305,134 @@ LABEL_49:
   }
 }
 
-- (void)writeJavascript:(id)a3 useCDATA:(BOOL)a4
+- (void)writeJavascript:(id)javascript useCDATA:(BOOL)a
 {
-  v4 = a4;
-  v6 = a3;
+  aCopy = a;
+  javascriptCopy = javascript;
   [(KSHTMLWriter *)self startJavascriptElementWithSrc:0];
-  if (v4)
+  if (aCopy)
   {
     [(KSHTMLWriter *)self startJavascriptCDATA];
-    [(KSXMLWriter *)self writeString:v6];
+    [(KSXMLWriter *)self writeString:javascriptCopy];
     [(KSHTMLWriter *)self endJavascriptCDATA];
   }
 
   else
   {
-    [(KSXMLWriter *)self writeString:v6];
+    [(KSXMLWriter *)self writeString:javascriptCopy];
   }
 
   [(KSXMLWriter *)self endElement];
 }
 
-- (void)writeJavascriptWithSrc:(id)a3 charset:(id)a4
+- (void)writeJavascriptWithSrc:(id)src charset:(id)charset
 {
-  v6 = a3;
-  if (a4)
+  srcCopy = src;
+  if (charset)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"charset" value:a4];
+    [(KSHTMLWriter *)self pushAttribute:@"charset" value:charset];
   }
 
-  [(KSHTMLWriter *)self startJavascriptElementWithSrc:v6];
+  [(KSHTMLWriter *)self startJavascriptElementWithSrc:srcCopy];
   [(KSXMLWriter *)self endElement];
 }
 
-- (void)writeJavascriptWithSrc:(id)a3 encoding:(unint64_t)a4
+- (void)writeJavascriptWithSrc:(id)src encoding:(unint64_t)encoding
 {
-  v8 = a3;
-  if ([(KSXMLWriter *)self encoding]== a4)
+  srcCopy = src;
+  if ([(KSXMLWriter *)self encoding]== encoding)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = CFStringConvertNSStringEncodingToEncoding(a4);
+    v7 = CFStringConvertNSStringEncodingToEncoding(encoding);
     v6 = CFStringConvertEncodingToIANACharSetName(v7);
   }
 
-  [(KSHTMLWriter *)self writeJavascriptWithSrc:v8 charset:v6];
+  [(KSHTMLWriter *)self writeJavascriptWithSrc:srcCopy charset:v6];
 }
 
-- (void)writeLinkWithHref:(id)a3 type:(id)a4 rel:(id)a5 title:(id)a6 media:(id)a7
+- (void)writeLinkWithHref:(id)href type:(id)type rel:(id)rel title:(id)title media:(id)media
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v13)
+  hrefCopy = href;
+  typeCopy = type;
+  relCopy = rel;
+  titleCopy = title;
+  mediaCopy = media;
+  if (relCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"rel" value:v13];
+    [(KSHTMLWriter *)self pushAttribute:@"rel" value:relCopy];
   }
 
-  if (!v12)
+  if (!typeCopy)
   {
-    v12 = @"text/css";
+    typeCopy = @"text/css";
   }
 
-  [(KSHTMLWriter *)self pushAttribute:@"type" value:v12];
-  [(KSHTMLWriter *)self pushAttribute:@"href" value:v16];
-  if (v14)
+  [(KSHTMLWriter *)self pushAttribute:@"type" value:typeCopy];
+  [(KSHTMLWriter *)self pushAttribute:@"href" value:hrefCopy];
+  if (titleCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"title" value:v14];
+    [(KSHTMLWriter *)self pushAttribute:@"title" value:titleCopy];
   }
 
-  if (v15)
+  if (mediaCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"media" value:v15];
+    [(KSHTMLWriter *)self pushAttribute:@"media" value:mediaCopy];
   }
 
   [(KSXMLWriter *)self startElement:@"link"];
   [(KSXMLWriter *)self endElement];
 }
 
-- (void)writeImageWithSrc:(id)a3 alt:(id)a4 width:(id)a5 height:(id)a6
+- (void)writeImageWithSrc:(id)src alt:(id)alt width:(id)width height:(id)height
 {
-  v12 = a5;
-  v10 = a6;
-  v11 = a4;
-  [(KSHTMLWriter *)self pushAttribute:@"src" value:a3];
-  [(KSHTMLWriter *)self pushAttribute:@"alt" value:v11];
+  widthCopy = width;
+  heightCopy = height;
+  altCopy = alt;
+  [(KSHTMLWriter *)self pushAttribute:@"src" value:src];
+  [(KSHTMLWriter *)self pushAttribute:@"alt" value:altCopy];
 
-  if (v12)
+  if (widthCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"width" value:v12];
+    [(KSHTMLWriter *)self pushAttribute:@"width" value:widthCopy];
   }
 
-  if (v10)
+  if (heightCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"height" value:v10];
+    [(KSHTMLWriter *)self pushAttribute:@"height" value:heightCopy];
   }
 
   [(KSXMLWriter *)self startElement:@"img"];
   [(KSXMLWriter *)self endElement];
 }
 
-- (void)startAnchorElementWithHref:(id)a3 title:(id)a4 target:(id)a5 rel:(id)a6
+- (void)startAnchorElementWithHref:(id)href title:(id)title target:(id)target rel:(id)rel
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v13)
+  hrefCopy = href;
+  titleCopy = title;
+  targetCopy = target;
+  relCopy = rel;
+  if (hrefCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"href" value:v13];
+    [(KSHTMLWriter *)self pushAttribute:@"href" value:hrefCopy];
   }
 
-  if (v11)
+  if (targetCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"target" value:v11];
+    [(KSHTMLWriter *)self pushAttribute:@"target" value:targetCopy];
   }
 
-  if (v10)
+  if (titleCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"title" value:v10];
+    [(KSHTMLWriter *)self pushAttribute:@"title" value:titleCopy];
   }
 
-  if (v12)
+  if (relCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"rel" value:v12];
+    [(KSHTMLWriter *)self pushAttribute:@"rel" value:relCopy];
   }
 
   [(KSXMLWriter *)self startElement:@"a"];
@@ -445,29 +445,29 @@ LABEL_49:
   [(KSXMLWriter *)self endElement];
 }
 
-- (void)startElement:(id)a3 idName:(id)a4 className:(id)a5
+- (void)startElement:(id)element idName:(id)name className:(id)className
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  elementCopy = element;
+  nameCopy = name;
+  classNameCopy = className;
+  if (nameCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"id" value:v8];
+    [(KSHTMLWriter *)self pushAttribute:@"id" value:nameCopy];
   }
 
-  if (v9)
+  if (classNameCopy)
   {
-    [(KSHTMLWriter *)self pushAttribute:@"class" value:v9];
+    [(KSHTMLWriter *)self pushAttribute:@"class" value:classNameCopy];
   }
 
-  [(KSXMLWriter *)self startElement:v10];
+  [(KSXMLWriter *)self startElement:elementCopy];
 }
 
-- (void)writeHTMLFormat:(id)a3
+- (void)writeHTMLFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(KSHTMLWriter *)self writeHTMLString:v6];
 }
@@ -483,35 +483,35 @@ LABEL_49:
 {
   v6.receiver = self;
   v6.super_class = KSHTMLWriter;
-  v3 = [(KSXMLWriter *)&v6 currentAttributes];
-  v4 = [(KSHTMLWriter *)self currentElementClassName];
-  if (v4)
+  currentAttributes = [(KSXMLWriter *)&v6 currentAttributes];
+  currentElementClassName = [(KSHTMLWriter *)self currentElementClassName];
+  if (currentElementClassName)
   {
-    [v3 addAttribute:@"class" value:v4];
+    [currentAttributes addAttribute:@"class" value:currentElementClassName];
   }
 
-  return v3;
+  return currentAttributes;
 }
 
-- (void)pushAttribute:(id)a3 value:(id)a4
+- (void)pushAttribute:(id)attribute value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"class"])
+  attributeCopy = attribute;
+  valueCopy = value;
+  if ([attributeCopy isEqualToString:@"class"])
   {
-    [(KSHTMLWriter *)self pushClassName:v7];
+    [(KSHTMLWriter *)self pushClassName:valueCopy];
   }
 
   else
   {
-    if ([v6 isEqualToString:@"id"])
+    if ([attributeCopy isEqualToString:@"id"])
     {
-      [(NSMutableSet *)self->_IDs addObject:v7];
+      [(NSMutableSet *)self->_IDs addObject:valueCopy];
     }
 
     v8.receiver = self;
     v8.super_class = KSHTMLWriter;
-    [(KSXMLWriter *)&v8 pushAttribute:v6 value:v7];
+    [(KSXMLWriter *)&v8 pushAttribute:attributeCopy value:valueCopy];
   }
 }
 
@@ -526,9 +526,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setDocType:(id)a3
+- (void)setDocType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   docType = self->_docType;
   self->_docType = v4;
   v6 = v4;
@@ -537,33 +537,33 @@ LABEL_49:
   self->_isXHTML = docType;
 }
 
-- (void)startDocumentWithDocType:(id)a3 encoding:(unint64_t)a4
+- (void)startDocumentWithDocType:(id)type encoding:(unint64_t)encoding
 {
-  v6 = a3;
-  [(KSHTMLWriter *)self setDocType:v6];
+  typeCopy = type;
+  [(KSHTMLWriter *)self setDocType:typeCopy];
   v7.receiver = self;
   v7.super_class = KSHTMLWriter;
-  [(KSXMLWriter *)&v7 startDocumentWithDocType:v6 encoding:a4];
+  [(KSXMLWriter *)&v7 startDocumentWithDocType:typeCopy encoding:encoding];
 }
 
-- (KSHTMLWriter)initWithOutputWriter:(id)a3 docType:(id)a4 encoding:(unint64_t)a5
+- (KSHTMLWriter)initWithOutputWriter:(id)writer docType:(id)type encoding:(unint64_t)encoding
 {
-  v8 = a4;
-  v9 = [(KSXMLWriter *)self initWithOutputWriter:a3 encoding:a5];
+  typeCopy = type;
+  v9 = [(KSXMLWriter *)self initWithOutputWriter:writer encoding:encoding];
   v10 = v9;
   if (v9)
   {
-    [(KSHTMLWriter *)v9 setDocType:v8];
+    [(KSHTMLWriter *)v9 setDocType:typeCopy];
   }
 
   return v10;
 }
 
-- (KSHTMLWriter)initWithOutputWriter:(id)a3
+- (KSHTMLWriter)initWithOutputWriter:(id)writer
 {
   v10.receiver = self;
   v10.super_class = KSHTMLWriter;
-  v3 = [(KSXMLWriter *)&v10 initWithOutputWriter:a3];
+  v3 = [(KSXMLWriter *)&v10 initWithOutputWriter:writer];
   v4 = v3;
   if (v3)
   {
@@ -580,17 +580,17 @@ LABEL_49:
   return v4;
 }
 
-+ (BOOL)isDocTypeXHTML:(id)a3
++ (BOOL)isDocTypeXHTML:(id)l
 {
-  v3 = a3;
-  if ([v3 isEqualToString:KSHTMLWriterDocTypeHTML_4_01_Strict] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", KSHTMLWriterDocTypeHTML_4_01_Transitional))
+  lCopy = l;
+  if ([lCopy isEqualToString:KSHTMLWriterDocTypeHTML_4_01_Strict] & 1) != 0 || (objc_msgSend(lCopy, "isEqualToString:", KSHTMLWriterDocTypeHTML_4_01_Transitional))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:KSHTMLWriterDocTypeHTML_4_01_Frameset] ^ 1;
+    v4 = [lCopy isEqualToString:KSHTMLWriterDocTypeHTML_4_01_Frameset] ^ 1;
   }
 
   return v4;

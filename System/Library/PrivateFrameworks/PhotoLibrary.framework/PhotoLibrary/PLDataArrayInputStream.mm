@@ -1,25 +1,25 @@
 @interface PLDataArrayInputStream
-- (BOOL)_setCFClientFlags:(unint64_t)a3 callback:(void *)a4 context:(id *)a5;
-- (PLDataArrayInputStream)initWithDataArray:(id)a3;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
-- (void)_scheduleInCFRunLoop:(__CFRunLoop *)a3 forMode:(__CFString *)a4;
+- (BOOL)_setCFClientFlags:(unint64_t)flags callback:(void *)callback context:(id *)context;
+- (PLDataArrayInputStream)initWithDataArray:(id)array;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
+- (void)_scheduleInCFRunLoop:(__CFRunLoop *)loop forMode:(__CFString *)mode;
 - (void)_scheduleProgressUpdate;
 - (void)_streamEventTrigger;
 - (void)_updateProgress;
 - (void)close;
 - (void)dealloc;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
 @end
 
 @implementation PLDataArrayInputStream
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
-  bzero(a3, a4);
+  bzero(read, length);
   v14 = 160;
   v6 = 0;
-  if (self->_dataOffset < self->_dataLength && a4 != 0)
+  if (self->_dataOffset < self->_dataLength && length != 0)
   {
     do
     {
@@ -29,17 +29,17 @@
       }
 
       v8 = [(NSArray *)self->_dataArray objectAtIndex:?];
-      if (a4 - v6 >= self->_currentLength - self->_currentOffset)
+      if (length - v6 >= self->_currentLength - self->_currentOffset)
       {
         v9 = self->_currentLength - self->_currentOffset;
       }
 
       else
       {
-        v9 = a4 - v6;
+        v9 = length - v6;
       }
 
-      memcpy(&a3[v6], ([v8 bytes] + self->_currentOffset), v9);
+      memcpy(&read[v6], ([v8 bytes] + self->_currentOffset), v9);
       self->_currentOffset += v9;
       dataOffset = (self->_dataOffset + v9);
       self->_dataOffset = dataOffset;
@@ -60,7 +60,7 @@
       v6 += v9;
     }
 
-    while (dataOffset < *(&self->super.super.super.isa + v14) && v6 < a4);
+    while (dataOffset < *(&self->super.super.super.isa + v14) && v6 < length);
   }
 
   [(PLDataArrayInputStream *)self _scheduleProgressUpdate];
@@ -100,34 +100,34 @@
   self->_streamStatus = 6;
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  v6 = [a3 getCFRunLoop];
+  getCFRunLoop = [loop getCFRunLoop];
 
-  [(PLDataArrayInputStream *)self _unscheduleFromCFRunLoop:v6 forMode:a4];
+  [(PLDataArrayInputStream *)self _unscheduleFromCFRunLoop:getCFRunLoop forMode:mode];
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  v6 = [a3 getCFRunLoop];
+  getCFRunLoop = [loop getCFRunLoop];
 
-  [(PLDataArrayInputStream *)self _scheduleInCFRunLoop:v6 forMode:a4];
+  [(PLDataArrayInputStream *)self _scheduleInCFRunLoop:getCFRunLoop forMode:mode];
 }
 
-- (BOOL)_setCFClientFlags:(unint64_t)a3 callback:(void *)a4 context:(id *)a5
+- (BOOL)_setCFClientFlags:(unint64_t)flags callback:(void *)callback context:(id *)context
 {
   p_clientContext = &self->_clientContext;
-  if (a5)
+  if (context)
   {
-    v8 = *&a5->var0;
-    v9 = *&a5->var2;
-    self->_clientContext.copyDescription = a5->var4;
+    v8 = *&context->var0;
+    v9 = *&context->var2;
+    self->_clientContext.copyDescription = context->var4;
     *&p_clientContext->version = v8;
     *&self->_clientContext.retain = v9;
     retain = self->_clientContext.retain;
     if (retain)
     {
-      retain(self->_clientContext.info, a2, a3);
+      retain(self->_clientContext.info, a2, flags);
     }
   }
 
@@ -136,7 +136,7 @@
     release = self->_clientContext.release;
     if (release)
     {
-      release(self->_clientContext.info, a2, a3);
+      release(self->_clientContext.info, a2, flags);
     }
 
     p_clientContext->copyDescription = 0;
@@ -144,11 +144,11 @@
     *&p_clientContext->retain = 0u;
   }
 
-  self->_clientCallback = a4;
+  self->_clientCallback = callback;
   return 1;
 }
 
-- (void)_scheduleInCFRunLoop:(__CFRunLoop *)a3 forMode:(__CFString *)a4
+- (void)_scheduleInCFRunLoop:(__CFRunLoop *)loop forMode:(__CFString *)mode
 {
   rls = self->_rls;
   if (!rls)
@@ -166,12 +166,12 @@
     }
   }
 
-  CFRunLoopAddSource(a3, rls, a4);
+  CFRunLoopAddSource(loop, rls, mode);
 }
 
 - (void)_streamEventTrigger
 {
-  v4 = self;
+  selfCopy = self;
   openEventSent = self->_openEventSent;
   if (openEventSent)
   {
@@ -189,15 +189,15 @@
       if (clientCallback)
       {
         info = self->_clientContext.info;
-        v10 = self;
+        selfCopy4 = self;
         v11 = 16;
 LABEL_11:
-        clientCallback(v10, v11, info);
+        clientCallback(selfCopy4, v11, info);
         goto LABEL_17;
       }
 
-      v13 = [(PLDataArrayInputStream *)self delegate];
-      v14 = self;
+      delegate = [(PLDataArrayInputStream *)self delegate];
+      selfCopy5 = self;
       v15 = 16;
     }
 
@@ -207,17 +207,17 @@ LABEL_11:
       if (clientCallback)
       {
         info = self->_clientContext.info;
-        v10 = self;
+        selfCopy4 = self;
         v11 = 2;
         goto LABEL_11;
       }
 
-      v13 = [(PLDataArrayInputStream *)self delegate];
-      v14 = self;
+      delegate = [(PLDataArrayInputStream *)self delegate];
+      selfCopy5 = self;
       v15 = 2;
     }
 
-    [v13 stream:v14 handleEvent:v15];
+    [delegate stream:selfCopy5 handleEvent:v15];
   }
 
   else
@@ -256,7 +256,7 @@ LABEL_19:
 
 LABEL_20:
 
-  v16 = self;
+  selfCopy6 = self;
 }
 
 - (void)dealloc
@@ -279,7 +279,7 @@ LABEL_20:
   [(PLDataArrayInputStream *)&v5 dealloc];
 }
 
-- (PLDataArrayInputStream)initWithDataArray:(id)a3
+- (PLDataArrayInputStream)initWithDataArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
@@ -287,7 +287,7 @@ LABEL_20:
   v4 = [(PLDataArrayInputStream *)&v16 init];
   if (v4)
   {
-    v4->_dataArray = a3;
+    v4->_dataArray = array;
     v4->_dataLength = 0;
     v4->_dataCount = [(NSArray *)v4->_dataArray count];
     v14 = 0u;

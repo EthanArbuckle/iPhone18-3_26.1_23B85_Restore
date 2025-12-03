@@ -1,24 +1,24 @@
 @interface NCNotificationSummaryExpandedHeaderView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)space;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCNotificationListCoalescingControlsHandlerDelegate)handlerDelegate;
-- (NCNotificationSummaryExpandedHeaderView)initWithFrame:(CGRect)a3;
+- (NCNotificationSummaryExpandedHeaderView)initWithFrame:(CGRect)frame;
 - (NCNotificationSummaryExpandedHeaderViewDelegate)delegate;
-- (double)_allowedWidthForButtonInRect:(CGRect)a3;
-- (id)_newOnboardingButtonWithTitle:(id)a3;
-- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)a3;
+- (double)_allowedWidthForButtonInRect:(CGRect)rect;
+- (id)_newOnboardingButtonWithTitle:(id)title;
+- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)content;
 - (unint64_t)_maximumNumberOfLinesForTitleText;
-- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)a3;
+- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)frame;
 - (void)_configureControlsViewIfNecessary;
 - (void)_configureDividerViewIfNecessary;
 - (void)_configureOnboardingButtonsIfNecessary;
 - (void)_configureTimeStampLabel;
 - (void)_configureTimeStampLabelIfNecessary;
-- (void)_handleClearAll:(id)a3;
-- (void)_handleClearControlPrimaryAction:(id)a3;
-- (void)_handleClearControlTouchUpInside:(id)a3;
-- (void)_handleCollapseControlPrimaryAction:(id)a3;
+- (void)_handleClearAll:(id)all;
+- (void)_handleClearControlPrimaryAction:(id)action;
+- (void)_handleClearControlTouchUpInside:(id)inside;
+- (void)_handleCollapseControlPrimaryAction:(id)action;
 - (void)_layoutControlsView;
 - (void)_layoutDividerView;
 - (void)_layoutOnboardingButtons;
@@ -26,35 +26,35 @@
 - (void)_layoutTimeStampLabel;
 - (void)_layoutTitleLabel;
 - (void)_recycleTimeStampLabel;
-- (void)_summaryOnboardingAccepted:(id)a3;
-- (void)_summaryOnboardingRejected:(id)a3;
+- (void)_summaryOnboardingAccepted:(id)accepted;
+- (void)_summaryOnboardingRejected:(id)rejected;
 - (void)_tearDownTimeStampLabel;
 - (void)_updateTextAttributes;
-- (void)_updateTextAttributesForButtonLabel:(id)a3;
+- (void)_updateTextAttributesForButtonLabel:(id)label;
 - (void)_updateTextAttributesForDateLabel;
 - (void)_updateTextAttributesForSubtitleTextLabel;
 - (void)_updateTextAttributesForTitleTextLabel;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 - (void)layoutSubviews;
-- (void)resetClearButtonStateAnimated:(BOOL)a3;
-- (void)setDate:(id)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setOnboarding:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)toggleControlDidBeginClickInteraction:(id)a3;
-- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)a3;
-- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)a3;
+- (void)resetClearButtonStateAnimated:(BOOL)animated;
+- (void)setDate:(id)date;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setOnboarding:(BOOL)onboarding;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTimeZone:(id)zone;
+- (void)setTitle:(id)title;
+- (void)toggleControlDidBeginClickInteraction:(id)interaction;
+- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)content;
+- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)content;
 @end
 
 @implementation NCNotificationSummaryExpandedHeaderView
 
-- (NCNotificationSummaryExpandedHeaderView)initWithFrame:(CGRect)a3
+- (NCNotificationSummaryExpandedHeaderView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NCNotificationSummaryExpandedHeaderView;
-  result = [(NCNotificationListBaseContentView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(NCNotificationListBaseContentView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_onboarding = 0;
@@ -64,11 +64,11 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 isEqualToString:v10];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -87,16 +87,16 @@
       titleLabel = self->_titleLabel;
     }
 
-    [(UILabel *)titleLabel setText:v10];
+    [(UILabel *)titleLabel setText:titleCopy];
     [(NCNotificationSummaryExpandedHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_subtitleLabel text];
-  v5 = [v4 isEqualToString:v10];
+  subtitleCopy = subtitle;
+  text = [(UILabel *)self->_subtitleLabel text];
+  v5 = [text isEqualToString:subtitleCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -115,17 +115,17 @@
       subtitleLabel = self->_subtitleLabel;
     }
 
-    [(UILabel *)subtitleLabel setText:v10];
+    [(UILabel *)subtitleLabel setText:subtitleCopy];
     [(NCNotificationSummaryExpandedHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     date = self->_date;
     self->_date = v4;
 
@@ -134,12 +134,12 @@
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [zoneCopy copy];
     timeZone = self->_timeZone;
     self->_timeZone = v4;
 
@@ -148,23 +148,23 @@
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if (self->_dateFormatStyle != a3)
+  if (self->_dateFormatStyle != style)
   {
-    self->_dateFormatStyle = a3;
+    self->_dateFormatStyle = style;
     [(NCNotificationSummaryExpandedHeaderView *)self _tearDownTimeStampLabel];
 
     [(NCNotificationSummaryExpandedHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setOnboarding:(BOOL)a3
+- (void)setOnboarding:(BOOL)onboarding
 {
-  if (self->_onboarding != a3)
+  if (self->_onboarding != onboarding)
   {
-    self->_onboarding = a3;
-    if (!a3)
+    self->_onboarding = onboarding;
+    if (!onboarding)
     {
       [(UIButton *)self->_onboardingAcceptButton removeFromSuperview];
       onboardingAcceptButton = self->_onboardingAcceptButton;
@@ -179,15 +179,15 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   timeStampLabel = self->_timeStampLabel;
   if (timeStampLabel)
   {
-    v7 = [(BSUIDateLabel *)timeStampLabel font];
-    [v7 lineHeight];
+    font = [(BSUIDateLabel *)timeStampLabel font];
+    [font lineHeight];
   }
 
   v8 = width + -14.0;
@@ -209,12 +209,12 @@
     v12 = v11;
     [(UIButton *)self->_onboardingAcceptButton sizeThatFits:?];
     [(UIButton *)self->_onboardingRejectButton sizeThatFits:v12, height];
-    v13 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    UIContentSizeCategoryIsAccessibilityCategory(v13);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   }
 
-  v14 = [(NCNotificationSummaryExpandedHeaderView *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(NCNotificationSummaryExpandedHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
   v16 = v15;
 
@@ -252,8 +252,8 @@
     self->_dividerView = v4;
 
     v6 = self->_dividerView;
-    v7 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v6 setBackgroundColor:blackColor];
 
     v8 = self->_dividerView;
     v9 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
@@ -287,17 +287,17 @@
   }
 }
 
-- (id)_newOnboardingButtonWithTitle:(id)a3
+- (id)_newOnboardingButtonWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_alloc_init(NCNotificationSummaryOnboardingButton);
-  v6 = [MEMORY[0x277D75348] systemWhiteColor];
-  [(NCNotificationSummaryOnboardingButton *)v5 setTitleColor:v6 forState:0];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [(NCNotificationSummaryOnboardingButton *)v5 setTitleColor:systemWhiteColor forState:0];
 
-  [(NCNotificationSummaryOnboardingButton *)v5 setTitle:v4 forState:0];
+  [(NCNotificationSummaryOnboardingButton *)v5 setTitle:titleCopy forState:0];
   [(NCNotificationSummaryExpandedHeaderView *)self _updateTextAttributesForButtonLabel:v5];
-  v7 = [(NCNotificationSummaryOnboardingButton *)v5 titleLabel];
-  [v7 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(NCNotificationSummaryOnboardingButton *)v5 titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 
   [(NCNotificationSummaryExpandedHeaderView *)self addSubview:v5];
   return v5;
@@ -361,30 +361,30 @@ void __76__NCNotificationSummaryExpandedHeaderView__configureControlsViewIfNeces
   *(v18 + 496) = v17;
 }
 
-- (void)_handleClearControlTouchUpInside:(id)a3
+- (void)_handleClearControlTouchUpInside:(id)inside
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  [v4 notificationSummaryExpandedHeaderView:self didTransitionToClearState:{-[NCToggleControl isExpanded](self->_clearControl, "isExpanded") ^ 1}];
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  [delegate notificationSummaryExpandedHeaderView:self didTransitionToClearState:{-[NCToggleControl isExpanded](self->_clearControl, "isExpanded") ^ 1}];
 
   self->_animateCollapseButtonLayout = 1;
 
   [(NCNotificationSummaryExpandedHeaderView *)self setNeedsLayout];
 }
 
-- (void)_handleClearControlPrimaryAction:(id)a3
+- (void)_handleClearControlPrimaryAction:(id)action
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  [v4 notificationSummaryExpandedHeaderViewRequestsClearingSummary:self];
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  [delegate notificationSummaryExpandedHeaderViewRequestsClearingSummary:self];
 }
 
-- (void)_handleCollapseControlPrimaryAction:(id)a3
+- (void)_handleCollapseControlPrimaryAction:(id)action
 {
   self->_animateCollapseButtonLayout = 0;
   [(NCNotificationSummaryExpandedHeaderView *)self setNeedsLayout];
   memset(&v10, 0, sizeof(v10));
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCNotificationSummaryExpandedHeaderView *)self _shouldReverseLayoutDirection];
   v5 = 1.57;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v5 = -1.57;
   }
@@ -402,8 +402,8 @@ void __76__NCNotificationSummaryExpandedHeaderView__configureControlsViewIfNeces
   v7[3] = &unk_27836F980;
   v7[4] = self;
   [MEMORY[0x277D75D18] _animateUsingSpringWithTension:0 friction:v8 interactive:v7 animations:200.0 completion:25.0];
-  v6 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  [v6 notificationSummaryExpandedHeaderViewRequestsCollapsingSummary:self];
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  [delegate notificationSummaryExpandedHeaderViewRequestsCollapsingSummary:self];
 }
 
 uint64_t __79__NCNotificationSummaryExpandedHeaderView__handleCollapseControlPrimaryAction___block_invoke(uint64_t a1)
@@ -427,7 +427,7 @@ uint64_t __79__NCNotificationSummaryExpandedHeaderView__handleCollapseControlPri
   return [*(*(a1 + 32) + 496) setExpanded:0];
 }
 
-- (void)_handleClearAll:(id)a3
+- (void)_handleClearAll:(id)all
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained notificationSummaryExpandedHeaderViewRequestsClearAll:self];
@@ -451,10 +451,10 @@ uint64_t __79__NCNotificationSummaryExpandedHeaderView__handleCollapseControlPri
     v16.size.width = v9;
     v16.size.height = v11;
     CGRectGetWidth(v16);
-    v12 = [(BSUIDateLabel *)self->_timeStampLabel font];
-    [v12 lineHeight];
-    v13 = [(NCNotificationSummaryExpandedHeaderView *)self traitCollection];
-    [v13 displayScale];
+    font = [(BSUIDateLabel *)self->_timeStampLabel font];
+    [font lineHeight];
+    traitCollection = [(NCNotificationSummaryExpandedHeaderView *)self traitCollection];
+    [traitCollection displayScale];
     UICeilToScale();
 
     UIRectIntegralWithScale();
@@ -480,10 +480,10 @@ uint64_t __79__NCNotificationSummaryExpandedHeaderView__handleCollapseControlPri
     UIRectIntegralWithScale();
     [(NCToggleControl *)self->_clearControl setFrame:?];
     [(NCToggleControl *)self->_clearControl layoutIfNeeded];
-    v12 = [(NCNotificationSummaryExpandedHeaderView *)self _shouldReverseLayoutDirection];
-    v13 = [(PLGlyphControl *)self->_clearControl _backgroundMaterialView];
-    [v13 frame];
-    if (v12)
+    _shouldReverseLayoutDirection = [(NCNotificationSummaryExpandedHeaderView *)self _shouldReverseLayoutDirection];
+    _backgroundMaterialView = [(PLGlyphControl *)self->_clearControl _backgroundMaterialView];
+    [_backgroundMaterialView frame];
+    if (_shouldReverseLayoutDirection)
     {
       CGRectGetMaxX(*&v14);
     }
@@ -690,8 +690,8 @@ LABEL_10:
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v28);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -770,14 +770,14 @@ LABEL_9:
   [(UIView *)v7 setFrame:?];
 }
 
-- (void)resetClearButtonStateAnimated:(BOOL)a3
+- (void)resetClearButtonStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(NCToggleControl *)self->_clearControl isExpanded])
   {
     self->_animateCollapseButtonLayout = 1;
     [(NCNotificationSummaryExpandedHeaderView *)self setNeedsLayout];
-    if (v3)
+    if (animatedCopy)
     {
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
@@ -796,10 +796,10 @@ LABEL_9:
   }
 }
 
-- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)a3
+- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = space.y;
+  x = space.x;
   [(UIView *)self->_controlsView frame];
   [(NCNotificationSummaryExpandedHeaderView *)self convertRect:0 toView:?];
   v8.x = x;
@@ -808,30 +808,30 @@ LABEL_9:
   return [(NCToggleControl *)self->_clearControl isExpanded]&& v6;
 }
 
-- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)a3
+- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  v5 = [v4 containerViewForClickInteractionPresentedContentForNotificationSummaryExpandedHeaderView:self];
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  v5 = [delegate containerViewForClickInteractionPresentedContentForNotificationSummaryExpandedHeaderView:self];
 
   return v5;
 }
 
-- (void)toggleControlDidBeginClickInteraction:(id)a3
+- (void)toggleControlDidBeginClickInteraction:(id)interaction
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  [v4 notificationSummaryExpandedHeaderViewDidBeginClickInteraction:self];
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  [delegate notificationSummaryExpandedHeaderViewDidBeginClickInteraction:self];
 }
 
-- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)a3
+- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  [v4 notificationSummaryExpandedHeaderViewDidPresentClickInteractionPresentedContent:self];
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  [delegate notificationSummaryExpandedHeaderViewDidPresentClickInteractionPresentedContent:self];
 }
 
-- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)a3
+- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  [v4 notificationSummaryExpandedHeaderViewDidDismssClickInteractionPresentedContent:self];
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  [delegate notificationSummaryExpandedHeaderViewDidDismssClickInteractionPresentedContent:self];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
@@ -847,25 +847,25 @@ LABEL_9:
   return 1;
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   titleLabel = self->_titleLabel;
-  v8 = a5;
-  v9 = a3;
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:titleLabel style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_timeStampLabel style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_dividerView style:3 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_subtitleLabel style:0 visualStylingProvider:v9 outgoingProvider:v8];
+  providerCopy = provider;
+  changeCopy = change;
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:titleLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_timeStampLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_dividerView style:3 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_subtitleLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
 }
 
-- (double)_allowedWidthForButtonInRect:(CGRect)a3
+- (double)_allowedWidthForButtonInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -886,8 +886,8 @@ LABEL_9:
 
 - (unint64_t)_maximumNumberOfLinesForTitleText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v2))
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v3 = 0;
   }
@@ -900,16 +900,16 @@ LABEL_9:
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   titleLabel = self->_titleLabel;
-  v9 = [(NCNotificationSummaryExpandedHeaderView *)self _maximumNumberOfLinesForTitleText];
+  _maximumNumberOfLinesForTitleText = [(NCNotificationSummaryExpandedHeaderView *)self _maximumNumberOfLinesForTitleText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:titleLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:titleLabel maximumNumberOfLines:_maximumNumberOfLinesForTitleText inFrame:x, y, width, height];
 }
 
 - (void)_updateTextAttributes
@@ -952,8 +952,8 @@ LABEL_9:
 {
   if (self->_subtitleLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -968,13 +968,13 @@ LABEL_9:
   }
 }
 
-- (void)_updateTextAttributesForButtonLabel:(id)a3
+- (void)_updateTextAttributesForButtonLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
-    v4 = a3;
-    v5 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+    labelCopy = label;
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v7 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -983,9 +983,9 @@ LABEL_9:
 
     v8 = *v7;
 
-    v9 = [v4 titleLabel];
+    titleLabel = [labelCopy titleLabel];
 
-    [(NCNotificationListBaseContentView *)self _updateTextAttributesForLabel:v9 withTextStyle:v8 fontWeight:0 additionalTraits:0 maximumNumberOfLines:*MEMORY[0x277D74418]];
+    [(NCNotificationListBaseContentView *)self _updateTextAttributesForLabel:titleLabel withTextStyle:v8 fontWeight:0 additionalTraits:0 maximumNumberOfLines:*MEMORY[0x277D74418]];
     [(NCNotificationSummaryExpandedHeaderView *)self setNeedsLayout];
   }
 }
@@ -1003,8 +1003,8 @@ LABEL_9:
 
 - (void)_configureTimeStampLabel
 {
-  v3 = [MEMORY[0x277CF0D50] sharedInstance];
-  v4 = [v3 startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:0 forStyle:self->_dateFormatStyle];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  v4 = [mEMORY[0x277CF0D50] startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:0 forStyle:self->_dateFormatStyle];
   timeStampLabel = self->_timeStampLabel;
   self->_timeStampLabel = v4;
 
@@ -1023,8 +1023,8 @@ LABEL_9:
   v4 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
   [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:timeStampLabel style:0 visualStylingProvider:0 outgoingProvider:v4];
 
-  v5 = [MEMORY[0x277CF0D50] sharedInstance];
-  [v5 recycleLabel:self->_timeStampLabel];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  [mEMORY[0x277CF0D50] recycleLabel:self->_timeStampLabel];
 }
 
 - (void)_tearDownTimeStampLabel
@@ -1050,25 +1050,25 @@ void __66__NCNotificationSummaryExpandedHeaderView__tearDownTimeStampLabel__bloc
   }
 }
 
-- (void)_summaryOnboardingAccepted:(id)a3
+- (void)_summaryOnboardingAccepted:(id)accepted
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  if (v4)
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    [v4 notificationSummaryExpandedHeaderView:self acceptedSummaryOnboarding:1];
-    v4 = v5;
+    v5 = delegate;
+    [delegate notificationSummaryExpandedHeaderView:self acceptedSummaryOnboarding:1];
+    delegate = v5;
   }
 }
 
-- (void)_summaryOnboardingRejected:(id)a3
+- (void)_summaryOnboardingRejected:(id)rejected
 {
-  v4 = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
-  if (v4)
+  delegate = [(NCNotificationSummaryExpandedHeaderView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    [v4 notificationSummaryExpandedHeaderView:self acceptedSummaryOnboarding:0];
-    v4 = v5;
+    v5 = delegate;
+    [delegate notificationSummaryExpandedHeaderView:self acceptedSummaryOnboarding:0];
+    delegate = v5;
   }
 }
 

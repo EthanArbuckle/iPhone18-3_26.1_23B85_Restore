@@ -1,42 +1,42 @@
 @interface VUIAggregateMediaLibrary
 - (BOOL)isInitialUpdateInProgress;
 - (BOOL)isUpdating;
-- (VUIAggregateMediaLibrary)initWithManager:(id)a3 deviceMediaLibrary:(id)a4 sidebandMediaLibrary:(id)a5;
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3;
+- (VUIAggregateMediaLibrary)initWithManager:(id)manager deviceMediaLibrary:(id)library sidebandMediaLibrary:(id)mediaLibrary;
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
+- (id)_imageLoadParamsForImageLoaderObject:(id)object;
 - (id)_imageLoaderIdentifier;
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4;
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3;
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4;
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler;
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler;
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler;
 - (id)title;
 - (unint64_t)connectionState;
-- (void)connectWithCompletionHandler:(id)a3 progressHandler:(id)a4;
+- (void)connectWithCompletionHandler:(id)handler progressHandler:(id)progressHandler;
 - (void)dealloc;
-- (void)updateFromCloudWithReason:(int64_t)a3;
-- (void)updateProgressWithCompletionHandler:(id)a3;
+- (void)updateFromCloudWithReason:(int64_t)reason;
+- (void)updateProgressWithCompletionHandler:(id)handler;
 @end
 
 @implementation VUIAggregateMediaLibrary
 
-- (VUIAggregateMediaLibrary)initWithManager:(id)a3 deviceMediaLibrary:(id)a4 sidebandMediaLibrary:(id)a5
+- (VUIAggregateMediaLibrary)initWithManager:(id)manager deviceMediaLibrary:(id)library sidebandMediaLibrary:(id)mediaLibrary
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  libraryCopy = library;
+  mediaLibraryCopy = mediaLibrary;
+  managerCopy = manager;
   v12 = objc_alloc_init(VUIAggregateLibraryIdentifier);
   v17.receiver = self;
   v17.super_class = VUIAggregateMediaLibrary;
-  v13 = [(VUIMediaLibrary *)&v17 initWithIdentifier:v12 type:0 manager:v11];
+  v13 = [(VUIMediaLibrary *)&v17 initWithIdentifier:v12 type:0 manager:managerCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_deviceMediaLibrary, a4);
-    objc_storeStrong(&v13->_sidebandMediaLibrary, a5);
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v13 selector:sel__deviceMediaLibraryContentsDidChange_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:v9];
+    objc_storeStrong(&v13->_deviceMediaLibrary, library);
+    objc_storeStrong(&v13->_sidebandMediaLibrary, mediaLibrary);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__deviceMediaLibraryContentsDidChange_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:libraryCopy];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v13 selector:sel__sidebandMediaLibraryContentsDidChangeNotification_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:v10];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__sidebandMediaLibraryContentsDidChangeNotification_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:mediaLibraryCopy];
   }
 
   return v13;
@@ -44,8 +44,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIAggregateMediaLibrary;
@@ -54,80 +54,80 @@
 
 - (BOOL)isUpdating
 {
-  v3 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  if ([v3 isUpdating])
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  if ([deviceMediaLibrary isUpdating])
   {
-    v4 = 1;
+    isUpdating = 1;
   }
 
   else
   {
-    v5 = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
-    v4 = [v5 isUpdating];
+    sidebandMediaLibrary = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
+    isUpdating = [sidebandMediaLibrary isUpdating];
   }
 
-  return v4;
+  return isUpdating;
 }
 
 - (BOOL)isInitialUpdateInProgress
 {
-  v3 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  if ([v3 isInitialUpdateInProgress])
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  if ([deviceMediaLibrary isInitialUpdateInProgress])
   {
-    v4 = 1;
+    isInitialUpdateInProgress = 1;
   }
 
   else
   {
-    v5 = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
-    v4 = [v5 isInitialUpdateInProgress];
+    sidebandMediaLibrary = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
+    isInitialUpdateInProgress = [sidebandMediaLibrary isInitialUpdateInProgress];
   }
 
-  return v4;
+  return isInitialUpdateInProgress;
 }
 
-- (void)updateProgressWithCompletionHandler:(id)a3
+- (void)updateProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  [v5 updateProgressWithCompletionHandler:v4];
+  handlerCopy = handler;
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  [deviceMediaLibrary updateProgressWithCompletionHandler:handlerCopy];
 }
 
-- (void)updateFromCloudWithReason:(int64_t)a3
+- (void)updateFromCloudWithReason:(int64_t)reason
 {
-  v4 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  [v4 updateFromCloudWithReason:a3];
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  [deviceMediaLibrary updateFromCloudWithReason:reason];
 }
 
 - (id)title
 {
-  v2 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  v3 = [v2 title];
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  title = [deviceMediaLibrary title];
 
-  return v3;
+  return title;
 }
 
 - (unint64_t)connectionState
 {
-  v2 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  v3 = [v2 connectionState];
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  connectionState = [deviceMediaLibrary connectionState];
 
-  return v3;
+  return connectionState;
 }
 
-- (void)connectWithCompletionHandler:(id)a3 progressHandler:(id)a4
+- (void)connectWithCompletionHandler:(id)handler progressHandler:(id)progressHandler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  [v8 connectWithCompletionHandler:v7 progressHandler:v6];
+  progressHandlerCopy = progressHandler;
+  handlerCopy = handler;
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  [deviceMediaLibrary connectWithCompletionHandler:handlerCopy progressHandler:progressHandlerCopy];
 }
 
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
-  v6 = [(VUIMediaLibrary *)self manager];
+  manager = [(VUIMediaLibrary *)self manager];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32[0] = 0;
   v32[1] = v32;
@@ -136,7 +136,7 @@
   v32[4] = __Block_byref_object_dispose__36;
   v33 = 0;
   dispatch_group_enter(v5);
-  v8 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __82__VUIAggregateMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHandler___block_invoke;
@@ -146,9 +146,9 @@
   v31 = v32;
   v10 = v5;
   v30 = v10;
-  v11 = [v8 enqueueMediaItemEntityTypesFetchWithCompletionHandler:v28];
+  v11 = [deviceMediaLibrary enqueueMediaItemEntityTypesFetchWithCompletionHandler:v28];
 
-  v12 = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
+  sidebandMediaLibrary = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __82__VUIAggregateMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHandler___block_invoke_2;
@@ -158,19 +158,19 @@
   v27 = v32;
   v14 = v10;
   v26 = v14;
-  v15 = [v12 enqueueMediaItemEntityTypesFetchWithCompletionHandler:v24];
+  v15 = [sidebandMediaLibrary enqueueMediaItemEntityTypesFetchWithCompletionHandler:v24];
 
-  v16 = [v6 completionDispatchQueue];
+  completionDispatchQueue = [manager completionDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__VUIAggregateMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHandler___block_invoke_3;
   block[3] = &unk_1E8737220;
   v21 = v13;
-  v22 = v4;
+  v22 = handlerCopy;
   v23 = v32;
   v17 = v13;
-  v18 = v4;
-  dispatch_group_notify(v14, v16, block);
+  v18 = handlerCopy;
+  dispatch_group_notify(v14, completionDispatchQueue, block);
 
   _Block_object_dispose(v32, 8);
 
@@ -286,12 +286,12 @@ void __82__VUIAggregateMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompleti
   }
 }
 
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
-  v9 = [(VUIMediaLibrary *)self manager];
+  manager = [(VUIMediaLibrary *)self manager];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x3032000000;
@@ -311,7 +311,7 @@ void __82__VUIAggregateMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompleti
   v34[4] = __Block_byref_object_dispose__36;
   v35 = 0;
   dispatch_group_enter(v8);
-  v10 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __67__VUIAggregateMediaLibrary_enqueueFetchRequests_completionHandler___block_invoke;
@@ -320,10 +320,10 @@ void __82__VUIAggregateMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompleti
   v33 = v34;
   v11 = v8;
   v31 = v11;
-  v12 = [v10 enqueueFetchRequests:v6 completionHandler:v30];
+  v12 = [deviceMediaLibrary enqueueFetchRequests:requestsCopy completionHandler:v30];
 
   dispatch_group_enter(v11);
-  v13 = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
+  sidebandMediaLibrary = [(VUIAggregateMediaLibrary *)self sidebandMediaLibrary];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __67__VUIAggregateMediaLibrary_enqueueFetchRequests_completionHandler___block_invoke_2;
@@ -332,21 +332,21 @@ void __82__VUIAggregateMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompleti
   v29 = v34;
   v14 = v11;
   v27 = v14;
-  v15 = [v13 enqueueFetchRequests:v6 completionHandler:v26];
+  v15 = [sidebandMediaLibrary enqueueFetchRequests:requestsCopy completionHandler:v26];
 
-  v16 = [v9 completionDispatchQueue];
+  completionDispatchQueue = [manager completionDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__VUIAggregateMediaLibrary_enqueueFetchRequests_completionHandler___block_invoke_3;
   block[3] = &unk_1E8737298;
   v23 = v36;
   v24 = v38;
-  v21 = v6;
-  v22 = v7;
+  v21 = requestsCopy;
+  v22 = handlerCopy;
   v25 = v34;
-  v17 = v7;
-  v18 = v6;
-  dispatch_group_notify(v14, v16, block);
+  v17 = handlerCopy;
+  v18 = requestsCopy;
+  dispatch_group_notify(v14, completionDispatchQueue, block);
 
   _Block_object_dispose(v34, 8);
   _Block_object_dispose(v36, 8);
@@ -561,18 +561,18 @@ LABEL_36:
 LABEL_37:
 }
 
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(VUIMediaLibrary *)self manager];
+    manager = [(VUIMediaLibrary *)self manager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __62__VUIAggregateMediaLibrary_saveMediaEntity_completionHandler___block_invoke;
     v9[3] = &unk_1E872D7E0;
-    v10 = v5;
-    [v6 _enqueueCompletionQueueBlock:v9];
+    v10 = handlerCopy;
+    [manager _enqueueCompletionQueueBlock:v9];
   }
 
   v7 = [objc_alloc(MEMORY[0x1E69DF690]) initWithOperation:0];
@@ -582,29 +582,29 @@ LABEL_37:
 
 - (id)_imageLoaderIdentifier
 {
-  v2 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  v3 = [v2 _imageLoaderIdentifier];
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  _imageLoaderIdentifier = [deviceMediaLibrary _imageLoaderIdentifier];
 
-  return v3;
+  return _imageLoaderIdentifier;
 }
 
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3
+- (id)_imageLoadParamsForImageLoaderObject:(id)object
 {
-  v4 = a3;
-  v5 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  v6 = [v5 _imageLoadParamsForImageLoaderObject:v4];
+  objectCopy = object;
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  v6 = [deviceMediaLibrary _imageLoadParamsForImageLoaderObject:objectCopy];
 
   return v6;
 }
 
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
-  v11 = [v10 _imageLoadOperationWithParams:v9 scaleToSize:v5 cropToFit:{width, height}];
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  paramsCopy = params;
+  deviceMediaLibrary = [(VUIAggregateMediaLibrary *)self deviceMediaLibrary];
+  v11 = [deviceMediaLibrary _imageLoadOperationWithParams:paramsCopy scaleToSize:fitCopy cropToFit:{width, height}];
 
   return v11;
 }

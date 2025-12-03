@@ -1,9 +1,9 @@
 @interface CollationMap
-+ (BOOL)lookupEntryForUser:(unsigned int)a3 withBundleID:(const char *)a4 minVersion:(_cryptex_version *)a5;
++ (BOOL)lookupEntryForUser:(unsigned int)user withBundleID:(const char *)d minVersion:(_cryptex_version *)version;
 + (id)getMap;
-+ (int)addEntryForUser:(unsigned int)a3 fromQuire:(id)a4;
-+ (int)removeEntryForUser:(unsigned int)a3 withValue:(char *)a4;
-+ (void)createCollationForUser:(unsigned int)a3;
++ (int)addEntryForUser:(unsigned int)user fromQuire:(id)quire;
++ (int)removeEntryForUser:(unsigned int)user withValue:(char *)value;
++ (void)createCollationForUser:(unsigned int)user;
 - (CollationMap)init;
 - (void)init;
 @end
@@ -23,9 +23,9 @@
     v4 = objc_alloc_init(NSMutableDictionary);
     [(CollationMap *)v2 setColl_map:v4];
 
-    v5 = [(CollationMap *)v2 coll_map];
+    coll_map = [(CollationMap *)v2 coll_map];
 
-    if (!v5)
+    if (!coll_map)
     {
       [(CollationMap *)&v8 init];
     }
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __22__CollationMap_getMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getMap_once_token != -1)
   {
     dispatch_once(&getMap_once_token, block);
@@ -66,7 +66,7 @@ void __22__CollationMap_getMap__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)createCollationForUser:(unsigned int)a3
++ (void)createCollationForUser:(unsigned int)user
 {
   v4 = [NSNumber numberWithUnsignedInt:?];
   v5 = +[CollationMap getMap];
@@ -77,7 +77,7 @@ void __22__CollationMap_getMap__block_invoke(uint64_t a1)
   block[3] = &unk_100072E50;
   v10 = v5;
   v11 = v4;
-  v12 = a3;
+  userCopy = user;
   v7 = v4;
   v8 = v5;
   dispatch_sync(v6, block);
@@ -110,20 +110,20 @@ void __39__CollationMap_createCollationForUser___block_invoke(uint64_t a1)
   }
 }
 
-+ (int)addEntryForUser:(unsigned int)a3 fromQuire:(id)a4
++ (int)addEntryForUser:(unsigned int)user fromQuire:(id)quire
 {
-  v5 = a4;
+  quireCopy = quire;
   v6 = +[CollationMap getMap];
   v7 = v6[3];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __42__CollationMap_addEntryForUser_fromQuire___block_invoke;
   block[3] = &unk_100072E50;
-  v14 = a3;
-  v12 = v5;
+  userCopy = user;
+  v12 = quireCopy;
   v13 = v6;
   v8 = v6;
-  v9 = v5;
+  v9 = quireCopy;
   dispatch_sync(v7, block);
 
   return 0;
@@ -243,7 +243,7 @@ void __42__CollationMap_addEntryForUser_fromQuire___block_invoke(uint64_t a1)
   [v13 appendCollationElement:v10];
 }
 
-+ (int)removeEntryForUser:(unsigned int)a3 withValue:(char *)a4
++ (int)removeEntryForUser:(unsigned int)user withValue:(char *)value
 {
   v6 = +[CollationMap getMap];
   v7 = v6[3];
@@ -251,9 +251,9 @@ void __42__CollationMap_addEntryForUser_fromQuire___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__CollationMap_removeEntryForUser_withValue___block_invoke;
   block[3] = &unk_100072E78;
-  v13 = a3;
+  userCopy = user;
   v11 = v6;
-  v12 = a4;
+  valueCopy = value;
   v8 = v6;
   dispatch_sync(v7, block);
 
@@ -296,7 +296,7 @@ void __45__CollationMap_removeEntryForUser_withValue___block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)lookupEntryForUser:(unsigned int)a3 withBundleID:(const char *)a4 minVersion:(_cryptex_version *)a5
++ (BOOL)lookupEntryForUser:(unsigned int)user withBundleID:(const char *)d minVersion:(_cryptex_version *)version
 {
   v18 = 0;
   v19 = &v18;
@@ -308,17 +308,17 @@ void __45__CollationMap_removeEntryForUser_withValue___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __59__CollationMap_lookupEntryForUser_withBundleID_minVersion___block_invoke;
   block[3] = &unk_100072EC8;
-  v17 = a3;
+  userCopy = user;
   v13 = v8;
   v14 = &v18;
-  v15 = a4;
-  v16 = a5;
+  dCopy = d;
+  versionCopy = version;
   v10 = v8;
   dispatch_sync(v9, block);
-  LOBYTE(a4) = *(v19 + 24);
+  LOBYTE(d) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return a4;
+  return d;
 }
 
 void __59__CollationMap_lookupEntryForUser_withBundleID_minVersion___block_invoke(uint64_t a1)
@@ -379,7 +379,7 @@ uint64_t __59__CollationMap_lookupEntryForUser_withBundleID_minVersion___block_i
 
 - (void)init
 {
-  OUTLINED_FUNCTION_3(a1, a2);
+  OUTLINED_FUNCTION_3(self, a2);
   os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
   OUTLINED_FUNCTION_0_3();
   v3 = *v2;

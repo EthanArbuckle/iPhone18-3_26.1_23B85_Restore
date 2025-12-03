@@ -1,19 +1,19 @@
 @interface PXCADisplayLink
 + (BOOL)highFramerateRequiresReasonAndRange;
-- (PXCADisplayLink)initWithWeakTarget:(id)a3 selector:(SEL)a4 deferredStart:(BOOL)a5 runloopModes:(id)a6 preferredFramesPerSecond:(int64_t)a7 screen:(id)a8 queue:(id)a9;
+- (PXCADisplayLink)initWithWeakTarget:(id)target selector:(SEL)selector deferredStart:(BOOL)start runloopModes:(id)modes preferredFramesPerSecond:(int64_t)second screen:(id)screen queue:(id)queue;
 - (double)resolvedDuration;
 - (double)targetTimestamp;
 - (double)timestamp;
 - (id)description;
 - (void)_addToRunLoop;
-- (void)_tick:(id)a3;
+- (void)_tick:(id)_tick;
 - (void)_updateIsHighFrameRateActive;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setFrameRateRangeType:(unint64_t)a3;
-- (void)setHighFrameRateReason:(unsigned int)a3;
-- (void)setIsHighFrameRateActive:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)setFrameRateRangeType:(unint64_t)type;
+- (void)setHighFrameRateReason:(unsigned int)reason;
+- (void)setIsHighFrameRateActive:(BOOL)active;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation PXCADisplayLink
@@ -56,9 +56,9 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
 - (void)_addToRunLoop
 {
   displayLink = self->_displayLink;
-  v4 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  v5 = [(PXDisplayLink *)self runloopModes];
-  [(CADisplayLink *)displayLink addToRunLoop:v4 forMode:v5];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  runloopModes = [(PXDisplayLink *)self runloopModes];
+  [(CADisplayLink *)displayLink addToRunLoop:mainRunLoop forMode:runloopModes];
 
   [(PXCADisplayLink *)self paused];
 
@@ -87,11 +87,11 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
   return result;
 }
 
-- (void)setIsHighFrameRateActive:(BOOL)a3
+- (void)setIsHighFrameRateActive:(BOOL)active
 {
-  if (self->_isHighFrameRateActive != a3)
+  if (self->_isHighFrameRateActive != active)
   {
-    self->_isHighFrameRateActive = a3;
+    self->_isHighFrameRateActive = active;
     [(PXCADisplayLink *)self highFrameRateReason];
     [(CADisplayLink *)self->_displayLink preferredFrameRateRange];
 
@@ -99,12 +99,12 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
   }
 }
 
-- (void)setFrameRateRangeType:(unint64_t)a3
+- (void)setFrameRateRangeType:(unint64_t)type
 {
-  if (+[PXCADisplayLink highFramerateRequiresReasonAndRange]&& self->_frameRateRangeType != a3)
+  if (+[PXCADisplayLink highFramerateRequiresReasonAndRange]&& self->_frameRateRangeType != type)
   {
-    self->_frameRateRangeType = a3;
-    *&v5 = PXFrameRateRangeTypeGetCAFrameRateRange(a3);
+    self->_frameRateRangeType = type;
+    *&v5 = PXFrameRateRangeTypeGetCAFrameRateRange(type);
     [(CADisplayLink *)self->_displayLink setPreferredFrameRateRange:v5];
     kdebug_trace();
 
@@ -112,9 +112,9 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
   }
 }
 
-- (void)setHighFrameRateReason:(unsigned int)a3
+- (void)setHighFrameRateReason:(unsigned int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   if (+[PXCADisplayLink highFramerateRequiresReasonAndRange])
   {
     [(CADisplayLink *)self->_displayLink setHighFrameRateReason:v3];
@@ -126,9 +126,9 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
 
 - (double)resolvedDuration
 {
-  v3 = [(PXCADisplayLink *)self preferredFramesPerSecond];
+  preferredFramesPerSecond = [(PXCADisplayLink *)self preferredFramesPerSecond];
   displayLink = self->_displayLink;
-  if (v3 < 1)
+  if (preferredFramesPerSecond < 1)
   {
 
     [(CADisplayLink *)displayLink duration];
@@ -145,11 +145,11 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
   return result;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   kdebug_trace();
-  [(CADisplayLink *)self->_displayLink setPaused:v3];
+  [(CADisplayLink *)self->_displayLink setPaused:pausedCopy];
 
   [(PXCADisplayLink *)self _updateIsHighFrameRateActive];
 }
@@ -159,9 +159,9 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXCADisplayLink *)self paused];
+  paused = [(PXCADisplayLink *)self paused];
   v7 = @"NO";
-  if (v6)
+  if (paused)
   {
     v7 = @"YES";
   }
@@ -175,9 +175,9 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
   return v12;
 }
 
-- (void)_tick:(id)a3
+- (void)_tick:(id)_tick
 {
-  if (self->_displayLink == a3)
+  if (self->_displayLink == _tick)
   {
     if (_UIUpdateCycleEnabled())
     {
@@ -199,10 +199,10 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
       self->_updateCycleTimestamp = v7;
     }
 
-    v8 = [(PXDisplayLink *)self target];
-    if (v8)
+    target = [(PXDisplayLink *)self target];
+    if (target)
     {
-      [v8 performSelector:-[PXDisplayLink selector](self withObject:{"selector"), self}];
+      [target performSelector:-[PXDisplayLink selector](self withObject:{"selector"), self}];
     }
 
     else
@@ -237,22 +237,22 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
   [(PXCADisplayLink *)&v3 dealloc];
 }
 
-- (PXCADisplayLink)initWithWeakTarget:(id)a3 selector:(SEL)a4 deferredStart:(BOOL)a5 runloopModes:(id)a6 preferredFramesPerSecond:(int64_t)a7 screen:(id)a8 queue:(id)a9
+- (PXCADisplayLink)initWithWeakTarget:(id)target selector:(SEL)selector deferredStart:(BOOL)start runloopModes:(id)modes preferredFramesPerSecond:(int64_t)second screen:(id)screen queue:(id)queue
 {
-  v12 = a5;
-  v16 = a3;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  if (v19 != MEMORY[0x1E69E96A0])
+  startCopy = start;
+  targetCopy = target;
+  modesCopy = modes;
+  screenCopy = screen;
+  queueCopy = queue;
+  if (queueCopy != MEMORY[0x1E69E96A0])
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PXCADisplayLink.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"queue == dispatch_get_main_queue()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCADisplayLink.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"queue == dispatch_get_main_queue()"}];
   }
 
   v32.receiver = self;
   v32.super_class = PXCADisplayLink;
-  v20 = [(PXDisplayLink *)&v32 initInternalWithWeakTarget:v16 selector:a4 deferredStart:v12 runloopModes:v17 preferredFramesPerSecond:a7 screen:v18 queue:v19];
+  v20 = [(PXDisplayLink *)&v32 initInternalWithWeakTarget:targetCopy selector:selector deferredStart:startCopy runloopModes:modesCopy preferredFramesPerSecond:second screen:screenCopy queue:queueCopy];
   if (v20)
   {
     v21 = [MEMORY[0x1E6979330] displayLinkWithTarget:v20 selector:sel__tick_];
@@ -260,13 +260,13 @@ void __54__PXCADisplayLink_highFramerateRequiresReasonAndRange__block_invoke()
     v20->_displayLink = v21;
 
     v23 = +[PXCADisplayLink highFramerateRequiresReasonAndRange];
-    if (a7 >= 1 && !v23)
+    if (second >= 1 && !v23)
     {
-      v35 = CAFrameRateRangeMake(a7, a7, a7);
+      v35 = CAFrameRateRangeMake(second, second, second);
       [(CADisplayLink *)v20->_displayLink setPreferredFrameRateRange:*&v35.minimum, *&v35.maximum, *&v35.preferred];
     }
 
-    if (v12)
+    if (startCopy)
     {
       objc_initWeak(&location, v20);
       aBlock[0] = MEMORY[0x1E69E9820];

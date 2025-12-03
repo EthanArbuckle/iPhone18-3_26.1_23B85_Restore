@@ -1,5 +1,5 @@
 @interface HMFOSTransaction
-- (HMFOSTransaction)initWithName:(id)a3;
+- (HMFOSTransaction)initWithName:(id)name;
 - (void)dealloc;
 @end
 
@@ -9,14 +9,14 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = HMFGetLogIdentifier(v4);
+    v6 = HMFGetLogIdentifier(selfCopy);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    v8 = v7 - v4->_creationTime;
-    transaction = v4->_transaction;
+    v8 = v7 - selfCopy->_creationTime;
+    transaction = selfCopy->_transaction;
     *buf = 138543874;
     v13 = v6;
     v14 = 2048;
@@ -27,16 +27,16 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v11.receiver = v4;
+  v11.receiver = selfCopy;
   v11.super_class = HMFOSTransaction;
   [(HMFOSTransaction *)&v11 dealloc];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMFOSTransaction)initWithName:(id)a3
+- (HMFOSTransaction)initWithName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = HMFOSTransaction;
   v5 = [(HMFOSTransaction *)&v18 init];
@@ -44,8 +44,8 @@
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v5->_creationTime = v6;
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v4 stringByAppendingFormat:@"-%@", v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v8 = [nameCopy stringByAppendingFormat:@"-%@", uUID];
 
     [v8 UTF8String];
     v9 = os_transaction_create();

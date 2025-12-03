@@ -1,31 +1,31 @@
 @interface TIDPRecorder
-- (BOOL)isWordEntryReallyOOV:(id)a3 caseSensitive:(BOOL)a4;
+- (BOOL)isWordEntryReallyOOV:(id)v caseSensitive:(BOOL)sensitive;
 - (HCHuffmanCoder)characterCoder;
 - (HCHuffmanCoder)wordCoder;
 - (NSArray)characterExplodedRecords;
 - (NSString)primaryInputModeLocaleIndentifier;
 - (NSString)recordingKeyLocaleSubstring;
 - (NSString)secondaryInputModeLocaleIdentifier;
-- (TIDPRecorder)initWithTypingSession:(id)a3 aligned:(id)a4;
+- (TIDPRecorder)initWithTypingSession:(id)session aligned:(id)aligned;
 - (TIDPReportingDelegate)delegate;
 - (_LXLexicon)lexiconPrimaryInputMode;
 - (_LXLexicon)lexiconSecondaryInputMode;
 - (void)_prepareCharacterCoderMatchingSession;
 - (void)_prepareWordCoderMatchingSession;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation TIDPRecorder
 
 - (void)_prepareWordCoderMatchingSession
 {
-  v3 = [(TITypingSession *)self->_typingSession sessionParams];
-  v4 = [v3 activeInputModes];
-  v9 = [v4 firstObject];
+  sessionParams = [(TITypingSession *)self->_typingSession sessionParams];
+  activeInputModes = [sessionParams activeInputModes];
+  firstObject = [activeInputModes firstObject];
 
-  v5 = [v9 normalizedIdentifier];
-  v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v5];
+  normalizedIdentifier = [firstObject normalizedIdentifier];
+  v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:normalizedIdentifier];
   v7 = [HCHuffmanCoder wordCoderForLocale:v6];
   wordCoder = self->_wordCoder;
   self->_wordCoder = v7;
@@ -33,12 +33,12 @@
 
 - (void)_prepareCharacterCoderMatchingSession
 {
-  v3 = [(TITypingSession *)self->_typingSession sessionParams];
-  v4 = [v3 activeInputModes];
-  v9 = [v4 firstObject];
+  sessionParams = [(TITypingSession *)self->_typingSession sessionParams];
+  activeInputModes = [sessionParams activeInputModes];
+  firstObject = [activeInputModes firstObject];
 
-  v5 = [v9 normalizedIdentifier];
-  v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v5];
+  normalizedIdentifier = [firstObject normalizedIdentifier];
+  v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:normalizedIdentifier];
   v7 = [HCHuffmanCoder characterCoderForLocale:v6];
   characterCoder = self->_characterCoder;
   self->_characterCoder = v7;
@@ -85,12 +85,12 @@
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    word = 0;
     v7 = *v23;
     do
     {
       v8 = 0;
-      v9 = v6;
+      v9 = word;
       do
       {
         if (*v23 != v7)
@@ -100,9 +100,9 @@
 
         v10 = *(*(&v22 + 1) + 8 * v8);
         v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v6 = [v10 word];
+        word = [v10 word];
 
-        v12 = [v6 length];
+        v12 = [word length];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __40__TIDPRecorder_characterExplodedRecords__block_invoke;
@@ -111,13 +111,13 @@
         v21 = &v26;
         v19[4] = self;
         v13 = v11;
-        [v6 enumerateSubstringsInRange:0 options:v12 usingBlock:{2, v19}];
+        [word enumerateSubstringsInRange:0 options:v12 usingBlock:{2, v19}];
         v14 = [v13 copy];
         [v3 addObject:v14];
 
         v27[3] = 0;
         ++v8;
-        v9 = v6;
+        v9 = word;
       }
 
       while (v5 != v8);
@@ -152,16 +152,16 @@ void __40__TIDPRecorder_characterExplodedRecords__block_invoke(uint64_t a1, void
 - (NSString)recordingKeyLocaleSubstring
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(TIDPRecorder *)self typingSession];
-  v3 = [v2 sessionParams];
-  v4 = [v3 activeInputModes];
+  typingSession = [(TIDPRecorder *)self typingSession];
+  sessionParams = [typingSession sessionParams];
+  activeInputModes = [sessionParams activeInputModes];
 
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(activeInputModes, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = activeInputModes;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -176,8 +176,8 @@ void __40__TIDPRecorder_characterExplodedRecords__block_invoke(uint64_t a1, void
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) normalizedIdentifier];
-        [v5 addObject:v11];
+        normalizedIdentifier = [*(*(&v15 + 1) + 8 * i) normalizedIdentifier];
+        [v5 addObject:normalizedIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -194,15 +194,15 @@ void __40__TIDPRecorder_characterExplodedRecords__block_invoke(uint64_t a1, void
   return v12;
 }
 
-- (BOOL)isWordEntryReallyOOV:(id)a3 caseSensitive:(BOOL)a4
+- (BOOL)isWordEntryReallyOOV:(id)v caseSensitive:(BOOL)sensitive
 {
-  v4 = a4;
-  v6 = a3;
+  sensitiveCopy = sensitive;
+  vCopy = v;
   if ([(TIDPRecorder *)self lexiconPrimaryInputMode])
   {
-    v7 = [v6 acceptedString];
-    v8 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
+    acceptedString = [vCopy acceptedString];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v9 = [acceptedString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v10 = v9;
     v11 = v10;
@@ -214,8 +214,8 @@ void __40__TIDPRecorder_characterExplodedRecords__block_invoke(uint64_t a1, void
         goto LABEL_29;
       }
 
-      v24 = v4;
-      v25 = v7;
+      v24 = sensitiveCopy;
+      v25 = acceptedString;
       v12 = 0;
       LODWORD(v13) = 0;
       v14 = 0;
@@ -247,8 +247,8 @@ void __40__TIDPRecorder_characterExplodedRecords__block_invoke(uint64_t a1, void
           v13 = CharacterAtIndex;
         }
 
-        v18 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-        v19 = [v18 longCharacterIsMember:v13];
+        punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+        v19 = [punctuationCharacterSet longCharacterIsMember:v13];
 
         v14 += v19;
         ++v15;
@@ -258,8 +258,8 @@ void __40__TIDPRecorder_characterExplodedRecords__block_invoke(uint64_t a1, void
       while (v12 < [(__CFString *)v11 length]);
 
       v20 = v15 == v14;
-      v7 = v25;
-      v4 = v24;
+      acceptedString = v25;
+      sensitiveCopy = v24;
       if (v20)
       {
         goto LABEL_29;
@@ -271,7 +271,7 @@ void __40__TIDPRecorder_characterExplodedRecords__block_invoke(uint64_t a1, void
     }
 
     [(TIDPRecorder *)self lexiconPrimaryInputMode];
-    if (v4)
+    if (sensitiveCopy)
     {
       [(__CFString *)v11 UTF8String];
       [(__CFString *)v11 length];
@@ -281,10 +281,10 @@ LABEL_25:
         if ([(TIDPRecorder *)self lexiconSecondaryInputMode])
         {
           [(TIDPRecorder *)self lexiconSecondaryInputMode];
-          if (v4)
+          if (sensitiveCopy)
           {
-            [v7 UTF8String];
-            [v7 length];
+            [acceptedString UTF8String];
+            [acceptedString length];
             TokenIDForUTF8String = LXLexiconGetTokenIDForUTF8String();
           }
 
@@ -325,9 +325,9 @@ LABEL_31:
 
 - (_LXLexicon)lexiconSecondaryInputMode
 {
-  v3 = [(TIDPRecorder *)self secondaryInputModeLocaleIdentifier];
+  secondaryInputModeLocaleIdentifier = [(TIDPRecorder *)self secondaryInputModeLocaleIdentifier];
 
-  if (!v3)
+  if (!secondaryInputModeLocaleIdentifier)
   {
     return 0;
   }
@@ -335,8 +335,8 @@ LABEL_31:
   [(NSLock *)self->_secondaryLexiconLock lock];
   if (!self->_lexiconSecondaryInputMode)
   {
-    v4 = [(TIDPRecorder *)self secondaryInputModeLocaleIdentifier];
-    self->_lexiconSecondaryInputMode = _createStaticLexiconForLocaleIdentifier(v4);
+    secondaryInputModeLocaleIdentifier2 = [(TIDPRecorder *)self secondaryInputModeLocaleIdentifier];
+    self->_lexiconSecondaryInputMode = _createStaticLexiconForLocaleIdentifier(secondaryInputModeLocaleIdentifier2);
   }
 
   [(NSLock *)self->_secondaryLexiconLock unlock];
@@ -348,8 +348,8 @@ LABEL_31:
   [(NSLock *)self->_primaryLexiconLock lock];
   if (!self->_lexiconPrimaryInputMode)
   {
-    v3 = [(TIDPRecorder *)self primaryInputModeLocaleIndentifier];
-    self->_lexiconPrimaryInputMode = _createStaticLexiconForLocaleIdentifier(v3);
+    primaryInputModeLocaleIndentifier = [(TIDPRecorder *)self primaryInputModeLocaleIndentifier];
+    self->_lexiconPrimaryInputMode = _createStaticLexiconForLocaleIdentifier(primaryInputModeLocaleIndentifier);
   }
 
   [(NSLock *)self->_primaryLexiconLock unlock];
@@ -358,43 +358,43 @@ LABEL_31:
 
 - (NSString)secondaryInputModeLocaleIdentifier
 {
-  v2 = [(TIDPRecorder *)self typingSession];
-  v3 = [v2 sessionParams];
-  v4 = [v3 activeInputModes];
+  typingSession = [(TIDPRecorder *)self typingSession];
+  sessionParams = [typingSession sessionParams];
+  activeInputModes = [sessionParams activeInputModes];
 
-  if ([v4 count] < 2)
+  if ([activeInputModes count] < 2)
   {
-    v6 = 0;
+    normalizedIdentifier = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:1];
-    v6 = [v5 normalizedIdentifier];
+    v5 = [activeInputModes objectAtIndexedSubscript:1];
+    normalizedIdentifier = [v5 normalizedIdentifier];
   }
 
-  return v6;
+  return normalizedIdentifier;
 }
 
 - (NSString)primaryInputModeLocaleIndentifier
 {
-  v2 = [(TIDPRecorder *)self typingSession];
-  v3 = [v2 sessionParams];
-  v4 = [v3 activeInputModes];
+  typingSession = [(TIDPRecorder *)self typingSession];
+  sessionParams = [typingSession sessionParams];
+  activeInputModes = [sessionParams activeInputModes];
 
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 normalizedIdentifier];
+  v5 = [activeInputModes objectAtIndexedSubscript:0];
+  normalizedIdentifier = [v5 normalizedIdentifier];
 
-  return v6;
+  return normalizedIdentifier;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(NSLock *)self->_delegateLock lock];
   delegate = self->_delegate;
-  self->_delegate = v4;
-  v6 = v4;
+  self->_delegate = delegateCopy;
+  v6 = delegateCopy;
 
   [(NSLock *)self->_delegateLock unlock];
 }
@@ -408,18 +408,18 @@ LABEL_31:
   return v3;
 }
 
-- (TIDPRecorder)initWithTypingSession:(id)a3 aligned:(id)a4
+- (TIDPRecorder)initWithTypingSession:(id)session aligned:(id)aligned
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  alignedCopy = aligned;
   v18.receiver = self;
   v18.super_class = TIDPRecorder;
   v9 = [(TIDPRecorder *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_typingSession, a3);
-    objc_storeStrong(&v10->_typingSessionAligned, a4);
+    objc_storeStrong(&v9->_typingSession, session);
+    objc_storeStrong(&v10->_typingSessionAligned, aligned);
     v11 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     delegateLock = v10->_delegateLock;
     v10->_delegateLock = v11;

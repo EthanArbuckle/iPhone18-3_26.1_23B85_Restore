@@ -1,6 +1,6 @@
 @interface SYBacklinkIndicatorClient
-+ (SYBacklinkIndicatorClient)clientWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4;
-+ (SYBacklinkIndicatorClient)clientWithLinkIdentifiers:(id)a3;
++ (SYBacklinkIndicatorClient)clientWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers;
++ (SYBacklinkIndicatorClient)clientWithLinkIdentifiers:(id)identifiers;
 + (void)hideIndicator;
 + (void)hotCornerExited;
 - (BOOL)_shouldSendIndicatorRequest;
@@ -11,18 +11,18 @@
 - (void)_createConnectionIfNeeded;
 - (void)_recordLastShowIndicatorRequestTimestamp;
 - (void)_resetConnectionIfNecessary;
-- (void)_sendIndicatorRequestWithCompletion:(id)a3;
+- (void)_sendIndicatorRequestWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)requestIndicatorWithCompletion:(id)a3;
+- (void)requestIndicatorWithCompletion:(id)completion;
 @end
 
 @implementation SYBacklinkIndicatorClient
 
-+ (SYBacklinkIndicatorClient)clientWithLinkIdentifiers:(id)a3
++ (SYBacklinkIndicatorClient)clientWithLinkIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+  if ([identifiersCopy count])
   {
     v6 = 0;
     do
@@ -31,28 +31,28 @@
       ++v6;
     }
 
-    while (v6 < [v4 count]);
+    while (v6 < [identifiersCopy count]);
   }
 
-  v7 = [a1 clientWithDomainIdentifiers:v5 linkIdentifiers:v4];
+  v7 = [self clientWithDomainIdentifiers:v5 linkIdentifiers:identifiersCopy];
 
   return v7;
 }
 
-+ (SYBacklinkIndicatorClient)clientWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4
++ (SYBacklinkIndicatorClient)clientWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
-  if (v9 != [v8 count])
+  identifiersCopy = identifiers;
+  linkIdentifiersCopy = linkIdentifiers;
+  v9 = [identifiersCopy count];
+  if (v9 != [linkIdentifiersCopy count])
   {
-    [(SYBacklinkIndicatorClient *)v7 clientWithDomainIdentifiers:v8 linkIdentifiers:a2, a1];
+    [(SYBacklinkIndicatorClient *)identifiersCopy clientWithDomainIdentifiers:linkIdentifiersCopy linkIdentifiers:a2, self];
   }
 
-  v10 = objc_alloc_init(a1);
-  [v10 setDomainIdentifiers:v7];
-  [v10 setLinkIdentifiers:v8];
-  [v10 setAction:{objc_msgSend(v8, "count") != 0}];
+  v10 = objc_alloc_init(self);
+  [v10 setDomainIdentifiers:identifiersCopy];
+  [v10 setLinkIdentifiers:linkIdentifiersCopy];
+  [v10 setAction:{objc_msgSend(linkIdentifiersCopy, "count") != 0}];
 
   return v10;
 }
@@ -87,8 +87,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SYBacklinkIndicatorClient *)self connection];
-  [v3 invalidate];
+  connection = [(SYBacklinkIndicatorClient *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = SYBacklinkIndicatorClient;
@@ -97,25 +97,25 @@
 
 - (void)_createConnectionIfNeeded
 {
-  v3 = [(SYBacklinkIndicatorClient *)self connection];
+  connection = [(SYBacklinkIndicatorClient *)self connection];
 
-  if (!v3)
+  if (!connection)
   {
-    v4 = [objc_opt_class() _testingEndpoint];
+    _testingEndpoint = [objc_opt_class() _testingEndpoint];
 
     v5 = objc_alloc(MEMORY[0x277CCAE80]);
     v6 = v5;
-    if (v4)
+    if (_testingEndpoint)
     {
-      v7 = [objc_opt_class() _testingEndpoint];
-      v8 = [v6 initWithListenerEndpoint:v7];
+      _testingEndpoint2 = [objc_opt_class() _testingEndpoint];
+      v8 = [v6 initWithListenerEndpoint:_testingEndpoint2];
       [(SYBacklinkIndicatorClient *)self setConnection:v8];
     }
 
     else
     {
-      v7 = [v5 initWithMachServiceName:@"com.apple.synapse.backlinkindicator" options:0];
-      [(SYBacklinkIndicatorClient *)self setConnection:v7];
+      _testingEndpoint2 = [v5 initWithMachServiceName:@"com.apple.synapse.backlinkindicator" options:0];
+      [(SYBacklinkIndicatorClient *)self setConnection:_testingEndpoint2];
     }
 
     [(SYBacklinkIndicatorClient *)self _configureConnectionAndResume];
@@ -124,8 +124,8 @@
 
 - (void)_configureConnectionAndResume
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SYBacklinkIndicatorClient.m" lineNumber:97 description:@"the XPC connection is unexpectedly nil"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SYBacklinkIndicatorClient.m" lineNumber:97 description:@"the XPC connection is unexpectedly nil"];
 }
 
 void __58__SYBacklinkIndicatorClient__configureConnectionAndResume__block_invoke(uint64_t a1)
@@ -144,8 +144,8 @@ void __58__SYBacklinkIndicatorClient__configureConnectionAndResume__block_invoke
 {
   if ([(SYBacklinkIndicatorClient *)self sentRequest])
   {
-    v3 = [(SYBacklinkIndicatorClient *)self connection];
-    [v3 invalidate];
+    connection = [(SYBacklinkIndicatorClient *)self connection];
+    [connection invalidate];
 
     [(SYBacklinkIndicatorClient *)self setConnection:0];
 
@@ -153,24 +153,24 @@ void __58__SYBacklinkIndicatorClient__configureConnectionAndResume__block_invoke
   }
 }
 
-- (void)requestIndicatorWithCompletion:(id)a3
+- (void)requestIndicatorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SYBacklinkIndicatorClient *)self _shouldSendIndicatorRequest])
   {
-    [(SYBacklinkIndicatorClient *)self _sendIndicatorRequestWithCompletion:v4];
+    [(SYBacklinkIndicatorClient *)self _sendIndicatorRequestWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_sendIndicatorRequestWithCompletion:(id)a3
+- (void)_sendIndicatorRequestWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   [(SYBacklinkIndicatorClient *)self _createConnectionIfNeeded];
   if (![(SYBacklinkIndicatorClient *)self sentRequest])
   {
@@ -178,35 +178,35 @@ void __58__SYBacklinkIndicatorClient__configureConnectionAndResume__block_invoke
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v5 = [(SYBacklinkIndicatorClient *)self connection];
+    connection = [(SYBacklinkIndicatorClient *)self connection];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __65__SYBacklinkIndicatorClient__sendIndicatorRequestWithCompletion___block_invoke;
     v16[3] = &unk_27856B808;
     v16[4] = &v17;
-    v6 = [v5 remoteObjectProxyWithErrorHandler:v16];
+    v6 = [connection remoteObjectProxyWithErrorHandler:v16];
 
     if ((v18[3] & 1) == 0)
     {
-      v7 = [(SYBacklinkIndicatorClient *)self _showIndicatorAction];
+      _showIndicatorAction = [(SYBacklinkIndicatorClient *)self _showIndicatorAction];
       v8 = os_log_create("com.apple.synapse", "BacklinkMonitor");
       v9 = v8;
-      if (v7)
+      if (_showIndicatorAction)
       {
         v10 = v8;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [(SYBacklinkIndicatorClient *)self linkIdentifiers];
-          v12 = [v11 count];
+          linkIdentifiers = [(SYBacklinkIndicatorClient *)self linkIdentifiers];
+          v12 = [linkIdentifiers count];
           *buf = 134217984;
           v22 = v12;
           _os_log_impl(&dword_225901000, v10, OS_LOG_TYPE_DEFAULT, "BacklinkIndicatorClient: Will call showIndicatorForBacklink on service. Link identifier count: %ld", buf, 0xCu);
         }
 
         [(SYBacklinkIndicatorClient *)self _recordLastShowIndicatorRequestTimestamp];
-        v13 = [(SYBacklinkIndicatorClient *)self domainIdentifiers];
-        v14 = [(SYBacklinkIndicatorClient *)self linkIdentifiers];
-        [v6 showIndicatorForBacklinkWithDomainIdentifiers:v13 linkIdentifiers:v14 displayID:-[SYBacklinkIndicatorClient displayID](self corner:"displayID") action:{-[SYBacklinkIndicatorClient corner](self, "corner"), v7}];
+        domainIdentifiers = [(SYBacklinkIndicatorClient *)self domainIdentifiers];
+        linkIdentifiers2 = [(SYBacklinkIndicatorClient *)self linkIdentifiers];
+        [v6 showIndicatorForBacklinkWithDomainIdentifiers:domainIdentifiers linkIdentifiers:linkIdentifiers2 displayID:-[SYBacklinkIndicatorClient displayID](self corner:"displayID") action:{-[SYBacklinkIndicatorClient corner](self, "corner"), _showIndicatorAction}];
       }
 
       else
@@ -227,9 +227,9 @@ void __58__SYBacklinkIndicatorClient__configureConnectionAndResume__block_invoke
     _Block_object_dispose(&v17, 8);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, [(SYBacklinkIndicatorClient *)self sentRequest]);
+    completionCopy[2](completionCopy, [(SYBacklinkIndicatorClient *)self sentRequest]);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -249,8 +249,8 @@ void __65__SYBacklinkIndicatorClient__sendIndicatorRequestWithCompletion___block
 
 - (int64_t)_showIndicatorAction
 {
-  v3 = [(SYBacklinkIndicatorClient *)self linkIdentifiers];
-  v4 = [v3 count];
+  linkIdentifiers = [(SYBacklinkIndicatorClient *)self linkIdentifiers];
+  v4 = [linkIdentifiers count];
 
   if (v4)
   {
@@ -264,14 +264,14 @@ void __65__SYBacklinkIndicatorClient__sendIndicatorRequestWithCompletion___block
 {
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v3 = v2;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setDouble:@"lastShowIndicatorTime" forKey:v3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setDouble:@"lastShowIndicatorTime" forKey:v3];
 }
 
 - (void)_clearLastShowIndicatorRequestTimestamp
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 removeObjectForKey:@"lastShowIndicatorTime"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"lastShowIndicatorTime"];
 }
 
 - (BOOL)_shouldSendIndicatorRequest

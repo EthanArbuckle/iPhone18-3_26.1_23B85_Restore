@@ -1,21 +1,21 @@
 @interface RUIDetailButtonElement
-- (RUIDetailButtonElement)initWithAttributes:(id)a3 parent:(id)a4;
+- (RUIDetailButtonElement)initWithAttributes:(id)attributes parent:(id)parent;
 - (void)startActivityIndicator;
 - (void)stopActivityIndicator;
 @end
 
 @implementation RUIDetailButtonElement
 
-- (RUIDetailButtonElement)initWithAttributes:(id)a3 parent:(id)a4
+- (RUIDetailButtonElement)initWithAttributes:(id)attributes parent:(id)parent
 {
   v14.receiver = self;
   v14.super_class = RUIDetailButtonElement;
-  v4 = [(RUIElement *)&v14 initWithAttributes:a3 parent:a4];
+  v4 = [(RUIElement *)&v14 initWithAttributes:attributes parent:parent];
   v5 = v4;
   if (v4)
   {
-    v6 = [(RUIElement *)v4 attributes];
-    v7 = [v6 objectForKeyedSubscript:@"visibility"];
+    attributes = [(RUIElement *)v4 attributes];
+    v7 = [attributes objectForKeyedSubscript:@"visibility"];
     v8 = [v7 isEqualToString:@"editing"];
 
     if (v8)
@@ -25,8 +25,8 @@
 
     else
     {
-      v10 = [(RUIElement *)v5 attributes];
-      v11 = [v10 objectForKeyedSubscript:@"visibility"];
+      attributes2 = [(RUIElement *)v5 attributes];
+      v11 = [attributes2 objectForKeyedSubscript:@"visibility"];
       v12 = [v11 isEqualToString:@"notEditing"];
 
       if (v12)
@@ -48,14 +48,14 @@
 
 - (void)startActivityIndicator
 {
-  v2 = [(RUIElement *)self parent];
-  [v2 startActivityIndicator];
+  parent = [(RUIElement *)self parent];
+  [parent startActivityIndicator];
 }
 
 - (void)stopActivityIndicator
 {
-  v2 = [(RUIElement *)self parent];
-  [v2 stopActivityIndicator];
+  parent = [(RUIElement *)self parent];
+  [parent stopActivityIndicator];
 }
 
 @end

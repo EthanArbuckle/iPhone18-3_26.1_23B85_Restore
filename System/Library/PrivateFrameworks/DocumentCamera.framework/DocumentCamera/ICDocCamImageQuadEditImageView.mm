@@ -1,90 +1,90 @@
 @interface ICDocCamImageQuadEditImageView
-- (ICDocCamImageQuadEditImageView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3 orientation:(int64_t)a4;
-- (void)setImageOpacity:(double)a3;
+- (ICDocCamImageQuadEditImageView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image orientation:(int64_t)orientation;
+- (void)setImageOpacity:(double)opacity;
 @end
 
 @implementation ICDocCamImageQuadEditImageView
 
-- (ICDocCamImageQuadEditImageView)initWithFrame:(CGRect)a3
+- (ICDocCamImageQuadEditImageView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = ICDocCamImageQuadEditImageView;
-  v3 = [(ICDocCamImageQuadEditImageView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICDocCamImageQuadEditImageView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(ICDocCamImageQuadEditImageView *)v3 layer];
-    [v5 setMasksToBounds:0];
+    layer = [(ICDocCamImageQuadEditImageView *)v3 layer];
+    [layer setMasksToBounds:0];
 
     v6 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(ICDocCamImageQuadEditImageView *)v4 setImageLayer:v6];
 
-    v7 = [(ICDocCamImageQuadEditImageView *)v4 layer];
-    v8 = [(ICDocCamImageQuadEditImageView *)v4 imageLayer];
-    [v7 addSublayer:v8];
+    layer2 = [(ICDocCamImageQuadEditImageView *)v4 layer];
+    imageLayer = [(ICDocCamImageQuadEditImageView *)v4 imageLayer];
+    [layer2 addSublayer:imageLayer];
 
-    v9 = [MEMORY[0x277D75348] blackColor];
-    [(ICDocCamImageQuadEditImageView *)v4 setBackgroundColor:v9];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(ICDocCamImageQuadEditImageView *)v4 setBackgroundColor:blackColor];
   }
 
   return v4;
 }
 
-- (void)setImageOpacity:(double)a3
+- (void)setImageOpacity:(double)opacity
 {
-  self->_imageOpacity = a3;
-  v3 = a3;
-  v5 = [(ICDocCamImageQuadEditImageView *)self imageLayer];
-  *&v4 = v3;
-  [v5 setOpacity:v4];
+  self->_imageOpacity = opacity;
+  opacityCopy = opacity;
+  imageLayer = [(ICDocCamImageQuadEditImageView *)self imageLayer];
+  *&v4 = opacityCopy;
+  [imageLayer setOpacity:v4];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = ICDocCamImageQuadEditImageView;
-  [(ICDocCamImageQuadEditImageView *)&v21 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICDocCamImageQuadEditImageView *)&v21 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(ICDocCamImageQuadEditImageView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICDocCamImageQuadEditImageView *)self layer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  layer = [(ICDocCamImageQuadEditImageView *)self layer];
+  [layer setFrame:{v5, v7, v9, v11}];
 
   [(ICDocCamImageQuadEditImageView *)self bounds];
   v17 = DCTSDCenterOfRect(v13, v14, v15, v16);
   v19 = v18;
-  v20 = [(ICDocCamImageQuadEditImageView *)self imageLayer];
-  [v20 setPosition:{v17, v19}];
+  imageLayer = [(ICDocCamImageQuadEditImageView *)self imageLayer];
+  [imageLayer setPosition:{v17, v19}];
 }
 
-- (void)setImage:(id)a3 orientation:(int64_t)a4
+- (void)setImage:(id)image orientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = v6;
-  if (*&self->_image != __PAIR128__(a4, v6))
+  imageCopy = image;
+  v7 = imageCopy;
+  if (*&self->_image != __PAIR128__(orientation, imageCopy))
   {
-    [v6 size];
+    [imageCopy size];
     v9 = v8;
     v11 = v10;
-    v12 = [v7 CGImage];
-    v13 = [(ICDocCamImageQuadEditImageView *)self imageLayer];
-    [v13 setContents:v12];
+    cGImage = [v7 CGImage];
+    imageLayer = [(ICDocCamImageQuadEditImageView *)self imageLayer];
+    [imageLayer setContents:cGImage];
 
-    v14 = [(ICDocCamImageQuadEditImageView *)self layer];
-    [v14 setFrame:{0.0, 0.0, v9, v11}];
+    layer = [(ICDocCamImageQuadEditImageView *)self layer];
+    [layer setFrame:{0.0, 0.0, v9, v11}];
 
-    v15 = [(ICDocCamImageQuadEditImageView *)self imageLayer];
-    [v15 setFrame:{0.0, 0.0, v9, v11}];
+    imageLayer2 = [(ICDocCamImageQuadEditImageView *)self imageLayer];
+    [imageLayer2 setFrame:{0.0, 0.0, v9, v11}];
 
-    matched = dc_clockwiseRotationsFromUpToMatchOrientation(a4);
+    matched = dc_clockwiseRotationsFromUpToMatchOrientation(orientation);
     CGAffineTransformMakeRotation(&v19, matched * 1.57079633);
-    v17 = [(ICDocCamImageQuadEditImageView *)self imageLayer];
+    imageLayer3 = [(ICDocCamImageQuadEditImageView *)self imageLayer];
     v18 = v19;
-    [v17 setAffineTransform:&v18];
+    [imageLayer3 setAffineTransform:&v18];
   }
 }
 

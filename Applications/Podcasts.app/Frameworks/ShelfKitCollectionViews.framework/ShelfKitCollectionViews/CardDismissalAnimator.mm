@@ -1,15 +1,15 @@
 @interface CardDismissalAnimator
 - (_TtC23ShelfKitCollectionViews21CardDismissalAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CardDismissalAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1D7598(a3);
+  selfCopy = self;
+  sub_1D7598(transition);
   swift_unknownObjectRelease();
 }
 

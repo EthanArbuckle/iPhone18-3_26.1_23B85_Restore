@@ -1,35 +1,35 @@
 @interface ASDProperty
-- (ASDProperty)initWithAddress:(id)a3 value:(id)a4;
-- (ASDProperty)initWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASDProperty)initWithAddress:(id)address value:(id)value;
+- (ASDProperty)initWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation ASDProperty
 
-- (ASDProperty)initWithAddress:(id)a3 value:(id)a4
+- (ASDProperty)initWithAddress:(id)address value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  addressCopy = address;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = ASDProperty;
   v9 = [(ASDProperty *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_address, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_address, address);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;
 }
 
-- (ASDProperty)initWithDictionary:(id)a3
+- (ASDProperty)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Address"];
-  v6 = [v4 objectForKeyedSubscript:@"Value"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Address"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Value"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -47,20 +47,20 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ASDProperty *)self address];
-  v6 = [(ASDProperty *)self value];
-  v7 = [v4 initWithAddress:v5 value:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  address = [(ASDProperty *)self address];
+  value = [(ASDProperty *)self value];
+  v7 = [v4 initWithAddress:address value:value];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -70,14 +70,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ASDProperty *)v5 address];
-      v7 = [(ASDProperty *)self address];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      address = [(ASDProperty *)v5 address];
+      address2 = [(ASDProperty *)self address];
+      if ([address isEqual:address2])
       {
-        v8 = [(ASDProperty *)v5 value];
-        v9 = [(ASDProperty *)self value];
-        v10 = [v8 isEqual:v9];
+        value = [(ASDProperty *)v5 value];
+        value2 = [(ASDProperty *)self value];
+        v10 = [value isEqual:value2];
       }
 
       else
@@ -97,10 +97,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ASDProperty *)self address];
-  v4 = [v3 hash];
-  v5 = [(ASDProperty *)self value];
-  v6 = [v5 hash];
+  address = [(ASDProperty *)self address];
+  v4 = [address hash];
+  value = [(ASDProperty *)self value];
+  v6 = [value hash];
 
   return v6 ^ v4;
 }

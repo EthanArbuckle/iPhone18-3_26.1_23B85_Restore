@@ -1,5 +1,5 @@
 @interface PXLemonadeCollectionCustomizationAlbumsFactory
-+ (id)albumsCustomizationViewControllerWithRootCollectionList:(id)a3 preselectedAssets:(id)a4 completion:(id)a5;
++ (id)albumsCustomizationViewControllerWithRootCollectionList:(id)list preselectedAssets:(id)assets completion:(id)completion;
 - (PXLemonadeCollectionCustomizationAlbumsFactory)init;
 @end
 
@@ -12,10 +12,10 @@
   return [(PXLemonadeCollectionCustomizationAlbumsFactory *)&v3 init];
 }
 
-+ (id)albumsCustomizationViewControllerWithRootCollectionList:(id)a3 preselectedAssets:(id)a4 completion:(id)a5
++ (id)albumsCustomizationViewControllerWithRootCollectionList:(id)list preselectedAssets:(id)assets completion:(id)completion
 {
-  v7 = _Block_copy(a5);
-  if (a4)
+  v7 = _Block_copy(completion);
+  if (assets)
   {
     sub_1A3C52C70(0, &qword_1EB126660);
     sub_1A524CA34();
@@ -26,7 +26,7 @@
     *(swift_allocObject() + 16) = v7;
   }
 
-  v8 = a3;
+  listCopy = list;
   sub_1A42D603C();
 }
 

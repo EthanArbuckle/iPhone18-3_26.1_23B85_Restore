@@ -1,7 +1,7 @@
 @interface RichLinkPluginDataSource
-+ (BOOL)supportsURL:(id)a3;
-+ (id)individualPreviewSummaryForPluginPayload:(id)a3;
-+ (id)messageTintColorForView:(id)a3;
++ (BOOL)supportsURL:(id)l;
++ (id)individualPreviewSummaryForPluginPayload:(id)payload;
++ (id)messageTintColorForView:(id)view;
 - (BOOL)hasPendingFetch;
 - (BOOL)isCollaborationLink;
 - (BOOL)isFromMe;
@@ -9,24 +9,24 @@
 - (BOOL)metadataIsLikelyFinal;
 - (BOOL)metadataIsViableForDisplay;
 - (BOOL)wantsStatusItem;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)storeIdentifier;
 - (NSURL)originalURL;
-- (RichLinkPluginDataSource)initWithPluginPayload:(id)a3;
-- (id)_linkView:(id)a3 overrideURLForOpeningURL:(id)a4;
-- (id)balloonMaskIncludingTail:(BOOL)a3 userInterfaceStyle:(int64_t)a4;
+- (RichLinkPluginDataSource)initWithPluginPayload:(id)payload;
+- (id)_linkView:(id)view overrideURLForOpeningURL:(id)l;
+- (id)balloonMaskIncludingTail:(BOOL)tail userInterfaceStyle:(int64_t)style;
 - (id)createEmptyMetadataWithOriginalURL;
 - (id)createRichLinkView;
 - (id)individualPreviewSummary;
 - (id)metadataForDisplay;
-- (id)payloadWithOutOfLineAttachments:(id *)a3;
+- (id)payloadWithOutOfLineAttachments:(id *)attachments;
 - (id)richLinkMetadata;
 - (id)sizingView;
 - (id)statusAttributedString;
 - (id)statusTransformer;
-- (void)_didFetchMetadata:(id)a3 error:(id)a4;
+- (void)_didFetchMetadata:(id)metadata error:(id)error;
 - (void)_startFetchingMetadata;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)didTapStatusItem;
 - (void)dispatchMetadataUpdateToAllClients;
 - (void)ensureValidCollaborationState;
@@ -34,42 +34,42 @@
 - (void)needsResize;
 - (void)payloadWillEnterShelf;
 - (void)payloadWillSendFromShelf;
-- (void)pluginPayloadDidChange:(unint64_t)a3;
-- (void)postProcessMetadataUpgradedByCompleteRefetch:(id)a3 originalMetadata:(id)a4;
-- (void)prepareCollaborationLink:(id)a3;
-- (void)richLinkViewDidMoveToSuperview:(id)a3;
-- (void)setFlattenedMetadataForSending:(id)a3;
+- (void)pluginPayloadDidChange:(unint64_t)change;
+- (void)postProcessMetadataUpgradedByCompleteRefetch:(id)refetch originalMetadata:(id)metadata;
+- (void)prepareCollaborationLink:(id)link;
+- (void)richLinkViewDidMoveToSuperview:(id)superview;
+- (void)setFlattenedMetadataForSending:(id)sending;
 - (void)startUpdateWatchdogIfNeeded;
-- (void)tapToLoadDidFetchMetadata:(id)a3;
-- (void)updateRichLinkWithFetchedMetadata:(id)a3;
-- (void)updateSidednessForLinkView:(id)a3;
-- (void)updateUsesInferredAppearanceForLinkView:(id)a3;
+- (void)tapToLoadDidFetchMetadata:(id)metadata;
+- (void)updateRichLinkWithFetchedMetadata:(id)metadata;
+- (void)updateSidednessForLinkView:(id)view;
+- (void)updateUsesInferredAppearanceForLinkView:(id)view;
 @end
 
 @implementation RichLinkPluginDataSource
 
-- (RichLinkPluginDataSource)initWithPluginPayload:(id)a3
+- (RichLinkPluginDataSource)initWithPluginPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v25.receiver = self;
   v25.super_class = RichLinkPluginDataSource;
-  v5 = [(RichLinkPluginDataSource *)&v25 initWithPluginPayload:v4];
+  v5 = [(RichLinkPluginDataSource *)&v25 initWithPluginPayload:payloadCopy];
   if (v5)
   {
-    v6 = [v4 url];
+    v6 = [payloadCopy url];
     originalURL = v5->_originalURL;
     v5->_originalURL = v6;
 
-    v8 = [v4 data];
-    v5->_hasReceivedAnyPayload = v8 != 0;
+    data = [payloadCopy data];
+    v5->_hasReceivedAnyPayload = data != 0;
 
-    v9 = [v4 data];
+    data2 = [payloadCopy data];
 
-    if (v9)
+    if (data2)
     {
-      v10 = [v4 data];
-      v11 = [v4 attachments];
-      v12 = [LPMessagesPayload linkWithDataRepresentation:v10 attachments:v11];
+      data3 = [payloadCopy data];
+      attachments = [payloadCopy attachments];
+      v12 = [LPMessagesPayload linkWithDataRepresentation:data3 attachments:attachments];
       richLink = v5->_richLink;
       v5->_richLink = v12;
     }
@@ -80,27 +80,27 @@
       v15 = v5->_richLink;
       v5->_richLink = v14;
 
-      v5->_shouldFetchWhenSent = [v4 supportsCollaboration] ^ 1;
+      v5->_shouldFetchWhenSent = [payloadCopy supportsCollaboration] ^ 1;
     }
 
     v16 = LPLogChannelPlugin();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [(RichLinkPluginDataSource *)v5 messageGUID];
-      v19 = [v4 data];
-      v20 = [v19 length];
-      v21 = [v4 attachments];
-      v22 = [v21 count];
-      v23 = [(LPMessagesPayload *)v5->_richLink isPlaceholder];
+      messageGUID = [(RichLinkPluginDataSource *)v5 messageGUID];
+      data4 = [payloadCopy data];
+      v20 = [data4 length];
+      attachments2 = [payloadCopy attachments];
+      v22 = [attachments2 count];
+      isPlaceholder = [(LPMessagesPayload *)v5->_richLink isPlaceholder];
       *buf = 138413058;
-      v27 = v18;
+      v27 = messageGUID;
       v28 = 2048;
       v29 = v20;
       v30 = 2048;
       v31 = v22;
       v32 = 1024;
-      v33 = v23;
+      v33 = isPlaceholder;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "RichLinkPluginDataSource<%@>: initialized (payload=%lu, attachments=%lu, placeholder=%d)", buf, 0x26u);
     }
 
@@ -110,13 +110,13 @@
   return v5;
 }
 
-+ (BOOL)supportsURL:(id)a3
++ (BOOL)supportsURL:(id)l
 {
-  v3 = a3;
-  if (([v3 _lp_isHTTPFamilyURL] & 1) != 0 || objc_msgSend(v3, "_lp_hasAllowedNonHTTPScheme"))
+  lCopy = l;
+  if (([lCopy _lp_isHTTPFamilyURL] & 1) != 0 || objc_msgSend(lCopy, "_lp_hasAllowedNonHTTPScheme"))
   {
-    v4 = [v3 host];
-    v5 = [v4 length] != 0;
+    host = [lCopy host];
+    v5 = [host length] != 0;
   }
 
   else
@@ -137,20 +137,20 @@
 
 - (id)richLinkMetadata
 {
-  v3 = [(RichLinkPluginDataSource *)self richLink];
-  v4 = [v3 metadata];
-  v5 = v4;
-  if (v4)
+  richLink = [(RichLinkPluginDataSource *)self richLink];
+  metadata = [richLink metadata];
+  v5 = metadata;
+  if (metadata)
   {
-    v6 = v4;
+    createEmptyMetadataWithOriginalURL = metadata;
   }
 
   else
   {
-    v6 = [(RichLinkPluginDataSource *)self createEmptyMetadataWithOriginalURL];
+    createEmptyMetadataWithOriginalURL = [(RichLinkPluginDataSource *)self createEmptyMetadataWithOriginalURL];
   }
 
-  v7 = v6;
+  v7 = createEmptyMetadataWithOriginalURL;
 
   return v7;
 }
@@ -159,8 +159,8 @@
 {
   if ([(RichLinkPluginDataSource *)self isFromMe])
   {
-    v3 = [(RichLinkPluginDataSource *)self pluginPayload];
-    if ([v3 supportsCollaboration])
+    pluginPayload = [(RichLinkPluginDataSource *)self pluginPayload];
+    if ([pluginPayload supportsCollaboration])
     {
       hasReceivedAnyPayload = self->_hasReceivedAnyPayload;
 
@@ -184,9 +184,9 @@
     goto LABEL_10;
   }
 
-  v6 = [(LPMessagesPayload *)self->_richLink metadata];
+  metadata = [(LPMessagesPayload *)self->_richLink metadata];
 
-  if (!v6)
+  if (!metadata)
   {
     goto LABEL_10;
   }
@@ -196,9 +196,9 @@
     goto LABEL_10;
   }
 
-  v7 = [(RichLinkPluginDataSource *)self imMessage];
-  v8 = [v7 time];
-  v9 = [v8 dateByAddingTimeInterval:15.0];
+  imMessage = [(RichLinkPluginDataSource *)self imMessage];
+  time = [imMessage time];
+  v9 = [time dateByAddingTimeInterval:15.0];
   v10 = +[NSDate date];
   v11 = [v9 compare:v10];
 
@@ -223,44 +223,44 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(RichLinkPluginDataSource *)self imMessage];
-  if ([v4 isFromMe])
+  imMessage = [(RichLinkPluginDataSource *)self imMessage];
+  if ([imMessage isFromMe])
   {
-    v3 = 1;
+    isFromMe = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = RichLinkPluginDataSource;
-    v3 = [(RichLinkPluginDataSource *)&v6 isFromMe];
+    isFromMe = [(RichLinkPluginDataSource *)&v6 isFromMe];
   }
 
-  return v3;
+  return isFromMe;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clients = self->_clients;
-  v8 = v4;
+  v8 = clientCopy;
   if (!clients)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     v7 = self->_clients;
     self->_clients = v6;
 
-    v4 = v8;
+    clientCopy = v8;
     clients = self->_clients;
   }
 
-  [(NSHashTable *)clients addObject:v4];
+  [(NSHashTable *)clients addObject:clientCopy];
 }
 
 - (void)dispatchMetadataUpdateToAllClients
 {
-  v3 = [(RichLinkPluginDataSource *)self metadataForDisplay];
-  v4 = [(RichLinkPluginDataSource *)self metadataIsLikelyFinal];
+  metadataForDisplay = [(RichLinkPluginDataSource *)self metadataForDisplay];
+  metadataIsLikelyFinal = [(RichLinkPluginDataSource *)self metadataIsLikelyFinal];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -281,7 +281,7 @@ LABEL_10:
         }
 
         v10 = [*(*(&v12 + 1) + 8 * i) rendererForRichLinkPluginDataSource:{self, v12}];
-        [v10 _setMetadata:v3 isFinal:v4];
+        [v10 _setMetadata:metadataForDisplay isFinal:metadataIsLikelyFinal];
         if ([(RichLinkPluginDataSource *)self isCollaborationLink])
         {
           [(RichLinkPluginDataSource *)self prepareCollaborationLink:v10];
@@ -297,10 +297,10 @@ LABEL_10:
   statusTransformer = self->_statusTransformer;
   if (statusTransformer)
   {
-    [(LPLinkMetadataStatusTransformer *)statusTransformer setMetadata:v3];
+    [(LPLinkMetadataStatusTransformer *)statusTransformer setMetadata:metadataForDisplay];
   }
 
-  [(LPLinkView *)self->_temporarySizingView _setMetadata:v3 isFinal:v4, v12];
+  [(LPLinkView *)self->_temporarySizingView _setMetadata:metadataForDisplay isFinal:metadataIsLikelyFinal, v12];
   if ([(RichLinkPluginDataSource *)self isCollaborationLink])
   {
     [(RichLinkPluginDataSource *)self prepareCollaborationLink:self->_temporarySizingView];
@@ -353,9 +353,9 @@ LABEL_10:
   if (![(RichLinkPluginDataSource *)self metadataIsLikelyFinal]&& !self->_didStartUpdateWatchdog)
   {
     self->_didStartUpdateWatchdog = 1;
-    v3 = [(RichLinkPluginDataSource *)self imMessage];
-    v4 = [v3 time];
-    v5 = [v4 dateByAddingTimeInterval:15.0];
+    imMessage = [(RichLinkPluginDataSource *)self imMessage];
+    time = [imMessage time];
+    v5 = [time dateByAddingTimeInterval:15.0];
 
     v6 = +[NSDate date];
     [v5 timeIntervalSinceDate:v6];
@@ -404,15 +404,15 @@ LABEL_10:
   }
 }
 
-- (void)postProcessMetadataUpgradedByCompleteRefetch:(id)a3 originalMetadata:(id)a4
+- (void)postProcessMetadataUpgradedByCompleteRefetch:(id)refetch originalMetadata:(id)metadata
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [v5 specialization];
+  refetchCopy = refetch;
+  metadataCopy = metadata;
+  specialization = [metadataCopy specialization];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v15 specialization];
+    specialization2 = [refetchCopy specialization];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -421,27 +421,27 @@ LABEL_10:
       goto LABEL_9;
     }
 
-    v6 = [v5 specialization];
-    v9 = [v15 specialization];
-    v10 = [v6 name];
-    if (v10)
+    specialization = [metadataCopy specialization];
+    specialization3 = [refetchCopy specialization];
+    name = [specialization name];
+    if (name)
     {
-      v11 = v10;
-      v12 = [v6 searchQuery];
-      if (v12 || ([v9 name], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+      v11 = name;
+      searchQuery = [specialization searchQuery];
+      if (searchQuery || ([specialization3 name], (searchQuery = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v13 = [v9 searchQuery];
+        searchQuery2 = [specialization3 searchQuery];
 
-        if (v13)
+        if (searchQuery2)
         {
-          v14 = [v9 searchQuery];
-          [v9 setName:v14];
+          searchQuery3 = [specialization3 searchQuery];
+          [specialization3 setName:searchQuery3];
 
-          [v9 setSearchQuery:0];
+          [specialization3 setSearchQuery:0];
         }
       }
     }
@@ -460,35 +460,35 @@ LABEL_9:
 
   else if (([(LPMessagesPayload *)self->_richLink needsSubresourceFetch]& 1) != 0 || [(LPMessagesPayload *)self->_richLink needsCompleteFetch])
   {
-    v3 = [(LPMessagesPayload *)self->_richLink needsCompleteFetch];
+    needsCompleteFetch = [(LPMessagesPayload *)self->_richLink needsCompleteFetch];
     [(LPMessagesPayload *)self->_richLink setNeedsSubresourceFetch:0];
     [(LPMessagesPayload *)self->_richLink setNeedsCompleteFetch:0];
     v4 = objc_alloc_init(LPMetadataProvider);
-    v5 = [(LPMessagesPayload *)self->_richLink metadata];
-    v6 = [v5 copy];
+    metadata = [(LPMessagesPayload *)self->_richLink metadata];
+    v6 = [metadata copy];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_2FD0;
     v14[3] = &unk_C478;
     v14[4] = self;
-    v16 = v3;
+    v16 = needsCompleteFetch;
     v7 = v6;
     v15 = v7;
     v8 = objc_retainBlock(v14);
-    if (v3)
+    if (needsCompleteFetch)
     {
-      v9 = [(LPMessagesPayload *)self->_richLink metadata];
-      v10 = [v9 originalURL];
-      if (v10)
+      metadata2 = [(LPMessagesPayload *)self->_richLink metadata];
+      originalURL = [metadata2 originalURL];
+      if (originalURL)
       {
-        v11 = [NSMutableURLRequest requestWithURL:v10];
+        v11 = [NSMutableURLRequest requestWithURL:originalURL];
       }
 
       else
       {
-        v12 = [(LPMessagesPayload *)self->_richLink metadata];
-        v13 = [v12 URL];
+        metadata3 = [(LPMessagesPayload *)self->_richLink metadata];
+        v13 = [metadata3 URL];
         v11 = [NSMutableURLRequest requestWithURL:v13];
       }
 
@@ -514,29 +514,29 @@ LABEL_9:
   return v3;
 }
 
-- (void)updateRichLinkWithFetchedMetadata:(id)a3
+- (void)updateRichLinkWithFetchedMetadata:(id)metadata
 {
-  v6 = a3;
+  metadataCopy = metadata;
   [(LPMessagesPayload *)self->_richLink setPlaceholder:0];
   [(LPMessagesPayload *)self->_richLink setNeedsCompleteFetch:0];
-  if (v6)
+  if (metadataCopy)
   {
-    [(LPMessagesPayload *)self->_richLink setMetadata:v6];
+    [(LPMessagesPayload *)self->_richLink setMetadata:metadataCopy];
   }
 
   else
   {
-    v4 = [(RichLinkPluginDataSource *)self createEmptyMetadataWithOriginalURL];
-    [(LPMessagesPayload *)self->_richLink setMetadata:v4];
+    createEmptyMetadataWithOriginalURL = [(RichLinkPluginDataSource *)self createEmptyMetadataWithOriginalURL];
+    [(LPMessagesPayload *)self->_richLink setMetadata:createEmptyMetadataWithOriginalURL];
   }
 
-  v5 = [(LPMessagesPayload *)self->_richLink metadata];
-  [v5 _resetIncompleteState];
+  metadata = [(LPMessagesPayload *)self->_richLink metadata];
+  [metadata _resetIncompleteState];
 }
 
-- (void)setFlattenedMetadataForSending:(id)a3
+- (void)setFlattenedMetadataForSending:(id)sending
 {
-  [(RichLinkPluginDataSource *)self updateRichLinkWithFetchedMetadata:a3];
+  [(RichLinkPluginDataSource *)self updateRichLinkWithFetchedMetadata:sending];
   v6 = 0;
   v4 = [(RichLinkPluginDataSource *)self payloadWithOutOfLineAttachments:&v6];
   v5 = v6;
@@ -545,41 +545,41 @@ LABEL_9:
 
 - (BOOL)metadataHasContent
 {
-  v2 = [(LPMessagesPayload *)self->_richLink metadata];
-  v3 = [v2 title];
-  if (v3)
+  metadata = [(LPMessagesPayload *)self->_richLink metadata];
+  title = [metadata title];
+  if (title)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [v2 icon];
-    if (v5)
+    icon = [metadata icon];
+    if (icon)
     {
       LOBYTE(v4) = 1;
     }
 
     else
     {
-      v6 = [v2 image];
-      if (v6)
+      image = [metadata image];
+      if (image)
       {
         LOBYTE(v4) = 1;
       }
 
       else
       {
-        v7 = [v2 video];
-        if (v7)
+        video = [metadata video];
+        if (video)
         {
           LOBYTE(v4) = 1;
         }
 
         else
         {
-          v8 = [v2 specialization];
-          if (v8)
+          specialization = [metadata specialization];
+          if (specialization)
           {
             LOBYTE(v4) = 1;
           }
@@ -587,7 +587,7 @@ LABEL_9:
           else
           {
             v9 = objc_alloc_init(LPLinkMetadata);
-            v4 = [v2 _isEqualIgnoringURLs:v9] ^ 1;
+            v4 = [metadata _isEqualIgnoringURLs:v9] ^ 1;
           }
         }
       }
@@ -597,17 +597,17 @@ LABEL_9:
   return v4;
 }
 
-- (id)payloadWithOutOfLineAttachments:(id *)a3
+- (id)payloadWithOutOfLineAttachments:(id *)attachments
 {
   if ([(RichLinkPluginDataSource *)self metadataHasContent])
   {
-    v5 = [(LPMessagesPayload *)self->_richLink dataRepresentationWithOutOfLineAttachments:a3];
+    v5 = [(LPMessagesPayload *)self->_richLink dataRepresentationWithOutOfLineAttachments:attachments];
   }
 
   else
   {
     v5 = 0;
-    *a3 = 0;
+    *attachments = 0;
   }
 
   return v5;
@@ -620,12 +620,12 @@ LABEL_9:
   [(RichLinkPluginDataSource *)&v15 payloadWillSendFromShelf];
   self->_didSendPayload = 1;
   v3 = self->_richLink;
-  v4 = [(LPMessagesPayload *)v3 metadata];
+  metadata = [(LPMessagesPayload *)v3 metadata];
 
-  if (!v4)
+  if (!metadata)
   {
-    v5 = [(RichLinkPluginDataSource *)self createEmptyMetadataWithOriginalURL];
-    [(LPMessagesPayload *)v3 setMetadata:v5];
+    createEmptyMetadataWithOriginalURL = [(RichLinkPluginDataSource *)self createEmptyMetadataWithOriginalURL];
+    [(LPMessagesPayload *)v3 setMetadata:createEmptyMetadataWithOriginalURL];
 
     [(LPMessagesPayload *)v3 setPlaceholder:1];
   }
@@ -642,18 +642,18 @@ LABEL_9:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(RichLinkPluginDataSource *)self messageGUID];
+    messageGUID = [(RichLinkPluginDataSource *)self messageGUID];
     v11 = [v6 length];
     v12 = [v7 count];
-    v13 = [(LPMessagesPayload *)v3 isPlaceholder];
+    isPlaceholder = [(LPMessagesPayload *)v3 isPlaceholder];
     *buf = 138413058;
-    v17 = v10;
+    v17 = messageGUID;
     v18 = 2048;
     v19 = v11;
     v20 = 2048;
     v21 = v12;
     v22 = 1024;
-    v23 = v13;
+    v23 = isPlaceholder;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "RichLinkPluginDataSource<%@>: initial send (payload=%lu, attachments=%lu, placeholder=%d)", buf, 0x26u);
   }
 
@@ -661,9 +661,9 @@ LABEL_9:
   [(LPLinkView *)self->_temporarySizingView _setDisablePlaybackControls:0];
 }
 
-- (void)_didFetchMetadata:(id)a3 error:(id)a4
+- (void)_didFetchMetadata:(id)metadata error:(id)error
 {
-  [(RichLinkPluginDataSource *)self updateRichLinkWithFetchedMetadata:a3, a4];
+  [(RichLinkPluginDataSource *)self updateRichLinkWithFetchedMetadata:metadata, error];
   [(RichLinkPluginDataSource *)self dispatchMetadataUpdateToAllClients];
   v14 = 0;
   v5 = [(RichLinkPluginDataSource *)self payloadWithOutOfLineAttachments:&v14];
@@ -676,11 +676,11 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(RichLinkPluginDataSource *)self messageGUID];
+      messageGUID = [(RichLinkPluginDataSource *)self messageGUID];
       v12 = [v5 length];
       v13 = [v6 count];
       *buf = 138412802;
-      v16 = v11;
+      v16 = messageGUID;
       v17 = 2048;
       v18 = v12;
       v19 = 2048;
@@ -702,22 +702,22 @@ LABEL_9:
   }
 }
 
-- (void)pluginPayloadDidChange:(unint64_t)a3
+- (void)pluginPayloadDidChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v22.receiver = self;
   v22.super_class = RichLinkPluginDataSource;
   [(RichLinkPluginDataSource *)&v22 pluginPayloadDidChange:?];
-  if (!self->_didSendPayload && (v3 & 3) != 0 && !self->_didTapToLoad)
+  if (!self->_didSendPayload && (changeCopy & 3) != 0 && !self->_didTapToLoad)
   {
-    v5 = [(RichLinkPluginDataSource *)self payload];
-    self->_hasReceivedAnyPayload |= v5 != 0;
+    payload = [(RichLinkPluginDataSource *)self payload];
+    self->_hasReceivedAnyPayload |= payload != 0;
 
-    v6 = [(RichLinkPluginDataSource *)self pluginPayload];
-    v7 = [v6 data];
-    v8 = [(RichLinkPluginDataSource *)self pluginPayload];
-    v9 = [v8 attachments];
-    v10 = [LPMessagesPayload linkWithDataRepresentation:v7 attachments:v9];
+    pluginPayload = [(RichLinkPluginDataSource *)self pluginPayload];
+    data = [pluginPayload data];
+    pluginPayload2 = [(RichLinkPluginDataSource *)self pluginPayload];
+    attachments = [pluginPayload2 attachments];
+    v10 = [LPMessagesPayload linkWithDataRepresentation:data attachments:attachments];
     richLink = self->_richLink;
     self->_richLink = v10;
 
@@ -725,22 +725,22 @@ LABEL_9:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(RichLinkPluginDataSource *)self messageGUID];
-      v15 = [(RichLinkPluginDataSource *)self pluginPayload];
-      v16 = [v15 data];
-      v17 = [v16 length];
-      v18 = [(RichLinkPluginDataSource *)self pluginPayload];
-      v19 = [v18 attachments];
-      v20 = [v19 count];
-      v21 = [(LPMessagesPayload *)self->_richLink isPlaceholder];
+      messageGUID = [(RichLinkPluginDataSource *)self messageGUID];
+      pluginPayload3 = [(RichLinkPluginDataSource *)self pluginPayload];
+      data2 = [pluginPayload3 data];
+      v17 = [data2 length];
+      pluginPayload4 = [(RichLinkPluginDataSource *)self pluginPayload];
+      attachments2 = [pluginPayload4 attachments];
+      v20 = [attachments2 count];
+      isPlaceholder = [(LPMessagesPayload *)self->_richLink isPlaceholder];
       *buf = 138413058;
-      v24 = v14;
+      v24 = messageGUID;
       v25 = 2048;
       v26 = v17;
       v27 = 2048;
       v28 = v20;
       v29 = 1024;
-      v30 = v21;
+      v30 = isPlaceholder;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "RichLinkPluginDataSource<%@>: received payload change (payload=%lu, attachments=%lu, placeholder=%d)", buf, 0x26u);
     }
 
@@ -749,16 +749,16 @@ LABEL_9:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [UIScreen mainScreen:a3.width];
+  width = fits.width;
+  v5 = [UIScreen mainScreen:fits.width];
   [v5 bounds];
   v7 = v6;
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
+  preferredContentSizeCategory = [v8 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -767,16 +767,16 @@ LABEL_9:
     v7 = v12 + v12;
   }
 
-  v13 = [(RichLinkPluginDataSource *)self sizingView];
-  [(RichLinkPluginDataSource *)self updateSidednessForLinkView:v13];
-  [v13 sizeThatFits:{width, v7}];
+  sizingView = [(RichLinkPluginDataSource *)self sizingView];
+  [(RichLinkPluginDataSource *)self updateSidednessForLinkView:sizingView];
+  [sizingView sizeThatFits:{width, v7}];
   v15 = v14;
   v17 = v16;
   v18 = LPLogChannelPlugin();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     v21 = v18;
-    v22 = [(RichLinkPluginDataSource *)self messageGUID];
+    messageGUID = [(RichLinkPluginDataSource *)self messageGUID];
     v32.width = width;
     v32.height = v7;
     v23 = NSStringFromCGSize(v32);
@@ -784,7 +784,7 @@ LABEL_9:
     v33.height = v17;
     v24 = NSStringFromCGSize(v33);
     *buf = 138412802;
-    v27 = v22;
+    v27 = messageGUID;
     v28 = 2112;
     v29 = v23;
     v30 = 2112;
@@ -816,15 +816,15 @@ LABEL_9:
 
   else
   {
-    v5 = [(NSHashTable *)self->_clients anyObject];
-    v6 = [v5 rendererForRichLinkPluginDataSource:self];
+    anyObject = [(NSHashTable *)self->_clients anyObject];
+    v6 = [anyObject rendererForRichLinkPluginDataSource:self];
 
     v7 = v6;
     if (!v6)
     {
-      v8 = [(RichLinkPluginDataSource *)self createRichLinkView];
+      createRichLinkView = [(RichLinkPluginDataSource *)self createRichLinkView];
       v9 = self->_temporarySizingView;
-      self->_temporarySizingView = v8;
+      self->_temporarySizingView = createRichLinkView;
 
       v7 = self->_temporarySizingView;
     }
@@ -848,11 +848,11 @@ LABEL_9:
   else
   {
     v6 = [RichLinkView alloc];
-    v7 = [(RichLinkPluginDataSource *)self originalURL];
-    v4 = [(RichLinkView *)v6 initWithURL:v7];
+    originalURL = [(RichLinkPluginDataSource *)self originalURL];
+    v4 = [(RichLinkView *)v6 initWithURL:originalURL];
 
-    v8 = [(RichLinkPluginDataSource *)self originalURL];
-    [(RichLinkView *)v4 _setOverrideURL:v8];
+    originalURL2 = [(RichLinkPluginDataSource *)self originalURL];
+    [(RichLinkView *)v4 _setOverrideURL:originalURL2];
 
     [(RichLinkView *)v4 setDataSource:self];
     [(RichLinkView *)v4 setDelegate:self];
@@ -874,8 +874,8 @@ LABEL_9:
     }
 
     [(RichLinkView *)v4 _setAllowsTapToLoad:[(RichLinkPluginDataSource *)self isFromMe]^ 1];
-    v10 = [(RichLinkPluginDataSource *)self metadataForDisplay];
-    [(RichLinkView *)v4 _setMetadata:v10 isFinal:[(RichLinkPluginDataSource *)self metadataIsLikelyFinal]];
+    metadataForDisplay = [(RichLinkPluginDataSource *)self metadataForDisplay];
+    [(RichLinkView *)v4 _setMetadata:metadataForDisplay isFinal:[(RichLinkPluginDataSource *)self metadataIsLikelyFinal]];
 
     [(RichLinkPluginDataSource *)self updateSidednessForLinkView:v4];
     if ([(RichLinkPluginDataSource *)self isCollaborationLink])
@@ -887,13 +887,13 @@ LABEL_9:
   return v4;
 }
 
-- (void)richLinkViewDidMoveToSuperview:(id)a3
+- (void)richLinkViewDidMoveToSuperview:(id)superview
 {
   if (self->_hasDeferredResize)
   {
-    v4 = [a3 superview];
+    superview = [superview superview];
 
-    if (v4)
+    if (superview)
     {
       self->_hasDeferredResize = 0;
 
@@ -902,28 +902,28 @@ LABEL_9:
   }
 }
 
-- (void)updateSidednessForLinkView:(id)a3
+- (void)updateSidednessForLinkView:(id)view
 {
-  v17 = a3;
-  v4 = [(RichLinkPluginDataSource *)self isFromMe];
-  v5 = [(RichLinkPluginDataSource *)self payloadInShelf];
+  viewCopy = view;
+  isFromMe = [(RichLinkPluginDataSource *)self isFromMe];
+  payloadInShelf = [(RichLinkPluginDataSource *)self payloadInShelf];
   disableAnimations = self->_disableAnimations;
-  v7 = v5 ^ 1;
-  if ((disableAnimations & 1) == 0 && ((v5 ^ 1) & 1) == 0)
+  v7 = payloadInShelf ^ 1;
+  if ((disableAnimations & 1) == 0 && ((payloadInShelf ^ 1) & 1) == 0)
   {
-    v8 = [(RichLinkPluginDataSource *)self pluginPayload];
-    v9 = [v8 supportsCollaboration];
+    pluginPayload = [(RichLinkPluginDataSource *)self pluginPayload];
+    supportsCollaboration = [pluginPayload supportsCollaboration];
 
-    disableAnimations = v9 ^ 1;
+    disableAnimations = supportsCollaboration ^ 1;
   }
 
-  [v17 _setDisableAnimations:disableAnimations];
-  if (v4)
+  [viewCopy _setDisableAnimations:disableAnimations];
+  if (isFromMe)
   {
-    v10 = [(RichLinkPluginDataSource *)self pluginPayload];
-    v11 = [v10 supportsCollaboration];
+    pluginPayload2 = [(RichLinkPluginDataSource *)self pluginPayload];
+    supportsCollaboration2 = [pluginPayload2 supportsCollaboration];
 
-    if (v11)
+    if (supportsCollaboration2)
     {
       v12 = 2;
     }
@@ -939,28 +939,28 @@ LABEL_9:
     v12 = 0;
   }
 
-  [v17 _setAnimationOrigin:v12];
-  [v17 _setNeedsMessagesTranscriptPushCounterAnimation:v7];
+  [viewCopy _setAnimationOrigin:v12];
+  [viewCopy _setNeedsMessagesTranscriptPushCounterAnimation:v7];
   v13 = +[CKUIBehavior sharedBehaviors];
-  [v13 pluginBalloonInsetsForMessageFromMe:v4];
-  [v17 setContentInset:?];
+  [v13 pluginBalloonInsetsForMessageFromMe:isFromMe];
+  [viewCopy setContentInset:?];
 
-  [v17 _setForceFlexibleWidth:1];
-  [v17 _setInComposeContext:v5];
-  [v17 _setInSenderContext:v4];
-  [v17 _setDisableTapGesture:v5];
-  [v17 _setDisableHighlightGesture:v5];
-  v14 = [v17 traitCollection];
-  v15 = -[RichLinkPluginDataSource balloonMaskIncludingTail:userInterfaceStyle:](self, "balloonMaskIncludingTail:userInterfaceStyle:", v7, [v14 userInterfaceStyle]);
+  [viewCopy _setForceFlexibleWidth:1];
+  [viewCopy _setInComposeContext:payloadInShelf];
+  [viewCopy _setInSenderContext:isFromMe];
+  [viewCopy _setDisableTapGesture:payloadInShelf];
+  [viewCopy _setDisableHighlightGesture:payloadInShelf];
+  traitCollection = [viewCopy traitCollection];
+  v15 = -[RichLinkPluginDataSource balloonMaskIncludingTail:userInterfaceStyle:](self, "balloonMaskIncludingTail:userInterfaceStyle:", v7, [traitCollection userInterfaceStyle]);
 
-  [v17 _setMaskImage:v15];
+  [viewCopy _setMaskImage:v15];
   v16 = objc_alloc_init(LPLinkRendererSizeClassParameters);
   [v16 setNeedsSpaceAffordanceForDeleteButton:1];
-  [v17 _setSizeClassParameters:v16];
-  [(RichLinkPluginDataSource *)self updateUsesInferredAppearanceForLinkView:v17];
+  [viewCopy _setSizeClassParameters:v16];
+  [(RichLinkPluginDataSource *)self updateUsesInferredAppearanceForLinkView:viewCopy];
 }
 
-- (id)balloonMaskIncludingTail:(BOOL)a3 userInterfaceStyle:(int64_t)a4
+- (id)balloonMaskIncludingTail:(BOOL)tail userInterfaceStyle:(int64_t)style
 {
   v10 = *(&CKBalloonDescriptorZero + 41);
   v11 = *(&CKBalloonDescriptorZero + 57);
@@ -979,11 +979,11 @@ LABEL_9:
   return v4;
 }
 
-- (void)updateUsesInferredAppearanceForLinkView:(id)a3
+- (void)updateUsesInferredAppearanceForLinkView:(id)view
 {
-  v3 = a3;
-  v4 = [RichLinkPluginDataSource messageTintColorForView:v3];
-  [v3 _setUsesInferredAppearanceWithOverriddenBackgroundColor:v4 != 0];
+  viewCopy = view;
+  v4 = [RichLinkPluginDataSource messageTintColorForView:viewCopy];
+  [viewCopy _setUsesInferredAppearanceWithOverriddenBackgroundColor:v4 != 0];
 }
 
 - (void)needsResize
@@ -1015,8 +1015,8 @@ LABEL_9:
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) rendererForRichLinkPluginDataSource:self];
-        v11 = [v10 superview];
-        v7 |= v11 != 0;
+        superview = [v10 superview];
+        v7 |= superview != 0;
       }
 
       v6 = [(NSHashTable *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1049,26 +1049,26 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v5 = [(LPMessagesPayload *)self->_richLink metadata];
-  v6 = [v5 originalURL];
+  metadata = [(LPMessagesPayload *)self->_richLink metadata];
+  originalURL = [metadata originalURL];
 
-  v7 = [(LPMessagesPayload *)self->_richLink metadata];
-  v8 = v7;
-  if (v6)
+  metadata2 = [(LPMessagesPayload *)self->_richLink metadata];
+  metadata3 = metadata2;
+  if (originalURL)
   {
-    v9 = [v7 originalURL];
+    originalURL2 = [metadata2 originalURL];
 LABEL_7:
-    v3 = v9;
+    v3 = originalURL2;
 
     goto LABEL_8;
   }
 
-  v10 = [v7 URL];
+  v10 = [metadata2 URL];
 
   if (v10)
   {
-    v8 = [(LPMessagesPayload *)self->_richLink metadata];
-    v9 = [v8 URL];
+    metadata3 = [(LPMessagesPayload *)self->_richLink metadata];
+    originalURL2 = [metadata3 URL];
     goto LABEL_7;
   }
 
@@ -1081,26 +1081,26 @@ LABEL_8:
 - (NSString)storeIdentifier
 {
   v3 = [LPLinkMetadataStoreTransformer alloc];
-  v4 = [(RichLinkPluginDataSource *)self metadataForDisplay];
-  v5 = [(RichLinkPluginDataSource *)self originalURL];
-  v6 = [v3 initWithMetadata:v4 URL:v5];
+  metadataForDisplay = [(RichLinkPluginDataSource *)self metadataForDisplay];
+  originalURL = [(RichLinkPluginDataSource *)self originalURL];
+  v6 = [v3 initWithMetadata:metadataForDisplay URL:originalURL];
 
-  v7 = [v6 storeIdentifier];
+  storeIdentifier = [v6 storeIdentifier];
 
-  return v7;
+  return storeIdentifier;
 }
 
-- (id)_linkView:(id)a3 overrideURLForOpeningURL:(id)a4
+- (id)_linkView:(id)view overrideURLForOpeningURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(RichLinkPluginDataSource *)self overrideURLForOpeningURL:v5];
+    v6 = [(RichLinkPluginDataSource *)self overrideURLForOpeningURL:lCopy];
   }
 
   else
   {
-    v6 = v5;
+    v6 = lCopy;
   }
 
   v7 = v6;
@@ -1110,52 +1110,52 @@ LABEL_8:
 
 - (BOOL)metadataIsViableForDisplay
 {
-  v3 = [(LPMessagesPayload *)self->_richLink metadata];
+  metadata = [(LPMessagesPayload *)self->_richLink metadata];
 
-  if (!v3)
+  if (!metadata)
   {
 LABEL_5:
-    LOBYTE(v4) = 0;
-    return v4;
+    LOBYTE(metadataHasContent) = 0;
+    return metadataHasContent;
   }
 
-  v4 = [(RichLinkPluginDataSource *)self metadataHasContent];
-  if (v4)
+  metadataHasContent = [(RichLinkPluginDataSource *)self metadataHasContent];
+  if (metadataHasContent)
   {
     if (![(RichLinkPluginDataSource *)self payloadInShelf]|| (WeakRetained = objc_loadWeakRetained(&self->_pendingMetadataProvider), WeakRetained, !WeakRetained))
     {
-      LOBYTE(v4) = 1;
-      return v4;
+      LOBYTE(metadataHasContent) = 1;
+      return metadataHasContent;
     }
 
     goto LABEL_5;
   }
 
-  return v4;
+  return metadataHasContent;
 }
 
 - (id)metadataForDisplay
 {
   if ([(RichLinkPluginDataSource *)self metadataIsViableForDisplay])
   {
-    v3 = [(LPMessagesPayload *)self->_richLink metadata];
+    metadata = [(LPMessagesPayload *)self->_richLink metadata];
   }
 
   else
   {
-    v3 = 0;
+    metadata = 0;
   }
 
-  return v3;
+  return metadata;
 }
 
-- (void)tapToLoadDidFetchMetadata:(id)a3
+- (void)tapToLoadDidFetchMetadata:(id)metadata
 {
   self->_didTapToLoad = 1;
-  v4 = a3;
-  [(RichLinkPluginDataSource *)self updateRichLinkWithFetchedMetadata:v4];
+  metadataCopy = metadata;
+  [(RichLinkPluginDataSource *)self updateRichLinkWithFetchedMetadata:metadataCopy];
   [(LPLinkView *)self->_temporarySizingView _setAllowsTapToLoad:0];
-  [(LPLinkView *)self->_temporarySizingView _setMetadata:v4 isFinal:1];
+  [(LPLinkView *)self->_temporarySizingView _setMetadata:metadataCopy isFinal:1];
 
   v12 = 0;
   v5 = [(RichLinkPluginDataSource *)self payloadWithOutOfLineAttachments:&v12];
@@ -1164,11 +1164,11 @@ LABEL_5:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(RichLinkPluginDataSource *)self messageGUID];
+    messageGUID = [(RichLinkPluginDataSource *)self messageGUID];
     v10 = [v5 length];
     v11 = [v6 count];
     *buf = 138412802;
-    v14 = v9;
+    v14 = messageGUID;
     v15 = 2048;
     v16 = v10;
     v17 = 2048;
@@ -1182,27 +1182,27 @@ LABEL_5:
 - (id)individualPreviewSummary
 {
   v3 = [LPLinkMetadataPreviewTransformer alloc];
-  v4 = [(RichLinkPluginDataSource *)self metadataForDisplay];
-  v5 = [(RichLinkPluginDataSource *)self originalURL];
-  v6 = [v3 initWithMetadata:v4 URL:v5];
+  metadataForDisplay = [(RichLinkPluginDataSource *)self metadataForDisplay];
+  originalURL = [(RichLinkPluginDataSource *)self originalURL];
+  v6 = [v3 initWithMetadata:metadataForDisplay URL:originalURL];
 
-  v7 = [v6 previewSummary];
+  previewSummary = [v6 previewSummary];
 
-  return v7;
+  return previewSummary;
 }
 
-+ (id)individualPreviewSummaryForPluginPayload:(id)a3
++ (id)individualPreviewSummaryForPluginPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 data];
+  payloadCopy = payload;
+  data = [payloadCopy data];
 
-  if (v4)
+  if (data)
   {
-    v5 = [v3 data];
-    v6 = [v3 attachments];
-    v7 = [LPMessagesPayload linkWithDataRepresentation:v5 attachments:v6];
+    data2 = [payloadCopy data];
+    attachments = [payloadCopy attachments];
+    v7 = [LPMessagesPayload linkWithDataRepresentation:data2 attachments:attachments];
 
-    v8 = [v3 url];
+    v8 = [payloadCopy url];
     v9 = v8;
     if (v8)
     {
@@ -1211,42 +1211,42 @@ LABEL_5:
 
     else
     {
-      v12 = [v7 metadata];
-      v13 = [v12 originalURL];
-      v14 = v13;
-      if (v13)
+      metadata = [v7 metadata];
+      originalURL = [metadata originalURL];
+      v14 = originalURL;
+      if (originalURL)
       {
-        v10 = v13;
+        v10 = originalURL;
       }
 
       else
       {
-        v15 = [v7 metadata];
-        v10 = [v15 URL];
+        metadata2 = [v7 metadata];
+        v10 = [metadata2 URL];
       }
     }
 
     v16 = [LPLinkMetadataPreviewTransformer alloc];
-    v17 = [v7 metadata];
-    v18 = [v16 initWithMetadata:v17 URL:v10];
+    metadata3 = [v7 metadata];
+    v18 = [v16 initWithMetadata:metadata3 URL:v10];
 
-    v11 = [v18 previewSummary];
+    previewSummary = [v18 previewSummary];
   }
 
   else
   {
-    v11 = 0;
+    previewSummary = 0;
   }
 
-  return v11;
+  return previewSummary;
 }
 
 - (BOOL)isCollaborationLink
 {
-  v2 = [(RichLinkPluginDataSource *)self pluginPayload];
+  pluginPayload = [(RichLinkPluginDataSource *)self pluginPayload];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 isCollaboration];
+    isCollaboration = [pluginPayload isCollaboration];
   }
 
   else
@@ -1257,44 +1257,44 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v3 = [v2 supportsCollaboration];
+    isCollaboration = [pluginPayload supportsCollaboration];
   }
 
-  v4 = v3;
+  v4 = isCollaboration;
 LABEL_7:
 
   return v4;
 }
 
-- (void)prepareCollaborationLink:(id)a3
+- (void)prepareCollaborationLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   if ([(RichLinkPluginDataSource *)self payloadInShelf]&& self->_hasReceivedAnyPayload)
   {
-    [v4 _setCollaborative:1];
-    v5 = [(RichLinkPluginDataSource *)self pluginPayload];
-    v46 = [v5 collaborationMetadata];
+    [linkCopy _setCollaborative:1];
+    pluginPayload = [(RichLinkPluginDataSource *)self pluginPayload];
+    collaborationMetadata = [pluginPayload collaborationMetadata];
 
-    v6 = [(RichLinkPluginDataSource *)self pluginPayload];
+    pluginPayload2 = [(RichLinkPluginDataSource *)self pluginPayload];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(RichLinkPluginDataSource *)self pluginPayload];
-      v45 = [v8 collaborationOptionsSummary];
+      pluginPayload3 = [(RichLinkPluginDataSource *)self pluginPayload];
+      collaborationOptionsSummary = [pluginPayload3 collaborationOptionsSummary];
     }
 
     else
     {
-      v45 = sub_1B80(@"Share Options");
+      collaborationOptionsSummary = sub_1B80(@"Share Options");
     }
 
-    v9 = [[SLCollaborationFooterViewModel alloc] initWithMetadata:v46];
-    [v9 setOptionsSummary:v45];
-    v10 = [(RichLinkPluginDataSource *)self pluginPayload];
-    v11 = [v10 payloadCollaborationType];
+    v9 = [[SLCollaborationFooterViewModel alloc] initWithMetadata:collaborationMetadata];
+    [v9 setOptionsSummary:collaborationOptionsSummary];
+    pluginPayload4 = [(RichLinkPluginDataSource *)self pluginPayload];
+    payloadCollaborationType = [pluginPayload4 payloadCollaborationType];
 
-    if (v11 == &dword_0 + 2)
+    if (payloadCollaborationType == &dword_0 + 2)
     {
       v12 = objc_alloc_init(NSTextAttachment);
       v13 = [UIImage systemImageNamed:@"person.2.fill"];
@@ -1312,17 +1312,17 @@ LABEL_7:
       v20 = [v18 initWithString:v19];
       [v16 appendAttributedString:v20];
 
-      [v4 _setOverrideSubtitle:v16];
+      [linkCopy _setOverrideSubtitle:v16];
       goto LABEL_17;
     }
 
-    objc_initWeak(&location, v4);
-    v21 = [v46 type];
-    v22 = [v21 actionDescription];
-    v23 = v22;
-    if (v22)
+    objc_initWeak(&location, linkCopy);
+    type = [collaborationMetadata type];
+    actionDescription = [type actionDescription];
+    v23 = actionDescription;
+    if (actionDescription)
     {
-      v44 = v22;
+      v44 = actionDescription;
     }
 
     else
@@ -1364,13 +1364,13 @@ LABEL_7:
     v37 = [v35 initWithPlatformImage:v36];
     [v34 setVisibleImage:v37];
 
-    v38 = [(RichLinkPluginDataSource *)self pluginPayload];
+    pluginPayload5 = [(RichLinkPluginDataSource *)self pluginPayload];
     if (objc_opt_respondsToSelector())
     {
-      v39 = [(RichLinkPluginDataSource *)self pluginPayload];
-      v40 = [v39 sendAsCopy];
+      pluginPayload6 = [(RichLinkPluginDataSource *)self pluginPayload];
+      sendAsCopy = [pluginPayload6 sendAsCopy];
 
-      if (v40)
+      if (sendAsCopy)
       {
         [v34 setSelected:1];
         v41 = 0;
@@ -1388,7 +1388,7 @@ LABEL_16:
     v54[0] = v27;
     v54[1] = v34;
     v42 = [NSArray arrayWithObjects:v54 count:2];
-    [v4 _setButtonActions:v42];
+    [linkCopy _setButtonActions:v42];
 
     objc_destroyWeak(&v49);
     objc_destroyWeak(&v52);
@@ -1407,7 +1407,7 @@ LABEL_17:
     v47[2] = sub_53D0;
     v47[3] = &unk_C3B0;
     v47[4] = self;
-    [v4 _setCollaborationFooterViewModel:v9 action:v47];
+    [linkCopy _setCollaborationFooterViewModel:v9 action:v47];
     goto LABEL_18;
   }
 
@@ -1416,16 +1416,16 @@ LABEL_19:
 
 - (void)ensureValidCollaborationState
 {
-  v7 = [(LPMessagesPayload *)self->_richLink metadata];
-  v3 = [v7 specialization];
+  metadata = [(LPMessagesPayload *)self->_richLink metadata];
+  specialization = [metadata specialization];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v7 specialization];
-    v6 = [(RichLinkPluginDataSource *)self pluginPayload];
-    [v5 setIsCollaboration:{objc_msgSend(v6, "sendAsCopy") ^ 1}];
+    specialization2 = [metadata specialization];
+    pluginPayload = [(RichLinkPluginDataSource *)self pluginPayload];
+    [specialization2 setIsCollaboration:{objc_msgSend(pluginPayload, "sendAsCopy") ^ 1}];
   }
 }
 
@@ -1434,23 +1434,23 @@ LABEL_19:
   if (!self->_statusTransformer)
   {
     v3 = [LPLinkMetadataStatusTransformer alloc];
-    v4 = [(RichLinkPluginDataSource *)self metadataForDisplay];
-    v5 = [(RichLinkPluginDataSource *)self originalURL];
-    v6 = [v3 initWithMetadata:v4 URL:v5];
+    metadataForDisplay = [(RichLinkPluginDataSource *)self metadataForDisplay];
+    originalURL = [(RichLinkPluginDataSource *)self originalURL];
+    v6 = [v3 initWithMetadata:metadataForDisplay URL:originalURL];
     statusTransformer = self->_statusTransformer;
     self->_statusTransformer = v6;
 
     [(LPLinkMetadataStatusTransformer *)self->_statusTransformer setDelegate:self];
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 theme];
-    LOBYTE(v5) = objc_opt_respondsToSelector();
+    theme = [v8 theme];
+    LOBYTE(originalURL) = objc_opt_respondsToSelector();
 
-    if (v5)
+    if (originalURL)
     {
       v10 = +[CKUIBehavior sharedBehaviors];
-      v11 = [v10 theme];
-      v12 = [v11 transcriptMessageStatusButtonTextColor];
-      [(LPLinkMetadataStatusTransformer *)self->_statusTransformer setForegroundColor:v12];
+      theme2 = [v10 theme];
+      transcriptMessageStatusButtonTextColor = [theme2 transcriptMessageStatusButtonTextColor];
+      [(LPLinkMetadataStatusTransformer *)self->_statusTransformer setForegroundColor:transcriptMessageStatusButtonTextColor];
     }
   }
 
@@ -1461,36 +1461,36 @@ LABEL_19:
 
 - (BOOL)wantsStatusItem
 {
-  v2 = [(RichLinkPluginDataSource *)self statusTransformer];
-  v3 = [v2 statusText];
-  v4 = v3 != 0;
+  statusTransformer = [(RichLinkPluginDataSource *)self statusTransformer];
+  statusText = [statusTransformer statusText];
+  v4 = statusText != 0;
 
   return v4;
 }
 
 - (id)statusAttributedString
 {
-  v2 = [(RichLinkPluginDataSource *)self statusTransformer];
-  v3 = [v2 statusText];
+  statusTransformer = [(RichLinkPluginDataSource *)self statusTransformer];
+  statusText = [statusTransformer statusText];
 
-  return v3;
+  return statusText;
 }
 
 - (void)didTapStatusItem
 {
-  v4 = [(RichLinkPluginDataSource *)self statusTransformer];
+  statusTransformer = [(RichLinkPluginDataSource *)self statusTransformer];
   v2 = +[UIApplication sharedApplication];
-  v3 = [v4 actionURL];
-  [v2 openURL:v3 options:&__NSDictionary0__struct completionHandler:0];
+  actionURL = [statusTransformer actionURL];
+  [v2 openURL:actionURL options:&__NSDictionary0__struct completionHandler:0];
 }
 
-+ (id)messageTintColorForView:(id)a3
++ (id)messageTintColorForView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 _specializedBackgroundColor];
-  v5 = [v3 _hasMedia];
+  viewCopy = view;
+  _specializedBackgroundColor = [viewCopy _specializedBackgroundColor];
+  _hasMedia = [viewCopy _hasMedia];
 
-  if ((v5 & 1) == 0 && v4)
+  if ((_hasMedia & 1) == 0 && _specializedBackgroundColor)
   {
     v6 = +[LPResources linkBackgroundColor];
     v7 = [UITraitCollection traitCollectionWithUserInterfaceStyle:1];
@@ -1499,14 +1499,14 @@ LABEL_19:
     v9 = [UITraitCollection traitCollectionWithUserInterfaceStyle:2];
     v10 = [v6 resolvedColorWithTraitCollection:v9];
 
-    if (([v4 _isSimilarToColor:v8 withinPercentage:0.100000001] & 1) != 0 || objc_msgSend(v4, "_isSimilarToColor:withinPercentage:", v10, 0.100000001))
+    if (([_specializedBackgroundColor _isSimilarToColor:v8 withinPercentage:0.100000001] & 1) != 0 || objc_msgSend(_specializedBackgroundColor, "_isSimilarToColor:withinPercentage:", v10, 0.100000001))
     {
 
-      v4 = 0;
+      _specializedBackgroundColor = 0;
     }
   }
 
-  return v4;
+  return _specializedBackgroundColor;
 }
 
 @end

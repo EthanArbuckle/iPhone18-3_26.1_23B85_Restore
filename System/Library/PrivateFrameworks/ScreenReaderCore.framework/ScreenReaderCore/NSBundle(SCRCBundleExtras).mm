@@ -29,8 +29,8 @@
 + (id)localizedCoreStringForKey:()SCRCBundleExtras
 {
   v4 = a3;
-  v5 = [a1 coreFrameworkBundle];
-  v6 = [v5 localizedStringForKey:v4 value:0 table:0];
+  coreFrameworkBundle = [self coreFrameworkBundle];
+  v6 = [coreFrameworkBundle localizedStringForKey:v4 value:0 table:0];
 
   return v6;
 }
@@ -40,25 +40,25 @@
   v2 = _SCRFrameworkBundle;
   if (!_SCRFrameworkBundle)
   {
-    v3 = [a1 bundleWithIdentifier:@"com.apple.ScreenReader"];
+    v3 = [self bundleWithIdentifier:@"com.apple.ScreenReader"];
     v4 = _SCRFrameworkBundle;
     _SCRFrameworkBundle = v3;
 
     v2 = _SCRFrameworkBundle;
     if (!_SCRFrameworkBundle)
     {
-      v5 = [a1 coreFrameworkBundle];
-      v6 = [v5 bundlePath];
-      v7 = [v6 stringByDeletingLastPathComponent];
-      v8 = [v7 stringByAppendingPathComponent:@"ScreenReader.framework"];
+      coreFrameworkBundle = [self coreFrameworkBundle];
+      bundlePath = [coreFrameworkBundle bundlePath];
+      stringByDeletingLastPathComponent = [bundlePath stringByDeletingLastPathComponent];
+      v8 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"ScreenReader.framework"];
 
       v13 = 0;
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      LODWORD(v6) = [v9 fileExistsAtPath:v8 isDirectory:&v13];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      LODWORD(bundlePath) = [defaultManager fileExistsAtPath:v8 isDirectory:&v13];
 
-      if (v6)
+      if (bundlePath)
       {
-        v10 = [a1 bundleWithPath:v8];
+        v10 = [self bundleWithPath:v8];
         v11 = _SCRFrameworkBundle;
         _SCRFrameworkBundle = v10;
       }
@@ -79,8 +79,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 screenReaderFrameworkBundle];
-  v9 = [v8 localizedStringForKey:v7 value:0 table:v6];
+  screenReaderFrameworkBundle = [self screenReaderFrameworkBundle];
+  v9 = [screenReaderFrameworkBundle localizedStringForKey:v7 value:0 table:v6];
 
   return v9;
 }
@@ -156,10 +156,10 @@
 
 - (id)bundleLocale
 {
-  v1 = [a1 preferredLocalizations];
-  if ([v1 count])
+  preferredLocalizations = [self preferredLocalizations];
+  if ([preferredLocalizations count])
   {
-    v2 = [v1 objectAtIndex:0];
+    v2 = [preferredLocalizations objectAtIndex:0];
   }
 
   else
@@ -181,18 +181,18 @@
     goto LABEL_31;
   }
 
-  v11 = [a1 localizations];
+  localizations = [self localizations];
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v12 = v11;
+  v12 = localizations;
   v13 = [v12 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v13)
   {
     v14 = v12;
-    v31 = a1;
+    selfCopy = self;
     v15 = *v39;
 LABEL_4:
     v16 = 0;
@@ -227,7 +227,7 @@ LABEL_4:
 
         v12 = v14;
         v20 = v14;
-        a1 = v31;
+        self = selfCopy;
         goto LABEL_17;
       }
     }
@@ -237,12 +237,12 @@ LABEL_4:
 
     if (!v13)
     {
-      a1 = v31;
+      self = selfCopy;
       goto LABEL_19;
     }
 
-    a1 = v31;
-    v20 = [v31 localizedStringForKey:v8 value:@"__NULL__" table:v9 localization:v13];
+    self = selfCopy;
+    v20 = [selfCopy localizedStringForKey:v8 value:@"__NULL__" table:v9 localization:v13];
     if ([v20 isEqualToString:@"__NULL__"])
     {
       goto LABEL_17;
@@ -277,7 +277,7 @@ LABEL_19:
         }
 
         v26 = v9;
-        v27 = [a1 localizedStringForKey:v8 value:@"__NULL__" table:v9 localization:*(*(&v34 + 1) + 8 * i)];
+        v27 = [self localizedStringForKey:v8 value:@"__NULL__" table:v9 localization:*(*(&v34 + 1) + 8 * i)];
         if (![v27 isEqualToString:@"__NULL__"])
         {
           v28 = 0;
@@ -315,7 +315,7 @@ LABEL_30:
   if (v28)
   {
 LABEL_31:
-    v20 = [a1 localizedStringForKey:v8 value:v8 table:v9];
+    v20 = [self localizedStringForKey:v8 value:v8 table:v9];
   }
 
 LABEL_32:

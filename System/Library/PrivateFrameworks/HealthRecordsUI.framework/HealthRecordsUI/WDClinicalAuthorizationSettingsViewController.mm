@@ -1,13 +1,13 @@
 @interface WDClinicalAuthorizationSettingsViewController
-+ (id)contextUsingProfile:(id)a3 source:(id)a4;
++ (id)contextUsingProfile:(id)profile source:(id)source;
 - (HRProfile)profile;
-- (WDClinicalAuthorizationSettingsViewController)initWithContext:(id)a3 style:(int64_t)a4;
-- (WDClinicalAuthorizationSettingsViewController)initWithProfile:(id)a3 source:(id)a4;
+- (WDClinicalAuthorizationSettingsViewController)initWithContext:(id)context style:(int64_t)style;
+- (WDClinicalAuthorizationSettingsViewController)initWithProfile:(id)profile source:(id)source;
 @end
 
 @implementation WDClinicalAuthorizationSettingsViewController
 
-- (WDClinicalAuthorizationSettingsViewController)initWithContext:(id)a3 style:(int64_t)a4
+- (WDClinicalAuthorizationSettingsViewController)initWithContext:(id)context style:(int64_t)style
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
@@ -17,11 +17,11 @@
   return 0;
 }
 
-- (WDClinicalAuthorizationSettingsViewController)initWithProfile:(id)a3 source:(id)a4
+- (WDClinicalAuthorizationSettingsViewController)initWithProfile:(id)profile source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() contextUsingProfile:v6 source:v7];
+  profileCopy = profile;
+  sourceCopy = source;
+  v8 = [objc_opt_class() contextUsingProfile:profileCopy source:sourceCopy];
 
   v12.receiver = self;
   v12.super_class = WDClinicalAuthorizationSettingsViewController;
@@ -29,18 +29,18 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_profile, v6);
+    objc_storeWeak(&v9->_profile, profileCopy);
   }
 
   return v10;
 }
 
-+ (id)contextUsingProfile:(id)a3 source:(id)a4
++ (id)contextUsingProfile:(id)profile source:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v19 = 0;
-  v6 = a3;
-  v7 = [v5 _fetchBundleWithError:&v19];
+  profileCopy = profile;
+  v7 = [sourceCopy _fetchBundleWithError:&v19];
   v8 = v19;
   if (!v7)
   {
@@ -48,14 +48,14 @@
     v9 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(WDClinicalAuthorizationSettingsViewController *)v5 contextUsingProfile:v8 source:v9];
+      [(WDClinicalAuthorizationSettingsViewController *)sourceCopy contextUsingProfile:v8 source:v9];
     }
   }
 
-  v10 = [v6 healthStore];
-  v11 = [v6 healthRecordsStore];
+  healthStore = [profileCopy healthStore];
+  healthRecordsStore = [profileCopy healthRecordsStore];
 
-  v12 = [objc_alloc(MEMORY[0x1E69A4158]) initWithHealthStore:v10 healthRecordsStore:v11 source:v5 typesRequestedForReading:0];
+  v12 = [objc_alloc(MEMORY[0x1E69A4158]) initWithHealthStore:healthStore healthRecordsStore:healthRecordsStore source:sourceCopy typesRequestedForReading:0];
   v13 = objc_alloc(MEMORY[0x1E69A4150]);
   v14 = [v7 objectForInfoDictionaryKey:*MEMORY[0x1E69A40B0]];
   v15 = v14;
@@ -69,7 +69,7 @@
     v16 = &stru_1F4D16E38;
   }
 
-  v17 = [v13 initWithHealthStore:v10 healthRecordsStore:v11 authorizationController:v12 readUsageDescription:v16 source:v5];
+  v17 = [v13 initWithHealthStore:healthStore healthRecordsStore:healthRecordsStore authorizationController:v12 readUsageDescription:v16 source:sourceCopy];
 
   return v17;
 }

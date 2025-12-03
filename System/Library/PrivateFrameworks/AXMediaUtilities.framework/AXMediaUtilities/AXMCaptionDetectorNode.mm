@@ -2,27 +2,27 @@
 + (BOOL)isSupported;
 + (CGSize)preferredModelInputSize;
 - (AXImageCaptionModel)effectiveCaptionModelInfo;
-- (AXMCaptionDetectorNode)initWithCoder:(id)a3;
+- (AXMCaptionDetectorNode)initWithCoder:(id)coder;
 - (AXMSceneDetectorNode)sceneDetector;
-- (CVNLPCaptionHandler)_withLock_captionHandlerCreateIfNeeded:(id)a3;
+- (CVNLPCaptionHandler)_withLock_captionHandlerCreateIfNeeded:(id)needed;
 - (NSURL)effectiveModelURL;
 - (NSURL)overrideModelURL;
-- (id)_computeCaptionForPixelBuffer:(__CVBuffer *)a3 orImage:(CGImage *)a4 captionHandler:(CVNLPCaptionHandler *)a5 metrics:(id)a6;
+- (id)_computeCaptionForPixelBuffer:(__CVBuffer *)buffer orImage:(CGImage *)image captionHandler:(CVNLPCaptionHandler *)handler metrics:(id)metrics;
 - (id)_withLock_captionModelURLCloningAssetIfNeeded;
-- (id)_withLock_cloneCaptionModelIfNeeded:(id)a3;
-- (id)_withLock_modelURLForOverrideURL:(id)a3;
+- (id)_withLock_cloneCaptionModelIfNeeded:(id)needed;
+- (id)_withLock_modelURLForOverrideURL:(id)l;
 - (id)_withLock_valueForOverrideScaleMethod;
 - (unint64_t)genderStrategy;
 - (unint64_t)overrideScaleMethod;
-- (void)_performWithLock:(id)a3;
+- (void)_performWithLock:(id)lock;
 - (void)_withLock_captionModelURLCloningAssetIfNeeded;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 - (void)nodeInitialize;
-- (void)setGenderStrategy:(unint64_t)a3;
-- (void)setOverrideModelURL:(id)a3;
-- (void)setOverrideScaleMethod:(unint64_t)a3;
+- (void)setGenderStrategy:(unint64_t)strategy;
+- (void)setOverrideModelURL:(id)l;
+- (void)setOverrideScaleMethod:(unint64_t)method;
 @end
 
 @implementation AXMCaptionDetectorNode
@@ -58,45 +58,45 @@
   [(AXMCaptionDetectorNode *)&v4 dealloc];
 }
 
-- (AXMCaptionDetectorNode)initWithCoder:(id)a3
+- (AXMCaptionDetectorNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AXMCaptionDetectorNode;
-  v5 = [(AXMEvaluationNode *)&v9 initWithCoder:v4];
+  v5 = [(AXMEvaluationNode *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"overrideModelURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"overrideModelURL"];
     [(AXMCaptionDetectorNode *)v5 setOverrideModelURL:v6];
 
-    -[AXMCaptionDetectorNode setOverrideScaleMethod:](v5, "setOverrideScaleMethod:", [v4 decodeBoolForKey:@"overrideScaleMethod"]);
-    -[AXMCaptionDetectorNode setGenderStrategy:](v5, "setGenderStrategy:", [v4 decodeIntegerForKey:@"genderStrategy"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneDetector"];
+    -[AXMCaptionDetectorNode setOverrideScaleMethod:](v5, "setOverrideScaleMethod:", [coderCopy decodeBoolForKey:@"overrideScaleMethod"]);
+    -[AXMCaptionDetectorNode setGenderStrategy:](v5, "setGenderStrategy:", [coderCopy decodeIntegerForKey:@"genderStrategy"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneDetector"];
     [(AXMCaptionDetectorNode *)v5 setSceneDetector:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = AXMCaptionDetectorNode;
-  v4 = a3;
-  [(AXMEvaluationNode *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AXMEvaluationNode *)&v7 encodeWithCoder:coderCopy];
   v5 = [(AXMCaptionDetectorNode *)self overrideModelURL:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"overrideModelURL"];
+  [coderCopy encodeObject:v5 forKey:@"overrideModelURL"];
 
-  [v4 encodeBool:-[AXMCaptionDetectorNode overrideScaleMethod](self forKey:{"overrideScaleMethod") != 0, @"overrideScaleMethod"}];
-  [v4 encodeInteger:-[AXMCaptionDetectorNode genderStrategy](self forKey:{"genderStrategy"), @"genderStrategy"}];
-  v6 = [(AXMCaptionDetectorNode *)self sceneDetector];
-  [v4 encodeObject:v6 forKey:@"sceneDetector"];
+  [coderCopy encodeBool:-[AXMCaptionDetectorNode overrideScaleMethod](self forKey:{"overrideScaleMethod") != 0, @"overrideScaleMethod"}];
+  [coderCopy encodeInteger:-[AXMCaptionDetectorNode genderStrategy](self forKey:{"genderStrategy"), @"genderStrategy"}];
+  sceneDetector = [(AXMCaptionDetectorNode *)self sceneDetector];
+  [coderCopy encodeObject:sceneDetector forKey:@"sceneDetector"];
 }
 
 + (BOOL)isSupported
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  if ([v2 physicalMemory] < 0x77359400)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  if ([processInfo physicalMemory] < 0x77359400)
   {
     v3 = 0;
   }
@@ -109,22 +109,22 @@
   return v3;
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v13.receiver = self;
   v13.super_class = AXMCaptionDetectorNode;
-  [(AXMEvaluationNode *)&v13 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v13 evaluate:evaluateCopy metrics:metricsCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __43__AXMCaptionDetectorNode_evaluate_metrics___block_invoke;
   v10[3] = &unk_1E7A1D5C8;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = metricsCopy;
+  v12 = evaluateCopy;
+  v8 = evaluateCopy;
+  v9 = metricsCopy;
   [(AXMCaptionDetectorNode *)self _performWithLock:v10];
 }
 
@@ -522,16 +522,16 @@ LABEL_69:
   return v2;
 }
 
-- (void)setOverrideModelURL:(id)a3
+- (void)setOverrideModelURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__AXMCaptionDetectorNode_setOverrideModelURL___block_invoke;
   v6[3] = &unk_1E7A1CB30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   [(AXMCaptionDetectorNode *)self _performWithLock:v6];
 }
 
@@ -567,14 +567,14 @@ void __46__AXMCaptionDetectorNode_setOverrideModelURL___block_invoke(uint64_t a1
   return v2;
 }
 
-- (void)setOverrideScaleMethod:(unint64_t)a3
+- (void)setOverrideScaleMethod:(unint64_t)method
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __49__AXMCaptionDetectorNode_setOverrideScaleMethod___block_invoke;
   v3[3] = &unk_1E7A1D060;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = method;
   [(AXMCaptionDetectorNode *)self _performWithLock:v3];
 }
 
@@ -609,14 +609,14 @@ uint64_t __49__AXMCaptionDetectorNode_setOverrideScaleMethod___block_invoke(uint
   return v2;
 }
 
-- (void)setGenderStrategy:(unint64_t)a3
+- (void)setGenderStrategy:(unint64_t)strategy
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__AXMCaptionDetectorNode_setGenderStrategy___block_invoke;
   v3[3] = &unk_1E7A1D060;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = strategy;
   [(AXMCaptionDetectorNode *)self _performWithLock:v3];
 }
 
@@ -675,39 +675,39 @@ uint64_t __44__AXMCaptionDetectorNode_setGenderStrategy___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)_performWithLock:(id)a3
+- (void)_performWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_withLock_modelURLForOverrideURL:(id)a3
+- (id)_withLock_modelURLForOverrideURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 URLByAppendingPathComponent:@"model_info.json"];
-  v6 = [v5 path];
-  v7 = [v4 fileExistsAtPath:v6];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [lCopy URLByAppendingPathComponent:@"model_info.json"];
+  path = [v5 path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if (v7)
   {
-    v8 = v3;
+    v8 = lCopy;
 LABEL_5:
     v12 = v8;
     goto LABEL_7;
   }
 
-  v9 = [v3 URLByAppendingPathComponent:@"ImageCaptionModel/model_info.json"];
-  v10 = [v9 path];
-  v11 = [v4 fileExistsAtPath:v10];
+  v9 = [lCopy URLByAppendingPathComponent:@"ImageCaptionModel/model_info.json"];
+  path2 = [v9 path];
+  v11 = [defaultManager fileExistsAtPath:path2];
 
   if (v11)
   {
-    v8 = [v3 URLByAppendingPathComponent:@"ImageCaptionModel"];
+    v8 = [lCopy URLByAppendingPathComponent:@"ImageCaptionModel"];
     goto LABEL_5;
   }
 
@@ -716,9 +716,9 @@ LABEL_7:
   v13 = AXMediaLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v12 path];
+    path3 = [v12 path];
     v16 = 138412290;
-    v17 = v14;
+    v17 = path3;
     _os_log_impl(&dword_1AE37B000, v13, OS_LOG_TYPE_INFO, "Fixed up URL for override URL for image caption model: %@", &v16, 0xCu);
   }
 
@@ -733,9 +733,9 @@ LABEL_7:
     v3 = AXMediaLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(NSURL *)self->_overrideModelURL path];
+      path = [(NSURL *)self->_overrideModelURL path];
       v12 = 138412290;
-      v13 = v4;
+      v13 = path;
       _os_log_impl(&dword_1AE37B000, v3, OS_LOG_TYPE_INFO, "Override URL specified for image caption model: %@", &v12, 0xCu);
     }
 
@@ -754,9 +754,9 @@ LABEL_7:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 path];
+      path2 = [v5 path];
       v12 = 138412290;
-      v13 = v9;
+      v13 = path2;
       _os_log_impl(&dword_1AE37B000, v8, OS_LOG_TYPE_INFO, "Original URL for caption model [type:AXMCaptionModelTypeImage] before cloning: %@", &v12, 0xCu);
     }
 
@@ -776,21 +776,21 @@ LABEL_7:
   return v10;
 }
 
-- (id)_withLock_cloneCaptionModelIfNeeded:(id)a3
+- (id)_withLock_cloneCaptionModelIfNeeded:(id)needed
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if ([(AXMCaptionDetectorNode *)self _captionModelCloningIsNeeded])
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v6 = MEMORY[0x1E695DFF8];
     v7 = NSTemporaryDirectory();
     v8 = [v6 fileURLWithPath:v7 isDirectory:1];
     v9 = [v8 URLByAppendingPathComponent:@"ClonedImageCaptionModel" isDirectory:1];
 
     v35 = 0;
-    v10 = [v9 path];
-    LODWORD(v8) = [v5 fileExistsAtPath:v10 isDirectory:&v35];
+    path = [v9 path];
+    LODWORD(v8) = [defaultManager fileExistsAtPath:path isDirectory:&v35];
 
     if (v8)
     {
@@ -803,7 +803,7 @@ LABEL_7:
       }
 
       v34 = 0;
-      v12 = [v5 removeItemAtURL:v9 error:&v34];
+      v12 = [defaultManager removeItemAtURL:v9 error:&v34];
       v13 = v34;
       v14 = v13;
       if ((v12 & 1) == 0)
@@ -834,7 +834,7 @@ LABEL_7:
     }
 
     v33 = v15;
-    v20 = [v5 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v33];
+    v20 = [defaultManager createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v33];
     v14 = v33;
 
     if ((v20 & 1) == 0)
@@ -852,22 +852,22 @@ LABEL_31:
     }
 
 LABEL_20:
-    v23 = [v4 lastPathComponent];
-    v21 = [v9 URLByAppendingPathComponent:v23 isDirectory:1];
+    lastPathComponent = [neededCopy lastPathComponent];
+    v21 = [v9 URLByAppendingPathComponent:lastPathComponent isDirectory:1];
 
-    v24 = [v4 path];
-    v25 = [v21 path];
+    path2 = [neededCopy path];
+    path3 = [v21 path];
     v26 = AXMediaLogCommon();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v37 = v24;
+      v37 = path2;
       v38 = 2112;
-      v39 = v25;
+      v39 = path3;
       _os_log_impl(&dword_1AE37B000, v26, OS_LOG_TYPE_INFO, "Cloning caption model: '%@' to: '%@'", buf, 0x16u);
     }
 
-    if (!clonefile([v24 UTF8String], objc_msgSend(v25, "UTF8String"), 3u))
+    if (!clonefile([path2 UTF8String], objc_msgSend(path3, "UTF8String"), 3u))
     {
       goto LABEL_29;
     }
@@ -875,12 +875,12 @@ LABEL_20:
     v27 = AXMediaLogCommon();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      [(AXMCaptionDetectorNode *)v24 _withLock_cloneCaptionModelIfNeeded:v25, v27];
+      [(AXMCaptionDetectorNode *)path2 _withLock_cloneCaptionModelIfNeeded:path3, v27];
     }
 
-    v28 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v32 = 0;
-    [v28 copyItemAtPath:v24 toPath:v25 error:&v32];
+    [defaultManager2 copyItemAtPath:path2 toPath:path3 error:&v32];
     v29 = v32;
 
     if (v29)
@@ -906,25 +906,25 @@ LABEL_29:
   v16 = AXMediaLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v4 path];
+    path4 = [neededCopy path];
     *buf = 138412290;
-    v37 = v17;
+    v37 = path4;
     _os_log_impl(&dword_1AE37B000, v16, OS_LOG_TYPE_INFO, "Will not clone caption model. Using original location: %@", buf, 0xCu);
   }
 
-  v18 = v4;
+  v18 = neededCopy;
 LABEL_32:
 
   return v18;
 }
 
-- (CVNLPCaptionHandler)_withLock_captionHandlerCreateIfNeeded:(id)a3
+- (CVNLPCaptionHandler)_withLock_captionHandlerCreateIfNeeded:(id)needed
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if (self->_needsCaptionHandlerRefresh)
   {
-    v5 = v4;
+    v5 = neededCopy;
     v6 = AXMediaLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -946,13 +946,13 @@ LABEL_32:
     self->_effectiveCaptionModelInfo = 0;
 
     self->_needsCaptionHandlerRefresh = 0;
-    v4 = v5;
+    neededCopy = v5;
   }
 
   v10 = self->_captionHandlerRef;
   if (!v10)
   {
-    v59 = v4;
+    v59 = neededCopy;
     obj = [(AXMCaptionDetectorNode *)self _withLock_captionModelURLCloningAssetIfNeeded];
     v11 = obj;
     if (!obj)
@@ -960,7 +960,7 @@ LABEL_32:
       v10 = 0;
 LABEL_48:
 
-      v4 = v59;
+      neededCopy = v59;
       goto LABEL_49;
     }
 
@@ -973,12 +973,12 @@ LABEL_48:
     v15 = AXMediaLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(AXImageCaptionModel *)self->_effectiveCaptionModelInfo version];
-      v17 = [(AXImageCaptionModel *)self->_effectiveCaptionModelInfo stage];
+      version = [(AXImageCaptionModel *)self->_effectiveCaptionModelInfo version];
+      stage = [(AXImageCaptionModel *)self->_effectiveCaptionModelInfo stage];
       *buf = 138412546;
-      *&buf[4] = v16;
+      *&buf[4] = version;
       *&buf[12] = 2112;
-      *&buf[14] = v17;
+      *&buf[14] = stage;
       _os_log_impl(&dword_1AE37B000, v15, OS_LOG_TYPE_INFO, "Did load image caption model: [v'%@' - '%@']", buf, 0x16u);
     }
 
@@ -1136,8 +1136,8 @@ LABEL_48:
                 v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:v66 count:5];
                 v58 = [v45 mutableCopy];
 
-                v46 = [(AXMCaptionDetectorNode *)self _withLock_valueForOverrideScaleMethod];
-                if (v46)
+                _withLock_valueForOverrideScaleMethod = [(AXMCaptionDetectorNode *)self _withLock_valueForOverrideScaleMethod];
+                if (_withLock_valueForOverrideScaleMethod)
                 {
                   v62 = 0;
                   v63 = &v62;
@@ -1164,7 +1164,7 @@ LABEL_48:
                     goto LABEL_50;
                   }
 
-                  [v58 setObject:v46 forKeyedSubscript:*v47];
+                  [v58 setObject:_withLock_valueForOverrideScaleMethod forKeyedSubscript:*v47];
                 }
 
                 v50 = AXMediaLogCommon();
@@ -1392,14 +1392,14 @@ LABEL_27:
   return v3;
 }
 
-- (id)_computeCaptionForPixelBuffer:(__CVBuffer *)a3 orImage:(CGImage *)a4 captionHandler:(CVNLPCaptionHandler *)a5 metrics:(id)a6
+- (id)_computeCaptionForPixelBuffer:(__CVBuffer *)buffer orImage:(CGImage *)image captionHandler:(CVNLPCaptionHandler *)handler metrics:(id)metrics
 {
-  v9 = a6;
-  v10 = v9;
+  metricsCopy = metrics;
+  v10 = metricsCopy;
   v22 = 0;
-  if (a3)
+  if (buffer)
   {
-    v11 = [v9 startMeasure:@"CVNLPCaptionCopyForCVPixelBuffer"];
+    v11 = [metricsCopy startMeasure:@"CVNLPCaptionCopyForCVPixelBuffer"];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -1421,8 +1421,8 @@ LABEL_27:
     _Block_object_dispose(&v28, 8);
     if (v12)
     {
-      v14 = a5;
-      v15 = a3;
+      handlerCopy2 = handler;
+      imageCopy = buffer;
       goto LABEL_10;
     }
 
@@ -1433,7 +1433,7 @@ LABEL_19:
     _Unwind_Resume(v21);
   }
 
-  v11 = [v9 startMeasure:@"CVNLPCaptionCreateForImage"];
+  v11 = [metricsCopy startMeasure:@"CVNLPCaptionCreateForImage"];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -1458,10 +1458,10 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v14 = a5;
-  v15 = a4;
+  handlerCopy2 = handler;
+  imageCopy = image;
 LABEL_10:
-  v17 = v12(v14, v15, 0, &v22);
+  v17 = v12(handlerCopy2, imageCopy, 0, &v22);
   [v11 endMeasurement];
   if (v22)
   {

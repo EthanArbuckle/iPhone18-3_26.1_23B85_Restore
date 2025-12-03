@@ -1,22 +1,22 @@
 @interface VCPMABaseTask
 - (BOOL)isCanceled;
-- (BOOL)run:(id *)a3;
-- (VCPMABaseTask)initWithCompletionHandler:(id)a3;
+- (BOOL)run:(id *)run;
+- (VCPMABaseTask)initWithCompletionHandler:(id)handler;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPMABaseTask
 
-- (VCPMABaseTask)initWithCompletionHandler:(id)a3
+- (VCPMABaseTask)initWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = VCPMABaseTask;
   v5 = [(VCPMABaseTask *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     completionHandler = v5->_completionHandler;
     v5->_completionHandler = v6;
   }
@@ -68,7 +68,7 @@
   return cancelBlock;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
@@ -80,8 +80,8 @@
   v14[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v10 = [v4 errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:v9];
-  v11 = *a3;
-  *a3 = v10;
+  v11 = *run;
+  *run = v10;
 
   return 0;
 }
@@ -94,7 +94,7 @@
   v12 = 0;
   if ([(VCPMABaseTask *)self run:&v12])
   {
-    v4 = 0;
+    code = 0;
   }
 
   else
@@ -127,11 +127,11 @@
     }
 
     (*(self->_completionHandler + 2))();
-    v4 = [v12 code];
+    code = [v12 code];
   }
 
   objc_autoreleasePoolPop(v3);
-  return v4;
+  return code;
 }
 
 @end

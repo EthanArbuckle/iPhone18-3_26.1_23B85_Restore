@@ -1,37 +1,37 @@
 @interface PXMemoriesRelatedDiagnosticsHelper
-+ (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5 sourceMemory:(id)a6 sourceDictionary:(id)a7;
-+ (id)_curationFullsetForMemory:(id)a3;
-+ (id)_datesAndAssetCountDictionaryForAssetCollection:(id)a3;
-+ (id)_featureVectorInfoGroupedByKeyForFeatureVector:(id)a3;
-+ (id)_isSafeForWidgetDisplayForAssetUUID:(id)a3;
-+ (id)_sanitizedGraphDataDictionaryForArchivingDictionary:(id)a3 memoryLocalIdentifier:(id)a4;
-+ (id)_userFeedbackScoreInfoForMemory:(id)a3;
-+ (id)getSummaryFromProviderItem:(id)a3;
-+ (id)preprocessDictionary:(id)a3 forMemoryWithLocalIdentifier:(id)a4 algorithmsVersion:(int64_t)a5 inPhotoLibrary:(id)a6;
++ (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index sourceMemory:(id)memory sourceDictionary:(id)dictionary;
++ (id)_curationFullsetForMemory:(id)memory;
++ (id)_datesAndAssetCountDictionaryForAssetCollection:(id)collection;
++ (id)_featureVectorInfoGroupedByKeyForFeatureVector:(id)vector;
++ (id)_isSafeForWidgetDisplayForAssetUUID:(id)d;
++ (id)_sanitizedGraphDataDictionaryForArchivingDictionary:(id)dictionary memoryLocalIdentifier:(id)identifier;
++ (id)_userFeedbackScoreInfoForMemory:(id)memory;
++ (id)getSummaryFromProviderItem:(id)item;
++ (id)preprocessDictionary:(id)dictionary forMemoryWithLocalIdentifier:(id)identifier algorithmsVersion:(int64_t)version inPhotoLibrary:(id)library;
 @end
 
 @implementation PXMemoriesRelatedDiagnosticsHelper
 
-+ (id)_isSafeForWidgetDisplayForAssetUUID:(id)a3
++ (id)_isSafeForWidgetDisplayForAssetUUID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = @"NO";
-  if ([a3 length])
+  if ([d length])
   {
-    v4 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+    librarySpecificFetchOptions = [px_systemPhotoLibrary librarySpecificFetchOptions];
 
     v12[0] = *MEMORY[0x1E6978CF0];
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v5 setFetchPropertySets:v6];
+    [librarySpecificFetchOptions setFetchPropertySets:v6];
 
-    [v5 setFetchLimit:1];
-    [v5 setWantsIncrementalChangeDetails:0];
-    [v5 setIncludeGuestAssets:1];
-    v7 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v5];
-    v8 = [v7 firstObject];
+    [librarySpecificFetchOptions setFetchLimit:1];
+    [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
+    v7 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
+    firstObject = [v7 firstObject];
 
-    v9 = [MEMORY[0x1E69C1520] assetIsSafeForWidgetDisplay:v8];
+    v9 = [MEMORY[0x1E69C1520] assetIsSafeForWidgetDisplay:firstObject];
     v10 = @"YES";
     if (!v9)
     {
@@ -44,17 +44,17 @@
   return v3;
 }
 
-+ (id)_userFeedbackScoreInfoForMemory:(id)a3
++ (id)_userFeedbackScoreInfoForMemory:(id)memory
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  memoryCopy = memory;
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v42 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = MEMORY[0x1E6978630];
-  v5 = [v3 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
-  v39 = v3;
-  v7 = [v4 fetchAssetsInAssetCollection:v3 options:v6];
+  photoLibrary = [memoryCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v39 = memoryCopy;
+  v7 = [v4 fetchAssetsInAssetCollection:memoryCopy options:librarySpecificFetchOptions];
 
   v51 = 0u;
   v52 = 0u;
@@ -75,23 +75,23 @@
         }
 
         v9 = *(*(&v49 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        [v43 addObject:v10];
+        uuid = [v9 uuid];
+        [v43 addObject:uuid];
 
-        v11 = [v9 photoLibrary];
-        v12 = [v11 librarySpecificFetchOptions];
+        photoLibrary2 = [v9 photoLibrary];
+        librarySpecificFetchOptions2 = [photoLibrary2 librarySpecificFetchOptions];
 
-        v13 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-        [v12 setIncludedDetectionTypes:v13];
+        px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+        [librarySpecificFetchOptions2 setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-        v14 = [MEMORY[0x1E6978980] fetchPersonsInAsset:v9 options:v12];
+        v14 = [MEMORY[0x1E6978980] fetchPersonsInAsset:v9 options:librarySpecificFetchOptions2];
         v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v14, "count")}];
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v16 = [v14 fetchedObjects];
-        v17 = [v16 countByEnumeratingWithState:&v45 objects:v53 count:16];
+        fetchedObjects = [v14 fetchedObjects];
+        v17 = [fetchedObjects countByEnumeratingWithState:&v45 objects:v53 count:16];
         if (v17)
         {
           v18 = v17;
@@ -102,21 +102,21 @@
             {
               if (*v46 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(fetchedObjects);
               }
 
-              v21 = [*(*(&v45 + 1) + 8 * j) uuid];
-              [v15 addObject:v21];
+              uuid2 = [*(*(&v45 + 1) + 8 * j) uuid];
+              [v15 addObject:uuid2];
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v45 objects:v53 count:16];
+            v18 = [fetchedObjects countByEnumeratingWithState:&v45 objects:v53 count:16];
           }
 
           while (v18);
         }
 
-        v22 = [v9 uuid];
-        [v42 setObject:v15 forKeyedSubscript:v22];
+        uuid3 = [v9 uuid];
+        [v42 setObject:v15 forKeyedSubscript:uuid3];
       }
 
       v44 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
@@ -126,28 +126,28 @@
   }
 
   v23 = MEMORY[0x1E6978630];
-  v24 = [v39 photoLibrary];
-  v25 = [v24 librarySpecificFetchOptions];
-  v26 = [v23 fetchKeyAssetsInAssetCollection:v39 options:v25];
+  photoLibrary3 = [v39 photoLibrary];
+  librarySpecificFetchOptions3 = [photoLibrary3 librarySpecificFetchOptions];
+  v26 = [v23 fetchKeyAssetsInAssetCollection:v39 options:librarySpecificFetchOptions3];
 
   if (v26)
   {
-    v27 = [v26 fetchedObjects];
-    v28 = [v27 objectAtIndexedSubscript:0];
-    v29 = [v28 uuid];
+    fetchedObjects2 = [v26 fetchedObjects];
+    v28 = [fetchedObjects2 objectAtIndexedSubscript:0];
+    uuid4 = [v28 uuid];
   }
 
   else
   {
-    v29 = 0;
+    uuid4 = 0;
   }
 
   v30 = objc_alloc(MEMORY[0x1E6978B08]);
-  v31 = [v39 photoLibrary];
-  v32 = [v30 initWithPhotoLibrary:v31];
+  photoLibrary4 = [v39 photoLibrary];
+  v32 = [v30 initWithPhotoLibrary:photoLibrary4];
 
-  v33 = [v39 blockableFeatures];
-  [v32 scoreForAssetUUIDs:v43 keyAssetUUID:v29 personsUUIDsByAssetUUIDs:v42 memoryFeatures:v33];
+  blockableFeatures = [v39 blockableFeatures];
+  [v32 scoreForAssetUUIDs:v43 keyAssetUUID:uuid4 personsUUIDsByAssetUUIDs:v42 memoryFeatures:blockableFeatures];
   v35 = v34;
 
   v36 = [MEMORY[0x1E6978B08] descriptionForScore:v35];
@@ -156,15 +156,15 @@
   return v37;
 }
 
-+ (id)_curationFullsetForMemory:(id)a3
++ (id)_curationFullsetForMemory:(id)memory
 {
   v126[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  memoryCopy = memory;
   v4 = 0x1E695D000uLL;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = MEMORY[0x1E6978830];
-  v7 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v8 = [v6 fetchOptionsWithPhotoLibrary:v7 orObject:v3];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v8 = [v6 fetchOptionsWithPhotoLibrary:px_deprecated_appPhotoLibrary orObject:memoryCopy];
 
   v9 = *MEMORY[0x1E6978CF0];
   v126[0] = *MEMORY[0x1E6978D18];
@@ -175,8 +175,8 @@
 
   v91 = v8;
   [v8 setChunkSizeForFetch:300];
-  v83 = v3;
-  v11 = [MEMORY[0x1E6978650] fetchMomentsBackingMemory:v3 options:0];
+  v83 = memoryCopy;
+  v11 = [MEMORY[0x1E6978650] fetchMomentsBackingMemory:memoryCopy options:0];
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v117 = 0u;
   v118 = 0u;
@@ -200,8 +200,8 @@
         v17 = *(*(&v117 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
         v19 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v17 options:v91];
-        v20 = [v19 fetchedObjects];
-        [v12 addObjectsFromArray:v20];
+        fetchedObjects = [v19 fetchedObjects];
+        [v12 addObjectsFromArray:fetchedObjects];
 
         objc_autoreleasePoolPop(v18);
       }
@@ -215,12 +215,12 @@
   v84 = v5;
 
   v21 = objc_alloc(MEMORY[0x1E69788E0]);
-  v22 = [v91 photoLibrary];
-  v23 = [MEMORY[0x1E6978630] fetchType];
+  photoLibrary = [v91 photoLibrary];
+  fetchType = [MEMORY[0x1E6978630] fetchType];
   v24 = MEMORY[0x1E695DFD8];
-  v25 = [v91 fetchPropertySets];
-  v26 = [v24 setWithArray:v25];
-  v27 = [v21 initWithObjects:v12 photoLibrary:v22 fetchType:v23 fetchPropertySets:v26 identifier:0 registerIfNeeded:0];
+  fetchPropertySets = [v91 fetchPropertySets];
+  v26 = [v24 setWithArray:fetchPropertySets];
+  v27 = [v21 initWithObjects:v12 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:v26 identifier:0 registerIfNeeded:0];
 
   v89 = [MEMORY[0x1E6978980] fetchPersonsGroupedByAssetLocalIdentifierForAssets:v27 options:0];
   v82 = v27;
@@ -247,26 +247,26 @@
         v29 = *(*(&v113 + 1) + 8 * j);
         v30 = objc_autoreleasePoolPush();
         v31 = objc_alloc_init(*(v4 + 3984));
-        v32 = [v29 localIdentifier];
-        [v31 setObject:v32 forKeyedSubscript:@"identifier"];
-        v33 = [v29 creationDate];
-        [v31 setObject:v33 forKeyedSubscript:@"creationDate"];
+        localIdentifier = [v29 localIdentifier];
+        [v31 setObject:localIdentifier forKeyedSubscript:@"identifier"];
+        creationDate = [v29 creationDate];
+        [v31 setObject:creationDate forKeyedSubscript:@"creationDate"];
 
-        v34 = [v29 localCreationDate];
-        [v31 setObject:v34 forKeyedSubscript:@"localCreationDate"];
+        localCreationDate = [v29 localCreationDate];
+        [v31 setObject:localCreationDate forKeyedSubscript:@"localCreationDate"];
 
-        v35 = [v29 location];
-        v36 = [v29 location];
+        location = [v29 location];
+        location2 = [v29 location];
 
-        if (v36)
+        if (location2)
         {
           v37 = MEMORY[0x1E696AD98];
-          [v35 coordinate];
+          [location coordinate];
           v38 = [v37 numberWithDouble:?];
           [v31 setObject:v38 forKeyedSubscript:@"latitude"];
 
           v39 = MEMORY[0x1E696AD98];
-          [v35 coordinate];
+          [location coordinate];
           v41 = [v39 numberWithDouble:v40];
           [v31 setObject:v41 forKeyedSubscript:@"longitude"];
         }
@@ -276,23 +276,23 @@
         v43 = [v42 numberWithDouble:?];
         [v31 setObject:v43 forKeyedSubscript:@"score"];
 
-        v44 = [v89 objectForKeyedSubscript:v32];
+        v44 = [v89 objectForKeyedSubscript:localIdentifier];
         v98 = j;
         v100 = v44;
         if ([v44 count])
         {
-          v45 = [v44 fetchedObjects];
-          [v45 valueForKey:@"localIdentifier"];
-          v46 = v32;
+          fetchedObjects2 = [v44 fetchedObjects];
+          [fetchedObjects2 valueForKey:@"localIdentifier"];
+          v46 = localIdentifier;
           v47 = v30;
           v48 = v4;
-          v50 = v49 = v35;
+          v50 = v49 = location;
           [v31 setObject:v50 forKeyedSubscript:@"persons"];
 
-          v35 = v49;
+          location = v49;
           v4 = v48;
           v30 = v47;
-          v32 = v46;
+          localIdentifier = v46;
           j = v98;
 
           v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v100, "count")}];
@@ -301,12 +301,12 @@
           v44 = v100;
         }
 
-        v99 = [v88 objectForKeyedSubscript:v32];
+        v99 = [v88 objectForKeyedSubscript:localIdentifier];
         if ([v99 count])
         {
-          v93 = v35;
+          v93 = location;
           v94 = v29;
-          v95 = v32;
+          v95 = localIdentifier;
           v96 = v31;
           v97 = v30;
           v52 = objc_alloc_init(*(v4 + 3984));
@@ -350,8 +350,8 @@
           v30 = v97;
           j = v98;
           v29 = v94;
-          v32 = v95;
-          v35 = v93;
+          localIdentifier = v95;
+          location = v93;
           v44 = v100;
         }
 
@@ -360,7 +360,7 @@
           [v31 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isFavorite"];
         }
 
-        [v90 setObject:v31 forKeyedSubscript:v32];
+        [v90 setObject:v31 forKeyedSubscript:localIdentifier];
 
         objc_autoreleasePoolPop(v30);
       }
@@ -393,8 +393,8 @@
           objc_enumerationMutation(v64);
         }
 
-        v69 = [*(*(&v105 + 1) + 8 * m) localIdentifier];
-        [v63 addObject:v69];
+        localIdentifier2 = [*(*(&v105 + 1) + 8 * m) localIdentifier];
+        [v63 addObject:localIdentifier2];
       }
 
       v66 = [v64 countByEnumeratingWithState:&v105 objects:v122 count:16];
@@ -425,8 +425,8 @@
           objc_enumerationMutation(v72);
         }
 
-        v77 = [*(*(&v101 + 1) + 8 * n) localIdentifier];
-        [v71 addObject:v77];
+        localIdentifier3 = [*(*(&v101 + 1) + 8 * n) localIdentifier];
+        [v71 addObject:localIdentifier3];
       }
 
       v74 = [v72 countByEnumeratingWithState:&v101 objects:v121 count:16];
@@ -437,22 +437,22 @@
 
   [v84 setObject:v71 forKeyedSubscript:@"extendedCurationIdentifiers"];
   v78 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:v83 referenceAsset:0];
-  v79 = [v78 firstObject];
+  firstObject = [v78 firstObject];
 
-  if (v79)
+  if (firstObject)
   {
-    v80 = [v79 localIdentifier];
-    [v84 setObject:v80 forKeyedSubscript:@"keyAssetIdentifier"];
+    localIdentifier4 = [firstObject localIdentifier];
+    [v84 setObject:localIdentifier4 forKeyedSubscript:@"keyAssetIdentifier"];
   }
 
   return v84;
 }
 
-+ (id)_datesAndAssetCountDictionaryForAssetCollection:(id)a3
++ (id)_datesAndAssetCountDictionaryForAssetCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v3 options:0];
+  collectionCopy = collection;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:0];
   v6 = [v5 count];
   if (v6)
   {
@@ -479,23 +479,23 @@
     v8 = v20[5];
     if (v8)
     {
-      [v4 setObject:v8 forKey:@"startDate"];
+      [dictionary setObject:v8 forKey:@"startDate"];
     }
 
     v9 = v14[5];
     if (v9)
     {
-      [v4 setObject:v9 forKey:@"endDate"];
+      [dictionary setObject:v9 forKey:@"endDate"];
     }
 
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-    [v4 setObject:v10 forKey:@"estimatedAssetCount"];
+    [dictionary setObject:v10 forKey:@"estimatedAssetCount"];
 
     _Block_object_dispose(&v13, 8);
     _Block_object_dispose(&v19, 8);
   }
 
-  return v4;
+  return dictionary;
 }
 
 void __86__PXMemoriesRelatedDiagnosticsHelper__datesAndAssetCountDictionaryForAssetCollection___block_invoke(uint64_t a1, void *a2)
@@ -532,16 +532,16 @@ LABEL_5:
 LABEL_9:
 }
 
-+ (id)_featureVectorInfoGroupedByKeyForFeatureVector:(id)a3
++ (id)_featureVectorInfoGroupedByKeyForFeatureVector:(id)vector
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  vectorCopy = vector;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = vectorCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -557,23 +557,23 @@ LABEL_9:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 firstObject];
-        v12 = [v10 lastObject];
-        if ([v11 isEqualToString:@"referenceKeywords"])
+        firstObject = [v10 firstObject];
+        lastObject = [v10 lastObject];
+        if ([firstObject isEqualToString:@"referenceKeywords"])
         {
-          [v4 setObject:v12 forKeyedSubscript:v11];
+          [dictionary setObject:lastObject forKeyedSubscript:firstObject];
         }
 
         else
         {
-          v13 = [v4 objectForKeyedSubscript:v11];
-          if (!v13)
+          array = [dictionary objectForKeyedSubscript:firstObject];
+          if (!array)
           {
-            v13 = [MEMORY[0x1E695DF70] array];
-            [v4 setObject:v13 forKeyedSubscript:v11];
+            array = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:array forKeyedSubscript:firstObject];
           }
 
-          [v13 addObject:v12];
+          [array addObject:lastObject];
         }
       }
 
@@ -583,29 +583,29 @@ LABEL_9:
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)_sanitizedGraphDataDictionaryForArchivingDictionary:(id)a3 memoryLocalIdentifier:(id)a4
++ (id)_sanitizedGraphDataDictionaryForArchivingDictionary:(id)dictionary memoryLocalIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  if (!dictionaryCopy)
   {
     v11 = 0;
     goto LABEL_34;
   }
 
-  v7 = [v5 objectForKey:@"backingMoments"];
-  v8 = [v5 objectForKey:@"collectionsInfo"];
-  v9 = [v5 objectForKey:@"info"];
+  v7 = [dictionaryCopy objectForKey:@"backingMoments"];
+  v8 = [dictionaryCopy objectForKey:@"collectionsInfo"];
+  v9 = [dictionaryCopy objectForKey:@"info"];
   v10 = [v9 mutableCopy];
 
-  v33 = v6;
+  v33 = identifierCopy;
   if (!v7 || !v8 || !v10)
   {
-    if (!v6)
+    if (!identifierCopy)
     {
       v32 = v8;
       v13 = 0;
@@ -616,9 +616,9 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v12 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v42 = 0;
-    v13 = [v12 memoryDebugInformationForMemoryWithLocalIdentifier:v6 error:&v42];
+    v13 = [px_deprecated_appPhotoLibrary memoryDebugInformationForMemoryWithLocalIdentifier:identifierCopy error:&v42];
     v14 = v42;
 
     if (!v13)
@@ -680,9 +680,9 @@ LABEL_39:
   v31 = v10;
   v32 = v8;
 LABEL_18:
-  v34 = v5;
-  v30 = [v5 mutableCopy];
-  v16 = [MEMORY[0x1E695DF70] array];
+  v34 = dictionaryCopy;
+  v30 = [dictionaryCopy mutableCopy];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -706,22 +706,22 @@ LABEL_18:
         v22 = [v21 objectForKey:@"keywords"];
         if (v22)
         {
-          v23 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v36[0] = MEMORY[0x1E69E9820];
           v36[1] = 3221225472;
           v36[2] = __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForArchivingDictionary_memoryLocalIdentifier___block_invoke;
           v36[3] = &unk_1E774BC88;
-          v37 = v23;
-          v24 = v23;
+          v37 = dictionary;
+          v24 = dictionary;
           [v22 enumerateKeysAndObjectsUsingBlock:v36];
           v25 = [v21 mutableCopy];
           [v25 setObject:v24 forKey:@"keywords"];
-          [v16 addObject:v25];
+          [array addObject:v25];
         }
 
         else
         {
-          [v16 addObject:v21];
+          [array addObject:v21];
         }
       }
 
@@ -732,27 +732,27 @@ LABEL_18:
   }
 
   v11 = v30;
-  [v30 setObject:v16 forKey:@"backingMoments"];
+  [v30 setObject:array forKey:@"backingMoments"];
   if (v32)
   {
     [v30 setObject:v32 forKey:@"collectionsInfo"];
   }
 
   v26 = [v31 objectForKeyedSubscript:@"moodKeywords"];
-  v6 = v33;
+  identifierCopy = v33;
   if (v26)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = [v26 allObjects];
-      [v31 setObject:v27 forKeyedSubscript:@"moodKeywords"];
+      allObjects = [v26 allObjects];
+      [v31 setObject:allObjects forKeyedSubscript:@"moodKeywords"];
     }
   }
 
   [v30 setObject:v31 forKeyedSubscript:@"info"];
 
-  v5 = v34;
+  dictionaryCopy = v34;
 LABEL_34:
 
   return v11;
@@ -773,138 +773,138 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
   [*(a1 + 32) setObject:v7 forKey:v5];
 }
 
-+ (id)getSummaryFromProviderItem:(id)a3
++ (id)getSummaryFromProviderItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v84 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v84 handleFailureInMethod:a2 object:a1 file:@"PXMemoriesRelatedDiagnosticsHelper.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesRelatedDiagnosticsHelper.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"item"}];
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [v5 localIdentifier];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  localIdentifier = [itemCopy localIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v5;
-    v9 = [v8 localizedTitle];
-    v10 = [v9 length];
+    itemCopy = itemCopy;
+    localizedTitle = [itemCopy localizedTitle];
+    v10 = [localizedTitle length];
 
     if (v10)
     {
-      v11 = [v8 localizedTitle];
-      [v6 setObject:v11 forKey:@"title"];
+      localizedTitle2 = [itemCopy localizedTitle];
+      [dictionary setObject:localizedTitle2 forKey:@"title"];
     }
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "assetCollectionType")}];
-    [v6 setObject:v12 forKey:@"assetCollectionType"];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(itemCopy, "assetCollectionType")}];
+    [dictionary setObject:v12 forKey:@"assetCollectionType"];
 
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "assetCollectionSubtype")}];
-    [v6 setObject:v13 forKey:@"assetCollectionSubtype"];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(itemCopy, "assetCollectionSubtype")}];
+    [dictionary setObject:v13 forKey:@"assetCollectionSubtype"];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "estimatedAssetCount")}];
-    [v6 setObject:v14 forKey:@"estimatedAssetCount"];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(itemCopy, "estimatedAssetCount")}];
+    [dictionary setObject:v14 forKey:@"estimatedAssetCount"];
 
-    v15 = [v8 creationDate];
+    creationDate = [itemCopy creationDate];
 
-    if (v15)
+    if (creationDate)
     {
-      v16 = [v8 creationDate];
-      [v6 setObject:v16 forKey:@"creationDate"];
+      creationDate2 = [itemCopy creationDate];
+      [dictionary setObject:creationDate2 forKey:@"creationDate"];
     }
 
-    if (v7)
+    if (localIdentifier)
     {
-      [v6 setObject:v7 forKey:@"localIdentifier"];
+      [dictionary setObject:localIdentifier forKey:@"localIdentifier"];
     }
 
-    if ([v8 assetCollectionType] == 4)
+    if ([itemCopy assetCollectionType] == 4)
     {
-      v8 = v8;
-      v17 = [v8 isRejected];
-      v18 = [MEMORY[0x1E696AD98] numberWithBool:v17];
-      [v6 setObject:v18 forKey:@"rejected"];
+      itemCopy = itemCopy;
+      isRejected = [itemCopy isRejected];
+      v18 = [MEMORY[0x1E696AD98] numberWithBool:isRejected];
+      [dictionary setObject:v18 forKey:@"rejected"];
 
-      v19 = [v8 isFavorite];
-      v20 = [MEMORY[0x1E696AD98] numberWithBool:v19];
-      [v6 setObject:v20 forKey:@"favorite"];
+      isFavorite = [itemCopy isFavorite];
+      v20 = [MEMORY[0x1E696AD98] numberWithBool:isFavorite];
+      [dictionary setObject:v20 forKey:@"favorite"];
 
-      v21 = [v8 pendingState];
-      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v21];
-      [v6 setObject:v22 forKey:@"pendingState"];
+      pendingState = [itemCopy pendingState];
+      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:pendingState];
+      [dictionary setObject:v22 forKey:@"pendingState"];
 
-      [v8 score];
+      [itemCopy score];
       v23 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-      [v6 setObject:v23 forKey:@"score"];
+      [dictionary setObject:v23 forKey:@"score"];
 
-      v24 = [v8 uuid];
-      if (v24)
+      uuid = [itemCopy uuid];
+      if (uuid)
       {
-        [v6 setObject:v24 forKey:@"uuid"];
+        [dictionary setObject:uuid forKey:@"uuid"];
       }
 
-      v91 = v24;
-      v25 = [v8 photosGraphVersion];
-      v26 = [MEMORY[0x1E696AD98] numberWithLongLong:v25];
-      [v6 setObject:v26 forKey:@"photoGraphVersion"];
+      v91 = uuid;
+      photosGraphVersion = [itemCopy photosGraphVersion];
+      v26 = [MEMORY[0x1E696AD98] numberWithLongLong:photosGraphVersion];
+      [dictionary setObject:v26 forKey:@"photoGraphVersion"];
 
-      v27 = [v8 photosGraphProperties];
-      if (v27)
+      photosGraphProperties = [itemCopy photosGraphProperties];
+      if (photosGraphProperties)
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = [a1 _sanitizedGraphDataDictionaryForArchivingDictionary:v27 memoryLocalIdentifier:v7];
-        [v6 setObject:v29 forKey:@"photosGraphProperties"];
+        v29 = [self _sanitizedGraphDataDictionaryForArchivingDictionary:photosGraphProperties memoryLocalIdentifier:localIdentifier];
+        [dictionary setObject:v29 forKey:@"photosGraphProperties"];
 
         objc_autoreleasePoolPop(v28);
       }
 
-      v30 = [v8 movieData];
-      if (v30)
+      movieData = [itemCopy movieData];
+      if (movieData)
       {
-        [v6 setObject:v30 forKey:@"movieData"];
+        [dictionary setObject:movieData forKey:@"movieData"];
       }
 
-      v31 = [v8 lastViewedDate];
-      if (v31)
+      lastViewedDate = [itemCopy lastViewedDate];
+      if (lastViewedDate)
       {
-        [v6 setObject:v31 forKey:@"lastViewedDate"];
+        [dictionary setObject:lastViewedDate forKey:@"lastViewedDate"];
       }
 
-      v85 = v31;
-      v87 = v30;
-      v89 = v27;
-      v93 = v7;
-      v32 = [v8 lastViewedDate];
-      if (v32)
+      v85 = lastViewedDate;
+      v87 = movieData;
+      v89 = photosGraphProperties;
+      v93 = localIdentifier;
+      lastViewedDate2 = [itemCopy lastViewedDate];
+      if (lastViewedDate2)
       {
-        [v6 setObject:v32 forKey:@"lastMoviePlayedDate"];
+        [dictionary setObject:lastViewedDate2 forKey:@"lastMoviePlayedDate"];
       }
 
-      v33 = [v8 category];
-      v34 = [MEMORY[0x1E69788F0] stringForCategory:v33];
-      [v6 setObject:v34 forKey:@"category"];
-      v35 = [v8 subcategory];
-      v36 = [MEMORY[0x1E69788F0] stringForSubcategory:v35];
-      [v6 setObject:v36 forKey:@"subCategory"];
-      v37 = [v8 subtitle];
-      if ([v37 length])
+      category = [itemCopy category];
+      v34 = [MEMORY[0x1E69788F0] stringForCategory:category];
+      [dictionary setObject:v34 forKey:@"category"];
+      subcategory = [itemCopy subcategory];
+      v36 = [MEMORY[0x1E69788F0] stringForSubcategory:subcategory];
+      [dictionary setObject:v36 forKey:@"subCategory"];
+      subtitle = [itemCopy subtitle];
+      if ([subtitle length])
       {
-        v38 = [v8 subtitle];
+        subtitle2 = [itemCopy subtitle];
       }
 
       else
       {
-        v38 = @"unknown";
+        subtitle2 = @"unknown";
       }
 
-      [v6 setObject:v38 forKey:@"subtitle"];
-      [v6 setObject:@"Memory" forKey:@"referenceOrigin"];
-      v77 = [v8 titleFontName];
-      v78 = v77;
-      if (v77)
+      [dictionary setObject:subtitle2 forKey:@"subtitle"];
+      [dictionary setObject:@"Memory" forKey:@"referenceOrigin"];
+      titleFontName = [itemCopy titleFontName];
+      v78 = titleFontName;
+      if (titleFontName)
       {
-        v79 = v77;
+        v79 = titleFontName;
       }
 
       else
@@ -912,43 +912,43 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
         v79 = @"unknown";
       }
 
-      [v6 setObject:v79 forKey:@"fontName"];
+      [dictionary setObject:v79 forKey:@"fontName"];
 
       v80 = objc_autoreleasePoolPush();
-      v81 = [a1 _curationFullsetForMemory:v8];
+      v81 = [self _curationFullsetForMemory:itemCopy];
       if (v81)
       {
-        [v6 setObject:v81 forKeyedSubscript:@"curationFullset"];
+        [dictionary setObject:v81 forKeyedSubscript:@"curationFullset"];
       }
 
       objc_autoreleasePoolPop(v80);
-      v82 = [a1 _datesAndAssetCountDictionaryForAssetCollection:v8];
-      [v6 addEntriesFromDictionary:v82];
+      v82 = [self _datesAndAssetCountDictionaryForAssetCollection:itemCopy];
+      [dictionary addEntriesFromDictionary:v82];
 
-      v7 = v93;
+      localIdentifier = v93;
     }
 
-    else if ([v8 assetCollectionType] == 3)
+    else if ([itemCopy assetCollectionType] == 3)
     {
-      v8 = v8;
-      v72 = [v8 startDate];
-      if (v72)
+      itemCopy = itemCopy;
+      startDate = [itemCopy startDate];
+      if (startDate)
       {
-        [v6 setObject:v72 forKey:@"startDate"];
+        [dictionary setObject:startDate forKey:@"startDate"];
       }
 
-      v73 = [v8 endDate];
-      if (v73)
+      endDate = [itemCopy endDate];
+      if (endDate)
       {
-        [v6 setObject:v73 forKey:@"endDate"];
+        [dictionary setObject:endDate forKey:@"endDate"];
       }
 
-      [v6 setObject:@"Moment" forKey:@"referenceOrigin"];
+      [dictionary setObject:@"Moment" forKey:@"referenceOrigin"];
     }
 
     else
     {
-      [v6 setObject:@"Collection" forKey:@"referenceOrigin"];
+      [dictionary setObject:@"Collection" forKey:@"referenceOrigin"];
     }
   }
 
@@ -957,165 +957,165 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v94 = v7;
-      v8 = v5;
-      v39 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "mediaType")}];
-      [v6 setObject:v39 forKey:@"assetType"];
+      v94 = localIdentifier;
+      itemCopy = itemCopy;
+      v39 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(itemCopy, "mediaType")}];
+      [dictionary setObject:v39 forKey:@"assetType"];
 
-      v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "mediaSubtypes")}];
-      [v6 setObject:v40 forKey:@"mediaSubtypes"];
+      v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(itemCopy, "mediaSubtypes")}];
+      [dictionary setObject:v40 forKey:@"mediaSubtypes"];
 
-      v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "pixelWidth")}];
-      [v6 setObject:v41 forKey:@"pixelWidth"];
+      v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(itemCopy, "pixelWidth")}];
+      [dictionary setObject:v41 forKey:@"pixelWidth"];
 
-      v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "pixelHeight")}];
-      [v6 setObject:v42 forKey:@"pixelHeight"];
+      v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(itemCopy, "pixelHeight")}];
+      [dictionary setObject:v42 forKey:@"pixelHeight"];
 
       v43 = MEMORY[0x1E696AD98];
-      [v8 duration];
+      [itemCopy duration];
       v44 = [v43 numberWithDouble:?];
-      [v6 setObject:v44 forKey:@"duration"];
+      [dictionary setObject:v44 forKey:@"duration"];
 
-      v45 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isHidden")}];
-      [v6 setObject:v45 forKey:@"isHidden"];
+      v45 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isHidden")}];
+      [dictionary setObject:v45 forKey:@"isHidden"];
 
-      v46 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isFavorite")}];
-      [v6 setObject:v46 forKey:@"isFavorite"];
+      v46 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isFavorite")}];
+      [dictionary setObject:v46 forKey:@"isFavorite"];
 
-      v47 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isTrashed")}];
-      [v6 setObject:v47 forKey:@"isTrashed"];
+      v47 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isTrashed")}];
+      [dictionary setObject:v47 forKey:@"isTrashed"];
 
-      v48 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "hasAdjustments")}];
-      [v6 setObject:v48 forKey:@"hasAdjustments"];
+      v48 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "hasAdjustments")}];
+      [dictionary setObject:v48 forKey:@"hasAdjustments"];
 
-      v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isVideo")}];
-      [v6 setObject:v49 forKey:@"isVideo"];
+      v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isVideo")}];
+      [dictionary setObject:v49 forKey:@"isVideo"];
 
-      v50 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isPhoto")}];
-      [v6 setObject:v50 forKey:@"isPhoto"];
+      v50 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isPhoto")}];
+      [dictionary setObject:v50 forKey:@"isPhoto"];
 
-      v51 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isAudio")}];
-      [v6 setObject:v51 forKey:@"isAudio"];
+      v51 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isAudio")}];
+      [dictionary setObject:v51 forKey:@"isAudio"];
 
-      v52 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isIncludedInMoments")}];
-      [v6 setObject:v52 forKey:@"isIncludedInMoments"];
+      v52 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isIncludedInMoments")}];
+      [dictionary setObject:v52 forKey:@"isIncludedInMoments"];
 
-      v53 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isIncludedInCloudFeeds")}];
-      [v6 setObject:v53 forKey:@"isIncludedInCloudFeeds"];
+      v53 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isIncludedInCloudFeeds")}];
+      [dictionary setObject:v53 forKey:@"isIncludedInCloudFeeds"];
 
-      v54 = [v8 assetUserActivityProperties];
-      v55 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v54, "playCount")}];
-      [v6 setObject:v55 forKey:@"playCount"];
+      assetUserActivityProperties = [itemCopy assetUserActivityProperties];
+      v55 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(assetUserActivityProperties, "playCount")}];
+      [dictionary setObject:v55 forKey:@"playCount"];
 
-      v56 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v54, "viewCount")}];
-      [v6 setObject:v56 forKey:@"viewCount"];
+      v56 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(assetUserActivityProperties, "viewCount")}];
+      [dictionary setObject:v56 forKey:@"viewCount"];
 
-      v92 = v54;
-      v57 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v54, "shareCount")}];
-      [v6 setObject:v57 forKey:@"shareCount"];
+      v92 = assetUserActivityProperties;
+      v57 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(assetUserActivityProperties, "shareCount")}];
+      [dictionary setObject:v57 forKey:@"shareCount"];
 
-      v58 = [v8 creationDate];
-      if (v58)
+      creationDate3 = [itemCopy creationDate];
+      if (creationDate3)
       {
-        [v6 setObject:v58 forKey:@"creationDate"];
+        [dictionary setObject:creationDate3 forKey:@"creationDate"];
       }
 
-      v59 = [v8 modificationDate];
-      if (v59)
+      modificationDate = [itemCopy modificationDate];
+      if (modificationDate)
       {
-        [v6 setObject:v59 forKey:@"modificationDate"];
+        [dictionary setObject:modificationDate forKey:@"modificationDate"];
       }
 
-      v60 = [v8 location];
-      v61 = v60;
-      if (v60)
+      location = [itemCopy location];
+      v61 = location;
+      if (location)
       {
-        v62 = [v60 description];
-        [v6 setObject:v62 forKey:@"location"];
+        v62 = [location description];
+        [dictionary setObject:v62 forKey:@"location"];
       }
 
-      v63 = [v8 burstIdentifier];
-      if (v63)
+      burstIdentifier = [itemCopy burstIdentifier];
+      if (burstIdentifier)
       {
-        [v6 setObject:v63 forKey:@"burstIdentifier"];
+        [dictionary setObject:burstIdentifier forKey:@"burstIdentifier"];
       }
 
-      v64 = [v8 uniformTypeIdentifier];
-      if (v64)
+      uniformTypeIdentifier = [itemCopy uniformTypeIdentifier];
+      if (uniformTypeIdentifier)
       {
-        [v6 setObject:v64 forKey:@"uniformTypeIdentifier"];
+        [dictionary setObject:uniformTypeIdentifier forKey:@"uniformTypeIdentifier"];
       }
 
-      v88 = v59;
-      v65 = [v8 filename];
-      if (v65)
+      v88 = modificationDate;
+      filename = [itemCopy filename];
+      if (filename)
       {
-        [v6 setObject:v65 forKey:@"filename"];
+        [dictionary setObject:filename forKey:@"filename"];
       }
 
       v86 = v61;
-      v66 = [v8 cloudIdentifier];
-      if (v66)
+      cloudIdentifier = [itemCopy cloudIdentifier];
+      if (cloudIdentifier)
       {
-        [v6 setObject:v66 forKey:@"cloudIdentifier"];
+        [dictionary setObject:cloudIdentifier forKey:@"cloudIdentifier"];
       }
 
-      v90 = v58;
-      v67 = [v8 adjustmentVersion];
-      if (v67)
+      v90 = creationDate3;
+      adjustmentVersion = [itemCopy adjustmentVersion];
+      if (adjustmentVersion)
       {
-        [v6 setObject:v67 forKey:@"adjustmentVersion"];
+        [dictionary setObject:adjustmentVersion forKey:@"adjustmentVersion"];
       }
 
-      v68 = [v8 faceAdjustmentVersion];
-      if (v68)
+      faceAdjustmentVersion = [itemCopy faceAdjustmentVersion];
+      if (faceAdjustmentVersion)
       {
-        [v6 setObject:v68 forKey:@"faceAdjustmentVersion"];
+        [dictionary setObject:faceAdjustmentVersion forKey:@"faceAdjustmentVersion"];
       }
 
-      v69 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v8, "faceAnalysisVersion")}];
-      [v6 setObject:v69 forKey:@"faceAnalysisVersion"];
+      v69 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(itemCopy, "faceAnalysisVersion")}];
+      [dictionary setObject:v69 forKey:@"faceAnalysisVersion"];
 
       v70 = objc_opt_class();
       v71 = NSStringFromClass(v70);
-      [v6 setObject:v71 forKey:@"itemClass"];
+      [dictionary setObject:v71 forKey:@"itemClass"];
 
-      [v6 setObject:@"One Up" forKey:@"referenceOrigin"];
-      v7 = v94;
+      [dictionary setObject:@"One Up" forKey:@"referenceOrigin"];
+      localIdentifier = v94;
       if (v94)
       {
-        [v6 setObject:v94 forKey:@"localIdentifier"];
+        [dictionary setObject:v94 forKey:@"localIdentifier"];
       }
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v5];
-      v74 = [v5 uuid];
-      [v6 setObject:v8 forKey:v74];
+      itemCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", itemCopy];
+      uuid2 = [itemCopy uuid];
+      [dictionary setObject:itemCopy forKey:uuid2];
       v75 = objc_opt_class();
       v76 = NSStringFromClass(v75);
-      [v6 setObject:v76 forKey:@"itemClass"];
-      [v6 setObject:v76 forKey:@"referenceOrigin"];
-      if (v7)
+      [dictionary setObject:v76 forKey:@"itemClass"];
+      [dictionary setObject:v76 forKey:@"referenceOrigin"];
+      if (localIdentifier)
       {
-        [v6 setObject:v7 forKey:@"localIdentifier"];
+        [dictionary setObject:localIdentifier forKey:@"localIdentifier"];
       }
     }
   }
 
-  return v6;
+  return dictionary;
 }
 
-+ (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5 sourceMemory:(id)a6 sourceDictionary:(id)a7
++ (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index sourceMemory:(id)memory sourceDictionary:(id)dictionary
 {
   v226 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a7;
-  v14 = v13;
-  if (a3)
+  memoryCopy = memory;
+  dictionaryCopy = dictionary;
+  v14 = dictionaryCopy;
+  if (titles)
   {
-    v15 = a4 == 0;
+    v15 = content == 0;
   }
 
   else
@@ -1126,12 +1126,12 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
   v16 = !v15;
   if (!v15)
   {
-    switch(a5)
+    switch(index)
     {
       case 2:
-        v143 = [v13 objectForKeyedSubscript:@"collectionsInfo"];
+        v143 = [dictionaryCopy objectForKeyedSubscript:@"collectionsInfo"];
         [v14 objectForKeyedSubscript:@"backingMoments"];
-        v145 = v144 = a3;
+        v145 = v144 = titles;
         v146 = objc_opt_new();
         v147 = objc_opt_new();
         v212[0] = MEMORY[0x1E69E9820];
@@ -1155,42 +1155,42 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
         v152 = v151;
         *v144 = v151;
         v153 = v150;
-        *a4 = v150;
+        *content = v150;
 
         break;
       case 1:
-        v141 = [v13 objectForKeyedSubscript:@"featureVector"];
-        *a3 = [v141 allKeys];
+        v141 = [dictionaryCopy objectForKeyedSubscript:@"featureVector"];
+        *titles = [v141 allKeys];
         v142 = v141;
-        *a4 = v141;
+        *content = v141;
 
         break;
       case 0:
-        v198 = a3;
-        v199 = a4;
+        titlesCopy = titles;
+        contentCopy = content;
         v17 = objc_opt_new();
         v202 = v14;
         v18 = [v14 objectForKeyedSubscript:@"info"];
         v207 = [MEMORY[0x1E695DFD8] setWithObjects:{@"category", @"subcategory", @"originalsubcategory", @"sourceType", @"creationDate", @"assetCount", @"title", @"subtitle", @"fontname", @"representativeassetcount", @"repCount", @"relevantAssetCount", @"curatedCount", @"extendedCuratedCount", @"meaningLabels", @"numberOfMoments", @"numberOfCollections", @"notificationstate", @"suggestedMood", @"recommendedMoods", @"forbiddenMoods", @"moodWeights", @"moodKeywords", 0}];
         v19 = MEMORY[0x1E696AEC0];
-        v20 = [v12 localIdentifier];
-        v21 = [v19 stringWithFormat:@"[localIdentifier] %@", v20];
+        localIdentifier = [memoryCopy localIdentifier];
+        v21 = [v19 stringWithFormat:@"[localIdentifier] %@", localIdentifier];
         [v17 addObject:v21];
 
         v22 = MEMORY[0x1E696AEC0];
-        [v12 pendingState];
+        [memoryCopy pendingState];
         v23 = PHMemoryPendingStateDescription();
-        v24 = [v22 stringWithFormat:@"[pendingState] %@ (%d)", v23, objc_msgSend(v12, "pendingState")];
+        v24 = [v22 stringWithFormat:@"[pendingState] %@ (%d)", v23, objc_msgSend(memoryCopy, "pendingState")];
         [v17 addObject:v24];
 
         v25 = MEMORY[0x1E696AEC0];
-        [v12 creationType];
+        [memoryCopy creationType];
         v26 = PHMemoryCreationTypeDescription();
-        v27 = [v25 stringWithFormat:@"[creationType] %@ (%d)", v26, objc_msgSend(v12, "creationType")];
+        v27 = [v25 stringWithFormat:@"[creationType] %@ (%d)", v26, objc_msgSend(memoryCopy, "creationType")];
         [v17 addObject:v27];
 
         v28 = MEMORY[0x1E696AEC0];
-        v29 = [MEMORY[0x1E69788F0] stringForCategory:{objc_msgSend(v12, "category")}];
+        v29 = [MEMORY[0x1E69788F0] stringForCategory:{objc_msgSend(memoryCopy, "category")}];
         v30 = [v28 stringWithFormat:@"[category] %@", v29];
         [v17 addObject:v30];
 
@@ -1219,55 +1219,55 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
         [v17 addObject:v38];
 
         v39 = MEMORY[0x1E696AEC0];
-        [v12 score];
+        [memoryCopy score];
         v41 = [v39 stringWithFormat:@"[score] %.3f", v40];
         [v17 addObject:v41];
 
         v42 = MEMORY[0x1E696AEC0];
         v43 = MEMORY[0x1E6978918];
-        v44 = [MEMORY[0x1E695DF00] date];
-        [v43 relevanceScoreForMemory:v12 atDate:v44];
+        date = [MEMORY[0x1E695DF00] date];
+        [v43 relevanceScoreForMemory:memoryCopy atDate:date];
         v46 = [v42 stringWithFormat:@"[current relevance score] %.3f", v45];
         [v17 addObject:v46];
 
         v47 = MEMORY[0x1E696AEC0];
         v48 = MEMORY[0x1E6978918];
-        v49 = [v12 creationDate];
-        [v48 relevanceScoreForMemory:v12 atDate:v49];
+        creationDate = [memoryCopy creationDate];
+        [v48 relevanceScoreForMemory:memoryCopy atDate:creationDate];
         v51 = [v47 stringWithFormat:@"[relevance score on creation date] %.3f", v50];
         [v17 addObject:v51];
 
         v52 = MEMORY[0x1E696AEC0];
-        v53 = [v12 localizedTitle];
-        v54 = v53;
+        localizedTitle = [memoryCopy localizedTitle];
+        v54 = localizedTitle;
         v55 = @"## Missing Title ##";
-        if (v53)
+        if (localizedTitle)
         {
-          v55 = v53;
+          v55 = localizedTitle;
         }
 
         v56 = [v52 stringWithFormat:@"[title] %@", v55];
         [v17 addObject:v56];
 
         v57 = MEMORY[0x1E696AEC0];
-        v58 = [v12 localizedSubtitle];
-        v59 = v58;
+        localizedSubtitle = [memoryCopy localizedSubtitle];
+        v59 = localizedSubtitle;
         v60 = &stru_1F1741150;
-        if (v58)
+        if (localizedSubtitle)
         {
-          v60 = v58;
+          v60 = localizedSubtitle;
         }
 
         v61 = [v57 stringWithFormat:@"[subtitle] %@", v60];
         [v17 addObject:v61];
 
         v62 = MEMORY[0x1E696AEC0];
-        v63 = [v12 titleFontName];
-        v64 = v63;
+        titleFontName = [memoryCopy titleFontName];
+        v64 = titleFontName;
         v65 = @"## Missing Title Font Name";
-        if (v63)
+        if (titleFontName)
         {
-          v65 = v63;
+          v65 = titleFontName;
         }
 
         v66 = [v62 stringWithFormat:@"[fontName] %@", v65];
@@ -1356,7 +1356,7 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
 
         v97 = MEMORY[0x1E696AEC0];
         v98 = [v18 objectForKeyedSubscript:@"keyAssetUUID"];
-        v99 = [a1 _isSafeForWidgetDisplayForAssetUUID:v98];
+        v99 = [self _isSafeForWidgetDisplayForAssetUUID:v98];
         v100 = [v97 stringWithFormat:@"[keyAssetIsSafeForWidgetDisplay] %@", v99];
         [v17 addObject:v100];
 
@@ -1369,8 +1369,8 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
           v104 = v102;
         }
 
-        v105 = [v101 stringWithFormat:@"[numberOfMoments] %@", v104];
-        [v17 addObject:v105];
+        v104 = [v101 stringWithFormat:@"[numberOfMoments] %@", v104];
+        [v17 addObject:v104];
 
         v106 = MEMORY[0x1E696AEC0];
         v107 = [v18 objectForKeyedSubscript:@"numberOfCollections"];
@@ -1381,64 +1381,64 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
           v109 = v107;
         }
 
-        v110 = [v106 stringWithFormat:@"[numberOfCollections] %@", v109];
-        [v17 addObject:v110];
+        v109 = [v106 stringWithFormat:@"[numberOfCollections] %@", v109];
+        [v17 addObject:v109];
 
         v111 = MEMORY[0x1E696AEC0];
         v112 = [v18 objectForKeyedSubscript:@"suggestedMood"];
-        v113 = [v111 stringWithFormat:@"[suggestedMood] %@", v112];
-        [v17 addObject:v113];
+        v112 = [v111 stringWithFormat:@"[suggestedMood] %@", v112];
+        [v17 addObject:v112];
 
         v114 = MEMORY[0x1E696AEC0];
         v115 = [v18 objectForKeyedSubscript:@"recommendedMoods"];
-        v116 = [v114 stringWithFormat:@"[recommendedMoods] %@", v115];
-        [v17 addObject:v116];
+        v115 = [v114 stringWithFormat:@"[recommendedMoods] %@", v115];
+        [v17 addObject:v115];
 
         v117 = MEMORY[0x1E696AEC0];
         v118 = [v18 objectForKeyedSubscript:@"forbiddenMoods"];
-        v119 = [v117 stringWithFormat:@"[forbiddenMoods] %@", v118];
-        [v17 addObject:v119];
+        v118 = [v117 stringWithFormat:@"[forbiddenMoods] %@", v118];
+        [v17 addObject:v118];
 
         v120 = MEMORY[0x1E696AEC0];
         v121 = [v18 objectForKeyedSubscript:@"moodWeights"];
-        v122 = [v120 stringWithFormat:@"[moodWeights] %@", v121];
-        [v17 addObject:v122];
+        v121 = [v120 stringWithFormat:@"[moodWeights] %@", v121];
+        [v17 addObject:v121];
 
         v123 = MEMORY[0x1E696AEC0];
         v124 = [v18 objectForKeyedSubscript:@"moodKeywords"];
         v125 = [v124 componentsJoinedByString:{@", "}];
-        v126 = [v123 stringWithFormat:@"[moodKeywords] %@", v125];
-        [v17 addObject:v126];
+        v125 = [v123 stringWithFormat:@"[moodKeywords] %@", v125];
+        [v17 addObject:v125];
 
         v127 = MEMORY[0x1E696AEC0];
-        v128 = [a1 _userFeedbackScoreInfoForMemory:v12];
-        v129 = [v127 stringWithFormat:@"[userFeedbackScore] %@", v128];
-        [v17 addObject:v129];
+        v128 = [self _userFeedbackScoreInfoForMemory:memoryCopy];
+        v128 = [v127 stringWithFormat:@"[userFeedbackScore] %@", v128];
+        [v17 addObject:v128];
 
         v130 = MEMORY[0x1E696AEC0];
         v131 = [v14 objectForKeyedSubscript:@"triggerTypes"];
-        v132 = [v130 stringWithFormat:@"[triggerTypes] %@", v131];
-        [v17 addObject:v132];
+        v131 = [v130 stringWithFormat:@"[triggerTypes] %@", v131];
+        [v17 addObject:v131];
 
         v133 = MEMORY[0x1E696AEC0];
         v134 = [v14 objectForKeyedSubscript:@"encodedFeatures"];
-        v135 = [v133 stringWithFormat:@"[memoryFeatures] %@", v134];
-        [v17 addObject:v135];
+        v134 = [v133 stringWithFormat:@"[memoryFeatures] %@", v134];
+        [v17 addObject:v134];
 
         v136 = MEMORY[0x1E696AEC0];
-        v137 = [v12 graphMemoryIdentifier];
-        v138 = [v136 stringWithFormat:@"[graphMemoryIdentifier] %@", v137];
-        [v17 addObject:v138];
+        graphMemoryIdentifier = [memoryCopy graphMemoryIdentifier];
+        v137 = [v136 stringWithFormat:@"[graphMemoryIdentifier] %@", graphMemoryIdentifier];
+        [v17 addObject:v137];
 
-        v139 = [v12 notificationState];
-        if (v139 == 1)
+        notificationState = [memoryCopy notificationState];
+        if (notificationState == 1)
         {
           v140 = @"Requested";
         }
 
         else
         {
-          if (v139 != 2)
+          if (notificationState != 2)
           {
             goto LABEL_48;
           }
@@ -1446,7 +1446,7 @@ void __112__PXMemoriesRelatedDiagnosticsHelper__sanitizedGraphDataDictionaryForA
           v140 = @"Seen";
         }
 
-        v154 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[notificationState] Notification State %@ (%lu)", v140, objc_msgSend(v12, "notificationState")];
+        v154 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[notificationState] Notification State %@ (%lu)", v140, objc_msgSend(memoryCopy, "notificationState")];
         [v17 addObject:v154];
 
 LABEL_48:
@@ -1460,13 +1460,13 @@ LABEL_48:
           {
             v157 = MEMORY[0x1E696AEC0];
             v158 = [v155 componentsJoinedByString:{@", "}];
-            v159 = [v157 stringWithFormat:@"[meaning] %@", v158];
-            [v17 addObject:v159];
+            v158 = [v157 stringWithFormat:@"[meaning] %@", v158];
+            [v17 addObject:v158];
           }
         }
 
         v195 = v155;
-        [v12 photosGraphVersion];
+        [memoryCopy photosGraphVersion];
         v160 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[graphVersion] %u", PLGraphAlgorithmsVersionFromPhotosGraphVersion()];
         [v17 addObject:v160];
 
@@ -1499,8 +1499,8 @@ LABEL_48:
         v218 = 0u;
         v215 = 0u;
         v216 = 0u;
-        v201 = v12;
-        obj = [v12 blockableFeatures];
+        v201 = memoryCopy;
+        obj = [memoryCopy blockableFeatures];
         v166 = [obj countByEnumeratingWithState:&v215 objects:v225 count:16];
         if (v166)
         {
@@ -1519,28 +1519,28 @@ LABEL_48:
               v169 = *(*(&v215 + 1) + 8 * v168);
               if ([v169 type] == 1)
               {
-                v170 = [v169 personLocalIdentifier];
-                v171 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-                v172 = [v171 librarySpecificFetchOptions];
+                personLocalIdentifier = [v169 personLocalIdentifier];
+                px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+                librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
                 v173 = MEMORY[0x1E6978980];
-                v224 = v170;
+                v224 = personLocalIdentifier;
                 v174 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v224 count:1];
-                v175 = [v173 fetchPersonsWithLocalIdentifiers:v174 options:v172];
+                v175 = [v173 fetchPersonsWithLocalIdentifiers:v174 options:librarySpecificFetchOptions];
 
-                v176 = [v175 firstObject];
-                v177 = [v176 name];
-                if ([v177 length])
+                firstObject = [v175 firstObject];
+                name = [firstObject name];
+                if ([name length])
                 {
-                  v178 = v177;
+                  v178 = name;
                 }
 
                 else
                 {
-                  v178 = v170;
+                  v178 = personLocalIdentifier;
                 }
 
-                v179 = v178;
+                v186 = v178;
 
 LABEL_61:
 LABEL_65:
@@ -1550,57 +1550,57 @@ LABEL_65:
 
               if ([v169 type] == 16)
               {
-                v170 = [v169 date];
-                v180 = [v204 stringFromDate:v170];
+                personLocalIdentifier = [v169 date];
+                v191 = [v204 stringFromDate:personLocalIdentifier];
                 goto LABEL_64;
               }
 
               if ([v169 type] == 512)
               {
-                v170 = [v169 dateInterval];
+                personLocalIdentifier = [v169 dateInterval];
                 v184 = MEMORY[0x1E696AEC0];
-                v172 = [v170 startDate];
-                v175 = [v204 stringFromDate:v172];
-                v185 = [v170 endDate];
-                v186 = [v204 stringFromDate:v185];
-                v179 = [v184 stringWithFormat:@"%@ - %@", v175, v186];
+                librarySpecificFetchOptions = [personLocalIdentifier startDate];
+                v175 = [v204 stringFromDate:librarySpecificFetchOptions];
+                endDate = [personLocalIdentifier endDate];
+                v186 = [v204 stringFromDate:endDate];
+                v186 = [v184 stringWithFormat:@"%@ - %@", v175, v186];
 
                 goto LABEL_61;
               }
 
               if ([v169 type] == 32)
               {
-                v187 = [v169 holidayName];
+                holidayName = [v169 holidayName];
 LABEL_72:
-                v179 = v187;
+                v186 = holidayName;
                 goto LABEL_66;
               }
 
               if ([v169 type] == 4096)
               {
-                v170 = [v169 location];
+                personLocalIdentifier = [v169 location];
                 v188 = MEMORY[0x1E696AEC0];
-                [v170 coordinate];
+                [personLocalIdentifier coordinate];
                 v190 = v189;
-                [v170 coordinate];
-                v180 = [v188 stringWithFormat:@"(%f, %f)", v190, v191];
+                [personLocalIdentifier coordinate];
+                v191 = [v188 stringWithFormat:@"(%f, %f)", v190, v191];
 LABEL_64:
-                v179 = v180;
+                v186 = v191;
                 goto LABEL_65;
               }
 
               if ([v169 type] == 0x20000)
               {
-                v187 = [v169 areaName];
+                holidayName = [v169 areaName];
                 goto LABEL_72;
               }
 
-              v179 = 0;
+              v186 = 0;
 LABEL_66:
               v181 = MEMORY[0x1E696AEC0];
               v182 = [MEMORY[0x1E6978908] stringForType:{objc_msgSend(v169, "type")}];
-              v183 = [v181 stringWithFormat:@"[blockableFeature] %@: %@", v182, v179];
-              [v208 addObject:v183];
+              v179 = [v181 stringWithFormat:@"[blockableFeature] %@: %@", v182, v186];
+              [v208 addObject:v179];
 
               ++v168;
             }
@@ -1613,12 +1613,12 @@ LABEL_66:
           while (v192);
         }
 
-        *v198 = &unk_1F1910A38;
+        *titlesCopy = &unk_1F1910A38;
         v222 = &stru_1F1741150;
         v223 = v208;
-        *v199 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v223 forKeys:&v222 count:1];
+        *contentCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v223 forKeys:&v222 count:1];
 
-        v12 = v201;
+        memoryCopy = v201;
         v14 = v202;
         v16 = v200;
         break;
@@ -1759,18 +1759,18 @@ void __115__PXMemoriesRelatedDiagnosticsHelper_generateSectionTitles_andTableCon
   }
 }
 
-+ (id)preprocessDictionary:(id)a3 forMemoryWithLocalIdentifier:(id)a4 algorithmsVersion:(int64_t)a5 inPhotoLibrary:(id)a6
++ (id)preprocessDictionary:(id)dictionary forMemoryWithLocalIdentifier:(id)identifier algorithmsVersion:(int64_t)version inPhotoLibrary:(id)library
 {
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v49 = a6;
-  v10 = [a3 mutableCopy];
+  identifierCopy = identifier;
+  libraryCopy = library;
+  v10 = [dictionary mutableCopy];
   v11 = [v10 objectForKeyedSubscript:@"backingMoments"];
   v12 = [v10 objectForKeyedSubscript:@"collectionsInfo"];
   if (![v11 count] || !objc_msgSend(v12, "count"))
   {
     v56 = 0;
-    v13 = [v49 memoryDebugInformationForMemoryWithLocalIdentifier:v9 error:&v56];
+    v13 = [libraryCopy memoryDebugInformationForMemoryWithLocalIdentifier:identifierCopy error:&v56];
     v14 = v56;
     if (v13)
     {
@@ -1806,7 +1806,7 @@ void __115__PXMemoriesRelatedDiagnosticsHelper_generateSectionTitles_andTableCon
   if (v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v19 = v18) != 0)
   {
     v20 = v19;
-    v21 = [a1 _featureVectorInfoGroupedByKeyForFeatureVector:v19];
+    v21 = [self _featureVectorInfoGroupedByKeyForFeatureVector:v19];
 
     if (!v21)
     {
@@ -1833,8 +1833,8 @@ void __115__PXMemoriesRelatedDiagnosticsHelper_generateSectionTitles_andTableCon
     v45 = v12;
     v46 = v11;
     v47 = v10;
-    v48 = v9;
-    v24 = [v49 librarySpecificFetchOptions];
+    v48 = identifierCopy;
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
     v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v23, "count")}];
     v52 = 0u;
     v53 = 0u;
@@ -1864,7 +1864,7 @@ void __115__PXMemoriesRelatedDiagnosticsHelper_generateSectionTitles_andTableCon
 
           else
           {
-            v32 = [MEMORY[0x1E6978908] personLocalIdentifierForPersonUniversalIdentifier:v30 photoLibrary:v49];
+            v32 = [MEMORY[0x1E6978908] personLocalIdentifierForPersonUniversalIdentifier:v30 photoLibrary:libraryCopy];
             v33 = v32;
             if (v32)
             {
@@ -1882,13 +1882,13 @@ void __115__PXMemoriesRelatedDiagnosticsHelper_generateSectionTitles_andTableCon
           v36 = MEMORY[0x1E6978980];
           v57 = v35;
           v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
-          v38 = [v36 fetchPersonsWithLocalIdentifiers:v37 options:v24];
+          v38 = [v36 fetchPersonsWithLocalIdentifiers:v37 options:librarySpecificFetchOptions];
 
-          v39 = [v38 firstObject];
-          v40 = [v39 name];
-          if ([v40 length])
+          firstObject = [v38 firstObject];
+          name = [firstObject name];
+          if ([name length])
           {
-            v41 = v40;
+            v41 = name;
           }
 
           else
@@ -1910,7 +1910,7 @@ void __115__PXMemoriesRelatedDiagnosticsHelper_generateSectionTitles_andTableCon
     [v43 setObject:0 forKeyedSubscript:@"people"];
 
     v10 = v47;
-    v9 = v48;
+    identifierCopy = v48;
     v12 = v45;
     v11 = v46;
     v18 = v44;

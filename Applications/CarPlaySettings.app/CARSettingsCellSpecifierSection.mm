@@ -1,43 +1,43 @@
 @interface CARSettingsCellSpecifierSection
-- (BOOL)hasEqualFooter:(id)a3;
-- (BOOL)hasEqualHeader:(id)a3;
-- (BOOL)hasEqualSpecifiers:(id)a3;
-- (BOOL)isEqualToSpecifierSection:(id)a3;
-- (CARSettingsCellSpecifierSection)initWithTitle:(id)a3 footer:(id)a4 specifiers:(id)a5;
+- (BOOL)hasEqualFooter:(id)footer;
+- (BOOL)hasEqualHeader:(id)header;
+- (BOOL)hasEqualSpecifiers:(id)specifiers;
+- (BOOL)isEqualToSpecifierSection:(id)section;
+- (CARSettingsCellSpecifierSection)initWithTitle:(id)title footer:(id)footer specifiers:(id)specifiers;
 @end
 
 @implementation CARSettingsCellSpecifierSection
 
-- (CARSettingsCellSpecifierSection)initWithTitle:(id)a3 footer:(id)a4 specifiers:(id)a5
+- (CARSettingsCellSpecifierSection)initWithTitle:(id)title footer:(id)footer specifiers:(id)specifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  footerCopy = footer;
+  specifiersCopy = specifiers;
   v17.receiver = self;
   v17.super_class = CARSettingsCellSpecifierSection;
   v11 = [(CARSettingsCellSpecifierSection *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [footerCopy copy];
     footer = v11->_footer;
     v11->_footer = v14;
 
-    objc_storeStrong(&v11->_specifiers, a5);
+    objc_storeStrong(&v11->_specifiers, specifiers);
   }
 
   return v11;
 }
 
-- (BOOL)isEqualToSpecifierSection:(id)a3
+- (BOOL)isEqualToSpecifierSection:(id)section
 {
-  v4 = a3;
-  if ([(CARSettingsCellSpecifierSection *)self hasEqualSpecifiers:v4]&& [(CARSettingsCellSpecifierSection *)self hasEqualHeader:v4])
+  sectionCopy = section;
+  if ([(CARSettingsCellSpecifierSection *)self hasEqualSpecifiers:sectionCopy]&& [(CARSettingsCellSpecifierSection *)self hasEqualHeader:sectionCopy])
   {
-    v5 = [(CARSettingsCellSpecifierSection *)self hasEqualFooter:v4];
+    v5 = [(CARSettingsCellSpecifierSection *)self hasEqualFooter:sectionCopy];
   }
 
   else
@@ -48,34 +48,34 @@
   return v5;
 }
 
-- (BOOL)hasEqualSpecifiers:(id)a3
+- (BOOL)hasEqualSpecifiers:(id)specifiers
 {
-  v4 = a3;
-  v5 = [(CARSettingsCellSpecifierSection *)self specifiers];
-  v6 = [v4 specifiers];
+  specifiersCopy = specifiers;
+  specifiers = [(CARSettingsCellSpecifierSection *)self specifiers];
+  specifiers2 = [specifiersCopy specifiers];
 
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
-  return v4;
+  LOBYTE(specifiersCopy) = [specifiers isEqualToArray:specifiers2];
+  return specifiersCopy;
 }
 
-- (BOOL)hasEqualHeader:(id)a3
+- (BOOL)hasEqualHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(CARSettingsCellSpecifierSection *)self title];
-  v6 = [v4 title];
+  headerCopy = header;
+  title = [(CARSettingsCellSpecifierSection *)self title];
+  title2 = [headerCopy title];
 
-  LOBYTE(v4) = BSEqualStrings();
-  return v4;
+  LOBYTE(headerCopy) = BSEqualStrings();
+  return headerCopy;
 }
 
-- (BOOL)hasEqualFooter:(id)a3
+- (BOOL)hasEqualFooter:(id)footer
 {
-  v4 = a3;
-  v5 = [(CARSettingsCellSpecifierSection *)self footer];
-  v6 = [v4 footer];
+  footerCopy = footer;
+  footer = [(CARSettingsCellSpecifierSection *)self footer];
+  footer2 = [footerCopy footer];
 
-  LOBYTE(v4) = BSEqualStrings();
-  return v4;
+  LOBYTE(footerCopy) = BSEqualStrings();
+  return footerCopy;
 }
 
 @end

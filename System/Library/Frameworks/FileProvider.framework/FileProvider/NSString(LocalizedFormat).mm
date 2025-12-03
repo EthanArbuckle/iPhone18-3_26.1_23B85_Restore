@@ -7,7 +7,7 @@
 
 - (id)fp_localizedFormatWithKeys:()LocalizedFormat fromDictionary:error:
 {
-  v19 = a1;
+  selfCopy = self;
   v26 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
@@ -30,7 +30,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v13 = [v7 fp_valueForKeyPath:{*(*(&v21 + 1) + 8 * i), v19}];
+        v13 = [v7 fp_valueForKeyPath:{*(*(&v21 + 1) + 8 * i), selfCopy}];
         if (!v13)
         {
           if (a5)
@@ -74,7 +74,7 @@ LABEL_17:
     }
   }
 
-  v16 = [v19 fp_formatStringWithValues:v8 error:a5];
+  v16 = [selfCopy fp_formatStringWithValues:v8 error:a5];
 LABEL_18:
 
   v17 = *MEMORY[0x1E69E9840];
@@ -98,7 +98,7 @@ LABEL_18:
         v47 = [v6 objectAtIndexedSubscript:2];
         v48 = [v6 objectAtIndexedSubscript:3];
         v49 = [v6 objectAtIndexedSubscript:4];
-        v22 = [v46 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@%@%@" error:a4, v15, v16, v47, v48, v49];
+        v22 = [v46 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@%@%@" error:a4, v15, v16, v47, v48, v49];
       }
 
       else
@@ -112,7 +112,7 @@ LABEL_18:
           v18 = [v6 objectAtIndexedSubscript:3];
           v19 = [v6 objectAtIndexedSubscript:4];
           v20 = [v6 objectAtIndexedSubscript:5];
-          v22 = [v38 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@%@%@%@" error:a4, v15, v16, v17, v18, v19, v20];
+          v22 = [v38 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@%@%@%@" error:a4, v15, v16, v17, v18, v19, v20];
         }
 
         else
@@ -125,7 +125,7 @@ LABEL_18:
           v19 = [v6 objectAtIndexedSubscript:4];
           v20 = [v6 objectAtIndexedSubscript:5];
           v21 = [v6 objectAtIndexedSubscript:6];
-          v22 = [v67 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@%@%@%@%@" error:a4, v15, v16, v17, v18, v19, v20, v21];
+          v22 = [v67 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@%@%@%@%@" error:a4, v15, v16, v17, v18, v19, v20, v21];
         }
       }
 
@@ -146,7 +146,7 @@ LABEL_18:
         v42 = [v6 objectAtIndexedSubscript:6];
         v43 = [v6 objectAtIndexedSubscript:7];
         v44 = [v6 objectAtIndexedSubscript:8];
-        v22 = [v65 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@%@%@%@%@%@%@" error:a4, v62, v69, v39, v40, v60, v41, v42, v43, v44];
+        v22 = [v65 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@%@%@%@%@%@%@" error:a4, v62, v69, v39, v40, v60, v41, v42, v43, v44];
 
         goto LABEL_31;
       }
@@ -164,7 +164,7 @@ LABEL_18:
         v29 = [v6 objectAtIndexedSubscript:7];
         v30 = [v6 objectAtIndexedSubscript:8];
         v31 = [v6 objectAtIndexedSubscript:9];
-        v22 = [v61 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@%@%@%@%@%@%@%@" error:a4, v59, v68, v64, v58, v57, v27, v28, v29, v30, v31];
+        v22 = [v61 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@%@%@%@%@%@%@%@" error:a4, v59, v68, v64, v58, v57, v27, v28, v29, v30, v31];
 
         goto LABEL_31;
       }
@@ -182,7 +182,7 @@ LABEL_18:
     v54 = [v6 objectAtIndexedSubscript:6];
     v55 = [v6 objectAtIndexedSubscript:7];
     v33 = v66;
-    v22 = [v70 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@%@%@%@%@%@" error:a4, v66, v63, v50, v51, v52, v53, v54, v55];
+    v22 = [v70 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@%@%@%@%@%@" error:a4, v66, v63, v50, v51, v52, v53, v54, v55];
 
     goto LABEL_28;
   }
@@ -194,7 +194,7 @@ LABEL_18:
       v45 = MEMORY[0x1E696AEC0];
       v33 = [v6 objectAtIndexedSubscript:0];
       v36 = [v6 objectAtIndexedSubscript:1];
-      v22 = [v45 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@" error:a4, v33, v36];
+      v22 = [v45 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@" error:a4, v33, v36];
     }
 
     else
@@ -206,7 +206,7 @@ LABEL_18:
         v24 = [v6 objectAtIndexedSubscript:1];
         v25 = [v6 objectAtIndexedSubscript:2];
         v26 = [v6 objectAtIndexedSubscript:3];
-        v22 = [v23 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@%@" error:a4, v15, v24, v25, v26];
+        v22 = [v23 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@%@" error:a4, v15, v24, v25, v26];
 
 LABEL_26:
         goto LABEL_31;
@@ -216,7 +216,7 @@ LABEL_26:
       v33 = [v6 objectAtIndexedSubscript:0];
       v36 = [v6 objectAtIndexedSubscript:1];
       v37 = [v6 objectAtIndexedSubscript:2];
-      v22 = [v35 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@%@%@" error:a4, v33, v36, v37];
+      v22 = [v35 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@%@%@" error:a4, v33, v36, v37];
     }
 
     goto LABEL_28;
@@ -227,21 +227,21 @@ LABEL_26:
     if (v7 != 1)
     {
 LABEL_29:
-      v34 = FPLoc(@"TOO_MANY_FORMATS_%@", v8, v9, v10, v11, v12, v13, v14, a1);
+      selfCopy = FPLoc(@"TOO_MANY_FORMATS_%@", v8, v9, v10, v11, v12, v13, v14, self);
       goto LABEL_30;
     }
 
     v32 = MEMORY[0x1E696AEC0];
     v33 = [v6 objectAtIndexedSubscript:0];
-    v22 = [v32 localizedStringWithValidatedFormat:a1 validFormatSpecifiers:@"%@" error:a4, v33];
+    v22 = [v32 localizedStringWithValidatedFormat:self validFormatSpecifiers:@"%@" error:a4, v33];
 LABEL_28:
 
     goto LABEL_31;
   }
 
-  v34 = a1;
+  selfCopy = self;
 LABEL_30:
-  v22 = v34;
+  v22 = selfCopy;
 LABEL_31:
 
   return v22;

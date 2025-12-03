@@ -1,24 +1,24 @@
 @interface MSDKPeerDemoWiFiSettings
-- (MSDKPeerDemoWiFiSettings)initWithCoder:(id)a3;
-- (MSDKPeerDemoWiFiSettings)initWithSSID:(id)a3 password:(id)a4;
+- (MSDKPeerDemoWiFiSettings)initWithCoder:(id)coder;
+- (MSDKPeerDemoWiFiSettings)initWithSSID:(id)d password:(id)password;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSDKPeerDemoWiFiSettings
 
-- (MSDKPeerDemoWiFiSettings)initWithSSID:(id)a3 password:(id)a4
+- (MSDKPeerDemoWiFiSettings)initWithSSID:(id)d password:(id)password
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  passwordCopy = password;
   v11.receiver = self;
   v11.super_class = MSDKPeerDemoWiFiSettings;
   v8 = [(MSDKPeerDemoWiFiSettings *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MSDKPeerDemoWiFiSettings *)v8 setSsid:v6];
-    [(MSDKPeerDemoWiFiSettings *)v9 setPassword:v7];
+    [(MSDKPeerDemoWiFiSettings *)v8 setSsid:dCopy];
+    [(MSDKPeerDemoWiFiSettings *)v9 setPassword:passwordCopy];
   }
 
   return v9;
@@ -29,39 +29,39 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MSDKPeerDemoWiFiSettings *)self ssid];
-  v7 = [(MSDKPeerDemoWiFiSettings *)self password];
-  v8 = [v3 stringWithFormat:@"<%@[%p]: SSID=%@ Password=%@>", v5, self, v6, v7];
+  ssid = [(MSDKPeerDemoWiFiSettings *)self ssid];
+  password = [(MSDKPeerDemoWiFiSettings *)self password];
+  v8 = [v3 stringWithFormat:@"<%@[%p]: SSID=%@ Password=%@>", v5, self, ssid, password];
 
   return v8;
 }
 
-- (MSDKPeerDemoWiFiSettings)initWithCoder:(id)a3
+- (MSDKPeerDemoWiFiSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MSDKPeerDemoWiFiSettings;
   v5 = [(MSDKPeerDemoWiFiSettings *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ssid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ssid"];
     [(MSDKPeerDemoWiFiSettings *)v5 setSsid:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"password"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"password"];
     [(MSDKPeerDemoWiFiSettings *)v5 setPassword:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MSDKPeerDemoWiFiSettings *)self ssid];
-  [v4 encodeObject:v5 forKey:@"ssid"];
+  coderCopy = coder;
+  ssid = [(MSDKPeerDemoWiFiSettings *)self ssid];
+  [coderCopy encodeObject:ssid forKey:@"ssid"];
 
-  v6 = [(MSDKPeerDemoWiFiSettings *)self password];
-  [v4 encodeObject:v6 forKey:@"password"];
+  password = [(MSDKPeerDemoWiFiSettings *)self password];
+  [coderCopy encodeObject:password forKey:@"password"];
 }
 
 @end

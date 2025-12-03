@@ -1,23 +1,23 @@
 @interface ClimateMaxDefrostButton
-- (void)cabinService:(id)a3 didUpdateMaxDefrostOn:(BOOL)a4;
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3;
+- (void)cabinService:(id)service didUpdateMaxDefrostOn:(BOOL)on;
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter;
 @end
 
 @implementation ClimateMaxDefrostButton
 
-- (void)cabinService:(id)a3 didUpdateMaxDefrostOn:(BOOL)a4
+- (void)cabinService:(id)service didUpdateMaxDefrostOn:(BOOL)on
 {
-  v4 = self;
+  selfCopy = self;
   sub_1000C10C4();
-  [(ClimateMaxDefrostButton *)v4 setEnabled:sub_100004D14() < 8];
+  [(ClimateMaxDefrostButton *)selfCopy setEnabled:sub_100004D14() < 8];
   sub_100004E94();
   ClimateButton.refreshColorConfig()();
   ClimateButton.createEdgeInsets()();
 }
 
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter
 {
-  v3 = self;
+  selfCopy = self;
   sub_100004E94();
 }
 

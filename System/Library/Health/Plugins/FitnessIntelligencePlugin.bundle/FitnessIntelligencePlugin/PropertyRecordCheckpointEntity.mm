@@ -1,15 +1,15 @@
 @interface PropertyRecordCheckpointEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
 + (HDSyncEntityIdentifier)syncEntityIdentifier;
-+ (id)createTableSQLWithBehavior:(id)a3;
++ (id)createTableSQLWithBehavior:(id)behavior;
 + (id)databaseTable;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)indicesWithBehavior:(id)a3;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)indicesWithBehavior:(id)behavior;
 + (id)propertyForSyncIdentity;
 + (id)propertyForSyncProvenance;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
 - (_TtC25FitnessIntelligencePlugin30PropertyRecordCheckpointEntity)init;
-- (_TtC25FitnessIntelligencePlugin30PropertyRecordCheckpointEntity)initWithPersistentID:(int64_t)a3;
+- (_TtC25FitnessIntelligencePlugin30PropertyRecordCheckpointEntity)initWithPersistentID:(int64_t)d;
 @end
 
 @implementation PropertyRecordCheckpointEntity
@@ -23,39 +23,39 @@
   return v4;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   swift_getObjCClassMetadata();
-  v12 = a3;
-  v13 = a5;
+  sessionCopy = session;
+  profileCopy = profile;
   swift_unknownObjectRetain();
-  static PropertyRecordCheckpointEntity.generateSyncObjects(for:syncAnchorRange:profile:messageHandler:)(v12, var0, var1, v13, a6);
+  static PropertyRecordCheckpointEntity.generateSyncObjects(for:syncAnchorRange:profile:messageHandler:)(sessionCopy, var0, var1, profileCopy, handler);
   swift_unknownObjectRelease();
 
   return 1;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
   swift_getObjCClassMetadata();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v11 = a3;
-  v12 = a5;
-  v13 = [v12 database];
-  v14 = [ObjCClassFromMetadata nextSyncAnchorWithStartAnchor:a4 predicate:0 syncEntityClass:ObjCClassFromMetadata session:v11 orderingTerms:0 limit:0 healthDatabase:v13 error:a6];
+  sessionCopy = session;
+  profileCopy = profile;
+  database = [profileCopy database];
+  v14 = [ObjCClassFromMetadata nextSyncAnchorWithStartAnchor:anchor predicate:0 syncEntityClass:ObjCClassFromMetadata session:sessionCopy orderingTerms:0 limit:0 healthDatabase:database error:error];
 
   return v14;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
   v4 = sub_38F8(&qword_8EB18, &qword_7A950);
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4 - 8);
   v7 = &v18 - v6;
-  v8 = a3;
+  dataCopy = data;
   v9 = sub_748C8();
   v11 = v10;
 
@@ -84,7 +84,7 @@
   return v2;
 }
 
-+ (id)createTableSQLWithBehavior:(id)a3
++ (id)createTableSQLWithBehavior:(id)behavior
 {
   _s25FitnessIntelligencePlugin30PropertyRecordCheckpointEntityC14createTableSQL4withSSSgSo11_HKBehaviorC_tFZ_0();
   if (v3)
@@ -100,10 +100,10 @@
   return v4;
 }
 
-+ (id)indicesWithBehavior:(id)a3
++ (id)indicesWithBehavior:(id)behavior
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
+  behaviorCopy = behavior;
   static PropertyRecordCheckpointEntity.indices(with:)();
 
   sub_7688(0, &unk_8F270, HDSQLiteEntityIndex_ptr);
@@ -126,11 +126,11 @@
   return v2;
 }
 
-- (_TtC25FitnessIntelligencePlugin30PropertyRecordCheckpointEntity)initWithPersistentID:(int64_t)a3
+- (_TtC25FitnessIntelligencePlugin30PropertyRecordCheckpointEntity)initWithPersistentID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for PropertyRecordCheckpointEntity();
-  return [(PropertyRecordCheckpointEntity *)&v5 initWithPersistentID:a3];
+  return [(PropertyRecordCheckpointEntity *)&v5 initWithPersistentID:d];
 }
 
 - (_TtC25FitnessIntelligencePlugin30PropertyRecordCheckpointEntity)init

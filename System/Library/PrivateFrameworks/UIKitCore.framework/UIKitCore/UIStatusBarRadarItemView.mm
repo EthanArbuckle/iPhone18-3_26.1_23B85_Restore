@@ -8,18 +8,18 @@
 
 - (id)contentsImage
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
   v3 = MEMORY[0x1E696AEC0];
-  [v2 scale];
+  [foregroundStyle scale];
   v5 = [v3 stringWithFormat:@"_internal_radar_%ix.png", v4];
   v6 = MEMORY[0x1E696AAE8];
   v7 = _UIKitResourceBundlePath(@"CarPlayArtwork.bundle");
   v8 = [v6 bundleWithPath:v7];
 
   v9 = [UIImage imageNamed:v5 inBundle:v8];
-  v10 = [v9 CGImage];
-  [v2 scale];
-  v11 = [UIImage imageWithCGImage:v10 scale:0 orientation:?];
+  cGImage = [v9 CGImage];
+  [foregroundStyle scale];
+  v11 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
 
   v12 = [_UILegibilityImageSet imageFromImage:v11 withShadowImage:0];
 
@@ -28,8 +28,8 @@
 
 - (id)highlightImage
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  v3 = [v2 untintedImageNamed:@"Home_Highlight"];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v3 = [foregroundStyle untintedImageNamed:@"Home_Highlight"];
   v4 = [_UILegibilityImageSet imageFromImage:v3 withShadowImage:0];
 
   return v4;

@@ -1,20 +1,20 @@
 @interface HUTableViewCell
-- (HUTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateDetailTextLabel;
 - (void)_updateTitle;
 - (void)prepareForReuse;
-- (void)setTitleColorFollowsTintColor:(BOOL)a3;
-- (void)setValueColorFollowsTintColor:(BOOL)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setTitleColorFollowsTintColor:(BOOL)color;
+- (void)setValueColorFollowsTintColor:(BOOL)color;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUTableViewCell
 
-- (HUTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = HUTableViewCell;
-  result = [(HUTableViewCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  result = [(HUTableViewCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
   if (result)
   {
     result->_titleColorFollowsTintColor = 0;
@@ -35,46 +35,46 @@
   [(HUTableViewCell *)self setValueColorFollowsTintColor:0];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = [(HUTableViewCell *)self item];
-  v5 = [v4 latestResults];
+  item = [(HUTableViewCell *)self item];
+  latestResults = [item latestResults];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v7 = [(HUTableViewCell *)self textLabel];
-  [v7 setText:v6];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [(HUTableViewCell *)self textLabel];
+  [textLabel setText:v6];
 
   v8 = *MEMORY[0x277D13E20];
-  v9 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
 
   if (v9)
   {
     v21[0] = *MEMORY[0x277D740A8];
-    v10 = [(HUTableViewCell *)self detailTextLabel];
-    v11 = [v10 font];
-    v22[0] = v11;
+    detailTextLabel = [(HUTableViewCell *)self detailTextLabel];
+    font = [detailTextLabel font];
+    v22[0] = font;
     v21[1] = *MEMORY[0x277D740C0];
-    v12 = [(HUTableViewCell *)self detailTextLabel];
-    v13 = [v12 textColor];
-    v22[1] = v13;
+    detailTextLabel2 = [(HUTableViewCell *)self detailTextLabel];
+    textColor = [detailTextLabel2 textColor];
+    v22[1] = textColor;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
-    v15 = [v5 objectForKeyedSubscript:v8];
+    v15 = [latestResults objectForKeyedSubscript:v8];
     if ([v15 prefersDynamicString])
     {
-      v16 = [(HUTableViewCell *)self detailTextLabel];
-      [v16 bounds];
-      v19 = [v15 dynamicStringForSize:v14 attributes:{v17, v18}];
-      v20 = [(HUTableViewCell *)self detailTextLabel];
-      [v20 setAttributedText:v19];
+      detailTextLabel3 = [(HUTableViewCell *)self detailTextLabel];
+      [detailTextLabel3 bounds];
+      detailTextLabel5 = [v15 dynamicStringForSize:v14 attributes:{v17, v18}];
+      detailTextLabel4 = [(HUTableViewCell *)self detailTextLabel];
+      [detailTextLabel4 setAttributedText:detailTextLabel5];
     }
 
     else
     {
-      v16 = [v15 stringWithAttributes:v14];
-      v19 = [(HUTableViewCell *)self detailTextLabel];
-      [v19 setAttributedText:v16];
+      detailTextLabel3 = [v15 stringWithAttributes:v14];
+      detailTextLabel5 = [(HUTableViewCell *)self detailTextLabel];
+      [detailTextLabel5 setAttributedText:detailTextLabel3];
     }
   }
 
@@ -82,20 +82,20 @@
   [(HUTableViewCell *)self _updateDetailTextLabel];
 }
 
-- (void)setTitleColorFollowsTintColor:(BOOL)a3
+- (void)setTitleColorFollowsTintColor:(BOOL)color
 {
-  if (self->_titleColorFollowsTintColor != a3)
+  if (self->_titleColorFollowsTintColor != color)
   {
-    self->_titleColorFollowsTintColor = a3;
+    self->_titleColorFollowsTintColor = color;
     [(HUTableViewCell *)self _updateTitle];
   }
 }
 
-- (void)setValueColorFollowsTintColor:(BOOL)a3
+- (void)setValueColorFollowsTintColor:(BOOL)color
 {
-  if (self->_valueColorFollowsTintColor != a3)
+  if (self->_valueColorFollowsTintColor != color)
   {
-    self->_valueColorFollowsTintColor = a3;
+    self->_valueColorFollowsTintColor = color;
     [(HUTableViewCell *)self _updateDetailTextLabel];
   }
 }
@@ -108,8 +108,8 @@
   v5[3] = &unk_277DBF240;
   v5[4] = self;
   v3 = __31__HUTableViewCell__updateTitle__block_invoke(v5);
-  v4 = [(HUTableViewCell *)self textLabel];
-  [v4 setTextColor:v3];
+  textLabel = [(HUTableViewCell *)self textLabel];
+  [textLabel setTextColor:v3];
 }
 
 id __31__HUTableViewCell__updateTitle__block_invoke(uint64_t a1)
@@ -144,8 +144,8 @@ id __31__HUTableViewCell__updateTitle__block_invoke(uint64_t a1)
   v5[3] = &unk_277DBF240;
   v5[4] = self;
   v3 = __41__HUTableViewCell__updateDetailTextLabel__block_invoke(v5);
-  v4 = [(HUTableViewCell *)self detailTextLabel];
-  [v4 setTextColor:v3];
+  detailTextLabel = [(HUTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v3];
 }
 
 id __41__HUTableViewCell__updateDetailTextLabel__block_invoke(uint64_t a1)

@@ -1,6 +1,6 @@
 @interface SKArcadeSubscribeViewController
 - (BOOL)prefersStatusBarHidden;
-- (SKArcadeSubscribeViewController)initWithItemID:(id)a3 bundleID:(id)a4;
+- (SKArcadeSubscribeViewController)initWithItemID:(id)d bundleID:(id)iD;
 - (SKArcadeSubscribeViewControllerDelegate)delegate;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_loadOcelotUpsellExtension;
@@ -9,25 +9,25 @@
 - (void)finish;
 - (void)finishExtension;
 - (void)storeRemoteViewControllerDidDismiss;
-- (void)storeRemoteViewControllerTerminatedWithError:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)storeRemoteViewControllerTerminatedWithError:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKArcadeSubscribeViewController
 
-- (SKArcadeSubscribeViewController)initWithItemID:(id)a3 bundleID:(id)a4
+- (SKArcadeSubscribeViewController)initWithItemID:(id)d bundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v11.receiver = self;
   v11.super_class = SKArcadeSubscribeViewController;
   v8 = [(SKArcadeSubscribeViewController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(SKArcadeSubscribeViewController *)v8 setItemID:v6];
-    [(SKArcadeSubscribeViewController *)v9 setBundleID:v7];
+    [(SKArcadeSubscribeViewController *)v8 setItemID:dCopy];
+    [(SKArcadeSubscribeViewController *)v9 setBundleID:iDCopy];
   }
 
   return v9;
@@ -41,8 +41,8 @@
     [(SKStoreRemoteViewController *)remoteViewController willMoveToParentViewController:0];
     if ([(SKStoreRemoteViewController *)self->_remoteViewController isViewLoaded])
     {
-      v4 = [(SKStoreRemoteViewController *)self->_remoteViewController view];
-      [v4 removeFromSuperview];
+      view = [(SKStoreRemoteViewController *)self->_remoteViewController view];
+      [view removeFromSuperview];
     }
 
     [(SKStoreRemoteViewController *)self->_remoteViewController removeFromParentViewController];
@@ -79,24 +79,24 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v3 = [(SKArcadeSubscribeViewController *)self remoteViewController];
+  remoteViewController = [(SKArcadeSubscribeViewController *)self remoteViewController];
 
-  if (!v3)
+  if (!remoteViewController)
   {
     return 1;
   }
 
-  v4 = [(SKArcadeSubscribeViewController *)self remoteViewController];
-  v5 = [v4 prefersStatusBarHidden];
+  remoteViewController2 = [(SKArcadeSubscribeViewController *)self remoteViewController];
+  prefersStatusBarHidden = [remoteViewController2 prefersStatusBarHidden];
 
-  return v5;
+  return prefersStatusBarHidden;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(SKArcadeSubscribeViewController *)self remoteViewController];
+  remoteViewController = [(SKArcadeSubscribeViewController *)self remoteViewController];
 
-  if (v3)
+  if (remoteViewController)
   {
     [(SKArcadeSubscribeViewController *)self remoteViewController];
   }
@@ -106,38 +106,38 @@
     [(SKArcadeSubscribeViewController *)self parentViewController];
   }
   v4 = ;
-  v5 = [v4 supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [v4 supportedInterfaceOrientations];
 
-  return v5;
+  return supportedInterfaceOrientations;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SKArcadeSubscribeViewController;
-  [(SKArcadeSubscribeViewController *)&v5 viewDidAppear:a3];
-  v4 = [(SKArcadeSubscribeViewController *)self extension];
+  [(SKArcadeSubscribeViewController *)&v5 viewDidAppear:appear];
+  extension = [(SKArcadeSubscribeViewController *)self extension];
 
-  if (!v4)
+  if (!extension)
   {
     [(SKArcadeSubscribeViewController *)self _loadOcelotUpsellExtension];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = SKArcadeSubscribeViewController;
-  v6 = a4;
-  v7 = a3;
-  [(SKArcadeSubscribeViewController *)&v8 willTransitionToTraitCollection:v7 withTransitionCoordinator:v6];
-  [(_UIRemoteViewController *)self->_remoteViewController willTransitionToTraitCollection:v7 withTransitionCoordinator:v6, v8.receiver, v8.super_class];
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
+  [(SKArcadeSubscribeViewController *)&v8 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  [(_UIRemoteViewController *)self->_remoteViewController willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy, v8.receiver, v8.super_class];
 }
 
 - (void)finish
 {
-  v2 = [(SKArcadeSubscribeViewController *)self delegate];
-  [v2 didFinishWithError:0];
+  delegate = [(SKArcadeSubscribeViewController *)self delegate];
+  [delegate didFinishWithError:0];
 }
 
 - (void)_loadOcelotUpsellExtension
@@ -151,15 +151,15 @@
   if (v4)
   {
     NSLog(&cfstr_ErrorInstantia.isa, v4);
-    v6 = [(SKArcadeSubscribeViewController *)self delegate];
-    [v6 didFinishWithError:v5];
+    delegate = [(SKArcadeSubscribeViewController *)self delegate];
+    [delegate didFinishWithError:v5];
   }
 
   else if (v3)
   {
     [(SKArcadeSubscribeViewController *)self setExtension:v3];
-    v6 = objc_opt_new();
-    v12[0] = v6;
+    delegate = objc_opt_new();
+    v12[0] = delegate;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -175,8 +175,8 @@
   else
   {
     NSLog(&cfstr_ErrorNoExtensi.isa);
-    v6 = [(SKArcadeSubscribeViewController *)self delegate];
-    [v6 didFinishWithError:0];
+    delegate = [(SKArcadeSubscribeViewController *)self delegate];
+    [delegate didFinishWithError:0];
   }
 
   objc_destroyWeak(&location);
@@ -233,50 +233,50 @@ void __61__SKArcadeSubscribeViewController__loadOcelotUpsellExtension__block_inv
 
 - (void)_setupRemoteChildViewController
 {
-  v3 = [(SKArcadeSubscribeViewController *)self remoteViewController];
-  v15 = [v3 serviceViewControllerProxy];
+  remoteViewController = [(SKArcadeSubscribeViewController *)self remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
   v4 = [MEMORY[0x1E695E0F8] mutableCopy];
-  v5 = [(SKArcadeSubscribeViewController *)self itemID];
-  v6 = [v5 stringValue];
+  itemID = [(SKArcadeSubscribeViewController *)self itemID];
+  stringValue = [itemID stringValue];
 
-  if (v6)
+  if (stringValue)
   {
-    v7 = [(SKArcadeSubscribeViewController *)self itemID];
-    v8 = [v7 stringValue];
-    [v4 setObject:v8 forKeyedSubscript:@"itemID"];
+    itemID2 = [(SKArcadeSubscribeViewController *)self itemID];
+    stringValue2 = [itemID2 stringValue];
+    [v4 setObject:stringValue2 forKeyedSubscript:@"itemID"];
   }
 
-  [v15 setupWithParameters:v4];
-  v9 = [(SKArcadeSubscribeViewController *)self remoteViewController];
-  [(SKArcadeSubscribeViewController *)self addChildViewController:v9];
+  [serviceViewControllerProxy setupWithParameters:v4];
+  remoteViewController2 = [(SKArcadeSubscribeViewController *)self remoteViewController];
+  [(SKArcadeSubscribeViewController *)self addChildViewController:remoteViewController2];
 
-  v10 = [(SKArcadeSubscribeViewController *)self remoteViewController];
-  v11 = [v10 view];
+  remoteViewController3 = [(SKArcadeSubscribeViewController *)self remoteViewController];
+  view = [remoteViewController3 view];
 
-  v12 = [(SKArcadeSubscribeViewController *)self view];
-  [v12 bounds];
-  [v11 setFrame:?];
+  view2 = [(SKArcadeSubscribeViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v11 setAutoresizingMask:18];
-  v13 = [(SKArcadeSubscribeViewController *)self view];
-  [v13 addSubview:v11];
+  [view setAutoresizingMask:18];
+  view3 = [(SKArcadeSubscribeViewController *)self view];
+  [view3 addSubview:view];
 
-  v14 = [(SKArcadeSubscribeViewController *)self remoteViewController];
-  [v14 didMoveToParentViewController:self];
+  remoteViewController4 = [(SKArcadeSubscribeViewController *)self remoteViewController];
+  [remoteViewController4 didMoveToParentViewController:self];
 }
 
 - (void)storeRemoteViewControllerDidDismiss
 {
-  v2 = [(SKArcadeSubscribeViewController *)self delegate];
-  [v2 didFinishWithError:0];
+  delegate = [(SKArcadeSubscribeViewController *)self delegate];
+  [delegate didFinishWithError:0];
 }
 
-- (void)storeRemoteViewControllerTerminatedWithError:(id)a3
+- (void)storeRemoteViewControllerTerminatedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SKArcadeSubscribeViewController *)self delegate];
-  [v5 didFinishWithError:v4];
+  errorCopy = error;
+  delegate = [(SKArcadeSubscribeViewController *)self delegate];
+  [delegate didFinishWithError:errorCopy];
 }
 
 - (SKArcadeSubscribeViewControllerDelegate)delegate

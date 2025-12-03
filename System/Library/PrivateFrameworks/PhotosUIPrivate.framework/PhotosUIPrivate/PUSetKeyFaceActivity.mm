@@ -1,14 +1,14 @@
 @interface PUSetKeyFaceActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 @end
 
 @implementation PUSetKeyFaceActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 assets];
-  v5 = [v4 count] == 1;
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  v5 = [assets count] == 1;
 
   return v5;
 }

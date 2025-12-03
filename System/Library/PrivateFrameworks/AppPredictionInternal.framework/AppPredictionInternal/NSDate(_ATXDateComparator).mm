@@ -10,7 +10,7 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 compare:v4] == 1 || objc_msgSend(a1, "compare:", v4) == 0;
+    v5 = [self compare:v4] == 1 || objc_msgSend(self, "compare:", v4) == 0;
   }
 
   else
@@ -28,14 +28,14 @@
   v8 = 0;
   if (a3 && v6)
   {
-    if ([a1 atx_isBeforeDate:a3])
+    if ([self atx_isBeforeDate:a3])
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = [a1 atx_isAfterDate:v7] ^ 1;
+      v8 = [self atx_isAfterDate:v7] ^ 1;
     }
   }
 

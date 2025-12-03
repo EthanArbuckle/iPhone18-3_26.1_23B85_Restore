@@ -1,8 +1,8 @@
 @interface ISLanguageSetupController
 - (BOOL)isSettingDifferentLanguage;
 - (void)commit;
-- (void)saveLanguage:(BOOL)a3;
-- (void)setLanguage:(id)a3 specifier:(id)a4;
+- (void)saveLanguage:(BOOL)language;
+- (void)setLanguage:(id)language specifier:(id)specifier;
 - (void)setupController;
 @end
 
@@ -10,12 +10,12 @@
 
 - (BOOL)isSettingDifferentLanguage
 {
-  v2 = self;
-  v3 = [(ISLanguageSetupController *)self listController];
-  v4 = [v3 checkedLanguageCode];
-  LOBYTE(v2) = [v4 isEqualToString:v2->_languageToSet];
+  selfCopy = self;
+  listController = [(ISLanguageSetupController *)self listController];
+  checkedLanguageCode = [listController checkedLanguageCode];
+  LOBYTE(selfCopy) = [checkedLanguageCode isEqualToString:selfCopy->_languageToSet];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (void)commit
@@ -32,7 +32,7 @@
       v43 = [v5 localizedStringForKey:@"CANCEL_CHANGE_LANGUAGE" value:&stru_35798 table:@"InternationalSettings"];
 
       v6 = +[IPLanguageListManager manager];
-      v7 = [v6 systemDisplayLanguage];
+      systemDisplayLanguage = [v6 systemDisplayLanguage];
 
       v8 = [NSBundle bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"USE_%@" value:&stru_35798 table:@"InternationalSettings"];
@@ -40,8 +40,8 @@
 
       v10 = [NSBundle bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"USE_%@" value:&stru_35798 table:@"InternationalSettings"];
-      v44 = v7;
-      v42 = [NSLocale string:v11 withCapitalizedDisplayNamesForFirstLanguageIdentifier:v7 secondLanguageIdentifier:0 thirdLanguageIdentifier:0];
+      v44 = systemDisplayLanguage;
+      v42 = [NSLocale string:v11 withCapitalizedDisplayNamesForFirstLanguageIdentifier:systemDisplayLanguage secondLanguageIdentifier:0 thirdLanguageIdentifier:0];
 
       v12 = v45;
       v13 = [NSBundle bundleForClass:objc_opt_class()];
@@ -131,12 +131,12 @@
       v37 = [UIAlertAction _actionWithTitle:v43 image:0 style:1 handler:0 shouldDismissHandler:v49];
       [v34 addAction:v37];
 
-      v38 = [(ISLanguageSetupController *)self presentedViewController];
+      presentedViewController = [(ISLanguageSetupController *)self presentedViewController];
 
-      if (v38)
+      if (presentedViewController)
       {
-        v39 = [(ISLanguageSetupController *)self presentedViewController];
-        [v39 presentViewController:v34 animated:1 completion:0];
+        presentedViewController2 = [(ISLanguageSetupController *)self presentedViewController];
+        [presentedViewController2 presentViewController:v34 animated:1 completion:0];
       }
 
       else
@@ -147,15 +147,15 @@
 
     else
     {
-      v48 = [(ISLanguageSetupController *)self listController];
-      [v48 deselectHighlightedRow];
+      listController = [(ISLanguageSetupController *)self listController];
+      [listController deselectHighlightedRow];
     }
   }
 }
 
-- (void)saveLanguage:(BOOL)a3
+- (void)saveLanguage:(BOOL)language
 {
-  v3 = a3;
+  languageCopy = language;
   v14 = +[(ISInternationalViewController *)InternationalSettingsController];
   if (![v14 count])
   {
@@ -164,7 +164,7 @@
 
   if ([v14 count])
   {
-    if (v3)
+    if (languageCopy)
     {
       [InternationalSettingsController setLanguage:self->_languageToSet];
     }
@@ -179,20 +179,20 @@
       v5 = [NSMutableOrderedSet orderedSetWithArray:v14];
       v6 = self->_languageToSet;
       v7 = [NSLocale localeWithLocaleIdentifier:v6];
-      v8 = [v7 regionCode];
+      regionCode = [v7 regionCode];
 
-      if (!v8)
+      if (!regionCode)
       {
         v9 = +[(ISInternationalViewController *)InternationalSettingsController];
-        v10 = [v9 regionCode];
-        v11 = [NSLocale languageFromLanguage:v6 byReplacingRegion:v10];
+        regionCode2 = [v9 regionCode];
+        v11 = [NSLocale languageFromLanguage:v6 byReplacingRegion:regionCode2];
 
         v6 = v11;
       }
 
       [v5 addObject:v6];
-      v12 = [v5 array];
-      [InternationalSettingsController setPreferredLanguages:v12];
+      array = [v5 array];
+      [InternationalSettingsController setPreferredLanguages:array];
 
       +[InternationalSettingsController syncPreferencesAndPostNotificationForLanguageChange];
     }
@@ -205,9 +205,9 @@
   }
 }
 
-- (void)setLanguage:(id)a3 specifier:(id)a4
+- (void)setLanguage:(id)language specifier:(id)specifier
 {
-  v5 = [a3 copy];
+  v5 = [language copy];
   languageToSet = self->_languageToSet;
   self->_languageToSet = v5;
 

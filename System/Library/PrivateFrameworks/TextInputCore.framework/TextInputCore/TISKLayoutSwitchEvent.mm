@@ -1,17 +1,17 @@
 @interface TISKLayoutSwitchEvent
 - (double)touchDownTimestamp;
 - (double)touchUpTimestamp;
-- (void)reportToSession:(id)a3;
+- (void)reportToSession:(id)session;
 @end
 
 @implementation TISKLayoutSwitchEvent
 
-- (void)reportToSession:(id)a3
+- (void)reportToSession:(id)session
 {
   v3 = kTISKNumberOfTappedKeysCounter;
-  v4 = a3;
-  [v4 addSample:&unk_28400BF10 forKey:v3];
-  [v4 addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
+  sessionCopy = session;
+  [sessionCopy addSample:&unk_28400BF10 forKey:v3];
+  [sessionCopy addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
 }
 
 - (double)touchUpTimestamp
@@ -21,8 +21,8 @@
   if (v3)
   {
     v4 = [(TISKEvent *)self tap];
-    v5 = [v4 lastTouch];
-    [v5 timestamp];
+    lastTouch = [v4 lastTouch];
+    [lastTouch timestamp];
     v7 = v6;
 
     return v7;
@@ -44,8 +44,8 @@
   if (v3)
   {
     v4 = [(TISKEvent *)self tap];
-    v5 = [v4 firstTouch];
-    [v5 timestamp];
+    firstTouch = [v4 firstTouch];
+    [firstTouch timestamp];
     v7 = v6;
 
     return v7;

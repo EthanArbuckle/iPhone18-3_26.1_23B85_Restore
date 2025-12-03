@@ -1,12 +1,12 @@
 @interface RemoteUIActivator
-- (BOOL)_activateUserInterface:(id)a3 withParams:(id)a4;
-- (BOOL)activateUIWithParams:(id)a3;
+- (BOOL)_activateUserInterface:(id)interface withParams:(id)params;
+- (BOOL)activateUIWithParams:(id)params;
 - (RemoteUIActivator)init;
 - (RemoteUIActivatorDelegate)delegate;
 - (id)_createInterface;
 - (id)_prepareUIListener;
 - (id)_workQueue;
-- (void)_processParams:(id)a3 interface:(id)a4;
+- (void)_processParams:(id)params interface:(id)interface;
 @end
 
 @implementation RemoteUIActivator
@@ -32,13 +32,13 @@
   return v3;
 }
 
-- (BOOL)activateUIWithParams:(id)a3
+- (BOOL)activateUIWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(RemoteUIActivator *)self _createInterface];
-  if (v5)
+  paramsCopy = params;
+  _createInterface = [(RemoteUIActivator *)self _createInterface];
+  if (_createInterface)
   {
-    v6 = [(RemoteUIActivator *)self _activateUserInterface:v5 withParams:v4];
+    v6 = [(RemoteUIActivator *)self _activateUserInterface:_createInterface withParams:paramsCopy];
   }
 
   else
@@ -52,21 +52,21 @@
 - (id)_createInterface
 {
   v3 = objc_alloc(MEMORY[0x277D23FE8]);
-  v4 = [(RemoteUIActivator *)self _workQueue];
-  v5 = [v3 initWithReplyQueue:v4];
+  _workQueue = [(RemoteUIActivator *)self _workQueue];
+  v5 = [v3 initWithReplyQueue:_workQueue];
 
   v6 = objc_alloc(MEMORY[0x277D24108]);
-  v7 = [(RemoteUIActivator *)self _workQueue];
-  v8 = [v6 initWithConnectionProvider:v5 replyQueue:v7];
+  _workQueue2 = [(RemoteUIActivator *)self _workQueue];
+  v8 = [v6 initWithConnectionProvider:v5 replyQueue:_workQueue2];
 
   return v8;
 }
 
-- (BOOL)_activateUserInterface:(id)a3 withParams:(id)a4
+- (BOOL)_activateUserInterface:(id)interface withParams:(id)params
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interfaceCopy = interface;
+  paramsCopy = params;
   v8 = [(NSMapTable *)self->_activeInterfaces copy];
   v28 = 0u;
   v29 = 0u;
@@ -139,45 +139,45 @@
   [(NSMapTable *)self->_activeInterfaces removeAllObjects];
   [(NSMapTable *)self->_activeListeners removeAllObjects];
   os_unfair_lock_unlock(&self->_activeObjectsLock);
-  [(RemoteUIActivator *)self _processParams:v7 interface:v6];
+  [(RemoteUIActivator *)self _processParams:paramsCopy interface:interfaceCopy];
 
   v22 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)_processParams:(id)a3 interface:(id)a4
+- (void)_processParams:(id)params interface:(id)interface
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  interfaceCopy = interface;
   v8 = objc_alloc(MEMORY[0x277D24110]);
-  v9 = [v6 evaluationRequest];
-  v10 = [v8 initWithIdentifier:4 evaluationRequest:v9];
+  evaluationRequest = [paramsCopy evaluationRequest];
+  v10 = [v8 initWithIdentifier:4 evaluationRequest:evaluationRequest];
 
-  v11 = [(RemoteUIActivator *)self _prepareUIListener];
-  v12 = [v11 endpoint];
-  [v10 setConnectionEndpoint:v12];
+  _prepareUIListener = [(RemoteUIActivator *)self _prepareUIListener];
+  endpoint = [_prepareUIListener endpoint];
+  [v10 setConnectionEndpoint:endpoint];
 
   activeInterfaces = self->_activeInterfaces;
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "evaluationRequestIdentifier")}];
-  [(NSMapTable *)activeInterfaces setObject:v7 forKey:v14];
+  [(NSMapTable *)activeInterfaces setObject:interfaceCopy forKey:v14];
 
   activeListeners = self->_activeListeners;
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "evaluationRequestIdentifier")}];
-  [(NSMapTable *)activeListeners setObject:v11 forKey:v16];
+  [(NSMapTable *)activeListeners setObject:_prepareUIListener forKey:v16];
 
   v17 = LACLogUI();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v7;
+    v27 = interfaceCopy;
     v28 = 1024;
-    v29 = [v10 evaluationRequestIdentifier];
+    evaluationRequestIdentifier = [v10 evaluationRequestIdentifier];
     _os_log_impl(&dword_238B95000, v17, OS_LOG_TYPE_DEFAULT, "Activator registered interface: %@ for rid: %d", buf, 0x12u);
   }
 
-  v18 = [v6 notificationCenter];
-  [v18 postNotificationUIDidAppear];
+  notificationCenter = [paramsCopy notificationCenter];
+  [notificationCenter postNotificationUIDidAppear];
 
   objc_initWeak(buf, self);
   v22[0] = MEMORY[0x277D85DD0];
@@ -187,9 +187,9 @@
   v19 = v10;
   v23 = v19;
   objc_copyWeak(&v25, buf);
-  v20 = v6;
+  v20 = paramsCopy;
   v24 = v20;
-  [v7 processRequest:v19 completion:v22];
+  [interfaceCopy processRequest:v19 completion:v22];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
@@ -271,10 +271,10 @@ LABEL_14:
 
 - (id)_prepareUIListener
 {
-  v2 = [(RemoteUIActivator *)self delegate];
-  v3 = [v2 anonymousListener];
+  delegate = [(RemoteUIActivator *)self delegate];
+  anonymousListener = [delegate anonymousListener];
 
-  return v3;
+  return anonymousListener;
 }
 
 - (id)_workQueue
@@ -284,15 +284,15 @@ LABEL_14:
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v4 workQueue];
+    workQueue = [v4 workQueue];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D24028] daemonQueue];
+    workQueue = [MEMORY[0x277D24028] daemonQueue];
   }
 
-  return v5;
+  return workQueue;
 }
 
 - (RemoteUIActivatorDelegate)delegate

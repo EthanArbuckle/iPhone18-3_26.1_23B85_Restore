@@ -1,22 +1,22 @@
 @interface _TVURLSessionDownloadTaskWrapper
-+ (id)writeRequestToTempDir:(id)a3 resultError:(id)a4;
-- (_TVURLSessionDownloadTaskWrapper)initWithURL:(id)a3;
++ (id)writeRequestToTempDir:(id)dir resultError:(id)error;
+- (_TVURLSessionDownloadTaskWrapper)initWithURL:(id)l;
 - (void)cancel;
-- (void)resumeWithCompletionHandler:(id)a3;
-- (void)resumeWithCompletionHandler:(id)a3 session:(id)a4;
+- (void)resumeWithCompletionHandler:(id)handler;
+- (void)resumeWithCompletionHandler:(id)handler session:(id)session;
 @end
 
 @implementation _TVURLSessionDownloadTaskWrapper
 
-- (_TVURLSessionDownloadTaskWrapper)initWithURL:(id)a3
+- (_TVURLSessionDownloadTaskWrapper)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = _TVURLSessionDownloadTaskWrapper;
   v5 = [(_TVURLSessionDownloadTaskWrapper *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -26,11 +26,11 @@
   return v5;
 }
 
-+ (id)writeRequestToTempDir:(id)a3 resultError:(id)a4
++ (id)writeRequestToTempDir:(id)dir resultError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6 || ([v5 data], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  dirCopy = dir;
+  errorCopy = error;
+  if (errorCopy || ([dirCopy data], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v7 = VUICImageLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -42,14 +42,14 @@
   }
 
   v11 = NSTemporaryDirectory();
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 UUIDString];
-  v7 = [v11 stringByAppendingPathComponent:v13];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [v11 stringByAppendingPathComponent:uUIDString];
 
-  v14 = [v5 data];
-  LODWORD(v12) = [v14 writeToFile:v7 atomically:0];
+  data = [dirCopy data];
+  LODWORD(uUID) = [data writeToFile:v7 atomically:0];
 
-  if (!v12)
+  if (!uUID)
   {
     v15 = VUICImageLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -68,9 +68,9 @@ LABEL_5:
   return v8;
 }
 
-- (void)resumeWithCompletionHandler:(id)a3
+- (void)resumeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_state == 1)
   {
     v5 = (self->_taskID + 1);
@@ -87,7 +87,7 @@ LABEL_5:
     v8 = v6;
     objc_copyWeak(v12, &location);
     v12[1] = v5;
-    v11 = v4;
+    v11 = handlerCopy;
     dispatch_async(v7, block);
 
     objc_destroyWeak(v12);
@@ -95,11 +95,11 @@ LABEL_5:
   }
 }
 
-- (void)resumeWithCompletionHandler:(id)a3 session:(id)a4
+- (void)resumeWithCompletionHandler:(id)handler session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  sessionCopy = session;
+  if (sessionCopy)
   {
     if (self->_state == 1)
     {
@@ -113,12 +113,12 @@ LABEL_5:
       v13[1] = 3221225472;
       v13[2] = __72___TVURLSessionDownloadTaskWrapper_resumeWithCompletionHandler_session___block_invoke;
       v13[3] = &unk_279E21EE8;
-      v14 = v7;
+      v14 = sessionCopy;
       v15 = v9;
       v11 = v9;
       objc_copyWeak(v17, &location);
       v17[1] = v8;
-      v16 = v6;
+      v16 = handlerCopy;
       dispatch_async(v10, v13);
 
       objc_destroyWeak(v17);
@@ -134,7 +134,7 @@ LABEL_5:
       [_TVURLSessionDownloadTaskWrapper resumeWithCompletionHandler:session:];
     }
 
-    [(_TVURLSessionDownloadTaskWrapper *)self resumeWithCompletionHandler:v6];
+    [(_TVURLSessionDownloadTaskWrapper *)self resumeWithCompletionHandler:handlerCopy];
   }
 }
 

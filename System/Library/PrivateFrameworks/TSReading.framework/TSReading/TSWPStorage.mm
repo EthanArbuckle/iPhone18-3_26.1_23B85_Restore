@@ -1,311 +1,311 @@
 @interface TSWPStorage
-+ (TSWPAttributeArray)createAttributeArrayForKind:(unsigned int)a3 undoTransaction:(TSWPStorageTransaction *)a4;
-+ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unsigned int)a3;
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4;
-+ (id)plainTextPasteStringForStorages:(id)a3 forcePlainText:(BOOL)a4;
++ (TSWPAttributeArray)createAttributeArrayForKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
++ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unsigned int)kind;
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments;
++ (id)plainTextPasteStringForStorages:(id)storages forcePlainText:(BOOL)text;
 - ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)hyperlinkCellID;
-- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)a3;
+- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)index;
 - (BOOL)canBeStoredInAStringValueCell;
 - (BOOL)canPasteAsPlainText;
 - (BOOL)canPasteAsPlainTextWithUniformParagraphs;
 - (BOOL)canUserReplaceText;
 - (BOOL)changesWithPageCount;
 - (BOOL)hasAttachmentsThatChangeWithPageNumberOrPageCount;
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasDeletionInRange:(_NSRange)a3;
-- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)a3;
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasDeletionInRange:(_NSRange)range;
+- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)index;
 - (BOOL)hasSmartFields;
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3;
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range;
 - (BOOL)hasVisibleText;
 - (BOOL)highlightsAllowed;
-- (BOOL)isEmptyParagraphSelection:(id)a3 outRange:(_NSRange *)a4;
+- (BOOL)isEmptyParagraphSelection:(id)selection outRange:(_NSRange *)range;
 - (BOOL)isThemeContent;
-- (BOOL)isWholeParagraphsForRange:(_NSRange)a3 ignoreAttachmentCharacters:(BOOL)a4 requireParagraphBreakSelected:(BOOL)a5;
-- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)a3;
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3;
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)a3;
-- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)a3 requireHidden:(BOOL)a4 range:(_NSRange *)a5;
+- (BOOL)isWholeParagraphsForRange:(_NSRange)range ignoreAttachmentCharacters:(BOOL)characters requireParagraphBreakSelected:(BOOL)selected;
+- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)index;
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index;
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)index;
+- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)index requireHidden:(BOOL)hidden range:(_NSRange *)range;
 - (BOOL)p_hasGoodAttributesForPlainTextPaste;
 - (BOOL)p_passesExtraTablesChecksForStoringInAStringValueCell;
-- (BOOL)p_shouldInsertionSplitChange:(id)a3 changeSession:(id)a4;
-- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)a3;
-- (BOOL)selectionContainsVisibleTrackedChanges:(id)a3;
-- (BOOL)setDOLCSuppressed:(BOOL)a3;
-- (BOOL)styleOverridesAppliedToRange:(_NSRange)a3;
+- (BOOL)p_shouldInsertionSplitChange:(id)change changeSession:(id)session;
+- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)index;
+- (BOOL)selectionContainsVisibleTrackedChanges:(id)changes;
+- (BOOL)setDOLCSuppressed:(BOOL)suppressed;
+- (BOOL)styleOverridesAppliedToRange:(_NSRange)range;
 - (BOOL)textIsVertical;
 - (NSString)debugDescription;
 - (NSString)description;
-- (TSWPAttributeArray)attributeArrayForKind:(unsigned int)a3 withCreate:(BOOL)a4 fromUndo:(BOOL)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)a3 styleProvider:(unint64_t)a4;
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)a3 styleProvider:(unint64_t)a4;
-- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)a3 styleProvider:(_NSRange)a4;
-- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)a3 styleProvider:(_NSRange)a4 requireHidden:(id)a5;
-- (TSWPRangeVector)deletedRangeVectorInRange:(SEL)a3;
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(int)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10;
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(int)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10 paragraphDirection:(int)a11;
-- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)a3;
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4;
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4 attributeKind:(unsigned int)a5;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)footnoteRangeForTextRange:(_NSRange)a3;
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4;
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6 changeSession:(id)a7;
-- (_NSRange)insertSection:(id)a3 atCharIndex:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6 changeSession:(id)a7;
-- (_NSRange)insertSpecialCharacter:(unsigned __int16)a3 object:(id)a4 kind:(unsigned int)a5 range:(_NSRange)a6 dolcContext:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8 changeSession:(id)a9;
-- (_NSRange)nextWordFromIndex:(unint64_t)a3 forward:(BOOL)a4;
-- (_NSRange)p_RelocateNonSelectedAnchorsInRange:(_NSRange)a3 selectionInfos:(id)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)a3;
-- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4 handleNextWordWhitespace:(BOOL)a5;
-- (_NSRange)p_replaceCharactersInLogicalSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id *)a6 changeSession:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8 outInsertedRange:(_NSRange *)a9;
-- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)a3;
+- (TSWPAttributeArray)attributeArrayForKind:(unsigned int)kind withCreate:(BOOL)create fromUndo:(BOOL)undo undoTransaction:(TSWPStorageTransaction *)transaction;
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)index styleProvider:(unint64_t)provider;
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)index styleProvider:(unint64_t)provider;
+- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)range styleProvider:(_NSRange)provider;
+- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)range styleProvider:(_NSRange)provider requireHidden:(id)hidden;
+- (TSWPRangeVector)deletedRangeVectorInRange:(SEL)range;
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(int)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0;
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(int)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0 paragraphDirection:(int)self1;
+- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)range;
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards;
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards attributeKind:(unsigned int)kind;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)footnoteRangeForTextRange:(_NSRange)range;
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range;
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session;
+- (_NSRange)insertSection:(id)section atCharIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session;
+- (_NSRange)insertSpecialCharacter:(unsigned __int16)character object:(id)object kind:(unsigned int)kind range:(_NSRange)range dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session;
+- (_NSRange)nextWordFromIndex:(unint64_t)index forward:(BOOL)forward;
+- (_NSRange)p_RelocateNonSelectedAnchorsInRange:(_NSRange)range selectionInfos:(id)infos undoTransaction:(TSWPStorageTransaction *)transaction;
+- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)fields;
+- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex handleNextWordWhitespace:(BOOL)whitespace;
+- (_NSRange)p_replaceCharactersInLogicalSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id *)data changeSession:(id)session undoTransaction:(TSWPStorageTransaction *)transaction outInsertedRange:(_NSRange *)range;
+- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)range;
 - (_NSRange)range;
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3;
-- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)a3;
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3;
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3 skipVisibleDeleted:(BOOL)a4;
-- (_NSRange)rangeByTrimmingRange:(_NSRange)a3 withBlock:(id)a4;
-- (_NSRange)rangeForChange:(id)a3;
-- (_NSRange)rangeForHighlight:(id)a3;
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4;
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (_NSRange)rangeForSelectionWithInsertionSelection:(id)a3;
-- (_NSRange)rangeForTrackedChanges:(id)a3;
-- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)a3 range:(_NSRange)a4;
-- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)a3 backwards:(BOOL)a4 range:(_NSRange)a5;
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 range:(_NSRange)a5;
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 updatingSearchRange:(_NSRange *)a5;
-- (_NSRange)replaceAllOccurrencesOfObject:(id)a3 withObject:(id)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (_NSRange)replaceAllOccurrencesOfStyle:(id)a3 withStyle:(id)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 dolcContext:(id)a6 undoTransaction:(void *)a7;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 notifyObservers:(BOOL)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (_NSRange)replaceCharactersInSelection:(id)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 dolcContext:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8;
-- (_NSRange)replaceCharactersInSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id *)a6 changeSession:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8 outInsertedRange:(_NSRange *)a9;
-- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)a3;
-- (_NSRange)textRangeForListAtCharIndex:(unint64_t)a3;
-- (_NSRange)textRangeForListsInCharRange:(_NSRange)a3;
-- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)a3;
-- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)a3;
-- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)a3;
-- (_NSRange)textRangeForParagraphsInRange:(_NSRange)a3;
-- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)a3;
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3;
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3 includingBreaks:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (__CTFont)createFontAtCharIndex:(unint64_t)a3 scaleTextPercent:(unint64_t)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6;
-- (id)attachmentAtAttachmentIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4;
-- (id)attachmentAtCharIndex:(unint64_t)a3;
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3;
-- (id)bestCharacterLanguageForTextRange:(_NSRange)a3;
-- (id)changeAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5;
-- (id)changeAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)changeDetailsAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)changeDetailsForChange:(id)a3 withRange:(_NSRange)a4;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 left:(BOOL)a4 effectiveRange:(_NSRange *)a5;
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words;
+- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)break;
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace;
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace skipVisibleDeleted:(BOOL)deleted;
+- (_NSRange)rangeByTrimmingRange:(_NSRange)range withBlock:(id)block;
+- (_NSRange)rangeForChange:(id)change;
+- (_NSRange)rangeForHighlight:(id)highlight;
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex;
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (_NSRange)rangeForSelectionWithInsertionSelection:(id)selection;
+- (_NSRange)rangeForTrackedChanges:(id)changes;
+- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)options range:(_NSRange)range;
+- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)character backwards:(BOOL)backwards range:(_NSRange)range;
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options range:(_NSRange)range;
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options updatingSearchRange:(_NSRange *)range;
+- (_NSRange)replaceAllOccurrencesOfObject:(id)object withObject:(id)withObject forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (_NSRange)replaceAllOccurrencesOfStyle:(id)style withStyle:(id)withStyle undoTransaction:(TSWPStorageTransaction *)transaction;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withStorage:(id)storage usePasteRules:(BOOL)rules dolcContext:(id)context undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string notifyObservers:(BOOL)observers undoTransaction:(TSWPStorageTransaction *)transaction;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string undoTransaction:(TSWPStorageTransaction *)transaction;
+- (_NSRange)replaceCharactersInSelection:(id)selection withStorage:(id)storage usePasteRules:(BOOL)rules dolcContext:(id)context changeSession:(id)session undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id *)data changeSession:(id)session undoTransaction:(TSWPStorageTransaction *)transaction outInsertedRange:(_NSRange *)range;
+- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)index;
+- (_NSRange)textRangeForListAtCharIndex:(unint64_t)index;
+- (_NSRange)textRangeForListsInCharRange:(_NSRange)range;
+- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)index;
+- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)index;
+- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)range;
+- (_NSRange)textRangeForParagraphsInRange:(_NSRange)range;
+- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)index;
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index;
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index includingBreaks:(BOOL)breaks;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (__CTFont)createFontAtCharIndex:(unint64_t)index scaleTextPercent:(unint64_t)percent effectiveRange:(_NSRange *)range styleProvider:(id)provider;
+- (id)attachmentAtAttachmentIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex;
+- (id)attachmentAtCharIndex:(unint64_t)index;
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index;
+- (id)bestCharacterLanguageForTextRange:(_NSRange)range;
+- (id)changeAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range;
+- (id)changeAtCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)changeDetailsAtCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)changeDetailsForChange:(id)change withRange:(_NSRange)range;
+- (id)characterStyleAtCharIndex:(unint64_t)index left:(BOOL)left effectiveRange:(_NSRange *)range;
 - (id)childEnumerator;
-- (id)childEnumeratorForRange:(_NSRange)a3;
+- (id)childEnumeratorForRange:(_NSRange)range;
 - (id)childInfos;
-- (id)columnStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)columnStyleAtColumnStyleIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)copyWithContext:(id)a3;
-- (id)deletedRangesInRange:(_NSRange)a3;
-- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)editableSmartFieldAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)extendSelectionForTopicChildren:(id)a3;
-- (id)extendSelectionToIncludeSmartFields:(id)a3;
-- (id)fontNameAtCharIndex:(unint64_t)a3 size:(double *)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6;
-- (id)footnoteAtFootnoteIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4;
-- (id)footnoteMarkAtCharIndex:(unint64_t)a3;
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3;
-- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)a3;
+- (id)columnStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)columnStyleAtColumnStyleIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)copyWithContext:(id)context;
+- (id)deletedRangesInRange:(_NSRange)range;
+- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)editableSmartFieldAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)extendSelectionForTopicChildren:(id)children;
+- (id)extendSelectionToIncludeSmartFields:(id)fields;
+- (id)fontNameAtCharIndex:(unint64_t)index size:(double *)size effectiveRange:(_NSRange *)range styleProvider:(id)provider;
+- (id)footnoteAtFootnoteIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex;
+- (id)footnoteMarkAtCharIndex:(unint64_t)index;
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index;
+- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)index;
 - (id)footnoteStorages;
-- (id)glyphVariantDataAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)hiddenRangesInRange:(_NSRange)a3;
-- (id)languageAtParIndex:(unint64_t)a3 useStringTokenizer:(BOOL)a4 useCreationLanguage:(BOOL)a5;
-- (id)languageForTextRange:(_NSRange)a3 useStringTokenizer:(BOOL)a4 useCreationLanguage:(BOOL)a5;
-- (id)listStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6;
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6 kind:(int)a7;
-- (id)nextChangeFromCharIndex:(unint64_t)a3 afterChange:(id)a4 changeRange:(_NSRange *)a5;
-- (id)nsAttributedStringWithDefaultAttributeDelegateWithLayoutParent:(id)a3;
-- (id)nsAttributedSubstringFromRange:(_NSRange)a3 delegate:(id)a4 scale:(double)a5 applyChanges:(BOOL)a6 includeInlineDrawables:(BOOL)a7 withLayoutParent:(id)a8;
-- (id)nsAttributedSubstringFromRange:(_NSRange)a3 scale:(double)a4 applyChanges:(BOOL)a5 includeInlineDrawables:(BOOL)a6 withLayoutParent:(id)a7;
-- (id)nsAttributedSubstringWithAttachmentsRemovedFromRange:(_NSRange)a3 withLayoutParent:(id)a4;
-- (id)objectAtLocationAtExactCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4;
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5;
-- (id)pDefaultSectionForContext:(id)a3;
-- (id)pDrawableInfoFromImporter:(id)a3 error:(id *)a4;
-- (id)pExportAttributes:(unint64_t)a3 effectiveRange:(_NSRange *)a4 stickyFont:(id *)a5 scale:(double)a6;
-- (id)pExportParagraphAttributes:(id)a3 nextParagraphStyle:(id)a4 scale:(double)a5;
-- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)a3;
-- (id)pImportParagraphAttributes:(id)a3 paragraphStyle:(id)a4;
-- (id)pNSAttributedStringWithAttributeDelegate:(id)a3 ignoreLists:(BOOL)a4 stripTextualAttachments:(BOOL)a5 stripGraphicalAttachments:(BOOL)a6 stripInlineAttachments:(BOOL)a7 attachmentChar:(id)a8 scale:(double)a9 withLayoutParent:(id)a10;
-- (id)pNSAttributedStringWithDefaultDelegateIgnoreLists:(BOOL)a3 stripTextualAttachments:(BOOL)a4 stripGraphicalAttachments:(BOOL)a5 stripInlineAttachments:(BOOL)a6 attachmentChar:(id)a7 scale:(double)a8 withLayoutParent:(id)a9;
-- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4 withInsertionBehavior:(int)a5;
-- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)a3 withString:(id)a4;
-- (id)pParagraphStyleWithFrequentAttributesInString:(id)a3 withinStringRange:(_NSRange)a4 currentParagraphStyle:(id)a5;
-- (id)pTextListsFromListStyle:(id)a3 atLevel:(unint64_t)a4 labelTypeMap:(id)a5;
-- (id)p_replacementsForSelection:(id)a3 withString:(id)a4 changeSession:(id)a5 shouldTrackDeletions:(BOOL)a6;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)plainTextStringFromRange:(_NSRange)a3 convertTextualAttachments:(BOOL)a4 includeChildTextStorages:(BOOL)a5 forExport:(BOOL)a6 withLayoutParent:(id)a7;
-- (id)previousChangeFromCharIndex:(unint64_t)a3 beforeChange:(id)a4 changeRange:(_NSRange *)a5;
+- (id)glyphVariantDataAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)hiddenRangesInRange:(_NSRange)range;
+- (id)languageAtParIndex:(unint64_t)index useStringTokenizer:(BOOL)tokenizer useCreationLanguage:(BOOL)language;
+- (id)languageForTextRange:(_NSRange)range useStringTokenizer:(BOOL)tokenizer useCreationLanguage:(BOOL)language;
+- (id)listStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags;
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags kind:(int)kind;
+- (id)nextChangeFromCharIndex:(unint64_t)index afterChange:(id)change changeRange:(_NSRange *)range;
+- (id)nsAttributedStringWithDefaultAttributeDelegateWithLayoutParent:(id)parent;
+- (id)nsAttributedSubstringFromRange:(_NSRange)range delegate:(id)delegate scale:(double)scale applyChanges:(BOOL)changes includeInlineDrawables:(BOOL)drawables withLayoutParent:(id)parent;
+- (id)nsAttributedSubstringFromRange:(_NSRange)range scale:(double)scale applyChanges:(BOOL)changes includeInlineDrawables:(BOOL)drawables withLayoutParent:(id)parent;
+- (id)nsAttributedSubstringWithAttachmentsRemovedFromRange:(_NSRange)range withLayoutParent:(id)parent;
+- (id)objectAtLocationAtExactCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind;
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range;
+- (id)pDefaultSectionForContext:(id)context;
+- (id)pDrawableInfoFromImporter:(id)importer error:(id *)error;
+- (id)pExportAttributes:(unint64_t)attributes effectiveRange:(_NSRange *)range stickyFont:(id *)font scale:(double)scale;
+- (id)pExportParagraphAttributes:(id)attributes nextParagraphStyle:(id)style scale:(double)scale;
+- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)index;
+- (id)pImportParagraphAttributes:(id)attributes paragraphStyle:(id)style;
+- (id)pNSAttributedStringWithAttributeDelegate:(id)delegate ignoreLists:(BOOL)lists stripTextualAttachments:(BOOL)attachments stripGraphicalAttachments:(BOOL)graphicalAttachments stripInlineAttachments:(BOOL)inlineAttachments attachmentChar:(id)char scale:(double)scale withLayoutParent:(id)self0;
+- (id)pNSAttributedStringWithDefaultDelegateIgnoreLists:(BOOL)lists stripTextualAttachments:(BOOL)attachments stripGraphicalAttachments:(BOOL)graphicalAttachments stripInlineAttachments:(BOOL)inlineAttachments attachmentChar:(id)char scale:(double)scale withLayoutParent:(id)parent;
+- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)range withString:(id)string withInsertionBehavior:(int)behavior;
+- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)selection withString:(id)string;
+- (id)pParagraphStyleWithFrequentAttributesInString:(id)string withinStringRange:(_NSRange)range currentParagraphStyle:(id)style;
+- (id)pTextListsFromListStyle:(id)style atLevel:(unint64_t)level labelTypeMap:(id)map;
+- (id)p_replacementsForSelection:(id)selection withString:(id)string changeSession:(id)session shouldTrackDeletions:(BOOL)deletions;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)plainTextStringFromRange:(_NSRange)range convertTextualAttachments:(BOOL)attachments includeChildTextStorages:(BOOL)storages forExport:(BOOL)export withLayoutParent:(id)parent;
+- (id)previousChangeFromCharIndex:(unint64_t)index beforeChange:(id)change changeRange:(_NSRange *)range;
 - (id)referencedStyles;
-- (id)referencedStylesOfClass:(Class)a3;
-- (id)relocateNonSelectedAnchorsInSelection:(id)a3 undoTransaction:(TSWPStorageTransaction *)a4;
-- (id)searchForAnnotationsWithHitBlock:(id)a3;
-- (id)searchForString:(id)a3 options:(unint64_t)a4 onHit:(id)a5;
-- (id)searchInRange:(_NSRange)a3 forString:(id)a4 options:(unint64_t)a5 onHit:(id)a6;
-- (id)sectionAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)sectionAtSectionIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unsigned int)a3 intersectingRange:(_NSRange)a4 passingTest:(id)a5;
+- (id)referencedStylesOfClass:(Class)class;
+- (id)relocateNonSelectedAnchorsInSelection:(id)selection undoTransaction:(TSWPStorageTransaction *)transaction;
+- (id)searchForAnnotationsWithHitBlock:(id)block;
+- (id)searchForString:(id)string options:(unint64_t)options onHit:(id)hit;
+- (id)searchInRange:(_NSRange)range forString:(id)string options:(unint64_t)options onHit:(id)hit;
+- (id)sectionAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)sectionAtSectionIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unsigned int)kind intersectingRange:(_NSRange)range passingTest:(id)test;
 - (id)stringValue;
-- (id)substringWithSelection:(id)a3;
-- (id)textSourceForLayoutInRange:(_NSRange)a3;
-- (id)valueForBIUProperties:(id)a3;
-- (id)valueForBIUProperties:(id)a3 selection:(id)a4 insertionStyle:(id)a5;
-- (id)valueForProperty:(int)a3 atCharIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (int)compareAttributeArray1:(TSWPAttributeArray *)a3 array2:(TSWPAttributeArray *)a4 range1:(_NSRange)a5 range2:(_NSRange)a6 attributeIndex1:(unint64_t)a7 attributeIndex2:(unint64_t)a8;
-- (int)compareAttributeArray:(TSWPAttributeArray *)a3 range:(_NSRange)a4 otherStorage:(id)a5 otherRange:(_NSRange)a6;
-- (int)compareRange:(_NSRange)a3 otherStorage:(id)a4 otherRange:(_NSRange)a5 options:(unint64_t)a6;
-- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)a3;
-- (int)writingDirectionForParagraphAtParIndex:(unint64_t)a3;
+- (id)substringWithSelection:(id)selection;
+- (id)textSourceForLayoutInRange:(_NSRange)range;
+- (id)valueForBIUProperties:(id)properties;
+- (id)valueForBIUProperties:(id)properties selection:(id)selection insertionStyle:(id)style;
+- (id)valueForProperty:(int)property atCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (int)compareAttributeArray1:(TSWPAttributeArray *)array1 array2:(TSWPAttributeArray *)array2 range1:(_NSRange)range1 range2:(_NSRange)range2 attributeIndex1:(unint64_t)index1 attributeIndex2:(unint64_t)index2;
+- (int)compareAttributeArray:(TSWPAttributeArray *)array range:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange;
+- (int)compareRange:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange options:(unint64_t)options;
+- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)index;
+- (int)writingDirectionForParagraphAtParIndex:(unint64_t)index;
 - (int64_t)contentWritingDirection;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(__CFLocale *)a5 hyphenChar:(unsigned int *)a6;
-- (int64_t)pMapListsFromStorageRange:(_NSRange)a3 toString:(id)a4 atStringLoc:(unint64_t)a5 textListMap:(id)a6;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(__CFLocale *)locale hyphenChar:(unsigned int *)char;
+- (int64_t)pMapListsFromStorageRange:(_NSRange)range toString:(id)string atStringLoc:(unint64_t)loc textListMap:(id)map;
 - (unint64_t)attachmentCount;
-- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)a3;
-- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)a3;
-- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)a3;
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3;
+- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)index;
+- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)index;
+- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)range;
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage;
 - (unint64_t)characterStyleAttributeCount;
 - (unint64_t)columnStyleCount;
-- (unint64_t)emptyParagraphCount:(_NSRange)a3;
-- (unint64_t)findCharIndexForAttachment:(id)a3;
-- (unint64_t)findCharIndexForFootnoteAttachment:(id)a3;
-- (unint64_t)findCharacterIndexForContainedInfo:(id)a3;
-- (unint64_t)findNextParagraphStyleChange:(unint64_t)a3 maxCharIndex:(unint64_t)a4;
-- (unint64_t)firstParIndexInListAtParIndex:(unint64_t)a3;
+- (unint64_t)emptyParagraphCount:(_NSRange)count;
+- (unint64_t)findCharIndexForAttachment:(id)attachment;
+- (unint64_t)findCharIndexForFootnoteAttachment:(id)attachment;
+- (unint64_t)findCharacterIndexForContainedInfo:(id)info;
+- (unint64_t)findNextParagraphStyleChange:(unint64_t)change maxCharIndex:(unint64_t)index;
+- (unint64_t)firstParIndexInListAtParIndex:(unint64_t)index;
 - (unint64_t)footnoteCount;
-- (unint64_t)footnoteIndexForCharIndex:(unint64_t)a3;
-- (unint64_t)footnoteIndexForFootnote:(id)a3;
-- (unint64_t)footnoteIndexForFootnoteStorage:(id)a3;
-- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)a3;
-- (unint64_t)indexForCharacter:(unsigned __int16)a3 startCharIndex:(unint64_t)a4;
-- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)a3 numberingData:(id *)a4;
-- (unint64_t)listNumberForParagraphIndex:(unint64_t)a3 numberingData:(id *)a4;
-- (unint64_t)listStartAtCharIndex:(unint64_t)a3;
+- (unint64_t)footnoteIndexForCharIndex:(unint64_t)index;
+- (unint64_t)footnoteIndexForFootnote:(id)footnote;
+- (unint64_t)footnoteIndexForFootnoteStorage:(id)storage;
+- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)range;
+- (unint64_t)indexForCharacter:(unsigned __int16)character startCharIndex:(unint64_t)index;
+- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)enumerator numberingData:(id *)data;
+- (unint64_t)listNumberForParagraphIndex:(unint64_t)index numberingData:(id *)data;
+- (unint64_t)listStartAtCharIndex:(unint64_t)index;
 - (unint64_t)listStyleCount;
-- (unint64_t)nextCharacterIndex:(unint64_t)a3;
-- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)a3 requireVisible:(BOOL)a4;
+- (unint64_t)nextCharacterIndex:(unint64_t)index;
+- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)range requireVisible:(BOOL)visible;
 - (unint64_t)paragraphCount;
-- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)a3;
-- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)a3;
-- (unint64_t)paragraphLevelAtParIndex:(unint64_t)a3;
-- (unint64_t)previousCharacterIndex:(unint64_t)location forDelete:(BOOL)a4;
+- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)index;
+- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)index;
+- (unint64_t)paragraphLevelAtParIndex:(unint64_t)index;
+- (unint64_t)previousCharacterIndex:(unint64_t)location forDelete:(BOOL)delete;
 - (unint64_t)sectionCount;
-- (unint64_t)sectionIndexForCharIndex:(unint64_t)a3;
-- (unint64_t)sectionIndexForSection:(id)a3;
-- (unint64_t)selectedParagraphBreakCount:(_NSRange)a3;
+- (unint64_t)sectionIndexForCharIndex:(unint64_t)index;
+- (unint64_t)sectionIndexForSection:(id)section;
+- (unint64_t)selectedParagraphBreakCount:(_NSRange)count;
 - (unint64_t)wordCount;
 - (unsigned)disallowedElementKinds;
-- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)a3;
-- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)a3 toRanges:(void *)a4;
-- (void)addGlyphVariantData:(id)a3 toRange:(_NSRange)a4;
-- (void)addObserver:(id)a3;
-- (void)addSmartField:(id)a3 toRange:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)appendSection:(id)a3 charIndex:(unint64_t)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)applyChange:(id)a3 changeRange:(_NSRange)a4 accept:(BOOL)a5 undoTransaction:(void *)a6;
-- (void)applyChanges:(BOOL)a3 inRange:(_NSRange)a4 inSelectionRange:(_NSRange)a5 outChangedRange:(_NSRange *)a6 outSelectionRange:(_NSRange *)a7 undoTransaction:(void *)a8 forceAll:(BOOL)a9;
-- (void)applyDataValue:(unsigned int)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphIndexRange:(_NSRange)a5 forKind:(unsigned int)a6 undoTransaction:(TSWPStorageTransaction *)a7;
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphsInCharRange:(_NSRange)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)applyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 dolcContext:(id)a6 undoTransaction:(TSWPStorageTransaction *)a7;
-- (void)applyObject:(id)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)applyObject:(id)a3 toParagraphsInCharRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)applyWritingDirection:(int)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)autoUpdateField:(id)a3 withRange:(_NSRange)a4 documentRoot:(id)a5 returningInsertedRange:(_NSRange *)a6;
-- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)a3;
+- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)index;
+- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)range toRanges:(void *)ranges;
+- (void)addGlyphVariantData:(id)data toRange:(_NSRange)range;
+- (void)addObserver:(id)observer;
+- (void)addSmartField:(id)field toRange:(_NSRange)range dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)appendSection:(id)section charIndex:(unint64_t)index undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)applyChange:(id)change changeRange:(_NSRange)range accept:(BOOL)accept undoTransaction:(void *)transaction;
+- (void)applyChanges:(BOOL)changes inRange:(_NSRange)range inSelectionRange:(_NSRange)selectionRange outChangedRange:(_NSRange *)changedRange outSelectionRange:(_NSRange *)outSelectionRange undoTransaction:(void *)transaction forceAll:(BOOL)all;
+- (void)applyDataValue:(unsigned int)value toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphsInCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)applyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)applyObject:(id)object toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)applyObject:(id)object toParagraphsInCharRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)applyWritingDirection:(int)direction toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)autoUpdateField:(id)field withRange:(_NSRange)range documentRoot:(id)root returningInsertedRange:(_NSRange *)insertedRange;
+- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)root;
 - (void)changeViewSettingsDidChange;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)compress:(TSWPStorageTransaction *)a3;
-- (void)compressAttributeArrayKind:(unsigned int)a3 undoTransaction:(TSWPStorageTransaction *)a4;
-- (void)continueSearch:(id)a3;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)compress:(TSWPStorageTransaction *)compress;
+- (void)compressAttributeArrayKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)continueSearch:(id)search;
 - (void)dealloc;
-- (void)enumerateAttachmentsInTextRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateAttachmentsOfClass:(Class)a3 inTextRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)enumerateWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)filterInvalidContentForStorage:(id)a3 undoTransaction:(TSWPStorageTransaction *)a4;
-- (void)filterSectionBreaksFromStorage:(id)a3 undoTransaction:(TSWPStorageTransaction *)a4;
-- (void)findChangesInRange:(_NSRange)a3 onHit:(id)a4;
-- (void)fixGlyphVariantFontsForRange:(_NSRange)a3;
-- (void)insertObject:(id)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6 dolcContext:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8;
-- (void)insertParagraphData:(id)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6 undoTransaction:(TSWPStorageTransaction *)a7;
-- (void)invalidateCharIndexForAttachment:(id)a3;
+- (void)enumerateAttachmentsInTextRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateAttachmentsOfClass:(Class)class inTextRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block;
+- (void)filterInvalidContentForStorage:(id)storage undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)filterSectionBreaksFromStorage:(id)storage undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)findChangesInRange:(_NSRange)range onHit:(id)hit;
+- (void)fixGlyphVariantFontsForRange:(_NSRange)range;
+- (void)insertObject:(id)object charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)insertParagraphData:(id)data charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)invalidateCharIndexForAttachment:(id)attachment;
 - (void)invalidateFootnoteAttachmentCharIndexes;
-- (void)invalidateForStyle:(id)a3;
-- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)a3;
-- (void)lowLevelApplyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 dolcContext:(id)a6 undoTransaction:(TSWPStorageTransaction *)a7;
-- (void)pApplyOverrideObjectAfterReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4 overrideObject:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)pApplyOverrideObjectAfterReplacingCharactersInSelection:(id)a3 withString:(id)a4 overrideObject:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)pMapAttributesFromAttributedString:(id)a3 ontoRange:(_NSRange)a4 asCharacterStylesOnly:(BOOL)a5;
-- (void)p_attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[19] attributesTable:(id)a5[19] effectiveRange:(_NSRange *)a6;
-- (void)p_didChangeRange:(_NSRange)a3 delta:(int64_t)a4 broadcastKind:(int)a5;
-- (void)p_fillMarkers:(void *)a3 startingAtCharIndex:(unint64_t)a4 forCount:(unint64_t)a5;
-- (void)p_fillMarkers:(void *)a3 string:(id)a4 length:(unint64_t)a5 hasAttachments:(BOOL *)a6 hasFootnotes:(BOOL *)a7 hasBreaks:(BOOL *)a8;
-- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)a3 changeSession:(id)a4 undoTransaction:(void *)a5;
-- (void)p_lowLevelReplaceCharactersInRange:(_NSRange)a3 withString:(id)a4 length:(unint64_t)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)p_replaceCharactersInSelection:(id)a3 withString:(id)a4 length:(unint64_t)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)paragraphFlags:(unsigned __int16 *)a3 andLevel:(unint64_t *)a4 atCharIndex:(unint64_t)a5;
-- (void)removeGlyphVariantDataFromRange:(_NSRange)a3;
-- (void)removeSmartField:(id)a3 fromRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 options:(unint64_t)a5 changedRange:(_NSRange *)a6 changeDelta:(int64_t *)a7 undoTransaction:(TSWPStorageTransaction *)a8 changeSession:(id)a9;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)replaceSectionAtSectionIndex:(unint64_t)a3 withSection:(id)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)replaceWithAttachment:(id)a3 forAttachmentIndex:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6;
-- (void)setDictationAndAutocorrection:(id)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)setDocumentRoot:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setHyperlinkCellID:(id)a3;
-- (void)setLanguage:(id)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)setListStart:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)setParagraphFlags:(unsigned __int16)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)setParagraphLevel:(unint64_t)a3 atParIndex:(unint64_t)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)setParagraphLevel:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)setParagraphWritingDirection:(int)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5;
-- (void)setWPKind:(int)a3 undoTransaction:(TSWPStorageTransaction *)a4;
-- (void)smartFieldDidChange:(id)a3;
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 attributeKind:(unsigned int)a5 dolcContext:(id)a6 undoTransaction:(TSWPStorageTransaction *)a7;
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6;
+- (void)invalidateForStyle:(id)style;
+- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)indexes;
+- (void)lowLevelApplyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)pApplyOverrideObjectAfterReplacingCharactersInRange:(_NSRange)range withString:(id)string overrideObject:(id)object undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)pApplyOverrideObjectAfterReplacingCharactersInSelection:(id)selection withString:(id)string overrideObject:(id)object undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)pMapAttributesFromAttributedString:(id)string ontoRange:(_NSRange)range asCharacterStylesOnly:(BOOL)only;
+- (void)p_attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[19] attributesTable:(id)table[19] effectiveRange:(_NSRange *)range;
+- (void)p_didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind;
+- (void)p_fillMarkers:(void *)markers startingAtCharIndex:(unint64_t)index forCount:(unint64_t)count;
+- (void)p_fillMarkers:(void *)markers string:(id)string length:(unint64_t)length hasAttachments:(BOOL *)attachments hasFootnotes:(BOOL *)footnotes hasBreaks:(BOOL *)breaks;
+- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)range changeSession:(id)session undoTransaction:(void *)transaction;
+- (void)p_lowLevelReplaceCharactersInRange:(_NSRange)range withString:(id)string length:(unint64_t)length undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)p_replaceCharactersInSelection:(id)selection withString:(id)string length:(unint64_t)length undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)paragraphFlags:(unsigned __int16 *)flags andLevel:(unint64_t *)level atCharIndex:(unint64_t)index;
+- (void)removeGlyphVariantDataFromRange:(_NSRange)range;
+- (void)removeSmartField:(id)field fromRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string options:(unint64_t)options changedRange:(_NSRange *)changedRange changeDelta:(int64_t *)delta undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)replaceSectionAtSectionIndex:(unint64_t)index withSection:(id)section dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)replaceWithAttachment:(id)attachment forAttachmentIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setDictationAndAutocorrection:(id)autocorrection forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setDocumentRoot:(id)root;
+- (void)setGeometry:(id)geometry;
+- (void)setHyperlinkCellID:(id)d;
+- (void)setLanguage:(id)language forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setListStart:(unint64_t)start forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setParagraphFlags:(unsigned __int16)flags forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setParagraphLevel:(unint64_t)level atParIndex:(unint64_t)index undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setParagraphLevel:(unint64_t)level forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setParagraphWritingDirection:(int)direction forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)setWPKind:(int)kind undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)smartFieldDidChange:(id)change;
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert attributeKind:(unsigned int)kind dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction;
 - (void)stashBroadcaster;
-- (void)transferAttributeArraySource:(TSWPAttributeArray *)a3 forSourceRange:(_NSRange)a4 toDestStorage:(id)a5 objectContext:(id)a6 dolcContext:(id)a7 flags:(int)a8;
-- (void)transferAttributeArraySource:(TSWPAttributeArray *)a3 toAttributeArrayDest:(TSWPAttributeArray *)a4 atCharIndex:(unint64_t)a5 dolcContext:(id)a6 undoTransaction:(void *)a7;
+- (void)transferAttributeArraySource:(TSWPAttributeArray *)source forSourceRange:(_NSRange)range toDestStorage:(id)storage objectContext:(id)context dolcContext:(id)dolcContext flags:(int)flags;
+- (void)transferAttributeArraySource:(TSWPAttributeArray *)source toAttributeArrayDest:(TSWPAttributeArray *)dest atCharIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(void *)transaction;
 - (void)unstashBroadcaster;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPStorage
 
-+ (id)plainTextPasteStringForStorages:(id)a3 forcePlainText:(BOOL)a4
++ (id)plainTextPasteStringForStorages:(id)storages forcePlainText:(BOOL)text
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!text)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v5 = [storages countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v5)
     {
       v6 = v5;
@@ -316,7 +316,7 @@ LABEL_4:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(storages);
         }
 
         if (![*(*(&v23 + 1) + 8 * v8) canPasteAsPlainText])
@@ -326,7 +326,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v6 = [storages countByEnumeratingWithState:&v23 objects:v28 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -342,7 +342,7 @@ LABEL_4:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  result = [a3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  result = [storages countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (!result)
   {
     return result;
@@ -357,12 +357,12 @@ LABEL_4:
     {
       if (*v20 != v12)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(storages);
       }
 
       v14 = *(*(&v19 + 1) + 8 * i);
-      v15 = [v14 range];
-      v17 = [v14 stringEquivalentFromRange:v15 withLayoutParent:{v16, 0}];
+      range = [v14 range];
+      v17 = [v14 stringEquivalentFromRange:range withLayoutParent:{v16, 0}];
       if (v17)
       {
         v18 = v17;
@@ -381,7 +381,7 @@ LABEL_4:
       }
     }
 
-    v10 = [a3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    v10 = [storages countByEnumeratingWithState:&v19 objects:v27 count:16];
   }
 
   while (v10);
@@ -401,12 +401,12 @@ LABEL_4:
   }
 }
 
-- (id)plainTextStringFromRange:(_NSRange)a3 convertTextualAttachments:(BOOL)a4 includeChildTextStorages:(BOOL)a5 forExport:(BOOL)a6 withLayoutParent:(id)a7
+- (id)plainTextStringFromRange:(_NSRange)range convertTextualAttachments:(BOOL)attachments includeChildTextStorages:(BOOL)storages forExport:(BOOL)export withLayoutParent:(id)parent
 {
-  v65 = a6;
-  v62 = a5;
-  length = a3.length;
-  location = a3.location;
+  exportCopy = export;
+  storagesCopy = storages;
+  length = range.length;
+  location = range.location;
   v69 = [[TSWPFilteredStorage alloc] initWithStorage:self subRange:location removeRanges:length, [(TSWPStorage *)self deletedRangesInRange:location, length]];
   v67 = [-[TSWPFilteredStorage string](v69 "string")];
   [v67 replaceBreaksWithPlainTextVersions];
@@ -486,14 +486,14 @@ LABEL_4:
       v41 = -[TSWPFilteredStorage charIndexMappedFromStorage:](v69, "charIndexMappedFromStorage:", [objc_msgSend(v39 objectAtIndexedSubscript:{1), "unsignedIntValue"}]) + v37;
       if (v41 >= 0x7FFFFFFFFFFFFFFFLL)
       {
-        v43 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(TSWPStorage_conversion) plainTextStringFromRange:convertTextualAttachments:includeChildTextStorages:forExport:withLayoutParent:]"];
-        [v43 handleFailureInFunction:v44 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion.mm"), 228, @"Bad charIndex"}];
+        [currentHandler handleFailureInFunction:v44 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion.mm"), 228, @"Bad charIndex"}];
       }
 
       else
       {
-        if (!a4)
+        if (!attachments)
         {
           goto LABEL_32;
         }
@@ -504,17 +504,17 @@ LABEL_4:
           {
             if (objc_opt_respondsToSelector())
             {
-              v42 = [v40 performSelector:sel_stringEquivalentWithLayoutParent_ withObject:a7];
+              stringEquivalent = [v40 performSelector:sel_stringEquivalentWithLayoutParent_ withObject:parent];
             }
 
             else
             {
-              v42 = [v40 stringEquivalent];
+              stringEquivalent = [v40 stringEquivalent];
             }
 
-            if (v42)
+            if (stringEquivalent)
             {
-              v45 = v42;
+              v45 = stringEquivalent;
             }
 
             else
@@ -528,25 +528,25 @@ LABEL_4:
             continue;
           }
 
-          if (v62)
+          if (storagesCopy)
           {
-            if (v65 && (objc_opt_respondsToSelector() & 1) != 0)
+            if (exportCopy && (objc_opt_respondsToSelector() & 1) != 0)
             {
-              v47 = [v40 textRepresentationForExport];
+              textRepresentationForExport = [v40 textRepresentationForExport];
 LABEL_37:
-              v48 = v47;
-              if (!v47)
+              v48 = textRepresentationForExport;
+              if (!textRepresentationForExport)
               {
                 goto LABEL_42;
               }
 
-              v49 = [v47 length];
+              v49 = [textRepresentationForExport length];
               if (!v49)
               {
                 goto LABEL_42;
               }
 
-              v50 = [v48 plainTextStringFromRange:0 convertTextualAttachments:v49 includeChildTextStorages:1 forExport:1 withLayoutParent:{v65, a7}];
+              v50 = [v48 plainTextStringFromRange:0 convertTextualAttachments:v49 includeChildTextStorages:1 forExport:1 withLayoutParent:{exportCopy, parent}];
               if (!v50)
               {
                 goto LABEL_42;
@@ -578,7 +578,7 @@ LABEL_57:
             {
               if (objc_opt_respondsToSelector())
               {
-                v47 = [v40 textRepresentationForCopy];
+                textRepresentationForExport = [v40 textRepresentationForCopy];
                 goto LABEL_37;
               }
 
@@ -586,17 +586,17 @@ LABEL_42:
               if (objc_opt_respondsToSelector())
               {
                 v52 = [objc_msgSend(v40 "textStorages")];
-                v53 = [v52 nextObject];
-                if (v53)
+                nextObject = [v52 nextObject];
+                if (nextObject)
                 {
-                  v54 = v53;
+                  nextObject2 = nextObject;
                   v63 = 0;
                   do
                   {
-                    v55 = [v54 length];
+                    v55 = [nextObject2 length];
                     if (v55)
                     {
-                      v56 = [v54 plainTextStringFromRange:0 convertTextualAttachments:v55 includeChildTextStorages:1 forExport:1 withLayoutParent:{v65, a7}];
+                      v56 = [nextObject2 plainTextStringFromRange:0 convertTextualAttachments:v55 includeChildTextStorages:1 forExport:1 withLayoutParent:{exportCopy, parent}];
                       if (v56)
                       {
                         v57 = v56;
@@ -615,10 +615,10 @@ LABEL_42:
                       }
                     }
 
-                    v54 = [v52 nextObject];
+                    nextObject2 = [v52 nextObject];
                   }
 
-                  while (v54);
+                  while (nextObject2);
                   goto LABEL_52;
                 }
               }
@@ -665,67 +665,67 @@ LABEL_32:
   return v67;
 }
 
-- (id)nsAttributedSubstringFromRange:(_NSRange)a3 scale:(double)a4 applyChanges:(BOOL)a5 includeInlineDrawables:(BOOL)a6 withLayoutParent:(id)a7
+- (id)nsAttributedSubstringFromRange:(_NSRange)range scale:(double)scale applyChanges:(BOOL)changes includeInlineDrawables:(BOOL)drawables withLayoutParent:(id)parent
 {
-  v8 = a6;
-  v9 = a5;
-  v11 = [(TSWPStorage *)self newSubstorageWithRange:a3.location context:a3.length flags:[(TSPObject *)self context], 7];
+  drawablesCopy = drawables;
+  changesCopy = changes;
+  v11 = [(TSWPStorage *)self newSubstorageWithRange:range.location context:range.length flags:[(TSPObject *)self context], 7];
   v12 = v11;
-  if (v9)
+  if (changesCopy)
   {
     v13 = MEMORY[0x277D6C268];
     v19 = *MEMORY[0x277D6C268];
     v20 = v19;
-    v14 = [v11 range];
+    range = [v11 range];
     LOBYTE(v18) = 1;
-    [v12 applyChanges:1 inRange:v14 inSelectionRange:v15 outChangedRange:*v13 outSelectionRange:v13[1] undoTransaction:&v20 forceAll:{&v19, 0, v18}];
+    [v12 applyChanges:1 inRange:range inSelectionRange:v15 outChangedRange:*v13 outSelectionRange:v13[1] undoTransaction:&v20 forceAll:{&v19, 0, v18}];
   }
 
-  v16 = [v12 pNSAttributedStringWithDefaultDelegateIgnoreLists:1 stripTextualAttachments:0 stripGraphicalAttachments:1 stripInlineAttachments:!v8 attachmentChar:@" " scale:a7 withLayoutParent:a4];
+  v16 = [v12 pNSAttributedStringWithDefaultDelegateIgnoreLists:1 stripTextualAttachments:0 stripGraphicalAttachments:1 stripInlineAttachments:!drawablesCopy attachmentChar:@" " scale:parent withLayoutParent:scale];
 
   return v16;
 }
 
-- (id)nsAttributedSubstringFromRange:(_NSRange)a3 delegate:(id)a4 scale:(double)a5 applyChanges:(BOOL)a6 includeInlineDrawables:(BOOL)a7 withLayoutParent:(id)a8
+- (id)nsAttributedSubstringFromRange:(_NSRange)range delegate:(id)delegate scale:(double)scale applyChanges:(BOOL)changes includeInlineDrawables:(BOOL)drawables withLayoutParent:(id)parent
 {
-  v9 = a7;
-  v10 = a6;
-  v13 = [(TSWPStorage *)self newSubstorageWithRange:a3.location context:a3.length flags:[(TSPObject *)self context], 7];
+  drawablesCopy = drawables;
+  changesCopy = changes;
+  v13 = [(TSWPStorage *)self newSubstorageWithRange:range.location context:range.length flags:[(TSPObject *)self context], 7];
   v14 = v13;
-  if (v10)
+  if (changesCopy)
   {
     v15 = MEMORY[0x277D6C268];
     v21 = *MEMORY[0x277D6C268];
     v22 = v21;
-    v16 = [v13 range];
+    range = [v13 range];
     LOBYTE(v20) = 1;
-    [v14 applyChanges:1 inRange:v16 inSelectionRange:v17 outChangedRange:*v15 outSelectionRange:v15[1] undoTransaction:&v22 forceAll:{&v21, 0, v20}];
+    [v14 applyChanges:1 inRange:range inSelectionRange:v17 outChangedRange:*v15 outSelectionRange:v15[1] undoTransaction:&v22 forceAll:{&v21, 0, v20}];
   }
 
-  v18 = [v14 pNSAttributedStringWithAttributeDelegate:a4 ignoreLists:1 stripTextualAttachments:0 stripGraphicalAttachments:1 stripInlineAttachments:!v9 attachmentChar:@" " scale:a5 withLayoutParent:a8];
+  v18 = [v14 pNSAttributedStringWithAttributeDelegate:delegate ignoreLists:1 stripTextualAttachments:0 stripGraphicalAttachments:1 stripInlineAttachments:!drawablesCopy attachmentChar:@" " scale:scale withLayoutParent:parent];
 
   return v18;
 }
 
-- (id)nsAttributedSubstringWithAttachmentsRemovedFromRange:(_NSRange)a3 withLayoutParent:(id)a4
+- (id)nsAttributedSubstringWithAttachmentsRemovedFromRange:(_NSRange)range withLayoutParent:(id)parent
 {
-  v5 = [(TSWPStorage *)self newSubstorageWithRange:a3.location context:a3.length flags:[(TSPObject *)self context], 7];
-  v6 = [v5 pNSAttributedStringWithDefaultDelegateIgnoreLists:1 stripTextualAttachments:1 stripGraphicalAttachments:1 stripInlineAttachments:1 attachmentChar:&stru_287D36338 scale:a4 withLayoutParent:1.0];
+  v5 = [(TSWPStorage *)self newSubstorageWithRange:range.location context:range.length flags:[(TSPObject *)self context], 7];
+  v6 = [v5 pNSAttributedStringWithDefaultDelegateIgnoreLists:1 stripTextualAttachments:1 stripGraphicalAttachments:1 stripInlineAttachments:1 attachmentChar:&stru_287D36338 scale:parent withLayoutParent:1.0];
 
   return v6;
 }
 
-- (id)nsAttributedStringWithDefaultAttributeDelegateWithLayoutParent:(id)a3
+- (id)nsAttributedStringWithDefaultAttributeDelegateWithLayoutParent:(id)parent
 {
   v5 = objc_alloc_init(TSWPNSAttributedStringAttachmentConversionDelegate);
-  v6 = [(TSWPStorage *)self pNSAttributedStringWithAttributeDelegate:v5 ignoreLists:0 stripTextualAttachments:0 stripGraphicalAttachments:0 stripInlineAttachments:0 attachmentChar:0 scale:1.0 withLayoutParent:a3];
+  v6 = [(TSWPStorage *)self pNSAttributedStringWithAttributeDelegate:v5 ignoreLists:0 stripTextualAttachments:0 stripGraphicalAttachments:0 stripInlineAttachments:0 attachmentChar:0 scale:1.0 withLayoutParent:parent];
 
   return v6;
 }
 
-+ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unsigned int)a3
++ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unsigned int)kind
 {
-  switch(a3)
+  switch(kind)
   {
     case 0u:
     case 1u:
@@ -737,7 +737,7 @@ LABEL_32:
       v5 = v4;
       if (v4)
       {
-        TSWPAttributeArray::TSWPAttributeArray(v4, a3);
+        TSWPAttributeArray::TSWPAttributeArray(v4, kind);
         goto LABEL_4;
       }
 
@@ -782,7 +782,7 @@ LABEL_19:
       v5 = v8;
       if (v8)
       {
-        TSWPAttributeArray::TSWPAttributeArray(v8, a3);
+        TSWPAttributeArray::TSWPAttributeArray(v8, kind);
         goto LABEL_22;
       }
 
@@ -830,7 +830,7 @@ LABEL_22:
       v5 = v6;
       if (v6)
       {
-        TSWPAttributeArray::TSWPAttributeArray(v6, a3);
+        TSWPAttributeArray::TSWPAttributeArray(v6, kind);
         LOBYTE(v5[1].var0) = 0;
         *&v5[1].var1 = 0;
         v7 = &unk_287D35648;
@@ -871,9 +871,9 @@ LABEL_27:
 
       break;
     default:
-      v18 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPStorage(AttributeTables) createEmptyAttributeArrayForKind:]"];
-      [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 83, @"createAttributeArrayForKind: bad kind."}];
+      [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 83, @"createAttributeArrayForKind: bad kind."}];
       v5 = 0;
       break;
   }
@@ -881,31 +881,31 @@ LABEL_27:
   return v5;
 }
 
-+ (TSWPAttributeArray)createAttributeArrayForKind:(unsigned int)a3 undoTransaction:(TSWPStorageTransaction *)a4
++ (TSWPAttributeArray)createAttributeArrayForKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
   v6 = [TSWPStorage createEmptyAttributeArrayForKind:?];
   v7 = v6;
-  if (a3 > 0x12)
+  if (kind > 0x12)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPStorage(AttributeTables) createAttributeArrayForKind:undoTransaction:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 116, @"createAttributeArrayForKind: bad kind."}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 116, @"createAttributeArrayForKind: bad kind."}];
   }
 
-  else if (((1 << a3) & 0x40F37) == 0)
+  else if (((1 << kind) & 0x40F37) == 0)
   {
     v11[0] = 0;
     v11[1] = 0;
-    TSWPAttributeArray::insertAttribute(v6, v11, 0, 0, a4);
+    TSWPAttributeArray::insertAttribute(v6, v11, 0, 0, transaction);
   }
 
   return v7;
 }
 
-- (TSWPAttributeArray)attributeArrayForKind:(unsigned int)a3 withCreate:(BOOL)a4 fromUndo:(BOOL)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (TSWPAttributeArray)attributeArrayForKind:(unsigned int)kind withCreate:(BOOL)create fromUndo:(BOOL)undo undoTransaction:(TSWPStorageTransaction *)transaction
 {
   attributesTable = self->_attributesTable;
-  result = self->_attributesTable[a3];
+  result = self->_attributesTable[kind];
   if (result)
   {
     v9 = 1;
@@ -913,22 +913,22 @@ LABEL_27:
 
   else
   {
-    v9 = !a4;
+    v9 = !create;
   }
 
   if (!v9)
   {
-    v11 = a5;
-    v12 = *&a3;
+    undoCopy = undo;
+    v12 = *&kind;
     v13 = objc_opt_class();
-    if (v11)
+    if (undoCopy)
     {
       result = [v13 createEmptyAttributeArrayForKind:v12];
     }
 
     else
     {
-      result = [v13 createAttributeArrayForKind:v12 undoTransaction:a6];
+      result = [v13 createAttributeArrayForKind:v12 undoTransaction:transaction];
     }
 
     attributesTable[v12] = result;
@@ -941,41 +941,41 @@ LABEL_27:
   return result;
 }
 
-- (void)compressAttributeArrayKind:(unsigned int)a3 undoTransaction:(TSWPStorageTransaction *)a4
+- (void)compressAttributeArrayKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
   attributesTable = self->_attributesTable;
-  v5 = self->_attributesTable[a3];
+  v5 = self->_attributesTable[kind];
   if (v5)
   {
-    (*(v5->var0 + 19))(self->_attributesTable[a3], a4);
+    (*(v5->var0 + 19))(self->_attributesTable[kind], transaction);
     if ((*(v5->var0 + 6))(v5))
     {
       (*(v5->var0 + 1))(v5);
-      attributesTable[a3] = 0;
+      attributesTable[kind] = 0;
     }
   }
 }
 
-- (void)compress:(TSWPStorageTransaction *)a3
+- (void)compress:(TSWPStorageTransaction *)compress
 {
   v5 = 0;
   do
   {
-    [(TSWPStorage *)self compressAttributeArrayKind:v5 undoTransaction:a3];
+    [(TSWPStorage *)self compressAttributeArrayKind:v5 undoTransaction:compress];
     v5 = (v5 + 1);
   }
 
   while (v5 != 19);
 }
 
-- (void)p_attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[19] attributesTable:(id)a5[19] effectiveRange:(_NSRange *)a6
+- (void)p_attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[19] attributesTable:(id)table[19] effectiveRange:(_NSRange *)range
 {
   v10 = 0;
-  v11 = [(TSWPStorage *)self characterCount]- a3;
-  v12 = a3;
+  v11 = [(TSWPStorage *)self characterCount]- index;
+  indexCopy2 = index;
   do
   {
-    if (!a4[v10])
+    if (!interest[v10])
     {
       goto LABEL_9;
     }
@@ -994,16 +994,16 @@ LABEL_27:
 
     if ((*(v13->var0 + 2))(v13))
     {
-      TSWPAttributeArray::rangeForCharIndex(v13, a3);
-      v12 = NSIntersectionRangeInclusive();
+      TSWPAttributeArray::rangeForCharIndex(v13, index);
+      indexCopy2 = NSIntersectionRangeInclusive();
       v11 = v15;
-      v16 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, a3);
+      v16 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, index);
     }
 
     else
     {
-      v16 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v13, a3);
-      v12 = a3;
+      v16 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v13, index);
+      indexCopy2 = index;
       v11 = 1;
     }
 
@@ -1019,74 +1019,74 @@ LABEL_9:
     }
 
 LABEL_10:
-    a5[v10++] = var2;
+    table[v10++] = var2;
   }
 
   while (v10 != 19);
-  a6->location = v12;
-  a6->length = v11;
+  range->location = indexCopy2;
+  range->length = v11;
 }
 
-- (_NSRange)insertSpecialCharacter:(unsigned __int16)a3 object:(id)a4 kind:(unsigned int)a5 range:(_NSRange)a6 dolcContext:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8 changeSession:(id)a9
+- (_NSRange)insertSpecialCharacter:(unsigned __int16)character object:(id)object kind:(unsigned int)kind range:(_NSRange)range dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = *&a5;
-  v35 = a3;
+  length = range.length;
+  location = range.location;
+  v11 = *&kind;
+  characterCopy = character;
   v13 = *MEMORY[0x277D6C268];
   v34 = *(MEMORY[0x277D6C268] + 8);
-  if (((1 << a5) & 0x301) != 0)
+  if (((1 << kind) & 0x301) != 0)
   {
-    v14 = a6.location + 1;
+    v14 = range.location + 1;
   }
 
   else
   {
-    v14 = a6.location;
+    v14 = range.location;
   }
 
-  if (a5 <= 9)
+  if (kind <= 9)
   {
     v15 = v14;
   }
 
   else
   {
-    v15 = a6.location;
+    v15 = range.location;
   }
 
-  v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:&v35 length:1];
-  [(TSWPStorage *)self replaceCharactersInSelection:[TSWPSelection selectionWithRange:?]changeSession:v16 undoTransaction:0 outInsertedRange:0, a9, a8, 0];
+  v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:&characterCopy length:1];
+  [(TSWPStorage *)self replaceCharactersInSelection:[TSWPSelection selectionWithRange:?]changeSession:v16 undoTransaction:0 outInsertedRange:0, session, transaction, 0];
 
-  v17 = [(TSWPStorage *)self attributeArrayForKind:v11 withCreate:1 undoTransaction:a8];
+  v17 = [(TSWPStorage *)self attributeArrayForKind:v11 withCreate:1 undoTransaction:transaction];
   if (v17)
   {
     v18 = v17;
     v19 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v17, v15);
     if (v19 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      TSWPAttributeArray::replaceObjectForAttributeIndex(v18, a4, v19, a7, a8);
+      TSWPAttributeArray::replaceObjectForAttributeIndex(v18, object, v19, context, transaction);
       v29 = 1;
       v13 = location;
       goto LABEL_13;
     }
 
-    v20 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) insertSpecialCharacter:object:kind:range:dolcContext:undoTransaction:changeSession:]"];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
     v23 = @"insertSpecialCharacter: Bad attribute index.";
-    v24 = v20;
+    v24 = currentHandler;
     v25 = v21;
     v26 = 236;
   }
 
   else
   {
-    v27 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) insertSpecialCharacter:object:kind:range:dolcContext:undoTransaction:changeSession:]"];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
     v23 = @"insertSpecialCharacter: Bad attribute array.";
-    v24 = v27;
+    v24 = currentHandler2;
     v25 = v28;
     v26 = 232;
   }
@@ -1102,74 +1102,74 @@ LABEL_13:
   return result;
 }
 
-- (void)insertObject:(id)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6 dolcContext:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8
+- (void)insertObject:(id)object charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
   [(TSPObject *)self willModify];
-  if (!a5)
+  if (!array)
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) insertObject:charIndex:attributeArray:attributeIndex:dolcContext:undoTransaction:]"];
-    [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 266, @"insertObject: Bad attribute array."}];
+    [currentHandler handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 266, @"insertObject: Bad attribute array."}];
   }
 
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (attributeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) insertObject:charIndex:attributeArray:attributeIndex:dolcContext:undoTransaction:]"];
-    [v17 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 267, @"insertObject: Bad attribute index."}];
+    [currentHandler2 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 267, @"insertObject: Bad attribute index."}];
   }
 
-  v21[0] = a4;
-  v21[1] = a3;
-  TSWPAttributeArray::insertAttribute(a5, v21, a6, a7, a8);
-  v19 = TSWPAttributeArray::rangeForAttributeIndex(a5, a6);
+  v21[0] = index;
+  v21[1] = object;
+  TSWPAttributeArray::insertAttribute(array, v21, attributeIndex, context, transaction);
+  v19 = TSWPAttributeArray::rangeForAttributeIndex(array, attributeIndex);
   [(TSWPStorage *)self p_didChangeRange:v19 delta:v20 broadcastKind:0, 0];
 }
 
-- (void)insertParagraphData:(id)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6 undoTransaction:(TSWPStorageTransaction *)a7
+- (void)insertParagraphData:(id)data charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex undoTransaction:(TSWPStorageTransaction *)transaction
 {
   [(TSPObject *)self willModify];
-  if (!a5)
+  if (!array)
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) insertParagraphData:charIndex:attributeArray:attributeIndex:undoTransaction:]"];
-    [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 283, @"insertParagraphData: Bad attribute array."}];
+    [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 283, @"insertParagraphData: Bad attribute array."}];
   }
 
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (attributeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) insertParagraphData:charIndex:attributeArray:attributeIndex:undoTransaction:]"];
-    [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 284, @"insertParagraphData: Bad attribute index."}];
+    [currentHandler2 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 284, @"insertParagraphData: Bad attribute index."}];
   }
 
-  v19 = a4;
-  var0 = a3.var0.var0.var0;
-  TSWPAttributeArray::insertAttribute(a5, &v19, a6, 0, a7);
-  v17 = TSWPAttributeArray::rangeForAttributeIndex(a5, a6);
+  indexCopy = index;
+  var0 = data.var0.var0.var0;
+  TSWPAttributeArray::insertAttribute(array, &indexCopy, attributeIndex, 0, transaction);
+  v17 = TSWPAttributeArray::rangeForAttributeIndex(array, attributeIndex);
   [(TSWPStorage *)self p_didChangeRange:v17 delta:v18 broadcastKind:0, 0];
 }
 
-- (void)applyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 dolcContext:(id)a6 undoTransaction:(TSWPStorageTransaction *)a7
+- (void)applyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v8 = *&a5;
-  [(TSWPStorage *)self lowLevelApplyObject:a3 toCharRange:a4.location forKind:a4.length dolcContext:*&a5 undoTransaction:a6];
+  v8 = *&kind;
+  [(TSWPStorage *)self lowLevelApplyObject:object toCharRange:range.location forKind:range.length dolcContext:*&kind undoTransaction:context];
 
-  [(TSWPStorage *)self compressAttributeArrayKind:v8 undoTransaction:a7];
+  [(TSWPStorage *)self compressAttributeArrayKind:v8 undoTransaction:transaction];
 }
 
-- (void)lowLevelApplyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 dolcContext:(id)a6 undoTransaction:(TSWPStorageTransaction *)a7
+- (void)lowLevelApplyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  if (a5 <= 0x11 && ((1 << a5) & 0x3F0C8) != 0)
+  if (kind <= 0x11 && ((1 << kind) & 0x3F0C8) != 0)
   {
-    length = a4.length;
-    location = a4.location;
-    v13 = [(TSWPStorage *)self attributeArrayForKind:*&a5 withCreate:a3 != 0 undoTransaction:a7];
+    length = range.length;
+    location = range.location;
+    v13 = [(TSWPStorage *)self attributeArrayForKind:*&kind withCreate:object != 0 undoTransaction:transaction];
     if (v13)
     {
       v14 = v13;
       [(TSPObject *)self willModify];
-      (*(v14->var0 + 8))(v14, a3, location, length, a6, a7);
+      (*(v14->var0 + 8))(v14, object, location, length, context, transaction);
 
       [(TSWPStorage *)self p_didChangeRange:location delta:length broadcastKind:0, 0];
     }
@@ -1177,20 +1177,20 @@ LABEL_13:
 
   else
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) lowLevelApplyObject:toCharRange:forKind:dolcContext:undoTransaction:]"];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
 
-    [v15 handleFailureInFunction:v16 file:v17 lineNumber:309 description:@"applyObject:toCharRange: Bad attribute array."];
+    [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:309 description:@"applyObject:toCharRange: Bad attribute array."];
   }
 }
 
-- (void)applyObject:(id)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)applyObject:(id)object toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v7 = *&a5;
-  length = a4.length;
-  location = a4.location;
-  v12 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:a6];
+  v7 = *&kind;
+  length = range.length;
+  location = range.location;
+  v12 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:transaction];
   if (v12)
   {
     v13 = v12;
@@ -1201,30 +1201,30 @@ LABEL_13:
     v22.location = v14;
     v22.length = v16;
     v18 = NSUnionRange(v22, v23);
-    v19 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:a3 != 0 undoTransaction:a6];
+    v19 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:object != 0 undoTransaction:transaction];
     if (v19)
     {
       v20 = v19;
       [(TSPObject *)self willModify];
       v24.location = location;
       v24.length = length;
-      TSWPParagraphAttributeArray::applyObjectToParagraphRange(v20, a3, v24, v13, a6);
+      TSWPParagraphAttributeArray::applyObjectToParagraphRange(v20, object, v24, v13, transaction);
 
       [(TSWPStorage *)self p_didChangeRange:v18.location delta:v18.length broadcastKind:0, 0];
     }
   }
 }
 
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphIndexRange:(_NSRange)a5 forKind:(unsigned int)a6 undoTransaction:(TSWPStorageTransaction *)a7
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v8 = *&a6;
-  length = a5.length;
-  location = a5.location;
-  v14 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:a7];
+  v8 = *&kind;
+  length = range.length;
+  location = range.location;
+  v14 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:transaction];
   if (v14)
   {
     v15 = v14;
-    v42 = a3;
+    flagsCopy = flags;
     v16 = [(TSWPStorage *)self textRangeForParagraphAtIndex:location];
     v18 = v17;
     v19 = location + length;
@@ -1234,47 +1234,47 @@ LABEL_13:
     v46.length = v18;
     v21 = NSUnionRange(v46, v48);
     v22 = v21.location;
-    v23 = [(TSWPStorage *)self attributeArrayForKind:v8 withCreate:1 undoTransaction:a7];
+    v23 = [(TSWPStorage *)self attributeArrayForKind:v8 withCreate:1 undoTransaction:transaction];
     if (v23)
     {
       v24 = v23;
       [(TSPObject *)self willModify];
       if (((*(v24->var0 + 4))(v24) & 1) == 0)
       {
-        v41 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyFlags:level:toParagraphIndexRange:forKind:undoTransaction:]"];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
         v27 = v25;
         v22 = v21.location;
-        [v41 handleFailureInFunction:v27 file:v26 lineNumber:366 description:@"Do not call this method unless table has paired data."];
+        [currentHandler handleFailureInFunction:v27 file:v26 lineNumber:366 description:@"Do not call this method unless table has paired data."];
       }
 
-      if (a4 >= 0x10000)
+      if (level >= 0x10000)
       {
         [TSWPStorage(AttributeTables) applyFlags:level:toParagraphIndexRange:forKind:undoTransaction:];
-        LOWORD(a4) = -1;
+        LOWORD(level) = -1;
       }
 
-      v44[0] = a4;
-      v44[1] = v42;
-      TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(v24, v44, location, length, v15, a7);
-      v28 = [(TSWPStorage *)self listStyleAtParIndex:location + length - 1 effectiveRange:0];
-      if ([v28 parent])
+      v44[0] = level;
+      v44[1] = flagsCopy;
+      TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(v24, v44, location, length, v15, transaction);
+      parent = [(TSWPStorage *)self listStyleAtParIndex:location + length - 1 effectiveRange:0];
+      if ([parent parent])
       {
-        v28 = [v28 parent];
+        parent = [parent parent];
       }
 
       v29 = MEMORY[0x277D6C268];
       v30 = *MEMORY[0x277D6C268];
       v31 = *(MEMORY[0x277D6C268] + 8);
-      v32 = [(TSWPStorage *)self paragraphCount];
-      if (v19 < v32)
+      paragraphCount = [(TSWPStorage *)self paragraphCount];
+      if (v19 < paragraphCount)
       {
-        v33 = v32;
+        v33 = paragraphCount;
         do
         {
           v34 = [(TSWPStorage *)self listStyleAtParIndex:v19 effectiveRange:v43];
-          if (v34 != v28 && [v34 parent] != v28)
+          if (v34 != parent && [v34 parent] != parent)
           {
             break;
           }
@@ -1308,21 +1308,21 @@ LABEL_13:
 
     else
     {
-      v38 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyFlags:level:toParagraphIndexRange:forKind:undoTransaction:]"];
       v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
 
-      [v38 handleFailureInFunction:v39 file:v40 lineNumber:360 description:@"applyObject: Bad attribute array."];
+      [currentHandler2 handleFailureInFunction:v39 file:v40 lineNumber:360 description:@"applyObject: Bad attribute array."];
     }
   }
 }
 
-- (void)applyDataValue:(unsigned int)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)applyDataValue:(unsigned int)value toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v7 = *&a5;
-  length = a4.length;
-  location = a4.location;
-  v12 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:a6];
+  v7 = *&kind;
+  length = range.length;
+  location = range.location;
+  v12 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:transaction];
   if (v12)
   {
     v13 = v12;
@@ -1333,20 +1333,20 @@ LABEL_13:
     v28.location = v14;
     v28.length = v16;
     v18 = NSUnionRange(v28, v29);
-    v19 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:1 undoTransaction:a6];
+    v19 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:1 undoTransaction:transaction];
     if (v19)
     {
       v20 = v19;
       [(TSPObject *)self willModify];
       if (((*(v20->var0 + 5))(v20) & 1) == 0)
       {
-        v25 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyDataValue:toParagraphIndexRange:forKind:undoTransaction:]"];
-        [v25 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 416, @"Do not call this method unless table has single data."}];
+        [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 416, @"Do not call this method unless table has single data."}];
       }
 
-      v26 = a3;
-      if (TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(v20, &v26, location, length, v13, a6))
+      valueCopy = value;
+      if (TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(v20, &valueCopy, location, length, v13, transaction))
       {
         [(TSWPStorage *)self p_didChangeRange:v18.location delta:v18.length broadcastKind:0, 0];
       }
@@ -1354,21 +1354,21 @@ LABEL_13:
 
     else
     {
-      v22 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyDataValue:toParagraphIndexRange:forKind:undoTransaction:]"];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
 
-      [v22 handleFailureInFunction:v23 file:v24 lineNumber:410 description:@"applyObject: Bad attribute array."];
+      [currentHandler2 handleFailureInFunction:v23 file:v24 lineNumber:410 description:@"applyObject: Bad attribute array."];
     }
   }
 }
 
-- (void)applyWritingDirection:(int)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)applyWritingDirection:(int)direction toParagraphIndexRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v7 = *&a5;
-  length = a4.length;
-  location = a4.location;
-  v12 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:a6];
+  v7 = *&kind;
+  length = range.length;
+  location = range.location;
+  v12 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:1 undoTransaction:transaction];
   if (v12)
   {
     v13 = v12;
@@ -1379,20 +1379,20 @@ LABEL_13:
     v28.location = v14;
     v28.length = v16;
     v18 = NSUnionRange(v28, v29);
-    v19 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:1 undoTransaction:a6];
+    v19 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:1 undoTransaction:transaction];
     if (v19)
     {
       v20 = v19;
       [(TSPObject *)self willModify];
       if (((*(v20->var0 + 5))(v20) & 1) == 0)
       {
-        v25 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyWritingDirection:toParagraphIndexRange:forKind:undoTransaction:]"];
-        [v25 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 450, @"Do not call this method unless table has single data."}];
+        [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 450, @"Do not call this method unless table has single data."}];
       }
 
-      v26 = a3;
-      if (TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(v20, &v26, location, length, v13, a6))
+      directionCopy = direction;
+      if (TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(v20, &directionCopy, location, length, v13, transaction))
       {
         [(TSWPStorage *)self p_didChangeRange:v18.location delta:v18.length broadcastKind:0, 0];
       }
@@ -1400,20 +1400,20 @@ LABEL_13:
 
     else
     {
-      v22 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyWritingDirection:toParagraphIndexRange:forKind:undoTransaction:]"];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
 
-      [v22 handleFailureInFunction:v23 file:v24 lineNumber:444 description:@"applyObject: Bad attribute array."];
+      [currentHandler2 handleFailureInFunction:v23 file:v24 lineNumber:444 description:@"applyObject: Bad attribute array."];
     }
   }
 }
 
-- (void)applyObject:(id)a3 toParagraphsInCharRange:(_NSRange)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)applyObject:(id)object toParagraphsInCharRange:(_NSRange)range forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v7 = *&a5;
-  length = a4.length;
-  location = a4.location;
+  v7 = *&kind;
+  length = range.length;
+  location = range.location;
   v12 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (v12)
   {
@@ -1421,24 +1421,24 @@ LABEL_13:
     v19.length = length;
     v14 = TSWPParagraphAttributeArray::paragraphRangeForCharRange(v12, v19);
 
-    [(TSWPStorage *)self applyObject:a3 toParagraphIndexRange:v14 forKind:v13 undoTransaction:v7, a6];
+    [(TSWPStorage *)self applyObject:object toParagraphIndexRange:v14 forKind:v13 undoTransaction:v7, transaction];
   }
 
   else
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyObject:toParagraphsInCharRange:forKind:undoTransaction:]"];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
 
-    [v15 handleFailureInFunction:v16 file:v17 lineNumber:470 description:@"No paragraph array."];
+    [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:470 description:@"No paragraph array."];
   }
 }
 
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphsInCharRange:(_NSRange)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphsInCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a3;
+  length = range.length;
+  location = range.location;
+  flagsCopy = flags;
   v12 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (v12)
   {
@@ -1446,30 +1446,30 @@ LABEL_13:
     v19.length = length;
     v14 = TSWPParagraphAttributeArray::paragraphRangeForCharRange(v12, v19);
 
-    [(TSWPStorage *)self applyFlags:v10 level:a4 toParagraphIndexRange:v14 forKind:v13 undoTransaction:1, a6];
+    [(TSWPStorage *)self applyFlags:flagsCopy level:level toParagraphIndexRange:v14 forKind:v13 undoTransaction:1, transaction];
   }
 
   else
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) applyFlags:level:toParagraphsInCharRange:undoTransaction:]"];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
 
-    [v15 handleFailureInFunction:v16 file:v17 lineNumber:481 description:@"No paragraph array."];
+    [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:481 description:@"No paragraph array."];
   }
 }
 
-- (_NSRange)replaceAllOccurrencesOfObject:(id)a3 withObject:(id)a4 forKind:(unsigned int)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (_NSRange)replaceAllOccurrencesOfObject:(id)object withObject:(id)withObject forKind:(unsigned int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v7 = *&a5;
-  if (!a4)
+  v7 = *&kind;
+  if (!withObject)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) replaceAllOccurrencesOfObject:withObject:forKind:undoTransaction:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 495, @"replaceAllOccurrencesOfStyle: toReplace is nil."}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 495, @"replaceAllOccurrencesOfStyle: toReplace is nil."}];
   }
 
-  v13 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:0 undoTransaction:a6];
+  v13 = [(TSWPStorage *)self attributeArrayForKind:v7 withCreate:0 undoTransaction:transaction];
   if (!v13 || (v14 = v13, (var2 = v13->var2) == 0))
   {
     length = 0;
@@ -1484,9 +1484,9 @@ LABEL_14:
   location = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    if (*(v14->var4 + v18) == a3)
+    if (*(v14->var4 + v18) == object)
     {
-      TSWPAttributeArray::replaceObjectForAttributeIndex(v14, a4, v17, 0, a6);
+      TSWPAttributeArray::replaceObjectForAttributeIndex(v14, withObject, v17, 0, transaction);
       v21.location = TSWPAttributeArray::rangeForAttributeIndex(v14, v17);
       v21.length = v20;
       if (location != 0x7FFFFFFFFFFFFFFFLL)
@@ -1520,22 +1520,22 @@ LABEL_15:
   return result;
 }
 
-- (void)transferAttributeArraySource:(TSWPAttributeArray *)a3 forSourceRange:(_NSRange)a4 toDestStorage:(id)a5 objectContext:(id)a6 dolcContext:(id)a7 flags:(int)a8
+- (void)transferAttributeArraySource:(TSWPAttributeArray *)source forSourceRange:(_NSRange)range toDestStorage:(id)storage objectContext:(id)context dolcContext:(id)dolcContext flags:(int)flags
 {
-  range1 = a4.length;
-  if (a3)
+  range1 = range.length;
+  if (source)
   {
-    if (a4.length)
+    if (range.length)
     {
-      var1 = a3->var1;
+      var1 = source->var1;
       if (var1 <= 0x12)
       {
-        location = a4.location;
-        if (((1 << var1) & 0x63BFF) != 0 || ((1 << var1) & 0x18000) != 0 && (a8 & 2) != 0)
+        location = range.location;
+        if (((1 << var1) & 0x63BFF) != 0 || ((1 << var1) & 0x18000) != 0 && (flags & 2) != 0)
         {
-          v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(a3, a4.location);
+          v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(source, range.location);
           v12 = v11 == 0x7FFFFFFFFFFFFFFFLL ? 0 : v11;
-          if (v12 < a3->var2)
+          if (v12 < source->var2)
           {
             v49 = 0;
             v47 = 0;
@@ -1545,10 +1545,10 @@ LABEL_15:
             while (1)
             {
               v15 = v14;
-              v16 = TSWPAttributeArray::charIndexForAttributeIndex(a3, v12);
-              v17 = TSWPAttributeArray::rangeForAttributeIndex(a3, v12);
+              v16 = TSWPAttributeArray::charIndexForAttributeIndex(source, v12);
+              v17 = TSWPAttributeArray::rangeForAttributeIndex(source, v12);
               v19 = v18;
-              v20 = (*(a3->var0 + 3))(a3) ? *(a3->var4 + v13) : 0;
+              v20 = (*(source->var0 + 3))(source) ? *(source->var4 + v13) : 0;
               if (var1 <= 5)
               {
                 break;
@@ -1577,7 +1577,7 @@ LABEL_40:
                   }
 
                   v26 = v49;
-                  if (v49 || (v26 = [a5 attributeArrayForKind:var1 withCreate:0 undoTransaction:0]) != 0)
+                  if (v49 || (v26 = [storage attributeArrayForKind:var1 withCreate:0 undoTransaction:0]) != 0)
                   {
                     v27 = v16 - location;
                     v28 = v26;
@@ -1585,16 +1585,16 @@ LABEL_40:
                     v49 = v28;
                     if (v29 < v28->var2 && TSWPAttributeArray::charIndexForAttributeIndex(v28, v29) >= v25)
                     {
-                      v42 = [MEMORY[0x277D6C290] currentHandler];
+                      currentHandler = [MEMORY[0x277D6C290] currentHandler];
                       v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) transferAttributeArraySource:forSourceRange:toDestStorage:objectContext:dolcContext:flags:]"];
-                      [v42 handleFailureInFunction:v43 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 659, @"Source and dest tables are out of order."}];
+                      [currentHandler handleFailureInFunction:v43 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"), 659, @"Source and dest tables are out of order."}];
                     }
 
                     else
                     {
                       v52 = v25;
                       v53 = v20;
-                      TSWPAttributeArray::insertAttribute(v28, &v52, ++v47, a7, 0);
+                      TSWPAttributeArray::insertAttribute(v28, &v52, ++v47, dolcContext, 0);
                     }
 
                     goto LABEL_78;
@@ -1617,33 +1617,33 @@ LABEL_40:
               }
 
               v14 = v15;
-              if ([a5 supportsSectionCopying] && v20)
+              if ([storage supportsSectionCopying] && v20)
               {
-                v24 = [(objc_object *)v20 copyWithContext:a6];
+                v24 = [(objc_object *)v20 copyWithContext:context];
                 v20 = v24;
 LABEL_67:
                 if (v16 > location && v16 <= v51)
                 {
                   v34 = v49;
-                  if (v49 || (v34 = [a5 attributeArrayForKind:var1 withCreate:0 undoTransaction:0]) != 0)
+                  if (v49 || (v34 = [storage attributeArrayForKind:var1 withCreate:0 undoTransaction:0]) != 0)
                   {
                     v35 = v47 + 1;
                     v49 = v34;
                     var2 = *(v34 + 16);
                     if (v47 + 1 >= var2)
                     {
-                      v44 = [MEMORY[0x277D6C290] currentHandler];
+                      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
                       v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(AttributeTables) transferAttributeArraySource:forSourceRange:toDestStorage:objectContext:dolcContext:flags:]"];
                       v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_attributeTables.mm"];
                       v39 = v37;
                       v14 = v15;
-                      [v44 handleFailureInFunction:v39 file:v38 lineNumber:617 description:@"Bad par index count."];
+                      [currentHandler2 handleFailureInFunction:v39 file:v38 lineNumber:617 description:@"Bad par index count."];
                       var2 = v49->var2;
                     }
 
                     if (v35 < var2)
                     {
-                      TSWPAttributeArray::replaceObjectForAttributeIndex(v49, v20, v35, a7, 0);
+                      TSWPAttributeArray::replaceObjectForAttributeIndex(v49, v20, v35, dolcContext, 0);
                       ++v47;
                     }
                   }
@@ -1657,15 +1657,15 @@ LABEL_67:
 
 LABEL_78:
               ++v12;
-              v40 = a3->var2;
+              v40 = source->var2;
               if (v12 < v40)
               {
-                if (TSWPAttributeArray::charIndexForAttributeIndex(a3, v12) > v51)
+                if (TSWPAttributeArray::charIndexForAttributeIndex(source, v12) > v51)
                 {
                   return;
                 }
 
-                v40 = a3->var2;
+                v40 = source->var2;
               }
 
               v13 += 16;
@@ -1688,15 +1688,15 @@ LABEL_78:
                   }
 
                   v23 = v49;
-                  if (v49 || (v23 = [a5 attributeArrayForKind:var1 withCreate:1 undoTransaction:0]) != 0)
+                  if (v49 || (v23 = [storage attributeArrayForKind:var1 withCreate:1 undoTransaction:0]) != 0)
                   {
                     v49 = v23;
                     if (v47 < v23->var2)
                     {
-                      if (a8)
+                      if (flags)
                       {
-                        v41 = [(objc_object *)v20 copyWithContext:a6];
-                        TSWPAttributeArray::replaceObjectForAttributeIndex(v49, v41, v47, a7, 0);
+                        v41 = [(objc_object *)v20 copyWithContext:context];
+                        TSWPAttributeArray::replaceObjectForAttributeIndex(v49, v41, v47, dolcContext, 0);
                       }
 
                       else
@@ -1762,7 +1762,7 @@ LABEL_49:
                 v32 = v30.location;
               }
 
-              if ((a8 & 8) != 0)
+              if ((flags & 8) != 0)
               {
                 if (var1 == 17)
                 {
@@ -1781,12 +1781,12 @@ LABEL_49:
                 }
 
 LABEL_62:
-                v33 = [(objc_object *)v20 copyWithContext:a6];
+                v33 = [(objc_object *)v20 copyWithContext:context];
                 v20 = v33;
               }
 
 LABEL_76:
-              [a5 applyObject:v20 toCharRange:v32 - location forKind:length dolcContext:var1 undoTransaction:{a7, 0}];
+              [storage applyObject:v20 toCharRange:v32 - location forKind:length dolcContext:var1 undoTransaction:{dolcContext, 0}];
 
               goto LABEL_77;
             }
@@ -1820,14 +1820,14 @@ LABEL_20:
               v21 = v49;
               if (!v49)
               {
-                v21 = [a5 attributeArrayForKind:var1 withCreate:0 undoTransaction:0];
+                v21 = [storage attributeArrayForKind:var1 withCreate:0 undoTransaction:0];
                 if (!v21)
                 {
                   goto LABEL_83;
                 }
               }
 
-              v22 = *(a3->var4 + v13);
+              v22 = *(source->var4 + v13);
               v52 = v16 - location;
               LODWORD(v53) = v22;
               v49 = v21;
@@ -1842,25 +1842,25 @@ LABEL_20:
   }
 }
 
-- (int)compareAttributeArray:(TSWPAttributeArray *)a3 range:(_NSRange)a4 otherStorage:(id)a5 otherRange:(_NSRange)a6
+- (int)compareAttributeArray:(TSWPAttributeArray *)array range:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange
 {
-  if (!a3)
+  if (!array)
   {
     return -2;
   }
 
-  length = a6.length;
-  location = a6.location;
-  v8 = a4.length;
-  v9 = a4.location;
-  v12 = [a5 attributeArrayForKind:a3->var1 withCreate:0 undoTransaction:0];
+  length = otherRange.length;
+  location = otherRange.location;
+  v8 = range.length;
+  v9 = range.location;
+  v12 = [storage attributeArrayForKind:array->var1 withCreate:0 undoTransaction:0];
   if (!v12)
   {
     return -2;
   }
 
   v13 = v12;
-  v14 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(a3, v9);
+  v14 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(array, v9);
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = 0;
@@ -1882,17 +1882,17 @@ LABEL_20:
     v17 = v16;
   }
 
-  v18 = a3->var2 - v15;
+  v18 = array->var2 - v15;
   v19 = v13->var2 - v17;
   v20 = v18 > v19;
   if (v18 <= v19)
   {
-    v21 = v13;
+    arrayCopy = v13;
   }
 
   else
   {
-    v21 = a3;
+    arrayCopy = array;
   }
 
   if (v18 <= v19)
@@ -1928,12 +1928,12 @@ LABEL_20:
   if (v20)
   {
     v17 = v15;
-    v25 = v13;
+    arrayCopy2 = v13;
   }
 
   else
   {
-    v25 = a3;
+    arrayCopy2 = array;
   }
 
   if (v20)
@@ -1956,37 +1956,37 @@ LABEL_20:
     v27 = v8;
   }
 
-  return [(TSWPStorage *)self compareAttributeArray1:v25 array2:v21 range1:v26 range2:v27 attributeIndex1:v23 attributeIndex2:v22, v24, v17];
+  return [(TSWPStorage *)self compareAttributeArray1:arrayCopy2 array2:arrayCopy range1:v26 range2:v27 attributeIndex1:v23 attributeIndex2:v22, v24, v17];
 }
 
-- (int)compareAttributeArray1:(TSWPAttributeArray *)a3 array2:(TSWPAttributeArray *)a4 range1:(_NSRange)a5 range2:(_NSRange)a6 attributeIndex1:(unint64_t)a7 attributeIndex2:(unint64_t)a8
+- (int)compareAttributeArray1:(TSWPAttributeArray *)array1 array2:(TSWPAttributeArray *)array2 range1:(_NSRange)range1 range2:(_NSRange)range2 attributeIndex1:(unint64_t)index1 attributeIndex2:(unint64_t)index2
 {
   v8 = 0;
-  if (a3 && a4)
+  if (array1 && array2)
   {
-    v11 = a7;
-    if (a3->var2 > a7)
+    index1Copy = index1;
+    if (array1->var2 > index1)
     {
-      v12 = a8;
-      if (a4->var2 > a8)
+      index2Copy = index2;
+      if (array2->var2 > index2)
       {
         v8 = 0;
-        v35 = a5.location + a5.length;
-        v13 = (16 * a7) | 8;
-        for (i = (16 * a8) | 8; ; i += 16)
+        v35 = range1.location + range1.length;
+        v13 = (16 * index1) | 8;
+        for (i = (16 * index2) | 8; ; i += 16)
         {
-          v15 = TSWPAttributeArray::charIndexForAttributeIndex(a3, v11);
+          v15 = TSWPAttributeArray::charIndexForAttributeIndex(array1, index1Copy);
           if (v8 || v15 > v35)
           {
             return v8;
           }
 
-          v16 = TSWPAttributeArray::charIndexForAttributeIndex(a3, v11);
-          v17 = TSWPAttributeArray::rangeForAttributeIndex(a3, v11);
+          v16 = TSWPAttributeArray::charIndexForAttributeIndex(array1, index1Copy);
+          v17 = TSWPAttributeArray::rangeForAttributeIndex(array1, index1Copy);
           range1 = v18;
-          if ((*(a3->var0 + 3))(a3))
+          if ((*(array1->var0 + 3))(array1))
           {
-            v19 = *(a3->var4 + v13);
+            v19 = *(array1->var4 + v13);
           }
 
           else
@@ -1994,23 +1994,23 @@ LABEL_20:
             v19 = 0;
           }
 
-          var2 = a4->var2;
+          var2 = array2->var2;
           v32 = v19;
-          if (v12 >= var2)
+          if (index2Copy >= var2)
           {
             v33 = 0x7FFFFFFFFFFFFFFFuLL;
           }
 
           else
           {
-            v33.location = TSWPAttributeArray::rangeForAttributeIndex(a4, v12);
+            v33.location = TSWPAttributeArray::rangeForAttributeIndex(array2, index2Copy);
             v33.length = v21;
-            var2 = a4->var2;
+            var2 = array2->var2;
           }
 
-          if (v12 < var2 && (*(a4->var0 + 3))(a4))
+          if (index2Copy < var2 && (*(array2->var0 + 3))(array2))
           {
-            v22 = *(a4->var4 + i);
+            v22 = *(array2->var4 + i);
           }
 
           else
@@ -2019,7 +2019,7 @@ LABEL_20:
           }
 
           v8 = 0;
-          var1 = a3->var1;
+          var1 = array1->var1;
           if (var1 <= 0x12)
           {
             v24 = 1 << var1;
@@ -2029,8 +2029,8 @@ LABEL_20:
               {
                 v39.location = v17;
                 v39.length = range1;
-                length = NSIntersectionRange(v39, a5).length;
-                if (length != NSIntersectionRange(v33, a6).length || v32 != v22 && (!v32 || !v22 || ([v32 isEqual:v22] & 1) == 0))
+                length = NSIntersectionRange(v39, range1).length;
+                if (length != NSIntersectionRange(v33, range2).length || v32 != v22 && (!v32 || !v22 || ([v32 isEqual:v22] & 1) == 0))
                 {
                   goto LABEL_40;
                 }
@@ -2045,8 +2045,8 @@ LABEL_20:
               {
                 v38.location = v17;
                 v38.length = range1;
-                v25 = NSIntersectionRange(v38, a5).length;
-                if (v25 != NSIntersectionRange(v33, a6).length)
+                v25 = NSIntersectionRange(v38, range1).length;
+                if (v25 != NSIntersectionRange(v33, range2).length)
                 {
                   goto LABEL_40;
                 }
@@ -2069,12 +2069,12 @@ LABEL_34:
               {
                 v40.location = v17;
                 v40.length = range1;
-                v28 = NSIntersectionRange(v40, a5).length;
-                if (v28 == NSIntersectionRange(v33, a6).length)
+                v28 = NSIntersectionRange(v40, range1).length;
+                if (v28 == NSIntersectionRange(v33, range2).length)
                 {
-                  v37 = *(a3->var4 + v13);
-                  v36 = *(a4->var4 + i);
-                  IsSame = TSWPParagraphAttributeArray::dataIsSame(a3, &v37, &v36);
+                  v37 = *(array1->var4 + v13);
+                  v36 = *(array2->var4 + i);
+                  IsSame = TSWPParagraphAttributeArray::dataIsSame(array1, &v37, &v36);
 LABEL_37:
                   if (IsSame)
                   {
@@ -2099,10 +2099,10 @@ LABEL_40:
           }
 
 LABEL_41:
-          ++v11;
-          ++v12;
+          ++index1Copy;
+          ++index2Copy;
           v13 += 16;
-          if (v11 >= a3->var2)
+          if (index1Copy >= array1->var2)
           {
             return v8;
           }
@@ -2116,10 +2116,10 @@ LABEL_41:
   return v8;
 }
 
-- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)a3
+- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)index
 {
   v5 = [(TSWPStorage *)self paragraphStartAtCharIndex:?];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
@@ -2127,22 +2127,22 @@ LABEL_41:
   v6 = v5;
   while (1)
   {
-    v7 = [(TSWPStorage *)self smartFieldAtCharIndex:a3 attributeKind:6 effectiveRange:&v10];
-    if (!(v7 | [(TSWPStorage *)self footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:a3]))
+    v7 = [(TSWPStorage *)self smartFieldAtCharIndex:index attributeKind:6 effectiveRange:&v10];
+    if (!(v7 | [(TSWPStorage *)self footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:index]))
     {
       break;
     }
 
-    v8 = v10;
+    indexCopy = v10;
     if (!v7)
     {
-      v8 = a3;
+      indexCopy = index;
     }
 
-    if (v8 > v6)
+    if (indexCopy > v6)
     {
-      a3 = v8 - 1;
-      if (v8 != 0x8000000000000000)
+      index = indexCopy - 1;
+      if (indexCopy != 0x8000000000000000)
       {
         continue;
       }
@@ -2151,7 +2151,7 @@ LABEL_41:
     return 0;
   }
 
-  result = [(TSWPStorage *)self characterStyleAtCharIndex:a3 effectiveRange:0];
+  result = [(TSWPStorage *)self characterStyleAtCharIndex:index effectiveRange:0];
   if (!result)
   {
     return [MEMORY[0x277CBEB68] null];
@@ -2160,52 +2160,52 @@ LABEL_41:
   return result;
 }
 
-- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)a3 withString:(id)a4
+- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)selection withString:(id)string
 {
-  v7 = [a3 range];
+  range = [selection range];
   v9 = v8;
-  v10 = [a3 styleInsertionBehavior];
+  styleInsertionBehavior = [selection styleInsertionBehavior];
 
-  return [(TSWPStorage *)self pOverrideObjectBeforeReplacingCharactersInRange:v7 withString:v9 withInsertionBehavior:a4, v10];
+  return [(TSWPStorage *)self pOverrideObjectBeforeReplacingCharactersInRange:range withString:v9 withInsertionBehavior:string, styleInsertionBehavior];
 }
 
-- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4 withInsertionBehavior:(int)a5
+- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)range withString:(id)string withInsertionBehavior:(int)behavior
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v17 = *MEMORY[0x277D6C268];
-  if (![a4 length] || !length)
+  if (![string length] || !length)
   {
-    v11 = [a4 length];
-    v10 = 0;
+    v11 = [string length];
+    null = 0;
     if (!v11 || length)
     {
-      return v10;
+      return null;
     }
 
-    if (a5 == 2)
+    if (behavior == 2)
     {
       v14 = [(TSWPStorage *)self smartFieldAtCharIndex:location attributeKind:6 effectiveRange:&v17];
-      v10 = 0;
+      null = 0;
       if (!v14 || v17 != location)
       {
-        return v10;
+        return null;
       }
     }
 
     else
     {
-      if (a5 == 1)
+      if (behavior == 1)
       {
         if (!location)
         {
           goto LABEL_4;
         }
 
-        v10 = [(TSWPStorage *)self smartFieldAtCharIndex:location - 1 attributeKind:6 effectiveRange:&v17];
-        if (!v10)
+        null = [(TSWPStorage *)self smartFieldAtCharIndex:location - 1 attributeKind:6 effectiveRange:&v17];
+        if (!null)
         {
-          return v10;
+          return null;
         }
 
         if (*(&v17 + 1) + v17 != location)
@@ -2213,53 +2213,53 @@ LABEL_41:
           goto LABEL_4;
         }
 
-        v12 = self;
+        selfCopy2 = self;
         v13 = location - 1;
         goto LABEL_31;
       }
 
-      if (a5)
+      if (behavior)
       {
         goto LABEL_4;
       }
 
       if (!location)
       {
-        v10 = [(TSWPStorage *)self length];
-        if (v10)
+        null = [(TSWPStorage *)self length];
+        if (null)
         {
           if ([(TSWPStorage *)self smartFieldAtCharIndex:0 attributeKind:6 effectiveRange:&v17])
           {
             goto LABEL_40;
           }
 
-          v10 = [(TSWPStorage *)self footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:0];
-          if (v10)
+          null = [(TSWPStorage *)self footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:0];
+          if (null)
           {
             goto LABEL_40;
           }
         }
 
-        return v10;
+        return null;
       }
 
       if (![(TSWPStorage *)self smartFieldAtCharIndex:location - 1 attributeKind:6 effectiveRange:&v17]|| *(&v17 + 1) + v17 != location)
       {
-        v10 = [(TSWPStorage *)self footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:location - 1];
-        if (!v10 || location == 1)
+        null = [(TSWPStorage *)self footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:location - 1];
+        if (!null || location == 1)
         {
-          if (!v10)
+          if (!null)
           {
-            return v10;
+            return null;
           }
         }
 
         else
         {
-          v10 = [(TSWPStorage *)self pFindValidInsertionCharStyleFromCharIndex:location - 2];
-          if (v10)
+          null = [(TSWPStorage *)self pFindValidInsertionCharStyleFromCharIndex:location - 2];
+          if (null)
           {
-            return v10;
+            return null;
           }
         }
       }
@@ -2276,84 +2276,84 @@ LABEL_41:
       }
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = location;
 LABEL_31:
-    v10 = [(TSWPStorage *)v12 characterStyleAtCharIndex:v13 effectiveRange:0];
-    if (v10)
+    null = [(TSWPStorage *)selfCopy2 characterStyleAtCharIndex:v13 effectiveRange:0];
+    if (null)
     {
-      return v10;
+      return null;
     }
 
     goto LABEL_40;
   }
 
-  if (a5)
+  if (behavior)
   {
 LABEL_4:
-    v10 = 0;
-    return v10;
+    null = 0;
+    return null;
   }
 
-  if ((-[TSWPStorage smartFieldAtCharIndex:attributeKind:effectiveRange:](self, "smartFieldAtCharIndex:attributeKind:effectiveRange:", location, 6, &v17) && v17 == location && [objc_opt_class() defaultFieldStyleIdentifier] || (v10 = -[TSWPStorage footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:](self, "footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:", location)) != 0) && (!location || (v10 = -[TSWPStorage pFindValidInsertionCharStyleFromCharIndex:](self, "pFindValidInsertionCharStyleFromCharIndex:", location - 1)) == 0))
+  if ((-[TSWPStorage smartFieldAtCharIndex:attributeKind:effectiveRange:](self, "smartFieldAtCharIndex:attributeKind:effectiveRange:", location, 6, &v17) && v17 == location && [objc_opt_class() defaultFieldStyleIdentifier] || (null = -[TSWPStorage footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:](self, "footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:", location)) != 0) && (!location || (null = -[TSWPStorage pFindValidInsertionCharStyleFromCharIndex:](self, "pFindValidInsertionCharStyleFromCharIndex:", location - 1)) == 0))
   {
 LABEL_40:
-    v10 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  return v10;
+  return null;
 }
 
-- (void)pApplyOverrideObjectAfterReplacingCharactersInSelection:(id)a3 withString:(id)a4 overrideObject:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)pApplyOverrideObjectAfterReplacingCharactersInSelection:(id)selection withString:(id)string overrideObject:(id)object undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v11 = [a3 range];
+  range = [selection range];
 
-  [(TSWPStorage *)self pApplyOverrideObjectAfterReplacingCharactersInRange:v11 withString:v10 overrideObject:a4 undoTransaction:a5, a6];
+  [(TSWPStorage *)self pApplyOverrideObjectAfterReplacingCharactersInRange:range withString:v10 overrideObject:string undoTransaction:object, transaction];
 }
 
-- (void)pApplyOverrideObjectAfterReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4 overrideObject:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)pApplyOverrideObjectAfterReplacingCharactersInRange:(_NSRange)range withString:(id)string overrideObject:(id)object undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  location = a3.location;
-  v10 = [a4 length];
-  if (a5)
+  location = range.location;
+  v10 = [string length];
+  if (object)
   {
     v11 = v10;
-    if ([MEMORY[0x277CBEB68] null] == a5)
+    if ([MEMORY[0x277CBEB68] null] == object)
     {
-      v12 = 0;
+      objectCopy = 0;
     }
 
     else
     {
-      v12 = a5;
+      objectCopy = object;
     }
 
-    [(TSWPStorage *)self setCharacterStyle:v12 range:location undoTransaction:v11, a6];
+    [(TSWPStorage *)self setCharacterStyle:objectCopy range:location undoTransaction:v11, transaction];
   }
 }
 
-- (id)pNSAttributedStringWithDefaultDelegateIgnoreLists:(BOOL)a3 stripTextualAttachments:(BOOL)a4 stripGraphicalAttachments:(BOOL)a5 stripInlineAttachments:(BOOL)a6 attachmentChar:(id)a7 scale:(double)a8 withLayoutParent:(id)a9
+- (id)pNSAttributedStringWithDefaultDelegateIgnoreLists:(BOOL)lists stripTextualAttachments:(BOOL)attachments stripGraphicalAttachments:(BOOL)graphicalAttachments stripInlineAttachments:(BOOL)inlineAttachments attachmentChar:(id)char scale:(double)scale withLayoutParent:(id)parent
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  inlineAttachmentsCopy = inlineAttachments;
+  graphicalAttachmentsCopy = graphicalAttachments;
+  attachmentsCopy = attachments;
+  listsCopy = lists;
   v17 = objc_alloc_init(TSWPNSAttributedStringAttachmentConversionDelegate);
-  v18 = [(TSWPStorage *)self pNSAttributedStringWithAttributeDelegate:v17 ignoreLists:v15 stripTextualAttachments:v14 stripGraphicalAttachments:v13 stripInlineAttachments:v12 attachmentChar:a7 scale:a8 withLayoutParent:a9];
+  v18 = [(TSWPStorage *)self pNSAttributedStringWithAttributeDelegate:v17 ignoreLists:listsCopy stripTextualAttachments:attachmentsCopy stripGraphicalAttachments:graphicalAttachmentsCopy stripInlineAttachments:inlineAttachmentsCopy attachmentChar:char scale:scale withLayoutParent:parent];
 
   return v18;
 }
 
-- (id)pNSAttributedStringWithAttributeDelegate:(id)a3 ignoreLists:(BOOL)a4 stripTextualAttachments:(BOOL)a5 stripGraphicalAttachments:(BOOL)a6 stripInlineAttachments:(BOOL)a7 attachmentChar:(id)a8 scale:(double)a9 withLayoutParent:(id)a10
+- (id)pNSAttributedStringWithAttributeDelegate:(id)delegate ignoreLists:(BOOL)lists stripTextualAttachments:(BOOL)attachments stripGraphicalAttachments:(BOOL)graphicalAttachments stripInlineAttachments:(BOOL)inlineAttachments attachmentChar:(id)char scale:(double)scale withLayoutParent:(id)self0
 {
-  v56 = a5;
-  v59 = a4;
+  attachmentsCopy = attachments;
+  listsCopy = lists;
   v14 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:{-[TSWPStorage string](self, "string")}];
   [objc_msgSend(v14 "mutableString")];
-  if (a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v15 = [(TSWPStorage *)self range];
-    TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v61, self, v15, v16, 6);
+    range = [(TSWPStorage *)self range];
+    TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v61, self, range, v16, 6);
     v17 = *MEMORY[0x277D740E8];
     while (TSWPAttributeEnumerator::nextAttributeIndex(&v61, &v60))
     {
@@ -2361,7 +2361,7 @@ LABEL_40:
       v18 = TSUDynamicCast();
       if (v18)
       {
-        v19 = [a3 urlForHyperlinkField:v18];
+        v19 = [delegate urlForHyperlinkField:v18];
         if (v19)
         {
           [v14 addAttribute:v17 value:v19 range:{v60.location, v60.length}];
@@ -2380,7 +2380,7 @@ LABEL_40:
     v22 = 0;
     do
     {
-      v23 = [(TSWPStorage *)self pExportAttributes:v22 effectiveRange:&v61 stickyFont:&v60 scale:a9];
+      v23 = [(TSWPStorage *)self pExportAttributes:v22 effectiveRange:&v61 stickyFont:&v60 scale:scale];
       if (v23)
       {
         [v14 addAttributes:v23 range:{v61, v62}];
@@ -2400,24 +2400,24 @@ LABEL_40:
     while (v22 < v21);
   }
 
-  v24 = [(TSWPStorage *)self attachmentCount];
+  attachmentCount = [(TSWPStorage *)self attachmentCount];
   v58 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (!v24 && !v59)
+  if (!attachmentCount && !listsCopy)
   {
     v26 = [(TSWPStorage *)self length];
-    v27 = self;
+    selfCopy2 = self;
     v28 = 0;
     v29 = v14;
     v30 = 0;
 LABEL_68:
-    [(TSWPStorage *)v27 pMapListsFromStorageRange:v28 toString:v26 atStringLoc:v29 textListMap:v30, v58];
+    [(TSWPStorage *)selfCopy2 pMapListsFromStorageRange:v28 toString:v26 atStringLoc:v29 textListMap:v30, v58];
     goto LABEL_69;
   }
 
-  if (v24)
+  if (attachmentCount)
   {
-    v54 = a3;
-    v53 = a6;
+    delegateCopy = delegate;
+    graphicalAttachmentsCopy = graphicalAttachments;
     v25 = 0;
     v31 = 0;
     v32 = 0;
@@ -2429,13 +2429,13 @@ LABEL_68:
       v35 = v61;
       if (v61 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v36 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(conversion_private) pNSAttributedStringWithAttributeDelegate:ignoreLists:stripTextualAttachments:stripGraphicalAttachments:stripInlineAttachments:attachmentChar:scale:withLayoutParent:]"];
-        [v36 handleFailureInFunction:v37 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 118, @"Could not find an expected attachment"}];
+        [currentHandler handleFailureInFunction:v37 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 118, @"Could not find an expected attachment"}];
         v35 = v61;
       }
 
-      if (!v59)
+      if (!listsCopy)
       {
         if (v32 <= v35 + 1)
         {
@@ -2474,9 +2474,9 @@ LABEL_55:
       v41 = TSUDynamicCast();
       if (v40)
       {
-        if (!v56)
+        if (!attachmentsCopy)
         {
-          v42 = [v40 stringEquivalentWithLayoutParent:a10];
+          v42 = [v40 stringEquivalentWithLayoutParent:parent];
           if (!v42)
           {
             goto LABEL_55;
@@ -2498,15 +2498,15 @@ LABEL_37:
         {
           if ([v41 isAnchored] && !objc_msgSend(v45, "isHTMLWrap"))
           {
-            if (!v53)
+            if (!graphicalAttachmentsCopy)
             {
 LABEL_45:
-              if (!v54 || (objc_opt_respondsToSelector() & 1) == 0 || [v45 isAnchored] && !objc_msgSend(v45, "isHTMLWrap"))
+              if (!delegateCopy || (objc_opt_respondsToSelector() & 1) == 0 || [v45 isAnchored] && !objc_msgSend(v45, "isHTMLWrap"))
               {
                 goto LABEL_55;
               }
 
-              v46 = [v54 attachmentStringForDrawableAttachment:v45];
+              v46 = [delegateCopy attachmentStringForDrawableAttachment:v45];
               if (!v46)
               {
                 goto LABEL_55;
@@ -2515,7 +2515,7 @@ LABEL_45:
               v47 = v46;
               [v14 replaceCharactersInRange:v35 + v31 withAttributedString:{1, v46}];
               v48 = [v47 length];
-              if (!v59 && [(TSWPStorage *)self paragraphHasListLabelAtCharIndex:v61]&& v48 != 1)
+              if (!listsCopy && [(TSWPStorage *)self paragraphHasListLabelAtCharIndex:v61]&& v48 != 1)
               {
                 TSULogErrorInFunction();
               }
@@ -2525,23 +2525,23 @@ LABEL_45:
             }
           }
 
-          else if (!a7)
+          else if (!inlineAttachments)
           {
             goto LABEL_45;
           }
         }
       }
 
-      if (![a8 length])
+      if (![char length])
       {
         goto LABEL_55;
       }
 
-      [v14 replaceCharactersInRange:v35 + v31 withString:{1, a8}];
+      [v14 replaceCharactersInRange:v35 + v31 withString:{1, char}];
 LABEL_56:
       v32 = v35 + 1;
       v25 = v33;
-      if (v24 <= v33++)
+      if (attachmentCount <= v33++)
       {
         goto LABEL_59;
       }
@@ -2551,7 +2551,7 @@ LABEL_56:
   v32 = 0;
   v31 = 0;
 LABEL_59:
-  if (v32 < [(TSWPStorage *)self length]&& !v59)
+  if (v32 < [(TSWPStorage *)self length]&& !listsCopy)
   {
     v50 = [(TSWPStorage *)self length];
     if (v32 <= v50)
@@ -2576,7 +2576,7 @@ LABEL_59:
 
     v26 = v51 - v28;
     v30 = v31 + v32;
-    v27 = self;
+    selfCopy2 = self;
     v29 = v14;
     goto LABEL_68;
   }
@@ -2586,14 +2586,14 @@ LABEL_69:
   return v14;
 }
 
-- (id)pExportAttributes:(unint64_t)a3 effectiveRange:(_NSRange *)a4 stickyFont:(id *)a5 scale:(double)a6
+- (id)pExportAttributes:(unint64_t)attributes effectiveRange:(_NSRange *)range stickyFont:(id *)font scale:(double)scale
 {
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0;
   range2.location = 0;
   range2.length = 0;
-  v12 = [(TSWPStorage *)self paragraphStyleAtCharIndex:a3 effectiveRange:&v20];
-  v13 = [(TSWPStorage *)self characterStyleAtCharIndex:a3 effectiveRange:&range2];
+  v12 = [(TSWPStorage *)self paragraphStyleAtCharIndex:attributes effectiveRange:&v20];
+  v13 = [(TSWPStorage *)self characterStyleAtCharIndex:attributes effectiveRange:&range2];
   if (v12)
   {
     v14 = [(TSWPStorage *)self paragraphIndexAtCharIndex:v20.location + v20.length - 1]+ 1;
@@ -2607,26 +2607,26 @@ LABEL_69:
       v15 = 0;
     }
 
-    [v11 addEntriesFromDictionary:{-[TSWPStorage pExportParagraphAttributes:nextParagraphStyle:scale:](self, "pExportParagraphAttributes:nextParagraphStyle:scale:", v12, v15, a6)}];
-    [TSWPPropertyConverter mapCharacterPropertiesFromStyle:v12 toNS:v11 stickyFont:a5 scale:a6];
+    [dictionary addEntriesFromDictionary:{-[TSWPStorage pExportParagraphAttributes:nextParagraphStyle:scale:](self, "pExportParagraphAttributes:nextParagraphStyle:scale:", v12, v15, scale)}];
+    [TSWPPropertyConverter mapCharacterPropertiesFromStyle:v12 toNS:dictionary stickyFont:font scale:scale];
   }
 
-  [TSWPPropertyConverter mapCharacterPropertiesFromStyle:v13 secondaryStyle:v12 toNS:v11 stickyFont:a5 scale:a6];
-  v16 = [v11 count];
-  if (a4)
+  [TSWPPropertyConverter mapCharacterPropertiesFromStyle:v13 secondaryStyle:v12 toNS:dictionary stickyFont:font scale:scale];
+  v16 = [dictionary count];
+  if (range)
   {
-    *a4 = v20;
+    *range = v20;
     v17.length = range2.length;
     if (range2.length)
     {
       v17.location = range2.location;
-      *a4 = NSIntersectionRange(*a4, v17);
+      *range = NSIntersectionRange(*range, v17);
     }
   }
 
   if (v16)
   {
-    return v11;
+    return dictionary;
   }
 
   else
@@ -2635,25 +2635,25 @@ LABEL_69:
   }
 }
 
-- (int64_t)pMapListsFromStorageRange:(_NSRange)a3 toString:(id)a4 atStringLoc:(unint64_t)a5 textListMap:(id)a6
+- (int64_t)pMapListsFromStorageRange:(_NSRange)range toString:(id)string atStringLoc:(unint64_t)loc textListMap:(id)map
 {
-  if (!a3.length)
+  if (!range.length)
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  v54 = a3.location + a3.length;
-  if (a3.location >= a3.location + a3.length)
+  length = range.length;
+  location = range.location;
+  v54 = range.location + range.length;
+  if (range.location >= range.location + range.length)
   {
     return 0;
   }
 
-  v8 = a5;
+  locCopy3 = loc;
   v53 = 0;
   v50 = *MEMORY[0x277D74118];
-  v10 = a3.location;
+  v10 = range.location;
   do
   {
     v11 = [(TSWPStorage *)self paragraphIndexAtCharIndex:v10];
@@ -2677,14 +2677,14 @@ LABEL_69:
           v18 = 0;
         }
 
-        v19 = v53 + v8 + v18;
-        if (v19 < [a4 length])
+        v19 = v53 + locCopy3 + v18;
+        if (v19 < [string length])
         {
-          v20 = [a4 attribute:v50 atIndex:v19 effectiveRange:0];
+          v20 = [string attribute:v50 atIndex:v19 effectiveRange:0];
           if (v20)
           {
             v21 = v20;
-            v22 = [objc_msgSend(a4 "string")];
+            v22 = [objc_msgSend(string "string")];
             v48 = v23;
             v49 = v22;
             v24 = [v21 mutableCopy];
@@ -2704,7 +2704,7 @@ LABEL_69:
             [objc_msgSend(v14 valueForProperty:{80), "tsu_CGFloatValue"}];
             v32 = v26 + v31;
             v33 = v28 + v32;
-            v8 = a5;
+            locCopy3 = loc;
             if ([v30 count])
             {
               v34 = 0;
@@ -2750,23 +2750,23 @@ LABEL_22:
             [v30 insertObject:v41 atIndex:0];
 
             [v24 setTabStops:v30];
-            [a4 addAttribute:v50 value:v24 range:{v49, v48}];
-            v42 = [a4 labelMarkerStringAtIndex:v49];
+            [string addAttribute:v50 value:v24 range:{v49, v48}];
+            v42 = [string labelMarkerStringAtIndex:v49];
             v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@\t", v42];
             v44 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v24, v50, 0}];
             v45 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v43 attributes:v44];
-            [a4 insertAttributedString:v45 atIndex:v49];
+            [string insertAttributedString:v45 atIndex:v49];
             v53 += [v43 length];
           }
 
           else
           {
-            v8 = a5;
+            locCopy3 = loc;
           }
         }
 
-        location = a3.location;
-        length = a3.length;
+        location = range.location;
+        length = range.length;
       }
     }
 
@@ -2777,22 +2777,22 @@ LABEL_22:
   return v53;
 }
 
-- (id)pExportParagraphAttributes:(id)a3 nextParagraphStyle:(id)a4 scale:(double)a5
+- (id)pExportParagraphAttributes:(id)attributes nextParagraphStyle:(id)style scale:(double)scale
 {
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = objc_alloc_init(MEMORY[0x277D74240]);
-  v10 = [a3 valueForProperty:85];
+  v10 = [attributes valueForProperty:85];
   [v10 amount];
-  v12 = v11 * a5;
-  v13 = [v10 mode];
-  if (v13 > 1)
+  v12 = v11 * scale;
+  mode = [v10 mode];
+  if (mode > 1)
   {
-    if (v13 == 2)
+    if (mode == 2)
     {
       [v9 setMinimumLineHeight:v12];
     }
 
-    else if (v13 != 3)
+    else if (mode != 3)
     {
       goto LABEL_11;
     }
@@ -2801,9 +2801,9 @@ LABEL_22:
     goto LABEL_11;
   }
 
-  if (v13)
+  if (mode)
   {
-    if (v13 == 1)
+    if (mode == 1)
     {
       [v9 setMinimumLineHeight:v12];
     }
@@ -2815,11 +2815,11 @@ LABEL_22:
   }
 
 LABEL_11:
-  [a3 floatValueForProperty:88];
+  [attributes floatValueForProperty:88];
   v15 = v14;
-  if (a4)
+  if (style)
   {
-    [a4 floatValueForProperty:87];
+    [style floatValueForProperty:87];
     v17 = v16;
   }
 
@@ -2828,29 +2828,29 @@ LABEL_11:
     v17 = 0.0;
   }
 
-  v18 = v17 * a5;
-  if (v15 * a5 >= v18)
+  v18 = v17 * scale;
+  if (v15 * scale >= v18)
   {
-    v18 = v15 * a5;
+    v18 = v15 * scale;
   }
 
   [v9 setParagraphSpacing:v18];
-  [v9 setAlignment:{objc_msgSend(a3, "intValueForProperty:", 86)}];
-  [a3 floatValueForProperty:80];
-  [v9 setFirstLineHeadIndent:v19 * a5];
-  [a3 floatValueForProperty:81];
-  [v9 setHeadIndent:v20 * a5];
-  [a3 floatValueForProperty:82];
-  v22 = v21 * a5;
+  [v9 setAlignment:{objc_msgSend(attributes, "intValueForProperty:", 86)}];
+  [attributes floatValueForProperty:80];
+  [v9 setFirstLineHeadIndent:v19 * scale];
+  [attributes floatValueForProperty:81];
+  [v9 setHeadIndent:v20 * scale];
+  [attributes floatValueForProperty:82];
+  v22 = v21 * scale;
   if (v22 > 0.0 && v22 < 468.0)
   {
     [v9 setTailIndent:468.0 - v22];
   }
 
   v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
-  v24 = [a3 valueForProperty:84];
-  [a3 floatValueForProperty:83];
-  [v9 setDefaultTabInterval:v25 * a5];
+  v24 = [attributes valueForProperty:84];
+  [attributes floatValueForProperty:83];
+  [v9 setDefaultTabInterval:v25 * scale];
   if ([v24 count])
   {
     v26 = 0;
@@ -2860,16 +2860,16 @@ LABEL_11:
     {
       v29 = [v24 tabAtIndex:v26];
       [v29 position];
-      v31 = v30 * a5;
-      v32 = [v29 alignment];
-      if (v32 == 2)
+      v31 = v30 * scale;
+      alignment = [v29 alignment];
+      if (alignment == 2)
       {
         v33 = 2;
       }
 
       else
       {
-        v33 = v32 == 1;
+        v33 = alignment == 1;
       }
 
       v34 = [objc_alloc(MEMORY[0x277D742E0]) initWithTextAlignment:v33 location:v28 options:v31];
@@ -2886,16 +2886,16 @@ LABEL_11:
     [v9 setTabStops:v23];
   }
 
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x277D74118]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x277D74118]];
 
-  return v8;
+  return dictionary;
 }
 
-- (id)pTextListsFromListStyle:(id)a3 atLevel:(unint64_t)a4 labelTypeMap:(id)a5
+- (id)pTextListsFromListStyle:(id)style atLevel:(unint64_t)level labelTypeMap:(id)map
 {
-  if (a5)
+  if (map)
   {
-    if (a3)
+    if (style)
     {
       goto LABEL_3;
     }
@@ -2903,29 +2903,29 @@ LABEL_11:
 
   else
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(conversion_private) pTextListsFromListStyle:atLevel:labelTypeMap:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 611, @"Expecting a non-nil labelTypeMap parameter"}];
-    if (a3)
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 611, @"Expecting a non-nil labelTypeMap parameter"}];
+    if (style)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(conversion_private) pTextListsFromListStyle:atLevel:labelTypeMap:]"];
-  [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 612, @"Expecting a non-nil listStyle parameter"}];
+  [currentHandler2 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 612, @"Expecting a non-nil listStyle parameter"}];
 LABEL_3:
   v7 = MEMORY[0x277CBEB18];
 
-  return [v7 arrayWithCapacity:a4 + 1];
+  return [v7 arrayWithCapacity:level + 1];
 }
 
-- (void)pMapAttributesFromAttributedString:(id)a3 ontoRange:(_NSRange)a4 asCharacterStylesOnly:(BOOL)a5
+- (void)pMapAttributesFromAttributedString:(id)string ontoRange:(_NSRange)range asCharacterStylesOnly:(BOOL)only
 {
-  location = a4.location;
-  v8 = a4.location + a4.length;
-  v9 = [a3 length];
+  location = range.location;
+  v8 = range.location + range.length;
+  v9 = [string length];
   v10 = MEMORY[0x277D740C0];
   if (v9)
   {
@@ -2934,7 +2934,7 @@ LABEL_3:
     v13 = *MEMORY[0x277D740C0];
     do
     {
-      v14 = [objc_msgSend(a3 attributesAtIndex:v12 effectiveRange:{&v43), "objectForKeyedSubscript:", v13}];
+      v14 = [objc_msgSend(string attributesAtIndex:v12 effectiveRange:{&v43), "objectForKeyedSubscript:", v13}];
       v38 = v14 != 0;
       if (v14)
       {
@@ -3006,9 +3006,9 @@ LABEL_3:
       v39 = 0;
       v40 = 0;
       v36 = v19;
-      if (!a5 && v20 == v41 && v21 == v42)
+      if (!only && v20 == v41 && v21 == v42)
       {
-        v16 = [(TSWPStorage *)self pParagraphStyleWithFrequentAttributesInString:a3 withinStringRange:v20 - location currentParagraphStyle:v19 - v20, v16];
+        v16 = [(TSWPStorage *)self pParagraphStyleWithFrequentAttributesInString:string withinStringRange:v20 - location currentParagraphStyle:v19 - v20, v16];
         if (v16)
         {
           [(TSWPStorage *)self setParagraphStyle:v16 forCharRange:v41 undoTransaction:v42, 0];
@@ -3018,14 +3018,14 @@ LABEL_3:
       while (v21)
       {
         v24 = v22 + v21;
-        if (v22 + v21 > [a3 length])
+        if (v22 + v21 > [string length])
         {
-          v25 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(conversion_private) pMapAttributesFromAttributedString:ontoRange:asCharacterStylesOnly:]"];
-          [v25 handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 712, @"Remaining range extends outside attributed string"}];
+          [currentHandler handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 712, @"Remaining range extends outside attributed string"}];
         }
 
-        v27 = [objc_msgSend(a3 attributesAtIndex:v22 longestEffectiveRange:&v39 inRange:{v22, v21), "mutableCopy"}];
+        v27 = [objc_msgSend(string attributesAtIndex:v22 longestEffectiveRange:&v39 inRange:{v22, v21), "mutableCopy"}];
         v28 = v27;
         if (v38 && ![v27 objectForKeyedSubscript:v37])
         {
@@ -3037,9 +3037,9 @@ LABEL_3:
         v30 = v40 + v39;
         if (v40 + v39 > v24)
         {
-          v31 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(conversion_private) pMapAttributesFromAttributedString:ontoRange:asCharacterStylesOnly:]"];
-          [v31 handleFailureInFunction:v32 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 746, @"Attribute range extends outside remaining range - expected attribute range to be clamped"}];
+          [currentHandler2 handleFailureInFunction:v32 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 746, @"Attribute range extends outside remaining range - expected attribute range to be clamped"}];
           v30 = v40 + v39;
         }
 
@@ -3074,16 +3074,16 @@ LABEL_3:
   }
 }
 
-- (id)pParagraphStyleWithFrequentAttributesInString:(id)a3 withinStringRange:(_NSRange)a4 currentParagraphStyle:(id)a5
+- (id)pParagraphStyleWithFrequentAttributesInString:(id)string withinStringRange:(_NSRange)range currentParagraphStyle:(id)style
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a4.location + a4.length;
-  if (a4.location + a4.length > [a3 length])
+  length = range.length;
+  location = range.location;
+  v9 = range.location + range.length;
+  if (range.location + range.length > [string length])
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(conversion_private) pParagraphStyleWithFrequentAttributesInString:withinStringRange:currentParagraphStyle:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 760, @"Range extends outside attributed string"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_conversion_private.mm"), 760, @"Range extends outside attributed string"}];
   }
 
   v12 = [MEMORY[0x277CBEB58] set];
@@ -3094,19 +3094,19 @@ LABEL_3:
     {
       v25 = 0;
       v26 = 0;
-      [v12 addObjectsFromArray:{objc_msgSend(objc_msgSend(a3, "attributesAtIndex:effectiveRange:", v13, &v25), "allKeys")}];
+      [v12 addObjectsFromArray:{objc_msgSend(objc_msgSend(string, "attributesAtIndex:effectiveRange:", v13, &v25), "allKeys")}];
       v13 = v26 + v25;
     }
 
     while (v26 + v25 < v9);
   }
 
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [v12 objectEnumerator];
-  v16 = [v15 nextObject];
-  if (v16)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  objectEnumerator = [v12 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v17 = v16;
+    nextObject2 = nextObject;
     do
     {
       if (location < v9)
@@ -3118,7 +3118,7 @@ LABEL_3:
         {
           v25 = 0;
           v26 = 0;
-          v21 = [a3 attribute:v17 atIndex:v20 longestEffectiveRange:&v25 inRange:{location, length}];
+          v21 = [string attribute:nextObject2 atIndex:v20 longestEffectiveRange:&v25 inRange:{location, length}];
           if (v26 > v19)
           {
             v19 = v26;
@@ -3131,25 +3131,25 @@ LABEL_3:
         while (v25 + v26 < v9);
         if (v18)
         {
-          [v14 setObject:v18 forKeyedSubscript:v17];
+          [dictionary setObject:v18 forKeyedSubscript:nextObject2];
         }
       }
 
-      v17 = [v15 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v17);
+    while (nextObject2);
   }
 
   v22 = +[TSSPropertyMap propertyMap];
-  [v22 addValuesFromPropertyMap:{+[TSWPPropertyConverter mapCharacterPropertiesFromNS:](TSWPPropertyConverter, "mapCharacterPropertiesFromNS:", v14)}];
-  [v22 addValuesFromPropertyMap:{-[TSWPStorage pImportParagraphAttributes:paragraphStyle:](self, "pImportParagraphAttributes:paragraphStyle:", v14, 0)}];
-  return [(TSSStylesheet *)self->_stylesheet variationOfStyle:a5 propertyMap:v22];
+  [v22 addValuesFromPropertyMap:{+[TSWPPropertyConverter mapCharacterPropertiesFromNS:](TSWPPropertyConverter, "mapCharacterPropertiesFromNS:", dictionary)}];
+  [v22 addValuesFromPropertyMap:{-[TSWPStorage pImportParagraphAttributes:paragraphStyle:](self, "pImportParagraphAttributes:paragraphStyle:", dictionary, 0)}];
+  return [(TSSStylesheet *)self->_stylesheet variationOfStyle:style propertyMap:v22];
 }
 
-- (id)pImportParagraphAttributes:(id)a3 paragraphStyle:(id)a4
+- (id)pImportParagraphAttributes:(id)attributes paragraphStyle:(id)style
 {
-  v4 = [a3 objectForKeyedSubscript:{*MEMORY[0x277D74118], a4}];
+  v4 = [attributes objectForKeyedSubscript:{*MEMORY[0x277D74118], style}];
   if (!v4)
   {
     return 0;
@@ -3191,13 +3191,13 @@ LABEL_12:
   [v5 paragraphSpacing];
   [v6 setCGFloatValue:88 forProperty:?];
   [v6 setIntValue:objc_msgSend(v5 forProperty:{"baseWritingDirection") == 1, 44}];
-  v16 = [v5 alignment];
-  if (v16 >= 0x80000000)
+  alignment = [v5 alignment];
+  if (alignment >= 0x80000000)
   {
     [TSWPStorage(conversion_private) pImportParagraphAttributes:paragraphStyle:];
   }
 
-  else if (v16 <= 0xFFFFFFFF7FFFFFFFLL)
+  else if (alignment <= 0xFFFFFFFF7FFFFFFFLL)
   {
     [TSWPStorage(conversion_private) pImportParagraphAttributes:paragraphStyle:];
   }
@@ -3220,27 +3220,27 @@ LABEL_12:
   }
 
   [v6 setCGFloatValue:82 forProperty:{v20, v18}];
-  v21 = [v5 tabStops];
-  if ([v21 count])
+  tabStops = [v5 tabStops];
+  if ([tabStops count])
   {
     v22 = objc_alloc_init(TSWPTabs);
-    if ([v21 count])
+    if ([tabStops count])
     {
       v23 = 0;
       do
       {
-        v24 = [v21 objectAtIndexedSubscript:v23];
-        v25 = [v24 alignment];
+        v24 = [tabStops objectAtIndexedSubscript:v23];
+        alignment2 = [v24 alignment];
         [v24 location];
         v27 = v26;
-        if (v25 == 2)
+        if (alignment2 == 2)
         {
           v28 = 2;
         }
 
         else
         {
-          v28 = v25 == 1;
+          v28 = alignment2 == 1;
         }
 
         v29 = +[TSWPTab tab];
@@ -3250,7 +3250,7 @@ LABEL_12:
         ++v23;
       }
 
-      while (v23 < [v21 count]);
+      while (v23 < [tabStops count]);
     }
 
     [v6 setObject:v22 forProperty:84];
@@ -3259,7 +3259,7 @@ LABEL_12:
   return v6;
 }
 
-- (id)pDrawableInfoFromImporter:(id)a3 error:(id *)a4
+- (id)pDrawableInfoFromImporter:(id)importer error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -3273,7 +3273,7 @@ LABEL_12:
   v13 = __Block_byref_object_copy__21;
   v14 = __Block_byref_object_dispose__21;
   v15 = 0;
-  if (a3)
+  if (importer)
   {
     v6 = dispatch_semaphore_create(0);
     v9[0] = MEMORY[0x277D85DD0];
@@ -3282,16 +3282,16 @@ LABEL_12:
     v9[3] = &unk_279D49AC8;
     v9[6] = &v16;
     v9[7] = &v10;
-    v9[4] = a3;
+    v9[4] = importer;
     v9[5] = v6;
-    [a3 importInfoWithCompletionHandler:v9];
+    [importer importInfoWithCompletionHandler:v9];
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_release(v6);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   v7 = v17[5];
@@ -3309,26 +3309,26 @@ intptr_t __67__TSWPStorage_conversion_private__pDrawableInfoFromImporter_error__
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)transferAttributeArraySource:(TSWPAttributeArray *)a3 toAttributeArrayDest:(TSWPAttributeArray *)a4 atCharIndex:(unint64_t)a5 dolcContext:(id)a6 undoTransaction:(void *)a7
+- (void)transferAttributeArraySource:(TSWPAttributeArray *)source toAttributeArrayDest:(TSWPAttributeArray *)dest atCharIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  if (a3 && (v7 = a4) != 0)
+  if (source && (destCopy4 = dest) != 0)
   {
-    var2 = a3->var2;
+    var2 = source->var2;
     if (var2)
     {
-      v9 = a5;
+      indexCopy2 = index;
       v43 = 0;
       v10 = 0;
-      v39 = a5 - 1;
+      v39 = index - 1;
       v11 = 8;
       v12 = 0x7FFFFFFFFFFFFFFFLL;
       while (1)
       {
-        v13 = TSWPAttributeArray::rangeForAttributeIndex(a3, v10);
+        v13 = TSWPAttributeArray::rangeForAttributeIndex(source, v10);
         v15 = v14;
-        v16 = (*(a3->var0 + 3))(a3) ? *(a3->var4 + v11) : 0;
-        v17 = v13 + v9;
-        var1 = a3->var1;
+        v16 = (*(source->var0 + 3))(source) ? *(source->var4 + v11) : 0;
+        v17 = v13 + indexCopy2;
+        var1 = source->var1;
         if (var1 > 5)
         {
           break;
@@ -3340,7 +3340,7 @@ intptr_t __67__TSWPStorage_conversion_private__pDrawableInfoFromImporter_error__
           {
             if (v12 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              if (v9 && (v25 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, v39), v25 < 0x7FFFFFFFFFFFFFFELL))
+              if (indexCopy2 && (v25 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(destCopy4, v39), v25 < 0x7FFFFFFFFFFFFFFELL))
               {
                 v12 = v25 + 1;
               }
@@ -3352,9 +3352,9 @@ intptr_t __67__TSWPStorage_conversion_private__pDrawableInfoFromImporter_error__
             }
 
             v26 = v12 + v10;
-            v27 = v7;
+            v27 = destCopy4;
             v28 = v16;
-            v29 = a6;
+            contextCopy = context;
             goto LABEL_60;
           }
 
@@ -3373,7 +3373,7 @@ LABEL_18:
             {
               if (v12 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v12 = [(TSWPStorage *)self paragraphIndexAtCharIndex:v9];
+                v12 = [(TSWPStorage *)self paragraphIndexAtCharIndex:indexCopy2];
               }
 
               v20 = v43;
@@ -3389,7 +3389,7 @@ LABEL_18:
               v24 = v22 - v21 + 1;
               if (v10)
               {
-                v7 = a4;
+                destCopy4 = dest;
                 if (v22 - v21 != -1)
                 {
                   goto LABEL_53;
@@ -3398,7 +3398,7 @@ LABEL_18:
 
               else
               {
-                v32 = TSWPAttributeArray::charIndexForAttributeIndex(v43, v21) < v9 && v24 != 0;
+                v32 = TSWPAttributeArray::charIndexForAttributeIndex(v43, v21) < indexCopy2 && v24 != 0;
                 if (v32)
                 {
                   v24 = v23;
@@ -3407,29 +3407,29 @@ LABEL_18:
                 if (v24)
                 {
                   v21 += v32;
-                  v7 = a4;
-                  if (TSWPAttributeArray::charIndexForAttributeIndex(v43, v21) >= v9)
+                  destCopy4 = dest;
+                  if (TSWPAttributeArray::charIndexForAttributeIndex(v43, v21) >= indexCopy2)
                   {
 LABEL_53:
-                    v33 = a3->var1;
+                    v33 = source->var1;
                     if (v33 <= 0x12 && ((1 << v33) & 0x40802) != 0)
                     {
-                      v47 = *(a3->var4 + v11);
-                      TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(v7, &v47, v21, v24, v43, a7);
+                      v47 = *(source->var4 + v11);
+                      TSWPParagraphAttributeArray::applyParagraphDataToParagraphRange(destCopy4, &v47, v21, v24, v43, transaction);
                     }
 
                     else
                     {
-                      if (!v7->var2)
+                      if (!destCopy4->var2)
                       {
-                        v38 = [MEMORY[0x277D6C290] currentHandler];
+                        currentHandler = [MEMORY[0x277D6C290] currentHandler];
                         v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(TSWPStorage_copying) transferAttributeArraySource:toAttributeArrayDest:atCharIndex:dolcContext:undoTransaction:]"];
-                        [v38 handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_copying.mm"), 100, @"This attribute table should not be empty. This storage was created incorrectly."}];
+                        [currentHandler handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_copying.mm"), 100, @"This attribute table should not be empty. This storage was created incorrectly."}];
                       }
 
                       v49.location = v21;
                       v49.length = v24;
-                      TSWPParagraphAttributeArray::applyObjectToParagraphRange(v7, v16, v49, v43, a7);
+                      TSWPParagraphAttributeArray::applyObjectToParagraphRange(destCopy4, v16, v49, v43, transaction);
                     }
 
                     goto LABEL_61;
@@ -3438,7 +3438,7 @@ LABEL_53:
 
                 else
                 {
-                  v7 = a4;
+                  destCopy4 = dest;
                 }
               }
             }
@@ -3476,12 +3476,12 @@ LABEL_61:
 
         if ((v19 & 0x18000) != 0)
         {
-          if (![a6 exportingFootnotes] || !v15)
+          if (![context exportingFootnotes] || !v15)
           {
             goto LABEL_61;
           }
 
-          var1 = a3->var1;
+          var1 = source->var1;
 LABEL_42:
           if (var1 != 17)
           {
@@ -3490,25 +3490,25 @@ LABEL_42:
 
           if ([(TSWPStorage *)self highlightsAllowed])
           {
-            var1 = a3->var1;
+            var1 = source->var1;
 LABEL_45:
             v30 = 0;
             if (var1 <= 0x11 && ((1 << var1) & 0x390C0) != 0)
             {
-              v31 = self;
+              selfCopy2 = self;
               v16 = [(objc_object *)v16 copyWithContext:[(TSPObject *)self context]];
               v30 = v16;
             }
 
             else
             {
-              v31 = self;
+              selfCopy2 = self;
             }
 
-            [(TSWPStorage *)v31 lowLevelApplyObject:v16 toCharRange:v17 forKind:v15 dolcContext:var1 undoTransaction:a6, a7];
+            [(TSWPStorage *)selfCopy2 lowLevelApplyObject:v16 toCharRange:v17 forKind:v15 dolcContext:var1 undoTransaction:context, transaction];
 
-            v9 = a5;
-            v7 = a4;
+            indexCopy2 = index;
+            destCopy4 = dest;
             goto LABEL_61;
           }
 
@@ -3526,20 +3526,20 @@ LABEL_45:
 LABEL_35:
         if (v12 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, v9);
+          v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(destCopy4, indexCopy2);
         }
 
-        if (!v10 && TSWPAttributeArray::charIndexForAttributeIndex(v7, v12) < v9)
+        if (!v10 && TSWPAttributeArray::charIndexForAttributeIndex(destCopy4, v12) < indexCopy2)
         {
           goto LABEL_61;
         }
 
         v26 = v12 + v10;
-        v27 = v7;
+        v27 = destCopy4;
         v28 = v16;
-        v29 = 0;
+        contextCopy = 0;
 LABEL_60:
-        TSWPAttributeArray::replaceObjectForAttributeIndex(v27, v28, v26, v29, a7);
+        TSWPAttributeArray::replaceObjectForAttributeIndex(v27, v28, v26, contextCopy, transaction);
         goto LABEL_61;
       }
 
@@ -3555,19 +3555,19 @@ LABEL_41:
 
   else
   {
-    v35 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(TSWPStorage_copying) transferAttributeArraySource:toAttributeArrayDest:atCharIndex:dolcContext:undoTransaction:]"];
     v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_copying.mm"];
 
-    [v35 handleFailureInFunction:v36 file:v37 lineNumber:25 description:@"transferAttributeArraySource: bad tables."];
+    [currentHandler2 handleFailureInFunction:v36 file:v37 lineNumber:25 description:@"transferAttributeArraySource: bad tables."];
   }
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 dolcContext:(id)a6 undoTransaction:(void *)a7
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withStorage:(id)storage usePasteRules:(BOOL)rules dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v9 = a5;
-  v12 = [[TSWPSelection alloc] initWithRange:a3.location, a3.length];
-  v13 = [(TSWPStorage *)self replaceCharactersInSelection:v12 withStorage:a4 usePasteRules:v9 dolcContext:a6 changeSession:0 undoTransaction:a7];
+  rulesCopy = rules;
+  v12 = [[TSWPSelection alloc] initWithRange:range.location, range.length];
+  v13 = [(TSWPStorage *)self replaceCharactersInSelection:v12 withStorage:storage usePasteRules:rulesCopy dolcContext:context changeSession:0 undoTransaction:transaction];
   v15 = v14;
 
   v16 = v13;
@@ -3577,11 +3577,11 @@ LABEL_41:
   return result;
 }
 
-- (_NSRange)replaceCharactersInSelection:(id)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 dolcContext:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8
+- (_NSRange)replaceCharactersInSelection:(id)selection withStorage:(id)storage usePasteRules:(BOOL)rules dolcContext:(id)context changeSession:(id)session undoTransaction:(void *)transaction
 {
-  v11 = a5;
+  rulesCopy = rules;
   [(TSPObject *)self willModify];
-  if (v11)
+  if (rulesCopy)
   {
     v15 = objc_alloc_init(TSWPStoragePasteRules);
   }
@@ -3591,26 +3591,26 @@ LABEL_41:
     v15 = 0;
   }
 
-  v16 = [(TSWPStorage *)self relocateNonSelectedAnchorsInSelection:a3 undoTransaction:a8];
-  v17 = [v16 range];
-  [(TSWPStoragePasteRules *)v15 willPasteStorage:a4 intoDestStorage:self atDestRange:v17, v18];
-  v19 = [a4 string];
+  v16 = [(TSWPStorage *)self relocateNonSelectedAnchorsInSelection:selection undoTransaction:transaction];
+  range = [v16 range];
+  [(TSWPStoragePasteRules *)v15 willPasteStorage:storage intoDestStorage:self atDestRange:range, v18];
+  string = [storage string];
   v20 = [(TSWPStorage *)self length];
   v33 = xmmword_26CA637B0;
-  v21 = [(TSWPStorage *)self replaceCharactersInSelection:v16 withString:v19 withFlags:0 replaceTextData:0 changeSession:a7 undoTransaction:a8 outInsertedRange:&v33];
+  v21 = [(TSWPStorage *)self replaceCharactersInSelection:v16 withString:string withFlags:0 replaceTextData:0 changeSession:session undoTransaction:transaction outInsertedRange:&v33];
   v23 = v22;
   if (*(&v33 + 1))
   {
     v24 = 0;
     do
     {
-      v25 = [a4 attributeArrayForKind:v24];
+      v25 = [storage attributeArrayForKind:v24];
       if (v25)
       {
         v26 = v25;
         if (v24 == 9)
         {
-          if ([a4 columnStyleCount] < 2 || !-[TSWPStorage supportsColumnStyles](self, "supportsColumnStyles"))
+          if ([storage columnStyleCount] < 2 || !-[TSWPStorage supportsColumnStyles](self, "supportsColumnStyles"))
           {
             goto LABEL_19;
           }
@@ -3618,7 +3618,7 @@ LABEL_41:
 
         else if (v24 == 8)
         {
-          if ([a4 sectionCount] < 2 || !-[TSWPStorage supportsSections](self, "supportsSections"))
+          if ([storage sectionCount] < 2 || !-[TSWPStorage supportsSections](self, "supportsSections"))
           {
             goto LABEL_19;
           }
@@ -3629,8 +3629,8 @@ LABEL_41:
           goto LABEL_19;
         }
 
-        v27 = [(TSWPStorage *)self attributeArrayForKind:v24 withCreate:1 undoTransaction:a8];
-        [(TSWPStorage *)self transferAttributeArraySource:v26 toAttributeArrayDest:v27 atCharIndex:v33 dolcContext:a6 undoTransaction:a8];
+        v27 = [(TSWPStorage *)self attributeArrayForKind:v24 withCreate:1 undoTransaction:transaction];
+        [(TSWPStorage *)self transferAttributeArraySource:v26 toAttributeArrayDest:v27 atCharIndex:v33 dolcContext:context undoTransaction:transaction];
       }
 
 LABEL_19:
@@ -3640,17 +3640,17 @@ LABEL_19:
     while (v24 != 19);
   }
 
-  [(TSWPStorage *)self compress:a8];
-  if (a8)
+  [(TSWPStorage *)self compress:transaction];
+  if (transaction)
   {
-    *&v28 = *&TSWPStorageTransaction::compress(a8);
+    *&v28 = *&TSWPStorageTransaction::compress(transaction);
   }
 
   [(TSWPStorage *)self p_didChangeRange:v21 delta:v23 broadcastKind:[(TSWPStorage *)self length]- v20, 1];
   self->_delayBroadcast = 1;
   self->_rangeToBroadcast.location = 0;
   self->_rangeToBroadcast.length = 0;
-  [(TSWPStoragePasteRules *)v15 didPasteWithIOTransaction:a8 atDestRange:v33];
+  [(TSWPStoragePasteRules *)v15 didPasteWithIOTransaction:transaction atDestRange:v33];
 
   location = self->_rangeToBroadcast.location;
   length = self->_rangeToBroadcast.length;
@@ -3669,9 +3669,9 @@ LABEL_19:
   return result;
 }
 
-- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)a3
+- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)index
 {
-  v4 = [(TSWPStorage *)self textRangeForParagraphAtIndex:a3];
+  v4 = [(TSWPStorage *)self textRangeForParagraphAtIndex:index];
   v6 = v4;
   if (v5)
   {
@@ -3698,34 +3698,34 @@ LABEL_19:
   return result;
 }
 
-- (id)pDefaultSectionForContext:(id)a3
+- (id)pDefaultSectionForContext:(id)context
 {
   if (objc_opt_respondsToSelector())
   {
 
-    return [(TSWPStorage *)self defaultSectionForContext:a3];
+    return [(TSWPStorage *)self defaultSectionForContext:context];
   }
 
   else
   {
-    v6 = [[TSWPSectionPlaceholder alloc] initWithContext:a3];
+    v6 = [[TSWPSectionPlaceholder alloc] initWithContext:context];
 
     return v6;
   }
 }
 
-- (void)p_didChangeRange:(_NSRange)a3 delta:(int64_t)a4 broadcastKind:(int)a5
+- (void)p_didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind
 {
-  v5 = *&a5;
-  length = a3.length;
-  location = a3.location;
+  v5 = *&kind;
+  length = range.length;
+  location = range.location;
   ++self->_changeCount;
-  if (a4 || !self->_delayBroadcast)
+  if (delta || !self->_delayBroadcast)
   {
     [(TSPObject *)self willModify];
     broadcaster = self->_broadcaster;
 
-    [(TSWPStorageBroadcaster *)broadcaster broadcastStorage:self didChangeRange:location delta:length broadcastKind:a4, v5];
+    [(TSWPStorageBroadcaster *)broadcaster broadcastStorage:self didChangeRange:location delta:length broadcastKind:delta, v5];
   }
 
   else
@@ -3734,39 +3734,39 @@ LABEL_19:
     v11.location = self->_rangeToBroadcast.location;
     if (*&self->_rangeToBroadcast == 0)
     {
-      p_rangeToBroadcast->location = a3.location;
-      self->_rangeToBroadcast.length = a3.length;
+      p_rangeToBroadcast->location = range.location;
+      self->_rangeToBroadcast.length = range.length;
     }
 
     else
     {
       v11.length = self->_rangeToBroadcast.length;
-      v13 = NSUnionRange(v11, a3);
+      v13 = NSUnionRange(v11, range);
       p_rangeToBroadcast->location = v13.location;
       self->_rangeToBroadcast.length = v13.length;
     }
   }
 }
 
-- (void)p_replaceCharactersInSelection:(id)a3 withString:(id)a4 length:(unint64_t)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)p_replaceCharactersInSelection:(id)selection withString:(id)string length:(unint64_t)length undoTransaction:(TSWPStorageTransaction *)transaction
 {
   __p = 0;
   v33 = 0;
   v34 = 0;
   v31 = 0;
-  if (!a3)
+  if (!selection)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(TSWPStorage_private) p_replaceCharactersInSelection:withString:length:undoTransaction:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_private.mm"), 78, @"invalid nil value for '%s'", "selection"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_private.mm"), 78, @"invalid nil value for '%s'", "selection"}];
   }
 
-  if (a5)
+  if (length)
   {
-    [(TSWPStorage *)self p_fillMarkers:&__p string:a4 length:a5 hasAttachments:&v31 + 1 hasFootnotes:&v31 hasBreaks:0];
+    [(TSWPStorage *)self p_fillMarkers:&__p string:string length:length hasAttachments:&v31 + 1 hasFootnotes:&v31 hasBreaks:0];
   }
 
-  v13 = [(TSWPStorage *)self pOverrideObjectBeforeReplacingCharactersInSelection:a3 withString:a4];
+  v13 = [(TSWPStorage *)self pOverrideObjectBeforeReplacingCharactersInSelection:selection withString:string];
   v14 = 0;
   do
   {
@@ -3782,11 +3782,11 @@ LABEL_19:
         v15 = v14 == 4 ? HIBYTE(v31) : 0;
       }
 
-      v16 = [(TSWPStorage *)self attributeArrayForKind:v14 withCreate:v15 & 1 undoTransaction:a6];
+      v16 = [(TSWPStorage *)self attributeArrayForKind:v14 withCreate:v15 & 1 undoTransaction:transaction];
       if (v16)
       {
-        v17 = [a3 range];
-        (*(v16->var0 + 9))(v16, v17, v18, a4, a5, &__p, a6);
+        range = [selection range];
+        (*(v16->var0 + 9))(v16, range, v18, string, length, &__p, transaction);
       }
     }
 
@@ -3794,20 +3794,20 @@ LABEL_19:
   }
 
   while (v14 != 19);
-  v19 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:0 undoTransaction:a6];
+  v19 = [(TSWPStorage *)self attributeArrayForKind:0 withCreate:0 undoTransaction:transaction];
   if (v19)
   {
-    v20 = [a3 range];
-    (*(v19->var0 + 9))(v19, v20, v21, a4, a5, &__p, a6);
+    range2 = [selection range];
+    (*(v19->var0 + 9))(v19, range2, v21, string, length, &__p, transaction);
   }
 
-  v22 = [a3 range];
-  [(TSWPStorage *)self p_lowLevelReplaceCharactersInRange:v22 withString:v23 length:a4 undoTransaction:a5, a6];
+  range3 = [selection range];
+  [(TSWPStorage *)self p_lowLevelReplaceCharactersInRange:range3 withString:v23 length:string undoTransaction:length, transaction];
   v24 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (v24)
   {
-    v25 = [a3 range];
-    (*(v24->var0 + 11))(v24, v25, v26, a4, a5, &__p, a6, [a3 styleInsertionBehavior]);
+    range4 = [selection range];
+    (*(v24->var0 + 11))(v24, range4, v26, string, length, &__p, transaction, [selection styleInsertionBehavior]);
   }
 
   v27 = 0;
@@ -3818,8 +3818,8 @@ LABEL_19:
       v28 = [(TSWPStorage *)self attributeArrayForKind:v27];
       if (v28)
       {
-        v29 = [a3 range];
-        (*(v28->var0 + 11))(v28, v29, v30, a4, a5, &__p, a6, [a3 styleInsertionBehavior]);
+        range5 = [selection range];
+        (*(v28->var0 + 11))(v28, range5, v30, string, length, &__p, transaction, [selection styleInsertionBehavior]);
       }
     }
 
@@ -3827,7 +3827,7 @@ LABEL_19:
   }
 
   while (v27 != 19);
-  [(TSWPStorage *)self pApplyOverrideObjectAfterReplacingCharactersInSelection:a3 withString:a4 overrideObject:v13 undoTransaction:a6];
+  [(TSWPStorage *)self pApplyOverrideObjectAfterReplacingCharactersInSelection:selection withString:string overrideObject:v13 undoTransaction:transaction];
   if (__p)
   {
     v33 = __p;
@@ -3835,44 +3835,44 @@ LABEL_19:
   }
 }
 
-- (void)p_lowLevelReplaceCharactersInRange:(_NSRange)a3 withString:(id)a4 length:(unint64_t)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)p_lowLevelReplaceCharactersInRange:(_NSRange)range withString:(id)string length:(unint64_t)length undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [(NSMutableString *)self->_string length])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [(NSMutableString *)self->_string length])
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(TSWPStorage_private) p_lowLevelReplaceCharactersInRange:withString:length:undoTransaction:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_private.mm"), 143, @"Attempting to delete past end of storage."}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_private.mm"), 143, @"Attempting to delete past end of storage."}];
   }
 
   string = self->_string;
-  if (a4)
+  if (string)
   {
-    v13 = a4;
+    stringCopy = string;
   }
 
   else
   {
-    v13 = &stru_287D36338;
+    stringCopy = &stru_287D36338;
   }
 
-  [(NSMutableString *)string replaceCharactersInRange:location withString:length, v13];
+  [(NSMutableString *)string replaceCharactersInRange:location withString:length, stringCopy];
 }
 
-- (void)p_fillMarkers:(void *)a3 string:(id)a4 length:(unint64_t)a5 hasAttachments:(BOOL *)a6 hasFootnotes:(BOOL *)a7 hasBreaks:(BOOL *)a8
+- (void)p_fillMarkers:(void *)markers string:(id)string length:(unint64_t)length hasAttachments:(BOOL *)attachments hasFootnotes:(BOOL *)footnotes hasBreaks:(BOOL *)breaks
 {
-  if (a5)
+  if (length)
   {
-    v11 = a5;
-    if (a5 == 1)
+    lengthCopy2 = length;
+    if (length == 1)
     {
-      v13 = [a4 characterAtIndex:0];
+      v13 = [string characterAtIndex:0];
       if (v13 == 14)
       {
-        if (a7)
+        if (footnotes)
         {
-          *a7 = 1;
+          *footnotes = 1;
         }
 
         *&v27 = 0;
@@ -3883,9 +3883,9 @@ LABEL_19:
       v14 = v13;
       if (v13 == 65532)
       {
-        if (a6)
+        if (attachments)
         {
-          *a6 = 1;
+          *attachments = 1;
         }
 
         *&v27 = 0;
@@ -3893,15 +3893,15 @@ LABEL_19:
 LABEL_36:
         WORD4(v27) = v15;
 LABEL_37:
-        std::vector<std::pair<unsigned long,unsigned short>>::push_back[abi:nn200100](a3, &v27);
+        std::vector<std::pair<unsigned long,unsigned short>>::push_back[abi:nn200100](markers, &v27);
         return;
       }
 
       if (IsParagraphBreakingCharacter(v13))
       {
-        if (a8)
+        if (breaks)
         {
-          *a8 = 1;
+          *breaks = 1;
         }
 
         *&v27 = 0;
@@ -3922,45 +3922,45 @@ LABEL_37:
         }
 
         v18 = v16 + 1024;
-        if (v16 + 1024 < v11)
+        if (v16 + 1024 < lengthCopy2)
         {
-          v11 = v16 + 1024;
+          lengthCopy2 = v16 + 1024;
         }
 
         v28.location = v16;
-        v28.length = v11 - v16;
+        v28.length = lengthCopy2 - v16;
         v26 = v17;
-        CFStringGetCharacters(a4, v28, v17);
-        if ((v11 - v16) >= 1)
+        CFStringGetCharacters(string, v28, v17);
+        if ((lengthCopy2 - v16) >= 1)
         {
           v19 = v26;
           do
           {
             if ((IsParagraphBreakingCharacter(*v19) & 1) != 0 || ((v20 = *v19, v20 != 65532) ? (v21 = v20 == 14) : (v21 = 1), v21))
             {
-              if (a6 && (v22 = a6, *v19 == -4) || a7 && (v22 = a7, *v19 == 14) || a8 && (v23 = IsParagraphBreakingCharacter(*v19), v22 = a8, v23))
+              if (attachments && (v22 = attachments, *v19 == -4) || footnotes && (v22 = footnotes, *v19 == 14) || breaks && (v23 = IsParagraphBreakingCharacter(*v19), v22 = breaks, v23))
               {
                 *v22 = 1;
               }
 
               *&v27 = v16;
               WORD4(v27) = *v19;
-              std::vector<std::pair<unsigned long,unsigned short>>::push_back[abi:nn200100](a3, &v27);
+              std::vector<std::pair<unsigned long,unsigned short>>::push_back[abi:nn200100](markers, &v27);
             }
 
             ++v16;
             ++v19;
           }
 
-          while (v11 != v16);
+          while (lengthCopy2 != v16);
         }
 
-        v16 = v11;
-        v11 = a5;
+        v16 = lengthCopy2;
+        lengthCopy2 = length;
         v17 = v26;
       }
 
-      while (v18 < a5);
+      while (v18 < length);
       if (v26)
       {
         free(v26);
@@ -3969,11 +3969,11 @@ LABEL_37:
   }
 }
 
-- (void)p_fillMarkers:(void *)a3 startingAtCharIndex:(unint64_t)a4 forCount:(unint64_t)a5
+- (void)p_fillMarkers:(void *)markers startingAtCharIndex:(unint64_t)index forCount:(unint64_t)count
 {
-  range.location = a4;
-  std::vector<unsigned long>::push_back[abi:nn200100](a3, &range);
-  if (a5 > (*(a3 + 1) - *a3) >> 3)
+  range.location = index;
+  std::vector<unsigned long>::push_back[abi:nn200100](markers, &range);
+  if (count > (*(markers + 1) - *markers) >> 3)
   {
     v8 = [(NSMutableString *)self->_string length];
     v9 = 0;
@@ -4001,7 +4001,7 @@ LABEL_37:
       }
 
       v12 = v11 - location;
-      v13 = self;
+      selfCopy = self;
       v20.location = location;
       v20.length = v11 - location;
       CFStringGetCharacters(self->_string, v20, v9);
@@ -4022,9 +4022,9 @@ LABEL_37:
           }
 
           v18 = v16 + v14;
-          std::vector<unsigned long>::push_back[abi:nn200100](a3, &v18);
+          std::vector<unsigned long>::push_back[abi:nn200100](markers, &v18);
           v14 = v15 + 1;
-          v17 = a5 <= (*(a3 + 1) - *a3) >> 3 || v12 <= v14;
+          v17 = count <= (*(markers + 1) - *markers) >> 3 || v12 <= v14;
           ++v15;
         }
 
@@ -4033,10 +4033,10 @@ LABEL_37:
 
 LABEL_19:
       location = v11;
-      self = v13;
+      self = selfCopy;
     }
 
-    while (a5 > (*(a3 + 1) - *a3) >> 3);
+    while (count > (*(markers + 1) - *markers) >> 3);
     if (v9)
     {
       free(v9);
@@ -4044,13 +4044,13 @@ LABEL_19:
   }
 }
 
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments
 {
-  v4 = a4;
+  attachmentsCopy = attachments;
   v5 = +[TSWPStorage filterText:removingAttachments:]::sFilteredStorageChars;
   if (+[TSWPStorage filterText:removingAttachments:]::sFilteredStorageChars)
   {
-    v6 = a3;
+    textCopy3 = text;
     v7 = +[TSWPStorage filterText:removingAttachments:]::sFilteredStorageCharsWithAttachmentChar;
   }
 
@@ -4058,7 +4058,7 @@ LABEL_19:
   {
     v8 = objc_alloc_init(MEMORY[0x277CCAB50]);
     [v8 formUnionWithCharacterSet:{objc_msgSend(MEMORY[0x277CCA900], "controlCharacterSet")}];
-    v6 = a3;
+    textCopy3 = text;
     [v8 formUnionWithCharacterSet:{objc_msgSend(MEMORY[0x277CCA900], "illegalCharacterSet")}];
     [v8 removeCharactersInRange:{10, 1}];
     [v8 removeCharactersInRange:{11, 1}];
@@ -4079,7 +4079,7 @@ LABEL_19:
     v5 = +[TSWPStorage filterText:removingAttachments:]::sFilteredStorageChars;
   }
 
-  if (v4)
+  if (attachmentsCopy)
   {
     v9 = v7;
   }
@@ -4094,23 +4094,23 @@ LABEL_19:
   v29 = v10;
   if (v10)
   {
-    v11 = [v10 string];
+    string = [v10 string];
   }
 
   else
   {
     objc_opt_class();
-    v11 = TSUDynamicCast();
+    string = TSUDynamicCast();
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = string;
+  if (!string)
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPStorage filterText:removingAttachments:]"];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"];
-    v16 = v13;
-    v6 = a3;
+    v16 = currentHandler;
+    textCopy3 = text;
     [v16 handleFailureInFunction:v14 file:v15 lineNumber:268 description:{@"invalid nil value for '%s'", "theStr"}];
   }
 
@@ -4134,42 +4134,42 @@ LABEL_19:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [a3 mutableCopy];
-          v6 = v24;
-          v25 = [v24 mutableString];
+          v24 = [text mutableCopy];
+          textCopy3 = v24;
+          mutableString = [v24 mutableString];
         }
 
         else
         {
-          v25 = [MEMORY[0x277CCAB68] stringWithString:v12];
-          v6 = v25;
+          mutableString = [MEMORY[0x277CCAB68] stringWithString:v12];
+          textCopy3 = mutableString;
         }
 
-        v12 = v25;
+        v12 = mutableString;
       }
 
-      [v6 replaceCharactersInRange:v17 withString:{v22, &stru_287D36338}];
+      [textCopy3 replaceCharactersInRange:v17 withString:{v22, &stru_287D36338}];
       v18 = 1;
     }
 
     while (v23 != v17 + v22);
   }
 
-  if (v29 && ([v12 isEqualToString:{objc_msgSend(v6, "string")}] & 1) == 0)
+  if (v29 && ([v12 isEqualToString:{objc_msgSend(textCopy3, "string")}] & 1) == 0)
   {
-    v26 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPStorage filterText:removingAttachments:]"];
-    [v26 handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 305, @"Internal inconsistency in attributed string"}];
+    [currentHandler2 handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 305, @"Internal inconsistency in attributed string"}];
   }
 
-  return v6;
+  return textCopy3;
 }
 
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(int)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(int)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0
 {
-  v13 = *&a5;
+  v13 = *&kind;
   objc_opt_class();
-  [a3 documentObject];
+  [context documentObject];
   v17 = TSUDynamicCast();
   if (v17)
   {
@@ -4182,43 +4182,43 @@ LABEL_19:
   }
 
   LODWORD(v20) = v18;
-  return [(TSWPStorage *)self initWithContext:a3 string:a4 kind:v13 stylesheet:a6 paragraphStyle:a7 listStyle:a8 section:a9 columnStyle:a10 paragraphDirection:v20];
+  return [(TSWPStorage *)self initWithContext:context string:string kind:v13 stylesheet:stylesheet paragraphStyle:style listStyle:listStyle section:section columnStyle:columnStyle paragraphDirection:v20];
 }
 
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(int)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10 paragraphDirection:(int)a11
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(int)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0 paragraphDirection:(int)self1
 {
-  if (!a7)
+  if (!style)
   {
-    v23 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage initWithContext:string:kind:stylesheet:paragraphStyle:listStyle:section:columnStyle:paragraphDirection:]"];
-    [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 381, @"initWithString: Missing paragraph style."}];
+    [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 381, @"initWithString: Missing paragraph style."}];
 
     return 0;
   }
 
-  v15 = *&a5;
+  v15 = *&kind;
   v18 = [(TSPObject *)self initWithContext:?];
   v19 = v18;
   if (v18)
   {
     v18->_isInInit = 1;
-    v18->_stylesheet = a6;
+    v18->_stylesheet = stylesheet;
     v19->_WPKind = v15;
     v19->_writingDirectionCache = -1;
-    [(TSWPStorage *)v19 insertObject:a7 charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:0 withCreate:1 undoTransaction:0] attributeIndex:0 dolcContext:0 undoTransaction:0];
+    [(TSWPStorage *)v19 insertObject:style charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:0 withCreate:1 undoTransaction:0] attributeIndex:0 dolcContext:0 undoTransaction:0];
     [(TSWPStorage *)v19 insertParagraphData:0 charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:1 withCreate:1 undoTransaction:0] attributeIndex:0 undoTransaction:0];
     [(TSWPStorage *)v19 insertParagraphData:0 charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:11 withCreate:1 undoTransaction:0] attributeIndex:0 undoTransaction:0];
-    [(TSWPStorage *)v19 insertParagraphData:a11 charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:18 withCreate:1 undoTransaction:0] attributeIndex:0 undoTransaction:0];
+    [(TSWPStorage *)v19 insertParagraphData:direction charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:18 withCreate:1 undoTransaction:0] attributeIndex:0 undoTransaction:0];
     if (v15 == 5)
     {
-      [(TSWPStorage *)v19 insertParagraphData:a11 charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:10 withCreate:1 undoTransaction:0] attributeIndex:0 undoTransaction:0];
+      [(TSWPStorage *)v19 insertParagraphData:direction charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:10 withCreate:1 undoTransaction:0] attributeIndex:0 undoTransaction:0];
     }
 
-    if (a8)
+    if (listStyle)
     {
       v20 = [(TSWPStorage *)v19 attributeArrayForKind:2 withCreate:1 undoTransaction:0];
       v21 = v19;
-      v22 = a8;
+      listStyleCopy = listStyle;
     }
 
     else
@@ -4229,39 +4229,39 @@ LABEL_19:
       }
 
       v28 = [(TSWPStorage *)v19 attributeArrayForKind:2 withCreate:1 undoTransaction:0];
-      v22 = [-[TSWPStorage stylesheet](v19 "stylesheet")];
+      listStyleCopy = [-[TSWPStorage stylesheet](v19 "stylesheet")];
       v21 = v19;
       v20 = v28;
     }
 
-    [(TSWPStorage *)v21 insertObject:v22 charIndex:0 attributeArray:v20 attributeIndex:0 dolcContext:0 undoTransaction:0];
+    [(TSWPStorage *)v21 insertObject:listStyleCopy charIndex:0 attributeArray:v20 attributeIndex:0 dolcContext:0 undoTransaction:0];
 LABEL_11:
     if ([(TSWPStorage *)v19 supportsSections])
     {
-      v25 = a9;
-      if (!a9)
+      sectionCopy = section;
+      if (!section)
       {
-        v25 = [(TSWPStorage *)v19 pDefaultSectionForContext:a3];
+        sectionCopy = [(TSWPStorage *)v19 pDefaultSectionForContext:context];
       }
 
-      [(TSWPStorage *)v19 insertObject:v25 charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:8 withCreate:1 undoTransaction:0] attributeIndex:0 dolcContext:0 undoTransaction:0];
+      [(TSWPStorage *)v19 insertObject:sectionCopy charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:8 withCreate:1 undoTransaction:0] attributeIndex:0 dolcContext:0 undoTransaction:0];
     }
 
     if ([(TSWPStorage *)v19 supportsColumnStyles])
     {
-      v26 = a10;
-      if (!a10)
+      columnStyleCopy = columnStyle;
+      if (!columnStyle)
       {
-        v26 = [a6 defaultColumnStyle];
+        columnStyleCopy = [stylesheet defaultColumnStyle];
       }
 
-      [(TSWPStorage *)v19 insertObject:v26 charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:9 withCreate:1 undoTransaction:0] attributeIndex:0 dolcContext:0 undoTransaction:0];
+      [(TSWPStorage *)v19 insertObject:columnStyleCopy charIndex:0 attributeArray:[(TSWPStorage *)v19 attributeArrayForKind:9 withCreate:1 undoTransaction:0] attributeIndex:0 dolcContext:0 undoTransaction:0];
     }
 
     v19->_string = objc_alloc_init([objc_opt_class() pStringClassForWPKind:v15]);
-    if (a4)
+    if (string)
     {
-      [(TSWPStorage *)v19 insertString:a4 atCharIndex:0 undoTransaction:0];
+      [(TSWPStorage *)v19 insertString:string atCharIndex:0 undoTransaction:0];
     }
 
     v19->_isInInit = 0;
@@ -4292,7 +4292,7 @@ LABEL_11:
   [(TSWPStorage *)&v5 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   broadcaster = self->_broadcaster;
   if (!broadcaster)
@@ -4301,37 +4301,37 @@ LABEL_11:
     self->_broadcaster = broadcaster;
   }
 
-  [(TSWPStorageBroadcaster *)broadcaster addObserver:a3];
+  [(TSWPStorageBroadcaster *)broadcaster addObserver:observer];
 }
 
-- (void)setDocumentRoot:(id)a3
+- (void)setDocumentRoot:(id)root
 {
-  if (self->_documentRoot != a3)
+  if (self->_documentRoot != root)
   {
     [(TSPObject *)self willModify];
   }
 
-  self->_documentRoot = a3;
+  self->_documentRoot = root;
 }
 
-- (void)setWPKind:(int)a3 undoTransaction:(TSWPStorageTransaction *)a4
+- (void)setWPKind:(int)kind undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  if (self->_WPKind != a3)
+  if (self->_WPKind != kind)
   {
-    if (!a3)
+    if (!kind)
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage setWPKind:undoTransaction:]"];
-      [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1081, @"Can't set storage kind to kBody without a context and column style"}];
+      [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1081, @"Can't set storage kind to kBody without a context and column style"}];
     }
 
-    self->_WPKind = a3;
+    self->_WPKind = kind;
     if (![(TSWPStorage *)self supportsColumnStyles])
     {
       v9 = [(TSWPStorage *)self attributeArrayForKind:9 withCreate:0 undoTransaction:0];
       if (v9)
       {
-        (*(v9->var0 + 7))(v9, 0, v9->var2, a4);
+        (*(v9->var0 + 7))(v9, 0, v9->var2, transaction);
       }
     }
 
@@ -4340,7 +4340,7 @@ LABEL_11:
       v10 = [(TSWPStorage *)self attributeArrayForKind:8 withCreate:0 undoTransaction:0];
       if (v10)
       {
-        (*(v10->var0 + 7))(v10, 0, v10->var2, a4);
+        (*(v10->var0 + 7))(v10, 0, v10->var2, transaction);
       }
     }
 
@@ -4349,7 +4349,7 @@ LABEL_11:
       -[TSWPStorage insertObject:charIndex:attributeArray:attributeIndex:dolcContext:undoTransaction:](self, "insertObject:charIndex:attributeArray:attributeIndex:dolcContext:undoTransaction:", [-[TSWPStorage stylesheet](self "stylesheet")], 0, -[TSWPStorage attributeArrayForKind:withCreate:undoTransaction:](self, "attributeArrayForKind:withCreate:undoTransaction:", 2, 1, 0), 0, 0, 0);
     }
 
-    [(TSWPStorage *)self filterInvalidContentForStorage:self undoTransaction:a4];
+    [(TSWPStorage *)self filterInvalidContentForStorage:self undoTransaction:transaction];
   }
 }
 
@@ -4374,14 +4374,14 @@ LABEL_11:
   }
 }
 
-- (void)filterSectionBreaksFromStorage:(id)a3 undoTransaction:(TSWPStorageTransaction *)a4
+- (void)filterSectionBreaksFromStorage:(id)storage undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  if (([a3 supportsSectionCopying] & 1) == 0)
+  if (([storage supportsSectionCopying] & 1) == 0)
   {
     v6 = [(TSWPStorage *)self attributeArrayForKind:8 withCreate:0 undoTransaction:0];
     if (v6)
     {
-      (*(v6->var0 + 7))(v6, 0, v6->var2, a4);
+      (*(v6->var0 + 7))(v6, 0, v6->var2, transaction);
     }
 
     if ([(NSMutableString *)self->_string length])
@@ -4400,15 +4400,15 @@ LABEL_11:
   }
 }
 
-- (void)filterInvalidContentForStorage:(id)a3 undoTransaction:(TSWPStorageTransaction *)a4
+- (void)filterInvalidContentForStorage:(id)storage undoTransaction:(TSWPStorageTransaction *)transaction
 {
   [TSWPStorage filterSectionBreaksFromStorage:"filterSectionBreaksFromStorage:undoTransaction:" undoTransaction:?];
-  if (([a3 allowsElementKind:1049087] & 1) == 0)
+  if (([storage allowsElementKind:1049087] & 1) == 0)
   {
-    v7 = [(TSWPStorage *)self attachmentCount];
-    if (v7)
+    attachmentCount = [(TSWPStorage *)self attachmentCount];
+    if (attachmentCount)
     {
-      v8 = v7 - 1;
+      v8 = attachmentCount - 1;
       do
       {
         v29[0] = 0x7FFFFFFFFFFFFFFFLL;
@@ -4418,16 +4418,16 @@ LABEL_11:
           if (v29[0] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v10 = v9;
-            if (![a3 allowsElementKind:{objc_msgSend(v9, "elementKind")}] || objc_msgSend(v10, "isDrawable") && objc_msgSend(v10, "isAnchored") && objc_msgSend(a3, "wpKind"))
+            if (![storage allowsElementKind:{objc_msgSend(v9, "elementKind")}] || objc_msgSend(v10, "isDrawable") && objc_msgSend(v10, "isAnchored") && objc_msgSend(storage, "wpKind"))
             {
               v11 = objc_opt_respondsToSelector();
-              v12 = &stru_287D36338;
+              stringEquivalent = &stru_287D36338;
               if (v11)
               {
-                v12 = [v10 stringEquivalent];
+                stringEquivalent = [v10 stringEquivalent];
               }
 
-              [(TSWPStorage *)self replaceCharactersInRange:v29[0] withString:1 notifyObservers:v12 undoTransaction:0, a4];
+              [(TSWPStorage *)self replaceCharactersInRange:v29[0] withString:1 notifyObservers:stringEquivalent undoTransaction:0, transaction];
             }
           }
         }
@@ -4438,10 +4438,10 @@ LABEL_11:
       while (v8 != -1);
     }
 
-    v13 = [(TSWPStorage *)self footnoteCount];
-    if (v13)
+    footnoteCount = [(TSWPStorage *)self footnoteCount];
+    if (footnoteCount)
     {
-      v14 = v13 - 1;
+      v14 = footnoteCount - 1;
       do
       {
         v29[0] = 0x7FFFFFFFFFFFFFFFLL;
@@ -4451,16 +4451,16 @@ LABEL_11:
           if (v29[0] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v16 = v15;
-            if (([a3 allowsElementKind:{objc_msgSend(v15, "elementKind")}] & 1) == 0)
+            if (([storage allowsElementKind:{objc_msgSend(v15, "elementKind")}] & 1) == 0)
             {
               v17 = objc_opt_respondsToSelector();
-              v18 = &stru_287D36338;
+              stringEquivalent2 = &stru_287D36338;
               if (v17)
               {
-                v18 = [v16 stringEquivalent];
+                stringEquivalent2 = [v16 stringEquivalent];
               }
 
-              [(TSWPStorage *)self replaceCharactersInRange:v29[0] withString:1 notifyObservers:v18 undoTransaction:0, a4];
+              [(TSWPStorage *)self replaceCharactersInRange:v29[0] withString:1 notifyObservers:stringEquivalent2 undoTransaction:0, transaction];
             }
           }
         }
@@ -4477,7 +4477,7 @@ LABEL_11:
     v20 = dword_26CA66E88[i];
     if (self->_attributesTable[v20])
     {
-      if (([a3 allowsElementKind:802304] & 1) == 0)
+      if (([storage allowsElementKind:802304] & 1) == 0)
       {
         v21 = [(TSWPStorage *)self length];
         if (v21)
@@ -4501,8 +4501,8 @@ LABEL_11:
               v25 = *(v24 + 8);
             }
 
-            while (!v25 || ([a3 allowsElementKind:{objc_msgSend(*(v24 + 8), "elementKind")}] & 1) != 0);
-            [(TSWPStorage *)self removeSmartField:v25 fromRange:v28.location undoTransaction:v28.length, a4];
+            while (!v25 || ([storage allowsElementKind:{objc_msgSend(*(v24 + 8), "elementKind")}] & 1) != 0);
+            [(TSWPStorage *)self removeSmartField:v25 fromRange:v28.location undoTransaction:v28.length, transaction];
             location = v28.location;
             length = v28.length;
             v22 = [(TSWPStorage *)self length];
@@ -4524,39 +4524,39 @@ LABEL_35:
   }
 }
 
-- (id)textSourceForLayoutInRange:(_NSRange)a3
+- (id)textSourceForLayoutInRange:(_NSRange)range
 {
-  v3 = [[TSWPRubyTextSource alloc] initWithSource:self subRange:a3.location, a3.length];
+  v3 = [[TSWPRubyTextSource alloc] initWithSource:self subRange:range.location, range.length];
 
   return v3;
 }
 
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)a3 styleProvider:(unint64_t)a4
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)index styleProvider:(unint64_t)provider
 {
   result = [(TSWPStorage *)self length];
   if (self)
   {
-    if (result >= a4)
+    if (result >= provider)
     {
-      v10 = a4;
+      providerCopy = provider;
     }
 
     else
     {
-      v10 = result;
+      providerCopy = result;
     }
 
-    if (result <= a4)
+    if (result <= provider)
     {
-      v11 = a4;
+      providerCopy2 = provider;
     }
 
     else
     {
-      v11 = result;
+      providerCopy2 = result;
     }
 
-    return [(TSWPStorage *)self paragraphEnumeratorForCharRange:v10 styleProvider:v11 - v10, a5];
+    return [(TSWPStorage *)self paragraphEnumeratorForCharRange:providerCopy styleProvider:providerCopy2 - providerCopy, a5];
   }
 
   else
@@ -4570,11 +4570,11 @@ LABEL_35:
   return result;
 }
 
-- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)a3 styleProvider:(_NSRange)a4
+- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)range styleProvider:(_NSRange)provider
 {
   if (self)
   {
-    return [(TSWPParagraphEnumerator *)self paragraphEnumeratorForCharRange:a4.location styleProvider:a4.length requireHidden:a5, 1];
+    return [(TSWPParagraphEnumerator *)self paragraphEnumeratorForCharRange:provider.location styleProvider:provider.length requireHidden:a5, 1];
   }
 
   *&retstr->var6 = 0;
@@ -4584,41 +4584,41 @@ LABEL_35:
   return self;
 }
 
-- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)a3 styleProvider:(_NSRange)a4 requireHidden:(id)a5
+- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)range styleProvider:(_NSRange)provider requireHidden:(id)hidden
 {
-  length = a4.length;
-  location = a4.location;
+  length = provider.length;
+  location = provider.location;
   v12 = [(TSWPStorage *)self paragraphIndexAtCharIndex:?];
   v13 = location + length;
   if (v13 == [(TSWPStorage *)self length])
   {
-    v14 = [(TSWPStorage *)self paragraphCount];
+    paragraphCount = [(TSWPStorage *)self paragraphCount];
   }
 
   else if (length)
   {
-    v14 = [(TSWPStorage *)self paragraphIndexAtCharIndex:v13 - 1]+ 1;
+    paragraphCount = [(TSWPStorage *)self paragraphIndexAtCharIndex:v13 - 1]+ 1;
   }
 
   else
   {
-    v14 = v12 + 1;
+    paragraphCount = v12 + 1;
   }
 
-  return TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, a5, v12, v14, a6);
+  return TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, hidden, v12, paragraphCount, a6);
 }
 
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)a3 styleProvider:(unint64_t)a4
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)index styleProvider:(unint64_t)provider
 {
-  v9 = [(TSWPStorage *)self paragraphCount];
+  paragraphCount = [(TSWPStorage *)self paragraphCount];
 
-  return TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, a5, a4, v9, 1);
+  return TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, a5, provider, paragraphCount, 1);
 }
 
-- (BOOL)setDOLCSuppressed:(BOOL)a3
+- (BOOL)setDOLCSuppressed:(BOOL)suppressed
 {
   dolcSuppressed = self->_dolcSuppressed;
-  self->_dolcSuppressed = a3;
+  self->_dolcSuppressed = suppressed;
   return dolcSuppressed;
 }
 
@@ -4635,9 +4635,9 @@ LABEL_35:
 {
   if (!self->_WPKind)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage stringValue]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1362, @"performance warning: -[TSWPStorage stringValue] should not be called on body storage."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1362, @"performance warning: -[TSWPStorage stringValue] should not be called on body storage."}];
   }
 
   v5 = MEMORY[0x277CCACA8];
@@ -4668,25 +4668,25 @@ LABEL_35:
   return v6;
 }
 
-- (id)childEnumeratorForRange:(_NSRange)a3
+- (id)childEnumeratorForRange:(_NSRange)range
 {
-  v3 = [[TSWPStorageChildEnumerator alloc] initWithStorage:self range:a3.location, a3.length];
+  v3 = [[TSWPStorageChildEnumerator alloc] initWithStorage:self range:range.location, range.length];
 
   return v3;
 }
 
-- (unint64_t)previousCharacterIndex:(unint64_t)location forDelete:(BOOL)a4
+- (unint64_t)previousCharacterIndex:(unint64_t)location forDelete:(BOOL)delete
 {
-  v4 = a4;
-  v7 = [(TSWPStorage *)self characterCount];
-  if (v7 >= location)
+  deleteCopy = delete;
+  characterCount = [(TSWPStorage *)self characterCount];
+  if (characterCount >= location)
   {
     v10 = location - 1;
-    if (location - 1 < v7)
+    if (location - 1 < characterCount)
     {
       RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self->_string, location - 1);
       location = RangeOfComposedCharactersAtIndex.location;
-      v12 = RangeOfComposedCharactersAtIndex.length < 2 || !v4;
+      v12 = RangeOfComposedCharactersAtIndex.length < 2 || !deleteCopy;
       if (!v12 && isDeletableWithoutCombining([(NSMutableString *)self->_string characterAtIndex:v10]))
       {
         return v10;
@@ -4696,49 +4696,49 @@ LABEL_35:
 
   else
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage previousCharacterIndex:forDelete:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1455, @"Character index is outside storage bounds"}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1455, @"Character index is outside storage bounds"}];
   }
 
   return location;
 }
 
-- (unint64_t)nextCharacterIndex:(unint64_t)a3
+- (unint64_t)nextCharacterIndex:(unint64_t)index
 {
-  v3 = a3;
-  if ([(TSWPStorage *)self characterCount]> a3)
+  indexCopy = index;
+  if ([(TSWPStorage *)self characterCount]> index)
   {
-    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self->_string, v3);
+    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self->_string, indexCopy);
     return RangeOfComposedCharactersAtIndex.location + RangeOfComposedCharactersAtIndex.length;
   }
 
-  return v3;
+  return indexCopy;
 }
 
-- (unint64_t)indexForCharacter:(unsigned __int16)a3 startCharIndex:(unint64_t)a4
+- (unint64_t)indexForCharacter:(unsigned __int16)character startCharIndex:(unint64_t)index
 {
-  v5 = a3;
+  characterCopy = character;
   v7 = malloc_type_malloc(0x800uLL, 0x1000040BDFB0063uLL);
-  v8 = [(TSWPStorage *)self characterCount];
-  if (v8 > a4)
+  indexCopy = [(TSWPStorage *)self characterCount];
+  if (indexCopy > index)
   {
     while (1)
     {
-      v9 = a4 + 1024;
-      v10 = v8 >= a4 + 1024 ? a4 + 1024 : v8;
-      v14.location = a4;
-      v14.length = v10 - a4;
+      v9 = index + 1024;
+      v10 = indexCopy >= index + 1024 ? index + 1024 : indexCopy;
+      v14.location = index;
+      v14.length = v10 - index;
       CFStringGetCharacters(self->_string, v14, v7);
       v11 = v7;
-      if ((v10 - a4) >= 1)
+      if ((v10 - index) >= 1)
       {
         break;
       }
 
 LABEL_8:
-      a4 = v10;
-      if (v9 >= v8)
+      index = v10;
+      if (v9 >= indexCopy)
       {
         goto LABEL_11;
       }
@@ -4747,34 +4747,34 @@ LABEL_8:
     while (1)
     {
       v12 = *v11++;
-      if (v12 == v5)
+      if (v12 == characterCopy)
       {
         break;
       }
 
-      if (v10 == ++a4)
+      if (v10 == ++index)
       {
         goto LABEL_8;
       }
     }
 
-    v8 = a4;
+    indexCopy = index;
   }
 
 LABEL_11:
   free(v7);
-  return v8;
+  return indexCopy;
 }
 
-- (unint64_t)selectedParagraphBreakCount:(_NSRange)a3
+- (unint64_t)selectedParagraphBreakCount:(_NSRange)count
 {
-  if (!a3.length)
+  if (!count.length)
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
+  length = count.length;
+  location = count.location;
   v6 = [(TSWPStorage *)self paragraphIndexRangeForCharRange:?];
   if (v6 >= v6 + v7)
   {
@@ -4804,14 +4804,14 @@ LABEL_11:
   return v10;
 }
 
-- (unint64_t)emptyParagraphCount:(_NSRange)a3
+- (unint64_t)emptyParagraphCount:(_NSRange)count
 {
-  if (!a3.length)
+  if (!count.length)
   {
     return 0;
   }
 
-  v4 = [(TSWPStorage *)self paragraphIndexRangeForCharRange:a3.location];
+  v4 = [(TSWPStorage *)self paragraphIndexRangeForCharRange:count.location];
   if (v4 >= v4 + v5)
   {
     return 0;
@@ -4836,20 +4836,20 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isWholeParagraphsForRange:(_NSRange)a3 ignoreAttachmentCharacters:(BOOL)a4 requireParagraphBreakSelected:(BOOL)a5
+- (BOOL)isWholeParagraphsForRange:(_NSRange)range ignoreAttachmentCharacters:(BOOL)characters requireParagraphBreakSelected:(BOOL)selected
 {
-  if (!a3.length)
+  if (!range.length)
   {
     v16 = 0;
     return v16 & 1;
   }
 
-  v6 = a4;
-  length = a3.length;
-  location = a3.location;
+  charactersCopy = characters;
+  length = range.length;
+  location = range.location;
   v10 = [(TSWPStorage *)self textRangeForParagraphAtCharIndex:?];
   v12 = v10;
-  if (v6 && (v13 = v11, v14 = v10 + v11, v10 < v10 + v11))
+  if (charactersCopy && (v13 = v11, v14 = v10 + v11, v10 < v10 + v11))
   {
     v15 = v10;
     while (IsSpecialCharacter([(TSWPStorage *)self characterAtIndex:v15]))
@@ -4880,11 +4880,11 @@ LABEL_11:
       v22 = IsParagraphBreakingCharacter([(TSWPStorage *)self characterAtIndex:v21]);
       if (v17 == v20)
       {
-        v16 = !a5 | v22;
+        v16 = !selected | v22;
         return v16 & 1;
       }
 
-      if (!a5)
+      if (!selected)
       {
         v16 = (v17 == v21) & v22;
         return v16 & 1;
@@ -4893,9 +4893,9 @@ LABEL_11:
 
     else
     {
-      v23 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage isWholeParagraphsForRange:ignoreAttachmentCharacters:requireParagraphBreakSelected:]"];
-      [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1604, @"Paragraph should not be zero length"}];
+      [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1604, @"Paragraph should not be zero length"}];
     }
 
     v16 = 0;
@@ -4904,17 +4904,17 @@ LABEL_11:
   return v16 & 1;
 }
 
-- (BOOL)isEmptyParagraphSelection:(id)a3 outRange:(_NSRange *)a4
+- (BOOL)isEmptyParagraphSelection:(id)selection outRange:(_NSRange *)range
 {
-  if (![a3 isInsertionPoint])
+  if (![selection isInsertionPoint])
   {
     return 0;
   }
 
-  v7 = [a3 range];
+  range = [selection range];
   if (self)
   {
-    [(TSWPStorage *)self paragraphEnumeratorAtCharIndex:v7 styleProvider:0];
+    [(TSWPStorage *)self paragraphEnumeratorAtCharIndex:range styleProvider:0];
   }
 
   else
@@ -4925,10 +4925,10 @@ LABEL_11:
   v9 = TSWPParagraphEnumerator::paragraphString(&v12);
   if (![v9 length] || objc_msgSend(v9, "length") == 1 && IsParagraphBreakingCharacter(objc_msgSend(v9, "characterAtIndex:", 0)))
   {
-    if (a4)
+    if (range)
     {
-      a4->location = TSWPParagraphEnumerator::paragraphTextRange(&v12);
-      a4->length = v10;
+      range->location = TSWPParagraphEnumerator::paragraphTextRange(&v12);
+      range->length = v10;
     }
 
     v8 = 1;
@@ -4943,34 +4943,34 @@ LABEL_11:
   return v8;
 }
 
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index
 {
-  v3 = [(TSWPStorage *)self whiteSpaceRangeAtCharIndex:a3 includingBreaks:1];
+  v3 = [(TSWPStorage *)self whiteSpaceRangeAtCharIndex:index includingBreaks:1];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3 includingBreaks:(BOOL)a4
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index includingBreaks:(BOOL)breaks
 {
   v7 = [(TSWPStorage *)self selectionRangeForCharIndex:?];
   v9 = v8;
-  if ([(TSWPStorage *)self length]> a3 && IsWhitespaceCharacter([(TSWPStorage *)self characterAtIndex:a3]))
+  if ([(TSWPStorage *)self length]> index && IsWhitespaceCharacter([(TSWPStorage *)self characterAtIndex:index]))
   {
-    v10 = a3;
-    if (v7 < a3)
+    indexCopy2 = index;
+    if (v7 < index)
     {
-      v10 = a3;
+      indexCopy2 = index;
       while (1)
       {
-        v11 = v10 - 1;
-        v12 = [(TSWPStorage *)self characterAtIndex:v10 - 1];
+        v11 = indexCopy2 - 1;
+        v12 = [(TSWPStorage *)self characterAtIndex:indexCopy2 - 1];
         if (!IsWhitespaceCharacter(v12))
         {
           break;
         }
 
-        if (!a4)
+        if (!breaks)
         {
           v13 = IsParagraphBreakingCharacter(v12);
           if (v12 == 8232 || (v13 & 1) != 0)
@@ -4979,27 +4979,27 @@ LABEL_11:
           }
         }
 
-        --v10;
+        --indexCopy2;
         if (v11 <= v7)
         {
-          v10 = v7;
+          indexCopy2 = v7;
           break;
         }
       }
     }
 
     v14 = v7 + v9;
-    if (v14 > a3)
+    if (v14 > index)
     {
       while (1)
       {
-        v15 = [(TSWPStorage *)self characterAtIndex:a3];
+        v15 = [(TSWPStorage *)self characterAtIndex:index];
         if (!IsWhitespaceCharacter(v15))
         {
           break;
         }
 
-        if (!a4)
+        if (!breaks)
         {
           v16 = IsParagraphBreakingCharacter(v15);
           if (v15 == 8232 || (v16 & 1) != 0)
@@ -5008,41 +5008,41 @@ LABEL_11:
           }
         }
 
-        if (v14 == ++a3)
+        if (v14 == ++index)
         {
-          a3 = v14;
+          index = v14;
           break;
         }
       }
     }
 
-    v17 = a3 - v10;
+    v17 = index - indexCopy2;
   }
 
   else
   {
     v17 = 0;
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    indexCopy2 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v18 = v10;
+  v18 = indexCopy2;
   result.length = v17;
   result.location = v18;
   return result;
 }
 
-- (_NSRange)rangeForSelectionWithInsertionSelection:(id)a3
+- (_NSRange)rangeForSelectionWithInsertionSelection:(id)selection
 {
-  if (![a3 isValid] || (objc_msgSend(a3, "isInsertionPoint") & 1) == 0)
+  if (![selection isValid] || (objc_msgSend(selection, "isInsertionPoint") & 1) == 0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage rangeForSelectionWithInsertionSelection:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1692, @"Invalid selection parameter passed in"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1692, @"Invalid selection parameter passed in"}];
   }
 
-  if ([a3 isValid] && objc_msgSend(a3, "start"))
+  if ([selection isValid] && objc_msgSend(selection, "start"))
   {
-    v7 = [a3 start] - 1;
+    v7 = [selection start] - 1;
   }
 
   else
@@ -5050,37 +5050,37 @@ LABEL_11:
     v7 = 0;
   }
 
-  if ([a3 isValid])
+  if ([selection isValid])
   {
-    v8 = [a3 start];
+    start = [selection start];
   }
 
   else
   {
-    v8 = 0;
+    start = 0;
   }
 
-  v9 = [(TSWPStorage *)self p_rangeForSelectionAtCharIndex:v7 caretIndex:v8 handleNextWordWhitespace:1];
+  v9 = [(TSWPStorage *)self p_rangeForSelectionAtCharIndex:v7 caretIndex:start handleNextWordWhitespace:1];
   result.length = v10;
   result.location = v9;
   return result;
 }
 
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace
 {
-  v3 = [(TSWPStorage *)self rangeByExtendingRangeToWhitespace:a3.location skipVisibleDeleted:a3.length, 0];
+  v3 = [(TSWPStorage *)self rangeByExtendingRangeToWhitespace:whitespace.location skipVisibleDeleted:whitespace.length, 0];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3 skipVisibleDeleted:(BOOL)a4
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace skipVisibleDeleted:(BOOL)deleted
 {
-  length = a3.length;
-  location = a3.location;
+  length = whitespace.length;
+  location = whitespace.location;
   if (self)
   {
-    [(TSWPStorage *)self paragraphEnumeratorForCharRange:a3.location styleProvider:a3.length requireHidden:0, !a4];
+    [(TSWPStorage *)self paragraphEnumeratorForCharRange:whitespace.location styleProvider:whitespace.length requireHidden:0, !deleted];
   }
 
   else
@@ -5088,10 +5088,10 @@ LABEL_11:
     memset(&v17, 0, sizeof(v17));
   }
 
-  v7 = self;
-  v8 = [(TSWPStorage *)v7 charRangeMappedFromStorage:location, length];
-  v10 = TSWPRangeByExtendingRangeToWhitespaceForTextSource(v8, v9, v7);
-  v12 = [(TSWPStorage *)v7 charRangeMappedToStorage:v10, v11];
+  selfCopy = self;
+  v8 = [(TSWPStorage *)selfCopy charRangeMappedFromStorage:location, length];
+  v10 = TSWPRangeByExtendingRangeToWhitespaceForTextSource(v8, v9, selfCopy);
+  v12 = [(TSWPStorage *)selfCopy charRangeMappedToStorage:v10, v11];
   v14 = v13;
 
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v17);
@@ -5102,10 +5102,10 @@ LABEL_11:
   return result;
 }
 
-- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)a3
+- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)break
 {
-  location = a3.location;
-  v5 = a3.location + a3.length;
+  location = break.location;
+  v5 = break.location + break.length;
   v6 = [(TSWPStorage *)self selectionRangeForCharIndex:?];
   v8 = v7;
   do
@@ -5165,64 +5165,64 @@ LABEL_11:
   return result;
 }
 
-- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)a3
+- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)index
 {
   v5 = [(TSWPStorage *)self selectionRangeForCharIndex:?];
-  v7 = a3;
-  if (v5 + v6 > a3)
+  indexCopy3 = index;
+  if (v5 + v6 > index)
   {
-    v7 = a3;
-    if (IsWhitespaceCharacter([(TSWPStorage *)self characterAtIndex:a3]))
+    indexCopy3 = index;
+    if (IsWhitespaceCharacter([(TSWPStorage *)self characterAtIndex:index]))
     {
-      v8 = [(TSWPStorage *)self whiteSpaceRangeAtCharIndex:a3];
+      v8 = [(TSWPStorage *)self whiteSpaceRangeAtCharIndex:index];
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v7 = a3;
+        indexCopy3 = index;
       }
 
       else
       {
-        v7 = v8;
+        indexCopy3 = v8;
       }
     }
   }
 
-  v9 = [(TSWPStorage *)self wordAtCharIndex:a3 includePreviousWord:1];
+  v9 = [(TSWPStorage *)self wordAtCharIndex:index includePreviousWord:1];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = v7;
+    v9 = indexCopy3;
   }
 
-  v10 = a3 - v9;
+  v10 = index - v9;
   result.length = v10;
   result.location = v9;
   return result;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v4 = a4;
+  wordCopy = word;
   string = self->_string;
   v8 = [(TSWPStorage *)self textRangeForParagraphAtCharIndex:?];
 
-  v9 = [(NSMutableString *)string rangeOfWordAtCharacterIndex:a3 range:v8 includePreviousWord:v7, v4];
+  wordCopy = [(NSMutableString *)string rangeOfWordAtCharacterIndex:index range:v8 includePreviousWord:v7, wordCopy];
   result.length = v10;
-  result.location = v9;
+  result.location = wordCopy;
   return result;
 }
 
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v4 = a4;
+  wordCopy = word;
   v7 = *MEMORY[0x277D6C268];
   v8 = *(MEMORY[0x277D6C268] + 8);
-  v9 = [(TSWPStorage *)self range];
+  range = [(TSWPStorage *)self range];
   v11 = v10;
   string = self->_string;
-  if (CFStringGetLength(string) > a3 && ((CharacterAtIndex = CFStringGetCharacterAtIndex(string, a3), CharacterAtIndex) ? (v14 = v9 + v11 > a3) : (v14 = 0), v14))
+  if (CFStringGetLength(string) > index && ((CharacterAtIndex = CFStringGetCharacterAtIndex(string, index), CharacterAtIndex) ? (v14 = range + v11 > index) : (v14 = 0), v14))
   {
     v15 = IsWhitespaceCharacter(CharacterAtIndex) ^ 1;
-    if (!v4)
+    if (!wordCopy)
     {
       goto LABEL_12;
     }
@@ -5231,20 +5231,20 @@ LABEL_11:
   else
   {
     LOBYTE(v15) = 0;
-    if (!v4)
+    if (!wordCopy)
     {
       goto LABEL_12;
     }
   }
 
-  if (v9 < a3)
+  if (range < index)
   {
-    v16 = CFStringGetCharacterAtIndex(string, a3 - 1);
+    v16 = CFStringGetCharacterAtIndex(string, index - 1);
     v17 = IsWhitespaceCharacter(v16);
     LOBYTE(v15) = v17 ^ 1 | v15;
     if (!v17)
     {
-      --a3;
+      --index;
     }
   }
 
@@ -5253,13 +5253,13 @@ LABEL_12:
   {
     if (v11)
     {
-      v27.location = v9;
+      v27.location = range;
       v27.length = v11;
       v18 = CFStringTokenizerCreate(0, string, v27, 4uLL, 0);
       if (v18)
       {
         v19 = v18;
-        if (CFStringTokenizerGoToTokenAtIndex(v18, a3))
+        if (CFStringTokenizerGoToTokenAtIndex(v18, index))
         {
           CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v19);
           length = CurrentTokenRange.length;
@@ -5290,50 +5290,50 @@ LABEL_12:
   return result;
 }
 
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex
 {
-  v4 = [(TSWPStorage *)self p_rangeForSelectionAtCharIndex:a3 caretIndex:a4 handleNextWordWhitespace:1];
+  v4 = [(TSWPStorage *)self p_rangeForSelectionAtCharIndex:index caretIndex:caretIndex handleNextWordWhitespace:1];
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4 handleNextWordWhitespace:(BOOL)a5
+- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex handleNextWordWhitespace:(BOOL)whitespace
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = a4 - 1;
-  if (a3 != a4 && v9 != a3)
+  whitespaceCopy = whitespace;
+  caretIndexCopy = index;
+  v9 = caretIndex - 1;
+  if (index != caretIndex && v9 != index)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage p_rangeForSelectionAtCharIndex:caretIndex:handleNextWordWhitespace:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1883, @"Precondition: caretIndex is either equal to the given charIndex or one past"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1883, @"Precondition: caretIndex is either equal to the given charIndex or one past"}];
   }
 
-  v12 = [(TSWPStorage *)self selectionRangeForCharIndex:a4];
+  v12 = [(TSWPStorage *)self selectionRangeForCharIndex:caretIndex];
   v14 = v12;
   v15 = v13;
-  if (v12 > v7)
+  if (v12 > caretIndexCopy)
   {
-    v7 = v12;
+    caretIndexCopy = v12;
   }
 
-  if (v13 - 1 < v7 - v12)
+  if (v13 - 1 < caretIndexCopy - v12)
   {
-    v16 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage p_rangeForSelectionAtCharIndex:caretIndex:handleNextWordWhitespace:]"];
-    [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1893, @"Character index should be inside allowable selection range."}];
+    [currentHandler2 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 1893, @"Character index should be inside allowable selection range."}];
   }
 
   v18 = v14 + v15;
-  if (v7 >= v14 + v15)
+  if (caretIndexCopy >= v14 + v15)
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = [(TSWPStorage *)self characterAtIndex:v7];
+    v19 = [(TSWPStorage *)self characterAtIndex:caretIndexCopy];
   }
 
   if (!IsSpecialCharacter(v19))
@@ -5342,7 +5342,7 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v20 = [(TSWPStorage *)self attachmentOrFootnoteAtCharIndex:v7];
+  v20 = [(TSWPStorage *)self attachmentOrFootnoteAtCharIndex:caretIndexCopy];
   v21 = v20;
   if (!v20)
   {
@@ -5353,25 +5353,25 @@ LABEL_18:
 
   if ([v20 isDrawable] && objc_msgSend(v21, "isAnchored"))
   {
-    if (v18 <= a4)
+    if (v18 <= caretIndex)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = [(TSWPStorage *)self characterAtIndex:a4];
+      v19 = [(TSWPStorage *)self characterAtIndex:caretIndex];
     }
 
     v21 = 0;
     v22 = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = a4;
+    caretIndexCopy = caretIndex;
   }
 
   else
   {
     v21 = 1;
-    v22 = v7;
+    v22 = caretIndexCopy;
   }
 
 LABEL_22:
@@ -5380,28 +5380,28 @@ LABEL_22:
     goto LABEL_45;
   }
 
-  if (v5 && IsWhitespaceCharacter(v19))
+  if (whitespaceCopy && IsWhitespaceCharacter(v19))
   {
-    if (v7 != a4 || !v7 || v7 <= v14)
+    if (caretIndexCopy != caretIndex || !caretIndexCopy || caretIndexCopy <= v14)
     {
-      if (v18 <= a4)
+      if (v18 <= caretIndex)
       {
-        v23 = v7;
+        caretIndexCopy2 = caretIndexCopy;
       }
 
       else
       {
-        v23 = a4;
+        caretIndexCopy2 = caretIndex;
       }
 
-      if (v7 + 1 == a4)
+      if (caretIndexCopy + 1 == caretIndex)
       {
-        v9 = v23;
+        v9 = caretIndexCopy2;
       }
 
       else
       {
-        v9 = v7;
+        v9 = caretIndexCopy;
       }
     }
 
@@ -5412,11 +5412,11 @@ LABEL_22:
       goto LABEL_38;
     }
 
-    v22 = [(TSWPStorage *)self whiteSpaceRangeAtCharIndex:v7 includingBreaks:0];
+    v22 = [(TSWPStorage *)self whiteSpaceRangeAtCharIndex:caretIndexCopy includingBreaks:0];
     v21 = v26;
   }
 
-  v9 = v7;
+  v9 = caretIndexCopy;
 LABEL_38:
   if (v22 == 0x7FFFFFFFFFFFFFFFLL || !v21)
   {
@@ -5450,20 +5450,20 @@ LABEL_45:
   return result;
 }
 
-- (_NSRange)nextWordFromIndex:(unint64_t)a3 forward:(BOOL)a4
+- (_NSRange)nextWordFromIndex:(unint64_t)index forward:(BOOL)forward
 {
-  v4 = a4;
+  forwardCopy = forward;
   v8 = *MEMORY[0x277D6C268];
   length = *(MEMORY[0x277D6C268] + 8);
   v9 = [TSWPStorage wordAtCharIndex:"wordAtCharIndex:includePreviousWord:" includePreviousWord:?];
   v11 = v10;
-  v12 = [(TSWPStorage *)self selectionRangeForCharIndex:a3];
+  v12 = [(TSWPStorage *)self selectionRangeForCharIndex:index];
   v14 = v13;
-  v15 = [(TSWPStorage *)self textRangeForParagraphAtCharIndex:a3];
+  v15 = [(TSWPStorage *)self textRangeForParagraphAtCharIndex:index];
   v16 = v15;
   v18 = v17;
   string = self->_string;
-  if (v4)
+  if (forwardCopy)
   {
     v12 += v14;
     v33.length = v12 - v15;
@@ -5473,25 +5473,25 @@ LABEL_45:
     {
       v21 = v20;
       v22 = 0;
-      v23 = a3;
+      indexCopy = index;
       do
       {
-        v24 = v23 - 1;
+        v24 = indexCopy - 1;
         ++v22;
-        if (CFStringTokenizerGoToTokenAtIndex(v21, v23))
+        if (CFStringTokenizerGoToTokenAtIndex(v21, indexCopy))
         {
           break;
         }
 
-        if (v23 <= v16)
+        if (indexCopy <= v16)
         {
           break;
         }
 
-        --v23;
+        --indexCopy;
       }
 
-      while (v12 == a3);
+      while (v12 == index);
       do
       {
         ++v24;
@@ -5535,22 +5535,22 @@ LABEL_30:
     if (v27)
     {
       v21 = v27;
-      v28 = a3;
+      indexCopy2 = index;
       while (1)
       {
-        while (!CFStringTokenizerGoToTokenAtIndex(v21, v28))
+        while (!CFStringTokenizerGoToTokenAtIndex(v21, indexCopy2))
         {
-          if (v28 <= v12)
+          if (indexCopy2 <= v12)
           {
             goto LABEL_28;
           }
 
-          --v28;
+          --indexCopy2;
         }
 
         v29 = CFStringTokenizerGetCurrentTokenRange(v21);
         length = v29.length;
-        if (v29.location + v29.length < a3 || v29.location + v29.length == v9)
+        if (v29.location + v29.length < index || v29.location + v29.length == v9)
         {
           break;
         }
@@ -5560,14 +5560,14 @@ LABEL_30:
           goto LABEL_28;
         }
 
-        if (v29.location - 1 >= v28 - 1)
+        if (v29.location - 1 >= indexCopy2 - 1)
         {
-          --v28;
+          --indexCopy2;
         }
 
         else
         {
-          v28 = v29.location - 1;
+          indexCopy2 = v29.location - 1;
         }
       }
 
@@ -5583,10 +5583,10 @@ LABEL_30:
   return result;
 }
 
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words
 {
-  location = a3.location;
-  v5 = a3.location + a3.length;
+  location = words.location;
+  v5 = words.location + words.length;
   v6 = [(TSWPStorage *)self selectionRangeForCharIndex:?];
   if (location > v6 && location < v6 + v7 && (IsWhitespaceCharacter([(TSWPStorage *)self characterAtIndex:location]) & 1) == 0)
   {
@@ -5632,15 +5632,15 @@ LABEL_30:
   return result;
 }
 
-- (_NSRange)rangeByTrimmingRange:(_NSRange)a3 withBlock:(id)a4
+- (_NSRange)rangeByTrimmingRange:(_NSRange)range withBlock:(id)block
 {
-  location = a3.location;
-  if (a3.length)
+  location = range.location;
+  if (range.length)
   {
-    length = a3.length;
-    v8 = a3.length;
-    v9 = a3.location;
-    while ((*(a4 + 2))(a4, [(TSWPStorage *)self characterAtIndex:v9]))
+    length = range.length;
+    v8 = range.length;
+    v9 = range.location;
+    while ((*(block + 2))(block, [(TSWPStorage *)self characterAtIndex:v9]))
     {
       ++v9;
       if (!--v8)
@@ -5652,7 +5652,7 @@ LABEL_30:
     v10 = location + length - 1;
     do
     {
-      if (!(*(a4 + 2))(a4, [(TSWPStorage *)self characterAtIndex:v10]))
+      if (!(*(block + 2))(block, [(TSWPStorage *)self characterAtIndex:v10]))
       {
         break;
       }
@@ -5678,24 +5678,24 @@ LABEL_10:
   return result;
 }
 
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range
 {
-  v6 = a3;
-  if (a5)
+  indexCopy = index;
+  if (range)
   {
-    *a5 = xmmword_26CA637B0;
+    *range = xmmword_26CA637B0;
   }
 
-  if (a3)
+  if (index)
   {
-    v7 = [(TSWPStorage *)self attributeArrayForKind:*&a4];
-    if (v7 && (v8 = v7, v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, v6 - 1), v9 < v8->var2))
+    v7 = [(TSWPStorage *)self attributeArrayForKind:*&kind];
+    if (v7 && (v8 = v7, v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, indexCopy - 1), v9 < v8->var2))
     {
-      v6 = *(v8->var4 + 2 * v9 + 1);
-      if (a5)
+      indexCopy = *(v8->var4 + 2 * v9 + 1);
+      if (range)
       {
-        a5->location = TSWPAttributeArray::rangeForAttributeIndex(v8, v9);
-        a5->length = v10;
+        range->location = TSWPAttributeArray::rangeForAttributeIndex(v8, v9);
+        range->length = v10;
       }
     }
 
@@ -5705,13 +5705,13 @@ LABEL_10:
     }
   }
 
-  return v6;
+  return indexCopy;
 }
 
-- (id)objectAtLocationAtExactCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4
+- (id)objectAtLocationAtExactCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind
 {
-  v4 = *&a4;
-  if ([(TSWPStorage *)self length]<= a3)
+  v4 = *&kind;
+  if ([(TSWPStorage *)self length]<= index)
   {
     return 0;
   }
@@ -5723,7 +5723,7 @@ LABEL_10:
   }
 
   v8 = result;
-  v9 = TSWPAttributeArray::exactAttributeIndexForCharIndex(result, a3);
+  v9 = TSWPAttributeArray::exactAttributeIndexForCharIndex(result, index);
   if (v9 >= v8[2])
   {
     return 0;
@@ -5735,72 +5735,72 @@ LABEL_10:
   }
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(__CFLocale *)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(__CFLocale *)locale hyphenChar:(unsigned int *)char
 {
-  v6 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage hyphenationLocationBeforeIndex:inRange:locale:hyphenChar:]"];
-  [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2175, @"notreached"}];
+  [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2175, @"notreached"}];
   return -1;
 }
 
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage
 {
-  v4 = [(TSWPStorage *)self charIndexMappedFromStorage:a3];
+  v4 = [(TSWPStorage *)self charIndexMappedFromStorage:storage];
 
   return [(TSWPStorage *)self charIndexMappedToStorage:v4];
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (id)relocateNonSelectedAnchorsInSelection:(id)a3 undoTransaction:(TSWPStorageTransaction *)a4
+- (id)relocateNonSelectedAnchorsInSelection:(id)selection undoTransaction:(TSWPStorageTransaction *)transaction
 {
   [(TSPObject *)self willModify];
-  if (![a3 isRange])
+  if (![selection isRange])
   {
-    return a3;
+    return selection;
   }
 
   memset(&__p, 0, sizeof(__p));
-  if ([a3 isVisual])
+  if ([selection isVisual])
   {
-    v7 = [a3 visualRanges];
-    if (&__p != v7)
+    visualRanges = [selection visualRanges];
+    if (&__p != visualRanges)
     {
-      std::vector<_NSRange>::__assign_with_size[abi:nn200100]<_NSRange*,_NSRange*>(&__p, *v7, v7[1], (v7[1] - *v7) >> 4);
+      std::vector<_NSRange>::__assign_with_size[abi:nn200100]<_NSRange*,_NSRange*>(&__p, *visualRanges, visualRanges[1], (visualRanges[1] - *visualRanges) >> 4);
     }
   }
 
-  if (![a3 visualRangeCount])
+  if (![selection visualRangeCount])
   {
-    v8 = 1;
+    visualRangeCount = 1;
 LABEL_10:
     v10 = 0;
     v18 = 0;
-    v11 = v8;
-    v9 = a3;
+    v11 = visualRangeCount;
+    selectionCopy2 = selection;
     do
     {
       v20.location = 0;
       v20.length = 0;
-      if (v8 == 1)
+      if (visualRangeCount == 1)
       {
-        location = [a3 range];
+        location = [selection range];
         length = v13;
         v20.location = location;
         v20.length = v13;
@@ -5808,18 +5808,18 @@ LABEL_10:
 
       else
       {
-        v20 = *(*[a3 visualRanges] + v10);
+        v20 = *(*[selection visualRanges] + v10);
         location = v20.location;
         length = v20.length;
       }
 
       v19.location = 0;
       v19.length = 0;
-      v19.location = -[TSWPStorage p_RelocateNonSelectedAnchorsInRange:selectionInfos:undoTransaction:](self, "p_RelocateNonSelectedAnchorsInRange:selectionInfos:undoTransaction:", location, length, [TSUProtocolCast() infos], a4);
+      v19.location = -[TSWPStorage p_RelocateNonSelectedAnchorsInRange:selectionInfos:undoTransaction:](self, "p_RelocateNonSelectedAnchorsInRange:selectionInfos:undoTransaction:", location, length, [TSUProtocolCast() infos], transaction);
       v19.length = v15;
       if (v20.location != v19.location || v20.length != v15)
       {
-        if ([a3 isVisual])
+        if ([selection isVisual])
         {
           TSWPRangeVector::removeRange(&__p, &v20);
           TSWPRangeVector::addRange(&__p, &v19);
@@ -5828,7 +5828,7 @@ LABEL_10:
 
         else
         {
-          v9 = [a3 copyWithNewRange:{v19.location, v19.length}];
+          selectionCopy2 = [selection copyWithNewRange:{v19.location, v19.length}];
         }
       }
 
@@ -5839,19 +5839,19 @@ LABEL_10:
     while (v11);
     if (v18)
     {
-      v9 = [a3 copyWithNewVisualRanges:&__p];
+      selectionCopy2 = [selection copyWithNewVisualRanges:&__p];
     }
 
     goto LABEL_24;
   }
 
-  v8 = [a3 visualRangeCount];
-  if (v8)
+  visualRangeCount = [selection visualRangeCount];
+  if (visualRangeCount)
   {
     goto LABEL_10;
   }
 
-  v9 = a3;
+  selectionCopy2 = selection;
 LABEL_24:
   if (__p.__begin_)
   {
@@ -5859,16 +5859,16 @@ LABEL_24:
     operator delete(__p.__begin_);
   }
 
-  return v9;
+  return selectionCopy2;
 }
 
-- (_NSRange)p_RelocateNonSelectedAnchorsInRange:(_NSRange)a3 selectionInfos:(id)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (_NSRange)p_RelocateNonSelectedAnchorsInRange:(_NSRange)range selectionInfos:(id)infos undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.length >= 2)
+  length = range.length;
+  location = range.location;
+  if (range.length >= 2)
   {
-    v10 = [(TSWPStorage *)self attachmentIndexRangeForTextRange:a3.location, a3.length];
+    v10 = [(TSWPStorage *)self attachmentIndexRangeForTextRange:range.location, range.length];
     if (v10 < v10 + v11)
     {
       v12 = v10;
@@ -5879,12 +5879,12 @@ LABEL_24:
         objc_opt_class();
         [(TSWPStorage *)self attachmentAtAttachmentIndex:v12 outCharIndex:&v19];
         v14 = TSUDynamicCast();
-        if ([v14 isAnchored] && (objc_msgSend(a4, "containsObject:", objc_msgSend(v14, "drawable")) & 1) == 0)
+        if ([v14 isAnchored] && (objc_msgSend(infos, "containsObject:", objc_msgSend(v14, "drawable")) & 1) == 0)
         {
           v15 = [(TSWPStorage *)self setDOLCSuppressed:1];
           v16 = v14;
-          [(TSWPStorage *)self replaceCharactersInRange:v19 withString:1 undoTransaction:0, a5];
-          [(TSWPStorage *)self insertAttachmentOrFootnote:v14 range:location++ dolcContext:0 undoTransaction:0 changeSession:a5, 0];
+          [(TSWPStorage *)self replaceCharactersInRange:v19 withString:1 undoTransaction:0, transaction];
+          [(TSWPStorage *)self insertAttachmentOrFootnote:v14 range:location++ dolcContext:0 undoTransaction:0 changeSession:transaction, 0];
           --length;
 
           [(TSWPStorage *)self setDOLCSuppressed:v15];
@@ -5905,12 +5905,12 @@ LABEL_24:
   return result;
 }
 
-- (id)extendSelectionForTopicChildren:(id)a3
+- (id)extendSelectionForTopicChildren:(id)children
 {
-  v3 = a3;
-  if ([a3 type] == 2)
+  childrenCopy = children;
+  if ([children type] == 2)
   {
-    TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v15, self, 0, [(TSWPStorage *)self paragraphIndexAtCharIndex:[(TSWPSelection *)v3 range]], [(TSWPStorage *)self paragraphCount], 1);
+    TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v15, self, 0, [(TSWPStorage *)self paragraphIndexAtCharIndex:[(TSWPSelection *)childrenCopy range]], [(TSWPStorage *)self paragraphCount], 1);
     v5 = TSWPParagraphEnumerator::paragraphLevel(&v15);
     v6 = 0;
     while (1)
@@ -5933,50 +5933,50 @@ LABEL_24:
 
     if (v7)
     {
-      v9 = [(TSWPSelection *)v3 range];
+      range = [(TSWPSelection *)childrenCopy range];
       v10 = TSWPParagraphEnumerator::paragraphTextRange(&v15);
-      if (v9 <= v10 + v11)
+      if (range <= v10 + v11)
       {
         v12 = v10 + v11;
       }
 
       else
       {
-        v12 = v9;
+        v12 = range;
       }
 
-      if (v9 >= v10 + v11)
+      if (range >= v10 + v11)
       {
         v13 = v10 + v11;
       }
 
       else
       {
-        v13 = v9;
+        v13 = range;
       }
 
-      v3 = [TSWPSelection selectionWithRange:v13 type:v12 - v13 leadingEdge:2 storage:1, 0];
+      childrenCopy = [TSWPSelection selectionWithRange:v13 type:v12 - v13 leadingEdge:2 storage:1, 0];
     }
 
     TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v15);
   }
 
-  return v3;
+  return childrenCopy;
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v5 = [(TSWPStorage *)self replaceCharactersInRange:a3.location withString:a3.length notifyObservers:a4 undoTransaction:1, a5];
+  transaction = [(TSWPStorage *)self replaceCharactersInRange:range.location withString:range.length notifyObservers:string undoTransaction:1, transaction];
   result.length = v6;
-  result.location = v5;
+  result.location = transaction;
   return result;
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 notifyObservers:(BOOL)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string notifyObservers:(BOOL)observers undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v7 = a5;
-  v10 = [[TSWPSelection alloc] initWithRange:a3.location, a3.length];
-  v11 = [(TSWPStorage *)self p_replaceCharactersInLogicalSelection:v10 withString:a4 withFlags:v7 replaceTextData:0 changeSession:0 undoTransaction:a6 outInsertedRange:0];
+  observersCopy = observers;
+  v10 = [[TSWPSelection alloc] initWithRange:range.location, range.length];
+  v11 = [(TSWPStorage *)self p_replaceCharactersInLogicalSelection:v10 withString:string withFlags:observersCopy replaceTextData:0 changeSession:0 undoTransaction:transaction outInsertedRange:0];
   v13 = v12;
 
   v14 = v11;
@@ -5986,38 +5986,38 @@ LABEL_24:
   return result;
 }
 
-- (_NSRange)replaceCharactersInSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id *)a6 changeSession:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8 outInsertedRange:(_NSRange *)a9
+- (_NSRange)replaceCharactersInSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id *)data changeSession:(id)session undoTransaction:(TSWPStorageTransaction *)transaction outInsertedRange:(_NSRange *)range
 {
-  v9 = *&a5;
-  v11 = a3;
-  if ([a3 visualRangeCount] < 2)
+  v9 = *&flags;
+  selectionCopy = selection;
+  if ([selection visualRangeCount] < 2)
   {
-    if ([v11 isVisual])
+    if ([selectionCopy isVisual])
     {
-      v21 = [v11 superRange];
-      v11 = [v11 copyWithNewType:0 range:{v21, v22}];
+      superRange = [selectionCopy superRange];
+      selectionCopy = [selectionCopy copyWithNewType:0 range:{superRange, v22}];
     }
 
-    v23 = [(TSWPStorage *)self p_replaceCharactersInLogicalSelection:v11 withString:a4 withFlags:v9 replaceTextData:a6 changeSession:a7 undoTransaction:a8 outInsertedRange:a9];
+    v23 = [(TSWPStorage *)self p_replaceCharactersInLogicalSelection:selectionCopy withString:string withFlags:v9 replaceTextData:data changeSession:session undoTransaction:transaction outInsertedRange:range];
   }
 
   else
   {
-    std::vector<CGPoint>::vector[abi:nn200100](&__p, [v11 visualRanges]);
-    v13 = [v11 superRange];
+    std::vector<CGPoint>::vector[abi:nn200100](&__p, [selectionCopy visualRanges]);
+    superRange2 = [selectionCopy superRange];
     v15 = v14;
-    v26 = v13;
-    v16 = [a4 length];
-    v25 = v16 + v15 - TSWPRangeVector::characterCount([v11 visualRanges]);
+    v26 = superRange2;
+    v16 = [string length];
+    v25 = v16 + v15 - TSWPRangeVector::characterCount([selectionCopy visualRanges]);
     v17 = v31 - __p;
     v18 = ((v31 - __p) >> 4) + 1;
     while (v18-- > 1)
     {
       v20 = [[TSWPSelection alloc] initWithRange:*(__p + v17 - 16), *(__p + v17 - 8)];
-      [(TSWPStorage *)self p_replaceCharactersInLogicalSelection:v20 withString:a4 withFlags:v9 replaceTextData:a6 changeSession:a7 undoTransaction:a8 outInsertedRange:a9];
+      [(TSWPStorage *)self p_replaceCharactersInLogicalSelection:v20 withString:string withFlags:v9 replaceTextData:data changeSession:session undoTransaction:transaction outInsertedRange:range];
       v17 -= 16;
 
-      a4 = &stru_287D36338;
+      string = &stru_287D36338;
     }
 
     if (__p)
@@ -6035,33 +6035,33 @@ LABEL_24:
   return result;
 }
 
-- (_NSRange)p_replaceCharactersInLogicalSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id *)a6 changeSession:(id)a7 undoTransaction:(TSWPStorageTransaction *)a8 outInsertedRange:(_NSRange *)a9
+- (_NSRange)p_replaceCharactersInLogicalSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id *)data changeSession:(id)session undoTransaction:(TSWPStorageTransaction *)transaction outInsertedRange:(_NSRange *)range
 {
-  v9 = a5;
+  flagsCopy = flags;
   v79 = *MEMORY[0x277D85DE8];
-  location = [a3 range];
+  location = [selection range];
   length = v14;
-  [a3 range];
-  if (v16 || [a4 length])
+  [selection range];
+  if (v16 || [string length])
   {
-    v17 = [a3 range];
-    if (v17 != -[TSWPStorage length](self, "length") && (-[TSWPStorage characterAtIndex:](self, "characterAtIndex:", [a3 range]) & 0xFC00) == 0xDC00)
+    range = [selection range];
+    if (range != -[TSWPStorage length](self, "length") && (-[TSWPStorage characterAtIndex:](self, "characterAtIndex:", [selection range]) & 0xFC00) == 0xDC00)
     {
-      v18 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage p_replaceCharactersInLogicalSelection:withString:withFlags:replaceTextData:changeSession:undoTransaction:outInsertedRange:]"];
-      [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2432, @"Inserting text within surrogate pair"}];
+      [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2432, @"Inserting text within surrogate pair"}];
     }
 
     [(TSPObject *)self willModify];
-    v64 = [(TSWPStorage *)self relocateNonSelectedAnchorsInSelection:a3 undoTransaction:a8];
+    v64 = [(TSWPStorage *)self relocateNonSelectedAnchorsInSelection:selection undoTransaction:transaction];
     self->_delayBroadcast = 1;
-    v66 = self;
-    v62 = a4;
+    selfCopy = self;
+    stringCopy = string;
     v20 = [TSWPStorage p_replacementsForSelection:"p_replacementsForSelection:withString:changeSession:shouldTrackDeletions:" withString:? changeSession:? shouldTrackDeletions:?];
     __src = 0;
     v76 = 0;
     v77 = 0;
-    v21 = *MEMORY[0x277D6C268];
+    insertedRange2 = *MEMORY[0x277D6C268];
     v22 = *(MEMORY[0x277D6C268] + 8);
     v71 = 0u;
     v72 = 0u;
@@ -6069,12 +6069,12 @@ LABEL_24:
     v74 = 0u;
     obj = v20;
     v23 = [v20 countByEnumeratingWithState:&v71 objects:v78 count:16];
-    v63 = v9;
+    v63 = flagsCopy;
     v24 = 0;
     if (v23)
     {
       v68 = *v72;
-      v25 = self;
+      selfCopy3 = self;
       do
       {
         v70 = v23;
@@ -6086,9 +6086,9 @@ LABEL_24:
           }
 
           v27 = *(*(&v71 + 1) + 8 * i);
-          [v27 performWithStorage:v25 delta:v24 undoTransaction:? replaceBlock:?];
-          v28 = [v27 delta];
-          v29 = [v27 insertedRange];
+          [v27 performWithStorage:selfCopy3 delta:v24 undoTransaction:? replaceBlock:?];
+          delta = [v27 delta];
+          insertedRange = [v27 insertedRange];
           v31 = v30;
           v32 = v76;
           if (v76 >= v77)
@@ -6122,7 +6122,7 @@ LABEL_24:
 
             v41 = (v76 - __src) >> 4;
             v42 = (16 * v36);
-            *v42 = v29;
+            *v42 = insertedRange;
             v42[1] = v31;
             v33 = 16 * v36 + 16;
             v43 = &v42[-2 * v41];
@@ -6136,12 +6136,12 @@ LABEL_24:
               operator delete(v44);
             }
 
-            v25 = v66;
+            selfCopy3 = selfCopy;
           }
 
           else
           {
-            *v76 = v29;
+            *v76 = insertedRange;
             *(v32 + 1) = v30;
             v33 = (v32 + 16);
           }
@@ -6150,11 +6150,11 @@ LABEL_24:
           [v27 insertedRange];
           if (v45)
           {
-            v21 = [v27 insertedRange];
+            insertedRange2 = [v27 insertedRange];
             v22 = v46;
           }
 
-          v24 += v28;
+          v24 += delta;
         }
 
         v23 = [obj countByEnumeratingWithState:&v71 objects:v78 count:16];
@@ -6165,36 +6165,36 @@ LABEL_24:
 
     else
     {
-      v25 = self;
+      selfCopy3 = self;
     }
 
-    if (a6)
+    if (data)
     {
       if (v22)
       {
-        if (![a6->var0 isEqualToString:@"TSWPShouldExtendStoredLanguage"])
+        if (![data->var0 isEqualToString:@"TSWPShouldExtendStoredLanguage"])
         {
-          if ([v62 isEqualToString:@"\t"] && -[TSWPStorage writingDirectionForParagraphAtCharIndex:](v25, "writingDirectionForParagraphAtCharIndex:", v21) == 1 && objc_msgSend(MEMORY[0x277CBEAF8], "characterDirectionForLanguage:", a6->var0) != 2)
+          if ([stringCopy isEqualToString:@"\t"] && -[TSWPStorage writingDirectionForParagraphAtCharIndex:](selfCopy3, "writingDirectionForParagraphAtCharIndex:", insertedRange2) == 1 && objc_msgSend(MEMORY[0x277CBEAF8], "characterDirectionForLanguage:", data->var0) != 2)
           {
-            [(TSWPStorage *)v25 setLanguage:*MEMORY[0x277D6C3A0] forCharRange:v21 undoTransaction:v22, a8];
+            [(TSWPStorage *)selfCopy3 setLanguage:*MEMORY[0x277D6C3A0] forCharRange:insertedRange2 undoTransaction:v22, transaction];
           }
 
           else
           {
-            [(TSWPStorage *)v25 setLanguage:a6->var0 forCharRange:v21 undoTransaction:v22, a8];
+            [(TSWPStorage *)selfCopy3 setLanguage:data->var0 forCharRange:insertedRange2 undoTransaction:v22, transaction];
           }
         }
 
-        [(TSWPStorage *)v25 setDictationAndAutocorrection:a6->var1 forCharRange:v21 undoTransaction:v22, a8];
+        [(TSWPStorage *)selfCopy3 setDictationAndAutocorrection:data->var1 forCharRange:insertedRange2 undoTransaction:v22, transaction];
       }
     }
 
     else if (v22)
     {
-      [(TSWPStorage *)v25 applyObject:0 toCharRange:v21 forKind:v22 dolcContext:13 undoTransaction:0, a8];
+      [(TSWPStorage *)selfCopy3 applyObject:0 toCharRange:insertedRange2 forKind:v22 dolcContext:13 undoTransaction:0, transaction];
     }
 
-    v25->_delayBroadcast = 0;
+    selfCopy3->_delayBroadcast = 0;
     location = [v64 range];
     length = 0;
     v47 = __src;
@@ -6211,9 +6211,9 @@ LABEL_24:
         v50 = v47->length;
         if (((v50 != 0) & v48) == 1)
         {
-          v51 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage p_replaceCharactersInLogicalSelection:withString:withFlags:replaceTextData:changeSession:undoTransaction:outInsertedRange:]"];
-          [v51 handleFailureInFunction:v52 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2510, @"multiple inserted ranges aren't handled yet"}];
+          [currentHandler2 handleFailureInFunction:v52 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2510, @"multiple inserted ranges aren't handled yet"}];
         }
 
         v48 |= v50 != 0;
@@ -6225,17 +6225,17 @@ LABEL_24:
 
     if (v63)
     {
-      v53 = v66->_rangeToBroadcast.location;
-      v54 = v66->_rangeToBroadcast.length;
-      [(TSWPStorage *)v66 p_didChangeRange:location delta:length broadcastKind:v24, 1];
+      v53 = selfCopy->_rangeToBroadcast.location;
+      v54 = selfCopy->_rangeToBroadcast.length;
+      [(TSWPStorage *)selfCopy p_didChangeRange:location delta:length broadcastKind:v24, 1];
       if (v53 | v54)
       {
-        [(TSWPStorage *)v66 p_didChangeRange:v53 delta:v54 broadcastKind:0, 1];
+        [(TSWPStorage *)selfCopy p_didChangeRange:v53 delta:v54 broadcastKind:0, 1];
       }
     }
 
     v55 = __src;
-    if (a9)
+    if (range)
     {
       v56 = v76;
       if (__src != v76)
@@ -6243,7 +6243,7 @@ LABEL_24:
         v57 = __src;
         do
         {
-          *a9 = *v57;
+          *range = *v57;
           v58 = v57->length;
           ++v57;
           if (v58)
@@ -6261,8 +6261,8 @@ LABEL_24:
       }
     }
 
-    v66->_rangeToBroadcast.location = 0;
-    v66->_rangeToBroadcast.length = 0;
+    selfCopy->_rangeToBroadcast.location = 0;
+    selfCopy->_rangeToBroadcast.length = 0;
     if (v55)
     {
       v76 = v55;
@@ -6286,12 +6286,12 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   return [v6 p_replaceCharactersInSelection:a2 withString:a3 length:v7 undoTransaction:v8];
 }
 
-- (id)substringWithSelection:(id)a3
+- (id)substringWithSelection:(id)selection
 {
   v21 = *MEMORY[0x277D85DE8];
-  if ([a3 type])
+  if ([selection type])
   {
-    if ([a3 type] != 7)
+    if ([selection type] != 7)
     {
       return &stru_287D36338;
     }
@@ -6300,8 +6300,8 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [a3 visualRangesArray];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    visualRangesArray = [selection visualRangesArray];
+    v6 = [visualRangesArray countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (!v6)
     {
       return &stru_287D36338;
@@ -6316,14 +6316,14 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visualRangesArray);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) rangeValue];
-        v9 = [(__CFString *)v9 stringByAppendingString:[(TSWPStorage *)self substringWithRange:v11, v12]];
+        rangeValue = [*(*(&v16 + 1) + 8 * i) rangeValue];
+        v9 = [(__CFString *)v9 stringByAppendingString:[(TSWPStorage *)self substringWithRange:rangeValue, v12]];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [visualRangesArray countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -6332,13 +6332,13 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
 
   else
   {
-    v15 = [a3 range];
+    range = [selection range];
 
-    return [(TSWPStorage *)self substringWithRange:v15, v14];
+    return [(TSWPStorage *)self substringWithRange:range, v14];
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   [(TSWPStorage *)self setDocumentRoot:?];
   v7 = 0;
@@ -6347,7 +6347,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
     v8 = [(TSWPStorage *)self attributeArrayForKind:v7];
     if (v8)
     {
-      (*(v8->var0 + 13))(v8, a3, a4);
+      (*(v8->var0 + 13))(v8, root, context);
     }
 
     v7 = (v7 + 1);
@@ -6356,7 +6356,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   while (v7 != 19);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   v7 = 0;
@@ -6365,7 +6365,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
     v8 = [(TSWPStorage *)self attributeArrayForKind:v7];
     if (v8)
     {
-      (*(v8->var0 + 14))(v8, a3, a4);
+      (*(v8->var0 + 14))(v8, root, context);
     }
 
     v7 = (v7 + 1);
@@ -6374,7 +6374,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   while (v7 != 19);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v5 = 0;
   do
@@ -6382,7 +6382,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
     v6 = [(TSWPStorage *)self attributeArrayForKind:v5];
     if (v6)
     {
-      (*(v6->var0 + 15))(v6, a3);
+      (*(v6->var0 + 15))(v6, root);
     }
 
     v5 = (v5 + 1);
@@ -6391,7 +6391,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   while (v5 != 19);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   v5 = 0;
@@ -6400,7 +6400,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
     v6 = [(TSWPStorage *)self attributeArrayForKind:v5];
     if (v6)
     {
-      (*(v6->var0 + 16))(v6, a3);
+      (*(v6->var0 + 16))(v6, root);
     }
 
     v5 = (v5 + 1);
@@ -6411,38 +6411,38 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   [(TSWPStorage *)self setDocumentRoot:0];
 }
 
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 updatingSearchRange:(_NSRange *)a5
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options updatingSearchRange:(_NSRange *)range
 {
-  v5 = [(NSMutableString *)self->_string rangeOfString:a3 searchOptions:a4 updatingSearchRange:a5];
+  v5 = [(NSMutableString *)self->_string rangeOfString:string searchOptions:options updatingSearchRange:range];
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 range:(_NSRange)a5
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options range:(_NSRange)range
 {
-  v7 = a5;
-  v5 = [(NSMutableString *)self->_string rangeOfString:a3 searchOptions:a4 updatingSearchRange:&v7];
+  rangeCopy = range;
+  v5 = [(NSMutableString *)self->_string rangeOfString:string searchOptions:options updatingSearchRange:&rangeCopy];
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)a3 backwards:(BOOL)a4 range:(_NSRange)a5
+- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)character backwards:(BOOL)backwards range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4;
-  if ((IsParagraphBreakingCharacter(a3) & 1) == 0)
+  length = range.length;
+  location = range.location;
+  backwardsCopy = backwards;
+  if ((IsParagraphBreakingCharacter(character) & 1) == 0)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage rangeOfParagraphBreakingCharacter:backwards:range:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2682, @"invalid character"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2682, @"invalid character"}];
   }
 
-  v16 = a3;
-  v12 = [MEMORY[0x277CCACA8] stringWithCharacters:&v16 length:1];
-  if (v7)
+  characterCopy = character;
+  v12 = [MEMORY[0x277CCACA8] stringWithCharacters:&characterCopy length:1];
+  if (backwardsCopy)
   {
     v13 = 6;
   }
@@ -6460,26 +6460,26 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
 
 - (id)childEnumerator
 {
-  v4 = [(TSWPStorage *)self range];
+  range = [(TSWPStorage *)self range];
 
-  return [(TSWPStorage *)self childEnumeratorForRange:v4, v3];
+  return [(TSWPStorage *)self childEnumeratorForRange:range, v3];
 }
 
-- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)a3 range:(_NSRange)a4
+- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)options range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  optionsCopy = options;
   v8 = *MEMORY[0x277D6C268];
   v9 = *(MEMORY[0x277D6C268] + 8);
-  TSWPAttributeEnumerator::TSWPAttributeEnumerator(v14, self, a4.location, a4.length, 15);
+  TSWPAttributeEnumerator::TSWPAttributeEnumerator(v14, self, range.location, range.length, 15);
   v10 = 0;
   while (TSWPAttributeEnumerator::nextAttributeIndex(v14, &v13))
   {
     objc_opt_class();
     if (TSUDynamicCast() && v13.location >= location && v13.location - location < length)
     {
-      if ((v6 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
         if ((v10 & (v13.location >= v8)) == 0)
         {
@@ -6508,7 +6508,7 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
     objc_opt_class();
     if (TSUDynamicCast() && v13.location >= location && v13.location - location < length)
     {
-      if ((v6 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
         if ((v10 & (v13.location >= v8)) == 0)
         {
@@ -6537,16 +6537,16 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   return result;
 }
 
-- (void)findChangesInRange:(_NSRange)a3 onHit:(id)a4
+- (void)findChangesInRange:(_NSRange)range onHit:(id)hit
 {
-  length = a3.length;
-  location = a3.location;
-  [(TSWPStorage *)self p_findChangesInRange:a3.location onHit:a3.length withAttributeKind:a4, 15];
+  length = range.length;
+  location = range.location;
+  [(TSWPStorage *)self p_findChangesInRange:range.location onHit:range.length withAttributeKind:hit, 15];
 
-  [(TSWPStorage *)self p_findChangesInRange:location onHit:length withAttributeKind:a4, 16];
+  [(TSWPStorage *)self p_findChangesInRange:location onHit:length withAttributeKind:hit, 16];
 }
 
-- (_NSRange)rangeForHighlight:(id)a3
+- (_NSRange)rangeForHighlight:(id)highlight
 {
   v4 = *MEMORY[0x277D6C268];
   v5 = *(MEMORY[0x277D6C268] + 8);
@@ -6554,12 +6554,12 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   if (v6)
   {
     v7 = v6;
-    Object = TSWPAttributeArray::findObject(v6, a3, 0);
+    Object = TSWPAttributeArray::findObject(v6, highlight, 0);
     if (Object == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage rangeForHighlight:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2887, @"Expected to find highlight in storage"}];
+      [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2887, @"Expected to find highlight in storage"}];
     }
 
     else
@@ -6576,21 +6576,21 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   return result;
 }
 
-- (id)searchForString:(id)a3 options:(unint64_t)a4 onHit:(id)a5
+- (id)searchForString:(id)string options:(unint64_t)options onHit:(id)hit
 {
   if ([(TSWPStorage *)self wpKind]== 7)
   {
     return 0;
   }
 
-  v11 = [(TSWPStorage *)self range];
+  range = [(TSWPStorage *)self range];
 
-  return [(TSWPStorage *)self searchInRange:v11 forString:v10 options:a3 onHit:a4, a5];
+  return [(TSWPStorage *)self searchInRange:range forString:v10 options:string onHit:options, hit];
 }
 
-- (id)searchInRange:(_NSRange)a3 forString:(id)a4 options:(unint64_t)a5 onHit:(id)a6
+- (id)searchInRange:(_NSRange)range forString:(id)string options:(unint64_t)options onHit:(id)hit
 {
-  v7 = [[TSWPSearch alloc] initWithString:a4 options:a5 hitBlock:a6 storage:self range:a3.location, a3.length];
+  v7 = [[TSWPSearch alloc] initWithString:string options:options hitBlock:hit storage:self range:range.location, range.length];
   [(TSWPStorage *)self continueSearch:v7];
   if ([(TSWPSearch *)v7 isComplete])
   {
@@ -6606,35 +6606,35 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   return v7;
 }
 
-- (id)searchForAnnotationsWithHitBlock:(id)a3
+- (id)searchForAnnotationsWithHitBlock:(id)block
 {
-  v5 = [(TSWPStorage *)self range];
-  [(TSWPStorage *)self findCommentsInRange:v5 onHit:v6, a3];
-  v7 = [(TSWPStorage *)self range];
-  [(TSWPStorage *)self findChangesInRange:v7 onHit:v8, a3];
+  range = [(TSWPStorage *)self range];
+  [(TSWPStorage *)self findCommentsInRange:range onHit:v6, block];
+  range2 = [(TSWPStorage *)self range];
+  [(TSWPStorage *)self findChangesInRange:range2 onHit:v8, block];
   return 0;
 }
 
-- (void)continueSearch:(id)a3
+- (void)continueSearch:(id)search
 {
-  if (!a3)
+  if (!search)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage continueSearch:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2930, @"invalid nil value for '%s'", "search"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 2930, @"invalid nil value for '%s'", "search"}];
   }
 
-  v10 = [a3 range];
+  range = [search range];
   v11 = v7;
   if (v7 && [(TSWPStorage *)self wpKind]!= 7)
   {
-    v8 = [objc_msgSend(a3 "searchedString")];
+    v8 = [objc_msgSend(search "searchedString")];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [a3 foundHitWithRange:{v8, v9}];
+      [search foundHitWithRange:{v8, v9}];
     }
 
-    [a3 setRange:{v10, v11}];
+    [search setRange:{range, v11}];
   }
 }
 
@@ -6645,10 +6645,10 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
     return 0;
   }
 
-  v4 = [(TSWPStorage *)self parentInfo];
-  if (v4)
+  parentInfo = [(TSWPStorage *)self parentInfo];
+  if (parentInfo)
   {
-    v5 = v4;
+    parentInfo2 = parentInfo;
     while (1)
     {
       objc_opt_class();
@@ -6661,8 +6661,8 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
         }
       }
 
-      v5 = [(TSDContainerInfo *)v5 parentInfo];
-      if (!v5)
+      parentInfo2 = [(TSDContainerInfo *)parentInfo2 parentInfo];
+      if (!parentInfo2)
       {
         return 1;
       }
@@ -6674,26 +6674,26 @@ uint64_t __137__TSWPStorage_p_replaceCharactersInLogicalSelection_withString_wit
   return 1;
 }
 
-- (_NSRange)replaceAllOccurrencesOfStyle:(id)a3 withStyle:(id)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (_NSRange)replaceAllOccurrencesOfStyle:(id)style withStyle:(id)withStyle undoTransaction:(TSWPStorageTransaction *)transaction
 {
   v9 = *MEMORY[0x277D6C268];
   v10 = *(MEMORY[0x277D6C268] + 8);
-  if ([a3 isMemberOfClass:objc_opt_class()])
+  if ([style isMemberOfClass:objc_opt_class()])
   {
     v11 = 0;
 LABEL_7:
-    v9 = [(TSWPStorage *)self replaceAllOccurrencesOfObject:a3 withObject:a4 forKind:v11 undoTransaction:a5];
+    v9 = [(TSWPStorage *)self replaceAllOccurrencesOfObject:style withObject:withStyle forKind:v11 undoTransaction:transaction];
     v10 = v12;
     goto LABEL_8;
   }
 
-  if ([a3 isMemberOfClass:objc_opt_class()])
+  if ([style isMemberOfClass:objc_opt_class()])
   {
     v11 = 2;
     goto LABEL_7;
   }
 
-  if ([a3 isMemberOfClass:objc_opt_class()])
+  if ([style isMemberOfClass:objc_opt_class()])
   {
     v11 = 3;
     goto LABEL_7;
@@ -6707,11 +6707,11 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)styleOverridesAppliedToRange:(_NSRange)a3
+- (BOOL)styleOverridesAppliedToRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  TSWPAttributeEnumerator::TSWPAttributeEnumerator(v13, self, a3.location, a3.length, 3);
+  length = range.length;
+  location = range.location;
+  TSWPAttributeEnumerator::TSWPAttributeEnumerator(v13, self, range.location, range.length, 3);
   while (1)
   {
     AttributeIndex = TSWPAttributeEnumerator::nextAttributeIndex(v13, 0);
@@ -6762,36 +6762,36 @@ LABEL_13:
   return v7;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  if (self->_stylesheet != a3)
+  if (self->_stylesheet != stylesheet)
   {
-    [a4 pushMappingContext:self];
+    [mapper pushMappingContext:self];
     v7 = 0;
     do
     {
       v8 = [(TSWPStorage *)self attributeArrayForKind:v7];
       if (v8)
       {
-        (*(v8->var0 + 12))(v8, a3, a4);
+        (*(v8->var0 + 12))(v8, stylesheet, mapper);
       }
 
       v7 = (v7 + 1);
     }
 
     while (v7 != 19);
-    v9 = a3;
+    stylesheetCopy = stylesheet;
 
-    self->_stylesheet = a3;
+    self->_stylesheet = stylesheet;
 
-    [a4 popMappingContext:self];
+    [mapper popMappingContext:self];
   }
 }
 
-- (_NSRange)textRangeForListsInCharRange:(_NSRange)a3
+- (_NSRange)textRangeForListsInCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = [(TSWPStorage *)self textRangeForListAtCharIndex:?];
   v8 = location + length;
   if (v8 > v7 + v6)
@@ -6811,11 +6811,11 @@ LABEL_13:
   return result;
 }
 
-- (_NSRange)textRangeForListAtCharIndex:(unint64_t)a3
+- (_NSRange)textRangeForListAtCharIndex:(unint64_t)index
 {
   if (self)
   {
-    [(TSWPStorage *)self paragraphEnumeratorAtCharIndex:a3 styleProvider:0];
+    [(TSWPStorage *)self paragraphEnumeratorAtCharIndex:index styleProvider:0];
   }
 
   else
@@ -6889,12 +6889,12 @@ LABEL_18:
   return result;
 }
 
-- (unint64_t)firstParIndexInListAtParIndex:(unint64_t)a3
+- (unint64_t)firstParIndexInListAtParIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self)
   {
-    [(TSWPStorage *)self paragraphEnumeratorAtParIndex:a3 styleProvider:0];
+    [(TSWPStorage *)self paragraphEnumeratorAtParIndex:index styleProvider:0];
   }
 
   else
@@ -6909,7 +6909,7 @@ LABEL_18:
     while (1)
     {
       isFirstParagraph = TSWPParagraphEnumerator::isFirstParagraph(&v11);
-      if (!v3 || isFirstParagraph)
+      if (!indexCopy || isFirstParagraph)
       {
         break;
       }
@@ -6922,12 +6922,12 @@ LABEL_18:
         break;
       }
 
-      --v3;
+      --indexCopy;
     }
   }
 
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v11);
-  return v3;
+  return indexCopy;
 }
 
 - (unint64_t)paragraphCount
@@ -6941,44 +6941,44 @@ LABEL_18:
   return result;
 }
 
-- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)a3
+- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)index
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (!v4)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage paragraphIndexAtCharIndex:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3193, @"paragraphIndexAtCharIndex: no paragraph table."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3193, @"paragraphIndexAtCharIndex: no paragraph table."}];
   }
 
-  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
 }
 
-- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)a3
+- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)index
 {
   v5 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (v5)
   {
     v6 = v5;
-    v7 = TSWPAttributeArray::charIndexForAttributeIndex(v5, a3);
-    if (a3 + 1 >= v6->var2)
+    v7 = TSWPAttributeArray::charIndexForAttributeIndex(v5, index);
+    if (index + 1 >= v6->var2)
     {
-      v8 = [(TSWPStorage *)self characterCount];
+      characterCount = [(TSWPStorage *)self characterCount];
     }
 
     else
     {
-      v8 = TSWPAttributeArray::charIndexForAttributeIndex(v6, a3 + 1);
+      characterCount = TSWPAttributeArray::charIndexForAttributeIndex(v6, index + 1);
     }
 
-    v11 = v8 - v7;
+    v11 = characterCount - v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage textRangeForParagraphAtIndex:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3205, @"textRangeForParagraphAtIndex: no paragraph table."}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3205, @"textRangeForParagraphAtIndex: no paragraph table."}];
     v11 = 0;
     v7 = 0;
   }
@@ -6989,17 +6989,17 @@ LABEL_18:
   return result;
 }
 
-- (_NSRange)textRangeForParagraphsInRange:(_NSRange)a3
+- (_NSRange)textRangeForParagraphsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(TSWPStorage *)self textRangeForParagraphAtIndex:?];
   v8 = v7;
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage textRangeForParagraphsInRange:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3224, @"bogus first paragraph text range"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3224, @"bogus first paragraph text range"}];
   }
 
   if (length)
@@ -7015,9 +7015,9 @@ LABEL_18:
       v13 = v12;
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage textRangeForParagraphsInRange:]"];
-        [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3233, @"bogus first paragraph text range"}];
+        [currentHandler2 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3233, @"bogus first paragraph text range"}];
       }
 
       v19.location = v6;
@@ -7037,17 +7037,17 @@ LABEL_18:
   return result;
 }
 
-- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)a3
+- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)index
 {
   v5 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (!v5)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage textRangeForParagraphAtCharIndex:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3246, @"textRangeForParagraphAtCharIndex: no paragraph table."}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3246, @"textRangeForParagraphAtCharIndex: no paragraph table."}];
   }
 
-  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, a3);
+  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, index);
 
   v9 = [(TSWPStorage *)self textRangeForParagraphAtIndex:v8];
   result.length = v10;
@@ -7055,10 +7055,10 @@ LABEL_18:
   return result;
 }
 
-- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)a3
+- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = [(TSWPStorage *)self textRangeForParagraphAtCharIndex:?];
   v8 = location + length;
   if (v8 > v7 + v6)
@@ -7078,10 +7078,10 @@ LABEL_18:
   return result;
 }
 
-- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)a3
+- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(TSWPStorage *)self paragraphIndexAtCharIndex:?];
   if (length)
   {
@@ -7099,27 +7099,27 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)a3
+- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)index
 {
-  v5 = [(TSWPStorage *)self listStyleAtCharIndex:a3 effectiveRange:0];
+  v5 = [(TSWPStorage *)self listStyleAtCharIndex:index effectiveRange:0];
   if (v5)
   {
-    LOBYTE(v5) = [v5 labelTypeForLevel:{-[TSWPStorage paragraphLevelAtCharIndex:](self, "paragraphLevelAtCharIndex:", a3)}] != 0;
+    LOBYTE(v5) = [v5 labelTypeForLevel:{-[TSWPStorage paragraphLevelAtCharIndex:](self, "paragraphLevelAtCharIndex:", index)}] != 0;
   }
 
   return v5;
 }
 
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index
 {
-  v4 = [(TSWPStorage *)self paragraphIndexAtCharIndex:a3];
+  v4 = [(TSWPStorage *)self paragraphIndexAtCharIndex:index];
 
   return [(TSWPStorage *)self isWritingDirectionRightToLeftForParagraphAtParIndex:v4];
 }
 
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)index
 {
-  v4 = [(TSWPStorage *)self writingDirectionForParagraphAtParIndex:a3];
+  v4 = [(TSWPStorage *)self writingDirectionForParagraphAtParIndex:index];
   if (v4 >= 2)
   {
     if (v4 == -1)
@@ -7140,9 +7140,9 @@ LABEL_18:
 
     else
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage isWritingDirectionRightToLeftForParagraphAtParIndex:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3343, @"Unknown writing direction."}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3343, @"Unknown writing direction."}];
       LOBYTE(v4) = 0;
     }
   }
@@ -7150,9 +7150,9 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)index
 {
-  v5 = [(TSWPStorage *)self listStyleAtParIndex:a3 effectiveRange:0];
+  v5 = [(TSWPStorage *)self listStyleAtParIndex:index effectiveRange:0];
   if (v5)
   {
     v6 = v5;
@@ -7166,22 +7166,22 @@ LABEL_18:
     }
   }
 
-  v9 = [(TSWPStorage *)self firstParIndexInListAtParIndex:a3];
+  v9 = [(TSWPStorage *)self firstParIndexInListAtParIndex:index];
 
   return [(TSWPStorage *)self isWritingDirectionRightToLeftForParagraphAtParIndex:v9];
 }
 
-- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)a3
+- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)index
 {
-  result = [-[TSWPStorage paragraphStyleAtCharIndex:effectiveRange:](self paragraphStyleAtCharIndex:a3 effectiveRange:{0), "intValueForProperty:", 44}];
+  result = [-[TSWPStorage paragraphStyleAtCharIndex:effectiveRange:](self paragraphStyleAtCharIndex:index effectiveRange:{0), "intValueForProperty:", 44}];
   if (result == -1)
   {
     v6 = [(TSWPStorage *)self attributeArrayForKind:18];
     if (!v6)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage writingDirectionForParagraphAtCharIndex:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3383, @"writingDirectionForParagraphAtParIndex: no paragraph table."}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3383, @"writingDirectionForParagraphAtParIndex: no paragraph table."}];
       return [(TSKDocumentRoot *)self->_documentRoot isDirectionRightToLeft];
     }
 
@@ -7191,12 +7191,12 @@ LABEL_18:
       return [(TSKDocumentRoot *)self->_documentRoot isDirectionRightToLeft];
     }
 
-    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, a3);
+    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, index);
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage writingDirectionForParagraphAtCharIndex:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3387, @"writingDirectionForParagraphAtParIndex: no paragraph table."}];
+      [currentHandler2 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3387, @"writingDirectionForParagraphAtParIndex: no paragraph table."}];
     }
 
     result = *(v7->var4 + 4 * v8 + 2);
@@ -7209,40 +7209,40 @@ LABEL_18:
   return result;
 }
 
-- (int)writingDirectionForParagraphAtParIndex:(unint64_t)a3
+- (int)writingDirectionForParagraphAtParIndex:(unint64_t)index
 {
-  v4 = [(TSWPStorage *)self textRangeForParagraphAtIndex:a3];
+  v4 = [(TSWPStorage *)self textRangeForParagraphAtIndex:index];
 
   return [(TSWPStorage *)self writingDirectionForParagraphAtCharIndex:v4];
 }
 
-- (void)setParagraphWritingDirection:(int)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)setParagraphWritingDirection:(int)direction forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v6 = *&a3;
-  v8 = [(TSWPStorage *)self paragraphIndexRangeForCharRange:a4.location, a4.length];
+  v6 = *&direction;
+  v8 = [(TSWPStorage *)self paragraphIndexRangeForCharRange:range.location, range.length];
   if (v9)
   {
 
-    [(TSWPStorage *)self applyWritingDirection:v6 toParagraphIndexRange:v8 forKind:v9 undoTransaction:18, a5];
+    [(TSWPStorage *)self applyWritingDirection:v6 toParagraphIndexRange:v8 forKind:v9 undoTransaction:18, transaction];
   }
 }
 
-- (void)setLanguage:(id)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)setLanguage:(id)language forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v10 = [(TSWPStorage *)self attributeArrayForKind:13];
-  if (!v10 || (v11 = v10, v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v10, location), v12 == v11->var2) || (v13 = *(v11->var4 + 2 * v12 + 1), v14 = TSWPAttributeArray::rangeForAttributeIndex(v11, v12), v14 > location) || v14 + v15 < location + length || v13 != a3 && (!a3 || !v13 || ([v13 isEqualToString:a3] & 1) == 0))
+  if (!v10 || (v11 = v10, v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v10, location), v12 == v11->var2) || (v13 = *(v11->var4 + 2 * v12 + 1), v14 = TSWPAttributeArray::rangeForAttributeIndex(v11, v12), v14 > location) || v14 + v15 < location + length || v13 != language && (!language || !v13 || ([v13 isEqualToString:language] & 1) == 0))
   {
 
-    [(TSWPStorage *)self applyObject:a3 toCharRange:location forKind:length dolcContext:13 undoTransaction:0, a5];
+    [(TSWPStorage *)self applyObject:language toCharRange:location forKind:length dolcContext:13 undoTransaction:0, transaction];
   }
 }
 
-- (id)bestCharacterLanguageForTextRange:(_NSRange)a3
+- (id)bestCharacterLanguageForTextRange:(_NSRange)range
 {
-  range2 = a3.length;
-  location = a3.location;
+  range2 = range.length;
+  location = range.location;
   v47 = *MEMORY[0x277D85DE8];
   result = [(TSWPStorage *)self attributeArrayForKind:13];
   if (result)
@@ -7433,12 +7433,12 @@ LABEL_31:
   return result;
 }
 
-- (id)languageForTextRange:(_NSRange)a3 useStringTokenizer:(BOOL)a4 useCreationLanguage:(BOOL)a5
+- (id)languageForTextRange:(_NSRange)range useStringTokenizer:(BOOL)tokenizer useCreationLanguage:(BOOL)language
 {
-  v5 = a5;
-  v33 = a4;
-  length = a3.length;
-  location = a3.location;
+  languageCopy = language;
+  tokenizerCopy = tokenizer;
+  length = range.length;
+  location = range.location;
   v9 = [(TSWPStorage *)self paragraphIndexAtCharIndex:?];
   v34 = location;
   v10 = location + length;
@@ -7458,7 +7458,7 @@ LABEL_5:
     if (v14 <= v10)
     {
       v31 = length;
-      v32 = v5;
+      v32 = languageCopy;
       v15 = 0;
       v16 = v14;
       v17 = *v12;
@@ -7529,7 +7529,7 @@ LABEL_5:
       if (!v15)
       {
 LABEL_43:
-        v5 = v32;
+        languageCopy = v32;
         length = v31;
         v14 = v34;
         goto LABEL_44;
@@ -7537,7 +7537,7 @@ LABEL_43:
 
 LABEL_38:
       v14 = v34;
-      v5 = v32;
+      languageCopy = v32;
       length = v31;
       if (v21.location == v34 && v21.length == v31 || v21.location <= v34 && v21.location + v21.length >= v10)
       {
@@ -7605,7 +7605,7 @@ LABEL_44:
     }
   }
 
-  if (!v33 || ((v13 = 0, length == v12[1]) ? (v28 = v14 == *v12) : (v28 = 0), v28 || !length))
+  if (!tokenizerCopy || ((v13 = 0, length == v12[1]) ? (v28 = v14 == *v12) : (v28 = 0), v28 || !length))
   {
 LABEL_65:
     if (v13)
@@ -7627,7 +7627,7 @@ LABEL_65:
 
   v13 = 0;
 LABEL_66:
-  if (v5)
+  if (languageCopy)
   {
     return [(TSKDocumentRoot *)self->_documentRoot creationLanguage];
   }
@@ -7635,29 +7635,29 @@ LABEL_66:
   return v13;
 }
 
-- (id)languageAtParIndex:(unint64_t)a3 useStringTokenizer:(BOOL)a4 useCreationLanguage:(BOOL)a5
+- (id)languageAtParIndex:(unint64_t)index useStringTokenizer:(BOOL)tokenizer useCreationLanguage:(BOOL)language
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(TSWPStorage *)self textRangeForParagraphAtIndex:a3];
+  languageCopy = language;
+  tokenizerCopy = tokenizer;
+  v8 = [(TSWPStorage *)self textRangeForParagraphAtIndex:index];
   v10 = (__PAIR128__(v9, v8 + v9) - [(TSWPStorage *)self length]) >> 64;
 
-  return [(TSWPStorage *)self languageForTextRange:v8 useStringTokenizer:v10 useCreationLanguage:v6, v5];
+  return [(TSWPStorage *)self languageForTextRange:v8 useStringTokenizer:v10 useCreationLanguage:tokenizerCopy, languageCopy];
 }
 
-- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  if (a4)
+  if (range)
   {
-    a4->location = 0;
-    a4->length = 0;
+    range->location = 0;
+    range->length = 0;
   }
 
   result = [(TSWPStorage *)self attributeArrayForKind:14];
   if (result)
   {
     v7 = result;
-    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3);
+    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index);
     if (v8 >= v7->var2)
     {
       return 0;
@@ -7666,10 +7666,10 @@ LABEL_66:
     else
     {
       v9 = v8;
-      if (a4)
+      if (range)
       {
-        a4->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v8);
-        a4->length = v10;
+        range->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v8);
+        range->length = v10;
       }
 
       return *(v7->var4 + 2 * v9 + 1);
@@ -7679,10 +7679,10 @@ LABEL_66:
   return result;
 }
 
-- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)a3 toRanges:(void *)a4
+- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)range toRanges:(void *)ranges
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = [(TSWPStorage *)self attributeArrayForKind:14];
   if (v7)
   {
@@ -7706,12 +7706,12 @@ LABEL_66:
         v32.length = length;
         if (NSIntersectionRange(v31, v32).length && v15)
         {
-          v17 = *(a4 + 1);
-          v16 = *(a4 + 2);
+          v17 = *(ranges + 1);
+          v16 = *(ranges + 2);
           if (v17 >= v16)
           {
-            v19 = *a4;
-            v20 = v17 - *a4;
+            v19 = *ranges;
+            v20 = v17 - *ranges;
             v21 = v20 >> 4;
             v22 = (v20 >> 4) + 1;
             if (v22 >> 60)
@@ -7734,7 +7734,7 @@ LABEL_66:
 
             if (v25)
             {
-              std::__allocate_at_least[abi:nn200100]<std::allocator<CGPoint>>(a4, v25);
+              std::__allocate_at_least[abi:nn200100]<std::allocator<CGPoint>>(ranges, v25);
             }
 
             v26 = (16 * v21);
@@ -7742,10 +7742,10 @@ LABEL_66:
             v26[1] = v14;
             v18 = 16 * v21 + 16;
             memcpy(0, v19, v20);
-            v27 = *a4;
-            *a4 = 0;
-            *(a4 + 1) = v18;
-            *(a4 + 2) = 0;
+            v27 = *ranges;
+            *ranges = 0;
+            *(ranges + 1) = v18;
+            *(ranges + 2) = 0;
             if (v27)
             {
               operator delete(v27);
@@ -7761,7 +7761,7 @@ LABEL_66:
             v18 = (v17 + 2);
           }
 
-          *(a4 + 1) = v18;
+          *(ranges + 1) = v18;
           location = v29;
         }
 
@@ -7778,37 +7778,37 @@ LABEL_66:
   }
 }
 
-- (void)setDictationAndAutocorrection:(id)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)setDictationAndAutocorrection:(id)autocorrection forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v10 = [(TSWPStorage *)self attributeArrayForKind:14];
-  if (!v10 || (v11 = v10, v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v10, location), v12 == v11->var2) || (v13 = *(v11->var4 + 2 * v12 + 1), v14 = TSWPAttributeArray::rangeForAttributeIndex(v11, v12), v14 > location) || v14 + v15 < location + length || v13 != a3 && (!a3 || !v13 || ([v13 isEqualToString:a3] & 1) == 0))
+  if (!v10 || (v11 = v10, v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v10, location), v12 == v11->var2) || (v13 = *(v11->var4 + 2 * v12 + 1), v14 = TSWPAttributeArray::rangeForAttributeIndex(v11, v12), v14 > location) || v14 + v15 < location + length || v13 != autocorrection && (!autocorrection || !v13 || ([v13 isEqualToString:autocorrection] & 1) == 0))
   {
 
-    [(TSWPStorage *)self applyObject:a3 toCharRange:location forKind:length dolcContext:14 undoTransaction:0, a5];
+    [(TSWPStorage *)self applyObject:autocorrection toCharRange:location forKind:length dolcContext:14 undoTransaction:0, transaction];
   }
 }
 
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (!v7)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage paragraphStyleAtParIndex:effectiveRange:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3800, @"paragraphStyleAtParIndex: no paragraph table."}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3800, @"paragraphStyleAtParIndex: no paragraph table."}];
   }
 
-  if (a4)
+  if (range)
   {
-    a4->location = [(TSWPStorage *)self textRangeForParagraphAtIndex:a3];
-    a4->length = v10;
+    range->location = [(TSWPStorage *)self textRangeForParagraphAtIndex:index];
+    range->length = v10;
   }
 
-  if (v7 && v7->var2 > a3)
+  if (v7 && v7->var2 > index)
   {
-    return *(v7->var4 + 2 * a3 + 1);
+    return *(v7->var4 + 2 * index + 1);
   }
 
   else
@@ -7817,32 +7817,32 @@ LABEL_66:
   }
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(TSWPStorage *)self paragraphIndexAtCharIndex:a3];
+  v6 = [(TSWPStorage *)self paragraphIndexAtCharIndex:index];
 
-  return [(TSWPStorage *)self paragraphStyleAtParIndex:v6 effectiveRange:a4];
+  return [(TSWPStorage *)self paragraphStyleAtParIndex:v6 effectiveRange:range];
 }
 
-- (unint64_t)findNextParagraphStyleChange:(unint64_t)a3 maxCharIndex:(unint64_t)a4
+- (unint64_t)findNextParagraphStyleChange:(unint64_t)change maxCharIndex:(unint64_t)index
 {
   v6 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (!v6)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage findNextParagraphStyleChange:maxCharIndex:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3835, @"findNextParagraphStyleChange: no paragraph table."}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3835, @"findNextParagraphStyleChange: no paragraph table."}];
   }
 
-  v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, a3);
+  v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, change);
   var2 = v6->var2;
   v11 = *(v6->var4 + 2 * v9 + 1);
   v12 = 16 * v9 + 24;
   do
   {
-    if (++v9 >= var2 || TSWPAttributeArray::charIndexForAttributeIndex(v6, v9) >= a4)
+    if (++v9 >= var2 || TSWPAttributeArray::charIndexForAttributeIndex(v6, v9) >= index)
     {
-      return a4;
+      return index;
     }
 
     v13 = *(v6->var4 + v12);
@@ -7854,16 +7854,16 @@ LABEL_66:
   return TSWPAttributeArray::charIndexForAttributeIndex(v6, v9);
 }
 
-- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8 = [(TSWPStorage *)self attributeArrayForKind:0];
   if (!v8)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage enumerateParagraphsIntersectingTextRange:usingBlock:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3867, @"enumerateParagraphsIntersectingTextRange:usingBlock: no paragraph table."}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 3867, @"enumerateParagraphsIntersectingTextRange:usingBlock: no paragraph table."}];
   }
 
   v18.location = location;
@@ -7877,7 +7877,7 @@ LABEL_66:
     do
     {
       v15 = [(TSWPStorage *)self paragraphStyleAtParIndex:v14 effectiveRange:v16];
-      (*(a4 + 2))(a4, v14, v16[0], v16[1], v15, &v17);
+      (*(block + 2))(block, v14, v16[0], v16[1], v15, &v17);
       if (v17)
       {
         break;
@@ -7901,7 +7901,7 @@ LABEL_66:
   return result;
 }
 
-- (id)listStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v6 = [(TSWPStorage *)self attributeArrayForKind:2];
   if (!v6)
@@ -7910,39 +7910,39 @@ LABEL_66:
   }
 
   v7 = v6;
-  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, a3);
+  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, index);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v9 = *(v7->var4 + 2 * v8 + 1);
-  if (a4)
+  if (range)
   {
-    a4->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v8);
-    a4->length = v10;
+    range->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v8);
+    range->length = v10;
   }
 
   return v9;
 }
 
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(TSWPStorage *)self textRangeForParagraphAtIndex:a3];
-  if (a4)
+  v6 = [(TSWPStorage *)self textRangeForParagraphAtIndex:index];
+  if (range)
   {
-    a4->location = v6;
-    a4->length = v7;
+    range->location = v6;
+    range->length = v7;
   }
 
   return [(TSWPStorage *)self listStyleAtCharIndex:v6 effectiveRange:0];
 }
 
-- (unint64_t)listNumberForParagraphIndex:(unint64_t)a3 numberingData:(id *)a4
+- (unint64_t)listNumberForParagraphIndex:(unint64_t)index numberingData:(id *)data
 {
   if (self)
   {
-    [(TSWPStorage *)self paragraphEnumeratorAtParIndex:a3 styleProvider:0];
+    [(TSWPStorage *)self paragraphEnumeratorAtParIndex:index styleProvider:0];
   }
 
   else
@@ -7950,15 +7950,15 @@ LABEL_66:
     memset(&v8, 0, sizeof(v8));
   }
 
-  v6 = [(TSWPStorage *)self listNumberForParagraphEnumerator:&v8 numberingData:a4];
+  v6 = [(TSWPStorage *)self listNumberForParagraphEnumerator:&v8 numberingData:data];
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v8);
   return v6;
 }
 
-- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)a3 numberingData:(id *)a4
+- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)enumerator numberingData:(id *)data
 {
-  v7 = TSWPParagraphEnumerator::paragraphListStyle(a3);
-  v8 = TSWPParagraphEnumerator::paragraphLevel(a3);
+  v7 = TSWPParagraphEnumerator::paragraphListStyle(enumerator);
+  v8 = TSWPParagraphEnumerator::paragraphLevel(enumerator);
   if (!v7)
   {
     [0 baseStyleForTopicNumbers];
@@ -7967,7 +7967,7 @@ LABEL_66:
   }
 
   v9 = [v7 labelTypeForLevel:v8];
-  v10 = [v7 baseStyleForTopicNumbers];
+  baseStyleForTopicNumbers = [v7 baseStyleForTopicNumbers];
   if (v9 != 3)
   {
 LABEL_6:
@@ -7975,15 +7975,15 @@ LABEL_6:
     goto LABEL_29;
   }
 
-  v11 = v10;
-  v12 = TSWPParagraphEnumerator::paragraphListStart(a3);
+  v11 = baseStyleForTopicNumbers;
+  v12 = TSWPParagraphEnumerator::paragraphListStart(enumerator);
   if (v12)
   {
     v13 = v12;
     goto LABEL_28;
   }
 
-  TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v28, a3);
+  TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v28, enumerator);
   v26 = 0;
   for (i = 1; ; i = v13 + 1)
   {
@@ -8061,12 +8061,12 @@ LABEL_27:
 LABEL_28:
   v9 = 3;
 LABEL_29:
-  v24 = TSWPParagraphEnumerator::paragraphListStart(a3);
-  if (a4)
+  v24 = TSWPParagraphEnumerator::paragraphListStart(enumerator);
+  if (data)
   {
-    a4->var0 = v9;
-    a4->var1 = v8;
-    a4->var2 = v24 == 0;
+    data->var0 = v9;
+    data->var1 = v8;
+    data->var2 = v24 == 0;
   }
 
   return v13;
@@ -8085,24 +8085,24 @@ uint64_t __62__TSWPStorage_listNumberForParagraphEnumerator_numberingData___bloc
   return [v4 isPartitioned];
 }
 
-- (void)setListStart:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)setListStart:(unint64_t)start forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v8 = [(TSWPStorage *)self paragraphIndexRangeForCharRange:a4.location, a4.length];
+  v8 = [(TSWPStorage *)self paragraphIndexRangeForCharRange:range.location, range.length];
   if (v9)
   {
     v10 = v8;
     v11 = v9;
-    if (HIDWORD(a3))
+    if (HIDWORD(start))
     {
       [TSWPStorage setListStart:forCharRange:undoTransaction:];
-      a3 = 0xFFFFFFFFLL;
+      start = 0xFFFFFFFFLL;
     }
 
-    [(TSWPStorage *)self applyDataValue:a3 toParagraphIndexRange:v10 forKind:v11 undoTransaction:11, a5];
+    [(TSWPStorage *)self applyDataValue:start toParagraphIndexRange:v10 forKind:v11 undoTransaction:11, transaction];
   }
 }
 
-- (unint64_t)listStartAtCharIndex:(unint64_t)a3
+- (unint64_t)listStartAtCharIndex:(unint64_t)index
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:11];
   if (v4)
@@ -8111,12 +8111,12 @@ uint64_t __62__TSWPStorage_listNumberForParagraphEnumerator_numberingData___bloc
     v6 = 0x7FFFFFFFFFFFFFFFLL;
     if (v4->var2)
     {
-      v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+      v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
       if (v7 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v8 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage listStartAtCharIndex:]"];
-        [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4086, @"paragraphStartAtCharIndex: no paragraph table."}];
+        [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4086, @"paragraphStartAtCharIndex: no paragraph table."}];
       }
 
       return *(v5->var4 + 4 * v7 + 2);
@@ -8125,33 +8125,33 @@ uint64_t __62__TSWPStorage_listNumberForParagraphEnumerator_numberingData___bloc
 
   else
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage listStartAtCharIndex:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4081, @"paragraphLevelAtCharIndex: no paragraph table."}];
+    [currentHandler2 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4081, @"paragraphLevelAtCharIndex: no paragraph table."}];
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v6;
 }
 
-- (void)paragraphFlags:(unsigned __int16 *)a3 andLevel:(unint64_t *)a4 atCharIndex:(unint64_t)a5
+- (void)paragraphFlags:(unsigned __int16 *)flags andLevel:(unint64_t *)level atCharIndex:(unint64_t)index
 {
   v8 = [(TSWPStorage *)self attributeArrayForKind:1];
   if (v8)
   {
     v9 = v8;
-    v10 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v8, a5);
+    v10 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v8, index);
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage paragraphFlags:andLevel:atCharIndex:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4107, @"paragraphFlagsAtCharIndex: no paragraph table."}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4107, @"paragraphFlagsAtCharIndex: no paragraph table."}];
     }
 
     v13 = v9->var4 + 16 * v10;
     v14 = *(v13 + 8);
     v15 = *(v13 + 10);
-    if (a3)
+    if (flags)
     {
       goto LABEL_5;
     }
@@ -8161,31 +8161,31 @@ uint64_t __62__TSWPStorage_listNumberForParagraphEnumerator_numberingData___bloc
   {
     v14 = 0;
     v15 = 0;
-    if (a3)
+    if (flags)
     {
 LABEL_5:
-      *a3 = v15;
+      *flags = v15;
     }
   }
 
-  if (a4)
+  if (level)
   {
-    *a4 = v14;
+    *level = v14;
   }
 }
 
-- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)a3
+- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)index
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:1];
   if (v4)
   {
     v5 = v4;
-    v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+    v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage paragraphFlagsAtCharIndex:]"];
-      [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4128, @"paragraphFlagsAtCharIndex: no paragraph table."}];
+      [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4128, @"paragraphFlagsAtCharIndex: no paragraph table."}];
     }
 
     return *(v5->var4 + 8 * v6 + 5);
@@ -8193,31 +8193,31 @@ LABEL_5:
 
   else
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage paragraphFlagsAtCharIndex:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4123, @"paragraphFlagsAtCharIndex: no paragraph table."}];
+    [currentHandler2 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4123, @"paragraphFlagsAtCharIndex: no paragraph table."}];
     return 0;
   }
 }
 
-- (void)setParagraphFlags:(unsigned __int16)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)setParagraphFlags:(unsigned __int16)flags forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v10 = [(TSWPStorage *)self paragraphLevelAtCharIndex:a4.location];
+  length = range.length;
+  location = range.location;
+  flagsCopy = flags;
+  v10 = [(TSWPStorage *)self paragraphLevelAtCharIndex:range.location];
 
-  [(TSWPStorage *)self applyFlags:v8 level:v10 toParagraphsInCharRange:location undoTransaction:length, a5];
+  [(TSWPStorage *)self applyFlags:flagsCopy level:v10 toParagraphsInCharRange:location undoTransaction:length, transaction];
 }
 
-- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)a3
+- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)index
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:1];
   if (!v4)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage paragraphLevelAtCharIndex:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4146, @"paragraphLevelAtCharIndex: no paragraph table."}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4146, @"paragraphLevelAtCharIndex: no paragraph table."}];
     return 0;
   }
 
@@ -8227,40 +8227,40 @@ LABEL_5:
     return 0;
   }
 
-  v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+  v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage paragraphLevelAtCharIndex:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4151, @"paragraphFlagsAtCharIndex: no paragraph table."}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4151, @"paragraphFlagsAtCharIndex: no paragraph table."}];
   }
 
   return *(v5->var4 + 8 * v6 + 4);
 }
 
-- (unint64_t)paragraphLevelAtParIndex:(unint64_t)a3
+- (unint64_t)paragraphLevelAtParIndex:(unint64_t)index
 {
-  v4 = [(TSWPStorage *)self textRangeForParagraphAtIndex:a3];
+  v4 = [(TSWPStorage *)self textRangeForParagraphAtIndex:index];
 
   return [(TSWPStorage *)self paragraphLevelAtCharIndex:v4];
 }
 
-- (void)setParagraphLevel:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)setParagraphLevel:(unint64_t)level forCharRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = [(TSWPStorage *)self paragraphFlagsAtCharIndex:a4.location];
+  length = range.length;
+  location = range.location;
+  v10 = [(TSWPStorage *)self paragraphFlagsAtCharIndex:range.location];
 
-  [(TSWPStorage *)self applyFlags:v10 level:a3 toParagraphsInCharRange:location undoTransaction:length, a5];
+  [(TSWPStorage *)self applyFlags:v10 level:level toParagraphsInCharRange:location undoTransaction:length, transaction];
 }
 
-- (void)setParagraphLevel:(unint64_t)a3 atParIndex:(unint64_t)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)setParagraphLevel:(unint64_t)level atParIndex:(unint64_t)index undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v8 = [(TSWPStorage *)self textRangeForParagraphAtIndex:a4];
+  v8 = [(TSWPStorage *)self textRangeForParagraphAtIndex:index];
   v10 = v9;
   v11 = [(TSWPStorage *)self paragraphFlagsAtCharIndex:v8];
 
-  [(TSWPStorage *)self applyFlags:v11 level:a3 toParagraphsInCharRange:v8 undoTransaction:v10, a5];
+  [(TSWPStorage *)self applyFlags:v11 level:level toParagraphsInCharRange:v8 undoTransaction:v10, transaction];
 }
 
 - (unint64_t)characterStyleAttributeCount
@@ -8274,72 +8274,72 @@ LABEL_5:
   return result;
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 left:(BOOL)a4 effectiveRange:(_NSRange *)a5
+- (id)characterStyleAtCharIndex:(unint64_t)index left:(BOOL)left effectiveRange:(_NSRange *)range
 {
-  v6 = a4;
-  v7 = a3;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  leftCopy = left;
+  indexCopy = index;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage characterStyleAtCharIndex:left:effectiveRange:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4203, @"charIndex has an uninitialized value"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4203, @"charIndex has an uninitialized value"}];
   }
 
   v11 = [(TSWPStorage *)self attributeArrayForKind:3];
   if (!v11 || (v12 = v11, !v11->var2))
   {
-    if (a5)
+    if (range)
     {
-      v15 = [(TSWPStorage *)self range];
+      range = [(TSWPStorage *)self range];
       goto LABEL_13;
     }
 
     return 0;
   }
 
-  if (v6)
+  if (leftCopy)
   {
-    if (!v7)
+    if (!indexCopy)
     {
       goto LABEL_9;
     }
 
-    --v7;
+    --indexCopy;
   }
 
-  v13 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v11, v7);
+  v13 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v11, indexCopy);
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = *(v12->var4 + 2 * v13 + 1);
-    if (!a5)
+    if (!range)
     {
       return v16;
     }
 
-    v15 = TSWPAttributeArray::rangeForAttributeIndex(v12, v13);
+    range = TSWPAttributeArray::rangeForAttributeIndex(v12, v13);
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (!a5)
+  if (!range)
   {
     return 0;
   }
 
   v14 = TSWPAttributeArray::charIndexForAttributeIndex(v12, 0);
-  v15 = 0;
+  range = 0;
 LABEL_13:
   v16 = 0;
 LABEL_14:
-  a5->location = v15;
-  a5->length = v14;
+  range->location = range;
+  range->length = v14;
   return v16;
 }
 
-- (id)valueForProperty:(int)a3 atCharIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)valueForProperty:(int)property atCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v7 = *&a3;
-  v9 = [(TSWPStorage *)self characterStyleAtCharIndex:a4 left:0 effectiveRange:?];
+  v7 = *&property;
+  v9 = [(TSWPStorage *)self characterStyleAtCharIndex:index left:0 effectiveRange:?];
   if (v9)
   {
     v10 = v9;
@@ -8356,19 +8356,19 @@ LABEL_9:
 
   if ([+[TSWPParagraphStyle properties](TSWPParagraphStyle "properties")])
   {
-    v11 = [(TSWPStorage *)self paragraphStyleAtCharIndex:a4 effectiveRange:a5];
+    v11 = [(TSWPStorage *)self paragraphStyleAtCharIndex:index effectiveRange:range];
     goto LABEL_6;
   }
 
   if ([+[TSWPColumnStyle properties](TSWPColumnStyle "properties")])
   {
-    v12 = [-[TSWPStorage columnStyleAtCharIndex:effectiveRange:](self columnStyleAtCharIndex:a4 effectiveRange:{a5), "valueForProperty:", v7}];
+    v12 = [-[TSWPStorage columnStyleAtCharIndex:effectiveRange:](self columnStyleAtCharIndex:index effectiveRange:{range), "valueForProperty:", v7}];
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage valueForProperty:atCharIndex:effectiveRange:]"];
-  [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4268, @"Bad property sent to storage: %@", String(v7)}];
+  [currentHandler handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4268, @"Bad property sent to storage: %@", String(v7)}];
   v13 = 0;
 LABEL_10:
   if (v13 == [MEMORY[0x277CBEB68] null])
@@ -8393,7 +8393,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index
 {
   LODWORD(v5) = [(TSWPStorage *)self supportsColumnStyles];
   if (v5)
@@ -8401,17 +8401,17 @@ LABEL_10:
     v5 = [(TSWPStorage *)self attributeArrayForKind:9];
     if (v5)
     {
-      LOBYTE(v5) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v5, a3 + 1) != 0x7FFFFFFFFFFFFFFFLL;
+      LOBYTE(v5) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v5, index + 1) != 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   return v5;
 }
 
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index
 {
   v5 = [(TSWPStorage *)self characterAtIndex:?];
-  if ((v5 - 4) < 0xC && ((0x907u >> (v5 - 4)) & 1) != 0 || (v6 = IsParagraphBreakingCharacter(v5)) != 0 && ([(TSWPStorage *)self hasColumnStyleForParagraphBreakAtCharIndex:a3]|| (v6 = [(TSWPStorage *)self hasSectionForParagraphBreakAtCharIndex:a3]) != 0))
+  if ((v5 - 4) < 0xC && ((0x907u >> (v5 - 4)) & 1) != 0 || (v6 = IsParagraphBreakingCharacter(v5)) != 0 && ([(TSWPStorage *)self hasColumnStyleForParagraphBreakAtCharIndex:index]|| (v6 = [(TSWPStorage *)self hasSectionForParagraphBreakAtCharIndex:index]) != 0))
   {
     LOBYTE(v6) = 1;
   }
@@ -8419,7 +8419,7 @@ LABEL_10:
   return v6;
 }
 
-- (id)columnStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)columnStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = [(TSWPStorage *)self attributeArrayForKind:9];
   if (!v7)
@@ -8427,51 +8427,51 @@ LABEL_10:
     return 0;
   }
 
-  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, a3);
+  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, index);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [(TSWPStorage *)self columnStyleAtColumnStyleIndex:v8 effectiveRange:a4];
+  return [(TSWPStorage *)self columnStyleAtColumnStyleIndex:v8 effectiveRange:range];
 }
 
-- (id)columnStyleAtColumnStyleIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)columnStyleAtColumnStyleIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   result = [(TSWPStorage *)self attributeArrayForKind:9];
   if (result)
   {
     v7 = result;
     var2 = *(result + 2);
-    if (var2 <= a3)
+    if (var2 <= index)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage columnStyleAtColumnStyleIndex:effectiveRange:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4350, @"Bad columnStyleIndex"}];
+      [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4350, @"Bad columnStyleIndex"}];
       var2 = v7->var2;
     }
 
-    if (var2 <= a3)
+    if (var2 <= index)
     {
       return 0;
     }
 
     else
     {
-      if (a4)
+      if (range)
       {
-        a4->location = TSWPAttributeArray::rangeForAttributeIndex(v7, a3);
-        a4->length = v11;
+        range->location = TSWPAttributeArray::rangeForAttributeIndex(v7, index);
+        range->length = v11;
       }
 
-      return *(v7->var4 + 2 * a3 + 1);
+      return *(v7->var4 + 2 * index + 1);
     }
   }
 
   return result;
 }
 
-- (void)invalidateForStyle:(id)a3
+- (void)invalidateForStyle:(id)style
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -8500,7 +8500,7 @@ LABEL_10:
           v10[1] = 3221225472;
           v10[2] = __34__TSWPStorage_invalidateForStyle___block_invoke;
           v10[3] = &unk_279D49E48;
-          v10[4] = a3;
+          v10[4] = style;
           v10[5] = self;
           TSWPAttributeArray::enumerateObjectAttributes(v9, v10);
         }
@@ -8539,7 +8539,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)index
 {
   if (self->_WPKind)
   {
@@ -8551,42 +8551,42 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     v3 = [(TSWPStorage *)self attributeArrayForKind:8];
     if (v3)
     {
-      LOBYTE(v3) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v3, a3 + 1) != 0x7FFFFFFFFFFFFFFFLL;
+      LOBYTE(v3) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v3, index + 1) != 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   return v3;
 }
 
-- (id)sectionAtSectionIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)sectionAtSectionIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   result = [(TSWPStorage *)self attributeArrayForKind:8];
   if (result)
   {
     v7 = result;
-    if (a4)
+    if (range)
     {
-      a4->location = TSWPAttributeArray::rangeForAttributeIndex(result, a3);
-      a4->length = v8;
+      range->location = TSWPAttributeArray::rangeForAttributeIndex(result, index);
+      range->length = v8;
     }
 
-    return *(v7[4] + 16 * a3 + 8);
+    return *(v7[4] + 16 * index + 8);
   }
 
   return result;
 }
 
-- (void)replaceSectionAtSectionIndex:(unint64_t)a3 withSection:(id)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)replaceSectionAtSectionIndex:(unint64_t)index withSection:(id)section dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
   v10 = [(TSWPStorage *)self attributeArrayForKind:8];
-  if (v10 && v10->var2 > a3)
+  if (v10 && v10->var2 > index)
   {
 
-    TSWPAttributeArray::replaceObjectForAttributeIndex(v10, a4, a3, a5, a6);
+    TSWPAttributeArray::replaceObjectForAttributeIndex(v10, section, index, context, transaction);
   }
 }
 
-- (unint64_t)sectionIndexForCharIndex:(unint64_t)a3
+- (unint64_t)sectionIndexForCharIndex:(unint64_t)index
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:8];
   if (!v4)
@@ -8594,10 +8594,10 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
 }
 
-- (unint64_t)sectionIndexForSection:(id)a3
+- (unint64_t)sectionIndexForSection:(id)section
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:8];
   if (!v4)
@@ -8605,10 +8605,10 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return TSWPAttributeArray::findObject(v4, a3, 0);
+  return TSWPAttributeArray::findObject(v4, section, 0);
 }
 
-- (id)sectionAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)sectionAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = [(TSWPStorage *)self attributeArrayForKind:8];
   if (!v7)
@@ -8616,34 +8616,34 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     return 0;
   }
 
-  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, a3);
+  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, index);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [(TSWPStorage *)self sectionAtSectionIndex:v8 effectiveRange:a4];
+  return [(TSWPStorage *)self sectionAtSectionIndex:v8 effectiveRange:range];
 }
 
-- (_NSRange)insertSection:(id)a3 atCharIndex:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6 changeSession:(id)a7
+- (_NSRange)insertSection:(id)section atCharIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session
 {
-  [TSWPStorage splitSmartFieldAtCharIndex:"splitSmartFieldAtCharIndex:lengthToInsert:dolcContext:undoTransaction:" lengthToInsert:a4 dolcContext:1 undoTransaction:?];
-  [(TSWPStorage *)self insertSpecialCharacter:4 object:a3 kind:8 range:a4 dolcContext:0 undoTransaction:a5 changeSession:a6, a7];
-  v13 = [(TSWPStorage *)self attributeArrayForKind:8 withCreate:1 undoTransaction:a6];
+  [TSWPStorage splitSmartFieldAtCharIndex:"splitSmartFieldAtCharIndex:lengthToInsert:dolcContext:undoTransaction:" lengthToInsert:index dolcContext:1 undoTransaction:?];
+  [(TSWPStorage *)self insertSpecialCharacter:4 object:section kind:8 range:index dolcContext:0 undoTransaction:context changeSession:transaction, session];
+  v13 = [(TSWPStorage *)self attributeArrayForKind:8 withCreate:1 undoTransaction:transaction];
   if (!v13)
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage insertSection:atCharIndex:dolcContext:undoTransaction:changeSession:]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4520, @"insertSection: bad attribute array."}];
+    [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4520, @"insertSection: bad attribute array."}];
   }
 
-  v16 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, a4 + 1);
+  v16 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, index + 1);
   v17 = v16;
-  if (v16 == 0x7FFFFFFFFFFFFFFFLL || *(v13->var4 + 2 * v16 + 1) != a3)
+  if (v16 == 0x7FFFFFFFFFFFFFFFLL || *(v13->var4 + 2 * v16 + 1) != section)
   {
-    v18 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage insertSection:atCharIndex:dolcContext:undoTransaction:changeSession:]"];
-    [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4523, @"insertSection: bad insertion object."}];
+    [currentHandler2 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4523, @"insertSection: bad insertion object."}];
   }
 
   v20 = TSWPAttributeArray::rangeForAttributeIndex(v13, v17);
@@ -8652,11 +8652,11 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)appendSection:(id)a3 charIndex:(unint64_t)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)appendSection:(id)section charIndex:(unint64_t)index undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v9 = [(TSWPStorage *)self length]- a4;
+  v9 = [(TSWPStorage *)self length]- index;
 
-  [(TSWPStorage *)self applyObject:a3 toParagraphsInCharRange:a4 forKind:v9 undoTransaction:8, a5];
+  [(TSWPStorage *)self applyObject:section toParagraphsInCharRange:index forKind:v9 undoTransaction:8, transaction];
 }
 
 - (unint64_t)footnoteCount
@@ -8670,16 +8670,16 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (unint64_t)footnoteIndexForCharIndex:(unint64_t)a3
+- (unint64_t)footnoteIndexForCharIndex:(unint64_t)index
 {
   result = [(TSWPStorage *)self attributeArrayForKind:5];
   if (result)
   {
     v5 = result;
-    if (*(result + 16) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3), v6 != 0x7FFFFFFFFFFFFFFFLL))
+    if (*(result + 16) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index), v6 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v7 = v6;
-      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == a3)
+      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == index)
       {
         return v7;
       }
@@ -8699,10 +8699,10 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)index
 {
   v5 = [(TSWPStorage *)self attributeArrayForKind:5];
-  if (!v5 || (v6 = v5, !v5->var2) || (v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, a3), v7 == 0x7FFFFFFFFFFFFFFFLL) || (v8 = v7, TSWPAttributeArray::charIndexForAttributeIndex(v6, v7) != a3) || (result = *(v6->var4 + 2 * v8 + 1)) == 0)
+  if (!v5 || (v6 = v5, !v5->var2) || (v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, index), v7 == 0x7FFFFFFFFFFFFFFFLL) || (v8 = v7, TSWPAttributeArray::charIndexForAttributeIndex(v6, v7) != index) || (result = *(v6->var4 + 2 * v8 + 1)) == 0)
   {
     if ([(TSWPStorage *)self wpKind]!= 2)
     {
@@ -8716,7 +8716,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     }
 
     v10 = result;
-    if (*(result + 2) && (v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3), v11 != 0x7FFFFFFFFFFFFFFFLL) && (v12 = v11, TSWPAttributeArray::charIndexForAttributeIndex(v10, v11) == a3))
+    if (*(result + 2) && (v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index), v11 != 0x7FFFFFFFFFFFFFFFLL) && (v12 = v11, TSWPAttributeArray::charIndexForAttributeIndex(v10, v11) == index))
     {
       v13 = *(v10->var4 + 2 * v12 + 1);
       objc_opt_class();
@@ -8740,7 +8740,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (id)footnoteMarkAtCharIndex:(unint64_t)a3
+- (id)footnoteMarkAtCharIndex:(unint64_t)index
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:4];
   if (!v4)
@@ -8754,8 +8754,8 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     return 0;
   }
 
-  v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL || TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) != a3)
+  v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
+  if (v6 == 0x7FFFFFFFFFFFFFFFLL || TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) != index)
   {
     return 0;
   }
@@ -8765,13 +8765,13 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return TSUDynamicCast();
 }
 
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index
 {
   result = [(TSWPStorage *)self attributeArrayForKind:5];
   if (result)
   {
     v5 = result;
-    if (*(result + 2) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == a3))
+    if (*(result + 2) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == index))
     {
       return *(v5->var4 + 2 * v7 + 1);
     }
@@ -8785,27 +8785,27 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (id)footnoteAtFootnoteIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4
+- (id)footnoteAtFootnoteIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex
 {
   v6 = [(TSWPStorage *)self attributeArrayForKind:5];
-  if (!v6 || v6->var2 <= a3)
+  if (!v6 || v6->var2 <= index)
   {
     return 0;
   }
 
-  v7 = *(v6->var4 + 2 * a3 + 1);
-  if (a4)
+  v7 = *(v6->var4 + 2 * index + 1);
+  if (charIndex)
   {
-    *a4 = TSWPAttributeArray::charIndexForAttributeIndex(v6, a3);
+    *charIndex = TSWPAttributeArray::charIndexForAttributeIndex(v6, index);
   }
 
   return v7;
 }
 
-- (_NSRange)footnoteRangeForTextRange:(_NSRange)a3
+- (_NSRange)footnoteRangeForTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(TSWPStorage *)self attributeArrayForKind:5];
   if (v5)
   {
@@ -8825,9 +8825,9 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)a3
+- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)range
 {
-  v4 = [(TSWPStorage *)self footnoteRangeForTextRange:a3.location, a3.length];
+  v4 = [(TSWPStorage *)self footnoteRangeForTextRange:range.location, range.length];
   if (v4 >= v4 + v5)
   {
     return 0;
@@ -8851,7 +8851,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return v8;
 }
 
-- (unint64_t)footnoteIndexForFootnote:(id)a3
+- (unint64_t)footnoteIndexForFootnote:(id)footnote
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:5];
   if (!v4)
@@ -8859,33 +8859,33 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return TSWPAttributeArray::findObject(v4, a3, 0);
+  return TSWPAttributeArray::findObject(v4, footnote, 0);
 }
 
-- (unint64_t)footnoteIndexForFootnoteStorage:(id)a3
+- (unint64_t)footnoteIndexForFootnoteStorage:(id)storage
 {
-  if (!a3)
+  if (!storage)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage footnoteIndexForFootnoteStorage:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4706, @"invalid nil value for '%s'", "footnoteStorage"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4706, @"invalid nil value for '%s'", "footnoteStorage"}];
   }
 
-  if ([a3 wpKind] != 2)
+  if ([storage wpKind] != 2)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage footnoteIndexForFootnoteStorage:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4707, @"This isn't a footnote storage"}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4707, @"This isn't a footnote storage"}];
   }
 
   objc_opt_class();
-  [a3 owningAttachment];
+  [storage owningAttachment];
   v9 = TSUDynamicCast();
   if (!v9)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage footnoteIndexForFootnoteStorage:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4710, @"invalid nil value for '%s'", "footnoteAttachment"}];
+    [currentHandler3 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4710, @"invalid nil value for '%s'", "footnoteAttachment"}];
   }
 
   return [(TSWPStorage *)self footnoteIndexForFootnote:v9];
@@ -8894,10 +8894,10 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
 - (id)footnoteStorages
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(TSWPStorage *)self footnoteCount];
-  if (v4)
+  footnoteCount = [(TSWPStorage *)self footnoteCount];
+  if (footnoteCount)
   {
-    v5 = v4;
+    v5 = footnoteCount;
     for (i = 0; i != v5; ++i)
     {
       v7 = [-[TSWPStorage footnoteAtFootnoteIndex:outCharIndex:](self footnoteAtFootnoteIndex:i outCharIndex:{0), "containedStorage"}];
@@ -8908,9 +8908,9 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
 
       else
       {
-        v8 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage footnoteStorages]"];
-        [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4726, @"invalid nil value for '%s'", "footnoteStorage"}];
+        [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4726, @"invalid nil value for '%s'", "footnoteStorage"}];
       }
     }
   }
@@ -8918,7 +8918,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (unint64_t)findCharIndexForFootnoteAttachment:(id)a3
+- (unint64_t)findCharIndexForFootnoteAttachment:(id)attachment
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:5];
   if (!v4)
@@ -8927,7 +8927,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   }
 
   v5 = v4;
-  Object = TSWPAttributeArray::findObject(v4, a3, 0);
+  Object = TSWPAttributeArray::findObject(v4, attachment, 0);
   if (Object == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -8953,9 +8953,9 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)a3
+- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)indexes
 {
-  v3 = a3;
+  indexesCopy = indexes;
   v5 = [(TSWPStorage *)self attributeArrayForKind:4];
   if (v5)
   {
@@ -8968,31 +8968,31 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
         v9 = [(TSWPStorage *)self attachmentAtAttachmentIndex:i outCharIndex:0];
         if ([v9 changesWithPageCount])
         {
-          v10 = [v9 stringEquivalent];
-          if ([v10 length])
+          stringEquivalent = [v9 stringEquivalent];
+          if ([stringEquivalent length])
           {
-            v11 = [v10 intValue];
-            if (v11 == 0x7FFFFFFF)
+            intValue = [stringEquivalent intValue];
+            if (intValue == 0x7FFFFFFF)
             {
-              v12 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler = [MEMORY[0x277D6C290] currentHandler];
               v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage invalidatePageCountAttachmentCharIndexes:]"];
-              [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4803, @"Invalid page count."}];
+              [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 4803, @"Invalid page count."}];
             }
 
             else
             {
               v14 = 10;
-              if (v11 >= 11)
+              if (intValue >= 11)
               {
                 do
                 {
                   v14 *= 10;
                 }
 
-                while (v14 < v11);
+                while (v14 < intValue);
               }
 
-              if (v14 == v11 + !v3)
+              if (v14 == intValue + !indexesCopy)
               {
                 [(TSWPStorageBroadcaster *)self->_broadcaster broadcastStorage:self didChangeRange:TSWPAttributeArray::charIndexForAttributeIndex(v6 delta:i) broadcastKind:1, 0, 1];
               }
@@ -9004,22 +9004,22 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)invalidateCharIndexForAttachment:(id)a3
+- (void)invalidateCharIndexForAttachment:(id)attachment
 {
-  v4 = [a3 findCharIndex];
-  if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+  findCharIndex = [attachment findCharIndex];
+  if (findCharIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v4;
+    v5 = findCharIndex;
     broadcaster = self->_broadcaster;
 
     [(TSWPStorageBroadcaster *)broadcaster broadcastStorage:self didChangeRange:v5 delta:1 broadcastKind:0, 1];
   }
 }
 
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -9042,16 +9042,16 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     v10 = 65532;
   }
 
-  v11 = [(TSWPStorage *)self insertSpecialCharacter:v10 object:a3 kind:v9 range:location dolcContext:length undoTransaction:0 changeSession:0, 0];
+  v11 = [(TSWPStorage *)self insertSpecialCharacter:v10 object:footnote kind:v9 range:location dolcContext:length undoTransaction:0 changeSession:0, 0];
   result.length = v12;
   result.location = v11;
   return result;
 }
 
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6 changeSession:(id)a7
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -9074,22 +9074,22 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     v16 = 65532;
   }
 
-  v17 = [(TSWPStorage *)self insertSpecialCharacter:v16 object:a3 kind:v15 range:location dolcContext:length undoTransaction:a5 changeSession:a6, a7];
+  session = [(TSWPStorage *)self insertSpecialCharacter:v16 object:footnote kind:v15 range:location dolcContext:length undoTransaction:context changeSession:transaction, session];
   result.length = v18;
-  result.location = v17;
+  result.location = session;
   return result;
 }
 
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index
 {
   v5 = [(TSWPStorage *)self attributeArrayForKind:4];
-  if (!v5 || (v6 = v5, !v5->var2) || (v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, a3), v7 == 0x7FFFFFFFFFFFFFFFLL) || (v8 = v7, TSWPAttributeArray::charIndexForAttributeIndex(v6, v7) != a3) || (result = *(v6->var4 + 2 * v8 + 1)) == 0)
+  if (!v5 || (v6 = v5, !v5->var2) || (v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, index), v7 == 0x7FFFFFFFFFFFFFFFLL) || (v8 = v7, TSWPAttributeArray::charIndexForAttributeIndex(v6, v7) != index) || (result = *(v6->var4 + 2 * v8 + 1)) == 0)
   {
     result = [(TSWPStorage *)self attributeArrayForKind:5];
     if (result)
     {
       v10 = result;
-      if (*(result + 2) && (v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3), v11 != 0x7FFFFFFFFFFFFFFFLL) && (v12 = v11, TSWPAttributeArray::charIndexForAttributeIndex(v10, v11) == a3))
+      if (*(result + 2) && (v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index), v11 != 0x7FFFFFFFFFFFFFFFLL) && (v12 = v11, TSWPAttributeArray::charIndexForAttributeIndex(v10, v11) == index))
       {
         return *(v10->var4 + 2 * v12 + 1);
       }
@@ -9104,34 +9104,34 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (unint64_t)findCharacterIndexForContainedInfo:(id)a3
+- (unint64_t)findCharacterIndexForContainedInfo:(id)info
 {
-  v3 = a3;
-  v5 = [a3 parentInfo];
-  v6 = v5 != 0;
-  if (v5)
+  infoCopy = info;
+  parentInfo = [info parentInfo];
+  v6 = parentInfo != 0;
+  if (parentInfo)
   {
-    v7 = v5;
-    if (v5 != self)
+    v7 = parentInfo;
+    if (parentInfo != self)
     {
       do
       {
-        v8 = [(TSWPStorage *)v7 parentInfo];
-        if (v8 == self)
+        parentInfo2 = [(TSWPStorage *)v7 parentInfo];
+        if (parentInfo2 == self)
         {
-          v3 = v7;
+          infoCopy = v7;
         }
 
-        v6 = v8 != 0;
-        if (!v8)
+        v6 = parentInfo2 != 0;
+        if (!parentInfo2)
         {
           break;
         }
 
-        v7 = v8;
+        v7 = parentInfo2;
       }
 
-      while (v8 != self);
+      while (parentInfo2 != self);
     }
   }
 
@@ -9158,7 +9158,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     v13 = *(v10->var4 + i);
     if ([v13 isDrawable])
     {
-      if ([v13 drawable] == v3)
+      if ([v13 drawable] == infoCopy)
       {
         break;
       }
@@ -9184,30 +9184,30 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (id)attachmentAtAttachmentIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4
+- (id)attachmentAtAttachmentIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex
 {
   v6 = [(TSWPStorage *)self attributeArrayForKind:4];
-  if (!v6 || v6->var2 <= a3)
+  if (!v6 || v6->var2 <= index)
   {
     return 0;
   }
 
-  v7 = *(v6->var4 + 2 * a3 + 1);
-  if (a4)
+  v7 = *(v6->var4 + 2 * index + 1);
+  if (charIndex)
   {
-    *a4 = TSWPAttributeArray::charIndexForAttributeIndex(v6, a3);
+    *charIndex = TSWPAttributeArray::charIndexForAttributeIndex(v6, index);
   }
 
   return v7;
 }
 
-- (id)attachmentAtCharIndex:(unint64_t)a3
+- (id)attachmentAtCharIndex:(unint64_t)index
 {
   result = [(TSWPStorage *)self attributeArrayForKind:4];
   if (result)
   {
     v5 = result;
-    if (*(result + 2) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == a3))
+    if (*(result + 2) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == index))
     {
       return *(v5->var4 + 2 * v7 + 1);
     }
@@ -9221,7 +9221,7 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)a3
+- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)index
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:4];
   if (!v4)
@@ -9233,11 +9233,11 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4->var2)
   {
-    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = v7;
-      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v7) == a3)
+      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v7) == index)
       {
         return v8;
       }
@@ -9252,24 +9252,24 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return v6;
 }
 
-- (void)replaceWithAttachment:(id)a3 forAttachmentIndex:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)replaceWithAttachment:(id)attachment forAttachmentIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
   v10 = [(TSWPStorage *)self attributeArrayForKind:4];
-  if (v10 && v10->var2 > a4)
+  if (v10 && v10->var2 > index)
   {
 
-    TSWPAttributeArray::replaceObjectForAttributeIndex(v10, a3, a4, a5, a6);
+    TSWPAttributeArray::replaceObjectForAttributeIndex(v10, attachment, index, context, transaction);
   }
 }
 
-- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)a3
+- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)index
 {
   result = [(TSWPStorage *)self attributeArrayForKind:4];
   if (result)
   {
     v5 = result;
-    v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3);
-    if (v6 >= v5->var2 || TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) >= a3)
+    v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index);
+    if (v6 >= v5->var2 || TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) >= index)
     {
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -9291,10 +9291,10 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)enumerateAttachmentsOfClass:(Class)a3 inTextRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateAttachmentsOfClass:(Class)class inTextRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = [(TSWPStorage *)self attributeArrayForKind:4];
   if (v9)
   {
@@ -9308,8 +9308,8 @@ uint64_t __34__TSWPStorage_invalidateForStyle___block_invoke(uint64_t a1, void *
     v10[3] = &unk_279D49E70;
     v10[7] = location;
     v10[8] = length;
-    v10[4] = a3;
-    v10[5] = a5;
+    v10[4] = class;
+    v10[5] = block;
     v10[6] = v11;
     TSWPAttributeArray::enumerateObjectAttributesInCharacterRange(v9, location, length, v10);
     _Block_object_dispose(v11, 8);
@@ -9339,16 +9339,16 @@ uint64_t __66__TSWPStorage_enumerateAttachmentsOfClass_inTextRange_usingBlock___
   return result;
 }
 
-- (void)enumerateAttachmentsInTextRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateAttachmentsInTextRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8 = objc_opt_class();
 
-  [(TSWPStorage *)self enumerateAttachmentsOfClass:v8 inTextRange:location usingBlock:length, a4];
+  [(TSWPStorage *)self enumerateAttachmentsOfClass:v8 inTextRange:location usingBlock:length, block];
 }
 
-- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)a3
+- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)range
 {
   v9 = 0;
   v10 = &v9;
@@ -9362,7 +9362,7 @@ uint64_t __66__TSWPStorage_enumerateAttachmentsOfClass_inTextRange_usingBlock___
   v8[2] = __48__TSWPStorage_attachmentIndexRangeForTextRange___block_invoke;
   v8[3] = &unk_279D49E98;
   v8[4] = &v9;
-  [(TSWPStorage *)self enumerateAttachmentsInTextRange:a3.location usingBlock:a3.length, v8];
+  [(TSWPStorage *)self enumerateAttachmentsInTextRange:range.location usingBlock:range.length, v8];
   v3 = v10;
   v4 = v10[6];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
@@ -9398,7 +9398,7 @@ uint64_t __48__TSWPStorage_attachmentIndexRangeForTextRange___block_invoke(uint6
   return result;
 }
 
-- (unint64_t)findCharIndexForAttachment:(id)a3
+- (unint64_t)findCharIndexForAttachment:(id)attachment
 {
   v4 = [(TSWPStorage *)self attributeArrayForKind:4];
   if (!v4)
@@ -9407,7 +9407,7 @@ uint64_t __48__TSWPStorage_attachmentIndexRangeForTextRange___block_invoke(uint6
   }
 
   v5 = v4;
-  Object = TSWPAttributeArray::findObject(v4, a3, 0);
+  Object = TSWPAttributeArray::findObject(v4, attachment, 0);
   if (Object == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -9416,29 +9416,29 @@ uint64_t __48__TSWPStorage_attachmentIndexRangeForTextRange___block_invoke(uint6
   return TSWPAttributeArray::charIndexForAttributeIndex(v5, Object);
 }
 
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards
 {
-  v4 = [(TSWPStorage *)self attachmentRangeForCharIndex:a3 forwards:a4 attributeKind:4];
+  v4 = [(TSWPStorage *)self attachmentRangeForCharIndex:index forwards:forwards attributeKind:4];
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4 attributeKind:(unsigned int)a5
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards attributeKind:(unsigned int)kind
 {
-  v5 = *&a5;
-  v6 = a4;
-  if ((a5 & 0xFFFFFFFE) != 4)
+  v5 = *&kind;
+  forwardsCopy = forwards;
+  if ((kind & 0xFFFFFFFE) != 4)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage attachmentRangeForCharIndex:forwards:attributeKind:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5077, @"Bad attribute kind passed into attachmentRangeForCharIndex::: method."}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5077, @"Bad attribute kind passed into attachmentRangeForCharIndex::: method."}];
   }
 
   v11 = [(TSWPStorage *)self attributeArrayForKind:v5];
   if (!v11 || (v12 = v11, !v11->var2))
   {
-    if (!v6)
+    if (!forwardsCopy)
     {
       goto LABEL_20;
     }
@@ -9446,10 +9446,10 @@ uint64_t __48__TSWPStorage_attachmentIndexRangeForTextRange___block_invoke(uint6
     goto LABEL_10;
   }
 
-  v13 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v11, a3);
+  v13 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v11, index);
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v6)
+    if (forwardsCopy)
     {
       v14 = v12;
       v15 = 0;
@@ -9457,23 +9457,23 @@ LABEL_8:
       v16 = TSWPAttributeArray::charIndexForAttributeIndex(v14, v15);
 LABEL_11:
       v17 = v16;
-      v18 = a3;
-      a3 = v17 - a3;
+      indexCopy2 = index;
+      index = v17 - index;
       goto LABEL_21;
     }
 
 LABEL_20:
-    v18 = 0;
+    indexCopy2 = 0;
     goto LABEL_21;
   }
 
   v19 = v13;
   v20 = TSWPAttributeArray::charIndexForAttributeIndex(v12, v13);
-  if (v6)
+  if (forwardsCopy)
   {
-    if (v20 == a3)
+    if (v20 == index)
     {
-      v18 = a3;
+      indexCopy2 = index;
       goto LABEL_19;
     }
 
@@ -9489,7 +9489,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v20 == a3)
+  if (v20 == index)
   {
     if (!v19)
     {
@@ -9497,47 +9497,47 @@ LABEL_10:
     }
 
     v21 = TSWPAttributeArray::charIndexForAttributeIndex(v12, v19 - 1);
-    v18 = a3 - 1;
-    if (v21 != a3 - 1)
+    indexCopy2 = index - 1;
+    if (v21 != index - 1)
     {
-      v18 = v21 + 1;
-      a3 -= v21 + 1;
+      indexCopy2 = v21 + 1;
+      index -= v21 + 1;
       goto LABEL_21;
     }
 
 LABEL_19:
-    a3 = 1;
+    index = 1;
     goto LABEL_21;
   }
 
-  v18 = TSWPAttributeArray::charIndexForAttributeIndex(v12, v19);
-  v23 = a3 - (v18 + 1);
-  if (v18 == a3 - 1)
+  indexCopy2 = TSWPAttributeArray::charIndexForAttributeIndex(v12, v19);
+  v23 = index - (indexCopy2 + 1);
+  if (indexCopy2 == index - 1)
   {
-    a3 = 1;
+    index = 1;
   }
 
   else
   {
-    ++v18;
-    a3 = v23;
+    ++indexCopy2;
+    index = v23;
   }
 
 LABEL_21:
-  v22 = a3;
-  result.length = v22;
-  result.location = v18;
+  indexCopy3 = index;
+  result.length = indexCopy3;
+  result.location = indexCopy2;
   return result;
 }
 
-- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)a3
+- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)index
 {
   if ([(TSWPStorage *)self characterAtIndex:?]!= 65532)
   {
     return 0;
   }
 
-  v5 = [(TSWPStorage *)self attachmentAtCharIndex:a3];
+  v5 = [(TSWPStorage *)self attachmentAtCharIndex:index];
   if (![v5 isDrawable])
   {
     return 0;
@@ -9546,12 +9546,12 @@ LABEL_21:
   return [v5 isAnchored];
 }
 
-- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)a3
+- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)fields
 {
-  length = a3.length;
-  location = a3.location;
+  length = fields.length;
+  location = fields.location;
   range2 = 0uLL;
-  v6 = [(TSWPStorage *)self smartFieldAtCharIndex:a3.location attributeKind:6 effectiveRange:&range2];
+  v6 = [(TSWPStorage *)self smartFieldAtCharIndex:fields.location attributeKind:6 effectiveRange:&range2];
   v7 = location + length;
   v15.location = 0;
   v15.length = 0;
@@ -9626,69 +9626,69 @@ LABEL_21:
   return v11;
 }
 
-- (id)extendSelectionToIncludeSmartFields:(id)a3
+- (id)extendSelectionToIncludeSmartFields:(id)fields
 {
-  if (![a3 isValid])
+  if (![fields isValid])
   {
-    return a3;
+    return fields;
   }
 
-  v5 = [a3 range];
+  range = [fields range];
   v7 = v6;
-  for (i = [a3 range]; ; i = -[TSWPStorage textRangeForParagraphsInCharRange:](self, "textRangeForParagraphsInCharRange:", v12, v13))
+  for (i = [fields range]; ; i = -[TSWPStorage textRangeForParagraphsInCharRange:](self, "textRangeForParagraphsInCharRange:", v12, v13))
   {
     v10 = [(TSWPStorage *)self p_extendRangeToIncludeSmartFields:i, v9];
     v12 = v10;
     v13 = v11;
-    if (v10 == v5 && v11 == v7)
+    if (v10 == range && v11 == v7)
     {
       break;
     }
 
-    v5 = v10;
+    range = v10;
     v7 = v11;
-    if ([a3 type] != 2)
+    if ([fields type] != 2)
     {
       break;
     }
   }
 
-  if (v5 == [a3 range] && v7 == v14)
+  if (range == [fields range] && v7 == v14)
   {
-    return a3;
+    return fields;
   }
 
-  v16 = [a3 copyWithNewType:0 range:{v12, v13}];
+  v16 = [fields copyWithNewType:0 range:{v12, v13}];
 
   return v16;
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range
 {
-  v6 = self->_attributesTable[a4];
+  v6 = self->_attributesTable[kind];
   if (!v6)
   {
-    if (a5)
+    if (range)
     {
-      v9 = [(TSWPStorage *)self range];
+      range = [(TSWPStorage *)self range];
       goto LABEL_7;
     }
 
     return 0;
   }
 
-  v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[a4], a3);
+  v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[kind], index);
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (range)
     {
       v8 = TSWPAttributeArray::charIndexForAttributeIndex(v6, 0);
-      v9 = 0;
+      range = 0;
 LABEL_7:
       v10 = 0;
 LABEL_10:
-      a5->location = v9;
-      a5->length = v8;
+      range->location = range;
+      range->length = v8;
       return v10;
     }
 
@@ -9696,18 +9696,18 @@ LABEL_10:
   }
 
   v10 = *(v6->var4 + 2 * v7 + 1);
-  if (a5)
+  if (range)
   {
-    v9 = TSWPAttributeArray::rangeForAttributeIndex(v6, v7);
+    range = TSWPAttributeArray::rangeForAttributeIndex(v6, v7);
     goto LABEL_10;
   }
 
   return v10;
 }
 
-- (id)editableSmartFieldAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)editableSmartFieldAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  result = [(TSWPStorage *)self smartFieldAtCharIndex:a3 attributeKind:6 effectiveRange:0];
+  result = [(TSWPStorage *)self smartFieldAtCharIndex:index attributeKind:6 effectiveRange:0];
   if (result)
   {
     v5 = result;
@@ -9725,41 +9725,41 @@ LABEL_10:
   return result;
 }
 
-- (void)addSmartField:(id)a3 toRange:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)addSmartField:(id)field toRange:(_NSRange)range dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = [a3 styleAttributeArrayKind];
+  length = range.length;
+  location = range.location;
+  styleAttributeArrayKind = [field styleAttributeArrayKind];
 
-  [(TSWPStorage *)self applyObject:a3 toCharRange:location forKind:length dolcContext:v12 undoTransaction:a5, a6];
+  [(TSWPStorage *)self applyObject:field toCharRange:location forKind:length dolcContext:styleAttributeArrayKind undoTransaction:context, transaction];
 }
 
-- (void)removeSmartField:(id)a3 fromRange:(_NSRange)a4 undoTransaction:(TSWPStorageTransaction *)a5
+- (void)removeSmartField:(id)field fromRange:(_NSRange)range undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = [a3 styleAttributeArrayKind];
+  length = range.length;
+  location = range.location;
+  styleAttributeArrayKind = [field styleAttributeArrayKind];
 
-  [(TSWPStorage *)self applyObject:0 toCharRange:location forKind:length dolcContext:v9 undoTransaction:0, a5];
+  [(TSWPStorage *)self applyObject:0 toCharRange:location forKind:length dolcContext:styleAttributeArrayKind undoTransaction:0, transaction];
 }
 
 - (BOOL)hasSmartFields
 {
-  v4 = [(TSWPStorage *)self range];
+  range = [(TSWPStorage *)self range];
 
-  return [(TSWPStorage *)self hasSmartFieldsInRange:v4, v3];
+  return [(TSWPStorage *)self hasSmartFieldsInRange:range, v3];
 }
 
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range
 {
   if (!self->_attributesTable[6])
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  TSWPAttributeEnumerator::TSWPAttributeEnumerator(v9, self, a3.location, a3.length, 6);
+  length = range.length;
+  location = range.location;
+  TSWPAttributeEnumerator::TSWPAttributeEnumerator(v9, self, range.location, range.length, 6);
   v8.location = 0;
   v8.length = 0;
   while (1)
@@ -9786,13 +9786,13 @@ LABEL_10:
   return v6;
 }
 
-- (void)enumerateWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  if (self->_attributesTable[a3])
+  length = range.length;
+  location = range.location;
+  if (self->_attributesTable[kind])
   {
-    TSWPAttributeEnumerator::TSWPAttributeEnumerator(v16, self, a4.location, a4.length, *&a3);
+    TSWPAttributeEnumerator::TSWPAttributeEnumerator(v16, self, range.location, range.length, *&kind);
     v15.location = 0;
     v15.length = 0;
     v14 = 0;
@@ -9804,9 +9804,9 @@ LABEL_10:
         break;
       }
 
-      if ((v11 = *(v10 + 8), v17.location = location, v17.length = length, NSIntersectionRange(v17, v15).length) || a3 <= 0x12 && ((1 << a3) & 0x40307) != 0 && (v12 = v15.location, v12 == [(TSWPStorage *)self length]) || !length && TSWPInsertionPointInRangeWithOptions(location, 0, v15.location, v15.length, 0))
+      if ((v11 = *(v10 + 8), v17.location = location, v17.length = length, NSIntersectionRange(v17, v15).length) || kind <= 0x12 && ((1 << kind) & 0x40307) != 0 && (v12 = v15.location, v12 == [(TSWPStorage *)self length]) || !length && TSWPInsertionPointInRangeWithOptions(location, 0, v15.location, v15.length, 0))
       {
-        (*(a5 + 2))(a5, v11, v15.location, v15.length, &v14);
+        (*(block + 2))(block, v11, v15.location, v15.length, &v14);
         if (v14)
         {
           break;
@@ -9824,20 +9824,20 @@ LABEL_10:
     v19.location = location;
     v19.length = length;
     v13 = NSIntersectionRange(v18, v19);
-    (*(a5 + 2))(a5, 0, v13.location, v13.length, v16);
+    (*(block + 2))(block, 0, v13.location, v13.length, v16);
   }
 }
 
-- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = *&a3;
-  if (a3 > 0xC || ((1 << a3) & 0x10C0) == 0)
+  length = range.length;
+  location = range.location;
+  v8 = *&kind;
+  if (kind > 0xC || ((1 << kind) & 0x10C0) == 0)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage enumerateSmartFieldsWithAttributeKind:inRange:usingBlock:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5384, @"Not a smart field attribute kind"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5384, @"Not a smart field attribute kind"}];
   }
 
   v12 = [(TSWPStorage *)self length];
@@ -9863,12 +9863,12 @@ LABEL_10:
         v21.length = length;
         if (NSIntersectionRange(v21, v19).length || !length && TSWPInsertionPointInRangeWithOptions(location, 0, v19.location, v19.length, 0))
         {
-          (*(a5 + 2))(a5, v15, v19.location, v19.length, &v18);
+          (*(block + 2))(block, v15, v19.location, v19.length, &v18);
           if ([(TSWPStorage *)self length]!= v13)
           {
-            v16 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage enumerateSmartFieldsWithAttributeKind:inRange:usingBlock:]"];
-            [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5404, @"Storage was modified while enumerating attributes"}];
+            [currentHandler2 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5404, @"Storage was modified while enumerating attributes"}];
           }
 
           if (v18)
@@ -9883,7 +9883,7 @@ LABEL_10:
   }
 }
 
-- (id)smartFieldsWithAttributeKind:(unsigned int)a3 intersectingRange:(_NSRange)a4 passingTest:(id)a5
+- (id)smartFieldsWithAttributeKind:(unsigned int)kind intersectingRange:(_NSRange)range passingTest:(id)test
 {
   v8 = 0;
   v9 = &v8;
@@ -9895,9 +9895,9 @@ LABEL_10:
   v7[1] = 3221225472;
   v7[2] = __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passingTest___block_invoke;
   v7[3] = &unk_279D49EC0;
-  v7[4] = a5;
+  v7[4] = test;
   v7[5] = &v8;
-  [(TSWPStorage *)self enumerateSmartFieldsWithAttributeKind:*&a3 inRange:a4.location usingBlock:a4.length, v7];
+  [(TSWPStorage *)self enumerateSmartFieldsWithAttributeKind:*&kind inRange:range.location usingBlock:range.length, v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
   return v5;
@@ -9921,80 +9921,80 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
   return result;
 }
 
-- (void)smartFieldDidChange:(id)a3
+- (void)smartFieldDidChange:(id)change
 {
-  if ([a3 parentStorage] != self)
+  if ([change parentStorage] != self)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage smartFieldDidChange:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5439, @"smart field doesn't belong to this storage"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5439, @"smart field doesn't belong to this storage"}];
   }
 
-  v8 = [a3 range];
+  range = [change range];
 
-  [(TSWPStorage *)self p_didChangeRange:v8 delta:v7 broadcastKind:0, 0];
+  [(TSWPStorage *)self p_didChangeRange:range delta:v7 broadcastKind:0, 0];
 }
 
-- (void)autoUpdateField:(id)a3 withRange:(_NSRange)a4 documentRoot:(id)a5 returningInsertedRange:(_NSRange *)a6
+- (void)autoUpdateField:(id)field withRange:(_NSRange)range documentRoot:(id)root returningInsertedRange:(_NSRange *)insertedRange
 {
-  v6 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage autoUpdateField:withRange:documentRoot:returningInsertedRange:]"];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"];
 
-  [v6 handleFailureInFunction:v7 file:v8 lineNumber:5448 description:@"unimplemented"];
+  [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:5448 description:@"unimplemented"];
 }
 
-- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)a3
+- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)root
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage autoUpdateSmartFieldsWithDocumentRoot:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:5455 description:@"unimplemented"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:5455 description:@"unimplemented"];
 }
 
-- (void)addGlyphVariantData:(id)a3 toRange:(_NSRange)a4
+- (void)addGlyphVariantData:(id)data toRange:(_NSRange)range
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage addGlyphVariantData:toRange:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"];
 
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:5463 description:@"unimplemented"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:5463 description:@"unimplemented"];
 }
 
-- (void)removeGlyphVariantDataFromRange:(_NSRange)a3
+- (void)removeGlyphVariantDataFromRange:(_NSRange)range
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage removeGlyphVariantDataFromRange:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:5470 description:@"unimplemented"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:5470 description:@"unimplemented"];
 }
 
-- (id)glyphVariantDataAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)glyphVariantDataAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage glyphVariantDataAtCharIndex:effectiveRange:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5476, @"unimplemented"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5476, @"unimplemented"}];
   return 0;
 }
 
-- (void)fixGlyphVariantFontsForRange:(_NSRange)a3
+- (void)fixGlyphVariantFontsForRange:(_NSRange)range
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage fixGlyphVariantFontsForRange:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:5483 description:@"unimplemented"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:5483 description:@"unimplemented"];
 }
 
-- (id)fontNameAtCharIndex:(unint64_t)a3 size:(double *)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6
+- (id)fontNameAtCharIndex:(unint64_t)index size:(double *)size effectiveRange:(_NSRange *)range styleProvider:(id)provider
 {
-  v7 = [(TSWPStorage *)self createFontAtCharIndex:a3 scaleTextPercent:100 effectiveRange:a5 styleProvider:a6];
+  v7 = [(TSWPStorage *)self createFontAtCharIndex:index scaleTextPercent:100 effectiveRange:range styleProvider:provider];
   v8 = CTFontCopyPostScriptName(v7);
-  if (a4)
+  if (size)
   {
-    *a4 = CTFontGetSize(v7);
+    *size = CTFontGetSize(v7);
   }
 
   CFRelease(v7);
@@ -10020,18 +10020,18 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
   return [v2 contentWritingDirection];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage setGeometry:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:5537 description:@"can't set geometry on a storage"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:5537 description:@"can't set geometry on a storage"];
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  if (self->_parentInfo == a3)
+  if (self->_parentInfo == needed)
   {
     self->_parentInfo = 0;
   }
@@ -10039,25 +10039,25 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
 
 - (BOOL)isThemeContent
 {
-  v2 = [(TSWPStorage *)self parentInfo];
+  parentInfo = [(TSWPStorage *)self parentInfo];
 
-  return [(TSDContainerInfo *)v2 isThemeContent];
+  return [(TSDContainerInfo *)parentInfo isThemeContent];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v5 = [(TSWPStorage *)self range];
+  range = [(TSWPStorage *)self range];
   v7 = v6;
-  v8 = [(TSWPStorage *)self wpKind];
+  wpKind = [(TSWPStorage *)self wpKind];
 
-  return [(TSWPStorage *)self newSubstorageWithRange:v5 storageContext:v7 objectsContext:a3 flags:a3 kind:1, v8];
+  return [(TSWPStorage *)self newSubstorageWithRange:range storageContext:v7 objectsContext:context flags:context kind:1, wpKind];
 }
 
 - (id)childInfos
 {
-  v3 = [(TSWPStorage *)self attachmentCount];
-  v4 = [(TSWPStorage *)self footnoteCount];
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4 + v3];
+  attachmentCount = [(TSWPStorage *)self attachmentCount];
+  footnoteCount = [(TSWPStorage *)self footnoteCount];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:footnoteCount + attachmentCount];
   v6 = [(TSWPStorage *)self attributeArrayForKind:4];
   if (v6)
   {
@@ -10072,10 +10072,10 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
         v10 = TSUDynamicCast();
         if (v10)
         {
-          v11 = [v10 drawable];
-          if (v11)
+          drawable = [v10 drawable];
+          if (drawable)
           {
-            [v5 addObject:v11];
+            [v5 addObject:drawable];
           }
         }
 
@@ -10101,10 +10101,10 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
         v16 = TSUDynamicCast();
         if (v16)
         {
-          v17 = [v16 containedStorage];
-          if (v17)
+          containedStorage = [v16 containedStorage];
+          if (containedStorage)
           {
-            [v5 addObject:v17];
+            [v5 addObject:containedStorage];
           }
         }
 
@@ -10119,31 +10119,31 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
   return v5;
 }
 
-- (id)referencedStylesOfClass:(Class)a3
+- (id)referencedStylesOfClass:(Class)class
 {
   v5 = [MEMORY[0x277CBEB58] set];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v8 = 0;
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v8 = 2;
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v8 = 3;
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage referencedStylesOfClass:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5674, @"Unknown style class."}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 5674, @"Unknown style class."}];
       return v5;
     }
 
@@ -10219,7 +10219,7 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
   return v3;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -10248,7 +10248,7 @@ uint64_t __74__TSWPStorage_smartFieldsWithAttributeKind_intersectingRange_passin
           v10[1] = 3221225472;
           v10[2] = __49__TSWPStorage_replaceReferencedStylesUsingBlock___block_invoke;
           v10[3] = &unk_279D49EE8;
-          v10[4] = a3;
+          v10[4] = block;
           v10[5] = v9;
           TSWPAttributeArray::enumerateObjectAttributes(v9, v10);
         }
@@ -10282,18 +10282,18 @@ void __49__TSWPStorage_replaceReferencedStylesUsingBlock___block_invoke(uint64_t
 - (BOOL)hasVisibleText
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(TSWPStorage *)self length];
-  if (v3)
+  footnoteCount = [(TSWPStorage *)self length];
+  if (footnoteCount)
   {
-    v4 = v3 > 8;
-    if (v3 >= 8)
+    v4 = footnoteCount > 8;
+    if (footnoteCount >= 8)
     {
       v5 = 8;
     }
 
     else
     {
-      v5 = v3;
+      v5 = footnoteCount;
     }
 
     [(NSMutableString *)self->_string getCharacters:v21 range:0, v5];
@@ -10331,22 +10331,22 @@ void __49__TSWPStorage_replaceReferencedStylesUsingBlock___block_invoke(uint64_t
     if (!v4)
     {
 LABEL_30:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(footnoteCount) = 0;
+      return footnoteCount;
     }
 
 LABEL_13:
     if (-[NSMutableString rangeOfCharacterFromSet:options:](self->_string, "rangeOfCharacterFromSet:options:", [objc_msgSend(MEMORY[0x277CCA900] "invisibleCharacterSet")], 2) != 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_31:
-      LOBYTE(v3) = 1;
-      return v3;
+      LOBYTE(footnoteCount) = 1;
+      return footnoteCount;
     }
 
-    v9 = [(TSWPStorage *)self attachmentCount];
-    if (v9)
+    attachmentCount = [(TSWPStorage *)self attachmentCount];
+    if (attachmentCount)
     {
-      v10 = v9;
+      v10 = attachmentCount;
       for (i = 0; v10 != i; ++i)
       {
         v12 = [(TSWPStorage *)self attachmentAtAttachmentIndex:i outCharIndex:0];
@@ -10356,8 +10356,8 @@ LABEL_31:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 stringEquivalent];
-            if (v14 && [v14 length])
+            stringEquivalent = [v13 stringEquivalent];
+            if (stringEquivalent && [stringEquivalent length])
             {
               goto LABEL_31;
             }
@@ -10376,20 +10376,20 @@ LABEL_31:
       }
     }
 
-    v3 = [(TSWPStorage *)self footnoteCount];
-    if (v3)
+    footnoteCount = [(TSWPStorage *)self footnoteCount];
+    if (footnoteCount)
     {
-      v16 = v3;
+      v16 = footnoteCount;
       v17 = 0;
       while (1)
       {
         v18 = [(TSWPStorage *)self footnoteAtFootnoteIndex:v17 outCharIndex:0];
         if (v18)
         {
-          v19 = [v18 stringEquivalent];
-          if (v19)
+          stringEquivalent2 = [v18 stringEquivalent];
+          if (stringEquivalent2)
           {
-            if ([v19 length])
+            if ([stringEquivalent2 length])
             {
               goto LABEL_31;
             }
@@ -10404,7 +10404,7 @@ LABEL_31:
     }
   }
 
-  return v3;
+  return footnoteCount;
 }
 
 - (BOOL)p_hasGoodAttributesForPlainTextPaste
@@ -10472,23 +10472,23 @@ LABEL_6:
   return [(TSWPStorage *)self p_hasGoodAttributesForPlainTextPaste];
 }
 
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags
 {
-  v6 = *&a6;
-  length = a3.length;
-  location = a3.location;
-  v12 = [(TSWPStorage *)self wpKind];
+  v6 = *&flags;
+  length = range.length;
+  location = range.location;
+  wpKind = [(TSWPStorage *)self wpKind];
 
-  return [(TSWPStorage *)self newSubstorageWithRange:location storageContext:length objectsContext:a4 flags:a5 kind:v6, v12];
+  return [(TSWPStorage *)self newSubstorageWithRange:location storageContext:length objectsContext:context flags:objectsContext kind:v6, wpKind];
 }
 
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6 kind:(int)a7
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags kind:(int)kind
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
-    v30 = [(NSMutableString *)self->_string substringWithRange:a3.location, a3.length];
+    v30 = [(NSMutableString *)self->_string substringWithRange:range.location, range.length];
   }
 
   else
@@ -10502,15 +10502,15 @@ LABEL_6:
   v14 = [(TSWPStorage *)self writingDirectionForParagraphAtCharIndex:location];
   v34 = 0;
   v33 = 0;
-  if ((a6 & 4) != 0 && [(TSWPStorage *)self supportsSections]&& [(TSWPStorage *)self sectionCount])
+  if ((flags & 4) != 0 && [(TSWPStorage *)self supportsSections]&& [(TSWPStorage *)self sectionCount])
   {
-    v15 = a4;
-    v16 = [-[TSWPStorage sectionAtCharIndex:effectiveRange:](self sectionAtCharIndex:location effectiveRange:{0), "copyWithContext:", a4}];
+    contextCopy2 = context;
+    v16 = [-[TSWPStorage sectionAtCharIndex:effectiveRange:](self sectionAtCharIndex:location effectiveRange:{0), "copyWithContext:", context}];
   }
 
   else
   {
-    v15 = a4;
+    contextCopy2 = context;
     v16 = 0;
   }
 
@@ -10518,7 +10518,7 @@ LABEL_6:
   v17 = [(TSWPStorage *)self listStartAtCharIndex:location];
   LODWORD(v27) = v14;
   v31 = v16;
-  v18 = [objc_alloc(objc_opt_class()) initWithContext:v15 string:v30 kind:a7 stylesheet:self->_stylesheet paragraphStyle:v29 listStyle:v28 section:v16 columnStyle:v13 paragraphDirection:v27];
+  v18 = [objc_alloc(objc_opt_class()) initWithContext:contextCopy2 string:v30 kind:kind stylesheet:self->_stylesheet paragraphStyle:v29 listStyle:v28 section:v16 columnStyle:v13 paragraphDirection:v27];
   [v18 setParagraphFlags:v33 level:v34 forCharRange:0 undoTransaction:{objc_msgSend(v18, "length"), 0}];
   if (v17 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -10541,7 +10541,7 @@ LABEL_6:
 
   [v18 filterSectionBreaksFromStorage:v18 undoTransaction:0];
   v20 = 0;
-  if ((a6 & 8) != 0)
+  if ((flags & 8) != 0)
   {
     v20 = +[TSKAddedToDocumentContext changeTrackingSubstorageForCopyContext];
   }
@@ -10552,8 +10552,8 @@ LABEL_6:
     v22 = [(TSWPStorage *)self attributeArrayForKind:v21];
     if (v22)
     {
-      LODWORD(v26) = a6;
-      [(TSWPStorage *)self transferAttributeArraySource:v22 forSourceRange:location toDestStorage:length objectContext:v18 dolcContext:a5 flags:v20, v26];
+      LODWORD(v26) = flags;
+      [(TSWPStorage *)self transferAttributeArraySource:v22 forSourceRange:location toDestStorage:length objectContext:v18 dolcContext:objectsContext flags:v20, v26];
     }
 
     v21 = (v21 + 1);
@@ -10586,9 +10586,9 @@ LABEL_26:
       }
     }
 
-    v23 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage newSubstorageWithRange:storageContext:objectsContext:flags:kind:]"];
-    [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 6123, @"No default section in storage."}];
+    [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage.mm"), 6123, @"No default section in storage."}];
   }
 
 LABEL_29:
@@ -10596,22 +10596,22 @@ LABEL_29:
   return v18;
 }
 
-- (int)compareRange:(_NSRange)a3 otherStorage:(id)a4 otherRange:(_NSRange)a5 options:(unint64_t)a6
+- (int)compareRange:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange options:(unint64_t)options
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a3.length;
-  v11 = a3.location;
-  v13 = [a4 range];
+  length = otherRange.length;
+  location = otherRange.location;
+  v10 = range.length;
+  v11 = range.location;
+  range = [storage range];
   v15 = v14;
-  v16 = [a4 string];
-  v17 = v16;
-  if (location != v13 || length != v15)
+  string = [storage string];
+  v17 = string;
+  if (location != range || length != v15)
   {
-    v17 = [v16 substringWithRange:{location, length}];
+    v17 = [string substringWithRange:{location, length}];
   }
 
-  result = [(NSMutableString *)self->_string compare:v17 options:a6 range:v11, v10];
+  result = [(NSMutableString *)self->_string compare:v17 options:options range:v11, v10];
   if (!result)
   {
     v19 = 0;
@@ -10622,7 +10622,7 @@ LABEL_29:
         v20 = [(TSWPStorage *)self attributeArrayForKind:v19];
         if (v20)
         {
-          result = [(TSWPStorage *)self compareAttributeArray:v20 range:v11 otherStorage:v10 otherRange:a4, location, length];
+          result = [(TSWPStorage *)self compareAttributeArray:v20 range:v11 otherStorage:v10 otherRange:storage, location, length];
           if (result)
           {
             break;
@@ -10680,84 +10680,84 @@ LABEL_29:
   WPKind = self->_WPKind;
   if (WPKind > 7)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"*#$! Unknown WP kind: %d", WPKind];
+    wPKind = [MEMORY[0x277CCACA8] stringWithFormat:@"*#$! Unknown WP kind: %d", WPKind];
   }
 
   else
   {
-    v4 = [TSWPStorage description]::kinds[WPKind];
+    wPKind = [TSWPStorage description]::kinds[WPKind];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%@*) %p (length:%lu) kind: %@", objc_opt_class(), self, -[TSWPStorage characterCount](self, "characterCount"), v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%@*) %p (length:%lu) kind: %@", objc_opt_class(), self, -[TSWPStorage characterCount](self, "characterCount"), wPKind];
 }
 
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 attributeKind:(unsigned int)a5 dolcContext:(id)a6 undoTransaction:(TSWPStorageTransaction *)a7
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert attributeKind:(unsigned int)kind dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  v11 = [(TSWPStorage *)self smartFieldAtCharIndex:a3 attributeKind:*&a5 effectiveRange:&v16];
-  if (v11 && a3 > v16)
+  v11 = [(TSWPStorage *)self smartFieldAtCharIndex:index attributeKind:*&kind effectiveRange:&v16];
+  if (v11 && index > v16)
   {
     v12 = v17 + v16;
-    if (a3 - v16 != v17 && v12 != a3)
+    if (index - v16 != v17 && v12 != index)
     {
-      v14 = v12 - a3;
+      v14 = v12 - index;
       v15 = [v11 copyWithContext:{-[TSPObject context](self, "context")}];
-      [(TSWPStorage *)self addSmartField:v15 toRange:a3 dolcContext:v14 undoTransaction:a6, a7];
+      [(TSWPStorage *)self addSmartField:v15 toRange:index dolcContext:v14 undoTransaction:context, transaction];
     }
   }
 }
 
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(TSWPStorageTransaction *)a6
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert dolcContext:(id)context undoTransaction:(TSWPStorageTransaction *)transaction
 {
-  [(TSWPStorage *)self splitSmartFieldAtCharIndex:a3 lengthToInsert:a4 attributeKind:6 dolcContext:a5 undoTransaction:a6];
+  [(TSWPStorage *)self splitSmartFieldAtCharIndex:index lengthToInsert:insert attributeKind:6 dolcContext:context undoTransaction:transaction];
 
-  [(TSWPStorage *)self splitSmartFieldAtCharIndex:a3 lengthToInsert:a4 attributeKind:12 dolcContext:a5 undoTransaction:a6];
+  [(TSWPStorage *)self splitSmartFieldAtCharIndex:index lengthToInsert:insert attributeKind:12 dolcContext:context undoTransaction:transaction];
 }
 
-- (__CTFont)createFontAtCharIndex:(unint64_t)a3 scaleTextPercent:(unint64_t)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6
+- (__CTFont)createFontAtCharIndex:(unint64_t)index scaleTextPercent:(unint64_t)percent effectiveRange:(_NSRange *)range styleProvider:(id)provider
 {
-  v11 = [(TSWPStorage *)self characterStyleAtCharIndex:a3 left:0 effectiveRange:0];
-  v12 = [a6 paragraphStyleAtParIndex:-[TSWPStorage paragraphIndexAtCharIndex:](self effectiveRange:{"paragraphIndexAtCharIndex:", a3), a5}];
+  v11 = [(TSWPStorage *)self characterStyleAtCharIndex:index left:0 effectiveRange:0];
+  v12 = [provider paragraphStyleAtParIndex:-[TSWPStorage paragraphIndexAtCharIndex:](self effectiveRange:{"paragraphIndexAtCharIndex:", index), range}];
 
-  return TSWPFastCreateFontForStyle(v11, v12, a4);
+  return TSWPFastCreateFontForStyle(v11, v12, percent);
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 options:(unint64_t)a5 changedRange:(_NSRange *)a6 changeDelta:(int64_t *)a7 undoTransaction:(TSWPStorageTransaction *)a8 changeSession:(id)a9
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string options:(unint64_t)options changedRange:(_NSRange *)changedRange changeDelta:(int64_t *)delta undoTransaction:(TSWPStorageTransaction *)transaction changeSession:(id)session
 {
-  length = a3.length;
-  location = a3.location;
-  if (a4)
+  length = range.length;
+  location = range.location;
+  if (string)
   {
-    v14 = a4;
+    stringCopy = string;
   }
 
   else
   {
-    v14 = &stru_287D36338;
+    stringCopy = &stru_287D36338;
   }
 
-  v15 = [(__CFString *)v14 stringByCapitalizingToMatchString:[(TSWPStorage *)self string] range:a3.location searchOptions:a3.length, a5];
+  options = [(__CFString *)stringCopy stringByCapitalizingToMatchString:[(TSWPStorage *)self string] range:range.location searchOptions:range.length, options];
   v16 = [(TSWPStorage *)self length];
-  [(TSWPStorage *)self replaceCharactersInSelection:[TSWPSelection selectionWithRange:?]changeSession:v15 undoTransaction:1 outInsertedRange:0, a9, a8, 0];
-  if (a7)
+  [(TSWPStorage *)self replaceCharactersInSelection:[TSWPSelection selectionWithRange:?]changeSession:options undoTransaction:1 outInsertedRange:0, session, transaction, 0];
+  if (delta)
   {
-    *a7 = [(TSWPStorage *)self length]- v16;
+    *delta = [(TSWPStorage *)self length]- v16;
   }
 
-  if (a6)
+  if (changedRange)
   {
-    a6->location = location;
-    a6->length = [v15 length];
+    changedRange->location = location;
+    changedRange->length = [options length];
   }
 }
 
-- (id)valueForBIUProperties:(id)a3 selection:(id)a4 insertionStyle:(id)a5
+- (id)valueForBIUProperties:(id)properties selection:(id)selection insertionStyle:(id)style
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CCAB58] indexSet];
-  v10 = [a4 superRange];
-  v11 = -[TSWPStorage characterStyleAtCharIndex:left:effectiveRange:](self, "characterStyleAtCharIndex:left:effectiveRange:", v10, [a4 isInsertionPoint], 0);
-  v12 = [(TSWPStorage *)self paragraphStyleAtCharIndex:v10 effectiveRange:0];
-  if (a5)
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  superRange = [selection superRange];
+  v11 = -[TSWPStorage characterStyleAtCharIndex:left:effectiveRange:](self, "characterStyleAtCharIndex:left:effectiveRange:", superRange, [selection isInsertionPoint], 0);
+  v12 = [(TSWPStorage *)self paragraphStyleAtCharIndex:superRange effectiveRange:0];
+  if (style)
   {
     v13 = 3;
   }
@@ -10768,24 +10768,24 @@ LABEL_29:
   }
 
   v14 = (&v29 - ((8 * v13 + 15) & 0x30));
-  if (a5)
+  if (style)
   {
     v14[2] = v12;
   }
 
   else
   {
-    a5 = v11;
+    style = v11;
     v11 = v12;
   }
 
-  *v14 = a5;
+  *v14 = style;
   v14[1] = v11;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = [a3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v15 = [properties countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v15)
   {
     v16 = v15;
@@ -10797,16 +10797,16 @@ LABEL_29:
       {
         if (*v30 != v18)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(properties);
         }
 
-        v20 = [*(*(&v29 + 1) + 8 * i) unsignedIntValue];
-        v21 = v20;
-        if (v20 > 2)
+        unsignedIntValue = [*(*(&v29 + 1) + 8 * i) unsignedIntValue];
+        v21 = unsignedIntValue;
+        if (unsignedIntValue > 2)
         {
-          if (v20 <= 4)
+          if (unsignedIntValue <= 4)
           {
-            if (v20 == 3)
+            if (unsignedIntValue == 3)
             {
               v26 = 26;
               goto LABEL_39;
@@ -10816,7 +10816,7 @@ LABEL_29:
             goto LABEL_35;
           }
 
-          if (v20 == 5)
+          if (unsignedIntValue == 5)
           {
             v22 = 65093;
 LABEL_35:
@@ -10829,7 +10829,7 @@ LABEL_35:
             goto LABEL_41;
           }
 
-          if (v20 != 6)
+          if (unsignedIntValue != 6)
           {
             goto LABEL_41;
           }
@@ -10852,7 +10852,7 @@ LABEL_22:
           goto LABEL_41;
         }
 
-        switch(v20)
+        switch(unsignedIntValue)
         {
           case 0:
             v26 = 19;
@@ -10866,7 +10866,7 @@ LABEL_39:
             }
 
 LABEL_40:
-            [v9 addIndex:v17];
+            [indexSet addIndex:v17];
             break;
           case 2:
             goto LABEL_22;
@@ -10876,13 +10876,13 @@ LABEL_41:
         ++v17;
       }
 
-      v16 = [a3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v16 = [properties countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v16);
   }
 
-  return v9;
+  return indexSet;
 }
 
 - (BOOL)p_passesExtraTablesChecksForStoringInAStringValueCell
@@ -10906,22 +10906,22 @@ LABEL_41:
 
 - (BOOL)canBeStoredInAStringValueCell
 {
-  v3 = [(TSWPStorage *)self canPasteAsPlainTextWithUniformParagraphs];
-  if (v3)
+  canPasteAsPlainTextWithUniformParagraphs = [(TSWPStorage *)self canPasteAsPlainTextWithUniformParagraphs];
+  if (canPasteAsPlainTextWithUniformParagraphs)
   {
 
-    LOBYTE(v3) = [(TSWPStorage *)self p_passesExtraTablesChecksForStoringInAStringValueCell];
+    LOBYTE(canPasteAsPlainTextWithUniformParagraphs) = [(TSWPStorage *)self p_passesExtraTablesChecksForStoringInAStringValueCell];
   }
 
-  return v3;
+  return canPasteAsPlainTextWithUniformParagraphs;
 }
 
-- (id)valueForBIUProperties:(id)a3
+- (id)valueForBIUProperties:(id)properties
 {
   v5 = [TSWPSelection alloc];
-  v6 = [(TSWPStorage *)self range];
-  v8 = [(TSWPSelection *)v5 initWithRange:v6, v7];
-  v9 = [(TSWPStorage *)self valueForBIUProperties:a3 selection:v8 insertionStyle:0];
+  range = [(TSWPStorage *)self range];
+  v8 = [(TSWPSelection *)v5 initWithRange:range, v7];
+  v9 = [(TSWPStorage *)self valueForBIUProperties:properties selection:v8 insertionStyle:0];
 
   return v9;
 }
@@ -10935,7 +10935,7 @@ LABEL_41:
   return [v0 handleFailureInFunction:v1 file:v2 lineNumber:4073 description:@"Out-of-bounds type assignment was clamped to max"];
 }
 
-- (_NSRange)rangeForChange:(id)a3
+- (_NSRange)rangeForChange:(id)change
 {
   v12.length = [(TSWPStorage *)self length];
   v12.location = 0;
@@ -10949,7 +10949,7 @@ LABEL_41:
       goto LABEL_7;
     }
 
-    if (TSWPChangeEnumerator::change(v10) == a3)
+    if (TSWPChangeEnumerator::change(v10) == change)
     {
       break;
     }
@@ -10968,61 +10968,61 @@ LABEL_7:
   return result;
 }
 
-- (id)changeAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5
+- (id)changeAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range
 {
-  v6 = self->_attributesTable[a4];
+  v6 = self->_attributesTable[kind];
   if (!v6 || !v6->var2)
   {
-    if (a5)
+    if (range)
     {
-      v9 = [(TSWPStorage *)self range];
+      range = [(TSWPStorage *)self range];
       goto LABEL_8;
     }
 
     return 0;
   }
 
-  v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[a4], a3);
+  v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[kind], index);
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = *(v6->var4 + 2 * v7 + 1);
-    if (!a5)
+    if (!range)
     {
       return v10;
     }
 
-    v9 = TSWPAttributeArray::rangeForAttributeIndex(v6, v7);
+    range = TSWPAttributeArray::rangeForAttributeIndex(v6, v7);
     goto LABEL_9;
   }
 
-  if (!a5)
+  if (!range)
   {
     return 0;
   }
 
   v8 = TSWPAttributeArray::charIndexForAttributeIndex(v6, 0);
-  v9 = 0;
+  range = 0;
 LABEL_8:
   v10 = 0;
 LABEL_9:
-  a5->location = v9;
-  a5->length = v8;
+  range->location = range;
+  range->length = v8;
   return v10;
 }
 
-- (id)changeAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)changeAtCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  result = [(TSWPStorage *)self changeAtCharIndex:a3 attributeKind:15 effectiveRange:a4];
+  result = [(TSWPStorage *)self changeAtCharIndex:index attributeKind:15 effectiveRange:range];
   if (!result)
   {
 
-    return [(TSWPStorage *)self changeAtCharIndex:a3 attributeKind:16 effectiveRange:a4];
+    return [(TSWPStorage *)self changeAtCharIndex:index attributeKind:16 effectiveRange:range];
   }
 
   return result;
 }
 
-- (TSWPRangeVector)deletedRangeVectorInRange:(SEL)a3
+- (TSWPRangeVector)deletedRangeVectorInRange:(SEL)range
 {
   length = a4.length;
   location = a4.location;
@@ -11052,14 +11052,14 @@ LABEL_9:
   return result;
 }
 
-- (id)deletedRangesInRange:(_NSRange)a3
+- (id)deletedRangesInRange:(_NSRange)range
 {
   if (!self)
   {
     return 0;
   }
 
-  [(TSWPStorage *)self deletedRangeVectorInRange:a3.location, a3.length];
+  [(TSWPStorage *)self deletedRangeVectorInRange:range.location, range.length];
   v3 = v6;
   if (v7 != v6)
   {
@@ -11084,11 +11084,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)hiddenRangesInRange:(_NSRange)a3
+- (id)hiddenRangesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  TSWPChangeEnumerator::TSWPChangeEnumerator(v8, self, a3);
+  length = range.length;
+  location = range.location;
+  TSWPChangeEnumerator::TSWPChangeEnumerator(v8, self, range);
   v5 = 0;
   while (TSWPChangeEnumerator::change(v8))
   {
@@ -11116,58 +11116,58 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)a3 requireHidden:(BOOL)a4 range:(_NSRange *)a5
+- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)index requireHidden:(BOOL)hidden range:(_NSRange *)range
 {
-  v6 = a4;
-  v8 = [(TSWPStorage *)self deletionChangesTable];
-  if (v8)
+  hiddenCopy = hidden;
+  deletionChangesTable = [(TSWPStorage *)self deletionChangesTable];
+  if (deletionChangesTable)
   {
-    v9 = v8;
-    v10 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v8, a3);
+    v9 = deletionChangesTable;
+    v10 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(deletionChangesTable, index);
     if (v10 > 0x7FFFFFFFFFFFFFFELL)
     {
-      LOBYTE(v8) = 0;
+      LOBYTE(deletionChangesTable) = 0;
     }
 
     else
     {
       v11 = v10;
-      v8 = *(v9->var4 + 2 * v10 + 1);
-      if (v8)
+      deletionChangesTable = *(v9->var4 + 2 * v10 + 1);
+      if (deletionChangesTable)
       {
-        if (!v6 || (LODWORD(v8) = [(TSWPChangeAttributeArray *)v8 isHidden], v8))
+        if (!hiddenCopy || (LODWORD(deletionChangesTable) = [(TSWPChangeAttributeArray *)deletionChangesTable isHidden], deletionChangesTable))
         {
           v13 = TSWPAttributeArray::rangeForAttributeIndex(v9, v11);
-          LOBYTE(v8) = 0;
-          if (a3 >= v13 && a3 - v13 < v12)
+          LOBYTE(deletionChangesTable) = 0;
+          if (index >= v13 && index - v13 < v12)
           {
-            if (a5)
+            if (range)
             {
-              a5->location = v13;
-              a5->length = v12;
+              range->location = v13;
+              range->length = v12;
             }
 
-            LOBYTE(v8) = 1;
+            LOBYTE(deletionChangesTable) = 1;
           }
         }
       }
     }
   }
 
-  return v8;
+  return deletionChangesTable;
 }
 
-- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)a3 requireVisible:(BOOL)a4
+- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)range requireVisible:(BOOL)visible
 {
-  v4 = a4;
-  location = a3.location;
-  v17 = a3;
-  v6 = [(TSWPStorage *)self deletionChangesTable];
-  if (v6)
+  visibleCopy = visible;
+  location = range.location;
+  rangeCopy = range;
+  deletionChangesTable = [(TSWPStorage *)self deletionChangesTable];
+  if (deletionChangesTable)
   {
-    v7 = v6;
-    TSWPAttributeArray::begin(v6, &v17, &v15);
-    TSWPAttributeArray::end(v7, &v17, &v13);
+    v7 = deletionChangesTable;
+    TSWPAttributeArray::begin(deletionChangesTable, &rangeCopy, &v15);
+    TSWPAttributeArray::end(v7, &rangeCopy, &v13);
     v8 = v16;
     v9 = v14;
     if (v16 != v14)
@@ -11180,7 +11180,7 @@ LABEL_7:
           break;
         }
 
-        if (v4)
+        if (visibleCopy)
         {
           if (([*(v15->var4 + 2 * v8 + 1) isHidden] & 1) == 0)
           {
@@ -11200,7 +11200,7 @@ LABEL_7:
         }
       }
 
-      v11 = v17.location;
+      v11 = rangeCopy.location;
       if (v11 <= TSWPAttributeArray::rangeForAttributeIndex(v10, v8))
       {
         return TSWPAttributeArray::rangeForAttributeIndex(v15, v16);
@@ -11208,7 +11208,7 @@ LABEL_7:
 
       else
       {
-        return v17.location;
+        return rangeCopy.location;
       }
     }
   }
@@ -11216,16 +11216,16 @@ LABEL_7:
   return location;
 }
 
-- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)a3
+- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)range
 {
-  v16 = a3;
-  v3 = a3.location + a3.length;
-  v4 = [(TSWPStorage *)self deletionChangesTable];
-  if (v4)
+  rangeCopy = range;
+  v3 = range.location + range.length;
+  deletionChangesTable = [(TSWPStorage *)self deletionChangesTable];
+  if (deletionChangesTable)
   {
-    v5 = v4;
-    TSWPAttributeArray::end(v4, &v16, &v14);
-    TSWPAttributeArray::begin(v5, &v16, &v12);
+    v5 = deletionChangesTable;
+    TSWPAttributeArray::end(deletionChangesTable, &rangeCopy, &v14);
+    TSWPAttributeArray::begin(v5, &rangeCopy, &v12);
     v6 = v15;
     if (v15 != v13)
     {
@@ -11262,7 +11262,7 @@ LABEL_7:
         }
       }
 
-      v3 = v16.length + v16.location;
+      v3 = rangeCopy.length + rangeCopy.location;
       v9 = TSWPAttributeArray::rangeForAttributeIndex(v8, v7);
       if (v9 + v10 < v3)
       {
@@ -11274,45 +11274,45 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)hasDeletionInRange:(_NSRange)a3
+- (BOOL)hasDeletionInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(TSWPStorage *)self deletionChangesTable];
-  if (v5)
+  length = range.length;
+  location = range.location;
+  deletionChangesTable = [(TSWPStorage *)self deletionChangesTable];
+  if (deletionChangesTable)
   {
-    v6 = v5;
-    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, location);
+    v6 = deletionChangesTable;
+    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(deletionChangesTable, location);
     if (*(v6->var4 + 2 * v7 + 1))
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(deletionChangesTable) = 1;
     }
 
     else
     {
       v8 = TSWPAttributeArray::rangeForAttributeIndex(v6, v7);
-      LOBYTE(v5) = v8 > location || v8 + v9 < location + length;
+      LOBYTE(deletionChangesTable) = v8 > location || v8 + v9 < location + length;
     }
   }
 
-  return v5;
+  return deletionChangesTable;
 }
 
-- (void)applyChange:(id)a3 changeRange:(_NSRange)a4 accept:(BOOL)a5 undoTransaction:(void *)a6
+- (void)applyChange:(id)change changeRange:(_NSRange)range accept:(BOOL)accept undoTransaction:(void *)transaction
 {
-  v7 = a5;
-  length = a4.length;
-  location = a4.location;
-  if (([a3 isInsertion] & 1) == 0 && (objc_msgSend(a3, "isDeletion") & 1) == 0)
+  acceptCopy = accept;
+  length = range.length;
+  location = range.location;
+  if (([change isInsertion] & 1) == 0 && (objc_msgSend(change, "isDeletion") & 1) == 0)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(ChangeTracking) applyChange:changeRange:accept:undoTransaction:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 361, @"unknown change kind"}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 361, @"unknown change kind"}];
   }
 
-  if (([a3 isInsertion] & 1) != 0 || objc_msgSend(a3, "isDeletion"))
+  if (([change isInsertion] & 1) != 0 || objc_msgSend(change, "isDeletion"))
   {
-    if ([a3 isInsertion])
+    if ([change isInsertion])
     {
       v14 = 15;
     }
@@ -11322,35 +11322,35 @@ LABEL_7:
       v14 = 16;
     }
 
-    [(TSWPStorage *)self applyObject:0 toCharRange:location forKind:length dolcContext:v14 undoTransaction:0, a6];
-    if (v7)
+    [(TSWPStorage *)self applyObject:0 toCharRange:location forKind:length dolcContext:v14 undoTransaction:0, transaction];
+    if (acceptCopy)
     {
-      if (([a3 isInsertion] & 1) != 0 || (objc_msgSend(a3, "isDeletion") & 1) == 0)
+      if (([change isInsertion] & 1) != 0 || (objc_msgSend(change, "isDeletion") & 1) == 0)
       {
         return;
       }
     }
 
-    else if (([a3 isDeletion] & 1) != 0 || !objc_msgSend(a3, "isInsertion"))
+    else if (([change isDeletion] & 1) != 0 || !objc_msgSend(change, "isInsertion"))
     {
       return;
     }
 
-    [(TSWPStorage *)self deleteRange:location undoTransaction:length, a6];
+    [(TSWPStorage *)self deleteRange:location undoTransaction:length, transaction];
   }
 }
 
-- (void)applyChanges:(BOOL)a3 inRange:(_NSRange)a4 inSelectionRange:(_NSRange)a5 outChangedRange:(_NSRange *)a6 outSelectionRange:(_NSRange *)a7 undoTransaction:(void *)a8 forceAll:(BOOL)a9
+- (void)applyChanges:(BOOL)changes inRange:(_NSRange)range inSelectionRange:(_NSRange)selectionRange outChangedRange:(_NSRange *)changedRange outSelectionRange:(_NSRange *)outSelectionRange undoTransaction:(void *)transaction forceAll:(BOOL)all
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a4.length;
-  v12 = a4.location;
-  v13 = a3;
+  length = selectionRange.length;
+  location = selectionRange.location;
+  v11 = range.length;
+  v12 = range.location;
+  changesCopy = changes;
   v72 = *MEMORY[0x277D85DE8];
-  *a6 = a4;
-  *a7 = a5;
-  v49 = a7;
+  *changedRange = range;
+  *outSelectionRange = selectionRange;
+  outSelectionRangeCopy = outSelectionRange;
   v15 = *MEMORY[0x277D6C268];
   v16 = *(MEMORY[0x277D6C268] + 8);
   v17 = objc_opt_new();
@@ -11361,7 +11361,7 @@ LABEL_7:
   v55 = 0;
   *&v58[8] = 0;
   v59 = 0;
-  *v58 = a9;
+  *v58 = all;
   range2 = length;
   v57 = location + length;
   v51 = v16;
@@ -11373,10 +11373,10 @@ LABEL_7:
     v20 = v19;
     v82.location = v18;
     v82.length = v19;
-    *a6 = NSUnionRange(*a6, v82);
+    *changedRange = NSUnionRange(*changedRange, v82);
     v21 = TSWPChangeEnumerator::change(v69);
     v22 = v21;
-    if (v13)
+    if (changesCopy)
     {
       if (([v21 isDeletion] & 1) == 0)
       {
@@ -11404,7 +11404,7 @@ LABEL_7:
     }
 
 LABEL_8:
-    if (!a9 && v18 <= location && v18 + v20 >= v57)
+    if (!all && v18 <= location && v18 + v20 >= v57)
     {
       if ([v22 isDeletion])
       {
@@ -11421,15 +11421,15 @@ LABEL_8:
       }
     }
 
-    [v17 addObject:{v22, v49}];
+    [v17 addObject:{v22, outSelectionRangeCopy}];
     TSWPChangeEnumerator::operator++(v69);
   }
 
   if (v55)
   {
-    a6->location = v15;
-    a6->length = range1;
-    if (v13)
+    changedRange->location = v15;
+    changedRange->length = range1;
+    if (changesCopy)
     {
       v75.location = v15;
       v75.length = range1;
@@ -11456,9 +11456,9 @@ LABEL_8:
 
   else if (v53)
   {
-    a6->location = v52;
-    a6->length = v51;
-    if (v13)
+    changedRange->location = v52;
+    changedRange->length = v51;
+    if (changesCopy)
     {
       *&v58[4] = 0;
       v59 = 0;
@@ -11483,18 +11483,18 @@ LABEL_8:
     [v17 addObject:v53];
   }
 
-  if (v49->location != 0x7FFFFFFFFFFFFFFFLL)
+  if (outSelectionRangeCopy->location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v26 = v49->length + *&v58[4];
-    v49->location += v59;
-    v49->length = v26;
+    v26 = outSelectionRangeCopy->length + *&v58[4];
+    outSelectionRangeCopy->location += v59;
+    outSelectionRangeCopy->length = v26;
   }
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v27 = [v17 countByEnumeratingWithState:&v65 objects:v71 count:{16, v49}];
+  v27 = [v17 countByEnumeratingWithState:&v65 objects:v71 count:{16, outSelectionRangeCopy}];
   if (v27)
   {
     v28 = *v66;
@@ -11511,7 +11511,7 @@ LABEL_8:
         if ([v30 isInsertion])
         {
           v31 = [(TSWPStorage *)self rangeForChange:v30];
-          [(TSWPStorage *)self applyChange:v30 changeRange:v31 accept:v32 undoTransaction:v13, a8];
+          [(TSWPStorage *)self applyChange:v30 changeRange:v31 accept:v32 undoTransaction:changesCopy, transaction];
         }
       }
 
@@ -11544,7 +11544,7 @@ LABEL_8:
           v38 = [(TSWPStorage *)self rangeForChange:v36];
           if (v38 <= 0x7FFFFFFFFFFFFFFELL)
           {
-            [(TSWPStorage *)self applyChange:v36 changeRange:v38 accept:v37 undoTransaction:v13, a8];
+            [(TSWPStorage *)self applyChange:v36 changeRange:v38 accept:v37 undoTransaction:changesCopy, transaction];
           }
         }
       }
@@ -11561,9 +11561,9 @@ LABEL_8:
     v39 = *v50;
     if (v40 + v39 > [(TSWPStorage *)self length])
     {
-      v41 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(ChangeTracking) applyChanges:inRange:inSelectionRange:outChangedRange:outSelectionRange:undoTransaction:forceAll:]"];
-      [v41 handleFailureInFunction:v42 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 491, @"bad selection range"}];
+      [currentHandler handleFailureInFunction:v42 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 491, @"bad selection range"}];
       v43 = *v50;
       v44 = v50[1];
       v89.location = [(TSWPStorage *)self range];
@@ -11574,36 +11574,36 @@ LABEL_8:
     }
   }
 
-  v46 = a6->location;
-  if (a6->location != 0x7FFFFFFFFFFFFFFFLL)
+  v46 = changedRange->location;
+  if (changedRange->location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v47 = a6->length;
+    v47 = changedRange->length;
     v90.location = [(TSWPStorage *)self range];
     v90.length = v48;
     v80.location = v46;
     v80.length = v47;
-    *a6 = NSIntersectionRange(v80, v90);
+    *changedRange = NSIntersectionRange(v80, v90);
   }
 
   TSWPChangeEnumerator::~TSWPChangeEnumerator(v69);
 }
 
-- (id)nextChangeFromCharIndex:(unint64_t)a3 afterChange:(id)a4 changeRange:(_NSRange *)a5
+- (id)nextChangeFromCharIndex:(unint64_t)index afterChange:(id)change changeRange:(_NSRange *)range
 {
   v9 = [(TSWPStorage *)self length];
-  if (v9 <= a3)
+  if (v9 <= index)
   {
-    v10 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v10 = v9;
+    indexCopy = v9;
   }
 
-  if (v9 >= a3)
+  if (v9 >= index)
   {
-    v11.location = a3;
+    v11.location = index;
   }
 
   else
@@ -11611,14 +11611,14 @@ LABEL_8:
     v11.location = v9;
   }
 
-  v11.length = v10 - v11.location;
+  v11.length = indexCopy - v11.location;
   TSWPChangeEnumerator::TSWPChangeEnumerator(v21, self, v11);
   v12 = 0;
   v13 = 0;
   v14 = 0x7FFFFFFFFFFFFFFFLL;
   while (TSWPChangeEnumerator::change(v21))
   {
-    v15 = !a4 || v13 == a4;
+    v15 = !change || v13 == change;
     v16 = !v15;
     v13 = TSWPChangeEnumerator::change(v21);
     v14 = TSWPChangeEnumerator::changeRange(v21);
@@ -11632,7 +11632,7 @@ LABEL_8:
   }
 
   TSWPChangeEnumerator::~TSWPChangeEnumerator(v21);
-  if (v13 == a4)
+  if (v13 == change)
   {
     v22.location = [(TSWPStorage *)self range];
     v22.length = v18;
@@ -11643,19 +11643,19 @@ LABEL_8:
     TSWPChangeEnumerator::~TSWPChangeEnumerator(v21);
   }
 
-  if (a5)
+  if (range)
   {
-    a5->location = v14;
-    a5->length = v12;
+    range->location = v14;
+    range->length = v12;
   }
 
   return v13;
 }
 
-- (id)previousChangeFromCharIndex:(unint64_t)a3 beforeChange:(id)a4 changeRange:(_NSRange *)a5
+- (id)previousChangeFromCharIndex:(unint64_t)index beforeChange:(id)change changeRange:(_NSRange *)range
 {
   v21.location = 0;
-  v21.length = a3;
+  v21.length = index;
   TSWPChangeEnumerator::TSWPChangeEnumerator(v20, self, v21);
   v9 = 0;
   v10 = 0;
@@ -11664,13 +11664,13 @@ LABEL_8:
   {
     v12 = TSWPChangeEnumerator::change(v20);
     v13 = TSWPChangeEnumerator::changeRange(v20);
-    if (v12 == a4)
+    if (v12 == change)
     {
       break;
     }
 
     v15 = v13;
-    if (v13 > a3)
+    if (v13 > index)
     {
       break;
     }
@@ -11699,40 +11699,40 @@ LABEL_8:
     TSWPChangeEnumerator::~TSWPChangeEnumerator(v20);
   }
 
-  if (a5)
+  if (range)
   {
-    a5->location = v11;
-    a5->length = v9;
+    range->location = v11;
+    range->length = v9;
   }
 
   return v10;
 }
 
-- (id)changeDetailsAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)changeDetailsAtCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  if ([(TSWPStorage *)self range]> a3 || (v7 = [(TSWPStorage *)self range], v7 + v8 < a3))
+  if ([(TSWPStorage *)self range]> index || (v7 = [(TSWPStorage *)self range], v7 + v8 < index))
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(ChangeTracking) changeDetailsAtCharIndex:outRange:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"];
     v17.location = [(TSWPStorage *)self range];
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:592 description:{@"charIndex %lu not within storage range %@", a3, NSStringFromRange(v17)}];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:592 description:{@"charIndex %lu not within storage range %@", index, NSStringFromRange(v17)}];
   }
 
-  v12 = [(TSWPStorage *)self changeAtCharIndex:a3 outRange:a4];
-  location = a4->location;
-  length = a4->length;
+  v12 = [(TSWPStorage *)self changeAtCharIndex:index outRange:range];
+  location = range->location;
+  length = range->length;
 
   return [(TSWPStorage *)self changeDetailsForChange:v12 withRange:location, length];
 }
 
-- (id)changeDetailsForChange:(id)a3 withRange:(_NSRange)a4
+- (id)changeDetailsForChange:(id)change withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3)
+  length = range.length;
+  location = range.location;
+  if (change)
   {
-    if (a4.length)
+    if (range.length)
     {
       goto LABEL_3;
     }
@@ -11740,26 +11740,26 @@ LABEL_8:
 
   else
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(ChangeTracking) changeDetailsForChange:withRange:]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 602, @"invalid nil value for '%s'", "change"}];
+    [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 602, @"invalid nil value for '%s'", "change"}];
     if (length)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(ChangeTracking) changeDetailsForChange:withRange:]"];
-  [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 603, @"Should have a change range greater than 0"}];
+  [currentHandler2 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 603, @"Should have a change range greater than 0"}];
 LABEL_3:
   v8 = [(TSWPStorage *)self substringWithRange:location, length];
   v9 = [v8 length];
   if (!v9)
   {
-    v18 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(ChangeTracking) changeDetailsForChange:withRange:]"];
-    [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 609, @"change text length should be greater than 0"}];
+    [currentHandler3 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorage_changeTracking.mm"), 609, @"change text length should be greater than 0"}];
     v20 = TSWPFullNameForCharacter(0, 0);
     goto LABEL_21;
   }
@@ -11798,7 +11798,7 @@ LABEL_13:
 LABEL_21:
     v21 = v20;
 LABEL_22:
-    if (([a3 isInsertion] & 1) == 0)
+    if (([change isInsertion] & 1) == 0)
     {
       goto LABEL_25;
     }
@@ -11823,7 +11823,7 @@ LABEL_29:
     }
   }
 
-  if ([a3 isInsertion])
+  if ([change isInsertion])
   {
     goto LABEL_29;
   }
@@ -11837,48 +11837,48 @@ LABEL_25:
 
   v25 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(TSWPBundle(), "localizedStringForKey:value:table:", @"Deleted: %@", &stru_287D36338, @"TSText", v8];
 LABEL_30:
-  v26 = [[TSWPChangeDetails alloc] initWithChange:a3 changeString:v25];
+  v26 = [[TSWPChangeDetails alloc] initWithChange:change changeString:v25];
 
   return v26;
 }
 
-- (_NSRange)rangeForTrackedChanges:(id)a3
+- (_NSRange)rangeForTrackedChanges:(id)changes
 {
-  v5 = [a3 range];
+  range = [changes range];
   v7 = v6;
-  if ([a3 isInsertionPoint])
+  if ([changes isInsertionPoint])
   {
-    v8 = [(TSWPStorage *)self rangeForSelectionWithInsertionSelection:a3];
-    if ([a3 start] == v8 + v9)
+    v8 = [(TSWPStorage *)self rangeForSelectionWithInsertionSelection:changes];
+    if ([changes start] == v8 + v9)
     {
-      if ([a3 start])
+      if ([changes start])
       {
-        v5 = [a3 start] - 1;
+        range = [changes start] - 1;
       }
 
       else
       {
-        v5 = 0;
+        range = 0;
       }
     }
   }
 
-  v10 = v5;
+  v10 = range;
   v11 = v7;
   result.length = v11;
   result.location = v10;
   return result;
 }
 
-- (BOOL)selectionContainsVisibleTrackedChanges:(id)a3
+- (BOOL)selectionContainsVisibleTrackedChanges:(id)changes
 {
-  v5 = [a3 isValid];
-  if (v5)
+  isValid = [changes isValid];
+  if (isValid)
   {
-    v5 = [(TSWPStorage *)self hasTrackedChanges];
-    if (v5)
+    isValid = [(TSWPStorage *)self hasTrackedChanges];
+    if (isValid)
     {
-      v6 = [(TSWPStorage *)self rangeForTrackedChanges:a3];
+      v6 = [(TSWPStorage *)self rangeForTrackedChanges:changes];
       v8 = v6 + v7;
       while (1)
       {
@@ -11920,30 +11920,30 @@ LABEL_30:
 
         if (v6 >= v8)
         {
-          LOBYTE(v5) = 0;
-          return v5;
+          LOBYTE(isValid) = 0;
+          return isValid;
         }
       }
 
-      LOBYTE(v5) = 1;
+      LOBYTE(isValid) = 1;
     }
   }
 
-  return v5;
+  return isValid;
 }
 
 - (void)changeViewSettingsDidChange
 {
-  v4 = [(TSWPStorage *)self range];
+  range = [(TSWPStorage *)self range];
 
-  [(TSWPStorage *)self p_didChangeRange:v4 delta:v3 broadcastKind:0, 0];
+  [(TSWPStorage *)self p_didChangeRange:range delta:v3 broadcastKind:0, 0];
 }
 
 - (BOOL)highlightsAllowed
 {
-  v3 = [(TSWPStorage *)self wpKind];
-  LOBYTE(v4) = (v3 & 0xFFFFFFFD) == 0 || v3 == 3;
-  if (v3 <= 3 && v3 != 1)
+  wpKind = [(TSWPStorage *)self wpKind];
+  LOBYTE(v4) = (wpKind & 0xFFFFFFFD) == 0 || wpKind == 3;
+  if (wpKind <= 3 && wpKind != 1)
   {
     objc_opt_class();
     [(TSWPStorage *)self parentInfo];
@@ -11975,27 +11975,27 @@ LABEL_30:
   return v4;
 }
 
-- (id)p_replacementsForSelection:(id)a3 withString:(id)a4 changeSession:(id)a5 shouldTrackDeletions:(BOOL)a6
+- (id)p_replacementsForSelection:(id)selection withString:(id)string changeSession:(id)session shouldTrackDeletions:(BOOL)deletions
 {
-  v9 = [MEMORY[0x277CBEB18] array];
-  if (a5)
+  array = [MEMORY[0x277CBEB18] array];
+  if (session)
   {
-    v14.location = [a3 range];
+    v14.location = [selection range];
     v14.length = v10;
     TSWPRangeVector::TSWPRangeVector(&v13, &v14);
   }
 
-  v11 = [[TSWPTextReplacement alloc] initWithSelection:a3 string:a4];
-  [v9 addObject:v11];
+  v11 = [[TSWPTextReplacement alloc] initWithSelection:selection string:string];
+  [array addObject:v11];
 
-  [v9 sortUsingComparator:&__block_literal_global_76];
-  return v9;
+  [array sortUsingComparator:&__block_literal_global_76];
+  return array;
 }
 
-- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)a3 changeSession:(id)a4 undoTransaction:(void *)a5
+- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)range changeSession:(id)session undoTransaction:(void *)transaction
 {
-  v26 = a3;
-  if (a3.length)
+  rangeCopy = range;
+  if (range.length)
   {
     v8 = 0;
     v9 = 1;
@@ -12007,45 +12007,45 @@ LABEL_30:
       if (v12)
       {
         v13 = v12;
-        TSWPAttributeArray::begin(v12, &v26, &v24);
-        TSWPAttributeArray::end(v13, &v26, v23);
+        TSWPAttributeArray::begin(v12, &rangeCopy, &v24);
+        TSWPAttributeArray::end(v13, &rangeCopy, v23);
         for (i = v25; i != v23[1]; i = ++v25)
         {
           v15 = v24->var4 + 16 * i;
           v16 = *(v15 + 1);
           if (v16)
           {
-            if ([(TSWPStorage *)self p_shouldInsertionSplitChange:*(v15 + 1) changeSession:a4])
+            if ([(TSWPStorage *)self p_shouldInsertionSplitChange:*(v15 + 1) changeSession:session])
             {
               v17 = TSWPAttributeArray::rangeForAttributeIndex(v24, v25);
-              if (v17 < v26.location)
+              if (v17 < rangeCopy.location)
               {
                 v19 = v17 + v18;
-                if (v17 + v18 > v26.length + v26.location)
+                if (v17 + v18 > rangeCopy.length + rangeCopy.location)
                 {
                   v20 = [v16 copyWithContext:{-[TSPObject context](self, "context")}];
-                  if (v26.length + v26.location <= v19)
+                  if (rangeCopy.length + rangeCopy.location <= v19)
                   {
                     v21 = v19;
                   }
 
                   else
                   {
-                    v21 = v26.length + v26.location;
+                    v21 = rangeCopy.length + rangeCopy.location;
                   }
 
-                  if (v26.length + v26.location >= v19)
+                  if (rangeCopy.length + rangeCopy.location >= v19)
                   {
                     v22 = v19;
                   }
 
                   else
                   {
-                    v22 = v26.length + v26.location;
+                    v22 = rangeCopy.length + rangeCopy.location;
                   }
 
-                  [(TSWPStorage *)self applyObject:v20 toCharRange:v22 forKind:v21 - v22 dolcContext:v11 undoTransaction:0, a5];
-                  [(TSWPStorage *)self applyObject:0 toCharRange:v26.location forKind:v26.length dolcContext:v11 undoTransaction:0, a5];
+                  [(TSWPStorage *)self applyObject:v20 toCharRange:v22 forKind:v21 - v22 dolcContext:v11 undoTransaction:0, transaction];
+                  [(TSWPStorage *)self applyObject:0 toCharRange:rangeCopy.location forKind:rangeCopy.length dolcContext:v11 undoTransaction:0, transaction];
                 }
               }
             }
@@ -12061,11 +12061,11 @@ LABEL_30:
   }
 }
 
-- (BOOL)p_shouldInsertionSplitChange:(id)a3 changeSession:(id)a4
+- (BOOL)p_shouldInsertionSplitChange:(id)change changeSession:(id)session
 {
-  if (a4)
+  if (session)
   {
-    return [a3 canMergeWithKind:1 session:?] ^ 1;
+    return [change canMergeWithKind:1 session:?] ^ 1;
   }
 
   else
@@ -12091,9 +12091,9 @@ LABEL_30:
     v4 = AssociatedObject;
     if (self->_broadcaster)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(TablesAdditions) unstashBroadcaster]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSWPStorage_TablesAdditions.mm"), 82, @"swapping in the stashed broadcaster, so the real one should be nil!"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSWPStorage_TablesAdditions.mm"), 82, @"swapping in the stashed broadcaster, so the real one should be nil!"}];
       broadcaster = self->_broadcaster;
       if (broadcaster)
       {
@@ -12115,9 +12115,9 @@ LABEL_30:
     v4 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v2, 0);
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorage(TablesAdditions) hyperlinkCellID]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSWPStorage_TablesAdditions.mm"), 101, @"cell attribute array should not be empty"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSWPStorage_TablesAdditions.mm"), 101, @"cell attribute array should not be empty"}];
     }
 
     v7 = v3->var4 + 16 * v4;
@@ -12143,10 +12143,10 @@ LABEL_30:
   }
 }
 
-- (void)setHyperlinkCellID:(id)a3
+- (void)setHyperlinkCellID:(id)d
 {
-  v4 = *&a3 & 0xFFFFFF;
-  if (([(TSWPStorage *)self hyperlinkCellID]& 0xFFFFFF) != (*&a3 & 0xFFFFFF))
+  v4 = *&d & 0xFFFFFF;
+  if (([(TSWPStorage *)self hyperlinkCellID]& 0xFFFFFF) != (*&d & 0xFFFFFF))
   {
     v5 = [(TSWPStorage *)self attributeArrayForKind:10 withCreate:1 undoTransaction:0];
     if (v5)
@@ -12162,13 +12162,13 @@ LABEL_30:
 
 - (BOOL)changesWithPageCount
 {
-  v3 = [(TSWPStorage *)self attachmentCount];
-  if (v3)
+  attachmentCount = [(TSWPStorage *)self attachmentCount];
+  if (attachmentCount)
   {
-    v4 = v3;
+    v4 = attachmentCount;
     if ([-[TSWPStorage attachmentAtAttachmentIndex:outCharIndex:](self attachmentAtAttachmentIndex:0 outCharIndex:{0), "changesWithPageCount"}])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(attachmentCount) = 1;
     }
 
     else
@@ -12187,19 +12187,19 @@ LABEL_30:
       }
 
       while (!v7);
-      LOBYTE(v3) = v6 < v4;
+      LOBYTE(attachmentCount) = v6 < v4;
     }
   }
 
-  return v3;
+  return attachmentCount;
 }
 
 - (BOOL)hasAttachmentsThatChangeWithPageNumberOrPageCount
 {
-  v3 = [(TSWPStorage *)self attachmentCount];
-  if (v3)
+  attachmentCount = [(TSWPStorage *)self attachmentCount];
+  if (attachmentCount)
   {
-    v4 = v3;
+    v4 = attachmentCount;
     v5 = 0;
     while (1)
     {
@@ -12211,15 +12211,15 @@ LABEL_30:
 
       if (v4 == ++v5)
       {
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(attachmentCount) = 0;
+        return attachmentCount;
       }
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(attachmentCount) = 1;
   }
 
-  return v3;
+  return attachmentCount;
 }
 
 @end

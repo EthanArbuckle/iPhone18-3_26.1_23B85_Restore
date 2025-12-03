@@ -1,19 +1,19 @@
 @interface FCCKMultiFetchQueryOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setKnownRecordIDsToEtags:(uint64_t)a1;
-- (void)setRecordIDs:(uint64_t)a1;
-- (void)setRecordSpecs:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
+- (void)setKnownRecordIDsToEtags:(uint64_t)etags;
+- (void)setRecordIDs:(uint64_t)ds;
+- (void)setRecordSpecs:(uint64_t)specs;
 @end
 
 @implementation FCCKMultiFetchQueryOperation
 
 - (BOOL)validateOperation
 {
-  v2 = self;
+  selfCopy = self;
   v21 = *MEMORY[0x1E69E9840];
   if (self && self->_database)
   {
@@ -33,7 +33,7 @@
     v20 = v10;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
 
-    if (v2)
+    if (selfCopy)
     {
       goto LABEL_5;
     }
@@ -43,13 +43,13 @@ LABEL_22:
     goto LABEL_6;
   }
 
-  if (!v2)
+  if (!selfCopy)
   {
     goto LABEL_22;
   }
 
 LABEL_5:
-  recordIDs = v2->_recordIDs;
+  recordIDs = selfCopy->_recordIDs;
 LABEL_6:
   if (![(NSArray *)recordIDs count]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -65,9 +65,9 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    recordSpecs = v2->_recordSpecs;
+    recordSpecs = selfCopy->_recordSpecs;
   }
 
   else
@@ -88,41 +88,41 @@ LABEL_6:
     v20 = v12;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
 
-    if (!v2)
+    if (!selfCopy)
     {
       goto LABEL_20;
     }
   }
 
-  else if (!v2)
+  else if (!selfCopy)
   {
     goto LABEL_20;
   }
 
-  v5 = v2->_database;
+  v5 = selfCopy->_database;
   if (v5)
   {
     v6 = v5;
-    v7 = v2->_recordIDs;
+    v7 = selfCopy->_recordIDs;
     if ([(NSArray *)v7 count])
     {
-      LOBYTE(v2) = [(NSArray *)v2->_recordSpecs count]!= 0;
+      LOBYTE(selfCopy) = [(NSArray *)selfCopy->_recordSpecs count]!= 0;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
 LABEL_20:
   v8 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (void)prepareOperation
@@ -167,12 +167,12 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
   location[16] = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v64 = [MEMORY[0x1E695DF70] array];
-    v63 = [MEMORY[0x1E695DF70] array];
-    v62 = [MEMORY[0x1E695DF70] array];
-    v61 = [MEMORY[0x1E695DF70] array];
-    v66 = [MEMORY[0x1E695DF70] array];
-    v65 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     [(NSArray *)self->_recordSpecs sortedArrayUsingComparator:&__block_literal_global_16_1];
     v77 = 0u;
     v78 = 0u;
@@ -195,13 +195,13 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
           v5 = *(*(&v75 + 1) + 8 * v4);
           if (v5)
           {
-            [v64 addObject:*(v5 + 16)];
+            [array addObject:*(v5 + 16)];
             v6 = *(v5 + 32);
           }
 
           else
           {
-            [v64 addObject:0];
+            [array addObject:0];
             v6 = 0;
           }
 
@@ -218,7 +218,7 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
             v10 = &stru_1F2DC7DC0;
           }
 
-          [v63 addObject:v10];
+          [array2 addObject:v10];
 
           if (v5)
           {
@@ -232,7 +232,7 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
 
           v12 = [v11 sortedArrayUsingSelector:sel_compare_];
           v13 = [v12 componentsJoinedByString:{@", "}];
-          [v62 addObject:v13];
+          [array3 addObject:v13];
 
           if (v5)
           {
@@ -245,7 +245,7 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
           }
 
           v15 = [MEMORY[0x1E696AD98] numberWithBool:v14 & 1];
-          [v61 addObject:v15];
+          [array4 addObject:v15];
 
           ++v4;
         }
@@ -259,8 +259,8 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
     }
 
     v17 = self->_knownRecordIDsToEtags;
-    v18 = [(NSDictionary *)v17 allKeys];
-    v19 = [v18 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [(NSDictionary *)v17 allKeys];
+    v19 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v74 = 0u;
     v72 = 0u;
@@ -281,9 +281,9 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
           }
 
           v24 = *(*(&v71 + 1) + 8 * i);
-          [v66 addObject:v24];
+          [array5 addObject:v24];
           v25 = [(NSDictionary *)self->_knownRecordIDsToEtags objectForKeyedSubscript:v24];
-          [v65 addObject:v25];
+          [array6 addObject:v25];
         }
 
         v21 = [v20 countByEnumeratingWithState:&v71 objects:v79 count:16];
@@ -293,38 +293,38 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
     }
 
     v26 = [(NSArray *)self->_recordIDs sortedArrayUsingSelector:sel_compare_];
-    v27 = [MEMORY[0x1E695DF70] array];
+    array7 = [MEMORY[0x1E695DF70] array];
     v28 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v26, @"recordIDs"];
-    [v27 addObject:v28];
+    [array7 addObject:v28];
 
-    v29 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v64, @"recordTypes"];
-    [v27 addObject:v29];
+    v29 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", array, @"recordTypes"];
+    [array7 addObject:v29];
 
-    v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v63, @"fetchFields"];
-    [v27 addObject:v30];
+    v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", array2, @"fetchFields"];
+    [array7 addObject:v30];
 
-    v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v62, @"requestedFields"];
-    [v27 addObject:v31];
+    v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", array3, @"requestedFields"];
+    [array7 addObject:v31];
 
-    v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v61, @"shortcut"];
-    [v27 addObject:v32];
+    v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", array4, @"shortcut"];
+    [array7 addObject:v32];
 
-    v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v66, @"knownRecordIDs"];
-    [v27 addObject:v33];
+    v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", array5, @"knownRecordIDs"];
+    [array7 addObject:v33];
 
-    v34 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v65, @"knownEtags"];
-    [v27 addObject:v34];
+    v34 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", array6, @"knownEtags"];
+    [array7 addObject:v34];
 
     v35 = MEMORY[0x1E696AE18];
     v36 = MEMORY[0x1E696AD98];
-    v37 = [(FCOperation *)self relativePriority];
+    relativePriority = [(FCOperation *)self relativePriority];
     v38 = 300;
-    if (!v37)
+    if (!relativePriority)
     {
       v38 = 200;
     }
 
-    if (v37 == -1)
+    if (relativePriority == -1)
     {
       v39 = 100;
     }
@@ -336,9 +336,9 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
 
     v40 = [v36 numberWithUnsignedInteger:v39];
     v41 = [v35 predicateWithFormat:@"%K == %@", @"priority", v40];
-    [v27 addObject:v41];
+    [array7 addObject:v41];
 
-    v42 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v27];
+    v42 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array7];
     v43 = [objc_alloc(MEMORY[0x1E695BA30]) initWithRecordType:@"MultiFetch" predicate:v42];
   }
 
@@ -361,14 +361,14 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
       objc_setProperty_nonatomic_copy(v45, v48, self->_edgeCacheHint, 448);
       *(v45 + 368) = self->_ignoreCache;
       *(v45 + 456) = self->_optimizationPolicy;
-      v49 = [(FCOperation *)self relativePriority];
+      relativePriority2 = [(FCOperation *)self relativePriority];
       v50 = 300;
-      if (!v49)
+      if (!relativePriority2)
       {
         v50 = 200;
       }
 
-      if (v49 == -1)
+      if (relativePriority2 == -1)
       {
         v50 = 100;
       }
@@ -387,7 +387,7 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
     location[3] = &unk_1E7C371F8;
     location[4] = self;
     v51 = [MEMORY[0x1E695DFD8] fc_set:location];
-    v52 = [v51 allObjects];
+    allObjects = [v51 allObjects];
   }
 
   else
@@ -400,7 +400,7 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
       objc_setProperty_nonatomic_copy(v45, v58, 0, 480);
       objc_setProperty_nonatomic_copy(v45, v59, 0, 448);
       v47 = 0;
-      v52 = 0;
+      allObjects = 0;
       *(v45 + 368) = 0;
       *(v45 + 456) = 0;
       *(v45 + 464) = 0;
@@ -408,12 +408,12 @@ id __48__FCCKMultiFetchQueryOperation_prepareOperation__block_invoke(uint64_t a1
 
     else
     {
-      v52 = 0;
+      allObjects = 0;
       v47 = 1;
     }
   }
 
-  v54 = [v52 sortedArrayUsingSelector:sel_compare_];
+  v54 = [allObjects sortedArrayUsingSelector:sel_compare_];
   if (!v47)
   {
     objc_setProperty_nonatomic_copy(v45, v53, v54, 408);
@@ -577,19 +577,19 @@ void __48__FCCKMultiFetchQueryOperation_performOperation__block_invoke_2(uint64_
   [*(a1 + 32) finishedPerformingOperationWithError:v10];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     queryCompletionHandler = self->_queryCompletionHandler;
     if (queryCompletionHandler)
     {
-      v7 = v4;
+      v7 = errorCopy;
       v6 = queryCompletionHandler;
       v6[2](v6, self->_resultMissingRecordIDs, v7);
 
-      v4 = v7;
+      errorCopy = v7;
     }
   }
 }
@@ -626,35 +626,35 @@ LABEL_4:
   return v9;
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((database + 376), a2);
   }
 }
 
-- (void)setRecordIDs:(uint64_t)a1
+- (void)setRecordIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    objc_storeStrong((a1 + 384), a2);
+    objc_storeStrong((ds + 384), a2);
   }
 }
 
-- (void)setRecordSpecs:(uint64_t)a1
+- (void)setRecordSpecs:(uint64_t)specs
 {
-  if (a1)
+  if (specs)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((specs + 392), a2);
   }
 }
 
-- (void)setKnownRecordIDsToEtags:(uint64_t)a1
+- (void)setKnownRecordIDsToEtags:(uint64_t)etags
 {
-  if (a1)
+  if (etags)
   {
-    objc_storeStrong((a1 + 400), a2);
+    objc_storeStrong((etags + 400), a2);
   }
 }
 

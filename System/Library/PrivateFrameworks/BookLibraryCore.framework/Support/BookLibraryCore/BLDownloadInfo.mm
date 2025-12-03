@@ -1,5 +1,5 @@
 @interface BLDownloadInfo
-+ (BOOL)_shouldBeDiscretionary:(id)a3;
++ (BOOL)_shouldBeDiscretionary:(id)discretionary;
 + (NSMutableSet)forcedNonDiscretionaryAssetIDs;
 - (id)createDownload;
 - (unint64_t)fileSize;
@@ -23,15 +23,15 @@
 - (id)createDownload
 {
   v3 = objc_opt_new();
-  v4 = [(BLDownloadInfo *)self managedObjectContext];
+  managedObjectContext = [(BLDownloadInfo *)self managedObjectContext];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009CE6C;
   v8[3] = &unk_10011D1A8;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  [v4 performBlockAndWait:v8];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v8];
 
   v6 = v5;
   return v5;
@@ -40,42 +40,42 @@
 - (unint64_t)fileSize
 {
   v2 = [(BLDownloadInfo *)self size];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (void)forceNonDiscretionary
 {
-  v3 = [(BLDownloadInfo *)self isAutomaticDownload];
+  isAutomaticDownload = [(BLDownloadInfo *)self isAutomaticDownload];
 
-  if (v3)
+  if (isAutomaticDownload)
   {
     [(BLDownloadInfo *)self setIsAutomaticDownload:&__kCFBooleanFalse];
     v5 = +[BLDownloadInfo forcedNonDiscretionaryAssetIDs];
-    v4 = [(BLDownloadInfo *)self storeIdentifier];
-    [v5 addObject:v4];
+    storeIdentifier = [(BLDownloadInfo *)self storeIdentifier];
+    [v5 addObject:storeIdentifier];
   }
 }
 
-+ (BOOL)_shouldBeDiscretionary:(id)a3
++ (BOOL)_shouldBeDiscretionary:(id)discretionary
 {
-  v4 = a3;
-  v5 = [v4 isAutomaticDownload];
-  v6 = [v5 BOOLValue];
+  discretionaryCopy = discretionary;
+  isAutomaticDownload = [discretionaryCopy isAutomaticDownload];
+  bOOLValue = [isAutomaticDownload BOOLValue];
 
-  v8 = [v4 isRestore];
-  v7 = [v8 BOOLValue];
+  isRestore = [discretionaryCopy isRestore];
+  bOOLValue2 = [isRestore BOOLValue];
 
-  LOBYTE(v8) = 0;
-  if (v6 && (v7 & 1) == 0)
+  LOBYTE(isRestore) = 0;
+  if (bOOLValue && (bOOLValue2 & 1) == 0)
   {
-    v9 = [a1 forcedNonDiscretionaryAssetIDs];
-    v10 = [v4 storeIdentifier];
-    LODWORD(v8) = [v9 containsObject:v10] ^ 1;
+    forcedNonDiscretionaryAssetIDs = [self forcedNonDiscretionaryAssetIDs];
+    storeIdentifier = [discretionaryCopy storeIdentifier];
+    LODWORD(isRestore) = [forcedNonDiscretionaryAssetIDs containsObject:storeIdentifier] ^ 1;
   }
 
-  return v8;
+  return isRestore;
 }
 
 @end

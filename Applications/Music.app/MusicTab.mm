@@ -1,10 +1,10 @@
 @interface MusicTab
-- (_TtC5Music8MusicTab)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 viewControllerProvider:(id)a6;
+- (_TtC5Music8MusicTab)initWithTitle:(id)title image:(id)image identifier:(id)identifier viewControllerProvider:(id)provider;
 @end
 
 @implementation MusicTab
 
-- (_TtC5Music8MusicTab)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 viewControllerProvider:(id)a6
+- (_TtC5Music8MusicTab)initWithTitle:(id)title image:(id)image identifier:(id)identifier viewControllerProvider:(id)provider
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

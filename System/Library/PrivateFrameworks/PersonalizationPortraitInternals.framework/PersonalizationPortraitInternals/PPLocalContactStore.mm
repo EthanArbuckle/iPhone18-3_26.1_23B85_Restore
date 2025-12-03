@@ -1,18 +1,18 @@
 @interface PPLocalContactStore
 + (id)defaultStore;
-- (BOOL)iterContactNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5;
+- (BOOL)iterContactNameRecordsForClient:(id)client error:(id *)error block:(id)block;
 - (PPLocalContactStore)init;
-- (PPLocalContactStore)initWithStorage:(id)a3 namedEntityStoreOverride:(id)a4;
-- (double)similarityForNamedEntity:(id)a3 nameRecord:(id)a4;
-- (id)_incompleteContactFromContactsRecord:(id)a3;
-- (id)_scoredContactFromContactsRecord:(id)a3 score:(double)a4;
-- (id)contactNameRecordChangesForClient:(id)a3 error:(id *)a4;
-- (id)rankedContactsWithQuery:(id)a3 error:(id *)a4;
-- (id)resolveContactsForNamedEntities:(id)a3;
-- (id)upcomingRelevantContactsForQuery:(id)a3 error:(id *)a4;
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4;
-- (void)rebuildCachedSignificantContactHandlesWithShouldContinue:(id)a3;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (PPLocalContactStore)initWithStorage:(id)storage namedEntityStoreOverride:(id)override;
+- (double)similarityForNamedEntity:(id)entity nameRecord:(id)record;
+- (id)_incompleteContactFromContactsRecord:(id)record;
+- (id)_scoredContactFromContactsRecord:(id)record score:(double)score;
+- (id)contactNameRecordChangesForClient:(id)client error:(id *)error;
+- (id)rankedContactsWithQuery:(id)query error:(id *)error;
+- (id)resolveContactsForNamedEntities:(id)entities;
+- (id)upcomingRelevantContactsForQuery:(id)query error:(id *)error;
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier;
+- (void)rebuildCachedSignificantContactHandlesWithShouldContinue:(id)continue;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPLocalContactStore
@@ -43,22 +43,22 @@
   return v5;
 }
 
-- (void)rebuildCachedSignificantContactHandlesWithShouldContinue:(id)a3
+- (void)rebuildCachedSignificantContactHandlesWithShouldContinue:(id)continue
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  continueCopy = continue;
   v5 = +[PPPeopleSuggester sharedInstance];
-  v6 = [v5 rankedContactIdentifiers];
+  rankedContactIdentifiers = [v5 rankedContactIdentifiers];
 
-  if (v4[2](v4))
+  if (continueCopy[2](continueCopy))
   {
     v7 = +[PPConfiguration sharedInstance];
-    v8 = [v7 maxRelevantHighlightContacts];
+    maxRelevantHighlightContacts = [v7 maxRelevantHighlightContacts];
 
-    v9 = [v6 count];
-    if (v9 >= v8)
+    v9 = [rankedContactIdentifiers count];
+    if (v9 >= maxRelevantHighlightContacts)
     {
-      v10 = v8;
+      v10 = maxRelevantHighlightContacts;
     }
 
     else
@@ -67,13 +67,13 @@
     }
 
     v11 = objc_alloc(MEMORY[0x277CBEB98]);
-    v12 = [v6 _pas_proxySubarrayWithRange:{0, v10}];
+    v12 = [rankedContactIdentifiers _pas_proxySubarrayWithRange:{0, v10}];
     v13 = [v11 initWithArray:v12];
 
     v14 = objc_opt_new();
     v15 = objc_opt_new();
-    v16 = [v13 allObjects];
-    [v15 setMatchingIdentifiers:v16];
+    allObjects = [v13 allObjects];
+    [v15 setMatchingIdentifiers:allObjects];
 
     v17 = +[PPLocalContactStore defaultStore];
     v63 = 0;
@@ -94,13 +94,13 @@
       v47 = MEMORY[0x277CBEBF8];
     }
 
-    if (v4[2](v4))
+    if (continueCopy[2](continueCopy))
     {
       v43 = v19;
       v44 = v15;
       v45 = v13;
-      v42 = self;
-      v46 = v6;
+      selfCopy = self;
+      v46 = rankedContactIdentifiers;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
@@ -124,8 +124,8 @@
             v56 = 0u;
             v57 = 0u;
             v58 = 0u;
-            v23 = [v22 emailAddresses];
-            v24 = [v23 countByEnumeratingWithState:&v55 objects:v65 count:16];
+            emailAddresses = [v22 emailAddresses];
+            v24 = [emailAddresses countByEnumeratingWithState:&v55 objects:v65 count:16];
             if (v24)
             {
               v25 = v24;
@@ -136,17 +136,17 @@
                 {
                   if (*v56 != v26)
                   {
-                    objc_enumerationMutation(v23);
+                    objc_enumerationMutation(emailAddresses);
                   }
 
                   v28 = MEMORY[0x277CFE080];
-                  v29 = [*(*(&v55 + 1) + 8 * j) value];
-                  v30 = [v28 normalizedStringFromContactString:v29];
+                  value = [*(*(&v55 + 1) + 8 * j) value];
+                  v30 = [v28 normalizedStringFromContactString:value];
 
                   [v14 addObject:v30];
                 }
 
-                v25 = [v23 countByEnumeratingWithState:&v55 objects:v65 count:16];
+                v25 = [emailAddresses countByEnumeratingWithState:&v55 objects:v65 count:16];
               }
 
               while (v25);
@@ -156,8 +156,8 @@
             v54 = 0u;
             v51 = 0u;
             v52 = 0u;
-            v31 = [v22 phoneNumbers];
-            v32 = [v31 countByEnumeratingWithState:&v51 objects:v64 count:16];
+            phoneNumbers = [v22 phoneNumbers];
+            v32 = [phoneNumbers countByEnumeratingWithState:&v51 objects:v64 count:16];
             if (v32)
             {
               v33 = v32;
@@ -168,17 +168,17 @@
                 {
                   if (*v52 != v34)
                   {
-                    objc_enumerationMutation(v31);
+                    objc_enumerationMutation(phoneNumbers);
                   }
 
                   v36 = MEMORY[0x277CFE080];
-                  v37 = [*(*(&v51 + 1) + 8 * k) value];
-                  v38 = [v36 normalizedStringFromContactString:v37];
+                  value2 = [*(*(&v51 + 1) + 8 * k) value];
+                  v38 = [v36 normalizedStringFromContactString:value2];
 
                   [v14 addObject:v38];
                 }
 
-                v33 = [v31 countByEnumeratingWithState:&v51 objects:v64 count:16];
+                v33 = [phoneNumbers countByEnumeratingWithState:&v51 objects:v64 count:16];
               }
 
               while (v33);
@@ -191,11 +191,11 @@
         while (v50);
       }
 
-      if (v4[2](v4))
+      if (continueCopy[2](continueCopy))
       {
-        [(PPContactStorage *)v42->_contactStorage setCachedSignificantContactHandles:v14];
+        [(PPContactStorage *)selfCopy->_contactStorage setCachedSignificantContactHandles:v14];
         v13 = v45;
-        v6 = v46;
+        rankedContactIdentifiers = v46;
         v15 = v44;
         v19 = v43;
 LABEL_41:
@@ -205,7 +205,7 @@ LABEL_41:
 
       v39 = pp_contacts_log_handle();
       v13 = v45;
-      v6 = v46;
+      rankedContactIdentifiers = v46;
       v15 = v44;
       v19 = v43;
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -243,42 +243,42 @@ LABEL_42:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   v7 = pp_contacts_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138739971;
-    v12 = v5;
+    v12 = feedbackCopy;
     _os_log_debug_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEBUG, "Contact feedback received: %{sensitive}@", &v11, 0xCu);
   }
 
-  v8 = [v5 feedbackItems];
-  v9 = [v8 count];
+  feedbackItems = [feedbackCopy feedbackItems];
+  v9 = [feedbackItems count];
 
   if (v9)
   {
-    [PPFeedbackStorage logFeedback:v5 domain:4 domainStatus:2 inBackground:0];
+    [PPFeedbackStorage logFeedback:feedbackCopy domain:4 domainStatus:2 inBackground:0];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contactNameRecordChangesForClient:(id)a3 error:(id *)a4
+- (id)contactNameRecordChangesForClient:(id)client error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   contactStorage = self->_contactStorage;
   v25 = 0;
-  v8 = [(PPContactStorage *)contactStorage contactsChangeHistoryForClient:v6 error:&v25];
+  v8 = [(PPContactStorage *)contactStorage contactsChangeHistoryForClient:clientCopy error:&v25];
   v9 = v25;
   if (v8)
   {
@@ -297,24 +297,24 @@ LABEL_42:
         _os_log_impl(&dword_23224A000, v14, OS_LOG_TYPE_DEFAULT, "Contacts change history truncated", buf, 2u);
       }
 
-      [(PPContactStorage *)self->_contactStorage clearChangeHistoryForClient:v6 historyResult:v8];
+      [(PPContactStorage *)self->_contactStorage clearChangeHistoryForClient:clientCopy historyResult:v8];
       v15 = [MEMORY[0x277D3A368] contactNameRecordChangeResultWithChanges:0 changesTruncated:1];
     }
 
     else if (v11)
     {
       [PPContactScorer scoreContactNameRecords:v11];
-      [(PPContactStorage *)self->_contactStorage clearChangeHistoryForClient:v6 historyResult:v8];
+      [(PPContactStorage *)self->_contactStorage clearChangeHistoryForClient:clientCopy historyResult:v8];
       v18 = [v11 _pas_mappedArrayWithTransform:&__block_literal_global_127];
       v15 = [MEMORY[0x277D3A368] contactNameRecordChangeResultWithChanges:v18 changesTruncated:0];
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v19 = v12;
-        *a4 = v13;
+        *error = v13;
       }
 
       v20 = pp_contacts_log_handle();
@@ -339,11 +339,11 @@ LABEL_42:
       _os_log_impl(&dword_23224A000, v16, OS_LOG_TYPE_DEFAULT, "failed to load CN change history during changes call: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v9;
       v15 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -357,14 +357,14 @@ LABEL_42:
   return v15;
 }
 
-- (BOOL)iterContactNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterContactNameRecordsForClient:(id)client error:(id *)error block:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  clientCopy = client;
+  blockCopy = block;
   contactStorage = self->_contactStorage;
   v26 = 0;
-  v11 = [(PPContactStorage *)contactStorage contactsChangeHistoryForClient:v8 error:&v26];
+  v11 = [(PPContactStorage *)contactStorage contactsChangeHistoryForClient:clientCopy error:&v26];
   v12 = v26;
   if (!v11)
   {
@@ -376,10 +376,10 @@ LABEL_42:
       _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEFAULT, "PPLocalContactStore: failed to load CN change history during full name load: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -389,7 +389,7 @@ LABEL_42:
   v23[1] = 3221225472;
   v23[2] = __67__PPLocalContactStore_iterContactNameRecordsForClient_error_block___block_invoke;
   v23[3] = &unk_278972788;
-  v16 = v9;
+  v16 = blockCopy;
   v24 = v16;
   v17 = [(PPContactStorage *)v15 iterAllNameRecordsFromAllSourcesWithError:&v25 block:v23];
   v18 = v25;
@@ -397,7 +397,7 @@ LABEL_42:
   {
     if (v11)
     {
-      [(PPContactStorage *)self->_contactStorage clearChangeHistoryForClient:v8 historyResult:v11];
+      [(PPContactStorage *)self->_contactStorage clearChangeHistoryForClient:clientCopy historyResult:v11];
     }
   }
 
@@ -411,10 +411,10 @@ LABEL_42:
       _os_log_error_impl(&dword_23224A000, v19, OS_LOG_TYPE_ERROR, "PPLocalContactStore: failed to load internal name records: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v18;
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -434,34 +434,34 @@ void __67__PPLocalContactStore_iterContactNameRecordsForClient_error_block___blo
   (*(v7 + 16))(v7, v8, a3);
 }
 
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v7 = pp_contacts_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = [v5 count];
+    v10 = [identifiersCopy count];
     v11 = 2112;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPLocalContactStore: feedbackDisambiguationResultWithChoicesIdentifiers choice count: %tu chose: %@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)upcomingRelevantContactsForQuery:(id)a3 error:(id *)a4
+- (id)upcomingRelevantContactsForQuery:(id)query error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = objc_opt_new();
-  v8 = [v6 startDate];
-  [v7 setFromDate:v8];
+  startDate = [queryCopy startDate];
+  [v7 setFromDate:startDate];
 
-  v9 = [v6 endDate];
-  [v7 setToDate:v9];
+  endDate = [queryCopy endDate];
+  [v7 setToDate:endDate];
 
   [v7 setMatchCategory:1];
   v10 = objc_autoreleasePoolPush();
@@ -469,11 +469,11 @@ void __67__PPLocalContactStore_iterContactNameRecordsForClient_error_block___blo
   objc_autoreleasePoolPop(v10);
   [v7 setMatchingCategories:v11];
 
-  v12 = [v6 sourceBundleIds];
-  [v7 setMatchingSourceBundleIds:v12];
+  sourceBundleIds = [queryCopy sourceBundleIds];
+  [v7 setMatchingSourceBundleIds:sourceBundleIds];
 
   [v7 setLimit:50];
-  v13 = [(PPLocalNamedEntityStore *)self->_namedEntityStore rankedNamedEntitiesWithQuery:v7 error:a4];
+  v13 = [(PPLocalNamedEntityStore *)self->_namedEntityStore rankedNamedEntitiesWithQuery:v7 error:error];
   v14 = v13;
   if (v13)
   {
@@ -564,10 +564,10 @@ uint64_t __62__PPLocalContactStore_upcomingRelevantContactsForQuery_error___bloc
   return [v4 reverseCompareDouble:v7 withDouble:v9];
 }
 
-- (id)resolveContactsForNamedEntities:(id)a3
+- (id)resolveContactsForNamedEntities:(id)entities
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = objc_opt_new();
   contactStorage = self->_contactStorage;
   v18 = 0;
@@ -575,11 +575,11 @@ uint64_t __62__PPLocalContactStore_upcomingRelevantContactsForQuery_error___bloc
   v14[1] = 3221225472;
   v14[2] = __55__PPLocalContactStore_resolveContactsForNamedEntities___block_invoke;
   v14[3] = &unk_278972738;
-  v7 = v4;
+  v7 = entitiesCopy;
   v15 = v7;
   v8 = v5;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   LOBYTE(contactStorage) = [(PPContactStorage *)contactStorage iterAllNameRecordsFromAllSourcesWithError:&v18 block:v14];
   v9 = v18;
   if (contactStorage)
@@ -714,43 +714,43 @@ LABEL_20:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_scoredContactFromContactsRecord:(id)a3 score:(double)a4
+- (id)_scoredContactFromContactsRecord:(id)record score:(double)score
 {
   v6 = MEMORY[0x277D3A488];
-  v7 = a3;
+  recordCopy = record;
   v8 = [v6 alloc];
-  v9 = [(PPLocalContactStore *)self _incompleteContactFromContactsRecord:v7];
+  v9 = [(PPLocalContactStore *)self _incompleteContactFromContactsRecord:recordCopy];
 
-  v10 = [v8 initWithContact:v9 scoredPhoneNumbers:MEMORY[0x277CBEBF8] scoredEmailAddresses:MEMORY[0x277CBEBF8] scoredSocialProfiles:MEMORY[0x277CBEBF8] scoredPostalAddresses:MEMORY[0x277CBEBF8] score:0 flags:a4];
+  v10 = [v8 initWithContact:v9 scoredPhoneNumbers:MEMORY[0x277CBEBF8] scoredEmailAddresses:MEMORY[0x277CBEBF8] scoredSocialProfiles:MEMORY[0x277CBEBF8] scoredPostalAddresses:MEMORY[0x277CBEBF8] score:0 flags:score];
 
   return v10;
 }
 
-- (id)_incompleteContactFromContactsRecord:(id)a3
+- (id)_incompleteContactFromContactsRecord:(id)record
 {
   v3 = MEMORY[0x277D3A358];
-  v4 = a3;
+  recordCopy = record;
   v5 = [v3 alloc];
-  v6 = [v4 sourceIdentifier];
-  v7 = [v4 firstName];
-  v8 = [v4 middleName];
-  v9 = [v4 lastName];
-  v10 = [v4 nickname];
-  v11 = [v4 localizedFullName];
+  sourceIdentifier = [recordCopy sourceIdentifier];
+  firstName = [recordCopy firstName];
+  middleName = [recordCopy middleName];
+  lastName = [recordCopy lastName];
+  nickname = [recordCopy nickname];
+  localizedFullName = [recordCopy localizedFullName];
 
-  v12 = [v5 initWithIdentifier:v6 source:1 namePrefix:0 givenName:v7 middleName:v8 familyName:v9 nameSuffix:0 nickname:v10 localizedFullName:v11 organizationName:0 jobTitle:0 birthday:0 nonGregorianBirthday:0 phoneNumbers:0 emailAddresses:0 socialProfiles:0 postalAddresses:0];
+  v12 = [v5 initWithIdentifier:sourceIdentifier source:1 namePrefix:0 givenName:firstName middleName:middleName familyName:lastName nameSuffix:0 nickname:nickname localizedFullName:localizedFullName organizationName:0 jobTitle:0 birthday:0 nonGregorianBirthday:0 phoneNumbers:0 emailAddresses:0 socialProfiles:0 postalAddresses:0];
 
   return v12;
 }
 
-- (double)similarityForNamedEntity:(id)a3 nameRecord:(id)a4
+- (double)similarityForNamedEntity:(id)entity nameRecord:(id)record
 {
-  v5 = a4;
-  v6 = [a3 item];
-  v7 = [v6 name];
-  v8 = [v7 localizedLowercaseString];
+  recordCopy = record;
+  item = [entity item];
+  name = [item name];
+  localizedLowercaseString = [name localizedLowercaseString];
   v9 = *MEMORY[0x277CBE768];
-  v10 = [v8 stringByApplyingTransform:*MEMORY[0x277CBE768] reverse:0];
+  v10 = [localizedLowercaseString stringByApplyingTransform:*MEMORY[0x277CBE768] reverse:0];
   v11 = v10;
   if (v10)
   {
@@ -765,10 +765,10 @@ LABEL_20:
   v13 = v12;
 
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
-  v15 = [v5 firstName];
-  v16 = [v5 lastName];
+  firstName = [recordCopy firstName];
+  lastName = [recordCopy lastName];
 
-  v17 = [v14 initWithFormat:@"%@ %@", v15, v16];
+  v17 = [v14 initWithFormat:@"%@ %@", firstName, lastName];
   v18 = [v17 stringByApplyingTransform:v9 reverse:0];
   v19 = v18;
   if (v18)
@@ -789,36 +789,36 @@ LABEL_20:
   return v23;
 }
 
-- (id)rankedContactsWithQuery:(id)a3 error:(id *)a4
+- (id)rankedContactsWithQuery:(id)query error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 hasNoConstraints])
+  queryCopy = query;
+  if ([queryCopy hasNoConstraints])
   {
-    a4 = [PPContactScorer mostRelevantContactsWithStore:self];
+    error = [PPContactScorer mostRelevantContactsWithStore:self];
   }
 
-  else if ([v6 onlyQueryMostRelevantContacts])
+  else if ([queryCopy onlyQueryMostRelevantContacts])
   {
-    v7 = [v6 matchingName];
-    v8 = [v7 length];
+    matchingName = [queryCopy matchingName];
+    v8 = [matchingName length];
 
     if (v8)
     {
-      v9 = [v6 matchingName];
-      a4 = [PPContactScorer mostRelevantContactsWithName:v9 store:self];
+      matchingName2 = [queryCopy matchingName];
+      error = [PPContactScorer mostRelevantContactsWithName:matchingName2 store:self];
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v11 = MEMORY[0x277CCA9B8];
         v12 = *MEMORY[0x277D3A580];
         v21 = *MEMORY[0x277D3A588];
         v22[0] = @"PPLocalContactStore rankedContactsWithQuery passed PPContactQuery with onlyQueryMostRelevantContacts and an unsupported matching property";
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-        *a4 = [v11 errorWithDomain:v12 code:8 userInfo:v13];
+        *error = [v11 errorWithDomain:v12 code:8 userInfo:v13];
       }
 
       v14 = pp_default_log_handle();
@@ -829,36 +829,36 @@ LABEL_20:
         _os_log_fault_impl(&dword_23224A000, v14, OS_LOG_TYPE_FAULT, "%@", &v19, 0xCu);
       }
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    v10 = [(PPLocalContactStore *)self contactsWithQuery:v6 error:a4];
+    v10 = [(PPLocalContactStore *)self contactsWithQuery:queryCopy error:error];
     if (v10)
     {
-      a4 = [PPContactScorer scoredContactsWithContacts:v10];
+      error = [PPContactScorer scoredContactsWithContacts:v10];
     }
 
-    else if (a4)
+    else if (error)
     {
       v15 = pp_contacts_log_handle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v18 = *a4;
+        v18 = *error;
         v19 = 138412290;
         v20 = v18;
         _os_log_error_impl(&dword_23224A000, v15, OS_LOG_TYPE_ERROR, "rankedContactsWithQuery: %@", &v19, 0xCu);
       }
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 - (PPLocalContactStore)init
@@ -876,35 +876,35 @@ LABEL_20:
     if (v4)
     {
       self = [(PPLocalContactStore *)self initWithStorage:v4 namedEntityStoreOverride:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PPLocalContactStore)initWithStorage:(id)a3 namedEntityStoreOverride:(id)a4
+- (PPLocalContactStore)initWithStorage:(id)storage namedEntityStoreOverride:(id)override
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  overrideCopy = override;
   v12.receiver = self;
   v12.super_class = PPLocalContactStore;
   v9 = [(PPLocalContactStore *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStorage, a3);
-    objc_storeStrong(&v10->_namedEntityStore, a4);
+    objc_storeStrong(&v9->_contactStorage, storage);
+    objc_storeStrong(&v10->_namedEntityStore, override);
   }
 
   return v10;

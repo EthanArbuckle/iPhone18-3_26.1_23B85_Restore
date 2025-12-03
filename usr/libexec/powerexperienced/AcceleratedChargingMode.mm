@@ -1,7 +1,7 @@
 @interface AcceleratedChargingMode
 + (id)powerModeInstance;
 - (AcceleratedChargingMode)init;
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4;
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context;
 - (void)enterPowerMode;
 - (void)exitPowerMode;
 @end
@@ -29,9 +29,9 @@
     [(PowerModeObjImpl *)self setAppliesPowerTarget:1];
   }
 
-  v6 = self;
+  selfCopy = self;
 
-  return v6;
+  return selfCopy;
 }
 
 + (id)powerModeInstance
@@ -46,21 +46,21 @@
   return v3;
 }
 
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 objectForKeyedSubscript:@"kPluggedInContext"];
-  v52 = [v8 BOOLValue];
+  contextCopy = context;
+  hintsCopy = hints;
+  v8 = [contextCopy objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v8 BOOLValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"kBatteryLevelContext"];
-  v49 = [v9 intValue];
+  v9 = [contextCopy objectForKeyedSubscript:@"kBatteryLevelContext"];
+  intValue = [v9 intValue];
 
-  v50 = v6;
-  v10 = [v6 objectForKeyedSubscript:@"kLockStateContext"];
+  v50 = contextCopy;
+  v10 = [contextCopy objectForKeyedSubscript:@"kLockStateContext"];
   v11 = [v10 BOOLValue] ^ 1;
 
-  v12 = self;
+  selfCopy = self;
   v13 = [(PowerModeObjImpl *)self log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -69,33 +69,33 @@
 
   v48 = v11;
 
-  v14 = [v7 objectForKeyedSubscript:@"Display"];
-  v15 = [v14 state];
-  v16 = [v7 objectForKeyedSubscript:@"CarPlay"];
+  v14 = [hintsCopy objectForKeyedSubscript:@"Display"];
+  state = [v14 state];
+  v16 = [hintsCopy objectForKeyedSubscript:@"CarPlay"];
 
-  v17 = [v16 state];
-  v18 = [v7 objectForKeyedSubscript:@"AudioSession"];
+  state2 = [v16 state];
+  v18 = [hintsCopy objectForKeyedSubscript:@"AudioSession"];
 
-  v19 = [v18 state];
-  v20 = [v7 objectForKeyedSubscript:@"PhoneCall"];
+  state3 = [v18 state];
+  v20 = [hintsCopy objectForKeyedSubscript:@"PhoneCall"];
 
-  v21 = [v20 state];
-  v22 = [v7 objectForKeyedSubscript:@"OnenessSession"];
+  state4 = [v20 state];
+  v22 = [hintsCopy objectForKeyedSubscript:@"OnenessSession"];
 
-  v23 = [v22 state];
-  v24 = [v7 objectForKeyedSubscript:@"USBDeviceMode"];
+  state5 = [v22 state];
+  v24 = [hintsCopy objectForKeyedSubscript:@"USBDeviceMode"];
 
-  v25 = [v24 state];
-  v26 = [v7 objectForKeyedSubscript:@"DataMigrationInProgress"];
+  state6 = [v24 state];
+  v26 = [hintsCopy objectForKeyedSubscript:@"DataMigrationInProgress"];
 
   v51 = v26;
-  v27 = [v26 state];
-  v28 = v27;
+  state7 = [v26 state];
+  v28 = state7;
   v29 = 1;
-  v47 = v15;
-  if (v15 == 101 || v17 == 1)
+  v47 = state;
+  if (state == 101 || state2 == 1)
   {
-    v30 = v12;
+    v30 = selfCopy;
     v31 = v50;
 LABEL_20:
     if (![(PowerModeObjImpl *)v30 state])
@@ -105,7 +105,7 @@ LABEL_20:
 
     v44 = v28;
     v36 = 0;
-    LOBYTE(v35) = 0;
+    LOBYTE(shortChargeExpected) = 0;
     [(PowerModeObjImpl *)v30 log];
     v37 = LABEL_25:;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -122,9 +122,9 @@ LABEL_20:
       v59 = 1024;
       v60 = v48;
       v61 = 1024;
-      v62 = v17 == 1;
+      v62 = state2 == 1;
       v63 = 1024;
-      v64 = v52;
+      v64 = bOOLValue;
       v65 = 1024;
       v66 = v45 == 1;
       v67 = 2112;
@@ -132,9 +132,9 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "evaluatePowerMode: %@: %d display %d unlocked %d, carPlay %d, pluggedIn %d, dataMigrationInProgress %d, batterylevel %@", buf, 0x3Au);
     }
 
-    if (v35)
+    if (shortChargeExpected)
     {
-      LOBYTE(v35) = 1;
+      LOBYTE(shortChargeExpected) = 1;
       goto LABEL_41;
     }
 
@@ -148,12 +148,12 @@ LABEL_20:
       v41 = 1;
     }
 
-    if (v49 > 50)
+    if (intValue > 50)
     {
       v41 = 5;
     }
 
-    if (!v52)
+    if (!bOOLValue)
     {
       v41 = 4;
     }
@@ -170,20 +170,20 @@ LABEL_20:
 
     [(PowerModeObjImpl *)v30 setExitReason:v42];
 LABEL_40:
-    LOBYTE(v35) = 0;
+    LOBYTE(shortChargeExpected) = 0;
     goto LABEL_41;
   }
 
-  v30 = v12;
+  v30 = selfCopy;
   v31 = v50;
-  if (v19 == 1 || v21 == 1)
+  if (state3 == 1 || state4 == 1)
   {
     goto LABEL_20;
   }
 
-  v32 = v23 == 1 || v25 == 1;
+  v32 = state5 == 1 || state6 == 1;
   v29 = v32;
-  if (!v52 || (v29 & 1) != 0 || v49 > 50 || v27 == 1)
+  if (!bOOLValue || (v29 & 1) != 0 || intValue > 50 || state7 == 1)
   {
     goto LABEL_20;
   }
@@ -192,26 +192,26 @@ LABEL_40:
   v34 = v33;
   if (v33)
   {
-    v35 = [v33 shortChargeExpected];
+    shortChargeExpected = [v33 shortChargeExpected];
   }
 
   else
   {
-    v35 = 0;
+    shortChargeExpected = 0;
   }
 
-  if (v35 != [(PowerModeObjImpl *)v12 state])
+  if (shortChargeExpected != [(PowerModeObjImpl *)selfCopy state])
   {
     v46 = v28;
     v29 = 0;
-    v36 = v35;
-    [(PowerModeObjImpl *)v12 log];
+    v36 = shortChargeExpected;
+    [(PowerModeObjImpl *)selfCopy log];
     goto LABEL_25;
   }
 
 LABEL_41:
 
-  return v35;
+  return shortChargeExpected;
 }
 
 - (void)enterPowerMode

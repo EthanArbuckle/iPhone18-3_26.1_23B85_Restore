@@ -1,21 +1,21 @@
 @interface DIDocUploadSessionProxy
 - (_TtC8coreidvd23DIDocUploadSessionProxy)init;
 - (void)cancelUploads;
-- (void)uploadDocData:(NSArray *)a3 uploadSettings:(DIDocUploadSettings *)a4 completion:(id)a5;
+- (void)uploadDocData:(NSArray *)data uploadSettings:(DIDocUploadSettings *)settings completion:(id)completion;
 @end
 
 @implementation DIDocUploadSessionProxy
 
-- (void)uploadDocData:(NSArray *)a3 uploadSettings:(DIDocUploadSettings *)a4 completion:(id)a5
+- (void)uploadDocData:(NSArray *)data uploadSettings:(DIDocUploadSettings *)settings completion:(id)completion
 {
   v9 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = data;
+  v14[3] = settings;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -30,15 +30,15 @@
   v17[3] = 0;
   v17[4] = &unk_1006D9180;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  dataCopy = data;
+  settingsCopy = settings;
+  selfCopy = self;
   sub_100500D54(0, 0, v12, &unk_1006E13D0, v17);
 }
 
 - (void)cancelUploads
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047DDB4();
 }
 

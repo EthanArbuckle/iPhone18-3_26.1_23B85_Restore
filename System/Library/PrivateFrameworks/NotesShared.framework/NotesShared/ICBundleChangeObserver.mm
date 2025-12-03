@@ -1,25 +1,25 @@
 @interface ICBundleChangeObserver
 - (ICBundleChangeObserver)init;
-- (ICBundleChangeObserver)initWithPersistentStoreCoordinator:(id)a3 managedObjectContext:(id)a4;
+- (ICBundleChangeObserver)initWithPersistentStoreCoordinator:(id)coordinator managedObjectContext:(id)context;
 - (id)filePresenters;
 - (void)addManagedObjectContextDidSaveObserver;
-- (void)addObserverForBundleWithObjectID:(id)a3 url:(id)a4;
+- (void)addObserverForBundleWithObjectID:(id)d url:(id)url;
 - (void)addObserversForExistingPaperAttachments;
-- (void)addObserversForObjects:(id)a3;
-- (void)contextDidSave:(id)a3;
-- (void)processObjectIDs:(id)a3 completion:(id)a4;
+- (void)addObserversForObjects:(id)objects;
+- (void)contextDidSave:(id)save;
+- (void)processObjectIDs:(id)ds completion:(id)completion;
 - (void)removeManagedObjectContextDidSaveObserver;
-- (void)removeObserverForBundleWithURL:(id)a3;
+- (void)removeObserverForBundleWithURL:(id)l;
 - (void)start;
-- (void)stopAndNotifyObservers:(BOOL)a3;
+- (void)stopAndNotifyObservers:(BOOL)observers;
 @end
 
 @implementation ICBundleChangeObserver
 
-- (ICBundleChangeObserver)initWithPersistentStoreCoordinator:(id)a3 managedObjectContext:(id)a4
+- (ICBundleChangeObserver)initWithPersistentStoreCoordinator:(id)coordinator managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = ICBundleChangeObserver;
   v9 = [(ICBundleChangeObserver *)&v19 init];
@@ -27,11 +27,11 @@
   if (v9)
   {
     v9->_isObserving = 0;
-    objc_storeStrong(&v9->_persistentStoreCoordinator, a3);
-    objc_storeStrong(&v10->_managedObjectContext, a4);
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v9->_persistentStoreCoordinator, coordinator);
+    objc_storeStrong(&v10->_managedObjectContext, context);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     mutableFilePresenters = v10->_mutableFilePresenters;
-    v10->_mutableFilePresenters = v11;
+    v10->_mutableFilePresenters = dictionary;
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("com.apple.notes.bundle-change-observer-processing-queue", v13);
@@ -51,9 +51,9 @@
 - (ICBundleChangeObserver)init
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 persistentStoreCoordinator];
-  v5 = [v3 workerManagedObjectContext];
-  v6 = [(ICBundleChangeObserver *)self initWithPersistentStoreCoordinator:v4 managedObjectContext:v5];
+  persistentStoreCoordinator = [v3 persistentStoreCoordinator];
+  workerManagedObjectContext = [v3 workerManagedObjectContext];
+  v6 = [(ICBundleChangeObserver *)self initWithPersistentStoreCoordinator:persistentStoreCoordinator managedObjectContext:workerManagedObjectContext];
 
   return v6;
 }
@@ -68,10 +68,10 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(ICBundleChangeObserver *)self mutableFilePresenters];
-    v4 = [v3 allValues];
+    mutableFilePresenters = [(ICBundleChangeObserver *)self mutableFilePresenters];
+    allValues = [mutableFilePresenters allValues];
 
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -83,23 +83,23 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [MEMORY[0x277CCA9E8] addFilePresenter:*(*(&v11 + 1) + 8 * v8)];
-          v9 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+          didChangeFilePresenters = [(ICBundleChangeObserver *)self didChangeFilePresenters];
 
-          if (v9)
+          if (didChangeFilePresenters)
           {
-            v10 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
-            v10[2]();
+            didChangeFilePresenters2 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+            didChangeFilePresenters2[2]();
           }
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -114,9 +114,9 @@
   }
 }
 
-- (void)stopAndNotifyObservers:(BOOL)a3
+- (void)stopAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v18 = *MEMORY[0x277D85DE8];
   if ([(ICBundleChangeObserver *)self isObserving])
   {
@@ -125,10 +125,10 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(ICBundleChangeObserver *)self mutableFilePresenters];
-    v6 = [v5 allValues];
+    mutableFilePresenters = [(ICBundleChangeObserver *)self mutableFilePresenters];
+    allValues = [mutableFilePresenters allValues];
 
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -140,18 +140,18 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           [MEMORY[0x277CCA9E8] removeFilePresenter:*(*(&v13 + 1) + 8 * v10)];
-          if (v3)
+          if (observersCopy)
           {
-            v11 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+            didChangeFilePresenters = [(ICBundleChangeObserver *)self didChangeFilePresenters];
 
-            if (v11)
+            if (didChangeFilePresenters)
             {
-              v12 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
-              v12[2]();
+              didChangeFilePresenters2 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+              didChangeFilePresenters2[2]();
             }
           }
 
@@ -159,7 +159,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -169,12 +169,12 @@
   }
 }
 
-- (void)contextDidSave:(id)a3
+- (void)contextDidSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBE180]];
+  userInfo = [saveCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE180]];
 
   if ([v7 count])
   {
@@ -191,13 +191,13 @@
 
 - (void)addObserversForExistingPaperAttachments
 {
-  v3 = [(ICBundleChangeObserver *)self processingQueue];
+  processingQueue = [(ICBundleChangeObserver *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ICBundleChangeObserver_addObserversForExistingPaperAttachments__block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(processingQueue, block);
 }
 
 void __65__ICBundleChangeObserver_addObserversForExistingPaperAttachments__block_invoke(uint64_t a1)
@@ -228,12 +228,12 @@ void __65__ICBundleChangeObserver_addObserversForExistingPaperAttachments__block
   [v4 processObjectIDs:v5 completion:v6];
 }
 
-- (void)addObserversForObjects:(id)a3
+- (void)addObserversForObjects:(id)objects
 {
-  v3 = a3;
-  if ([v3 count])
+  objectsCopy = objects;
+  if ([objectsCopy count])
   {
-    v4 = v3;
+    v4 = objectsCopy;
     performBlockOnMainThread();
   }
 }
@@ -273,28 +273,28 @@ void __49__ICBundleChangeObserver_addObserversForObjects___block_invoke(uint64_t
   }
 }
 
-- (void)addObserverForBundleWithObjectID:(id)a3 url:(id)a4
+- (void)addObserverForBundleWithObjectID:(id)d url:(id)url
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  urlCopy = url;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICBundleChangeObserver addObserverForBundleWithObjectID:url:]" simulateCrash:1 showAlert:0 format:@"Must be on main thread here"];
   }
 
-  v8 = [(ICBundleChangeObserver *)self filePresenters];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  filePresenters = [(ICBundleChangeObserver *)self filePresenters];
+  v9 = [filePresenters objectForKeyedSubscript:urlCopy];
 
   if (!v9)
   {
     v10 = [ICBundleChangeFilePresenter alloc];
-    v11 = [(ICBundleChangeObserver *)self managedObjectContext];
-    v12 = [(ICBundleChangeFilePresenter *)v10 initWithObjectID:v6 url:v7 managedObjectContext:v11];
+    managedObjectContext = [(ICBundleChangeObserver *)self managedObjectContext];
+    v12 = [(ICBundleChangeFilePresenter *)v10 initWithObjectID:dCopy url:urlCopy managedObjectContext:managedObjectContext];
 
-    v13 = [(ICBundleChangeObserver *)self mutableFilePresenters];
-    [v13 setObject:v12 forKeyedSubscript:v7];
+    mutableFilePresenters = [(ICBundleChangeObserver *)self mutableFilePresenters];
+    [mutableFilePresenters setObject:v12 forKeyedSubscript:urlCopy];
 
-    if ([v6 ic_isEntityOfClass:objc_opt_class()])
+    if ([dCopy ic_isEntityOfClass:objc_opt_class()])
     {
       objc_initWeak(&location, self);
       v16[0] = MEMORY[0x277D85DD0];
@@ -302,7 +302,7 @@ void __49__ICBundleChangeObserver_addObserversForObjects___block_invoke(uint64_t
       v16[2] = __63__ICBundleChangeObserver_addObserverForBundleWithObjectID_url___block_invoke;
       v16[3] = &unk_278197A88;
       objc_copyWeak(&v18, &location);
-      v17 = v6;
+      v17 = dCopy;
       [(ICBundleChangeFilePresenter *)v12 setPresentedItemDidApplyChanges:v16];
 
       objc_destroyWeak(&v18);
@@ -312,12 +312,12 @@ void __49__ICBundleChangeObserver_addObserversForObjects___block_invoke(uint64_t
     if ([(ICBundleChangeObserver *)self isObserving])
     {
       [MEMORY[0x277CCA9E8] addFilePresenter:v12];
-      v14 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+      didChangeFilePresenters = [(ICBundleChangeObserver *)self didChangeFilePresenters];
 
-      if (v14)
+      if (didChangeFilePresenters)
       {
-        v15 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
-        v15[2]();
+        didChangeFilePresenters2 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+        didChangeFilePresenters2[2]();
       }
     }
   }
@@ -342,65 +342,65 @@ void __63__ICBundleChangeObserver_addObserverForBundleWithObjectID_url___block_i
   }
 }
 
-- (void)removeObserverForBundleWithURL:(id)a3
+- (void)removeObserverForBundleWithURL:(id)l
 {
-  v9 = a3;
-  v4 = [(ICBundleChangeObserver *)self mutableFilePresenters];
-  v5 = [v4 objectForKeyedSubscript:v9];
+  lCopy = l;
+  mutableFilePresenters = [(ICBundleChangeObserver *)self mutableFilePresenters];
+  v5 = [mutableFilePresenters objectForKeyedSubscript:lCopy];
 
   if (v5)
   {
-    v6 = [(ICBundleChangeObserver *)self mutableFilePresenters];
-    [v6 setObject:0 forKeyedSubscript:v9];
+    mutableFilePresenters2 = [(ICBundleChangeObserver *)self mutableFilePresenters];
+    [mutableFilePresenters2 setObject:0 forKeyedSubscript:lCopy];
 
     [MEMORY[0x277CCA9E8] removeFilePresenter:v5];
-    v7 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+    didChangeFilePresenters = [(ICBundleChangeObserver *)self didChangeFilePresenters];
 
-    if (v7)
+    if (didChangeFilePresenters)
     {
-      v8 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
-      v8[2]();
+      didChangeFilePresenters2 = [(ICBundleChangeObserver *)self didChangeFilePresenters];
+      didChangeFilePresenters2[2]();
     }
   }
 }
 
 - (void)addManagedObjectContextDidSaveObserver
 {
-  v4 = [(ICBundleChangeObserver *)self persistentStoreCoordinator];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_contextDidSave_ name:*MEMORY[0x277CBE1B0] object:v4];
+  persistentStoreCoordinator = [(ICBundleChangeObserver *)self persistentStoreCoordinator];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contextDidSave_ name:*MEMORY[0x277CBE1B0] object:persistentStoreCoordinator];
 }
 
 - (void)removeManagedObjectContextDidSaveObserver
 {
-  v4 = [(ICBundleChangeObserver *)self persistentStoreCoordinator];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE1B0] object:v4];
+  persistentStoreCoordinator = [(ICBundleChangeObserver *)self persistentStoreCoordinator];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE1B0] object:persistentStoreCoordinator];
 }
 
 - (id)filePresenters
 {
-  v2 = [(ICBundleChangeObserver *)self mutableFilePresenters];
-  v3 = [v2 copy];
+  mutableFilePresenters = [(ICBundleChangeObserver *)self mutableFilePresenters];
+  v3 = [mutableFilePresenters copy];
 
   return v3;
 }
 
-- (void)processObjectIDs:(id)a3 completion:(id)a4
+- (void)processObjectIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICBundleChangeObserver *)self processingQueue];
+  dsCopy = ds;
+  completionCopy = completion;
+  processingQueue = [(ICBundleChangeObserver *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__ICBundleChangeObserver_processObjectIDs_completion___block_invoke;
   block[3] = &unk_278194E38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __54__ICBundleChangeObserver_processObjectIDs_completion___block_invoke(id *a1)

@@ -1,22 +1,22 @@
 @interface SUScriptMediaPlaylist
-+ (id)scriptPlaylistAttributesForNativePlaylistAttributes:(unint64_t)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
-+ (unint64_t)nativePlaylistAttributesForScriptPlaylistAttributes:(id)a3;
++ (id)scriptPlaylistAttributesForNativePlaylistAttributes:(unint64_t)attributes;
++ (id)webScriptNameForSelector:(SEL)selector;
++ (unint64_t)nativePlaylistAttributesForScriptPlaylistAttributes:(id)attributes;
 + (void)initialize;
 - (MPMediaPlaylist)nativePlaylist;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 @end
 
 @implementation SUScriptMediaPlaylist
 
-+ (unint64_t)nativePlaylistAttributesForScriptPlaylistAttributes:(id)a3
++ (unint64_t)nativePlaylistAttributesForScriptPlaylistAttributes:(id)attributes
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [attributes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v4)
   {
     return 0;
@@ -31,7 +31,7 @@
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(attributes);
       }
 
       v9 = *(*(&v13 + 1) + 8 * i);
@@ -51,51 +51,51 @@
       while (v11);
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [attributes countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-+ (id)scriptPlaylistAttributesForNativePlaylistAttributes:(unint64_t)a3
++ (id)scriptPlaylistAttributesForNativePlaylistAttributes:(unint64_t)attributes
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = &off_1E8165EA8;
   v6 = 4;
   while (1)
   {
     v7 = *(v5 - 1);
-    if (v7 == a3)
+    if (v7 == attributes)
     {
       break;
     }
 
-    if ((v7 & a3) != 0)
+    if ((v7 & attributes) != 0)
     {
-      [v4 addObject:*v5];
+      [array addObject:*v5];
     }
 
     v5 += 2;
     if (!--v6)
     {
-      return v4;
+      return array;
     }
   }
 
-  [v4 removeAllObjects];
-  [v4 addObject:*v5];
-  return v4;
+  [array removeAllObjects];
+  [array addObject:*v5];
+  return array;
 }
 
 - (MPMediaPlaylist)nativePlaylist
 {
-  v2 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
 
-  return [(SUScriptNativeObject *)v2 object];
+  return [(SUScriptNativeObject *)nativeObject object];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   v34 = *MEMORY[0x1E69E9840];
   v27 = 0;
@@ -115,9 +115,9 @@
   v21 = 3221225472;
   v22 = __42__SUScriptMediaPlaylist_valueForProperty___block_invoke;
   v23 = &unk_1E8165E08;
-  v25 = a3;
+  propertyCopy = property;
   v26 = &v27;
-  v24 = self;
+  selfCopy = self;
   WebThreadRunOnMainThread();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -127,14 +127,14 @@
     v5 = 0;
   }
 
-  else if ([a3 isEqualToString:@"attributes"])
+  else if ([property isEqualToString:@"attributes"])
   {
     v5 = [objc_opt_class() scriptPlaylistAttributesForNativePlaylistAttributes:{objc_msgSend(v28[5], "integerValue")}];
   }
 
   else
   {
-    if (![a3 isEqualToString:@"seed-items"])
+    if (![property isEqualToString:@"seed-items"])
     {
       goto LABEL_16;
     }
@@ -177,15 +177,15 @@ LABEL_16:
   v12 = v28[5];
   if (v12)
   {
-    v13 = v12;
+    null = v12;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14 = v13;
+  v14 = null;
   _Block_object_dispose(&v27, 8);
   return v14;
 }
@@ -198,14 +198,14 @@ id __42__SUScriptMediaPlaylist_valueForProperty___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_31, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_31, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaPlaylist;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -213,7 +213,7 @@ id __42__SUScriptMediaPlaylist_valueForProperty___block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_31 = sel_valueForProperty_;
     unk_1EBF3B0C0 = @"valueForProperty";

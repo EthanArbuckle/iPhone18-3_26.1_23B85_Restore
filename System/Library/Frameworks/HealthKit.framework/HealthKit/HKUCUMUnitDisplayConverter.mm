@@ -3,8 +3,8 @@
 - (HKUCUMUnitDisplayConverter)init;
 - (NSDictionary)hkUnitNameLookupTable;
 - (NSDictionary)synonymLookupTable;
-- (id)hkUnitNameForUCUMUnitCode:(id)a3;
-- (id)synonymForUCUMUnitString:(id)a3;
+- (id)hkUnitNameForUCUMUnitCode:(id)code;
+- (id)synonymForUCUMUnitString:(id)string;
 @end
 
 @implementation HKUCUMUnitDisplayConverter
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __45__HKUCUMUnitDisplayConverter_sharedConverter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConverter_onceToken != -1)
   {
     dispatch_once(&sharedConverter_onceToken, block);
@@ -90,16 +90,16 @@ uint64_t __45__HKUCUMUnitDisplayConverter_sharedConverter__block_invoke(uint64_t
   return v4;
 }
 
-- (id)synonymForUCUMUnitString:(id)a3
+- (id)synonymForUCUMUnitString:(id)string
 {
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
     [(HKUCUMUnitDisplayConverter *)a2 synonymForUCUMUnitString:?];
   }
 
-  v6 = [(HKUCUMUnitDisplayConverter *)self synonymLookupTable];
-  v7 = [v6 objectForKey:v5];
+  synonymLookupTable = [(HKUCUMUnitDisplayConverter *)self synonymLookupTable];
+  v7 = [synonymLookupTable objectForKey:stringCopy];
 
   if (v7)
   {
@@ -108,7 +108,7 @@ uint64_t __45__HKUCUMUnitDisplayConverter_sharedConverter__block_invoke(uint64_t
 
   else
   {
-    v9 = [v5 stringByReplacingOccurrencesOfString:@"10*" withString:@"10^"];
+    v9 = [stringCopy stringByReplacingOccurrencesOfString:@"10*" withString:@"10^"];
     v10 = [v9 stringByReplacingOccurrencesOfString:@" {" withString:@" "];
     v11 = [v10 stringByReplacingOccurrencesOfString:@"} " withString:@" "];
     v12 = [v11 stringByReplacingOccurrencesOfString:@"{" withString:&stru_1F05FF230];
@@ -118,8 +118,8 @@ uint64_t __45__HKUCUMUnitDisplayConverter_sharedConverter__block_invoke(uint64_t
     v14 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\s+" options:1 error:&v19];
     v15 = [v14 stringByReplacingMatchesInString:v13 options:0 range:0 withTemplate:{objc_msgSend(v13, "length"), @" "}];
 
-    v16 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v17 = [v15 stringByTrimmingCharactersInSet:v16];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v17 = [v15 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     v8 = v17;
   }
@@ -127,13 +127,13 @@ uint64_t __45__HKUCUMUnitDisplayConverter_sharedConverter__block_invoke(uint64_t
   return v8;
 }
 
-- (id)hkUnitNameForUCUMUnitCode:(id)a3
+- (id)hkUnitNameForUCUMUnitCode:(id)code
 {
-  v4 = a3;
-  if ([v4 length])
+  codeCopy = code;
+  if ([codeCopy length])
   {
-    v5 = [(HKUCUMUnitDisplayConverter *)self hkUnitNameLookupTable];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    hkUnitNameLookupTable = [(HKUCUMUnitDisplayConverter *)self hkUnitNameLookupTable];
+    v6 = [hkUnitNameLookupTable objectForKeyedSubscript:codeCopy];
     v7 = v6;
     if (v6)
     {
@@ -142,7 +142,7 @@ uint64_t __45__HKUCUMUnitDisplayConverter_sharedConverter__block_invoke(uint64_t
 
     else
     {
-      v8 = v4;
+      v8 = codeCopy;
     }
 
     v9 = v8;

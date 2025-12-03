@@ -1,9 +1,9 @@
 @interface FollowUpViewController
-- (_TtC19ADFollowUpExtension22FollowUpViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (_TtC19ADFollowUpExtension22FollowUpViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FollowUpViewController
@@ -15,39 +15,39 @@
   [(FollowUpViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000BF3C(a3);
+  selfCopy = self;
+  sub_10000BF3C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FollowUpViewController();
   v4 = v5.receiver;
-  [(FollowUpViewController *)&v5 viewWillDisappear:v3];
+  [(FollowUpViewController *)&v5 viewWillDisappear:disappearCopy];
   [v4 finishProcessing];
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     *(swift_allocObject() + 16) = v8;
     v8 = sub_10000FE38;
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_10000C378(a3, a4, v8);
+  itemCopy = item;
+  actionCopy = action;
+  selfCopy = self;
+  sub_10000C378(item, action, v8);
   sub_10000FDF0(v8);
 }
 
-- (_TtC19ADFollowUpExtension22FollowUpViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19ADFollowUpExtension22FollowUpViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

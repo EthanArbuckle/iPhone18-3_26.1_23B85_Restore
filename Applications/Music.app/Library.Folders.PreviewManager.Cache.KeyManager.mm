@@ -1,15 +1,15 @@
 @interface Library.Folders.PreviewManager.Cache.KeyManager
 - (_TtCCCOE5MusicO9MusicCore7Library7Folders14PreviewManagerP33_4E92466DD7805690A64C66280926D2CB5Cache10KeyManager)init;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 @end
 
 @implementation Library.Folders.PreviewManager.Cache.KeyManager
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a3;
+  cacheCopy = cache;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1001789B4(v7);

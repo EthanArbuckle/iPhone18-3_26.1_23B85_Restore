@@ -1,5 +1,5 @@
 @interface ExternalHangTracerFooterView
-- (ExternalHangTracerFooterView)initWithSpecifier:(id)a3;
+- (ExternalHangTracerFooterView)initWithSpecifier:(id)specifier;
 - (void)didTapLearnMore;
 - (void)didTapLearnMoreLink;
 - (void)didTapOpenSettings;
@@ -7,12 +7,12 @@
 
 @implementation ExternalHangTracerFooterView
 
-- (ExternalHangTracerFooterView)initWithSpecifier:(id)a3
+- (ExternalHangTracerFooterView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v21.receiver = self;
   v21.super_class = ExternalHangTracerFooterView;
-  v5 = [(ExternalHangTracerFooterView *)&v21 initWithSpecifier:v4];
+  v5 = [(ExternalHangTracerFooterView *)&v21 initWithSpecifier:specifierCopy];
   if (v5)
   {
     v6 = HTUIActivationToggleFooterPart1();
@@ -24,9 +24,9 @@
     v11 = v10 - [v7 length];
     v12 = [v7 length];
     v13 = objc_opt_new();
-    v14 = [v13 isInternalBuild];
+    isInternalBuild = [v13 isInternalBuild];
 
-    if (v14)
+    if (isInternalBuild)
     {
       v15 = HTUIInternalRedirect();
       v16 = [NSString localizedStringWithFormat:@"%@%@", v9, v15];
@@ -42,15 +42,15 @@
       v17 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    [v4 setProperty:v9 forKey:PSFooterTextGroupKey];
-    [v4 addFooterHyperlinkWithRange:v11 target:v12 action:{v5, "didTapLearnMore"}];
+    [specifierCopy setProperty:v9 forKey:PSFooterTextGroupKey];
+    [specifierCopy addFooterHyperlinkWithRange:v11 target:v12 action:{v5, "didTapLearnMore"}];
     if (v17 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 addFooterHyperlinkWithRange:v17 target:v19 action:{v5, "didTapOpenSettings"}];
+      [specifierCopy addFooterHyperlinkWithRange:v17 target:v19 action:{v5, "didTapOpenSettings"}];
     }
 
-    [(ExternalHangTracerFooterView *)v5 setSpecifier:v4];
-    [(ExternalHangTracerFooterView *)v5 refreshContentsWithSpecifier:v4];
+    [(ExternalHangTracerFooterView *)v5 setSpecifier:specifierCopy];
+    [(ExternalHangTracerFooterView *)v5 refreshContentsWithSpecifier:specifierCopy];
   }
 
   return v5;
@@ -104,13 +104,13 @@
   v21 = [UIAction actionWithHandler:v27];
   v22 = [v19 initWithBarButtonSystemItem:0 primaryAction:v21];
 
-  v23 = [v20 navigationItem];
-  [v23 setRightBarButtonItem:v22];
+  navigationItem = [v20 navigationItem];
+  [navigationItem setRightBarButtonItem:v22];
 
   v24 = [[UINavigationController alloc] initWithRootViewController:v20];
-  v25 = [(ExternalHangTracerFooterView *)self specifier];
-  v26 = [v25 target];
-  [v26 presentModalViewController:v24 withTransition:3];
+  specifier = [(ExternalHangTracerFooterView *)self specifier];
+  target = [specifier target];
+  [target presentModalViewController:v24 withTransition:3];
 }
 
 - (void)didTapLearnMoreLink

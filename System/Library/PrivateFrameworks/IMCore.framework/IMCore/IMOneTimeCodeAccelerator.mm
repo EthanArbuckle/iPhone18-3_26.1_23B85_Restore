@@ -1,13 +1,13 @@
 @interface IMOneTimeCodeAccelerator
 + (IMSyncedSettingsManaging)syncedSettingsManager;
-- (IMOneTimeCodeAccelerator)initWithBlockForUpdates:(id)a3;
-- (void)_deleteVerificationCodesDidChange:(id)a3;
-- (void)_incomingCodeUpdateFromDaemon:(id)a3;
-- (void)consumeCodeWithGuid:(id)a3;
+- (IMOneTimeCodeAccelerator)initWithBlockForUpdates:(id)updates;
+- (void)_deleteVerificationCodesDidChange:(id)change;
+- (void)_incomingCodeUpdateFromDaemon:(id)daemon;
+- (void)consumeCodeWithGuid:(id)guid;
 - (void)dealloc;
-- (void)fetchAutoDeletionPreferenceWithCompletionHandler:(id)a3;
-- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)a3;
-- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)a3 completionHandler:(id)a4;
+- (void)fetchAutoDeletionPreferenceWithCompletionHandler:(id)handler;
+- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)handler;
+- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)message completionHandler:(id)handler;
 - (void)setUpConnectionToDaemaon;
 @end
 
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (void)_deleteVerificationCodesDidChange:(id)a3
+- (void)_deleteVerificationCodesDidChange:(id)change
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -42,7 +42,7 @@
     }
   }
 
-  v8 = objc_msgSend_userInfo(v4, v5, v6);
+  v8 = objc_msgSend_userInfo(changeCopy, v5, v6);
   v10 = objc_msgSend_valueForKey_(v8, v9, @"reason");
   isEqual = objc_msgSend_isEqual_(v10, v11, @"LocallySet");
 
@@ -91,15 +91,15 @@
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (IMOneTimeCodeAccelerator)initWithBlockForUpdates:(id)a3
+- (IMOneTimeCodeAccelerator)initWithBlockForUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v19.receiver = self;
   v19.super_class = IMOneTimeCodeAccelerator;
   v5 = [(IMOneTimeCodeAccelerator *)&v19 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(updatesCopy);
     updateBlock = v5->_updateBlock;
     v5->_updateBlock = v6;
 
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (void)consumeCodeWithGuid:(id)a3
+- (void)consumeCodeWithGuid:(id)guid
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  guidCopy = guid;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = guidCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Sending request to daemon to consume code with GUID: %@", &v11, 0xCu);
     }
   }
 
   v8 = objc_msgSend_remoteProxy(self->_daemonConnection, v5, v6);
-  objc_msgSend_consumeCodeWithMessageGUID_(v8, v9, v4);
+  objc_msgSend_consumeCodeWithMessageGUID_(v8, v9, guidCopy);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)a3
+- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -152,39 +152,39 @@
   }
 
   v8 = objc_msgSend_remoteProxy(self->_daemonConnection, v5, v6);
-  objc_msgSend_onboardDeleteVerificationCodesIfNeededWithReply_(v8, v9, v4);
+  objc_msgSend_onboardDeleteVerificationCodesIfNeededWithReply_(v8, v9, handlerCopy);
 }
 
-- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)a3 completionHandler:(id)a4
+- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)message completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = messageCopy;
       _os_log_impl(&dword_1A823F000, v10, OS_LOG_TYPE_INFO, "Sending request to onboarding delete verification codes if needed, using custom message: %@", &v14, 0xCu);
     }
   }
 
   v11 = objc_msgSend_remoteProxy(self->_daemonConnection, v8, v9);
-  objc_msgSend_onboardDeleteVerificationCodesIfNeededWithMessage_reply_(v11, v12, v6, v7);
+  objc_msgSend_onboardDeleteVerificationCodesIfNeededWithMessage_reply_(v11, v12, messageCopy, handlerCopy);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAutoDeletionPreferenceWithCompletionHandler:(id)a3
+- (void)fetchAutoDeletionPreferenceWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     daemonConnection = self->_daemonConnection;
-    v4 = a3;
+    handlerCopy = handler;
     v8 = objc_msgSend_remoteProxy(daemonConnection, v5, v6);
-    objc_msgSend_fetchAutoDeletionPreferenceWithReply_(v8, v7, v4);
+    objc_msgSend_fetchAutoDeletionPreferenceWithReply_(v8, v7, handlerCopy);
   }
 }
 
@@ -237,23 +237,23 @@
   objc_msgSend_connectWithCompletion_(v14, v15, v16);
 }
 
-- (void)_incomingCodeUpdateFromDaemon:(id)a3
+- (void)_incomingCodeUpdateFromDaemon:(id)daemon
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  daemonCopy = daemon;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v10 = objc_msgSend_userInfo(v4, v8, v9);
+      v10 = objc_msgSend_userInfo(daemonCopy, v8, v9);
       v21 = 138412290;
       v22 = v10;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Recevied updated valid codes list from daemon: %@", &v21, 0xCu);
     }
   }
 
-  v11 = objc_msgSend_userInfo(v4, v5, v6);
+  v11 = objc_msgSend_userInfo(daemonCopy, v5, v6);
   v13 = objc_msgSend_objectForKeyedSubscript_(v11, v12, @"validCodes");
 
   v16 = objc_msgSend_updateBlock(self, v14, v15);

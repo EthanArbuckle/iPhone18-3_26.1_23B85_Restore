@@ -3,81 +3,81 @@
 - ($115C4C562B26FF47E01F9F4EA65B5887)balloonHostAuditToken;
 - (UIViewController)stickerViewController;
 - (UIViewController)viewController;
-- (_MSMessageAppContext)initWithAppContext:(id)a3;
+- (_MSMessageAppContext)initWithAppContext:(id)context;
 - (_MSMessageComposeHostImplProtocol)hostContext;
-- (id)updatedConversationForConversationState:(id)a3;
+- (id)updatedConversationForConversationState:(id)state;
 - (unint64_t)presentationContext;
 - (unint64_t)presentationStyle;
-- (void)_addStickerAnimationDidFinishWithCompletion:(id)a3;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 effect:(int64_t)a5 completion:(id)a6;
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
-- (void)_animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4;
-- (void)_becomeActiveWithConversationState:(id)a3 presentationState:(id)a4;
-- (void)_canSendMessage:(id)a3 conversationState:(id)a4 associatedText:(id)a5 completion:(id)a6;
-- (void)_conversationDidChangeWithConversationState:(id)a3;
-- (void)_didCancelSendingMessage:(id)a3 conversationState:(id)a4;
-- (void)_didReceiveMessage:(id)a3 conversationState:(id)a4;
-- (void)_didRemoveAssetArchiveWithIdentifier:(id)a3;
+- (void)_addStickerAnimationDidFinishWithCompletion:(id)completion;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds;
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion;
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect effect:(int64_t)effect completion:(id)completion;
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion;
+- (void)_animatedStickerCreationProgressChanged:(id)changed progress:(double)progress;
+- (void)_becomeActiveWithConversationState:(id)state presentationState:(id)presentationState;
+- (void)_canSendMessage:(id)message conversationState:(id)state associatedText:(id)text completion:(id)completion;
+- (void)_conversationDidChangeWithConversationState:(id)state;
+- (void)_didCancelSendingMessage:(id)message conversationState:(id)state;
+- (void)_didReceiveMessage:(id)message conversationState:(id)state;
+- (void)_didRemoveAssetArchiveWithIdentifier:(id)identifier;
 - (void)_didRemoveStickerPreview;
-- (void)_didSelectGPAsset:(id)a3 sandboxExtension:(id)a4 recipeData:(id)a5 completion:(id)a6;
-- (void)_didStartSendingMessage:(id)a3 conversationState:(id)a4;
-- (void)_didUpdateMessage:(id)a3 conversationState:(id)a4;
-- (void)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4 completion:(id)a5;
+- (void)_didSelectGPAsset:(id)asset sandboxExtension:(id)extension recipeData:(id)data completion:(id)completion;
+- (void)_didStartSendingMessage:(id)message conversationState:(id)state;
+- (void)_didUpdateMessage:(id)message conversationState:(id)state;
+- (void)_handleTextInputPayload:(id)payload withPayloadID:(id)d completion:(id)completion;
 - (void)_keepContextAlive;
 - (void)_prepareForAddStickerFromSubjectLift;
-- (void)_prepareForPresentationWithCompletionHandler:(id)a3;
-- (void)_presentationDidChangeToPresentationState:(id)a3;
-- (void)_presentationWillChangeToPresentationState:(id)a3;
+- (void)_prepareForPresentationWithCompletionHandler:(id)handler;
+- (void)_presentationDidChangeToPresentationState:(id)state;
+- (void)_presentationWillChangeToPresentationState:(id)state;
 - (void)_remoteViewDidBecomeReadyForDisplay;
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3;
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color;
 - (void)_remoteViewNeedsSizeMatchBeforeSnapshotSwap;
 - (void)_remoteViewProvidesExplicitSizeSnapshot;
-- (void)_requestContentSizeThatFits:(id)a3 presentationStyle:(id)a4 completionHandler:(id)a5;
-- (void)_requestMessageTintColor:(id)a3;
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4;
-- (void)_requestSnapshotThatFits:(id)a3 completion:(id)a4;
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3;
+- (void)_requestContentSizeThatFits:(id)fits presentationStyle:(id)style completionHandler:(id)handler;
+- (void)_requestMessageTintColor:(id)color;
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier;
+- (void)_requestSnapshotThatFits:(id)fits completion:(id)completion;
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary;
 - (void)_resignActive;
-- (void)_setHostBundleID:(id)a3;
-- (void)_setPluginIdentifierToShow:(id)a3 completion:(id)a4;
-- (void)_setSendingEnabled:(BOOL)a3;
-- (void)_volumeButtonPressed:(BOOL)a3;
-- (void)canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4;
+- (void)_setHostBundleID:(id)d;
+- (void)_setPluginIdentifierToShow:(id)show completion:(id)completion;
+- (void)_setSendingEnabled:(BOOL)enabled;
+- (void)_volumeButtonPressed:(BOOL)pressed;
+- (void)canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion;
 - (void)contentDidLoad;
-- (void)didChangeBackgroundLuminance:(double)a3;
+- (void)didChangeBackgroundLuminance:(double)luminance;
 - (void)dismiss;
 - (void)dismissAndPresentPhotosApp;
 - (void)dragMediaItemCanceled;
-- (void)dragMediaItemMoved:(id)a3 frameInRemoteView:(CGRect)a4 rotation:(double)a5 scale:(double)a6 completionHandler:(id)a7;
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4;
-- (void)presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5;
-- (void)presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7;
-- (void)removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)requestFullScreenModalPresentationWithSize:(CGSize)a3;
-- (void)requestHostSceneIdentifierWithCompletion:(id)a3;
-- (void)requestPresentationStyle:(unint64_t)a3;
-- (void)requestPresentationStyleExpanded:(BOOL)a3;
+- (void)dragMediaItemMoved:(id)moved frameInRemoteView:(CGRect)view rotation:(double)rotation scale:(double)scale completionHandler:(id)handler;
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion;
+- (void)presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion;
+- (void)presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion;
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion;
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion;
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion;
+- (void)removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler;
+- (void)requestFullScreenModalPresentationWithSize:(CGSize)size;
+- (void)requestHostSceneIdentifierWithCompletion:(id)completion;
+- (void)requestPresentationStyle:(unint64_t)style;
+- (void)requestPresentationStyleExpanded:(BOOL)expanded;
 - (void)requestResize;
-- (void)sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5;
-- (void)setHostContext:(id)a3;
-- (void)setPresentationContext:(unint64_t)a3;
-- (void)setPresentationStyle:(unint64_t)a3;
+- (void)sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler;
+- (void)setHostContext:(id)context;
+- (void)setPresentationContext:(unint64_t)context;
+- (void)setPresentationStyle:(unint64_t)style;
 - (void)setShouldPerformSendAnimationOnAppear;
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6;
-- (void)stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6;
-- (void)stickerDruidDragEndedWithPayload:(id)a3;
-- (void)stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4;
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler;
+- (void)stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler;
+- (void)stickerDruidDragEndedWithPayload:(id)payload;
+- (void)stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier;
 - (void)stickerDruidDragStarted;
 @end
 
@@ -86,15 +86,15 @@
 + (id)activeExtensionContext
 {
   v2 = +[_MSExtensionGlobalState sharedInstance];
-  v3 = [v2 activeExtensionContext];
+  activeExtensionContext = [v2 activeExtensionContext];
 
-  return v3;
+  return activeExtensionContext;
 }
 
-- (_MSMessageAppContext)initWithAppContext:(id)a3
+- (_MSMessageAppContext)initWithAppContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v12.receiver = self;
     v12.super_class = _MSMessageAppContext;
@@ -103,24 +103,24 @@
     if (v5)
     {
       v5->_becomeActiveShouldDispatchAsyncMainQueue = 1;
-      v7 = objc_storeWeak(&v5->_context, v4);
-      [v4 setContainingContext:v6];
+      v7 = objc_storeWeak(&v5->_context, contextCopy);
+      [contextCopy setContainingContext:v6];
 
-      v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+      weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
       conversationsByIdentifier = v6->_conversationsByIdentifier;
-      v6->_conversationsByIdentifier = v8;
+      v6->_conversationsByIdentifier = weakToWeakObjectsMapTable;
     }
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)_keepContextAlive
@@ -130,76 +130,76 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setHostContext:(id)a3
+- (void)setHostContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained setHostContext:v4];
+  [WeakRetained setHostContext:contextCopy];
 }
 
 - (_MSMessageComposeHostImplProtocol)hostContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v3 = [WeakRetained hostContext];
+  hostContext = [WeakRetained hostContext];
 
-  return v3;
+  return hostContext;
 }
 
 - (unint64_t)presentationStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v3 = [WeakRetained presentationStyle];
+  presentationStyle = [WeakRetained presentationStyle];
 
-  return v3;
+  return presentationStyle;
 }
 
 - (unint64_t)presentationContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v3 = [WeakRetained presentationContext];
+  presentationContext = [WeakRetained presentationContext];
 
-  return v3;
+  return presentationContext;
 }
 
-- (void)setPresentationContext:(unint64_t)a3
+- (void)setPresentationContext:(unint64_t)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained setPresentationContext:a3];
+  [WeakRetained setPresentationContext:context];
 }
 
-- (void)setPresentationStyle:(unint64_t)a3
+- (void)setPresentationStyle:(unint64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained setPresentationStyle:a3];
+  [WeakRetained setPresentationStyle:style];
 }
 
-- (id)updatedConversationForConversationState:(id)a3
+- (id)updatedConversationForConversationState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 conversationIdentifier];
-  v6 = [(NSMapTable *)self->_conversationsByIdentifier objectForKey:v5];
+  stateCopy = state;
+  conversationIdentifier = [stateCopy conversationIdentifier];
+  v6 = [(NSMapTable *)self->_conversationsByIdentifier objectForKey:conversationIdentifier];
   if (v6)
   {
     v7 = v6;
-    [v6 _updateWithState:v4];
+    [v6 _updateWithState:stateCopy];
   }
 
   else
   {
     v8 = [MSConversation alloc];
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v7 = [(MSConversation *)v8 _initWithState:v4 context:WeakRetained];
+    v7 = [(MSConversation *)v8 _initWithState:stateCopy context:WeakRetained];
 
-    v10 = [(_MSMessageAppContext *)self viewController];
-    if ([v10 conformsToProtocol:&unk_1F4ACE350])
+    viewController = [(_MSMessageAppContext *)self viewController];
+    if ([viewController conformsToProtocol:&unk_1F4ACE350])
     {
-      v11 = [(_MSMessageAppContext *)self viewController];
-      [v7 setDelegate:v11];
+      viewController2 = [(_MSMessageAppContext *)self viewController];
+      [v7 setDelegate:viewController2];
     }
 
     conversationsByIdentifier = self->_conversationsByIdentifier;
-    v13 = [v7 identifier];
-    [(NSMapTable *)conversationsByIdentifier setObject:v7 forKey:v13];
+    identifier = [v7 identifier];
+    [(NSMapTable *)conversationsByIdentifier setObject:v7 forKey:identifier];
   }
 
   return v7;
@@ -208,70 +208,70 @@
 - (UIViewController)viewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v3 = [WeakRetained viewController];
+  viewController = [WeakRetained viewController];
 
-  return v3;
+  return viewController;
 }
 
 - (UIViewController)stickerViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v3 = [WeakRetained stickerViewController];
+  stickerViewController = [WeakRetained stickerViewController];
 
-  return v3;
+  return stickerViewController;
 }
 
-- (void)stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained stageAppItem:v9 skipShelf:v5 completionHandler:v8];
+  [WeakRetained stageAppItem:itemCopy skipShelf:shelfCopy completionHandler:handlerCopy];
 }
 
-- (void)stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6
+- (void)stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  v11 = a3;
+  stageCopy = stage;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained stageMediaItem:v11 skipShelf:v7 forceStage:v6 completionHandler:v10];
+  [WeakRetained stageMediaItem:itemCopy skipShelf:shelfCopy forceStage:stageCopy completionHandler:handlerCopy];
 }
 
-- (void)stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  linkCopy = link;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained stageRichLink:v9 skipShelf:v5 completionHandler:v8];
+  [WeakRetained stageRichLink:linkCopy skipShelf:shelfCopy completionHandler:handlerCopy];
 }
 
-- (void)sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5
+- (void)sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
+  acknowledgementCopy = acknowledgement;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained sendCustomAcknowledgement:v10 selectedMessage:v9 completionHandler:v8];
+  [WeakRetained sendCustomAcknowledgement:acknowledgementCopy selectedMessage:messageCopy completionHandler:handlerCopy];
 }
 
-- (void)requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained requestConversationAvatarsWithSize:v7 completionHandler:{width, height}];
+  [WeakRetained requestConversationAvatarsWithSize:handlerCopy completionHandler:{width, height}];
 }
 
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  archiveCopy = archive;
   v10 = ms_defaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -280,13 +280,13 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained stageAssetArchive:v9 skipShelf:v5 completionHandler:v8];
+  [WeakRetained stageAssetArchive:archiveCopy skipShelf:shelfCopy completionHandler:handlerCopy];
 }
 
-- (void)removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = ms_defaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -295,32 +295,32 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained removeAssetArchiveWithIdentifier:v7 completionHandler:v6];
+  [WeakRetained removeAssetArchiveWithIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6
+- (void)startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  handlerCopy = handler;
+  fenceCopy = fence;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained startDragMediaItem:v15 frameInRemoteView:v14 fence:v13 completionHandler:{x, y, width, height}];
+  [WeakRetained startDragMediaItem:itemCopy frameInRemoteView:fenceCopy fence:handlerCopy completionHandler:{x, y, width, height}];
 }
 
-- (void)dragMediaItemMoved:(id)a3 frameInRemoteView:(CGRect)a4 rotation:(double)a5 scale:(double)a6 completionHandler:(id)a7
+- (void)dragMediaItemMoved:(id)moved frameInRemoteView:(CGRect)view rotation:(double)rotation scale:(double)scale completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = a3;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  handlerCopy = handler;
+  movedCopy = moved;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained dragMediaItemMoved:v16 frameInRemoteView:v15 rotation:x scale:y completionHandler:{width, height, a5, a6}];
+  [WeakRetained dragMediaItemMoved:movedCopy frameInRemoteView:handlerCopy rotation:x scale:y completionHandler:{width, height, rotation, scale}];
 }
 
 - (void)dragMediaItemCanceled
@@ -335,38 +335,38 @@
   [WeakRetained stickerDruidDragStarted];
 }
 
-- (void)stickerDruidDragEndedWithPayload:(id)a3
+- (void)stickerDruidDragEndedWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained stickerDruidDragEndedWithPayload:v4];
+  [WeakRetained stickerDruidDragEndedWithPayload:payloadCopy];
 }
 
-- (void)stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4
+- (void)stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained stickerDruidDragEndedWithPayload:v7 pluginIdentifier:v6];
+  [WeakRetained stickerDruidDragEndedWithPayload:payloadCopy pluginIdentifier:identifierCopy];
 }
 
-- (void)requestPresentationStyle:(unint64_t)a3
+- (void)requestPresentationStyle:(unint64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained requestPresentationStyle:a3];
+  [WeakRetained requestPresentationStyle:style];
 }
 
-- (void)requestPresentationStyleExpanded:(BOOL)a3
+- (void)requestPresentationStyleExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained requestPresentationStyleExpanded:v3];
+  [WeakRetained requestPresentationStyleExpanded:expandedCopy];
 }
 
-- (void)requestFullScreenModalPresentationWithSize:(CGSize)a3
+- (void)requestFullScreenModalPresentationWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_context);
   [WeakRetained requestFullScreenModalPresentationWithSize:{width, height}];
 }
@@ -383,63 +383,63 @@
   [WeakRetained dismissAndPresentPhotosApp];
 }
 
-- (void)_setSendingEnabled:(BOOL)a3
+- (void)_setSendingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained _setSendingEnabled:v3];
+  [WeakRetained _setSendingEnabled:enabledCopy];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained presentAlertWithTitle:v13 message:v12 buttonTitle:v11 completion:v10];
+  [WeakRetained presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy completion:completionCopy];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  imageCopy = image;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained presentAlertWithTitle:v16 message:v15 buttonTitle:v14 image:v13 completion:v12];
+  [WeakRetained presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy image:imageCopy completion:completionCopy];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  destructiveButtonTitleCopy = destructiveButtonTitle;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained presentAlertWithTitle:v16 message:v15 buttonTitle:v14 destructiveButtonTitle:v13 completion:v12];
+  [WeakRetained presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy destructiveButtonTitle:destructiveButtonTitleCopy completion:completionCopy];
 }
 
-- (void)presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5
+- (void)presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  stylesCopy = styles;
+  withCopy = with;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained presentAlertSheetWith:v10 styles:v9 completion:v8];
+  [WeakRetained presentAlertSheetWith:withCopy styles:stylesCopy completion:completionCopy];
 }
 
-- (void)presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7
+- (void)presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  stylesCopy = styles;
+  titlesCopy = titles;
+  messageCopy = message;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained presentAlertSheetWithTitle:v16 message:v15 buttonTitles:v14 styles:v13 completion:v12];
+  [WeakRetained presentAlertSheetWithTitle:titleCopy message:messageCopy buttonTitles:titlesCopy styles:stylesCopy completion:completionCopy];
 }
 
 - (void)_remoteViewProvidesExplicitSizeSnapshot
@@ -460,43 +460,43 @@
   [WeakRetained _remoteViewDidBecomeReadyForDisplay];
 }
 
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:v4];
+  [WeakRetained _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:colorCopy];
 }
 
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(_MSMessageAppContext *)self viewController];
+  dictionaryCopy = dictionary;
+  viewController = [(_MSMessageAppContext *)self viewController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67___MSMessageAppContext__requestStickerExtensionMetadataDictionary___block_invoke;
   v8[3] = &unk_1E83A2C48;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = viewController;
+  v10 = dictionaryCopy;
+  v6 = dictionaryCopy;
+  v7 = viewController;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_MSMessageAppContext *)self viewController];
+  typeCopy = type;
+  identifierCopy = identifier;
+  viewController = [(_MSMessageAppContext *)self viewController];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71___MSMessageAppContext__requestPresentationWithStickerType_identifier___block_invoke;
   block[3] = &unk_1E83A2C70;
-  v13 = v8;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = v8;
+  v13 = viewController;
+  v14 = typeCopy;
+  v15 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = typeCopy;
+  v11 = viewController;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -512,34 +512,34 @@
   [WeakRetained contentDidLoad];
 }
 
-- (void)requestHostSceneIdentifierWithCompletion:(id)a3
+- (void)requestHostSceneIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained requestHostSceneIdentifierWithCompletion:v4];
+  [WeakRetained requestHostSceneIdentifierWithCompletion:completionCopy];
 }
 
-- (void)canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4
+- (void)canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained canShowBrowserForPluginIdentifier:v7 completion:v6];
+  [WeakRetained canShowBrowserForPluginIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained showBrowserForPluginIdentifier:v9 style:a4 completion:v8];
+  [WeakRetained showBrowserForPluginIdentifier:identifierCopy style:style completion:completionCopy];
 }
 
-- (void)_setHostBundleID:(id)a3
+- (void)_setHostBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained _setHostBundleID:v4];
+  [WeakRetained _setHostBundleID:dCopy];
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)balloonHostAuditToken
@@ -587,21 +587,21 @@
   return result;
 }
 
-- (void)_becomeActiveWithConversationState:(id)a3 presentationState:(id)a4
+- (void)_becomeActiveWithConversationState:(id)state presentationState:(id)presentationState
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_MSMessageAppContext *)self viewController];
+  stateCopy = state;
+  presentationStateCopy = presentationState;
+  viewController = [(_MSMessageAppContext *)self viewController];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77___MSMessageAppContext__becomeActiveWithConversationState_presentationState___block_invoke;
   aBlock[3] = &unk_1E83A2C98;
   aBlock[4] = self;
-  v9 = v7;
+  v9 = presentationStateCopy;
   v16 = v9;
-  v10 = v6;
+  v10 = stateCopy;
   v17 = v10;
-  v11 = v8;
+  v11 = viewController;
   v18 = v11;
   v12 = _Block_copy(aBlock);
   if ([(_MSMessageAppContext *)self becomeActiveShouldDispatchAsyncMainQueue])
@@ -620,222 +620,222 @@
   }
 }
 
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(_MSMessageAppContext *)self viewController];
+  draftCopy = draft;
+  completionCopy = completion;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v6 fetchInternalMessageStateForDraft:v4 completion:v7];
+    [viewController fetchInternalMessageStateForDraft:draftCopy completion:completionCopy];
   }
 }
 
 - (void)setShouldPerformSendAnimationOnAppear
 {
-  v2 = [(_MSMessageAppContext *)self viewController];
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v2 setShouldPerformSendAnimationOnAppear];
+    [viewController setShouldPerformSendAnimationOnAppear];
   }
 }
 
-- (void)didChangeBackgroundLuminance:(double)a3
+- (void)didChangeBackgroundLuminance:(double)luminance
 {
-  v4 = [(_MSMessageAppContext *)self viewController];
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didChangeBackgroundLuminance:a3];
+    [viewController didChangeBackgroundLuminance:luminance];
   }
 }
 
 - (void)_resignActive
 {
-  v3 = [(_MSMessageAppContext *)self viewController];
+  viewController = [(_MSMessageAppContext *)self viewController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37___MSMessageAppContext__resignActive__block_invoke;
   v5[3] = &unk_1E83A2CE8;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = viewController;
+  v4 = viewController;
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_canSendMessage:(id)a3 conversationState:(id)a4 associatedText:(id)a5 completion:(id)a6
+- (void)_canSendMessage:(id)message conversationState:(id)state associatedText:(id)text completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  stateCopy = state;
+  textCopy = text;
+  completionCopy = completion;
   [(_MSMessageAppContext *)self _keepContextAlive];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84___MSMessageAppContext__canSendMessage_conversationState_associatedText_completion___block_invoke;
   block[3] = &unk_1E83A2D38;
   block[4] = self;
-  v19 = v11;
-  v20 = v10;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
+  v19 = stateCopy;
+  v20 = messageCopy;
+  v21 = textCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = textCopy;
+  v16 = messageCopy;
+  v17 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_conversationDidChangeWithConversationState:(id)a3
+- (void)_conversationDidChangeWithConversationState:(id)state
 {
-  v4 = a3;
-  v5 = [(_MSMessageAppContext *)self viewController];
+  stateCopy = state;
+  viewController = [(_MSMessageAppContext *)self viewController];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68___MSMessageAppContext__conversationDidChangeWithConversationState___block_invoke;
   block[3] = &unk_1E83A2C70;
   block[4] = self;
-  v9 = v4;
-  v10 = v5;
-  v6 = v5;
-  v7 = v4;
+  v9 = stateCopy;
+  v10 = viewController;
+  v6 = viewController;
+  v7 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_requestContentSizeThatFits:(id)a3 presentationStyle:(id)a4 completionHandler:(id)a5
+- (void)_requestContentSizeThatFits:(id)fits presentationStyle:(id)style completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  fitsCopy = fits;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88___MSMessageAppContext__requestContentSizeThatFits_presentationStyle_completionHandler___block_invoke;
   block[3] = &unk_1E83A2D60;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = fitsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = fitsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_presentationWillChangeToPresentationState:(id)a3
+- (void)_presentationWillChangeToPresentationState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67___MSMessageAppContext__presentationWillChangeToPresentationState___block_invoke;
   v6[3] = &unk_1E83A2CE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_presentationDidChangeToPresentationState:(id)a3
+- (void)_presentationDidChangeToPresentationState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66___MSMessageAppContext__presentationDidChangeToPresentationState___block_invoke;
   v6[3] = &unk_1E83A2CE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_didUpdateMessage:(id)a3 conversationState:(id)a4
+- (void)_didUpdateMessage:(id)message conversationState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  stateCopy = state;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60___MSMessageAppContext__didUpdateMessage_conversationState___block_invoke;
   block[3] = &unk_1E83A2C70;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = stateCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_didReceiveMessage:(id)a3 conversationState:(id)a4
+- (void)_didReceiveMessage:(id)message conversationState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  stateCopy = state;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61___MSMessageAppContext__didReceiveMessage_conversationState___block_invoke;
   block[3] = &unk_1E83A2C70;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = stateCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_didStartSendingMessage:(id)a3 conversationState:(id)a4
+- (void)_didStartSendingMessage:(id)message conversationState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  stateCopy = state;
   [(_MSMessageAppContext *)self _keepContextAlive];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66___MSMessageAppContext__didStartSendingMessage_conversationState___block_invoke;
   block[3] = &unk_1E83A2C70;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = stateCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_didCancelSendingMessage:(id)a3 conversationState:(id)a4
+- (void)_didCancelSendingMessage:(id)message conversationState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  stateCopy = state;
   [(_MSMessageAppContext *)self _keepContextAlive];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67___MSMessageAppContext__didCancelSendingMessage_conversationState___block_invoke;
   block[3] = &unk_1E83A2C70;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = stateCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_didSelectGPAsset:(id)a3 sandboxExtension:(id)a4 recipeData:(id)a5 completion:(id)a6
+- (void)_didSelectGPAsset:(id)asset sandboxExtension:(id)extension recipeData:(id)data completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  extensionCopy = extension;
+  dataCopy = data;
+  completionCopy = completion;
   [(_MSMessageAppContext *)self _keepContextAlive];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81___MSMessageAppContext__didSelectGPAsset_sandboxExtension_recipeData_completion___block_invoke;
   block[3] = &unk_1E83A2D38;
   block[4] = self;
-  v19 = v10;
-  v20 = v12;
-  v21 = v11;
-  v22 = v13;
-  v14 = v13;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
+  v19 = assetCopy;
+  v20 = dataCopy;
+  v21 = extensionCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = extensionCopy;
+  v16 = dataCopy;
+  v17 = assetCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_requestSnapshotThatFits:(id)a3 completion:(id)a4
+- (void)_requestSnapshotThatFits:(id)fits completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  fitsCopy = fits;
+  completionCopy = completion;
   v8 = ms_traceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -847,16 +847,16 @@
   block[2] = __60___MSMessageAppContext__requestSnapshotThatFits_completion___block_invoke;
   block[3] = &unk_1E83A2D60;
   block[4] = self;
-  v19 = v6;
-  v20 = v7;
-  v16 = v7;
-  v17 = v6;
+  v19 = fitsCopy;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = fitsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_requestMessageTintColor:(id)a3
+- (void)_requestMessageTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = ms_traceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -868,186 +868,186 @@
   v14[2] = __49___MSMessageAppContext__requestMessageTintColor___block_invoke;
   v14[3] = &unk_1E83A2C48;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = colorCopy;
+  v13 = colorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
-- (void)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4 completion:(id)a5
+- (void)_handleTextInputPayload:(id)payload withPayloadID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  dCopy = d;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73___MSMessageAppContext__handleTextInputPayload_withPayloadID_completion___block_invoke;
   v14[3] = &unk_1E83A2D88;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = payloadCopy;
+  v16 = dCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
+  v13 = payloadCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
-- (void)_didRemoveAssetArchiveWithIdentifier:(id)a3
+- (void)_didRemoveAssetArchiveWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(_MSMessageAppContext *)self _keepContextAlive];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61___MSMessageAppContext__didRemoveAssetArchiveWithIdentifier___block_invoke;
   v6[3] = &unk_1E83A2CE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_prepareForPresentationWithCompletionHandler:(id)a3
+- (void)_prepareForPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69___MSMessageAppContext__prepareForPresentationWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E83A2C48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_volumeButtonPressed:(BOOL)a3
+- (void)_volumeButtonPressed:(BOOL)pressed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45___MSMessageAppContext__volumeButtonPressed___block_invoke;
   v3[3] = &unk_1E83A2E00;
   v3[4] = self;
-  v4 = a3;
+  pressedCopy = pressed;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)_setPluginIdentifierToShow:(id)a3 completion:(id)a4
+- (void)_setPluginIdentifierToShow:(id)show completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_MSMessageAppContext *)self viewController];
+  showCopy = show;
+  completionCopy = completion;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v7 _setPluginIdentifierToShow:v8 completion:v6];
+    [viewController _setPluginIdentifierToShow:showCopy completion:completionCopy];
   }
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_MSMessageAppContext *)self viewController];
+  representationsCopy = representations;
+  dsCopy = ds;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v7 _addStickerToStoreWithRepresentations:v8 completionWithStickerIDs:v6];
+    [viewController _addStickerToStoreWithRepresentations:representationsCopy completionWithStickerIDs:dsCopy];
   }
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_MSMessageAppContext *)self viewController];
+  representationsCopy = representations;
+  handlerCopy = handler;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v7 _addStickerToStoreWithRepresentations:v8 completionHandler:v6];
+    [viewController _addStickerToStoreWithRepresentations:representationsCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v11 = a5;
-  v12 = [(_MSMessageAppContext *)self viewController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  representationsCopy = representations;
+  completionCopy = completion;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v12 _addStickerToStoreWithRepresentations:v13 sourceRect:v11 completion:{x, y, width, height}];
+    [viewController _addStickerToStoreWithRepresentations:representationsCopy sourceRect:completionCopy completion:{x, y, width, height}];
   }
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 effect:(int64_t)a5 completion:(id)a6
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect effect:(int64_t)effect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a3;
-  v15 = [(_MSMessageAppContext *)self viewController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  representationsCopy = representations;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v15 _addStickerToStoreWithRepresentations:v14 sourceRect:a5 effect:v13 completion:{x, y, width, height}];
+    [viewController _addStickerToStoreWithRepresentations:representationsCopy sourceRect:effect effect:completionCopy completion:{x, y, width, height}];
   }
 
   else
   {
-    [(_MSMessageAppContext *)self _addStickerToStoreWithRepresentations:v14 sourceRect:v13 completion:x, y, width, height];
+    [(_MSMessageAppContext *)self _addStickerToStoreWithRepresentations:representationsCopy sourceRect:completionCopy completion:x, y, width, height];
   }
 }
 
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v11 = a5;
-  v12 = [(_MSMessageAppContext *)self viewController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stickerCopy = sticker;
+  completionCopy = completion;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v12 _addStickerToStoreWithUISticker:v13 sourceRect:v11 completion:{x, y, width, height}];
+    [viewController _addStickerToStoreWithUISticker:stickerCopy sourceRect:completionCopy completion:{x, y, width, height}];
   }
 }
 
 - (void)_prepareForAddStickerFromSubjectLift
 {
-  v2 = [(_MSMessageAppContext *)self viewController];
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v2 _prepareForAddStickerFromSubjectLift];
+    [viewController _prepareForAddStickerFromSubjectLift];
   }
 }
 
-- (void)_addStickerAnimationDidFinishWithCompletion:(id)a3
+- (void)_addStickerAnimationDidFinishWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(_MSMessageAppContext *)self viewController];
+  completionCopy = completion;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 _addStickerAnimationDidFinishWithCompletion:v5];
+    [viewController _addStickerAnimationDidFinishWithCompletion:completionCopy];
   }
 }
 
 - (void)_didRemoveStickerPreview
 {
-  v2 = [(_MSMessageAppContext *)self viewController];
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v2 _didRemoveStickerPreview];
+    [viewController _didRemoveStickerPreview];
   }
 }
 
-- (void)_animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4
+- (void)_animatedStickerCreationProgressChanged:(id)changed progress:(double)progress
 {
-  v7 = a3;
-  v6 = [(_MSMessageAppContext *)self viewController];
+  changedCopy = changed;
+  viewController = [(_MSMessageAppContext *)self viewController];
   if (objc_opt_respondsToSelector())
   {
-    [v6 _animatedStickerCreationProgressChanged:v7 progress:a4];
+    [viewController _animatedStickerCreationProgressChanged:changedCopy progress:progress];
   }
 }
 

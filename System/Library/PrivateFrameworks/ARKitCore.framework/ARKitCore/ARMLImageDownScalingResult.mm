@@ -1,30 +1,30 @@
 @interface ARMLImageDownScalingResult
-- (ARMLImageDownScalingResult)initWithPixelBuffer:(__CVBuffer *)a3 regionOfInterest:(CGSize)a4 cropRegion:(CGRect)a5;
+- (ARMLImageDownScalingResult)initWithPixelBuffer:(__CVBuffer *)buffer regionOfInterest:(CGSize)interest cropRegion:(CGRect)region;
 - (CGRect)cropRegion;
 - (CGSize)imageResolution;
 - (CGSize)regionOfInterest;
 - (void)dealloc;
-- (void)setPixelBuffer:(__CVBuffer *)a3;
-- (void)setUndistortedPixelBuffer:(__CVBuffer *)a3;
+- (void)setPixelBuffer:(__CVBuffer *)buffer;
+- (void)setUndistortedPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ARMLImageDownScalingResult
 
-- (ARMLImageDownScalingResult)initWithPixelBuffer:(__CVBuffer *)a3 regionOfInterest:(CGSize)a4 cropRegion:(CGRect)a5
+- (ARMLImageDownScalingResult)initWithPixelBuffer:(__CVBuffer *)buffer regionOfInterest:(CGSize)interest cropRegion:(CGRect)region
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.height;
-  v10 = a4.width;
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  v9 = interest.height;
+  v10 = interest.width;
   v15.receiver = self;
   v15.super_class = ARMLImageDownScalingResult;
   v12 = [(ARMLImageDownScalingResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(ARMLImageDownScalingResult *)v12 setPixelBuffer:a3];
+    [(ARMLImageDownScalingResult *)v12 setPixelBuffer:buffer];
     v13->_regionOfInterest.width = v10;
     v13->_regionOfInterest.height = v9;
     v13->_cropRegion.origin.x = x;
@@ -50,27 +50,27 @@
   [(ARMLImageDownScalingResult *)&v4 dealloc];
 }
 
-- (void)setPixelBuffer:(__CVBuffer *)a3
+- (void)setPixelBuffer:(__CVBuffer *)buffer
 {
   pixelBuffer = self->_pixelBuffer;
-  if (pixelBuffer != a3)
+  if (pixelBuffer != buffer)
   {
     CVPixelBufferRelease(pixelBuffer);
-    self->_pixelBuffer = a3;
+    self->_pixelBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setUndistortedPixelBuffer:(__CVBuffer *)a3
+- (void)setUndistortedPixelBuffer:(__CVBuffer *)buffer
 {
   undistortedPixelBuffer = self->_undistortedPixelBuffer;
-  if (undistortedPixelBuffer != a3)
+  if (undistortedPixelBuffer != buffer)
   {
     CVPixelBufferRelease(undistortedPixelBuffer);
-    self->_undistortedPixelBuffer = a3;
+    self->_undistortedPixelBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 

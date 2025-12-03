@@ -1,7 +1,7 @@
 @interface BKRestorationScrimView
-- (BKRestorationScrimView)initWithAssetID:(id)a3 window:(id)a4;
+- (BKRestorationScrimView)initWithAssetID:(id)d window:(id)window;
 - (UIWindow)window;
-- (void)_setupMaskView:(id)a3 spinner:(id)a4;
+- (void)_setupMaskView:(id)view spinner:(id)spinner;
 - (void)removeAnimated;
 - (void)removeEventually;
 - (void)show;
@@ -9,15 +9,15 @@
 
 @implementation BKRestorationScrimView
 
-- (BKRestorationScrimView)initWithAssetID:(id)a3 window:(id)a4
+- (BKRestorationScrimView)initWithAssetID:(id)d window:(id)window
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 bounds];
+  windowCopy = window;
+  dCopy = d;
+  [windowCopy bounds];
   v56.receiver = self;
   v56.super_class = BKRestorationScrimView;
   v8 = [(BKRestorationScrimView *)&v56 initWithFrame:?];
-  objc_storeWeak(&v8->_window, v6);
+  objc_storeWeak(&v8->_window, windowCopy);
   v9 = +[NSNotificationCenter defaultCenter];
   v8->_observationToken = [v9 _addObserver:v8 selector:"_contentDidFinishRestoring:" name:@"BKBookReaderContentLayoutFinished" object:0 options:2048];
 
@@ -26,7 +26,7 @@
   v11 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   v54 = +[BEPageSnapshotCache restorationImageAssetID];
-  v12 = [v54 isEqualToString:v7];
+  v12 = [v54 isEqualToString:dCopy];
 
   v13 = v10;
   if (v12)
@@ -54,10 +54,10 @@ LABEL_34:
             goto LABEL_25;
           }
 
-          v17 = [v6 traitCollection];
-          v18 = [v17 userInterfaceStyle];
+          traitCollection = [windowCopy traitCollection];
+          userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-          if (v18 != 1)
+          if (userInterfaceStyle != 1)
           {
             goto LABEL_25;
           }
@@ -69,11 +69,11 @@ LABEL_19:
           {
             [v24 size];
             v27 = v26;
-            v28 = [v6 screen];
-            [v28 scale];
+            screen = [windowCopy screen];
+            [screen scale];
             v30 = v27 / v29;
 
-            [v6 bounds];
+            [windowCopy bounds];
             v35 = v34;
             if (v30 == v34)
             {
@@ -138,10 +138,10 @@ LABEL_30:
     switch(v16)
     {
       case 3:
-        v22 = [v6 traitCollection];
-        v23 = [v22 userInterfaceStyle];
+        traitCollection2 = [windowCopy traitCollection];
+        userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-        if (v23 == 2)
+        if (userInterfaceStyle2 == 2)
         {
           goto LABEL_19;
         }
@@ -149,9 +149,9 @@ LABEL_30:
         break;
       case 4:
         v43 = +[BCLightLevelController sharedInstance];
-        v44 = [v43 isLowLight];
+        isLowLight = [v43 isLowLight];
 
-        if ((v44 & 1) == 0)
+        if ((isLowLight & 1) == 0)
         {
           goto LABEL_19;
         }
@@ -159,9 +159,9 @@ LABEL_30:
         break;
       case 5:
         v19 = +[BCLightLevelController sharedInstance];
-        v20 = [v19 isLowLight];
+        isLowLight2 = [v19 isLowLight];
 
-        if ((v20 & 1) == 0)
+        if ((isLowLight2 & 1) == 0)
         {
           break;
         }
@@ -186,15 +186,15 @@ LABEL_25:
 LABEL_35:
   [(BKRestorationScrimView *)v10 addSubview:v11];
   [(BKRestorationScrimView *)v10 _setupMaskView:v13 spinner:v11];
-  v45 = [v11 centerXAnchor];
-  v46 = [(BKRestorationScrimView *)v10 centerXAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  centerXAnchor = [v11 centerXAnchor];
+  centerXAnchor2 = [(BKRestorationScrimView *)v10 centerXAnchor];
+  v47 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v57[0] = v47;
-  v48 = [v11 centerYAnchor];
-  v49 = [(BKRestorationScrimView *)v10 centerYAnchor];
-  [v48 constraintEqualToAnchor:v49];
+  centerYAnchor = [v11 centerYAnchor];
+  centerYAnchor2 = [(BKRestorationScrimView *)v10 centerYAnchor];
+  [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v55 = v10;
-  v51 = v50 = v6;
+  v51 = v50 = windowCopy;
   v57[1] = v51;
   v52 = [NSArray arrayWithObjects:v57 count:2];
   [NSLayoutConstraint activateConstraints:v52];
@@ -252,12 +252,12 @@ LABEL_35:
   return WeakRetained;
 }
 
-- (void)_setupMaskView:(id)a3 spinner:(id)a4
+- (void)_setupMaskView:(id)view spinner:(id)spinner
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_10063CDD8(a3, v8);
+  viewCopy = view;
+  spinnerCopy = spinner;
+  selfCopy = self;
+  sub_10063CDD8(view, spinnerCopy);
 }
 
 @end

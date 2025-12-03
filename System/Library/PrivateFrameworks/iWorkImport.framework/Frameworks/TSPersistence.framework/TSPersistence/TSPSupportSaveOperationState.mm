@@ -1,7 +1,7 @@
 @interface TSPSupportSaveOperationState
 - (BOOL)isSavingCurrentDocument;
 - (TSPSupportSaveOperationState)init;
-- (TSPSupportSaveOperationState)initWithOriginalDocumentUUID:(id)a3 originalVersionUUID:(id)a4 originalURL:(id)a5 updateType:(int64_t)a6;
+- (TSPSupportSaveOperationState)initWithOriginalDocumentUUID:(id)d originalVersionUUID:(id)iD originalURL:(id)l updateType:(int64_t)type;
 @end
 
 @implementation TSPSupportSaveOperationState
@@ -22,29 +22,29 @@
   objc_exception_throw(v13);
 }
 
-- (TSPSupportSaveOperationState)initWithOriginalDocumentUUID:(id)a3 originalVersionUUID:(id)a4 originalURL:(id)a5 updateType:(int64_t)a6
+- (TSPSupportSaveOperationState)initWithOriginalDocumentUUID:(id)d originalVersionUUID:(id)iD originalURL:(id)l updateType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
   v27.receiver = self;
   v27.super_class = TSPSupportSaveOperationState;
   v15 = [(TSPSupportSaveOperationState *)&v27 init];
   if (v15)
   {
-    v16 = objc_msgSend_copy(v10, v13, v14);
+    v16 = objc_msgSend_copy(dCopy, v13, v14);
     originalDocumentUUID = v15->_originalDocumentUUID;
     v15->_originalDocumentUUID = v16;
 
-    v20 = objc_msgSend_copy(v11, v18, v19);
+    v20 = objc_msgSend_copy(iDCopy, v18, v19);
     originalVersionUUID = v15->_originalVersionUUID;
     v15->_originalVersionUUID = v20;
 
-    v24 = objc_msgSend_copy(v12, v22, v23);
+    v24 = objc_msgSend_copy(lCopy, v22, v23);
     originalURL = v15->_originalURL;
     v15->_originalURL = v24;
 
-    v15->_updateType = a6;
+    v15->_updateType = type;
   }
 
   return v15;

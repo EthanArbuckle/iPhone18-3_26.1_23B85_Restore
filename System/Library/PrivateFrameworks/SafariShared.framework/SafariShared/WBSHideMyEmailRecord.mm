@@ -1,28 +1,28 @@
 @interface WBSHideMyEmailRecord
-- (BOOL)isEqual:(id)a3;
-- (WBSHideMyEmailRecord)initWithCoder:(id)a3;
-- (WBSHideMyEmailRecord)initWithDomain:(id)a3 state:(unint64_t)a4 privateEmailAddress:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (WBSHideMyEmailRecord)initWithCoder:(id)coder;
+- (WBSHideMyEmailRecord)initWithDomain:(id)domain state:(unint64_t)state privateEmailAddress:(id)address;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHideMyEmailRecord
 
-- (WBSHideMyEmailRecord)initWithDomain:(id)a3 state:(unint64_t)a4 privateEmailAddress:(id)a5
+- (WBSHideMyEmailRecord)initWithDomain:(id)domain state:(unint64_t)state privateEmailAddress:(id)address
 {
-  v8 = a3;
-  v9 = a5;
+  domainCopy = domain;
+  addressCopy = address;
   v17.receiver = self;
   v17.super_class = WBSHideMyEmailRecord;
   v10 = [(WBSHideMyEmailRecord *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [domainCopy copy];
     domain = v10->_domain;
     v10->_domain = v11;
 
-    v10->_state = a4;
-    v13 = [v9 copy];
+    v10->_state = state;
+    v13 = [addressCopy copy];
     privateEmailAddress = v10->_privateEmailAddress;
     v10->_privateEmailAddress = v13;
 
@@ -32,10 +32,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -45,7 +45,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_state == v5->_state && WBSIsEqual())
       {
         v6 = WBSIsEqual();
@@ -84,21 +84,21 @@
   return [v3 stringWithFormat:@"<%@: %p, domain: %@, state: %@, privateEmailAddress: %@>", v4, self, self->_domain, v6, self->_privateEmailAddress];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domain = self->_domain;
-  v5 = a3;
-  [v5 encodeObject:domain forKey:@"domain"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_privateEmailAddress forKey:@"privateEmailAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domain forKey:@"domain"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_privateEmailAddress forKey:@"privateEmailAddress"];
 }
 
-- (WBSHideMyEmailRecord)initWithCoder:(id)a3
+- (WBSHideMyEmailRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
-  v6 = [v4 decodeIntegerForKey:@"state"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privateEmailAddress"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  v6 = [coderCopy decodeIntegerForKey:@"state"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateEmailAddress"];
 
   v8 = [(WBSHideMyEmailRecord *)self initWithDomain:v5 state:v6 privateEmailAddress:v7];
   return v8;

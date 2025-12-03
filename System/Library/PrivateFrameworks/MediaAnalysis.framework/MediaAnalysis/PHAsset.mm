@@ -1,7 +1,7 @@
 @interface PHAsset
-- (BOOL)mad_isFullAnalysisVersionOutdated:(BOOL)a3;
+- (BOOL)mad_isFullAnalysisVersionOutdated:(BOOL)outdated;
 - (BOOL)vcp_eligibleForFullAnalysis;
-- (BOOL)vcp_isAnalysisValid:(id)a3;
+- (BOOL)vcp_isAnalysisValid:(id)valid;
 @end
 
 @implementation PHAsset
@@ -18,28 +18,28 @@
     v3 = 1;
   }
 
-  v4 = [(PHAsset *)self localIdentifier];
-  v5 = [(PHAsset *)self vcp_modificationDate];
+  localIdentifier = [(PHAsset *)self localIdentifier];
+  vcp_modificationDate = [(PHAsset *)self vcp_modificationDate];
 
-  if (v5)
+  if (vcp_modificationDate)
   {
     v21 = 0;
     if (+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v6 = [(PHAsset *)self photoLibrary];
-      v7 = [v6 mad_fetchRequest];
+      photoLibrary = [(PHAsset *)self photoLibrary];
+      mad_fetchRequest = [photoLibrary mad_fetchRequest];
       v20 = 0;
-      [v7 fetchProcessingStatus:0 attempts:&v21 lastAttemptDate:0 nextAttemptDate:&v20 localIdentifier:v4 taskID:v3];
+      [mad_fetchRequest fetchProcessingStatus:0 attempts:&v21 lastAttemptDate:0 nextAttemptDate:&v20 localIdentifier:localIdentifier taskID:v3];
       v8 = v20;
     }
 
     else
     {
-      v11 = [(PHAsset *)self photoLibrary];
-      v6 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v11];
+      photoLibrary2 = [(PHAsset *)self photoLibrary];
+      photoLibrary = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary2];
 
       v19 = 0;
-      [v6 queryProcessingStatus:0 attempts:&v21 lastAttemptDate:0 andNextAttemptDate:&v19 forLocalIdentifier:v4 andTaskID:v3];
+      [photoLibrary queryProcessingStatus:0 attempts:&v21 lastAttemptDate:0 andNextAttemptDate:&v19 forLocalIdentifier:localIdentifier andTaskID:v3];
       v8 = v19;
     }
 
@@ -54,7 +54,7 @@
           v16 = +[VCPLogManager dateFormatter];
           v17 = [v16 stringFromDate:v8];
           *buf = 138412802;
-          v23 = v4;
+          v23 = localIdentifier;
           v24 = 1024;
           v25 = v15;
           v26 = 2112;
@@ -80,7 +80,7 @@
       if (os_log_type_enabled(&_os_log_default, v9))
       {
         *buf = 138412290;
-        v23 = v4;
+        v23 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "  [%@] Missing modification date; ineligible", buf, 0xCu);
       }
     }
@@ -91,62 +91,62 @@
   return v10;
 }
 
-- (BOOL)vcp_isAnalysisValid:(id)a3
+- (BOOL)vcp_isAnalysisValid:(id)valid
 {
-  v4 = a3;
-  v5 = [(PHAsset *)self vcp_modificationDate];
-  v6 = [v4 vcp_dateModified];
-  v7 = [v5 isEqualToDate:v6];
+  validCopy = valid;
+  vcp_modificationDate = [(PHAsset *)self vcp_modificationDate];
+  vcp_dateModified = [validCopy vcp_dateModified];
+  v7 = [vcp_modificationDate isEqualToDate:vcp_dateModified];
 
   return v7;
 }
 
-- (BOOL)mad_isFullAnalysisVersionOutdated:(BOOL)a3
+- (BOOL)mad_isFullAnalysisVersionOutdated:(BOOL)outdated
 {
-  v3 = a3;
+  outdatedCopy = outdated;
   if (([(PHAsset *)self vcp_needsFullAnalysisProcessing:?]& 1) != 0)
   {
     return 1;
   }
 
-  if (([(PHAsset *)self mad_isNonLivePhotoImage]& 1) != 0 || !v3)
+  if (([(PHAsset *)self mad_isNonLivePhotoImage]& 1) != 0 || !outdatedCopy)
   {
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
-      v6 = [(PHAsset *)self photoLibrary];
-      v7 = [v6 mad_fetchRequest];
+      photoLibrary = [(PHAsset *)self photoLibrary];
+      mad_fetchRequest = [photoLibrary mad_fetchRequest];
 
-      v8 = [(PHAsset *)self localIdentifier];
-      v9 = [v7 fetchAnalysisWithLocalIdentifier:v8 predicate:0];
+      localIdentifier = [(PHAsset *)self localIdentifier];
+      v9 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
     }
 
     else
     {
-      v10 = [(PHAsset *)self photoLibrary];
-      v11 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v10];
+      photoLibrary2 = [(PHAsset *)self photoLibrary];
+      v11 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary2];
 
       v12 = +[NSMutableDictionary dictionary];
-      v13 = [(PHAsset *)self localIdentifier];
-      v20 = v13;
+      localIdentifier2 = [(PHAsset *)self localIdentifier];
+      v20 = localIdentifier2;
       v14 = [NSArray arrayWithObjects:&v20 count:1];
       [v11 queryHeadersForAssets:v14 analyses:v12];
 
-      v15 = [(PHAsset *)self localIdentifier];
-      v9 = [v12 objectForKeyedSubscript:v15];
+      localIdentifier3 = [(PHAsset *)self localIdentifier];
+      v9 = [v12 objectForKeyedSubscript:localIdentifier3];
     }
 
     if (v9)
     {
-      v16 = [v9 vcp_version];
-      if (v16 < MediaAnalysisVersion)
+      vcp_version = [v9 vcp_version];
+      if (vcp_version < MediaAnalysisVersion)
       {
 
         return 1;
       }
 
-      v17 = [v9 vcp_dateModified];
-      v18 = [(PHAsset *)self vcp_modificationDate];
-      v19 = [v17 isEqualToDate:v18];
+      vcp_dateModified = [v9 vcp_dateModified];
+      vcp_modificationDate = [(PHAsset *)self vcp_modificationDate];
+      v19 = [vcp_dateModified isEqualToDate:vcp_modificationDate];
 
       if ((v19 & 1) == 0)
       {

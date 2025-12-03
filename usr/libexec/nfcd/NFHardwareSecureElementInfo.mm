@@ -1,130 +1,130 @@
 @interface NFHardwareSecureElementInfo
-- (NFHardwareSecureElementInfo)initWithCoder:(id)a3;
-- (NFHardwareSecureElementInfo)initWithDictionary:(id)a3;
+- (NFHardwareSecureElementInfo)initWithCoder:(id)coder;
+- (NFHardwareSecureElementInfo)initWithDictionary:(id)dictionary;
 - (NSNumber)expectedSequenceCounter;
 - (id)asDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFHardwareSecureElementInfo
 
-- (NFHardwareSecureElementInfo)initWithDictionary:(id)a3
+- (NFHardwareSecureElementInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v54.receiver = self;
   v54.super_class = NFHardwareSecureElementInfo;
   v5 = [(NFHardwareSecureElementInfo *)&v54 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"OSVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"OSVersion"];
     v5->_OSVersion = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"fullOSVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"fullOSVersion"];
     v5->_fullOSVersion = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"firmwareVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"firmwareVersion"];
     v5->_firmwareVersion = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"compiledFWVersion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"compiledFWVersion"];
     compiledFWVersion = v5->_compiledFWVersion;
     v5->_compiledFWVersion = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"hardwareVersion"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"hardwareVersion"];
     v5->_hardwareVersion = [v13 unsignedIntegerValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     v5->_deviceType = [v14 unsignedIntegerValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"sequenceCounter"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"sequenceCounter"];
     sequenceCounter = v5->_sequenceCounter;
     v5->_sequenceCounter = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"referenceCounter"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"referenceCounter"];
     referenceCounter = v5->_referenceCounter;
     v5->_referenceCounter = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"osid"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"osid"];
     v5->_osid = [v19 unsignedIntegerValue];
 
-    v20 = [v4 objectForKeyedSubscript:@"otherOSValid"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"otherOSValid"];
     otherOSValid = v5->_otherOSValid;
     v5->_otherOSValid = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"restrictedMode"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"restrictedMode"];
     v5->_restrictedMode = [v22 BOOLValue];
 
-    v23 = [v4 objectForKeyedSubscript:@"osUpdateMode"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"osUpdateMode"];
     v5->_osUpdateMode = [v23 BOOLValue];
 
-    v24 = [v4 objectForKeyedSubscript:@"OSMode"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"OSMode"];
     v5->_OSMode = [v24 unsignedIntegerValue];
 
-    v25 = [v4 objectForKeyedSubscript:@"signingKeyType"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"signingKeyType"];
     v5->_signingKeyType = [v25 unsignedIntegerValue];
 
-    v26 = [v4 objectForKeyedSubscript:@"migrationState"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"migrationState"];
     v5->_migrationState = [v26 unsignedIntegerValue];
 
-    v27 = [v4 objectForKeyedSubscript:@"migrationPackages"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"migrationPackages"];
     migrationPackages = v5->_migrationPackages;
     v5->_migrationPackages = v27;
 
-    v29 = [v4 objectForKeyedSubscript:@"migrationInstances"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"migrationInstances"];
     migrationInstances = v5->_migrationInstances;
     v5->_migrationInstances = v29;
 
-    v31 = [v4 objectForKeyedSubscript:@"migrationContext"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"migrationContext"];
     v5->_migrationContext = [v31 unsignedIntegerValue];
 
-    v32 = [v4 objectForKeyedSubscript:@"platformIdentifier"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"platformIdentifier"];
     platformIdentifier = v5->_platformIdentifier;
     v5->_platformIdentifier = v32;
 
-    v34 = [v4 objectForKeyedSubscript:@"serialNumber"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"serialNumber"];
     serialNumberAsData = v5->_serialNumberAsData;
     v5->_serialNumberAsData = v34;
 
-    v36 = [v4 objectForKeyedSubscript:@"systemOSSerialNumber"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"systemOSSerialNumber"];
     systemOSSerialNumberAsData = v5->_systemOSSerialNumberAsData;
     v5->_systemOSSerialNumberAsData = v36;
 
-    v38 = [v4 objectForKeyedSubscript:@"rsaCertificate"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"rsaCertificate"];
     rsaCertificateAsData = v5->_rsaCertificateAsData;
     v5->_rsaCertificateAsData = v38;
 
-    v40 = [v4 objectForKeyedSubscript:@"ecdsaCertificate"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"ecdsaCertificate"];
     ecdsaCertificateAsData = v5->_ecdsaCertificateAsData;
     v5->_ecdsaCertificateAsData = v40;
 
-    v42 = [v4 objectForKeyedSubscript:@"eckaCertificate"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"eckaCertificate"];
     eckaCertificateAsData = v5->_eckaCertificateAsData;
     v5->_eckaCertificateAsData = v42;
 
-    v44 = [v4 objectForKeyedSubscript:@"appletMap"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"appletMap"];
     v5->_appletMap = [v44 unsignedIntegerValue];
 
-    v45 = [v4 objectForKeyedSubscript:@"persistentConfigID"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"persistentConfigID"];
     persistentConfigID = v5->_persistentConfigID;
     v5->_persistentConfigID = v45;
 
-    v47 = [v4 objectForKeyedSubscript:@"manifestQuery"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"manifestQuery"];
     manifestQuery = v5->_manifestQuery;
     v5->_manifestQuery = v47;
 
-    v49 = [v4 objectForKeyedSubscript:@"personalisable"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"personalisable"];
     v5->_personalisable = [v49 BOOLValue];
 
-    v50 = [v4 objectForKeyedSubscript:@"supportedTechnologies"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"supportedTechnologies"];
     v5->_supportedTechnologies = [v50 unsignedIntegerValue];
 
-    v51 = [v4 objectForKeyedSubscript:@"seType"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"seType"];
     v5->_seType = [v51 unsignedIntegerValue];
 
-    v52 = [v4 objectForKeyedSubscript:@"jcopTooOld"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"jcopTooOld"];
     v5->_jcopTooOld = [v52 BOOLValue];
   }
 
@@ -137,20 +137,20 @@
   v5 = [v4 childWithTag:65343];
   v6 = [v5 childWithTag:135];
 
-  v7 = [v6 value];
-  v8 = [v7 length];
+  value = [v6 value];
+  v8 = [value length];
 
   if (v8)
   {
     [(NFHardwareSecureElementInfo *)self signingKeyType];
     if ([(NFHardwareSecureElementInfo *)self seType]== 6 && [(NFHardwareSecureElementInfo *)self deviceType]== 56)
     {
-      v9 = [(NFHardwareSecureElementInfo *)self persistentConfigID];
-      [v9 unsignedIntValue];
+      persistentConfigID = [(NFHardwareSecureElementInfo *)self persistentConfigID];
+      [persistentConfigID unsignedIntValue];
     }
 
-    v10 = [v6 value];
-    v11 = *[v10 bytes];
+    value2 = [v6 value];
+    v11 = *[value2 bytes];
     v12 = &off_100336A80;
     v13 = &off_100336A80;
     if (v11 != 210)
@@ -278,92 +278,92 @@
   return v20;
 }
 
-- (NFHardwareSecureElementInfo)initWithCoder:(id)a3
+- (NFHardwareSecureElementInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = NFHardwareSecureElementInfo;
   v5 = [(NFHardwareSecureElementInfo *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_OSVersion = [v4 decodeIntegerForKey:@"OSVersion"];
-    v5->_fullOSVersion = [v4 decodeIntegerForKey:@"fullOSVersion"];
-    v5->_firmwareVersion = [v4 decodeIntegerForKey:@"firmwareVersion"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"compiledFWVersion"];
+    v5->_OSVersion = [coderCopy decodeIntegerForKey:@"OSVersion"];
+    v5->_fullOSVersion = [coderCopy decodeIntegerForKey:@"fullOSVersion"];
+    v5->_firmwareVersion = [coderCopy decodeIntegerForKey:@"firmwareVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compiledFWVersion"];
     compiledFWVersion = v5->_compiledFWVersion;
     v5->_compiledFWVersion = v8;
 
-    v5->_hardwareVersion = [v4 decodeIntegerForKey:@"hardwareVersion"];
-    v5->_deviceType = [v4 decodeIntegerForKey:@"deviceType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sequenceCounter"];
+    v5->_hardwareVersion = [coderCopy decodeIntegerForKey:@"hardwareVersion"];
+    v5->_deviceType = [coderCopy decodeIntegerForKey:@"deviceType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sequenceCounter"];
     sequenceCounter = v5->_sequenceCounter;
     v5->_sequenceCounter = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceCounter"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceCounter"];
     referenceCounter = v5->_referenceCounter;
     v5->_referenceCounter = v12;
 
-    v5->_osid = [v4 decodeIntegerForKey:@"osid"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherOSValid"];
+    v5->_osid = [coderCopy decodeIntegerForKey:@"osid"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherOSValid"];
     otherOSValid = v5->_otherOSValid;
     v5->_otherOSValid = v14;
 
-    v5->_restrictedMode = [v4 decodeBoolForKey:@"restrictedMode"];
-    v5->_osUpdateMode = [v4 decodeBoolForKey:@"osUpdateMode"];
-    v5->_OSMode = [v4 decodeIntegerForKey:@"OSMode"];
-    v5->_signingKeyType = [v4 decodeIntegerForKey:@"signingKeyType"];
-    v5->_migrationState = [v4 decodeIntegerForKey:@"migrationState"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"migrationPackages"];
+    v5->_restrictedMode = [coderCopy decodeBoolForKey:@"restrictedMode"];
+    v5->_osUpdateMode = [coderCopy decodeBoolForKey:@"osUpdateMode"];
+    v5->_OSMode = [coderCopy decodeIntegerForKey:@"OSMode"];
+    v5->_signingKeyType = [coderCopy decodeIntegerForKey:@"signingKeyType"];
+    v5->_migrationState = [coderCopy decodeIntegerForKey:@"migrationState"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"migrationPackages"];
     migrationPackages = v5->_migrationPackages;
     v5->_migrationPackages = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"migrationInstances"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"migrationInstances"];
     migrationInstances = v5->_migrationInstances;
     v5->_migrationInstances = v18;
 
-    v5->_migrationContext = [v4 decodeIntegerForKey:@"migrationContext"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformIdentifier"];
+    v5->_migrationContext = [coderCopy decodeIntegerForKey:@"migrationContext"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformIdentifier"];
     platformIdentifier = v5->_platformIdentifier;
     v5->_platformIdentifier = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumberAsData = v5->_serialNumberAsData;
     v5->_serialNumberAsData = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemOSSerialNumber"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemOSSerialNumber"];
     systemOSSerialNumberAsData = v5->_systemOSSerialNumberAsData;
     v5->_systemOSSerialNumberAsData = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rsaCertificate"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsaCertificate"];
     rsaCertificateAsData = v5->_rsaCertificateAsData;
     v5->_rsaCertificateAsData = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ecdsaCertificate"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ecdsaCertificate"];
     ecdsaCertificateAsData = v5->_ecdsaCertificateAsData;
     v5->_ecdsaCertificateAsData = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eckaCertificate"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eckaCertificate"];
     eckaCertificateAsData = v5->_eckaCertificateAsData;
     v5->_eckaCertificateAsData = v30;
 
-    v5->_appletMap = [v4 decodeIntegerForKey:@"appletMap"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentConfigID"];
+    v5->_appletMap = [coderCopy decodeIntegerForKey:@"appletMap"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentConfigID"];
     persistentConfigID = v5->_persistentConfigID;
     v5->_persistentConfigID = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifestQuery"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifestQuery"];
     manifestQuery = v5->_manifestQuery;
     v5->_manifestQuery = v34;
 
-    v5->_personalisable = [v4 decodeBoolForKey:@"personalisable"];
-    v5->_supportedTechnologies = [v4 decodeIntegerForKey:@"supportedTechnologies"];
-    v5->_seType = [v4 decodeIntegerForKey:@"seType"];
-    v5->_jcopTooOld = [v4 decodeBoolForKey:@"jcopTooOld"];
-    v36 = [NFNSCheckedDecoder coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"bootHistory"];
+    v5->_personalisable = [coderCopy decodeBoolForKey:@"personalisable"];
+    v5->_supportedTechnologies = [coderCopy decodeIntegerForKey:@"supportedTechnologies"];
+    v5->_seType = [coderCopy decodeIntegerForKey:@"seType"];
+    v5->_jcopTooOld = [coderCopy decodeBoolForKey:@"jcopTooOld"];
+    v36 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"bootHistory"];
     bootHistory = v5->_bootHistory;
     v5->_bootHistory = v36;
   }
@@ -371,18 +371,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v22 = v4;
+  v22 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"identifier"];
-    v4 = v22;
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
+    coderCopy = v22;
   }
 
-  [v4 encodeInteger:self->_OSVersion forKey:@"OSVersion"];
+  [coderCopy encodeInteger:self->_OSVersion forKey:@"OSVersion"];
   [v22 encodeInteger:self->_fullOSVersion forKey:@"fullOSVersion"];
   [v22 encodeInteger:self->_firmwareVersion forKey:@"firmwareVersion"];
   compiledFWVersion = self->_compiledFWVersion;
@@ -626,8 +626,8 @@
   serialNumberAsData = self->_serialNumberAsData;
   if (serialNumberAsData)
   {
-    v26 = [(NSData *)serialNumberAsData NF_asHexString];
-    [v4 setObject:v26 forKeyedSubscript:@"serialNumber"];
+    nF_asHexString = [(NSData *)serialNumberAsData NF_asHexString];
+    [v4 setObject:nF_asHexString forKeyedSubscript:@"serialNumber"];
   }
 
   else
@@ -638,8 +638,8 @@
   systemOSSerialNumberAsData = self->_systemOSSerialNumberAsData;
   if (systemOSSerialNumberAsData)
   {
-    v28 = [(NSData *)systemOSSerialNumberAsData NF_asHexString];
-    [v4 setObject:v28 forKeyedSubscript:@"systemOSSerialNumber"];
+    nF_asHexString2 = [(NSData *)systemOSSerialNumberAsData NF_asHexString];
+    [v4 setObject:nF_asHexString2 forKeyedSubscript:@"systemOSSerialNumber"];
   }
 
   else
@@ -650,8 +650,8 @@
   rsaCertificateAsData = self->_rsaCertificateAsData;
   if (rsaCertificateAsData)
   {
-    v30 = [(NSData *)rsaCertificateAsData NF_asHexString];
-    [v4 setObject:v30 forKeyedSubscript:@"rsaCertificate"];
+    nF_asHexString3 = [(NSData *)rsaCertificateAsData NF_asHexString];
+    [v4 setObject:nF_asHexString3 forKeyedSubscript:@"rsaCertificate"];
   }
 
   else
@@ -662,8 +662,8 @@
   ecdsaCertificateAsData = self->_ecdsaCertificateAsData;
   if (ecdsaCertificateAsData)
   {
-    v32 = [(NSData *)ecdsaCertificateAsData NF_asHexString];
-    [v4 setObject:v32 forKeyedSubscript:@"ecdsaCertificate"];
+    nF_asHexString4 = [(NSData *)ecdsaCertificateAsData NF_asHexString];
+    [v4 setObject:nF_asHexString4 forKeyedSubscript:@"ecdsaCertificate"];
   }
 
   else
@@ -674,8 +674,8 @@
   eckaCertificateAsData = self->_eckaCertificateAsData;
   if (eckaCertificateAsData)
   {
-    v34 = [(NSData *)eckaCertificateAsData NF_asHexString];
-    [v4 setObject:v34 forKeyedSubscript:@"eckaCertificate"];
+    nF_asHexString5 = [(NSData *)eckaCertificateAsData NF_asHexString];
+    [v4 setObject:nF_asHexString5 forKeyedSubscript:@"eckaCertificate"];
   }
 
   else

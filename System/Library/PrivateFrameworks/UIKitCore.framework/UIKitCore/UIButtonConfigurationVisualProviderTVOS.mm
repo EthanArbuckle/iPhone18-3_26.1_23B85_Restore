@@ -1,28 +1,28 @@
 @interface UIButtonConfigurationVisualProviderTVOS
-- (BOOL)_hasRemovedPlatterForState:(unint64_t)a3;
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (BOOL)_hasRemovedPlatterForState:(unint64_t)state;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (id)_floatingContentView;
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 - (id)effectiveContentView;
 - (void)_layoutFloatingContentView;
-- (void)_updateBackgroundViewWithConfiguration:(id)a3;
+- (void)_updateBackgroundViewWithConfiguration:(id)configuration;
 - (void)_updateContentBackdropView;
-- (void)cleanupForVisualProvider:(id)a3;
-- (void)contextMenuInteraction:(id)a3 updateStyleForMenuWithConfiguration:(id)a4 style:(id)a5;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)cleanupForVisualProvider:(id)provider;
+- (void)contextMenuInteraction:(id)interaction updateStyleForMenuWithConfiguration:(id)configuration style:(id)style;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation UIButtonConfigurationVisualProviderTVOS
 
-- (void)cleanupForVisualProvider:(id)a3
+- (void)cleanupForVisualProvider:(id)provider
 {
   v4.receiver = self;
   v4.super_class = UIButtonConfigurationVisualProviderTVOS;
-  [(UIButtonConfigurationVisualProvider *)&v4 cleanupForVisualProvider:a3];
+  [(UIButtonConfigurationVisualProvider *)&v4 cleanupForVisualProvider:provider];
   [(UIView *)self->_floatingContentView removeFromSuperview];
 }
 
@@ -37,10 +37,10 @@
 
 - (id)effectiveContentView
 {
-  v2 = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
-  v3 = [v2 contentView];
+  _floatingContentView = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
+  contentView = [_floatingContentView contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (id)_floatingContentView
@@ -78,8 +78,8 @@
     v18[3] = &unk_1E70F3590;
     v18[4] = self;
     [UIView _performSystemAppearanceModifications:v18];
-    v16 = [(UIButtonConfigurationVisualProvider *)self button];
-    [v16 addSubview:self->_floatingContentView];
+    button = [(UIButtonConfigurationVisualProvider *)self button];
+    [button addSubview:self->_floatingContentView];
 
     floatingContentView = self->_floatingContentView;
   }
@@ -101,58 +101,58 @@ uint64_t __63__UIButtonConfigurationVisualProviderTVOS__floatingContentView__blo
   return [v4 setUseShadowImage:0];
 }
 
-- (void)_updateBackgroundViewWithConfiguration:(id)a3
+- (void)_updateBackgroundViewWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 background];
-  [v5 cornerRadius];
+  configurationCopy = configuration;
+  background = [configurationCopy background];
+  [background cornerRadius];
   v7 = v6;
-  v8 = [v4 cornerStyle];
+  cornerStyle = [configurationCopy cornerStyle];
 
-  if (v8 <= 1)
+  if (cornerStyle <= 1)
   {
-    if (!v8)
+    if (!cornerStyle)
     {
-      v9 = +[UIFontMetrics defaultMetrics];
-      v14 = [(UIButtonConfigurationVisualProvider *)self button];
-      v15 = [v14 traitCollection];
-      [v9 scaledValueForValue:v15 compatibleWithTraitCollection:v7];
-      [v5 setCornerRadius:?];
+      button2 = +[UIFontMetrics defaultMetrics];
+      button = [(UIButtonConfigurationVisualProvider *)self button];
+      traitCollection = [button traitCollection];
+      [button2 scaledValueForValue:traitCollection compatibleWithTraitCollection:v7];
+      [background setCornerRadius:?];
 
       goto LABEL_14;
     }
 
-    if (v8 != 1)
+    if (cornerStyle != 1)
     {
       goto LABEL_15;
     }
 
-    v9 = [(UIButtonConfigurationVisualProvider *)self button];
-    [v9 bounds];
+    button2 = [(UIButtonConfigurationVisualProvider *)self button];
+    [button2 bounds];
     v11 = 0.25;
     goto LABEL_10;
   }
 
-  switch(v8)
+  switch(cornerStyle)
   {
     case 2:
-      v9 = [(UIButtonConfigurationVisualProvider *)self button];
-      [v9 bounds];
+      button2 = [(UIButtonConfigurationVisualProvider *)self button];
+      [button2 bounds];
       v11 = 0.35;
 LABEL_10:
       v12 = v10 * v11 * 0.5;
 LABEL_12:
-      [v5 setCornerRadius:v12];
+      [background setCornerRadius:v12];
 LABEL_14:
 
       break;
     case 3:
-      v9 = [(UIButtonConfigurationVisualProvider *)self button];
-      [v9 bounds];
+      button2 = [(UIButtonConfigurationVisualProvider *)self button];
+      [button2 bounds];
       v12 = v13 * 0.5 * 0.5;
       goto LABEL_12;
     case 4:
-      [v5 setCornerRadius:1.79769313e308];
+      [background setCornerRadius:1.79769313e308];
       break;
   }
 
@@ -170,19 +170,19 @@ LABEL_15:
     v19[2] = __82__UIButtonConfigurationVisualProviderTVOS__updateBackgroundViewWithConfiguration___block_invoke_2;
     v19[3] = &unk_1E70FCE28;
     v19[4] = self;
-    v20 = v5;
+    v20 = background;
     v21 = v16;
     [UIView performWithoutAnimation:v19];
   }
 
   else
   {
-    v17 = [[_UISystemBackgroundView alloc] initWithConfiguration:v5];
+    v17 = [[_UISystemBackgroundView alloc] initWithConfiguration:background];
     backgroundView = self->super._backgroundView;
     self->super._backgroundView = v17;
 
     [(UIView *)self->super._backgroundView setUserInteractionEnabled:0];
-    (*(v16 + 2))(v16, v5, self->super._backgroundView);
+    (*(v16 + 2))(v16, background, self->super._backgroundView);
   }
 }
 
@@ -251,10 +251,10 @@ uint64_t __82__UIButtonConfigurationVisualProviderTVOS__updateBackgroundViewWith
 
 - (void)_layoutFloatingContentView
 {
-  v3 = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
-  v4 = [(UIButtonConfigurationVisualProvider *)self button];
-  [v4 bounds];
-  [v3 setFrame:?];
+  _floatingContentView = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
+  button = [(UIButtonConfigurationVisualProvider *)self button];
+  [button bounds];
+  [_floatingContentView setFrame:?];
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
@@ -296,7 +296,7 @@ uint64_t __82__UIButtonConfigurationVisualProviderTVOS__updateBackgroundViewWith
   }
 }
 
-- (BOOL)_hasRemovedPlatterForState:(unint64_t)a3
+- (BOOL)_hasRemovedPlatterForState:(unint64_t)state
 {
   v5 = dyld_program_sdk_at_least();
   if (v5)
@@ -305,10 +305,10 @@ uint64_t __82__UIButtonConfigurationVisualProviderTVOS__updateBackgroundViewWith
     do
     {
       v7 = qword_18A683D60[v6];
-      v8 = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
-      v9 = [v8 backgroundColorForState:v7];
+      _floatingContentView = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
+      v9 = [_floatingContentView backgroundColorForState:v7];
 
-      v5 = (v7 & ~a3) != 0 || v9 == 0;
+      v5 = (v7 & ~state) != 0 || v9 == 0;
     }
 
     while (v5 == 1 && v6++ != 2);
@@ -320,20 +320,20 @@ uint64_t __82__UIButtonConfigurationVisualProviderTVOS__updateBackgroundViewWith
 - (void)_updateContentBackdropView
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = [(UIButtonConfigurationVisualProvider *)self button];
-  v4 = [v3 state];
+  button = [(UIButtonConfigurationVisualProvider *)self button];
+  state = [button state];
 
-  if (v4)
+  if (state)
   {
-    if (v4 == 2)
+    if (state == 2)
     {
       v5 = 0.5;
     }
 
     else
     {
-      v6 = [(UIButtonConfigurationVisualProvider *)self button];
-      if (-[UIButtonConfigurationVisualProviderTVOS _hasRemovedPlatterForState:](self, "_hasRemovedPlatterForState:", [v6 state]))
+      button2 = [(UIButtonConfigurationVisualProvider *)self button];
+      if (-[UIButtonConfigurationVisualProviderTVOS _hasRemovedPlatterForState:](self, "_hasRemovedPlatterForState:", [button2 state]))
       {
         v5 = 1.0;
       }
@@ -370,89 +370,89 @@ uint64_t __82__UIButtonConfigurationVisualProviderTVOS__updateBackgroundViewWith
 
   [v11 setDuration:v10];
   [v11 setAdditive:1];
-  v17 = [(UIView *)self->super._backgroundView layer];
-  [v17 addAnimation:v11 forKey:@"opacity"];
+  layer = [(UIView *)self->super._backgroundView layer];
+  [layer addAnimation:v11 forKey:@"opacity"];
 
   [(UIView *)self->super._backgroundView setAlpha:v5];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(UIButtonConfigurationVisualProvider *)self button];
-  v8 = [v13 nextFocusedView];
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  button = [(UIButtonConfigurationVisualProvider *)self button];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if (v7 != v8)
+  if (button != nextFocusedView)
   {
-    v9 = [(UIButtonConfigurationVisualProvider *)self button];
-    [v9 _setHighlightedWithoutUpdatingState:0];
+    button2 = [(UIButtonConfigurationVisualProvider *)self button];
+    [button2 _setHighlightedWithoutUpdatingState:0];
   }
 
-  v10 = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
-  v11 = [(UIButtonConfigurationVisualProvider *)self button];
-  [v10 setControlState:objc_msgSend(v11 withAnimationCoordinator:{"_stateForFocusUpdateContext:", v13), v6}];
+  _floatingContentView = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
+  button3 = [(UIButtonConfigurationVisualProvider *)self button];
+  [_floatingContentView setControlState:objc_msgSend(button3 withAnimationCoordinator:{"_stateForFocusUpdateContext:", contextCopy), coordinatorCopy}];
 
-  v12 = [(UIButtonConfigurationVisualProvider *)self button];
-  [v12 setNeedsUpdateConfiguration];
+  button4 = [(UIButtonConfigurationVisualProvider *)self button];
+  [button4 setNeedsUpdateConfiguration];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v6.receiver = self;
   v6.super_class = UIButtonConfigurationVisualProviderTVOS;
-  [(UIButtonConfigurationVisualProvider *)&v6 setSelected:a3];
-  v4 = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
-  v5 = [(UIButtonConfigurationVisualProvider *)self button];
-  [v4 setControlState:objc_msgSend(v5 animated:{"state"), +[UIView _isInAnimationBlock](UIView, "_isInAnimationBlock")}];
+  [(UIButtonConfigurationVisualProvider *)&v6 setSelected:selected];
+  _floatingContentView = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
+  button = [(UIButtonConfigurationVisualProvider *)self button];
+  [_floatingContentView setControlState:objc_msgSend(button animated:{"state"), +[UIView _isInAnimationBlock](UIView, "_isInAnimationBlock")}];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8.receiver = self;
   v8.super_class = UIButtonConfigurationVisualProviderTVOS;
-  [(UIButtonConfigurationVisualProvider *)&v8 setHighlighted:a3 animated:?];
-  v6 = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
-  v7 = [(UIButtonConfigurationVisualProvider *)self button];
-  [v6 setControlState:objc_msgSend(v7 animated:{"state"), v4}];
+  [(UIButtonConfigurationVisualProvider *)&v8 setHighlighted:highlighted animated:?];
+  _floatingContentView = [(UIButtonConfigurationVisualProviderTVOS *)self _floatingContentView];
+  button = [(UIButtonConfigurationVisualProvider *)self button];
+  [_floatingContentView setControlState:objc_msgSend(button animated:{"state"), animatedCopy}];
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(UIButtonConfigurationVisualProvider *)self button];
-  v6 = _UIControlMenuSupportTargetedPreviewOverViews(v5, 0, 0);
+  configurationCopy = configuration;
+  button = [(UIButtonConfigurationVisualProvider *)self button];
+  v6 = _UIControlMenuSupportTargetedPreviewOverViews(button, 0, 0);
 
-  v7 = [v6 target];
-  v8 = [v7 container];
+  target = [v6 target];
+  container = [target container];
 
-  v9 = [v6 view];
-  [v9 bounds];
+  view = [v6 view];
+  [view bounds];
   v11 = v10;
   v13 = v12;
-  v14 = [v6 target];
-  [v14 center];
+  target2 = [v6 target];
+  [target2 center];
   v16 = round(v15 - v13 * 0.5);
   v18 = round(v17 - v11 * 0.5);
-  v19 = [v8 _window];
-  [v8 convertRect:v19 toView:{v18, v16, v11, v13}];
+  _window = [container _window];
+  [container convertRect:_window toView:{v18, v16, v11, v13}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  LODWORD(v9) = [v4 prefersHorizontalAttachment];
-  v28 = [v8 _window];
-  v29 = v28;
-  if (v9)
+  LODWORD(view) = [configurationCopy prefersHorizontalAttachment];
+  _window2 = [container _window];
+  v29 = _window2;
+  if (view)
   {
-    v30 = _UIControlMenuAttachmentPointForRectInContainerForHorizontalAttachment(v28, v21, v23, v25, v27);
+    v30 = _UIControlMenuAttachmentPointForRectInContainerForHorizontalAttachment(_window2, v21, v23, v25, v27);
   }
 
   else
   {
-    v30 = _UIControlMenuAttachmentPointForRectInContainer(v28, v21, v23, v25, v27);
+    v30 = _UIControlMenuAttachmentPointForRectInContainer(_window2, v21, v23, v25, v27);
   }
 
   v32 = v30;
@@ -465,48 +465,48 @@ uint64_t __82__UIButtonConfigurationVisualProviderTVOS__updateBackgroundViewWith
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 updateStyleForMenuWithConfiguration:(id)a4 style:(id)a5
+- (void)contextMenuInteraction:(id)interaction updateStyleForMenuWithConfiguration:(id)configuration style:(id)style
 {
-  v7 = a5;
-  if (v7)
+  styleCopy = style;
+  if (styleCopy)
   {
-    v17 = v7;
-    v8 = a4;
-    v9 = [(UIButtonConfigurationVisualProvider *)self button];
-    v10 = _UIControlMenuSupportTargetedPreviewOverViews(v9, 0, 0);
+    v17 = styleCopy;
+    configurationCopy = configuration;
+    button = [(UIButtonConfigurationVisualProvider *)self button];
+    v10 = _UIControlMenuSupportTargetedPreviewOverViews(button, 0, 0);
 
-    v11 = [(UIButtonConfigurationVisualProvider *)self button];
-    [v11 menuAttachmentPointForConfiguration:v8];
+    button2 = [(UIButtonConfigurationVisualProvider *)self button];
+    [button2 menuAttachmentPointForConfiguration:configurationCopy];
     v13 = v12;
     v15 = v14;
 
-    LODWORD(v11) = [v8 prefersHorizontalAttachment];
-    v16 = [(UIButtonConfigurationVisualProvider *)self button];
-    if (v11)
+    LODWORD(button2) = [configurationCopy prefersHorizontalAttachment];
+    button3 = [(UIButtonConfigurationVisualProvider *)self button];
+    if (button2)
     {
-      _UIControlMenuSupportUpdateStyleWithHorizontalPreference(v17, v16, v10, v13, v15);
+      _UIControlMenuSupportUpdateStyleWithHorizontalPreference(v17, button3, v10, v13, v15);
     }
 
     else
     {
-      _UIControlMenuSupportUpdateStyle(v17, v16, v10, v13, v15);
+      _UIControlMenuSupportUpdateStyle(v17, button3, v10, v13, v15);
     }
 
-    v7 = v17;
+    styleCopy = v17;
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v4 = [(UIButtonConfigurationVisualProvider *)self button:a3];
+  v4 = [(UIButtonConfigurationVisualProvider *)self button:interaction];
   v5 = _UIControlMenuSupportTargetedPreviewOverViews(v4, 0, 0);
 
   return v5;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration
 {
-  v4 = [(UIButtonConfigurationVisualProvider *)self button:a3];
+  v4 = [(UIButtonConfigurationVisualProvider *)self button:interaction];
   v5 = _UIControlMenuSupportTargetedPreviewOverViews(v4, 0, 0);
 
   return v5;

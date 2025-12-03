@@ -1,6 +1,6 @@
 @interface FusionInputBands
 - (FusionInputBands)init;
-- (void)swapFrame:(int)a3 withFrame:(int)a4;
+- (void)swapFrame:(int)frame withFrame:(int)withFrame;
 @end
 
 @implementation FusionInputBands
@@ -23,14 +23,14 @@
   return v2;
 }
 
-- (void)swapFrame:(int)a3 withFrame:(int)a4
+- (void)swapFrame:(int)frame withFrame:(int)withFrame
 {
   bands = self->bands;
-  v6 = &self->bands[a3];
+  v6 = &self->bands[frame];
   v7 = *v6;
-  objc_storeStrong(v6, bands[a4]);
-  v8 = bands[a4];
-  bands[a4] = v7;
+  objc_storeStrong(v6, bands[withFrame]);
+  v8 = bands[withFrame];
+  bands[withFrame] = v7;
 }
 
 @end

@@ -1,73 +1,73 @@
 @interface RTPersistenceDriver
-+ (id)persistCurrentDeviceWithIdentifier:(id)a3 inStore:(id)a4 context:(id)a5 platform:(id)a6 notificationHelper:(id)a7 error:(id *)a8;
-- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4 isRetry:(BOOL)a5;
-- (BOOL)_acquireBackgroundProcessingPermissionsForStoreType:(unint64_t)a3 isRetry:(BOOL)a4;
-- (BOOL)_didPersistenceStoreBackgroundProcessingAssertionsSucceedWithRetry:(BOOL)a3;
-- (BOOL)_evaluatePersistentHistoryForDeletedDeviceDuringResetSync:(BOOL *)a3 resetSyncContext:(id)a4 managedObjectContext:(id)a5 error:(id *)a6;
++ (id)persistCurrentDeviceWithIdentifier:(id)identifier inStore:(id)store context:(id)context platform:(id)platform notificationHelper:(id)helper error:(id *)error;
+- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension isRetry:(BOOL)retry;
+- (BOOL)_acquireBackgroundProcessingPermissionsForStoreType:(unint64_t)type isRetry:(BOOL)retry;
+- (BOOL)_didPersistenceStoreBackgroundProcessingAssertionsSucceedWithRetry:(BOOL)retry;
+- (BOOL)_evaluatePersistentHistoryForDeletedDeviceDuringResetSync:(BOOL *)sync resetSyncContext:(id)context managedObjectContext:(id)objectContext error:(id *)error;
 - (BOOL)_isBackgroundProcessingAssertionActive;
-- (BOOL)_purgeLocalEntityRowsUsingModel:(id)a3 managedObjectContext:(id)a4 persistenceManager:(id)a5 error:(id *)a6;
-- (BOOL)_releaseBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4;
-- (BOOL)_releaseBackgroundProcessingPermissionsForStoreType:(unint64_t)a3;
+- (BOOL)_purgeLocalEntityRowsUsingModel:(id)model managedObjectContext:(id)context persistenceManager:(id)manager error:(id *)error;
+- (BOOL)_releaseBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension;
+- (BOOL)_releaseBackgroundProcessingPermissionsForStoreType:(unint64_t)type;
 - (BOOL)_releasePersistenceStoreBackgroundProcessingAssertions;
-- (BOOL)_shouldAttemptSetupAccordingToAccountStatus:(int64_t)a3 account:(id)a4;
-- (BOOL)_shouldAttemptSetupAccordingToDeviceConfiguration:(int64_t)a3;
-- (BOOL)backupPersistenceStore:(id)a3 error:(id *)a4;
-- (BOOL)copyPersistenceStore:(id)a3 outputURL:(id)a4 error:(id *)a5;
-- (BOOL)importSourceStore:(id)a3 sourceCoordinator:(id)a4 destinationStore:(id)a5 destinationCoordinator:(id)a6 managedObjectModel:(id)a7 configuration:(id)a8 error:(id *)a9;
-- (BOOL)persistCurrentDeviceRecordInStore:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)persistenceMirroringManagerDidFinishZonePurge:(id)a3 store:(id)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)prepareStore:(id)a3 withContext:(id)a4 error:(id *)a5;
+- (BOOL)_shouldAttemptSetupAccordingToAccountStatus:(int64_t)status account:(id)account;
+- (BOOL)_shouldAttemptSetupAccordingToDeviceConfiguration:(int64_t)configuration;
+- (BOOL)backupPersistenceStore:(id)store error:(id *)error;
+- (BOOL)copyPersistenceStore:(id)store outputURL:(id)l error:(id *)error;
+- (BOOL)importSourceStore:(id)store sourceCoordinator:(id)coordinator destinationStore:(id)destinationStore destinationCoordinator:(id)destinationCoordinator managedObjectModel:(id)model configuration:(id)configuration error:(id *)error;
+- (BOOL)persistCurrentDeviceRecordInStore:(id)store context:(id)context error:(id *)error;
+- (BOOL)persistenceMirroringManagerDidFinishZonePurge:(id)purge store:(id)store context:(id)context error:(id *)error;
+- (BOOL)prepareStore:(id)store withContext:(id)context error:(id *)error;
 - (BOOL)shouldResetCloudStore;
-- (RTPersistenceDriver)initWithAccountManager:(id)a3 dataProtectionManager:(id)a4 defaultsManager:(id)a5 keychainManager:(id)a6 lifecycleManager:(id)a7 persistenceManager:(id)a8 platform:(id)a9 timerManager:(id)a10;
-- (RTPersistenceDriver)initWithPersistenceManager:(id)a3 dataProtectionManager:(id)a4 accountManager:(id)a5 platform:(id)a6 keychainManager:(id)a7 defaultsManager:(id)a8 lifecycleManager:(id)a9;
+- (RTPersistenceDriver)initWithAccountManager:(id)manager dataProtectionManager:(id)protectionManager defaultsManager:(id)defaultsManager keychainManager:(id)keychainManager lifecycleManager:(id)lifecycleManager persistenceManager:(id)persistenceManager platform:(id)platform timerManager:(id)self0;
+- (RTPersistenceDriver)initWithPersistenceManager:(id)manager dataProtectionManager:(id)protectionManager accountManager:(id)accountManager platform:(id)platform keychainManager:(id)keychainManager defaultsManager:(id)defaultsManager lifecycleManager:(id)lifecycleManager;
 - (RTPersistenceMetricsDelegate)metricsDelegate;
-- (id)_repersistPreviousDeviceWithResetSyncContext:(id)a3 persistenceManager:(id)a4 managedObjectContext:(id)a5;
-- (id)appleIDsForStore:(id)a3;
-- (id)cloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 context:(id)a6 error:(id *)a7;
-- (id)earliestCloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6;
-- (id)latestCloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6;
-- (id)mirroringOptionsForStoreWithType:(unint64_t)a3;
-- (id)prepareForDatabaseRekey:(id *)a3;
-- (id)remoteServerOptionsForStoreWithType:(unint64_t)a3;
-- (int64_t)store:(id)a3 validateAppleIDs:(id)a4;
-- (unint64_t)countOfCloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6;
+- (id)_repersistPreviousDeviceWithResetSyncContext:(id)context persistenceManager:(id)manager managedObjectContext:(id)objectContext;
+- (id)appleIDsForStore:(id)store;
+- (id)cloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate sortDescriptors:(id)descriptors context:(id)context error:(id *)error;
+- (id)earliestCloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error;
+- (id)latestCloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error;
+- (id)mirroringOptionsForStoreWithType:(unint64_t)type;
+- (id)prepareForDatabaseRekey:(id *)rekey;
+- (id)remoteServerOptionsForStoreWithType:(unint64_t)type;
+- (int64_t)store:(id)store validateAppleIDs:(id)ds;
+- (unint64_t)countOfCloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error;
 - (unint64_t)persistenceDeviceClassForPlatform;
 - (void)_cleanUpFileDescriptoersForPersistenceStore;
-- (void)_evaluateBackgroundProcessingAfterAssertionConfigurationChange:(int64_t)a3;
-- (void)_evaluteDirtyTransactionAfterConfigurationChange:(int64_t)a3;
-- (void)_onAccountChange:(id)a3;
+- (void)_evaluateBackgroundProcessingAfterAssertionConfigurationChange:(int64_t)change;
+- (void)_evaluteDirtyTransactionAfterConfigurationChange:(int64_t)change;
+- (void)_onAccountChange:(id)change;
 - (void)_onBackgroundProcessingAssertionAcquireRetryExpiry;
 - (void)_onBackgroundProcessingAssertionTimerExpiry;
-- (void)_onCloudSyncAuthorizationChange:(id)a3;
-- (void)_onDataProtectionChange:(id)a3;
+- (void)_onCloudSyncAuthorizationChange:(id)change;
+- (void)_onDataProtectionChange:(id)change;
 - (void)_prepareFileDescriptorsForPersistenceStore;
-- (void)_setupPersistenceAfterConfigurationChange:(int64_t)a3 cloudSyncAuthorization:(int64_t)a4 accountStatus:(int64_t)a5 account:(id)a6;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_startBackgroundProcessingAssertionAcquireRetryWithLatency:(double)a3;
-- (void)_startBackgroundProcessingAssertionBufferTimerWithLatency:(double)a3;
-- (void)_updatePersistenceContexts:(id)a3 deviceObjectID:(id)a4;
-- (void)_updatePersistenceStoresWithDeviceObjectID:(id)a3;
+- (void)_setupPersistenceAfterConfigurationChange:(int64_t)change cloudSyncAuthorization:(int64_t)authorization accountStatus:(int64_t)status account:(id)account;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_startBackgroundProcessingAssertionAcquireRetryWithLatency:(double)latency;
+- (void)_startBackgroundProcessingAssertionBufferTimerWithLatency:(double)latency;
+- (void)_updatePersistenceContexts:(id)contexts deviceObjectID:(id)d;
+- (void)_updatePersistenceStoresWithDeviceObjectID:(id)d;
 - (void)cleanupOlderPersistentStores;
 - (void)dealloc;
 - (void)evaluateTransactions;
-- (void)onAccountChange:(id)a3;
-- (void)onCloudSyncAuthorizationChange:(id)a3;
-- (void)onDailyMetricsNotification:(id)a3;
-- (void)onDataProtectionChange:(id)a3;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)persistenceDriver:(id)a3 persistenceMigrator:(id)a4 didFinishMigratingStore:(id)a5 withModelProvider:(id)a6;
-- (void)persistenceDriver:(id)a3 persistenceMigrator:(id)a4 didStartMigratingStore:(id)a5 withModelProvider:(id)a6;
-- (void)persistenceManagerDidFinishResetSync:(id)a3 userInfo:(id)a4;
-- (void)persistenceManagerWillStartResetSync:(id)a3 userInfo:(id)a4 context:(id)a5;
-- (void)persistenceMigrator:(id)a3 didFinishMigratingStore:(id)a4 withModelProvider:(id)a5;
-- (void)persistenceMigrator:(id)a3 didStartMigratingStore:(id)a4 withModelProvider:(id)a5;
-- (void)persistenceStore:(id)a3 didPrepareWithContext:(id)a4;
-- (void)persistenceStore:(id)a3 encounteredCriticalError:(id)a4;
-- (void)persistenceStore:(id)a3 failedWithError:(id)a4;
-- (void)persistenceStoreFailedWithError:(id)a3;
-- (void)persistenceStoreResetSyncWithUserInfo:(id)a3;
-- (void)setShouldResetCloudStore:(BOOL)a3;
+- (void)onAccountChange:(id)change;
+- (void)onCloudSyncAuthorizationChange:(id)change;
+- (void)onDailyMetricsNotification:(id)notification;
+- (void)onDataProtectionChange:(id)change;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)persistenceDriver:(id)driver persistenceMigrator:(id)migrator didFinishMigratingStore:(id)store withModelProvider:(id)provider;
+- (void)persistenceDriver:(id)driver persistenceMigrator:(id)migrator didStartMigratingStore:(id)store withModelProvider:(id)provider;
+- (void)persistenceManagerDidFinishResetSync:(id)sync userInfo:(id)info;
+- (void)persistenceManagerWillStartResetSync:(id)sync userInfo:(id)info context:(id)context;
+- (void)persistenceMigrator:(id)migrator didFinishMigratingStore:(id)store withModelProvider:(id)provider;
+- (void)persistenceMigrator:(id)migrator didStartMigratingStore:(id)store withModelProvider:(id)provider;
+- (void)persistenceStore:(id)store didPrepareWithContext:(id)context;
+- (void)persistenceStore:(id)store encounteredCriticalError:(id)error;
+- (void)persistenceStore:(id)store failedWithError:(id)error;
+- (void)persistenceStoreFailedWithError:(id)error;
+- (void)persistenceStoreResetSyncWithUserInfo:(id)info;
+- (void)setShouldResetCloudStore:(BOOL)store;
 - (void)start;
 @end
 
@@ -78,8 +78,8 @@
   v2 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsPersistenceBackgroundAssertionDate"];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceDate:v2];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v2];
     v5 = v4 < 43200.0;
   }
 
@@ -96,9 +96,9 @@
   v26 = *MEMORY[0x277D85DE8];
   if ([(RTPersistenceDriver *)self requiresDirtyTransaction]|| [(RTPersistenceDriver *)self requiresSetupTransaction])
   {
-    v4 = [(RTPersistenceDriver *)self setupTransaction];
+    setupTransaction = [(RTPersistenceDriver *)self setupTransaction];
 
-    if (!v4)
+    if (!setupTransaction)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -142,9 +142,9 @@
 
   else
   {
-    v15 = [(RTPersistenceDriver *)self setupTransaction];
+    setupTransaction2 = [(RTPersistenceDriver *)self setupTransaction];
 
-    if (v15)
+    if (setupTransaction2)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -164,19 +164,19 @@
   }
 }
 
-- (RTPersistenceDriver)initWithAccountManager:(id)a3 dataProtectionManager:(id)a4 defaultsManager:(id)a5 keychainManager:(id)a6 lifecycleManager:(id)a7 persistenceManager:(id)a8 platform:(id)a9 timerManager:(id)a10
+- (RTPersistenceDriver)initWithAccountManager:(id)manager dataProtectionManager:(id)protectionManager defaultsManager:(id)defaultsManager keychainManager:(id)keychainManager lifecycleManager:(id)lifecycleManager persistenceManager:(id)persistenceManager platform:(id)platform timerManager:(id)self0
 {
-  v37 = a3;
-  v16 = a4;
-  v34 = a5;
-  v35 = a6;
-  v33 = a7;
-  v17 = a8;
-  v36 = a9;
-  v18 = a10;
-  v32 = v18;
-  v30 = v16;
-  if (!v17)
+  managerCopy = manager;
+  protectionManagerCopy = protectionManager;
+  defaultsManagerCopy = defaultsManager;
+  keychainManagerCopy = keychainManager;
+  lifecycleManagerCopy = lifecycleManager;
+  persistenceManagerCopy = persistenceManager;
+  platformCopy = platform;
+  timerManagerCopy = timerManager;
+  v32 = timerManagerCopy;
+  v30 = protectionManagerCopy;
+  if (!persistenceManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -191,7 +191,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!v16)
+  if (!protectionManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -204,7 +204,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v37)
+  if (!managerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -217,7 +217,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v36)
+  if (!platformCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -230,7 +230,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v35)
+  if (!keychainManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v34)
+  if (!defaultsManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -256,7 +256,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v18)
+  if (!timerManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -269,7 +269,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v33)
+  if (!lifecycleManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -282,7 +282,7 @@ LABEL_28:
 LABEL_29:
 
     v26 = 0;
-    v25 = self;
+    selfCopy = self;
     goto LABEL_30;
   }
 
@@ -292,14 +292,14 @@ LABEL_29:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_persistenceManager, a8);
-    objc_storeStrong(&v20->_dataProtectionManager, a4);
-    objc_storeStrong(&v20->_accountManager, a3);
-    objc_storeStrong(&v20->_currentPlatform, a9);
-    objc_storeStrong(&v20->_keychainManager, a6);
-    objc_storeStrong(&v20->_defaultsManager, a5);
-    objc_storeStrong(&v20->_lifecycleManager, a7);
-    objc_storeStrong(&v20->_timerManager, a10);
+    objc_storeStrong(&v19->_persistenceManager, persistenceManager);
+    objc_storeStrong(&v20->_dataProtectionManager, protectionManager);
+    objc_storeStrong(&v20->_accountManager, manager);
+    objc_storeStrong(&v20->_currentPlatform, platform);
+    objc_storeStrong(&v20->_keychainManager, keychainManager);
+    objc_storeStrong(&v20->_defaultsManager, defaultsManager);
+    objc_storeStrong(&v20->_lifecycleManager, lifecycleManager);
+    objc_storeStrong(&v20->_timerManager, timerManager);
     objc_storeWeak(&v20->_metricsDelegate, v20);
     v21 = objc_opt_new();
     notificationHelper = v20->_notificationHelper;
@@ -312,37 +312,37 @@ LABEL_29:
     v20->_fileDescriptorsForPersistenceStoreDict = v23;
   }
 
-  v25 = v20;
-  v26 = v25;
+  selfCopy = v20;
+  v26 = selfCopy;
 LABEL_30:
 
   return v26;
 }
 
-- (RTPersistenceDriver)initWithPersistenceManager:(id)a3 dataProtectionManager:(id)a4 accountManager:(id)a5 platform:(id)a6 keychainManager:(id)a7 defaultsManager:(id)a8 lifecycleManager:(id)a9
+- (RTPersistenceDriver)initWithPersistenceManager:(id)manager dataProtectionManager:(id)protectionManager accountManager:(id)accountManager platform:(id)platform keychainManager:(id)keychainManager defaultsManager:(id)defaultsManager lifecycleManager:(id)lifecycleManager
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  lifecycleManagerCopy = lifecycleManager;
+  defaultsManagerCopy = defaultsManager;
+  keychainManagerCopy = keychainManager;
+  platformCopy = platform;
+  accountManagerCopy = accountManager;
+  protectionManagerCopy = protectionManager;
+  managerCopy = manager;
   v23 = objc_alloc_init(RTTimerManager);
-  v24 = [(RTPersistenceDriver *)self initWithAccountManager:v20 dataProtectionManager:v21 defaultsManager:v17 keychainManager:v18 lifecycleManager:v16 persistenceManager:v22 platform:v19 timerManager:v23];
+  v24 = [(RTPersistenceDriver *)self initWithAccountManager:accountManagerCopy dataProtectionManager:protectionManagerCopy defaultsManager:defaultsManagerCopy keychainManager:keychainManagerCopy lifecycleManager:lifecycleManagerCopy persistenceManager:managerCopy platform:platformCopy timerManager:v23];
 
   return v24;
 }
 
 - (void)start
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__RTPersistenceDriver_start__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __28__RTPersistenceDriver_start__block_invoke(uint64_t a1)
@@ -375,50 +375,50 @@ void __28__RTPersistenceDriver_start__block_invoke(uint64_t a1)
 {
   [(RTNotifier *)self->_dataProtectionManager removeObserver:self];
   [(RTNotifier *)self->_accountManager removeObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RTPersistenceDriver;
   [(RTPersistenceDriver *)&v4 dealloc];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   [(RTPersistenceDriver *)self setSetupTransaction:0];
-  v4 = [(RTPersistenceDriver *)self dataProtectionManager];
-  [v4 removeObserver:self];
+  dataProtectionManager = [(RTPersistenceDriver *)self dataProtectionManager];
+  [dataProtectionManager removeObserver:self];
 
-  v5 = [(RTPersistenceDriver *)self accountManager];
-  [v5 removeObserver:self];
+  accountManager = [(RTPersistenceDriver *)self accountManager];
+  [accountManager removeObserver:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v7 = v8;
-  if (v8)
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0);
-    v7 = v8;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v7 = handlerCopy;
   }
 }
 
-- (void)onDataProtectionChange:(id)a3
+- (void)onDataProtectionChange:(id)change
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__RTPersistenceDriver_onDataProtectionChange___block_invoke;
     v10[3] = &unk_2788C4A70;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v5, v10);
+    v11 = changeCopy;
+    dispatch_async(queue, v10);
   }
 
   else
@@ -426,18 +426,18 @@ void __28__RTPersistenceDriver_start__block_invoke(uint64_t a1)
     v6 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 name];
+      name = [changeCopy name];
       *buf = 138412290;
-      v13 = v8;
+      v13 = name;
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
 
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 name];
+      name2 = [changeCopy name];
       *buf = 138412802;
-      v13 = v9;
+      v13 = name2;
       v14 = 2080;
       v15 = "[RTPersistenceDriver onDataProtectionChange:]";
       v16 = 1024;
@@ -447,19 +447,19 @@ void __28__RTPersistenceDriver_start__block_invoke(uint64_t a1)
   }
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke;
   block[3] = &unk_2788C5020;
-  v9 = v5;
-  v10 = self;
+  v9 = notificationCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = notificationCopy;
+  dispatch_async(queue, block);
 }
 
 void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint64_t a1)
@@ -516,10 +516,10 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
   }
 }
 
-- (void)_onDataProtectionChange:(id)a3
+- (void)_onDataProtectionChange:(id)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changeCopy = change;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -543,7 +543,7 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
   {
     v8 = NSStringFromSelector(a2);
     v9 = [RTDataProtectionManager encryptedDataAvailabilityToString:[(RTPersistenceDriver *)self encryptedDataAvailability]];
-    v10 = +[RTDataProtectionManager encryptedDataAvailabilityToString:](RTDataProtectionManager, "encryptedDataAvailabilityToString:", [v5 availability]);
+    v10 = +[RTDataProtectionManager encryptedDataAvailabilityToString:](RTDataProtectionManager, "encryptedDataAvailabilityToString:", [changeCopy availability]);
     v17 = 138412802;
     v18 = v8;
     v19 = 2112;
@@ -553,31 +553,31 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
     _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_DEFAULT, "%@, currentDataAvailability, %@, newDataAvailability, %@", &v17, 0x20u);
   }
 
-  -[RTPersistenceDriver setEncryptedDataAvailability:](self, "setEncryptedDataAvailability:", [v5 availability]);
+  -[RTPersistenceDriver setEncryptedDataAvailability:](self, "setEncryptedDataAvailability:", [changeCopy availability]);
   [(RTPersistenceDriver *)self _evaluateBackgroundProcessingAfterAssertionConfigurationChange:[(RTPersistenceDriver *)self encryptedDataAvailability]];
   [(RTPersistenceDriver *)self _evaluteDirtyTransactionAfterConfigurationChange:[(RTPersistenceDriver *)self encryptedDataAvailability]];
-  v11 = [(RTPersistenceDriver *)self encryptedDataAvailability];
-  v12 = [(RTPersistenceDriver *)self cloudSyncAuthorization];
-  v13 = [(RTPersistenceDriver *)self currentAccountStatus];
-  v14 = [(RTPersistenceDriver *)self currentAccount];
-  [(RTPersistenceDriver *)self _setupPersistenceAfterConfigurationChange:v11 cloudSyncAuthorization:v12 accountStatus:v13 account:v14];
+  encryptedDataAvailability = [(RTPersistenceDriver *)self encryptedDataAvailability];
+  cloudSyncAuthorization = [(RTPersistenceDriver *)self cloudSyncAuthorization];
+  currentAccountStatus = [(RTPersistenceDriver *)self currentAccountStatus];
+  currentAccount = [(RTPersistenceDriver *)self currentAccount];
+  [(RTPersistenceDriver *)self _setupPersistenceAfterConfigurationChange:encryptedDataAvailability cloudSyncAuthorization:cloudSyncAuthorization accountStatus:currentAccountStatus account:currentAccount];
 }
 
-- (void)onCloudSyncAuthorizationChange:(id)a3
+- (void)onCloudSyncAuthorizationChange:(id)change
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__RTPersistenceDriver_onCloudSyncAuthorizationChange___block_invoke;
     v10[3] = &unk_2788C4A70;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v5, v10);
+    v11 = changeCopy;
+    dispatch_async(queue, v10);
   }
 
   else
@@ -585,18 +585,18 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
     v6 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 name];
+      name = [changeCopy name];
       *buf = 138412290;
-      v13 = v8;
+      v13 = name;
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
 
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 name];
+      name2 = [changeCopy name];
       *buf = 138412802;
-      v13 = v9;
+      v13 = name2;
       v14 = 2080;
       v15 = "[RTPersistenceDriver onCloudSyncAuthorizationChange:]";
       v16 = 1024;
@@ -606,10 +606,10 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
   }
 }
 
-- (void)_onCloudSyncAuthorizationChange:(id)a3
+- (void)_onCloudSyncAuthorizationChange:(id)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changeCopy = change;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -633,7 +633,7 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
   {
     v8 = NSStringFromSelector(a2);
     v9 = [RTAccountManager cloudSyncAuthorizationToString:[(RTPersistenceDriver *)self cloudSyncAuthorization]];
-    v10 = +[RTAccountManager cloudSyncAuthorizationToString:](RTAccountManager, "cloudSyncAuthorizationToString:", [v5 cloudSyncAuthorizationState]);
+    v10 = +[RTAccountManager cloudSyncAuthorizationToString:](RTAccountManager, "cloudSyncAuthorizationToString:", [changeCopy cloudSyncAuthorizationState]);
     v17 = 138412802;
     v18 = v8;
     v19 = 2112;
@@ -643,29 +643,29 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
     _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_DEFAULT, "%@, currentCloudSyncAuthorization, %@, newCloudSyncAuthorization, %@", &v17, 0x20u);
   }
 
-  -[RTPersistenceDriver setCloudSyncAuthorization:](self, "setCloudSyncAuthorization:", [v5 cloudSyncAuthorizationState]);
-  v11 = [(RTPersistenceDriver *)self encryptedDataAvailability];
-  v12 = [(RTPersistenceDriver *)self cloudSyncAuthorization];
-  v13 = [(RTPersistenceDriver *)self currentAccountStatus];
-  v14 = [(RTPersistenceDriver *)self currentAccount];
-  [(RTPersistenceDriver *)self _setupPersistenceAfterConfigurationChange:v11 cloudSyncAuthorization:v12 accountStatus:v13 account:v14];
+  -[RTPersistenceDriver setCloudSyncAuthorization:](self, "setCloudSyncAuthorization:", [changeCopy cloudSyncAuthorizationState]);
+  encryptedDataAvailability = [(RTPersistenceDriver *)self encryptedDataAvailability];
+  cloudSyncAuthorization = [(RTPersistenceDriver *)self cloudSyncAuthorization];
+  currentAccountStatus = [(RTPersistenceDriver *)self currentAccountStatus];
+  currentAccount = [(RTPersistenceDriver *)self currentAccount];
+  [(RTPersistenceDriver *)self _setupPersistenceAfterConfigurationChange:encryptedDataAvailability cloudSyncAuthorization:cloudSyncAuthorization accountStatus:currentAccountStatus account:currentAccount];
 }
 
-- (void)onAccountChange:(id)a3
+- (void)onAccountChange:(id)change
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __39__RTPersistenceDriver_onAccountChange___block_invoke;
     v10[3] = &unk_2788C4A70;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v5, v10);
+    v11 = changeCopy;
+    dispatch_async(queue, v10);
   }
 
   else
@@ -673,18 +673,18 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
     v6 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 name];
+      name = [changeCopy name];
       *buf = 138412290;
-      v13 = v8;
+      v13 = name;
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
 
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 name];
+      name2 = [changeCopy name];
       *buf = 138412802;
-      v13 = v9;
+      v13 = name2;
       v14 = 2080;
       v15 = "[RTPersistenceDriver onAccountChange:]";
       v16 = 1024;
@@ -694,10 +694,10 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
   }
 }
 
-- (void)_onAccountChange:(id)a3
+- (void)_onAccountChange:(id)change
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changeCopy = change;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -716,70 +716,70 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
     }
   }
 
-  v7 = [(RTPersistenceDriver *)self accountManager];
-  v8 = [v7 accountStatus];
+  accountManager = [(RTPersistenceDriver *)self accountManager];
+  accountStatus = [accountManager accountStatus];
 
   v9 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [(RTPersistenceDriver *)self currentAccount];
+    currentAccount = [(RTPersistenceDriver *)self currentAccount];
     v12 = [RTAccountManager accountStatusToString:[(RTPersistenceDriver *)self currentAccountStatus]];
-    v13 = [v5 latestAccount];
-    v14 = [RTAccountManager accountStatusToString:v8];
+    latestAccount = [changeCopy latestAccount];
+    v14 = [RTAccountManager accountStatusToString:accountStatus];
     v25 = 138413314;
     v26 = v10;
     v27 = 2112;
-    v28 = v11;
+    v28 = currentAccount;
     v29 = 2112;
     v30 = v12;
     v31 = 2112;
-    v32 = v13;
+    v32 = latestAccount;
     v33 = 2112;
     v34 = v14;
     _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEFAULT, "%@, current account, (%@), current status, %@, new account, (%@), new status, %@", &v25, 0x34u);
   }
 
-  v15 = [v5 latestAccount];
+  latestAccount2 = [changeCopy latestAccount];
 
-  if (!v15)
+  if (!latestAccount2)
   {
-    v16 = [v5 oldAccount];
+    oldAccount = [changeCopy oldAccount];
 
-    if (v16 || v8 == 1)
+    if (oldAccount || accountStatus == 1)
     {
-      v17 = [(RTPersistenceDriver *)self defaultsManager];
-      [v17 setObject:0 forKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastResetSyncDate"];
+      defaultsManager = [(RTPersistenceDriver *)self defaultsManager];
+      [defaultsManager setObject:0 forKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastResetSyncDate"];
     }
   }
 
   [(RTDefaultsManager *)self->_defaultsManager setObject:0 forKey:@"RTDefaultsPersistenceMirroringManagerMirroringAttemptsByBuildMap"];
-  [(RTPersistenceDriver *)self setCurrentAccountStatus:v8];
-  v18 = [v5 latestAccount];
-  [(RTPersistenceDriver *)self setCurrentAccount:v18];
+  [(RTPersistenceDriver *)self setCurrentAccountStatus:accountStatus];
+  latestAccount3 = [changeCopy latestAccount];
+  [(RTPersistenceDriver *)self setCurrentAccount:latestAccount3];
 
-  v19 = [(RTPersistenceDriver *)self encryptedDataAvailability];
-  v20 = [(RTPersistenceDriver *)self cloudSyncAuthorization];
-  v21 = [(RTPersistenceDriver *)self currentAccountStatus];
-  v22 = [(RTPersistenceDriver *)self currentAccount];
-  [(RTPersistenceDriver *)self _setupPersistenceAfterConfigurationChange:v19 cloudSyncAuthorization:v20 accountStatus:v21 account:v22];
+  encryptedDataAvailability = [(RTPersistenceDriver *)self encryptedDataAvailability];
+  cloudSyncAuthorization = [(RTPersistenceDriver *)self cloudSyncAuthorization];
+  currentAccountStatus = [(RTPersistenceDriver *)self currentAccountStatus];
+  currentAccount2 = [(RTPersistenceDriver *)self currentAccount];
+  [(RTPersistenceDriver *)self _setupPersistenceAfterConfigurationChange:encryptedDataAvailability cloudSyncAuthorization:cloudSyncAuthorization accountStatus:currentAccountStatus account:currentAccount2];
 }
 
-- (void)_startBackgroundProcessingAssertionBufferTimerWithLatency:(double)a3
+- (void)_startBackgroundProcessingAssertionBufferTimerWithLatency:(double)latency
 {
   v21 = *MEMORY[0x277D85DE8];
   timerManager = self->_timerManager;
-  v7 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__RTPersistenceDriver__startBackgroundProcessingAssertionBufferTimerWithLatency___block_invoke;
   v14[3] = &unk_2788C4EA0;
   v14[4] = self;
-  v8 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTPersistenceDriverBackgroundAssertionTimer" queue:v7 handler:v14];
+  v8 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTPersistenceDriverBackgroundAssertionTimer" queue:queue handler:v14];
   backgroundProcessingAssertionDeferralTimer = self->_backgroundProcessingAssertionDeferralTimer;
   self->_backgroundProcessingAssertionDeferralTimer = v8;
 
-  [(RTTimer *)self->_backgroundProcessingAssertionDeferralTimer fireWithInterval:a3];
+  [(RTTimer *)self->_backgroundProcessingAssertionDeferralTimer fireWithInterval:latency];
   [(RTTimer *)self->_backgroundProcessingAssertionDeferralTimer resume];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -794,7 +794,7 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
       v17 = 2112;
       v18 = v13;
       v19 = 2048;
-      v20 = a3;
+      latencyCopy = latency;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, %@, interval, %.2f", buf, 0x20u);
     }
   }
@@ -812,7 +812,7 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
   self->_backgroundProcessingAssertionDeferralTimer = 0;
 }
 
-- (void)_startBackgroundProcessingAssertionAcquireRetryWithLatency:(double)a3
+- (void)_startBackgroundProcessingAssertionAcquireRetryWithLatency:(double)latency
 {
   v26 = *MEMORY[0x277D85DE8];
   backgroundProcessingAssertionAcquireRetryTimer = self->_backgroundProcessingAssertionAcquireRetryTimer;
@@ -824,17 +824,17 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
   }
 
   timerManager = self->_timerManager;
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __82__RTPersistenceDriver__startBackgroundProcessingAssertionAcquireRetryWithLatency___block_invoke;
   v17[3] = &unk_2788C4EA0;
   v17[4] = self;
-  v10 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTPersistenceDriverBackgroundAssertionAcquireRetryTimer" queue:v9 handler:v17];
+  v10 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTPersistenceDriverBackgroundAssertionAcquireRetryTimer" queue:queue handler:v17];
   v11 = self->_backgroundProcessingAssertionAcquireRetryTimer;
   self->_backgroundProcessingAssertionAcquireRetryTimer = v10;
 
-  [(RTTimer *)self->_backgroundProcessingAssertionAcquireRetryTimer fireWithInterval:a3];
+  [(RTTimer *)self->_backgroundProcessingAssertionAcquireRetryTimer fireWithInterval:latency];
   [(RTTimer *)self->_backgroundProcessingAssertionAcquireRetryTimer resume];
   [(RTPersistenceDriver *)self setBackgroundAssertionRetryCount:[(RTPersistenceDriver *)self backgroundAssertionRetryCount]+ 1];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -845,15 +845,15 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = NSStringFromSelector(a2);
-      v16 = [(RTPersistenceDriver *)self backgroundAssertionRetryCount];
+      backgroundAssertionRetryCount = [(RTPersistenceDriver *)self backgroundAssertionRetryCount];
       *buf = 138413058;
       v19 = v14;
       v20 = 2112;
       v21 = v15;
       v22 = 2048;
-      v23 = a3;
+      latencyCopy = latency;
       v24 = 2048;
-      v25 = v16;
+      v25 = backgroundAssertionRetryCount;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@, %@, interval, %.2f, backgroundAssertionRetryCount, %lu", buf, 0x2Au);
     }
   }
@@ -861,11 +861,11 @@ void __52__RTPersistenceDriver_onDataProtectionNotification___block_invoke(uint6
 
 - (void)_cleanUpFileDescriptoersForPersistenceStore
 {
-  v3 = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_42];
+  fileDescriptorsForPersistenceStoreDict = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
+  [fileDescriptorsForPersistenceStoreDict enumerateKeysAndObjectsUsingBlock:&__block_literal_global_42];
 
-  v4 = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
-  [v4 removeAllObjects];
+  fileDescriptorsForPersistenceStoreDict2 = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
+  [fileDescriptorsForPersistenceStoreDict2 removeAllObjects];
 }
 
 uint64_t __66__RTPersistenceDriver__cleanUpFileDescriptoersForPersistenceStore__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -893,8 +893,8 @@ uint64_t __66__RTPersistenceDriver__cleanUpFileDescriptoersForPersistenceStore__
   if ([(RTPersistenceDriver *)self _didPersistenceStoreBackgroundProcessingAssertionsSucceedWithRetry:1])
   {
     defaultsManager = self->_defaultsManager;
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [(RTDefaultsManager *)defaultsManager setObject:v6 forKey:@"RTDefaultsPersistenceBackgroundAssertionDate"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(RTDefaultsManager *)defaultsManager setObject:date forKey:@"RTDefaultsPersistenceBackgroundAssertionDate"];
 
 LABEL_9:
     [(RTPersistenceDriver *)self setBackgroundAssertionRetryCount:0];
@@ -911,9 +911,9 @@ LABEL_9:
   [(RTPersistenceDriver *)self _startBackgroundProcessingAssertionAcquireRetryWithLatency:3.0];
 }
 
-- (BOOL)_didPersistenceStoreBackgroundProcessingAssertionsSucceedWithRetry:(BOOL)a3
+- (BOOL)_didPersistenceStoreBackgroundProcessingAssertionsSucceedWithRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   v14 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -927,7 +927,7 @@ LABEL_9:
     }
   }
 
-  v8 = [(RTPersistenceDriver *)self _acquireBackgroundProcessingPermissionsForStoreType:0 isRetry:v3];
+  v8 = [(RTPersistenceDriver *)self _acquireBackgroundProcessingPermissionsForStoreType:0 isRetry:retryCopy];
   if (v8)
   {
     v9 = 0;
@@ -942,28 +942,28 @@ LABEL_9:
       ++v9;
     }
 
-    while ([(RTPersistenceDriver *)self _acquireBackgroundProcessingPermissionsForStoreType:v10 + 1 isRetry:v3]);
+    while ([(RTPersistenceDriver *)self _acquireBackgroundProcessingPermissionsForStoreType:v10 + 1 isRetry:retryCopy]);
     LOBYTE(v8) = v10 > 2;
   }
 
   return v8;
 }
 
-- (BOOL)_acquireBackgroundProcessingPermissionsForStoreType:(unint64_t)a3 isRetry:(BOOL)a4
+- (BOOL)_acquireBackgroundProcessingPermissionsForStoreType:(unint64_t)type isRetry:(BOOL)retry
 {
-  v4 = a4;
+  retryCopy = retry;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = [(RTPersistenceDriver *)self persistenceManager];
-  v8 = [v7 URLForStoreType:a3];
+  persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
+  v8 = [persistenceManager URLForStoreType:type];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(RTPersistenceDriver *)self persistenceManager];
-  v10 = [objc_opt_class() protectedStoreFilesExtensions];
+  persistenceManager2 = [(RTPersistenceDriver *)self persistenceManager];
+  protectedStoreFilesExtensions = [objc_opt_class() protectedStoreFilesExtensions];
 
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [protectedStoreFilesExtensions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -974,17 +974,17 @@ LABEL_9:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(protectedStoreFilesExtensions);
         }
 
-        if (![(RTPersistenceDriver *)self _acquireBackgroundProcessingPermissionForStoreURL:v8 cacheFileExtension:*(*(&v17 + 1) + 8 * i) isRetry:v4])
+        if (![(RTPersistenceDriver *)self _acquireBackgroundProcessingPermissionForStoreURL:v8 cacheFileExtension:*(*(&v17 + 1) + 8 * i) isRetry:retryCopy])
         {
           v15 = 0;
           goto LABEL_11;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [protectedStoreFilesExtensions countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         continue;
@@ -1000,22 +1000,22 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4 isRetry:(BOOL)a5
+- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension isRetry:(BOOL)retry
 {
-  v5 = a5;
+  retryCopy = retry;
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 path];
-  v12 = [v11 stringByReplacingOccurrencesOfString:@"sqlite" withString:v10];
+  lCopy = l;
+  extensionCopy = extension;
+  path = [lCopy path];
+  v12 = [path stringByReplacingOccurrencesOfString:@"sqlite" withString:extensionCopy];
 
-  if (v5)
+  if (retryCopy)
   {
-    v13 = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
-    v14 = [v13 objectForKeyedSubscript:v12];
-    v15 = [v14 intValue];
+    fileDescriptorsForPersistenceStoreDict = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
+    v14 = [fileDescriptorsForPersistenceStoreDict objectForKeyedSubscript:v12];
+    intValue = [v14 intValue];
 
-    if ((v15 & 0x80000000) == 0)
+    if ((intValue & 0x80000000) == 0)
     {
       goto LABEL_3;
     }
@@ -1023,11 +1023,11 @@ LABEL_11:
 
   else
   {
-    v15 = [(RTPersistenceDriver *)self _getFileDescriptorForPersistenceStoreFile:v12];
-    if ((v15 & 0x80000000) == 0)
+    intValue = [(RTPersistenceDriver *)self _getFileDescriptorForPersistenceStoreFile:v12];
+    if ((intValue & 0x80000000) == 0)
     {
 LABEL_3:
-      v16 = [(RTPersistenceDriver *)self _acquireBackgroundAssertionForFileDescriptor:v15];
+      v16 = [(RTPersistenceDriver *)self _acquireBackgroundAssertionForFileDescriptor:intValue];
       v17 = v16 == 0;
       if (v16)
       {
@@ -1045,7 +1045,7 @@ LABEL_3:
         v27 = 138413314;
         v28 = v22;
         v29 = 2112;
-        *v30 = v9;
+        *v30 = lCopy;
         *&v30[8] = 1024;
         *v31 = v18;
         *&v31[4] = 1024;
@@ -1060,9 +1060,9 @@ LABEL_3:
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_6:
-          if (!v5)
+          if (!retryCopy)
           {
-            close(v15);
+            close(intValue);
           }
 
           goto LABEL_12;
@@ -1080,9 +1080,9 @@ LABEL_5:
         v27 = 138412802;
         v28 = v22;
         v29 = 2112;
-        *v30 = v9;
+        *v30 = lCopy;
         *&v30[8] = 2112;
-        *v31 = v10;
+        *v31 = extensionCopy;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%@ Success to acquire background processing assertion for the persistence store type %@ and the extension %@", &v27, 0x20u);
       }
 
@@ -1097,7 +1097,7 @@ LABEL_5:
     v27 = 138412802;
     v28 = v12;
     v29 = 1024;
-    *v30 = v5;
+    *v30 = retryCopy;
     *&v30[4] = 1024;
     *&v30[6] = v26;
     _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Unable to to get the file descriptor for the file %@ with data protection, isRetry, %d, errno, %{errno}d", &v27, 0x18u);
@@ -1133,20 +1133,20 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)_releaseBackgroundProcessingPermissionsForStoreType:(unint64_t)a3
+- (BOOL)_releaseBackgroundProcessingPermissionsForStoreType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(RTPersistenceDriver *)self persistenceManager];
-  v6 = [v5 URLForStoreType:a3];
+  persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
+  v6 = [persistenceManager URLForStoreType:type];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(RTPersistenceDriver *)self persistenceManager];
-  v8 = [objc_opt_class() protectedStoreFilesExtensions];
+  persistenceManager2 = [(RTPersistenceDriver *)self persistenceManager];
+  protectedStoreFilesExtensions = [objc_opt_class() protectedStoreFilesExtensions];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [protectedStoreFilesExtensions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1157,7 +1157,7 @@ LABEL_12:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(protectedStoreFilesExtensions);
         }
 
         if (![(RTPersistenceDriver *)self _releaseBackgroundProcessingPermissionForStoreURL:v6 cacheFileExtension:*(*(&v15 + 1) + 8 * i)])
@@ -1167,7 +1167,7 @@ LABEL_12:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [protectedStoreFilesExtensions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         continue;
@@ -1183,13 +1183,13 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_releaseBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4
+- (BOOL)_releaseBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 path];
-  v10 = [v9 stringByReplacingOccurrencesOfString:@"sqlite" withString:v8];
+  lCopy = l;
+  extensionCopy = extension;
+  path = [lCopy path];
+  v10 = [path stringByReplacingOccurrencesOfString:@"sqlite" withString:extensionCopy];
 
   v11 = [(RTPersistenceDriver *)self _getFileDescriptorForPersistenceStoreFile:v10];
   if ((v11 & 0x80000000) == 0)
@@ -1213,7 +1213,7 @@ LABEL_11:
       v24 = 138413314;
       v25 = v19;
       v26 = 2112;
-      v27 = v7;
+      v27 = lCopy;
       v28 = 1024;
       *v29 = v15;
       *&v29[4] = 1024;
@@ -1244,9 +1244,9 @@ LABEL_5:
       v24 = 138412802;
       v25 = v19;
       v26 = 2112;
-      v27 = v7;
+      v27 = lCopy;
       v28 = 2112;
-      *v29 = v8;
+      *v29 = extensionCopy;
       _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@ Success to release background processing assertion for the persistence store type %@ and the extension %@", &v24, 0x20u);
     }
 
@@ -1289,20 +1289,20 @@ LABEL_9:
   v7 = @"sqlite";
   do
   {
-    v8 = [(RTPersistenceDriver *)self persistenceManager];
+    persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
     v30 = v6;
-    v9 = [v8 URLForStoreType:v6];
+    v9 = [persistenceManager URLForStoreType:v6];
 
     v10 = v9;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = [(RTPersistenceDriver *)self persistenceManager];
-    v12 = [objc_opt_class() protectedStoreFilesExtensions];
+    persistenceManager2 = [(RTPersistenceDriver *)self persistenceManager];
+    protectedStoreFilesExtensions = [objc_opt_class() protectedStoreFilesExtensions];
 
-    obj = v12;
-    v33 = [v12 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    obj = protectedStoreFilesExtensions;
+    v33 = [protectedStoreFilesExtensions countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (!v33)
     {
       goto LABEL_19;
@@ -1321,29 +1321,29 @@ LABEL_9:
         }
 
         v15 = *(*(&v34 + 1) + 8 * v14);
-        v16 = [v10 path];
-        v17 = [v16 stringByReplacingOccurrencesOfString:v7 withString:v15];
+        path = [v10 path];
+        v17 = [path stringByReplacingOccurrencesOfString:v7 withString:v15];
 
         if (v17)
         {
-          v18 = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
-          v19 = [v18 objectForKeyedSubscript:v17];
+          fileDescriptorsForPersistenceStoreDict = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
+          v19 = [fileDescriptorsForPersistenceStoreDict objectForKeyedSubscript:v17];
           if (v19)
           {
             v20 = v19;
             [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
             v21 = v10;
-            v22 = self;
+            selfCopy = self;
             v24 = v23 = v7;
             v25 = [v24 objectForKeyedSubscript:v17];
-            v26 = [v25 integerValue];
+            integerValue = [v25 integerValue];
 
             v7 = v23;
-            self = v22;
+            self = selfCopy;
             v10 = v21;
             v13 = v31;
 
-            if ((v26 & 0x8000000000000000) == 0)
+            if ((integerValue & 0x8000000000000000) == 0)
             {
               goto LABEL_17;
             }
@@ -1355,8 +1355,8 @@ LABEL_9:
 
           v27 = [(RTPersistenceDriver *)self _getFileDescriptorForPersistenceStoreFile:v17];
           v28 = [MEMORY[0x277CCABB0] numberWithInteger:v27];
-          v29 = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
-          [v29 setObject:v28 forKeyedSubscript:v17];
+          fileDescriptorsForPersistenceStoreDict2 = [(RTPersistenceDriver *)self fileDescriptorsForPersistenceStoreDict];
+          [fileDescriptorsForPersistenceStoreDict2 setObject:v28 forKeyedSubscript:v17];
         }
 
 LABEL_17:
@@ -1377,7 +1377,7 @@ LABEL_19:
   while (v30 != 3);
 }
 
-- (void)_evaluateBackgroundProcessingAfterAssertionConfigurationChange:(int64_t)a3
+- (void)_evaluateBackgroundProcessingAfterAssertionConfigurationChange:(int64_t)change
 {
   if ([(RTPersistenceDriver *)self encryptedDataAvailability]== 3)
   {
@@ -1399,9 +1399,9 @@ LABEL_14:
     if ([(RTPersistenceDriver *)self _didPersistenceStoreBackgroundProcessingAssertionsSucceedWithRetry:0])
     {
       defaultsManager = self->_defaultsManager;
-      v11 = [MEMORY[0x277CBEAA8] date];
-      [(RTDefaultsManager *)defaultsManager setObject:v11 forKey:@"RTDefaultsPersistenceBackgroundAssertionDate"];
-      v5 = v11;
+      date = [MEMORY[0x277CBEAA8] date];
+      [(RTDefaultsManager *)defaultsManager setObject:date forKey:@"RTDefaultsPersistenceBackgroundAssertionDate"];
+      v5 = date;
       goto LABEL_14;
     }
 
@@ -1443,13 +1443,13 @@ LABEL_14:
   }
 }
 
-- (void)_evaluteDirtyTransactionAfterConfigurationChange:(int64_t)a3
+- (void)_evaluteDirtyTransactionAfterConfigurationChange:(int64_t)change
 {
   [(RTPersistenceDriver *)self setRequiresDirtyTransaction:0];
-  v5 = [(RTPersistenceDriver *)self persistenceManager];
-  v6 = [v5 availability];
+  persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
+  availability = [persistenceManager availability];
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1 && v6 == 2)
+  if ((change & 0xFFFFFFFFFFFFFFFDLL) == 1 && availability == 2)
   {
     [(RTPersistenceDriver *)self setRequiresDirtyTransaction:1];
   }
@@ -1457,13 +1457,13 @@ LABEL_14:
   [(RTPersistenceDriver *)self evaluateTransactions];
 }
 
-- (BOOL)_shouldAttemptSetupAccordingToDeviceConfiguration:(int64_t)a3
+- (BOOL)_shouldAttemptSetupAccordingToDeviceConfiguration:(int64_t)configuration
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = 1;
-  if (a3 > 1)
+  if (configuration > 1)
   {
-    if (a3 == 2)
+    if (configuration == 2)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -1481,7 +1481,7 @@ LABEL_14:
 
     else
     {
-      if (a3 != 3 || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
+      if (configuration != 3 || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         return v3;
       }
@@ -1504,7 +1504,7 @@ LABEL_29:
     return v3;
   }
 
-  if (!a3)
+  if (!configuration)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -1522,7 +1522,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (a3 == 1)
+  if (configuration == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -1534,9 +1534,9 @@ LABEL_29:
       }
     }
 
-    v6 = [(RTPersistenceDriver *)self _isBackgroundProcessingAssertionActive];
+    _isBackgroundProcessingAssertionActive = [(RTPersistenceDriver *)self _isBackgroundProcessingAssertionActive];
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-    if (!v6)
+    if (!_isBackgroundProcessingAssertionActive)
     {
       if (!v7)
       {
@@ -1578,17 +1578,17 @@ LABEL_29:
   return v3;
 }
 
-- (BOOL)_shouldAttemptSetupAccordingToAccountStatus:(int64_t)a3 account:(id)a4
+- (BOOL)_shouldAttemptSetupAccordingToAccountStatus:(int64_t)status account:(id)account
 {
-  v4 = a4 == 0;
-  if (a3 != 1)
+  v4 = account == 0;
+  if (status != 1)
   {
     v4 = 0;
   }
 
-  if (a3 == 2)
+  if (status == 2)
   {
-    return a4 != 0;
+    return account != 0;
   }
 
   else
@@ -1597,18 +1597,18 @@ LABEL_29:
   }
 }
 
-- (void)_setupPersistenceAfterConfigurationChange:(int64_t)a3 cloudSyncAuthorization:(int64_t)a4 accountStatus:(int64_t)a5 account:(id)a6
+- (void)_setupPersistenceAfterConfigurationChange:(int64_t)change cloudSyncAuthorization:(int64_t)authorization accountStatus:(int64_t)status account:(id)account
 {
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  accountCopy = account;
   v12 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromSelector(a2);
-    v14 = [RTDataProtectionManager encryptedDataAvailabilityToString:a3];
+    v14 = [RTDataProtectionManager encryptedDataAvailabilityToString:change];
     v32 = a2;
-    v15 = [RTAccountManager cloudSyncAuthorizationToString:a4];
-    v16 = [RTAccountManager accountStatusToString:a5];
+    v15 = [RTAccountManager cloudSyncAuthorizationToString:authorization];
+    v16 = [RTAccountManager accountStatusToString:status];
     *buf = 138413315;
     v35 = v13;
     v36 = 2114;
@@ -1618,15 +1618,15 @@ LABEL_29:
     v40 = 2114;
     v41 = v16;
     v42 = 2113;
-    v43 = v11;
+    v43 = accountCopy;
     _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEFAULT, "%@, encryptedDataAvailability, %{public}@, cloudSyncAuthorization, %{public}@, accountStatus, %{public}@, account, %{private}@", buf, 0x34u);
 
     a2 = v32;
   }
 
-  v17 = [(RTPersistenceDriver *)self _shouldAttemptSetupAccordingToDeviceConfiguration:a3];
-  v18 = [(RTPersistenceDriver *)self _shouldAttemptSetupAccordingToCloudSyncAuthorization:a4];
-  v19 = [(RTPersistenceDriver *)self _shouldAttemptSetupAccordingToAccountStatus:a5 account:v11];
+  v17 = [(RTPersistenceDriver *)self _shouldAttemptSetupAccordingToDeviceConfiguration:change];
+  v18 = [(RTPersistenceDriver *)self _shouldAttemptSetupAccordingToCloudSyncAuthorization:authorization];
+  v19 = [(RTPersistenceDriver *)self _shouldAttemptSetupAccordingToAccountStatus:status account:accountCopy];
   v20 = v19;
   v21 = v17 && v18 && v19;
   v22 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
@@ -1683,22 +1683,22 @@ LABEL_29:
     _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_DEFAULT, "%@, shouldSetupAccordingTo, deviceConfiguration, %@, cloudSyncAuthorization, %@, accountState, %@, overall, %@", buf, 0x34u);
   }
 
-  v29 = [(RTPersistenceDriver *)self persistenceManager];
-  v30 = [v29 availability];
+  persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
+  availability = [persistenceManager availability];
 
-  if (v30 != 2)
+  if (availability != 2)
   {
     [(RTPersistenceDriver *)self setRequiresSetupTransaction:1];
     [(RTPersistenceDriver *)self evaluateTransactions];
     if (v21)
     {
-      v31 = [(RTPersistenceDriver *)self persistenceManager];
+      persistenceManager2 = [(RTPersistenceDriver *)self persistenceManager];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __110__RTPersistenceDriver__setupPersistenceAfterConfigurationChange_cloudSyncAuthorization_accountStatus_account___block_invoke;
       v33[3] = &unk_2788C9890;
       v33[4] = self;
-      [v31 setupPersistenceContainers:v33];
+      [persistenceManager2 setupPersistenceContainers:v33];
     }
   }
 }
@@ -1717,36 +1717,36 @@ uint64_t __110__RTPersistenceDriver__setupPersistenceAfterConfigurationChange_cl
   return result;
 }
 
-- (int64_t)store:(id)a3 validateAppleIDs:(id)a4
+- (int64_t)store:(id)store validateAppleIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  dsCopy = ds;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(RTPersistenceDriver *)self currentAccount];
-      v10 = [v9 appleIDs];
+      currentAccount = [(RTPersistenceDriver *)self currentAccount];
+      appleIDs = [currentAccount appleIDs];
       v15 = 138740227;
-      v16 = v10;
+      v16 = appleIDs;
       v17 = 2117;
-      v18 = v7;
+      v18 = dsCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "validating current AppleIDs (%{sensitive}@) against appleIDs (%{sensitive}@)", &v15, 0x16u);
     }
   }
 
-  v11 = [(RTPersistenceDriver *)self currentAccount];
-  v12 = [v11 appleIDs];
+  currentAccount2 = [(RTPersistenceDriver *)self currentAccount];
+  appleIDs2 = [currentAccount2 appleIDs];
 
-  if ([v12 count] || objc_msgSend(v7, "count"))
+  if ([appleIDs2 count] || objc_msgSend(dsCopy, "count"))
   {
-    if (v12 && [v12 count])
+    if (appleIDs2 && [appleIDs2 count])
     {
-      if (v7 && [v7 count])
+      if (dsCopy && [dsCopy count])
       {
-        if ([v12 intersectsSet:v7])
+        if ([appleIDs2 intersectsSet:dsCopy])
         {
           v13 = 2;
         }
@@ -1777,24 +1777,24 @@ uint64_t __110__RTPersistenceDriver__setupPersistenceAfterConfigurationChange_cl
   return v13;
 }
 
-- (id)appleIDsForStore:(id)a3
+- (id)appleIDsForStore:(id)store
 {
-  v3 = [(RTPersistenceDriver *)self currentAccount];
-  v4 = [v3 appleIDs];
+  currentAccount = [(RTPersistenceDriver *)self currentAccount];
+  appleIDs = [currentAccount appleIDs];
 
-  return v4;
+  return appleIDs;
 }
 
-- (id)mirroringOptionsForStoreWithType:(unint64_t)a3
+- (id)mirroringOptionsForStoreWithType:(unint64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsPersistenceManagerDisableMirroringDelegate2"];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(RTPersistenceDriver *)self persistenceDeviceClassForPlatform]& v6;
-  v8 = [(RTPersistenceDriver *)self persistenceDeviceClassForPlatform];
+  v7 = [(RTPersistenceDriver *)self persistenceDeviceClassForPlatform]& unsignedIntegerValue;
+  persistenceDeviceClassForPlatform = [(RTPersistenceDriver *)self persistenceDeviceClassForPlatform];
   v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (v7 != v8)
+  if (v7 != persistenceDeviceClassForPlatform)
   {
     if (v9)
     {
@@ -1802,14 +1802,14 @@ uint64_t __110__RTPersistenceDriver__setupPersistenceAfterConfigurationChange_cl
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v26 = a3;
+        typeCopy = type;
         v27 = 2048;
-        v28 = [(RTPersistenceDriver *)self cloudSyncAuthorization];
+        cloudSyncAuthorization = [(RTPersistenceDriver *)self cloudSyncAuthorization];
         _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "mirroring options for store with type, %lu, cloud sync auth, %ld", buf, 0x16u);
       }
     }
 
-    if (a3 == 1 && [(RTPersistenceDriver *)self cloudSyncAuthorization]== 2)
+    if (type == 1 && [(RTPersistenceDriver *)self cloudSyncAuthorization]== 2)
     {
       v13 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsPersistenceManagerMirroringOverrideDefaultContainer"];
 
@@ -1850,11 +1850,11 @@ uint64_t __110__RTPersistenceDriver__setupPersistenceAfterConfigurationChange_cl
       [v18 setUseZoneWidePCS:1];
       [v18 setBypassPCSEncryption:0];
       v19 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsPersistenceManagerMirroringDisablePCSEncryption"];
-      v20 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
 
       if ([(RTPlatform *)self->_currentPlatform internalInstall])
       {
-        if (v20)
+        if (bOOLValue)
         {
           [v10 setUseDeviceToDeviceEncryption:0];
           [v18 setUseZoneWidePCS:0];
@@ -1893,7 +1893,7 @@ LABEL_18:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v26 = v6;
+    typeCopy = unsignedIntegerValue;
     _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "sync is disabled for device, current mask, %lu", buf, 0xCu);
   }
 
@@ -1905,13 +1905,13 @@ LABEL_32:
   return v11;
 }
 
-- (id)remoteServerOptionsForStoreWithType:(unint64_t)a3
+- (id)remoteServerOptionsForStoreWithType:(unint64_t)type
 {
-  v4 = [(RTPersistenceDriver *)self currentPlatform];
-  v5 = [v4 internalInstall];
+  currentPlatform = [(RTPersistenceDriver *)self currentPlatform];
+  internalInstall = [currentPlatform internalInstall];
 
   v6 = 0;
-  if (a3 <= 1 && v5)
+  if (type <= 1 && internalInstall)
   {
     v6 = objc_opt_new();
     v7 = MEMORY[0x277CBEC38];
@@ -1920,7 +1920,7 @@ LABEL_32:
     [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277CBE268]];
     [v6 setObject:*MEMORY[0x277CCA198] forKeyedSubscript:*MEMORY[0x277CBE240]];
     v8 = *MEMORY[0x277CBE340];
-    if (a3)
+    if (type)
     {
       [v6 setObject:@"com.apple.routined.store.cloud" forKeyedSubscript:v8];
       v8 = *MEMORY[0x277CBE210];
@@ -1963,14 +1963,14 @@ LABEL_32:
         }
 
         v7 = [MEMORY[0x277CCAA00] pathInCacheDirectory:{*(*(&v15 + 1) + 8 * v6), v13}];
-        v8 = [MEMORY[0x277CCAA00] defaultManager];
-        v9 = [v8 fileExistsAtPath:v7];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v9 = [defaultManager fileExistsAtPath:v7];
 
         if (v9)
         {
-          v10 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
           v14 = 0;
-          [v10 removeItemAtPath:v7 error:&v14];
+          [defaultManager2 removeItemAtPath:v7 error:&v14];
           v11 = v14;
 
           if (v11)
@@ -1998,14 +1998,14 @@ LABEL_32:
   }
 }
 
-+ (id)persistCurrentDeviceWithIdentifier:(id)a3 inStore:(id)a4 context:(id)a5 platform:(id)a6 notificationHelper:(id)a7 error:(id *)a8
++ (id)persistCurrentDeviceWithIdentifier:(id)identifier inStore:(id)store context:(id)context platform:(id)platform notificationHelper:(id)helper error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v14)
+  identifierCopy = identifier;
+  storeCopy = store;
+  contextCopy = context;
+  platformCopy = platform;
+  helperCopy = helper;
+  if (!storeCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2014,12 +2014,12 @@ LABEL_32:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: persistenceStore", buf, 2u);
     }
 
-    if (a8)
+    if (error)
     {
       v20 = @"persistenceStore";
 LABEL_17:
       _RTErrorInvalidParameterCreate(v20);
-      *a8 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_19;
     }
 
@@ -2028,7 +2028,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!contextCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -2037,7 +2037,7 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a8)
+    if (error)
     {
       v20 = @"context";
       goto LABEL_17;
@@ -2062,21 +2062,21 @@ LABEL_18:
   v24 = 3221225472;
   v25 = __108__RTPersistenceDriver_persistCurrentDeviceWithIdentifier_inStore_context_platform_notificationHelper_error___block_invoke;
   v26 = &unk_2788C98B8;
-  v27 = v16;
-  v28 = v13;
-  v29 = v15;
+  v27 = platformCopy;
+  v28 = identifierCopy;
+  v29 = contextCopy;
   v31 = &v33;
-  v30 = v14;
+  v30 = storeCopy;
   v32 = buf;
   [v29 performBlockAndWait:&v23];
   if (*(v40 + 5) && !v34[5])
   {
-    [v17 postNotification:{@"kRTPersistenceDeviceIdentityChanged", v23, v24, v25, v26, v27, v28, v29}];
+    [helperCopy postNotification:{@"kRTPersistenceDeviceIdentityChanged", v23, v24, v25, v26, v27, v28, v29}];
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = v34[5];
+    *error = v34[5];
   }
 
   v18 = *(v40 + 5);
@@ -2267,12 +2267,12 @@ void __108__RTPersistenceDriver_persistCurrentDeviceWithIdentifier_inStore_conte
   }
 }
 
-- (BOOL)persistCurrentDeviceRecordInStore:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)persistCurrentDeviceRecordInStore:(id)store context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  storeCopy = store;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!storeCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2281,12 +2281,12 @@ void __108__RTPersistenceDriver_persistCurrentDeviceWithIdentifier_inStore_conte
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: store", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v27 = @"store";
 LABEL_18:
       _RTErrorInvalidParameterCreate(v27);
-      *a5 = v23 = 0;
+      *error = v23 = 0;
       goto LABEL_21;
     }
 
@@ -2295,7 +2295,7 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  if (!v9)
+  if (!contextCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -2304,7 +2304,7 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v27 = @"context";
       goto LABEL_18;
@@ -2313,7 +2313,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v11 = [v8 URL];
+  v11 = [storeCopy URL];
   v12 = [RTPersistenceManager storeTypeForURL:v11];
 
   if (v12 == 1)
@@ -2324,12 +2324,12 @@ LABEL_19:
     v39 = __Block_byref_object_copy__56;
     v40 = __Block_byref_object_dispose__56;
     v41 = 0;
-    v13 = [v10 persistentStoreCoordinator];
-    v14 = [v8 URL];
-    v15 = [v13 persistentStoreForURL:v14];
+    persistentStoreCoordinator = [v10 persistentStoreCoordinator];
+    v14 = [storeCopy URL];
+    v15 = [persistentStoreCoordinator persistentStoreForURL:v14];
 
-    v16 = [v10 persistentStoreCoordinator];
-    v17 = [v16 metadataForPersistentStore:v15];
+    persistentStoreCoordinator2 = [v10 persistentStoreCoordinator];
+    v17 = [persistentStoreCoordinator2 metadataForPersistentStore:v15];
     v18 = v17;
     if (!v17)
     {
@@ -2345,18 +2345,18 @@ LABEL_19:
     v30[3] = &unk_2788C9908;
     v21 = v20;
     v31 = v21;
-    v32 = v8;
+    v32 = storeCopy;
     v33 = v10;
-    v34 = self;
+    selfCopy = self;
     v35 = buf;
     [v33 performBlockAndWait:v30];
     v22 = *(v37 + 5);
     v23 = v22 == 0;
-    if (a5 && v22)
+    if (error && v22)
     {
       v24 = MEMORY[0x277CCA9B8];
-      v25 = [v22 userInfo];
-      *a5 = [v24 errorWithDomain:@"RTPersistenceErrorDomain" code:0 userInfo:v25];
+      userInfo = [v22 userInfo];
+      *error = [v24 errorWithDomain:@"RTPersistenceErrorDomain" code:0 userInfo:userInfo];
     }
 
     _Block_object_dispose(buf, 8);
@@ -2577,12 +2577,12 @@ LABEL_37:
 LABEL_42:
 }
 
-- (BOOL)prepareStore:(id)a3 withContext:(id)a4 error:(id *)a5
+- (BOOL)prepareStore:(id)store withContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  storeCopy = store;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!storeCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2591,12 +2591,12 @@ LABEL_42:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: store", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v15 = @"store";
 LABEL_13:
       _RTErrorInvalidParameterCreate(v15);
-      *a5 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_21;
     }
 
@@ -2605,7 +2605,7 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  if (!v9)
+  if (!contextCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2614,7 +2614,7 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", v22, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v15 = @"context";
       goto LABEL_13;
@@ -2624,13 +2624,13 @@ LABEL_14:
   }
 
   [(RTPersistenceDriver *)self cleanupOlderPersistentStores];
-  v11 = [v8 URL];
+  v11 = [storeCopy URL];
   v12 = [RTPersistenceManager storeTypeForURL:v11];
 
   if (v12 == 1)
   {
     v21 = 0;
-    [(RTPersistenceDriver *)self persistCurrentDeviceRecordInStore:v8 context:v10 error:&v21];
+    [(RTPersistenceDriver *)self persistCurrentDeviceRecordInStore:storeCopy context:v10 error:&v21];
     v13 = v21;
   }
 
@@ -2642,13 +2642,13 @@ LABEL_14:
   WeakRetained = objc_loadWeakRetained(&self->_metricsDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained persistenceStore:v8 didPrepareWithContext:v10];
+    [WeakRetained persistenceStore:storeCopy didPrepareWithContext:v10];
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v17 = v13 == 0;
@@ -2657,85 +2657,85 @@ LABEL_21:
   return v17;
 }
 
-- (void)persistenceStore:(id)a3 failedWithError:(id)a4
+- (void)persistenceStore:(id)store failedWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_metricsDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained persistenceStoreFailedWithError:v6];
+    [WeakRetained persistenceStoreFailedWithError:errorCopy];
   }
 }
 
-- (void)persistenceStore:(id)a3 encounteredCriticalError:(id)a4
+- (void)persistenceStore:(id)store encounteredCriticalError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Exiting due to critical error, %@", &v8, 0xCu);
   }
 
-  v7 = [(RTPersistenceDriver *)self lifecycleManager];
-  [v7 exit];
+  lifecycleManager = [(RTPersistenceDriver *)self lifecycleManager];
+  [lifecycleManager exit];
 }
 
-- (BOOL)copyPersistenceStore:(id)a3 outputURL:(id)a4 error:(id *)a5
+- (BOOL)copyPersistenceStore:(id)store outputURL:(id)l error:(id *)error
 {
   v147 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v121 = a4;
+  storeCopy = store;
+  lCopy = l;
   if (![(RTPlatform *)self->_currentPlatform internalInstall])
   {
     v107 = 1;
     goto LABEL_65;
   }
 
-  v114 = a5;
+  errorCopy = error;
   v9 = objc_opt_new();
-  v10 = [v8 URL];
-  v11 = [v10 path];
+  v10 = [storeCopy URL];
+  path = [v10 path];
 
-  [v9 addObject:v11];
-  v12 = [v11 stringByDeletingPathExtension];
-  v13 = [v12 stringByAppendingString:@".bak"];
-  v117 = v11;
-  v14 = [v11 pathExtension];
-  v15 = [v13 stringByAppendingPathExtension:v14];
+  [v9 addObject:path];
+  stringByDeletingPathExtension = [path stringByDeletingPathExtension];
+  v13 = [stringByDeletingPathExtension stringByAppendingString:@".bak"];
+  v117 = path;
+  pathExtension = [path pathExtension];
+  v15 = [v13 stringByAppendingPathExtension:pathExtension];
   [v9 addObject:v15];
 
   v16 = MEMORY[0x277CBEBC0];
-  v17 = [v8 URL];
-  v18 = [v17 path];
-  v19 = [v18 stringByAppendingString:@"-wal"];
+  v17 = [storeCopy URL];
+  path2 = [v17 path];
+  v19 = [path2 stringByAppendingString:@"-wal"];
   v20 = [v16 fileURLWithPath:v19];
-  v21 = [v20 path];
+  path3 = [v20 path];
 
-  [v9 addObject:v21];
-  v22 = [v21 stringByDeletingPathExtension];
-  v23 = [v22 stringByAppendingString:@".bak"];
-  v116 = v21;
-  v24 = [v21 pathExtension];
-  v25 = [v23 stringByAppendingPathExtension:v24];
+  [v9 addObject:path3];
+  stringByDeletingPathExtension2 = [path3 stringByDeletingPathExtension];
+  v23 = [stringByDeletingPathExtension2 stringByAppendingString:@".bak"];
+  v116 = path3;
+  pathExtension2 = [path3 pathExtension];
+  v25 = [v23 stringByAppendingPathExtension:pathExtension2];
   [v9 addObject:v25];
 
   v26 = MEMORY[0x277CBEBC0];
-  v118 = v8;
-  v27 = [v8 URL];
-  v28 = [v27 path];
-  v29 = [v28 stringByAppendingString:@"-shm"];
+  v118 = storeCopy;
+  v27 = [storeCopy URL];
+  path4 = [v27 path];
+  v29 = [path4 stringByAppendingString:@"-shm"];
   v30 = [v26 fileURLWithPath:v29];
-  v31 = [v30 path];
+  path5 = [v30 path];
 
-  [v9 addObject:v31];
-  v32 = [v31 stringByDeletingPathExtension];
-  v33 = [v32 stringByAppendingString:@".bak"];
-  v115 = v31;
-  v34 = [v31 pathExtension];
-  v35 = [v33 stringByAppendingPathExtension:v34];
+  [v9 addObject:path5];
+  stringByDeletingPathExtension3 = [path5 stringByDeletingPathExtension];
+  v33 = [stringByDeletingPathExtension3 stringByAppendingString:@".bak"];
+  v115 = path5;
+  pathExtension3 = [path5 pathExtension];
+  v35 = [v33 stringByAppendingPathExtension:pathExtension3];
   [v9 addObject:v35];
 
   v122 = objc_opt_new();
@@ -2745,7 +2745,7 @@ LABEL_21:
   v133 = 0u;
   obj = v9;
   v36 = [obj countByEnumeratingWithState:&v130 objects:v146 count:16];
-  v38 = v121;
+  v38 = lCopy;
   if (!v36)
   {
     goto LABEL_56;
@@ -2768,12 +2768,12 @@ LABEL_21:
       }
 
       v43 = *(*(&v130 + 1) + 8 * v42);
-      v44 = [v38 path];
-      v45 = [v44 stringByAppendingPathComponent:v43];
+      path6 = [v38 path];
+      v45 = [path6 stringByAppendingPathComponent:v43];
 
-      v46 = [v45 stringByDeletingLastPathComponent];
-      v47 = [*(v40 + 2560) defaultManager];
-      v48 = [v47 fileExistsAtPath:v43];
+      stringByDeletingLastPathComponent = [v45 stringByDeletingLastPathComponent];
+      defaultManager = [*(v40 + 2560) defaultManager];
+      v48 = [defaultManager fileExistsAtPath:v43];
 
       if ((v48 & 1) == 0)
       {
@@ -2800,8 +2800,8 @@ LABEL_21:
         goto LABEL_53;
       }
 
-      v49 = [*(v40 + 2560) defaultManager];
-      v50 = [v49 fileExistsAtPath:v46];
+      defaultManager2 = [*(v40 + 2560) defaultManager];
+      v50 = [defaultManager2 fileExistsAtPath:stringByDeletingLastPathComponent];
 
       if ((v50 & 1) == 0)
       {
@@ -2818,14 +2818,14 @@ LABEL_21:
             v138 = 2112;
             v139 = v54;
             v140 = 2112;
-            v141 = v46;
+            v141 = stringByDeletingLastPathComponent;
             _os_log_impl(&dword_2304B3000, v51, OS_LOG_TYPE_INFO, "%@ %@, creating destination directory, %@", buf, 0x20u);
           }
         }
 
-        v55 = [*(v40 + 2560) defaultManager];
+        defaultManager3 = [*(v40 + 2560) defaultManager];
         v129 = 0;
-        v56 = [v55 createDirectoryAtPath:v46 withIntermediateDirectories:1 attributes:0 error:&v129];
+        v56 = [defaultManager3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v129];
         v57 = v129;
 
         if (!v56 || v57)
@@ -2842,7 +2842,7 @@ LABEL_21:
             v139 = v93;
             v94 = v93;
             v140 = 2112;
-            v141 = v46;
+            v141 = stringByDeletingLastPathComponent;
             v142 = 2112;
             *v143 = v57;
             _os_log_error_impl(&dword_2304B3000, v58, OS_LOG_TYPE_ERROR, "%@ %@, failed to create directory, %@, error, %@", buf, 0x2Au);
@@ -2857,8 +2857,8 @@ LABEL_21:
         v41 = v124;
       }
 
-      v59 = [v43 pathExtension];
-      v60 = [v59 isEqualToString:@".sqlite"];
+      pathExtension4 = [v43 pathExtension];
+      v60 = [pathExtension4 isEqualToString:@".sqlite"];
 
       if (v60)
       {
@@ -2925,11 +2925,11 @@ LABEL_21:
           else
           {
             v80 = db;
-            v81 = [v45 lastPathComponent];
-            v82 = [v81 UTF8String];
+            lastPathComponent = [v45 lastPathComponent];
+            uTF8String = [lastPathComponent UTF8String];
             v83 = ppDb;
-            v84 = [v43 lastPathComponent];
-            v85 = sqlite3_backup_init(v80, v82, v83, [v84 UTF8String]);
+            lastPathComponent2 = [v43 lastPathComponent];
+            v85 = sqlite3_backup_init(v80, uTF8String, v83, [lastPathComponent2 UTF8String]);
 
             if (v85)
             {
@@ -2938,7 +2938,7 @@ LABEL_21:
             }
 
             v86 = sqlite3_errcode(db);
-            v38 = v121;
+            v38 = lCopy;
             v40 = 0x277CCA000;
             v41 = v124;
             if (v86)
@@ -2982,9 +2982,9 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      v68 = [*(v40 + 2560) defaultManager];
+      defaultManager4 = [*(v40 + 2560) defaultManager];
       v126 = 0;
-      v69 = [v68 copyItemAtPath:v43 toPath:v45 error:&v126];
+      v69 = [defaultManager4 copyItemAtPath:v43 toPath:v45 error:&v126];
       v70 = v126;
 
       if (!v69 || v70)
@@ -3054,7 +3054,7 @@ LABEL_56:
 
   if ([v122 count])
   {
-    v8 = v118;
+    storeCopy = v118;
     if ([v122 count] > 1)
     {
       v108 = MEMORY[0x277CCA9B8];
@@ -3062,65 +3062,65 @@ LABEL_56:
       v134 = *MEMORY[0x277D01440];
       v135 = v122;
       v110 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v135 forKeys:&v134 count:1];
-      v106 = [v108 errorWithDomain:v109 code:9 userInfo:v110];
+      firstObject = [v108 errorWithDomain:v109 code:9 userInfo:v110];
     }
 
     else
     {
-      v106 = [v122 firstObject];
+      firstObject = [v122 firstObject];
     }
 
-    if (v114)
+    if (errorCopy)
     {
-      v111 = v106;
-      *v114 = v106;
+      v111 = firstObject;
+      *errorCopy = firstObject;
     }
   }
 
   else
   {
-    v106 = 0;
-    v8 = v118;
+    firstObject = 0;
+    storeCopy = v118;
   }
 
-  v107 = v106 == 0;
+  v107 = firstObject == 0;
 
 LABEL_65:
   return v107;
 }
 
-- (BOOL)backupPersistenceStore:(id)a3 error:(id *)a4
+- (BOOL)backupPersistenceStore:(id)store error:(id *)error
 {
   v107 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  storeCopy = store;
   if (![(RTPlatform *)self->_currentPlatform internalInstall])
   {
     v40 = 1;
     goto LABEL_59;
   }
 
-  v73 = a4;
+  errorCopy = error;
   v7 = objc_opt_new();
-  v8 = [v6 URL];
-  v9 = [v8 path];
-  [v7 addObject:v9];
+  v8 = [storeCopy URL];
+  path = [v8 path];
+  [v7 addObject:path];
 
   v10 = MEMORY[0x277CBEBC0];
-  v11 = [v6 URL];
-  v12 = [v11 path];
-  v13 = [v12 stringByAppendingString:@"-wal"];
+  v11 = [storeCopy URL];
+  path2 = [v11 path];
+  v13 = [path2 stringByAppendingString:@"-wal"];
   v14 = [v10 fileURLWithPath:v13];
-  v15 = [v14 path];
-  [v7 addObject:v15];
+  path3 = [v14 path];
+  [v7 addObject:path3];
 
   v16 = MEMORY[0x277CBEBC0];
-  v74 = v6;
-  v17 = [v6 URL];
-  v18 = [v17 path];
-  v19 = [v18 stringByAppendingString:@"-shm"];
+  v74 = storeCopy;
+  v17 = [storeCopy URL];
+  path4 = [v17 path];
+  v19 = [path4 stringByAppendingString:@"-shm"];
   v20 = [v16 fileURLWithPath:v19];
-  v21 = [v20 path];
-  [v7 addObject:v21];
+  path5 = [v20 path];
+  [v7 addObject:path5];
 
   v79 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
   v91 = 0u;
@@ -3151,19 +3151,19 @@ LABEL_65:
       }
 
       v28 = *(*(&v91 + 1) + 8 * i);
-      v29 = [v28 stringByDeletingPathExtension];
-      v30 = [v29 stringByAppendingString:@".bak"];
-      v31 = [v28 pathExtension];
-      v32 = [v30 stringByAppendingPathExtension:v31];
+      stringByDeletingPathExtension = [v28 stringByDeletingPathExtension];
+      v30 = [stringByDeletingPathExtension stringByAppendingString:@".bak"];
+      pathExtension = [v28 pathExtension];
+      v32 = [v30 stringByAppendingPathExtension:pathExtension];
 
-      v33 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v90 = 0;
-      v34 = [v33 attributesOfItemAtPath:v32 error:&v90];
+      v34 = [defaultManager attributesOfItemAtPath:v32 error:&v90];
       v35 = v90;
 
       v36 = [v34 objectForKeyedSubscript:v26];
-      v37 = [MEMORY[0x277CCAA00] defaultManager];
-      if ([v37 fileExistsAtPath:v32])
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      if ([defaultManager2 fileExistsAtPath:v32])
       {
         v38 = [v36 laterDate:v79];
         v39 = [v38 isEqualToDate:v36];
@@ -3173,8 +3173,8 @@ LABEL_65:
           goto LABEL_13;
         }
 
-        v37 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
-        if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+        defaultManager2 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
+        if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
           v101 = v32;
@@ -3182,7 +3182,7 @@ LABEL_65:
           v103 = v79;
           v104 = 2112;
           v105 = v36;
-          _os_log_error_impl(&dword_2304B3000, v37, OS_LOG_TYPE_ERROR, "a backup already exists at the path %@ and is recent (%@, %@), skipping", buf, 0x20u);
+          _os_log_error_impl(&dword_2304B3000, defaultManager2, OS_LOG_TYPE_ERROR, "a backup already exists at the path %@ and is recent (%@, %@), skipping", buf, 0x20u);
         }
 
         v77 = 1;
@@ -3201,7 +3201,7 @@ LABEL_13:
   if (v77)
   {
     v40 = 1;
-    v6 = v74;
+    storeCopy = v74;
     goto LABEL_58;
   }
 
@@ -3233,19 +3233,19 @@ LABEL_19:
       }
 
       v45 = *(*(&v86 + 1) + 8 * v44);
-      v46 = [v45 stringByDeletingPathExtension];
-      v47 = [v46 stringByAppendingString:@".bak"];
-      v48 = [v45 pathExtension];
-      v49 = [v47 stringByAppendingPathExtension:v48];
+      stringByDeletingPathExtension2 = [v45 stringByDeletingPathExtension];
+      v47 = [stringByDeletingPathExtension2 stringByAppendingString:@".bak"];
+      pathExtension2 = [v45 pathExtension];
+      v49 = [v47 stringByAppendingPathExtension:pathExtension2];
 
-      v50 = [MEMORY[0x277CCAA00] defaultManager];
-      LODWORD(v47) = [v50 fileExistsAtPath:v49];
-      v51 = [MEMORY[0x277CCAA00] defaultManager];
-      v52 = v51;
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      LODWORD(v47) = [defaultManager3 fileExistsAtPath:v49];
+      defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+      date = defaultManager4;
       if (!v47)
       {
         v83 = 0;
-        v59 = [v51 copyItemAtPath:v45 toPath:v49 error:&v83];
+        v59 = [defaultManager4 copyItemAtPath:v45 toPath:v49 error:&v83];
         v57 = v83;
         goto LABEL_38;
       }
@@ -3254,7 +3254,7 @@ LABEL_19:
       v54 = [MEMORY[0x277CBEBC0] fileURLWithPath:v49];
       v55 = [MEMORY[0x277CBEBC0] fileURLWithPath:v45];
       v85 = 0;
-      v56 = [v52 replaceItemAtURL:v54 withItemAtURL:v55 backupItemName:0 options:0 resultingItemURL:0 error:&v85];
+      v56 = [date replaceItemAtURL:v54 withItemAtURL:v55 backupItemName:0 options:0 resultingItemURL:0 error:&v85];
       v57 = v85;
 
       if (v56)
@@ -3269,13 +3269,13 @@ LABEL_19:
 
       if (v58)
       {
-        v52 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v97 = v75;
-        v98 = v52;
+        v98 = date;
         v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
-        v61 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
         v84 = 0;
-        v62 = [v61 setAttributes:v60 ofItemAtPath:v49 error:&v84];
+        v62 = [defaultManager5 setAttributes:v60 ofItemAtPath:v49 error:&v84];
         v63 = v84;
 
         v43 = v53;
@@ -3370,7 +3370,7 @@ LABEL_50:
 
   if ([v76 count])
   {
-    v6 = v74;
+    storeCopy = v74;
     v22 = obj;
     if ([v76 count] > 1)
     {
@@ -3379,29 +3379,29 @@ LABEL_50:
       v95 = *MEMORY[0x277D01440];
       v96 = v76;
       v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
-      v67 = [v68 errorWithDomain:v69 code:9 userInfo:v70];
+      firstObject = [v68 errorWithDomain:v69 code:9 userInfo:v70];
     }
 
     else
     {
-      v67 = [v76 firstObject];
+      firstObject = [v76 firstObject];
     }
 
-    if (v73)
+    if (errorCopy)
     {
-      v71 = v67;
-      *v73 = v67;
+      v71 = firstObject;
+      *errorCopy = firstObject;
     }
   }
 
   else
   {
-    v67 = 0;
-    v6 = v74;
+    firstObject = 0;
+    storeCopy = v74;
     v22 = obj;
   }
 
-  v40 = v67 == 0;
+  v40 = firstObject == 0;
 
 LABEL_58:
 LABEL_59:
@@ -3409,12 +3409,12 @@ LABEL_59:
   return v40;
 }
 
-- (BOOL)persistenceMirroringManagerDidFinishZonePurge:(id)a3 store:(id)a4 context:(id)a5 error:(id *)a6
+- (BOOL)persistenceMirroringManagerDidFinishZonePurge:(id)purge store:(id)store context:(id)context error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  purgeCopy = purge;
+  storeCopy = store;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
@@ -3425,11 +3425,11 @@ LABEL_59:
     }
   }
 
-  v14 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   currentPlatform = self->_currentPlatform;
   notificationHelper = self->_notificationHelper;
   v33 = 0;
-  v17 = [RTPersistenceDriver persistCurrentDeviceWithIdentifier:v14 inStore:v11 context:v12 platform:currentPlatform notificationHelper:notificationHelper error:&v33];
+  v17 = [RTPersistenceDriver persistCurrentDeviceWithIdentifier:uUID inStore:storeCopy context:contextCopy platform:currentPlatform notificationHelper:notificationHelper error:&v33];
   v18 = v33;
 
   if (v17)
@@ -3454,11 +3454,11 @@ LABEL_59:
     v27[1] = 3221225472;
     v27[2] = __89__RTPersistenceDriver_persistenceMirroringManagerDidFinishZonePurge_store_context_error___block_invoke;
     v27[3] = &unk_2788C98E0;
-    v28 = v12;
+    v28 = contextCopy;
     v29 = v17;
     p_buf = &buf;
-    v30 = v11;
-    v31 = self;
+    v30 = storeCopy;
+    selfCopy = self;
     [v28 performBlockAndWait:v27];
     v23 = *(*(&buf + 1) + 40);
     v22 = v23 == 0;
@@ -3473,9 +3473,9 @@ LABEL_59:
         _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "error getting new device record, %@", v34, 0xCu);
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = *(*(&buf + 1) + 40);
+        *error = *(*(&buf + 1) + 40);
       }
     }
 
@@ -3492,11 +3492,11 @@ LABEL_59:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "error creating new device record, %@", &buf, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
       v21 = v18;
       v22 = 0;
-      *a6 = v18;
+      *error = v18;
     }
 
     else
@@ -3554,38 +3554,38 @@ void __89__RTPersistenceDriver_persistenceMirroringManagerDidFinishZonePurge_sto
   }
 }
 
-- (void)persistenceManagerWillStartResetSync:(id)a3 userInfo:(id)a4 context:(id)a5
+- (void)persistenceManagerWillStartResetSync:(id)sync userInfo:(id)info context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  syncCopy = sync;
+  infoCopy = info;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (syncCopy)
   {
-    if (v10)
+    if (contextCopy)
     {
 LABEL_3:
       v12 = objc_opt_new();
       [(RTPersistenceDriver *)self setResetSyncContext:v12];
 
-      v13 = [(RTPersistenceDriver *)self resetSyncContext];
-      [v13 setManagedObjectContext:v11];
+      resetSyncContext = [(RTPersistenceDriver *)self resetSyncContext];
+      [resetSyncContext setManagedObjectContext:v11];
 
       WeakRetained = objc_loadWeakRetained(&self->_metricsDelegate);
       if (objc_opt_respondsToSelector())
       {
-        [WeakRetained persistenceStoreResetSyncWithUserInfo:v9];
+        [WeakRetained persistenceStoreResetSyncWithUserInfo:infoCopy];
       }
 
-      v15 = [(RTPersistenceDriver *)self persistenceManager];
-      v16 = [v15 historyTokenForStoreType:1];
-      v17 = [(RTPersistenceDriver *)self resetSyncContext];
-      [v17 setHistoryToken:v16];
+      persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
+      v16 = [persistenceManager historyTokenForStoreType:1];
+      resetSyncContext2 = [(RTPersistenceDriver *)self resetSyncContext];
+      [resetSyncContext2 setHistoryToken:v16];
 
       defaultsManager = self->_defaultsManager;
-      v19 = [MEMORY[0x277CBEAA8] date];
-      [(RTDefaultsManager *)defaultsManager setObject:v19 forKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastResetSyncDate"];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(RTDefaultsManager *)defaultsManager setObject:date forKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastResetSyncDate"];
 
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
@@ -3664,12 +3664,12 @@ void __77__RTPersistenceDriver_persistenceManagerWillStartResetSync_userInfo_con
   }
 }
 
-- (BOOL)_evaluatePersistentHistoryForDeletedDeviceDuringResetSync:(BOOL *)a3 resetSyncContext:(id)a4 managedObjectContext:(id)a5 error:(id *)a6
+- (BOOL)_evaluatePersistentHistoryForDeletedDeviceDuringResetSync:(BOOL *)sync resetSyncContext:(id)context managedObjectContext:(id)objectContext error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v10)
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  v12 = objectContextCopy;
+  if (!contextCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3678,12 +3678,12 @@ void __77__RTPersistenceDriver_persistenceManagerWillStartResetSync_userInfo_con
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: resetSyncContext", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v19 = @"resetSyncContext";
 LABEL_14:
       _RTErrorInvalidParameterCreate(v19);
-      *a6 = v21 = 0;
+      *error = v21 = 0;
       goto LABEL_21;
     }
 
@@ -3692,7 +3692,7 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  if (!v11)
+  if (!objectContextCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -3701,7 +3701,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: managedObjectContext", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v19 = @"managedObjectContext";
       goto LABEL_14;
@@ -3719,8 +3719,8 @@ LABEL_15:
   v25 = 3221225472;
   v26 = __125__RTPersistenceDriver__evaluatePersistentHistoryForDeletedDeviceDuringResetSync_resetSyncContext_managedObjectContext_error___block_invoke;
   v27 = &unk_2788C9908;
-  v28 = v10;
-  v29 = self;
+  v28 = contextCopy;
+  selfCopy = self;
   v30 = v12;
   v14 = v13;
   v31 = v14;
@@ -3729,7 +3729,7 @@ LABEL_15:
   v15 = _RTSafeArray();
   v16 = _RTMultiErrorCreate();
 
-  if (a3)
+  if (sync)
   {
     if ([v14 count])
     {
@@ -3741,13 +3741,13 @@ LABEL_15:
       v17 = v34[24];
     }
 
-    *a3 = v17;
+    *sync = v17;
   }
 
-  if (a6)
+  if (error)
   {
     v22 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   v21 = v16 == 0;
@@ -3981,13 +3981,13 @@ LABEL_47:
   }
 }
 
-- (void)persistenceManagerDidFinishResetSync:(id)a3 userInfo:(id)a4
+- (void)persistenceManagerDidFinishResetSync:(id)sync userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTPersistenceDriver *)self resetSyncContext];
+  syncCopy = sync;
+  infoCopy = info;
+  resetSyncContext = [(RTPersistenceDriver *)self resetSyncContext];
 
-  if (!v8)
+  if (!resetSyncContext)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -4000,15 +4000,15 @@ LABEL_47:
     objc_exception_throw(v13);
   }
 
-  v9 = [v6 persistenceContextWithOptions:1];
+  v9 = [syncCopy persistenceContextWithOptions:1];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__RTPersistenceDriver_persistenceManagerDidFinishResetSync_userInfo___block_invoke;
   v14[3] = &unk_2788C76F8;
   v14[4] = self;
   v15 = v9;
-  v16 = v6;
-  v10 = v6;
+  v16 = syncCopy;
+  v10 = syncCopy;
   v11 = v9;
   [v11 performBlockAndWait:v14];
   [(RTPersistenceDriver *)self setResetSyncContext:0];
@@ -4092,13 +4092,13 @@ void __69__RTPersistenceDriver_persistenceManagerDidFinishResetSync_userInfo___b
   [v24 _purgeLocalEntityRowsUsingModel:v25 managedObjectContext:v26 persistenceManager:v27 error:&v30];
 }
 
-- (id)_repersistPreviousDeviceWithResetSyncContext:(id)a3 persistenceManager:(id)a4 managedObjectContext:(id)a5
+- (id)_repersistPreviousDeviceWithResetSyncContext:(id)context persistenceManager:(id)manager managedObjectContext:(id)objectContext
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  contextCopy = context;
+  managerCopy = manager;
+  objectContextCopy = objectContext;
+  v11 = objectContextCopy;
+  if (!contextCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -4113,7 +4113,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!managerCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -4126,7 +4126,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (v10)
+  if (objectContextCopy)
   {
     *buf = 0;
     v23 = buf;
@@ -4138,11 +4138,11 @@ LABEL_11:
     v16[1] = 3221225472;
     v16[2] = __108__RTPersistenceDriver__repersistPreviousDeviceWithResetSyncContext_persistenceManager_managedObjectContext___block_invoke;
     v16[3] = &unk_2788C9908;
-    v17 = v9;
+    v17 = managerCopy;
     v21 = buf;
-    v18 = v8;
+    v18 = contextCopy;
     v19 = v11;
-    v20 = self;
+    selfCopy = self;
     [v19 performBlockAndWait:v16];
     v12 = *(v23 + 5);
 
@@ -4277,13 +4277,13 @@ LABEL_22:
   }
 }
 
-- (BOOL)_purgeLocalEntityRowsUsingModel:(id)a3 managedObjectContext:(id)a4 persistenceManager:(id)a5 error:(id *)a6
+- (BOOL)_purgeLocalEntityRowsUsingModel:(id)model managedObjectContext:(id)context persistenceManager:(id)manager error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  modelCopy = model;
+  contextCopy = context;
+  managerCopy = manager;
+  v12 = managerCopy;
+  if (!modelCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4292,7 +4292,7 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: managedObjectModel", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -4301,7 +4301,7 @@ LABEL_22:
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!contextCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -4310,7 +4310,7 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: managedObjectContext", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -4318,11 +4318,11 @@ LABEL_22:
     v20 = @"managedObjectContext";
 LABEL_19:
     _RTErrorInvalidParameterCreate(v20);
-    *a6 = v18 = 0;
+    *error = v18 = 0;
     goto LABEL_21;
   }
 
-  if (!v11)
+  if (!managerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -4331,7 +4331,7 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: persistenceManager", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v20 = @"persistenceManager";
       goto LABEL_19;
@@ -4348,17 +4348,17 @@ LABEL_20:
   v24[2] = __101__RTPersistenceDriver__purgeLocalEntityRowsUsingModel_managedObjectContext_persistenceManager_error___block_invoke;
   v24[3] = &unk_2788C76F8;
   v25 = v12;
-  v26 = v10;
+  v26 = contextCopy;
   v14 = v13;
   v27 = v14;
   [v26 performBlockAndWait:v24];
   v15 = _RTSafeArray();
   v16 = _RTMultiErrorCreate();
 
-  if (a6)
+  if (error)
   {
     v17 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   v18 = v16 == 0;
@@ -4463,51 +4463,51 @@ LABEL_15:
   }
 }
 
-- (void)_updatePersistenceStoresWithDeviceObjectID:(id)a3
+- (void)_updatePersistenceStoresWithDeviceObjectID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = dCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "Updating stores with new device MOID %@", &v12, 0xCu);
     }
   }
 
-  v6 = [(RTPersistenceDriver *)self persistenceManager];
-  v7 = [v6 countOfPersistenceStores];
+  persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
+  countOfPersistenceStores = [persistenceManager countOfPersistenceStores];
 
-  if (v7)
+  if (countOfPersistenceStores)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != countOfPersistenceStores; ++i)
     {
-      v9 = [(RTPersistenceDriver *)self persistenceManager];
-      v10 = [v9 persistenceStoreForType:i];
+      persistenceManager2 = [(RTPersistenceDriver *)self persistenceManager];
+      v10 = [persistenceManager2 persistenceStoreForType:i];
 
-      v11 = [v10 userInfo];
-      [v11 setObject:v4 forKeyedSubscript:@"RTPersistenceDriverUserInfoDeviceMOIDKey"];
+      userInfo = [v10 userInfo];
+      [userInfo setObject:dCopy forKeyedSubscript:@"RTPersistenceDriverUserInfoDeviceMOIDKey"];
     }
   }
 }
 
-- (void)_updatePersistenceContexts:(id)a3 deviceObjectID:(id)a4
+- (void)_updatePersistenceContexts:(id)contexts deviceObjectID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contextsCopy = contexts;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v22 = [v5 count];
+      v22 = [contextsCopy count];
       v23 = 2112;
-      v24 = v6;
+      v24 = dCopy;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "Updating %lu contexts with new device MOID %@", buf, 0x16u);
     }
   }
@@ -4516,7 +4516,7 @@ LABEL_15:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v5;
+  v8 = contextsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -4538,7 +4538,7 @@ LABEL_15:
         v14[2] = __65__RTPersistenceDriver__updatePersistenceContexts_deviceObjectID___block_invoke;
         v14[3] = &unk_2788C4A70;
         v14[4] = v13;
-        v15 = v6;
+        v15 = dCopy;
         [v13 performBlockAndWait:v14];
 
         ++v12;
@@ -4623,42 +4623,42 @@ LABEL_19:
 
 - (unint64_t)persistenceDeviceClassForPlatform
 {
-  v3 = [(RTPersistenceDriver *)self currentPlatform];
-  v4 = [v3 iPhonePlatform];
+  currentPlatform = [(RTPersistenceDriver *)self currentPlatform];
+  iPhonePlatform = [currentPlatform iPhonePlatform];
 
-  if (v4)
+  if (iPhonePlatform)
   {
     return 1;
   }
 
-  v6 = [(RTPersistenceDriver *)self currentPlatform];
-  v7 = [v6 watchPlatform];
+  currentPlatform2 = [(RTPersistenceDriver *)self currentPlatform];
+  watchPlatform = [currentPlatform2 watchPlatform];
 
-  if (v7)
+  if (watchPlatform)
   {
     return 2;
   }
 
-  v8 = [(RTPersistenceDriver *)self currentPlatform];
-  v9 = [v8 macOSPlatform];
+  currentPlatform3 = [(RTPersistenceDriver *)self currentPlatform];
+  macOSPlatform = [currentPlatform3 macOSPlatform];
 
-  if (v9)
+  if (macOSPlatform)
   {
     return 4;
   }
 
-  v10 = [(RTPersistenceDriver *)self currentPlatform];
-  v11 = [v10 simulatorPlatform];
+  currentPlatform4 = [(RTPersistenceDriver *)self currentPlatform];
+  simulatorPlatform = [currentPlatform4 simulatorPlatform];
 
-  if (v11)
+  if (simulatorPlatform)
   {
     return 8;
   }
 
-  v12 = [(RTPersistenceDriver *)self currentPlatform];
-  v13 = [v12 realityDevice];
+  currentPlatform5 = [(RTPersistenceDriver *)self currentPlatform];
+  realityDevice = [currentPlatform5 realityDevice];
 
-  if (v13)
+  if (realityDevice)
   {
     return 32;
   }
@@ -4669,27 +4669,27 @@ LABEL_19:
   }
 }
 
-- (void)persistenceMigrator:(id)a3 didStartMigratingStore:(id)a4 withModelProvider:(id)a5
+- (void)persistenceMigrator:(id)migrator didStartMigratingStore:(id)store withModelProvider:(id)provider
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  migratorCopy = migrator;
+  storeCopy = store;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_metricsDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained persistenceDriver:self persistenceMigrator:v11 didStartMigratingStore:v8 withModelProvider:v9];
+    [WeakRetained persistenceDriver:self persistenceMigrator:migratorCopy didStartMigratingStore:storeCopy withModelProvider:providerCopy];
   }
 }
 
-- (void)persistenceMigrator:(id)a3 didFinishMigratingStore:(id)a4 withModelProvider:(id)a5
+- (void)persistenceMigrator:(id)migrator didFinishMigratingStore:(id)store withModelProvider:(id)provider
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  migratorCopy = migrator;
+  storeCopy = store;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_metricsDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained persistenceDriver:self persistenceMigrator:v11 didFinishMigratingStore:v8 withModelProvider:v9];
+    [WeakRetained persistenceDriver:self persistenceMigrator:migratorCopy didFinishMigratingStore:storeCopy withModelProvider:providerCopy];
   }
 }
 
@@ -4699,34 +4699,34 @@ LABEL_19:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setShouldResetCloudStore:(BOOL)a3
+- (void)setShouldResetCloudStore:(BOOL)store
 {
-  v3 = a3;
-  v5 = [(RTPersistenceDriver *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsPersistenceShouldResetCloudStore"];
+  storeCopy = store;
+  defaultsManager = [(RTPersistenceDriver *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:storeCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsPersistenceShouldResetCloudStore"];
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 != 3)
+  dateCopy = date;
+  completionCopy = completion;
+  if (type != 3)
   {
-    v11 = v9;
-    v12 = [(RTPersistenceDriver *)self persistenceManager];
-    v13 = [v12 persistenceContextWithOptions:0];
+    v11 = dateCopy;
+    persistenceManager = [(RTPersistenceDriver *)self persistenceManager];
+    v13 = [persistenceManager persistenceContextWithOptions:0];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -4741,9 +4741,9 @@ LABEL_19:
     [v15 performBlockAndWait:v16];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -4875,7 +4875,7 @@ LABEL_19:
 LABEL_20:
 }
 
-- (id)prepareForDatabaseRekey:(id *)a3
+- (id)prepareForDatabaseRekey:(id *)rekey
 {
   v28 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4888,15 +4888,15 @@ LABEL_20:
     }
   }
 
-  v6 = [(RTPersistenceDriver *)self keychainManager];
+  keychainManager = [(RTPersistenceDriver *)self keychainManager];
   v25 = 0;
-  v7 = [v6 encryptionKeyWithSize:0 identifier:@"com.apple.routined.security.database.rekey" error:&v25];
+  v7 = [keychainManager encryptionKeyWithSize:0 identifier:@"com.apple.routined.security.database.rekey" error:&v25];
   v8 = v25;
 
   if (v8)
   {
-    v9 = [v8 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [v8 userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
     if (v10)
     {
@@ -4914,7 +4914,7 @@ LABEL_20:
         _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "error while checking to see if re-key key material already exists in database, %@", buf, 0xCu);
       }
 
-      if (!a3)
+      if (!rekey)
       {
 LABEL_30:
         v15 = 0;
@@ -4922,14 +4922,14 @@ LABEL_30:
       }
     }
 
-    else if (!a3)
+    else if (!rekey)
     {
       goto LABEL_30;
     }
 
     v19 = v8;
     v15 = 0;
-    *a3 = v8;
+    *rekey = v8;
     goto LABEL_35;
   }
 
@@ -4946,9 +4946,9 @@ LABEL_9:
       }
     }
 
-    v12 = [(RTPersistenceDriver *)self keychainManager];
+    keychainManager2 = [(RTPersistenceDriver *)self keychainManager];
     v24 = 0;
-    [v12 removeEncryptionKeyWithIdentifier:@"com.apple.routined.security.database.rekey" error:&v24];
+    [keychainManager2 removeEncryptionKeyWithIdentifier:@"com.apple.routined.security.database.rekey" error:&v24];
     v10 = v24;
 
     if (v10)
@@ -4961,12 +4961,12 @@ LABEL_9:
         _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "error while removing pre-existing re-key key from keychain, %@", buf, 0xCu);
       }
 
-      if (a3)
+      if (rekey)
       {
         v14 = v10;
         v15 = 0;
 LABEL_24:
-        *a3 = v10;
+        *rekey = v10;
         goto LABEL_35;
       }
 
@@ -4974,9 +4974,9 @@ LABEL_24:
     }
   }
 
-  v16 = [(RTPersistenceDriver *)self keychainManager];
+  keychainManager3 = [(RTPersistenceDriver *)self keychainManager];
   v23 = 0;
-  v15 = [v16 createSymmetricKeyWithSize:0 identifier:@"com.apple.routined.security.database.rekey" storeInKeychain:1 error:&v23];
+  v15 = [keychainManager3 createSymmetricKeyWithSize:0 identifier:@"com.apple.routined.security.database.rekey" storeInKeychain:1 error:&v23];
   v10 = v23;
 
   if (v10)
@@ -4989,7 +4989,7 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "error while creating new re-key key, %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (rekey)
     {
       v18 = v10;
       goto LABEL_24;
@@ -5011,17 +5011,17 @@ LABEL_35:
   return v15;
 }
 
-- (BOOL)importSourceStore:(id)a3 sourceCoordinator:(id)a4 destinationStore:(id)a5 destinationCoordinator:(id)a6 managedObjectModel:(id)a7 configuration:(id)a8 error:(id *)a9
+- (BOOL)importSourceStore:(id)store sourceCoordinator:(id)coordinator destinationStore:(id)destinationStore destinationCoordinator:(id)destinationCoordinator managedObjectModel:(id)model configuration:(id)configuration error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
-  if (!v15)
+  storeCopy = store;
+  coordinatorCopy = coordinator;
+  destinationStoreCopy = destinationStore;
+  destinationCoordinatorCopy = destinationCoordinator;
+  modelCopy = model;
+  configurationCopy = configuration;
+  v21 = configurationCopy;
+  if (!storeCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -5030,7 +5030,7 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v36, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sourceStore", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_42;
     }
@@ -5039,7 +5039,7 @@ LABEL_35:
     goto LABEL_41;
   }
 
-  if (!v16)
+  if (!coordinatorCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -5048,7 +5048,7 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sourceCoordinator", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_42;
     }
@@ -5057,7 +5057,7 @@ LABEL_35:
     goto LABEL_41;
   }
 
-  if (!v17)
+  if (!destinationStoreCopy)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -5066,7 +5066,7 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinationStore", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_42;
     }
@@ -5075,7 +5075,7 @@ LABEL_35:
     goto LABEL_41;
   }
 
-  if (!v18)
+  if (!destinationCoordinatorCopy)
   {
     v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -5084,7 +5084,7 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinationCoordinator", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_42;
     }
@@ -5093,7 +5093,7 @@ LABEL_35:
     goto LABEL_41;
   }
 
-  if (!v19)
+  if (!modelCopy)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -5102,7 +5102,7 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v41, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: managedObjectModel", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       goto LABEL_42;
     }
@@ -5110,11 +5110,11 @@ LABEL_35:
     v37 = @"managedObjectModel";
 LABEL_41:
     _RTErrorInvalidParameterCreate(v37);
-    *a9 = v43 = 0;
+    *error = v43 = 0;
     goto LABEL_43;
   }
 
-  if (!v20)
+  if (!configurationCopy)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -5123,7 +5123,7 @@ LABEL_41:
       _os_log_error_impl(&dword_2304B3000, v42, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: configuration", buf, 2u);
     }
 
-    if (a9)
+    if (error)
     {
       v37 = @"configuration";
       goto LABEL_41;
@@ -5134,17 +5134,17 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v69 = v20;
+  v69 = configurationCopy;
   v22 = MEMORY[0x277CCACA8];
   v23 = objc_opt_class();
   NSStringFromClass(v23);
-  v24 = v68 = v19;
+  v24 = v68 = modelCopy;
   v25 = NSStringFromSelector(a2);
   v26 = [v22 stringWithFormat:@"%@-%@", v24, v25];
   [v26 UTF8String];
   v67 = os_transaction_create();
 
-  v19 = v68;
+  modelCopy = v68;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -5167,25 +5167,25 @@ LABEL_42:
     v29 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v65 = [v15 URL];
-      v63 = [v65 path];
-      v62 = [v63 lastPathComponent];
-      v57 = [v62 stringByDeletingPathExtension];
-      v60 = [v17 URL];
-      v58 = [v60 path];
-      v30 = [v58 lastPathComponent];
-      v31 = [v30 stringByDeletingPathExtension];
+      v65 = [storeCopy URL];
+      path = [v65 path];
+      lastPathComponent = [path lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+      v60 = [destinationStoreCopy URL];
+      path2 = [v60 path];
+      lastPathComponent2 = [path2 lastPathComponent];
+      stringByDeletingPathExtension2 = [lastPathComponent2 stringByDeletingPathExtension];
       *buf = 138412546;
-      v74 = v57;
+      v74 = stringByDeletingPathExtension;
       v75 = 2112;
-      v76 = v31;
+      v76 = stringByDeletingPathExtension2;
       _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "preparing to import data from store, %@ to store, %@", buf, 0x16u);
 
       v28 = v69;
     }
   }
 
-  v32 = [[RTPersistenceStoreImporter alloc] initWithManagedObjectModel:v68 configuration:v28 sourceStore:v15 sourceCoordinator:v16 destinationStore:v17 destinationCoordinator:v18];
+  v32 = [[RTPersistenceStoreImporter alloc] initWithManagedObjectModel:v68 configuration:v28 sourceStore:storeCopy sourceCoordinator:coordinatorCopy destinationStore:destinationStoreCopy destinationCoordinator:destinationCoordinatorCopy];
   v33 = objc_opt_new();
   v72 = 0;
   v66 = v32;
@@ -5200,7 +5200,7 @@ LABEL_42:
   else if (v34 && [v28 isEqualToString:@"Cloud"])
   {
     v71 = 0;
-    v45 = [v15 retrieveMetadataWithCoordinator:v16 error:&v71];
+    v45 = [storeCopy retrieveMetadataWithCoordinator:coordinatorCopy error:&v71];
     v46 = v71;
     if (v46)
     {
@@ -5210,13 +5210,13 @@ LABEL_42:
     else
     {
       v59 = [v45 mutableCopy];
-      v47 = [v45 allKeys];
-      v48 = [v15 _validateKeys:v47];
+      allKeys = [v45 allKeys];
+      v48 = [storeCopy _validateKeys:allKeys];
 
       v61 = v48;
       [v59 removeObjectsForKeys:v48];
       v70 = 0;
-      [v17 updateMetadata:v59 coordinator:v18 error:&v70];
+      [destinationStoreCopy updateMetadata:v59 coordinator:destinationCoordinatorCopy error:&v70];
       v49 = v70;
       if (v49)
       {
@@ -5231,10 +5231,10 @@ LABEL_42:
   v51 = _RTSafeArray();
   v52 = _RTMultiErrorCreate();
 
-  if (a9)
+  if (error)
   {
     v53 = v52;
-    *a9 = v52;
+    *error = v52;
   }
 
   v43 = v52 == 0;
@@ -5252,12 +5252,12 @@ LABEL_43:
   return WeakRetained;
 }
 
-- (void)persistenceStore:(id)a3 didPrepareWithContext:(id)a4
+- (void)persistenceStore:(id)store didPrepareWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  storeCopy = store;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (!storeCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -5272,7 +5272,7 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!contextCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -5285,8 +5285,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [v6 storeBaseName];
-  v10 = [v9 isEqualToString:@"Cloud-V2"];
+  storeBaseName = [storeCopy storeBaseName];
+  v10 = [storeBaseName isEqualToString:@"Cloud-V2"];
 
   if ((v10 & 1) == 0)
   {
@@ -5310,7 +5310,7 @@ LABEL_13:
       v23[3] = &unk_2788CC490;
       v26 = IsEventUsed;
       v24 = v8;
-      v25 = self;
+      selfCopy = self;
       v27 = v20;
       [v24 performBlockAndWait:v23];
       v21 = v24;
@@ -5694,13 +5694,13 @@ void __71__RTPersistenceDriver_Metrics__persistenceStore_didPrepareWithContext__
   }
 }
 
-- (unint64_t)countOfCloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6
+- (unint64_t)countOfCloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  descriptionCopy = description;
+  predicateCopy = predicate;
+  contextCopy = context;
+  v12 = contextCopy;
+  if (!descriptionCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -5709,12 +5709,12 @@ void __71__RTPersistenceDriver_Metrics__persistenceStore_didPrepareWithContext__
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entityDescription", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v15 = @"entityDescription";
 LABEL_14:
       _RTErrorInvalidParameterCreate(v15);
-      *a6 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_16;
     }
 
@@ -5723,7 +5723,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!contextCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -5732,7 +5732,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v15 = @"context";
       goto LABEL_14;
@@ -5755,15 +5755,15 @@ LABEL_15:
   v18[1] = 3221225472;
   v18[2] = __103__RTPersistenceDriver_Metrics__countOfCloudManagedObjectWithEntityDescription_predicate_context_error___block_invoke;
   v18[3] = &unk_2788C9200;
-  v19 = v9;
-  v20 = v10;
+  v19 = descriptionCopy;
+  v20 = predicateCopy;
   v22 = &v30;
   v21 = v12;
   v23 = buf;
   [v21 performBlockAndWait:v18];
-  if (a6)
+  if (error)
   {
-    *a6 = *(v25 + 5);
+    *error = *(v25 + 5);
   }
 
   v13 = v31[3];
@@ -5790,44 +5790,44 @@ void __103__RTPersistenceDriver_Metrics__countOfCloudManagedObjectWithEntityDesc
   *(*(*(a1 + 56) + 8) + 24) = v7;
 }
 
-- (id)latestCloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6
+- (id)latestCloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277CCAC98];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
+  descriptionCopy = description;
   v14 = [v10 sortDescriptorWithKey:@"creationDate" ascending:0];
   v18[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v16 = [(RTPersistenceDriver *)self cloudManagedObjectWithEntityDescription:v13 predicate:v12 sortDescriptors:v15 context:v11 error:a6];
+  v16 = [(RTPersistenceDriver *)self cloudManagedObjectWithEntityDescription:descriptionCopy predicate:predicateCopy sortDescriptors:v15 context:contextCopy error:error];
 
   return v16;
 }
 
-- (id)earliestCloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6
+- (id)earliestCloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277CCAC98];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
+  descriptionCopy = description;
   v14 = [v10 sortDescriptorWithKey:@"creationDate" ascending:1];
   v18[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v16 = [(RTPersistenceDriver *)self cloudManagedObjectWithEntityDescription:v13 predicate:v12 sortDescriptors:v15 context:v11 error:a6];
+  v16 = [(RTPersistenceDriver *)self cloudManagedObjectWithEntityDescription:descriptionCopy predicate:predicateCopy sortDescriptors:v15 context:contextCopy error:error];
 
   return v16;
 }
 
-- (id)cloudManagedObjectWithEntityDescription:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 context:(id)a6 error:(id *)a7
+- (id)cloudManagedObjectWithEntityDescription:(id)description predicate:(id)predicate sortDescriptors:(id)descriptors context:(id)context error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  descriptionCopy = description;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  contextCopy = context;
+  v15 = contextCopy;
+  if (!descriptionCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -5836,12 +5836,12 @@ void __103__RTPersistenceDriver_Metrics__countOfCloudManagedObjectWithEntityDesc
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entityDescription", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v18 = @"entityDescription";
 LABEL_14:
       _RTErrorInvalidParameterCreate(v18);
-      *a7 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_16;
     }
 
@@ -5850,7 +5850,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!contextCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -5859,7 +5859,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v18 = @"context";
       goto LABEL_14;
@@ -5884,16 +5884,16 @@ LABEL_15:
   v21[1] = 3221225472;
   v21[2] = __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription_predicate_sortDescriptors_context_error___block_invoke;
   v21[3] = &unk_2788CC4B8;
-  v22 = v11;
-  v23 = v13;
-  v24 = v12;
+  v22 = descriptionCopy;
+  v23 = descriptorsCopy;
+  v24 = predicateCopy;
   v25 = v15;
   v26 = &v28;
   v27 = buf;
   [v25 performBlockAndWait:v21];
-  if (a7)
+  if (error)
   {
-    *a7 = v29[5];
+    *error = v29[5];
   }
 
   v16 = *(v35 + 5);
@@ -5926,15 +5926,15 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
   *(v9 + 40) = v8;
 }
 
-- (void)persistenceStoreFailedWithError:(id)a3
+- (void)persistenceStoreFailedWithError:(id)error
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  errorCopy = error;
   v11 = [[v3 alloc] initWithCapacity:1];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  v7 = [v5 numberWithInteger:v6];
+  v7 = [v5 numberWithInteger:code];
   [v11 setObject:v7 forKeyedSubscript:@"reason"];
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
   v9 = [v8 initWithCString:RTAnalyticsEventPersistenceStoreDestruction encoding:1];
@@ -5943,14 +5943,14 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
   AnalyticsSendEvent();
 }
 
-- (void)persistenceStoreResetSyncWithUserInfo:(id)a3
+- (void)persistenceStoreResetSyncWithUserInfo:(id)info
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  infoCopy = info;
   v12 = [[v3 alloc] initWithCapacity:2];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBE138]];
+  v5 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CBE138]];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   v8 = [v6 numberWithInteger:{objc_msgSend(v7, "code")}];
 
@@ -5963,7 +5963,7 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
   AnalyticsSendEvent();
 }
 
-- (void)persistenceDriver:(id)a3 persistenceMigrator:(id)a4 didStartMigratingStore:(id)a5 withModelProvider:(id)a6
+- (void)persistenceDriver:(id)driver persistenceMigrator:(id)migrator didStartMigratingStore:(id)store withModelProvider:(id)provider
 {
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -5979,33 +5979,33 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
   }
 }
 
-- (void)persistenceDriver:(id)a3 persistenceMigrator:(id)a4 didFinishMigratingStore:(id)a5 withModelProvider:(id)a6
+- (void)persistenceDriver:(id)driver persistenceMigrator:(id)migrator didFinishMigratingStore:(id)store withModelProvider:(id)provider
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  storeCopy = store;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  migratorCopy = migrator;
   v10 = [[v8 alloc] initWithCapacity:5];
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v9 migrationEndDate];
-  v13 = [v9 migrationStartDate];
-  [v12 timeIntervalSinceDate:v13];
+  migrationEndDate = [migratorCopy migrationEndDate];
+  migrationStartDate = [migratorCopy migrationStartDate];
+  [migrationEndDate timeIntervalSinceDate:migrationStartDate];
   v14 = [v11 numberWithDouble:?];
 
   v15 = MEMORY[0x277CCABB0];
-  v16 = [v7 URL];
+  v16 = [storeCopy URL];
   v17 = [v15 numberWithUnsignedInteger:{+[RTPersistenceManager storeTypeForURL:](RTPersistenceManager, "storeTypeForURL:", v16)}];
 
   v18 = MEMORY[0x277CCABB0];
-  v19 = [v9 status];
+  status = [migratorCopy status];
 
-  v20 = [v18 numberWithUnsignedInteger:v19];
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v33 = v7;
-  v22 = [v7 URL];
-  v23 = [v22 path];
+  v20 = [v18 numberWithUnsignedInteger:status];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v33 = storeCopy;
+  v22 = [storeCopy URL];
+  path = [v22 path];
   v34 = 0;
-  v24 = [v21 attributesOfItemAtPath:v23 error:&v34];
+  v24 = [defaultManager attributesOfItemAtPath:path error:&v34];
   v25 = v34;
 
   if (v24)
@@ -6019,9 +6019,9 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v31 = [v33 URL];
-      v32 = [v31 path];
+      path2 = [v31 path];
       *buf = 138412546;
-      v36 = v32;
+      v36 = path2;
       v37 = 2112;
       v38 = v25;
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "error fetching file attributes for store, %@, error, %@", buf, 0x16u);
@@ -6042,21 +6042,21 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
   AnalyticsSendEvent();
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if ((v6 & 1) == 0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v4 name];
+      name2 = [notificationCopy name];
       *buf = 138412802;
-      v34 = v31;
+      v34 = name2;
       v35 = 2080;
       v36 = "[RTPersistenceDriver(Metrics) onDailyMetricsNotification:]";
       v37 = 1024;
@@ -6065,16 +6065,16 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
     }
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  name3 = [notificationCopy name];
+  v9 = [name3 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if (v9)
   {
     v10 = objc_opt_new();
-    v11 = [(RTPersistenceDriver *)self cloudSyncAuthorization];
+    cloudSyncAuthorization = [(RTPersistenceDriver *)self cloudSyncAuthorization];
     v12 = MEMORY[0x277CBEC28];
     v13 = MEMORY[0x277CBEC38];
-    if (v11 == 2)
+    if (cloudSyncAuthorization == 2)
     {
       v14 = MEMORY[0x277CBEC38];
     }
@@ -6085,9 +6085,9 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
     }
 
     [v10 setObject:v14 forKeyedSubscript:@"cloudSyncAuthorization"];
-    v15 = [(RTPersistenceDriver *)self currentAccount];
+    currentAccount = [(RTPersistenceDriver *)self currentAccount];
 
-    if (v15)
+    if (currentAccount)
     {
       v16 = v13;
     }
@@ -6098,16 +6098,16 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
     }
 
     [v10 setObject:v16 forKeyedSubscript:@"iCloudAccountPresent"];
-    v17 = [(RTPersistenceDriver *)self defaultsManager];
-    v18 = [v17 objectForKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastImportDate"];
+    defaultsManager = [(RTPersistenceDriver *)self defaultsManager];
+    v18 = [defaultsManager objectForKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastImportDate"];
 
-    v19 = [(RTPersistenceDriver *)self defaultsManager];
-    v20 = [v19 objectForKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastExportDate"];
+    defaultsManager2 = [(RTPersistenceDriver *)self defaultsManager];
+    v20 = [defaultsManager2 objectForKey:@"RTDefaultsPersistenceMirroringManagerBackgroundLastExportDate"];
 
-    v21 = [MEMORY[0x277CBEAA8] date];
-    [v21 timeIntervalSinceDate:v18];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v18];
     v23 = v22;
-    [v21 timeIntervalSinceDate:v20];
+    [date timeIntervalSinceDate:v20];
     v25 = v24;
     v26 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
     [v10 setObject:v26 forKeyedSubscript:@"durationSinceLastImport"];
@@ -6127,9 +6127,9 @@ void __112__RTPersistenceDriver_Metrics__cloudManagedObjectWithEntityDescription
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v4 name];
+      name4 = [notificationCopy name];
       *buf = 138412290;
-      v34 = v32;
+      v34 = name4;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
   }

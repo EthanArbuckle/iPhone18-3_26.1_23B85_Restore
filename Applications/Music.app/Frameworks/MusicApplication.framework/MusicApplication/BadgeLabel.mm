@@ -1,13 +1,13 @@
 @interface BadgeLabel
 - (UIColor)textColor;
-- (_TtC16MusicApplication10BadgeLabel)initWithCoder:(id)a3;
-- (_TtC16MusicApplication10BadgeLabel)initWithFrame:(CGRect)a3;
-- (void)setTextColor:(id)a3;
+- (_TtC16MusicApplication10BadgeLabel)initWithCoder:(id)coder;
+- (_TtC16MusicApplication10BadgeLabel)initWithFrame:(CGRect)frame;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation BadgeLabel
 
-- (_TtC16MusicApplication10BadgeLabel)initWithCoder:(id)a3
+- (_TtC16MusicApplication10BadgeLabel)initWithCoder:(id)coder
 {
   result = sub_ABAFD0();
   __break(1u);
@@ -18,22 +18,22 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for BadgeLabel();
-  v2 = [(BadgeLabel *)&v4 textColor];
+  textColor = [(BadgeLabel *)&v4 textColor];
 
-  return v2;
+  return textColor;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for BadgeLabel();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(BadgeLabel *)&v6 setTextColor:v4];
+  [(BadgeLabel *)&v6 setTextColor:colorCopy];
   sub_272AC0();
 }
 
-- (_TtC16MusicApplication10BadgeLabel)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication10BadgeLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

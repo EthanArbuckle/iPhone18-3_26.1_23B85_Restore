@@ -1,36 +1,36 @@
 @interface TiltedTabViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tiltedTabView:(id)a3 contentViewForItemAtIndex:(unint64_t)a4;
-- (id)tiltedTabView:(id)a3 snapshotViewForItemAtIndex:(unint64_t)a4;
-- (void)_accessibilityUpdateDraftLabelForBorrowedView:(id)a3 withActorAtIndex:(int64_t)a4;
-- (void)_axPrepareDockedLabelForIndex:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tiltedTabView:(id)view contentViewForItemAtIndex:(unint64_t)index;
+- (id)tiltedTabView:(id)view snapshotViewForItemAtIndex:(unint64_t)index;
+- (void)_accessibilityUpdateDraftLabelForBorrowedView:(id)view withActorAtIndex:(int64_t)index;
+- (void)_axPrepareDockedLabelForIndex:(int64_t)index;
 - (void)dismiss;
-- (void)tiltedTabViewDidDismiss:(id)a3;
-- (void)tiltedTabViewDidPresent:(id)a3;
+- (void)tiltedTabViewDidDismiss:(id)dismiss;
+- (void)tiltedTabViewDidPresent:(id)present;
 @end
 
 @implementation TiltedTabViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TiltedTabViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TiltedTabViewController" hasInstanceMethod:@"dockedStates" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabViewDidPresent:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabViewDidDismiss:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabView:contentViewForItemAtIndex:" withFullSignature:{"@", "@", "Q", 0}];
-  [v3 validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabView:snapshotViewForItemAtIndex:" withFullSignature:{"@", "@", "Q", 0}];
-  [v3 validateClass:@"TiltedTabViewController" hasInstanceMethod:@"dismiss" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MFTiltedTabView" hasInstanceVariable:@"_visibleItems" withType:"NSMutableArray"];
-  [v3 validateClass:@"_MFTiltedTabItemView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"borrowedContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"contentShadowView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DockedViewControllerState" isKindOfClass:@"RestorableViewControllerState"];
-  [v3 validateClass:@"RestorableViewControllerState" hasInstanceMethod:@"storedUserActivity" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TiltedTabViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TiltedTabViewController" hasInstanceMethod:@"dockedStates" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabViewDidPresent:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabViewDidDismiss:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabView:contentViewForItemAtIndex:" withFullSignature:{"@", "@", "Q", 0}];
+  [validationsCopy validateClass:@"TiltedTabViewController" hasInstanceMethod:@"tiltedTabView:snapshotViewForItemAtIndex:" withFullSignature:{"@", "@", "Q", 0}];
+  [validationsCopy validateClass:@"TiltedTabViewController" hasInstanceMethod:@"dismiss" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MFTiltedTabView" hasInstanceVariable:@"_visibleItems" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"_MFTiltedTabItemView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"borrowedContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"contentShadowView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DockedViewControllerState" isKindOfClass:@"RestorableViewControllerState"];
+  [validationsCopy validateClass:@"RestorableViewControllerState" hasInstanceMethod:@"storedUserActivity" withFullSignature:{"@", 0}];
 }
 
-- (void)_axPrepareDockedLabelForIndex:(int64_t)a3
+- (void)_axPrepareDockedLabelForIndex:(int64_t)index
 {
   v5 = [(TiltedTabViewControllerAccessibility *)self safeValueForKey:@"tiltedTabView"];
   v6 = [v5 safeArrayForKey:@"_visibleItems"];
@@ -48,7 +48,7 @@
   _Block_object_dispose(&v10, 8);
   v8 = [v7 safeValueForKey:@"borrowedContentView"];
 
-  [(TiltedTabViewControllerAccessibility *)self _accessibilityUpdateDraftLabelForBorrowedView:v8 withActorAtIndex:a3];
+  [(TiltedTabViewControllerAccessibility *)self _accessibilityUpdateDraftLabelForBorrowedView:v8 withActorAtIndex:index];
 }
 
 uint64_t __70__TiltedTabViewControllerAccessibility__axPrepareDockedLabelForIndex___block_invoke(uint64_t a1)
@@ -61,13 +61,13 @@ uint64_t __70__TiltedTabViewControllerAccessibility__axPrepareDockedLabelForInde
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)tiltedTabViewDidPresent:(id)a3
+- (void)tiltedTabViewDidPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   v8.receiver = self;
   v8.super_class = TiltedTabViewControllerAccessibility;
-  [(TiltedTabViewControllerAccessibility *)&v8 tiltedTabViewDidPresent:v4];
-  v5 = [v4 safeArrayForKey:@"_visibleItems"];
+  [(TiltedTabViewControllerAccessibility *)&v8 tiltedTabViewDidPresent:presentCopy];
+  v5 = [presentCopy safeArrayForKey:@"_visibleItems"];
   if ([v5 count])
   {
     v6 = 0;
@@ -79,7 +79,7 @@ uint64_t __70__TiltedTabViewControllerAccessibility__axPrepareDockedLabelForInde
     while ([v5 count] > v6);
   }
 
-  [v4 _accessibilityLoadAccessibilityInformation];
+  [presentCopy _accessibilityLoadAccessibilityInformation];
   v7 = [(TiltedTabViewControllerAccessibility *)self safeValueForKey:@"view"];
   [v7 setAccessibilityViewIsModal:1];
 
@@ -94,83 +94,83 @@ uint64_t __70__TiltedTabViewControllerAccessibility__axPrepareDockedLabelForInde
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)tiltedTabViewDidDismiss:(id)a3
+- (void)tiltedTabViewDidDismiss:(id)dismiss
 {
   v3.receiver = self;
   v3.super_class = TiltedTabViewControllerAccessibility;
-  [(TiltedTabViewControllerAccessibility *)&v3 tiltedTabViewDidDismiss:a3];
+  [(TiltedTabViewControllerAccessibility *)&v3 tiltedTabViewDidDismiss:dismiss];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (id)tiltedTabView:(id)a3 contentViewForItemAtIndex:(unint64_t)a4
+- (id)tiltedTabView:(id)view contentViewForItemAtIndex:(unint64_t)index
 {
   v8.receiver = self;
   v8.super_class = TiltedTabViewControllerAccessibility;
-  v6 = [(TiltedTabViewControllerAccessibility *)&v8 tiltedTabView:a3 contentViewForItemAtIndex:?];
-  [(TiltedTabViewControllerAccessibility *)self _accessibilityUpdateDraftLabelForBorrowedView:v6 withActorAtIndex:a4];
+  v6 = [(TiltedTabViewControllerAccessibility *)&v8 tiltedTabView:view contentViewForItemAtIndex:?];
+  [(TiltedTabViewControllerAccessibility *)self _accessibilityUpdateDraftLabelForBorrowedView:v6 withActorAtIndex:index];
 
   return v6;
 }
 
-- (id)tiltedTabView:(id)a3 snapshotViewForItemAtIndex:(unint64_t)a4
+- (id)tiltedTabView:(id)view snapshotViewForItemAtIndex:(unint64_t)index
 {
   v8.receiver = self;
   v8.super_class = TiltedTabViewControllerAccessibility;
-  v6 = [(TiltedTabViewControllerAccessibility *)&v8 tiltedTabView:a3 snapshotViewForItemAtIndex:?];
-  [(TiltedTabViewControllerAccessibility *)self _accessibilityUpdateDraftLabelForBorrowedView:v6 withActorAtIndex:a4];
+  v6 = [(TiltedTabViewControllerAccessibility *)&v8 tiltedTabView:view snapshotViewForItemAtIndex:?];
+  [(TiltedTabViewControllerAccessibility *)self _accessibilityUpdateDraftLabelForBorrowedView:v6 withActorAtIndex:index];
 
   return v6;
 }
 
-- (void)_accessibilityUpdateDraftLabelForBorrowedView:(id)a3 withActorAtIndex:(int64_t)a4
+- (void)_accessibilityUpdateDraftLabelForBorrowedView:(id)view withActorAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = [(TiltedTabViewControllerAccessibility *)self safeValueForKey:@"tiltedTabView"];
   v8 = [v7 safeArrayForKey:@"_visibleItems"];
 
   v9 = [(TiltedTabViewControllerAccessibility *)self safeArrayForKey:@"dockedStates"];
   v10 = v9;
-  if (a4 >= 1 && [v9 count] >= a4)
+  if (index >= 1 && [v9 count] >= index)
   {
     v12 = accessibilityLocalizedString(@"draft.label");
-    [v6 setAccessibilityLabel:v12];
+    [viewCopy setAccessibilityLabel:v12];
 
-    v11 = [v10 objectAtIndex:a4 - 1];
+    v11 = [v10 objectAtIndex:index - 1];
     LOBYTE(location) = 0;
     objc_opt_class();
     v13 = [v11 safeValueForKey:@"storedUserActivity"];
     v14 = __UIAccessibilityCastAsClass();
 
-    v15 = [v14 userInfo];
-    v16 = [v15 objectForKey:@"ComposeNavTitle"];
-    [v6 setAccessibilityValue:v16];
+    userInfo = [v14 userInfo];
+    v16 = [userInfo objectForKey:@"ComposeNavTitle"];
+    [viewCopy setAccessibilityValue:v16];
   }
 
   else
   {
     v11 = accessibilityLocalizedString(@"dismiss.draft.picker");
-    [v6 setAccessibilityLabel:v11];
+    [viewCopy setAccessibilityLabel:v11];
   }
 
-  [v6 setIsAccessibilityElement:1];
-  [v6 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
-  objc_initWeak(&location, v6);
+  [viewCopy setIsAccessibilityElement:1];
+  [viewCopy setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+  objc_initWeak(&location, viewCopy);
   v21[0] = MEMORY[0x29EDCA5F8];
   v21[1] = 3221225472;
   v21[2] = __103__TiltedTabViewControllerAccessibility__accessibilityUpdateDraftLabelForBorrowedView_withActorAtIndex___block_invoke;
   v21[3] = &unk_29F2D44C8;
   objc_copyWeak(&v22, &location);
-  [v6 _setAccessibilityActivationPointBlock:v21];
-  if ((a4 & 0x8000000000000000) == 0 && [v8 count] > a4)
+  [viewCopy _setAccessibilityActivationPointBlock:v21];
+  if ((index & 0x8000000000000000) == 0 && [v8 count] > index)
   {
-    v17 = [v8 objectAtIndex:a4];
+    v17 = [v8 objectAtIndex:index];
     v19[0] = MEMORY[0x29EDCA5F8];
     v19[1] = 3221225472;
     v19[2] = __103__TiltedTabViewControllerAccessibility__accessibilityUpdateDraftLabelForBorrowedView_withActorAtIndex___block_invoke_2;
     v19[3] = &unk_29F2D44F0;
     v18 = v17;
     v20 = v18;
-    [v6 _setAccessibilityPathBlock:v19];
+    [viewCopy _setAccessibilityPathBlock:v19];
   }
 
   objc_destroyWeak(&v22);

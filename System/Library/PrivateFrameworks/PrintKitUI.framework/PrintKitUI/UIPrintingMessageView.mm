@@ -1,16 +1,16 @@
 @interface UIPrintingMessageView
-- (id)initInView:(id)a3 title:(id)a4;
-- (void)setMessage:(id)a3;
+- (id)initInView:(id)view title:(id)title;
+- (void)setMessage:(id)message;
 @end
 
 @implementation UIPrintingMessageView
 
-- (id)initInView:(id)a3 title:(id)a4
+- (id)initInView:(id)view title:(id)title
 {
   v41[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 bounds];
+  viewCopy = view;
+  titleCopy = title;
+  [viewCopy bounds];
   v33.receiver = self;
   v33.super_class = UIPrintingMessageView;
   v8 = [(UIPrintingMessageView *)&v33 initWithFrame:?];
@@ -36,12 +36,12 @@
     v14 = [MEMORY[0x277D74300] systemFontOfSize:20.0];
     v41[0] = v14;
     v40[1] = *MEMORY[0x277D740C0];
-    v15 = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
     v40[2] = *MEMORY[0x277D74118];
-    v41[1] = v15;
+    v41[1] = secondaryLabelColor;
     v41[2] = v12;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:3];
-    v17 = [v13 initWithString:v7 attributes:v16];
+    v17 = [v13 initWithString:titleCopy attributes:v16];
     [p_isa[51] setAttributedText:v17];
 
     [p_isa addSubview:p_isa[51]];
@@ -52,15 +52,15 @@
     v20 = [MEMORY[0x277D74300] systemFontOfSize:17.5];
     [p_isa[52] setFont:v20];
 
-    v21 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [p_isa[52] setTextColor:v21];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [p_isa[52] setTextColor:secondaryLabelColor2];
 
     [p_isa[52] setBackgroundColor:0];
     [p_isa[52] setOpaque:0];
     [p_isa[52] setTextAlignment:1];
     [p_isa[52] setTranslatesAutoresizingMaskIntoConstraints:0];
     [p_isa addSubview:p_isa[52]];
-    [v6 addSubview:p_isa];
+    [viewCopy addSubview:p_isa];
     v22 = MEMORY[0x277CCAAD0];
     v38 = @"title";
     v39 = p_isa[51];
@@ -89,9 +89,9 @@
   return p_isa;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  [(UILabel *)self->_message setText:a3];
+  [(UILabel *)self->_message setText:message];
 
   [(UIPrintingMessageView *)self setNeedsUpdateConstraints];
 }

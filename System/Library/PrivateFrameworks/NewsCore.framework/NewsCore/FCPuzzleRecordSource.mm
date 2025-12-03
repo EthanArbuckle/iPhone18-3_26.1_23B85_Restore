@@ -1,6 +1,6 @@
 @interface FCPuzzleRecordSource
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCPuzzleRecordSource
@@ -26,77 +26,77 @@ uint64_t __42__FCPuzzleRecordSource_nonLocalizableKeys__block_invoke_2()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v5 = MEMORY[0x1E69B6F68];
-  v6 = a4;
-  v7 = a3;
+  baseCopy = base;
+  recordCopy = record;
   v8 = objc_alloc_init(v5);
-  [v8 setBase:v6];
+  [v8 setBase:baseCopy];
 
-  v9 = [v7 objectForKeyedSubscript:@"title"];
+  v9 = [recordCopy objectForKeyedSubscript:@"title"];
   [v8 setTitle:v9];
 
-  v10 = [v7 objectForKeyedSubscript:@"subtitle"];
+  v10 = [recordCopy objectForKeyedSubscript:@"subtitle"];
   [v8 setSubtitle:v10];
 
-  v11 = [v7 objectForKeyedSubscript:@"description"];
+  v11 = [recordCopy objectForKeyedSubscript:@"description"];
   [v8 setPuzzleDescription:v11];
 
-  v12 = [v7 objectForKeyedSubscript:@"dataResourceID"];
+  v12 = [recordCopy objectForKeyedSubscript:@"dataResourceID"];
   [v8 setDataResourceID:v12];
 
-  v13 = [v7 objectForKeyedSubscript:@"puzzleTypeID"];
+  v13 = [recordCopy objectForKeyedSubscript:@"puzzleTypeID"];
   [v8 setPuzzleTypeID:v13];
 
-  v14 = [v7 objectForKeyedSubscript:@"authors"];
+  v14 = [recordCopy objectForKeyedSubscript:@"authors"];
   v15 = [v14 mutableCopy];
   [v8 setAuthors:v15];
 
-  v16 = [v7 objectForKeyedSubscript:@"isPaid"];
+  v16 = [recordCopy objectForKeyedSubscript:@"isPaid"];
   [v8 setIsPaid:{objc_msgSend(v16, "BOOLValue")}];
 
-  v17 = [v7 objectForKeyedSubscript:@"publishDate"];
-  v18 = [v17 pbDate];
-  [v8 setPublishedDate:v18];
+  v17 = [recordCopy objectForKeyedSubscript:@"publishDate"];
+  pbDate = [v17 pbDate];
+  [v8 setPublishedDate:pbDate];
 
-  v19 = [v7 objectForKeyedSubscript:@"difficulty"];
+  v19 = [recordCopy objectForKeyedSubscript:@"difficulty"];
   [v8 setDifficultyLevel:{objc_msgSend(v19, "unsignedLongLongValue")}];
 
-  v20 = [v7 objectForKeyedSubscript:@"relatedPuzzleIDs"];
+  v20 = [recordCopy objectForKeyedSubscript:@"relatedPuzzleIDs"];
   v21 = [v20 mutableCopy];
   [v8 setRelatedPuzzleIDs:v21];
 
-  v22 = [v7 objectForKeyedSubscript:@"thumbnailSmall"];
+  v22 = [recordCopy objectForKeyedSubscript:@"thumbnailSmall"];
   [v8 setThumbnailImageCompactURL:v22];
 
-  v23 = [v7 objectForKeyedSubscript:@"thumbnailLarge"];
+  v23 = [recordCopy objectForKeyedSubscript:@"thumbnailLarge"];
   [v8 setThumbnailImageLargeURL:v23];
 
-  v24 = [v7 objectForKeyedSubscript:@"language"];
+  v24 = [recordCopy objectForKeyedSubscript:@"language"];
   [v8 setLanguage:v24];
 
-  v25 = [v7 objectForKeyedSubscript:@"blockedStorefrontIDs"];
+  v25 = [recordCopy objectForKeyedSubscript:@"blockedStorefrontIDs"];
   v26 = [v25 mutableCopy];
   [v8 setBlockedStorefrontIDs:v26];
 
-  v27 = [v7 objectForKeyedSubscript:@"allowedStorefrontIDs"];
+  v27 = [recordCopy objectForKeyedSubscript:@"allowedStorefrontIDs"];
   v28 = [v27 mutableCopy];
   [v8 setAllowedStorefrontIDs:v28];
 
-  v29 = [v7 objectForKeyedSubscript:@"minNewsVersion"];
+  v29 = [recordCopy objectForKeyedSubscript:@"minNewsVersion"];
   [v8 setMinimumNewsVersion:{+[FCRestrictions integerRepresentationOfShortVersionString:](FCRestrictions, "integerRepresentationOfShortVersionString:", v29)}];
 
-  v30 = [v7 objectForKeyedSubscript:@"teaserConfiguration"];
+  v30 = [recordCopy objectForKeyedSubscript:@"teaserConfiguration"];
   [v8 setTeaserConfiguration:v30];
 
-  v31 = [v7 objectForKey:@"behaviorFlags"];
+  v31 = [recordCopy objectForKey:@"behaviorFlags"];
   [v8 setBehaviorFlags:{objc_msgSend(v31, "unsignedLongLongValue")}];
 
-  v32 = [v7 objectForKeyedSubscript:@"isDeprecated"];
+  v32 = [recordCopy objectForKeyedSubscript:@"isDeprecated"];
   [v8 setIsDeprecated:{objc_msgSend(v32, "BOOLValue")}];
 
-  v33 = [v7 objectForKeyedSubscript:@"isDraft"];
+  v33 = [recordCopy objectForKeyedSubscript:@"isDraft"];
 
   [v8 setIsDraft:{objc_msgSend(v33, "BOOLValue")}];
 

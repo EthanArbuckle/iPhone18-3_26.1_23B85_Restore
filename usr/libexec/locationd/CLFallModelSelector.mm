@@ -1,8 +1,8 @@
 @interface CLFallModelSelector
-- (BOOL)fillFallThresholds:(FallThresholds *)a3;
-- (BOOL)fillOtherFallModel:(FallModel *)a3;
-- (BOOL)fillSlipFallModel:(FallModel *)a3;
-- (BOOL)fillTripFallModel:(FallModel *)a3;
+- (BOOL)fillFallThresholds:(FallThresholds *)thresholds;
+- (BOOL)fillOtherFallModel:(FallModel *)model;
+- (BOOL)fillSlipFallModel:(FallModel *)model;
+- (BOOL)fillTripFallModel:(FallModel *)model;
 - (BOOL)selectModels;
 - (CLFallModelSelector)init;
 - (void)dealloc;
@@ -229,7 +229,7 @@
   }
 
   v193 = *&v73;
-  v192 = [v65 intValue];
+  intValue = [v65 intValue];
   if (v66)
   {
     [v66 floatValue];
@@ -287,49 +287,49 @@
   v187 = *&v78;
   if (v180)
   {
-    v79 = [v70 integerValue];
+    integerValue = [v70 integerValue];
   }
 
   else
   {
-    v79 = 0;
+    integerValue = 0;
   }
 
-  v186 = v79;
+  v186 = integerValue;
   if (v71)
   {
-    v80 = [v71 integerValue];
+    integerValue2 = [v71 integerValue];
   }
 
   else
   {
-    v80 = 0;
+    integerValue2 = 0;
   }
 
-  v185 = v80;
+  v185 = integerValue2;
   if (v72)
   {
-    v81 = [v72 integerValue];
+    integerValue3 = [v72 integerValue];
   }
 
   else
   {
-    v81 = 0;
+    integerValue3 = 0;
   }
 
-  v184 = v81;
+  v184 = integerValue3;
   if (v181)
   {
-    v82 = [v181 BOOLValue];
+    bOOLValue = [v181 BOOLValue];
   }
 
   else
   {
-    v82 = 0;
+    bOOLValue = 0;
   }
 
   sub_10051515C("BehaviorOverrideAge", &v193);
-  sub_1005152A0("BehaviorOverrideGender", &v192);
+  sub_1005152A0("BehaviorOverrideGender", &intValue);
   sub_10051515C("BehaviorOverrideHeight", &v191);
   sub_10051515C("BehaviorOverrideWeight", &v190);
   sub_10051515C("BehaviorOverridePal", &v189);
@@ -381,7 +381,7 @@
     v196 = 2049;
     v197 = v193;
     v198 = 1025;
-    *v199 = v192;
+    *v199 = intValue;
     *&v199[4] = 2049;
     *&v199[6] = v191;
     *&v199[14] = 2049;
@@ -469,7 +469,7 @@
       _os_log_impl(dword_100000000, v90, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:Model Selector - Picked thresholds based on features, impactMaxAccelNormAlertThreshold:%{public}f, age:%{private}f, totalLongLieThreshold:%{private}d, consecutiveLongLieThreshold:%{private}d, metminpercentile:%{private}f, alertGatingMotionThreshold:%{private}f, cyclingImpactMaxAbsYThreshold:%{private}f, otherWorkoutQuiescenceThresholdLow:%{private}d, otherWorkoutQuiescenceThresholdHigh:%{private}d, otherWorkoutConsecutiveLongLieThreshold:%{private}d, otherWorkoutShouldCancelAlertOnStepsThreshold:%{private}hhd, otherWorkoutShouldCancelAlertOnStandThreshold:%{private}hhd, otherWorkoutShouldCancelAlertOnActiveThreshold:%{private}hhd}", buf, 0x74u);
     }
 
-    if (v82)
+    if (bOOLValue)
     {
       *buf = -1;
       v102 = sub_1000206B4();
@@ -879,227 +879,227 @@ LABEL_103:
   return 1;
 }
 
-- (BOOL)fillTripFallModel:(FallModel *)a3
+- (BOOL)fillTripFallModel:(FallModel *)model
 {
-  if (a3)
+  if (model)
   {
-    *a3->fRatioMaxAbsX = *self->fTripFallModel.fRatioMaxAbsX;
+    *model->fRatioMaxAbsX = *self->fTripFallModel.fRatioMaxAbsX;
     v5 = *&self->fTripFallModel.fRatioMaxAbsX[4];
     v6 = *&self->fTripFallModel.fRatioMaxAbsX[8];
     v7 = *&self->fTripFallModel.fRatioMaxAbsX[12];
-    a3->fRatioMaxAbsX[16] = self->fTripFallModel.fRatioMaxAbsX[16];
-    *&a3->fRatioMaxAbsX[8] = v6;
-    *&a3->fRatioMaxAbsX[12] = v7;
-    *&a3->fRatioMaxAbsX[4] = v5;
+    model->fRatioMaxAbsX[16] = self->fTripFallModel.fRatioMaxAbsX[16];
+    *&model->fRatioMaxAbsX[8] = v6;
+    *&model->fRatioMaxAbsX[12] = v7;
+    *&model->fRatioMaxAbsX[4] = v5;
     v8 = *&self->fTripFallModel.fRatioMaxAbsY[8];
     v9 = *&self->fTripFallModel.fRatioMaxAbsY[12];
     v10 = self->fTripFallModel.fRatioMaxAbsY[16];
-    *&a3->fRatioMaxAbsY[4] = *&self->fTripFallModel.fRatioMaxAbsY[4];
-    a3->fRatioMaxAbsY[16] = v10;
-    *&a3->fRatioMaxAbsY[12] = v9;
-    *&a3->fRatioMaxAbsY[8] = v8;
-    *a3->fRatioMaxAbsY = *self->fTripFallModel.fRatioMaxAbsY;
+    *&model->fRatioMaxAbsY[4] = *&self->fTripFallModel.fRatioMaxAbsY[4];
+    model->fRatioMaxAbsY[16] = v10;
+    *&model->fRatioMaxAbsY[12] = v9;
+    *&model->fRatioMaxAbsY[8] = v8;
+    *model->fRatioMaxAbsY = *self->fTripFallModel.fRatioMaxAbsY;
     v11 = *&self->fTripFallModel.fRatioMaxAbsZ[8];
     v12 = *&self->fTripFallModel.fRatioMaxAbsZ[12];
     v13 = self->fTripFallModel.fRatioMaxAbsZ[16];
-    *&a3->fRatioMaxAbsZ[4] = *&self->fTripFallModel.fRatioMaxAbsZ[4];
-    a3->fRatioMaxAbsZ[16] = v13;
-    *&a3->fRatioMaxAbsZ[12] = v12;
-    *&a3->fRatioMaxAbsZ[8] = v11;
-    *a3->fRatioMaxAbsZ = *self->fTripFallModel.fRatioMaxAbsZ;
-    memcpy(a3->fRatioMaxJerkVM, self->fTripFallModel.fRatioMaxJerkVM, sizeof(a3->fRatioMaxJerkVM));
+    *&model->fRatioMaxAbsZ[4] = *&self->fTripFallModel.fRatioMaxAbsZ[4];
+    model->fRatioMaxAbsZ[16] = v13;
+    *&model->fRatioMaxAbsZ[12] = v12;
+    *&model->fRatioMaxAbsZ[8] = v11;
+    *model->fRatioMaxAbsZ = *self->fTripFallModel.fRatioMaxAbsZ;
+    memcpy(model->fRatioMaxJerkVM, self->fTripFallModel.fRatioMaxJerkVM, sizeof(model->fRatioMaxJerkVM));
     v14 = *&self->fTripFallModel.fRatioMinInertialZ[4];
-    *a3->fRatioMinInertialZ = *self->fTripFallModel.fRatioMinInertialZ;
-    *&a3->fRatioMinInertialZ[4] = v14;
+    *model->fRatioMinInertialZ = *self->fTripFallModel.fRatioMinInertialZ;
+    *&model->fRatioMinInertialZ[4] = v14;
     v16 = *&self->fTripFallModel.fRatioMinInertialZ[12];
     v15 = *&self->fTripFallModel.fRatioMinInertialZ[16];
     v17 = *&self->fTripFallModel.fRatioMinInertialZ[8];
-    a3->fRatioMinInertialZ[20] = self->fTripFallModel.fRatioMinInertialZ[20];
-    *&a3->fRatioMinInertialZ[12] = v16;
-    *&a3->fRatioMinInertialZ[16] = v15;
-    *&a3->fRatioMinInertialZ[8] = v17;
+    model->fRatioMinInertialZ[20] = self->fTripFallModel.fRatioMinInertialZ[20];
+    *&model->fRatioMinInertialZ[12] = v16;
+    *&model->fRatioMinInertialZ[16] = v15;
+    *&model->fRatioMinInertialZ[8] = v17;
     v18 = *self->fTripFallModel.fRatioAccelPathLength;
     v19 = *&self->fTripFallModel.fRatioAccelPathLength[4];
-    *&a3->fRatioAccelPathLength[8] = *&self->fTripFallModel.fRatioAccelPathLength[8];
-    *a3->fRatioAccelPathLength = v18;
-    *&a3->fRatioAccelPathLength[4] = v19;
+    *&model->fRatioAccelPathLength[8] = *&self->fTripFallModel.fRatioAccelPathLength[8];
+    *model->fRatioAccelPathLength = v18;
+    *&model->fRatioAccelPathLength[4] = v19;
     v20 = *&self->fTripFallModel.fRatioMaxAngleChangePreimpact[4];
     v21 = *&self->fTripFallModel.fRatioMaxAngleChangePreimpact[8];
     v22 = *&self->fTripFallModel.fRatioMaxAngleChangePreimpact[12];
-    *a3->fRatioMaxAngleChangePreimpact = *self->fTripFallModel.fRatioMaxAngleChangePreimpact;
-    *&a3->fRatioMaxAngleChangePreimpact[4] = v20;
-    *&a3->fRatioMaxAngleChangePreimpact[8] = v21;
-    *&a3->fRatioMaxAngleChangePreimpact[12] = v22;
+    *model->fRatioMaxAngleChangePreimpact = *self->fTripFallModel.fRatioMaxAngleChangePreimpact;
+    *&model->fRatioMaxAngleChangePreimpact[4] = v20;
+    *&model->fRatioMaxAngleChangePreimpact[8] = v21;
+    *&model->fRatioMaxAngleChangePreimpact[12] = v22;
     v24 = *&self->fTripFallModel.fRatioMaxAngleChangePostimpact[8];
     v23 = *&self->fTripFallModel.fRatioMaxAngleChangePostimpact[12];
     v25 = *&self->fTripFallModel.fRatioMaxAngleChangePostimpact[4];
-    *a3->fRatioMaxAngleChangePostimpact = *self->fTripFallModel.fRatioMaxAngleChangePostimpact;
-    *&a3->fRatioMaxAngleChangePostimpact[4] = v25;
-    *&a3->fRatioMaxAngleChangePostimpact[8] = v24;
-    *&a3->fRatioMaxAngleChangePostimpact[12] = v23;
-    *&a3->fLikelihoodRatioInfo[0].firstBinEdge = *&self->fTripFallModel.fLikelihoodRatioInfo[0].firstBinEdge;
+    *model->fRatioMaxAngleChangePostimpact = *self->fTripFallModel.fRatioMaxAngleChangePostimpact;
+    *&model->fRatioMaxAngleChangePostimpact[4] = v25;
+    *&model->fRatioMaxAngleChangePostimpact[8] = v24;
+    *&model->fRatioMaxAngleChangePostimpact[12] = v23;
+    *&model->fLikelihoodRatioInfo[0].firstBinEdge = *&self->fTripFallModel.fLikelihoodRatioInfo[0].firstBinEdge;
     v27 = *&self->fTripFallModel.fLikelihoodRatioInfo[2].binNum;
     v26 = *&self->fTripFallModel.fLikelihoodRatioInfo[4].firstBinEdge;
     v28 = *&self->fTripFallModel.fLikelihoodRatioInfo[1].binSize;
-    *&a3->fLikelihoodRatioInfo[5].binSize = *&self->fTripFallModel.fLikelihoodRatioInfo[5].binSize;
-    *&a3->fLikelihoodRatioInfo[2].binNum = v27;
-    *&a3->fLikelihoodRatioInfo[4].firstBinEdge = v26;
-    *&a3->fLikelihoodRatioInfo[1].binSize = v28;
+    *&model->fLikelihoodRatioInfo[5].binSize = *&self->fTripFallModel.fLikelihoodRatioInfo[5].binSize;
+    *&model->fLikelihoodRatioInfo[2].binNum = v27;
+    *&model->fLikelihoodRatioInfo[4].firstBinEdge = v26;
+    *&model->fLikelihoodRatioInfo[1].binSize = v28;
   }
 
-  return a3 != 0;
+  return model != 0;
 }
 
-- (BOOL)fillSlipFallModel:(FallModel *)a3
+- (BOOL)fillSlipFallModel:(FallModel *)model
 {
-  if (a3)
+  if (model)
   {
-    *a3->fRatioMaxAbsX = *&self->fTripFallModel.fLikelihoodRatioInfo[6].firstBinEdge;
+    *model->fRatioMaxAbsX = *&self->fTripFallModel.fLikelihoodRatioInfo[6].firstBinEdge;
     v5 = *&self->fTripFallModel.fLikelihoodRatioInfo[7].binSize;
     v6 = *&self->fSlipFallModel.fRatioMaxAbsX[2];
     v7 = *&self->fSlipFallModel.fRatioMaxAbsX[6];
-    a3->fRatioMaxAbsX[16] = self->fSlipFallModel.fRatioMaxAbsX[10];
-    *&a3->fRatioMaxAbsX[8] = v6;
-    *&a3->fRatioMaxAbsX[12] = v7;
-    *&a3->fRatioMaxAbsX[4] = v5;
+    model->fRatioMaxAbsX[16] = self->fSlipFallModel.fRatioMaxAbsX[10];
+    *&model->fRatioMaxAbsX[8] = v6;
+    *&model->fRatioMaxAbsX[12] = v7;
+    *&model->fRatioMaxAbsX[4] = v5;
     v9 = *&self->fSlipFallModel.fRatioMaxAbsY[2];
     v8 = *&self->fSlipFallModel.fRatioMaxAbsY[6];
     v10 = self->fSlipFallModel.fRatioMaxAbsY[10];
-    *&a3->fRatioMaxAbsY[4] = *&self->fSlipFallModel.fRatioMaxAbsX[15];
-    a3->fRatioMaxAbsY[16] = v10;
-    *&a3->fRatioMaxAbsY[12] = v8;
-    *&a3->fRatioMaxAbsY[8] = v9;
-    *a3->fRatioMaxAbsY = *&self->fSlipFallModel.fRatioMaxAbsX[11];
+    *&model->fRatioMaxAbsY[4] = *&self->fSlipFallModel.fRatioMaxAbsX[15];
+    model->fRatioMaxAbsY[16] = v10;
+    *&model->fRatioMaxAbsY[12] = v8;
+    *&model->fRatioMaxAbsY[8] = v9;
+    *model->fRatioMaxAbsY = *&self->fSlipFallModel.fRatioMaxAbsX[11];
     v12 = *&self->fSlipFallModel.fRatioMaxAbsZ[2];
     v11 = *&self->fSlipFallModel.fRatioMaxAbsZ[6];
     v13 = self->fSlipFallModel.fRatioMaxAbsZ[10];
-    *&a3->fRatioMaxAbsZ[4] = *&self->fSlipFallModel.fRatioMaxAbsY[15];
-    a3->fRatioMaxAbsZ[16] = v13;
-    *&a3->fRatioMaxAbsZ[12] = v11;
-    *&a3->fRatioMaxAbsZ[8] = v12;
-    *a3->fRatioMaxAbsZ = *&self->fSlipFallModel.fRatioMaxAbsY[11];
-    memcpy(a3->fRatioMaxJerkVM, &self->fSlipFallModel.fRatioMaxAbsZ[11], sizeof(a3->fRatioMaxJerkVM));
+    *&model->fRatioMaxAbsZ[4] = *&self->fSlipFallModel.fRatioMaxAbsY[15];
+    model->fRatioMaxAbsZ[16] = v13;
+    *&model->fRatioMaxAbsZ[12] = v11;
+    *&model->fRatioMaxAbsZ[8] = v12;
+    *model->fRatioMaxAbsZ = *&self->fSlipFallModel.fRatioMaxAbsY[11];
+    memcpy(model->fRatioMaxJerkVM, &self->fSlipFallModel.fRatioMaxAbsZ[11], sizeof(model->fRatioMaxJerkVM));
     v14 = *&self->fSlipFallModel.fRatioMaxJerkVM[65];
-    *a3->fRatioMinInertialZ = *&self->fSlipFallModel.fRatioMaxJerkVM[61];
-    *&a3->fRatioMinInertialZ[4] = v14;
+    *model->fRatioMinInertialZ = *&self->fSlipFallModel.fRatioMaxJerkVM[61];
+    *&model->fRatioMinInertialZ[4] = v14;
     v16 = *&self->fSlipFallModel.fRatioMinInertialZ[6];
     v15 = *&self->fSlipFallModel.fRatioMinInertialZ[10];
     v17 = *&self->fSlipFallModel.fRatioMinInertialZ[2];
-    a3->fRatioMinInertialZ[20] = self->fSlipFallModel.fRatioMinInertialZ[14];
-    *&a3->fRatioMinInertialZ[12] = v16;
-    *&a3->fRatioMinInertialZ[16] = v15;
-    *&a3->fRatioMinInertialZ[8] = v17;
+    model->fRatioMinInertialZ[20] = self->fSlipFallModel.fRatioMinInertialZ[14];
+    *&model->fRatioMinInertialZ[12] = v16;
+    *&model->fRatioMinInertialZ[16] = v15;
+    *&model->fRatioMinInertialZ[8] = v17;
     v18 = *&self->fSlipFallModel.fRatioMinInertialZ[15];
     v19 = *&self->fSlipFallModel.fRatioMinInertialZ[19];
-    *&a3->fRatioAccelPathLength[8] = *&self->fSlipFallModel.fRatioAccelPathLength[2];
-    *a3->fRatioAccelPathLength = v18;
-    *&a3->fRatioAccelPathLength[4] = v19;
+    *&model->fRatioAccelPathLength[8] = *&self->fSlipFallModel.fRatioAccelPathLength[2];
+    *model->fRatioAccelPathLength = v18;
+    *&model->fRatioAccelPathLength[4] = v19;
     v20 = *&self->fSlipFallModel.fRatioMaxAngleChangePreimpact[2];
     v21 = *&self->fSlipFallModel.fRatioAccelPathLength[8];
     v22 = *&self->fSlipFallModel.fRatioMaxAngleChangePreimpact[6];
-    *a3->fRatioMaxAngleChangePreimpact = *&self->fSlipFallModel.fRatioAccelPathLength[4];
-    *&a3->fRatioMaxAngleChangePreimpact[4] = v21;
-    *&a3->fRatioMaxAngleChangePreimpact[8] = v20;
-    *&a3->fRatioMaxAngleChangePreimpact[12] = v22;
+    *model->fRatioMaxAngleChangePreimpact = *&self->fSlipFallModel.fRatioAccelPathLength[4];
+    *&model->fRatioMaxAngleChangePreimpact[4] = v21;
+    *&model->fRatioMaxAngleChangePreimpact[8] = v20;
+    *&model->fRatioMaxAngleChangePreimpact[12] = v22;
     v23 = *&self->fSlipFallModel.fRatioMaxAngleChangePostimpact[6];
     v24 = *&self->fSlipFallModel.fRatioMaxAngleChangePostimpact[2];
     v25 = *&self->fSlipFallModel.fRatioMaxAngleChangePreimpact[14];
-    *a3->fRatioMaxAngleChangePostimpact = *&self->fSlipFallModel.fRatioMaxAngleChangePreimpact[10];
-    *&a3->fRatioMaxAngleChangePostimpact[4] = v25;
-    *&a3->fRatioMaxAngleChangePostimpact[8] = v24;
-    *&a3->fRatioMaxAngleChangePostimpact[12] = v23;
-    *&a3->fLikelihoodRatioInfo[0].firstBinEdge = *&self->fSlipFallModel.fRatioMaxAngleChangePostimpact[10];
+    *model->fRatioMaxAngleChangePostimpact = *&self->fSlipFallModel.fRatioMaxAngleChangePreimpact[10];
+    *&model->fRatioMaxAngleChangePostimpact[4] = v25;
+    *&model->fRatioMaxAngleChangePostimpact[8] = v24;
+    *&model->fRatioMaxAngleChangePostimpact[12] = v23;
+    *&model->fLikelihoodRatioInfo[0].firstBinEdge = *&self->fSlipFallModel.fRatioMaxAngleChangePostimpact[10];
     v26 = *&self->fSlipFallModel.fLikelihoodRatioInfo[0].binNum;
     v27 = *&self->fSlipFallModel.fLikelihoodRatioInfo[2].firstBinEdge;
     v28 = *&self->fSlipFallModel.fRatioMaxAngleChangePostimpact[14];
-    *&a3->fLikelihoodRatioInfo[5].binSize = *&self->fSlipFallModel.fLikelihoodRatioInfo[3].binSize;
-    *&a3->fLikelihoodRatioInfo[2].binNum = v26;
-    *&a3->fLikelihoodRatioInfo[4].firstBinEdge = v27;
-    *&a3->fLikelihoodRatioInfo[1].binSize = v28;
+    *&model->fLikelihoodRatioInfo[5].binSize = *&self->fSlipFallModel.fLikelihoodRatioInfo[3].binSize;
+    *&model->fLikelihoodRatioInfo[2].binNum = v26;
+    *&model->fLikelihoodRatioInfo[4].firstBinEdge = v27;
+    *&model->fLikelihoodRatioInfo[1].binSize = v28;
   }
 
-  return a3 != 0;
+  return model != 0;
 }
 
-- (BOOL)fillOtherFallModel:(FallModel *)a3
+- (BOOL)fillOtherFallModel:(FallModel *)model
 {
-  if (a3)
+  if (model)
   {
-    *a3->fRatioMaxAbsX = *&self->fSlipFallModel.fLikelihoodRatioInfo[4].firstBinEdge;
+    *model->fRatioMaxAbsX = *&self->fSlipFallModel.fLikelihoodRatioInfo[4].firstBinEdge;
     v5 = *&self->fSlipFallModel.fLikelihoodRatioInfo[5].binSize;
     v6 = *&self->fSlipFallModel.fLikelihoodRatioInfo[6].binNum;
     v7 = *self->fOtherFallModel.fRatioMaxAbsX;
-    a3->fRatioMaxAbsX[16] = self->fOtherFallModel.fRatioMaxAbsX[4];
-    *&a3->fRatioMaxAbsX[8] = v6;
-    *&a3->fRatioMaxAbsX[12] = v7;
-    *&a3->fRatioMaxAbsX[4] = v5;
+    model->fRatioMaxAbsX[16] = self->fOtherFallModel.fRatioMaxAbsX[4];
+    *&model->fRatioMaxAbsX[8] = v6;
+    *&model->fRatioMaxAbsX[12] = v7;
+    *&model->fRatioMaxAbsX[4] = v5;
     v9 = *&self->fOtherFallModel.fRatioMaxAbsX[13];
     v8 = *self->fOtherFallModel.fRatioMaxAbsY;
     v10 = self->fOtherFallModel.fRatioMaxAbsY[4];
-    *&a3->fRatioMaxAbsY[4] = *&self->fOtherFallModel.fRatioMaxAbsX[9];
-    a3->fRatioMaxAbsY[16] = v10;
-    *&a3->fRatioMaxAbsY[12] = v8;
-    *&a3->fRatioMaxAbsY[8] = v9;
-    *a3->fRatioMaxAbsY = *&self->fOtherFallModel.fRatioMaxAbsX[5];
+    *&model->fRatioMaxAbsY[4] = *&self->fOtherFallModel.fRatioMaxAbsX[9];
+    model->fRatioMaxAbsY[16] = v10;
+    *&model->fRatioMaxAbsY[12] = v8;
+    *&model->fRatioMaxAbsY[8] = v9;
+    *model->fRatioMaxAbsY = *&self->fOtherFallModel.fRatioMaxAbsX[5];
     v11 = *&self->fOtherFallModel.fRatioMaxAbsY[13];
     v12 = *self->fOtherFallModel.fRatioMaxAbsZ;
     v13 = self->fOtherFallModel.fRatioMaxAbsZ[4];
-    *&a3->fRatioMaxAbsZ[4] = *&self->fOtherFallModel.fRatioMaxAbsY[9];
-    a3->fRatioMaxAbsZ[16] = v13;
-    *&a3->fRatioMaxAbsZ[12] = v12;
-    *&a3->fRatioMaxAbsZ[8] = v11;
-    *a3->fRatioMaxAbsZ = *&self->fOtherFallModel.fRatioMaxAbsY[5];
-    memcpy(a3->fRatioMaxJerkVM, &self->fOtherFallModel.fRatioMaxAbsZ[5], sizeof(a3->fRatioMaxJerkVM));
+    *&model->fRatioMaxAbsZ[4] = *&self->fOtherFallModel.fRatioMaxAbsY[9];
+    model->fRatioMaxAbsZ[16] = v13;
+    *&model->fRatioMaxAbsZ[12] = v12;
+    *&model->fRatioMaxAbsZ[8] = v11;
+    *model->fRatioMaxAbsZ = *&self->fOtherFallModel.fRatioMaxAbsY[5];
+    memcpy(model->fRatioMaxJerkVM, &self->fOtherFallModel.fRatioMaxAbsZ[5], sizeof(model->fRatioMaxJerkVM));
     v14 = *&self->fOtherFallModel.fRatioMaxJerkVM[59];
-    *a3->fRatioMinInertialZ = *&self->fOtherFallModel.fRatioMaxJerkVM[55];
-    *&a3->fRatioMinInertialZ[4] = v14;
+    *model->fRatioMinInertialZ = *&self->fOtherFallModel.fRatioMaxJerkVM[55];
+    *&model->fRatioMinInertialZ[4] = v14;
     v15 = *self->fOtherFallModel.fRatioMinInertialZ;
     v16 = *&self->fOtherFallModel.fRatioMinInertialZ[4];
     v17 = *&self->fOtherFallModel.fRatioMaxJerkVM[63];
-    a3->fRatioMinInertialZ[20] = self->fOtherFallModel.fRatioMinInertialZ[8];
-    *&a3->fRatioMinInertialZ[12] = v15;
-    *&a3->fRatioMinInertialZ[16] = v16;
-    *&a3->fRatioMinInertialZ[8] = v17;
+    model->fRatioMinInertialZ[20] = self->fOtherFallModel.fRatioMinInertialZ[8];
+    *&model->fRatioMinInertialZ[12] = v15;
+    *&model->fRatioMinInertialZ[16] = v16;
+    *&model->fRatioMinInertialZ[8] = v17;
     v18 = *&self->fOtherFallModel.fRatioMinInertialZ[9];
     v19 = *&self->fOtherFallModel.fRatioMinInertialZ[13];
-    *&a3->fRatioAccelPathLength[8] = *&self->fOtherFallModel.fRatioMinInertialZ[17];
-    *a3->fRatioAccelPathLength = v18;
-    *&a3->fRatioAccelPathLength[4] = v19;
+    *&model->fRatioAccelPathLength[8] = *&self->fOtherFallModel.fRatioMinInertialZ[17];
+    *model->fRatioAccelPathLength = v18;
+    *&model->fRatioAccelPathLength[4] = v19;
     v20 = *&self->fOtherFallModel.fRatioAccelPathLength[2];
     v21 = *&self->fOtherFallModel.fRatioAccelPathLength[6];
     v22 = *self->fOtherFallModel.fRatioMaxAngleChangePreimpact;
-    *a3->fRatioMaxAngleChangePreimpact = *&self->fOtherFallModel.fRatioMinInertialZ[19];
-    *&a3->fRatioMaxAngleChangePreimpact[4] = v20;
-    *&a3->fRatioMaxAngleChangePreimpact[8] = v21;
-    *&a3->fRatioMaxAngleChangePreimpact[12] = v22;
+    *model->fRatioMaxAngleChangePreimpact = *&self->fOtherFallModel.fRatioMinInertialZ[19];
+    *&model->fRatioMaxAngleChangePreimpact[4] = v20;
+    *&model->fRatioMaxAngleChangePreimpact[8] = v21;
+    *&model->fRatioMaxAngleChangePreimpact[12] = v22;
     v24 = *&self->fOtherFallModel.fRatioMaxAngleChangePreimpact[12];
     v23 = *self->fOtherFallModel.fRatioMaxAngleChangePostimpact;
     v25 = *&self->fOtherFallModel.fRatioMaxAngleChangePreimpact[8];
-    *a3->fRatioMaxAngleChangePostimpact = *&self->fOtherFallModel.fRatioMaxAngleChangePreimpact[4];
-    *&a3->fRatioMaxAngleChangePostimpact[4] = v25;
-    *&a3->fRatioMaxAngleChangePostimpact[8] = v24;
-    *&a3->fRatioMaxAngleChangePostimpact[12] = v23;
-    *&a3->fLikelihoodRatioInfo[0].firstBinEdge = *&self->fOtherFallModel.fRatioMaxAngleChangePostimpact[4];
+    *model->fRatioMaxAngleChangePostimpact = *&self->fOtherFallModel.fRatioMaxAngleChangePreimpact[4];
+    *&model->fRatioMaxAngleChangePostimpact[4] = v25;
+    *&model->fRatioMaxAngleChangePostimpact[8] = v24;
+    *&model->fRatioMaxAngleChangePostimpact[12] = v23;
+    *&model->fLikelihoodRatioInfo[0].firstBinEdge = *&self->fOtherFallModel.fRatioMaxAngleChangePostimpact[4];
     v27 = *&self->fOtherFallModel.fRatioMaxAngleChangePostimpact[12];
     v26 = *&self->fOtherFallModel.fLikelihoodRatioInfo[0].firstBinEdge;
     v28 = *&self->fOtherFallModel.fRatioMaxAngleChangePostimpact[8];
-    *&a3->fLikelihoodRatioInfo[5].binSize = *&self->fOtherFallModel.fLikelihoodRatioInfo[1].binSize;
-    *&a3->fLikelihoodRatioInfo[2].binNum = v27;
-    *&a3->fLikelihoodRatioInfo[4].firstBinEdge = v26;
-    *&a3->fLikelihoodRatioInfo[1].binSize = v28;
+    *&model->fLikelihoodRatioInfo[5].binSize = *&self->fOtherFallModel.fLikelihoodRatioInfo[1].binSize;
+    *&model->fLikelihoodRatioInfo[2].binNum = v27;
+    *&model->fLikelihoodRatioInfo[4].firstBinEdge = v26;
+    *&model->fLikelihoodRatioInfo[1].binSize = v28;
   }
 
-  return a3 != 0;
+  return model != 0;
 }
 
-- (BOOL)fillFallThresholds:(FallThresholds *)a3
+- (BOOL)fillFallThresholds:(FallThresholds *)thresholds
 {
-  if (a3)
+  if (thresholds)
   {
-    sub_100515940(a3, &self->fOtherFallModel.fLikelihoodRatioInfo[2]);
+    sub_100515940(thresholds, &self->fOtherFallModel.fLikelihoodRatioInfo[2]);
   }
 
-  return a3 != 0;
+  return thresholds != 0;
 }
 
 @end

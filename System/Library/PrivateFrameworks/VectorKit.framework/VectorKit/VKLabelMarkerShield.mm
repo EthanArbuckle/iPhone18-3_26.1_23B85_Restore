@@ -1,6 +1,6 @@
 @interface VKLabelMarkerShield
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)color;
-- (VKLabelMarkerShield)initWithImageKey:(id)a3;
+- (VKLabelMarkerShield)initWithImageKey:(id)key;
 @end
 
 @implementation VKLabelMarkerShield
@@ -15,16 +15,16 @@
   return result;
 }
 
-- (VKLabelMarkerShield)initWithImageKey:(id)a3
+- (VKLabelMarkerShield)initWithImageKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = VKLabelMarkerShield;
   v6 = [(VKLabelMarkerShield *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageKey, a3);
+    objc_storeStrong(&v6->_imageKey, key);
   }
 
   return v7;

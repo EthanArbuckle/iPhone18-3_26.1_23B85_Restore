@@ -1,6 +1,6 @@
 @interface ISOpenURLOperation
-- (BOOL)_openURL:(id)a3;
-- (ISOpenURLOperation)initWithOpenURLRequest:(id)a3;
+- (BOOL)_openURL:(id)l;
+- (ISOpenURLOperation)initWithOpenURLRequest:(id)request;
 - (ISOpenURLRequest)openURLRequest;
 - (id)_newSortedTargetsArray;
 - (void)run;
@@ -8,21 +8,21 @@
 
 @implementation ISOpenURLOperation
 
-- (ISOpenURLOperation)initWithOpenURLRequest:(id)a3
+- (ISOpenURLOperation)initWithOpenURLRequest:(id)request
 {
-  v5 = a3;
-  v6 = [v5 URL];
-  if (v6)
+  requestCopy = request;
+  currentHandler = [requestCopy URL];
+  if (currentHandler)
   {
     goto LABEL_2;
   }
 
-  v7 = [v5 URLBagKey];
+  uRLBagKey = [requestCopy URLBagKey];
 
-  if (!v7)
+  if (!uRLBagKey)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ISOpenURLOperation.m" lineNumber:66 description:@"Request must be resolvable"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ISOpenURLOperation.m" lineNumber:66 description:@"Request must be resolvable"];
 LABEL_2:
   }
 
@@ -31,7 +31,7 @@ LABEL_2:
   v8 = [(ISOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v5 copy];
+    v9 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v9;
   }
@@ -48,19 +48,19 @@ LABEL_2:
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   v64 = *MEMORY[0x277D85DE8];
-  v3 = [(ISOpenURLRequest *)self->_request URLBagKey];
+  uRLBagKey = [(ISOpenURLRequest *)self->_request URLBagKey];
 
-  if (v3)
+  if (uRLBagKey)
   {
     v4 = [MEMORY[0x277D69C90] contextWithBagType:0];
-    [(ISOperation *)v2 loadURLBagWithContext:v4 returningError:0];
+    [(ISOperation *)selfCopy loadURLBagWithContext:v4 returningError:0];
     v5 = +[ISURLBagCache sharedCache];
     v6 = [v5 URLBagForContext:v4];
 
-    v7 = [(ISOpenURLRequest *)v2->_request URLBagKey];
-    v8 = [v6 urlForKey:v7];
+    uRLBagKey2 = [(ISOpenURLRequest *)selfCopy->_request URLBagKey];
+    v8 = [v6 urlForKey:uRLBagKey2];
 
     if (v8)
     {
@@ -68,25 +68,25 @@ LABEL_2:
     }
 
 LABEL_43:
-    v36 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v36)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v36 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v37 = [v36 shouldLog];
-    if ([v36 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v38 = v37 | 2;
+      v38 = shouldLog | 2;
     }
 
     else
     {
-      v38 = v37;
+      v38 = shouldLog;
     }
 
-    v39 = [v36 OSLogObject];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v40 = v38;
     }
@@ -99,7 +99,7 @@ LABEL_43:
     if (v40)
     {
       v41 = objc_opt_class();
-      request = v2->_request;
+      request = selfCopy->_request;
       v58 = 138412546;
       v59 = v41;
       v60 = 2112;
@@ -116,27 +116,27 @@ LABEL_55:
         goto LABEL_58;
       }
 
-      v39 = [MEMORY[0x277CCACA8] stringWithCString:v44 encoding:{4, &v58, v48}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v44 encoding:{4, &v58, v48}];
       free(v44);
-      v47 = v39;
+      v47 = oSLogObject;
       SSFileLog();
     }
 
     goto LABEL_55;
   }
 
-  v8 = [(ISOpenURLRequest *)v2->_request URL];
+  v8 = [(ISOpenURLRequest *)selfCopy->_request URL];
   if (!v8)
   {
     goto LABEL_43;
   }
 
 LABEL_3:
-  if (![(ISOpenURLRequest *)v2->_request isITunesStoreURL])
+  if (![(ISOpenURLRequest *)selfCopy->_request isITunesStoreURL])
   {
     if ([(ISOpenURLRequest *)v8 isSafeExternalURL])
     {
-      v45 = [(ISOpenURLOperation *)v2 _openURL:v8];
+      v45 = [(ISOpenURLOperation *)selfCopy _openURL:v8];
       goto LABEL_62;
     }
 
@@ -145,35 +145,35 @@ LABEL_58:
     goto LABEL_62;
   }
 
-  v9 = [(ISOpenURLOperation *)v2 _newSortedTargetsArray];
+  _newSortedTargetsArray = [(ISOpenURLOperation *)selfCopy _newSortedTargetsArray];
   v10 = [OpenURLTarget alloc];
-  v11 = [(ISOpenURLRequest *)v2->_request targetIdentifier];
-  v12 = [(OpenURLTarget *)v10 initWithTargetIdentifier:v11];
+  targetIdentifier = [(ISOpenURLRequest *)selfCopy->_request targetIdentifier];
+  v12 = [(OpenURLTarget *)v10 initWithTargetIdentifier:targetIdentifier];
 
   if (v12)
   {
-    [v9 insertObject:v12 atIndex:0];
+    [_newSortedTargetsArray insertObject:v12 atIndex:0];
   }
 
-  v13 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v13)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v13 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
-  if ([v13 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog2 | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog2;
   }
 
-  v16 = [v13 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v17 = v15;
   }
@@ -193,7 +193,7 @@ LABEL_58:
   v60 = 2112;
   v61 = v8;
   v62 = 2112;
-  v63 = v9;
+  v63 = _newSortedTargetsArray;
   v18 = v59;
   LODWORD(v48) = 32;
   v47 = &v58;
@@ -201,19 +201,19 @@ LABEL_58:
 
   if (v19)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v58, v48}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v58, v48}];
     free(v19);
-    v47 = v16;
+    v47 = oSLogObject2;
     SSFileLog();
 LABEL_17:
   }
 
-  v52 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v9;
+  obj = _newSortedTargetsArray;
   v20 = [obj countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (!v20)
   {
@@ -234,7 +234,7 @@ LABEL_17:
       }
 
       v23 = [*(*(&v53 + 1) + 8 * i) copyURLForURL:{v8, v47}];
-      v24 = [v52 applicationsAvailableForOpeningURL:v23];
+      v24 = [defaultWorkspace applicationsAvailableForOpeningURL:v23];
       if (![v24 count])
       {
 
@@ -242,26 +242,26 @@ LABEL_17:
       }
 
       v25 = v8;
-      v26 = v2;
-      v27 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v27)
+      v26 = selfCopy;
+      mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38]3)
       {
-        v27 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v28 = [v27 shouldLog];
-      if ([v27 shouldLogToDisk])
+      shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+      if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
       {
-        v29 = v28 | 2;
+        v29 = shouldLog3 | 2;
       }
 
       else
       {
-        v29 = v28;
+        v29 = shouldLog3;
       }
 
-      v30 = [v27 OSLogObject];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+      oSLogObject3 = [mEMORY[0x277D69B38]3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
       {
         v31 = v29;
       }
@@ -288,14 +288,14 @@ LABEL_17:
           goto LABEL_36;
         }
 
-        v30 = [MEMORY[0x277CCACA8] stringWithCString:v34 encoding:{4, &v58, v48}];
+        oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v34 encoding:{4, &v58, v48}];
         free(v34);
-        v47 = v30;
+        v47 = oSLogObject3;
         SSFileLog();
       }
 
 LABEL_36:
-      v2 = v26;
+      selfCopy = v26;
       v35 = [(ISOpenURLOperation *)v26 _openURL:v23];
 
       v8 = v25;
@@ -316,7 +316,7 @@ LABEL_59:
 LABEL_61:
 
 LABEL_62:
-  [(ISOperation *)v2 setSuccess:v45, v47];
+  [(ISOperation *)selfCopy setSuccess:v45, v47];
 
   v46 = *MEMORY[0x277D85DE8];
 }
@@ -337,10 +337,10 @@ LABEL_62:
   return v2;
 }
 
-- (BOOL)_openURL:(id)a3
+- (BOOL)_openURL:(id)l
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if ([(ISOpenURLRequest *)self->_request interruptsKeybagRefresh])
   {
     SBSInterruptKeybagRefetch();
@@ -351,21 +351,21 @@ LABEL_62:
   MEMORY[0x277C8B810](v5, &v13 + 1, &v13);
   if (HIBYTE(v13))
   {
-    v6 = [MEMORY[0x277D0AE18] sharedService];
-    v7 = [v6 createClientPort];
+    mEMORY[0x277D0AE18] = [MEMORY[0x277D0AE18] sharedService];
+    createClientPort = [mEMORY[0x277D0AE18] createClientPort];
 
     v14 = *MEMORY[0x277D0AC58];
     v15[0] = MEMORY[0x277CBEC38];
     v8 = 1;
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    v10 = [MEMORY[0x277D0AE18] sharedService];
-    [v10 openURL:v4 application:@"com.apple.MobileStore" options:v9 clientPort:v7 withResult:0];
+    defaultWorkspace = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
+    mEMORY[0x277D0AE18]2 = [MEMORY[0x277D0AE18] sharedService];
+    [mEMORY[0x277D0AE18]2 openURL:lCopy application:@"com.apple.MobileStore" options:defaultWorkspace clientPort:createClientPort withResult:0];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v8 = [v9 openSensitiveURL:v4 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v8 = [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
   }
 
   v11 = *MEMORY[0x277D85DE8];

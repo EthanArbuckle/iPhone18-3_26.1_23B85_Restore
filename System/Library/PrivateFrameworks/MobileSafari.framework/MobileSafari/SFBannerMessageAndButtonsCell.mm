@@ -1,25 +1,25 @@
 @interface SFBannerMessageAndButtonsCell
-- (SFBannerMessageAndButtonsCell)initWithFrame:(CGRect)a3;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (SFBannerMessageAndButtonsCell)initWithFrame:(CGRect)frame;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)_primaryButtonSelected;
 - (void)_secondaryButtonSelected;
-- (void)configureUsingBanner:(id)a3;
+- (void)configureUsingBanner:(id)banner;
 @end
 
 @implementation SFBannerMessageAndButtonsCell
 
-- (SFBannerMessageAndButtonsCell)initWithFrame:(CGRect)a3
+- (SFBannerMessageAndButtonsCell)initWithFrame:(CGRect)frame
 {
   v37[1] = *MEMORY[0x1E69E9840];
   v33.receiver = self;
   v33.super_class = SFBannerMessageAndButtonsCell;
-  v3 = [(SFStartPageFilledBackgroundCell *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFStartPageFilledBackgroundCell *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SFStartPageFilledBackgroundCell *)v3 defaultBackgroundConfiguration];
-    [v5 setCornerRadius:20.0];
-    [(SFBannerMessageAndButtonsCell *)v4 setBackgroundConfiguration:v5];
+    defaultBackgroundConfiguration = [(SFStartPageFilledBackgroundCell *)v3 defaultBackgroundConfiguration];
+    [defaultBackgroundConfiguration setCornerRadius:20.0];
+    [(SFBannerMessageAndButtonsCell *)v4 setBackgroundConfiguration:defaultBackgroundConfiguration];
     v32 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDDC8] weight:*MEMORY[0x1E69DB980]];
     v6 = [MEMORY[0x1E69DCC10] sf_startPageBannerTitleLabelWithFont:v32];
     titleLabel = v4->_titleLabel;
@@ -32,27 +32,27 @@
     [(UITextView *)v4->_messageTextView setDelegate:v4];
     [(UITextView *)v4->_messageTextView setScrollEnabled:0];
     [(UITextView *)v4->_messageTextView setEditable:0];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v4->_messageTextView setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v4->_messageTextView setBackgroundColor:clearColor];
 
     v36 = *MEMORY[0x1E69DB650];
-    v11 = [MEMORY[0x1E69DC888] linkColor];
-    v37[0] = v11;
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    v37[0] = linkColor;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     [(UITextView *)v4->_messageTextView setLinkTextAttributes:v12];
 
-    v13 = [MEMORY[0x1E69DC740] borderedProminentButtonConfiguration];
-    [v13 setCornerStyle:3];
-    v14 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v13 primaryAction:0];
+    borderedProminentButtonConfiguration = [MEMORY[0x1E69DC740] borderedProminentButtonConfiguration];
+    [borderedProminentButtonConfiguration setCornerStyle:3];
+    v14 = [MEMORY[0x1E69DC738] buttonWithConfiguration:borderedProminentButtonConfiguration primaryAction:0];
     primaryButton = v4->_primaryButton;
     v4->_primaryButton = v14;
 
-    v16 = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [v16 setBaseForegroundColor:v17];
+    borderedButtonConfiguration = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [borderedButtonConfiguration setBaseForegroundColor:labelColor];
 
-    [v16 setCornerStyle:3];
-    v18 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v16 primaryAction:0];
+    [borderedButtonConfiguration setCornerStyle:3];
+    v18 = [MEMORY[0x1E69DC738] buttonWithConfiguration:borderedButtonConfiguration primaryAction:0];
     secondaryButton = v4->_secondaryButton;
     v4->_secondaryButton = v18;
 
@@ -76,12 +76,12 @@
     [v25 setAxis:1];
     [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v25 setAlignment:3];
-    v26 = [(SFBannerMessageAndButtonsCell *)v4 contentView];
-    [v26 addSubview:v25];
+    contentView = [(SFBannerMessageAndButtonsCell *)v4 contentView];
+    [contentView addSubview:v25];
 
     v27 = MEMORY[0x1E696ACD8];
-    v28 = [(SFBannerMessageAndButtonsCell *)v4 contentView];
-    v29 = [v27 safari_constraintsMatchingFrameOfView:v25 withFrameOfView:v28 edgeInsets:{10.0, 10.0, 10.0, 10.0}];
+    contentView2 = [(SFBannerMessageAndButtonsCell *)v4 contentView];
+    v29 = [v27 safari_constraintsMatchingFrameOfView:v25 withFrameOfView:contentView2 edgeInsets:{10.0, 10.0, 10.0, 10.0}];
     [v27 activateConstraints:v29];
 
     v30 = v4;
@@ -90,23 +90,23 @@
   return v4;
 }
 
-- (void)configureUsingBanner:(id)a3
+- (void)configureUsingBanner:(id)banner
 {
-  objc_storeStrong(&self->_banner, a3);
-  v11 = a3;
-  v5 = [v11 title];
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_banner, banner);
+  bannerCopy = banner;
+  title = [bannerCopy title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v6 = [v11 attributedMessage];
-  [(UITextView *)self->_messageTextView setAttributedText:v6];
+  attributedMessage = [bannerCopy attributedMessage];
+  [(UITextView *)self->_messageTextView setAttributedText:attributedMessage];
 
   primaryButton = self->_primaryButton;
-  v8 = [v11 primaryButtonTitle];
-  [(UIButton *)primaryButton setTitle:v8 forState:0];
+  primaryButtonTitle = [bannerCopy primaryButtonTitle];
+  [(UIButton *)primaryButton setTitle:primaryButtonTitle forState:0];
 
   secondaryButton = self->_secondaryButton;
-  v10 = [v11 secondaryButtonTitle];
-  [(UIButton *)secondaryButton setTitle:v10 forState:0];
+  secondaryButtonTitle = [bannerCopy secondaryButtonTitle];
+  [(UIButton *)secondaryButton setTitle:secondaryButtonTitle forState:0];
 
   [(UIButton *)self->_primaryButton addTarget:self action:sel__primaryButtonSelected forControlEvents:64];
   [(UIButton *)self->_secondaryButton addTarget:self action:sel__secondaryButtonSelected forControlEvents:64];
@@ -114,23 +114,23 @@
 
 - (void)_primaryButtonSelected
 {
-  v2 = [(WBSStartPageBanner *)self->_banner primaryButtonHandler];
-  v2[2]();
+  primaryButtonHandler = [(WBSStartPageBanner *)self->_banner primaryButtonHandler];
+  primaryButtonHandler[2]();
 }
 
 - (void)_secondaryButtonSelected
 {
-  v2 = [(WBSStartPageBanner *)self->_banner secondaryButtonHandler];
-  v2[2]();
+  secondaryButtonHandler = [(WBSStartPageBanner *)self->_banner secondaryButtonHandler];
+  secondaryButtonHandler[2]();
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
   banner = self->_banner;
-  v7 = a5;
-  v8 = a4;
-  v9 = [(WBSStartPageBanner *)banner messageTextItemHandler];
-  v10 = (v9)[2](v9, v8);
+  actionCopy = action;
+  itemCopy = item;
+  messageTextItemHandler = [(WBSStartPageBanner *)banner messageTextItemHandler];
+  v10 = (messageTextItemHandler)[2](messageTextItemHandler, itemCopy);
 
   if (v10)
   {
@@ -139,7 +139,7 @@
 
   else
   {
-    v11 = v7;
+    v11 = actionCopy;
   }
 
   v12 = v11;

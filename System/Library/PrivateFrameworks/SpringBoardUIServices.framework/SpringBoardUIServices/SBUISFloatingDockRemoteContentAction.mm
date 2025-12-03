@@ -1,16 +1,16 @@
 @interface SBUISFloatingDockRemoteContentAction
 - (SBUISFloatingDockFileStackActionContext)actionContext;
-- (SBUISFloatingDockRemoteContentAction)initWithContext:(id)a3 handler:(id)a4;
+- (SBUISFloatingDockRemoteContentAction)initWithContext:(id)context handler:(id)handler;
 @end
 
 @implementation SBUISFloatingDockRemoteContentAction
 
-- (SBUISFloatingDockRemoteContentAction)initWithContext:(id)a3 handler:(id)a4
+- (SBUISFloatingDockRemoteContentAction)initWithContext:(id)context handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  contextCopy = context;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!contextCopy)
   {
     [SBUISFloatingDockRemoteContentAction initWithContext:a2 handler:self];
     if (v9)
@@ -23,14 +23,14 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v10 = objc_alloc_init(MEMORY[0x1E698E700]);
-  [v10 setObject:v7 forSetting:1];
+  [v10 setObject:contextCopy forSetting:1];
   v11 = MEMORY[0x1E698E5F8];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -54,8 +54,8 @@ void __64__SBUISFloatingDockRemoteContentAction_initWithContext_handler___block_
 
 - (SBUISFloatingDockFileStackActionContext)actionContext
 {
-  v2 = [(SBUISFloatingDockRemoteContentAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(SBUISFloatingDockRemoteContentAction *)self info];
+  v3 = [info objectForSetting:1];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)

@@ -1,19 +1,19 @@
 @interface AUServiceAdapter
 + (id)sharedInstance;
 - (id)_init;
-- (void)accessoryDisconnected:(id)a3;
-- (void)applyFirmwareWithOptions:(id)a3;
-- (void)bootstrapWithOptions:(id)a3;
-- (void)deviceClassAttached:(id)a3 options:(id)a4 withReply:(id)a5;
-- (void)downloadFirmwareWithOptions:(id)a3;
-- (void)finishWithOptions:(id)a3;
-- (void)issueNotification:(id)a3;
-- (void)personalizationRequest:(id)a3;
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5;
-- (void)prepareFirmwareWithOptions:(id)a3;
-- (void)progress:(double)a3;
-- (void)queryDeviceList:(id)a3;
-- (void)reportAnalytics:(id)a3 info:(id)a4;
+- (void)accessoryDisconnected:(id)disconnected;
+- (void)applyFirmwareWithOptions:(id)options;
+- (void)bootstrapWithOptions:(id)options;
+- (void)deviceClassAttached:(id)attached options:(id)options withReply:(id)reply;
+- (void)downloadFirmwareWithOptions:(id)options;
+- (void)finishWithOptions:(id)options;
+- (void)issueNotification:(id)notification;
+- (void)personalizationRequest:(id)request;
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status;
+- (void)prepareFirmwareWithOptions:(id)options;
+- (void)progress:(double)progress;
+- (void)queryDeviceList:(id)list;
+- (void)reportAnalytics:(id)analytics info:(id)info;
 @end
 
 @implementation AUServiceAdapter
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __34__AUServiceAdapter_sharedInstance__block_invoke;
   block[3] = &unk_2798E3658;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -59,13 +59,13 @@ uint64_t __34__AUServiceAdapter_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)deviceClassAttached:(id)a3 options:(id)a4 withReply:(id)a5
+- (void)deviceClassAttached:(id)attached options:(id)options withReply:(id)reply
 {
   v12 = 0;
   v9 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
   if (([(objc_class *)v9 conformsToProtocol:&unk_286AB9150]& 1) != 0)
   {
-    updater = [[v9 alloc] initWithDeviceClass:a3 delegate:self info:&v12 options:a4];
+    updater = [[v9 alloc] initWithDeviceClass:attached delegate:self info:&v12 options:options];
     self->_updater = updater;
     v11 = v12;
   }
@@ -77,85 +77,85 @@ uint64_t __34__AUServiceAdapter_sharedInstance__block_invoke(uint64_t a1)
     updater = self->_updater;
   }
 
-  (*(a5 + 2))(a5, updater != 0, v11);
+  (*(reply + 2))(reply, updater != 0, v11);
 }
 
-- (void)bootstrapWithOptions:(id)a3
+- (void)bootstrapWithOptions:(id)options
 {
   updater = self->_updater;
   if (updater)
   {
 
-    [(FudPlugin *)updater bootstrapWithOptions:a3];
+    [(FudPlugin *)updater bootstrapWithOptions:options];
   }
 
   else
   {
-    NSLog(&cfstr_SPluginNotLoad.isa, a2, a3, "[AUServiceAdapter bootstrapWithOptions:]");
+    NSLog(&cfstr_SPluginNotLoad.isa, a2, options, "[AUServiceAdapter bootstrapWithOptions:]");
   }
 }
 
-- (void)downloadFirmwareWithOptions:(id)a3
+- (void)downloadFirmwareWithOptions:(id)options
 {
   updater = self->_updater;
   if (updater)
   {
 
-    [(FudPlugin *)updater downloadFirmwareWithOptions:a3];
+    [(FudPlugin *)updater downloadFirmwareWithOptions:options];
   }
 
   else
   {
-    NSLog(&cfstr_SPluginNotLoad.isa, a2, a3, "[AUServiceAdapter downloadFirmwareWithOptions:]");
+    NSLog(&cfstr_SPluginNotLoad.isa, a2, options, "[AUServiceAdapter downloadFirmwareWithOptions:]");
   }
 }
 
-- (void)prepareFirmwareWithOptions:(id)a3
+- (void)prepareFirmwareWithOptions:(id)options
 {
   updater = self->_updater;
   if (updater)
   {
 
-    [(FudPlugin *)updater prepareFirmwareWithOptions:a3];
+    [(FudPlugin *)updater prepareFirmwareWithOptions:options];
   }
 
   else
   {
-    NSLog(&cfstr_SPluginNotLoad.isa, a2, a3, "[AUServiceAdapter prepareFirmwareWithOptions:]");
+    NSLog(&cfstr_SPluginNotLoad.isa, a2, options, "[AUServiceAdapter prepareFirmwareWithOptions:]");
   }
 }
 
-- (void)applyFirmwareWithOptions:(id)a3
+- (void)applyFirmwareWithOptions:(id)options
 {
   updater = self->_updater;
   if (updater)
   {
 
-    [(FudPlugin *)updater applyFirmwareWithOptions:a3];
+    [(FudPlugin *)updater applyFirmwareWithOptions:options];
   }
 
   else
   {
-    NSLog(&cfstr_SPluginNotLoad.isa, a2, a3, "[AUServiceAdapter applyFirmwareWithOptions:]");
+    NSLog(&cfstr_SPluginNotLoad.isa, a2, options, "[AUServiceAdapter applyFirmwareWithOptions:]");
   }
 }
 
-- (void)finishWithOptions:(id)a3
+- (void)finishWithOptions:(id)options
 {
   updater = self->_updater;
   if (updater)
   {
 
-    [(FudPlugin *)updater finishWithOptions:a3];
+    [(FudPlugin *)updater finishWithOptions:options];
   }
 
   else
   {
-    NSLog(&cfstr_SPluginNotLoad.isa, a2, a3, "[AUServiceAdapter finishWithOptions:]");
+    NSLog(&cfstr_SPluginNotLoad.isa, a2, options, "[AUServiceAdapter finishWithOptions:]");
   }
 }
 
-- (void)queryDeviceList:(id)a3
+- (void)queryDeviceList:(id)list
 {
   v8 = 0;
   updater = self->_updater;
@@ -176,10 +176,10 @@ LABEL_7:
   [(FudPlugin *)self->_updater queryDeviceList:&v8];
   v7 = v8;
 LABEL_4:
-  (*(a3 + 2))(a3, v7);
+  (*(list + 2))(list, v7);
 }
 
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status
 {
   updater = self->_updater;
   if (updater)
@@ -188,7 +188,7 @@ LABEL_4:
     {
       v14 = self->_updater;
 
-      [(FudPlugin *)v14 personalizationResponse:a3 response:a4 status:a5];
+      [(FudPlugin *)v14 personalizationResponse:response response:a4 status:status];
     }
 
     else
@@ -199,43 +199,43 @@ LABEL_4:
 
   else
   {
-    NSLog(&cfstr_SPluginNotLoad.isa, a2, a3, a4, a5, "[AUServiceAdapter personalizationResponse:response:status:]");
+    NSLog(&cfstr_SPluginNotLoad.isa, a2, response, a4, status, "[AUServiceAdapter personalizationResponse:response:status:]");
   }
 }
 
-- (void)accessoryDisconnected:(id)a3
+- (void)accessoryDisconnected:(id)disconnected
 {
   v4 = [(NSXPCConnection *)self->_activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global];
 
-  [v4 accessoryDisconnected:a3];
+  [v4 accessoryDisconnected:disconnected];
 }
 
-- (void)personalizationRequest:(id)a3
+- (void)personalizationRequest:(id)request
 {
   v4 = [(NSXPCConnection *)self->_activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_183];
 
-  [v4 personalizationRequest:a3];
+  [v4 personalizationRequest:request];
 }
 
-- (void)progress:(double)a3
+- (void)progress:(double)progress
 {
   v4 = [(NSXPCConnection *)self->_activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_185];
 
-  [v4 progress:a3];
+  [v4 progress:progress];
 }
 
-- (void)reportAnalytics:(id)a3 info:(id)a4
+- (void)reportAnalytics:(id)analytics info:(id)info
 {
   v6 = [(NSXPCConnection *)self->_activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_187];
 
-  [v6 reportAnalytics:a3 info:a4];
+  [v6 reportAnalytics:analytics info:info];
 }
 
-- (void)issueNotification:(id)a3
+- (void)issueNotification:(id)notification
 {
   v4 = [(NSXPCConnection *)self->_activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_189];
 
-  [v4 issueNotification:a3];
+  [v4 issueNotification:notification];
 }
 
 @end

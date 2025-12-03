@@ -1,24 +1,24 @@
 @interface PXAssetsAction
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
-- (PXAssetsAction)initWithAsset:(id)a3;
-- (PXAssetsAction)initWithAssets:(id)a3;
-- (PXAssetsAction)initWithPhotoLibrary:(id)a3;
-- (void)performAssetChanges:(id)a3 completionHandler:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
+- (PXAssetsAction)initWithAsset:(id)asset;
+- (PXAssetsAction)initWithAssets:(id)assets;
+- (PXAssetsAction)initWithPhotoLibrary:(id)library;
+- (void)performAssetChanges:(id)changes completionHandler:(id)handler;
 @end
 
 @implementation PXAssetsAction
 
-- (void)performAssetChanges:(id)a3 completionHandler:(id)a4
+- (void)performAssetChanges:(id)changes completionHandler:(id)handler
 {
-  v6 = a3;
+  changesCopy = changes;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__PXAssetsAction_performAssetChanges_completionHandler___block_invoke;
   v8[3] = &unk_1E774C2F0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(PXPhotosAction *)self performChanges:v8 completionHandler:a4];
+  v9 = changesCopy;
+  v7 = changesCopy;
+  [(PXPhotosAction *)self performChanges:v8 completionHandler:handler];
 }
 
 void __56__PXAssetsAction_performAssetChanges_completionHandler___block_invoke(uint64_t a1)
@@ -58,66 +58,66 @@ void __56__PXAssetsAction_performAssetChanges_completionHandler___block_invoke(u
   }
 }
 
-- (PXAssetsAction)initWithPhotoLibrary:(id)a3
+- (PXAssetsAction)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAssetsAction.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXAssetsAction initWithPhotoLibrary:]"}];
+  libraryCopy = library;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsAction.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXAssetsAction initWithPhotoLibrary:]"}];
 
   abort();
 }
 
-- (PXAssetsAction)initWithAsset:(id)a3
+- (PXAssetsAction)initWithAsset:(id)asset
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  assetCopy = asset;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  assetCopy2 = asset;
+  v6 = [v4 arrayWithObjects:&assetCopy count:1];
 
-  v7 = [(PXAssetsAction *)self initWithAssets:v6, v9, v10];
+  v7 = [(PXAssetsAction *)self initWithAssets:v6, assetCopy, v10];
   return v7;
 }
 
-- (PXAssetsAction)initWithAssets:(id)a3
+- (PXAssetsAction)initWithAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  assetsCopy = assets;
+  firstObject = [assetsCopy firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = [v5 photoLibrary];
+    photoLibrary = [firstObject photoLibrary];
     v13.receiver = self;
     v13.super_class = PXAssetsAction;
-    v8 = [(PXPhotosAction *)&v13 initWithPhotoLibrary:v7];
+    v8 = [(PXPhotosAction *)&v13 initWithPhotoLibrary:photoLibrary];
 
     if (v8)
     {
-      v9 = [v4 copy];
+      v9 = [assetsCopy copy];
       assets = v8->_assets;
       v8->_assets = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  collectionCopy = collection;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:a1 file:@"PXAssetsAction.m" lineNumber:23 description:{@"Method %s is a responsibility of subclass %@", "+[PXAssetsAction canPerformOnAsset:inAssetCollection:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsAction.m" lineNumber:23 description:{@"Method %s is a responsibility of subclass %@", "+[PXAssetsAction canPerformOnAsset:inAssetCollection:]", v11}];
 
   abort();
 }

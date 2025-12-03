@@ -1,22 +1,22 @@
 @interface CNRecentComposeRecipient
-- (BOOL)isEqual:(id)a3;
-- (CNRecentComposeRecipient)initWithCoder:(id)a3;
-- (CNRecentComposeRecipient)initWithRecentContact:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNRecentComposeRecipient)initWithCoder:(id)coder;
+- (CNRecentComposeRecipient)initWithRecentContact:(id)contact;
 - (id)description;
 - (id)placeholderName;
 @end
 
 @implementation CNRecentComposeRecipient
 
-- (CNRecentComposeRecipient)initWithRecentContact:(id)a3
+- (CNRecentComposeRecipient)initWithRecentContact:(id)contact
 {
-  v5 = a3;
-  v6 = [objc_opt_class() descriptorsForRequiredKeysForContact];
-  v7 = [v5 contactWithKeysToFetch:v6];
+  contactCopy = contact;
+  descriptorsForRequiredKeysForContact = [objc_opt_class() descriptorsForRequiredKeysForContact];
+  v7 = [contactCopy contactWithKeysToFetch:descriptorsForRequiredKeysForContact];
 
-  v8 = [v5 address];
-  v9 = [v5 kind];
-  v10 = CNAutocompleteContactKeyForRecentsKind(v9);
+  address = [contactCopy address];
+  kind = [contactCopy kind];
+  v10 = CNAutocompleteContactKeyForRecentsKind(kind);
 
   v11 = v10;
   if ([v11 isEqualToString:*MEMORY[0x1E695C330]])
@@ -41,11 +41,11 @@
 
   v17.receiver = self;
   v17.super_class = CNRecentComposeRecipient;
-  v13 = [(CNComposeRecipient *)&v17 initWithContact:v7 address:v8 kind:v12];
+  v13 = [(CNComposeRecipient *)&v17 initWithContact:v7 address:address kind:v12];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_recent, a3);
+    objc_storeStrong(&v13->_recent, contact);
     v15 = v14;
   }
 
@@ -60,17 +60,17 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 recentContact];
-    v6 = [v5 address];
-    v7 = [(CNRecentComposeRecipient *)self recentContact];
-    v8 = [v7 address];
-    v9 = [v6 isEqualToString:v8];
+    recentContact = [equalCopy recentContact];
+    address = [recentContact address];
+    recentContact2 = [(CNRecentComposeRecipient *)self recentContact];
+    address2 = [recentContact2 address];
+    v9 = [address isEqualToString:address2];
   }
 
   else
@@ -86,16 +86,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CNComposeRecipient *)self address];
-  v7 = [v3 stringWithFormat:@"<%@: %p> %@", v5, self, v6];
+  address = [(CNComposeRecipient *)self address];
+  v7 = [v3 stringWithFormat:@"<%@: %p> %@", v5, self, address];
 
   return v7;
 }
 
-- (CNRecentComposeRecipient)initWithCoder:(id)a3
+- (CNRecentComposeRecipient)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recent"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recent"];
 
   v6 = [(CNRecentComposeRecipient *)self initWithRecentContact:v5];
   return v6;

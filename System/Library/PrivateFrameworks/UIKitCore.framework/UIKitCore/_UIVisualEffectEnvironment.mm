@@ -1,26 +1,26 @@
 @interface _UIVisualEffectEnvironment
-- (_UIVisualEffectEnvironment)initWithHost:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIVisualEffectEnvironment)initWithHost:(id)host;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_applyBlurQualityToConfigurationDictionary:(id)a3;
+- (void)_applyBlurQualityToConfigurationDictionary:(id)dictionary;
 @end
 
 @implementation _UIVisualEffectEnvironment
 
-- (_UIVisualEffectEnvironment)initWithHost:(id)a3
+- (_UIVisualEffectEnvironment)initWithHost:(id)host
 {
   v5.receiver = self;
   v5.super_class = _UIVisualEffectEnvironment;
   result = [(_UIVisualEffectEnvironment *)&v5 init];
   if (result)
   {
-    result->_effectView = a3;
+    result->_effectView = host;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v4[2] = self->_effectView;
@@ -86,9 +86,9 @@
   return v4;
 }
 
-- (void)_applyBlurQualityToConfigurationDictionary:(id)a3
+- (void)_applyBlurQualityToConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   blurQuality = self->_blurQuality;
   if (blurQuality > 1)
   {
@@ -117,17 +117,17 @@
     goto LABEL_11;
   }
 
-  v8 = v4;
+  v8 = dictionaryCopy;
   v7 = [(UITraitCollection *)self->_traitCollection userInterfaceIdiom]== UIUserInterfaceIdiomCarPlay;
-  v4 = v8;
+  dictionaryCopy = v8;
   if (v7)
   {
 LABEL_10:
     v6 = @"medium";
 LABEL_11:
-    v9 = v4;
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6979B60]];
-    v4 = v9;
+    v9 = dictionaryCopy;
+    [dictionaryCopy setObject:v6 forKeyedSubscript:*MEMORY[0x1E6979B60]];
+    dictionaryCopy = v9;
   }
 
 LABEL_12:

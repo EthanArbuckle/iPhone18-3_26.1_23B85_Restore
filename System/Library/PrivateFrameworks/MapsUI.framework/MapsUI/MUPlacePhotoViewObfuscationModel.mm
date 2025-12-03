@@ -1,13 +1,13 @@
 @interface MUPlacePhotoViewObfuscationModel
-- (MUPlacePhotoViewObfuscationModel)initWithProviderName:(id)a3;
+- (MUPlacePhotoViewObfuscationModel)initWithProviderName:(id)name;
 @end
 
 @implementation MUPlacePhotoViewObfuscationModel
 
-- (MUPlacePhotoViewObfuscationModel)initWithProviderName:(id)a3
+- (MUPlacePhotoViewObfuscationModel)initWithProviderName:(id)name
 {
-  v5 = a3;
-  if ([v5 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v10.receiver = self;
     v10.super_class = MUPlacePhotoViewObfuscationModel;
@@ -15,19 +15,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_providerName, a3);
+      objc_storeStrong(&v6->_providerName, name);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

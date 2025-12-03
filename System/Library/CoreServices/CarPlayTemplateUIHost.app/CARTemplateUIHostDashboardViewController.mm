@@ -12,9 +12,9 @@
   v100.receiver = self;
   v100.super_class = CARTemplateUIHostDashboardViewController;
   [(CARTemplateUIHostDashboardViewController *)&v100 viewDidLoad];
-  v3 = [(CARTemplateUIHostDashboardViewController *)self view];
+  view = [(CARTemplateUIHostDashboardViewController *)self view];
   v4 = +[UIColor redColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [UIView alloc];
   y = CGRectZero.origin.y;
@@ -25,8 +25,8 @@
   v10 = +[UIColor blueColor];
   [v9 setBackgroundColor:v10];
 
-  v11 = [(CARTemplateUIHostDashboardViewController *)self view];
-  [v11 addSubview:v9];
+  view2 = [(CARTemplateUIHostDashboardViewController *)self view];
+  [view2 addSubview:v9];
 
   v99 = v9;
   [(CARTemplateUIHostDashboardViewController *)self setSafeView:v9];
@@ -48,8 +48,8 @@
   [v15 setTitle:@"1" forState:0];
   [v15 sizeToFit];
   [(CARTemplateUIHostDashboardViewController *)self setButton1:v15];
-  v16 = [(CARTemplateUIHostDashboardViewController *)self view];
-  [v16 addSubview:v15];
+  view3 = [(CARTemplateUIHostDashboardViewController *)self view];
+  [view3 addSubview:v15];
 
   v17 = +[UIColor yellowColor];
   [v15 setTintColor:v17];
@@ -60,8 +60,8 @@
   [v18 setTitle:@"2" forState:0];
   [v18 sizeToFit];
   [(CARTemplateUIHostDashboardViewController *)self setButton2:v18];
-  v19 = [(CARTemplateUIHostDashboardViewController *)self view];
-  [v19 addSubview:v18];
+  view4 = [(CARTemplateUIHostDashboardViewController *)self view];
+  [view4 addSubview:v18];
 
   v20 = +[UIColor yellowColor];
   [v18 setTintColor:v20];
@@ -72,107 +72,107 @@
   [v21 setTitle:@"3" forState:0];
   [v21 sizeToFit];
   [(CARTemplateUIHostDashboardViewController *)self setButton3:v21];
-  v22 = [(CARTemplateUIHostDashboardViewController *)self view];
-  [v22 addSubview:v21];
+  view5 = [(CARTemplateUIHostDashboardViewController *)self view];
+  [view5 addSubview:v21];
 
   v23 = +[UIColor yellowColor];
   [v21 setTintColor:v23];
 
   v24 = objc_alloc_init(UILayoutGuide);
-  v25 = [(CARTemplateUIHostDashboardViewController *)self view];
-  [v25 addLayoutGuide:v24];
+  view6 = [(CARTemplateUIHostDashboardViewController *)self view];
+  [view6 addLayoutGuide:v24];
 
-  v90 = [v24 centerXAnchor];
-  v92 = [(CARTemplateUIHostDashboardViewController *)self view];
-  v88 = [v92 centerXAnchor];
-  v86 = [v90 constraintEqualToAnchor:v88];
+  centerXAnchor = [v24 centerXAnchor];
+  view7 = [(CARTemplateUIHostDashboardViewController *)self view];
+  centerXAnchor2 = [view7 centerXAnchor];
+  v86 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v102[0] = v86;
-  v82 = [v24 centerYAnchor];
-  v84 = [(CARTemplateUIHostDashboardViewController *)self view];
-  v80 = [v84 centerYAnchor];
-  v78 = [v82 constraintEqualToAnchor:v80];
+  centerYAnchor = [v24 centerYAnchor];
+  view8 = [(CARTemplateUIHostDashboardViewController *)self view];
+  centerYAnchor2 = [view8 centerYAnchor];
+  v78 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v102[1] = v78;
   v96 = v15;
-  v76 = [v15 topAnchor];
-  v74 = [v14 bottomAnchor];
-  v72 = [v76 constraintEqualToAnchor:v74];
+  topAnchor = [v15 topAnchor];
+  bottomAnchor = [v14 bottomAnchor];
+  v72 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v102[2] = v72;
-  v70 = [v18 topAnchor];
+  topAnchor2 = [v18 topAnchor];
   v97 = v14;
-  v68 = [v14 bottomAnchor];
-  v66 = [v70 constraintEqualToAnchor:v68];
+  bottomAnchor2 = [v14 bottomAnchor];
+  v66 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2];
   v102[3] = v66;
-  v64 = [v21 topAnchor];
-  v62 = [v14 bottomAnchor];
-  v60 = [v64 constraintEqualToAnchor:v62];
+  topAnchor3 = [v21 topAnchor];
+  bottomAnchor3 = [v14 bottomAnchor];
+  v60 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v102[4] = v60;
   v26 = v24;
-  v58 = [v24 bottomAnchor];
-  v56 = [v21 bottomAnchor];
-  v54 = [v58 constraintEqualToAnchor:v56];
+  bottomAnchor4 = [v24 bottomAnchor];
+  bottomAnchor5 = [v21 bottomAnchor];
+  v54 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v102[5] = v54;
-  v52 = [v15 leftAnchor];
+  leftAnchor = [v15 leftAnchor];
   v98 = v24;
-  v50 = [v24 leftAnchor];
-  v48 = [v52 constraintEqualToAnchor:v50];
+  leftAnchor2 = [v24 leftAnchor];
+  v48 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v102[6] = v48;
-  v47 = [v15 rightAnchor];
+  rightAnchor = [v15 rightAnchor];
   v95 = v18;
-  v27 = [v18 leftAnchor];
-  v28 = [v47 constraintEqualToAnchor:v27 constant:-5.0];
+  leftAnchor3 = [v18 leftAnchor];
+  v28 = [rightAnchor constraintEqualToAnchor:leftAnchor3 constant:-5.0];
   v102[7] = v28;
-  v29 = [v18 rightAnchor];
+  rightAnchor2 = [v18 rightAnchor];
   v30 = v21;
   v94 = v21;
-  v31 = [v21 leftAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:-5.0];
+  leftAnchor4 = [v21 leftAnchor];
+  v32 = [rightAnchor2 constraintEqualToAnchor:leftAnchor4 constant:-5.0];
   v102[8] = v32;
-  v33 = [v30 rightAnchor];
-  v34 = [v26 rightAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  rightAnchor3 = [v30 rightAnchor];
+  rightAnchor4 = [v26 rightAnchor];
+  v35 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v102[9] = v35;
   v36 = [NSArray arrayWithObjects:v102 count:10];
   [NSLayoutConstraint activateConstraints:v36];
 
-  v91 = [v99 topAnchor];
-  v93 = [(CARTemplateUIHostDashboardViewController *)self view];
-  v89 = [v93 safeAreaLayoutGuide];
-  v87 = [v89 topAnchor];
-  v85 = [v91 constraintEqualToAnchor:v87];
+  topAnchor4 = [v99 topAnchor];
+  view9 = [(CARTemplateUIHostDashboardViewController *)self view];
+  safeAreaLayoutGuide = [view9 safeAreaLayoutGuide];
+  topAnchor5 = [safeAreaLayoutGuide topAnchor];
+  v85 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v101[0] = v85;
-  v81 = [v99 leftAnchor];
-  v83 = [(CARTemplateUIHostDashboardViewController *)self view];
-  v79 = [v83 safeAreaLayoutGuide];
-  v77 = [v79 leftAnchor];
-  v75 = [v81 constraintEqualToAnchor:v77];
+  leftAnchor5 = [v99 leftAnchor];
+  view10 = [(CARTemplateUIHostDashboardViewController *)self view];
+  safeAreaLayoutGuide2 = [view10 safeAreaLayoutGuide];
+  leftAnchor6 = [safeAreaLayoutGuide2 leftAnchor];
+  v75 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
   v101[1] = v75;
-  v71 = [v99 rightAnchor];
-  v73 = [(CARTemplateUIHostDashboardViewController *)self view];
-  v69 = [v73 safeAreaLayoutGuide];
-  v67 = [v69 rightAnchor];
-  v65 = [v71 constraintEqualToAnchor:v67];
+  rightAnchor5 = [v99 rightAnchor];
+  view11 = [(CARTemplateUIHostDashboardViewController *)self view];
+  safeAreaLayoutGuide3 = [view11 safeAreaLayoutGuide];
+  rightAnchor6 = [safeAreaLayoutGuide3 rightAnchor];
+  v65 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
   v101[2] = v65;
-  v61 = [v99 bottomAnchor];
-  v63 = [(CARTemplateUIHostDashboardViewController *)self view];
-  v59 = [v63 safeAreaLayoutGuide];
-  v57 = [v59 bottomAnchor];
-  v55 = [v61 constraintEqualToAnchor:v57];
+  bottomAnchor6 = [v99 bottomAnchor];
+  view12 = [(CARTemplateUIHostDashboardViewController *)self view];
+  safeAreaLayoutGuide4 = [view12 safeAreaLayoutGuide];
+  bottomAnchor7 = [safeAreaLayoutGuide4 bottomAnchor];
+  v55 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v101[3] = v55;
-  v53 = [v97 centerXAnchor];
-  v51 = [v99 centerXAnchor];
-  v49 = [v53 constraintEqualToAnchor:v51];
+  centerXAnchor3 = [v97 centerXAnchor];
+  centerXAnchor4 = [v99 centerXAnchor];
+  v49 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v101[4] = v49;
-  v37 = [v97 topAnchor];
-  v38 = [v98 topAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  topAnchor6 = [v97 topAnchor];
+  topAnchor7 = [v98 topAnchor];
+  v39 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v101[5] = v39;
-  v40 = [v97 leftAnchor];
-  v41 = [v99 leftAnchor];
-  v42 = [v40 constraintLessThanOrEqualToAnchor:v41 constant:4.0];
+  leftAnchor7 = [v97 leftAnchor];
+  leftAnchor8 = [v99 leftAnchor];
+  v42 = [leftAnchor7 constraintLessThanOrEqualToAnchor:leftAnchor8 constant:4.0];
   v101[6] = v42;
-  v43 = [v97 rightAnchor];
-  v44 = [v99 rightAnchor];
-  v45 = [v43 constraintLessThanOrEqualToAnchor:v44 constant:-4.0];
+  rightAnchor7 = [v97 rightAnchor];
+  rightAnchor8 = [v99 rightAnchor];
+  v45 = [rightAnchor7 constraintLessThanOrEqualToAnchor:rightAnchor8 constant:-4.0];
   v101[7] = v45;
   v46 = [NSArray arrayWithObjects:v101 count:8];
   [NSLayoutConstraint activateConstraints:v46];
@@ -180,26 +180,26 @@
 
 - (void)_button1Triggered
 {
-  v3 = [(CARTemplateUIHostDashboardViewController *)self safeView];
+  safeView = [(CARTemplateUIHostDashboardViewController *)self safeView];
   v2 = +[UIColor redColor];
-  [v3 setBackgroundColor:v2];
+  [safeView setBackgroundColor:v2];
 }
 
 - (void)_button2Triggered
 {
-  v3 = [(CARTemplateUIHostDashboardViewController *)self safeView];
+  safeView = [(CARTemplateUIHostDashboardViewController *)self safeView];
   v2 = +[UIColor blueColor];
-  [v3 setBackgroundColor:v2];
+  [safeView setBackgroundColor:v2];
 }
 
 - (void)_button3Triggered
 {
   objc_opt_class();
-  v3 = [(CARTemplateUIHostDashboardViewController *)self view];
-  v4 = [v3 window];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  view = [(CARTemplateUIHostDashboardViewController *)self view];
+  window = [view window];
+  if (window && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v4;
+    v8 = window;
   }
 
   else
@@ -207,14 +207,14 @@
     v8 = 0;
   }
 
-  v5 = [(CARTemplateUIHostDashboardViewController *)self button1];
-  [v5 setHidden:1];
+  button1 = [(CARTemplateUIHostDashboardViewController *)self button1];
+  [button1 setHidden:1];
 
-  v6 = [(CARTemplateUIHostDashboardViewController *)self button2];
-  [v6 setHidden:1];
+  button2 = [(CARTemplateUIHostDashboardViewController *)self button2];
+  [button2 setHidden:1];
 
-  v7 = [(CARTemplateUIHostDashboardViewController *)self button3];
-  [v7 setHidden:1];
+  button3 = [(CARTemplateUIHostDashboardViewController *)self button3];
+  [button3 setHidden:1];
 
   [v8 setFocusableViews:&__NSArray0__struct];
 }

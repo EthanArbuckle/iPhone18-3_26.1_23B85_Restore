@@ -1,7 +1,7 @@
 @interface QSSTextToSpeechSpeechFeatureInputText
 - (NSArray)words;
-- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputText>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechSpeechFeatureInputText)initWithFlatbuffData:(id)a3 root:(const TextToSpeechSpeechFeatureInputText *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputText>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechSpeechFeatureInputText)initWithFlatbuffData:(id)data root:(const TextToSpeechSpeechFeatureInputText *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -36,11 +36,11 @@ flatbuffers::DetachedBuffer *__53__QSSTextToSpeechSpeechFeatureInputText_flatbuf
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputText>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputText>)addObjectToBuffer:(void *)buffer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSTextToSpeechSpeechFeatureInputText *)self words];
-  v6 = [v5 count];
+  words = [(QSSTextToSpeechSpeechFeatureInputText *)self words];
+  v6 = [words count];
   if (v6)
   {
     if (!(v6 >> 62))
@@ -60,34 +60,34 @@ flatbuffers::DetachedBuffer *__53__QSSTextToSpeechSpeechFeatureInputText_flatbuf
   {
     *v17;
     *v17;
-    [**(&v16 + 1) addObjectToBuffer:a3];
+    [**(&v16 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v7 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 5);
-  v9 = *(a3 + 6);
-  v10 = *(a3 + 4);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v7 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 5);
+  v9 = *(buffer + 6);
+  v10 = *(buffer + 4);
   if (v7)
   {
-    v11 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v7);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v11);
+    v11 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v7);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v11);
   }
 
-  v12.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v10 - v9 + v8);
+  v12.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v10 - v9 + v8);
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
 - (NSArray)words
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"words"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"words"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -104,7 +104,7 @@ flatbuffers::DetachedBuffer *__53__QSSTextToSpeechSpeechFeatureInputText_flatbuf
           do
           {
             v11 = [[QSSTextToSpeechSpeechFeatureInputWord alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -115,48 +115,48 @@ flatbuffers::DetachedBuffer *__53__QSSTextToSpeechSpeechFeatureInputText_flatbuf
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"words"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"words"];
   }
 
-  return v3;
+  return array;
 }
 
-- (QSSTextToSpeechSpeechFeatureInputText)initWithFlatbuffData:(id)a3 root:(const TextToSpeechSpeechFeatureInputText *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechSpeechFeatureInputText)initWithFlatbuffData:(id)data root:(const TextToSpeechSpeechFeatureInputText *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechSpeechFeatureInputText;
   v10 = [(QSSTextToSpeechSpeechFeatureInputText *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -178,9 +178,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

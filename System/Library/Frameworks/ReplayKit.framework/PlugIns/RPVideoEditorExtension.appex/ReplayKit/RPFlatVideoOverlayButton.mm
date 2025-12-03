@@ -1,15 +1,15 @@
 @interface RPFlatVideoOverlayButton
-- (RPFlatVideoOverlayButton)initWithStyle:(int64_t)a3;
-- (id)_createOverlayImageWithBackgroundWhite:(double)a3 backgroundAlpha:(double)a4 glyphAlpha:(double)a5;
+- (RPFlatVideoOverlayButton)initWithStyle:(int64_t)style;
+- (id)_createOverlayImageWithBackgroundWhite:(double)white backgroundAlpha:(double)alpha glyphAlpha:(double)glyphAlpha;
 - (id)_highlightedButtonImage;
 - (id)_normalButtonImage;
 - (id)target;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 @end
 
 @implementation RPFlatVideoOverlayButton
 
-- (RPFlatVideoOverlayButton)initWithStyle:(int64_t)a3
+- (RPFlatVideoOverlayButton)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = RPFlatVideoOverlayButton;
@@ -17,12 +17,12 @@
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
-    v6 = [(RPFlatVideoOverlayButton *)v4 _normalButtonImage];
-    [(RPFlatVideoOverlayButton *)v5 setImage:v6 forState:0];
+    v4->_style = style;
+    _normalButtonImage = [(RPFlatVideoOverlayButton *)v4 _normalButtonImage];
+    [(RPFlatVideoOverlayButton *)v5 setImage:_normalButtonImage forState:0];
 
-    v7 = [(RPFlatVideoOverlayButton *)v5 _highlightedButtonImage];
-    [(RPFlatVideoOverlayButton *)v5 setImage:v7 forState:1];
+    _highlightedButtonImage = [(RPFlatVideoOverlayButton *)v5 _highlightedButtonImage];
+    [(RPFlatVideoOverlayButton *)v5 setImage:_highlightedButtonImage forState:1];
 
     [(RPFlatVideoOverlayButton *)v5 sizeToFit];
     [(RPFlatVideoOverlayButton *)v5 setDeliversTouchesForGesturesToSuperview:0];
@@ -32,7 +32,7 @@
   return v5;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
   action = self->_action;
@@ -75,7 +75,7 @@
   return qword_10001F0C0;
 }
 
-- (id)_createOverlayImageWithBackgroundWhite:(double)a3 backgroundAlpha:(double)a4 glyphAlpha:(double)a5
+- (id)_createOverlayImageWithBackgroundWhite:(double)white backgroundAlpha:(double)alpha glyphAlpha:(double)glyphAlpha
 {
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [UIImage imageNamed:@"RPVideoOverlayBackgroundMask" inBundle:v8];
@@ -86,7 +86,7 @@
   height = v17.height;
   UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  CGContextSetGrayFillColor(CurrentContext, a3, a4);
+  CGContextSetGrayFillColor(CurrentContext, white, alpha);
   v18.origin.x = CGPointZero.x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -94,7 +94,7 @@
   CGContextFillRect(CurrentContext, v18);
   [v9 drawAtPoint:23 blendMode:CGPointZero.x alpha:{y, 1.0}];
   [v10 drawAtPoint:23 blendMode:CGPointZero.x alpha:{y, 1.0}];
-  [v10 drawAtPoint:0 blendMode:CGPointZero.x alpha:{y, a5}];
+  [v10 drawAtPoint:0 blendMode:CGPointZero.x alpha:{y, glyphAlpha}];
   v15 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 

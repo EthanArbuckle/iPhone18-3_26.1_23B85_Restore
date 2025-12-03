@@ -1,28 +1,28 @@
 @interface AMPMusicArtistContent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCatalogContent:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCatalogContent:(id)content;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AMPMusicArtistContent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 32))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 32))
   {
-    self->_adamId = *(v4 + 1);
+    self->_adamId = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(AMPMusicArtistContent *)self setName:?];
   }
@@ -72,24 +72,24 @@
   return v4 ^ [(NSMutableArray *)self->_catalogContents hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_adamId != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_adamId != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -97,13 +97,13 @@ LABEL_11:
   }
 
   name = self->_name;
-  if (name | *(v4 + 3) && ![(NSString *)name isEqual:?])
+  if (name | *(equalCopy + 3) && ![(NSString *)name isEqual:?])
   {
     goto LABEL_11;
   }
 
   catalogContents = self->_catalogContents;
-  if (catalogContents | *(v4 + 2))
+  if (catalogContents | *(equalCopy + 2))
   {
     v8 = [(NSMutableArray *)catalogContents isEqual:?];
   }
@@ -118,9 +118,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -128,7 +128,7 @@ LABEL_12:
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -152,7 +152,7 @@ LABEL_12:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{a3, v16}];
+        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{zone, v16}];
         [v6 addCatalogContent:v14];
 
         v13 = v13 + 1;
@@ -168,28 +168,28 @@ LABEL_12:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_adamId;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_adamId;
+    *(toCopy + 32) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
+    [toCopy setName:?];
   }
 
   if ([(AMPMusicArtistContent *)self catalogContentsCount])
   {
     [v9 clearCatalogContents];
-    v5 = [(AMPMusicArtistContent *)self catalogContentsCount];
-    if (v5)
+    catalogContentsCount = [(AMPMusicArtistContent *)self catalogContentsCount];
+    if (catalogContentsCount)
     {
-      v6 = v5;
+      v6 = catalogContentsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AMPMusicArtistContent *)self catalogContentAtIndex:i];
@@ -199,9 +199,9 @@ LABEL_12:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     adamId = self->_adamId;
@@ -283,8 +283,8 @@ LABEL_12:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -304,28 +304,28 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = AMPMusicArtistContent;
   v3 = [(AMPMusicArtistContent *)&v7 description];
-  v4 = [(AMPMusicArtistContent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AMPMusicArtistContent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addCatalogContent:(id)a3
+- (void)addCatalogContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   catalogContents = self->_catalogContents;
-  v8 = v4;
+  v8 = contentCopy;
   if (!catalogContents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_catalogContents;
     self->_catalogContents = v6;
 
-    v4 = v8;
+    contentCopy = v8;
     catalogContents = self->_catalogContents;
   }
 
-  [(NSMutableArray *)catalogContents addObject:v4];
+  [(NSMutableArray *)catalogContents addObject:contentCopy];
 }
 
 @end

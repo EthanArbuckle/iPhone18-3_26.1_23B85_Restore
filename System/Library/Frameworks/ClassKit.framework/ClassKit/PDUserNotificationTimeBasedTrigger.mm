@@ -1,22 +1,22 @@
 @interface PDUserNotificationTimeBasedTrigger
-- (PDUserNotificationTimeBasedTrigger)initWithDatabase:(id)a3;
+- (PDUserNotificationTimeBasedTrigger)initWithDatabase:(id)database;
 - (id)defaultRecurringTriggerDateComponents;
-- (id)nextTriggerDateFromReferenceDate:(id)a3;
-- (void)checkForTriggerAtDate:(id)a3;
+- (id)nextTriggerDateFromReferenceDate:(id)date;
+- (void)checkForTriggerAtDate:(id)date;
 - (void)checkTriggerNow;
 - (void)resetTrigger;
 - (void)scheduleCheckTimerForNextTriggerTime;
-- (void)scheduleCheckTimerForTimeInterval:(double)a3;
-- (void)setRecurringTriggerDateComponents:(id)a3;
+- (void)scheduleCheckTimerForTimeInterval:(double)interval;
+- (void)setRecurringTriggerDateComponents:(id)components;
 @end
 
 @implementation PDUserNotificationTimeBasedTrigger
 
-- (PDUserNotificationTimeBasedTrigger)initWithDatabase:(id)a3
+- (PDUserNotificationTimeBasedTrigger)initWithDatabase:(id)database
 {
   v11.receiver = self;
   v11.super_class = PDUserNotificationTimeBasedTrigger;
-  v3 = [(PDUserNotificationTrigger *)&v11 initWithDatabase:a3];
+  v3 = [(PDUserNotificationTrigger *)&v11 initWithDatabase:database];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.progressd.timeBasedTriggerQ", 0);
@@ -27,15 +27,15 @@
     calendar = v3->_calendar;
     v3->_calendar = v6;
 
-    v8 = [(PDUserNotificationTimeBasedTrigger *)v3 defaultRecurringTriggerDateComponents];
+    defaultRecurringTriggerDateComponents = [(PDUserNotificationTimeBasedTrigger *)v3 defaultRecurringTriggerDateComponents];
     recurringTriggerDateComponents = v3->_recurringTriggerDateComponents;
-    v3->_recurringTriggerDateComponents = v8;
+    v3->_recurringTriggerDateComponents = defaultRecurringTriggerDateComponents;
   }
 
   return v3;
 }
 
-- (void)scheduleCheckTimerForTimeInterval:(double)a3
+- (void)scheduleCheckTimerForTimeInterval:(double)interval
 {
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
@@ -49,7 +49,7 @@
   v8 = [NSString stringWithFormat:@"com.apple.progressd.task.%@", v7];
 
   v9 = [[PDTaskSchedulerBlockTask alloc] initWithIdentifier:v8 queue:self->_queue block:v5];
-  [(PDTaskSchedulerBlockTask *)v9 setDelay:a3];
+  [(PDTaskSchedulerBlockTask *)v9 setDelay:interval];
   [(PDTaskSchedulerBlockTask *)v9 setGracePeriod:60];
   [(PDTaskSchedulerBlockTask *)v9 setRepeating:0];
   [(PDTaskSchedulerBlockTask *)v9 setRequiredNetworkState:0];
@@ -85,7 +85,7 @@
   [(PDUserNotificationTimeBasedTrigger *)self scheduleCheckTimerForTimeInterval:v6];
 }
 
-- (id)nextTriggerDateFromReferenceDate:(id)a3
+- (id)nextTriggerDateFromReferenceDate:(id)date
 {
   CLSInitLog();
   v3 = CLSLogNotifications;
@@ -147,7 +147,7 @@
   sub_10006DEB8(v4, v5);
 }
 
-- (void)checkForTriggerAtDate:(id)a3
+- (void)checkForTriggerAtDate:(id)date
 {
   CLSInitLog();
   v3 = CLSLogNotifications;
@@ -158,15 +158,15 @@
   }
 }
 
-- (void)setRecurringTriggerDateComponents:(id)a3
+- (void)setRecurringTriggerDateComponents:(id)components
 {
-  v5 = a3;
-  if (v5)
+  componentsCopy = components;
+  if (componentsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_recurringTriggerDateComponents, a3);
+    v6 = componentsCopy;
+    objc_storeStrong(&self->_recurringTriggerDateComponents, components);
     [(PDUserNotificationTimeBasedTrigger *)self checkTriggerNow];
-    v5 = v6;
+    componentsCopy = v6;
   }
 }
 

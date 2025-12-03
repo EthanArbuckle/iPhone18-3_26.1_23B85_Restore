@@ -1,5 +1,5 @@
 @interface _SVXDeactivationContextMutation
-- (_SVXDeactivationContextMutation)initWithBaseModel:(id)a3;
+- (_SVXDeactivationContextMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -27,49 +27,49 @@ LABEL_8:
         if ((mutationFlags & 8) != 0)
         {
 LABEL_9:
-          v9 = self->_buttonEvent;
+          buttonEvent = self->_buttonEvent;
 LABEL_13:
-          v10 = v9;
+          v10 = buttonEvent;
           if ((*&self->_mutationFlags & 0x10) != 0)
           {
-            v11 = self->_clientInfo;
+            clientInfo = self->_clientInfo;
           }
 
           else
           {
-            v11 = [(SVXDeactivationContext *)self->_baseModel clientInfo];
+            clientInfo = [(SVXDeactivationContext *)self->_baseModel clientInfo];
           }
 
-          v12 = v11;
+          v12 = clientInfo;
           if ((*&self->_mutationFlags & 0x20) != 0)
           {
-            v13 = self->_userInfo;
+            userInfo = self->_userInfo;
           }
 
           else
           {
-            v13 = [(SVXDeactivationContext *)self->_baseModel userInfo];
+            userInfo = [(SVXDeactivationContext *)self->_baseModel userInfo];
           }
 
-          v14 = v13;
+          v14 = userInfo;
           if ((*&self->_mutationFlags & 0x40) != 0)
           {
-            v15 = self->_options;
+            options = self->_options;
           }
 
           else
           {
-            v15 = [(SVXDeactivationContext *)self->_baseModel options];
+            options = [(SVXDeactivationContext *)self->_baseModel options];
           }
 
-          v16 = v15;
-          v6 = [[SVXDeactivationContext alloc] initWithSource:source timestamp:timestamp buttonEvent:v10 clientInfo:v12 userInfo:v14 options:v15];
+          v16 = options;
+          v6 = [[SVXDeactivationContext alloc] initWithSource:source timestamp:timestamp buttonEvent:v10 clientInfo:v12 userInfo:v14 options:options];
 
           goto LABEL_23;
         }
 
 LABEL_12:
-        v9 = [(SVXDeactivationContext *)self->_baseModel buttonEvent];
+        buttonEvent = [(SVXDeactivationContext *)self->_baseModel buttonEvent];
         goto LABEL_13;
       }
     }
@@ -101,16 +101,16 @@ LABEL_23:
   return v6;
 }
 
-- (_SVXDeactivationContextMutation)initWithBaseModel:(id)a3
+- (_SVXDeactivationContextMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXDeactivationContextMutation;
   v6 = [(_SVXDeactivationContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

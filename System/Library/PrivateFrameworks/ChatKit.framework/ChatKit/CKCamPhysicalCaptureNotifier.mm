@@ -1,12 +1,12 @@
 @interface CKCamPhysicalCaptureNotifier
 - (CKCamPhysicalCaptureNotifier)init;
 - (CKCamPhysicalCaptureNotifierDelegate)delegate;
-- (void)_setVolumeDownButtonState:(int64_t)a3;
-- (void)_setVolumeUpButtonState:(int64_t)a3;
+- (void)_setVolumeDownButtonState:(int64_t)state;
+- (void)_setVolumeUpButtonState:(int64_t)state;
 - (void)_updateCaptureButtonNotifications;
 - (void)_updateStateAndNotifyDelegateIfNeeded;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CKCamPhysicalCaptureNotifier
@@ -27,14 +27,14 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   WeakRetained = objc_loadWeakRetained(&_CurrentNotifier);
   if (!WeakRetained)
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v5 setWantsVolumeButtonEvents:0];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setWantsVolumeButtonEvents:0];
   }
 
   [(BSInvalidatable *)self->__cameraButtonRequest invalidate];
@@ -43,11 +43,11 @@
   [(CKCamPhysicalCaptureNotifier *)&v6 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(CKCamPhysicalCaptureNotifier *)self _updateCaptureButtonNotifications];
     if (self->_enabled)
     {
@@ -59,17 +59,17 @@
 
 - (void)_updateCaptureButtonNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   if ([(CKCamPhysicalCaptureNotifier *)self isEnabled])
   {
-    [v4 setWantsVolumeButtonEvents:1];
-    [v3 addObserver:self selector:sel__handleVolumeUpButtonUpNotification_ name:*MEMORY[0x1E69DE870] object:0];
-    [v3 addObserver:self selector:sel__handleVolumeUpButtonDownNotification_ name:*MEMORY[0x1E69DE868] object:0];
-    [v3 addObserver:self selector:sel__handleVolumeDownButtonUpNotification_ name:*MEMORY[0x1E69DE860] object:0];
-    [v3 addObserver:self selector:sel__handleVolumeDownButtonDownNotification_ name:*MEMORY[0x1E69DE858] object:0];
-    [v3 addObserver:self selector:sel__handleVolumeDownButtonUpNotification_ name:@"_UIApplicationCameraShutterButtonUpNotification" object:0];
-    [v3 addObserver:self selector:sel__handleVolumeDownButtonDownNotification_ name:@"_UIApplicationCameraShutterButtonDownNotification" object:0];
+    [mEMORY[0x1E69DC668] setWantsVolumeButtonEvents:1];
+    [defaultCenter addObserver:self selector:sel__handleVolumeUpButtonUpNotification_ name:*MEMORY[0x1E69DE870] object:0];
+    [defaultCenter addObserver:self selector:sel__handleVolumeUpButtonDownNotification_ name:*MEMORY[0x1E69DE868] object:0];
+    [defaultCenter addObserver:self selector:sel__handleVolumeDownButtonUpNotification_ name:*MEMORY[0x1E69DE860] object:0];
+    [defaultCenter addObserver:self selector:sel__handleVolumeDownButtonDownNotification_ name:*MEMORY[0x1E69DE858] object:0];
+    [defaultCenter addObserver:self selector:sel__handleVolumeDownButtonUpNotification_ name:@"_UIApplicationCameraShutterButtonUpNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__handleVolumeDownButtonDownNotification_ name:@"_UIApplicationCameraShutterButtonDownNotification" object:0];
     v14 = 0;
     v15 = &v14;
     v16 = 0x2050000000;
@@ -88,29 +88,29 @@
 
     v6 = v5;
     _Block_object_dispose(&v14, 8);
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    v8 = [v7 keyWindow];
-    v9 = [v5 tokenForIdentifierOfCAContext:{objc_msgSend(v8, "_contextId")}];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    keyWindow = [mEMORY[0x1E69DC668]2 keyWindow];
+    v9 = [v5 tokenForIdentifierOfCAContext:{objc_msgSend(keyWindow, "_contextId")}];
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E69D4220] sharedInstance];
-      v11 = [v10 deferHIDEventsForButtonKind:7 toToken:v9];
+      mEMORY[0x1E69D4220] = [MEMORY[0x1E69D4220] sharedInstance];
+      v11 = [mEMORY[0x1E69D4220] deferHIDEventsForButtonKind:7 toToken:v9];
       [(CKCamPhysicalCaptureNotifier *)self set_cameraButtonRequest:v11];
     }
   }
 
   else
   {
-    [v4 setWantsVolumeButtonEvents:0];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DE870] object:0];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DE868] object:0];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DE860] object:0];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DE858] object:0];
-    [v3 removeObserver:self name:@"_UIApplicationCameraShutterButtonUpNotification" object:0];
-    [v3 removeObserver:self name:@"_UIApplicationCameraShutterButtonDownNotification" object:0];
-    v12 = [(CKCamPhysicalCaptureNotifier *)self _cameraButtonRequest];
-    [v12 invalidate];
+    [mEMORY[0x1E69DC668] setWantsVolumeButtonEvents:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE870] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE868] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE860] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE858] object:0];
+    [defaultCenter removeObserver:self name:@"_UIApplicationCameraShutterButtonUpNotification" object:0];
+    [defaultCenter removeObserver:self name:@"_UIApplicationCameraShutterButtonDownNotification" object:0];
+    _cameraButtonRequest = [(CKCamPhysicalCaptureNotifier *)self _cameraButtonRequest];
+    [_cameraButtonRequest invalidate];
 
     [(CKCamPhysicalCaptureNotifier *)self set_cameraButtonRequest:0];
     [(CKCamPhysicalCaptureNotifier *)self _setVolumeUpButtonState:0];
@@ -118,28 +118,28 @@
   }
 }
 
-- (void)_setVolumeUpButtonState:(int64_t)a3
+- (void)_setVolumeUpButtonState:(int64_t)state
 {
-  if (self->__volumeUpButtonState != a3)
+  if (self->__volumeUpButtonState != state)
   {
-    v5 = [(CKCamPhysicalCaptureNotifier *)self _volumeDownButtonState];
-    if (a3 != 1 || v5 != 1)
+    _volumeDownButtonState = [(CKCamPhysicalCaptureNotifier *)self _volumeDownButtonState];
+    if (state != 1 || _volumeDownButtonState != 1)
     {
-      self->__volumeUpButtonState = a3;
+      self->__volumeUpButtonState = state;
 
       [(CKCamPhysicalCaptureNotifier *)self _updateStateAndNotifyDelegateIfNeeded];
     }
   }
 }
 
-- (void)_setVolumeDownButtonState:(int64_t)a3
+- (void)_setVolumeDownButtonState:(int64_t)state
 {
-  if (self->__volumeDownButtonState != a3)
+  if (self->__volumeDownButtonState != state)
   {
-    v5 = [(CKCamPhysicalCaptureNotifier *)self _volumeUpButtonState];
-    if (a3 != 1 || v5 != 1)
+    _volumeUpButtonState = [(CKCamPhysicalCaptureNotifier *)self _volumeUpButtonState];
+    if (state != 1 || _volumeUpButtonState != 1)
     {
-      self->__volumeDownButtonState = a3;
+      self->__volumeDownButtonState = state;
 
       [(CKCamPhysicalCaptureNotifier *)self _updateStateAndNotifyDelegateIfNeeded];
     }
@@ -148,14 +148,14 @@
 
 - (void)_updateStateAndNotifyDelegateIfNeeded
 {
-  v3 = [(CKCamPhysicalCaptureNotifier *)self _volumeUpButtonState];
-  v4 = [(CKCamPhysicalCaptureNotifier *)self _volumeDownButtonState];
-  v6 = v3 == 1 || v4 == 1;
+  _volumeUpButtonState = [(CKCamPhysicalCaptureNotifier *)self _volumeUpButtonState];
+  _volumeDownButtonState = [(CKCamPhysicalCaptureNotifier *)self _volumeDownButtonState];
+  v6 = _volumeUpButtonState == 1 || _volumeDownButtonState == 1;
   if ([(CKCamPhysicalCaptureNotifier *)self state]!= v6)
   {
     [(CKCamPhysicalCaptureNotifier *)self _setState:v6];
-    v7 = [(CKCamPhysicalCaptureNotifier *)self delegate];
-    [v7 physicalCaptureNotifierDidChangeState:self];
+    delegate = [(CKCamPhysicalCaptureNotifier *)self delegate];
+    [delegate physicalCaptureNotifierDidChangeState:self];
   }
 }
 

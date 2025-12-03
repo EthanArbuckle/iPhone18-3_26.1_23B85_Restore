@@ -1,12 +1,12 @@
 @interface UARPUpdaterServiceLegacyAudio
 - (UARPUpdaterServiceLegacyAudio)init;
-- (void)bsdNotificationReceived:(id)a3;
-- (void)eaRuleMatched:(id)a3;
-- (void)getBSDNotificationsListWithReply:(id)a3;
-- (void)getDASActivityListWithReply:(id)a3;
-- (void)getIsBusyStatusWithReply:(id)a3;
-- (void)getMatchingServicesListWithReply:(id)a3;
-- (void)updateCompleteForAccessory:(id)a3;
+- (void)bsdNotificationReceived:(id)received;
+- (void)eaRuleMatched:(id)matched;
+- (void)getBSDNotificationsListWithReply:(id)reply;
+- (void)getDASActivityListWithReply:(id)reply;
+- (void)getIsBusyStatusWithReply:(id)reply;
+- (void)getMatchingServicesListWithReply:(id)reply;
+- (void)updateCompleteForAccessory:(id)accessory;
 @end
 
 @implementation UARPUpdaterServiceLegacyAudio
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (void)getMatchingServicesListWithReply:(id)a3
+- (void)getMatchingServicesListWithReply:(id)reply
 {
-  v24 = a3;
+  replyCopy = reply;
   v25 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [(LegacyAudioController *)self->_controller matchingAccessoriesList];
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  matchingAccessoriesList = [(LegacyAudioController *)self->_controller matchingAccessoriesList];
+  v5 = [matchingAccessoriesList countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -51,7 +51,7 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(matchingAccessoriesList);
         }
 
         v12 = *(*(&v27 + 1) + 8 * v11);
@@ -75,11 +75,11 @@
           v19 = v8;
           v20 = v7;
           v21 = v10;
-          v22 = v4;
+          v22 = matchingAccessoriesList;
           v23 = [[UARPServiceUpdaterAccessoryMatchingRule alloc] initWithIdentifier:v17 xpcEventStream:v13 matchingDictionary:v15];
           [v25 addObject:v23];
 
-          v4 = v22;
+          matchingAccessoriesList = v22;
           v10 = v21;
           v7 = v20;
           v8 = v19;
@@ -91,33 +91,33 @@
       }
 
       while (v6 != v11);
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [matchingAccessoriesList countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);
   }
 
-  v24[2](v24, v25);
+  replyCopy[2](replyCopy, v25);
 }
 
-- (void)eaRuleMatched:(id)a3
+- (void)eaRuleMatched:(id)matched
 {
-  v4 = a3;
+  matchedCopy = matched;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 accessorySerialNumber];
+  accessorySerialNumber = [matchedCopy accessorySerialNumber];
 
-  if (v6)
+  if (accessorySerialNumber)
   {
-    v7 = [v4 accessorySerialNumber];
-    [v5 setObject:v7 forKeyedSubscript:@"SerialNumber"];
+    accessorySerialNumber2 = [matchedCopy accessorySerialNumber];
+    [v5 setObject:accessorySerialNumber2 forKeyedSubscript:@"SerialNumber"];
   }
 
-  v8 = [v4 eaIdentifier];
+  eaIdentifier = [matchedCopy eaIdentifier];
 
-  if (v8)
+  if (eaIdentifier)
   {
-    v9 = [v4 eaIdentifier];
-    [v5 setObject:v9 forKeyedSubscript:@"DeviceClass"];
+    eaIdentifier2 = [matchedCopy eaIdentifier];
+    [v5 setObject:eaIdentifier2 forKeyedSubscript:@"DeviceClass"];
   }
 
   v10 = [[LegacyAudioAccessory alloc] initWithDelegate:self];
@@ -127,26 +127,26 @@
     sub_100014EF4(v10, &self->_controller);
   }
 
-  v11 = [v4 eaIdentifier];
-  [(LegacyAudioAccessory *)v10 handleConnect:v11 options:v5];
+  eaIdentifier3 = [matchedCopy eaIdentifier];
+  [(LegacyAudioAccessory *)v10 handleConnect:eaIdentifier3 options:v5];
 }
 
-- (void)getBSDNotificationsListWithReply:(id)a3
+- (void)getBSDNotificationsListWithReply:(id)reply
 {
   controller = self->_controller;
-  v4 = a3;
-  v5 = [(LegacyAudioController *)controller matchingBSDNotificationsList];
-  v4[2](v4, v5);
+  replyCopy = reply;
+  matchingBSDNotificationsList = [(LegacyAudioController *)controller matchingBSDNotificationsList];
+  replyCopy[2](replyCopy, matchingBSDNotificationsList);
 }
 
-- (void)bsdNotificationReceived:(id)a3
+- (void)bsdNotificationReceived:(id)received
 {
-  v21 = a3;
+  receivedCopy = received;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v20 = self;
+  selfCopy = self;
   obj = [(LegacyAudioController *)self->_controller matchingAccessoriesList];
   v4 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v4)
@@ -183,19 +183,19 @@
           if ([v10 isEqualToString:@"com.apple.notifyd.matching"])
           {
             v14 = [v12 objectForKeyedSubscript:@"Notification"];
-            v15 = [v14 isEqualToString:v21];
+            v15 = [v14 isEqualToString:receivedCopy];
 
             if (v15)
             {
-              v16 = [[LegacyAudioAccessory alloc] initWithDelegate:v20];
-              [(LegacyAudioController *)v20->_controller addActiveAccessory:v16];
+              v16 = [[LegacyAudioAccessory alloc] initWithDelegate:selfCopy];
+              [(LegacyAudioController *)selfCopy->_controller addActiveAccessory:v16];
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
               {
-                v18 = [(LegacyAudioController *)v20->_controller activeAccessories];
+                activeAccessories = [(LegacyAudioController *)selfCopy->_controller activeAccessories];
                 *buf = v19;
                 v28 = v16;
                 v29 = 2112;
-                v30 = v18;
+                v30 = activeAccessories;
                 _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Added accessory %@, active accessories %@", buf, 0x16u);
               }
 
@@ -213,44 +213,44 @@
   }
 }
 
-- (void)getDASActivityListWithReply:(id)a3
+- (void)getDASActivityListWithReply:(id)reply
 {
   controller = self->_controller;
-  v4 = a3;
-  v5 = [(LegacyAudioController *)controller matchingDASActivityList];
+  replyCopy = reply;
+  matchingDASActivityList = [(LegacyAudioController *)controller matchingDASActivityList];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[UARPUpdaterServiceLegacyAudio getDASActivityListWithReply:]";
     v8 = 2112;
-    v9 = v5;
+    v9 = matchingDASActivityList;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: matchingDASActivities %@", &v6, 0x16u);
   }
 
-  v4[2](v4, v5);
+  replyCopy[2](replyCopy, matchingDASActivityList);
 }
 
-- (void)getIsBusyStatusWithReply:(id)a3
+- (void)getIsBusyStatusWithReply:(id)reply
 {
   controller = self->_controller;
-  v6 = a3;
-  v4 = [(LegacyAudioController *)controller activeAccessories];
-  v5 = [v4 count] != 0;
+  replyCopy = reply;
+  activeAccessories = [(LegacyAudioController *)controller activeAccessories];
+  v5 = [activeAccessories count] != 0;
 
-  v6[2](v6, v5);
+  replyCopy[2](replyCopy, v5);
 }
 
-- (void)updateCompleteForAccessory:(id)a3
+- (void)updateCompleteForAccessory:(id)accessory
 {
-  v4 = a3;
-  [(LegacyAudioController *)self->_controller removeActiveAccessory:v4];
+  accessoryCopy = accessory;
+  [(LegacyAudioController *)self->_controller removeActiveAccessory:accessoryCopy];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    sub_100014F90(v4, &self->_controller);
+    sub_100014F90(accessoryCopy, &self->_controller);
   }
 
-  v5 = [(LegacyAudioController *)self->_controller activeAccessories];
-  v6 = [v5 count];
+  activeAccessories = [(LegacyAudioController *)self->_controller activeAccessories];
+  v6 = [activeAccessories count];
 
   if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {

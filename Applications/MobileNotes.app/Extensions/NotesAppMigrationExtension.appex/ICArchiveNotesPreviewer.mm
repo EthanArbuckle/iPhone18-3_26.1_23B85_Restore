@@ -1,11 +1,11 @@
 @interface ICArchiveNotesPreviewer
 - (_TtC26NotesAppMigrationExtension23ICArchiveNotesPreviewer)init;
-- (id)initForArchiveAt:(id)a3 error:(id *)a4;
+- (id)initForArchiveAt:(id)at error:(id *)error;
 @end
 
 @implementation ICArchiveNotesPreviewer
 
-- (id)initForArchiveAt:(id)a3 error:(id *)a4
+- (id)initForArchiveAt:(id)at error:(id *)error
 {
   v4 = sub_1000847C8();
   v5 = *(*(v4 - 8) + 64);

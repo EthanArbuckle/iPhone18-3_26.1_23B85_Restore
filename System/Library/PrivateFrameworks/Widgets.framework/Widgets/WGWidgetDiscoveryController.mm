@@ -1,110 +1,110 @@
 @interface WGWidgetDiscoveryController
-+ (int64_t)layoutModeForSize:(CGSize)a3;
-- (BOOL)_isElementWithIdentifierEnabled:(id)a3;
-- (BOOL)_isElementWithIdentifierFavorited:(id)a3;
-- (BOOL)_isElementWithIdentifierKnown:(id)a3;
-- (BOOL)_setEnabled:(BOOL)a3 forElementWithIdentifier:(id)a4;
++ (int64_t)layoutModeForSize:(CGSize)size;
+- (BOOL)_isElementWithIdentifierEnabled:(id)enabled;
+- (BOOL)_isElementWithIdentifierFavorited:(id)favorited;
+- (BOOL)_isElementWithIdentifierKnown:(id)known;
+- (BOOL)_setEnabled:(BOOL)enabled forElementWithIdentifier:(id)identifier;
 - (BOOL)alwaysShowsFavoriteWidgets;
 - (BOOL)areWidgetsPinned;
-- (BOOL)shouldPurgeArchivedSnapshotsForWidget:(id)a3;
-- (BOOL)shouldShowWidgetsPinButtonForWidgetListEditViewController:(id)a3;
+- (BOOL)shouldPurgeArchivedSnapshotsForWidget:(id)widget;
+- (BOOL)shouldShowWidgetsPinButtonForWidgetListEditViewController:(id)controller;
 - (BOOL)shouldShowWidgetsPinningTeachingView;
-- (BOOL)widgetListEditViewControllerShouldIncludeInternalWidgets:(id)a3;
-- (BOOL)widgetListEditViewControllerShouldShowFavorites:(id)a3;
+- (BOOL)widgetListEditViewControllerShouldIncludeInternalWidgets:(id)widgets;
+- (BOOL)widgetListEditViewControllerShouldShowFavorites:(id)favorites;
 - (WGWidgetDebugging)debuggingHandler;
 - (WGWidgetDiscoveryController)init;
 - (WGWidgetDiscoveryControllerDelegate)delegate;
 - (WGWidgetListEditViewController)presentedEditViewController;
 - (id)_disabledIdentifiers;
-- (id)_groupForWidgetWithIdentifier:(id)a3;
-- (id)_insertWidgetWithIdentifier:(id)a3 atTop:(BOOL)a4;
+- (id)_groupForWidgetWithIdentifier:(id)identifier;
+- (id)_insertWidgetWithIdentifier:(id)identifier atTop:(BOOL)top;
 - (id)_newWidgetListEditViewController;
 - (id)_newWidgetListEditViewControllerStatusBarAssertion;
-- (id)_newWidgetWithIdentifier:(id)a3 delegate:(id)a4;
-- (id)_orderedEnabledIdentifiersForGroup:(id)a3;
-- (id)_orderedEnabledWidgetIdentifiersForGroup:(id)a3 includingNoContent:(BOOL)a4;
-- (id)_orderedVisibleIdentifiersForGroup:(id)a3;
+- (id)_newWidgetWithIdentifier:(id)identifier delegate:(id)delegate;
+- (id)_orderedEnabledIdentifiersForGroup:(id)group;
+- (id)_orderedEnabledWidgetIdentifiersForGroup:(id)group includingNoContent:(BOOL)content;
+- (id)_orderedVisibleIdentifiersForGroup:(id)group;
 - (id)_orderedVisibleIdentifiersForTodayGroup;
 - (id)_orderedVisibleIdentifiersForWidgetGroup;
-- (id)_preferredViewControllerForPresentingFromViewController:(id)a3;
-- (id)_updatePublicationStateOfDatumWithIdentifier:(id)a3 visibilityChanged:(BOOL)a4 contentStateChanged:(BOOL)a5 insertAtTop:(BOOL)a6 notifyingObservers:(BOOL)a7;
+- (id)_preferredViewControllerForPresentingFromViewController:(id)controller;
+- (id)_updatePublicationStateOfDatumWithIdentifier:(id)identifier visibilityChanged:(BOOL)changed contentStateChanged:(BOOL)stateChanged insertAtTop:(BOOL)top notifyingObservers:(BOOL)observers;
 - (id)enabledWidgetIdentifiersForAllGroups;
-- (id)widgetListEditViewController:(id)a3 displayNameForItemWithIdentifier:(id)a4;
-- (id)widgetWithIdentifier:(id)a3 delegate:(id)a4 forRequesterWithIdentifier:(id)a5;
+- (id)widgetListEditViewController:(id)controller displayNameForItemWithIdentifier:(id)identifier;
+- (id)widgetWithIdentifier:(id)identifier delegate:(id)delegate forRequesterWithIdentifier:(id)withIdentifier;
 - (int64_t)_widgetListEditViewControllerStatusBarLegibilityStyle;
-- (int64_t)largestAvailableDisplayModeForWidget:(id)a3;
-- (int64_t)layoutModeForWidgetListEditViewController:(id)a3;
-- (int64_t)userSpecifiedDisplayModeForWidget:(id)a3;
+- (int64_t)largestAvailableDisplayModeForWidget:(id)widget;
+- (int64_t)layoutModeForWidgetListEditViewController:(id)controller;
+- (int64_t)userSpecifiedDisplayModeForWidget:(id)widget;
 - (unint64_t)visibleWidgetsCount;
 - (void)_addDefaultPinnedWidgets;
-- (void)_applicationIconChanged:(id)a3;
+- (void)_applicationIconChanged:(id)changed;
 - (void)_beginObservingDataSourcesIfNecessary;
 - (void)_calculateAndPostNewWidgetsCount;
-- (void)_dataSourcesDidChange:(id)a3;
-- (void)_externalSourceRequestsInsertionOfWidgetWithIdentifier:(id)a3 insertAtTop:(BOOL)a4;
-- (void)_invalidateVisibleIdentifiersForGroup:(id)a3;
-- (void)_invalidateWidgetListEditViewControllerStatusBarAssertion:(id)a3;
-- (void)_notifyObserversOfOrderChangeForWidgetIdentifiers:(id)a3;
+- (void)_dataSourcesDidChange:(id)change;
+- (void)_externalSourceRequestsInsertionOfWidgetWithIdentifier:(id)identifier insertAtTop:(BOOL)top;
+- (void)_invalidateVisibleIdentifiersForGroup:(id)group;
+- (void)_invalidateWidgetListEditViewControllerStatusBarAssertion:(id)assertion;
+- (void)_notifyObserversOfOrderChangeForWidgetIdentifiers:(id)identifiers;
 - (void)_notifyObserversOfSignificantWidgetsChange;
-- (void)_notifyObserversOfVisibilityChange:(BOOL)a3 ofWidgetWithIdentifier:(id)a4 inGroup:(id)a5;
-- (void)_removeWidgetWithIdentifier:(id)a3;
-- (void)_requestUnlockWithCompletion:(id)a3;
-- (void)_setWidgetsPinned:(BOOL)a3;
-- (void)_updateFavoriteWidgetIDs:(id)a3;
-- (void)_updateLockedOutStateForWidget:(id)a3;
-- (void)_updateLockedOutStateForWidget:(id)a3 withContainingAppProxy:(id)a4;
-- (void)_widget:(id)a3 withIdentifier:(id)a4 didRemoveSnapshotAtURL:(id)a5;
-- (void)_widgetListEditViewControllerWillDisappear:(id)a3;
-- (void)_widgetViewControllerDidRemoveSnapshot:(id)a3;
-- (void)_widgetViewControllerRequestsAdd:(id)a3;
-- (void)addDiscoveryObserver:(id)a3;
+- (void)_notifyObserversOfVisibilityChange:(BOOL)change ofWidgetWithIdentifier:(id)identifier inGroup:(id)group;
+- (void)_removeWidgetWithIdentifier:(id)identifier;
+- (void)_requestUnlockWithCompletion:(id)completion;
+- (void)_setWidgetsPinned:(BOOL)pinned;
+- (void)_updateFavoriteWidgetIDs:(id)ds;
+- (void)_updateLockedOutStateForWidget:(id)widget;
+- (void)_updateLockedOutStateForWidget:(id)widget withContainingAppProxy:(id)proxy;
+- (void)_widget:(id)_widget withIdentifier:(id)identifier didRemoveSnapshotAtURL:(id)l;
+- (void)_widgetListEditViewControllerWillDisappear:(id)disappear;
+- (void)_widgetViewControllerDidRemoveSnapshot:(id)snapshot;
+- (void)_widgetViewControllerRequestsAdd:(id)add;
+- (void)addDiscoveryObserver:(id)observer;
 - (void)beginDiscovery;
-- (void)debugWidgetWithBundleID:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)deviceManagementPolicyDidChange:(id)a3;
-- (void)dismissWidgetListEditViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)dismissWidgetListEditViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleWidgetLaunchRecommendation:(id)a3 completion:(id)a4;
+- (void)debugWidgetWithBundleID:(id)d options:(id)options completion:(id)completion;
+- (void)deviceManagementPolicyDidChange:(id)change;
+- (void)dismissWidgetListEditViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion;
+- (void)dismissWidgetListEditViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleWidgetLaunchRecommendation:(id)recommendation completion:(id)completion;
 - (void)invalidateVisibleIdentifiers;
-- (void)noteWidgetsPinningViewControllerDidDismiss:(BOOL)a3;
-- (void)presentWidgetListEditViewControllerFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)remoteViewControllerDidConnectForWidgetViewController:(id)a3;
-- (void)remoteViewControllerViewDidAppearForWidgetViewController:(id)a3;
-- (void)removeDiscoveryObserver:(id)a3;
-- (void)removeWidgetIdentifiersFromToday:(id)a3;
-- (void)setHasContent:(BOOL)a3 forWidgetWithIdentifier:(id)a4;
-- (void)widget:(id)a3 didChangeLargestAvailableDisplayMode:(int64_t)a4;
-- (void)widget:(id)a3 didChangeUserSpecifiedDisplayMode:(int64_t)a4;
-- (void)widget:(id)a3 didEncounterProblematicSnapshotAtURL:(id)a4;
-- (void)widget:(id)a3 didRemoveSnapshotAtURL:(id)a4;
-- (void)widgetDataSource:(id)a3 removeDatum:(id)a4;
-- (void)widgetDataSource:(id)a3 replaceWithDatum:(id)a4;
-- (void)widgetEditListViewController:(id)a3 traitCollectionDidChange:(id)a4;
-- (void)widgetListEditViewController:(id)a3 acknowledgeInterfaceItemsWithIdentifiers:(id)a4;
-- (void)widgetListEditViewController:(id)a3 didReorderItemsWithIdentifiersInGroups:(id)a4;
-- (void)widgetListEditViewController:(id)a3 requestsIconForItemWithIdentifier:(id)a4 withHandler:(id)a5;
-- (void)widgetListEditViewController:(id)a3 setEnabled:(BOOL)a4 forItemsWithIdentifiers:(id)a5;
-- (void)widgetViewControllerNeedsToBeRegisteredForRefreshNotification:(id)a3;
-- (void)widgetViewControllerNeedsToBeUnregisteredForRefreshNotification:(id)a3;
+- (void)noteWidgetsPinningViewControllerDidDismiss:(BOOL)dismiss;
+- (void)presentWidgetListEditViewControllerFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)remoteViewControllerDidConnectForWidgetViewController:(id)controller;
+- (void)remoteViewControllerViewDidAppearForWidgetViewController:(id)controller;
+- (void)removeDiscoveryObserver:(id)observer;
+- (void)removeWidgetIdentifiersFromToday:(id)today;
+- (void)setHasContent:(BOOL)content forWidgetWithIdentifier:(id)identifier;
+- (void)widget:(id)widget didChangeLargestAvailableDisplayMode:(int64_t)mode;
+- (void)widget:(id)widget didChangeUserSpecifiedDisplayMode:(int64_t)mode;
+- (void)widget:(id)widget didEncounterProblematicSnapshotAtURL:(id)l;
+- (void)widget:(id)widget didRemoveSnapshotAtURL:(id)l;
+- (void)widgetDataSource:(id)source removeDatum:(id)datum;
+- (void)widgetDataSource:(id)source replaceWithDatum:(id)datum;
+- (void)widgetEditListViewController:(id)controller traitCollectionDidChange:(id)change;
+- (void)widgetListEditViewController:(id)controller acknowledgeInterfaceItemsWithIdentifiers:(id)identifiers;
+- (void)widgetListEditViewController:(id)controller didReorderItemsWithIdentifiersInGroups:(id)groups;
+- (void)widgetListEditViewController:(id)controller requestsIconForItemWithIdentifier:(id)identifier withHandler:(id)handler;
+- (void)widgetListEditViewController:(id)controller setEnabled:(BOOL)enabled forItemsWithIdentifiers:(id)identifiers;
+- (void)widgetViewControllerNeedsToBeRegisteredForRefreshNotification:(id)notification;
+- (void)widgetViewControllerNeedsToBeUnregisteredForRefreshNotification:(id)notification;
 @end
 
 @implementation WGWidgetDiscoveryController
 
-+ (int64_t)layoutModeForSize:(CGSize)a3
++ (int64_t)layoutModeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  height = size.height;
+  width = size.width;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v7 = 3;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v7 = 1;
   }
 
   if (width <= height)
   {
-    return 2 * ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1);
+    return 2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1);
   }
 
   else
@@ -133,12 +133,12 @@
     statsController = v2->_statsController;
     v2->_statsController = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel__widgetViewControllerRequestsAdd_ name:@"WGWidgetViewControllerAddRequestNotification" object:0];
-    [v9 addObserver:v2 selector:sel__widgetViewControllerDidRemoveSnapshot_ name:@"WGWidgetViewControllerDidRemoveSnapshotNotification" object:0];
-    [v9 addObserver:v2 selector:sel__widgetListEditViewControllerWillDisappear_ name:@"WGWidgetListEditViewControllerWillDisappear" object:0];
-    v10 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v10 addObserver:v2 selector:sel__applicationIconChanged_ name:@"com.apple.LaunchServices.applicationIconChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__widgetViewControllerRequestsAdd_ name:@"WGWidgetViewControllerAddRequestNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__widgetViewControllerDidRemoveSnapshot_ name:@"WGWidgetViewControllerDidRemoveSnapshotNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__widgetListEditViewControllerWillDisappear_ name:@"WGWidgetListEditViewControllerWillDisappear" object:0];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__applicationIconChanged_ name:@"com.apple.LaunchServices.applicationIconChanged" object:0];
   }
 
   return v2;
@@ -146,48 +146,48 @@
 
 - (unint64_t)visibleWidgetsCount
 {
-  v3 = [(WGWidgetDiscoveryController *)self _orderedVisibleIdentifiersForTodayGroup];
-  v4 = [v3 count];
-  v5 = [(WGWidgetDiscoveryController *)self _orderedVisibleIdentifiersForWidgetGroup];
-  v6 = [v5 count];
+  _orderedVisibleIdentifiersForTodayGroup = [(WGWidgetDiscoveryController *)self _orderedVisibleIdentifiersForTodayGroup];
+  v4 = [_orderedVisibleIdentifiersForTodayGroup count];
+  _orderedVisibleIdentifiersForWidgetGroup = [(WGWidgetDiscoveryController *)self _orderedVisibleIdentifiersForWidgetGroup];
+  v6 = [_orderedVisibleIdentifiersForWidgetGroup count];
 
   return v6 + v4;
 }
 
-- (void)addDiscoveryObserver:(id)a3
+- (void)addDiscoveryObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
     if (!observers)
     {
-      v7 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+      weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsPointerArray;
 
       observers = self->_observers;
     }
 
-    v4 = [(NSPointerArray *)observers addPointer:v9];
+    observerCopy = [(NSPointerArray *)observers addPointer:v9];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](observerCopy, v5);
 }
 
-- (void)removeDiscoveryObserver:(id)a3
+- (void)removeDiscoveryObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
     [(NSPointerArray *)self->_observers compact];
     if ([(NSPointerArray *)self->_observers count])
     {
       v4 = 0;
-      while ([(NSPointerArray *)self->_observers pointerAtIndex:v4]!= v5)
+      while ([(NSPointerArray *)self->_observers pointerAtIndex:v4]!= observerCopy)
       {
         if (++v4 >= [(NSPointerArray *)self->_observers count])
         {
@@ -202,24 +202,24 @@
 LABEL_8:
 }
 
-- (void)_updateLockedOutStateForWidget:(id)a3 withContainingAppProxy:(id)a4
+- (void)_updateLockedOutStateForWidget:(id)widget withContainingAppProxy:(id)proxy
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(WGWidgetDiscoveryController *)self _isApplicationLockedOutWithProxy:v6];
+  widgetCopy = widget;
+  proxyCopy = proxy;
+  v7 = [(WGWidgetDiscoveryController *)self _isApplicationLockedOutWithProxy:proxyCopy];
   if (v7)
   {
     v8 = MEMORY[0x277D24400];
-    if (v6)
+    if (proxyCopy)
     {
-      v9 = [v6 localizedName];
-      [v8 messageForApplicationName:v9 style:2];
+      localizedName = [proxyCopy localizedName];
+      [v8 messageForApplicationName:localizedName style:2];
     }
 
     else
     {
-      v9 = [v11 widgetIdentifier];
-      [v8 messageForBundleIdentifier:v9 style:2];
+      localizedName = [widgetCopy widgetIdentifier];
+      [v8 messageForBundleIdentifier:localizedName style:2];
     }
     v10 = ;
   }
@@ -229,19 +229,19 @@ LABEL_8:
     v10 = 0;
   }
 
-  [v11 setLockedOut:v7 withExplanation:v10];
+  [widgetCopy setLockedOut:v7 withExplanation:v10];
 }
 
-- (void)_updateLockedOutStateForWidget:(id)a3
+- (void)_updateLockedOutStateForWidget:(id)widget
 {
-  v8 = a3;
-  v4 = [v8 widgetIdentifier];
-  v5 = WGContainingBundleProxyForWidgetWithBundleIdentifer(v4);
+  widgetCopy = widget;
+  widgetIdentifier = [widgetCopy widgetIdentifier];
+  v5 = WGContainingBundleProxyForWidgetWithBundleIdentifer(widgetIdentifier);
 
   if (v5)
   {
-    v6 = [v5 bundleType];
-    if (([v6 isEqualToString:*MEMORY[0x277CC1E08]] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CC1E30]) & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CC1E40]))
+    bundleType = [v5 bundleType];
+    if (([bundleType isEqualToString:*MEMORY[0x277CC1E08]] & 1) != 0 || (objc_msgSend(bundleType, "isEqualToString:", *MEMORY[0x277CC1E30]) & 1) != 0 || objc_msgSend(bundleType, "isEqualToString:", *MEMORY[0x277CC1E40]))
     {
       v7 = v5;
     }
@@ -251,24 +251,24 @@ LABEL_8:
       v7 = 0;
     }
 
-    [(WGWidgetDiscoveryController *)self _updateLockedOutStateForWidget:v8 withContainingAppProxy:v7];
+    [(WGWidgetDiscoveryController *)self _updateLockedOutStateForWidget:widgetCopy withContainingAppProxy:v7];
   }
 }
 
-- (id)_newWidgetWithIdentifier:(id)a3 delegate:(id)a4
+- (id)_newWidgetWithIdentifier:(id)identifier delegate:(id)delegate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  if ([identifierCopy length])
   {
-    v8 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:identifierCopy];
     if (v8)
     {
-      v9 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:v6];
+      v9 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:identifierCopy];
       if (v9)
       {
-        v10 = [[WGWidgetHostingViewController alloc] initWithWidgetInfo:v9 delegate:v7 host:self];
+        v10 = [[WGWidgetHostingViewController alloc] initWithWidgetInfo:v9 delegate:delegateCopy host:self];
         [(WGWidgetDiscoveryController *)self _updateLockedOutStateForWidget:v10];
       }
 
@@ -278,7 +278,7 @@ LABEL_8:
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138543362;
-          v15 = v6;
+          v15 = identifierCopy;
           _os_log_impl(&dword_27425E000, v12, OS_LOG_TYPE_DEFAULT, "Couldn't find widget info for widget with ID '%{public}@'", &v14, 0xCu);
         }
 
@@ -292,7 +292,7 @@ LABEL_8:
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = v6;
+        v15 = identifierCopy;
         _os_log_impl(&dword_27425E000, v11, OS_LOG_TYPE_DEFAULT, "Couldn't find widget datum for widget with ID '%{public}@'", &v14, 0xCu);
       }
 
@@ -308,17 +308,17 @@ LABEL_8:
   return v10;
 }
 
-- (id)widgetWithIdentifier:(id)a3 delegate:(id)a4 forRequesterWithIdentifier:(id)a5
+- (id)widgetWithIdentifier:(id)identifier delegate:(id)delegate forRequesterWithIdentifier:(id)withIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  withIdentifierCopy = withIdentifier;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
   {
     [WGWidgetDiscoveryController widgetWithIdentifier:delegate:forRequesterWithIdentifier:];
   }
 
-  if ([v8 length] && objc_msgSend(v10, "length"))
+  if ([identifierCopy length] && objc_msgSend(withIdentifierCopy, "length"))
   {
     widgetIDsToWidgets = self->_widgetIDsToWidgets;
     if (!widgetIDsToWidgets)
@@ -330,13 +330,13 @@ LABEL_8:
       widgetIDsToWidgets = self->_widgetIDsToWidgets;
     }
 
-    v14 = [(NSMutableDictionary *)widgetIDsToWidgets objectForKey:v8];
+    v14 = [(NSMutableDictionary *)widgetIDsToWidgets objectForKey:identifierCopy];
     if (!v14)
     {
-      v14 = [(WGWidgetDiscoveryController *)self _newWidgetWithIdentifier:v8 delegate:v9];
+      v14 = [(WGWidgetDiscoveryController *)self _newWidgetWithIdentifier:identifierCopy delegate:delegateCopy];
       if (v14)
       {
-        [(NSMutableDictionary *)self->_widgetIDsToWidgets setObject:v14 forKey:v8];
+        [(NSMutableDictionary *)self->_widgetIDsToWidgets setObject:v14 forKey:identifierCopy];
       }
     }
   }
@@ -349,9 +349,9 @@ LABEL_8:
   return v14;
 }
 
-- (id)_orderedEnabledIdentifiersForGroup:(id)a3
+- (id)_orderedEnabledIdentifiersForGroup:(id)group
 {
-  v4 = [a3 isEqual:@"WidgetGroup"];
+  v4 = [group isEqual:@"WidgetGroup"];
   v5 = 64;
   if (v4)
   {
@@ -414,17 +414,17 @@ LABEL_8:
   [(WGWidgetDiscoveryController *)self _notifyObserversOfSignificantWidgetsChange];
 }
 
-- (void)_invalidateVisibleIdentifiersForGroup:(id)a3
+- (void)_invalidateVisibleIdentifiersForGroup:(id)group
 {
-  v6 = a3;
-  if ([v6 isEqual:@"TodayGroup"])
+  groupCopy = group;
+  if ([groupCopy isEqual:@"TodayGroup"])
   {
     v4 = 72;
   }
 
   else
   {
-    if (![v6 isEqual:@"WidgetGroup"])
+    if (![groupCopy isEqual:@"WidgetGroup"])
     {
       goto LABEL_6;
     }
@@ -438,9 +438,9 @@ LABEL_8:
 LABEL_6:
 }
 
-- (id)_orderedVisibleIdentifiersForGroup:(id)a3
+- (id)_orderedVisibleIdentifiersForGroup:(id)group
 {
-  if ([a3 isEqual:@"WidgetGroup"])
+  if ([group isEqual:@"WidgetGroup"])
   {
     [(WGWidgetDiscoveryController *)self _orderedVisibleIdentifiersForWidgetGroup];
   }
@@ -456,28 +456,28 @@ LABEL_6:
 
 - (id)_disabledIdentifiers
 {
-  v3 = [(NSMutableDictionary *)self->_identifiersToDatums allKeys];
+  allKeys = [(NSMutableDictionary *)self->_identifiersToDatums allKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__WGWidgetDiscoveryController__disabledIdentifiers__block_invoke;
   v7[3] = &unk_279ED0C38;
   v7[4] = self;
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:v7];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [allKeys filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)_orderedEnabledWidgetIdentifiersForGroup:(id)a3 includingNoContent:(BOOL)a4
+- (id)_orderedEnabledWidgetIdentifiersForGroup:(id)group includingNoContent:(BOOL)content
 {
-  if (a4)
+  if (content)
   {
-    [(WGWidgetDiscoveryController *)self _orderedEnabledIdentifiersForGroup:a3];
+    [(WGWidgetDiscoveryController *)self _orderedEnabledIdentifiersForGroup:group];
   }
 
   else
   {
-    [(WGWidgetDiscoveryController *)self _orderedVisibleIdentifiersForGroup:a3];
+    [(WGWidgetDiscoveryController *)self _orderedVisibleIdentifiersForGroup:group];
   }
   v4 = ;
 
@@ -486,96 +486,96 @@ LABEL_6:
 
 - (id)enabledWidgetIdentifiersForAllGroups
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(WGWidgetDiscoveryController *)self _orderedEnabledIdentifiersForGroup:@"TodayGroup"];
   if (v4)
   {
-    [v3 addObjectsFromArray:v4];
+    [array addObjectsFromArray:v4];
   }
 
   v5 = [(WGWidgetDiscoveryController *)self _orderedEnabledIdentifiersForGroup:@"WidgetGroup"];
   if (v5)
   {
-    [v3 addObjectsFromArray:v5];
+    [array addObjectsFromArray:v5];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setHasContent:(BOOL)a3 forWidgetWithIdentifier:(id)a4
+- (void)setHasContent:(BOOL)content forWidgetWithIdentifier:(id)identifier
 {
-  v8 = a4;
-  if ([v8 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    if (!a3)
+    if (!content)
     {
-      v6 = [(NSMutableDictionary *)self->_widgetIDsToWidgets objectForKey:v8];
+      v6 = [(NSMutableDictionary *)self->_widgetIDsToWidgets objectForKey:identifierCopy];
       [v6 invalidateCachedSnapshotWithCompletionHandler:0];
     }
 
-    v7 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:v8 visibilityChanged:0 contentStateChanged:1 insertAtTop:0 notifyingObservers:1];
+    v7 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:identifierCopy visibilityChanged:0 contentStateChanged:1 insertAtTop:0 notifyingObservers:1];
   }
 }
 
-- (void)_externalSourceRequestsInsertionOfWidgetWithIdentifier:(id)a3 insertAtTop:(BOOL)a4
+- (void)_externalSourceRequestsInsertionOfWidgetWithIdentifier:(id)identifier insertAtTop:(BOOL)top
 {
-  v4 = a4;
-  v8 = a3;
-  if ([v8 length])
+  topCopy = top;
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v6 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v8];
+    v6 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:identifierCopy];
 
     if (v6)
     {
-      v7 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:v8 visibilityChanged:[(WGWidgetDiscoveryController *)self _setEnabled:1 forElementWithIdentifier:v8] contentStateChanged:0 insertAtTop:v4 notifyingObservers:1];
+      v7 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:identifierCopy visibilityChanged:[(WGWidgetDiscoveryController *)self _setEnabled:1 forElementWithIdentifier:identifierCopy] contentStateChanged:0 insertAtTop:topCopy notifyingObservers:1];
       if (!v7)
       {
-        v7 = [(WGWidgetDiscoveryController *)self _defaultGroupForWidgetWithIdentifier:v8];
+        v7 = [(WGWidgetDiscoveryController *)self _defaultGroupForWidgetWithIdentifier:identifierCopy];
       }
 
-      WGTodayViewArchiveSetKnownForIdentifier(self->_archive, v8, 0);
+      WGTodayViewArchiveSetKnownForIdentifier(self->_archive, identifierCopy, 0);
       WGTodayViewArchiveSetOrderedIdentifiersInGroup(self->_archive, self->_orderedEnabledTodayIdentifiers, v7, self->_archiveWriteQueue);
     }
   }
 }
 
-- (void)_widgetViewControllerRequestsAdd:(id)a3
+- (void)_widgetViewControllerRequestsAdd:(id)add
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"WGWidgetViewControllerAddRequestBundleIdentifierKey"];
+  userInfo = [add userInfo];
+  v5 = [userInfo objectForKey:@"WGWidgetViewControllerAddRequestBundleIdentifierKey"];
 
   [(WGWidgetDiscoveryController *)self _externalSourceRequestsInsertionOfWidgetWithIdentifier:v5 insertAtTop:0];
 }
 
-- (void)_widget:(id)a3 withIdentifier:(id)a4 didRemoveSnapshotAtURL:(id)a5
+- (void)_widget:(id)_widget withIdentifier:(id)identifier didRemoveSnapshotAtURL:(id)l
 {
-  v11 = a5;
+  lCopy = l;
   widgetIDsToWidgets = self->_widgetIDsToWidgets;
-  v9 = a3;
-  v10 = [(NSMutableDictionary *)widgetIDsToWidgets objectForKey:a4];
+  _widgetCopy = _widget;
+  v10 = [(NSMutableDictionary *)widgetIDsToWidgets objectForKey:identifier];
 
-  if (v10 != v9)
+  if (v10 != _widgetCopy)
   {
-    [v10 invalidateCachedSnapshotWithURL:v11 completionHandler:0];
+    [v10 invalidateCachedSnapshotWithURL:lCopy completionHandler:0];
   }
 }
 
-- (void)_widgetViewControllerDidRemoveSnapshot:(id)a3
+- (void)_widgetViewControllerDidRemoveSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v8 = [v5 objectForKey:@"WGWidgetViewControllerRemovedSnapshotWidgetIdentifierKey"];
+  snapshotCopy = snapshot;
+  userInfo = [snapshotCopy userInfo];
+  v8 = [userInfo objectForKey:@"WGWidgetViewControllerRemovedSnapshotWidgetIdentifierKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [snapshotCopy userInfo];
 
-  v7 = [v6 objectForKey:@"WGWidgetViewControllerRemovedSnapshotURLKey"];
+  v7 = [userInfo2 objectForKey:@"WGWidgetViewControllerRemovedSnapshotURLKey"];
 
   [(WGWidgetDiscoveryController *)self _widget:0 withIdentifier:v8 didRemoveSnapshotAtURL:v7];
 }
 
-- (void)_widgetListEditViewControllerWillDisappear:(id)a3
+- (void)_widgetListEditViewControllerWillDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -587,13 +587,13 @@ LABEL_6:
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    v8 = [WeakRetained transitionCoordinator];
+    transitionCoordinator = [WeakRetained transitionCoordinator];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__WGWidgetDiscoveryController__widgetListEditViewControllerWillDisappear___block_invoke_2;
     v13[3] = &unk_279ED0C60;
     v14 = v5;
-    [v8 animateAlongsideTransition:v13 completion:0];
+    [transitionCoordinator animateAlongsideTransition:v13 completion:0];
     v9 = &v14;
   }
 
@@ -622,11 +622,11 @@ void __74__WGWidgetDiscoveryController__widgetListEditViewControllerWillDisappea
   [WeakRetained _setPresentedEditViewControllerStatusBarAssertion:0];
 }
 
-- (void)_applicationIconChanged:(id)a3
+- (void)_applicationIconChanged:(id)changed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"CFBundleIdentifier"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"CFBundleIdentifier"];
 
   if (v5)
   {
@@ -691,22 +691,22 @@ void __74__WGWidgetDiscoveryController__widgetListEditViewControllerWillDisappea
 
 - (BOOL)alwaysShowsFavoriteWidgets
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"WGAlwaysShowFavorites"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"WGAlwaysShowFavorites"];
 
   return v3;
 }
 
-- (void)handleWidgetLaunchRecommendation:(id)a3 completion:(id)a4
+- (void)handleWidgetLaunchRecommendation:(id)recommendation completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v17 = a4;
+  recommendationCopy = recommendation;
+  completionCopy = completion;
   v7 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = recommendationCopy;
     _os_log_impl(&dword_27425E000, v7, OS_LOG_TYPE_DEFAULT, "Handling recommendation to update widgets with bundle IDs: %{public}@)", &buf, 0xCu);
   }
 
@@ -722,7 +722,7 @@ void __74__WGWidgetDiscoveryController__widgetListEditViewControllerWillDisappea
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
+  obj = recommendationCopy;
   v10 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
@@ -741,8 +741,8 @@ void __74__WGWidgetDiscoveryController__widgetListEditViewControllerWillDisappea
         if (v14)
         {
           dispatch_group_enter(v8);
-          v15 = [(WGWidgetDiscoveryController *)self _nextSequenceNumber];
-          [(WGWidgetStatsController *)v9 notePreWarmHasStarted:v13 withTriggerType:1 withSequence:v15];
+          _nextSequenceNumber = [(WGWidgetDiscoveryController *)self _nextSequenceNumber];
+          [(WGWidgetStatsController *)v9 notePreWarmHasStarted:v13 withTriggerType:1 withSequence:_nextSequenceNumber];
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
           v22[2] = __75__WGWidgetDiscoveryController_handleWidgetLaunchRecommendation_completion___block_invoke;
@@ -750,7 +750,7 @@ void __74__WGWidgetDiscoveryController__widgetListEditViewControllerWillDisappea
           v22[4] = v13;
           p_buf = &buf;
           v23 = v9;
-          v26 = v15;
+          v26 = _nextSequenceNumber;
           v24 = v8;
           [v14 _updateWidgetWithCompletionHandler:v22];
         }
@@ -766,9 +766,9 @@ void __74__WGWidgetDiscoveryController__widgetListEditViewControllerWillDisappea
   block[1] = 3221225472;
   block[2] = __75__WGWidgetDiscoveryController_handleWidgetLaunchRecommendation_completion___block_invoke_72;
   block[3] = &unk_279ED0CD8;
-  v20 = v17;
+  v20 = completionCopy;
   v21 = &buf;
-  v16 = v17;
+  v16 = completionCopy;
   dispatch_group_notify(v8, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(&buf, 8);
@@ -825,17 +825,17 @@ void __75__WGWidgetDiscoveryController_handleWidgetLaunchRecommendation_completi
   }
 }
 
-- (void)_dataSourcesDidChange:(id)a3
+- (void)_dataSourcesDidChange:(id)change
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  changeCopy = change;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [(NSMutableDictionary *)self->_identifiersToDataSources mutableCopy];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = v4;
+  v7 = changeCopy;
   v8 = [v7 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v8)
   {
@@ -851,21 +851,21 @@ void __75__WGWidgetDiscoveryController_handleWidgetLaunchRecommendation_completi
         }
 
         v12 = *(*(&v43 + 1) + 8 * i);
-        v13 = [v12 dataSourceIdentifier];
-        v14 = [(NSMutableDictionary *)self->_identifiersToDataSources objectForKey:v13];
+        dataSourceIdentifier = [v12 dataSourceIdentifier];
+        v14 = [(NSMutableDictionary *)self->_identifiersToDataSources objectForKey:dataSourceIdentifier];
         v15 = v14;
         if (v14)
         {
           if (([v14 isEqual:v12] & 1) == 0)
           {
-            [v5 addObject:v12];
+            [array addObject:v12];
           }
         }
 
         else
         {
-          [v5 addObject:v12];
-          [v6 removeObjectForKey:v13];
+          [array addObject:v12];
+          [v6 removeObjectForKey:dataSourceIdentifier];
         }
       }
 
@@ -913,7 +913,7 @@ void __75__WGWidgetDiscoveryController_handleWidgetLaunchRecommendation_completi
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v23 = v5;
+  v23 = array;
   v24 = [v23 countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v24)
   {
@@ -930,13 +930,13 @@ void __75__WGWidgetDiscoveryController_handleWidgetLaunchRecommendation_completi
 
         v28 = *(*(&v35 + 1) + 8 * k);
         identifiersToDataSources = self->_identifiersToDataSources;
-        v30 = [v28 dataSourceIdentifier];
-        [(NSMutableDictionary *)identifiersToDataSources setObject:v28 forKey:v30];
+        dataSourceIdentifier2 = [v28 dataSourceIdentifier];
+        [(NSMutableDictionary *)identifiersToDataSources setObject:v28 forKey:dataSourceIdentifier2];
 
         dataSourceIdentifiersToDatumIdentifiers = self->_dataSourceIdentifiersToDatumIdentifiers;
-        v32 = [MEMORY[0x277CBEB18] array];
-        v33 = [v28 dataSourceIdentifier];
-        [(NSMutableDictionary *)dataSourceIdentifiersToDatumIdentifiers setObject:v32 forKey:v33];
+        array2 = [MEMORY[0x277CBEB18] array];
+        dataSourceIdentifier3 = [v28 dataSourceIdentifier];
+        [(NSMutableDictionary *)dataSourceIdentifiersToDatumIdentifiers setObject:array2 forKey:dataSourceIdentifier3];
 
         [v28 addWidgetObserver:self completion:0];
       }
@@ -991,8 +991,8 @@ void __75__WGWidgetDiscoveryController_handleWidgetLaunchRecommendation_completi
     v23 = &unk_279ED0D28;
     objc_copyWeak(&v24, &location);
     [WGDataSourceManager requestSharedDataSourceManager:&v20];
-    v19 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v19 addObserver:self];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:self];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -1034,42 +1034,42 @@ void __68__WGWidgetDiscoveryController__beginObservingDataSourcesIfNecessary__bl
   [(WGWidgetDiscoveryController *)self _beginObservingDataSourcesIfNecessary];
 }
 
-- (BOOL)_isElementWithIdentifierEnabled:(id)a3
+- (BOOL)_isElementWithIdentifierEnabled:(id)enabled
 {
-  v4 = a3;
-  if ([v4 length])
+  enabledCopy = enabled;
+  if ([enabledCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v4];
-    v6 = [v5 representedExtension];
-    v7 = v6;
-    if (v6)
+    v5 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:enabledCopy];
+    representedExtension = [v5 representedExtension];
+    v7 = representedExtension;
+    if (representedExtension)
     {
-      v8 = [v6 optedIn];
+      optedIn = [representedExtension optedIn];
     }
 
     else
     {
-      v8 = 0;
+      optedIn = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    optedIn = 0;
   }
 
-  return v8;
+  return optedIn;
 }
 
-- (BOOL)_setEnabled:(BOOL)a3 forElementWithIdentifier:(id)a4
+- (BOOL)_setEnabled:(BOOL)enabled forElementWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:v6];
-    v8 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v6];
+    v7 = [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:identifierCopy];
+    v8 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:identifierCopy];
     if ((objc_opt_respondsToSelector() & 1) == 0 || ([v8 representedExtension], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       LOBYTE(v17) = 0;
@@ -1079,10 +1079,10 @@ LABEL_18:
     }
 
     v10 = v9;
-    v11 = [v9 optedIn];
-    if (v4)
+    optedIn = [v9 optedIn];
+    if (enabledCopy)
     {
-      if ((v11 & 1) == 0)
+      if ((optedIn & 1) == 0)
       {
         v21 = 0;
         [v10 attemptOptIn:&v21];
@@ -1099,9 +1099,9 @@ LABEL_18:
         }
 
         v14 = v13;
-        v15 = [v10 identifier];
+        identifier = [v10 identifier];
         *buf = 138543618;
-        v23 = v15;
+        v23 = identifier;
         v24 = 2114;
         v25 = v12;
         v16 = "Encountered error attempting to opt in extension with ID '%{public}@': %{public}@";
@@ -1112,7 +1112,7 @@ LABEL_16:
       }
     }
 
-    else if (v11)
+    else if (optedIn)
     {
       v20 = 0;
       [v10 attemptOptOut:&v20];
@@ -1129,16 +1129,16 @@ LABEL_16:
       }
 
       v14 = v18;
-      v15 = [v10 identifier];
+      identifier = [v10 identifier];
       *buf = 138543618;
-      v23 = v15;
+      v23 = identifier;
       v24 = 2114;
       v25 = v12;
       v16 = "Encountered error attempting to opt out extension with ID '%{public}@': %{public}@";
       goto LABEL_15;
     }
 
-    v17 = v7 ^ [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:v6];
+    v17 = v7 ^ [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:identifierCopy];
 
     goto LABEL_18;
   }
@@ -1149,35 +1149,35 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)_isElementWithIdentifierKnown:(id)a3
+- (BOOL)_isElementWithIdentifierKnown:(id)known
 {
-  v4 = a3;
-  if (WGTodayViewArchiveGetKnownForIdentifier(self->_archive, v4))
+  knownCopy = known;
+  if (WGTodayViewArchiveGetKnownForIdentifier(self->_archive, knownCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = WGIsWidgetWithBundleIdentifierInternal(v4);
+    v5 = WGIsWidgetWithBundleIdentifierInternal(knownCopy);
   }
 
   return v5;
 }
 
-- (BOOL)_isElementWithIdentifierFavorited:(id)a3
+- (BOOL)_isElementWithIdentifierFavorited:(id)favorited
 {
   archive = self->_archive;
-  v4 = a3;
+  favoritedCopy = favorited;
   v5 = WGTodayViewArchiveGetOrderedIdentifiersInGroup(archive, @"FavoriteGroup");
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:favoritedCopy];
 
   return v6;
 }
 
 - (void)_calculateAndPostNewWidgetsCount
 {
-  v3 = [(NSMutableDictionary *)self->_identifiersToDatums allValues];
+  allValues = [(NSMutableDictionary *)self->_identifiersToDatums allValues];
   if (self->_newWidgetsCountPostQueue || (v4 = dispatch_queue_create("com.apple.notificationcenter.newwidgetscountpostqueue", 0), v5 = self->_newWidgetsCountPostQueue, self->_newWidgetsCountPostQueue = v4, v5, self->_newWidgetsCountPostQueue))
   {
     objc_initWeak(&location, self);
@@ -1186,7 +1186,7 @@ LABEL_19:
     block[1] = 3221225472;
     block[2] = __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_invoke;
     block[3] = &unk_279ED0DA0;
-    v8 = v3;
+    v8 = allValues;
     objc_copyWeak(&v9, &location);
     dispatch_async(newWidgetsCountPostQueue, block);
     objc_destroyWeak(&v9);
@@ -1278,12 +1278,12 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
   [v4 postNotificationName:@"WGAvailableWidgetsUpdatedNotification" object:WeakRetained userInfo:v3];
 }
 
-- (void)_notifyObserversOfVisibilityChange:(BOOL)a3 ofWidgetWithIdentifier:(id)a4 inGroup:(id)a5
+- (void)_notifyObserversOfVisibilityChange:(BOOL)change ofWidgetWithIdentifier:(id)identifier inGroup:(id)group
 {
-  v6 = a3;
+  changeCopy = change;
   v21 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  groupCopy = group;
   [(NSPointerArray *)self->_observers compact];
   v18 = 0u;
   v19 = 0u;
@@ -1306,17 +1306,17 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
-        if (v6)
+        if (changeCopy)
         {
           if (objc_opt_respondsToSelector())
           {
-            [v14 widgetDiscoveryController:self widgetWithIdentifier:v15 shouldBecomeVisibleInGroup:v8];
+            [v14 widgetDiscoveryController:self widgetWithIdentifier:identifierCopy shouldBecomeVisibleInGroup:groupCopy];
           }
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          [v14 widgetDiscoveryController:self widgetWithIdentifier:v15 shouldBecomeHiddenInGroup:v8];
+          [v14 widgetDiscoveryController:self widgetWithIdentifier:identifierCopy shouldBecomeHiddenInGroup:groupCopy];
         }
 
         ++v13;
@@ -1371,10 +1371,10 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
   }
 }
 
-- (void)_notifyObserversOfOrderChangeForWidgetIdentifiers:(id)a3
+- (void)_notifyObserversOfOrderChangeForWidgetIdentifiers:(id)identifiers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(NSPointerArray *)self->_observers compact];
   v13 = 0u;
   v14 = 0u;
@@ -1399,7 +1399,7 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 widgetDiscoveryController:self orderDidChangeForWidgetIdentifiers:{v4, v11}];
+          [v10 widgetDiscoveryController:self orderDidChangeForWidgetIdentifiers:{identifiersCopy, v11}];
         }
 
         ++v9;
@@ -1413,19 +1413,19 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
   }
 }
 
-- (id)_groupForWidgetWithIdentifier:(id)a3
+- (id)_groupForWidgetWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v5 = @"TodayGroup";
     v6 = WGTodayViewArchiveGetOrderedIdentifiersInGroup(self->_archive, @"TodayGroup");
-    v7 = [v6 containsObject:v4];
+    v7 = [v6 containsObject:identifierCopy];
 
     if ((v7 & 1) == 0)
     {
       v8 = WGTodayViewArchiveGetOrderedIdentifiersInGroup(self->_archive, @"WidgetGroup");
-      v9 = [v8 containsObject:v4];
+      v9 = [v8 containsObject:identifierCopy];
 
       if (v9)
       {
@@ -1447,13 +1447,13 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
   return v5;
 }
 
-- (id)_insertWidgetWithIdentifier:(id)a3 atTop:(BOOL)a4
+- (id)_insertWidgetWithIdentifier:(id)identifier atTop:(BOOL)top
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  topCopy = top;
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v7 = [(WGWidgetDiscoveryController *)self _groupForWidgetWithIdentifier:v6];
+    v7 = [(WGWidgetDiscoveryController *)self _groupForWidgetWithIdentifier:identifierCopy];
     v8 = v7;
     if (v7)
     {
@@ -1462,7 +1462,7 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
 
     else
     {
-      v9 = [(WGWidgetDiscoveryController *)self _defaultGroupForWidgetWithIdentifier:v6];
+      v9 = [(WGWidgetDiscoveryController *)self _defaultGroupForWidgetWithIdentifier:identifierCopy];
     }
 
     v10 = v9;
@@ -1470,14 +1470,14 @@ void __63__WGWidgetDiscoveryController__calculateAndPostNewWidgetsCount__block_i
     v11 = WGTodayViewArchiveGetOrderedIdentifiersInGroup(self->_archive, v10);
     v12 = [(WGWidgetDiscoveryController *)self _orderedEnabledIdentifiersForGroup:v10];
     [(WGWidgetDiscoveryController *)self _invalidateVisibleIdentifiersForGroup:v10];
-    if (v4)
+    if (topCopy)
     {
-      [v12 insertObject:v6 atIndex:0];
+      [v12 insertObject:identifierCopy atIndex:0];
     }
 
     else
     {
-      [v12 addObject:v6];
+      [v12 addObject:identifierCopy];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __65__WGWidgetDiscoveryController__insertWidgetWithIdentifier_atTop___block_invoke;
@@ -1523,56 +1523,56 @@ uint64_t __65__WGWidgetDiscoveryController__insertWidgetWithIdentifier_atTop___b
   return v14;
 }
 
-- (void)_removeWidgetWithIdentifier:(id)a3
+- (void)_removeWidgetWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([v5 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    [(NSMutableArray *)self->_orderedEnabledTodayIdentifiers removeObject:v5];
+    [(NSMutableArray *)self->_orderedEnabledTodayIdentifiers removeObject:identifierCopy];
     [(WGWidgetDiscoveryController *)self _invalidateVisibleIdentifiersForGroup:@"TodayGroup"];
-    [(NSMutableArray *)self->_orderedEnabledWidgetsIdentifiers removeObject:v5];
+    [(NSMutableArray *)self->_orderedEnabledWidgetsIdentifiers removeObject:identifierCopy];
     [(WGWidgetDiscoveryController *)self _invalidateVisibleIdentifiersForGroup:@"WidgetGroup"];
     orderedVisibleWidgetsIdentifiers = self->_orderedVisibleWidgetsIdentifiers;
     self->_orderedVisibleWidgetsIdentifiers = 0;
   }
 }
 
-- (id)_updatePublicationStateOfDatumWithIdentifier:(id)a3 visibilityChanged:(BOOL)a4 contentStateChanged:(BOOL)a5 insertAtTop:(BOOL)a6 notifyingObservers:(BOOL)a7
+- (id)_updatePublicationStateOfDatumWithIdentifier:(id)identifier visibilityChanged:(BOOL)changed contentStateChanged:(BOOL)stateChanged insertAtTop:(BOOL)top notifyingObservers:(BOOL)observers
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  observersCopy = observers;
+  topCopy = top;
+  stateChangedCopy = stateChanged;
+  changedCopy = changed;
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  identifierCopy = identifier;
   v13 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138544386;
-    v23 = v12;
+    v23 = identifierCopy;
     v24 = 1024;
-    v25 = v10;
+    v25 = changedCopy;
     v26 = 1024;
-    v27 = v9;
+    v27 = stateChangedCopy;
     v28 = 1024;
-    v29 = v8;
+    v29 = topCopy;
     v30 = 1024;
-    v31 = v7;
+    v31 = observersCopy;
     _os_log_impl(&dword_27425E000, v13, OS_LOG_TYPE_DEFAULT, "Will update publication state of %{public}@ visibilityChanged: %d contentStateChanged: %d insertAtTop: %d notifyingObservers: %d", &v22, 0x24u);
   }
 
-  if (![v12 length])
+  if (![identifierCopy length])
   {
     v14 = 0;
     goto LABEL_25;
   }
 
-  if (v10 || v9)
+  if (changedCopy || stateChangedCopy)
   {
-    v15 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v12];
+    v15 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:identifierCopy];
     if (v15)
     {
-      v16 = [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:v12];
+      v16 = [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:identifierCopy];
     }
 
     else
@@ -1580,22 +1580,22 @@ uint64_t __65__WGWidgetDiscoveryController__insertWidgetWithIdentifier_atTop___b
       v16 = 0;
     }
 
-    v17 = [(WGWidgetPersistentStateController *)self->_persistentStateController doesWidgetWithIdentifierHaveContent:v12];
-    v14 = [(WGWidgetDiscoveryController *)self _groupForWidgetWithIdentifier:v12];
+    v17 = [(WGWidgetPersistentStateController *)self->_persistentStateController doesWidgetWithIdentifierHaveContent:identifierCopy];
+    v14 = [(WGWidgetDiscoveryController *)self _groupForWidgetWithIdentifier:identifierCopy];
     v18 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138543874;
-      v23 = v12;
+      v23 = identifierCopy;
       v24 = 1024;
       v25 = v16;
       v26 = 1024;
       v27 = v17;
       _os_log_impl(&dword_27425E000, v18, OS_LOG_TYPE_DEFAULT, "Publication state of %{public}@ isVisible: %d hasContent: %d", &v22, 0x18u);
-      if (!v9)
+      if (!stateChangedCopy)
       {
 LABEL_13:
-        if (!v10)
+        if (!changedCopy)
         {
           goto LABEL_14;
         }
@@ -1604,26 +1604,26 @@ LABEL_13:
       }
     }
 
-    else if (!v9)
+    else if (!stateChangedCopy)
     {
       goto LABEL_13;
     }
 
-    v19 = [(WGWidgetDiscoveryController *)self _groupForWidgetWithIdentifier:v12];
+    v19 = [(WGWidgetDiscoveryController *)self _groupForWidgetWithIdentifier:identifierCopy];
     [(WGWidgetDiscoveryController *)self _invalidateVisibleIdentifiersForGroup:v19];
 
-    if (!v10)
+    if (!changedCopy)
     {
 LABEL_14:
-      if (!v7)
+      if (!observersCopy)
       {
         goto LABEL_24;
       }
 
 LABEL_15:
-      if (v10 && v17 || v16 && v9)
+      if (changedCopy && v17 || v16 && stateChangedCopy)
       {
-        [(WGWidgetDiscoveryController *)self _notifyObserversOfVisibilityChange:v16 & v17 ofWidgetWithIdentifier:v12 inGroup:v14];
+        [(WGWidgetDiscoveryController *)self _notifyObserversOfVisibilityChange:v16 & v17 ofWidgetWithIdentifier:identifierCopy inGroup:v14];
       }
 
       goto LABEL_24;
@@ -1632,10 +1632,10 @@ LABEL_15:
 LABEL_20:
     if (v16)
     {
-      v20 = [(WGWidgetDiscoveryController *)self _insertWidgetWithIdentifier:v12 atTop:v8];
+      v20 = [(WGWidgetDiscoveryController *)self _insertWidgetWithIdentifier:identifierCopy atTop:topCopy];
 
       v14 = v20;
-      if (!v7)
+      if (!observersCopy)
       {
         goto LABEL_24;
       }
@@ -1643,8 +1643,8 @@ LABEL_20:
 
     else
     {
-      [(WGWidgetDiscoveryController *)self _removeWidgetWithIdentifier:v12];
-      if (!v7)
+      [(WGWidgetDiscoveryController *)self _removeWidgetWithIdentifier:identifierCopy];
+      if (!observersCopy)
       {
         goto LABEL_24;
       }
@@ -1661,13 +1661,13 @@ LABEL_25:
   return v14;
 }
 
-- (void)presentWidgetListEditViewControllerFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentWidgetListEditViewControllerFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_presentedEditViewController);
   v11 = WeakRetained;
-  if (v8 && ([WeakRetained wg_isAppearanceTransitioning] & 1) == 0)
+  if (controllerCopy && ([WeakRetained wg_isAppearanceTransitioning] & 1) == 0)
   {
     objc_initWeak(&location, self);
     if (v11)
@@ -1678,9 +1678,9 @@ LABEL_25:
       v19[2] = __105__WGWidgetDiscoveryController_presentWidgetListEditViewControllerFromViewController_animated_completion___block_invoke;
       v19[3] = &unk_279ED0DF0;
       objc_copyWeak(&v22, &location);
-      v20 = v8;
-      v23 = a4;
-      v21 = v9;
+      v20 = controllerCopy;
+      animatedCopy = animated;
+      v21 = completionCopy;
       [(WGWidgetDiscoveryController *)self dismissWidgetListEditViewControllerAnimated:1 completion:v19];
 
       v13 = v20;
@@ -1694,9 +1694,9 @@ LABEL_25:
       v14[2] = __105__WGWidgetDiscoveryController_presentWidgetListEditViewControllerFromViewController_animated_completion___block_invoke_2;
       v14[3] = &unk_279ED0E40;
       objc_copyWeak(&v17, &location);
-      v15 = v8;
-      v18 = a4;
-      v16 = v9;
+      v15 = controllerCopy;
+      animatedCopy2 = animated;
+      v16 = completionCopy;
       [(WGWidgetDiscoveryController *)self _requestUnlockWithCompletion:v14];
 
       v13 = v15;
@@ -1706,9 +1706,9 @@ LABEL_25:
     objc_destroyWeak(&location);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1774,10 +1774,10 @@ void __105__WGWidgetDiscoveryController_presentWidgetListEditViewControllerFromV
   [v1 _setPresentedEditViewControllerStatusBarAssertion:v2];
 }
 
-- (void)dismissWidgetListEditViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissWidgetListEditViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_presentedEditViewController);
   if (WeakRetained)
   {
@@ -1787,8 +1787,8 @@ void __105__WGWidgetDiscoveryController_presentWidgetListEditViewControllerFromV
     v8[2] = __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAnimated_completion___block_invoke;
     v8[3] = &unk_279ED0E68;
     objc_copyWeak(&v10, &location);
-    v9 = v6;
-    [WeakRetained dismissViewControllerAnimated:v4 completion:v8];
+    v9 = completionCopy;
+    [WeakRetained dismissViewControllerAnimated:animatedCopy completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -1838,9 +1838,9 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
 - (int64_t)_widgetListEditViewControllerStatusBarLegibilityStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentedEditViewController);
-  v3 = [WeakRetained traitCollection];
+  traitCollection = [WeakRetained traitCollection];
 
-  if ([v3 userInterfaceStyle] == 2)
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     v4 = 1;
   }
@@ -1853,127 +1853,127 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   return v4;
 }
 
-- (void)_invalidateWidgetListEditViewControllerStatusBarAssertion:(id)a3
+- (void)_invalidateWidgetListEditViewControllerStatusBarAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained widgetDiscoveryController:self didEndUsingStatusBarAssertion:v5];
+    [WeakRetained widgetDiscoveryController:self didEndUsingStatusBarAssertion:assertionCopy];
   }
 }
 
-- (id)_preferredViewControllerForPresentingFromViewController:(id)a3
+- (id)_preferredViewControllerForPresentingFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = v4;
+  v6 = controllerCopy;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained widgetDiscoveryController:self preferredViewControllerForPresentingFromViewController:v4];
+    v6 = [WeakRetained widgetDiscoveryController:self preferredViewControllerForPresentingFromViewController:controllerCopy];
   }
 
   return v6;
 }
 
-- (void)_requestUnlockWithCompletion:(id)a3
+- (void)_requestUnlockWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained widgetDiscoveryController:self requestUnlockWithCompletion:v5];
+    [WeakRetained widgetDiscoveryController:self requestUnlockWithCompletion:completionCopy];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)dismissWidgetListEditViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)dismissWidgetListEditViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion
 {
-  v6 = a4;
-  v11 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_presentedEditViewController);
 
-  if (WeakRetained != v11)
+  if (WeakRetained != controllerCopy)
   {
-    [WGWidgetDiscoveryController dismissWidgetListEditViewController:a2 animated:self withCompletion:v11];
+    [WGWidgetDiscoveryController dismissWidgetListEditViewController:a2 animated:self withCompletion:controllerCopy];
   }
 
-  [(WGWidgetDiscoveryController *)self dismissWidgetListEditViewControllerAnimated:v6 completion:v9];
+  [(WGWidgetDiscoveryController *)self dismissWidgetListEditViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)widgetEditListViewController:(id)a3 traitCollectionDidChange:(id)a4
+- (void)widgetEditListViewController:(id)controller traitCollectionDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [a3 traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [controller traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v9 = [v6 userInterfaceStyle];
-  if (v9 != v8)
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle2 != userInterfaceStyle)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(WGWidgetDiscoveryController *)self _widgetListEditViewControllerStatusBarLegibilityStyle];
-      v11 = [(WGWidgetDiscoveryController *)self _presentedEditViewControllerStatusBarAssertion];
-      [WeakRetained widgetDiscoveryController:self updateStatusBarAssertion:v11 withLegibilityStyle:v10];
+      _widgetListEditViewControllerStatusBarLegibilityStyle = [(WGWidgetDiscoveryController *)self _widgetListEditViewControllerStatusBarLegibilityStyle];
+      _presentedEditViewControllerStatusBarAssertion = [(WGWidgetDiscoveryController *)self _presentedEditViewControllerStatusBarAssertion];
+      [WeakRetained widgetDiscoveryController:self updateStatusBarAssertion:_presentedEditViewControllerStatusBarAssertion withLegibilityStyle:_widgetListEditViewControllerStatusBarLegibilityStyle];
     }
   }
 }
 
-- (void)widgetDataSource:(id)a3 replaceWithDatum:(id)a4
+- (void)widgetDataSource:(id)source replaceWithDatum:(id)datum
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  datumCopy = datum;
   v8 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 datumIdentifier];
-    v11 = [v7 representedExtension];
-    v12 = [v11 _plugIn];
-    v13 = [v12 uuid];
+    datumIdentifier = [datumCopy datumIdentifier];
+    representedExtension = [datumCopy representedExtension];
+    _plugIn = [representedExtension _plugIn];
+    uuid = [_plugIn uuid];
     v31 = 138543874;
-    v32 = v6;
+    v32 = sourceCopy;
     v33 = 2114;
-    v34 = v10;
+    v34 = datumIdentifier;
     v35 = 2114;
-    v36 = v13;
+    v36 = uuid;
     _os_log_impl(&dword_27425E000, v9, OS_LOG_TYPE_DEFAULT, "Widget data source %{public}@ asking to replace with datum with ID '%{public}@ (%{public}@)'", &v31, 0x20u);
   }
 
   identifiersToDataSources = self->_identifiersToDataSources;
-  v15 = [v6 dataSourceIdentifier];
-  v16 = [(NSMutableDictionary *)identifiersToDataSources objectForKey:v15];
+  dataSourceIdentifier = [sourceCopy dataSourceIdentifier];
+  v16 = [(NSMutableDictionary *)identifiersToDataSources objectForKey:dataSourceIdentifier];
 
   if (v16)
   {
-    v17 = [v7 datumIdentifier];
-    v18 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v17];
+    datumIdentifier2 = [datumCopy datumIdentifier];
+    v18 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:datumIdentifier2];
 
-    [(NSMutableDictionary *)self->_identifiersToDatums setObject:v7 forKey:v17];
-    v19 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:v17];
+    [(NSMutableDictionary *)self->_identifiersToDatums setObject:datumCopy forKey:datumIdentifier2];
+    v19 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:datumIdentifier2];
     if (v19)
     {
       v20 = v19;
-      v21 = [v7 representedExtension];
-      v22 = [v20 widgetInfoWithExtension:v21];
+      representedExtension2 = [datumCopy representedExtension];
+      v22 = [v20 widgetInfoWithExtension:representedExtension2];
     }
 
     else
     {
-      v21 = [v7 representedExtension];
-      v22 = [WGWidgetInfo widgetInfoWithExtension:v21];
+      representedExtension2 = [datumCopy representedExtension];
+      v22 = [WGWidgetInfo widgetInfoWithExtension:representedExtension2];
     }
 
     if (v22)
     {
-      [(NSMutableDictionary *)self->_identifiersToWidgetInfos setObject:v22 forKey:v17];
+      [(NSMutableDictionary *)self->_identifiersToWidgetInfos setObject:v22 forKey:datumIdentifier2];
     }
 
     else if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
@@ -1982,28 +1982,28 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
     }
 
     dataSourceIdentifiersToDatumIdentifiers = self->_dataSourceIdentifiersToDatumIdentifiers;
-    v25 = [v6 dataSourceIdentifier];
-    v26 = [(NSMutableDictionary *)dataSourceIdentifiersToDatumIdentifiers objectForKey:v25];
-    [v26 addObject:v17];
+    dataSourceIdentifier2 = [sourceCopy dataSourceIdentifier];
+    v26 = [(NSMutableDictionary *)dataSourceIdentifiersToDatumIdentifiers objectForKey:dataSourceIdentifier2];
+    [v26 addObject:datumIdentifier2];
 
-    if (WGIsWidgetWithBundleIdentifierInternal(v17))
+    if (WGIsWidgetWithBundleIdentifierInternal(datumIdentifier2))
     {
-      WGTodayViewArchiveSetKnownForIdentifier(self->_archive, v17, self->_archiveWriteQueue);
+      WGTodayViewArchiveSetKnownForIdentifier(self->_archive, datumIdentifier2, self->_archiveWriteQueue);
     }
 
-    if (!v18 && (WGTodayViewArchiveGetPenalizedForIdentifier(self->_archive, v17) & 1) == 0 && !WGIsWidgetWithBundleIdentifierBuiltOnOrAfterSystemVersion(v17, @"10.0"))
+    if (!v18 && (WGTodayViewArchiveGetPenalizedForIdentifier(self->_archive, datumIdentifier2) & 1) == 0 && !WGIsWidgetWithBundleIdentifierBuiltOnOrAfterSystemVersion(datumIdentifier2, @"10.0"))
     {
-      WGTodayViewArchiveRemoveFromOrderedIdentifiers(self->_archive, v17, 0);
-      WGTodayViewArchiveSetPenalizedForIdentifier(self->_archive, v17, 0);
+      WGTodayViewArchiveRemoveFromOrderedIdentifiers(self->_archive, datumIdentifier2, 0);
+      WGTodayViewArchiveSetPenalizedForIdentifier(self->_archive, datumIdentifier2, 0);
     }
 
-    v27 = [(NSMutableSet *)self->_defaultEnabledIDs containsObject:v17];
+    v27 = [(NSMutableSet *)self->_defaultEnabledIDs containsObject:datumIdentifier2];
     if (v27)
     {
-      [(NSMutableSet *)self->_defaultEnabledIDs removeObject:v17];
+      [(NSMutableSet *)self->_defaultEnabledIDs removeObject:datumIdentifier2];
     }
 
-    v28 = [(WGWidgetDiscoveryController *)self _setEnabled:v27 | [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:v17] forElementWithIdentifier:v17];
+    v28 = [(WGWidgetDiscoveryController *)self _setEnabled:v27 | [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:datumIdentifier2] forElementWithIdentifier:datumIdentifier2];
     if (v18)
     {
       v29 = 0;
@@ -2011,11 +2011,11 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
 
     else
     {
-      v28 |= [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:v17];
-      v29 = WGIsWidgetWithBundleIdentifierWantsTop(v17);
+      v28 |= [(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:datumIdentifier2];
+      v29 = WGIsWidgetWithBundleIdentifierWantsTop(datumIdentifier2);
     }
 
-    v30 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:v17 visibilityChanged:v28 & 1 contentStateChanged:0 insertAtTop:v29 notifyingObservers:1];
+    v30 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:datumIdentifier2 visibilityChanged:v28 & 1 contentStateChanged:0 insertAtTop:v29 notifyingObservers:1];
   }
 
   else
@@ -2023,53 +2023,53 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
     v23 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
     {
-      [WGWidgetDiscoveryController widgetDataSource:v23 replaceWithDatum:v6];
+      [WGWidgetDiscoveryController widgetDataSource:v23 replaceWithDatum:sourceCopy];
     }
   }
 }
 
-- (void)widgetDataSource:(id)a3 removeDatum:(id)a4
+- (void)widgetDataSource:(id)source removeDatum:(id)datum
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  datumCopy = datum;
   v8 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 datumIdentifier];
-    v11 = [v7 representedExtension];
-    v12 = [v11 _plugIn];
-    v13 = [v12 uuid];
+    datumIdentifier = [datumCopy datumIdentifier];
+    representedExtension = [datumCopy representedExtension];
+    _plugIn = [representedExtension _plugIn];
+    uuid = [_plugIn uuid];
     v24 = 138543874;
-    v25 = v6;
+    v25 = sourceCopy;
     v26 = 2114;
-    v27 = v10;
+    v27 = datumIdentifier;
     v28 = 2114;
-    v29 = v13;
+    v29 = uuid;
     _os_log_impl(&dword_27425E000, v9, OS_LOG_TYPE_DEFAULT, "Widget data source %{public}@ asking to remove datum with ID '%{public}@ (%{public}@)'", &v24, 0x20u);
   }
 
   identifiersToDataSources = self->_identifiersToDataSources;
-  v15 = [v6 dataSourceIdentifier];
-  v16 = [(NSMutableDictionary *)identifiersToDataSources objectForKey:v15];
+  dataSourceIdentifier = [sourceCopy dataSourceIdentifier];
+  v16 = [(NSMutableDictionary *)identifiersToDataSources objectForKey:dataSourceIdentifier];
 
   if (!v16)
   {
     v17 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
     {
-      [WGWidgetDiscoveryController widgetDataSource:v17 removeDatum:v6];
+      [WGWidgetDiscoveryController widgetDataSource:v17 removeDatum:sourceCopy];
     }
   }
 
-  v18 = [v7 datumIdentifier];
-  v19 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v18];
+  datumIdentifier2 = [datumCopy datumIdentifier];
+  v19 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:datumIdentifier2];
   if (v19)
   {
-    if ([(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:v18])
+    if ([(WGWidgetDiscoveryController *)self _isElementWithIdentifierEnabled:datumIdentifier2])
     {
-      v20 = [(WGWidgetPersistentStateController *)self->_persistentStateController doesWidgetWithIdentifierHaveContent:v18];
+      v20 = [(WGWidgetPersistentStateController *)self->_persistentStateController doesWidgetWithIdentifierHaveContent:datumIdentifier2];
     }
 
     else
@@ -2077,13 +2077,13 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
       v20 = 0;
     }
 
-    [(NSMutableDictionary *)self->_identifiersToDatums removeObjectForKey:v18];
-    [(NSMutableDictionary *)self->_identifiersToWidgetInfos removeObjectForKey:v18];
-    v21 = [v6 dataSourceIdentifier];
-    v22 = [(NSMutableDictionary *)self->_dataSourceIdentifiersToDatumIdentifiers objectForKey:v21];
-    [v22 removeObject:v18];
-    [(NSMutableDictionary *)self->_widgetIDsToWidgets removeObjectForKey:v18];
-    v23 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:v18 visibilityChanged:1 contentStateChanged:0 insertAtTop:0 notifyingObservers:v20];
+    [(NSMutableDictionary *)self->_identifiersToDatums removeObjectForKey:datumIdentifier2];
+    [(NSMutableDictionary *)self->_identifiersToWidgetInfos removeObjectForKey:datumIdentifier2];
+    dataSourceIdentifier2 = [sourceCopy dataSourceIdentifier];
+    v22 = [(NSMutableDictionary *)self->_dataSourceIdentifiersToDatumIdentifiers objectForKey:dataSourceIdentifier2];
+    [v22 removeObject:datumIdentifier2];
+    [(NSMutableDictionary *)self->_widgetIDsToWidgets removeObjectForKey:datumIdentifier2];
+    v23 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:datumIdentifier2 visibilityChanged:1 contentStateChanged:0 insertAtTop:0 notifyingObservers:v20];
   }
 
   else if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
@@ -2092,14 +2092,14 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   }
 }
 
-- (int64_t)userSpecifiedDisplayModeForWidget:(id)a3
+- (int64_t)userSpecifiedDisplayModeForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [v4 widgetInfo];
-  if ([v5 isLinkedOnOrAfterSystemVersion:@"10.0"])
+  widgetCopy = widget;
+  widgetInfo = [widgetCopy widgetInfo];
+  if ([widgetInfo isLinkedOnOrAfterSystemVersion:@"10.0"])
   {
-    v6 = [v4 widgetIdentifier];
-    v7 = [(WGWidgetDiscoveryController *)self userSpecifiedDisplayModeForWidgetWithIdentifier:v6];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    v7 = [(WGWidgetDiscoveryController *)self userSpecifiedDisplayModeForWidgetWithIdentifier:widgetIdentifier];
   }
 
   else
@@ -2110,28 +2110,28 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   return v7;
 }
 
-- (void)widget:(id)a3 didChangeUserSpecifiedDisplayMode:(int64_t)a4
+- (void)widget:(id)widget didChangeUserSpecifiedDisplayMode:(int64_t)mode
 {
-  v9 = a3;
-  if ([(WGWidgetDiscoveryController *)self userSpecifiedDisplayModeForWidget:?]!= a4)
+  widgetCopy = widget;
+  if ([(WGWidgetDiscoveryController *)self userSpecifiedDisplayModeForWidget:?]!= mode)
   {
-    v6 = [v9 widgetIdentifier];
-    [(WGWidgetDiscoveryController *)self setUserSpecifiedDisplayMode:a4 forWidgetWithIdentifier:v6];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    [(WGWidgetDiscoveryController *)self setUserSpecifiedDisplayMode:mode forWidgetWithIdentifier:widgetIdentifier];
 
     v7 = +[WGWidgetEventTracker sharedInstance];
-    v8 = [v9 widgetIdentifier];
-    [v7 widget:v8 didChangeUserSpecifiedDisplayMode:a4];
+    widgetIdentifier2 = [widgetCopy widgetIdentifier];
+    [v7 widget:widgetIdentifier2 didChangeUserSpecifiedDisplayMode:mode];
   }
 }
 
-- (int64_t)largestAvailableDisplayModeForWidget:(id)a3
+- (int64_t)largestAvailableDisplayModeForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [v4 widgetInfo];
-  if ([v5 isLinkedOnOrAfterSystemVersion:@"10.0"])
+  widgetCopy = widget;
+  widgetInfo = [widgetCopy widgetInfo];
+  if ([widgetInfo isLinkedOnOrAfterSystemVersion:@"10.0"])
   {
-    v6 = [v4 widgetIdentifier];
-    v7 = [(WGWidgetDiscoveryController *)self largestAvailableDisplayModeForWidgetWithIdentifier:v6];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    v7 = [(WGWidgetDiscoveryController *)self largestAvailableDisplayModeForWidgetWithIdentifier:widgetIdentifier];
   }
 
   else
@@ -2142,40 +2142,40 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   return v7;
 }
 
-- (void)widget:(id)a3 didChangeLargestAvailableDisplayMode:(int64_t)a4
+- (void)widget:(id)widget didChangeLargestAvailableDisplayMode:(int64_t)mode
 {
-  v6 = [a3 widgetIdentifier];
-  [(WGWidgetDiscoveryController *)self setLargestAvailableDisplayMode:a4 forWidgetWithIdentifier:v6];
+  widgetIdentifier = [widget widgetIdentifier];
+  [(WGWidgetDiscoveryController *)self setLargestAvailableDisplayMode:mode forWidgetWithIdentifier:widgetIdentifier];
 }
 
-- (void)widget:(id)a3 didEncounterProblematicSnapshotAtURL:(id)a4
+- (void)widget:(id)widget didEncounterProblematicSnapshotAtURL:(id)l
 {
-  v9 = a3;
-  v6 = a4;
+  widgetCopy = widget;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v9 widgetIdentifier];
-    [WeakRetained widgetDiscoveryController:self widgetWithBundleIdentifier:v8 didEncounterProblematicSnapshotAtURL:v6];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    [WeakRetained widgetDiscoveryController:self widgetWithBundleIdentifier:widgetIdentifier didEncounterProblematicSnapshotAtURL:lCopy];
   }
 }
 
-- (void)widget:(id)a3 didRemoveSnapshotAtURL:(id)a4
+- (void)widget:(id)widget didRemoveSnapshotAtURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 widgetIdentifier];
-  [(WGWidgetDiscoveryController *)self _widget:v7 withIdentifier:v8 didRemoveSnapshotAtURL:v6];
+  lCopy = l;
+  widgetCopy = widget;
+  widgetIdentifier = [widgetCopy widgetIdentifier];
+  [(WGWidgetDiscoveryController *)self _widget:widgetCopy withIdentifier:widgetIdentifier didRemoveSnapshotAtURL:lCopy];
 }
 
-- (BOOL)shouldPurgeArchivedSnapshotsForWidget:(id)a3
+- (BOOL)shouldPurgeArchivedSnapshotsForWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 widgetIdentifier];
-    v7 = [WeakRetained widgetDiscoveryController:self shouldPurgeArchivedSnapshotsForWidgetWithBundleIdentifier:v6];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    v7 = [WeakRetained widgetDiscoveryController:self shouldPurgeArchivedSnapshotsForWidgetWithBundleIdentifier:widgetIdentifier];
   }
 
   else
@@ -2186,15 +2186,15 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   return v7;
 }
 
-- (void)widgetListEditViewController:(id)a3 didReorderItemsWithIdentifiersInGroups:(id)a4
+- (void)widgetListEditViewController:(id)controller didReorderItemsWithIdentifiersInGroups:(id)groups
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  groupsCopy = groups;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [groupsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2205,15 +2205,15 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groupsCopy);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v5 objectForKey:v10];
+        v11 = [groupsCopy objectForKey:v10];
         WGTodayViewArchiveSetOrderedIdentifiersInGroup(self->_archive, v11, v10, self->_archiveWriteQueue);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [groupsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -2237,16 +2237,16 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   [(WGWidgetDiscoveryController *)self _notifyObserversOfSignificantWidgetsChange];
 }
 
-- (void)widgetListEditViewController:(id)a3 setEnabled:(BOOL)a4 forItemsWithIdentifiers:(id)a5
+- (void)widgetListEditViewController:(id)controller setEnabled:(BOOL)enabled forItemsWithIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifiersCopy = identifiers;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2258,22 +2258,22 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(identifiersCopy);
         }
 
-        v12 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:*(*(&v13 + 1) + 8 * v11) visibilityChanged:[(WGWidgetDiscoveryController *)self _setEnabled:v5 forElementWithIdentifier:*(*(&v13 + 1) + 8 * v11)] contentStateChanged:0 insertAtTop:0 notifyingObservers:1];
+        v12 = [(WGWidgetDiscoveryController *)self _updatePublicationStateOfDatumWithIdentifier:*(*(&v13 + 1) + 8 * v11) visibilityChanged:[(WGWidgetDiscoveryController *)self _setEnabled:enabledCopy forElementWithIdentifier:*(*(&v13 + 1) + 8 * v11)] contentStateChanged:0 insertAtTop:0 notifyingObservers:1];
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (BOOL)shouldShowWidgetsPinButtonForWidgetListEditViewController:(id)a3
+- (BOOL)shouldShowWidgetsPinButtonForWidgetListEditViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -2305,9 +2305,9 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   return v4;
 }
 
-- (void)noteWidgetsPinningViewControllerDidDismiss:(BOOL)a3
+- (void)noteWidgetsPinningViewControllerDidDismiss:(BOOL)dismiss
 {
-  v3 = a3;
+  dismissCopy = dismiss;
   [(WGWidgetDiscoveryController *)self _setWidgetsPinned:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -2315,7 +2315,7 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
     [WeakRetained widgetDiscoveryControllerDidDismissWidgetsPinningTeachingView:self];
   }
 
-  if (v3)
+  if (dismissCopy)
   {
     [(WGWidgetDiscoveryController *)self _addDefaultPinnedWidgets];
   }
@@ -2357,8 +2357,8 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
     [(WGWidgetDiscoveryController *)self _notifyObserversOfOrderChangeForWidgetIdentifiers:v11];
   }
 
-  v12 = [(WGWidgetDiscoveryController *)self favoriteWidgetIdentifiers];
-  v13 = [v12 mutableCopy];
+  favoriteWidgetIdentifiers = [(WGWidgetDiscoveryController *)self favoriteWidgetIdentifiers];
+  v13 = [favoriteWidgetIdentifiers mutableCopy];
 
   if (([v13 containsObject:@"com.apple.weather.WeatherAppTodayWidget"] & 1) == 0)
   {
@@ -2373,25 +2373,25 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   [(WGWidgetDiscoveryController *)self _updateFavoriteWidgetIDs:v13];
 }
 
-- (void)_setWidgetsPinned:(BOOL)a3
+- (void)_setWidgetsPinned:(BOOL)pinned
 {
-  v3 = a3;
+  pinnedCopy = pinned;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained widgetDiscoveryController:self didChangeWidgetsPinning:v3];
+    [WeakRetained widgetDiscoveryController:self didChangeWidgetsPinning:pinnedCopy];
   }
 }
 
-- (void)widgetListEditViewController:(id)a3 acknowledgeInterfaceItemsWithIdentifiers:(id)a4
+- (void)widgetListEditViewController:(id)controller acknowledgeInterfaceItemsWithIdentifiers:(id)identifiers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifiersCopy = identifiers;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [identifiersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2403,14 +2403,14 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         WGTodayViewArchiveSetKnownForIdentifier(self->_archive, *(*(&v10 + 1) + 8 * v9++), 0);
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [identifiersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -2419,10 +2419,10 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   WGTodayViewArchiveSave(self->_archive, self->_archiveWriteQueue, 0);
 }
 
-- (id)widgetListEditViewController:(id)a3 displayNameForItemWithIdentifier:(id)a4
+- (id)widgetListEditViewController:(id)controller displayNameForItemWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  if (![v5 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v6 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
@@ -2431,11 +2431,11 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
     }
   }
 
-  v14 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:v5];
+  v14 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:identifierCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 displayName];
+    displayName = [v14 displayName];
   }
 
   else
@@ -2445,17 +2445,17 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
       [WGWidgetDiscoveryController widgetListEditViewController:displayNameForItemWithIdentifier:];
     }
 
-    v16 = 0;
+    displayName = 0;
   }
 
-  return v16;
+  return displayName;
 }
 
-- (void)widgetListEditViewController:(id)a3 requestsIconForItemWithIdentifier:(id)a4 withHandler:(id)a5
+- (void)widgetListEditViewController:(id)controller requestsIconForItemWithIdentifier:(id)identifier withHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  if (![v7 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (![identifierCopy length])
   {
     v9 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
@@ -2464,11 +2464,11 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
     }
   }
 
-  v17 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:v7];
+  v17 = [(NSMutableDictionary *)self->_identifiersToWidgetInfos objectForKey:identifierCopy];
   v18 = v17;
   if (v17)
   {
-    [v17 requestSettingsIconWithHandler:v8];
+    [v17 requestSettingsIconWithHandler:handlerCopy];
   }
 
   else if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
@@ -2477,7 +2477,7 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   }
 }
 
-- (BOOL)widgetListEditViewControllerShouldIncludeInternalWidgets:(id)a3
+- (BOOL)widgetListEditViewControllerShouldIncludeInternalWidgets:(id)widgets
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -2493,20 +2493,20 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   return v5;
 }
 
-- (int64_t)layoutModeForWidgetListEditViewController:(id)a3
+- (int64_t)layoutModeForWidgetListEditViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_class();
-  v5 = [v3 presentingViewController];
+  presentingViewController = [controllerCopy presentingViewController];
 
-  v6 = [v5 view];
-  [v6 bounds];
+  view = [presentingViewController view];
+  [view bounds];
   v9 = [v4 layoutModeForSize:{v7, v8}];
 
   return v9;
 }
 
-- (BOOL)widgetListEditViewControllerShouldShowFavorites:(id)a3
+- (BOOL)widgetListEditViewControllerShouldShowFavorites:(id)favorites
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -2522,61 +2522,61 @@ uint64_t __86__WGWidgetDiscoveryController_dismissWidgetListEditViewControllerAn
   return v5;
 }
 
-- (void)remoteViewControllerDidConnectForWidgetViewController:(id)a3
+- (void)remoteViewControllerDidConnectForWidgetViewController:(id)controller
 {
-  v4 = [a3 widgetHost];
-  v7 = [v4 widgetIdentifier];
+  widgetHost = [controller widgetHost];
+  widgetIdentifier = [widgetHost widgetIdentifier];
 
-  v5 = [(NSMutableDictionary *)self->_widgetIDsToPendingTestCompletions objectForKey:v7];
+  v5 = [(NSMutableDictionary *)self->_widgetIDsToPendingTestCompletions objectForKey:widgetIdentifier];
   v6 = v5;
   if (v5)
   {
     (*(v5 + 16))(v5, 1, 0);
-    [(NSMutableDictionary *)self->_widgetIDsToPendingTestCompletions removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_widgetIDsToPendingTestCompletions removeObjectForKey:widgetIdentifier];
   }
 }
 
-- (void)remoteViewControllerViewDidAppearForWidgetViewController:(id)a3
+- (void)remoteViewControllerViewDidAppearForWidgetViewController:(id)controller
 {
-  v4 = [a3 widgetHost];
-  v7 = [v4 widgetIdentifier];
+  widgetHost = [controller widgetHost];
+  widgetIdentifier = [widgetHost widgetIdentifier];
 
-  v5 = [(NSMutableDictionary *)self->_widgetIDsToPendingTestTearDowns objectForKey:v7];
+  v5 = [(NSMutableDictionary *)self->_widgetIDsToPendingTestTearDowns objectForKey:widgetIdentifier];
   v6 = v5;
   if (v5)
   {
     (*(v5 + 16))(v5);
-    [(NSMutableDictionary *)self->_widgetIDsToPendingTestTearDowns removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_widgetIDsToPendingTestTearDowns removeObjectForKey:widgetIdentifier];
   }
 }
 
-- (void)widgetViewControllerNeedsToBeUnregisteredForRefreshNotification:(id)a3
+- (void)widgetViewControllerNeedsToBeUnregisteredForRefreshNotification:(id)notification
 {
   statsController = self->_statsController;
-  v5 = [a3 widgetHost];
-  v4 = [v5 widgetIdentifier];
-  [(WGWidgetStatsController *)statsController unregisterWidgetForPredictionEvents:v4];
+  widgetHost = [notification widgetHost];
+  widgetIdentifier = [widgetHost widgetIdentifier];
+  [(WGWidgetStatsController *)statsController unregisterWidgetForPredictionEvents:widgetIdentifier];
 }
 
-- (void)widgetViewControllerNeedsToBeRegisteredForRefreshNotification:(id)a3
+- (void)widgetViewControllerNeedsToBeRegisteredForRefreshNotification:(id)notification
 {
   statsController = self->_statsController;
-  v5 = [a3 widgetHost];
-  v4 = [v5 widgetIdentifier];
-  [(WGWidgetStatsController *)statsController registerWidgetForPredictionEvents:v4];
+  widgetHost = [notification widgetHost];
+  widgetIdentifier = [widgetHost widgetIdentifier];
+  [(WGWidgetStatsController *)statsController registerWidgetForPredictionEvents:widgetIdentifier];
 }
 
-- (void)deviceManagementPolicyDidChange:(id)a3
+- (void)deviceManagementPolicyDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__WGWidgetDiscoveryController_deviceManagementPolicyDidChange___block_invoke;
   block[3] = &unk_279ED09F0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);
@@ -2654,24 +2654,24 @@ void __63__WGWidgetDiscoveryController_deviceManagementPolicyDidChange___block_i
   }
 }
 
-- (void)debugWidgetWithBundleID:(id)a3 options:(id)a4 completion:(id)a5
+- (void)debugWidgetWithBundleID:(id)d options:(id)options completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543362;
-    v17 = v8;
+    v17 = dCopy;
     _os_log_impl(&dword_27425E000, v11, OS_LOG_TYPE_DEFAULT, "Asked to debug widget with ID '%{public}@'", &v16, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_debuggingHandler);
-  if ([v8 length])
+  if ([dCopy length])
   {
-    v13 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:v8];
+    v13 = [(NSMutableDictionary *)self->_identifiersToDatums objectForKey:dCopy];
     v14 = v13;
     if (v13 && WeakRetained)
     {
@@ -2679,8 +2679,8 @@ void __63__WGWidgetDiscoveryController_deviceManagementPolicyDidChange___block_i
 
       if (v15)
       {
-        [(WGWidgetDiscoveryController *)self _externalSourceRequestsInsertionOfWidgetWithIdentifier:v8 insertAtTop:0];
-        [WeakRetained makeVisibleWidgetWithIdentifier:v8 completion:v10];
+        [(WGWidgetDiscoveryController *)self _externalSourceRequestsInsertionOfWidgetWithIdentifier:dCopy insertAtTop:0];
+        [WeakRetained makeVisibleWidgetWithIdentifier:dCopy completion:completionCopy];
         goto LABEL_11;
       }
     }
@@ -2690,39 +2690,39 @@ void __63__WGWidgetDiscoveryController_deviceManagementPolicyDidChange___block_i
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_11:
 }
 
-- (void)removeWidgetIdentifiersFromToday:(id)a3
+- (void)removeWidgetIdentifiersFromToday:(id)today
 {
-  v4 = a3;
-  v5 = [(WGWidgetDiscoveryController *)self todayWidgetIdentifiers];
-  v9 = [v5 mutableCopy];
+  todayCopy = today;
+  todayWidgetIdentifiers = [(WGWidgetDiscoveryController *)self todayWidgetIdentifiers];
+  v9 = [todayWidgetIdentifiers mutableCopy];
 
-  [v9 removeObjectsInArray:v4];
+  [v9 removeObjectsInArray:todayCopy];
   WGTodayViewArchiveSetOrderedIdentifiersInGroup(self->_archive, v9, @"TodayGroup", self->_archiveWriteQueue);
-  v6 = [(WGWidgetDiscoveryController *)self todayWidgetIdentifiers];
-  v7 = [v6 mutableCopy];
+  todayWidgetIdentifiers2 = [(WGWidgetDiscoveryController *)self todayWidgetIdentifiers];
+  v7 = [todayWidgetIdentifiers2 mutableCopy];
   orderedEnabledTodayIdentifiers = self->_orderedEnabledTodayIdentifiers;
   self->_orderedEnabledTodayIdentifiers = v7;
 
   [(WGWidgetDiscoveryController *)self invalidateVisibleIdentifiers];
 }
 
-- (void)_updateFavoriteWidgetIDs:(id)a3
+- (void)_updateFavoriteWidgetIDs:(id)ds
 {
-  v6 = a3;
-  v4 = [(WGWidgetDiscoveryController *)self favoriteWidgetIdentifiers];
-  if (([v4 isEqualToArray:v6] & 1) == 0)
+  dsCopy = ds;
+  favoriteWidgetIdentifiers = [(WGWidgetDiscoveryController *)self favoriteWidgetIdentifiers];
+  if (([favoriteWidgetIdentifiers isEqualToArray:dsCopy] & 1) == 0)
   {
-    WGTodayViewArchiveSetOrderedIdentifiersInGroup(self->_archive, v6, @"FavoriteGroup", self->_archiveWriteQueue);
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"WGWidgetFavoritesDidChange" object:self];
+    WGTodayViewArchiveSetOrderedIdentifiersInGroup(self->_archive, dsCopy, @"FavoriteGroup", self->_archiveWriteQueue);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"WGWidgetFavoritesDidChange" object:self];
   }
 }
 

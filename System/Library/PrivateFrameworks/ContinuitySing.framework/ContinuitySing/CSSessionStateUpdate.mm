@@ -1,18 +1,18 @@
 @interface CSSessionStateUpdate
 + (id)requiredParameters;
-- (CSSessionStateUpdate)initWithMessage:(id)a3;
-- (CSSessionStateUpdate)initWithSessionState:(id)a3;
+- (CSSessionStateUpdate)initWithMessage:(id)message;
+- (CSSessionStateUpdate)initWithSessionState:(id)state;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CSSessionStateUpdate
 
-- (CSSessionStateUpdate)initWithMessage:(id)a3
+- (CSSessionStateUpdate)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v38.receiver = self;
   v38.super_class = CSSessionStateUpdate;
-  v5 = [(CSMessage *)&v38 initWithMessage:v4];
+  v5 = [(CSMessage *)&v38 initWithMessage:messageCopy];
   if (!v5)
   {
     goto LABEL_27;
@@ -32,7 +32,7 @@
     v20 = ContinuitySingLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [(CSSessionStateUpdate *)v4 initWithMessage:v20];
+      [(CSSessionStateUpdate *)messageCopy initWithMessage:v20];
     }
   }
 
@@ -57,7 +57,7 @@
 
     v18 = v17;
 
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -80,7 +80,7 @@
           v25 = [objc_alloc(MEMORY[0x277CF6C40]) initWithDictionary:*(*(&v34 + 1) + 8 * i)];
           if (v25)
           {
-            [v19 addObject:v25];
+            [array addObject:v25];
           }
         }
 
@@ -90,7 +90,7 @@
       while (v22);
     }
 
-    v26 = [v19 copy];
+    v26 = [array copy];
     participants = v5->_participants;
     v5->_participants = v26;
 
@@ -113,26 +113,26 @@ LABEL_27:
   return v28;
 }
 
-- (CSSessionStateUpdate)initWithSessionState:(id)a3
+- (CSSessionStateUpdate)initWithSessionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = CSSessionStateUpdate;
   v5 = [(CSSessionStateUpdate *)&v12 init];
   if (v5)
   {
-    v5->_reverbLevel = [v4 reverbLevel];
-    [v4 micVolume];
+    v5->_reverbLevel = [stateCopy reverbLevel];
+    [stateCopy micVolume];
     v5->_micVolume = v6;
-    v7 = [v4 activeMicRemoteDisplayID];
+    activeMicRemoteDisplayID = [stateCopy activeMicRemoteDisplayID];
     activeMicRemoteDisplayID = v5->_activeMicRemoteDisplayID;
-    v5->_activeMicRemoteDisplayID = v7;
+    v5->_activeMicRemoteDisplayID = activeMicRemoteDisplayID;
 
-    v9 = [v4 participants];
+    participants = [stateCopy participants];
     participants = v5->_participants;
-    v5->_participants = v9;
+    v5->_participants = participants;
 
-    v5->_sdrMode = [v4 sdrMode];
+    v5->_sdrMode = [stateCopy sdrMode];
   }
 
   return v5;
@@ -140,7 +140,7 @@ LABEL_27:
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSSessionStateUpdate;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -174,8 +174,8 @@ LABEL_27:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v19 objects:v18 count:16];
@@ -186,8 +186,8 @@ LABEL_27:
 
   v17.receiver = self;
   v17.super_class = CSSessionStateUpdate;
-  v10 = [(CSMessage *)&v17 dictionaryRepresentation];
-  v11 = [v10 mutableCopy];
+  dictionaryRepresentation2 = [(CSMessage *)&v17 dictionaryRepresentation];
+  v11 = [dictionaryRepresentation2 mutableCopy];
 
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:self->_reverbLevel];
   [v11 setObject:v12 forKey:@"ReverbLevel"];

@@ -1,10 +1,10 @@
 @interface BMAskToBuyEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMAskToBuyEvent)initWithProto:(id)a3;
-- (BMAskToBuyEvent)initWithProtoData:(id)a3;
-- (BMAskToBuyEvent)initWithRequestID:(id)a3 status:(int)a4 eventTime:(double)a5 userID:(id)a6 actionUserID:(id)a7 itemTitle:(id)a8 itemDescription:(id)a9 itemLocalizedPrice:(id)a10 thumbnailPath:(id)a11 ageRating:(id)a12 starRating:(id)a13 productType:(id)a14 isActionUserDevice:(BOOL)a15 storeLink:(id)a16;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validNonOptionalProperty:(id)a3 propertyName:(id)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMAskToBuyEvent)initWithProto:(id)proto;
+- (BMAskToBuyEvent)initWithProtoData:(id)data;
+- (BMAskToBuyEvent)initWithRequestID:(id)d status:(int)status eventTime:(double)time userID:(id)iD actionUserID:(id)userID itemTitle:(id)title itemDescription:(id)description itemLocalizedPrice:(id)self0 thumbnailPath:(id)self1 ageRating:(id)self2 starRating:(id)self3 productType:(id)self4 isActionUserDevice:(BOOL)self5 storeLink:(id)self6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validNonOptionalProperty:(id)property propertyName:(id)name;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -13,11 +13,11 @@
 
 @implementation BMAskToBuyEvent
 
-- (BOOL)validNonOptionalProperty:(id)a3 propertyName:(id)a4
+- (BOOL)validNonOptionalProperty:(id)property propertyName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  propertyCopy = property;
+  nameCopy = name;
+  if (!propertyCopy)
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -28,8 +28,8 @@
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v8 = [v5 stringByTrimmingCharactersInSet:v7];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v8 = [propertyCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v9 = [v8 length];
 
   if (!v9)
@@ -52,37 +52,37 @@ LABEL_9:
   return v10;
 }
 
-- (BMAskToBuyEvent)initWithRequestID:(id)a3 status:(int)a4 eventTime:(double)a5 userID:(id)a6 actionUserID:(id)a7 itemTitle:(id)a8 itemDescription:(id)a9 itemLocalizedPrice:(id)a10 thumbnailPath:(id)a11 ageRating:(id)a12 starRating:(id)a13 productType:(id)a14 isActionUserDevice:(BOOL)a15 storeLink:(id)a16
+- (BMAskToBuyEvent)initWithRequestID:(id)d status:(int)status eventTime:(double)time userID:(id)iD actionUserID:(id)userID itemTitle:(id)title itemDescription:(id)description itemLocalizedPrice:(id)self0 thumbnailPath:(id)self1 ageRating:(id)self2 starRating:(id)self3 productType:(id)self4 isActionUserDevice:(BOOL)self5 storeLink:(id)self6
 {
-  v34 = a3;
-  v30 = a6;
-  v43 = a6;
-  v32 = a7;
-  v36 = a7;
-  v41 = a8;
-  v39 = a9;
-  v40 = a10;
-  v38 = a11;
-  v42 = a12;
-  v37 = a13;
-  v35 = a14;
-  v21 = a16;
+  dCopy = d;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  userIDCopy = userID;
+  userIDCopy2 = userID;
+  titleCopy = title;
+  descriptionCopy = description;
+  priceCopy = price;
+  pathCopy = path;
+  ratingCopy = rating;
+  starRatingCopy = starRating;
+  typeCopy = type;
+  linkCopy = link;
   v44.receiver = self;
   v44.super_class = BMAskToBuyEvent;
   v22 = [(BMEventBase *)&v44 init];
   v23 = v22;
   if (!v22)
   {
-    v24 = v34;
+    v24 = dCopy;
 LABEL_19:
     v27 = v23;
     goto LABEL_20;
   }
 
-  v24 = v34;
-  if ([(BMAskToBuyEvent *)v22 validNonOptionalProperty:v34 propertyName:@"requestID"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:v43 propertyName:@"userID"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:v42 propertyName:@"ageRating"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:v41 propertyName:@"itemTitle"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:v40 propertyName:@"localizedPrice"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:v38 propertyName:@"thumbnailPath"])
+  v24 = dCopy;
+  if ([(BMAskToBuyEvent *)v22 validNonOptionalProperty:dCopy propertyName:@"requestID"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:iDCopy2 propertyName:@"userID"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:ratingCopy propertyName:@"ageRating"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:titleCopy propertyName:@"itemTitle"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:priceCopy propertyName:@"localizedPrice"]&& [(BMAskToBuyEvent *)v23 validNonOptionalProperty:pathCopy propertyName:@"thumbnailPath"])
   {
-    if (!v39)
+    if (!descriptionCopy)
     {
       v25 = __biome_log_for_category();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -90,10 +90,10 @@ LABEL_19:
         [BMAskToBuyEvent initWithRequestID:v25 status:? eventTime:? userID:? actionUserID:? itemTitle:? itemDescription:? itemLocalizedPrice:? thumbnailPath:? ageRating:? starRating:? productType:? isActionUserDevice:? storeLink:?];
       }
 
-      v39 = &stru_1EF2B2408;
+      descriptionCopy = &stru_1EF2B2408;
     }
 
-    if (!v37)
+    if (!starRatingCopy)
     {
       v26 = __biome_log_for_category();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -102,22 +102,22 @@ LABEL_19:
       }
     }
 
-    objc_storeStrong(&v23->_requestID, a3);
-    v23->_status = a4;
-    v23->_eventTime = a5;
-    objc_storeStrong(&v23->_userID, v30);
-    objc_storeStrong(&v23->_requestID, a3);
-    objc_storeStrong(&v23->_actionUserID, v32);
-    objc_storeStrong(&v23->_itemTitle, a8);
-    objc_storeStrong(&v23->_itemDescription, v39);
-    objc_storeStrong(&v23->_thumbnailPath, a11);
-    objc_storeStrong(&v23->_itemLocalizedPrice, a10);
-    objc_storeStrong(&v23->_itemAgeRating, a12);
-    objc_storeStrong(&v23->_itemStarRating, a13);
-    objc_storeStrong(&v23->_productType, a14);
-    v23->_isActionUserDevice = a15;
-    objc_storeStrong(&v23->_storeLink, a16);
-    v24 = v34;
+    objc_storeStrong(&v23->_requestID, d);
+    v23->_status = status;
+    v23->_eventTime = time;
+    objc_storeStrong(&v23->_userID, iDCopy);
+    objc_storeStrong(&v23->_requestID, d);
+    objc_storeStrong(&v23->_actionUserID, userIDCopy);
+    objc_storeStrong(&v23->_itemTitle, title);
+    objc_storeStrong(&v23->_itemDescription, descriptionCopy);
+    objc_storeStrong(&v23->_thumbnailPath, path);
+    objc_storeStrong(&v23->_itemLocalizedPrice, price);
+    objc_storeStrong(&v23->_itemAgeRating, rating);
+    objc_storeStrong(&v23->_itemStarRating, starRating);
+    objc_storeStrong(&v23->_productType, type);
+    v23->_isActionUserDevice = device;
+    objc_storeStrong(&v23->_storeLink, link);
+    v24 = dCopy;
     goto LABEL_19;
   }
 
@@ -127,12 +127,12 @@ LABEL_20:
   return v27;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 - 3 > 0xFFFFFFFD)
+  dataCopy = data;
+  if (version - 3 > 0xFFFFFFFD)
   {
-    v8 = [[a1 alloc] initWithProtoData:v6];
+    v8 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -151,38 +151,38 @@ LABEL_20:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMAskToBuyEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMAskToBuyEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMAskToBuyEvent)initWithProtoData:(id)a3
+- (BMAskToBuyEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBAskToBuyEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBAskToBuyEvent alloc] initWithData:dataCopy];
 
     self = [(BMAskToBuyEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BMAskToBuyEvent)initWithProto:(id)a3
+- (BMAskToBuyEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_10:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -198,43 +198,43 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [v5 status];
-  if (v6 - 1 >= 3)
+  v5 = protoCopy;
+  status = [v5 status];
+  if (status - 1 >= 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6;
+    v7 = status;
   }
 
   v25 = v7;
-  v27 = [v5 requestID];
+  requestID = [v5 requestID];
   [v5 eventTime];
   v9 = v8;
-  v26 = [v5 userID];
-  v24 = [v5 actionUserID];
-  v23 = [v5 itemTitle];
-  v22 = [v5 itemDescription];
-  v21 = [v5 itemLocalizedPrice];
-  v20 = [v5 thumbnailPath];
-  v19 = [v5 ageRating];
+  userID = [v5 userID];
+  actionUserID = [v5 actionUserID];
+  itemTitle = [v5 itemTitle];
+  itemDescription = [v5 itemDescription];
+  itemLocalizedPrice = [v5 itemLocalizedPrice];
+  thumbnailPath = [v5 thumbnailPath];
+  ageRating = [v5 ageRating];
   v10 = MEMORY[0x1E696AD98];
   [v5 starRating];
   v11 = [v10 numberWithFloat:?];
-  v12 = [v5 productType];
-  v13 = [v5 isActionUserDevice];
-  v14 = [v5 storeLink];
+  productType = [v5 productType];
+  isActionUserDevice = [v5 isActionUserDevice];
+  storeLink = [v5 storeLink];
 
-  LOBYTE(v18) = v13;
-  self = [(BMAskToBuyEvent *)self initWithRequestID:v27 status:v25 eventTime:v26 userID:v24 actionUserID:v23 itemTitle:v22 itemDescription:v9 itemLocalizedPrice:v21 thumbnailPath:v20 ageRating:v19 starRating:v11 productType:v12 isActionUserDevice:v18 storeLink:v14];
+  LOBYTE(v18) = isActionUserDevice;
+  self = [(BMAskToBuyEvent *)self initWithRequestID:requestID status:v25 eventTime:userID userID:actionUserID actionUserID:itemTitle itemTitle:itemDescription itemDescription:v9 itemLocalizedPrice:itemLocalizedPrice thumbnailPath:thumbnailPath ageRating:ageRating starRating:v11 productType:productType isActionUserDevice:v18 storeLink:storeLink];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)proto
@@ -272,37 +272,37 @@ LABEL_11:
 
 - (id)jsonDict
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_requestID forKeyedSubscript:@"requestID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_requestID forKeyedSubscript:@"requestID"];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_status];
-  [v3 setObject:v4 forKeyedSubscript:@"status"];
+  [dictionary setObject:v4 forKeyedSubscript:@"status"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_eventTime];
-  [v3 setObject:v5 forKeyedSubscript:@"eventTime"];
+  [dictionary setObject:v5 forKeyedSubscript:@"eventTime"];
 
-  [v3 setObject:self->_itemTitle forKeyedSubscript:@"itemTitle"];
-  [v3 setObject:self->_itemDescription forKeyedSubscript:@"itemDescription"];
-  [v3 setObject:self->_thumbnailPath forKeyedSubscript:@"thumbnailPath"];
-  [v3 setObject:self->_itemLocalizedPrice forKeyedSubscript:@"itemLocalizedPrice"];
-  [v3 setObject:self->_userID forKeyedSubscript:@"userID"];
-  [v3 setObject:self->_actionUserID forKeyedSubscript:@"actionUserID"];
-  [v3 setObject:self->_itemStarRating forKeyedSubscript:@"starRating"];
-  [v3 setObject:self->_itemAgeRating forKeyedSubscript:@"ageRating"];
-  [v3 setObject:self->_productType forKeyedSubscript:@"productType"];
+  [dictionary setObject:self->_itemTitle forKeyedSubscript:@"itemTitle"];
+  [dictionary setObject:self->_itemDescription forKeyedSubscript:@"itemDescription"];
+  [dictionary setObject:self->_thumbnailPath forKeyedSubscript:@"thumbnailPath"];
+  [dictionary setObject:self->_itemLocalizedPrice forKeyedSubscript:@"itemLocalizedPrice"];
+  [dictionary setObject:self->_userID forKeyedSubscript:@"userID"];
+  [dictionary setObject:self->_actionUserID forKeyedSubscript:@"actionUserID"];
+  [dictionary setObject:self->_itemStarRating forKeyedSubscript:@"starRating"];
+  [dictionary setObject:self->_itemAgeRating forKeyedSubscript:@"ageRating"];
+  [dictionary setObject:self->_productType forKeyedSubscript:@"productType"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_isActionUserDevice];
-  [v3 setObject:v6 forKeyedSubscript:@"isActionUserDevice"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isActionUserDevice"];
 
-  [v3 setObject:self->_storeLink forKeyedSubscript:@"storeLink"];
+  [dictionary setObject:self->_storeLink forKeyedSubscript:@"storeLink"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMAskToBuyEvent *)self jsonDict];
+  jsonDict = [(BMAskToBuyEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -317,29 +317,29 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = MEMORY[0x1E696AD98];
     [(BMAskToBuyEvent *)self eventTime];
     v7 = [v6 numberWithDouble:?];
-    v8 = [v7 longValue];
+    longValue = [v7 longValue];
 
     v9 = MEMORY[0x1E696AD98];
     [v5 eventTime];
     v10 = [v9 numberWithDouble:?];
-    v11 = [v10 longValue];
+    longValue2 = [v10 longValue];
 
-    v12 = [(BMAskToBuyEvent *)self requestID];
-    v13 = [v5 requestID];
-    v14 = [v12 isEqualToString:v13];
+    requestID = [(BMAskToBuyEvent *)self requestID];
+    requestID2 = [v5 requestID];
+    v14 = [requestID isEqualToString:requestID2];
 
-    LODWORD(v12) = [(BMAskToBuyEvent *)self status];
-    if (v12 == [v5 status])
+    LODWORD(requestID) = [(BMAskToBuyEvent *)self status];
+    if (requestID == [v5 status])
     {
       v15 = v14;
     }
@@ -349,7 +349,7 @@ LABEL_11:
       v15 = 0;
     }
 
-    if (v8 == v11)
+    if (longValue == longValue2)
     {
       v16 = v15;
     }
@@ -359,52 +359,52 @@ LABEL_11:
       v16 = 0;
     }
 
-    v17 = [(BMAskToBuyEvent *)self userID];
-    v18 = [v5 userID];
-    v19 = [v17 isEqualToString:v18];
+    userID = [(BMAskToBuyEvent *)self userID];
+    userID2 = [v5 userID];
+    v19 = [userID isEqualToString:userID2];
 
-    v20 = [(BMAskToBuyEvent *)self actionUserID];
-    if (v20)
+    actionUserID = [(BMAskToBuyEvent *)self actionUserID];
+    if (actionUserID)
     {
-      v21 = [(BMAskToBuyEvent *)self actionUserID];
+      actionUserID2 = [(BMAskToBuyEvent *)self actionUserID];
     }
 
     else
     {
-      v21 = @"___";
+      actionUserID2 = @"___";
     }
 
     v23 = v16 & v19;
 
-    v24 = [v5 actionUserID];
-    if (v24)
+    actionUserID3 = [v5 actionUserID];
+    if (actionUserID3)
     {
-      v25 = [v5 actionUserID];
+      actionUserID4 = [v5 actionUserID];
     }
 
     else
     {
-      v25 = @"___";
+      actionUserID4 = @"___";
     }
 
-    v26 = [(__CFString *)v21 isEqualToString:v25];
-    v27 = [(BMAskToBuyEvent *)self itemAgeRating];
-    v28 = [v5 itemAgeRating];
-    v29 = v23 & v26 & [v27 isEqualToString:v28];
+    v26 = [(__CFString *)actionUserID2 isEqualToString:actionUserID4];
+    itemAgeRating = [(BMAskToBuyEvent *)self itemAgeRating];
+    itemAgeRating2 = [v5 itemAgeRating];
+    v29 = v23 & v26 & [itemAgeRating isEqualToString:itemAgeRating2];
 
     v30 = MEMORY[0x1E696AD98];
-    v31 = [(BMAskToBuyEvent *)self itemStarRating];
-    [v31 floatValue];
+    itemStarRating = [(BMAskToBuyEvent *)self itemStarRating];
+    [itemStarRating floatValue];
     v33 = [v30 numberWithInteger:(v32 * 100.0)];
-    v34 = [v33 longValue];
+    longValue3 = [v33 longValue];
 
     v35 = MEMORY[0x1E696AD98];
-    v36 = [v5 itemStarRating];
-    [v36 floatValue];
+    itemStarRating2 = [v5 itemStarRating];
+    [itemStarRating2 floatValue];
     v38 = [v35 numberWithInteger:(v37 * 100.0)];
-    v39 = [v38 longValue];
+    longValue4 = [v38 longValue];
 
-    if (v34 == v39)
+    if (longValue3 == longValue4)
     {
       v40 = v29;
     }
@@ -414,57 +414,57 @@ LABEL_11:
       v40 = 0;
     }
 
-    v41 = [(BMAskToBuyEvent *)self itemAgeRating];
-    v42 = [v5 itemAgeRating];
-    v43 = [v41 isEqualToString:v42];
+    itemAgeRating3 = [(BMAskToBuyEvent *)self itemAgeRating];
+    itemAgeRating4 = [v5 itemAgeRating];
+    v43 = [itemAgeRating3 isEqualToString:itemAgeRating4];
 
-    v44 = [(BMAskToBuyEvent *)self itemTitle];
-    v45 = [v5 itemTitle];
-    v46 = v43 & [v44 isEqualToString:v45];
+    itemTitle = [(BMAskToBuyEvent *)self itemTitle];
+    itemTitle2 = [v5 itemTitle];
+    v46 = v43 & [itemTitle isEqualToString:itemTitle2];
 
-    v47 = [(BMAskToBuyEvent *)self itemDescription];
-    v48 = [v5 itemDescription];
-    v49 = v46 & [v47 isEqualToString:v48];
+    itemDescription = [(BMAskToBuyEvent *)self itemDescription];
+    itemDescription2 = [v5 itemDescription];
+    v49 = v46 & [itemDescription isEqualToString:itemDescription2];
 
-    v50 = [(BMAskToBuyEvent *)self itemLocalizedPrice];
-    v51 = [v5 itemLocalizedPrice];
-    v52 = v49 & [v50 isEqualToString:v51];
+    itemLocalizedPrice = [(BMAskToBuyEvent *)self itemLocalizedPrice];
+    itemLocalizedPrice2 = [v5 itemLocalizedPrice];
+    v52 = v49 & [itemLocalizedPrice isEqualToString:itemLocalizedPrice2];
 
-    v53 = [(BMAskToBuyEvent *)self thumbnailPath];
-    v54 = [v5 thumbnailPath];
-    v55 = v52 & [v53 isEqualToString:v54];
+    thumbnailPath = [(BMAskToBuyEvent *)self thumbnailPath];
+    thumbnailPath2 = [v5 thumbnailPath];
+    v55 = v52 & [thumbnailPath isEqualToString:thumbnailPath2];
 
-    v56 = [(BMAskToBuyEvent *)self productType];
-    v57 = [v5 productType];
-    v58 = v55 & [v56 isEqualToString:v57];
+    productType = [(BMAskToBuyEvent *)self productType];
+    productType2 = [v5 productType];
+    v58 = v55 & [productType isEqualToString:productType2];
 
-    LODWORD(v56) = [(BMAskToBuyEvent *)self isActionUserDevice];
-    v59 = v58 & (v56 ^ [v5 isActionUserDevice] ^ 1);
-    v60 = [(BMAskToBuyEvent *)self storeLink];
-    if (v60)
+    LODWORD(productType) = [(BMAskToBuyEvent *)self isActionUserDevice];
+    v59 = v58 & (productType ^ [v5 isActionUserDevice] ^ 1);
+    storeLink = [(BMAskToBuyEvent *)self storeLink];
+    if (storeLink)
     {
-      v61 = [(BMAskToBuyEvent *)self storeLink];
+      storeLink2 = [(BMAskToBuyEvent *)self storeLink];
     }
 
     else
     {
-      v61 = @"___";
+      storeLink2 = @"___";
     }
 
     v62 = v40 & v59;
 
-    v63 = [v5 storeLink];
-    if (v63)
+    storeLink3 = [v5 storeLink];
+    if (storeLink3)
     {
-      v64 = [v5 storeLink];
+      storeLink4 = [v5 storeLink];
     }
 
     else
     {
-      v64 = @"___";
+      storeLink4 = @"___";
     }
 
-    v22 = v62 & [(__CFString *)v61 isEqualToString:v64];
+    v22 = v62 & [(__CFString *)storeLink2 isEqualToString:storeLink4];
   }
 
   else

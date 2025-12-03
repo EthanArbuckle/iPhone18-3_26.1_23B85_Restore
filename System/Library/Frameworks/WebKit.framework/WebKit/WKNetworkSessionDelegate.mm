@@ -1,43 +1,43 @@
 @interface WKNetworkSessionDelegate
-- (RefPtr<WebKit::NetworkDataTaskCocoa,)existingTask:(id)a3;
-- (RefPtr<WebKit::WebSocketTask,)existingWebSocketTask:(id)a3;
-- (WKNetworkSessionDelegate)initWithNetworkSession:(reference_wrapper<WebKit:(void *)a4 :(BOOL)a5 NetworkSessionCocoa>)a3 wrapper:withCredentials:;
+- (RefPtr<WebKit::NetworkDataTaskCocoa,)existingTask:(id)task;
+- (RefPtr<WebKit::WebSocketTask,)existingWebSocketTask:(id)task;
+- (WKNetworkSessionDelegate)initWithNetworkSession:(reference_wrapper<WebKit:(void *)session :(BOOL)a5 NetworkSessionCocoa>)a3 wrapper:withCredentials:;
 - (id).cxx_construct;
-- (uint64_t)URLSession:(const void *)a1 dataTask:didReceiveResponse:completionHandler:;
-- (uint64_t)URLSession:(const void *)a1 task:_schemeUpgraded:completionHandler:;
-- (uint64_t)URLSession:(const void *)a1 task:didReceiveChallenge:completionHandler:;
-- (uint64_t)URLSession:(const void *)a1 task:willPerformHTTPRedirection:newRequest:completionHandler:;
-- (uint64_t)URLSession:(uint64_t)a1 dataTask:didReceiveResponse:completionHandler:;
-- (uint64_t)URLSession:(uint64_t)a1 task:_schemeUpgraded:completionHandler:;
-- (uint64_t)URLSession:(uint64_t)a1 task:didReceiveChallenge:completionHandler:;
-- (uint64_t)URLSession:(uint64_t)a1 task:willPerformHTTPRedirection:newRequest:completionHandler:;
+- (uint64_t)URLSession:(const void *)session dataTask:didReceiveResponse:completionHandler:;
+- (uint64_t)URLSession:(const void *)session task:_schemeUpgraded:completionHandler:;
+- (uint64_t)URLSession:(const void *)session task:didReceiveChallenge:completionHandler:;
+- (uint64_t)URLSession:(const void *)session task:willPerformHTTPRedirection:newRequest:completionHandler:;
+- (uint64_t)URLSession:(uint64_t)session dataTask:didReceiveResponse:completionHandler:;
+- (uint64_t)URLSession:(uint64_t)session task:_schemeUpgraded:completionHandler:;
+- (uint64_t)URLSession:(uint64_t)session task:didReceiveChallenge:completionHandler:;
+- (uint64_t)URLSession:(uint64_t)session task:willPerformHTTPRedirection:newRequest:completionHandler:;
 - (void)URLSession:(WebCore::Credential *)this task:didReceiveChallenge:completionHandler:;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didBecomeDownloadTask:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 _didReceiveInformationalResponse:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 _schemeUpgraded:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveInformationalResponse:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didCloseWithCode:(int64_t)a5 reason:(id)a6;
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didOpenWithProtocol:(id)a5;
-- (void)URLSession:(uint64_t)a1 task:_schemeUpgraded:completionHandler:;
-- (void)URLSession:(uint64_t)a1 task:willPerformHTTPRedirection:newRequest:completionHandler:;
+- (void)URLSession:(id)session dataTask:(id)task didBecomeDownloadTask:(id)downloadTask;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task _didReceiveInformationalResponse:(id)response;
+- (void)URLSession:(id)session task:(id)task _schemeUpgraded:(id)upgraded completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didReceiveInformationalResponse:(id)response;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session webSocketTask:(id)task didCloseWithCode:(int64_t)code reason:(id)reason;
+- (void)URLSession:(id)session webSocketTask:(id)task didOpenWithProtocol:(id)protocol;
+- (void)URLSession:(uint64_t)session task:_schemeUpgraded:completionHandler:;
+- (void)URLSession:(uint64_t)session task:willPerformHTTPRedirection:newRequest:completionHandler:;
 - (void)URLSession:task:didReceiveChallenge:completionHandler:;
-- (void)sessionFromTask:(id)a3;
+- (void)sessionFromTask:(id)task;
 - (void)sessionInvalidated;
 @end
 
 @implementation WKNetworkSessionDelegate
 
-- (WKNetworkSessionDelegate)initWithNetworkSession:(reference_wrapper<WebKit:(void *)a4 :(BOOL)a5 NetworkSessionCocoa>)a3 wrapper:withCredentials:
+- (WKNetworkSessionDelegate)initWithNetworkSession:(reference_wrapper<WebKit:(void *)session :(BOOL)a5 NetworkSessionCocoa>)a3 wrapper:withCredentials:
 {
   v16.receiver = self;
   v16.super_class = WKNetworkSessionDelegate;
@@ -55,9 +55,9 @@
       WTF::fastFree(m_ptr, v9);
     }
 
-    WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a4, a4);
-    v13 = *a4;
-    atomic_fetch_add(*a4, 1u);
+    WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(session, session);
+    v13 = *session;
+    atomic_fetch_add(*session, 1u);
     v14 = v8->_sessionWrapper.m_impl.m_ptr;
     v8->_sessionWrapper.m_impl.m_ptr = v13;
     if (v14 && atomic_fetch_add(v14, 0xFFFFFFFF) == 1)
@@ -86,7 +86,7 @@
   }
 }
 
-- (RefPtr<WebKit::NetworkDataTaskCocoa,)existingTask:(id)a3
+- (RefPtr<WebKit::NetworkDataTaskCocoa,)existingTask:(id)task
 {
   v4 = v3;
   m_ptr = self->_sessionWrapper.m_impl.m_ptr;
@@ -96,12 +96,12 @@
   }
 
   v6 = *(m_ptr + 1);
-  if (!v6 || !a3)
+  if (!v6 || !task)
   {
     goto LABEL_10;
   }
 
-  self = [a3 taskIdentifier];
+  self = [task taskIdentifier];
   if (self == -1 || !self)
   {
     __break(0xC471u);
@@ -147,28 +147,28 @@ LABEL_10:
     return self;
   }
 
-  v17 = self;
+  selfCopy = self;
   v18 = v4;
-  v19 = v17;
-  WTF::ThreadSafeWeakPtrControlBlock::makeStrongReferenceIfPossible<WebKit::NetworkDataTaskCocoa>(v18, v17, v15);
+  v19 = selfCopy;
+  WTF::ThreadSafeWeakPtrControlBlock::makeStrongReferenceIfPossible<WebKit::NetworkDataTaskCocoa>(v18, selfCopy, v15);
 
   return WTF::ThreadSafeWeakPtrControlBlock::weakDeref(v19, v20);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
   if (self)
   {
-    [(WKNetworkSessionDelegate *)self existingTask:a4];
+    [(WKNetworkSessionDelegate *)self existingTask:task];
     if (v9)
     {
-      WebKit::NetworkDataTaskCocoa::didSendData(v9, a6, a7);
+      WebKit::NetworkDataTaskCocoa::didSendData(v9, sent, send);
       WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::deref(v9 + 1);
     }
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
   if (!self)
   {
@@ -176,11 +176,11 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   if (!v11)
   {
 LABEL_8:
-    (*(a5 + 2))(a5, 0);
+    (*(stream + 2))(stream, 0);
     goto LABEL_12;
   }
 
@@ -190,7 +190,7 @@ LABEL_8:
     v8 = v10;
     v10 = 0;
     WebCore::createHTTPBodyNSInputStream();
-    (*(a5 + 2))(a5);
+    (*(stream + 2))(stream);
     if (v9)
     {
     }
@@ -200,7 +200,7 @@ LABEL_8:
 
   else
   {
-    (*(a5 + 2))(a5, 0);
+    (*(stream + 2))(stream, 0);
   }
 
   v6 = v10;
@@ -219,9 +219,9 @@ LABEL_12:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v12 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (!self)
   {
     v53 = 0;
@@ -229,17 +229,17 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v13 = v12;
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  v13 = taskIdentifier;
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   if (!v53)
   {
-    [(WKNetworkSessionDelegate *)self existingWebSocketTask:a4];
+    [(WKNetworkSessionDelegate *)self existingWebSocketTask:task];
     if (v48)
     {
-      WebCore::ResourceResponse::ResourceResponse(&v51, a5);
+      WebCore::ResourceResponse::ResourceResponse(&v51, redirection);
       v21 = v48;
-      MEMORY[0x19EB06210](v49, a6);
-      v22 = _Block_copy(a7);
+      MEMORY[0x19EB06210](v49, request);
+      v22 = _Block_copy(handler);
       v23 = WTF::fastMalloc(0x18);
       *v23 = &unk_1F10ED7D8;
       v23[1] = v22;
@@ -272,7 +272,7 @@ LABEL_12:
     }
 
 LABEL_10:
-    (*(a7 + 2))(a7, 0);
+    (*(handler + 2))(handler, 0);
 LABEL_19:
     v28 = v48;
     v48 = 0;
@@ -302,21 +302,21 @@ LABEL_19:
 
       if (*(v53 + 545) == 1)
       {
-        v19 = [a6 URL];
+        mainDocumentURL = [request URL];
       }
 
       else
       {
-        v19 = [a6 mainDocumentURL];
+        mainDocumentURL = [request mainDocumentURL];
       }
 
-      v29 = v19;
-      if (v19)
+      v29 = mainDocumentURL;
+      if (mainDocumentURL)
       {
-        v30 = v19;
+        v30 = mainDocumentURL;
       }
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [a6 _schemeWasUpgradedDueToDynamicHSTS])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [request _schemeWasUpgradedDueToDynamicHSTS])
       {
         if (!v18)
         {
@@ -325,7 +325,7 @@ LABEL_19:
         }
 
         MEMORY[0x19EB01DE0](&v51, v29);
-        MEMORY[0x19EB01DE0](v49, [a6 URL]);
+        MEMORY[0x19EB01DE0](v49, [request URL]);
         WebKit::NetworkTaskCocoa::shouldRelaxThirdPartyCookieBlocking((v53 + 552));
         shouldBlockCookies = WebCore::NetworkStorageSession::shouldBlockCookies();
         v33 = v49[0];
@@ -344,10 +344,10 @@ LABEL_19:
 
         if (shouldBlockCookies)
         {
-          downgradeRequest(&v51, a6);
+          downgradeRequest(&v51, request);
           updateIgnoreStrictTransportSecuritySetting(&v51.super.isa, 1);
           v35 = v51.super.isa;
-          (*(a7 + 2))(a7, v51.super.isa);
+          (*(handler + 2))(handler, v51.super.isa);
           if (v35)
           {
           }
@@ -400,10 +400,10 @@ LABEL_61:
     }
   }
 
-  WebCore::ResourceResponse::ResourceResponse(&v51, a5);
+  WebCore::ResourceResponse::ResourceResponse(&v51, redirection);
   v40 = v53;
-  MEMORY[0x19EB06210](v49, a6);
-  v41 = _Block_copy(a7);
+  MEMORY[0x19EB06210](v49, request);
+  v41 = _Block_copy(handler);
   v42 = WTF::fastMalloc(0x20);
   *v42 = &unk_1F10ED7B0;
   *(v42 + 8) = v41;
@@ -440,21 +440,21 @@ LABEL_55:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _schemeUpgraded:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _schemeUpgraded:(id)upgraded completionHandler:(id)handler
 {
-  v10 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (!self)
   {
     v45 = 0;
     goto LABEL_19;
   }
 
-  v11 = v10;
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  v11 = taskIdentifier;
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   if (!v45)
   {
 LABEL_19:
-    (*(a6 + 2))(a6, 0);
+    (*(handler + 2))(handler, 0);
     goto LABEL_38;
   }
 
@@ -474,7 +474,7 @@ LABEL_19:
         ++*(v15 + 8);
       }
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [a5 _schemeWasUpgradedDueToDynamicHSTS])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [upgraded _schemeWasUpgradedDueToDynamicHSTS])
       {
         if (!v16)
         {
@@ -482,7 +482,7 @@ LABEL_19:
           JUMPOUT(0x19D933CBCLL);
         }
 
-        MEMORY[0x19EB06210](&v42, a5);
+        MEMORY[0x19EB06210](&v42, upgraded);
         WebKit::NetworkTaskCocoa::shouldRelaxThirdPartyCookieBlocking((v45 + 552));
         shouldBlockCookies = WebCore::NetworkStorageSession::shouldBlockCookies();
         v18 = v43;
@@ -494,10 +494,10 @@ LABEL_19:
         WebCore::ResourceRequestBase::~ResourceRequestBase(&v42);
         if (shouldBlockCookies)
         {
-          downgradeRequest(&v42, a5);
+          downgradeRequest(&v42, upgraded);
           updateIgnoreStrictTransportSecuritySetting(&v42.super.isa, 1);
           isa = v42.super.isa;
-          (*(a6 + 2))(a6, v42.super.isa);
+          (*(handler + 2))(handler, v42.super.isa);
           if (isa)
           {
           }
@@ -546,10 +546,10 @@ LABEL_23:
   }
 
 LABEL_25:
-  v24 = [a4 currentRequest];
-  v26 = WebCore::synthesizeRedirectResponseIfNecessary(v24, a5, 0, v25);
+  currentRequest = [task currentRequest];
+  v26 = WebCore::synthesizeRedirectResponseIfNecessary(currentRequest, upgraded, 0, v25);
   WebCore::ResourceResponse::ResourceResponse(&v42, v26);
-  v27 = [a5 valueForHTTPHeaderField:@"Origin"];
+  v27 = [upgraded valueForHTTPHeaderField:@"Origin"];
   if (v27)
   {
     v28 = v27;
@@ -571,8 +571,8 @@ LABEL_25:
   }
 
   v32 = v45;
-  MEMORY[0x19EB06210](v40, a5);
-  v33 = _Block_copy(a6);
+  MEMORY[0x19EB06210](v40, upgraded);
+  v33 = _Block_copy(handler);
   v34 = WTF::fastMalloc(0x20);
   *v34 = &unk_1F10ED800;
   *(v34 + 8) = v33;
@@ -610,11 +610,11 @@ LABEL_38:
   }
 }
 
-- (void)sessionFromTask:(id)a3
+- (void)sessionFromTask:(id)task
 {
   if (self)
   {
-    [(WKNetworkSessionDelegate *)self existingTask:a3];
+    [(WKNetworkSessionDelegate *)self existingTask:task];
     v5 = v37;
     if (v37)
     {
@@ -654,14 +654,14 @@ LABEL_38:
     return 0;
   }
 
-  v10 = [a3 taskIdentifier];
-  if (v10 == -1)
+  taskIdentifier = [task taskIdentifier];
+  if (taskIdentifier == -1)
   {
     __break(0xC471u);
     JUMPOUT(0x19D934174);
   }
 
-  if (!v10)
+  if (!taskIdentifier)
   {
     __break(0xC471u);
     JUMPOUT(0x19D934194);
@@ -674,12 +674,12 @@ LABEL_38:
   }
 
   v12 = *(v11 - 8);
-  v13 = (v10 + ~(v10 << 32)) ^ ((v10 + ~(v10 << 32)) >> 22);
+  v13 = (taskIdentifier + ~(taskIdentifier << 32)) ^ ((taskIdentifier + ~(taskIdentifier << 32)) >> 22);
   v14 = 9 * ((v13 + ~(v13 << 13)) ^ ((v13 + ~(v13 << 13)) >> 8));
   v15 = (v14 ^ (v14 >> 15)) + ~((v14 ^ (v14 >> 15)) << 27);
   v16 = v12 & ((v15 >> 31) ^ v15);
   v17 = *(v11 + 16 * v16);
-  if (v17 == v10)
+  if (v17 == taskIdentifier)
   {
 LABEL_16:
     v19 = self->_session.m_impl.m_ptr;
@@ -757,7 +757,7 @@ LABEL_42:
     v16 = (v16 + v18) & v12;
     v17 = *(v11 + 16 * v16);
     ++v18;
-    if (v17 == v10)
+    if (v17 == taskIdentifier)
     {
       goto LABEL_16;
     }
@@ -772,7 +772,7 @@ LABEL_43:
     JUMPOUT(0x19D934154);
   }
 
-  WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<unsigned long long>>,unsigned long long>(&v37, (v30 + 48), [a3 taskIdentifier]);
+  WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<unsigned long long>>,unsigned long long>(&v37, (v30 + 48), [task taskIdentifier]);
   v31 = v38;
   if (!v38)
   {
@@ -797,15 +797,15 @@ LABEL_43:
   return v7;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a4;
+  taskCopy = task;
   v127 = *MEMORY[0x1E69E9840];
-  v10 = [(WKNetworkSessionDelegate *)self sessionFromTask:a4];
+  v10 = [(WKNetworkSessionDelegate *)self sessionFromTask:task];
   v11 = v10;
-  if (!v10 || (++v10[4], [v8 state] == 2))
+  if (!v10 || (++v10[4], [taskCopy state] == 2))
   {
-    (*(a6 + 2))(a6, 2, 0);
+    (*(handler + 2))(handler, 2, 0);
 LABEL_4:
     if (v11)
     {
@@ -815,14 +815,14 @@ LABEL_4:
     return;
   }
 
-  v12 = [v8 taskIdentifier];
-  if ([objc_msgSend(a5 "protectionSpace")] && !*(v11 + 1204) && (*(v11 + 1232) & 1) == 0)
+  taskIdentifier = [taskCopy taskIdentifier];
+  if ([objc_msgSend(challenge "protectionSpace")] && !*(v11 + 1204) && (*(v11 + 1232) & 1) == 0)
   {
-    (*(a6 + 2))(a6, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
     goto LABEL_51;
   }
 
-  v13 = [objc_msgSend(a5 "protectionSpace")];
+  v13 = [objc_msgSend(challenge "protectionSpace")];
   if (![v13 isEqualToString:*MEMORY[0x1E695AB80]])
   {
 LABEL_38:
@@ -830,7 +830,7 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  MEMORY[0x19EB0B400](&to, a5);
+  MEMORY[0x19EB0B400](&to, challenge);
   WebKit::NetworkProcess::sourceApplicationAuditData(&location, *(*(v11 + 32) + 40));
   v15 = location;
   if (!location)
@@ -887,7 +887,7 @@ LABEL_18:
     }
 
     WebCore::AuthenticationChallengeBase::~AuthenticationChallengeBase(&to, v14);
-    v15 = checkForLegacyTLS([objc_msgSend(objc_msgSend(v8 "_incompleteTaskMetrics")]);
+    v15 = checkForLegacyTLS([objc_msgSend(objc_msgSend(taskCopy "_incompleteTaskMetrics")]);
     if (v15)
     {
       break;
@@ -912,8 +912,8 @@ LABEL_143:
       }
 
       *&v123 = v86;
-      *(&v123 + 1) = _Block_copy(a6);
-      v124 = v12;
+      *(&v123 + 1) = _Block_copy(handler);
+      v124 = taskIdentifier;
       v87 = v112;
       if (v112)
       {
@@ -992,7 +992,7 @@ LABEL_150:
       }
 
       objc_destroyWeak(&location);
-      [MEMORY[0x1E695AC78] _strictTrustEvaluate:a5 queue:objc_msgSend(objc_msgSend(MEMORY[0x1E696ADC8] completionHandler:{"mainQueue"), "underlyingQueue"), v92}];
+      [MEMORY[0x1E695AC78] _strictTrustEvaluate:challenge queue:objc_msgSend(objc_msgSend(MEMORY[0x1E696ADC8] completionHandler:{"mainQueue"), "underlyingQueue"), v92}];
       _Block_release(v92);
       v100 = v112;
       v112 = 0;
@@ -1004,24 +1004,24 @@ LABEL_150:
       goto LABEL_4;
     }
 
-    [(WKNetworkSessionDelegate *)self existingTask:v8];
+    [(WKNetworkSessionDelegate *)self existingTask:taskCopy];
     if (!v112)
     {
       goto LABEL_143;
     }
 
-    v21 = [a5 protectionSpace];
-    v8 = v21;
-    if (v21)
+    protectionSpace = [challenge protectionSpace];
+    taskCopy = protectionSpace;
+    if (protectionSpace)
     {
-      v22 = v21;
+      v22 = protectionSpace;
     }
 
     v106 = v112;
-    MEMORY[0x19EB02040](&v110, [v8 protocol]);
-    MEMORY[0x19EB02040](&v109, [v8 host]);
-    v23 = [v8 port];
-    v18 = v23;
+    MEMORY[0x19EB02040](&v110, [taskCopy protocol]);
+    MEMORY[0x19EB02040](&v109, [taskCopy host]);
+    port = [taskCopy port];
+    v18 = port;
     v16 = v110;
     v107 = v109;
     if (v110)
@@ -1040,9 +1040,9 @@ LABEL_150:
       v25 = *(v109 + 1);
     }
 
-    if (v23 < 0)
+    if (port < 0)
     {
-      v41 = -v23;
+      v41 = -port;
       v26 = 1;
       do
       {
@@ -1057,7 +1057,7 @@ LABEL_150:
     else
     {
       v26 = 0;
-      v27 = v23;
+      v27 = port;
       do
       {
         ++v26;
@@ -1135,8 +1135,8 @@ LABEL_109:
       }
 
       v103 = location;
-      v105 = v8;
-      v8 = location + 20;
+      v105 = taskCopy;
+      taskCopy = location + 20;
       *location = 2;
       *(v60 + 1) = v49;
       *(v60 + 1) = v60 + 20;
@@ -1159,7 +1159,7 @@ LABEL_109:
 
       v62 = v49 - v61;
       v102 = v61;
-      v63 = &v8[v61];
+      v63 = &taskCopy[v61];
       v63[2] = 47;
       *v63 = 12090;
       if (v62 <= 2)
@@ -1168,7 +1168,7 @@ LABEL_109:
       }
 
       v16 = (v62 - 3);
-      v8 = v63 + 3;
+      taskCopy = v63 + 3;
       v121 = v107;
       WTF::StringTypeAdapter<WTF::StringImpl *,void>::writeTo<unsigned char>(&v121, v63 + 3);
       if (!v121)
@@ -1180,12 +1180,12 @@ LABEL_100:
           goto LABEL_160;
         }
 
-        v8[v64] = 58;
-        v65 = &v8[v64 + 1];
+        taskCopy[v64] = 58;
+        v65 = &taskCopy[v64 + 1];
         if ((v18 & 0x8000000000000000) == 0)
         {
           v66 = 0;
-          v8 = v105;
+          taskCopy = v105;
           while (v66 != -25)
           {
             *(&v124 + v66--) = (v18 % 0xA) | 0x30;
@@ -1213,7 +1213,7 @@ LABEL_100:
 
         v74 = -v18;
         v75 = 24;
-        v8 = v105;
+        taskCopy = v105;
         do
         {
           if (v75 == -1)
@@ -1295,7 +1295,7 @@ LABEL_126:
           WTF::StringImpl::destroy(v85, v79);
         }
 
-        if (v8)
+        if (taskCopy)
         {
         }
 
@@ -1325,8 +1325,8 @@ LABEL_173:
       }
 
       v103 = location;
-      v104 = v8;
-      v8 = location + 20;
+      v104 = taskCopy;
+      taskCopy = location + 20;
       *location = 2;
       *(v50 + 1) = v49;
       *(v50 + 1) = v50 + 20;
@@ -1347,13 +1347,13 @@ LABEL_173:
         v51 = 0;
       }
 
-      v52 = &v8[2 * v51];
+      v52 = &taskCopy[2 * v51];
       *v52 = 3080250;
       *(v52 + 2) = 47;
       v101 = v51;
       if ((v49 - v51) > 2)
       {
-        v8 = v52 + 6;
+        taskCopy = v52 + 6;
         v16 = (v49 - v51 - 3);
         v121 = v107;
         WTF::StringTypeAdapter<WTF::StringImpl *,void>::writeTo<char16_t>(&v121, v52 + 6);
@@ -1363,14 +1363,14 @@ LABEL_173:
 LABEL_83:
           if (v16 != v53)
           {
-            v54 = &v8[2 * v53];
+            v54 = &taskCopy[2 * v53];
             *v54 = 58;
             v55 = v54 + 2;
             if ((v18 & 0x8000000000000000) != 0)
             {
               v70 = -v18;
               v71 = 24;
-              v8 = v104;
+              taskCopy = v104;
               while (v71 != -1)
               {
                 *(&location + v71--) = (v70 % 0xA) | 0x30;
@@ -1404,7 +1404,7 @@ LABEL_83:
             else
             {
               v56 = 24;
-              v8 = v104;
+              taskCopy = v104;
               while (v56 != -1)
               {
                 *(&location + v56--) = (v18 % 0xA) | 0x30;
@@ -1450,9 +1450,9 @@ LABEL_161:
     CFRetain(v18);
   }
 
-  if ([v8 _preconnect])
+  if ([taskCopy _preconnect])
   {
-    (*(a6 + 2))(a6, 2, 0);
+    (*(handler + 2))(handler, 2, 0);
     goto LABEL_51;
   }
 
@@ -1466,14 +1466,14 @@ LABEL_39:
   }
 
   ++*(v31 + 8);
-  MEMORY[0x19EB0B400](&to, a5);
-  [(WKNetworkSessionDelegate *)self existingTask:v8];
-  v32 = _Block_copy(a6);
+  MEMORY[0x19EB0B400](&to, challenge);
+  [(WKNetworkSessionDelegate *)self existingTask:taskCopy];
+  v32 = _Block_copy(handler);
   v33 = WTF::fastMalloc(0x10);
   *v33 = &unk_1F10ED828;
   v33[1] = v32;
   location = v33;
-  WebKit::NetworkSessionCocoa::continueDidReceiveChallenge(v11, v31, &to, v29, v12, &v108, &location);
+  WebKit::NetworkSessionCocoa::continueDidReceiveChallenge(v11, v31, &to, v29, taskIdentifier, &v108, &location);
   v34 = location;
   location = 0;
   if (v34)
@@ -1521,36 +1521,36 @@ LABEL_51:
   *(v11 + 16) = v40 - 1;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v75 = a5;
-  if (a5)
+  errorCopy = error;
+  if (error)
   {
-    v37 = a5;
-    v38 = [a5 userInfo];
-    v39 = v38;
-    if (v38)
+    errorCopy2 = error;
+    userInfo = [error userInfo];
+    v39 = userInfo;
+    if (userInfo)
     {
-      v40 = v38;
-      v41 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v39];
+      v40 = userInfo;
+      dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v39];
     }
 
     else
     {
-      v41 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v42 = v41;
-    if (v41)
+    v42 = dictionary;
+    if (dictionary)
     {
-      v43 = v41;
+      v43 = dictionary;
     }
 
-    [v42 setObject:objc_msgSend(a4 forKeyedSubscript:{"description"), @"networkTaskDescription"}];
+    [v42 setObject:objc_msgSend(task forKeyedSubscript:{"description"), @"networkTaskDescription"}];
     if (self)
     {
-      [(WKNetworkSessionDelegate *)self existingTask:a4];
+      [(WKNetworkSessionDelegate *)self existingTask:task];
       if (*v76)
       {
         if (*(*v76 + 715) - 1 > 4)
@@ -1566,7 +1566,7 @@ LABEL_51:
         v45 = v44;
         [v42 setObject:v44 forKeyedSubscript:@"networkTaskMetricsPrivacyStance"];
 
-        ResolutionReport = extractResolutionReport(v75);
+        ResolutionReport = extractResolutionReport(errorCopy);
         if (ResolutionReport)
         {
           [v42 setObject:ResolutionReport forKeyedSubscript:@"networkResolutionReport"];
@@ -1578,8 +1578,8 @@ LABEL_51:
           v74 = 0u;
           v71 = 0u;
           v72 = 0u;
-          v47 = [(NSError *)v75 underlyingErrors];
-          v48 = [(NSArray *)v47 countByEnumeratingWithState:&v71 objects:v80 count:16];
+          underlyingErrors = [(NSError *)errorCopy underlyingErrors];
+          v48 = [(NSArray *)underlyingErrors countByEnumeratingWithState:&v71 objects:v80 count:16];
           if (v48)
           {
             v52 = *v72;
@@ -1589,7 +1589,7 @@ LABEL_51:
               {
                 if (*v72 != v52)
                 {
-                  objc_enumerationMutation(v47);
+                  objc_enumerationMutation(underlyingErrors);
                 }
 
                 v54 = extractResolutionReport(*(*(&v71 + 1) + 8 * i));
@@ -1600,7 +1600,7 @@ LABEL_51:
                 }
               }
 
-              v48 = [(NSArray *)v47 countByEnumeratingWithState:&v71 objects:v80 count:16];
+              v48 = [(NSArray *)underlyingErrors countByEnumeratingWithState:&v71 objects:v80 count:16];
               if (v48)
               {
                 continue;
@@ -1622,8 +1622,8 @@ LABEL_66:
     }
 
     v50 = MEMORY[0x1E696ABC0];
-    v51 = [(NSError *)v75 domain];
-    WTF::RetainPtr<NSError>::operator=(&v75, [v50 errorWithDomain:v51 code:-[NSError code](v75 userInfo:{"code"), v42}]);
+    domain = [(NSError *)errorCopy domain];
+    WTF::RetainPtr<NSError>::operator=(&errorCopy, [v50 errorWithDomain:domain code:-[NSError code](errorCopy userInfo:{"code"), v42}]);
     if (v42)
     {
     }
@@ -1638,7 +1638,7 @@ LABEL_66:
     v70 = 0;
     *buf = 0;
 LABEL_16:
-    if (v75)
+    if (errorCopy)
     {
       m_ptr = self->_sessionWrapper.m_impl.m_ptr;
       if (m_ptr)
@@ -1646,7 +1646,7 @@ LABEL_16:
         v15 = *(m_ptr + 1);
         if (v15)
         {
-          v16 = WTF::HashMap<unsigned long long,WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::takeOptional((v15 + 40), [a4 taskIdentifier]);
+          v16 = WTF::HashMap<unsigned long long,WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::takeOptional((v15 + 40), [task taskIdentifier]);
           if (a2)
           {
             v17 = self->_session.m_impl.m_ptr;
@@ -1677,11 +1677,11 @@ LABEL_16:
                 if (v20)
                 {
                   v69 = 0;
-                  v24 = [(NSError *)v75 userInfo];
-                  if (v24 && WTF::ObjCTypeCastTraits<NSDictionary>::isType<NSObject>())
+                  userInfo2 = [(NSError *)errorCopy userInfo];
+                  if (userInfo2 && WTF::ObjCTypeCastTraits<NSDictionary>::isType<NSObject>())
                   {
-                    v63 = v24;
-                    WTF::OSObjectPtr<NSObject  {objcproto13OS_xpc_object}*>::operator=(&v69, [(NSDictionary *)v24 objectForKeyedSubscript:@"NSURLSessionDownloadTaskResumeData"]);
+                    v63 = userInfo2;
+                    WTF::OSObjectPtr<NSObject  {objcproto13OS_xpc_object}*>::operator=(&v69, [(NSDictionary *)userInfo2 objectForKeyedSubscript:@"NSURLSessionDownloadTaskResumeData"]);
                     if (v69)
                     {
                       objc_opt_class();
@@ -1690,13 +1690,13 @@ LABEL_16:
                         v64 = qword_1ED640E78;
                         if (os_log_type_enabled(qword_1ED640E78, OS_LOG_TYPE_DEFAULT))
                         {
-                          v65 = [a4 taskIdentifier];
+                          taskIdentifier = [task taskIdentifier];
                           v66 = objc_opt_class();
-                          v67 = [NSStringFromClass(v66) UTF8String];
+                          uTF8String = [NSStringFromClass(v66) UTF8String];
                           *v76 = 134218242;
-                          *&v76[4] = v65;
+                          *&v76[4] = taskIdentifier;
                           *&v76[12] = 2080;
-                          *&v76[14] = v67;
+                          *&v76[14] = uTF8String;
                           _os_log_impl(&dword_19D52D000, v64, OS_LOG_TYPE_DEFAULT, "Download task %llu finished with resume data of wrong class: %s", v76, 0x16u);
                         }
 
@@ -1712,17 +1712,17 @@ LABEL_16:
                   v25 = v69;
                   if (v69)
                   {
-                    v26 = [v69 bytes];
+                    bytes = [v69 bytes];
                     v25 = [v25 length];
                   }
 
                   else
                   {
-                    v26 = 0;
+                    bytes = 0;
                   }
 
-                  MEMORY[0x19EB04D40](v76, v75);
-                  WebKit::Download::didFail(v21, v76, v26, v25);
+                  MEMORY[0x19EB04D40](v76, errorCopy);
+                  WebKit::Download::didFail(v21, v76, bytes, v25);
                   v28 = v79;
                   v79 = 0;
                   if (v28)
@@ -1768,10 +1768,10 @@ LABEL_16:
     goto LABEL_38;
   }
 
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   if (v70)
   {
-    MEMORY[0x19EB04D40](v76, v75);
+    MEMORY[0x19EB04D40](v76, errorCopy);
     if (!kdebug_is_enabled())
     {
 LABEL_5:
@@ -1877,7 +1877,7 @@ LABEL_97:
     goto LABEL_97;
   }
 
-  [(WKNetworkSessionDelegate *)self existingWebSocketTask:a4];
+  [(WKNetworkSessionDelegate *)self existingWebSocketTask:task];
   if (!*buf)
   {
     goto LABEL_16;
@@ -1900,14 +1900,14 @@ LABEL_40:
     WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::deref((v34 + 8));
   }
 
-  v35 = v75;
-  v75 = 0;
+  v35 = errorCopy;
+  errorCopy = 0;
   if (v35)
   {
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
   v112 = *MEMORY[0x1E69E9840];
   if (!self)
@@ -1915,24 +1915,24 @@ LABEL_40:
     return;
   }
 
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   if (!v110)
   {
     return;
   }
 
-  v7 = [a5 transactionMetrics];
-  v8 = v7;
-  if (v7)
+  transactionMetrics = [metrics transactionMetrics];
+  v8 = transactionMetrics;
+  if (transactionMetrics)
   {
-    v9 = v7;
+    v9 = transactionMetrics;
   }
 
-  v10 = [v8 lastObject];
-  v11 = v10;
-  if (v10)
+  lastObject = [v8 lastObject];
+  v11 = lastObject;
+  if (lastObject)
   {
-    v12 = v10;
+    v12 = lastObject;
   }
 
   v13 = v110;
@@ -2051,7 +2051,7 @@ LABEL_40:
 
   *(v13 + 86) = v43;
   *(v13 + 714) |= 1u;
-  *(v13 + 356) = [a5 redirectCount];
+  *(v13 + 356) = [metrics redirectCount];
   MEMORY[0x19EB02040](&v100, [v11 networkProtocolName]);
   v45 = v100;
   v100 = 0;
@@ -2127,22 +2127,22 @@ LABEL_40:
   }
 
   *(v13 + 714) = *(v13 + 714) & 0xDF | v51;
-  v52 = [v11 _privacyStance];
-  if (v52 >= 6)
+  _privacyStance = [v11 _privacyStance];
+  if (_privacyStance >= 6)
   {
     v53 = 0;
   }
 
   else
   {
-    v53 = v52;
+    v53 = _privacyStance;
   }
 
   *(v13 + 715) = v53;
   if (WebKit::NetworkDataTask::shouldCaptureExtraNetworkLoadMetrics(v110))
   {
     WebCore::AdditionalNetworkLoadMetricsForWebInspector::create(&v109);
-    [a4 priority];
+    [task priority];
     if (*MEMORY[0x1E695ABC8] > v57)
     {
       v58 = 1;
@@ -2268,15 +2268,15 @@ LABEL_82:
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v75 = [a5 transactionMetrics];
-    v76 = [v75 countByEnumeratingWithState:&v95 objects:v111 count:16];
-    v93 = a4;
+    transactionMetrics2 = [metrics transactionMetrics];
+    v76 = [transactionMetrics2 countByEnumeratingWithState:&v95 objects:v111 count:16];
+    taskCopy = task;
     v77 = 0;
     v78 = 0;
     if (v76)
     {
       v79 = *v96;
-      obj = v75;
+      obj = transactionMetrics2;
       do
       {
         for (i = 0; i != v76; ++i)
@@ -2298,13 +2298,13 @@ LABEL_82:
     }
 
     *(v109 + 72) = v77;
-    v82 = [v93 countOfBytesSent];
+    countOfBytesSent = [taskCopy countOfBytesSent];
     v83 = v109;
     *(v109 + 80) = v78;
-    *(v83 + 88) = v82;
-    v84 = [v11 isProxyConnection];
+    *(v83 + 88) = countOfBytesSent;
+    isProxyConnection = [v11 isProxyConnection];
     v86 = v109;
-    *(v109 + 96) = v84;
+    *(v109 + 96) = isProxyConnection;
     v109 = 0;
     v87 = *(v13 + 92);
     *(v13 + 92) = v86;
@@ -2325,9 +2325,9 @@ LABEL_82:
   }
 
   *(v13 + 90) = [v11 countOfResponseBodyBytesReceived];
-  v54 = [v11 countOfResponseBodyBytesAfterDecoding];
-  *(v13 + 91) = v54;
-  if (!v54)
+  countOfResponseBodyBytesAfterDecoding = [v11 countOfResponseBodyBytesAfterDecoding];
+  *(v13 + 91) = countOfResponseBodyBytesAfterDecoding;
+  if (!countOfResponseBodyBytesAfterDecoding)
   {
     *(v13 + 90) = 0;
   }
@@ -2374,14 +2374,14 @@ WTF::StringImpl *__71__WKNetworkSessionDelegate_URLSession_task_didFinishCollect
   return result;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveInformationalResponse:(id)a5
+- (void)URLSession:(id)session task:(id)task didReceiveInformationalResponse:(id)response
 {
   if (self)
   {
-    [(WKNetworkSessionDelegate *)self existingTask:a4];
+    [(WKNetworkSessionDelegate *)self existingTask:task];
     if (v11)
     {
-      WebCore::ResourceResponse::ResourceResponse(v9, a5);
+      WebCore::ResourceResponse::ResourceResponse(v9, response);
       WebKit::NetworkDataTask::didReceiveInformationalResponse(v11, v9);
       v7 = v10;
       v10 = 0;
@@ -2400,41 +2400,41 @@ WTF::StringImpl *__71__WKNetworkSessionDelegate_URLSession_task_didFinishCollect
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _didReceiveInformationalResponse:(id)a5
+- (void)URLSession:(id)session task:(id)task _didReceiveInformationalResponse:(id)response
 {
-  v8 = WTF::dynamic_objc_cast<NSHTTPURLResponse>(a5);
+  v8 = WTF::dynamic_objc_cast<NSHTTPURLResponse>(response);
   if (v8)
   {
     v10 = v8;
     v9 = v8;
-    [(WKNetworkSessionDelegate *)self URLSession:a3 task:a4 didReceiveInformationalResponse:v10];
+    [(WKNetworkSessionDelegate *)self URLSession:session task:task didReceiveInformationalResponse:v10];
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v79 = *MEMORY[0x1E69E9840];
-  v10 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (!self)
   {
     v70 = 0;
     goto LABEL_40;
   }
 
-  v11 = v10;
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  v11 = taskIdentifier;
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   if (!v70)
   {
 LABEL_40:
-    (*(a6 + 2))(a6, 0);
+    (*(handler + 2))(handler, 0);
     goto LABEL_36;
   }
 
-  v12 = [a4 _incompleteTaskMetrics];
-  v13 = v12;
-  if (v12)
+  _incompleteTaskMetrics = [task _incompleteTaskMetrics];
+  v13 = _incompleteTaskMetrics;
+  if (_incompleteTaskMetrics)
   {
-    v14 = v12;
+    v14 = _incompleteTaskMetrics;
   }
 
   v15 = [objc_msgSend(v13 "transactionMetrics")];
@@ -2467,20 +2467,20 @@ LABEL_40:
   }
 
   v62 = checkForLegacyTLS(v16);
-  v21 = WTF::dynamic_objc_cast<NSHTTPURLResponse>(a5);
+  v21 = WTF::dynamic_objc_cast<NSHTTPURLResponse>(response);
   v22 = v21;
   if (!v21)
   {
     v26 = 0;
     v63 = 1;
 LABEL_50:
-    [a5 _CFURLResponse];
+    [response _CFURLResponse];
     WebCore::adjustMIMETypeIfNecessary();
     goto LABEL_16;
   }
 
   v23 = v21;
-  v24 = [v22 statusCode];
+  statusCode = [v22 statusCode];
   v25 = [v22 valueForHTTPHeaderField:@"X-Content-Type-Options"];
   v26 = v25;
   v63 = v25 == 0;
@@ -2490,13 +2490,13 @@ LABEL_50:
     [v26 caseInsensitiveCompare:@"nosniff"];
   }
 
-  if (v24 != 304)
+  if (statusCode != 304)
   {
     goto LABEL_50;
   }
 
 LABEL_16:
-  WebCore::ResourceResponse::ResourceResponse(v66, a5);
+  WebCore::ResourceResponse::ResourceResponse(v66, response);
   v27 = WebCore::ResourceResponseBase::url(v66);
   if ((WTF::URL::hasSpecialScheme(v27) & 1) == 0)
   {
@@ -2528,7 +2528,7 @@ LABEL_16:
   }
 
   v32 = v70;
-  v33 = _Block_copy(a6);
+  v33 = _Block_copy(handler);
   v34 = WTF::fastMalloc(0x18);
   *v34 = &unk_1F10ED850;
   v34[1] = v33;
@@ -2602,8 +2602,8 @@ LABEL_21:
 
   else
   {
-    v35 = [*(v32 + 608) _incompleteTaskMetrics];
-    if (WebKit::NetworkIssueReporter::shouldReport(v35, v36))
+    _incompleteTaskMetrics2 = [*(v32 + 608) _incompleteTaskMetrics];
+    if (WebKit::NetworkIssueReporter::shouldReport(_incompleteTaskMetrics2, v36))
     {
       v54 = *(v32 + 16);
       if (v54)
@@ -2675,23 +2675,23 @@ LABEL_36:
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v33 = *MEMORY[0x1E69E9840];
-  v24 = a5;
+  dataCopy = data;
   if (!self)
   {
     return;
   }
 
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   v6 = v23;
   if (!v23)
   {
     return;
   }
 
-  WebCore::SharedBuffer::create<NSData *&>(&v24, v5, &v22);
+  WebCore::SharedBuffer::create<NSData *&>(&dataCopy, v5, &v22);
   v7 = v22;
   if (kdebug_is_enabled())
   {
@@ -2787,7 +2787,7 @@ LABEL_4:
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   m_ptr = self->_sessionWrapper.m_impl.m_ptr;
   if (m_ptr)
@@ -2795,7 +2795,7 @@ LABEL_4:
     v6 = *(m_ptr + 1);
     if (v6)
     {
-      v8 = WTF::HashMap<unsigned long long,WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::takeOptional((v6 + 40), [a4 taskIdentifier]);
+      v8 = WTF::HashMap<unsigned long long,WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::takeOptional((v6 + 40), [task taskIdentifier]);
       if (v9)
       {
         v10 = self->_session.m_impl.m_ptr;
@@ -2852,7 +2852,7 @@ LABEL_14:
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
   m_ptr = self->_sessionWrapper.m_impl.m_ptr;
   if (!m_ptr)
@@ -2866,14 +2866,14 @@ LABEL_14:
     return;
   }
 
-  v13 = [a4 taskIdentifier];
-  if (v13 == -1)
+  taskIdentifier = [task taskIdentifier];
+  if (taskIdentifier == -1)
   {
     __break(0xC471u);
     goto LABEL_24;
   }
 
-  if (!v13)
+  if (!taskIdentifier)
   {
     __break(0xC471u);
     JUMPOUT(0x19D9395C0);
@@ -2886,12 +2886,12 @@ LABEL_14:
   }
 
   v15 = *(v14 - 8);
-  v16 = (v13 + ~(v13 << 32)) ^ ((v13 + ~(v13 << 32)) >> 22);
+  v16 = (taskIdentifier + ~(taskIdentifier << 32)) ^ ((taskIdentifier + ~(taskIdentifier << 32)) >> 22);
   v17 = 9 * ((v16 + ~(v16 << 13)) ^ ((v16 + ~(v16 << 13)) >> 8));
   v18 = (v17 ^ (v17 >> 15)) + ~((v17 ^ (v17 >> 15)) << 27);
   v19 = v15 & ((v18 >> 31) ^ v18);
   v20 = *(v14 + 16 * v19);
-  if (v20 == v13)
+  if (v20 == taskIdentifier)
   {
 LABEL_10:
     v22 = self->_session.m_impl.m_ptr;
@@ -2920,7 +2920,7 @@ LABEL_10:
       if (v28)
       {
         *(v25 + 184) = v28 - 1;
-        WebKit::Download::didReceiveData(v26, a5, a6, a7);
+        WebKit::Download::didReceiveData(v26, data, written, write);
         WTF::RefCounted<WebKit::Download>::deref(v27);
 LABEL_15:
         v29 = *(v23 + 16);
@@ -2956,21 +2956,21 @@ LABEL_24:
     v19 = (v19 + v21) & v15;
     v20 = *(v14 + 16 * v19);
     ++v21;
-    if (v20 == v13)
+    if (v20 == taskIdentifier)
     {
       goto LABEL_10;
     }
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didBecomeDownloadTask:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didBecomeDownloadTask:(id)downloadTask
 {
   if (!self)
   {
     return;
   }
 
-  [(WKNetworkSessionDelegate *)self existingTask:a4];
+  [(WKNetworkSessionDelegate *)self existingTask:task];
   v7 = v44;
   if (!v44)
   {
@@ -3021,7 +3021,7 @@ LABEL_10:
   *v15 = v16 + 1;
   WebKit::NetworkDataTaskCocoa::suggestedFilename(v7, v40);
   v18 = WebKit::Download::operator new(0x1C8, v17);
-  v42 = WebKit::Download::Download(v18, v15, v13, a5, v9);
+  v42 = WebKit::Download::Download(v18, v15, v13, downloadTask, v9);
   v20 = v40[0];
   v40[0] = 0;
   if (v20 && atomic_fetch_add_explicit(v20, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -3052,17 +3052,17 @@ LABEL_37:
     JUMPOUT(0x19D9398F8);
   }
 
-  v27 = [a5 taskIdentifier];
+  taskIdentifier = [downloadTask taskIdentifier];
   v28 = *(v26 + 40);
   if (v28)
   {
-    if (v27 == -1)
+    if (taskIdentifier == -1)
     {
       __break(0xC471u);
       JUMPOUT(0x19D939978);
     }
 
-    if (!v27 || (v29 = *(v28 - 8), v30 = (v27 + ~(v27 << 32)) ^ ((v27 + ~(v27 << 32)) >> 22), v31 = 9 * ((v30 + ~(v30 << 13)) ^ ((v30 + ~(v30 << 13)) >> 8)), v32 = (v31 ^ (v31 >> 15)) + ~((v31 ^ (v31 >> 15)) << 27), v33 = v29 & ((v32 >> 31) ^ v32), v34 = *(v28 + 16 * v33), v34 == v27))
+    if (!taskIdentifier || (v29 = *(v28 - 8), v30 = (taskIdentifier + ~(taskIdentifier << 32)) ^ ((taskIdentifier + ~(taskIdentifier << 32)) >> 22), v31 = 9 * ((v30 + ~(v30 << 13)) ^ ((v30 + ~(v30 << 13)) >> 8)), v32 = (v31 ^ (v31 >> 15)) + ~((v31 ^ (v31 >> 15)) << 27), v33 = v29 & ((v32 >> 31) ^ v32), v34 = *(v28 + 16 * v33), v34 == taskIdentifier))
     {
 LABEL_42:
       __break(0xC471u);
@@ -3075,7 +3075,7 @@ LABEL_42:
       v33 = (v33 + v35) & v29;
       v34 = *(v28 + 16 * v33);
       ++v35;
-      if (v34 == v27)
+      if (v34 == taskIdentifier)
       {
         goto LABEL_42;
       }
@@ -3089,8 +3089,8 @@ LABEL_42:
     JUMPOUT(0x19D939918);
   }
 
-  v41 = [a5 taskIdentifier];
-  WTF::HashMap<unsigned long long,WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>&>((v37 + 40), &v41, &v43, v40);
+  taskIdentifier2 = [downloadTask taskIdentifier];
+  WTF::HashMap<unsigned long long,WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<WTF::ObjectIdentifierGeneric<WebKit::DownloadIDType,WTF::ObjectIdentifierMainThreadAccessTraits<unsigned long long>,unsigned long long>&>((v37 + 40), &taskIdentifier2, &v43, v40);
   v38 = v42;
   v42 = 0;
   if (v38)
@@ -3122,11 +3122,11 @@ LABEL_42:
   }
 }
 
-- (RefPtr<WebKit::WebSocketTask,)existingWebSocketTask:(id)a3
+- (RefPtr<WebKit::WebSocketTask,)existingWebSocketTask:(id)task
 {
   v4 = v3;
   m_ptr = self->_sessionWrapper.m_impl.m_ptr;
-  if (m_ptr && (v6 = *(m_ptr + 1)) != 0 && a3 && (self = WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<unsigned long long>>,unsigned long long>(&v9, (v6 + 48), [a3 taskIdentifier]), (v7 = v10) != 0))
+  if (m_ptr && (v6 = *(m_ptr + 1)) != 0 && task && (self = WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<unsigned long long,WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>,WTF::DefaultHash<unsigned long long>,WTF::HashTraits<unsigned long long>,WTF::HashTraits<WTF::ThreadSafeWeakPtr<WebKit::WebSocketTask,WTF::NoTaggingTraits<WebKit::WebSocketTask>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<unsigned long long>>,unsigned long long>(&v9, (v6 + 48), [task taskIdentifier]), (v7 = v10) != 0))
   {
     WTF::ThreadSafeWeakPtrControlBlock::makeStrongReferenceIfPossible<WebKit::RemoteMediaPlayerManager>(v10, v9, v4);
     return WTF::ThreadSafeWeakPtrControlBlock::weakDeref(v7, v8);
@@ -3140,15 +3140,15 @@ LABEL_42:
   return self;
 }
 
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didOpenWithProtocol:(id)a5
+- (void)URLSession:(id)session webSocketTask:(id)task didOpenWithProtocol:(id)protocol
 {
   if (self)
   {
-    [(WKNetworkSessionDelegate *)self existingWebSocketTask:a4];
+    [(WKNetworkSessionDelegate *)self existingWebSocketTask:task];
     v6 = v11;
     if (v11)
     {
-      MEMORY[0x19EB02040](&v10, a5);
+      MEMORY[0x19EB02040](&v10, protocol);
       WebKit::WebSocketTask::didConnect(v6, &v10);
       v8 = v10;
       v10 = 0;
@@ -3167,18 +3167,18 @@ LABEL_42:
   }
 }
 
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didCloseWithCode:(int64_t)a5 reason:(id)a6
+- (void)URLSession:(id)session webSocketTask:(id)task didCloseWithCode:(int64_t)code reason:(id)reason
 {
   if (self)
   {
-    v7 = a5;
-    [(WKNetworkSessionDelegate *)self existingWebSocketTask:a4];
+    codeCopy = code;
+    [(WKNetworkSessionDelegate *)self existingWebSocketTask:task];
     if (v14)
     {
-      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a6 encoding:4];
+      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:reason encoding:4];
       v9 = v14;
       MEMORY[0x19EB02040](&v13, v8);
-      WebKit::WebSocketTask::didClose(v9, v7, &v13);
+      WebKit::WebSocketTask::didClose(v9, codeCopy, &v13);
       v11 = v13;
       v13 = 0;
       if (v11 && atomic_fetch_add_explicit(v11, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -3217,17 +3217,17 @@ LABEL_7:
 
 - (void)URLSession:task:didReceiveChallenge:completionHandler:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  WeakRetained = objc_loadWeakRetained((self + 32));
   v7 = WeakRetained;
   if (!WeakRetained || (v8 = *(WeakRetained + 2)) == 0 || !*(v8 + 8))
   {
-    (*(*(a1 + 48) + 16))();
+    (*(*(self + 48) + 16))();
     goto LABEL_34;
   }
 
-  v9 = *(a1 + 64);
-  *(a1 + 64) = 0;
-  v10 = *(a1 + 40);
+  v9 = *(self + 64);
+  *(self + 64) = 0;
+  v10 = *(self + 40);
   if (!v10)
   {
     v11 = 0;
@@ -3240,7 +3240,7 @@ LABEL_7:
 LABEL_28:
     LOBYTE(a3) = 1;
 LABEL_29:
-    (*(*(a1 + 48) + 16))();
+    (*(*(self + 48) + 16))();
     if (a3)
     {
       goto LABEL_32;
@@ -3263,11 +3263,11 @@ LABEL_29:
   }
 
   ++*(v13 + 8);
-  v14 = *(a1 + 72);
-  v15 = *(a1 + 56);
+  v14 = *(self + 72);
+  v15 = *(self + 56);
   v16 = WTF::fastMalloc(0x10);
-  v17 = *(a1 + 48);
-  *(a1 + 48) = 0;
+  v17 = *(self + 48);
+  *(self + 48) = 0;
   *v16 = &unk_1F10ED478;
   v16[1] = v17;
   MEMORY[0x19EB0B400](v31, a2);
@@ -3361,22 +3361,22 @@ LABEL_34:
   }
 }
 
-- (uint64_t)URLSession:(uint64_t)a1 task:willPerformHTTPRedirection:newRequest:completionHandler:
+- (uint64_t)URLSession:(uint64_t)session task:willPerformHTTPRedirection:newRequest:completionHandler:
 {
-  *a1 = &unk_1F10ED7D8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *session = &unk_1F10ED7D8;
+  _Block_release(*(session + 8));
+  return session;
 }
 
-- (uint64_t)URLSession:(const void *)a1 task:willPerformHTTPRedirection:newRequest:completionHandler:
+- (uint64_t)URLSession:(const void *)session task:willPerformHTTPRedirection:newRequest:completionHandler:
 {
-  *a1 = &unk_1F10ED7D8;
-  _Block_release(a1[1]);
+  *session = &unk_1F10ED7D8;
+  _Block_release(session[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(session, v2);
 }
 
-- (void)URLSession:(uint64_t)a1 task:willPerformHTTPRedirection:newRequest:completionHandler:
+- (void)URLSession:(uint64_t)session task:willPerformHTTPRedirection:newRequest:completionHandler:
 {
   v3 = WebCore::ResourceRequest::nsURLRequest();
   if (v3)
@@ -3384,28 +3384,28 @@ LABEL_34:
     v2 = v3;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(session + 8) + 16))();
   if (v3)
   {
   }
 }
 
-- (uint64_t)URLSession:(uint64_t)a1 task:_schemeUpgraded:completionHandler:
+- (uint64_t)URLSession:(uint64_t)session task:_schemeUpgraded:completionHandler:
 {
-  *a1 = &unk_1F10ED800;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *session = &unk_1F10ED800;
+  _Block_release(*(session + 8));
+  return session;
 }
 
-- (uint64_t)URLSession:(const void *)a1 task:_schemeUpgraded:completionHandler:
+- (uint64_t)URLSession:(const void *)session task:_schemeUpgraded:completionHandler:
 {
-  *a1 = &unk_1F10ED800;
-  _Block_release(a1[1]);
+  *session = &unk_1F10ED800;
+  _Block_release(session[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(session, v2);
 }
 
-- (void)URLSession:(uint64_t)a1 task:_schemeUpgraded:completionHandler:
+- (void)URLSession:(uint64_t)session task:_schemeUpgraded:completionHandler:
 {
   v2 = WebCore::ResourceRequest::nsURLRequest();
   v5 = v2;
@@ -3414,27 +3414,27 @@ LABEL_34:
     v3 = v2;
   }
 
-  updateIgnoreStrictTransportSecuritySetting(&v5, *(a1 + 24));
+  updateIgnoreStrictTransportSecuritySetting(&v5, *(session + 24));
   v4 = v5;
-  (*(*(a1 + 8) + 16))();
+  (*(*(session + 8) + 16))();
   if (v4)
   {
   }
 }
 
-- (uint64_t)URLSession:(uint64_t)a1 task:didReceiveChallenge:completionHandler:
+- (uint64_t)URLSession:(uint64_t)session task:didReceiveChallenge:completionHandler:
 {
-  *a1 = &unk_1F10ED828;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *session = &unk_1F10ED828;
+  _Block_release(*(session + 8));
+  return session;
 }
 
-- (uint64_t)URLSession:(const void *)a1 task:didReceiveChallenge:completionHandler:
+- (uint64_t)URLSession:(const void *)session task:didReceiveChallenge:completionHandler:
 {
-  *a1 = &unk_1F10ED828;
-  _Block_release(a1[1]);
+  *session = &unk_1F10ED828;
+  _Block_release(session[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(session, v2);
 }
 
 - (void)URLSession:(WebCore::Credential *)this task:didReceiveChallenge:completionHandler:
@@ -3445,25 +3445,25 @@ LABEL_34:
     v4 = v5;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v5)
   {
   }
 }
 
-- (uint64_t)URLSession:(uint64_t)a1 dataTask:didReceiveResponse:completionHandler:
+- (uint64_t)URLSession:(uint64_t)session dataTask:didReceiveResponse:completionHandler:
 {
-  *a1 = &unk_1F10ED850;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *session = &unk_1F10ED850;
+  _Block_release(*(session + 8));
+  return session;
 }
 
-- (uint64_t)URLSession:(const void *)a1 dataTask:didReceiveResponse:completionHandler:
+- (uint64_t)URLSession:(const void *)session dataTask:didReceiveResponse:completionHandler:
 {
-  *a1 = &unk_1F10ED850;
-  _Block_release(a1[1]);
+  *session = &unk_1F10ED850;
+  _Block_release(session[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(session, v2);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface MTRThermostatClusterSetWeeklyScheduleParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRThermostatClusterSetWeeklyScheduleParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -25,9 +25,9 @@
     modeForSequence = v3->_modeForSequence;
     v3->_modeForSequence = &unk_284C3E4C8;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     transitions = v3->_transitions;
-    v3->_transitions = v7;
+    v3->_transitions = array;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -39,26 +39,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterSetWeeklyScheduleParams);
-  v5 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self numberOfTransitionsForSequence];
-  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setNumberOfTransitionsForSequence:v5];
+  numberOfTransitionsForSequence = [(MTRThermostatClusterSetWeeklyScheduleParams *)self numberOfTransitionsForSequence];
+  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setNumberOfTransitionsForSequence:numberOfTransitionsForSequence];
 
-  v6 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self dayOfWeekForSequence];
-  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setDayOfWeekForSequence:v6];
+  dayOfWeekForSequence = [(MTRThermostatClusterSetWeeklyScheduleParams *)self dayOfWeekForSequence];
+  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setDayOfWeekForSequence:dayOfWeekForSequence];
 
-  v7 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self modeForSequence];
-  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setModeForSequence:v7];
+  modeForSequence = [(MTRThermostatClusterSetWeeklyScheduleParams *)self modeForSequence];
+  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setModeForSequence:modeForSequence];
 
-  v8 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self transitions];
-  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setTransitions:v8];
+  transitions = [(MTRThermostatClusterSetWeeklyScheduleParams *)self transitions];
+  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setTransitions:transitions];
 
-  v9 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self timedInvokeTimeoutMs];
-  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRThermostatClusterSetWeeklyScheduleParams *)self timedInvokeTimeoutMs];
+  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self serverSideProcessingTimeout];
-  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRThermostatClusterSetWeeklyScheduleParams *)self serverSideProcessingTimeout];
+  [(MTRThermostatClusterSetWeeklyScheduleParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -73,27 +73,27 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v31 = *MEMORY[0x277D85DE8];
   v22 = 0;
-  v23 = 0;
+  unsignedCharValue = 0;
   v24 = 0;
   v25 = 0;
   v21[0] = 0;
   v21[1] = 0;
   v20 = v21;
-  v4 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self numberOfTransitionsForSequence];
-  LOBYTE(v22) = [v4 unsignedCharValue];
+  numberOfTransitionsForSequence = [(MTRThermostatClusterSetWeeklyScheduleParams *)self numberOfTransitionsForSequence];
+  LOBYTE(v22) = [numberOfTransitionsForSequence unsignedCharValue];
 
-  v5 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self dayOfWeekForSequence];
-  HIBYTE(v22) = [v5 unsignedCharValue];
+  dayOfWeekForSequence = [(MTRThermostatClusterSetWeeklyScheduleParams *)self dayOfWeekForSequence];
+  HIBYTE(v22) = [dayOfWeekForSequence unsignedCharValue];
 
-  v6 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self modeForSequence];
-  v23 = [v6 unsignedCharValue];
+  modeForSequence = [(MTRThermostatClusterSetWeeklyScheduleParams *)self modeForSequence];
+  unsignedCharValue = [modeForSequence unsignedCharValue];
 
-  v7 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self transitions];
-  v8 = [v7 count] == 0;
+  transitions = [(MTRThermostatClusterSetWeeklyScheduleParams *)self transitions];
+  v8 = [transitions count] == 0;
 
   if (!v8)
   {
@@ -121,8 +121,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v19);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v19);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v17;
       v11 = v9;
     }
@@ -151,19 +151,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRThermostatClusterSetWeeklyScheduleParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -174,7 +174,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x5D4D00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

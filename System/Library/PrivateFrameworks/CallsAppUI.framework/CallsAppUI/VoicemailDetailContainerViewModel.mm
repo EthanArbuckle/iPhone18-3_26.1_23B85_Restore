@@ -1,10 +1,10 @@
 @interface VoicemailDetailContainerViewModel
-- (void)messageStoreDidUpdateMessages:(id)a3;
+- (void)messageStoreDidUpdateMessages:(id)messages;
 @end
 
 @implementation VoicemailDetailContainerViewModel
 
-- (void)messageStoreDidUpdateMessages:(id)a3
+- (void)messageStoreDidUpdateMessages:(id)messages
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4ED950, &qword_1CFCA2710);
   v5 = *(*(v4 - 8) + 64);

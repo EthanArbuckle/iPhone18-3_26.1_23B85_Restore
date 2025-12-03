@@ -2,28 +2,28 @@
 + (id)errorDictGraphIDKey;
 + (id)errorDictResourceIDKey;
 + (id)errorDomain;
-- (BOOL)addGraphWithID:(id)a3 type:(unint64_t)a4 inputs:(id)a5 outputs:(id)a6 error:(id *)a7;
-- (BOOL)isWaitInput:(id)a3 forGraph:(id)a4;
-- (BOOL)removeGraphWithID:(id)a3 error:(id *)a4;
-- (BOOL)removeGraphsWithIDs:(id)a3 error:(id *)a4;
-- (id)allDependentGraphsForResourceSet:(id)a3;
+- (BOOL)addGraphWithID:(id)d type:(unint64_t)type inputs:(id)inputs outputs:(id)outputs error:(id *)error;
+- (BOOL)isWaitInput:(id)input forGraph:(id)graph;
+- (BOOL)removeGraphWithID:(id)d error:(id *)error;
+- (BOOL)removeGraphsWithIDs:(id)ds error:(id *)error;
+- (id)allDependentGraphsForResourceSet:(id)set;
 - (id)allNodes;
 - (id)allStrideDependentGraphs;
 - (id)deepCopy;
 - (id)dumpStateSync;
-- (id)externalSharedInputsForGraph:(id)a3;
-- (id)getOrphanedGraphsWithSourceGraphToAffectedGraphs:(id)a3;
-- (id)graphsForExecSession:(id)a3;
+- (id)externalSharedInputsForGraph:(id)graph;
+- (id)getOrphanedGraphsWithSourceGraphToAffectedGraphs:(id)graphs;
+- (id)graphsForExecSession:(id)session;
 - (id)graphsInTopologicalWaitOrder;
-- (id)nodesForGraphID:(id)a3 graphCond:(id)a4 graphInputCond:(id)a5 resourceCond:(id)a6;
-- (id)nodesForResourceID:(id)a3 graphCond:(id)a4 graphInputCond:(id)a5 resourceCond:(id)a6;
-- (id)producerGraphForResource:(id)a3;
-- (id)resourcesForGraph:(id)a3;
-- (id)strideDependentGraphsForGraphID:(id)a3;
-- (id)waitResourcesForGraph:(id)a3 isSessionLocal:(BOOL)a4;
-- (int64_t)getStrideDependentGraphsCountWithStrideDependentGraphs:(id)a3;
-- (void)_removeGraphUnsafeWith:(id)a3;
-- (void)dumpStateAsync:(id)a3;
+- (id)nodesForGraphID:(id)d graphCond:(id)cond graphInputCond:(id)inputCond resourceCond:(id)resourceCond;
+- (id)nodesForResourceID:(id)d graphCond:(id)cond graphInputCond:(id)inputCond resourceCond:(id)resourceCond;
+- (id)producerGraphForResource:(id)resource;
+- (id)resourcesForGraph:(id)graph;
+- (id)strideDependentGraphsForGraphID:(id)d;
+- (id)waitResourcesForGraph:(id)graph isSessionLocal:(BOOL)local;
+- (int64_t)getStrideDependentGraphsCountWithStrideDependentGraphs:(id)graphs;
+- (void)_removeGraphUnsafeWith:(id)with;
+- (void)dumpStateAsync:(id)async;
 @end
 
 @implementation PSSGBuilder
@@ -49,50 +49,50 @@
   return v2;
 }
 
-- (BOOL)addGraphWithID:(id)a3 type:(unint64_t)a4 inputs:(id)a5 outputs:(id)a6 error:(id *)a7
+- (BOOL)addGraphWithID:(id)d type:(unint64_t)type inputs:(id)inputs outputs:(id)outputs error:(id *)error
 {
-  if (a5)
+  if (inputs)
   {
     type metadata accessor for PSSGGraphInput(self);
     sub_25EB6E3D8();
   }
 
-  if (a6)
+  if (outputs)
   {
     type metadata accessor for PSSGResourceID(0);
     sub_25EB24DC0(&qword_27FD11EA0, 255, type metadata accessor for PSSGResourceID);
     sub_25EB6E438();
   }
 
-  v11 = a3;
-  v12 = self;
-  PSSGBuilder.addGraph(with:type:inputs:outputs:)(v11, a4);
+  dCopy = d;
+  selfCopy = self;
+  PSSGBuilder.addGraph(with:type:inputs:outputs:)(dCopy, type);
 
   return 1;
 }
 
-- (void)_removeGraphUnsafeWith:(id)a3
+- (void)_removeGraphUnsafeWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_25EB174C8(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_25EB174C8(withCopy);
 }
 
-- (BOOL)removeGraphWithID:(id)a3 error:(id *)a4
+- (BOOL)removeGraphWithID:(id)d error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  PSSGBuilder.removeGraph(with:)(v5);
+  dCopy = d;
+  selfCopy = self;
+  PSSGBuilder.removeGraph(with:)(dCopy);
 
   return 1;
 }
 
-- (BOOL)removeGraphsWithIDs:(id)a3 error:(id *)a4
+- (BOOL)removeGraphsWithIDs:(id)ds error:(id *)error
 {
   type metadata accessor for PSSGGraphID(0);
   sub_25EB24DC0(&unk_27FD11DF0, 255, type metadata accessor for PSSGGraphID);
   v5 = sub_25EB6E438();
-  v6 = self;
+  selfCopy = self;
   PSSGBuilder.removeGraphs(with:)(v5);
 
   return 1;
@@ -100,18 +100,18 @@
 
 - (id)allNodes
 {
-  v2 = self;
+  selfCopy = self;
   PSSGBuilder.allNodes()(v3);
   v5 = v4;
 
   return v5;
 }
 
-- (id)nodesForGraphID:(id)a3 graphCond:(id)a4 graphInputCond:(id)a5 resourceCond:(id)a6
+- (id)nodesForGraphID:(id)d graphCond:(id)cond graphInputCond:(id)inputCond resourceCond:(id)resourceCond
 {
-  v10 = _Block_copy(a4);
-  v11 = _Block_copy(a5);
-  v12 = _Block_copy(a6);
+  v10 = _Block_copy(cond);
+  v11 = _Block_copy(inputCond);
+  v12 = _Block_copy(resourceCond);
   if (v10)
   {
     v13 = swift_allocObject();
@@ -154,13 +154,13 @@ LABEL_4:
 LABEL_7:
   v15 = 0;
 LABEL_8:
-  v16 = self;
-  v17 = a3;
+  selfCopy = self;
+  dCopy = d;
   sub_25EB2FB1C(v10);
   sub_25EB2FB1C(v11);
   sub_25EB2FB1C(v12);
-  sub_25EB30638(v16, v10, v13, v11, v14, v12, v15);
-  v18 = sub_25EB1958C(v17);
+  sub_25EB30638(selfCopy, v10, v13, v11, v14, v12, v15);
+  v18 = sub_25EB1958C(dCopy);
 
   sub_25EB318AC(v12);
   sub_25EB318AC(v11);
@@ -169,11 +169,11 @@ LABEL_8:
   return v18;
 }
 
-- (id)nodesForResourceID:(id)a3 graphCond:(id)a4 graphInputCond:(id)a5 resourceCond:(id)a6
+- (id)nodesForResourceID:(id)d graphCond:(id)cond graphInputCond:(id)inputCond resourceCond:(id)resourceCond
 {
-  v10 = _Block_copy(a4);
-  v11 = _Block_copy(a5);
-  v12 = _Block_copy(a6);
+  v10 = _Block_copy(cond);
+  v11 = _Block_copy(inputCond);
+  v12 = _Block_copy(resourceCond);
   if (v10)
   {
     v13 = swift_allocObject();
@@ -216,13 +216,13 @@ LABEL_4:
 LABEL_7:
   v15 = 0;
 LABEL_8:
-  v16 = self;
-  v17 = a3;
+  selfCopy = self;
+  dCopy = d;
   sub_25EB2FB1C(v10);
   sub_25EB2FB1C(v11);
   sub_25EB2FB1C(v12);
-  sub_25EB30638(v16, v10, v13, v11, v14, v12, v15);
-  v18 = sub_25EB197BC(v17);
+  sub_25EB30638(selfCopy, v10, v13, v11, v14, v12, v15);
+  v18 = sub_25EB197BC(dCopy);
 
   sub_25EB318AC(v12);
   sub_25EB318AC(v11);
@@ -233,7 +233,7 @@ LABEL_8:
 
 - (id)dumpStateSync
 {
-  v2 = self;
+  selfCopy = self;
   object = PSSGBuilder.dumpStateSync()().value._object;
 
   if (object)
@@ -249,29 +249,29 @@ LABEL_8:
   return v4;
 }
 
-- (void)dumpStateAsync:(id)a3
+- (void)dumpStateAsync:(id)async
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(async);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   PSSGBuilder.dumpStateAsync(_:)(sub_25EB318A4, v5);
 }
 
 - (id)deepCopy
 {
-  v2 = self;
+  selfCopy = self;
   PSSGBuilder.deepCopy()(v3);
   v5 = v4;
 
   return v5;
 }
 
-- (id)strideDependentGraphsForGraphID:(id)a3
+- (id)strideDependentGraphsForGraphID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  PSSGBuilder.strideDependentGraphs(for:)(v4);
+  dCopy = d;
+  selfCopy = self;
+  PSSGBuilder.strideDependentGraphs(for:)(dCopy);
 
   type metadata accessor for PSSGGraphID(0);
   sub_25EB24DC0(&unk_27FD11DF0, 255, type metadata accessor for PSSGGraphID);
@@ -280,25 +280,25 @@ LABEL_8:
   return v6;
 }
 
-- (int64_t)getStrideDependentGraphsCountWithStrideDependentGraphs:(id)a3
+- (int64_t)getStrideDependentGraphsCountWithStrideDependentGraphs:(id)graphs
 {
   type metadata accessor for PSSGGraphID(0);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FD121D0, &unk_25EB78ED8);
   sub_25EB24DC0(&unk_27FD11DF0, 255, type metadata accessor for PSSGGraphID);
   v4 = sub_25EB6E208();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_25EB30C5C(v4);
 
   return v6;
 }
 
-- (id)getOrphanedGraphsWithSourceGraphToAffectedGraphs:(id)a3
+- (id)getOrphanedGraphsWithSourceGraphToAffectedGraphs:(id)graphs
 {
   type metadata accessor for PSSGGraphID(0);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FD121D0, &unk_25EB78ED8);
   sub_25EB24DC0(&unk_27FD11DF0, 255, type metadata accessor for PSSGGraphID);
   v4 = sub_25EB6E208();
-  v5 = self;
+  selfCopy = self;
   sub_25EB1EC4C(v4);
 
   v6 = sub_25EB6E428();
@@ -308,7 +308,7 @@ LABEL_8:
 
 - (id)allStrideDependentGraphs
 {
-  v2 = self;
+  selfCopy = self;
   PSSGBuilder.allStrideDependentGraphs()();
 
   type metadata accessor for PSSGGraphID(0);
@@ -319,12 +319,12 @@ LABEL_8:
   return v3;
 }
 
-- (id)allDependentGraphsForResourceSet:(id)a3
+- (id)allDependentGraphsForResourceSet:(id)set
 {
   type metadata accessor for PSSGResourceID(0);
   sub_25EB24DC0(&qword_27FD11EA0, 255, type metadata accessor for PSSGResourceID);
   v4 = sub_25EB6E438();
-  v5 = self;
+  selfCopy = self;
   PSSGBuilder.allDependentGraphs(forResourceSet:)(v4);
 
   type metadata accessor for PSSGGraphID(0);
@@ -334,11 +334,11 @@ LABEL_8:
   return v6;
 }
 
-- (id)externalSharedInputsForGraph:(id)a3
+- (id)externalSharedInputsForGraph:(id)graph
 {
-  v4 = a3;
-  v5 = self;
-  sub_25EB20C90(v4);
+  graphCopy = graph;
+  selfCopy = self;
+  sub_25EB20C90(graphCopy);
 
   type metadata accessor for PSSGGraphInput(v6);
   v7 = sub_25EB6E3C8();
@@ -346,33 +346,33 @@ LABEL_8:
   return v7;
 }
 
-- (id)resourcesForGraph:(id)a3
+- (id)resourcesForGraph:(id)graph
 {
-  v4 = a3;
-  v5 = self;
-  PSSGBuilder.resources(forGraph:)(v4);
+  graphCopy = graph;
+  selfCopy = self;
+  PSSGBuilder.resources(forGraph:)(graphCopy);
 
   v6 = sub_25EB6E428();
 
   return v6;
 }
 
-- (id)waitResourcesForGraph:(id)a3 isSessionLocal:(BOOL)a4
+- (id)waitResourcesForGraph:(id)graph isSessionLocal:(BOOL)local
 {
-  v6 = a3;
-  v7 = self;
-  PSSGBuilder.waitResources(forGraph:isSessionLocal:)(v6, a4);
+  graphCopy = graph;
+  selfCopy = self;
+  PSSGBuilder.waitResources(forGraph:isSessionLocal:)(graphCopy, local);
 
   v8 = sub_25EB6E428();
 
   return v8;
 }
 
-- (id)graphsForExecSession:(id)a3
+- (id)graphsForExecSession:(id)session
 {
   v4 = sub_25EB6E268();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   PSSGBuilder.graphs(forExecSession:)(v4, v6);
   v9 = v8;
 
@@ -391,44 +391,44 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)isWaitInput:(id)a3 forGraph:(id)a4
+- (BOOL)isWaitInput:(id)input forGraph:(id)graph
 {
   v6 = sub_25EB6E268();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  LOBYTE(v6) = PSSGBuilder.isWaitInput(_:forGraph:)(v6, v8, v9);
+  graphCopy = graph;
+  selfCopy = self;
+  LOBYTE(v6) = PSSGBuilder.isWaitInput(_:forGraph:)(v6, v8, graphCopy);
 
   return v6 & 1;
 }
 
-- (id)producerGraphForResource:(id)a3
+- (id)producerGraphForResource:(id)resource
 {
   v5 = OBJC_IVAR___PSSGBuilder_resources;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  v7 = a3;
-  v8 = self;
-  v9 = sub_25EB0EE68(v7, v6, sub_25EAFD114, type metadata accessor for PSSGResource);
+  resourceCopy = resource;
+  selfCopy = self;
+  v9 = sub_25EB0EE68(resourceCopy, v6, sub_25EAFD114, type metadata accessor for PSSGResource);
   if (v9)
   {
     v10 = v9;
     swift_endAccess();
-    v11 = [v10 producer];
+    producer = [v10 producer];
   }
 
   else
   {
     swift_endAccess();
-    v11 = 0;
+    producer = 0;
   }
 
-  return v11;
+  return producer;
 }
 
 - (id)graphsInTopologicalWaitOrder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PSSGBuilder.graphsInTopologicalWaitOrder()();
 
   if (v3)

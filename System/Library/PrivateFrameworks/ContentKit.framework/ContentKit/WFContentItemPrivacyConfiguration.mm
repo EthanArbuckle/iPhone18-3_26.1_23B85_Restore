@@ -1,24 +1,24 @@
 @interface WFContentItemPrivacyConfiguration
-+ (id)configurationWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4;
-+ (id)configurationWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 disclosureWarnings:(id)a5;
-- (WFContentItemPrivacyConfiguration)initWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 disclosureWarnings:(id)a5;
++ (id)configurationWithOrigin:(id)origin disclosureLevel:(unint64_t)level;
++ (id)configurationWithOrigin:(id)origin disclosureLevel:(unint64_t)level disclosureWarnings:(id)warnings;
+- (WFContentItemPrivacyConfiguration)initWithOrigin:(id)origin disclosureLevel:(unint64_t)level disclosureWarnings:(id)warnings;
 @end
 
 @implementation WFContentItemPrivacyConfiguration
 
-- (WFContentItemPrivacyConfiguration)initWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 disclosureWarnings:(id)a5
+- (WFContentItemPrivacyConfiguration)initWithOrigin:(id)origin disclosureLevel:(unint64_t)level disclosureWarnings:(id)warnings
 {
-  v9 = a3;
-  v10 = a5;
+  originCopy = origin;
+  warningsCopy = warnings;
   v17.receiver = self;
   v17.super_class = WFContentItemPrivacyConfiguration;
   v11 = [(WFContentItemPrivacyConfiguration *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_origin, a3);
-    v12->_disclosureLevel = a4;
-    v13 = [MEMORY[0x277CBEB70] orderedSetWithArray:v10];
+    objc_storeStrong(&v11->_origin, origin);
+    v12->_disclosureLevel = level;
+    v13 = [MEMORY[0x277CBEB70] orderedSetWithArray:warningsCopy];
     disclosureWarnings = v12->_disclosureWarnings;
     v12->_disclosureWarnings = v13;
 
@@ -28,20 +28,20 @@
   return v12;
 }
 
-+ (id)configurationWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 disclosureWarnings:(id)a5
++ (id)configurationWithOrigin:(id)origin disclosureLevel:(unint64_t)level disclosureWarnings:(id)warnings
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithOrigin:v9 disclosureLevel:a4 disclosureWarnings:v8];
+  warningsCopy = warnings;
+  originCopy = origin;
+  v10 = [[self alloc] initWithOrigin:originCopy disclosureLevel:level disclosureWarnings:warningsCopy];
 
   return v10;
 }
 
-+ (id)configurationWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4
++ (id)configurationWithOrigin:(id)origin disclosureLevel:(unint64_t)level
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = [v7 initWithOrigin:v6 disclosureLevel:a4 disclosureWarnings:MEMORY[0x277CBEBF8]];
+  originCopy = origin;
+  v7 = [self alloc];
+  v8 = [v7 initWithOrigin:originCopy disclosureLevel:level disclosureWarnings:MEMORY[0x277CBEBF8]];
 
   return v8;
 }

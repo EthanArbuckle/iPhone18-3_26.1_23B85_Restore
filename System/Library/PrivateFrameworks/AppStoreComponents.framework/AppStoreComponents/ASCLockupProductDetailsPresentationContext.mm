@@ -1,6 +1,6 @@
 @interface ASCLockupProductDetailsPresentationContext
 + (ASCLockupProductDetailsPresentationContext)defaultPresentationContext;
-- (ASCLockupProductDetailsPresentationContext)initWithPresentationStyle:(int64_t)a3;
+- (ASCLockupProductDetailsPresentationContext)initWithPresentationStyle:(int64_t)style;
 @end
 
 @implementation ASCLockupProductDetailsPresentationContext
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __72__ASCLockupProductDetailsPresentationContext_defaultPresentationContext__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultPresentationContext_onceToken != -1)
   {
     dispatch_once(&defaultPresentationContext_onceToken, block);
@@ -29,14 +29,14 @@ uint64_t __72__ASCLockupProductDetailsPresentationContext_defaultPresentationCon
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASCLockupProductDetailsPresentationContext)initWithPresentationStyle:(int64_t)a3
+- (ASCLockupProductDetailsPresentationContext)initWithPresentationStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = ASCLockupProductDetailsPresentationContext;
   result = [(ASCLockupProductDetailsPresentationContext *)&v5 init];
   if (result)
   {
-    result->_presentationStyle = a3;
+    result->_presentationStyle = style;
   }
 
   return result;

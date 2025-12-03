@@ -1,25 +1,25 @@
 @interface NRDLocalDevice
-- (NRDLocalDevice)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NRDLocalDevice)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NRDLocalDevice
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   if (self)
   {
-    [v15 encodeObject:self->_nrUUID forKey:@"nrUUID"];
-    [v15 encodeObject:self->_bluetoothUUID forKey:@"bluetoothUUID"];
-    [v15 encodeObject:self->_idsDeviceID forKey:@"idsDeviceID"];
-    [v15 encodeObject:self->_dateCreated forKey:@"dateCreated"];
-    [v15 encodeBool:self->_isEmptyPairing forKey:@"isEmptyPairing"];
+    [coderCopy encodeObject:self->_nrUUID forKey:@"nrUUID"];
+    [coderCopy encodeObject:self->_bluetoothUUID forKey:@"bluetoothUUID"];
+    [coderCopy encodeObject:self->_idsDeviceID forKey:@"idsDeviceID"];
+    [coderCopy encodeObject:self->_dateCreated forKey:@"dateCreated"];
+    [coderCopy encodeBool:self->_isEmptyPairing forKey:@"isEmptyPairing"];
     if (self->_isEmptyPairing)
     {
       goto LABEL_13;
@@ -30,24 +30,24 @@
 
   else
   {
-    [v15 encodeObject:0 forKey:@"nrUUID"];
-    [v15 encodeObject:0 forKey:@"bluetoothUUID"];
-    [v15 encodeObject:0 forKey:@"idsDeviceID"];
-    [v15 encodeObject:0 forKey:@"dateCreated"];
-    [v15 encodeBool:0 forKey:@"isEmptyPairing"];
+    [coderCopy encodeObject:0 forKey:@"nrUUID"];
+    [coderCopy encodeObject:0 forKey:@"bluetoothUUID"];
+    [coderCopy encodeObject:0 forKey:@"idsDeviceID"];
+    [coderCopy encodeObject:0 forKey:@"dateCreated"];
+    [coderCopy encodeBool:0 forKey:@"isEmptyPairing"];
     databaseFlags = 0;
   }
 
-  [v15 encodeInt64:databaseFlags forKey:@"databaseFlags"];
-  [v15 encodeInt64:-[NRDLocalDevice pairingProtocolVersion](self forKey:{"pairingProtocolVersion"), @"pairingProtocolVersion"}];
+  [coderCopy encodeInt64:databaseFlags forKey:@"databaseFlags"];
+  [coderCopy encodeInt64:-[NRDLocalDevice pairingProtocolVersion](self forKey:{"pairingProtocolVersion"), @"pairingProtocolVersion"}];
   if (self)
   {
-    [v15 encodeInt32:self->_lastSeenInnerLinkVersionHBO forKey:@"lastSeenInnerLinkVersionHBO"];
-    [v15 encodeObject:self->_lastSeenName forKey:@"lastSeenName"];
-    [v15 encodeObject:self->_lastSeenBuildVersion forKey:@"lastSeenBuildVersion"];
+    [coderCopy encodeInt32:self->_lastSeenInnerLinkVersionHBO forKey:@"lastSeenInnerLinkVersionHBO"];
+    [coderCopy encodeObject:self->_lastSeenName forKey:@"lastSeenName"];
+    [coderCopy encodeObject:self->_lastSeenBuildVersion forKey:@"lastSeenBuildVersion"];
     if ((self->_databaseFlags & 0x10) != 0)
     {
-      [v15 encodeInt64:self->_authMethodUsedForModernPairing forKey:@"authMethodUsedForModernPairing"];
+      [coderCopy encodeInt64:self->_authMethodUsedForModernPairing forKey:@"authMethodUsedForModernPairing"];
     }
 
     psm = self->_psm;
@@ -55,53 +55,53 @@
 
   else
   {
-    [v15 encodeInt32:0 forKey:@"lastSeenInnerLinkVersionHBO"];
-    [v15 encodeObject:0 forKey:@"lastSeenName"];
-    [v15 encodeObject:0 forKey:@"lastSeenBuildVersion"];
+    [coderCopy encodeInt32:0 forKey:@"lastSeenInnerLinkVersionHBO"];
+    [coderCopy encodeObject:0 forKey:@"lastSeenName"];
+    [coderCopy encodeObject:0 forKey:@"lastSeenBuildVersion"];
     psm = 0;
   }
 
-  [v15 encodeInt32:psm forKey:@"psm"];
-  v7 = [(NRDLocalDevice *)self dateRegistered];
-  [v15 encodeObject:v7 forKey:@"dateRegistered"];
+  [coderCopy encodeInt32:psm forKey:@"psm"];
+  dateRegistered = [(NRDLocalDevice *)self dateRegistered];
+  [coderCopy encodeObject:dateRegistered forKey:@"dateRegistered"];
 
-  v8 = [(NRDLocalDevice *)self dateEnabled];
-  [v15 encodeObject:v8 forKey:@"dateEnabled"];
+  dateEnabled = [(NRDLocalDevice *)self dateEnabled];
+  [coderCopy encodeObject:dateEnabled forKey:@"dateEnabled"];
 
   if (self)
   {
-    [v15 encodeObject:self->_localIdentity forKey:@"localIdentity"];
-    [v15 encodeObject:self->_remoteIdentity forKey:@"remoteIdentity"];
-    [v15 encodeInt32:self->_deviceType forKey:@"deviceType"];
-    [v15 encodeObject:self->_operationalProp forKey:@"operationalProp"];
-    [v15 encodeInt64:self->_localFlags forKey:@"localFlags"];
-    [v15 encodeInt64:self->_remoteFlags forKey:@"remoteFlags"];
+    [coderCopy encodeObject:self->_localIdentity forKey:@"localIdentity"];
+    [coderCopy encodeObject:self->_remoteIdentity forKey:@"remoteIdentity"];
+    [coderCopy encodeInt32:self->_deviceType forKey:@"deviceType"];
+    [coderCopy encodeObject:self->_operationalProp forKey:@"operationalProp"];
+    [coderCopy encodeInt64:self->_localFlags forKey:@"localFlags"];
+    [coderCopy encodeInt64:self->_remoteFlags forKey:@"remoteFlags"];
     bluetoothMACAddress = self->_bluetoothMACAddress;
   }
 
   else
   {
-    [v15 encodeObject:0 forKey:@"localIdentity"];
-    [v15 encodeObject:0 forKey:@"remoteIdentity"];
-    [v15 encodeInt32:0 forKey:@"deviceType"];
-    [v15 encodeObject:0 forKey:@"operationalProp"];
-    [v15 encodeInt64:0 forKey:@"localFlags"];
-    [v15 encodeInt64:0 forKey:@"remoteFlags"];
+    [coderCopy encodeObject:0 forKey:@"localIdentity"];
+    [coderCopy encodeObject:0 forKey:@"remoteIdentity"];
+    [coderCopy encodeInt32:0 forKey:@"deviceType"];
+    [coderCopy encodeObject:0 forKey:@"operationalProp"];
+    [coderCopy encodeInt64:0 forKey:@"localFlags"];
+    [coderCopy encodeInt64:0 forKey:@"remoteFlags"];
     bluetoothMACAddress = 0;
   }
 
-  [v15 encodeObject:bluetoothMACAddress forKey:@"bluetoothMACAddress"];
-  v10 = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassD];
-  [v15 encodeObject:v10 forKey:@"localInnerIPv6AddressBytesClassD"];
+  [coderCopy encodeObject:bluetoothMACAddress forKey:@"bluetoothMACAddress"];
+  localInnerIPv6AddressBytesClassD = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassD];
+  [coderCopy encodeObject:localInnerIPv6AddressBytesClassD forKey:@"localInnerIPv6AddressBytesClassD"];
 
-  v11 = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassD];
-  [v15 encodeObject:v11 forKey:@"remoteInnerIPv6AddressBytesClassD"];
+  remoteInnerIPv6AddressBytesClassD = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassD];
+  [coderCopy encodeObject:remoteInnerIPv6AddressBytesClassD forKey:@"remoteInnerIPv6AddressBytesClassD"];
 
-  v12 = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassC];
-  [v15 encodeObject:v12 forKey:@"localInnerIPv6AddressBytesClassC"];
+  localInnerIPv6AddressBytesClassC = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassC];
+  [coderCopy encodeObject:localInnerIPv6AddressBytesClassC forKey:@"localInnerIPv6AddressBytesClassC"];
 
-  v13 = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassC];
-  [v15 encodeObject:v13 forKey:@"remoteInnerIPv6AddressBytesClassC"];
+  remoteInnerIPv6AddressBytesClassC = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassC];
+  [coderCopy encodeObject:remoteInnerIPv6AddressBytesClassC forKey:@"remoteInnerIPv6AddressBytesClassC"];
 
   if (self)
   {
@@ -113,16 +113,16 @@
     receivedProxyNotifyPayload = 0;
   }
 
-  [v15 encodeObject:receivedProxyNotifyPayload forKey:@"receivedProxyNotifyPayload"];
+  [coderCopy encodeObject:receivedProxyNotifyPayload forKey:@"receivedProxyNotifyPayload"];
 LABEL_13:
   objc_autoreleasePoolPop(v4);
 }
 
-- (NRDLocalDevice)initWithCoder:(id)a3
+- (NRDLocalDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nrUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nrUUID"];
   if (!v6)
   {
     v88 = sub_10015B480();
@@ -134,24 +134,24 @@ LABEL_13:
       _NRLogWithArgs();
     }
 
-    v12 = 0;
+    selfCopy2 = 0;
     goto LABEL_12;
   }
 
   v7 = sub_10015D20C(self, v6);
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothUUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothUUID"];
   [v7 setBluetoothUUID:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceID"];
   [v7 setIdsDeviceID:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
   if (v7)
   {
     objc_storeStrong(v7 + 21, v10);
   }
 
-  v11 = [v4 decodeBoolForKey:@"isEmptyPairing"];
+  v11 = [coderCopy decodeBoolForKey:@"isEmptyPairing"];
   if (v7)
   {
     if (v7[12] != v11)
@@ -172,7 +172,7 @@ LABEL_13:
     if (v7[12] == 1)
     {
       self = v7;
-      v12 = self;
+      selfCopy2 = self;
 LABEL_12:
 
       objc_autoreleasePoolPop(v5);
@@ -180,18 +180,18 @@ LABEL_12:
     }
   }
 
-  if ([v4 containsValueForKey:@"databaseFlags"])
+  if ([coderCopy containsValueForKey:@"databaseFlags"])
   {
-    [v7 setDatabaseFlags:{objc_msgSend(v4, "decodeInt64ForKey:", @"databaseFlags"}];
+    [v7 setDatabaseFlags:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"databaseFlags"}];
   }
 
   else
   {
-    v13 = [v4 decodeBoolForKey:@"isRegistered"];
+    v13 = [coderCopy decodeBoolForKey:@"isRegistered"];
     if (v7)
     {
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFFFELL | v13];
-      v14 = [v4 decodeBoolForKey:@"isEnabled"];
+      v14 = [coderCopy decodeBoolForKey:@"isEnabled"];
       v15 = 2;
       if (!v14)
       {
@@ -199,7 +199,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFFFDLL | v15];
-      v16 = [v4 decodeBoolForKey:@"isAltAccountDevice"];
+      v16 = [coderCopy decodeBoolForKey:@"isAltAccountDevice"];
       v17 = 4;
       if (!v16)
       {
@@ -207,7 +207,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFFFBLL | v17];
-      v18 = [v4 decodeBoolForKey:@"isExternalDevice"];
+      v18 = [coderCopy decodeBoolForKey:@"isExternalDevice"];
       v19 = 8;
       if (!v18)
       {
@@ -215,7 +215,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFFF7 | v19];
-      v20 = [v4 decodeBoolForKey:@"isModernPairing"];
+      v20 = [coderCopy decodeBoolForKey:@"isModernPairing"];
       v21 = 16;
       if (!v20)
       {
@@ -223,7 +223,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFFEFLL | v21];
-      v22 = [v4 decodeBoolForKey:@"wasInitiallySetupUsingIDSPairing"];
+      v22 = [coderCopy decodeBoolForKey:@"wasInitiallySetupUsingIDSPairing"];
       v23 = 32;
       if (!v22)
       {
@@ -231,7 +231,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFFDFLL | v23];
-      v24 = [v4 decodeBoolForKey:@"lastSeenAlwaysOnWiFiSupported"];
+      v24 = [coderCopy decodeBoolForKey:@"lastSeenAlwaysOnWiFiSupported"];
       v25 = 256;
       if (!v24)
       {
@@ -239,7 +239,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFEFFLL | v25];
-      v26 = [v4 decodeBoolForKey:@"hasAuthenticatedWithIdentity"];
+      v26 = [coderCopy decodeBoolForKey:@"hasAuthenticatedWithIdentity"];
       v27 = 512;
       if (!v26)
       {
@@ -247,7 +247,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFDFFLL | v27];
-      v28 = [v4 decodeBoolForKey:@"hasSavedClassCKeysInKeychain"];
+      v28 = [coderCopy decodeBoolForKey:@"hasSavedClassCKeysInKeychain"];
       v29 = 1024;
       if (!v28)
       {
@@ -255,7 +255,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFFBFFLL | v29];
-      v30 = [v4 decodeBoolForKey:@"hasSavedPairingInfoInKeychain"];
+      v30 = [coderCopy decodeBoolForKey:@"hasSavedPairingInfoInKeychain"];
       v31 = 2048;
       if (!v30)
       {
@@ -263,7 +263,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFF7FFLL | v31];
-      v32 = [v4 decodeBoolForKey:@"hasConfirmedClassDKeys"];
+      v32 = [coderCopy decodeBoolForKey:@"hasConfirmedClassDKeys"];
       v33 = 4096;
       if (!v32)
       {
@@ -271,7 +271,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFEFFFLL | v33];
-      v34 = [v4 decodeBoolForKey:@"hasConfirmedClassCKeys"];
+      v34 = [coderCopy decodeBoolForKey:@"hasConfirmedClassCKeys"];
       v35 = 0x2000;
       if (!v34)
       {
@@ -279,7 +279,7 @@ LABEL_12:
       }
 
       [v7 setDatabaseFlags:*(v7 + 6) & 0xFFFFFFFFFFFFDFFFLL | v35];
-      v36 = [v4 decodeBoolForKey:@"hasConfirmedClassAKeys"];
+      v36 = [coderCopy decodeBoolForKey:@"hasConfirmedClassAKeys"];
       v37 = 0x4000;
       if (!v36)
       {
@@ -292,54 +292,54 @@ LABEL_12:
 
     else
     {
-      [v4 decodeBoolForKey:@"isEnabled"];
-      [v4 decodeBoolForKey:@"isAltAccountDevice"];
-      [v4 decodeBoolForKey:@"isExternalDevice"];
-      [v4 decodeBoolForKey:@"isModernPairing"];
-      [v4 decodeBoolForKey:@"wasInitiallySetupUsingIDSPairing"];
-      [v4 decodeBoolForKey:@"lastSeenAlwaysOnWiFiSupported"];
-      [v4 decodeBoolForKey:@"hasAuthenticatedWithIdentity"];
-      [v4 decodeBoolForKey:@"hasSavedClassCKeysInKeychain"];
-      [v4 decodeBoolForKey:@"hasSavedPairingInfoInKeychain"];
-      [v4 decodeBoolForKey:@"hasConfirmedClassDKeys"];
-      [v4 decodeBoolForKey:@"hasConfirmedClassCKeys"];
-      [v4 decodeBoolForKey:@"hasConfirmedClassAKeys"];
+      [coderCopy decodeBoolForKey:@"isEnabled"];
+      [coderCopy decodeBoolForKey:@"isAltAccountDevice"];
+      [coderCopy decodeBoolForKey:@"isExternalDevice"];
+      [coderCopy decodeBoolForKey:@"isModernPairing"];
+      [coderCopy decodeBoolForKey:@"wasInitiallySetupUsingIDSPairing"];
+      [coderCopy decodeBoolForKey:@"lastSeenAlwaysOnWiFiSupported"];
+      [coderCopy decodeBoolForKey:@"hasAuthenticatedWithIdentity"];
+      [coderCopy decodeBoolForKey:@"hasSavedClassCKeysInKeychain"];
+      [coderCopy decodeBoolForKey:@"hasSavedPairingInfoInKeychain"];
+      [coderCopy decodeBoolForKey:@"hasConfirmedClassDKeys"];
+      [coderCopy decodeBoolForKey:@"hasConfirmedClassCKeys"];
+      [coderCopy decodeBoolForKey:@"hasConfirmedClassAKeys"];
     }
   }
 
-  [v7 setPairingProtocolVersion:{objc_msgSend(v4, "decodeInt64ForKey:", @"pairingProtocolVersion"}];
-  [v7 setLastSeenInnerLinkVersionHBO:{objc_msgSend(v4, "decodeInt32ForKey:", @"lastSeenInnerLinkVersionHBO"}];
-  v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenName"];
+  [v7 setPairingProtocolVersion:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"pairingProtocolVersion"}];
+  [v7 setLastSeenInnerLinkVersionHBO:{objc_msgSend(coderCopy, "decodeInt32ForKey:", @"lastSeenInnerLinkVersionHBO"}];
+  v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenName"];
   [v7 setLastSeenName:v38];
 
-  v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenBuildVersion"];
+  v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenBuildVersion"];
   [v7 setLastSeenBuildVersion:v39];
 
   if (v7 && (v7[48] & 0x10) != 0)
   {
-    [v7 setAuthMethodUsedForModernPairing:{objc_msgSend(v4, "decodeInt64ForKey:", @"authMethodUsedForModernPairing"}];
+    [v7 setAuthMethodUsedForModernPairing:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"authMethodUsedForModernPairing"}];
   }
 
-  [v7 setPsm:{objc_msgSend(v4, "decodeInt32ForKey:", @"psm"}];
-  v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateRegistered"];
+  [v7 setPsm:{objc_msgSend(coderCopy, "decodeInt32ForKey:", @"psm"}];
+  v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateRegistered"];
   [v7 setDateRegistered:v40];
 
-  v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateEnabled"];
+  v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateEnabled"];
   [v7 setDateEnabled:v41];
 
-  v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localIdentity"];
+  v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localIdentity"];
   [v7 setLocalIdentity:v42];
 
-  v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteIdentity"];
+  v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteIdentity"];
   [v7 setRemoteIdentity:v43];
 
-  [v7 setDeviceType:{objc_msgSend(v4, "decodeInt32ForKey:", @"deviceType"}];
-  v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationalProp"];
+  [v7 setDeviceType:{objc_msgSend(coderCopy, "decodeInt32ForKey:", @"deviceType"}];
+  v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationalProp"];
   [v7 setOperationalProp:v44];
 
-  [v7 setLocalFlags:{objc_msgSend(v4, "decodeInt64ForKey:", @"localFlags"}];
-  [v7 setRemoteFlags:{objc_msgSend(v4, "decodeInt64ForKey:", @"remoteFlags"}];
-  v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothMACAddress"];
+  [v7 setLocalFlags:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"localFlags"}];
+  [v7 setRemoteFlags:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"remoteFlags"}];
+  v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothMACAddress"];
   v46 = v45;
   if (v45)
   {
@@ -365,7 +365,7 @@ LABEL_12:
     [v7 setBluetoothMACAddress:0];
   }
 
-  v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localInnerIPv6AddressBytesClassD"];
+  v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localInnerIPv6AddressBytesClassD"];
   v52 = v51;
   if (v51)
   {
@@ -391,7 +391,7 @@ LABEL_12:
     [v7 setLocalInnerIPv6AddressBytesClassD:0];
   }
 
-  v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteInnerIPv6AddressBytesClassD"];
+  v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteInnerIPv6AddressBytesClassD"];
   v58 = v57;
   if (v57)
   {
@@ -417,7 +417,7 @@ LABEL_12:
     [v7 setRemoteInnerIPv6AddressBytesClassD:0];
   }
 
-  v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localInnerIPv6AddressBytesClassC"];
+  v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localInnerIPv6AddressBytesClassC"];
   v64 = v63;
   if (v63)
   {
@@ -443,7 +443,7 @@ LABEL_12:
     [v7 setLocalInnerIPv6AddressBytesClassC:0];
   }
 
-  v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteInnerIPv6AddressBytesClassC"];
+  v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteInnerIPv6AddressBytesClassC"];
   v70 = v69;
   if (v69)
   {
@@ -469,7 +469,7 @@ LABEL_12:
     [v7 setRemoteInnerIPv6AddressBytesClassC:0];
   }
 
-  v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receivedProxyNotifyPayload"];
+  v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receivedProxyNotifyPayload"];
   v76 = v75;
   if (v75)
   {
@@ -495,7 +495,7 @@ LABEL_12:
     [v7 setReceivedProxyNotifyPayload:0];
   }
 
-  v81 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classDKeys"];
+  v81 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classDKeys"];
   if (v81)
   {
     if (qword_100229488 != -1)
@@ -527,7 +527,7 @@ LABEL_12:
     }
   }
 
-  v84 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outOfBandKey"];
+  v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outOfBandKey"];
   if (v84)
   {
     if (qword_100229488 != -1)
@@ -563,16 +563,16 @@ LABEL_12:
 
   objc_autoreleasePoolPop(v5);
   self = v7;
-  v12 = self;
+  selfCopy2 = self;
 LABEL_99:
 
-  return v12;
+  return selfCopy2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_opt_class() allocWithZone:a3];
+  v6 = [objc_opt_class() allocWithZone:zone];
   if (self)
   {
     v7 = sub_10015D20C(v6, self->_nrUUID);
@@ -724,12 +724,12 @@ LABEL_21:
   }
 
   [v8 setPsm:psm];
-  v28 = [(NRDLocalDevice *)self dateRegistered];
-  v29 = [v28 copy];
+  dateRegistered = [(NRDLocalDevice *)self dateRegistered];
+  v29 = [dateRegistered copy];
   [v8 setDateRegistered:v29];
 
-  v30 = [(NRDLocalDevice *)self dateEnabled];
-  v31 = [v30 copy];
+  dateEnabled = [(NRDLocalDevice *)self dateEnabled];
+  v31 = [dateEnabled copy];
   [v8 setDateEnabled:v31];
 
   if (self)
@@ -831,20 +831,20 @@ LABEL_21:
   v52 = [(NSData *)bluetoothMACAddress copy];
   [v8 setBluetoothMACAddress:v52];
 
-  v53 = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassD];
-  v54 = [v53 copy];
+  localInnerIPv6AddressBytesClassD = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassD];
+  v54 = [localInnerIPv6AddressBytesClassD copy];
   [v8 setLocalInnerIPv6AddressBytesClassD:v54];
 
-  v55 = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassD];
-  v56 = [v55 copy];
+  remoteInnerIPv6AddressBytesClassD = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassD];
+  v56 = [remoteInnerIPv6AddressBytesClassD copy];
   [v8 setRemoteInnerIPv6AddressBytesClassD:v56];
 
-  v57 = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassC];
-  v58 = [v57 copy];
+  localInnerIPv6AddressBytesClassC = [(NRDLocalDevice *)self localInnerIPv6AddressBytesClassC];
+  v58 = [localInnerIPv6AddressBytesClassC copy];
   [v8 setLocalInnerIPv6AddressBytesClassC:v58];
 
-  v59 = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassC];
-  v60 = [v59 copy];
+  remoteInnerIPv6AddressBytesClassC = [(NRDLocalDevice *)self remoteInnerIPv6AddressBytesClassC];
+  v60 = [remoteInnerIPv6AddressBytesClassC copy];
   [v8 setRemoteInnerIPv6AddressBytesClassC:v60];
 
   if (self)
@@ -876,8 +876,8 @@ LABEL_37:
   v4 = v3;
   if (!self)
   {
-    v10 = [0 UUIDString];
-    [v4 appendString:v10];
+    uUIDString = [0 UUIDString];
+    [v4 appendString:uUIDString];
 
     goto LABEL_17;
   }
@@ -887,8 +887,8 @@ LABEL_37:
     [v3 appendString:@"empty pairing:"];
   }
 
-  v5 = [(NSUUID *)self->_nrUUID UUIDString];
-  [v4 appendString:v5];
+  uUIDString2 = [(NSUUID *)self->_nrUUID UUIDString];
+  [v4 appendString:uUIDString2];
 
   if (self->_databaseFlags)
   {
@@ -966,13 +966,13 @@ LABEL_17:
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v15 = a5;
+  changeCopy = change;
   v7 = sub_100003490();
   dispatch_assert_queue_V2(v7);
 
-  v8 = [v15 objectForKeyedSubscript:NSKeyValueChangeOldKey];
+  v8 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
   v9 = +[NSNull null];
   v10 = [v8 isEqual:v9];
 
@@ -982,7 +982,7 @@ LABEL_17:
     v8 = 0;
   }
 
-  v11 = [v15 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  v11 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
   v12 = +[NSNull null];
   v13 = [v11 isEqual:v12];
 

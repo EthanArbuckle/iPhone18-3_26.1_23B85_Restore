@@ -1,13 +1,13 @@
 @interface CNEnumerator
-+ (id)combine:(id)a3;
++ (id)combine:(id)combine;
 @end
 
 @implementation CNEnumerator
 
-+ (id)combine:(id)a3
++ (id)combine:(id)combine
 {
-  v3 = [a3 objectEnumerator];
-  v4 = [v3 _cn_flatMap:&__block_literal_global_76];
+  objectEnumerator = [combine objectEnumerator];
+  v4 = [objectEnumerator _cn_flatMap:&__block_literal_global_76];
 
   return v4;
 }

@@ -1,13 +1,13 @@
 @interface HUQuickControlPresentationCoordinator
 - (BOOL)_isRTL;
 - (BOOL)_shouldCancelPresentation;
-- (BOOL)_supportsDoubleClick:(id)a3;
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)hasDetailsActionForQuickControlViewController:(id)a3 item:(id)a4;
+- (BOOL)_supportsDoubleClick:(id)click;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)hasDetailsActionForQuickControlViewController:(id)controller item:(id)item;
 - (BOOL)isActionSetTile;
 - (BOOL)isQuickControlPresented;
 - (BOOL)isTileOff;
@@ -24,39 +24,39 @@
 - (CGRect)sourceFrameForAnimationController;
 - (CGRect)titleAndDescriptionViewFrameInActionSetTile;
 - (HUPressedItemContext)activePressedItemContext;
-- (HUQuickControlPresentationCoordinator)initWithTargetView:(id)a3 delegate:(id)a4 cornerRadius:(double)a5;
+- (HUQuickControlPresentationCoordinator)initWithTargetView:(id)view delegate:(id)delegate cornerRadius:(double)radius;
 - (HUQuickControlPresentationCoordinatorDelegate)delegate;
 - (UITraitCollection)traitCollection;
 - (UIView)targetView;
 - (UIViewController)presentingViewController;
-- (double)quickControlViewController:(id)a3 sourceViewInitialScaleForPresentation:(BOOL)a4;
-- (id)_animationControllerForDismissedController:(id)a3;
-- (id)_animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)_beginControlPresentationAnimated:(BOOL)a3;
+- (double)quickControlViewController:(id)controller sourceViewInitialScaleForPresentation:(BOOL)presentation;
+- (id)_animationControllerForDismissedController:(id)controller;
+- (id)_animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)_beginControlPresentationAnimated:(BOOL)animated;
 - (id)_buildCardNavigationController;
 - (id)_buildQuickControlViewController;
 - (id)_buildSoftwareUpdateNavigationController;
 - (id)_buildStatusDetailsNavigationController;
-- (id)_createPressedContextForItem:(id)a3 userInitiated:(BOOL)a4;
+- (id)_createPressedContextForItem:(id)item userInitiated:(BOOL)initiated;
 - (id)_dismissCardViewController;
 - (id)_dismissChildViewController;
-- (id)_dismissQuickControlViewControllerAnimated:(BOOL)a3;
-- (id)_dismissServiceDetailsViewController:(id)a3 animated:(BOOL)a4;
-- (id)_legacyAnimationControllerForDismissedController:(id)a3;
-- (id)_legacyAnimationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_dismissQuickControlViewControllerAnimated:(BOOL)animated;
+- (id)_dismissServiceDetailsViewController:(id)controller animated:(BOOL)animated;
+- (id)_legacyAnimationControllerForDismissedController:(id)controller;
+- (id)_legacyAnimationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)_prepareSettingsViewController;
 - (id)_viewControllerToPresent;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (id)createNavigationControllerForPresentationContext:(id)a3;
-- (id)detailsViewControllerForQuickControlViewController:(id)a3 item:(id)a4;
-- (id)dismissQuickControlAnimated:(BOOL)a3;
-- (id)dismissQuickControlAnimated:(BOOL)a3 wasDismissed:(BOOL *)a4;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)presentQuickControlWithContext:(id)a3 animated:(BOOL)a4;
-- (id)quickControlViewController:(id)a3 applierForSourceViewTransitionWithAnimationSettings:(id)a4 presenting:(BOOL)a5;
-- (unint64_t)activationStyleForClickPresentationInteraction:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (id)createNavigationControllerForPresentationContext:(id)context;
+- (id)detailsViewControllerForQuickControlViewController:(id)controller item:(id)item;
+- (id)dismissQuickControlAnimated:(BOOL)animated;
+- (id)dismissQuickControlAnimated:(BOOL)animated wasDismissed:(BOOL *)dismissed;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)presentQuickControlWithContext:(id)context animated:(BOOL)animated;
+- (id)quickControlViewController:(id)controller applierForSourceViewTransitionWithAnimationSettings:(id)settings presenting:(BOOL)presenting;
+- (unint64_t)activationStyleForClickPresentationInteraction:(id)interaction;
 - (unint64_t)iconSizeInActionSetTile;
 - (unint64_t)iconSizeInNavigationBar;
 - (unint64_t)iconSizeInTile;
@@ -66,57 +66,57 @@
 - (void)__createTransitionViewsForPresentation;
 - (void)_actuateTapticFeedback;
 - (void)_cleanupForQuickControlDismissal;
-- (void)_configureInitialStateForPressedItemContext:(id)a3 userInitiated:(BOOL)a4;
+- (void)_configureInitialStateForPressedItemContext:(id)context userInitiated:(BOOL)initiated;
 - (void)_createTransitionViewsForDismissal;
 - (void)_createTransitionViewsForPresentation;
-- (void)_handleDoubleTapGesture:(id)a3;
-- (void)_handleMutuallyExclusiveGesture:(id)a3;
-- (void)_handlePressGesture:(id)a3;
-- (void)_handleSingleTapGesture:(id)a3;
-- (void)_handleTouchGesture:(id)a3;
-- (void)_initiateProgrammaticBounceForItem:(id)a3;
+- (void)_handleDoubleTapGesture:(id)gesture;
+- (void)_handleMutuallyExclusiveGesture:(id)gesture;
+- (void)_handlePressGesture:(id)gesture;
+- (void)_handleSingleTapGesture:(id)gesture;
+- (void)_handleTouchGesture:(id)gesture;
+- (void)_initiateProgrammaticBounceForItem:(id)item;
 - (void)_installGestureRecognizer;
 - (void)_prepareForTapticFeedback;
-- (void)_preparePressedItemContextForItem:(id)a3 startApplier:(BOOL)a4;
+- (void)_preparePressedItemContextForItem:(id)item startApplier:(BOOL)applier;
 - (void)_pressGestureDidBecomeActive;
-- (void)_pressGestureDidBeginWithLocation:(CGPoint)a3;
-- (void)_pressGestureDidEnd:(BOOL)a3;
-- (void)_pressedStateDidEndForItem:(id)a3 clearPresentationContext:(BOOL)a4;
+- (void)_pressGestureDidBeginWithLocation:(CGPoint)location;
+- (void)_pressGestureDidEnd:(BOOL)end;
+- (void)_pressedStateDidEndForItem:(id)item clearPresentationContext:(BOOL)context;
 - (void)_restoreOriginalTile;
 - (void)_updateCardController;
-- (void)_updateOverrideAttributesWithScale:(double)a3 forItem:(id)a4;
-- (void)_updateOverrideAttributesWithTransform:(CGAffineTransform *)a3 alpha:(double)a4 forItem:(id)a5;
-- (void)_validatePresentationContext:(id)a3;
-- (void)addMutuallyExclusiveGestureRecognizer:(id)a3;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
-- (void)itemManager:(id)a3 didChangeSourceItem:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)playBounceForItem:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)quickControlViewControllerDidTapDetailsButton:(id)a3;
-- (void)quickControlViewControllerWillDismissDetailsViewController:(id)a3 shouldDismissQuickControl:(BOOL)a4;
+- (void)_updateOverrideAttributesWithScale:(double)scale forItem:(id)item;
+- (void)_updateOverrideAttributesWithTransform:(CGAffineTransform *)transform alpha:(double)alpha forItem:(id)item;
+- (void)_validatePresentationContext:(id)context;
+- (void)addMutuallyExclusiveGestureRecognizer:(id)recognizer;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
+- (void)itemManager:(id)manager didChangeSourceItem:(id)item;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)playBounceForItem:(id)item;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)quickControlViewControllerDidTapDetailsButton:(id)button;
+- (void)quickControlViewControllerWillDismissDetailsViewController:(id)controller shouldDismissQuickControl:(BOOL)control;
 - (void)removeAllTransitionSubviews;
-- (void)removeMutuallyExclusiveGestureRecognizer:(id)a3;
-- (void)setIsEditing:(BOOL)a3;
-- (void)setPresentationContext:(id)a3;
-- (void)statusDetailsViewControllerDidFinish:(id)a3;
+- (void)removeMutuallyExclusiveGestureRecognizer:(id)recognizer;
+- (void)setIsEditing:(BOOL)editing;
+- (void)setPresentationContext:(id)context;
+- (void)statusDetailsViewControllerDidFinish:(id)finish;
 @end
 
 @implementation HUQuickControlPresentationCoordinator
 
-- (HUQuickControlPresentationCoordinator)initWithTargetView:(id)a3 delegate:(id)a4 cornerRadius:(double)a5
+- (HUQuickControlPresentationCoordinator)initWithTargetView:(id)view delegate:(id)delegate cornerRadius:(double)radius
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = HUQuickControlPresentationCoordinator;
   v10 = [(HUQuickControlPresentationCoordinator *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_targetView, v8);
-    objc_storeWeak(&v11->_delegate, v9);
-    v11->_cornerRadius = a5;
+    objc_storeWeak(&v10->_targetView, viewCopy);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    v11->_cornerRadius = radius;
     v12 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:512 valueOptions:0];
     pressedItemContexts = v11->_pressedItemContexts;
     v11->_pressedItemContexts = v12;
@@ -126,13 +126,13 @@
     v11->_mutuallyExclusiveGestureRecognizers = v14;
 
     [(HUQuickControlPresentationCoordinator *)v11 _installGestureRecognizer];
-    v16 = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __82__HUQuickControlPresentationCoordinator_initWithTargetView_delegate_cornerRadius___block_invoke;
     v18[3] = &unk_277DB8488;
     v19 = v11;
-    [v16 performBlock:v18];
+    [globalAsyncScheduler performBlock:v18];
   }
 
   return v11;
@@ -140,29 +140,29 @@
 
 - (UITraitCollection)traitCollection
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  v4 = [v3 traitCollectionForPresentationCoordinator:self];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+  v4 = [delegate traitCollectionForPresentationCoordinator:self];
 
   return v4;
 }
 
 - (UIViewController)presentingViewController
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v3 = [v2 sourceViewController];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  sourceViewController = [presentationContext sourceViewController];
 
-  return v3;
+  return sourceViewController;
 }
 
 - (HUPressedItemContext)activePressedItemContext
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v4 = [v3 item];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item = [presentationContext item];
 
-  if (v4)
+  if (item)
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-    v6 = [v5 objectForKey:v4];
+    pressedItemContexts = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+    v6 = [pressedItemContexts objectForKey:item];
   }
 
   else
@@ -173,212 +173,212 @@
   return v6;
 }
 
-- (void)setPresentationContext:(id)a3
+- (void)setPresentationContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    [(HUQuickControlPresentationCoordinator *)self _validatePresentationContext:v4];
+    [(HUQuickControlPresentationCoordinator *)self _validatePresentationContext:contextCopy];
   }
 
-  v5 = [(HUQuickControlPresentationContext *)self->_presentationContext itemManager];
-  [v5 setDelegate:0];
+  itemManager = [(HUQuickControlPresentationContext *)self->_presentationContext itemManager];
+  [itemManager setDelegate:0];
 
-  v6 = [(HUQuickControlPresentationContext *)v4 itemManager];
-  [v6 setDelegate:self];
+  itemManager2 = [(HUQuickControlPresentationContext *)contextCopy itemManager];
+  [itemManager2 setDelegate:self];
 
   presentationContext = self->_presentationContext;
-  self->_presentationContext = v4;
+  self->_presentationContext = contextCopy;
 }
 
-- (void)addMutuallyExclusiveGestureRecognizer:(id)a3
+- (void)addMutuallyExclusiveGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
-  v4 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
-  v5 = [v4 containsObject:v7];
+  recognizerCopy = recognizer;
+  mutuallyExclusiveGestureRecognizers = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
+  v5 = [mutuallyExclusiveGestureRecognizers containsObject:recognizerCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
-    [v6 addObject:v7];
+    mutuallyExclusiveGestureRecognizers2 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
+    [mutuallyExclusiveGestureRecognizers2 addObject:recognizerCopy];
 
-    [v7 addTarget:self action:sel__handleMutuallyExclusiveGesture_];
+    [recognizerCopy addTarget:self action:sel__handleMutuallyExclusiveGesture_];
   }
 }
 
-- (void)removeMutuallyExclusiveGestureRecognizer:(id)a3
+- (void)removeMutuallyExclusiveGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
-  v4 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
-  v5 = [v4 containsObject:v7];
+  recognizerCopy = recognizer;
+  mutuallyExclusiveGestureRecognizers = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
+  v5 = [mutuallyExclusiveGestureRecognizers containsObject:recognizerCopy];
 
   if (v5)
   {
-    v6 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
-    [v6 removeObject:v7];
+    mutuallyExclusiveGestureRecognizers2 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
+    [mutuallyExclusiveGestureRecognizers2 removeObject:recognizerCopy];
 
-    [v7 removeTarget:self action:sel__handleMutuallyExclusiveGesture_];
+    [recognizerCopy removeTarget:self action:sel__handleMutuallyExclusiveGesture_];
   }
 }
 
-- (void)setIsEditing:(BOOL)a3
+- (void)setIsEditing:(BOOL)editing
 {
-  if (self->_isEditing != a3)
+  if (self->_isEditing != editing)
   {
-    v3 = a3;
-    self->_isEditing = a3;
-    v5 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+    editingCopy = editing;
+    self->_isEditing = editing;
+    presentationInteraction = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
 
-    if (v5)
+    if (presentationInteraction)
     {
-      v7 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
-      v6 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
-      if (v3)
+      _gestureInstallationView = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+      presentationInteraction2 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+      if (editingCopy)
       {
-        [v7 removeInteraction:v6];
+        [_gestureInstallationView removeInteraction:presentationInteraction2];
       }
 
       else
       {
-        [v7 addInteraction:v6];
+        [_gestureInstallationView addInteraction:presentationInteraction2];
       }
     }
   }
 }
 
-- (id)createNavigationControllerForPresentationContext:(id)a3
+- (id)createNavigationControllerForPresentationContext:(id)context
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = contextCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "createNavigationControllerForPresentationContext Creating navigation controller for presentation context: %@", &v8, 0xCu);
   }
 
-  [(HUQuickControlPresentationCoordinator *)self setPresentationContext:v4];
-  v6 = [(HUQuickControlPresentationCoordinator *)self _buildCardNavigationController];
+  [(HUQuickControlPresentationCoordinator *)self setPresentationContext:contextCopy];
+  _buildCardNavigationController = [(HUQuickControlPresentationCoordinator *)self _buildCardNavigationController];
 
-  return v6;
+  return _buildCardNavigationController;
 }
 
 - (id)_buildCardNavigationController
 {
-  if (!a1)
+  if (!self)
   {
-    v21 = 0;
+    cardNavigationController8 = 0;
     goto LABEL_57;
   }
 
   if (([MEMORY[0x277D14CE8] isProxHandOffV2Config] & 1) == 0)
   {
-    v13 = [a1 _buildQuickControlViewController];
-    v14 = [a1 presentationContext];
-    v15 = [v14 item];
-    v16 = [a1 hasDetailsActionForQuickControlViewController:v13 item:v15];
+    _buildQuickControlViewController = [self _buildQuickControlViewController];
+    presentationContext = [self presentationContext];
+    item = [presentationContext item];
+    v16 = [self hasDetailsActionForQuickControlViewController:_buildQuickControlViewController item:item];
 
-    if ((v16 & 1) != 0 || ([a1 presentationContext], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "item"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "conformsToProtocol:", &unk_28251B0C8), v18, v17, (v19 & 1) == 0))
+    if ((v16 & 1) != 0 || ([self presentationContext], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "item"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "conformsToProtocol:", &unk_28251B0C8), v18, v17, (v19 & 1) == 0))
     {
-      v20 = [a1 _prepareSettingsViewController];
-      v21 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v20];
+      _prepareSettingsViewController = [self _prepareSettingsViewController];
+      cardNavigationController8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:_prepareSettingsViewController];
 
       goto LABEL_57;
     }
   }
 
-  [a1 setCardViewController:0];
+  [self setCardViewController:0];
   if ([MEMORY[0x277D14CE8] isProxHandOffV2Config])
   {
-    v2 = [a1 presentationContext];
-    v3 = [v2 isConfiguredForNonHomeUser];
+    presentationContext2 = [self presentationContext];
+    isConfiguredForNonHomeUser = [presentationContext2 isConfiguredForNonHomeUser];
 
-    if (v3)
+    if (isConfiguredForNonHomeUser)
     {
       v4 = [HUCardViewController alloc];
-      v5 = [a1 presentationContext];
-      v6 = [v5 controlItems];
-      v7 = [(HUCardViewController *)v4 initWithControlItems:v6];
-      [a1 setCardViewController:v7];
+      presentationContext3 = [self presentationContext];
+      controlItems = [presentationContext3 controlItems];
+      v7 = [(HUCardViewController *)v4 initWithControlItems:controlItems];
+      [self setCardViewController:v7];
 
-      v8 = [a1 cardViewController];
-      [v8 setIsConfiguredForNonHomeUser:1];
+      cardViewController = [self cardViewController];
+      [cardViewController setIsConfiguredForNonHomeUser:1];
 
-      [a1 _updateCardController];
+      [self _updateCardController];
     }
   }
 
-  v9 = [a1 cardViewController];
+  cardViewController2 = [self cardViewController];
 
-  if (!v9)
+  if (!cardViewController2)
   {
     v10 = objc_alloc_init(HUCardViewController);
-    [a1 setCardViewController:v10];
+    [self setCardViewController:v10];
   }
 
-  v11 = [a1 presentationContext];
-  v12 = [v11 item];
+  presentationContext4 = [self presentationContext];
+  item2 = [presentationContext4 item];
 
-  if (v12)
+  if (item2)
   {
-    [a1 _updateCardController];
+    [self _updateCardController];
   }
 
   else
   {
-    v22 = [a1 presentationContext];
-    v23 = [v22 itemManager];
-    v24 = [v23 reloadAndUpdateAllItemsFromSenderSelector:sel__buildCardNavigationController];
+    presentationContext5 = [self presentationContext];
+    itemManager = [presentationContext5 itemManager];
+    v24 = [itemManager reloadAndUpdateAllItemsFromSenderSelector:sel__buildCardNavigationController];
   }
 
-  v25 = [a1 cardViewController];
-  [v25 setDelegate:a1];
+  cardViewController3 = [self cardViewController];
+  [cardViewController3 setDelegate:self];
 
-  v26 = [a1 delegate];
+  delegate = [self delegate];
   v27 = objc_opt_respondsToSelector();
 
   if (v27)
   {
-    v28 = [a1 delegate];
-    v29 = [a1 presentationContext];
-    [v28 presentationCoordinator:a1 willBeginPresentationWithContext:v29];
+    delegate2 = [self delegate];
+    presentationContext6 = [self presentationContext];
+    [delegate2 presentationCoordinator:self willBeginPresentationWithContext:presentationContext6];
   }
 
-  v30 = [a1 delegate];
+  delegate3 = [self delegate];
   v31 = objc_opt_respondsToSelector();
 
   if (v31)
   {
-    v32 = [a1 delegate];
-    v33 = [v32 presentationCoordinatorShouldDisablePullToUnlockSettings:a1];
-    v34 = [a1 cardViewController];
-    [v34 setDisablePullToUnlockSettings:v33];
+    delegate4 = [self delegate];
+    v33 = [delegate4 presentationCoordinatorShouldDisablePullToUnlockSettings:self];
+    cardViewController4 = [self cardViewController];
+    [cardViewController4 setDisablePullToUnlockSettings:v33];
   }
 
   if ([MEMORY[0x277D14CE8] isAMac])
   {
     v35 = objc_alloc(MEMORY[0x277D757A0]);
-    v36 = [a1 cardViewController];
-    v21 = [v35 initWithRootViewController:v36];
+    cardViewController5 = [self cardViewController];
+    cardNavigationController8 = [v35 initWithRootViewController:cardViewController5];
 
-    [v21 setModalPresentationStyle:2];
-    v37 = [a1 quickControlViewController];
-    v38 = [v37 controlContainerView];
-    [v38 setNeedsLayout];
+    [cardNavigationController8 setModalPresentationStyle:2];
+    quickControlViewController = [self quickControlViewController];
+    controlContainerView = [quickControlViewController controlContainerView];
+    [controlContainerView setNeedsLayout];
 
-    v39 = [a1 quickControlViewController];
-    v40 = [v39 controlContainerView];
-    [v40 layoutIfNeeded];
+    quickControlViewController2 = [self quickControlViewController];
+    controlContainerView2 = [quickControlViewController2 controlContainerView];
+    [controlContainerView2 layoutIfNeeded];
 
-    v41 = [a1 quickControlViewController];
-    v42 = [v41 controlContainerView];
-    [v42 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+    quickControlViewController3 = [self quickControlViewController];
+    controlContainerView3 = [quickControlViewController3 controlContainerView];
+    [controlContainerView3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
     v44 = v43;
     v46 = v45;
 
-    v47 = [v21 navigationBar];
-    [v47 bounds];
+    navigationBar = [cardNavigationController8 navigationBar];
+    [navigationBar bounds];
     v49 = v46 + v48;
 
     if (v49 > 621.0)
@@ -393,48 +393,48 @@
         v50 = 671.0;
       }
 
-      [v21 setPreferredContentSize:{v44, v50}];
+      [cardNavigationController8 setPreferredContentSize:{v44, v50}];
     }
 
     if ([MEMORY[0x277D14670] isMacShortcuts])
     {
-      [v21 preferredContentSize];
-      [v21 setPreferredContentSize:668.0];
+      [cardNavigationController8 preferredContentSize];
+      [cardNavigationController8 setPreferredContentSize:668.0];
     }
 
     goto LABEL_57;
   }
 
   v51 = [HUQuickControlNavigationController alloc];
-  v52 = [a1 cardViewController];
-  v53 = [(HUQuickControlNavigationController *)v51 initWithRootViewController:v52];
-  [a1 setCardNavigationController:v53];
+  cardViewController6 = [self cardViewController];
+  v53 = [(HUQuickControlNavigationController *)v51 initWithRootViewController:cardViewController6];
+  [self setCardNavigationController:v53];
 
-  v54 = [a1 presentationContext];
-  if ([v54 prefersSystemTransitions])
+  presentationContext7 = [self presentationContext];
+  if ([presentationContext7 prefersSystemTransitions])
   {
-    v55 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v55 = a1;
+    selfCopy = self;
   }
 
-  v56 = [a1 cardNavigationController];
-  [v56 setTransitioningDelegate:v55];
+  cardNavigationController = [self cardNavigationController];
+  [cardNavigationController setTransitioningDelegate:selfCopy];
 
-  v57 = [a1 cardNavigationController];
-  v58 = [v57 presentationController];
-  [v58 setDelegate:a1];
+  cardNavigationController2 = [self cardNavigationController];
+  presentationController = [cardNavigationController2 presentationController];
+  [presentationController setDelegate:self];
 
-  v59 = [a1 cardNavigationController];
-  [v59 setDelegate:a1];
+  cardNavigationController3 = [self cardNavigationController];
+  [cardNavigationController3 setDelegate:self];
 
-  v60 = [a1 settingsViewController];
-  if ([v60 conformsToProtocol:&unk_2825BD480])
+  settingsViewController = [self settingsViewController];
+  if ([settingsViewController conformsToProtocol:&unk_2825BD480])
   {
-    v61 = v60;
+    v61 = settingsViewController;
   }
 
   else
@@ -446,17 +446,17 @@
 
   if (v62)
   {
-    v63 = [a1 presentationContext];
-    v64 = [v63 item];
-    v65 = [a1 cardNavigationController];
-    [v62 recreateDetailsViewFor:v64 navigationController:v65 dismiss:0];
+    presentationContext8 = [self presentationContext];
+    item3 = [presentationContext8 item];
+    cardNavigationController4 = [self cardNavigationController];
+    [v62 recreateDetailsViewFor:item3 navigationController:cardNavigationController4 dismiss:0];
   }
 
-  v66 = [a1 presentationContext];
-  if (([v66 prefersSystemTransitions] & 1) == 0)
+  presentationContext9 = [self presentationContext];
+  if (([presentationContext9 prefersSystemTransitions] & 1) == 0)
   {
-    v67 = [a1 cardNavigationController];
-    v68 = [v67 presentationController];
+    cardNavigationController5 = [self cardNavigationController];
+    presentationController2 = [cardNavigationController5 presentationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -465,107 +465,107 @@
       goto LABEL_53;
     }
 
-    v70 = [a1 cardNavigationController];
-    v66 = [v70 presentationController];
+    cardNavigationController6 = [self cardNavigationController];
+    presentationContext9 = [cardNavigationController6 presentationController];
 
     if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
     {
-      [a1 pressedTile_legacy];
+      [self pressedTile_legacy];
     }
 
     else
     {
-      [a1 pressedTile];
+      [self pressedTile];
     }
     v71 = ;
-    v72 = [a1 presentingViewController];
+    presentingViewController = [self presentingViewController];
     objc_opt_class();
     v73 = objc_opt_isKindOfClass();
 
     if (v73)
     {
-      v74 = [a1 presentingViewController];
-      v75 = [v74 presentationController];
+      presentingViewController2 = [self presentingViewController];
+      presentationController3 = [presentingViewController2 presentationController];
       objc_opt_class();
       v76 = objc_opt_isKindOfClass();
 
       if (v76)
       {
-        v77 = [v74 presentationController];
-        v78 = [v77 _sourceView];
+        presentationController4 = [presentingViewController2 presentationController];
+        _sourceView = [presentationController4 _sourceView];
 
-        if (v78)
+        if (_sourceView)
         {
-          v79 = [v77 _sourceView];
+          _sourceView2 = [presentationController4 _sourceView];
 
-          v71 = v79;
+          v71 = _sourceView2;
         }
       }
     }
 
-    [v66 _setSourceView:v71];
+    [presentationContext9 _setSourceView:v71];
     if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
     {
-      v80 = [a1 pressedTile_legacy];
-      v81 = [v80 layoutOptions];
-      [v81 cellCornerRadius];
-      [v66 _setCornerRadiusForPresentationAndDismissal:?];
+      pressedTile_legacy = [self pressedTile_legacy];
+      layoutOptions = [pressedTile_legacy layoutOptions];
+      [layoutOptions cellCornerRadius];
+      [presentationContext9 _setCornerRadiusForPresentationAndDismissal:?];
     }
 
     else
     {
-      v80 = [a1 pressedTile];
-      [v80 backgroundCornerRadius];
-      [v66 _setCornerRadiusForPresentationAndDismissal:?];
+      pressedTile_legacy = [self pressedTile];
+      [pressedTile_legacy backgroundCornerRadius];
+      [presentationContext9 _setCornerRadiusForPresentationAndDismissal:?];
     }
 
-    [a1 cornerRadius];
-    [v66 _setPreferredCornerRadius:?];
-    [v66 _setShouldDismissWhenTappedOutside:1];
+    [self cornerRadius];
+    [presentationContext9 _setPreferredCornerRadius:?];
+    [presentationContext9 _setShouldDismissWhenTappedOutside:1];
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials] && objc_msgSend(MEMORY[0x277D14CE8], "isAnIPad"))
     {
-      [v66 _setIndexOfLastUndimmedDetent:0];
+      [presentationContext9 _setIndexOfLastUndimmedDetent:0];
     }
   }
 
 LABEL_53:
-  v82 = [a1 presentingViewController];
-  v83 = [v82 view];
-  v84 = [v83 window];
-  v85 = [v84 _rootSheetPresentationController];
-  [v85 _setShouldScaleDownBehindDescendantSheets:0];
+  presentingViewController3 = [self presentingViewController];
+  view = [presentingViewController3 view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
-  v86 = [a1 delegate];
-  LOBYTE(v83) = objc_opt_respondsToSelector();
+  delegate5 = [self delegate];
+  LOBYTE(view) = objc_opt_respondsToSelector();
 
-  if (v83)
+  if (view)
   {
-    v87 = [a1 delegate];
-    v88 = [v87 shouldOverrideTraitCollectionForPresentationCoordinator:a1];
+    delegate6 = [self delegate];
+    v88 = [delegate6 shouldOverrideTraitCollectionForPresentationCoordinator:self];
 
     if (v88)
     {
-      v89 = [a1 delegate];
-      v90 = [v89 traitCollectionForPresentationCoordinator:a1];
+      delegate7 = [self delegate];
+      v90 = [delegate7 traitCollectionForPresentationCoordinator:self];
 
-      v91 = [v90 userInterfaceStyle];
-      v92 = [a1 cardNavigationController];
-      [v92 setOverrideUserInterfaceStyle:v91];
+      userInterfaceStyle = [v90 userInterfaceStyle];
+      cardNavigationController7 = [self cardNavigationController];
+      [cardNavigationController7 setOverrideUserInterfaceStyle:userInterfaceStyle];
     }
   }
 
-  v21 = [a1 cardNavigationController];
+  cardNavigationController8 = [self cardNavigationController];
 
 LABEL_57:
 
-  return v21;
+  return cardNavigationController8;
 }
 
-- (void)playBounceForItem:(id)a3
+- (void)playBounceForItem:(id)item
 {
-  v8 = a3;
-  v4 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-  v5 = [v4 objectForKey:v8];
+  itemCopy = item;
+  pressedItemContexts = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+  v5 = [pressedItemContexts objectForKey:itemCopy];
 
   if (![v5 isUserInitiated] || (objc_msgSend(v5, "isActive") & 1) == 0)
   {
@@ -576,29 +576,29 @@ LABEL_57:
 
     else
     {
-      v5 = [(HUQuickControlPresentationCoordinator *)self _createPressedContextForItem:v8 userInitiated:0];
-      v6 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-      [v6 setObject:v5 forKey:v8];
+      v5 = [(HUQuickControlPresentationCoordinator *)self _createPressedContextForItem:itemCopy userInitiated:0];
+      pressedItemContexts2 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+      [pressedItemContexts2 setObject:v5 forKey:itemCopy];
 
-      v7 = [v5 applier];
-      [v7 start];
+      applier = [v5 applier];
+      [applier start];
     }
 
-    [(HUQuickControlPresentationCoordinator *)self _initiateProgrammaticBounceForItem:v8];
+    [(HUQuickControlPresentationCoordinator *)self _initiateProgrammaticBounceForItem:itemCopy];
   }
 }
 
-- (void)_handleMutuallyExclusiveGesture:(id)a3
+- (void)_handleMutuallyExclusiveGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
-    v4 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
-    v5 = [v4 gestureRecognizerForExclusionRelationship];
-    [v5 setEnabled:0];
+    presentationInteraction = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+    gestureRecognizerForExclusionRelationship = [presentationInteraction gestureRecognizerForExclusionRelationship];
+    [gestureRecognizerForExclusionRelationship setEnabled:0];
 
-    v7 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
-    v6 = [v7 gestureRecognizerForExclusionRelationship];
-    [v6 setEnabled:1];
+    presentationInteraction2 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+    gestureRecognizerForExclusionRelationship2 = [presentationInteraction2 gestureRecognizerForExclusionRelationship];
+    [gestureRecognizerForExclusionRelationship2 setEnabled:1];
   }
 }
 
@@ -609,21 +609,21 @@ LABEL_57:
     v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleDoubleTapGesture_];
     [(HUQuickControlPresentationCoordinator *)self setDoubleTapGestureRecognizer:v3];
 
-    v4 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
-    [v4 setNumberOfTapsRequired:2];
+    doubleTapGestureRecognizer = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
 
-    v5 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
-    [v5 setName:@"doubleTapGestureRecognizer"];
+    doubleTapGestureRecognizer2 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer2 setName:@"doubleTapGestureRecognizer"];
 
-    v6 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
-    [v6 setMaximumIntervalBetweenSuccessiveTaps:0.15];
+    doubleTapGestureRecognizer3 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer3 setMaximumIntervalBetweenSuccessiveTaps:0.15];
 
-    v7 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
-    [v7 setDelegate:self];
+    doubleTapGestureRecognizer4 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer4 setDelegate:self];
 
-    v8 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
-    v9 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
-    [v8 addGestureRecognizer:v9];
+    _gestureInstallationView = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+    doubleTapGestureRecognizer5 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
+    [_gestureInstallationView addGestureRecognizer:doubleTapGestureRecognizer5];
   }
 
   else
@@ -631,61 +631,61 @@ LABEL_57:
     v10 = [objc_alloc(MEMORY[0x277D75E40]) initWithDelegate:self];
     [(HUQuickControlPresentationCoordinator *)self setPresentationInteraction:v10];
 
-    v11 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
-    v12 = [v11 gestureRecognizerForExclusionRelationship];
-    [v12 setDelegate:self];
+    presentationInteraction = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+    gestureRecognizerForExclusionRelationship = [presentationInteraction gestureRecognizerForExclusionRelationship];
+    [gestureRecognizerForExclusionRelationship setDelegate:self];
 
-    v13 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
-    [v13 setAllowSimultaneousRecognition:1];
+    presentationInteraction2 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+    [presentationInteraction2 setAllowSimultaneousRecognition:1];
 
-    v8 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
-    v9 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
-    [v8 addInteraction:v9];
+    _gestureInstallationView = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+    doubleTapGestureRecognizer5 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+    [_gestureInstallationView addInteraction:doubleTapGestureRecognizer5];
   }
 
   v14 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleSingleTapGesture_];
   [(HUQuickControlPresentationCoordinator *)self setSingleTapGestureRecognizer:v14];
 
-  v15 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
-  [v15 setDelegate:self];
+  singleTapGestureRecognizer = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
+  [singleTapGestureRecognizer setDelegate:self];
 
-  v16 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
-  [v16 setDelaysTouchesEnded:1];
+  singleTapGestureRecognizer2 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
+  [singleTapGestureRecognizer2 setDelaysTouchesEnded:1];
 
-  v17 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
-  [v17 setName:@"singleTapGestureRecognizer"];
+  singleTapGestureRecognizer3 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
+  [singleTapGestureRecognizer3 setName:@"singleTapGestureRecognizer"];
 
-  v18 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
-  v19 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
-  [v18 addGestureRecognizer:v19];
+  _gestureInstallationView2 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+  singleTapGestureRecognizer4 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
+  [_gestureInstallationView2 addGestureRecognizer:singleTapGestureRecognizer4];
 
   v20 = [[HUTouchGestureRecognizer alloc] initWithTarget:self action:sel__handleTouchGesture_];
   [(HUQuickControlPresentationCoordinator *)self setTouchGestureRecognizer:v20];
 
-  v21 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
-  [v21 setDelegate:self];
+  touchGestureRecognizer = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
+  [touchGestureRecognizer setDelegate:self];
 
-  v22 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
-  [v22 setDelaysTouchesEnded:1];
+  touchGestureRecognizer2 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
+  [touchGestureRecognizer2 setDelaysTouchesEnded:1];
 
-  v23 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
-  [v23 setName:@"touchGestureRecognizer"];
+  touchGestureRecognizer3 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
+  [touchGestureRecognizer3 setName:@"touchGestureRecognizer"];
 
-  v25 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
-  v24 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
-  [v25 addGestureRecognizer:v24];
+  _gestureInstallationView3 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+  touchGestureRecognizer4 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
+  [_gestureInstallationView3 addGestureRecognizer:touchGestureRecognizer4];
 }
 
-- (void)_handleSingleTapGesture:(id)a3
+- (void)_handleSingleTapGesture:(id)gesture
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self isQuickControlPresented];
+    isQuickControlPresented = [(HUQuickControlPresentationCoordinator *)self isQuickControlPresented];
     v6 = HFLogForCategory();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (isQuickControlPresented)
     {
       if (v7)
       {
@@ -694,7 +694,7 @@ LABEL_57:
         v53 = 138412546;
         v54 = v9;
         v55 = 2112;
-        v56 = v4;
+        v56 = gestureCopy;
         v10 = "%@+Controls ignoring single tap gesture %@ because quick control is presented";
 LABEL_7:
         _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, v10, &v53, 0x16u);
@@ -710,35 +710,35 @@ LABEL_7:
         v53 = 138412546;
         v54 = v13;
         v55 = 2112;
-        v56 = v4;
+        v56 = gestureCopy;
         _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@+Controls handling single tap gesture %@", &v53, 0x16u);
       }
 
-      v14 = [(HUQuickControlPresentationCoordinator *)self targetView];
-      [v4 locationInView:v14];
+      targetView = [(HUQuickControlPresentationCoordinator *)self targetView];
+      [gestureCopy locationInView:targetView];
       v16 = v15;
       v18 = v17;
 
-      v19 = [(HUQuickControlPresentationCoordinator *)self delegate];
-      v20 = [v19 presentationCoordinator:self contextForPresentationAtPoint:{v16, v18}];
+      delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+      v20 = [delegate presentationCoordinator:self contextForPresentationAtPoint:{v16, v18}];
       [(HUQuickControlPresentationCoordinator *)self setPresentationContext:v20];
 
       v21 = MEMORY[0x277D143D8];
-      v22 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      [v21 logAndSendTileInteractionEventOfType:1 withPresentationContext:v22 presentationCoordinator:self];
+      presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      [v21 logAndSendTileInteractionEventOfType:1 withPresentationContext:presentationContext presentationCoordinator:self];
 
-      v23 = [(HUQuickControlPresentationCoordinator *)self delegate];
-      LOBYTE(v22) = objc_opt_respondsToSelector();
+      delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+      LOBYTE(presentationContext) = objc_opt_respondsToSelector();
 
-      if (v22)
+      if (presentationContext)
       {
-        v24 = [(HUQuickControlPresentationCoordinator *)self delegate];
-        v25 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-        [v24 presentationCoordinatorSendTileInteractionEventOfType:1 withPresentationContext:v25 presentationCoordinator:self];
+        delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
+        presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+        [delegate3 presentationCoordinatorSendTileInteractionEventOfType:1 withPresentationContext:presentationContext2 presentationCoordinator:self];
       }
 
-      v26 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v27 = [v26 item];
+      presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item = [presentationContext3 item];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -747,19 +747,19 @@ LABEL_7:
         [HUEnergyAnalytics saveTapEvent:46 withInteractionType:1];
       }
 
-      v29 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v30 = [v29 item];
-      [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:v30 startApplier:1];
+      presentationContext4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item2 = [presentationContext4 item];
+      [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:item2 startApplier:1];
 
-      v31 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v32 = [v31 item];
-      [(HUQuickControlPresentationCoordinator *)self _initiateProgrammaticBounceForItem:v32];
+      presentationContext5 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item3 = [presentationContext5 item];
+      [(HUQuickControlPresentationCoordinator *)self _initiateProgrammaticBounceForItem:item3];
 
       objc_opt_class();
-      v33 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+      _gestureInstallationView = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
       if (objc_opt_isKindOfClass())
       {
-        v34 = v33;
+        v34 = _gestureInstallationView;
       }
 
       else
@@ -800,20 +800,20 @@ LABEL_7:
         }
       }
 
-      v40 = [(HUQuickControlPresentationCoordinator *)self delegate];
+      delegate4 = [(HUQuickControlPresentationCoordinator *)self delegate];
       v41 = objc_opt_respondsToSelector();
 
       if (v41)
       {
-        v42 = [(HUQuickControlPresentationCoordinator *)self delegate];
-        v43 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-        v44 = [v43 item];
-        v45 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-        v46 = [v45 tappedArea];
-        [v42 presentationCoordinator:self didRecognizeTapForItem:v44 tappedArea:v46];
+        delegate5 = [(HUQuickControlPresentationCoordinator *)self delegate];
+        presentationContext6 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+        item4 = [presentationContext6 item];
+        presentationContext7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+        tappedArea = [presentationContext7 tappedArea];
+        [delegate5 presentationCoordinator:self didRecognizeTapForItem:item4 tappedArea:tappedArea];
       }
 
-      v47 = [(HUQuickControlPresentationCoordinator *)self delegate];
+      delegate6 = [(HUQuickControlPresentationCoordinator *)self delegate];
       v48 = objc_opt_respondsToSelector();
 
       if ((v48 & 1) == 0 || (-[HUQuickControlPresentationCoordinator delegate](self, "delegate"), v49 = objc_claimAutoreleasedReturnValue(), -[HUQuickControlPresentationCoordinator presentationContext](self, "presentationContext"), v50 = objc_claimAutoreleasedReturnValue(), [v50 item], v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v49, "presentationCoordinator:shouldAllowTapticFeedbackForItem:", self, v51), v51, v50, v49, v52))
@@ -833,20 +833,20 @@ LABEL_7:
       v53 = 138412546;
       v54 = v9;
       v55 = 2112;
-      v56 = v4;
+      v56 = gestureCopy;
       v10 = "%@+Controls ignoring single tap gesture %@ because its state isn't recognized";
       goto LABEL_7;
     }
   }
 }
 
-- (void)_handleTouchGesture:(id)a3
+- (void)_handleTouchGesture:(id)gesture
 {
-  v24 = a3;
-  v4 = [v24 state];
-  if ((v4 - 3) < 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) < 2)
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if ((v6 & 1) == 0)
@@ -854,25 +854,25 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    v7 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    v8 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v9 = [v8 item];
-    v10 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v11 = [v10 tappedArea];
-    [v7 presentationCoordinator:self touchDidEndForItem:v9 tappedArea:v11];
+    delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    item = [presentationContext item];
+    presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    tappedArea = [presentationContext2 tappedArea];
+    [delegate2 presentationCoordinator:self touchDidEndForItem:item tappedArea:tappedArea];
     goto LABEL_11;
   }
 
-  if (v4 != 1)
+  if (state != 1)
   {
     goto LABEL_13;
   }
 
   objc_opt_class();
-  v12 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+  _gestureInstallationView = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = _gestureInstallationView;
   }
 
   else
@@ -882,30 +882,30 @@ LABEL_7:
 
   v14 = v13;
 
-  v15 = [(HUQuickControlPresentationCoordinator *)self targetView];
-  [v24 locationInView:v15];
+  targetView = [(HUQuickControlPresentationCoordinator *)self targetView];
+  [gestureCopy locationInView:targetView];
   v17 = v16;
   v19 = v18;
 
-  v7 = [v14 indexPathForItemAtPoint:{v17, v19}];
+  delegate2 = [v14 indexPathForItemAtPoint:{v17, v19}];
 
-  if (v7)
+  if (delegate2)
   {
-    v20 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    v21 = [v20 presentationCoordinator:self contextForPresentationAtPoint:{v17, v19}];
+    delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    v21 = [delegate3 presentationCoordinator:self contextForPresentationAtPoint:{v17, v19}];
     [(HUQuickControlPresentationCoordinator *)self setPresentationContext:v21];
 
-    v22 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    delegate4 = [(HUQuickControlPresentationCoordinator *)self delegate];
     LOBYTE(v21) = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v8 = [(HUQuickControlPresentationCoordinator *)self delegate];
-      v9 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v10 = [v9 item];
-      v11 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v23 = [v11 tappedArea];
-      [v8 presentationCoordinator:self touchDidBeginForItem:v10 tappedArea:v23];
+      presentationContext = [(HUQuickControlPresentationCoordinator *)self delegate];
+      item = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      presentationContext2 = [item item];
+      tappedArea = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      v11TappedArea = [tappedArea tappedArea];
+      [presentationContext presentationCoordinator:self touchDidBeginForItem:presentationContext2 tappedArea:v11TappedArea];
 
 LABEL_11:
     }
@@ -914,18 +914,18 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)_handleDoubleTapGesture:(id)a3
+- (void)_handleDoubleTapGesture:(id)gesture
 {
-  v23 = a3;
-  if ([v23 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
-    v4 = [(HUQuickControlPresentationCoordinator *)self targetView];
-    [v23 locationInView:v4];
+    targetView = [(HUQuickControlPresentationCoordinator *)self targetView];
+    [gestureCopy locationInView:targetView];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    v10 = [v9 presentationCoordinator:self contextForPresentationAtPoint:{v6, v8}];
+    delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+    v10 = [delegate presentationCoordinator:self contextForPresentationAtPoint:{v6, v8}];
 
     if (!v10)
     {
@@ -935,20 +935,20 @@ LABEL_22:
     }
 
     [MEMORY[0x277D143D8] logAndSendTileInteractionEventOfType:2 withPresentationContext:v10 presentationCoordinator:self];
-    v11 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(HUQuickControlPresentationCoordinator *)self delegate];
-      [v13 presentationCoordinatorSendTileInteractionEventOfType:2 withPresentationContext:v10 presentationCoordinator:self];
+      delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
+      [delegate3 presentationCoordinatorSendTileInteractionEventOfType:2 withPresentationContext:v10 presentationCoordinator:self];
     }
 
     objc_opt_class();
-    v14 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+    _gestureInstallationView = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = _gestureInstallationView;
     }
 
     else
@@ -1003,26 +1003,26 @@ LABEL_21:
 LABEL_23:
 }
 
-- (void)_handlePressGesture:(id)a3
+- (void)_handlePressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(HUQuickControlPresentationCoordinator *)self targetView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  targetView = [(HUQuickControlPresentationCoordinator *)self targetView];
+  [gestureCopy locationInView:targetView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 state];
-  if (v10 == 4)
+  state = [gestureCopy state];
+  if (state == 4)
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = 0;
   }
 
   else
   {
-    if (v10 != 3)
+    if (state != 3)
     {
-      if (v10 == 1)
+      if (state == 1)
       {
 
         [(HUQuickControlPresentationCoordinator *)self _pressGestureDidBeginWithLocation:v7, v9];
@@ -1031,33 +1031,33 @@ LABEL_23:
       return;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1;
   }
 
-  [(HUQuickControlPresentationCoordinator *)v11 _pressGestureDidEnd:v12];
+  [(HUQuickControlPresentationCoordinator *)selfCopy2 _pressGestureDidEnd:v12];
 }
 
-- (void)_pressGestureDidBeginWithLocation:(CGPoint)a3
+- (void)_pressGestureDidBeginWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  v7 = [v6 presentationCoordinator:self contextForPresentationAtPoint:{x, y}];
+  y = location.y;
+  x = location.x;
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+  v7 = [delegate presentationCoordinator:self contextForPresentationAtPoint:{x, y}];
   [(HUQuickControlPresentationCoordinator *)self setPresentationContext:v7];
 
-  v8 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v9 = [v8 item];
-  [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:v9 startApplier:1];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item = [presentationContext item];
+  [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:item startApplier:1];
 
   objc_initWeak(&location, self);
-  v10 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __75__HUQuickControlPresentationCoordinator__pressGestureDidBeginWithLocation___block_invoke;
   v15 = &unk_277DB8770;
   objc_copyWeak(&v16, &location);
-  v11 = [v10 afterDelay:&v12 performBlock:0.15];
+  v11 = [mainThreadScheduler afterDelay:&v12 performBlock:0.15];
   [(HUQuickControlPresentationCoordinator *)self setPressGestureActiveTimerCancellationToken:v11, v12, v13, v14, v15];
 
   [(HUQuickControlPresentationCoordinator *)self _prepareForTapticFeedback];
@@ -1078,8 +1078,8 @@ void __75__HUQuickControlPresentationCoordinator__pressGestureDidBeginWithLocati
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  mutuallyExclusiveGestureRecognizers = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
+  v3 = [mutuallyExclusiveGestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1090,7 +1090,7 @@ void __75__HUQuickControlPresentationCoordinator__pressGestureDidBeginWithLocati
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mutuallyExclusiveGestureRecognizers);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -1101,113 +1101,113 @@ void __75__HUQuickControlPresentationCoordinator__pressGestureDidBeginWithLocati
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [mutuallyExclusiveGestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_pressGestureDidEnd:(BOOL)a3
+- (void)_pressGestureDidEnd:(BOOL)end
 {
-  v3 = a3;
-  v5 = [(HUQuickControlPresentationCoordinator *)self pressGestureActiveTimerCancellationToken];
-  [v5 cancel];
+  endCopy = end;
+  pressGestureActiveTimerCancellationToken = [(HUQuickControlPresentationCoordinator *)self pressGestureActiveTimerCancellationToken];
+  [pressGestureActiveTimerCancellationToken cancel];
 
   [(HUQuickControlPresentationCoordinator *)self setPressGestureActiveTimerCancellationToken:0];
-  v6 = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
-  if (v6)
+  activePressedItemContext = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
+  if (activePressedItemContext)
   {
-    v26 = v6;
-    v7 = [v6 applier];
-    [v7 setCompletesWhenAtRest:1];
+    v26 = activePressedItemContext;
+    applier = [activePressedItemContext applier];
+    [applier setCompletesWhenAtRest:1];
 
     [v26 setActive:0];
     v8 = CACurrentMediaTime();
     [v26 beginTime];
-    v6 = v26;
-    if (v3)
+    activePressedItemContext = v26;
+    if (endCopy)
     {
       v10 = v8 - v9;
       v11 = MEMORY[0x277D143D8];
-      v12 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
       if (v10 <= 0.25)
       {
-        [v11 logAndSendTileInteractionEventOfType:1 withPresentationContext:v12 presentationCoordinator:self];
+        [v11 logAndSendTileInteractionEventOfType:1 withPresentationContext:presentationContext presentationCoordinator:self];
 
-        v17 = [(HUQuickControlPresentationCoordinator *)self delegate];
+        delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
         v18 = objc_opt_respondsToSelector();
 
         if (v18)
         {
-          v19 = [(HUQuickControlPresentationCoordinator *)self delegate];
-          v20 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-          [v19 presentationCoordinatorSendTileInteractionEventOfType:1 withPresentationContext:v20 presentationCoordinator:self];
+          delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+          presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+          [delegate2 presentationCoordinatorSendTileInteractionEventOfType:1 withPresentationContext:presentationContext2 presentationCoordinator:self];
         }
 
-        v15 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-        if (v15)
+        quickControlViewController = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+        if (quickControlViewController)
         {
           goto LABEL_12;
         }
 
-        v21 = [(HUQuickControlPresentationCoordinator *)self delegate];
+        delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
         v22 = objc_opt_respondsToSelector();
 
-        v6 = v26;
+        activePressedItemContext = v26;
         if ((v22 & 1) == 0)
         {
           goto LABEL_13;
         }
 
-        v15 = [(HUQuickControlPresentationCoordinator *)self delegate];
-        v16 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-        v23 = [v16 item];
-        v24 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-        v25 = [v24 tappedArea];
-        [v15 presentationCoordinator:self didRecognizeTapForItem:v23 tappedArea:v25];
+        quickControlViewController = [(HUQuickControlPresentationCoordinator *)self delegate];
+        presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+        item = [presentationContext3 item];
+        presentationContext4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+        tappedArea = [presentationContext4 tappedArea];
+        [quickControlViewController presentationCoordinator:self didRecognizeTapForItem:item tappedArea:tappedArea];
       }
 
       else
       {
-        [v11 logAndSendTileInteractionEventOfType:3 withPresentationContext:v12 presentationCoordinator:self];
+        [v11 logAndSendTileInteractionEventOfType:3 withPresentationContext:presentationContext presentationCoordinator:self];
 
-        v13 = [(HUQuickControlPresentationCoordinator *)self delegate];
+        delegate4 = [(HUQuickControlPresentationCoordinator *)self delegate];
         v14 = objc_opt_respondsToSelector();
 
-        v6 = v26;
+        activePressedItemContext = v26;
         if ((v14 & 1) == 0)
         {
           goto LABEL_13;
         }
 
-        v15 = [(HUQuickControlPresentationCoordinator *)self delegate];
-        v16 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-        [v15 presentationCoordinatorSendTileInteractionEventOfType:3 withPresentationContext:v16 presentationCoordinator:self];
+        quickControlViewController = [(HUQuickControlPresentationCoordinator *)self delegate];
+        presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+        [quickControlViewController presentationCoordinatorSendTileInteractionEventOfType:3 withPresentationContext:presentationContext3 presentationCoordinator:self];
       }
 
 LABEL_12:
-      v6 = v26;
+      activePressedItemContext = v26;
     }
   }
 
 LABEL_13:
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(HUQuickControlPresentationCoordinator *)self targetView];
-  [v4 locationInView:v5];
+  beginCopy = begin;
+  targetView = [(HUQuickControlPresentationCoordinator *)self targetView];
+  [beginCopy locationInView:targetView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 view];
+  view = [beginCopy view];
 
-  v11 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
-  if ((v12 & 1) != 0 && (-[HUQuickControlPresentationCoordinator delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 presentationCoordinator:self shouldBeginInteractivePresentationWithTouchLocation:v10 view:{v7, v9}], v13, !v14))
+  if ((v12 & 1) != 0 && (-[HUQuickControlPresentationCoordinator delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 presentationCoordinator:self shouldBeginInteractivePresentationWithTouchLocation:view view:{v7, v9}], v13, !v14))
   {
     v20 = 0;
   }
@@ -1215,10 +1215,10 @@ LABEL_13:
   else
   {
     objc_opt_class();
-    v15 = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
+    _gestureInstallationView = [(HUQuickControlPresentationCoordinator *)self _gestureInstallationView];
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = _gestureInstallationView;
     }
 
     else
@@ -1257,11 +1257,11 @@ LABEL_13:
           [(HUQuickControlPresentationCoordinator *)self setPressedTile:v23];
         }
 
-        v24 = [(HUQuickControlPresentationCoordinator *)self delegate];
-        v25 = [v24 presentationCoordinator:self contextForPresentationAtPoint:{v7, v9}];
+        delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+        v25 = [delegate2 presentationCoordinator:self contextForPresentationAtPoint:{v7, v9}];
         [(HUQuickControlPresentationCoordinator *)self setPresentationContext:v25];
 
-        v26 = [(HUQuickControlPresentationCoordinator *)self delegate];
+        delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
         LOBYTE(v25) = objc_opt_respondsToSelector();
 
         if ((v25 & 1) != 0 && (-[HUQuickControlPresentationCoordinator delegate](self, "delegate"), v27 = objc_claimAutoreleasedReturnValue(), -[HUQuickControlPresentationCoordinator presentationContext](self, "presentationContext"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v27 presentationCoordinator:self shouldBeginLongPressPresentationWithContext:v28], v28, v27, !v29))
@@ -1271,9 +1271,9 @@ LABEL_13:
 
         else
         {
-          v30 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-          v31 = [v30 item];
-          [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:v31 startApplier:0];
+          presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+          item = [presentationContext item];
+          [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:item startApplier:0];
 
           v20 = 1;
         }
@@ -1294,52 +1294,52 @@ LABEL_13:
   return v20;
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
   if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
 
-    if (!v5)
+    if (!pressedTile_legacy)
     {
       goto LABEL_7;
     }
 
     v6 = objc_alloc(MEMORY[0x277D76350]);
-    v7 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
   }
 
   else
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile];
 
-    if (!v5)
+    if (!pressedTile_legacy)
     {
       goto LABEL_7;
     }
 
     v6 = objc_alloc(MEMORY[0x277D76350]);
-    v7 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
   }
 
-  v8 = v7;
-  v5 = [v6 initWithView:v7];
+  v8 = pressedTile_legacy2;
+  pressedTile_legacy = [v6 initWithView:pressedTile_legacy2];
 
 LABEL_7:
 
-  return v5;
+  return pressedTile_legacy;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
-  v4 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    v7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v8 = [v6 presentationCoordinator:self shouldBeginLongPressPresentationWithContext:v7];
+    delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    v8 = [delegate2 presentationCoordinator:self shouldBeginLongPressPresentationWithContext:presentationContext];
 
     if (!v8)
     {
@@ -1348,17 +1348,17 @@ LABEL_7:
   }
 
   v9 = MEMORY[0x277D143D8];
-  v10 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  [v9 logAndSendTileInteractionEventOfType:3 withPresentationContext:v10 presentationCoordinator:self];
+  presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  [v9 logAndSendTileInteractionEventOfType:3 withPresentationContext:presentationContext2 presentationCoordinator:self];
 
-  v11 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  LOBYTE(v10) = objc_opt_respondsToSelector();
+  delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  LOBYTE(presentationContext2) = objc_opt_respondsToSelector();
 
-  if (v10)
+  if (presentationContext2)
   {
-    v12 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    v13 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    [v12 presentationCoordinatorSendTileInteractionEventOfType:3 withPresentationContext:v13 presentationCoordinator:self];
+    delegate4 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    [delegate4 presentationCoordinatorSendTileInteractionEventOfType:3 withPresentationContext:presentationContext3 presentationCoordinator:self];
   }
 
   v14 = 1;
@@ -1366,23 +1366,23 @@ LABEL_7:
   return v14;
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
-  if (a4 && ![(HUQuickControlPresentationCoordinator *)self isQuickControlPresented])
+  if (cancelled && ![(HUQuickControlPresentationCoordinator *)self isQuickControlPresented])
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
-    v6 = [v5 state];
+    singleTapGestureRecognizer = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
+    state = [singleTapGestureRecognizer state];
 
-    if (v6 == 5)
+    if (state == 5)
     {
-      v8 = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
-      v7 = [v8 item];
-      [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithScale:v7 forItem:1.0];
+      activePressedItemContext = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
+      item = [activePressedItemContext item];
+      [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithScale:item forItem:1.0];
     }
   }
 }
 
-- (unint64_t)activationStyleForClickPresentationInteraction:(id)a3
+- (unint64_t)activationStyleForClickPresentationInteraction:(id)interaction
 {
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
@@ -1410,20 +1410,20 @@ LABEL_7:
   }
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v8 = MEMORY[0x277D14CE8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  sourceControllerCopy = sourceController;
+  presentingControllerCopy = presentingController;
+  controllerCopy = controller;
   if ([v8 shouldUseLegacyQuickControlPresentation])
   {
-    [(HUQuickControlPresentationCoordinator *)self _legacyAnimationControllerForPresentedController:v11 presentingController:v10 sourceController:v9];
+    [(HUQuickControlPresentationCoordinator *)self _legacyAnimationControllerForPresentedController:controllerCopy presentingController:presentingControllerCopy sourceController:sourceControllerCopy];
   }
 
   else
   {
-    [(HUQuickControlPresentationCoordinator *)self _animationControllerForPresentedController:v11 presentingController:v10 sourceController:v9];
+    [(HUQuickControlPresentationCoordinator *)self _animationControllerForPresentedController:controllerCopy presentingController:presentingControllerCopy sourceController:sourceControllerCopy];
   }
   v12 = ;
 
@@ -1445,18 +1445,18 @@ LABEL_7:
   }
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v4 = MEMORY[0x277D14CE8];
-  v5 = a3;
+  controllerCopy = controller;
   if ([v4 shouldUseLegacyQuickControlPresentation])
   {
-    [(HUQuickControlPresentationCoordinator *)self _legacyAnimationControllerForDismissedController:v5];
+    [(HUQuickControlPresentationCoordinator *)self _legacyAnimationControllerForDismissedController:controllerCopy];
   }
 
   else
   {
-    [(HUQuickControlPresentationCoordinator *)self _animationControllerForDismissedController:v5];
+    [(HUQuickControlPresentationCoordinator *)self _animationControllerForDismissedController:controllerCopy];
   }
   v6 = ;
 
@@ -1466,289 +1466,289 @@ LABEL_7:
 - (void)__createTransitionViewsForPresentation
 {
   [(HUQuickControlPresentationCoordinator *)self removeAllTransitionSubviews];
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  [v3 updateUIWithAnimation:0];
+  pressedTile = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  [pressedTile updateUIWithAnimation:0];
 
-  v4 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v5 = [v4 navigationBarTitleView];
-  v6 = [v5 summaryView];
-  [v6 setHidden:1];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
+  [summaryView setHidden:1];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v8 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v9 = [v8 navigationBarTitleView];
-  [v9 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView2 = [cardViewController2 navigationBarTitleView];
+  [navigationBarTitleView2 setBackgroundColor:clearColor];
 
-  v10 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v11 = [v10 view];
-  [v11 setAlpha:0.0];
+  cardViewController3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  view = [cardViewController3 view];
+  [view setAlpha:0.0];
 
-  v12 = [MEMORY[0x277D75348] clearColor];
-  v13 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v14 = [v13 view];
-  [v14 setBackgroundColor:v12];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  cardNavigationController = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view2 = [cardNavigationController view];
+  [view2 setBackgroundColor:clearColor2];
 
   if (([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials] & 1) == 0)
   {
     v15 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(HUQuickControlPresentationCoordinator *)self setTransitionBackgroundView:v15];
 
-    v16 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v17 = [v16 backgroundColor];
-    v18 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-    [v18 setBackgroundColor:v17];
+    pressedTile2 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    backgroundColor = [pressedTile2 backgroundColor];
+    transitionBackgroundView = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+    [transitionBackgroundView setBackgroundColor:backgroundColor];
 
-    v19 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-    [v19 setHidden:1];
+    transitionBackgroundView2 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+    [transitionBackgroundView2 setHidden:1];
 
-    v20 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-    [v20 setAlpha:1.0];
+    transitionBackgroundView3 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+    [transitionBackgroundView3 setAlpha:1.0];
 
-    v21 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    [v21 tileFrame];
+    pressedTile3 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    [pressedTile3 tileFrame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-    [v30 setFrame:{v23, v25, v27, v29}];
+    transitionBackgroundView4 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+    [transitionBackgroundView4 setFrame:{v23, v25, v27, v29}];
 
-    v31 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-    [v31 setNeedsLayout];
+    transitionBackgroundView5 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+    [transitionBackgroundView5 setNeedsLayout];
 
-    v32 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v33 = [v32 view];
-    v34 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-    [v33 addSubview:v34];
+    cardNavigationController2 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view3 = [cardNavigationController2 view];
+    transitionBackgroundView6 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+    [view3 addSubview:transitionBackgroundView6];
 
-    v35 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v36 = [v35 createBackgroundBlurView];
-    [(HUQuickControlPresentationCoordinator *)self setPressedTileBlurEffectView:v36];
+    pressedTile4 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    createBackgroundBlurView = [pressedTile4 createBackgroundBlurView];
+    [(HUQuickControlPresentationCoordinator *)self setPressedTileBlurEffectView:createBackgroundBlurView];
 
-    v37 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v37 setHidden:1];
+    pressedTileBlurEffectView = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView setHidden:1];
 
-    v38 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v38 setAlpha:1.0];
+    pressedTileBlurEffectView2 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView2 setAlpha:1.0];
 
-    v39 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    [v39 tileFrame];
+    pressedTile5 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    [pressedTile5 tileFrame];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v48 setFrame:{v41, v43, v45, v47}];
+    pressedTileBlurEffectView3 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView3 setFrame:{v41, v43, v45, v47}];
 
-    v49 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v49 setNeedsLayout];
+    pressedTileBlurEffectView4 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView4 setNeedsLayout];
 
-    v50 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v51 = [v50 view];
-    v52 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v51 insertSubview:v52 atIndex:0];
+    cardNavigationController3 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view4 = [cardNavigationController3 view];
+    pressedTileBlurEffectView5 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [view4 insertSubview:pressedTileBlurEffectView5 atIndex:0];
   }
 
   v53 = [MEMORY[0x277D75210] effectWithBlurRadius:0.0];
   v54 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v53];
   [(HUQuickControlPresentationCoordinator *)self setTransitionBlurView:v54];
 
-  v55 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-  [v55 setAutoresizingMask:18];
+  transitionBlurView = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+  [transitionBlurView setAutoresizingMask:18];
 
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
-    v56 = [MEMORY[0x277D759A0] mainScreen];
-    [v56 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v58 = v57;
     v60 = v59;
     v62 = v61;
     v64 = v63;
-    v65 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v65 setFrame:{v58, v60, v62, v64}];
+    transitionBlurView2 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [transitionBlurView2 setFrame:{v58, v60, v62, v64}];
 
-    v66 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v67 = [v66 view];
-    v68 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v67 insertSubview:v68 atIndex:0];
+    cardNavigationController4 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view5 = [cardNavigationController4 view];
+    transitionBlurView3 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [view5 insertSubview:transitionBlurView3 atIndex:0];
   }
 
   else
   {
-    v69 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-    v70 = [v69 view];
-    [v70 bounds];
+    presentingViewController = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+    view6 = [presentingViewController view];
+    [view6 bounds];
     v72 = v71;
     v74 = v73;
     v76 = v75;
     v78 = v77;
-    v79 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v79 setFrame:{v72, v74, v76, v78}];
+    transitionBlurView4 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [transitionBlurView4 setFrame:{v72, v74, v76, v78}];
 
-    v66 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-    v67 = [v66 tabBarController];
-    v68 = [v67 view];
-    v80 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v68 addSubview:v80];
+    cardNavigationController4 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+    view5 = [cardNavigationController4 tabBarController];
+    transitionBlurView3 = [view5 view];
+    transitionBlurView5 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [transitionBlurView3 addSubview:transitionBlurView5];
   }
 
-  v81 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v82 = [v81 closeButton];
-  [v82 setAlpha:0.0];
+  cardViewController4 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  closeButton = [cardViewController4 closeButton];
+  [closeButton setAlpha:0.0];
 
-  v83 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v84 = [v83 baseIconViewConfiguration];
+  pressedTile6 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  baseIconViewConfiguration = [pressedTile6 baseIconViewConfiguration];
 
   v85 = objc_alloc_init(HUBaseIconView);
   [(HUQuickControlPresentationCoordinator *)self setTransitionBaseIconView:v85];
 
-  v86 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v86 setConfiguration:v84];
+  transitionBaseIconView = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView setConfiguration:baseIconViewConfiguration];
 
-  v87 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  [v87 iconViewTileFrame];
+  pressedTile7 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  [pressedTile7 iconViewTileFrame];
   v89 = v88;
   v91 = v90;
   v93 = v92;
   v95 = v94;
-  v96 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v96 setFrame:{v89, v91, v93, v95}];
+  transitionBaseIconView2 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView2 setFrame:{v89, v91, v93, v95}];
 
-  v97 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v97 setHidden:1];
+  transitionBaseIconView3 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView3 setHidden:1];
 
-  v98 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v98 setNeedsLayout];
+  transitionBaseIconView4 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView4 setNeedsLayout];
 
-  v99 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v99 layoutIfNeeded];
+  transitionBaseIconView5 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView5 layoutIfNeeded];
 
-  v100 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v101 = [v100 view];
-  v102 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v101 addSubview:v102];
+  cardNavigationController5 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view7 = [cardNavigationController5 view];
+  transitionBaseIconView6 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [view7 addSubview:transitionBaseIconView6];
 
-  v103 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v104 = [v103 prefixString];
+  pressedTile8 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  prefixString = [pressedTile8 prefixString];
 
-  if (v104)
+  if (prefixString)
   {
     v105 = objc_opt_new();
     [(HUQuickControlPresentationCoordinator *)self setTransitionPrefixLabel:v105];
 
-    v106 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v107 = [v106 prefixString];
-    v108 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v108 setText:v107];
+    pressedTile9 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    prefixString2 = [pressedTile9 prefixString];
+    transitionPrefixLabel = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel setText:prefixString2];
 
-    v109 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v110 = [v109 prefixLabelFont];
-    v111 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v111 setFont:v110];
+    pressedTile10 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    prefixLabelFont = [pressedTile10 prefixLabelFont];
+    transitionPrefixLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel2 setFont:prefixLabelFont];
 
-    v112 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v113 = [v112 prefixLabelTextColor];
-    v114 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v114 setTextColor:v113];
+    pressedTile11 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    prefixLabelTextColor = [pressedTile11 prefixLabelTextColor];
+    transitionPrefixLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel3 setTextColor:prefixLabelTextColor];
 
-    v115 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    [v115 prefixLabelTileFrame];
+    pressedTile12 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    [pressedTile12 prefixLabelTileFrame];
     v117 = v116;
     v119 = v118;
     v121 = v120;
     v123 = v122;
-    v124 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v124 setFrame:{v117, v119, v121, v123}];
+    transitionPrefixLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel4 setFrame:{v117, v119, v121, v123}];
 
-    v125 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v125 setNumberOfLines:1];
+    transitionPrefixLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel5 setNumberOfLines:1];
 
-    v126 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v126 setHidden:1];
+    transitionPrefixLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel6 setHidden:1];
 
-    v127 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v127 setAllowsDefaultTighteningForTruncation:1];
+    transitionPrefixLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel7 setAllowsDefaultTighteningForTruncation:1];
 
-    v128 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v128 setContentMode:1];
+    transitionPrefixLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel8 setContentMode:1];
 
-    v129 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v129 setAlpha:1.0];
+    transitionPrefixLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel9 setAlpha:1.0];
 
-    v130 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v130 setNeedsLayout];
+    transitionPrefixLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel10 setNeedsLayout];
 
-    v131 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v132 = [v131 view];
-    v133 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v132 addSubview:v133];
+    cardNavigationController6 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view8 = [cardNavigationController6 view];
+    transitionPrefixLabel11 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [view8 addSubview:transitionPrefixLabel11];
   }
 
-  v134 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v135 = [v134 primaryString];
+  pressedTile13 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  primaryString = [pressedTile13 primaryString];
 
-  if (v135)
+  if (primaryString)
   {
     v136 = objc_opt_new();
     [(HUQuickControlPresentationCoordinator *)self setTransitionPrimaryLabel:v136];
 
-    v137 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v138 = [v137 primaryString];
-    v139 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v139 setText:v138];
+    pressedTile14 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    primaryString2 = [pressedTile14 primaryString];
+    transitionPrimaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel setText:primaryString2];
 
-    v140 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v141 = [v140 primaryLabelFont];
-    v142 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v142 setFont:v141];
+    pressedTile15 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    primaryLabelFont = [pressedTile15 primaryLabelFont];
+    transitionPrimaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel2 setFont:primaryLabelFont];
 
-    v143 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v144 = [v143 primaryLabelTextColor];
-    v145 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v145 setTextColor:v144];
+    pressedTile16 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    primaryLabelTextColor = [pressedTile16 primaryLabelTextColor];
+    transitionPrimaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel3 setTextColor:primaryLabelTextColor];
 
-    v146 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    [v146 primaryLabelTileFrame];
+    pressedTile17 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    [pressedTile17 primaryLabelTileFrame];
     v148 = v147;
     v150 = v149;
     v152 = v151;
     v154 = v153;
-    v155 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v155 setFrame:{v148, v150, v152, v154}];
+    transitionPrimaryLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel4 setFrame:{v148, v150, v152, v154}];
 
-    v156 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v156 setNumberOfLines:0];
+    transitionPrimaryLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel5 setNumberOfLines:0];
 
-    v157 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v157 setHidden:1];
+    transitionPrimaryLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel6 setHidden:1];
 
-    v158 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v158 setAllowsDefaultTighteningForTruncation:1];
+    transitionPrimaryLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel7 setAllowsDefaultTighteningForTruncation:1];
 
-    v159 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v159 setContentMode:1];
+    transitionPrimaryLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel8 setContentMode:1];
 
-    v160 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v160 setNeedsLayout];
+    transitionPrimaryLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel9 setNeedsLayout];
 
-    v161 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v162 = [v161 view];
-    v163 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v162 addSubview:v163];
+    cardNavigationController7 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view9 = [cardNavigationController7 view];
+    transitionPrimaryLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [view9 addSubview:transitionPrimaryLabel10];
   }
 
-  v164 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v165 = [v164 secondaryString];
-  if (v165)
+  pressedTile18 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  secondaryString = [pressedTile18 secondaryString];
+  if (secondaryString)
   {
   }
 
   else
   {
-    v166 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v167 = [v166 secondaryAttributedString];
+    pressedTile19 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    secondaryAttributedString = [pressedTile19 secondaryAttributedString];
 
-    if (!v167)
+    if (!secondaryAttributedString)
     {
       return;
     }
@@ -1760,97 +1760,97 @@ LABEL_7:
   v169 = objc_opt_new();
   [(HUQuickControlPresentationCoordinator *)self setTransitionSecondaryLabel:v169];
 
-  v170 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v171 = [v170 secondaryString];
+  pressedTile20 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  secondaryString2 = [pressedTile20 secondaryString];
 
-  v172 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v173 = v172;
-  if (v171)
+  pressedTile21 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  v173 = pressedTile21;
+  if (secondaryString2)
   {
-    v174 = [v172 secondaryString];
-    v175 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v175 setText:v174];
+    secondaryString3 = [pressedTile21 secondaryString];
+    transitionSecondaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel setText:secondaryString3];
   }
 
   else
   {
-    v174 = [v172 secondaryAttributedString];
-    v175 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v175 setAttributedText:v174];
+    secondaryString3 = [pressedTile21 secondaryAttributedString];
+    transitionSecondaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel setAttributedText:secondaryString3];
   }
 
-  v176 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v177 = [v176 secondaryLabelFont];
-  v178 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v178 setFont:v177];
+  pressedTile22 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  secondaryLabelFont = [pressedTile22 secondaryLabelFont];
+  transitionSecondaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel2 setFont:secondaryLabelFont];
 
-  v179 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v180 = [v179 secondaryLabelTextColor];
-  v181 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v181 setTextColor:v180];
+  pressedTile23 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  secondaryLabelTextColor = [pressedTile23 secondaryLabelTextColor];
+  transitionSecondaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel3 setTextColor:secondaryLabelTextColor];
 
-  v182 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v182 setHidden:1];
+  transitionSecondaryLabelVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView setHidden:1];
 
-  v183 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  [v183 secondaryLabelTileFrame];
+  pressedTile24 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  [pressedTile24 secondaryLabelTileFrame];
   v185 = v184;
   v187 = v186;
   v189 = v188;
   v191 = v190;
-  v192 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v192 setFrame:{v185, v187, v189, v191}];
+  transitionSecondaryLabelVibrantEffectView2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView2 setFrame:{v185, v187, v189, v191}];
 
-  v193 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v193 bounds];
+  transitionSecondaryLabelVibrantEffectView3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView3 bounds];
   v195 = v194;
   v197 = v196;
   v199 = v198;
   v201 = v200;
-  v202 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v202 setFrame:{v195, v197, v199, v201}];
+  transitionSecondaryLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel4 setFrame:{v195, v197, v199, v201}];
 
-  v203 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v203 setHidden:1];
+  transitionSecondaryLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel5 setHidden:1];
 
-  v204 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v204 setNumberOfLines:0];
+  transitionSecondaryLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel6 setNumberOfLines:0];
 
-  v205 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v205 setAdjustsFontSizeToFitWidth:1];
+  transitionSecondaryLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel7 setAdjustsFontSizeToFitWidth:1];
 
-  v206 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v206 setMinimumScaleFactor:0.8];
+  transitionSecondaryLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel8 setMinimumScaleFactor:0.8];
 
-  v207 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v207 setAllowsDefaultTighteningForTruncation:1];
+  transitionSecondaryLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel9 setAllowsDefaultTighteningForTruncation:1];
 
-  v208 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v208 setContentMode:1];
+  transitionSecondaryLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel10 setContentMode:1];
 
-  v209 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v209 sizeToFit];
+  transitionSecondaryLabel11 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel11 sizeToFit];
 
-  v210 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v210 setNeedsLayout];
+  transitionSecondaryLabel12 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel12 setNeedsLayout];
 
-  v211 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  v212 = [v211 contentView];
-  v213 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v212 addSubview:v213];
+  transitionSecondaryLabelVibrantEffectView4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  contentView = [transitionSecondaryLabelVibrantEffectView4 contentView];
+  transitionSecondaryLabel13 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [contentView addSubview:transitionSecondaryLabel13];
 
-  v214 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v214 setNeedsLayout];
+  transitionSecondaryLabelVibrantEffectView5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView5 setNeedsLayout];
 
-  v217 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v215 = [v217 view];
-  v216 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v215 addSubview:v216];
+  cardNavigationController8 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view10 = [cardNavigationController8 view];
+  transitionSecondaryLabelVibrantEffectView6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [view10 addSubview:transitionSecondaryLabelVibrantEffectView6];
 }
 
-- (id)_animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  [(HUQuickControlPresentationCoordinator *)self _createTransitionViewsForPresentation:a3];
+  [(HUQuickControlPresentationCoordinator *)self _createTransitionViewsForPresentation:controller];
   v6 = objc_alloc_init(MEMORY[0x277D76230]);
   [v6 setIsReversed:0];
   v9[0] = MEMORY[0x277D85DD0];
@@ -2112,231 +2112,231 @@ uint64_t __122__HUQuickControlPresentationCoordinator__animationControllerForPre
 - (void)__createTransitionViewsForDismissal
 {
   [(HUQuickControlPresentationCoordinator *)self removeAllTransitionSubviews];
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  [v3 updateUIWithAnimation:0];
+  pressedTile = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  [pressedTile updateUIWithAnimation:0];
 
-  v4 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  [v4 setHidden:1];
+  pressedTile2 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  [pressedTile2 setHidden:1];
 
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
   [(HUQuickControlPresentationCoordinator *)self setTransitionBackgroundView:v5];
 
-  v6 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v7 = [v6 backgroundColor];
-  v8 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-  [v8 setBackgroundColor:v7];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  backgroundColor = [cardViewController backgroundColor];
+  transitionBackgroundView = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+  [transitionBackgroundView setBackgroundColor:backgroundColor];
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-  [v9 setHidden:1];
+  transitionBackgroundView2 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+  [transitionBackgroundView2 setHidden:1];
 
-  v10 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-  [v10 setAlpha:0.0];
+  transitionBackgroundView3 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+  [transitionBackgroundView3 setAlpha:0.0];
 
-  v11 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v12 = [v11 view];
-  [v12 frame];
+  cardNavigationController = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view = [cardNavigationController view];
+  [view frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  transitionBackgroundView4 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+  [transitionBackgroundView4 setFrame:{v14, v16, v18, v20}];
 
-  v22 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-  [v22 setNeedsLayout];
+  transitionBackgroundView5 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+  [transitionBackgroundView5 setNeedsLayout];
 
-  v23 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v24 = [v23 view];
-  v25 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-  [v24 addSubview:v25];
+  cardNavigationController2 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view2 = [cardNavigationController2 view];
+  transitionBackgroundView6 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+  [view2 addSubview:transitionBackgroundView6];
 
-  v26 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v27 = [v26 createBackgroundBlurView];
-  [(HUQuickControlPresentationCoordinator *)self setPressedTileBlurEffectView:v27];
+  pressedTile3 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  createBackgroundBlurView = [pressedTile3 createBackgroundBlurView];
+  [(HUQuickControlPresentationCoordinator *)self setPressedTileBlurEffectView:createBackgroundBlurView];
 
-  v28 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-  [v28 setHidden:1];
+  pressedTileBlurEffectView = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+  [pressedTileBlurEffectView setHidden:1];
 
-  v29 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-  [v29 setAlpha:1.0];
+  pressedTileBlurEffectView2 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+  [pressedTileBlurEffectView2 setAlpha:1.0];
 
-  v30 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v31 = [v30 view];
-  [v31 frame];
+  cardNavigationController3 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view3 = [cardNavigationController3 view];
+  [view3 frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-  [v40 setFrame:{v33, v35, v37, v39}];
+  pressedTileBlurEffectView3 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+  [pressedTileBlurEffectView3 setFrame:{v33, v35, v37, v39}];
 
-  v41 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-  [v41 setNeedsLayout];
+  pressedTileBlurEffectView4 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+  [pressedTileBlurEffectView4 setNeedsLayout];
 
-  v42 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v43 = [v42 view];
-  v44 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-  [v43 insertSubview:v44 atIndex:0];
+  cardNavigationController4 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view4 = [cardNavigationController4 view];
+  pressedTileBlurEffectView5 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+  [view4 insertSubview:pressedTileBlurEffectView5 atIndex:0];
 
-  v45 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v46 = [v45 baseIconViewConfiguration];
+  pressedTile4 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  baseIconViewConfiguration = [pressedTile4 baseIconViewConfiguration];
 
-  v47 = [v46 appearance];
-  [v46 setAppearance:3];
+  appearance = [baseIconViewConfiguration appearance];
+  [baseIconViewConfiguration setAppearance:3];
   v48 = objc_alloc_init(HUBaseIconView);
   [(HUQuickControlPresentationCoordinator *)self setTransitionBaseIconView:v48];
 
-  v49 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v49 setConfiguration:v46];
+  transitionBaseIconView = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView setConfiguration:baseIconViewConfiguration];
 
-  v50 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v50 prepareForTransitionToTargetViewState:v47];
+  transitionBaseIconView2 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView2 prepareForTransitionToTargetViewState:appearance];
 
   [(HUQuickControlPresentationCoordinator *)self baseIconFrameInNavigationBar];
   v52 = v51;
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  v59 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v59 setFrame:{v52, v54, v56, v58}];
+  transitionBaseIconView3 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView3 setFrame:{v52, v54, v56, v58}];
 
-  v60 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v60 setHidden:1];
+  transitionBaseIconView4 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView4 setHidden:1];
 
-  v61 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v61 setNeedsLayout];
+  transitionBaseIconView5 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView5 setNeedsLayout];
 
-  v62 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v63 = [v62 view];
-  v64 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v63 addSubview:v64];
+  cardNavigationController5 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view5 = [cardNavigationController5 view];
+  transitionBaseIconView6 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [view5 addSubview:transitionBaseIconView6];
 
-  v65 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v66 = [v65 prefixString];
+  pressedTile5 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  prefixString = [pressedTile5 prefixString];
 
-  if (v66)
+  if (prefixString)
   {
     v67 = objc_opt_new();
     [(HUQuickControlPresentationCoordinator *)self setTransitionPrefixLabel:v67];
 
-    v68 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v69 = [v68 prefixString];
-    v70 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v70 setText:v69];
+    pressedTile6 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    prefixString2 = [pressedTile6 prefixString];
+    transitionPrefixLabel = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel setText:prefixString2];
 
-    v71 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v72 = [v71 prefixLabelFont];
-    v73 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v73 setFont:v72];
+    pressedTile7 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    prefixLabelFont = [pressedTile7 prefixLabelFont];
+    transitionPrefixLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel2 setFont:prefixLabelFont];
 
-    v74 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v75 = [v74 prefixLabelTextColor];
-    v76 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v76 setTextColor:v75];
+    pressedTile8 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    prefixLabelTextColor = [pressedTile8 prefixLabelTextColor];
+    transitionPrefixLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel3 setTextColor:prefixLabelTextColor];
 
-    v77 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    [v77 prefixLabelTileFrame];
+    pressedTile9 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    [pressedTile9 prefixLabelTileFrame];
     v79 = v78;
     v81 = v80;
     v83 = v82;
     v85 = v84;
-    v86 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v86 setFrame:{v79, v81, v83, v85}];
+    transitionPrefixLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel4 setFrame:{v79, v81, v83, v85}];
 
-    v87 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v87 setNumberOfLines:1];
+    transitionPrefixLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel5 setNumberOfLines:1];
 
-    v88 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v88 setHidden:1];
+    transitionPrefixLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel6 setHidden:1];
 
-    v89 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v89 setContentMode:1];
+    transitionPrefixLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel7 setContentMode:1];
 
-    v90 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v90 setAlpha:0.0];
+    transitionPrefixLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel8 setAlpha:0.0];
 
-    v91 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v91 setNeedsLayout];
+    transitionPrefixLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [transitionPrefixLabel9 setNeedsLayout];
 
-    v92 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v93 = [v92 view];
-    v94 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-    [v93 addSubview:v94];
+    cardNavigationController6 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view6 = [cardNavigationController6 view];
+    transitionPrefixLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+    [view6 addSubview:transitionPrefixLabel10];
   }
 
-  v95 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v96 = [v95 primaryString];
+  pressedTile10 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  primaryString = [pressedTile10 primaryString];
 
-  if (v96)
+  if (primaryString)
   {
     v97 = objc_opt_new();
     [(HUQuickControlPresentationCoordinator *)self setTransitionPrimaryLabel:v97];
 
-    v98 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-    v99 = [v98 navigationBarTitleView];
-    v100 = [v99 summaryView];
-    v101 = [v100 primaryLabel];
-    v102 = [v101 font];
-    v103 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v103 setFont:v102];
+    cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+    navigationBarTitleView = [cardViewController2 navigationBarTitleView];
+    summaryView = [navigationBarTitleView summaryView];
+    primaryLabel = [summaryView primaryLabel];
+    font = [primaryLabel font];
+    transitionPrimaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel setFont:font];
 
-    v104 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-    v105 = [v104 navigationBarTitleView];
-    v106 = [v105 summaryView];
-    v107 = [v106 primaryLabel];
-    v108 = [v107 text];
-    v109 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v109 setText:v108];
+    cardViewController3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+    navigationBarTitleView2 = [cardViewController3 navigationBarTitleView];
+    summaryView2 = [navigationBarTitleView2 summaryView];
+    primaryLabel2 = [summaryView2 primaryLabel];
+    text = [primaryLabel2 text];
+    transitionPrimaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel2 setText:text];
 
-    v110 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-    v111 = [v110 navigationBarTitleView];
-    v112 = [v111 summaryView];
-    v113 = [v112 primaryLabel];
-    v114 = [v113 textColor];
-    v115 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v115 setTextColor:v114];
+    cardViewController4 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+    navigationBarTitleView3 = [cardViewController4 navigationBarTitleView];
+    summaryView3 = [navigationBarTitleView3 summaryView];
+    primaryLabel3 = [summaryView3 primaryLabel];
+    textColor = [primaryLabel3 textColor];
+    transitionPrimaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel3 setTextColor:textColor];
 
-    v116 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v116 setNumberOfLines:0];
+    transitionPrimaryLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel4 setNumberOfLines:0];
 
     [(HUQuickControlPresentationCoordinator *)self primaryLabelFrameInNavigationBar];
     v118 = v117;
     v120 = v119;
     v122 = v121;
     v124 = v123;
-    v125 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v125 setFrame:{v118, v120, v122, v124}];
+    transitionPrimaryLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel5 setFrame:{v118, v120, v122, v124}];
 
-    v126 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v126 setHidden:1];
+    transitionPrimaryLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel6 setHidden:1];
 
-    v127 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v127 setContentMode:1];
+    transitionPrimaryLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel7 setContentMode:1];
 
-    v128 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v128 sizeToFit];
+    transitionPrimaryLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel8 sizeToFit];
 
-    v129 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v129 setNeedsLayout];
+    transitionPrimaryLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel9 setNeedsLayout];
 
-    v130 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v131 = [v130 view];
-    v132 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v131 addSubview:v132];
+    cardNavigationController7 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view7 = [cardNavigationController7 view];
+    transitionPrimaryLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [view7 addSubview:transitionPrimaryLabel10];
   }
 
-  v133 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-  v134 = [v133 secondaryString];
-  if (v134)
+  pressedTile11 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+  secondaryString = [pressedTile11 secondaryString];
+  if (secondaryString)
   {
   }
 
   else
   {
-    v135 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    v136 = [v135 secondaryAttributedString];
+    pressedTile12 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    secondaryAttributedString = [pressedTile12 secondaryAttributedString];
 
-    if (!v136)
+    if (!secondaryAttributedString)
     {
       return;
     }
@@ -2348,106 +2348,106 @@ uint64_t __122__HUQuickControlPresentationCoordinator__animationControllerForPre
   v138 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUQuickControlPresentationCoordinator *)self setTransitionSecondaryLabel:v138];
 
-  v139 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v140 = [v139 navigationBarTitleView];
-  v141 = [v140 summaryView];
-  v142 = [v141 secondaryLabel];
-  v143 = [v142 font];
-  v144 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v144 setFont:v143];
+  cardViewController5 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView4 = [cardViewController5 navigationBarTitleView];
+  summaryView4 = [navigationBarTitleView4 summaryView];
+  secondaryLabel = [summaryView4 secondaryLabel];
+  font2 = [secondaryLabel font];
+  transitionSecondaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel setFont:font2];
 
-  v145 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v146 = [v145 navigationBarTitleView];
-  v147 = [v146 summaryView];
-  v148 = [v147 secondaryLabel];
-  v149 = [v148 textColor];
-  v150 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v150 setTextColor:v149];
+  cardViewController6 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView5 = [cardViewController6 navigationBarTitleView];
+  summaryView5 = [navigationBarTitleView5 summaryView];
+  secondaryLabel2 = [summaryView5 secondaryLabel];
+  textColor2 = [secondaryLabel2 textColor];
+  transitionSecondaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel2 setTextColor:textColor2];
 
-  v151 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v152 = [v151 navigationBarTitleView];
-  v153 = [v152 summaryView];
-  v154 = [v153 secondaryLabel];
-  v155 = [v154 text];
+  cardViewController7 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView6 = [cardViewController7 navigationBarTitleView];
+  summaryView6 = [navigationBarTitleView6 summaryView];
+  secondaryLabel3 = [summaryView6 secondaryLabel];
+  text2 = [secondaryLabel3 text];
 
-  v156 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v157 = [v156 navigationBarTitleView];
-  v158 = [v157 summaryView];
-  v159 = [v158 secondaryLabel];
-  v160 = v159;
-  if (v155)
+  cardViewController8 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView7 = [cardViewController8 navigationBarTitleView];
+  summaryView7 = [navigationBarTitleView7 summaryView];
+  secondaryLabel4 = [summaryView7 secondaryLabel];
+  v160 = secondaryLabel4;
+  if (text2)
   {
-    v161 = [v159 text];
-    v162 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v162 setText:v161];
+    text3 = [secondaryLabel4 text];
+    transitionSecondaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel3 setText:text3];
   }
 
   else
   {
-    v161 = [v159 attributedText];
-    v162 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v162 setAttributedText:v161];
+    text3 = [secondaryLabel4 attributedText];
+    transitionSecondaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel3 setAttributedText:text3];
   }
 
-  v163 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v163 setHidden:1];
+  transitionSecondaryLabelVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView setHidden:1];
 
   [(HUQuickControlPresentationCoordinator *)self secondaryLabelFrameInNavigationBar];
   v165 = v164;
   v167 = v166;
   v169 = v168;
   v171 = v170;
-  v172 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v172 setFrame:{v165, v167, v169, v171}];
+  transitionSecondaryLabelVibrantEffectView2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView2 setFrame:{v165, v167, v169, v171}];
 
-  v173 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v173 setNumberOfLines:1];
+  transitionSecondaryLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel4 setNumberOfLines:1];
 
-  v174 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v174 setAllowsDefaultTighteningForTruncation:1];
+  transitionSecondaryLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel5 setAllowsDefaultTighteningForTruncation:1];
 
-  v175 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v175 setAdjustsFontSizeToFitWidth:1];
+  transitionSecondaryLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel6 setAdjustsFontSizeToFitWidth:1];
 
   +[HUGridServiceCellTextView minimumDescriptionScaleFactor];
   v177 = v176;
-  v178 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v178 setMinimumScaleFactor:v177];
+  transitionSecondaryLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel7 setMinimumScaleFactor:v177];
 
-  v179 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v179 sizeToFit];
+  transitionSecondaryLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel8 sizeToFit];
 
-  v180 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v180 bounds];
+  transitionSecondaryLabelVibrantEffectView3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView3 bounds];
   v182 = v181;
   v184 = v183;
   v186 = v185;
   v188 = v187;
-  v189 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v189 setFrame:{v182, v184, v186, v188}];
+  transitionSecondaryLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel9 setFrame:{v182, v184, v186, v188}];
 
-  v190 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v190 setNeedsLayout];
+  transitionSecondaryLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel10 setNeedsLayout];
 
-  v191 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  v192 = [v191 contentView];
-  v193 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v192 addSubview:v193];
+  transitionSecondaryLabelVibrantEffectView4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  contentView = [transitionSecondaryLabelVibrantEffectView4 contentView];
+  transitionSecondaryLabel11 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [contentView addSubview:transitionSecondaryLabel11];
 
-  v194 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v194 setNeedsLayout];
+  transitionSecondaryLabelVibrantEffectView5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView5 setNeedsLayout];
 
-  v197 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v195 = [v197 view];
-  v196 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v195 addSubview:v196];
+  cardNavigationController8 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view8 = [cardNavigationController8 view];
+  transitionSecondaryLabelVibrantEffectView6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [view8 addSubview:transitionSecondaryLabelVibrantEffectView6];
 }
 
-- (id)_animationControllerForDismissedController:(id)a3
+- (id)_animationControllerForDismissedController:(id)controller
 {
-  v4 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
+  cardNavigationController = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2768,18 +2768,18 @@ void __84__HUQuickControlPresentationCoordinator__animationControllerForDismisse
 - (void)__createLegacyTransitionViewsForPresentation
 {
   [(HUQuickControlPresentationCoordinator *)self removeAllTransitionSubviews];
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  [v3 updateUIWithAnimation:0];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  [pressedTile_legacy updateUIWithAnimation:0];
 
-  v4 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v5 = [v4 navigationBarTitleView];
-  v6 = [v5 summaryView];
-  [v6 setHidden:1];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
+  [summaryView setHidden:1];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v8 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v9 = [v8 navigationBarTitleView];
-  [v9 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView2 = [cardViewController2 navigationBarTitleView];
+  [navigationBarTitleView2 setBackgroundColor:clearColor];
 
   if ([(HUQuickControlPresentationCoordinator *)self isTileOff])
   {
@@ -2805,98 +2805,98 @@ void __84__HUQuickControlPresentationCoordinator__animationControllerForDismisse
       [(HUQuickControlPresentationCoordinator *)self setPressedTileBlurEffectView:v11];
     }
 
-    v12 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v12 setHidden:1];
+    pressedTileBlurEffectView = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView setHidden:1];
 
-    v13 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v13 setAlpha:1.0];
+    pressedTileBlurEffectView2 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView2 setAlpha:1.0];
 
-    v14 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v15 = [v14 view];
-    [v15 frame];
+    cardNavigationController = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view = [cardNavigationController view];
+    [view frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    pressedTileBlurEffectView3 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView3 setFrame:{v17, v19, v21, v23}];
 
-    v25 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v25 setNeedsLayout];
+    pressedTileBlurEffectView4 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView4 setNeedsLayout];
 
-    v26 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v27 = [v26 view];
-    v28 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v27 insertSubview:v28 atIndex:0];
+    cardNavigationController2 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view2 = [cardNavigationController2 view];
+    pressedTileBlurEffectView5 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [view2 insertSubview:pressedTileBlurEffectView5 atIndex:0];
 
-    v29 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-    v30 = [v29 view];
-    [v30 setAlpha:0.0];
+    cardViewController3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+    view3 = [cardViewController3 view];
+    [view3 setAlpha:0.0];
 
-    v31 = [MEMORY[0x277D75348] clearColor];
-    v32 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v33 = [v32 view];
-    [v33 setBackgroundColor:v31];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    cardNavigationController3 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view4 = [cardNavigationController3 view];
+    [view4 setBackgroundColor:clearColor2];
   }
 
   v34 = [MEMORY[0x277D75210] effectWithBlurRadius:0.0];
   v35 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v34];
   [(HUQuickControlPresentationCoordinator *)self setTransitionBlurView:v35];
 
-  v36 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-  [v36 setAutoresizingMask:18];
+  transitionBlurView = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+  [transitionBlurView setAutoresizingMask:18];
 
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
-    v37 = [MEMORY[0x277D759A0] mainScreen];
-    [v37 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v39 = v38;
     v41 = v40;
     v43 = v42;
     v45 = v44;
-    v46 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v46 setFrame:{v39, v41, v43, v45}];
+    transitionBlurView2 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [transitionBlurView2 setFrame:{v39, v41, v43, v45}];
 
-    v47 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v48 = [v47 view];
-    v49 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v48 insertSubview:v49 atIndex:0];
+    cardNavigationController4 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view5 = [cardNavigationController4 view];
+    transitionBlurView3 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [view5 insertSubview:transitionBlurView3 atIndex:0];
   }
 
   else
   {
-    v50 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-    v51 = [v50 view];
-    [v51 bounds];
+    presentingViewController = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+    view6 = [presentingViewController view];
+    [view6 bounds];
     v53 = v52;
     v55 = v54;
     v57 = v56;
     v59 = v58;
-    v60 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v60 setFrame:{v53, v55, v57, v59}];
+    transitionBlurView4 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [transitionBlurView4 setFrame:{v53, v55, v57, v59}];
 
-    v47 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-    v48 = [v47 tabBarController];
-    v49 = [v48 view];
-    v61 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-    [v49 addSubview:v61];
+    cardNavigationController4 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+    view5 = [cardNavigationController4 tabBarController];
+    transitionBlurView3 = [view5 view];
+    transitionBlurView5 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+    [transitionBlurView3 addSubview:transitionBlurView5];
   }
 
-  v62 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v63 = [v62 closeButton];
-  [v63 setAlpha:0.0];
+  cardViewController4 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  closeButton = [cardViewController4 closeButton];
+  [closeButton setAlpha:0.0];
 
   v64 = objc_alloc_init(MEMORY[0x277D180D0]);
   [(HUQuickControlPresentationCoordinator *)self setTransitionIconView:v64];
 
-  v65 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  transitionIconView = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
   v66 = 1;
-  [v65 setContentMode:1];
+  [transitionIconView setContentMode:1];
 
-  v67 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v68 = [v67 item];
-  v69 = [v68 latestResults];
-  v70 = [v69 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  item = [pressedTile_legacy2 item];
+  latestResults = [item latestResults];
+  v70 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
 
   if ([(HUQuickControlPresentationCoordinator *)self isTileOff])
   {
@@ -2911,23 +2911,23 @@ void __84__HUQuickControlPresentationCoordinator__animationControllerForDismisse
     }
   }
 
-  v71 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v71 updateWithIconDescriptor:v70 displayStyle:v66 animated:0];
+  transitionIconView2 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView2 updateWithIconDescriptor:v70 displayStyle:v66 animated:0];
 
   if ([(HUQuickControlPresentationCoordinator *)self isActionSetTile])
   {
-    v72 = [(HUQuickControlPresentationCoordinator *)self iconSizeInActionSetTile];
-    v73 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-    [v73 setIconSize:v72];
+    iconSizeInActionSetTile = [(HUQuickControlPresentationCoordinator *)self iconSizeInActionSetTile];
+    transitionIconView3 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+    [transitionIconView3 setIconSize:iconSizeInActionSetTile];
 
     [(HUQuickControlPresentationCoordinator *)self iconFrameInActionSetTile];
   }
 
   else
   {
-    v78 = [(HUQuickControlPresentationCoordinator *)self iconSizeInTile];
-    v79 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-    [v79 setIconSize:v78];
+    iconSizeInTile = [(HUQuickControlPresentationCoordinator *)self iconSizeInTile];
+    transitionIconView4 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+    [transitionIconView4 setIconSize:iconSizeInTile];
 
     [(HUQuickControlPresentationCoordinator *)self iconFrameInTile];
   }
@@ -2936,37 +2936,37 @@ void __84__HUQuickControlPresentationCoordinator__animationControllerForDismisse
   v81 = v75;
   v82 = v76;
   v83 = v77;
-  v84 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v84 setFrame:{v80, v81, v82, v83}];
+  transitionIconView5 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView5 setFrame:{v80, v81, v82, v83}];
 
-  v85 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v85 setHidden:1];
+  transitionIconView6 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView6 setHidden:1];
 
-  v86 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v87 = [v86 view];
-  v88 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v87 addSubview:v88];
+  cardNavigationController5 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view7 = [cardNavigationController5 view];
+  transitionIconView7 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [view7 addSubview:transitionIconView7];
 
   v89 = objc_alloc_init(MEMORY[0x277D180D0]);
   [(HUQuickControlPresentationCoordinator *)self setTransitionIconViewVibrant:v89];
 
-  v90 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v90 setContentMode:1];
+  transitionIconViewVibrant = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant setContentMode:1];
 
   if ([(HUQuickControlPresentationCoordinator *)self isActionSetTile])
   {
-    v91 = [(HUQuickControlPresentationCoordinator *)self iconSizeInActionSetTile];
-    v92 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-    [v92 setIconSize:v91];
+    iconSizeInActionSetTile2 = [(HUQuickControlPresentationCoordinator *)self iconSizeInActionSetTile];
+    transitionIconViewVibrant2 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+    [transitionIconViewVibrant2 setIconSize:iconSizeInActionSetTile2];
 
     [(HUQuickControlPresentationCoordinator *)self iconFrameInActionSetTile];
   }
 
   else
   {
-    v97 = [(HUQuickControlPresentationCoordinator *)self iconSizeInTile];
-    v98 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-    [v98 setIconSize:v97];
+    iconSizeInTile2 = [(HUQuickControlPresentationCoordinator *)self iconSizeInTile];
+    transitionIconViewVibrant3 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+    [transitionIconViewVibrant3 setIconSize:iconSizeInTile2];
 
     [(HUQuickControlPresentationCoordinator *)self iconFrameInTile];
   }
@@ -2975,198 +2975,198 @@ void __84__HUQuickControlPresentationCoordinator__animationControllerForDismisse
   v100 = v94;
   v101 = v95;
   v102 = v96;
-  v103 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v103 setFrame:{v99, v100, v101, v102}];
+  transitionIconViewVibrant4 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant4 setFrame:{v99, v100, v101, v102}];
 
-  v104 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v104 setHidden:1];
+  transitionIconViewVibrant5 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant5 setHidden:1];
 
-  v105 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v106 = [v105 navigationBarTitleView];
-  v107 = [v106 summaryView];
-  v108 = [v107 iconView];
-  v109 = [v108 tintColor];
-  v110 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v110 setTintColor:v109];
+  cardViewController5 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView3 = [cardViewController5 navigationBarTitleView];
+  summaryView2 = [navigationBarTitleView3 summaryView];
+  iconView = [summaryView2 iconView];
+  tintColor = [iconView tintColor];
+  transitionIconView8 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView8 setTintColor:tintColor];
 
-  v111 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v112 = [v111 navigationBarTitleView];
-  v113 = [v112 summaryView];
-  v114 = [v113 iconView];
-  v115 = [v114 tintColor];
-  v116 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v116 setTintColor:v115];
+  cardViewController6 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView4 = [cardViewController6 navigationBarTitleView];
+  summaryView3 = [navigationBarTitleView4 summaryView];
+  iconView2 = [summaryView3 iconView];
+  tintColor2 = [iconView2 tintColor];
+  transitionIconViewVibrant6 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant6 setTintColor:tintColor2];
 
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
-    v117 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-    v118 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-    [v118 setVibrancyEffect:v117];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+    transitionIconViewVibrant7 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+    [transitionIconViewVibrant7 setVibrancyEffect:controlCenterSecondaryVibrancyEffect];
   }
 
   else
   {
-    v117 = [MEMORY[0x277D75210] effectWithStyle:7];
-    v118 = [MEMORY[0x277D75D00] effectForBlurEffect:v117 style:4];
-    v119 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-    [v119 setVibrancyEffect:v118];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75210] effectWithStyle:7];
+    transitionIconViewVibrant7 = [MEMORY[0x277D75D00] effectForBlurEffect:controlCenterSecondaryVibrancyEffect style:4];
+    transitionIconViewVibrant8 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+    [transitionIconViewVibrant8 setVibrancyEffect:transitionIconViewVibrant7];
   }
 
-  v120 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v120 updateWithIconDescriptor:v70 displayStyle:2 animated:0];
+  transitionIconViewVibrant9 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant9 updateWithIconDescriptor:v70 displayStyle:2 animated:0];
 
-  v121 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v121 layoutIfNeeded];
+  transitionIconView9 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView9 layoutIfNeeded];
 
-  v122 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v122 layoutIfNeeded];
+  transitionIconViewVibrant10 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant10 layoutIfNeeded];
 
-  v123 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v124 = [v123 view];
-  v125 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  v126 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v124 insertSubview:v125 above:v126];
+  cardNavigationController6 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view8 = [cardNavigationController6 view];
+  transitionIconViewVibrant11 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  transitionIconView10 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [view8 insertSubview:transitionIconViewVibrant11 above:transitionIconView10];
 
   v127 = objc_opt_new();
   [(HUQuickControlPresentationCoordinator *)self setTransitionPrimaryLabel:v127];
 
-  LODWORD(v123) = [(HUQuickControlPresentationCoordinator *)self isActionSetTile];
-  v128 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v129 = v128;
-  if (v123)
+  LODWORD(cardNavigationController6) = [(HUQuickControlPresentationCoordinator *)self isActionSetTile];
+  pressedTile_legacy3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  transitionPrimaryLabel6 = pressedTile_legacy3;
+  if (cardNavigationController6)
   {
-    v130 = [v128 titleAndDescriptionView];
-    v131 = [v130 titleLabel];
-    v132 = [v131 font];
-    v133 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v133 setFont:v132];
+    titleAndDescriptionView = [pressedTile_legacy3 titleAndDescriptionView];
+    titleLabel = [titleAndDescriptionView titleLabel];
+    font = [titleLabel font];
+    transitionPrimaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel setFont:font];
 
-    v134 = [v129 titleAndDescriptionView];
-    v135 = [v134 titleLabel];
-    v136 = [v135 text];
-    v137 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v137 setText:v136];
+    titleAndDescriptionView2 = [transitionPrimaryLabel6 titleAndDescriptionView];
+    titleLabel2 = [titleAndDescriptionView2 titleLabel];
+    text = [titleLabel2 text];
+    transitionPrimaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel2 setText:text];
 
     [(HUQuickControlPresentationCoordinator *)self primaryLabelFrameInActionSetTile];
     v139 = v138;
     v141 = v140;
     v143 = v142;
     v145 = v144;
-    v146 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v146 setFrame:{v139, v141, v143, v145}];
+    transitionPrimaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel3 setFrame:{v139, v141, v143, v145}];
   }
 
   else
   {
-    v147 = [v128 serviceTextView];
-    v148 = [v147 font];
-    v149 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v149 setFont:v148];
+    serviceTextView = [pressedTile_legacy3 serviceTextView];
+    font2 = [serviceTextView font];
+    transitionPrimaryLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel4 setFont:font2];
 
-    v150 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v151 = [v150 item];
-    v152 = [v151 latestResults];
-    v153 = [v152 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    v154 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v154 setText:v153];
+    pressedTile_legacy4 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    item2 = [pressedTile_legacy4 item];
+    latestResults2 = [item2 latestResults];
+    v153 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    transitionPrimaryLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel5 setText:v153];
 
     [(HUQuickControlPresentationCoordinator *)self primaryLabelFrameInTile];
     v156 = v155;
     v158 = v157;
     v160 = v159;
     v162 = v161;
-    v129 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-    [v129 setFrame:{v156, v158, v160, v162}];
+    transitionPrimaryLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+    [transitionPrimaryLabel6 setFrame:{v156, v158, v160, v162}];
   }
 
-  v163 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-  [v163 setHidden:1];
+  transitionPrimaryLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+  [transitionPrimaryLabel7 setHidden:1];
 
-  v164 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-  [v164 setNumberOfLines:2];
+  transitionPrimaryLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+  [transitionPrimaryLabel8 setNumberOfLines:2];
 
-  v165 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-  [v165 setContentMode:1];
+  transitionPrimaryLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+  [transitionPrimaryLabel9 setContentMode:1];
 
-  v166 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v167 = [v166 view];
-  v168 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-  [v167 addSubview:v168];
+  cardNavigationController7 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view9 = [cardNavigationController7 view];
+  transitionPrimaryLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+  [view9 addSubview:transitionPrimaryLabel10];
 
   v169 = objc_opt_new();
   [(HUQuickControlPresentationCoordinator *)self setTransitionSecondaryLabel:v169];
 
-  LODWORD(v167) = [(HUQuickControlPresentationCoordinator *)self isActionSetTile];
-  v170 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v171 = v170;
-  if (v167)
+  LODWORD(view9) = [(HUQuickControlPresentationCoordinator *)self isActionSetTile];
+  pressedTile_legacy5 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  transitionSecondaryLabel8 = pressedTile_legacy5;
+  if (view9)
   {
-    v172 = [v170 titleAndDescriptionView];
-    v173 = [v172 descriptionLabel];
-    v174 = [v173 font];
-    v175 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v175 setFont:v174];
+    titleAndDescriptionView3 = [pressedTile_legacy5 titleAndDescriptionView];
+    descriptionLabel = [titleAndDescriptionView3 descriptionLabel];
+    font3 = [descriptionLabel font];
+    transitionSecondaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel setFont:font3];
 
-    v176 = [v171 titleAndDescriptionView];
-    v177 = [v176 descriptionLabel];
-    v178 = [v177 text];
-    v179 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v179 setText:v178];
+    titleAndDescriptionView4 = [transitionSecondaryLabel8 titleAndDescriptionView];
+    descriptionLabel2 = [titleAndDescriptionView4 descriptionLabel];
+    text2 = [descriptionLabel2 text];
+    transitionSecondaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel2 setText:text2];
 
-    v180 = [v171 titleAndDescriptionView];
-    v181 = [v180 descriptionLabel];
-    v182 = [v181 textColor];
-    v183 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v183 setTextColor:v182];
+    titleAndDescriptionView5 = [transitionSecondaryLabel8 titleAndDescriptionView];
+    descriptionLabel3 = [titleAndDescriptionView5 descriptionLabel];
+    textColor = [descriptionLabel3 textColor];
+    transitionSecondaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel3 setTextColor:textColor];
 
     [(HUQuickControlPresentationCoordinator *)self secondaryLabelFrameInActionSetTile];
     v185 = v184;
     v187 = v186;
     v189 = v188;
     v191 = v190;
-    v192 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v192 setFrame:{v185, v187, v189, v191}];
+    transitionSecondaryLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel4 setFrame:{v185, v187, v189, v191}];
   }
 
   else
   {
-    v193 = [v170 coloredDescriptionLabel];
-    v194 = [v193 font];
-    v195 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v195 setFont:v194];
+    coloredDescriptionLabel = [pressedTile_legacy5 coloredDescriptionLabel];
+    font4 = [coloredDescriptionLabel font];
+    transitionSecondaryLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel5 setFont:font4];
 
-    v196 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v197 = [v196 coloredDescriptionLabel];
-    v198 = [v197 text];
-    v199 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v199 setText:v198];
+    pressedTile_legacy6 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    coloredDescriptionLabel2 = [pressedTile_legacy6 coloredDescriptionLabel];
+    text3 = [coloredDescriptionLabel2 text];
+    transitionSecondaryLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel6 setText:text3];
 
-    v200 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v201 = [v200 coloredDescriptionLabel];
-    v202 = [v201 textColor];
-    v203 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v203 setTextColor:v202];
+    pressedTile_legacy7 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    coloredDescriptionLabel3 = [pressedTile_legacy7 coloredDescriptionLabel];
+    textColor2 = [coloredDescriptionLabel3 textColor];
+    transitionSecondaryLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel7 setTextColor:textColor2];
 
     [(HUQuickControlPresentationCoordinator *)self secondaryLabelFrameInTile];
     v205 = v204;
     v207 = v206;
     v209 = v208;
     v211 = v210;
-    v171 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v171 setFrame:{v205, v207, v209, v211}];
+    transitionSecondaryLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel8 setFrame:{v205, v207, v209, v211}];
   }
 
-  v212 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v212 setHidden:1];
+  transitionSecondaryLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel9 setHidden:1];
 
-  v213 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v213 setNumberOfLines:0];
+  transitionSecondaryLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel10 setNumberOfLines:0];
 
-  v214 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v214 setContentMode:1];
+  transitionSecondaryLabel11 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel11 setContentMode:1];
 
-  v215 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v215 sizeToFit];
+  transitionSecondaryLabel12 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel12 sizeToFit];
 
   v216 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
   [(HUQuickControlPresentationCoordinator *)self setTransitionSecondaryLabelVibrantEffectView:v216];
@@ -3175,60 +3175,60 @@ void __84__HUQuickControlPresentationCoordinator__animationControllerForDismisse
   {
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v217 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-      v218 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-      [v218 setEffect:v217];
+      controlCenterSecondaryVibrancyEffect2 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+      transitionSecondaryLabelVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+      [transitionSecondaryLabelVibrantEffectView setEffect:controlCenterSecondaryVibrancyEffect2];
     }
 
     else
     {
-      v217 = [MEMORY[0x277D75210] effectWithStyle:7];
-      v218 = [MEMORY[0x277D75D00] effectForBlurEffect:v217 style:2];
-      v219 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-      [v219 setEffect:v218];
+      controlCenterSecondaryVibrancyEffect2 = [MEMORY[0x277D75210] effectWithStyle:7];
+      transitionSecondaryLabelVibrantEffectView = [MEMORY[0x277D75D00] effectForBlurEffect:controlCenterSecondaryVibrancyEffect2 style:2];
+      transitionSecondaryLabelVibrantEffectView2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+      [transitionSecondaryLabelVibrantEffectView2 setEffect:transitionSecondaryLabelVibrantEffectView];
     }
   }
 
-  v220 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v220 setHidden:1];
+  transitionSecondaryLabelVibrantEffectView3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView3 setHidden:1];
 
   [(HUQuickControlPresentationCoordinator *)self secondaryLabelFrameInTile];
   v222 = v221;
   v224 = v223;
   v226 = v225;
   v228 = v227;
-  v229 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v229 setFrame:{v222, v224, v226, v228}];
+  transitionSecondaryLabelVibrantEffectView4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView4 setFrame:{v222, v224, v226, v228}];
 
-  v230 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v230 bounds];
+  transitionSecondaryLabelVibrantEffectView5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView5 bounds];
   v232 = v231;
   v234 = v233;
   v236 = v235;
   v238 = v237;
-  v239 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v239 setFrame:{v232, v234, v236, v238}];
+  transitionSecondaryLabel13 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel13 setFrame:{v232, v234, v236, v238}];
 
-  v240 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v240 setNeedsLayout];
+  transitionSecondaryLabel14 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel14 setNeedsLayout];
 
-  v241 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v241 setNeedsLayout];
+  transitionSecondaryLabelVibrantEffectView6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView6 setNeedsLayout];
 
-  v242 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  v243 = [v242 contentView];
-  v244 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v243 addSubview:v244];
+  transitionSecondaryLabelVibrantEffectView7 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  contentView = [transitionSecondaryLabelVibrantEffectView7 contentView];
+  transitionSecondaryLabel15 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [contentView addSubview:transitionSecondaryLabel15];
 
-  v247 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v245 = [v247 view];
-  v246 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v245 addSubview:v246];
+  cardNavigationController8 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view10 = [cardNavigationController8 view];
+  transitionSecondaryLabelVibrantEffectView8 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [view10 addSubview:transitionSecondaryLabelVibrantEffectView8];
 }
 
-- (id)_legacyAnimationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_legacyAnimationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  [(HUQuickControlPresentationCoordinator *)self _createTransitionViewsForPresentation:a3];
+  [(HUQuickControlPresentationCoordinator *)self _createTransitionViewsForPresentation:controller];
   v6 = objc_alloc_init(MEMORY[0x277D76230]);
   [v6 setIsReversed:0];
   v9[0] = MEMORY[0x277D85DD0];
@@ -3478,15 +3478,15 @@ uint64_t __128__HUQuickControlPresentationCoordinator__legacyAnimationController
 {
   v273[2] = *MEMORY[0x277D85DE8];
   [(HUQuickControlPresentationCoordinator *)self removeAllTransitionSubviews];
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  [v3 updateUIWithAnimation:0];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  [pressedTile_legacy updateUIWithAnimation:0];
 
-  LODWORD(v3) = [(HUQuickControlPresentationCoordinator *)self isTileOff];
+  LODWORD(pressedTile_legacy) = [(HUQuickControlPresentationCoordinator *)self isTileOff];
   v4 = 0x277D14000uLL;
-  v5 = [MEMORY[0x277D14CE8] shouldUseControlCenterMaterials];
-  if (v3)
+  shouldUseControlCenterMaterials = [MEMORY[0x277D14CE8] shouldUseControlCenterMaterials];
+  if (pressedTile_legacy)
   {
-    if (v5)
+    if (shouldUseControlCenterMaterials)
     {
       if ([MEMORY[0x277D14670] isSpringBoard])
       {
@@ -3508,159 +3508,159 @@ uint64_t __128__HUQuickControlPresentationCoordinator__legacyAnimationController
       [(HUQuickControlPresentationCoordinator *)self setPressedTileBlurEffectView:v12];
     }
 
-    v13 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v13 setHidden:1];
+    pressedTileBlurEffectView = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView setHidden:1];
 
-    v14 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v15 = [v14 view];
-    [v15 frame];
+    cardNavigationController = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view = [cardNavigationController view];
+    [view frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    pressedTileBlurEffectView2 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [pressedTileBlurEffectView2 setFrame:{v17, v19, v21, v23}];
 
-    v8 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v9 = [v8 view];
-    v10 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-    [v9 insertSubview:v10 atIndex:0];
+    cardNavigationController2 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view2 = [cardNavigationController2 view];
+    pressedTileBlurEffectView3 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+    [view2 insertSubview:pressedTileBlurEffectView3 atIndex:0];
   }
 
   else
   {
-    if (!v5)
+    if (!shouldUseControlCenterMaterials)
     {
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    v7 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-    [v7 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+    [cardViewController setBackgroundColor:clearColor];
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    v9 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v10 = [v9 view];
-    [v10 setBackgroundColor:v8];
+    cardNavigationController2 = [MEMORY[0x277D75348] clearColor];
+    view2 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    pressedTileBlurEffectView3 = [view2 view];
+    [pressedTileBlurEffectView3 setBackgroundColor:cardNavigationController2];
   }
 
 LABEL_12:
   v25 = objc_alloc_init(MEMORY[0x277D180D0]);
   [(HUQuickControlPresentationCoordinator *)self setTransitionIconView:v25];
 
-  v26 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v27 = [v26 item];
-  v28 = [v27 latestResults];
-  v29 = [v28 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  item = [pressedTile_legacy2 item];
+  latestResults = [item latestResults];
+  v29 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
 
-  v30 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v30 setContentMode:1];
+  transitionIconView = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView setContentMode:1];
 
-  v31 = [(HUQuickControlPresentationCoordinator *)self iconSizeInNavigationBar];
-  v32 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v32 setIconSize:v31];
+  iconSizeInNavigationBar = [(HUQuickControlPresentationCoordinator *)self iconSizeInNavigationBar];
+  transitionIconView2 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView2 setIconSize:iconSizeInNavigationBar];
 
   [(HUQuickControlPresentationCoordinator *)self iconFrameInNavigationBar];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v41 setFrame:{v34, v36, v38, v40}];
+  transitionIconView3 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView3 setFrame:{v34, v36, v38, v40}];
 
-  v42 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v42 setHidden:1];
+  transitionIconView4 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView4 setHidden:1];
 
-  v43 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  v44 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v45 = [v44 navigationBarTitleView];
-  v46 = [v45 summaryView];
-  v47 = [v46 iconView];
-  [v43 updateWithIconDescriptor:v29 displayStyle:objc_msgSend(v47 animated:{"displayStyle"), 0}];
+  transitionIconView5 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController2 navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
+  iconView = [summaryView iconView];
+  [transitionIconView5 updateWithIconDescriptor:v29 displayStyle:objc_msgSend(iconView animated:{"displayStyle"), 0}];
 
-  v48 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v49 = [v48 view];
-  v50 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v49 addSubview:v50];
+  cardNavigationController3 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view3 = [cardNavigationController3 view];
+  transitionIconView6 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [view3 addSubview:transitionIconView6];
 
   v51 = objc_alloc_init(MEMORY[0x277D180D0]);
   [(HUQuickControlPresentationCoordinator *)self setTransitionIconViewVibrant:v51];
 
-  v52 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v52 setContentMode:1];
+  transitionIconViewVibrant = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant setContentMode:1];
 
-  v53 = [(HUQuickControlPresentationCoordinator *)self iconSizeInNavigationBar];
-  v54 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v54 setIconSize:v53];
+  iconSizeInNavigationBar2 = [(HUQuickControlPresentationCoordinator *)self iconSizeInNavigationBar];
+  transitionIconViewVibrant2 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant2 setIconSize:iconSizeInNavigationBar2];
 
   [(HUQuickControlPresentationCoordinator *)self iconFrameInNavigationBar];
   v56 = v55;
   v58 = v57;
   v60 = v59;
   v62 = v61;
-  v63 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v63 setFrame:{v56, v58, v60, v62}];
+  transitionIconViewVibrant3 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant3 setFrame:{v56, v58, v60, v62}];
 
-  v64 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v64 setHidden:1];
+  transitionIconViewVibrant4 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant4 setHidden:1];
 
-  v65 = [MEMORY[0x277D75348] clearColor];
-  v66 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v66 setTintColor:v65];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  transitionIconView7 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView7 setTintColor:clearColor2];
 
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
     if ([MEMORY[0x277D14670] isHomeControlService])
     {
       v67 = MEMORY[0x277D75358];
-      v68 = [MEMORY[0x277D75348] systemWhiteColor];
-      v69 = [v67 colorEffectMonochromeTint:v68 blendingAmount:1.0 brightnessAdjustment:0.45];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      controlCenterSecondaryVibrancyEffect = [v67 colorEffectMonochromeTint:systemWhiteColor blendingAmount:1.0 brightnessAdjustment:0.45];
 
       v70 = MEMORY[0x277D75D58];
-      v273[0] = v69;
-      v71 = [MEMORY[0x277D75D00] controlCenterPrimaryVibrancyEffect];
-      v273[1] = v71;
+      v273[0] = controlCenterSecondaryVibrancyEffect;
+      controlCenterPrimaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterPrimaryVibrancyEffect];
+      v273[1] = controlCenterPrimaryVibrancyEffect;
       v72 = [MEMORY[0x277CBEA60] arrayWithObjects:v273 count:2];
       v73 = [v70 effectCombiningEffects:v72];
-      v74 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-      [v74 setVibrancyEffect:v73];
+      transitionIconViewVibrant5 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+      [transitionIconViewVibrant5 setVibrancyEffect:v73];
 
       goto LABEL_18;
     }
 
-    v69 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-    v75 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-    [v75 setVibrancyEffect:v69];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+    transitionIconViewVibrant6 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+    [transitionIconViewVibrant6 setVibrancyEffect:controlCenterSecondaryVibrancyEffect];
   }
 
   else
   {
-    v69 = [MEMORY[0x277D75210] effectWithStyle:7];
-    v75 = [MEMORY[0x277D75D00] effectForBlurEffect:v69 style:4];
-    v76 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-    [v76 setVibrancyEffect:v75];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75210] effectWithStyle:7];
+    transitionIconViewVibrant6 = [MEMORY[0x277D75D00] effectForBlurEffect:controlCenterSecondaryVibrancyEffect style:4];
+    transitionIconViewVibrant7 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+    [transitionIconViewVibrant7 setVibrancyEffect:transitionIconViewVibrant6];
   }
 
 LABEL_18:
-  v77 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v77 updateWithIconDescriptor:v29 displayStyle:2 animated:0];
+  transitionIconViewVibrant8 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant8 updateWithIconDescriptor:v29 displayStyle:2 animated:0];
 
-  v78 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v79 = [v78 view];
-  v80 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  v81 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v79 insertSubview:v80 below:v81];
+  cardNavigationController4 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  view4 = [cardNavigationController4 view];
+  transitionIconViewVibrant9 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  transitionIconView8 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [view4 insertSubview:transitionIconViewVibrant9 below:transitionIconView8];
 
   v82 = off_277DB0000;
   if ([(HUQuickControlPresentationCoordinator *)self isActionSetTile])
   {
-    v83 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    pressedTile_legacy3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
     v84 = [MEMORY[0x277D75210] effectWithStyle:7];
-    v85 = [(HUQuickControlPresentationCoordinator *)self isTileOff];
+    isTileOff = [(HUQuickControlPresentationCoordinator *)self isTileOff];
     v86 = objc_alloc(MEMORY[0x277D75D68]);
     v87 = v86;
     v272 = v84;
-    if (v85)
+    if (isTileOff)
     {
       v88 = [MEMORY[0x277D75D00] effectForBlurEffect:v84 style:4];
       v89 = [v87 initWithEffect:v88];
@@ -3678,65 +3678,65 @@ LABEL_18:
     v149 = v148;
     v151 = v150;
     v153 = v152;
-    v154 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
-    [v154 setFrame:{v147, v149, v151, v153}];
+    transitionTitleAndDescriptionVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
+    [transitionTitleAndDescriptionVibrantEffectView setFrame:{v147, v149, v151, v153}];
 
     [(HUQuickControlPresentationCoordinator *)self primaryLabelFrameInNavigationBar];
     v156 = v155;
     [(HUQuickControlPresentationCoordinator *)self primaryLabelFrameInNavigationBar];
     v158 = v157;
-    v159 = [v83 titleAndDescriptionView];
-    [v159 frame];
+    titleAndDescriptionView = [pressedTile_legacy3 titleAndDescriptionView];
+    [titleAndDescriptionView frame];
     v161 = v160;
-    v162 = [v83 titleAndDescriptionView];
-    [v162 frame];
+    titleAndDescriptionView2 = [pressedTile_legacy3 titleAndDescriptionView];
+    [titleAndDescriptionView2 frame];
     v164 = v163;
 
-    v165 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v166 = [v165 view];
-    v167 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
-    [v166 addSubview:v167];
+    cardNavigationController5 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view5 = [cardNavigationController5 view];
+    transitionTitleAndDescriptionVibrantEffectView2 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
+    [view5 addSubview:transitionTitleAndDescriptionVibrantEffectView2];
 
     v168 = [HUGridActionSetTitleAndDescriptionView alloc];
-    v169 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
-    v170 = [v169 contentView];
-    v171 = [(HUGridActionSetTitleAndDescriptionView *)v168 initWithFrame:v170 titleLabelSuperview:v156, v158, v161, v164];
-    [(HUQuickControlPresentationCoordinator *)self setTransitionTitleAndDescriptionView:v171];
+    transitionTitleAndDescriptionVibrantEffectView3 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
+    contentView = [transitionTitleAndDescriptionVibrantEffectView3 contentView];
+    v164 = [(HUGridActionSetTitleAndDescriptionView *)v168 initWithFrame:contentView titleLabelSuperview:v156, v158, v161, v164];
+    [(HUQuickControlPresentationCoordinator *)self setTransitionTitleAndDescriptionView:v164];
 
-    v172 = [v83 sceneCellLayoutOptions];
-    v173 = [v172 numberOfTitleLines];
-    v174 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
-    v175 = [v174 titleLabel];
-    [v175 setNumberOfLines:v173];
+    sceneCellLayoutOptions = [pressedTile_legacy3 sceneCellLayoutOptions];
+    numberOfTitleLines = [sceneCellLayoutOptions numberOfTitleLines];
+    transitionTitleAndDescriptionView = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
+    titleLabel = [transitionTitleAndDescriptionView titleLabel];
+    [titleLabel setNumberOfLines:numberOfTitleLines];
 
-    [v172 titleDescriptionLineSpacing];
+    [sceneCellLayoutOptions titleDescriptionLineSpacing];
     v177 = v176;
-    v178 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
-    [v178 setTitleDescriptionLineSpacing:v177];
+    transitionTitleAndDescriptionView2 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
+    [transitionTitleAndDescriptionView2 setTitleDescriptionLineSpacing:v177];
 
-    v179 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
-    v180 = [v83 titleAndDescriptionView];
-    v181 = [v180 titleLabel];
-    v182 = [v181 attributedText];
-    v183 = [v83 titleAndDescriptionView];
-    v184 = [v183 descriptionLabel];
-    v185 = [v184 attributedText];
-    [v179 updateTitleText:v182 descriptionText:v185];
+    transitionTitleAndDescriptionView3 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
+    titleAndDescriptionView3 = [pressedTile_legacy3 titleAndDescriptionView];
+    titleLabel2 = [titleAndDescriptionView3 titleLabel];
+    attributedText = [titleLabel2 attributedText];
+    titleAndDescriptionView4 = [pressedTile_legacy3 titleAndDescriptionView];
+    descriptionLabel = [titleAndDescriptionView4 descriptionLabel];
+    attributedText2 = [descriptionLabel attributedText];
+    [transitionTitleAndDescriptionView3 updateTitleText:attributedText descriptionText:attributedText2];
 
-    v186 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
-    [v186 setHidden:1];
+    transitionTitleAndDescriptionView4 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
+    [transitionTitleAndDescriptionView4 setHidden:1];
 
-    v187 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
-    [v187 setHidden:1];
+    transitionTitleAndDescriptionVibrantEffectView4 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
+    [transitionTitleAndDescriptionVibrantEffectView4 setHidden:1];
 
-    v188 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v189 = [v188 view];
-    v190 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
-    [v189 addSubview:v190];
+    cardNavigationController6 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view6 = [cardNavigationController6 view];
+    transitionTitleAndDescriptionView5 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
+    [view6 addSubview:transitionTitleAndDescriptionView5];
 
     v4 = 0x277D14000;
     v82 = off_277DB0000;
-    v191 = v272;
+    view8 = v272;
   }
 
   else
@@ -3744,135 +3744,135 @@ LABEL_18:
     v90 = objc_alloc_init(HUGridServiceCellTextView);
     [(HUQuickControlPresentationCoordinator *)self setTransitionTextView:v90];
 
-    v91 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v92 = [v91 shouldShowRoomName];
-    v93 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v93 setShouldShowRoomName:v92];
+    pressedTile_legacy4 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    shouldShowRoomName = [pressedTile_legacy4 shouldShowRoomName];
+    transitionTextView = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView setShouldShowRoomName:shouldShowRoomName];
 
-    v94 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v95 = [v94 serviceTextView];
-    [v95 lineHeight];
+    pressedTile_legacy5 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView = [pressedTile_legacy5 serviceTextView];
+    [serviceTextView lineHeight];
     v97 = v96;
-    v98 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v98 setLineHeight:v97];
+    transitionTextView2 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView2 setLineHeight:v97];
 
-    v99 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v100 = [v99 serviceTextView];
-    v101 = [v100 font];
-    v102 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v102 setFont:v101];
+    pressedTile_legacy6 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView2 = [pressedTile_legacy6 serviceTextView];
+    font = [serviceTextView2 font];
+    transitionTextView3 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView3 setFont:font];
 
-    v103 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v104 = [v103 serviceTextView];
-    v105 = [v104 serviceNameComponents];
-    v106 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v106 setServiceNameComponents:v105];
+    pressedTile_legacy7 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView3 = [pressedTile_legacy7 serviceTextView];
+    serviceNameComponents = [serviceTextView3 serviceNameComponents];
+    transitionTextView4 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView4 setServiceNameComponents:serviceNameComponents];
 
     [(HUQuickControlPresentationCoordinator *)self primaryLabelFrameInNavigationBar];
     v108 = v107;
     [(HUQuickControlPresentationCoordinator *)self primaryLabelFrameInNavigationBar];
     v110 = v109;
-    v111 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v112 = [v111 serviceTextView];
-    [v112 frame];
+    pressedTile_legacy8 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView4 = [pressedTile_legacy8 serviceTextView];
+    [serviceTextView4 frame];
     v114 = v113;
-    v115 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v116 = [v115 serviceTextView];
-    [v116 frame];
+    pressedTile_legacy9 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView5 = [pressedTile_legacy9 serviceTextView];
+    [serviceTextView5 frame];
     v118 = v117;
-    v119 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v119 setFrame:{v108, v110, v114, v118}];
+    transitionTextView5 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView5 setFrame:{v108, v110, v114, v118}];
 
-    v120 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v120 setHidden:1];
+    transitionTextView6 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView6 setHidden:1];
 
-    v121 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v121 setNeedsLayout];
+    transitionTextView7 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView7 setNeedsLayout];
 
-    v122 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v123 = [v122 view];
-    v124 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v123 addSubview:v124];
+    cardNavigationController7 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view7 = [cardNavigationController7 view];
+    transitionTextView8 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [view7 addSubview:transitionTextView8];
 
     v125 = objc_alloc_init(HUGridServiceCellTextView);
     [(HUQuickControlPresentationCoordinator *)self setTransitionTextViewVibrant:v125];
 
-    v126 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v127 = [v126 shouldShowRoomName];
-    v128 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-    [v128 setShouldShowRoomName:v127];
+    pressedTile_legacy10 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    shouldShowRoomName2 = [pressedTile_legacy10 shouldShowRoomName];
+    transitionTextViewVibrant = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+    [transitionTextViewVibrant setShouldShowRoomName:shouldShowRoomName2];
 
-    v129 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v130 = [v129 serviceTextView];
-    [v130 lineHeight];
+    pressedTile_legacy11 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView6 = [pressedTile_legacy11 serviceTextView];
+    [serviceTextView6 lineHeight];
     v132 = v131;
-    v133 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-    [v133 setLineHeight:v132];
+    transitionTextViewVibrant2 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+    [transitionTextViewVibrant2 setLineHeight:v132];
 
-    v134 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v135 = [v134 serviceTextView];
-    v136 = [v135 font];
-    v137 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-    [v137 setFont:v136];
+    pressedTile_legacy12 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView7 = [pressedTile_legacy12 serviceTextView];
+    font2 = [serviceTextView7 font];
+    transitionTextViewVibrant3 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+    [transitionTextViewVibrant3 setFont:font2];
 
-    v138 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v139 = [v138 serviceTextView];
-    v140 = [v139 serviceNameComponents];
-    v141 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-    [v141 setServiceNameComponents:v140];
+    pressedTile_legacy13 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    serviceTextView8 = [pressedTile_legacy13 serviceTextView];
+    serviceNameComponents2 = [serviceTextView8 serviceNameComponents];
+    transitionTextViewVibrant4 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+    [transitionTextViewVibrant4 setServiceNameComponents:serviceNameComponents2];
 
-    v142 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-    [v142 sizeToFit];
+    transitionTextViewVibrant5 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+    [transitionTextViewVibrant5 sizeToFit];
 
     v143 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
     [(HUQuickControlPresentationCoordinator *)self setTransitionTextViewVibrantEffectView:v143];
 
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v144 = [MEMORY[0x277D75D00] controlCenterPrimaryVibrancyEffect];
-      v145 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-      [v145 setEffect:v144];
+      controlCenterPrimaryVibrancyEffect2 = [MEMORY[0x277D75D00] controlCenterPrimaryVibrancyEffect];
+      transitionTextViewVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+      [transitionTextViewVibrantEffectView setEffect:controlCenterPrimaryVibrancyEffect2];
     }
 
     else
     {
-      v144 = [MEMORY[0x277D75210] effectWithStyle:7];
-      v145 = [MEMORY[0x277D75D00] effectForBlurEffect:v144 style:4];
-      v192 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-      [v192 setEffect:v145];
+      controlCenterPrimaryVibrancyEffect2 = [MEMORY[0x277D75210] effectWithStyle:7];
+      transitionTextViewVibrantEffectView = [MEMORY[0x277D75D00] effectForBlurEffect:controlCenterPrimaryVibrancyEffect2 style:4];
+      transitionTextViewVibrantEffectView2 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+      [transitionTextViewVibrantEffectView2 setEffect:transitionTextViewVibrantEffectView];
     }
 
-    v193 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v193 frame];
+    transitionTextView9 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [transitionTextView9 frame];
     v195 = v194;
     v197 = v196;
     v199 = v198;
     v201 = v200;
-    v202 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-    [v202 setFrame:{v195, v197, v199, v201}];
+    transitionTextViewVibrantEffectView3 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+    [transitionTextViewVibrantEffectView3 setFrame:{v195, v197, v199, v201}];
 
-    v203 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-    [v203 bounds];
+    transitionTextViewVibrantEffectView4 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+    [transitionTextViewVibrantEffectView4 bounds];
     v205 = v204;
     v207 = v206;
     v209 = v208;
     v211 = v210;
-    v212 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-    [v212 setFrame:{v205, v207, v209, v211}];
+    transitionTextViewVibrant6 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+    [transitionTextViewVibrant6 setFrame:{v205, v207, v209, v211}];
 
-    v213 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-    [v213 setHidden:1];
+    transitionTextViewVibrantEffectView5 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+    [transitionTextViewVibrantEffectView5 setHidden:1];
 
-    v214 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-    v215 = [v214 contentView];
-    v216 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-    [v215 addSubview:v216];
+    transitionTextViewVibrantEffectView6 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+    contentView2 = [transitionTextViewVibrantEffectView6 contentView];
+    transitionTextViewVibrant7 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+    [contentView2 addSubview:transitionTextViewVibrant7];
 
-    v83 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v191 = [v83 view];
-    v172 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-    v188 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-    [v191 insertSubview:v172 below:v188];
+    pressedTile_legacy3 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view8 = [pressedTile_legacy3 view];
+    sceneCellLayoutOptions = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+    cardNavigationController6 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+    [view8 insertSubview:sceneCellLayoutOptions below:cardNavigationController6];
   }
 
   if (![(HUQuickControlPresentationCoordinator *)self isActionSetTile])
@@ -3880,52 +3880,52 @@ LABEL_18:
     v217 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(HUQuickControlPresentationCoordinator *)self setTransitionSecondaryLabel:v217];
 
-    v218 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v218 setNumberOfLines:1];
+    transitionSecondaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel setNumberOfLines:1];
 
     if (-[HUQuickControlPresentationCoordinator isTileOff](self, "isTileOff") && (-[HUQuickControlPresentationCoordinator pressedTile_legacy](self, "pressedTile_legacy"), v219 = objc_claimAutoreleasedReturnValue(), [v219 serviceTextView], v220 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v220, "descriptionText"), v221 = objc_claimAutoreleasedReturnValue(), v221, v220, v219, v221))
     {
-      v222 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-      v223 = [v222 serviceTextView];
-      v224 = [v223 font];
-      v225 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-      [v225 setFont:v224];
+      pressedTile_legacy14 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+      serviceTextView9 = [pressedTile_legacy14 serviceTextView];
+      font3 = [serviceTextView9 font];
+      transitionSecondaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+      [transitionSecondaryLabel2 setFont:font3];
 
-      v226 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-      v227 = [v226 serviceTextView];
-      v228 = [v227 descriptionText];
-      v229 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-      [v229 setText:v228];
+      pressedTile_legacy15 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+      serviceTextView10 = [pressedTile_legacy15 serviceTextView];
+      descriptionText = [serviceTextView10 descriptionText];
+      transitionSecondaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+      [transitionSecondaryLabel3 setText:descriptionText];
     }
 
     else
     {
-      v230 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-      v231 = [v230 coloredDescriptionLabel];
-      v232 = [v231 attributedText];
-      v233 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-      [v233 setAttributedText:v232];
+      pressedTile_legacy16 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+      coloredDescriptionLabel = [pressedTile_legacy16 coloredDescriptionLabel];
+      attributedText3 = [coloredDescriptionLabel attributedText];
+      transitionSecondaryLabel4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+      [transitionSecondaryLabel4 setAttributedText:attributedText3];
 
-      v226 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-      v227 = [v226 coloredDescriptionLabel];
-      v228 = [v227 textColor];
-      v229 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-      [v229 setTextColor:v228];
+      pressedTile_legacy15 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+      serviceTextView10 = [pressedTile_legacy15 coloredDescriptionLabel];
+      descriptionText = [serviceTextView10 textColor];
+      transitionSecondaryLabel3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+      [transitionSecondaryLabel3 setTextColor:descriptionText];
     }
 
-    v234 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v234 setAllowsDefaultTighteningForTruncation:1];
+    transitionSecondaryLabel5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel5 setAllowsDefaultTighteningForTruncation:1];
 
-    v235 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v235 setAdjustsFontSizeToFitWidth:1];
+    transitionSecondaryLabel6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel6 setAdjustsFontSizeToFitWidth:1];
 
     [(__objc2_class *)v82[218] minimumDescriptionScaleFactor];
     v237 = v236;
-    v238 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v238 setMinimumScaleFactor:v237];
+    transitionSecondaryLabel7 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel7 setMinimumScaleFactor:v237];
 
-    v239 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v239 sizeToFit];
+    transitionSecondaryLabel8 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel8 sizeToFit];
 
     v240 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
     [(HUQuickControlPresentationCoordinator *)self setTransitionSecondaryLabelVibrantEffectView:v240];
@@ -3934,63 +3934,63 @@ LABEL_18:
     {
       if ([*(v4 + 3304) shouldUseControlCenterMaterials])
       {
-        v241 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-        v242 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-        [v242 setEffect:v241];
+        controlCenterSecondaryVibrancyEffect2 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+        transitionSecondaryLabelVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+        [transitionSecondaryLabelVibrantEffectView setEffect:controlCenterSecondaryVibrancyEffect2];
       }
 
       else
       {
-        v241 = [MEMORY[0x277D75210] effectWithStyle:7];
-        v242 = [MEMORY[0x277D75D00] effectForBlurEffect:v241 style:2];
-        v243 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-        [v243 setEffect:v242];
+        controlCenterSecondaryVibrancyEffect2 = [MEMORY[0x277D75210] effectWithStyle:7];
+        transitionSecondaryLabelVibrantEffectView = [MEMORY[0x277D75D00] effectForBlurEffect:controlCenterSecondaryVibrancyEffect2 style:2];
+        transitionSecondaryLabelVibrantEffectView2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+        [transitionSecondaryLabelVibrantEffectView2 setEffect:transitionSecondaryLabelVibrantEffectView];
       }
     }
 
-    v244 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-    [v244 setHidden:1];
+    transitionSecondaryLabelVibrantEffectView3 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+    [transitionSecondaryLabelVibrantEffectView3 setHidden:1];
 
     [(HUQuickControlPresentationCoordinator *)self secondaryLabelFrameInNavigationBar];
     v246 = v245;
     v248 = v247;
     v250 = v249;
     v252 = v251;
-    v253 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-    [v253 setFrame:{v246, v248, v250, v252}];
+    transitionSecondaryLabelVibrantEffectView4 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+    [transitionSecondaryLabelVibrantEffectView4 setFrame:{v246, v248, v250, v252}];
 
-    v254 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-    [v254 bounds];
+    transitionSecondaryLabelVibrantEffectView5 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+    [transitionSecondaryLabelVibrantEffectView5 bounds];
     v256 = v255;
     v258 = v257;
     v260 = v259;
     v262 = v261;
-    v263 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v263 setFrame:{v256, v258, v260, v262}];
+    transitionSecondaryLabel9 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel9 setFrame:{v256, v258, v260, v262}];
 
-    v264 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v264 setNeedsLayout];
+    transitionSecondaryLabel10 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [transitionSecondaryLabel10 setNeedsLayout];
 
-    v265 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-    [v265 setNeedsLayout];
+    transitionSecondaryLabelVibrantEffectView6 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+    [transitionSecondaryLabelVibrantEffectView6 setNeedsLayout];
 
-    v266 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-    v267 = [v266 contentView];
-    v268 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-    [v267 addSubview:v268];
+    transitionSecondaryLabelVibrantEffectView7 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+    contentView3 = [transitionSecondaryLabelVibrantEffectView7 contentView];
+    transitionSecondaryLabel11 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+    [contentView3 addSubview:transitionSecondaryLabel11];
 
-    v269 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v270 = [v269 view];
-    v271 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-    [v270 addSubview:v271];
+    cardNavigationController8 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    view9 = [cardNavigationController8 view];
+    transitionSecondaryLabelVibrantEffectView8 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+    [view9 addSubview:transitionSecondaryLabelVibrantEffectView8];
   }
 }
 
-- (id)_legacyAnimationControllerForDismissedController:(id)a3
+- (id)_legacyAnimationControllerForDismissedController:(id)controller
 {
-  v4 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
+  cardNavigationController = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4364,61 +4364,61 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (void)removeAllTransitionSubviews
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
-  [v3 removeFromSuperview];
+  pressedTileBlurEffectView = [(HUQuickControlPresentationCoordinator *)self pressedTileBlurEffectView];
+  [pressedTileBlurEffectView removeFromSuperview];
 
-  v4 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-  [v4 removeFromSuperview];
+  transitionIconView = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+  [transitionIconView removeFromSuperview];
 
-  v5 = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
-  [v5 removeFromSuperview];
+  transitionIconViewVibrant = [(HUQuickControlPresentationCoordinator *)self transitionIconViewVibrant];
+  [transitionIconViewVibrant removeFromSuperview];
 
-  v6 = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
-  [v6 removeFromSuperview];
+  transitionPrimaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionPrimaryLabel];
+  [transitionPrimaryLabel removeFromSuperview];
 
-  v7 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v7 removeFromSuperview];
+  transitionSecondaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel removeFromSuperview];
 
-  v8 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
-  [v8 removeFromSuperview];
+  transitionSecondaryLabelVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabelVibrantEffectView];
+  [transitionSecondaryLabelVibrantEffectView removeFromSuperview];
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
-  [v9 removeFromSuperview];
+  transitionTextView = [(HUQuickControlPresentationCoordinator *)self transitionTextView];
+  [transitionTextView removeFromSuperview];
 
-  v10 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
-  [v10 removeFromSuperview];
+  transitionTextViewVibrant = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrant];
+  [transitionTextViewVibrant removeFromSuperview];
 
-  v11 = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
-  [v11 removeFromSuperview];
+  transitionTextViewVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionTextViewVibrantEffectView];
+  [transitionTextViewVibrantEffectView removeFromSuperview];
 
-  v12 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
-  [v12 removeFromSuperview];
+  transitionTitleAndDescriptionView = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionView];
+  [transitionTitleAndDescriptionView removeFromSuperview];
 
-  v13 = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
-  [v13 removeFromSuperview];
+  transitionTitleAndDescriptionVibrantEffectView = [(HUQuickControlPresentationCoordinator *)self transitionTitleAndDescriptionVibrantEffectView];
+  [transitionTitleAndDescriptionVibrantEffectView removeFromSuperview];
 
-  v14 = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
-  [v14 removeFromSuperview];
+  transitionPrefixLabel = [(HUQuickControlPresentationCoordinator *)self transitionPrefixLabel];
+  [transitionPrefixLabel removeFromSuperview];
 
-  v15 = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
-  [v15 removeFromSuperview];
+  transitionBaseIconView = [(HUQuickControlPresentationCoordinator *)self transitionBaseIconView];
+  [transitionBaseIconView removeFromSuperview];
 
-  v16 = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
-  [v16 removeFromSuperview];
+  transitionBackgroundView = [(HUQuickControlPresentationCoordinator *)self transitionBackgroundView];
+  [transitionBackgroundView removeFromSuperview];
 }
 
 - (BOOL)isTileOff
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  if ([v3 primaryState] == 1)
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  if ([pressedTile_legacy primaryState] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    v4 = [v5 primaryState] == 0;
+    pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    v4 = [pressedTile_legacy2 primaryState] == 0;
   }
 
   return v4;
@@ -4444,27 +4444,27 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (unint64_t)iconSizeInTile
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v3 = [v2 iconView];
-  v4 = [v3 iconSize];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  iconView = [pressedTile_legacy iconView];
+  iconSize = [iconView iconSize];
 
-  return v4;
+  return iconSize;
 }
 
 - (unint64_t)iconSizeInActionSetTile
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v3 = [v2 iconView];
-  v4 = [v3 iconSize];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  iconView = [pressedTile_legacy iconView];
+  iconSize = [iconView iconSize];
 
-  return v4;
+  return iconSize;
 }
 
 - (CGRect)iconFrameInTile
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v3 = [v2 iconView];
-  [v3 frame];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  iconView = [pressedTile_legacy iconView];
+  [iconView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -4483,16 +4483,16 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (CGRect)iconFrameInActionSetTile
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v3 = [v2 sceneCellLayoutOptions];
-  v4 = [v2 iconView];
-  [v4 frame];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  sceneCellLayoutOptions = [pressedTile_legacy sceneCellLayoutOptions];
+  iconView = [pressedTile_legacy iconView];
+  [iconView frame];
   v6 = v5;
   v8 = v7;
 
-  [v3 iconInnerHorizontalMargin];
+  [sceneCellLayoutOptions iconInnerHorizontalMargin];
   v10 = v9;
-  [v3 cellHeight];
+  [sceneCellLayoutOptions cellHeight];
   v12 = v11 * 0.5 - v8 * 0.5;
 
   v13 = v10;
@@ -4508,13 +4508,13 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (unint64_t)iconSizeInNavigationBar
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v3 = [v2 navigationBarTitleView];
-  v4 = [v3 summaryView];
-  v5 = [v4 iconView];
-  v6 = [v5 iconSize];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
+  iconView = [summaryView iconView];
+  iconSize = [iconView iconSize];
 
-  return v6;
+  return iconSize;
 }
 
 - (CGRect)iconFrameInNavigationBar
@@ -4526,9 +4526,9 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
   v7 = 14.0;
   if ([(HUQuickControlPresentationCoordinator *)self _isRTL])
   {
-    v8 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-    v9 = [v8 navigationBarTitleView];
-    [v9 frame];
+    cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+    navigationBarTitleView = [cardViewController navigationBarTitleView];
+    [navigationBarTitleView frame];
     v7 = v10 + -14.0 - v4;
   }
 
@@ -4545,40 +4545,40 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (CGRect)primaryLabelFrameInTile
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  [v3 frame];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  [pressedTile_legacy frame];
   v5 = v4;
-  v6 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v7 = [v6 layoutOptions];
-  [v7 cellInnerMargin];
+  pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  layoutOptions = [pressedTile_legacy2 layoutOptions];
+  [layoutOptions cellInnerMargin];
   v9 = v5 + v8 * -2.0;
 
-  v10 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v11 = [v10 serviceTextView];
-  [v11 frame];
+  pressedTile_legacy3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  serviceTextView = [pressedTile_legacy3 serviceTextView];
+  [serviceTextView frame];
   v13 = v12;
 
-  v14 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v15 = [v14 layoutOptions];
-  [v15 cellInnerMargin];
+  pressedTile_legacy4 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  layoutOptions2 = [pressedTile_legacy4 layoutOptions];
+  [layoutOptions2 cellInnerMargin];
   v17 = v16;
 
-  v18 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v19 = [v18 contentView];
-  [v19 bounds];
+  pressedTile_legacy5 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  contentView = [pressedTile_legacy5 contentView];
+  [contentView bounds];
   MaxY = CGRectGetMaxY(v36);
-  v21 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v22 = [v21 layoutOptions];
-  [v22 cellInnerMargin];
+  pressedTile_legacy6 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  layoutOptions3 = [pressedTile_legacy6 layoutOptions];
+  [layoutOptions3 cellInnerMargin];
   v24 = MaxY - v23;
 
-  v25 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v26 = [v25 serviceTextView];
-  [v26 frame];
+  pressedTile_legacy7 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  serviceTextView2 = [pressedTile_legacy7 serviceTextView];
+  [serviceTextView2 frame];
   v27 = v24 - CGRectGetHeight(v37);
-  v28 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v29 = [v28 serviceTextView];
-  [v29 lastBaselineToBottomDistance];
+  pressedTile_legacy8 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  serviceTextView3 = [pressedTile_legacy8 serviceTextView];
+  [serviceTextView3 lastBaselineToBottomDistance];
   v31 = HURoundToScreenScale(v27 + v30);
 
   v32 = v17;
@@ -4594,10 +4594,10 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (CGRect)primaryLabelFrameInActionSetTile
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v3 = [v2 titleAndDescriptionView];
-  v4 = [v3 titleLabel];
-  [v4 frame];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  titleAndDescriptionView = [pressedTile_legacy titleAndDescriptionView];
+  titleLabel = [titleAndDescriptionView titleLabel];
+  [titleLabel frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -4616,24 +4616,24 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (CGRect)baseIconFrameInNavigationBar
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v4 = [v3 navigationBarTitleView];
-  v5 = [v4 summaryView];
-  v6 = [v5 baseIconView];
-  [v6 frame];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
+  baseIconView = [summaryView baseIconView];
+  [baseIconView frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v16 = [v15 navigationBarTitleView];
-  [v16 frame];
+  cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView2 = [cardViewController2 navigationBarTitleView];
+  [navigationBarTitleView2 frame];
   v18 = v17;
 
-  v19 = [(HUQuickControlPresentationCoordinator *)self _isRTL];
+  _isRTL = [(HUQuickControlPresentationCoordinator *)self _isRTL];
   v20 = v18 - v12 + -14.0;
-  if (!v19)
+  if (!_isRTL)
   {
     v20 = v8;
   }
@@ -4650,29 +4650,29 @@ void __90__HUQuickControlPresentationCoordinator__legacyAnimationControllerForDi
 
 - (CGRect)primaryLabelFrameInNavigationBar
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v4 = [v3 navigationBarTitleView];
-  v5 = [v4 summaryView];
-  v6 = [v5 primaryLabel];
-  [v6 frame];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
+  primaryLabel = [summaryView primaryLabel];
+  [primaryLabel frame];
   v8 = v7;
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v10 = [v9 navigationBarTitleView];
-  v11 = [v10 summaryView];
-  v12 = [v11 primaryLabel];
-  [v12 frame];
+  cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView2 = [cardViewController2 navigationBarTitleView];
+  summaryView2 = [navigationBarTitleView2 summaryView];
+  primaryLabel2 = [summaryView2 primaryLabel];
+  [primaryLabel2 frame];
   v14 = v13;
 
   if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
   {
     if (![(HUQuickControlPresentationCoordinator *)self _isRTL])
     {
-      v26 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-      [v26 frame];
+      transitionIconView = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+      [transitionIconView frame];
       v28 = v27;
-      v29 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-      [v29 frame];
+      transitionIconView2 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+      [transitionIconView2 frame];
       v25 = v28 + v30 + 14.0;
 
       goto LABEL_9;
@@ -4717,39 +4717,39 @@ LABEL_9:
 
 - (CGRect)secondaryLabelFrameInTile
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v4 = [v3 contentView];
-  [v4 bounds];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  contentView = [pressedTile_legacy contentView];
+  [contentView bounds];
   Width = CGRectGetWidth(v33);
-  v6 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v7 = [v6 layoutOptions];
-  [v7 cellInnerMargin];
+  pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  layoutOptions = [pressedTile_legacy2 layoutOptions];
+  [layoutOptions cellInnerMargin];
   v9 = Width + v8 * -2.0;
 
-  v10 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v10 bounds];
+  transitionSecondaryLabel = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel bounds];
   Height = CGRectGetHeight(v34);
 
-  v12 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v13 = [v12 contentView];
-  [v13 bounds];
+  pressedTile_legacy3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  contentView2 = [pressedTile_legacy3 contentView];
+  [contentView2 bounds];
   MinX = CGRectGetMinX(v35);
-  v15 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v16 = [v15 layoutOptions];
-  [v16 cellInnerMargin];
+  pressedTile_legacy4 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  layoutOptions2 = [pressedTile_legacy4 layoutOptions];
+  [layoutOptions2 cellInnerMargin];
   v18 = MinX + v17;
 
-  v19 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v20 = [v19 contentView];
-  [v20 bounds];
+  pressedTile_legacy5 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  contentView3 = [pressedTile_legacy5 contentView];
+  [contentView3 bounds];
   MaxY = CGRectGetMaxY(v36);
-  v22 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v23 = [v22 layoutOptions];
-  [v23 cellInnerMargin];
+  pressedTile_legacy6 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  layoutOptions3 = [pressedTile_legacy6 layoutOptions];
+  [layoutOptions3 cellInnerMargin];
   v25 = MaxY - v24;
 
-  v26 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
-  [v26 _lastLineBaseline];
+  transitionSecondaryLabel2 = [(HUQuickControlPresentationCoordinator *)self transitionSecondaryLabel];
+  [transitionSecondaryLabel2 _lastLineBaseline];
   v28 = HURoundToScreenScale(v25 - v27);
 
   v29 = v18;
@@ -4765,10 +4765,10 @@ LABEL_9:
 
 - (CGRect)secondaryLabelFrameInActionSetTile
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v3 = [v2 titleAndDescriptionView];
-  v4 = [v3 descriptionLabel];
-  [v4 frame];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  titleAndDescriptionView = [pressedTile_legacy titleAndDescriptionView];
+  descriptionLabel = [titleAndDescriptionView descriptionLabel];
+  [descriptionLabel frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -4787,36 +4787,36 @@ LABEL_9:
 
 - (CGRect)secondaryLabelFrameInNavigationBar
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v4 = [v3 navigationBarTitleView];
-  v5 = [v4 summaryView];
-  v6 = [v5 secondaryLabel];
-  [v6 frame];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
+  secondaryLabel = [summaryView secondaryLabel];
+  [secondaryLabel frame];
   v8 = v7;
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v10 = [v9 navigationBarTitleView];
-  v11 = [v10 summaryView];
-  v12 = [v11 secondaryLabel];
-  [v12 frame];
+  cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView2 = [cardViewController2 navigationBarTitleView];
+  summaryView2 = [navigationBarTitleView2 summaryView];
+  secondaryLabel2 = [summaryView2 secondaryLabel];
+  [secondaryLabel2 frame];
   v14 = v13;
 
-  v15 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v16 = [v15 navigationBarTitleView];
-  v17 = [v16 summaryView];
-  v18 = [v17 primaryLabel];
-  [v18 frame];
+  cardViewController3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView3 = [cardViewController3 navigationBarTitleView];
+  summaryView3 = [navigationBarTitleView3 summaryView];
+  primaryLabel = [summaryView3 primaryLabel];
+  [primaryLabel frame];
   v20 = v19;
 
   if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
   {
     if (![(HUQuickControlPresentationCoordinator *)self _isRTL])
     {
-      v32 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-      [v32 frame];
+      transitionIconView = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+      [transitionIconView frame];
       v34 = v33;
-      v35 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
-      [v35 frame];
+      transitionIconView2 = [(HUQuickControlPresentationCoordinator *)self transitionIconView];
+      [transitionIconView2 frame];
       v31 = v34 + v36 + 14.0;
 
       goto LABEL_9;
@@ -4861,9 +4861,9 @@ LABEL_9:
 
 - (CGRect)titleAndDescriptionViewFrameInActionSetTile
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-  v3 = [v2 titleAndDescriptionView];
-  [v3 frame];
+  pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+  titleAndDescriptionView = [pressedTile_legacy titleAndDescriptionView];
+  [titleAndDescriptionView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -4880,12 +4880,12 @@ LABEL_9:
   return result;
 }
 
-- (void)_preparePressedItemContextForItem:(id)a3 startApplier:(BOOL)a4
+- (void)_preparePressedItemContextForItem:(id)item startApplier:(BOOL)applier
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-  v7 = [v6 objectForKey:v10];
+  applierCopy = applier;
+  itemCopy = item;
+  pressedItemContexts = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+  v7 = [pressedItemContexts objectForKey:itemCopy];
 
   if (v7)
   {
@@ -4894,45 +4894,45 @@ LABEL_9:
 
   else
   {
-    v7 = [(HUQuickControlPresentationCoordinator *)self _createPressedContextForItem:v10 userInitiated:1];
-    v8 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-    [v8 setObject:v7 forKey:v10];
+    v7 = [(HUQuickControlPresentationCoordinator *)self _createPressedContextForItem:itemCopy userInitiated:1];
+    pressedItemContexts2 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+    [pressedItemContexts2 setObject:v7 forKey:itemCopy];
 
-    if (v4)
+    if (applierCopy)
     {
-      v9 = [v7 applier];
-      [v9 start];
+      applier = [v7 applier];
+      [applier start];
     }
   }
 }
 
-- (void)_configureInitialStateForPressedItemContext:(id)a3 userInitiated:(BOOL)a4
+- (void)_configureInitialStateForPressedItemContext:(id)context userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v8 = a3;
-  [v8 setBeginTime:CACurrentMediaTime()];
-  [v8 setRawInputProgress:0.433333333];
-  v5 = [v8 applier];
-  [v5 setCompletesWhenAtRest:0];
+  initiatedCopy = initiated;
+  contextCopy = context;
+  [contextCopy setBeginTime:CACurrentMediaTime()];
+  [contextCopy setRawInputProgress:0.433333333];
+  applier = [contextCopy applier];
+  [applier setCompletesWhenAtRest:0];
 
-  [v8 setActive:1];
-  [v8 setIsUserInitiated:v4];
-  v6 = [v8 programmaticBounceTimer];
+  [contextCopy setActive:1];
+  [contextCopy setIsUserInitiated:initiatedCopy];
+  programmaticBounceTimer = [contextCopy programmaticBounceTimer];
 
-  if (v6)
+  if (programmaticBounceTimer)
   {
-    v7 = [v8 programmaticBounceTimer];
-    [v7 invalidate];
+    programmaticBounceTimer2 = [contextCopy programmaticBounceTimer];
+    [programmaticBounceTimer2 invalidate];
 
-    [v8 setProgrammaticBounceTimer:0];
+    [contextCopy setProgrammaticBounceTimer:0];
   }
 }
 
-- (void)_initiateProgrammaticBounceForItem:(id)a3
+- (void)_initiateProgrammaticBounceForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-  v6 = [v5 objectForKey:v4];
+  itemCopy = item;
+  pressedItemContexts = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+  v6 = [pressedItemContexts objectForKey:itemCopy];
 
   v7 = MEMORY[0x277CBEBB8];
   v10[0] = MEMORY[0x277D85DD0];
@@ -4952,21 +4952,21 @@ void __76__HUQuickControlPresentationCoordinator__initiateProgrammaticBounceForI
   [v2 setCompletesWhenAtRest:1];
 }
 
-- (id)_createPressedContextForItem:(id)a3 userInitiated:(BOOL)a4
+- (id)_createPressedContextForItem:(id)item userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-  v8 = [v7 objectForKey:v6];
+  initiatedCopy = initiated;
+  itemCopy = item;
+  pressedItemContexts = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+  v8 = [pressedItemContexts objectForKey:itemCopy];
 
   if (v8)
   {
-    NSLog(&cfstr_PressedItemCon.isa, v6);
+    NSLog(&cfstr_PressedItemCon.isa, itemCopy);
   }
 
   v9 = objc_alloc_init(HUPressedItemContext);
-  [(HUPressedItemContext *)v9 setItem:v6];
-  [(HUPressedItemContext *)v9 setIsUserInitiated:v4];
+  [(HUPressedItemContext *)v9 setItem:itemCopy];
+  [(HUPressedItemContext *)v9 setIsUserInitiated:initiatedCopy];
   objc_initWeak(&location, self);
   objc_initWeak(&from, v9);
   v25[0] = 0;
@@ -4990,7 +4990,7 @@ void __76__HUQuickControlPresentationCoordinator__initiateProgrammaticBounceForI
   v18[3] = &unk_277DC4CF0;
   objc_copyWeak(&v20, &location);
   objc_copyWeak(&v21, &from);
-  v12 = v6;
+  v12 = itemCopy;
   v19 = v12;
   [(HUApplier *)v11 addApplierBlock:v18];
   [(HUElasticApplier *)v11 setCompletesWhenAtRest:0];
@@ -5003,7 +5003,7 @@ void __76__HUQuickControlPresentationCoordinator__initiateProgrammaticBounceForI
   v16 = v13;
   [(HUApplier *)v11 addCompletionBlock:v15];
   [(HUPressedItemContext *)v9 setApplier:v11];
-  [(HUQuickControlPresentationCoordinator *)self _configureInitialStateForPressedItemContext:v9 userInitiated:v4];
+  [(HUQuickControlPresentationCoordinator *)self _configureInitialStateForPressedItemContext:v9 userInitiated:initiatedCopy];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v21);
@@ -5093,42 +5093,42 @@ void __84__HUQuickControlPresentationCoordinator__createPressedContextForItem_us
   }
 }
 
-- (void)_updateOverrideAttributesWithScale:(double)a3 forItem:(id)a4
+- (void)_updateOverrideAttributesWithScale:(double)scale forItem:(id)item
 {
-  v6 = a4;
-  CGAffineTransformMakeScale(&v7, a3, a3);
-  [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithTransform:&v7 alpha:v6 forItem:1.0];
+  itemCopy = item;
+  CGAffineTransformMakeScale(&v7, scale, scale);
+  [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithTransform:&v7 alpha:itemCopy forItem:1.0];
 }
 
-- (void)_updateOverrideAttributesWithTransform:(CGAffineTransform *)a3 alpha:(double)a4 forItem:(id)a5
+- (void)_updateOverrideAttributesWithTransform:(CGAffineTransform *)transform alpha:(double)alpha forItem:(id)item
 {
-  v8 = a5;
+  itemCopy = item;
   v9 = objc_alloc_init(HUControllableCollectionViewLayoutOverrideAttributes);
-  v10 = *&a3->c;
-  v14[0] = *&a3->a;
+  v10 = *&transform->c;
+  v14[0] = *&transform->a;
   v14[1] = v10;
-  v14[2] = *&a3->tx;
+  v14[2] = *&transform->tx;
   [(HUControllableCollectionViewLayoutOverrideAttributes *)v9 setTransform:v14];
-  [(HUControllableCollectionViewLayoutOverrideAttributes *)v9 setAlpha:a4];
+  [(HUControllableCollectionViewLayoutOverrideAttributes *)v9 setAlpha:alpha];
   [(HUControllableCollectionViewLayoutOverrideAttributes *)v9 setZIndex:1000];
-  v11 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  [v11 presentationCoordinator:self applyOverrideAttributes:v9 toItem:v8];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+  [delegate presentationCoordinator:self applyOverrideAttributes:v9 toItem:itemCopy];
 
-  v12 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-  v13 = [v12 objectForKey:v8];
+  pressedItemContexts = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+  v13 = [pressedItemContexts objectForKey:itemCopy];
 
   if (v13)
   {
-    [v13 setCurrentViewScale:a3->a];
+    [v13 setCurrentViewScale:transform->a];
   }
 }
 
-- (void)_pressedStateDidEndForItem:(id)a3 clearPresentationContext:(BOOL)a4
+- (void)_pressedStateDidEndForItem:(id)item clearPresentationContext:(BOOL)context
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-  v8 = [v7 objectForKey:v6];
+  contextCopy = context;
+  itemCopy = item;
+  pressedItemContexts = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+  v8 = [pressedItemContexts objectForKey:itemCopy];
 
   if (v8)
   {
@@ -5138,17 +5138,17 @@ void __84__HUQuickControlPresentationCoordinator__createPressedContextForItem_us
     v15[2] = __93__HUQuickControlPresentationCoordinator__pressedStateDidEndForItem_clearPresentationContext___block_invoke;
     v15[3] = &unk_277DB7558;
     v15[4] = self;
-    v10 = v6;
+    v10 = itemCopy;
     v16 = v10;
     [v9 performWithoutAnimation:v15];
-    v11 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
-    [v11 removeObjectForKey:v10];
+    pressedItemContexts2 = [(HUQuickControlPresentationCoordinator *)self pressedItemContexts];
+    [pressedItemContexts2 removeObjectForKey:v10];
 
-    if (v4)
+    if (contextCopy)
     {
-      v12 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v13 = [v12 item];
-      v14 = [v13 isEqual:v10];
+      presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item = [presentationContext item];
+      v14 = [item isEqual:v10];
 
       if (v14)
       {
@@ -5159,7 +5159,7 @@ void __84__HUQuickControlPresentationCoordinator__createPressedContextForItem_us
 
   else
   {
-    NSLog(&cfstr_MissingPressed.isa, v6);
+    NSLog(&cfstr_MissingPressed.isa, itemCopy);
   }
 }
 
@@ -5171,41 +5171,41 @@ void __93__HUQuickControlPresentationCoordinator__pressedStateDidEndForItem_clea
 
 - (void)_prepareForTapticFeedback
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
+  feedbackGenerator = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
 
-  if (!v3)
+  if (!feedbackGenerator)
   {
     v4 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:4];
     [(HUQuickControlPresentationCoordinator *)self setFeedbackGenerator:v4];
 
-    v5 = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
-    [v5 prepare];
+    feedbackGenerator2 = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
+    [feedbackGenerator2 prepare];
   }
 }
 
 - (void)_actuateTapticFeedback
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
-  [v3 impactOccurred];
+  feedbackGenerator = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
+  [feedbackGenerator impactOccurred];
 
-  v4 = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
-  [v4 prepare];
+  feedbackGenerator2 = [(HUQuickControlPresentationCoordinator *)self feedbackGenerator];
+  [feedbackGenerator2 prepare];
 }
 
-- (id)presentQuickControlWithContext:(id)a3 animated:(BOOL)a4
+- (id)presentQuickControlWithContext:(id)context animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(HUQuickControlPresentationCoordinator *)self setPresentationContext:v6];
-  v7 = [v6 item];
+  animatedCopy = animated;
+  contextCopy = context;
+  [(HUQuickControlPresentationCoordinator *)self setPresentationContext:contextCopy];
+  item = [contextCopy item];
 
-  if (v7)
+  if (item)
   {
-    v8 = [v6 item];
-    [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:v8 startApplier:0];
+    item2 = [contextCopy item];
+    [(HUQuickControlPresentationCoordinator *)self _preparePressedItemContextForItem:item2 startApplier:0];
   }
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self _beginControlPresentationAnimated:v4];
+  v9 = [(HUQuickControlPresentationCoordinator *)self _beginControlPresentationAnimated:animatedCopy];
 
   return v9;
 }
@@ -5213,7 +5213,7 @@ void __93__HUQuickControlPresentationCoordinator__pressedStateDidEndForItem_clea
 - (BOOL)_shouldCancelPresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -5221,53 +5221,53 @@ void __93__HUQuickControlPresentationCoordinator__pressedStateDidEndForItem_clea
     return 0;
   }
 
-  v5 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  v6 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v7 = [v5 presentationCoordinator:self shouldBeginPresentationWithContext:v6];
+  delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  v7 = [delegate2 presentationCoordinator:self shouldBeginPresentationWithContext:presentationContext];
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
     v13 = 138412802;
     v14 = v10;
     v15 = 1024;
     v16 = v7;
     v17 = 2112;
-    v18 = v11;
+    v18 = delegate3;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@+Controls _shouldCancelPresentation: delegate responded to shouldBeginPresentationWithContext with %{BOOL}d delegate %@", &v13, 0x1Cu);
   }
 
   return v7 ^ 1;
 }
 
-- (id)_beginControlPresentationAnimated:(BOOL)a3
+- (id)_beginControlPresentationAnimated:(BOOL)animated
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+  quickControlViewController = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
 
-  if (v4)
+  if (quickControlViewController)
   {
     NSLog(&cfstr_AttemptingToBe.isa);
   }
 
-  v5 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
 
-  if (!v5)
+  if (!presentationContext)
   {
     NSLog(&cfstr_AttemptingToBe_0.isa);
   }
 
-  v6 = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
-  v7 = [v6 applier];
-  [v7 cancel];
+  activePressedItemContext = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
+  applier = [activePressedItemContext applier];
+  [applier cancel];
 
-  LODWORD(v7) = [(HUQuickControlPresentationCoordinator *)self _shouldCancelPresentation];
+  LODWORD(applier) = [(HUQuickControlPresentationCoordinator *)self _shouldCancelPresentation];
   v8 = HFLogForCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (applier)
   {
     if (v9)
     {
@@ -5278,7 +5278,7 @@ void __93__HUQuickControlPresentationCoordinator__pressedStateDidEndForItem_clea
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@+Controls canceling presentation", buf, 0xCu);
     }
 
-    v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -5292,12 +5292,12 @@ void __93__HUQuickControlPresentationCoordinator__pressedStateDidEndForItem_clea
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@+Controls beginning control presentation", buf, 0xCu);
     }
 
-    v15 = [(HUQuickControlPresentationCoordinator *)self _viewControllerToPresent];
+    _viewControllerToPresent = [(HUQuickControlPresentationCoordinator *)self _viewControllerToPresent];
     v16 = objc_alloc_init(MEMORY[0x277D2C900]);
-    if (v15)
+    if (_viewControllerToPresent)
     {
-      v17 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-      v18 = [v17 hu_presentPreloadableViewController:v15 animated:1];
+      presentingViewController = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+      v18 = [presentingViewController hu_presentPreloadableViewController:_viewControllerToPresent animated:1];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __75__HUQuickControlPresentationCoordinator__beginControlPresentationAnimated___block_invoke;
@@ -5305,19 +5305,19 @@ void __93__HUQuickControlPresentationCoordinator__pressedStateDidEndForItem_clea
       v22[4] = self;
       v19 = v16;
       v23 = v19;
-      v24 = v15;
+      v24 = _viewControllerToPresent;
       v20 = [v18 addCompletionBlock:v22];
 
-      v12 = v19;
+      futureWithNoResult = v19;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
   }
 
-  return v12;
+  return futureWithNoResult;
 }
 
 uint64_t __75__HUQuickControlPresentationCoordinator__beginControlPresentationAnimated___block_invoke(uint64_t a1)
@@ -5341,20 +5341,20 @@ uint64_t __75__HUQuickControlPresentationCoordinator__beginControlPresentationAn
 
 - (id)_viewControllerToPresent
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v4 = [v3 item];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item = [presentationContext item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(HUQuickControlPresentationCoordinator *)self _buildSoftwareUpdateNavigationController];
+    _buildSoftwareUpdateNavigationController = [(HUQuickControlPresentationCoordinator *)self _buildSoftwareUpdateNavigationController];
   }
 
   else
   {
-    v7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v8 = [v7 item];
+    presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    item2 = [presentationContext2 item];
     objc_opt_class();
     v9 = objc_opt_isKindOfClass();
 
@@ -5367,27 +5367,27 @@ uint64_t __75__HUQuickControlPresentationCoordinator__beginControlPresentationAn
     {
       [(HUQuickControlPresentationCoordinator *)self _buildCardNavigationController];
     }
-    v6 = ;
+    _buildSoftwareUpdateNavigationController = ;
   }
 
-  return v6;
+  return _buildSoftwareUpdateNavigationController;
 }
 
 - (id)_buildQuickControlViewController
 {
   v3 = [HUQuickControlContainerViewController alloc];
-  v4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v5 = [(HUQuickControlContainerViewController *)v3 initWithPresentationContext:v4];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  v5 = [(HUQuickControlContainerViewController *)v3 initWithPresentationContext:presentationContext];
 
   [(HUQuickControlContainerViewController *)v5 setDelegate:self];
   [(HUQuickControlContainerViewController *)v5 setPresentationDelegate:self];
-  v6 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    v9 = [v8 detailViewURLHandlerForPresentationCoordinator:self];
+    delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    v9 = [delegate2 detailViewURLHandlerForPresentationCoordinator:self];
     [(HUQuickControlContainerViewController *)v5 setDetailViewURLHandler:v9];
   }
 
@@ -5398,15 +5398,15 @@ uint64_t __75__HUQuickControlPresentationCoordinator__beginControlPresentationAn
 
   else
   {
-    v10 = [(HUQuickControlContainerViewController *)v5 view];
-    v11 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    [v11 sourceRect];
+    view = [(HUQuickControlContainerViewController *)v5 view];
+    presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    [presentationContext2 sourceRect];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(HUQuickControlPresentationCoordinator *)self targetView];
-    [v10 convertRect:v20 fromView:{v13, v15, v17, v19}];
+    targetView = [(HUQuickControlPresentationCoordinator *)self targetView];
+    [view convertRect:targetView fromView:{v13, v15, v17, v19}];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -5420,22 +5420,22 @@ uint64_t __75__HUQuickControlPresentationCoordinator__beginControlPresentationAn
 
 - (void)_updateCardController
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v4 = [v3 item];
-  if (v4)
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item = [presentationContext item];
+  if (item)
   {
-    v5 = v4;
-    v6 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-    v7 = [v6 sourceItem];
-    if (v7)
+    v5 = item;
+    cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+    sourceItem = [cardViewController sourceItem];
+    if (sourceItem)
     {
-      v8 = v7;
-      v9 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v10 = [v9 item];
-      v11 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-      v12 = [v11 sourceItem];
+      v8 = sourceItem;
+      presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item2 = [presentationContext2 item];
+      cardViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+      sourceItem2 = [cardViewController2 sourceItem];
 
-      if (v10 == v12)
+      if (item2 == sourceItem2)
       {
         return;
       }
@@ -5445,61 +5445,61 @@ uint64_t __75__HUQuickControlPresentationCoordinator__beginControlPresentationAn
   }
 
 LABEL_7:
-  v13 = [(HUQuickControlPresentationCoordinator *)self _buildQuickControlViewController];
-  [(HUQuickControlPresentationCoordinator *)self setQuickControlViewController:v13];
+  _buildQuickControlViewController = [(HUQuickControlPresentationCoordinator *)self _buildQuickControlViewController];
+  [(HUQuickControlPresentationCoordinator *)self setQuickControlViewController:_buildQuickControlViewController];
 
-  v14 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-  v15 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v16 = [v15 item];
-  v17 = [(HUQuickControlPresentationCoordinator *)self hasDetailsActionForQuickControlViewController:v14 item:v16];
+  quickControlViewController = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+  presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item3 = [presentationContext3 item];
+  v17 = [(HUQuickControlPresentationCoordinator *)self hasDetailsActionForQuickControlViewController:quickControlViewController item:item3];
 
   if (v17 || (-[HUQuickControlPresentationCoordinator presentationContext](self, "presentationContext"), v18 = objc_claimAutoreleasedReturnValue(), [v18 item], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "conformsToProtocol:", &unk_28251B0C8), v19, v18, (v20 & 1) == 0))
   {
-    v21 = [(HUQuickControlPresentationCoordinator *)self _prepareSettingsViewController];
-    [(HUQuickControlPresentationCoordinator *)self setSettingsViewController:v21];
+    _prepareSettingsViewController = [(HUQuickControlPresentationCoordinator *)self _prepareSettingsViewController];
+    [(HUQuickControlPresentationCoordinator *)self setSettingsViewController:_prepareSettingsViewController];
   }
 
-  v22 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v23 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-  v24 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
-  v25 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  [v22 updateWithQuickControlViewController:v23 settingsViewController:v24 presentationContext:v25];
+  cardViewController3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  quickControlViewController2 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+  settingsViewController = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
+  presentationContext4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  [cardViewController3 updateWithQuickControlViewController:quickControlViewController2 settingsViewController:settingsViewController presentationContext:presentationContext4];
 
   if (([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation] & 1) == 0)
   {
-    v26 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    pressedTile = [(HUQuickControlPresentationCoordinator *)self pressedTile];
 
-    if (v26)
+    if (pressedTile)
     {
-      v27 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-      v28 = [v27 baseIconViewConfiguration];
+      pressedTile2 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+      baseIconViewConfiguration = [pressedTile2 baseIconViewConfiguration];
 
-      [(HUBaseIconViewConfiguration *)v28 setAppearance:3];
-      v29 = objc_alloc_init(HUBaseIconView);
-      [(HUBaseIconView *)v29 setConfiguration:v28];
-      v30 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-      v31 = [v30 navigationBarTitleView];
-      v32 = [v31 summaryView];
-      [v32 setBaseIconView:v29];
+      [(HUBaseIconViewConfiguration *)baseIconViewConfiguration setAppearance:3];
+      cardViewController5 = objc_alloc_init(HUBaseIconView);
+      [(HUBaseIconView *)cardViewController5 setConfiguration:baseIconViewConfiguration];
+      cardViewController4 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+      navigationBarTitleView = [cardViewController4 navigationBarTitleView];
+      summaryView = [navigationBarTitleView summaryView];
+      [summaryView setBaseIconView:cardViewController5];
     }
 
     else
     {
       v33 = [HUBaseIconViewConfiguration alloc];
-      v34 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v35 = [v34 item];
-      v28 = [(HUBaseIconViewConfiguration *)v33 initWithItem:v35 appearance:3];
+      presentationContext5 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item4 = [presentationContext5 item];
+      baseIconViewConfiguration = [(HUBaseIconViewConfiguration *)v33 initWithItem:item4 appearance:3];
 
-      v29 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-      v30 = [(HUBaseIconView *)v29 navigationBarTitleView];
-      v31 = [v30 summaryView];
-      v32 = [v31 baseIconView];
-      [v32 setConfiguration:v28];
+      cardViewController5 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+      cardViewController4 = [(HUBaseIconView *)cardViewController5 navigationBarTitleView];
+      navigationBarTitleView = [cardViewController4 summaryView];
+      summaryView = [navigationBarTitleView baseIconView];
+      [summaryView setConfiguration:baseIconViewConfiguration];
     }
   }
 
-  v36 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v37 = [v36 item];
+  presentationContext6 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item5 = [presentationContext6 item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -5508,16 +5508,16 @@ LABEL_7:
 
   else
   {
-    v39 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v40 = [v39 controlItems];
-    v38 = [v40 count] != 0;
+    presentationContext7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    controlItems = [presentationContext7 controlItems];
+    v38 = [controlItems count] != 0;
   }
 
-  v41 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v42 = [v41 controlItems];
-  v43 = [v42 na_any:&__block_literal_global_295];
+  presentationContext8 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  controlItems2 = [presentationContext8 controlItems];
+  v43 = [controlItems2 na_any:&__block_literal_global_295];
 
-  v44 = [MEMORY[0x277D14CE8] isAMac];
+  isAMac = [MEMORY[0x277D14CE8] isAMac];
   if ([MEMORY[0x277D14CE8] isInternalInstall] && HFHideQuickControls())
   {
     v45 = HFLogForCategory();
@@ -5535,12 +5535,12 @@ LABEL_7:
     v46 = 0;
   }
 
-  v47 = v38 & (v44 ^ 1 | v43) ^ 1;
-  v48 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  [v48 setHideControls:v46 | v47];
+  v47 = v38 & (isAMac ^ 1 | v43) ^ 1;
+  cardViewController6 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  [cardViewController6 setHideControls:v46 | v47];
 
-  v49 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  [v49 setHideSettings:!v17];
+  cardViewController7 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  [cardViewController7 setHideSettings:!v17];
 }
 
 BOOL __62__HUQuickControlPresentationCoordinator__updateCardController__block_invoke(uint64_t a1, void *a2)
@@ -5555,11 +5555,11 @@ BOOL __62__HUQuickControlPresentationCoordinator__updateCardController__block_in
 - (id)_buildStatusDetailsNavigationController
 {
   objc_opt_class();
-  v3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v4 = [v3 item];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item = [presentationContext item];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = item;
   }
 
   else
@@ -5573,18 +5573,18 @@ BOOL __62__HUQuickControlPresentationCoordinator__updateCardController__block_in
   [(HUQuickControlPresentationCoordinator *)self setStatusDetailsViewController:v7];
 
   v8 = objc_alloc(MEMORY[0x277D757A0]);
-  v9 = [(HUQuickControlPresentationCoordinator *)self statusDetailsViewController];
-  v10 = [v8 initWithRootViewController:v9];
+  statusDetailsViewController = [(HUQuickControlPresentationCoordinator *)self statusDetailsViewController];
+  v10 = [v8 initWithRootViewController:statusDetailsViewController];
   [(HUQuickControlPresentationCoordinator *)self setStatusDetailsNavigationController:v10];
 
-  v11 = [(HUQuickControlPresentationCoordinator *)self statusDetailsNavigationController];
-  [v11 setModalPresentationStyle:2];
+  statusDetailsNavigationController = [(HUQuickControlPresentationCoordinator *)self statusDetailsNavigationController];
+  [statusDetailsNavigationController setModalPresentationStyle:2];
 
-  v12 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-  v13 = [v12 view];
-  v14 = [v13 window];
-  v15 = [v14 _rootSheetPresentationController];
-  [v15 _setShouldScaleDownBehindDescendantSheets:0];
+  presentingViewController = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
   return [(HUQuickControlPresentationCoordinator *)self statusDetailsNavigationController];
 }
@@ -5592,9 +5592,9 @@ BOOL __62__HUQuickControlPresentationCoordinator__updateCardController__block_in
 - (id)_buildSoftwareUpdateNavigationController
 {
   v3 = [HUSoftwareUpdateStandaloneViewController alloc];
-  v4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v5 = [v4 home];
-  v6 = [(HUSoftwareUpdateStandaloneViewController *)v3 initWithHome:v5];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  home = [presentationContext home];
+  v6 = [(HUSoftwareUpdateStandaloneViewController *)v3 initWithHome:home];
 
   [(HUSoftwareUpdateStandaloneViewController *)v6 setShowDoneButtonInNavBar:1];
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v6];
@@ -5603,57 +5603,57 @@ BOOL __62__HUQuickControlPresentationCoordinator__updateCardController__block_in
   return v7;
 }
 
-- (void)_validatePresentationContext:(id)a3
+- (void)_validatePresentationContext:(id)context
 {
-  v12 = a3;
-  if (!v12)
+  contextCopy = context;
+  if (!contextCopy)
   {
     NSLog(&cfstr_Presentationco.isa);
   }
 
-  v3 = [MEMORY[0x277D14CE8] isProxHandOffV2Config];
-  v4 = v12;
-  if ((v3 & 1) == 0)
+  isProxHandOffV2Config = [MEMORY[0x277D14CE8] isProxHandOffV2Config];
+  v4 = contextCopy;
+  if ((isProxHandOffV2Config & 1) == 0)
   {
-    v5 = [v12 isConfiguredForNonHomeUser];
-    v4 = v12;
-    if ((v5 & 1) == 0)
+    isConfiguredForNonHomeUser = [contextCopy isConfiguredForNonHomeUser];
+    v4 = contextCopy;
+    if ((isConfiguredForNonHomeUser & 1) == 0)
     {
-      v6 = [v12 item];
-      if (v6)
+      item = [contextCopy item];
+      if (item)
       {
       }
 
       else
       {
-        v7 = [v12 itemManager];
-        v8 = [v7 homeKitObjectUUID];
+        itemManager = [contextCopy itemManager];
+        homeKitObjectUUID = [itemManager homeKitObjectUUID];
 
-        if (!v8)
+        if (!homeKitObjectUUID)
         {
-          NSLog(&cfstr_ContextMustInc.isa, v12);
+          NSLog(&cfstr_ContextMustInc.isa, contextCopy);
         }
       }
 
-      v9 = [v12 home];
+      home = [contextCopy home];
 
-      v4 = v12;
-      if (!v9)
+      v4 = contextCopy;
+      if (!home)
       {
-        NSLog(&cfstr_ContextMustInc_0.isa, v12);
-        v4 = v12;
+        NSLog(&cfstr_ContextMustInc_0.isa, contextCopy);
+        v4 = contextCopy;
       }
     }
   }
 
-  v10 = [v4 item];
-  if (v10 && ([v12 sourceRect], CGRectIsEmpty(v14)))
+  item2 = [v4 item];
+  if (item2 && ([contextCopy sourceRect], CGRectIsEmpty(v14)))
   {
-    v11 = [v12 prefersSystemTransitions];
+    prefersSystemTransitions = [contextCopy prefersSystemTransitions];
 
-    if ((v11 & 1) == 0)
+    if ((prefersSystemTransitions & 1) == 0)
     {
-      NSLog(&cfstr_ContextMustInc_1.isa, v12);
+      NSLog(&cfstr_ContextMustInc_1.isa, contextCopy);
     }
   }
 
@@ -5662,63 +5662,63 @@ BOOL __62__HUQuickControlPresentationCoordinator__updateCardController__block_in
   }
 }
 
-- (id)dismissQuickControlAnimated:(BOOL)a3 wasDismissed:(BOOL *)a4
+- (id)dismissQuickControlAnimated:(BOOL)animated wasDismissed:(BOOL *)dismissed
 {
-  v4 = a3;
-  if (a4)
+  animatedCopy = animated;
+  if (dismissed)
   {
-    *a4 = [(HUQuickControlPresentationCoordinator *)self isQuickControlPresented];
+    *dismissed = [(HUQuickControlPresentationCoordinator *)self isQuickControlPresented];
   }
 
-  return [(HUQuickControlPresentationCoordinator *)self dismissQuickControlAnimated:v4];
+  return [(HUQuickControlPresentationCoordinator *)self dismissQuickControlAnimated:animatedCopy];
 }
 
-- (id)dismissQuickControlAnimated:(BOOL)a3
+- (id)dismissQuickControlAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-  if (v5 && (v6 = v5, -[HUQuickControlPresentationCoordinator quickControlViewController](self, "quickControlViewController"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isControlDismissedOrDismissing], v7, v6, (v8 & 1) == 0))
+  animatedCopy = animated;
+  quickControlViewController = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+  if (quickControlViewController && (v6 = quickControlViewController, -[HUQuickControlPresentationCoordinator quickControlViewController](self, "quickControlViewController"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isControlDismissedOrDismissing], v7, v6, (v8 & 1) == 0))
   {
-    v10 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(HUQuickControlPresentationCoordinator *)self delegate];
-      v13 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      [v12 presentationCoordinator:self willEndPresentationWithContext:v13];
+      delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+      presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      [delegate2 presentationCoordinator:self willEndPresentationWithContext:presentationContext];
     }
 
-    v14 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-    v9 = [v14 dismissControlAnimated:v3];
+    quickControlViewController2 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+    v9 = [quickControlViewController2 dismissControlAnimated:animatedCopy];
   }
 
   else
   {
-    v9 = [(HUQuickControlPresentationCoordinator *)self _dismissQuickControlViewControllerAnimated:v3];
+    v9 = [(HUQuickControlPresentationCoordinator *)self _dismissQuickControlViewControllerAnimated:animatedCopy];
   }
 
   return v9;
 }
 
-- (id)_dismissQuickControlViewControllerAnimated:(BOOL)a3
+- (id)_dismissQuickControlViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v6 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  animatedCopy = animated;
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    [v8 presentationCoordinator:self willEndPresentationWithContext:v5];
+    delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    [delegate2 presentationCoordinator:self willEndPresentationWithContext:presentationContext];
   }
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-  if (v9 && (v10 = v9, -[HUQuickControlPresentationCoordinator quickControlViewController](self, "quickControlViewController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isBeingDismissed], v11, v10, !v12))
+  quickControlViewController = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+  if (quickControlViewController && (v10 = quickControlViewController, -[HUQuickControlPresentationCoordinator quickControlViewController](self, "quickControlViewController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isBeingDismissed], v11, v10, !v12))
   {
     v14 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v15 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+    quickControlViewController2 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __84__HUQuickControlPresentationCoordinator__dismissQuickControlViewControllerAnimated___block_invoke;
@@ -5726,18 +5726,18 @@ BOOL __62__HUQuickControlPresentationCoordinator__updateCardController__block_in
     v19[4] = self;
     v16 = v14;
     v20 = v16;
-    [v15 dismissViewControllerAnimated:v3 completion:v19];
+    [quickControlViewController2 dismissViewControllerAnimated:animatedCopy completion:v19];
 
     v17 = v20;
-    v13 = v16;
+    futureWithNoResult = v16;
   }
 
   else
   {
-    v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v13;
+  return futureWithNoResult;
 }
 
 void __84__HUQuickControlPresentationCoordinator__dismissQuickControlViewControllerAnimated___block_invoke(uint64_t a1)
@@ -5791,54 +5791,54 @@ uint64_t __84__HUQuickControlPresentationCoordinator__dismissQuickControlViewCon
 {
   if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
   {
-    v3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-    if (v3)
+    pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    if (pressedTile_legacy)
     {
-      v4 = v3;
-      v5 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      v4 = pressedTile_legacy;
+      presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
 
-      if (v5)
+      if (presentationContext)
       {
         CGAffineTransformMakeScale(&v18, 1.0, 1.0);
-        v6 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
-        v7 = [v6 item];
-        [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithTransform:&v18 alpha:v7 forItem:1.0];
+        pressedTile_legacy2 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+        item = [pressedTile_legacy2 item];
+        [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithTransform:&v18 alpha:item forItem:1.0];
 
-        v8 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+        pressedTile_legacy3 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
 LABEL_9:
-        v15 = v8;
-        v16 = [v8 item];
-        [(HUQuickControlPresentationCoordinator *)self _pressedStateDidEndForItem:v16 clearPresentationContext:1];
+        v15 = pressedTile_legacy3;
+        item2 = [pressedTile_legacy3 item];
+        [(HUQuickControlPresentationCoordinator *)self _pressedStateDidEndForItem:item2 clearPresentationContext:1];
       }
     }
   }
 
   else
   {
-    v9 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
-    if (!v9)
+    pressedTile = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    if (!pressedTile)
     {
       return;
     }
 
-    v17 = v9;
-    v10 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    if (v10)
+    v17 = pressedTile;
+    presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    if (presentationContext2)
     {
-      v11 = v10;
-      v12 = [(HUQuickControlPresentationCoordinator *)self isActionSetTile];
+      v11 = presentationContext2;
+      isActionSetTile = [(HUQuickControlPresentationCoordinator *)self isActionSetTile];
 
-      if (v12)
+      if (isActionSetTile)
       {
         return;
       }
 
       CGAffineTransformMakeScale(&v18, 1.0, 1.0);
-      v13 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v14 = [v13 item];
-      [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithTransform:&v18 alpha:v14 forItem:1.0];
+      presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item3 = [presentationContext3 item];
+      [(HUQuickControlPresentationCoordinator *)self _updateOverrideAttributesWithTransform:&v18 alpha:item3 forItem:1.0];
 
-      v8 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      pressedTile_legacy3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
       goto LABEL_9;
     }
   }
@@ -5855,11 +5855,11 @@ LABEL_9:
 
 - (BOOL)isQuickControlPresented
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-  if (v3)
+  quickControlViewController = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+  if (quickControlViewController)
   {
-    v4 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
-    v5 = [v4 isBeingDismissed] ^ 1;
+    quickControlViewController2 = [(HUQuickControlPresentationCoordinator *)self quickControlViewController];
+    v5 = [quickControlViewController2 isBeingDismissed] ^ 1;
   }
 
   else
@@ -5878,17 +5878,17 @@ LABEL_9:
   aBlock[3] = &unk_277DC4D18;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v5 = [v4 item];
-  v6 = [v5 conformsToProtocol:&unk_28251B0C8];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item = [presentationContext item];
+  v6 = [item conformsToProtocol:&unk_28251B0C8];
 
   if (v6)
   {
-    v7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v8 = [v7 item];
-    if ([v8 conformsToProtocol:&unk_28251B0C8])
+    presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    item2 = [presentationContext2 item];
+    if ([item2 conformsToProtocol:&unk_28251B0C8])
     {
-      v9 = v8;
+      v9 = item2;
     }
 
     else
@@ -5914,14 +5914,14 @@ LABEL_9:
 
     if (v13)
     {
-      v14 = [(HUSceneActionEditorViewController *)v13 accessory];
-      v15 = [v14 hf_isSingleServiceLikeAccessory];
+      accessory = [(HUSceneActionEditorViewController *)v13 accessory];
+      hf_isSingleServiceLikeAccessory = [accessory hf_isSingleServiceLikeAccessory];
 
-      if (v15)
+      if (hf_isSingleServiceLikeAccessory)
       {
-        v16 = [(HUSceneActionEditorViewController *)v13 accessory];
-        v17 = [v16 hf_primaryService];
-        v18 = [(HUSceneActionEditorViewController *)v13 serviceItemForService:v17];
+        accessory2 = [(HUSceneActionEditorViewController *)v13 accessory];
+        hf_primaryService = [accessory2 hf_primaryService];
+        v18 = [(HUSceneActionEditorViewController *)v13 serviceItemForService:hf_primaryService];
 
         v11 = v18;
       }
@@ -5944,24 +5944,24 @@ LABEL_9:
 
     if (v22)
     {
-      v23 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      -[HUSceneActionEditorViewController setShouldIncludeRoomNameInHeaderTitle:](v22, "setShouldIncludeRoomNameInHeaderTitle:", [v23 shouldIncludeRoomNameInHeaderTitle]);
+      presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      -[HUSceneActionEditorViewController setShouldIncludeRoomNameInHeaderTitle:](v22, "setShouldIncludeRoomNameInHeaderTitle:", [presentationContext3 shouldIncludeRoomNameInHeaderTitle]);
     }
 
 LABEL_39:
     goto LABEL_40;
   }
 
-  v24 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v25 = [v24 item];
+  presentationContext4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item3 = [presentationContext4 item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v27 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v28 = [v27 item];
-    v29 = v3[2](v3, v28);
+    presentationContext5 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    item4 = [presentationContext5 item];
+    v29 = v3[2](v3, item4);
 
     objc_opt_class();
     v11 = v29;
@@ -5981,11 +5981,11 @@ LABEL_39:
     if (!v31)
     {
       objc_opt_class();
-      v32 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v33 = [v32 item];
+      presentationContext6 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      item5 = [presentationContext6 item];
       if (objc_opt_isKindOfClass())
       {
-        v34 = v33;
+        v34 = item5;
       }
 
       else
@@ -5996,11 +5996,11 @@ LABEL_39:
       v35 = v34;
 
       v36 = objc_alloc(MEMORY[0x277D14398]);
-      v37 = [v35 actionSet];
+      actionSet = [v35 actionSet];
 
-      v38 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      v39 = [v38 home];
-      v40 = [v36 initWithExistingObject:v37 inHome:v39];
+      presentationContext7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      home = [presentationContext7 home];
+      v40 = [v36 initWithExistingObject:actionSet inHome:home];
 
       v20 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:v40 mode:0];
     }
@@ -6009,19 +6009,19 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v41 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v42 = [v41 item];
+  presentationContext8 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item6 = [presentationContext8 item];
   objc_opt_class();
   v43 = objc_opt_isKindOfClass();
 
   if (v43)
   {
     objc_opt_class();
-    v44 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v45 = [v44 item];
+    presentationContext9 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    item7 = [presentationContext9 item];
     if (objc_opt_isKindOfClass())
     {
-      v46 = v45;
+      v46 = item7;
     }
 
     else
@@ -6031,11 +6031,11 @@ LABEL_39:
 
     v47 = v46;
 
-    v48 = [v47 sourceItem];
+    sourceItem = [v47 sourceItem];
 
-    if ([v48 conformsToProtocol:&unk_28251B0C8])
+    if ([sourceItem conformsToProtocol:&unk_28251B0C8])
     {
-      v49 = v48;
+      v49 = sourceItem;
     }
 
     else
@@ -6063,8 +6063,8 @@ LABEL_39:
 
     if (v11)
     {
-      v53 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-      -[HUSceneActionEditorViewController setShouldIncludeRoomNameInHeaderTitle:](v11, "setShouldIncludeRoomNameInHeaderTitle:", [v53 shouldIncludeRoomNameInHeaderTitle]);
+      presentationContext10 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+      -[HUSceneActionEditorViewController setShouldIncludeRoomNameInHeaderTitle:](v11, "setShouldIncludeRoomNameInHeaderTitle:", [presentationContext10 shouldIncludeRoomNameInHeaderTitle]);
 
       v11 = v20;
     }
@@ -6117,26 +6117,26 @@ LABEL_8:
   return v9;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v8 = [v9 navigationBarTitleView];
-  [v8 setHidden:(isKindOfClass & 1) == 0];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  navigationBarTitleView = [cardViewController navigationBarTitleView];
+  [navigationBarTitleView setHidden:(isKindOfClass & 1) == 0];
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-  v5 = [v4 transitionCoordinator];
+  presentingViewController = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+  transitionCoordinator = [presentingViewController transitionCoordinator];
 
-  if (v5)
+  if (transitionCoordinator)
   {
-    v6 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-    v7 = [v6 transitionCoordinator];
+    presentingViewController2 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+    transitionCoordinator2 = [presentingViewController2 transitionCoordinator];
     v8[4] = self;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -6147,7 +6147,7 @@ LABEL_8:
     v8[1] = 3221225472;
     v8[2] = __75__HUQuickControlPresentationCoordinator_presentationControllerWillDismiss___block_invoke_2;
     v8[3] = &unk_277DB79B8;
-    [v7 animateAlongsideTransition:v9 completion:v8];
+    [transitionCoordinator2 animateAlongsideTransition:v9 completion:v8];
   }
 }
 
@@ -6181,30 +6181,30 @@ void __75__HUQuickControlPresentationCoordinator_presentationControllerWillDismi
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(HUQuickControlPresentationCoordinator *)self targetView];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  targetView = [(HUQuickControlPresentationCoordinator *)self targetView];
+  [touchCopy locationInView:targetView];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v5 view];
+  view = [touchCopy view];
 
-  v12 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  LOBYTE(self) = [v12 presentationCoordinator:self shouldBeginInteractivePresentationWithTouchLocation:v11 view:{v8, v10}];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+  LOBYTE(self) = [delegate presentationCoordinator:self shouldBeginInteractivePresentationWithTouchLocation:view view:{v8, v10}];
 
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  singleTapGestureRecognizer = [(HUQuickControlPresentationCoordinator *)self singleTapGestureRecognizer];
 
-  if (v9 != v8)
+  if (singleTapGestureRecognizer != recognizerCopy)
   {
 
 LABEL_4:
@@ -6225,9 +6225,9 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v10 = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
+  doubleTapGestureRecognizer = [(HUQuickControlPresentationCoordinator *)self doubleTapGestureRecognizer];
 
-  if (v10 != v7)
+  if (doubleTapGestureRecognizer != gestureRecognizerCopy)
   {
     goto LABEL_4;
   }
@@ -6251,14 +6251,14 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
-  v10 = v9;
-  if (v9 == v7)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  touchGestureRecognizer = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
+  v10 = touchGestureRecognizer;
+  if (touchGestureRecognizer == recognizerCopy)
   {
 
 LABEL_6:
@@ -6273,9 +6273,9 @@ LABEL_6:
       v30 = 2112;
       v31 = v21;
       v32 = 2112;
-      v33 = v7;
+      v33 = recognizerCopy;
       v34 = 2112;
-      v35 = v8;
+      v35 = gestureRecognizerCopy;
       v22 = "%@+Controls: %@ returning YES (first case) %@ %@";
       goto LABEL_16;
     }
@@ -6285,20 +6285,20 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v11 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
+  touchGestureRecognizer2 = [(HUQuickControlPresentationCoordinator *)self touchGestureRecognizer];
 
-  if (v11 == v8)
+  if (touchGestureRecognizer2 == gestureRecognizerCopy)
   {
     goto LABEL_6;
   }
 
-  v12 = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
-  v13 = [v12 gestureRecognizerForExclusionRelationship];
-  v14 = v13;
-  if (v13 == v7)
+  presentationInteraction = [(HUQuickControlPresentationCoordinator *)self presentationInteraction];
+  gestureRecognizerForExclusionRelationship = [presentationInteraction gestureRecognizerForExclusionRelationship];
+  v14 = gestureRecognizerForExclusionRelationship;
+  if (gestureRecognizerForExclusionRelationship == recognizerCopy)
   {
-    v17 = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
-    v18 = [v17 containsObject:v8];
+    mutuallyExclusiveGestureRecognizers = [(HUQuickControlPresentationCoordinator *)self mutuallyExclusiveGestureRecognizers];
+    v18 = [mutuallyExclusiveGestureRecognizers containsObject:gestureRecognizerCopy];
 
     if (!v18)
     {
@@ -6316,9 +6316,9 @@ LABEL_7:
       v30 = 2112;
       v31 = v21;
       v32 = 2112;
-      v33 = v7;
+      v33 = recognizerCopy;
       v34 = 2112;
-      v35 = v8;
+      v35 = gestureRecognizerCopy;
       v22 = "%@+Controls: %@ returning YES (second case) %@, %@";
 LABEL_16:
       _os_log_debug_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEBUG, v22, &v28, 0x2Au);
@@ -6349,36 +6349,36 @@ LABEL_14:
   return v16;
 }
 
-- (double)quickControlViewController:(id)a3 sourceViewInitialScaleForPresentation:(BOOL)a4
+- (double)quickControlViewController:(id)controller sourceViewInitialScaleForPresentation:(BOOL)presentation
 {
-  if (!a4)
+  if (!presentation)
   {
     return 1.0;
   }
 
-  v4 = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
-  [v4 currentViewScale];
+  activePressedItemContext = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
+  [activePressedItemContext currentViewScale];
   v6 = v5;
 
   return v6;
 }
 
-- (id)quickControlViewController:(id)a3 applierForSourceViewTransitionWithAnimationSettings:(id)a4 presenting:(BOOL)a5
+- (id)quickControlViewController:(id)controller applierForSourceViewTransitionWithAnimationSettings:(id)settings presenting:(BOOL)presenting
 {
-  v7 = a4;
-  v8 = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
-  v9 = [v8 item];
+  settingsCopy = settings;
+  activePressedItemContext = [(HUQuickControlPresentationCoordinator *)self activePressedItemContext];
+  item = [activePressedItemContext item];
 
-  v10 = [HUAnimationApplier dynamicApplierWithAnimationSettings:v7];
+  v10 = [HUAnimationApplier dynamicApplierWithAnimationSettings:settingsCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __131__HUQuickControlPresentationCoordinator_quickControlViewController_applierForSourceViewTransitionWithAnimationSettings_presenting___block_invoke;
   v13[3] = &unk_277DC4D40;
-  v15 = a5;
+  presentingCopy = presenting;
   v13[4] = self;
-  v14 = v9;
-  v11 = v9;
+  v14 = item;
+  v11 = item;
   [v10 addApplierBlock:v13];
 
   return v10;
@@ -6399,61 +6399,61 @@ uint64_t __131__HUQuickControlPresentationCoordinator_quickControlViewController
   return result;
 }
 
-- (BOOL)hasDetailsActionForQuickControlViewController:(id)a3 item:(id)a4
+- (BOOL)hasDetailsActionForQuickControlViewController:(id)controller item:(id)item
 {
-  v5 = a4;
-  v6 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  LOBYTE(self) = [v6 hasDetailsActionForPresentationCoordinator:self item:v5];
+  itemCopy = item;
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+  LOBYTE(self) = [delegate hasDetailsActionForPresentationCoordinator:self item:itemCopy];
 
   return self;
 }
 
-- (id)detailsViewControllerForQuickControlViewController:(id)a3 item:(id)a4
+- (id)detailsViewControllerForQuickControlViewController:(id)controller item:(id)item
 {
-  v5 = a4;
-  v6 = [(HUQuickControlPresentationCoordinator *)self delegate];
-  v7 = [v6 detailsViewControllerForPresentationCoordinator:self item:v5];
+  itemCopy = item;
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
+  v7 = [delegate detailsViewControllerForPresentationCoordinator:self item:itemCopy];
 
   return v7;
 }
 
-- (void)quickControlViewControllerWillDismissDetailsViewController:(id)a3 shouldDismissQuickControl:(BOOL)a4
+- (void)quickControlViewControllerWillDismissDetailsViewController:(id)controller shouldDismissQuickControl:(BOOL)control
 {
-  if (a4)
+  if (control)
   {
-    v6 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    v5 = [v6 item];
-    [(HUQuickControlPresentationCoordinator *)self _pressedStateDidEndForItem:v5 clearPresentationContext:0];
+    presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    item = [presentationContext item];
+    [(HUQuickControlPresentationCoordinator *)self _pressedStateDidEndForItem:item clearPresentationContext:0];
   }
 }
 
-- (void)quickControlViewControllerDidTapDetailsButton:(id)a3
+- (void)quickControlViewControllerDidTapDetailsButton:(id)button
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  [v3 scrollToDetailsViewAnimated:1];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  [cardViewController scrollToDetailsViewAnimated:1];
 }
 
-- (void)statusDetailsViewControllerDidFinish:(id)a3
+- (void)statusDetailsViewControllerDidFinish:(id)finish
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self statusDetailsNavigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  statusDetailsNavigationController = [(HUQuickControlPresentationCoordinator *)self statusDetailsNavigationController];
+  [statusDetailsNavigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  presentationCopy = presentation;
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v7 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    if (v7)
+    cardNavigationController = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    if (cardNavigationController)
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [v6 parentViewController];
+      parentViewController = [presentationCopy parentViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -6469,20 +6469,20 @@ uint64_t __131__HUQuickControlPresentationCoordinator_quickControlViewController
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v12 = [v11 topViewController];
+    cardNavigationController2 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    topViewController = [cardNavigationController2 topViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 LABEL_11:
 
 LABEL_12:
-      v15 = [(HUQuickControlPresentationCoordinator *)self _dismissServiceDetailsViewController:v6 animated:v4];
+      _dismissCardViewController = [(HUQuickControlPresentationCoordinator *)self _dismissServiceDetailsViewController:presentationCopy animated:animatedCopy];
       goto LABEL_22;
     }
 
-    v13 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
-    v14 = [v13 topViewController];
+    cardNavigationController3 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    topViewController2 = [cardNavigationController3 topViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -6490,9 +6490,9 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    v16 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
+    cardNavigationController4 = [(HUQuickControlPresentationCoordinator *)self cardNavigationController];
 
-    if (!v16)
+    if (!cardNavigationController4)
     {
       goto LABEL_12;
     }
@@ -6501,7 +6501,7 @@ LABEL_12:
   objc_opt_class();
   if (v8 & 1 | ((objc_opt_isKindOfClass() & 1) == 0))
   {
-    v17 = v6;
+    v17 = presentationCopy;
     if ([v17 conformsToProtocol:&unk_2824C3AE0])
     {
       v18 = v17;
@@ -6514,10 +6514,10 @@ LABEL_12:
 
     v19 = v18;
 
-    v20 = [v19 requiresPresentingViewControllerDismissal];
-    if (v20)
+    requiresPresentingViewControllerDismissal = [v19 requiresPresentingViewControllerDismissal];
+    if (requiresPresentingViewControllerDismissal)
     {
-      v15 = [(HUQuickControlPresentationCoordinator *)self _dismissCardViewController];
+      _dismissCardViewController = [(HUQuickControlPresentationCoordinator *)self _dismissCardViewController];
       goto LABEL_22;
     }
   }
@@ -6529,12 +6529,12 @@ LABEL_12:
     v23[2] = __69__HUQuickControlPresentationCoordinator_finishPresentation_animated___block_invoke;
     v23[3] = &unk_277DB8488;
     v23[4] = self;
-    [v6 dismissViewControllerAnimated:1 completion:v23];
+    [presentationCopy dismissViewControllerAnimated:1 completion:v23];
   }
 
-  v15 = [MEMORY[0x277D2C900] futureWithNoResult];
+  _dismissCardViewController = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_22:
-  v21 = v15;
+  v21 = _dismissCardViewController;
 
   return v21;
 }
@@ -6554,21 +6554,21 @@ void __69__HUQuickControlPresentationCoordinator_finishPresentation_animated___b
   }
 }
 
-- (void)itemManager:(id)a3 didChangeSourceItem:(id)a4
+- (void)itemManager:(id)manager didChangeSourceItem:(id)item
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v8 = [v7 itemManager];
+  managerCopy = manager;
+  itemCopy = item;
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  itemManager = [presentationContext itemManager];
 
-  if (v8 == v12)
+  if (itemManager == managerCopy)
   {
-    v9 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    [v9 setItem:v6];
+    presentationContext2 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    [presentationContext2 setItem:itemCopy];
 
-    v10 = [v12 childItemsForItem:v6 ofClass:objc_opt_class()];
-    v11 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-    [v11 setControlItems:v10];
+    v10 = [managerCopy childItemsForItem:itemCopy ofClass:objc_opt_class()];
+    presentationContext3 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+    [presentationContext3 setControlItems:v10];
 
     [(HUQuickControlPresentationCoordinator *)self _updateCardController];
   }
@@ -6576,25 +6576,25 @@ void __69__HUQuickControlPresentationCoordinator_finishPresentation_animated___b
 
 - (id)_dismissChildViewController
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
+  settingsViewController = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
-    v6 = [v5 commitChanges];
+    settingsViewController2 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
+    commitChanges = [settingsViewController2 commitChanges];
     goto LABEL_10;
   }
 
-  v5 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  if ([v5 hideSettings])
+  settingsViewController2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  if ([settingsViewController2 hideSettings])
   {
     goto LABEL_10;
   }
 
-  v7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v8 = [v7 item];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  item = [presentationContext item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -6603,7 +6603,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
+  settingsViewController3 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -6611,23 +6611,23 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v11 = [v10 settingsUnlocked];
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  settingsUnlocked = [cardViewController settingsUnlocked];
 
-  if (!v11)
+  if (!settingsUnlocked)
   {
     goto LABEL_11;
   }
 
-  v5 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
-  [v5 commitChanges];
+  settingsViewController2 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
+  [settingsViewController2 commitChanges];
 LABEL_10:
 
 LABEL_11:
-  v12 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
-  if ([v12 conformsToProtocol:&unk_2824C3AE0])
+  settingsViewController4 = [(HUQuickControlPresentationCoordinator *)self settingsViewController];
+  if ([settingsViewController4 conformsToProtocol:&unk_2824C3AE0])
   {
-    v13 = v12;
+    v13 = settingsViewController4;
   }
 
   else
@@ -6645,7 +6645,7 @@ LABEL_11:
 - (id)_dismissCardViewController
 {
   v3 = [(HUQuickControlPresentationCoordinator *)self dismissQuickControlAnimated:0];
-  v4 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
   v5 = [(HUQuickControlPresentationCoordinator *)self _dismissQuickControlViewControllerAnimated:1];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
@@ -6653,7 +6653,7 @@ LABEL_11:
   v9[2] = __67__HUQuickControlPresentationCoordinator__dismissCardViewController__block_invoke;
   v9[3] = &unk_277DB8620;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = presentationContext;
   v10 = v6;
   v7 = [v5 addCompletionBlock:v9];
 
@@ -6680,44 +6680,44 @@ void __67__HUQuickControlPresentationCoordinator__dismissCardViewController__blo
   [WeakRetained setCardNavigationController:0];
 }
 
-- (id)_dismissServiceDetailsViewController:(id)a3 animated:(BOOL)a4
+- (id)_dismissServiceDetailsViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUQuickControlPresentationCoordinator *)self presentationContext];
-  v8 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  presentationContext = [(HUQuickControlPresentationCoordinator *)self presentationContext];
+  delegate = [(HUQuickControlPresentationCoordinator *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    [v10 presentationCoordinator:self willEndPresentationWithContext:v7];
+    delegate2 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    [delegate2 presentationCoordinator:self willEndPresentationWithContext:presentationContext];
   }
 
-  v11 = [(HUQuickControlPresentationCoordinator *)self delegate];
+  delegate3 = [(HUQuickControlPresentationCoordinator *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(HUQuickControlPresentationCoordinator *)self delegate];
-    [v13 presentationCoordinatorWillBeginTransition:self presenting:0];
+    delegate4 = [(HUQuickControlPresentationCoordinator *)self delegate];
+    [delegate4 presentationCoordinatorWillBeginTransition:self presenting:0];
   }
 
-  v14 = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
-  [v14 removeFromSuperview];
+  transitionBlurView = [(HUQuickControlPresentationCoordinator *)self transitionBlurView];
+  [transitionBlurView removeFromSuperview];
 
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __87__HUQuickControlPresentationCoordinator__dismissServiceDetailsViewController_animated___block_invoke;
   v21 = &unk_277DB7558;
-  v22 = self;
-  v23 = v7;
-  v15 = v7;
-  [v6 dismissViewControllerAnimated:v4 completion:&v18];
+  selfCopy = self;
+  v23 = presentationContext;
+  v15 = presentationContext;
+  [controllerCopy dismissViewControllerAnimated:animatedCopy completion:&v18];
 
-  v16 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
-  return v16;
+  return futureWithNoResult;
 }
 
 void __87__HUQuickControlPresentationCoordinator__dismissServiceDetailsViewController_animated___block_invoke(uint64_t a1)
@@ -6735,24 +6735,24 @@ void __87__HUQuickControlPresentationCoordinator__dismissServiceDetailsViewContr
 
 - (BOOL)_isRTL
 {
-  v2 = [(HUQuickControlPresentationCoordinator *)self cardViewController];
-  v3 = [v2 traitCollection];
-  v4 = [v3 layoutDirection] == 1;
+  cardViewController = [(HUQuickControlPresentationCoordinator *)self cardViewController];
+  traitCollection = [cardViewController traitCollection];
+  v4 = [traitCollection layoutDirection] == 1;
 
   return v4;
 }
 
 - (CGRect)sourceFrameForAnimationController
 {
-  v3 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+  presentingViewController = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277D14670] isHomeControlService];
+    isHomeControlService = [MEMORY[0x277D14670] isHomeControlService];
 
-    if ((v4 & 1) == 0)
+    if ((isHomeControlService & 1) == 0)
     {
-      v5 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+      presentingViewController2 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
       goto LABEL_6;
     }
   }
@@ -6761,20 +6761,20 @@ void __87__HUQuickControlPresentationCoordinator__dismissServiceDetailsViewContr
   {
   }
 
-  v6 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
-  v5 = [v6 presentingViewController];
+  presentingViewController3 = [(HUQuickControlPresentationCoordinator *)self presentingViewController];
+  presentingViewController2 = [presentingViewController3 presentingViewController];
 
 LABEL_6:
-  v7 = [v5 splitViewController];
+  splitViewController = [presentingViewController2 splitViewController];
   if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
   {
-    v8 = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
+    pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
     [(HUQuickControlPresentationCoordinator *)self pressedTile_legacy];
   }
 
   else
   {
-    v8 = [(HUQuickControlPresentationCoordinator *)self pressedTile];
+    pressedTile_legacy = [(HUQuickControlPresentationCoordinator *)self pressedTile];
     [(HUQuickControlPresentationCoordinator *)self pressedTile];
   }
   v9 = ;
@@ -6783,18 +6783,18 @@ LABEL_6:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  if (v7)
+  if (splitViewController)
   {
-    v18 = v7;
+    v18 = splitViewController;
   }
 
   else
   {
-    v18 = v5;
+    v18 = presentingViewController2;
   }
 
-  v19 = [v18 view];
-  [v8 convertRect:v19 toView:{v11, v13, v15, v17}];
+  view = [v18 view];
+  [pressedTile_legacy convertRect:view toView:{v11, v13, v15, v17}];
   x = v20;
   y = v22;
   width = v24;
@@ -6802,8 +6802,8 @@ LABEL_6:
 
   if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0)
   {
-    v28 = [v5 presentationController];
-    [v28 frameOfPresentedViewInContainerView];
+    presentationController = [presentingViewController2 presentationController];
+    [presentationController frameOfPresentedViewInContainerView];
     v30 = v29;
     v32 = v31;
 
@@ -6829,12 +6829,12 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_supportsDoubleClick:(id)a3
+- (BOOL)_supportsDoubleClick:(id)click
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_2824C4B08])
+  clickCopy = click;
+  if ([clickCopy conformsToProtocol:&unk_2824C4B08])
   {
-    v4 = v3;
+    v4 = clickCopy;
   }
 
   else

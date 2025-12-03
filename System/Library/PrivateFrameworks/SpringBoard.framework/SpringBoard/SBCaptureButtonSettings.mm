@@ -1,6 +1,6 @@
 @interface SBCaptureButtonSettings
 + (id)settingsControllerModule;
-- (void)_configureSettings:(id)a3 withDamping:(double)a4 mass:(double)a5 stiffness:(double)a6;
+- (void)_configureSettings:(id)settings withDamping:(double)damping mass:(double)mass stiffness:(double)stiffness;
 - (void)setDefaultValues;
 @end
 
@@ -18,24 +18,24 @@
   [(SBCaptureButtonSettings *)self setPreludeDropletRadius:8.33333333];
   [(SBCaptureButtonSettings *)self setPreludeCornerRadius:33.3333333];
   [(SBCaptureButtonSettings *)self setPreludeScreenEdgeInset:13.3333333];
-  v3 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
-  [v3 setDefaultValues];
+  preludePresentationTranslationSettings = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
+  [preludePresentationTranslationSettings setDefaultValues];
 
-  v4 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
-  [v4 setBehaviorType:1];
+  preludePresentationTranslationSettings2 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
+  [preludePresentationTranslationSettings2 setBehaviorType:1];
 
-  v5 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
-  [v5 setResponse:0.484];
+  preludePresentationTranslationSettings3 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
+  [preludePresentationTranslationSettings3 setResponse:0.484];
 
-  v6 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
-  [v6 setDampingRatio:0.845];
+  preludePresentationTranslationSettings4 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
+  [preludePresentationTranslationSettings4 setDampingRatio:0.845];
 
-  v7 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
-  [v7 setName:@"Droplet Presentation"];
+  preludePresentationTranslationSettings5 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
+  [preludePresentationTranslationSettings5 setName:@"Droplet Presentation"];
 
-  v8 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
+  preludePresentationTranslationSettings6 = [(SBCaptureButtonSettings *)self preludePresentationTranslationSettings];
   v73 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v8 setFrameRateRange:1114147 highFrameRateReason:{*&v73.minimum, *&v73.maximum, *&v73.preferred}];
+  [preludePresentationTranslationSettings6 setFrameRateRange:1114147 highFrameRateReason:{*&v73.minimum, *&v73.maximum, *&v73.preferred}];
 
   [(SBCaptureButtonSettings *)self setVisionIntelligenceKeylineScreenBlendMode:0];
   [(SBCaptureButtonSettings *)self setVisionIntelligenceKeylineRimIsSoft:0];
@@ -49,210 +49,210 @@
   [(SBCaptureButtonSettings *)self setVisionIntelligenceKeylineFadeStart:0.28];
   [(SBCaptureButtonSettings *)self setVisionIntelligenceKeylineFadeEnd:0.8];
   [(SBCaptureButtonSettings *)self setVisionIntelligenceKeylineEDRGain:4.5];
-  v9 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
-  [v9 setDefaultValues];
+  visionIntelligenceBehaviorSettings = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
+  [visionIntelligenceBehaviorSettings setDefaultValues];
 
-  v10 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
-  [v10 setBehaviorType:1];
+  visionIntelligenceBehaviorSettings2 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
+  [visionIntelligenceBehaviorSettings2 setBehaviorType:1];
 
-  v11 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
-  [v11 setResponse:0.531];
+  visionIntelligenceBehaviorSettings3 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
+  [visionIntelligenceBehaviorSettings3 setResponse:0.531];
 
-  v12 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
-  [v12 setDampingRatio:1.0];
+  visionIntelligenceBehaviorSettings4 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
+  [visionIntelligenceBehaviorSettings4 setDampingRatio:1.0];
 
-  v13 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
-  [v13 setName:@"Droplet Settings"];
+  visionIntelligenceBehaviorSettings5 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
+  [visionIntelligenceBehaviorSettings5 setName:@"Droplet Settings"];
 
-  v14 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
+  visionIntelligenceBehaviorSettings6 = [(SBCaptureButtonSettings *)self visionIntelligenceBehaviorSettings];
   v74 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v14 setFrameRateRange:1114113 highFrameRateReason:{*&v74.minimum, *&v74.maximum, *&v74.preferred}];
+  [visionIntelligenceBehaviorSettings6 setFrameRateRange:1114113 highFrameRateReason:{*&v74.minimum, *&v74.maximum, *&v74.preferred}];
 
-  v15 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
-  [v15 setDefaultValues];
+  visionIntelligenceHintBehaviorSettings = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
+  [visionIntelligenceHintBehaviorSettings setDefaultValues];
 
-  v16 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
-  [v16 setBehaviorType:1];
+  visionIntelligenceHintBehaviorSettings2 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
+  [visionIntelligenceHintBehaviorSettings2 setBehaviorType:1];
 
-  v17 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
-  [v17 setResponse:0.224];
+  visionIntelligenceHintBehaviorSettings3 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
+  [visionIntelligenceHintBehaviorSettings3 setResponse:0.224];
 
-  v18 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
-  [v18 setDampingRatio:3.2];
+  visionIntelligenceHintBehaviorSettings4 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
+  [visionIntelligenceHintBehaviorSettings4 setDampingRatio:3.2];
 
-  v19 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
-  [v19 setName:@"Droplet Hint Settings"];
+  visionIntelligenceHintBehaviorSettings5 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
+  [visionIntelligenceHintBehaviorSettings5 setName:@"Droplet Hint Settings"];
 
-  v20 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
+  visionIntelligenceHintBehaviorSettings6 = [(SBCaptureButtonSettings *)self visionIntelligenceHintBehaviorSettings];
   v75 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v20 setFrameRateRange:1114113 highFrameRateReason:{*&v75.minimum, *&v75.maximum, *&v75.preferred}];
+  [visionIntelligenceHintBehaviorSettings6 setFrameRateRange:1114113 highFrameRateReason:{*&v75.minimum, *&v75.maximum, *&v75.preferred}];
 
   [(SBCaptureButtonSettings *)self setEnableZoomUpBlur:1];
   [(SBCaptureButtonSettings *)self setZoomUpDropletRadius:0.0];
   [(SBCaptureButtonSettings *)self setDisableDropletEffectDelay:0.1];
   [(SBCaptureButtonSettings *)self setZoomUpYAndScaleDelay:0.024];
-  v21 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
-  [v21 setDefaultValues];
+  zoomUpPositionXSettings = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
+  [zoomUpPositionXSettings setDefaultValues];
 
-  v22 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
-  [v22 setBehaviorType:1];
+  zoomUpPositionXSettings2 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
+  [zoomUpPositionXSettings2 setBehaviorType:1];
 
-  v23 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
-  [v23 setResponse:0.412];
+  zoomUpPositionXSettings3 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
+  [zoomUpPositionXSettings3 setResponse:0.412];
 
-  v24 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
-  [v24 setDampingRatio:0.816];
+  zoomUpPositionXSettings4 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
+  [zoomUpPositionXSettings4 setDampingRatio:0.816];
 
-  v25 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
-  [v25 setRetargetImpulse:0.016];
+  zoomUpPositionXSettings5 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
+  [zoomUpPositionXSettings5 setRetargetImpulse:0.016];
 
-  v26 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
-  [v26 setName:@"Droplet Zoom Up Position X"];
+  zoomUpPositionXSettings6 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
+  [zoomUpPositionXSettings6 setName:@"Droplet Zoom Up Position X"];
 
-  v27 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
+  zoomUpPositionXSettings7 = [(SBCaptureButtonSettings *)self zoomUpPositionXSettings];
   v76 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v27 setFrameRateRange:1114113 highFrameRateReason:{*&v76.minimum, *&v76.maximum, *&v76.preferred}];
+  [zoomUpPositionXSettings7 setFrameRateRange:1114113 highFrameRateReason:{*&v76.minimum, *&v76.maximum, *&v76.preferred}];
 
-  v28 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
-  [v28 setDefaultValues];
+  zoomUpPositionYSettings = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
+  [zoomUpPositionYSettings setDefaultValues];
 
-  v29 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
-  [v29 setBehaviorType:1];
+  zoomUpPositionYSettings2 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
+  [zoomUpPositionYSettings2 setBehaviorType:1];
 
-  v30 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
-  [v30 setResponse:0.412];
+  zoomUpPositionYSettings3 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
+  [zoomUpPositionYSettings3 setResponse:0.412];
 
-  v31 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
-  [v31 setDampingRatio:1.1];
+  zoomUpPositionYSettings4 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
+  [zoomUpPositionYSettings4 setDampingRatio:1.1];
 
-  v32 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
-  [v32 setName:@"Droplet Zoom Up Position Y"];
+  zoomUpPositionYSettings5 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
+  [zoomUpPositionYSettings5 setName:@"Droplet Zoom Up Position Y"];
 
-  v33 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
+  zoomUpPositionYSettings6 = [(SBCaptureButtonSettings *)self zoomUpPositionYSettings];
   v77 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v33 setFrameRateRange:1114113 highFrameRateReason:{*&v77.minimum, *&v77.maximum, *&v77.preferred}];
+  [zoomUpPositionYSettings6 setFrameRateRange:1114113 highFrameRateReason:{*&v77.minimum, *&v77.maximum, *&v77.preferred}];
 
-  v34 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
-  [v34 setDefaultValues];
+  zoomUpScaleSettings = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
+  [zoomUpScaleSettings setDefaultValues];
 
-  v35 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
-  [v35 setBehaviorType:1];
+  zoomUpScaleSettings2 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
+  [zoomUpScaleSettings2 setBehaviorType:1];
 
-  v36 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
-  [v36 setResponse:0.424];
+  zoomUpScaleSettings3 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
+  [zoomUpScaleSettings3 setResponse:0.424];
 
-  v37 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
-  [v37 setDampingRatio:1.1];
+  zoomUpScaleSettings4 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
+  [zoomUpScaleSettings4 setDampingRatio:1.1];
 
-  v38 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
-  [v38 setName:@"Droplet Zoom Up Scale"];
+  zoomUpScaleSettings5 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
+  [zoomUpScaleSettings5 setName:@"Droplet Zoom Up Scale"];
 
-  v39 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
+  zoomUpScaleSettings6 = [(SBCaptureButtonSettings *)self zoomUpScaleSettings];
   v78 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v39 setFrameRateRange:1114113 highFrameRateReason:{*&v78.minimum, *&v78.maximum, *&v78.preferred}];
+  [zoomUpScaleSettings6 setFrameRateRange:1114113 highFrameRateReason:{*&v78.minimum, *&v78.maximum, *&v78.preferred}];
 
-  v40 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
-  [v40 setDefaultValues];
+  zoomUpCornerRadiusSettings = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
+  [zoomUpCornerRadiusSettings setDefaultValues];
 
-  v41 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
-  [v41 setBehaviorType:1];
+  zoomUpCornerRadiusSettings2 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
+  [zoomUpCornerRadiusSettings2 setBehaviorType:1];
 
-  v42 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
-  [(SBCaptureButtonSettings *)self _configureSettings:v42 withDamping:36.0328 mass:1.0 stiffness:324.591];
+  zoomUpCornerRadiusSettings3 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
+  [(SBCaptureButtonSettings *)self _configureSettings:zoomUpCornerRadiusSettings3 withDamping:36.0328 mass:1.0 stiffness:324.591];
 
-  v43 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
-  [v43 setName:@"Droplet Zoom Up Corner Radius"];
+  zoomUpCornerRadiusSettings4 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
+  [zoomUpCornerRadiusSettings4 setName:@"Droplet Zoom Up Corner Radius"];
 
-  v44 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
+  zoomUpCornerRadiusSettings5 = [(SBCaptureButtonSettings *)self zoomUpCornerRadiusSettings];
   v79 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v44 setFrameRateRange:1114113 highFrameRateReason:{*&v79.minimum, *&v79.maximum, *&v79.preferred}];
+  [zoomUpCornerRadiusSettings5 setFrameRateRange:1114113 highFrameRateReason:{*&v79.minimum, *&v79.maximum, *&v79.preferred}];
 
-  v45 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
-  [v45 setDefaultValues];
+  zoomUpDropletRadiusAnimationSettings = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
+  [zoomUpDropletRadiusAnimationSettings setDefaultValues];
 
-  v46 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
-  [v46 setBehaviorType:1];
+  zoomUpDropletRadiusAnimationSettings2 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
+  [zoomUpDropletRadiusAnimationSettings2 setBehaviorType:1];
 
-  v47 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
-  [(SBCaptureButtonSettings *)self _configureSettings:v47 withDamping:50.0 mass:2.0 stiffness:300.0];
+  zoomUpDropletRadiusAnimationSettings3 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
+  [(SBCaptureButtonSettings *)self _configureSettings:zoomUpDropletRadiusAnimationSettings3 withDamping:50.0 mass:2.0 stiffness:300.0];
 
-  v48 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
-  [v48 setName:@"Droplet Zoom Up Droplet Radius"];
+  zoomUpDropletRadiusAnimationSettings4 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
+  [zoomUpDropletRadiusAnimationSettings4 setName:@"Droplet Zoom Up Droplet Radius"];
 
-  v49 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
+  zoomUpDropletRadiusAnimationSettings5 = [(SBCaptureButtonSettings *)self zoomUpDropletRadiusAnimationSettings];
   v80 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v49 setFrameRateRange:1114113 highFrameRateReason:{*&v80.minimum, *&v80.maximum, *&v80.preferred}];
+  [zoomUpDropletRadiusAnimationSettings5 setFrameRateRange:1114113 highFrameRateReason:{*&v80.minimum, *&v80.maximum, *&v80.preferred}];
 
-  v50 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
-  [v50 setDefaultValues];
+  zoomUpBackgroundDimAnimationSettings = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
+  [zoomUpBackgroundDimAnimationSettings setDefaultValues];
 
-  v51 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
-  [v51 setBehaviorType:1];
+  zoomUpBackgroundDimAnimationSettings2 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
+  [zoomUpBackgroundDimAnimationSettings2 setBehaviorType:1];
 
-  v52 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
-  [v52 setResponse:0.28];
+  zoomUpBackgroundDimAnimationSettings3 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
+  [zoomUpBackgroundDimAnimationSettings3 setResponse:0.28];
 
-  v53 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
-  [v53 setDampingRatio:1.0];
+  zoomUpBackgroundDimAnimationSettings4 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
+  [zoomUpBackgroundDimAnimationSettings4 setDampingRatio:1.0];
 
-  v54 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
-  [v54 setName:@"Droplet Zoom Up Background Dim"];
+  zoomUpBackgroundDimAnimationSettings5 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
+  [zoomUpBackgroundDimAnimationSettings5 setName:@"Droplet Zoom Up Background Dim"];
 
-  v55 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
+  zoomUpBackgroundDimAnimationSettings6 = [(SBCaptureButtonSettings *)self zoomUpBackgroundDimAnimationSettings];
   v81 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v55 setFrameRateRange:1114113 highFrameRateReason:{*&v81.minimum, *&v81.maximum, *&v81.preferred}];
+  [zoomUpBackgroundDimAnimationSettings6 setFrameRateRange:1114113 highFrameRateReason:{*&v81.minimum, *&v81.maximum, *&v81.preferred}];
 
-  v56 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
-  [v56 setDefaultValues];
+  zoomUpDisableDropletEffectFiltersSettings = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
+  [zoomUpDisableDropletEffectFiltersSettings setDefaultValues];
 
-  v57 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
-  [v57 setBehaviorType:1];
+  zoomUpDisableDropletEffectFiltersSettings2 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
+  [zoomUpDisableDropletEffectFiltersSettings2 setBehaviorType:1];
 
-  v58 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
-  [v58 setResponse:0.128];
+  zoomUpDisableDropletEffectFiltersSettings3 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
+  [zoomUpDisableDropletEffectFiltersSettings3 setResponse:0.128];
 
-  v59 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
-  [v59 setDampingRatio:1.0];
+  zoomUpDisableDropletEffectFiltersSettings4 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
+  [zoomUpDisableDropletEffectFiltersSettings4 setDampingRatio:1.0];
 
-  v60 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
-  [v60 setName:@"Droplet Zoom Up Disable Dropletting"];
+  zoomUpDisableDropletEffectFiltersSettings5 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
+  [zoomUpDisableDropletEffectFiltersSettings5 setName:@"Droplet Zoom Up Disable Dropletting"];
 
-  v61 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
+  zoomUpDisableDropletEffectFiltersSettings6 = [(SBCaptureButtonSettings *)self zoomUpDisableDropletEffectFiltersSettings];
   v82 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v61 setFrameRateRange:1114113 highFrameRateReason:{*&v82.minimum, *&v82.maximum, *&v82.preferred}];
+  [zoomUpDisableDropletEffectFiltersSettings6 setFrameRateRange:1114113 highFrameRateReason:{*&v82.minimum, *&v82.maximum, *&v82.preferred}];
 
   [(SBCaptureButtonSettings *)self setDosidoTargetScale:0.5];
-  v62 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
-  [v62 setDefaultValues];
+  dosidoLayoutAndPositionSettings = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
+  [dosidoLayoutAndPositionSettings setDefaultValues];
 
-  v63 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
-  [v63 setBehaviorType:1];
+  dosidoLayoutAndPositionSettings2 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
+  [dosidoLayoutAndPositionSettings2 setBehaviorType:1];
 
-  v64 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
-  [(SBCaptureButtonSettings *)self _configureSettings:v64 withDamping:50.0 mass:2.0 stiffness:300.0];
+  dosidoLayoutAndPositionSettings3 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
+  [(SBCaptureButtonSettings *)self _configureSettings:dosidoLayoutAndPositionSettings3 withDamping:50.0 mass:2.0 stiffness:300.0];
 
-  v65 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
-  [v65 setName:@"Droplet Do-si-do Layout and Position"];
+  dosidoLayoutAndPositionSettings4 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
+  [dosidoLayoutAndPositionSettings4 setName:@"Droplet Do-si-do Layout and Position"];
 
-  v66 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
+  dosidoLayoutAndPositionSettings5 = [(SBCaptureButtonSettings *)self dosidoLayoutAndPositionSettings];
   v83 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v66 setFrameRateRange:1114113 highFrameRateReason:{*&v83.minimum, *&v83.maximum, *&v83.preferred}];
+  [dosidoLayoutAndPositionSettings5 setFrameRateRange:1114113 highFrameRateReason:{*&v83.minimum, *&v83.maximum, *&v83.preferred}];
 
-  v67 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
-  [v67 setDefaultValues];
+  dosidoScaleSettings = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
+  [dosidoScaleSettings setDefaultValues];
 
-  v68 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
-  [v68 setBehaviorType:1];
+  dosidoScaleSettings2 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
+  [dosidoScaleSettings2 setBehaviorType:1];
 
-  v69 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
-  [(SBCaptureButtonSettings *)self _configureSettings:v69 withDamping:50.0 mass:2.0 stiffness:300.0];
+  dosidoScaleSettings3 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
+  [(SBCaptureButtonSettings *)self _configureSettings:dosidoScaleSettings3 withDamping:50.0 mass:2.0 stiffness:300.0];
 
-  v70 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
-  [v70 setName:@"Droplet Do-si-do Scale"];
+  dosidoScaleSettings4 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
+  [dosidoScaleSettings4 setName:@"Droplet Do-si-do Scale"];
 
-  v71 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
+  dosidoScaleSettings5 = [(SBCaptureButtonSettings *)self dosidoScaleSettings];
   v84 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v71 setFrameRateRange:1114113 highFrameRateReason:{*&v84.minimum, *&v84.maximum, *&v84.preferred}];
+  [dosidoScaleSettings5 setFrameRateRange:1114113 highFrameRateReason:{*&v84.minimum, *&v84.maximum, *&v84.preferred}];
 
   [(SBCaptureButtonSettings *)self setZoomUpBlurStartProgress:0.0];
   [(SBCaptureButtonSettings *)self setZoomUpBackgroundDimStartProgress:0.85];
@@ -264,18 +264,18 @@
   [(SBCaptureButtonSettings *)self setStationaryDetectionDebounceInterval:4.0];
 }
 
-- (void)_configureSettings:(id)a3 withDamping:(double)a4 mass:(double)a5 stiffness:(double)a6
+- (void)_configureSettings:(id)settings withDamping:(double)damping mass:(double)mass stiffness:(double)stiffness
 {
-  v6 = a3;
+  settingsCopy = settings;
   convertDampingMassAndStiffnessToDampingRatioAndResponse();
-  [v6 setDampingRatio:0.0];
-  [v6 setResponse:0.0];
+  [settingsCopy setDampingRatio:0.0];
+  [settingsCopy setResponse:0.0];
 }
 
 + (id)settingsControllerModule
 {
   v182[4] = *MEMORY[0x277D85DE8];
-  v174 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v2 = MEMORY[0x277D43210];
   v168 = [MEMORY[0x277D431E8] rowWithTitle:@"Grace period (sec) after release" valueKeyPath:@"launchAfterButtonUpGracePeriod"];
   v162 = [v168 between:0.0 and:5.0];
@@ -295,7 +295,7 @@
   v182[3] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v182 count:4];
   v12 = [v2 sectionWithRows:v11 title:@"Launch Behavior (VO leniency)"];
-  [v174 addObject:v12];
+  [array addObject:v12];
 
   v13 = MEMORY[0x277D43210];
   v169 = [MEMORY[0x277D431E8] rowWithTitle:@"Prelude Droplet Radius" valueKeyPath:@"preludeDropletRadius"];
@@ -314,7 +314,7 @@
   v181[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v181 count:4];
   v23 = [v13 sectionWithRows:v22 title:@"Launch Prelude (initial droplet)"];
-  [v174 addObject:v23];
+  [array addObject:v23];
 
   v24 = MEMORY[0x277D43210];
   v170 = [MEMORY[0x277D432A8] rowWithTitle:@"Composites with Screen Blend Mode" valueKeyPath:@"visionIntelligenceKeylineScreenBlendMode"];
@@ -367,7 +367,7 @@
   v180[13] = v32;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v180 count:14];
   v34 = [v24 sectionWithRows:v33 title:@"Vision Intelligence Droplet Keyline"];
-  [v174 addObject:v34];
+  [array addObject:v34];
 
   v35 = MEMORY[0x277D43210];
   v171 = [MEMORY[0x277D431E8] rowWithTitle:@"Zoom Up Y & Scale Delay" valueKeyPath:@"zoomUpYAndScaleDelay"];
@@ -409,7 +409,7 @@
   v179[12] = v43;
   v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v179 count:13];
   v45 = [v35 sectionWithRows:v44 title:@"Launch Zoom Up"];
-  [v174 addObject:v45];
+  [array addObject:v45];
 
   v46 = MEMORY[0x277D43210];
   v47 = [MEMORY[0x277D431E8] rowWithTitle:@"Do-si-do target scale" valueKeyPath:@"dosidoTargetScale"];
@@ -424,7 +424,7 @@
   v178[3] = v52;
   v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v178 count:4];
   v54 = [v46 sectionWithRows:v53 title:@"Launch Do-si-do"];
-  [v174 addObject:v54];
+  [array addObject:v54];
 
   v55 = MEMORY[0x277D43210];
   v172 = [MEMORY[0x277D432A8] rowWithTitle:@"Enable when UI Unlocked" valueKeyPath:@"enablesStationaryDetectionForUnlocked"];
@@ -443,7 +443,7 @@
   v177[3] = v62;
   v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v177 count:4];
   v64 = [v55 sectionWithRows:v63 title:@"Device Stationary Detection"];
-  [v174 addObject:v64];
+  [array addObject:v64];
 
   v65 = MEMORY[0x277D43210];
   v66 = MEMORY[0x277D431E8];
@@ -454,7 +454,7 @@
   v176 = v70;
   v71 = [MEMORY[0x277CBEA60] arrayWithObjects:&v176 count:1];
   v72 = [v65 sectionWithRows:v71 title:@"Coaching UI"];
-  [v174 addObject:v72];
+  [array addObject:v72];
 
   v131 = MEMORY[0x277D43210];
   v73 = MEMORY[0x277D431B0];
@@ -519,9 +519,9 @@
   v175[14] = v94;
   v95 = [MEMORY[0x277CBEA60] arrayWithObjects:v175 count:15];
   v96 = [v131 sectionWithRows:v95 title:@"Reset"];
-  [v174 addObject:v96];
+  [array addObject:v96];
 
-  v97 = [MEMORY[0x277D43210] moduleWithTitle:@"Camera Capture Button" contents:v174];
+  v97 = [MEMORY[0x277D43210] moduleWithTitle:@"Camera Capture Button" contents:array];
 
   return v97;
 }

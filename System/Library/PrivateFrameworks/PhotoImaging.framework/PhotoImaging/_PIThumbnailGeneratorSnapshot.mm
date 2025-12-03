@@ -1,7 +1,7 @@
 @interface _PIThumbnailGeneratorSnapshot
 - (PIThumbnailGenerator)generator;
-- (_PIThumbnailGeneratorSnapshot)initWithGenerator:(id)a3;
-- (void)setReferenceTime:(id *)a3;
+- (_PIThumbnailGeneratorSnapshot)initWithGenerator:(id)generator;
+- (void)setReferenceTime:(id *)time;
 @end
 
 @implementation _PIThumbnailGeneratorSnapshot
@@ -13,38 +13,38 @@
   return WeakRetained;
 }
 
-- (void)setReferenceTime:(id *)a3
+- (void)setReferenceTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_referenceTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_referenceTime.epoch = time->var3;
   *&self->_referenceTime.value = v3;
 }
 
-- (_PIThumbnailGeneratorSnapshot)initWithGenerator:(id)a3
+- (_PIThumbnailGeneratorSnapshot)initWithGenerator:(id)generator
 {
   v16.receiver = self;
   v16.super_class = _PIThumbnailGeneratorSnapshot;
-  v3 = a3;
+  generatorCopy = generator;
   v4 = [(_PIThumbnailGeneratorSnapshot *)&v16 init];
-  objc_storeWeak(&v4->_generator, v3);
-  v5 = [v3 composition];
-  v6 = [v5 copy];
+  objc_storeWeak(&v4->_generator, generatorCopy);
+  composition = [generatorCopy composition];
+  v6 = [composition copy];
   composition = v4->_composition;
   v4->_composition = v6;
 
-  v8 = [v3 thumbnailTimes];
-  v9 = [v8 copy];
+  thumbnailTimes = [generatorCopy thumbnailTimes];
+  v9 = [thumbnailTimes copy];
   thumbnailTimes = v4->_thumbnailTimes;
   v4->_thumbnailTimes = v9;
 
-  v11 = [v3 resultQueue];
+  resultQueue = [generatorCopy resultQueue];
   resultQueue = v4->_resultQueue;
-  v4->_resultQueue = v11;
+  v4->_resultQueue = resultQueue;
 
-  v13 = [v3 partialResultHandler];
+  partialResultHandler = [generatorCopy partialResultHandler];
 
   partialResultHandler = v4->_partialResultHandler;
-  v4->_partialResultHandler = v13;
+  v4->_partialResultHandler = partialResultHandler;
 
   return v4;
 }

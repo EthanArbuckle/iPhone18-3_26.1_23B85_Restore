@@ -1,39 +1,39 @@
 @interface UIAlertView
-+ (id)_alertViewForSessionWithRemoteViewController:(id)a3;
-+ (id)_alertViewForWindow:(id)a3;
-+ (id)_remoteAlertViewWithBlock:(id)a3;
++ (id)_alertViewForSessionWithRemoteViewController:(id)controller;
++ (id)_alertViewForWindow:(id)window;
++ (id)_remoteAlertViewWithBlock:(id)block;
 - (BOOL)_isAnimating;
-- (BOOL)_prepareToDismissForTappedIndex:(int64_t)a3;
+- (BOOL)_prepareToDismissForTappedIndex:(int64_t)index;
 - (BOOL)isVisible;
 - (CGSize)backgroundSize;
 - (NSInteger)addButtonWithTitle:(NSString *)title;
 - (UIAlertView)initWithCoder:(NSCoder *)coder;
 - (UIAlertView)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles;
-- (UIAlertView)initWithTitle:(id)a3 buttons:(id)a4 defaultButtonIndex:(int)a5 delegate:(id)a6 context:(id)a7;
-- (UIAlertView)initWithTitle:(id)a3 message:(id)a4 delegate:(id)a5 defaultButton:(id)a6 cancelButton:(id)a7 otherButtons:(id)a8;
+- (UIAlertView)initWithTitle:(id)title buttons:(id)buttons defaultButtonIndex:(int)index delegate:(id)delegate context:(id)context;
+- (UIAlertView)initWithTitle:(id)title message:(id)message delegate:(id)delegate defaultButton:(id)button cancelButton:(id)cancelButton otherButtons:(id)buttons;
 - (UITextField)textFieldAtIndex:(NSInteger)textFieldIndex;
-- (id)_addTextFieldWithValue:(id)a3 label:(id)a4;
-- (id)_preparedAlertActionAtIndex:(unint64_t)a3;
+- (id)_addTextFieldWithValue:(id)value label:(id)label;
+- (id)_preparedAlertActionAtIndex:(unint64_t)index;
 - (id)delegate;
 - (id)initWithFrame:(CGRect)frame;
 - (id)textField;
 - (int)textFieldCount;
 - (int64_t)_maximumNumberOfTextFieldsForCurrentStyle;
-- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4;
+- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated;
 - (void)_prepareAlertActions;
-- (void)_setAccessoryView:(id)a3;
-- (void)_setIsPresented:(BOOL)a3;
-- (void)_showAnimated:(BOOL)a3;
-- (void)_updateButtonTitle:(id)a3 buttonIndex:(unint64_t)a4;
+- (void)_setAccessoryView:(id)view;
+- (void)_setIsPresented:(BOOL)presented;
+- (void)_showAnimated:(BOOL)animated;
+- (void)_updateButtonTitle:(id)title buttonIndex:(unint64_t)index;
 - (void)_updateFirstOtherButtonEnabledState;
 - (void)_updateMessageAndSubtitle;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated;
 - (void)setAlertViewStyle:(UIAlertViewStyle)alertViewStyle;
-- (void)setDefaultButtonIndex:(int64_t)a3;
+- (void)setDefaultButtonIndex:(int64_t)index;
 - (void)setMessage:(NSString *)message;
-- (void)setSubtitle:(id)a3;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation UIAlertView
@@ -74,23 +74,23 @@
   return v3;
 }
 
-- (UIAlertView)initWithTitle:(id)a3 buttons:(id)a4 defaultButtonIndex:(int)a5 delegate:(id)a6 context:(id)a7
+- (UIAlertView)initWithTitle:(id)title buttons:(id)buttons defaultButtonIndex:(int)index delegate:(id)delegate context:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  buttonsCopy = buttons;
+  delegateCopy = delegate;
+  contextCopy = context;
   v16 = [(UIAlertView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v17 = v16;
   if (v16)
   {
-    [(UIAlertView *)v16 setTitle:v12];
+    [(UIAlertView *)v16 setTitle:titleCopy];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v18 = v13;
+    v18 = buttonsCopy;
     v19 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v19)
     {
@@ -116,49 +116,49 @@
       while (v20);
     }
 
-    [(UIAlertView *)v17 setDefaultButtonIndex:a5];
-    [(UIAlertView *)v17 setDelegate:v14];
-    [(UIAlertView *)v17 setContext:v15];
+    [(UIAlertView *)v17 setDefaultButtonIndex:index];
+    [(UIAlertView *)v17 setDelegate:delegateCopy];
+    [(UIAlertView *)v17 setContext:contextCopy];
   }
 
   return v17;
 }
 
-- (UIAlertView)initWithTitle:(id)a3 message:(id)a4 delegate:(id)a5 defaultButton:(id)a6 cancelButton:(id)a7 otherButtons:(id)a8
+- (UIAlertView)initWithTitle:(id)title message:(id)message delegate:(id)delegate defaultButton:(id)button cancelButton:(id)cancelButton otherButtons:(id)buttons
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  messageCopy = message;
+  delegateCopy = delegate;
+  buttonCopy = button;
+  cancelButtonCopy = cancelButton;
+  buttonsCopy = buttons;
   v20 = [(UIAlertView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v21 = v20;
   if (v20)
   {
-    [(UIAlertView *)v20 setTitle:v14];
-    [(UIAlertView *)v21 setMessage:v15];
-    [(UIAlertView *)v21 setDelegate:v16];
-    if (v17)
+    [(UIAlertView *)v20 setTitle:titleCopy];
+    [(UIAlertView *)v21 setMessage:messageCopy];
+    [(UIAlertView *)v21 setDelegate:delegateCopy];
+    if (buttonCopy)
     {
-      [(UIAlertView *)v21 setCancelButtonIndex:[(UIAlertView *)v21 addButtonWithTitle:v17]];
+      [(UIAlertView *)v21 setCancelButtonIndex:[(UIAlertView *)v21 addButtonWithTitle:buttonCopy]];
     }
 
-    if (v18)
+    if (cancelButtonCopy)
     {
-      [(UIAlertView *)v21 setCancelButtonIndex:[(UIAlertView *)v21 addButtonWithTitle:v18]];
+      [(UIAlertView *)v21 setCancelButtonIndex:[(UIAlertView *)v21 addButtonWithTitle:cancelButtonCopy]];
     }
 
-    if (v19)
+    if (buttonsCopy)
     {
       v25 = &v26;
       do
       {
-        [(UIAlertView *)v21 addButtonWithTitle:v19];
+        [(UIAlertView *)v21 addButtonWithTitle:buttonsCopy];
         v22 = v25++;
         v23 = *v22;
 
-        v19 = v23;
+        buttonsCopy = v23;
       }
 
       while (v23);
@@ -231,29 +231,29 @@
   [(UIView *)&v4 dealloc];
 }
 
-- (void)_updateButtonTitle:(id)a3 buttonIndex:(unint64_t)a4
+- (void)_updateButtonTitle:(id)title buttonIndex:(unint64_t)index
 {
-  v7 = a3;
-  if ([(NSMutableArray *)self->_actions count]> a4)
+  titleCopy = title;
+  if ([(NSMutableArray *)self->_actions count]> index)
   {
-    [(NSMutableArray *)self->_actions replaceObjectAtIndex:a4 withObject:v7];
+    [(NSMutableArray *)self->_actions replaceObjectAtIndex:index withObject:titleCopy];
   }
 
-  v6 = [(UIAlertView *)self _preparedAlertActionAtIndex:a4];
-  [v6 setTitle:v7];
+  v6 = [(UIAlertView *)self _preparedAlertActionAtIndex:index];
+  [v6 setTitle:titleCopy];
 }
 
-- (id)_preparedAlertActionAtIndex:(unint64_t)a3
+- (id)_preparedAlertActionAtIndex:(unint64_t)index
 {
-  v4 = [(UIAlertController *)self->_alertController _actions];
-  if ([v4 count] <= a3)
+  _actions = [(UIAlertController *)self->_alertController _actions];
+  if ([_actions count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [_actions objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -329,8 +329,8 @@ uint64_t __35__UIAlertView__prepareAlertActions__block_invoke_2(uint64_t a1)
 {
   if (self->_isPresented)
   {
-    v2 = [(UIAlertView *)self window];
-    v3 = [v2 isHidden] ^ 1;
+    window = [(UIAlertView *)self window];
+    v3 = [window isHidden] ^ 1;
   }
 
   else
@@ -350,9 +350,9 @@ uint64_t __35__UIAlertView__prepareAlertActions__block_invoke_2(uint64_t a1)
   [(UIAlertView *)self _updateMessageAndSubtitle];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = [a3 copy];
+  v4 = [subtitle copy];
   subtitle = self->_subtitle;
   self->_subtitle = v4;
 
@@ -368,8 +368,8 @@ uint64_t __35__UIAlertView__prepareAlertActions__block_invoke_2(uint64_t a1)
     if (subtitle)
     {
       alertController = self->_alertController;
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", subtitle, message];
-      [(UIAlertController *)alertController setMessage:v7];
+      message = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", subtitle, message];
+      [(UIAlertController *)alertController setMessage:message];
 
       return;
     }
@@ -385,8 +385,8 @@ uint64_t __35__UIAlertView__prepareAlertActions__block_invoke_2(uint64_t a1)
 - (void)setAlertViewStyle:(UIAlertViewStyle)alertViewStyle
 {
   self->_alertViewStyle = alertViewStyle;
-  v5 = [(UIAlertView *)self _alertController];
-  [v5 _removeAllTextFields];
+  _alertController = [(UIAlertView *)self _alertController];
+  [_alertController _removeAllTextFields];
 
   if (alertViewStyle != UIAlertViewStyleSecureTextInput)
   {
@@ -410,33 +410,33 @@ uint64_t __35__UIAlertView__prepareAlertActions__block_invoke_2(uint64_t a1)
   [v10 setSecureTextEntry:1];
 }
 
-- (BOOL)_prepareToDismissForTappedIndex:(int64_t)a3
+- (BOOL)_prepareToDismissForTappedIndex:(int64_t)index
 {
   self->_handlingAlertActionShouldDismiss = 1;
-  v5 = [(UIAlertView *)self delegate];
-  v6 = v5;
-  v7 = self;
+  delegate = [(UIAlertView *)self delegate];
+  v6 = delegate;
+  selfCopy = self;
   self->_alertControllerShouldDismiss = 0;
   if (objc_opt_respondsToSelector())
   {
-    [v5 alertView:self clickedButtonAtIndex:a3];
+    [delegate alertView:self clickedButtonAtIndex:index];
   }
 
-  [(UIAlertView *)self dismissWithClickedButtonIndex:a3 animated:1];
+  [(UIAlertView *)self dismissWithClickedButtonIndex:index animated:1];
   self->_handlingAlertActionShouldDismiss = 0;
   return self->_alertControllerShouldDismiss;
 }
 
-- (void)_setIsPresented:(BOOL)a3
+- (void)_setIsPresented:(BOOL)presented
 {
-  v3 = a3;
-  v5 = [(UIAlertView *)self delegate];
-  v6 = v5;
-  if (self->_isPresented != v3)
+  presentedCopy = presented;
+  delegate = [(UIAlertView *)self delegate];
+  v6 = delegate;
+  if (self->_isPresented != presentedCopy)
   {
-    v9 = v5;
-    self->_isPresented = v3;
-    if (v3)
+    v9 = delegate;
+    self->_isPresented = presentedCopy;
+    if (presentedCopy)
     {
       objc_storeStrong(&self->_retainedSelf, self);
       [(UIAlertView *)self _prepareAlertActions];
@@ -467,8 +467,8 @@ LABEL_7:
   v5 = title;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIAlertView.m" lineNumber:384 description:@"UIAlertView: Buttons added must have a title."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIAlertView.m" lineNumber:384 description:@"UIAlertView: Buttons added must have a title."];
   }
 
   v6 = [(NSMutableArray *)self->_actions count];
@@ -477,30 +477,30 @@ LABEL_7:
   return v6;
 }
 
-- (void)setDefaultButtonIndex:(int64_t)a3
+- (void)setDefaultButtonIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
-    v3 = -1;
+    indexCopy = -1;
   }
 
   else
   {
-    v3 = a3;
+    indexCopy = index;
   }
 
-  self->_defaultButtonIndex = v3;
+  self->_defaultButtonIndex = indexCopy;
 }
 
 - (void)_updateFirstOtherButtonEnabledState
 {
-  v5 = [(UIAlertView *)self delegate];
+  delegate = [(UIAlertView *)self delegate];
   v3 = [(UIAlertView *)self _preparedAlertActionAtIndex:self->_firstOtherButtonIndex];
   if (v3)
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v5 alertViewShouldEnableFirstOtherButton:self];
+      v4 = [delegate alertViewShouldEnableFirstOtherButton:self];
     }
 
     else
@@ -515,24 +515,24 @@ LABEL_7:
 - (int64_t)_maximumNumberOfTextFieldsForCurrentStyle
 {
   [(UIAlertView *)self alertViewStyle];
-  v3 = [(UIAlertView *)self alertViewStyle];
-  if ((v3 - 1) > 2)
+  alertViewStyle = [(UIAlertView *)self alertViewStyle];
+  if ((alertViewStyle - 1) > 2)
   {
     return 2;
   }
 
   else
   {
-    return qword_18A677798[v3 - 1];
+    return qword_18A677798[alertViewStyle - 1];
   }
 }
 
-- (id)_addTextFieldWithValue:(id)a3 label:(id)a4
+- (id)_addTextFieldWithValue:(id)value label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIAlertView *)self textFieldCount];
-  if ([(UIAlertView *)self _maximumNumberOfTextFieldsForCurrentStyle]== v8)
+  valueCopy = value;
+  labelCopy = label;
+  textFieldCount = [(UIAlertView *)self textFieldCount];
+  if ([(UIAlertView *)self _maximumNumberOfTextFieldsForCurrentStyle]== textFieldCount)
   {
     v9 = 0;
   }
@@ -545,16 +545,16 @@ LABEL_7:
     v20 = __Block_byref_object_copy__1;
     v21 = __Block_byref_object_dispose__1;
     v22 = 0;
-    v10 = [(UIAlertView *)self _alertController];
+    _alertController = [(UIAlertView *)self _alertController];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__UIAlertView__addTextFieldWithValue_label___block_invoke;
     v12[3] = &unk_1E70F37E8;
     v16 = &v17;
-    v13 = v6;
-    v14 = v7;
-    v15 = self;
-    [v10 addTextFieldWithConfigurationHandler:v12];
+    v13 = valueCopy;
+    v14 = labelCopy;
+    selfCopy = self;
+    [_alertController addTextFieldWithConfigurationHandler:v12];
 
     v9 = v18[5];
     _Block_object_dispose(&v17, 8);
@@ -574,44 +574,44 @@ void __44__UIAlertView__addTextFieldWithValue_label___block_invoke(void *a1, voi
 
 - (int)textFieldCount
 {
-  v2 = [(UIAlertView *)self _alertController];
-  v3 = [v2 textFields];
-  v4 = [v3 count];
+  _alertController = [(UIAlertView *)self _alertController];
+  textFields = [_alertController textFields];
+  v4 = [textFields count];
 
   return v4;
 }
 
 - (id)textField
 {
-  v2 = [(UIAlertView *)self _alertController];
-  v3 = [v2 textFields];
-  v4 = [v3 firstObject];
+  _alertController = [(UIAlertView *)self _alertController];
+  textFields = [_alertController textFields];
+  firstObject = [textFields firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (UITextField)textFieldAtIndex:(NSInteger)textFieldIndex
 {
-  v4 = [(UIAlertView *)self _alertController];
-  v5 = [v4 textFields];
+  _alertController = [(UIAlertView *)self _alertController];
+  textFields = [_alertController textFields];
 
-  if (textFieldIndex < 0 || [v5 count] <= textFieldIndex)
+  if (textFieldIndex < 0 || [textFields count] <= textFieldIndex)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:textFieldIndex];
+    v6 = [textFields objectAtIndex:textFieldIndex];
   }
 
   return v6;
 }
 
-- (void)_showAnimated:(BOOL)a3
+- (void)_showAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIAlertView *)self delegate];
+  animatedCopy = animated;
+  delegate = [(UIAlertView *)self delegate];
   [(UIAlertView *)self _setIsPresented:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -624,10 +624,10 @@ void __44__UIAlertView__addTextFieldWithValue_label___block_invoke(void *a1, voi
   v8[1] = 3221225472;
   v8[2] = __29__UIAlertView__showAnimated___block_invoke_2;
   v8[3] = &unk_1E70F35B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  [(_UIAlertControllerShimPresenter *)presenter _presentAlertControllerAnimated:v3 completion:v8];
+  v9 = delegate;
+  selfCopy = self;
+  v7 = delegate;
+  [(_UIAlertControllerShimPresenter *)presenter _presentAlertControllerAnimated:animatedCopy completion:v8];
 }
 
 void __29__UIAlertView__showAnimated___block_invoke_2(uint64_t a1)
@@ -647,12 +647,12 @@ void __29__UIAlertView__showAnimated___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIAlertView *)self cancelButtonIndex];
+  animatedCopy = animated;
+  cancelButtonIndex = [(UIAlertView *)self cancelButtonIndex];
 
-  [(UIAlertView *)self dismissWithClickedButtonIndex:v5 animated:v3];
+  [(UIAlertView *)self dismissWithClickedButtonIndex:cancelButtonIndex animated:animatedCopy];
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated
@@ -660,10 +660,10 @@ void __29__UIAlertView__showAnimated___block_invoke_2(uint64_t a1)
   if (!self->_dismissingAlertController)
   {
     v4 = animated;
-    v7 = [(UIAlertView *)self delegate];
+    delegate = [(UIAlertView *)self delegate];
     self->_alertControllerShouldDismiss = 1;
     self->_dismissingAlertController = 1;
-    v8 = v7;
+    v8 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v8 alertView:self willDismissWithButtonIndex:buttonIndex];
@@ -676,26 +676,26 @@ void __29__UIAlertView__showAnimated___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)_performPresentationDismissalWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated
 {
   if (self->_alertControllerShouldDismiss)
   {
     v17 = v4;
     v18 = v5;
-    v6 = a4;
-    v9 = [(UIAlertView *)self delegate];
+    animatedCopy = animated;
+    delegate = [(UIAlertView *)self delegate];
     presenter = self->_presenter;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __76__UIAlertView__performPresentationDismissalWithClickedButtonIndex_animated___block_invoke;
     v13[3] = &unk_1E70F36D0;
-    v14 = v9;
-    v15 = self;
-    v16 = a3;
-    v11 = v9;
-    v12 = self;
-    [(_UIAlertControllerShimPresenter *)presenter _dismissAlertControllerAnimated:v6 completion:v13];
-    v12->_dismissingAlertController = 0;
+    v14 = delegate;
+    selfCopy = self;
+    indexCopy = index;
+    v11 = delegate;
+    selfCopy2 = self;
+    [(_UIAlertControllerShimPresenter *)presenter _dismissAlertControllerAnimated:animatedCopy completion:v13];
+    selfCopy2->_dismissingAlertController = 0;
   }
 }
 
@@ -732,13 +732,13 @@ uint64_t __76__UIAlertView__performPresentationDismissalWithClickedButtonIndex_a
   return result;
 }
 
-- (void)_setAccessoryView:(id)a3
+- (void)_setAccessoryView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
+    viewCopy = view;
     v5 = objc_alloc_init(UIViewController);
-    [(UIViewController *)v5 setView:v4];
+    [(UIViewController *)v5 setView:viewCopy];
 
     v7 = [[_UIAlertViewShimAccessoryViewController alloc] initWithAccessoryViewController:v5];
   }
@@ -748,8 +748,8 @@ uint64_t __76__UIAlertView__performPresentationDismissalWithClickedButtonIndex_a
     v7 = 0;
   }
 
-  v6 = [(UIAlertView *)self _alertController];
-  [v6 setContentViewController:v7];
+  _alertController = [(UIAlertView *)self _alertController];
+  [_alertController setContentViewController:v7];
 }
 
 - (id)delegate
@@ -759,21 +759,21 @@ uint64_t __76__UIAlertView__performPresentationDismissalWithClickedButtonIndex_a
   return WeakRetained;
 }
 
-+ (id)_remoteAlertViewWithBlock:(id)a3
++ (id)_remoteAlertViewWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [(UIAlertView *)[_UIUserNotificationAlertView alloc] initWithTitle:0 message:0 delegate:0 cancelButtonTitle:0 otherButtonTitles:0];
-  v3[2](v3, v4);
+  blockCopy[2](blockCopy, v4);
 
   v5 = [_UIUserNotificationRestrictedAlertViewProxy restrictedProxyForAlertView:v4];
 
   return v5;
 }
 
-+ (id)_alertViewForSessionWithRemoteViewController:(id)a3
++ (id)_alertViewForSessionWithRemoteViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"remoteViewControllerProxy is nil!"];
   }
@@ -782,16 +782,16 @@ uint64_t __76__UIAlertView__performPresentationDismissalWithClickedButtonIndex_a
   v8[1] = 3221225472;
   v8[2] = __80__UIAlertView_ViewServiceSupport___alertViewForSessionWithRemoteViewController___block_invoke;
   v8[3] = &unk_1E7128918;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 _remoteAlertViewWithBlock:v8];
+  v9 = controllerCopy;
+  v5 = controllerCopy;
+  v6 = [self _remoteAlertViewWithBlock:v8];
 
   return v6;
 }
 
-+ (id)_alertViewForWindow:(id)a3
++ (id)_alertViewForWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -799,13 +799,13 @@ uint64_t __76__UIAlertView__performPresentationDismissalWithClickedButtonIndex_a
     v7[1] = 3221225472;
     v7[2] = __55__UIAlertView_ViewServiceSupport___alertViewForWindow___block_invoke;
     v7[3] = &unk_1E7128918;
-    v8 = v4;
-    v5 = [a1 _remoteAlertViewWithBlock:v7];
+    v8 = windowCopy;
+    v5 = [self _remoteAlertViewWithBlock:v7];
   }
 
   else
   {
-    v5 = [[a1 alloc] initWithTitle:0 message:0 delegate:0 cancelButtonTitle:0 otherButtonTitles:0];
+    v5 = [[self alloc] initWithTitle:0 message:0 delegate:0 cancelButtonTitle:0 otherButtonTitles:0];
   }
 
   return v5;

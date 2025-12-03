@@ -2,11 +2,11 @@
 - (BOOL)_shouldHaveAttributeViewController;
 - (BOOL)_shouldInstallOpacityLabel;
 - (CGRect)_colorIndicatorImageViewFrame;
-- (PKPaletteInkingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6;
-- (PKPaletteInkingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6 toolProperties:(id)a7;
+- (PKPaletteInkingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration;
+- (PKPaletteInkingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration toolProperties:(id)properties;
 - (id)_opacityLabelFont;
 - (id)_opacityLabelTextColor;
-- (id)_tintedImage:(id)a3 color:(id)a4 allowHDR:(BOOL)a5;
+- (id)_tintedImage:(id)image color:(id)color allowHDR:(BOOL)r;
 - (id)_toolColorIndicatorContourImageForCurrentEdgeLocation;
 - (id)_toolColorIndicatorImageForCurrentEdgeLocation;
 - (id)_toolTipContourImageForCurrentEdgeLocation;
@@ -19,44 +19,44 @@
 - (int64_t)azimuthImageIndex;
 - (unint64_t)_displayModeForAttributeViewController;
 - (void)_reloadToolImage;
-- (void)_setToolProperties:(id)a3 toolIdentifier:(id)a4;
+- (void)_setToolProperties:(id)properties toolIdentifier:(id)identifier;
 - (void)_updateOpacityLabel;
 - (void)_updateToolColorBandAndTipImageViews;
 - (void)_updateWantsExtendedDynamicRange;
-- (void)inkAttributesPickerDidChangeInkAzimuth:(id)a3;
-- (void)inkAttributesPickerDidChangeInkOpacity:(id)a3;
-- (void)inkAttributesPickerDidChangeInkThickness:(id)a3;
+- (void)inkAttributesPickerDidChangeInkAzimuth:(id)azimuth;
+- (void)inkAttributesPickerDidChangeInkOpacity:(id)opacity;
+- (void)inkAttributesPickerDidChangeInkThickness:(id)thickness;
 - (void)layoutSubviews;
-- (void)setAllowHDR:(BOOL)a3;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setInk:(id)a3;
-- (void)setInkAzimuth:(double)a3;
-- (void)setInkColor:(id)a3;
-- (void)setInkWeight:(double)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)setToolProperties:(id)a3;
+- (void)setAllowHDR:(BOOL)r;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setInk:(id)ink;
+- (void)setInkAzimuth:(double)azimuth;
+- (void)setInkColor:(id)color;
+- (void)setInkWeight:(double)weight;
+- (void)setScalingFactor:(double)factor;
+- (void)setToolProperties:(id)properties;
 - (void)updateConstraints;
 @end
 
 @implementation PKPaletteInkingToolView
 
-- (PKPaletteInkingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6
+- (PKPaletteInkingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = a5;
-  v26 = a4;
-  v11 = a3;
-  v12 = [v9 defaultColor];
-  if (!v12)
+  configurationCopy = configuration;
+  variantCopy = variant;
+  itemIdentifierCopy = itemIdentifier;
+  identifierCopy = identifier;
+  defaultColor = [configurationCopy defaultColor];
+  if (!defaultColor)
   {
-    v12 = [MEMORY[0x1E69DC888] blackColor];
+    defaultColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
   v30 = xmmword_1C801D150;
   *v31 = unk_1C801D160;
-  DKUColorGetRGBAComponents([v12 CGColor], &v30);
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  DKUColorGetRGBAComponents([defaultColor CGColor], &v30);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v28[0] = @"PKInkRedComponentProperty";
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:*&v30];
   v29[0] = v14;
@@ -67,40 +67,40 @@
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:v31[0]];
   v29[2] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:3];
-  [v13 setObject:v17 forKeyedSubscript:@"PKInkColorProperty"];
+  [dictionary setObject:v17 forKeyedSubscript:@"PKInkColorProperty"];
 
   v18 = MEMORY[0x1E696AD98];
-  [PKInk defaultWeightForIdentifier:v11];
+  [PKInk defaultWeightForIdentifier:identifierCopy];
   v19 = [v18 numberWithDouble:?];
-  [v13 setObject:v19 forKeyedSubscript:@"PKInkWeightProperty"];
+  [dictionary setObject:v19 forKeyedSubscript:@"PKInkWeightProperty"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:v31[1]];
-  [v13 setObject:v20 forKeyedSubscript:@"PKInkOpacityProperty"];
+  [dictionary setObject:v20 forKeyedSubscript:@"PKInkOpacityProperty"];
 
-  [v13 setObject:v10 forKeyedSubscript:@"PKInkVariantProperty"];
+  [dictionary setObject:variantCopy forKeyedSubscript:@"PKInkVariantProperty"];
   v21 = MEMORY[0x1E696AD98];
-  [PKInk defaultAzimuthForIdentifier:v11];
+  [PKInk defaultAzimuthForIdentifier:identifierCopy];
   v22 = [v21 numberWithDouble:?];
-  [v13 setObject:v22 forKeyedSubscript:@"PKInkAzimuthProperty"];
+  [dictionary setObject:v22 forKeyedSubscript:@"PKInkAzimuthProperty"];
 
-  v23 = [v13 copy];
-  v24 = [(PKPaletteInkingToolView *)self initWithToolIdentifier:v11 itemIdentifier:v26 variant:v10 configuration:v9 toolProperties:v23];
+  v23 = [dictionary copy];
+  v24 = [(PKPaletteInkingToolView *)self initWithToolIdentifier:identifierCopy itemIdentifier:itemIdentifierCopy variant:variantCopy configuration:configurationCopy toolProperties:v23];
 
   return v24;
 }
 
-- (PKPaletteInkingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6 toolProperties:(id)a7
+- (PKPaletteInkingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration toolProperties:(id)properties
 {
-  v12 = a3;
-  v13 = a7;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v116.receiver = self;
   v116.super_class = PKPaletteInkingToolView;
-  v14 = [(PKPaletteToolView *)&v116 initWithToolIdentifier:v12 itemIdentifier:a4 variant:a5 configuration:a6];
+  v14 = [(PKPaletteToolView *)&v116 initWithToolIdentifier:identifierCopy itemIdentifier:itemIdentifier variant:variant configuration:configuration];
   v15 = v14;
   if (v14)
   {
-    [(PKPaletteInkingToolView *)v14 _setToolProperties:v13 toolIdentifier:v12];
-    if (([v12 isEqual:@"com.apple.ink.lasso"] & 1) == 0 && (objc_msgSend(v12, "isEqual:", @"com.apple.ink.generationtool") & 1) == 0)
+    [(PKPaletteInkingToolView *)v14 _setToolProperties:propertiesCopy toolIdentifier:identifierCopy];
+    if (([identifierCopy isEqual:@"com.apple.ink.lasso"] & 1) == 0 && (objc_msgSend(identifierCopy, "isEqual:", @"com.apple.ink.generationtool") & 1) == 0)
     {
       v16 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       colorIndicatorImageView = v15->_colorIndicatorImageView;
@@ -110,31 +110,31 @@
       [(UIImageView *)v15->_colorIndicatorImageView _setLocalOverrideTraitCollection:v18];
 
       [(PKPaletteInkingToolView *)v15 addSubview:v15->_colorIndicatorImageView];
-      v19 = [(PKPaletteToolView *)v15 configuration];
-      v20 = [v19 bandMaskImage];
-      v21 = [v20 imageWithRenderingMode:2];
+      configuration = [(PKPaletteToolView *)v15 configuration];
+      bandMaskImage = [configuration bandMaskImage];
+      v21 = [bandMaskImage imageWithRenderingMode:2];
       [(PKPaletteInkingToolView *)v15 setColorIndicatorImageUp:v21];
 
       v22 = MEMORY[0x1E69DCAB8];
-      v23 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
-      v24 = [v23 CGImage];
-      v25 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
-      [v25 scale];
-      v26 = [v22 imageWithCGImage:v24 scale:3 orientation:?];
+      colorIndicatorImageUp = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
+      cGImage = [colorIndicatorImageUp CGImage];
+      colorIndicatorImageUp2 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
+      [colorIndicatorImageUp2 scale];
+      v26 = [v22 imageWithCGImage:cGImage scale:3 orientation:?];
       v27 = [v26 imageWithRenderingMode:2];
       [(PKPaletteInkingToolView *)v15 setColorIndicatorImageRight:v27];
 
       v28 = MEMORY[0x1E69DCAB8];
-      v29 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
-      v30 = [v29 CGImage];
-      v31 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
-      [v31 scale];
-      v32 = [v28 imageWithCGImage:v30 scale:2 orientation:?];
+      colorIndicatorImageUp3 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
+      cGImage2 = [colorIndicatorImageUp3 CGImage];
+      colorIndicatorImageUp4 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
+      [colorIndicatorImageUp4 scale];
+      v32 = [v28 imageWithCGImage:cGImage2 scale:2 orientation:?];
       v33 = [v32 imageWithRenderingMode:2];
       [(PKPaletteInkingToolView *)v15 setColorIndicatorImageLeft:v33];
 
-      v34 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
-      [(UIImageView *)v15->_colorIndicatorImageView setImage:v34];
+      colorIndicatorImageUp5 = [(PKPaletteInkingToolView *)v15 colorIndicatorImageUp];
+      [(UIImageView *)v15->_colorIndicatorImageView setImage:colorIndicatorImageUp5];
 
       v35 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       colorIndicatorContourImageView = v15->_colorIndicatorContourImageView;
@@ -144,24 +144,24 @@
       [(UIImageView *)v15->_colorIndicatorContourImageView _setLocalOverrideTraitCollection:v37];
 
       [(PKPaletteInkingToolView *)v15 addSubview:v15->_colorIndicatorContourImageView];
-      v38 = [(PKPaletteToolView *)v15 configuration];
-      v39 = [v38 bandContourImage];
-      v40 = [v39 imageWithRenderingMode:1];
+      configuration2 = [(PKPaletteToolView *)v15 configuration];
+      bandContourImage = [configuration2 bandContourImage];
+      v40 = [bandContourImage imageWithRenderingMode:1];
       colorIndicatorContourImageUp = v15->_colorIndicatorContourImageUp;
       v15->_colorIndicatorContourImageUp = v40;
 
       v42 = MEMORY[0x1E69DCAB8];
-      v43 = [(UIImage *)v15->_colorIndicatorContourImageUp CGImage];
+      cGImage3 = [(UIImage *)v15->_colorIndicatorContourImageUp CGImage];
       [(UIImage *)v15->_colorIndicatorContourImageUp scale];
-      v44 = [v42 imageWithCGImage:v43 scale:2 orientation:?];
+      v44 = [v42 imageWithCGImage:cGImage3 scale:2 orientation:?];
       v45 = [v44 imageWithRenderingMode:1];
       colorIndicatorContourImageLeft = v15->_colorIndicatorContourImageLeft;
       v15->_colorIndicatorContourImageLeft = v45;
 
       v47 = MEMORY[0x1E69DCAB8];
-      v48 = [(UIImage *)v15->_colorIndicatorContourImageUp CGImage];
+      cGImage4 = [(UIImage *)v15->_colorIndicatorContourImageUp CGImage];
       [(UIImage *)v15->_colorIndicatorContourImageUp scale];
-      v49 = [v47 imageWithCGImage:v48 scale:3 orientation:?];
+      v49 = [v47 imageWithCGImage:cGImage4 scale:3 orientation:?];
       v50 = [v49 imageWithRenderingMode:1];
       colorIndicatorContourImageRight = v15->_colorIndicatorContourImageRight;
       v15->_colorIndicatorContourImageRight = v50;
@@ -174,35 +174,35 @@
       v54 = [MEMORY[0x1E69DD1B8] traitCollectionWithLegibilityWeight:0];
       [(UIImageView *)v15->_tipIndicatorImageView _setLocalOverrideTraitCollection:v54];
 
-      v55 = [(PKPaletteToolView *)v15 imageContentView];
-      [v55 addSubview:v15->_tipIndicatorImageView];
+      imageContentView = [(PKPaletteToolView *)v15 imageContentView];
+      [imageContentView addSubview:v15->_tipIndicatorImageView];
 
-      v56 = [(PKPaletteToolView *)v15 configuration];
-      v57 = [v56 tipMaskImage];
-      v58 = [v57 imageWithRenderingMode:2];
+      configuration3 = [(PKPaletteToolView *)v15 configuration];
+      tipMaskImage = [configuration3 tipMaskImage];
+      v58 = [tipMaskImage imageWithRenderingMode:2];
       [(PKPaletteInkingToolView *)v15 setToolTipImageUp:v58];
 
       v59 = MEMORY[0x1E69DCAB8];
-      v60 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
-      v61 = [v60 CGImage];
-      v62 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
-      [v62 scale];
-      v63 = [v59 imageWithCGImage:v61 scale:3 orientation:?];
+      toolTipImageUp = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
+      cGImage5 = [toolTipImageUp CGImage];
+      toolTipImageUp2 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
+      [toolTipImageUp2 scale];
+      v63 = [v59 imageWithCGImage:cGImage5 scale:3 orientation:?];
       v64 = [v63 imageWithRenderingMode:2];
       [(PKPaletteInkingToolView *)v15 setToolTipImageRight:v64];
 
       v65 = MEMORY[0x1E69DCAB8];
-      v66 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
-      v67 = [v66 CGImage];
-      v68 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
-      [v68 scale];
-      v69 = [v65 imageWithCGImage:v67 scale:2 orientation:?];
+      toolTipImageUp3 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
+      cGImage6 = [toolTipImageUp3 CGImage];
+      toolTipImageUp4 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
+      [toolTipImageUp4 scale];
+      v69 = [v65 imageWithCGImage:cGImage6 scale:2 orientation:?];
       v70 = [v69 imageWithRenderingMode:2];
       [(PKPaletteInkingToolView *)v15 setToolTipImageLeft:v70];
 
-      v71 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
-      v72 = [(PKPaletteInkingToolView *)v15 tipIndicatorImageView];
-      [v72 setImage:v71];
+      toolTipImageUp5 = [(PKPaletteInkingToolView *)v15 toolTipImageUp];
+      tipIndicatorImageView = [(PKPaletteInkingToolView *)v15 tipIndicatorImageView];
+      [tipIndicatorImageView setImage:toolTipImageUp5];
 
       v73 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       tipIndicatorContourImageView = v15->_tipIndicatorContourImageView;
@@ -211,27 +211,27 @@
       v75 = [MEMORY[0x1E69DD1B8] traitCollectionWithLegibilityWeight:0];
       [(UIImageView *)v15->_tipIndicatorContourImageView _setLocalOverrideTraitCollection:v75];
 
-      v76 = [(PKPaletteToolView *)v15 imageContentView];
-      [v76 addSubview:v15->_tipIndicatorContourImageView];
+      imageContentView2 = [(PKPaletteToolView *)v15 imageContentView];
+      [imageContentView2 addSubview:v15->_tipIndicatorContourImageView];
 
-      v77 = [(PKPaletteToolView *)v15 configuration];
-      v78 = [v77 tipContourImage];
-      v79 = [v78 imageWithRenderingMode:1];
+      configuration4 = [(PKPaletteToolView *)v15 configuration];
+      tipContourImage = [configuration4 tipContourImage];
+      v79 = [tipContourImage imageWithRenderingMode:1];
       toolTipContourImageUp = v15->_toolTipContourImageUp;
       v15->_toolTipContourImageUp = v79;
 
       v81 = MEMORY[0x1E69DCAB8];
-      v82 = [(UIImage *)v15->_toolTipContourImageUp CGImage];
+      cGImage7 = [(UIImage *)v15->_toolTipContourImageUp CGImage];
       [(UIImage *)v15->_toolTipContourImageUp scale];
-      v83 = [v81 imageWithCGImage:v82 scale:2 orientation:?];
+      v83 = [v81 imageWithCGImage:cGImage7 scale:2 orientation:?];
       v84 = [v83 imageWithRenderingMode:1];
       toolTipContourImageLeft = v15->_toolTipContourImageLeft;
       v15->_toolTipContourImageLeft = v84;
 
       v86 = MEMORY[0x1E69DCAB8];
-      v87 = [(UIImage *)v15->_toolTipContourImageUp CGImage];
+      cGImage8 = [(UIImage *)v15->_toolTipContourImageUp CGImage];
       [(UIImage *)v15->_toolTipContourImageUp scale];
-      v88 = [v86 imageWithCGImage:v87 scale:3 orientation:?];
+      v88 = [v86 imageWithCGImage:cGImage8 scale:3 orientation:?];
       v89 = [v88 imageWithRenderingMode:1];
       toolTipContourImageRight = v15->_toolTipContourImageRight;
       v15->_toolTipContourImageRight = v89;
@@ -243,42 +243,42 @@
         opacityLabel = v15->_opacityLabel;
         v15->_opacityLabel = v91;
 
-        v93 = [(PKPaletteInkingToolView *)v15 _opacityLabelFont];
-        [(UILabel *)v15->_opacityLabel setFont:v93];
+        _opacityLabelFont = [(PKPaletteInkingToolView *)v15 _opacityLabelFont];
+        [(UILabel *)v15->_opacityLabel setFont:_opacityLabelFont];
 
         [(UILabel *)v15->_opacityLabel setTextAlignment:1];
         [(UILabel *)v15->_opacityLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-        v94 = [(PKPaletteInkingToolView *)v15 _opacityLabelTextColor];
-        [(UILabel *)v15->_opacityLabel setTextColor:v94];
+        _opacityLabelTextColor = [(PKPaletteInkingToolView *)v15 _opacityLabelTextColor];
+        [(UILabel *)v15->_opacityLabel setTextColor:_opacityLabelTextColor];
         [(PKPaletteInkingToolView *)v15 addSubview:v15->_opacityLabel];
         [(PKPaletteInkingToolView *)v15 _updateOpacityLabel];
-        v95 = [(UILabel *)v15->_opacityLabel topAnchor];
-        v96 = [(PKPaletteInkingToolView *)v15 topAnchor];
-        v97 = [v95 constraintEqualToAnchor:v96];
+        topAnchor = [(UILabel *)v15->_opacityLabel topAnchor];
+        topAnchor2 = [(PKPaletteInkingToolView *)v15 topAnchor];
+        v97 = [topAnchor constraintEqualToAnchor:topAnchor2];
         opacityLabelTopConstraint = v15->_opacityLabelTopConstraint;
         v15->_opacityLabelTopConstraint = v97;
 
-        v99 = [(UILabel *)v15->_opacityLabel leftAnchor];
-        v100 = [(PKPaletteInkingToolView *)v15 leftAnchor];
-        v101 = [v99 constraintEqualToAnchor:v100];
+        leftAnchor = [(UILabel *)v15->_opacityLabel leftAnchor];
+        leftAnchor2 = [(PKPaletteInkingToolView *)v15 leftAnchor];
+        v101 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
         opacityLabelLeftConstraint = v15->_opacityLabelLeftConstraint;
         v15->_opacityLabelLeftConstraint = v101;
 
-        v103 = [(PKPaletteInkingToolView *)v15 rightAnchor];
-        v104 = [(UILabel *)v15->_opacityLabel rightAnchor];
-        v105 = [v103 constraintEqualToAnchor:v104];
+        rightAnchor = [(PKPaletteInkingToolView *)v15 rightAnchor];
+        rightAnchor2 = [(UILabel *)v15->_opacityLabel rightAnchor];
+        v105 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
         opacityLabelRightConstraint = v15->_opacityLabelRightConstraint;
         v15->_opacityLabelRightConstraint = v105;
 
-        v107 = [(UILabel *)v15->_opacityLabel centerXAnchor];
-        v108 = [(PKPaletteInkingToolView *)v15 centerXAnchor];
-        v109 = [v107 constraintEqualToAnchor:v108];
+        centerXAnchor = [(UILabel *)v15->_opacityLabel centerXAnchor];
+        centerXAnchor2 = [(PKPaletteInkingToolView *)v15 centerXAnchor];
+        v109 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         opacityLabelCenterXConstraint = v15->_opacityLabelCenterXConstraint;
         v15->_opacityLabelCenterXConstraint = v109;
 
-        v111 = [(UILabel *)v15->_opacityLabel centerYAnchor];
-        v112 = [(PKPaletteInkingToolView *)v15 centerYAnchor];
-        v113 = [v111 constraintEqualToAnchor:v112];
+        centerYAnchor = [(UILabel *)v15->_opacityLabel centerYAnchor];
+        centerYAnchor2 = [(PKPaletteInkingToolView *)v15 centerYAnchor];
+        v113 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         opacityLabelCenterYConstraint = v15->_opacityLabelCenterYConstraint;
         v15->_opacityLabelCenterYConstraint = v113;
       }
@@ -292,14 +292,14 @@
 
 - (BOOL)_shouldInstallOpacityLabel
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  if ([v3 supportsOpacity])
+  configuration = [(PKPaletteToolView *)self configuration];
+  if ([configuration supportsOpacity])
   {
-    v4 = [(PKPaletteToolView *)self configuration];
-    v5 = v4;
-    if (v4)
+    configuration2 = [(PKPaletteToolView *)self configuration];
+    v5 = configuration2;
+    if (configuration2)
     {
-      v6 = *(v4 + 184);
+      v6 = *(configuration2 + 184);
     }
 
     else
@@ -366,17 +366,17 @@ void __49__PKPaletteInkingToolView__opacityLabelTextColor__block_invoke_9(uint64
   *(v3 + 40) = v2;
 }
 
-- (void)_setToolProperties:(id)a3 toolIdentifier:(id)a4
+- (void)_setToolProperties:(id)properties toolIdentifier:(id)identifier
 {
-  v5 = [PKInk inkWithIdentifier:a4 properties:a3];
+  v5 = [PKInk inkWithIdentifier:identifier properties:properties];
   [(PKPaletteInkingToolView *)self setInk:v5];
 
   [(PKPaletteInkingToolView *)self _updateOpacityLabel];
-  v6 = [(PKPaletteToolView *)self configuration];
-  v7 = v6;
-  if (v6)
+  configuration = [(PKPaletteToolView *)self configuration];
+  v7 = configuration;
+  if (configuration)
   {
-    v8 = *(v6 + 184);
+    v8 = *(configuration + 184);
   }
 
   else
@@ -393,19 +393,19 @@ void __49__PKPaletteInkingToolView__opacityLabelTextColor__block_invoke_9(uint64
   }
 }
 
-- (void)setToolProperties:(id)a3
+- (void)setToolProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(PKPaletteToolView *)self toolIdentifier];
-  [(PKPaletteInkingToolView *)self _setToolProperties:v4 toolIdentifier:v5];
+  propertiesCopy = properties;
+  toolIdentifier = [(PKPaletteToolView *)self toolIdentifier];
+  [(PKPaletteInkingToolView *)self _setToolProperties:propertiesCopy toolIdentifier:toolIdentifier];
 }
 
 - (id)toolProperties
 {
   v2 = [(PKPaletteInkingToolView *)self ink];
-  v3 = [v2 properties];
+  properties = [v2 properties];
 
-  return v3;
+  return properties;
 }
 
 - (void)layoutSubviews
@@ -418,32 +418,32 @@ void __49__PKPaletteInkingToolView__opacityLabelTextColor__block_invoke_9(uint64
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKPaletteInkingToolView *)self colorIndicatorImageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  colorIndicatorImageView = [(PKPaletteInkingToolView *)self colorIndicatorImageView];
+  [colorIndicatorImageView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(PKPaletteInkingToolView *)self colorIndicatorContourImageView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  colorIndicatorContourImageView = [(PKPaletteInkingToolView *)self colorIndicatorContourImageView];
+  [colorIndicatorContourImageView setFrame:{v4, v6, v8, v10}];
 
-  v13 = [(PKPaletteToolView *)self imageContentView];
-  [v13 bounds];
+  imageContentView = [(PKPaletteToolView *)self imageContentView];
+  [imageContentView bounds];
 
-  v14 = [(PKPaletteToolView *)self imageContentView];
-  [v14 bounds];
+  imageContentView2 = [(PKPaletteToolView *)self imageContentView];
+  [imageContentView2 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(PKPaletteInkingToolView *)self tipIndicatorImageView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  tipIndicatorImageView = [(PKPaletteInkingToolView *)self tipIndicatorImageView];
+  [tipIndicatorImageView setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(PKPaletteToolView *)self imageContentView];
-  [v24 bounds];
+  imageContentView3 = [(PKPaletteToolView *)self imageContentView];
+  [imageContentView3 bounds];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [(PKPaletteInkingToolView *)self tipIndicatorContourImageView];
-  [v33 setFrame:{v26, v28, v30, v32}];
+  tipIndicatorContourImageView = [(PKPaletteInkingToolView *)self tipIndicatorContourImageView];
+  [tipIndicatorContourImageView setFrame:{v26, v28, v30, v32}];
 
   [(PKPaletteInkingToolView *)self _updateWantsExtendedDynamicRange];
 }
@@ -452,7 +452,7 @@ void __49__PKPaletteInkingToolView__opacityLabelTextColor__block_invoke_9(uint64
 {
   if ([(PKPaletteToolView *)self edgeLocation]== 2)
   {
-    v3 = [(PKPaletteInkingToolView *)self colorIndicatorImageRight];
+    colorIndicatorImageRight = [(PKPaletteInkingToolView *)self colorIndicatorImageRight];
   }
 
   else
@@ -466,17 +466,17 @@ void __49__PKPaletteInkingToolView__opacityLabelTextColor__block_invoke_9(uint64
     {
       [(PKPaletteInkingToolView *)self colorIndicatorImageUp];
     }
-    v3 = ;
+    colorIndicatorImageRight = ;
   }
 
-  return v3;
+  return colorIndicatorImageRight;
 }
 
 - (id)_toolColorIndicatorContourImageForCurrentEdgeLocation
 {
   if ([(PKPaletteToolView *)self edgeLocation]== 2)
   {
-    v3 = [(PKPaletteInkingToolView *)self colorIndicatorContourImageRight];
+    colorIndicatorContourImageRight = [(PKPaletteInkingToolView *)self colorIndicatorContourImageRight];
   }
 
   else
@@ -490,31 +490,31 @@ void __49__PKPaletteInkingToolView__opacityLabelTextColor__block_invoke_9(uint64
     {
       [(PKPaletteInkingToolView *)self colorIndicatorContourImageUp];
     }
-    v3 = ;
+    colorIndicatorContourImageRight = ;
   }
 
-  return v3;
+  return colorIndicatorContourImageRight;
 }
 
 - (id)_toolTipImageForCurrentEdgeLocation
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  v4 = [v3 tipMaskImagesForAzimuth];
+  configuration = [(PKPaletteToolView *)self configuration];
+  tipMaskImagesForAzimuth = [configuration tipMaskImagesForAzimuth];
 
-  if (v4)
+  if (tipMaskImagesForAzimuth)
   {
-    v5 = [(PKPaletteToolView *)self configuration];
-    v6 = [v5 tipMaskImagesForAzimuth];
-    v7 = [v6 objectAtIndexedSubscript:{-[PKPaletteInkingToolView azimuthImageIndex](self, "azimuthImageIndex")}];
+    configuration2 = [(PKPaletteToolView *)self configuration];
+    tipMaskImagesForAzimuth2 = [configuration2 tipMaskImagesForAzimuth];
+    v7 = [tipMaskImagesForAzimuth2 objectAtIndexedSubscript:{-[PKPaletteInkingToolView azimuthImageIndex](self, "azimuthImageIndex")}];
     v8 = [v7 imageWithRenderingMode:2];
 
     if ([(PKPaletteToolView *)self edgeLocation]== 2)
     {
       v9 = MEMORY[0x1E69DCAB8];
-      v10 = [v8 CGImage];
+      cGImage = [v8 CGImage];
       [v8 scale];
       v11 = v9;
-      v12 = v10;
+      v12 = cGImage;
       v13 = 3;
     }
 
@@ -527,10 +527,10 @@ void __49__PKPaletteInkingToolView__opacityLabelTextColor__block_invoke_9(uint64
       }
 
       v15 = MEMORY[0x1E69DCAB8];
-      v16 = [v8 CGImage];
+      cGImage2 = [v8 CGImage];
       [v8 scale];
       v11 = v15;
-      v12 = v16;
+      v12 = cGImage2;
       v13 = 2;
     }
 
@@ -543,7 +543,7 @@ LABEL_13:
 
   if ([(PKPaletteToolView *)self edgeLocation]== 2)
   {
-    v14 = [(PKPaletteInkingToolView *)self toolTipImageRight];
+    toolTipImageRight = [(PKPaletteInkingToolView *)self toolTipImageRight];
   }
 
   else
@@ -557,10 +557,10 @@ LABEL_13:
     {
       [(PKPaletteInkingToolView *)self toolTipImageUp];
     }
-    v14 = ;
+    toolTipImageRight = ;
   }
 
-  v18 = v14;
+  v18 = toolTipImageRight;
 LABEL_16:
 
   return v18;
@@ -568,23 +568,23 @@ LABEL_16:
 
 - (id)_toolTipContourImageForCurrentEdgeLocation
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  v4 = [v3 tipContourImagesForAzimuth];
+  configuration = [(PKPaletteToolView *)self configuration];
+  tipContourImagesForAzimuth = [configuration tipContourImagesForAzimuth];
 
-  if (v4)
+  if (tipContourImagesForAzimuth)
   {
-    v5 = [(PKPaletteToolView *)self configuration];
-    v6 = [v5 tipContourImagesForAzimuth];
-    v7 = [v6 objectAtIndexedSubscript:{-[PKPaletteInkingToolView azimuthImageIndex](self, "azimuthImageIndex")}];
+    configuration2 = [(PKPaletteToolView *)self configuration];
+    tipContourImagesForAzimuth2 = [configuration2 tipContourImagesForAzimuth];
+    v7 = [tipContourImagesForAzimuth2 objectAtIndexedSubscript:{-[PKPaletteInkingToolView azimuthImageIndex](self, "azimuthImageIndex")}];
     v8 = [v7 imageWithRenderingMode:2];
 
     if ([(PKPaletteToolView *)self edgeLocation]== 2)
     {
       v9 = MEMORY[0x1E69DCAB8];
-      v10 = [v8 CGImage];
+      cGImage = [v8 CGImage];
       [v8 scale];
       v11 = v9;
-      v12 = v10;
+      v12 = cGImage;
       v13 = 3;
     }
 
@@ -597,10 +597,10 @@ LABEL_16:
       }
 
       v15 = MEMORY[0x1E69DCAB8];
-      v16 = [v8 CGImage];
+      cGImage2 = [v8 CGImage];
       [v8 scale];
       v11 = v15;
-      v12 = v16;
+      v12 = cGImage2;
       v13 = 2;
     }
 
@@ -613,7 +613,7 @@ LABEL_13:
 
   if ([(PKPaletteToolView *)self edgeLocation]== 2)
   {
-    v14 = [(PKPaletteInkingToolView *)self toolTipContourImageRight];
+    toolTipContourImageRight = [(PKPaletteInkingToolView *)self toolTipContourImageRight];
   }
 
   else
@@ -627,10 +627,10 @@ LABEL_13:
     {
       [(PKPaletteInkingToolView *)self toolTipContourImageUp];
     }
-    v14 = ;
+    toolTipContourImageRight = ;
   }
 
-  v18 = v14;
+  v18 = toolTipContourImageRight;
 LABEL_16:
 
   return v18;
@@ -638,27 +638,27 @@ LABEL_16:
 
 - (CGRect)_colorIndicatorImageViewFrame
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  if ([v3 supportsStrokeWeight])
+  configuration = [(PKPaletteToolView *)self configuration];
+  if ([configuration supportsStrokeWeight])
   {
-    v4 = [(PKPaletteInkingToolView *)self ink];
-    [v4 weight];
-    [(PKToolConfiguration *)v3 bandThicknessForStrokeWeight:v5];
+    colorIndicatorImageUp = [(PKPaletteInkingToolView *)self ink];
+    [colorIndicatorImageUp weight];
+    [(PKToolConfiguration *)configuration bandThicknessForStrokeWeight:v5];
   }
 
   else
   {
-    v4 = [(PKPaletteInkingToolView *)self colorIndicatorImageUp];
-    [v4 size];
+    colorIndicatorImageUp = [(PKPaletteInkingToolView *)self colorIndicatorImageUp];
+    [colorIndicatorImageUp size];
   }
 
   [(PKPaletteToolView *)self scalingFactor];
   [(PKPaletteToolView *)self _toolSelectedOffset];
-  [v3 bandVerticalOffset];
+  [configuration bandVerticalOffset];
   [(PKPaletteToolView *)self scalingFactor];
   [(PKPaletteToolView *)self edgeLocation];
-  v6 = [(PKPaletteToolView *)self imageContentView];
-  [v6 bounds];
+  imageContentView = [(PKPaletteToolView *)self imageContentView];
+  [imageContentView bounds];
 
   if ([(PKPaletteToolView *)self edgeLocation]== 2)
   {
@@ -705,55 +705,55 @@ LABEL_16:
 
 - (id)baseImage
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  v4 = [v3 baseImagesForAzimuth];
+  configuration = [(PKPaletteToolView *)self configuration];
+  baseImagesForAzimuth = [configuration baseImagesForAzimuth];
 
-  v5 = [(PKPaletteToolView *)self configuration];
-  v6 = v5;
-  if (v4)
+  configuration2 = [(PKPaletteToolView *)self configuration];
+  v6 = configuration2;
+  if (baseImagesForAzimuth)
   {
-    v7 = [v5 baseImagesForAzimuth];
-    v8 = [v7 objectAtIndexedSubscript:{-[PKPaletteInkingToolView azimuthImageIndex](self, "azimuthImageIndex")}];
+    baseImagesForAzimuth2 = [configuration2 baseImagesForAzimuth];
+    baseImage = [baseImagesForAzimuth2 objectAtIndexedSubscript:{-[PKPaletteInkingToolView azimuthImageIndex](self, "azimuthImageIndex")}];
   }
 
   else
   {
-    v8 = [v5 baseImage];
+    baseImage = [configuration2 baseImage];
   }
 
-  return v8;
+  return baseImage;
 }
 
 - (void)updateConstraints
 {
-  v3 = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
-  [v3 setConstant:0.0];
+  opacityLabelTopConstraint = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
+  [opacityLabelTopConstraint setConstant:0.0];
 
-  v4 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
-  [v4 setConstant:0.0];
+  opacityLabelLeftConstraint = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
+  [opacityLabelLeftConstraint setConstant:0.0];
 
-  v5 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
-  [v5 setConstant:0.0];
+  opacityLabelRightConstraint = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
+  [opacityLabelRightConstraint setConstant:0.0];
 
-  v6 = [(PKPaletteToolView *)self configuration];
-  [v6 opacityLabelVerticalOffset];
+  configuration = [(PKPaletteToolView *)self configuration];
+  [configuration opacityLabelVerticalOffset];
   v8 = v7;
   [(PKPaletteToolView *)self scalingFactor];
   v10 = v8 * v9;
 
-  v11 = [(PKPaletteInkingToolView *)self traitCollection];
-  v12 = [(PKPaletteInkingToolView *)self window];
-  v13 = [v12 windowScene];
-  v14 = PKUseCompactSize(v11, v13);
+  traitCollection = [(PKPaletteInkingToolView *)self traitCollection];
+  window = [(PKPaletteInkingToolView *)self window];
+  windowScene = [window windowScene];
+  v14 = PKUseCompactSize(traitCollection, windowScene);
 
-  v15 = [(PKPaletteInkingToolView *)self isSelected];
+  isSelected = [(PKPaletteInkingToolView *)self isSelected];
   if (v14)
   {
-    if ((v15 & 1) == 0)
+    if ((isSelected & 1) == 0)
     {
-      v16 = [(PKPaletteInkingToolView *)self isHighlighted];
+      isHighlighted = [(PKPaletteInkingToolView *)self isHighlighted];
       v17 = 10.0;
-      if (v16)
+      if (isHighlighted)
       {
         v17 = 11.0;
       }
@@ -764,12 +764,12 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  if ((v15 & 1) == 0)
+  if ((isSelected & 1) == 0)
   {
-    v18 = [(PKPaletteInkingToolView *)self isHighlighted];
+    isHighlighted2 = [(PKPaletteInkingToolView *)self isHighlighted];
     [(PKPaletteToolView *)self scalingFactor];
     v20 = 20.0;
-    if (v18)
+    if (isHighlighted2)
     {
       v20 = 22.0;
     }
@@ -779,7 +779,7 @@ LABEL_16:
 
   if ([(PKPaletteToolView *)self edgeLocation]== 2)
   {
-    v21 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
+    opacityLabelRightConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
   }
 
   else
@@ -787,57 +787,57 @@ LABEL_16:
     if ([(PKPaletteToolView *)self edgeLocation]!= 8)
     {
 LABEL_14:
-      v21 = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
+      opacityLabelRightConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
       goto LABEL_15;
     }
 
-    v21 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
+    opacityLabelRightConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
   }
 
 LABEL_15:
-  v22 = v21;
-  [v21 setConstant:v10];
+  v22 = opacityLabelRightConstraint2;
+  [opacityLabelRightConstraint2 setConstant:v10];
 
   v23.receiver = self;
   v23.super_class = PKPaletteInkingToolView;
   [(PKPaletteToolView *)&v23 updateConstraints];
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
   v43[4] = *MEMORY[0x1E69E9840];
-  v5 = [(PKPaletteToolView *)self edgeLocation];
+  edgeLocation = [(PKPaletteToolView *)self edgeLocation];
   v37.receiver = self;
   v37.super_class = PKPaletteInkingToolView;
-  [(PKPaletteToolView *)&v37 setEdgeLocation:a3];
-  if (v5 != [(PKPaletteToolView *)self edgeLocation])
+  [(PKPaletteToolView *)&v37 setEdgeLocation:location];
+  if (edgeLocation != [(PKPaletteToolView *)self edgeLocation])
   {
     if ([(PKPaletteToolView *)self edgeLocation]== 2)
     {
       if ([(PKPaletteInkingToolView *)self _shouldInstallOpacityLabel])
       {
         CGAffineTransformMakeRotation(&v36, 1.57079633);
-        v6 = [(PKPaletteInkingToolView *)self opacityLabel];
+        opacityLabel = [(PKPaletteInkingToolView *)self opacityLabel];
         v35 = v36;
-        [v6 setTransform:&v35];
+        [opacityLabel setTransform:&v35];
 
         v7 = MEMORY[0x1E696ACD8];
-        v8 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
-        v43[0] = v8;
-        v9 = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
-        v43[1] = v9;
-        v10 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
-        v43[2] = v10;
-        v11 = [(PKPaletteInkingToolView *)self opacityLabelCenterXConstraint];
-        v43[3] = v11;
+        opacityLabelLeftConstraint = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
+        v43[0] = opacityLabelLeftConstraint;
+        opacityLabelTopConstraint = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
+        v43[1] = opacityLabelTopConstraint;
+        opacityLabelRightConstraint = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
+        v43[2] = opacityLabelRightConstraint;
+        opacityLabelCenterXConstraint = [(PKPaletteInkingToolView *)self opacityLabelCenterXConstraint];
+        v43[3] = opacityLabelCenterXConstraint;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:4];
         [v7 deactivateConstraints:v12];
 
         v13 = MEMORY[0x1E696ACD8];
-        v14 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
-        v42[0] = v14;
-        v15 = [(PKPaletteInkingToolView *)self opacityLabelCenterYConstraint];
-        v42[1] = v15;
+        opacityLabelRightConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
+        v42[0] = opacityLabelRightConstraint2;
+        opacityLabelCenterYConstraint = [(PKPaletteInkingToolView *)self opacityLabelCenterYConstraint];
+        v42[1] = opacityLabelCenterYConstraint;
         v16 = v42;
 LABEL_10:
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
@@ -847,63 +847,63 @@ LABEL_10:
 
     else
     {
-      v17 = [(PKPaletteToolView *)self edgeLocation];
-      v18 = [(PKPaletteInkingToolView *)self _shouldInstallOpacityLabel];
-      if (v17 == 8)
+      edgeLocation2 = [(PKPaletteToolView *)self edgeLocation];
+      _shouldInstallOpacityLabel = [(PKPaletteInkingToolView *)self _shouldInstallOpacityLabel];
+      if (edgeLocation2 == 8)
       {
-        if (v18)
+        if (_shouldInstallOpacityLabel)
         {
           CGAffineTransformMakeRotation(&v34, -1.57079633);
-          v19 = [(PKPaletteInkingToolView *)self opacityLabel];
+          opacityLabel2 = [(PKPaletteInkingToolView *)self opacityLabel];
           v35 = v34;
-          [v19 setTransform:&v35];
+          [opacityLabel2 setTransform:&v35];
 
           v20 = MEMORY[0x1E696ACD8];
-          v21 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
-          v41[0] = v21;
-          v22 = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
-          v41[1] = v22;
-          v23 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
-          v41[2] = v23;
-          v24 = [(PKPaletteInkingToolView *)self opacityLabelCenterXConstraint];
-          v41[3] = v24;
+          opacityLabelRightConstraint3 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
+          v41[0] = opacityLabelRightConstraint3;
+          opacityLabelTopConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
+          v41[1] = opacityLabelTopConstraint2;
+          opacityLabelRightConstraint4 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
+          v41[2] = opacityLabelRightConstraint4;
+          opacityLabelCenterXConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelCenterXConstraint];
+          v41[3] = opacityLabelCenterXConstraint2;
           v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
           [v20 deactivateConstraints:v25];
 
           v13 = MEMORY[0x1E696ACD8];
-          v14 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
-          v40[0] = v14;
-          v15 = [(PKPaletteInkingToolView *)self opacityLabelCenterYConstraint];
-          v40[1] = v15;
+          opacityLabelRightConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
+          v40[0] = opacityLabelRightConstraint2;
+          opacityLabelCenterYConstraint = [(PKPaletteInkingToolView *)self opacityLabelCenterYConstraint];
+          v40[1] = opacityLabelCenterYConstraint;
           v16 = v40;
           goto LABEL_10;
         }
       }
 
-      else if (v18)
+      else if (_shouldInstallOpacityLabel)
       {
-        v26 = [(PKPaletteInkingToolView *)self opacityLabel];
+        opacityLabel3 = [(PKPaletteInkingToolView *)self opacityLabel];
         v27 = *(MEMORY[0x1E695EFD0] + 16);
         *&v35.a = *MEMORY[0x1E695EFD0];
         *&v35.c = v27;
         *&v35.tx = *(MEMORY[0x1E695EFD0] + 32);
-        [v26 setTransform:&v35];
+        [opacityLabel3 setTransform:&v35];
 
         v28 = MEMORY[0x1E696ACD8];
-        v29 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
-        v39[0] = v29;
-        v30 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
-        v39[1] = v30;
-        v31 = [(PKPaletteInkingToolView *)self opacityLabelCenterYConstraint];
-        v39[2] = v31;
+        opacityLabelRightConstraint5 = [(PKPaletteInkingToolView *)self opacityLabelRightConstraint];
+        v39[0] = opacityLabelRightConstraint5;
+        opacityLabelLeftConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelLeftConstraint];
+        v39[1] = opacityLabelLeftConstraint2;
+        opacityLabelCenterYConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelCenterYConstraint];
+        v39[2] = opacityLabelCenterYConstraint2;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
         [v28 deactivateConstraints:v32];
 
         v13 = MEMORY[0x1E696ACD8];
-        v14 = [(PKPaletteInkingToolView *)self opacityLabelCenterXConstraint];
-        v38[0] = v14;
-        v15 = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
-        v38[1] = v15;
+        opacityLabelRightConstraint2 = [(PKPaletteInkingToolView *)self opacityLabelCenterXConstraint];
+        v38[0] = opacityLabelRightConstraint2;
+        opacityLabelCenterYConstraint = [(PKPaletteInkingToolView *)self opacityLabelTopConstraint];
+        v38[1] = opacityLabelCenterYConstraint;
         v16 = v38;
         goto LABEL_10;
       }
@@ -924,10 +924,10 @@ LABEL_10:
 
   else
   {
-    v4 = [(PKPaletteInkingToolView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(PKPaletteInkingToolView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    return v5;
+    return userInterfaceStyle;
   }
 }
 
@@ -940,17 +940,17 @@ LABEL_10:
   return v5;
 }
 
-- (id)_tintedImage:(id)a3 color:(id)a4 allowHDR:(BOOL)a5
+- (id)_tintedImage:(id)image color:(id)color allowHDR:(BOOL)r
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  [v7 size];
+  rCopy = r;
+  imageCopy = image;
+  colorCopy = color;
+  [imageCopy size];
   v10 = v9;
   v12 = v11;
-  v13 = [MEMORY[0x1E69DCA80] defaultFormat];
-  v14 = v13;
-  if (v5)
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
+  v14 = defaultFormat;
+  if (rCopy)
   {
     v15 = 1;
   }
@@ -960,8 +960,8 @@ LABEL_10:
     v15 = 2;
   }
 
-  [v13 setPreferredRange:v15];
-  [v7 scale];
+  [defaultFormat setPreferredRange:v15];
+  [imageCopy scale];
   [v14 setScale:?];
   v16 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v14 format:{v10, v12}];
   v21[0] = MEMORY[0x1E69E9820];
@@ -970,10 +970,10 @@ LABEL_10:
   v21[3] = &unk_1E82D8698;
   v24 = v10;
   v25 = v12;
-  v22 = v8;
-  v23 = v7;
-  v17 = v7;
-  v18 = v8;
+  v22 = colorCopy;
+  v23 = imageCopy;
+  v17 = imageCopy;
+  v18 = colorCopy;
   v19 = [v16 imageWithActions:v21];
 
   return v19;
@@ -992,14 +992,14 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
   return [v2 drawAtPoint:22 blendMode:0.0 alpha:{0.0, 1.0}];
 }
 
-- (void)setAllowHDR:(BOOL)a3
+- (void)setAllowHDR:(BOOL)r
 {
-  v3 = a3;
-  v5 = [(PKPaletteToolView *)self allowHDR];
+  rCopy = r;
+  allowHDR = [(PKPaletteToolView *)self allowHDR];
   v6.receiver = self;
   v6.super_class = PKPaletteInkingToolView;
-  [(PKPaletteToolView *)&v6 setAllowHDR:v3];
-  if (v5 != v3)
+  [(PKPaletteToolView *)&v6 setAllowHDR:rCopy];
+  if (allowHDR != rCopy)
   {
     [(PKPaletteInkingToolView *)self _updateToolColorBandAndTipImageViews];
   }
@@ -1007,8 +1007,8 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
 
 - (void)_updateToolColorBandAndTipImageViews
 {
-  v3 = [(PKPaletteInkingToolView *)self _uiColor];
-  v16 = [v3 colorWithAlphaComponent:1.0];
+  _uiColor = [(PKPaletteInkingToolView *)self _uiColor];
+  v16 = [_uiColor colorWithAlphaComponent:1.0];
 
   if ([(PKPaletteToolView *)self allowHDR])
   {
@@ -1022,31 +1022,31 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
     v5 = 0;
   }
 
-  v6 = [(PKPaletteInkingToolView *)self _toolColorIndicatorImageForCurrentEdgeLocation];
-  v7 = [(PKPaletteInkingToolView *)self _tintedImage:v6 color:v16 allowHDR:v5];
-  v8 = [(PKPaletteInkingToolView *)self colorIndicatorImageView];
-  [v8 setImage:v7];
+  _toolColorIndicatorImageForCurrentEdgeLocation = [(PKPaletteInkingToolView *)self _toolColorIndicatorImageForCurrentEdgeLocation];
+  v7 = [(PKPaletteInkingToolView *)self _tintedImage:_toolColorIndicatorImageForCurrentEdgeLocation color:v16 allowHDR:v5];
+  colorIndicatorImageView = [(PKPaletteInkingToolView *)self colorIndicatorImageView];
+  [colorIndicatorImageView setImage:v7];
 
-  v9 = [(PKPaletteInkingToolView *)self _toolColorIndicatorContourImageForCurrentEdgeLocation];
-  v10 = [(PKPaletteInkingToolView *)self colorIndicatorContourImageView];
-  [v10 setImage:v9];
+  _toolColorIndicatorContourImageForCurrentEdgeLocation = [(PKPaletteInkingToolView *)self _toolColorIndicatorContourImageForCurrentEdgeLocation];
+  colorIndicatorContourImageView = [(PKPaletteInkingToolView *)self colorIndicatorContourImageView];
+  [colorIndicatorContourImageView setImage:_toolColorIndicatorContourImageForCurrentEdgeLocation];
 
-  v11 = [(PKPaletteInkingToolView *)self _toolTipImageForCurrentEdgeLocation];
-  v12 = [(PKPaletteInkingToolView *)self _tintedImage:v11 color:v16 allowHDR:v5];
-  v13 = [(PKPaletteInkingToolView *)self tipIndicatorImageView];
-  [v13 setImage:v12];
+  _toolTipImageForCurrentEdgeLocation = [(PKPaletteInkingToolView *)self _toolTipImageForCurrentEdgeLocation];
+  v12 = [(PKPaletteInkingToolView *)self _tintedImage:_toolTipImageForCurrentEdgeLocation color:v16 allowHDR:v5];
+  tipIndicatorImageView = [(PKPaletteInkingToolView *)self tipIndicatorImageView];
+  [tipIndicatorImageView setImage:v12];
 
-  v14 = [(PKPaletteInkingToolView *)self _toolTipContourImageForCurrentEdgeLocation];
-  v15 = [(PKPaletteInkingToolView *)self tipIndicatorContourImageView];
-  [v15 setImage:v14];
+  _toolTipContourImageForCurrentEdgeLocation = [(PKPaletteInkingToolView *)self _toolTipContourImageForCurrentEdgeLocation];
+  tipIndicatorContourImageView = [(PKPaletteInkingToolView *)self tipIndicatorContourImageView];
+  [tipIndicatorContourImageView setImage:_toolTipContourImageForCurrentEdgeLocation];
 
   [(PKPaletteInkingToolView *)self _updateWantsExtendedDynamicRange];
 }
 
 - (void)_updateWantsExtendedDynamicRange
 {
-  v3 = [(PKPaletteInkingToolView *)self _uiColor];
-  [v3 CGColor];
+  _uiColor = [(PKPaletteInkingToolView *)self _uiColor];
+  [_uiColor CGColor];
   CGColorGetContentHeadroom();
   v5 = v4;
 
@@ -1060,11 +1060,11 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
     v6 = 0;
   }
 
-  v7 = [(PKPaletteInkingToolView *)self colorIndicatorImageView];
-  [v7 setPreferredImageDynamicRange:v6];
+  colorIndicatorImageView = [(PKPaletteInkingToolView *)self colorIndicatorImageView];
+  [colorIndicatorImageView setPreferredImageDynamicRange:v6];
 
-  v8 = [(PKPaletteInkingToolView *)self tipIndicatorImageView];
-  [v8 setPreferredImageDynamicRange:v6];
+  tipIndicatorImageView = [(PKPaletteInkingToolView *)self tipIndicatorImageView];
+  [tipIndicatorImageView setPreferredImageDynamicRange:v6];
 }
 
 - (void)_reloadToolImage
@@ -1075,17 +1075,17 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
   [(PKPaletteInkingToolView *)self _updateToolColorBandAndTipImageViews];
 }
 
-- (void)setInk:(id)a3
+- (void)setInk:(id)ink
 {
-  v9 = a3;
+  inkCopy = ink;
   if (![(PKInk *)self->_ink isEqual:?])
   {
-    objc_storeStrong(&self->_ink, a3);
-    v5 = [(PKPaletteToolView *)self configuration];
-    v6 = v5;
-    if (v5)
+    objc_storeStrong(&self->_ink, ink);
+    configuration = [(PKPaletteToolView *)self configuration];
+    v6 = configuration;
+    if (configuration)
     {
-      v7 = *(v5 + 184);
+      v7 = *(configuration + 184);
     }
 
     else
@@ -1105,18 +1105,18 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
   }
 }
 
-- (void)setInkColor:(id)a3
+- (void)setInkColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [(PKPaletteInkingToolView *)self ink];
-  v6 = [v5 color];
-  v7 = v6;
-  v19 = v4;
-  ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([v6 CGColor]);
+  color = [v5 color];
+  v7 = color;
+  v19 = colorCopy;
+  ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([color CGColor]);
   v9 = v19;
-  v10 = [v19 CGColor];
+  cGColor = [v19 CGColor];
 
-  v11 = DKUCGColorCreateConvertedToSRGB(v10);
+  v11 = DKUCGColorCreateConvertedToSRGB(cGColor);
   IsEqualToColorIgnoringOpacityWithTolerance = DKUColorIsEqualToColorIgnoringOpacityWithTolerance(ConvertedToSRGB, v11, 0, 0.000000999999997);
   CGColorRelease(ConvertedToSRGB);
   CGColorRelease(v11);
@@ -1127,11 +1127,11 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
     v14 = [PKInk inkFromInk:v13 color:v19];
     [(PKPaletteInkingToolView *)self setInk:v14];
 
-    v15 = [(PKPaletteToolView *)self configuration];
-    v16 = v15;
-    if (v15)
+    configuration = [(PKPaletteToolView *)self configuration];
+    v16 = configuration;
+    if (configuration)
     {
-      v17 = *(v15 + 184);
+      v17 = *(configuration + 184);
     }
 
     else
@@ -1155,41 +1155,41 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
   if ([(PKPaletteInkingToolView *)self _shouldInstallOpacityLabel])
   {
     v3 = [(PKPaletteInkingToolView *)self ink];
-    v4 = [v3 color];
-    [v4 alphaComponent];
+    color = [v3 color];
+    [color alphaComponent];
     v6 = v5;
 
     v7 = llround(v6 * 100.0);
     if (v7 > 0x63)
     {
-      v9 = [(PKPaletteInkingToolView *)self opacityLabel];
-      [v9 setText:0];
+      opacityLabel = [(PKPaletteInkingToolView *)self opacityLabel];
+      [opacityLabel setText:0];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", v7];
-      v8 = [(PKPaletteInkingToolView *)self opacityLabel];
-      [v8 setText:v9];
+      opacityLabel = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", v7];
+      opacityLabel2 = [(PKPaletteInkingToolView *)self opacityLabel];
+      [opacityLabel2 setText:opacityLabel];
     }
   }
 }
 
-- (void)setInkWeight:(double)a3
+- (void)setInkWeight:(double)weight
 {
   v5 = [(PKPaletteInkingToolView *)self ink];
   [v5 weight];
-  v7 = vabdd_f64(v6, a3);
+  v7 = vabdd_f64(v6, weight);
 
   if (v7 >= 0.1)
   {
     v8 = [(PKPaletteInkingToolView *)self ink];
-    v9 = [PKInk inkFromInk:v8 weight:a3];
+    v9 = [PKInk inkFromInk:v8 weight:weight];
     [(PKPaletteInkingToolView *)self setInk:v9];
 
-    v10 = [(PKPaletteToolView *)self configuration];
-    v11 = v10;
-    v12 = v10 ? *(v10 + 184) : 0;
+    configuration = [(PKPaletteToolView *)self configuration];
+    v11 = configuration;
+    v12 = configuration ? *(configuration + 184) : 0;
     v13 = v12;
 
     if (v13)
@@ -1200,16 +1200,16 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
   }
 }
 
-- (void)setInkAzimuth:(double)a3
+- (void)setInkAzimuth:(double)azimuth
 {
   v5 = [(PKPaletteInkingToolView *)self ink];
   [v5 _azimuth];
-  v7 = vabdd_f64(v6, a3);
+  v7 = vabdd_f64(v6, azimuth);
 
   if (v7 >= 0.1)
   {
     v8 = [(PKPaletteInkingToolView *)self ink];
-    v9 = [PKInk inkFromInk:v8 azimuth:a3];
+    v9 = [PKInk inkFromInk:v8 azimuth:azimuth];
     [(PKPaletteInkingToolView *)self setInk:v9];
 
     [(PKPaletteToolView *)self _setToolImageNeedsReload];
@@ -1222,8 +1222,8 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
   {
     v3 = [PKInkAttributesPicker alloc];
     v4 = [(PKPaletteInkingToolView *)self ink];
-    v5 = [(PKPaletteToolView *)self configuration];
-    v6 = [(PKInkAttributesPicker *)v3 initWithInk:v4 toolConfiguration:v5];
+    configuration = [(PKPaletteToolView *)self configuration];
+    v6 = [(PKInkAttributesPicker *)v3 initWithInk:v4 toolConfiguration:configuration];
 
     [(PKPaletteAttributeViewController *)v6 setDisplayMode:[(PKPaletteInkingToolView *)self _displayModeForAttributeViewController]];
     [(PKPaletteAttributeViewController *)v6 setMinimumOpacityValue:0.0];
@@ -1237,14 +1237,14 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
   [(PKPaletteAttributeViewController *)v8 setSelectedInk:v9];
 
   [(PKPaletteAttributeViewController *)v8 setColorUserInterfaceStyle:[(PKPaletteToolView *)self colorUserInterfaceStyle]];
-  v10 = [(PKPaletteToolView *)self configuration];
-  v11 = [v10 viewControllerProvider];
+  configuration2 = [(PKPaletteToolView *)self configuration];
+  viewControllerProvider = [configuration2 viewControllerProvider];
 
-  if (v11)
+  if (viewControllerProvider)
   {
-    v12 = [(PKPaletteToolView *)self configuration];
-    v13 = [v12 viewControllerProvider];
-    v14 = v13[2]();
+    configuration3 = [(PKPaletteToolView *)self configuration];
+    viewControllerProvider2 = [configuration3 viewControllerProvider];
+    v14 = viewControllerProvider2[2]();
 
     if (!v14)
     {
@@ -1267,31 +1267,31 @@ uint64_t __55__PKPaletteInkingToolView__tintedImage_color_allowHDR___block_invok
 
   v19.receiver = self;
   v19.super_class = PKPaletteInkingToolView;
-  v17 = [(PKPaletteToolView *)&v19 attributeViewController];
-  if (!v17)
+  attributeViewController = [(PKPaletteToolView *)&v19 attributeViewController];
+  if (!attributeViewController)
   {
     v16 = self->_attributeViewController;
 LABEL_9:
-    v17 = v16;
+    attributeViewController = v16;
   }
 
-  return v17;
+  return attributeViewController;
 }
 
 - (BOOL)_shouldHaveAttributeViewController
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  v4 = v3;
-  if (v3 && [v3 supportsStrokeWeight] && (v4[16] & 1) != 0)
+  configuration = [(PKPaletteToolView *)self configuration];
+  v4 = configuration;
+  if (configuration && [configuration supportsStrokeWeight] && (v4[16] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PKPaletteToolView *)self configuration];
-    v7 = v6;
-    if (v6 && [v6 supportsOpacity])
+    configuration2 = [(PKPaletteToolView *)self configuration];
+    v7 = configuration2;
+    if (configuration2 && [configuration2 supportsOpacity])
     {
       v5 = v7[17];
     }
@@ -1307,9 +1307,9 @@ LABEL_9:
 
 - (unint64_t)_displayModeForAttributeViewController
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  v4 = v3;
-  if (v3 && [v3 supportsStrokeWeight])
+  configuration = [(PKPaletteToolView *)self configuration];
+  v4 = configuration;
+  if (configuration && [configuration supportsStrokeWeight])
   {
     v5 = v4[16];
   }
@@ -1319,9 +1319,9 @@ LABEL_9:
     v5 = 0;
   }
 
-  v6 = [(PKPaletteToolView *)self configuration];
-  v7 = v6;
-  if (v6 && ([v6 supportsOpacity] & 1) != 0)
+  configuration2 = [(PKPaletteToolView *)self configuration];
+  v7 = configuration2;
+  if (configuration2 && ([configuration2 supportsOpacity] & 1) != 0)
   {
     v8 = v7[17];
 
@@ -1335,8 +1335,8 @@ LABEL_9:
   {
   }
 
-  v9 = [(PKPaletteToolView *)self configuration];
-  if (v9 && (v10 = v9[22], v9, (v10 & 1) != 0))
+  configuration3 = [(PKPaletteToolView *)self configuration];
+  if (configuration3 && (v10 = configuration3[22], configuration3, (v10 & 1) != 0))
   {
     v5 |= 4uLL;
   }
@@ -1356,14 +1356,14 @@ LABEL_9:
   return v5;
 }
 
-- (void)inkAttributesPickerDidChangeInkOpacity:(id)a3
+- (void)inkAttributesPickerDidChangeInkOpacity:(id)opacity
 {
-  v4 = a3;
-  v7 = [v4 selectedInk];
-  v5 = [v7 colorForUIAllowHDR:{-[PKPaletteToolView allowHDR](self, "allowHDR")}];
+  opacityCopy = opacity;
+  selectedInk = [opacityCopy selectedInk];
+  v5 = [selectedInk colorForUIAllowHDR:{-[PKPaletteToolView allowHDR](self, "allowHDR")}];
   [(PKPaletteInkingToolView *)self setInkColor:v5];
 
-  LODWORD(v5) = [v4 isUpdatingOpacityValue];
+  LODWORD(v5) = [opacityCopy isUpdatingOpacityValue];
   if (v5)
   {
     v6 = 4;
@@ -1377,30 +1377,30 @@ LABEL_9:
   [(PKPaletteInkingToolView *)self sendActionsForControlEvents:v6];
 }
 
-- (void)inkAttributesPickerDidChangeInkThickness:(id)a3
+- (void)inkAttributesPickerDidChangeInkThickness:(id)thickness
 {
-  v4 = [a3 selectedInk];
-  [v4 weight];
+  selectedInk = [thickness selectedInk];
+  [selectedInk weight];
   [(PKPaletteInkingToolView *)self setInkWeight:?];
   [(PKPaletteInkingToolView *)self sendActionsForControlEvents:4096];
 }
 
-- (void)inkAttributesPickerDidChangeInkAzimuth:(id)a3
+- (void)inkAttributesPickerDidChangeInkAzimuth:(id)azimuth
 {
-  v4 = [a3 selectedInk];
-  [v4 _azimuth];
+  selectedInk = [azimuth selectedInk];
+  [selectedInk _azimuth];
   [(PKPaletteInkingToolView *)self setInkAzimuth:?];
   [(PKPaletteInkingToolView *)self sendActionsForControlEvents:4096];
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   v6.receiver = self;
   v6.super_class = PKPaletteInkingToolView;
-  [(PKPaletteToolView *)&v6 setScalingFactor:a3];
-  v4 = [(PKPaletteInkingToolView *)self _opacityLabelFont];
-  v5 = [(PKPaletteInkingToolView *)self opacityLabel];
-  [v5 setFont:v4];
+  [(PKPaletteToolView *)&v6 setScalingFactor:factor];
+  _opacityLabelFont = [(PKPaletteInkingToolView *)self _opacityLabelFont];
+  opacityLabel = [(PKPaletteInkingToolView *)self opacityLabel];
+  [opacityLabel setFont:_opacityLabelFont];
 
   [(PKPaletteInkingToolView *)self setNeedsUpdateConstraints];
 }

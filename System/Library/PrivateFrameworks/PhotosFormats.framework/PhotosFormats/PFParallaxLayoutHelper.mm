@@ -1,37 +1,37 @@
 @interface PFParallaxLayoutHelper
 + (CGRect)inflatePersonFaceRect:(CGRect)result;
-+ (double)closeupZoomPercentWithLayoutType:(unint64_t)a3;
-+ (double)scoreBonusAdaptiveWithLayoutType:(unint64_t)a3;
-+ (double)scoreBonusInactiveWithLayoutType:(unint64_t)a3;
-+ (double)scoreBonusOverlapStretchWithLayoutType:(unint64_t)a3;
-+ (double)scoreBonusOverlapTargetWithLayoutType:(unint64_t)a3;
-+ (double)scoreBonusZoomHeadroomWithLayoutType:(unint64_t)a3;
-+ (double)scoreBonusZoomNoneWithLayoutType:(unint64_t)a3;
-+ (double)scoreBonusZoomTargetWithLayoutType:(unint64_t)a3;
-+ (double)targetZoomFactorLimitWithLayoutType:(unint64_t)a3;
-+ (double)targetZoomPercentWithLayoutType:(unint64_t)a3;
++ (double)closeupZoomPercentWithLayoutType:(unint64_t)type;
++ (double)scoreBonusAdaptiveWithLayoutType:(unint64_t)type;
++ (double)scoreBonusInactiveWithLayoutType:(unint64_t)type;
++ (double)scoreBonusOverlapStretchWithLayoutType:(unint64_t)type;
++ (double)scoreBonusOverlapTargetWithLayoutType:(unint64_t)type;
++ (double)scoreBonusZoomHeadroomWithLayoutType:(unint64_t)type;
++ (double)scoreBonusZoomNoneWithLayoutType:(unint64_t)type;
++ (double)scoreBonusZoomTargetWithLayoutType:(unint64_t)type;
++ (double)targetZoomFactorLimitWithLayoutType:(unint64_t)type;
++ (double)targetZoomPercentWithLayoutType:(unint64_t)type;
 - (BOOL)canInflate;
 - (CGRect)initialRect;
 - (CGRect)pixelEffectiveAcceptable;
 - (CGRect)pixelEffectivePreferred;
 - (CGRect)pixelValidBounds;
-- (CGRect)unsafeAreaInImageSpaceWithVisibleFrame:(CGRect)a3;
+- (CGRect)unsafeAreaInImageSpaceWithVisibleFrame:(CGRect)frame;
 - (CGSize)extendedImageSize;
-- (CGSize)imageSizeWithHeadroomStrategy:(unint64_t)a3;
+- (CGSize)imageSizeWithHeadroomStrategy:(unint64_t)strategy;
 - (CGSize)originalImageSize;
-- (double)computeCropScoreForIntermediate:(id)a3;
-- (double)initWithPosterClassification:(double)a3 initialRect:(double)a4 imageSize:(double)a5 effectiveAcceptableRect:(double)a6 effectivePreferredRect:(double)a7 validBoundsNormalized:(uint64_t)a8 headroomFeasible:(uint64_t)a9 hasTopEdgeContact:(char)a10 computeSpatial:(char)a11 spatialPadding:(char)a12 layoutType:(uint64_t)a13 allowedLayoutStrategies:(uint64_t)a14 layoutConfiguration:(double)a15;
-- (double)scoreAdjustmentWithUnscoredIntermediate:(id)a3 unsafeAreaOverlap:(double)a4 timeBottomOverlap:(double)a5 timeTopOverlap:(double)a6;
-- (id)_pickBestLayout:(id)a3 allowHeadroom:(BOOL)a4;
-- (id)bestLayout:(id)a3;
-- (id)intermediateWithAdaptiveStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithHeadroomStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithInactiveStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithOverlapStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithParallaxStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithSpatialStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithZoomStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)scoreIntermediate:(id)a3;
+- (double)computeCropScoreForIntermediate:(id)intermediate;
+- (double)initWithPosterClassification:(double)classification initialRect:(double)rect imageSize:(double)size effectiveAcceptableRect:(double)acceptableRect effectivePreferredRect:(double)preferredRect validBoundsNormalized:(uint64_t)normalized headroomFeasible:(uint64_t)feasible hasTopEdgeContact:(char)self0 computeSpatial:(char)self1 spatialPadding:(char)self2 layoutType:(uint64_t)self3 allowedLayoutStrategies:(uint64_t)self4 layoutConfiguration:(double)self5;
+- (double)scoreAdjustmentWithUnscoredIntermediate:(id)intermediate unsafeAreaOverlap:(double)overlap timeBottomOverlap:(double)bottomOverlap timeTopOverlap:(double)topOverlap;
+- (id)_pickBestLayout:(id)layout allowHeadroom:(BOOL)headroom;
+- (id)bestLayout:(id)layout;
+- (id)intermediateWithAdaptiveStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithHeadroomStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithInactiveStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithOverlapStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithParallaxStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithSpatialStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithZoomStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)scoreIntermediate:(id)intermediate;
 @end
 
 @implementation PFParallaxLayoutHelper
@@ -97,9 +97,9 @@
   return result;
 }
 
-- (double)scoreAdjustmentWithUnscoredIntermediate:(id)a3 unsafeAreaOverlap:(double)a4 timeBottomOverlap:(double)a5 timeTopOverlap:(double)a6
+- (double)scoreAdjustmentWithUnscoredIntermediate:(id)intermediate unsafeAreaOverlap:(double)overlap timeBottomOverlap:(double)bottomOverlap timeTopOverlap:(double)topOverlap
 {
-  v9 = a3;
+  intermediateCopy = intermediate;
   [PFParallaxLayoutHelper scoreBonusZoomTargetWithLayoutType:self->_layoutType];
   v11 = v10;
   [PFParallaxLayoutHelper scoreBonusZoomHeadroomWithLayoutType:self->_layoutType];
@@ -142,22 +142,22 @@
   v21 = v20;
   [PFParallaxLayoutHelper scoreBonusAdaptiveWithLayoutType:self->_layoutType];
   v23 = v22;
-  if ([v9 zoomStrategy] != 4 || (v24 = 0.0, objc_msgSend(v9, "overlapStrategy") != 5))
+  if ([intermediateCopy zoomStrategy] != 4 || (v24 = 0.0, objc_msgSend(intermediateCopy, "overlapStrategy") != 5))
   {
     v25 = 0.0;
-    if ([v9 zoomStrategy] == 2)
+    if ([intermediateCopy zoomStrategy] == 2)
     {
       [PFParallaxLayoutHelper scoreBonusZoomTargetWithLayoutType:self->_layoutType];
       v25 = v26 + 0.0;
     }
 
-    if ([v9 zoomStrategy] == 4)
+    if ([intermediateCopy zoomStrategy] == 4)
     {
       [PFParallaxLayoutHelper scoreBonusZoomHeadroomWithLayoutType:self->_layoutType];
       v25 = v25 + v27;
     }
 
-    if ([v9 zoomStrategy] == 3)
+    if ([intermediateCopy zoomStrategy] == 3)
     {
       [PFParallaxLayoutHelper scoreBonusZoomTargetWithLayoutType:self->_layoutType];
       v29 = v28;
@@ -165,45 +165,45 @@
       v25 = v25 + (v29 + v30) * 0.5;
     }
 
-    if ([v9 zoomStrategy] == 1)
+    if ([intermediateCopy zoomStrategy] == 1)
     {
       [PFParallaxLayoutHelper scoreBonusZoomNoneWithLayoutType:self->_layoutType];
       v25 = v25 + v31;
     }
 
-    if ([v9 overlapStrategy] == 3)
+    if ([intermediateCopy overlapStrategy] == 3)
     {
       +[PFParallaxLayoutHelper scoreBonusOverlapAvoid];
-      v25 = v25 + v32 * (1.0 - a4);
+      v25 = v25 + v32 * (1.0 - overlap);
     }
 
-    v33 = [v9 overlapStrategy];
-    if (a5 > 0.0 && v33 == 2)
+    overlapStrategy = [intermediateCopy overlapStrategy];
+    if (bottomOverlap > 0.0 && overlapStrategy == 2)
     {
       v34 = +[PFParallaxLayoutTextOverlapParameters systemParameters];
       [v34 maxBottomOverlap];
       v36 = v35;
 
-      if (v36 > a5)
+      if (v36 > bottomOverlap)
       {
         [PFParallaxLayoutHelper scoreBonusOverlapTargetWithLayoutType:self->_layoutType];
         v25 = v25 + v37;
       }
     }
 
-    if ([v9 overlapStrategy] == 5)
+    if ([intermediateCopy overlapStrategy] == 5)
     {
       [PFParallaxLayoutHelper scoreBonusOverlapStretchWithLayoutType:self->_layoutType];
       v25 = v25 + v38;
     }
 
-    if ([v9 inactiveStrategy] == 2)
+    if ([intermediateCopy inactiveStrategy] == 2)
     {
       [PFParallaxLayoutHelper scoreBonusInactiveWithLayoutType:self->_layoutType];
       v25 = v25 + v39;
     }
 
-    if ([v9 adaptiveStrategy] == 2)
+    if ([intermediateCopy adaptiveStrategy] == 2)
     {
       [PFParallaxLayoutHelper scoreBonusAdaptiveWithLayoutType:self->_layoutType];
       v25 = v25 + v40;
@@ -215,12 +215,12 @@
   return v24;
 }
 
-- (id)scoreIntermediate:(id)a3
+- (id)scoreIntermediate:(id)intermediate
 {
-  v4 = a3;
-  [(PFParallaxLayoutHelper *)self computeCropScoreForIntermediate:v4];
+  intermediateCopy = intermediate;
+  [(PFParallaxLayoutHelper *)self computeCropScoreForIntermediate:intermediateCopy];
   v100 = v5;
-  [v4 visibleRect];
+  [intermediateCopy visibleRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -230,15 +230,15 @@
   v102 = v14;
   v103 = v16;
   v106 = v17;
-  v18 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-  [v18 timeOverlapCheckBottom];
+  layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+  [layoutConfiguration timeOverlapCheckBottom];
   v98 = v7 + v19 * v11;
   r1 = v9 + v20 * v13;
   v104 = v13 * v22;
   v105 = v11 * v21;
 
-  v23 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-  [v23 timeOverlapCheckTop];
+  layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+  [layoutConfiguration2 timeOverlapCheckTop];
   v94 = v25;
   v96 = v24;
   v91 = v27;
@@ -437,7 +437,7 @@ LABEL_59:
   }
 
   v83 = v74 / v76;
-  [(PFParallaxLayoutHelper *)self scoreAdjustmentWithUnscoredIntermediate:v4 unsafeAreaOverlap:v82 timeBottomOverlap:v81 timeTopOverlap:v80];
+  [(PFParallaxLayoutHelper *)self scoreAdjustmentWithUnscoredIntermediate:intermediateCopy unsafeAreaOverlap:v82 timeBottomOverlap:v81 timeTopOverlap:v80];
   v85 = (v100 + v84) * 0.5;
   v86 = [PFParallaxIntermediateLayout alloc];
   v107[0] = MEMORY[0x1E69E9820];
@@ -450,9 +450,9 @@ LABEL_59:
   v113 = v80;
   v114 = v82;
   v115 = v83;
-  v108 = v4;
-  v109 = self;
-  v87 = v4;
+  v108 = intermediateCopy;
+  selfCopy = self;
+  v87 = intermediateCopy;
   v88 = [(PFParallaxIntermediateLayout *)v86 initWithConfiguration:v107];
 
   return v88;
@@ -496,28 +496,28 @@ void __44__PFParallaxLayoutHelper_scoreIntermediate___block_invoke(uint64_t a1, 
   [v4 setZoomFactor:?];
 }
 
-- (id)intermediateWithSpatialStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithSpatialStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  intermediateCopy = intermediate;
+  v7 = intermediateCopy;
+  if (strategy)
   {
-    if (a3 == 1)
+    if (strategy == 1)
     {
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __71__PFParallaxLayoutHelper_intermediateWithSpatialStrategy_intermediate___block_invoke_2;
       v37[3] = &__block_descriptor_40_e45_v16__0__PFParallaxMutableIntermediateLayout_8l;
       v37[4] = 1;
-      v8 = [v6 updateWithConfiguration:v37];
+      v8 = [intermediateCopy updateWithConfiguration:v37];
     }
 
     else
     {
-      v8 = v6;
-      if (a3 == 2)
+      v8 = intermediateCopy;
+      if (strategy == 2)
       {
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v35 = v10;
         v36 = v9;
         v12 = v11;
@@ -565,8 +565,8 @@ void __44__PFParallaxLayoutHelper_scoreIntermediate___block_invoke(uint64_t a1, 
       }
     }
 
-    v6 = v8;
-    v33 = v6;
+    intermediateCopy = v8;
+    v33 = intermediateCopy;
   }
 
   else
@@ -592,34 +592,34 @@ void __71__PFParallaxLayoutHelper_intermediateWithSpatialStrategy_intermediate__
   }
 }
 
-- (id)intermediateWithAdaptiveStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithAdaptiveStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  if ([v6 overlapStrategy] == 5)
+  intermediateCopy = intermediate;
+  if ([intermediateCopy overlapStrategy] == 5)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __72__PFParallaxLayoutHelper_intermediateWithAdaptiveStrategy_intermediate___block_invoke;
     v25[3] = &unk_1E7B657F8;
-    v26 = v6;
-    a3 = [v26 updateWithConfiguration:v25];
+    v26 = intermediateCopy;
+    strategy = [v26 updateWithConfiguration:v25];
   }
 
   else
   {
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [v6 headroomStrategy]);
-    if (a3)
+    -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [intermediateCopy headroomStrategy]);
+    if (strategy)
     {
-      if (a3 == 2)
+      if (strategy == 2)
       {
         v17 = v15;
         v18 = v16;
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         [PFParallaxLayoutUtilities adaptiveFrameForVisibleFrame:self->_layoutConfiguration essentialRect:self->_classification originalImageSize:v17 layoutConfiguration:v18 classification:*&self->_allowedClockStretch maxClockStretchOverride:?];
         v8 = v19;
         v10 = v20;
@@ -635,13 +635,13 @@ void __71__PFParallaxLayoutHelper_intermediateWithSpatialStrategy_intermediate__
       v24[5] = v10;
       v24[6] = v12;
       v24[7] = v14;
-      v24[8] = a3;
+      v24[8] = strategy;
       v24[9] = 0;
-      a3 = [v6 updateWithConfiguration:v24];
+      strategy = [intermediateCopy updateWithConfiguration:v24];
     }
   }
 
-  return a3;
+  return strategy;
 }
 
 void __72__PFParallaxLayoutHelper_intermediateWithAdaptiveStrategy_intermediate___block_invoke(uint64_t a1, void *a2)
@@ -665,16 +665,16 @@ void __72__PFParallaxLayoutHelper_intermediateWithAdaptiveStrategy_intermediate_
   [v7 setMaxClockShift:*(a1 + 72)];
 }
 
-- (id)intermediateWithHeadroomStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithHeadroomStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  intermediateCopy = intermediate;
+  v7 = intermediateCopy;
+  if (strategy)
   {
-    if (a3 == 2)
+    if (strategy == 2)
     {
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -748,9 +748,9 @@ void __72__PFParallaxLayoutHelper_intermediateWithAdaptiveStrategy_intermediate_
       v9 = 0.0;
       v10 = 0.0;
       v11 = 0.0;
-      if (a3 == 1)
+      if (strategy == 1)
       {
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v9 = v12;
         v8 = v13;
       }
@@ -764,11 +764,11 @@ void __72__PFParallaxLayoutHelper_intermediateWithAdaptiveStrategy_intermediate_
     *&v35[5] = v10;
     *&v35[6] = v9;
     *&v35[7] = v8;
-    v35[8] = a3;
-    a3 = [v7 updateWithConfiguration:v35];
+    v35[8] = strategy;
+    strategy = [v7 updateWithConfiguration:v35];
   }
 
-  return a3;
+  return strategy;
 }
 
 void __72__PFParallaxLayoutHelper_intermediateWithHeadroomStrategy_intermediate___block_invoke(double *a1, void *a2)
@@ -782,10 +782,10 @@ void __72__PFParallaxLayoutHelper_intermediateWithHeadroomStrategy_intermediate_
   [v7 setHeadroomStrategy:*(a1 + 8)];
 }
 
-- (id)intermediateWithInactiveStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithInactiveStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  [v6 visibleRect];
+  intermediateCopy = intermediate;
+  [intermediateCopy visibleRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -794,8 +794,8 @@ void __72__PFParallaxLayoutHelper_intermediateWithHeadroomStrategy_intermediate_
   *(&v137 + 1) = v9;
   *&v138 = v11;
   *(&v138 + 1) = v13;
-  [v6 adaptiveVisibleRect];
-  if (a3)
+  [intermediateCopy adaptiveVisibleRect];
+  if (strategy)
   {
     v19 = v15;
     v20 = v16;
@@ -805,16 +805,16 @@ void __72__PFParallaxLayoutHelper_intermediateWithHeadroomStrategy_intermediate_
     v24 = *(MEMORY[0x1E695F050] + 8);
     v26 = *(MEMORY[0x1E695F050] + 16);
     v25 = *(MEMORY[0x1E695F050] + 24);
-    if (a3 != 2)
+    if (strategy != 2)
     {
       v27 = 0;
-      if (a3 == 1)
+      if (strategy == 1)
       {
         v28 = *(MEMORY[0x1E695F050] + 24);
         v29 = v18;
         v30 = v15;
         v31 = v21;
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v21 = v31;
         v19 = v30;
         v22 = v29;
@@ -848,29 +848,29 @@ void __72__PFParallaxLayoutHelper_intermediateWithHeadroomStrategy_intermediate_
     v115 = v42;
     v109 = v45;
     v111 = v44;
-    v46 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-    [v46 unsafeRect];
+    layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+    [layoutConfiguration unsafeRect];
     v99 = v41;
     v100 = v39;
-    +[PFParallaxLayoutUtilities computeInactiveAvoidingRectForVisibleRect:acceptableFrame:unsafeRect:imageSize:considerHeadroom:newVisibleRect:](PFParallaxLayoutUtilities, "computeInactiveAvoidingRectForVisibleRect:acceptableFrame:unsafeRect:imageSize:considerHeadroom:newVisibleRect:", [v6 headroomStrategy] == 2, &v137, v8, v10, v12, v14, v115, v113, v111, v109, v47, v48, v49, v50, v39, v41);
+    +[PFParallaxLayoutUtilities computeInactiveAvoidingRectForVisibleRect:acceptableFrame:unsafeRect:imageSize:considerHeadroom:newVisibleRect:](PFParallaxLayoutUtilities, "computeInactiveAvoidingRectForVisibleRect:acceptableFrame:unsafeRect:imageSize:considerHeadroom:newVisibleRect:", [intermediateCopy headroomStrategy] == 2, &v137, v8, v10, v12, v14, v115, v113, v111, v109, v47, v48, v49, v50, v39, v41);
     v116 = v51;
     v34 = v52;
     v36 = v53;
     v27 = v54;
 
-    if ([v6 adaptiveStrategy] == 2)
+    if ([intermediateCopy adaptiveStrategy] == 2)
     {
-      [v6 adaptiveVisibleRect];
+      [intermediateCopy adaptiveVisibleRect];
       v20 = v117;
       if (!CGRectIsNull(v140))
       {
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v56 = v55;
         v58 = v57;
         v118 = v36;
         v60 = v59;
         v62 = v61;
-        [v6 adaptiveVisibleRect];
+        [intermediateCopy adaptiveVisibleRect];
         [PFParallaxLayoutUtilities topFrameForVisibleRect:v56 adaptiveRect:v58, v60, v62, v63, v64, v65, v66];
         v110 = v68;
         v112 = v67;
@@ -884,13 +884,13 @@ void __72__PFParallaxLayoutHelper_intermediateWithHeadroomStrategy_intermediate_
         v74 = v73;
         v76 = v75;
         v106 = v77;
-        v78 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-        [v78 unsafeRect];
+        layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+        [layoutConfiguration2 unsafeRect];
         v80 = v79;
         v82 = v81;
         v84 = v83;
         v86 = v85;
-        v87 = [v6 headroomStrategy] == 2;
+        v87 = [intermediateCopy headroomStrategy] == 2;
         v88 = v72;
         v34 = v114;
         [PFParallaxLayoutUtilities computeInactiveAvoidingRectForVisibleRect:v87 acceptableFrame:&v135 unsafeRect:v112 imageSize:v110 considerHeadroom:v108 newVisibleRect:v107, v88, v74, v76, v106, v80, v82, v84, v86, v100, v99];
@@ -899,10 +899,10 @@ void __72__PFParallaxLayoutHelper_intermediateWithHeadroomStrategy_intermediate_
         v26 = v91;
         v93 = v92;
 
-        [v6 adaptiveVisibleRect];
+        [intermediateCopy adaptiveVisibleRect];
         v95 = v94;
         v96 = *(&v135 + 1) + *(&v136 + 1);
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v25 = v93;
         v32 = v116;
         v36 = v118;
@@ -946,11 +946,11 @@ LABEL_12:
     v131 = v20;
     v132 = v21;
     v133 = v22;
-    v134 = a3;
-    a3 = [v6 updateWithConfiguration:v119];
+    strategyCopy = strategy;
+    strategy = [intermediateCopy updateWithConfiguration:v119];
   }
 
-  return a3;
+  return strategy;
 }
 
 void __72__PFParallaxLayoutHelper_intermediateWithInactiveStrategy_intermediate___block_invoke(uint64_t a1, void *a2)
@@ -967,24 +967,24 @@ void __72__PFParallaxLayoutHelper_intermediateWithInactiveStrategy_intermediate_
   [v7 setInactiveStrategy:*(a1 + 160)];
 }
 
-- (id)intermediateWithParallaxStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithParallaxStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  v7 = v6;
-  if (!a3)
+  intermediateCopy = intermediate;
+  v7 = intermediateCopy;
+  if (!strategy)
   {
     goto LABEL_26;
   }
 
-  if (a3 != 2)
+  if (strategy != 2)
   {
     v8 = 0;
     v9 = 0;
     v10 = 0;
     v11 = 0;
-    if (a3 == 1)
+    if (strategy == 1)
     {
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       goto LABEL_24;
     }
 
@@ -1000,12 +1000,12 @@ void __72__PFParallaxLayoutHelper_intermediateWithInactiveStrategy_intermediate_
       _PFAssertContinueHandler();
     }
 
-    a3 = 0;
+    strategy = 0;
     goto LABEL_26;
   }
 
-  v18 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-  [v18 parallaxPaddingPct];
+  layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+  [layoutConfiguration parallaxPaddingPct];
   v46 = v20;
   v47 = v19;
 
@@ -1107,12 +1107,12 @@ LABEL_25:
   v54 = v9;
   v55 = v8;
   v51 = v7;
-  v56 = a3;
-  a3 = [(PFParallaxIntermediateLayout *)v44 initWithConfiguration:v50];
+  strategyCopy = strategy;
+  strategy = [(PFParallaxIntermediateLayout *)v44 initWithConfiguration:v50];
 
 LABEL_26:
 
-  return a3;
+  return strategy;
 }
 
 void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate___block_invoke(uint64_t a1, void *a2)
@@ -1134,22 +1134,22 @@ void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate_
   [v7 setHeadroomStrategy:{objc_msgSend(*(a1 + 32), "headroomStrategy")}];
 }
 
-- (id)intermediateWithOverlapStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithOverlapStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  v7 = v6;
+  intermediateCopy = intermediate;
+  v7 = intermediateCopy;
   v8 = 0.0;
-  if (a3 > 2)
+  if (strategy > 2)
   {
-    if (a3 - 3 >= 2)
+    if (strategy - 3 >= 2)
     {
       height = 0.0;
       width = 0.0;
       y = 0.0;
       x = 0.0;
-      if (a3 == 5)
+      if (strategy == 5)
       {
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v36 = v35;
         v38 = v37;
         v40 = v39;
@@ -1164,8 +1164,8 @@ void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate_
           MaxY = CGRectGetMaxY(v113);
         }
 
-        v45 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-        [v45 timeOverlapCheckBottom];
+        layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+        [layoutConfiguration timeOverlapCheckBottom];
         v47 = v46;
         v49 = v48;
         [v7 visibleRect];
@@ -1201,8 +1201,8 @@ void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate_
           v65 = v64;
           v67 = v66;
           v101 = v68;
-          v69 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-          [PFParallaxLayoutUtilities widgetZoneAdjustmentForVisibleFrame:v69 essentialRect:x layoutConfiguration:y, width, height, v63, v65, v67, v101];
+          layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+          [PFParallaxLayoutUtilities widgetZoneAdjustmentForVisibleFrame:layoutConfiguration2 essentialRect:x layoutConfiguration:y, width, height, v63, v65, v67, v101];
           v71 = v70;
 
           v116.origin.x = x;
@@ -1242,7 +1242,7 @@ void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate_
       goto LABEL_26;
     }
 
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     v14 = v29;
     v16 = v30;
     v18 = v31;
@@ -1262,14 +1262,14 @@ void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate_
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!strategy)
   {
     goto LABEL_54;
   }
 
-  if (a3 == 1)
+  if (strategy == 1)
   {
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     goto LABEL_25;
   }
 
@@ -1277,9 +1277,9 @@ void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate_
   width = 0.0;
   y = 0.0;
   x = 0.0;
-  if (a3 == 2)
+  if (strategy == 2)
   {
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -1294,8 +1294,8 @@ void __72__PFParallaxLayoutHelper_intermediateWithParallaxStrategy_intermediate_
       v21 = CGRectGetMaxY(v106);
     }
 
-    v23 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-    [v23 timeOverlapCheckBottom];
+    layoutConfiguration3 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+    [layoutConfiguration3 timeOverlapCheckBottom];
     v25 = v16 + v24 * v20;
     v27 = v20 * v26;
 
@@ -1428,17 +1428,17 @@ LABEL_26:
     *&v103[5] = v97;
     *&v103[6] = v89;
     *&v103[7] = v102;
-    v103[8] = a3;
+    v103[8] = strategy;
     *&v103[9] = v99;
-    a3 = [v7 updateWithConfiguration:v103];
+    strategy = [v7 updateWithConfiguration:v103];
     goto LABEL_54;
   }
 
 LABEL_53:
-  a3 = 0;
+  strategy = 0;
 LABEL_54:
 
-  return a3;
+  return strategy;
 }
 
 void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate___block_invoke(uint64_t a1, void *a2)
@@ -1453,10 +1453,10 @@ void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate__
   [v7 setMaxClockShift:*(a1 + 72)];
 }
 
-- (id)bestLayout:(id)a3
+- (id)bestLayout:(id)layout
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layoutCopy = layout;
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
   v6 = MEMORY[0x1E695E0F0];
   v7 = [v5 initWithArray:MEMORY[0x1E695E0F0]];
@@ -1465,7 +1465,7 @@ void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate__
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v4;
+  v9 = layoutCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -1519,32 +1519,32 @@ void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate__
   return v22;
 }
 
-- (id)_pickBestLayout:(id)a3 allowHeadroom:(BOOL)a4
+- (id)_pickBestLayout:(id)layout allowHeadroom:(BOOL)headroom
 {
   v97 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![v6 count])
+  layoutCopy = layout;
+  if (![layoutCopy count])
   {
     _PFAssertFailHandler();
   }
 
-  v7 = [v6 objectAtIndexedSubscript:0];
+  v7 = [layoutCopy objectAtIndexedSubscript:0];
   [v7 cropScore];
   v9 = v8;
   v10 = v7;
-  v11 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-  [v10 clockOverlapAcceptabilityForLayoutConfiguration:v11 inflated:1];
+  layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+  [v10 clockOverlapAcceptabilityForLayoutConfiguration:layoutConfiguration inflated:1];
   v89 = v12;
 
-  v13 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-  [v10 clockOverlapAcceptabilityForLayoutConfiguration:v13 inflated:0];
+  layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+  [v10 clockOverlapAcceptabilityForLayoutConfiguration:layoutConfiguration2 inflated:0];
   v88 = v14;
 
   v94 = 0u;
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v15 = v6;
+  v15 = layoutCopy;
   v16 = [v15 countByEnumeratingWithState:&v92 objects:v96 count:16];
   v84 = v10;
   if (!v16)
@@ -1575,7 +1575,7 @@ void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate__
       }
 
       v22 = *(*(&v92 + 1) + 8 * v21);
-      if ((v9 >= v20 || [*(*(&v92 + 1) + 8 * v21) zoomStrategy] == 1) && (a4 || objc_msgSend(v22, "headroomStrategy") != 2))
+      if ((v9 >= v20 || [*(*(&v92 + 1) + 8 * v21) zoomStrategy] == 1) && (headroom || objc_msgSend(v22, "headroomStrategy") != 2))
       {
         [v22 cropScore];
         if (v23 >= 0.45 || v9 <= 0.45)
@@ -1619,8 +1619,8 @@ void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate__
                   goto LABEL_13;
                 }
 
-                v31 = [v22 headroomStrategy];
-                if (v31 == [v86 headroomStrategy])
+                headroomStrategy = [v22 headroomStrategy];
+                if (headroomStrategy == [v86 headroomStrategy])
                 {
                   [v22 adaptiveHeadroom];
                   v33 = v32;
@@ -1648,13 +1648,13 @@ void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate__
             if ([v22 overlapStrategy] != 5 || objc_msgSend(v22, "zoomStrategy") == 4)
             {
               v35 = v18;
-              v36 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-              [v22 clockOverlapAcceptabilityForLayoutConfiguration:v36 inflated:1];
+              layoutConfiguration3 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+              [v22 clockOverlapAcceptabilityForLayoutConfiguration:layoutConfiguration3 inflated:1];
               v38 = v37;
 
-              v39 = self;
-              v40 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-              [v22 clockOverlapAcceptabilityForLayoutConfiguration:v40 inflated:0];
+              selfCopy = self;
+              layoutConfiguration4 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+              [v22 clockOverlapAcceptabilityForLayoutConfiguration:layoutConfiguration4 inflated:0];
               v42 = v41;
 
               v43 = v89;
@@ -1683,7 +1683,7 @@ void __71__PFParallaxLayoutHelper_intermediateWithOverlapStrategy_intermediate__
               if (v89 >= 0.5 != v38 >= 0.5)
               {
 LABEL_38:
-                self = v39;
+                self = selfCopy;
                 if (v49)
                 {
                   goto LABEL_39;
@@ -1710,8 +1710,8 @@ LABEL_40:
                 }
 
                 v57 = v48;
-                v58 = [v22 headroomStrategy];
-                if (v58 == [v90 headroomStrategy])
+                headroomStrategy2 = [v22 headroomStrategy];
+                if (headroomStrategy2 == [v90 headroomStrategy])
                 {
                   v49 = v42 >= 0.5;
                   if (v88 < 0.5 == v49)
@@ -1725,7 +1725,7 @@ LABEL_40:
                     v59 = v50 > v43;
                   }
 
-                  self = v39;
+                  self = selfCopy;
                   if (!v59)
                   {
                     goto LABEL_40;
@@ -1734,12 +1734,12 @@ LABEL_40:
 
                 else
                 {
-                  self = v39;
-                  [(PFParallaxLayoutHelper *)v39 spatialPadding];
+                  self = selfCopy;
+                  [(PFParallaxLayoutHelper *)selfCopy spatialPadding];
                   v62 = v61;
-                  v63 = [v22 headroomStrategy];
+                  headroomStrategy3 = [v22 headroomStrategy];
                   v64 = v62 <= 0.0;
-                  if (v63 != 1)
+                  if (headroomStrategy3 != 1)
                   {
                     v64 = v47 > v57;
                   }
@@ -1753,7 +1753,7 @@ LABEL_40:
 
               else
               {
-                self = v39;
+                self = selfCopy;
                 if (v38 <= v89)
                 {
                   goto LABEL_40;
@@ -1852,8 +1852,8 @@ LABEL_85:
   {
     if (v86)
     {
-      v73 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-      v74 = [v86 clockOverlapAcceptableForLayoutConfiguration:v73];
+      layoutConfiguration5 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+      v74 = [v86 clockOverlapAcceptableForLayoutConfiguration:layoutConfiguration5];
     }
 
     else
@@ -1940,25 +1940,25 @@ LABEL_85:
   return v81;
 }
 
-- (id)intermediateWithZoomStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithZoomStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  [v6 visibleRect];
+  intermediateCopy = intermediate;
+  [intermediateCopy visibleRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v15 = 0;
-  if (a3 <= 1)
+  if (strategy <= 1)
   {
-    if (!a3)
+    if (!strategy)
     {
       goto LABEL_61;
     }
 
-    if (a3 == 1)
+    if (strategy == 1)
     {
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       v8 = v16;
       v10 = v17;
       v12 = v18;
@@ -1968,12 +1968,12 @@ LABEL_85:
     goto LABEL_9;
   }
 
-  if (a3 - 2 < 2)
+  if (strategy - 2 < 2)
   {
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     if (v21 < 1.0 || ([(PFParallaxLayoutHelper *)self pixelEffectiveAcceptable], v22 < 1.0))
     {
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       if (v23 < 1.0)
       {
         goto LABEL_18;
@@ -1984,10 +1984,10 @@ LABEL_85:
 
     [(PFParallaxLayoutHelper *)self pixelEffectivePreferred];
     v28 = v27;
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     layoutType = self->_layoutType;
     v31 = v28 / v30;
-    if (a3 == 2)
+    if (strategy == 2)
     {
       [PFParallaxLayoutHelper targetZoomPercentWithLayoutType:layoutType];
     }
@@ -2014,17 +2014,17 @@ LABEL_30:
         v20 = v33;
       }
 
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       v12 = v50 * (1.0 / v20);
       v14 = v51 * (1.0 / v20);
       [(PFParallaxLayoutHelper *)self pixelEffectiveAcceptable];
       v54 = v52 + v53 * 0.5;
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       v57 = v55 + v56 * 0.5 - v36;
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       v82 = v36 + v57 / v58 * v14 + v14 * -0.5;
       v83 = v54 + v12 * -0.5;
-      -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [v6 headroomStrategy]);
+      -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [intermediateCopy headroomStrategy]);
       v81 = v59;
       v61 = v60;
       [(PFParallaxLayoutHelper *)self pixelValidBounds];
@@ -2032,7 +2032,7 @@ LABEL_30:
       v65 = v64;
       v67 = v66;
       v69 = v68;
-      if ([v6 headroomStrategy] == 2 || (v88.origin.x = v63, v88.origin.y = v65, v88.size.width = v67, v88.size.height = v69, CGRectIsNull(v88)))
+      if ([intermediateCopy headroomStrategy] == 2 || (v88.origin.x = v63, v88.origin.y = v65, v88.size.width = v67, v88.size.height = v69, CGRectIsNull(v88)))
       {
         v63 = 0.0;
         v65 = 0.0;
@@ -2102,9 +2102,9 @@ LABEL_30:
     goto LABEL_60;
   }
 
-  if (a3 != 4)
+  if (strategy != 4)
   {
-    if (a3 == 5)
+    if (strategy == 5)
     {
       goto LABEL_61;
     }
@@ -2120,13 +2120,13 @@ LABEL_10:
     *&v84[5] = v10;
     *&v84[6] = v12;
     *&v84[7] = v14;
-    v84[8] = a3;
+    v84[8] = strategy;
     *&v84[9] = v20;
-    v15 = [v6 updateWithConfiguration:v84];
+    v15 = [intermediateCopy updateWithConfiguration:v84];
     goto LABEL_61;
   }
 
-  [v6 visibleRect];
+  [intermediateCopy visibleRect];
   if (v24 >= 1.0)
   {
     [(PFParallaxLayoutHelper *)self pixelEffectiveAcceptable];
@@ -2142,11 +2142,11 @@ LABEL_10:
         MaxY = CGRectGetMaxY(v87);
       }
 
-      -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [v6 headroomStrategy]);
+      -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [intermediateCopy headroomStrategy]);
       v40 = v39;
       v41 = (v39 - MaxY) / v39;
-      v42 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-      [v42 timeOverlapCheckBottom];
+      layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+      [layoutConfiguration timeOverlapCheckBottom];
       v45 = 1.0 - (v43 + v44 * 0.5);
 
       v46 = v45 / v41;
@@ -2172,7 +2172,7 @@ LABEL_10:
     }
   }
 
-  [v6 visibleRect];
+  [intermediateCopy visibleRect];
   if (v26 < 1.0)
   {
 LABEL_18:
@@ -2200,22 +2200,22 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
 
 - (BOOL)canInflate
 {
-  v3 = [(PFParallaxLayoutHelper *)self classification];
-  if (v3 != 1)
+  classification = [(PFParallaxLayoutHelper *)self classification];
+  if (classification != 1)
   {
-    LOBYTE(v3) = [(PFParallaxLayoutHelper *)self classification]== 2;
+    LOBYTE(classification) = [(PFParallaxLayoutHelper *)self classification]== 2;
   }
 
-  return v3;
+  return classification;
 }
 
-- (double)computeCropScoreForIntermediate:(id)a3
+- (double)computeCropScoreForIntermediate:(id)intermediate
 {
-  v4 = a3;
-  -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [v4 headroomStrategy]);
+  intermediateCopy = intermediate;
+  -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [intermediateCopy headroomStrategy]);
   v6 = v5;
   v8 = v7;
-  [v4 visibleRect];
+  [intermediateCopy visibleRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -2233,14 +2233,14 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-- (CGRect)unsafeAreaInImageSpaceWithVisibleFrame:(CGRect)a3
+- (CGRect)unsafeAreaInImageSpaceWithVisibleFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-  [v7 unsafeRect];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+  [layoutConfiguration unsafeRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -2257,16 +2257,16 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-- (CGSize)imageSizeWithHeadroomStrategy:(unint64_t)a3
+- (CGSize)imageSizeWithHeadroomStrategy:(unint64_t)strategy
 {
-  if (a3)
+  if (strategy)
   {
-    if (a3 == 2)
+    if (strategy == 2)
     {
       [(PFParallaxLayoutHelper *)self extendedImageSize];
     }
 
-    else if (a3 == 1)
+    else if (strategy == 1)
     {
       [(PFParallaxLayoutHelper *)self originalImageSize];
     }
@@ -2292,43 +2292,43 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-- (double)initWithPosterClassification:(double)a3 initialRect:(double)a4 imageSize:(double)a5 effectiveAcceptableRect:(double)a6 effectivePreferredRect:(double)a7 validBoundsNormalized:(uint64_t)a8 headroomFeasible:(uint64_t)a9 hasTopEdgeContact:(char)a10 computeSpatial:(char)a11 spatialPadding:(char)a12 layoutType:(uint64_t)a13 allowedLayoutStrategies:(uint64_t)a14 layoutConfiguration:(double)a15
+- (double)initWithPosterClassification:(double)classification initialRect:(double)rect imageSize:(double)size effectiveAcceptableRect:(double)acceptableRect effectivePreferredRect:(double)preferredRect validBoundsNormalized:(uint64_t)normalized headroomFeasible:(uint64_t)feasible hasTopEdgeContact:(char)self0 computeSpatial:(char)self1 spatialPadding:(char)self2 layoutType:(uint64_t)self3 allowedLayoutStrategies:(uint64_t)self4 layoutConfiguration:(double)self5
 {
   v39 = a30;
-  v47.receiver = a1;
+  v47.receiver = self;
   v47.super_class = PFParallaxLayoutHelper;
   v40 = objc_msgSendSuper2(&v47, sel_init);
-  *(v40 + 2) = a9;
+  *(v40 + 2) = feasible;
   v40[10] = a2;
-  v40[11] = a3;
-  v40[12] = a4;
-  v40[13] = a5;
-  v40[8] = a6;
-  v40[9] = a7;
+  v40[11] = classification;
+  v40[12] = rect;
+  v40[13] = size;
+  v40[8] = acceptableRect;
+  v40[9] = preferredRect;
   v41 = *MEMORY[0x1E695EFF8];
   v42 = *(MEMORY[0x1E695EFF8] + 8);
-  v40[14] = *MEMORY[0x1E695EFF8] + a25 * a6;
-  v40[15] = v42 + a26 * a7;
-  v40[16] = a6 * a27;
-  v40[17] = a7 * a28;
-  v40[18] = v41 + a17 * a6;
-  v40[19] = v42 + a18 * a7;
-  v40[20] = a6 * a19;
-  v40[21] = a7 * a20;
-  v40[22] = v41 + a21 * a6;
-  v40[23] = v42 + a22 * a7;
-  v40[24] = a6 * a23;
-  v40[25] = a7 * a24;
+  v40[14] = *MEMORY[0x1E695EFF8] + a25 * acceptableRect;
+  v40[15] = v42 + a26 * preferredRect;
+  v40[16] = acceptableRect * a27;
+  v40[17] = preferredRect * a28;
+  v40[18] = v41 + a17 * acceptableRect;
+  v40[19] = v42 + a18 * preferredRect;
+  v40[20] = acceptableRect * a19;
+  v40[21] = preferredRect * a20;
+  v40[22] = v41 + a21 * acceptableRect;
+  v40[23] = v42 + a22 * preferredRect;
+  v40[24] = acceptableRect * a23;
+  v40[25] = preferredRect * a24;
   v43 = *(v40 + 7);
   *(v40 + 7) = v39;
 
-  *(v40 + 3) = a13;
-  *(v40 + 8) = a10;
-  *(v40 + 9) = a11;
+  *(v40 + 3) = type;
+  *(v40 + 8) = contact;
+  *(v40 + 9) = spatial;
   *(v40 + 4) = a29;
-  *(v40 + 10) = a12;
+  *(v40 + 10) = padding;
   v40[5] = 1.0;
-  *(v40 + 6) = a14;
+  *(v40 + 6) = strategies;
   return v40;
 }
 
@@ -2339,10 +2339,10 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)scoreBonusOverlapStretchWithLayoutType:(unint64_t)a3
++ (double)scoreBonusOverlapStretchWithLayoutType:(unint64_t)type
 {
-  result = dbl_1B36A1EA0[a3 == 1];
-  if (a3 == 2)
+  result = dbl_1B36A1EA0[type == 1];
+  if (type == 2)
   {
     return 0.0;
   }
@@ -2350,10 +2350,10 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)scoreBonusAdaptiveWithLayoutType:(unint64_t)a3
++ (double)scoreBonusAdaptiveWithLayoutType:(unint64_t)type
 {
-  result = dbl_1B36A1EB0[a3 == 1];
-  if (a3 == 2)
+  result = dbl_1B36A1EB0[type == 1];
+  if (type == 2)
   {
     return 0.0;
   }
@@ -2361,15 +2361,15 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)scoreBonusInactiveWithLayoutType:(unint64_t)a3
++ (double)scoreBonusInactiveWithLayoutType:(unint64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     return *&_scoreBonusInactive;
   }
 
   result = 0.0;
-  if (!a3)
+  if (!type)
   {
     return *&_scoreBonusInactive;
   }
@@ -2377,15 +2377,15 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)scoreBonusOverlapTargetWithLayoutType:(unint64_t)a3
++ (double)scoreBonusOverlapTargetWithLayoutType:(unint64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     return *&_scoreBonusOverlapTarget;
   }
 
   result = 0.25;
-  if (!a3)
+  if (!type)
   {
     return *&_scoreBonusOverlapTarget;
   }
@@ -2393,10 +2393,10 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)scoreBonusZoomNoneWithLayoutType:(unint64_t)a3
++ (double)scoreBonusZoomNoneWithLayoutType:(unint64_t)type
 {
   result = 0.2;
-  if (a3 - 1 >= 2)
+  if (type - 1 >= 2)
   {
     return 0.0;
   }
@@ -2404,9 +2404,9 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)scoreBonusZoomTargetWithLayoutType:(unint64_t)a3
++ (double)scoreBonusZoomTargetWithLayoutType:(unint64_t)type
 {
-  if (a3 != 3 && a3)
+  if (type != 3 && type)
   {
     return 0.1;
   }
@@ -2417,15 +2417,15 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   }
 }
 
-+ (double)scoreBonusZoomHeadroomWithLayoutType:(unint64_t)a3
++ (double)scoreBonusZoomHeadroomWithLayoutType:(unint64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     return *&_scoreBonusZoomHeadroom;
   }
 
   result = 0.0;
-  if (!a3)
+  if (!type)
   {
     return *&_scoreBonusZoomHeadroom;
   }
@@ -2433,14 +2433,14 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)targetZoomFactorLimitWithLayoutType:(unint64_t)a3
++ (double)targetZoomFactorLimitWithLayoutType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 1.0;
   }
 
-  if (a3)
+  if (type)
   {
     return 1.2;
   }
@@ -2448,10 +2448,10 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return *&_targetZoomFactorLimit;
 }
 
-+ (double)closeupZoomPercentWithLayoutType:(unint64_t)a3
++ (double)closeupZoomPercentWithLayoutType:(unint64_t)type
 {
   result = 0.2;
-  if (a3 - 1 >= 2)
+  if (type - 1 >= 2)
   {
     return 0.75;
   }
@@ -2459,9 +2459,9 @@ void __68__PFParallaxLayoutHelper_intermediateWithZoomStrategy_intermediate___bl
   return result;
 }
 
-+ (double)targetZoomPercentWithLayoutType:(unint64_t)a3
++ (double)targetZoomPercentWithLayoutType:(unint64_t)type
 {
-  if (a3 != 3 && a3)
+  if (type != 3 && type)
   {
     return 0.1;
   }

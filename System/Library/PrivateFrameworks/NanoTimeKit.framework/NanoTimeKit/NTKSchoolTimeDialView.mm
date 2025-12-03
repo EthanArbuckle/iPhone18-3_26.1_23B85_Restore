@@ -1,22 +1,22 @@
 @interface NTKSchoolTimeDialView
-- (NTKSchoolTimeDialView)initWithFrame:(CGRect)a3 ringWidth:(double)a4;
+- (NTKSchoolTimeDialView)initWithFrame:(CGRect)frame ringWidth:(double)width;
 - (id)_activeHourColor;
 - (id)_inactiveHourColor;
 - (void)_setupUI;
-- (void)setActiveHour:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setActiveHour:(unint64_t)hour animated:(BOOL)animated;
 @end
 
 @implementation NTKSchoolTimeDialView
 
-- (NTKSchoolTimeDialView)initWithFrame:(CGRect)a3 ringWidth:(double)a4
+- (NTKSchoolTimeDialView)initWithFrame:(CGRect)frame ringWidth:(double)width
 {
   v8.receiver = self;
   v8.super_class = NTKSchoolTimeDialView;
-  v5 = [(NTKSchoolTimeDialView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(NTKSchoolTimeDialView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_ringWidth = a4;
+    v5->_ringWidth = width;
     [(NTKSchoolTimeDialView *)v5 _setupUI];
   }
 
@@ -26,8 +26,8 @@
 - (void)_setupUI
 {
   v55[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v51 = ___LayoutConstants_block_invoke_8(v3, v3);
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v51 = ___LayoutConstants_block_invoke_8(currentDevice, currentDevice);
   v4 = self->_ringWidth * 0.5;
   [(NTKSchoolTimeDialView *)self bounds];
   v57 = CGRectInset(v56, v4 * 0.5, v4 * 0.5);
@@ -35,19 +35,19 @@
   y = v57.origin.y;
   width = v57.size.width;
   height = v57.size.height;
-  v9 = [MEMORY[0x277CD9F90] layer];
+  layer = [MEMORY[0x277CD9F90] layer];
   v58.origin.x = x;
   v58.origin.y = y;
   v58.size.width = width;
   v58.size.height = height;
-  [v9 setPath:{CGPathCreateWithEllipseInRect(v58, 0)}];
+  [layer setPath:{CGPathCreateWithEllipseInRect(v58, 0)}];
   v10 = +[NTKSchoolTimeFaceView schoolTimeColor];
-  [v9 setStrokeColor:{objc_msgSend(v10, "CGColor")}];
+  [layer setStrokeColor:{objc_msgSend(v10, "CGColor")}];
 
-  [v9 setFillColor:0];
-  [v9 setLineWidth:v4];
-  v11 = [(NTKSchoolTimeDialView *)self layer];
-  [v11 addSublayer:v9];
+  [layer setFillColor:0];
+  [layer setLineWidth:v4];
+  layer2 = [(NTKSchoolTimeDialView *)self layer];
+  [layer2 addSublayer:layer];
 
   v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:12];
   v13 = MEMORY[0x2318D8E70]([(NTKSchoolTimeDialView *)self bounds]);
@@ -56,11 +56,11 @@
   v15 = width * 0.5;
   v16 = objc_opt_new();
   [v16 setNumberStyle:0];
-  v17 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v16 setLocale:v17];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v16 setLocale:currentLocale];
 
-  v46 = v3;
-  v18 = [MEMORY[0x277CBBAF8] metricsWithDevice:v3 identitySizeClass:3];
+  v46 = currentDevice;
+  v18 = [MEMORY[0x277CBBAF8] metricsWithDevice:currentDevice identitySizeClass:3];
   v54[0] = &unk_2841820F8;
   v19 = MEMORY[0x277CCAE60];
   [v18 scaledValue:0 withOverride:-1.0 forSizeClass:0.0];
@@ -100,8 +100,8 @@
     v35 = [v16 stringFromNumber:v34];
     [v32 setText:v35];
 
-    v36 = [(NTKSchoolTimeDialView *)self _inactiveHourColor];
-    [v32 setTextColor:v36];
+    _inactiveHourColor = [(NTKSchoolTimeDialView *)self _inactiveHourColor];
+    [v32 setTextColor:_inactiveHourColor];
 
     [v32 sizeToFit];
     v37 = __sincos_stret(i * 0.523598776 + -1.57079633);
@@ -127,12 +127,12 @@
   self->_hourLabels = v12;
 }
 
-- (void)setActiveHour:(unint64_t)a3 animated:(BOOL)a4
+- (void)setActiveHour:(unint64_t)hour animated:(BOOL)animated
 {
-  if (self->_activeHour != a3)
+  if (self->_activeHour != hour)
   {
-    v4 = a4;
-    self->_activeHour = a3;
+    animatedCopy = animated;
+    self->_activeHour = hour;
     hourLabels = self->_hourLabels;
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
     v8 = [(NSDictionary *)hourLabels objectForKeyedSubscript:v7];
@@ -141,14 +141,14 @@
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_activeHour];
     v11 = [(NSDictionary *)v9 objectForKeyedSubscript:v10];
 
-    if (v4)
+    if (animatedCopy)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __48__NTKSchoolTimeDialView_setActiveHour_animated___block_invoke;
       aBlock[3] = &unk_2787800D0;
       v16 = v8;
-      v17 = self;
+      selfCopy = self;
       v18 = v11;
       v12 = _Block_copy(aBlock);
       v12[2](1.0);
@@ -158,14 +158,14 @@
     {
       if (v8)
       {
-        v13 = [(NTKSchoolTimeDialView *)self _inactiveHourColor];
-        [v8 setTextColor:v13];
+        _inactiveHourColor = [(NTKSchoolTimeDialView *)self _inactiveHourColor];
+        [v8 setTextColor:_inactiveHourColor];
       }
 
       if (v11)
       {
-        v14 = [(NTKSchoolTimeDialView *)self _activeHourColor];
-        [v11 setTextColor:v14];
+        _activeHourColor = [(NTKSchoolTimeDialView *)self _activeHourColor];
+        [v11 setTextColor:_activeHourColor];
       }
     }
   }

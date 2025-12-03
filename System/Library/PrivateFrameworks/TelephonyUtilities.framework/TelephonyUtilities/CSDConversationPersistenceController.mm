@@ -1,37 +1,37 @@
 @interface CSDConversationPersistenceController
-- (void)enumerateActiveConversations:(id)a3;
+- (void)enumerateActiveConversations:(id)conversations;
 - (void)removeAllConversations;
-- (void)removeConversation:(id)a3;
-- (void)updateConversation:(id)a3;
+- (void)removeConversation:(id)conversation;
+- (void)updateConversation:(id)conversation;
 @end
 
 @implementation CSDConversationPersistenceController
 
-- (void)updateConversation:(id)a3
+- (void)updateConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1003CA94C();
 }
 
-- (void)removeConversation:(id)a3
+- (void)removeConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1003CAFE0();
 }
 
 - (void)removeAllConversations
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003CB638();
 }
 
-- (void)enumerateActiveConversations:(id)a3
+- (void)enumerateActiveConversations:(id)conversations
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(conversations);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   sub_1003CBBA0();
 }
 

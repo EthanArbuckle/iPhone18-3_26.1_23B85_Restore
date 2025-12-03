@@ -1,43 +1,43 @@
 @interface CPSAuthenticationSession
-- (CPSAuthenticationSession)initWithRequest:(id)a3;
+- (CPSAuthenticationSession)initWithRequest:(id)request;
 - (void)_activated;
-- (void)_deviceStartedAuthentication:(uint64_t)a1;
-- (void)_deviceTappedNotification:(uint64_t)a1;
+- (void)_deviceStartedAuthentication:(uint64_t)authentication;
+- (void)_deviceTappedNotification:(uint64_t)notification;
 - (void)_invalidated;
-- (void)_sessionFailedWithError:(uint64_t)a1;
-- (void)_sessionFinishedWithResponse:(uint64_t)a1;
-- (void)authenticationSessionPresentShieldWithStyle:(int64_t)a3 device:(id)a4;
+- (void)_sessionFailedWithError:(uint64_t)error;
+- (void)_sessionFinishedWithResponse:(uint64_t)response;
+- (void)authenticationSessionPresentShieldWithStyle:(int64_t)style device:(id)device;
 - (void)cancel;
 - (void)start;
 @end
 
 @implementation CPSAuthenticationSession
 
-- (CPSAuthenticationSession)initWithRequest:(id)a3
+- (CPSAuthenticationSession)initWithRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [(CPSAuthenticationSession *)a2 initWithRequest:?];
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x277D77C08] currentPersona];
+  v7 = requestCopy;
+  currentPersona = [MEMORY[0x277D77C08] currentPersona];
   v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (currentPersona)
   {
     if (v9)
     {
-      v10 = [v8 userPersonaType];
-      v11 = [v8 userPersonaNickName];
-      v12 = [v8 userPersonaUniqueString];
+      userPersonaType = [currentPersona userPersonaType];
+      userPersonaNickName = [currentPersona userPersonaNickName];
+      userPersonaUniqueString = [currentPersona userPersonaUniqueString];
       *buf = 134218498;
-      v20 = v10;
+      v20 = userPersonaType;
       v21 = 2112;
-      v22 = v11;
+      v22 = userPersonaNickName;
       v23 = 2112;
-      v24 = v12;
+      v24 = userPersonaUniqueString;
       _os_log_impl(&dword_243D1C000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "activePersona: <ty:%lu, nm:%@, id:%@>", buf, 0x20u);
     }
   }
@@ -57,7 +57,7 @@
     dispatchQueue = v13->_dispatchQueue;
     v13->_dispatchQueue = Serial;
 
-    objc_storeStrong(&v13->_request, a3);
+    objc_storeStrong(&v13->_request, request);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -143,7 +143,7 @@ void __38__CPSAuthenticationSession__activated__block_invoke_19(uint64_t a1, voi
   }
 }
 
-- (void)authenticationSessionPresentShieldWithStyle:(int64_t)a3 device:(id)a4
+- (void)authenticationSessionPresentShieldWithStyle:(int64_t)style device:(id)device
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = ClientSessionLog();
@@ -160,7 +160,7 @@ void __38__CPSAuthenticationSession__activated__block_invoke_19(uint64_t a1, voi
 - (void)_activated
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = ClientSessionLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -169,53 +169,53 @@ void __38__CPSAuthenticationSession__activated__block_invoke_19(uint64_t a1, voi
       _os_log_impl(&dword_243D1C000, v2, OS_LOG_TYPE_INFO, "Activated", buf, 2u);
     }
 
-    *(a1 + 24) = 1;
+    *(self + 24) = 1;
     v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.companiond.xpc" options:0];
-    v4 = *(a1 + 16);
-    *(a1 + 16) = v3;
+    v4 = *(self + 16);
+    *(self + 16) = v3;
 
-    v5 = *(a1 + 16);
+    v5 = *(self + 16);
     v6 = +[CPSAuthenticationServiceInterface clientInterface];
     [v5 setExportedInterface:v6];
 
-    v7 = *(a1 + 16);
+    v7 = *(self + 16);
     v8 = +[CPSAuthenticationServiceInterface daemonInterface];
     [v7 setRemoteObjectInterface:v8];
 
-    [*(a1 + 16) setExportedObject:a1];
-    [*(a1 + 16) _setQueue:*(a1 + 8)];
-    v9 = *(a1 + 16);
+    [*(self + 16) setExportedObject:self];
+    [*(self + 16) _setQueue:*(self + 8)];
+    v9 = *(self + 16);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __38__CPSAuthenticationSession__activated__block_invoke;
     v18[3] = &unk_278DF14F0;
-    v18[4] = a1;
+    v18[4] = self;
     [v9 setInterruptionHandler:v18];
-    v10 = *(a1 + 16);
+    v10 = *(self + 16);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __38__CPSAuthenticationSession__activated__block_invoke_18;
     v17[3] = &unk_278DF14F0;
-    v17[4] = a1;
+    v17[4] = self;
     [v10 setInvalidationHandler:v17];
-    [*(a1 + 16) resume];
+    [*(self + 16) resume];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __38__CPSAuthenticationSession__activated__block_invoke_19;
     aBlock[3] = &unk_278DF1518;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v11 = _Block_copy(aBlock);
     v12 = ClientSessionLog();
     if (OUTLINED_FUNCTION_3(v12))
     {
-      v13 = *(a1 + 32);
+      v13 = *(self + 32);
       *buf = 138412290;
       v20 = v13;
       _os_log_impl(&dword_243D1C000, v8, OS_LOG_TYPE_DEFAULT, "Starting authentication session: %@", buf, 0xCu);
     }
 
-    v14 = [*(a1 + 16) remoteObjectProxyWithErrorHandler:v11];
-    [v14 startAuthenticationSessionWithRequest:*(a1 + 32) completionHandler:v11];
+    v14 = [*(self + 16) remoteObjectProxyWithErrorHandler:v11];
+    [v14 startAuthenticationSessionWithRequest:*(self + 32) completionHandler:v11];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -223,7 +223,7 @@ void __38__CPSAuthenticationSession__activated__block_invoke_19(uint64_t a1, voi
 
 - (void)_invalidated
 {
-  if (a1 && (*(a1 + 25) & 1) == 0)
+  if (self && (*(self + 25) & 1) == 0)
   {
     v2 = ClientSessionLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -232,43 +232,43 @@ void __38__CPSAuthenticationSession__activated__block_invoke_19(uint64_t a1, voi
       _os_log_impl(&dword_243D1C000, v2, OS_LOG_TYPE_INFO, "Invalidated", v11, 2u);
     }
 
-    v3 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v3 = *(self + 64);
+    *(self + 64) = 0;
 
-    v4 = *(a1 + 72);
-    *(a1 + 72) = 0;
+    v4 = *(self + 72);
+    *(self + 72) = 0;
 
-    v5 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v5 = *(self + 48);
+    *(self + 48) = 0;
 
-    v6 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    v6 = *(self + 56);
+    *(self + 56) = 0;
 
-    v7 = *(a1 + 40);
+    v7 = *(self + 40);
     if (v7)
     {
       v8 = NSErrorF();
       (*(v7 + 16))(v7, 0, v8);
 
-      v9 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v9 = *(self + 40);
+      *(self + 40) = 0;
     }
 
-    [*(a1 + 16) setInterruptionHandler:0];
-    [*(a1 + 16) setInvalidationHandler:0];
-    [*(a1 + 16) invalidate];
-    v10 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    [*(self + 16) setInterruptionHandler:0];
+    [*(self + 16) setInvalidationHandler:0];
+    [*(self + 16) invalidate];
+    v10 = *(self + 16);
+    *(self + 16) = 0;
 
-    *(a1 + 25) = 1;
+    *(self + 25) = 1;
   }
 }
 
-- (void)_sessionFailedWithError:(uint64_t)a1
+- (void)_sessionFailedWithError:(uint64_t)error
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v4 = ClientSessionLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -278,25 +278,25 @@ void __38__CPSAuthenticationSession__activated__block_invoke_19(uint64_t a1, voi
       _os_log_error_impl(&dword_243D1C000, v4, OS_LOG_TYPE_ERROR, "Session failed: %@", &v14, 0xCu);
     }
 
-    v5 = *(a1 + 56);
+    v5 = *(error + 56);
     if (v5)
     {
       v6 = OUTLINED_FUNCTION_1_0(v5);
       v7(v6, v3);
-      v8 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      v8 = *(error + 56);
+      *(error + 56) = 0;
     }
 
-    v9 = *(a1 + 40);
+    v9 = *(error + 40);
     if (v9)
     {
       v10 = OUTLINED_FUNCTION_1_0(v9);
       v11(v10, 0, v3);
-      v12 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v12 = *(error + 40);
+      *(error + 40) = 0;
     }
 
-    [(CPSAuthenticationSession *)a1 _invalidated];
+    [(CPSAuthenticationSession *)error _invalidated];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -319,11 +319,11 @@ void __38__CPSAuthenticationSession__activated__block_invoke_18(uint64_t a1)
   [(CPSAuthenticationSession *)*(a1 + 32) _sessionFailedWithError:v5];
 }
 
-- (void)_deviceTappedNotification:(uint64_t)a1
+- (void)_deviceTappedNotification:(uint64_t)notification
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (notification)
   {
     v5 = ClientSessionLog();
     if (OUTLINED_FUNCTION_3(v5))
@@ -331,7 +331,7 @@ void __38__CPSAuthenticationSession__activated__block_invoke_18(uint64_t a1)
       OUTLINED_FUNCTION_0_0(&dword_243D1C000, v6, v7, "Device tapped notification: %@", v8, v9, v10, v11, 2u);
     }
 
-    v12 = *(a1 + 64);
+    v12 = *(notification + 64);
     if (v12)
     {
       v13 = OUTLINED_FUNCTION_1_0(v12);
@@ -342,11 +342,11 @@ void __38__CPSAuthenticationSession__activated__block_invoke_18(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deviceStartedAuthentication:(uint64_t)a1
+- (void)_deviceStartedAuthentication:(uint64_t)authentication
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (authentication)
   {
     v5 = ClientSessionLog();
     if (OUTLINED_FUNCTION_3(v5))
@@ -354,7 +354,7 @@ void __38__CPSAuthenticationSession__activated__block_invoke_18(uint64_t a1)
       OUTLINED_FUNCTION_0_0(&dword_243D1C000, v6, v7, "Device started authentication: %@", v8, v9, v10, v11, 2u);
     }
 
-    v12 = *(a1 + 72);
+    v12 = *(authentication + 72);
     if (v12)
     {
       v13 = OUTLINED_FUNCTION_1_0(v12);
@@ -365,11 +365,11 @@ void __38__CPSAuthenticationSession__activated__block_invoke_18(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sessionFinishedWithResponse:(uint64_t)a1
+- (void)_sessionFinishedWithResponse:(uint64_t)response
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (response)
   {
     v5 = ClientSessionLog();
     if (OUTLINED_FUNCTION_3(v5))
@@ -377,25 +377,25 @@ void __38__CPSAuthenticationSession__activated__block_invoke_18(uint64_t a1)
       OUTLINED_FUNCTION_0_0(&dword_243D1C000, v6, v7, "Session finished: %@", v8, v9, v10, v11, 2u);
     }
 
-    v12 = *(a1 + 48);
+    v12 = *(response + 48);
     if (v12)
     {
       v13 = OUTLINED_FUNCTION_1_0(v12);
       v14(v13, v4);
-      v15 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v15 = *(response + 48);
+      *(response + 48) = 0;
     }
 
-    v16 = *(a1 + 40);
+    v16 = *(response + 40);
     if (v16)
     {
       v17 = OUTLINED_FUNCTION_1_0(v16);
       v18(v17, v4, 0);
-      v19 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v19 = *(response + 40);
+      *(response + 40) = 0;
     }
 
-    [(CPSAuthenticationSession *)a1 _invalidated];
+    [(CPSAuthenticationSession *)response _invalidated];
   }
 
   v20 = *MEMORY[0x277D85DE8];

@@ -1,15 +1,15 @@
 @interface HFFetchedHomeKitObjectItem
-- (HFFetchedHomeKitObjectItem)initWithHomeKitObject:(id)a3;
+- (HFFetchedHomeKitObjectItem)initWithHomeKitObject:(id)object;
 - (id)_homeKitObjectFetch;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFFetchedHomeKitObjectItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:HFItemUpdateOptionFullUpdateIndicated];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionFullUpdateIndicated];
   if ([v5 BOOLValue] || (-[HFFetchedHomeKitObjectItem homeKitObject](self, "homeKitObject"), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
@@ -19,21 +19,21 @@
   else
   {
     v7 = v6;
-    v8 = [objc_opt_class() alwaysPerformFullFetch];
+    alwaysPerformFullFetch = [objc_opt_class() alwaysPerformFullFetch];
 
     objc_initWeak(&location, self);
-    if ((v8 & 1) == 0)
+    if ((alwaysPerformFullFetch & 1) == 0)
     {
       v9 = MEMORY[0x277D2C900];
-      v10 = [(HFFetchedHomeKitObjectItem *)self homeKitObject];
-      v11 = [v9 futureWithResult:v10];
+      homeKitObject = [(HFFetchedHomeKitObjectItem *)self homeKitObject];
+      _homeKitObjectFetch = [v9 futureWithResult:homeKitObject];
 
       v12 = 0;
       goto LABEL_7;
     }
   }
 
-  v11 = [(HFFetchedHomeKitObjectItem *)self _homeKitObjectFetch];
+  _homeKitObjectFetch = [(HFFetchedHomeKitObjectItem *)self _homeKitObjectFetch];
   v12 = 1;
 LABEL_7:
   v18[0] = MEMORY[0x277D85DD0];
@@ -42,7 +42,7 @@ LABEL_7:
   v18[3] = &unk_277DFBFE8;
   objc_copyWeak(&v19, &location);
   v20 = v12;
-  v13 = [v11 flatMap:v18];
+  v13 = [_homeKitObjectFetch flatMap:v18];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__HFFetchedHomeKitObjectItem__subclass_updateWithOptions___block_invoke_2;
@@ -121,16 +121,16 @@ id __58__HFFetchedHomeKitObjectItem__subclass_updateWithOptions___block_invoke_2
   return v8;
 }
 
-- (HFFetchedHomeKitObjectItem)initWithHomeKitObject:(id)a3
+- (HFFetchedHomeKitObjectItem)initWithHomeKitObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = HFFetchedHomeKitObjectItem;
   v6 = [(HFFetchedHomeKitObjectItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_homeKitObject, a3);
+    objc_storeStrong(&v6->_homeKitObject, object);
   }
 
   return v7;
@@ -138,8 +138,8 @@ id __58__HFFetchedHomeKitObjectItem__subclass_updateWithOptions___block_invoke_2
 
 - (id)_homeKitObjectFetch
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFFetchedHomeKitObjectItem.m" lineNumber:71 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFFetchedHomeKitObjectItem _homeKitObjectFetch]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFFetchedHomeKitObjectItem.m" lineNumber:71 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFFetchedHomeKitObjectItem _homeKitObjectFetch]", objc_opt_class()}];
 
   return 0;
 }

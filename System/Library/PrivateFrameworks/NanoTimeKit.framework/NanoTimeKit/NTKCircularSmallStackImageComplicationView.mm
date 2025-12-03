@@ -1,8 +1,8 @@
 @interface NTKCircularSmallStackImageComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-+ (double)_imageScaleForTemplate:(id)a3;
-- (NTKCircularSmallStackImageComplicationView)initWithFrame:(CGRect)a3;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
++ (double)_imageScaleForTemplate:(id)template;
+- (NTKCircularSmallStackImageComplicationView)initWithFrame:(CGRect)frame;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
 - (void)_updateForTemplateChange;
 - (void)_updateLabelsForFontChange;
 - (void)layoutSubviews;
@@ -10,9 +10,9 @@
 
 @implementation NTKCircularSmallStackImageComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28,11 +28,11 @@
   return isKindOfClass & 1;
 }
 
-- (NTKCircularSmallStackImageComplicationView)initWithFrame:(CGRect)a3
+- (NTKCircularSmallStackImageComplicationView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = NTKCircularSmallStackImageComplicationView;
-  v3 = [(NTKCircularComplicationView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKCircularComplicationView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,23 +56,23 @@
   [(NTKCircularComplicationView *)&v21 layoutSubviews];
   [(NTKCircularSmallStackImageComplicationView *)self bounds];
   memset(v20, 0, 152);
-  v3 = [(NTKCircularComplicationView *)self device];
-  _LayoutConstants_11(v3, [(NTKCircularComplicationView *)self usesMediumLayout], v20);
+  device = [(NTKCircularComplicationView *)self device];
+  _LayoutConstants_11(device, [(NTKCircularComplicationView *)self usesMediumLayout], v20);
 
   [(CDComplicationImageView *)self->_imageView sizeToFit];
   [(CLKUIColoringLabel *)self->_label sizeToFit];
-  v4 = [(NTKCircularComplicationView *)self complicationTemplate];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
   objc_opt_class();
   v5 = 1.0;
   if (objc_opt_isKindOfClass())
   {
-    [objc_opt_class() _imageScaleForTemplate:v4];
+    [objc_opt_class() _imageScaleForTemplate:complicationTemplate];
     v5 = v6;
   }
 
   [(CDComplicationImageView *)self->_imageView bounds];
   imageView = self->_imageView;
-  v8 = [(NTKCircularComplicationView *)self device];
+  device2 = [(NTKCircularComplicationView *)self device];
   CLKRectIntegralForDevice();
   [(CDComplicationImageView *)imageView ntk_setBoundsAndPositionFromFrame:?];
 
@@ -82,7 +82,7 @@
   [(CLKUIColoringLabel *)self->_label frame];
   [(NTKCircularComplicationView *)self _layoutConstants];
   [(CLKUIColoringLabel *)self->_label _lastLineBaseline];
-  v10 = [(NTKCircularComplicationView *)self device];
+  device3 = [(NTKCircularComplicationView *)self device];
   CLKRectCenteredXInRectForDevice();
   v12 = v11;
   v14 = v13;
@@ -92,19 +92,19 @@
   [(CLKUIColoringLabel *)self->_label setFrame:v12, v14, v16, v18];
 }
 
-+ (double)_imageScaleForTemplate:(id)a3
++ (double)_imageScaleForTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__NTKCircularSmallStackImageComplicationView__imageScaleForTemplate___block_invoke;
   v10[3] = &unk_27877DDA0;
-  v11 = v3;
+  v11 = templateCopy;
   v4 = MEMORY[0x277CBBB68];
-  v5 = v3;
-  v6 = [v4 sharedRenderingContext];
-  v7 = [v6 device];
-  __69__NTKCircularSmallStackImageComplicationView__imageScaleForTemplate___block_invoke(v10, v7);
+  v5 = templateCopy;
+  sharedRenderingContext = [v4 sharedRenderingContext];
+  device = [sharedRenderingContext device];
+  __69__NTKCircularSmallStackImageComplicationView__imageScaleForTemplate___block_invoke(v10, device);
 
   v8 = *&_imageScaleForTemplate___scale_359;
   return v8;
@@ -172,27 +172,27 @@ uint64_t __69__NTKCircularSmallStackImageComplicationView__imageScaleForTemplate
 
 - (void)_updateForTemplateChange
 {
-  v3 = [(NTKCircularComplicationView *)self complicationTemplate];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
   label = self->_label;
-  v13 = v3;
-  v5 = [v3 line2TextProvider];
-  [(CLKUIColoringLabel *)label setTextProvider:v5];
+  v13 = complicationTemplate;
+  line2TextProvider = [complicationTemplate line2TextProvider];
+  [(CLKUIColoringLabel *)label setTextProvider:line2TextProvider];
 
   if ([(NTKCircularComplicationView *)self usesMediumLayout])
   {
     [(NTKCircularSmallStackImageComplicationView *)self _updateLabelsForFontChange];
   }
 
-  v6 = [v13 line1ImageProvider];
+  line1ImageProvider = [v13 line1ImageProvider];
   imageView = self->_imageView;
-  v8 = [(CDComplicationImageView *)imageView imageProvider];
-  v9 = [off_27877BE78 existingImageView:imageView supportsImageProvider:v8];
+  imageProvider = [(CDComplicationImageView *)imageView imageProvider];
+  v9 = [off_27877BE78 existingImageView:imageView supportsImageProvider:imageProvider];
 
   v10 = self->_imageView;
   if ((v9 & 1) == 0)
   {
     [(CDComplicationImageView *)v10 removeFromSuperview];
-    v11 = [off_27877BE78 viewForImageProvider:v6];
+    v11 = [off_27877BE78 viewForImageProvider:line1ImageProvider];
     v12 = self->_imageView;
     self->_imageView = v11;
 
@@ -208,7 +208,7 @@ uint64_t __69__NTKCircularSmallStackImageComplicationView__imageScaleForTemplate
     }
   }
 
-  [(CDComplicationImageView *)v10 setImageProvider:v6];
+  [(CDComplicationImageView *)v10 setImageProvider:line1ImageProvider];
   [(NTKCircularComplicationView *)self _updateImageViewColor:self->_imageView];
   [(NTKCircularSmallStackImageComplicationView *)self setNeedsLayout];
 }
@@ -217,8 +217,8 @@ uint64_t __69__NTKCircularSmallStackImageComplicationView__imageScaleForTemplate
 {
   if ([(NTKCircularComplicationView *)self usesMediumLayout])
   {
-    v3 = [(CLKUIColoringLabel *)self->_label text];
-    v4 = [(NTKCircularComplicationView *)self _mediumStackFontForText:v3];
+    text = [(CLKUIColoringLabel *)self->_label text];
+    v4 = [(NTKCircularComplicationView *)self _mediumStackFontForText:text];
   }
 
   else
@@ -232,13 +232,13 @@ uint64_t __69__NTKCircularSmallStackImageComplicationView__imageScaleForTemplate
   [(CLKUIColoringLabel *)label setMaxWidth:v6];
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_imageView);
+  (*v4)(blockCopy, self->_imageView);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface HMFKeyValueDatabase
-- (BOOL)_syncWithoutTimerHandling:(id *)a3;
-- (BOOL)containsKey:(id)a3;
-- (BOOL)removeAllEntriesWithError:(id *)a3;
-- (BOOL)setValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)sync:(id *)a3;
+- (BOOL)_syncWithoutTimerHandling:(id *)handling;
+- (BOOL)containsKey:(id)key;
+- (BOOL)removeAllEntriesWithError:(id *)error;
+- (BOOL)setValue:(id)value forKey:(id)key error:(id *)error;
+- (BOOL)sync:(id *)sync;
 - (HMFKeyValueDatabase)init;
 - (id)dictionary;
 - (id)keys;
-- (id)valueForKey:(id)a3 error:(id *)a4;
+- (id)valueForKey:(id)key error:(id *)error;
 - (id)values;
 - (void)_cancelSyncTimer;
 - (void)_startDelayedSyncTimerIfNeeded;
 - (void)dealloc;
-- (void)memoryMonitor:(id)a3 didReceiveMemoryEvent:(int64_t)a4;
+- (void)memoryMonitor:(id)monitor didReceiveMemoryEvent:(int64_t)event;
 @end
 
 @implementation HMFKeyValueDatabase
@@ -70,21 +70,21 @@
   [(HMFKeyValueDatabase *)&v6 dealloc];
 }
 
-- (BOOL)setValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HMFKeyValueDatabase *)self queue];
+  valueCopy = value;
+  keyCopy = key;
+  queue = [(HMFKeyValueDatabase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMFKeyValueDatabase_setValue_forKey_error___block_invoke;
   block[3] = &unk_2786E73A0;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_sync(v9, block);
+  v14 = valueCopy;
+  v15 = keyCopy;
+  v10 = keyCopy;
+  v11 = valueCopy;
+  dispatch_sync(queue, block);
 
   return 1;
 }
@@ -117,25 +117,25 @@ uint64_t __45__HMFKeyValueDatabase_setValue_forKey_error___block_invoke(uint64_t
   }
 }
 
-- (id)valueForKey:(id)a3 error:(id *)a4
+- (id)valueForKey:(id)key error:(id *)error
 {
-  v5 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__1;
   v17 = __Block_byref_object_dispose__1;
   v18 = 0;
-  v6 = [(HMFKeyValueDatabase *)self queue];
+  queue = [(HMFKeyValueDatabase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__HMFKeyValueDatabase_valueForKey_error___block_invoke;
   block[3] = &unk_2786E7CB0;
-  v11 = v5;
+  v11 = keyCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v5;
-  dispatch_sync(v6, block);
+  v7 = keyCopy;
+  dispatch_sync(queue, block);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -174,24 +174,24 @@ LABEL_9:
   }
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
   v6 = 0;
-  v3 = [(HMFKeyValueDatabase *)self valueForKey:a3 error:&v6];
+  v3 = [(HMFKeyValueDatabase *)self valueForKey:key error:&v6];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)removeAllEntriesWithError:(id *)a3
+- (BOOL)removeAllEntriesWithError:(id *)error
 {
-  v4 = [(HMFKeyValueDatabase *)self queue];
+  queue = [(HMFKeyValueDatabase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__HMFKeyValueDatabase_removeAllEntriesWithError___block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 
   return 1;
 }
@@ -205,7 +205,7 @@ uint64_t __49__HMFKeyValueDatabase_removeAllEntriesWithError___block_invoke(uint
   return [v2 setDiskRepresentation:0];
 }
 
-- (BOOL)sync:(id *)a3
+- (BOOL)sync:(id *)sync
 {
   v15 = 0;
   v16 = &v15;
@@ -217,7 +217,7 @@ uint64_t __49__HMFKeyValueDatabase_removeAllEntriesWithError___block_invoke(uint
   v12 = __Block_byref_object_copy__1;
   v13 = __Block_byref_object_dispose__1;
   v14 = 0;
-  v5 = [(HMFKeyValueDatabase *)self queue];
+  queue = [(HMFKeyValueDatabase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__HMFKeyValueDatabase_sync___block_invoke;
@@ -225,11 +225,11 @@ uint64_t __49__HMFKeyValueDatabase_removeAllEntriesWithError___block_invoke(uint
   block[4] = self;
   block[5] = &v15;
   block[6] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  if (a3)
+  if (sync)
   {
-    *a3 = v10[5];
+    *sync = v10[5];
   }
 
   v6 = *(v16 + 24);
@@ -250,7 +250,7 @@ void __28__HMFKeyValueDatabase_sync___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-- (BOOL)_syncWithoutTimerHandling:(id *)a3
+- (BOOL)_syncWithoutTimerHandling:(id *)handling
 {
   v28[1] = *MEMORY[0x277D85DE8];
   if (dispatch_get_specific(&kHMFKeyValueDatabaseQueueSpecificKey) != &kHMFKeyValueDatabaseQueueSpecificKey)
@@ -258,21 +258,21 @@ void __28__HMFKeyValueDatabase_sync___block_invoke(uint64_t a1)
     _HMFPreconditionFailure(@"Must be called on database serial queue");
   }
 
-  v5 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
+  inMemoryDictionary = [(HMFKeyValueDatabase *)self inMemoryDictionary];
 
-  if (v5)
+  if (inMemoryDictionary)
   {
-    v6 = [(HMFKeyValueDatabase *)self diskRepresentation];
+    diskRepresentation = [(HMFKeyValueDatabase *)self diskRepresentation];
 
-    if (v6)
+    if (diskRepresentation)
     {
-      v7 = [(HMFKeyValueDatabase *)self diskRepresentation];
-      v8 = [v7 hmf_readObject];
+      diskRepresentation2 = [(HMFKeyValueDatabase *)self diskRepresentation];
+      hmf_readObject = [diskRepresentation2 hmf_readObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = hmf_readObject;
       }
 
       else
@@ -285,34 +285,34 @@ void __28__HMFKeyValueDatabase_sync___block_invoke(uint64_t a1)
       if (v10)
       {
         v11 = [v10 mutableCopy];
-        v12 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
-        [v11 addEntriesFromDictionary:v12];
+        inMemoryDictionary2 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
+        [v11 addEntriesFromDictionary:inMemoryDictionary2];
 
         [(HMFKeyValueDatabase *)self setInMemoryDictionary:v11];
       }
     }
 
-    v13 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
-    v14 = [MEMORY[0x277CBEB68] null];
-    v15 = [v13 allKeysForObject:v14];
+    inMemoryDictionary3 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
+    null = [MEMORY[0x277CBEB68] null];
+    v15 = [inMemoryDictionary3 allKeysForObject:null];
 
     if ([v15 count])
     {
-      v16 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
-      [v16 removeObjectsForKeys:v15];
+      inMemoryDictionary4 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
+      [inMemoryDictionary4 removeObjectsForKeys:v15];
     }
 
-    v17 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
-    v18 = [v17 hmf_copyAsMemoryMappedData];
+    inMemoryDictionary5 = [(HMFKeyValueDatabase *)self inMemoryDictionary];
+    hmf_copyAsMemoryMappedData = [inMemoryDictionary5 hmf_copyAsMemoryMappedData];
 
-    v19 = v18 != 0;
-    if (v18)
+    v19 = hmf_copyAsMemoryMappedData != 0;
+    if (hmf_copyAsMemoryMappedData)
     {
-      [(HMFKeyValueDatabase *)self setDiskRepresentation:v18];
+      [(HMFKeyValueDatabase *)self setDiskRepresentation:hmf_copyAsMemoryMappedData];
       [(HMFKeyValueDatabase *)self setInMemoryDictionary:0];
       v20 = 0;
       v21 = 0;
-      if (!a3)
+      if (!handling)
       {
         goto LABEL_21;
       }
@@ -326,7 +326,7 @@ void __28__HMFKeyValueDatabase_sync___block_invoke(uint64_t a1)
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v21 = [v22 errorWithDomain:@"HMFKeyValueDatabaseErrorDomain" code:1 userInfo:v23];
 
-      if (!a3)
+      if (!handling)
       {
 LABEL_21:
 
@@ -337,14 +337,14 @@ LABEL_21:
       v20 = v21;
     }
 
-    *a3 = v20;
+    *handling = v20;
     v21 = v20;
     goto LABEL_21;
   }
 
-  if (a3)
+  if (handling)
   {
-    *a3 = 0;
+    *handling = 0;
   }
 
   v19 = 1;
@@ -355,8 +355,8 @@ LABEL_22:
 
 - (void)_startDelayedSyncTimerIfNeeded
 {
-  v3 = [(HMFKeyValueDatabase *)self syncTimer];
-  if (!v3 || (v4 = v3, -[HMFKeyValueDatabase syncTimer](self, "syncTimer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isValid], v5, v4, (v6 & 1) == 0))
+  syncTimer = [(HMFKeyValueDatabase *)self syncTimer];
+  if (!syncTimer || (v4 = syncTimer, -[HMFKeyValueDatabase syncTimer](self, "syncTimer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isValid], v5, v4, (v6 & 1) == 0))
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x277D85DD0];
@@ -431,20 +431,20 @@ uint64_t __53__HMFKeyValueDatabase__startDelayedSyncTimerIfNeeded__block_invoke_
     _HMFPreconditionFailure(@"Must be called on database serial queue");
   }
 
-  v3 = [(HMFKeyValueDatabase *)self syncTimer];
+  syncTimer = [(HMFKeyValueDatabase *)self syncTimer];
 
-  if (v3)
+  if (syncTimer)
   {
-    v4 = [(HMFKeyValueDatabase *)self syncTimer];
-    [v4 invalidate];
+    syncTimer2 = [(HMFKeyValueDatabase *)self syncTimer];
+    [syncTimer2 invalidate];
 
     [(HMFKeyValueDatabase *)self setSyncTimer:0];
   }
 }
 
-- (void)memoryMonitor:(id)a3 didReceiveMemoryEvent:(int64_t)a4
+- (void)memoryMonitor:(id)monitor didReceiveMemoryEvent:(int64_t)event
 {
-  v5 = [(HMFKeyValueDatabase *)self queue:a3];
+  v5 = [(HMFKeyValueDatabase *)self queue:monitor];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HMFKeyValueDatabase_memoryMonitor_didReceiveMemoryEvent___block_invoke;
@@ -474,19 +474,19 @@ void __59__HMFKeyValueDatabase_memoryMonitor_didReceiveMemoryEvent___block_invok
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v3 = [(HMFKeyValueDatabase *)self queue];
+  queue = [(HMFKeyValueDatabase *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__HMFKeyValueDatabase_keys__block_invoke;
   v6[3] = &unk_2786E7D28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
-  v4 = [v8[5] allObjects];
+  allObjects = [v8[5] allObjects];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return allObjects;
 }
 
 void __27__HMFKeyValueDatabase_keys__block_invoke(uint64_t a1)
@@ -524,19 +524,19 @@ void __27__HMFKeyValueDatabase_keys__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [(HMFKeyValueDatabase *)self queue];
+  queue = [(HMFKeyValueDatabase *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__HMFKeyValueDatabase_values__block_invoke;
   v6[3] = &unk_2786E7D28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
-  v4 = [v8[5] allValues];
+  allValues = [v8[5] allValues];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return allValues;
 }
 
 void __29__HMFKeyValueDatabase_values__block_invoke(uint64_t a1)
@@ -613,14 +613,14 @@ void __29__HMFKeyValueDatabase_values__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [(HMFKeyValueDatabase *)self queue];
+  queue = [(HMFKeyValueDatabase *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__HMFKeyValueDatabase_dictionary__block_invoke;
   v6[3] = &unk_2786E7D28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = [v8[5] copy];
   _Block_object_dispose(&v7, 8);

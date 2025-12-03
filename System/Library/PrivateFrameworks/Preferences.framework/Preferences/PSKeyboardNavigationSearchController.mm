@@ -1,44 +1,44 @@
 @interface PSKeyboardNavigationSearchController
-- (PSKeyboardNavigationSearchController)initWithSearchResultsController:(id)a3;
+- (PSKeyboardNavigationSearchController)initWithSearchResultsController:(id)controller;
 - (void)_downArrowKeyPressed;
 - (void)_upArrowKeyPressed;
 @end
 
 @implementation PSKeyboardNavigationSearchController
 
-- (PSKeyboardNavigationSearchController)initWithSearchResultsController:(id)a3
+- (PSKeyboardNavigationSearchController)initWithSearchResultsController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [PSKeyboardNavigationSearchBar alloc];
   v6 = [(PSKeyboardNavigationSearchBar *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(PSKeyboardNavigationSearchController *)self setSearchBar:v6];
 
   v7 = +[PSListController appearance];
-  v8 = [v7 buttonTextColor];
+  buttonTextColor = [v7 buttonTextColor];
 
-  if (v8)
+  if (buttonTextColor)
   {
     v9 = +[PSListController appearance];
-    v10 = [v9 buttonTextColor];
-    v11 = [(PSKeyboardNavigationSearchController *)self searchBar];
-    [v11 setTintColor:v10];
+    buttonTextColor2 = [v9 buttonTextColor];
+    searchBar = [(PSKeyboardNavigationSearchController *)self searchBar];
+    [searchBar setTintColor:buttonTextColor2];
   }
 
   v18.receiver = self;
   v18.super_class = PSKeyboardNavigationSearchController;
-  v12 = [(PSKeyboardNavigationSearchController *)&v18 initWithSearchResultsController:v4];
+  v12 = [(PSKeyboardNavigationSearchController *)&v18 initWithSearchResultsController:controllerCopy];
   v13 = v12;
   if (v12)
   {
-    [(PSKeyboardNavigationSearchController *)v12 setSearchResultsController:v4];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v13 selector:sel__escapeKeyPressed name:@"PSSearchBarEscapeKeyPressedNotification" object:0];
+    [(PSKeyboardNavigationSearchController *)v12 setSearchResultsController:controllerCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__escapeKeyPressed name:@"PSSearchBarEscapeKeyPressedNotification" object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v13 selector:sel__downArrowKeyPressed name:@"PSSearchBarDownArrowKeyPressedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__downArrowKeyPressed name:@"PSSearchBarDownArrowKeyPressedNotification" object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v13 selector:sel__upArrowKeyPressed name:@"PSSearchBarUpArrowKeyPressedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v13 selector:sel__upArrowKeyPressed name:@"PSSearchBarUpArrowKeyPressedNotification" object:0];
 
     [(PSKeyboardNavigationSearchController *)v13 setObscuresBackgroundDuringPresentation:1];
   }
@@ -48,14 +48,14 @@
 
 - (void)_downArrowKeyPressed
 {
-  v2 = [(PSKeyboardNavigationSearchController *)self searchResultsController];
-  [v2 selectNextSearchResult];
+  searchResultsController = [(PSKeyboardNavigationSearchController *)self searchResultsController];
+  [searchResultsController selectNextSearchResult];
 }
 
 - (void)_upArrowKeyPressed
 {
-  v2 = [(PSKeyboardNavigationSearchController *)self searchResultsController];
-  [v2 selectPreviousSearchResult];
+  searchResultsController = [(PSKeyboardNavigationSearchController *)self searchResultsController];
+  [searchResultsController selectPreviousSearchResult];
 }
 
 @end

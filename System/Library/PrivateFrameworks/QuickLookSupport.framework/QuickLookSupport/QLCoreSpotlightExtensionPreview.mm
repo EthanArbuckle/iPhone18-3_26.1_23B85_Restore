@@ -1,69 +1,69 @@
 @interface QLCoreSpotlightExtensionPreview
-- (QLCoreSpotlightExtensionPreview)initWithCoder:(id)a3;
-- (QLCoreSpotlightExtensionPreview)initWithQuery:(id)a3 searchableItemURL:(id)a4 searchableItemTitle:(id)a5 searchableItemUUID:(id)a6 description:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (QLCoreSpotlightExtensionPreview)initWithCoder:(id)coder;
+- (QLCoreSpotlightExtensionPreview)initWithQuery:(id)query searchableItemURL:(id)l searchableItemTitle:(id)title searchableItemUUID:(id)d description:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLCoreSpotlightExtensionPreview
 
-- (QLCoreSpotlightExtensionPreview)initWithQuery:(id)a3 searchableItemURL:(id)a4 searchableItemTitle:(id)a5 searchableItemUUID:(id)a6 description:(id)a7
+- (QLCoreSpotlightExtensionPreview)initWithQuery:(id)query searchableItemURL:(id)l searchableItemTitle:(id)title searchableItemUUID:(id)d description:(id)description
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  queryCopy = query;
+  lCopy = l;
+  titleCopy = title;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = QLCoreSpotlightExtensionPreview;
-  v16 = [(QLExtensionPreview *)&v19 initWithDescription:a7];
+  v16 = [(QLExtensionPreview *)&v19 initWithDescription:description];
   v17 = v16;
   if (v16)
   {
-    [(QLCoreSpotlightExtensionPreview *)v16 setQuery:v12];
-    [(QLCoreSpotlightExtensionPreview *)v17 setSearchableItemURL:v13];
-    [(QLCoreSpotlightExtensionPreview *)v17 setSearchableItemTitle:v14];
-    [(QLCoreSpotlightExtensionPreview *)v17 setSearchableItemUniqueIdentifier:v15];
+    [(QLCoreSpotlightExtensionPreview *)v16 setQuery:queryCopy];
+    [(QLCoreSpotlightExtensionPreview *)v17 setSearchableItemURL:lCopy];
+    [(QLCoreSpotlightExtensionPreview *)v17 setSearchableItemTitle:titleCopy];
+    [(QLCoreSpotlightExtensionPreview *)v17 setSearchableItemUniqueIdentifier:dCopy];
   }
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = QLCoreSpotlightExtensionPreview;
-  v4 = a3;
-  [(QLExtensionPreview *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(QLExtensionPreview *)&v9 encodeWithCoder:coderCopy];
   v5 = [(QLCoreSpotlightExtensionPreview *)self searchableItemUniqueIdentifier:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"searchableItemUniqueIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"searchableItemUniqueIdentifier"];
 
-  v6 = [(QLCoreSpotlightExtensionPreview *)self query];
-  [v4 encodeObject:v6 forKey:@"query"];
+  query = [(QLCoreSpotlightExtensionPreview *)self query];
+  [coderCopy encodeObject:query forKey:@"query"];
 
-  v7 = [(QLCoreSpotlightExtensionPreview *)self searchableItemTitle];
-  [v4 encodeObject:v7 forKey:@"searchableItemTitle"];
+  searchableItemTitle = [(QLCoreSpotlightExtensionPreview *)self searchableItemTitle];
+  [coderCopy encodeObject:searchableItemTitle forKey:@"searchableItemTitle"];
 
-  v8 = [(QLCoreSpotlightExtensionPreview *)self searchableItemURL];
-  [v4 encodeObject:v8 forKey:@"searchableItemURL"];
+  searchableItemURL = [(QLCoreSpotlightExtensionPreview *)self searchableItemURL];
+  [coderCopy encodeObject:searchableItemURL forKey:@"searchableItemURL"];
 }
 
-- (QLCoreSpotlightExtensionPreview)initWithCoder:(id)a3
+- (QLCoreSpotlightExtensionPreview)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = QLCoreSpotlightExtensionPreview;
-  v5 = [(QLExtensionPreview *)&v11 initWithCoder:v4];
+  v5 = [(QLExtensionPreview *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemUniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemUniqueIdentifier"];
     [(QLCoreSpotlightExtensionPreview *)v5 setSearchableItemUniqueIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"query"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"query"];
     [(QLCoreSpotlightExtensionPreview *)v5 setQuery:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemTitle"];
     [(QLCoreSpotlightExtensionPreview *)v5 setSearchableItemTitle:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemURL"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemURL"];
     [(QLCoreSpotlightExtensionPreview *)v5 setSearchableItemURL:v9];
   }
 

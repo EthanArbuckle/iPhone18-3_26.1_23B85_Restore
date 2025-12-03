@@ -1,16 +1,16 @@
 @interface COSTargetBackgroundView
-- (COSTargetBackgroundView)initWithCutoutPath:(id)a3 gradientHeight:(double)a4;
-- (id)scaleBackgroundAnimationWithScale:(float)a3 forPath:(CGPath *)a4;
-- (void)drawRect:(CGRect)a3;
+- (COSTargetBackgroundView)initWithCutoutPath:(id)path gradientHeight:(double)height;
+- (id)scaleBackgroundAnimationWithScale:(float)scale forPath:(CGPath *)path;
+- (void)drawRect:(CGRect)rect;
 - (void)pulseBackground;
 - (void)removeAnimation;
 @end
 
 @implementation COSTargetBackgroundView
 
-- (COSTargetBackgroundView)initWithCutoutPath:(id)a3 gradientHeight:(double)a4
+- (COSTargetBackgroundView)initWithCutoutPath:(id)path gradientHeight:(double)height
 {
-  v7 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = COSTargetBackgroundView;
   v8 = [(COSTargetBackgroundView *)&v12 init];
@@ -20,18 +20,18 @@
     v10 = [v9 colorWithAlphaComponent:0.5];
     [(COSTargetBackgroundView *)v8 setBackgroundColor:v10];
 
-    objc_storeStrong(&v8->_cutoutPath, a3);
-    v8->_gradientHeight = a4;
+    objc_storeStrong(&v8->_cutoutPath, path);
+    v8->_gradientHeight = height;
   }
 
   return v8;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v18.receiver = self;
   v18.super_class = COSTargetBackgroundView;
-  [(COSTargetBackgroundView *)&v18 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(COSTargetBackgroundView *)&v18 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (self->_cutoutPath)
   {
     Mutable = CGPathCreateMutable();
@@ -47,8 +47,8 @@
 
       [(CAShapeLayer *)self->_maskLayer setFillRule:kCAFillRuleEvenOdd];
       v8 = self->_maskLayer;
-      v9 = [(COSTargetBackgroundView *)self layer];
-      [v9 setMask:v8];
+      layer = [(COSTargetBackgroundView *)self layer];
+      [layer setMask:v8];
 
       maskLayer = self->_maskLayer;
     }
@@ -67,8 +67,8 @@
       v14 = [NSArray arrayWithObjects:v19 count:2];
       [(CAGradientLayer *)self->_gradientLayer setColors:v14];
 
-      v15 = [(COSTargetBackgroundView *)self layer];
-      [v15 addSublayer:self->_gradientLayer];
+      layer2 = [(COSTargetBackgroundView *)self layer];
+      [layer2 addSublayer:self->_gradientLayer];
     }
 
     memset(&slice, 0, sizeof(slice));
@@ -80,24 +80,24 @@
 
 - (void)pulseBackground
 {
-  v3 = [(COSTargetBackgroundView *)self cutoutPath];
-  v4 = [v3 CGPath];
+  cutoutPath = [(COSTargetBackgroundView *)self cutoutPath];
+  cGPath = [cutoutPath CGPath];
   LODWORD(v5) = 1061997773;
-  v12 = [(COSTargetBackgroundView *)self scaleBackgroundAnimationWithScale:v4 forPath:v5];
+  v12 = [(COSTargetBackgroundView *)self scaleBackgroundAnimationWithScale:cGPath forPath:v5];
 
-  v6 = [(COSTargetBackgroundView *)self cutoutPath];
-  v7 = [v6 CGPath];
+  cutoutPath2 = [(COSTargetBackgroundView *)self cutoutPath];
+  cGPath2 = [cutoutPath2 CGPath];
   LODWORD(v8) = 1063675494;
-  v9 = [(COSTargetBackgroundView *)self scaleBackgroundAnimationWithScale:v7 forPath:v8];
+  v9 = [(COSTargetBackgroundView *)self scaleBackgroundAnimationWithScale:cGPath2 forPath:v8];
 
-  v10 = [(COSTargetBackgroundView *)self maskLayer];
-  [v10 addAnimation:v12 forKey:@"path"];
+  maskLayer = [(COSTargetBackgroundView *)self maskLayer];
+  [maskLayer addAnimation:v12 forKey:@"path"];
 
-  v11 = [(COSTargetBackgroundView *)self maskLayer];
-  [v11 addAnimation:v9 forKey:@"path"];
+  maskLayer2 = [(COSTargetBackgroundView *)self maskLayer];
+  [maskLayer2 addAnimation:v9 forKey:@"path"];
 }
 
-- (id)scaleBackgroundAnimationWithScale:(float)a3 forPath:(CGPath *)a4
+- (id)scaleBackgroundAnimationWithScale:(float)scale forPath:(CGPath *)path
 {
   v6 = [CABasicAnimation animationWithKeyPath:@"path"];
   v21 = *&CATransform3DIdentity.m33;
@@ -112,8 +112,8 @@
   v18 = *&CATransform3DIdentity.m23;
   *&v24.m21 = *&CATransform3DIdentity.m21;
   *&v24.m23 = v18;
-  v7 = [(COSTargetBackgroundView *)self cutoutPath];
-  BoundingBox = CGPathGetBoundingBox([v7 CGPath]);
+  cutoutPath = [(COSTargetBackgroundView *)self cutoutPath];
+  BoundingBox = CGPathGetBoundingBox([cutoutPath CGPath]);
   x = BoundingBox.origin.x;
   y = BoundingBox.origin.y;
   width = BoundingBox.size.width;
@@ -139,7 +139,7 @@
   *&v23.m23 = v18;
   CATransform3DTranslate(&v24, &v23, MidX, MidY, 0.0);
   v22 = v24;
-  CATransform3DScale(&v23, &v22, a3, a3, 1.0);
+  CATransform3DScale(&v23, &v22, scale, scale, 1.0);
   v24 = v23;
   v22 = v23;
   CATransform3DTranslate(&v23, &v22, -MidX, -MidY, 0.0);
@@ -151,8 +151,8 @@
   CGPathAddPath(Mutable, 0, CopyByTransformingPath);
   [(COSTargetBackgroundView *)self bounds];
   CGPathAddRect(Mutable, 0, v29);
-  v16 = [(COSTargetBackgroundView *)self maskLayer];
-  [v6 setFromValue:{objc_msgSend(v16, "path")}];
+  maskLayer = [(COSTargetBackgroundView *)self maskLayer];
+  [v6 setFromValue:{objc_msgSend(maskLayer, "path")}];
 
   [v6 setToValue:Mutable];
   [v6 setDuration:0.1];
@@ -164,8 +164,8 @@
 
 - (void)removeAnimation
 {
-  v2 = [(COSTargetBackgroundView *)self maskLayer];
-  [v2 removeAllAnimations];
+  maskLayer = [(COSTargetBackgroundView *)self maskLayer];
+  [maskLayer removeAllAnimations];
 }
 
 @end

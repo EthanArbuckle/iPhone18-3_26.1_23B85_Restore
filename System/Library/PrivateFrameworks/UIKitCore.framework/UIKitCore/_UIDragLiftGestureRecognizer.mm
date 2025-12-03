@@ -1,15 +1,15 @@
 @interface _UIDragLiftGestureRecognizer
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIDragLiftGestureRecognizer
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = _UIDragLiftGestureRecognizer;
-  [(UILongPressGestureRecognizer *)&v14 touchesMoved:a3 withEvent:a4];
+  [(UILongPressGestureRecognizer *)&v14 touchesMoved:moved withEvent:event];
   if ([(UIGestureRecognizer *)self _hasUnmetFailureRequirements])
   {
     [(UILongPressGestureRecognizer *)self startPoint];
@@ -28,32 +28,32 @@
       else
       {
         [(UIGestureRecognizer *)self setState:4];
-        v13 = [(UIGestureRecognizer *)self delegate];
+        delegate = [(UIGestureRecognizer *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v13 _gestureRecognizerFailed:self];
+          [delegate _gestureRecognizerFailed:self];
         }
       }
     }
   }
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIGestureRecognizer *)self view];
-    v6 = [v4 view];
-    if (v5 == v6)
+    view = [(UIGestureRecognizer *)self view];
+    view2 = [recognizerCopy view];
+    if (view == view2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [v5 isDescendantOfView:v6];
+      v7 = [view isDescendantOfView:view2];
     }
   }
 

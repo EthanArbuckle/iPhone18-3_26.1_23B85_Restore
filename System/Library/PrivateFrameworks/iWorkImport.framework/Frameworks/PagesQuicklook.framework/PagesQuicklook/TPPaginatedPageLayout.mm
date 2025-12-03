@@ -1,63 +1,63 @@
 @interface TPPaginatedPageLayout
-- (BOOL)allowIntersectionOfChildLayout:(id)a3;
+- (BOOL)allowIntersectionOfChildLayout:(id)layout;
 - (BOOL)allowsFootnotes;
 - (BOOL)canHavePreviousPageFootnotes;
 - (BOOL)hasFooters;
 - (BOOL)hasHeaders;
 - (BOOL)isReadyForBodyLayout;
 - (BOOL)marginsAreMirrored;
-- (BOOL)p_isHeaderFooterLayout:(id)a3;
-- (BOOL)shouldHeaderFooterBeVisible:(int64_t)a3;
+- (BOOL)p_isHeaderFooterLayout:(id)layout;
+- (BOOL)shouldHeaderFooterBeVisible:(int64_t)visible;
 - (BOOL)textIsVertical;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
 - (CGRect)bodyRect;
-- (CGRect)footnoteContainerFrameWithSize:(CGSize)a3;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
-- (CGSize)maximumFrameSizeForChild:(id)a3;
+- (CGRect)footnoteContainerFrameWithSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
+- (CGSize)maximumFrameSizeForChild:(id)child;
 - (Class)backgroundFillOwningInfoClass;
-- (Class)repClassForTextLayout:(id)a3;
+- (Class)repClassForTextLayout:(id)layout;
 - (NSArray)floatingDrawableLayouts;
 - (NSFastEnumeration)childTextLayoutsForExteriorWrap;
 - (TPBodyLayout)bodyLayout;
 - (TPMasterDrawableProvider)masterDrawableProvider;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
 - (double)blockHeightAvailableForFootnotes;
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3;
-- (double)maxAutoGrowLineWidthForTextLayout:(id)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout;
+- (double)maxAutoGrowLineWidthForTextLayout:(id)layout;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
-- (id)dependentsOfTextLayout:(id)a3;
-- (id)existingAttachmentLayoutForInfo:(id)a3;
+- (id)dependentsOfTextLayout:(id)layout;
+- (id)existingAttachmentLayoutForInfo:(id)info;
 - (id)headerFooterProvider;
-- (id)layoutForChildInfo:(id)a3;
-- (id)layoutsCausingWrapOnTextLayoutTarget:(id)a3 ignoreIntersection:(BOOL)a4;
-- (id)layoutsForChildInfo:(id)a3;
+- (id)layoutForChildInfo:(id)info;
+- (id)layoutsCausingWrapOnTextLayoutTarget:(id)target ignoreIntersection:(BOOL)intersection;
+- (id)layoutsForChildInfo:(id)info;
 - (id)layoutsForProvidingGuidesForChildLayouts;
-- (id)p_childLayoutInParentLayout:(id)a3 forChildInfo:(id)a4;
-- (id)p_existingChildLayoutForInfo:(id)a3;
+- (id)p_childLayoutInParentLayout:(id)layout forChildInfo:(id)info;
+- (id)p_existingChildLayoutForInfo:(id)info;
 - (id)p_generateChildTextLayoutsForExteriorWrap;
 - (id)p_insertBodyLayout;
-- (id)p_insertChildLayoutForInfo:(id)a3;
+- (id)p_insertChildLayoutForInfo:(id)info;
 - (id)p_insertFootnoteContainerLayout;
-- (id)p_insertValidatedChildLayoutForInfo:(id)a3;
+- (id)p_insertValidatedChildLayoutForInfo:(id)info;
 - (id)p_insertValidatedFloatingLayouts;
 - (id)p_insertValidatedMasterLayouts;
 - (id)p_orderedChildInfos;
-- (id)primaryLayoutForInfo:(id)a3;
+- (id)primaryLayoutForInfo:(id)info;
 - (id)sectionTemplateDrawableProvider;
-- (int)naturalAlignmentForTextLayout:(id)a3;
+- (int)naturalAlignmentForTextLayout:(id)layout;
 - (pair<double,)p_sideMargins;
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3;
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout;
 - (unint64_t)pageIndex;
-- (void)addAttachmentLayout:(id)a3;
+- (void)addAttachmentLayout:(id)layout;
 - (void)beginResizeWrapInvalidationCluster;
 - (void)dealloc;
 - (void)endResizeWrapInvalidationCluster;
 - (void)evacuateOldChildLayoutCache;
-- (void)inflateFootnotesInFootnoteContainer:(id)a3;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
+- (void)inflateFootnotesInFootnoteContainer:(id)container;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
 - (void)invalidateBodyAndMarginLayouts;
 - (void)invalidateFootnoteContainers;
 - (void)invalidateFootnoteSeparatorLine;
@@ -66,24 +66,24 @@
 - (void)invalidateLayoutsForPageCountChange;
 - (void)invalidatePosition;
 - (void)invalidateSize;
-- (void)p_addLayoutIfAttached:(id)a3;
-- (void)p_addLayoutsForInfos:(id)a3 toArray:(id)a4;
+- (void)p_addLayoutIfAttached:(id)attached;
+- (void)p_addLayoutsForInfos:(id)infos toArray:(id)array;
 - (void)p_clearChildTextLayoutCache;
-- (void)p_populateOldChildLayoutsWithLayouts:(id)a3;
+- (void)p_populateOldChildLayoutsWithLayouts:(id)layouts;
 - (void)p_removeInlineLayoutsFromPageLayout;
 - (void)p_removeNoLongerInlineLayoutsFromBodyLayout;
 - (void)p_sortChildLayouts;
 - (void)p_updateFromLayoutInfoProvider;
 - (void)p_validateTextLayoutsForExteriorWrapAffectedByAnchoredAttachments;
 - (void)parentDidChange;
-- (void)parentWillChangeTo:(id)a3;
+- (void)parentWillChangeTo:(id)to;
 - (void)processWidowAndInflation;
-- (void)rebuildChildLayoutsOnNextValidationForcingTextLayoutOnTopLevelObjects:(BOOL)a3;
-- (void)replaceChild:(id)a3 with:(id)a4;
-- (void)setChildren:(id)a3;
+- (void)rebuildChildLayoutsOnNextValidationForcingTextLayoutOnTopLevelObjects:(BOOL)objects;
+- (void)replaceChild:(id)child with:(id)with;
+- (void)setChildren:(id)children;
 - (void)setNeedsInflation;
 - (void)validate;
-- (void)wrappableChildInvalidated:(id)a3;
+- (void)wrappableChildInvalidated:(id)invalidated;
 @end
 
 @implementation TPPaginatedPageLayout
@@ -106,11 +106,11 @@
   [(TPPaginatedPageLayout *)&v25 dealloc];
 }
 
-- (BOOL)shouldHeaderFooterBeVisible:(int64_t)a3
+- (BOOL)shouldHeaderFooterBeVisible:(int64_t)visible
 {
   v6.receiver = self;
   v6.super_class = TPPaginatedPageLayout;
-  return [(TSWPPageLayout *)&v6 shouldHeaderFooterBeVisible:a3]&& self->_shouldHeaderFooterBeVisible;
+  return [(TSWPPageLayout *)&v6 shouldHeaderFooterBeVisible:visible]&& self->_shouldHeaderFooterBeVisible;
 }
 
 - (Class)backgroundFillOwningInfoClass
@@ -324,7 +324,7 @@ LABEL_6:
 {
   v117 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v97 = self;
+  selfCopy = self;
   v8 = objc_msgSend_info(self, v3, v4, v5, v6, v7);
   v9 = TSUDynamicCast();
 
@@ -348,12 +348,12 @@ LABEL_6:
     aBlock[5] = &v106;
     obj = _Block_copy(aBlock);
     objc_storeWeak(v107 + 5, obj);
-    v15 = objc_msgSend_children(v97, v10, v11, v12, v13, v14);
+    v15 = objc_msgSend_children(selfCopy, v10, v11, v12, v13, v14);
     objc_msgSend_enumerateObjectsUsingBlock_(v15, v16, v17, v18, v19, v20, obj);
 
     if (*(v113 + 24) == 1)
     {
-      objc_msgSend_invalidate(v97, v21, v22, v23, v24, v25);
+      objc_msgSend_invalidate(selfCopy, v21, v22, v23, v24, v25);
       v98 = objc_opt_new();
       v103 = 0u;
       v104 = 0u;
@@ -400,7 +400,7 @@ LABEL_6:
                 }
 
                 v85 = objc_msgSend_pageController(v9, v66, v68, v69, v70, v71);
-                v91 = objc_msgSend_pageIndex(v97, v86, v87, v88, v89, v90);
+                v91 = objc_msgSend_pageIndex(selfCopy, v86, v87, v88, v89, v90);
                 objc_msgSend_i_invalidatePageIndex_(v85, v92, v93, v94, v95, v96, v91);
 
                 v30 = v99;
@@ -432,12 +432,12 @@ LABEL_20:
   }
 }
 
-- (id)primaryLayoutForInfo:(id)a3
+- (id)primaryLayoutForInfo:(id)info
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_class();
-  if (objc_msgSend_canPartitionInline(v5, v6, v7, v8, v9, v10) && (objc_msgSend_owningAttachmentNoRecurse(v4, v11, v12, v13, v14, v15), v16 = objc_claimAutoreleasedReturnValue(), isAttachedToBodyText = objc_msgSend_isAttachedToBodyText(v16, v17, v18, v19, v20, v21), v16, isAttachedToBodyText))
+  if (objc_msgSend_canPartitionInline(v5, v6, v7, v8, v9, v10) && (objc_msgSend_owningAttachmentNoRecurse(infoCopy, v11, v12, v13, v14, v15), v16 = objc_claimAutoreleasedReturnValue(), isAttachedToBodyText = objc_msgSend_isAttachedToBodyText(v16, v17, v18, v19, v20, v21), v16, isAttachedToBodyText))
   {
     v47 = 0u;
     v48 = 0u;
@@ -459,7 +459,7 @@ LABEL_5:
           objc_enumerationMutation(v29);
         }
 
-        v43 = objc_msgSend_partitionedLayoutForInfo_(*(*(&v45 + 1) + 8 * v42), v35, v37, v38, v39, v40, v4);
+        v43 = objc_msgSend_partitionedLayoutForInfo_(*(*(&v45 + 1) + 8 * v42), v35, v37, v38, v39, v40, infoCopy);
         if (v43)
         {
           break;
@@ -487,25 +487,25 @@ LABEL_11:
 
   else
   {
-    v43 = objc_msgSend_layoutForChildInfo_(self, v11, v12, v13, v14, v15, v4);
+    v43 = objc_msgSend_layoutForChildInfo_(self, v11, v12, v13, v14, v15, infoCopy);
   }
 
   return v43;
 }
 
-- (id)layoutForChildInfo:(id)a3
+- (id)layoutForChildInfo:(id)info
 {
-  v7 = objc_msgSend_p_childLayoutInParentLayout_forChildInfo_(self, a2, v3, v4, v5, v6, self, a3);
+  v7 = objc_msgSend_p_childLayoutInParentLayout_forChildInfo_(self, a2, v3, v4, v5, v6, self, info);
 
   return v7;
 }
 
-- (id)p_childLayoutInParentLayout:(id)a3 forChildInfo:(id)a4
+- (id)p_childLayoutInParentLayout:(id)layout forChildInfo:(id)info
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  sub_275FC5090(self, v7);
+  layoutCopy = layout;
+  infoCopy = info;
+  sub_275FC5090(self, infoCopy);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -542,9 +542,9 @@ LABEL_11:
   return v14;
 }
 
-- (id)layoutsForChildInfo:(id)a3
+- (id)layoutsForChildInfo:(id)info
 {
-  v3 = sub_275FC5090(self, a3);
+  v3 = sub_275FC5090(self, info);
   v9 = objc_msgSend_copy(v3, v4, v5, v6, v7, v8);
 
   return v9;
@@ -579,13 +579,13 @@ LABEL_11:
   return v12;
 }
 
-- (void)parentWillChangeTo:(id)a3
+- (void)parentWillChangeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v23.receiver = self;
   v23.super_class = TPPaginatedPageLayout;
-  [(TSWPPageLayout *)&v23 parentWillChangeTo:v4];
-  if (!v4)
+  [(TSWPPageLayout *)&v23 parentWillChangeTo:toCopy];
+  if (!toCopy)
   {
     objc_opt_class();
     v10 = objc_msgSend_info(self, v5, v6, v7, v8, v9);
@@ -653,41 +653,41 @@ LABEL_11:
   }
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
-  v6 = a3;
-  v8 = a4;
-  if (v6 != v8)
+  childCopy = child;
+  withCopy = with;
+  if (childCopy != withCopy)
   {
-    objc_msgSend_removeObject_(self->_anchoredDrawableLayouts, v7, v9, v10, v11, v12, v6);
+    objc_msgSend_removeObject_(self->_anchoredDrawableLayouts, v7, v9, v10, v11, v12, childCopy);
   }
 
   v18.receiver = self;
   v18.super_class = TPPaginatedPageLayout;
-  [(TPPaginatedPageLayout *)&v18 replaceChild:v6 with:v8];
+  [(TPPaginatedPageLayout *)&v18 replaceChild:childCopy with:withCopy];
   objc_msgSend_p_clearChildTextLayoutCache(self, v13, v14, v15, v16, v17);
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
-  v6 = a3;
-  objc_msgSend_p_addLayoutIfAttached_(self, v7, v8, v9, v10, v11, v6);
+  childCopy = child;
+  objc_msgSend_p_addLayoutIfAttached_(self, v7, v8, v9, v10, v11, childCopy);
   v17.receiver = self;
   v17.super_class = TPPaginatedPageLayout;
-  [(TPPaginatedPageLayout *)&v17 insertChild:v6 atIndex:a4];
+  [(TPPaginatedPageLayout *)&v17 insertChild:childCopy atIndex:index];
   objc_msgSend_p_clearChildTextLayoutCache(self, v12, v13, v14, v15, v16);
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  childrenCopy = children;
   objc_msgSend_removeAllObjects(self->_anchoredDrawableLayouts, v5, v6, v7, v8, v9);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v4;
+  v10 = childrenCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, v12, v13, v14, v15, &v30, v34, 16);
   if (v17)
   {
@@ -718,9 +718,9 @@ LABEL_11:
   objc_msgSend_p_clearChildTextLayoutCache(self, v24, v25, v26, v27, v28);
 }
 
-- (void)p_addLayoutIfAttached:(id)a3
+- (void)p_addLayoutIfAttached:(id)attached
 {
-  v31 = a3;
+  attachedCopy = attached;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v10 = objc_msgSend_info(v4, v5, v6, v7, v8, v9);
@@ -743,16 +743,16 @@ LABEL_11:
   }
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
-  v4 = a3;
-  v10 = objc_msgSend_info(v4, v5, v6, v7, v8, v9);
+  childCopy = child;
+  v10 = objc_msgSend_info(childCopy, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_owningAttachmentNoRecurse(v10, v11, v12, v13, v14, v15);
 
   if (v16 && objc_msgSend_isAnchored(v16, v17, v18, v19, v20, v21) && (objc_opt_class(), TSUDynamicCast(), v22 = objc_claimAutoreleasedReturnValue(), isHTMLWrap = objc_msgSend_isHTMLWrap(v22, v23, v24, v25, v26, v27), v22, isHTMLWrap))
   {
     v34 = objc_msgSend_bodyLayout(self, v29, v30, v31, v32, v33);
-    objc_msgSend_maximumFrameSizeForChild_(v34, v35, v36, v37, v38, v39, v4);
+    objc_msgSend_maximumFrameSizeForChild_(v34, v35, v36, v37, v38, v39, childCopy);
     v41 = v40;
     v43 = v42;
   }
@@ -761,7 +761,7 @@ LABEL_11:
   {
     v48.receiver = self;
     v48.super_class = TPPaginatedPageLayout;
-    [(TPPaginatedPageLayout *)&v48 maximumFrameSizeForChild:v4];
+    [(TPPaginatedPageLayout *)&v48 maximumFrameSizeForChild:childCopy];
     v41 = v44;
     v43 = v45;
   }
@@ -773,19 +773,19 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)allowIntersectionOfChildLayout:(id)a3
+- (BOOL)allowIntersectionOfChildLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v36.receiver = self;
   v36.super_class = TPPaginatedPageLayout;
-  if ([(TPPaginatedPageLayout *)&v36 allowIntersectionOfChildLayout:v4])
+  if ([(TPPaginatedPageLayout *)&v36 allowIntersectionOfChildLayout:layoutCopy])
   {
     v10 = objc_msgSend_info(self, v5, v6, v7, v8, v9);
     v16 = objc_msgSend_documentRoot(v10, v11, v12, v13, v14, v15);
 
     if (objc_msgSend_isCollaborativeClient(v16, v17, v18, v19, v20, v21))
     {
-      v27 = objc_msgSend_info(v4, v22, v23, v24, v25, v26);
+      v27 = objc_msgSend_info(layoutCopy, v22, v23, v24, v25, v26);
       isSectionInfo = objc_msgSend_isSectionInfo_(v16, v28, v29, v30, v31, v32, v27);
 
       v34 = isSectionInfo ^ 1;
@@ -1150,10 +1150,10 @@ LABEL_11:
   self->_childLayoutsValid = 0;
 }
 
-- (void)rebuildChildLayoutsOnNextValidationForcingTextLayoutOnTopLevelObjects:(BOOL)a3
+- (void)rebuildChildLayoutsOnNextValidationForcingTextLayoutOnTopLevelObjects:(BOOL)objects
 {
   self->_childLayoutsValid = 0;
-  if (a3)
+  if (objects)
   {
     v17 = 0;
     v18 = &v17;
@@ -1212,12 +1212,12 @@ LABEL_11:
   return v37;
 }
 
-- (void)inflateFootnotesInFootnoteContainer:(id)a3
+- (void)inflateFootnotesInFootnoteContainer:(id)container
 {
-  v51 = a3;
+  containerCopy = container;
   v9 = objc_msgSend_footnoteContainerLayout(self, v4, v5, v6, v7, v8);
 
-  if (v9 != v51)
+  if (v9 != containerCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "[TPPaginatedPageLayout inflateFootnotesInFootnoteContainer:]");
@@ -1231,14 +1231,14 @@ LABEL_11:
   v38 = objc_msgSend_info(self, v33, v34, v35, v36, v37);
   v44 = objc_msgSend_pageController(v38, v39, v40, v41, v42, v43);
   v45 = TSUDynamicCast();
-  objc_msgSend_i_inflateFootnotesInFootnoteContainer_(v45, v46, v47, v48, v49, v50, v51);
+  objc_msgSend_i_inflateFootnotesInFootnoteContainer_(v45, v46, v47, v48, v49, v50, containerCopy);
 }
 
-- (CGRect)footnoteContainerFrameWithSize:(CGSize)a3
+- (CGRect)footnoteContainerFrameWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  objc_msgSend_bodyRect(self, a2, a3, *&a3.height, v3, v4);
+  height = size.height;
+  width = size.width;
+  objc_msgSend_bodyRect(self, a2, size, *&size.height, v3, v4);
   v9 = v8.n128_f64[0];
   v11 = v10.n128_f64[0];
   v13 = v12.n128_f64[0];
@@ -1316,24 +1316,24 @@ LABEL_11:
   return result;
 }
 
-- (id)layoutsCausingWrapOnTextLayoutTarget:(id)a3 ignoreIntersection:(BOOL)a4
+- (id)layoutsCausingWrapOnTextLayoutTarget:(id)target ignoreIntersection:(BOOL)intersection
 {
   v256 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v223 = v6;
+  targetCopy = target;
+  v223 = targetCopy;
   objc_opt_class();
   v12 = objc_msgSend_info(self, v7, v8, v9, v10, v11);
   v13 = TSUDynamicCast();
 
   v224 = v13;
-  if (!v13 || (objc_msgSend_shouldWrapAroundExternalDrawables(v6, v14, v15, v16, v17, v18) & 1) == 0)
+  if (!v13 || (objc_msgSend_shouldWrapAroundExternalDrawables(targetCopy, v14, v15, v16, v17, v18) & 1) == 0)
   {
     v71 = 0;
     goto LABEL_83;
   }
 
-  v24 = objc_msgSend_parent(v6, v19, v20, v21, v22, v23);
-  v237 = self;
+  v24 = objc_msgSend_parent(targetCopy, v19, v20, v21, v22, v23);
+  selfCopy = self;
   objc_opt_class();
   v235 = TSUClassAndProtocolCast();
 
@@ -1341,8 +1341,8 @@ LABEL_11:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_275FC7D24;
   aBlock[3] = &unk_27A6A83C8;
-  v252 = a4;
-  v233 = v6;
+  intersectionCopy = intersection;
+  v233 = targetCopy;
   v251 = v233;
   v25 = _Block_copy(aBlock);
   objc_msgSend_isInGroup(v233, v26, v27, v28, v29, v30, &unk_28851B9A0, &unk_28853CDB0);
@@ -1361,8 +1361,8 @@ LABEL_11:
   if (isAnchored)
   {
 LABEL_8:
-    v72 = objc_msgSend_floatingDrawableLayouts(v237, v61, v62, v63, v64, v65);
-    v78 = objc_msgSend_anchoredDrawableLayouts(v237, v73, v74, v75, v76, v77);
+    v72 = objc_msgSend_floatingDrawableLayouts(selfCopy, v61, v62, v63, v64, v65);
+    v78 = objc_msgSend_anchoredDrawableLayouts(selfCopy, v73, v74, v75, v76, v77);
     v84 = objc_msgSend_allObjects(v78, v79, v80, v81, v82, v83);
     v90 = objc_msgSend_arrayByAddingObjectsFromArray_(v72, v85, v86, v87, v88, v89, v84);
     v222 = objc_msgSend_mutableCopy(v90, v91, v92, v93, v94, v95);
@@ -1415,7 +1415,7 @@ LABEL_9:
       v231 = *v247;
       if (v235)
       {
-        v132 = v235 == v237;
+        v132 = v235 == selfCopy;
       }
 
       else
@@ -1455,7 +1455,7 @@ LABEL_9:
 
                 if (v145)
                 {
-                  v147 = v145 == v237;
+                  v147 = v145 == selfCopy;
                 }
 
                 else
@@ -1630,20 +1630,20 @@ LABEL_83:
   return v71;
 }
 
-- (id)existingAttachmentLayoutForInfo:(id)a3
+- (id)existingAttachmentLayoutForInfo:(id)info
 {
-  v7 = objc_msgSend_p_existingChildLayoutForInfo_(self, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_p_existingChildLayoutForInfo_(self, a2, v3, v4, v5, v6, info);
 
   return v7;
 }
 
-- (void)addAttachmentLayout:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  v4 = a3;
-  v49 = v4;
-  if (v4)
+  layoutCopy = layout;
+  v49 = layoutCopy;
+  if (layoutCopy)
   {
-    objc_msgSend_addChild_(self, v4, v6, v7, v8, v9, v4);
+    objc_msgSend_addChild_(self, layoutCopy, v6, v7, v8, v9, layoutCopy);
     objc_msgSend_updateChildrenFromInfo(v49, v10, v11, v12, v13, v14);
     v20 = objc_msgSend_layoutController(self, v15, v16, v17, v18, v19);
     objc_msgSend_validateLayoutWithDependencies_(v20, v21, v22, v23, v24, v25, v49);
@@ -1662,15 +1662,15 @@ LABEL_83:
   }
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v10 = objc_msgSend_bodyLayout(self, v5, v6, v7, v8, v9);
   v16 = v10;
   if (v10)
   {
-    if (v10 == v4)
+    if (v10 == layoutCopy)
     {
       v48 = objc_msgSend_footnoteContainerLayout(self, v11, v12, v13, v14, v15);
       v23 = v48;
@@ -1693,7 +1693,7 @@ LABEL_83:
       v23 = TSUDynamicCast();
 
       v29 = objc_msgSend_floatingDrawableInfos(v23, v24, v25, v26, v27, v28);
-      v35 = objc_msgSend_info(v4, v30, v31, v32, v33, v34);
+      v35 = objc_msgSend_info(layoutCopy, v30, v31, v32, v33, v34);
       v41 = objc_msgSend_containsObject_(v29, v36, v37, v38, v39, v40, v35);
 
       if (v41)
@@ -1751,10 +1751,10 @@ LABEL_83:
   }
 }
 
-- (void)wrappableChildInvalidated:(id)a3
+- (void)wrappableChildInvalidated:(id)invalidated
 {
   v90 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  invalidatedCopy = invalidated;
   if (self->_inInvalidationClusterCount < 1)
   {
     if ((objc_msgSend_isValidating(self, v4, v6, v7, v8, v9) & 1) == 0)
@@ -1764,7 +1764,7 @@ LABEL_83:
       v88 = 0u;
       v85 = 0u;
       v86 = 0u;
-      v83 = self;
+      selfCopy = self;
       v19 = objc_msgSend_childTextLayoutsForExteriorWrap(self, v15, 0, v16, v17, v18);
       v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, v21, v22, v23, v24, &v85, v89, 16);
       if (v26)
@@ -1783,7 +1783,7 @@ LABEL_83:
             if (objc_msgSend_textLayoutValid(v33, v25, v27, v28, v29, v30, v82))
             {
               v39 = objc_msgSend_parent(v33, v34, v35, v36, v37, v38);
-              v40 = v39 == v5;
+              v40 = v39 == invalidatedCopy;
 
               if (!v40)
               {
@@ -1821,10 +1821,10 @@ LABEL_83:
       }
 
       objc_opt_class();
-      v69 = objc_msgSend_info(v83, v64, v65, v66, v67, v68);
+      v69 = objc_msgSend_info(selfCopy, v64, v65, v66, v67, v68);
       v75 = objc_msgSend_pageController(v69, v70, v71, v72, v73, v74);
       v76 = TSUDynamicCast();
-      objc_msgSend_i_invalidateFlows_startingPage_(v76, v77, v78, v79, v80, v81, v84, v83);
+      objc_msgSend_i_invalidateFlows_startingPage_(v76, v77, v78, v79, v80, v81, v84, selfCopy);
     }
   }
 
@@ -1834,10 +1834,10 @@ LABEL_83:
   }
 }
 
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout
 {
-  v4 = a3;
-  v10 = objc_msgSend_storage(v4, v5, v6, v7, v8, v9);
+  layoutCopy = layout;
+  v10 = objc_msgSend_storage(layoutCopy, v5, v6, v7, v8, v9);
   if (objc_msgSend_wpKind(v10, v11, v12, v13, v14, v15) != 1)
   {
 
@@ -1845,7 +1845,7 @@ LABEL_83:
   }
 
   v21 = objc_msgSend_children(self, v16, v17, v18, v19, v20);
-  v27 = objc_msgSend_containsObject_(v21, v22, v23, v24, v25, v26, v4);
+  v27 = objc_msgSend_containsObject_(v21, v22, v23, v24, v25, v26, layoutCopy);
 
   if (!v27)
   {
@@ -1869,7 +1869,7 @@ LABEL_8:
   return v33;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   v3.n128_u64[0] = *MEMORY[0x277CBF3A8];
   v4.n128_u64[0] = *(MEMORY[0x277CBF3A8] + 8);
@@ -1881,12 +1881,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v13 = objc_msgSend_storage(v7, v8, v9, v10, v11, v12);
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  v13 = objc_msgSend_storage(layoutCopy, v8, v9, v10, v11, v12);
   v19 = objc_msgSend_wpKind(v13, v14, v15, v16, v17, v18);
 
   if (v19 == 1)
@@ -1899,10 +1899,10 @@ LABEL_8:
     objc_msgSend_p_sideMargins(self, v41, v37, v39, v42, v43);
     v49 = v45.n128_f64[0];
     v50 = (&self->super.super.super.super.super.isa + *MEMORY[0x277D80FC0]);
-    if (*v50 != v7 && v50[3] != v7)
+    if (*v50 != layoutCopy && v50[3] != layoutCopy)
     {
       v51 = v46.n128_f64[0];
-      if (v50[1] == v7 || v50[4] == v7)
+      if (v50[1] == layoutCopy || v50[4] == layoutCopy)
       {
         if (objc_msgSend_usesSingleHeaderFooter(self->_headerFooterProvider, v44, v45, v46, v47, v48))
         {
@@ -1920,7 +1920,7 @@ LABEL_8:
 
       else
       {
-        if (v50[2] != v7 && v50[5] != v7)
+        if (v50[2] != layoutCopy && v50[5] != layoutCopy)
         {
           v52 = MEMORY[0x277D81150];
           v53 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v44, v45, v46, v47, v48, "[TPPaginatedPageLayout autosizedFrameForTextLayout:textSize:]");
@@ -1935,7 +1935,7 @@ LABEL_8:
       }
     }
 
-    if (*v50 == v7 || v50[1] == v7 || v50[2] == v7)
+    if (*v50 == layoutCopy || v50[1] == layoutCopy || v50[2] == layoutCopy)
     {
       objc_msgSend_headerMargin(v31, v44, v45, v46, v47, v48);
       v70 = v90;
@@ -1943,7 +1943,7 @@ LABEL_8:
 
     else
     {
-      if (v50[3] != v7 && v50[4] != v7 && v50[5] != v7)
+      if (v50[3] != layoutCopy && v50[4] != layoutCopy && v50[5] != layoutCopy)
       {
         v71 = MEMORY[0x277D81150];
         v72 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v44, v45, v46, v47, v48, "[TPPaginatedPageLayout autosizedFrameForTextLayout:textSize:]");
@@ -1977,9 +1977,9 @@ LABEL_8:
   return result;
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = objc_msgSend_bodyLayout(self, v5, v6, v7, v8, v9);
   if (v11)
   {
@@ -1993,7 +1993,7 @@ LABEL_8:
 
   v17 = self + *MEMORY[0x277D80FC0];
   v18 = *(v17 + 1);
-  if (v18 == v4 || *(v17 + 4) == v4)
+  if (v18 == layoutCopy || *(v17 + 4) == layoutCopy)
   {
     if (!v16)
     {
@@ -2001,7 +2001,7 @@ LABEL_8:
       v18 = *(v17 + 1);
     }
 
-    v19 = &v17[24 * (v18 != v4)];
+    v19 = &v17[24 * (v18 != layoutCopy)];
     if (*v19)
     {
       objc_msgSend_addObject_(v16, v10, v12, v13, v14, v15);
@@ -2016,10 +2016,10 @@ LABEL_8:
   return v16;
 }
 
-- (Class)repClassForTextLayout:(id)a3
+- (Class)repClassForTextLayout:(id)layout
 {
-  v4 = a3;
-  if ((objc_msgSend_p_isHeaderFooterLayout_(self, v5, v6, v7, v8, v9, v4) & 1) == 0)
+  layoutCopy = layout;
+  if ((objc_msgSend_p_isHeaderFooterLayout_(self, v5, v6, v7, v8, v9, layoutCopy) & 1) == 0)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "[TPPaginatedPageLayout repClassForTextLayout:]");
@@ -2035,10 +2035,10 @@ LABEL_8:
   return v33;
 }
 
-- (double)maxAutoGrowLineWidthForTextLayout:(id)a3
+- (double)maxAutoGrowLineWidthForTextLayout:(id)layout
 {
-  v4 = a3;
-  if (objc_msgSend_p_isHeaderFooterLayout_(self, v5, v6, v7, v8, v9, v4))
+  layoutCopy = layout;
+  if (objc_msgSend_p_isHeaderFooterLayout_(self, v5, v6, v7, v8, v9, layoutCopy))
   {
     v15 = objc_msgSend_info(self, v10, v11, v12, v13, v14);
     v21 = objc_msgSend_documentRoot(v15, v16, v17, v18, v19, v20);
@@ -2076,10 +2076,10 @@ LABEL_8:
   return Width;
 }
 
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout
 {
-  v4 = a3;
-  if ((objc_msgSend_p_isHeaderFooterLayout_(self, v5, v6, v7, v8, v9, v4) & 1) == 0)
+  layoutCopy = layout;
+  if ((objc_msgSend_p_isHeaderFooterLayout_(self, v5, v6, v7, v8, v9, layoutCopy) & 1) == 0)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "[TPPaginatedPageLayout maxAutoGrowBlockHeightForTextLayout:]");
@@ -2113,10 +2113,10 @@ LABEL_8:
   return v77;
 }
 
-- (int)naturalAlignmentForTextLayout:(id)a3
+- (int)naturalAlignmentForTextLayout:(id)layout
 {
-  v4 = a3;
-  if ((objc_msgSend_usesSingleHeaderFooter(self->_headerFooterProvider, v5, v6, v7, v8, v9) & 1) != 0 || (objc_msgSend_storage(v4, v10, v11, v12, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend_wpKind(v15, v16, v17, v18, v19, v20), v15, v21 != 1))
+  layoutCopy = layout;
+  if ((objc_msgSend_usesSingleHeaderFooter(self->_headerFooterProvider, v5, v6, v7, v8, v9) & 1) != 0 || (objc_msgSend_storage(layoutCopy, v10, v11, v12, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend_wpKind(v15, v16, v17, v18, v19, v20), v15, v21 != 1))
   {
     v45 = 4;
   }
@@ -2125,7 +2125,7 @@ LABEL_8:
   {
     v27 = objc_msgSend_info(self, v22, v23, v24, v25, v26);
     v33 = objc_msgSend_documentRoot(v27, v28, v29, v30, v31, v32);
-    v39 = objc_msgSend_storage(v4, v34, v35, v36, v37, v38);
+    v39 = objc_msgSend_storage(layoutCopy, v34, v35, v36, v37, v38);
     v45 = objc_msgSend_naturalAlignmentAtCharIndex_inTextStorage_(v33, v40, v41, v42, v43, v44, 0, v39);
   }
 
@@ -2394,7 +2394,7 @@ LABEL_47:
   self->_oldChildLayouts = 0;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   v3 = *MEMORY[0x277D81428];
   v4 = *(MEMORY[0x277D81428] + 8);
@@ -2407,16 +2407,16 @@ LABEL_47:
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a6)
+  if (outWidth)
   {
-    *a6 = a4;
+    *outWidth = width;
   }
 
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;
@@ -2571,14 +2571,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)p_insertChildLayoutForInfo:(id)a3
+- (id)p_insertChildLayoutForInfo:(id)info
 {
-  v4 = a3;
-  v11 = objc_msgSend_p_existingChildLayoutForInfo_(self, v5, v6, v7, v8, v9, v4);
+  infoCopy = info;
+  v11 = objc_msgSend_p_existingChildLayoutForInfo_(self, v5, v6, v7, v8, v9, infoCopy);
   if (!v11)
   {
-    v16 = objc_alloc(objc_msgSend_layoutClass(v4, v10, v12, v13, v14, v15));
-    v11 = objc_msgSend_initWithInfo_(v16, v17, v18, v19, v20, v21, v4);
+    v16 = objc_alloc(objc_msgSend_layoutClass(infoCopy, v10, v12, v13, v14, v15));
+    v11 = objc_msgSend_initWithInfo_(v16, v17, v18, v19, v20, v21, infoCopy);
   }
 
   v22 = objc_msgSend_parent(v11, v10, v12, v13, v14, v15);
@@ -2591,9 +2591,9 @@ LABEL_9:
   return v11;
 }
 
-- (id)p_insertValidatedChildLayoutForInfo:(id)a3
+- (id)p_insertValidatedChildLayoutForInfo:(id)info
 {
-  v8 = objc_msgSend_p_insertChildLayoutForInfo_(self, a2, v3, v4, v5, v6, a3);
+  v8 = objc_msgSend_p_insertChildLayoutForInfo_(self, a2, v3, v4, v5, v6, info);
   v14 = v8;
   if (v8)
   {
@@ -2605,15 +2605,15 @@ LABEL_9:
   return v14;
 }
 
-- (id)p_existingChildLayoutForInfo:(id)a3
+- (id)p_existingChildLayoutForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10 = objc_msgSend_layoutController(self, v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_layoutForInfo_childOfLayout_(v10, v11, v12, v13, v14, v15, v4, self);
+  v16 = objc_msgSend_layoutForInfo_childOfLayout_(v10, v11, v12, v13, v14, v15, infoCopy, self);
 
   if (!v16)
   {
-    v16 = objc_msgSend_objectForKeyedSubscript_(self->_oldChildLayouts, v17, v18, v19, v20, v21, v4);
+    v16 = objc_msgSend_objectForKeyedSubscript_(self->_oldChildLayouts, v17, v18, v19, v20, v21, infoCopy);
   }
 
   return v16;
@@ -2670,7 +2670,7 @@ LABEL_9:
 {
   v160 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v149 = self;
+  selfCopy = self;
   v8 = objc_msgSend_info(self, v3, v4, v5, v6, v7);
   v9 = TSUDynamicCast();
 
@@ -2681,14 +2681,14 @@ LABEL_9:
     v148 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (objc_msgSend_count(v145, v15, v16, v17, v18, v19))
     {
-      v25 = objc_msgSend_info(v149, v20, v21, v22, v23, v24);
+      v25 = objc_msgSend_info(selfCopy, v20, v21, v22, v23, v24);
       v31 = objc_msgSend_bodyInfo(v25, v26, v27, v28, v29, v30);
 
       v144 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v37 = objc_msgSend_children(v149, v32, v33, v34, v35, v36);
+      v37 = objc_msgSend_children(selfCopy, v32, v33, v34, v35, v36);
       objc_msgSend_makeObjectsPerformSelector_withObject_(v37, v38, v39, v40, v41, v42, sel_recursivelyAddLayoutAndChildrenToSet_, v144);
 
-      objc_msgSend_p_orderedChildInfos(v149, v43, v44, v45, v46, v47);
+      objc_msgSend_p_orderedChildInfos(selfCopy, v43, v44, v45, v46, v47);
       v156 = 0u;
       v157 = 0u;
       v154 = 0u;
@@ -2708,7 +2708,7 @@ LABEL_9:
 
             if (*(*(&v154 + 1) + 8 * i) != v31)
             {
-              v61 = objc_msgSend_p_insertChildLayoutForInfo_(v149, v53, v55, v56, v57, v58);
+              v61 = objc_msgSend_p_insertChildLayoutForInfo_(selfCopy, v53, v55, v56, v57, v58);
               objc_msgSend_updateChildrenFromInfo(v61, v62, v63, v64, v65, v66);
               objc_msgSend_addObject_(v148, v67, v68, v69, v70, v71, v61);
             }
@@ -2721,7 +2721,7 @@ LABEL_9:
       }
 
       v72 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v78 = objc_msgSend_children(v149, v73, v74, v75, v76, v77);
+      v78 = objc_msgSend_children(selfCopy, v73, v74, v75, v76, v77);
       objc_msgSend_makeObjectsPerformSelector_withObject_(v78, v79, v80, v81, v82, v83, sel_recursivelyAddLayoutAndChildrenToSet_, v72);
 
       objc_msgSend_minusSet_(v72, v84, v85, v86, v87, v88, v144);
@@ -2763,7 +2763,7 @@ LABEL_9:
         while (v95);
       }
 
-      v131 = objc_msgSend_layoutController(v149, v126, v127, v128, v129, v130);
+      v131 = objc_msgSend_layoutController(selfCopy, v126, v127, v128, v129, v130);
       v137 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v132, v133, v134, v135, v136, v148);
       objc_msgSend_validateLayoutsWithDependencies_(v131, v138, v139, v140, v141, v142, v137);
     }
@@ -2943,15 +2943,15 @@ LABEL_17:
   return v85;
 }
 
-- (void)p_populateOldChildLayoutsWithLayouts:(id)a3
+- (void)p_populateOldChildLayoutsWithLayouts:(id)layouts
 {
   v36 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = a3;
-  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, v6, v7, v8, v9, &v31, v35, 16);
+  layoutsCopy = layouts;
+  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(layoutsCopy, v5, v6, v7, v8, v9, &v31, v35, 16);
   if (v11)
   {
     v16 = *v32;
@@ -2961,7 +2961,7 @@ LABEL_17:
       {
         if (*v32 != v16)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layoutsCopy);
         }
 
         v18 = *(*(&v31 + 1) + 8 * i);
@@ -2975,7 +2975,7 @@ LABEL_17:
         objc_msgSend_p_populateOldChildLayoutsWithLayouts_(self, v26, v27, v28, v29, v30, v25);
       }
 
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v10, v12, v13, v14, v15, &v31, v35, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(layoutsCopy, v10, v12, v13, v14, v15, &v31, v35, 16);
     }
 
     while (v11);
@@ -3004,9 +3004,9 @@ LABEL_17:
   }
 }
 
-- (BOOL)p_isHeaderFooterLayout:(id)a3
+- (BOOL)p_isHeaderFooterLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = 0;
   v6 = MEMORY[0x277D80FC0];
   while (!v5)
@@ -3014,7 +3014,7 @@ LABEL_17:
     v5 = 0;
     while (!v5)
     {
-      v5 = *(&self->super.super.super.super.super.isa + *v6) == v4;
+      v5 = *(&self->super.super.super.super.super.isa + *v6) == layoutCopy;
       operator++();
     }
 
@@ -3142,17 +3142,17 @@ LABEL_17:
   return WeakRetained;
 }
 
-- (void)p_addLayoutsForInfos:(id)a3 toArray:(id)a4
+- (void)p_addLayoutsForInfos:(id)infos toArray:(id)array
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v66 = a4;
+  infosCopy = infos;
+  arrayCopy = array;
   v67 = objc_msgSend_layoutController(self, v7, v8, v9, v10, v11);
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v6;
+  obj = infosCopy;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, v13, v14, v15, v16, &v72, v77, 16);
   if (v18)
   {
@@ -3226,7 +3226,7 @@ LABEL_15:
         v31 = objc_msgSend_initWithInfo_(v52, v53, v54, v55, v56, v57, v23);
         objc_msgSend_updateChildrenFromInfo(v31, v58, v59, v60, v61, v62);
 LABEL_18:
-        objc_msgSend_addObject_(v66, v47, v48, v49, v50, v51, v31);
+        objc_msgSend_addObject_(arrayCopy, v47, v48, v49, v50, v51, v31);
       }
 
       v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v17, v63, v19, v20, v21, &v72, v77, 16);

@@ -1,5 +1,5 @@
 @interface TSDCanvas
-+ (void)p_recursivelyAddOrderedChildrenOfRep:(id)a3 toArray:(id)a4;
++ (void)p_recursivelyAddOrderedChildrenOfRep:(id)rep toArray:(id)array;
 - (BOOL)i_updateRepsFromLayouts;
 - (BOOL)isCanvasInteractive;
 - (BOOL)isDrawingIntoPDF;
@@ -7,7 +7,7 @@
 - (BOOL)isRenderingForKPF;
 - (BOOL)p_canvasShouldAlwaysUpdateLayers;
 - (BOOL)shouldShowComments;
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3;
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout;
 - (BOOL)shouldShowTextCommentHighlights;
 - (BOOL)shouldShowTextOverflowGlyphs;
 - (BOOL)shouldSuppressBackgrounds;
@@ -16,26 +16,26 @@
 - (BOOL)supportsAdaptiveLayout;
 - (BOOL)textLayoutMustIncludeAdornments;
 - (BOOL)wantsEditingLayoutsForOffscreenInfos;
-- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 returningBounds:(CGRect *)a6 integralBounds:(CGRect *)a7;
-- (CGImage)i_imageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 preservingContentHeadroom:(double *)a6 tonemappedHDRContentToSDR:(BOOL *)a7 keepingChildrenPassingTest:(id)a8;
-- (CGImage)i_newImageInContext:(CGContext *)a3 bounds:(CGRect)a4 integralBounds:(CGRect)a5 distortedToMatch:(BOOL)a6 tonemappedHDRContentToSDR:(BOOL *)a7 keepingChildrenPassingTest:(id)a8;
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3;
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3;
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3;
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3;
-- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)a3;
+- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match returningBounds:(CGRect *)bounds integralBounds:(CGRect *)integralBounds;
+- (CGImage)i_imageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match preservingContentHeadroom:(double *)headroom tonemappedHDRContentToSDR:(BOOL *)r keepingChildrenPassingTest:(id)test;
+- (CGImage)i_newImageInContext:(CGContext *)context bounds:(CGRect)bounds integralBounds:(CGRect)integralBounds distortedToMatch:(BOOL)match tonemappedHDRContentToSDR:(BOOL *)r keepingChildrenPassingTest:(id)test;
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point;
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point;
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect;
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect;
+- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)point;
 - (CGRect)i_clipRectForCreatingRepsFromLayouts;
 - (CGRect)p_bounds;
 - (CGRect)unscaledRectOfLayouts;
 - (CGRect)visibleUnscaledRectForClippingReps;
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3;
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3;
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size;
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size;
 - (CGSize)unscaledSize;
 - (Class)rootLayoutClass;
 - (NSArray)allRepsOrdered;
 - (TSCKDocumentRoot)documentRoot;
 - (TSDCanvas)init;
-- (TSDCanvas)initWithLayoutControllerClass:(Class)a3 delegate:(id)a4;
+- (TSDCanvas)initWithLayoutControllerClass:(Class)class delegate:(id)delegate;
 - (TSDCanvasDelegate)delegate;
 - (TSDImageRenderingConfiguration)currentlyPreferredRenderingConfiguration;
 - (TSDInteractiveCanvasController)canvasController;
@@ -44,19 +44,19 @@
 - (TSPObjectContext)objectContext;
 - (UIEdgeInsets)contentInset;
 - (id)initForTemporaryLayout;
-- (id)repForLayout:(id)a3;
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4;
+- (id)repForLayout:(id)layout;
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context;
 - (void)dealloc;
-- (void)i_drawBackgroundInContext:(CGContext *)a3;
-- (void)i_drawBackgroundInContext:(CGContext *)a3 bounds:(CGRect)a4;
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4;
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4 distort:(CGAffineTransform *)a5;
+- (void)i_drawBackgroundInContext:(CGContext *)context;
+- (void)i_drawBackgroundInContext:(CGContext *)context bounds:(CGRect)bounds;
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test;
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test distort:(CGAffineTransform *)distort;
 - (void)i_layoutIfNeededUpdatingLayerTree;
-- (void)i_performBlockWhileIgnoringClickThrough:(id)a3;
-- (void)i_registerRep:(id)a3;
-- (void)i_setCanvasController:(id)a3;
-- (void)i_setInfosToDisplay:(id)a3 updatingLayoutController:(BOOL)a4;
-- (void)i_unregisterRep:(id)a3;
+- (void)i_performBlockWhileIgnoringClickThrough:(id)through;
+- (void)i_registerRep:(id)rep;
+- (void)i_setCanvasController:(id)controller;
+- (void)i_setInfosToDisplay:(id)display updatingLayoutController:(BOOL)controller;
+- (void)i_unregisterRep:(id)rep;
 - (void)i_updateInfosInLayoutController;
 - (void)invalidateLayers;
 - (void)invalidateReps;
@@ -66,13 +66,13 @@
 - (void)p_invalidateCachedRenderingConfiguration;
 - (void)p_layoutWithReadLock;
 - (void)p_removeAllReps;
-- (void)performBlockAfterLayoutIfNecessary:(id)a3;
+- (void)performBlockAfterLayoutIfNecessary:(id)necessary;
 - (void)recreateAllLayoutsAndReps;
-- (void)setDelegate:(id)a3;
-- (void)setEnableInstructionalText:(BOOL)a3;
-- (void)setSupportsHDR:(BOOL)a3;
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3;
-- (void)setViewScale:(double)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setEnableInstructionalText:(BOOL)text;
+- (void)setSupportsHDR:(BOOL)r;
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections;
+- (void)setViewScale:(double)scale;
 - (void)teardown;
 @end
 
@@ -85,9 +85,9 @@
   return MEMORY[0x2821F9670](self, sel_initWithLayoutControllerClass_delegate_, v3);
 }
 
-- (TSDCanvas)initWithLayoutControllerClass:(Class)a3 delegate:(id)a4
+- (TSDCanvas)initWithLayoutControllerClass:(Class)class delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = TSDCanvas;
   v7 = [(TSDCanvas *)&v29 init];
@@ -115,8 +115,8 @@
     v17 = *(v8 + 56);
     *(v8 + 56) = v16;
 
-    objc_storeWeak((v8 + 8), v6);
-    v18 = [a3 alloc];
+    objc_storeWeak((v8 + 8), delegateCopy);
+    v18 = [class alloc];
     v20 = objc_msgSend_initWithCanvas_(v18, v19, v8);
     v21 = *(v8 + 64);
     *(v8 + 64) = v20;
@@ -218,12 +218,12 @@
   return v3;
 }
 
-- (void)performBlockAfterLayoutIfNecessary:(id)a3
+- (void)performBlockAfterLayoutIfNecessary:(id)necessary
 {
-  v4 = a3;
-  if (v4)
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
-    v16 = v4;
+    v16 = necessaryCopy;
     if (objc_msgSend_isLayoutComplete(self, v5, v6))
     {
       v16[2]();
@@ -254,13 +254,13 @@
       os_unfair_lock_unlock(&self->mBlocksToPerformLock);
     }
 
-    v4 = v16;
+    necessaryCopy = v16;
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
 
   v5 = obj;
@@ -304,9 +304,9 @@
   return v6;
 }
 
-- (void)i_setCanvasController:(id)a3
+- (void)i_setCanvasController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->mCanvasController);
 
   if (WeakRetained)
@@ -344,14 +344,14 @@
   return WeakRetained;
 }
 
-- (void)i_setInfosToDisplay:(id)a3 updatingLayoutController:(BOOL)a4
+- (void)i_setInfosToDisplay:(id)display updatingLayoutController:(BOOL)controller
 {
-  v4 = a4;
-  v6 = a3;
-  v13 = v6;
-  if (v6)
+  controllerCopy = controller;
+  displayCopy = display;
+  v13 = displayCopy;
+  if (displayCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(displayCopy, v7, v8);
   }
 
   else
@@ -362,7 +362,7 @@
   mInfos = self->mInfos;
   self->mInfos = v9;
 
-  if (v4)
+  if (controllerCopy)
   {
     objc_msgSend_i_updateInfosInLayoutController(self, v11, v12);
   }
@@ -374,11 +374,11 @@
   objc_msgSend_setInfos_(v5, v4, self->mInfos);
 }
 
-- (id)repForLayout:(id)a3
+- (id)repForLayout:(id)layout
 {
-  if (a3)
+  if (layout)
   {
-    v4 = objc_msgSend_objectForKeyedSubscript_(self->mRepsByLayout, a2, a3);
+    v4 = objc_msgSend_objectForKeyedSubscript_(self->mRepsByLayout, a2, layout);
   }
 
   else
@@ -740,9 +740,9 @@
   return shouldShowTextCommentHighlightsForCanvas;
 }
 
-- (void)setEnableInstructionalText:(BOOL)a3
+- (void)setEnableInstructionalText:(BOOL)text
 {
-  if (objc_msgSend_isCanvasInteractive(self, a2, a3))
+  if (objc_msgSend_isCanvasInteractive(self, a2, text))
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDCanvas setEnableInstructionalText:]");
@@ -752,17 +752,17 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  self->mEnableInstructionalText = a3;
+  self->mEnableInstructionalText = text;
 }
 
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   if (WeakRetained && (v8 = WeakRetained, v9 = objc_loadWeakRetained(&self->mDelegate), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0))
   {
     v11 = objc_loadWeakRetained(&self->mDelegate);
-    shouldShowInstructionalTextForLayout = objc_msgSend_shouldShowInstructionalTextForLayout_(v11, v12, v4);
+    shouldShowInstructionalTextForLayout = objc_msgSend_shouldShowInstructionalTextForLayout_(v11, v12, layoutCopy);
   }
 
   else if (objc_msgSend_isCanvasInteractive(self, v6, v7) & 1) != 0 || (objc_msgSend_isTemporaryForLayout(self, v14, v15))
@@ -873,13 +873,13 @@
   return MustIncludeAdornments;
 }
 
-- (void)setSupportsHDR:(BOOL)a3
+- (void)setSupportsHDR:(BOOL)r
 {
-  if (self->mSupportsHDR != a3)
+  if (self->mSupportsHDR != r)
   {
-    if (a3)
+    if (r)
     {
-      v5 = objc_msgSend_currentCapabilities(TSDCapabilities, a2, a3);
+      v5 = objc_msgSend_currentCapabilities(TSDCapabilities, a2, r);
       isHDRCapable = objc_msgSend_isHDRCapable(v5, v6, v7);
 
       if ((isHDRCapable & 1) == 0)
@@ -893,8 +893,8 @@
       }
     }
 
-    self->mSupportsHDR = a3;
-    objc_msgSend_p_invalidateCachedRenderingConfiguration(self, a2, a3);
+    self->mSupportsHDR = r;
+    objc_msgSend_p_invalidateCachedRenderingConfiguration(self, a2, r);
     WeakRetained = objc_loadWeakRetained(&self->mDelegate);
     v17 = objc_opt_respondsToSelector();
 
@@ -928,9 +928,9 @@
   return mCachedImageRenderingConfiguration;
 }
 
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections
 {
-  if (objc_msgSend_isCanvasInteractive(self, a2, a3))
+  if (objc_msgSend_isCanvasInteractive(self, a2, reflections))
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDCanvas setSuppressesShadowsAndReflections:]");
@@ -940,17 +940,17 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  self->mSuppressesShadowsAndReflections = a3;
+  self->mSuppressesShadowsAndReflections = reflections;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCanvas setViewScale:]");
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDCanvas.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 569, 0, "Caller is trying to set the canvas view scale to invalid value: %f (Falling back to current value: %f)", *&a3, *&self->mViewScale);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 569, 0, "Caller is trying to set the canvas view scale to invalid value: %f (Falling back to current value: %f)", *&scale, *&self->mViewScale);
 
     v13 = MEMORY[0x277D81150];
 
@@ -959,13 +959,13 @@
 
   else
   {
-    self->mViewScale = a3;
+    self->mViewScale = scale;
 
     objc_msgSend_p_invalidateCachedRenderingConfiguration(self, a2, v3);
   }
 }
 
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect
 {
   objc_msgSend_viewScale(self, a2, v3);
 
@@ -977,7 +977,7 @@
   return result;
 }
 
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect
 {
   objc_msgSend_viewScale(self, a2, v3);
 
@@ -989,7 +989,7 @@
   return result;
 }
 
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point
 {
   objc_msgSend_viewScale(self, a2, v3);
 
@@ -999,7 +999,7 @@
   return result;
 }
 
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point
 {
   objc_msgSend_viewScale(self, a2, v3);
 
@@ -1009,7 +1009,7 @@
   return result;
 }
 
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size
 {
   objc_msgSend_viewScale(self, a2, v3);
 
@@ -1019,7 +1019,7 @@
   return result;
 }
 
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size
 {
   objc_msgSend_viewScale(self, a2, v3);
 
@@ -1056,37 +1056,37 @@
   return result;
 }
 
-- (void)i_performBlockWhileIgnoringClickThrough:(id)a3
+- (void)i_performBlockWhileIgnoringClickThrough:(id)through
 {
   mIgnoringClickThrough = self->mIgnoringClickThrough;
   self->mIgnoringClickThrough = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(through + 2))(through, a2);
   self->mIgnoringClickThrough = mIgnoringClickThrough;
 }
 
-- (void)i_registerRep:(id)a3
+- (void)i_registerRep:(id)rep
 {
-  v4 = a3;
-  if (v4 && self->mRepsByLayout)
+  repCopy = rep;
+  if (repCopy && self->mRepsByLayout)
   {
-    v9 = v4;
-    v8 = objc_msgSend_layout(v4, v5, v6);
+    v9 = repCopy;
+    v8 = objc_msgSend_layout(repCopy, v5, v6);
     if (v8)
     {
       objc_msgSend_setObject_forUncopiedKey_(self->mRepsByLayout, v7, v9, v8);
     }
 
-    v4 = v9;
+    repCopy = v9;
   }
 }
 
-- (void)i_unregisterRep:(id)a3
+- (void)i_unregisterRep:(id)rep
 {
-  v4 = a3;
-  if (v4 && self->mRepsByLayout)
+  repCopy = rep;
+  if (repCopy && self->mRepsByLayout)
   {
-    v11 = v4;
-    v8 = objc_msgSend_layout(v4, v5, v6);
+    v11 = repCopy;
+    v8 = objc_msgSend_layout(repCopy, v5, v6);
     if (v8)
     {
       v9 = objc_msgSend_objectForKeyedSubscript_(self->mRepsByLayout, v7, v8);
@@ -1097,11 +1097,11 @@
       }
     }
 
-    v4 = v11;
+    repCopy = v11;
   }
 }
 
-- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)a3
+- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)point
 {
   TSURectWithCenterAndSize();
   result.size.height = v6;
@@ -1140,40 +1140,40 @@
   return result;
 }
 
-- (void)i_drawBackgroundInContext:(CGContext *)a3
+- (void)i_drawBackgroundInContext:(CGContext *)context
 {
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   CGRectIntegral(ClipBoundingBox);
 
-  MEMORY[0x2821F9670](self, sel_i_drawBackgroundInContext_bounds_, a3);
+  MEMORY[0x2821F9670](self, sel_i_drawBackgroundInContext_bounds_, context);
 }
 
-- (void)i_drawBackgroundInContext:(CGContext *)a3 bounds:(CGRect)a4
+- (void)i_drawBackgroundInContext:(CGContext *)context bounds:(CGRect)bounds
 {
   if (self->mBackgroundColor)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    CGContextSaveGState(a3);
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    CGContextSaveGState(context);
     v12 = objc_msgSend_CGColor(self->mBackgroundColor, v10, v11);
-    CGContextSetFillColorWithColor(a3, v12);
+    CGContextSetFillColorWithColor(context, v12);
     v14.origin.x = x;
     v14.origin.y = y;
     v14.size.width = width;
     v14.size.height = height;
-    CGContextFillRect(a3, v14);
+    CGContextFillRect(context, v14);
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
     v16 = 0u;
     v17 = 0u;
@@ -1194,7 +1194,7 @@
             objc_enumerationMutation(v7);
           }
 
-          objc_msgSend_recursivelyPerformSelector_withObject_withObject_(*(*(&v14 + 1) + 8 * i), v10, sel_addBitmapsToRenderingQualityInfo_inContext_, v6, a4, v14);
+          objc_msgSend_recursivelyPerformSelector_withObject_withObject_(*(*(&v14 + 1) + 8 * i), v10, sel_addBitmapsToRenderingQualityInfo_inContext_, infoCopy, context, v14);
         }
 
         v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v10, &v14, v18, 16);
@@ -1205,15 +1205,15 @@
   }
 }
 
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4 distort:(CGAffineTransform *)a5
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test distort:(CGAffineTransform *)distort
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a3)
+  testCopy = test;
+  if (context)
   {
-    CGContextSaveGState(a3);
-    CGContextScaleCTM(a3, self->mViewScale, self->mViewScale);
-    v9 = a5->b == 0.0 && a5->c == 0.0 && a5->tx == 0.0 && a5->ty == 0.0 && fabs(a5->a + -1.0) < 0.001 && fabs(a5->d + -1.0) < 0.001;
+    CGContextSaveGState(context);
+    CGContextScaleCTM(context, self->mViewScale, self->mViewScale);
+    v9 = distort->b == 0.0 && distort->c == 0.0 && distort->tx == 0.0 && distort->ty == 0.0 && fabs(distort->a + -1.0) < 0.001 && fabs(distort->d + -1.0) < 0.001;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -1235,20 +1235,20 @@
           }
 
           v16 = *(*(&v23 + 1) + 8 * v15);
-          if (!v8 || v8[2](v8, *(*(&v23 + 1) + 8 * v15)))
+          if (!testCopy || testCopy[2](testCopy, *(*(&v23 + 1) + 8 * v15)))
           {
-            CGContextSaveGState(a3);
+            CGContextSaveGState(context);
             if (!v9 || objc_msgSend_wantsToDistortWithImagerContext(v16, v18, v19))
             {
-              v21 = *&a5->c;
-              *&v22.a = *&a5->a;
+              v21 = *&distort->c;
+              *&v22.a = *&distort->a;
               *&v22.c = v21;
-              *&v22.tx = *&a5->tx;
-              CGContextConcatCTM(a3, &v22);
+              *&v22.tx = *&distort->tx;
+              CGContextConcatCTM(context, &v22);
             }
 
-            objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(v16, v20, a3, v8);
-            CGContextRestoreGState(a3);
+            objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(v16, v20, context, testCopy);
+            CGContextRestoreGState(context);
           }
 
           ++v15;
@@ -1261,46 +1261,46 @@
       while (v13);
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test
 {
   v4 = *(MEMORY[0x277CBF2C0] + 16);
   v5[0] = *MEMORY[0x277CBF2C0];
   v5[1] = v4;
   v5[2] = *(MEMORY[0x277CBF2C0] + 32);
-  objc_msgSend_i_drawRepsInContext_passingTest_distort_(self, a2, a3, a4, v5);
+  objc_msgSend_i_drawRepsInContext_passingTest_distort_(self, a2, context, test, v5);
 }
 
-- (CGImage)i_imageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 preservingContentHeadroom:(double *)a6 tonemappedHDRContentToSDR:(BOOL *)a7 keepingChildrenPassingTest:(id)a8
+- (CGImage)i_imageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match preservingContentHeadroom:(double *)headroom tonemappedHDRContentToSDR:(BOOL *)r keepingChildrenPassingTest:(id)test
 {
-  v10 = a5;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a8;
+  matchCopy = match;
+  height = size.height;
+  width = size.width;
+  v13 = rect.size.height;
+  v14 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  testCopy = test;
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  matched = objc_msgSend_i_createContextToDrawImageInScaledRect_withTargetIntegralSize_distortedToMatch_returningBounds_integralBounds_(self, v19, v10, &v27, &v25, x, y, v14, v13, width, height);
+  matched = objc_msgSend_i_createContextToDrawImageInScaledRect_withTargetIntegralSize_distortedToMatch_returningBounds_integralBounds_(self, v19, matchCopy, &v27, &v25, x, y, v14, v13, width, height);
   if (matched)
   {
     v22 = matched;
-    if (a6)
+    if (headroom)
     {
       TSDCGContextSetMaxHDRHeadroom(matched, 0.0);
     }
 
-    v23 = objc_msgSend_i_newImageInContext_bounds_integralBounds_distortedToMatch_tonemappedHDRContentToSDR_keepingChildrenPassingTest_(self, v21, v22, v10, a7, v18, v27, v28, v25, v26);
-    if (a6)
+    v23 = objc_msgSend_i_newImageInContext_bounds_integralBounds_distortedToMatch_tonemappedHDRContentToSDR_keepingChildrenPassingTest_(self, v21, v22, matchCopy, r, testCopy, v27, v28, v25, v26);
+    if (headroom)
     {
-      *a6 = TSDCGContextGetMaxHDRHeadroom(v22);
+      *headroom = TSDCGContextGetMaxHDRHeadroom(v22);
     }
 
     CGContextRelease(v22);
@@ -1314,14 +1314,14 @@
   return v23;
 }
 
-- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 returningBounds:(CGRect *)a6 integralBounds:(CGRect *)a7
+- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match returningBounds:(CGRect *)bounds integralBounds:(CGRect *)integralBounds
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3.size.height;
-  v13 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v12 = rect.size.height;
+  v13 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   TSURoundedRect();
   v54 = v18;
   v56 = v17;
@@ -1333,7 +1333,7 @@
   }
 
   TSUCeilSize();
-  if (a5)
+  if (match)
   {
     v20 = v23;
 LABEL_5:
@@ -1437,66 +1437,66 @@ LABEL_6:
   v47 = v46;
   objc_msgSend_contentsScale(self, v48, v49);
   CGContextScaleCTM(v41, v47, v50);
-  if (a6)
+  if (bounds)
   {
-    a6->origin.x = x;
-    a6->origin.y = y;
-    a6->size.width = v13;
-    a6->size.height = v12;
+    bounds->origin.x = x;
+    bounds->origin.y = y;
+    bounds->size.width = v13;
+    bounds->size.height = v12;
   }
 
-  if (a7)
+  if (integralBounds)
   {
-    a7->origin.x = v57;
-    a7->origin.y = v55;
-    a7->size.width = v20;
-    a7->size.height = v22;
+    integralBounds->origin.x = v57;
+    integralBounds->origin.y = v55;
+    integralBounds->size.width = v20;
+    integralBounds->size.height = v22;
   }
 
   return v41;
 }
 
-- (CGImage)i_newImageInContext:(CGContext *)a3 bounds:(CGRect)a4 integralBounds:(CGRect)a5 distortedToMatch:(BOOL)a6 tonemappedHDRContentToSDR:(BOOL *)a7 keepingChildrenPassingTest:(id)a8
+- (CGImage)i_newImageInContext:(CGContext *)context bounds:(CGRect)bounds integralBounds:(CGRect)integralBounds distortedToMatch:(BOOL)match tonemappedHDRContentToSDR:(BOOL *)r keepingChildrenPassingTest:(id)test
 {
-  if (!a3)
+  if (!context)
   {
     return 0;
   }
 
-  v9 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4.size.height;
-  v15 = a4.size.width;
-  v18 = a8;
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, 0.0, height);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  CGContextTranslateCTM(a3, -x, -y);
+  matchCopy = match;
+  height = integralBounds.size.height;
+  width = integralBounds.size.width;
+  y = integralBounds.origin.y;
+  x = integralBounds.origin.x;
+  v14 = bounds.size.height;
+  v15 = bounds.size.width;
+  testCopy = test;
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextTranslateCTM(context, -x, -y);
   CGContextClipToRectSafe();
   v20 = *(MEMORY[0x277CBF2C0] + 16);
   *&v24.a = *MEMORY[0x277CBF2C0];
   *&v24.c = v20;
   *&v24.tx = *(MEMORY[0x277CBF2C0] + 32);
-  if (v9)
+  if (matchCopy)
   {
     CGAffineTransformMakeScale(&v24, width / v15, height / v14);
   }
 
-  objc_msgSend_i_drawBackgroundInContext_(self, v19, a3);
+  objc_msgSend_i_drawBackgroundInContext_(self, v19, context);
   v23 = v24;
-  objc_msgSend_i_drawRepsInContext_passingTest_distort_(self, v21, a3, v18, &v23);
+  objc_msgSend_i_drawRepsInContext_passingTest_distort_(self, v21, context, testCopy, &v23);
 
-  if (a7)
+  if (r)
   {
-    *a7 = TSDCGContextGetTonemappedHDRContentToSDR(a3);
+    *r = TSDCGContextGetTonemappedHDRContentToSDR(context);
   }
 
-  TSDCGContextMarkTonemappedHDRContentToSDR(a3, 0);
-  CGContextRestoreGState(a3);
-  return CGBitmapContextCreateImage(a3);
+  TSDCGContextMarkTonemappedHDRContentToSDR(context, 0);
+  CGContextRestoreGState(context);
+  return CGBitmapContextCreateImage(context);
 }
 
 - (CGRect)p_bounds
@@ -1662,23 +1662,23 @@ LABEL_22:
 
 - (BOOL)i_updateRepsFromLayouts
 {
-  v3 = self;
+  selfCopy = self;
   v166 = *MEMORY[0x277D85DE8];
   objc_msgSend_i_clipRectForCreatingRepsFromLayouts(self, a2, v2);
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v14 = objc_msgSend_layoutController(v3, v12, v13);
+  v14 = objc_msgSend_layoutController(selfCopy, v12, v13);
   v17 = objc_msgSend_layoutsInRect_(v14, v15, v16, v5, v7, v9, v11);
 
-  WeakRetained = objc_loadWeakRetained(&v3->mDelegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->mDelegate);
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = objc_loadWeakRetained(&v3->mDelegate);
-    v22 = objc_msgSend_additionalVisibleInfosForCanvas_(v20, v21, v3);
+    v20 = objc_loadWeakRetained(&selfCopy->mDelegate);
+    v22 = objc_msgSend_additionalVisibleInfosForCanvas_(v20, v21, selfCopy);
 
     v157 = 0u;
     v158 = 0u;
@@ -1700,7 +1700,7 @@ LABEL_22:
           }
 
           v29 = TSDTopmostInfoFromInfo(*(*(&v155 + 1) + 8 * i), 0);
-          v32 = objc_msgSend_layoutForInfo_(v3->mLayoutController, v30, v29);
+          v32 = objc_msgSend_layoutForInfo_(selfCopy->mLayoutController, v30, v29);
           if (v32 && (objc_msgSend_containsObject_(v17, v31, v32) & 1) == 0)
           {
             v34 = objc_msgSend_arrayByAddingObject_(v17, v33, v32);
@@ -1716,13 +1716,13 @@ LABEL_22:
     }
   }
 
-  v36 = objc_loadWeakRetained(&v3->mDelegate);
+  v36 = objc_loadWeakRetained(&selfCopy->mDelegate);
   v37 = objc_opt_respondsToSelector();
 
   if (v37)
   {
-    v38 = objc_loadWeakRetained(&v3->mDelegate);
-    v40 = objc_msgSend_infosToHideForCanvas_(v38, v39, v3);
+    v38 = objc_loadWeakRetained(&selfCopy->mDelegate);
+    v40 = objc_msgSend_infosToHideForCanvas_(v38, v39, selfCopy);
 
     if (objc_msgSend_count(v40, v41, v42))
     {
@@ -1830,10 +1830,10 @@ LABEL_22:
     while (v73);
   }
 
-  if ((*&v3->mInvalidFlags & 3) != 0 || (objc_msgSend_isEqualToArray_(v59, v78, v3->mPreviouslyVisibleLayouts) & 1) == 0)
+  if ((*&selfCopy->mInvalidFlags & 3) != 0 || (objc_msgSend_isEqualToArray_(v59, v78, selfCopy->mPreviouslyVisibleLayouts) & 1) == 0)
   {
     v126 = v69;
-    objc_storeStrong(&v3->mPreviouslyVisibleLayouts, v59);
+    objc_storeStrong(&selfCopy->mPreviouslyVisibleLayouts, v59);
     v130 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v129 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v139 = 0u;
@@ -1846,7 +1846,7 @@ LABEL_22:
     {
       v83 = v81;
       v84 = *v140;
-      v85 = v3;
+      v85 = selfCopy;
       do
       {
         for (n = 0; n != v83; ++n)
@@ -1857,8 +1857,8 @@ LABEL_22:
           }
 
           v87 = *(*(&v139 + 1) + 8 * n);
-          v88 = objc_msgSend_repForLayout_(v3, v82, v87, v126);
-          if (v88 || (v90 = objc_alloc(objc_msgSend_repClassOverride(v87, v82, v89)), (v88 = objc_msgSend_initWithLayout_canvas_(v90, v91, v87, v3)) != 0))
+          v88 = objc_msgSend_repForLayout_(selfCopy, v82, v87, v126);
+          if (v88 || (v90 = objc_alloc(objc_msgSend_repClassOverride(v87, v82, v89)), (v88 = objc_msgSend_initWithLayout_canvas_(v90, v91, v87, selfCopy)) != 0))
           {
             v92 = v88;
             objc_msgSend_setParentRep_(v88, v82, 0);
@@ -1868,7 +1868,7 @@ LABEL_22:
             objc_msgSend_recursivelyPerformSelector_withObject_(v92, v97, sel_addToSet_, v129);
           }
 
-          v3 = v85;
+          selfCopy = v85;
         }
 
         v83 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v82, &v139, v161, 16);
@@ -1881,7 +1881,7 @@ LABEL_22:
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    v98 = v3->mAllReps;
+    v98 = selfCopy->mAllReps;
     v100 = objc_msgSend_countByEnumeratingWithState_objects_count_(v98, v99, &v135, v160, 16);
     if (v100)
     {
@@ -1909,7 +1909,7 @@ LABEL_22:
       while (v102);
     }
 
-    v107 = objc_loadWeakRetained(&v3->mDelegate);
+    v107 = objc_loadWeakRetained(&selfCopy->mDelegate);
     v108 = objc_opt_respondsToSelector();
 
     if (v108)
@@ -1934,10 +1934,10 @@ LABEL_22:
             }
 
             v117 = *(*(&v131 + 1) + 8 * jj);
-            if ((objc_msgSend_containsObject_(v3->mAllReps, v113, v117, v126) & 1) == 0)
+            if ((objc_msgSend_containsObject_(selfCopy->mAllReps, v113, v117, v126) & 1) == 0)
             {
-              v118 = objc_loadWeakRetained(&v3->mDelegate);
-              objc_msgSend_canvas_createdRep_(v118, v119, v3, v117);
+              v118 = objc_loadWeakRetained(&selfCopy->mDelegate);
+              objc_msgSend_canvas_createdRep_(v118, v119, selfCopy, v117);
             }
           }
 
@@ -1948,17 +1948,17 @@ LABEL_22:
       }
     }
 
-    objc_msgSend_orderRepsForLayout_(v3, v109, v130, v126);
-    mAllReps = v3->mAllReps;
-    v3->mAllReps = v129;
+    objc_msgSend_orderRepsForLayout_(selfCopy, v109, v130, v126);
+    mAllReps = selfCopy->mAllReps;
+    selfCopy->mAllReps = v129;
     v121 = v129;
 
-    mTopLevelReps = v3->mTopLevelReps;
-    v3->mTopLevelReps = v130;
+    mTopLevelReps = selfCopy->mTopLevelReps;
+    selfCopy->mTopLevelReps = v130;
     v123 = v130;
 
-    mAllRepsOrdered = v3->mAllRepsOrdered;
-    v3->mAllRepsOrdered = 0;
+    mAllRepsOrdered = selfCopy->mAllRepsOrdered;
+    selfCopy->mAllRepsOrdered = 0;
 
     v79 = 1;
     v69 = v127;
@@ -2087,17 +2087,17 @@ LABEL_22:
   return result;
 }
 
-+ (void)p_recursivelyAddOrderedChildrenOfRep:(id)a3 toArray:(id)a4
++ (void)p_recursivelyAddOrderedChildrenOfRep:(id)rep toArray:(id)array
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_addObject_(v7, v8, v6);
+  repCopy = rep;
+  arrayCopy = array;
+  objc_msgSend_addObject_(arrayCopy, v8, repCopy);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = objc_msgSend_childReps(v6, v9, v10, 0);
+  v11 = objc_msgSend_childReps(repCopy, v9, v10, 0);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v18, v22, 16);
   if (v13)
   {
@@ -2113,7 +2113,7 @@ LABEL_22:
           objc_enumerationMutation(v11);
         }
 
-        objc_msgSend_p_recursivelyAddOrderedChildrenOfRep_toArray_(a1, v14, *(*(&v18 + 1) + 8 * v17++), v7);
+        objc_msgSend_p_recursivelyAddOrderedChildrenOfRep_toArray_(self, v14, *(*(&v18 + 1) + 8 * v17++), arrayCopy);
       }
 
       while (v15 != v17);

@@ -11,26 +11,26 @@
 - (void)_activate
 {
   [(NTKMonogramComplicationController *)self _reloadMonogramText];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleMonogramTextReload name:@"NTKCustomMonogramChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__handleMonogramTextReload name:@"NTKFaceDefaultsChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBE620] object:0];
-  [v3 addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBB690] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:@"NTKCustomMonogramChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:@"NTKFaceDefaultsChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBE620] object:0];
+  [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBB690] object:0];
 }
 
 - (void)_deactivate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"NTKCustomMonogramChangedNotification" object:0];
-  [v3 removeObserver:self name:@"NTKFaceDefaultsChangedNotification" object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CBB690] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"NTKCustomMonogramChangedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"NTKFaceDefaultsChangedNotification" object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBB690] object:0];
 }
 
 - (void)_updateDisplay
 {
-  v3 = [(NTKComplicationController *)self legacyDisplay];
-  [v3 setMonogramText:self->_monogramText];
+  legacyDisplay = [(NTKComplicationController *)self legacyDisplay];
+  [legacyDisplay setMonogramText:self->_monogramText];
 }
 
 - (void)_reloadMonogramText

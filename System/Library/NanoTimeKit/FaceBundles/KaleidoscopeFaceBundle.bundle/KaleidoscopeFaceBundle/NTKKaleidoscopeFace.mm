@@ -1,34 +1,34 @@
 @interface NTKKaleidoscopeFace
-+ (BOOL)_customEditMode:(int64_t)a3 hasActionForOption:(id)a4 forDevice:(id)a5;
++ (BOOL)_customEditMode:(int64_t)mode hasActionForOption:(id)option forDevice:(id)device;
 + (BOOL)supportsExternalAssets;
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)_sortableFaceOfStyle:(int64_t)a3 withAssets:(id)a4;
-- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)a3 error:(id *)a4;
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3;
++ (id)_sortableFaceOfStyle:(int64_t)style withAssets:(id)assets;
+- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)path error:(id *)error;
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration;
 - (BOOL)isUsingCustomAsset;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3 resourceDirectoryExists:(BOOL)a4;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode resourceDirectoryExists:(BOOL)exists;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_resourceDirectorySnapshotKey;
 - (id)addFaceDetailViewController;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)editOptionThatHidesAllComplications;
 - (id)libraryDetailViewController;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_updateForResourceDirectoryChange:(id)a3;
-- (void)companionEditorWithAssets:(id)a3 completion:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_updateForResourceDirectoryChange:(id)change;
+- (void)companionEditorWithAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation NTKKaleidoscopeFace
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = NTKKaleidoscopeFace;
-  v4 = [(NTKKaleidoscopeFace *)&v8 copyWithZone:a3];
+  v4 = [(NTKKaleidoscopeFace *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_cachedResourceDirectorySnapshotKey copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -67,25 +67,25 @@
   return v2;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 12)
+  slotCopy = slot;
+  if (mode == 12)
   {
-    v10 = [(NTKKaleidoscopeFace *)self device];
-    v11 = [NTKKaleidoscopeAssetOption optionWithAsset:27 forDevice:v10];
+    device = [(NTKKaleidoscopeFace *)self device];
+    v11 = [NTKKaleidoscopeAssetOption optionWithAsset:27 forDevice:device];
 LABEL_8:
     v12 = v11;
 
     goto LABEL_10;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v7 = [(NTKKaleidoscopeFace *)self device];
-    v8 = [v7 deviceCategory];
+    device2 = [(NTKKaleidoscopeFace *)self device];
+    deviceCategory = [device2 deviceCategory];
 
-    if (v8 == &dword_0 + 1)
+    if (deviceCategory == &dword_0 + 1)
     {
       v9 = 0;
     }
@@ -95,8 +95,8 @@ LABEL_8:
       v9 = 3;
     }
 
-    v10 = [(NTKKaleidoscopeFace *)self device];
-    v11 = [NTKKaleidoscopeStyleOption optionWithStyle:v9 forDevice:v10];
+    device = [(NTKKaleidoscopeFace *)self device];
+    v11 = [NTKKaleidoscopeStyleOption optionWithStyle:v9 forDevice:device];
     goto LABEL_8;
   }
 
@@ -106,49 +106,49 @@ LABEL_10:
   return v12;
 }
 
-+ (BOOL)_customEditMode:(int64_t)a3 hasActionForOption:(id)a4 forDevice:(id)a5
++ (BOOL)_customEditMode:(int64_t)mode hasActionForOption:(id)option forDevice:(id)device
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = a3 == 12 && [v6 asset] == stru_3D8.segname;
+  optionCopy = option;
+  v7 = optionCopy;
+  v8 = mode == 12 && [optionCopy asset] == stru_3D8.segname;
 
   return v8;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKKaleidoscopeFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKKaleidoscopeFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKKaleidoscopeFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKKaleidoscopeFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKKaleidoscopeFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKKaleidoscopeFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKKaleidoscopeFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKKaleidoscopeFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKKaleidoscopeFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKKaleidoscopeFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKKaleidoscopeFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKKaleidoscopeFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3 resourceDirectoryExists:(BOOL)a4
+- (Class)_optionClassForCustomEditMode:(int64_t)mode resourceDirectoryExists:(BOOL)exists
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v5 = &off_244B8;
-    if (!a4)
+    if (!exists)
     {
       v5 = off_244B0;
     }
@@ -157,7 +157,7 @@ LABEL_10:
     v4 = objc_opt_class();
   }
 
-  else if (a3 == 15)
+  else if (mode == 15)
   {
     v4 = objc_opt_class();
   }
@@ -172,24 +172,24 @@ LABEL_10:
 
 - (id)_resourceDirectorySnapshotKey
 {
-  v3 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-  if (!v3)
+  resourceDirectory = [(NTKKaleidoscopeFace *)self resourceDirectory];
+  if (!resourceDirectory)
   {
     goto LABEL_8;
   }
 
-  v4 = v3;
+  v4 = resourceDirectory;
   v5 = +[NSFileManager defaultManager];
-  v6 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-  v7 = [v5 fileExistsAtPath:v6];
+  resourceDirectory2 = [(NTKKaleidoscopeFace *)self resourceDirectory];
+  v7 = [v5 fileExistsAtPath:resourceDirectory2];
 
   if (v7)
   {
     cachedResourceDirectorySnapshotKey = self->_cachedResourceDirectorySnapshotKey;
     if (!cachedResourceDirectorySnapshotKey)
     {
-      v9 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-      v10 = [NTKPhotosReader readerForResourceDirectory:v9];
+      resourceDirectory3 = [(NTKKaleidoscopeFace *)self resourceDirectory];
+      v10 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory3];
 
       if ([v10 count])
       {
@@ -217,14 +217,14 @@ LABEL_8:
   return v14;
 }
 
-- (void)_updateForResourceDirectoryChange:(id)a3
+- (void)_updateForResourceDirectoryChange:(id)change
 {
   cachedResourceDirectorySnapshotKey = self->_cachedResourceDirectorySnapshotKey;
   self->_cachedResourceDirectorySnapshotKey = 0;
 
-  v6 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-  v7 = v6;
-  if (a3)
+  resourceDirectory = [(NTKKaleidoscopeFace *)self resourceDirectory];
+  v7 = resourceDirectory;
+  if (change)
   {
 
     if (v7)
@@ -235,7 +235,7 @@ LABEL_8:
 
   else
   {
-    if (!v6)
+    if (!resourceDirectory)
     {
       return;
     }
@@ -244,17 +244,17 @@ LABEL_8:
   [(NTKKaleidoscopeFace *)self _notifyObserversOptionsDidChangeForEditMode:12];
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v5 = a4;
-  if (a3 == 12)
+  deviceCopy = device;
+  if (mode == 12)
   {
     v6 = @"EDIT_MODE_LABEL_IMAGE";
     v7 = @"<Image>";
     goto LABEL_5;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
     v6 = @"EDIT_MODE_LABEL_STYLE";
     v7 = @"<Style>";
@@ -271,23 +271,23 @@ LABEL_7:
 
 - (id)editOptionThatHidesAllComplications
 {
-  v2 = [(NTKKaleidoscopeFace *)self device];
-  v3 = [NTKKaleidoscopeStyleOption optionWithStyle:3 forDevice:v2];
+  device = [(NTKKaleidoscopeFace *)self device];
+  v3 = [NTKKaleidoscopeStyleOption optionWithStyle:3 forDevice:device];
 
   return v3;
 }
 
 - (BOOL)isUsingCustomAsset
 {
-  v2 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-  v3 = v2 != 0;
+  resourceDirectory = [(NTKKaleidoscopeFace *)self resourceDirectory];
+  v3 = resourceDirectory != 0;
 
   return v3;
 }
 
-- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)a3 error:(id *)a4
+- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_opt_new();
   v15 = v7;
   v8 = objc_opt_new();
@@ -298,23 +298,23 @@ LABEL_7:
 
   v11 = [NTKResourceDirectoryScrubber alloc];
   v12 = [v11 initWithOperations:{v10, v15, v16}];
-  v13 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-  LOBYTE(a4) = [v12 scrubDirectoryAtPath:v13 toDestinationPath:v6 error:a4];
+  resourceDirectory = [(NTKKaleidoscopeFace *)self resourceDirectory];
+  LOBYTE(error) = [v12 scrubDirectoryAtPath:resourceDirectory toDestinationPath:pathCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration
 {
-  v5 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-  v6 = [NTKKaleidoscopeResourcesManifest manifestForResourceDirectory:v5];
+  resourceDirectory = [(NTKKaleidoscopeFace *)self resourceDirectory];
+  v6 = [NTKKaleidoscopeResourcesManifest manifestForResourceDirectory:resourceDirectory];
 
   if (!v6)
   {
-    if (a3)
+    if (configuration)
     {
       [NSError errorWithDomain:kNTKResourceDirectoryDomain code:2003 userInfo:0];
-      *a3 = v12 = 0;
+      *configuration = v12 = 0;
       goto LABEL_10;
     }
 
@@ -323,22 +323,22 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v6 validateManifestWithError:a3])
+  if (![v6 validateManifestWithError:configuration])
   {
     goto LABEL_9;
   }
 
-  v7 = [(NTKKaleidoscopeFace *)self resourceDirectory];
-  v8 = [NTKPhotosReader readerForResourceDirectory:v7];
+  resourceDirectory2 = [(NTKKaleidoscopeFace *)self resourceDirectory];
+  v8 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory2];
 
   v9 = [v8 count];
-  v10 = [v6 imageList];
-  v11 = [v10 count];
+  imageList = [v6 imageList];
+  v11 = [imageList count];
   v12 = v9 == v11;
 
-  if (a3 && v9 != v11)
+  if (configuration && v9 != v11)
   {
-    *a3 = [NSError errorWithDomain:kNTKResourceDirectoryDomain code:2003 userInfo:0];
+    *configuration = [NSError errorWithDomain:kNTKResourceDirectoryDomain code:2003 userInfo:0];
   }
 
 LABEL_10:
@@ -355,32 +355,32 @@ LABEL_10:
 - (id)addFaceDetailViewController
 {
   v3 = [NTKCFaceDetailViewController alloc];
-  v4 = [(NTKKaleidoscopeFace *)self externalAssets];
-  v5 = [v3 initWithCandidateFace:self externalAssets:v4];
+  externalAssets = [(NTKKaleidoscopeFace *)self externalAssets];
+  v5 = [v3 initWithCandidateFace:self externalAssets:externalAssets];
 
   return v5;
 }
 
 + (BOOL)supportsExternalAssets
 {
-  v2 = [a1 isSubclassOfClass:objc_opt_class()];
+  v2 = [self isSubclassOfClass:objc_opt_class()];
   v3 = +[CLKDevice currentDevice];
   v4 = NTKShowBlueRidgeUI();
 
   return v2 ^ v4 ^ 1;
 }
 
-+ (id)_sortableFaceOfStyle:(int64_t)a3 withAssets:(id)a4
++ (id)_sortableFaceOfStyle:(int64_t)style withAssets:(id)assets
 {
-  v5 = a4;
-  if ([v5 count] == &dword_0 + 1)
+  assetsCopy = assets;
+  if ([assetsCopy count] == &dword_0 + 1)
   {
     v6 = +[CLKDevice currentDevice];
-    v7 = [NTKFace defaultFaceOfStyle:a3 forDevice:v6];
+    v7 = [NTKFace defaultFaceOfStyle:style forDevice:v6];
 
-    [v7 setExternalAssets:v5];
-    v8 = [v7 device];
-    v9 = [(NTKKaleidoscopeAssetOption *)NTKKaleidoscopeCustomAssetOption optionWithAsset:1000 forDevice:v8];
+    [v7 setExternalAssets:assetsCopy];
+    device = [v7 device];
+    v9 = [(NTKKaleidoscopeAssetOption *)NTKKaleidoscopeCustomAssetOption optionWithAsset:1000 forDevice:device];
 
     [v7 selectOption:v9 forCustomEditMode:12 slot:0];
     if (v7)
@@ -402,11 +402,11 @@ LABEL_10:
   return v10;
 }
 
-- (void)companionEditorWithAssets:(id)a3 completion:(id)a4
+- (void)companionEditorWithAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
+  assetsCopy = assets;
+  completionCopy = completion;
+  firstObject = [assetsCopy firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -416,10 +416,10 @@ LABEL_10:
   v20 = sub_C7C4;
   v21 = sub_C7D4;
   v10 = [NTKCompanionKaleidoscopeEditor alloc];
-  v11 = [(NTKKaleidoscopeFace *)self device];
-  v22 = [(NTKCompanionKaleidoscopeEditor *)v10 initWithResourceDirectory:0 forDevice:v11];
+  device = [(NTKKaleidoscopeFace *)self device];
+  v22 = [(NTKCompanionKaleidoscopeEditor *)v10 initWithResourceDirectory:0 forDevice:device];
 
-  v12 = [v6 firstObject];
+  firstObject2 = [assetsCopy firstObject];
   v13 = v18[5];
   if (isKindOfClass)
   {
@@ -428,9 +428,9 @@ LABEL_10:
     v16[1] = 3221225472;
     v16[2] = sub_C7DC;
     v16[3] = &unk_24C88;
-    v16[4] = v7;
+    v16[4] = completionCopy;
     v16[5] = &v17;
-    [v13 setAsset:v12 completion:v16];
+    [v13 setAsset:firstObject2 completion:v16];
   }
 
   else
@@ -440,9 +440,9 @@ LABEL_10:
     v15[1] = 3221225472;
     v15[2] = sub_C838;
     v15[3] = &unk_24C88;
-    v15[4] = v7;
+    v15[4] = completionCopy;
     v15[5] = &v17;
-    [v13 setRawImage:v12 completion:v15];
+    [v13 setRawImage:firstObject2 completion:v15];
   }
 
   _Block_object_dispose(&v17, 8);

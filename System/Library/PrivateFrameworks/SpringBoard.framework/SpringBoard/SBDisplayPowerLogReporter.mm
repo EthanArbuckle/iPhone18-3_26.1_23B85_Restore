@@ -1,8 +1,8 @@
 @interface SBDisplayPowerLogReporter
 - (SBDisplayPowerLogReporter)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (void)reportPowerLogEntry:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (void)reportPowerLogEntry:(id)entry;
 @end
 
 @implementation SBDisplayPowerLogReporter
@@ -53,33 +53,33 @@ id __33__SBDisplayPowerLogReporter_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)reportPowerLogEntry:(id)a3
+- (void)reportPowerLogEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDisplayPowerLogReporter reportPowerLogEntry:];
   }
 
-  v6 = [v5 displayName];
+  displayName = [entryCopy displayName];
 
-  if (!v6)
+  if (!displayName)
   {
     [(SBDisplayPowerLogReporter *)a2 reportPowerLogEntry:?];
   }
 
-  v7 = [v5 displayName];
-  v8 = [v5 windowingMode];
-  v9 = [(NSMutableDictionary *)self->_displayNameToPowerLogEntry objectForKey:v7];
+  displayName2 = [entryCopy displayName];
+  windowingMode = [entryCopy windowingMode];
+  v9 = [(NSMutableDictionary *)self->_displayNameToPowerLogEntry objectForKey:displayName2];
   v10 = v9;
-  if (v8)
+  if (windowingMode)
   {
-    if ([v9 isEqual:v5])
+    if ([v9 isEqual:entryCopy])
     {
       goto LABEL_15;
     }
 
-    [(NSMutableDictionary *)self->_displayNameToPowerLogEntry setObject:v5 forKey:v7];
+    [(NSMutableDictionary *)self->_displayNameToPowerLogEntry setObject:entryCopy forKey:displayName2];
   }
 
   else
@@ -90,18 +90,18 @@ id __33__SBDisplayPowerLogReporter_init__block_invoke(uint64_t a1)
       v11 = SBLogDisplayControlling();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [(SBDisplayPowerLogReporter *)v5 reportPowerLogEntry:v11];
+        [(SBDisplayPowerLogReporter *)entryCopy reportPowerLogEntry:v11];
       }
 
-      [(NSMutableDictionary *)self->_displayNameToPowerLogEntry removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_displayNameToPowerLogEntry removeObjectForKey:displayName2];
     }
   }
 
-  v12 = [v5 logPayload];
+  logPayload = [entryCopy logPayload];
   v13 = SBLogDisplayControlling();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [(SBDisplayPowerLogReporter *)v12 reportPowerLogEntry:v13];
+    [(SBDisplayPowerLogReporter *)logPayload reportPowerLogEntry:v13];
   }
 
   powerLogSendQueue = self->_powerLogSendQueue;
@@ -109,9 +109,9 @@ id __33__SBDisplayPowerLogReporter_init__block_invoke(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __49__SBDisplayPowerLogReporter_reportPowerLogEntry___block_invoke;
   v15[3] = &unk_2783A8BC8;
-  v16 = v12;
+  v16 = logPayload;
   v17 = @"WindowMode";
-  v10 = v12;
+  v10 = logPayload;
   dispatch_async(powerLogSendQueue, v15);
 
 LABEL_15:
@@ -129,15 +129,15 @@ uint64_t __49__SBDisplayPowerLogReporter_reportPowerLogEntry___block_invoke()
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDisplayPowerLogReporter *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDisplayPowerLogReporter *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v4 appendDictionarySection:self->_displayNameToPowerLogEntry withName:@"map" skipIfEmpty:0];

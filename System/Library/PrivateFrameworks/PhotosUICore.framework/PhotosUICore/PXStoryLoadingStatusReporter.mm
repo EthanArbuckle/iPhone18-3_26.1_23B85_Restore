@@ -1,91 +1,91 @@
 @interface PXStoryLoadingStatusReporter
-- ($14D77461FF5D83CAEC4252578BA76F85)_lock_stateForClipIdentifier:(int64_t)a3;
+- ($14D77461FF5D83CAEC4252578BA76F85)_lock_stateForClipIdentifier:(int64_t)identifier;
 - (PXStoryLoadingStatusReporter)init;
-- (unsigned)loadingStatusForClipIdentifier:(int64_t)a3;
-- (void)_lock_updateStatusForLoadingState:(id *)a3 error:(id)a4 clipIdentifier:(int64_t)a5;
+- (unsigned)loadingStatusForClipIdentifier:(int64_t)identifier;
+- (void)_lock_updateStatusForLoadingState:(id *)state error:(id)error clipIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)notifyLoadingStatus:(unsigned __int8)a3 error:(id)a4 forClipIdentifier:(int64_t)a5;
-- (void)notifyPreloadingCompleteForClipIdentifier:(int64_t)a3;
-- (void)notifyPreloadingProgress:(double)a3 error:(id)a4 forClipIdentifier:(int64_t)a5;
-- (void)notifyStartedPreloadingClipIdentifier:(int64_t)a3;
+- (void)notifyLoadingStatus:(unsigned __int8)status error:(id)error forClipIdentifier:(int64_t)identifier;
+- (void)notifyPreloadingCompleteForClipIdentifier:(int64_t)identifier;
+- (void)notifyPreloadingProgress:(double)progress error:(id)error forClipIdentifier:(int64_t)identifier;
+- (void)notifyStartedPreloadingClipIdentifier:(int64_t)identifier;
 - (void)notifyUserDidNavigate;
-- (void)notifyVisibility:(unsigned __int8)a3 forClipIdentifier:(int64_t)a4;
+- (void)notifyVisibility:(unsigned __int8)visibility forClipIdentifier:(int64_t)identifier;
 @end
 
 @implementation PXStoryLoadingStatusReporter
 
-- (unsigned)loadingStatusForClipIdentifier:(int64_t)a3
+- (unsigned)loadingStatusForClipIdentifier:(int64_t)identifier
 {
   os_unfair_lock_lock(&self->_lock);
-  LOBYTE(a3) = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:a3][3];
+  LOBYTE(identifier) = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:identifier][3];
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return identifier;
 }
 
-- (void)notifyLoadingStatus:(unsigned __int8)a3 error:(id)a4 forClipIdentifier:(int64_t)a5
+- (void)notifyLoadingStatus:(unsigned __int8)status error:(id)error forClipIdentifier:(int64_t)identifier
 {
-  v8 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:a5];
-  v9->var1 = a3;
-  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v9 error:v8 clipIdentifier:a5];
-
-  os_unfair_lock_unlock(&self->_lock);
-}
-
-- (void)notifyVisibility:(unsigned __int8)a3 forClipIdentifier:(int64_t)a4
-{
-  os_unfair_lock_lock(&self->_lock);
-  v7 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:a4];
-  v7->var2 = a3;
-  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v7 error:0 clipIdentifier:a4];
+  v9 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:identifier];
+  v9->var1 = status;
+  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v9 error:errorCopy clipIdentifier:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)notifyPreloadingCompleteForClipIdentifier:(int64_t)a3
+- (void)notifyVisibility:(unsigned __int8)visibility forClipIdentifier:(int64_t)identifier
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:a3];
+  v7 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:identifier];
+  v7->var2 = visibility;
+  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v7 error:0 clipIdentifier:identifier];
+
+  os_unfair_lock_unlock(&self->_lock);
+}
+
+- (void)notifyPreloadingCompleteForClipIdentifier:(int64_t)identifier
+{
+  os_unfair_lock_lock(&self->_lock);
+  v5 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:identifier];
   v5->var0 = 2;
-  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v5 error:0 clipIdentifier:a3];
+  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v5 error:0 clipIdentifier:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)notifyPreloadingProgress:(double)a3 error:(id)a4 forClipIdentifier:(int64_t)a5
+- (void)notifyPreloadingProgress:(double)progress error:(id)error forClipIdentifier:(int64_t)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  if (v8)
+  if (errorCopy)
   {
-    [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:[(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:a5] error:v8 clipIdentifier:a5];
+    [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:[(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:identifier] error:errorCopy clipIdentifier:identifier];
   }
 
   else
   {
     v9 = [(PXStoryLoadingStatusReporter *)self log];
     v10 = v9;
-    if ((a5 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+    if ((identifier - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
     {
       v11 = 134218240;
-      v12 = [(PXStoryLoadingStatusReporter *)self logContext];
+      logContext = [(PXStoryLoadingStatusReporter *)self logContext];
       v13 = 2048;
-      v14 = a3;
-      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_EVENT, a5, "PXStoryClipLoadingProgress", "Context=%{signpost.telemetry:string2}lu %.2f", &v11, 0x16u);
+      progressCopy = progress;
+      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_EVENT, identifier, "PXStoryClipLoadingProgress", "Context=%{signpost.telemetry:string2}lu %.2f", &v11, 0x16u);
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)notifyStartedPreloadingClipIdentifier:(int64_t)a3
+- (void)notifyStartedPreloadingClipIdentifier:(int64_t)identifier
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:a3];
+  v5 = [(PXStoryLoadingStatusReporter *)self _lock_stateForClipIdentifier:identifier];
   v5->var0 = 1;
-  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v5 error:0 clipIdentifier:a3];
+  [(PXStoryLoadingStatusReporter *)self _lock_updateStatusForLoadingState:v5 error:0 clipIdentifier:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -93,21 +93,21 @@
 - (void)notifyUserDidNavigate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lock_lastUserActivity = self->_lock_lastUserActivity;
-  self->_lock_lastUserActivity = v3;
+  self->_lock_lastUserActivity = date;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_updateStatusForLoadingState:(id *)a3 error:(id)a4 clipIdentifier:(int64_t)a5
+- (void)_lock_updateStatusForLoadingState:(id *)state error:(id)error clipIdentifier:(int64_t)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  var2 = a3->var2;
+  errorCopy = error;
+  var2 = state->var2;
   if (var2 == 2)
   {
-    var1 = a3->var1;
+    var1 = state->var1;
     v13 = var1 >= 5;
     v14 = 8 * var1;
     v15 = 134678022;
@@ -117,14 +117,14 @@
   {
     if (var2 != 1)
     {
-      if (a3->var2)
+      if (state->var2)
       {
         v11 = 0;
       }
 
       else
       {
-        var0 = a3->var0;
+        var0 = state->var0;
         if (var0 == 2)
         {
           v11 = 2;
@@ -139,7 +139,7 @@
       goto LABEL_13;
     }
 
-    v12 = a3->var1;
+    v12 = state->var1;
     v13 = v12 >= 5;
     v14 = 8 * v12;
     v15 = 84148995;
@@ -157,64 +157,64 @@
   }
 
 LABEL_13:
-  if (a3->var3 != v11)
+  if (state->var3 != v11)
   {
     v18 = PXStoryClipLoadingStatusDescription(v11);
     v19 = [(PXStoryLoadingStatusReporter *)self log];
     v20 = v19;
-    v21 = a5 - 1;
-    if ((a5 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
+    v21 = identifier - 1;
+    if ((identifier - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
     {
       v28 = 134217984;
-      v29 = [(PXStoryLoadingStatusReporter *)self logContext];
-      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v20, OS_SIGNPOST_INTERVAL_END, a5, "PXStoryClipLoadingStatus", "Context=%{signpost.telemetry:string2}lu ", &v28, 0xCu);
+      logContext = [(PXStoryLoadingStatusReporter *)self logContext];
+      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v20, OS_SIGNPOST_INTERVAL_END, identifier, "PXStoryClipLoadingStatus", "Context=%{signpost.telemetry:string2}lu ", &v28, 0xCu);
     }
 
     v22 = [(PXStoryLoadingStatusReporter *)self log];
     v23 = v22;
     if (v21 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
     {
-      v24 = [(PXStoryLoadingStatusReporter *)self logContext];
+      logContext2 = [(PXStoryLoadingStatusReporter *)self logContext];
       v28 = 134219010;
-      v29 = v24;
+      logContext = logContext2;
       v30 = 2048;
-      v31 = a5;
+      identifierCopy2 = identifier;
       v32 = 1024;
       v33 = v11;
       v34 = 2114;
       v35 = v18;
       v36 = 2114;
-      v37 = v8;
-      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v23, OS_SIGNPOST_EVENT, a5, "PXStoryClipLoadingStatus", "Context=%{signpost.telemetry:string2}lu ClipIdentifier=%{signpost.description:attribute}ld Status=%{signpost.description:attribute}d Description=%{signpost.description:attribute,public}@ Error=%{signpost.description:attribute,public}@", &v28, 0x30u);
+      v37 = errorCopy;
+      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v23, OS_SIGNPOST_EVENT, identifier, "PXStoryClipLoadingStatus", "Context=%{signpost.telemetry:string2}lu ClipIdentifier=%{signpost.description:attribute}ld Status=%{signpost.description:attribute}d Description=%{signpost.description:attribute,public}@ Error=%{signpost.description:attribute,public}@", &v28, 0x30u);
     }
 
     v25 = [(PXStoryLoadingStatusReporter *)self log];
     v26 = v25;
     if (v21 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
     {
-      v27 = [(PXStoryLoadingStatusReporter *)self logContext];
+      logContext3 = [(PXStoryLoadingStatusReporter *)self logContext];
       v28 = 134219010;
-      v29 = v27;
+      logContext = logContext3;
       v30 = 2048;
-      v31 = a5;
+      identifierCopy2 = identifier;
       v32 = 1024;
       v33 = v11;
       v34 = 2114;
       v35 = v18;
       v36 = 2114;
-      v37 = v8;
-      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v26, OS_SIGNPOST_INTERVAL_BEGIN, a5, "PXStoryClipLoadingStatus", "Context=%{signpost.telemetry:string2}lu ClipIdentifier=%{signpost.description:attribute}ld Status=%{signpost.description:attribute}d Description=%{signpost.description:attribute,public}@ Error=%{signpost.description:attribute,public}@", &v28, 0x30u);
+      v37 = errorCopy;
+      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v26, OS_SIGNPOST_INTERVAL_BEGIN, identifier, "PXStoryClipLoadingStatus", "Context=%{signpost.telemetry:string2}lu ClipIdentifier=%{signpost.description:attribute}ld Status=%{signpost.description:attribute}d Description=%{signpost.description:attribute,public}@ Error=%{signpost.description:attribute,public}@", &v28, 0x30u);
     }
   }
 
-  a3->var3 = v11;
+  state->var3 = v11;
 }
 
-- ($14D77461FF5D83CAEC4252578BA76F85)_lock_stateForClipIdentifier:(int64_t)a3
+- ($14D77461FF5D83CAEC4252578BA76F85)_lock_stateForClipIdentifier:(int64_t)identifier
 {
   os_unfair_lock_assert_owner(&self->_lock);
   lock_stateIndexByClipIdentifier = self->_lock_stateIndexByClipIdentifier;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v7 = [(NSMutableDictionary *)lock_stateIndexByClipIdentifier objectForKeyedSubscript:v6];
 
   if (!v7)
@@ -256,15 +256,15 @@ LABEL_13:
     }
 
     self = v4;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

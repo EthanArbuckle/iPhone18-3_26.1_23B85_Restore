@@ -1,6 +1,6 @@
 @interface TUIElementStructProp
 + (id)attributesToEvaluate;
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementStructProp
@@ -17,11 +17,11 @@
   return v3;
 }
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v9 = a3;
-  v8 = a5;
-  [v9 setValue:objc_msgSend(v8 forKey:{"unresolvedValueForAttribute:node:", 217, a4.var0), objc_msgSend(v8, "propertyNameForAttribute:node:", 137, a4.var0)}];
+  builderCopy = builder;
+  attributesCopy = attributes;
+  [builderCopy setValue:objc_msgSend(attributesCopy forKey:{"unresolvedValueForAttribute:node:", 217, node.var0), objc_msgSend(attributesCopy, "propertyNameForAttribute:node:", 137, node.var0)}];
 }
 
 @end

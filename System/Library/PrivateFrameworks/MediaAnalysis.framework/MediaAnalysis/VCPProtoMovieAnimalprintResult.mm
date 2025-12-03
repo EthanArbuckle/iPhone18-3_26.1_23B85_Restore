@@ -1,13 +1,13 @@
 @interface VCPProtoMovieAnimalprintResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieAnimalprintResult
@@ -18,52 +18,52 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieAnimalprintResult;
   v4 = [(VCPProtoMovieAnimalprintResult *)&v8 description];
-  v5 = [(VCPProtoMovieAnimalprintResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieAnimalprintResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_animalID];
-  [v3 setObject:v4 forKey:@"animalID"];
+  [dictionary setObject:v4 forKey:@"animalID"];
 
   animalprintBlob = self->_animalprintBlob;
   if (animalprintBlob)
   {
-    [v3 setObject:animalprintBlob forKey:@"animalprintBlob"];
+    [dictionary setObject:animalprintBlob forKey:@"animalprintBlob"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_animalLabel];
-  [v3 setObject:v6 forKey:@"animalLabel"];
+  [dictionary setObject:v6 forKey:@"animalLabel"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   PBDataWriterWriteDataField();
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_animalID;
+  *(to + 2) = self->_animalID;
   animalprintBlob = self->_animalprintBlob;
-  v5 = a3;
-  [v5 setAnimalprintBlob:animalprintBlob];
-  v5[3] = self->_animalLabel;
+  toCopy = to;
+  [toCopy setAnimalprintBlob:animalprintBlob];
+  toCopy[3] = self->_animalLabel;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_animalID;
-  v6 = [(NSData *)self->_animalprintBlob copyWithZone:a3];
+  v6 = [(NSData *)self->_animalprintBlob copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -71,34 +71,34 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && self->_animalID == *(v4 + 2) && ((animalprintBlob = self->_animalprintBlob, !(animalprintBlob | *(v4 + 2))) || -[NSData isEqual:](animalprintBlob, "isEqual:")) && self->_animalLabel == *(v4 + 3);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_animalID == *(equalCopy + 2) && ((animalprintBlob = self->_animalprintBlob, !(animalprintBlob | *(equalCopy + 2))) || -[NSData isEqual:](animalprintBlob, "isEqual:")) && self->_animalLabel == *(equalCopy + 3);
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_animalID = v4[2];
-  if (*(v4 + 2))
+  fromCopy = from;
+  self->_animalID = fromCopy[2];
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(VCPProtoMovieAnimalprintResult *)self setAnimalprintBlob:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_animalLabel = v4[3];
+  self->_animalLabel = fromCopy[3];
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"attributes"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"animalId"];
-  v6 = [v3 objectForKeyedSubscript:@"flags"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"flags"];
   v7 = [v4 objectForKeyedSubscript:@"animalPrint"];
   v8 = v7;
   if (v5)
@@ -130,10 +130,10 @@
 - (id)exportToLegacyDictionary
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = [(VCPProtoMovieAnimalprintResult *)self animalLabel];
-  if (v3)
+  animalLabel = [(VCPProtoMovieAnimalprintResult *)self animalLabel];
+  if (animalLabel)
   {
-    v4 = (v3 == 1) << 34;
+    v4 = (animalLabel == 1) << 34;
   }
 
   else
@@ -149,8 +149,8 @@
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoMovieAnimalprintResult animalID](self, "animalID")}];
   v12[0] = v6;
   v11[1] = @"animalPrint";
-  v7 = [(VCPProtoMovieAnimalprintResult *)self animalprintBlob];
-  v12[1] = v7;
+  animalprintBlob = [(VCPProtoMovieAnimalprintResult *)self animalprintBlob];
+  v12[1] = animalprintBlob;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v14[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];

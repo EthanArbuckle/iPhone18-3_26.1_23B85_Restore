@@ -1,6 +1,6 @@
 @interface PETReservoirSamplingLogStoreInMemory
-- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)a3;
-- (BOOL)appendData:(id)a3 andReturnMapPointer:(id *)a4;
+- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)remap;
+- (BOOL)appendData:(id)data andReturnMapPointer:(id *)pointer;
 - (BOOL)attemptToRecreate;
 - (PETReservoirSamplingLogStoreInMemory)init;
 @end
@@ -16,22 +16,22 @@
   return 1;
 }
 
-- (BOOL)appendData:(id)a3 andReturnMapPointer:(id *)a4
+- (BOOL)appendData:(id)data andReturnMapPointer:(id *)pointer
 {
-  [(NSMutableData *)self->_data appendData:a3];
-  if (a4)
+  [(NSMutableData *)self->_data appendData:data];
+  if (pointer)
   {
-    *a4 = [(NSMutableData *)self->_data mutableBytes];
+    *pointer = [(NSMutableData *)self->_data mutableBytes];
   }
 
   return 1;
 }
 
-- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)a3
+- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)remap
 {
-  if (a3)
+  if (remap)
   {
-    *a3 = [(NSMutableData *)self->_data length];
+    *remap = [(NSMutableData *)self->_data length];
   }
 
   data = self->_data;

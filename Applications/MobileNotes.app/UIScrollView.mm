@@ -1,15 +1,15 @@
 @interface UIScrollView
-- (void)ic_performRecapScrollTestNamed:(id)a3 iterations:(unint64_t)a4;
+- (void)ic_performRecapScrollTestNamed:(id)named iterations:(unint64_t)iterations;
 @end
 
 @implementation UIScrollView
 
-- (void)ic_performRecapScrollTestNamed:(id)a3 iterations:(unint64_t)a4
+- (void)ic_performRecapScrollTestNamed:(id)named iterations:(unint64_t)iterations
 {
-  v5 = a3;
+  namedCopy = named;
   if (byte_1006CB358 == 1)
   {
-    v6 = [[RPTScrollViewTestParameters alloc] initWithTestName:v5 scrollView:self completionHandler:0];
+    v6 = [[RPTScrollViewTestParameters alloc] initWithTestName:namedCopy scrollView:self completionHandler:0];
     [RPTTestRunner runTestWithParameters:v6];
   }
 

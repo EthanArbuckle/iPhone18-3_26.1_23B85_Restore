@@ -1,36 +1,36 @@
 @interface TSCH3DSpotLight
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (TSCH3DSpotLight)init;
-- (TSCH3DSpotLight)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCH3DSpotLight)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (tvec3<float>)direction;
 - (tvec3<float>)position;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setDirection:(tvec3<float>)a3;
-- (void)setPosition:(tvec3<float>)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setDirection:(tvec3<float>)direction;
+- (void)setPosition:(tvec3<float>)position;
 @end
 
 @implementation TSCH3DSpotLight
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DSpotLight alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DSpotLight)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DSpotLight)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v43.receiver = self;
   v43.super_class = TSCH3DSpotLight;
-  v8 = [(TSCH3DLight *)&v43 initWithLightArchive:a3 unarchiver:v6];
+  v8 = [(TSCH3DLight *)&v43 initWithLightArchive:archive unarchiver:unarchiverCopy];
   if (v8)
   {
-    if ((*(a3 + 16) & 0x80) == 0)
+    if ((*(archive + 16) & 0x80) == 0)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCH3DSpotLight(PersistenceAdditions) initWithArchive:unarchiver:]");
@@ -40,9 +40,9 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
     }
 
-    if (*(a3 + 10))
+    if (*(archive + 10))
     {
-      v27 = *(a3 + 10);
+      v27 = *(archive + 10);
     }
 
     else
@@ -53,12 +53,12 @@
     v28 = [TSCH3DVector alloc];
     if (v27[3])
     {
-      v33 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, v27[3], v6);
+      v33 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, v27[3], unarchiverCopy);
     }
 
     else
     {
-      v33 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, &qword_2812F15A8, v6);
+      v33 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, &qword_2812F15A8, unarchiverCopy);
     }
 
     position = v8->_position;
@@ -67,12 +67,12 @@
     v35 = [TSCH3DVector alloc];
     if (v27[4])
     {
-      v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, v27[4], v6);
+      v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, v27[4], unarchiverCopy);
     }
 
     else
     {
-      v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, &qword_2812F15A8, v6);
+      v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, &qword_2812F15A8, unarchiverCopy);
     }
 
     direction = v8->_direction;
@@ -85,24 +85,24 @@
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v55.receiver = self;
   v55.super_class = TSCH3DSpotLight;
-  [(TSCH3DLight *)&v55 saveToLightArchive:a3 archiver:v6];
-  *(a3 + 4) |= 0x80u;
-  v11 = *(a3 + 10);
+  [(TSCH3DLight *)&v55 saveToLightArchive:archive archiver:archiverCopy];
+  *(archive + 4) |= 0x80u;
+  v11 = *(archive + 10);
   if (!v11)
   {
-    v12 = *(a3 + 1);
+    v12 = *(archive + 1);
     if (v12)
     {
       v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v11 = sub_27644745C(v12);
-    *(a3 + 10) = v11;
+    *(archive + 10) = v11;
   }
 
   position = self->_position;
@@ -131,7 +131,7 @@
     *(v11 + 24) = v29;
   }
 
-  objc_msgSend_saveToArchive_archiver_(position, v7, v8, v9, v10, v29, v6);
+  objc_msgSend_saveToArchive_archiver_(position, v7, v8, v9, v10, v29, archiverCopy);
   direction = self->_direction;
   if (!direction)
   {
@@ -158,7 +158,7 @@
     *(v11 + 32) = v51;
   }
 
-  objc_msgSend_saveToArchive_archiver_(direction, v31, v32, v33, v34, v51, v6);
+  objc_msgSend_saveToArchive_archiver_(direction, v31, v32, v33, v34, v51, archiverCopy);
   v53 = *(v11 + 16);
   *(v11 + 40) = self->_cutOff;
   dropOff = self->_dropOff;
@@ -205,11 +205,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42.receiver = self;
   v42.super_class = TSCH3DSpotLight;
-  v5 = [(TSCH3DLight *)&v42 copyWithZone:a3];
+  v5 = [(TSCH3DLight *)&v42 copyWithZone:zone];
   if (v5)
   {
     objc_msgSend_position(self, v4, v6, v7, v8);
@@ -251,9 +251,9 @@
   return result;
 }
 
-- (void)setPosition:(tvec3<float>)a3
+- (void)setPosition:(tvec3<float>)position
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&position.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec3_(v5, v6, v7, v8, v9, v3);
   position = self->_position;
@@ -282,9 +282,9 @@
   return result;
 }
 
-- (void)setDirection:(tvec3<float>)a3
+- (void)setDirection:(tvec3<float>)direction
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&direction.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec3_(v5, v6, v7, v8, v9, v3);
   direction = self->_direction;

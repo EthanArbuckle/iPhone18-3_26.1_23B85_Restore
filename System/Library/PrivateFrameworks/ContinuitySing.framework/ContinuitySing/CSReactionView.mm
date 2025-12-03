@@ -1,10 +1,10 @@
 @interface CSReactionView
 - (CSReactionView)init;
-- (CSReactionView)initWithCoder:(id)a3;
-- (CSReactionView)initWithFrame:(CGRect)a3;
+- (CSReactionView)initWithCoder:(id)coder;
+- (CSReactionView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)showReaction:(id)a3 from:(id)a4;
-- (void)showReactionSendingAnimation:(id)a3 at:(CGPoint)a4;
+- (void)showReaction:(id)reaction from:(id)from;
+- (void)showReactionSendingAnimation:(id)animation at:(CGPoint)at;
 @end
 
 @implementation CSReactionView
@@ -27,7 +27,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___CSReactionView_cleanupTimer);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -38,7 +38,7 @@
   [(CSReactionView *)&v5 dealloc];
 }
 
-- (CSReactionView)initWithCoder:(id)a3
+- (CSReactionView)initWithCoder:(id)coder
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -48,11 +48,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_244242BB0();
 }
 
-- (void)showReaction:(id)a3 from:(id)a4
+- (void)showReaction:(id)reaction from:(id)from
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -66,14 +66,14 @@
   v7 = v6;
   v8 = sub_244257A78();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_24423E8E8(v5, v7, v8, v10);
 }
 
-- (void)showReactionSendingAnimation:(id)a3 at:(CGPoint)a4
+- (void)showReactionSendingAnimation:(id)animation at:(CGPoint)at
 {
-  y = a4.y;
-  x = a4.x;
+  y = at.y;
+  x = at.x;
   sub_244257BB8();
   sub_244257BA8();
   sub_244257B68();
@@ -84,11 +84,11 @@
 
   v7 = sub_244257A78();
   v9 = v8;
-  v10 = self;
+  selfCopy = self;
   sub_24423FC9C(v7, v9, x, y);
 }
 
-- (CSReactionView)initWithFrame:(CGRect)a3
+- (CSReactionView)initWithFrame:(CGRect)frame
 {
   sub_244257BB8();
   sub_244257BA8();

@@ -1,9 +1,9 @@
 @interface TNAppDelegateBase
 + (TNAppPropertiesProvider)tn_sharedPropertiesProvider;
-- (BOOL)isValidURLForImportedHyperlink:(id)a3 targetDocumentRoot:(id)a4 forCrossDocumentPaste:(BOOL)a5;
+- (BOOL)isValidURLForImportedHyperlink:(id)hyperlink targetDocumentRoot:(id)root forCrossDocumentPaste:(BOOL)paste;
 - (TNAppDelegateBase)init;
 - (id)createCompatibilityDelegate;
-- (id)universalPreviewImageNameForDocumentType:(id)a3;
+- (id)universalPreviewImageNameForDocumentType:(id)type;
 - (void)configureSharedCode;
 - (void)registerClassTypeMappings;
 - (void)registerSOSClassTypeMappings;
@@ -124,7 +124,7 @@
 + (TNAppPropertiesProvider)tn_sharedPropertiesProvider
 {
   objc_opt_class();
-  v5 = objc_msgSend_sharedPropertiesProvider(a1, v3, v4);
+  v5 = objc_msgSend_sharedPropertiesProvider(self, v3, v4);
   v6 = TSUCheckedDynamicCast();
 
   return v6;
@@ -137,14 +137,14 @@
   return v2;
 }
 
-- (id)universalPreviewImageNameForDocumentType:(id)a3
+- (id)universalPreviewImageNameForDocumentType:(id)type
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v24[0] = @"com.apple.iwork.numbers.template";
   v24[1] = @"com.apple.iwork.numbers.sfftemplate";
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v4, v24, 2);
-  v7 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v6, v5);
+  v7 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v6, v5);
 
   if (v7)
   {
@@ -156,7 +156,7 @@
     v9 = objc_opt_class();
     v12 = objc_msgSend_tn_sharedPropertiesProvider(v9, v10, v11);
     v15 = objc_msgSend_excelDocumentTypes(v12, v13, v14);
-    v17 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v16, v15);
+    v17 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v16, v15);
 
     if (v17)
     {
@@ -168,7 +168,7 @@
       v23[0] = @"public.comma-separated-values-text";
       v23[1] = @"public.plain-text";
       v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v18, v23, 2);
-      v21 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v20, v19);
+      v21 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v20, v19);
 
       if (v21)
       {
@@ -185,17 +185,17 @@
   return v8;
 }
 
-- (BOOL)isValidURLForImportedHyperlink:(id)a3 targetDocumentRoot:(id)a4 forCrossDocumentPaste:(BOOL)a5
+- (BOOL)isValidURLForImportedHyperlink:(id)hyperlink targetDocumentRoot:(id)root forCrossDocumentPaste:(BOOL)paste
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (objc_msgSend_isSheetURL(v8, v10, v11))
+  pasteCopy = paste;
+  hyperlinkCopy = hyperlink;
+  rootCopy = root;
+  if (objc_msgSend_isSheetURL(hyperlinkCopy, v10, v11))
   {
-    v13 = objc_msgSend_sheetFromURL_documentRoot_(TNSheet, v12, v8, v9);
+    v13 = objc_msgSend_sheetFromURL_documentRoot_(TNSheet, v12, hyperlinkCopy, rootCopy);
     if (v13)
     {
-      v14 = !v5;
+      v14 = !pasteCopy;
     }
 
     else
@@ -208,7 +208,7 @@
   {
     v16.receiver = self;
     v16.super_class = TNAppDelegateBase;
-    v14 = [(TSWPApplicationDelegate *)&v16 isValidURLForImportedHyperlink:v8 targetDocumentRoot:v9 forCrossDocumentPaste:v5];
+    v14 = [(TSWPApplicationDelegate *)&v16 isValidURLForImportedHyperlink:hyperlinkCopy targetDocumentRoot:rootCopy forCrossDocumentPaste:pasteCopy];
   }
 
   return v14;

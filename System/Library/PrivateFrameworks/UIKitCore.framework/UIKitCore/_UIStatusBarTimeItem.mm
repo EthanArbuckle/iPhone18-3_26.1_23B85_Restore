@@ -3,8 +3,8 @@
 - (_UIStatusBarStringView)pillTimeView;
 - (_UIStatusBarStringView)shortTimeView;
 - (_UIStatusBarStringView)timeView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_dateView;
 - (void)_create_pillTimeView;
 - (void)_create_shortTimeView;
@@ -13,46 +13,46 @@
 
 @implementation _UIStatusBarTimeItem
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v40.receiver = self;
   v40.super_class = _UIStatusBarTimeItem;
-  v8 = [(_UIStatusBarItem *)&v40 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(_UIStatusBarItem *)&v40 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v7 identifier];
-    v10 = [objc_opt_class() timeDisplayIdentifier];
-    v11 = v10;
-    if (v9 == v10)
+    identifier = [itemCopy identifier];
+    timeDisplayIdentifier = [objc_opt_class() timeDisplayIdentifier];
+    v11 = timeDisplayIdentifier;
+    if (identifier == timeDisplayIdentifier)
     {
-      v24 = [v6 data];
-      v25 = [v24 timeEntry];
+      data = [updateCopy data];
+      timeEntry = [data timeEntry];
 
-      if (v25)
+      if (timeEntry)
       {
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
-          v26 = [v6 data];
-          v27 = [v26 timeEntry];
-          [v7 setEnabled:{objc_msgSend(v27, "isEnabled")}];
+          data2 = [updateCopy data];
+          timeEntry2 = [data2 timeEntry];
+          [itemCopy setEnabled:{objc_msgSend(timeEntry2, "isEnabled")}];
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
 
-        if (![v7 isEnabled])
+        if (![itemCopy isEnabled])
         {
           goto LABEL_35;
         }
 
-        v18 = [v6 data];
-        v19 = [v18 timeEntry];
-        v36 = [v19 stringValue];
-        v37 = [(_UIStatusBarTimeItem *)self timeView];
+        data3 = [updateCopy data];
+        timeEntry3 = [data3 timeEntry];
+        stringValue = [timeEntry3 stringValue];
+        timeView = [(_UIStatusBarTimeItem *)self timeView];
         goto LABEL_33;
       }
     }
@@ -61,37 +61,37 @@
     {
     }
 
-    v12 = [v7 identifier];
-    v13 = [objc_opt_class() shortTimeDisplayIdentifier];
-    v14 = v13;
-    if (v12 == v13)
+    identifier2 = [itemCopy identifier];
+    shortTimeDisplayIdentifier = [objc_opt_class() shortTimeDisplayIdentifier];
+    v14 = shortTimeDisplayIdentifier;
+    if (identifier2 == shortTimeDisplayIdentifier)
     {
-      v28 = [v6 data];
-      v29 = [v28 shortTimeEntry];
+      data4 = [updateCopy data];
+      shortTimeEntry = [data4 shortTimeEntry];
 
-      if (v29)
+      if (shortTimeEntry)
       {
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
-          v30 = [v6 data];
-          v31 = [v30 shortTimeEntry];
-          [v7 setEnabled:{objc_msgSend(v31, "isEnabled")}];
+          data5 = [updateCopy data];
+          shortTimeEntry2 = [data5 shortTimeEntry];
+          [itemCopy setEnabled:{objc_msgSend(shortTimeEntry2, "isEnabled")}];
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
 
-        if (![v7 isEnabled])
+        if (![itemCopy isEnabled])
         {
           goto LABEL_35;
         }
 
-        v18 = [v6 data];
-        v19 = [v18 shortTimeEntry];
-        v36 = [v19 stringValue];
-        v37 = [(_UIStatusBarTimeItem *)self shortTimeView];
+        data3 = [updateCopy data];
+        timeEntry3 = [data3 shortTimeEntry];
+        stringValue = [timeEntry3 stringValue];
+        timeView = [(_UIStatusBarTimeItem *)self shortTimeView];
         goto LABEL_33;
       }
     }
@@ -100,37 +100,37 @@
     {
     }
 
-    v15 = [v7 identifier];
-    v16 = [objc_opt_class() pillTimeDisplayIdentifier];
-    v17 = v16;
-    if (v15 == v16)
+    identifier3 = [itemCopy identifier];
+    pillTimeDisplayIdentifier = [objc_opt_class() pillTimeDisplayIdentifier];
+    v17 = pillTimeDisplayIdentifier;
+    if (identifier3 == pillTimeDisplayIdentifier)
     {
-      v32 = [v6 data];
-      v33 = [v32 shortTimeEntry];
+      data6 = [updateCopy data];
+      shortTimeEntry3 = [data6 shortTimeEntry];
 
-      if (v33)
+      if (shortTimeEntry3)
       {
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
-          v34 = [v6 data];
-          v35 = [v34 shortTimeEntry];
-          [v7 setEnabled:{objc_msgSend(v35, "isEnabled")}];
+          data7 = [updateCopy data];
+          shortTimeEntry4 = [data7 shortTimeEntry];
+          [itemCopy setEnabled:{objc_msgSend(shortTimeEntry4, "isEnabled")}];
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
 
-        if (![v7 isEnabled])
+        if (![itemCopy isEnabled])
         {
           goto LABEL_35;
         }
 
-        v18 = [v6 data];
-        v19 = [v18 shortTimeEntry];
-        v36 = [v19 stringValue];
-        v37 = [(_UIStatusBarTimeItem *)self pillTimeView];
+        data3 = [updateCopy data];
+        timeEntry3 = [data3 shortTimeEntry];
+        stringValue = [timeEntry3 stringValue];
+        timeView = [(_UIStatusBarTimeItem *)self pillTimeView];
         goto LABEL_33;
       }
     }
@@ -139,47 +139,47 @@
     {
     }
 
-    v18 = [v7 identifier];
-    v19 = [objc_opt_class() dateDisplayIdentifier];
-    if (v18 != v19)
+    data3 = [itemCopy identifier];
+    timeEntry3 = [objc_opt_class() dateDisplayIdentifier];
+    if (data3 != timeEntry3)
     {
 LABEL_34:
 
       goto LABEL_35;
     }
 
-    v20 = [v6 data];
-    v21 = [v20 dateEntry];
+    data8 = [updateCopy data];
+    dateEntry = [data8 dateEntry];
 
-    if (!v21)
+    if (!dateEntry)
     {
       goto LABEL_35;
     }
 
-    if ([v7 isEnabled])
+    if ([itemCopy isEnabled])
     {
-      v22 = [v6 data];
-      v23 = [v22 dateEntry];
-      [v7 setEnabled:{objc_msgSend(v23, "isEnabled")}];
+      data9 = [updateCopy data];
+      dateEntry2 = [data9 dateEntry];
+      [itemCopy setEnabled:{objc_msgSend(dateEntry2, "isEnabled")}];
     }
 
     else
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
 
-    if (![v7 isEnabled])
+    if (![itemCopy isEnabled])
     {
       goto LABEL_35;
     }
 
-    v18 = [v6 data];
-    v19 = [v18 dateEntry];
-    v36 = [v19 stringValue];
-    v37 = [(_UIStatusBarTimeItem *)self dateView];
+    data3 = [updateCopy data];
+    timeEntry3 = [data3 dateEntry];
+    stringValue = [timeEntry3 stringValue];
+    timeView = [(_UIStatusBarTimeItem *)self dateView];
 LABEL_33:
-    v38 = v37;
-    [v37 setText:v36];
+    v38 = timeView;
+    [timeView setText:stringValue];
 
     goto LABEL_34;
   }
@@ -287,54 +287,54 @@ LABEL_35:
   self->_dateView = v4;
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() timeDisplayIdentifier];
+  identifierCopy = identifier;
+  timeDisplayIdentifier = [objc_opt_class() timeDisplayIdentifier];
 
-  if (v5 == v4)
+  if (timeDisplayIdentifier == identifierCopy)
   {
-    v9 = [(_UIStatusBarTimeItem *)self timeView];
+    timeView = [(_UIStatusBarTimeItem *)self timeView];
   }
 
   else
   {
-    v6 = [objc_opt_class() shortTimeDisplayIdentifier];
+    shortTimeDisplayIdentifier = [objc_opt_class() shortTimeDisplayIdentifier];
 
-    if (v6 == v4)
+    if (shortTimeDisplayIdentifier == identifierCopy)
     {
-      v9 = [(_UIStatusBarTimeItem *)self shortTimeView];
+      timeView = [(_UIStatusBarTimeItem *)self shortTimeView];
     }
 
     else
     {
-      v7 = [objc_opt_class() pillTimeDisplayIdentifier];
+      pillTimeDisplayIdentifier = [objc_opt_class() pillTimeDisplayIdentifier];
 
-      if (v7 == v4)
+      if (pillTimeDisplayIdentifier == identifierCopy)
       {
-        v9 = [(_UIStatusBarTimeItem *)self pillTimeView];
+        timeView = [(_UIStatusBarTimeItem *)self pillTimeView];
       }
 
       else
       {
-        v8 = [objc_opt_class() dateDisplayIdentifier];
+        dateDisplayIdentifier = [objc_opt_class() dateDisplayIdentifier];
 
-        if (v8 == v4)
+        if (dateDisplayIdentifier == identifierCopy)
         {
-          v9 = [(_UIStatusBarTimeItem *)self dateView];
+          timeView = [(_UIStatusBarTimeItem *)self dateView];
         }
 
         else
         {
           v12.receiver = self;
           v12.super_class = _UIStatusBarTimeItem;
-          v9 = [(_UIStatusBarItem *)&v12 viewForIdentifier:v4];
+          timeView = [(_UIStatusBarItem *)&v12 viewForIdentifier:identifierCopy];
         }
       }
     }
   }
 
-  v10 = v9;
+  v10 = timeView;
 
   return v10;
 }

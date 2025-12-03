@@ -15,10 +15,10 @@
 
 - (id)codings
 {
-  v1 = [a1 documentTypeCodingCollection];
-  v2 = [v1 codings];
+  documentTypeCodingCollection = [self documentTypeCodingCollection];
+  codings = [documentTypeCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 @end

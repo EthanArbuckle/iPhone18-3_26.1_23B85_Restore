@@ -1,15 +1,15 @@
 @interface AccessibilityFrameExpandingLabel
 - (CGRect)accessibilityFrame;
-- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithCoder:(id)a3;
-- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithFrame:(CGRect)a3;
-- (void)setAccessibilityFrame:(CGRect)a3;
+- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithCoder:(id)coder;
+- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithFrame:(CGRect)frame;
+- (void)setAccessibilityFrame:(CGRect)frame;
 @end
 
 @implementation AccessibilityFrameExpandingLabel
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   sub_2153CB454();
   v4 = v3;
   v6 = v5;
@@ -27,23 +27,23 @@
   return result;
 }
 
-- (void)setAccessibilityFrame:(CGRect)a3
+- (void)setAccessibilityFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AccessibilityFrameExpandingLabel();
   [(AccessibilityFrameExpandingLabel *)&v7 setAccessibilityFrame:x, y, width, height];
 }
 
-- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithFrame:(CGRect)a3
+- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel_accessibilityFrameDelegate) = 0;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
@@ -51,14 +51,14 @@
   return [(AccessibilityFrameExpandingLabel *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithCoder:(id)a3
+- (_TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC11NotesEditorP33_BCDBDF3703124CBFF67EDFC1BC77488932AccessibilityFrameExpandingLabel_accessibilityFrameDelegate) = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for AccessibilityFrameExpandingLabel();
-  v5 = a3;
-  v6 = [(AccessibilityFrameExpandingLabel *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AccessibilityFrameExpandingLabel *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

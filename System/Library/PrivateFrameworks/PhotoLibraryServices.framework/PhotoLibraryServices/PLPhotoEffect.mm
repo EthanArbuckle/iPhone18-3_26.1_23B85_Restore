@@ -1,16 +1,16 @@
 @interface PLPhotoEffect
-+ (BOOL)isEffectNoneForIdentifier:(id)a3;
-+ (BOOL)isEffectWithIdentifier:(id)a3 equalToEffectWithIdentifier:(id)a4;
-+ (id)_effectWithIdentifier:(id)a3 CIFilterName:(id)a4 displayName:(id)a5;
-+ (id)_legacyEffectWithIdentifier:(id)a3 CIFilterName:(id)a4;
-+ (id)_lightingEffectWithIdentifier:(id)a3 relatedVersionIdentifier:(id)a4 CIFilterName:(id)a5 lightingVersion:(int64_t)a6;
++ (BOOL)isEffectNoneForIdentifier:(id)identifier;
++ (BOOL)isEffectWithIdentifier:(id)identifier equalToEffectWithIdentifier:(id)withIdentifier;
++ (id)_effectWithIdentifier:(id)identifier CIFilterName:(id)name displayName:(id)displayName;
++ (id)_legacyEffectWithIdentifier:(id)identifier CIFilterName:(id)name;
++ (id)_lightingEffectWithIdentifier:(id)identifier relatedVersionIdentifier:(id)versionIdentifier CIFilterName:(id)name lightingVersion:(int64_t)version;
 + (id)allEffects;
 + (id)allSupportedEffects;
-+ (id)effectWithCIFilterName:(id)a3;
-+ (id)effectWithIdentifier:(id)a3;
-+ (id)equivalentEffectForIdentifier:(id)a3 version:(int64_t)a4;
++ (id)effectWithCIFilterName:(id)name;
++ (id)effectWithIdentifier:(id)identifier;
++ (id)equivalentEffectForIdentifier:(id)identifier version:(int64_t)version;
 + (id)standardSupportedEffects;
-+ (unint64_t)_indexOfEffectWithIdentifier:(id)a3;
++ (unint64_t)_indexOfEffectWithIdentifier:(id)identifier;
 - (id)description;
 - (id)newEffectFilter;
 - (int64_t)latestVersion;
@@ -20,27 +20,27 @@
 
 - (id)newEffectFilter
 {
-  v3 = [(PLPhotoEffect *)self CIFilterName];
+  cIFilterName = [(PLPhotoEffect *)self CIFilterName];
 
-  if (!v3)
+  if (!cIFilterName)
   {
     return 0;
   }
 
   v4 = MEMORY[0x1E695F648];
-  v5 = [(PLPhotoEffect *)self CIFilterName];
-  v6 = [v4 filterWithName:v5];
+  cIFilterName2 = [(PLPhotoEffect *)self CIFilterName];
+  v6 = [v4 filterWithName:cIFilterName2];
 
   return v6;
 }
 
 - (int64_t)latestVersion
 {
-  v2 = [(PLPhotoEffect *)self newEffectFilter];
-  v3 = [v2 valueForKey:*MEMORY[0x1E695FB40]];
-  v4 = [v3 integerValue];
+  newEffectFilter = [(PLPhotoEffect *)self newEffectFilter];
+  v3 = [newEffectFilter valueForKey:*MEMORY[0x1E695FB40]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (id)description
@@ -49,25 +49,25 @@
   v8.super_class = PLPhotoEffect;
   v3 = [(PLPhotoEffect *)&v8 description];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PLPhotoEffect *)self displayName];
-  v6 = [v4 stringWithFormat:@"%@ %@", v3, v5];
+  displayName = [(PLPhotoEffect *)self displayName];
+  v6 = [v4 stringWithFormat:@"%@ %@", v3, displayName];
 
   return v6;
 }
 
-+ (id)equivalentEffectForIdentifier:(id)a3 version:(int64_t)a4
++ (id)equivalentEffectForIdentifier:(id)identifier version:(int64_t)version
 {
-  v6 = [a1 effectWithIdentifier:a3];
-  v7 = [v6 relatedVersionIdentifier];
-  if ([v6 lightingVersion] == a4)
+  v6 = [self effectWithIdentifier:identifier];
+  relatedVersionIdentifier = [v6 relatedVersionIdentifier];
+  if ([v6 lightingVersion] == version)
   {
     v8 = v6;
   }
 
-  else if (v7)
+  else if (relatedVersionIdentifier)
   {
-    v9 = [a1 effectWithIdentifier:v7];
-    if ([v9 lightingVersion] == a4)
+    v9 = [self effectWithIdentifier:relatedVersionIdentifier];
+    if ([v9 lightingVersion] == version)
     {
       v8 = v9;
     }
@@ -88,17 +88,17 @@
   return v8;
 }
 
-+ (id)effectWithCIFilterName:(id)a3
++ (id)effectWithCIFilterName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 allEffects];
+  nameCopy = name;
+  allEffects = [self allEffects];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__PLPhotoEffect_effectWithCIFilterName___block_invoke;
   v11[3] = &unk_1E7575A18;
-  v6 = v4;
+  v6 = nameCopy;
   v12 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v11];
+  v7 = [allEffects indexOfObjectPassingTest:v11];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -107,8 +107,8 @@
 
   else
   {
-    v9 = [a1 allEffects];
-    v8 = [v9 objectAtIndex:v7];
+    allEffects2 = [self allEffects];
+    v8 = [allEffects2 objectAtIndex:v7];
   }
 
   return v8;
@@ -123,9 +123,9 @@ uint64_t __40__PLPhotoEffect_effectWithCIFilterName___block_invoke(uint64_t a1, 
   return v7;
 }
 
-+ (id)effectWithIdentifier:(id)a3
++ (id)effectWithIdentifier:(id)identifier
 {
-  v4 = [a1 _indexOfEffectWithIdentifier:a3];
+  v4 = [self _indexOfEffectWithIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -134,19 +134,19 @@ uint64_t __40__PLPhotoEffect_effectWithCIFilterName___block_invoke(uint64_t a1, 
   else
   {
     v6 = v4;
-    v7 = [a1 allEffects];
-    v5 = [v7 objectAtIndex:v6];
+    allEffects = [self allEffects];
+    v5 = [allEffects objectAtIndex:v6];
   }
 
   return v5;
 }
 
-+ (unint64_t)_indexOfEffectWithIdentifier:(id)a3
++ (unint64_t)_indexOfEffectWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
   }
 
   else
@@ -154,14 +154,14 @@ uint64_t __40__PLPhotoEffect_effectWithCIFilterName___block_invoke(uint64_t a1, 
     v5 = @"PUPhotoEffectNone";
   }
 
-  v6 = [a1 allEffects];
+  allEffects = [self allEffects];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__PLPhotoEffect__indexOfEffectWithIdentifier___block_invoke;
   v10[3] = &unk_1E75759F0;
   v11 = v5;
   v7 = v5;
-  v8 = [v6 indexOfObjectPassingTest:v10];
+  v8 = [allEffects indexOfObjectPassingTest:v10];
 
   return v8;
 }
@@ -175,15 +175,15 @@ uint64_t __46__PLPhotoEffect__indexOfEffectWithIdentifier___block_invoke(uint64_
   return v7;
 }
 
-+ (BOOL)isEffectWithIdentifier:(id)a3 equalToEffectWithIdentifier:(id)a4
++ (BOOL)isEffectWithIdentifier:(id)identifier equalToEffectWithIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 isEffectNoneForIdentifier:v6];
-  v9 = [a1 isEffectNoneForIdentifier:v7];
-  if (v6)
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  v8 = [self isEffectNoneForIdentifier:identifierCopy];
+  v9 = [self isEffectNoneForIdentifier:withIdentifierCopy];
+  if (identifierCopy)
   {
-    v10 = [v6 isEqualToString:v7];
+    v10 = [identifierCopy isEqualToString:withIdentifierCopy];
   }
 
   else
@@ -194,10 +194,10 @@ uint64_t __46__PLPhotoEffect__indexOfEffectWithIdentifier___block_invoke(uint64_
   return v10 | v8 & v9;
 }
 
-+ (BOOL)isEffectNoneForIdentifier:(id)a3
++ (BOOL)isEffectNoneForIdentifier:(id)identifier
 {
-  result = [a3 isEqualToString:@"PUPhotoEffectNone"];
-  if (!a3)
+  result = [identifier isEqualToString:@"PUPhotoEffectNone"];
+  if (!identifier)
   {
     return 1;
   }
@@ -383,47 +383,47 @@ void __27__PLPhotoEffect_allEffects__block_invoke()
   allEffects_allPhotoEffects = v9;
 }
 
-+ (id)_lightingEffectWithIdentifier:(id)a3 relatedVersionIdentifier:(id)a4 CIFilterName:(id)a5 lightingVersion:(int64_t)a6
++ (id)_lightingEffectWithIdentifier:(id)identifier relatedVersionIdentifier:(id)versionIdentifier CIFilterName:(id)name lightingVersion:(int64_t)version
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  nameCopy = name;
+  versionIdentifierCopy = versionIdentifier;
+  identifierCopy = identifier;
   v12 = objc_alloc_init(objc_opt_class());
-  v13 = [v11 copy];
+  v13 = [identifierCopy copy];
 
   v14 = v12[2];
   v12[2] = v13;
 
-  v15 = [v10 copy];
+  v15 = [versionIdentifierCopy copy];
   v16 = v12[3];
   v12[3] = v15;
 
-  v17 = [v9 copy];
+  v17 = [nameCopy copy];
   v18 = v12[5];
   v12[5] = v17;
 
   *(v12 + 8) = 1;
-  v12[6] = a6;
+  v12[6] = version;
 
   return v12;
 }
 
-+ (id)_effectWithIdentifier:(id)a3 CIFilterName:(id)a4 displayName:(id)a5
++ (id)_effectWithIdentifier:(id)identifier CIFilterName:(id)name displayName:(id)displayName
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  displayNameCopy = displayName;
+  nameCopy = name;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(objc_opt_class());
-  v11 = [v9 copy];
+  v11 = [identifierCopy copy];
 
   v12 = v10[2];
   v10[2] = v11;
 
-  v13 = [v8 copy];
+  v13 = [nameCopy copy];
   v14 = v10[5];
   v10[5] = v13;
 
-  v15 = [v7 copy];
+  v15 = [displayNameCopy copy];
   v16 = v10[4];
   v10[4] = v15;
 
@@ -432,17 +432,17 @@ void __27__PLPhotoEffect_allEffects__block_invoke()
   return v10;
 }
 
-+ (id)_legacyEffectWithIdentifier:(id)a3 CIFilterName:(id)a4
++ (id)_legacyEffectWithIdentifier:(id)identifier CIFilterName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(objc_opt_class());
-  v8 = [v6 copy];
+  v8 = [identifierCopy copy];
 
   v9 = v7[2];
   v7[2] = v8;
 
-  v10 = [v5 copy];
+  v10 = [nameCopy copy];
   v11 = v7[5];
   v7[5] = v10;
 

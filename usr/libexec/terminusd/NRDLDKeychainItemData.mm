@@ -1,14 +1,14 @@
 @interface NRDLDKeychainItemData
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NRDLDKeychainItemData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = NRDLDKeychainItemData;
-  v4 = [(NRDLDKeychainItem *)&v9 copyWithZone:a3];
+  v4 = [(NRDLDKeychainItem *)&v9 copyWithZone:zone];
   if (self)
   {
     secretData = self->_secretData;

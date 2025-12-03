@@ -1,5 +1,5 @@
 @interface CKAudioController
-- (CKAudioController)initWithMediaObjects:(id)a3 conversation:(id)a4;
+- (CKAudioController)initWithMediaObjects:(id)objects conversation:(id)conversation;
 - (CKAudioControllerDelegate)delegate;
 - (CKMediaObject)currentMediaObject;
 - (double)currentMediaObjectDuration;
@@ -7,31 +7,31 @@
 - (double)playbackSpeed;
 - (float)volume;
 - (unint64_t)audioSessionControllerOptions;
-- (void)_notifyPlayerDidPrepareMediaObject:(id)a3 successfully:(BOOL)a4;
-- (void)addMediaObject:(id)a3;
-- (void)addMediaObjects:(id)a3;
-- (void)audioPlayerCurrentTimeDidChange:(id)a3;
-- (void)audioPlayerDidFinishPlaying:(id)a3;
+- (void)_notifyPlayerDidPrepareMediaObject:(id)object successfully:(BOOL)successfully;
+- (void)addMediaObject:(id)object;
+- (void)addMediaObjects:(id)objects;
+- (void)audioPlayerCurrentTimeDidChange:(id)change;
+- (void)audioPlayerDidFinishPlaying:(id)playing;
 - (void)audioPlayerDidGetInterrupted;
-- (void)audioPlayerDidPrepareAudioToPlay:(id)a3 successfully:(BOOL)a4;
-- (void)audioSessionInterruption:(id)a3;
+- (void)audioPlayerDidPrepareAudioToPlay:(id)play successfully:(BOOL)successfully;
+- (void)audioSessionInterruption:(id)interruption;
 - (void)clearMediaPlayerInfo;
 - (void)dealloc;
-- (void)layoutViewsForScrubbingTime:(double)a3;
+- (void)layoutViewsForScrubbingTime:(double)time;
 - (void)pause;
 - (void)play;
-- (void)playAfterDelay:(double)a3;
-- (void)playListenEndSound:(id)a3;
-- (void)playListenSound:(id)a3;
+- (void)playAfterDelay:(double)delay;
+- (void)playListenEndSound:(id)sound;
+- (void)playListenSound:(id)sound;
 - (void)prepareToPlay;
 - (void)setCurrentMediaPlayerInfo;
-- (void)setCurrentTime:(double)a3;
-- (void)setPlaybackSpeed:(double)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setShouldDuckOthers:(BOOL)a3;
-- (void)setShouldStopPlayingWhenSilent:(BOOL)a3;
-- (void)setShouldUseSpeaker:(BOOL)a3;
-- (void)setVolume:(float)a3;
+- (void)setCurrentTime:(double)time;
+- (void)setPlaybackSpeed:(double)speed;
+- (void)setPlaying:(BOOL)playing;
+- (void)setShouldDuckOthers:(BOOL)others;
+- (void)setShouldStopPlayingWhenSilent:(BOOL)silent;
+- (void)setShouldUseSpeaker:(BOOL)speaker;
+- (void)setVolume:(float)volume;
 - (void)setupMediaRemoteCommandCenter;
 - (void)stop;
 @end
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CKAudioPlayer *)self->_audioPlayer setDelegate:0];
   [(CKAudioPlayer *)self->_audioPlayer stop];
@@ -50,34 +50,34 @@
   [(CKAudioController *)&v4 dealloc];
 }
 
-- (CKAudioController)initWithMediaObjects:(id)a3 conversation:(id)a4
+- (CKAudioController)initWithMediaObjects:(id)objects conversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  conversationCopy = conversation;
   v17.receiver = self;
   v17.super_class = CKAudioController;
   v8 = [(CKAudioController *)&v17 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [objectsCopy mutableCopy];
     [(CKAudioController *)v8 _setMediaObjects:v9];
     v8->_shouldUseSpeaker = 1;
     [(CKAudioController *)v8 setCurrentIndex:0x7FFFFFFFFFFFFFFFLL];
-    [(CKAudioController *)v8 setConversation:v7];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v8 selector:sel_audioSessionInterruption_ name:*MEMORY[0x1E69580D8] object:0];
-    [v10 addObserver:v8 selector:sel_applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
-    v11 = [v9 firstObject];
+    [(CKAudioController *)v8 setConversation:conversationCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_audioSessionInterruption_ name:*MEMORY[0x1E69580D8] object:0];
+    [defaultCenter addObserver:v8 selector:sel_applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
+    firstObject = [v9 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [v9 firstObject];
-      v14 = [v13 messageContext];
-      v15 = [v14 isAudioMessage];
+      firstObject2 = [v9 firstObject];
+      messageContext = [firstObject2 messageContext];
+      isAudioMessage = [messageContext isAudioMessage];
 
-      if (v15)
+      if (isAudioMessage)
       {
         [(CKAudioController *)v8 setupMediaRemoteCommandCenter];
       }
@@ -87,25 +87,25 @@
   return v8;
 }
 
-- (void)addMediaObject:(id)a3
+- (void)addMediaObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CKAudioController *)self _mediaObjects];
-  [v5 addObject:v4];
+  objectCopy = object;
+  _mediaObjects = [(CKAudioController *)self _mediaObjects];
+  [_mediaObjects addObject:objectCopy];
 }
 
-- (void)addMediaObjects:(id)a3
+- (void)addMediaObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(CKAudioController *)self _mediaObjects];
-  [v5 addObjectsFromArray:v4];
+  objectsCopy = objects;
+  _mediaObjects = [(CKAudioController *)self _mediaObjects];
+  [_mediaObjects addObjectsFromArray:objectsCopy];
 }
 
-- (void)setShouldUseSpeaker:(BOOL)a3
+- (void)setShouldUseSpeaker:(BOOL)speaker
 {
-  if (self->_shouldUseSpeaker != a3)
+  if (self->_shouldUseSpeaker != speaker)
   {
-    self->_shouldUseSpeaker = a3;
+    self->_shouldUseSpeaker = speaker;
     if ([(CKAudioController *)self isPlaying])
     {
       v4 = +[CKAudioSessionController shareInstance];
@@ -114,11 +114,11 @@
   }
 }
 
-- (void)setShouldStopPlayingWhenSilent:(BOOL)a3
+- (void)setShouldStopPlayingWhenSilent:(BOOL)silent
 {
-  if (self->_shouldStopPlayingWhenSilent != a3)
+  if (self->_shouldStopPlayingWhenSilent != silent)
   {
-    self->_shouldStopPlayingWhenSilent = a3;
+    self->_shouldStopPlayingWhenSilent = silent;
     if ([(CKAudioController *)self isPlaying])
     {
       v4 = +[CKAudioSessionController shareInstance];
@@ -127,11 +127,11 @@
   }
 }
 
-- (void)setShouldDuckOthers:(BOOL)a3
+- (void)setShouldDuckOthers:(BOOL)others
 {
-  if (self->_shouldDuckOthers != a3)
+  if (self->_shouldDuckOthers != others)
   {
-    self->_shouldDuckOthers = a3;
+    self->_shouldDuckOthers = others;
     if ([(CKAudioController *)self isPlaying])
     {
       v4 = +[CKAudioSessionController shareInstance];
@@ -142,20 +142,20 @@
 
 - (unint64_t)audioSessionControllerOptions
 {
-  v3 = [(CKAudioController *)self shouldUseSpeaker];
+  shouldUseSpeaker = [(CKAudioController *)self shouldUseSpeaker];
   if ([(CKAudioController *)self shouldStopPlayingWhenSilent])
   {
-    v3 |= 2uLL;
+    shouldUseSpeaker |= 2uLL;
   }
 
   if ([(CKAudioController *)self shouldDuckOthers])
   {
-    return v3 | 4;
+    return shouldUseSpeaker | 4;
   }
 
   else
   {
-    return v3;
+    return shouldUseSpeaker;
   }
 }
 
@@ -166,12 +166,12 @@
   [(CKAudioController *)self setCurrentMediaPlayerInfo];
 }
 
-- (void)playAfterDelay:(double)a3
+- (void)playAfterDelay:(double)delay
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [(CKAudioController *)self currentIndex];
+  currentIndex = [(CKAudioController *)self currentIndex];
   v6 = IMOSLoggingEnabled();
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (currentIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (!v6)
     {
@@ -181,9 +181,9 @@
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(CKAudioController *)self _mediaObjects];
+      _mediaObjects = [(CKAudioController *)self _mediaObjects];
       *buf = 134217984;
-      v34 = [v8 count];
+      v34 = [_mediaObjects count];
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Playing audio message. _currentIndex was NSNotFound. [[self _mediaObjects] count]: %llu", buf, 0xCu);
     }
   }
@@ -198,37 +198,37 @@
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v9 = [(CKAudioController *)self currentIndex];
-      v10 = [(CKAudioController *)self _mediaObjects];
+      currentIndex2 = [(CKAudioController *)self currentIndex];
+      _mediaObjects2 = [(CKAudioController *)self _mediaObjects];
       *buf = 134218240;
-      v34 = v9;
+      v34 = currentIndex2;
       v35 = 2048;
-      v36 = [v10 count];
+      v36 = [_mediaObjects2 count];
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Playing %llu of %llu audio messages.", buf, 0x16u);
     }
   }
 
 LABEL_10:
-  v11 = [(CKAudioController *)self audioPlayer];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
   objc_initWeak(buf, self);
-  if (v11)
+  if (audioPlayer)
   {
-    if (![(CKAudioPlayer *)v11 isPlaying])
+    if (![(CKAudioPlayer *)audioPlayer isPlaying])
     {
-      objc_initWeak(&location, v11);
+      objc_initWeak(&location, audioPlayer);
       v12 = +[CKAudioSessionController shareInstance];
-      v13 = [(CKAudioController *)self audioSessionControllerOptions];
+      audioSessionControllerOptions = [(CKAudioController *)self audioSessionControllerOptions];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __36__CKAudioController_playAfterDelay___block_invoke;
       v27[3] = &unk_1E72F45A0;
-      v11 = v11;
-      v28 = v11;
-      v31[1] = *&a3;
+      audioPlayer = audioPlayer;
+      v28 = audioPlayer;
+      v31[1] = *&delay;
       objc_copyWeak(&v30, buf);
       objc_copyWeak(v31, &location);
-      v29 = self;
-      [v12 activateWithOptions:v13 completion:v27];
+      selfCopy = self;
+      [v12 activateWithOptions:audioSessionControllerOptions completion:v27];
 
       objc_destroyWeak(v31);
       objc_destroyWeak(&v30);
@@ -244,19 +244,19 @@ LABEL_10:
       [(CKAudioController *)self setCurrentIndex:0];
     }
 
-    v14 = [(CKAudioController *)self _mediaObjects];
-    v15 = [(CKAudioController *)self currentIndex];
-    if (v15 >= [v14 count])
+    _mediaObjects3 = [(CKAudioController *)self _mediaObjects];
+    currentIndex3 = [(CKAudioController *)self currentIndex];
+    if (currentIndex3 >= [_mediaObjects3 count])
     {
-      v11 = 0;
+      audioPlayer = 0;
     }
 
     else
     {
-      v16 = [v14 objectAtIndex:{-[CKAudioController currentIndex](self, "currentIndex")}];
+      v16 = [_mediaObjects3 objectAtIndex:{-[CKAudioController currentIndex](self, "currentIndex")}];
       if ([v16 shouldSuppressPreview])
       {
-        v11 = 0;
+        audioPlayer = 0;
       }
 
       else
@@ -266,24 +266,24 @@ LABEL_10:
         [(CKAudioController *)self setAudioPlayer:v17];
         objc_initWeak(&location, v17);
         v18 = +[CKAudioSessionController shareInstance];
-        v19 = [(CKAudioController *)self audioSessionControllerOptions];
+        audioSessionControllerOptions2 = [(CKAudioController *)self audioSessionControllerOptions];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __36__CKAudioController_playAfterDelay___block_invoke_3;
         v22[3] = &unk_1E72F45A0;
-        v11 = v17;
-        v23 = v11;
-        v26[1] = *&a3;
+        audioPlayer = v17;
+        v23 = audioPlayer;
+        v26[1] = *&delay;
         objc_copyWeak(&v25, buf);
         objc_copyWeak(v26, &location);
-        v24 = self;
-        [v18 activateWithOptions:v19 completion:v22];
+        selfCopy2 = self;
+        [v18 activateWithOptions:audioSessionControllerOptions2 completion:v22];
 
-        v20 = [(CKAudioController *)self delegate];
+        delegate = [(CKAudioController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [(CKAudioPlayer *)v11 duration];
-          [v20 audioController:self mediaObjectProgressDidChange:v16 currentTime:0.0 duration:v21];
+          [(CKAudioPlayer *)audioPlayer duration];
+          [delegate audioController:self mediaObjectProgressDidChange:v16 currentTime:0.0 duration:v21];
         }
 
         objc_destroyWeak(v26);
@@ -383,11 +383,11 @@ void __36__CKAudioController_playAfterDelay___block_invoke_5(uint64_t a1, int a2
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__41;
   v21 = __Block_byref_object_dispose__41;
-  v22 = [(CKAudioController *)self audioPlayer];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
   if ([v18[5] isPlaying])
   {
-    v3 = [v18[5] mediaObject];
-    [(CKAudioController *)self _notifyPlayerDidPrepareMediaObject:v3 successfully:1];
+    mediaObject = [v18[5] mediaObject];
+    [(CKAudioController *)self _notifyPlayerDidPrepareMediaObject:mediaObject successfully:1];
   }
 
   else
@@ -397,15 +397,15 @@ void __36__CKAudioController_playAfterDelay___block_invoke_5(uint64_t a1, int a2
       [(CKAudioController *)self setCurrentIndex:0];
     }
 
-    v3 = [(CKAudioController *)self _mediaObjects];
+    mediaObject = [(CKAudioController *)self _mediaObjects];
     v4 = v18[5];
     if (v4)
     {
       goto LABEL_6;
     }
 
-    v11 = [(CKAudioController *)self currentIndex];
-    if (v11 >= [v3 count])
+    currentIndex = [(CKAudioController *)self currentIndex];
+    if (currentIndex >= [mediaObject count])
     {
       [(CKAudioController *)self _notifyPlayerDidPrepareMediaObject:0 successfully:0];
       goto LABEL_8;
@@ -415,28 +415,28 @@ void __36__CKAudioController_playAfterDelay___block_invoke_5(uint64_t a1, int a2
     if (v4)
     {
 LABEL_6:
-      v5 = [v4 mediaObject];
+      mediaObject2 = [v4 mediaObject];
     }
 
     else
     {
-      v5 = [v3 objectAtIndex:{-[CKAudioController currentIndex](self, "currentIndex")}];
+      mediaObject2 = [mediaObject objectAtIndex:{-[CKAudioController currentIndex](self, "currentIndex")}];
     }
 
-    v6 = v5;
+    v6 = mediaObject2;
     v7 = +[CKAudioSessionController shareInstance];
-    v8 = [(CKAudioController *)self audioSessionControllerOptions];
+    audioSessionControllerOptions = [(CKAudioController *)self audioSessionControllerOptions];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __34__CKAudioController_prepareToPlay__block_invoke;
     v12[3] = &unk_1E72F45C8;
     v9 = v7;
     v13 = v9;
-    v14 = self;
+    selfCopy = self;
     v10 = v6;
     v15 = v10;
     v16 = &v17;
-    [v9 activateWithOptions:v8 completion:v12];
+    [v9 activateWithOptions:audioSessionControllerOptions completion:v12];
   }
 
 LABEL_8:
@@ -475,15 +475,15 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
 
 - (void)pause
 {
-  v3 = [(CKAudioController *)self audioPlayer];
-  [v3 pause];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer pause];
 
   [(CKAudioController *)self setPlaying:0];
   [(CKAudioController *)self setCurrentMediaPlayerInfo];
-  v4 = [(CKAudioController *)self delegate];
+  delegate = [(CKAudioController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 audioControllerDidPause:self];
+    [delegate audioControllerDidPause:self];
   }
 }
 
@@ -501,8 +501,8 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
     }
   }
 
-  v4 = [(CKAudioController *)self audioPlayer];
-  [v4 stop];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer stop];
 
   [(CKAudioController *)self setPlaying:0];
   if (![(CKAudioController *)self interrupted])
@@ -511,51 +511,51 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
     [v5 deactivate];
   }
 
-  v6 = [(CKAudioController *)self delegate];
+  delegate = [(CKAudioController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 audioControllerDidStop:self];
+    [delegate audioControllerDidStop:self];
   }
 
   [(CKAudioController *)self clearMediaPlayerInfo];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"CKAudioControllerStoppedPlaybackNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKAudioControllerStoppedPlaybackNotification" object:0];
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  v5 = [(CKAudioController *)self audioPlayer];
-  [v5 setVolume:0.0];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer setVolume:0.0];
 
-  v6 = [(CKAudioController *)self audioPlayer];
-  [v6 setCurrentTime:a3];
+  audioPlayer2 = [(CKAudioController *)self audioPlayer];
+  [audioPlayer2 setCurrentTime:time];
 
   [(CKAudioController *)self setCurrentMediaPlayerInfo];
-  v8 = [(CKAudioController *)self audioPlayer];
+  audioPlayer3 = [(CKAudioController *)self audioPlayer];
   LODWORD(v7) = 1.0;
-  [v8 setVolume:v7];
+  [audioPlayer3 setVolume:v7];
 }
 
-- (void)layoutViewsForScrubbingTime:(double)a3
+- (void)layoutViewsForScrubbingTime:(double)time
 {
-  v6 = [(CKAudioController *)self delegate];
+  delegate = [(CKAudioController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CKAudioController *)self currentMediaObject];
-    [v6 audioController:self layoutViewsForScrubbingTime:v5 mediaObject:a3];
+    currentMediaObject = [(CKAudioController *)self currentMediaObject];
+    [delegate audioController:self layoutViewsForScrubbingTime:currentMediaObject mediaObject:time];
   }
 }
 
-- (void)setPlaybackSpeed:(double)a3
+- (void)setPlaybackSpeed:(double)speed
 {
-  v4 = [(CKAudioController *)self audioPlayer];
-  [v4 setPlaybackSpeed:a3];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer setPlaybackSpeed:speed];
 }
 
 - (double)playbackSpeed
 {
-  v2 = [(CKAudioController *)self audioPlayer];
-  [v2 playbackSpeed];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer playbackSpeed];
   v4 = v3;
 
   return v4;
@@ -570,8 +570,8 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [(CKAudioController *)self _mediaObjects];
-    v2 = [v4 objectAtIndex:self->_currentIndex];
+    _mediaObjects = [(CKAudioController *)self _mediaObjects];
+    v2 = [_mediaObjects objectAtIndex:self->_currentIndex];
   }
 
   return v2;
@@ -579,8 +579,8 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
 
 - (double)currentMediaObjectTime
 {
-  v2 = [(CKAudioController *)self audioPlayer];
-  [v2 currentTime];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer currentTime];
   v4 = v3;
 
   return v4;
@@ -588,24 +588,24 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
 
 - (double)currentMediaObjectDuration
 {
-  v2 = [(CKAudioController *)self audioPlayer];
-  [v2 duration];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer duration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  v5 = [(CKAudioController *)self audioPlayer];
-  *&v4 = a3;
-  [v5 setVolume:v4];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  *&v4 = volume;
+  [audioPlayer setVolume:v4];
 }
 
 - (float)volume
 {
-  v2 = [(CKAudioController *)self audioPlayer];
-  [v2 volume];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer volume];
   v4 = v3;
 
   return v4;
@@ -618,35 +618,35 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
   [(CKAudioController *)self stop];
 }
 
-- (void)audioPlayerCurrentTimeDidChange:(id)a3
+- (void)audioPlayerCurrentTimeDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [(CKAudioController *)self delegate];
+  changeCopy = change;
+  delegate = [(CKAudioController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CKAudioController *)self currentMediaObject];
-    [v9 currentTime];
+    currentMediaObject = [(CKAudioController *)self currentMediaObject];
+    [changeCopy currentTime];
     v7 = v6;
-    [v9 duration];
-    [v4 audioController:self mediaObjectProgressDidChange:v5 currentTime:v7 duration:v8];
+    [changeCopy duration];
+    [delegate audioController:self mediaObjectProgressDidChange:currentMediaObject currentTime:v7 duration:v8];
   }
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3
+- (void)audioPlayerDidFinishPlaying:(id)playing
 {
-  v4 = a3;
-  v5 = [(CKAudioController *)self delegate];
+  playingCopy = playing;
+  delegate = [(CKAudioController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(CKAudioController *)self currentMediaObject];
-    [v5 audioController:self mediaObjectDidFinishPlaying:v6];
+    currentMediaObject = [(CKAudioController *)self currentMediaObject];
+    [delegate audioController:self mediaObjectDidFinishPlaying:currentMediaObject];
   }
 
-  [v4 setDelegate:0];
+  [playingCopy setDelegate:0];
   [(CKAudioController *)self setAudioPlayer:0];
   v7 = self->_currentIndex + 1;
-  v8 = [(CKAudioController *)self _mediaObjects];
-  v9 = [v8 count];
+  _mediaObjects = [(CKAudioController *)self _mediaObjects];
+  v9 = [_mediaObjects count];
 
   if (v7 >= v9)
   {
@@ -673,26 +673,26 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
   }
 }
 
-- (void)audioPlayerDidPrepareAudioToPlay:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidPrepareAudioToPlay:(id)play successfully:(BOOL)successfully
 {
-  v5 = [a3 mediaObject];
-  [(CKAudioController *)self _notifyPlayerDidPrepareMediaObject:v5 successfully:1];
+  mediaObject = [play mediaObject];
+  [(CKAudioController *)self _notifyPlayerDidPrepareMediaObject:mediaObject successfully:1];
 }
 
-- (void)_notifyPlayerDidPrepareMediaObject:(id)a3 successfully:(BOOL)a4
+- (void)_notifyPlayerDidPrepareMediaObject:(id)object successfully:(BOOL)successfully
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(CKAudioController *)self delegate];
+  successfullyCopy = successfully;
+  objectCopy = object;
+  delegate = [(CKAudioController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 audioController:self didPrepareMediaObjectToPlay:v7 successfully:v4];
+    [delegate audioController:self didPrepareMediaObjectToPlay:objectCopy successfully:successfullyCopy];
   }
 }
 
-- (void)playListenSound:(id)a3
+- (void)playListenSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v5 = [CKAudioPlayer alloc];
   v6 = [MEMORY[0x1E695DFF8] ckURLForResource:@"MessageListen" withExtension:@"caf"];
   v7 = [(CKAudioPlayer *)v5 initWithFileURL:v6];
@@ -706,7 +706,7 @@ uint64_t __34__CKAudioController_prepareToPlay__block_invoke(uint64_t a1)
   v11[2] = __37__CKAudioController_playListenSound___block_invoke;
   v11[3] = &unk_1E72F45F0;
   objc_copyWeak(&v13, &location);
-  v10 = v4;
+  v10 = soundCopy;
   v12 = v10;
   [(CKAudioPlayer *)v9 playAfterDelay:v11 completion:0.0];
 
@@ -735,9 +735,9 @@ void __37__CKAudioController_playListenSound___block_invoke(uint64_t a1)
   }
 }
 
-- (void)playListenEndSound:(id)a3
+- (void)playListenEndSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v5 = [CKAudioPlayer alloc];
   v6 = [MEMORY[0x1E695DFF8] ckURLForResource:@"MessageListenEnd" withExtension:@"caf"];
   v7 = [(CKAudioPlayer *)v5 initWithFileURL:v6];
@@ -751,7 +751,7 @@ void __37__CKAudioController_playListenSound___block_invoke(uint64_t a1)
   v11[2] = __40__CKAudioController_playListenEndSound___block_invoke;
   v11[3] = &unk_1E72F45F0;
   objc_copyWeak(&v13, &location);
-  v10 = v4;
+  v10 = soundCopy;
   v12 = v10;
   [(CKAudioPlayer *)v9 playAfterDelay:v11 completion:0.0];
 
@@ -780,22 +780,22 @@ void __40__CKAudioController_playListenEndSound___block_invoke(uint64_t a1)
   }
 }
 
-- (void)audioSessionInterruption:(id)a3
+- (void)audioSessionInterruption:(id)interruption
 {
   [(CKAudioController *)self setInterrupted:1];
-  v4 = [(CKAudioController *)self audioPlayer];
-  [v4 stop];
+  audioPlayer = [(CKAudioController *)self audioPlayer];
+  [audioPlayer stop];
 
   [(CKAudioController *)self setInterrupted:0];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    v4 = a3;
-    self->_playing = a3;
-    if (a3)
+    playingCopy = playing;
+    self->_playing = playing;
+    if (playing)
     {
       [(CKAudioController *)self suppressNowPlaying];
     }
@@ -805,13 +805,13 @@ void __40__CKAudioController_playListenEndSound___block_invoke(uint64_t a1)
       [(CKAudioController *)self stopSuppressingNowPlaying];
     }
 
-    v6 = [(CKAudioController *)self conversation];
-    [v6 setCurrentlyPlayingAudio:v4];
+    conversation = [(CKAudioController *)self conversation];
+    [conversation setCurrentlyPlayingAudio:playingCopy];
 
-    v7 = [(CKAudioController *)self delegate];
+    delegate = [(CKAudioController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 audioControllerPlayingDidChange:self];
+      [delegate audioControllerPlayingDidChange:self];
     }
   }
 }
@@ -825,20 +825,20 @@ void __40__CKAudioController_playListenEndSound___block_invoke(uint64_t a1)
 
 - (void)setupMediaRemoteCommandCenter
 {
-  v2 = self;
+  selfCopy = self;
   CKAudioController.setupMediaRemoteCommandCenter()();
 }
 
 - (void)setCurrentMediaPlayerInfo
 {
-  v2 = self;
+  selfCopy = self;
   CKAudioController.setCurrentMediaPlayerInfo()();
 }
 
 - (void)clearMediaPlayerInfo
 {
-  v2 = [objc_opt_self() defaultCenter];
-  [v2 setNowPlayingInfo_];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter setNowPlayingInfo_];
 }
 
 @end

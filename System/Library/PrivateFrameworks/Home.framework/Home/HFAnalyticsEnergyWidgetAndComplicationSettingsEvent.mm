@@ -1,13 +1,13 @@
 @interface HFAnalyticsEnergyWidgetAndComplicationSettingsEvent
-- (HFAnalyticsEnergyWidgetAndComplicationSettingsEvent)initWithData:(id)a3;
+- (HFAnalyticsEnergyWidgetAndComplicationSettingsEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEnergyWidgetAndComplicationSettingsEvent
 
-- (HFAnalyticsEnergyWidgetAndComplicationSettingsEvent)initWithData:(id)a3
+- (HFAnalyticsEnergyWidgetAndComplicationSettingsEvent)initWithData:(id)data
 {
-  v4 = [a3 objectForKeyedSubscript:@"energyWidgetAndComplicationLocationSetting"];
+  v4 = [data objectForKeyedSubscript:@"energyWidgetAndComplicationLocationSetting"];
   if (!v4)
   {
     NSLog(&cfstr_Hfanalyticsene_4.isa);
@@ -29,11 +29,11 @@
 {
   v7.receiver = self;
   v7.super_class = HFAnalyticsEnergyWidgetAndComplicationSettingsEvent;
-  v3 = [(HFAnalyticsEvent *)&v7 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v7 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsEnergyWidgetAndComplicationSettingsEvent *)self location];
-  [v4 na_safeSetObject:v5 forKey:@"energyWidgetAndComplicationLocation"];
+  location = [(HFAnalyticsEnergyWidgetAndComplicationSettingsEvent *)self location];
+  [v4 na_safeSetObject:location forKey:@"energyWidgetAndComplicationLocation"];
 
   [v4 na_safeSetObject:&unk_2825236B8 forKey:@"homeAppEventCount"];
 

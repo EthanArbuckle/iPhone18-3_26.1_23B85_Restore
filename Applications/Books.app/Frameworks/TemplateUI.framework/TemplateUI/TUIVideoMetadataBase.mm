@@ -1,26 +1,26 @@
 @interface TUIVideoMetadataBase
-- (TUIVideoMetadataBase)initWithMode:(unint64_t)a3 isMuted:(BOOL)a4 isPlaying:(BOOL)a5 mediaTimePlayed:(double)a6 mediaDuration:(double)a7 mediaId:(id)a8;
+- (TUIVideoMetadataBase)initWithMode:(unint64_t)mode isMuted:(BOOL)muted isPlaying:(BOOL)playing mediaTimePlayed:(double)played mediaDuration:(double)duration mediaId:(id)id;
 - (id)serialize;
 - (id)videoModeAsString;
 @end
 
 @implementation TUIVideoMetadataBase
 
-- (TUIVideoMetadataBase)initWithMode:(unint64_t)a3 isMuted:(BOOL)a4 isPlaying:(BOOL)a5 mediaTimePlayed:(double)a6 mediaDuration:(double)a7 mediaId:(id)a8
+- (TUIVideoMetadataBase)initWithMode:(unint64_t)mode isMuted:(BOOL)muted isPlaying:(BOOL)playing mediaTimePlayed:(double)played mediaDuration:(double)duration mediaId:(id)id
 {
-  v15 = a8;
+  idCopy = id;
   v19.receiver = self;
   v19.super_class = TUIVideoMetadataBase;
   v16 = [(TUIVideoMetadataBase *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_mode = a3;
-    v16->_isMuted = a4;
-    v16->_isPlaying = a5;
-    v16->_mediaTimePlayed = a6;
-    v16->_mediaDuration = a7;
-    objc_storeStrong(&v16->_mediaId, a8);
+    v16->_mode = mode;
+    v16->_isMuted = muted;
+    v16->_isPlaying = playing;
+    v16->_mediaTimePlayed = played;
+    v16->_mediaDuration = duration;
+    objc_storeStrong(&v16->_mediaId, id);
   }
 
   return v17;
@@ -29,8 +29,8 @@
 - (id)serialize
 {
   v11[0] = @"videoMode";
-  v3 = [(TUIVideoMetadataBase *)self videoModeAsString];
-  v12[0] = v3;
+  videoModeAsString = [(TUIVideoMetadataBase *)self videoModeAsString];
+  v12[0] = videoModeAsString;
   v11[1] = @"mediaTimePlayed";
   v4 = [NSNumber numberWithDouble:self->_mediaTimePlayed];
   v12[1] = v4;

@@ -1,17 +1,17 @@
 @interface PKAccountWebServiceSchedulePaymentRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 - (id)endpointComponents;
-- (id)manifestHashWithReferenceIdentifier:(id)a3;
+- (id)manifestHashWithReferenceIdentifier:(id)identifier;
 @end
 
 @implementation PKAccountWebServiceSchedulePaymentRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccountWebServiceSchedulePaymentRequest *)self baseURL];
-  if (!v5)
+  informationCopy = information;
+  baseURL = [(PKAccountWebServiceSchedulePaymentRequest *)self baseURL];
+  if (!baseURL)
   {
     v15 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v15 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -102,28 +102,28 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v6 = [(PKAccountWebServiceSchedulePaymentRequest *)self endpointComponents];
-  v7 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v5 endpointComponents:v6 queryParameters:0 appleAccountInformation:v4];
+  endpointComponents = [(PKAccountWebServiceSchedulePaymentRequest *)self endpointComponents];
+  v7 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:endpointComponents queryParameters:0 appleAccountInformation:informationCopy];
 
   [v7 setHTTPMethod:@"POST"];
   [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9 = [(PKAccountScheduledPaymentList *)self->_scheduledPayments jsonArrayRepresentationWithCertificatesResponse:self->_certificatesResponse];
-  [v8 setObject:v9 forKeyedSubscript:@"scheduledPayments"];
+  [dictionary setObject:v9 forKeyedSubscript:@"scheduledPayments"];
 
-  v10 = [(PKAccountPaymentScheduleDetails *)self->_scheduleDetails jsonDictionaryRepresentation];
-  [v8 setObject:v10 forKeyedSubscript:@"scheduleDetails"];
+  jsonDictionaryRepresentation = [(PKAccountPaymentScheduleDetails *)self->_scheduleDetails jsonDictionaryRepresentation];
+  [dictionary setObject:jsonDictionaryRepresentation forKeyedSubscript:@"scheduleDetails"];
 
-  v11 = [(NSData *)self->_publicKeyHash hexEncoding];
-  [v8 setObject:v11 forKeyedSubscript:@"publicKeyHash"];
+  hexEncoding = [(NSData *)self->_publicKeyHash hexEncoding];
+  [dictionary setObject:hexEncoding forKeyedSubscript:@"publicKeyHash"];
 
-  v12 = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
-  if (v12)
+  dictionaryRepresentation = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v8 setObject:v12 forKey:@"deviceMetadata"];
+    [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
   }
 
-  v13 = [objc_opt_class() _HTTPBodyWithDictionary:v8];
+  v13 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v7 setHTTPBody:v13];
 
   v14 = [v7 copy];
@@ -152,35 +152,35 @@ LABEL_21:
   return v3;
 }
 
-- (id)manifestHashWithReferenceIdentifier:(id)a3
+- (id)manifestHashWithReferenceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(PKAccountScheduledPaymentList *)self->_scheduledPayments scheduledPaymentOfFundingSourceType:1];
   v6 = [(PKAccountScheduledPaymentList *)self->_scheduledPayments scheduledPaymentOfFundingSourceType:2];
   v7 = [v5 hashComponentWithCertificatesResponse:self->_certificatesResponse];
   v8 = [v6 hashComponentWithCertificatesResponse:self->_certificatesResponse];
-  v9 = [(PKAccountPaymentScheduleDetails *)self->_scheduleDetails hashString];
-  v10 = [MEMORY[0x1E696AD60] string];
+  hashString = [(PKAccountPaymentScheduleDetails *)self->_scheduleDetails hashString];
+  string = [MEMORY[0x1E696AD60] string];
   if ([v7 length])
   {
-    [v10 appendString:v7];
+    [string appendString:v7];
   }
 
   if ([v8 length])
   {
-    [v10 appendString:v8];
+    [string appendString:v8];
   }
 
-  if (v9)
+  if (hashString)
   {
-    [v10 appendString:v9];
+    [string appendString:hashString];
   }
 
-  [v10 appendString:v4];
-  v11 = [v10 dataUsingEncoding:4];
-  v12 = [v11 SHA256Hash];
+  [string appendString:identifierCopy];
+  v11 = [string dataUsingEncoding:4];
+  sHA256Hash = [v11 SHA256Hash];
 
-  return v12;
+  return sHA256Hash;
 }
 
 @end

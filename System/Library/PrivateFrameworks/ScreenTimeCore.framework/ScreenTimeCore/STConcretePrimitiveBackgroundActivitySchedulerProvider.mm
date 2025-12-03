@@ -1,20 +1,20 @@
 @interface STConcretePrimitiveBackgroundActivitySchedulerProvider
-- (id)createSchedulerRegisteredForTypes:(id)a3 schedulerDelegate:(id)a4;
+- (id)createSchedulerRegisteredForTypes:(id)types schedulerDelegate:(id)delegate;
 @end
 
 @implementation STConcretePrimitiveBackgroundActivitySchedulerProvider
 
-- (id)createSchedulerRegisteredForTypes:(id)a3 schedulerDelegate:(id)a4
+- (id)createSchedulerRegisteredForTypes:(id)types schedulerDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
+  typesCopy = types;
+  delegateCopy = delegate;
   v7 = objc_opt_new();
-  [v7 setDelegate:v6];
+  [v7 setDelegate:delegateCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v9)
   {
@@ -33,11 +33,11 @@
         v14 = +[STLog backgroundActivity];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 integerValue];
+          integerValue = [v13 integerValue];
           v16 = &stru_1001AC900;
-          if (v15 <= 3)
+          if (integerValue <= 3)
           {
-            v16 = *(&off_1001A34B8 + v15);
+            v16 = *(&off_1001A34B8 + integerValue);
           }
 
           *buf = 138412290;

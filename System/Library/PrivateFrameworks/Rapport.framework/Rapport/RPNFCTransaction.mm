@@ -1,31 +1,31 @@
 @interface RPNFCTransaction
 - (NSString)description;
-- (RPNFCTransaction)initWithCoder:(id)a3;
-- (RPNFCTransaction)initWithRole:(int64_t)a3;
+- (RPNFCTransaction)initWithCoder:(id)coder;
+- (RPNFCTransaction)initWithRole:(int64_t)role;
 - (RPNFCTransactionDelegate)delegate;
-- (void)encodeWithCoder:(id)a3;
-- (void)setError:(id)a3;
-- (void)setRemoteAuthenticationMessage:(id)a3;
-- (void)setRemoteIdentity:(id)a3;
-- (void)setRemoteValidationMessage:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setTapEvent:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setError:(id)error;
+- (void)setRemoteAuthenticationMessage:(id)message;
+- (void)setRemoteIdentity:(id)identity;
+- (void)setRemoteValidationMessage:(id)message;
+- (void)setState:(int64_t)state;
+- (void)setTapEvent:(id)event;
 @end
 
 @implementation RPNFCTransaction
 
-- (RPNFCTransaction)initWithRole:(int64_t)a3
+- (RPNFCTransaction)initWithRole:(int64_t)role
 {
   v10.receiver = self;
   v10.super_class = RPNFCTransaction;
   v4 = [(RPNFCTransaction *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v4->_identifier;
-    v4->_identifier = v5;
+    v4->_identifier = uUID;
 
-    v4->_role = a3;
+    v4->_role = role;
     v7 = [MEMORY[0x1E695DF00] now];
     connectionDate = v4->_connectionDate;
     v4->_connectionDate = v7;
@@ -36,28 +36,28 @@
   return v4;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v12 = a3;
+  errorCopy = error;
   v5 = [(RPNFCTransaction *)self state]== 2;
-  v6 = v12;
+  v6 = errorCopy;
   if (!v5)
   {
     error = self->_error;
-    v8 = v12;
-    v9 = error;
-    v10 = v9;
-    if (v9 == v8)
+    v8 = errorCopy;
+    errorCopy2 = error;
+    v10 = errorCopy2;
+    if (errorCopy2 == v8)
     {
     }
 
     else
     {
-      if ((v8 != 0) != (v9 == 0))
+      if ((v8 != 0) != (errorCopy2 == 0))
       {
-        v11 = [(NSError *)v8 isEqual:v9];
+        v11 = [(NSError *)v8 isEqual:errorCopy2];
 
-        v6 = v12;
+        v6 = errorCopy;
         if (v11)
         {
           goto LABEL_10;
@@ -68,21 +68,21 @@
       {
       }
 
-      objc_storeStrong(&self->_error, a3);
+      objc_storeStrong(&self->_error, error);
       [(RPNFCTransaction *)self setState:1];
     }
 
-    v6 = v12;
+    v6 = errorCopy;
   }
 
 LABEL_10:
 }
 
-- (void)setTapEvent:(id)a3
+- (void)setTapEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   tapEvent = self->_tapEvent;
-  v10 = v5;
+  v10 = eventCopy;
   v7 = tapEvent;
   if (v7 == v10)
   {
@@ -115,7 +115,7 @@ LABEL_7:
       [RPNFCTransaction setTapEvent:];
     }
 
-    objc_storeStrong(&self->_tapEvent, a3);
+    objc_storeStrong(&self->_tapEvent, event);
     [(RPNFCTransaction *)self setState:2];
     goto LABEL_12;
   }
@@ -123,12 +123,12 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)setRemoteAuthenticationMessage:(id)a3
+- (void)setRemoteAuthenticationMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   p_remoteAuthenticationMessage = &self->_remoteAuthenticationMessage;
   remoteAuthenticationMessage = self->_remoteAuthenticationMessage;
-  v12 = v4;
+  v12 = messageCopy;
   v7 = remoteAuthenticationMessage;
   if (v7 == v12)
   {
@@ -174,12 +174,12 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)setRemoteValidationMessage:(id)a3
+- (void)setRemoteValidationMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   p_remoteValidationMessage = &self->_remoteValidationMessage;
   remoteValidationMessage = self->_remoteValidationMessage;
-  v12 = v4;
+  v12 = messageCopy;
   v7 = remoteValidationMessage;
   if (v7 == v12)
   {
@@ -225,22 +225,22 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = [(RPNFCTransaction *)self delegate];
-    [v5 didChangeStateForTransaction:self];
+    self->_state = state;
+    delegate = [(RPNFCTransaction *)self delegate];
+    [delegate didChangeStateForTransaction:self];
   }
 }
 
-- (void)setRemoteIdentity:(id)a3
+- (void)setRemoteIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   p_remoteIdentity = &self->_remoteIdentity;
   remoteIdentity = self->_remoteIdentity;
-  v12 = v4;
+  v12 = identityCopy;
   v7 = remoteIdentity;
   if (v7 == v12)
   {
@@ -286,15 +286,15 @@ LABEL_7:
 LABEL_13:
 }
 
-- (RPNFCTransaction)initWithCoder:(id)a3
+- (RPNFCTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RPNFCTransaction *)self init];
   if (v5)
   {
     objc_opt_class();
     NSDecodeObjectIfPresent();
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"state"])
     {
       v5->_state = [v6 decodeIntegerForKey:@"state"];
@@ -318,50 +318,50 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v11 = v4;
+  v11 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"identifier"];
-    v4 = v11;
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
+    coderCopy = v11;
   }
 
   state = self->_state;
   if (state)
   {
     [v11 encodeInteger:state forKey:@"state"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   connectionDate = self->_connectionDate;
   if (connectionDate)
   {
     [v11 encodeObject:connectionDate forKey:@"connectionDate"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   tapEvent = self->_tapEvent;
   if (tapEvent)
   {
     [v11 encodeObject:tapEvent forKey:@"tapEvent"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   error = self->_error;
   if (error)
   {
     [v11 encodeObject:error forKey:@"error"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   role = self->_role;
   if (role)
   {
     [v11 encodeInteger:role forKey:@"role"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 

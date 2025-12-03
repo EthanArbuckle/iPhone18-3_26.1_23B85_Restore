@@ -6,12 +6,12 @@
 
 - (uint64_t)_hasBlockArgument
 {
-  v1 = [a1 methodSignature];
-  result = [v1 numberOfArguments];
+  methodSignature = [self methodSignature];
+  result = [methodSignature numberOfArguments];
   if (result)
   {
     v3 = result;
-    if (*([v1 _argInfo:0] + 34) < 0)
+    if (*([methodSignature _argInfo:0] + 34) < 0)
     {
       return 1;
     }
@@ -27,7 +27,7 @@
           break;
         }
 
-        v6 = [v1 _argInfo:v4];
+        v6 = [methodSignature _argInfo:v4];
         v4 = v5 + 1;
       }
 

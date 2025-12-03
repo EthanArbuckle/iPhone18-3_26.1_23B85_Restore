@@ -1,61 +1,61 @@
 @interface VNImageBufferCache
-+ (id)cacheKeyWithBufferFormat:(unsigned int)a3 width:(unint64_t)a4 height:(unint64_t)a5 cropRect:(CGRect)a6;
++ (id)cacheKeyWithBufferFormat:(unsigned int)format width:(unint64_t)width height:(unint64_t)height cropRect:(CGRect)rect;
 - (VNImageBufferCache)init;
-- (__CVBuffer)cachedBufferWithKey:(id)a3;
-- (void)cacheBuffer:(__CVBuffer *)a3 forCacheKey:(id)a4;
+- (__CVBuffer)cachedBufferWithKey:(id)key;
+- (void)cacheBuffer:(__CVBuffer *)buffer forCacheKey:(id)key;
 - (void)dealloc;
-- (void)purgeCacheRepresentationsForOriginalBuffer:(__CVBuffer *)a3;
-- (void)removeCachedBufferWithKey:(id)a3;
+- (void)purgeCacheRepresentationsForOriginalBuffer:(__CVBuffer *)buffer;
+- (void)removeCachedBufferWithKey:(id)key;
 @end
 
 @implementation VNImageBufferCache
 
-- (void)purgeCacheRepresentationsForOriginalBuffer:(__CVBuffer *)a3
+- (void)purgeCacheRepresentationsForOriginalBuffer:(__CVBuffer *)buffer
 {
   os_unfair_lock_lock(&self->_pixelBufferRepsLock);
-  v5 = CFDictionaryContainsValue(self->_pixelBufferReps, a3);
+  v5 = CFDictionaryContainsValue(self->_pixelBufferReps, buffer);
   if (v5)
   {
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 
   CFDictionaryRemoveAllValues(self->_pixelBufferReps);
   if (v5)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    Width = CVPixelBufferGetWidth(a3);
-    v8 = [VNImageBufferCache cacheKeyWithBufferFormat:PixelFormatType width:Width height:CVPixelBufferGetHeight(a3)];
-    CFDictionaryAddValue(self->_pixelBufferReps, v8, a3);
-    CVPixelBufferRelease(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+    Width = CVPixelBufferGetWidth(buffer);
+    v8 = [VNImageBufferCache cacheKeyWithBufferFormat:PixelFormatType width:Width height:CVPixelBufferGetHeight(buffer)];
+    CFDictionaryAddValue(self->_pixelBufferReps, v8, buffer);
+    CVPixelBufferRelease(buffer);
   }
 
   os_unfair_lock_unlock(&self->_pixelBufferRepsLock);
 }
 
-- (void)removeCachedBufferWithKey:(id)a3
+- (void)removeCachedBufferWithKey:(id)key
 {
-  key = a3;
+  key = key;
   os_unfair_lock_lock(&self->_pixelBufferRepsLock);
   CFDictionaryRemoveValue(self->_pixelBufferReps, key);
   os_unfair_lock_unlock(&self->_pixelBufferRepsLock);
 }
 
-- (__CVBuffer)cachedBufferWithKey:(id)a3
+- (__CVBuffer)cachedBufferWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_pixelBufferRepsLock);
-  Value = CFDictionaryGetValue(self->_pixelBufferReps, v4);
+  Value = CFDictionaryGetValue(self->_pixelBufferReps, keyCopy);
   CVPixelBufferRetain(Value);
   os_unfair_lock_unlock(&self->_pixelBufferRepsLock);
 
   return Value;
 }
 
-- (void)cacheBuffer:(__CVBuffer *)a3 forCacheKey:(id)a4
+- (void)cacheBuffer:(__CVBuffer *)buffer forCacheKey:(id)key
 {
-  key = a4;
+  key = key;
   os_unfair_lock_lock(&self->_pixelBufferRepsLock);
-  CFDictionaryAddValue(self->_pixelBufferReps, key, a3);
+  CFDictionaryAddValue(self->_pixelBufferReps, key, buffer);
   os_unfair_lock_unlock(&self->_pixelBufferRepsLock);
 }
 
@@ -91,16 +91,16 @@
   return v3;
 }
 
-+ (id)cacheKeyWithBufferFormat:(unsigned int)a3 width:(unint64_t)a4 height:(unint64_t)a5 cropRect:(CGRect)a6
++ (id)cacheKeyWithBufferFormat:(unsigned int)format width:(unint64_t)width height:(unint64_t)height cropRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = a3;
+  formatCopy = format;
   v15 = VNHumanReadableCGRect(x, y, width, height);
-  v16 = [v13 initWithFormat:@"format=%lu_width=%lu_height=%lu_cropRect=%@", v14, a4, a5, v15];
+  v16 = [v13 initWithFormat:@"format=%lu_width=%lu_height=%lu_cropRect=%@", formatCopy, width, height, v15];
 
   return v16;
 }

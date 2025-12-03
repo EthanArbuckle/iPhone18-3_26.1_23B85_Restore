@@ -1,13 +1,13 @@
 @interface PDDPQueryRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPQueryRequest
@@ -17,8 +17,8 @@
   v7.receiver = self;
   v7.super_class = PDDPQueryRequest;
   v3 = [(PDDPQueryRequest *)&v7 description];
-  v4 = [(PDDPQueryRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPQueryRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -29,15 +29,15 @@
   queryZone = self->_queryZone;
   if (queryZone)
   {
-    v5 = [(PDDPSchoolworkQueryZone *)queryZone dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"query_zone"];
+    dictionaryRepresentation = [(PDDPSchoolworkQueryZone *)queryZone dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"query_zone"];
   }
 
   filterQuery = self->_filterQuery;
   if (filterQuery)
   {
-    v7 = [(PDDPSchoolworkSearchQuery *)filterQuery dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"filter_query"];
+    dictionaryRepresentation2 = [(PDDPSchoolworkSearchQuery *)filterQuery dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"filter_query"];
   }
 
   if (*&self->_has)
@@ -49,16 +49,16 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -67,18 +67,18 @@
       while (1)
       {
         LOBYTE(v25) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -96,11 +96,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -113,18 +113,18 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v25) = 0;
-          v19 = [a3 position] + 1;
-          if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+          v19 = [from position] + 1;
+          if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
           {
-            v21 = [a3 data];
-            [v21 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v18 |= (v25 & 0x7F) << v16;
@@ -142,7 +142,7 @@ LABEL_15:
           }
         }
 
-        v22 = (v18 != 0) & ~[a3 hasError];
+        v22 = (v18 != 0) & ~[from hasError];
 LABEL_38:
         self->_includeChildren = v22;
         goto LABEL_39;
@@ -159,7 +159,7 @@ LABEL_38:
         objc_storeStrong(&self->_queryZone, v15);
         v25 = 0;
         v26 = 0;
-        if (!PBReaderPlaceMark() || !sub_1000B18A8(v15, a3))
+        if (!PBReaderPlaceMark() || !sub_1000B18A8(v15, from))
         {
           goto LABEL_41;
         }
@@ -176,10 +176,10 @@ LABEL_25:
       }
 
 LABEL_39:
-      v23 = [a3 position];
-      if (v23 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -187,7 +187,7 @@ LABEL_39:
     objc_storeStrong(&self->_filterQuery, v15);
     v25 = 0;
     v26 = 0;
-    if (!PBReaderPlaceMark() || !sub_1000AEE3C(v15, a3))
+    if (!PBReaderPlaceMark() || !sub_1000AEE3C(v15, from))
     {
 LABEL_41:
 
@@ -197,64 +197,64 @@ LABEL_41:
     goto LABEL_25;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_queryZone)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_filterQuery)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     includeChildren = self->_includeChildren;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_queryZone)
   {
-    [v4 setQueryZone:?];
-    v4 = v5;
+    [toCopy setQueryZone:?];
+    toCopy = v5;
   }
 
   if (self->_filterQuery)
   {
     [v5 setFilterQuery:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_includeChildren;
-    v4[28] |= 1u;
+    toCopy[24] = self->_includeChildren;
+    toCopy[28] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPSchoolworkQueryZone *)self->_queryZone copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPSchoolworkQueryZone *)self->_queryZone copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(PDDPSchoolworkSearchQuery *)self->_filterQuery copyWithZone:a3];
+  v8 = [(PDDPSchoolworkSearchQuery *)self->_filterQuery copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -267,16 +267,16 @@ LABEL_41:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   queryZone = self->_queryZone;
-  if (queryZone | *(v4 + 2))
+  if (queryZone | *(equalCopy + 2))
   {
     if (![(PDDPSchoolworkQueryZone *)queryZone isEqual:?])
     {
@@ -285,7 +285,7 @@ LABEL_41:
   }
 
   filterQuery = self->_filterQuery;
-  if (filterQuery | *(v4 + 1))
+  if (filterQuery | *(equalCopy + 1))
   {
     if (![(PDDPSchoolworkSearchQuery *)filterQuery isEqual:?])
     {
@@ -293,10 +293,10 @@ LABEL_41:
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -305,13 +305,13 @@ LABEL_8:
 
     if (self->_includeChildren)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -341,12 +341,12 @@ LABEL_9:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   queryZone = self->_queryZone;
-  v6 = *(v4 + 2);
-  v9 = v4;
+  v6 = *(fromCopy + 2);
+  v9 = fromCopy;
   if (queryZone)
   {
     if (!v6)
@@ -367,10 +367,10 @@ LABEL_9:
     [(PDDPQueryRequest *)self setQueryZone:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   filterQuery = self->_filterQuery;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (filterQuery)
   {
     if (!v8)
@@ -391,15 +391,15 @@ LABEL_7:
     filterQuery = [(PDDPQueryRequest *)self setFilterQuery:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_includeChildren = *(v4 + 24);
+    self->_includeChildren = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
-  _objc_release_x1(filterQuery, v4);
+  _objc_release_x1(filterQuery, fromCopy);
 }
 
 @end

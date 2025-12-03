@@ -1,36 +1,36 @@
 @interface POKerberosHelper
-- (BOOL)checkForValidKerberosTGT:(id)a3;
-- (BOOL)destroyCredentialForUUID:(id)a3;
-- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)a3;
-- (id)importKerberosEntry:(id)a3 error:(id *)a4;
-- (void)exchangeKerberosTGTForEntry:(id)a3;
+- (BOOL)checkForValidKerberosTGT:(id)t;
+- (BOOL)destroyCredentialForUUID:(id)d;
+- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)d;
+- (id)importKerberosEntry:(id)entry error:(id *)error;
+- (void)exchangeKerberosTGTForEntry:(id)entry;
 @end
 
 @implementation POKerberosHelper
 
-- (id)importKerberosEntry:(id)a3 error:(id *)a4
+- (id)importKerberosEntry:(id)entry error:(id *)error
 {
   v178 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  entryCopy = entry;
   v6 = PO_LOG_POKerberosHelper();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 realm];
+    realm = [entryCopy realm];
     *buf = 136315650;
     *&buf[4] = "[POKerberosHelper importKerberosEntry:error:]";
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = realm;
     *&buf[22] = 2112;
     *&buf[24] = self;
     _os_log_impl(&dword_25E831000, v6, OS_LOG_TYPE_DEFAULT, "%s realm = %{public}@ on %@", buf, 0x20u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277D3D200]);
-  v9 = [v5 ticketKeyPath];
-  [v8 setTicketKeyPath:v9];
+  ticketKeyPath = [entryCopy ticketKeyPath];
+  [v8 setTicketKeyPath:ticketKeyPath];
 
-  v10 = [v5 realm];
-  [v8 setRealm:v10];
+  realm2 = [entryCopy realm];
+  [v8 setRealm:realm2];
 
   context = 0;
   opt = 0;
@@ -58,9 +58,9 @@
   v148 = 0;
   krb5_data_zero();
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v5 clientName];
-  v13 = [v5 realm];
-  v14 = [v11 stringWithFormat:@"%@@%@", v12, v13];
+  clientName = [entryCopy clientName];
+  realm3 = [entryCopy realm];
+  v14 = [v11 stringWithFormat:@"%@@%@", clientName, realm3];
 
   inited = krb5_init_context(&context);
   if (inited)
@@ -77,10 +77,10 @@
   v142 = 0;
   v141 = 0;
   krb5_data_zero();
-  v19 = [v5 messageBuffer];
-  [v19 bytes];
-  v20 = [v5 messageBuffer];
-  [v20 length];
+  messageBuffer = [entryCopy messageBuffer];
+  [messageBuffer bytes];
+  messageBuffer2 = [entryCopy messageBuffer];
+  [messageBuffer2 length];
   krb5_data_copy();
 
   v21 = [v14 componentsSeparatedByString:@"@"];
@@ -116,7 +116,7 @@
     }
   }
 
-  [v5 encryptionKeyType];
+  [entryCopy encryptionKeyType];
   v27 = krb5_enctype_valid();
   if (v27)
   {
@@ -130,11 +130,11 @@
 
   else
   {
-    [v5 encryptionKeyType];
-    v29 = [v5 sessionKey];
-    [v29 bytes];
-    v30 = [v5 sessionKey];
-    [v30 length];
+    [entryCopy encryptionKeyType];
+    sessionKey = [entryCopy sessionKey];
+    [sessionKey bytes];
+    sessionKey2 = [entryCopy sessionKey];
+    [sessionKey2 length];
     v31 = krb5_keyblock_init();
 
     if (v31)
@@ -347,13 +347,13 @@
                                 v62 = PO_LOG_POKerberosHelper();
                                 if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
                                 {
-                                  v63 = [v5 realm];
+                                  realm4 = [entryCopy realm];
                                   *v162 = 136315650;
                                   v163 = "[POKerberosHelper importKerberosEntry:error:]";
                                   v164 = 2114;
-                                  v165 = v63;
+                                  v165 = realm4;
                                   v166 = 2112;
-                                  v167 = self;
+                                  selfCopy = self;
                                   _os_log_impl(&dword_25E831000, v62, OS_LOG_TYPE_DEFAULT, "%s Successful for realm = %{public}@ on %@", v162, 0x20u);
                                 }
 
@@ -617,18 +617,18 @@ id __46__POKerberosHelper_importKerberosEntry_error___block_invoke_147()
   return v0;
 }
 
-- (void)exchangeKerberosTGTForEntry:(id)a3
+- (void)exchangeKerberosTGTForEntry:(id)entry
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v5 = PO_LOG_POKerberosHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 realm];
+    realm = [entryCopy realm];
     *buf = 136315650;
     *&buf[4] = "[POKerberosHelper exchangeKerberosTGTForEntry:]";
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = realm;
     *&buf[22] = 2112;
     *&buf[24] = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s realm = %{public}@ on %@", buf, 0x20u);
@@ -658,8 +658,8 @@ id __46__POKerberosHelper_importKerberosEntry_error___block_invoke_147()
     goto LABEL_11;
   }
 
-  v10 = [v4 cacheName];
-  [v10 UTF8String];
+  cacheName = [entryCopy cacheName];
+  [cacheName UTF8String];
   v8 = krb5_string_to_uuid();
 
   if (v8)
@@ -746,18 +746,18 @@ id __46__POKerberosHelper_importKerberosEntry_error___block_invoke_147()
                 v31 = krb5_cc_store_cred(context, cache, creds);
                 if (!v31)
                 {
-                  [v4 setExchangeRequired:{0, "krbtgt", v34, 0}];
-                  [v4 setFailedToConnect:0];
+                  [entryCopy setExchangeRequired:{0, "krbtgt", v34, 0}];
+                  [entryCopy setFailedToConnect:0];
                   v16 = PO_LOG_POKerberosHelper();
                   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
                   {
-                    v33 = [v4 realm];
+                    realm2 = [entryCopy realm];
                     *v41 = 136315650;
                     v42 = "[POKerberosHelper exchangeKerberosTGTForEntry:]";
                     v43 = 2114;
-                    v44 = v33;
+                    v44 = realm2;
                     v45 = 2112;
-                    v46 = self;
+                    selfCopy = self;
                     _os_log_impl(&dword_25E831000, v16, OS_LOG_TYPE_DEFAULT, "%s Success for realm = %{public}@ on %@", v41, 0x20u);
                   }
 
@@ -778,11 +778,11 @@ LABEL_17:
 LABEL_11:
     if (v8 == -1765328347)
     {
-      [v4 setExchangeRequired:0];
+      [entryCopy setExchangeRequired:0];
       v16 = PO_LOG_POKerberosHelper();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [POKerberosHelper exchangeKerberosTGTForEntry:v4];
+        [POKerberosHelper exchangeKerberosTGTForEntry:entryCopy];
       }
     }
 
@@ -793,11 +793,11 @@ LABEL_11:
         goto LABEL_18;
       }
 
-      [v4 setFailedToConnect:1];
+      [entryCopy setFailedToConnect:1];
       v16 = PO_LOG_POKerberosHelper();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [POKerberosHelper exchangeKerberosTGTForEntry:v4];
+        [POKerberosHelper exchangeKerberosTGTForEntry:entryCopy];
       }
     }
 
@@ -959,16 +959,16 @@ id __48__POKerberosHelper_exchangeKerberosTGTForEntry___block_invoke_183()
   return v0;
 }
 
-- (BOOL)checkForValidKerberosTGT:(id)a3
+- (BOOL)checkForValidKerberosTGT:(id)t
 {
-  v4 = a3;
+  tCopy = t;
   v5 = PO_LOG_POKerberosHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POKerberosHelper checkForValidKerberosTGT:];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:tCopy];
   if (v6)
   {
     cred_handle = [(POKerberosHelper *)self acquireCredentialForUUID:v6];
@@ -988,23 +988,23 @@ id __48__POKerberosHelper_exchangeKerberosTGTForEntry___block_invoke_183()
   return v7;
 }
 
-- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)a3
+- (gss_cred_id_t_desc_struct)acquireCredentialForUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = PO_LOG_POKerberosHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [POKerberosHelper acquireCredentialForUUID:];
   }
 
-  if (!v3)
+  if (!dCopy)
   {
     v8 = 0;
     goto LABEL_19;
   }
 
-  v5 = [v3 UUIDString];
-  if (([(__CFString *)v5 isEqualToString:&stru_287080C08]& 1) != 0 || (v6 = CFUUIDCreateFromString(0, v5)) == 0)
+  uUIDString = [dCopy UUIDString];
+  if (([(__CFString *)uUIDString isEqualToString:&stru_287080C08]& 1) != 0 || (v6 = CFUUIDCreateFromString(0, uUIDString)) == 0)
   {
     *lifetime = 0;
     goto LABEL_14;
@@ -1018,8 +1018,8 @@ id __48__POKerberosHelper_exchangeKerberosTGTForEntry___block_invoke_183()
   {
 LABEL_14:
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v3 UUIDString];
-    v13 = [v11 stringWithFormat:@"failed to find credential: %@", v12];
+    uUIDString2 = [dCopy UUIDString];
+    v13 = [v11 stringWithFormat:@"failed to find credential: %@", uUIDString2];
 
     v14 = PO_LOG_POKerberosHelper();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1053,18 +1053,18 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)destroyCredentialForUUID:(id)a3
+- (BOOL)destroyCredentialForUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = PO_LOG_POKerberosHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [POKerberosHelper destroyCredentialForUUID:];
   }
 
-  if (v3)
+  if (dCopy)
   {
-    if (([(__CFString *)v3 isEqualToString:&stru_287080C08]& 1) == 0 && (v5 = CFUUIDCreateFromString(0, v3)) != 0 && (v6 = v5, cred_handle = GSSCreateCredentialFromUUID(v5), CFRelease(v6), cred_handle))
+    if (([(__CFString *)dCopy isEqualToString:&stru_287080C08]& 1) == 0 && (v5 = CFUUIDCreateFromString(0, dCopy)) != 0 && (v6 = v5, cred_handle = GSSCreateCredentialFromUUID(v5), CFRelease(v6), cred_handle))
     {
       min_stat = 0;
       v7 = gss_destroy_cred(&min_stat, &cred_handle) == 0;

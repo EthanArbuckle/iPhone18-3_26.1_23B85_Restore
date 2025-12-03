@@ -1,34 +1,34 @@
 @interface _MKPlaceAttributionLabel
-- (id)attributionWithString:(id)a3;
+- (id)attributionWithString:(id)string;
 @end
 
 @implementation _MKPlaceAttributionLabel
 
-- (id)attributionWithString:(id)a3
+- (id)attributionWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(_MKPlaceAttributionLabel *)self image];
+  stringCopy = string;
+  image = [(_MKPlaceAttributionLabel *)self image];
 
-  if (v5)
+  if (image)
   {
-    v5 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-    v6 = [(_MKPlaceAttributionLabel *)self image];
-    [v5 setImage:v6];
+    image = objc_alloc_init(MEMORY[0x1E69DB7F0]);
+    image2 = [(_MKPlaceAttributionLabel *)self image];
+    [image setImage:image2];
 
     v7 = *MEMORY[0x1E695EFF8];
     v8 = *(MEMORY[0x1E695EFF8] + 8);
-    v9 = [(_MKPlaceAttributionLabel *)self image];
-    [v9 size];
-    [v5 setBounds:{v7, v8, v10, v11}];
+    image3 = [(_MKPlaceAttributionLabel *)self image];
+    [image3 size];
+    [image setBounds:{v7, v8, v10, v11}];
   }
 
-  v12 = v4;
-  v13 = [(_MKPlaceAttributionLabel *)self imagePlaceholder];
+  v12 = stringCopy;
+  imagePlaceholder = [(_MKPlaceAttributionLabel *)self imagePlaceholder];
 
-  if (v13)
+  if (imagePlaceholder)
   {
-    v14 = [(_MKPlaceAttributionLabel *)self imagePlaceholder];
-    v15 = [v12 componentsSeparatedByString:v14];
+    imagePlaceholder2 = [(_MKPlaceAttributionLabel *)self imagePlaceholder];
+    v15 = [v12 componentsSeparatedByString:imagePlaceholder2];
 
     v16 = v12;
     if ([v15 count])
@@ -60,11 +60,11 @@
     [v18 appendAttributedString:v19];
   }
 
-  v20 = [(_MKPlaceAttributionLabel *)self image];
+  image4 = [(_MKPlaceAttributionLabel *)self image];
 
-  if (v20)
+  if (image4)
   {
-    v21 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v5];
+    v21 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:image];
     [v18 appendAttributedString:v21];
 
     v22 = *MEMORY[0x1E69DB610];

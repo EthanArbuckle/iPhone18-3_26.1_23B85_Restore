@@ -1,13 +1,13 @@
 @interface CRLLastSubmittedTaskQueue
-+ (_TtC8Freeform25CRLLastSubmittedTaskQueue)taskQueueWithQoSAsBackgroundWithLabel:(id)a3;
++ (_TtC8Freeform25CRLLastSubmittedTaskQueue)taskQueueWithQoSAsBackgroundWithLabel:(id)label;
 - (_TtC8Freeform25CRLLastSubmittedTaskQueue)init;
-- (_TtC8Freeform25CRLLastSubmittedTaskQueue)initWithLabel:(id)a3;
-- (void)performAsync:(id)a3;
+- (_TtC8Freeform25CRLLastSubmittedTaskQueue)initWithLabel:(id)label;
+- (void)performAsync:(id)async;
 @end
 
 @implementation CRLLastSubmittedTaskQueue
 
-- (_TtC8Freeform25CRLLastSubmittedTaskQueue)initWithLabel:(id)a3
+- (_TtC8Freeform25CRLLastSubmittedTaskQueue)initWithLabel:(id)label
 {
   ObjectType = swift_getObjectType();
   v4 = type metadata accessor for DispatchQoS();
@@ -23,16 +23,16 @@
   return v11;
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(async);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100877818(sub_100685EBC, v5);
 }
 
-+ (_TtC8Freeform25CRLLastSubmittedTaskQueue)taskQueueWithQoSAsBackgroundWithLabel:(id)a3
++ (_TtC8Freeform25CRLLastSubmittedTaskQueue)taskQueueWithQoSAsBackgroundWithLabel:(id)label
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v4 = type metadata accessor for DispatchQoS();

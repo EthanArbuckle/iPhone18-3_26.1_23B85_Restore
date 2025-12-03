@@ -1,7 +1,7 @@
 @interface PAAccessoryManager
 + (id)sharedInstance;
 - (PAAccessoryManager)init;
-- (void)routesDidChange:(id)a3;
+- (void)routesDidChange:(id)change;
 - (void)sendPMEConfigurationToAccessory;
 - (void)sendUpdateToAccessory;
 @end
@@ -132,12 +132,12 @@ uint64_t __36__PAAccessoryManager_sharedInstance__block_invoke()
     objc_copyWeak(&v30, &location);
     [v9 registerUpdateBlock:v29 forRetrieveSelector:sel_accommodationTypesByRouteUID withListener:v2];
 
-    v10 = [getHUAccessoryManagerClass() sharedInstance];
+    sharedInstance = [getHUAccessoryManagerClass() sharedInstance];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __26__PAAccessoryManager_init__block_invoke_14;
     v26[3] = &unk_279A1D068;
-    v11 = v10;
+    v11 = sharedInstance;
     v27 = v11;
     objc_copyWeak(&v28, &location);
     [v11 registerDiscoveryBlock:v26 withListener:v2];
@@ -155,7 +155,7 @@ uint64_t __36__PAAccessoryManager_sharedInstance__block_invoke()
     [v13 registerUpdateBlock:v23 forCharacteristicUUIDs:v15 withListener:v12];
 
     [v13 registerLoggingBlock:&__block_literal_global_29_0 withListener:v12];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v44 = 0;
     v45 = &v44;
     v46 = 0x2020000000;
@@ -184,7 +184,7 @@ uint64_t __36__PAAccessoryManager_sharedInstance__block_invoke()
     }
 
     v20 = *v17;
-    [v16 addObserver:v12 selector:sel_routesDidChange_ name:v20 object:0];
+    [defaultCenter addObserver:v12 selector:sel_routesDidChange_ name:v20 object:0];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v30);
@@ -221,9 +221,9 @@ void __26__PAAccessoryManager_init__block_invoke(uint64_t a1)
 - (void)sendPMEConfigurationToAccessory
 {
   v3 = +[PASettings sharedInstance];
-  v4 = [v3 shouldUpdateAccessory];
+  shouldUpdateAccessory = [v3 shouldUpdateAccessory];
 
-  if ((v4 & 1) == 0)
+  if ((shouldUpdateAccessory & 1) == 0)
   {
     v5 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -237,8 +237,8 @@ void __26__PAAccessoryManager_init__block_invoke(uint64_t a1)
   if (!pmeHysteresisTimer)
   {
     v7 = objc_alloc(MEMORY[0x277CE6950]);
-    v8 = [MEMORY[0x277D12B60] bluetoothManagerQueue];
-    v9 = [v7 initWithTargetSerialQueue:v8];
+    bluetoothManagerQueue = [MEMORY[0x277D12B60] bluetoothManagerQueue];
+    v9 = [v7 initWithTargetSerialQueue:bluetoothManagerQueue];
     v10 = self->_pmeHysteresisTimer;
     self->_pmeHysteresisTimer = v9;
 
@@ -266,15 +266,15 @@ void __26__PAAccessoryManager_init__block_invoke(uint64_t a1)
   if (self->_shouldSendUpdate)
   {
     v2 = [MEMORY[0x277CBE0A0] UUIDWithString:@"d5621cc1-f7ab-45db-9403-9eaf744d5390"];
-    v3 = [getHUAccessoryManagerClass() sharedInstance];
+    sharedInstance = [getHUAccessoryManagerClass() sharedInstance];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __43__PAAccessoryManager_sendUpdateToAccessory__block_invoke;
     v7[3] = &unk_279A1D178;
-    v8 = v3;
+    v8 = sharedInstance;
     v9 = v2;
     v4 = v2;
-    v5 = v3;
+    v5 = sharedInstance;
     [v5 getAvailableAddressesSupportingCharacteristic:@"d5621cc1-f7ab-45db-9403-9eaf744d5390" withCompletion:v7];
   }
 
@@ -634,15 +634,15 @@ void __26__PAAccessoryManager_init__block_invoke_26(uint64_t a1, void *a2)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)routesDidChange:(id)a3
+- (void)routesDidChange:(id)change
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = HCLogAudioAccommodations();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = changeCopy;
     _os_log_impl(&dword_25E445000, v5, OS_LOG_TYPE_DEFAULT, "Routes changes: %@", &v7, 0xCu);
   }
 

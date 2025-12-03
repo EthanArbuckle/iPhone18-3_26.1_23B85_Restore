@@ -1,11 +1,11 @@
 @interface CVACMALSData
 + (id)classes;
-+ (id)withData:(id)a3;
++ (id)withData:(id)data;
 - (CVACMALSData)init;
-- (CVACMALSData)initWithCoder:(id)a3;
+- (CVACMALSData)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACMALSData
@@ -45,11 +45,11 @@
   return v2;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACMALSData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -67,56 +67,56 @@
   return v6;
 }
 
-- (CVACMALSData)initWithCoder:(id)a3
+- (CVACMALSData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CVACMALSData *)self init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_luxValue = [v4 decodeIntForKey:@"lux"];
-    [v4 decodeFloatForKey:@"rc0"];
+    v5->_luxValue = [coderCopy decodeIntForKey:@"lux"];
+    [coderCopy decodeFloatForKey:@"rc0"];
     [(CVACLMotionTypeVector4 *)v5->_rawChannels setX:?];
-    [v4 decodeFloatForKey:@"rc1"];
+    [coderCopy decodeFloatForKey:@"rc1"];
     [(CVACLMotionTypeVector4 *)v5->_rawChannels setY:?];
-    [v4 decodeFloatForKey:@"rc2"];
+    [coderCopy decodeFloatForKey:@"rc2"];
     [(CVACLMotionTypeVector4 *)v5->_rawChannels setZ:?];
-    [v4 decodeFloatForKey:@"rc3"];
+    [coderCopy decodeFloatForKey:@"rc3"];
     [(CVACLMotionTypeVector4 *)v5->_rawChannels setW:?];
-    [v4 decodeDoubleForKey:@"cx"];
+    [coderCopy decodeDoubleForKey:@"cx"];
     [(CVACLMotionTypeDoubleVector3 *)v5->_colorComponents setX:?];
-    [v4 decodeDoubleForKey:@"cy"];
+    [coderCopy decodeDoubleForKey:@"cy"];
     [(CVACLMotionTypeDoubleVector3 *)v5->_colorComponents setY:?];
-    [v4 decodeDoubleForKey:@"cz"];
+    [coderCopy decodeDoubleForKey:@"cz"];
     [(CVACLMotionTypeDoubleVector3 *)v5->_colorComponents setZ:?];
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v7;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
-    v8 = [v4 decodeObjectForKey:@"g"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
+    v8 = [coderCopy decodeObjectForKey:@"g"];
     gain = v5->_gain;
     v5->_gain = v8;
 
-    v10 = [v4 decodeObjectForKey:@"e"];
+    v10 = [coderCopy decodeObjectForKey:@"e"];
     integrationTime = v5->_integrationTime;
     v5->_integrationTime = v10;
 
-    v5->_vendorNumChannels = [v4 decodeIntForKey:@"vnc"];
-    v12 = [v4 decodeObjectForKey:@"vch"];
+    v5->_vendorNumChannels = [coderCopy decodeIntForKey:@"vnc"];
+    v12 = [coderCopy decodeObjectForKey:@"vch"];
     vendorRawChannels = v5->_vendorRawChannels;
     v5->_vendorRawChannels = v12;
 
-    v5->_vendorStatus = [v4 decodeIntForKey:@"vstat"];
-    v5->_vendorOrientation = [v4 decodeIntForKey:@"vori"];
-    v5->_vendorIntegrationTime = [v4 decodeIntForKey:@"vintt"];
-    v5->_vendorReportInterval = [v4 decodeIntForKey:@"vrepi"];
-    [v4 decodeFloatForKey:@"vlux"];
+    v5->_vendorStatus = [coderCopy decodeIntForKey:@"vstat"];
+    v5->_vendorOrientation = [coderCopy decodeIntForKey:@"vori"];
+    v5->_vendorIntegrationTime = [coderCopy decodeIntForKey:@"vintt"];
+    v5->_vendorReportInterval = [coderCopy decodeIntForKey:@"vrepi"];
+    [coderCopy decodeFloatForKey:@"vlux"];
     v5->_vendorLux = v14;
-    [v4 decodeFloatForKey:@"vtemp"];
+    [coderCopy decodeFloatForKey:@"vtemp"];
     v5->_vendorTemperature = v15;
-    [v4 decodeFloatForKey:@"vcct"];
+    [coderCopy decodeFloatForKey:@"vcct"];
     v5->_vendorCCT = v16;
-    v17 = [v4 decodeObjectForKey:@"vazo"];
+    v17 = [coderCopy decodeObjectForKey:@"vazo"];
     vendorAZOffsets = v5->_vendorAZOffsets;
     v5->_vendorAZOffsets = v17;
 
@@ -126,43 +126,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v8 encodeInt:self->_luxValue forKey:@"lux"];
+  [coderCopy encodeInt:self->_luxValue forKey:@"lux"];
   [(CVACLMotionTypeVector4 *)self->_rawChannels x];
-  [v8 encodeFloat:@"rc0" forKey:?];
+  [coderCopy encodeFloat:@"rc0" forKey:?];
   [(CVACLMotionTypeVector4 *)self->_rawChannels y];
-  [v8 encodeFloat:@"rc1" forKey:?];
+  [coderCopy encodeFloat:@"rc1" forKey:?];
   [(CVACLMotionTypeVector4 *)self->_rawChannels z];
-  [v8 encodeFloat:@"rc2" forKey:?];
+  [coderCopy encodeFloat:@"rc2" forKey:?];
   [(CVACLMotionTypeVector4 *)self->_rawChannels w];
-  [v8 encodeFloat:@"rc3" forKey:?];
+  [coderCopy encodeFloat:@"rc3" forKey:?];
   [(CVACLMotionTypeDoubleVector3 *)self->_colorComponents x];
-  [v8 encodeDouble:@"cx" forKey:?];
+  [coderCopy encodeDouble:@"cx" forKey:?];
   [(CVACLMotionTypeDoubleVector3 *)self->_colorComponents y];
-  [v8 encodeDouble:@"cy" forKey:?];
+  [coderCopy encodeDouble:@"cy" forKey:?];
   [(CVACLMotionTypeDoubleVector3 *)self->_colorComponents z];
-  [v8 encodeDouble:@"cz" forKey:?];
-  [v8 encodeDouble:@"t" forKey:self->_timestamp];
-  [v8 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v8 encodeInt64:self->_frameId forKey:@"fi"];
-  [v8 encodeObject:self->_gain forKey:@"g"];
-  [v8 encodeObject:self->_integrationTime forKey:@"e"];
-  [v8 encodeInt:self->_vendorNumChannels forKey:@"vnc"];
-  [v8 encodeObject:self->_vendorRawChannels forKey:@"vch"];
-  [v8 encodeInt:self->_vendorStatus forKey:@"vstat"];
-  [v8 encodeInt:self->_vendorOrientation forKey:@"vori"];
-  [v8 encodeInt:self->_vendorIntegrationTime forKey:@"vintt"];
-  [v8 encodeInt:self->_vendorReportInterval forKey:@"vrepi"];
+  [coderCopy encodeDouble:@"cz" forKey:?];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeObject:self->_gain forKey:@"g"];
+  [coderCopy encodeObject:self->_integrationTime forKey:@"e"];
+  [coderCopy encodeInt:self->_vendorNumChannels forKey:@"vnc"];
+  [coderCopy encodeObject:self->_vendorRawChannels forKey:@"vch"];
+  [coderCopy encodeInt:self->_vendorStatus forKey:@"vstat"];
+  [coderCopy encodeInt:self->_vendorOrientation forKey:@"vori"];
+  [coderCopy encodeInt:self->_vendorIntegrationTime forKey:@"vintt"];
+  [coderCopy encodeInt:self->_vendorReportInterval forKey:@"vrepi"];
   *&v5 = self->_vendorLux;
-  [v8 encodeFloat:@"vlux" forKey:v5];
+  [coderCopy encodeFloat:@"vlux" forKey:v5];
   *&v6 = self->_vendorTemperature;
-  [v8 encodeFloat:@"vtemp" forKey:v6];
+  [coderCopy encodeFloat:@"vtemp" forKey:v6];
   *&v7 = self->_vendorCCT;
-  [v8 encodeFloat:@"vcct" forKey:v7];
-  [v8 encodeObject:self->_vendorAZOffsets forKey:@"vazo"];
+  [coderCopy encodeFloat:@"vcct" forKey:v7];
+  [coderCopy encodeObject:self->_vendorAZOffsets forKey:@"vazo"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -275,8 +275,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMALSData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMALSData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

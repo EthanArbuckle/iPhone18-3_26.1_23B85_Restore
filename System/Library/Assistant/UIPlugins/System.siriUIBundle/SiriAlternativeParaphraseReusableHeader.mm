@@ -1,17 +1,17 @@
 @interface SiriAlternativeParaphraseReusableHeader
 + (id)reuseIdentifier;
-- (SiriAlternativeParaphraseReusableHeader)initWithFrame:(CGRect)a3;
-- (void)configureWithText:(id)a3 locale:(id)a4;
+- (SiriAlternativeParaphraseReusableHeader)initWithFrame:(CGRect)frame;
+- (void)configureWithText:(id)text locale:(id)locale;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriAlternativeParaphraseReusableHeader
 
-- (SiriAlternativeParaphraseReusableHeader)initWithFrame:(CGRect)a3
+- (SiriAlternativeParaphraseReusableHeader)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SiriAlternativeParaphraseReusableHeader;
-  v3 = [(SiriAlternativeParaphraseReusableHeader *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriAlternativeParaphraseReusableHeader *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[SiriUISashView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -34,14 +34,14 @@
   [(SiriUISashView *)sashView setFrame:?];
 }
 
-- (void)configureWithText:(id)a3 locale:(id)a4
+- (void)configureWithText:(id)text locale:(id)locale
 {
   sashView = self->_sashView;
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SiriUISashItem alloc] initWithTitle:v7 image:0];
+  localeCopy = locale;
+  textCopy = text;
+  v8 = [[SiriUISashItem alloc] initWithTitle:textCopy image:0];
 
-  [(SiriUISashView *)sashView setSashItem:v8 locale:v6];
+  [(SiriUISashView *)sashView setSashItem:v8 locale:localeCopy];
 }
 
 + (id)reuseIdentifier

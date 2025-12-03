@@ -26,18 +26,18 @@
 
 - (id)opString
 {
-  v3 = [(ipp_t *)self op_or_status];
-  if (v3 <= 8)
+  op_or_status = [(ipp_t *)self op_or_status];
+  if (op_or_status <= 8)
   {
-    if (v3 <= 4)
+    if (op_or_status <= 4)
     {
-      if (v3 == 2)
+      if (op_or_status == 2)
       {
         v4 = @"IPP_OP_PRINT_JOB";
         goto LABEL_24;
       }
 
-      if (v3 == 4)
+      if (op_or_status == 4)
       {
         v4 = @"IPP_OP_VALIDATE_JOB";
         goto LABEL_24;
@@ -46,7 +46,7 @@
 
     else
     {
-      switch(v3)
+      switch(op_or_status)
       {
         case 5:
           v4 = @"IPP_OP_CREATE_JOB";
@@ -65,9 +65,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v3 > 10)
+  if (op_or_status > 10)
   {
-    switch(v3)
+    switch(op_or_status)
     {
       case 11:
         v4 = @"IPP_OP_GET_PRINTER_ATTRIBUTES";
@@ -83,7 +83,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (v3 == 9)
+  if (op_or_status == 9)
   {
     v4 = @"IPP_OP_GET_JOB_ATTRIBUTES";
   }
@@ -101,9 +101,9 @@ LABEL_24:
 - (id)_descriptionLeader
 {
   request_id = self->super._request_id;
-  v4 = [(ipp_t *)self op_or_status];
-  v5 = [(ipp_request_t *)self opString];
-  v6 = [NSString stringWithFormat:@"<ID#%d(%d - %@)>", request_id, v4, v5];
+  op_or_status = [(ipp_t *)self op_or_status];
+  opString = [(ipp_request_t *)self opString];
+  v6 = [NSString stringWithFormat:@"<ID#%d(%d - %@)>", request_id, op_or_status, opString];
 
   return v6;
 }

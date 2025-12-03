@@ -1,51 +1,51 @@
 @interface PKPhysicsWorld
 + (id)world;
-- (BOOL)isEqualToWorld:(id)a3;
-- (BOOL)stepWithTime:(double)a3 velocityIterations:(unint64_t)a4 positionIterations:(unint64_t)a5;
-- (CGVector)evalForce:(unsigned int)a3 point:(CGPoint)a4;
+- (BOOL)isEqualToWorld:(id)world;
+- (BOOL)stepWithTime:(double)time velocityIterations:(unint64_t)iterations positionIterations:(unint64_t)positionIterations;
+- (CGVector)evalForce:(unsigned int)force point:(CGPoint)point;
 - (CGVector)gravity;
-- (CGVector)sampleFields:(CGPoint)a3;
+- (CGVector)sampleFields:(CGPoint)fields;
 - (PKPhysicsContactDelegate)contactDelegate;
 - (PKPhysicsWorld)init;
-- (PKPhysicsWorld)initWithCoder:(id)a3;
-- (__n128)sampleFieldsAt:(uint64_t)a1;
+- (PKPhysicsWorld)initWithCoder:(id)coder;
+- (__n128)sampleFieldsAt:(uint64_t)at;
 - (b2Vec2)_gravity;
 - (id).cxx_construct;
 - (id)bodies;
-- (id)bodyAlongRayStart:(CGPoint)a3 end:(CGPoint)a4;
-- (id)bodyAtPoint:(CGPoint)a3;
-- (id)bodyInRect:(CGRect)a3;
+- (id)bodyAlongRayStart:(CGPoint)start end:(CGPoint)end;
+- (id)bodyAtPoint:(CGPoint)point;
+- (id)bodyInRect:(CGRect)rect;
 - (id)collisionDelegate;
 - (id)copy;
 - (id)joints;
-- (id)sampleFields:(CGRect)a3 categories:(unsigned int)a4 dataSize:(CGSize)a5;
+- (id)sampleFields:(CGRect)fields categories:(unsigned int)categories dataSize:(CGSize)size;
 - (void)__init__;
-- (void)_runBlockOutsideOfTimeStep:(id)a3;
-- (void)addBody:(id)a3;
-- (void)addField:(id)a3;
-- (void)addJoint:(id)a3;
+- (void)_runBlockOutsideOfTimeStep:(id)step;
+- (void)addBody:(id)body;
+- (void)addField:(id)field;
+- (void)addJoint:(id)joint;
 - (void)dealloc;
-- (void)debugDraw:(float)a3 matrix:(_GLSKMatrix4 *)a4 showsPhysics:(BOOL)a5 showsOutlineInterior:(BOOL)a6 showsFields:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateBodiesAlongRayStart:(CGPoint)a3 end:(CGPoint)a4 usingBlock:(id)a5;
-- (void)enumerateBodiesAtPoint:(CGPoint)a3 usingBlock:(id)a4;
-- (void)enumerateBodiesInRect:(CGRect)a3 usingBlock:(id)a4;
+- (void)debugDraw:(float)draw matrix:(_GLSKMatrix4 *)matrix showsPhysics:(BOOL)physics showsOutlineInterior:(BOOL)interior showsFields:(BOOL)fields;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateBodiesAlongRayStart:(CGPoint)start end:(CGPoint)end usingBlock:(id)block;
+- (void)enumerateBodiesAtPoint:(CGPoint)point usingBlock:(id)block;
+- (void)enumerateBodiesInRect:(CGRect)rect usingBlock:(id)block;
 - (void)removeAllBodies;
 - (void)removeAllFields;
 - (void)removeAllJoints;
-- (void)removeBody:(id)a3;
-- (void)removeField:(id)a3;
-- (void)removeJoint:(id)a3;
-- (void)setGravity:(CGVector)a3;
+- (void)removeBody:(id)body;
+- (void)removeField:(id)field;
+- (void)removeJoint:(id)joint;
+- (void)setGravity:(CGVector)gravity;
 @end
 
 @implementation PKPhysicsWorld
 
-- (void)enumerateBodiesAtPoint:(CGPoint)a3 usingBlock:(id)a4
+- (void)enumerateBodiesAtPoint:(CGPoint)point usingBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  blockCopy = block;
   v8 = x + -0.5;
   v9 = y + -0.5;
   v16.size.width = 1.0;
@@ -83,7 +83,7 @@
       v13[4] = 1065353216;
       v12[0] = &unk_287079A78;
       v12[1] = v15;
-      v14 = MEMORY[0x25F8C0600](v7);
+      v14 = MEMORY[0x25F8C0600](blockCopy);
 
       b2World::QueryAABB(self->_world, v12, &v15);
       v12[0] = &unk_287079A78;
@@ -93,13 +93,13 @@
   }
 }
 
-- (void)enumerateBodiesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateBodiesInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
@@ -137,7 +137,7 @@
       memset(v18, 0, sizeof(v18));
       v16 = &unk_287079A78;
       v19 = 1065353216;
-      v20 = MEMORY[0x25F8C0600](v9);
+      v20 = MEMORY[0x25F8C0600](blockCopy);
 
       b2World::QueryAABB(self->_world, &v16, &v21);
       v16 = &unk_287079A78;
@@ -147,13 +147,13 @@
   }
 }
 
-- (void)enumerateBodiesAlongRayStart:(CGPoint)a3 end:(CGPoint)a4 usingBlock:(id)a5
+- (void)enumerateBodiesAlongRayStart:(CGPoint)start end:(CGPoint)end usingBlock:(id)block
 {
-  x = a4.x;
-  y = a4.y;
-  v19 = a3.x;
-  v20 = a3.y;
-  v6 = a5;
+  x = end.x;
+  y = end.y;
+  v19 = start.x;
+  v20 = start.y;
+  blockCopy = block;
   v17 = PKGet_INV_PTM_RATIO();
   v7 = PKGet_INV_PTM_RATIO();
   v8.f64[0] = v19;
@@ -170,7 +170,7 @@
   v23[1] = v23;
   v23[2] = 0;
   v24 = 0;
-  v11 = MEMORY[0x25F8C0600](v6);
+  v11 = MEMORY[0x25F8C0600](blockCopy);
   v12 = v22;
   v22 = v11;
 
@@ -183,7 +183,7 @@
   std::__list_imp<PKRayCastItem>::clear(v23);
 }
 
-- (id)bodyAtPoint:(CGPoint)a3
+- (id)bodyAtPoint:(CGPoint)point
 {
   v6 = 0;
   v7 = &v6;
@@ -196,14 +196,14 @@
   v5[2] = __30__PKPhysicsWorld_bodyAtPoint___block_invoke;
   v5[3] = &unk_279A38958;
   v5[4] = &v6;
-  [(PKPhysicsWorld *)self enumerateBodiesAtPoint:v5 usingBlock:a3.x, a3.y];
+  [(PKPhysicsWorld *)self enumerateBodiesAtPoint:v5 usingBlock:point.x, point.y];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-- (id)bodyInRect:(CGRect)a3
+- (id)bodyInRect:(CGRect)rect
 {
   v6 = 0;
   v7 = &v6;
@@ -216,14 +216,14 @@
   v5[2] = __29__PKPhysicsWorld_bodyInRect___block_invoke;
   v5[3] = &unk_279A38958;
   v5[4] = &v6;
-  [(PKPhysicsWorld *)self enumerateBodiesInRect:v5 usingBlock:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PKPhysicsWorld *)self enumerateBodiesInRect:v5 usingBlock:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-- (id)bodyAlongRayStart:(CGPoint)a3 end:(CGPoint)a4
+- (id)bodyAlongRayStart:(CGPoint)start end:(CGPoint)end
 {
   v7 = 0;
   v8 = &v7;
@@ -236,7 +236,7 @@
   v6[2] = __40__PKPhysicsWorld_bodyAlongRayStart_end___block_invoke;
   v6[3] = &unk_279A38980;
   v6[4] = &v7;
-  [(PKPhysicsWorld *)self enumerateBodiesAlongRayStart:v6 end:a3.x usingBlock:a3.y, a4.x, a4.y];
+  [(PKPhysicsWorld *)self enumerateBodiesAlongRayStart:v6 end:start.x usingBlock:start.y, end.x, end.y];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -266,21 +266,21 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_joints forKey:@"_joints"];
-  [v4 encodeObject:self->_bodies forKey:@"_bodies"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_joints forKey:@"_joints"];
+  [coderCopy encodeObject:self->_bodies forKey:@"_bodies"];
   [(PKPhysicsWorld *)self gravity];
-  [v4 encodeCGVector:@"gravity" forKey:?];
+  [coderCopy encodeCGVector:@"gravity" forKey:?];
   [(PKPhysicsWorld *)self speed];
-  [v4 encodeDouble:@"speedMultiplier" forKey:?];
+  [coderCopy encodeDouble:@"speedMultiplier" forKey:?];
 }
 
-- (PKPhysicsWorld)initWithCoder:(id)a3
+- (PKPhysicsWorld)initWithCoder:(id)coder
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = PKPhysicsWorld;
   v5 = [(PKPhysicsWorld *)&v34 init];
@@ -293,7 +293,7 @@
     v38[1] = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
     v9 = [v7 setWithArray:v8];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_bodies"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_bodies"];
 
     v32 = 0u;
     v33 = 0u;
@@ -331,7 +331,7 @@
     v36[1] = objc_opt_class();
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_joints"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_joints"];
 
     v28 = 0u;
     v29 = 0u;
@@ -364,9 +364,9 @@
       while (v21);
     }
 
-    [v4 decodeCGVectorForKey:@"gravity"];
+    [coderCopy decodeCGVectorForKey:@"gravity"];
     [(PKPhysicsWorld *)v6 setGravity:?];
-    [v4 decodeDoubleForKey:@"speedMultiplier"];
+    [coderCopy decodeDoubleForKey:@"speedMultiplier"];
     [(PKPhysicsWorld *)v6 setSpeed:?];
   }
 
@@ -399,13 +399,13 @@
   return v3;
 }
 
-- (void)setGravity:(CGVector)a3
+- (void)setGravity:(CGVector)gravity
 {
-  *&a3.dx = a3.dx;
-  dy = a3.dy;
-  self->_gravity.x = *&a3.dx;
+  *&gravity.dx = gravity.dx;
+  dy = gravity.dy;
+  self->_gravity.x = *&gravity.dx;
   self->_gravity.y = dy;
-  b2World::SetGravity(self->_world, &self->_gravity, a3);
+  b2World::SetGravity(self->_world, &self->_gravity, gravity);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __29__PKPhysicsWorld_setGravity___block_invoke;
@@ -494,24 +494,24 @@ b2Body *__29__PKPhysicsWorld_setGravity___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)addBody:(id)a3
+- (void)addBody:(id)body
 {
-  v4 = a3;
-  if ([v4 _inUse])
+  bodyCopy = body;
+  if ([bodyCopy _inUse])
   {
-    [MEMORY[0x277CBEAD8] raise:@"Cant add body format:{already exists in a world", @"Cant add body %@, already exists in a world", v4}];
+    [MEMORY[0x277CBEAD8] raise:@"Cant add body format:{already exists in a world", @"Cant add body %@, already exists in a world", bodyCopy}];
   }
 
   else
   {
-    [v4 set_inUse:1];
-    [v4 set_world:self];
+    [bodyCopy set_inUse:1];
+    [bodyCopy set_world:self];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __26__PKPhysicsWorld_addBody___block_invoke;
     v5[3] = &unk_279A389D0;
     v5[4] = self;
-    v6 = v4;
+    v6 = bodyCopy;
     [(PKPhysicsWorld *)self _runBlockOutsideOfTimeStep:v5];
   }
 }
@@ -535,7 +535,7 @@ void __26__PKPhysicsWorld_addBody___block_invoke(uint64_t a1)
   b2World::CreateBody([*(a1 + 32) _world], &v4);
 }
 
-- (void)removeBody:(id)a3
+- (void)removeBody:(id)body
 {
   v20 = *MEMORY[0x277D85DE8];
   v17[0] = 0;
@@ -543,13 +543,13 @@ void __26__PKPhysicsWorld_addBody___block_invoke(uint64_t a1)
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy_;
   v17[4] = __Block_byref_object_dispose_;
-  v4 = a3;
-  v18 = v4;
-  v5 = [v4 _joints];
-  v6 = [v5 copy];
+  bodyCopy = body;
+  v18 = bodyCopy;
+  _joints = [bodyCopy _joints];
+  v6 = [_joints copy];
 
-  [(NSMutableArray *)self->_bodies removeObject:v4];
-  [v4 set_inUse:0];
+  [(NSMutableArray *)self->_bodies removeObject:bodyCopy];
+  [bodyCopy set_inUse:0];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -579,8 +579,8 @@ void __26__PKPhysicsWorld_addBody___block_invoke(uint64_t a1)
     while (v8);
   }
 
-  v11 = [v4 _body];
-  if (v11)
+  _body = [bodyCopy _body];
+  if (_body)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -588,11 +588,11 @@ void __26__PKPhysicsWorld_addBody___block_invoke(uint64_t a1)
     v12[3] = &unk_279A389F8;
     v12[4] = self;
     v12[5] = v17;
-    v12[6] = v11;
+    v12[6] = _body;
     [(PKPhysicsWorld *)self _runBlockOutsideOfTimeStep:v12];
   }
 
-  [v4 clearBox2DData];
+  [bodyCopy clearBox2DData];
 
   _Block_object_dispose(v17, 8);
 }
@@ -637,8 +637,8 @@ void __29__PKPhysicsWorld_removeBody___block_invoke(uint64_t a1)
         v21[4] = __Block_byref_object_dispose_;
         v6 = v5;
         v22 = v6;
-        v7 = [v6 _joints];
-        v8 = [v7 copy];
+        _joints = [v6 _joints];
+        v8 = [_joints copy];
 
         v19 = 0u;
         v20 = 0u;
@@ -670,8 +670,8 @@ void __29__PKPhysicsWorld_removeBody___block_invoke(uint64_t a1)
         }
 
         [v6 set_inUse:0];
-        v13 = [v6 _body];
-        if (v13)
+        _body = [v6 _body];
+        if (_body)
         {
           v16[0] = MEMORY[0x277D85DD0];
           v16[1] = 3221225472;
@@ -679,7 +679,7 @@ void __29__PKPhysicsWorld_removeBody___block_invoke(uint64_t a1)
           v16[3] = &unk_279A389F8;
           v16[4] = self;
           v16[5] = v21;
-          v16[6] = v13;
+          v16[6] = _body;
           [(PKPhysicsWorld *)self _runBlockOutsideOfTimeStep:v16];
         }
 
@@ -709,12 +709,12 @@ void __33__PKPhysicsWorld_removeAllBodies__block_invoke(uint64_t a1)
   *(v4 + 40) = 0;
 }
 
-- (void)addJoint:(id)a3
+- (void)addJoint:(id)joint
 {
-  v4 = a3;
-  if ([v4 _inUse])
+  jointCopy = joint;
+  if ([jointCopy _inUse])
   {
-    [MEMORY[0x277CBEAD8] raise:@"Cant add joint format:{already exists in a world", @"Cant add joint %@, already exists in a world", v4}];
+    [MEMORY[0x277CBEAD8] raise:@"Cant add joint format:{already exists in a world", @"Cant add joint %@, already exists in a world", jointCopy}];
   }
 
   else
@@ -723,8 +723,8 @@ void __33__PKPhysicsWorld_removeAllBodies__block_invoke(uint64_t a1)
     v5[1] = 3221225472;
     v5[2] = __27__PKPhysicsWorld_addJoint___block_invoke;
     v5[3] = &unk_279A389D0;
-    v6 = v4;
-    v7 = self;
+    v6 = jointCopy;
+    selfCopy = self;
     [(PKPhysicsWorld *)self _runBlockOutsideOfTimeStep:v5];
   }
 }
@@ -736,42 +736,42 @@ void __27__PKPhysicsWorld_addJoint___block_invoke(uint64_t a1)
   b2World::CreateJoint([*(a1 + 40) _world], objc_msgSend(*(a1 + 32), "_jointDef"));
 }
 
-- (void)removeJoint:(id)a3
+- (void)removeJoint:(id)joint
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_joints removeObject:v4];
-  v5 = [v4 bodyA];
+  jointCopy = joint;
+  [(NSMutableArray *)self->_joints removeObject:jointCopy];
+  bodyA = [jointCopy bodyA];
 
-  if (v5)
+  if (bodyA)
   {
-    v6 = [v4 bodyA];
-    v7 = [v6 _joints];
-    [v7 removeObject:v4];
+    bodyA2 = [jointCopy bodyA];
+    _joints = [bodyA2 _joints];
+    [_joints removeObject:jointCopy];
   }
 
-  v8 = [v4 bodyB];
+  bodyB = [jointCopy bodyB];
 
-  if (v8)
+  if (bodyB)
   {
-    v9 = [v4 bodyB];
-    v10 = [v9 _joints];
-    [v10 removeObject:v4];
+    bodyB2 = [jointCopy bodyB];
+    _joints2 = [bodyB2 _joints];
+    [_joints2 removeObject:jointCopy];
   }
 
-  v11 = [v4 _joint];
-  if (v11)
+  _joint = [jointCopy _joint];
+  if (_joint)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __30__PKPhysicsWorld_removeJoint___block_invoke;
     v12[3] = &unk_279A38A20;
     v12[4] = self;
-    v12[5] = v11;
+    v12[5] = _joint;
     [(PKPhysicsWorld *)self _runBlockOutsideOfTimeStep:v12];
   }
 
-  [v4 set_joint:0];
-  [v4 set_inUse:0];
+  [jointCopy set_joint:0];
+  [jointCopy set_inUse:0];
 }
 
 b2Joint *__30__PKPhysicsWorld_removeJoint___block_invoke(uint64_t a1)
@@ -806,35 +806,35 @@ b2Joint *__30__PKPhysicsWorld_removeJoint___block_invoke(uint64_t a1)
         v7 = *(*(&v18 + 1) + 8 * i);
         if (([v7 _implicit] & 1) == 0)
         {
-          v8 = [v7 bodyA];
-          v9 = v8 == 0;
+          bodyA = [v7 bodyA];
+          v9 = bodyA == 0;
 
           if (!v9)
           {
-            v10 = [v7 bodyA];
-            v11 = [v10 _joints];
-            [v11 removeObject:v7];
+            bodyA2 = [v7 bodyA];
+            _joints = [bodyA2 _joints];
+            [_joints removeObject:v7];
           }
 
-          v12 = [v7 bodyB];
-          v13 = v12 == 0;
+          bodyB = [v7 bodyB];
+          v13 = bodyB == 0;
 
           if (!v13)
           {
-            v14 = [v7 bodyB];
-            v15 = [v14 _joints];
-            [v15 removeObject:v7];
+            bodyB2 = [v7 bodyB];
+            _joints2 = [bodyB2 _joints];
+            [_joints2 removeObject:v7];
           }
 
-          v16 = [v7 _joint];
-          if (v16)
+          _joint = [v7 _joint];
+          if (_joint)
           {
             v17[0] = MEMORY[0x277D85DD0];
             v17[1] = 3221225472;
             v17[2] = __33__PKPhysicsWorld_removeAllJoints__block_invoke;
             v17[3] = &unk_279A38A20;
             v17[4] = self;
-            v17[5] = v16;
+            v17[5] = _joint;
             [(PKPhysicsWorld *)self _runBlockOutsideOfTimeStep:v17];
           }
 
@@ -860,16 +860,16 @@ b2Joint *__33__PKPhysicsWorld_removeAllJoints__block_invoke(uint64_t a1)
   return b2World::DestroyJoint(v2, v3);
 }
 
-- (void)addField:(id)a3
+- (void)addField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__PKPhysicsWorld_addField___block_invoke;
   v6[3] = &unk_279A389D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = fieldCopy;
+  v5 = fieldCopy;
   [(PKPhysicsWorld *)self _runBlockOutsideOfTimeStep:v6];
 }
 
@@ -905,14 +905,14 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeField:(id)a3
+- (void)removeField:(id)field
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fieldCopy = field;
+  v5 = fieldCopy;
+  if (fieldCopy)
   {
     v6 = *(self->_world + 12894);
-    [v4 _field];
+    [fieldCopy _field];
     v9 = v7;
     v10 = v8;
     if (v8)
@@ -942,14 +942,14 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
   }
 }
 
-- (id)sampleFields:(CGRect)a3 categories:(unsigned int)a4 dataSize:(CGSize)a5
+- (id)sampleFields:(CGRect)fields categories:(unsigned int)categories dataSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v8 = fields.size.height;
+  v9 = fields.size.width;
+  y = fields.origin.y;
+  x = fields.origin.x;
   PKCAether::Evaluator::Evaluator(&v35, *(self->_world + 12894));
   v13 = vcvtd_n_u64_f64(width * height, 2uLL);
   v14 = malloc_type_malloc(v13, 0x100004052888210uLL);
@@ -972,7 +972,7 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
           v18 = y + v8 * v16 / height;
           *(&v23 + 1) = v21 * v18;
           v24.n128_u32[0] = 1.0;
-          PKCAether::Evaluator::evalForce(&v35, a4, 0.0, v23, 0, v24, 1.0, *(self->_world + 12899));
+          PKCAether::Evaluator::evalForce(&v35, categories, 0.0, v23, 0, v24, 1.0, *(self->_world + 12899));
           _S2 = _V0.S[2];
           __asm { FMLA            S1, S2, V0.S[2] }
 
@@ -1002,10 +1002,10 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
   return v33;
 }
 
-- (CGVector)sampleFields:(CGPoint)a3
+- (CGVector)sampleFields:(CGPoint)fields
 {
-  *&v3 = a3.x;
-  *&v4 = a3.y;
+  *&v3 = fields.x;
+  *&v4 = fields.y;
   [(PKPhysicsWorld *)self sampleFieldsAt:COERCE_DOUBLE(__PAIR64__(v4, v3))];
   v6 = vcvtq_f64_f32(v5);
   v7 = v6.f64[1];
@@ -1014,15 +1014,15 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
   return result;
 }
 
-- (__n128)sampleFieldsAt:(uint64_t)a1
+- (__n128)sampleFieldsAt:(uint64_t)at
 {
-  PKCAether::Evaluator::Evaluator(&v11, *(*(a1 + 8) + 103152));
+  PKCAether::Evaluator::Evaluator(&v11, *(*(at + 8) + 103152));
   v3 = PKGet_INV_PTM_RATIO();
   v4 = PKGet_INV_PTM_RATIO();
   *&v5 = v3 * *&a2;
   HIDWORD(v5) = vmuls_lane_f32(v4, *&a2, 1);
   v6.n128_u32[0] = 1.0;
-  PKCAether::Evaluator::evalForce(&v11, -1, 0.0, v5, 0, v6, 1.0, *(*(a1 + 8) + 103192));
+  PKCAether::Evaluator::evalForce(&v11, -1, 0.0, v5, 0, v6, 1.0, *(*(at + 8) + 103192));
   v10 = v7;
   if (__p)
   {
@@ -1035,10 +1035,10 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (CGVector)evalForce:(unsigned int)a3 point:(CGPoint)a4
+- (CGVector)evalForce:(unsigned int)force point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   PKCAether::Evaluator::Evaluator(&v19, *(self->_world + 12894));
   v7 = PKGet_INV_PTM_RATIO();
   v8 = PKGet_INV_PTM_RATIO();
@@ -1067,20 +1067,20 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)stepWithTime:(double)a3 velocityIterations:(unint64_t)a4 positionIterations:(unint64_t)a5
+- (BOOL)stepWithTime:(double)time velocityIterations:(unint64_t)iterations positionIterations:(unint64_t)positionIterations
 {
-  v5 = a5;
-  v6 = a4;
+  positionIterationsCopy = positionIterations;
+  iterationsCopy = iterations;
   v38 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_bodies count])
   {
-    v9 = self->_accumulatedDt + a3 * self->_speed;
+    v9 = self->_accumulatedDt + time * self->_speed;
     self->_accumulatedDt = v9;
     if (v9 >= 0.00833333377)
     {
       do
       {
-        b2World::Step(self->_world, 0.0083333, v6, v5);
+        b2World::Step(self->_world, 0.0083333, iterationsCopy, positionIterationsCopy);
         v10 = self->_accumulatedDt + -0.00833333377;
         self->_accumulatedDt = v10;
       }
@@ -1146,13 +1146,13 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
             }
 
             v23 = *(*(&v28 + 1) + 8 * j);
-            v24 = [v23 postStepBlock];
-            v25 = v24 == 0;
+            postStepBlock = [v23 postStepBlock];
+            v25 = postStepBlock == 0;
 
             if (!v25)
             {
-              v26 = [v23 postStepBlock];
-              (v26)[2](v26, v23);
+              postStepBlock2 = [v23 postStepBlock];
+              (postStepBlock2)[2](postStepBlock2, v23);
             }
 
             if ([v23 isDynamic])
@@ -1192,14 +1192,14 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
   return self;
 }
 
-- (void)debugDraw:(float)a3 matrix:(_GLSKMatrix4 *)a4 showsPhysics:(BOOL)a5 showsOutlineInterior:(BOOL)a6 showsFields:(BOOL)a7
+- (void)debugDraw:(float)draw matrix:(_GLSKMatrix4 *)matrix showsPhysics:(BOOL)physics showsOutlineInterior:(BOOL)interior showsFields:(BOOL)fields
 {
-  v7 = a5;
-  v39 = a4;
+  physicsCopy = physics;
+  matrixCopy = matrix;
   v55 = *MEMORY[0x277D85DE8];
-  PKDebugDraw::PKDebugDraw(v53, &self->drawPacket, a5, a7);
+  PKDebugDraw::PKDebugDraw(v53, &self->drawPacket, physics, fields);
   b2World::SetDebugDraw(self->_world, v53);
-  if (v7)
+  if (physicsCopy)
   {
     v51 = 0u;
     v52 = 0u;
@@ -1221,7 +1221,7 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
           }
 
           v14 = *(*(&v49 + 1) + 8 * i);
-          v15 = [v14 _body];
+          _body = [v14 _body];
           if (!v14)
           {
             goto LABEL_14;
@@ -1230,12 +1230,12 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
           [v14 outline];
           if (__p)
           {
-            v16 = a6;
+            interiorCopy = interior;
           }
 
           else
           {
-            v16 = 1;
+            interiorCopy = 1;
           }
 
           if (v45)
@@ -1243,14 +1243,14 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
             std::__shared_weak_count::__release_shared[abi:ne200100](v45);
           }
 
-          if (!v16)
+          if (!interiorCopy)
           {
-            v24 = [v14 representedObject];
+            representedObject = [v14 representedObject];
             v25 = objc_opt_respondsToSelector();
             v48 = 0;
             if (v25)
             {
-              [v24 _getWorldTransform:0 positionY:0 rotation:0 xScale:&v48 + 4 yScale:&v48];
+              [representedObject _getWorldTransform:0 positionY:0 rotation:0 xScale:&v48 + 4 yScale:&v48];
             }
 
             else
@@ -1261,7 +1261,7 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
             v47 = 0;
             if (objc_opt_respondsToSelector())
             {
-              [v24 _getBasePhysicsScale:&v47 + 4 yScale:&v47];
+              [representedObject _getBasePhysicsScale:&v47 + 4 yScale:&v47];
               *&v48 = *&v48 / *&v47;
               *(&v48 + 1) = *(&v48 + 1) / *(&v47 + 1);
             }
@@ -1293,10 +1293,10 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
               v33 = __p;
               do
               {
-                v34 = *(v15 + 40);
+                v34 = *(_body + 40);
                 v35 = vrev64_s32(v34);
                 *v34.i32 = -*v34.i32;
-                *v33++ = vadd_f32(*(v15 + 32), vmla_n_f32(vmul_n_f32(v34, *v32 * *&v31), v35, *(v32 - 1) * *(&v31 + 1)));
+                *v33++ = vadd_f32(*(_body + 32), vmla_n_f32(vmul_n_f32(v34, *v32 * *&v31), v35, *(v32 - 1) * *(&v31 + 1)));
                 v32 += 2;
                 --v30;
               }
@@ -1317,22 +1317,22 @@ void __27__PKPhysicsWorld_addField___block_invoke(uint64_t a1)
           else
           {
 LABEL_14:
-            for (j = *(v15 + 176); j; j = *(j + 16))
+            for (j = *(_body + 176); j; j = *(j + 16))
             {
-              if (b2Body::IsActive(v15))
+              if (b2Body::IsActive(_body))
               {
-                v18 = *(v15 + 20);
+                v18 = *(_body + 20);
                 if (v18 == 1)
                 {
                   world = self->_world;
                   __p = 0x3F0000003F000000;
                   LODWORD(v45) = 1063675494;
-                  b2World::DrawShape(world, j, (v15 + 32), &__p);
+                  b2World::DrawShape(world, j, (_body + 32), &__p);
                 }
 
                 else if (v18)
                 {
-                  IsAwake = b2Body::IsAwake(v15);
+                  IsAwake = b2Body::IsAwake(_body);
                   v23 = self->_world;
                   if (IsAwake)
                   {
@@ -1346,7 +1346,7 @@ LABEL_14:
                     LODWORD(v45) = 1058642330;
                   }
 
-                  b2World::DrawShape(v23, j, (v15 + 32), &__p);
+                  b2World::DrawShape(v23, j, (_body + 32), &__p);
                 }
 
                 else
@@ -1354,7 +1354,7 @@ LABEL_14:
                   v19 = self->_world;
                   __p = 0x3F6666663F000000;
                   LODWORD(v45) = 1056964608;
-                  b2World::DrawShape(v19, j, (v15 + 32), &__p);
+                  b2World::DrawShape(v19, j, (_body + 32), &__p);
                 }
               }
 
@@ -1363,7 +1363,7 @@ LABEL_14:
                 v20 = self->_world;
                 __p = 0x3F0000003F000000;
                 LODWORD(v45) = 1050253722;
-                b2World::DrawShape(v20, j, (v15 + 32), &__p);
+                b2World::DrawShape(v20, j, (_body + 32), &__p);
               }
             }
           }
@@ -1390,7 +1390,7 @@ LABEL_14:
 
     do
     {
-      *begin = vadd_f32(vadd_f32(vmul_n_f32(*v39, *begin * a3), vmul_n_f32(v39[2], *(begin + 1) * a3)), vadd_f32(vmul_f32(v39[4], 0), v39[6]));
+      *begin = vadd_f32(vadd_f32(vmul_n_f32(*matrixCopy, *begin * draw), vmul_n_f32(matrixCopy[2], *(begin + 1) * draw)), vadd_f32(vmul_f32(matrixCopy[4], 0), matrixCopy[6]));
       begin = (begin + 8);
       --v38;
     }
@@ -1399,16 +1399,16 @@ LABEL_14:
   }
 }
 
-- (BOOL)isEqualToWorld:(id)a3
+- (BOOL)isEqualToWorld:(id)world
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (self == v4)
+  worldCopy = world;
+  p_isa = &worldCopy->super.isa;
+  if (self == worldCopy)
   {
     v6 = 1;
   }
 
-  else if ((COERCE_UNSIGNED_INT(self->_speed - v4->_speed) & 0x60000000) != 0 || (COERCE_UNSIGNED_INT(self->_gravity.x - v4->_gravity.x) & 0x60000000) != 0 || (COERCE_UNSIGNED_INT(self->_gravity.y - v4->_gravity.y) & 0x60000000) != 0)
+  else if ((COERCE_UNSIGNED_INT(self->_speed - worldCopy->_speed) & 0x60000000) != 0 || (COERCE_UNSIGNED_INT(self->_gravity.x - worldCopy->_gravity.x) & 0x60000000) != 0 || (COERCE_UNSIGNED_INT(self->_gravity.y - worldCopy->_gravity.y) & 0x60000000) != 0)
   {
     v6 = 0;
   }
@@ -1455,10 +1455,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)_runBlockOutsideOfTimeStep:(id)a3
+- (void)_runBlockOutsideOfTimeStep:(id)step
 {
-  v4 = a3;
-  v7 = v4;
+  stepCopy = step;
+  v7 = stepCopy;
   if ((*(self->_world + 102936) & 2) != 0)
   {
     postStepBlocks = self->_postStepBlocks;
@@ -1468,7 +1468,7 @@ LABEL_7:
 
   else
   {
-    (*(v4 + 2))();
+    (*(stepCopy + 2))();
   }
 }
 

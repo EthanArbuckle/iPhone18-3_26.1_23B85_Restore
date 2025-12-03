@@ -1,65 +1,65 @@
 @interface STFamilyOrganizationSettings
-- (BOOL)_validateOrganization:(id)a3;
-- (BOOL)_validateUser:(id)a3;
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)_validateOrganization:(id)organization;
+- (BOOL)_validateUser:(id)user;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (NSString)description;
 - (id)computeUniqueIdentifier;
 - (id)dictionaryRepresentation;
-- (void)didChangeValueForKey:(id)a3;
-- (void)updateAppExceptionsWithDictionaryRepresentationsIfNeeded:(id)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)updateAppExceptionsWithDictionaryRepresentationsIfNeeded:(id)needed;
 @end
 
 @implementation STFamilyOrganizationSettings
 
 - (id)computeUniqueIdentifier
 {
-  v3 = [(STFamilyOrganizationSettings *)self user];
+  user = [(STFamilyOrganizationSettings *)self user];
 
-  if (v3)
+  if (user)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [objc_opt_class() serializableClassName];
-    v6 = [(STFamilyOrganizationSettings *)self user];
-    v7 = [v6 dsid];
-    v8 = [v7 stringValue];
-    v9 = [v4 stringWithFormat:@"%@:%@", v5, v8];
+    serializableClassName = [objc_opt_class() serializableClassName];
+    user2 = [(STFamilyOrganizationSettings *)self user];
+    dsid = [user2 dsid];
+    stringValue = [dsid stringValue];
+    serializableClassName2 = [v4 stringWithFormat:@"%@:%@", serializableClassName, stringValue];
   }
 
   else
   {
-    v9 = [objc_opt_class() serializableClassName];
+    serializableClassName2 = [objc_opt_class() serializableClassName];
   }
 
-  return v9;
+  return serializableClassName2;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"user"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"user"])
   {
     [(STUniquedManagedObject *)self updateUniqueIdentifier];
     goto LABEL_30;
   }
 
-  if ([v4 isEqualToString:@"passcode"])
+  if ([keyCopy isEqualToString:@"passcode"])
   {
-    v5 = [(STFamilyOrganizationSettings *)self passcode];
+    passcode = [(STFamilyOrganizationSettings *)self passcode];
 
-    if (!v5)
+    if (!passcode)
     {
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v21 = [(STFamilyOrganizationSettings *)self organization];
-      v18 = [v21 blueprints];
+      organization = [(STFamilyOrganizationSettings *)self organization];
+      blueprints = [organization blueprints];
 
-      v22 = [(STVersionVector *)v18 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      v22 = [(STVersionVector *)blueprints countByEnumeratingWithState:&v36 objects:v45 count:16];
       if (v22)
       {
         v23 = v22;
@@ -70,13 +70,13 @@
           {
             if (*v37 != v24)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(blueprints);
             }
 
             v26 = *(*(&v36 + 1) + 8 * i);
-            v27 = [v26 users];
-            v28 = [(STFamilyOrganizationSettings *)self user];
-            v29 = [v27 containsObject:v28];
+            users = [v26 users];
+            user = [(STFamilyOrganizationSettings *)self user];
+            v29 = [users containsObject:user];
 
             if (v29)
             {
@@ -84,7 +84,7 @@
             }
           }
 
-          v23 = [(STVersionVector *)v18 countByEnumeratingWithState:&v36 objects:v45 count:16];
+          v23 = [(STVersionVector *)blueprints countByEnumeratingWithState:&v36 objects:v45 count:16];
         }
 
         while (v23);
@@ -94,9 +94,9 @@
     }
   }
 
-  if (![v4 isEqualToString:@"isManaged"])
+  if (![keyCopy isEqualToString:@"isManaged"])
   {
-    if (![v4 isEqualToString:@"isDirty"] || !-[STFamilyOrganizationSettings isDirty](self, "isDirty"))
+    if (![keyCopy isEqualToString:@"isDirty"] || !-[STFamilyOrganizationSettings isDirty](self, "isDirty"))
     {
       goto LABEL_30;
     }
@@ -105,14 +105,14 @@
     [(STFamilyOrganizationSettings *)self setModificationDate:v15];
 
     v16 = [STVersionVector alloc];
-    v17 = [(STFamilyOrganizationSettings *)self versionVector];
-    v18 = [(STVersionVector *)v16 initWithDataRepresentation:v17];
+    versionVector = [(STFamilyOrganizationSettings *)self versionVector];
+    blueprints = [(STVersionVector *)v16 initWithDataRepresentation:versionVector];
 
     v19 = STGetDeviceUUID();
-    [(STVersionVector *)v18 incrementNodeWithIdentifier:v19];
+    [(STVersionVector *)blueprints incrementNodeWithIdentifier:v19];
 
-    v20 = [(STVersionVector *)v18 dataRepresentation];
-    [(STFamilyOrganizationSettings *)self setVersionVector:v20];
+    dataRepresentation = [(STVersionVector *)blueprints dataRepresentation];
+    [(STFamilyOrganizationSettings *)self setVersionVector:dataRepresentation];
 
 LABEL_29:
     goto LABEL_30;
@@ -121,15 +121,15 @@ LABEL_29:
   if (([(STFamilyOrganizationSettings *)self isManaged]& 1) == 0)
   {
     [(STFamilyOrganizationSettings *)self setPasscode:0];
-    v6 = [(STFamilyOrganizationSettings *)self managedObjectContext];
+    managedObjectContext = [(STFamilyOrganizationSettings *)self managedObjectContext];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v7 = [(STFamilyOrganizationSettings *)self user];
-    v8 = [v7 usages];
+    user2 = [(STFamilyOrganizationSettings *)self user];
+    usages = [user2 usages];
 
-    v9 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+    v9 = [usages countByEnumeratingWithState:&v32 objects:v44 count:16];
     if (v9)
     {
       v10 = v9;
@@ -140,7 +140,7 @@ LABEL_29:
         {
           if (*v33 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(usages);
           }
 
           v13 = *(*(&v32 + 1) + 8 * j);
@@ -154,10 +154,10 @@ LABEL_29:
             _os_log_impl(&dword_1B831F000, v14, OS_LOG_TYPE_DEFAULT, "%{public}s: Deleting usage (%@)", buf, 0x16u);
           }
 
-          [v6 deleteObject:v13];
+          [managedObjectContext deleteObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+        v10 = [usages countByEnumeratingWithState:&v32 objects:v44 count:16];
       }
 
       while (v10);
@@ -167,23 +167,23 @@ LABEL_29:
 LABEL_30:
   v31.receiver = self;
   v31.super_class = STFamilyOrganizationSettings;
-  [(STFamilyOrganizationSettings *)&v31 didChangeValueForKey:v4];
+  [(STFamilyOrganizationSettings *)&v31 didChangeValueForKey:keyCopy];
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
   v94 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = [STVersionVector alloc];
-  v6 = [(STFamilyOrganizationSettings *)self versionVector];
-  v7 = [(STVersionVector *)v5 initWithDataRepresentation:v6];
+  versionVector = [(STFamilyOrganizationSettings *)self versionVector];
+  v7 = [(STVersionVector *)v5 initWithDataRepresentation:versionVector];
 
-  v8 = [(STVersionVector *)v7 nodes];
-  v9 = [v8 count];
+  nodes = [(STVersionVector *)v7 nodes];
+  v9 = [nodes count];
 
-  v10 = [(STVersionVector *)v4 objectForKeyedSubscript:@"versionVector"];
+  v10 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"versionVector"];
   v11 = [[STVersionVector alloc] initWithDataRepresentation:v10];
   if (!v7)
   {
@@ -193,10 +193,10 @@ LABEL_30:
   v12 = +[STLog versionVector];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(STFamilyOrganizationSettings *)self user];
-    v14 = [v13 dsid];
+    user = [(STFamilyOrganizationSettings *)self user];
+    dsid = [user dsid];
     *buf = 138412802;
-    v89 = v14;
+    v89 = dsid;
     v90 = 2112;
     v91 = v7;
     v92 = 2112;
@@ -245,17 +245,17 @@ LABEL_7:
   }
 
   [(STVersionVector *)v7 join:v11];
-  v18 = [(STVersionVector *)v7 dataRepresentation];
-  [(STFamilyOrganizationSettings *)self setVersionVector:v18];
+  dataRepresentation = [(STVersionVector *)v7 dataRepresentation];
+  [(STFamilyOrganizationSettings *)self setVersionVector:dataRepresentation];
 
   switch(v16)
   {
     case 1:
-      v19 = +[STLog screentime];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+      modificationDate = +[STLog screentime];
+      if (os_log_type_enabled(modificationDate, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_1B831F000, v19, OS_LOG_TYPE_INFO, "Received family settings representation is out of date. Skipping update.", buf, 2u);
+        _os_log_impl(&dword_1B831F000, modificationDate, OS_LOG_TYPE_INFO, "Received family settings representation is out of date. Skipping update.", buf, 2u);
       }
 
       goto LABEL_50;
@@ -263,11 +263,11 @@ LABEL_7:
       v32 = +[STLog screentime];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
-        v33 = [(STFamilyOrganizationSettings *)self dictionaryRepresentation];
+        dictionaryRepresentation = [(STFamilyOrganizationSettings *)self dictionaryRepresentation];
         *buf = 138412546;
-        v89 = v33;
+        v89 = dictionaryRepresentation;
         v90 = 2112;
-        v91 = v4;
+        v91 = representationCopy;
         _os_log_impl(&dword_1B831F000, v32, OS_LOG_TYPE_INFO, "Family settings version clocks equal: %@ \n %@", buf, 0x16u);
       }
 
@@ -298,35 +298,35 @@ LABEL_7:
         [STFamilyOrganizationSettings updateWithDictionaryRepresentation:];
       }
 
-      v19 = [(STFamilyOrganizationSettings *)self modificationDate];
-      v23 = [(STVersionVector *)v4 objectForKeyedSubscript:@"modificationDate"];
+      modificationDate = [(STFamilyOrganizationSettings *)self modificationDate];
+      v23 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"modificationDate"];
       v24 = +[STLog screentime];
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-      if (v19 && v23)
+      if (modificationDate && v23)
       {
         if (v25)
         {
           *buf = 138412546;
-          v89 = v19;
+          v89 = modificationDate;
           v90 = 2112;
           v91 = v23;
           _os_log_impl(&dword_1B831F000, v24, OS_LOG_TYPE_DEFAULT, "Local modification date = %@, Incoming modification date = %@", buf, 0x16u);
         }
 
-        v26 = v19;
-        v27 = [v19 compare:v23];
+        v26 = modificationDate;
+        v27 = [modificationDate compare:v23];
         v24 = +[STLog screentime];
         v28 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
         if (v27 != -1)
         {
           if (!v28)
           {
-            v19 = v26;
+            modificationDate = v26;
             goto LABEL_49;
           }
 
           *buf = 138412546;
-          v19 = v26;
+          modificationDate = v26;
           v89 = v26;
           v90 = 2112;
           v91 = v23;
@@ -338,12 +338,12 @@ LABEL_7:
 
         if (!v28)
         {
-          v19 = v26;
+          modificationDate = v26;
           goto LABEL_52;
         }
 
         *buf = 138412546;
-        v19 = v26;
+        modificationDate = v26;
         v89 = v26;
         v90 = 2112;
         v91 = v23;
@@ -354,7 +354,7 @@ LABEL_7:
 
       else
       {
-        if (v19)
+        if (modificationDate)
         {
           if (!v25)
           {
@@ -396,12 +396,12 @@ LABEL_52:
 LABEL_53:
   v87.receiver = self;
   v87.super_class = STFamilyOrganizationSettings;
-  if ([(STCoreOrganizationSettings *)&v87 updateWithDictionaryRepresentation:v4])
+  if ([(STCoreOrganizationSettings *)&v87 updateWithDictionaryRepresentation:representationCopy])
   {
-    v38 = [(STFamilyOrganizationSettings *)self managedObjectContext];
+    managedObjectContext = [(STFamilyOrganizationSettings *)self managedObjectContext];
     v86 = 0;
-    v39 = [STFamilyOrganization fetchOrCreateFamilyOrganizationWithContext:v38 error:&v86];
-    v19 = v86;
+    v39 = [STFamilyOrganization fetchOrCreateFamilyOrganizationWithContext:managedObjectContext error:&v86];
+    modificationDate = v86;
 
     v34 = v39 != 0;
     if (!v39)
@@ -415,16 +415,16 @@ LABEL_53:
       goto LABEL_95;
     }
 
-    v83 = v19;
+    v83 = modificationDate;
     [(STFamilyOrganizationSettings *)self setOrganization:v39];
-    v76 = [(STFamilyOrganizationSettings *)self isManaged];
-    v40 = [(STVersionVector *)v4 objectForKeyedSubscript:@"isManaged"];
+    isManaged = [(STFamilyOrganizationSettings *)self isManaged];
+    v40 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"isManaged"];
     -[STFamilyOrganizationSettings setIsManaged:](self, "setIsManaged:", [v40 BOOLValue]);
 
-    v41 = [(STVersionVector *)v4 objectForKeyedSubscript:@"passcode"];
+    v41 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"passcode"];
     [(STFamilyOrganizationSettings *)self setPasscode:v41];
 
-    v42 = [(STVersionVector *)v4 objectForKeyedSubscript:@"allLimitsEnabled"];
+    v42 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"allLimitsEnabled"];
     v43 = v42;
     if (v42)
     {
@@ -432,21 +432,21 @@ LABEL_53:
     }
 
     v81 = v43;
-    v44 = [(STVersionVector *)v4 objectForKeyedSubscript:@"defaultUserPolicies"];
+    v44 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"defaultUserPolicies"];
     v45 = v44;
     if (v44)
     {
       -[STFamilyOrganizationSettings setDefaultUserPolicies:](self, "setDefaultUserPolicies:", [v44 longLongValue]);
     }
 
-    v46 = [(STVersionVector *)v4 objectForKeyedSubscript:@"communicationPolicy"];
+    v46 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"communicationPolicy"];
     v47 = v46;
     if (v46)
     {
       -[STFamilyOrganizationSettings setCommunicationPolicy:](self, "setCommunicationPolicy:", [v46 longLongValue]);
     }
 
-    v48 = [(STVersionVector *)v4 objectForKeyedSubscript:@"communicationWhileLimitedPolicy"];
+    v48 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"communicationWhileLimitedPolicy"];
     v49 = v48;
     if (v48)
     {
@@ -454,30 +454,30 @@ LABEL_53:
     }
 
     v78 = v49;
-    v50 = [(STVersionVector *)v4 objectForKeyedSubscript:@"contactManagementState"];
+    v50 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"contactManagementState"];
     v51 = v50;
     v79 = v47;
     if (v50)
     {
-      v52 = [v50 longLongValue];
-      if (v52 != [(STFamilyOrganizationSettings *)self contactManagementState])
+      longLongValue = [v50 longLongValue];
+      if (longLongValue != [(STFamilyOrganizationSettings *)self contactManagementState])
       {
         -[STFamilyOrganizationSettings setContactManagementState:](self, "setContactManagementState:", [v51 longLongValue]);
       }
     }
 
-    v53 = [(STVersionVector *)v4 objectForKeyedSubscript:@"contentPrivacySiriImageGenerationRestriction"];
+    v53 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"contentPrivacySiriImageGenerationRestriction"];
     v85 = v53;
     if (v53)
     {
-      v54 = [v53 longLongValue];
-      if (v54 != [(STCoreOrganizationSettings *)self contentPrivacySiriImageGenerationRestriction])
+      longLongValue2 = [v53 longLongValue];
+      if (longLongValue2 != [(STCoreOrganizationSettings *)self contentPrivacySiriImageGenerationRestriction])
       {
         -[STCoreOrganizationSettings setContentPrivacySiriImageGenerationRestriction:](self, "setContentPrivacySiriImageGenerationRestriction:", [v85 longLongValue]);
       }
     }
 
-    v55 = [(STVersionVector *)v4 objectForKeyedSubscript:@"isCommunicationSafetySendingRestricted"];
+    v55 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"isCommunicationSafetySendingRestricted"];
     v56 = v55;
     if (v55)
     {
@@ -485,7 +485,7 @@ LABEL_53:
     }
 
     v80 = v45;
-    v57 = [(STVersionVector *)v4 objectForKeyedSubscript:@"isCommunicationSafetyReceivingRestricted"];
+    v57 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"isCommunicationSafetyReceivingRestricted"];
     v58 = v57;
     if (v57)
     {
@@ -494,7 +494,7 @@ LABEL_53:
 
     v74 = v58;
     v82 = v39;
-    v59 = [(STVersionVector *)v4 objectForKeyedSubscript:@"isCommunicationSafetyNotificationEnabled"];
+    v59 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"isCommunicationSafetyNotificationEnabled"];
     v60 = v59;
     if (v59)
     {
@@ -502,7 +502,7 @@ LABEL_53:
     }
 
     v75 = v56;
-    v61 = [(STVersionVector *)v4 objectForKeyedSubscript:@"isCommunicationSafetyAnalyticsEnabled"];
+    v61 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"isCommunicationSafetyAnalyticsEnabled"];
     v62 = v61;
     if (v61)
     {
@@ -510,21 +510,21 @@ LABEL_53:
     }
 
     v84 = v10;
-    v63 = [(STVersionVector *)v4 objectForKeyedSubscript:@"isEyeReliefEnabled"];
+    v63 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"isEyeReliefEnabled"];
     v64 = v63;
     if (v63)
     {
       -[STCoreOrganizationSettings setIsEyeReliefEnabled:](self, "setIsEyeReliefEnabled:", [v63 BOOLValue]);
     }
 
-    v65 = [(STVersionVector *)v4 objectForKeyedSubscript:@"isAppAndWebsiteActivityEnabled"];
+    v65 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"isAppAndWebsiteActivityEnabled"];
     v66 = v65;
     if (!v65)
     {
-      v69 = [(STFamilyOrganizationSettings *)self isManaged];
-      if (v76)
+      isManaged2 = [(STFamilyOrganizationSettings *)self isManaged];
+      if (isManaged)
       {
-        if (v69)
+        if (isManaged2)
         {
           goto LABEL_81;
         }
@@ -534,7 +534,7 @@ LABEL_53:
 
       else
       {
-        if ((v69 & 1) == 0)
+        if ((isManaged2 & 1) == 0)
         {
           goto LABEL_81;
         }
@@ -548,7 +548,7 @@ LABEL_81:
     v77 = v51;
     if ([(STFamilyOrganizationSettings *)self isManaged])
     {
-      v67 = [(STVersionVector *)v4 objectForKeyedSubscript:@"appExceptions"];
+      v67 = [(STVersionVector *)representationCopy objectForKeyedSubscript:@"appExceptions"];
       if (v67)
       {
         [(STFamilyOrganizationSettings *)self updateAppExceptionsWithDictionaryRepresentationsIfNeeded:v67];
@@ -565,10 +565,10 @@ LABEL_81:
       }
     }
 
-    v70 = [(STVersionVector *)v7 dataRepresentation];
-    [(STFamilyOrganizationSettings *)self setVersionVector:v70];
+    dataRepresentation2 = [(STVersionVector *)v7 dataRepresentation];
+    [(STFamilyOrganizationSettings *)self setVersionVector:dataRepresentation2];
 
-    v19 = v83;
+    modificationDate = v83;
     v10 = v84;
     v68 = v81;
     v39 = v82;
@@ -584,22 +584,22 @@ LABEL_97:
   return v34;
 }
 
-- (void)updateAppExceptionsWithDictionaryRepresentationsIfNeeded:(id)a3
+- (void)updateAppExceptionsWithDictionaryRepresentationsIfNeeded:(id)needed
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(STFamilyOrganizationSettings *)self appExceptions];
+  appExceptions = [(STFamilyOrganizationSettings *)self appExceptions];
 
-  if (v7)
+  if (appExceptions)
   {
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v8 = [(STFamilyOrganizationSettings *)self appExceptions];
-    v9 = [v8 countByEnumeratingWithState:&v49 objects:v59 count:16];
+    appExceptions2 = [(STFamilyOrganizationSettings *)self appExceptions];
+    v9 = [appExceptions2 countByEnumeratingWithState:&v49 objects:v59 count:16];
     if (v9)
     {
       v10 = v9;
@@ -610,18 +610,18 @@ LABEL_97:
         {
           if (*v50 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(appExceptions2);
           }
 
           v13 = *(*(&v49 + 1) + 8 * i);
-          v14 = [v13 dictionaryRepresentation];
-          [v5 addObject:v14];
+          dictionaryRepresentation = [v13 dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
 
-          v15 = [v13 uniqueIdentifier];
-          [v6 setObject:v13 forKeyedSubscript:v15];
+          uniqueIdentifier = [v13 uniqueIdentifier];
+          [v6 setObject:v13 forKeyedSubscript:uniqueIdentifier];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v49 objects:v59 count:16];
+        v10 = [appExceptions2 countByEnumeratingWithState:&v49 objects:v59 count:16];
       }
 
       while (v10);
@@ -630,8 +630,8 @@ LABEL_97:
 
   v35 = v5;
   v16 = [v5 mutableCopy];
-  v36 = v4;
-  [v16 minusSet:v4];
+  v36 = neededCopy;
+  [v16 minusSet:neededCopy];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
@@ -663,8 +663,8 @@ LABEL_97:
           _os_log_impl(&dword_1B831F000, v23, OS_LOG_TYPE_DEFAULT, "%{public}s: Deleting app exception (%@)", buf, 0x16u);
         }
 
-        v24 = [(STFamilyOrganizationSettings *)self managedObjectContext];
-        [v24 deleteObject:v22];
+        managedObjectContext = [(STFamilyOrganizationSettings *)self managedObjectContext];
+        [managedObjectContext deleteObject:v22];
       }
 
       v18 = [obj countByEnumeratingWithState:&v45 objects:v58 count:16];
@@ -694,9 +694,9 @@ LABEL_97:
         }
 
         v29 = *(*(&v41 + 1) + 8 * k);
-        v30 = [(STFamilyOrganizationSettings *)self managedObjectContext];
+        managedObjectContext2 = [(STFamilyOrganizationSettings *)self managedObjectContext];
         v40 = 0;
-        v31 = [STAppException fetchOrCreateWithDictionaryRepresentation:v29 inContext:v30 error:&v40];
+        v31 = [STAppException fetchOrCreateWithDictionaryRepresentation:v29 inContext:managedObjectContext2 error:&v40];
         v32 = v40;
 
         if (v31)
@@ -735,13 +735,13 @@ LABEL_97:
   v3 = MEMORY[0x1E695DF90];
   v29.receiver = self;
   v29.super_class = STFamilyOrganizationSettings;
-  v4 = [(STCoreOrganizationSettings *)&v29 dictionaryRepresentation];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  dictionaryRepresentation = [(STCoreOrganizationSettings *)&v29 dictionaryRepresentation];
+  v5 = [v3 dictionaryWithDictionary:dictionaryRepresentation];
 
-  v6 = [objc_opt_class() serializableClassName];
-  [v5 setObject:v6 forKeyedSubscript:@"class"];
+  serializableClassName = [objc_opt_class() serializableClassName];
+  [v5 setObject:serializableClassName forKeyedSubscript:@"class"];
 
-  v7 = [(STFamilyOrganizationSettings *)self organization];
+  organization = [(STFamilyOrganizationSettings *)self organization];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   [v5 setObject:v9 forKeyedSubscript:@"organization"];
@@ -749,15 +749,15 @@ LABEL_97:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[STFamilyOrganizationSettings isManaged](self, "isManaged")}];
   [v5 setObject:v10 forKeyedSubscript:@"isManaged"];
 
-  v11 = [(STFamilyOrganizationSettings *)self versionVector];
-  [v5 setObject:v11 forKeyedSubscript:@"versionVector"];
+  versionVector = [(STFamilyOrganizationSettings *)self versionVector];
+  [v5 setObject:versionVector forKeyedSubscript:@"versionVector"];
 
-  v12 = [(STFamilyOrganizationSettings *)self isAppAndWebsiteActivityEnabled];
+  isAppAndWebsiteActivityEnabled = [(STFamilyOrganizationSettings *)self isAppAndWebsiteActivityEnabled];
 
-  if (v12)
+  if (isAppAndWebsiteActivityEnabled)
   {
-    v13 = [(STFamilyOrganizationSettings *)self isAppAndWebsiteActivityEnabled];
-    [v5 setObject:v13 forKeyedSubscript:@"isAppAndWebsiteActivityEnabled"];
+    isAppAndWebsiteActivityEnabled2 = [(STFamilyOrganizationSettings *)self isAppAndWebsiteActivityEnabled];
+    [v5 setObject:isAppAndWebsiteActivityEnabled2 forKeyedSubscript:@"isAppAndWebsiteActivityEnabled"];
   }
 
   if ([(STFamilyOrganizationSettings *)self isManaged])
@@ -767,8 +767,8 @@ LABEL_97:
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = [(STFamilyOrganizationSettings *)self appExceptions];
-    v16 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    appExceptions = [(STFamilyOrganizationSettings *)self appExceptions];
+    v16 = [appExceptions countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -779,14 +779,14 @@ LABEL_97:
         {
           if (*v26 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(appExceptions);
           }
 
-          v20 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v17 = [appExceptions countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v17);
@@ -809,16 +809,16 @@ LABEL_97:
   v11.receiver = self;
   v11.super_class = STFamilyOrganizationSettings;
   v4 = [(STCoreOrganizationSettings *)&v11 description];
-  v5 = [(STFamilyOrganizationSettings *)self isDirty];
-  v6 = [(STFamilyOrganizationSettings *)self isManaged];
-  v7 = [(STFamilyOrganizationSettings *)self shareWebUsage];
-  v8 = [(STFamilyOrganizationSettings *)self isAppAndWebsiteActivityEnabled];
-  v9 = [v3 stringWithFormat:@"%@, ({\n isDirty: %d\n isManaged: %d\n shareWebUsage: %d\n isAppAndWebsiteActivityEnabled: %@\n})", v4, v5, v6, v7, v8];
+  isDirty = [(STFamilyOrganizationSettings *)self isDirty];
+  isManaged = [(STFamilyOrganizationSettings *)self isManaged];
+  shareWebUsage = [(STFamilyOrganizationSettings *)self shareWebUsage];
+  isAppAndWebsiteActivityEnabled = [(STFamilyOrganizationSettings *)self isAppAndWebsiteActivityEnabled];
+  v9 = [v3 stringWithFormat:@"%@, ({\n isDirty: %d\n isManaged: %d\n shareWebUsage: %d\n isAppAndWebsiteActivityEnabled: %@\n})", v4, isDirty, isManaged, shareWebUsage, isAppAndWebsiteActivityEnabled];
 
   return v9;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v10.receiver = self;
   v10.super_class = STFamilyOrganizationSettings;
@@ -843,7 +843,7 @@ LABEL_97:
 
     v9.receiver = self;
     v9.super_class = STFamilyOrganizationSettings;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:update otherErrors:v5];
   }
 
   else
@@ -851,7 +851,7 @@ LABEL_97:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STFamilyOrganizationSettings validateForUpdate:a3];
+      [STFamilyOrganizationSettings validateForUpdate:update];
     }
 
     v7 = 0;
@@ -860,7 +860,7 @@ LABEL_97:
   return v7;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v10.receiver = self;
   v10.super_class = STFamilyOrganizationSettings;
@@ -885,7 +885,7 @@ LABEL_97:
 
     v9.receiver = self;
     v9.super_class = STFamilyOrganizationSettings;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:insert otherErrors:v5];
   }
 
   else
@@ -893,7 +893,7 @@ LABEL_97:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STFamilyOrganizationSettings validateForInsert:a3];
+      [STFamilyOrganizationSettings validateForInsert:insert];
     }
 
     v7 = 0;
@@ -902,49 +902,49 @@ LABEL_97:
   return v7;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v4.receiver = self;
   v4.super_class = STFamilyOrganizationSettings;
-  return [(STFamilyOrganizationSettings *)&v4 validateForDelete:a3];
+  return [(STFamilyOrganizationSettings *)&v4 validateForDelete:delete];
 }
 
-- (BOOL)_validateOrganization:(id)a3
+- (BOOL)_validateOrganization:(id)organization
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STFamilyOrganizationSettings *)self organization];
+  organizationCopy = organization;
+  organization = [(STFamilyOrganizationSettings *)self organization];
 
-  if (!v5)
+  if (!organization)
   {
     v6 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A578];
     v13[0] = @"Family settings is not related to an organization. This is not supported.";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v8 = [v6 errorWithDomain:@"STErrorDomain" code:507 userInfo:v7];
-    [v4 addObject:v8];
+    [organizationCopy addObject:v8];
   }
 
-  v9 = [v4 count] == 0;
+  v9 = [organizationCopy count] == 0;
 
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (BOOL)_validateUser:(id)a3
+- (BOOL)_validateUser:(id)user
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STFamilyOrganizationSettings *)self user];
-  v6 = [v5 familyMemberType];
+  userCopy = user;
+  user = [(STFamilyOrganizationSettings *)self user];
+  familyMemberType = [user familyMemberType];
   v7 = MEMORY[0x1E696A578];
-  if (v6)
+  if (familyMemberType)
   {
-    v8 = v6;
-    v9 = [(STFamilyOrganizationSettings *)self user];
-    v10 = [v9 familyMemberType];
+    v8 = familyMemberType;
+    user2 = [(STFamilyOrganizationSettings *)self user];
+    familyMemberType2 = [user2 familyMemberType];
 
-    if (v10 != @"Unknown")
+    if (familyMemberType2 != @"Unknown")
     {
       goto LABEL_6;
     }
@@ -959,23 +959,23 @@ LABEL_97:
   v25[0] = @"Family settings are assigned to a user that is not in a family. This is not supported.";
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v13 = [v11 errorWithDomain:@"STErrorDomain" code:536 userInfo:v12];
-  [v4 addObject:v13];
+  [userCopy addObject:v13];
 
 LABEL_6:
-  v14 = [(STFamilyOrganizationSettings *)self user];
-  v15 = [v14 isParent];
+  user3 = [(STFamilyOrganizationSettings *)self user];
+  isParent = [user3 isParent];
 
-  if (v15)
+  if (isParent)
   {
     v16 = MEMORY[0x1E696ABC0];
     v22 = *v7;
     v23 = @"Family settings are assigned to a guardian. This is not supported.";
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v18 = [v16 errorWithDomain:@"STErrorDomain" code:535 userInfo:v17];
-    [v4 addObject:v18];
+    [userCopy addObject:v18];
   }
 
-  v19 = [v4 count] == 0;
+  v19 = [userCopy count] == 0;
 
   v20 = *MEMORY[0x1E69E9840];
   return v19;

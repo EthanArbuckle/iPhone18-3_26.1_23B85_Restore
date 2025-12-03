@@ -1,50 +1,50 @@
 @interface _SFPBButtonItemAppearance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBButtonItemAppearance)initWithDictionary:(id)a3;
-- (_SFPBButtonItemAppearance)initWithFacade:(id)a3;
-- (_SFPBButtonItemAppearance)initWithJSON:(id)a3;
+- (_SFPBButtonItemAppearance)initWithDictionary:(id)dictionary;
+- (_SFPBButtonItemAppearance)initWithFacade:(id)facade;
+- (_SFPBButtonItemAppearance)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBButtonItemAppearance
 
-- (_SFPBButtonItemAppearance)initWithFacade:(id)a3
+- (_SFPBButtonItemAppearance)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBButtonItemAppearance *)self init];
   if (v5)
   {
-    if ([v4 hasStyle])
+    if ([facadeCopy hasStyle])
     {
-      -[_SFPBButtonItemAppearance setStyle:](v5, "setStyle:", [v4 style]);
+      -[_SFPBButtonItemAppearance setStyle:](v5, "setStyle:", [facadeCopy style]);
     }
 
-    if ([v4 hasRole])
+    if ([facadeCopy hasRole])
     {
-      -[_SFPBButtonItemAppearance setRole:](v5, "setRole:", [v4 role]);
+      -[_SFPBButtonItemAppearance setRole:](v5, "setRole:", [facadeCopy role]);
     }
 
-    v6 = [v4 tintColor];
+    tintColor = [facadeCopy tintColor];
 
-    if (v6)
+    if (tintColor)
     {
       v7 = [_SFPBColor alloc];
-      v8 = [v4 tintColor];
-      v9 = [(_SFPBColor *)v7 initWithFacade:v8];
+      tintColor2 = [facadeCopy tintColor];
+      v9 = [(_SFPBColor *)v7 initWithFacade:tintColor2];
       [(_SFPBButtonItemAppearance *)v5 setTintColor:v9];
     }
 
-    if ([v4 hasRenderingMode])
+    if ([facadeCopy hasRenderingMode])
     {
-      -[_SFPBButtonItemAppearance setRenderingMode:](v5, "setRenderingMode:", [v4 renderingMode]);
+      -[_SFPBButtonItemAppearance setRenderingMode:](v5, "setRenderingMode:", [facadeCopy renderingMode]);
     }
 
-    if ([v4 hasPreferNoFallbackImage])
+    if ([facadeCopy hasPreferNoFallbackImage])
     {
-      -[_SFPBButtonItemAppearance setPreferNoFallbackImage:](v5, "setPreferNoFallbackImage:", [v4 preferNoFallbackImage]);
+      -[_SFPBButtonItemAppearance setPreferNoFallbackImage:](v5, "setPreferNoFallbackImage:", [facadeCopy preferNoFallbackImage]);
     }
 
     v10 = v5;
@@ -53,29 +53,29 @@
   return v5;
 }
 
-- (_SFPBButtonItemAppearance)initWithDictionary:(id)a3
+- (_SFPBButtonItemAppearance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBButtonItemAppearance;
   v5 = [(_SFPBButtonItemAppearance *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"style"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"style"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBButtonItemAppearance setStyle:](v5, "setStyle:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"role"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"role"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBButtonItemAppearance setRole:](v5, "setRole:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"tintColor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tintColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,14 +83,14 @@
       [(_SFPBButtonItemAppearance *)v5 setTintColor:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"renderingMode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"renderingMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBButtonItemAppearance setRenderingMode:](v5, "setRenderingMode:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"preferNoFallbackImage"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"preferNoFallbackImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (_SFPBButtonItemAppearance)initWithJSON:(id)a3
+- (_SFPBButtonItemAppearance)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBButtonItemAppearance *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBButtonItemAppearance *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBButtonItemAppearance *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -139,78 +139,78 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_preferNoFallbackImage)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBButtonItemAppearance preferNoFallbackImage](self, "preferNoFallbackImage")}];
-    [v3 setObject:v4 forKeyedSubscript:@"preferNoFallbackImage"];
+    [dictionary setObject:v4 forKeyedSubscript:@"preferNoFallbackImage"];
   }
 
   if (self->_renderingMode)
   {
-    v5 = [(_SFPBButtonItemAppearance *)self renderingMode];
-    if (v5 >= 3)
+    renderingMode = [(_SFPBButtonItemAppearance *)self renderingMode];
+    if (renderingMode >= 3)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", renderingMode];
     }
 
     else
     {
-      v6 = off_1E7ACE548[v5];
+      v6 = off_1E7ACE548[renderingMode];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"renderingMode"];
+    [dictionary setObject:v6 forKeyedSubscript:@"renderingMode"];
   }
 
   if (self->_role)
   {
-    v7 = [(_SFPBButtonItemAppearance *)self role];
-    if (v7 >= 5)
+    role = [(_SFPBButtonItemAppearance *)self role];
+    if (role >= 5)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v7];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", role];
     }
 
     else
     {
-      v8 = off_1E7ACE448[v7];
+      v8 = off_1E7ACE448[role];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"role"];
+    [dictionary setObject:v8 forKeyedSubscript:@"role"];
   }
 
   if (self->_style)
   {
-    v9 = [(_SFPBButtonItemAppearance *)self style];
-    if (v9 >= 6)
+    style = [(_SFPBButtonItemAppearance *)self style];
+    if (style >= 6)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v9];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", style];
     }
 
     else
     {
-      v10 = off_1E7ACE580[v9];
+      v10 = off_1E7ACE580[style];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"style"];
+    [dictionary setObject:v10 forKeyedSubscript:@"style"];
   }
 
   if (self->_tintColor)
   {
-    v11 = [(_SFPBButtonItemAppearance *)self tintColor];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    tintColor = [(_SFPBButtonItemAppearance *)self tintColor];
+    dictionaryRepresentation = [tintColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"tintColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"tintColor"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"tintColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"tintColor"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -231,42 +231,42 @@
   return v4 ^ v3 ^ v5 ^ (2654435761 * self->_renderingMode) ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   style = self->_style;
-  if (style != [v4 style])
+  if (style != [equalCopy style])
   {
     goto LABEL_12;
   }
 
   role = self->_role;
-  if (role != [v4 role])
+  if (role != [equalCopy role])
   {
     goto LABEL_12;
   }
 
-  v7 = [(_SFPBButtonItemAppearance *)self tintColor];
-  v8 = [v4 tintColor];
-  v9 = v8;
-  if ((v7 != 0) == (v8 == 0))
+  tintColor = [(_SFPBButtonItemAppearance *)self tintColor];
+  tintColor2 = [equalCopy tintColor];
+  v9 = tintColor2;
+  if ((tintColor != 0) == (tintColor2 == 0))
   {
 
     goto LABEL_12;
   }
 
-  v10 = [(_SFPBButtonItemAppearance *)self tintColor];
-  if (v10)
+  tintColor3 = [(_SFPBButtonItemAppearance *)self tintColor];
+  if (tintColor3)
   {
-    v11 = v10;
-    v12 = [(_SFPBButtonItemAppearance *)self tintColor];
-    v13 = [v4 tintColor];
-    v14 = [v12 isEqual:v13];
+    v11 = tintColor3;
+    tintColor4 = [(_SFPBButtonItemAppearance *)self tintColor];
+    tintColor5 = [equalCopy tintColor];
+    v14 = [tintColor4 isEqual:tintColor5];
 
     if (!v14)
     {
@@ -279,7 +279,7 @@
   }
 
   renderingMode = self->_renderingMode;
-  if (renderingMode != [v4 renderingMode])
+  if (renderingMode != [equalCopy renderingMode])
   {
 LABEL_12:
     v17 = 0;
@@ -287,15 +287,15 @@ LABEL_12:
   }
 
   preferNoFallbackImage = self->_preferNoFallbackImage;
-  v17 = preferNoFallbackImage == [v4 preferNoFallbackImage];
+  v17 = preferNoFallbackImage == [equalCopy preferNoFallbackImage];
 LABEL_13:
 
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_SFPBButtonItemAppearance *)self style])
   {
     PBDataWriterWriteInt32Field();
@@ -306,8 +306,8 @@ LABEL_13:
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(_SFPBButtonItemAppearance *)self tintColor];
-  if (v4)
+  tintColor = [(_SFPBButtonItemAppearance *)self tintColor];
+  if (tintColor)
   {
     PBDataWriterWriteSubmessage();
   }

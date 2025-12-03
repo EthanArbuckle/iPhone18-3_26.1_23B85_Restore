@@ -1,27 +1,27 @@
 @interface NTKDelayedBlock
-- (NTKDelayedBlock)initWithDelay:(double)a3 runLoopMode:(id)a4 action:(id)a5;
+- (NTKDelayedBlock)initWithDelay:(double)delay runLoopMode:(id)mode action:(id)action;
 - (void)cancel;
 - (void)dealloc;
 - (void)reset;
-- (void)resetWithDelay:(double)a3;
-- (void)timerFired:(id)a3;
+- (void)resetWithDelay:(double)delay;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation NTKDelayedBlock
 
-- (NTKDelayedBlock)initWithDelay:(double)a3 runLoopMode:(id)a4 action:(id)a5
+- (NTKDelayedBlock)initWithDelay:(double)delay runLoopMode:(id)mode action:(id)action
 {
-  v8 = a4;
-  v9 = a5;
+  modeCopy = mode;
+  actionCopy = action;
   v13.receiver = self;
   v13.super_class = NTKDelayedBlock;
   v10 = [(NTKDelayedBlock *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(NTKDelayedBlock *)v10 setDelay:a3];
-    [(NTKDelayedBlock *)v11 setRunLoopMode:v8];
-    [(NTKDelayedBlock *)v11 setAction:v9];
+    [(NTKDelayedBlock *)v10 setDelay:delay];
+    [(NTKDelayedBlock *)v11 setRunLoopMode:modeCopy];
+    [(NTKDelayedBlock *)v11 setAction:actionCopy];
     [(NTKDelayedBlock *)v11 delay];
     [(NTKDelayedBlock *)v11 resetWithDelay:?];
   }
@@ -31,8 +31,8 @@
 
 - (void)dealloc
 {
-  v3 = [(NTKDelayedBlock *)self timer];
-  [v3 invalidate];
+  timer = [(NTKDelayedBlock *)self timer];
+  [timer invalidate];
 
   [(NTKDelayedBlock *)self setAction:0];
   v4.receiver = self;
@@ -47,7 +47,7 @@
   [(NTKDelayedBlock *)self resetWithDelay:?];
 }
 
-- (void)resetWithDelay:(double)a3
+- (void)resetWithDelay:(double)delay
 {
   if ([(NTKDelayedBlock *)self canceled])
   {
@@ -59,32 +59,32 @@
     }
   }
 
-  v6 = [(NTKDelayedBlock *)self action];
+  action = [(NTKDelayedBlock *)self action];
 
-  if (v6)
+  if (action)
   {
-    if (a3 >= 0.0)
+    if (delay >= 0.0)
     {
       [(NTKDelayedBlock *)self setCanceled:0];
-      [(NTKDelayedBlock *)self setDelay:a3];
-      v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-      v8 = [(NTKDelayedBlock *)self timer];
+      [(NTKDelayedBlock *)self setDelay:delay];
+      v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:delay];
+      timer = [(NTKDelayedBlock *)self timer];
 
-      if (v8)
+      if (timer)
       {
-        v9 = [(NTKDelayedBlock *)self timer];
-        [v9 setFireDate:v7];
+        timer2 = [(NTKDelayedBlock *)self timer];
+        [timer2 setFireDate:v7];
       }
 
       else
       {
-        v10 = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:v7 interval:self target:sel_timerFired_ selector:0 userInfo:0 repeats:a3];
+        v10 = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:v7 interval:self target:sel_timerFired_ selector:0 userInfo:0 repeats:delay];
         [(NTKDelayedBlock *)self setTimer:v10];
 
-        v9 = [MEMORY[0x277CBEB88] currentRunLoop];
-        v11 = [(NTKDelayedBlock *)self timer];
-        v12 = [(NTKDelayedBlock *)self runLoopMode];
-        [v9 addTimer:v11 forMode:v12];
+        timer2 = [MEMORY[0x277CBEB88] currentRunLoop];
+        timer3 = [(NTKDelayedBlock *)self timer];
+        runLoopMode = [(NTKDelayedBlock *)self runLoopMode];
+        [timer2 addTimer:timer3 forMode:runLoopMode];
       }
     }
 
@@ -95,16 +95,16 @@
   }
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   if (![(NTKDelayedBlock *)self canceled])
   {
-    v4 = [(NTKDelayedBlock *)self action];
+    action = [(NTKDelayedBlock *)self action];
 
-    if (v4)
+    if (action)
     {
-      v5 = [(NTKDelayedBlock *)self action];
-      (v5)[2](v5, self);
+      action2 = [(NTKDelayedBlock *)self action];
+      (action2)[2](action2, self);
     }
   }
 
@@ -114,8 +114,8 @@
 - (void)cancel
 {
   [(NTKDelayedBlock *)self setCanceled:1];
-  v3 = [(NTKDelayedBlock *)self timer];
-  [v3 invalidate];
+  timer = [(NTKDelayedBlock *)self timer];
+  [timer invalidate];
 
   [(NTKDelayedBlock *)self setTimer:0];
 

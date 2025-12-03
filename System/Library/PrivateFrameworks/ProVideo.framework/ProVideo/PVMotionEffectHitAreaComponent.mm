@@ -1,30 +1,30 @@
 @interface PVMotionEffectHitAreaComponent
 + (id)motionEffectPropertyKeyToPublishedParameterNameMap;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTimeToTimelineTime_noLock:(SEL)a3 forcePosterFrame:(id *)a4 documentInfo:(BOOL)a5;
-- (BOOL)hitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11;
-- (CGPath)createPathsForHitTestingAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 scale:(CGPoint)a5 adjustForMinimumSize:(BOOL)a6 minimumSize:(double)a7 sizeThreshold:(double)a8 viewSize:(CGSize)a9 viewOrigin:(int)a10 outExpandedPath:(const CGPath *)a11;
-- (id)hitAreaPointsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 scale:(CGPoint)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8;
-- (id)objectHitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTimeToTimelineTime_noLock:(SEL)lock forcePosterFrame:(id *)frame documentInfo:(BOOL)info;
+- (BOOL)hitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1;
+- (CGPath)createPathsForHitTestingAtTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)viewSize viewOrigin:(int)self0 outExpandedPath:(const CGPath *)self1;
+- (id)hitAreaPointsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow scale:(CGPoint)scale viewSize:(CGSize)size viewOrigin:(int)origin;
+- (id)objectHitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1;
 @end
 
 @implementation PVMotionEffectHitAreaComponent
 
-- (id)hitAreaPointsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 scale:(CGPoint)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8
+- (id)hitAreaPointsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow scale:(CGPoint)scale viewSize:(CGSize)size viewOrigin:(int)origin
 {
-  v8 = *&a8;
-  height = a7.height;
-  width = a7.width;
-  y = a6.y;
-  x = a6.x;
-  v13 = a5;
-  v14 = a4;
-  v17 = [(PVMotionEffectComponent *)self motionEffect];
-  [v17 outputSize];
+  v8 = *&origin;
+  height = size.height;
+  width = size.width;
+  y = scale.y;
+  x = scale.x;
+  shadowCopy = shadow;
+  frameCopy = frame;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect outputSize];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(PVMotionEffectComponent *)self motionEffect];
-  LODWORD(v17) = [v22 origin];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  LODWORD(motionEffect) = [motionEffect2 origin];
 
   v39 = 0;
   v40 = &v39;
@@ -32,13 +32,13 @@
   v42 = __Block_byref_object_copy__4;
   v43 = __Block_byref_object_dispose__4;
   v44 = 0;
-  v23 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = *"";
   v34[2] = __115__PVMotionEffectHitAreaComponent_hitAreaPointsAtTime_forcePosterFrame_includeDropShadow_scale_viewSize_viewOrigin___block_invoke;
   v34[3] = &unk_279AA5A50;
-  v38 = v14;
-  v35 = *a3;
+  v38 = frameCopy;
+  v35 = *time;
   *&v34[6] = x;
   *&v34[7] = y;
   v34[4] = self;
@@ -47,21 +47,21 @@
   v34[9] = v21;
   *&v34[10] = width;
   *&v34[11] = height;
-  v36 = v17;
+  v36 = motionEffect;
   v37 = v8;
-  [v23 runEnsuringDocumentReadyAndLockingDocument:v34];
+  [motionEffect3 runEnsuringDocumentReadyAndLockingDocument:v34];
 
   if ([v40[5] count] < 3)
   {
     memset(&v33, 0, sizeof(v33));
-    v25 = [(PVMotionEffectComponent *)self motionEffect];
-    v26 = [v25 transformComponent];
-    v27 = v26;
-    v31 = *&a3->var0;
-    var3 = a3->var3;
-    if (v26)
+    motionEffect4 = [(PVMotionEffectComponent *)self motionEffect];
+    transformComponent = [motionEffect4 transformComponent];
+    v27 = transformComponent;
+    v31 = *&time->var0;
+    var3 = time->var3;
+    if (transformComponent)
     {
-      [v26 cornersAtTime:&v31 forcePosterFrame:v14 includeDropShadow:v13 scale:v8 viewSize:x viewOrigin:{y, width, height}];
+      [transformComponent cornersAtTime:&v31 forcePosterFrame:frameCopy includeDropShadow:shadowCopy scale:v8 viewSize:x viewOrigin:{y, width, height}];
     }
 
     else
@@ -347,38 +347,38 @@ void __115__PVMotionEffectHitAreaComponent_hitAreaPointsAtTime_forcePosterFrame_
   [v28 addObject:v29];
 }
 
-- (BOOL)hitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11
+- (BOOL)hitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1
 {
-  v11 = *&a11;
-  height = a10.height;
-  width = a10.width;
-  v16 = a7;
-  y = a6.y;
-  x = a6.x;
-  v19 = a5;
-  v21 = a3.y;
-  v22 = a3.x;
-  v24 = [(PVMotionEffectComponent *)self motionEffect];
-  v25 = [v24 isVisible];
+  v11 = *&origin;
+  height = viewSize.height;
+  width = viewSize.width;
+  sizeCopy = size;
+  y = scale.y;
+  x = scale.x;
+  frameCopy = frame;
+  v21 = test.y;
+  v22 = test.x;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  isVisible = [motionEffect isVisible];
 
-  if ((v25 & 1) == 0)
+  if ((isVisible & 1) == 0)
   {
     return 0;
   }
 
-  v28 = *&a4->var0;
-  var3 = a4->var3;
+  v28 = *&time->var0;
+  var3 = time->var3;
   path = 0;
-  v26 = [(PVMotionEffectHitAreaComponent *)self createPathsForHitTestingAtTime:&v28 forcePosterFrame:v19 scale:v16 adjustForMinimumSize:v11 minimumSize:&path sizeThreshold:x viewSize:y viewOrigin:a8 outExpandedPath:a9, width, height];
+  height = [(PVMotionEffectHitAreaComponent *)self createPathsForHitTestingAtTime:&v28 forcePosterFrame:frameCopy scale:sizeCopy adjustForMinimumSize:v11 minimumSize:&path sizeThreshold:x viewSize:y viewOrigin:minimumSize outExpandedPath:threshold, width, height];
   v31.x = v22;
   v31.y = v21;
-  if (CGPathContainsPoint(v26, 0, v31, 0))
+  if (CGPathContainsPoint(height, 0, v31, 0))
   {
     return 1;
   }
 
   result = 0;
-  if (v16)
+  if (sizeCopy)
   {
     if (path)
     {
@@ -391,50 +391,50 @@ void __115__PVMotionEffectHitAreaComponent_hitAreaPointsAtTime_forcePosterFrame_
   return result;
 }
 
-- (CGPath)createPathsForHitTestingAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 scale:(CGPoint)a5 adjustForMinimumSize:(BOOL)a6 minimumSize:(double)a7 sizeThreshold:(double)a8 viewSize:(CGSize)a9 viewOrigin:(int)a10 outExpandedPath:(const CGPath *)a11
+- (CGPath)createPathsForHitTestingAtTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)viewSize viewOrigin:(int)self0 outExpandedPath:(const CGPath *)self1
 {
-  v12 = a6;
-  v22 = *a3;
-  v15 = [(PVMotionEffectHitAreaComponent *)self hitAreaPointsAtTime:&v22 forcePosterFrame:a4 includeDropShadow:0 scale:*&a10 viewSize:a5.x viewOrigin:a5.y, a9.width, a9.height];
+  sizeCopy = size;
+  v22 = *time;
+  v15 = [(PVMotionEffectHitAreaComponent *)self hitAreaPointsAtTime:&v22 forcePosterFrame:frame includeDropShadow:0 scale:*&origin viewSize:scale.x viewOrigin:scale.y, viewSize.width, viewSize.height];
   closed_CGPath_with_points = pv_create_closed_CGPath_with_points(v15);
-  if (a11)
+  if (path)
   {
-    if (!v12 || (pv_bounding_CGRect(v15), v18.f64[1] = v17, v19 = fmin(fmax(a8 / sqrt(vaddvq_f64(vmulq_f64(v18, v18))), 0.0), 1.0) * a7, v19 <= 0.0) || (expanded_closed_CGPath_with_CGPath = pv_create_expanded_closed_CGPath_with_CGPath(closed_CGPath_with_points, v19)) == 0)
+    if (!sizeCopy || (pv_bounding_CGRect(v15), v18.f64[1] = v17, v19 = fmin(fmax(threshold / sqrt(vaddvq_f64(vmulq_f64(v18, v18))), 0.0), 1.0) * minimumSize, v19 <= 0.0) || (expanded_closed_CGPath_with_CGPath = pv_create_expanded_closed_CGPath_with_CGPath(closed_CGPath_with_points, v19)) == 0)
     {
       expanded_closed_CGPath_with_CGPath = CGPathRetain(closed_CGPath_with_points);
     }
 
-    *a11 = expanded_closed_CGPath_with_CGPath;
+    *path = expanded_closed_CGPath_with_CGPath;
   }
 
   return closed_CGPath_with_points;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTimeToTimelineTime_noLock:(SEL)a3 forcePosterFrame:(id *)a4 documentInfo:(BOOL)a5
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTimeToTimelineTime_noLock:(SEL)lock forcePosterFrame:(id *)frame documentInfo:(BOOL)info
 {
-  if (a5)
+  if (info)
   {
-    v10 = 1;
+    isForceRenderAtPosterFrameEnabled = 1;
   }
 
   else
   {
-    v11 = [(PVMotionEffectComponent *)self motionEffect];
-    v12 = [v11 timelineComponent];
-    v10 = [v12 isForceRenderAtPosterFrameEnabled];
+    motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+    timelineComponent = [motionEffect timelineComponent];
+    isForceRenderAtPosterFrameEnabled = [timelineComponent isForceRenderAtPosterFrameEnabled];
   }
 
   retstr->var0 = 0;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
-  v13 = [(PVMotionEffectComponent *)self motionEffect];
-  v14 = [v13 timelineComponent];
-  v15 = v14;
-  v17 = *&a4->var0;
-  var3 = a4->var3;
-  if (v14)
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  timelineComponent2 = [motionEffect2 timelineComponent];
+  v15 = timelineComponent2;
+  v17 = *&frame->var0;
+  var3 = frame->var3;
+  if (timelineComponent2)
   {
-    [v14 timelineTimeFromComponentTime_NoLock:&v17 forcePosterFrame:v10 documentInfo:a6];
+    [timelineComponent2 timelineTimeFromComponentTime_NoLock:&v17 forcePosterFrame:isForceRenderAtPosterFrameEnabled documentInfo:a6];
   }
 
   else
@@ -447,19 +447,19 @@ void __115__PVMotionEffectHitAreaComponent_hitAreaPointsAtTime_forcePosterFrame_
   return result;
 }
 
-- (id)objectHitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11
+- (id)objectHitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1
 {
-  height = a10.height;
-  width = a10.width;
-  y = a3.y;
-  x = a3.x;
-  v19 = [(PVMotionEffectComponent *)self motionEffect:a4];
+  height = viewSize.height;
+  width = viewSize.width;
+  y = test.y;
+  x = test.x;
+  v19 = [(PVMotionEffectComponent *)self motionEffect:time];
   [v19 outputSize];
   v21 = v20;
   v23 = v22;
 
-  v24 = [(PVMotionEffectComponent *)self motionEffect];
-  LODWORD(v19) = [v24 origin];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  LODWORD(v19) = [motionEffect origin];
 
   v33 = 0;
   v34 = &v33;
@@ -467,24 +467,24 @@ void __115__PVMotionEffectHitAreaComponent_hitAreaPointsAtTime_forcePosterFrame_
   v36 = __Block_byref_object_copy__4;
   v37 = __Block_byref_object_dispose__4;
   v38 = 0;
-  v25 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = *"";
   v28[2] = __145__PVMotionEffectHitAreaComponent_objectHitTest_atTime_forcePosterFrame_scale_adjustForMinimumSize_minimumSize_sizeThreshold_viewSize_viewOrigin___block_invoke;
   v28[3] = &unk_279AA5A50;
-  v29 = *a4;
-  v32 = a5;
+  v29 = *time;
+  frameCopy = frame;
   *&v28[6] = x;
   *&v28[7] = y;
   *&v28[8] = width;
   *&v28[9] = height;
   v28[10] = v21;
   v28[11] = v23;
-  v30 = a11;
+  originCopy = origin;
   v31 = v19;
   v28[4] = self;
   v28[5] = &v33;
-  [v25 runEnsuringDocumentReadyAndLockingDocument:v28];
+  [motionEffect2 runEnsuringDocumentReadyAndLockingDocument:v28];
 
   v26 = v34[5];
   _Block_object_dispose(&v33, 8);
@@ -677,7 +677,7 @@ void __145__PVMotionEffectHitAreaComponent_objectHitTest_atTime_forcePosterFrame
 + (id)motionEffectPropertyKeyToPublishedParameterNameMap
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___PVMotionEffectHitAreaComponent;
   v2 = objc_msgSendSuper2(&v7, sel_motionEffectPropertyKeyToPublishedParameterNameMap);
   v3 = [v2 mutableCopy];

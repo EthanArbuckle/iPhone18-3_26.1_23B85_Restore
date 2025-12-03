@@ -9,7 +9,7 @@
 - (void)_startLongPressTimerWithTimeout:(double *)val;
 - (void)_startRepeatedPressTimerWithTimeout:(double *)val;
 - (void)dealloc;
-- (void)processEvent:(__IOHIDEvent *)a3;
+- (void)processEvent:(__IOHIDEvent *)event;
 - (void)reset;
 @end
 
@@ -105,7 +105,7 @@ void __63__SBHIDButtonStateArbiter__startRepeatedPressTimerWithTimeout___block_i
   [(SBHIDButtonStateArbiter *)WeakRetained _repeatedPressTimeoutDidOccur];
 }
 
-- (void)processEvent:(__IOHIDEvent *)a3
+- (void)processEvent:(__IOHIDEvent *)event
 {
   SenderID = IOHIDEventGetSenderID();
   IntegerValue = IOHIDEventGetIntegerValue();
@@ -229,36 +229,36 @@ LABEL_19:
 
 - (void)_invalidateLongPressTimer
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 24) invalidate];
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    [*(self + 24) invalidate];
+    v2 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
 - (void)_invalidateRepeatedPressTimer
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 32) invalidate];
-    v2 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    [*(self + 32) invalidate];
+    v2 = *(self + 32);
+    *(self + 32) = 0;
   }
 }
 
 - (void)_longPressTimeoutDidOccur
 {
-  if (a1 && *(a1 + 24))
+  if (self && *(self + 24))
   {
-    *(a1 + 16) = 1;
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
-    [WeakRetained performActionsForButtonLongPress:a1];
+    *(self + 16) = 1;
+    WeakRetained = objc_loadWeakRetained((self + 120));
+    [WeakRetained performActionsForButtonLongPress:self];
 
-    *(a1 + 48) = 0;
-    [*(a1 + 24) invalidate];
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    *(self + 48) = 0;
+    [*(self + 24) invalidate];
+    v3 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 

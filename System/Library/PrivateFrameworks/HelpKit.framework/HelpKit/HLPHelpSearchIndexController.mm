@@ -1,23 +1,23 @@
 @interface HLPHelpSearchIndexController
-+ (id)_stopwordsForLanguage:(id)a3;
++ (id)_stopwordsForLanguage:(id)language;
 - (NSArray)spotlightSearchResults;
 - (id)_fetchAttributesForCSSearchQuery;
-- (id)_rankingQueriesForSearchTerm:(id)a3;
-- (id)_strippedSearchTermFromSearchTerm:(id)a3;
-- (id)_tokenizeSearchTerm:(id)a3;
-- (id)getAllIdentifiersFromTree:(id)a3 withMaxDepth:(int)a4;
-- (id)hpd_dataUsingCompressionAlgorithm:(int)a3 operation:(int)a4 data:(id)a5;
-- (id)mergeDictionary:(id)a3 withDictionary:(id)a4;
-- (id)resultsWithSearchText:(id)a3 localeCode:(id)a4 searchTerms:(id *)a5;
-- (id)searchTermsForSearchText:(id)a3 localeCode:(id)a4;
-- (void)CSSearchForSearchText:(id)a3 completionHandler:(id)a4;
-- (void)_hpdResultsFromCSSearchableItems:(id)a3 rankingQueries:(id)a4;
+- (id)_rankingQueriesForSearchTerm:(id)term;
+- (id)_strippedSearchTermFromSearchTerm:(id)term;
+- (id)_tokenizeSearchTerm:(id)term;
+- (id)getAllIdentifiersFromTree:(id)tree withMaxDepth:(int)depth;
+- (id)hpd_dataUsingCompressionAlgorithm:(int)algorithm operation:(int)operation data:(id)data;
+- (id)mergeDictionary:(id)dictionary withDictionary:(id)withDictionary;
+- (id)resultsWithSearchText:(id)text localeCode:(id)code searchTerms:(id *)terms;
+- (id)searchTermsForSearchText:(id)text localeCode:(id)code;
+- (void)CSSearchForSearchText:(id)text completionHandler:(id)handler;
+- (void)_hpdResultsFromCSSearchableItems:(id)items rankingQueries:(id)queries;
 - (void)cancelSpotlightSearch;
 - (void)dealloc;
-- (void)fetchDataWithDataType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5;
-- (void)processData:(id)a3 formattedData:(id)a4;
-- (void)processFileURLWithCompletionHandler:(id)a3;
-- (void)setUseCSSearch:(BOOL)a3;
+- (void)fetchDataWithDataType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler;
+- (void)processData:(id)data formattedData:(id)formattedData;
+- (void)processFileURLWithCompletionHandler:(id)handler;
+- (void)setUseCSSearch:(BOOL)search;
 @end
 
 @implementation HLPHelpSearchIndexController
@@ -30,48 +30,48 @@
   [(HLPRemoteDataController *)&v3 dealloc];
 }
 
-- (void)setUseCSSearch:(BOOL)a3
+- (void)setUseCSSearch:(BOOL)search
 {
-  if (self->_useCSSearch != a3)
+  if (self->_useCSSearch != search)
   {
-    self->_useCSSearch = a3;
-    if (a3)
+    self->_useCSSearch = search;
+    if (search)
     {
       if (self->_privateSearchableIndex)
       {
         return;
       }
 
-      v4 = [MEMORY[0x277CC3478] defaultSearchableIndex];
+      defaultSearchableIndex = [MEMORY[0x277CC3478] defaultSearchableIndex];
       privateSearchableIndex = self->_privateSearchableIndex;
     }
 
     else
     {
-      v4 = 0;
+      defaultSearchableIndex = 0;
     }
 
-    self->_privateSearchableIndex = v4;
+    self->_privateSearchableIndex = defaultSearchableIndex;
 
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)fetchDataWithDataType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5
+- (void)fetchDataWithDataType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v10 = +[HLPCommonDefines assetRequestHeaderFields];
   [(HLPRemoteDataController *)self setHeaderFields:v10];
 
   v11.receiver = self;
   v11.super_class = HLPHelpSearchIndexController;
-  [(HLPRemoteDataController *)&v11 fetchDataWithDataType:a3 identifier:v9 completionHandler:v8];
+  [(HLPRemoteDataController *)&v11 fetchDataWithDataType:type identifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)processFileURLWithCompletionHandler:(id)a3
+- (void)processFileURLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277CBEA90];
   v6 = [(HLPRemoteDataController *)self URL];
   v7 = [v5 dataWithContentsOfURL:v6];
@@ -90,16 +90,16 @@
   }
 
   [(HLPHelpSearchIndexController *)self processData:v7 formattedData:v8];
-  v4[2](v4, v8 != 0, v9, 0);
+  handlerCopy[2](handlerCopy, v8 != 0, v9, 0);
 }
 
-- (void)processData:(id)a3 formattedData:(id)a4
+- (void)processData:(id)data formattedData:(id)formattedData
 {
-  v5 = a4;
+  formattedDataCopy = formattedData;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = formattedDataCopy;
     if ([(HLPHelpBookController *)self->_helpBookController isSemanticHTML])
     {
       [(HLPHelpSearchIndexController *)self setSearchIndex:v6];
@@ -132,8 +132,8 @@
       block[2] = __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke_3;
       block[3] = &unk_279706F30;
       objc_copyWeak(&v14, &location);
-      v12 = v5;
-      v13 = self;
+      v12 = formattedDataCopy;
+      selfCopy = self;
       dispatch_async(v7, block);
 
       objc_destroyWeak(&v14);
@@ -243,20 +243,20 @@ void __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke
   }
 }
 
-- (id)searchTermsForSearchText:(id)a3 localeCode:(id)a4
+- (id)searchTermsForSearchText:(id)text localeCode:(id)code
 {
-  v5 = a3;
+  textCopy = text;
   v6 = *MEMORY[0x277CBECE8];
-  v7 = CFLocaleCreate(*MEMORY[0x277CBECE8], a4);
+  v7 = CFLocaleCreate(*MEMORY[0x277CBECE8], code);
   if (!MEMORY[0x25309E860]())
   {
     CFRelease(v7);
     v7 = CFLocaleCopyCurrent();
   }
 
-  v18.length = [(__CFString *)v5 length];
+  v18.length = [(__CFString *)textCopy length];
   v18.location = 0;
-  v8 = CFStringTokenizerCreate(v6, v5, v18, 4uLL, v7);
+  v8 = CFStringTokenizerCreate(v6, textCopy, v18, 4uLL, v7);
   v9 = [MEMORY[0x277CBEBF8] mutableCopy];
   if (CFStringTokenizerAdvanceToNextToken(v8))
   {
@@ -264,13 +264,13 @@ void __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke
     do
     {
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v8);
-      v11 = CFStringCreateWithSubstring(v6, v5, CurrentTokenRange);
+      v11 = CFStringCreateWithSubstring(v6, textCopy, CurrentTokenRange);
       if ([(__CFString *)v11 length])
       {
         if ([(__CFString *)v11 isEqualToString:@"-"])
         {
-          v12 = [v9 lastObject];
-          v13 = [v12 stringByAppendingString:v11];
+          lastObject = [v9 lastObject];
+          v13 = [lastObject stringByAppendingString:v11];
 
           [v9 removeLastObject];
           [v9 addObject:v13];
@@ -282,8 +282,8 @@ void __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke
         {
           if (v10)
           {
-            v14 = [v9 lastObject];
-            v15 = [v14 stringByAppendingString:v11];
+            lastObject2 = [v9 lastObject];
+            v15 = [lastObject2 stringByAppendingString:v11];
 
             [v9 removeLastObject];
             [v9 addObject:v15];
@@ -310,21 +310,21 @@ void __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke
   return v9;
 }
 
-- (id)resultsWithSearchText:(id)a3 localeCode:(id)a4 searchTerms:(id *)a5
+- (id)resultsWithSearchText:(id)text localeCode:(id)code searchTerms:(id *)terms
 {
   v52[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  codeCopy = code;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__0;
   v50 = __Block_byref_object_dispose__0;
   v51 = [MEMORY[0x277CBEC10] mutableCopy];
-  if ([v8 length])
+  if ([textCopy length])
   {
     v10 = MEMORY[0x277CBEB18];
-    v11 = [(HLPHelpSearchIndexController *)self searchTermsForSearchText:v8 localeCode:v9];
+    v11 = [(HLPHelpSearchIndexController *)self searchTermsForSearchText:textCopy localeCode:codeCopy];
     v12 = [v10 arrayWithArray:v11];
 
     if ([(HLPHelpBookController *)self->_helpBookController isSemanticHTML])
@@ -348,7 +348,7 @@ void __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke
         v15 = v14;
         v44 = v15;
         [v13 enumerateObjectsUsingBlock:v43];
-        *a5 = [MEMORY[0x277CBEA60] arrayWithArray:v12];
+        *terms = [MEMORY[0x277CBEA60] arrayWithArray:v12];
         v16 = [MEMORY[0x277CBEA60] arrayWithArray:v15];
       }
 
@@ -360,15 +360,15 @@ void __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke
 
     else
     {
-      v31 = [v8 substringFromIndex:{objc_msgSend(v8, "length") - 1}];
+      v31 = [textCopy substringFromIndex:{objc_msgSend(textCopy, "length") - 1}];
       if ([v31 isEqualToString:@" "])
       {
-        v32 = 0;
+        lastObject = 0;
       }
 
       else
       {
-        v32 = [v12 lastObject];
+        lastObject = [v12 lastObject];
       }
 
       v41[0] = MEMORY[0x277D85DD0];
@@ -379,39 +379,39 @@ void __58__HLPHelpSearchIndexController_processData_formattedData___block_invoke
       v17 = v12;
       v42 = v17;
       [v17 enumerateObjectsUsingBlock:v41];
-      if (v32)
+      if (lastObject)
       {
-        v18 = [(HLPHelpSearchIndexController *)self searchIndex];
-        v19 = [v18 allKeys];
+        searchIndex = [(HLPHelpSearchIndexController *)self searchIndex];
+        allKeys = [searchIndex allKeys];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __77__HLPHelpSearchIndexController_resultsWithSearchText_localeCode_searchTerms___block_invoke_5;
         v38[3] = &unk_279706DD0;
-        v39 = v32;
+        v39 = lastObject;
         v40 = v17;
-        [v19 enumerateObjectsUsingBlock:v38];
+        [allKeys enumerateObjectsUsingBlock:v38];
       }
 
-      v20 = [(HLPHelpBookController *)self->_helpBookController copyrightTopicIdentifier];
+      copyrightTopicIdentifier = [(HLPHelpBookController *)self->_helpBookController copyrightTopicIdentifier];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __77__HLPHelpSearchIndexController_resultsWithSearchText_localeCode_searchTerms___block_invoke_6;
       v35[3] = &unk_279706FC8;
       v35[4] = self;
       v37 = &v46;
-      v21 = v20;
+      v21 = copyrightTopicIdentifier;
       v36 = v21;
       [v17 enumerateObjectsUsingBlock:v35];
       if ([v47[5] count])
       {
-        *a5 = [MEMORY[0x277CBEA60] arrayWithArray:v17];
-        v22 = [v47[5] allValues];
+        *terms = [MEMORY[0x277CBEA60] arrayWithArray:v17];
+        allValues = [v47[5] allValues];
         v23 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"matchCount" ascending:0];
         v52[0] = v23;
         v24 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"weight" ascending:0];
         v52[1] = v24;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:2];
-        v26 = [v22 sortedArrayUsingDescriptors:v25];
+        v26 = [allValues sortedArrayUsingDescriptors:v25];
 
         v27 = [MEMORY[0x277CBEBF8] mutableCopy];
         v33[0] = MEMORY[0x277D85DD0];
@@ -588,35 +588,35 @@ void __77__HLPHelpSearchIndexController_resultsWithSearchText_localeCode_searchT
   }
 }
 
-- (id)getAllIdentifiersFromTree:(id)a3 withMaxDepth:(int)a4
+- (id)getAllIdentifiersFromTree:(id)tree withMaxDepth:(int)depth
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  treeCopy = tree;
+  v7 = treeCopy;
+  if (depth)
   {
-    v8 = [v6 objectForKeyedSubscript:@"_"];
+    v8 = [treeCopy objectForKeyedSubscript:@"_"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 objectEnumerator];
-      v11 = [v10 nextObject];
-      if (v11)
+      objectEnumerator = [v8 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v12 = v11;
+        v12 = nextObject;
         v13 = 0;
-        v14 = (a4 - 1);
+        v14 = (depth - 1);
         do
         {
           v15 = [(HLPHelpSearchIndexController *)self getAllIdentifiersFromTree:v12 withMaxDepth:v14];
           v16 = [(HLPHelpSearchIndexController *)self mergeDictionary:v13 withDictionary:v15];
 
-          v17 = [v10 nextObject];
+          nextObject2 = [objectEnumerator nextObject];
 
-          v12 = v17;
+          v12 = nextObject2;
           v13 = v16;
         }
 
-        while (v17);
+        while (nextObject2);
       }
 
       else
@@ -649,33 +649,33 @@ void __77__HLPHelpSearchIndexController_resultsWithSearchText_localeCode_searchT
   return v18;
 }
 
-- (id)mergeDictionary:(id)a3 withDictionary:(id)a4
+- (id)mergeDictionary:(id)dictionary withDictionary:(id)withDictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dictionaryCopy = dictionary;
+  withDictionaryCopy = withDictionary;
+  v7 = withDictionaryCopy;
+  if (withDictionaryCopy)
   {
-    if (v5)
+    if (dictionaryCopy)
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __63__HLPHelpSearchIndexController_mergeDictionary_withDictionary___block_invoke;
       v10[3] = &unk_279707018;
-      v5 = v5;
-      v11 = v5;
+      dictionaryCopy = dictionaryCopy;
+      v11 = dictionaryCopy;
       [v7 enumerateKeysAndObjectsUsingBlock:v10];
     }
 
     else
     {
-      v5 = [v6 mutableCopy];
+      dictionaryCopy = [withDictionaryCopy mutableCopy];
     }
   }
 
-  v8 = v5;
+  v8 = dictionaryCopy;
 
-  return v5;
+  return dictionaryCopy;
 }
 
 void __63__HLPHelpSearchIndexController_mergeDictionary_withDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -701,18 +701,18 @@ void __63__HLPHelpSearchIndexController_mergeDictionary_withDictionary___block_i
   }
 }
 
-+ (id)_stopwordsForLanguage:(id)a3
++ (id)_stopwordsForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = v4;
+  languageCopy = language;
+  v5 = languageCopy;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HLPHelpSearchIndexController__stopwordsForLanguage___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_stopwordsForLanguage__pred == -1)
   {
-    if (v4)
+    if (languageCopy)
     {
       goto LABEL_3;
     }
@@ -729,10 +729,10 @@ LABEL_10:
   }
 
 LABEL_3:
-  v6 = a1;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = [_stopwordsForLanguage__stopwordsCache objectForKeyedSubscript:v5];
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   if (!v7)
   {
@@ -752,7 +752,7 @@ LABEL_3:
 
     if (v7)
     {
-      v14 = v6;
+      v14 = selfCopy;
       objc_sync_enter(v14);
       [_stopwordsForLanguage__stopwordsCache setObject:v7 forKeyedSubscript:v5];
       objc_sync_exit(v14);
@@ -780,10 +780,10 @@ uint64_t __54__HLPHelpSearchIndexController__stopwordsForLanguage___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_strippedSearchTermFromSearchTerm:(id)a3
+- (id)_strippedSearchTermFromSearchTerm:(id)term
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAAE8] dominantLanguageForString:v4];
+  termCopy = term;
+  v5 = [MEMORY[0x277CCAAE8] dominantLanguageForString:termCopy];
   v6 = v5;
   if (v5 && ([v5 isEqualToString:@"und"] & 1) == 0)
   {
@@ -795,7 +795,7 @@ uint64_t __54__HLPHelpSearchIndexController__stopwordsForLanguage___block_invoke
     v7 = 0;
   }
 
-  v8 = [(HLPHelpSearchIndexController *)self _tokenizeSearchTerm:v4];
+  v8 = [(HLPHelpSearchIndexController *)self _tokenizeSearchTerm:termCopy];
   v9 = [v8 count] - 1;
   v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
   v16 = MEMORY[0x277D85DD0];
@@ -827,9 +827,9 @@ uint64_t __66__HLPHelpSearchIndexController__strippedSearchTermFromSearchTerm___
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (id)_tokenizeSearchTerm:(id)a3
+- (id)_tokenizeSearchTerm:(id)term
 {
-  v3 = a3;
+  termCopy = term;
   if (_tokenizeSearchTerm__onceToken != -1)
   {
     [HLPHelpSearchIndexController _tokenizeSearchTerm:];
@@ -841,7 +841,7 @@ uint64_t __66__HLPHelpSearchIndexController__strippedSearchTermFromSearchTerm___
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__0;
   v27 = __Block_byref_object_dispose__0;
-  v28 = [v3 lowercaseString];
+  lowercaseString = [termCopy lowercaseString];
   v5 = _tokenizeSearchTerm__doNotSplitList;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -853,7 +853,7 @@ uint64_t __66__HLPHelpSearchIndexController__strippedSearchTermFromSearchTerm___
   [v5 enumerateObjectsUsingBlock:v20];
   v7 = objc_opt_new();
   v8 = v24[5];
-  v9 = [v3 length];
+  v9 = [termCopy length];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __52__HLPHelpSearchIndexController__tokenizeSearchTerm___block_invoke_3;
@@ -911,12 +911,12 @@ void __52__HLPHelpSearchIndexController__tokenizeSearchTerm___block_invoke_3(uin
   [*(a1 + 40) addObject:v6];
 }
 
-- (id)_rankingQueriesForSearchTerm:(id)a3
+- (id)_rankingQueriesForSearchTerm:(id)term
 {
   v28[14] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  termCopy = term;
   v23 = objc_opt_new();
-  v5 = [(HLPHelpSearchIndexController *)self _strippedSearchTermFromSearchTerm:v4];
+  v5 = [(HLPHelpSearchIndexController *)self _strippedSearchTermFromSearchTerm:termCopy];
   v6 = *MEMORY[0x277CC31A0];
   v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*cdwt", *MEMORY[0x277CC31A0], v5];
   v28[0] = v27;
@@ -937,19 +937,19 @@ void __52__HLPHelpSearchIndexController__tokenizeSearchTerm___block_invoke_3(uin
   v28[6] = v20;
   v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@cdwt", v9, v5];
   v28[7] = v19;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*cdwt", v7, v4];
-  v28[8] = v10;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*cdwt", v8, v4];
-  v28[9] = v11;
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*cdwt", v9, v4];
-  v28[10] = v12;
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@cdwt", v7, v4];
-  v28[11] = v13;
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@cdwt", v8, v4];
-  v28[12] = v14;
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@cdwt", v9, v4];
+  termCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*cdwt", v7, termCopy];
+  v28[8] = termCopy;
+  termCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*cdwt", v8, termCopy];
+  v28[9] = termCopy2;
+  termCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*cdwt", v9, termCopy];
+  v28[10] = termCopy3;
+  termCopy4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@cdwt", v7, termCopy];
+  v28[11] = termCopy4;
+  termCopy5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@cdwt", v8, termCopy];
+  v28[12] = termCopy5;
+  termCopy6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@cdwt", v9, termCopy];
 
-  v28[13] = v15;
+  v28[13] = termCopy6;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:14];
   [v23 addObjectsFromArray:v16];
 
@@ -994,20 +994,20 @@ void __64__HLPHelpSearchIndexController__fetchAttributesForCSSearchQuery__block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_hpdResultsFromCSSearchableItems:(id)a3 rankingQueries:(id)a4
+- (void)_hpdResultsFromCSSearchableItems:(id)items rankingQueries:(id)queries
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  queriesCopy = queries;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__HLPHelpSearchIndexController__hpdResultsFromCSSearchableItems_rankingQueries___block_invoke;
   v9[3] = &unk_2797070B8;
   v9[4] = self;
-  v8 = v7;
+  v8 = queriesCopy;
   v10 = v8;
   objc_copyWeak(&v11, &location);
-  [v6 enumerateObjectsUsingBlock:v9];
+  [itemsCopy enumerateObjectsUsingBlock:v9];
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(&location);
@@ -1061,9 +1061,9 @@ void __80__HLPHelpSearchIndexController__hpdResultsFromCSSearchableItems_ranking
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(HLPHelpSearchIndexController *)self helpBookController];
-        v12 = [v10 identifier];
-        v13 = [v11 helpItemForID:v12];
+        helpBookController = [(HLPHelpSearchIndexController *)self helpBookController];
+        identifier = [v10 identifier];
+        v13 = [helpBookController helpItemForID:identifier];
 
         if (v13)
         {
@@ -1118,19 +1118,19 @@ uint64_t __54__HLPHelpSearchIndexController_spotlightSearchResults__block_invoke
   }
 }
 
-- (void)CSSearchForSearchText:(id)a3 completionHandler:(id)a4
+- (void)CSSearchForSearchText:(id)text completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  handlerCopy = handler;
   [(HLPHelpSearchIndexController *)self cancelSpotlightSearch];
   if (!self->_spotlightSearchScores)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     spotlightSearchScores = self->_spotlightSearchScores;
-    self->_spotlightSearchScores = v8;
+    self->_spotlightSearchScores = array;
   }
 
-  v10 = [v6 stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
+  v10 = [textCopy stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
   v11 = [v10 stringByReplacingOccurrencesOfString:@" withString:@"\];
 
   v12 = [(HLPHelpSearchIndexController *)self _strippedSearchTermFromSearchTerm:v11];
@@ -1140,8 +1140,8 @@ uint64_t __54__HLPHelpSearchIndexController_spotlightSearchResults__block_invoke
 
   v16 = [(HLPHelpSearchIndexController *)self _rankingQueriesForSearchTerm:v11];
   v17 = objc_opt_new();
-  v18 = [(HLPHelpSearchIndexController *)self _fetchAttributesForCSSearchQuery];
-  [v17 setFetchAttributes:v18];
+  _fetchAttributesForCSSearchQuery = [(HLPHelpSearchIndexController *)self _fetchAttributesForCSSearchQuery];
+  [v17 setFetchAttributes:_fetchAttributesForCSSearchQuery];
 
   [v17 setRankingQueries:v16];
   objc_initWeak(&location, self);
@@ -1149,7 +1149,7 @@ uint64_t __54__HLPHelpSearchIndexController_spotlightSearchResults__block_invoke
   spotlightSearchQuery = self->_spotlightSearchQuery;
   self->_spotlightSearchQuery = v19;
 
-  [(CSSearchQuery *)self->_spotlightSearchQuery setCompletionHandler:v7];
+  [(CSSearchQuery *)self->_spotlightSearchQuery setCompletionHandler:handlerCopy];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __72__HLPHelpSearchIndexController_CSSearchForSearchText_completionHandler___block_invoke;
@@ -1171,10 +1171,10 @@ void __72__HLPHelpSearchIndexController_CSSearchForSearchText_completionHandler_
   [WeakRetained _hpdResultsFromCSSearchableItems:v3 rankingQueries:*(a1 + 32)];
 }
 
-- (id)hpd_dataUsingCompressionAlgorithm:(int)a3 operation:(int)a4 data:(id)a5
+- (id)hpd_dataUsingCompressionAlgorithm:(int)algorithm operation:(int)operation data:(id)data
 {
-  v7 = a5;
-  if (![v7 length] || (memset(&v16, 0, sizeof(v16)), v8 = compression_stream_init(&v16, a4, a3), v8 == COMPRESSION_STATUS_ERROR))
+  dataCopy = data;
+  if (![dataCopy length] || (memset(&v16, 0, sizeof(v16)), v8 = compression_stream_init(&v16, operation, algorithm), v8 == COMPRESSION_STATUS_ERROR))
   {
     v12 = 0;
   }
@@ -1182,9 +1182,9 @@ void __72__HLPHelpSearchIndexController_CSSearchForSearchText_completionHandler_
   else
   {
     v9 = v8;
-    v16.src_ptr = [v7 bytes];
-    v16.src_size = [v7 length];
-    v10 = a4 == 0;
+    v16.src_ptr = [dataCopy bytes];
+    v16.src_size = [dataCopy length];
+    v10 = operation == 0;
     v11 = malloc_type_malloc(0x1000uLL, 0xC8EB3F6AuLL);
     v12 = v11;
     if (v11)

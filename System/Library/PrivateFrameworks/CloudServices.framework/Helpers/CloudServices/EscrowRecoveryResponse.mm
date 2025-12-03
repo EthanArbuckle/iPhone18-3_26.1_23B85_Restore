@@ -8,8 +8,8 @@
 
 - (NSData)recoveryData
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"respBlob"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"respBlob"];
 
   if (v3)
   {
@@ -26,8 +26,8 @@
 
 - (NSDictionary)metadata
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:kEscrowServiceRecordMetadataKey];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:kEscrowServiceRecordMetadataKey];
 
   if (v3)
   {
@@ -53,8 +53,8 @@
 
 - (NSData)fmipRecoveryData
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"fmipRecoveryData"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"fmipRecoveryData"];
 
   if (v3)
   {

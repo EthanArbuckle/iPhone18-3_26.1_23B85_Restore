@@ -1,61 +1,61 @@
 @interface THThreadNetwork
-- (THThreadNetwork)initWithCoder:(id)a3;
-- (THThreadNetwork)initWithName:(id)a3 extendedPANID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (THThreadNetwork)initWithCoder:(id)coder;
+- (THThreadNetwork)initWithName:(id)name extendedPANID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation THThreadNetwork
 
-- (THThreadNetwork)initWithName:(id)a3 extendedPANID:(id)a4
+- (THThreadNetwork)initWithName:(id)name extendedPANID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length] == 8)
+  nameCopy = name;
+  dCopy = d;
+  if ([dCopy length] == 8)
   {
     v15.receiver = self;
     v15.super_class = THThreadNetwork;
     v8 = [(THThreadNetwork *)&v15 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [nameCopy copy];
       networkName = v8->_networkName;
       v8->_networkName = v9;
 
-      v11 = [v7 copy];
+      v11 = [dCopy copy];
       extendedPANID = v8->_extendedPANID;
       v8->_extendedPANID = v11;
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (THThreadNetwork)initWithCoder:(id)a3
+- (THThreadNetwork)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"xp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"xp"];
 
   v7 = [(THThreadNetwork *)self initWithName:v5 extendedPANID:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(THThreadNetwork *)self networkName];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  networkName = [(THThreadNetwork *)self networkName];
+  [coderCopy encodeObject:networkName forKey:@"name"];
 
-  v6 = [(THThreadNetwork *)self extendedPANID];
-  [v4 encodeObject:v6 forKey:@"xp"];
+  extendedPANID = [(THThreadNetwork *)self extendedPANID];
+  [coderCopy encodeObject:extendedPANID forKey:@"xp"];
 }
 
 @end

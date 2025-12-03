@@ -1,39 +1,39 @@
 @interface SCWatchlist
 + (id)zoneMergeHandler;
 + (id)zoneSchema;
-- (SCWatchlist)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaults:(id)a5;
-- (SCWatchlist)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaultsProvider:(id)a5;
-- (id)_sortedStocks:(id)a3 withSymbolOrder:(id)a4;
+- (SCWatchlist)initWithDatabase:(id)database metadataProvider:(id)provider defaults:(id)defaults;
+- (SCWatchlist)initWithDatabase:(id)database metadataProvider:(id)provider defaultsProvider:(id)defaultsProvider;
+- (id)_sortedStocks:(id)stocks withSymbolOrder:(id)order;
 - (void)_enqueueStartupSequence;
-- (void)addObserver:(id)a3;
-- (void)addStock:(id)a3 completion:(id)a4;
-- (void)database:(id)a3 didChangeZone:(id)a4 from:(id)a5 to:(id)a6;
-- (void)fetchStocksWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeStock:(id)a3 completion:(id)a4;
-- (void)removeSymbol:(id)a3 completion:(id)a4;
-- (void)reorderStock:(id)a3 toIndex:(unint64_t)a4 completion:(id)a5;
-- (void)reorderSymbol:(id)a3 afterSymbol:(id)a4 completion:(id)a5;
-- (void)replaceSymbol:(id)a3 withSymbol:(id)a4 completion:(id)a5;
+- (void)addObserver:(id)observer;
+- (void)addStock:(id)stock completion:(id)completion;
+- (void)database:(id)database didChangeZone:(id)zone from:(id)from to:(id)to;
+- (void)fetchStocksWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)removeStock:(id)stock completion:(id)completion;
+- (void)removeSymbol:(id)symbol completion:(id)completion;
+- (void)reorderStock:(id)stock toIndex:(unint64_t)index completion:(id)completion;
+- (void)reorderSymbol:(id)symbol afterSymbol:(id)afterSymbol completion:(id)completion;
+- (void)replaceSymbol:(id)symbol withSymbol:(id)withSymbol completion:(id)completion;
 - (void)synchronize;
 @end
 
 @implementation SCWatchlist
 
-- (SCWatchlist)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaultsProvider:(id)a5
+- (SCWatchlist)initWithDatabase:(id)database metadataProvider:(id)provider defaultsProvider:(id)defaultsProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  providerCopy = provider;
+  defaultsProviderCopy = defaultsProvider;
   v22.receiver = self;
   v22.super_class = SCWatchlist;
   v12 = [(SCWatchlist *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_database, a3);
-    objc_storeStrong(&v13->_metadataProvider, a4);
-    objc_storeStrong(&v13->_defaultsProvider, a5);
+    objc_storeStrong(&v12->_database, database);
+    objc_storeStrong(&v13->_metadataProvider, provider);
+    objc_storeStrong(&v13->_defaultsProvider, defaultsProvider);
     v14 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:0];
     observers = v13->_observers;
     v13->_observers = v14;
@@ -47,36 +47,36 @@
     callbackQueue = v13->_callbackQueue;
     v13->_callbackQueue = v19;
 
-    [v9 addObserver:v13 forZone:@"Watchlist"];
+    [databaseCopy addObserver:v13 forZone:@"Watchlist"];
     [(SCWatchlist *)v13 _enqueueStartupSequence];
   }
 
   return v13;
 }
 
-- (SCWatchlist)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaults:(id)a5
+- (SCWatchlist)initWithDatabase:(id)database metadataProvider:(id)provider defaults:(id)defaults
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SCWatchlistInlineDefaultsProvider alloc] initWithDefaults:v8];
+  defaultsCopy = defaults;
+  providerCopy = provider;
+  databaseCopy = database;
+  v11 = [[SCWatchlistInlineDefaultsProvider alloc] initWithDefaults:defaultsCopy];
 
-  v12 = [(SCWatchlist *)self initWithDatabase:v10 metadataProvider:v9 defaultsProvider:v11];
+  v12 = [(SCWatchlist *)self initWithDatabase:databaseCopy metadataProvider:providerCopy defaultsProvider:v11];
   return v12;
 }
 
-- (void)fetchStocksWithCompletion:(id)a3
+- (void)fetchStocksWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCWatchlist *)self startupQueue];
+  completionCopy = completion;
+  startupQueue = [(SCWatchlist *)self startupQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__SCWatchlist_fetchStocksWithCompletion___block_invoke;
   v7[3] = &unk_279D15ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 executeAfterStartup:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [startupQueue executeAfterStartup:v7];
 }
 
 void __41__SCWatchlist_fetchStocksWithCompletion___block_invoke(uint64_t a1)
@@ -202,108 +202,108 @@ void __41__SCWatchlist_fetchStocksWithCompletion___block_invoke_12(uint64_t a1, 
   }
 }
 
-- (void)addStock:(id)a3 completion:(id)a4
+- (void)addStock:(id)stock completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = [(SCWatchlist *)self callbackQueue];
+    callbackQueue = [(SCWatchlist *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__SCWatchlist_addStock_completion___block_invoke;
     block[3] = &unk_279D15FA0;
-    v8 = v5;
-    dispatch_async(v6, block);
+    v8 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)removeSymbol:(id)a3 completion:(id)a4
+- (void)removeSymbol:(id)symbol completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = [(SCWatchlist *)self callbackQueue];
+    callbackQueue = [(SCWatchlist *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__SCWatchlist_removeSymbol_completion___block_invoke;
     block[3] = &unk_279D15FA0;
-    v8 = v5;
-    dispatch_async(v6, block);
+    v8 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)reorderSymbol:(id)a3 afterSymbol:(id)a4 completion:(id)a5
+- (void)reorderSymbol:(id)symbol afterSymbol:(id)afterSymbol completion:(id)completion
 {
-  v6 = a5;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(SCWatchlist *)self callbackQueue];
+    callbackQueue = [(SCWatchlist *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__SCWatchlist_reorderSymbol_afterSymbol_completion___block_invoke;
     block[3] = &unk_279D15FA0;
-    v9 = v6;
-    dispatch_async(v7, block);
+    v9 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)replaceSymbol:(id)a3 withSymbol:(id)a4 completion:(id)a5
+- (void)replaceSymbol:(id)symbol withSymbol:(id)withSymbol completion:(id)completion
 {
-  v6 = a5;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(SCWatchlist *)self callbackQueue];
+    callbackQueue = [(SCWatchlist *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__SCWatchlist_replaceSymbol_withSymbol_completion___block_invoke;
     block[3] = &unk_279D15FA0;
-    v9 = v6;
-    dispatch_async(v7, block);
+    v9 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCWatchlist *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SCWatchlist *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCWatchlist *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SCWatchlist *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)synchronize
 {
-  v2 = [(SCWatchlist *)self database];
-  [v2 synchronize];
+  database = [(SCWatchlist *)self database];
+  [database synchronize];
 }
 
-- (void)removeStock:(id)a3 completion:(id)a4
+- (void)removeStock:(id)stock completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 symbol];
-  [(SCWatchlist *)self removeSymbol:v7 completion:v6];
+  completionCopy = completion;
+  symbol = [stock symbol];
+  [(SCWatchlist *)self removeSymbol:symbol completion:completionCopy];
 }
 
-- (void)reorderStock:(id)a3 toIndex:(unint64_t)a4 completion:(id)a5
+- (void)reorderStock:(id)stock toIndex:(unint64_t)index completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(SCWatchlist *)self startupQueue];
-  [v7 executeAfterStartup:&__block_literal_global_6];
+  completionCopy = completion;
+  startupQueue = [(SCWatchlist *)self startupQueue];
+  [startupQueue executeAfterStartup:&__block_literal_global_6];
 
-  if (v6)
+  if (completionCopy)
   {
-    v8 = [(SCWatchlist *)self callbackQueue];
+    callbackQueue = [(SCWatchlist *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SCWatchlist_reorderStock_toIndex_completion___block_invoke_2;
     block[3] = &unk_279D15FA0;
-    v10 = v6;
-    dispatch_async(v8, block);
+    v10 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -329,33 +329,33 @@ void __41__SCWatchlist_fetchStocksWithCompletion___block_invoke_12(uint64_t a1, 
   return v2;
 }
 
-- (void)database:(id)a3 didChangeZone:(id)a4 from:(id)a5 to:(id)a6
+- (void)database:(id)database didChangeZone:(id)zone from:(id)from to:(id)to
 {
-  v8 = a6;
-  v9 = [a5 recordWithName:@"watchlist"];
-  v10 = [v8 recordWithName:@"watchlist"];
+  toCopy = to;
+  v9 = [from recordWithName:@"watchlist"];
+  v10 = [toCopy recordWithName:@"watchlist"];
 
-  v11 = [v9 encryptedValuesByKey];
-  v12 = [v11 objectForKeyedSubscript:@"symbols"];
+  encryptedValuesByKey = [v9 encryptedValuesByKey];
+  v12 = [encryptedValuesByKey objectForKeyedSubscript:@"symbols"];
 
-  v13 = [v10 encryptedValuesByKey];
-  v14 = [v13 objectForKeyedSubscript:@"symbols"];
+  encryptedValuesByKey2 = [v10 encryptedValuesByKey];
+  v14 = [encryptedValuesByKey2 objectForKeyedSubscript:@"symbols"];
 
   v15 = [MEMORY[0x277CBEB58] set];
   [v15 addObjectsFromArray:v12];
   [v15 addObjectsFromArray:v14];
-  v16 = [(SCWatchlist *)self metadataProvider];
-  v17 = [v15 allObjects];
+  metadataProvider = [(SCWatchlist *)self metadataProvider];
+  allObjects = [v15 allObjects];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __46__SCWatchlist_database_didChangeZone_from_to___block_invoke;
   v20[3] = &unk_279D15FF0;
   v21 = v12;
   v22 = v14;
-  v23 = self;
+  selfCopy = self;
   v18 = v14;
   v19 = v12;
-  [v16 fetchMetadataForSymbols:v17 completion:v20];
+  [metadataProvider fetchMetadataForSymbols:allObjects completion:v20];
 }
 
 void __46__SCWatchlist_database_didChangeZone_from_to___block_invoke(uint64_t a1, void *a2)
@@ -447,17 +447,17 @@ void __46__SCWatchlist_database_didChangeZone_from_to___block_invoke(uint64_t a1
   }
 }
 
-- (id)_sortedStocks:(id)a3 withSymbolOrder:(id)a4
+- (id)_sortedStocks:(id)stocks withSymbolOrder:(id)order
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  stocksCopy = stocks;
+  orderCopy = order;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v5;
+  v8 = stocksCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
@@ -473,8 +473,8 @@ void __46__SCWatchlist_database_didChangeZone_from_to___block_invoke(uint64_t a1
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [v13 symbol];
-        [v7 setObject:v13 forKeyedSubscript:v14];
+        symbol = [v13 symbol];
+        [dictionary setObject:v13 forKeyedSubscript:symbol];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -483,12 +483,12 @@ void __46__SCWatchlist_database_didChangeZone_from_to___block_invoke(uint64_t a1
     while (v10);
   }
 
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v6;
+  v16 = orderCopy;
   v17 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v17)
   {
@@ -504,11 +504,11 @@ void __46__SCWatchlist_database_didChangeZone_from_to___block_invoke(uint64_t a1
         }
 
         v21 = *(*(&v24 + 1) + 8 * j);
-        v22 = [v7 objectForKeyedSubscript:{v21, v24}];
+        v22 = [dictionary objectForKeyedSubscript:{v21, v24}];
         if (v22)
         {
-          [v15 addObject:v22];
-          [v7 removeObjectForKey:v21];
+          [array addObject:v22];
+          [dictionary removeObjectForKey:v21];
         }
       }
 
@@ -518,7 +518,7 @@ void __46__SCWatchlist_database_didChangeZone_from_to___block_invoke(uint64_t a1
     while (v18);
   }
 
-  return v15;
+  return array;
 }
 
 - (void)_enqueueStartupSequence
@@ -527,31 +527,31 @@ void __46__SCWatchlist_database_didChangeZone_from_to___block_invoke(uint64_t a1
   v9[1] = v9;
   v9[2] = 0x2020000000;
   v10 = 1;
-  v3 = [(SCWatchlist *)self startupQueue];
+  startupQueue = [(SCWatchlist *)self startupQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__SCWatchlist__enqueueStartupSequence__block_invoke;
   v8[3] = &unk_279D16040;
   v8[4] = self;
   v8[5] = v9;
-  [v3 enqueueStartupBlock:v8];
+  [startupQueue enqueueStartupBlock:v8];
 
-  v4 = [(SCWatchlist *)self startupQueue];
+  startupQueue2 = [(SCWatchlist *)self startupQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SCWatchlist__enqueueStartupSequence__block_invoke_26;
   v7[3] = &unk_279D160B8;
   v7[4] = v9;
-  [v4 enqueueStartupBlock:v7];
+  [startupQueue2 enqueueStartupBlock:v7];
 
-  v5 = [(SCWatchlist *)self startupQueue];
+  startupQueue3 = [(SCWatchlist *)self startupQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__SCWatchlist__enqueueStartupSequence__block_invoke_41;
   v6[3] = &unk_279D16130;
   v6[4] = self;
   v6[5] = v9;
-  [v5 enqueueStartupBlock:v6];
+  [startupQueue3 enqueueStartupBlock:v6];
 
   _Block_object_dispose(v9, 8);
 }

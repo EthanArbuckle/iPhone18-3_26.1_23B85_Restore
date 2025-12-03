@@ -8,7 +8,7 @@
 - (void)revisitSuspendedState
 {
   *(swift_allocObject() + 16) = self;
-  v3 = self;
+  selfCopy = self;
   sub_219BE3494();
 }
 

@@ -1,28 +1,28 @@
 @interface CKQLPreviewControllerDataSource
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (void)setPreviewItems:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (void)setPreviewItems:(id)items;
 @end
 
 @implementation CKQLPreviewControllerDataSource
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(CKQLPreviewControllerDataSource *)self previewItems];
-  v4 = [v3 count];
+  previewItems = [(CKQLPreviewControllerDataSource *)self previewItems];
+  v4 = [previewItems count];
 
   return v4;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v6 = [(CKQLPreviewControllerDataSource *)self previewItems];
-  v7 = [v6 count];
+  previewItems = [(CKQLPreviewControllerDataSource *)self previewItems];
+  v7 = [previewItems count];
 
-  if (v7 >= a4)
+  if (v7 >= index)
   {
-    v9 = [(CKQLPreviewControllerDataSource *)self previewItems];
-    v8 = [v9 objectAtIndex:a4];
+    previewItems2 = [(CKQLPreviewControllerDataSource *)self previewItems];
+    v8 = [previewItems2 objectAtIndex:index];
   }
 
   else
@@ -33,12 +33,12 @@
   return v8;
 }
 
-- (void)setPreviewItems:(id)a3
+- (void)setPreviewItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   previewItems = self->_previewItems;
   p_previewItems = &self->_previewItems;
-  v9 = v4;
+  v9 = itemsCopy;
   if ([(NSArray *)previewItems isEqualToArray:?])
   {
     v7 = v9;

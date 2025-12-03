@@ -1,46 +1,46 @@
 @interface PPLocation
-+ (id)clusterIdentifierFromPlacemark:(id)a3;
-+ (id)describeCategory:(unsigned __int16)a3;
-+ (unsigned)categoryForDescription:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLocation:(id)a3;
++ (id)clusterIdentifierFromPlacemark:(id)placemark;
++ (id)describeCategory:(unsigned __int16)category;
++ (unsigned)categoryForDescription:(id)description;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLocation:(id)location;
 - (NSSet)featureNames;
-- (PPLocation)initWithCoder:(id)a3;
-- (PPLocation)initWithPlacemark:(id)a3 category:(unsigned __int16)a4 mostRelevantRecord:(id)a5;
+- (PPLocation)initWithCoder:(id)coder;
+- (PPLocation)initWithPlacemark:(id)placemark category:(unsigned __int16)category mostRelevantRecord:(id)record;
 - (id)customizedDescription;
 - (id)description;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPLocation
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"category_"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"category_"])
   {
     v5 = [MEMORY[0x1E695FE60] featureValueWithInt64:{-[PPLocation category](self, "category")}];
     goto LABEL_9;
   }
 
-  if ([v4 hasPrefix:@"placemark_"])
+  if ([nameCopy hasPrefix:@"placemark_"])
   {
-    v6 = [(PPLocation *)self placemark];
-    v7 = [v4 substringFromIndex:{objc_msgSend(@"placemark_", "length")}];
-    v8 = [v6 pp_featureValueForName:v7];
+    placemark = [(PPLocation *)self placemark];
+    v7 = [nameCopy substringFromIndex:{objc_msgSend(@"placemark_", "length")}];
+    v8 = [placemark pp_featureValueForName:v7];
 LABEL_7:
     v5 = v8;
 
     goto LABEL_9;
   }
 
-  if ([v4 hasPrefix:@"record_"])
+  if ([nameCopy hasPrefix:@"record_"])
   {
-    v6 = [(PPLocation *)self mostRelevantRecord];
-    v7 = [v4 substringFromIndex:{objc_msgSend(@"record_", "length")}];
-    v8 = [v6 featureValueForName:v7];
+    placemark = [(PPLocation *)self mostRelevantRecord];
+    v7 = [nameCopy substringFromIndex:{objc_msgSend(@"record_", "length")}];
+    v8 = [placemark featureValueForName:v7];
     goto LABEL_7;
   }
 
@@ -92,48 +92,48 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [(CLPlacemark *)self->_placemark name];
-  v4 = [v3 hash];
+  name = [(CLPlacemark *)self->_placemark name];
+  v4 = [name hash];
 
-  v5 = [(CLPlacemark *)self->_placemark thoroughfare];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  thoroughfare = [(CLPlacemark *)self->_placemark thoroughfare];
+  v6 = [thoroughfare hash] - v4 + 32 * v4;
 
-  v7 = [(CLPlacemark *)self->_placemark subThoroughfare];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  subThoroughfare = [(CLPlacemark *)self->_placemark subThoroughfare];
+  v8 = [subThoroughfare hash] - v6 + 32 * v6;
 
-  v9 = [(CLPlacemark *)self->_placemark locality];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  locality = [(CLPlacemark *)self->_placemark locality];
+  v10 = [locality hash] - v8 + 32 * v8;
 
-  v11 = [(CLPlacemark *)self->_placemark subLocality];
-  v12 = [v11 hash] - v10 + 32 * v10;
+  subLocality = [(CLPlacemark *)self->_placemark subLocality];
+  v12 = [subLocality hash] - v10 + 32 * v10;
 
-  v13 = [(CLPlacemark *)self->_placemark administrativeArea];
-  v14 = [v13 hash] - v12 + 32 * v12;
+  administrativeArea = [(CLPlacemark *)self->_placemark administrativeArea];
+  v14 = [administrativeArea hash] - v12 + 32 * v12;
 
-  v15 = [(CLPlacemark *)self->_placemark subAdministrativeArea];
-  v16 = [v15 hash] - v14 + 32 * v14;
+  subAdministrativeArea = [(CLPlacemark *)self->_placemark subAdministrativeArea];
+  v16 = [subAdministrativeArea hash] - v14 + 32 * v14;
 
-  v17 = [(CLPlacemark *)self->_placemark postalCode];
-  v18 = [v17 hash] - v16 + 32 * v16;
+  postalCode = [(CLPlacemark *)self->_placemark postalCode];
+  v18 = [postalCode hash] - v16 + 32 * v16;
 
-  v19 = [(CLPlacemark *)self->_placemark country];
-  v20 = [v19 hash] - v18 + 32 * v18;
+  country = [(CLPlacemark *)self->_placemark country];
+  v20 = [country hash] - v18 + 32 * v18;
 
   return self->_category - v20 + 32 * v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPLocation *)self isEqualToLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPLocation *)self isEqualToLocation:v5];
   }
 
   return v6;
@@ -145,30 +145,30 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
   v4 = &stru_1F1B327D8;
   if (placemark)
   {
-    v5 = [(CLPlacemark *)placemark postalAddress];
-    v6 = [v5 mutableCopy];
+    postalAddress = [(CLPlacemark *)placemark postalAddress];
+    v6 = [postalAddress mutableCopy];
 
-    v7 = [v6 street];
-    v8 = [v7 length];
+    street = [v6 street];
+    v8 = [street length];
 
     if (!v8)
     {
       v9 = objc_opt_new();
-      v10 = [(CLPlacemark *)self->_placemark subThoroughfare];
+      subThoroughfare = [(CLPlacemark *)self->_placemark subThoroughfare];
 
-      if (v10)
+      if (subThoroughfare)
       {
-        v11 = [(CLPlacemark *)self->_placemark subThoroughfare];
-        [v9 appendString:v11];
+        subThoroughfare2 = [(CLPlacemark *)self->_placemark subThoroughfare];
+        [v9 appendString:subThoroughfare2];
       }
 
-      v12 = [(CLPlacemark *)self->_placemark thoroughfare];
+      thoroughfare = [(CLPlacemark *)self->_placemark thoroughfare];
 
-      if (v12)
+      if (thoroughfare)
       {
         v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v14 = [(CLPlacemark *)self->_placemark thoroughfare];
-        v15 = [v13 initWithFormat:@" %@", v14];
+        thoroughfare2 = [(CLPlacemark *)self->_placemark thoroughfare];
+        v15 = [v13 initWithFormat:@" %@", thoroughfare2];
         [v9 appendString:v15];
       }
 
@@ -178,18 +178,18 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     v16 = [MEMORY[0x1E695CF68] singleLineStringFromPostalAddress:v6 addCountryName:0];
     if ([v16 length])
     {
-      v17 = v16;
+      name = v16;
     }
 
     else
     {
-      v17 = [(CLPlacemark *)self->_placemark name];
+      name = [(CLPlacemark *)self->_placemark name];
     }
 
-    v18 = v17;
-    if (v17)
+    v18 = name;
+    if (name)
     {
-      v19 = v17;
+      v19 = name;
     }
 
     else
@@ -203,32 +203,32 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)isEqualToLocation:(id)a3
+- (BOOL)isEqualToLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy == self)
   {
     v16 = 1;
     goto LABEL_52;
   }
 
-  if (!v4)
+  if (!locationCopy)
   {
     goto LABEL_51;
   }
 
-  v6 = [(CLPlacemark *)self->_placemark name];
-  v7 = [(CLPlacemark *)v5->_placemark name];
-  if (v6 | v7)
+  name = [(CLPlacemark *)self->_placemark name];
+  name2 = [(CLPlacemark *)v5->_placemark name];
+  if (name | name2)
   {
-    v17 = v7;
-    if (!v6 || !v7)
+    v17 = name2;
+    if (!name || !name2)
     {
       goto LABEL_50;
     }
 
-    v18 = [v6 isEqualToString:v7];
+    v18 = [name isEqualToString:name2];
 
     if (!v18)
     {
@@ -236,17 +236,17 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark thoroughfare];
-  v8 = [(CLPlacemark *)v5->_placemark thoroughfare];
-  if (v6 | v8)
+  name = [(CLPlacemark *)self->_placemark thoroughfare];
+  thoroughfare = [(CLPlacemark *)v5->_placemark thoroughfare];
+  if (name | thoroughfare)
   {
-    v17 = v8;
-    if (!v6 || !v8)
+    v17 = thoroughfare;
+    if (!name || !thoroughfare)
     {
       goto LABEL_50;
     }
 
-    v19 = [v6 isEqualToString:v8];
+    v19 = [name isEqualToString:thoroughfare];
 
     if (!v19)
     {
@@ -254,17 +254,17 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark subThoroughfare];
-  v9 = [(CLPlacemark *)v5->_placemark subThoroughfare];
-  if (v6 | v9)
+  name = [(CLPlacemark *)self->_placemark subThoroughfare];
+  subThoroughfare = [(CLPlacemark *)v5->_placemark subThoroughfare];
+  if (name | subThoroughfare)
   {
-    v17 = v9;
-    if (!v6 || !v9)
+    v17 = subThoroughfare;
+    if (!name || !subThoroughfare)
     {
       goto LABEL_50;
     }
 
-    v20 = [v6 isEqualToString:v9];
+    v20 = [name isEqualToString:subThoroughfare];
 
     if (!v20)
     {
@@ -272,17 +272,17 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark locality];
-  v10 = [(CLPlacemark *)v5->_placemark locality];
-  if (v6 | v10)
+  name = [(CLPlacemark *)self->_placemark locality];
+  locality = [(CLPlacemark *)v5->_placemark locality];
+  if (name | locality)
   {
-    v17 = v10;
-    if (!v6 || !v10)
+    v17 = locality;
+    if (!name || !locality)
     {
       goto LABEL_50;
     }
 
-    v21 = [v6 isEqualToString:v10];
+    v21 = [name isEqualToString:locality];
 
     if (!v21)
     {
@@ -290,17 +290,17 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark subLocality];
-  v11 = [(CLPlacemark *)v5->_placemark subLocality];
-  if (v6 | v11)
+  name = [(CLPlacemark *)self->_placemark subLocality];
+  subLocality = [(CLPlacemark *)v5->_placemark subLocality];
+  if (name | subLocality)
   {
-    v17 = v11;
-    if (!v6 || !v11)
+    v17 = subLocality;
+    if (!name || !subLocality)
     {
       goto LABEL_50;
     }
 
-    v22 = [v6 isEqualToString:v11];
+    v22 = [name isEqualToString:subLocality];
 
     if (!v22)
     {
@@ -308,17 +308,17 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark administrativeArea];
-  v12 = [(CLPlacemark *)v5->_placemark administrativeArea];
-  if (v6 | v12)
+  name = [(CLPlacemark *)self->_placemark administrativeArea];
+  administrativeArea = [(CLPlacemark *)v5->_placemark administrativeArea];
+  if (name | administrativeArea)
   {
-    v17 = v12;
-    if (!v6 || !v12)
+    v17 = administrativeArea;
+    if (!name || !administrativeArea)
     {
       goto LABEL_50;
     }
 
-    v23 = [v6 isEqualToString:v12];
+    v23 = [name isEqualToString:administrativeArea];
 
     if (!v23)
     {
@@ -326,17 +326,17 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark subAdministrativeArea];
-  v13 = [(CLPlacemark *)v5->_placemark subAdministrativeArea];
-  if (v6 | v13)
+  name = [(CLPlacemark *)self->_placemark subAdministrativeArea];
+  subAdministrativeArea = [(CLPlacemark *)v5->_placemark subAdministrativeArea];
+  if (name | subAdministrativeArea)
   {
-    v17 = v13;
-    if (!v6 || !v13)
+    v17 = subAdministrativeArea;
+    if (!name || !subAdministrativeArea)
     {
       goto LABEL_50;
     }
 
-    v24 = [v6 isEqualToString:v13];
+    v24 = [name isEqualToString:subAdministrativeArea];
 
     if (!v24)
     {
@@ -344,17 +344,17 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark postalCode];
-  v14 = [(CLPlacemark *)v5->_placemark postalCode];
-  if (v6 | v14)
+  name = [(CLPlacemark *)self->_placemark postalCode];
+  postalCode = [(CLPlacemark *)v5->_placemark postalCode];
+  if (name | postalCode)
   {
-    v17 = v14;
-    if (!v6 || !v14)
+    v17 = postalCode;
+    if (!name || !postalCode)
     {
       goto LABEL_50;
     }
 
-    v25 = [v6 isEqualToString:v14];
+    v25 = [name isEqualToString:postalCode];
 
     if (!v25)
     {
@@ -362,14 +362,14 @@ void __26__PPLocation_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(CLPlacemark *)self->_placemark country];
-  v15 = [(CLPlacemark *)v5->_placemark country];
-  if (v6 | v15)
+  name = [(CLPlacemark *)self->_placemark country];
+  country = [(CLPlacemark *)v5->_placemark country];
+  if (name | country)
   {
-    v17 = v15;
-    if (v6 && v15)
+    v17 = country;
+    if (name && country)
     {
-      v26 = [v6 isEqualToString:v15];
+      v26 = [name isEqualToString:country];
 
       if (v26)
       {
@@ -403,44 +403,44 @@ LABEL_52:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   placemark = self->_placemark;
-  v5 = a3;
-  [v5 encodeObject:placemark forKey:@"pmk"];
-  [v5 encodeInt32:self->_category forKey:@"cat"];
-  [v5 encodeObject:self->_mostRelevantRecord forKey:@"mrr"];
+  coderCopy = coder;
+  [coderCopy encodeObject:placemark forKey:@"pmk"];
+  [coderCopy encodeInt32:self->_category forKey:@"cat"];
+  [coderCopy encodeObject:self->_mostRelevantRecord forKey:@"mrr"];
 }
 
-- (PPLocation)initWithCoder:(id)a3
+- (PPLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pmk"];
-  v6 = [v4 decodeInt32ForKey:@"cat"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mrr"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pmk"];
+  v6 = [coderCopy decodeInt32ForKey:@"cat"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mrr"];
 
   if (v5)
   {
     self = [(PPLocation *)self initWithPlacemark:v5 category:v6 mostRelevantRecord:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PPLocation)initWithPlacemark:(id)a3 category:(unsigned __int16)a4 mostRelevantRecord:(id)a5
+- (PPLocation)initWithPlacemark:(id)placemark category:(unsigned __int16)category mostRelevantRecord:(id)record
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  placemarkCopy = placemark;
+  recordCopy = record;
+  if (!placemarkCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PPLocation.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"placemark"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPLocation.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"placemark"}];
   }
 
   v18.receiver = self;
@@ -449,10 +449,10 @@ LABEL_52:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_placemark, a3);
-    v13->_category = a4;
-    objc_storeStrong(&v13->_mostRelevantRecord, a5);
-    v14 = [PPLocation clusterIdentifierFromPlacemark:v10];
+    objc_storeStrong(&v12->_placemark, placemark);
+    v13->_category = category;
+    objc_storeStrong(&v13->_mostRelevantRecord, record);
+    v14 = [PPLocation clusterIdentifierFromPlacemark:placemarkCopy];
     clusterIdentifier = v13->_clusterIdentifier;
     v13->_clusterIdentifier = v14;
   }
@@ -460,143 +460,143 @@ LABEL_52:
   return v13;
 }
 
-+ (id)clusterIdentifierFromPlacemark:(id)a3
++ (id)clusterIdentifierFromPlacemark:(id)placemark
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  placemarkCopy = placemark;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 name];
-  v6 = [v5 length];
+  name = [placemarkCopy name];
+  v6 = [name length];
 
-  v7 = [v3 subThoroughfare];
-  v8 = v7;
+  subThoroughfare = [placemarkCopy subThoroughfare];
+  name2 = subThoroughfare;
   if (v6)
   {
-    if (v7)
+    if (subThoroughfare)
     {
-      v9 = [v3 thoroughfare];
+      thoroughfare = [placemarkCopy thoroughfare];
 
-      if (v9)
+      if (thoroughfare)
       {
-        v8 = [v3 name];
-        v28[0] = v8;
-        v10 = [v3 subThoroughfare];
-        v28[1] = v10;
-        v11 = [v3 thoroughfare];
-        v28[2] = v11;
+        name2 = [placemarkCopy name];
+        v28[0] = name2;
+        subThoroughfare2 = [placemarkCopy subThoroughfare];
+        v28[1] = subThoroughfare2;
+        thoroughfare2 = [placemarkCopy thoroughfare];
+        v28[2] = thoroughfare2;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
         v13 = [v12 _pas_componentsJoinedByString:@" "];
 
 LABEL_11:
-        v8 = v13;
+        name2 = v13;
         goto LABEL_12;
       }
     }
 
-    v14 = [v3 thoroughfare];
+    thoroughfare3 = [placemarkCopy thoroughfare];
 
-    v15 = [v3 name];
-    v8 = v15;
-    if (!v14)
+    name3 = [placemarkCopy name];
+    name2 = name3;
+    if (!thoroughfare3)
     {
       goto LABEL_12;
     }
 
-    v27[0] = v15;
-    v10 = [v3 thoroughfare];
-    v27[1] = v10;
+    v27[0] = name3;
+    subThoroughfare2 = [placemarkCopy thoroughfare];
+    v27[1] = subThoroughfare2;
     v16 = MEMORY[0x1E695DEC8];
     v17 = v27;
 LABEL_10:
-    v11 = [v16 arrayWithObjects:v17 count:2];
-    v13 = [v11 _pas_componentsJoinedByString:@" "];
+    thoroughfare2 = [v16 arrayWithObjects:v17 count:2];
+    v13 = [thoroughfare2 _pas_componentsJoinedByString:@" "];
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!subThoroughfare)
   {
     goto LABEL_12;
   }
 
-  v18 = [v3 thoroughfare];
+  thoroughfare4 = [placemarkCopy thoroughfare];
 
-  if (v18)
+  if (thoroughfare4)
   {
-    v8 = [v3 subThoroughfare];
-    v10 = [v3 thoroughfare];
-    v26[1] = v10;
+    name2 = [placemarkCopy subThoroughfare];
+    subThoroughfare2 = [placemarkCopy thoroughfare];
+    v26[1] = subThoroughfare2;
     v16 = MEMORY[0x1E695DEC8];
     v17 = v26;
     goto LABEL_10;
   }
 
-  v8 = 0;
+  name2 = 0;
 LABEL_12:
   objc_autoreleasePoolPop(v4);
-  if (![v8 length])
+  if (![name2 length])
   {
-    v19 = [v3 thoroughfare];
+    thoroughfare5 = [placemarkCopy thoroughfare];
 
-    v8 = v19;
+    name2 = thoroughfare5;
   }
 
-  if (![v8 length])
+  if (![name2 length])
   {
-    v20 = [v3 locality];
+    locality = [placemarkCopy locality];
 
-    v8 = v20;
+    name2 = locality;
   }
 
-  if (![v8 length])
+  if (![name2 length])
   {
-    v21 = [v3 administrativeArea];
+    administrativeArea = [placemarkCopy administrativeArea];
 
-    v8 = v21;
+    name2 = administrativeArea;
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = [v8 lowercaseString];
+  lowercaseString = [name2 lowercaseString];
   objc_autoreleasePoolPop(v22);
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v23;
+  return lowercaseString;
 }
 
-+ (unsigned)categoryForDescription:(id)a3
++ (unsigned)categoryForDescription:(id)description
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"restaurant"])
+  descriptionCopy = description;
+  if ([descriptionCopy isEqualToString:@"restaurant"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"organization"])
+  else if ([descriptionCopy isEqualToString:@"organization"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"activity location"])
+  else if ([descriptionCopy isEqualToString:@"activity location"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"tourist attraction"])
+  else if ([descriptionCopy isEqualToString:@"tourist attraction"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"work"])
+  else if ([descriptionCopy isEqualToString:@"work"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"home"])
+  else if ([descriptionCopy isEqualToString:@"home"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"dynamic"])
+  else if ([descriptionCopy isEqualToString:@"dynamic"])
   {
     v4 = 7;
   }
@@ -609,16 +609,16 @@ LABEL_12:
   return v4;
 }
 
-+ (id)describeCategory:(unsigned __int16)a3
++ (id)describeCategory:(unsigned __int16)category
 {
-  if (a3 > 7u)
+  if (category > 7u)
   {
     return @"restaurant";
   }
 
   else
   {
-    return off_1E77F6BD8[a3];
+    return off_1E77F6BD8[category];
   }
 }
 

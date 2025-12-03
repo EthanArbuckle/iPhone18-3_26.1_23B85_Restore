@@ -1,5 +1,5 @@
 @interface CKEncryptedDate
-- (CKEncryptedDate)initWithDate:(id)a3;
+- (CKEncryptedDate)initWithDate:(id)date;
 - (NSDate)date;
 @end
 
@@ -26,11 +26,11 @@
   return v15;
 }
 
-- (CKEncryptedDate)initWithDate:(id)a3
+- (CKEncryptedDate)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v36 = 0;
-  v5 = _CKCheckArgument("date", v4, 0, 0, 0, &v36);
+  v5 = _CKCheckArgument("date", dateCopy, 0, 0, 0, &v36);
   v6 = v36;
   v7 = v6;
   if ((v5 & 1) == 0)
@@ -48,7 +48,7 @@
   v9 = objc_alloc_init(CKDPDate);
   objc_msgSend_setDateValue_(v8, v10, v9);
 
-  objc_msgSend_timeIntervalSinceReferenceDate(v4, v11, v12);
+  objc_msgSend_timeIntervalSinceReferenceDate(dateCopy, v11, v12);
   v14 = v13;
   v17 = objc_msgSend_dateValue(v8, v15, v16);
   objc_msgSend_setTime_(v17, v18, v19, v14);

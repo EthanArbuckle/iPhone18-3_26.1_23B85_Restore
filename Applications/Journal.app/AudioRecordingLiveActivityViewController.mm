@@ -1,14 +1,14 @@
 @interface AudioRecordingLiveActivityViewController
-- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithCoder:(id)a3;
-- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithCoder:(id)coder;
+- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AudioRecordingLiveActivityViewController
 
-- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithCoder:(id)a3
+- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal40AudioRecordingLiveActivityViewController_recordingFinishedTask) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal40AudioRecordingLiveActivityViewController____lazy_storage___timeLabel) = 0;
@@ -24,17 +24,17 @@
   v7.super_class = type metadata accessor for AudioRecordingLiveActivityViewController();
   v2 = v7.receiver;
   [(AudioRecordingLiveActivityViewController *)&v7 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    v4 = view;
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v5 = [v2 view];
-    if (v5)
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 setMaximumContentSizeCategory:UIContentSizeCategoryLarge];
+      v6 = view2;
+      [view2 setMaximumContentSizeCategory:UIContentSizeCategoryLarge];
 
       return;
     }
@@ -48,13 +48,13 @@
   __break(1u);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AudioRecordingLiveActivityViewController();
   v4 = v5.receiver;
-  [(AudioRecordingLiveActivityViewController *)&v5 viewIsAppearing:v3];
+  [(AudioRecordingLiveActivityViewController *)&v5 viewIsAppearing:appearingCopy];
   withObservationTracking<A>(_:onChange:)();
 }
 
@@ -67,7 +67,7 @@
   withObservationTracking<A>(_:onChange:)();
 }
 
-- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal40AudioRecordingLiveActivityViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

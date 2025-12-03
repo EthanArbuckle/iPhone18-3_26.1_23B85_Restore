@@ -1,19 +1,19 @@
 @interface CATActiveIDSServiceConnectionContentRequestMissingData
-+ (id)instanceWithDictionary:(id)a3;
-- (CATActiveIDSServiceConnectionContentRequestMissingData)initWithExpectedSequenceNumber:(unint64_t)a3;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATActiveIDSServiceConnectionContentRequestMissingData)initWithExpectedSequenceNumber:(unint64_t)number;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CATActiveIDSServiceConnectionContentRequestMissingData
 
-- (CATActiveIDSServiceConnectionContentRequestMissingData)initWithExpectedSequenceNumber:(unint64_t)a3
+- (CATActiveIDSServiceConnectionContentRequestMissingData)initWithExpectedSequenceNumber:(unint64_t)number
 {
   v5.receiver = self;
   v5.super_class = CATActiveIDSServiceConnectionContentRequestMissingData;
   result = [(CATActiveIDSServiceConnectionContentRequestMissingData *)&v5 init];
   if (result)
   {
-    result->_expectedSequenceNumber = a3;
+    result->_expectedSequenceNumber = number;
   }
 
   return result;
@@ -32,9 +32,9 @@
   return v3;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"ExpectedSequenceNumber"];
+  v4 = [dictionary objectForKeyedSubscript:@"ExpectedSequenceNumber"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -50,7 +50,7 @@
 
   if (v6)
   {
-    v7 = [[a1 alloc] initWithExpectedSequenceNumber:{objc_msgSend(v6, "unsignedIntegerValue")}];
+    v7 = [[self alloc] initWithExpectedSequenceNumber:{objc_msgSend(v6, "unsignedIntegerValue")}];
   }
 
   else

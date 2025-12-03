@@ -1,7 +1,7 @@
 @interface XDCLaunchAppResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -13,8 +13,8 @@
   v7.receiver = self;
   v7.super_class = XDCLaunchAppResponse;
   v3 = [(XDCLaunchAppResponse *)&v7 description];
-  v4 = [(XDCLaunchAppResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(XDCLaunchAppResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -28,14 +28,14 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -46,18 +46,18 @@
       while (1)
       {
         v24 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v24 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v24 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v24 & 0x7F) << v6;
@@ -75,9 +75,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -90,18 +90,18 @@ LABEL_15:
         while (1)
         {
           v25 = 0;
-          v17 = [a3 position] + 1;
-          if (v17 >= [a3 position] && (v18 = objc_msgSend(a3, "position") + 1, v18 <= objc_msgSend(a3, "length")))
+          v17 = [from position] + 1;
+          if (v17 >= [from position] && (v18 = objc_msgSend(from, "position") + 1, v18 <= objc_msgSend(from, "length")))
           {
-            v19 = [a3 data];
-            [v19 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v16 |= (v25 & 0x7F) << v14;
@@ -119,7 +119,7 @@ LABEL_15:
           }
         }
 
-        v20 = [a3 hasError] ? 0 : v16;
+        v20 = [from hasError] ? 0 : v16;
 LABEL_32:
         self->_status = v20;
       }
@@ -133,29 +133,29 @@ LABEL_32:
         }
       }
 
-      v22 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v22 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v21) = [a3 hasError] ^ 1;
+  LOBYTE(v21) = [from hasError] ^ 1;
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_status;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = self->_status == v4[2];
+    v5 = self->_status == equalCopy[2];
   }
 
   else

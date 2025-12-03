@@ -1,11 +1,11 @@
 @interface DRSCKConfig
-+ (id)_configWithConfigMO_ON_MOC_QUEUE:(id)a3;
++ (id)_configWithConfigMO_ON_MOC_QUEUE:(id)e;
 + (id)defaultConfig;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DRSCKConfig)init;
-- (DRSCKConfig)initWithContainerEnvironment:(unsigned __int8)a3 rapidEnvironment:(unsigned __int8)a4 overridesDefault:(BOOL)a5;
+- (DRSCKConfig)initWithContainerEnvironment:(unsigned __int8)environment rapidEnvironment:(unsigned __int8)rapidEnvironment overridesDefault:(BOOL)default;
 - (id)debugDescription;
-- (id)newConfigMOInContext_ON_MOC_QUEUE:(id)a3;
+- (id)newConfigMOInContext_ON_MOC_QUEUE:(id)e;
 - (int64_t)ckContainerEnvironment;
 - (int64_t)ckRapidEnvironment;
 @end
@@ -38,23 +38,23 @@
   }
 }
 
-+ (id)_configWithConfigMO_ON_MOC_QUEUE:(id)a3
++ (id)_configWithConfigMO_ON_MOC_QUEUE:(id)e
 {
-  v3 = a3;
+  eCopy = e;
   v4 = [DRSCKConfig alloc];
-  v5 = [v3 containerEnvironment];
-  v6 = [v3 rapidEnvironment];
-  v7 = [v3 overridesDefault];
+  containerEnvironment = [eCopy containerEnvironment];
+  rapidEnvironment = [eCopy rapidEnvironment];
+  overridesDefault = [eCopy overridesDefault];
 
-  v8 = [(DRSCKConfig *)v4 initWithContainerEnvironment:v5 rapidEnvironment:v6 overridesDefault:v7];
+  v8 = [(DRSCKConfig *)v4 initWithContainerEnvironment:containerEnvironment rapidEnvironment:rapidEnvironment overridesDefault:overridesDefault];
 
   return v8;
 }
 
-- (id)newConfigMOInContext_ON_MOC_QUEUE:(id)a3
+- (id)newConfigMOInContext_ON_MOC_QUEUE:(id)e
 {
-  v4 = a3;
-  v5 = [[DRSCKConfigMO alloc] initWithContext:v4];
+  eCopy = e;
+  v5 = [[DRSCKConfigMO alloc] initWithContext:eCopy];
 
   [(DRSCKConfigMO *)v5 setContainerEnvironment:[(DRSCKConfig *)self containerEnvironment]];
   [(DRSCKConfigMO *)v5 setRapidEnvironment:[(DRSCKConfig *)self rapidEnvironment]];
@@ -113,16 +113,16 @@ void __28__DRSCKConfig_defaultConfig__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (DRSCKConfig)initWithContainerEnvironment:(unsigned __int8)a3 rapidEnvironment:(unsigned __int8)a4 overridesDefault:(BOOL)a5
+- (DRSCKConfig)initWithContainerEnvironment:(unsigned __int8)environment rapidEnvironment:(unsigned __int8)rapidEnvironment overridesDefault:(BOOL)default
 {
   v9.receiver = self;
   v9.super_class = DRSCKConfig;
   result = [(DRSCKConfig *)&v9 init];
   if (result)
   {
-    result->_containerEnvironment = a3;
-    result->_rapidEnvironment = a4;
-    result->_overridesDefault = a5;
+    result->_containerEnvironment = environment;
+    result->_rapidEnvironment = rapidEnvironment;
+    result->_overridesDefault = default;
   }
 
   return result;
@@ -131,9 +131,9 @@ void __28__DRSCKConfig_defaultConfig__block_invoke()
 - (DRSCKConfig)init
 {
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     v5 = 2;
   }
@@ -149,8 +149,8 @@ void __28__DRSCKConfig_defaultConfig__block_invoke()
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DRSCKConfig *)self containerEnvironment];
-  if (v4 == 1)
+  containerEnvironment = [(DRSCKConfig *)self containerEnvironment];
+  if (containerEnvironment == 1)
   {
     v5 = @"Production";
   }
@@ -160,14 +160,14 @@ void __28__DRSCKConfig_defaultConfig__block_invoke()
     v5 = @"Unknown";
   }
 
-  if (v4 == 2)
+  if (containerEnvironment == 2)
   {
     v5 = @"Sandbox";
   }
 
   v6 = v5;
-  v7 = [(DRSCKConfig *)self rapidEnvironment];
-  if (v7 == 1)
+  rapidEnvironment = [(DRSCKConfig *)self rapidEnvironment];
+  if (rapidEnvironment == 1)
   {
     v8 = @"Production";
   }
@@ -177,15 +177,15 @@ void __28__DRSCKConfig_defaultConfig__block_invoke()
     v8 = @"Unknown";
   }
 
-  if (v7 == 2)
+  if (rapidEnvironment == 2)
   {
     v8 = @"Sandbox";
   }
 
   v9 = v8;
-  v10 = [(DRSCKConfig *)self overridesDefault];
+  overridesDefault = [(DRSCKConfig *)self overridesDefault];
   v11 = @"(Default)";
-  if (v10)
+  if (overridesDefault)
   {
     v11 = @"(Overrides default)";
   }
@@ -195,16 +195,16 @@ void __28__DRSCKConfig_defaultConfig__block_invoke()
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_7;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
     goto LABEL_11;
@@ -214,11 +214,11 @@ void __28__DRSCKConfig_defaultConfig__block_invoke()
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(DRSCKConfig *)self containerEnvironment];
-    if (v7 == [(DRSCKConfig *)v6 containerEnvironment]&& (v8 = [(DRSCKConfig *)self rapidEnvironment], v8 == [(DRSCKConfig *)v6 rapidEnvironment]))
+    containerEnvironment = [(DRSCKConfig *)self containerEnvironment];
+    if (containerEnvironment == [(DRSCKConfig *)v6 containerEnvironment]&& (v8 = [(DRSCKConfig *)self rapidEnvironment], v8 == [(DRSCKConfig *)v6 rapidEnvironment]))
     {
-      v9 = [(DRSCKConfig *)self overridesDefault];
-      v10 = v9 ^ [(DRSCKConfig *)v6 overridesDefault]^ 1;
+      overridesDefault = [(DRSCKConfig *)self overridesDefault];
+      v10 = overridesDefault ^ [(DRSCKConfig *)v6 overridesDefault]^ 1;
     }
 
     else

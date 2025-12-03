@@ -1,28 +1,28 @@
 @interface SBSApplicationShortcutTemplateIcon
-- (BOOL)isEqual:(id)a3;
-- (SBSApplicationShortcutTemplateIcon)initWithTemplateImageName:(id)a3;
-- (SBSApplicationShortcutTemplateIcon)initWithXPCDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSApplicationShortcutTemplateIcon)initWithTemplateImageName:(id)name;
+- (SBSApplicationShortcutTemplateIcon)initWithXPCDictionary:(id)dictionary;
 - (id)_initForSubclass;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSApplicationShortcutTemplateIcon
 
-- (SBSApplicationShortcutTemplateIcon)initWithTemplateImageName:(id)a3
+- (SBSApplicationShortcutTemplateIcon)initWithTemplateImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SBSApplicationShortcutTemplateIcon;
-  v5 = [(SBSApplicationShortcutIcon *)&v9 _initForSubclass];
-  if (v5)
+  _initForSubclass = [(SBSApplicationShortcutIcon *)&v9 _initForSubclass];
+  if (_initForSubclass)
   {
-    v6 = [v4 copy];
-    templateImageName = v5->_templateImageName;
-    v5->_templateImageName = v6;
+    v6 = [nameCopy copy];
+    templateImageName = _initForSubclass->_templateImageName;
+    _initForSubclass->_templateImageName = v6;
   }
 
-  return v5;
+  return _initForSubclass;
 }
 
 - (id)_initForSubclass
@@ -36,24 +36,24 @@
   return [(SBSApplicationShortcutTemplateIcon *)self initWithTemplateImageName:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-    v6 = [(SBSApplicationShortcutTemplateIcon *)self templateImageName];
+    v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+    templateImageName = [(SBSApplicationShortcutTemplateIcon *)self templateImageName];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __46__SBSApplicationShortcutTemplateIcon_isEqual___block_invoke;
     v10[3] = &unk_1E7360810;
-    v11 = v4;
-    v7 = [v5 appendObject:v6 counterpart:v10];
+    v11 = equalCopy;
+    v7 = [v5 appendObject:templateImageName counterpart:v10];
 
     v8 = [v5 isEqual];
   }
@@ -63,38 +63,38 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(SBSApplicationShortcutTemplateIcon *)self templateImageName];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  templateImageName = [(SBSApplicationShortcutTemplateIcon *)self templateImageName];
+  v5 = [builder appendObject:templateImageName];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
-- (SBSApplicationShortcutTemplateIcon)initWithXPCDictionary:(id)a3
+- (SBSApplicationShortcutTemplateIcon)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = BSDeserializeStringFromXPCDictionaryWithKey();
     self = [(SBSApplicationShortcutTemplateIcon *)self initWithTemplateImageName:v4];
 
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [(SBSApplicationShortcutTemplateIcon *)self templateImageName];
+    dictionaryCopy = dictionary;
+    templateImageName = [(SBSApplicationShortcutTemplateIcon *)self templateImageName];
     BSSerializeStringToXPCDictionaryWithKey();
   }
 }

@@ -2,15 +2,15 @@
 - (WLDataMigrationDelegate)delegate;
 - (void)cancel;
 - (void)daemonDidGetInterrupted;
-- (void)run:(id)a3;
+- (void)run:(id)run;
 @end
 
 @implementation WLMigrationKitController
 
-- (void)run:(id)a3
+- (void)run:(id)run
 {
-  v4 = a3;
-  [(WLMigrationKitController *)self setDelegate:v4];
+  runCopy = run;
+  [(WLMigrationKitController *)self setDelegate:runCopy];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
@@ -19,7 +19,7 @@
   objc_copyWeak(&v10, &location);
   [(WLDaemonConnection *)self setInterruptionHandler:&v6];
   v5 = [(WLDaemonConnection *)self daemonWithErrorHandler:&__block_literal_global_2, v6, v7, v8, v9];
-  [v5 startMigrationUsingRetryPolicies:0 delegate:v4 useMigrationKit:1 replyBlock:&__block_literal_global_5];
+  [v5 startMigrationUsingRetryPolicies:0 delegate:runCopy useMigrationKit:1 replyBlock:&__block_literal_global_5];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);

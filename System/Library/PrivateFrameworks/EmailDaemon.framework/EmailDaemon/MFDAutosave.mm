@@ -3,13 +3,13 @@
 + (id)log;
 + (id)sharedInstance;
 - (MFDAutosave)init;
-- (void)_autosavedMessageWithIdentifier:(id)a3 localOnly:(BOOL)a4 completion:(id)a5;
-- (void)autosaveMessageData:(id)a3 replacingIdentifier:(id)a4 completion:(id)a5;
-- (void)autosaveSessionForIdentifier:(id)a3 completion:(id)a4;
-- (void)autosavedMessageDataWithIdentifier:(id)a3 completion:(id)a4;
-- (void)getIdleAutosaves:(id)a3;
-- (void)hasAutosavedMessageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)removeAutosavedMessageWithIdentifier:(id)a3;
+- (void)_autosavedMessageWithIdentifier:(id)identifier localOnly:(BOOL)only completion:(id)completion;
+- (void)autosaveMessageData:(id)data replacingIdentifier:(id)identifier completion:(id)completion;
+- (void)autosaveSessionForIdentifier:(id)identifier completion:(id)completion;
+- (void)autosavedMessageDataWithIdentifier:(id)identifier completion:(id)completion;
+- (void)getIdleAutosaves:(id)autosaves;
+- (void)hasAutosavedMessageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)removeAutosavedMessageWithIdentifier:(id)identifier;
 @end
 
 @implementation MFDAutosave
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = sub_100052584;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001857C0 != -1)
   {
     dispatch_once(&qword_1001857C0, block);
@@ -76,19 +76,19 @@
   return v3;
 }
 
-- (void)hasAutosavedMessageWithIdentifier:(id)a3 completion:(id)a4
+- (void)hasAutosavedMessageWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (identifierCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100052988;
     v10[3] = &unk_100157FD0;
-    v11 = v7;
-    [(MFDAutosave *)self _autosavedMessageWithIdentifier:v6 localOnly:0 completion:v10];
+    v11 = completionCopy;
+    [(MFDAutosave *)self _autosavedMessageWithIdentifier:identifierCopy localOnly:0 completion:v10];
   }
 
   else
@@ -103,63 +103,63 @@
   }
 }
 
-- (void)removeAutosavedMessageWithIdentifier:(id)a3
+- (void)removeAutosavedMessageWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100052B98;
     v6[3] = &unk_100157FF8;
-    v7 = v4;
+    v7 = identifierCopy;
     [(MFDAutosave *)self _autosavedMessageWithIdentifier:v7 localOnly:1 completion:v6];
   }
 }
 
-- (void)_autosavedMessageWithIdentifier:(id)a3 localOnly:(BOOL)a4 completion:(id)a5
+- (void)_autosavedMessageWithIdentifier:(id)identifier localOnly:(BOOL)only completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MFDAutosave *)self autosaveScheduler];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  autosaveScheduler = [(MFDAutosave *)self autosaveScheduler];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100052EA0;
   v13[3] = &unk_100158020;
-  v11 = v8;
+  v11 = identifierCopy;
   v14 = v11;
-  v16 = a4;
-  v12 = v9;
+  onlyCopy = only;
+  v12 = completionCopy;
   v15 = v12;
-  [v10 performBlock:v13];
+  [autosaveScheduler performBlock:v13];
 }
 
-- (void)autosavedMessageDataWithIdentifier:(id)a3 completion:(id)a4
+- (void)autosavedMessageDataWithIdentifier:(id)identifier completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000532FC;
   v8[3] = &unk_100158048;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = identifierCopy;
   [(MFDAutosave *)self _autosavedMessageWithIdentifier:v7 localOnly:0 completion:v8];
 }
 
-- (void)autosaveMessageData:(id)a3 replacingIdentifier:(id)a4 completion:(id)a5
+- (void)autosaveMessageData:(id)data replacingIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v24 = a4;
-  v9 = a5;
-  v10 = [MFMailMessage messageWithRFC822Data:v8];
-  v11 = [v10 mf_documentReference];
-  v12 = [v11 absoluteString];
-  v13 = v12;
-  if (v10 && v12)
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = [MFMailMessage messageWithRFC822Data:dataCopy];
+  mf_documentReference = [v10 mf_documentReference];
+  absoluteString = [mf_documentReference absoluteString];
+  v13 = absoluteString;
+  if (v10 && absoluteString)
   {
-    v14 = [NSString stringWithFormat:@"MFDAutosave transaction: documentID=%@", v12];
+    v14 = [NSString stringWithFormat:@"MFDAutosave transaction: documentID=%@", absoluteString];
     v15 = [EFProcessTransaction transactionWithDescription:v14];
 
     v16 = [NSString stringWithFormat:@"(Autosave documentID=%@)", v13];
@@ -171,21 +171,21 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Enqueuing autosave. %@", buf, 0xCu);
     }
 
-    v18 = [(MFDAutosave *)self autosaveScheduler];
+    autosaveScheduler = [(MFDAutosave *)self autosaveScheduler];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10005385C;
     v25[3] = &unk_100158070;
     v19 = v16;
     v26 = v19;
-    v27 = v11;
-    v28 = v24;
+    v27 = mf_documentReference;
+    v28 = identifierCopy;
     v29 = v13;
     v30 = v10;
-    v32 = v9;
+    v32 = completionCopy;
     v20 = v15;
     v31 = v20;
-    [v18 performBlock:v25];
+    [autosaveScheduler performBlock:v25];
   }
 
   else
@@ -196,8 +196,8 @@
       v21 = +[MFDAutosave log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v20 ef_publicDescription];
-        sub_1000D3DC8(v22, buf, v21);
+        ef_publicDescription = [v20 ef_publicDescription];
+        sub_1000D3DC8(ef_publicDescription, buf, v21);
       }
     }
 
@@ -207,45 +207,45 @@
       v21 = +[MFDAutosave log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v20 ef_publicDescription];
-        sub_1000D3D7C(v23, buf, v21);
+        ef_publicDescription2 = [v20 ef_publicDescription];
+        sub_1000D3D7C(ef_publicDescription2, buf, v21);
       }
     }
 
-    (*(v9 + 2))(v9, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 }
 
-- (void)getIdleAutosaves:(id)a3
+- (void)getIdleAutosaves:(id)autosaves
 {
-  v4 = a3;
-  v5 = [(MFDAutosave *)self autosaveScheduler];
+  autosavesCopy = autosaves;
+  autosaveScheduler = [(MFDAutosave *)self autosaveScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005414C;
   v7[3] = &unk_100158128;
-  v6 = v4;
+  v6 = autosavesCopy;
   v7[4] = self;
   v8 = v6;
-  [v5 performBlock:v7];
+  [autosaveScheduler performBlock:v7];
 }
 
-- (void)autosaveSessionForIdentifier:(id)a3 completion:(id)a4
+- (void)autosaveSessionForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (identifierCopy)
   {
     objc_initWeak(&location, self);
-    v8 = [(MFDAutosave *)self autosaveScheduler];
+    autosaveScheduler = [(MFDAutosave *)self autosaveScheduler];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000549BC;
     v10[3] = &unk_100158150;
     objc_copyWeak(&v13, &location);
-    v11 = v6;
-    v12 = v7;
-    [v8 performBlock:v10];
+    v11 = identifierCopy;
+    v12 = completionCopy;
+    [autosaveScheduler performBlock:v10];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -254,7 +254,7 @@
   else
   {
     v9 = [NSError errorWithDomain:MSAutosaveErrorDomain code:1 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 

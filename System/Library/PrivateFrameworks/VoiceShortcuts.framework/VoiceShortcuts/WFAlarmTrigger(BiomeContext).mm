@@ -8,8 +8,8 @@
 
 - (uint64_t)alarmEventForCurrentAlarmState
 {
-  v1 = [a1 alarmState];
-  if (v1 == 1)
+  alarmState = [self alarmState];
+  if (alarmState == 1)
   {
     v2 = 3;
   }
@@ -19,7 +19,7 @@
     v2 = 1;
   }
 
-  if (v1 == 2)
+  if (alarmState == 2)
   {
     return 2;
   }
@@ -43,9 +43,9 @@
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEFAULT, "%s Recieved alarm event", &v24, 0xCu);
   }
 
-  v10 = [v8 eventBody];
+  eventBody = [v8 eventBody];
 
-  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (eventBody && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v11 = getWFTriggersLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -53,18 +53,18 @@
       v24 = 136315394;
       v25 = "[WFAlarmTrigger(BiomeContext) shouldFireInResponseToEvent:triggerIdentifier:completion:]";
       v26 = 2112;
-      v27 = v10;
+      v27 = eventBody;
       _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Received alarm event %@ for trigger", &v24, 0x16u);
     }
 
-    v12 = [a1 alarmType];
-    switch(v12)
+    alarmType = [self alarmType];
+    switch(alarmType)
     {
       case 2:
-        if ([v10 isSleepAlarm])
+        if ([eventBody isSleepAlarm])
         {
-          v21 = [v10 eventType];
-          v22 = v21 == [a1 alarmEventForCurrentAlarmState];
+          eventType = [eventBody eventType];
+          v22 = eventType == [self alarmEventForCurrentAlarmState];
         }
 
         else
@@ -76,16 +76,16 @@
         break;
       case 1:
         v15 = objc_alloc(MEMORY[0x277CCAD78]);
-        v16 = [v10 alarmID];
-        v17 = [v15 initWithUUIDString:v16];
+        alarmID = [eventBody alarmID];
+        v17 = [v15 initWithUUIDString:alarmID];
 
         if (v17)
         {
-          v18 = [a1 alarmIDs];
-          if ([v18 containsObject:v17])
+          alarmIDs = [self alarmIDs];
+          if ([alarmIDs containsObject:v17])
           {
-            v19 = [v10 eventType];
-            v20 = v19 == [a1 alarmEventForCurrentAlarmState];
+            eventType2 = [eventBody eventType];
+            v20 = eventType2 == [self alarmEventForCurrentAlarmState];
           }
 
           else
@@ -111,7 +111,7 @@
 
         break;
       case 0:
-        v7[2](v7, [v10 eventType] == objc_msgSend(a1, "alarmEventForCurrentAlarmState"));
+        v7[2](v7, [eventBody eventType] == objc_msgSend(self, "alarmEventForCurrentAlarmState"));
         break;
     }
   }
@@ -128,7 +128,7 @@
     }
 
     v7[2](v7, 0);
-    v10 = 0;
+    eventBody = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -138,10 +138,10 @@
 {
   v3 = a3;
   v4 = BiomeLibrary();
-  v5 = [v4 Clock];
-  v6 = [v5 Alarm];
+  clock = [v4 Clock];
+  alarm = [clock Alarm];
 
-  v7 = [v6 DSLPublisherWithUseCase:@"Automation.Trigger"];
+  v7 = [alarm DSLPublisherWithUseCase:@"Automation.Trigger"];
   v8 = [v7 subscribeOn:v3];
 
   return v8;

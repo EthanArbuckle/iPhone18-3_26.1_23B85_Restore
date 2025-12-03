@@ -1,20 +1,20 @@
 @interface CDPCAEscrowReporter
-- (CDPCAEscrowReporter)initWithPreRecordIdentifier:(id)a3;
+- (CDPCAEscrowReporter)initWithPreRecordIdentifier:(id)identifier;
 - (void)didAttemptEscrowPreRecord;
 @end
 
 @implementation CDPCAEscrowReporter
 
-- (CDPCAEscrowReporter)initWithPreRecordIdentifier:(id)a3
+- (CDPCAEscrowReporter)initWithPreRecordIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = CDPCAEscrowReporter;
   v5 = [(CDPCAReporter *)&v8 initWithEvent:@"com.apple.CoreCDP.EscrowPreRecord"];
   v6 = v5;
   if (v5)
   {
-    [(CDPCAReporter *)v5 setObject:v4 forKeyedSubscript:@"preRecordIdentifier"];
+    [(CDPCAReporter *)v5 setObject:identifierCopy forKeyedSubscript:@"preRecordIdentifier"];
   }
 
   return v6;

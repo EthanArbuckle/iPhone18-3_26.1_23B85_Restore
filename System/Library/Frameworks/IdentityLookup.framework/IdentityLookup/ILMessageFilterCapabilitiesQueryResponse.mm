@@ -1,11 +1,11 @@
 @interface ILMessageFilterCapabilitiesQueryResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCapabilitiesResponse:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCapabilitiesResponse:(id)response;
 - (ILMessageFilterCapabilitiesQueryResponse)init;
-- (ILMessageFilterCapabilitiesQueryResponse)initWithCoder:(id)a3;
+- (ILMessageFilterCapabilitiesQueryResponse)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ILMessageFilterCapabilitiesQueryResponse
@@ -33,47 +33,47 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ILMessageFilterCapabilitiesQueryResponse *)self transactionalSubActions];
-  v6 = [(ILMessageFilterCapabilitiesQueryResponse *)self promotionalSubActions];
-  v7 = [(ILMessageFilterCapabilitiesQueryResponse *)self version];
-  v8 = [v3 stringWithFormat:@"<%@ %p subActions transactionalSubActions=%p promotionalSubActions=%p version=%@>", v4, self, v5, v6, v7];
+  transactionalSubActions = [(ILMessageFilterCapabilitiesQueryResponse *)self transactionalSubActions];
+  promotionalSubActions = [(ILMessageFilterCapabilitiesQueryResponse *)self promotionalSubActions];
+  version = [(ILMessageFilterCapabilitiesQueryResponse *)self version];
+  v8 = [v3 stringWithFormat:@"<%@ %p subActions transactionalSubActions=%p promotionalSubActions=%p version=%@>", v4, self, transactionalSubActions, promotionalSubActions, version];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILMessageFilterCapabilitiesQueryResponse *)self isEqualToCapabilitiesResponse:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILMessageFilterCapabilitiesQueryResponse *)self isEqualToCapabilitiesResponse:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCapabilitiesResponse:(id)a3
+- (BOOL)isEqualToCapabilitiesResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_alloc(MEMORY[0x277CCA940]);
-  v6 = [(ILMessageFilterCapabilitiesQueryResponse *)self transactionalSubActions];
-  v7 = [v5 initWithArray:v6];
+  transactionalSubActions = [(ILMessageFilterCapabilitiesQueryResponse *)self transactionalSubActions];
+  v7 = [v5 initWithArray:transactionalSubActions];
 
   v8 = objc_alloc(MEMORY[0x277CCA940]);
-  v9 = [v4 transactionalSubActions];
-  v10 = [v8 initWithArray:v9];
+  transactionalSubActions2 = [responseCopy transactionalSubActions];
+  v10 = [v8 initWithArray:transactionalSubActions2];
 
   v11 = objc_alloc(MEMORY[0x277CCA940]);
-  v12 = [(ILMessageFilterCapabilitiesQueryResponse *)self promotionalSubActions];
-  v13 = [v11 initWithArray:v12];
+  promotionalSubActions = [(ILMessageFilterCapabilitiesQueryResponse *)self promotionalSubActions];
+  v13 = [v11 initWithArray:promotionalSubActions];
 
   v14 = objc_alloc(MEMORY[0x277CCA940]);
-  v15 = [v4 promotionalSubActions];
-  v16 = [v14 initWithArray:v15];
+  promotionalSubActions2 = [responseCopy promotionalSubActions];
+  v16 = [v14 initWithArray:promotionalSubActions2];
 
   if ([v7 isEqualToSet:v10] && objc_msgSend(v13, "isEqualToSet:", v16))
   {
-    v17 = [(ILMessageFilterCapabilitiesQueryResponse *)self version];
-    v18 = [v4 version];
-    v19 = [v17 isEqualToString:v18];
+    version = [(ILMessageFilterCapabilitiesQueryResponse *)self version];
+    version2 = [responseCopy version];
+    v19 = [version isEqualToString:version2];
   }
 
   else
@@ -86,19 +86,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ILMessageFilterCapabilitiesQueryResponse *)self transactionalSubActions];
-  v4 = [v3 hash];
-  v5 = [(ILMessageFilterCapabilitiesQueryResponse *)self promotionalSubActions];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(ILMessageFilterCapabilitiesQueryResponse *)self version];
-  v8 = [v7 hash];
+  transactionalSubActions = [(ILMessageFilterCapabilitiesQueryResponse *)self transactionalSubActions];
+  v4 = [transactionalSubActions hash];
+  promotionalSubActions = [(ILMessageFilterCapabilitiesQueryResponse *)self promotionalSubActions];
+  v6 = [promotionalSubActions hash] ^ v4;
+  version = [(ILMessageFilterCapabilitiesQueryResponse *)self version];
+  v8 = [version hash];
 
   return v6 ^ v8;
 }
 
-- (ILMessageFilterCapabilitiesQueryResponse)initWithCoder:(id)a3
+- (ILMessageFilterCapabilitiesQueryResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ILMessageFilterCapabilitiesQueryResponse;
   v5 = [(ILMessageFilterCapabilitiesQueryResponse *)&v19 init];
@@ -106,19 +106,19 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_promotionalSubActions);
-    v8 = [v4 decodeArrayOfObjectsOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:v6 forKey:v7];
     promotionalSubActions = v5->_promotionalSubActions;
     v5->_promotionalSubActions = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_transactionalSubActions);
-    v12 = [v4 decodeArrayOfObjectsOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeArrayOfObjectsOfClass:v10 forKey:v11];
     transactionalSubActions = v5->_transactionalSubActions;
     v5->_transactionalSubActions = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_version);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     version = v5->_version;
     v5->_version = v16;
   }
@@ -126,20 +126,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   promotionalSubActions = self->_promotionalSubActions;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_promotionalSubActions);
-  [v5 encodeObject:promotionalSubActions forKey:v6];
+  [coderCopy encodeObject:promotionalSubActions forKey:v6];
 
   transactionalSubActions = self->_transactionalSubActions;
   v8 = NSStringFromSelector(sel_transactionalSubActions);
-  [v5 encodeObject:transactionalSubActions forKey:v8];
+  [coderCopy encodeObject:transactionalSubActions forKey:v8];
 
   version = self->_version;
   v10 = NSStringFromSelector(sel_version);
-  [v5 encodeObject:version forKey:v10];
+  [coderCopy encodeObject:version forKey:v10];
 }
 
 @end

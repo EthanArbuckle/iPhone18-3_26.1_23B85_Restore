@@ -2,7 +2,7 @@
 + (MPSGraphStencilOpDescriptor)descriptorWithExplicitPadding:(MPSShape *)explicitPadding;
 + (MPSGraphStencilOpDescriptor)descriptorWithOffsets:(MPSShape *)offsets explicitPadding:(MPSShape *)explicitPadding;
 + (MPSGraphStencilOpDescriptor)descriptorWithReductionMode:(MPSGraphReductionMode)reductionMode offsets:(MPSShape *)offsets strides:(MPSShape *)strides dilationRates:(MPSShape *)dilationRates explicitPadding:(MPSShape *)explicitPadding boundaryMode:(MPSGraphPaddingMode)boundaryMode paddingStyle:(MPSGraphPaddingStyle)paddingStyle paddingConstant:(float)paddingConstant;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphStencilOpDescriptor
@@ -41,7 +41,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphStencilOpDescriptor alloc];
   [(MPSGraphStencilOpDescriptor *)v4 setReductionMode:self->_reductionMode];

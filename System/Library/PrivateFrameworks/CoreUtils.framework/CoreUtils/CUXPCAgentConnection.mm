@@ -13,8 +13,8 @@
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      v4 = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-      LogPrintF(ucat, "[CUXPCAgentConnection connectionInvalidated]", 0x14u, "XPC connection ended from %#{pid}\n", v5, v6, v7, v8, v4);
+      processIdentifier = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
+      LogPrintF(ucat, "[CUXPCAgentConnection connectionInvalidated]", 0x14u, "XPC connection ended from %#{pid}\n", v5, v6, v7, v8, processIdentifier);
       return;
     }
 

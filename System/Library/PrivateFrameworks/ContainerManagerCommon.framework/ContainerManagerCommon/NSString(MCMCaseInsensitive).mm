@@ -12,12 +12,12 @@
     v4 = *MEMORY[0x1E69E9840];
     v5 = *MEMORY[0x1E69E9840];
 
-    return [a1 isEqualToString:?];
+    return [self isEqualToString:?];
   }
 
   else
   {
-    result = [a1 compare:a3 options:1] == 0;
+    result = [self compare:a3 options:1] == 0;
     v7 = *MEMORY[0x1E69E9840];
   }
 

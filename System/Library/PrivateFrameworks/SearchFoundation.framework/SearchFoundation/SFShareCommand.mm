@@ -1,12 +1,12 @@
 @interface SFShareCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFShareCommand)initWithCoder:(id)a3;
-- (SFShareCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFShareCommand)initWithCoder:(id)coder;
+- (SFShareCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFShareCommand
@@ -16,34 +16,34 @@
   v9.receiver = self;
   v9.super_class = SFShareCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFShareCommand *)self shareItem];
-  v5 = [v4 hash];
-  v6 = [(SFShareCommand *)self shareItems];
-  v7 = v5 ^ [v6 hash];
+  shareItem = [(SFShareCommand *)self shareItem];
+  v5 = [shareItem hash];
+  shareItems = [(SFShareCommand *)self shareItems];
+  v7 = v5 ^ [shareItems hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFShareCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFShareCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFShareCommand;
-      if ([(SFCommand *)&v22 isEqual:v5])
+      if ([(SFCommand *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFShareCommand *)self shareItem];
-        v8 = [(SFShareCommand *)v6 shareItem];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        shareItem = [(SFShareCommand *)self shareItem];
+        shareItem2 = [(SFShareCommand *)v6 shareItem];
+        if ((shareItem != 0) == (shareItem2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -51,12 +51,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFShareCommand *)self shareItem];
-        if (v9)
+        shareItem3 = [(SFShareCommand *)self shareItem];
+        if (shareItem3)
         {
-          v3 = [(SFShareCommand *)self shareItem];
-          v10 = [(SFShareCommand *)v6 shareItem];
-          if (![v3 isEqual:v10])
+          shareItem4 = [(SFShareCommand *)self shareItem];
+          shareItem5 = [(SFShareCommand *)v6 shareItem];
+          if (![shareItem4 isEqual:shareItem5])
           {
             v11 = 0;
 LABEL_18:
@@ -65,13 +65,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = shareItem5;
         }
 
-        v12 = [(SFShareCommand *)self shareItems];
-        v13 = [(SFShareCommand *)v6 shareItems];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        shareItems = [(SFShareCommand *)self shareItems];
+        shareItems2 = [(SFShareCommand *)v6 shareItems];
+        v14 = shareItems2;
+        if ((shareItems != 0) == (shareItems2 == 0))
         {
 
           v11 = 0;
@@ -79,16 +79,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFShareCommand *)self shareItems];
-          if (v15)
+          shareItems3 = [(SFShareCommand *)self shareItems];
+          if (shareItems3)
           {
-            v16 = v15;
-            v19 = [(SFShareCommand *)self shareItems];
+            v16 = shareItems3;
+            shareItems4 = [(SFShareCommand *)self shareItems];
             [(SFShareCommand *)v6 shareItems];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = shareItem4;
+            v11 = [shareItems4 isEqual:v17];
 
-            v3 = v20;
+            shareItem4 = v20;
           }
 
           else
@@ -98,8 +98,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        shareItem5 = v21;
+        if (!shareItem3)
         {
           goto LABEL_19;
         }
@@ -116,17 +116,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFShareCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFShareCommand *)self shareItem];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  shareItem = [(SFShareCommand *)self shareItem];
+  v6 = [shareItem copy];
   [v4 setShareItem:v6];
 
-  v7 = [(SFShareCommand *)self shareItems];
-  v8 = [v7 copy];
+  shareItems = [(SFShareCommand *)self shareItems];
+  v8 = [shareItems copy];
   [v4 setShareItems:v8];
 
   return v4;
@@ -135,80 +135,80 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBShareCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShareCommand *)v2 jsonData];
+  jsonData = [(_SFPBShareCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBShareCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShareCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBShareCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFShareCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFShareCommand)initWithCoder:(id)a3
+- (SFShareCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFShareCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 shareItem];
-    [(SFShareCommand *)v5 setShareItem:v9];
+    shareItem = [(SFCommand *)v8 shareItem];
+    [(SFShareCommand *)v5 setShareItem:shareItem];
 
-    v10 = [(SFCommand *)v8 shareItems];
-    [(SFShareCommand *)v5 setShareItems:v10];
+    shareItems = [(SFCommand *)v8 shareItems];
+    [(SFShareCommand *)v5 setShareItems:shareItems];
 
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFShareCommand)initWithProtobuf:(id)a3
+- (SFShareCommand)initWithProtobuf:(id)protobuf
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v25.receiver = self;
   v25.super_class = SFShareCommand;
   v5 = [(SFShareCommand *)&v25 init];
   if (v5)
   {
-    v6 = [v4 shareItem];
+    shareItem = [protobufCopy shareItem];
 
-    if (v6)
+    if (shareItem)
     {
       v7 = [SFShareItem alloc];
-      v8 = [v4 shareItem];
-      v9 = [(SFShareItem *)v7 initWithProtobuf:v8];
+      shareItem2 = [protobufCopy shareItem];
+      v9 = [(SFShareItem *)v7 initWithProtobuf:shareItem2];
       [(SFShareCommand *)v5 setShareItem:v9];
     }
 
-    v10 = [v4 shareItems];
-    if (v10)
+    shareItems = [protobufCopy shareItems];
+    if (shareItems)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -222,8 +222,8 @@ LABEL_21:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v4 shareItems];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    shareItems2 = [protobufCopy shareItems];
+    v13 = [shareItems2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -234,7 +234,7 @@ LABEL_21:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(shareItems2);
           }
 
           v17 = [[SFShareItem alloc] initWithProtobuf:*(*(&v21 + 1) + 8 * i)];
@@ -244,7 +244,7 @@ LABEL_21:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v14 = [shareItems2 countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v14);

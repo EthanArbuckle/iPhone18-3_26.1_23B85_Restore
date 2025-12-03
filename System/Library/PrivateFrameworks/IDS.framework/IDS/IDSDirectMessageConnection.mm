@@ -1,9 +1,9 @@
 @interface IDSDirectMessageConnection
-+ (BOOL)isDirectMessagingRequested:(id)a3;
-- (BOOL)isMessageEligible:(id)a3 options:(id)a4 destinationDevice:(id)a5;
-- (IDSDirectMessageConnection)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5;
++ (BOOL)isDirectMessagingRequested:(id)requested;
+- (BOOL)isMessageEligible:(id)eligible options:(id)options destinationDevice:(id)device;
+- (IDSDirectMessageConnection)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate;
 - (IDSDirectMessageConnectionDelegate)delegate;
-- (id)createDispatchDataForMessageSend:(id)a3 isAck:(BOOL)a4 ackMessageId:(unsigned int)add;
+- (id)createDispatchDataForMessageSend:(id)send isAck:(BOOL)ack ackMessageId:(unsigned int)add;
 - (id)description;
 - (unsigned)getMessageTypeForFirstMessage;
 - (void)cancel;
@@ -11,36 +11,36 @@
 - (void)clearPowerAssertion;
 - (void)dealloc;
 - (void)dequeueMessages;
-- (void)failedToSendMessage:(id)a3 responseCode:(int64_t)a4;
+- (void)failedToSendMessage:(id)message responseCode:(int64_t)code;
 - (void)getPowerAssertion;
 - (void)invalidate;
 - (void)logConnectionStatisticsInPowerDictionary;
 - (void)parseDirectMessagingState;
 - (void)receiveMessages;
-- (void)receivedDirectMessagingSocketWithContext:(id)a3;
+- (void)receivedDirectMessagingSocketWithContext:(id)context;
 - (void)resetConnection;
 - (void)resumePendingAckTimer;
-- (void)sendAppAckWithGUID:(id)a3;
-- (void)sendMessageWithParameters:(id)a3 options:(id)a4;
-- (void)setDestinationDevice:(id)a3;
+- (void)sendAppAckWithGUID:(id)d;
+- (void)sendMessageWithParameters:(id)parameters options:(id)options;
+- (void)setDestinationDevice:(id)device;
 - (void)setupConnectionIfApplicable;
 - (void)setupIDSDeviceConnection;
 - (void)startPowerLogReportTimer;
 - (void)suspendPendingAckTimer;
-- (void)updateConnectedDevices:(id)a3;
-- (void)updateConnection:(id)a3;
-- (void)updateMetadata:(id)a3;
-- (void)updateTrafficClass:(unsigned __int16)a3;
+- (void)updateConnectedDevices:(id)devices;
+- (void)updateConnection:(id)connection;
+- (void)updateMetadata:(id)metadata;
+- (void)updateTrafficClass:(unsigned __int16)class;
 @end
 
 @implementation IDSDirectMessageConnection
 
-- (IDSDirectMessageConnection)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5
+- (IDSDirectMessageConnection)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = IDSDirectMessageConnection;
   v12 = [(IDSDirectMessageConnection *)&v29 init];
@@ -48,7 +48,7 @@
   if (v12)
   {
     v12->_identifier = atomic_fetch_add(&qword_1EAEDA918, 1uLL);
-    objc_storeStrong(&v12->_serviceName, a3);
+    objc_storeStrong(&v12->_serviceName, name);
     v14 = [(NSString *)v13->_serviceName stringByReplacingOccurrencesOfString:@"com.apple.private.alloy." withString:&stru_1F09E7B80];
     if ([v14 length])
     {
@@ -57,8 +57,8 @@
       strlcpy(v15, [v14 UTF8String], objc_msgSend(v14, "length") + 1);
     }
 
-    objc_storeStrong(&v13->_connectionQueue, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v13->_connectionQueue, queue);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
     queueOneToMessageIDDictionary = v13->_queueOneToMessageIDDictionary;
     v13->_queueOneToMessageIDDictionary = v16;
@@ -114,7 +114,7 @@ LABEL_10:
   {
     directMessagingState = self->_directMessagingState;
     v10 = 138412546;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2048;
     v13 = directMessagingState;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "%@ parsing direct messaging state: %llu", &v10, 0x16u);
@@ -160,7 +160,7 @@ LABEL_11:
   {
     directMessagingSupported = self->_directMessagingSupported;
     v10 = 138412546;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1024;
     LODWORD(v13) = directMessagingSupported;
     _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "%@ direct messaging supported: %d", &v10, 0x12u);
@@ -227,7 +227,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "%@ Cancel", &v6, 0xCu);
   }
 
@@ -249,7 +249,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "%@ Invalidate", &v5, 0xCu);
   }
 
@@ -262,31 +262,31 @@ LABEL_11:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDestinationDevice:(id)a3
+- (void)setDestinationDevice:(id)device
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  deviceCopy = device;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B27B10();
     }
   }
 
-  objc_storeStrong(&self->_device, a3);
+  objc_storeStrong(&self->_device, device);
   v9 = +[IDSLogging IDSDirectMessagingConnection];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     device = self->_device;
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = device;
+    deviceCopy2 = device;
     _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "%@ Updated destination device: %@", &v12, 0x16u);
   }
 
@@ -299,18 +299,18 @@ LABEL_11:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isDirectMessagingRequested:(id)a3
++ (BOOL)isDirectMessagingRequested:(id)requested
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"IDSSendMessageOptionDirectMessaging"];
-  v5 = [v4 BOOLValue];
+  requestedCopy = requested;
+  v4 = [requestedCopy objectForKey:@"IDSSendMessageOptionDirectMessaging"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     goto LABEL_2;
   }
 
-  v7 = [v3 objectForKey:@"IDSSendMessageOptionFireAndForget"];
+  v7 = [requestedCopy objectForKey:@"IDSSendMessageOptionFireAndForget"];
   if (![v7 BOOLValue])
   {
 
@@ -333,18 +333,18 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isMessageEligible:(id)a3 options:(id)a4 destinationDevice:(id)a5
+- (BOOL)isMessageEligible:(id)eligible options:(id)options destinationDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eligibleCopy = eligible;
+  optionsCopy = options;
+  deviceCopy = device;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v11 assertQueueIsCurrent];
 
-  if (v12)
+  if (assertQueueIsCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B27BA8();
     }
@@ -357,36 +357,36 @@ LABEL_8:
 
   if (!self->_trafficClassInitialized)
   {
-    if (v10)
+    if (deviceCopy)
     {
       goto LABEL_11;
     }
 
 LABEL_14:
-    LOBYTE(v16) = 0;
+    LOBYTE(protobuf) = 0;
     goto LABEL_22;
   }
 
   trafficClassApplied = self->_trafficClassApplied;
-  v15 = [v8 priority];
-  LOBYTE(v16) = 0;
-  if (v10 && trafficClassApplied == v15)
+  priority = [eligibleCopy priority];
+  LOBYTE(protobuf) = 0;
+  if (deviceCopy && trafficClassApplied == priority)
   {
 LABEL_11:
-    v17 = IDSCopyIDForDevice(v10);
+    v17 = IDSCopyIDForDevice(deviceCopy);
     if (v17)
     {
-      v18 = [v8 destinations];
-      v19 = [v18 destinationURIs];
-      if ([v19 containsObject:*MEMORY[0x1E69A4B50]])
+      destinations = [eligibleCopy destinations];
+      destinationURIs = [destinations destinationURIs];
+      if ([destinationURIs containsObject:*MEMORY[0x1E69A4B50]])
       {
       }
 
       else
       {
-        v20 = [v8 destinations];
-        v21 = [v20 destinationURIs];
-        v22 = [v21 containsObject:v17];
+        destinations2 = [eligibleCopy destinations];
+        destinationURIs2 = [destinations2 destinationURIs];
+        v22 = [destinationURIs2 containsObject:v17];
 
         if (!v22)
         {
@@ -394,34 +394,34 @@ LABEL_11:
         }
       }
 
-      if (([v8 allowCloudDelivery] & 1) == 0)
+      if (([eligibleCopy allowCloudDelivery] & 1) == 0)
       {
-        v23 = [v9 objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
-        v24 = [v23 BOOLValue];
+        v23 = [optionsCopy objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
+        bOOLValue = [v23 BOOLValue];
 
-        if ((v24 & 1) == 0 && ([v8 nonWaking] & 1) == 0)
+        if ((bOOLValue & 1) == 0 && ([eligibleCopy nonWaking] & 1) == 0)
         {
-          v25 = [v9 objectForKey:@"IDSSendMessageOptionNonWaking"];
-          v26 = [v25 BOOLValue];
+          v25 = [optionsCopy objectForKey:@"IDSSendMessageOptionNonWaking"];
+          bOOLValue2 = [v25 BOOLValue];
 
-          if ((v26 & 1) == 0)
+          if ((bOOLValue2 & 1) == 0)
           {
-            v28 = [v8 data];
-            if (v28 || ([v8 message], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+            data = [eligibleCopy data];
+            if (data || ([eligibleCopy message], (data = objc_claimAutoreleasedReturnValue()) != 0))
             {
             }
 
             else
             {
-              v16 = [v8 protobuf];
+              protobuf = [eligibleCopy protobuf];
 
-              if (!v16)
+              if (!protobuf)
               {
                 goto LABEL_21;
               }
             }
 
-            LOBYTE(v16) = [objc_opt_class() isDirectMessagingRequested:v9];
+            LOBYTE(protobuf) = [objc_opt_class() isDirectMessagingRequested:optionsCopy];
 LABEL_21:
 
             goto LABEL_22;
@@ -431,26 +431,26 @@ LABEL_21:
     }
 
 LABEL_20:
-    LOBYTE(v16) = 0;
+    LOBYTE(protobuf) = 0;
     goto LABEL_21;
   }
 
 LABEL_22:
 
-  return v16;
+  return protobuf;
 }
 
-- (void)updateConnectedDevices:(id)a3
+- (void)updateConnectedDevices:(id)devices
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B27C40();
     }
@@ -460,19 +460,19 @@ LABEL_22:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v32 = self;
+    selfCopy2 = self;
     v33 = 2112;
-    *v34 = v4;
+    *v34 = devicesCopy;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "%@ connected devices changed %@", buf, 0x16u);
   }
 
-  if ([v4 count])
+  if ([devicesCopy count])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = v4;
+    v9 = devicesCopy;
     v10 = [v9 countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v10)
     {
@@ -488,32 +488,32 @@ LABEL_22:
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          v15 = [v14 _internal];
-          v16 = [v15 isDefaultPairedDevice];
+          _internal = [v14 _internal];
+          isDefaultPairedDevice = [_internal isDefaultPairedDevice];
 
-          if (v16)
+          if (isDefaultPairedDevice)
           {
             if (!self->_device)
             {
               [(IDSDirectMessageConnection *)self setDestinationDevice:v14];
             }
 
-            v18 = [v14 _internal];
-            v19 = [v18 isConnected];
+            _internal2 = [v14 _internal];
+            isConnected = [_internal2 isConnected];
 
             peerIsConnected = self->_peerIsConnected;
-            v17 = peerIsConnected != v19;
-            if (peerIsConnected != v19)
+            v17 = peerIsConnected != isConnected;
+            if (peerIsConnected != isConnected)
             {
-              self->_peerIsConnected = v19;
+              self->_peerIsConnected = isConnected;
             }
 
-            v21 = [v14 _internal];
-            v22 = [v21 isNearby];
+            _internal3 = [v14 _internal];
+            isNearby = [_internal3 isNearby];
 
-            if (self->_peerIsNearby != v22)
+            if (self->_peerIsNearby != isNearby)
             {
-              self->_peerIsNearby = v22;
+              self->_peerIsNearby = isNearby;
               v17 = 1;
             }
 
@@ -541,7 +541,7 @@ LABEL_25:
     peerIsNearby = self->_peerIsNearby;
     v25 = self->_peerIsConnected;
     *buf = 138413058;
-    v32 = self;
+    selfCopy2 = self;
     v33 = 1024;
     *v34 = peerIsNearby;
     *&v34[4] = 1024;
@@ -559,17 +559,17 @@ LABEL_25:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMetadata:(id)a3
+- (void)updateMetadata:(id)metadata
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B27CD8();
     }
@@ -579,15 +579,15 @@ LABEL_25:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2112;
-    v29 = v4;
+    v29 = metadataCopy;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "%@ received direct-messaging metadata %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (metadataCopy)
   {
-    v9 = [v4 objectForKeyedSubscript:@"directMsgAllowedForServices"];
+    v9 = [metadataCopy objectForKeyedSubscript:@"directMsgAllowedForServices"];
     v10 = v9;
     if (v9)
     {
@@ -599,7 +599,7 @@ LABEL_25:
     {
       directMessagingAllowed = self->_directMessagingAllowed;
       *buf = 138412546;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 1024;
       LODWORD(v29) = directMessagingAllowed;
       _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "%@ direct messaging allowed: %d", buf, 0x12u);
@@ -618,7 +618,7 @@ LABEL_25:
         objc_destroyWeak(buf);
       }
 
-      v14 = [v4 objectForKeyedSubscript:@"peerIDForDirectMsg"];
+      v14 = [metadataCopy objectForKeyedSubscript:@"peerIDForDirectMsg"];
       peerID = self->_peerID;
       self->_peerID = v14;
 
@@ -626,7 +626,7 @@ LABEL_25:
       v16 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
       v25[0] = v16;
       v24[1] = *MEMORY[0x1E69A6010];
-      v17 = [v4 objectForKeyedSubscript:@"pidForIDSD"];
+      v17 = [metadataCopy objectForKeyedSubscript:@"pidForIDSD"];
       v25[1] = v17;
       v18 = *MEMORY[0x1E69A6008];
       v24[2] = *MEMORY[0x1E69A6018];
@@ -709,16 +709,16 @@ LABEL_25:
   [(IDSDirectMessageConnection *)self clearPowerAssertion];
 }
 
-- (void)updateConnection:(id)a3
+- (void)updateConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   p_connection = &self->_connection;
   if (self->_connection)
   {
     [(IDSDirectMessageConnection *)self resetConnection];
   }
 
-  objc_storeStrong(&self->_connection, a3);
+  objc_storeStrong(&self->_connection, connection);
   if (*p_connection)
   {
     nw_connection_set_queue(*p_connection, self->_connectionQueue);
@@ -729,7 +729,7 @@ LABEL_25:
     handler[2] = sub_195A19B38;
     handler[3] = &unk_1E743ECB0;
     objc_copyWeak(&v10, &location);
-    v9 = v5;
+    v9 = connectionCopy;
     nw_connection_set_state_changed_handler(connection, handler);
     nw_connection_start(*p_connection);
     self->_connectionSetupInProgress = 1;
@@ -739,7 +739,7 @@ LABEL_25:
   }
 }
 
-- (void)updateTrafficClass:(unsigned __int16)a3
+- (void)updateTrafficClass:(unsigned __int16)class
 {
   if (self->_connection)
   {
@@ -771,8 +771,8 @@ LABEL_25:
     [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69A4F48]];
 
     [v5 setObject:&unk_1F0A29798 forKeyedSubscript:*MEMORY[0x1E69A4F10]];
-    v8 = [(IDSDirectMessageConnection *)self getMessageTypeForFirstMessage];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v8];
+    getMessageTypeForFirstMessage = [(IDSDirectMessageConnection *)self getMessageTypeForFirstMessage];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:getMessageTypeForFirstMessage];
     [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69A4F30]];
 
     v10 = MEMORY[0x1E696AD98];
@@ -811,17 +811,17 @@ LABEL_25:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedDirectMessagingSocketWithContext:(id)a3
+- (void)receivedDirectMessagingSocketWithContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B27D74();
     }
@@ -829,18 +829,18 @@ LABEL_25:
 
   v8 = +[IDSLogging IDSDirectMessagingConnection];
   v9 = v8;
-  if (v4)
+  if (contextCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v4;
+      v25 = contextCopy;
       _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "%@ Received context %@", &v22, 0x16u);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"streamName"];
+    v10 = [contextCopy objectForKeyedSubscript:@"streamName"];
     v9 = v10;
     if (!v10)
     {
@@ -879,7 +879,7 @@ LABEL_30:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412290;
-        v23 = self;
+        selfCopy2 = self;
         v14 = "%@ Ignoring incoming request as existing request is in progress";
         v15 = v13;
         v16 = OS_LOG_TYPE_DEFAULT;
@@ -898,24 +898,24 @@ LABEL_35:
       [(IDSDirectMessageConnection *)self resetConnection];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"streamFlags"];
+    v18 = [contextCopy objectForKeyedSubscript:@"streamFlags"];
     v13 = v18;
     if (v18)
     {
-      v19 = [v18 unsignedLongLongValue];
-      if ((v19 & 4) != 0)
+      unsignedLongLongValue = [v18 unsignedLongLongValue];
+      if ((unsignedLongLongValue & 4) != 0)
       {
         v20 = 200;
         goto LABEL_32;
       }
 
-      if ((v19 & 8) != 0)
+      if ((unsignedLongLongValue & 8) != 0)
       {
         v20 = 300;
         goto LABEL_32;
       }
 
-      if ((v19 & 0x10) != 0)
+      if ((unsignedLongLongValue & 0x10) != 0)
       {
         v20 = 100;
 LABEL_32:
@@ -967,27 +967,27 @@ LABEL_36:
   objc_destroyWeak(&location);
 }
 
-- (void)sendAppAckWithGUID:(id)a3
+- (void)sendAppAckWithGUID:(id)d
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B27F6C();
     }
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E69A53E0]);
-  v9 = [MEMORY[0x1E695DF20] dictionary];
-  [v8 setMessage:v9];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
+  [v8 setMessage:dictionary];
 
-  [v8 setPeerResponseIdentifier:v4];
+  [v8 setPeerResponseIdentifier:dCopy];
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:244];
   [v8 setCommand:v10];
 
@@ -1003,7 +1003,7 @@ LABEL_36:
   v17[3] = &unk_1E743ED78;
   objc_copyWeak(&v19, &location);
   v14 = *MEMORY[0x1E6977E88];
-  v15 = v4;
+  v15 = dCopy;
   v18 = v15;
   nw_connection_send(connection, v12, v14, 0, v17);
 
@@ -1020,43 +1020,43 @@ LABEL_36:
     return 0;
   }
 
-  v3 = [(NSMutableArray *)self->_connectionMessageSendQueue firstObject];
-  v4 = [v3 objectForKeyedSubscript:@"ids-dm-snd-params"];
-  v5 = [v4 message];
+  firstObject = [(NSMutableArray *)self->_connectionMessageSendQueue firstObject];
+  v4 = [firstObject objectForKeyedSubscript:@"ids-dm-snd-params"];
+  message = [v4 message];
 
-  if (v5)
+  if (message)
   {
     v6 = 3;
   }
 
   else
   {
-    v7 = [v4 data];
+    data = [v4 data];
 
-    if (v7)
+    if (data)
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [v4 protobuf];
+      protobuf = [v4 protobuf];
 
-      if (v8)
+      if (protobuf)
       {
         v6 = 5;
       }
 
       else
       {
-        v9 = [v4 command];
+        command = [v4 command];
 
-        if (v9)
+        if (command)
         {
-          v10 = [v4 command];
-          if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+          command2 = [v4 command];
+          if (command2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            if ([v10 integerValue] == 244)
+            if ([command2 integerValue] == 244)
             {
               v6 = 9;
             }
@@ -1084,14 +1084,14 @@ LABEL_36:
   return v6;
 }
 
-- (id)createDispatchDataForMessageSend:(id)a3 isAck:(BOOL)a4 ackMessageId:(unsigned int)add
+- (id)createDispatchDataForMessageSend:(id)send isAck:(BOOL)ack ackMessageId:(unsigned int)add
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (!a4)
+  sendCopy = send;
+  v9 = sendCopy;
+  if (!ack)
   {
-    v10 = [v8 objectForKeyedSubscript:@"ids-dm-msg-id"];
+    v10 = [sendCopy objectForKeyedSubscript:@"ids-dm-msg-id"];
     add = [v10 unsignedIntValue];
   }
 
@@ -1103,36 +1103,36 @@ LABEL_36:
   HIDWORD(v52) = add;
   v55 = v9;
   v11 = [v9 objectForKeyedSubscript:@"ids-dm-snd-params"];
-  v12 = [v11 data];
-  v13 = [v11 message];
-  v57 = [v11 protobuf];
-  v14 = [v11 messageUUID];
-  v15 = [v11 peerResponseIdentifier];
-  if (a4)
+  data = [v11 data];
+  message = [v11 message];
+  protobuf = [v11 protobuf];
+  messageUUID = [v11 messageUUID];
+  peerResponseIdentifier = [v11 peerResponseIdentifier];
+  if (ack)
   {
     LODWORD(v52) = 7;
     goto LABEL_19;
   }
 
-  v16 = [v11 command];
-  if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v16 integerValue] == 244)
+  command = [v11 command];
+  if (command && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [command integerValue] == 244)
   {
     v17 = 9;
   }
 
-  else if (v13)
+  else if (message)
   {
     v17 = 3;
   }
 
-  else if (v12)
+  else if (data)
   {
     v17 = 1;
   }
 
   else
   {
-    if (!v57)
+    if (!protobuf)
     {
       LODWORD(v52) = 0;
       goto LABEL_18;
@@ -1176,89 +1176,89 @@ LABEL_24:
   }
 
 LABEL_26:
-  v56 = v13;
-  if (v15)
+  v56 = message;
+  if (peerResponseIdentifier)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v15 dataUsingEncoding:4];
+      v21 = [peerResponseIdentifier dataUsingEncoding:4];
       v22 = [v21 length];
-      v23 = [v21 bytes];
+      bytes = [v21 bytes];
       LOBYTE(v58) = 4;
       v61[0] = bswap32(v22);
       v24 = v18;
       [v24 appendBytes:&v58 length:1];
       [v24 appendBytes:v61 length:4];
-      [v24 appendBytes:v23 length:v22];
+      [v24 appendBytes:bytes length:v22];
 
-      v13 = v56;
+      message = v56;
     }
   }
 
-  if (v14)
+  if (messageUUID)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = [v14 length];
-      v26 = [v14 bytes];
+      v25 = [messageUUID length];
+      bytes2 = [messageUUID bytes];
       LOBYTE(v58) = 5;
       v61[0] = bswap32(v25);
       v27 = v18;
       [v27 appendBytes:&v58 length:1];
       [v27 appendBytes:v61 length:4];
-      [v27 appendBytes:v26 length:v25];
+      [v27 appendBytes:bytes2 length:v25];
     }
   }
 
-  if (v12)
+  if (data)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = [v12 length];
-      v29 = [v12 bytes];
+      v28 = [data length];
+      bytes3 = [data bytes];
       LOBYTE(v58) = 6;
       v61[0] = bswap32(v28);
       v30 = v18;
       [v30 appendBytes:&v58 length:1];
       [v30 appendBytes:v61 length:4];
-      [v30 appendBytes:v29 length:v28];
+      [v30 appendBytes:bytes3 length:v28];
     }
   }
 
-  if (v13)
+  if (message)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [v13 plistData];
-      v32 = [v31 length];
-      v33 = [v31 bytes];
+      plistData = [message plistData];
+      v32 = [plistData length];
+      bytes4 = [plistData bytes];
       LOBYTE(v58) = 7;
       v61[0] = bswap32(v32);
       v34 = v18;
       [v34 appendBytes:&v58 length:1];
       [v34 appendBytes:v61 length:4];
-      [v34 appendBytes:v33 length:v32];
+      [v34 appendBytes:bytes4 length:v32];
     }
   }
 
-  if (v57)
+  if (protobuf)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v35 = [v57 plistData];
-      v36 = [v35 length];
-      v37 = [v35 bytes];
+      plistData2 = [protobuf plistData];
+      v36 = [plistData2 length];
+      bytes5 = [plistData2 bytes];
       LOBYTE(v58) = 8;
       v61[0] = bswap32(v36);
       v38 = v18;
       [v38 appendBytes:&v58 length:1];
       [v38 appendBytes:v61 length:4];
-      [v38 appendBytes:v37 length:v36];
+      [v38 appendBytes:bytes5 length:v36];
     }
   }
 
@@ -1276,13 +1276,13 @@ LABEL_26:
   }
 
   v40 = [v18 length];
-  v41 = [v11 queueOneIdentifier];
+  queueOneIdentifier = [v11 queueOneIdentifier];
 
-  if (v41)
+  if (queueOneIdentifier)
   {
     queueOneToMessageIDDictionary = self->_queueOneToMessageIDDictionary;
-    v43 = [v11 queueOneIdentifier];
-    [(NSMutableDictionary *)queueOneToMessageIDDictionary setObject:0 forKeyedSubscript:v43];
+    queueOneIdentifier2 = [v11 queueOneIdentifier];
+    [(NSMutableDictionary *)queueOneToMessageIDDictionary setObject:0 forKeyedSubscript:queueOneIdentifier2];
   }
 
   v44 = bswap32(v40);
@@ -1353,14 +1353,14 @@ LABEL_26:
   }
 }
 
-- (void)failedToSendMessage:(id)a3 responseCode:(int64_t)a4
+- (void)failedToSendMessage:(id)message responseCode:(int64_t)code
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  messageCopy = message;
+  v7 = messageCopy;
+  if (messageCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"ids-dm-msg-guid"];
+    v8 = [messageCopy objectForKeyedSubscript:@"ids-dm-msg-guid"];
     v9 = [v7 objectForKeyedSubscript:@"ids-dm-msg-id"];
     v10 = +[IDSLogging IDSDirectMessagingConnection];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1368,7 +1368,7 @@ LABEL_26:
       v17 = 138412546;
       v18 = v8;
       v19 = 2048;
-      v20 = a4;
+      codeCopy = code;
       _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "Message %@ failed to send due to %ld", &v17, 0x16u);
     }
 
@@ -1376,12 +1376,12 @@ LABEL_26:
 
     if (v11)
     {
-      v12 = [(IDSDirectMessageConnection *)self delegate];
+      delegate = [(IDSDirectMessageConnection *)self delegate];
 
-      if (v12)
+      if (delegate)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        [WeakRetained connection:self messageSendFailed:v8 responseCode:a4];
+        [WeakRetained connection:self messageSendFailed:v8 responseCode:code];
       }
 
       [(NSMutableDictionary *)self->_messageIDToMessageDictionary setObject:0 forKeyedSubscript:v9];
@@ -1389,10 +1389,10 @@ LABEL_26:
 
     [(NSMutableArray *)self->_connectionMessageSendQueue removeObject:v7];
     v14 = [v7 objectForKeyedSubscript:@"ids-dm-snd-params"];
-    v15 = [v14 queueOneIdentifier];
-    if (v15)
+    queueOneIdentifier = [v14 queueOneIdentifier];
+    if (queueOneIdentifier)
     {
-      [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:0 forKeyedSubscript:v15];
+      [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:0 forKeyedSubscript:queueOneIdentifier];
     }
 
     [(IDSDirectMessageConnection *)self clearPowerAssertion];
@@ -1401,26 +1401,26 @@ LABEL_26:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessageWithParameters:(id)a3 options:(id)a4
+- (void)sendMessageWithParameters:(id)parameters options:(id)options
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  optionsCopy = options;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B28274();
     }
   }
 
-  if ([v6 priority] == 300 && (-[IDSServiceProperties allowUrgentMessages](self->_serviceProperties, "allowUrgentMessages") & 1) == 0)
+  if ([parametersCopy priority] == 300 && (-[IDSServiceProperties allowUrgentMessages](self->_serviceProperties, "allowUrgentMessages") & 1) == 0)
   {
-    [v6 setPriority:200];
+    [parametersCopy setPriority:200];
     v11 = +[IDSLogging IDSDirectMessagingConnection];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -1435,14 +1435,14 @@ LABEL_26:
         shortServiceNameCString = "<unknown>";
       }
 
-      v14 = [v6 identifier];
+      identifier = [parametersCopy identifier];
       serviceName = self->_serviceName;
       *buf = 134218754;
       v53 = identifier;
       v54 = 2080;
       v55 = shortServiceNameCString;
       v56 = 2112;
-      v57 = v14;
+      v57 = identifier;
       v58 = 2112;
       v59 = serviceName;
       _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "[%llu %s] Downgrading priority of message with guid %@ to Default from Urgent, client %@ is not configured to send urgent messages", buf, 0x2Au);
@@ -1450,8 +1450,8 @@ LABEL_26:
   }
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v16 setObject:v6 forKeyedSubscript:@"ids-dm-snd-params"];
-  [v16 setObject:v7 forKeyedSubscript:@"ids-dm-options"];
+  [v16 setObject:parametersCopy forKeyedSubscript:@"ids-dm-snd-params"];
+  [v16 setObject:optionsCopy forKeyedSubscript:@"ids-dm-options"];
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:mach_continuous_time()];
   [v16 setObject:v17 forKeyedSubscript:@"ids-dm-snd-time"];
 
@@ -1459,8 +1459,8 @@ LABEL_26:
   atomic_fetch_add(dword_1EAEDA920, 1u);
   v19 = [v18 numberWithUnsignedInt:?];
   [v16 setObject:v19 forKeyedSubscript:@"ids-dm-msg-id"];
-  v20 = [v6 identifier];
-  [v16 setObject:v20 forKeyedSubscript:@"ids-dm-msg-guid"];
+  identifier2 = [parametersCopy identifier];
+  [v16 setObject:identifier2 forKeyedSubscript:@"ids-dm-msg-guid"];
 
   [(NSMutableDictionary *)self->_messageIDToMessageDictionary setObject:v16 forKeyedSubscript:v19];
   v21 = +[IDSLogging IDSDirectMessagingConnection];
@@ -1477,15 +1477,15 @@ LABEL_26:
       v23 = "<unknown>";
     }
 
-    v24 = [v6 identifier];
+    identifier3 = [parametersCopy identifier];
     *buf = 134218754;
     v53 = v22;
     v54 = 2080;
     v55 = v23;
     v56 = 2112;
-    v57 = v24;
+    v57 = identifier3;
     v58 = 2112;
-    v59 = v7;
+    v59 = optionsCopy;
     _os_log_impl(&dword_1959FF000, v21, OS_LOG_TYPE_DEFAULT, "[%llu %s] Client requesting to send message with guid %@ options %@", buf, 0x2Au);
   }
 
@@ -1496,33 +1496,33 @@ LABEL_26:
     self->_connectionMessageSendQueue = v25;
   }
 
-  v27 = [(IDSDevice *)self->_device _internal];
-  if (([v27 relationship] & 2) == 0)
+  _internal = [(IDSDevice *)self->_device _internal];
+  if (([_internal relationship] & 2) == 0)
   {
 
     goto LABEL_23;
   }
 
-  v28 = [(IDSServiceProperties *)self->_serviceProperties wantsTinkerDevices];
+  wantsTinkerDevices = [(IDSServiceProperties *)self->_serviceProperties wantsTinkerDevices];
 
-  if (v28)
+  if (wantsTinkerDevices)
   {
 LABEL_23:
     if (!self->_trafficClassInitialized)
     {
       *&self->_idsPriorityToUse = vdupq_n_s64(0xC8uLL);
-      if ([v6 priority] == 300)
+      if ([parametersCopy priority] == 300)
       {
         self->_trafficClassToUse = 700;
         self->_idsPriorityToUse = 300;
-        self->_trafficClassApplied = [v6 priority];
+        self->_trafficClassApplied = [parametersCopy priority];
       }
 
-      if ([v6 priority] == 100)
+      if ([parametersCopy priority] == 100)
       {
         self->_trafficClassToUse = 200;
         self->_idsPriorityToUse = 100;
-        self->_trafficClassApplied = [v6 priority];
+        self->_trafficClassApplied = [parametersCopy priority];
       }
 
       self->_trafficClassInitialized = 1;
@@ -1553,10 +1553,10 @@ LABEL_23:
     }
 
     [(IDSDirectMessageConnection *)self resumePendingAckTimer];
-    v34 = [v6 queueOneIdentifier];
-    if (v34)
+    queueOneIdentifier = [parametersCopy queueOneIdentifier];
+    if (queueOneIdentifier)
     {
-      v35 = [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary objectForKeyedSubscript:v34];
+      v35 = [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary objectForKeyedSubscript:queueOneIdentifier];
       if (v35)
       {
         v36 = v35;
@@ -1579,7 +1579,7 @@ LABEL_23:
 
               v46 = v43;
               v48 = [v37 objectForKeyedSubscript:@"ids-dm-msg-guid"];
-              v45 = [v6 identifier];
+              identifier4 = [parametersCopy identifier];
               *buf = 134218754;
               v53 = v47;
               v54 = 2080;
@@ -1587,7 +1587,7 @@ LABEL_23:
               v56 = 2112;
               v57 = v48;
               v58 = 2112;
-              v59 = v45;
+              v59 = identifier4;
               _os_log_impl(&dword_1959FF000, v42, OS_LOG_TYPE_DEFAULT, "[%llu %s] Replacing guid: %@ with guid: %@", buf, 0x2Au);
             }
 
@@ -1595,20 +1595,20 @@ LABEL_23:
             [(NSMutableDictionary *)self->_messageIDToMessageDictionary setObject:0 forKeyedSubscript:v36];
 
             v44 = [v16 objectForKeyedSubscript:@"ids-dm-msg-id"];
-            [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:v44 forKeyedSubscript:v34];
+            [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:v44 forKeyedSubscript:queueOneIdentifier];
 
             goto LABEL_40;
           }
         }
 
         v39 = [v16 objectForKeyedSubscript:@"ids-dm-msg-id"];
-        [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:v39 forKeyedSubscript:v34];
+        [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:v39 forKeyedSubscript:queueOneIdentifier];
       }
 
       else
       {
         v36 = [v16 objectForKeyedSubscript:@"ids-dm-msg-id"];
-        [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:v36 forKeyedSubscript:v34];
+        [(NSMutableDictionary *)self->_queueOneToMessageIDDictionary setObject:v36 forKeyedSubscript:queueOneIdentifier];
       }
     }
 
@@ -1636,11 +1636,11 @@ LABEL_41:
       if ([(NSMutableArray *)connectionMessageSendQueue count]&& self->_connectionState == 3 && self->_peerIsConnected)
       {
         [(IDSDirectMessageConnection *)self getPowerAssertion];
-        v4 = [(NSMutableArray *)self->_connectionMessageSendQueue firstObject];
-        v5 = [v4 objectForKeyedSubscript:@"ids-dm-msg-id"];
-        v6 = [v5 unsignedIntValue];
-        v7 = [v4 objectForKeyedSubscript:@"ids-dm-snd-params"];
-        v8 = [v7 identifier];
+        firstObject = [(NSMutableArray *)self->_connectionMessageSendQueue firstObject];
+        v5 = [firstObject objectForKeyedSubscript:@"ids-dm-msg-id"];
+        unsignedIntValue = [v5 unsignedIntValue];
+        v7 = [firstObject objectForKeyedSubscript:@"ids-dm-snd-params"];
+        identifier = [v7 identifier];
         objc_initWeak(&location, self);
         if ([v7 requireBluetooth] && !self->_peerIsNearby)
         {
@@ -1651,7 +1651,7 @@ LABEL_41:
           block[2] = sub_195A1D694;
           block[3] = &unk_1E743EDC8;
           objc_copyWeak(&v20, &location);
-          v19 = v4;
+          v19 = firstObject;
           dispatch_async(connectionQueue, block);
 
           objc_destroyWeak(&v20);
@@ -1659,7 +1659,7 @@ LABEL_41:
 
         else
         {
-          v9 = [(IDSDirectMessageConnection *)self createDispatchDataForMessageSend:v4 isAck:0 ackMessageId:0];
+          v9 = [(IDSDirectMessageConnection *)self createDispatchDataForMessageSend:firstObject isAck:0 ackMessageId:0];
           size = dispatch_data_get_size(v9);
           [(NSMutableArray *)self->_connectionMessageSendQueue removeFirstObject];
           connection = self->_connection;
@@ -1669,8 +1669,8 @@ LABEL_41:
           completion[2] = sub_195A1D6F4;
           completion[3] = &unk_1E743EDF0;
           objc_copyWeak(v16, &location);
-          v17 = v6;
-          v15 = v8;
+          v17 = unsignedIntValue;
+          v15 = identifier;
           v16[1] = size;
           nw_connection_send(connection, v9, v12, 0, completion);
 

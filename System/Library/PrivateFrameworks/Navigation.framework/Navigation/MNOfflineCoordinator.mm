@@ -2,18 +2,18 @@
 - (MNNavigationSessionState)navigationSessionState;
 - (_TtC10Navigation20MNOfflineCoordinator)init;
 - (_TtP10Navigation28MNOfflineCoordinatorDelegate_)delegate;
-- (void)setNavigationSessionState:(id)a3;
+- (void)setNavigationSessionState:(id)state;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MNOfflineCoordinator
 
-- (void)setNavigationSessionState:(id)a3
+- (void)setNavigationSessionState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  MNOfflineCoordinator.navigationSessionState.setter(v4);
+  stateCopy = state;
+  selfCopy = self;
+  MNOfflineCoordinator.navigationSessionState.setter(stateCopy);
 }
 
 - (_TtP10Navigation28MNOfflineCoordinatorDelegate_)delegate
@@ -26,7 +26,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D31532C4();
 }
 
@@ -68,9 +68,9 @@
     MEMORY[0x1D38B6000](v3, -1, -1);
   }
 
-  v4 = [objc_opt_self() shared];
-  [v4 setDelegate_];
-  [v4 shutdownService];
+  shared = [objc_opt_self() shared];
+  [shared setDelegate_];
+  [shared shutdownService];
 }
 
 @end

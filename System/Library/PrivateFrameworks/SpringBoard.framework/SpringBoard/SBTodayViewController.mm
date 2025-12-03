@@ -1,35 +1,35 @@
 @interface SBTodayViewController
-- (BOOL)_shouldIconViewForbidJiggling:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)spotlightPresenterAllowsPullToSearch:(id)a3;
+- (BOOL)_shouldIconViewForbidJiggling:(id)jiggling;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)spotlightPresenterAllowsPullToSearch:(id)search;
 - (NSString)coverSheetIdentifier;
 - (int64_t)idleTimerDuration;
 - (int64_t)participantState;
-- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_dismissTodayViewOverlay:(id)a3;
-- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3;
-- (void)_setStatusBarSettingsAssertionActive:(BOOL)a3;
+- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_dismissTodayViewOverlay:(id)overlay;
+- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible;
+- (void)_setStatusBarSettingsAssertionActive:(BOOL)active;
 - (void)_setUpGestureRecognizers;
 - (void)_setUpSearchPresenter;
 - (void)_updateScrollViewContentInset;
 - (void)cleanupViews;
 - (void)loadView;
-- (void)overlayController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6;
-- (void)overlayControllerDidBeginChangingPresentationProgress:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)spotlightPresenterDidDismissSpotlight:(id)a3;
-- (void)spotlightPresenterDidPresentSpotlight:(id)a3;
-- (void)spotlightPresenterSearchBarDidFocus:(id)a3;
-- (void)spotlightPresenterWillPresentSpotlight:(id)a3;
+- (void)overlayController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading;
+- (void)overlayControllerDidBeginChangingPresentationProgress:(id)progress;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)spotlightPresenterDidDismissSpotlight:(id)spotlight;
+- (void)spotlightPresenterDidPresentSpotlight:(id)spotlight;
+- (void)spotlightPresenterSearchBarDidFocus:(id)focus;
+- (void)spotlightPresenterWillPresentSpotlight:(id)spotlight;
 - (void)updateViewsWithLegibilitySettings;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -38,12 +38,12 @@
 - (void)_updateScrollViewContentInset
 {
   v3 = MEMORY[0x277D768C8];
-  v4 = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter searchBarViewController];
-  v33 = v4;
-  if (v4)
+  searchBarViewController = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter searchBarViewController];
+  v33 = searchBarViewController;
+  if (searchBarViewController)
   {
-    v5 = [v4 view];
-    [v5 bounds];
+    view = [searchBarViewController view];
+    [view bounds];
     v7 = v6;
     [(SBHTodayViewController *)self searchBarTopOffset];
     v9 = v8 + v7;
@@ -59,18 +59,18 @@
   v12 = v3[3];
   if ([(SBTodayViewController *)self isEditing])
   {
-    v13 = [(UIViewController *)self _sbWindowScene];
-    v14 = [v13 controlCenterController];
-    v15 = [v14 presentingEdge];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    controlCenterController = [_sbWindowScene controlCenterController];
+    presentingEdge = [controlCenterController presentingEdge];
 
-    if ((v15 & 4) != 0)
+    if ((presentingEdge & 4) != 0)
     {
       v11 = 100.0;
     }
   }
 
-  v16 = [(SBHTodayViewController *)self scrollView];
-  [v16 contentInset];
+  scrollView = [(SBHTodayViewController *)self scrollView];
+  [scrollView contentInset];
   if (v10 == v20 && v9 == v17 && v12 == v19)
   {
     v23 = v18;
@@ -85,26 +85,26 @@
   {
   }
 
-  v24 = [(SBHTodayViewController *)self scrollView];
-  [v24 contentOffset];
-  v25 = [(SBHTodayViewController *)self scrollView];
-  [v25 adjustedContentInset];
+  scrollView2 = [(SBHTodayViewController *)self scrollView];
+  [scrollView2 contentOffset];
+  scrollView3 = [(SBHTodayViewController *)self scrollView];
+  [scrollView3 adjustedContentInset];
   v26 = BSFloatLessThanOrEqualToFloat();
 
-  v27 = [(SBHTodayViewController *)self scrollView];
-  [v27 setContentInset:{v9, v10, v11, v12}];
+  scrollView4 = [(SBHTodayViewController *)self scrollView];
+  [scrollView4 setContentInset:{v9, v10, v11, v12}];
 
   if (v26)
   {
-    v28 = [(SBHTodayViewController *)self scrollView];
-    v29 = [v28 isDragging];
+    scrollView5 = [(SBHTodayViewController *)self scrollView];
+    isDragging = [scrollView5 isDragging];
 
-    if ((v29 & 1) == 0)
+    if ((isDragging & 1) == 0)
     {
-      v30 = [(SBHTodayViewController *)self scrollView];
-      v31 = [(SBHTodayViewController *)self scrollView];
-      [v31 adjustedContentInset];
-      [v30 setContentOffset:{0.0, -v32}];
+      scrollView6 = [(SBHTodayViewController *)self scrollView];
+      scrollView7 = [(SBHTodayViewController *)self scrollView];
+      [scrollView7 adjustedContentInset];
+      [scrollView6 setContentOffset:{0.0, -v32}];
     }
   }
 
@@ -145,15 +145,15 @@ LABEL_19:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Determining participantState for %@", &v10, 0xCu);
   }
 
   [(SBHTodayViewController *)self mostRecentPresentationProgress];
   v4 = BSFloatLessThanFloat();
-  v5 = [(SBTodayViewController *)self viewIfLoaded];
-  v6 = [v5 superview];
-  if (!v6 || ([(SBTodayViewController *)self bs_isDisappearingOrDisappeared]& 1) != 0)
+  viewIfLoaded = [(SBTodayViewController *)self viewIfLoaded];
+  superview = [viewIfLoaded superview];
+  if (!superview || ([(SBTodayViewController *)self bs_isDisappearingOrDisappeared]& 1) != 0)
   {
 
 LABEL_6:
@@ -161,7 +161,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Determined participantState for %@ to be Inactive", &v10, 0xCu);
     }
 
@@ -178,7 +178,7 @@ LABEL_6:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Determined participantState for %@ to be ACTIVE", &v10, 0xCu);
   }
 
@@ -190,8 +190,8 @@ LABEL_9:
 
 - (int64_t)idleTimerDuration
 {
-  v2 = [(SBTodayViewController *)self spotlightPresenter];
-  if ([v2 isPresenting])
+  spotlightPresenter = [(SBTodayViewController *)self spotlightPresenter];
+  if ([spotlightPresenter isPresenting])
   {
     v3 = 9;
   }
@@ -221,112 +221,112 @@ LABEL_9:
 
   [(UITapGestureRecognizer *)self->_dismissTapGestureRecognizer setAllowableMovement:10.0];
   [(UITapGestureRecognizer *)self->_dismissTapGestureRecognizer setDelegate:self];
-  v5 = [(SBTodayViewController *)self view];
-  [v5 addGestureRecognizer:self->_dismissTapGestureRecognizer];
+  view = [(SBTodayViewController *)self view];
+  [view addGestureRecognizer:self->_dismissTapGestureRecognizer];
 }
 
 - (void)_setUpSearchPresenter
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v5 = [(SBTodayViewController *)self view];
+    view = [(SBTodayViewController *)self view];
     v6 = objc_alloc_init(MEMORY[0x277D65F80]);
     spotlightContainerView = self->_spotlightContainerView;
     self->_spotlightContainerView = v6;
 
     [(SBFTouchPassThroughView *)self->_spotlightContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 addSubview:self->_spotlightContainerView];
+    [view addSubview:self->_spotlightContainerView];
     v23 = MEMORY[0x277CCAAD0];
-    v28 = [v5 leadingAnchor];
-    v27 = [(SBFTouchPassThroughView *)self->_spotlightContainerView leadingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    leadingAnchor = [view leadingAnchor];
+    leadingAnchor2 = [(SBFTouchPassThroughView *)self->_spotlightContainerView leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[0] = v26;
-    v25 = [v5 trailingAnchor];
-    v24 = [(SBFTouchPassThroughView *)self->_spotlightContainerView trailingAnchor];
-    v22 = [v25 constraintEqualToAnchor:v24];
+    trailingAnchor = [view trailingAnchor];
+    trailingAnchor2 = [(SBFTouchPassThroughView *)self->_spotlightContainerView trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[1] = v22;
-    v8 = [v5 topAnchor];
-    v9 = [(SBFTouchPassThroughView *)self->_spotlightContainerView topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [(SBFTouchPassThroughView *)self->_spotlightContainerView topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[2] = v10;
-    v11 = [v5 bottomAnchor];
-    v12 = [(SBFTouchPassThroughView *)self->_spotlightContainerView bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [(SBFTouchPassThroughView *)self->_spotlightContainerView bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[3] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     [v23 activateConstraints:v14];
 
     v15 = [SBTodayViewSpotlightPresenter alloc];
     v16 = self->_spotlightContainerView;
-    v17 = [(SBHTodayViewController *)self scrollView];
-    v18 = [(SBTodayViewSpotlightPresenter *)v15 initWithSearchBarViewController:0 containerView:v16 scrollView:v17 delegate:self];
+    scrollView = [(SBHTodayViewController *)self scrollView];
+    v18 = [(SBTodayViewSpotlightPresenter *)v15 initWithSearchBarViewController:0 containerView:v16 scrollView:scrollView delegate:self];
     spotlightPresenter = self->_spotlightPresenter;
     self->_spotlightPresenter = v18;
 
     v20 = self->_spotlightPresenter;
-    v21 = [(SBHTodayViewController *)self effectiveLegibilitySettings];
-    [(SBTodayViewSpotlightPresenter *)v20 setLegibilitySettings:v21];
+    effectiveLegibilitySettings = [(SBHTodayViewController *)self effectiveLegibilitySettings];
+    [(SBTodayViewSpotlightPresenter *)v20 setLegibilitySettings:effectiveLegibilitySettings];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBTodayViewController;
-  [(SBHTodayViewController *)&v4 viewWillAppear:a3];
+  [(SBHTodayViewController *)&v4 viewWillAppear:appear];
   [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter containerViewWillAppear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SBTodayViewController;
-  [(SBHTodayViewController *)&v6 viewDidAppear:a3];
+  [(SBHTodayViewController *)&v6 viewDidAppear:appear];
   if ([(SBHTodayViewController *)self location]== 2)
   {
     v4 = +[SBLockScreenManager sharedInstance];
-    v5 = [v4 coverSheetViewController];
-    [v5 registerExternalBehaviorProvider:self];
+    coverSheetViewController = [v4 coverSheetViewController];
+    [coverSheetViewController registerExternalBehaviorProvider:self];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBTodayViewController;
-  [(SBHTodayViewController *)&v6 viewWillDisappear:a3];
+  [(SBHTodayViewController *)&v6 viewWillDisappear:disappear];
   if ([(SBHTodayViewController *)self location]== 2)
   {
     v4 = +[SBLockScreenManager sharedInstance];
-    v5 = [v4 coverSheetViewController];
-    [v5 unregisterExternalBehaviorProvider:self];
+    coverSheetViewController = [v4 coverSheetViewController];
+    [coverSheetViewController unregisterExternalBehaviorProvider:self];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBTodayViewController;
-  [(SBHTodayViewController *)&v4 viewDidDisappear:a3];
+  [(SBHTodayViewController *)&v4 viewDidDisappear:disappear];
   [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter containerViewDidDisappear];
 }
 
-- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  visibleCopy = visible;
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter spotlightViewController];
+  spotlightViewController = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter spotlightViewController];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SBTodayViewController *)self childViewControllers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childViewControllers = [(SBTodayViewController *)self childViewControllers];
+  v9 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -338,37 +338,37 @@ LABEL_9:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
-        if (v13 != v7)
+        if (v13 != spotlightViewController)
         {
-          [(SBTodayViewController *)self bs_beginAppearanceTransitionForChildViewController:v13 toVisible:v5 animated:v4];
+          [(SBTodayViewController *)self bs_beginAppearanceTransitionForChildViewController:v13 toVisible:visibleCopy animated:animatedCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3
+- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter spotlightViewController];
+  spotlightViewController = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter spotlightViewController];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(SBTodayViewController *)self childViewControllers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childViewControllers = [(SBTodayViewController *)self childViewControllers];
+  v7 = [childViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -380,34 +380,34 @@ LABEL_9:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
-        if (v11 != v5)
+        if (v11 != spotlightViewController)
         {
-          [(SBTodayViewController *)self bs_endAppearanceTransitionForChildViewController:v11 toVisible:v3];
+          [(SBTodayViewController *)self bs_endAppearanceTransitionForChildViewController:v11 toVisible:visibleCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [childViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = SBTodayViewController;
-  v6 = a3;
-  [(SBHTodayViewController *)&v7 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter containerViewDidMoveToWindow:v6, v7.receiver, v7.super_class];
+  windowCopy = window;
+  [(SBHTodayViewController *)&v7 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter containerViewDidMoveToWindow:windowCopy, v7.receiver, v7.super_class];
 }
 
 - (void)updateViewsWithLegibilitySettings
@@ -415,48 +415,48 @@ LABEL_9:
   v5.receiver = self;
   v5.super_class = SBTodayViewController;
   [(SBHTodayViewController *)&v5 updateViewsWithLegibilitySettings];
-  v3 = [(SBHTodayViewController *)self effectiveLegibilitySettings];
+  effectiveLegibilitySettings = [(SBHTodayViewController *)self effectiveLegibilitySettings];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _UILegibilitySettings];
+    _UILegibilitySettings = [effectiveLegibilitySettings _UILegibilitySettings];
 
-    v3 = v4;
+    effectiveLegibilitySettings = _UILegibilitySettings;
   }
 
-  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter setLegibilitySettings:v3];
+  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter setLegibilitySettings:effectiveLegibilitySettings];
 }
 
-- (void)_dismissTodayViewOverlay:(id)a3
+- (void)_dismissTodayViewOverlay:(id)overlay
 {
-  v8 = a3;
-  v4 = [(SBTodayViewController *)self dismissTapGestureRecognizer];
+  overlayCopy = overlay;
+  dismissTapGestureRecognizer = [(SBTodayViewController *)self dismissTapGestureRecognizer];
 
-  v5 = v8;
-  if (v4 == v8)
+  v5 = overlayCopy;
+  if (dismissTapGestureRecognizer == overlayCopy)
   {
-    v6 = [v8 state] == 3;
-    v5 = v8;
+    v6 = [overlayCopy state] == 3;
+    v5 = overlayCopy;
     if (v6)
     {
-      v7 = [(SBHTodayViewController *)self dismissalDelegate];
-      [v7 overlayControllerRequestsDismissal:self];
+      dismissalDelegate = [(SBHTodayViewController *)self dismissalDelegate];
+      [dismissalDelegate overlayControllerRequestsDismissal:self];
 
-      v5 = v8;
+      v5 = overlayCopy;
     }
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBTodayViewController *)self dismissTapGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  dismissTapGestureRecognizer = [(SBTodayViewController *)self dismissTapGestureRecognizer];
 
-  if (v8 == v7)
+  if (dismissTapGestureRecognizer == recognizerCopy)
   {
-    v10 = [(SBHTodayViewController *)self scrollView];
-    v11 = [v10 panGestureRecognizer];
-    v9 = v11 == v6;
+    scrollView = [(SBHTodayViewController *)self scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    v9 = panGestureRecognizer == gestureRecognizerCopy;
   }
 
   else
@@ -467,20 +467,20 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
-  v8 = [(SBTodayViewController *)self dismissTapGestureRecognizer];
+  dismissTapGestureRecognizer = [(SBTodayViewController *)self dismissTapGestureRecognizer];
 
-  if (v8 == v6)
+  if (dismissTapGestureRecognizer == recognizerCopy)
   {
-    v9 = [(SBHTodayViewController *)self scrollView];
-    [v7 locationInView:v9];
+    scrollView = [(SBHTodayViewController *)self scrollView];
+    [touchCopy locationInView:scrollView];
     v11 = v10;
     v13 = v12;
 
@@ -491,14 +491,14 @@ LABEL_9:
 
     else
     {
-      v14 = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter searchBarViewController];
-      if (v14)
+      searchBarViewController = [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter searchBarViewController];
+      if (searchBarViewController)
       {
-        [v7 locationInView:self->_spotlightContainerView];
+        [touchCopy locationInView:self->_spotlightContainerView];
         v16 = v15;
         v18 = v17;
-        v19 = [v14 view];
-        [v19 frame];
+        view = [searchBarViewController view];
+        [view frame];
         v28.x = v16;
         v28.y = v18;
         v20 = CGRectContainsPoint(v29, v28);
@@ -559,34 +559,34 @@ BOOL __62__SBTodayViewController_gestureRecognizer_shouldReceiveTouch___block_in
   return result;
 }
 
-- (void)spotlightPresenterSearchBarDidFocus:(id)a3
+- (void)spotlightPresenterSearchBarDidFocus:(id)focus
 {
-  v4 = [(SBHTodayViewController *)self delegate];
-  [v4 todayViewWantsToEndEditing:self];
+  delegate = [(SBHTodayViewController *)self delegate];
+  [delegate todayViewWantsToEndEditing:self];
 }
 
-- (void)spotlightPresenterWillPresentSpotlight:(id)a3
+- (void)spotlightPresenterWillPresentSpotlight:(id)spotlight
 {
-  v4 = [(SBHTodayViewController *)self delegate];
-  [v4 todayViewControllerWillPresentSpotlight:self];
+  delegate = [(SBHTodayViewController *)self delegate];
+  [delegate todayViewControllerWillPresentSpotlight:self];
 }
 
-- (void)spotlightPresenterDidPresentSpotlight:(id)a3
+- (void)spotlightPresenterDidPresentSpotlight:(id)spotlight
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(SBHTodayViewController *)self location]== 2)
   {
     v4 = +[SBLockScreenManager sharedInstance];
-    v5 = [v4 coverSheetViewController];
-    [v5 externalBehaviorProviderBehaviorChanged:self];
+    coverSheetViewController = [v4 coverSheetViewController];
+    [coverSheetViewController externalBehaviorProviderBehaviorChanged:self];
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(SBHTodayViewController *)self observers];
-  v7 = [v6 copy];
+  observers = [(SBHTodayViewController *)self observers];
+  v7 = [observers copy];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -620,22 +620,22 @@ BOOL __62__SBTodayViewController_gestureRecognizer_shouldReceiveTouch___block_in
   }
 }
 
-- (void)spotlightPresenterDidDismissSpotlight:(id)a3
+- (void)spotlightPresenterDidDismissSpotlight:(id)spotlight
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(SBHTodayViewController *)self location]== 2)
   {
     v4 = +[SBLockScreenManager sharedInstance];
-    v5 = [v4 coverSheetViewController];
-    [v5 externalBehaviorProviderBehaviorChanged:self];
+    coverSheetViewController = [v4 coverSheetViewController];
+    [coverSheetViewController externalBehaviorProviderBehaviorChanged:self];
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(SBHTodayViewController *)self observers];
-  v7 = [v6 copy];
+  observers = [(SBHTodayViewController *)self observers];
+  v7 = [observers copy];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -669,25 +669,25 @@ BOOL __62__SBTodayViewController_gestureRecognizer_shouldReceiveTouch___block_in
   }
 }
 
-- (BOOL)spotlightPresenterAllowsPullToSearch:(id)a3
+- (BOOL)spotlightPresenterAllowsPullToSearch:(id)search
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 isSpotlightAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isSpotlightAllowed = [mEMORY[0x277D262A0] isSpotlightAllowed];
 
-  if ((v5 & 1) == 0)
+  if ((isSpotlightAllowed & 1) == 0)
   {
     v6 = SBLogSpotlight();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SBHTodayViewController *)self location];
+      location = [(SBHTodayViewController *)self location];
       v12 = @"unknown";
-      if (v11 == 2)
+      if (location == 2)
       {
         v12 = @"left-of-lock";
       }
 
-      if (v11 == 1)
+      if (location == 1)
       {
         v12 = @"left-of-home";
       }
@@ -709,14 +709,14 @@ LABEL_16:
     v6 = SBLogSpotlight();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SBHTodayViewController *)self location];
+      location2 = [(SBHTodayViewController *)self location];
       v8 = @"unknown";
-      if (v7 == 2)
+      if (location2 == 2)
       {
         v8 = @"left-of-lock";
       }
 
-      if (v7 == 1)
+      if (location2 == 1)
       {
         v8 = @"left-of-home";
       }
@@ -737,58 +737,58 @@ LABEL_15:
   return 1;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v5.receiver = self;
   v5.super_class = SBTodayViewController;
-  v4 = a3;
-  [(SBHTodayViewController *)&v5 scrollViewWillBeginDragging:v4];
-  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter scrollViewWillBeginDragging:v4, v5.receiver, v5.super_class];
+  draggingCopy = dragging;
+  [(SBHTodayViewController *)&v5 scrollViewWillBeginDragging:draggingCopy];
+  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter scrollViewWillBeginDragging:draggingCopy, v5.receiver, v5.super_class];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   v6.receiver = self;
   v6.super_class = SBTodayViewController;
-  [(SBHTodayViewController *)&v6 scrollViewDidScroll:v4];
-  v5 = [(SBHTodayViewController *)self scrollView];
+  [(SBHTodayViewController *)&v6 scrollViewDidScroll:scrollCopy];
+  scrollView = [(SBHTodayViewController *)self scrollView];
 
-  if (v5 == v4)
+  if (scrollView == scrollCopy)
   {
-    [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter scrollViewDidScroll:v4];
+    [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   v10.receiver = self;
   v10.super_class = SBTodayViewController;
-  v9 = a3;
-  [(SBHTodayViewController *)&v10 scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:x, y];
-  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter scrollViewWillEndDragging:v9 withVelocity:x, y, v10.receiver, v10.super_class];
+  draggingCopy = dragging;
+  [(SBHTodayViewController *)&v10 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:x, y];
+  [(SBTodayViewSpotlightPresenter *)self->_spotlightPresenter scrollViewWillEndDragging:draggingCopy withVelocity:x, y, v10.receiver, v10.super_class];
 }
 
-- (void)overlayControllerDidBeginChangingPresentationProgress:(id)a3
+- (void)overlayControllerDidBeginChangingPresentationProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   [(SBHTodayViewController *)self cancelTouchesForAllWidgets];
   [(SBHTodayViewController *)self beginDisablingWidgetHitTestingForReason:*MEMORY[0x277D66618]];
   [(SBHTodayViewController *)self setIsOverlayViewDisappearing:1];
-  [v4 presentationProgress];
+  [progressCopy presentationProgress];
   v6 = v5;
 
   [(SBHTodayViewController *)self setMostRecentPresentationProgress:v6];
 }
 
-- (void)overlayController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6
+- (void)overlayController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (leading)
   {
-    [a3 presentationProgress];
+    [controller presentationProgress];
     [(SBHTodayViewController *)self setMostRecentPresentationProgress:?];
     if (((BSFloatIsOne() & 1) != 0 || BSFloatIsZero()) && [(SBHTodayViewController *)self isOverlayViewDisappearing])
     {
@@ -802,8 +802,8 @@ LABEL_15:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(SBHTodayViewController *)self observers];
-    v10 = [v9 copy];
+    observers = [(SBHTodayViewController *)self observers];
+    v10 = [observers copy];
 
     v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
@@ -823,7 +823,7 @@ LABEL_15:
           v15 = *(*(&v16 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 todayViewController:self didChangePresentationProgress:1 newPresentationProgress:a4 fromLeading:a5];
+            [v15 todayViewController:self didChangePresentationProgress:1 newPresentationProgress:progress fromLeading:presentationProgress];
           }
 
           ++v14;
@@ -838,50 +838,50 @@ LABEL_15:
   }
 }
 
-- (BOOL)_shouldIconViewForbidJiggling:(id)a3
+- (BOOL)_shouldIconViewForbidJiggling:(id)jiggling
 {
-  v4 = a3;
-  v5 = [(SBHTodayViewController *)self listView];
-  v6 = [v5 isEditing];
+  jigglingCopy = jiggling;
+  listView = [(SBHTodayViewController *)self listView];
+  isEditing = [listView isEditing];
 
-  if (v6 && (-[SBHTodayViewController listView](self, "listView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 icons], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "icon"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, v8, v7, v10) && (-[SBHTodayViewController onScreenIconIndexRangeByIconListView](self, "onScreenIconIndexRangeByIconListView"), v11 = objc_claimAutoreleasedReturnValue(), -[SBHTodayViewController listView](self, "listView"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "rangeValue"), v16 = v15, v13, v12, v11, v16 != 0x7FFFFFFFFFFFFFFFLL))
+  if (isEditing && (-[SBHTodayViewController listView](self, "listView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 icons], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(jigglingCopy, "icon"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, v8, v7, v10) && (-[SBHTodayViewController onScreenIconIndexRangeByIconListView](self, "onScreenIconIndexRangeByIconListView"), v11 = objc_claimAutoreleasedReturnValue(), -[SBHTodayViewController listView](self, "listView"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "rangeValue"), v16 = v15, v13, v12, v11, v16 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v19 = [(SBTodayViewController *)self view];
-    v20 = [(SBTodayViewController *)self spotlightPresenter];
-    v21 = [v20 searchBarViewController];
-    v22 = [v21 view];
+    view = [(SBTodayViewController *)self view];
+    spotlightPresenter = [(SBTodayViewController *)self spotlightPresenter];
+    searchBarViewController = [spotlightPresenter searchBarViewController];
+    view2 = [searchBarViewController view];
 
-    v23 = [(SBHTodayViewController *)self scrollView];
-    [v23 adjustedContentInset];
+    scrollView = [(SBHTodayViewController *)self scrollView];
+    [scrollView adjustedContentInset];
     v25 = v24;
 
-    [v22 frame];
+    [view2 frame];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [v22 superview];
-    [v19 convertRect:v34 fromView:{v27, v29, v31, v33}];
+    superview = [view2 superview];
+    [view convertRect:superview fromView:{v27, v29, v31, v33}];
     v36 = v35;
     v38 = v37;
     v40 = v39;
     v42 = v41;
 
-    v43 = [(SBHTodayViewController *)self listView];
-    v44 = [v4 icon];
-    v45 = [v43 indexOfIcon:v44];
+    listView2 = [(SBHTodayViewController *)self listView];
+    icon = [jigglingCopy icon];
+    v45 = [listView2 indexOfIcon:icon];
 
     v17 = 1;
     if (v45 >= v14 && v45 - v14 < v16)
     {
       v46 = v42 + v25 + v38;
-      [v4 frame];
+      [jigglingCopy frame];
       v48 = v47;
       v50 = v49;
       v52 = v51;
       v54 = v53;
-      v55 = [v4 superview];
-      [v19 convertRect:v55 fromView:{v48, v50, v52, v54}];
+      superview2 = [jigglingCopy superview];
+      [view convertRect:superview2 fromView:{v48, v50, v52, v54}];
       v57 = v56;
       v59 = v58;
       v61 = v60;
@@ -930,35 +930,35 @@ LABEL_15:
   return v17;
 }
 
-- (void)_setStatusBarSettingsAssertionActive:(BOOL)a3
+- (void)_setStatusBarSettingsAssertionActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(SBTodayViewController *)self statusBarSettingsAssertion];
-  if (v3 && !v5)
+  activeCopy = active;
+  statusBarSettingsAssertion = [(SBTodayViewController *)self statusBarSettingsAssertion];
+  if (activeCopy && !statusBarSettingsAssertion)
   {
     v15 = 0;
-    v6 = [(UIViewController *)self _sbWindowScene];
-    v7 = [v6 statusBarManager];
-    v8 = [v7 assertionManager];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
 
     v9 = objc_alloc_init(SBMutableStatusBarSettings);
-    v10 = [(SBHTodayViewController *)self effectiveLegibilitySettings];
+    effectiveLegibilitySettings = [(SBHTodayViewController *)self effectiveLegibilitySettings];
     v11 = SBUIDeriveUILegibilitySettings();
 
     [(SBMutableStatusBarSettings *)v9 setLegibilitySettings:v11];
-    v12 = [v8 newSettingsAssertionWithSettings:v9 atLevel:2 reason:@"Today View"];
+    v12 = [assertionManager newSettingsAssertionWithSettings:v9 atLevel:2 reason:@"Today View"];
     v13 = __62__SBTodayViewController__setStatusBarSettingsAssertionActive___block_invoke();
     [v12 acquireWithAnimationParameters:v13];
 
     [(SBTodayViewController *)self setStatusBarSettingsAssertion:v12];
 LABEL_7:
-    v5 = v15;
+    statusBarSettingsAssertion = v15;
     goto LABEL_8;
   }
 
-  if (!v3 && v5)
+  if (!activeCopy && statusBarSettingsAssertion)
   {
-    v15 = v5;
+    v15 = statusBarSettingsAssertion;
     v14 = __62__SBTodayViewController__setStatusBarSettingsAssertionActive___block_invoke();
     [v15 invalidateWithAnimationParameters:v14];
 

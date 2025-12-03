@@ -9,101 +9,101 @@
 - (HDCodableFitnessFriendWorkout)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableFitnessFriendWorkout);
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = &off_283D41EA0;
   v3 = objc_msgSendSuper2(&v30, sel_codableRepresentationForSync);
   [(HDCodableFitnessFriendWorkout *)v2 setSample:v3];
-  v4 = [a1 friendUUID];
-  v5 = [v4 hk_dataForUUIDBytes];
-  [(HDCodableFitnessFriendWorkout *)v2 setFriendUUID:v5];
+  friendUUID = [self friendUUID];
+  hk_dataForUUIDBytes = [friendUUID hk_dataForUUIDBytes];
+  [(HDCodableFitnessFriendWorkout *)v2 setFriendUUID:hk_dataForUUIDBytes];
 
-  [a1 duration];
+  [self duration];
   [(HDCodableFitnessFriendWorkout *)v2 setDuration:?];
-  v6 = [a1 totalEnergyBurned];
+  totalEnergyBurned = [self totalEnergyBurned];
 
-  if (v6)
+  if (totalEnergyBurned)
   {
-    v7 = [a1 totalEnergyBurned];
+    totalEnergyBurned2 = [self totalEnergyBurned];
     v8 = _HKWorkoutCanonicalEnergyBurnedUnit();
-    [v7 doubleValueForUnit:v8];
+    [totalEnergyBurned2 doubleValueForUnit:v8];
     [(HDCodableFitnessFriendWorkout *)v2 setTotalEnergyBurnedInCanonicalUnit:?];
   }
 
-  v9 = [a1 totalBasalEnergyBurned];
+  totalBasalEnergyBurned = [self totalBasalEnergyBurned];
 
-  if (v9)
+  if (totalBasalEnergyBurned)
   {
-    v10 = [a1 totalBasalEnergyBurned];
+    totalBasalEnergyBurned2 = [self totalBasalEnergyBurned];
     v11 = _HKWorkoutCanonicalEnergyBurnedUnit();
-    [v10 doubleValueForUnit:v11];
+    [totalBasalEnergyBurned2 doubleValueForUnit:v11];
     [(HDCodableFitnessFriendWorkout *)v2 setTotalBasalEnergyBurnedInCanonicalUnit:?];
   }
 
-  v12 = [a1 totalDistance];
+  totalDistance = [self totalDistance];
 
-  if (v12)
+  if (totalDistance)
   {
-    v13 = [a1 totalDistance];
+    totalDistance2 = [self totalDistance];
     v14 = _HKWorkoutCanonicalDistanceUnit();
-    [v13 doubleValueForUnit:v14];
+    [totalDistance2 doubleValueForUnit:v14];
     [(HDCodableFitnessFriendWorkout *)v2 setTotalDistanceInCanonicalUnit:?];
   }
 
-  -[HDCodableFitnessFriendWorkout setType:](v2, "setType:", [a1 workoutActivityType]);
-  -[HDCodableFitnessFriendWorkout setGoalType:](v2, "setGoalType:", [a1 goalType]);
-  v15 = [a1 goal];
-  if (v15)
+  -[HDCodableFitnessFriendWorkout setType:](v2, "setType:", [self workoutActivityType]);
+  -[HDCodableFitnessFriendWorkout setGoalType:](v2, "setGoalType:", [self goalType]);
+  goal = [self goal];
+  if (goal)
   {
-    v16 = v15;
-    [a1 goalType];
+    v16 = goal;
+    [self goalType];
     IsValidForGoal = _HKWorkoutGoalTypeIsValidForGoal();
 
     if (IsValidForGoal)
     {
-      v18 = [a1 goal];
-      [a1 goalType];
+      goal2 = [self goal];
+      [self goalType];
       v19 = _HKWorkoutCanonicalUnitForGoalType();
-      [v18 doubleValueForUnit:v19];
+      [goal2 doubleValueForUnit:v19];
       [(HDCodableFitnessFriendWorkout *)v2 setGoal:?];
     }
   }
 
-  v20 = [a1 bundleID];
-  [(HDCodableFitnessFriendWorkout *)v2 setBundleID:v20];
+  bundleID = [self bundleID];
+  [(HDCodableFitnessFriendWorkout *)v2 setBundleID:bundleID];
 
-  -[HDCodableFitnessFriendWorkout setIsWatchWorkout:](v2, "setIsWatchWorkout:", [a1 isWatchWorkout]);
-  -[HDCodableFitnessFriendWorkout setIsIndoorWorkout:](v2, "setIsIndoorWorkout:", [a1 isIndoorWorkout]);
-  v21 = [a1 deviceManufacturer];
+  -[HDCodableFitnessFriendWorkout setIsWatchWorkout:](v2, "setIsWatchWorkout:", [self isWatchWorkout]);
+  -[HDCodableFitnessFriendWorkout setIsIndoorWorkout:](v2, "setIsIndoorWorkout:", [self isIndoorWorkout]);
+  deviceManufacturer = [self deviceManufacturer];
 
-  if (v21)
+  if (deviceManufacturer)
   {
-    v22 = [a1 deviceManufacturer];
-    [(HDCodableFitnessFriendWorkout *)v2 setDeviceManufacturer:v22];
+    deviceManufacturer2 = [self deviceManufacturer];
+    [(HDCodableFitnessFriendWorkout *)v2 setDeviceManufacturer:deviceManufacturer2];
   }
 
-  v23 = [a1 deviceModel];
+  deviceModel = [self deviceModel];
 
-  if (v23)
+  if (deviceModel)
   {
-    v24 = [a1 deviceModel];
-    [(HDCodableFitnessFriendWorkout *)v2 setDeviceModel:v24];
+    deviceModel2 = [self deviceModel];
+    [(HDCodableFitnessFriendWorkout *)v2 setDeviceModel:deviceModel2];
   }
 
-  -[HDCodableFitnessFriendWorkout setAmm:](v2, "setAmm:", [a1 amm]);
-  v25 = [a1 seymourCatalogWorkoutIdentifier];
+  -[HDCodableFitnessFriendWorkout setAmm:](v2, "setAmm:", [self amm]);
+  seymourCatalogWorkoutIdentifier = [self seymourCatalogWorkoutIdentifier];
 
-  if (v25)
+  if (seymourCatalogWorkoutIdentifier)
   {
-    v26 = [a1 seymourCatalogWorkoutIdentifier];
-    [(HDCodableFitnessFriendWorkout *)v2 setSeymourCatalogWorkoutIdentifier:v26];
+    seymourCatalogWorkoutIdentifier2 = [self seymourCatalogWorkoutIdentifier];
+    [(HDCodableFitnessFriendWorkout *)v2 setSeymourCatalogWorkoutIdentifier:seymourCatalogWorkoutIdentifier2];
   }
 
-  v27 = [a1 seymourMediaType];
+  seymourMediaType = [self seymourMediaType];
 
-  if (v27)
+  if (seymourMediaType)
   {
-    v28 = [a1 seymourMediaType];
-    [(HDCodableFitnessFriendWorkout *)v2 setSeymourMediaType:v28];
+    seymourMediaType2 = [self seymourMediaType];
+    [(HDCodableFitnessFriendWorkout *)v2 setSeymourMediaType:seymourMediaType2];
   }
 
   return v2;
@@ -112,13 +112,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addFitnessFriendWorkouts:v5];
+    [v4 addFitnessFriendWorkouts:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -128,11 +128,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -140,7 +140,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;

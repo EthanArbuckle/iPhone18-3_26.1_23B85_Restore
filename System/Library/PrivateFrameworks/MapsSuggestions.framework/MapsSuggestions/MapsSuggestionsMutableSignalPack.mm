@@ -1,12 +1,12 @@
 @interface MapsSuggestionsMutableSignalPack
-- (BOOL)addFromEntry:(id)a3;
-- (BOOL)addFromMapItem:(id)a3;
-- (BOOL)writeSignalValue:(float)a3 forType:(int64_t)a4;
-- (BOOL)writeSignalValue:(float)a3 forType:(int64_t)a4 gathered:(id)a5;
-- (BOOL)writeSignalValue:(float)a3 forType:(int64_t)a4 gathered:(id)a5 expires:(id)a6;
-- (MapsSuggestionsMutableSignalPack)initWithCapacity:(unint64_t)a3;
+- (BOOL)addFromEntry:(id)entry;
+- (BOOL)addFromMapItem:(id)item;
+- (BOOL)writeSignalValue:(float)value forType:(int64_t)type;
+- (BOOL)writeSignalValue:(float)value forType:(int64_t)type gathered:(id)gathered;
+- (BOOL)writeSignalValue:(float)value forType:(int64_t)type gathered:(id)gathered expires:(id)expires;
+- (MapsSuggestionsMutableSignalPack)initWithCapacity:(unint64_t)capacity;
 - (id)copy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MapsSuggestionsMutableSignalPack
@@ -18,16 +18,16 @@
   return [(MapsSuggestionsSignalPack *)v3 initWithSignalPack:self];
 }
 
-- (BOOL)addFromEntry:(id)a3
+- (BOOL)addFromEntry:(id)entry
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  entryCopy = entry;
+  if (entryCopy)
   {
     v5 = objc_opt_class();
     v6 = MapsSuggestionsCurrentBestLocation();
     [v6 coordinate];
-    v7 = [v5 extractFromDestinationEntry:v4 originCoordinate:?];
+    v7 = [v5 extractFromDestinationEntry:entryCopy originCoordinate:?];
 
     [v7 mergeIntoSignalPack:self];
   }
@@ -49,19 +49,19 @@
     }
   }
 
-  return v4 != 0;
+  return entryCopy != 0;
 }
 
-- (BOOL)addFromMapItem:(id)a3
+- (BOOL)addFromMapItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     v5 = objc_opt_class();
     v6 = MapsSuggestionsCurrentBestLocation();
     [v6 coordinate];
-    v7 = [v5 extractFromDestinationMapItem:v4 originCoordinate:?];
+    v7 = [v5 extractFromDestinationMapItem:itemCopy originCoordinate:?];
 
     [v7 mergeIntoSignalPack:self];
   }
@@ -83,10 +83,10 @@
     }
   }
 
-  return v4 != 0;
+  return itemCopy != 0;
 }
 
-- (MapsSuggestionsMutableSignalPack)initWithCapacity:(unint64_t)a3
+- (MapsSuggestionsMutableSignalPack)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = MapsSuggestionsMutableSignalPack;
@@ -94,43 +94,43 @@
   v5 = v4;
   if (v4)
   {
-    std::__hash_table<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::__unordered_map_hasher<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::hash<MapsSuggestionsSignalType>,std::equal_to<MapsSuggestionsSignalType>,true>,std::__unordered_map_equal<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::equal_to<MapsSuggestionsSignalType>,std::hash<MapsSuggestionsSignalType>,true>,std::allocator<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>>>::__rehash<true>(&v4->super._innerSignalPack, vcvtps_u32_f32(a3 / v4->super._innerSignalPack.dict_.__table_.__max_load_factor_));
+    std::__hash_table<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::__unordered_map_hasher<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::hash<MapsSuggestionsSignalType>,std::equal_to<MapsSuggestionsSignalType>,true>,std::__unordered_map_equal<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::equal_to<MapsSuggestionsSignalType>,std::hash<MapsSuggestionsSignalType>,true>,std::allocator<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>>>::__rehash<true>(&v4->super._innerSignalPack, vcvtps_u32_f32(capacity / v4->super._innerSignalPack.dict_.__table_.__max_load_factor_));
   }
 
   return v5;
 }
 
-- (BOOL)writeSignalValue:(float)a3 forType:(int64_t)a4 gathered:(id)a5 expires:(id)a6
+- (BOOL)writeSignalValue:(float)value forType:(int64_t)type gathered:(id)gathered expires:(id)expires
 {
-  v10 = a6;
-  v11 = a5;
-  LOBYTE(a4) = MSg::SignalPack::set(&self->super._innerSignalPack.dict_.__table_.__bucket_list_.__ptr_, a4, v11, v10, a3);
+  expiresCopy = expires;
+  gatheredCopy = gathered;
+  LOBYTE(type) = MSg::SignalPack::set(&self->super._innerSignalPack.dict_.__table_.__bucket_list_.__ptr_, type, gatheredCopy, expiresCopy, value);
 
-  return a4;
+  return type;
 }
 
-- (BOOL)writeSignalValue:(float)a3 forType:(int64_t)a4 gathered:(id)a5
+- (BOOL)writeSignalValue:(float)value forType:(int64_t)type gathered:(id)gathered
 {
-  v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeInterval:v8 sinceDate:MapsSuggestionsShelfLifeForSignalType()];
-  *&v10 = a3;
-  LOBYTE(a4) = [(MapsSuggestionsMutableSignalPack *)self writeSignalValue:a4 forType:v8 gathered:v9 expires:v10];
+  gatheredCopy = gathered;
+  v9 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeInterval:gatheredCopy sinceDate:MapsSuggestionsShelfLifeForSignalType()];
+  *&v10 = value;
+  LOBYTE(type) = [(MapsSuggestionsMutableSignalPack *)self writeSignalValue:type forType:gatheredCopy gathered:v9 expires:v10];
 
-  return a4;
+  return type;
 }
 
-- (BOOL)writeSignalValue:(float)a3 forType:(int64_t)a4
+- (BOOL)writeSignalValue:(float)value forType:(int64_t)type
 {
   v7 = MapsSuggestionsNow();
-  *&v8 = a3;
-  LOBYTE(a4) = [(MapsSuggestionsMutableSignalPack *)self writeSignalValue:a4 forType:v7 gathered:v8];
+  *&v8 = value;
+  LOBYTE(type) = [(MapsSuggestionsMutableSignalPack *)self writeSignalValue:type forType:v7 gathered:v8];
 
-  return a4;
+  return type;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [MapsSuggestionsMutableSignalPack allocWithZone:a3];
+  v4 = [MapsSuggestionsMutableSignalPack allocWithZone:zone];
 
   return [(MapsSuggestionsSignalPack *)v4 initWithSignalPack:self];
 }

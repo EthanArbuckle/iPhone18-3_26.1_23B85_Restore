@@ -1,13 +1,13 @@
 @interface AudioFocusPresenter
-- (void)handleMediaSelectionDidChangeWithItem:(id)a3;
+- (void)handleMediaSelectionDidChangeWithItem:(id)item;
 @end
 
 @implementation AudioFocusPresenter
 
-- (void)handleMediaSelectionDidChangeWithItem:(id)a3
+- (void)handleMediaSelectionDidChangeWithItem:(id)item
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC9SeymourUI19AudioFocusPresenter_state);
-  v4 = a3;
+  itemCopy = item;
 
   os_unfair_lock_lock(v3 + 12);
   sub_20C0ECAE0(&v3[4]);

@@ -1,31 +1,31 @@
 @interface _RERuleMLElementComparator
-- (BOOL)shouldHideElement:(id)a3;
-- (_RERuleMLElementComparator)initWithFilteringRules:(id)a3 rankingRules:(id)a4 model:(id)a5 elementsHiddenByDefault:(BOOL)a6;
-- (float)_relevanceForElement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareElement:(id)a3 toElement:(id)a4 level:(unint64_t)a5;
+- (BOOL)shouldHideElement:(id)element;
+- (_RERuleMLElementComparator)initWithFilteringRules:(id)rules rankingRules:(id)rankingRules model:(id)model elementsHiddenByDefault:(BOOL)default;
+- (float)_relevanceForElement:(id)element;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareElement:(id)element toElement:(id)toElement level:(unint64_t)level;
 @end
 
 @implementation _RERuleMLElementComparator
 
-- (_RERuleMLElementComparator)initWithFilteringRules:(id)a3 rankingRules:(id)a4 model:(id)a5 elementsHiddenByDefault:(BOOL)a6
+- (_RERuleMLElementComparator)initWithFilteringRules:(id)rules rankingRules:(id)rankingRules model:(id)model elementsHiddenByDefault:(BOOL)default
 {
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  rulesCopy = rules;
+  rankingRulesCopy = rankingRules;
   v58.receiver = self;
   v58.super_class = _RERuleMLElementComparator;
-  v12 = [(REMLElementComparator *)&v58 initWithModel:a5];
+  v12 = [(REMLElementComparator *)&v58 initWithModel:model];
   if (v12)
   {
-    v47 = a6;
-    v49 = v10;
-    v13 = [v10 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_69];
+    defaultCopy = default;
+    v49 = rulesCopy;
+    v13 = [rulesCopy sortedArrayWithOptions:16 usingComparator:&__block_literal_global_69];
     filteringRules = v12->_filteringRules;
     v12->_filteringRules = v13;
 
-    v48 = v11;
-    v15 = [v11 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_3];
+    v48 = rankingRulesCopy;
+    v15 = [rankingRulesCopy sortedArrayWithOptions:16 usingComparator:&__block_literal_global_3];
     rankingRules = v12->_rankingRules;
     v12->_rankingRules = v15;
 
@@ -49,8 +49,8 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v54 + 1) + 8 * i) conditionEvaluator];
-          [v17 addObject:v23];
+          conditionEvaluator = [*(*(&v54 + 1) + 8 * i) conditionEvaluator];
+          [v17 addObject:conditionEvaluator];
         }
 
         v20 = [(NSArray *)v18 countByEnumeratingWithState:&v54 objects:v60 count:16];
@@ -87,14 +87,14 @@
           }
 
           v34 = *(*(&v50 + 1) + 8 * j);
-          v35 = [v34 leftConditionEvaluator];
-          [v26 addObject:v35];
+          leftConditionEvaluator = [v34 leftConditionEvaluator];
+          [v26 addObject:leftConditionEvaluator];
 
-          v36 = [v34 rightConditionEvaluator];
-          [v27 addObject:v36];
+          rightConditionEvaluator = [v34 rightConditionEvaluator];
+          [v27 addObject:rightConditionEvaluator];
 
-          v37 = [v34 comparisonConditionEvaluator];
-          [v28 addObject:v37];
+          comparisonConditionEvaluator = [v34 comparisonConditionEvaluator];
+          [v28 addObject:comparisonConditionEvaluator];
         }
 
         v31 = [(NSArray *)v29 countByEnumeratingWithState:&v50 objects:v59 count:16];
@@ -116,43 +116,43 @@
     comparisonRankingEvaluators = v46->_comparisonRankingEvaluators;
     v46->_comparisonRankingEvaluators = v42;
 
-    v46->_elementsHiddenByDefault = v47;
-    v11 = v48;
-    v10 = v49;
+    v46->_elementsHiddenByDefault = defaultCopy;
+    rankingRulesCopy = v48;
+    rulesCopy = v49;
   }
 
   v44 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   filteringRules = self->_filteringRules;
   rankingRules = self->_rankingRules;
-  v7 = [(REMLElementComparator *)self model];
-  v8 = [v4 comparatorWithFilteringRules:filteringRules rankingRules:rankingRules model:v7 elementsHiddenByDefault:self->_elementsHiddenByDefault];
+  model = [(REMLElementComparator *)self model];
+  v8 = [v4 comparatorWithFilteringRules:filteringRules rankingRules:rankingRules model:model elementsHiddenByDefault:self->_elementsHiddenByDefault];
 
   return v8;
 }
 
-- (float)_relevanceForElement:(id)a3
+- (float)_relevanceForElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 featureMap];
+  elementCopy = element;
+  featureMap = [elementCopy featureMap];
   v6 = +[REFeature forcedFeature];
-  v7 = [v5 hasValueForFeature:v6];
+  v7 = [featureMap hasValueForFeature:v6];
 
   if (v7)
   {
     v8 = +[REFeature forcedFeature];
-    v9 = [v5 valueForFeature:v8];
+    v9 = [featureMap valueForFeature:v8];
     v11 = REDoubleValueForTaggedPointer(v9, v10);
 
     v12 = RELogForDomain(4);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [_RERuleMLElementComparator _relevanceForElement:v4];
+      [_RERuleMLElementComparator _relevanceForElement:elementCopy];
     }
 
     v13 = v11;
@@ -169,11 +169,11 @@
     v15 = RELogForDomain(4);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [_RERuleMLElementComparator _relevanceForElement:v4];
+      [_RERuleMLElementComparator _relevanceForElement:elementCopy];
     }
 
-    v16 = [(REMLElementComparator *)self model];
-    v17 = [v16 predictWithFeatures:v5];
+    model = [(REMLElementComparator *)self model];
+    v17 = [model predictWithFeatures:featureMap];
 
     [v17 probability];
     v19 = v18;
@@ -186,13 +186,13 @@
     v21 = RELogForDomain(4);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [_RERuleMLElementComparator _relevanceForElement:v4];
+      [_RERuleMLElementComparator _relevanceForElement:elementCopy];
     }
 
     v22 = RELogForDomain(4);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      [(_RERuleMLElementComparator *)v4 _relevanceForElement:v17];
+      [(_RERuleMLElementComparator *)elementCopy _relevanceForElement:v17];
     }
 
     v23 = RELogForDomain(4);
@@ -221,17 +221,17 @@
   return v13;
 }
 
-- (BOOL)shouldHideElement:(id)a3
+- (BOOL)shouldHideElement:(id)element
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v5 = RELogForDomain(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(_RERuleMLElementComparator *)v4 shouldHideElement:v5];
+    [(_RERuleMLElementComparator *)elementCopy shouldHideElement:v5];
   }
 
-  v64 = v4;
+  v64 = elementCopy;
   if (![(NSArray *)self->_filteringRules count])
   {
 LABEL_26:
@@ -258,15 +258,15 @@ LABEL_26:
         v67[0] = 0;
         if (RelevanceEngineLibraryCore_2())
         {
-          v24 = [soft__REEngineDefaults_1() globalDefaults];
+          globalDefaults = [soft__REEngineDefaults_1() globalDefaults];
         }
 
         else
         {
-          v24 = 0;
+          globalDefaults = 0;
         }
 
-        v26 = [v24 _BOOLValueForKey:@"ShowAllElements" set:v67];
+        v26 = [globalDefaults _BOOLValueForKey:@"ShowAllElements" set:v67];
         v27 = v67[0] & v26;
         v28 = RELogForDomain(0);
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -284,7 +284,7 @@ LABEL_26:
       os_unfair_lock_unlock(&__RE_Cached_lock__ShowAllElements_0);
       v30 = __RE_Cached__ShowAllElements_0;
 
-      v4 = v64;
+      elementCopy = v64;
       if (v30)
       {
         goto LABEL_42;
@@ -301,9 +301,9 @@ LABEL_42:
     {
       elementsHiddenByDefault = self->_elementsHiddenByDefault;
       context = objc_autoreleasePoolPush();
-      v31 = [(REMLElementComparator *)self model];
-      v32 = [v4 featureMap];
-      v33 = [v31 predictionSetWithFeatures:v32];
+      model = [(REMLElementComparator *)self model];
+      featureMap = [elementCopy featureMap];
+      v33 = [model predictionSetWithFeatures:featureMap];
 
       if ([(NSArray *)self->_filteringRules count])
       {
@@ -317,9 +317,9 @@ LABEL_42:
           v37 = [(NSArray *)self->_filteringRules objectAtIndexedSubscript:v35];
           if ([v36 needsPredictionSet])
           {
-            v38 = [v64 featureMap];
+            featureMap2 = [v64 featureMap];
             v65 = 0;
-            v39 = [v36 acceptsFeatureMap:v38 predictionSet:v33 explanation:&v65];
+            v39 = [v36 acceptsFeatureMap:featureMap2 predictionSet:v33 explanation:&v65];
             v40 = v65;
 
             v41 = RELogForDomain(4);
@@ -331,24 +331,24 @@ LABEL_42:
                 [(_RERuleMLElementComparator *)v70 shouldHideElement:v36];
               }
 
-              v43 = [v64 identifier];
+              identifier = [v64 identifier];
               v44 = v37;
-              v45 = v43;
+              v45 = identifier;
               v46 = v40;
               if (v46 && REMLExplanationsEnabled())
               {
                 v60 = objc_alloc_init(REMLExplanationFormatter);
-                v47 = [v44 type];
+                type = [v44 type];
                 v48 = RELogForDomain(4);
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
                 {
                   v49 = @"Including";
-                  if (v47 != 1)
+                  if (type != 1)
                   {
                     v49 = 0;
                   }
 
-                  if (!v47)
+                  if (!type)
                   {
                     v49 = @"Filtering";
                   }
@@ -366,8 +366,8 @@ LABEL_42:
                 }
               }
 
-              v51 = [v44 type];
-              if (v51 == 1)
+              type2 = [v44 type];
+              if (type2 == 1)
               {
                 elementsHiddenByDefault = 0;
                 v33 = v63;
@@ -376,7 +376,7 @@ LABEL_42:
               else
               {
                 v33 = v63;
-                if (!v51)
+                if (!type2)
                 {
                   elementsHiddenByDefault = 1;
                 }
@@ -399,7 +399,7 @@ LABEL_42:
       }
 
       objc_autoreleasePoolPop(context);
-      v4 = v64;
+      elementCopy = v64;
       v25 = elementsHiddenByDefault;
     }
 
@@ -424,23 +424,23 @@ LABEL_25:
     }
   }
 
-  v9 = [v4 featureMap];
+  featureMap3 = [elementCopy featureMap];
   v66 = 0;
-  v10 = [v7 acceptsFeatureMap:v9 predictionSet:0 explanation:&v66];
+  v10 = [v7 acceptsFeatureMap:featureMap3 predictionSet:0 explanation:&v66];
   v11 = v66;
 
   v12 = RELogForDomain(4);
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
   if (!v10)
   {
-    v14 = v4;
+    v14 = elementCopy;
     if (v13)
     {
       [(_RERuleMLElementComparator *)v68 shouldHideElement:v7];
     }
 
 LABEL_24:
-    v4 = v14;
+    elementCopy = v14;
     goto LABEL_25;
   }
 
@@ -449,25 +449,25 @@ LABEL_24:
     [(_RERuleMLElementComparator *)v69 shouldHideElement:v7];
   }
 
-  v14 = v4;
-  v15 = [v4 identifier];
+  v14 = elementCopy;
+  identifier2 = [elementCopy identifier];
   v16 = v8;
-  v17 = v15;
+  v17 = identifier2;
   v18 = v11;
   if (v18 && REMLExplanationsEnabled())
   {
     v62 = objc_alloc_init(REMLExplanationFormatter);
-    v19 = [v16 type];
+    type3 = [v16 type];
     v20 = RELogForDomain(4);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = @"Including";
-      if (v19 != 1)
+      if (type3 != 1)
       {
         v21 = 0;
       }
 
-      if (!v19)
+      if (!type3)
       {
         v21 = @"Filtering";
       }
@@ -487,10 +487,10 @@ LABEL_24:
     v14 = v64;
   }
 
-  v23 = [v16 type];
-  if (v23)
+  type4 = [v16 type];
+  if (type4)
   {
-    if (v23 == 1)
+    if (type4 == 1)
     {
       v25 = 0;
       goto LABEL_35;
@@ -502,23 +502,23 @@ LABEL_24:
   v25 = 1;
 LABEL_35:
 
-  v4 = v14;
+  elementCopy = v14;
 LABEL_68:
 
   v52 = *MEMORY[0x277D85DE8];
   return v25 & 1;
 }
 
-- (int64_t)compareElement:(id)a3 toElement:(id)a4 level:(unint64_t)a5
+- (int64_t)compareElement:(id)element toElement:(id)toElement level:(unint64_t)level
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 != 1)
+  elementCopy = element;
+  toElementCopy = toElement;
+  if (level != 1)
   {
     v30 = objc_autoreleasePoolPush();
-    [(_RERuleMLElementComparator *)self _relevanceForElement:v8];
+    [(_RERuleMLElementComparator *)self _relevanceForElement:elementCopy];
     v32 = v31;
-    [(_RERuleMLElementComparator *)self _relevanceForElement:v9];
+    [(_RERuleMLElementComparator *)self _relevanceForElement:toElementCopy];
     v34 = v33;
     LODWORD(v35) = v32;
     v36 = [MEMORY[0x277CCABB0] numberWithFloat:v35];
@@ -527,20 +527,20 @@ LABEL_68:
     v39 = [v36 compare:v38];
     if (v39 == 1)
     {
-      v29 = 1;
+      order = 1;
     }
 
     else
     {
-      v29 = -1;
+      order = -1;
     }
 
     objc_autoreleasePoolPop(v30);
     if (!v39)
     {
-      v40 = [v8 identifier];
-      v41 = [v9 identifier];
-      v42 = [v40 compare:v41];
+      identifier = [elementCopy identifier];
+      identifier2 = [toElementCopy identifier];
+      v42 = [identifier compare:identifier2];
 
       if (v42 == 1)
       {
@@ -554,19 +554,19 @@ LABEL_68:
 
       if (v42)
       {
-        v29 = v43;
+        order = v43;
       }
 
       else
       {
-        v29 = 0;
+        order = 0;
       }
     }
 
     goto LABEL_45;
   }
 
-  v51 = v8;
+  v51 = elementCopy;
   if ([(NSArray *)self->_rankingRules count])
   {
     for (i = 0; i < [(NSArray *)self->_rankingRules count]; ++i)
@@ -576,60 +576,60 @@ LABEL_68:
       v13 = [(NSArray *)self->_comparisonRankingEvaluators objectAtIndexedSubscript:i];
       if (([v11 needsPredictionSet] & 1) == 0 && (objc_msgSend(v12, "needsPredictionSet") & 1) == 0)
       {
-        v14 = [v8 featureMap];
-        v15 = v9;
-        v16 = [v9 featureMap];
-        if ([v11 acceptsFeatureMap:v14 predictionSet:0 explanation:0] && objc_msgSend(v12, "acceptsFeatureMap:predictionSet:explanation:", v16, 0, 0) && objc_msgSend(v13, "compareFeatureMap:toFeatureMap:", v14, v16))
+        featureMap = [elementCopy featureMap];
+        v15 = toElementCopy;
+        featureMap2 = [toElementCopy featureMap];
+        if ([v11 acceptsFeatureMap:featureMap predictionSet:0 explanation:0] && objc_msgSend(v12, "acceptsFeatureMap:predictionSet:explanation:", featureMap2, 0, 0) && objc_msgSend(v13, "compareFeatureMap:toFeatureMap:", featureMap, featureMap2))
         {
           v47 = [(NSArray *)self->_rankingRules objectAtIndexedSubscript:i];
-          v29 = [v47 order];
+          order = [v47 order];
 LABEL_50:
 
-          v8 = v51;
-          v9 = v15;
+          elementCopy = v51;
+          toElementCopy = v15;
           goto LABEL_45;
         }
 
-        if ([v11 acceptsFeatureMap:v16 predictionSet:0 explanation:0] && objc_msgSend(v12, "acceptsFeatureMap:predictionSet:explanation:", v14, 0, 0) && objc_msgSend(v13, "compareFeatureMap:toFeatureMap:", v16, v14))
+        if ([v11 acceptsFeatureMap:featureMap2 predictionSet:0 explanation:0] && objc_msgSend(v12, "acceptsFeatureMap:predictionSet:explanation:", featureMap, 0, 0) && objc_msgSend(v13, "compareFeatureMap:toFeatureMap:", featureMap2, featureMap))
         {
           v47 = [(NSArray *)self->_rankingRules objectAtIndexedSubscript:i];
-          v48 = [v47 order];
-          if (v48 == 1)
+          order2 = [v47 order];
+          if (order2 == 1)
           {
-            v29 = -1;
+            order = -1;
           }
 
           else
           {
-            v29 = v48 != 0;
+            order = order2 != 0;
           }
 
           goto LABEL_50;
         }
 
-        v8 = v51;
-        v9 = v15;
+        elementCopy = v51;
+        toElementCopy = v15;
       }
     }
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = [(REMLElementComparator *)self model];
-  v19 = [v8 featureMap];
-  v52 = [v18 predictionSetWithFeatures:v19];
+  model = [(REMLElementComparator *)self model];
+  featureMap3 = [elementCopy featureMap];
+  v52 = [model predictionSetWithFeatures:featureMap3];
 
-  v20 = [(REMLElementComparator *)self model];
-  v21 = [v9 featureMap];
-  v22 = [v20 predictionSetWithFeatures:v21];
+  model2 = [(REMLElementComparator *)self model];
+  featureMap4 = [toElementCopy featureMap];
+  v22 = [model2 predictionSetWithFeatures:featureMap4];
 
   if (![(NSArray *)self->_rankingRules count])
   {
-    v29 = 0;
+    order = 0;
     goto LABEL_44;
   }
 
   v49 = v17;
-  v50 = v9;
+  v50 = toElementCopy;
   v23 = 0;
   while (1)
   {
@@ -641,16 +641,16 @@ LABEL_50:
       goto LABEL_25;
     }
 
-    v27 = [v51 featureMap];
-    v28 = [v50 featureMap];
-    if ([v24 acceptsFeatureMap:v27 predictionSet:v52 explanation:0] && objc_msgSend(v25, "acceptsFeatureMap:predictionSet:explanation:", v28, v22, 0) && objc_msgSend(v26, "compareFeatureMap:toFeatureMap:", v27, v28))
+    featureMap5 = [v51 featureMap];
+    featureMap6 = [v50 featureMap];
+    if ([v24 acceptsFeatureMap:featureMap5 predictionSet:v52 explanation:0] && objc_msgSend(v25, "acceptsFeatureMap:predictionSet:explanation:", featureMap6, v22, 0) && objc_msgSend(v26, "compareFeatureMap:toFeatureMap:", featureMap5, featureMap6))
     {
       v44 = [(NSArray *)self->_rankingRules objectAtIndexedSubscript:v23];
-      v29 = [v44 order];
+      order = [v44 order];
       goto LABEL_42;
     }
 
-    if ([v24 acceptsFeatureMap:v28 predictionSet:v22 explanation:0] && objc_msgSend(v25, "acceptsFeatureMap:predictionSet:explanation:", v27, v52, 0) && objc_msgSend(v26, "compareFeatureMap:toFeatureMap:", v28, v27))
+    if ([v24 acceptsFeatureMap:featureMap6 predictionSet:v22 explanation:0] && objc_msgSend(v25, "acceptsFeatureMap:predictionSet:explanation:", featureMap5, v52, 0) && objc_msgSend(v26, "compareFeatureMap:toFeatureMap:", featureMap6, featureMap5))
     {
       break;
     }
@@ -658,35 +658,35 @@ LABEL_50:
 LABEL_25:
     if (++v23 >= [(NSArray *)self->_rankingRules count])
     {
-      v29 = 0;
+      order = 0;
       goto LABEL_43;
     }
   }
 
   v44 = [(NSArray *)self->_rankingRules objectAtIndexedSubscript:v23];
-  v45 = [v44 order];
-  if (v45 == 1)
+  order3 = [v44 order];
+  if (order3 == 1)
   {
-    v29 = -1;
+    order = -1;
   }
 
   else
   {
-    v29 = v45 != 0;
+    order = order3 != 0;
   }
 
 LABEL_42:
 
 LABEL_43:
-  v9 = v50;
-  v8 = v51;
+  toElementCopy = v50;
+  elementCopy = v51;
   v17 = v49;
 LABEL_44:
 
   objc_autoreleasePoolPop(v17);
 LABEL_45:
 
-  return v29;
+  return order;
 }
 
 - (void)_relevanceForElement:(void *)a1 .cold.2(void *a1)

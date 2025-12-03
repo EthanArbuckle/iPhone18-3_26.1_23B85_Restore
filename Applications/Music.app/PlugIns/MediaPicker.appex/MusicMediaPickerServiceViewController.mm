@@ -1,8 +1,8 @@
 @interface MusicMediaPickerServiceViewController
-- (MusicMediaPickerServiceViewController)initWithCoder:(id)a3;
-- (MusicMediaPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)mediaPickerNavigationControllerDidCancel:(id)a3;
-- (void)updateWithConfiguration:(id)a3;
+- (MusicMediaPickerServiceViewController)initWithCoder:(id)coder;
+- (MusicMediaPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)mediaPickerNavigationControllerDidCancel:(id)cancel;
+- (void)updateWithConfiguration:(id)configuration;
 - (void)viewDidLoad;
 @end
 
@@ -10,13 +10,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000191C();
 }
 
-- (void)mediaPickerNavigationControllerDidCancel:(id)a3
+- (void)mediaPickerNavigationControllerDidCancel:(id)cancel
 {
-  v4 = self;
+  selfCopy = self;
   v3 = sub_10000215C();
   if (v3)
   {
@@ -25,44 +25,44 @@
   }
 }
 
-- (void)updateWithConfiguration:(id)a3
+- (void)updateWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_10000221C();
 }
 
-- (MusicMediaPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MusicMediaPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1000040A0();
     swift_unknownObjectWeakInit();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_100004090();
   }
 
   else
   {
     swift_unknownObjectWeakInit();
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for MusicMediaPickerServiceViewController();
-  v9 = [(MusicMediaPickerServiceViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(MusicMediaPickerServiceViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (MusicMediaPickerServiceViewController)initWithCoder:(id)a3
+- (MusicMediaPickerServiceViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for MusicMediaPickerServiceViewController();
-  v5 = a3;
-  v6 = [(MusicMediaPickerServiceViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(MusicMediaPickerServiceViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

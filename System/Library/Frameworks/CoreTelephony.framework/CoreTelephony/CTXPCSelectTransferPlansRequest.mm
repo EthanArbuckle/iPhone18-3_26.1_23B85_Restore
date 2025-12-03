@@ -1,17 +1,17 @@
 @interface CTXPCSelectTransferPlansRequest
 + (id)allowedClassesForArguments;
-- (CTXPCSelectTransferPlansRequest)initWithPlans:(id)a3;
+- (CTXPCSelectTransferPlansRequest)initWithPlans:(id)plans;
 - (id)plans;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCSelectTransferPlansRequest
 
-- (CTXPCSelectTransferPlansRequest)initWithPlans:(id)a3
+- (CTXPCSelectTransferPlansRequest)initWithPlans:(id)plans
 {
-  v4 = a3;
+  plansCopy = plans;
   v5 = objc_opt_new();
-  [v5 setObject:v4 forKeyedSubscript:@"plans"];
+  [v5 setObject:plansCopy forKeyedSubscript:@"plans"];
   v8.receiver = self;
   v8.super_class = CTXPCSelectTransferPlansRequest;
   v6 = [(CTXPCMessage *)&v8 initWithNamedArguments:v5];
@@ -19,24 +19,24 @@
   return v6;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCSelectTransferPlansRequest *)self plans];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  plans = [(CTXPCSelectTransferPlansRequest *)self plans];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__CTXPCSelectTransferPlansRequest_performRequestWithHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E6A43CC8;
-  v9 = v7;
+  v9 = completionHandlerCopy;
   v11 = v9;
-  [v6 selectTransferPlans:v8 completion:v10];
+  [handlerCopy selectTransferPlans:plans completion:v10];
 }
 
 + (id)allowedClassesForArguments
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCSelectTransferPlansRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -52,8 +52,8 @@
 
 - (id)plans
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"plans"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"plans"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

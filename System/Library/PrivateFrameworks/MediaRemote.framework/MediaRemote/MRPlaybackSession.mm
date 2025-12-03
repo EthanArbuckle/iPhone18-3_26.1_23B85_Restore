@@ -1,8 +1,8 @@
 @interface MRPlaybackSession
-- (BOOL)isEqual:(id)a3;
-- (MRPlaybackSession)initWithData:(id)a3;
-- (MRPlaybackSession)initWithIdentifier:(id)a3 type:(id)a4 playbackSessionData:(id)a5 revision:(id)a6 metadata:(id)a7;
-- (MRPlaybackSession)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRPlaybackSession)initWithData:(id)data;
+- (MRPlaybackSession)initWithIdentifier:(id)identifier type:(id)type playbackSessionData:(id)data revision:(id)revision metadata:(id)metadata;
+- (MRPlaybackSession)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (_MRPlaybackSessionProtobuf)protobuf;
 - (id)description;
@@ -11,35 +11,35 @@
 
 @implementation MRPlaybackSession
 
-- (MRPlaybackSession)initWithIdentifier:(id)a3 type:(id)a4 playbackSessionData:(id)a5 revision:(id)a6 metadata:(id)a7
+- (MRPlaybackSession)initWithIdentifier:(id)identifier type:(id)type playbackSessionData:(id)data revision:(id)revision metadata:(id)metadata
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  typeCopy = type;
+  dataCopy = data;
+  revisionCopy = revision;
+  metadataCopy = metadata;
   v29.receiver = self;
   v29.super_class = MRPlaybackSession;
   v17 = [(MRPlaybackSession *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [typeCopy copy];
     type = v17->_type;
     v17->_type = v20;
 
-    v22 = [v14 copy];
+    v22 = [dataCopy copy];
     playbackSessionData = v17->_playbackSessionData;
     v17->_playbackSessionData = v22;
 
-    v24 = [v15 copy];
+    v24 = [revisionCopy copy];
     revision = v17->_revision;
     v17->_revision = v24;
 
-    v26 = [v16 copy];
+    v26 = [metadataCopy copy];
     metadata = v17->_metadata;
     v17->_metadata = v26;
   }
@@ -47,18 +47,18 @@
   return v17;
 }
 
-- (MRPlaybackSession)initWithProtobuf:(id)a3
+- (MRPlaybackSession)initWithProtobuf:(id)protobuf
 {
-  if (a3)
+  if (protobuf)
   {
-    v4 = a3;
-    v5 = [v4 identifier];
-    v6 = [v4 type];
-    v7 = [v4 playbackSessionData];
-    v8 = [v4 revision];
-    v9 = [v4 metadata];
+    protobufCopy = protobuf;
+    identifier = [protobufCopy identifier];
+    type = [protobufCopy type];
+    playbackSessionData = [protobufCopy playbackSessionData];
+    revision = [protobufCopy revision];
+    metadata = [protobufCopy metadata];
 
-    v10 = [(MRPlaybackSession *)self initWithIdentifier:v5 type:v6 playbackSessionData:v7 revision:v8 metadata:v9];
+    v10 = [(MRPlaybackSession *)self initWithIdentifier:identifier type:type playbackSessionData:playbackSessionData revision:revision metadata:metadata];
     self = v10;
   }
 
@@ -70,12 +70,12 @@
   return v10;
 }
 
-- (MRPlaybackSession)initWithData:(id)a3
+- (MRPlaybackSession)initWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [[_MRPlaybackSessionProtobuf alloc] initWithData:v4];
+    v5 = [[_MRPlaybackSessionProtobuf alloc] initWithData:dataCopy];
     v6 = [(MRPlaybackSession *)self initWithProtobuf:v5];
   }
 
@@ -90,57 +90,57 @@
 - (_MRPlaybackSessionProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRPlaybackSessionProtobuf);
-  v4 = [(MRPlaybackSession *)self identifier];
-  [(_MRPlaybackSessionProtobuf *)v3 setIdentifier:v4];
+  identifier = [(MRPlaybackSession *)self identifier];
+  [(_MRPlaybackSessionProtobuf *)v3 setIdentifier:identifier];
 
-  v5 = [(MRPlaybackSession *)self type];
-  [(_MRPlaybackSessionProtobuf *)v3 setType:v5];
+  type = [(MRPlaybackSession *)self type];
+  [(_MRPlaybackSessionProtobuf *)v3 setType:type];
 
-  v6 = [(MRPlaybackSession *)self playbackSessionData];
-  [(_MRPlaybackSessionProtobuf *)v3 setPlaybackSessionData:v6];
+  playbackSessionData = [(MRPlaybackSession *)self playbackSessionData];
+  [(_MRPlaybackSessionProtobuf *)v3 setPlaybackSessionData:playbackSessionData];
 
-  v7 = [(MRPlaybackSession *)self revision];
-  [(_MRPlaybackSessionProtobuf *)v3 setRevision:v7];
+  revision = [(MRPlaybackSession *)self revision];
+  [(_MRPlaybackSessionProtobuf *)v3 setRevision:revision];
 
-  v8 = [(MRPlaybackSession *)self metadata];
-  [(_MRPlaybackSessionProtobuf *)v3 setMetadata:v8];
+  metadata = [(MRPlaybackSession *)self metadata];
+  [(_MRPlaybackSessionProtobuf *)v3 setMetadata:metadata];
 
   return v3;
 }
 
 - (NSData)data
 {
-  v2 = [(MRPlaybackSession *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRPlaybackSession *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MRPlaybackSession *)self playbackSessionData];
-  [v3 setObject:v4 forKeyedSubscript:@"playbackSessionData"];
+  playbackSessionData = [(MRPlaybackSession *)self playbackSessionData];
+  [v3 setObject:playbackSessionData forKeyedSubscript:@"playbackSessionData"];
 
-  v5 = [(MRPlaybackSession *)self identifier];
-  [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+  identifier = [(MRPlaybackSession *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v6 = [(MRPlaybackSession *)self type];
-  [v3 setObject:v6 forKeyedSubscript:@"type"];
+  type = [(MRPlaybackSession *)self type];
+  [v3 setObject:type forKeyedSubscript:@"type"];
 
-  v7 = [(MRPlaybackSession *)self revision];
-  [v3 setObject:v7 forKeyedSubscript:@"revision"];
+  revision = [(MRPlaybackSession *)self revision];
+  [v3 setObject:revision forKeyedSubscript:@"revision"];
 
-  v8 = [(MRPlaybackSession *)self metadata];
-  [v3 setObject:v8 forKeyedSubscript:@"metadata"];
+  metadata = [(MRPlaybackSession *)self metadata];
+  [v3 setObject:metadata forKeyedSubscript:@"metadata"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -150,9 +150,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MRPlaybackSession *)v4 dictionaryRepresentation];
-      v6 = [(MRPlaybackSession *)self dictionaryRepresentation];
-      v7 = [v5 isEqualToDictionary:v6];
+      dictionaryRepresentation = [(MRPlaybackSession *)equalCopy dictionaryRepresentation];
+      dictionaryRepresentation2 = [(MRPlaybackSession *)self dictionaryRepresentation];
+      v7 = [dictionaryRepresentation isEqualToDictionary:dictionaryRepresentation2];
     }
 
     else
@@ -168,8 +168,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRPlaybackSession *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRPlaybackSession *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }

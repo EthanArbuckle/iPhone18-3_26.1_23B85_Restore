@@ -1,26 +1,26 @@
 @interface PNRODSchemaPNRODResponseGeneration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODResponseGeneration)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODResponseGeneration)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODResponseGeneration)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODResponseGeneration)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODResponseGeneration
 
-- (PNRODSchemaPNRODResponseGeneration)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODResponseGeneration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = PNRODSchemaPNRODResponseGeneration;
   v5 = [(PNRODSchemaPNRODResponseGeneration *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"responseGenerationID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PNRODSchemaPNRODResponseGeneration *)v5 setResponseGenerationID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"responseGenerationType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
     }
 
     v31 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"responseGenerationHandleTime"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationHandleTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
     }
 
     v30 = v9;
-    v11 = [v4 objectForKeyedSubscript:@"responseGenerationOverrideTime"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationOverrideTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(PNRODSchemaPNRODResponseGeneration *)v5 setResponseGenerationOverrideTime:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:{@"responseGenerationValidationTime", v11}];
+    v13 = [dictionaryCopy objectForKeyedSubscript:{@"responseGenerationValidationTime", v11}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(PNRODSchemaPNRODResponseGeneration *)v5 setResponseGenerationValidationTime:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"responseGenerationCatalogTime"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationCatalogTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(PNRODSchemaPNRODResponseGeneration *)v5 setResponseGenerationCatalogTime:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"responseGenerationInferenceTime"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationInferenceTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,7 +78,7 @@
     }
 
     v32 = v6;
-    v19 = [v4 objectForKeyedSubscript:@"responseGenerationHallucinationDetectionTime"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationHallucinationDetectionTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
       [(PNRODSchemaPNRODResponseGeneration *)v5 setResponseGenerationHallucinationDetectionTime:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"responseGenerationGMSCallTime"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationGMSCallTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(PNRODSchemaPNRODResponseGeneration *)v5 setResponseGenerationGMSCallTime:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"responseGenerationCacheManagerTime"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationCacheManagerTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
       [(PNRODSchemaPNRODResponseGeneration *)v5 setResponseGenerationCacheManagerTime:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"failureInfo"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"failureInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,30 +116,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODResponseGeneration)initWithJSON:(id)a3
+- (PNRODSchemaPNRODResponseGeneration)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODResponseGeneration *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODResponseGeneration *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODResponseGeneration *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -152,148 +152,148 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_failureInfo)
   {
-    v4 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    failureInfo = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
+    dictionaryRepresentation = [failureInfo dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"failureInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"failureInfo"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"failureInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"failureInfo"];
     }
   }
 
   if (self->_responseGenerationCacheManagerTime)
   {
-    v7 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    responseGenerationCacheManagerTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
+    dictionaryRepresentation2 = [responseGenerationCacheManagerTime dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"responseGenerationCacheManagerTime"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"responseGenerationCacheManagerTime"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"responseGenerationCacheManagerTime"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"responseGenerationCacheManagerTime"];
     }
   }
 
   if (self->_responseGenerationCatalogTime)
   {
-    v10 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    responseGenerationCatalogTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
+    dictionaryRepresentation3 = [responseGenerationCatalogTime dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"responseGenerationCatalogTime"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"responseGenerationCatalogTime"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"responseGenerationCatalogTime"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"responseGenerationCatalogTime"];
     }
   }
 
   if (self->_responseGenerationGMSCallTime)
   {
-    v13 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    responseGenerationGMSCallTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
+    dictionaryRepresentation4 = [responseGenerationGMSCallTime dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"responseGenerationGMSCallTime"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"responseGenerationGMSCallTime"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"responseGenerationGMSCallTime"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"responseGenerationGMSCallTime"];
     }
   }
 
   if (self->_responseGenerationHallucinationDetectionTime)
   {
-    v16 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    responseGenerationHallucinationDetectionTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
+    dictionaryRepresentation5 = [responseGenerationHallucinationDetectionTime dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"responseGenerationHallucinationDetectionTime"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"responseGenerationHallucinationDetectionTime"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"responseGenerationHallucinationDetectionTime"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"responseGenerationHallucinationDetectionTime"];
     }
   }
 
   if (self->_responseGenerationHandleTime)
   {
-    v19 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    responseGenerationHandleTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
+    dictionaryRepresentation6 = [responseGenerationHandleTime dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"responseGenerationHandleTime"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"responseGenerationHandleTime"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"responseGenerationHandleTime"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"responseGenerationHandleTime"];
     }
   }
 
   if (self->_responseGenerationID)
   {
-    v22 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
+    dictionaryRepresentation7 = [responseGenerationID dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"responseGenerationID"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"responseGenerationID"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"responseGenerationID"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"responseGenerationID"];
     }
   }
 
   if (self->_responseGenerationInferenceTime)
   {
-    v25 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    responseGenerationInferenceTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
+    dictionaryRepresentation8 = [responseGenerationInferenceTime dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"responseGenerationInferenceTime"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"responseGenerationInferenceTime"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"responseGenerationInferenceTime"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"responseGenerationInferenceTime"];
     }
   }
 
   if (self->_responseGenerationOverrideTime)
   {
-    v28 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    responseGenerationOverrideTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
+    dictionaryRepresentation9 = [responseGenerationOverrideTime dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"responseGenerationOverrideTime"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"responseGenerationOverrideTime"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"responseGenerationOverrideTime"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"responseGenerationOverrideTime"];
     }
   }
 
@@ -310,28 +310,28 @@
       v32 = off_1E78E0CB0[v31];
     }
 
-    [v3 setObject:v32 forKeyedSubscript:@"responseGenerationType"];
+    [dictionary setObject:v32 forKeyedSubscript:@"responseGenerationType"];
   }
 
   if (self->_responseGenerationValidationTime)
   {
-    v33 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
-    v34 = [v33 dictionaryRepresentation];
-    if (v34)
+    responseGenerationValidationTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
+    dictionaryRepresentation10 = [responseGenerationValidationTime dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v34 forKeyedSubscript:@"responseGenerationValidationTime"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"responseGenerationValidationTime"];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v35 forKeyedSubscript:@"responseGenerationValidationTime"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"responseGenerationValidationTime"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -359,28 +359,28 @@
   return v10 ^ v13 ^ [(PNRODSchemaPNRODFailureInfo *)self->_failureInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
-  v6 = [v4 responseGenerationID];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
+  responseGenerationID2 = [equalCopy responseGenerationID];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v7 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
-  if (v7)
+  responseGenerationID3 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
+  if (responseGenerationID3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
-    v10 = [v4 responseGenerationID];
-    v11 = [v9 isEqual:v10];
+    v8 = responseGenerationID3;
+    responseGenerationID4 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
+    responseGenerationID5 = [equalCopy responseGenerationID];
+    v11 = [responseGenerationID4 isEqual:responseGenerationID5];
 
     if (!v11)
     {
@@ -392,7 +392,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[96] & 1))
+  if ((*&self->_has & 1) != (equalCopy[96] & 1))
   {
     goto LABEL_55;
   }
@@ -400,26 +400,26 @@
   if (*&self->_has)
   {
     responseGenerationType = self->_responseGenerationType;
-    if (responseGenerationType != [v4 responseGenerationType])
+    if (responseGenerationType != [equalCopy responseGenerationType])
     {
       goto LABEL_55;
     }
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
-  v6 = [v4 responseGenerationHandleTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
+  responseGenerationID2 = [equalCopy responseGenerationHandleTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v13 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
-  if (v13)
+  responseGenerationHandleTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
+  if (responseGenerationHandleTime)
   {
-    v14 = v13;
-    v15 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
-    v16 = [v4 responseGenerationHandleTime];
-    v17 = [v15 isEqual:v16];
+    v14 = responseGenerationHandleTime;
+    responseGenerationHandleTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
+    responseGenerationHandleTime3 = [equalCopy responseGenerationHandleTime];
+    v17 = [responseGenerationHandleTime2 isEqual:responseGenerationHandleTime3];
 
     if (!v17)
     {
@@ -431,20 +431,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
-  v6 = [v4 responseGenerationOverrideTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
+  responseGenerationID2 = [equalCopy responseGenerationOverrideTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v18 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
-  if (v18)
+  responseGenerationOverrideTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
+  if (responseGenerationOverrideTime)
   {
-    v19 = v18;
-    v20 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
-    v21 = [v4 responseGenerationOverrideTime];
-    v22 = [v20 isEqual:v21];
+    v19 = responseGenerationOverrideTime;
+    responseGenerationOverrideTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
+    responseGenerationOverrideTime3 = [equalCopy responseGenerationOverrideTime];
+    v22 = [responseGenerationOverrideTime2 isEqual:responseGenerationOverrideTime3];
 
     if (!v22)
     {
@@ -456,20 +456,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
-  v6 = [v4 responseGenerationValidationTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
+  responseGenerationID2 = [equalCopy responseGenerationValidationTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v23 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
-  if (v23)
+  responseGenerationValidationTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
+  if (responseGenerationValidationTime)
   {
-    v24 = v23;
-    v25 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
-    v26 = [v4 responseGenerationValidationTime];
-    v27 = [v25 isEqual:v26];
+    v24 = responseGenerationValidationTime;
+    responseGenerationValidationTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
+    responseGenerationValidationTime3 = [equalCopy responseGenerationValidationTime];
+    v27 = [responseGenerationValidationTime2 isEqual:responseGenerationValidationTime3];
 
     if (!v27)
     {
@@ -481,20 +481,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
-  v6 = [v4 responseGenerationCatalogTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
+  responseGenerationID2 = [equalCopy responseGenerationCatalogTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v28 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
-  if (v28)
+  responseGenerationCatalogTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
+  if (responseGenerationCatalogTime)
   {
-    v29 = v28;
-    v30 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
-    v31 = [v4 responseGenerationCatalogTime];
-    v32 = [v30 isEqual:v31];
+    v29 = responseGenerationCatalogTime;
+    responseGenerationCatalogTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
+    responseGenerationCatalogTime3 = [equalCopy responseGenerationCatalogTime];
+    v32 = [responseGenerationCatalogTime2 isEqual:responseGenerationCatalogTime3];
 
     if (!v32)
     {
@@ -506,20 +506,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
-  v6 = [v4 responseGenerationInferenceTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
+  responseGenerationID2 = [equalCopy responseGenerationInferenceTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v33 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
-  if (v33)
+  responseGenerationInferenceTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
+  if (responseGenerationInferenceTime)
   {
-    v34 = v33;
-    v35 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
-    v36 = [v4 responseGenerationInferenceTime];
-    v37 = [v35 isEqual:v36];
+    v34 = responseGenerationInferenceTime;
+    responseGenerationInferenceTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
+    responseGenerationInferenceTime3 = [equalCopy responseGenerationInferenceTime];
+    v37 = [responseGenerationInferenceTime2 isEqual:responseGenerationInferenceTime3];
 
     if (!v37)
     {
@@ -531,20 +531,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
-  v6 = [v4 responseGenerationHallucinationDetectionTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
+  responseGenerationID2 = [equalCopy responseGenerationHallucinationDetectionTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v38 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
-  if (v38)
+  responseGenerationHallucinationDetectionTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
+  if (responseGenerationHallucinationDetectionTime)
   {
-    v39 = v38;
-    v40 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
-    v41 = [v4 responseGenerationHallucinationDetectionTime];
-    v42 = [v40 isEqual:v41];
+    v39 = responseGenerationHallucinationDetectionTime;
+    responseGenerationHallucinationDetectionTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
+    responseGenerationHallucinationDetectionTime3 = [equalCopy responseGenerationHallucinationDetectionTime];
+    v42 = [responseGenerationHallucinationDetectionTime2 isEqual:responseGenerationHallucinationDetectionTime3];
 
     if (!v42)
     {
@@ -556,20 +556,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
-  v6 = [v4 responseGenerationGMSCallTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
+  responseGenerationID2 = [equalCopy responseGenerationGMSCallTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v43 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
-  if (v43)
+  responseGenerationGMSCallTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
+  if (responseGenerationGMSCallTime)
   {
-    v44 = v43;
-    v45 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
-    v46 = [v4 responseGenerationGMSCallTime];
-    v47 = [v45 isEqual:v46];
+    v44 = responseGenerationGMSCallTime;
+    responseGenerationGMSCallTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
+    responseGenerationGMSCallTime3 = [equalCopy responseGenerationGMSCallTime];
+    v47 = [responseGenerationGMSCallTime2 isEqual:responseGenerationGMSCallTime3];
 
     if (!v47)
     {
@@ -581,20 +581,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
-  v6 = [v4 responseGenerationCacheManagerTime];
-  if ((v5 != 0) == (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
+  responseGenerationID2 = [equalCopy responseGenerationCacheManagerTime];
+  if ((responseGenerationID != 0) == (responseGenerationID2 == 0))
   {
     goto LABEL_54;
   }
 
-  v48 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
-  if (v48)
+  responseGenerationCacheManagerTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
+  if (responseGenerationCacheManagerTime)
   {
-    v49 = v48;
-    v50 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
-    v51 = [v4 responseGenerationCacheManagerTime];
-    v52 = [v50 isEqual:v51];
+    v49 = responseGenerationCacheManagerTime;
+    responseGenerationCacheManagerTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
+    responseGenerationCacheManagerTime3 = [equalCopy responseGenerationCacheManagerTime];
+    v52 = [responseGenerationCacheManagerTime2 isEqual:responseGenerationCacheManagerTime3];
 
     if (!v52)
     {
@@ -606,12 +606,12 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
-  v6 = [v4 failureInfo];
-  if ((v5 != 0) != (v6 == 0))
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
+  responseGenerationID2 = [equalCopy failureInfo];
+  if ((responseGenerationID != 0) != (responseGenerationID2 == 0))
   {
-    v53 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
-    if (!v53)
+    failureInfo = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
+    if (!failureInfo)
     {
 
 LABEL_58:
@@ -619,10 +619,10 @@ LABEL_58:
       goto LABEL_56;
     }
 
-    v54 = v53;
-    v55 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
-    v56 = [v4 failureInfo];
-    v57 = [v55 isEqual:v56];
+    v54 = failureInfo;
+    failureInfo2 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
+    failureInfo3 = [equalCopy failureInfo];
+    v57 = [failureInfo2 isEqual:failureInfo3];
 
     if (v57)
     {
@@ -642,14 +642,14 @@ LABEL_56:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
-  v4 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
+  toCopy = to;
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
 
-  if (v4)
+  if (responseGenerationID)
   {
-    v5 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
+    responseGenerationID2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
     PBDataWriterWriteSubmessage();
   }
 
@@ -658,174 +658,174 @@ LABEL_56:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
+  responseGenerationHandleTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
 
-  if (v6)
+  if (responseGenerationHandleTime)
   {
-    v7 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
+    responseGenerationHandleTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
+  responseGenerationOverrideTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
 
-  if (v8)
+  if (responseGenerationOverrideTime)
   {
-    v9 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
+    responseGenerationOverrideTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
+  responseGenerationValidationTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
 
-  if (v10)
+  if (responseGenerationValidationTime)
   {
-    v11 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
+    responseGenerationValidationTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
+  responseGenerationCatalogTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
 
-  if (v12)
+  if (responseGenerationCatalogTime)
   {
-    v13 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
+    responseGenerationCatalogTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
+  responseGenerationInferenceTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
 
-  if (v14)
+  if (responseGenerationInferenceTime)
   {
-    v15 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
+    responseGenerationInferenceTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
+  responseGenerationHallucinationDetectionTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
 
-  if (v16)
+  if (responseGenerationHallucinationDetectionTime)
   {
-    v17 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
+    responseGenerationHallucinationDetectionTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
+  responseGenerationGMSCallTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
 
-  if (v18)
+  if (responseGenerationGMSCallTime)
   {
-    v19 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
+    responseGenerationGMSCallTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
+  responseGenerationCacheManagerTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
 
-  if (v20)
+  if (responseGenerationCacheManagerTime)
   {
-    v21 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
+    responseGenerationCacheManagerTime2 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
+  failureInfo = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (failureInfo)
   {
-    v24 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
+    failureInfo2 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
     PBDataWriterWriteSubmessage();
 
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v37.receiver = self;
   v37.super_class = PNRODSchemaPNRODResponseGeneration;
-  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:policyCopy];
+  responseGenerationID = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationID];
+  v7 = [responseGenerationID applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationID];
   }
 
-  v9 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  responseGenerationHandleTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHandleTime];
+  v10 = [responseGenerationHandleTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationHandleTime];
   }
 
-  v12 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  responseGenerationOverrideTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationOverrideTime];
+  v13 = [responseGenerationOverrideTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationOverrideTime];
   }
 
-  v15 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  responseGenerationValidationTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationValidationTime];
+  v16 = [responseGenerationValidationTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationValidationTime];
   }
 
-  v18 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  responseGenerationCatalogTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCatalogTime];
+  v19 = [responseGenerationCatalogTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationCatalogTime];
   }
 
-  v21 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  responseGenerationInferenceTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationInferenceTime];
+  v22 = [responseGenerationInferenceTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationInferenceTime];
   }
 
-  v24 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  responseGenerationHallucinationDetectionTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationHallucinationDetectionTime];
+  v25 = [responseGenerationHallucinationDetectionTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationHallucinationDetectionTime];
   }
 
-  v27 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  responseGenerationGMSCallTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationGMSCallTime];
+  v28 = [responseGenerationGMSCallTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationGMSCallTime];
   }
 
-  v30 = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  responseGenerationCacheManagerTime = [(PNRODSchemaPNRODResponseGeneration *)self responseGenerationCacheManagerTime];
+  v31 = [responseGenerationCacheManagerTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteResponseGenerationCacheManagerTime];
   }
 
-  v33 = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  failureInfo = [(PNRODSchemaPNRODResponseGeneration *)self failureInfo];
+  v34 = [failureInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(PNRODSchemaPNRODResponseGeneration *)self deleteFailureInfo];
   }

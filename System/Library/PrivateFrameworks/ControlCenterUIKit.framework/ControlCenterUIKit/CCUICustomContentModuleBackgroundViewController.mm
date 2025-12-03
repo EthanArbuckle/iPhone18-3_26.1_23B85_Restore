@@ -1,27 +1,27 @@
 @interface CCUICustomContentModuleBackgroundViewController
 - (BOOL)_shouldLimitContentSizeCategory;
-- (CGPoint)_footerCenterForBounds:(CGRect)a3;
-- (CGPoint)_headerCenterForBounds:(CGRect)a3;
+- (CGPoint)_footerCenterForBounds:(CGRect)bounds;
+- (CGPoint)_headerCenterForBounds:(CGRect)bounds;
 - (id)_titleFont;
 - (id)requiredVisualStyleCategories;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_updateCustomFooterViewLayoutIfNecessary;
 - (void)_updateCustomHeaderViewLayoutIfNecessary;
 - (void)_updateFooterButtonsLayoutIfNecessary;
-- (void)_updateHeaderGlyphVisualStylingWithProvider:(id)a3;
+- (void)_updateHeaderGlyphVisualStylingWithProvider:(id)provider;
 - (void)_updateHeaderLayoutIfNecessary;
 - (void)_updateTitleFont;
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingVisualStylingProvider:(id)a5;
-- (void)setCustomFooterView:(id)a3;
-- (void)setCustomHeaderView:(id)a3;
-- (void)setFooterButtons:(id)a3;
-- (void)setHeaderGlyphImage:(id)a3 unscaledSymbolPointSize:(double)a4;
-- (void)setHeaderGlyphPackageDescription:(id)a3;
-- (void)setHeaderGlyphState:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingVisualStylingProvider:(id)stylingProvider;
+- (void)setCustomFooterView:(id)view;
+- (void)setCustomHeaderView:(id)view;
+- (void)setFooterButtons:(id)buttons;
+- (void)setHeaderGlyphImage:(id)image unscaledSymbolPointSize:(double)size;
+- (void)setHeaderGlyphPackageDescription:(id)description;
+- (void)setHeaderGlyphState:(id)state;
+- (void)setHeaderTitle:(id)title;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -52,12 +52,12 @@
   [(CCUICustomContentModuleBackgroundViewController *)self _updateCustomFooterViewLayoutIfNecessary];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = CCUICustomContentModuleBackgroundViewController;
-  [(CCUICustomContentModuleBackgroundViewController *)&v10 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(CCUICustomContentModuleBackgroundViewController *)&v10 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     v6 = [(CCUICustomContentModuleBackgroundViewController *)self visualStylingProviderForCategory:1];
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
@@ -67,13 +67,13 @@
   }
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   headerTitleLabel = self->_headerTitleLabel;
-  if (v4)
+  if (titleCopy)
   {
-    v15 = v4;
+    v15 = titleCopy;
     if (!headerTitleLabel)
     {
       v6 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -82,15 +82,15 @@
       self->_headerTitleLabel = v7;
 
       v9 = self->_headerTitleLabel;
-      v10 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      [(UILabel *)v9 setTextColor:v10];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+      [(UILabel *)v9 setTextColor:systemWhiteColor];
 
       v11 = self->_headerTitleLabel;
       v12 = [MEMORY[0x1E69DB878] systemFontOfSize:20.0];
       [(UILabel *)v11 setFont:v12];
 
-      v13 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-      [v13 addSubview:self->_headerTitleLabel];
+      view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+      [view addSubview:self->_headerTitleLabel];
 
       headerTitleLabel = self->_headerTitleLabel;
     }
@@ -112,19 +112,19 @@
     self->_headerTitleLabel = 0;
   }
 
-  v4 = v15;
+  titleCopy = v15;
 LABEL_8:
 
-  MEMORY[0x1EEE66BB8](headerTitleLabel, v4);
+  MEMORY[0x1EEE66BB8](headerTitleLabel, titleCopy);
 }
 
-- (void)setHeaderGlyphImage:(id)a3 unscaledSymbolPointSize:(double)a4
+- (void)setHeaderGlyphImage:(id)image unscaledSymbolPointSize:(double)size
 {
-  v6 = a3;
+  imageCopy = image;
   headerImageView = self->_headerImageView;
-  if (v6)
+  if (imageCopy)
   {
-    v22 = v6;
+    v22 = imageCopy;
     if (!headerImageView)
     {
       v8 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -134,27 +134,27 @@ LABEL_8:
       [(UIImageView *)self->_headerImageView controlCenterApplyPrimaryContentShadow];
       [(UIImageView *)self->_headerImageView setContentMode:1];
       v10 = self->_headerImageView;
-      v11 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      [(UIImageView *)v10 setTintColor:v11];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+      [(UIImageView *)v10 setTintColor:systemWhiteColor];
 
-      v12 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-      [v12 addSubview:self->_headerImageView];
+      view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+      [view addSubview:self->_headerImageView];
 
-      v6 = v22;
+      imageCopy = v22;
     }
 
-    if ([(UIImageView *)v6 isSymbolImage])
+    if ([(UIImageView *)imageCopy isSymbolImage])
     {
-      v13 = [MEMORY[0x1E69DC938] currentDevice];
-      v14 = [v13 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
       v15 = 1.33333333;
-      if ((v14 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
       {
         v15 = 1.5;
       }
 
-      v16 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:round(v15 * a4)];
+      v16 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:round(v15 * size)];
       v17 = [(UIImageView *)v22 imageByApplyingSymbolConfiguration:v16];
 
       v18 = v17;
@@ -170,8 +170,8 @@ LABEL_8:
     v20 = [(CCUICustomContentModuleBackgroundViewController *)self visualStylingProviderForCategory:1];
     [(CCUICustomContentModuleBackgroundViewController *)self _updateHeaderGlyphVisualStylingWithProvider:v20];
 
-    v21 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    [v21 setNeedsLayout];
+    view2 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    [view2 setNeedsLayout];
 
     v19 = v23;
   }
@@ -189,12 +189,12 @@ LABEL_8:
   }
 }
 
-- (void)setHeaderGlyphPackageDescription:(id)a3
+- (void)setHeaderGlyphPackageDescription:(id)description
 {
-  v6 = a3;
-  v7 = 1008;
+  descriptionCopy = description;
+  currentDevice = 1008;
   packageView = self->_packageView;
-  v19 = v6;
+  v19 = descriptionCopy;
   if (!packageView)
   {
     v9 = objc_alloc_init(CCUICAPackageView);
@@ -202,14 +202,14 @@ LABEL_8:
     self->_packageView = v9;
 
     [(UIView *)self->_packageView controlCenterApplyPrimaryContentShadow];
-    v11 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    [v11 addSubview:self->_packageView];
+    view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    [view addSubview:self->_packageView];
 
-    v6 = v19;
+    descriptionCopy = v19;
     packageView = self->_packageView;
   }
 
-  [(CCUICAPackageView *)packageView setPackageDescription:v6];
+  [(CCUICAPackageView *)packageView setPackageDescription:descriptionCopy];
   v12 = self->_packageView;
   v21.origin.x = CCUIReferenceScreenBounds();
   Width = CGRectGetWidth(v21);
@@ -219,8 +219,8 @@ LABEL_8:
     v14 = CGRectGetWidth(v22);
     if (v14 >= 1024.0)
     {
-      v7 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v7 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
       {
         [(CCUICAPackageView *)v12 setScale:1.25];
 LABEL_41:
@@ -239,8 +239,8 @@ LABEL_42:
     v15 = CGRectGetWidth(v23);
     if (v15 >= 834.0)
     {
-      v3 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v3 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
       {
         [(CCUICAPackageView *)v12 setScale:1.25];
 LABEL_39:
@@ -264,9 +264,9 @@ LABEL_40:
 
     else
     {
-      v17 = [MEMORY[0x1E69DC938] currentDevice];
+      currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
       v18 = 1.25;
-      if ([v17 userInterfaceIdiom] != 1)
+      if ([currentDevice3 userInterfaceIdiom] != 1)
       {
         v25.origin.x = CCUIReferenceScreenBounds();
         v18 = 1.5;
@@ -340,32 +340,32 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)setHeaderGlyphState:(id)a3
+- (void)setHeaderGlyphState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(CCUICustomContentModuleBackgroundViewController *)self loadViewIfNeeded];
-  [(CCUICAPackageView *)self->_packageView setStateName:v4];
+  [(CCUICAPackageView *)self->_packageView setStateName:stateCopy];
 }
 
-- (void)setCustomHeaderView:(id)a3
+- (void)setCustomHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customHeaderView = self->_customHeaderView;
-  if (customHeaderView != v5)
+  if (customHeaderView != viewCopy)
   {
-    v13 = v5;
+    v13 = viewCopy;
     if (customHeaderView)
     {
       [(UIView *)customHeaderView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_customHeaderView, a3);
+    objc_storeStrong(&self->_customHeaderView, view);
     v7 = self->_customHeaderView;
-    v8 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    v9 = v8;
+    view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    v9 = view;
     if (v7)
     {
-      [v8 addSubview:self->_customHeaderView];
+      [view addSubview:self->_customHeaderView];
 
       [(UILabel *)self->_headerTitleLabel removeFromSuperview];
       [(UIImageView *)self->_headerImageView removeFromSuperview];
@@ -374,28 +374,28 @@ LABEL_44:
 
     else
     {
-      [v8 addSubview:self->_headerTitleLabel];
+      [view addSubview:self->_headerTitleLabel];
 
-      v10 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-      [v10 addSubview:self->_headerImageView];
+      view2 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+      [view2 addSubview:self->_headerImageView];
 
-      v11 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-      [v11 addSubview:self->_packageView];
+      view3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+      [view3 addSubview:self->_packageView];
     }
 
-    v12 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    [v12 setNeedsLayout];
+    view4 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    [view4 setNeedsLayout];
 
-    v5 = v13;
+    viewCopy = v13;
   }
 
-  MEMORY[0x1EEE66BB8](customHeaderView, v5);
+  MEMORY[0x1EEE66BB8](customHeaderView, viewCopy);
 }
 
-- (void)setFooterButtons:(id)a3
+- (void)setFooterButtons:(id)buttons
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonsCopy = buttons;
   footerButtons = self->_footerButtons;
   if (footerButtons)
   {
@@ -418,8 +418,8 @@ LABEL_44:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v29 + 1) + 8 * i) view];
-          [v11 removeFromSuperview];
+          view = [*(*(&v29 + 1) + 8 * i) view];
+          [view removeFromSuperview];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -429,7 +429,7 @@ LABEL_44:
     }
   }
 
-  v12 = [v4 copy];
+  v12 = [buttonsCopy copy];
   v13 = self->_footerButtons;
   self->_footerButtons = v12;
 
@@ -470,9 +470,9 @@ LABEL_44:
 
         v22 = *(*(&v25 + 1) + 8 * j);
         [v22 setContentSizeCategoryThreshold:{v16, v25}];
-        v23 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-        v24 = [v22 view];
-        [v23 addSubview:v24];
+        view2 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+        view3 = [v22 view];
+        [view2 addSubview:view3];
       }
 
       v19 = [(NSArray *)v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -482,23 +482,23 @@ LABEL_44:
   }
 }
 
-- (void)setCustomFooterView:(id)a3
+- (void)setCustomFooterView:(id)view
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   customFooterView = self->_customFooterView;
-  if (customFooterView != v5)
+  if (customFooterView != viewCopy)
   {
     if (customFooterView)
     {
       [(UIView *)customFooterView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_customFooterView, a3);
+    objc_storeStrong(&self->_customFooterView, view);
     if (self->_customFooterView)
     {
-      v7 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-      [v7 addSubview:self->_customFooterView];
+      view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+      [view addSubview:self->_customFooterView];
 
       v28 = 0u;
       v29 = 0u;
@@ -519,8 +519,8 @@ LABEL_44:
               objc_enumerationMutation(v8);
             }
 
-            v13 = [*(*(&v26 + 1) + 8 * i) view];
-            [v13 removeFromSuperview];
+            view2 = [*(*(&v26 + 1) + 8 * i) view];
+            [view2 removeFromSuperview];
           }
 
           v10 = [(NSArray *)v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -552,9 +552,9 @@ LABEL_44:
             }
 
             v18 = *(*(&v22 + 1) + 8 * j);
-            v19 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-            v20 = [v18 view];
-            [v19 addSubview:v20];
+            view3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+            view4 = [v18 view];
+            [view3 addSubview:view4];
           }
 
           v15 = [(NSArray *)v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -564,21 +564,21 @@ LABEL_44:
       }
     }
 
-    v21 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    [v21 setNeedsLayout];
+    view5 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    [view5 setNeedsLayout];
   }
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  v5 = [(CCUICustomContentModuleBackgroundViewController *)self requiredVisualStyleCategories];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 containsObject:v6];
+  requiredVisualStyleCategories = [(CCUICustomContentModuleBackgroundViewController *)self requiredVisualStyleCategories];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v7 = [requiredVisualStyleCategories containsObject:v6];
 
   if (v7)
   {
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:category];
     v10 = [(NSMutableDictionary *)categoriesToVisualStylingProviders objectForKey:v9];
     v11 = v10;
     if (v10)
@@ -588,8 +588,8 @@ LABEL_44:
 
     else
     {
-      v13 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-      v12 = [v13 visualStylingProviderForCategory:a3];
+      view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+      v12 = [view visualStylingProviderForCategory:category];
     }
   }
 
@@ -624,8 +624,8 @@ LABEL_44:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) requiredVisualStyleCategories];
-        [v3 addObjectsFromArray:v9];
+        requiredVisualStyleCategories = [*(*(&v12 + 1) + 8 * i) requiredVisualStyleCategories];
+        [v3 addObjectsFromArray:requiredVisualStyleCategories];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -634,25 +634,25 @@ LABEL_44:
     while (v6);
   }
 
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v17 = a3;
-  v6 = [(CCUICustomContentModuleBackgroundViewController *)self requiredVisualStyleCategories];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v8 = [v6 containsObject:v7];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(CCUICustomContentModuleBackgroundViewController *)self requiredVisualStyleCategories];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v8 = [requiredVisualStyleCategories containsObject:v7];
 
   if (v8)
   {
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:category];
     v11 = [(NSMutableDictionary *)categoriesToVisualStylingProviders objectForKey:v10];
 
-    if (v11 == v17)
+    if (v11 == providerCopy)
     {
 LABEL_10:
 
@@ -660,7 +660,7 @@ LABEL_10:
     }
 
     v12 = self->_categoriesToVisualStylingProviders;
-    if (v17)
+    if (providerCopy)
     {
       if (!v12)
       {
@@ -671,13 +671,13 @@ LABEL_10:
         v12 = self->_categoriesToVisualStylingProviders;
       }
 
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-      [(NSMutableDictionary *)v12 setObject:v17 forKey:v15];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+      [(NSMutableDictionary *)v12 setObject:providerCopy forKey:v15];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v16 = [MEMORY[0x1E696AD98] numberWithInteger:category];
       [(NSMutableDictionary *)v12 removeObjectForKey:v16];
 
       if ([(NSMutableDictionary *)self->_categoriesToVisualStylingProviders count])
@@ -690,7 +690,7 @@ LABEL_10:
     }
 
 LABEL_9:
-    [(CCUICustomContentModuleBackgroundViewController *)self _visualStylingProvider:v17 didChangeForCategory:a4 outgoingVisualStylingProvider:v11];
+    [(CCUICustomContentModuleBackgroundViewController *)self _visualStylingProvider:providerCopy didChangeForCategory:category outgoingVisualStylingProvider:v11];
     goto LABEL_10;
   }
 
@@ -699,8 +699,8 @@ LABEL_11:
 
 - (void)_updateHeaderLayoutIfNecessary
 {
-  v3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-  [v3 bounds];
+  view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+  [view bounds];
   [(CCUICustomContentModuleBackgroundViewController *)self _headerCenterForBounds:?];
 
   if (!CGFloatIsValid() || !CGFloatIsValid())
@@ -708,16 +708,16 @@ LABEL_11:
     return;
   }
 
-  v4 = [(CCUICustomContentModuleBackgroundViewController *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(CCUICustomContentModuleBackgroundViewController *)self traitCollection];
+  [traitCollection displayScale];
 
-  v37 = [(UIImageView *)self->_headerImageView image];
-  [v37 size];
-  if (([v37 isSymbolImage] & 1) == 0)
+  image = [(UIImageView *)self->_headerImageView image];
+  [image size];
+  if (([image isSymbolImage] & 1) == 0)
   {
     v39.origin.x = CCUIReferenceScreenBounds();
     Width = CGRectGetWidth(v39);
-    v6 = 0x1E69DC000;
+    currentDevice4 = 0x1E69DC000;
     if (Width >= 1024.0 && ([MEMORY[0x1E69DC938] currentDevice], v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "userInterfaceIdiom") == 1) && SBFEffectiveHomeButtonType() != 2)
     {
       v36 = 0;
@@ -764,8 +764,8 @@ LABEL_11:
 
           else
           {
-            v35 = [MEMORY[0x1E69DC938] currentDevice];
-            if ([v35 userInterfaceIdiom] != 1)
+            currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+            if ([currentDevice userInterfaceIdiom] != 1)
             {
               v43.origin.x = CCUIReferenceScreenBounds();
               if (CGRectGetWidth(v43) < 430.0)
@@ -830,8 +830,8 @@ LABEL_11:
       v15 = v14 >= 1024.0;
       if (v14 >= 1024.0)
       {
-        v31 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v31 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice2 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
         {
           v16 = 0;
           v17 = 0;
@@ -846,8 +846,8 @@ LABEL_11:
       v18 = v19 >= 834.0;
       if (v19 >= 834.0)
       {
-        v29 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v29 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
+        currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice3 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
         {
           v16 = 0;
           v17 = 0;
@@ -867,8 +867,8 @@ LABEL_11:
 
       else
       {
-        v6 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v6 userInterfaceIdiom] != 1)
+        currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice4 userInterfaceIdiom] != 1)
         {
           v57.origin.x = CCUIReferenceScreenBounds();
           if (CGRectGetWidth(v57) < 430.0)
@@ -1055,8 +1055,8 @@ LABEL_90:
 {
   if (self->_customHeaderView)
   {
-    v3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    [v3 bounds];
+    view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    [view bounds];
     [(CCUICustomContentModuleBackgroundViewController *)self _headerCenterForBounds:?];
 
     if (CGFloatIsValid())
@@ -1073,25 +1073,25 @@ LABEL_90:
   }
 }
 
-- (CGPoint)_headerCenterForBounds:(CGRect)a3
+- (CGPoint)_headerCenterForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsEmpty(a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectIsEmpty(bounds))
   {
-    v10 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    if (CCUILayoutShouldBePortrait(v10))
+    view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    if (CCUILayoutShouldBePortrait(view))
     {
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DC938] currentDevice];
-      v12 = [v11 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v12 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
       {
         if ([(CCUICustomContentModuleBackgroundViewController *)self positionHeaderToRightInLandscapeRight])
         {
@@ -1103,7 +1103,7 @@ LABEL_90:
           v15 = 0;
         }
 
-        v16 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+        view2 = [(CCUICustomContentModuleBackgroundViewController *)self view];
         v24.origin.x = x;
         v24.origin.y = y;
         v24.size.width = width;
@@ -1113,7 +1113,7 @@ LABEL_90:
         v25.origin.y = y;
         v25.size.width = width;
         v25.size.height = height;
-        [v16 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v25), 1.0}];
+        [view2 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v25), 1.0}];
         CGRectGetMinX(v26);
 
         v27.origin.x = x;
@@ -1140,7 +1140,7 @@ LABEL_90:
       }
     }
 
-    v13 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    view3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
     v19.origin.x = x;
     v19.origin.y = y;
     v19.size.width = width;
@@ -1150,7 +1150,7 @@ LABEL_90:
     v20.origin.y = y;
     v20.size.width = width;
     v20.size.height = height;
-    [v13 _inscribedRectInBoundingPathByInsettingRect:5 onEdges:1 withOptions:{MidX, 0.0, 1.0, CGRectGetHeight(v20)}];
+    [view3 _inscribedRectInBoundingPathByInsettingRect:5 onEdges:1 withOptions:{MidX, 0.0, 1.0, CGRectGetHeight(v20)}];
     CGRectGetMinY(v21);
 
     v22.origin.x = x;
@@ -1177,15 +1177,15 @@ LABEL_14:
   return result;
 }
 
-- (void)_updateHeaderGlyphVisualStylingWithProvider:(id)a3
+- (void)_updateHeaderGlyphVisualStylingWithProvider:(id)provider
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_headerImageView image];
-  v5 = [v4 renderingMode];
+  providerCopy = provider;
+  image = [(UIImageView *)self->_headerImageView image];
+  renderingMode = [image renderingMode];
 
-  if (v5 == 2)
+  if (renderingMode == 2)
   {
-    [v6 automaticallyUpdateView:self->_headerImageView withStyle:0];
+    [providerCopy automaticallyUpdateView:self->_headerImageView withStyle:0];
   }
 
   else
@@ -1197,25 +1197,25 @@ LABEL_14:
 - (void)_updateTitleFont
 {
   headerTitleLabel = self->_headerTitleLabel;
-  v4 = [(CCUICustomContentModuleBackgroundViewController *)self _titleFont];
-  [(UILabel *)headerTitleLabel setFont:v4];
+  _titleFont = [(CCUICustomContentModuleBackgroundViewController *)self _titleFont];
+  [(UILabel *)headerTitleLabel setFont:_titleFont];
 
   [(UILabel *)self->_headerTitleLabel sizeToFit];
-  v5 = [(CCUICustomContentModuleBackgroundViewController *)self viewIfLoaded];
-  [v5 setNeedsLayout];
+  viewIfLoaded = [(CCUICustomContentModuleBackgroundViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (id)_titleFont
 {
   if ([(CCUICustomContentModuleBackgroundViewController *)self _shouldLimitContentSizeCategory])
   {
-    v3 = *MEMORY[0x1E69DDC38];
+    preferredContentSizeCategory = *MEMORY[0x1E69DDC38];
   }
 
   else
   {
-    v4 = [(CCUICustomContentModuleBackgroundViewController *)self traitCollection];
-    v3 = [v4 preferredContentSizeCategory];
+    traitCollection = [(CCUICustomContentModuleBackgroundViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   }
 
   headerImageView = self->_headerImageView;
@@ -1240,17 +1240,17 @@ LABEL_14:
     v8 = 8;
   }
 
-  v9 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:*v7 hiFontStyle:v8 contentSizeCategory:v3];
+  v9 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:*v7 hiFontStyle:v8 contentSizeCategory:preferredContentSizeCategory];
 
   return v9;
 }
 
 - (BOOL)_shouldLimitContentSizeCategory
 {
-  v2 = [(CCUICustomContentModuleBackgroundViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(CCUICustomContentModuleBackgroundViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) <= 1 && UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
+  v4 = ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) <= 1 && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
   return v4;
 }
 
@@ -1259,32 +1259,32 @@ LABEL_14:
   v97 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_footerButtons count])
   {
-    v3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    [v3 bounds];
+    view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
     v12 = [(NSArray *)self->_footerButtons count];
-    v13 = [(NSArray *)self->_footerButtons firstObject];
-    v14 = [v13 button];
-    [v14 sizeThatFits:{v9, v11}];
+    firstObject = [(NSArray *)self->_footerButtons firstObject];
+    button = [firstObject button];
+    [button sizeThatFits:{v9, v11}];
     v16 = v15;
 
-    v17 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    if (CCUILayoutShouldBePortrait(v17))
+    view2 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    if (CCUILayoutShouldBePortrait(view2))
     {
     }
 
     else
     {
-      v18 = [MEMORY[0x1E69DC938] currentDevice];
-      v19 = [v18 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v19 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
       {
-        v37 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+        view3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
         v100.origin.x = v5;
         v100.origin.y = v7;
         v100.size.width = v9;
@@ -1295,7 +1295,7 @@ LABEL_14:
         v101.size.width = v9;
         v101.size.height = v11;
         v39 = 0.0;
-        [v37 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v101), 1.0}];
+        [view3 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v101), 1.0}];
         MaxX = CGRectGetMaxX(v102);
 
         v103.origin.x = v5;
@@ -1361,17 +1361,17 @@ LABEL_14:
               }
 
               v52 = *(*(&v81 + 1) + 8 * i);
-              v53 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-              v54 = [v53 traitCollection];
-              [v54 displayScale];
+              view4 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+              traitCollection = [view4 traitCollection];
+              [traitCollection displayScale];
 
-              v55 = [v52 view];
-              [v55 sizeThatFits:{v44, 0.0}];
+              view5 = [v52 view];
+              [view5 sizeThatFits:{v44, 0.0}];
               v57 = v56;
 
-              v58 = [v52 view];
+              view6 = [v52 view];
               UIRectIntegralWithScale();
-              [v58 setBounds:?];
+              [view6 setBounds:?];
 
               v48 = v48 + v57;
             }
@@ -1408,24 +1408,24 @@ LABEL_14:
               }
 
               v63 = *(*(&v77 + 1) + 8 * j);
-              v64 = [v63 view];
-              [v64 bounds];
+              view7 = [v63 view];
+              [view7 bounds];
               v66 = v65;
               v68 = v67;
               v70 = v69;
               v72 = v71;
 
-              v73 = [v63 view];
+              view8 = [v63 view];
               v108.origin.x = v66;
               v108.origin.y = v68;
               v108.size.width = v70;
               v108.size.height = v72;
               CGRectGetHeight(v108);
               UIPointIntegral();
-              [v73 setCenter:?];
+              [view8 setCenter:?];
 
-              v74 = [v63 view];
-              [v74 frame];
+              view9 = [v63 view];
+              [view9 frame];
               CGRectGetMaxY(v109);
             }
 
@@ -1470,8 +1470,8 @@ LABEL_14:
             objc_enumerationMutation(v21);
           }
 
-          v27 = [*(*(&v89 + 1) + 8 * k) view];
-          [v27 sizeThatFits:{v20 + -12.0, 0.0}];
+          view10 = [*(*(&v89 + 1) + 8 * k) view];
+          [view10 sizeThatFits:{v20 + -12.0, 0.0}];
           v29 = v28;
 
           if (v25 < v29)
@@ -1508,10 +1508,10 @@ LABEL_14:
           }
 
           ++v33;
-          v36 = [*(*(&v85 + 1) + 8 * m) view];
+          view11 = [*(*(&v85 + 1) + 8 * m) view];
           UIRectCenteredAboutPoint();
           UIRectIntegralWithScale();
-          [v36 setFrame:?];
+          [view11 setFrame:?];
         }
 
         v32 = [(NSArray *)v30 countByEnumeratingWithState:&v85 objects:v95 count:16];
@@ -1528,8 +1528,8 @@ LABEL_44:
 {
   if (self->_customFooterView)
   {
-    v3 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-    [v3 bounds];
+    view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+    [view bounds];
     [(CCUICustomContentModuleBackgroundViewController *)self _footerCenterForBounds:?];
     v5 = v4;
     v7 = v6;
@@ -1546,14 +1546,14 @@ LABEL_44:
   }
 }
 
-- (CGPoint)_footerCenterForBounds:(CGRect)a3
+- (CGPoint)_footerCenterForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CCUICustomContentModuleBackgroundViewController *)self view];
-  if (CCUILayoutShouldBePortrait(v8))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  view = [(CCUICustomContentModuleBackgroundViewController *)self view];
+  if (CCUILayoutShouldBePortrait(view))
   {
 
 LABEL_4:
@@ -1574,15 +1574,15 @@ LABEL_4:
     goto LABEL_14;
   }
 
-  v9 = [MEMORY[0x1E69DC938] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     goto LABEL_4;
   }
 
-  v17 = [(CCUICustomContentModuleBackgroundViewController *)self view];
+  view2 = [(CCUICustomContentModuleBackgroundViewController *)self view];
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
@@ -1593,7 +1593,7 @@ LABEL_4:
   v31.size.width = width;
   v31.size.height = height;
   v19 = 0.0;
-  [v17 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v31), 1.0}];
+  [view2 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v31), 1.0}];
   MaxX = CGRectGetMaxX(v32);
 
   v33.origin.x = x;
@@ -1649,16 +1649,16 @@ LABEL_14:
   return result;
 }
 
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingVisualStylingProvider:(id)a5
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingVisualStylingProvider:(id)stylingProvider
 {
   v26 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (a4 == 1)
+  providerCopy = provider;
+  stylingProviderCopy = stylingProvider;
+  v9 = stylingProviderCopy;
+  if (category == 1)
   {
-    [v8 stopAutomaticallyUpdatingView:self->_headerImageView];
-    [(CCUICustomContentModuleBackgroundViewController *)self _updateHeaderGlyphVisualStylingWithProvider:v20];
+    [stylingProviderCopy stopAutomaticallyUpdatingView:self->_headerImageView];
+    [(CCUICustomContentModuleBackgroundViewController *)self _updateHeaderGlyphVisualStylingWithProvider:providerCopy];
   }
 
   v19 = v9;
@@ -1682,13 +1682,13 @@ LABEL_14:
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 requiredVisualStyleCategories];
-        v17 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-        v18 = [v16 containsObject:v17];
+        requiredVisualStyleCategories = [v15 requiredVisualStyleCategories];
+        v17 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+        v18 = [requiredVisualStyleCategories containsObject:v17];
 
         if (v18)
         {
-          [v15 setVisualStylingProvider:v20 forCategory:a4];
+          [v15 setVisualStylingProvider:providerCopy forCategory:category];
         }
       }
 

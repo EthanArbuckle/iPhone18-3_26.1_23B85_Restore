@@ -1,14 +1,14 @@
 @interface IDSLinksQualityReportSyncTokenObject
-+ (id)createWithJSON:(id)a3 error:(id *)a4;
++ (id)createWithJSON:(id)n error:(id *)error;
 - (IDSLinksQualityReportSyncTokenObject)init;
-- (id)jsonWithError:(id *)a3;
+- (id)jsonWithError:(id *)error;
 @end
 
 @implementation IDSLinksQualityReportSyncTokenObject
 
-+ (id)createWithJSON:(id)a3 error:(id *)a4
++ (id)createWithJSON:(id)n error:(id *)error
 {
-  v4 = a3;
+  nCopy = n;
   v5 = sub_1A7E21A10();
   v7 = v6;
 
@@ -18,10 +18,10 @@
   return v8;
 }
 
-- (id)jsonWithError:(id *)a3
+- (id)jsonWithError:(id *)error
 {
   v3 = qword_1EB2B47F0;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();

@@ -1,33 +1,33 @@
 @interface SRUIFStateFeedbackManager
-- (SRUIFStateFeedbackManager)initWithStateFeedbackProvider:(id)a3 delegate:(id)a4;
-- (void)_cancelFeedbackWithCompletion:(id)a3;
+- (SRUIFStateFeedbackManager)initWithStateFeedbackProvider:(id)provider delegate:(id)delegate;
+- (void)_cancelFeedbackWithCompletion:(id)completion;
 - (void)_playDelayFeedback;
 - (void)_playSuccessFeedback;
-- (void)_scheduleDelayToneFor:(double)a3;
-- (void)audioPlaybackRequestDidStartForRequest:(id)a3;
-- (void)cancelFeedbackWithCompletion:(id)a3;
-- (void)didTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-- (void)didTransitionFromState:(int64_t)a3 toState:(int64_t)a4 event:(int64_t)a5 machAbsoluteTransitionTime:(double)a6;
-- (void)didUpdateEstimatedEndOfUserInput:(unint64_t)a3;
-- (void)nowPlayingObserver:(id)a3 playbackStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5 lastPlayingDate:(id)a6;
+- (void)_scheduleDelayToneFor:(double)for;
+- (void)audioPlaybackRequestDidStartForRequest:(id)request;
+- (void)cancelFeedbackWithCompletion:(id)completion;
+- (void)didTransitionFromState:(int64_t)state toState:(int64_t)toState;
+- (void)didTransitionFromState:(int64_t)state toState:(int64_t)toState event:(int64_t)event machAbsoluteTransitionTime:(double)time;
+- (void)didUpdateEstimatedEndOfUserInput:(unint64_t)input;
+- (void)nowPlayingObserver:(id)observer playbackStateDidChangeFrom:(int64_t)from to:(int64_t)to lastPlayingDate:(id)date;
 - (void)siriSessionDidEnd;
-- (void)updateResponseMode:(id)a3;
+- (void)updateResponseMode:(id)mode;
 @end
 
 @implementation SRUIFStateFeedbackManager
 
-- (SRUIFStateFeedbackManager)initWithStateFeedbackProvider:(id)a3 delegate:(id)a4
+- (SRUIFStateFeedbackManager)initWithStateFeedbackProvider:(id)provider delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = SRUIFStateFeedbackManager;
   v9 = [(SRUIFStateFeedbackManager *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_provider, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_provider, provider);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
     pendingDelayToneFeedbackIDs = v10->_pendingDelayToneFeedbackIDs;
     v10->_pendingDelayToneFeedbackIDs = v11;
@@ -46,15 +46,15 @@
   return v10;
 }
 
-- (void)didTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (void)didTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
   v18 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = SRUIFSiriSessionStateGetDescription(a3);
-    v10 = SRUIFSiriSessionStateGetDescription(a4);
+    v9 = SRUIFSiriSessionStateGetDescription(state);
+    v10 = SRUIFSiriSessionStateGetDescription(toState);
     v12 = 136315650;
     v13 = "[SRUIFStateFeedbackManager didTransitionFromState:toState:]";
     v14 = 2112;
@@ -64,9 +64,9 @@
     _os_log_impl(&dword_26951F000, v8, OS_LOG_TYPE_DEFAULT, "%s #statefeedback Transitioning fromState: %@ toState: %@", &v12, 0x20u);
   }
 
-  if (a4 != 2)
+  if (toState != 2)
   {
-    if (a4 == 1)
+    if (toState == 1)
     {
       self->_stateFeedbackNeeded = 1;
     }
@@ -80,11 +80,11 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTransitionFromState:(int64_t)a3 toState:(int64_t)a4 event:(int64_t)a5 machAbsoluteTransitionTime:(double)a6
+- (void)didTransitionFromState:(int64_t)state toState:(int64_t)toState event:(int64_t)event machAbsoluteTransitionTime:(double)time
 {
   v13 = *MEMORY[0x277D85DE8];
-  [(SRUIFStateFeedbackManager *)self didTransitionFromState:a3 toState:a4];
-  if (a5 == 16)
+  [(SRUIFStateFeedbackManager *)self didTransitionFromState:state toState:toState];
+  if (event == 16)
   {
     self->_stateFeedbackNeeded = 1;
     v9 = *MEMORY[0x277CEF098];
@@ -95,13 +95,13 @@
       _os_log_impl(&dword_26951F000, v9, OS_LOG_TYPE_DEFAULT, "%s #statefeedback will play delay tone for head gesture request if needed", &v11, 0xCu);
     }
 
-    [(SRUIFStateFeedbackManager *)self didUpdateEstimatedEndOfUserInput:a6];
+    [(SRUIFStateFeedbackManager *)self didUpdateEstimatedEndOfUserInput:time];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateEstimatedEndOfUserInput:(unint64_t)a3
+- (void)didUpdateEstimatedEndOfUserInput:(unint64_t)input
 {
   v12 = *MEMORY[0x277D85DE8];
   mach_absolute_time();
@@ -136,10 +136,10 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelFeedbackWithCompletion:(id)a3
+- (void)cancelFeedbackWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -148,38 +148,38 @@
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s #statefeedback cancelling state feedback", &v7, 0xCu);
   }
 
-  [(SRUIFStateFeedbackManager *)self _cancelFeedbackWithCompletion:v4];
+  [(SRUIFStateFeedbackManager *)self _cancelFeedbackWithCompletion:completionCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateResponseMode:(id)a3
+- (void)updateResponseMode:(id)mode
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SRUIFStateFeedbackManager updateResponseMode:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = modeCopy;
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s #statefeedback updating response mode to: %@", &v8, 0x16u);
   }
 
   responseMode = self->_responseMode;
-  self->_responseMode = v4;
+  self->_responseMode = modeCopy;
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioPlaybackRequestDidStartForRequest:(id)a3
+- (void)audioPlaybackRequestDidStartForRequest:(id)request
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 UUID];
-  v5 = [(SRUIFStateFeedbackProviding *)self->_provider uuidForCurrentStateFeedback];
-  v6 = !self->_stateFeedbackNeeded || v4 == 0;
-  if (!v6 && [v4 isEqualToString:v5])
+  uUID = [request UUID];
+  uuidForCurrentStateFeedback = [(SRUIFStateFeedbackProviding *)self->_provider uuidForCurrentStateFeedback];
+  v6 = !self->_stateFeedbackNeeded || uUID == 0;
+  if (!v6 && [uUID isEqualToString:uuidForCurrentStateFeedback])
   {
     v7 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -196,10 +196,10 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelFeedbackWithCompletion:(id)a3
+- (void)_cancelFeedbackWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -216,8 +216,8 @@
   v9[1] = 3221225472;
   v9[2] = __59__SRUIFStateFeedbackManager__cancelFeedbackWithCompletion___block_invoke;
   v9[3] = &unk_279C61A08;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [(SRUIFStateFeedbackProviding *)provider cancelFeedbackWithCompletion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -385,7 +385,7 @@ LABEL_17:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleDelayToneFor:(double)a3
+- (void)_scheduleDelayToneFor:(double)for
 {
   delayToneTimer = self->_delayToneTimer;
   if (delayToneTimer)
@@ -393,7 +393,7 @@ LABEL_17:
     [(AFWatchdogTimer *)delayToneTimer cancelIfNotAlreadyCanceled];
   }
 
-  if (a3 <= 0.0)
+  if (for <= 0.0)
   {
     if (self->_stateFeedbackNeeded)
     {
@@ -413,7 +413,7 @@ LABEL_17:
     v13 = __51__SRUIFStateFeedbackManager__scheduleDelayToneFor___block_invoke;
     v14 = &unk_279C61870;
     objc_copyWeak(&v15, &location);
-    v9 = [v6 initWithTimeoutInterval:v7 onQueue:&v11 timeoutHandler:a3];
+    v9 = [v6 initWithTimeoutInterval:v7 onQueue:&v11 timeoutHandler:for];
     v10 = self->_delayToneTimer;
     self->_delayToneTimer = v9;
 
@@ -449,12 +449,12 @@ void __51__SRUIFStateFeedbackManager__scheduleDelayToneFor___block_invoke(uint64
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nowPlayingObserver:(id)a3 playbackStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5 lastPlayingDate:(id)a6
+- (void)nowPlayingObserver:(id)observer playbackStateDidChangeFrom:(int64_t)from to:(int64_t)to lastPlayingDate:(id)date
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (self->_nowPlayingState != a5)
+  observerCopy = observer;
+  dateCopy = date;
+  if (self->_nowPlayingState != to)
   {
     v12 = MEMORY[0x277CEF098];
     v13 = *MEMORY[0x277CEF098];
@@ -472,8 +472,8 @@ void __51__SRUIFStateFeedbackManager__scheduleDelayToneFor___block_invoke(uint64
       _os_log_impl(&dword_26951F000, v14, OS_LOG_TYPE_DEFAULT, "%s #statefeedback: Media playback state changed from: %@ to: %@", buf, 0x20u);
     }
 
-    self->_nowPlayingState = a5;
-    if ((a4 == 4 || a4 == 2) && a5 == 1)
+    self->_nowPlayingState = to;
+    if ((from == 4 || from == 2) && to == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v19 = objc_opt_respondsToSelector();

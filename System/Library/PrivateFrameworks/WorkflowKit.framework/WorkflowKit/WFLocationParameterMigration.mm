@@ -1,23 +1,23 @@
 @interface WFLocationParameterMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFLocationParameterMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"900"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"900"))
   {
-    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.gettraveltime", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.weather.currentconditions", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.weather.forecast", v5))
+    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.gettraveltime", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.weather.currentconditions", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.weather.forecast", migrationCopy))
     {
       HasActionsWithIdentifier = 1;
     }
 
     else
     {
-      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getdistance", v5);
+      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getdistance", migrationCopy);
     }
   }
 
@@ -36,8 +36,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -49,26 +49,26 @@
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v22 + 1) + 8 * v7);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKeyedSubscript:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKeyedSubscript:actionIdentifierKey];
 
         if ([v10 isEqualToString:@"is.workflow.actions.gettraveltime"])
         {
 LABEL_7:
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 wf_popObjectForKey:@"WFGetDirectionsFrom"];
           if ([v13 isEqual:@"Current Location"])
           {
-            v14 = [[WFLocationValue alloc] initWithCurrentLocation];
-            v15 = [(WFLocationValue *)v14 serializedRepresentation];
+            initWithCurrentLocation = [[WFLocationValue alloc] initWithCurrentLocation];
+            serializedRepresentation = [(WFLocationValue *)initWithCurrentLocation serializedRepresentation];
             v16 = v12;
-            v17 = v15;
+            v17 = serializedRepresentation;
             v18 = @"WFGetDirectionsCustomLocation";
             goto LABEL_13;
           }
@@ -78,16 +78,16 @@ LABEL_7:
 
         if (([v10 isEqualToString:@"is.workflow.actions.weather.currentconditions"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"is.workflow.actions.weather.forecast"))
         {
-          v19 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v19];
+          actionParametersKey2 = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey2];
 
           v13 = [v12 wf_popObjectForKey:@"WFWeatherLocation"];
           if ([v13 isEqual:@"Current Location"])
           {
-            v14 = [[WFLocationValue alloc] initWithCurrentLocation];
-            v15 = [(WFLocationValue *)v14 serializedRepresentation];
+            initWithCurrentLocation = [[WFLocationValue alloc] initWithCurrentLocation];
+            serializedRepresentation = [(WFLocationValue *)initWithCurrentLocation serializedRepresentation];
             v16 = v12;
-            v17 = v15;
+            v17 = serializedRepresentation;
             v18 = @"WFWeatherCustomLocation";
 LABEL_13:
             [v16 setValue:v17 forKey:v18];
@@ -109,7 +109,7 @@ LABEL_15:
       }
 
       while (v5 != v7);
-      v20 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v20 = [actions countByEnumeratingWithState:&v22 objects:v26 count:16];
       v5 = v20;
     }
 

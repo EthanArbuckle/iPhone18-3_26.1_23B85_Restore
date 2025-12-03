@@ -1,29 +1,29 @@
 @interface DOCSearchController
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (_TtC26DocumentManagerExecutables19DOCSearchController)initWithSearchResultsController:(id)a3;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (_TtC26DocumentManagerExecutables19DOCSearchController)initWithSearchResultsController:(id)controller;
 - (_TtP26DocumentManagerExecutables39DOCSearchControllerPresentationDelegate_)presentationDelegate;
-- (void)deactivateAlongsideContainingTransitionCoordinator:(id)a3;
-- (void)didDismissSearchController:(id)a3;
-- (void)didPresentSearchController:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)deactivateAlongsideContainingTransitionCoordinator:(id)coordinator;
+- (void)didDismissSearchController:(id)controller;
+- (void)didPresentSearchController:(id)controller;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)handleSuggestionsTypingTimeout;
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)searchController:(id)a3 didChangeFromSearchBarPlacement:(int64_t)a4;
-- (void)setDelegate:(id)a3;
-- (void)setPresentationDelegate:(id)a3;
-- (void)setSearchResultsUpdater:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4;
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)searchController:(id)controller didChangeFromSearchBarPlacement:(int64_t)placement;
+- (void)setDelegate:(id)delegate;
+- (void)setPresentationDelegate:(id)delegate;
+- (void)setSearchResultsUpdater:(id)updater;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation DOCSearchController
@@ -36,27 +36,27 @@
   return Strong;
 }
 
-- (void)setPresentationDelegate:(id)a3
+- (void)setPresentationDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   DOCSearchController.presentationDelegate.setter();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCSearchController();
-  [(DOCSearchController *)&v4 setDelegate:a3];
+  [(DOCSearchController *)&v4 setDelegate:delegate];
 }
 
-- (void)setSearchResultsUpdater:(id)a3
+- (void)setSearchResultsUpdater:(id)updater
 {
-  if (a3 && a3 == self)
+  if (updater && updater == self)
   {
     v4.receiver = self;
     v4.super_class = type metadata accessor for DOCSearchController();
-    [(DOCSearchController *)&v4 setSearchResultsUpdater:a3];
+    [(DOCSearchController *)&v4 setSearchResultsUpdater:updater];
   }
 
   else
@@ -68,57 +68,57 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCSearchController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCSearchController.viewDidLayoutSubviews()();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCSearchController();
   v6 = v8.receiver;
-  v7 = a3;
-  [(DOCSearchController *)&v8 viewDidMoveToWindow:v7 shouldAppearOrDisappear:v4];
-  if (v7)
+  windowCopy = window;
+  [(DOCSearchController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
     DOCSearchController.updateForCurrentTraitCollection()();
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCSearchController();
   v4 = v8.receiver;
-  v5 = [(DOCSearchController *)&v8 viewWillAppear:v3];
+  v5 = [(DOCSearchController *)&v8 viewWillAppear:appearCopy];
   v6 = MEMORY[0x277D85000];
   v7 = (*((*MEMORY[0x277D85000] & *v4) + 0x328))(v5);
   (*((*v6 & *v4) + 0x3D8))(v7);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCSearchController();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(DOCSearchController *)&v6 traitCollectionDidChange:v4];
+  [(DOCSearchController *)&v6 traitCollectionDidChange:changeCopy];
   (*((*MEMORY[0x277D85000] & *v5) + 0x3B0))(0);
-  DOCSearchController.updateForTraitCollectionChange(from:)(a3);
+  DOCSearchController.updateForTraitCollectionChange(from:)(change);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = _Block_copy(a4);
+  animatedCopy = animated;
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -132,10 +132,10 @@
     v7 = 0;
   }
 
-  v9 = self;
-  if ([(DOCSearchController *)v9 isActive])
+  selfCopy = self;
+  if ([(DOCSearchController *)selfCopy isActive])
   {
-    (*((*MEMORY[0x277D85000] & *v9) + 0x360))(v8, v7, v4);
+    (*((*MEMORY[0x277D85000] & *selfCopy) + 0x360))(v8, v7, animatedCopy);
 LABEL_8:
 
     outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v8);
@@ -149,25 +149,25 @@ LABEL_8:
   }
 }
 
-- (void)deactivateAlongsideContainingTransitionCoordinator:(id)a3
+- (void)deactivateAlongsideContainingTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  DOCSearchController.deactivate(alongsideContainingTransitionCoordinator:)(a3);
+  selfCopy = self;
+  DOCSearchController.deactivate(alongsideContainingTransitionCoordinator:)(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (void)searchController:(id)a3 didChangeFromSearchBarPlacement:(int64_t)a4
+- (void)searchController:(id)controller didChangeFromSearchBarPlacement:(int64_t)placement
 {
   v4 = *((*MEMORY[0x277D85000] & *self) + 0x3D8);
-  v5 = self;
+  selfCopy = self;
   v4();
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   v3 = *((*MEMORY[0x277D85000] & *self) + 0x278);
-  v6 = self;
+  selfCopy = self;
   v4 = v3();
   if (v4)
   {
@@ -181,13 +181,13 @@ LABEL_8:
   }
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
   v3 = MEMORY[0x277D85000];
   v4 = *((*MEMORY[0x277D85000] & *self) + 0x3B0);
-  v7 = self;
+  selfCopy = self;
   v4(0);
-  v5 = (*((*v3 & *v7) + 0x278))();
+  v5 = (*((*v3 & *selfCopy) + 0x278))();
   if (v5)
   {
     v6 = v5;
@@ -202,21 +202,21 @@ LABEL_8:
   DOCSearchController.updateSearchResultsControllerVisibility()();
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized DOCSearchController.willDismissSearchController(_:)();
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized DOCSearchController.didDismissSearchController(_:)();
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   if (*(self + OBJC_IVAR____TtC26DocumentManagerExecutables19DOCSearchController_activationTemporilyDisabled))
   {
@@ -225,22 +225,22 @@ LABEL_8:
 
   else
   {
-    return [a3 isEnabled];
+    return [editing isEnabled];
   }
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
   v4 = MEMORY[0x277D85000];
   v5 = *((*MEMORY[0x277D85000] & *self) + 0x1F8);
-  v6 = a3;
-  v7 = self;
+  editingCopy = editing;
+  selfCopy = self;
   v8 = v5(1);
-  (*((*v4 & *v7) + 0x4C0))(v8);
-  v9 = [v6 text];
-  if (v9)
+  (*((*v4 & *selfCopy) + 0x4C0))(v8);
+  text = [editingCopy text];
+  if (text)
   {
-    v10 = v9;
+    v10 = text;
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
@@ -251,54 +251,54 @@ LABEL_8:
     v13 = 0xE000000000000000;
   }
 
-  (*((*v4 & *v7) + 0x448))(v6, v11, v13);
+  (*((*v4 & *selfCopy) + 0x448))(editingCopy, v11, v13);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  specialized DOCSearchController.searchBar(_:textDidChange:)(v5);
+  barCopy = bar;
+  selfCopy = self;
+  specialized DOCSearchController.searchBar(_:textDidChange:)(barCopy);
 }
 
 - (void)handleSuggestionsTypingTimeout
 {
-  v2 = self;
+  selfCopy = self;
   DOCSearchController.handleSuggestionsTypingTimeout()();
 }
 
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change
 {
   v5 = *((*MEMORY[0x277D85000] & *self) + 0x2E0);
-  v6 = self;
-  v5(a4);
+  selfCopy = self;
+  v5(change);
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized DOCSearchController.searchBarTextDidEndEditing(_:)();
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion
 {
-  v6 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v7 = self;
-  specialized DOCSearchController.updateSearchResults(for:selecting:)(a4);
+  selfCopy = self;
+  specialized DOCSearchController.updateSearchResults(for:selecting:)(suggestion);
 
   swift_unknownObjectRelease();
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized DOCSearchController.updateSearchResults(for:)();
 }
 
-- (_TtC26DocumentManagerExecutables19DOCSearchController)initWithSearchResultsController:(id)a3
+- (_TtC26DocumentManagerExecutables19DOCSearchController)initWithSearchResultsController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

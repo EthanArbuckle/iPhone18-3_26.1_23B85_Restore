@@ -1,17 +1,17 @@
 @interface MTLFXTemporalScalerDescriptor
 + (BOOL)supportsDevice:(id)device;
-+ (BOOL)supportsMetal4FX:(id)a3;
++ (BOOL)supportsMetal4FX:(id)x;
 + (float)supportedInputContentMaxScaleForDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newTemporalScalerWithDevice:(id)a3 compiler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newTemporalScalerWithDevice:(id)device;
-- (id)newTemporalScalerWithHistoryTexture:(id)a3;
-- (id)newTemporalScalerWithHistoryTexture:(id)a3 compiler:(id)a4;
+- (id)newTemporalScalerWithDevice:(id)device compiler:(id)compiler;
+- (id)newTemporalScalerWithHistoryTexture:(id)texture;
+- (id)newTemporalScalerWithHistoryTexture:(id)texture compiler:(id)compiler;
 @end
 
 @implementation MTLFXTemporalScalerDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setVersion:{-[MTLFXTemporalScalerDescriptor version](self, "version")}];
@@ -35,13 +35,13 @@
   return v4;
 }
 
-- (id)newTemporalScalerWithHistoryTexture:(id)a3
+- (id)newTemporalScalerWithHistoryTexture:(id)texture
 {
-  v4 = a3;
-  v5 = [v4 device];
-  if ([MTLFXTemporalScalerDescriptor supportsDevice:v5])
+  textureCopy = texture;
+  device = [textureCopy device];
+  if ([MTLFXTemporalScalerDescriptor supportsDevice:device])
   {
-    [v5 supportsFamily:1001];
+    [device supportsFamily:1001];
     MTLFXTemporalScalerVersionOverride = getMTLFXTemporalScalerVersionOverride([(MTLFXTemporalScalerDescriptor *)self version]);
     v7 = off_278AA4988;
     if (MTLFXTemporalScalerVersionOverride != 0x10000)
@@ -49,7 +49,7 @@
       v7 = off_278AA4990;
     }
 
-    v8 = [objc_alloc(*v7) initWithDevice:v5 descriptor:self history:v4];
+    v8 = [objc_alloc(*v7) initWithDevice:device descriptor:self history:textureCopy];
   }
 
   else
@@ -138,12 +138,12 @@ LABEL_13:
   return v5 & 1;
 }
 
-+ (BOOL)supportsMetal4FX:(id)a3
++ (BOOL)supportsMetal4FX:(id)x
 {
-  v3 = a3;
-  if ([v3 supportsFamily:5002])
+  xCopy = x;
+  if ([xCopy supportsFamily:5002])
   {
-    v4 = [v3 supportsFamily:1007];
+    v4 = [xCopy supportsFamily:1007];
   }
 
   else
@@ -154,14 +154,14 @@ LABEL_13:
   return v4;
 }
 
-- (id)newTemporalScalerWithHistoryTexture:(id)a3 compiler:(id)a4
+- (id)newTemporalScalerWithHistoryTexture:(id)texture compiler:(id)compiler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 device];
-  if ([MTLFXTemporalScalerDescriptor supportsMetal4FX:v8])
+  textureCopy = texture;
+  compilerCopy = compiler;
+  device = [textureCopy device];
+  if ([MTLFXTemporalScalerDescriptor supportsMetal4FX:device])
   {
-    v9 = [[_M4FXTemporalScalingEffectV4 alloc] initWithDevice:v8 descriptor:self compiler:v7 history:v6];
+    v9 = [[_M4FXTemporalScalingEffectV4 alloc] initWithDevice:device descriptor:self compiler:compilerCopy history:textureCopy];
   }
 
   else
@@ -172,11 +172,11 @@ LABEL_13:
   return v9;
 }
 
-- (id)newTemporalScalerWithDevice:(id)a3 compiler:(id)a4
+- (id)newTemporalScalerWithDevice:(id)device compiler:(id)compiler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_M4FXTemporalScalingEffectV4 alloc] initWithDevice:v6 descriptor:self compiler:v7 history:0];
+  deviceCopy = device;
+  compilerCopy = compiler;
+  v8 = [[_M4FXTemporalScalingEffectV4 alloc] initWithDevice:deviceCopy descriptor:self compiler:compilerCopy history:0];
 
   return v8;
 }

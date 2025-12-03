@@ -1,10 +1,10 @@
 @interface CDDaemonRecentVolumeInfo
-+ (id)CDRecentVolumeInfo:(id)a3;
-- (BOOL)_validateWithSharedCacheDeleteForService:(id)a3;
++ (id)CDRecentVolumeInfo:(id)info;
+- (BOOL)_validateWithSharedCacheDeleteForService:(id)service;
 - (BOOL)hasSnapshot;
-- (BOOL)prunePreserving:(id)a3;
+- (BOOL)prunePreserving:(id)preserving;
 - (id)bsdDisk;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)thresholds;
 - (unint64_t)_reserveForVolume;
 - (unint64_t)reserve;
@@ -14,7 +14,7 @@
 
 - (unint64_t)reserve
 {
-  v3 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
+  cdVolume = [(CDDaemonRecentVolumeInfo *)self cdVolume];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -27,20 +27,20 @@
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "reserve: cdVolume of CDDaemonRecentVolumeInfo is not of class CacheDeleteDaemonVolume", v11, 2u);
     }
 
-    v6 = [(CDDaemonRecentVolumeInfo *)self volume];
-    v7 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:v6];
+    volume = [(CDDaemonRecentVolumeInfo *)self volume];
+    v7 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:volume];
     [(CDDaemonRecentVolumeInfo *)self setCdVolume:v7];
   }
 
-  v8 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
-  v9 = [v8 reserve];
+  cdVolume2 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
+  reserve = [cdVolume2 reserve];
 
-  return v9;
+  return reserve;
 }
 
 - (id)bsdDisk
 {
-  v3 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
+  cdVolume = [(CDDaemonRecentVolumeInfo *)self cdVolume];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -53,20 +53,20 @@
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "bsdDisk: cdVolume of CDDaemonRecentVolumeInfo is not of class CacheDeleteDaemonVolume", v11, 2u);
     }
 
-    v6 = [(CDDaemonRecentVolumeInfo *)self volume];
-    v7 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:v6];
+    volume = [(CDDaemonRecentVolumeInfo *)self volume];
+    v7 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:volume];
     [(CDDaemonRecentVolumeInfo *)self setCdVolume:v7];
   }
 
-  v8 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
-  v9 = [v8 bsdDisk];
+  cdVolume2 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
+  bsdDisk = [cdVolume2 bsdDisk];
 
-  return v9;
+  return bsdDisk;
 }
 
 - (id)thresholds
 {
-  v3 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
+  cdVolume = [(CDDaemonRecentVolumeInfo *)self cdVolume];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -79,100 +79,100 @@
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "thresholds: cdVolume of CDDaemonRecentVolumeInfo is not of class CacheDeleteDaemonVolume", v11, 2u);
     }
 
-    v6 = [(CDDaemonRecentVolumeInfo *)self volume];
-    v7 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:v6];
+    volume = [(CDDaemonRecentVolumeInfo *)self volume];
+    v7 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:volume];
     [(CDDaemonRecentVolumeInfo *)self setCdVolume:v7];
   }
 
-  v8 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
-  v9 = [v8 thresholds];
+  cdVolume2 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
+  thresholds = [cdVolume2 thresholds];
 
-  return v9;
+  return thresholds;
 }
 
 - (BOOL)hasSnapshot
 {
-  v2 = [(CDDaemonRecentVolumeInfo *)self volume];
-  v3 = [CacheDeleteDaemonVolume volumeWithMountpoint:v2];
-  v4 = [v3 hasSnapshotsExcludingTimeMachine];
+  volume = [(CDDaemonRecentVolumeInfo *)self volume];
+  v3 = [CacheDeleteDaemonVolume volumeWithMountpoint:volume];
+  hasSnapshotsExcludingTimeMachine = [v3 hasSnapshotsExcludingTimeMachine];
 
-  return v4;
+  return hasSnapshotsExcludingTimeMachine;
 }
 
 - (unint64_t)_reserveForVolume
 {
-  v2 = [(CDDaemonRecentVolumeInfo *)self cdVolume];
-  v3 = [v2 reserve];
+  cdVolume = [(CDDaemonRecentVolumeInfo *)self cdVolume];
+  reserve = [cdVolume reserve];
 
-  return v3;
+  return reserve;
 }
 
-+ (id)CDRecentVolumeInfo:(id)a3
++ (id)CDRecentVolumeInfo:(id)info
 {
-  v3 = a3;
-  v4 = [[CDDaemonRecentVolumeInfo alloc] initWithServices:0 volumeName:v3];
+  infoCopy = info;
+  v4 = [[CDDaemonRecentVolumeInfo alloc] initWithServices:0 volumeName:infoCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(CDDaemonRecentVolumeInfo);
-  v6 = [(CDDaemonRecentVolumeInfo *)self services];
-  v7 = [v6 copyWithZone:a3];
+  services = [(CDDaemonRecentVolumeInfo *)self services];
+  v7 = [services copyWithZone:zone];
   [(CDDaemonRecentVolumeInfo *)v5 setServices:v7];
 
-  v8 = [(CDDaemonRecentVolumeInfo *)self timestamp];
-  v9 = [v8 copyWithZone:a3];
+  timestamp = [(CDDaemonRecentVolumeInfo *)self timestamp];
+  v9 = [timestamp copyWithZone:zone];
   [(CDDaemonRecentVolumeInfo *)v5 setTimestamp:v9];
 
-  v10 = [(CDDaemonRecentVolumeInfo *)self freespace];
-  v11 = [v10 copyWithZone:a3];
+  freespace = [(CDDaemonRecentVolumeInfo *)self freespace];
+  v11 = [freespace copyWithZone:zone];
   [(CDDaemonRecentVolumeInfo *)v5 setFreespace:v11];
 
-  v12 = [(CDDaemonRecentVolumeInfo *)self volume];
-  v13 = [v12 copyWithZone:a3];
+  volume = [(CDDaemonRecentVolumeInfo *)self volume];
+  v13 = [volume copyWithZone:zone];
   [(CDDaemonRecentVolumeInfo *)v5 setVolume:v13];
 
   [(CDDaemonRecentVolumeInfo *)v5 setVolumeState:[(CDDaemonRecentVolumeInfo *)self volumeState]];
-  v14 = [(CDDaemonRecentVolumeInfo *)self thresholds];
-  v15 = [v14 copyWithZone:a3];
+  thresholds = [(CDDaemonRecentVolumeInfo *)self thresholds];
+  v15 = [thresholds copyWithZone:zone];
   [(CDDaemonRecentVolumeInfo *)v5 setThresholds:v15];
 
-  v16 = [(CDDaemonRecentVolumeInfo *)self bsdDisk];
-  v17 = [v16 copyWithZone:a3];
+  bsdDisk = [(CDDaemonRecentVolumeInfo *)self bsdDisk];
+  v17 = [bsdDisk copyWithZone:zone];
   [(CDDaemonRecentVolumeInfo *)v5 setBsdDisk:v17];
 
   [(CDDaemonRecentVolumeInfo *)v5 setReserve:[(CDDaemonRecentVolumeInfo *)self reserve]];
-  v18 = [(CDDaemonRecentVolumeInfo *)self volume];
-  v19 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:v18];
+  volume2 = [(CDDaemonRecentVolumeInfo *)self volume];
+  v19 = [(CDDaemonRecentVolumeInfo *)self createVolumeWithPath:volume2];
   [(CDDaemonRecentVolumeInfo *)v5 setCdVolume:v19];
 
   return v5;
 }
 
-- (BOOL)_validateWithSharedCacheDeleteForService:(id)a3
+- (BOOL)_validateWithSharedCacheDeleteForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[CacheDelete sharedCacheDelete];
   v5 = v4;
-  v6 = !v4 || [v4 validateService:v3];
+  v6 = !v4 || [v4 validateService:serviceCopy];
 
   return v6;
 }
 
-- (BOOL)prunePreserving:(id)a3
+- (BOOL)prunePreserving:(id)preserving
 {
-  v4 = a3;
+  preservingCopy = preserving;
   v5 = objc_opt_new();
-  v26 = self;
-  v6 = [(CDDaemonRecentVolumeInfo *)self services];
-  v7 = [v6 allKeys];
-  v8 = [NSMutableSet setWithArray:v7];
+  selfCopy = self;
+  services = [(CDDaemonRecentVolumeInfo *)self services];
+  allKeys = [services allKeys];
+  v8 = [NSMutableSet setWithArray:allKeys];
 
   v9 = +[CacheDelete sharedCacheDelete];
-  v24 = v4;
-  [v8 minusSet:v4];
+  v24 = preservingCopy;
+  [v8 minusSet:preservingCopy];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -201,16 +201,16 @@
             v16 = CDGetLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
-              v17 = [(CDDaemonRecentVolumeInfo *)v26 volume];
-              v18 = [(CDDaemonRecentVolumeInfo *)v26 services];
-              [v18 objectForKeyedSubscript:v15];
+              volume = [(CDDaemonRecentVolumeInfo *)selfCopy volume];
+              services2 = [(CDDaemonRecentVolumeInfo *)selfCopy services];
+              [services2 objectForKeyedSubscript:v15];
               v20 = v19 = v5;
               *buf = 67110146;
               v32 = 78;
               v33 = 2080;
               v34 = "[CDDaemonRecentVolumeInfo prunePreserving:]";
               v35 = 2112;
-              v36 = v17;
+              v36 = volume;
               v37 = 2112;
               v38 = v15;
               v39 = 2112;
@@ -232,9 +232,9 @@
     while (v12);
   }
 
-  v21 = [(CDDaemonRecentVolumeInfo *)v26 services];
-  v22 = [v5 allObjects];
-  [v21 removeObjectsForKeys:v22];
+  services3 = [(CDDaemonRecentVolumeInfo *)selfCopy services];
+  allObjects = [v5 allObjects];
+  [services3 removeObjectsForKeys:allObjects];
 
   return 0;
 }

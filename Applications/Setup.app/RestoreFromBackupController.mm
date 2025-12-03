@@ -4,38 +4,38 @@
 - (BOOL)_shouldShowAllBackupsAction;
 - (BOOL)controllerNeedsToRun;
 - (RestoreFromBackupController)init;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)filteredRestorableItemsFromBackupList:(id)a3;
-- (id)mostSimilarRestorablesInsertRemainingIntoArray:(id)a3 getOtherUniqueDevicesCount:(unint64_t *)a4;
-- (id)restorableItemAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)filteredRestorableItemsFromBackupList:(id)list;
+- (id)mostSimilarRestorablesInsertRemainingIntoArray:(id)array getOtherUniqueDevicesCount:(unint64_t *)count;
+- (id)restorableItemAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_presentAlertForCurrentListState;
-- (void)_presentAlertWithTitle:(id)a3 withMessage:(id)a4 withTryAgainOption:(BOOL)a5 withSetupAsNewOption:(BOOL)a6 inViewController:(id)a7;
-- (void)_presentNetworkWarningForRestorable:(id)a3 completion:(id)a4;
-- (void)_updateTable:(id)a3 toMatchArray:(id)a4 withVisibleArray:(id)a5 maxVisible:(unint64_t)a6 fromOldSection:(int64_t)a7 toNewSection:(int64_t)a8;
+- (void)_presentAlertWithTitle:(id)title withMessage:(id)message withTryAgainOption:(BOOL)option withSetupAsNewOption:(BOOL)newOption inViewController:(id)controller;
+- (void)_presentNetworkWarningForRestorable:(id)restorable completion:(id)completion;
+- (void)_updateTable:(id)table toMatchArray:(id)array withVisibleArray:(id)visibleArray maxVisible:(unint64_t)visible fromOldSection:(int64_t)section toNewSection:(int64_t)newSection;
 - (void)cancelRestoreAndRemovePrimaryAppleAccount;
 - (void)dealloc;
 - (void)handleDebugGesture;
-- (void)refreshBackupListFromTimer:(id)a3;
-- (void)scanForUpdateIfNecessaryForBackupList:(id)a3 withCompletion:(id)a4;
-- (void)setBackupList:(id)a3 forceReload:(BOOL)a4 withError:(id)a5;
-- (void)setListState:(int)a3;
-- (void)setRefreshTimerToDuration:(double)a3;
-- (void)setupWithAlternateChoice:(id)a3;
-- (void)showRestoreWarningsIfNeededForRestorable:(id)a3 completion:(id)a4;
+- (void)refreshBackupListFromTimer:(id)timer;
+- (void)scanForUpdateIfNecessaryForBackupList:(id)list withCompletion:(id)completion;
+- (void)setBackupList:(id)list forceReload:(BOOL)reload withError:(id)error;
+- (void)setListState:(int)state;
+- (void)setRefreshTimerToDuration:(double)duration;
+- (void)setupWithAlternateChoice:(id)choice;
+- (void)showRestoreWarningsIfNeededForRestorable:(id)restorable completion:(id)completion;
 - (void)significantTimeChange;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateBackupListCompletion:(id)a3;
-- (void)updateListStateWithReload:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateBackupListCompletion:(id)completion;
+- (void)updateListStateWithReload:(BOOL)reload;
 - (void)updateVisibleSnapshots;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -94,23 +94,23 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  [(NSTimer *)v5->_refreshTimer invalidate];
-  v3.receiver = v5;
+  [(NSTimer *)selfCopy->_refreshTimer invalidate];
+  v3.receiver = selfCopy;
   v3.super_class = RestoreFromBackupController;
   [(RestoreFromBackupController *)&v3 dealloc];
 }
 
 - (void)significantTimeChange
 {
-  v2 = [(RestoreFromBackupController *)self navigationController];
-  v3 = [v2 topViewController];
+  navigationController = [(RestoreFromBackupController *)self navigationController];
+  topViewController = [navigationController topViewController];
   v4 = 0;
-  if (v3 == self)
+  if (topViewController == self)
   {
     v4 = 1;
     if (self->_listState != 2)
@@ -121,25 +121,25 @@
 
   if (v4)
   {
-    v5 = [(RestoreFromBackupController *)self tableView];
-    [v5 reloadData];
+    tableView = [(RestoreFromBackupController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (id)mostSimilarRestorablesInsertRemainingIntoArray:(id)a3 getOtherUniqueDevicesCount:(unint64_t *)a4
+- (id)mostSimilarRestorablesInsertRemainingIntoArray:(id)array getOtherUniqueDevicesCount:(unint64_t *)count
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = a4;
+  objc_storeStrong(location, array);
+  countCopy = count;
   v20 = 0;
   v24 = MGCopyAnswer();
   v19 = v24;
   v18 = +[NSMutableSet set];
   v17 = +[NSMutableArray array];
   memset(__b, 0, sizeof(__b));
-  v5 = v23->_backupList;
+  v5 = selfCopy->_backupList;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:__b objects:v25 count:16];
   if (v6)
   {
@@ -154,8 +154,8 @@
         }
 
         v16 = *(__b[1] + 8 * i);
-        v14 = [v16 backupUDID];
-        if ([v18 containsObject:v14])
+        backupUDID = [v16 backupUDID];
+        if ([v18 containsObject:backupUDID])
         {
 LABEL_7:
           [location[0] addObject:v16];
@@ -169,9 +169,9 @@ LABEL_7:
 
         else
         {
-          v9 = [v16 backup];
-          v10 = [v9 deviceClass];
-          v11 = [v10 isEqualToString:v19];
+          backup = [v16 backup];
+          deviceClass = [backup deviceClass];
+          v11 = [deviceClass isEqualToString:v19];
 
           if (v11)
           {
@@ -180,7 +180,7 @@ LABEL_7:
 
           else
           {
-            if (v23->_listState == 3)
+            if (selfCopy->_listState == 3)
             {
               goto LABEL_7;
             }
@@ -191,8 +191,8 @@ LABEL_7:
         }
 
 LABEL_14:
-        [v18 addObject:v14];
-        objc_storeStrong(&v14, 0);
+        [v18 addObject:backupUDID];
+        objc_storeStrong(&backupUDID, 0);
       }
 
       v6 = [(NSArray *)v5 countByEnumeratingWithState:__b objects:v25 count:16];
@@ -201,9 +201,9 @@ LABEL_14:
     while (v6);
   }
 
-  if (v21)
+  if (countCopy)
   {
-    *v21 = v20;
+    *countCopy = v20;
   }
 
   v12 = v17;
@@ -214,19 +214,19 @@ LABEL_14:
   return v12;
 }
 
-- (void)_updateTable:(id)a3 toMatchArray:(id)a4 withVisibleArray:(id)a5 maxVisible:(unint64_t)a6 fromOldSection:(int64_t)a7 toNewSection:(int64_t)a8
+- (void)_updateTable:(id)table toMatchArray:(id)array withVisibleArray:(id)visibleArray maxVisible:(unint64_t)visible fromOldSection:(int64_t)section toNewSection:(int64_t)newSection
 {
-  v67 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, table);
   v65 = 0;
-  objc_storeStrong(&v65, a4);
+  objc_storeStrong(&v65, array);
   v64 = 0;
-  objc_storeStrong(&v64, a5);
-  v63 = a6;
-  v62 = a7;
-  v61 = a8;
+  objc_storeStrong(&v64, visibleArray);
+  visibleCopy = visible;
+  sectionCopy = section;
+  newSectionCopy = newSection;
   [location[0] beginUpdates];
   v60 = +[NSMutableArray array];
   v59 = +[NSMutableArray array];
@@ -236,7 +236,7 @@ LABEL_14:
     if (!v58 && [v65 count])
     {
       v15 = location[0];
-      v16 = [NSIndexSet indexSetWithIndex:v61];
+      v16 = [NSIndexSet indexSetWithIndex:newSectionCopy];
       [v15 insertSections:v16 withRowAnimation:0];
     }
 
@@ -262,7 +262,7 @@ LABEL_14:
           if (v21 >= [v64 count])
           {
             v27 = v60;
-            v28 = [NSIndexPath indexPathForRow:v56 inSection:v61];
+            v28 = [NSIndexPath indexPathForRow:v56 inSection:newSectionCopy];
             [v27 addObject:v28];
 
             [v64 addObject:v55];
@@ -277,7 +277,7 @@ LABEL_14:
               if (v52 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v25 = v60;
-                v26 = [NSIndexPath indexPathForRow:v56 inSection:v61];
+                v26 = [NSIndexPath indexPathForRow:v56 inSection:newSectionCopy];
                 [v25 addObject:v26];
 
                 [v64 insertObject:v55 atIndex:v56];
@@ -286,8 +286,8 @@ LABEL_14:
               else
               {
                 v22 = location[0];
-                v23 = [NSIndexPath indexPathForRow:v52 inSection:v62];
-                v24 = [NSIndexPath indexPathForRow:v56 inSection:v61];
+                v23 = [NSIndexPath indexPathForRow:v52 inSection:sectionCopy];
+                v24 = [NSIndexPath indexPathForRow:v56 inSection:newSectionCopy];
                 [v22 moveRowAtIndexPath:v23 toIndexPath:v24];
 
                 v51 = [v64 indexOfObject:v55];
@@ -302,7 +302,7 @@ LABEL_14:
             objc_storeStrong(&v53, 0);
           }
 
-          if (++v56 >= v63)
+          if (++v56 >= visibleCopy)
           {
             v50 = 2;
             goto LABEL_26;
@@ -350,7 +350,7 @@ LABEL_26:
       v47[0] = [v64 objectAtIndexedSubscript:v56];
       v46 = [v57 indexOfObject:v47[0]];
       v33 = v59;
-      v34 = [NSIndexPath indexPathForRow:v46 inSection:v62];
+      v34 = [NSIndexPath indexPathForRow:v46 inSection:sectionCopy];
       [v33 addObject:v34];
 
       objc_storeStrong(v47, 0);
@@ -364,14 +364,14 @@ LABEL_26:
   else
   {
     v13 = location[0];
-    v14 = [NSIndexSet indexSetWithIndex:v62];
+    v14 = [NSIndexSet indexSetWithIndex:sectionCopy];
     [v13 deleteSections:v14 withRowAnimation:0];
 
     [v64 removeAllObjects];
   }
 
   v45 = +[NSMutableSet set];
-  if (v67->_listState == 2)
+  if (selfCopy->_listState == 2)
   {
     memset(v43, 0, sizeof(v43));
     v35 = v64;
@@ -390,19 +390,19 @@ LABEL_26:
 
           v44 = *(v43[1] + 8 * j);
           v39 = v45;
-          v40 = [v44 hashString];
-          LOBYTE(v39) = [v39 containsObject:v40];
+          hashString = [v44 hashString];
+          LOBYTE(v39) = [v39 containsObject:hashString];
 
           if (v39)
           {
-            v67->_shouldForceShowTimeStampOnBackups = 1;
+            selfCopy->_shouldForceShowTimeStampOnBackups = 1;
             v50 = 7;
             goto LABEL_42;
           }
 
           v41 = v45;
-          v42 = [v44 hashString];
-          [v41 addObject:v42];
+          hashString2 = [v44 hashString];
+          [v41 addObject:hashString2];
         }
 
         v36 = [v35 countByEnumeratingWithState:v43 objects:v76 count:16];
@@ -428,51 +428,51 @@ LABEL_42:
 
 - (void)updateVisibleSnapshots
 {
-  v45 = self;
+  selfCopy = self;
   v44[1] = a2;
-  v2 = [(RestoreFromBackupController *)self tableView];
-  [v2 beginUpdates];
+  tableView = [(RestoreFromBackupController *)self tableView];
+  [tableView beginUpdates];
 
-  if (*(v45 + 14) == 3 || *(v45 + 14) == 2)
+  if (*(selfCopy + 14) == 3 || *(selfCopy + 14) == 2)
   {
     v44[0] = 0;
     location = +[NSMutableArray array];
-    v3 = [v45 mostSimilarRestorablesInsertRemainingIntoArray:location getOtherUniqueDevicesCount:v44];
-    v4 = *(v45 + 5);
-    *(v45 + 5) = v3;
+    v3 = [selfCopy mostSimilarRestorablesInsertRemainingIntoArray:location getOtherUniqueDevicesCount:v44];
+    v4 = *(selfCopy + 5);
+    *(selfCopy + 5) = v3;
 
-    if (*(v45 + 14) == 3)
+    if (*(selfCopy + 14) == 3)
     {
       v44[0] = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    else if (*(v45 + 14) == 2)
+    else if (*(selfCopy + 14) == 2)
     {
-      v44[0] = [*(v45 + 5) count];
+      v44[0] = [*(selfCopy + 5) count];
     }
 
-    v5 = [*(v45 + 5) arrayByAddingObjectsFromArray:location];
-    v6 = *(v45 + 5);
-    *(v45 + 5) = v5;
+    v5 = [*(selfCopy + 5) arrayByAddingObjectsFromArray:location];
+    v6 = *(selfCopy + 5);
+    *(selfCopy + 5) = v5;
 
-    v7 = [*(v45 + 6) count];
+    v7 = [*(selfCopy + 6) count];
     v8 = 0;
     if (v7)
     {
-      v9 = [*(v45 + 5) count];
+      v9 = [*(selfCopy + 5) count];
       v8 = 0;
       if (v9)
       {
-        v10 = [*(v45 + 6) count];
-        v11 = [*(v45 + 5) count];
+        v10 = [*(selfCopy + 6) count];
+        v11 = [*(selfCopy + 5) count];
         v8 = 0;
         if (v10 != v11)
         {
-          v12 = [*(v45 + 6) count];
+          v12 = [*(selfCopy + 6) count];
           v8 = 1;
           if (v12 != 1)
           {
-            v8 = [*(v45 + 5) count] == 1;
+            v8 = [*(selfCopy + 5) count] == 1;
           }
         }
       }
@@ -482,7 +482,7 @@ LABEL_42:
     v41 = 0;
     v40 = 0;
     memset(__b, 0, sizeof(__b));
-    v13 = *(v45 + 3);
+    v13 = *(selfCopy + 3);
     v14 = [v13 countByEnumeratingWithState:__b objects:v46 count:16];
     if (v14)
     {
@@ -503,15 +503,15 @@ LABEL_42:
           if (([v39 isCompatible] & 1) == 0)
           {
             v18 = v39;
-            v37 = [v45 availableUpdateVersion];
+            availableUpdateVersion = [selfCopy availableUpdateVersion];
             v36 = 1;
             v19 = [v18 isCompatibleWithUpdateToSystemVersion:?];
             v17 = 0;
             if ((v19 & 1) == 0)
             {
-              v35 = [v45 betaEnrollmentStateManager];
+              betaEnrollmentStateManager = [selfCopy betaEnrollmentStateManager];
               v34 = 1;
-              v17 = [v35 isRestorableSeedEnrolled:v39] ^ 1;
+              v17 = [betaEnrollmentStateManager isRestorableSeedEnrolled:v39] ^ 1;
             }
           }
 
@@ -543,7 +543,7 @@ LABEL_42:
     else
     {
       v20 = v40;
-      if (v20 >= [*(v45 + 3) count])
+      if (v20 >= [*(selfCopy + 3) count])
       {
         v41 = 2;
       }
@@ -554,21 +554,21 @@ LABEL_42:
       }
     }
 
-    *(v45 + 19) = v41;
-    v21 = v45;
-    v22 = [v45 tableView];
-    [v21 _updateTable:v22 toMatchArray:*(v45 + 5) withVisibleArray:*(v45 + 6) maxVisible:v44[0] fromOldSection:0 toNewSection:0];
+    *(selfCopy + 19) = v41;
+    v21 = selfCopy;
+    tableView2 = [selfCopy tableView];
+    [v21 _updateTable:tableView2 toMatchArray:*(selfCopy + 5) withVisibleArray:*(selfCopy + 6) maxVisible:v44[0] fromOldSection:0 toNewSection:0];
 
     if (v42)
     {
-      v23 = [v45 tableView];
+      tableView3 = [selfCopy tableView];
       v24 = [NSIndexSet indexSetWithIndex:0];
-      [v23 _reloadSectionHeaderFooters:v24 withRowAnimation:0];
+      [tableView3 _reloadSectionHeaderFooters:v24 withRowAnimation:0];
     }
 
-    if ([*(v45 + 5) count])
+    if ([*(selfCopy + 5) count])
     {
-      if (*(v45 + 14) != 2 || (v25 = [*(v45 + 6) count], v25 == objc_msgSend(*(v45 + 5), "count")))
+      if (*(selfCopy + 14) != 2 || (v25 = [*(selfCopy + 6) count], v25 == objc_msgSend(*(selfCopy + 5), "count")))
       {
         v26 = &_dispatch_main_q;
         block = _NSConcreteStackBlock;
@@ -576,7 +576,7 @@ LABEL_42:
         v30 = 0;
         v31 = sub_1000CCF10;
         v32 = &unk_10032B0D0;
-        v33 = v45;
+        v33 = selfCopy;
         dispatch_async(v26, &block);
 
         objc_storeStrong(&v33, 0);
@@ -586,98 +586,98 @@ LABEL_42:
     objc_storeStrong(&location, 0);
   }
 
-  else if (*(v45 + 14) == 1)
+  else if (*(selfCopy + 14) == 1)
   {
-    [*(v45 + 6) removeAllObjects];
+    [*(selfCopy + 6) removeAllObjects];
   }
 
-  v27 = [v45 tableView];
-  [v27 endUpdates];
+  tableView4 = [selfCopy tableView];
+  [tableView4 endUpdates];
 }
 
-- (void)setListState:(int)a3
+- (void)setListState:(int)state
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  if (a3 == self->_listState)
+  stateCopy = state;
+  if (state == self->_listState)
   {
     return;
   }
 
-  listState = v26->_listState;
-  v26->_listState = v24;
+  listState = selfCopy->_listState;
+  selfCopy->_listState = stateCopy;
   v22 = 0;
-  v3 = [(RestoreFromBackupController *)v26 tableView];
-  v4 = [v3 numberOfSections];
+  tableView = [(RestoreFromBackupController *)selfCopy tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  v21 = v4;
-  v5 = [(RestoreFromBackupController *)v26 tableView];
-  [v5 beginUpdates];
+  v21 = numberOfSections;
+  tableView2 = [(RestoreFromBackupController *)selfCopy tableView];
+  [tableView2 beginUpdates];
 
-  if (!listState && v24 == -1)
+  if (!listState && stateCopy == -1)
   {
     goto LABEL_4;
   }
 
-  if (listState == -1 && !v24)
+  if (listState == -1 && !stateCopy)
   {
-    v8 = [(RestoreFromBackupController *)v26 tableView];
+    tableView3 = [(RestoreFromBackupController *)selfCopy tableView];
     v9 = [NSIndexSet indexSetWithIndex:0];
-    [v8 insertSections:v9 withRowAnimation:0];
+    [tableView3 insertSections:v9 withRowAnimation:0];
 
     goto LABEL_30;
   }
 
-  if (listState == -1 && v24 == 2)
+  if (listState == -1 && stateCopy == 2)
   {
     goto LABEL_10;
   }
 
-  if (!listState && v24 == 2)
+  if (!listState && stateCopy == 2)
   {
-    v10 = [(RestoreFromBackupController *)v26 tableView];
+    tableView4 = [(RestoreFromBackupController *)selfCopy tableView];
     v11 = [NSIndexSet indexSetWithIndex:0];
-    [v10 deleteSections:v11 withRowAnimation:0];
+    [tableView4 deleteSections:v11 withRowAnimation:0];
 
-    [(RestoreFromBackupController *)v26 updateVisibleSnapshots];
+    [(RestoreFromBackupController *)selfCopy updateVisibleSnapshots];
     goto LABEL_30;
   }
 
-  if (listState == 2 && v24 == 3)
+  if (listState == 2 && stateCopy == 3)
   {
-    v12 = [(RestoreFromBackupController *)v26 tableView];
-    v13 = [NSIndexPath indexPathForRow:[(NSMutableArray *)v26->_visibleSimilarRestorables count] inSection:0];
+    tableView5 = [(RestoreFromBackupController *)selfCopy tableView];
+    v13 = [NSIndexPath indexPathForRow:[(NSMutableArray *)selfCopy->_visibleSimilarRestorables count] inSection:0];
     v32 = v13;
     v14 = [NSArray arrayWithObjects:&v32 count:1];
-    [v12 deleteRowsAtIndexPaths:v14 withRowAnimation:0];
+    [tableView5 deleteRowsAtIndexPaths:v14 withRowAnimation:0];
 
-    [(RestoreFromBackupController *)v26 updateVisibleSnapshots];
+    [(RestoreFromBackupController *)selfCopy updateVisibleSnapshots];
     goto LABEL_30;
   }
 
-  if (!listState && v24 == 1)
+  if (!listState && stateCopy == 1)
   {
 LABEL_4:
-    v6 = [(RestoreFromBackupController *)v26 tableView];
+    tableView6 = [(RestoreFromBackupController *)selfCopy tableView];
     v7 = [NSIndexSet indexSetWithIndex:0];
-    [v6 deleteSections:v7 withRowAnimation:0];
+    [tableView6 deleteSections:v7 withRowAnimation:0];
 
     v22 = 1;
     goto LABEL_30;
   }
 
-  if (listState == 1 && (v24 == 2 || v24 == 3))
+  if (listState == 1 && (stateCopy == 2 || stateCopy == 3))
   {
 LABEL_10:
-    [(RestoreFromBackupController *)v26 updateVisibleSnapshots];
+    [(RestoreFromBackupController *)selfCopy updateVisibleSnapshots];
     goto LABEL_30;
   }
 
-  if ((listState == 2 || listState == 3) && v24 == 1)
+  if ((listState == 2 || listState == 3) && stateCopy == 1)
   {
-    [(RestoreFromBackupController *)v26 updateVisibleSnapshots];
-    v15 = [(RestoreFromBackupController *)v26 tableView];
+    [(RestoreFromBackupController *)selfCopy updateVisibleSnapshots];
+    tableView7 = [(RestoreFromBackupController *)selfCopy tableView];
     v28 = 0;
     v27 = v21;
     v29 = 0;
@@ -685,23 +685,23 @@ LABEL_10:
     oslog[2] = v21;
     oslog[1] = 0;
     v16 = [NSIndexSet indexSetWithIndexesInRange:0, v21];
-    [v15 deleteSections:v16 withRowAnimation:0];
+    [tableView7 deleteSections:v16 withRowAnimation:0];
 
     v22 = 1;
 LABEL_30:
-    if (v26->_listState != 2 && v24 != 3)
+    if (selfCopy->_listState != 2 && stateCopy != 3)
     {
-      v17 = [(RestoreFromBackupController *)v26 navigationItem];
-      v18 = [v17 rightBarButtonItem];
-      [v18 setEnabled:0];
+      navigationItem = [(RestoreFromBackupController *)selfCopy navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      [rightBarButtonItem setEnabled:0];
     }
 
-    v19 = [(RestoreFromBackupController *)v26 tableView];
-    [v19 endUpdates];
+    tableView8 = [(RestoreFromBackupController *)selfCopy tableView];
+    [tableView8 endUpdates];
 
     if (v22)
     {
-      [(RestoreFromBackupController *)v26 _presentAlertForCurrentListState];
+      [(RestoreFromBackupController *)selfCopy _presentAlertForCurrentListState];
     }
 
     return;
@@ -710,30 +710,30 @@ LABEL_30:
   oslog[0] = _BYLoggingFacility();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    sub_100075A38(buf, listState, v24);
+    sub_100075A38(buf, listState, stateCopy);
     _os_log_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_DEFAULT, "Tried to transition from state %i to state %i", buf, 0xEu);
   }
 
   objc_storeStrong(oslog, 0);
 }
 
-- (void)updateListStateWithReload:(BOOL)a3
+- (void)updateListStateWithReload:(BOOL)reload
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  if (self->_backupList && !v10->_scanningForUpdate)
+  reloadCopy = reload;
+  if (self->_backupList && !selfCopy->_scanningForUpdate)
   {
-    if ([(NSArray *)v10->_backupList count])
+    if ([(NSArray *)selfCopy->_backupList count])
     {
-      if (v10->_listState < 2u || v10->_listState == -1)
+      if (selfCopy->_listState < 2u || selfCopy->_listState == -1)
       {
-        [(RestoreFromBackupController *)v10 setListState:2];
+        [(RestoreFromBackupController *)selfCopy setListState:2];
       }
 
-      else if (v8)
+      else if (reloadCopy)
       {
-        [(RestoreFromBackupController *)v10 updateVisibleSnapshots];
+        [(RestoreFromBackupController *)selfCopy updateVisibleSnapshots];
       }
     }
 
@@ -750,51 +750,51 @@ LABEL_30:
       }
 
       objc_storeStrong(&oslog, 0);
-      [(RestoreFromBackupController *)v10 setListState:1];
+      [(RestoreFromBackupController *)selfCopy setListState:1];
     }
   }
 }
 
-- (void)setBackupList:(id)a3 forceReload:(BOOL)a4 withError:(id)a5
+- (void)setBackupList:(id)list forceReload:(BOOL)reload withError:(id)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, list);
+  reloadCopy = reload;
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, error);
   if (v9)
   {
-    if (!v12->_listState)
+    if (!selfCopy->_listState)
     {
-      [(RestoreFromBackupController *)v12 setListState:0xFFFFFFFFLL];
+      [(RestoreFromBackupController *)selfCopy setListState:0xFFFFFFFFLL];
     }
   }
 
-  else if (location[0] != v12->_backupList)
+  else if (location[0] != selfCopy->_backupList)
   {
-    v8 = ([(NSArray *)v12->_backupList isEqual:location[0]]^ 1) & 1;
-    objc_storeStrong(&v12->_backupList, location[0]);
+    v8 = ([(NSArray *)selfCopy->_backupList isEqual:location[0]]^ 1) & 1;
+    objc_storeStrong(&selfCopy->_backupList, location[0]);
     v7 = 1;
     if ((v8 & 1) == 0)
     {
-      v7 = v10;
+      v7 = reloadCopy;
     }
 
-    [(RestoreFromBackupController *)v12 updateListStateWithReload:v7 & 1];
+    [(RestoreFromBackupController *)selfCopy updateListStateWithReload:v7 & 1];
   }
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)filteredRestorableItemsFromBackupList:(id)a3
+- (id)filteredRestorableItemsFromBackupList:(id)list
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, list);
   v24 = +[NSMutableArray array];
   memset(__b, 0, sizeof(__b));
   v3 = location[0];
@@ -813,14 +813,14 @@ LABEL_30:
         }
 
         v23 = *(__b[1] + 8 * i);
-        v8 = [v23 productType];
-        v9 = [v8 containsString:@"RealityDevice"] ^ 1;
+        productType = [v23 productType];
+        v9 = [productType containsString:@"RealityDevice"] ^ 1;
 
         if (v9)
         {
           memset(v20, 0, sizeof(v20));
-          v10 = [v23 snapshots];
-          v11 = [v10 countByEnumeratingWithState:v20 objects:v26 count:16];
+          snapshots = [v23 snapshots];
+          v11 = [snapshots countByEnumeratingWithState:v20 objects:v26 count:16];
           if (v11)
           {
             v18 = v6;
@@ -832,7 +832,7 @@ LABEL_30:
               {
                 if (*v20[2] != v12)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(snapshots);
                 }
 
                 v21 = *(v20[1] + 8 * j);
@@ -844,7 +844,7 @@ LABEL_30:
                 }
               }
 
-              v11 = [v10 countByEnumeratingWithState:v20 objects:v26 count:16];
+              v11 = [snapshots countByEnumeratingWithState:v20 objects:v26 count:16];
             }
 
             while (v11);
@@ -866,12 +866,12 @@ LABEL_30:
   return v16;
 }
 
-- (void)updateBackupListCompletion:(id)a3
+- (void)updateBackupListCompletion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v26 = 0;
   v25 = 0;
   v3 = _BYSignpostSubsystem();
@@ -903,13 +903,13 @@ LABEL_30:
   objc_storeStrong(&oslog, 0);
   v25 = v23;
   v26 = v24;
-  update_backup_list_queue = v28->_update_backup_list_queue;
+  update_backup_list_queue = selfCopy->_update_backup_list_queue;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1000CDD98;
   v14 = &unk_10032C578;
-  v15 = v28;
+  v15 = selfCopy;
   v16[0] = location[0];
   v16[1] = v25;
   v16[2] = v26;
@@ -919,19 +919,19 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshBackupListFromTimer:(id)a3
+- (void)refreshBackupListFromTimer:(id)timer
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
+  objc_storeStrong(location, timer);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000CE880;
   v8 = &unk_10032C5A0;
-  v9 = v11;
+  v9 = selfCopy;
   [(RestoreFromBackupController *)v3 updateBackupListCompletion:&v4];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -939,8 +939,8 @@ LABEL_30:
 
 - (void)cancelRestoreAndRemovePrimaryAppleAccount
 {
-  v2 = [(RestoreFromBackupController *)self proximitySetupController];
-  v3 = ![(ProximitySetupController *)v2 signedIniCloudAccount];
+  proximitySetupController = [(RestoreFromBackupController *)self proximitySetupController];
+  v3 = ![(ProximitySetupController *)proximitySetupController signedIniCloudAccount];
 
   if (!self->_appleAccountRemoved && v3)
   {
@@ -950,15 +950,15 @@ LABEL_30:
   }
 }
 
-- (void)scanForUpdateIfNecessaryForBackupList:(id)a3 withCompletion:(id)a4
+- (void)scanForUpdateIfNecessaryForBackupList:(id)list withCompletion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, list);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
-  if (!v34->_scannedForUpdate && [location[0] count])
+  objc_storeStrong(&v32, completion);
+  if (!selfCopy->_scannedForUpdate && [location[0] count])
   {
     v30 = 0;
     memset(__b, 0, sizeof(__b));
@@ -1011,17 +1011,17 @@ LABEL_18:
       }
 
       objc_storeStrong(&oslog, 0);
-      [(RestoreFromBackupController *)v34 setScanningForUpdate:1];
-      v11 = [(RestoreFromBackupController *)v34 softwareUpdateCache];
+      [(RestoreFromBackupController *)selfCopy setScanningForUpdate:1];
+      softwareUpdateCache = [(RestoreFromBackupController *)selfCopy softwareUpdateCache];
       v17 = _NSConcreteStackBlock;
       v18 = -1073741824;
       v19 = 0;
       v20 = sub_1000CED84;
       v21 = &unk_10032C5C8;
-      v22 = v34;
+      v22 = selfCopy;
       v23 = location[0];
       v24 = v32;
-      [(BYSoftwareUpdateCache *)v11 scanUsingCache:1 withCompletion:&v17];
+      [(BYSoftwareUpdateCache *)softwareUpdateCache scanUsingCache:1 withCompletion:&v17];
 
       objc_storeStrong(&v24, 0);
       objc_storeStrong(&v23, 0);
@@ -1061,15 +1061,15 @@ LABEL_18:
   objc_storeStrong(location, 0);
 }
 
-- (void)setRefreshTimerToDuration:(double)a3
+- (void)setRefreshTimerToDuration:(double)duration
 {
-  v3 = [(RestoreFromBackupController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(RestoreFromBackupController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v4 == self)
+  if (topViewController == self)
   {
     [(NSTimer *)self->_refreshTimer invalidate];
-    v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"refreshBackupListFromTimer:" selector:0 userInfo:0 repeats:a3];
+    v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"refreshBackupListFromTimer:" selector:0 userInfo:0 repeats:duration];
     refreshTimer = self->_refreshTimer;
     self->_refreshTimer = v5;
   }
@@ -1077,20 +1077,20 @@ LABEL_18:
 
 - (void)viewDidLoad
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = RestoreFromBackupController;
   [(RestoreFromBackupController *)&v10 viewDidLoad];
-  v2 = v12;
-  v3 = [(RestoreFromBackupController *)v12 backupsTableView];
-  [(RestoreFromBackupController *)v2 setTableView:v3];
+  v2 = selfCopy;
+  backupsTableView = [(RestoreFromBackupController *)selfCopy backupsTableView];
+  [(RestoreFromBackupController *)v2 setTableView:backupsTableView];
 
-  v4 = [(RestoreFromBackupController *)v12 tableView];
-  [v4 setSeparatorInsetReference:1];
+  tableView = [(RestoreFromBackupController *)selfCopy tableView];
+  [tableView setSeparatorInsetReference:1];
 
-  v5 = [(RestoreFromBackupController *)v12 tableView];
-  [v5 setSeparatorStyle:1];
+  tableView2 = [(RestoreFromBackupController *)selfCopy tableView];
+  [tableView2 setSeparatorStyle:1];
 
   v6 = [[OBAnimationState alloc] initWithStateName:@"Start" transitionDuration:0.01 transitionSpeed:1.0];
   v13[0] = v6;
@@ -1098,35 +1098,35 @@ LABEL_18:
   v13[1] = v7;
   v9 = [NSArray arrayWithObjects:v13 count:2];
 
-  v8 = [(RestoreFromBackupController *)v12 buddy_animationController:@"iCloudBackup" animatedStates:v9 startAtFirstState:1];
-  [(RestoreFromBackupController *)v12 setAnimationController:v8];
+  v8 = [(RestoreFromBackupController *)selfCopy buddy_animationController:@"iCloudBackup" animatedStates:v9 startAtFirstState:1];
+  [(RestoreFromBackupController *)selfCopy setAnimationController:v8];
 
   objc_storeStrong(&v9, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v3 = [(RestoreFromBackupController *)self animationController];
-  [(OBAnimationController *)v3 startAnimation];
+  appearCopy = appear;
+  animationController = [(RestoreFromBackupController *)self animationController];
+  [(OBAnimationController *)animationController startAnimation];
 
-  if (!v18->_refreshTimer)
+  if (!selfCopy->_refreshTimer)
   {
-    [(RestoreFromBackupController *)v18 setRefreshTimerToDuration:20.0];
+    [(RestoreFromBackupController *)selfCopy setRefreshTimerToDuration:20.0];
   }
 
-  v15 = [(RestoreFromBackupController *)v18 isMovingToParentViewController]& 1;
-  if (v15 || !v18->_backupList)
+  v15 = [(RestoreFromBackupController *)selfCopy isMovingToParentViewController]& 1;
+  if (v15 || !selfCopy->_backupList)
   {
-    [(RestoreFromBackupController *)v18 updateBackupListCompletion:0];
+    [(RestoreFromBackupController *)selfCopy updateBackupListCompletion:0];
     if (v15)
     {
-      [(RestoreFromBackupController *)v18 updateListStateWithReload:0];
-      v4 = [(RestoreFromBackupController *)v18 navigationController];
-      v5 = [v4 viewControllers];
-      v14 = [v5 mutableCopy];
+      [(RestoreFromBackupController *)selfCopy updateListStateWithReload:0];
+      navigationController = [(RestoreFromBackupController *)selfCopy navigationController];
+      viewControllers = [navigationController viewControllers];
+      v14 = [viewControllers mutableCopy];
 
       location = objc_opt_new();
       v12 = 0;
@@ -1148,8 +1148,8 @@ LABEL_18:
 
       if (v12)
       {
-        v9 = [(RestoreFromBackupController *)v18 delegate];
-        [(BFFFlowItemDelegate *)v9 removeViewControllersOnNextPush:location];
+        delegate = [(RestoreFromBackupController *)selfCopy delegate];
+        [(BFFFlowItemDelegate *)delegate removeViewControllersOnNextPush:location];
       }
 
       objc_storeStrong(&location, 0);
@@ -1157,35 +1157,35 @@ LABEL_18:
     }
   }
 
-  v10.receiver = v18;
+  v10.receiver = selfCopy;
   v10.super_class = RestoreFromBackupController;
-  [(RestoreFromBackupController *)&v10 viewDidAppear:v16];
+  [(RestoreFromBackupController *)&v10 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4 = self->_refreshTimer != 0;
   [(NSTimer *)self->_refreshTimer invalidate];
-  objc_storeStrong(&v7->_refreshTimer, 0);
-  if (v4 && ([(RestoreFromBackupController *)v7 isMovingFromParentViewController]& 1) != 0)
+  objc_storeStrong(&selfCopy->_refreshTimer, 0);
+  if (v4 && ([(RestoreFromBackupController *)selfCopy isMovingFromParentViewController]& 1) != 0)
   {
-    [(RestoreFromBackupController *)v7 cancelRestoreAndRemovePrimaryAppleAccount];
+    [(RestoreFromBackupController *)selfCopy cancelRestoreAndRemovePrimaryAppleAccount];
   }
 
-  v3.receiver = v7;
+  v3.receiver = selfCopy;
   v3.super_class = RestoreFromBackupController;
-  [(RestoreFromBackupController *)&v3 viewDidDisappear:v5];
+  [(RestoreFromBackupController *)&v3 viewDidDisappear:disappearCopy];
 }
 
-- (void)setupWithAlternateChoice:(id)a3
+- (void)setupWithAlternateChoice:(id)choice
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   oslog = _BYLoggingFacility();
   v23 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1195,27 +1195,27 @@ LABEL_18:
   }
 
   objc_storeStrong(&oslog, 0);
-  v3 = [(RestoreFromBackupController *)v26 enrollmentCoordinator];
-  v4 = [(BuddyEnrollmentCoordinator *)v3 mdmEnrollmentChannel];
+  enrollmentCoordinator = [(RestoreFromBackupController *)selfCopy enrollmentCoordinator];
+  mdmEnrollmentChannel = [(BuddyEnrollmentCoordinator *)enrollmentCoordinator mdmEnrollmentChannel];
 
-  if (v4 != 2)
+  if (mdmEnrollmentChannel != 2)
   {
-    [(RestoreFromBackupController *)v26 cancelRestoreAndRemovePrimaryAppleAccount];
+    [(RestoreFromBackupController *)selfCopy cancelRestoreAndRemovePrimaryAppleAccount];
   }
 
-  v5 = [(RestoreFromBackupController *)v26 pendingRestoreState];
-  [(BuddyPendingRestoreState *)v5 clearBackupItem];
+  pendingRestoreState = [(RestoreFromBackupController *)selfCopy pendingRestoreState];
+  [(BuddyPendingRestoreState *)pendingRestoreState clearBackupItem];
 
-  v6 = [(RestoreFromBackupController *)v26 navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 indexOfObjectPassingTest:&stru_10032C608];
+  navigationController = [(RestoreFromBackupController *)selfCopy navigationController];
+  viewControllers = [navigationController viewControllers];
+  v8 = [viewControllers indexOfObjectPassingTest:&stru_10032C608];
 
   v22 = v8;
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(RestoreFromBackupController *)v26 navigationController];
-    v10 = [v9 viewControllers];
-    v11 = [v10 count];
+    navigationController2 = [(RestoreFromBackupController *)selfCopy navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    v11 = [viewControllers2 count];
     v28 = (v22 + 1);
     v27 = &v11[~v22];
     v29 = (v22 + 1);
@@ -1224,22 +1224,22 @@ LABEL_18:
     v20[1] = (v22 + 1);
     v21 = [NSIndexSet indexSetWithIndexesInRange:v22 + 1, v27];
 
-    v12 = [(RestoreFromBackupController *)v26 delegate];
-    v13 = [(RestoreFromBackupController *)v26 navigationController];
-    v14 = [v13 viewControllers];
-    v15 = [v14 objectsAtIndexes:v21];
-    [(BFFFlowItemDelegate *)v12 removeViewControllersOnNextPush:v15];
+    delegate = [(RestoreFromBackupController *)selfCopy delegate];
+    navigationController3 = [(RestoreFromBackupController *)selfCopy navigationController];
+    viewControllers3 = [navigationController3 viewControllers];
+    v15 = [viewControllers3 objectsAtIndexes:v21];
+    [(BFFFlowItemDelegate *)delegate removeViewControllersOnNextPush:v15];
 
-    v16 = [(RestoreFromBackupController *)v26 navigationController];
-    v17 = [v16 viewControllers];
-    v20[0] = [v17 objectAtIndexedSubscript:v22];
+    navigationController4 = [(RestoreFromBackupController *)selfCopy navigationController];
+    viewControllers4 = [navigationController4 viewControllers];
+    v20[0] = [viewControllers4 objectAtIndexedSubscript:v22];
 
-    v18 = [(RestoreFromBackupController *)v26 delegate];
-    [v20[0] setDelegate:v18];
+    delegate2 = [(RestoreFromBackupController *)selfCopy delegate];
+    [v20[0] setDelegate:delegate2];
 
     [v20[0] selectChoiceForIdentifier:location[0]];
-    v19 = [(RestoreFromBackupController *)v26 delegate];
-    [(BFFFlowItemDelegate *)v19 markFlowItemDone:v26];
+    delegate3 = [(RestoreFromBackupController *)selfCopy delegate];
+    [(BFFFlowItemDelegate *)delegate3 markFlowItemDone:selfCopy];
 
     objc_storeStrong(v20, 0);
     objc_storeStrong(&v21, 0);
@@ -1248,14 +1248,14 @@ LABEL_18:
   objc_storeStrong(location, 0);
 }
 
-- (void)showRestoreWarningsIfNeededForRestorable:(id)a3 completion:(id)a4
+- (void)showRestoreWarningsIfNeededForRestorable:(id)restorable completion:(id)completion
 {
-  v79 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restorable);
   v77 = 0;
-  objc_storeStrong(&v77, a4);
+  objc_storeStrong(&v77, completion);
   v70 = _NSConcreteStackBlock;
   v71 = -1073741824;
   v72 = 0;
@@ -1263,10 +1263,10 @@ LABEL_18:
   v74 = &unk_10032C630;
   v75 = v77;
   v76 = objc_retainBlock(&v70);
-  v5 = [location[0] backup];
-  v69 = [v5 deviceClass];
+  backup = [location[0] backup];
+  deviceClass = [backup deviceClass];
 
-  v68 = [v69 isEqualToString:@"iPad"] & 1;
+  v68 = [deviceClass isEqualToString:@"iPad"] & 1;
   v80 = MGCopyAnswer();
   v6 = v80;
   v7 = [v6 isEqualToString:@"iPad"];
@@ -1277,12 +1277,12 @@ LABEL_18:
   {
     if (v68 & 1) == 0 && (v67)
     {
-      v53 = [v69 uppercaseString];
+      uppercaseString = [deviceClass uppercaseString];
       v23 = +[NSBundle mainBundle];
-      v24 = [NSString localizedStringWithFormat:@"CROSS_DEVICE_CLASS_TO_IPAD_RESTORE_%@", v53];
+      v24 = [NSString localizedStringWithFormat:@"CROSS_DEVICE_CLASS_TO_IPAD_RESTORE_%@", uppercaseString];
       v25 = [(NSBundle *)v23 localizedStringForKey:v24 value:&stru_10032F900 table:@"RestoreFromBackup"];
       v26 = +[NSBundle mainBundle];
-      v27 = [NSString localizedStringWithFormat:@"CROSS_DEVICE_CLASS_TO_IPAD_RESTORE_WARNING_%@", v53];
+      v27 = [NSString localizedStringWithFormat:@"CROSS_DEVICE_CLASS_TO_IPAD_RESTORE_WARNING_%@", uppercaseString];
       v28 = [(NSBundle *)v26 localizedStringForKey:v27 value:&stru_10032F900 table:@"RestoreFromBackup"];
       v29 = [UIAlertController alertControllerWithTitle:v25 message:v28 preferredStyle:1];
       v30 = v66;
@@ -1314,7 +1314,7 @@ LABEL_18:
 
       objc_storeStrong(&v46, 0);
       objc_storeStrong(&v52, 0);
-      objc_storeStrong(&v53, 0);
+      objc_storeStrong(&uppercaseString, 0);
     }
   }
 
@@ -1359,9 +1359,9 @@ LABEL_18:
 
   if (v66)
   {
-    v39 = [(RestoreFromBackupController *)v79 navigationController];
-    v40 = [v39 topViewController];
-    [v40 presentViewController:v66 animated:1 completion:0];
+    navigationController = [(RestoreFromBackupController *)selfCopy navigationController];
+    topViewController = [navigationController topViewController];
+    [topViewController presentViewController:v66 animated:1 completion:0];
   }
 
   else
@@ -1370,24 +1370,24 @@ LABEL_18:
   }
 
   objc_storeStrong(&v66, 0);
-  objc_storeStrong(&v69, 0);
+  objc_storeStrong(&deviceClass, 0);
   objc_storeStrong(&v76, 0);
   objc_storeStrong(&v75, 0);
   objc_storeStrong(&v77, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentNetworkWarningForRestorable:(id)a3 completion:(id)a4
+- (void)_presentNetworkWarningForRestorable:(id)restorable completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restorable);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v5 = [(RestoreFromBackupController *)v24 networkProvider];
-  v6 = [location[0] snapshot];
-  v21 = +[BuddyRestoreNetworkAlertController alertControllerForNetworkConnectionWithProvider:estimatedRestoreSize:](BuddyRestoreNetworkAlertController, "alertControllerForNetworkConnectionWithProvider:estimatedRestoreSize:", v5, [v6 estimatedRestoreSize]);
+  objc_storeStrong(&v22, completion);
+  networkProvider = [(RestoreFromBackupController *)selfCopy networkProvider];
+  snapshot = [location[0] snapshot];
+  v21 = +[BuddyRestoreNetworkAlertController alertControllerForNetworkConnectionWithProvider:estimatedRestoreSize:](BuddyRestoreNetworkAlertController, "alertControllerForNetworkConnectionWithProvider:estimatedRestoreSize:", networkProvider, [snapshot estimatedRestoreSize]);
 
   if (v21)
   {
@@ -1398,17 +1398,17 @@ LABEL_18:
     v18 = &unk_10032B120;
     v19 = v22;
     [v21 setRestoreOverCellular:&v14];
-    v13 = [(RestoreFromBackupController *)v24 showModalWiFiSettingsBlock];
+    showModalWiFiSettingsBlock = [(RestoreFromBackupController *)selfCopy showModalWiFiSettingsBlock];
     v7 = _NSConcreteStackBlock;
     v8 = -1073741824;
     v9 = 0;
     v10 = sub_1000D092C;
     v11 = &unk_10032B120;
-    v12 = v13;
+    v12 = showModalWiFiSettingsBlock;
     [v21 setPresentWiFiSettings:&v7];
-    [(RestoreFromBackupController *)v24 presentViewController:v21 animated:1 completion:0];
+    [(RestoreFromBackupController *)selfCopy presentViewController:v21 animated:1 completion:0];
     objc_storeStrong(&v12, 0);
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&showModalWiFiSettingsBlock, 0);
     objc_storeStrong(&v19, 0);
     v20 = 0;
   }
@@ -1427,23 +1427,23 @@ LABEL_18:
 - (BOOL)controllerNeedsToRun
 {
   v2 = [(RestoreFromBackupController *)self pendingRestoreState:a2];
-  v3 = [(BuddyPendingRestoreState *)v2 backupItem];
-  v4 = v3 == 0;
+  backupItem = [(BuddyPendingRestoreState *)v2 backupItem];
+  v4 = backupItem == 0;
 
   return v4;
 }
 
-- (id)restorableItemAtIndexPath:(id)a3
+- (id)restorableItemAtIndexPath:(id)path
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v8 = [location[0] row];
   v7 = 0;
-  if (v8 < [(NSMutableArray *)v10->_visibleSimilarRestorables count])
+  if (v8 < [(NSMutableArray *)selfCopy->_visibleSimilarRestorables count])
   {
-    v3 = [(NSMutableArray *)v10->_visibleSimilarRestorables objectAtIndexedSubscript:v8];
+    v3 = [(NSMutableArray *)selfCopy->_visibleSimilarRestorables objectAtIndexedSubscript:v8];
     v4 = v7;
     v7 = v3;
   }
@@ -1454,38 +1454,38 @@ LABEL_18:
   return v5;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = v5->_listState != -1 && v5->_listState != 1;
+  objc_storeStrong(location, view);
+  v6 = selfCopy->_listState != -1 && selfCopy->_listState != 1;
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v6->_listState == 1 || v6->_listState == -1)
+  objc_storeStrong(location, view);
+  if (selfCopy->_listState == 1 || selfCopy->_listState == -1)
   {
     v7 = 0;
   }
 
-  else if (v6->_listState == 3 || v6->_listState == 2)
+  else if (selfCopy->_listState == 3 || selfCopy->_listState == 2)
   {
-    if ([(RestoreFromBackupController *)v6 _shouldShowAllBackupsAction])
+    if ([(RestoreFromBackupController *)selfCopy _shouldShowAllBackupsAction])
     {
-      v7 = [(NSMutableArray *)v6->_visibleSimilarRestorables count]+ 1;
+      v7 = [(NSMutableArray *)selfCopy->_visibleSimilarRestorables count]+ 1;
     }
 
     else
     {
-      v7 = [(NSMutableArray *)v6->_visibleSimilarRestorables count];
+      v7 = [(NSMutableArray *)selfCopy->_visibleSimilarRestorables count];
     }
   }
 
@@ -1498,20 +1498,20 @@ LABEL_18:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = a4;
-  if (v32->_listState != 2 && v32->_listState != 3 || v30 != [location[0] numberOfSections] - 1)
+  objc_storeStrong(location, view);
+  sectionCopy = section;
+  if (selfCopy->_listState != 2 && selfCopy->_listState != 3 || sectionCopy != [location[0] numberOfSections] - 1)
   {
     goto LABEL_28;
   }
 
   v29 = 0;
-  compatibleRestoresState = v32->_compatibleRestoresState;
+  compatibleRestoresState = selfCopy->_compatibleRestoresState;
   if (compatibleRestoresState)
   {
     if (compatibleRestoresState == 1)
@@ -1538,8 +1538,8 @@ LABEL_18:
     v28 = 0;
     obj = 0;
     v14 = +[UIDevice currentDevice];
-    v15 = [(UIDevice *)v14 systemVersion];
-    v16 = [NSString stringWithValidatedFormat:v29 validFormatSpecifiers:@"%@" error:&obj, v15];
+    systemVersion = [(UIDevice *)v14 systemVersion];
+    v16 = [NSString stringWithValidatedFormat:v29 validFormatSpecifiers:@"%@" error:&obj, systemVersion];
     objc_storeStrong(&v28, obj);
     v27 = v16;
 
@@ -1563,9 +1563,9 @@ LABEL_18:
 
         else if (v28)
         {
-          v24 = [v28 domain];
+          domain = [v28 domain];
           v23 = 1;
-          v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v24, [v28 code]);
+          v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v28 code]);
           v22 = v17;
           v21 = 1;
         }
@@ -1613,22 +1613,22 @@ LABEL_28:
   return v18;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15[1] = a4;
-  v15[0] = [(RestoreFromBackupController *)v17 tableView:location[0] viewForHeaderInSection:a4];
+  objc_storeStrong(location, view);
+  v15[1] = section;
+  v15[0] = [(RestoreFromBackupController *)selfCopy tableView:location[0] viewForHeaderInSection:section];
   [location[0] bounds];
   v6 = v5;
   [location[0] layoutMargins];
   v8 = v6 - v7;
   [location[0] layoutMargins];
   v10 = v8 - v9;
-  v11 = [v15[0] sectionLabel];
-  [v11 setPreferredMaxLayoutWidth:v10];
+  sectionLabel = [v15[0] sectionLabel];
+  [sectionLabel setPreferredMaxLayoutWidth:v10];
 
   [v15[0] systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v13 = v12;
@@ -1637,39 +1637,39 @@ LABEL_28:
   return v13;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return UITableViewAutomaticDimension;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, path);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return UITableViewAutomaticDimension;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v73 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v71 = 0;
-  objc_storeStrong(&v71, a4);
+  objc_storeStrong(&v71, path);
   v70 = 0;
-  listState = v73->_listState;
+  listState = selfCopy->_listState;
   switch(listState)
   {
     case -1:
@@ -1687,7 +1687,7 @@ LABEL_8:
       v68 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
       {
-        sub_100082D54(buf, v73->_listState);
+        sub_100082D54(buf, selfCopy->_listState);
         _os_log_impl(&_mh_execute_header, v69, v68, "Cell for row called for unexpected list state: %d", buf, 8u);
       }
 
@@ -1696,7 +1696,7 @@ LABEL_8:
     default:
       if ((listState - 2) < 2)
       {
-        v8 = [(RestoreFromBackupController *)v73 restorableItemAtIndexPath:v71];
+        v8 = [(RestoreFromBackupController *)selfCopy restorableItemAtIndexPath:v71];
         v67 = v8;
         if (v8)
         {
@@ -1705,14 +1705,14 @@ LABEL_8:
           v15 = 1;
           if (([v67 isCompatible] & 1) == 0)
           {
-            v64 = [(RestoreFromBackupController *)v73 availableUpdateVersion];
+            availableUpdateVersion = [(RestoreFromBackupController *)selfCopy availableUpdateVersion];
             v63 = 1;
             v15 = 1;
             if (([v67 isCompatibleWithUpdateToSystemVersion:?] & 1) == 0)
             {
-              v62 = [(RestoreFromBackupController *)v73 betaEnrollmentStateManager];
+              betaEnrollmentStateManager = [(RestoreFromBackupController *)selfCopy betaEnrollmentStateManager];
               v61 = 1;
-              v15 = [v62 isRestorableSeedEnrolled:v67];
+              v15 = [betaEnrollmentStateManager isRestorableSeedEnrolled:v67];
             }
           }
 
@@ -1734,15 +1734,15 @@ LABEL_8:
             v70 = [[DeviceRestoreBackupCell alloc] initWithStyle:3 reuseIdentifier:@"PBSnapshotCell"];
           }
 
-          v18 = [v70 textLabel];
+          textLabel = [v70 textLabel];
           if (v65)
           {
             v22 = +[UIColor _labelColor];
-            [v18 setTextColor:v22];
+            [textLabel setTextColor:v22];
 
-            v23 = [v70 detailTextLabel];
+            detailTextLabel = [v70 detailTextLabel];
             v24 = +[UIColor _labelColor];
-            [v23 setTextColor:v24];
+            [detailTextLabel setTextColor:v24];
 
             [v70 setSelectionStyle:3];
           }
@@ -1750,58 +1750,58 @@ LABEL_8:
           else
           {
             v19 = +[UIColor _secondaryLabelColor];
-            [v18 setTextColor:v19];
+            [textLabel setTextColor:v19];
 
-            v20 = [v70 detailTextLabel];
+            detailTextLabel2 = [v70 detailTextLabel];
             v21 = +[UIColor _secondaryLabelColor];
-            [v20 setTextColor:v21];
+            [detailTextLabel2 setTextColor:v21];
 
             [v70 setSelectionStyle:0];
           }
 
           [v70 setAccessoryType:1];
           v60 = 0;
-          v60 = v73->_listState == 3 || v73->_shouldForceShowTimeStampOnBackups;
-          v25 = [v70 textLabel];
+          v60 = selfCopy->_listState == 3 || selfCopy->_shouldForceShowTimeStampOnBackups;
+          textLabel2 = [v70 textLabel];
           v26 = [v67 dateStringWithStyle:v60];
-          [v25 setText:v26];
+          [textLabel2 setText:v26];
 
-          v27 = [v70 textLabel];
+          textLabel3 = [v70 textLabel];
           v28 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-          [v27 setFont:v28];
+          [textLabel3 setFont:v28];
 
           v59 = 0;
           if (v65)
           {
-            v29 = [v67 deviceInfoString];
+            deviceInfoString = [v67 deviceInfoString];
             v30 = v59;
-            v59 = v29;
+            v59 = deviceInfoString;
           }
 
           else
           {
             v31 = +[NSBundle mainBundle];
             v32 = [(NSBundle *)v31 localizedStringForKey:@"REQUIRED_OS_VERSION_%@" value:&stru_10032F900 table:@"RestoreFromBackup"];
-            v33 = [v67 snapshot];
-            v34 = [v33 systemVersion];
-            v35 = [NSString localizedStringWithFormat:v32, v34];
+            snapshot = [v67 snapshot];
+            systemVersion = [snapshot systemVersion];
+            v35 = [NSString localizedStringWithFormat:v32, systemVersion];
             v36 = v59;
             v59 = v35;
           }
 
-          v37 = [v70 imageView];
-          v38 = [v67 backup];
-          v39 = [v38 productType];
-          v40 = [(RestoreFromBackupController *)v73 traitCollection];
-          v41 = [_TtC5Setup25BuddyDeviceImageUtilities imageForDeviceModelWithModel:v39 traitCollection:v40];
-          [v37 setImage:v41];
+          imageView = [v70 imageView];
+          backup = [v67 backup];
+          productType = [backup productType];
+          traitCollection = [(RestoreFromBackupController *)selfCopy traitCollection];
+          v41 = [_TtC5Setup25BuddyDeviceImageUtilities imageForDeviceModelWithModel:productType traitCollection:traitCollection];
+          [imageView setImage:v41];
 
-          v42 = [v70 detailTextLabel];
-          [v42 setText:v59];
+          detailTextLabel3 = [v70 detailTextLabel];
+          [detailTextLabel3 setText:v59];
 
-          v43 = [v70 detailTextLabel];
+          detailTextLabel4 = [v70 detailTextLabel];
           v44 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-          [v43 setFont:v44];
+          [detailTextLabel4 setFont:v44];
 
           [location[0] separatorInset];
           v46 = 39.0 - v45;
@@ -1809,8 +1809,8 @@ LABEL_8:
           sub_1000D1DD4(v46, v47);
           v58 = sub_1000D1D7C();
           [v70 setSeparatorInset:{v58, v48, v49, v50}];
-          v51 = [v67 accessibilityIdentifier];
-          [v70 setAccessibilityIdentifier:v51];
+          accessibilityIdentifier = [v67 accessibilityIdentifier];
+          [v70 setAccessibilityIdentifier:accessibilityIdentifier];
 
           objc_storeStrong(&v59, 0);
         }
@@ -1821,17 +1821,17 @@ LABEL_8:
           v10 = v70;
           v70 = v9;
 
-          v66 = [v70 defaultContentConfiguration];
+          defaultContentConfiguration = [v70 defaultContentConfiguration];
           v11 = +[NSBundle mainBundle];
           v12 = [(NSBundle *)v11 localizedStringForKey:@"SHOW_ALL_BACKUPS" value:&stru_10032F900 table:@"RestoreFromBackup"];
-          [v66 setText:v12];
+          [defaultContentConfiguration setText:v12];
 
-          v13 = [v66 textProperties];
+          textProperties = [defaultContentConfiguration textProperties];
           v14 = +[UIColor systemBlueColor];
-          [v13 setColor:v14];
+          [textProperties setColor:v14];
 
-          [v70 setContentConfiguration:v66];
-          objc_storeStrong(&v66, 0);
+          [v70 setContentConfiguration:defaultContentConfiguration];
+          objc_storeStrong(&defaultContentConfiguration, 0);
         }
 
         objc_storeStrong(&v67, 0);
@@ -1840,12 +1840,12 @@ LABEL_8:
       break;
   }
 
-  v52 = [(RestoreFromBackupController *)v73 featureFlags];
-  v53 = [(BuddyFeatureFlags *)v52 isSolariumEnabled];
+  featureFlags = [(RestoreFromBackupController *)selfCopy featureFlags];
+  isSolariumEnabled = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v53)
+  if (isSolariumEnabled)
   {
-    if (v73->_listState)
+    if (selfCopy->_listState)
     {
       v54 = +[UIColor secondarySystemBackgroundColor];
     }
@@ -1871,14 +1871,14 @@ LABEL_8:
   return v56;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, path);
   v5 = [location[0] cellForRowAtIndexPath:v16];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1891,7 +1891,7 @@ LABEL_8:
 
   else
   {
-    v14 = [(RestoreFromBackupController *)v18 restorableItemAtIndexPath:v16];
+    v14 = [(RestoreFromBackupController *)selfCopy restorableItemAtIndexPath:v16];
     v12 = 0;
     v10 = 0;
     v7 = 0;
@@ -1900,14 +1900,14 @@ LABEL_8:
       v7 = 0;
       if (([v14 isCompatible] & 1) == 0)
       {
-        v13 = [(RestoreFromBackupController *)v18 availableUpdateVersion];
+        availableUpdateVersion = [(RestoreFromBackupController *)selfCopy availableUpdateVersion];
         v12 = 1;
         v7 = 0;
         if (([v14 isCompatibleWithUpdateToSystemVersion:?] & 1) == 0)
         {
-          v11 = [(RestoreFromBackupController *)v18 betaEnrollmentStateManager];
+          betaEnrollmentStateManager = [(RestoreFromBackupController *)selfCopy betaEnrollmentStateManager];
           v10 = 1;
-          v7 = ![(BuddyBetaEnrollmentStateManager *)v11 isRestorableSeedEnrolled:v14];
+          v7 = ![(BuddyBetaEnrollmentStateManager *)betaEnrollmentStateManager isRestorableSeedEnrolled:v14];
         }
       }
     }
@@ -1941,25 +1941,25 @@ LABEL_8:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, path);
   [location[0] deselectRowAtIndexPath:v15 animated:1];
-  v14 = [(RestoreFromBackupController *)v17 restorableItemAtIndexPath:v15];
+  v14 = [(RestoreFromBackupController *)selfCopy restorableItemAtIndexPath:v15];
   if (v14)
   {
-    v5 = v17;
+    v5 = selfCopy;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_1000D2138;
     v10 = &unk_10032AEF0;
-    v11 = v17;
+    v11 = selfCopy;
     v12 = v14;
     [(RestoreFromBackupController *)v5 showRestoreWarningsIfNeededForRestorable:v14 completion:&v6];
     objc_storeStrong(&v12, 0);
@@ -1969,7 +1969,7 @@ LABEL_8:
 
   else
   {
-    [(RestoreFromBackupController *)v17 showAllBackups];
+    [(RestoreFromBackupController *)selfCopy showAllBackups];
     v13 = 1;
   }
 
@@ -1980,7 +1980,7 @@ LABEL_8:
 
 - (void)handleDebugGesture
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = [objc_alloc(sub_1000D2654()) initWithName:@"com.apple.mobilebackup"];
   v18 = [v19[0] enabledLevel] == 4;
@@ -2022,7 +2022,7 @@ LABEL_8:
   v7 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];
   [v6 addAction:v7];
 
-  [(RestoreFromBackupController *)v20 presentViewController:location animated:1 completion:0];
+  [(RestoreFromBackupController *)selfCopy presentViewController:location animated:1 completion:0];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v15, 0);
@@ -2034,8 +2034,8 @@ LABEL_8:
 - (BOOL)_largerThanStandardAX
 {
   v2 = [UIApplication sharedApplication:a2];
-  v3 = [(UIApplication *)v2 preferredContentSizeCategory];
-  v4 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryExtraLarge, v3) == NSOrderedAscending;
+  preferredContentSizeCategory = [(UIApplication *)v2 preferredContentSizeCategory];
+  v4 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryExtraLarge, preferredContentSizeCategory) == NSOrderedAscending;
 
   return v4;
 }
@@ -2054,7 +2054,7 @@ LABEL_8:
 
 - (void)_presentAlertForCurrentListState
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v18[0] = 0;
   *&v17[1] = 0;
@@ -2073,11 +2073,11 @@ LABEL_8:
     *&v17[1] = v6;
 
 LABEL_8:
-    [(RestoreFromBackupController *)v19 _presentAlertWithTitle:v18[0] withMessage:*&v17[1] withTryAgainOption:v17[0] & 1 withSetupAsNewOption:v16 & 1 inViewController:v19];
+    [(RestoreFromBackupController *)selfCopy _presentAlertWithTitle:v18[0] withMessage:*&v17[1] withTryAgainOption:v17[0] & 1 withSetupAsNewOption:v16 & 1 inViewController:selfCopy];
     goto LABEL_9;
   }
 
-  if (v19->_listState == 1)
+  if (selfCopy->_listState == 1)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [(NSBundle *)v8 localizedStringForKey:@"NO_BACKUPS_AVAILABLE_ALERT_TITLE" value:&stru_10032F900 table:@"RestoreFromBackup"];
@@ -2096,7 +2096,7 @@ LABEL_8:
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100082D54(buf, v19->_listState);
+    sub_100082D54(buf, selfCopy->_listState);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Failed to determine alert state when transitioning to state %i", buf, 8u);
   }
 
@@ -2106,21 +2106,21 @@ LABEL_9:
   objc_storeStrong(v18, 0);
 }
 
-- (void)_presentAlertWithTitle:(id)a3 withMessage:(id)a4 withTryAgainOption:(BOOL)a5 withSetupAsNewOption:(BOOL)a6 inViewController:(id)a7
+- (void)_presentAlertWithTitle:(id)title withMessage:(id)message withTryAgainOption:(BOOL)option withSetupAsNewOption:(BOOL)newOption inViewController:(id)controller
 {
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v51 = 0;
-  objc_storeStrong(&v51, a4);
-  v50 = a5;
-  v49 = a6;
+  objc_storeStrong(&v51, message);
+  optionCopy = option;
+  newOptionCopy = newOption;
   v48 = 0;
-  objc_storeStrong(&v48, a7);
+  objc_storeStrong(&v48, controller);
   v47 = [UIAlertController alertControllerWithTitle:location[0] message:v51 preferredStyle:1];
-  objc_initWeak(&from, v53);
-  if (v50)
+  objc_initWeak(&from, selfCopy);
+  if (optionCopy)
   {
     v11 = +[NSBundle mainBundle];
     v45 = [(NSBundle *)v11 localizedStringForKey:@"TRY_AGAIN_CELL" value:&stru_10032F900 table:@"RestoreFromBackup"];
@@ -2140,7 +2140,7 @@ LABEL_9:
     objc_storeStrong(&v45, 0);
   }
 
-  if (v49)
+  if (newOptionCopy)
   {
     v13 = +[NSBundle mainBundle];
     v14 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"RESTORE_ALTERNATIVE_NEW"];

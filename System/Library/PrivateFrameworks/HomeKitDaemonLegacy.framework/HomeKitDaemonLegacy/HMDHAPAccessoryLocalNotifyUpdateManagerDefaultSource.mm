@@ -1,6 +1,6 @@
 @interface HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource
 - (HMDHAPAccessory)hmdHAPAccessory;
-- (HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5;
+- (HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue;
 - (HMDHome)home;
 - (id)createBackoffTimer;
 - (id)createLocalNotifyUpdate;
@@ -32,28 +32,28 @@
 - (id)createLocalNotifyUpdate
 {
   v3 = [HMDHAPAccessoryLocalNotifyUpdate alloc];
-  v4 = [(HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource *)self home];
-  v5 = [(HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource *)self hmdHAPAccessory];
-  v6 = [(HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource *)self queue];
-  v7 = [(HMDHAPAccessoryLocalNotifyUpdate *)v3 initWithHome:v4 hmdHAPAccessory:v5 queue:v6];
+  home = [(HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource *)self home];
+  hmdHAPAccessory = [(HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource *)self hmdHAPAccessory];
+  queue = [(HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource *)self queue];
+  v7 = [(HMDHAPAccessoryLocalNotifyUpdate *)v3 initWithHome:home hmdHAPAccessory:hmdHAPAccessory queue:queue];
 
   return v7;
 }
 
-- (HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5
+- (HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  accessoryCopy = accessory;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource;
   v11 = [(HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_home, v8);
-    objc_storeWeak(&v12->_hmdHAPAccessory, v9);
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeWeak(&v11->_home, homeCopy);
+    objc_storeWeak(&v12->_hmdHAPAccessory, accessoryCopy);
+    objc_storeStrong(&v12->_queue, queue);
   }
 
   return v12;

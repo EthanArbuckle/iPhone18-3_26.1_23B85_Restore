@@ -8,7 +8,7 @@
 - (void)runDaemonSide
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudSharingResetJob runDaemonSide]"];
-  v4 = [objc_opt_class() lowPriorityOperationQueue];
+  lowPriorityOperationQueue = [objc_opt_class() lowPriorityOperationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__PLCloudSharingResetJob_runDaemonSide__block_invoke;
@@ -16,7 +16,7 @@
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  [v4 addOperationWithBlock:v6];
+  [lowPriorityOperationQueue addOperationWithBlock:v6];
 }
 
 void __39__PLCloudSharingResetJob_runDaemonSide__block_invoke(uint64_t a1)

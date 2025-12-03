@@ -1,6 +1,6 @@
 @interface PHImportResults
-+ (PHImportResults)resultsWithException:(id)a3;
-+ (PHImportResults)resultsWithExceptions:(id)a3;
++ (PHImportResults)resultsWithException:(id)exception;
++ (PHImportResults)resultsWithExceptions:(id)exceptions;
 - (NSError)error;
 - (PHImportResults)init;
 - (double)runTime;
@@ -9,10 +9,10 @@
 - (id)importRecordExceptions;
 - (unint64_t)failedToImportCount;
 - (unsigned)result;
-- (void)insertStart:(id)a3 end:(id)a4 intoGroups:(id)a5 ofType:(unint64_t)a6;
-- (void)log:(id)a3 activity:(id)a4 description:(id)a5 digits:(unint64_t)a6;
+- (void)insertStart:(id)start end:(id)end intoGroups:(id)groups ofType:(unint64_t)type;
+- (void)log:(id)log activity:(id)activity description:(id)description digits:(unint64_t)digits;
 - (void)logPMR;
-- (void)verifyGroups:(id)a3;
+- (void)verifyGroups:(id)groups;
 @end
 
 @implementation PHImportResults
@@ -25,15 +25,15 @@
 
   if (v4)
   {
-    v5 = [(PHImportResults *)self generatePMRInfo];
-    v6 = [v5 objectForKeyedSubscript:@"ImportTotalTime"];
+    generatePMRInfo = [(PHImportResults *)self generatePMRInfo];
+    v6 = [generatePMRInfo objectForKeyedSubscript:@"ImportTotalTime"];
     v7 = [v6 objectForKeyedSubscript:@"Count"];
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if (v8)
+    if (unsignedIntegerValue)
     {
       LODWORD(v9) = 0;
-      v10 = v8;
+      v10 = unsignedIntegerValue;
       do
       {
         v9 = (v9 + 1);
@@ -53,25 +53,25 @@
     [v12 appendString:@"\t============================================================\n"];
     [v12 appendString:@"\t                    Import Performance                      \n"];
     [v12 appendString:@"\t============================================================\n"];
-    v13 = [v5 objectForKeyedSubscript:@"ImportTotalTime"];
+    v13 = [generatePMRInfo objectForKeyedSubscript:@"ImportTotalTime"];
     v14 = [v13 objectForKeyedSubscript:@"Duration"];
     [v14 doubleValue];
-    [v12 appendFormat:@"\tTotal time to import %lu items: %8.4f\n", v8, v15];
+    [v12 appendFormat:@"\tTotal time to import %lu items: %8.4f\n", unsignedIntegerValue, v15];
 
     [v12 appendString:@"\t------------------------------------------------------------\n"];
-    v16 = [v5 objectForKeyedSubscript:@"ImportDownload"];
+    v16 = [generatePMRInfo objectForKeyedSubscript:@"ImportDownload"];
     [(PHImportResults *)self log:v12 activity:v16 description:@"\tDownload files:           " digits:v9];
 
-    v17 = [v5 objectForKeyedSubscript:@"ImportReadMetadata"];
+    v17 = [generatePMRInfo objectForKeyedSubscript:@"ImportReadMetadata"];
     [(PHImportResults *)self log:v12 activity:v17 description:@"\tRead metadata:            " digits:v9];
 
-    v18 = [v5 objectForKeyedSubscript:@"ImportAdjustments"];
+    v18 = [generatePMRInfo objectForKeyedSubscript:@"ImportAdjustments"];
     [(PHImportResults *)self log:v12 activity:v18 description:@"\tApply adjustments:        " digits:v9];
 
-    v19 = [v5 objectForKeyedSubscript:@"ImportLivePhotoPairing"];
+    v19 = [generatePMRInfo objectForKeyedSubscript:@"ImportLivePhotoPairing"];
     [(PHImportResults *)self log:v12 activity:v19 description:@"\tPair LivePhotos:          " digits:v9];
 
-    v20 = [v5 objectForKeyedSubscript:@"ImportMisc"];
+    v20 = [generatePMRInfo objectForKeyedSubscript:@"ImportMisc"];
     [(PHImportResults *)self log:v12 activity:v20 description:@"\tMiscellaneous processing: " digits:v9];
 
     [v12 appendString:@"\t============================================================\n"];
@@ -85,41 +85,41 @@
   }
 }
 
-- (void)log:(id)a3 activity:(id)a4 description:(id)a5 digits:(unint64_t)a6
+- (void)log:(id)log activity:(id)activity description:(id)description digits:(unint64_t)digits
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKeyedSubscript:@"Count"];
-  v11 = [v10 unsignedIntegerValue];
+  logCopy = log;
+  activityCopy = activity;
+  descriptionCopy = description;
+  v10 = [activityCopy objectForKeyedSubscript:@"Count"];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  if (v11)
+  if (unsignedIntegerValue)
   {
-    v12 = [v8 objectForKeyedSubscript:@"Duration"];
+    v12 = [activityCopy objectForKeyedSubscript:@"Duration"];
     [v12 doubleValue];
     v14 = v13;
 
-    [v18 appendFormat:@"%@%8.4f", v9, *&v14];
-    v15 = [v8 objectForKeyedSubscript:@"Absolute Duration"];
+    [logCopy appendFormat:@"%@%8.4f", descriptionCopy, *&v14];
+    v15 = [activityCopy objectForKeyedSubscript:@"Absolute Duration"];
     [v15 doubleValue];
     v17 = v16;
 
     if (v14 != v17)
     {
-      [v18 appendFormat:@" (ab: %.3f, av: %.3f)", *&v17, v17 / v11];
+      [logCopy appendFormat:@" (ab: %.3f, av: %.3f)", *&v17, v17 / unsignedIntegerValue];
     }
 
-    [v18 appendString:@"\n"];
+    [logCopy appendString:@"\n"];
   }
 }
 
-- (void)verifyGroups:(id)a3
+- (void)verifyGroups:(id)groups
 {
   v3 = 0;
   v30 = *MEMORY[0x1E69E9840];
   do
   {
-    v4 = [a3 objectAtIndexedSubscript:v3];
+    v4 = [groups objectAtIndexedSubscript:v3];
     [v4 sortUsingComparator:&__block_literal_global_112_41288];
     v23 = 0u;
     v24 = 0u;
@@ -156,9 +156,9 @@
 
           if (v11)
           {
-            v15 = [v12 start];
+            start = [v12 start];
             v16 = [v11 end];
-            [v15 timeIntervalSinceDate:v16];
+            [start timeIntervalSinceDate:v16];
             v18 = v17;
 
             if (v18 < 0.0)
@@ -215,24 +215,24 @@ uint64_t __32__PHImportResults_verifyGroups___block_invoke(uint64_t a1, void *a2
   return v10;
 }
 
-- (void)insertStart:(id)a3 end:(id)a4 intoGroups:(id)a5 ofType:(unint64_t)a6
+- (void)insertStart:(id)start end:(id)end intoGroups:(id)groups ofType:(unint64_t)type
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  startCopy = start;
+  endCopy = end;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v12 = a5;
-  v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  groupsCopy = groups;
+  v13 = [groupsCopy countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v13)
   {
 LABEL_13:
 
 LABEL_22:
-    v15 = [[DurationGroup alloc] initWithStart:v10 end:v11];
-    [v12 addObject:v15];
+    v15 = [[DurationGroup alloc] initWithStart:startCopy end:endCopy];
+    [groupsCopy addObject:v15];
     goto LABEL_23;
   }
 
@@ -246,13 +246,13 @@ LABEL_3:
   {
     if (*v37 != v16)
     {
-      objc_enumerationMutation(v12);
+      objc_enumerationMutation(groupsCopy);
     }
 
     v15 = *(*(&v36 + 1) + 8 * v17);
 
-    v19 = [(DurationGroup *)v15 start];
-    [v10 timeIntervalSinceDate:v19];
+    start = [(DurationGroup *)v15 start];
+    [startCopy timeIntervalSinceDate:start];
     v21 = v20;
 
     if (v21 < 0.0)
@@ -261,13 +261,13 @@ LABEL_3:
     }
 
     v25 = [(DurationGroup *)v15 end];
-    [v10 timeIntervalSinceDate:v25];
+    [startCopy timeIntervalSinceDate:v25];
     v27 = v26;
 
     if (v27 < 0.0)
     {
       v28 = [(DurationGroup *)v15 end];
-      [v11 timeIntervalSinceDate:v28];
+      [endCopy timeIntervalSinceDate:v28];
       v30 = v29;
 
       if (v30 < 0.0)
@@ -283,7 +283,7 @@ LABEL_10:
     v18 = v15;
     if (v14 == v17)
     {
-      v14 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v14 = [groupsCopy countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v14)
       {
         goto LABEL_3;
@@ -293,8 +293,8 @@ LABEL_10:
     }
   }
 
-  v22 = [(DurationGroup *)v15 start];
-  [v11 timeIntervalSinceDate:v22];
+  start2 = [(DurationGroup *)v15 start];
+  [endCopy timeIntervalSinceDate:start2];
   v24 = v23;
 
   if (v24 < 0.0)
@@ -302,15 +302,15 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [(DurationGroup *)v15 setStart:v10];
+  [(DurationGroup *)v15 setStart:startCopy];
   v31 = [(DurationGroup *)v15 end];
-  [v11 timeIntervalSinceDate:v31];
+  [endCopy timeIntervalSinceDate:v31];
   v33 = v32;
 
   if (v33 >= 0.0)
   {
 LABEL_17:
-    [(DurationGroup *)v15 setEnd:v11];
+    [(DurationGroup *)v15 setEnd:endCopy];
   }
 
   [(DurationGroup *)v15 setWasChanged:1];
@@ -323,10 +323,10 @@ LABEL_19:
 
   if ([(DurationGroup *)v15 wasChanged])
   {
-    [v12 removeObject:v15];
-    v34 = [(DurationGroup *)v15 start];
+    [groupsCopy removeObject:v15];
+    start3 = [(DurationGroup *)v15 start];
     v35 = [(DurationGroup *)v15 end];
-    [(PHImportResults *)self insertStart:v34 end:v35 intoGroups:v12 ofType:a6];
+    [(PHImportResults *)self insertStart:start3 end:v35 intoGroups:groupsCopy ofType:type];
   }
 
 LABEL_23:
@@ -334,7 +334,7 @@ LABEL_23:
 
 - (id)generatePMRInfo
 {
-  v2 = self;
+  selfCopy = self;
   v72 = *MEMORY[0x1E69E9840];
   pmrInfo = self->_pmrInfo;
   if (!pmrInfo)
@@ -353,8 +353,8 @@ LABEL_23:
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v46 = v2;
-    obj = [(PHImportResults *)v2 importRecords];
+    v46 = selfCopy;
+    obj = [(PHImportResults *)selfCopy importRecords];
     v45 = [obj countByEnumeratingWithState:&v54 objects:v67 count:16];
     if (v45)
     {
@@ -383,23 +383,23 @@ LABEL_23:
               v8 = [v4 objectAtIndexedSubscript:v6];
             }
 
-            v9 = [v7 timers];
-            [v9 duration:v6];
+            timers = [v7 timers];
+            [timers duration:v6];
             v11 = v10;
 
             if (v11 > 0.0)
             {
               ++*(v70 + v6);
               *(v68 + v6) = v11 + *(v68 + v6);
-              v12 = [v7 timers];
+              timers2 = [v7 timers];
               v51[0] = MEMORY[0x1E69E9820];
               v51[1] = 3221225472;
               v51[2] = __34__PHImportResults_generatePMRInfo__block_invoke_2;
               v51[3] = &unk_1E75A9648;
-              v51[4] = v2;
+              v51[4] = selfCopy;
               v52 = v8;
               v53 = v6;
-              [v12 processTimesOfType:v6 withBlock:v51];
+              [timers2 processTimesOfType:v6 withBlock:v51];
             }
 
             ++v6;
@@ -415,19 +415,19 @@ LABEL_23:
     }
 
     v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:17];
-    v14 = v2->_pmrInfo;
-    v2->_pmrInfo = v13;
+    v14 = selfCopy->_pmrInfo;
+    selfCopy->_pmrInfo = v13;
 
     v65[0] = @"Count";
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHImportResults importedCount](v2, "importedCount")}];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHImportResults importedCount](selfCopy, "importedCount")}];
     v65[1] = @"Duration";
     v66[0] = v15;
     v16 = MEMORY[0x1E696AD98];
-    [(PHImportResults *)v2 runTime];
+    [(PHImportResults *)selfCopy runTime];
     v17 = [v16 numberWithDouble:?];
     v66[1] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
-    v19 = v2->_pmrInfo;
+    v19 = selfCopy->_pmrInfo;
     v20 = [pmrKey objectAtIndexedSubscript:17];
     [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v20];
 
@@ -464,8 +464,8 @@ LABEL_40:
 
             v30 = *(*(&v47 + 1) + 8 * k);
             v31 = [v30 end];
-            v32 = [v30 start];
-            [v31 timeIntervalSinceDate:v32];
+            start = [v30 start];
+            [v31 timeIntervalSinceDate:start];
             v28 = v28 + v33;
           }
 
@@ -474,7 +474,7 @@ LABEL_40:
 
         while (v26);
 
-        v2 = v46;
+        selfCopy = v46;
         if (v28 == 0.0)
         {
           goto LABEL_40;
@@ -515,7 +515,7 @@ LABEL_40:
       }
     }
 
-    pmrInfo = v2->_pmrInfo;
+    pmrInfo = selfCopy->_pmrInfo;
   }
 
   return pmrInfo;
@@ -529,23 +529,23 @@ void __34__PHImportResults_generatePMRInfo__block_invoke()
 
 - (double)runTime
 {
-  v3 = [(PHImportResults *)self startTime];
-  if (!v3)
+  startTime = [(PHImportResults *)self startTime];
+  if (!startTime)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(PHImportResults *)self endTime];
+  v4 = startTime;
+  endTime = [(PHImportResults *)self endTime];
 
-  if (!v5)
+  if (!endTime)
   {
     return 0.0;
   }
 
-  v6 = [(PHImportResults *)self endTime];
-  v7 = [(PHImportResults *)self startTime];
-  [v6 timeIntervalSinceDate:v7];
+  endTime2 = [(PHImportResults *)self endTime];
+  startTime2 = [(PHImportResults *)self startTime];
+  [endTime2 timeIntervalSinceDate:startTime2];
   v9 = v8;
 
   return v9;
@@ -553,11 +553,11 @@ void __34__PHImportResults_generatePMRInfo__block_invoke()
 
 - (NSError)error
 {
-  v2 = [(PHImportResults *)self exceptions];
-  v3 = [v2 firstObject];
-  v4 = [v3 underlyingError];
+  exceptions = [(PHImportResults *)self exceptions];
+  firstObject = [exceptions firstObject];
+  underlyingError = [firstObject underlyingError];
 
-  return v4;
+  return underlyingError;
 }
 
 - (id)exceptions
@@ -565,21 +565,21 @@ void __34__PHImportResults_generatePMRInfo__block_invoke()
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10.receiver = self;
   v10.super_class = PHImportResults;
-  v4 = [(PHImportExceptionRecorder *)&v10 exceptions];
-  v5 = [v4 count];
+  exceptions = [(PHImportExceptionRecorder *)&v10 exceptions];
+  v5 = [exceptions count];
 
   if (v5)
   {
     v9.receiver = self;
     v9.super_class = PHImportResults;
-    v6 = [(PHImportExceptionRecorder *)&v9 exceptions];
-    [v3 addObjectsFromArray:v6];
+    exceptions2 = [(PHImportExceptionRecorder *)&v9 exceptions];
+    [v3 addObjectsFromArray:exceptions2];
   }
 
-  v7 = [(PHImportResults *)self importRecordExceptions];
-  if ([v7 count])
+  importRecordExceptions = [(PHImportResults *)self importRecordExceptions];
+  if ([importRecordExceptions count])
   {
-    [v3 addObjectsFromArray:v7];
+    [v3 addObjectsFromArray:importRecordExceptions];
   }
 
   return v3;
@@ -608,10 +608,10 @@ void __34__PHImportResults_generatePMRInfo__block_invoke()
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) exceptions];
-        if ([v9 count])
+        exceptions = [*(*(&v11 + 1) + 8 * i) exceptions];
+        if ([exceptions count])
         {
-          [v3 addObjectsFromArray:v9];
+          [v3 addObjectsFromArray:exceptions];
         }
       }
 
@@ -626,8 +626,8 @@ void __34__PHImportResults_generatePMRInfo__block_invoke()
 
 - (unint64_t)failedToImportCount
 {
-  v2 = [(PHImportResults *)self importRecordExceptions];
-  v3 = [v2 count];
+  importRecordExceptions = [(PHImportResults *)self importRecordExceptions];
+  v3 = [importRecordExceptions count];
 
   return v3;
 }
@@ -639,8 +639,8 @@ void __34__PHImportResults_generatePMRInfo__block_invoke()
   {
     if ([(PHImportResults *)self importedCount])
     {
-      v4 = [(PHImportResults *)self exceptions];
-      v5 = [v4 count];
+      exceptions = [(PHImportResults *)self exceptions];
+      v5 = [exceptions count];
 
       if (v5)
       {
@@ -679,20 +679,20 @@ void __34__PHImportResults_generatePMRInfo__block_invoke()
   return v2;
 }
 
-+ (PHImportResults)resultsWithExceptions:(id)a3
++ (PHImportResults)resultsWithExceptions:(id)exceptions
 {
-  v3 = a3;
+  exceptionsCopy = exceptions;
   v4 = objc_opt_new();
-  [v4 addExceptions:v3];
+  [v4 addExceptions:exceptionsCopy];
 
   return v4;
 }
 
-+ (PHImportResults)resultsWithException:(id)a3
++ (PHImportResults)resultsWithException:(id)exception
 {
-  v3 = a3;
+  exceptionCopy = exception;
   v4 = objc_opt_new();
-  [v4 addException:v3];
+  [v4 addException:exceptionCopy];
 
   return v4;
 }

@@ -1,17 +1,17 @@
 @interface APTargetingExpression
 - (APExpressionEvaluationProtocol)rootNode;
-- (APTargetingExpression)initWithDictionary:(id)a3;
-- (APTargetingExpression)initWithString:(id)a3;
-- (BOOL)evaluateUsingLibrary:(id)a3 error:(id *)a4;
+- (APTargetingExpression)initWithDictionary:(id)dictionary;
+- (APTargetingExpression)initWithString:(id)string;
+- (BOOL)evaluateUsingLibrary:(id)library error:(id *)error;
 @end
 
 @implementation APTargetingExpression
 
-- (APTargetingExpression)initWithString:(id)a3
+- (APTargetingExpression)initWithString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     v6 = [v5 dataUsingEncoding:4];
     v17 = 0;
@@ -29,7 +29,7 @@
       if (objc_opt_isKindOfClass())
       {
         self = [(APTargetingExpression *)self initWithDictionary:v7];
-        v11 = self;
+        selfCopy = self;
 LABEL_10:
 
         goto LABEL_11;
@@ -44,7 +44,7 @@ LABEL_10:
       self->_error = v14;
     }
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -52,17 +52,17 @@ LABEL_10:
   v21 = @"Targeting expression is nil or empty.";
   v9 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v10 = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1122 userInfo:v9];
-  v11 = 0;
+  selfCopy = 0;
   v6 = self->_error;
   self->_error = v10;
 LABEL_11:
 
-  return v11;
+  return selfCopy;
 }
 
-- (APTargetingExpression)initWithDictionary:(id)a3
+- (APTargetingExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = APTargetingExpression;
   v5 = [(APTargetingExpression *)&v39 init];
@@ -71,10 +71,10 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  v6 = [v4 allKeys];
-  v7 = [v6 firstObject];
+  allKeys = [dictionaryCopy allKeys];
+  firstObject = [allKeys firstObject];
   identifier = v5->_identifier;
-  v5->_identifier = v7;
+  v5->_identifier = firstObject;
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -93,12 +93,12 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v9 = [v4 allValues];
-  v10 = [v9 firstObject];
+  allValues = [dictionaryCopy allValues];
+  firstObject2 = [allValues firstObject];
   expressionDict = v5->_expressionDict;
-  v5->_expressionDict = v10;
+  v5->_expressionDict = firstObject2;
 
-  v12 = [(APTargetingExpression *)v5 expressionDict];
+  expressionDict = [(APTargetingExpression *)v5 expressionDict];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -111,14 +111,14 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v14 = [(APTargetingExpression *)v5 expressionDict];
-  v15 = [v14 objectForKeyedSubscript:@"expression"];
+  expressionDict2 = [(APTargetingExpression *)v5 expressionDict];
+  v15 = [expressionDict2 objectForKeyedSubscript:@"expression"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [(APTargetingExpression *)v5 expressionDict];
-    v17 = [v16 objectForKeyedSubscript:@"subexpressions"];
+    expressionDict3 = [(APTargetingExpression *)v5 expressionDict];
+    v17 = [expressionDict3 objectForKeyedSubscript:@"subexpressions"];
 
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -134,8 +134,8 @@ LABEL_13:
 
     else
     {
-      v18 = [(APTargetingExpression *)v5 expressionDict];
-      v19 = [v18 objectForKeyedSubscript:@"data"];
+      expressionDict4 = [(APTargetingExpression *)v5 expressionDict];
+      v19 = [expressionDict4 objectForKeyedSubscript:@"data"];
 
       if (v19)
       {
@@ -177,15 +177,15 @@ LABEL_18:
   if (!rootNode)
   {
     v4 = [APTargetingExpressionNode alloc];
-    v5 = [(APTargetingExpression *)self identifier];
-    v6 = [(APTargetingExpression *)self expressionDict];
-    v7 = [v6 objectForKeyedSubscript:@"expression"];
-    v8 = [(APTargetingExpression *)self expressionDict];
-    v9 = [v8 objectForKeyedSubscript:@"subexpressions"];
-    v10 = [(APTargetingExpression *)self expressionDict];
-    v11 = [v10 objectForKeyedSubscript:@"data"];
+    identifier = [(APTargetingExpression *)self identifier];
+    expressionDict = [(APTargetingExpression *)self expressionDict];
+    v7 = [expressionDict objectForKeyedSubscript:@"expression"];
+    expressionDict2 = [(APTargetingExpression *)self expressionDict];
+    v9 = [expressionDict2 objectForKeyedSubscript:@"subexpressions"];
+    expressionDict3 = [(APTargetingExpression *)self expressionDict];
+    v11 = [expressionDict3 objectForKeyedSubscript:@"data"];
     v17 = 0;
-    v12 = [(APTargetingExpressionNode *)v4 initWithParent:0 identifier:v5 expressionOrReference:v7 subExpressions:v9 data:v11 error:&v17];
+    v12 = [(APTargetingExpressionNode *)v4 initWithParent:0 identifier:identifier expressionOrReference:v7 subExpressions:v9 data:v11 error:&v17];
     v13 = v17;
     v14 = self->_rootNode;
     self->_rootNode = v12;
@@ -199,13 +199,13 @@ LABEL_18:
   return rootNode;
 }
 
-- (BOOL)evaluateUsingLibrary:(id)a3 error:(id *)a4
+- (BOOL)evaluateUsingLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
-  v7 = [(APTargetingExpression *)self rootNode];
-  LOBYTE(a4) = [v7 evaluateUsingLibrary:v6 error:a4];
+  libraryCopy = library;
+  rootNode = [(APTargetingExpression *)self rootNode];
+  LOBYTE(error) = [rootNode evaluateUsingLibrary:libraryCopy error:error];
 
-  return a4;
+  return error;
 }
 
 @end

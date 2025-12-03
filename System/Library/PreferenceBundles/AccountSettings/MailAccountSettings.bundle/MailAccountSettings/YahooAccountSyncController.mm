@@ -1,27 +1,27 @@
 @interface YahooAccountSyncController
 - (BOOL)_needsReAuthenciationSection;
-- (YahooAccountSyncController)initWithNibName:(id)a3 bundle:(id)a4;
+- (YahooAccountSyncController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_reAuthenticationSectionSpecifiers;
 - (id)specifiers;
-- (void)_accountStoreDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
 - (void)_beginObservingAccountStoreDidChangeNotification;
-- (void)_reAuthenticationButtonTapped:(id)a3;
+- (void)_reAuthenticationButtonTapped:(id)tapped;
 - (void)_stopObservingAccountStoreDidChangeNotification;
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5;
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
+- (void)handleURL:(id)l;
 - (void)viewDidLoad;
 @end
 
 @implementation YahooAccountSyncController
 
-- (YahooAccountSyncController)initWithNibName:(id)a3 bundle:(id)a4
+- (YahooAccountSyncController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v11.receiver = self;
   v11.super_class = YahooAccountSyncController;
-  v8 = [(YahooAccountSyncController *)&v11 initWithNibName:v6 bundle:v7];
+  v8 = [(YahooAccountSyncController *)&v11 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = v8;
   if (v8)
   {
@@ -40,13 +40,13 @@
   [(YahooAccountSyncController *)&v3 dealloc];
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v7.receiver = self;
   v7.super_class = YahooAccountSyncController;
-  [(YahooAccountSyncController *)&v7 handleURL:v4];
-  v5 = [v4 objectForKeyedSubscript:@"slYahooAction"];
+  [(YahooAccountSyncController *)&v7 handleURL:lCopy];
+  v5 = [lCopy objectForKeyedSubscript:@"slYahooAction"];
   v6 = [v5 isEqualToString:@"showAuthSheet"];
 
   if (v6)
@@ -67,13 +67,13 @@
   [v3 removeObserver:self name:ACAccountStoreDidChangeNotification object:0];
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
-  v4 = [(YahooAccountSyncController *)self account];
-  [v4 refresh];
+  account = [(YahooAccountSyncController *)self account];
+  [account refresh];
 
-  LODWORD(v4) = self->_showingReAuthenticationSection;
-  if (v4 != [(YahooAccountSyncController *)self _needsReAuthenciationSection])
+  LODWORD(account) = self->_showingReAuthenticationSection;
+  if (account != [(YahooAccountSyncController *)self _needsReAuthenciationSection])
   {
 
     [(YahooAccountSyncController *)self reloadSpecifiers];
@@ -87,17 +87,17 @@
   [(AccountPSSyncController *)&v8 viewDidLoad];
   if ([(YahooAccountSyncController *)self isFirstTimeSetup])
   {
-    v3 = [(YahooAccountSyncController *)self navigationItem];
-    v4 = [v3 title];
+    navigationItem = [(YahooAccountSyncController *)self navigationItem];
+    title = [navigationItem title];
     firstTimeSetupValidationOriginalTitle = self->_firstTimeSetupValidationOriginalTitle;
-    self->_firstTimeSetupValidationOriginalTitle = v4;
+    self->_firstTimeSetupValidationOriginalTitle = title;
 
     [(YahooAccountSyncController *)self startValidationWithPrompt:self->_firstTimeSetupValidationOriginalTitle];
     [(YahooAccountSyncController *)self setTaskCompletionAssertionEnabled:1];
     v6 = objc_alloc_init(+[YahooAccount accountValidatorClass]);
     [v6 setDelegate:self];
-    v7 = [(AccountPSSyncController *)self mailAccount];
-    [v6 validateAccount:v7 useSSL:1];
+    mailAccount = [(AccountPSSyncController *)self mailAccount];
+    [v6 validateAccount:mailAccount useSSL:1];
   }
 }
 
@@ -108,28 +108,28 @@
     return 0;
   }
 
-  v4 = [(YahooAccountSyncController *)self account];
-  v5 = [v4 isAuthenticated];
+  account = [(YahooAccountSyncController *)self account];
+  isAuthenticated = [account isAuthenticated];
 
-  if ((v5 & 1) == 0)
+  if ((isAuthenticated & 1) == 0)
   {
     return 1;
   }
 
-  v6 = [(YahooAccountSyncController *)self account];
-  v7 = [v6 credential];
-  v8 = [v7 oauthToken];
-  if (v8)
+  account2 = [(YahooAccountSyncController *)self account];
+  credential = [account2 credential];
+  oauthToken = [credential oauthToken];
+  if (oauthToken)
   {
     v3 = 0;
   }
 
   else
   {
-    v9 = [(YahooAccountSyncController *)self account];
-    v10 = [v9 credential];
-    v11 = [v10 oauthRefreshToken];
-    v3 = v11 == 0;
+    account3 = [(YahooAccountSyncController *)self account];
+    credential2 = [account3 credential];
+    oauthRefreshToken = [credential2 oauthRefreshToken];
+    v3 = oauthRefreshToken == 0;
   }
 
   return v3;
@@ -147,26 +147,26 @@
     v3 = 0;
   }
 
-  v4 = [(YahooAccountSyncController *)self _needsReAuthenciationSection];
+  _needsReAuthenciationSection = [(YahooAccountSyncController *)self _needsReAuthenciationSection];
   obj = objc_alloc_init(NSMutableArray);
-  if (v4)
+  if (_needsReAuthenciationSection)
   {
-    v5 = [(YahooAccountSyncController *)self _reAuthenticationSectionSpecifiers];
-    [obj addObjectsFromArray:v5];
+    _reAuthenticationSectionSpecifiers = [(YahooAccountSyncController *)self _reAuthenticationSectionSpecifiers];
+    [obj addObjectsFromArray:_reAuthenticationSectionSpecifiers];
   }
 
   else
   {
-    v5 = 0;
+    _reAuthenticationSectionSpecifiers = 0;
   }
 
-  self->_showingReAuthenticationSection = v4;
+  self->_showingReAuthenticationSection = _needsReAuthenciationSection;
   v22.receiver = self;
   v22.super_class = YahooAccountSyncController;
-  v6 = [(AccountPSSyncController *)&v22 specifiers];
-  [obj addObjectsFromArray:v6];
+  specifiers = [(AccountPSSyncController *)&v22 specifiers];
+  [obj addObjectsFromArray:specifiers];
 
-  if (v4 || v3)
+  if (_needsReAuthenciationSection || v3)
   {
     v20 = 0u;
     v21 = 0u;
@@ -188,15 +188,15 @@
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [(YahooAccountSyncController *)self deleteButtonSpecifier];
-          v14 = v13;
-          if (v12 == v13)
+          deleteButtonSpecifier = [(YahooAccountSyncController *)self deleteButtonSpecifier];
+          v14 = deleteButtonSpecifier;
+          if (v12 == deleteButtonSpecifier)
           {
           }
 
           else
           {
-            v15 = [v5 containsObject:v12];
+            v15 = [_reAuthenticationSectionSpecifiers containsObject:v12];
 
             if ((v15 & 1) == 0)
             {
@@ -221,9 +221,9 @@
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[PSSpecifier emptyGroupSpecifier];
-  v5 = [(YahooAccountSyncController *)self account];
-  v6 = [v5 username];
-  [v4 setProperty:v6 forKey:@"YahooNameForAccountToAuthenticate"];
+  account = [(YahooAccountSyncController *)self account];
+  username = [account username];
+  [v4 setProperty:username forKey:@"YahooNameForAccountToAuthenticate"];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
@@ -243,20 +243,20 @@
   return v3;
 }
 
-- (void)_reAuthenticationButtonTapped:(id)a3
+- (void)_reAuthenticationButtonTapped:(id)tapped
 {
   if (!self->_reAuthenticating)
   {
     self->_reAuthenticating = 1;
     v4 = [SLYahooWebAuthController alloc];
-    v5 = [(YahooAccountSyncController *)self account];
-    v6 = [(YahooAccountSyncController *)self accountStore];
+    account = [(YahooAccountSyncController *)self account];
+    accountStore = [(YahooAccountSyncController *)self accountStore];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_78878;
     v12[3] = &unk_B9010;
     v12[4] = self;
-    v7 = [v4 initWithAccount:v5 accountStore:v6 presentationBlock:v12];
+    v7 = [v4 initWithAccount:account accountStore:accountStore presentationBlock:v12];
     webAuthController = self->_webAuthController;
     self->_webAuthController = v7;
 
@@ -272,17 +272,17 @@
   }
 }
 
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l
 {
-  v13 = a3;
-  v7 = a4;
+  validatorCopy = validator;
+  accountCopy = account;
   self->_didFirstTimeSetupValidation = 1;
   [(YahooAccountSyncController *)self stopValidationWithPrompt:self->_firstTimeSetupValidationOriginalTitle showButtons:1];
-  if ([v13 accountIsValid])
+  if ([validatorCopy accountIsValid])
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 deliveryAccount], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([accountCopy deliveryAccount], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = v7;
+      v9 = accountCopy;
       if (v9)
       {
         v10 = +[MFInvocationQueue sharedInvocationQueue];

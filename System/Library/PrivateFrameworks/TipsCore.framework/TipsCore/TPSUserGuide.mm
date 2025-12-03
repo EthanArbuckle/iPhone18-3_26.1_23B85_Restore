@@ -1,18 +1,18 @@
 @interface TPSUserGuide
 + (NSString)topicIdentifierKey;
-+ (id)getUserGuideFromURL:(id)a3;
-+ (id)privateURLWithBookIdentifier:(id)a3 topicIdentifier:(id)a4 version:(id)a5 referrer:(id)a6;
-+ (id)urlWithBook:(id)a3 topic:(id)a4 anchor:(id)a5 version:(id)a6 referrer:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)getUserGuideFromURL:(id)l;
++ (id)privateURLWithBookIdentifier:(id)identifier topicIdentifier:(id)topicIdentifier version:(id)version referrer:(id)referrer;
++ (id)urlWithBook:(id)book topic:(id)topic anchor:(id)anchor version:(id)version referrer:(id)referrer;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)gradientColorStrings;
 - (NSString)platform;
 - (NSString)topicIdentifier;
 - (TPSUserGuide)init;
-- (TPSUserGuide)initWithIdentifier:(id)a3 version:(id)a4 text:(id)a5 symbol:(id)a6 platform:(id)a7 platformIndependent:(BOOL)a8 gradientColorStrings:(id)a9;
-- (id)copyWithZone:(void *)a3;
+- (TPSUserGuide)initWithIdentifier:(id)identifier version:(id)version text:(id)text symbol:(id)symbol platform:(id)platform platformIndependent:(BOOL)independent gradientColorStrings:(id)strings;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTopicIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTopicIdentifier:(id)identifier;
 @end
 
 @implementation TPSUserGuide
@@ -24,7 +24,7 @@
   return v2;
 }
 
-+ (id)getUserGuideFromURL:(id)a3
++ (id)getUserGuideFromURL:(id)l
 {
   v3 = sub_1C014BC50();
   v4 = *(v3 - 8);
@@ -38,36 +38,36 @@
   return v8;
 }
 
-+ (id)privateURLWithBookIdentifier:(id)a3 topicIdentifier:(id)a4 version:(id)a5 referrer:(id)a6
++ (id)privateURLWithBookIdentifier:(id)identifier topicIdentifier:(id)topicIdentifier version:(id)version referrer:(id)referrer
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBE06970, &qword_1C0156340);
   v11 = *(*(v10 - 8) + 64);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v13 = &v30 - v12;
-  if (a3)
+  if (identifier)
   {
     sub_1C014C230();
-    a3 = v14;
-    if (a4)
+    identifier = v14;
+    if (topicIdentifier)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a4)
+  else if (topicIdentifier)
   {
 LABEL_3:
     v15 = sub_1C014C230();
-    a4 = v16;
-    if (a5)
+    topicIdentifier = v16;
+    if (version)
     {
       goto LABEL_4;
     }
 
 LABEL_8:
     v17 = 0;
-    v19 = a6;
-    if (v19)
+    referrerCopy2 = referrer;
+    if (referrerCopy2)
     {
       goto LABEL_5;
     }
@@ -76,19 +76,19 @@ LABEL_8:
   }
 
   v15 = 0;
-  if (!a5)
+  if (!version)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
   v17 = sub_1C014C230();
-  a5 = v18;
-  v19 = a6;
-  if (v19)
+  version = v18;
+  referrerCopy2 = referrer;
+  if (referrerCopy2)
   {
 LABEL_5:
-    v20 = v19;
+    v20 = referrerCopy2;
     v21 = sub_1C014C230();
     v23 = v22;
 
@@ -99,7 +99,7 @@ LABEL_9:
   v21 = 0;
   v23 = 0;
 LABEL_10:
-  static UserGuide.privateURL(bookIdentifier:topicIdentifier:version:referrer:)(a3, v15, a4, v17, a5, v21, v23, v13);
+  static UserGuide.privateURL(bookIdentifier:topicIdentifier:version:referrer:)(identifier, v15, topicIdentifier, v17, version, v21, v23, v13);
 
   v24 = sub_1C014BC50();
   v25 = *(v24 - 8);
@@ -115,24 +115,24 @@ LABEL_10:
   return v27;
 }
 
-+ (id)urlWithBook:(id)a3 topic:(id)a4 anchor:(id)a5 version:(id)a6 referrer:(id)a7
++ (id)urlWithBook:(id)book topic:(id)topic anchor:(id)anchor version:(id)version referrer:(id)referrer
 {
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBE06970, &qword_1C0156340);
   v13 = *(*(v12 - 8) + 64);
   MEMORY[0x1EEE9AC00](v12 - 8);
   v15 = &v35 - v14;
-  if (a3)
+  if (book)
   {
     v36 = sub_1C014C230();
-    a3 = v16;
-    if (a4)
+    book = v16;
+    if (topic)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v35 = 0;
-    if (a5)
+    if (anchor)
     {
       goto LABEL_4;
     }
@@ -141,29 +141,29 @@ LABEL_6:
   }
 
   v36 = 0;
-  if (!a4)
+  if (!topic)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v35 = sub_1C014C230();
-  a4 = v17;
-  if (a5)
+  topic = v17;
+  if (anchor)
   {
 LABEL_4:
     v18 = sub_1C014C230();
-    a5 = v19;
+    anchor = v19;
     goto LABEL_8;
   }
 
 LABEL_7:
   v18 = 0;
 LABEL_8:
-  v20 = a6;
-  v21 = a7;
-  v22 = v21;
-  if (v20)
+  versionCopy = version;
+  referrerCopy = referrer;
+  v22 = referrerCopy;
+  if (versionCopy)
   {
     v23 = sub_1C014C230();
     v25 = v24;
@@ -182,7 +182,7 @@ LABEL_10:
   {
     v23 = 0;
     v25 = 0;
-    if (v21)
+    if (referrerCopy)
     {
       goto LABEL_10;
     }
@@ -191,7 +191,7 @@ LABEL_10:
   v26 = 0;
   v28 = 0;
 LABEL_13:
-  static UserGuide.url(book:topic:anchor:version:referrer:)(a3, v35, a4, v18, a5, v23, v25, v15, v26, v28);
+  static UserGuide.url(book:topic:anchor:version:referrer:)(book, v35, topic, v18, anchor, v23, v25, v15, v26, v28);
 
   v29 = sub_1C014BC50();
   v30 = *(v29 - 8);
@@ -238,10 +238,10 @@ LABEL_13:
 {
   swift_getKeyPath();
   sub_1C011A644();
-  v3 = self;
+  selfCopy = self;
   sub_1C014BF00();
 
-  v4 = (v3 + OBJC_IVAR___TPSUserGuide__topicIdentifier);
+  v4 = (selfCopy + OBJC_IVAR___TPSUserGuide__topicIdentifier);
   swift_beginAccess();
   v6 = *v4;
   v5 = v4[1];
@@ -259,9 +259,9 @@ LABEL_13:
   return v7;
 }
 
-- (void)setTopicIdentifier:(id)a3
+- (void)setTopicIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1C014C230();
     v6 = v5;
@@ -273,19 +273,19 @@ LABEL_13:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   UserGuide.topicIdentifier.setter(v4, v6);
 }
 
-- (TPSUserGuide)initWithIdentifier:(id)a3 version:(id)a4 text:(id)a5 symbol:(id)a6 platform:(id)a7 platformIndependent:(BOOL)a8 gradientColorStrings:(id)a9
+- (TPSUserGuide)initWithIdentifier:(id)identifier version:(id)version text:(id)text symbol:(id)symbol platform:(id)platform platformIndependent:(BOOL)independent gradientColorStrings:(id)strings
 {
   v27 = sub_1C014C230();
   v13 = v12;
-  if (a4)
+  if (version)
   {
     v14 = sub_1C014C230();
     v16 = v15;
-    if (a5)
+    if (text)
     {
 LABEL_3:
       v17 = sub_1C014C230();
@@ -298,7 +298,7 @@ LABEL_3:
   {
     v14 = 0;
     v16 = 0;
-    if (a5)
+    if (text)
     {
       goto LABEL_3;
     }
@@ -309,9 +309,9 @@ LABEL_3:
 LABEL_6:
   v20 = sub_1C014C230();
   v22 = v21;
-  if (a7)
+  if (platform)
   {
-    a7 = sub_1C014C230();
+    platform = sub_1C014C230();
     v24 = v23;
   }
 
@@ -321,7 +321,7 @@ LABEL_6:
   }
 
   v25 = sub_1C014C3C0();
-  return UserGuide.init(identifier:version:text:symbol:platform:platformIndependent:gradientColorStrings:)(v27, v13, v14, v16, v17, v19, v20, v22, a7, v24, a8, v25);
+  return UserGuide.init(identifier:version:text:symbol:platform:platformIndependent:gradientColorStrings:)(v27, v13, v14, v16, v17, v19, v20, v22, platform, v24, independent, v25);
 }
 
 - (TPSUserGuide)init
@@ -331,9 +331,9 @@ LABEL_6:
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   UserGuide.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -342,28 +342,28 @@ LABEL_6:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  UserGuide.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  UserGuide.encode(with:)(coderCopy);
 }
 
 - (int64_t)hash
 {
   v2 = *(self + OBJC_IVAR___TPSUserGuide_identifier);
   v3 = *(self + OBJC_IVAR___TPSUserGuide_identifier + 8);
-  v4 = self;
+  selfCopy = self;
   v5 = MEMORY[0x1C68D6B80](v2, v3);
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C014C6E0();
     swift_unknownObjectRelease();
@@ -372,7 +372,7 @@ LABEL_6:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UserGuide.isEqual(_:)(v8);

@@ -1,15 +1,15 @@
 @interface PHAMediaSampleReportingTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)runWithPhotoLibrary:(id)a3 analytics:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (void)timeoutFatal:(BOOL)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)runWithPhotoLibrary:(id)library analytics:(id)analytics progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAMediaSampleReportingTask
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAMediaSampleReportingTask timeoutFatal:]", "PHAMediaSampleReportingTask.m", 115, "NO");
   }
@@ -21,12 +21,12 @@
   }
 }
 
-- (BOOL)runWithPhotoLibrary:(id)a3 analytics:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)runWithPhotoLibrary:(id)library analytics:(id)analytics progressReporter:(id)reporter error:(id *)error
 {
   *&v29[5] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  analyticsCopy = analytics;
+  reporterCopy = reporter;
   v12 = os_log_create("com.apple.PhotosGraph", "metrics");
   if (PFOSVariantHasInternalDiagnostics())
   {
@@ -40,16 +40,16 @@
 
   if (arc4random_uniform(v13) == 1)
   {
-    v14 = [v9 librarySpecificFetchOptions];
-    v15 = [MEMORY[0x277CD9810] assetPropertySetsToFetch];
-    [v14 setFetchPropertySets:v15];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    assetPropertySetsToFetch = [MEMORY[0x277CD9810] assetPropertySetsToFetch];
+    [librarySpecificFetchOptions setFetchPropertySets:assetPropertySetsToFetch];
 
-    [v14 setWantsIncrementalChangeDetails:0];
-    [v14 setIsExclusivePredicate:1];
-    [v14 setChunkSizeForFetch:1];
-    [v14 setCacheSizeForFetch:1];
-    v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v14];
-    if ([v11 isCancelledWithProgress:0.5])
+    [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+    [librarySpecificFetchOptions setIsExclusivePredicate:1];
+    [librarySpecificFetchOptions setChunkSizeForFetch:1];
+    [librarySpecificFetchOptions setCacheSizeForFetch:1];
+    v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
+    if ([reporterCopy isCancelledWithProgress:0.5])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -60,10 +60,10 @@
         _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
       }
 
-      if (a6 && !*a6)
+      if (error && !*error)
       {
         [MEMORY[0x277D22C28] errorForCode:-4];
-        *a6 = v17 = 0;
+        *error = v17 = 0;
       }
 
       else
@@ -81,16 +81,16 @@
         v21 = v12;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [v20 uuid];
+          uuid = [v20 uuid];
           *buf = 138412290;
-          *v29 = v22;
+          *v29 = uuid;
           _os_log_impl(&dword_22FA28000, v21, OS_LOG_TYPE_INFO, "[PHAMediaSampleReportingTask] Reporting asset uuid: %@", buf, 0xCu);
         }
 
         v26 = *MEMORY[0x277CF6E18];
         v27 = v20;
         v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-        [v10 sendEvent:@"com.apple.photos.CPAnalytics.mediaSample" withPayload:v23];
+        [analyticsCopy sendEvent:@"com.apple.photos.CPAnalytics.mediaSample" withPayload:v23];
       }
 
       else
@@ -104,7 +104,7 @@
         v20 = 0;
       }
 
-      v24 = [v11 isCancelledWithProgress:1.0];
+      v24 = [reporterCopy isCancelledWithProgress:1.0];
       if (v24)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -116,9 +116,9 @@
           _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
         }
 
-        if (a6 && !*a6)
+        if (error && !*error)
         {
-          *a6 = [MEMORY[0x277D22C28] errorForCode:-4];
+          *error = [MEMORY[0x277D22C28] errorForCode:-4];
         }
       }
 
@@ -140,22 +140,22 @@
   return v17;
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 workingContext];
-  v11 = [v10 photoLibrary];
-  v12 = [v9 analytics];
+  reporterCopy = reporter;
+  managerCopy = manager;
+  workingContext = [managerCopy workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  analytics = [managerCopy analytics];
 
-  LOBYTE(a5) = [(PHAMediaSampleReportingTask *)self runWithPhotoLibrary:v11 analytics:v12 progressReporter:v8 error:a5];
-  return a5;
+  LOBYTE(error) = [(PHAMediaSampleReportingTask *)self runWithPhotoLibrary:photoLibrary analytics:analytics progressReporter:reporterCopy error:error];
+  return error;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v4 = [a3 photoLibrary];
-  LOBYTE(self) = [(PHAMediaSampleReportingTask *)self shouldRunWithPhotoLibrary:v4];
+  photoLibrary = [manager photoLibrary];
+  LOBYTE(self) = [(PHAMediaSampleReportingTask *)self shouldRunWithPhotoLibrary:photoLibrary];
 
   return self;
 }

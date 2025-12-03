@@ -6,8 +6,8 @@
 
 - (uint64_t)Any
 {
-  v7 = *(a1 + 32);
-  v6 = *(a1 + 40);
+  v7 = *(self + 32);
+  v6 = *(self + 40);
   v8 = _Block_copy(aBlock);
   if (v8)
   {

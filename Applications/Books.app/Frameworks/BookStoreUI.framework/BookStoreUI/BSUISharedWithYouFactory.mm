@@ -1,17 +1,17 @@
 @interface BSUISharedWithYouFactory
-- (id)viewController:(id)a3 hostedViewWithType:(id)a4 identifier:(id)a5 parameters:(id)a6;
-- (void)_attributionView:(id)a3 displayContext:(id)a4;
+- (id)viewController:(id)controller hostedViewWithType:(id)type identifier:(id)identifier parameters:(id)parameters;
+- (void)_attributionView:(id)view displayContext:(id)context;
 @end
 
 @implementation BSUISharedWithYouFactory
 
-- (id)viewController:(id)a3 hostedViewWithType:(id)a4 identifier:(id)a5 parameters:(id)a6
+- (id)viewController:(id)controller hostedViewWithType:(id)type identifier:(id)identifier parameters:(id)parameters
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  controllerCopy = controller;
   v12 = +[_TtC11BookStoreUI27BSUISharedWithYouController shared];
-  v13 = [v12 createHighlightAttributionViewFor:v10 viewController:v11];
+  v13 = [v12 createHighlightAttributionViewFor:identifierCopy viewController:controllerCopy];
 
   if (!v13)
   {
@@ -76,21 +76,21 @@ LABEL_16:
   return v14;
 }
 
-- (void)_attributionView:(id)a3 displayContext:(id)a4
+- (void)_attributionView:(id)view displayContext:(id)context
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v5 isEqualToString:@"summary"])
+  viewCopy = view;
+  contextCopy = context;
+  if ([contextCopy isEqualToString:@"summary"])
   {
-    [v6 setDisplayContext:0];
+    [viewCopy setDisplayContext:0];
   }
 
-  else if (([v5 isEqualToString:@"detail"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"detailCompact"))
+  else if (([contextCopy isEqualToString:@"detail"] & 1) != 0 || objc_msgSend(contextCopy, "isEqualToString:", @"detailCompact"))
   {
-    [v6 setDisplayContext:1];
-    if ([v5 isEqualToString:@"detailCompact"])
+    [viewCopy setDisplayContext:1];
+    if ([contextCopy isEqualToString:@"detailCompact"])
     {
-      [v6 setHorizontalAlignment:2];
+      [viewCopy setHorizontalAlignment:2];
     }
   }
 }

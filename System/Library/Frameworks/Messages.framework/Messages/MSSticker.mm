@@ -1,33 +1,33 @@
 @interface MSSticker
 + (BOOL)_isHEICSupported;
-+ (BOOL)_isImageSourceAdaptiveImageGlyph:(CGImageSource *)a3;
-+ (CGSize)_frameSizeFromFrameProperties:(id)a3;
-+ (MSSticker)stickerWithContentsOfURL:(id)a3 localizedDescription:(id)a4 error:(id *)a5;
-+ (id)MSStickerPreviewCacheKeyForSticker:(id)a3;
-+ (id)_stickerRepresentationRoleForAdaptiveImageGlyphFrameWithProperties:(id)a3;
-+ (id)_stickerRepresentationsForImageFileURL:(id)a3;
++ (BOOL)_isImageSourceAdaptiveImageGlyph:(CGImageSource *)glyph;
++ (CGSize)_frameSizeFromFrameProperties:(id)properties;
++ (MSSticker)stickerWithContentsOfURL:(id)l localizedDescription:(id)description error:(id *)error;
++ (id)MSStickerPreviewCacheKeyForSticker:(id)sticker;
++ (id)_stickerRepresentationRoleForAdaptiveImageGlyphFrameWithProperties:(id)properties;
++ (id)_stickerRepresentationsForImageFileURL:(id)l;
 - (MSSticker)initWithContentsOfFileURL:(NSURL *)fileURL localizedDescription:(NSString *)localizedDescription error:(NSError *)error;
-- (MSSticker)initWithContentsOfURL:(id)a3 data:(id)a4 externalURI:(id)a5 localizedDescription:(id)a6 error:(id *)a7;
+- (MSSticker)initWithContentsOfURL:(id)l data:(id)data externalURI:(id)i localizedDescription:(id)description error:(id *)error;
 - (MSSticker)initWithFileURL:(NSURL *)url identifier:(NSUUID *)identifier localizedDescription:(NSString *)localizedDescription;
-- (MSSticker)initWithStickerIdentifier:(id)a3 representations:(id)a4 stickerName:(id)a5 effectType:(int64_t)a6 externalURI:(id)a7 localizedDescription:(id)a8 metadata:(id)a9 attributionInfo:(id)a10;
+- (MSSticker)initWithStickerIdentifier:(id)identifier representations:(id)representations stickerName:(id)name effectType:(int64_t)type externalURI:(id)i localizedDescription:(id)description metadata:(id)metadata attributionInfo:(id)self0;
 - (NSString)description;
 - (NSURL)animatedImageCacheURL;
 - (void)_convertImageFileURLIfNeeded;
 - (void)_generateImageData;
-- (void)_generateImageDataFromRepresentation:(id)a3;
-- (void)_generateImageDataFromURL:(id)a3;
+- (void)_generateImageDataFromRepresentation:(id)representation;
+- (void)_generateImageDataFromURL:(id)l;
 - (void)_generateThumbnail;
 - (void)animatedImageCacheURL;
-- (void)setStickerEffectType:(unint64_t)a3;
+- (void)setStickerEffectType:(unint64_t)type;
 @end
 
 @implementation MSSticker
 
-+ (MSSticker)stickerWithContentsOfURL:(id)a3 localizedDescription:(id)a4 error:(id *)a5
++ (MSSticker)stickerWithContentsOfURL:(id)l localizedDescription:(id)description error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[MSSticker alloc] initWithContentsOfFileURL:v8 localizedDescription:v7 error:a5];
+  descriptionCopy = description;
+  lCopy = l;
+  v9 = [[MSSticker alloc] initWithContentsOfFileURL:lCopy localizedDescription:descriptionCopy error:error];
 
   return v9;
 }
@@ -52,9 +52,9 @@
     representations = v9->_representations;
     v9->_representations = 0;
 
-    v14 = [(NSURL *)v7 absoluteString];
+    absoluteString = [(NSURL *)v7 absoluteString];
     externalURI = v9->_externalURI;
-    v9->_externalURI = v14;
+    v9->_externalURI = absoluteString;
 
     v9->_stickerEffectType = -1;
     metadata = v9->_metadata;
@@ -88,9 +88,9 @@
     representations = v11->_representations;
     v11->_representations = 0;
 
-    v16 = [(NSURL *)v8 absoluteString];
+    absoluteString = [(NSURL *)v8 absoluteString];
     externalURI = v11->_externalURI;
-    v11->_externalURI = v16;
+    v11->_externalURI = absoluteString;
 
     v11->_stickerEffectType = -1;
     metadata = v11->_metadata;
@@ -105,30 +105,30 @@
   return v11;
 }
 
-- (MSSticker)initWithContentsOfURL:(id)a3 data:(id)a4 externalURI:(id)a5 localizedDescription:(id)a6 error:(id *)a7
+- (MSSticker)initWithContentsOfURL:(id)l data:(id)data externalURI:(id)i localizedDescription:(id)description error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  dataCopy = data;
+  iCopy = i;
+  descriptionCopy = description;
   v23.receiver = self;
   v23.super_class = MSSticker;
   v15 = [(MSSticker *)&v23 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [lCopy copy];
     imageFileURL = v15->_imageFileURL;
     v15->_imageFileURL = v16;
 
-    objc_storeStrong(&v15->_localizedDescription, a6);
-    objc_storeStrong(&v15->_data, a4);
+    objc_storeStrong(&v15->_localizedDescription, description);
+    objc_storeStrong(&v15->_data, data);
     stickerIdentifier = v15->_stickerIdentifier;
     v15->_stickerIdentifier = 0;
 
     representations = v15->_representations;
     v15->_representations = 0;
 
-    objc_storeStrong(&v15->_externalURI, a5);
+    objc_storeStrong(&v15->_externalURI, i);
     v15->_stickerEffectType = -1;
     metadata = v15->_metadata;
     v15->_metadata = 0;
@@ -140,37 +140,37 @@
   return v15;
 }
 
-- (MSSticker)initWithStickerIdentifier:(id)a3 representations:(id)a4 stickerName:(id)a5 effectType:(int64_t)a6 externalURI:(id)a7 localizedDescription:(id)a8 metadata:(id)a9 attributionInfo:(id)a10
+- (MSSticker)initWithStickerIdentifier:(id)identifier representations:(id)representations stickerName:(id)name effectType:(int64_t)type externalURI:(id)i localizedDescription:(id)description metadata:(id)metadata attributionInfo:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  identifierCopy = identifier;
+  representationsCopy = representations;
+  nameCopy = name;
+  iCopy = i;
+  descriptionCopy = description;
+  metadataCopy = metadata;
+  infoCopy = info;
   v41.receiver = self;
   v41.super_class = MSSticker;
   v23 = [(MSSticker *)&v41 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     stickerIdentifier = v23->_stickerIdentifier;
     v23->_stickerIdentifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [representationsCopy copy];
     representations = v23->_representations;
     v23->_representations = v26;
 
-    v28 = [v18 copy];
+    v28 = [nameCopy copy];
     stickerName = v23->_stickerName;
     v23->_stickerName = v28;
 
-    v30 = [v19 copy];
+    v30 = [iCopy copy];
     externalURI = v23->_externalURI;
     v23->_externalURI = v30;
 
-    v32 = [v20 copy];
+    v32 = [descriptionCopy copy];
     localizedDescription = v23->_localizedDescription;
     v23->_localizedDescription = v32;
 
@@ -180,15 +180,15 @@
     data = v23->_data;
     v23->_data = 0;
 
-    v36 = [v21 copy];
+    v36 = [metadataCopy copy];
     metadata = v23->_metadata;
     v23->_metadata = v36;
 
-    v38 = [v22 copy];
+    v38 = [infoCopy copy];
     attributionInfo = v23->_attributionInfo;
     v23->_attributionInfo = v38;
 
-    v23->_stickerEffectType = a6;
+    v23->_stickerEffectType = type;
   }
 
   return v23;
@@ -218,11 +218,11 @@
   return v10;
 }
 
-- (void)setStickerEffectType:(unint64_t)a3
+- (void)setStickerEffectType:(unint64_t)type
 {
-  if (self->_stickerEffectType != a3)
+  if (self->_stickerEffectType != type)
   {
-    self->_stickerEffectType = a3;
+    self->_stickerEffectType = type;
   }
 }
 
@@ -246,14 +246,14 @@
   }
 }
 
-+ (BOOL)_isImageSourceAdaptiveImageGlyph:(CGImageSource *)a3
++ (BOOL)_isImageSourceAdaptiveImageGlyph:(CGImageSource *)glyph
 {
-  if (CGImageSourceGetCount(a3) == 1)
+  if (CGImageSourceGetCount(glyph) == 1)
   {
     return 0;
   }
 
-  v5 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+  v5 = CGImageSourceCopyPropertiesAtIndex(glyph, 0, 0);
   v6 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -271,26 +271,26 @@
   return v4;
 }
 
-+ (CGSize)_frameSizeFromFrameProperties:(id)a3
++ (CGSize)_frameSizeFromFrameProperties:(id)properties
 {
   v3 = *MEMORY[0x1E696DED8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v5 unsignedIntegerValue];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy objectForKeyedSubscript:v3];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
+  v7 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
 
-  v8 = [v7 unsignedIntegerValue];
-  v9 = v6;
-  v10 = v8;
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
+  v9 = unsignedIntegerValue;
+  v10 = unsignedIntegerValue2;
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-+ (id)_stickerRepresentationRoleForAdaptiveImageGlyphFrameWithProperties:(id)a3
++ (id)_stickerRepresentationRoleForAdaptiveImageGlyphFrameWithProperties:(id)properties
 {
-  [a1 _frameSizeFromFrameProperties:a3];
+  [self _frameSizeFromFrameProperties:properties];
   v5 = v3;
   if (v3 == 40.0 && v4 == 40.0)
   {
@@ -337,24 +337,24 @@ LABEL_15:
   return v10;
 }
 
-+ (id)_stickerRepresentationsForImageFileURL:(id)a3
++ (id)_stickerRepresentationsForImageFileURL:(id)l
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (!lCopy)
   {
-    v18 = 0;
+    array = 0;
     goto LABEL_58;
   }
 
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [(__CFURL *)v4 path];
-  v8 = [v6 imageWithContentsOfFile:v7];
+  path = [(__CFURL *)lCopy path];
+  v8 = [v6 imageWithContentsOfFile:path];
 
   if (!v8)
   {
-    v18 = 0;
+    array = 0;
     goto LABEL_57;
   }
 
@@ -362,7 +362,7 @@ LABEL_15:
   Type = CGImageSourceGetType(isrc);
   v10 = Type;
   v11 = MEMORY[0x1E6963860];
-  v65 = a1;
+  selfCopy = self;
   if (!Type)
   {
     v13 = 0;
@@ -382,7 +382,7 @@ LABEL_15:
 
   if (CFStringCompare(v10, *MEMORY[0x1E69A83F8], 0) == kCFCompareEqualTo)
   {
-    v64 = [a1 _isImageSourceAdaptiveImageGlyph:isrc];
+    v64 = [self _isImageSourceAdaptiveImageGlyph:isrc];
     v13 = 0;
     v16 = 0;
     v62 = 0;
@@ -411,9 +411,9 @@ LABEL_7:
     v64 = 0;
   }
 
-  a1 = v65;
+  self = selfCopy;
 LABEL_14:
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v59 = v10;
   if (v16)
   {
@@ -438,16 +438,16 @@ LABEL_15:
       }
 
       [v19 setRole:*v23];
-      [v18 addObject:v19];
+      [array addObject:v19];
     }
 
-    a1 = v65;
+    self = selfCopy;
     goto LABEL_20;
   }
 
   if (v17)
   {
-    if ((v13 | [a1 _isHEICSupported] & (v64 ^ 1)))
+    if ((v13 | [self _isHEICSupported] & (v64 ^ 1)))
     {
       goto LABEL_15;
     }
@@ -466,7 +466,7 @@ LABEL_20:
     goto LABEL_47;
   }
 
-  if (![a1 _isHEICSupported])
+  if (![self _isHEICSupported])
   {
     goto LABEL_47;
   }
@@ -481,7 +481,7 @@ LABEL_20:
   v55 = v13;
   v56 = v17;
   v60 = 0;
-  v61 = v18;
+  v61 = array;
   v57 = v8;
   v58 = v5;
   v26 = 0;
@@ -492,7 +492,7 @@ LABEL_20:
   {
     v30 = objc_autoreleasePoolPush();
     v31 = CGImageSourceCopyPropertiesAtIndex(v29, v26, 0);
-    v32 = [a1 _stickerRepresentationRoleForAdaptiveImageGlyphFrameWithProperties:v31];
+    v32 = [self _stickerRepresentationRoleForAdaptiveImageGlyphFrameWithProperties:v31];
     if (![v32 length])
     {
       v39 = ms_defaultLog();
@@ -510,7 +510,7 @@ LABEL_33:
       goto LABEL_38;
     }
 
-    [a1 _frameSizeFromFrameProperties:v31];
+    [self _frameSizeFromFrameProperties:v31];
     v34 = v33;
     v36 = v35;
     ImageAtIndex = CGImageSourceCreateImageAtIndex(v29, v26, 0);
@@ -531,8 +531,8 @@ LABEL_33:
 
     v38 = ImageAtIndex;
     v39 = [MEMORY[0x1E69DCAB8] imageWithCGImage:ImageAtIndex];
-    v40 = [v39 __ms_HEICData];
-    if (![v40 length])
+    __ms_HEICData = [v39 __ms_HEICData];
+    if (![__ms_HEICData length])
     {
       v41 = ms_defaultLog();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -549,7 +549,7 @@ LABEL_36:
     }
 
     v41 = objc_alloc_init(MEMORY[0x1E69DD760]);
-    [v41 setData:v40];
+    [v41 setData:__ms_HEICData];
     [v41 setType:@"public.heic"];
     [v41 setSize:v34, v36];
     [v41 setRole:v32];
@@ -559,7 +559,7 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    v42 = v40;
+    v42 = __ms_HEICData;
 
     v60 = v42;
     v29 = isrc;
@@ -568,7 +568,7 @@ LABEL_37:
     CFRelease(v38);
     v28 = v36;
     v27 = v34;
-    a1 = v65;
+    self = selfCopy;
 LABEL_38:
 
     objc_autoreleasePoolPop(v30);
@@ -578,7 +578,7 @@ LABEL_38:
   while (v25 != v26);
   v8 = v57;
   v5 = v58;
-  v18 = v61;
+  array = v61;
   v11 = MEMORY[0x1E6963860];
   v13 = v55;
   LOBYTE(v17) = v56;
@@ -609,36 +609,36 @@ LABEL_47:
       [v8 size];
       [v46 setSize:?];
       [v46 setRole:*MEMORY[0x1E69DEA88]];
-      [v18 addObject:v46];
+      [array addObject:v46];
     }
 
-    a1 = v65;
+    self = selfCopy;
   }
 
   if (((v13 | v64) & 1) == 0)
   {
     v50 = objc_alloc_init(MEMORY[0x1E69DD760]);
-    v51 = [v8 __ms_PNGData];
-    [v50 setData:v51];
+    __ms_PNGData = [v8 __ms_PNGData];
+    [v50 setData:__ms_PNGData];
 
     [v50 setType:*v11];
     [v8 size];
     [v50 setSize:?];
     [v50 setRole:*MEMORY[0x1E69DEA80]];
-    [v18 addObject:v50];
+    [array addObject:v50];
   }
 
-  if ((v17 & 1) == 0 && [a1 _isHEICSupported])
+  if ((v17 & 1) == 0 && [self _isHEICSupported])
   {
     v52 = objc_alloc_init(MEMORY[0x1E69DD760]);
-    v53 = [v8 __ms_HEICData];
-    [v52 setData:v53];
+    __ms_HEICData2 = [v8 __ms_HEICData];
+    [v52 setData:__ms_HEICData2];
 
     [v52 setType:@"public.heic"];
     [v8 size];
     [v52 setSize:?];
     [v52 setRole:*MEMORY[0x1E69DEA88]];
-    [v18 addObject:v52];
+    [array addObject:v52];
   }
 
   CFRelease(isrc);
@@ -646,7 +646,7 @@ LABEL_57:
 
 LABEL_58:
 
-  return v18;
+  return array;
 }
 
 + (BOOL)_isHEICSupported
@@ -667,14 +667,14 @@ void __29__MSSticker__isHEICSupported__block_invoke()
 
 - (void)_generateImageData
 {
-  v3 = [(MSSticker *)self _imageData];
+  _imageData = [(MSSticker *)self _imageData];
 
-  if (!v3)
+  if (!_imageData)
   {
-    v4 = [(MSSticker *)self imageFileURL];
-    if (v4)
+    imageFileURL = [(MSSticker *)self imageFileURL];
+    if (imageFileURL)
     {
-      [(MSSticker *)self _generateImageDataFromURL:v4];
+      [(MSSticker *)self _generateImageDataFromURL:imageFileURL];
     }
 
     else
@@ -682,8 +682,8 @@ void __29__MSSticker__isHEICSupported__block_invoke()
       representations = self->_representations;
       if (representations)
       {
-        v6 = [(NSArray *)representations firstObject];
-        [(MSSticker *)self _generateImageDataFromRepresentation:v6];
+        firstObject = [(NSArray *)representations firstObject];
+        [(MSSticker *)self _generateImageDataFromRepresentation:firstObject];
       }
     }
 
@@ -691,18 +691,18 @@ void __29__MSSticker__isHEICSupported__block_invoke()
   }
 }
 
-- (void)_generateImageDataFromURL:(id)a3
+- (void)_generateImageDataFromURL:(id)l
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 __ms_conformsToUTI:*MEMORY[0x1E69637F8]];
+  lCopy = l;
+  v5 = [lCopy __ms_conformsToUTI:*MEMORY[0x1E69637F8]];
   if ((v5 & 1) == 0)
   {
     v6 = MEMORY[0x1E696ABC0];
-    if (v4)
+    if (lCopy)
     {
       v23 = @"MSStickersErrorStickerInfoKey";
-      v24[0] = v4;
+      v24[0] = lCopy;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     }
 
@@ -714,7 +714,7 @@ void __29__MSSticker__isHEICSupported__block_invoke()
     v8 = [v6 errorWithDomain:@"com.apple.messages.stickers-error" code:3 userInfo:v7];
     [(MSSticker *)self set_stickerError:v8];
 
-    if (v4)
+    if (lCopy)
     {
     }
   }
@@ -736,14 +736,14 @@ void __29__MSSticker__isHEICSupported__block_invoke()
   }
 
   v12 = [CKImageDataClass alloc];
-  v13 = [(MSSticker *)self imageFileURL];
-  v14 = [v12 initWithURL:v13];
+  imageFileURL = [(MSSticker *)self imageFileURL];
+  v14 = [v12 initWithURL:imageFileURL];
 
   if (!v14)
   {
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    v17 = [v4 path];
-    if ([v16 fileExistsAtPath:v17])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    if ([defaultManager fileExistsAtPath:path])
     {
       v18 = 2;
     }
@@ -755,9 +755,9 @@ void __29__MSSticker__isHEICSupported__block_invoke()
 
     v19 = MEMORY[0x1E696ABC0];
     v21 = @"MSStickersErrorStickerInfoKey";
-    v22 = v4;
-    v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    v20 = [v19 errorWithDomain:@"com.apple.messages.stickers-error" code:v18 userInfo:v15];
+    v22 = lCopy;
+    _imageData = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
+    v20 = [v19 errorWithDomain:@"com.apple.messages.stickers-error" code:v18 userInfo:_imageData];
     [(MSSticker *)self set_stickerError:v20];
 
     goto LABEL_19;
@@ -766,18 +766,18 @@ void __29__MSSticker__isHEICSupported__block_invoke()
   if (v5)
   {
     [(MSSticker *)self set_imageData:v14];
-    v15 = [(MSSticker *)self _imageData];
-    [v15 count];
+    _imageData = [(MSSticker *)self _imageData];
+    [_imageData count];
 LABEL_19:
   }
 }
 
-- (void)_generateImageDataFromRepresentation:(id)a3
+- (void)_generateImageDataFromRepresentation:(id)representation
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 type];
-  if (UTTypeConformsTo(v6, *MEMORY[0x1E69637F8]))
+  representationCopy = representation;
+  type = [representationCopy type];
+  if (UTTypeConformsTo(type, *MEMORY[0x1E69637F8]))
   {
     CKImageDataClass = getCKImageDataClass();
     v8 = IMLogHandleForCategory();
@@ -796,21 +796,21 @@ LABEL_19:
     }
 
     v13 = [CKImageDataClass alloc];
-    v14 = [v5 data];
-    v11 = [v13 initWithData:v14];
+    data = [representationCopy data];
+    stickerIdentifier = [v13 initWithData:data];
 
-    [(MSSticker *)self set_imageData:v11];
+    [(MSSticker *)self set_imageData:stickerIdentifier];
   }
 
   else
   {
     v10 = MEMORY[0x1E696ABC0];
-    v11 = [(MSSticker *)self stickerIdentifier];
-    if (v11)
+    stickerIdentifier = [(MSSticker *)self stickerIdentifier];
+    if (stickerIdentifier)
     {
       v16 = @"MSStickersErrorStickerInfoKey";
-      v3 = [(MSSticker *)self stickerIdentifier];
-      v17[0] = v3;
+      stickerIdentifier2 = [(MSSticker *)self stickerIdentifier];
+      v17[0] = stickerIdentifier2;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     }
 
@@ -822,7 +822,7 @@ LABEL_19:
     v15 = [v10 errorWithDomain:@"com.apple.messages.stickers-error" code:3 userInfo:v12];
     [(MSSticker *)self set_stickerError:v15];
 
-    if (v11)
+    if (stickerIdentifier)
     {
     }
   }
@@ -836,24 +836,24 @@ LABEL_19:
   OUTLINED_FUNCTION_5(&dword_1CADE6000, v0, v1, "Failed to load weak link class: '%@': %s:%i (%s)", v2, v3, v4, v5, 2u);
 }
 
-+ (id)MSStickerPreviewCacheKeyForSticker:(id)a3
++ (id)MSStickerPreviewCacheKeyForSticker:(id)sticker
 {
-  v3 = a3;
-  v4 = [v3 stickerIdentifier];
+  stickerCopy = sticker;
+  stickerIdentifier = [stickerCopy stickerIdentifier];
 
-  if (v4)
+  if (stickerIdentifier)
   {
-    v5 = [v3 stickerIdentifier];
+    stickerIdentifier2 = [stickerCopy stickerIdentifier];
 
-    [v5 UUIDString];
+    [stickerIdentifier2 UUIDString];
   }
 
   else
   {
     v6 = MEMORY[0x1E696AEC0];
-    v5 = [v3 imageFileURL];
+    stickerIdentifier2 = [stickerCopy imageFileURL];
 
-    [v6 stringWithFormat:@"%lu", objc_msgSend(v5, "hash")];
+    [v6 stringWithFormat:@"%lu", objc_msgSend(stickerIdentifier2, "hash")];
   }
   v7 = ;
 
@@ -863,21 +863,21 @@ LABEL_19:
 - (NSURL)animatedImageCacheURL
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFF8] __ms_cachesDirectory];
-  v4 = [v3 path];
+  __ms_cachesDirectory = [MEMORY[0x1E695DFF8] __ms_cachesDirectory];
+  path = [__ms_cachesDirectory path];
 
-  v5 = [(NSUUID *)self->_stickerIdentifier UUIDString];
-  if ([v5 length])
+  uUIDString = [(NSUUID *)self->_stickerIdentifier UUIDString];
+  if ([uUIDString length])
   {
-    v6 = v5;
+    lastPathComponent = uUIDString;
   }
 
   else
   {
-    v6 = [(NSURL *)self->_imageFileURL lastPathComponent];
+    lastPathComponent = [(NSURL *)self->_imageFileURL lastPathComponent];
   }
 
-  v7 = v6;
+  v7 = lastPathComponent;
   CKImageDataClass = getCKImageDataClass();
   v9 = IMLogHandleForCategory();
   v10 = v9;
@@ -905,16 +905,16 @@ LABEL_19:
   }
 
   v12 = [v7 stringByAppendingPathExtension:v11];
-  if ([v4 length] && objc_msgSend(v12, "length"))
+  if ([path length] && objc_msgSend(v12, "length"))
   {
-    v19[0] = v4;
+    v19[0] = path;
     v19[1] = @"BrowserData";
     v19[2] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
     v14 = [MEMORY[0x1E696AEC0] pathWithComponents:v13];
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    v16 = [v14 stringByDeletingLastPathComponent];
-    [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    stringByDeletingLastPathComponent = [v14 stringByDeletingLastPathComponent];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
     v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14];
   }

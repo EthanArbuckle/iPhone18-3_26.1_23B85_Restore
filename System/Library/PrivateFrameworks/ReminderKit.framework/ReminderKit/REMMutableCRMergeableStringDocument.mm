@@ -1,45 +1,45 @@
 @interface REMMutableCRMergeableStringDocument
-- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)a3;
-- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 immutableDocumentToEdit:(id)a4;
+- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)source;
+- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)source immutableDocumentToEdit:(id)edit;
 - (TTMergeableAttributedString)mergeableString;
-- (id)hashtagAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)hashtagAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (id)immutableDocument;
-- (id)wipeAndReplaceWithString:(id)a3;
-- (void)_test_insertString:(id)a3 atIndex:(unint64_t)a4;
-- (void)addHashtag:(id)a3 range:(_NSRange)a4;
-- (void)enumerateHashtagInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)removeHashtagInRange:(_NSRange)a3;
-- (void)replicaIDHelperDidAcquireReplicaUUID:(id)a3;
+- (id)wipeAndReplaceWithString:(id)string;
+- (void)_test_insertString:(id)string atIndex:(unint64_t)index;
+- (void)addHashtag:(id)hashtag range:(_NSRange)range;
+- (void)enumerateHashtagInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
+- (void)removeHashtagInRange:(_NSRange)range;
+- (void)replicaIDHelperDidAcquireReplicaUUID:(id)d;
 @end
 
 @implementation REMMutableCRMergeableStringDocument
 
-- (id)hashtagAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)hashtagAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
-  v7 = [v6 attributedString];
-  v8 = [v7 rem_hashtagAtIndex:a3 effectiveRange:a4];
+  mergeableString = [(REMMutableCRMergeableStringDocument *)self mergeableString];
+  attributedString = [mergeableString attributedString];
+  v8 = [attributedString rem_hashtagAtIndex:index effectiveRange:range];
 
   return v8;
 }
 
-- (void)enumerateHashtagInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateHashtagInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
-  v11 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
-  v10 = [v11 attributedString];
-  [v10 rem_enumerateHashtagInRange:location options:length usingBlock:{a4, v9}];
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  mergeableString = [(REMMutableCRMergeableStringDocument *)self mergeableString];
+  attributedString = [mergeableString attributedString];
+  [attributedString rem_enumerateHashtagInRange:location options:length usingBlock:{options, blockCopy}];
 }
 
-- (void)addHashtag:(id)a3 range:(_NSRange)a4
+- (void)addHashtag:(id)hashtag range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  hashtagCopy = hashtag;
+  if (!hashtagCopy)
   {
     v10 = +[REMLog crdt];
     if (os_log_type_enabled(&v10->super, OS_LOG_TYPE_ERROR))
@@ -50,8 +50,8 @@
     goto LABEL_12;
   }
 
-  v8 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
-  v9 = [v8 length];
+  mergeableString = [(REMMutableCRMergeableStringDocument *)self mergeableString];
+  v9 = [mergeableString length];
 
   if (location >= v9)
   {
@@ -66,26 +66,26 @@
   if (length)
   {
     v10 = objc_alloc_init(TTREMHashtag);
-    v11 = [v7 objectIdentifier];
-    [(TTREMHashtag *)v10 setObjectIdentifier:v11];
+    objectIdentifier = [hashtagCopy objectIdentifier];
+    [(TTREMHashtag *)v10 setObjectIdentifier:objectIdentifier];
 
-    v12 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
+    mergeableString2 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
     v26 = @"_TTREMHashtag";
     v27[0] = v10;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    [v12 setAttributes:v13 range:{location, length}];
+    [mergeableString2 setAttributes:v13 range:{location, length}];
 
     v14 = +[REMLog crdt];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(REMMutableCRMergeableStringDocument *)self replicaIDSource];
+      replicaIDSource = [(REMMutableCRMergeableStringDocument *)self replicaIDSource];
       v28.location = location;
       v28.length = length;
       v16 = NSStringFromRange(v28);
       v18 = 134218754;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v15;
+      v21 = replicaIDSource;
       v22 = 2112;
       v23 = v10;
       v24 = 2112;
@@ -99,12 +99,12 @@ LABEL_12:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeHashtagInRange:(_NSRange)a3
+- (void)removeHashtagInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
-  v7 = [v6 length];
+  length = range.length;
+  location = range.location;
+  mergeableString = [(REMMutableCRMergeableStringDocument *)self mergeableString];
+  v7 = [mergeableString length];
   if (location >= v7)
   {
     location = v7;
@@ -117,14 +117,14 @@ LABEL_12:
 
   if (length)
   {
-    v8 = [v6 attributedString];
+    attributedString = [mergeableString attributedString];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __70__REMMutableCRMergeableStringDocument_Hashtags__removeHashtagInRange___block_invoke;
     v9[3] = &unk_1E75085B8;
-    v10 = v6;
-    v11 = self;
-    [v8 enumerateAttributesInRange:location options:length usingBlock:{0, v9}];
+    v10 = mergeableString;
+    selfCopy = self;
+    [attributedString enumerateAttributesInRange:location options:length usingBlock:{0, v9}];
   }
 }
 
@@ -166,16 +166,16 @@ void __70__REMMutableCRMergeableStringDocument_Hashtags__removeHashtagInRange___
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)a3
+- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = REMMutableCRMergeableStringDocument;
   v6 = [(REMMutableCRMergeableStringDocument *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_replicaIDSource, a3);
+    objc_storeStrong(&v6->_replicaIDSource, source);
     v8 = +[REMReplicaIDHelper replicaUUIDForCreation];
     v9 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:v8];
     v10 = [[TTMergeableStringVersionedDocument alloc] initWithMergeableString:v9];
@@ -190,19 +190,19 @@ void __70__REMMutableCRMergeableStringDocument_Hashtags__removeHashtagInRange___
   return v7;
 }
 
-- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 immutableDocumentToEdit:(id)a4
+- (REMMutableCRMergeableStringDocument)initWithReplicaIDSource:(id)source immutableDocumentToEdit:(id)edit
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  editCopy = edit;
   v14.receiver = self;
   v14.super_class = REMMutableCRMergeableStringDocument;
   v9 = [(REMMutableCRMergeableStringDocument *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_replicaIDSource, a3);
-    objc_storeStrong(&v10->_document, a4);
-    v11 = [[REMReplicaIDHelper alloc] initWithReplicaIDSource:v7 owner:v10 replicaClockProvider:v8];
+    objc_storeStrong(&v9->_replicaIDSource, source);
+    objc_storeStrong(&v10->_document, edit);
+    v11 = [[REMReplicaIDHelper alloc] initWithReplicaIDSource:sourceCopy owner:v10 replicaClockProvider:editCopy];
     replicaIDHelper = v10->_replicaIDHelper;
     v10->_replicaIDHelper = v11;
   }
@@ -212,73 +212,73 @@ void __70__REMMutableCRMergeableStringDocument_Hashtags__removeHashtagInRange___
 
 - (TTMergeableAttributedString)mergeableString
 {
-  v3 = [(REMMutableCRMergeableStringDocument *)self replicaIDHelper];
-  [v3 willEdit];
+  replicaIDHelper = [(REMMutableCRMergeableStringDocument *)self replicaIDHelper];
+  [replicaIDHelper willEdit];
 
-  v4 = [(REMMutableCRMergeableStringDocument *)self document];
-  v5 = [v4 mergeableString];
+  document = [(REMMutableCRMergeableStringDocument *)self document];
+  mergeableString = [document mergeableString];
 
-  return v5;
+  return mergeableString;
 }
 
 - (id)immutableDocument
 {
-  v3 = [(REMMutableCRMergeableStringDocument *)self document];
+  document = [(REMMutableCRMergeableStringDocument *)self document];
   v4 = +[REMReplicaIDHelper nonEditingReplicaUUID];
-  v5 = [v3 rem_copyWithReplicaIDForNewEdits:v4];
+  v5 = [document rem_copyWithReplicaIDForNewEdits:v4];
 
-  v6 = [(REMMutableCRMergeableStringDocument *)self replicaIDHelper];
-  [v6 didCopy];
+  replicaIDHelper = [(REMMutableCRMergeableStringDocument *)self replicaIDHelper];
+  [replicaIDHelper didCopy];
 
   v7 = [REMCRMergeableStringDocument alloc];
-  v8 = [(REMMutableCRMergeableStringDocument *)self replicaIDSource];
-  v9 = [(REMCRMergeableStringDocument *)v7 initWithReplicaIDSource:v8 document:v5];
+  replicaIDSource = [(REMMutableCRMergeableStringDocument *)self replicaIDSource];
+  v9 = [(REMCRMergeableStringDocument *)v7 initWithReplicaIDSource:replicaIDSource document:v5];
 
   return v9;
 }
 
-- (id)wipeAndReplaceWithString:(id)a3
+- (id)wipeAndReplaceWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
-  [v5 deleteCharactersInRange:{0, objc_msgSend(v5, "length")}];
-  [v5 insertAttributedString:v4 atIndex:0];
+  stringCopy = string;
+  mergeableString = [(REMMutableCRMergeableStringDocument *)self mergeableString];
+  [mergeableString deleteCharactersInRange:{0, objc_msgSend(mergeableString, "length")}];
+  [mergeableString insertAttributedString:stringCopy atIndex:0];
 
-  v6 = [v5 attributedString];
-  v7 = [v6 string];
-  v8 = [v7 length];
+  attributedString = [mergeableString attributedString];
+  string = [attributedString string];
+  v8 = [string length];
 
-  v9 = [v5 attributedString];
+  attributedString2 = [mergeableString attributedString];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__REMMutableCRMergeableStringDocument_wipeAndReplaceWithString___block_invoke;
   v13[3] = &unk_1E75096E8;
-  v14 = v5;
-  v10 = v5;
-  [v9 enumerateAttributesInRange:0 options:v8 usingBlock:{0, v13}];
+  v14 = mergeableString;
+  v10 = mergeableString;
+  [attributedString2 enumerateAttributesInRange:0 options:v8 usingBlock:{0, v13}];
 
-  v11 = [(REMMutableCRMergeableStringDocument *)self immutableDocument];
+  immutableDocument = [(REMMutableCRMergeableStringDocument *)self immutableDocument];
 
-  return v11;
+  return immutableDocument;
 }
 
-- (void)_test_insertString:(id)a3 atIndex:(unint64_t)a4
+- (void)_test_insertString:(id)string atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(REMMutableCRMergeableStringDocument *)self mergeableString];
-  [v7 insertString:v6 atIndex:a4];
+  stringCopy = string;
+  mergeableString = [(REMMutableCRMergeableStringDocument *)self mergeableString];
+  [mergeableString insertString:stringCopy atIndex:index];
 }
 
-- (void)replicaIDHelperDidAcquireReplicaUUID:(id)a3
+- (void)replicaIDHelperDidAcquireReplicaUUID:(id)d
 {
-  v8 = [a3 replicaUUID];
-  v4 = [(REMMutableCRMergeableStringDocument *)self document];
-  v5 = [v4 rem_copyWithReplicaIDForNewEdits:v8];
+  replicaUUID = [d replicaUUID];
+  document = [(REMMutableCRMergeableStringDocument *)self document];
+  v5 = [document rem_copyWithReplicaIDForNewEdits:replicaUUID];
   [(REMMutableCRMergeableStringDocument *)self setDocument:v5];
 
-  v6 = [(REMMutableCRMergeableStringDocument *)self document];
-  v7 = [(REMMutableCRMergeableStringDocument *)self replicaIDHelper];
-  [v7 setReplicaClockProvider:v6];
+  document2 = [(REMMutableCRMergeableStringDocument *)self document];
+  replicaIDHelper = [(REMMutableCRMergeableStringDocument *)self replicaIDHelper];
+  [replicaIDHelper setReplicaClockProvider:document2];
 }
 
 @end

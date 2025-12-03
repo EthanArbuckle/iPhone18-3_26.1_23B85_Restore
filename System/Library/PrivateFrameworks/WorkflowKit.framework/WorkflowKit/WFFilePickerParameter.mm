@@ -1,6 +1,6 @@
 @interface WFFilePickerParameter
-- (BOOL)parameterStateIsValid:(id)a3;
-- (WFFilePickerParameter)initWithDefinition:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
+- (WFFilePickerParameter)initWithDefinition:(id)definition;
 - (WFWorkflow)workflow;
 - (id)defaultSerializedRepresentation;
 @end
@@ -16,8 +16,8 @@
 
 - (id)defaultSerializedRepresentation
 {
-  v3 = [(WFParameter *)self definition];
-  v4 = [v3 objectForKey:@"DefaultsToShortcutsFolder"];
+  definition = [(WFParameter *)self definition];
+  v4 = [definition objectForKey:@"DefaultsToShortcutsFolder"];
 
   if (v4)
   {
@@ -40,29 +40,29 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  if (v7)
+  bOOLValue = [v6 BOOLValue];
+  if (bOOLValue)
   {
-    v8 = [(WFFilePickerParameter *)self workflow];
-    v9 = [v8 workflowID];
-    v10 = [WFFileValue defaultValueWithWorkflowID:v9];
+    workflow = [(WFFilePickerParameter *)self workflow];
+    workflowID = [workflow workflowID];
+    v10 = [WFFileValue defaultValueWithWorkflowID:workflowID];
 
     if (v10)
     {
       v11 = [(WFVariableSubstitutableParameterState *)[WFFileParameterState alloc] initWithValue:v10];
-      v12 = [(WFVariableSubstitutableParameterState *)v11 serializedRepresentation];
+      serializedRepresentation = [(WFVariableSubstitutableParameterState *)v11 serializedRepresentation];
 LABEL_21:
-      v22 = v12;
+      v22 = serializedRepresentation;
 
       goto LABEL_23;
     }
   }
 
-  v13 = [(WFParameter *)self definition];
-  v10 = [v13 objectForKey:@"DefaultValue"];
+  definition2 = [(WFParameter *)self definition];
+  v10 = [definition2 objectForKey:@"DefaultValue"];
 
-  v14 = [(WFParameter *)self definition];
-  v15 = [v14 objectForKey:@"AllowsMultipleValues"];
+  definition3 = [(WFParameter *)self definition];
+  v15 = [definition3 objectForKey:@"AllowsMultipleValues"];
 
   if (v15)
   {
@@ -85,11 +85,11 @@ LABEL_21:
 
   v17 = v16;
 
-  v18 = [v17 BOOLValue];
+  bOOLValue2 = [v17 BOOLValue];
   if (v10)
   {
     v19 = 0x1E695DEC8;
-    if (!v18)
+    if (!bOOLValue2)
     {
       v19 = 0x1E695DF20;
     }
@@ -107,7 +107,7 @@ LABEL_21:
       v21 = 0;
     }
 
-    v12 = v21;
+    serializedRepresentation = v21;
     goto LABEL_21;
   }
 
@@ -117,16 +117,16 @@ LABEL_23:
   return v22;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v4 = a3;
-  v5 = [v4 variable];
+  validCopy = valid;
+  variable = [validCopy variable];
 
-  if (v5)
+  if (variable)
   {
     v8.receiver = self;
     v8.super_class = WFFilePickerParameter;
-    v6 = [(WFParameter *)&v8 parameterStateIsValid:v4];
+    v6 = [(WFParameter *)&v8 parameterStateIsValid:validCopy];
   }
 
   else
@@ -137,26 +137,26 @@ LABEL_23:
   return v6;
 }
 
-- (WFFilePickerParameter)initWithDefinition:(id)a3
+- (WFFilePickerParameter)initWithDefinition:(id)definition
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v22.receiver = self;
   v22.super_class = WFFilePickerParameter;
-  v5 = [(WFParameter *)&v22 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v22 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AllowsMultipleValues"];
+    v6 = [definitionCopy objectForKey:@"AllowsMultipleValues"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     v5->_allowsMultipleSelection = [v8 BOOLValue];
 
-    v9 = [v4 objectForKey:@"ShowsFullContextualPath"];
+    v9 = [definitionCopy objectForKey:@"ShowsFullContextualPath"];
     v10 = objc_opt_class();
     v11 = WFEnforceClass_1501(v9, v10);
     v5->_shouldShowFullContextualPath = [v11 BOOLValue];
 
-    v12 = [v4 objectForKey:@"FilePickerSupportedTypes"];
+    v12 = [definitionCopy objectForKey:@"FilePickerSupportedTypes"];
     v13 = objc_opt_class();
     v14 = WFEnforceClass_1501(v12, v13);
     v15 = [v14 if_compactMap:&__block_literal_global_29529];

@@ -1,15 +1,15 @@
 @interface AWDIDSRegistrationRenewCredentialsCompleted
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRenewResult:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRenewResult:(BOOL)result;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSRegistrationRenewCredentialsCompleted
@@ -22,9 +22,9 @@
   [(AWDIDSRegistrationRenewCredentialsCompleted *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRenewResult:(BOOL)a3
+- (void)setHasRenewResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 4;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_renewResult), @"renewResult"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_renewResult), @"renewResult"}];
   }
 
   errorDomain = self->_errorDomain;
   if (errorDomain)
   {
-    [v3 setObject:errorDomain forKey:@"errorDomain"];
+    [dictionary setObject:errorDomain forKey:@"errorDomain"];
   }
 
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_errorCode), @"errorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_errorCode), @"errorCode"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 36) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 36) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 8) = self->_renewResult;
-    *(a3 + 36) |= 4u;
+    *(to + 8) = self->_renewResult;
+    *(to + 36) |= 4u;
   }
 
   if (self->_errorDomain)
   {
-    [a3 setErrorDomain:?];
+    [to setErrorDomain:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_errorCode;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_errorCode;
+    *(to + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -163,7 +163,7 @@
     *(v5 + 36) |= 4u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_errorDomain copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_errorDomain copyWithZone:zone];
   if (*&self->_has)
   {
     *(v6 + 8) = self->_errorCode;
@@ -173,22 +173,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 36);
+    v7 = *(equal + 36);
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 36) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -197,19 +197,19 @@ LABEL_19:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_renewResult != *(a3 + 8))
+      if ((*(equal + 36) & 4) == 0 || self->_renewResult != *(equal + 8))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
       goto LABEL_19;
     }
 
     errorDomain = self->_errorDomain;
-    if (errorDomain | *(a3 + 3))
+    if (errorDomain | *(equal + 3))
     {
       v5 = [(NSString *)errorDomain isEqual:?];
       if (!v5)
@@ -220,10 +220,10 @@ LABEL_19:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 1) == 0;
     if (has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_errorCode != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_errorCode != *(equal + 1))
       {
         goto LABEL_19;
       }
@@ -273,30 +273,30 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_renewResult = *(a3 + 8);
+    self->_renewResult = *(from + 8);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDIDSRegistrationRenewCredentialsCompleted *)self setErrorDomain:?];
   }
 
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_errorCode = *(a3 + 1);
+    self->_errorCode = *(from + 1);
     *&self->_has |= 1u;
   }
 }

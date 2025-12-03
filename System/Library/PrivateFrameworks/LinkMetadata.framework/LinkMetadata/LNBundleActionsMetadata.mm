@@ -1,22 +1,22 @@
 @interface LNBundleActionsMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNBundleActionsMetadata)initWithActions:(id)a3 systemProtocolDefaults:(id)a4;
-- (LNBundleActionsMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNBundleActionsMetadata)initWithActions:(id)actions systemProtocolDefaults:(id)defaults;
+- (LNBundleActionsMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNBundleActionsMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -25,10 +25,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNBundleActionsMetadata *)self actions];
-    v8 = [(LNBundleActionsMetadata *)v6 actions];
-    v9 = v7;
-    v10 = v8;
+    actions = [(LNBundleActionsMetadata *)self actions];
+    actions2 = [(LNBundleActionsMetadata *)v6 actions];
+    v9 = actions;
+    v10 = actions2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -55,10 +55,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
-    v16 = [(LNBundleActionsMetadata *)v6 systemProtocolDefaults];
-    v14 = v15;
-    v17 = v16;
+    systemProtocolDefaults = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
+    systemProtocolDefaults2 = [(LNBundleActionsMetadata *)v6 systemProtocolDefaults];
+    v14 = systemProtocolDefaults;
+    v17 = systemProtocolDefaults2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -85,10 +85,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNBundleActionsMetadata *)self actions];
-  v4 = [v3 hash];
-  v5 = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
-  v6 = [v5 hash];
+  actions = [(LNBundleActionsMetadata *)self actions];
+  v4 = [actions hash];
+  systemProtocolDefaults = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
+  v6 = [systemProtocolDefaults hash];
 
   return v6 ^ v4;
 }
@@ -98,66 +98,66 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNBundleActionsMetadata *)self actions];
-  v7 = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
-  v8 = [v3 stringWithFormat:@"<%@: %p, actions: %@, systemProtocolDefaults: %@>", v5, self, v6, v7];
+  actions = [(LNBundleActionsMetadata *)self actions];
+  systemProtocolDefaults = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
+  v8 = [v3 stringWithFormat:@"<%@: %p, actions: %@, systemProtocolDefaults: %@>", v5, self, actions, systemProtocolDefaults];
 
   return v8;
 }
 
-- (LNBundleActionsMetadata)initWithCoder:(id)a3
+- (LNBundleActionsMetadata)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"actions"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"actions"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v5 decodeObjectOfClasses:v13 forKey:@"systemProtocolDefaults"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"systemProtocolDefaults"];
 
-  v15 = 0;
+  selfCopy = 0;
   if (v9 && v14)
   {
     self = [(LNBundleActionsMetadata *)self initWithActions:v9 systemProtocolDefaults:v14];
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNBundleActionsMetadata *)self actions];
-  [v4 encodeObject:v5 forKey:@"actions"];
+  coderCopy = coder;
+  actions = [(LNBundleActionsMetadata *)self actions];
+  [coderCopy encodeObject:actions forKey:@"actions"];
 
-  v6 = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
-  [v4 encodeObject:v6 forKey:@"systemProtocolDefaults"];
+  systemProtocolDefaults = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
+  [coderCopy encodeObject:systemProtocolDefaults forKey:@"systemProtocolDefaults"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [LNBundleActionsMetadata alloc];
-  v5 = [(LNBundleActionsMetadata *)self actions];
-  v6 = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
-  v7 = [(LNBundleActionsMetadata *)v4 initWithActions:v5 systemProtocolDefaults:v6];
+  actions = [(LNBundleActionsMetadata *)self actions];
+  systemProtocolDefaults = [(LNBundleActionsMetadata *)self systemProtocolDefaults];
+  v7 = [(LNBundleActionsMetadata *)v4 initWithActions:actions systemProtocolDefaults:systemProtocolDefaults];
 
   return v7;
 }
 
-- (LNBundleActionsMetadata)initWithActions:(id)a3 systemProtocolDefaults:(id)a4
+- (LNBundleActionsMetadata)initWithActions:(id)actions systemProtocolDefaults:(id)defaults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  actionsCopy = actions;
+  defaultsCopy = defaults;
+  v10 = defaultsCopy;
+  if (actionsCopy)
   {
-    if (v9)
+    if (defaultsCopy)
     {
       goto LABEL_3;
     }
@@ -165,8 +165,8 @@ LABEL_21:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"LNBundleActionsMetadata.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNBundleActionsMetadata.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
 
     if (v10)
     {
@@ -174,8 +174,8 @@ LABEL_21:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"LNBundleActionsMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"systemProtocolDefaults"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNBundleActionsMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"systemProtocolDefaults"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -184,8 +184,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_actions, a3);
-    objc_storeStrong(&v12->_systemProtocolDefaults, a4);
+    objc_storeStrong(&v11->_actions, actions);
+    objc_storeStrong(&v12->_systemProtocolDefaults, defaults);
     v13 = v12;
   }
 

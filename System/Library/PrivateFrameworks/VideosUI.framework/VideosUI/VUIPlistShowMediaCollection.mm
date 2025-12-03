@@ -1,37 +1,37 @@
 @interface VUIPlistShowMediaCollection
-- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)a3 databaseShow:(id)a4 requestedProperties:(id)a5;
-- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6;
-- (id)_valueForPropertyDescriptor:(id)a3;
+- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)library databaseShow:(id)show requestedProperties:(id)properties;
+- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind;
+- (id)_valueForPropertyDescriptor:(id)descriptor;
 - (id)coverArtImageIdentifier;
-- (id)imageLoadParamsWithImageType:(unint64_t)a3;
+- (id)imageLoadParamsWithImageType:(unint64_t)type;
 - (id)mediaItemCount;
 @end
 
 @implementation VUIPlistShowMediaCollection
 
-- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)a3 databaseShow:(id)a4 requestedProperties:(id)a5
+- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)library databaseShow:(id)show requestedProperties:(id)properties
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  showCopy = show;
+  propertiesCopy = properties;
+  libraryCopy = library;
   v12 = [VUIPlistMediaEntityIdentifier alloc];
-  v13 = [v9 identifier];
-  v14 = [(VUIPlistMediaEntityIdentifier *)v12 initWithIdentifier:v13 type:4];
+  identifier = [showCopy identifier];
+  v14 = [(VUIPlistMediaEntityIdentifier *)v12 initWithIdentifier:identifier type:4];
 
   v15 = VUIPlistShowMediaKind();
   v18.receiver = self;
   v18.super_class = VUIPlistShowMediaCollection;
-  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:v11 identifier:v14 requestedProperties:v10 kind:v15];
+  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:libraryCopy identifier:v14 requestedProperties:propertiesCopy kind:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_databaseShow, a4);
+    objc_storeStrong(&v16->_databaseShow, show);
   }
 
   return v16;
 }
 
-- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6
+- (VUIPlistShowMediaCollection)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind
 {
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D940];
@@ -43,26 +43,26 @@
 
 - (id)coverArtImageIdentifier
 {
-  v2 = [(VUIPlistShowMediaCollection *)self databaseShow];
-  v3 = [v2 coverArtURL];
-  v4 = [v3 absoluteString];
+  databaseShow = [(VUIPlistShowMediaCollection *)self databaseShow];
+  coverArtURL = [databaseShow coverArtURL];
+  absoluteString = [coverArtURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
-- (id)_valueForPropertyDescriptor:(id)a3
+- (id)_valueForPropertyDescriptor:(id)descriptor
 {
-  v4 = [a3 sourcePropertyNames];
-  v5 = [v4 allObjects];
+  sourcePropertyNames = [descriptor sourcePropertyNames];
+  allObjects = [sourcePropertyNames allObjects];
 
-  if ([v5 count] == 1)
+  if ([allObjects count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [(VUIPlistShowMediaCollection *)self databaseShow];
-    NSSelectorFromString(v6);
+    firstObject = [allObjects firstObject];
+    databaseShow = [(VUIPlistShowMediaCollection *)self databaseShow];
+    NSSelectorFromString(firstObject);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 valueForKey:v6];
+      v8 = [databaseShow valueForKey:firstObject];
     }
 
     else
@@ -86,10 +86,10 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(VUIPlistShowMediaCollection *)self databaseShow];
-  v3 = [v2 seasons];
+  databaseShow = [(VUIPlistShowMediaCollection *)self databaseShow];
+  seasons = [databaseShow seasons];
 
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [seasons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -101,14 +101,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(seasons);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) episodes];
-        v6 += [v9 count];
+        episodes = [*(*(&v12 + 1) + 8 * i) episodes];
+        v6 += [episodes count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [seasons countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -124,20 +124,20 @@
   return v10;
 }
 
-- (id)imageLoadParamsWithImageType:(unint64_t)a3
+- (id)imageLoadParamsWithImageType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(VUIPlistShowMediaCollection *)self databaseShow];
-    v6 = [v5 coverArtURL];
+    databaseShow = [(VUIPlistShowMediaCollection *)self databaseShow];
+    coverArtURL = [databaseShow coverArtURL];
 
-    v7 = [(VUIPlistShowMediaCollection *)self coverArtImageIdentifier];
-    v3 = [[VUIPlistMediaEntityImageLoadParams alloc] initWithImageURL:v6 baseImageIdentifier:v7 imageType:0];
+    coverArtImageIdentifier = [(VUIPlistShowMediaCollection *)self coverArtImageIdentifier];
+    v3 = [[VUIPlistMediaEntityImageLoadParams alloc] initWithImageURL:coverArtURL baseImageIdentifier:coverArtImageIdentifier imageType:0];
   }
 
   return v3;

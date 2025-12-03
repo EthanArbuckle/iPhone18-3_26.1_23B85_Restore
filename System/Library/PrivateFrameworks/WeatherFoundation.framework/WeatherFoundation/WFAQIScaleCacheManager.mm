@@ -3,11 +3,11 @@
 - (WFAQIScaleCacheManager)init;
 - (id)_persistedInfoFromDisk;
 - (id)_persistedInfoURL;
-- (id)cachedScaleFromIdentifier:(id)a3;
+- (id)cachedScaleFromIdentifier:(id)identifier;
 - (void)_persistInfoToDisk;
 - (void)_persistedInfoFromDisk;
 - (void)clearCache;
-- (void)updateCacheWithScale:(id)a3 identifier:(id)a4;
+- (void)updateCacheWithScale:(id)scale identifier:(id)identifier;
 @end
 
 @implementation WFAQIScaleCacheManager
@@ -42,8 +42,8 @@ uint64_t __39__WFAQIScaleCacheManager_sharedManager__block_invoke()
   if (v2)
   {
     v2->_dataSynchronizationLock._os_unfair_lock_opaque = 0;
-    v4 = [(WFAQIScaleCacheManager *)v2 _persistedInfoFromDisk];
-    v5 = [v4 mutableCopy];
+    _persistedInfoFromDisk = [(WFAQIScaleCacheManager *)v2 _persistedInfoFromDisk];
+    v5 = [_persistedInfoFromDisk mutableCopy];
     aqiScaleCache = v3->_aqiScaleCache;
     v3->_aqiScaleCache = v5;
 
@@ -55,21 +55,21 @@ uint64_t __39__WFAQIScaleCacheManager_sharedManager__block_invoke()
         [WFAQIScaleCacheManager init];
       }
 
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v9 = v3->_aqiScaleCache;
-      v3->_aqiScaleCache = v8;
+      v3->_aqiScaleCache = dictionary;
     }
   }
 
   return v3;
 }
 
-- (void)updateCacheWithScale:(id)a3 identifier:(id)a4
+- (void)updateCacheWithScale:(id)scale identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  scaleCopy = scale;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (!scaleCopy)
   {
     v10 = WFLogForCategory(5uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -80,7 +80,7 @@ uint64_t __39__WFAQIScaleCacheManager_sharedManager__block_invoke()
     goto LABEL_8;
   }
 
-  if (!v7)
+  if (!identifierCopy)
   {
     v10 = WFLogForCategory(5uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -94,22 +94,22 @@ LABEL_8:
   }
 
   os_unfair_lock_lock_with_options();
-  v9 = [(WFAQIScaleCacheManager *)self aqiScaleCache];
-  [v9 setObject:v6 forKeyedSubscript:v8];
+  aqiScaleCache = [(WFAQIScaleCacheManager *)self aqiScaleCache];
+  [aqiScaleCache setObject:scaleCopy forKeyedSubscript:v8];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
   [(WFAQIScaleCacheManager *)self _persistInfoToDisk];
 LABEL_9:
 }
 
-- (id)cachedScaleFromIdentifier:(id)a3
+- (id)cachedScaleFromIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(WFAQIScaleCacheManager *)self aqiScaleCache];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    aqiScaleCache = [(WFAQIScaleCacheManager *)self aqiScaleCache];
+    v6 = [aqiScaleCache objectForKeyedSubscript:identifierCopy];
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
   }
@@ -134,35 +134,35 @@ LABEL_9:
   [v3 removeObjectForKey:@"aqiRemoteScales"];
 
   os_unfair_lock_lock_with_options();
-  v4 = [(WFAQIScaleCacheManager *)self aqiScaleCache];
-  [v4 removeAllObjects];
+  aqiScaleCache = [(WFAQIScaleCacheManager *)self aqiScaleCache];
+  [aqiScaleCache removeAllObjects];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [(WFAQIScaleCacheManager *)self _persistedInfoURL];
-  [v6 removeItemAtURL:v5 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _persistedInfoURL = [(WFAQIScaleCacheManager *)self _persistedInfoURL];
+  [defaultManager removeItemAtURL:_persistedInfoURL error:0];
 }
 
 - (void)_persistInfoToDisk
 {
   os_unfair_lock_lock_with_options();
   v3 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v4 = [(WFAQIScaleCacheManager *)self aqiScaleCache];
-  v8 = [v3 initWithDictionary:v4 copyItems:1];
+  aqiScaleCache = [(WFAQIScaleCacheManager *)self aqiScaleCache];
+  v8 = [v3 initWithDictionary:aqiScaleCache copyItems:1];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
   v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v5 encodeObject:v8 forKey:@"scalesCache"];
   [v5 finishEncoding];
-  v6 = [v5 encodedData];
-  v7 = [(WFAQIScaleCacheManager *)self _persistedInfoURL];
-  [v6 writeToURL:v7 atomically:1];
+  encodedData = [v5 encodedData];
+  _persistedInfoURL = [(WFAQIScaleCacheManager *)self _persistedInfoURL];
+  [encodedData writeToURL:_persistedInfoURL atomically:1];
 }
 
 - (id)_persistedInfoURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 URLForDirectory:9 inDomain:1 appropriateForURL:0 create:1 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager URLForDirectory:9 inDomain:1 appropriateForURL:0 create:1 error:0];
 
   v4 = [v3 URLByAppendingPathComponent:@"serverDrivenAQIScalesCacheFolder" isDirectory:0];
 
@@ -172,8 +172,8 @@ LABEL_9:
 - (id)_persistedInfoFromDisk
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [(WFAQIScaleCacheManager *)self _persistedInfoURL];
-  v5 = [v3 dataWithContentsOfURL:v4];
+  _persistedInfoURL = [(WFAQIScaleCacheManager *)self _persistedInfoURL];
+  v5 = [v3 dataWithContentsOfURL:_persistedInfoURL];
 
   if (v5)
   {
@@ -224,7 +224,7 @@ LABEL_9:
 - (void)_persistedInfoFromDisk
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = [a1 _persistedInfoURL];
+  _persistedInfoURL = [self _persistedInfoURL];
   OUTLINED_FUNCTION_0_3();
   _os_log_error_impl(&dword_272B94000, a3, OS_LOG_TYPE_ERROR, "Failed to read: %{public}@ -- %{public}@", v5, 0x16u);
 }

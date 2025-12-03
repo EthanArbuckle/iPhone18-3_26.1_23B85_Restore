@@ -1,12 +1,12 @@
 @interface UIDictationConnectionPreferences
 + (id)sharedInstance;
-- (BOOL)isOnDeviceDictationSupportAvailableForLanguage:(id)a3;
-- (BOOL)isOnDeviceDictationSupportMissingAssetForLanguage:(id)a3;
-- (BOOL)isOnDeviceEmojiRecognitionSupportAvailableForLanguage:(id)a3;
+- (BOOL)isOnDeviceDictationSupportAvailableForLanguage:(id)language;
+- (BOOL)isOnDeviceDictationSupportMissingAssetForLanguage:(id)language;
+- (BOOL)isOnDeviceEmojiRecognitionSupportAvailableForLanguage:(id)language;
 - (BOOL)isSmartLanguageSelectionEnabled;
-- (id)getOfflineDictationStatusForLanguage:(id)a3;
+- (id)getOfflineDictationStatusForLanguage:(id)language;
 - (id)initSingleton;
-- (void)afPreferencesChanged:(id)a3;
+- (void)afPreferencesChanged:(id)changed;
 @end
 
 @implementation UIDictationConnectionPreferences
@@ -46,11 +46,11 @@ void __50__UIDictationConnectionPreferences_sharedInstance__block_invoke()
 
   v4 = v3;
   _Block_object_dispose(&v21, 8);
-  v5 = [v3 sharedPreferences];
+  sharedPreferences = [v3 sharedPreferences];
   afPreferences = v2->_afPreferences;
-  v2->_afPreferences = v5;
+  v2->_afPreferences = sharedPreferences;
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -73,7 +73,7 @@ void __50__UIDictationConnectionPreferences_sharedInstance__block_invoke()
   _Block_object_dispose(&v21, 8);
   if (v8)
   {
-    [v7 addObserver:v2 selector:sel_afPreferencesChanged_ name:*v8 object:0];
+    [defaultCenter addObserver:v2 selector:sel_afPreferencesChanged_ name:*v8 object:0];
 
     v11 = v2;
 LABEL_8:
@@ -81,9 +81,9 @@ LABEL_8:
     return v2;
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSNotificationName getAFPreferencesDidChangeNotification(void)"];
-  [v13 handleFailureInFunction:v14 file:@"UIDictationConnection.m" lineNumber:66 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v14 file:@"UIDictationConnection.m" lineNumber:66 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -101,7 +101,7 @@ LABEL_8:
   return v3;
 }
 
-- (void)afPreferencesChanged:(id)a3
+- (void)afPreferencesChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -117,17 +117,17 @@ void __57__UIDictationConnectionPreferences_afPreferencesChanged___block_invoke(
   [v2 postNotificationName:@"UIDictationPreferencesDidChange" object:*(a1 + 32)];
 }
 
-- (id)getOfflineDictationStatusForLanguage:(id)a3
+- (id)getOfflineDictationStatusForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(UIDictationConnectionPreferences *)self afPreferences];
-  v6 = [v5 offlineDictationStatus];
+  languageCopy = language;
+  afPreferences = [(UIDictationConnectionPreferences *)self afPreferences];
+  offlineDictationStatus = [afPreferences offlineDictationStatus];
 
-  v7 = [UIDictationUtilities _remapDictationLocaleFromLanguage:v4];
+  v7 = [UIDictationUtilities _remapDictationLocaleFromLanguage:languageCopy];
 
-  v8 = [v7 languageIdentifier];
+  languageIdentifier = [v7 languageIdentifier];
 
-  v9 = [v6 objectForKeyedSubscript:v8];
+  v9 = [offlineDictationStatus objectForKeyedSubscript:languageIdentifier];
 
   return v9;
 }
@@ -145,9 +145,9 @@ void __57__UIDictationConnectionPreferences_afPreferencesChanged___block_invoke(
   return v3;
 }
 
-- (BOOL)isOnDeviceDictationSupportAvailableForLanguage:(id)a3
+- (BOOL)isOnDeviceDictationSupportAvailableForLanguage:(id)language
 {
-  v3 = [(UIDictationConnectionPreferences *)self getOfflineDictationStatusForLanguage:a3];
+  v3 = [(UIDictationConnectionPreferences *)self getOfflineDictationStatusForLanguage:language];
   if (v3)
   {
     v4 = getAFOfflineDictationStatusHighQualityKey();
@@ -159,26 +159,26 @@ void __57__UIDictationConnectionPreferences_afPreferencesChanged___block_invoke(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 BOOLValue];
+      bOOLValue2 = [v7 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue2 = 0;
     }
 
-    v9 = v8 & v10;
+    v9 = bOOLValue & bOOLValue2;
   }
 
   else
@@ -189,9 +189,9 @@ void __57__UIDictationConnectionPreferences_afPreferencesChanged___block_invoke(
   return v9;
 }
 
-- (BOOL)isOnDeviceDictationSupportMissingAssetForLanguage:(id)a3
+- (BOOL)isOnDeviceDictationSupportMissingAssetForLanguage:(id)language
 {
-  v3 = [(UIDictationConnectionPreferences *)self getOfflineDictationStatusForLanguage:a3];
+  v3 = [(UIDictationConnectionPreferences *)self getOfflineDictationStatusForLanguage:language];
   if (v3)
   {
     v4 = getAFOfflineDictationStatusHighQualityKey();
@@ -203,12 +203,12 @@ void __57__UIDictationConnectionPreferences_afPreferencesChanged___block_invoke(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
 
     objc_opt_class();
@@ -222,7 +222,7 @@ void __57__UIDictationConnectionPreferences_afPreferencesChanged___block_invoke(
       LOBYTE(v10) = 1;
     }
 
-    v9 = v8 & v10;
+    v9 = bOOLValue & v10;
   }
 
   else
@@ -233,10 +233,10 @@ void __57__UIDictationConnectionPreferences_afPreferencesChanged___block_invoke(
   return v9;
 }
 
-- (BOOL)isOnDeviceEmojiRecognitionSupportAvailableForLanguage:(id)a3
+- (BOOL)isOnDeviceEmojiRecognitionSupportAvailableForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(UIDictationConnectionPreferences *)self getOfflineDictationStatusForLanguage:v4];
+  languageCopy = language;
+  v5 = [(UIDictationConnectionPreferences *)self getOfflineDictationStatusForLanguage:languageCopy];
   if (!v5)
   {
     v12 = 0;
@@ -268,33 +268,33 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
     else
     {
-      v11 = 0;
+      bOOLValue = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v7 BOOLValue];
+      bOOLValue2 = [v7 BOOLValue];
     }
 
     else
     {
-      v13 = 0;
+      bOOLValue2 = 0;
     }
 
-    v12 = v11 & v13;
+    v12 = bOOLValue & bOOLValue2;
 
     goto LABEL_13;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getAFOfflineDictationStatusEmojiRecognitionKey(void)"];
-  [v15 handleFailureInFunction:v16 file:@"UIDictationConnection.m" lineNumber:70 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v16 file:@"UIDictationConnection.m" lineNumber:70 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

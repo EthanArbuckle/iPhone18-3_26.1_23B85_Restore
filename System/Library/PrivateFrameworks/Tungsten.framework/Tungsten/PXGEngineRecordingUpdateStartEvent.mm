@@ -1,11 +1,11 @@
 @interface PXGEngineRecordingUpdateStartEvent
-+ (id)eventWithTargetTimestamp:(double)a3 needsUpdate:(unint64_t)a4 pendingUpdateEntities:(unint64_t)a5;
-- (PXGEngineRecordingUpdateStartEvent)initWithTargetTimestamp:(double)a3 needsUpdate:(unint64_t)a4 pendingUpdateEntities:(unint64_t)a5;
++ (id)eventWithTargetTimestamp:(double)timestamp needsUpdate:(unint64_t)update pendingUpdateEntities:(unint64_t)entities;
+- (PXGEngineRecordingUpdateStartEvent)initWithTargetTimestamp:(double)timestamp needsUpdate:(unint64_t)update pendingUpdateEntities:(unint64_t)entities;
 @end
 
 @implementation PXGEngineRecordingUpdateStartEvent
 
-- (PXGEngineRecordingUpdateStartEvent)initWithTargetTimestamp:(double)a3 needsUpdate:(unint64_t)a4 pendingUpdateEntities:(unint64_t)a5
+- (PXGEngineRecordingUpdateStartEvent)initWithTargetTimestamp:(double)timestamp needsUpdate:(unint64_t)update pendingUpdateEntities:(unint64_t)entities
 {
   v12.receiver = self;
   v12.super_class = PXGEngineRecordingUpdateStartEvent;
@@ -16,17 +16,17 @@
     serializable = v8->_serializable;
     v8->_serializable = v9;
 
-    [(PXGEngineRecordingUpdateStartEventSerializable *)v8->_serializable setTargetTimestamp:a3];
-    [(PXGEngineRecordingUpdateStartEventSerializable *)v8->_serializable setNeedsUpdate:a4];
-    [(PXGEngineRecordingUpdateStartEventSerializable *)v8->_serializable setPendingUpdateEntities:a5];
+    [(PXGEngineRecordingUpdateStartEventSerializable *)v8->_serializable setTargetTimestamp:timestamp];
+    [(PXGEngineRecordingUpdateStartEventSerializable *)v8->_serializable setNeedsUpdate:update];
+    [(PXGEngineRecordingUpdateStartEventSerializable *)v8->_serializable setPendingUpdateEntities:entities];
   }
 
   return v8;
 }
 
-+ (id)eventWithTargetTimestamp:(double)a3 needsUpdate:(unint64_t)a4 pendingUpdateEntities:(unint64_t)a5
++ (id)eventWithTargetTimestamp:(double)timestamp needsUpdate:(unint64_t)update pendingUpdateEntities:(unint64_t)entities
 {
-  v5 = [[PXGEngineRecordingUpdateStartEvent alloc] initWithTargetTimestamp:a4 needsUpdate:a5 pendingUpdateEntities:a3];
+  v5 = [[PXGEngineRecordingUpdateStartEvent alloc] initWithTargetTimestamp:update needsUpdate:entities pendingUpdateEntities:timestamp];
 
   return v5;
 }

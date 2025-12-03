@@ -1,18 +1,18 @@
 @interface _UIViewServiceReplyControlProxy
-+ (id)proxyWithTarget:(id)a3;
++ (id)proxyWithTarget:(id)target;
 - (id)_awaitingReply;
 - (id)_deliveringRepliesAsynchronously;
 @end
 
 @implementation _UIViewServiceReplyControlProxy
 
-+ (id)proxyWithTarget:(id)a3
++ (id)proxyWithTarget:(id)target
 {
-  v3 = a3;
+  targetCopy = target;
   v4 = objc_alloc_init(_UIViewServiceReplyControlProxy);
   target = v4->_target;
-  v4->_target = v3;
-  v6 = v3;
+  v4->_target = targetCopy;
+  v6 = targetCopy;
 
   v7 = objc_alloc_init(MEMORY[0x1E696AD10]);
   lock = v4->_lock;

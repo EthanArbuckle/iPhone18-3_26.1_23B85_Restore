@@ -1,24 +1,24 @@
 @interface ASMailboxSearchPredicate
-- (ASMailboxSearchPredicate)initWithPredicate:(id)a3;
+- (ASMailboxSearchPredicate)initWithPredicate:(id)predicate;
 - (BOOL)isValid;
 - (id)getString;
-- (id)getStringForComparisonPredicate:(id)a3;
-- (id)getStringForCompoundPredicate:(id)a3;
-- (id)getStringForPredicate:(id)a3;
+- (id)getStringForComparisonPredicate:(id)predicate;
+- (id)getStringForCompoundPredicate:(id)predicate;
+- (id)getStringForPredicate:(id)predicate;
 @end
 
 @implementation ASMailboxSearchPredicate
 
-- (ASMailboxSearchPredicate)initWithPredicate:(id)a3
+- (ASMailboxSearchPredicate)initWithPredicate:(id)predicate
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v9.receiver = self;
   v9.super_class = ASMailboxSearchPredicate;
   v6 = [(ASMailboxSearchPredicate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_predicate, a3);
+    objc_storeStrong(&v6->_predicate, predicate);
   }
 
   return v7;
@@ -26,30 +26,30 @@
 
 - (BOOL)isValid
 {
-  v2 = [(ASMailboxSearchPredicate *)self getString];
-  v3 = v2 != 0;
+  getString = [(ASMailboxSearchPredicate *)self getString];
+  v3 = getString != 0;
 
   return v3;
 }
 
-- (id)getStringForComparisonPredicate:(id)a3
+- (id)getStringForComparisonPredicate:(id)predicate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 predicateOperatorType];
-  v5 = [v3 leftExpression];
-  v6 = [v3 rightExpression];
-  if ([v5 expressionType] || objc_msgSend(v6, "expressionType"))
+  predicateCopy = predicate;
+  predicateOperatorType = [predicateCopy predicateOperatorType];
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
+  if ([leftExpression expressionType] || objc_msgSend(rightExpression, "expressionType"))
   {
     v7 = 0;
     goto LABEL_4;
   }
 
-  v10 = [v5 constantValue];
-  v11 = [v6 constantValue];
-  if (v4 >= 5)
+  constantValue = [leftExpression constantValue];
+  constantValue2 = [rightExpression constantValue];
+  if (predicateOperatorType >= 5)
   {
-    if (v4 == 99)
+    if (predicateOperatorType == 99)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -57,14 +57,14 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v10;
+          v12 = constantValue;
           if ([v12 isEqualToString:*MEMORY[0x277D03F48]])
           {
             v21 = objc_opt_new();
             v7 = v21;
 LABEL_62:
             [v21 appendString:@""];
-            [v7 appendString:v11];
+            [v7 appendString:constantValue2];
             v15 = v7;
             v14 = @"";
 LABEL_63:
@@ -113,7 +113,7 @@ LABEL_61:
       if (os_log_type_enabled(v12, v22))
       {
         v26 = 134217984;
-        v27 = v4;
+        v27 = predicateOperatorType;
         v20 = "Predicate operator type is not supported. Operator type: %lu";
         v23 = v12;
         v24 = v22;
@@ -137,7 +137,7 @@ LABEL_51:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v10;
+        v12 = constantValue;
         if (([v12 isEqualToString:*MEMORY[0x277D03F58]]& 1) == 0 && ![v12 isEqualToString:*MEMORY[0x277D03F60]])
         {
           v16 = DALoggingwithCategory();
@@ -153,12 +153,12 @@ LABEL_51:
           goto LABEL_50;
         }
 
-        if (v4 == 4)
+        if (predicateOperatorType == 4)
         {
           v7 = objc_opt_new();
           [v7 appendString:v12];
           [v7 appendString:@":"];
-          if ([v11 BOOLValue])
+          if ([constantValue2 BOOLValue])
           {
             v14 = @"yes";
           }
@@ -194,7 +194,7 @@ LABEL_49:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v10;
+        v12 = constantValue;
         if (![v12 isEqualToString:*MEMORY[0x277D03F30]])
         {
           v16 = DALoggingwithCategory();
@@ -210,7 +210,7 @@ LABEL_49:
           goto LABEL_49;
         }
 
-        if (v4 != 4)
+        if (predicateOperatorType != 4)
         {
           v16 = DALoggingwithCategory();
           v17 = *(MEMORY[0x277D03988] + 3);
@@ -245,7 +245,7 @@ LABEL_39:
     goto LABEL_51;
   }
 
-  v12 = v10;
+  v12 = constantValue;
   if (([v12 isEqualToString:*MEMORY[0x277D03F40]]& 1) == 0 && ![v12 isEqualToString:*MEMORY[0x277D03F38]])
   {
     v16 = DALoggingwithCategory();
@@ -265,9 +265,9 @@ LABEL_50:
 
   v7 = objc_opt_new();
   [v7 appendString:v12];
-  [v7 appendString:off_278FC7ED8[v4]];
-  v13 = [v11 activeSyncString];
-  [v7 appendString:v13];
+  [v7 appendString:off_278FC7ED8[predicateOperatorType]];
+  activeSyncString = [constantValue2 activeSyncString];
+  [v7 appendString:activeSyncString];
 
 LABEL_52:
 LABEL_4:
@@ -277,37 +277,37 @@ LABEL_4:
   return v7;
 }
 
-- (id)getStringForCompoundPredicate:(id)a3
+- (id)getStringForCompoundPredicate:(id)predicate
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 compoundPredicateType];
-  if (v5 > 2)
+  predicateCopy = predicate;
+  compoundPredicateType = [predicateCopy compoundPredicateType];
+  if (compoundPredicateType > 2)
   {
     v29 = 0;
   }
 
   else
   {
-    v29 = off_278FC7F00[v5];
+    v29 = off_278FC7F00[compoundPredicateType];
   }
 
-  if ([v4 compoundPredicateType])
+  if ([predicateCopy compoundPredicateType])
   {
     v6 = objc_opt_new();
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v7 = [v4 subpredicates];
-    v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    subpredicates = [predicateCopy subpredicates];
+    v8 = [subpredicates countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (!v8)
     {
       goto LABEL_33;
     }
 
     v9 = v8;
-    v28 = v4;
+    v28 = predicateCopy;
     v10 = *v31;
     v11 = 1;
 LABEL_7:
@@ -316,7 +316,7 @@ LABEL_7:
     {
       if (*v31 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(subpredicates);
       }
 
       v13 = *(*(&v30 + 1) + 8 * v12);
@@ -351,7 +351,7 @@ LABEL_20:
       v11 = 0;
       if (v9 == ++v12)
       {
-        v9 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v9 = [subpredicates countByEnumeratingWithState:&v30 objects:v34 count:16];
         v11 = 0;
         if (v9)
         {
@@ -359,7 +359,7 @@ LABEL_20:
         }
 
 LABEL_24:
-        v4 = v28;
+        predicateCopy = v28;
 LABEL_33:
 
         goto LABEL_34;
@@ -389,15 +389,15 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  v19 = [v4 subpredicates];
-  v20 = [v19 count];
+  subpredicates2 = [predicateCopy subpredicates];
+  v20 = [subpredicates2 count];
 
   if (v20 == 1)
   {
-    v21 = [v4 subpredicates];
-    v7 = [v21 firstObject];
+    subpredicates3 = [predicateCopy subpredicates];
+    subpredicates = [subpredicates3 firstObject];
 
-    v22 = [(ASMailboxSearchPredicate *)self getStringForPredicate:v7];
+    v22 = [(ASMailboxSearchPredicate *)self getStringForPredicate:subpredicates];
     if (v22)
     {
       v6 = [MEMORY[0x277CCAB68] stringWithString:v29];
@@ -417,9 +417,9 @@ LABEL_23:
   v24 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v23, v24))
   {
-    v25 = [v4 subpredicates];
+    subpredicates4 = [predicateCopy subpredicates];
     *buf = 134217984;
-    v36 = [v25 count];
+    v36 = [subpredicates4 count];
     _os_log_impl(&dword_24A0AC000, v23, v24, "Invalid NOT predicate, because it contains %lu subpredicates.", buf, 0xCu);
   }
 
@@ -431,25 +431,25 @@ LABEL_34:
   return v6;
 }
 
-- (id)getStringForPredicate:(id)a3
+- (id)getStringForPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ASMailboxSearchPredicate *)self getStringForComparisonPredicate:v4];
+    v5 = [(ASMailboxSearchPredicate *)self getStringForComparisonPredicate:predicateCopy];
 LABEL_5:
     v8 = v5;
     goto LABEL_7;
   }
 
-  v6 = [(ASMailboxSearchPredicate *)self predicate];
+  predicate = [(ASMailboxSearchPredicate *)self predicate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(ASMailboxSearchPredicate *)self getStringForCompoundPredicate:v4];
+    v5 = [(ASMailboxSearchPredicate *)self getStringForCompoundPredicate:predicateCopy];
     goto LABEL_5;
   }
 
@@ -461,8 +461,8 @@ LABEL_7:
 
 - (id)getString
 {
-  v3 = [(ASMailboxSearchPredicate *)self predicate];
-  v4 = [(ASMailboxSearchPredicate *)self getStringForPredicate:v3];
+  predicate = [(ASMailboxSearchPredicate *)self predicate];
+  v4 = [(ASMailboxSearchPredicate *)self getStringForPredicate:predicate];
 
   return v4;
 }

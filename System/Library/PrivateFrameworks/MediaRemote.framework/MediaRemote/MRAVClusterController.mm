@@ -6,14 +6,14 @@
 - (unint64_t)clusterStatus;
 - (unint64_t)onQueue_computeClusterStatus;
 - (unsigned)clusterType;
-- (void)deviceInfoDidChangeNotification:(id)a3;
-- (void)getClusterLeaderEndpoint:(id)a3;
-- (void)getClusterStatus:(id)a3;
-- (void)onQueue_notifyObserversWithClusterStatus:(unint64_t)a3;
-- (void)onQueue_notifyObserversWithClusterType:(unsigned int)a3;
-- (void)onQueue_setClusterStatus:(unint64_t)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)deviceInfoDidChangeNotification:(id)notification;
+- (void)getClusterLeaderEndpoint:(id)endpoint;
+- (void)getClusterStatus:(id)status;
+- (void)onQueue_notifyObserversWithClusterStatus:(unint64_t)status;
+- (void)onQueue_notifyObserversWithClusterType:(unsigned int)type;
+- (void)onQueue_setClusterStatus:(unint64_t)status;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 - (void)updateClusterInformation;
 @end
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __41__MRAVClusterController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -54,9 +54,9 @@ void __41__MRAVClusterController_sharedController__block_invoke(uint64_t a1)
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     v6 = [v3 stringWithFormat:@"%@-callback", v5];
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     callbackQueue = v2->_callbackQueue;
     v2->_callbackQueue = v9;
 
@@ -64,15 +64,15 @@ void __41__MRAVClusterController_sharedController__block_invoke(uint64_t a1)
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = [v11 stringWithFormat:@"%@-serial", v13];
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String2, v16);
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v17;
 
-    v19 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v19;
+    v2->_observers = weakObjectsHashTable;
 
     if (+[MRAVClusterController canBeClusterMember])
     {
@@ -81,8 +81,8 @@ void __41__MRAVClusterController_sharedController__block_invoke(uint64_t a1)
       v2->_localPairingIdentity = v21;
     }
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v2 selector:sel_deviceInfoDidChangeNotification_ name:@"kMRDeviceInfoDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_deviceInfoDidChangeNotification_ name:@"kMRDeviceInfoDidChangeNotification" object:0];
 
     [(MRAVClusterController *)v2 updateClusterInformation];
   }
@@ -97,13 +97,13 @@ void __41__MRAVClusterController_sharedController__block_invoke(uint64_t a1)
     v3 = +[MROrigin localOrigin];
     v4 = [MRDeviceInfoRequest cachedDeviceInfoForOrigin:v3];
 
-    v5 = [v4 clusterID];
-    v6 = [v4 preferredClusterLeaderID];
+    clusterID = [v4 clusterID];
+    preferredClusterLeaderID = [v4 preferredClusterLeaderID];
     [v4 clusterType];
     serialQueue = self->_serialQueue;
-    v10 = v5;
-    v8 = v6;
-    v9 = v5;
+    v10 = clusterID;
+    v8 = preferredClusterLeaderID;
+    v9 = clusterID;
     msv_dispatch_sync_on_queue();
   }
 }
@@ -144,31 +144,31 @@ void __41__MRAVClusterController_sharedController__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__MRAVClusterController_registerObserver___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__MRAVClusterController_unregisterObserver___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -232,19 +232,19 @@ void __35__MRAVClusterController_clusterUID__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)getClusterStatus:(id)a3
+- (void)getClusterStatus:(id)status
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(MRAVClusterController *)self clusterStatus]);
+  statusCopy = status;
+  (*(status + 2))(statusCopy, [(MRAVClusterController *)self clusterStatus]);
 }
 
-- (void)getClusterLeaderEndpoint:(id)a3
+- (void)getClusterLeaderEndpoint:(id)endpoint
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endpointCopy = endpoint;
   if (+[MRAVClusterController canBeClusterMember]&& [(MRAVClusterController *)self clusterStatus]== 2)
   {
-    v5 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v6 = dispatch_get_global_queue(0, 0);
     v28 = 0;
     v29 = &v28;
@@ -260,11 +260,11 @@ void __35__MRAVClusterController_clusterUID__block_invoke(uint64_t a1)
     block[4] = self;
     block[5] = &v28;
     dispatch_sync(serialQueue, block);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Discovering cluster leader with UID: %@", v29[5]];
-    v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"getClusterLeaderEndpoint", v9];
+    v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"getClusterLeaderEndpoint", uUIDString];
     v12 = v11;
     if (v10)
     {
@@ -286,11 +286,11 @@ void __35__MRAVClusterController_clusterUID__block_invoke(uint64_t a1)
     v20[2] = __50__MRAVClusterController_getClusterLeaderEndpoint___block_invoke_32;
     v20[3] = &unk_1E769F448;
     v21 = @"getClusterLeaderEndpoint";
-    v16 = v9;
+    v16 = uUIDString;
     v22 = v16;
-    v17 = v5;
+    v17 = date;
     v23 = v17;
-    v25 = v4;
+    v25 = endpointCopy;
     v26 = &v28;
     v18 = v10;
     v24 = v18;
@@ -301,7 +301,7 @@ void __35__MRAVClusterController_clusterUID__block_invoke(uint64_t a1)
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(endpointCopy + 2))(endpointCopy, 0);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -565,10 +565,10 @@ LABEL_37:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deviceInfoDidChangeNotification:(id)a3
+- (void)deviceInfoDidChangeNotification:(id)notification
 {
-  v5 = [a3 userInfo];
-  v4 = MRGetOriginFromUserInfo(v5);
+  userInfo = [notification userInfo];
+  v4 = MRGetOriginFromUserInfo(userInfo);
   if ([v4 isLocal])
   {
     [(MRAVClusterController *)self updateClusterInformation];
@@ -633,30 +633,30 @@ void __49__MRAVClusterController_updateClusterInformation__block_invoke(uint64_t
   return 2;
 }
 
-- (void)onQueue_setClusterStatus:(unint64_t)a3
+- (void)onQueue_setClusterStatus:(unint64_t)status
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (self->_clusterStatus != a3)
+  if (self->_clusterStatus != status)
   {
-    self->_clusterStatus = a3;
+    self->_clusterStatus = status;
 
-    [(MRAVClusterController *)self onQueue_notifyObserversWithClusterStatus:a3];
+    [(MRAVClusterController *)self onQueue_notifyObserversWithClusterStatus:status];
   }
 }
 
-- (void)onQueue_notifyObserversWithClusterStatus:(unint64_t)a3
+- (void)onQueue_notifyObserversWithClusterStatus:(unint64_t)status
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__MRAVClusterController_onQueue_notifyObserversWithClusterStatus___block_invoke;
   block[3] = &unk_1E769F470;
-  v9 = v5;
-  v10 = self;
-  v11 = a3;
-  v7 = v5;
+  v9 = allObjects;
+  selfCopy = self;
+  statusCopy = status;
+  v7 = allObjects;
   dispatch_async(callbackQueue, block);
 }
 
@@ -702,19 +702,19 @@ void __66__MRAVClusterController_onQueue_notifyObserversWithClusterStatus___bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onQueue_notifyObserversWithClusterType:(unsigned int)a3
+- (void)onQueue_notifyObserversWithClusterType:(unsigned int)type
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__MRAVClusterController_onQueue_notifyObserversWithClusterType___block_invoke;
   block[3] = &unk_1E769BCF8;
-  v9 = v5;
-  v10 = self;
-  v11 = a3;
-  v7 = v5;
+  v9 = allObjects;
+  selfCopy = self;
+  typeCopy = type;
+  v7 = allObjects;
   dispatch_async(callbackQueue, block);
 }
 

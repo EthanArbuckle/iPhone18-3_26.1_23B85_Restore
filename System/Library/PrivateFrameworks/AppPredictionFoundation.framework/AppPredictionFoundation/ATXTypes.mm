@@ -2,88 +2,88 @@
 + (id)consumerMapping;
 + (id)consumerSubtypeMapping;
 + (id)inverseConsumerSubtypeMapping;
-+ (id)safeStringForConsumerSubtype:(unsigned __int8)a3;
-+ (id)stringForConsumerSubtype:(unsigned __int8)a3;
-+ (id)stringForConsumerType:(unint64_t)a3;
-+ (id)stringForEngagementType:(unint64_t)a3;
++ (id)safeStringForConsumerSubtype:(unsigned __int8)subtype;
++ (id)stringForConsumerSubtype:(unsigned __int8)subtype;
++ (id)stringForConsumerType:(unint64_t)type;
++ (id)stringForEngagementType:(unint64_t)type;
 + (id)validConsumerSubTypeList;
 + (id)validConsumerSubTypes;
 + (id)validConsumerTypeList;
 + (id)validConsumerTypes;
-+ (unint64_t)consumerTypeForString:(id)a3 found:(BOOL *)a4;
-+ (unint64_t)consumerTypeForSubType:(unsigned __int8)a3;
-+ (unint64_t)engagementTypeForString:(id)a3 found:(BOOL *)a4;
-+ (unsigned)consumerSubtypeForString:(id)a3 found:(BOOL *)a4;
-+ (void)iterConsumerSubTypesWithBlock:(id)a3;
-+ (void)iterConsumerTypesWithBlock:(id)a3;
++ (unint64_t)consumerTypeForString:(id)string found:(BOOL *)found;
++ (unint64_t)consumerTypeForSubType:(unsigned __int8)type;
++ (unint64_t)engagementTypeForString:(id)string found:(BOOL *)found;
++ (unsigned)consumerSubtypeForString:(id)string found:(BOOL *)found;
++ (void)iterConsumerSubTypesWithBlock:(id)block;
++ (void)iterConsumerTypesWithBlock:(id)block;
 @end
 
 @implementation ATXTypes
 
-+ (id)stringForEngagementType:(unint64_t)a3
++ (id)stringForEngagementType:(unint64_t)type
 {
-  if (a3 < 7)
+  if (type < 7)
   {
-    return off_278590078[a3];
+    return off_278590078[type];
   }
 
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ATXTypes *)a3 stringForEngagementType:v5];
+    [(ATXTypes *)type stringForEngagementType:v5];
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerType called with invalid ATXEngagementType value of %lu", a3}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerType called with invalid ATXEngagementType value of %lu", type}];
   return @"Error";
 }
 
-+ (id)stringForConsumerType:(unint64_t)a3
++ (id)stringForConsumerType:(unint64_t)type
 {
-  if (a3 < 0x18)
+  if (type < 0x18)
   {
-    return off_2785900B0[a3];
+    return off_2785900B0[type];
   }
 
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ATXTypes *)a3 stringForConsumerType:v5];
+    [(ATXTypes *)type stringForConsumerType:v5];
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerType called with invalid ATXConsumerType value of %lu", a3}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerType called with invalid ATXConsumerType value of %lu", type}];
   return @"Error";
 }
 
-+ (id)stringForConsumerSubtype:(unsigned __int8)a3
++ (id)stringForConsumerSubtype:(unsigned __int8)subtype
 {
-  v3 = a3;
+  subtypeCopy = subtype;
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 >= 0x32u)
+  if (subtype >= 0x32u)
   {
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v8 = v3;
+      v8 = subtypeCopy;
       _os_log_error_impl(&dword_226368000, v5, OS_LOG_TYPE_ERROR, "stringForConsumerSubtype called with invalid ATXConsumerSubType value of %lu", buf, 0xCu);
     }
 
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerSubtype called with invalid ATXConsumerSubType value of %lu", v3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForConsumerSubtype called with invalid ATXConsumerSubType value of %lu", subtypeCopy}];
     result = @"Error";
   }
 
   else
   {
-    result = off_278590170[a3];
+    result = off_278590170[subtype];
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (id)safeStringForConsumerSubtype:(unsigned __int8)a3
++ (id)safeStringForConsumerSubtype:(unsigned __int8)subtype
 {
-  switch(a3)
+  switch(subtype)
   {
     case '&':
       v5 = @"ActionSuggestionAvocado";
@@ -111,7 +111,7 @@
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:24];
   for (i = 0; i != 24; ++i)
   {
-    v5 = [a1 stringForConsumerType:i];
+    v5 = [self stringForConsumerType:i];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
@@ -126,7 +126,7 @@
   do
   {
     v5 = v4;
-    v6 = [a1 stringForConsumerSubtype:v4];
+    v6 = [self stringForConsumerSubtype:v4];
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4];
     [v3 setObject:v6 forKeyedSubscript:v7];
 
@@ -146,7 +146,7 @@
   {
     v5 = v4;
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4];
-    v7 = [a1 stringForConsumerSubtype:v4];
+    v7 = [self stringForConsumerSubtype:v4];
     [v3 setObject:v6 forKeyedSubscript:v7];
 
     ++v4;
@@ -171,17 +171,17 @@
 
 + (id)validConsumerTypeList
 {
-  v2 = [objc_opt_class() validConsumerTypes];
+  validConsumerTypes = [objc_opt_class() validConsumerTypes];
   v3 = objc_opt_new();
-  if ([v2 count])
+  if ([validConsumerTypes count])
   {
     v4 = 0;
     do
     {
-      v5 = [v2 objectAtIndexedSubscript:v4];
+      v5 = [validConsumerTypes objectAtIndexedSubscript:v4];
       [v3 appendString:v5];
 
-      if ([v2 count] - 1 > v4)
+      if ([validConsumerTypes count] - 1 > v4)
       {
         [v3 appendString:{@", "}];
       }
@@ -189,7 +189,7 @@
       ++v4;
     }
 
-    while ([v2 count] > v4);
+    while ([validConsumerTypes count] > v4);
   }
 
   return v3;
@@ -215,17 +215,17 @@
 
 + (id)validConsumerSubTypeList
 {
-  v2 = [objc_opt_class() validConsumerSubTypes];
+  validConsumerSubTypes = [objc_opt_class() validConsumerSubTypes];
   v3 = objc_opt_new();
-  if ([v2 count])
+  if ([validConsumerSubTypes count])
   {
     v4 = 0;
     do
     {
-      v5 = [v2 objectAtIndexedSubscript:v4];
+      v5 = [validConsumerSubTypes objectAtIndexedSubscript:v4];
       [v3 appendString:v5];
 
-      if ([v2 count] - 1 > v4)
+      if ([validConsumerSubTypes count] - 1 > v4)
       {
         [v3 appendString:{@", "}];
       }
@@ -233,20 +233,20 @@
       ++v4;
     }
 
-    while ([v2 count] > v4);
+    while ([validConsumerSubTypes count] > v4);
   }
 
   return v3;
 }
 
-+ (unint64_t)engagementTypeForString:(id)a3 found:(BOOL *)a4
++ (unint64_t)engagementTypeForString:(id)string found:(BOOL *)found
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = 0;
   while (1)
   {
-    v8 = [a1 stringForEngagementType:v7];
-    v9 = [v8 isEqualToString:v6];
+    v8 = [self stringForEngagementType:v7];
+    v9 = [v8 isEqualToString:stringCopy];
 
     if (v9)
     {
@@ -256,7 +256,7 @@
     if (++v7 == 7)
     {
       v7 = 0;
-      if (!a4)
+      if (!found)
       {
         goto LABEL_9;
       }
@@ -266,27 +266,27 @@
     }
   }
 
-  if (!a4)
+  if (!found)
   {
     goto LABEL_9;
   }
 
   v10 = 1;
 LABEL_8:
-  *a4 = v10;
+  *found = v10;
 LABEL_9:
 
   return v7;
 }
 
-+ (unint64_t)consumerTypeForString:(id)a3 found:(BOOL *)a4
++ (unint64_t)consumerTypeForString:(id)string found:(BOOL *)found
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = 0;
   while (1)
   {
-    v8 = [a1 stringForConsumerType:v7];
-    v9 = [v8 isEqualToString:v6];
+    v8 = [self stringForConsumerType:v7];
+    v9 = [v8 isEqualToString:stringCopy];
 
     if (v9)
     {
@@ -296,7 +296,7 @@ LABEL_9:
     if (++v7 == 24)
     {
       v7 = 0;
-      if (!a4)
+      if (!found)
       {
         goto LABEL_9;
       }
@@ -306,28 +306,28 @@ LABEL_9:
     }
   }
 
-  if (!a4)
+  if (!found)
   {
     goto LABEL_9;
   }
 
   v10 = 1;
 LABEL_8:
-  *a4 = v10;
+  *found = v10;
 LABEL_9:
 
   return v7;
 }
 
-+ (unsigned)consumerSubtypeForString:(id)a3 found:(BOOL *)a4
++ (unsigned)consumerSubtypeForString:(id)string found:(BOOL *)found
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = 0;
   while (1)
   {
     v8 = v7;
-    v9 = [a1 stringForConsumerSubtype:v7];
-    v10 = [v9 isEqualToString:v6];
+    v9 = [self stringForConsumerSubtype:v7];
+    v10 = [v9 isEqualToString:stringCopy];
 
     if (v10)
     {
@@ -339,7 +339,7 @@ LABEL_9:
     {
       v11 = 0;
       v7 = 0;
-      if (!a4)
+      if (!found)
       {
         goto LABEL_9;
       }
@@ -348,41 +348,41 @@ LABEL_9:
     }
   }
 
-  if (!a4)
+  if (!found)
   {
     goto LABEL_9;
   }
 
   v11 = 1;
 LABEL_8:
-  *a4 = v11;
+  *found = v11;
 LABEL_9:
 
   return v7;
 }
 
-+ (unint64_t)consumerTypeForSubType:(unsigned __int8)a3
++ (unint64_t)consumerTypeForSubType:(unsigned __int8)type
 {
-  if (a3 > 0x32u)
+  if (type > 0x32u)
   {
     return 0;
   }
 
   else
   {
-    return qword_22638AAC0[a3];
+    return qword_22638AAC0[type];
   }
 }
 
-+ (void)iterConsumerTypesWithBlock:(id)a3
++ (void)iterConsumerTypesWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
   v8 = 0;
   do
   {
     v5 = objc_autoreleasePoolPush();
-    v3[2](v3, v4, &v8);
+    blockCopy[2](blockCopy, v4, &v8);
     v6 = v8;
     objc_autoreleasePoolPop(v5);
     if (v6)
@@ -394,15 +394,15 @@ LABEL_9:
   while (v4++ != 23);
 }
 
-+ (void)iterConsumerSubTypesWithBlock:(id)a3
++ (void)iterConsumerSubTypesWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
   v8 = 0;
   do
   {
     v5 = objc_autoreleasePoolPush();
-    v3[2](v3, v4, &v8);
+    blockCopy[2](blockCopy, v4, &v8);
     v6 = v8;
     objc_autoreleasePoolPop(v5);
     if (v6)

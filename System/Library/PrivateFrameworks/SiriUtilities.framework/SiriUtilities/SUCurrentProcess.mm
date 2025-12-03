@@ -1,24 +1,24 @@
 @interface SUCurrentProcess
 + (SUCurrentProcess)default;
 - (SUIdleTracker)idleTracker;
-- (void)setIdleTracker:(id)a3;
+- (void)setIdleTracker:(id)tracker;
 @end
 
 @implementation SUCurrentProcess
 
 - (SUIdleTracker)idleTracker
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CurrentProcess.idleTracker.getter();
 
   return v3;
 }
 
-- (void)setIdleTracker:(id)a3
+- (void)setIdleTracker:(id)tracker
 {
-  v5 = a3;
-  v6 = self;
-  CurrentProcess.idleTracker.setter(a3);
+  trackerCopy = tracker;
+  selfCopy = self;
+  CurrentProcess.idleTracker.setter(tracker);
 }
 
 + (SUCurrentProcess)default

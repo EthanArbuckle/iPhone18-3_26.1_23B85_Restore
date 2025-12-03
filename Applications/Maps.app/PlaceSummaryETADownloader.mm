@@ -1,15 +1,15 @@
 @interface PlaceSummaryETADownloader
 - (_TtC4Maps25PlaceSummaryETADownloader)init;
-- (void)ETAProviderUpdated:(id)a3;
+- (void)ETAProviderUpdated:(id)updated;
 @end
 
 @implementation PlaceSummaryETADownloader
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003D13A0(a3);
+  updatedCopy = updated;
+  selfCopy = self;
+  sub_1003D13A0(updated);
 }
 
 - (_TtC4Maps25PlaceSummaryETADownloader)init

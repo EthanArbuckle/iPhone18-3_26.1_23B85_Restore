@@ -1,19 +1,19 @@
 @interface AWDScanStatsPerSlice
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)numChanScannedAtIndex:(unint64_t)a3;
-- (unsigned)numScanBlankedAtIndex:(unint64_t)a3;
-- (unsigned)numScanModeAtIndex:(unint64_t)a3;
-- (void)addScanObject:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)numChanScannedAtIndex:(unint64_t)index;
+- (unsigned)numScanBlankedAtIndex:(unint64_t)index;
+- (unsigned)numScanModeAtIndex:(unint64_t)index;
+- (void)addScanObject:(id)object;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvgAgeScan:(BOOL)a3;
-- (void)setHasNumScanWifiCritical:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvgAgeScan:(BOOL)scan;
+- (void)setHasNumScanWifiCritical:(BOOL)critical;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDScanStatsPerSlice
@@ -29,9 +29,9 @@
   [(AWDScanStatsPerSlice *)&v3 dealloc];
 }
 
-- (void)setHasNumScanWifiCritical:(BOOL)a3
+- (void)setHasNumScanWifiCritical:(BOOL)critical
 {
-  if (a3)
+  if (critical)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAvgAgeScan:(BOOL)a3
+- (void)setHasAvgAgeScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 2;
   }
@@ -59,43 +59,43 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)numChanScannedAtIndex:(unint64_t)a3
+- (unsigned)numChanScannedAtIndex:(unint64_t)index
 {
   p_numChanScanneds = &self->_numChanScanneds;
   count = self->_numChanScanneds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_numChanScanneds->list[a3];
+  return p_numChanScanneds->list[index];
 }
 
-- (unsigned)numScanModeAtIndex:(unint64_t)a3
+- (unsigned)numScanModeAtIndex:(unint64_t)index
 {
   p_numScanModes = &self->_numScanModes;
   count = self->_numScanModes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_numScanModes->list[a3];
+  return p_numScanModes->list[index];
 }
 
-- (unsigned)numScanBlankedAtIndex:(unint64_t)a3
+- (unsigned)numScanBlankedAtIndex:(unint64_t)index
 {
   p_numScanBlankeds = &self->_numScanBlankeds;
   count = self->_numScanBlankeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_numScanBlankeds->list[a3];
+  return p_numScanBlankeds->list[index];
 }
 
-- (void)addScanObject:(id)a3
+- (void)addScanObject:(id)object
 {
   scanObjects = self->_scanObjects;
   if (!scanObjects)
@@ -104,7 +104,7 @@
     self->_scanObjects = scanObjects;
   }
 
-  [(NSMutableArray *)scanObjects addObject:a3];
+  [(NSMutableArray *)scanObjects addObject:object];
 }
 
 - (id)description
@@ -117,11 +117,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numAbort), @"num_abort"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numAbort), @"num_abort"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -140,17 +140,17 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numScanWifiCritical), @"num_scan_wifi_critical"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numScanWifiCritical), @"num_scan_wifi_critical"}];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgAgeScan), @"avg_age_scan"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgAgeScan), @"avg_age_scan"}];
   }
 
 LABEL_5:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"num_chan_scanned"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"num_scan_mode"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"num_scan_blanked"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"num_chan_scanned"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"num_scan_mode"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"num_scan_blanked"];
   if ([(NSMutableArray *)self->_scanObjects count])
   {
     v5 = [objc_alloc(MEMORY[0x29EDB8DE8]) initWithCapacity:{-[NSMutableArray count](self->_scanObjects, "count")}];
@@ -182,14 +182,14 @@ LABEL_5:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"scan_object"];
+    [dictionary setObject:v5 forKey:@"scan_object"];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -296,7 +296,7 @@ LABEL_5:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -307,8 +307,8 @@ LABEL_5:
     }
 
 LABEL_23:
-    *(a3 + 23) = self->_numScanWifiCritical;
-    *(a3 + 104) |= 4u;
+    *(to + 23) = self->_numScanWifiCritical;
+    *(to + 104) |= 4u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_5;
@@ -317,8 +317,8 @@ LABEL_23:
     goto LABEL_4;
   }
 
-  *(a3 + 10) = self->_numAbort;
-  *(a3 + 104) |= 1u;
+  *(to + 10) = self->_numAbort;
+  *(to + 104) |= 1u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -329,72 +329,72 @@ LABEL_3:
   if ((has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 22) = self->_avgAgeScan;
-    *(a3 + 104) |= 2u;
+    *(to + 22) = self->_avgAgeScan;
+    *(to + 104) |= 2u;
   }
 
 LABEL_5:
   if ([(AWDScanStatsPerSlice *)self numChanScannedsCount])
   {
-    [a3 clearNumChanScanneds];
-    v6 = [(AWDScanStatsPerSlice *)self numChanScannedsCount];
-    if (v6)
+    [to clearNumChanScanneds];
+    numChanScannedsCount = [(AWDScanStatsPerSlice *)self numChanScannedsCount];
+    if (numChanScannedsCount)
     {
-      v7 = v6;
+      v7 = numChanScannedsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addNumChanScanned:{-[AWDScanStatsPerSlice numChanScannedAtIndex:](self, "numChanScannedAtIndex:", i)}];
+        [to addNumChanScanned:{-[AWDScanStatsPerSlice numChanScannedAtIndex:](self, "numChanScannedAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDScanStatsPerSlice *)self numScanModesCount])
   {
-    [a3 clearNumScanModes];
-    v9 = [(AWDScanStatsPerSlice *)self numScanModesCount];
-    if (v9)
+    [to clearNumScanModes];
+    numScanModesCount = [(AWDScanStatsPerSlice *)self numScanModesCount];
+    if (numScanModesCount)
     {
-      v10 = v9;
+      v10 = numScanModesCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addNumScanMode:{-[AWDScanStatsPerSlice numScanModeAtIndex:](self, "numScanModeAtIndex:", j)}];
+        [to addNumScanMode:{-[AWDScanStatsPerSlice numScanModeAtIndex:](self, "numScanModeAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDScanStatsPerSlice *)self numScanBlankedsCount])
   {
-    [a3 clearNumScanBlankeds];
-    v12 = [(AWDScanStatsPerSlice *)self numScanBlankedsCount];
-    if (v12)
+    [to clearNumScanBlankeds];
+    numScanBlankedsCount = [(AWDScanStatsPerSlice *)self numScanBlankedsCount];
+    if (numScanBlankedsCount)
     {
-      v13 = v12;
+      v13 = numScanBlankedsCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addNumScanBlanked:{-[AWDScanStatsPerSlice numScanBlankedAtIndex:](self, "numScanBlankedAtIndex:", k)}];
+        [to addNumScanBlanked:{-[AWDScanStatsPerSlice numScanBlankedAtIndex:](self, "numScanBlankedAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDScanStatsPerSlice *)self scanObjectsCount])
   {
-    [a3 clearScanObjects];
-    v15 = [(AWDScanStatsPerSlice *)self scanObjectsCount];
-    if (v15)
+    [to clearScanObjects];
+    scanObjectsCount = [(AWDScanStatsPerSlice *)self scanObjectsCount];
+    if (scanObjectsCount)
     {
-      v16 = v15;
+      v16 = scanObjectsCount;
       for (m = 0; m != v16; ++m)
       {
-        [a3 addScanObject:{-[AWDScanStatsPerSlice scanObjectAtIndex:](self, "scanObjectAtIndex:", m)}];
+        [to addScanObject:{-[AWDScanStatsPerSlice scanObjectAtIndex:](self, "scanObjectAtIndex:", m)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -451,7 +451,7 @@ LABEL_5:
           objc_enumerationMutation(scanObjects);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addScanObject:v13];
       }
 
@@ -465,21 +465,21 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
-    v6 = *(a3 + 104);
+    v6 = *(equal + 104);
     if (*&self->_has)
     {
-      if ((*(a3 + 104) & 1) == 0 || self->_numAbort != *(a3 + 10))
+      if ((*(equal + 104) & 1) == 0 || self->_numAbort != *(equal + 10))
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(a3 + 104))
+    else if (*(equal + 104))
     {
 LABEL_22:
       LOBYTE(IsEqual) = 0;
@@ -488,26 +488,26 @@ LABEL_22:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 104) & 4) == 0 || self->_numScanWifiCritical != *(a3 + 23))
+      if ((*(equal + 104) & 4) == 0 || self->_numScanWifiCritical != *(equal + 23))
       {
         goto LABEL_22;
       }
     }
 
-    else if ((*(a3 + 104) & 4) != 0)
+    else if ((*(equal + 104) & 4) != 0)
     {
       goto LABEL_22;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 104) & 2) == 0 || self->_avgAgeScan != *(a3 + 22))
+      if ((*(equal + 104) & 2) == 0 || self->_avgAgeScan != *(equal + 22))
       {
         goto LABEL_22;
       }
     }
 
-    else if ((*(a3 + 104) & 2) != 0)
+    else if ((*(equal + 104) & 2) != 0)
     {
       goto LABEL_22;
     }
@@ -522,7 +522,7 @@ LABEL_22:
         if (IsEqual)
         {
           scanObjects = self->_scanObjects;
-          if (scanObjects | *(a3 + 12))
+          if (scanObjects | *(equal + 12))
           {
 
             LOBYTE(IsEqual) = [(NSMutableArray *)scanObjects isEqual:?];
@@ -584,15 +584,15 @@ LABEL_8:
   return v8 ^ [(NSMutableArray *)self->_scanObjects hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 104);
+  v5 = *(from + 104);
   if (v5)
   {
-    self->_numAbort = *(a3 + 10);
+    self->_numAbort = *(from + 10);
     *&self->_has |= 1u;
-    v5 = *(a3 + 104);
+    v5 = *(from + 104);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -605,48 +605,48 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 104) & 4) == 0)
+  else if ((*(from + 104) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_numScanWifiCritical = *(a3 + 23);
+  self->_numScanWifiCritical = *(from + 23);
   *&self->_has |= 4u;
-  if ((*(a3 + 104) & 2) != 0)
+  if ((*(from + 104) & 2) != 0)
   {
 LABEL_4:
-    self->_avgAgeScan = *(a3 + 22);
+    self->_avgAgeScan = *(from + 22);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  v6 = [a3 numChanScannedsCount];
-  if (v6)
+  numChanScannedsCount = [from numChanScannedsCount];
+  if (numChanScannedsCount)
   {
-    v7 = v6;
+    v7 = numChanScannedsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDScanStatsPerSlice addNumChanScanned:](self, "addNumChanScanned:", [a3 numChanScannedAtIndex:i]);
+      -[AWDScanStatsPerSlice addNumChanScanned:](self, "addNumChanScanned:", [from numChanScannedAtIndex:i]);
     }
   }
 
-  v9 = [a3 numScanModesCount];
-  if (v9)
+  numScanModesCount = [from numScanModesCount];
+  if (numScanModesCount)
   {
-    v10 = v9;
+    v10 = numScanModesCount;
     for (j = 0; j != v10; ++j)
     {
-      -[AWDScanStatsPerSlice addNumScanMode:](self, "addNumScanMode:", [a3 numScanModeAtIndex:j]);
+      -[AWDScanStatsPerSlice addNumScanMode:](self, "addNumScanMode:", [from numScanModeAtIndex:j]);
     }
   }
 
-  v12 = [a3 numScanBlankedsCount];
-  if (v12)
+  numScanBlankedsCount = [from numScanBlankedsCount];
+  if (numScanBlankedsCount)
   {
-    v13 = v12;
+    v13 = numScanBlankedsCount;
     for (k = 0; k != v13; ++k)
     {
-      -[AWDScanStatsPerSlice addNumScanBlanked:](self, "addNumScanBlanked:", [a3 numScanBlankedAtIndex:k]);
+      -[AWDScanStatsPerSlice addNumScanBlanked:](self, "addNumScanBlanked:", [from numScanBlankedAtIndex:k]);
     }
   }
 
@@ -654,7 +654,7 @@ LABEL_5:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = *(a3 + 12);
+  v15 = *(from + 12);
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v16)
   {

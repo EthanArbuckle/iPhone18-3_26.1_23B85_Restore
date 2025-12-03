@@ -1,17 +1,17 @@
 @interface AxisAdjustingStackView
-- (AxisAdjustingStackView)initWithArrangedTruncatableSubviews:(id)a3;
-- (AxisAdjustingStackView)initWithFrame:(CGRect)a3;
+- (AxisAdjustingStackView)initWithArrangedTruncatableSubviews:(id)subviews;
+- (AxisAdjustingStackView)initWithFrame:(CGRect)frame;
 - (AxisAdjustingStackViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (void)_commonInit;
-- (void)addArrangedTruncatableSubview:(id)a3;
-- (void)addTruncatableView:(id)a3;
+- (void)addArrangedTruncatableSubview:(id)subview;
+- (void)addTruncatableView:(id)view;
 - (void)dealloc;
-- (void)insertArrangedTruncatableSubview:(id)a3 atIndex:(unint64_t)a4;
+- (void)insertArrangedTruncatableSubview:(id)subview atIndex:(unint64_t)index;
 - (void)layoutIfNeeded;
-- (void)removeArrangedTruncatableSubview:(id)a3;
-- (void)removeTruncatableView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)removeArrangedTruncatableSubview:(id)subview;
+- (void)removeTruncatableView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateStackViewAxisIfNeeded;
 @end
 
@@ -26,17 +26,17 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(AxisAdjustingStackView *)self delegate];
+  delegate = [(AxisAdjustingStackView *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_20;
   }
 
-  v4 = [(AxisAdjustingStackView *)self delegate];
-  v5 = [v4 shouldPopulateIntrinsicContentSize];
+  delegate2 = [(AxisAdjustingStackView *)self delegate];
+  shouldPopulateIntrinsicContentSize = [delegate2 shouldPopulateIntrinsicContentSize];
 
-  if ((v5 & 1) == 0)
+  if ((shouldPopulateIntrinsicContentSize & 1) == 0)
   {
 LABEL_20:
     v35.receiver = self;
@@ -47,8 +47,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v6 = [(AxisAdjustingStackView *)self arrangedSubviews];
-  v7 = [v6 count];
+  arrangedSubviews = [(AxisAdjustingStackView *)self arrangedSubviews];
+  v7 = [arrangedSubviews count];
 
   v8 = 0.0;
   v9 = 0.0;
@@ -58,13 +58,13 @@ LABEL_20:
     v9 = v10 * (v7 - 1);
   }
 
-  v11 = [(AxisAdjustingStackView *)self axis];
+  axis = [(AxisAdjustingStackView *)self axis];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = [(AxisAdjustingStackView *)self arrangedSubviews];
-  v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  arrangedSubviews2 = [(AxisAdjustingStackView *)self arrangedSubviews];
+  v13 = [arrangedSubviews2 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v13)
   {
     v14 = v13;
@@ -75,7 +75,7 @@ LABEL_20:
       {
         if (*v32 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(arrangedSubviews2);
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
@@ -83,7 +83,7 @@ LABEL_20:
         v19 = v18;
         v21 = v20;
         [v17 intrinsicContentSize];
-        if (v11 == 1)
+        if (axis == 1)
         {
           if (v22 > v8)
           {
@@ -105,13 +105,13 @@ LABEL_20:
         v9 = v21 + v9;
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v14 = [arrangedSubviews2 countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v14);
   }
 
-  if (v11 != 1)
+  if (axis != 1)
   {
     v26 = v8;
     v8 = v9;
@@ -143,11 +143,11 @@ LABEL_21:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v23 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Updating stack view alignment", buf, 0xCu);
   }
 
-  v17 = [(AxisAdjustingStackView *)self axis];
+  axis = [(AxisAdjustingStackView *)self axis];
   [(AxisAdjustingStackView *)self setAxis:0];
   [(AxisAdjustingStackView *)self setNeedsLayout];
   [(AxisAdjustingStackView *)self layoutIfNeeded];
@@ -183,7 +183,7 @@ LABEL_21:
         }
 
         *buf = 134349314;
-        v23 = self;
+        selfCopy5 = self;
         v24 = 2112;
         v25 = v9;
         v11 = v10;
@@ -199,7 +199,7 @@ LABEL_21:
         if (v14)
         {
           *buf = 134349314;
-          v23 = self;
+          selfCopy5 = self;
           v24 = 2112;
           v25 = v9;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] View is truncated: %@", buf, 0x16u);
@@ -212,7 +212,7 @@ LABEL_21:
       if (v14)
       {
         *buf = 134349314;
-        v23 = self;
+        selfCopy5 = self;
         v24 = 2112;
         v25 = v9;
         v11 = v10;
@@ -236,7 +236,7 @@ LABEL_17:
 LABEL_23:
 
   self->_calculatedIdealEndRouteButtonStackViewAxis = 1;
-  if (v17 != [(AxisAdjustingStackView *)self axis])
+  if (axis != [(AxisAdjustingStackView *)self axis])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained stackViewDidChangeLayout:self];
@@ -246,126 +246,126 @@ LABEL_23:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v23 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Finished updating stack view alignment", buf, 0xCu);
   }
 }
 
-- (void)removeArrangedTruncatableSubview:(id)a3
+- (void)removeArrangedTruncatableSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v5 = sub_10006F9A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = subviewCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Removing arranged truncatable subview: %@", &v6, 0x16u);
   }
 
-  [(AxisAdjustingStackView *)self removeArrangedSubview:v4];
-  [(AxisAdjustingStackView *)self removeTruncatableView:v4];
+  [(AxisAdjustingStackView *)self removeArrangedSubview:subviewCopy];
+  [(AxisAdjustingStackView *)self removeTruncatableView:subviewCopy];
 }
 
-- (void)insertArrangedTruncatableSubview:(id)a3 atIndex:(unint64_t)a4
+- (void)insertArrangedTruncatableSubview:(id)subview atIndex:(unint64_t)index
 {
-  v6 = a3;
+  subviewCopy = subview;
   v7 = sub_10006F9A4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134349570;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v6;
+    v11 = subviewCopy;
     v12 = 2048;
-    v13 = a4;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Inserting arranged truncatable subview: %@ at index: %lu", &v8, 0x20u);
   }
 
-  [(AxisAdjustingStackView *)self insertArrangedSubview:v6 atIndex:a4];
-  [(AxisAdjustingStackView *)self addTruncatableView:v6];
+  [(AxisAdjustingStackView *)self insertArrangedSubview:subviewCopy atIndex:index];
+  [(AxisAdjustingStackView *)self addTruncatableView:subviewCopy];
 }
 
-- (void)addArrangedTruncatableSubview:(id)a3
+- (void)addArrangedTruncatableSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v5 = sub_10006F9A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = subviewCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Adding arranged truncatable subview: %@", &v6, 0x16u);
   }
 
-  [(AxisAdjustingStackView *)self addArrangedSubview:v4];
-  [(AxisAdjustingStackView *)self addTruncatableView:v4];
+  [(AxisAdjustingStackView *)self addArrangedSubview:subviewCopy];
+  [(AxisAdjustingStackView *)self addTruncatableView:subviewCopy];
 }
 
-- (void)removeTruncatableView:(id)a3
+- (void)removeTruncatableView:(id)view
 {
-  v4 = a3;
-  if ([(NSHashTable *)self->_truncatableViews containsObject:v4])
+  viewCopy = view;
+  if ([(NSHashTable *)self->_truncatableViews containsObject:viewCopy])
   {
     v5 = sub_10006F9A4();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134349314;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = viewCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Removing truncatable view: %@", &v6, 0x16u);
     }
 
-    [(NSHashTable *)self->_truncatableViews removeObject:v4];
+    [(NSHashTable *)self->_truncatableViews removeObject:viewCopy];
     [(AxisAdjustingStackView *)self _forceUpdateStackViewAlignment];
   }
 }
 
-- (void)addTruncatableView:(id)a3
+- (void)addTruncatableView:(id)view
 {
-  v4 = a3;
-  if (![(NSHashTable *)self->_truncatableViews containsObject:v4])
+  viewCopy = view;
+  if (![(NSHashTable *)self->_truncatableViews containsObject:viewCopy])
   {
     v5 = sub_10006F9A4();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134349314;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = viewCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Adding truncatable view: %@", &v6, 0x16u);
     }
 
-    [(NSHashTable *)self->_truncatableViews addObject:v4];
+    [(NSHashTable *)self->_truncatableViews addObject:viewCopy];
     [(AxisAdjustingStackView *)self _forceUpdateStackViewAlignment];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v13.receiver = self;
   v13.super_class = AxisAdjustingStackView;
-  v4 = a3;
-  [(AxisAdjustingStackView *)&v13 traitCollectionDidChange:v4];
-  v5 = [(AxisAdjustingStackView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(AxisAdjustingStackView *)&v13 traitCollectionDidChange:changeCopy];
+  traitCollection = [(AxisAdjustingStackView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     v9 = sub_10006F9A4();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(AxisAdjustingStackView *)self traitCollection];
-      v11 = [v10 preferredContentSizeCategory];
+      traitCollection2 = [(AxisAdjustingStackView *)self traitCollection];
+      preferredContentSizeCategory3 = [traitCollection2 preferredContentSizeCategory];
       *buf = 134349314;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v11;
+      v17 = preferredContentSizeCategory3;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Preferred content size category changed to %@", buf, 0x16u);
     }
 
@@ -392,7 +392,7 @@ LABEL_23:
     {
       previousWidth = self->_previousWidth;
       *buf = 134349568;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
       v11 = previousWidth;
       v12 = 2048;
@@ -411,7 +411,7 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", &v6, 0xCu);
   }
 
@@ -423,9 +423,9 @@ LABEL_23:
   self->_previousWidth = NAN;
 }
 
-- (AxisAdjustingStackView)initWithArrangedTruncatableSubviews:(id)a3
+- (AxisAdjustingStackView)initWithArrangedTruncatableSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v17.receiver = self;
   v17.super_class = AxisAdjustingStackView;
   v5 = [(AxisAdjustingStackView *)&v17 init];
@@ -437,7 +437,7 @@ LABEL_23:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v4;
+    v7 = subviewsCopy;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v8)
     {
@@ -474,7 +474,7 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -483,11 +483,11 @@ LABEL_23:
   [(AxisAdjustingStackView *)&v4 dealloc];
 }
 
-- (AxisAdjustingStackView)initWithFrame:(CGRect)a3
+- (AxisAdjustingStackView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AxisAdjustingStackView;
-  v3 = [(AxisAdjustingStackView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AxisAdjustingStackView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

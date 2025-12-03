@@ -1,113 +1,113 @@
 @interface BuddyMandatoryUpdateAboutController
-- (BuddyMandatoryUpdateAboutController)initWithScanOptions:(id)a3;
+- (BuddyMandatoryUpdateAboutController)initWithScanOptions:(id)options;
 - (UIStackView)topLevelStackView;
-- (id)_boldFontForFont:(id)a3;
-- (id)_makeDetailLabelWithViewModel:(id)a3;
-- (id)_makeRowViewWithViewModel:(id)a3;
+- (id)_boldFontForFont:(id)font;
+- (id)_makeDetailLabelWithViewModel:(id)model;
+- (id)_makeRowViewWithViewModel:(id)model;
 - (id)_makeRowViews;
 - (id)_makeSpacer;
-- (id)_makeTitleLabelWithViewModel:(id)a3;
-- (id)_sortViewsForInterfaceDirection:(id)a3;
+- (id)_makeTitleLabelWithViewModel:(id)model;
+- (id)_sortViewsForInterfaceDirection:(id)direction;
 - (int64_t)_detailTextAlignment;
-- (void)_doneTapped:(id)a3;
+- (void)_doneTapped:(id)tapped;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation BuddyMandatoryUpdateAboutController
 
-- (BuddyMandatoryUpdateAboutController)initWithScanOptions:(id)a3
+- (BuddyMandatoryUpdateAboutController)initWithScanOptions:(id)options
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, options);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = BuddyMandatoryUpdateAboutController;
   v4 = [(BuddyMandatoryUpdateAboutController *)&v9 initWithNibName:0 bundle:0];
-  v11 = v4;
-  objc_storeStrong(&v11, v4);
+  selfCopy = v4;
+  objc_storeStrong(&selfCopy, v4);
   if (v4)
   {
     v5 = [location[0] copy];
-    v6 = *(v11 + 2);
-    *(v11 + 2) = v5;
+    v6 = *(selfCopy + 2);
+    *(selfCopy + 2) = v5;
   }
 
-  v7 = v11;
+  v7 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (void)loadView
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   v22.receiver = self;
   v22.super_class = BuddyMandatoryUpdateAboutController;
   [(BuddyMandatoryUpdateAboutController *)&v22 loadView];
   v2 = +[UIColor systemBackgroundColor];
-  v3 = [(BuddyMandatoryUpdateAboutController *)v24 view];
-  [v3 setBackgroundColor:v2];
+  view = [(BuddyMandatoryUpdateAboutController *)selfCopy view];
+  [view setBackgroundColor:v2];
 
-  v4 = [(BuddyMandatoryUpdateAboutController *)v24 view];
-  v5 = [(BuddyMandatoryUpdateAboutController *)v24 topLevelStackView];
-  [v4 addSubview:v5];
+  view2 = [(BuddyMandatoryUpdateAboutController *)selfCopy view];
+  topLevelStackView = [(BuddyMandatoryUpdateAboutController *)selfCopy topLevelStackView];
+  [view2 addSubview:topLevelStackView];
 
-  v6 = [(BuddyMandatoryUpdateAboutController *)v24 view];
-  v21 = [v6 safeAreaLayoutGuide];
+  view3 = [(BuddyMandatoryUpdateAboutController *)selfCopy view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
 
-  location = [(BuddyMandatoryUpdateAboutController *)v24 topLevelStackView];
-  v19 = [v21 topAnchor];
-  v18 = [location topAnchor];
-  v17 = [v19 constraintEqualToAnchor:-57.0 constant:?];
+  location = [(BuddyMandatoryUpdateAboutController *)selfCopy topLevelStackView];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  topAnchor2 = [location topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:-57.0 constant:?];
   v25[0] = v17;
-  v7 = [v21 bottomAnchor];
-  v8 = [location bottomAnchor];
-  v9 = [v7 constraintGreaterThanOrEqualToAnchor:v8 constant:57.0];
+  bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+  bottomAnchor2 = [location bottomAnchor];
+  v9 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:57.0];
   v25[1] = v9;
-  v10 = [v21 leadingAnchor];
-  v11 = [location leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-sub_1000BC3F0()];
+  leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+  leadingAnchor2 = [location leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-sub_1000BC3F0()];
   v25[2] = v12;
-  v13 = [v21 trailingAnchor];
-  v14 = [location trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:sub_1000BC3F0()];
+  trailingAnchor = [safeAreaLayoutGuide trailingAnchor];
+  trailingAnchor2 = [location trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:sub_1000BC3F0()];
   v25[3] = v15;
   v16 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v16];
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&safeAreaLayoutGuide, 0);
 }
 
 - (void)viewDidLoad
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyMandatoryUpdateAboutController;
   [(BuddyMandatoryUpdateAboutController *)&v7 viewDidLoad];
   v2 = [NSBundle bundleForClass:objc_opt_class()];
   v3 = [(NSBundle *)v2 localizedStringForKey:@"MANDATORY_UPDATE_TITLE" value:&stru_10032F900 table:@"MandatorySoftwareUpdate"];
-  [(BuddyMandatoryUpdateAboutController *)v9 setTitle:v3];
+  [(BuddyMandatoryUpdateAboutController *)selfCopy setTitle:v3];
 
   v4 = [UIBarButtonItem alloc];
-  v5 = [v4 initWithBarButtonSystemItem:0 target:v9 action:"_doneTapped:"];
-  v6 = [(BuddyMandatoryUpdateAboutController *)v9 navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  v5 = [v4 initWithBarButtonSystemItem:0 target:selfCopy action:"_doneTapped:"];
+  navigationItem = [(BuddyMandatoryUpdateAboutController *)selfCopy navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
-- (void)_doneTapped:(id)a3
+- (void)_doneTapped:(id)tapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyMandatoryUpdateAboutController *)v4 dismissViewControllerAnimated:1 completion:0];
+  objc_storeStrong(location, tapped);
+  [(BuddyMandatoryUpdateAboutController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   objc_storeStrong(location, 0);
 }
 
@@ -116,8 +116,8 @@
   if (!self->_topLevelStackView)
   {
     v2 = [UIStackView alloc];
-    v3 = [(BuddyMandatoryUpdateAboutController *)self _makeRowViews];
-    v4 = [v2 initWithArrangedSubviews:v3];
+    _makeRowViews = [(BuddyMandatoryUpdateAboutController *)self _makeRowViews];
+    v4 = [v2 initWithArrangedSubviews:_makeRowViews];
     topLevelStackView = self->_topLevelStackView;
     self->_topLevelStackView = v4;
 
@@ -133,10 +133,10 @@
 
 - (id)_makeRowViews
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
-  v2 = [(BuddyMandatoryUpdateAboutController *)self scanOptions];
-  v14[0] = [BuddyMandatoryUpdateAboutRowViewModel viewModelsWithScanOptions:v2];
+  scanOptions = [(BuddyMandatoryUpdateAboutController *)self scanOptions];
+  v14[0] = [BuddyMandatoryUpdateAboutRowViewModel viewModelsWithScanOptions:scanOptions];
 
   location = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v14[0], "count")}];
   memset(v11, 0, sizeof(v11));
@@ -156,7 +156,7 @@
 
         v12 = *(v11[1] + 8 * i);
         v7 = location;
-        v8 = [(BuddyMandatoryUpdateAboutController *)v15 _makeRowViewWithViewModel:v12];
+        v8 = [(BuddyMandatoryUpdateAboutController *)selfCopy _makeRowViewWithViewModel:v12];
         [v7 addObject:v8];
       }
 
@@ -172,18 +172,18 @@
   return v9;
 }
 
-- (id)_makeRowViewWithViewModel:(id)a3
+- (id)_makeRowViewWithViewModel:(id)model
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [(BuddyMandatoryUpdateAboutController *)v13 _makeTitleLabelWithViewModel:location[0]];
-  v10 = [(BuddyMandatoryUpdateAboutController *)v13 _makeDetailLabelWithViewModel:location[0]];
-  v9 = [(BuddyMandatoryUpdateAboutController *)v13 _makeSpacer];
-  v3 = v13;
+  objc_storeStrong(location, model);
+  v11 = [(BuddyMandatoryUpdateAboutController *)selfCopy _makeTitleLabelWithViewModel:location[0]];
+  v10 = [(BuddyMandatoryUpdateAboutController *)selfCopy _makeDetailLabelWithViewModel:location[0]];
+  _makeSpacer = [(BuddyMandatoryUpdateAboutController *)selfCopy _makeSpacer];
+  v3 = selfCopy;
   v14[0] = v11;
-  v14[1] = v9;
+  v14[1] = _makeSpacer;
   v14[2] = v10;
   v4 = [NSArray arrayWithObjects:v14 count:3];
   v8 = [(BuddyMandatoryUpdateAboutController *)v3 _sortViewsForInterfaceDirection:v4];
@@ -194,29 +194,29 @@
   v5 = v7;
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&_makeSpacer, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (id)_makeTitleLabelWithViewModel:(id)a3
+- (id)_makeTitleLabelWithViewModel:(id)model
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v10 = objc_alloc_init(UILabel);
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [location[0] title];
-  [v10 setText:v3];
+  title = [location[0] title];
+  [v10 setText:title];
 
   LODWORD(v4) = 1144750080;
   [v10 setContentCompressionResistancePriority:0 forAxis:v4];
-  v5 = v12;
-  v6 = [v10 font];
-  v7 = [(BuddyMandatoryUpdateAboutController *)v5 _boldFontForFont:v6];
+  v5 = selfCopy;
+  font = [v10 font];
+  v7 = [(BuddyMandatoryUpdateAboutController *)v5 _boldFontForFont:font];
   [v10 setFont:v7];
 
   v8 = v10;
@@ -225,19 +225,19 @@
   return v8;
 }
 
-- (id)_makeDetailLabelWithViewModel:(id)a3
+- (id)_makeDetailLabelWithViewModel:(id)model
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v6 = objc_alloc_init(UILabel);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [location[0] detail];
-  [v6 setText:v3];
+  detail = [location[0] detail];
+  [v6 setText:detail];
 
   [v6 setNumberOfLines:3];
-  [v6 setTextAlignment:{-[BuddyMandatoryUpdateAboutController _detailTextAlignment](v8, "_detailTextAlignment")}];
+  [v6 setTextAlignment:{-[BuddyMandatoryUpdateAboutController _detailTextAlignment](selfCopy, "_detailTextAlignment")}];
   v4 = v6;
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
@@ -250,8 +250,8 @@
   location[1] = a2;
   location[0] = objc_alloc_init(UIView);
   [location[0] setTranslatesAutoresizingMaskIntoConstraints:0];
-  v2 = [location[0] widthAnchor];
-  v3 = [v2 constraintGreaterThanOrEqualToConstant:32.0];
+  widthAnchor = [location[0] widthAnchor];
+  v3 = [widthAnchor constraintGreaterThanOrEqualToConstant:32.0];
   [v3 setActive:1];
 
   v4 = location[0];
@@ -259,25 +259,25 @@
   return v4;
 }
 
-- (id)_sortViewsForInterfaceDirection:(id)a3
+- (id)_sortViewsForInterfaceDirection:(id)direction
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, direction);
   if (sub_100196140())
   {
-    v3 = [location[0] reverseObjectEnumerator];
-    v7 = [v3 allObjects];
+    reverseObjectEnumerator = [location[0] reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
   }
 
   else
   {
-    v7 = location[0];
+    allObjects = location[0];
   }
 
   objc_storeStrong(location, 0);
-  v4 = v7;
+  v4 = allObjects;
 
   return v4;
 }
@@ -295,14 +295,14 @@
   }
 }
 
-- (id)_boldFontForFont:(id)a3
+- (id)_boldFontForFont:(id)font
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] fontDescriptor];
-  v6 = [v3 fontDescriptorWithSymbolicTraits:2];
+  objc_storeStrong(location, font);
+  fontDescriptor = [location[0] fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   [location[0] pointSize];
   v4 = [UIFont fontWithDescriptor:v6 size:?];

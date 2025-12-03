@@ -1,13 +1,13 @@
 @interface NSPredicate
-- (NSPredicate)initWithFormat:(id)a3 error:(id *)a4;
+- (NSPredicate)initWithFormat:(id)format error:(id *)error;
 @end
 
 @implementation NSPredicate
 
-- (NSPredicate)initWithFormat:(id)a3 error:(id *)a4
+- (NSPredicate)initWithFormat:(id)format error:(id *)error
 {
-  v5 = a3;
-  v6 = [NSPredicate predicateWithFormat:v5];
+  formatCopy = format;
+  v6 = [NSPredicate predicateWithFormat:formatCopy];
 
   return v6;
 }

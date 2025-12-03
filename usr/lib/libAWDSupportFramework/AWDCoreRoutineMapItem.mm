@@ -1,15 +1,15 @@
 @interface AWDCoreRoutineMapItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMapItemSources:(id)a3;
-- (int)mapItemSourcesAtIndex:(unint64_t)a3;
+- (int)StringAsMapItemSources:(id)sources;
+- (int)mapItemSourcesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMapItem
@@ -22,106 +22,106 @@
   [(AWDCoreRoutineMapItem *)&v3 dealloc];
 }
 
-- (int)mapItemSourcesAtIndex:(unint64_t)a3
+- (int)mapItemSourcesAtIndex:(unint64_t)index
 {
   p_mapItemSources = &self->_mapItemSources;
   count = self->_mapItemSources.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_mapItemSources->list[a3];
+  return p_mapItemSources->list[index];
 }
 
-- (int)StringAsMapItemSources:(id)a3
+- (int)StringAsMapItemSources:(id)sources
 {
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceNone"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceNone"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceReverseGeocode"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceReverseGeocode"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceContacts"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceContacts"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceMapsSupport"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceMapsSupport"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceUser"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceUser"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceMapsSupportFavorite"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceMapsSupportFavorite"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceMapsSupportHistoryEntry"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceMapsSupportHistoryEntry"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceMapsSupportHistoryEntryRoute"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceMapsSupportHistoryEntryRoute"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceMapsSupportHistoryEntryPlaceDisplay"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceMapsSupportHistoryEntryPlaceDisplay"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceEventKit"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceEventKit"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceLocalSearch"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceLocalSearch"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceMapItemHandle"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceMapItemHandle"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceForwardGeocode"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceForwardGeocode"])
   {
     return 12;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceProactiveExperts"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceProactiveExperts"])
   {
     return 13;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourcePortrait"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourcePortrait"])
   {
     return 14;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceLearnedPlace"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceLearnedPlace"])
   {
     return 15;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceBluePOI"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceBluePOI"])
   {
     return 16;
   }
 
-  if ([a3 isEqualToString:@"CoreRoutineMapItemSourceMapItemURL"])
+  if ([sources isEqualToString:@"CoreRoutineMapItemSourceMapItemURL"])
   {
     return 17;
   }
@@ -138,7 +138,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   p_mapItemSources = &self->_mapItemSources;
   if (self->_mapItemSources.count)
   {
@@ -166,18 +166,18 @@
       while (v6 < self->_mapItemSources.count);
     }
 
-    [v3 setObject:v5 forKey:@"mapItemSources"];
+    [dictionary setObject:v5 forKey:@"mapItemSources"];
   }
 
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_hasMuid), @"hasMuid"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_hasMuid), @"hasMuid"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_mapItemSources = &self->_mapItemSources;
   if (self->_mapItemSources.count)
@@ -201,32 +201,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ([(AWDCoreRoutineMapItem *)self mapItemSourcesCount])
   {
-    [a3 clearMapItemSources];
-    v5 = [(AWDCoreRoutineMapItem *)self mapItemSourcesCount];
-    if (v5)
+    [to clearMapItemSources];
+    mapItemSourcesCount = [(AWDCoreRoutineMapItem *)self mapItemSourcesCount];
+    if (mapItemSourcesCount)
     {
-      v6 = v5;
+      v6 = mapItemSourcesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addMapItemSources:{-[AWDCoreRoutineMapItem mapItemSourcesAtIndex:](self, "mapItemSourcesAtIndex:", i)}];
+        [to addMapItemSources:{-[AWDCoreRoutineMapItem mapItemSourcesAtIndex:](self, "mapItemSourcesAtIndex:", i)}];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(a3 + 32) = self->_hasMuid;
-    *(a3 + 36) |= 1u;
+    *(to + 32) = self->_hasMuid;
+    *(to + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   if (*&self->_has)
   {
@@ -237,18 +237,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
     IsEqual = PBRepeatedInt32IsEqual();
     if (IsEqual)
     {
-      LOBYTE(IsEqual) = (*(a3 + 36) & 1) == 0;
+      LOBYTE(IsEqual) = (*(equal + 36) & 1) == 0;
       if (*&self->_has)
       {
-        if ((*(a3 + 36) & 1) == 0)
+        if ((*(equal + 36) & 1) == 0)
         {
 LABEL_5:
           LOBYTE(IsEqual) = 0;
@@ -257,13 +257,13 @@ LABEL_5:
 
         if (self->_hasMuid)
         {
-          if ((*(a3 + 32) & 1) == 0)
+          if ((*(equal + 32) & 1) == 0)
           {
             goto LABEL_5;
           }
         }
 
-        else if (*(a3 + 32))
+        else if (*(equal + 32))
         {
           goto LABEL_5;
         }
@@ -292,21 +292,21 @@ LABEL_5:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = [a3 mapItemSourcesCount];
-  if (v5)
+  mapItemSourcesCount = [from mapItemSourcesCount];
+  if (mapItemSourcesCount)
   {
-    v6 = v5;
+    v6 = mapItemSourcesCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDCoreRoutineMapItem addMapItemSources:](self, "addMapItemSources:", [a3 mapItemSourcesAtIndex:i]);
+      -[AWDCoreRoutineMapItem addMapItemSources:](self, "addMapItemSources:", [from mapItemSourcesAtIndex:i]);
     }
   }
 
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_hasMuid = *(a3 + 32);
+    self->_hasMuid = *(from + 32);
     *&self->_has |= 1u;
   }
 }

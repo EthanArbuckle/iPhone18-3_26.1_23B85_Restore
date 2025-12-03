@@ -1,24 +1,24 @@
 @interface JavaNioSocketChannelImpl
-- (BOOL)connectWithJavaNetSocketAddress:(id)a3;
+- (BOOL)connectWithJavaNetSocketAddress:(id)address;
 - (BOOL)finishConnect;
 - (BOOL)isConnected;
 - (BOOL)isConnectionPending;
-- (id)bindWithJavaNetSocketAddress:(id)a3;
+- (id)bindWithJavaNetSocketAddress:(id)address;
 - (id)getLocalAddress;
-- (id)getOptionWithJavaNetSocketOption:(id)a3;
-- (id)setOptionWithJavaNetSocketOption:(id)a3 withId:(id)a4;
+- (id)getOptionWithJavaNetSocketOption:(id)option;
+- (id)setOptionWithJavaNetSocketOption:(id)option withId:(id)id;
 - (id)socket;
 - (id)supportedOptions;
-- (int)readWithJavaNioByteBuffer:(id)a3;
-- (int)writeWithJavaNioByteBuffer:(id)a3;
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (int)readWithJavaNioByteBuffer:(id)buffer;
+- (int)writeWithJavaNioByteBuffer:(id)buffer;
+- (int64_t)readWithJavaNioByteBufferArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (uint64_t)checkOpenConnected;
 - (uint64_t)checkUnconnected;
 - (void)dealloc;
 - (void)implCloseSelectableChannel;
-- (void)onBindWithBoolean:(BOOL)a3;
-- (void)onConnectStatusChangedWithJavaNetInetSocketAddress:(id)a3 withInt:(int)a4 withBoolean:(BOOL)a5;
+- (void)onBindWithBoolean:(BOOL)boolean;
+- (void)onConnectStatusChangedWithJavaNetInetSocketAddress:(id)address withInt:(int)int withBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaNioSocketChannelImpl
@@ -32,17 +32,17 @@
     v4 = *(&self->socket_ + 7);
     if (v4)
     {
-      v5 = [v4 getAddress];
-      v6 = [*(&self->socket_ + 7) getPort];
+      getAddress = [v4 getAddress];
+      getPort = [*(&self->socket_ + 7) getPort];
     }
 
     else
     {
-      v6 = 0;
-      v5 = 0;
+      getPort = 0;
+      getAddress = 0;
     }
 
-    v7 = new_JavaNetPlainSocketImpl_initWithJavaIoFileDescriptor_withInt_withJavaNetInetAddress_withInt_(*(&self->super.super.blockingLock_ + 7), *(&self->localAddress_ + 7), v5, v6);
+    v7 = new_JavaNetPlainSocketImpl_initWithJavaIoFileDescriptor_withInt_withJavaNetInetAddress_withInt_(*(&self->super.super.blockingLock_ + 7), *(&self->localAddress_ + 7), getAddress, getPort);
     v8 = [JavaNioSocketChannelImpl_SocketAdapter alloc];
     sub_1001E9908(&v8->super.super.isa, v7, self);
     JreStrongAssignAndConsume((&self->fd_ + 7), v8);
@@ -53,7 +53,7 @@
   return v3;
 }
 
-- (id)bindWithJavaNetSocketAddress:(id)a3
+- (id)bindWithJavaNetSocketAddress:(id)address
 {
   objc_sync_enter(self);
   if (![(JavaNioChannelsSpiAbstractInterruptibleChannel *)self isOpen])
@@ -70,7 +70,7 @@ LABEL_15:
     objc_exception_throw(v6);
   }
 
-  if (a3)
+  if (address)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -87,11 +87,11 @@ LABEL_15:
       objc_opt_class();
     }
 
-    a3 = new_JavaNetInetSocketAddress_initWithJavaNetInetAddress_withInt_(JavaNetInet4Address_ANY_, 0);
+    address = new_JavaNetInetSocketAddress_initWithJavaNetInetAddress_withInt_(JavaNetInet4Address_ANY_, 0);
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!address)
   {
     JreThrowNullPointerException();
   }
@@ -101,15 +101,15 @@ LABEL_15:
     JreThrowClassCastException();
   }
 
-  LibcoreIoIoBridge_bindWithJavaIoFileDescriptor_withJavaNetInetAddress_withInt_(*(&self->super.super.blockingLock_ + 7), [a3 getAddress], objc_msgSend(a3, "getPort"));
+  LibcoreIoIoBridge_bindWithJavaIoFileDescriptor_withJavaNetInetAddress_withInt_(*(&self->super.super.blockingLock_ + 7), [address getAddress], objc_msgSend(address, "getPort"));
   [(JavaNioSocketChannelImpl *)self onBindWithBoolean:1];
   objc_sync_exit(self);
   return self;
 }
 
-- (void)onBindWithBoolean:(BOOL)a3
+- (void)onBindWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(LibcoreIoLibcore__initialized, memory_order_acquire) & 1) == 0)
   {
     objc_opt_class();
@@ -134,11 +134,11 @@ LABEL_15:
   }
 
   JreStrongAssign((&self->connectAddress_ + 7), [v5 getAddress]);
-  v6 = [v5 getPort];
-  *(&self->localAddress_ + 7) = v6;
-  if (v3)
+  getPort = [v5 getPort];
+  *(&self->localAddress_ + 7) = getPort;
+  if (booleanCopy)
   {
-    v7 = v6;
+    v7 = getPort;
     v8 = *(&self->fd_ + 7);
     if (v8)
     {
@@ -173,7 +173,7 @@ LABEL_15:
   return v4;
 }
 
-- (id)getOptionWithJavaNetSocketOption:(id)a3
+- (id)getOptionWithJavaNetSocketOption:(id)option
 {
   if ((atomic_load_explicit(JavaNetStandardSocketOptions__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -182,17 +182,17 @@ LABEL_15:
 
   v5 = JavaNetStandardSocketOptions_SOCKET_OPTIONS_;
 
-  return JavaNioNioUtils_getSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_(self, v5, a3);
+  return JavaNioNioUtils_getSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_(self, v5, option);
 }
 
-- (id)setOptionWithJavaNetSocketOption:(id)a3 withId:(id)a4
+- (id)setOptionWithJavaNetSocketOption:(id)option withId:(id)id
 {
   if ((atomic_load_explicit(JavaNetStandardSocketOptions__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001661A8();
   }
 
-  JavaNioNioUtils_setSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_withId_(self, JavaNetStandardSocketOptions_SOCKET_OPTIONS_, a3, a4);
+  JavaNioNioUtils_setSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_withId_(self, JavaNetStandardSocketOptions_SOCKET_OPTIONS_, option, id);
   return self;
 }
 
@@ -222,11 +222,11 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)connectWithJavaNetSocketAddress:(id)a3
+- (BOOL)connectWithJavaNetSocketAddress:(id)address
 {
   [JavaNioSocketChannelImpl checkUnconnected]_0(self);
-  JavaNioSocketChannelImpl_validateAddressWithJavaNetSocketAddress_(a3);
-  if (!a3 || (LocalHost = [a3 getAddress], v6 = objc_msgSend(a3, "getPort"), !LocalHost))
+  JavaNioSocketChannelImpl_validateAddressWithJavaNetSocketAddress_(address);
+  if (!address || (LocalHost = [address getAddress], v6 = objc_msgSend(address, "getPort"), !LocalHost))
   {
     JreThrowNullPointerException();
   }
@@ -237,14 +237,14 @@ LABEL_15:
     LocalHost = JavaNetInetAddress_getLocalHost();
   }
 
-  v8 = [(JavaNioChannelsSpiAbstractSelectableChannel *)self isBlocking];
-  if (v8)
+  isBlocking = [(JavaNioChannelsSpiAbstractSelectableChannel *)self isBlocking];
+  if (isBlocking)
   {
     [(JavaNioChannelsSpiAbstractInterruptibleChannel *)self begin];
   }
 
   LibcoreIoIoBridge_connectWithJavaIoFileDescriptor_withJavaNetInetAddress_withInt_(*(&self->super.super.blockingLock_ + 7), LocalHost, v7);
-  if (v8)
+  if (isBlocking)
   {
     v9 = 2;
   }
@@ -254,7 +254,7 @@ LABEL_15:
     v9 = 1;
   }
 
-  if (v8)
+  if (isBlocking)
   {
     [(JavaNioChannelsSpiAbstractInterruptibleChannel *)self endWithBoolean:?];
   }
@@ -265,20 +265,20 @@ LABEL_15:
     [(JavaNioSocketChannelImpl *)self onBindWithBoolean:1];
   }
 
-  [(JavaNioSocketChannelImpl *)self onConnectStatusChangedWithJavaNetInetSocketAddress:a3 withInt:v9 withBoolean:1];
+  [(JavaNioSocketChannelImpl *)self onConnectStatusChangedWithJavaNetInetSocketAddress:address withInt:v9 withBoolean:1];
   return *(&self->localPort_ + 3) == 2;
 }
 
 - (uint64_t)checkUnconnected
 {
-  objc_sync_enter(a1);
-  if (([a1 isOpen] & 1) == 0)
+  objc_sync_enter(self);
+  if (([self isOpen] & 1) == 0)
   {
     v4 = new_JavaNioChannelsClosedChannelException_init();
     goto LABEL_10;
   }
 
-  v2 = *(a1 + 91);
+  v2 = *(self + 91);
   if (v2 == 1)
   {
     v4 = new_JavaNioChannelsConnectionPendingException_init();
@@ -292,15 +292,15 @@ LABEL_10:
     objc_exception_throw(v4);
   }
 
-  return objc_sync_exit(a1);
+  return objc_sync_exit(self);
 }
 
-- (void)onConnectStatusChangedWithJavaNetInetSocketAddress:(id)a3 withInt:(int)a4 withBoolean:(BOOL)a5
+- (void)onConnectStatusChangedWithJavaNetInetSocketAddress:(id)address withInt:(int)int withBoolean:(BOOL)boolean
 {
-  v5 = a5;
-  *(&self->localPort_ + 3) = a4;
-  JreStrongAssign((&self->socket_ + 7), a3);
-  if (a4 == 2 && v5)
+  booleanCopy = boolean;
+  *(&self->localPort_ + 3) = int;
+  JreStrongAssign((&self->socket_ + 7), address);
+  if (int == 2 && booleanCopy)
   {
     v8 = *(&self->fd_ + 7);
     if (v8)
@@ -311,10 +311,10 @@ LABEL_10:
         JreThrowNullPointerException();
       }
 
-      v10 = [v9 getAddress];
-      v11 = [*(&self->socket_ + 7) getPort];
+      getAddress = [v9 getAddress];
+      getPort = [*(&self->socket_ + 7) getPort];
 
-      [v8 onConnectWithJavaNetInetAddress:v10 withInt:v11];
+      [v8 onConnectWithJavaNetInetAddress:getAddress withInt:getPort];
     }
   }
 }
@@ -376,20 +376,20 @@ LABEL_16:
   return isConnectedWithJavaIoFileDescriptor_withJavaNetInetAddress_withInt_withInt_withInt;
 }
 
-- (int)readWithJavaNioByteBuffer:(id)a3
+- (int)readWithJavaNioByteBuffer:(id)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 checkWritable];
+  [buffer checkWritable];
   [JavaNioSocketChannelImpl checkOpenConnected]_0(self);
-  result = [a3 hasRemaining];
+  result = [buffer hasRemaining];
   if (result)
   {
 
-    return sub_1001E8FCC(self, a3);
+    return sub_1001E8FCC(self, buffer);
   }
 
   return result;
@@ -397,34 +397,34 @@ LABEL_16:
 
 - (uint64_t)checkOpenConnected
 {
-  objc_sync_enter(a1);
-  if (([a1 isOpen] & 1) == 0)
+  objc_sync_enter(self);
+  if (([self isOpen] & 1) == 0)
   {
     v3 = new_JavaNioChannelsClosedChannelException_init();
     goto LABEL_8;
   }
 
-  if (([a1 isConnected] & 1) == 0)
+  if (([self isConnected] & 1) == 0)
   {
     v3 = new_JavaNioChannelsNotYetConnectedException_init();
 LABEL_8:
     objc_exception_throw(v3);
   }
 
-  return objc_sync_exit(a1);
+  return objc_sync_exit(self);
 }
 
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (int64_t)readWithJavaNioByteBufferArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_18;
   }
 
-  v6 = a4;
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
+  intCopy = int;
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
   [JavaNioSocketChannelImpl checkOpenConnected]_0(self);
-  v9 = JavaNioFileChannelImpl_calculateTotalRemainingWithJavaNioByteBufferArray_withInt_withInt_withBoolean_(a3, v6, a5, 1);
+  v9 = JavaNioFileChannelImpl_calculateTotalRemainingWithJavaNioByteBufferArray_withInt_withInt_withBoolean_(array, intCopy, withInt, 1);
   if (!v9)
   {
     return 0;
@@ -445,33 +445,33 @@ LABEL_8:
     v14 = v13;
     while (1)
     {
-      v15 = *(a3 + 2);
-      if (v6 < 0 || v6 >= v15)
+      v15 = *(array + 2);
+      if (intCopy < 0 || intCopy >= v15)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v15, v6);
+        IOSArray_throwOutOfBoundsWithMsg(v15, intCopy);
       }
 
-      v16 = *(a3 + v6 + 3);
+      v16 = *(array + intCopy + 3);
       if (!v16)
       {
         break;
       }
 
       v17 = JavaLangMath_minWithInt_withInt_([v16 remaining], v14);
-      v18 = *(a3 + 2);
-      if (v6 < 0 || v6 >= v18)
+      v18 = *(array + 2);
+      if (intCopy < 0 || intCopy >= v18)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v18, v6);
+        IOSArray_throwOutOfBoundsWithMsg(v18, intCopy);
       }
 
-      v19 = *(a3 + v6 + 3);
+      v19 = *(array + intCopy + 3);
       if (!v19)
       {
         break;
       }
 
       [v19 putWithByteArray:v10 withInt:(v13 - v14) withInt:v17];
-      ++v6;
+      ++intCopy;
       v14 -= v17;
       if (v14 <= 0)
       {
@@ -486,36 +486,36 @@ LABEL_18:
   return v13;
 }
 
-- (int)writeWithJavaNioByteBuffer:(id)a3
+- (int)writeWithJavaNioByteBuffer:(id)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     v6 = new_JavaLangNullPointerException_initWithNSString_(@"src == null");
     objc_exception_throw(v6);
   }
 
   [JavaNioSocketChannelImpl checkOpenConnected]_0(self);
-  result = [a3 hasRemaining];
+  result = [buffer hasRemaining];
   if (result)
   {
 
-    return sub_1001E92FC(self, a3);
+    return sub_1001E92FC(self, buffer);
   }
 
   return result;
 }
 
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_23;
   }
 
-  v6 = a4;
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
+  intCopy = int;
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
   [JavaNioSocketChannelImpl checkOpenConnected]_0(self);
-  v9 = JavaNioFileChannelImpl_calculateTotalRemainingWithJavaNioByteBufferArray_withInt_withInt_withBoolean_(a3, v6, a5, 0);
+  v9 = JavaNioFileChannelImpl_calculateTotalRemainingWithJavaNioByteBufferArray_withInt_withInt_withBoolean_(array, intCopy, withInt, 0);
   if (!v9)
   {
     return 0;
@@ -523,15 +523,15 @@ LABEL_18:
 
   v17 = JavaNioByteBuffer_allocateWithInt_(v9, v10, v11, v12, v13, v14, v15, v16);
   v18 = v17;
-  v19 = a5 + v6;
-  if (a5 + v6 > v6)
+  v19 = withInt + intCopy;
+  if (withInt + intCopy > intCopy)
   {
-    v20 = v6;
+    v20 = intCopy;
     v21 = v19;
-    v22 = a3 + 8 * v6;
+    v22 = array + 8 * intCopy;
     while (1)
     {
-      v23 = *(a3 + 2);
+      v23 = *(array + 2);
       if (v20 < 0 || v20 >= v23)
       {
         IOSArray_throwOutOfBoundsWithMsg(v23, v20);
@@ -543,13 +543,13 @@ LABEL_18:
         break;
       }
 
-      v25 = [*(v22 + 3) position];
+      position = [*(v22 + 3) position];
       if (!v18)
       {
         break;
       }
 
-      v26 = v25;
+      v26 = position;
       [(JavaNioByteBuffer *)v18 putWithJavaNioByteBuffer:v24];
       [v24 positionWithInt:v26];
       ++v20;
@@ -578,22 +578,22 @@ LABEL_14:
     v30 = v28;
     while (1)
     {
-      v31 = v6;
-      v32 = *(a3 + 2);
-      if (v6 < 0 || v6 >= v32)
+      v31 = intCopy;
+      v32 = *(array + 2);
+      if (intCopy < 0 || intCopy >= v32)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v32, v6);
+        IOSArray_throwOutOfBoundsWithMsg(v32, intCopy);
       }
 
-      v33 = *(a3 + v6 + 3);
+      v33 = *(array + intCopy + 3);
       if (!v33)
       {
         break;
       }
 
-      v34 = JavaLangMath_minWithInt_withInt_(v30, [*(a3 + v31 + 3) remaining]);
+      v34 = JavaLangMath_minWithInt_withInt_(v30, [*(array + v31 + 3) remaining]);
       [v33 positionWithInt:{objc_msgSend(v33, "position") + v34}];
-      v6 = v31 + 1;
+      intCopy = v31 + 1;
       v30 = (v30 - v34);
       if (v30 <= 0)
       {

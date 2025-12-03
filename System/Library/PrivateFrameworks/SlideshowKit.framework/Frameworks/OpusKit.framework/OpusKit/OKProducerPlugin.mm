@@ -1,25 +1,25 @@
 @interface OKProducerPlugin
 - (BOOL)_load;
-- (BOOL)hasExportedClass:(Class)a3;
-- (BOOL)hasLoadedClass:(Class)a3;
+- (BOOL)hasExportedClass:(Class)class;
+- (BOOL)hasLoadedClass:(Class)class;
 - (BOOL)isLoaded;
 - (BOOL)loadRetain;
 - (OKProducerPlugin)init;
-- (OKProducerPlugin)initWithURL:(id)a3;
+- (OKProducerPlugin)initWithURL:(id)l;
 - (double)minimumContentVersion;
-- (id)URLForResource:(id)a3 withExtension:(id)a4;
+- (id)URLForResource:(id)resource withExtension:(id)extension;
 - (id)audioURLs;
 - (id)backgroundColor;
 - (id)contentIdentifier;
 - (id)exportedClassNames;
 - (id)localizedName;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
-- (id)producerWithPresentation:(id)a3;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
+- (id)producerWithPresentation:(id)presentation;
 - (id)supportedResolutions;
 - (unint64_t)family;
-- (void)_bundleDidLoad:(id)a3;
+- (void)_bundleDidLoad:(id)load;
 - (void)dealloc;
-- (void)setupJavascriptContext:(id)a3;
+- (void)setupJavascriptContext:(id)context;
 - (void)unloadRelease;
 @end
 
@@ -40,18 +40,18 @@
   return result;
 }
 
-- (OKProducerPlugin)initWithURL:(id)a3
+- (OKProducerPlugin)initWithURL:(id)l
 {
-  if ([objc_msgSend(a3 "pathExtension")])
+  if ([objc_msgSend(l "pathExtension")])
   {
     v7.receiver = self;
     v7.super_class = OKProducerPlugin;
-    return [(OKProducerBundle *)&v7 initWithURL:a3 bundleType:2];
+    return [(OKProducerBundle *)&v7 initWithURL:l bundleType:2];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
     return 0;
   }
 }
@@ -91,16 +91,16 @@
 
 - (id)localizedName
 {
-  v2 = [(OKProducerBundle *)self infoDictionary];
+  infoDictionary = [(OKProducerBundle *)self infoDictionary];
 
-  return [v2 objectForKey:@"OKProducerName"];
+  return [infoDictionary objectForKey:@"OKProducerName"];
 }
 
 - (id)supportedResolutions
 {
-  v2 = [(OKProducerBundle *)self infoDictionary];
+  infoDictionary = [(OKProducerBundle *)self infoDictionary];
 
-  return [v2 objectForKey:@"OKProducerResolutions"];
+  return [infoDictionary objectForKey:@"OKProducerResolutions"];
 }
 
 - (id)backgroundColor
@@ -117,16 +117,16 @@
 
 - (id)exportedClassNames
 {
-  v2 = [(OKProducerBundle *)self infoDictionary];
+  infoDictionary = [(OKProducerBundle *)self infoDictionary];
 
-  return [v2 objectForKey:@"OKProducerExportedClasses"];
+  return [infoDictionary objectForKey:@"OKProducerExportedClasses"];
 }
 
 - (id)contentIdentifier
 {
-  v2 = [(OKProducerBundle *)self infoDictionary];
+  infoDictionary = [(OKProducerBundle *)self infoDictionary];
 
-  return [v2 objectForKey:@"OKProducerContentIdentifier"];
+  return [infoDictionary objectForKey:@"OKProducerContentIdentifier"];
 }
 
 - (double)minimumContentVersion
@@ -139,59 +139,59 @@
 
 - (id)audioURLs
 {
-  v2 = [(OKProducerBundle *)self infoDictionary];
+  infoDictionary = [(OKProducerBundle *)self infoDictionary];
 
-  return [v2 objectForKey:@"OKProducerAudioURLs"];
+  return [infoDictionary objectForKey:@"OKProducerAudioURLs"];
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4
+- (id)URLForResource:(id)resource withExtension:(id)extension
 {
   content = self->_content;
-  if (!content || (result = [(OKProducerBundle *)content URLForResource:a3 withExtension:a4]) == 0)
+  if (!content || (result = [(OKProducerBundle *)content URLForResource:resource withExtension:extension]) == 0)
   {
     v9.receiver = self;
     v9.super_class = OKProducerPlugin;
-    return [(OKProducerBundle *)&v9 URLForResource:a3 withExtension:a4];
+    return [(OKProducerBundle *)&v9 URLForResource:resource withExtension:extension];
   }
 
   return result;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
   content = self->_content;
-  if (!content || (result = [(OKProducerBundle *)content localizedStringForKey:a3 value:a4 table:a5]) == 0)
+  if (!content || (result = [(OKProducerBundle *)content localizedStringForKey:key value:value table:table]) == 0)
   {
     v11.receiver = self;
     v11.super_class = OKProducerPlugin;
-    return [(OKProducerBundle *)&v11 localizedStringForKey:a3 value:a4 table:a5];
+    return [(OKProducerBundle *)&v11 localizedStringForKey:key value:value table:table];
   }
 
   return result;
 }
 
-- (id)producerWithPresentation:(id)a3
+- (id)producerWithPresentation:(id)presentation
 {
   [(OKProducerPlugin *)self loadRetain];
-  [a3 registerProducerPlugin:self];
-  v5 = [objc_alloc(self->_producerClass) initWithPresentation:a3 andPlugin:self];
+  [presentation registerProducerPlugin:self];
+  v5 = [objc_alloc(self->_producerClass) initWithPresentation:presentation andPlugin:self];
   [(OKProducerPlugin *)self unloadRelease];
 
   return v5;
 }
 
-- (void)setupJavascriptContext:(id)a3
+- (void)setupJavascriptContext:(id)context
 {
   [(OKProducerPlugin *)self loadRetain];
-  [(objc_class *)self->_producerClass setupJavascriptContext:a3];
+  [(objc_class *)self->_producerClass setupJavascriptContext:context];
 
   [(OKProducerPlugin *)self unloadRelease];
 }
 
-- (void)_bundleDidLoad:(id)a3
+- (void)_bundleDidLoad:(id)load
 {
-  v5 = [a3 name];
-  if ([v5 isEqualToString:*MEMORY[0x277CCA030]])
+  name = [load name];
+  if ([name isEqualToString:*MEMORY[0x277CCA030]])
   {
     objc_sync_enter(self);
     loadedClasses = self->_loadedClasses;
@@ -202,14 +202,14 @@
     }
 
     v7 = objc_alloc(MEMORY[0x277CBEA60]);
-    v8 = [a3 userInfo];
-    self->_loadedClasses = [v7 initWithArray:{objc_msgSend(v8, "objectForKey:", *MEMORY[0x277CCA438])}];
+    userInfo = [load userInfo];
+    self->_loadedClasses = [v7 initWithArray:{objc_msgSend(userInfo, "objectForKey:", *MEMORY[0x277CCA438])}];
 
     objc_sync_exit(self);
   }
 }
 
-- (BOOL)hasLoadedClass:(Class)a3
+- (BOOL)hasLoadedClass:(Class)class
 {
   v16 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -231,7 +231,7 @@
           objc_enumerationMutation(loadedClasses);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) isEqualToString:NSStringFromClass(a3)])
+        if ([*(*(&v11 + 1) + 8 * i) isEqualToString:NSStringFromClass(class)])
         {
           v9 = 1;
           goto LABEL_11;
@@ -254,7 +254,7 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)hasExportedClass:(Class)a3
+- (BOOL)hasExportedClass:(Class)class
 {
   v16 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -262,8 +262,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(OKProducerPlugin *)self exportedClassNames];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  exportedClassNames = [(OKProducerPlugin *)self exportedClassNames];
+  v6 = [exportedClassNames countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -273,17 +273,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(exportedClassNames);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) isEqualToString:NSStringFromClass(a3)])
+        if ([*(*(&v11 + 1) + 8 * i) isEqualToString:NSStringFromClass(class)])
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [exportedClassNames countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -310,11 +310,11 @@ LABEL_11:
       [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerPlugin.m" line:251 andFormat:@"Loading plugin %@...", -[OKProducerBundle identifier](self, "identifier")];
     }
 
-    v6 = self;
+    selfCopy = self;
     v13 = 0;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v8 = [(OKProducerBundle *)self bundle];
-    [v7 addObserver:self selector:sel__bundleDidLoad_ name:*MEMORY[0x277CCA030] object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    bundle = [(OKProducerBundle *)self bundle];
+    [defaultCenter addObserver:self selector:sel__bundleDidLoad_ name:*MEMORY[0x277CCA030] object:bundle];
     if ([-[OKProducerBundle bundle](self "bundle")])
     {
       v9 = [-[OKProducerBundle bundle](self "bundle")];
@@ -342,8 +342,8 @@ LABEL_11:
     else if (*v5 >= 4)
     {
       v10 = MEMORY[0x277D627B8];
-      v11 = [(OKProducerBundle *)self identifier];
-      [v10 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerPlugin.m" line:281 andFormat:@"Failed to load plugin %@: %@", v11, objc_msgSend(v13, "localizedDescription")];
+      identifier = [(OKProducerBundle *)self identifier];
+      [v10 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducerPlugin.m" line:281 andFormat:@"Failed to load plugin %@: %@", identifier, objc_msgSend(v13, "localizedDescription")];
     }
   }
 
@@ -360,16 +360,16 @@ LABEL_3:
   self->_loadCounter = loadCounter + 1;
   if (loadCounter)
   {
-    v4 = 1;
+    _load = 1;
   }
 
   else
   {
-    v4 = [(OKProducerPlugin *)self _load];
+    _load = [(OKProducerPlugin *)self _load];
   }
 
   objc_sync_exit(self);
-  return v4;
+  return _load;
 }
 
 - (void)unloadRelease

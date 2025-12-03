@@ -1,7 +1,7 @@
 @interface MCHomeScreenLayoutPayload
 + (id)typeStrings;
-- (MCHomeScreenLayoutPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)parseIconsArray:(id)a3 allowFolders:(BOOL)a4 outError:(id *)a5;
+- (MCHomeScreenLayoutPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)parseIconsArray:(id)array allowFolders:(BOOL)folders outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 @end
@@ -18,20 +18,20 @@
   return v2;
 }
 
-- (MCHomeScreenLayoutPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCHomeScreenLayoutPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v63.receiver = self;
   v63.super_class = MCHomeScreenLayoutPayload;
-  v10 = [(MCPayload *)&v63 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v63 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (v10)
   {
-    if ([v9 isStub])
+    if ([profileCopy isStub])
     {
       v62 = 0;
-      v11 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Layout" isRequired:0 outError:&v62];
+      v11 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Layout" isRequired:0 outError:&v62];
       v12 = v62;
       layout = v10->_layout;
       v10->_layout = v11;
@@ -41,7 +41,7 @@
     {
       layout = objc_opt_new();
       v61 = 0;
-      v14 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Dock" isRequired:0 outError:&v61];
+      v14 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Dock" isRequired:0 outError:&v61];
       v15 = v61;
       if (v15)
       {
@@ -65,7 +65,7 @@
         {
           [layout addObject:v17];
           v59 = 0;
-          v16 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Pages" isRequired:1 outError:&v59];
+          v16 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Pages" isRequired:1 outError:&v59];
           v19 = v59;
           if (v19)
           {
@@ -86,7 +86,7 @@
               v47 = layout;
               v48 = *v56;
               v43 = v14;
-              v44 = a5;
+              errorCopy = error;
               while (2)
               {
                 for (i = 0; i != v49; ++i)
@@ -147,7 +147,7 @@ LABEL_25:
                     v16 = obj;
                     v29 = obj;
                     v14 = v43;
-                    a5 = v44;
+                    error = errorCopy;
                     goto LABEL_31;
                   }
 
@@ -155,7 +155,7 @@ LABEL_25:
                 }
 
                 v14 = v43;
-                a5 = v44;
+                error = errorCopy;
                 v49 = [(NSArray *)obj countByEnumeratingWithState:&v55 objects:v69 count:16];
                 if (v49)
                 {
@@ -184,10 +184,10 @@ LABEL_31:
     {
       v30 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
       v31 = v30;
-      if (a5)
+      if (error)
       {
         v32 = v30;
-        *a5 = v31;
+        *error = v31;
       }
 
       v33 = _MCLogObjects;
@@ -196,28 +196,28 @@ LABEL_31:
         v34 = v33;
         v35 = objc_opt_class();
         v36 = v35;
-        v37 = [v31 MCVerboseDescription];
+        mCVerboseDescription = [v31 MCVerboseDescription];
         *buf = 138543618;
         v65 = v35;
         v66 = 2114;
-        v67 = v37;
+        v67 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v34, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
       v10 = 0;
     }
 
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v38 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v39 = v38;
-        v40 = [(MCPayload *)v10 friendlyName];
+        friendlyName = [(MCPayload *)v10 friendlyName];
         *buf = 138543618;
-        v65 = v40;
+        v65 = friendlyName;
         v66 = 2114;
-        v67 = v8;
+        v67 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v39, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
       }
     }
@@ -227,16 +227,16 @@ LABEL_31:
   return v10;
 }
 
-- (id)parseIconsArray:(id)a3 allowFolders:(BOOL)a4 outError:(id *)a5
+- (id)parseIconsArray:(id)array allowFolders:(BOOL)folders outError:(id *)error
 {
   v100 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  arrayCopy = array;
   v7 = objc_opt_new();
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v8 = v6;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v85 objects:v99 count:16];
   if (!v9)
   {
@@ -245,7 +245,7 @@ LABEL_31:
   }
 
   v10 = v9;
-  v58 = a5;
+  errorCopy = error;
   v11 = 0;
   v65 = *v86;
   v59 = v8;
@@ -300,7 +300,7 @@ LABEL_62:
       v19 = v14;
       if ([v14 isEqualToString:@"Folder"])
       {
-        if (!a4)
+        if (!folders)
         {
           v53 = _MCLogObjects;
           if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
@@ -533,13 +533,13 @@ LABEL_46:
 
 LABEL_63:
 
-  a5 = v58;
+  error = errorCopy;
   if (!v11)
   {
 LABEL_66:
     v54 = [v7 copy];
     v11 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_68;
     }
@@ -548,11 +548,11 @@ LABEL_66:
   }
 
   v54 = 0;
-  if (v58)
+  if (errorCopy)
   {
 LABEL_67:
     v55 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
 LABEL_68:
@@ -566,11 +566,11 @@ LABEL_68:
 {
   v6.receiver = self;
   v6.super_class = MCHomeScreenLayoutPayload;
-  v3 = [(MCPayload *)&v6 stubDictionary];
-  v4 = [(MCHomeScreenLayoutPayload *)self layout];
-  [v3 setObject:v4 forKeyedSubscript:@"Layout"];
+  stubDictionary = [(MCPayload *)&v6 stubDictionary];
+  layout = [(MCHomeScreenLayoutPayload *)self layout];
+  [stubDictionary setObject:layout forKeyedSubscript:@"Layout"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)payloadDescriptionKeyValueSections

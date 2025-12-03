@@ -1,10 +1,10 @@
 @interface EKUIRemoteUIExtension
-- (void)preferredContentSizeChanged:(id)a3;
+- (void)preferredContentSizeChanged:(id)changed;
 @end
 
 @implementation EKUIRemoteUIExtension
 
-- (void)preferredContentSizeChanged:(id)a3
+- (void)preferredContentSizeChanged:(id)changed
 {
   v3 = sub_10001CE9C();
   v4 = *(v3 - 8);

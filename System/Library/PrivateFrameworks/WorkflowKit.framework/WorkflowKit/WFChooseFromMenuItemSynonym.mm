@@ -1,19 +1,19 @@
 @interface WFChooseFromMenuItemSynonym
-- (BOOL)isEqual:(id)a3;
-- (WFChooseFromMenuItemSynonym)initWithIdentity:(id)a3 synonym:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WFChooseFromMenuItemSynonym)initWithIdentity:(id)identity synonym:(id)synonym;
 @end
 
 @implementation WFChooseFromMenuItemSynonym
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -29,18 +29,18 @@
 
   v6 = v5;
   identity = self->_identity;
-  v8 = [v6 identity];
+  identity = [v6 identity];
   v9 = identity;
-  v10 = v8;
+  v10 = identity;
   v11 = v10;
   if (v9 == v10)
   {
 
 LABEL_12:
     synonym = self->_synonym;
-    v14 = [v6 synonym];
+    synonym = [v6 synonym];
     v15 = synonym;
-    v16 = v14;
+    v16 = synonym;
     v9 = v16;
     if (v15 == v16)
     {
@@ -79,18 +79,18 @@ LABEL_20:
   return v12;
 }
 
-- (WFChooseFromMenuItemSynonym)initWithIdentity:(id)a3 synonym:(id)a4
+- (WFChooseFromMenuItemSynonym)initWithIdentity:(id)identity synonym:(id)synonym
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  synonymCopy = synonym;
   v13.receiver = self;
   v13.super_class = WFChooseFromMenuItemSynonym;
   v9 = [(WFChooseFromMenuItemSynonym *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identity, a3);
-    objc_storeStrong(&v10->_synonym, a4);
+    objc_storeStrong(&v9->_identity, identity);
+    objc_storeStrong(&v10->_synonym, synonym);
     v11 = v10;
   }
 

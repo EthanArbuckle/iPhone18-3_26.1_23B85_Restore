@@ -3,8 +3,8 @@
 - (id)_extraObjects;
 - (id)allObjects;
 - (void)_initializeFrc;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
+- (void)controllerDidChangeContent:(id)content;
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
 @end
 
 @implementation MTCoreDataResultsWithExtrasController
@@ -15,36 +15,36 @@
   v5.super_class = MTCoreDataResultsWithExtrasController;
   [(MTCoreDataResultsController *)&v5 _initializeFrc];
   v3 = [(MTCoreDataResultsController *)self frc];
-  v4 = [v3 fetchedObjects];
-  -[MTCoreDataResultsWithExtrasController setNumberOfResults:](self, "setNumberOfResults:", [v4 count]);
+  fetchedObjects = [v3 fetchedObjects];
+  -[MTCoreDataResultsWithExtrasController setNumberOfResults:](self, "setNumberOfResults:", [fetchedObjects count]);
 }
 
 - (id)allObjects
 {
   v7.receiver = self;
   v7.super_class = MTCoreDataResultsWithExtrasController;
-  v3 = [(MTCoreDataResultsController *)&v7 allObjects];
-  if ([v3 count])
+  allObjects = [(MTCoreDataResultsController *)&v7 allObjects];
+  if ([allObjects count])
   {
-    v4 = [(MTCoreDataResultsWithExtrasController *)self _extraObjects];
-    if ([v4 count])
+    _extraObjects = [(MTCoreDataResultsWithExtrasController *)self _extraObjects];
+    if ([_extraObjects count])
     {
-      v5 = [v3 arrayByAddingObjectsFromArray:v4];
+      v5 = [allObjects arrayByAddingObjectsFromArray:_extraObjects];
 
-      v3 = v5;
+      allObjects = v5;
     }
   }
 
-  return v3;
+  return allObjects;
 }
 
 - (id)_extraObjects
 {
   v3 = objc_opt_new();
-  v4 = [(MTCoreDataResultsWithExtrasController *)self numberOfExtraObjects];
-  if (v4)
+  numberOfExtraObjects = [(MTCoreDataResultsWithExtrasController *)self numberOfExtraObjects];
+  if (numberOfExtraObjects)
   {
-    v5 = v4;
+    v5 = numberOfExtraObjects;
     do
     {
       v6 = +[NSUUID UUID];
@@ -76,21 +76,21 @@
   return changeGenerator;
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = [(MTCoreDataResultsController *)self frc];
-  v6 = [v5 fetchedObjects];
+  fetchedObjects = [v5 fetchedObjects];
 
-  v7 = [v6 count];
+  v7 = [fetchedObjects count];
   if ((v7 != 0) != [(MTCoreDataResultsWithExtrasController *)self _hasResults])
   {
-    v8 = [(MTCoreDataResultsWithExtrasController *)self _extraObjects];
-    v9 = [v6 arrayByAddingObjectsFromArray:v8];
+    _extraObjects = [(MTCoreDataResultsWithExtrasController *)self _extraObjects];
+    v9 = [fetchedObjects arrayByAddingObjectsFromArray:_extraObjects];
 
     if (v7)
     {
-      v10 = v6;
+      v10 = fetchedObjects;
     }
 
     else
@@ -105,35 +105,35 @@
 
     else
     {
-      v11 = v6;
+      v11 = fetchedObjects;
     }
 
     v12 = v11;
     v13 = v10;
-    v14 = [(MTCoreDataResultsWithExtrasController *)self changeGenerator];
-    [v14 generateChangesForExistingObjects:v13 newObjects:v12 inSection:0];
+    changeGenerator = [(MTCoreDataResultsWithExtrasController *)self changeGenerator];
+    [changeGenerator generateChangesForExistingObjects:v13 newObjects:v12 inSection:0];
   }
 
   v15.receiver = self;
   v15.super_class = MTCoreDataResultsWithExtrasController;
-  [(MTCoreDataResultsController *)&v15 controllerDidChangeContent:v4];
+  [(MTCoreDataResultsController *)&v15 controllerDidChangeContent:contentCopy];
   [(MTCoreDataResultsWithExtrasController *)self setNumberOfResults:v7];
 }
 
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v15 = a4;
-  v11 = a5;
-  v12 = a7;
-  if (v11 && a6 == 2 && [(MTCoreDataResultsWithExtrasController *)self _hasResults])
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (pathCopy && type == 2 && [(MTCoreDataResultsWithExtrasController *)self _hasResults])
   {
-    v13 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v11 row] + -[MTCoreDataResultsWithExtrasController numberOfResults](self, "numberOfResults"), objc_msgSend(v11, "section"));
+    v13 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] + -[MTCoreDataResultsWithExtrasController numberOfResults](self, "numberOfResults"), objc_msgSend(pathCopy, "section"));
 
-    v11 = v13;
+    pathCopy = v13;
   }
 
   v14 = [(MTCoreDataResultsController *)self frc];
-  [(MTCoreDataResultsController *)self controller:v14 didChangeObject:v15 atIndexPath:v11 forChangeType:a6 newIndexPath:v12];
+  [(MTCoreDataResultsController *)self controller:v14 didChangeObject:objectCopy atIndexPath:pathCopy forChangeType:type newIndexPath:indexPathCopy];
 }
 
 @end

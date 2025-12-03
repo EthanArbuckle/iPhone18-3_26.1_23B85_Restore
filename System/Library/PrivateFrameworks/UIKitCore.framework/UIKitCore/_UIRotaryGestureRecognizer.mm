@@ -2,48 +2,48 @@
 - (BOOL)_effectiveCanBeginFromRest;
 - (BOOL)_effectiveMustBeginFromRest;
 - (BOOL)_invalidateRestingTouchBeginTimerIfNecessary;
-- (BOOL)_isTouchInRangeOfInitialTouchForRestingTouchActivation:(CGPoint)a3;
-- (_UIRotaryGestureRecognizer)initWithCoder:(id)a3;
-- (_UIRotaryGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)_isTouchInRangeOfInitialTouchForRestingTouchActivation:(CGPoint)activation;
+- (_UIRotaryGestureRecognizer)initWithCoder:(id)coder;
+- (_UIRotaryGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)_applyDeadbandToValue:(double)result;
-- (double)_applyDistanceWeightToValue:(double)a3;
-- (double)_applyScaleFactor:(double)a3 toValue:(double)a4 fromAngle:(double)a5 toAngle:(double)a6;
-- (double)_calculateAngleForTouchLocation:(CGPoint)a3;
+- (double)_applyDistanceWeightToValue:(double)value;
+- (double)_applyScaleFactor:(double)factor toValue:(double)value fromAngle:(double)angle toAngle:(double)toAngle;
+- (double)_calculateAngleForTouchLocation:(CGPoint)location;
 - (double)_deadzoneRangeForCurrentTouchLocation;
-- (double)_deltaForEventInfos:(id)a3;
+- (double)_deltaForEventInfos:(id)infos;
 - (double)_directionalMovementClassificationDistanceThreshold;
 - (double)_movementClassificationAngleThresholdNumerator;
 - (double)_restingTouchRangeForCurrentTouchLocation;
-- (double)_velocityForEventInfos:(id)a3;
-- (int64_t)_regionForTouchLocation:(CGPoint)a3;
-- (int64_t)_regionForWheelPosition:(double)a3;
+- (double)_velocityForEventInfos:(id)infos;
+- (int64_t)_regionForTouchLocation:(CGPoint)location;
+- (int64_t)_regionForWheelPosition:(double)position;
 - (void)_activateRestingTouchRecoveryTimer;
-- (void)_attemptToClassifyWithPreviousLocation:(CGPoint)a3 newLocation:(CGPoint)a4;
-- (void)_attemptToStartFromRestingTouch:(id)a3;
-- (void)_endGestureFromRestingTouchRecovery:(id)a3;
-- (void)_enterRecoveryWindowOrEndGestureWithState:(int64_t)a3;
+- (void)_attemptToClassifyWithPreviousLocation:(CGPoint)location newLocation:(CGPoint)newLocation;
+- (void)_attemptToStartFromRestingTouch:(id)touch;
+- (void)_endGestureFromRestingTouchRecovery:(id)recovery;
+- (void)_enterRecoveryWindowOrEndGestureWithState:(int64_t)state;
 - (void)_invalidateRestingTouchRecoveryTimerIfNecessary;
 - (void)_notifyDelegateBeganClassifyingMovementIfNecessary;
 - (void)_notifyDelegateFailedClassifyingMovement;
-- (void)_notifyDelegateRestTimerCancelledIfNecessary:(BOOL)a3;
+- (void)_notifyDelegateRestTimerCancelledIfNecessary:(BOOL)necessary;
 - (void)_notifyDelegateUpdatedClassifyingMovement;
-- (void)_processEvent:(id)a3;
+- (void)_processEvent:(id)event;
 - (void)_resetDeadband;
 - (void)reset;
-- (void)setDelegate:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIRotaryGestureRecognizer
 
-- (_UIRotaryGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIRotaryGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIRotaryGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -53,11 +53,11 @@
   return v5;
 }
 
-- (_UIRotaryGestureRecognizer)initWithCoder:(id)a3
+- (_UIRotaryGestureRecognizer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIRotaryGestureRecognizer;
-  v3 = [(UIGestureRecognizer *)&v6 initWithCoder:a3];
+  v3 = [(UIGestureRecognizer *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -67,14 +67,14 @@
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   p_touchBeganPoint = &self->_touchBeganPoint;
-  [a4 _digitizerLocation];
+  [event _digitizerLocation];
   p_touchBeganPoint->x = v7;
   p_touchBeganPoint->y = v8;
   [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchRecoveryTimerIfNecessary];
-  [a4 _digitizerLocation];
+  [event _digitizerLocation];
   self->_digitizerLocation.x = v9;
   self->_digitizerLocation.y = v10;
   [(_UIRotaryGestureRecognizer *)self _calculateCurrentWheelPosition];
@@ -85,8 +85,8 @@
     [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary];
     if ((*&self->_rotaryGestureRecognizerFlags & 4) != 0)
     {
-      v12 = [(UIGestureRecognizer *)self delegate];
-      [v12 rotaryGestureRecognizerStartedRestTimer:self];
+      delegate = [(UIGestureRecognizer *)self delegate];
+      [delegate rotaryGestureRecognizerStartedRestTimer:self];
     }
 
     v13 = MEMORY[0x1E695DFF0];
@@ -101,8 +101,8 @@
     restingTouchBeginTimer = self->_restingTouchBeginTimer;
     self->_restingTouchBeginTimer = v16;
 
-    v18 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v18 addTimer:self->_restingTouchBeginTimer forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->_restingTouchBeginTimer forMode:*MEMORY[0x1E695DA28]];
   }
 
   else if ([(_UIRotaryGestureRecognizer *)self _effectiveMustBeginFromRest])
@@ -113,18 +113,18 @@
   if ([(UIGestureRecognizer *)self state]!= UIGestureRecognizerStateFailed)
   {
 
-    [(_UIRotaryGestureRecognizer *)self _processEvent:a4];
+    [(_UIRotaryGestureRecognizer *)self _processEvent:event];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [a4 _digitizerLocation];
+  [event _digitizerLocation];
   if ([(_UIRotaryGestureRecognizer *)self _isTouchInRangeOfInitialTouchForRestingTouchActivation:?])
   {
 LABEL_4:
 
-    [(_UIRotaryGestureRecognizer *)self _processEvent:a4];
+    [(_UIRotaryGestureRecognizer *)self _processEvent:event];
     return;
   }
 
@@ -135,14 +135,14 @@ LABEL_4:
   }
 
   [(UIGestureRecognizer *)self setState:5];
-  v6 = [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary];
+  _invalidateRestingTouchBeginTimerIfNecessary = [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary];
 
-  [(_UIRotaryGestureRecognizer *)self _notifyDelegateRestTimerCancelledIfNecessary:v6];
+  [(_UIRotaryGestureRecognizer *)self _notifyDelegateRestTimerCancelledIfNecessary:_invalidateRestingTouchBeginTimerIfNecessary];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary:a3];
+  v5 = [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary:ended];
   [(_UIRotaryGestureRecognizer *)self setIsActivelyTouching:0];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
   {
@@ -159,9 +159,9 @@ LABEL_4:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary:a3];
+  v5 = [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary:cancelled];
   [(_UIRotaryGestureRecognizer *)self setIsActivelyTouching:0];
   if ([(UIGestureRecognizer *)self state])
   {
@@ -207,7 +207,7 @@ LABEL_4:
   [(UIGestureRecognizer *)&v6 reset];
 }
 
-- (void)_enterRecoveryWindowOrEndGestureWithState:(int64_t)a3
+- (void)_enterRecoveryWindowOrEndGestureWithState:(int64_t)state
 {
   if ((_UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_B519_RestingTouchRecoveryWindow, @"B519_RestingTouchRecoveryWindow") & 1) != 0 || (v5 = *&qword_1EA95E3F8, *&qword_1EA95E3F8 != 0.0))
   {
@@ -221,13 +221,13 @@ LABEL_4:
   else
   {
 
-    [(UIGestureRecognizer *)self setState:a3, v5];
+    [(UIGestureRecognizer *)self setState:state, v5];
   }
 }
 
-- (BOOL)_isTouchInRangeOfInitialTouchForRestingTouchActivation:(CGPoint)a3
+- (BOOL)_isTouchInRangeOfInitialTouchForRestingTouchActivation:(CGPoint)activation
 {
-  v3 = sqrt((a3.x - self->_touchBeganPoint.x) * (a3.x - self->_touchBeganPoint.x) + (a3.y - self->_touchBeganPoint.y) * (a3.y - self->_touchBeganPoint.y));
+  v3 = sqrt((activation.x - self->_touchBeganPoint.x) * (activation.x - self->_touchBeganPoint.x) + (activation.y - self->_touchBeganPoint.y) * (activation.y - self->_touchBeganPoint.y));
   v4 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_B519_RestingTouchMovementAllowance, @"B519_RestingTouchMovementAllowance");
   v5 = *&qword_1EA95E408;
   if (v4)
@@ -253,11 +253,11 @@ LABEL_4:
   restingTouchRecoveryTimer = self->_restingTouchRecoveryTimer;
   self->_restingTouchRecoveryTimer = v6;
 
-  v8 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v8 addTimer:self->_restingTouchRecoveryTimer forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:self->_restingTouchRecoveryTimer forMode:*MEMORY[0x1E695DA28]];
 }
 
-- (void)_endGestureFromRestingTouchRecovery:(id)a3
+- (void)_endGestureFromRestingTouchRecovery:(id)recovery
 {
   [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchRecoveryTimerIfNecessary];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
@@ -291,7 +291,7 @@ LABEL_4:
   }
 }
 
-- (void)_attemptToStartFromRestingTouch:(id)a3
+- (void)_attemptToStartFromRestingTouch:(id)touch
 {
   [(_UIRotaryGestureRecognizer *)self _invalidateRestingTouchBeginTimerIfNecessary];
   if ([(_UIRotaryGestureRecognizer *)self _isTouchInRangeOfInitialTouchForRestingTouchActivation:self->_digitizerLocation.x, self->_digitizerLocation.y])
@@ -323,43 +323,43 @@ LABEL_4:
     return 1;
   }
 
-  v3 = self;
-  v4 = [(UIGestureRecognizer *)self delegate];
-  LOBYTE(v3) = [v4 rotaryGestureRecognizerCanBeginFromRest:v3];
+  selfCopy = self;
+  delegate = [(UIGestureRecognizer *)self delegate];
+  LOBYTE(selfCopy) = [delegate rotaryGestureRecognizerCanBeginFromRest:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (int64_t)_regionForTouchLocation:(CGPoint)a3
+- (int64_t)_regionForTouchLocation:(CGPoint)location
 {
-  [(_UIRotaryGestureRecognizer *)self _calculateWheelPositionForTouchLocation:a3.x, a3.y];
+  [(_UIRotaryGestureRecognizer *)self _calculateWheelPositionForTouchLocation:location.x, location.y];
 
   return [(_UIRotaryGestureRecognizer *)self _regionForWheelPosition:?];
 }
 
-- (int64_t)_regionForWheelPosition:(double)a3
+- (int64_t)_regionForWheelPosition:(double)position
 {
-  if (a3 >= 0.0 && a3 <= 0.125)
+  if (position >= 0.0 && position <= 0.125)
   {
     return 1;
   }
 
-  if (a3 >= 0.875 && a3 <= 1.0)
+  if (position >= 0.875 && position <= 1.0)
   {
     return 1;
   }
 
-  if (a3 > 0.125 && a3 < 0.375)
+  if (position > 0.125 && position < 0.375)
   {
     return 4;
   }
 
-  if (a3 >= 0.375 && a3 <= 0.625)
+  if (position >= 0.375 && position <= 0.625)
   {
     return 2;
   }
 
-  if (a3 >= 0.875 || a3 <= 0.625)
+  if (position >= 0.875 || position <= 0.625)
   {
     return 0;
   }
@@ -370,12 +370,12 @@ LABEL_4:
   }
 }
 
-- (void)_processEvent:(id)a3
+- (void)_processEvent:(id)event
 {
   p_digitizerLocation = &self->_digitizerLocation;
   x = self->_digitizerLocation.x;
   y = self->_digitizerLocation.y;
-  [a3 _digitizerLocation];
+  [event _digitizerLocation];
   p_digitizerLocation->x = v8;
   p_digitizerLocation->y = v9;
   if ([(_UIRotaryGestureRecognizer *)self _effectiveMustBeginFromRest]&& [(_UIRotaryGestureRecognizer *)self beganMode]!= 1)
@@ -384,8 +384,8 @@ LABEL_4:
   }
 
   movementClassification = self->_movementClassification;
-  v11 = [(UIGestureRecognizer *)self state];
-  if (!(v11 | movementClassification))
+  state = [(UIGestureRecognizer *)self state];
+  if (!(state | movementClassification))
   {
     [(_UIRotaryGestureRecognizer *)self _attemptToClassifyWithPreviousLocation:x newLocation:y, p_digitizerLocation->x, p_digitizerLocation->y];
   }
@@ -451,7 +451,7 @@ LABEL_4:
             v35 = v32;
           }
 
-          [a3 timestamp];
+          [event timestamp];
           v37 = v36;
           v38 = [(NSMutableArray *)self->_recentRotaryEvents count];
           v39 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_B519_RotaryVelocityFilterSamples, @"B519_RotaryVelocityFilterSamples");
@@ -485,7 +485,7 @@ LABEL_4:
 
         else
         {
-          [a3 timestamp];
+          [event timestamp];
           v28 = v27;
           [(NSMutableArray *)self->_recentRotaryEvents removeAllObjects];
           v29 = self->_recentRotaryEvents;
@@ -500,13 +500,13 @@ LABEL_4:
         }
 
         [(_UIRotaryGestureRecognizer *)self setVelocity:v31];
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2;
       }
 
       else
       {
-        [a3 timestamp];
+        [event timestamp];
         v22 = v21;
         [(NSMutableArray *)self->_recentRotaryEvents removeAllObjects];
         v23 = self->_recentRotaryEvents;
@@ -526,15 +526,15 @@ LABEL_4:
 
         self->_startWheelPosition = self->_currentWheelPosition;
         [(_UIRotaryGestureRecognizer *)self _resetDeadband];
-        v25 = self;
+        selfCopy2 = self;
         v26 = 1;
       }
 
-      [(UIGestureRecognizer *)v25 setState:v26];
+      [(UIGestureRecognizer *)selfCopy2 setState:v26];
       return;
     }
 
-    if (v11 == UIGestureRecognizerStatePossible)
+    if (state == UIGestureRecognizerStatePossible)
     {
       [(_UIRotaryGestureRecognizer *)self _calculateCurrentWheelPosition];
       self->_currentWheelPosition = v20;
@@ -560,12 +560,12 @@ LABEL_4:
   }
 }
 
-- (void)_notifyDelegateRestTimerCancelledIfNecessary:(BOOL)a3
+- (void)_notifyDelegateRestTimerCancelledIfNecessary:(BOOL)necessary
 {
-  if (self->_movementClassification != 2 && a3 && (*&self->_rotaryGestureRecognizerFlags & 8) != 0)
+  if (self->_movementClassification != 2 && necessary && (*&self->_rotaryGestureRecognizerFlags & 8) != 0)
   {
-    v7 = [(UIGestureRecognizer *)self delegate];
-    [v7 rotaryGestureRecognizerCancelledRestTimer:self];
+    delegate = [(UIGestureRecognizer *)self delegate];
+    [delegate rotaryGestureRecognizerCancelledRestTimer:self];
   }
 }
 
@@ -574,8 +574,8 @@ LABEL_4:
   if (!self->_hasNotifiedDelegateBeganClassifyingMovement && (*&self->_rotaryGestureRecognizerFlags & 0x10) != 0)
   {
     self->_hasNotifiedDelegateBeganClassifyingMovement = 1;
-    v3 = [(UIGestureRecognizer *)self delegate];
-    [v3 rotaryGestureRecognizerBeganClassifyingMovement:self];
+    delegate = [(UIGestureRecognizer *)self delegate];
+    [delegate rotaryGestureRecognizerBeganClassifyingMovement:self];
   }
 }
 
@@ -583,8 +583,8 @@ LABEL_4:
 {
   if (self->_hasNotifiedDelegateBeganClassifyingMovement && (*&self->_rotaryGestureRecognizerFlags & 0x20) != 0)
   {
-    v3 = [(UIGestureRecognizer *)self delegate];
-    [v3 rotaryGestureRecognizerUpdatedClassifyingMovement:self];
+    delegate = [(UIGestureRecognizer *)self delegate];
+    [delegate rotaryGestureRecognizerUpdatedClassifyingMovement:self];
   }
 }
 
@@ -592,8 +592,8 @@ LABEL_4:
 {
   if (self->_hasNotifiedDelegateBeganClassifyingMovement && (*&self->_rotaryGestureRecognizerFlags & 0x40) != 0)
   {
-    v3 = [(UIGestureRecognizer *)self delegate];
-    [v3 rotaryGestureRecognizerFailedClassifyingMovement:self];
+    delegate = [(UIGestureRecognizer *)self delegate];
+    [delegate rotaryGestureRecognizerFailedClassifyingMovement:self];
   }
 }
 
@@ -609,8 +609,8 @@ LABEL_4:
   {
     if ((*&self->_rotaryGestureRecognizerFlags & 2) != 0)
     {
-      v6 = [(UIGestureRecognizer *)self delegate];
-      v2 = [v6 rotaryGestureRecognizerMustBeginFromRest:self];
+      delegate = [(UIGestureRecognizer *)self delegate];
+      v2 = [delegate rotaryGestureRecognizerMustBeginFromRest:self];
 
       v7 = [MEMORY[0x1E696AD98] numberWithBool:v2];
       v8 = self->_delegateMustBeginFromRestValue;
@@ -627,11 +627,11 @@ LABEL_2:
   return [(NSNumber *)delegateMustBeginFromRestValue BOOLValue];
 }
 
-- (void)_attemptToClassifyWithPreviousLocation:(CGPoint)a3 newLocation:(CGPoint)a4
+- (void)_attemptToClassifyWithPreviousLocation:(CGPoint)location newLocation:(CGPoint)newLocation
 {
-  y = a4.y;
-  x = a4.x;
-  [(_UIRotaryGestureRecognizer *)self _calculateRadialDistance:a4.x, a4.y];
+  y = newLocation.y;
+  x = newLocation.x;
+  [(_UIRotaryGestureRecognizer *)self _calculateRadialDistance:newLocation.x, newLocation.y];
   v8 = v7;
   v9 = [(_UIRotaryGestureRecognizer *)self _regionForTouchLocation:x, y];
   [(_UIRotaryGestureRecognizer *)self _calculateAngleForTouchLocation:x, y];
@@ -772,9 +772,9 @@ LABEL_41:
   }
 }
 
-- (double)_velocityForEventInfos:(id)a3
+- (double)_velocityForEventInfos:(id)infos
 {
-  v4 = [a3 count];
+  v4 = [infos count];
   v5 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_B519_RotaryVelocityFilterSamples, @"B519_RotaryVelocityFilterSamples");
   v6 = 0.0;
   if (v4 >= 2)
@@ -811,10 +811,10 @@ LABEL_41:
       v11 = v9;
       do
       {
-        v12 = [a3 objectAtIndex:{v10 - 1, 0, 0, 0, 0}];
+        v12 = [infos objectAtIndex:{v10 - 1, 0, 0, 0, 0}];
         [v12 getValue:&v16];
 
-        v13 = [a3 objectAtIndex:v10];
+        v13 = [infos objectAtIndex:v10];
         [v13 getValue:v15];
 
         v6 = v6 + v15[1] / fmax(v15[0] - v16, 0.0151515152) / v11;
@@ -849,9 +849,9 @@ LABEL_41:
   return result;
 }
 
-- (double)_deltaForEventInfos:(id)a3
+- (double)_deltaForEventInfos:(id)infos
 {
-  v4 = [a3 count];
+  v4 = [infos count];
   v5 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_B519_RotaryVelocityFilterSamples, @"B519_RotaryVelocityFilterSamples");
   v6 = 0.0;
   if (v4)
@@ -880,7 +880,7 @@ LABEL_41:
       do
       {
         v15 = 0.0;
-        v12 = [a3 objectAtIndex:{v10, 0}];
+        v12 = [infos objectAtIndex:{v10, 0}];
         [v12 getValue:&v14];
 
         v6 = v6 + v15 / v11;
@@ -895,12 +895,12 @@ LABEL_41:
   return v6;
 }
 
-- (double)_applyDistanceWeightToValue:(double)a3
+- (double)_applyDistanceWeightToValue:(double)value
 {
   __asm { FMOV            V2.2D, #0.5 }
 
   v8 = vsubq_f64(_Q2, self->_digitizerLocation);
-  v9 = sqrt(vaddvq_f64(vmulq_f64(v8, v8))) * a3;
+  v9 = sqrt(vaddvq_f64(vmulq_f64(v8, v8))) * value;
   v10 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_B519_DeweightedDistanceFromCenterFactor, @"B519_DeweightedDistanceFromCenterFactor");
   v11 = 1.0 / *&qword_1EA95E438;
   if (v10)
@@ -911,14 +911,14 @@ LABEL_41:
   return v11 * v9;
 }
 
-- (double)_applyScaleFactor:(double)a3 toValue:(double)a4 fromAngle:(double)a5 toAngle:(double)a6
+- (double)_applyScaleFactor:(double)factor toValue:(double)value fromAngle:(double)angle toAngle:(double)toAngle
 {
   [(_UIRotaryGestureRecognizer *)self _calculateAngleForTouchLocation:self->_digitizerLocation.x, self->_digitizerLocation.y];
-  v11 = v10 >= a6 || v10 <= a5;
-  result = a3 * a4;
+  v11 = v10 >= toAngle || v10 <= angle;
+  result = factor * value;
   if (v11)
   {
-    return a4;
+    return value;
   }
 
   return result;
@@ -970,10 +970,10 @@ LABEL_41:
   return result;
 }
 
-- (double)_calculateAngleForTouchLocation:(CGPoint)a3
+- (double)_calculateAngleForTouchLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(_UIRotaryGestureRecognizer *)self _calculateRadialDistance:?];
   *&v5 = (x + -0.5) / v5;
   v6 = acosf(*&v5) * 57.2957795;
@@ -1051,15 +1051,15 @@ LABEL_41:
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = [(UIGestureRecognizer *)self delegate];
-  if (v5 != a3 || !a3 && (*&self->_rotaryGestureRecognizerFlags & 0x80000000) != 0)
+  delegate = [(UIGestureRecognizer *)self delegate];
+  if (delegate != delegate || !delegate && (*&self->_rotaryGestureRecognizerFlags & 0x80000000) != 0)
   {
     v12.receiver = self;
     v12.super_class = _UIRotaryGestureRecognizer;
-    [(UIGestureRecognizer *)&v12 setDelegate:a3];
-    *&self->_rotaryGestureRecognizerFlags = *&self->_rotaryGestureRecognizerFlags & 0x7F | ((a3 != 0) << 7);
+    [(UIGestureRecognizer *)&v12 setDelegate:delegate];
+    *&self->_rotaryGestureRecognizerFlags = *&self->_rotaryGestureRecognizerFlags & 0x7F | ((delegate != 0) << 7);
     *&self->_rotaryGestureRecognizerFlags = *&self->_rotaryGestureRecognizerFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {

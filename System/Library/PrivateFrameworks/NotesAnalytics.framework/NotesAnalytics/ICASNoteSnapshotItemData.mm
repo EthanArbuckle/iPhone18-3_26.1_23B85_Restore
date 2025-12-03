@@ -1,64 +1,64 @@
 @interface ICASNoteSnapshotItemData
-- (ICASNoteSnapshotItemData)initWithNoteID:(id)a3 noteType:(id)a4 collaborationStatus:(id)a5 collaborationType:(id)a6 countOfInvitees:(id)a7 countOfAcceptances:(id)a8 countOfDocScan:(id)a9 countOfInlineDrawingV1:(id)a10 countOfInlineDrawingV2:(id)a11 countOfFullscreenDrawing:(id)a12 countOfTables:(id)a13 countOfAttachmentOther:(id)a14 hasChecklist:(id)a15 isPinned:(id)a16 isLocked:(id)a17 charLength:(id)a18 creationDate:(id)a19 countOfInlineDrawingV1PencilStrokes:(id)a20 countOfInlineDrawingV1FingerStrokes:(id)a21 countOfInlineDrawingV2PencilStrokes:(id)a22 countOfInlineDrawingV2FingerStrokes:(id)a23 countOfFullscreenDrawingStrokes:(id)a24;
+- (ICASNoteSnapshotItemData)initWithNoteID:(id)d noteType:(id)type collaborationStatus:(id)status collaborationType:(id)collaborationType countOfInvitees:(id)invitees countOfAcceptances:(id)acceptances countOfDocScan:(id)scan countOfInlineDrawingV1:(id)self0 countOfInlineDrawingV2:(id)self1 countOfFullscreenDrawing:(id)self2 countOfTables:(id)self3 countOfAttachmentOther:(id)self4 hasChecklist:(id)self5 isPinned:(id)self6 isLocked:(id)self7 charLength:(id)self8 creationDate:(id)self9 countOfInlineDrawingV1PencilStrokes:(id)strokes countOfInlineDrawingV1FingerStrokes:(id)fingerStrokes countOfInlineDrawingV2PencilStrokes:(id)pencilStrokes countOfInlineDrawingV2FingerStrokes:(id)v2FingerStrokes countOfFullscreenDrawingStrokes:(id)drawingStrokes;
 - (id)toDict;
 @end
 
 @implementation ICASNoteSnapshotItemData
 
-- (ICASNoteSnapshotItemData)initWithNoteID:(id)a3 noteType:(id)a4 collaborationStatus:(id)a5 collaborationType:(id)a6 countOfInvitees:(id)a7 countOfAcceptances:(id)a8 countOfDocScan:(id)a9 countOfInlineDrawingV1:(id)a10 countOfInlineDrawingV2:(id)a11 countOfFullscreenDrawing:(id)a12 countOfTables:(id)a13 countOfAttachmentOther:(id)a14 hasChecklist:(id)a15 isPinned:(id)a16 isLocked:(id)a17 charLength:(id)a18 creationDate:(id)a19 countOfInlineDrawingV1PencilStrokes:(id)a20 countOfInlineDrawingV1FingerStrokes:(id)a21 countOfInlineDrawingV2PencilStrokes:(id)a22 countOfInlineDrawingV2FingerStrokes:(id)a23 countOfFullscreenDrawingStrokes:(id)a24
+- (ICASNoteSnapshotItemData)initWithNoteID:(id)d noteType:(id)type collaborationStatus:(id)status collaborationType:(id)collaborationType countOfInvitees:(id)invitees countOfAcceptances:(id)acceptances countOfDocScan:(id)scan countOfInlineDrawingV1:(id)self0 countOfInlineDrawingV2:(id)self1 countOfFullscreenDrawing:(id)self2 countOfTables:(id)self3 countOfAttachmentOther:(id)self4 hasChecklist:(id)self5 isPinned:(id)self6 isLocked:(id)self7 charLength:(id)self8 creationDate:(id)self9 countOfInlineDrawingV1PencilStrokes:(id)strokes countOfInlineDrawingV1FingerStrokes:(id)fingerStrokes countOfInlineDrawingV2PencilStrokes:(id)pencilStrokes countOfInlineDrawingV2FingerStrokes:(id)v2FingerStrokes countOfFullscreenDrawingStrokes:(id)drawingStrokes
 {
-  v57 = a3;
-  v39 = a4;
-  v56 = a4;
-  v40 = a5;
-  v55 = a5;
-  v54 = a6;
-  v53 = a7;
-  v52 = a8;
-  v51 = a9;
-  v50 = a10;
-  v49 = a11;
-  v48 = a12;
-  v47 = a13;
-  v46 = a14;
-  v45 = a15;
-  v29 = a16;
-  v30 = a17;
-  v31 = a18;
-  v32 = a19;
-  v33 = a20;
-  v44 = a21;
-  v43 = a22;
-  v42 = a23;
-  v34 = a24;
+  dCopy = d;
+  typeCopy = type;
+  typeCopy2 = type;
+  statusCopy = status;
+  statusCopy2 = status;
+  collaborationTypeCopy = collaborationType;
+  inviteesCopy = invitees;
+  acceptancesCopy = acceptances;
+  scanCopy = scan;
+  v1Copy = v1;
+  v2Copy = v2;
+  drawingCopy = drawing;
+  tablesCopy = tables;
+  otherCopy = other;
+  checklistCopy = checklist;
+  pinnedCopy = pinned;
+  lockedCopy = locked;
+  lengthCopy = length;
+  dateCopy = date;
+  strokesCopy = strokes;
+  fingerStrokesCopy = fingerStrokes;
+  pencilStrokesCopy = pencilStrokes;
+  v2FingerStrokesCopy = v2FingerStrokes;
+  drawingStrokesCopy = drawingStrokes;
   v58.receiver = self;
   v58.super_class = ICASNoteSnapshotItemData;
   v35 = [(ICASNoteSnapshotItemData *)&v58 init];
   v36 = v35;
   if (v35)
   {
-    objc_storeStrong(&v35->_noteID, a3);
-    objc_storeStrong(&v36->_noteType, v39);
-    objc_storeStrong(&v36->_collaborationStatus, v40);
-    objc_storeStrong(&v36->_collaborationType, a6);
-    objc_storeStrong(&v36->_countOfInvitees, a7);
-    objc_storeStrong(&v36->_countOfAcceptances, a8);
-    objc_storeStrong(&v36->_countOfDocScan, a9);
-    objc_storeStrong(&v36->_countOfInlineDrawingV1, a10);
-    objc_storeStrong(&v36->_countOfInlineDrawingV2, a11);
-    objc_storeStrong(&v36->_countOfFullscreenDrawing, a12);
-    objc_storeStrong(&v36->_countOfTables, a13);
-    objc_storeStrong(&v36->_countOfAttachmentOther, a14);
-    objc_storeStrong(&v36->_hasChecklist, a15);
-    objc_storeStrong(&v36->_isPinned, a16);
-    objc_storeStrong(&v36->_isLocked, a17);
-    objc_storeStrong(&v36->_charLength, a18);
-    objc_storeStrong(&v36->_creationDate, a19);
-    objc_storeStrong(&v36->_countOfInlineDrawingV1PencilStrokes, a20);
-    objc_storeStrong(&v36->_countOfInlineDrawingV1FingerStrokes, a21);
-    objc_storeStrong(&v36->_countOfInlineDrawingV2PencilStrokes, a22);
-    objc_storeStrong(&v36->_countOfInlineDrawingV2FingerStrokes, a23);
-    objc_storeStrong(&v36->_countOfFullscreenDrawingStrokes, a24);
+    objc_storeStrong(&v35->_noteID, d);
+    objc_storeStrong(&v36->_noteType, typeCopy);
+    objc_storeStrong(&v36->_collaborationStatus, statusCopy);
+    objc_storeStrong(&v36->_collaborationType, collaborationType);
+    objc_storeStrong(&v36->_countOfInvitees, invitees);
+    objc_storeStrong(&v36->_countOfAcceptances, acceptances);
+    objc_storeStrong(&v36->_countOfDocScan, scan);
+    objc_storeStrong(&v36->_countOfInlineDrawingV1, v1);
+    objc_storeStrong(&v36->_countOfInlineDrawingV2, v2);
+    objc_storeStrong(&v36->_countOfFullscreenDrawing, drawing);
+    objc_storeStrong(&v36->_countOfTables, tables);
+    objc_storeStrong(&v36->_countOfAttachmentOther, other);
+    objc_storeStrong(&v36->_hasChecklist, checklist);
+    objc_storeStrong(&v36->_isPinned, pinned);
+    objc_storeStrong(&v36->_isLocked, locked);
+    objc_storeStrong(&v36->_charLength, length);
+    objc_storeStrong(&v36->_creationDate, date);
+    objc_storeStrong(&v36->_countOfInlineDrawingV1PencilStrokes, strokes);
+    objc_storeStrong(&v36->_countOfInlineDrawingV1FingerStrokes, fingerStrokes);
+    objc_storeStrong(&v36->_countOfInlineDrawingV2PencilStrokes, pencilStrokes);
+    objc_storeStrong(&v36->_countOfInlineDrawingV2FingerStrokes, v2FingerStrokes);
+    objc_storeStrong(&v36->_countOfFullscreenDrawingStrokes, drawingStrokes);
   }
 
   return v36;
@@ -68,313 +68,313 @@
 {
   v73[22] = *MEMORY[0x277D85DE8];
   v72[0] = @"noteID";
-  v71 = [(ICASNoteSnapshotItemData *)self noteID];
-  if (v71)
+  noteID = [(ICASNoteSnapshotItemData *)self noteID];
+  if (noteID)
   {
-    v3 = [(ICASNoteSnapshotItemData *)self noteID];
+    noteID2 = [(ICASNoteSnapshotItemData *)self noteID];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    noteID2 = objc_opt_new();
   }
 
-  v70 = v3;
-  v73[0] = v3;
+  v70 = noteID2;
+  v73[0] = noteID2;
   v72[1] = @"noteType";
-  v69 = [(ICASNoteSnapshotItemData *)self noteType];
-  if (v69)
+  noteType = [(ICASNoteSnapshotItemData *)self noteType];
+  if (noteType)
   {
-    v4 = [(ICASNoteSnapshotItemData *)self noteType];
+    noteType2 = [(ICASNoteSnapshotItemData *)self noteType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    noteType2 = objc_opt_new();
   }
 
-  v68 = v4;
-  v73[1] = v4;
+  v68 = noteType2;
+  v73[1] = noteType2;
   v72[2] = @"collaborationStatus";
-  v67 = [(ICASNoteSnapshotItemData *)self collaborationStatus];
-  if (v67)
+  collaborationStatus = [(ICASNoteSnapshotItemData *)self collaborationStatus];
+  if (collaborationStatus)
   {
-    v5 = [(ICASNoteSnapshotItemData *)self collaborationStatus];
+    collaborationStatus2 = [(ICASNoteSnapshotItemData *)self collaborationStatus];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    collaborationStatus2 = objc_opt_new();
   }
 
-  v66 = v5;
-  v73[2] = v5;
+  v66 = collaborationStatus2;
+  v73[2] = collaborationStatus2;
   v72[3] = @"collaborationType";
-  v65 = [(ICASNoteSnapshotItemData *)self collaborationType];
-  if (v65)
+  collaborationType = [(ICASNoteSnapshotItemData *)self collaborationType];
+  if (collaborationType)
   {
-    v6 = [(ICASNoteSnapshotItemData *)self collaborationType];
+    collaborationType2 = [(ICASNoteSnapshotItemData *)self collaborationType];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    collaborationType2 = objc_opt_new();
   }
 
-  v64 = v6;
-  v73[3] = v6;
+  v64 = collaborationType2;
+  v73[3] = collaborationType2;
   v72[4] = @"countOfInvitees";
-  v63 = [(ICASNoteSnapshotItemData *)self countOfInvitees];
-  if (v63)
+  countOfInvitees = [(ICASNoteSnapshotItemData *)self countOfInvitees];
+  if (countOfInvitees)
   {
-    v7 = [(ICASNoteSnapshotItemData *)self countOfInvitees];
+    countOfInvitees2 = [(ICASNoteSnapshotItemData *)self countOfInvitees];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfInvitees2 = objc_opt_new();
   }
 
-  v62 = v7;
-  v73[4] = v7;
+  v62 = countOfInvitees2;
+  v73[4] = countOfInvitees2;
   v72[5] = @"countOfAcceptances";
-  v61 = [(ICASNoteSnapshotItemData *)self countOfAcceptances];
-  if (v61)
+  countOfAcceptances = [(ICASNoteSnapshotItemData *)self countOfAcceptances];
+  if (countOfAcceptances)
   {
-    v8 = [(ICASNoteSnapshotItemData *)self countOfAcceptances];
+    countOfAcceptances2 = [(ICASNoteSnapshotItemData *)self countOfAcceptances];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    countOfAcceptances2 = objc_opt_new();
   }
 
-  v60 = v8;
-  v73[5] = v8;
+  v60 = countOfAcceptances2;
+  v73[5] = countOfAcceptances2;
   v72[6] = @"countOfDocScan";
-  v59 = [(ICASNoteSnapshotItemData *)self countOfDocScan];
-  if (v59)
+  countOfDocScan = [(ICASNoteSnapshotItemData *)self countOfDocScan];
+  if (countOfDocScan)
   {
-    v9 = [(ICASNoteSnapshotItemData *)self countOfDocScan];
+    countOfDocScan2 = [(ICASNoteSnapshotItemData *)self countOfDocScan];
   }
 
   else
   {
-    v9 = objc_opt_new();
+    countOfDocScan2 = objc_opt_new();
   }
 
-  v58 = v9;
-  v73[6] = v9;
+  v58 = countOfDocScan2;
+  v73[6] = countOfDocScan2;
   v72[7] = @"countOfInlineDrawingV1";
-  v57 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1];
-  if (v57)
+  countOfInlineDrawingV1 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1];
+  if (countOfInlineDrawingV1)
   {
-    v10 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1];
+    countOfInlineDrawingV12 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    countOfInlineDrawingV12 = objc_opt_new();
   }
 
-  v56 = v10;
-  v73[7] = v10;
+  v56 = countOfInlineDrawingV12;
+  v73[7] = countOfInlineDrawingV12;
   v72[8] = @"countOfInlineDrawingV2";
-  v55 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2];
-  if (v55)
+  countOfInlineDrawingV2 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2];
+  if (countOfInlineDrawingV2)
   {
-    v11 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2];
+    countOfInlineDrawingV22 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2];
   }
 
   else
   {
-    v11 = objc_opt_new();
+    countOfInlineDrawingV22 = objc_opt_new();
   }
 
-  v54 = v11;
-  v73[8] = v11;
+  v54 = countOfInlineDrawingV22;
+  v73[8] = countOfInlineDrawingV22;
   v72[9] = @"countOfFullscreenDrawing";
-  v53 = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawing];
-  if (v53)
+  countOfFullscreenDrawing = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawing];
+  if (countOfFullscreenDrawing)
   {
-    v12 = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawing];
+    countOfFullscreenDrawing2 = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawing];
   }
 
   else
   {
-    v12 = objc_opt_new();
+    countOfFullscreenDrawing2 = objc_opt_new();
   }
 
-  v52 = v12;
-  v73[9] = v12;
+  v52 = countOfFullscreenDrawing2;
+  v73[9] = countOfFullscreenDrawing2;
   v72[10] = @"countOfTables";
-  v51 = [(ICASNoteSnapshotItemData *)self countOfTables];
-  if (v51)
+  countOfTables = [(ICASNoteSnapshotItemData *)self countOfTables];
+  if (countOfTables)
   {
-    v13 = [(ICASNoteSnapshotItemData *)self countOfTables];
+    countOfTables2 = [(ICASNoteSnapshotItemData *)self countOfTables];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    countOfTables2 = objc_opt_new();
   }
 
-  v50 = v13;
-  v73[10] = v13;
+  v50 = countOfTables2;
+  v73[10] = countOfTables2;
   v72[11] = @"countOfAttachmentOther";
-  v49 = [(ICASNoteSnapshotItemData *)self countOfAttachmentOther];
-  if (v49)
+  countOfAttachmentOther = [(ICASNoteSnapshotItemData *)self countOfAttachmentOther];
+  if (countOfAttachmentOther)
   {
-    v14 = [(ICASNoteSnapshotItemData *)self countOfAttachmentOther];
+    countOfAttachmentOther2 = [(ICASNoteSnapshotItemData *)self countOfAttachmentOther];
   }
 
   else
   {
-    v14 = objc_opt_new();
+    countOfAttachmentOther2 = objc_opt_new();
   }
 
-  v48 = v14;
-  v73[11] = v14;
+  v48 = countOfAttachmentOther2;
+  v73[11] = countOfAttachmentOther2;
   v72[12] = @"hasChecklist";
-  v47 = [(ICASNoteSnapshotItemData *)self hasChecklist];
-  if (v47)
+  hasChecklist = [(ICASNoteSnapshotItemData *)self hasChecklist];
+  if (hasChecklist)
   {
-    v15 = [(ICASNoteSnapshotItemData *)self hasChecklist];
+    hasChecklist2 = [(ICASNoteSnapshotItemData *)self hasChecklist];
   }
 
   else
   {
-    v15 = objc_opt_new();
+    hasChecklist2 = objc_opt_new();
   }
 
-  v46 = v15;
-  v73[12] = v15;
+  v46 = hasChecklist2;
+  v73[12] = hasChecklist2;
   v72[13] = @"isPinned";
-  v45 = [(ICASNoteSnapshotItemData *)self isPinned];
-  if (v45)
+  isPinned = [(ICASNoteSnapshotItemData *)self isPinned];
+  if (isPinned)
   {
-    v16 = [(ICASNoteSnapshotItemData *)self isPinned];
+    isPinned2 = [(ICASNoteSnapshotItemData *)self isPinned];
   }
 
   else
   {
-    v16 = objc_opt_new();
+    isPinned2 = objc_opt_new();
   }
 
-  v44 = v16;
-  v73[13] = v16;
+  v44 = isPinned2;
+  v73[13] = isPinned2;
   v72[14] = @"isLocked";
-  v43 = [(ICASNoteSnapshotItemData *)self isLocked];
-  if (v43)
+  isLocked = [(ICASNoteSnapshotItemData *)self isLocked];
+  if (isLocked)
   {
-    v17 = [(ICASNoteSnapshotItemData *)self isLocked];
+    isLocked2 = [(ICASNoteSnapshotItemData *)self isLocked];
   }
 
   else
   {
-    v17 = objc_opt_new();
+    isLocked2 = objc_opt_new();
   }
 
-  v42 = v17;
-  v73[14] = v17;
+  v42 = isLocked2;
+  v73[14] = isLocked2;
   v72[15] = @"charLength";
-  v41 = [(ICASNoteSnapshotItemData *)self charLength];
-  if (v41)
+  charLength = [(ICASNoteSnapshotItemData *)self charLength];
+  if (charLength)
   {
-    v18 = [(ICASNoteSnapshotItemData *)self charLength];
+    charLength2 = [(ICASNoteSnapshotItemData *)self charLength];
   }
 
   else
   {
-    v18 = objc_opt_new();
+    charLength2 = objc_opt_new();
   }
 
-  v40 = v18;
-  v73[15] = v18;
+  v40 = charLength2;
+  v73[15] = charLength2;
   v72[16] = @"creationDate";
-  v39 = [(ICASNoteSnapshotItemData *)self creationDate];
-  if (v39)
+  creationDate = [(ICASNoteSnapshotItemData *)self creationDate];
+  if (creationDate)
   {
-    v19 = [(ICASNoteSnapshotItemData *)self creationDate];
+    creationDate2 = [(ICASNoteSnapshotItemData *)self creationDate];
   }
 
   else
   {
-    v19 = objc_opt_new();
+    creationDate2 = objc_opt_new();
   }
 
-  v38 = v19;
-  v73[16] = v19;
+  v38 = creationDate2;
+  v73[16] = creationDate2;
   v72[17] = @"countOfInlineDrawingV1PencilStrokes";
-  v20 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1PencilStrokes];
-  if (v20)
+  countOfInlineDrawingV1PencilStrokes = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1PencilStrokes];
+  if (countOfInlineDrawingV1PencilStrokes)
   {
-    v21 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1PencilStrokes];
+    countOfInlineDrawingV1PencilStrokes2 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1PencilStrokes];
   }
 
   else
   {
-    v21 = objc_opt_new();
+    countOfInlineDrawingV1PencilStrokes2 = objc_opt_new();
   }
 
-  v22 = v21;
-  v73[17] = v21;
+  v22 = countOfInlineDrawingV1PencilStrokes2;
+  v73[17] = countOfInlineDrawingV1PencilStrokes2;
   v72[18] = @"countOfInlineDrawingV1FingerStrokes";
-  v23 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1FingerStrokes];
-  if (v23)
+  countOfInlineDrawingV1FingerStrokes = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1FingerStrokes];
+  if (countOfInlineDrawingV1FingerStrokes)
   {
-    v24 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1FingerStrokes];
+    countOfInlineDrawingV1FingerStrokes2 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV1FingerStrokes];
   }
 
   else
   {
-    v24 = objc_opt_new();
+    countOfInlineDrawingV1FingerStrokes2 = objc_opt_new();
   }
 
-  v25 = v24;
-  v73[18] = v24;
+  v25 = countOfInlineDrawingV1FingerStrokes2;
+  v73[18] = countOfInlineDrawingV1FingerStrokes2;
   v72[19] = @"countOfInlineDrawingV2PencilStrokes";
-  v26 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2PencilStrokes];
-  if (v26)
+  countOfInlineDrawingV2PencilStrokes = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2PencilStrokes];
+  if (countOfInlineDrawingV2PencilStrokes)
   {
-    v27 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2PencilStrokes];
+    countOfInlineDrawingV2PencilStrokes2 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2PencilStrokes];
   }
 
   else
   {
-    v27 = objc_opt_new();
+    countOfInlineDrawingV2PencilStrokes2 = objc_opt_new();
   }
 
-  v28 = v27;
-  v73[19] = v27;
+  v28 = countOfInlineDrawingV2PencilStrokes2;
+  v73[19] = countOfInlineDrawingV2PencilStrokes2;
   v72[20] = @"countOfInlineDrawingV2FingerStrokes";
-  v29 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2FingerStrokes];
-  if (v29)
+  countOfInlineDrawingV2FingerStrokes = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2FingerStrokes];
+  if (countOfInlineDrawingV2FingerStrokes)
   {
-    v30 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2FingerStrokes];
+    countOfInlineDrawingV2FingerStrokes2 = [(ICASNoteSnapshotItemData *)self countOfInlineDrawingV2FingerStrokes];
   }
 
   else
   {
-    v30 = objc_opt_new();
+    countOfInlineDrawingV2FingerStrokes2 = objc_opt_new();
   }
 
-  v31 = v30;
-  v73[20] = v30;
+  v31 = countOfInlineDrawingV2FingerStrokes2;
+  v73[20] = countOfInlineDrawingV2FingerStrokes2;
   v72[21] = @"countOfFullscreenDrawingStrokes";
-  v32 = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawingStrokes];
-  if (v32)
+  countOfFullscreenDrawingStrokes = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawingStrokes];
+  if (countOfFullscreenDrawingStrokes)
   {
-    v33 = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawingStrokes];
+    countOfFullscreenDrawingStrokes2 = [(ICASNoteSnapshotItemData *)self countOfFullscreenDrawingStrokes];
   }
 
   else
   {
-    v33 = objc_opt_new();
+    countOfFullscreenDrawingStrokes2 = objc_opt_new();
   }
 
-  v34 = v33;
-  v73[21] = v33;
+  v34 = countOfFullscreenDrawingStrokes2;
+  v73[21] = countOfFullscreenDrawingStrokes2;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:v72 count:22];
 
   v35 = *MEMORY[0x277D85DE8];

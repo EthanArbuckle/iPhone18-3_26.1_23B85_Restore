@@ -1,21 +1,21 @@
 @interface TSTConcurrentStylesheet
-- (TSTConcurrentStylesheet)initWithStylesheet:(id)a3;
-- (id)repairOrReplaceErrantStyle:(id)a3;
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4;
+- (TSTConcurrentStylesheet)initWithStylesheet:(id)stylesheet;
+- (id)repairOrReplaceErrantStyle:(id)style;
+- (id)variationOfStyle:(id)style propertyMap:(id)map;
 @end
 
 @implementation TSTConcurrentStylesheet
 
-- (TSTConcurrentStylesheet)initWithStylesheet:(id)a3
+- (TSTConcurrentStylesheet)initWithStylesheet:(id)stylesheet
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
   v17.receiver = self;
   v17.super_class = TSTConcurrentStylesheet;
   v6 = [(TSTConcurrentStylesheet *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stylesheet, a3);
+    objc_storeStrong(&v6->_stylesheet, stylesheet);
     v7->_repairOrReplaceLock._os_unfair_lock_opaque = 0;
     v10 = objc_msgSend_mapTableWithKeyOptions_valueOptions_(MEMORY[0x277CCAB00], v8, 512, 512, v9);
     repairOrReplaceMap = v7->_repairOrReplaceMap;
@@ -32,15 +32,15 @@
   return v7;
 }
 
-- (id)repairOrReplaceErrantStyle:(id)a3
+- (id)repairOrReplaceErrantStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   os_unfair_lock_lock(&self->_repairOrReplaceLock);
-  v11 = objc_msgSend_objectForKey_(self->_repairOrReplaceMap, v5, v4, v6, v7);
+  v11 = objc_msgSend_objectForKey_(self->_repairOrReplaceMap, v5, styleCopy, v6, v7);
   if (!v11)
   {
-    v11 = objc_msgSend_repairOrReplaceErrantStyle_(self->_stylesheet, v8, v4, v9, v10);
-    objc_msgSend_setObject_forKey_(self->_repairOrReplaceMap, v12, v11, v4, v13);
+    v11 = objc_msgSend_repairOrReplaceErrantStyle_(self->_stylesheet, v8, styleCopy, v9, v10);
+    objc_msgSend_setObject_forKey_(self->_repairOrReplaceMap, v12, v11, styleCopy, v13);
   }
 
   os_unfair_lock_unlock(&self->_repairOrReplaceLock);
@@ -48,14 +48,14 @@
   return v11;
 }
 
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4
+- (id)variationOfStyle:(id)style propertyMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  mapCopy = map;
   v8 = [TSTConcurrentStylesheetKey alloc];
-  v11 = objc_msgSend_initWithStyle_andPropertyMap_(v8, v9, v6, v7, v10);
+  v11 = objc_msgSend_initWithStyle_andPropertyMap_(v8, v9, styleCopy, mapCopy, v10);
   stylesheet = self->_stylesheet;
-  v17 = objc_msgSend_stylesheet(v6, v13, v14, v15, v16);
+  v17 = objc_msgSend_stylesheet(styleCopy, v13, v14, v15, v16);
 
   if (stylesheet != v17)
   {
@@ -71,7 +71,7 @@
   v37 = objc_msgSend_objectForKey_(self->_variationMap, v32, v11, v33, v34);
   if (!v37)
   {
-    v37 = objc_msgSend_variationOfStyle_propertyMap_(self->_stylesheet, v35, v6, v7, v36);
+    v37 = objc_msgSend_variationOfStyle_propertyMap_(self->_stylesheet, v35, styleCopy, mapCopy, v36);
     objc_msgSend_setObject_forKey_(self->_variationMap, v38, v37, v11, v39);
   }
 

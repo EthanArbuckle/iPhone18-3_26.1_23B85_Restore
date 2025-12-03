@@ -1,6 +1,6 @@
 @interface LibcoreIoDeleteOnExit
 - (LibcoreIoDeleteOnExit)init;
-- (void)addFileWithNSString:(id)a3;
+- (void)addFileWithNSString:(id)string;
 - (void)dealloc;
 - (void)run;
 @end
@@ -15,7 +15,7 @@
   return self;
 }
 
-- (void)addFileWithNSString:(id)a3
+- (void)addFileWithNSString:(id)string
 {
   files = self->files_;
   objc_sync_enter(files);
@@ -25,9 +25,9 @@
     JreThrowNullPointerException();
   }
 
-  if (![(JavaUtilArrayList *)v6 containsWithId:a3])
+  if (![(JavaUtilArrayList *)v6 containsWithId:string])
   {
-    [(JavaUtilArrayList *)self->files_ addWithId:a3];
+    [(JavaUtilArrayList *)self->files_ addWithId:string];
   }
 
   objc_sync_exit(files);

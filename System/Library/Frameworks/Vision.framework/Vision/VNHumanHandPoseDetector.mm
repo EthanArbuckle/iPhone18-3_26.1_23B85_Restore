@@ -1,18 +1,18 @@
 @interface VNHumanHandPoseDetector
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (id)vcpPoseRequestRuntimeOptionsForDetectorOptions:(id)a3 error:(id *)a4;
-- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)a3 error:(id *)a4;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (id)vcpPoseRequestRuntimeOptionsForDetectorOptions:(id)options error:(id *)error;
+- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)options error:(id *)error;
 @end
 
 @implementation VNHumanHandPoseDetector
 
-- (id)vcpPoseRequestRuntimeOptionsForDetectorOptions:(id)a3 error:(id *)a4
+- (id)vcpPoseRequestRuntimeOptionsForDetectorOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = VNHumanHandPoseDetector;
-  v7 = [(VNHumanPoseDetector *)&v15 vcpPoseRequestRuntimeOptionsForDetectorOptions:v6 error:a4];
-  if (v7 && (v14 = 0, [VNValidationUtilities getNSUIntegerValue:&v14 forKey:@"VNHumanHandPoseDetectorProcessOption_MaximumHandCount" inOptions:v6 error:a4]))
+  v7 = [(VNHumanPoseDetector *)&v15 vcpPoseRequestRuntimeOptionsForDetectorOptions:optionsCopy error:error];
+  if (v7 && (v14 = 0, [VNValidationUtilities getNSUIntegerValue:&v14 forKey:@"VNHumanHandPoseDetectorProcessOption_MaximumHandCount" inOptions:optionsCopy error:error]))
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
     v21 = 0;
@@ -56,15 +56,15 @@
   return v12;
 }
 
-- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)a3 error:(id *)a4
+- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = VNHumanHandPoseDetector;
-  v7 = [(VNHumanPoseDetector *)&v15 vcpPoseRequestSetupOptionsForDetectorOptions:v6 error:a4];
+  v7 = [(VNHumanPoseDetector *)&v15 vcpPoseRequestSetupOptionsForDetectorOptions:optionsCopy error:error];
   if (v7)
   {
-    v8 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 specifyingRequestClass:objc_opt_class() error:a4];
+    v8 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy specifyingRequestClass:objc_opt_class() error:error];
     v9 = v8;
     if (!v8)
     {
@@ -106,10 +106,10 @@
       goto LABEL_12;
     }
 
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRequestSpecifier:v9];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -129,15 +129,15 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = VNHumanHandPoseDetector;
-  if ([(VNDetector *)&v15 completeInitializationForSession:v6 error:a4])
+  if ([(VNDetector *)&v15 completeInitializationForSession:sessionCopy error:error])
   {
-    v7 = [(VNDetector *)self configurationOptions];
-    v8 = [(VNHumanHandPoseDetector *)self vcpPoseRequestSetupOptionsForDetectorOptions:v7 error:a4];
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    v8 = [(VNHumanHandPoseDetector *)self vcpPoseRequestSetupOptionsForDetectorOptions:configurationOptions error:error];
     if (v8)
     {
       v17 = 0;
@@ -170,10 +170,10 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      if (a4)
+      if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to setup request in VNDetectHumanHandPoseRequest"];
-        *a4 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_11;
       }
     }

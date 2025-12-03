@@ -1,21 +1,21 @@
 @interface MRUActivityTrailingAccessoryView
-- (MRUActivityTrailingAccessoryView)initWithSize:(CGSize)a3;
+- (MRUActivityTrailingAccessoryView)initWithSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)setHapticView:(id)a3;
-- (void)setShowHaptic:(BOOL)a3;
-- (void)setShowWaveform:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setWaveformView:(id)a3;
+- (void)setHapticView:(id)view;
+- (void)setShowHaptic:(BOOL)haptic;
+- (void)setShowWaveform:(BOOL)waveform;
+- (void)setStylingProvider:(id)provider;
+- (void)setWaveformView:(id)view;
 - (void)updateVisibilty;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUActivityTrailingAccessoryView
 
-- (MRUActivityTrailingAccessoryView)initWithSize:(CGSize)a3
+- (MRUActivityTrailingAccessoryView)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12[1] = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [v6 setContentMode:1];
@@ -26,10 +26,10 @@
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v9 = [(MRUActivityTrailingAccessoryView *)self registerForTraitChanges:v8 withAction:sel_updateVisualStyling];
 
-  v10 = [(MRUActivityAccessoryView *)self initWithContentView:v6 size:width, height];
-  [(MRUActivityTrailingAccessoryView *)v10 setImageView:v6];
+  height = [(MRUActivityAccessoryView *)self initWithContentView:v6 size:width, height];
+  [(MRUActivityTrailingAccessoryView *)height setImageView:v6];
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -64,25 +64,25 @@
   [(MRUHapticView *)self->_hapticView setFrame:x, y, width, height];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUActivityTrailingAccessoryView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setWaveformView:(id)a3
+- (void)setWaveformView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MRUWaveformView *)self->_waveformView removeFromSuperview];
   waveformView = self->_waveformView;
-  self->_waveformView = v4;
-  v6 = v4;
+  self->_waveformView = viewCopy;
+  v6 = viewCopy;
 
   [(MRUActivityTrailingAccessoryView *)self addSubview:v6];
   [(MRUActivityTrailingAccessoryView *)self setNeedsLayout];
@@ -90,13 +90,13 @@
   [(MRUActivityTrailingAccessoryView *)self updateVisibilty];
 }
 
-- (void)setHapticView:(id)a3
+- (void)setHapticView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MRUHapticView *)self->_hapticView removeFromSuperview];
   hapticView = self->_hapticView;
-  self->_hapticView = v4;
-  v6 = v4;
+  self->_hapticView = viewCopy;
+  v6 = viewCopy;
 
   [(MRUActivityTrailingAccessoryView *)self addSubview:v6];
   [(MRUActivityTrailingAccessoryView *)self setNeedsLayout];
@@ -104,22 +104,22 @@
   [(MRUActivityTrailingAccessoryView *)self updateVisibilty];
 }
 
-- (void)setShowWaveform:(BOOL)a3
+- (void)setShowWaveform:(BOOL)waveform
 {
-  if (self->_showWaveform != a3)
+  if (self->_showWaveform != waveform)
   {
-    self->_showWaveform = a3;
+    self->_showWaveform = waveform;
     [(MRUActivityTrailingAccessoryView *)self setNeedsLayout];
 
     [(MRUActivityTrailingAccessoryView *)self updateVisibilty];
   }
 }
 
-- (void)setShowHaptic:(BOOL)a3
+- (void)setShowHaptic:(BOOL)haptic
 {
-  if (self->_showHaptic != a3)
+  if (self->_showHaptic != haptic)
   {
-    self->_showHaptic = a3;
+    self->_showHaptic = haptic;
     [(MRUActivityTrailingAccessoryView *)self setNeedsLayout];
 
     [(MRUActivityTrailingAccessoryView *)self updateVisibilty];
@@ -130,8 +130,8 @@
 {
   stylingProvider = self->_stylingProvider;
   imageView = self->_imageView;
-  v4 = [(MRUActivityTrailingAccessoryView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:imageView traitCollection:v4];
+  traitCollection = [(MRUActivityTrailingAccessoryView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:imageView traitCollection:traitCollection];
 }
 
 - (void)updateVisibilty

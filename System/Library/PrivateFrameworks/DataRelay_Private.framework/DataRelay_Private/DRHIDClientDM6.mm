@@ -1,9 +1,9 @@
 @interface DRHIDClientDM6
 - (DRHIDClientDM6)init;
-- (void)handleEvent:(id)a3 withService:(id)a4;
+- (void)handleEvent:(id)event withService:(id)service;
 - (void)reset;
-- (void)serviceAdded:(id)a3;
-- (void)setReport:(id)a3;
+- (void)serviceAdded:(id)added;
+- (void)setReport:(id)report;
 @end
 
 @implementation DRHIDClientDM6
@@ -22,23 +22,23 @@
   return v3;
 }
 
-- (void)handleEvent:(id)a3 withService:(id)a4
+- (void)handleEvent:(id)event withService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1)
+  eventCopy = event;
+  serviceCopy = service;
+  if ([eventCopy type] == 1)
   {
-    v8 = [v6 integerValueForField:65537];
-    v9 = [v6 integerValueForField:0x10000];
-    v10 = [v6 integerValueForField:65539];
-    v11 = [v6 dataValueForField:65540];
+    v8 = [eventCopy integerValueForField:65537];
+    v9 = [eventCopy integerValueForField:0x10000];
+    v10 = [eventCopy integerValueForField:65539];
+    v11 = [eventCopy dataValueForField:65540];
     v12 = [MEMORY[0x277CBEB28] dataWithCapacity:v10 + 21];
     v13 = v12;
     if (v8 == 13 && v9 == 65292)
     {
       v20 = 1;
       [v12 appendBytes:&v20 length:1];
-      v14 = [(DRHIDClient *)self getSensorTime:v6];
+      v14 = [(DRHIDClient *)self getSensorTime:eventCopy];
       if (!v14)
       {
         if (gLogCategory_DRHIDClientDM6 <= 90 && (gLogCategory_DRHIDClientDM6 != -1 || _LogCategory_Initialize()))
@@ -70,26 +70,26 @@
     [v13 appendBytes:v11 length:v10];
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v17 setObject:v13 forKey:@"data"];
-    v18 = [(DRHIDClient *)self dataHandler];
-    (v18)[2](v18, 1, [v7 serviceID], 2, v17);
+    dataHandler = [(DRHIDClient *)self dataHandler];
+    (dataHandler)[2](dataHandler, 1, [serviceCopy serviceID], 2, v17);
 
 LABEL_10:
   }
 }
 
-- (void)serviceAdded:(id)a3
+- (void)serviceAdded:(id)added
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   if (gLogCategory_DRHIDClientDM6 <= 50 && (gLogCategory_DRHIDClientDM6 != -1 || _LogCategory_Initialize()))
   {
-    [DRHIDClientDM6 serviceAdded:v4];
+    [DRHIDClientDM6 serviceAdded:addedCopy];
   }
 
-  v17 = self;
+  selfCopy = self;
   v22.receiver = self;
   v22.super_class = DRHIDClientDM6;
-  [(DRHIDClient *)&v22 serviceAdded:v4];
+  [(DRHIDClient *)&v22 serviceAdded:addedCopy];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = [MEMORY[0x277CBEA90] dataWithBytes:&wxDM6Descriptor length:99];
   [v5 setObject:v6 forKey:@"ReportDescriptor"];
@@ -117,7 +117,7 @@ LABEL_10:
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
-        v12 = [v4 propertyForKey:v11];
+        v12 = [addedCopy propertyForKey:v11];
         if (v12)
         {
           [v5 setObject:v12 forKey:v11];
@@ -125,7 +125,7 @@ LABEL_10:
 
         else if (gLogCategory_DRHIDClientDM6 <= 90 && (gLogCategory_DRHIDClientDM6 != -1 || _LogCategory_Initialize()))
         {
-          [DRHIDClientDM6 serviceAdded:v4];
+          [DRHIDClientDM6 serviceAdded:addedCopy];
         }
 
         ++v10;
@@ -141,16 +141,16 @@ LABEL_10:
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v14 setObject:v5 forKeyedSubscript:@"properties"];
-  v15 = [(DRHIDClient *)v17 dataHandler];
-  (v15)[2](v15, 1, [v4 serviceID], 0, v14);
+  dataHandler = [(DRHIDClient *)selfCopy dataHandler];
+  (dataHandler)[2](dataHandler, 1, [addedCopy serviceID], 0, v14);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setReport:(id)a3
+- (void)setReport:(id)report
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"serviceID"];
+  reportCopy = report;
+  v5 = [reportCopy objectForKeyedSubscript:@"serviceID"];
   if (!v5)
   {
 LABEL_18:
@@ -163,7 +163,7 @@ LABEL_18:
   }
 
   v6 = v5;
-  v7 = [v4 objectForKeyedSubscript:@"type"];
+  v7 = [reportCopy objectForKeyedSubscript:@"type"];
   if (!v7)
   {
 LABEL_17:
@@ -172,7 +172,7 @@ LABEL_17:
   }
 
   v8 = v7;
-  v9 = [v4 objectForKeyedSubscript:@"reportID"];
+  v9 = [reportCopy objectForKeyedSubscript:@"reportID"];
   if (!v9)
   {
 
@@ -180,44 +180,44 @@ LABEL_17:
   }
 
   v10 = v9;
-  v11 = [v4 objectForKeyedSubscript:@"report"];
+  v11 = [reportCopy objectForKeyedSubscript:@"report"];
 
   if (!v11)
   {
     goto LABEL_18;
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"type"];
-  v13 = [v12 integerValue];
+  v12 = [reportCopy objectForKeyedSubscript:@"type"];
+  integerValue = [v12 integerValue];
 
   if (gLogCategory_DRHIDClientDM6 <= 30 && (gLogCategory_DRHIDClientDM6 != -1 || _LogCategory_Initialize()))
   {
-    [DRHIDClientDM6 setReport:v4];
+    [DRHIDClientDM6 setReport:reportCopy];
   }
 
-  if (v13 == 2)
+  if (integerValue == 2)
   {
-    v14 = [v4 objectForKeyedSubscript:@"reportID"];
-    v15 = [v14 integerValue];
+    v14 = [reportCopy objectForKeyedSubscript:@"reportID"];
+    integerValue2 = [v14 integerValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"serviceID"];
-    v17 = [v4 objectForKeyedSubscript:@"report"];
+    v16 = [reportCopy objectForKeyedSubscript:@"serviceID"];
+    v17 = [reportCopy objectForKeyedSubscript:@"report"];
     v18 = v17;
-    switch(v15)
+    switch(integerValue2)
     {
       case 4:
         v23 = 0;
         [v17 getBytes:&v23 length:4];
-        v19 = [(DRHIDClient *)self HIDServices];
-        v20 = [v19 objectForKey:v16];
+        hIDServices = [(DRHIDClient *)self HIDServices];
+        v20 = [hIDServices objectForKey:v16];
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v23];
         v22 = @"MaxFIFOEvents";
         break;
       case 2:
         v24 = 0;
         [v17 getBytes:&v24 length:4];
-        v19 = [(DRHIDClient *)self HIDServices];
-        v20 = [v19 objectForKey:v16];
+        hIDServices = [(DRHIDClient *)self HIDServices];
+        v20 = [hIDServices objectForKey:v16];
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v24];
         v22 = @"BatchInterval";
         break;
@@ -229,8 +229,8 @@ LABEL_17:
           [DRHIDClientDM6 setReport:?];
         }
 
-        v19 = [(DRHIDClient *)self HIDServices];
-        v20 = [v19 objectForKey:v16];
+        hIDServices = [(DRHIDClient *)self HIDServices];
+        v20 = [hIDServices objectForKey:v16];
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v25];
         v22 = @"ReportInterval";
         break;
@@ -258,8 +258,8 @@ LABEL_21:
   v4.receiver = self;
   v4.super_class = DRHIDClientDM6;
   [(DRHIDClient *)&v4 reset];
-  v3 = [(DRHIDClient *)self HIDClient];
-  [v3 setMatching:&unk_285B1CA98];
+  hIDClient = [(DRHIDClient *)self HIDClient];
+  [hIDClient setMatching:&unk_285B1CA98];
 }
 
 - (void)serviceAdded:(void *)a1 .cold.1(void *a1)

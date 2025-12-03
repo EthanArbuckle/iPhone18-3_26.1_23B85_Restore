@@ -1,20 +1,20 @@
 @interface MFComposeScrollView
-- (MFComposeScrollView)initWithFrame:(CGRect)a3;
-- (void)didAddSubview:(id)a3;
-- (void)disableSubview:(id)a3;
-- (void)enableSubview:(id)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setSubviewsDisabled:(BOOL)a3;
-- (void)willRemoveSubview:(id)a3;
+- (MFComposeScrollView)initWithFrame:(CGRect)frame;
+- (void)didAddSubview:(id)subview;
+- (void)disableSubview:(id)subview;
+- (void)enableSubview:(id)subview;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setSubviewsDisabled:(BOOL)disabled;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation MFComposeScrollView
 
-- (MFComposeScrollView)initWithFrame:(CGRect)a3
+- (MFComposeScrollView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MFComposeScrollView;
-  v3 = [(MFComposeScrollView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFComposeScrollView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:3];
@@ -29,18 +29,18 @@
   return v3;
 }
 
-- (void)setSubviewsDisabled:(BOOL)a3
+- (void)setSubviewsDisabled:(BOOL)disabled
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_subviewsDisabled != a3)
+  if (self->_subviewsDisabled != disabled)
   {
-    self->_subviewsDisabled = a3;
+    self->_subviewsDisabled = disabled;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(MFComposeScrollView *)self subviews];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    subviews = [(MFComposeScrollView *)self subviews];
+    v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -51,7 +51,7 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v8 = *(*(&v9 + 1) + 8 * v7);
@@ -69,7 +69,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -77,51 +77,51 @@
   }
 }
 
-- (void)disableSubview:(id)a3
+- (void)disableSubview:(id)subview
 {
-  v4 = a3;
-  if ([v4 isUserInteractionEnabled])
+  subviewCopy = subview;
+  if ([subviewCopy isUserInteractionEnabled])
   {
-    [(NSMutableSet *)self->_disabledSubviews addObject:v4];
-    [v4 setUserInteractionEnabled:0];
+    [(NSMutableSet *)self->_disabledSubviews addObject:subviewCopy];
+    [subviewCopy setUserInteractionEnabled:0];
   }
 }
 
-- (void)enableSubview:(id)a3
+- (void)enableSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   if ([(NSMutableSet *)self->_disabledSubviews containsObject:?])
   {
-    [(NSMutableSet *)self->_disabledSubviews removeObject:v4];
-    [v4 setUserInteractionEnabled:1];
+    [(NSMutableSet *)self->_disabledSubviews removeObject:subviewCopy];
+    [subviewCopy setUserInteractionEnabled:1];
   }
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v5.receiver = self;
   v5.super_class = MFComposeScrollView;
-  [(MFComposeScrollView *)&v5 didAddSubview:v4];
+  [(MFComposeScrollView *)&v5 didAddSubview:subviewCopy];
   if (self->_subviewsDisabled)
   {
-    [(MFComposeScrollView *)self disableSubview:v4];
+    [(MFComposeScrollView *)self disableSubview:subviewCopy];
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v5.receiver = self;
   v5.super_class = MFComposeScrollView;
-  [(MFComposeScrollView *)&v5 willRemoveSubview:v4];
+  [(MFComposeScrollView *)&v5 willRemoveSubview:subviewCopy];
   if (self->_subviewsDisabled)
   {
-    [(MFComposeScrollView *)self enableSubview:v4];
+    [(MFComposeScrollView *)self enableSubview:subviewCopy];
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
   if (!self->_scrollBlocked)
   {
@@ -129,7 +129,7 @@
     v8 = v5;
     v6.receiver = self;
     v6.super_class = MFComposeScrollView;
-    [(MFComposeScrollView *)&v6 setContentOffset:a4 animated:a3.x, a3.y];
+    [(MFComposeScrollView *)&v6 setContentOffset:animated animated:offset.x, offset.y];
   }
 }
 

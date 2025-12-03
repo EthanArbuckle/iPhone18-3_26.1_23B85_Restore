@@ -1,49 +1,49 @@
 @interface CKPhotoAttachmentStatusChatItem
 - (BOOL)wantsDrawerLayout;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
 - (char)transcriptOrientation;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKPhotoAttachmentStatusChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
-  v15 = [v14 layoutType];
-  if (v15 <= 10)
+  layoutType = [v14 layoutType];
+  if (layoutType <= 10)
   {
-    if (v15 <= 4)
+    if (layoutType <= 4)
     {
-      if ((v15 - 2) < 2)
+      if ((layoutType - 2) < 2)
       {
         goto LABEL_18;
       }
 
-      if (v15 != 1)
+      if (layoutType != 1)
       {
         goto LABEL_27;
       }
     }
 
-    else if ((v15 - 5) >= 2 && (v15 - 8) >= 2)
+    else if ((layoutType - 5) >= 2 && (layoutType - 8) >= 2)
     {
-      if (v15 != 7)
+      if (layoutType != 7)
       {
         goto LABEL_27;
       }
@@ -52,7 +52,7 @@
     }
 
 LABEL_20:
-    v18 = [CKChatItemLayoutUtilities nextItemIsOriginatorWithRepliesForIndex:a4 allDatasourceItems:v12];
+    v18 = [CKChatItemLayoutUtilities nextItemIsOriginatorWithRepliesForIndex:index allDatasourceItems:itemsCopy];
     v19 = +[CKUIBehavior sharedBehaviors];
     v16 = v19;
     if (!v18)
@@ -64,17 +64,17 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v15 > 0x18)
+  if (layoutType > 0x18)
   {
     goto LABEL_9;
   }
 
-  if (((1 << v15) & 0x4C000) != 0)
+  if (((1 << layoutType) & 0x4C000) != 0)
   {
     goto LABEL_20;
   }
 
-  if (((1 << v15) & 0x1800000) != 0)
+  if (((1 << layoutType) & 0x1800000) != 0)
   {
 LABEL_18:
     v16 = +[CKUIBehavior sharedBehaviors];
@@ -82,7 +82,7 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  if (v15 == 19)
+  if (layoutType == 19)
   {
 LABEL_16:
     v16 = +[CKUIBehavior sharedBehaviors];
@@ -94,12 +94,12 @@ LABEL_23:
   }
 
 LABEL_9:
-  if ((v15 - 11) < 2)
+  if ((layoutType - 11) < 2)
   {
     goto LABEL_18;
   }
 
-  if (v15 == 13)
+  if (layoutType == 13)
   {
     v16 = +[CKUIBehavior sharedBehaviors];
 LABEL_21:
@@ -155,10 +155,10 @@ LABEL_24:
 
 - (char)transcriptOrientation
 {
-  v2 = [(CKPhotoAttachmentStatusChatItem *)self _photoAttachmentStatusChatItem];
-  v3 = [v2 isFromMe];
+  _photoAttachmentStatusChatItem = [(CKPhotoAttachmentStatusChatItem *)self _photoAttachmentStatusChatItem];
+  isFromMe = [_photoAttachmentStatusChatItem isFromMe];
 
-  if (v3)
+  if (isFromMe)
   {
     return 2;
   }
@@ -190,25 +190,25 @@ LABEL_24:
 - (id)loadTranscriptText
 {
   v94[3] = *MEMORY[0x1E69E9840];
-  v2 = [(CKPhotoAttachmentStatusChatItem *)self _photoAttachmentStatusChatItem];
-  v3 = [v2 numberOfPhotos];
-  v4 = [v2 numberOfVideos];
-  v85 = v2;
-  v5 = [v2 numberOfSavedAssets];
-  if (v4 + v3)
+  _photoAttachmentStatusChatItem = [(CKPhotoAttachmentStatusChatItem *)self _photoAttachmentStatusChatItem];
+  numberOfPhotos = [_photoAttachmentStatusChatItem numberOfPhotos];
+  numberOfVideos = [_photoAttachmentStatusChatItem numberOfVideos];
+  v85 = _photoAttachmentStatusChatItem;
+  numberOfSavedAssets = [_photoAttachmentStatusChatItem numberOfSavedAssets];
+  if (numberOfVideos + numberOfPhotos)
   {
-    if (v4)
+    if (numberOfVideos)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = v3 == 0;
+      v6 = numberOfPhotos == 0;
     }
 
     v7 = 1;
-    if (v3 != 0 || v4 == 0)
+    if (numberOfPhotos != 0 || numberOfVideos == 0)
     {
       v7 = 2;
     }
@@ -222,12 +222,12 @@ LABEL_24:
     v9 = MEMORY[0x1E696AEC0];
     v10 = CKFrameworkBundle();
     v11 = [v10 localizedStringForKey:v8 value:&stru_1F04268F8 table:@"ChatKit"];
-    v12 = [v9 localizedStringWithFormat:v11, v4 + v3];
+    v12 = [v9 localizedStringWithFormat:v11, numberOfVideos + numberOfPhotos];
 
-    v13 = [MEMORY[0x1E69DC668] sharedApplication];
-    v14 = [v13 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v14 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v15 = @"\u200F";
     }
@@ -249,20 +249,20 @@ LABEL_24:
   v17 = v16;
 
   v87 = v17;
-  if (v5)
+  if (numberOfSavedAssets)
   {
-    if (v4)
+    if (numberOfVideos)
     {
       v18 = 1;
     }
 
     else
     {
-      v18 = v3 == 0;
+      v18 = numberOfPhotos == 0;
     }
 
     v19 = 1;
-    if (v3 != 0 || v4 == 0)
+    if (numberOfPhotos != 0 || numberOfVideos == 0)
     {
       v19 = 2;
     }
@@ -277,7 +277,7 @@ LABEL_24:
       v20 = 0;
     }
 
-    if (v4 + v3 == v5)
+    if (numberOfVideos + numberOfPhotos == numberOfSavedAssets)
     {
       v21 = CKFrameworkBundle();
       v22 = v21;
@@ -310,13 +310,13 @@ LABEL_24:
       v33 = MEMORY[0x1E696AEC0];
       v34 = CKFrameworkBundle();
       v35 = [v34 localizedStringForKey:v32 value:&stru_1F04268F8 table:@"ChatKit"];
-      v22 = [v33 localizedStringWithFormat:v35, v5];
+      v22 = [v33 localizedStringWithFormat:v35, numberOfSavedAssets];
 
       v23 = 0x1E69DC000uLL;
-      v36 = [MEMORY[0x1E69DC668] sharedApplication];
-      v37 = [v36 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-      if (v37 == 1)
+      if (userInterfaceLayoutDirection2 == 1)
       {
         v38 = @"\u200F";
       }
@@ -334,10 +334,10 @@ LABEL_24:
     v41 = [v40 localizedStringForKey:@"PHOTO_ATTACHMENT_STATUS_HAS_SAVED_TITLE_FORMAT" value:&stru_1F04268F8 table:@"ChatKit"];
     v42 = [v39 stringWithFormat:v41, v17, v28];
 
-    v43 = [*(v23 + 1640) sharedApplication];
-    v44 = [v43 userInterfaceLayoutDirection];
+    sharedApplication = [*(v23 + 1640) sharedApplication];
+    userInterfaceLayoutDirection3 = [sharedApplication userInterfaceLayoutDirection];
 
-    if (v44 == 1)
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v45 = @"\u200F";
     }
@@ -357,10 +357,10 @@ LABEL_24:
     v27 = [v26 localizedStringForKey:@"PHOTO_ATTACHMENT_STATUS_TITLE_FORMAT" value:&stru_1F04268F8 table:@"ChatKit"];
     v28 = [v25 stringWithFormat:v27, v17];
 
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    v30 = [v29 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection4 = [mEMORY[0x1E69DC668]3 userInterfaceLayoutDirection];
 
-    if (v30 == 1)
+    if (userInterfaceLayoutDirection4 == 1)
     {
       v31 = @"\u200F";
     }
@@ -373,48 +373,48 @@ LABEL_24:
     v86 = [(__CFString *)v31 stringByAppendingString:v28];
   }
 
-  v46 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v47 = [v46 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v47 = [defaultParagraphStyle mutableCopy];
 
   [v47 setAlignment:{2 * (-[CKPhotoAttachmentStatusChatItem transcriptOrientation](self, "transcriptOrientation") != 0)}];
   [v47 setLineBreakMode:2];
   v91 = *MEMORY[0x1E69DB648];
   v81 = v91;
   v48 = +[CKUIBehavior sharedBehaviors];
-  v49 = [v48 transcriptRegularFont];
-  v94[0] = v49;
+  transcriptRegularFont = [v48 transcriptRegularFont];
+  v94[0] = transcriptRegularFont;
   v92 = *MEMORY[0x1E69DB650];
   v50 = v92;
   v51 = +[CKUIBehavior sharedBehaviors];
-  v52 = [v51 theme];
-  v53 = [v52 transcriptTextColor];
+  theme = [v51 theme];
+  transcriptTextColor = [theme transcriptTextColor];
   v93 = *MEMORY[0x1E69DB688];
   v54 = v93;
-  v94[1] = v53;
+  v94[1] = transcriptTextColor;
   v94[2] = v47;
   v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:&v91 count:3];
 
   v56 = +[CKUIBehavior sharedBehaviors];
-  v57 = [v56 transcriptMessageStatusFont];
+  transcriptMessageStatusFont = [v56 transcriptMessageStatusFont];
 
   v58 = +[CKUIBehavior sharedBehaviors];
-  v59 = [v58 theme];
-  v60 = [v59 attachmentBalloonActionColor];
+  theme2 = [v58 theme];
+  attachmentBalloonActionColor = [theme2 attachmentBalloonActionColor];
 
   v61 = objc_alloc(MEMORY[0x1E696AD40]);
   v84 = v55;
   v62 = v55;
   v63 = v47;
   v64 = [v61 initWithString:v86 attributes:v62];
-  v65 = [v64 string];
-  v66 = [v65 rangeOfString:v87];
+  string = [v64 string];
+  v66 = [string rangeOfString:v87];
   v68 = v67;
 
   v89[0] = v81;
   v89[1] = v50;
-  v82 = v57;
-  v90[0] = v57;
-  v90[1] = v60;
+  v82 = transcriptMessageStatusFont;
+  v90[0] = transcriptMessageStatusFont;
+  v90[1] = attachmentBalloonActionColor;
   v89[2] = v54;
   v90[2] = v47;
   v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:3];
@@ -423,14 +423,14 @@ LABEL_24:
     [v64 setAttributes:v69 range:{v66, v68}];
   }
 
-  v70 = [v64 string];
-  v71 = [v70 rangeOfString:@"__IMAGE_PLACEHOLDER__"];
+  string2 = [v64 string];
+  v71 = [string2 rangeOfString:@"__IMAGE_PLACEHOLDER__"];
   v73 = v72;
 
   if (v71 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v74 = MEMORY[0x1E69DCAD8];
-    v88 = v60;
+    v88 = attachmentBalloonActionColor;
     v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
     v76 = [v74 configurationWithPaletteColors:v75];
 
@@ -443,21 +443,21 @@ LABEL_24:
   return v64;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v7;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v7;
   }
 
-  v8 = [(CKChatItem *)self transcriptText];
-  v9 = [(CKChatItem *)self transcriptTraitCollection];
-  [v9 displayScale];
-  [CKTranscriptActionButtonCell sizeThatFits:v8 attributedText:width displayScale:height, v10];
+  transcriptText = [(CKChatItem *)self transcriptText];
+  transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+  [transcriptTraitCollection displayScale];
+  [CKTranscriptActionButtonCell sizeThatFits:transcriptText attributedText:width displayScale:height, v10];
   v12 = v11;
   v14 = v13;
 

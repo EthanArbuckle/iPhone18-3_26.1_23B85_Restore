@@ -1,51 +1,51 @@
 @interface GEODiskSpaceManager
 + (GEODiskSpaceManager)sharedManager;
 - (GEODiskSpaceManager)init;
-- (GEODiskSpaceManager)initWithCacheDeleteID:(id)a3;
-- (id)_validVolume:(id)a3;
-- (id)diskSpaceProviderForIdentifier:(id)a3;
-- (unint64_t)freePurgableDiskSpace:(unint64_t)a3 urgency:(int)a4;
-- (unint64_t)purgableDiskSpaceForUrgency:(int)a3;
+- (GEODiskSpaceManager)initWithCacheDeleteID:(id)d;
+- (id)_validVolume:(id)volume;
+- (id)diskSpaceProviderForIdentifier:(id)identifier;
+- (unint64_t)freePurgableDiskSpace:(unint64_t)space urgency:(int)urgency;
+- (unint64_t)purgableDiskSpaceForUrgency:(int)urgency;
 - (void)_registerCacheDeleteCallbacks;
-- (void)addDiskSpaceProvider:(id)a3;
+- (void)addDiskSpaceProvider:(id)provider;
 - (void)reportSignificantPurgableDiskSpaceUpdate;
 @end
 
 @implementation GEODiskSpaceManager
 
-- (unint64_t)freePurgableDiskSpace:(unint64_t)a3 urgency:(int)a4
+- (unint64_t)freePurgableDiskSpace:(unint64_t)space urgency:(int)urgency
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_freePurgableInProgress)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_freePurgableInProgress)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     v7 = 0;
   }
 
   else
   {
-    v6->_freePurgableInProgress = 1;
-    objc_sync_exit(v6);
+    selfCopy->_freePurgableInProgress = 1;
+    objc_sync_exit(selfCopy);
 
-    diskSpaceProviders = v6->_diskSpaceProviders;
+    diskSpaceProviders = selfCopy->_diskSpaceProviders;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000322B4;
     v11[3] = &unk_100082900;
     v11[5] = &v13;
-    v11[6] = a3;
-    v12 = a4;
-    v11[4] = v6;
+    v11[6] = space;
+    urgencyCopy = urgency;
+    v11[4] = selfCopy;
     [(NSMutableArray *)diskSpaceProviders enumerateObjectsWithOptions:1 usingBlock:v11];
-    v9 = v6;
+    v9 = selfCopy;
     objc_sync_enter(v9);
-    v6->_freePurgableInProgress = 0;
+    selfCopy->_freePurgableInProgress = 0;
     objc_sync_exit(v9);
 
     v7 = v14[3];
@@ -55,39 +55,39 @@
   return v7;
 }
 
-- (unint64_t)purgableDiskSpaceForUrgency:(int)a3
+- (unint64_t)purgableDiskSpaceForUrgency:(int)urgency
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = self;
-  objc_sync_enter(v6);
-  cachedPurgableTime = v6->_cachedPurgableTime;
-  if (Current - v6->_cachedPurgableTime[a3] < 60.0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedPurgableTime = selfCopy->_cachedPurgableTime;
+  if (Current - selfCopy->_cachedPurgableTime[urgency] < 60.0)
   {
-    v10 = v6->_cachedPurgableSpace[a3];
-    objc_sync_exit(v6);
+    v10 = selfCopy->_cachedPurgableSpace[urgency];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    diskSpaceProviders = v6->_diskSpaceProviders;
+    diskSpaceProviders = selfCopy->_diskSpaceProviders;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000324B0;
     v12[3] = &unk_1000828D8;
-    v13 = a3;
-    v12[4] = v6;
+    urgencyCopy = urgency;
+    v12[4] = selfCopy;
     v12[5] = &v14;
     [(NSMutableArray *)diskSpaceProviders enumerateObjectsWithOptions:1 usingBlock:v12];
-    v9 = v6;
+    v9 = selfCopy;
     objc_sync_enter(v9);
-    cachedPurgableTime[a3] = Current;
-    v9->_cachedPurgableSpace[a3] = v15[3];
+    cachedPurgableTime[urgency] = Current;
+    v9->_cachedPurgableSpace[urgency] = v15[3];
     objc_sync_exit(v9);
 
     v10 = v15[3];
@@ -142,16 +142,16 @@
   }
 }
 
-- (id)diskSpaceProviderForIdentifier:(id)a3
+- (id)diskSpaceProviderForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5->_diskSpaceProviders;
+  v6 = selfCopy->_diskSpaceProviders;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -166,8 +166,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -188,29 +188,29 @@
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)addDiskSpaceProvider:(id)a3
+- (void)addDiskSpaceProvider:(id)provider
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  diskSpaceProviders = v4->_diskSpaceProviders;
+  providerCopy = provider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  diskSpaceProviders = selfCopy->_diskSpaceProviders;
   if (!diskSpaceProviders)
   {
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = v4->_diskSpaceProviders;
-    v4->_diskSpaceProviders = v6;
+    v7 = selfCopy->_diskSpaceProviders;
+    selfCopy->_diskSpaceProviders = v6;
 
-    diskSpaceProviders = v4->_diskSpaceProviders;
+    diskSpaceProviders = selfCopy->_diskSpaceProviders;
   }
 
-  [(NSMutableArray *)diskSpaceProviders addObject:v8];
-  v4->_cachedPurgableTime[0] = 2.56734753e-289;
-  objc_sync_exit(v4);
+  [(NSMutableArray *)diskSpaceProviders addObject:providerCopy];
+  selfCopy->_cachedPurgableTime[0] = 2.56734753e-289;
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_registerCacheDeleteCallbacks
@@ -268,9 +268,9 @@ LABEL_8:
   objc_destroyWeak(buf);
 }
 
-- (id)_validVolume:(id)a3
+- (id)_validVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v4 = [GEOFilePaths urlFor:4];
   v5 = v4;
   if (v4)
@@ -280,7 +280,7 @@ LABEL_8:
     v7 = v13;
     if (v6)
     {
-      v8 = [v3 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+      v8 = [volumeCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
       v9 = [NSURL fileURLWithPath:v8];
       if ([v9 isEqual:v7])
       {
@@ -315,15 +315,15 @@ LABEL_8:
   return v10;
 }
 
-- (GEODiskSpaceManager)initWithCacheDeleteID:(id)a3
+- (GEODiskSpaceManager)initWithCacheDeleteID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = GEODiskSpaceManager;
   v5 = [(GEODiskSpaceManager *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     cacheDeleteID = v5->_cacheDeleteID;
     v5->_cacheDeleteID = v6;
 

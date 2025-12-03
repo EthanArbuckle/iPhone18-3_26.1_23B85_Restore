@@ -1,15 +1,15 @@
 @interface CKNanoReplyTextInputViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation CKNanoReplyTextInputViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKNanoReplyTextInputView" hasProperty:@"sendMenuButton" withType:"@"];
-  [v3 validateClass:@"CKNanoReplyTextInputView" hasProperty:@"textInputView" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKNanoReplyTextInputView" hasProperty:@"sendMenuButton" withType:"@"];
+  [validationsCopy validateClass:@"CKNanoReplyTextInputView" hasProperty:@"textInputView" withType:"@"];
 }
 
 - (id)accessibilityElements

@@ -1,13 +1,13 @@
 @interface ProgressView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TtC16MusicApplication12ProgressView)initWithCoder:(id)a3;
+- (_TtC16MusicApplication12ProgressView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation ProgressView
 
-- (_TtC16MusicApplication12ProgressView)initWithCoder:(id)a3
+- (_TtC16MusicApplication12ProgressView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication12ProgressView_progress) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication12ProgressView_isBlurBackgroundEnabled) = 0;
@@ -20,15 +20,15 @@
   return result;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = self;
-  sub_3E47F0(a3);
+  selfCopy = self;
+  sub_3E47F0(progress);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3E4A20();
 }
 

@@ -1,79 +1,79 @@
 @interface PXCMMAssetsViewController
 - (BOOL)_areAllNotCopiedAssetsSelected;
-- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)a3;
-- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)a3 withEngineDrivenLayout:(id)a4;
+- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)path withEngineDrivenLayout:(id)layout;
 - (BOOL)_shouldShowDefaultOneUpActions;
 - (BOOL)_shouldShowProgressBanner;
 - (BOOL)_shouldShowStatusPlaceholder;
-- (BOOL)engineDrivenLayout:(id)a3 shouldShowDimmingOverlayAtIndexPath:(PXSimpleIndexPath *)a4;
-- (BOOL)engineDrivenLayout:(id)a3 shouldShowStatusBadgeAtIndexPath:(PXSimpleIndexPath *)a4;
-- (BOOL)oneUpPresentation:(id)a3 allowsActionsForContextMenuInteraction:(id)a4;
-- (BOOL)oneUpPresentation:(id)a3 canStartPreviewingForContextMenuInteraction:(id)a4;
-- (BOOL)swipeSelectionManager:(id)a3 shouldSelectItemAtIndexPath:(PXSimpleIndexPath *)a4;
-- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)a3;
-- (CGRect)engineDrivenLayout:(id)a3 contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)a4 forAspectRatio:(double)a5;
+- (BOOL)engineDrivenLayout:(id)layout shouldShowDimmingOverlayAtIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)engineDrivenLayout:(id)layout shouldShowStatusBadgeAtIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)oneUpPresentation:(id)presentation allowsActionsForContextMenuInteraction:(id)interaction;
+- (BOOL)oneUpPresentation:(id)presentation canStartPreviewingForContextMenuInteraction:(id)interaction;
+- (BOOL)swipeSelectionManager:(id)manager shouldSelectItemAtIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)mode;
+- (CGRect)engineDrivenLayout:(id)layout contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)path forAspectRatio:(double)ratio;
 - (CGSize)_maximumThumbnailSize;
 - (PXActionManager)assetActionManager;
 - (PXAssetReference)_focusedAssetReference;
-- (PXCMMAssetsViewController)initWithSession:(id)a3;
+- (PXCMMAssetsViewController)initWithSession:(id)session;
 - (PXCMMAssetsViewControllerDelegate)delegate;
 - (PXOneUpPresentation)_oneUpPresentation;
-- (PXSimpleIndexPath)_assetIndexPathAtLocation:(SEL)a3 padding:(CGPoint)a4 kind:(UIEdgeInsets)a5;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathAtLocation:(id)a4;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestAboveLocation:(id)a4;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestLeadingLocation:(id)a4;
+- (PXSimpleIndexPath)_assetIndexPathAtLocation:(SEL)location padding:(CGPoint)padding kind:(UIEdgeInsets)kind;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathAtLocation:(id)location;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestAboveLocation:(id)location;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestLeadingLocation:(id)location;
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration;
 - (UIEdgeInsets)contentInset;
-- (double)_bannerHeightFromReferenceSize:(CGSize)a3;
-- (double)_headerHeightFromReferenceSize:(CGSize)a3 insets:(UIEdgeInsets)a4;
+- (double)_bannerHeightFromReferenceSize:(CGSize)size;
+- (double)_headerHeightFromReferenceSize:(CGSize)size insets:(UIEdgeInsets)insets;
 - (double)_progressBannerViewLayoutHeight;
-- (double)_statusFooterHeightFromReferenceSize:(CGSize)a3 insets:(UIEdgeInsets)a4;
-- (double)engineDrivenLayout:(id)a3 aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)a4;
-- (id)_assetActionManagerWithSelectionManager:(id)a3;
-- (id)_assetReferenceAtPoint:(CGPoint)a3 padding:(UIEdgeInsets)a4;
+- (double)_statusFooterHeightFromReferenceSize:(CGSize)size insets:(UIEdgeInsets)insets;
+- (double)engineDrivenLayout:(id)layout aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)_assetActionManagerWithSelectionManager:(id)manager;
+- (id)_assetReferenceAtPoint:(CGPoint)point padding:(UIEdgeInsets)padding;
 - (id)_createAddButton;
 - (id)_createBannerTileController;
 - (id)_createNewLayout;
-- (id)_createNewLayoutGeneratorWithReferenceSize:(CGSize)a3;
+- (id)_createNewLayoutGeneratorWithReferenceSize:(CGSize)size;
 - (id)_createOverlayTileView;
 - (id)_createPosterTileController;
 - (id)_createSectionHeaderController;
-- (id)_createSelectionManagerWithAssetReference:(id)a3;
+- (id)_createSelectionManagerWithAssetReference:(id)reference;
 - (id)_createStatusBadgeTileView;
 - (id)_createStatusFooter;
 - (id)_createStatusPlaceholderTileView;
-- (id)_indexPathsForAssetReferences:(id)a3 inDataSource:(id)a4;
-- (id)assetsScene:(id)a3 layoutForDataSource:(id)a4;
-- (id)assetsScene:(id)a3 transitionAnimationCoordinatorForChange:(id)a4;
-- (id)oneUpPresentation:(id)a3 currentImageForAssetReference:(id)a4;
-- (id)oneUpPresentation:(id)a3 regionOfInterestForAssetReference:(id)a4;
-- (id)oneUpPresentationActionManager:(id)a3;
-- (id)oneUpPresentationActionManagerForPreviewing:(id)a3;
-- (id)oneUpPresentationDataSourceManager:(id)a3;
-- (id)oneUpPresentationImportStatusManager:(id)a3;
-- (id)oneUpPresentationMediaProvider:(id)a3;
-- (int64_t)_assetImportStateAtIndexPath:(PXSimpleIndexPath *)a3 withDataSource:(id)a4;
-- (int64_t)engineDrivenLayout:(id)a3 assetStatusAtIndexPath:(PXSimpleIndexPath *)a4;
-- (int64_t)oneUpPresentationActionContext:(id)a3;
+- (id)_indexPathsForAssetReferences:(id)references inDataSource:(id)source;
+- (id)assetsScene:(id)scene layoutForDataSource:(id)source;
+- (id)assetsScene:(id)scene transitionAnimationCoordinatorForChange:(id)change;
+- (id)oneUpPresentation:(id)presentation currentImageForAssetReference:(id)reference;
+- (id)oneUpPresentation:(id)presentation regionOfInterestForAssetReference:(id)reference;
+- (id)oneUpPresentationActionManager:(id)manager;
+- (id)oneUpPresentationActionManagerForPreviewing:(id)previewing;
+- (id)oneUpPresentationDataSourceManager:(id)manager;
+- (id)oneUpPresentationImportStatusManager:(id)manager;
+- (id)oneUpPresentationMediaProvider:(id)provider;
+- (int64_t)_assetImportStateAtIndexPath:(PXSimpleIndexPath *)path withDataSource:(id)source;
+- (int64_t)engineDrivenLayout:(id)layout assetStatusAtIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)oneUpPresentationActionContext:(id)context;
 - (unint64_t)_additionalTileCount;
-- (void)_configureBannerTile:(id)a3;
-- (void)_configureLayout:(id)a3;
+- (void)_configureBannerTile:(id)tile;
+- (void)_configureLayout:(id)layout;
 - (void)_deselectAllAssets;
-- (void)_handleLongPress:(id)a3;
-- (void)_handleSpaceBar:(id)a3;
-- (void)_handleTap:(id)a3;
+- (void)_handleLongPress:(id)press;
+- (void)_handleSpaceBar:(id)bar;
+- (void)_handleTap:(id)tap;
 - (void)_invalidateLayoutGenerator;
 - (void)_performInitialSelectionIfNeeded;
-- (void)_performTilingChangeWithoutAnimationTransition:(id)a3;
+- (void)_performTilingChangeWithoutAnimationTransition:(id)transition;
 - (void)_scheduleLayout;
 - (void)_selectAllAssets;
 - (void)_selectCuratedAssets;
 - (void)_selectNonCopiedAssets;
 - (void)_selectionModeDidChange;
-- (void)_setHiddenAssetReferences:(id)a3;
-- (void)_setLayoutType:(int64_t)a3;
-- (void)_toggleAssetSelectionAtIndexPath:(PXSimpleIndexPath *)a3;
-- (void)_transitionLayoutGesture:(id)a3;
+- (void)_setHiddenAssetReferences:(id)references;
+- (void)_setLayoutType:(int64_t)type;
+- (void)_toggleAssetSelectionAtIndexPath:(PXSimpleIndexPath *)path;
+- (void)_transitionLayoutGesture:(id)gesture;
 - (void)_updateAssetsScene;
 - (void)_updateGestures;
 - (void)_updateLayoutEngine;
@@ -83,27 +83,27 @@
 - (void)_updateSelectionEnabled;
 - (void)_updateSelectionIfNeeded;
 - (void)_updateStyle;
-- (void)addButtonTapped:(id)a3;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
-- (void)didTapActionButtonInBannerTileController:(id)a3;
-- (void)engineDrivenLayoutReferenceSizeDidChange:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)oneUpPresentation:(id)a3 scrollAssetReferenceToVisible:(id)a4;
-- (void)oneUpPresentation:(id)a3 setHiddenAssetReferences:(id)a4;
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4;
-- (void)progressBannerView:(id)a3 dismissViewController:(id)a4;
-- (void)progressBannerViewLayoutHeightDidChange:(id)a3;
-- (void)setActionInProgress:(BOOL)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setUserSelectionEnabled:(BOOL)a3;
-- (void)statusController:(id)a3 configurationDidChange:(id)a4;
-- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)addButtonTapped:(id)tapped;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
+- (void)didTapActionButtonInBannerTileController:(id)controller;
+- (void)engineDrivenLayoutReferenceSizeDidChange:(id)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)oneUpPresentation:(id)presentation scrollAssetReferenceToVisible:(id)visible;
+- (void)oneUpPresentation:(id)presentation setHiddenAssetReferences:(id)references;
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller;
+- (void)progressBannerView:(id)view dismissViewController:(id)controller;
+- (void)progressBannerViewLayoutHeightDidChange:(id)change;
+- (void)setActionInProgress:(BOOL)progress;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setDelegate:(id)delegate;
+- (void)setUserSelectionEnabled:(BOOL)enabled;
+- (void)statusController:(id)controller configurationDidChange:(id)change;
+- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)mode;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXCMMAssetsViewController
@@ -130,10 +130,10 @@
 
 - (PXActionManager)assetActionManager
 {
-  v3 = [(PXCMMAssetsViewController *)self _focusedAssetReference];
-  if (v3)
+  _focusedAssetReference = [(PXCMMAssetsViewController *)self _focusedAssetReference];
+  if (_focusedAssetReference)
   {
-    v4 = [(PXCMMAssetsViewController *)self _createSelectionManagerWithAssetReference:v3];
+    v4 = [(PXCMMAssetsViewController *)self _createSelectionManagerWithAssetReference:_focusedAssetReference];
     v5 = [(PXCMMAssetsViewController *)self _assetActionManagerWithSelectionManager:v4];
   }
 
@@ -147,49 +147,49 @@
 
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  v4 = [v3 viewModel];
-  v5 = [v4 selectionEnabled];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  selectionEnabled = [viewModel selectionEnabled];
 
-  if (v5)
+  if (selectionEnabled)
   {
-    v6 = [(PXCMMAssetsViewController *)self boopableItemsProvider];
+    boopableItemsProvider = [(PXCMMAssetsViewController *)self boopableItemsProvider];
 
-    if (!v6)
+    if (!boopableItemsProvider)
     {
       v7 = objc_alloc_init(PXBoopableItemsProvider);
       [(PXCMMAssetsViewController *)self setBoopableItemsProvider:v7];
 
-      v8 = [(PXCMMComponentViewController *)self session];
-      v9 = [v8 viewModel];
-      v10 = [v9 selectionManager];
-      v11 = [(PXCMMAssetsViewController *)self boopableItemsProvider];
-      [v11 setSelectionManager:v10];
+      session2 = [(PXCMMComponentViewController *)self session];
+      viewModel2 = [session2 viewModel];
+      selectionManager = [viewModel2 selectionManager];
+      boopableItemsProvider2 = [(PXCMMAssetsViewController *)self boopableItemsProvider];
+      [boopableItemsProvider2 setSelectionManager:selectionManager];
 
-      v12 = [(PXCMMComponentViewController *)self session];
-      v13 = [v12 mediaProvider];
-      v14 = [(PXCMMAssetsViewController *)self boopableItemsProvider];
-      [v14 setImagePreviewMediaProvider:v13];
+      session3 = [(PXCMMComponentViewController *)self session];
+      mediaProvider = [session3 mediaProvider];
+      boopableItemsProvider3 = [(PXCMMAssetsViewController *)self boopableItemsProvider];
+      [boopableItemsProvider3 setImagePreviewMediaProvider:mediaProvider];
     }
 
-    v15 = [(PXCMMAssetsViewController *)self boopableItemsProvider];
+    boopableItemsProvider4 = [(PXCMMAssetsViewController *)self boopableItemsProvider];
   }
 
   else
   {
-    v15 = 0;
+    boopableItemsProvider4 = 0;
   }
 
-  return v15;
+  return boopableItemsProvider4;
 }
 
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  if (controllerCopy)
   {
-    [(PXCMMAssetsViewController *)self presentViewController:v5 animated:1 completion:0];
+    [(PXCMMAssetsViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
@@ -198,34 +198,34 @@
   }
 }
 
-- (void)didTapActionButtonInBannerTileController:(id)a3
+- (void)didTapActionButtonInBannerTileController:(id)controller
 {
-  v4 = [(PXCMMComponentViewController *)self session];
-  v5 = [v4 activityType];
+  session = [(PXCMMComponentViewController *)self session];
+  activityType = [session activityType];
 
-  if (v5 == 2)
+  if (activityType == 2)
   {
     self->_receivingActionButtonWasTapped = 1;
   }
 
-  v6 = [(PXCMMAssetsViewController *)self delegate];
-  [v6 assetsViewControllerDidTapActionButton:self];
+  delegate = [(PXCMMAssetsViewController *)self delegate];
+  [delegate assetsViewControllerDidTapActionButton:self];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXCMMViewModelObservationContext_204652 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCMMViewModelObservationContext_204652 == context)
   {
-    v13 = v9;
-    if ((v6 & 0x600) != 0)
+    v13 = observableCopy;
+    if ((changeCopy & 0x600) != 0)
     {
       [(PXCMMAssetsViewController *)self _selectionModeDidChange];
-      v9 = v13;
+      observableCopy = v13;
     }
 
-    if ((v6 & 0x1000) == 0)
+    if ((changeCopy & 0x1000) == 0)
     {
       goto LABEL_15;
     }
@@ -236,26 +236,26 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (PXMomentShareStatusPresentationObservationContext_204653 == a5)
+  if (PXMomentShareStatusPresentationObservationContext_204653 == context)
   {
-    if ((v6 & 0x2000) == 0)
+    if ((changeCopy & 0x2000) == 0)
     {
       goto LABEL_15;
     }
 
-    v13 = v9;
+    v13 = observableCopy;
     [(PXCMMAssetsViewController *)self _updateSelectionEnabled];
     goto LABEL_13;
   }
 
-  if (PXSpecManagerObservationContext_204654 == a5)
+  if (PXSpecManagerObservationContext_204654 == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v13 = v9;
-      v10 = [(PXFeatureSpecManager *)self->_specManager spec];
+      v13 = observableCopy;
+      spec = [(PXFeatureSpecManager *)self->_specManager spec];
       spec = self->_spec;
-      self->_spec = v10;
+      self->_spec = spec;
 
       [(PXCMMAssetsViewController *)self _updateStyle];
       [(PXCMMAssetsViewController *)self _invalidateLayoutGenerator];
@@ -265,32 +265,32 @@ LABEL_13:
 
   else
   {
-    if (PXSelectionManagerObservationContext_204655 != a5)
+    if (PXSelectionManagerObservationContext_204655 != context)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1805 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1805 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 2) != 0)
+    if ((changeCopy & 2) != 0)
     {
-      v13 = v9;
+      v13 = observableCopy;
       [(PXCMMAssetsViewController *)self _updateSelectionIfNeeded];
 LABEL_14:
-      v9 = v13;
+      observableCopy = v13;
     }
   }
 
 LABEL_15:
 }
 
-- (void)statusController:(id)a3 configurationDidChange:(id)a4
+- (void)statusController:(id)controller configurationDidChange:(id)change
 {
   sceneController = self->_sceneController;
-  v5 = a4;
-  v6 = [(PXAssetsScene *)sceneController viewTileReusePool];
-  v7 = [v6 checkOutReusableObjectWithReuseIdentifier:8870950];
+  changeCopy = change;
+  viewTileReusePool = [(PXAssetsScene *)sceneController viewTileReusePool];
+  v7 = [viewTileReusePool checkOutReusableObjectWithReuseIdentifier:8870950];
 
   v9 = v7;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
@@ -303,7 +303,7 @@ LABEL_15:
     v8 = 0;
   }
 
-  [v8 setConfiguration:v5];
+  [v8 setConfiguration:changeCopy];
 }
 
 - (BOOL)_shouldShowStatusPlaceholder
@@ -313,25 +313,25 @@ LABEL_15:
     return 0;
   }
 
-  v2 = [(PXCMMComponentViewController *)self session];
-  v3 = [v2 viewModel];
-  v4 = [v3 shouldShowPlaceholder];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  shouldShowPlaceholder = [viewModel shouldShowPlaceholder];
 
-  return v4;
+  return shouldShowPlaceholder;
 }
 
-- (void)progressBannerView:(id)a3 dismissViewController:(id)a4
+- (void)progressBannerView:(id)view dismissViewController:(id)controller
 {
-  v5 = [a4 presentingViewController];
+  presentingViewController = [controller presentingViewController];
 
-  if (v5 == self)
+  if (presentingViewController == self)
   {
 
     [(PXCMMAssetsViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)progressBannerViewLayoutHeightDidChange:(id)a3
+- (void)progressBannerViewLayoutHeightDidChange:(id)change
 {
   [(PXCMMAssetsViewController *)self _updateProgressBannerViewConstraints];
 
@@ -341,25 +341,25 @@ LABEL_15:
 - (void)_updateProgressBannerViewConstraints
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PXCMMProgressBannerView *)self->_progressBannerView superview];
-  v21 = [v3 safeAreaLayoutGuide];
+  superview = [(PXCMMProgressBannerView *)self->_progressBannerView superview];
+  safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
   [(PXCMMProgressBannerView *)self->_progressBannerView layoutHeight];
   v5 = v4;
-  v20 = [(PXCMMProgressBannerView *)self->_progressBannerView topAnchor];
-  v19 = [v21 bottomAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:-v5];
+  topAnchor = [(PXCMMProgressBannerView *)self->_progressBannerView topAnchor];
+  bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:-v5];
   v22[0] = v18;
-  v17 = [(PXCMMProgressBannerView *)self->_progressBannerView leadingAnchor];
-  v16 = [v3 leadingAnchor];
-  v6 = [v17 constraintEqualToAnchor:v16];
+  leadingAnchor = [(PXCMMProgressBannerView *)self->_progressBannerView leadingAnchor];
+  leadingAnchor2 = [superview leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v22[1] = v6;
-  v7 = [(PXCMMProgressBannerView *)self->_progressBannerView trailingAnchor];
-  v8 = [v3 trailingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  trailingAnchor = [(PXCMMProgressBannerView *)self->_progressBannerView trailingAnchor];
+  trailingAnchor2 = [superview trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v22[2] = v9;
-  v10 = [(PXCMMProgressBannerView *)self->_progressBannerView bottomAnchor];
-  v11 = [v3 bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  bottomAnchor2 = [(PXCMMProgressBannerView *)self->_progressBannerView bottomAnchor];
+  bottomAnchor3 = [superview bottomAnchor];
+  v12 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v22[3] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
 
@@ -373,10 +373,10 @@ LABEL_15:
 
 - (void)_updateProgressBannerViewVisibility
 {
-  v3 = [(PXCMMAssetsViewController *)self _shouldShowProgressBanner];
-  if (v3 == [(PXCMMProgressBannerView *)self->_progressBannerView isHidden])
+  _shouldShowProgressBanner = [(PXCMMAssetsViewController *)self _shouldShowProgressBanner];
+  if (_shouldShowProgressBanner == [(PXCMMProgressBannerView *)self->_progressBannerView isHidden])
   {
-    [(PXCMMProgressBannerView *)self->_progressBannerView setHidden:v3 ^ 1u];
+    [(PXCMMProgressBannerView *)self->_progressBannerView setHidden:_shouldShowProgressBanner ^ 1u];
 
     [(PXCMMAssetsViewController *)self _invalidateLayoutGenerator];
   }
@@ -403,9 +403,9 @@ LABEL_15:
   }
 
   v3 = +[PXCompleteMyMomentSettings sharedInstance];
-  v4 = [v3 showProgressBannerView];
+  showProgressBannerView = [v3 showProgressBannerView];
 
-  if (v4)
+  if (showProgressBannerView)
   {
     if (_shouldShowProgressBanner_predicate != -1)
     {
@@ -428,13 +428,13 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
   }
 }
 
-- (int64_t)engineDrivenLayout:(id)a3 assetStatusAtIndexPath:(PXSimpleIndexPath *)a4
+- (int64_t)engineDrivenLayout:(id)layout assetStatusAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = [a3 dataSource];
-  v7 = *&a4->item;
-  v10[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v7 = *&path->item;
+  v10[0] = *&path->dataSourceIdentifier;
   v10[1] = v7;
-  v8 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v10 withDataSource:v6];
+  v8 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v10 withDataSource:dataSource];
 
   if ((v8 - 1) > 2)
   {
@@ -447,24 +447,24 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
   }
 }
 
-- (BOOL)engineDrivenLayout:(id)a3 shouldShowStatusBadgeAtIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)engineDrivenLayout:(id)layout shouldShowStatusBadgeAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = a3;
-  v7 = [(PXCMMComponentViewController *)self session];
-  if ([v7 activityType] == 2)
+  layoutCopy = layout;
+  session = [(PXCMMComponentViewController *)self session];
+  if ([session activityType] == 2)
   {
-    v8 = [v6 dataSource];
-    v9 = *&a4->item;
-    v17[0] = *&a4->dataSourceIdentifier;
+    dataSource = [layoutCopy dataSource];
+    v9 = *&path->item;
+    v17[0] = *&path->dataSourceIdentifier;
     v17[1] = v9;
-    v10 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v17 withDataSource:v8];
+    v10 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v17 withDataSource:dataSource];
 
-    v11 = [(PXCMMComponentViewController *)self session];
-    v12 = [v11 viewModel];
-    v13 = [v12 isSelecting];
+    session2 = [(PXCMMComponentViewController *)self session];
+    viewModel = [session2 viewModel];
+    isSelecting = [viewModel isSelecting];
 
     v14 = 2;
-    if (!v13)
+    if (!isSelecting)
     {
       v14 = 3;
     }
@@ -480,17 +480,17 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
   return v15;
 }
 
-- (BOOL)engineDrivenLayout:(id)a3 shouldShowDimmingOverlayAtIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)engineDrivenLayout:(id)layout shouldShowDimmingOverlayAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = a3;
-  v7 = [(PXCMMComponentViewController *)self session];
-  if ([v7 activityType] == 2 && (objc_msgSend(v7, "viewModel"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isSelecting"), v8, v9))
+  layoutCopy = layout;
+  session = [(PXCMMComponentViewController *)self session];
+  if ([session activityType] == 2 && (objc_msgSend(session, "viewModel"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isSelecting"), v8, v9))
   {
-    v10 = [v6 dataSource];
-    v11 = *&a4->item;
-    v15[0] = *&a4->dataSourceIdentifier;
+    dataSource = [layoutCopy dataSource];
+    v11 = *&path->item;
+    v15[0] = *&path->dataSourceIdentifier;
     v15[1] = v11;
-    v12 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v15 withDataSource:v10];
+    v12 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v15 withDataSource:dataSource];
 
     v13 = v12 == 1;
   }
@@ -503,17 +503,17 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
   return v13;
 }
 
-- (CGRect)engineDrivenLayout:(id)a3 contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)a4 forAspectRatio:(double)a5
+- (CGRect)engineDrivenLayout:(id)layout contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)path forAspectRatio:(double)ratio
 {
-  v7 = [a3 dataSource];
-  v8 = *&a4->item;
-  v22[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v8 = *&path->item;
+  v22[0] = *&path->dataSourceIdentifier;
   v22[1] = v8;
-  v9 = [v7 assetAtItemIndexPath:v22];
+  v9 = [dataSource assetAtItemIndexPath:v22];
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 bestCropRectForAspectRatio:a5];
+    [v9 bestCropRectForAspectRatio:ratio];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -539,13 +539,13 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
   return result;
 }
 
-- (double)engineDrivenLayout:(id)a3 aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)a4
+- (double)engineDrivenLayout:(id)layout aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [a3 dataSource];
-  v6 = *&a4->item;
-  v11[0] = *&a4->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v6 = *&path->item;
+  v11[0] = *&path->dataSourceIdentifier;
   v11[1] = v6;
-  v7 = [v5 assetAtItemIndexPath:v11];
+  v7 = [dataSource assetAtItemIndexPath:v11];
 
   v8 = 1.0;
   if (objc_opt_respondsToSelector())
@@ -557,82 +557,82 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
   return v8;
 }
 
-- (void)engineDrivenLayoutReferenceSizeDidChange:(id)a3
+- (void)engineDrivenLayoutReferenceSizeDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [(PXTilingController *)self->_tilingController targetLayout];
+  changeCopy = change;
+  targetLayout = [(PXTilingController *)self->_tilingController targetLayout];
 
-  v5 = v9;
-  if (v4 == v9)
+  v5 = changeCopy;
+  if (targetLayout == changeCopy)
   {
-    [v9 referenceSize];
-    v5 = v9;
+    [changeCopy referenceSize];
+    v5 = changeCopy;
     if (self->_knownReferenceSize.width != v6 || self->_knownReferenceSize.height != v7)
     {
       self->_knownReferenceSize.width = v6;
       self->_knownReferenceSize.height = v7;
       [(PXCMMAssetsViewController *)self _invalidateLayoutGenerator];
-      v5 = v9;
+      v5 = changeCopy;
     }
   }
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
   v7 = self->_sceneController;
-  v8 = *&a4->index[5];
-  v15 = *&a4->index[3];
+  v8 = *&identifier->index[5];
+  v15 = *&identifier->index[3];
   v16 = v8;
-  v17 = *&a4->index[7];
-  v18 = a4->index[9];
-  v9 = *&a4->index[1];
-  v13 = *&a4->length;
+  v17 = *&identifier->index[7];
+  v18 = identifier->index[9];
+  v9 = *&identifier->index[1];
+  v13 = *&identifier->length;
   v14 = v9;
   if ([(PXAssetsScene *)v7 providesTileForIdentifier:&v13])
   {
-    v10 = *&a4->index[5];
-    v15 = *&a4->index[3];
+    v10 = *&identifier->index[5];
+    v15 = *&identifier->index[3];
     v16 = v10;
-    v17 = *&a4->index[7];
-    v18 = a4->index[9];
-    v11 = *&a4->index[1];
-    v13 = *&a4->length;
+    v17 = *&identifier->index[7];
+    v18 = identifier->index[9];
+    v11 = *&identifier->index[1];
+    v13 = *&identifier->length;
     v14 = v11;
-    [(PXUIAssetsScene *)v7 checkInTile:a3 withIdentifier:&v13];
+    [(PXUIAssetsScene *)v7 checkInTile:tile withIdentifier:&v13];
   }
 
   else
   {
-    v12 = [(PXAssetsScene *)v7 viewTileReusePool];
-    [v12 checkInReusableObject:a3];
+    viewTileReusePool = [(PXAssetsScene *)v7 viewTileReusePool];
+    [viewTileReusePool checkInReusableObject:tile];
 
-    [(NSMutableSet *)self->_inUseTiles removeObject:a3];
+    [(NSMutableSet *)self->_inUseTiles removeObject:tile];
   }
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   v8 = self->_sceneController;
-  v9 = *&a3->index[5];
-  v26 = *&a3->index[3];
+  v9 = *&identifier->index[5];
+  v26 = *&identifier->index[3];
   v27 = v9;
-  v28 = *&a3->index[7];
-  v29 = a3->index[9];
-  v10 = *&a3->index[1];
-  v24 = *&a3->length;
+  v28 = *&identifier->index[7];
+  v29 = identifier->index[9];
+  v10 = *&identifier->index[1];
+  v24 = *&identifier->length;
   v25 = v10;
   if (![(PXAssetsScene *)v8 providesTileForIdentifier:&v24])
   {
-    v14 = a3->index[0];
+    v14 = identifier->index[0];
     if (v14 > 8439979)
     {
       if (v14 > 8439981)
       {
         if (v14 == 8439982)
         {
-          v15 = [(PXAssetsScene *)v8 viewTileReusePool];
-          v16 = v15;
+          viewTileReusePool = [(PXAssetsScene *)v8 viewTileReusePool];
+          v16 = viewTileReusePool;
           v17 = 8870948;
         }
 
@@ -643,8 +643,8 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
             goto LABEL_25;
           }
 
-          v15 = [(PXAssetsScene *)v8 viewTileReusePool];
-          v16 = v15;
+          viewTileReusePool = [(PXAssetsScene *)v8 viewTileReusePool];
+          v16 = viewTileReusePool;
           v17 = 8870950;
         }
       }
@@ -653,8 +653,8 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
       {
         if (v14 != 8439980)
         {
-          v18 = [(PXAssetsScene *)v8 viewTileReusePool];
-          v13 = [v18 checkOutReusableObjectWithReuseIdentifier:8870947];
+          viewTileReusePool2 = [(PXAssetsScene *)v8 viewTileReusePool];
+          v13 = [viewTileReusePool2 checkOutReusableObjectWithReuseIdentifier:8870947];
 
           [(PXCMMAssetsViewController *)self _configureBannerTile:v13];
           if (!v13)
@@ -665,8 +665,8 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
           goto LABEL_24;
         }
 
-        v15 = [(PXAssetsScene *)v8 viewTileReusePool];
-        v16 = v15;
+        viewTileReusePool = [(PXAssetsScene *)v8 viewTileReusePool];
+        v16 = viewTileReusePool;
         v17 = 8870944;
       }
     }
@@ -675,8 +675,8 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
     {
       if (v14 == 8439963)
       {
-        v15 = [(PXAssetsScene *)v8 viewTileReusePool];
-        v16 = v15;
+        viewTileReusePool = [(PXAssetsScene *)v8 viewTileReusePool];
+        v16 = viewTileReusePool;
         v17 = 8870945;
       }
 
@@ -687,16 +687,16 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
           goto LABEL_25;
         }
 
-        v15 = [(PXAssetsScene *)v8 viewTileReusePool];
-        v16 = v15;
+        viewTileReusePool = [(PXAssetsScene *)v8 viewTileReusePool];
+        v16 = viewTileReusePool;
         v17 = 8870946;
       }
     }
 
     else if (v14 == 8439952)
     {
-      v15 = [(PXAssetsScene *)v8 viewTileReusePool];
-      v16 = v15;
+      viewTileReusePool = [(PXAssetsScene *)v8 viewTileReusePool];
+      v16 = viewTileReusePool;
       v17 = 8870942;
     }
 
@@ -707,12 +707,12 @@ void __54__PXCMMAssetsViewController__shouldShowProgressBanner__block_invoke()
         goto LABEL_25;
       }
 
-      v15 = [(PXAssetsScene *)v8 viewTileReusePool];
-      v16 = v15;
+      viewTileReusePool = [(PXAssetsScene *)v8 viewTileReusePool];
+      v16 = viewTileReusePool;
       v17 = 8870943;
     }
 
-    v13 = [v15 checkOutReusableObjectWithReuseIdentifier:v17];
+    v13 = [viewTileReusePool checkOutReusableObjectWithReuseIdentifier:v17];
 
     if (v13)
     {
@@ -722,31 +722,31 @@ LABEL_24:
     }
 
 LABEL_25:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    v20 = *&a3->index[5];
-    v26 = *&a3->index[3];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v20 = *&identifier->index[5];
+    v26 = *&identifier->index[3];
     v27 = v20;
-    v28 = *&a3->index[7];
-    v29 = a3->index[9];
-    v21 = *&a3->index[1];
-    v24 = *&a3->length;
+    v28 = *&identifier->index[7];
+    v29 = identifier->index[9];
+    v21 = *&identifier->index[1];
+    v24 = *&identifier->length;
     v25 = v21;
     v22 = PXTileIdentifierDescription(&v24);
-    [v19 handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1559 description:{@"%@ couldn't check out tile for identifier:%@, layout:%@", self, v22, v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1559 description:{@"%@ couldn't check out tile for identifier:%@, layout:%@", self, v22, layoutCopy}];
 
     v13 = 0;
     goto LABEL_26;
   }
 
-  v11 = *&a3->index[5];
-  v26 = *&a3->index[3];
+  v11 = *&identifier->index[5];
+  v26 = *&identifier->index[3];
   v27 = v11;
-  v28 = *&a3->index[7];
-  v29 = a3->index[9];
-  v12 = *&a3->index[1];
-  v24 = *&a3->length;
+  v28 = *&identifier->index[7];
+  v29 = identifier->index[9];
+  v12 = *&identifier->index[1];
+  v24 = *&identifier->length;
   v25 = v12;
-  v13 = [(PXUIAssetsScene *)v8 checkOutTileForIdentifier:&v24 layout:v7];
+  v13 = [(PXUIAssetsScene *)v8 checkOutTileForIdentifier:&v24 layout:layoutCopy];
   if (!v13)
   {
     goto LABEL_25;
@@ -757,36 +757,36 @@ LABEL_26:
   return v13;
 }
 
-- (void)_configureBannerTile:(id)a3
+- (void)_configureBannerTile:(id)tile
 {
-  v11 = a3;
-  v4 = [(PXCMMComponentViewController *)self session];
-  v5 = [v4 sourceType];
-  v6 = [v4 activityType];
-  if (!v5 && v6 == 1)
+  tileCopy = tile;
+  session = [(PXCMMComponentViewController *)self session];
+  sourceType = [session sourceType];
+  activityType = [session activityType];
+  if (!sourceType && activityType == 1)
   {
-    v7 = [v4 peopleSuggestionsPreviewDataSourceManager];
-    v8 = v7;
-    if (v7)
+    peopleSuggestionsPreviewDataSourceManager = [session peopleSuggestionsPreviewDataSourceManager];
+    v8 = peopleSuggestionsPreviewDataSourceManager;
+    if (peopleSuggestionsPreviewDataSourceManager)
     {
-      v9 = v7;
+      peopleSuggestionsDataSourceManager = peopleSuggestionsPreviewDataSourceManager;
     }
 
     else
     {
-      v9 = [v4 peopleSuggestionsDataSourceManager];
+      peopleSuggestionsDataSourceManager = [session peopleSuggestionsDataSourceManager];
     }
 
-    v10 = v9;
+    v10 = peopleSuggestionsDataSourceManager;
 
-    [v11 setPeopleSuggestionsDataSourceManager:v10];
+    [tileCopy setPeopleSuggestionsDataSourceManager:v10];
   }
 }
 
-- (id)assetsScene:(id)a3 transitionAnimationCoordinatorForChange:(id)a4
+- (id)assetsScene:(id)scene transitionAnimationCoordinatorForChange:(id)change
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  changeCopy = change;
   if (self->_layoutAnimationsGloballyDisabled)
   {
     v7 = 0;
@@ -794,21 +794,21 @@ LABEL_26:
 
   else
   {
-    v8 = [a3 dataSourceManager];
-    v9 = [v8 changeHistory];
-    v7 = [PXAssetsTileTransitionCoordinator transitionCoordinatorForChange:v6 changeHistory:v9];
+    dataSourceManager = [scene dataSourceManager];
+    changeHistory = [dataSourceManager changeHistory];
+    v7 = [PXAssetsTileTransitionCoordinator transitionCoordinatorForChange:changeCopy changeHistory:changeHistory];
 
     v10 = +[PXCompleteMyMomentSettings sharedInstance];
-    LODWORD(v8) = [v10 sectionHeadersShouldFloat];
+    LODWORD(dataSourceManager) = [v10 sectionHeadersShouldFloat];
 
-    if (v8)
+    if (dataSourceManager)
     {
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v11 = [v6 invalidationContexts];
-      v12 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      invalidationContexts = [changeCopy invalidationContexts];
+      v12 = [invalidationContexts countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v12)
       {
         v13 = v12;
@@ -819,7 +819,7 @@ LABEL_26:
           {
             if (*v33 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(invalidationContexts);
             }
 
             v16 = [*(*(&v32 + 1) + 8 * i) tag];
@@ -833,7 +833,7 @@ LABEL_26:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v13 = [invalidationContexts countByEnumeratingWithState:&v32 objects:v37 count:16];
           if (v13)
           {
             continue;
@@ -846,16 +846,16 @@ LABEL_26:
 
 LABEL_14:
     v18 = +[PXCompleteMyMomentSettings sharedInstance];
-    v19 = [v18 showFloatingBanner];
+    showFloatingBanner = [v18 showFloatingBanner];
 
-    if (v19)
+    if (showFloatingBanner)
     {
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v20 = [v6 invalidationContexts];
-      v21 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      invalidationContexts2 = [changeCopy invalidationContexts];
+      v21 = [invalidationContexts2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v21)
       {
         v22 = v21;
@@ -866,7 +866,7 @@ LABEL_14:
           {
             if (*v29 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(invalidationContexts2);
             }
 
             v25 = [*(*(&v28 + 1) + 8 * j) tag];
@@ -880,7 +880,7 @@ LABEL_14:
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v22 = [invalidationContexts2 countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v22)
           {
             continue;
@@ -898,26 +898,26 @@ LABEL_25:
   return v7;
 }
 
-- (id)assetsScene:(id)a3 layoutForDataSource:(id)a4
+- (id)assetsScene:(id)scene layoutForDataSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   [(PXCMMAssetsViewController *)self _updateLayoutEngine];
-  v6 = [(PXSectionedLayoutEngine *)self->_layoutEngine dataSourceSnapshot];
-  v7 = [v6 identifier];
+  dataSourceSnapshot = [(PXSectionedLayoutEngine *)self->_layoutEngine dataSourceSnapshot];
+  identifier = [dataSourceSnapshot identifier];
 
-  v8 = [(PXCMMComponentViewController *)self session];
-  v9 = [v8 dataSourceManager];
-  v10 = [v9 changeHistory];
-  v11 = [v10 changeDetailsFromDataSourceIdentifier:v7 toDataSourceIdentifier:{objc_msgSend(v5, "identifier")}];
+  session = [(PXCMMComponentViewController *)self session];
+  dataSourceManager = [session dataSourceManager];
+  changeHistory = [dataSourceManager changeHistory];
+  v11 = [changeHistory changeDetailsFromDataSourceIdentifier:identifier toDataSourceIdentifier:{objc_msgSend(sourceCopy, "identifier")}];
 
   if ([v11 count] == 1)
   {
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
   layoutEngine = self->_layoutEngine;
@@ -925,10 +925,10 @@ LABEL_25:
   v20 = 3221225472;
   v21 = __61__PXCMMAssetsViewController_assetsScene_layoutForDataSource___block_invoke;
   v22 = &unk_1E77440B8;
-  v23 = v5;
-  v24 = v12;
-  v14 = v12;
-  v15 = v5;
+  v23 = sourceCopy;
+  v24 = firstObject;
+  v14 = firstObject;
+  v15 = sourceCopy;
   v16 = [(PXSectionedLayoutEngine *)layoutEngine performChangesAndWait:&v19];
   v17 = [(PXCMMAssetsViewController *)self _createNewLayout:v19];
 
@@ -942,7 +942,7 @@ LABEL_25:
   PXEdgeInsetsAdd();
 }
 
-- (double)_statusFooterHeightFromReferenceSize:(CGSize)a3 insets:(UIEdgeInsets)a4
+- (double)_statusFooterHeightFromReferenceSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
   if (self->_momentShareStatusPresentationForFooter && ![(PXCMMAssetsViewController *)self _shouldShowStatusPlaceholder])
   {
@@ -962,30 +962,30 @@ LABEL_25:
   return 0.0;
 }
 
-- (double)_bannerHeightFromReferenceSize:(CGSize)a3
+- (double)_bannerHeightFromReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = +[PXCompleteMyMomentSettings sharedInstance];
-  v7 = [v6 showFloatingBanner];
+  showFloatingBanner = [v6 showFloatingBanner];
 
   v8 = 0.0;
-  if (v7)
+  if (showFloatingBanner)
   {
     momentShareStatusPresentationForPoster = self->_momentShareStatusPresentationForPoster;
     if (!momentShareStatusPresentationForPoster || (v10 = [(PXMomentShareStatusPresentation *)momentShareStatusPresentationForPoster type]) != 0 && (v10 != 1 || ([(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentationForPoster state]& 0xFFFFFFFFFFFFFFFDLL) != 4 && ![(PXCMMAssetsViewController *)self _shouldShowStatusPlaceholder]))
     {
-      v11 = [(PXCMMComponentViewController *)self session];
+      session = [(PXCMMComponentViewController *)self session];
       measuringBannerTile = self->_measuringBannerTile;
       if (!measuringBannerTile)
       {
         v13 = [PXCMMBannerTileController alloc];
-        v14 = [v11 activityType];
-        v15 = [v11 sourceType];
-        v16 = [v11 viewModel];
+        activityType = [session activityType];
+        sourceType = [session sourceType];
+        viewModel = [session viewModel];
         v17 = self->_momentShareStatusPresentationForPoster;
-        v18 = [v11 importStatusManager];
-        v19 = [(PXCMMBannerTileController *)v13 initWithActivityType:v14 sourceType:v15 viewModel:v16 momentShareStatusPresentation:v17 importStatusManager:v18];
+        importStatusManager = [session importStatusManager];
+        v19 = [(PXCMMBannerTileController *)v13 initWithActivityType:activityType sourceType:sourceType viewModel:viewModel momentShareStatusPresentation:v17 importStatusManager:importStatusManager];
         v20 = self->_measuringBannerTile;
         self->_measuringBannerTile = v19;
 
@@ -993,8 +993,8 @@ LABEL_25:
         measuringBannerTile = self->_measuringBannerTile;
       }
 
-      v21 = [(PXCMMBannerTileController *)measuringBannerTile view];
-      [v21 sizeThatFits:{width, height}];
+      view = [(PXCMMBannerTileController *)measuringBannerTile view];
+      [view sizeThatFits:{width, height}];
       v8 = v22;
     }
   }
@@ -1002,12 +1002,12 @@ LABEL_25:
   return v8;
 }
 
-- (double)_headerHeightFromReferenceSize:(CGSize)a3 insets:(UIEdgeInsets)a4
+- (double)_headerHeightFromReferenceSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
   v4 = +[PXCompleteMyMomentSettings sharedInstance];
-  v5 = [v4 showAttachedHeaderView];
+  showAttachedHeaderView = [v4 showAttachedHeaderView];
 
-  if (v5)
+  if (showAttachedHeaderView)
   {
     PXEdgeInsetsInsetSize();
   }
@@ -1015,17 +1015,17 @@ LABEL_25:
   return 0.0;
 }
 
-- (id)_createNewLayoutGeneratorWithReferenceSize:(CGSize)a3
+- (id)_createNewLayoutGeneratorWithReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = +[PXCompleteMyMomentSettings sharedInstance];
   if ([v6 showSectionHeaders])
   {
-    v7 = [(PXCMMAssetsViewController *)self _shouldShowStatusPlaceholder];
+    _shouldShowStatusPlaceholder = [(PXCMMAssetsViewController *)self _shouldShowStatusPlaceholder];
 
     v8 = 0.0;
-    if (!v7)
+    if (!_shouldShowStatusPlaceholder)
     {
       [(PXCMMSpec *)self->_spec reviewSectionHeaderHeight];
       v8 = v9;
@@ -1038,8 +1038,8 @@ LABEL_25:
     v8 = 0.0;
   }
 
-  v10 = [(PXCMMAssetsViewController *)self _layoutType];
-  v11 = [(PXCMMAssetsViewController *)self _additionalTileCount];
+  _layoutType = [(PXCMMAssetsViewController *)self _layoutType];
+  _additionalTileCount = [(PXCMMAssetsViewController *)self _additionalTileCount];
   [(PXCMMSpec *)self->_spec reviewGridItemSize];
   v13 = v12;
   v15 = v14;
@@ -1047,13 +1047,13 @@ LABEL_25:
   v17 = v16;
   v19 = v18;
   [(PXCMMSpec *)self->_spec reviewGridContentInsets];
-  return [PXCMMLayoutGenerator layoutGeneratorForLayoutType:v10 withReferenceSize:v11 additionalTileCount:width headerHeight:height itemSize:v8 interItemSpacing:v13 contentInsets:v15, v17, v19, v20, v21, v22, v23];
+  return [PXCMMLayoutGenerator layoutGeneratorForLayoutType:_layoutType withReferenceSize:_additionalTileCount additionalTileCount:width headerHeight:height itemSize:v8 interItemSpacing:v13 contentInsets:v15, v17, v19, v20, v21, v22, v23];
 }
 
-- (void)_configureLayout:(id)a3
+- (void)_configureLayout:(id)layout
 {
-  v19 = a3;
-  if (v19)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1061,24 +1061,24 @@ LABEL_25:
       goto LABEL_3;
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v19 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1290 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v16, v18}];
+    px_descriptionForAssertionMessage = [layoutCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1290 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v16, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1290 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1290 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v16}];
   }
 
 LABEL_3:
-  [v19 setPlaceholderMode:{-[PXCMMAssetsViewController _shouldShowStatusPlaceholder](self, "_shouldShowStatusPlaceholder")}];
-  [v19 setContentMode:{-[PXCMMSpec reviewGridContentMode](self->_spec, "reviewGridContentMode")}];
+  [layoutCopy setPlaceholderMode:{-[PXCMMAssetsViewController _shouldShowStatusPlaceholder](self, "_shouldShowStatusPlaceholder")}];
+  [layoutCopy setContentMode:{-[PXCMMSpec reviewGridContentMode](self->_spec, "reviewGridContentMode")}];
   if (self->_userSelectionEnabled)
   {
     v5 = 1025;
@@ -1089,30 +1089,30 @@ LABEL_3:
     v5 = 0;
   }
 
-  [v19 setSelectionBadgeOptions:v5];
-  [v19 setBadgeOptions:3];
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  [layoutCopy setSelectionBadgeOptions:v5];
+  [layoutCopy setBadgeOptions:3];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  [v19 setHasFloatingBanner:!IsAccessibilityCategory];
+  [layoutCopy setHasFloatingBanner:!IsAccessibilityCategory];
   v9 = +[PXCompleteMyMomentSettings sharedInstance];
-  [v19 setHasFloatingSectionHeaders:{objc_msgSend(v9, "sectionHeadersShouldFloat")}];
+  [layoutCopy setHasFloatingSectionHeaders:{objc_msgSend(v9, "sectionHeadersShouldFloat")}];
 
   [(PXCMMSpec *)self->_spec reviewContentInsets];
-  [v19 setHeaderFooterSideInset:v10];
+  [layoutCopy setHeaderFooterSideInset:v10];
   [(PXCMMSpec *)self->_spec reviewHeaderTopInset];
-  [v19 setHeaderTopInset:?];
+  [layoutCopy setHeaderTopInset:?];
   [(PXCMMSpec *)self->_spec reviewFooterBottomInset];
-  [v19 setFooterBottomInset:?];
+  [layoutCopy setFooterBottomInset:?];
   [(PXCMMAssetsViewController *)self _progressBannerViewLayoutHeight];
   [(PXCMMSpec *)self->_spec reviewSafeAreaInsets];
-  [v19 setReviewSafeAreaInsets:?];
-  v11 = [(PXCMMAssetsViewController *)self _hiddenAssetReferences];
-  v12 = [v19 dataSource];
-  v13 = [(PXCMMAssetsViewController *)self _indexPathsForAssetReferences:v11 inDataSource:v12];
+  [layoutCopy setReviewSafeAreaInsets:?];
+  _hiddenAssetReferences = [(PXCMMAssetsViewController *)self _hiddenAssetReferences];
+  dataSource = [layoutCopy dataSource];
+  v13 = [(PXCMMAssetsViewController *)self _indexPathsForAssetReferences:_hiddenAssetReferences inDataSource:dataSource];
 
-  [v19 setHiddenIndexPaths:v13];
+  [layoutCopy setHiddenIndexPaths:v13];
 }
 
 - (id)_createNewLayout
@@ -1120,13 +1120,13 @@ LABEL_3:
   [(PXSectionedLayoutEngine *)self->_layoutEngine layoutSnapshot];
   if (!objc_claimAutoreleasedReturnValue())
   {
-    v4 = [(PXTilingController *)self->_tilingController targetLayout];
-    v5 = [v4 layoutSnapshot];
+    targetLayout = [(PXTilingController *)self->_tilingController targetLayout];
+    layoutSnapshot = [targetLayout layoutSnapshot];
 
-    if (!v5)
+    if (!layoutSnapshot)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1266 description:@"The layout engine should always return a layoutSnapshot."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:1266 description:@"The layout engine should always return a layoutSnapshot."];
     }
   }
 
@@ -1150,18 +1150,18 @@ LABEL_3:
 
 - (unint64_t)_additionalTileCount
 {
-  v3 = +[PXCompleteMyMomentSettings sharedInstance];
-  if ([v3 shouldShowInlineAddButton])
+  delegate = +[PXCompleteMyMomentSettings sharedInstance];
+  if ([delegate shouldShowInlineAddButton])
   {
-    v4 = [(PXCMMAssetsViewController *)self _layoutType];
+    _layoutType = [(PXCMMAssetsViewController *)self _layoutType];
 
-    if (v4 == 1 || !self->_delegateRespondsTo.shouldShowAddMoreButton)
+    if (_layoutType == 1 || !self->_delegateRespondsTo.shouldShowAddMoreButton)
     {
       return 0;
     }
 
-    v3 = [(PXCMMAssetsViewController *)self delegate];
-    v5 = [v3 shouldShowAddMoreButtonForAssetsViewController:self];
+    delegate = [(PXCMMAssetsViewController *)self delegate];
+    v5 = [delegate shouldShowAddMoreButtonForAssetsViewController:self];
   }
 
   else
@@ -1172,38 +1172,38 @@ LABEL_3:
   return v5;
 }
 
-- (void)_performTilingChangeWithoutAnimationTransition:(id)a3
+- (void)_performTilingChangeWithoutAnimationTransition:(id)transition
 {
   layoutAnimationsGloballyDisabled = self->_layoutAnimationsGloballyDisabled;
   self->_layoutAnimationsGloballyDisabled = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(transition + 2))(transition, a2);
   [(PXUIScrollViewController *)self->_scrollViewController updateIfNeeded];
   self->_layoutAnimationsGloballyDisabled = layoutAnimationsGloballyDisabled;
 }
 
-- (void)_setLayoutType:(int64_t)a3
+- (void)_setLayoutType:(int64_t)type
 {
-  if (self->__layoutType != a3)
+  if (self->__layoutType != type)
   {
-    self->__layoutType = a3;
+    self->__layoutType = type;
     [(PXCMMAssetsViewController *)self _invalidateLayoutGenerator];
   }
 }
 
-- (void)oneUpPresentation:(id)a3 setHiddenAssetReferences:(id)a4
+- (void)oneUpPresentation:(id)presentation setHiddenAssetReferences:(id)references
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PXCMMComponentViewController *)self session];
-  v7 = [v6 dataSourceManager];
-  v8 = [v7 dataSource];
+  referencesCopy = references;
+  session = [(PXCMMComponentViewController *)self session];
+  dataSourceManager = [session dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  v9 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+  v9 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(referencesCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v5;
+  v10 = referencesCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -1219,7 +1219,7 @@ LABEL_3:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v8 assetReferenceForAssetReference:*(*(&v19 + 1) + 8 * v14)];
+        v15 = [dataSource assetReferenceForAssetReference:*(*(&v19 + 1) + 8 * v14)];
         [v9 addObject:v15];
 
         ++v14;
@@ -1242,28 +1242,28 @@ LABEL_3:
   [(PXCMMAssetsViewController *)self _performTilingChangeWithoutAnimationTransition:v17];
 }
 
-- (id)oneUpPresentation:(id)a3 currentImageForAssetReference:(id)a4
+- (id)oneUpPresentation:(id)presentation currentImageForAssetReference:(id)reference
 {
-  v5 = a4;
+  referenceCopy = reference;
   [(PXUIScrollViewController *)self->_scrollViewController updateIfNeeded];
-  v6 = [(PXTilingController *)self->_tilingController currentLayout];
+  currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(PXTilingController *)self->_tilingController currentLayout];
+    currentLayout2 = [(PXTilingController *)self->_tilingController currentLayout];
   }
 
   else
   {
-    v7 = 0;
+    currentLayout2 = 0;
   }
 
   memset(v22, 0, sizeof(v22));
-  v8 = [v7 dataSource];
-  v9 = v8;
-  if (v8)
+  dataSource = [currentLayout2 dataSource];
+  v9 = dataSource;
+  if (dataSource)
   {
-    [v8 indexPathForAssetReference:v5];
+    [dataSource indexPathForAssetReference:referenceCopy];
   }
 
   else
@@ -1273,7 +1273,7 @@ LABEL_3:
 
   if (*&v22[0] == *off_1E7721F68)
   {
-    v10 = 0;
+    image = 0;
   }
 
   else
@@ -1287,47 +1287,47 @@ LABEL_3:
     v17 = *(&v22[1] + 1);
     v18 = 0u;
     v19 = 0u;
-    v10 = 0;
+    image = 0;
     if ([(PXTilingController *)tilingController getTile:&v21 geometry:0 group:0 userData:0 forTileWithIdentifier:&v14])
     {
       v12 = v21;
       if ([v12 conformsToProtocol:&unk_1F1A50488])
       {
-        v10 = [v12 image];
+        image = [v12 image];
       }
 
       else
       {
-        v10 = 0;
+        image = 0;
       }
     }
   }
 
-  return v10;
+  return image;
 }
 
-- (void)oneUpPresentation:(id)a3 scrollAssetReferenceToVisible:(id)a4
+- (void)oneUpPresentation:(id)presentation scrollAssetReferenceToVisible:(id)visible
 {
-  v5 = a4;
+  visibleCopy = visible;
   [(PXUIScrollViewController *)self->_scrollViewController updateIfNeeded];
-  v6 = [(PXTilingController *)self->_tilingController currentLayout];
+  currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(PXTilingController *)self->_tilingController currentLayout];
+    currentLayout2 = [(PXTilingController *)self->_tilingController currentLayout];
   }
 
   else
   {
-    v7 = 0;
+    currentLayout2 = 0;
   }
 
   memset(v18, 0, sizeof(v18));
-  v8 = [v7 dataSource];
-  v9 = v8;
-  if (v8)
+  dataSource = [currentLayout2 dataSource];
+  v9 = dataSource;
+  if (dataSource)
   {
-    [v8 indexPathForAssetReference:v5];
+    [dataSource indexPathForAssetReference:visibleCopy];
   }
 
   else
@@ -1345,7 +1345,7 @@ LABEL_3:
     v14 = 0u;
     v15 = 0u;
     v16 = 0;
-    if ([v7 getGeometry:v17 group:0 userData:0 forTileWithIdentifier:&v10])
+    if ([currentLayout2 getGeometry:v17 group:0 userData:0 forTileWithIdentifier:&v10])
     {
       [(PXUIScrollViewController *)self->_scrollViewController scrollView];
       [objc_claimAutoreleasedReturnValue() bounds];
@@ -1355,24 +1355,24 @@ LABEL_3:
   }
 }
 
-- (id)oneUpPresentation:(id)a3 regionOfInterestForAssetReference:(id)a4
+- (id)oneUpPresentation:(id)presentation regionOfInterestForAssetReference:(id)reference
 {
-  v5 = a4;
+  referenceCopy = reference;
   v6 = *MEMORY[0x1E695F050];
   v7 = *(MEMORY[0x1E695F050] + 8);
   v8 = *(MEMORY[0x1E695F050] + 16);
   v9 = *(MEMORY[0x1E695F050] + 24);
-  v10 = [(PXCMMComponentViewController *)self session];
-  v11 = [v10 dataSourceManager];
+  session = [(PXCMMComponentViewController *)self session];
+  dataSourceManager = [session dataSourceManager];
 
   [(PXUIScrollViewController *)self->_scrollViewController updateIfNeeded];
   v69 = 0u;
   v70 = 0u;
-  v12 = [v11 dataSource];
-  v13 = v12;
-  if (v12)
+  dataSource = [dataSourceManager dataSource];
+  v13 = dataSource;
+  if (dataSource)
   {
-    [v12 indexPathForAssetReference:v5];
+    [dataSource indexPathForAssetReference:referenceCopy];
   }
 
   else
@@ -1428,13 +1428,13 @@ LABEL_3:
     v72.size.height = v9;
     if (CGRectIsNull(v72))
     {
-      v37 = v5;
-      v22 = [(PXAssetsScene *)self->_sceneController currentLayout];
+      v37 = referenceCopy;
+      currentLayout = [(PXAssetsScene *)self->_sceneController currentLayout];
       v23 = v69;
-      v24 = [v22 dataSource];
-      v25 = [v24 identifier];
+      dataSource2 = [currentLayout dataSource];
+      identifier = [dataSource2 identifier];
 
-      if (v23 == v25)
+      if (v23 == identifier)
       {
         v55 = 0u;
         v56 = 0u;
@@ -1455,12 +1455,12 @@ LABEL_3:
         v42 = 0u;
         v43 = 0u;
         v44 = 0;
-        if ([v22 getGeometry:&v45 group:0 userData:0 forTileWithIdentifier:&v38])
+        if ([currentLayout getGeometry:&v45 group:0 userData:0 forTileWithIdentifier:&v38])
         {
           v26 = +[PXTilingCoordinateSpaceConverter defaultConverter];
-          v27 = [v22 coordinateSpaceIdentifier];
-          v28 = [(PXTilingController *)self->_tilingController contentCoordinateSpaceIdentifier];
-          [v26 convertRect:v27 fromCoordinateSpaceIdentifier:v28 toCoordinateSpaceIdentifier:{v45, v46}];
+          coordinateSpaceIdentifier = [currentLayout coordinateSpaceIdentifier];
+          contentCoordinateSpaceIdentifier = [(PXTilingController *)self->_tilingController contentCoordinateSpaceIdentifier];
+          [v26 convertRect:coordinateSpaceIdentifier fromCoordinateSpaceIdentifier:contentCoordinateSpaceIdentifier toCoordinateSpaceIdentifier:{v45, v46}];
           v6 = v29;
           v7 = v30;
           v8 = v31;
@@ -1468,7 +1468,7 @@ LABEL_3:
         }
       }
 
-      v5 = v37;
+      referenceCopy = v37;
     }
   }
 
@@ -1484,8 +1484,8 @@ LABEL_3:
   else
   {
     v34 = [off_1E7721860 alloc];
-    v35 = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
-    v33 = [v34 initWithRect:v35 inCoordinateSpace:{v6, v7, v8, v9}];
+    contentCoordinateSpace = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
+    v33 = [v34 initWithRect:contentCoordinateSpace inCoordinateSpace:{v6, v7, v8, v9}];
 
     [v33 setImageContentsRect:{v14, v15, v16, v17}];
   }
@@ -1493,28 +1493,28 @@ LABEL_3:
   return v33;
 }
 
-- (id)oneUpPresentationImportStatusManager:(id)a3
+- (id)oneUpPresentationImportStatusManager:(id)manager
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  v4 = [v3 importStatusManager];
+  session = [(PXCMMComponentViewController *)self session];
+  importStatusManager = [session importStatusManager];
 
-  return v4;
+  return importStatusManager;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 allowsActionsForContextMenuInteraction:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation allowsActionsForContextMenuInteraction:(id)interaction
 {
-  v4 = [(PXCMMComponentViewController *)self session:a3];
-  v5 = [v4 viewModel];
-  v6 = [v5 isSelecting];
+  v4 = [(PXCMMComponentViewController *)self session:presentation];
+  viewModel = [v4 viewModel];
+  isSelecting = [viewModel isSelecting];
 
-  return v6 ^ 1;
+  return isSelecting ^ 1;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 canStartPreviewingForContextMenuInteraction:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation canStartPreviewingForContextMenuInteraction:(id)interaction
 {
-  v5 = a4;
-  v6 = +[PXCompleteMyMomentSettings sharedInstance];
-  if ([v6 disableClickyOrb])
+  interactionCopy = interaction;
+  view = +[PXCompleteMyMomentSettings sharedInstance];
+  if ([view disableClickyOrb])
   {
     v7 = 0;
 LABEL_6:
@@ -1522,18 +1522,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(PXCMMComponentViewController *)self session];
-  v9 = [v8 viewModel];
-  v10 = [v9 isSelecting];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  isSelecting = [viewModel isSelecting];
 
-  if ((v10 & 1) == 0)
+  if ((isSelecting & 1) == 0)
   {
-    v6 = [v5 view];
-    [v5 locationInView:v6];
+    view = [interactionCopy view];
+    [interactionCopy locationInView:view];
     v12 = v11;
     v14 = v13;
-    v15 = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
-    [v15 convertPoint:v6 fromCoordinateSpace:{v12, v14}];
+    contentCoordinateSpace = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
+    [contentCoordinateSpace convertPoint:view fromCoordinateSpace:{v12, v14}];
     v17 = v16;
     v19 = v18;
 
@@ -1551,7 +1551,7 @@ LABEL_7:
   return v7;
 }
 
-- (id)oneUpPresentationActionManagerForPreviewing:(id)a3
+- (id)oneUpPresentationActionManagerForPreviewing:(id)previewing
 {
   if (self->_navigatedAssetReference)
   {
@@ -1567,7 +1567,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)oneUpPresentationActionManager:(id)a3
+- (id)oneUpPresentationActionManager:(id)manager
 {
   if ([(PXCMMAssetsViewController *)self _shouldShowDefaultOneUpActions])
   {
@@ -1576,57 +1576,57 @@ LABEL_7:
 
   else
   {
-    v5 = [(PXCMMComponentViewController *)self session];
-    v6 = [v5 viewModel];
-    v7 = [v6 isSelecting];
+    session = [(PXCMMComponentViewController *)self session];
+    viewModel = [session viewModel];
+    isSelecting = [viewModel isSelecting];
 
-    if (v7)
+    if (isSelecting)
     {
-      v8 = [(PXCMMComponentViewController *)self session];
-      v9 = [v8 viewModel];
-      v10 = [v9 selectionManager];
+      session2 = [(PXCMMComponentViewController *)self session];
+      viewModel2 = [session2 viewModel];
+      selectionManager = [viewModel2 selectionManager];
     }
 
     else if (self->_navigatedAssetReference)
     {
-      v10 = [(PXCMMAssetsViewController *)self _createSelectionManagerWithAssetReference:?];
+      selectionManager = [(PXCMMAssetsViewController *)self _createSelectionManagerWithAssetReference:?];
     }
 
     else
     {
-      v10 = 0;
+      selectionManager = 0;
     }
 
-    v4 = [(PXCMMAssetsViewController *)self _assetActionManagerWithSelectionManager:v10];
+    v4 = [(PXCMMAssetsViewController *)self _assetActionManagerWithSelectionManager:selectionManager];
   }
 
   return v4;
 }
 
-- (id)_assetActionManagerWithSelectionManager:(id)a3
+- (id)_assetActionManagerWithSelectionManager:(id)manager
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXCMMComponentViewController *)self session];
-  v7 = [v6 viewModel];
-  v8 = [v5 dataSourceManager];
+  managerCopy = manager;
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  dataSourceManager = [managerCopy dataSourceManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [[PXPhotoKitAssetActionManager alloc] initWithSelectionManager:v5];
+    v10 = [[PXPhotoKitAssetActionManager alloc] initWithSelectionManager:managerCopy];
     [(PXActionManager *)v10 setPerformerDelegate:self];
-    v11 = v6;
-    v12 = [v11 activityType];
-    v13 = [v11 importStatusManager];
+    v11 = session;
+    activityType = [v11 activityType];
+    importStatusManager = [v11 importStatusManager];
 
-    if (v12 != 2)
+    if (activityType != 2)
     {
       goto LABEL_5;
     }
 
-    if (v13)
+    if (importStatusManager)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1634,34 +1634,34 @@ LABEL_7:
         goto LABEL_5;
       }
 
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PXPhotoKitImportStatusManager *_ImportStatusManagerForSession(PXCMMSession *__strong)"];
       v26 = objc_opt_class();
       v25 = NSStringFromClass(v26);
-      v27 = [v13 px_descriptionForAssertionMessage];
-      [v22 handleFailureInFunction:v23 file:@"PXCMMAssetsViewController.m" lineNumber:76 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"session.importStatusManager", v25, v27}];
+      px_descriptionForAssertionMessage = [importStatusManager px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInFunction:v23 file:@"PXCMMAssetsViewController.m" lineNumber:76 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"session.importStatusManager", v25, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PXPhotoKitImportStatusManager *_ImportStatusManagerForSession(PXCMMSession *__strong)"];
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
-      [v22 handleFailureInFunction:v23 file:@"PXCMMAssetsViewController.m" lineNumber:76 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"session.importStatusManager", v25}];
+      [currentHandler handleFailureInFunction:v23 file:@"PXCMMAssetsViewController.m" lineNumber:76 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"session.importStatusManager", v25}];
     }
 
 LABEL_5:
-    [(PXPhotoKitAssetActionManager *)v10 setImportStatusManager:v13];
+    [(PXPhotoKitAssetActionManager *)v10 setImportStatusManager:importStatusManager];
 
-    v14 = [v11 importSessionID];
-    [(PXPhotoKitAssetActionManager *)v10 setImportSessionID:v14];
+    importSessionID = [v11 importSessionID];
+    [(PXPhotoKitAssetActionManager *)v10 setImportSessionID:importSessionID];
 
-    v15 = [v7 isSelecting];
+    isSelecting = [viewModel isSelecting];
     v16 = +[PXCompleteMyMomentSettings sharedInstance];
     v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     [v17 addObject:*off_1E7721A28];
-    if (v15)
+    if (isSelecting)
     {
       v18 = off_1E7721BE0;
     }
@@ -1713,22 +1713,22 @@ LABEL_20:
   return v10;
 }
 
-- (id)_createSelectionManagerWithAssetReference:(id)a3
+- (id)_createSelectionManagerWithAssetReference:(id)reference
 {
   v13 = 0u;
   v14 = 0u;
-  if (a3)
+  if (reference)
   {
-    [a3 indexPath];
+    [reference indexPath];
   }
 
   v12[0] = v13;
   v12[1] = v14;
   v4 = [off_1E7721768 indexPathSetWithIndexPath:v12];
-  v5 = [(PXCMMComponentViewController *)self session];
-  v6 = [v5 dataSourceManager];
+  session = [(PXCMMComponentViewController *)self session];
+  dataSourceManager = [session dataSourceManager];
 
-  v7 = [[off_1E77218C8 alloc] initWithDataSourceManager:v6];
+  v7 = [[off_1E77218C8 alloc] initWithDataSourceManager:dataSourceManager];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__PXCMMAssetsViewController__createSelectionManagerWithAssetReference___block_invoke;
@@ -1740,46 +1740,46 @@ LABEL_20:
   return v7;
 }
 
-- (id)oneUpPresentationMediaProvider:(id)a3
+- (id)oneUpPresentationMediaProvider:(id)provider
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  v4 = [v3 mediaProvider];
+  session = [(PXCMMComponentViewController *)self session];
+  mediaProvider = [session mediaProvider];
 
-  return v4;
+  return mediaProvider;
 }
 
-- (id)oneUpPresentationDataSourceManager:(id)a3
+- (id)oneUpPresentationDataSourceManager:(id)manager
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  v4 = [v3 dataSourceManager];
+  session = [(PXCMMComponentViewController *)self session];
+  dataSourceManager = [session dataSourceManager];
 
-  return v4;
+  return dataSourceManager;
 }
 
-- (int64_t)oneUpPresentationActionContext:(id)a3
+- (int64_t)oneUpPresentationActionContext:(id)context
 {
-  v4 = [(PXCMMAssetsViewController *)self _shouldShowDefaultOneUpActions];
-  v5 = [(PXCMMComponentViewController *)self session];
-  v6 = [v5 viewModel];
+  _shouldShowDefaultOneUpActions = [(PXCMMAssetsViewController *)self _shouldShowDefaultOneUpActions];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
 
-  if ([v6 isSelecting])
+  if ([viewModel isSelecting])
   {
     v7 = 3;
   }
 
   else
   {
-    v8 = [(PXCMMComponentViewController *)self session];
-    v9 = [v8 activityType];
+    session2 = [(PXCMMComponentViewController *)self session];
+    activityType = [session2 activityType];
 
     v7 = 1;
-    if (v9 == 2)
+    if (activityType == 2)
     {
       v7 = 2;
     }
   }
 
-  if (v4)
+  if (_shouldShowDefaultOneUpActions)
   {
     v10 = 0;
   }
@@ -1794,17 +1794,17 @@ LABEL_20:
 
 - (BOOL)_shouldShowDefaultOneUpActions
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  if ([v3 sourceType] || objc_msgSend(v3, "activityType") != 1)
+  session = [(PXCMMComponentViewController *)self session];
+  if ([session sourceType] || objc_msgSend(session, "activityType") != 1)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v4 = [(PXCMMComponentViewController *)self session];
-    v5 = [v4 viewModel];
-    v6 = [v5 isSelecting] ^ 1;
+    session2 = [(PXCMMComponentViewController *)self session];
+    viewModel = [session2 viewModel];
+    v6 = [viewModel isSelecting] ^ 1;
   }
 
   return v6;
@@ -1814,8 +1814,8 @@ LABEL_20:
 {
   if (self->_delegateRespondsTo.oneUpPresentation)
   {
-    v3 = [(PXCMMAssetsViewController *)self delegate];
-    v4 = [v3 oneUpPresentationForAssetsViewController:self];
+    delegate = [(PXCMMAssetsViewController *)self delegate];
+    v4 = [delegate oneUpPresentationForAssetsViewController:self];
 
     [v4 setDelegate:self];
   }
@@ -1830,10 +1830,10 @@ LABEL_20:
 
 - (void)_updateSelectionIfNeeded
 {
-  v5 = [(PXCMMComponentViewController *)self session];
-  v3 = [v5 viewModel];
-  v4 = [v5 activityType];
-  if (([v3 isSelecting] & 1) == 0 && v4 == 2)
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  activityType = [session activityType];
+  if (([viewModel isSelecting] & 1) == 0 && activityType == 2)
   {
     [(PXCMMAssetsViewController *)self _selectNonCopiedAssets];
   }
@@ -1851,18 +1851,18 @@ LABEL_20:
 
 - (void)_selectionModeDidChange
 {
-  v5 = [(PXCMMComponentViewController *)self session];
-  v3 = [v5 viewModel];
-  v4 = [v5 activityType];
-  if (![v3 isSelecting])
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  activityType = [session activityType];
+  if (![viewModel isSelecting])
   {
     [(PXCMMAssetsViewController *)self setUserSelectionEnabled:0];
-    if (v4 == 2)
+    if (activityType == 2)
     {
       goto LABEL_6;
     }
 
-    if (v4 != 1)
+    if (activityType != 1)
     {
       goto LABEL_9;
     }
@@ -1873,12 +1873,12 @@ LABEL_8:
   }
 
   [(PXCMMAssetsViewController *)self setUserSelectionEnabled:1];
-  if (v4 == 1)
+  if (activityType == 1)
   {
     goto LABEL_8;
   }
 
-  if (v4 == 2)
+  if (activityType == 2)
   {
 LABEL_6:
     [(PXCMMAssetsViewController *)self _selectNonCopiedAssets];
@@ -1888,80 +1888,80 @@ LABEL_9:
   [(PXCMMAssetsViewController *)self invalidateBoopableItemsProvider];
 }
 
-- (void)addButtonTapped:(id)a3
+- (void)addButtonTapped:(id)tapped
 {
   if (self->_delegateRespondsTo.didTapAddMoreButton)
   {
-    v5 = [(PXCMMAssetsViewController *)self delegate];
-    [v5 didTapAddMoreButtonForAssetsViewController:self];
+    delegate = [(PXCMMAssetsViewController *)self delegate];
+    [delegate didTapAddMoreButtonForAssetsViewController:self];
   }
 }
 
-- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)a3
+- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)mode
 {
-  v4 = [(PXCMMComponentViewController *)self session];
-  v3 = [v4 viewModel];
-  [v3 performChanges:&__block_literal_global_463_204711];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  [viewModel performChanges:&__block_literal_global_463_204711];
 }
 
-- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)a3
+- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)mode
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  v4 = [v3 viewModel];
-  v5 = [v4 isSelecting];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  isSelecting = [viewModel isSelecting];
 
-  return v5;
+  return isSelecting;
 }
 
-- (BOOL)swipeSelectionManager:(id)a3 shouldSelectItemAtIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)swipeSelectionManager:(id)manager shouldSelectItemAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = *&a4->item;
-  v6[0] = *&a4->dataSourceIdentifier;
+  v4 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v4;
   return ![(PXCMMAssetsViewController *)self _isAssetAlreadyImportedAtIndexPath:v6];
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestAboveLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestAboveLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
   scrollViewController = self->_scrollViewController;
-  v10 = a4;
-  v11 = [(PXUIScrollViewController *)scrollViewController contentCoordinateSpace];
-  v12 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
-  [v11 convertPoint:v12 fromCoordinateSpace:{x, y}];
+  locationCopy = location;
+  contentCoordinateSpace = [(PXUIScrollViewController *)scrollViewController contentCoordinateSpace];
+  scrollView = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
+  [contentCoordinateSpace convertPoint:scrollView fromCoordinateSpace:{x, y}];
 
-  v13 = [v10 scrollView];
+  scrollView2 = [locationCopy scrollView];
 
-  [v13 frame];
+  [scrollView2 frame];
   *&retstr->dataSourceIdentifier = 0u;
   *&retstr->item = 0u;
   PXEdgeInsetsMake();
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestLeadingLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestLeadingLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
-  v9 = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
-  v10 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
-  [v9 convertPoint:v10 fromCoordinateSpace:{x, y}];
+  contentCoordinateSpace = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
+  scrollView = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
+  [contentCoordinateSpace convertPoint:scrollView fromCoordinateSpace:{x, y}];
 
-  v11 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
-  [v11 frame];
+  scrollView2 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
+  [scrollView2 frame];
 
   *&retstr->dataSourceIdentifier = 0u;
   *&retstr->item = 0u;
   PXEdgeInsetsMake();
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathAtLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathAtLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
-  v9 = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
-  v10 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
-  [v9 convertPoint:v10 fromCoordinateSpace:{x, y}];
+  contentCoordinateSpace = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
+  scrollView = [(PXSwipeSelectionManager *)self->_swipeSelectionManager scrollView];
+  [contentCoordinateSpace convertPoint:scrollView fromCoordinateSpace:{x, y}];
   v12 = v11;
   v14 = v13;
 
@@ -1975,43 +1975,43 @@ LABEL_9:
   return [(PXCMMAssetsViewController *)self _assetIndexPathAtLocation:v12 padding:v14, v15, v16, v17, v18];
 }
 
-- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)a3 withEngineDrivenLayout:(id)a4
+- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)path withEngineDrivenLayout:(id)layout
 {
-  v6 = [a4 dataSource];
-  v7 = *&a3->item;
-  v10[0] = *&a3->dataSourceIdentifier;
+  dataSource = [layout dataSource];
+  v7 = *&path->item;
+  v10[0] = *&path->dataSourceIdentifier;
   v10[1] = v7;
-  v8 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v10 withDataSource:v6];
+  v8 = [(PXCMMAssetsViewController *)self _assetImportStateAtIndexPath:v10 withDataSource:dataSource];
 
   return (v8 - 1) < 2;
 }
 
-- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)a3
+- (BOOL)_isAssetAlreadyImportedAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [(PXTilingController *)self->_tilingController currentLayout];
-  v6 = *&a3->item;
-  v8[0] = *&a3->dataSourceIdentifier;
+  currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
+  v6 = *&path->item;
+  v8[0] = *&path->dataSourceIdentifier;
   v8[1] = v6;
-  LOBYTE(a3) = [(PXCMMAssetsViewController *)self _isAssetAlreadyImportedAtIndexPath:v8 withEngineDrivenLayout:v5];
+  LOBYTE(path) = [(PXCMMAssetsViewController *)self _isAssetAlreadyImportedAtIndexPath:v8 withEngineDrivenLayout:currentLayout];
 
-  return a3;
+  return path;
 }
 
-- (int64_t)_assetImportStateAtIndexPath:(PXSimpleIndexPath *)a3 withDataSource:(id)a4
+- (int64_t)_assetImportStateAtIndexPath:(PXSimpleIndexPath *)path withDataSource:(id)source
 {
-  v6 = a4;
-  v7 = [(PXCMMComponentViewController *)self session];
-  v8 = [v7 importStatusManager];
+  sourceCopy = source;
+  session = [(PXCMMComponentViewController *)self session];
+  importStatusManager = [session importStatusManager];
 
-  if (v8)
+  if (importStatusManager)
   {
-    v9 = *&a3->item;
-    v13[0] = *&a3->dataSourceIdentifier;
+    v9 = *&path->item;
+    v13[0] = *&path->dataSourceIdentifier;
     v13[1] = v9;
-    v10 = [v6 assetAtItemIndexPath:v13];
+    v10 = [sourceCopy assetAtItemIndexPath:v13];
     if (v10)
     {
-      v11 = [v8 importStateForAsset:v10];
+      v11 = [importStatusManager importStateForAsset:v10];
     }
 
     else
@@ -2028,21 +2028,21 @@ LABEL_9:
   return v11;
 }
 
-- (PXSimpleIndexPath)_assetIndexPathAtLocation:(SEL)a3 padding:(CGPoint)a4 kind:(UIEdgeInsets)a5
+- (PXSimpleIndexPath)_assetIndexPathAtLocation:(SEL)location padding:(CGPoint)padding kind:(UIEdgeInsets)kind
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  y = a4.y;
-  x = a4.x;
+  right = kind.right;
+  bottom = kind.bottom;
+  left = kind.left;
+  top = kind.top;
+  y = padding.y;
+  x = padding.x;
   v15 = *(off_1E7722228 + 1);
   *&retstr->dataSourceIdentifier = *off_1E7722228;
   *&retstr->item = v15;
-  v16 = [(PXCMMComponentViewController *)self session];
-  v17 = [v16 dataSourceManager];
-  v18 = [v17 dataSource];
-  v19 = [v18 identifier];
+  session = [(PXCMMComponentViewController *)self session];
+  dataSourceManager = [session dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  identifier = [dataSource identifier];
 
   v30 = 0;
   v28 = 0u;
@@ -2050,17 +2050,17 @@ LABEL_9:
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  v20 = [(PXAssetsScene *)self->_sceneController tilingController];
-  v21 = v20;
+  tilingController = [(PXAssetsScene *)self->_sceneController tilingController];
+  v21 = tilingController;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __68__PXCMMAssetsViewController__assetIndexPathAtLocation_padding_kind___block_invoke;
   v24[3] = &__block_descriptor_48_e355_B504__0_PXTileIdentifier_Q_10Q__8_v96_PXTileGeometry__CGRect__CGPoint_dd__CGSize_dd___CGPoint_dd__CGSize_dd__CGAffineTransform_dddddd_ddB_CGSize_dd__CGRect__CGPoint_dd__CGSize_dd___v_104_PXTileGeometry__CGRect__CGPoint_dd__CGSize_dd___CGPoint_dd__CGSize_dd__CGAffineTransform_dddddd_ddB_CGSize_dd__CGRect__CGPoint_dd__CGSize_dd___v_296Q488___NSObject__496l;
   v24[4] = a6;
-  v24[5] = v19;
-  if (v20)
+  v24[5] = identifier;
+  if (tilingController)
   {
-    [v20 hitTestTileAtPoint:v24 padding:x passingTest:{y, top, left, bottom, right}];
+    [tilingController hitTestTileAtPoint:v24 padding:x passingTest:{y, top, left, bottom, right}];
   }
 
   else
@@ -2086,20 +2086,20 @@ LABEL_9:
   return result;
 }
 
-- (id)_assetReferenceAtPoint:(CGPoint)a3 padding:(UIEdgeInsets)a4
+- (id)_assetReferenceAtPoint:(CGPoint)point padding:(UIEdgeInsets)padding
 {
   v11 = 0u;
   v12 = 0u;
-  [(PXCMMAssetsViewController *)self _assetIndexPathAtLocation:a3.x padding:a3.y, a4.top, a4.left, a4.bottom, a4.right];
+  [(PXCMMAssetsViewController *)self _assetIndexPathAtLocation:point.x padding:point.y, padding.top, padding.left, padding.bottom, padding.right];
   if (*off_1E7721F68)
   {
-    v6 = [(PXCMMComponentViewController *)self session];
-    v7 = [v6 dataSourceManager];
-    v8 = [v7 dataSource];
+    session = [(PXCMMComponentViewController *)self session];
+    dataSourceManager = [session dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
 
     v10[0] = v11;
     v10[1] = v12;
-    v5 = [v8 assetReferenceAtItemIndexPath:v10];
+    v5 = [dataSource assetReferenceAtItemIndexPath:v10];
   }
 
   else
@@ -2110,26 +2110,26 @@ LABEL_9:
   return v5;
 }
 
-- (void)_toggleAssetSelectionAtIndexPath:(PXSimpleIndexPath *)a3
+- (void)_toggleAssetSelectionAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = [(PXCMMComponentViewController *)self session];
-  v5 = [v4 viewModel];
-  v6 = [v5 selectionManager];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v7 = [v6 selectionSnapshot];
-  v8 = *&a3->item;
-  v15[0] = *&a3->dataSourceIdentifier;
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  v8 = *&path->item;
+  v15[0] = *&path->dataSourceIdentifier;
   v15[1] = v8;
-  v9 = [v7 isIndexPathSelected:v15];
+  v9 = [selectionSnapshot isIndexPathSelected:v15];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__PXCMMAssetsViewController__toggleAssetSelectionAtIndexPath___block_invoke;
   v11[3] = &__block_descriptor_65_e37_v16__0___PXMutableSelectionManager__8l;
   v14 = v9 ^ 1;
-  v10 = *&a3->item;
-  v12 = *&a3->dataSourceIdentifier;
+  v10 = *&path->item;
+  v12 = *&path->dataSourceIdentifier;
   v13 = v10;
-  [v6 performChanges:v11];
+  [selectionManager performChanges:v11];
 }
 
 uint64_t __62__PXCMMAssetsViewController__toggleAssetSelectionAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -2141,26 +2141,26 @@ uint64_t __62__PXCMMAssetsViewController__toggleAssetSelectionAtIndexPath___bloc
   return [a2 setSelectedState:v2 forIndexPath:v5];
 }
 
-- (void)_handleSpaceBar:(id)a3
+- (void)_handleSpaceBar:(id)bar
 {
-  v4 = [(PXCMMAssetsViewController *)self _focusedAssetReference];
+  _focusedAssetReference = [(PXCMMAssetsViewController *)self _focusedAssetReference];
   navigatedAssetReference = self->_navigatedAssetReference;
-  self->_navigatedAssetReference = v4;
+  self->_navigatedAssetReference = _focusedAssetReference;
 
   if (self->_navigatedAssetReference)
   {
-    v6 = [(PXCMMAssetsViewController *)self _oneUpPresentation];
-    [v6 startWithConfigurationHandler:0];
+    _oneUpPresentation = [(PXCMMAssetsViewController *)self _oneUpPresentation];
+    [_oneUpPresentation startWithConfigurationHandler:0];
   }
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v12 = a3;
-  if ([v12 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    v4 = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
-    [v12 px_locationInCoordinateSpace:v4];
+    contentCoordinateSpace = [(PXUIScrollViewController *)self->_scrollViewController contentCoordinateSpace];
+    [pressCopy px_locationInCoordinateSpace:contentCoordinateSpace];
     v6 = v5;
     v8 = v7;
 
@@ -2170,29 +2170,29 @@ uint64_t __62__PXCMMAssetsViewController__toggleAssetSelectionAtIndexPath___bloc
 
     if (self->_navigatedAssetReference)
     {
-      v11 = [(PXCMMAssetsViewController *)self _oneUpPresentation];
-      [v11 startWithConfigurationHandler:0];
+      _oneUpPresentation = [(PXCMMAssetsViewController *)self _oneUpPresentation];
+      [_oneUpPresentation startWithConfigurationHandler:0];
     }
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v5 = [(PXCMMComponentViewController *)self session];
-    v6 = [v5 viewModel];
+    session = [(PXCMMComponentViewController *)self session];
+    viewModel = [session viewModel];
 
-    v7 = [v6 isSelecting];
-    v8 = [v6 oneUpDisabled];
+    isSelecting = [viewModel isSelecting];
+    oneUpDisabled = [viewModel oneUpDisabled];
     v9 = self->_scrollViewController;
-    v10 = [(PXUIScrollViewController *)v9 contentCoordinateSpace];
-    [v4 px_locationInCoordinateSpace:v10];
+    contentCoordinateSpace = [(PXUIScrollViewController *)v9 contentCoordinateSpace];
+    [tapCopy px_locationInCoordinateSpace:contentCoordinateSpace];
     v12 = v11;
     v14 = v13;
 
-    if (v7)
+    if (isSelecting)
     {
       v33 = 0u;
       v34 = 0u;
@@ -2203,14 +2203,14 @@ uint64_t __62__PXCMMAssetsViewController__toggleAssetSelectionAtIndexPath___bloc
         v32 = v34;
         if ([(PXCMMAssetsViewController *)self _isAssetAlreadyImportedAtIndexPath:&v31])
         {
-          v30 = [(PXTilingController *)self->_tilingController currentLayout];
-          v29 = [v30 dataSource];
+          currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
+          dataSource = [currentLayout dataSource];
           v31 = v33;
           v32 = v34;
-          v15 = [v29 assetAtItemIndexPath:&v31];
-          v16 = [v15 mediaType];
-          v17 = PXLocalizedAssetMessageForUsage(v16, 0, 2);
-          v18 = PXLocalizedAssetMessageForUsage(v16, 0, 3);
+          v15 = [dataSource assetAtItemIndexPath:&v31];
+          mediaType = [v15 mediaType];
+          v17 = PXLocalizedAssetMessageForUsage(mediaType, 0, 2);
+          v18 = PXLocalizedAssetMessageForUsage(mediaType, 0, 3);
           v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v17 message:v18 preferredStyle:1];
           v20 = MEMORY[0x1E69DC648];
           v21 = PXLocalizedStringFromTable(@"PXOK", @"PhotosUICore");
@@ -2229,7 +2229,7 @@ uint64_t __62__PXCMMAssetsViewController__toggleAssetSelectionAtIndexPath___bloc
       }
     }
 
-    else if ((v8 & 1) == 0)
+    else if ((oneUpDisabled & 1) == 0)
     {
       v23 = [(PXCMMAssetsViewController *)self _assetReferenceAtPoint:v12 padding:v14, *off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)];
       navigatedAssetReference = self->_navigatedAssetReference;
@@ -2241,33 +2241,33 @@ uint64_t __62__PXCMMAssetsViewController__toggleAssetSelectionAtIndexPath___bloc
         customAssetSelectionHandler = self->_customAssetSelectionHandler;
         if (customAssetSelectionHandler)
         {
-          v27 = [(PXCMMComponentViewController *)self session];
-          v28 = [v27 dataSourceManager];
-          customAssetSelectionHandler[2](customAssetSelectionHandler, v25, v28);
+          session2 = [(PXCMMComponentViewController *)self session];
+          dataSourceManager = [session2 dataSourceManager];
+          customAssetSelectionHandler[2](customAssetSelectionHandler, v25, dataSourceManager);
         }
 
         else
         {
-          v27 = [(PXCMMAssetsViewController *)self _oneUpPresentation];
-          [v27 startWithConfigurationHandler:0];
+          session2 = [(PXCMMAssetsViewController *)self _oneUpPresentation];
+          [session2 startWithConfigurationHandler:0];
         }
       }
     }
   }
 }
 
-- (void)setActionInProgress:(BOOL)a3
+- (void)setActionInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__PXCMMAssetsViewController_setActionInProgress___block_invoke;
   aBlock[3] = &unk_1E774C648;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  if (self->_actionInProgress == v3)
+  if (self->_actionInProgress == progressCopy)
   {
-    if (!v3)
+    if (!progressCopy)
     {
       goto LABEL_8;
     }
@@ -2277,13 +2277,13 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  self->_actionInProgress = v3;
-  v6 = [(PXCMMComponentViewController *)self session];
-  v7 = [v6 activityType];
+  self->_actionInProgress = progressCopy;
+  session = [(PXCMMComponentViewController *)self session];
+  activityType = [session activityType];
 
-  if (v7 == 2)
+  if (activityType == 2)
   {
-    if (!v3)
+    if (!progressCopy)
     {
       [(PXCMMAssetsViewController *)self _selectNonCopiedAssets];
       goto LABEL_8;
@@ -2309,34 +2309,34 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
 - (PXAssetReference)_focusedAssetReference
 {
   v2 = MEMORY[0x1E69DCA38];
-  v3 = [(PXCMMAssetsViewController *)self view];
-  v4 = [v2 focusSystemForEnvironment:v3];
-  v5 = [v4 focusedItem];
+  view = [(PXCMMAssetsViewController *)self view];
+  v4 = [v2 focusSystemForEnvironment:view];
+  focusedItem = [v4 focusedItem];
 
-  v6 = [v5 parentFocusEnvironment];
-  v7 = [v6 focusItemContainer];
-  v8 = [v7 coordinateSpace];
+  parentFocusEnvironment = [focusedItem parentFocusEnvironment];
+  focusItemContainer = [parentFocusEnvironment focusItemContainer];
+  coordinateSpace = [focusItemContainer coordinateSpace];
 
-  if (v8)
+  if (coordinateSpace)
   {
-    [v5 frame];
+    [focusedItem frame];
     PXRectGetCenter();
   }
 
   return 0;
 }
 
-- (void)_transitionLayoutGesture:(id)a3
+- (void)_transitionLayoutGesture:(id)gesture
 {
-  v4 = [(PXCMMAssetsViewController *)self _layoutType];
-  if (v4 > 4)
+  _layoutType = [(PXCMMAssetsViewController *)self _layoutType];
+  if (_layoutType > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1A5382B08[v4];
+    v5 = qword_1A5382B08[_layoutType];
   }
 
   [(PXCMMAssetsViewController *)self _setLayoutType:v5];
@@ -2351,8 +2351,8 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
     self->_tapSelectionGesture = v3;
 
     [(PXUITapGestureRecognizer *)self->_tapSelectionGesture setNumberOfTapsRequired:1];
-    v5 = [(PXCMMAssetsViewController *)self view];
-    [v5 addGestureRecognizer:self->_tapSelectionGesture];
+    view = [(PXCMMAssetsViewController *)self view];
+    [view addGestureRecognizer:self->_tapSelectionGesture];
   }
 
   if (!self->_longPressGesture)
@@ -2361,14 +2361,14 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
     longPressGesture = self->_longPressGesture;
     self->_longPressGesture = v6;
 
-    v8 = [(PXCMMAssetsViewController *)self view];
-    [v8 addGestureRecognizer:self->_longPressGesture];
+    view2 = [(PXCMMAssetsViewController *)self view];
+    [view2 addGestureRecognizer:self->_longPressGesture];
   }
 
   v9 = +[PXCompleteMyMomentSettings sharedInstance];
-  v10 = [v9 allowSwipeSelection];
+  allowSwipeSelection = [v9 allowSwipeSelection];
 
-  if (v10)
+  if (allowSwipeSelection)
   {
     swipeSelectionManager = self->_swipeSelectionManager;
     if (self->_userSelectionEnabled)
@@ -2376,11 +2376,11 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
       if (!swipeSelectionManager)
       {
         v12 = [off_1E77218F0 alloc];
-        v13 = [(PXCMMComponentViewController *)self session];
-        v14 = [v13 viewModel];
-        v15 = [v14 selectionManager];
-        v16 = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
-        v17 = [v12 initWithSelectionManager:v15 scrollView:v16];
+        session = [(PXCMMComponentViewController *)self session];
+        viewModel = [session viewModel];
+        selectionManager = [viewModel selectionManager];
+        scrollView = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
+        v17 = [v12 initWithSelectionManager:selectionManager scrollView:scrollView];
         v18 = self->_swipeSelectionManager;
         self->_swipeSelectionManager = v17;
 
@@ -2396,8 +2396,8 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
     }
   }
 
-  v23 = +[PXCompleteMyMomentSettings sharedInstance];
-  if ([v23 allowLayoutTransitionGesture])
+  view3 = +[PXCompleteMyMomentSettings sharedInstance];
+  if ([view3 allowLayoutTransitionGesture])
   {
     layoutTransitionGesture = self->_layoutTransitionGesture;
 
@@ -2411,33 +2411,33 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
     self->_layoutTransitionGesture = v21;
 
     [(PXUITapGestureRecognizer *)self->_layoutTransitionGesture setNumberOfTapsRequired:2];
-    v23 = [(PXCMMAssetsViewController *)self view];
-    [v23 addGestureRecognizer:self->_layoutTransitionGesture];
+    view3 = [(PXCMMAssetsViewController *)self view];
+    [view3 addGestureRecognizer:self->_layoutTransitionGesture];
   }
 }
 
 - (void)_updateStyle
 {
-  v4 = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
-  v3 = [(PXCMMSpec *)self->_spec reviewBackgroundColor];
-  [v4 setBackgroundColor:v3];
+  scrollView = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
+  reviewBackgroundColor = [(PXCMMSpec *)self->_spec reviewBackgroundColor];
+  [scrollView setBackgroundColor:reviewBackgroundColor];
 }
 
-- (id)_indexPathsForAssetReferences:(id)a3 inDataSource:(id)a4
+- (id)_indexPathsForAssetReferences:(id)references inDataSource:(id)source
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  referencesCopy = references;
+  sourceCopy = source;
+  v7 = [referencesCopy count];
   v8 = 0;
-  if (v6 && v7)
+  if (sourceCopy && v7)
   {
     v8 = objc_alloc_init(off_1E77217C8);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v5;
+    v9 = referencesCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -2455,7 +2455,7 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
           v14 = *(*(&v19 + 1) + 8 * i);
           v17 = 0u;
           v18 = 0u;
-          [v6 indexPathForAssetReference:v14];
+          [sourceCopy indexPathForAssetReference:v14];
           v16[0] = v17;
           v16[1] = v18;
           [v8 addIndexPath:v16];
@@ -2471,13 +2471,13 @@ void __49__PXCMMAssetsViewController_setActionInProgress___block_invoke(uint64_t
   return v8;
 }
 
-- (void)_setHiddenAssetReferences:(id)a3
+- (void)_setHiddenAssetReferences:(id)references
 {
-  v4 = a3;
-  if (v4)
+  referencesCopy = references;
+  if (referencesCopy)
   {
-    v7 = v4;
-    if ([(NSSet *)v4 count])
+    v7 = referencesCopy;
+    if ([(NSSet *)referencesCopy count])
     {
       v5 = v7;
       goto LABEL_6;
@@ -2490,18 +2490,18 @@ LABEL_6:
   {
     v8 = v5;
     objc_storeStrong(&self->__hiddenAssetReferences, v5);
-    v6 = [(PXAssetsScene *)self->_sceneController targetLayout];
-    [(PXCMMAssetsViewController *)self _configureLayout:v6];
+    targetLayout = [(PXAssetsScene *)self->_sceneController targetLayout];
+    [(PXCMMAssetsViewController *)self _configureLayout:targetLayout];
 
     v5 = v8;
   }
 }
 
-- (void)setUserSelectionEnabled:(BOOL)a3
+- (void)setUserSelectionEnabled:(BOOL)enabled
 {
-  if (self->_userSelectionEnabled != a3)
+  if (self->_userSelectionEnabled != enabled)
   {
-    self->_userSelectionEnabled = a3;
+    self->_userSelectionEnabled = enabled;
     [(PXCMMAssetsViewController *)self _invalidateLayoutGenerator];
     updater = self->_updater;
 
@@ -2509,9 +2509,9 @@ LABEL_6:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -2524,15 +2524,15 @@ LABEL_6:
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateAssetsScene];
   }
 }
@@ -2556,8 +2556,8 @@ LABEL_6:
 - (id)_createStatusPlaceholderTileView
 {
   v3 = objc_alloc(MEMORY[0x1E69DC8D0]);
-  v4 = [(PXStatusController *)self->_statusController configuration];
-  v5 = [v3 initWithConfiguration:v4];
+  configuration = [(PXStatusController *)self->_statusController configuration];
+  v5 = [v3 initWithConfiguration:configuration];
 
   v6 = [[PXCMMTileReusableView alloc] initWithView:v5];
 
@@ -2566,13 +2566,13 @@ LABEL_6:
 
 - (id)_createSectionHeaderController
 {
-  v3 = [(PXCMMComponentViewController *)self session];
+  session = [(PXCMMComponentViewController *)self session];
   v4 = [PXCMMSectionHeaderController alloc];
-  v5 = [v3 activityType];
-  v6 = [v3 viewModel];
+  activityType = [session activityType];
+  viewModel = [session viewModel];
   momentShareStatusPresentationForFooter = self->_momentShareStatusPresentationForFooter;
-  v8 = [v3 importStatusManager];
-  v9 = [(PXCMMSectionHeaderController *)v4 initWithActivityType:v5 viewModel:v6 momentShareStatusPresentation:momentShareStatusPresentationForFooter importStatusManager:v8];
+  importStatusManager = [session importStatusManager];
+  v9 = [(PXCMMSectionHeaderController *)v4 initWithActivityType:activityType viewModel:viewModel momentShareStatusPresentation:momentShareStatusPresentationForFooter importStatusManager:importStatusManager];
 
   return v9;
 }
@@ -2581,11 +2581,11 @@ LABEL_6:
 {
   v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus"];
   v4 = [MEMORY[0x1E69DC738] buttonWithType:0];
-  v5 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-  [v4 setBackgroundColor:v5];
+  quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+  [v4 setBackgroundColor:quaternarySystemFillColor];
 
-  v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v4 setTintColor:v6];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [v4 setTintColor:systemBlueColor];
 
   [v4 setImage:v3 forState:0];
   [v4 addTarget:self action:sel_addButtonTapped_ forControlEvents:64];
@@ -2596,14 +2596,14 @@ LABEL_6:
 
 - (id)_createBannerTileController
 {
-  v3 = [(PXCMMComponentViewController *)self session];
+  session = [(PXCMMComponentViewController *)self session];
   v4 = [PXCMMBannerTileController alloc];
-  v5 = [v3 activityType];
-  v6 = [v3 sourceType];
-  v7 = [v3 viewModel];
+  activityType = [session activityType];
+  sourceType = [session sourceType];
+  viewModel = [session viewModel];
   momentShareStatusPresentationForPoster = self->_momentShareStatusPresentationForPoster;
-  v9 = [v3 importStatusManager];
-  v10 = [(PXCMMBannerTileController *)v4 initWithActivityType:v5 sourceType:v6 viewModel:v7 momentShareStatusPresentation:momentShareStatusPresentationForPoster importStatusManager:v9];
+  importStatusManager = [session importStatusManager];
+  v10 = [(PXCMMBannerTileController *)v4 initWithActivityType:activityType sourceType:sourceType viewModel:viewModel momentShareStatusPresentation:momentShareStatusPresentationForPoster importStatusManager:importStatusManager];
 
   [(PXCMMBannerTileController *)v10 setDelegate:self];
 
@@ -2623,28 +2623,28 @@ LABEL_6:
 
 - (id)_createPosterTileController
 {
-  v3 = [(PXCMMComponentViewController *)self session];
+  session = [(PXCMMComponentViewController *)self session];
   v4 = [PXCMMPosterTileController alloc];
-  v5 = [v3 activityType];
-  v6 = [v3 viewModel];
-  v7 = [(PXCMMPosterTileController *)v4 initWithActivityType:v5 viewModel:v6 momentShareStatusPresentation:self->_momentShareStatusPresentationForPoster];
+  activityType = [session activityType];
+  viewModel = [session viewModel];
+  v7 = [(PXCMMPosterTileController *)v4 initWithActivityType:activityType viewModel:viewModel momentShareStatusPresentation:self->_momentShareStatusPresentationForPoster];
 
   return v7;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PXCMMAssetsViewController;
-  [(PXCMMAssetsViewController *)&v4 viewDidDisappear:a3];
+  [(PXCMMAssetsViewController *)&v4 viewDidDisappear:disappear];
   [(PXUIScrollViewController *)self->_scrollViewController unregisterObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXCMMAssetsViewController;
-  [(PXCMMAssetsViewController *)&v4 viewWillAppear:a3];
+  [(PXCMMAssetsViewController *)&v4 viewWillAppear:appear];
   [(PXUIScrollViewController *)self->_scrollViewController registerObserver:self];
 }
 
@@ -2654,37 +2654,37 @@ LABEL_6:
   v48.receiver = self;
   v48.super_class = PXCMMAssetsViewController;
   [(PXCMMAssetsViewController *)&v48 viewDidLoad];
-  v3 = [(PXCMMAssetsViewController *)self view];
-  [v3 bounds];
+  view = [(PXCMMAssetsViewController *)self view];
+  [view bounds];
   self->_knownReferenceSize.width = v4;
   self->_knownReferenceSize.height = v5;
 
   [(PXUpdater *)self->_updater updateIfNeeded];
-  v29 = [(PXCMMAssetsViewController *)self view];
-  v30 = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
-  v6 = [(PXCMMSpec *)self->_spec reviewBackgroundColor];
-  [v30 setBackgroundColor:v6];
+  view2 = [(PXCMMAssetsViewController *)self view];
+  scrollView = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
+  reviewBackgroundColor = [(PXCMMSpec *)self->_spec reviewBackgroundColor];
+  [scrollView setBackgroundColor:reviewBackgroundColor];
 
-  [v30 setAlwaysBounceVertical:1];
-  [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v30 setContentInsetAdjustmentBehavior:2];
-  [v29 addSubview:v30];
+  [scrollView setAlwaysBounceVertical:1];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [scrollView setContentInsetAdjustmentBehavior:2];
+  [view2 addSubview:scrollView];
   v24 = MEMORY[0x1E696ACD8];
-  v28 = [v30 topAnchor];
-  v27 = [v29 topAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  topAnchor = [scrollView topAnchor];
+  topAnchor2 = [view2 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[0] = v26;
-  v25 = [v30 leadingAnchor];
-  v7 = [v29 leadingAnchor];
-  v8 = [v25 constraintEqualToAnchor:v7];
+  leadingAnchor = [scrollView leadingAnchor];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v49[1] = v8;
-  v9 = [v30 trailingAnchor];
-  v10 = [v29 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [scrollView trailingAnchor];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v49[2] = v11;
-  v12 = [v30 bottomAnchor];
-  v13 = [v29 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [scrollView bottomAnchor];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v49[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
   [v24 activateConstraints:v15];
@@ -2697,74 +2697,74 @@ LABEL_6:
 
     [(PXCMMProgressBannerView *)self->_progressBannerView setDelegate:self];
     [(PXCMMProgressBannerView *)self->_progressBannerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v29 addSubview:self->_progressBannerView];
-    v18 = [(PXCMMProgressBannerView *)self->_progressBannerView layer];
-    [v18 setZPosition:1.0];
+    [view2 addSubview:self->_progressBannerView];
+    layer = [(PXCMMProgressBannerView *)self->_progressBannerView layer];
+    [layer setZPosition:1.0];
 
     [(PXCMMAssetsViewController *)self _updateProgressBannerViewVisibility];
     [(PXCMMAssetsViewController *)self _updateProgressBannerViewConstraints];
   }
 
   [(PXCMMAssetsViewController *)self _updateSelectionEnabled];
-  v19 = [(PXCMMAssetsViewController *)self _oneUpPresentation];
-  v20 = [v19 contextMenuInteraction];
+  _oneUpPresentation = [(PXCMMAssetsViewController *)self _oneUpPresentation];
+  contextMenuInteraction = [_oneUpPresentation contextMenuInteraction];
 
-  [v30 addInteraction:v20];
+  [scrollView addInteraction:contextMenuInteraction];
   v21 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@" " modifierFlags:0 action:sel__handleSpaceBar_];
   [(PXCMMAssetsViewController *)self addKeyCommand:v21];
 
-  v22 = [(PXAssetsScene *)self->_sceneController viewTileReusePool];
+  viewTileReusePool = [(PXAssetsScene *)self->_sceneController viewTileReusePool];
   objc_initWeak(&location, self);
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke;
   v45[3] = &unk_1E7744030;
   objc_copyWeak(&v46, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870942 creationHandler:v45];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870942 creationHandler:v45];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_2;
   v43[3] = &unk_1E7744030;
   objc_copyWeak(&v44, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870946 creationHandler:v43];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870946 creationHandler:v43];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_3;
   v41[3] = &unk_1E7744030;
   objc_copyWeak(&v42, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870943 creationHandler:v41];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870943 creationHandler:v41];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_4;
   v39[3] = &unk_1E7744030;
   objc_copyWeak(&v40, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870944 creationHandler:v39];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870944 creationHandler:v39];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_5;
   v37[3] = &unk_1E7744030;
   objc_copyWeak(&v38, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870948 creationHandler:v37];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870948 creationHandler:v37];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_6;
   v35[3] = &unk_1E7744030;
   objc_copyWeak(&v36, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870947 creationHandler:v35];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870947 creationHandler:v35];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_7;
   v33[3] = &unk_1E7744030;
   objc_copyWeak(&v34, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870945 creationHandler:v33];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870945 creationHandler:v33];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_8;
   v31[3] = &unk_1E7744030;
   objc_copyWeak(&v32, &location);
-  [v22 registerReusableObjectForReuseIdentifier:8870950 creationHandler:v31];
-  v23 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v23 addObserver:self selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:8870950 creationHandler:v31];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(&v34);
@@ -2851,64 +2851,64 @@ id __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_8(uint64_t a1)
 
 - (void)_scheduleLayout
 {
-  v2 = [(PXCMMAssetsViewController *)self viewIfLoaded];
-  [v2 setNeedsLayout];
+  viewIfLoaded = [(PXCMMAssetsViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (void)_deselectAllAssets
 {
-  v2 = [(PXCMMComponentViewController *)self session];
-  v3 = [v2 viewModel];
-  v4 = [v3 selectionManager];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  [v4 performChanges:&__block_literal_global_398];
+  [selectionManager performChanges:&__block_literal_global_398];
 }
 
 - (void)_selectAllAssets
 {
-  v2 = [(PXCMMComponentViewController *)self session];
-  v3 = [v2 viewModel];
-  v4 = [v3 selectionManager];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  [v4 performChanges:&__block_literal_global_396];
+  [selectionManager performChanges:&__block_literal_global_396];
 }
 
 - (BOOL)_areAllNotCopiedAssetsSelected
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  v4 = [v3 viewModel];
-  v5 = [v4 selectionManager];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v6 = [(PXCMMComponentViewController *)self session];
-  v7 = [v6 importStatusManager];
+  session2 = [(PXCMMComponentViewController *)self session];
+  importStatusManager = [session2 importStatusManager];
 
-  v8 = [v5 selectionSnapshot];
-  LOBYTE(v4) = [v8 areAllUnsavedAssetsSelectedWithImportStatusManager:v7];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  LOBYTE(viewModel) = [selectionSnapshot areAllUnsavedAssetsSelectedWithImportStatusManager:importStatusManager];
 
-  return v4;
+  return viewModel;
 }
 
 - (void)_selectNonCopiedAssets
 {
-  v3 = [(PXCMMComponentViewController *)self session];
-  v4 = [v3 viewModel];
-  v7 = [v4 selectionManager];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v5 = [(PXCMMComponentViewController *)self session];
-  v6 = [v5 importStatusManager];
+  session2 = [(PXCMMComponentViewController *)self session];
+  importStatusManager = [session2 importStatusManager];
 
-  [v7 selectNonCopiedAssetsWithImportStatusManager:v6];
+  [selectionManager selectNonCopiedAssetsWithImportStatusManager:importStatusManager];
 }
 
 - (void)_selectCuratedAssets
 {
-  v4 = [(PXCMMComponentViewController *)self session];
-  v5 = [v4 viewModel];
-  v6 = [v5 selectionManager];
+  session = [(PXCMMComponentViewController *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v7 = [v6 selectionSnapshot];
-  v8 = [v7 dataSource];
-  if (v8)
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2916,26 +2916,26 @@ id __40__PXCMMAssetsViewController_viewDidLoad__block_invoke_8(uint64_t a1)
       goto LABEL_3;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v8 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:332 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"dataSourceSnapshot", v14, v16}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:332 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"dataSourceSnapshot", v14, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:332 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"dataSourceSnapshot", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMAssetsViewController.m" lineNumber:332 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"dataSourceSnapshot", v14}];
   }
 
 LABEL_3:
-  v9 = [off_1E77217C8 indexPathSet];
-  if (v8)
+  indexPathSet = [off_1E77217C8 indexPathSet];
+  if (dataSource)
   {
-    [v8 firstItemIndexPath];
+    [dataSource firstItemIndexPath];
   }
 
   else
@@ -2947,9 +2947,9 @@ LABEL_3:
   v19[1] = 3221225472;
   v19[2] = __49__PXCMMAssetsViewController__selectCuratedAssets__block_invoke;
   v19[3] = &unk_1E7744508;
-  v10 = v8;
+  v10 = dataSource;
   v20 = v10;
-  v11 = v9;
+  v11 = indexPathSet;
   v21 = v11;
   [v10 enumerateItemIndexPathsStartingAtIndexPath:v22 reverseDirection:0 usingBlock:v19];
   if ([v11 count])
@@ -2959,7 +2959,7 @@ LABEL_3:
     v17[2] = __49__PXCMMAssetsViewController__selectCuratedAssets__block_invoke_2;
     v17[3] = &unk_1E7744008;
     v18 = v11;
-    [v6 performChanges:v17];
+    [selectionManager performChanges:v17];
   }
 }
 
@@ -2987,16 +2987,16 @@ uint64_t __49__PXCMMAssetsViewController__selectCuratedAssets__block_invoke(uint
   if (self->_needsToPerformInitialSelection && ![(PXCMMAssetsViewController *)self _shouldShowStatusPlaceholder])
   {
     self->_needsToPerformInitialSelection = 0;
-    v3 = [(PXCMMComponentViewController *)self session];
-    v4 = [v3 activityType];
+    session = [(PXCMMComponentViewController *)self session];
+    activityType = [session activityType];
 
-    if (v4 == 2)
+    if (activityType == 2)
     {
 
       [(PXCMMAssetsViewController *)self _selectNonCopiedAssets];
     }
 
-    else if (v4 == 1)
+    else if (activityType == 1)
     {
 
       [(PXCMMAssetsViewController *)self _selectAllAssets];
@@ -3008,10 +3008,10 @@ uint64_t __49__PXCMMAssetsViewController__selectCuratedAssets__block_invoke(uint
 {
   if (([(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentationForPoster state]& 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
-    v3 = [(PXCMMComponentViewController *)self session];
-    v4 = [v3 viewModel];
+    session = [(PXCMMComponentViewController *)self session];
+    viewModel = [session viewModel];
 
-    [v4 performChanges:&__block_literal_global_204765];
+    [viewModel performChanges:&__block_literal_global_204765];
   }
 }
 
@@ -3027,16 +3027,16 @@ void __52__PXCMMAssetsViewController__updateSelectionEnabled__block_invoke(uint6
   v36 = *MEMORY[0x1E69E9840];
   if (!self->_sceneController && [(PXCMMAssetsViewController *)self isViewLoaded])
   {
-    v3 = [(PXCMMComponentViewController *)self session];
-    v33 = [v3 dataSourceManager];
-    v4 = [v3 mediaProvider];
-    v5 = [v3 viewModel];
-    v6 = [v5 selectionManager];
+    session = [(PXCMMComponentViewController *)self session];
+    dataSourceManager = [session dataSourceManager];
+    mediaProvider = [session mediaProvider];
+    viewModel = [session viewModel];
+    selectionManager = [viewModel selectionManager];
 
-    v7 = [(PXCMMAssetsViewController *)self _createNewLayout];
+    _createNewLayout = [(PXCMMAssetsViewController *)self _createNewLayout];
     v8 = [off_1E7721938 alloc];
-    v9 = [(PXCMMAssetsViewController *)self view];
-    [v9 bounds];
+    view = [(PXCMMAssetsViewController *)self view];
+    [view bounds];
     v10 = [v8 initWithFrame:?];
     scrollViewController = self->_scrollViewController;
     self->_scrollViewController = v10;
@@ -3045,13 +3045,13 @@ void __52__PXCMMAssetsViewController__updateSelectionEnabled__block_invoke(uint6
     tileAnimator = self->_tileAnimator;
     self->_tileAnimator = &v12->super;
 
-    v14 = [[PXTilingController alloc] initWithLayout:v7];
+    v14 = [[PXTilingController alloc] initWithLayout:_createNewLayout];
     tilingController = self->_tilingController;
     self->_tilingController = v14;
 
     [(PXTilingController *)self->_tilingController setScrollController:self->_scrollViewController];
     [(PXTilingController *)self->_tilingController setTileAnimator:self->_tileAnimator];
-    v16 = [[PXUIAssetsScene alloc] initWithTilingController:self->_tilingController mediaProvider:v4 dataSourceManager:v33 selectionManager:v6 delegate:self];
+    v16 = [[PXUIAssetsScene alloc] initWithTilingController:self->_tilingController mediaProvider:mediaProvider dataSourceManager:dataSourceManager selectionManager:selectionManager delegate:self];
     sceneController = self->_sceneController;
     self->_sceneController = v16;
 
@@ -3082,16 +3082,16 @@ void __52__PXCMMAssetsViewController__updateSelectionEnabled__block_invoke(uint6
   v29 = v28;
   v31 = v30;
   [(PXUIScrollViewController *)self->_scrollViewController setContentInset:?];
-  v32 = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
-  [v32 setVerticalScrollIndicatorInsets:{v25, v27, v29, v31}];
+  scrollView = [(PXUIScrollViewController *)self->_scrollViewController scrollView];
+  [scrollView setVerticalScrollIndicatorInsets:{v25, v27, v29, v31}];
 }
 
 - (CGSize)_maximumThumbnailSize
 {
-  v2 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-  v3 = [v2 masterThumbnailFormat];
+  defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
+  masterThumbnailFormat = [defaultFormatChooser masterThumbnailFormat];
 
-  [v3 sizeWithFallBackSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [masterThumbnailFormat sizeWithFallBackSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v5 = v4;
   v7 = v6;
 
@@ -3102,12 +3102,12 @@ void __52__PXCMMAssetsViewController__updateSelectionEnabled__block_invoke(uint6
   return result;
 }
 
-- (PXCMMAssetsViewController)initWithSession:(id)a3
+- (PXCMMAssetsViewController)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v37.receiver = self;
   v37.super_class = PXCMMAssetsViewController;
-  v5 = [(PXCMMComponentViewController *)&v37 initWithSession:v4];
+  v5 = [(PXCMMComponentViewController *)&v37 initWithSession:sessionCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
@@ -3118,29 +3118,29 @@ void __52__PXCMMAssetsViewController__updateSelectionEnabled__block_invoke(uint6
     v5->__layoutType = [v8 initialLayoutType];
 
     v5->_needsToPerformInitialSelection = 1;
-    v9 = [v4 customAssetSelectionHandler];
-    v10 = [v9 copy];
+    customAssetSelectionHandler = [sessionCopy customAssetSelectionHandler];
+    v10 = [customAssetSelectionHandler copy];
     customAssetSelectionHandler = v5->_customAssetSelectionHandler;
     v5->_customAssetSelectionHandler = v10;
 
     [(PXCMMAssetsViewController *)v5 px_enableExtendedTraitCollection];
-    v12 = [(PXCMMAssetsViewController *)v5 px_extendedTraitCollection];
-    v13 = -[PXCMMSpecManager initWithExtendedTraitCollection:activityType:]([PXCMMSpecManager alloc], "initWithExtendedTraitCollection:activityType:", v12, [v4 activityType]);
+    px_extendedTraitCollection = [(PXCMMAssetsViewController *)v5 px_extendedTraitCollection];
+    v13 = -[PXCMMSpecManager initWithExtendedTraitCollection:activityType:]([PXCMMSpecManager alloc], "initWithExtendedTraitCollection:activityType:", px_extendedTraitCollection, [sessionCopy activityType]);
     specManager = v5->_specManager;
     v5->_specManager = v13;
 
-    v15 = [(PXFeatureSpecManager *)v5->_specManager spec];
+    spec = [(PXFeatureSpecManager *)v5->_specManager spec];
     spec = v5->_spec;
-    v5->_spec = v15;
+    v5->_spec = spec;
 
     [(PXCMMSpecManager *)v5->_specManager registerChangeObserver:v5 context:PXSpecManagerObservationContext_204654];
-    v17 = [v4 viewModel];
-    [v17 registerChangeObserver:v5 context:PXCMMViewModelObservationContext_204652];
+    viewModel = [sessionCopy viewModel];
+    [viewModel registerChangeObserver:v5 context:PXCMMViewModelObservationContext_204652];
 
-    v18 = [v4 viewModel];
-    v5->_userSelectionEnabled = [v18 isSelecting];
+    viewModel2 = [sessionCopy viewModel];
+    v5->_userSelectionEnabled = [viewModel2 isSelecting];
 
-    v19 = [v4 momentShareStatusPresentationWithPresentationStyle:2];
+    v19 = [sessionCopy momentShareStatusPresentationWithPresentationStyle:2];
     momentShareStatusPresentationForFooter = v5->_momentShareStatusPresentationForFooter;
     v5->_momentShareStatusPresentationForFooter = v19;
 
@@ -3152,15 +3152,15 @@ void __52__PXCMMAssetsViewController__updateSelectionEnabled__block_invoke(uint6
       v5->_statusFooterViewModel = v21;
     }
 
-    v23 = [v4 momentShareStatusPresentationWithPresentationStyle:1];
+    v23 = [sessionCopy momentShareStatusPresentationWithPresentationStyle:1];
     momentShareStatusPresentationForPoster = v5->_momentShareStatusPresentationForPoster;
     v5->_momentShareStatusPresentationForPoster = v23;
 
     [(PXMomentShareStatusPresentation *)v5->_momentShareStatusPresentationForPoster registerChangeObserver:v5 context:PXMomentShareStatusPresentationObservationContext_204653];
-    v25 = [v4 viewModel];
-    v26 = [v25 selectionManager];
+    viewModel3 = [sessionCopy viewModel];
+    selectionManager = [viewModel3 selectionManager];
 
-    [v26 registerChangeObserver:v5 context:PXSelectionManagerObservationContext_204655];
+    [selectionManager registerChangeObserver:v5 context:PXSelectionManagerObservationContext_204655];
     v27 = objc_alloc_init(off_1E77218E0);
     statusController = v5->_statusController;
     v5->_statusController = v27;
@@ -3170,8 +3170,8 @@ void __52__PXCMMAssetsViewController__updateSelectionEnabled__block_invoke(uint6
     {
       v29 = [PXCMMStatusController alloc];
       v30 = v5->_momentShareStatusPresentationForFooter;
-      v31 = [(PXStatusController *)v5->_statusController viewModel];
-      v32 = [(PXCMMStatusController *)v29 initWithStatusPresentation:v30 viewModel:v31];
+      viewModel4 = [(PXStatusController *)v5->_statusController viewModel];
+      v32 = [(PXCMMStatusController *)v29 initWithStatusPresentation:v30 viewModel:viewModel4];
       cmmStatusController = v5->_cmmStatusController;
       v5->_cmmStatusController = v32;
     }

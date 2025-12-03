@@ -1,6 +1,6 @@
 @interface MADSystemDataStoreClient
 + (id)readOnlyClient;
-- (BOOL)_configureXPCPersistentStoreCoordinatorWithReadOnlyMode:(BOOL)a3;
+- (BOOL)_configureXPCPersistentStoreCoordinatorWithReadOnlyMode:(BOOL)mode;
 - (MADSystemDataStoreClient)init;
 @end
 
@@ -78,9 +78,9 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)_configureXPCPersistentStoreCoordinatorWithReadOnlyMode:(BOOL)a3
+- (BOOL)_configureXPCPersistentStoreCoordinatorWithReadOnlyMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v33[3] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADSystemDataStoreClient][ConfigureXPC]"];
   v6 = objc_alloc_init(MADXPCStoreServerEndpointFactory);
@@ -90,7 +90,7 @@ LABEL_14:
   v33[0] = v6;
   v33[1] = MEMORY[0x1E695E118];
   v32[2] = *MEMORY[0x1E695D458];
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:modeCopy];
   v33[2] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:3];
 
@@ -110,8 +110,8 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v11 fileExistsAtPath:v10 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:v10 isDirectory:0];
 
   if ((v12 & 1) == 0)
   {

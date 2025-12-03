@@ -1,25 +1,25 @@
 @interface PFDictionaryCoder
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
 - (PFDictionaryCoder)init;
-- (PFDictionaryCoder)initWithMutableDictionary:(id)a3;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (int64_t)decodeIntegerForKey:(id)a3;
-- (uint64_t)decodeTopLevelObjectOfClass:(void *)a1 forKey:;
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5;
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (PFDictionaryCoder)initWithMutableDictionary:(id)dictionary;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (int64_t)decodeIntegerForKey:(id)key;
+- (uint64_t)decodeTopLevelObjectOfClass:(void *)class forKey:;
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key;
+- (void)encodeConditionalObject:(id)object forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeInteger:(int64_t)integer forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation PFDictionaryCoder
@@ -32,76 +32,76 @@
   return v4;
 }
 
-- (PFDictionaryCoder)initWithMutableDictionary:(id)a3
+- (PFDictionaryCoder)initWithMutableDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PFDictionaryCoder;
   v6 = [(PFDictionaryCoder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   return v7;
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
   dictionary = self->_dictionary;
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)dictionary allKeys];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  allKeys = [(NSMutableDictionary *)dictionary allKeys];
+  v6 = [allKeys containsObject:keyCopy];
 
   return v6;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_self();
-  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:v4];
+  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:keyCopy];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(keyCopy) = [v6 BOOLValue];
+  return keyCopy;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_self();
-  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:v4];
+  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:keyCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(keyCopy) = [v6 intValue];
+  return keyCopy;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_self();
-  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:v4];
+  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:keyCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(keyCopy) = [v6 intValue];
+  return keyCopy;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_self();
-  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:v4];
+  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:keyCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_self();
-  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:v4];
+  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:keyCopy];
 
   [v6 floatValue];
   v8 = v7;
@@ -109,11 +109,11 @@
   return v8;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_self();
-  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:v4];
+  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:keyCopy];
 
   [v6 doubleValue];
   v8 = v7;
@@ -121,44 +121,44 @@
   return v8;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_self();
-  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:v4];
+  v6 = [(PFDictionaryCoder *)self decodeObjectOfClass:v5 forKey:keyCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = objc_opt_self();
-  v8 = [(PFDictionaryCoder *)self decodeObjectOfClass:v7 forKey:v6];
+  v8 = [(PFDictionaryCoder *)self decodeObjectOfClass:v7 forKey:keyCopy];
 
-  if (a4)
+  if (length)
   {
-    *a4 = [v8 length];
+    *length = [v8 length];
   }
 
-  v9 = [v8 bytes];
+  bytes = [v8 bytes];
 
-  return v9;
+  return bytes;
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:a4];
+  classesCopy = classes;
+  v7 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:key];
   if (v7)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v6;
+    v8 = classesCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -203,9 +203,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key
 {
-  v4 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:a4];
+  v4 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -219,77 +219,77 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
   dictionary = self->_dictionary;
-  if (a3)
+  if (object)
   {
-    [(NSMutableDictionary *)dictionary setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)dictionary setObject:object forKeyedSubscript:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)dictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)dictionary removeObjectForKey:key];
   }
 }
 
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4
+- (void)encodeConditionalObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    [(NSMutableDictionary *)self->_dictionary setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)self->_dictionary setObject:object forKeyedSubscript:key];
   }
 }
 
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4
+- (void)encodeInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(NSMutableDictionary *)self->_dictionary setObject:v8 forKeyedSubscript:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [(NSMutableDictionary *)self->_dictionary setObject:v8 forKeyedSubscript:keyCopy];
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  *&v8 = a3;
+  keyCopy = key;
+  *&v8 = float;
   v9 = [v6 numberWithFloat:v8];
-  [(NSMutableDictionary *)self->_dictionary setObject:v9 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_dictionary setObject:v9 forKeyedSubscript:keyCopy];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(NSMutableDictionary *)self->_dictionary setObject:v8 forKeyedSubscript:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(NSMutableDictionary *)self->_dictionary setObject:v8 forKeyedSubscript:keyCopy];
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithLongLong:a3];
-  [(NSMutableDictionary *)self->_dictionary setObject:v8 forKeyedSubscript:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:int64];
+  [(NSMutableDictionary *)self->_dictionary setObject:v8 forKeyedSubscript:keyCopy];
 }
 
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key
 {
-  if (a3)
+  if (bytes)
   {
     v8 = MEMORY[0x1E695DEF0];
-    v9 = a5;
-    v10 = [v8 dataWithBytes:a3 length:a4];
-    [(PFDictionaryCoder *)self encodeObject:v10 forKey:v9];
+    keyCopy = key;
+    v10 = [v8 dataWithBytes:bytes length:length];
+    [(PFDictionaryCoder *)self encodeObject:v10 forKey:keyCopy];
   }
 }
 
-- (uint64_t)decodeTopLevelObjectOfClass:(void *)a1 forKey:
+- (uint64_t)decodeTopLevelObjectOfClass:(void *)class forKey:
 {
-  if (a1)
+  if (class)
   {
-    [a1 doesNotRecognizeSelector:sel_decodeTopLevelObjectOfClass_forKey_];
+    [class doesNotRecognizeSelector:sel_decodeTopLevelObjectOfClass_forKey_];
   }
 
   return 0;

@@ -1,24 +1,24 @@
 @interface CSVoiceTriggerAssetHandlerFromFile
-- (CSVoiceTriggerAssetHandlerFromFile)initWithDisableOnDeviceCompilation:(BOOL)a3;
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4;
+- (CSVoiceTriggerAssetHandlerFromFile)initWithDisableOnDeviceCompilation:(BOOL)compilation;
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion;
 @end
 
 @implementation CSVoiceTriggerAssetHandlerFromFile
 
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = +[CSFPreferences sharedPreferences];
-  v9 = [v8 fakeVoiceTriggerAssetPath];
+  fakeVoiceTriggerAssetPath = [v8 fakeVoiceTriggerAssetPath];
 
-  v10 = [v9 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [fakeVoiceTriggerAssetPath stringByDeletingLastPathComponent];
   v11 = +[NSFileManager defaultManager];
-  v12 = [v11 fileExistsAtPath:v9];
+  v12 = [v11 fileExistsAtPath:fakeVoiceTriggerAssetPath];
 
   if (v12)
   {
-    [CSAsset assetForAssetType:0 resourcePath:v10 configVersion:@"override-asset" assetProvider:2];
+    [CSAsset assetForAssetType:0 resourcePath:stringByDeletingLastPathComponent configVersion:@"override-asset" assetProvider:2];
   }
 
   else
@@ -32,7 +32,7 @@
     if (onDeviceCompilationHandler)
     {
       v17 = 0;
-      [(CSOnDeviceCompilationHandler *)onDeviceCompilationHandler compileAndUpdateDeviceCachesWithAsset:v13 assetType:0 endpointId:v6 errOut:&v17];
+      [(CSOnDeviceCompilationHandler *)onDeviceCompilationHandler compileAndUpdateDeviceCachesWithAsset:v13 assetType:0 endpointId:idCopy errOut:&v17];
       v15 = v17;
       v16 = CSLogCategoryAsset;
       if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -46,20 +46,20 @@
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 }
 
-- (CSVoiceTriggerAssetHandlerFromFile)initWithDisableOnDeviceCompilation:(BOOL)a3
+- (CSVoiceTriggerAssetHandlerFromFile)initWithDisableOnDeviceCompilation:(BOOL)compilation
 {
   v8.receiver = self;
   v8.super_class = CSVoiceTriggerAssetHandlerFromFile;
   v4 = [(CSVoiceTriggerAssetHandler *)&v8 init];
   if (v4)
   {
-    if (!a3)
+    if (!compilation)
     {
       v5 = +[CSOnDeviceCompilationHandler sharedHandler];
       onDeviceCompilationHandler = v4->_onDeviceCompilationHandler;

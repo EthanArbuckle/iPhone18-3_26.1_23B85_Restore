@@ -1,6 +1,6 @@
 @interface HMDPendingInvitedUserMessageFilter
 + (id)logCategory;
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error;
 @end
 
 @implementation HMDPendingInvitedUserMessageFilter
@@ -25,20 +25,20 @@ void __49__HMDPendingInvitedUserMessageFilter_logCategory__block_invoke()
   logCategory__hmf_once_v4_161189 = v1;
 }
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 policyOfClass:objc_opt_class() fromPolicies:v9];
+  messageCopy = message;
+  policiesCopy = policies;
+  v10 = [self policyOfClass:objc_opt_class() fromPolicies:policiesCopy];
   if (!v10)
   {
     goto LABEL_4;
   }
 
-  if (([v8 isRemote] & 1) == 0)
+  if (([messageCopy isRemote] & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
 LABEL_12:
       v13 = -1;
@@ -49,31 +49,31 @@ LABEL_12:
     v15 = @"Invited user message must be remote.";
     v16 = 10;
 LABEL_11:
-    *a5 = [v14 hmErrorWithCode:v16 description:0 reason:v15 suggestion:0 underlyingError:0];
+    *error = [v14 hmErrorWithCode:v16 description:0 reason:v15 suggestion:0 underlyingError:0];
     goto LABEL_12;
   }
 
-  v11 = [v10 homeManager];
-  v12 = [v11 pendingInviteExistsForSenderOfMessage:v8];
+  homeManager = [v10 homeManager];
+  v12 = [homeManager pendingInviteExistsForSenderOfMessage:messageCopy];
 
   if ((v12 & 1) == 0)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v8 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v24 = 138543618;
       v25 = v20;
       v26 = 2112;
-      v27 = v21;
+      v27 = shortDescription;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@There is no actionable pending home invite on this device for sender of message: %@", &v24, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_12;
     }

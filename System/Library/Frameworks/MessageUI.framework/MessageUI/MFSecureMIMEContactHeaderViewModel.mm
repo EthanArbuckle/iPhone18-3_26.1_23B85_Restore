@@ -7,39 +7,39 @@
 - (id)contactsCustomViewConfiguration
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] mailInteractiveColor];
-  v4 = [(MFSecureMIMEContactHeaderViewModel *)self warningLabelText];
-  v5 = [v4 length];
+  mailInteractiveColor = [MEMORY[0x1E69DC888] mailInteractiveColor];
+  warningLabelText = [(MFSecureMIMEContactHeaderViewModel *)self warningLabelText];
+  v5 = [warningLabelText length];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v7 = [(MFSecureMIMEContactHeaderViewModel *)self warningLabelText];
+    warningLabelText2 = [(MFSecureMIMEContactHeaderViewModel *)self warningLabelText];
     v38 = *MEMORY[0x1E69DB650];
-    v8 = [MEMORY[0x1E69DC888] mailSecureMIMEWarningColor];
-    v39[0] = v8;
+    mailSecureMIMEWarningColor = [MEMORY[0x1E69DC888] mailSecureMIMEWarningColor];
+    v39[0] = mailSecureMIMEWarningColor;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-    v10 = [v6 initWithString:v7 attributes:v9];
+    v10 = [v6 initWithString:warningLabelText2 attributes:v9];
 
     v11 = @"questionmark.circle.fill";
-    v12 = [MEMORY[0x1E69DC888] mailSecureMIMEWarningColor];
+    mailSecureMIMEWarningColor2 = [MEMORY[0x1E69DC888] mailSecureMIMEWarningColor];
 
-    v3 = v12;
+    mailInteractiveColor = mailSecureMIMEWarningColor2;
     goto LABEL_8;
   }
 
-  v13 = [(MFSecureMIMEContactHeaderViewModel *)self secureLabelText];
-  v14 = [v13 length];
+  secureLabelText = [(MFSecureMIMEContactHeaderViewModel *)self secureLabelText];
+  v14 = [secureLabelText length];
 
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v16 = [(MFSecureMIMEContactHeaderViewModel *)self secureLabelText];
+    secureLabelText2 = [(MFSecureMIMEContactHeaderViewModel *)self secureLabelText];
     v36 = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
-    v37 = v17;
+    mailSecureMIMERegularTextColor = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
+    v37 = mailSecureMIMERegularTextColor;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    v10 = [v15 initWithString:v16 attributes:v18];
+    v10 = [v15 initWithString:secureLabelText2 attributes:v18];
 
     v19 = MFImageGlyphLock;
 LABEL_7:
@@ -47,18 +47,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v20 = [(MFSecureMIMEContactHeaderViewModel *)self signedLabelText];
-  v10 = [v20 length];
+  signedLabelText = [(MFSecureMIMEContactHeaderViewModel *)self signedLabelText];
+  v10 = [signedLabelText length];
 
   if (v10)
   {
     v21 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v22 = [(MFSecureMIMEContactHeaderViewModel *)self signedLabelText];
+    signedLabelText2 = [(MFSecureMIMEContactHeaderViewModel *)self signedLabelText];
     v34 = *MEMORY[0x1E69DB650];
-    v23 = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
-    v35 = v23;
+    mailSecureMIMERegularTextColor2 = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
+    v35 = mailSecureMIMERegularTextColor2;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-    v10 = [v21 initWithString:v22 attributes:v24];
+    v10 = [v21 initWithString:signedLabelText2 attributes:v24];
 
     v19 = MFImageGlyphSigned;
     goto LABEL_7;
@@ -68,19 +68,19 @@ LABEL_7:
 LABEL_8:
   v25 = [objc_alloc(MEMORY[0x1E695D110]) initWithAttributedTitle:v10];
   [v25 setTitleIconSymbolName:v11];
-  [v25 setTitleIconColor:v3];
+  [v25 setTitleIconColor:mailInteractiveColor];
   v26 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v27 = [(MFSecureMIMEContactHeaderViewModel *)self explanationText];
-  v28 = [v26 initWithString:v27];
+  explanationText = [(MFSecureMIMEContactHeaderViewModel *)self explanationText];
+  v28 = [v26 initWithString:explanationText];
   [v25 setBody:v28];
 
-  v29 = [(MFSecureMIMEContactHeaderViewModel *)self actions];
-  v30 = [v29 count];
+  actions = [(MFSecureMIMEContactHeaderViewModel *)self actions];
+  v30 = [actions count];
 
   if (v30)
   {
-    v31 = [(MFSecureMIMEContactHeaderViewModel *)self actions];
-    v32 = [v31 ef_map:&__block_literal_global_33];
+    actions2 = [(MFSecureMIMEContactHeaderViewModel *)self actions];
+    v32 = [actions2 ef_map:&__block_literal_global_33];
     [v25 setActions:v32];
   }
 

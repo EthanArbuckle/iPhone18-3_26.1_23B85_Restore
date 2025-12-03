@@ -6,7 +6,7 @@
 
 - (uint64_t)_mk_laneDirectionValue
 {
-  result = [a1 integerValue];
+  result = [self integerValue];
   if (result <= 3)
   {
     if (result >= 3)

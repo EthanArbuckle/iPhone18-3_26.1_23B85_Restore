@@ -1,14 +1,14 @@
 @interface AMSDDaemonRunLoop
 - (AMSDDaemonRunLoop)init;
 - (BOOL)_performStartup;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_previousBuildVersion;
-- (void)_clearDanglingCookieDatabasesWithCompletion:(id)a3;
+- (void)_clearDanglingCookieDatabasesWithCompletion:(id)completion;
 - (void)_handleAccountChange;
 - (void)_handleBiometricsProvisioningNotification;
 - (void)_handleCachedDataUpdate;
-- (void)_handleDeviceLanguageChangeNotification:(id)a3;
-- (void)_handleNFCAccessoryNotification:(id)a3;
+- (void)_handleDeviceLanguageChangeNotification:(id)notification;
+- (void)_handleNFCAccessoryNotification:(id)notification;
 - (void)_setupAccountDataSync;
 - (void)_setupMultiUser;
 - (void)_setupNotifications;
@@ -48,8 +48,8 @@
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -57,7 +57,7 @@
       v10 = v7;
       v11 = 2114;
       v12 = v8;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Idle-exit", &v9, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Idle-exit", &v9, 0x16u);
     }
 
     objc_autoreleasePoolPop(v2);
@@ -97,9 +97,9 @@
   [(AMSDDaemonRunLoop *)&v5 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = AMSSetLogKey();
   v7 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v7)
@@ -107,47 +107,47 @@
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
-    v11 = [v5 processIdentifier];
-    v12 = [v5 amsd_processName];
+    processIdentifier = [connectionCopy processIdentifier];
+    amsd_processName = [connectionCopy amsd_processName];
     *buf = 138544386;
     v41 = v9;
     v42 = 2114;
     v43 = v10;
     v44 = 1024;
-    v45 = v11;
+    v45 = processIdentifier;
     v46 = 2114;
-    v47 = v12;
+    v47 = amsd_processName;
     v48 = 2114;
-    v49 = v5;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received a new XPC connection. processID = %d | processName = %{public}@ | connection = %{public}@", buf, 0x30u);
+    v49 = connectionCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received a new XPC connection. processID = %d | processName = %{public}@ | connection = %{public}@", buf, 0x30u);
   }
 
-  v13 = [v5 serviceName];
+  serviceName = [connectionCopy serviceName];
   v14 = +[AMSDServiceConnection machServiceName];
-  v15 = [v13 isEqualToString:v14];
+  v15 = [serviceName isEqualToString:v14];
 
   if (!v15)
   {
-    v22 = [v5 serviceName];
+    serviceName2 = [connectionCopy serviceName];
     v23 = +[AMSMultiUserService machServiceName];
-    v24 = [v22 isEqualToString:v23];
+    v24 = [serviceName2 isEqualToString:v23];
 
     if (v24)
     {
-      if (([AMSMultiUserService isConnectionEntitled:v5]& 1) != 0)
+      if (([AMSMultiUserService isConnectionEntitled:connectionCopy]& 1) != 0)
       {
         v25 = +[AMSMultiUserService serviceInterface];
-        [v5 setExportedInterface:v25];
+        [connectionCopy setExportedInterface:v25];
 
         v26 = +[AMSDMultiUserService sharedService];
-        [v5 setExportedObject:v26];
+        [connectionCopy setExportedObject:v26];
 
-        [v5 resume];
+        [connectionCopy resume];
         goto LABEL_7;
       }
 
@@ -157,8 +157,8 @@
         v27 = +[AMSLogConfig sharedConfig];
       }
 
-      v28 = [v27 OSLogObject];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v27 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v29 = objc_opt_class();
         v30 = AMSLogKey();
@@ -166,7 +166,7 @@
         v41 = v29;
         v42 = 2114;
         v43 = v30;
-        _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Connection interrupted (entitlements)", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Connection interrupted (entitlements)", buf, 0x16u);
       }
     }
 
@@ -174,13 +174,13 @@
     goto LABEL_17;
   }
 
-  v16 = [[AMSDServiceConnection alloc] initWithConnection:v5];
+  v16 = [[AMSDServiceConnection alloc] initWithConnection:connectionCopy];
   v17 = AMSLogKey();
   [(AMSDServiceConnection *)v16 setLogKey:v17];
 
   os_unfair_lock_lock_with_options();
-  v18 = [(AMSDDaemonRunLoop *)self connections];
-  [v18 addObject:v16];
+  connections = [(AMSDDaemonRunLoop *)self connections];
+  [connections addObject:v16];
 
   os_unfair_lock_unlock(&self->_connectionsLock);
   v38[0] = _NSConcreteStackBlock;
@@ -190,16 +190,16 @@
   v38[4] = self;
   v19 = v16;
   v39 = v19;
-  [v5 setInterruptionHandler:v38];
+  [connectionCopy setInterruptionHandler:v38];
   v32 = _NSConcreteStackBlock;
   v33 = 3221225472;
   v34 = sub_100051578;
   v35 = &unk_1002B00E8;
-  v36 = self;
+  selfCopy = self;
   v37 = v19;
   v20 = v19;
-  [v5 setInvalidationHandler:&v32];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:&v32];
+  [connectionCopy resume];
 
 LABEL_7:
   v21 = 1;
@@ -208,17 +208,17 @@ LABEL_17:
   return v21;
 }
 
-- (void)_clearDanglingCookieDatabasesWithCompletion:(id)a3
+- (void)_clearDanglingCookieDatabasesWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = objc_opt_class();
@@ -236,7 +236,7 @@ LABEL_17:
     v11 = ;
     *buf = 138543362;
     v17 = v11;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Clearing dangling cookie databases", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Clearing dangling cookie databases", buf, 0xCu);
     if (v8)
     {
 
@@ -250,8 +250,8 @@ LABEL_17:
   v14[2] = sub_1000517D0;
   v14[3] = &unk_1002B0498;
   v14[4] = self;
-  v15 = v5;
-  v13 = v5;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [v12 clearDanglingCookieDatabasesWithCompletion:v14];
 }
 
@@ -264,8 +264,8 @@ LABEL_17:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -273,7 +273,7 @@ LABEL_17:
     v11 = v6;
     v12 = 2114;
     v13 = v7;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting daemon", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting daemon", buf, 0x16u);
   }
 
   v9[0] = _NSConcreteStackBlock;
@@ -295,9 +295,9 @@ LABEL_17:
   [v3 waitUntilFinished];
 }
 
-- (void)_handleNFCAccessoryNotification:(id)a3
+- (void)_handleNFCAccessoryNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v4 = +[AMSLogConfig sharedAccountsDaemonConfig];
@@ -306,8 +306,8 @@ LABEL_17:
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -316,18 +316,18 @@ LABEL_17:
       v15 = 2114;
       v16 = v7;
       v17 = 2114;
-      v18 = v3;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] NFC URL tag URL detected. Notification = %{public}@", &v13, 0x20u);
+      v18 = notificationCopy;
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] NFC URL tag URL detected. Notification = %{public}@", &v13, 0x20u);
     }
 
-    v8 = [v3 object];
+    object = [notificationCopy object];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v3 object];
-      v11 = [NSURL URLWithString:v10];
+      object2 = [notificationCopy object];
+      v11 = [NSURL URLWithString:object2];
 
       if (v11)
       {
@@ -338,10 +338,10 @@ LABEL_17:
   }
 }
 
-- (void)_handleDeviceLanguageChangeNotification:(id)a3
+- (void)_handleDeviceLanguageChangeNotification:(id)notification
 {
   v4 = objc_alloc_init(AMSDUpdateDeviceLanguageTask);
-  v3 = [(AMSDUpdateDeviceLanguageTask *)v4 perform];
+  perform = [(AMSDUpdateDeviceLanguageTask *)v4 perform];
 }
 
 - (id)_previousBuildVersion
@@ -365,12 +365,12 @@ LABEL_17:
     v2 = +[AMSLogConfig sharedConfig];
   }
 
-  v3 = [v2 OSLogObject];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
     v6 = objc_opt_class();
-    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Multi-User is shutting down", &v5, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Multi-User is shutting down", &v5, 0xCu);
   }
 
   v4 = +[AMSDMultiUserController sharedController];
@@ -385,9 +385,9 @@ LABEL_17:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
+  oSLogObject = [v4 OSLogObject];
   v6 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = AMSLogKey();
     v8 = objc_opt_class();
@@ -405,7 +405,7 @@ LABEL_17:
     v10 = ;
     *buf = 138543362;
     v31 = v10;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Setting up multi-user.", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Setting up multi-user.", buf, 0xCu);
     if (v7)
     {
 
@@ -416,15 +416,15 @@ LABEL_17:
   }
 
   v11 = +[AMSDMultiUserController sharedController];
-  v12 = [v11 cloudContainer];
+  cloudContainer = [v11 cloudContainer];
 
-  if (v12)
+  if (cloudContainer)
   {
     v13 = +[AMSDMultiUserController sharedController];
-    v14 = [v13 homeManager];
-    v34 = v12;
+    homeManager = [v13 homeManager];
+    v34 = cloudContainer;
     v15 = [NSArray arrayWithObjects:&v34 count:1];
-    [v14 registerToAcceptCloudSharesForContainers:v15];
+    [homeManager registerToAcceptCloudSharesForContainers:v15];
   }
 
   v16 = +[AMSDMultiUserService sharedService];
@@ -434,8 +434,8 @@ LABEL_17:
     v17 = +[AMSLogConfig sharedConfig];
   }
 
-  v18 = [v17 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v17 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v19 = AMSLogKey();
     v20 = objc_opt_class();
@@ -456,7 +456,7 @@ LABEL_17:
     v31 = v22;
     v32 = 2114;
     v33 = v23;
-    _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Registering service for name: %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Registering service for name: %{public}@", buf, 0x16u);
 
     if (v19)
     {
@@ -557,8 +557,8 @@ LABEL_17:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = AMSLogKey();
     v6 = objc_opt_class();
@@ -573,19 +573,19 @@ LABEL_17:
     {
       [NSString stringWithFormat:@"%@: ", v6];
     }
-    v8 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v12 = v8;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating regulatory eligibility", buf, 0xCu);
+    v12 = selfCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating regulatory eligibility", buf, 0xCu);
     if (v5)
     {
 
-      v8 = self;
+      selfCopy = self;
     }
   }
 
   v9 = +[AMSRegulatoryEligibilityTask sharedInstance];
-  v10 = [v9 update];
+  update = [v9 update];
 }
 
 - (void)_startXPC

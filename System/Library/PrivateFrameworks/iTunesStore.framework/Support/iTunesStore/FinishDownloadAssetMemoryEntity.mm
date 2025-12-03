@@ -14,15 +14,15 @@
 
 - (NSString)destinationFileName
 {
-  v3 = [(FinishDownloadAssetMemoryEntity *)self destinationURLString];
-  if (v3)
+  destinationURLString = [(FinishDownloadAssetMemoryEntity *)self destinationURLString];
+  if (destinationURLString)
   {
-    v4 = [[NSURL alloc] initWithString:v3];
-    if ([v4 isFileURL])
+    pathExtension = [[NSURL alloc] initWithString:destinationURLString];
+    if ([pathExtension isFileURL])
     {
-      if (v4)
+      if (pathExtension)
       {
-        v5 = [v4 lastPathComponent];
+        lastPathComponent = [pathExtension lastPathComponent];
         goto LABEL_14;
       }
     }
@@ -32,43 +32,43 @@
     }
   }
 
-  v4 = [(FinishDownloadAssetMemoryEntity *)self pathExtension];
-  if (![v4 length])
+  pathExtension = [(FinishDownloadAssetMemoryEntity *)self pathExtension];
+  if (![pathExtension length])
   {
-    v6 = [(FinishDownloadAssetMemoryEntity *)self localPath];
-    v7 = [v6 pathExtension];
+    localPath = [(FinishDownloadAssetMemoryEntity *)self localPath];
+    pathExtension2 = [localPath pathExtension];
 
-    v4 = v7;
+    pathExtension = pathExtension2;
   }
 
-  v8 = [(FinishDownloadAssetMemoryEntity *)self sourceURLString];
-  if (![v4 length] && v8)
+  sourceURLString = [(FinishDownloadAssetMemoryEntity *)self sourceURLString];
+  if (![pathExtension length] && sourceURLString)
   {
-    v9 = [[NSURL alloc] initWithString:v8];
-    v10 = [v9 pathExtension];
+    v9 = [[NSURL alloc] initWithString:sourceURLString];
+    pathExtension3 = [v9 pathExtension];
 
-    v4 = v10;
+    pathExtension = pathExtension3;
   }
 
-  v5 = [NSString stringWithFormat:@"%lld", [(FinishDownloadAssetMemoryEntity *)self databaseID]];
-  if ([v4 length])
+  lastPathComponent = [NSString stringWithFormat:@"%lld", [(FinishDownloadAssetMemoryEntity *)self databaseID]];
+  if ([pathExtension length])
   {
-    v11 = [v5 stringByAppendingPathExtension:v4];
+    v11 = [lastPathComponent stringByAppendingPathExtension:pathExtension];
 
-    v5 = v11;
+    lastPathComponent = v11;
   }
 
 LABEL_14:
 
-  return v5;
+  return lastPathComponent;
 }
 
 - (NSDictionary)fileAttributes
 {
-  v2 = [(FinishDownloadAssetMemoryEntity *)self fileProtectionType];
-  if ([v2 length])
+  fileProtectionType = [(FinishDownloadAssetMemoryEntity *)self fileProtectionType];
+  if ([fileProtectionType length])
   {
-    v3 = [NSDictionary dictionaryWithObjectsAndKeys:v2, NSFileProtectionKey, 0];
+    v3 = [NSDictionary dictionaryWithObjectsAndKeys:fileProtectionType, NSFileProtectionKey, 0];
   }
 
   else
@@ -82,25 +82,25 @@ LABEL_14:
 - (BOOL)isDRMFree
 {
   v2 = [(FinishDownloadAssetMemoryEntity *)self valueForProperty:@"is_drm_free"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isExternalAsset
 {
   v2 = [(FinishDownloadAssetMemoryEntity *)self valueForProperty:@"is_external"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)mediaLibraryProtectionType
 {
   v2 = [(FinishDownloadAssetMemoryEntity *)self valueForProperty:@"protection_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSString)localPath
@@ -111,21 +111,21 @@ LABEL_14:
     v4 = [(FinishDownloadAssetMemoryEntity *)self valueForProperty:@"is_hls"];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 BOOLValue])
     {
-      v5 = [(FinishDownloadAssetMemoryEntity *)self downloadKind];
-      v6 = sub_10020F36C(v5);
+      downloadKind = [(FinishDownloadAssetMemoryEntity *)self downloadKind];
+      downloadKind2 = sub_10020F36C(downloadKind);
 
-      v7 = [(FinishDownloadAssetMemoryEntity *)self destinationFileName];
-      v3 = [v6 stringByAppendingPathComponent:v7];
+      destinationFileName = [(FinishDownloadAssetMemoryEntity *)self destinationFileName];
+      v3 = [downloadKind2 stringByAppendingPathComponent:destinationFileName];
     }
 
     else
     {
       v8 = [(FinishDownloadAssetMemoryEntity *)self valueForProperty:@"download_id"];
-      v9 = [v8 longLongValue];
+      longLongValue = [v8 longLongValue];
 
-      v10 = [(FinishDownloadAssetMemoryEntity *)self databaseID];
-      v6 = [(FinishDownloadAssetMemoryEntity *)self downloadKind];
-      v3 = [ScratchManager directoryPathForDownloadID:v9 assetID:v10 kind:v6 createIfNeeded:1];
+      databaseID = [(FinishDownloadAssetMemoryEntity *)self databaseID];
+      downloadKind2 = [(FinishDownloadAssetMemoryEntity *)self downloadKind];
+      v3 = [ScratchManager directoryPathForDownloadID:longLongValue assetID:databaseID kind:downloadKind2 createIfNeeded:1];
     }
   }
 
@@ -135,17 +135,17 @@ LABEL_14:
 - (unint64_t)processingTypes
 {
   v2 = [(FinishDownloadAssetMemoryEntity *)self valueForProperty:@"processing_types"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (NSArray)SINFs
 {
-  v2 = [(FinishDownloadAssetMemoryEntity *)self SINFData];
-  if (v2)
+  sINFData = [(FinishDownloadAssetMemoryEntity *)self SINFData];
+  if (sINFData)
   {
-    v3 = [NSPropertyListSerialization propertyListWithData:v2 options:0 format:0 error:0];
+    v3 = [NSPropertyListSerialization propertyListWithData:sINFData options:0 format:0 error:0];
     objc_opt_class();
     v4 = 0;
     if (objc_opt_isKindOfClass())

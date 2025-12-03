@@ -1,31 +1,31 @@
 @interface WiFiTriggerHandler
-+ (id)configureClass:(id)a3;
-+ (id)getHandlerByName:(id)a3;
++ (id)configureClass:(id)class;
++ (id)getHandlerByName:(id)name;
 + (id)getNetScoreInfo;
 + (id)sharedInstance;
-+ (void)_triggerAllowedByRSSI:(BOOL)a3 receiptTimestamp:(id)a4;
++ (void)_triggerAllowedByRSSI:(BOOL)i receiptTimestamp:(id)timestamp;
 + (void)initialize;
-+ (void)triggerAllowedByRSSI:(BOOL)a3 receiptTimestamp:(id)a4;
-- (BOOL)insufficientRxTrafficDetectedFrom:(id)a3 atTime:(id)a4 To:(id)a5;
-- (BOOL)noteSymptom:(id)a3;
++ (void)triggerAllowedByRSSI:(BOOL)i receiptTimestamp:(id)timestamp;
+- (BOOL)insufficientRxTrafficDetectedFrom:(id)from atTime:(id)time To:(id)to;
+- (BOOL)noteSymptom:(id)symptom;
 - (NSString)description;
 - (WiFiTriggerHandler)init;
 - (id)_getARPInfo;
-- (id)_getAWDInfo:(id)a3;
+- (id)_getAWDInfo:(id)info;
 - (id)_getDNSInfo;
 - (id)_getND6Info;
 - (id)_getNetScoreInfo;
-- (int)_impactFromFlags:(unsigned int)a3 andFlows:(unint64_t)a4;
-- (int)combineScoreARP:(int)a3 ND6:(int)a4 DNS:(int)a5 RTT:(int)a6 flows:(int)a7;
-- (int)configureInstance:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (int)_impactFromFlags:(unsigned int)flags andFlows:(unint64_t)flows;
+- (int)combineScoreARP:(int)p ND6:(int)d6 DNS:(int)s RTT:(int)t flows:(int)flows;
+- (int)configureInstance:(id)instance;
+- (int)read:(id)read returnedValues:(id)values;
 - (int64_t)_getDataStallsScore;
 - (void)_reset;
-- (void)checkUniqueStallCountOnInterfaceType:(int64_t)a3 stallType:(unint64_t)a4;
-- (void)dampeningStage:(id)a3;
-- (void)didReceiveSyndrome:(id)a3;
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
-- (void)refuteStage:(id)a3;
+- (void)checkUniqueStallCountOnInterfaceType:(int64_t)type stallType:(unint64_t)stallType;
+- (void)dampeningStage:(id)stage;
+- (void)didReceiveSyndrome:(id)syndrome;
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
+- (void)refuteStage:(id)stage;
 @end
 
 @implementation WiFiTriggerHandler
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __36__WiFiTriggerHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_1 != -1)
   {
     dispatch_once(&sharedInstance_pred_1, block);
@@ -67,11 +67,11 @@ void __36__WiFiTriggerHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[WiFiTriggerHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
@@ -83,14 +83,14 @@ void __36__WiFiTriggerHandler_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(WiFiTriggerHandler *)&v23 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __26__WiFiTriggerHandler_init__block_invoke;
     v21[3] = &unk_27898A690;
     v4 = v2;
     v22 = v4;
-    v5 = [v3 addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v21];
+    v5 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v21];
     wifiEpochObserver = v4->_wifiEpochObserver;
     v4->_wifiEpochObserver = v5;
 
@@ -100,7 +100,7 @@ void __36__WiFiTriggerHandler_sharedInstance__block_invoke(uint64_t a1)
     v19[3] = &unk_27898A690;
     v7 = v4;
     v20 = v7;
-    v8 = [v3 addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v19];
+    v8 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v19];
     cellEpochObserver = v7->_cellEpochObserver;
     v7->_cellEpochObserver = v8;
 
@@ -110,7 +110,7 @@ void __36__WiFiTriggerHandler_sharedInstance__block_invoke(uint64_t a1)
     v17[3] = &unk_27898A690;
     v10 = v7;
     v18 = v10;
-    v11 = [v3 addObserverForName:@"kNotificationNewPrimaryInterface" object:0 queue:0 usingBlock:v17];
+    v11 = [defaultCenter addObserverForName:@"kNotificationNewPrimaryInterface" object:0 queue:0 usingBlock:v17];
     primaryInterfaceObserver = v10->_primaryInterfaceObserver;
     v10->_primaryInterfaceObserver = v11;
 
@@ -263,38 +263,38 @@ void __28__WiFiTriggerHandler__reset__block_invoke(uint64_t a1)
   *(v15 + 152) = 0;
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"SYNDROME_DAMPENING_INTERVAL"];
+  instanceCopy = instance;
+  v4 = [instanceCopy objectForKey:@"SYNDROME_DAMPENING_INTERVAL"];
   v5 = v4;
   if (v4)
   {
     gDampeningInterval = [v4 unsignedShortValue];
   }
 
-  v6 = [v3 objectForKey:@"REFUTER_MODE"];
+  v6 = [instanceCopy objectForKey:@"REFUTER_MODE"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedShortValue];
-    gRefuterMode = v8;
-    [AppTracker setAppTrackerVerbose:v8];
+    unsignedShortValue = [v6 unsignedShortValue];
+    gRefuterMode = unsignedShortValue;
+    [AppTracker setAppTrackerVerbose:unsignedShortValue];
   }
 
-  v9 = [v3 objectForKey:@"FOREGROUND_APP_IGNORE_LIST"];
+  v9 = [instanceCopy objectForKey:@"FOREGROUND_APP_IGNORE_LIST"];
   if (v9)
   {
     [AppTracker setWifiNeverNoteList:v9];
   }
 
-  v10 = [v3 objectForKey:@"FOREGROUND_APP_NO_IGNORE_LIST"];
+  v10 = [instanceCopy objectForKey:@"FOREGROUND_APP_NO_IGNORE_LIST"];
   if (v10)
   {
     [AppTracker setWifiAlwaysNoteList:v10];
   }
 
-  v11 = [v3 objectForKey:@"MEDIA_DAEMON_CHECK_NETWORKING_LIST"];
+  v11 = [instanceCopy objectForKey:@"MEDIA_DAEMON_CHECK_NETWORKING_LIST"];
   if (v11)
   {
     [AppTracker setWifiDaemonCheckList:v11];
@@ -303,43 +303,43 @@ void __28__WiFiTriggerHandler__reset__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v5 = a3;
-  v6 = a4;
+  readCopy = read;
+  valuesCopy = values;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 setObject:v8 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v8 forKey:@"GENERIC_CONFIG_TARGET"];
 
-  v9 = [v5 objectForKey:@"REFUTER_MODE"];
+  v9 = [readCopy objectForKey:@"REFUTER_MODE"];
   if (v9)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:gRefuterMode];
-    [v6 setObject:v10 forKey:@"REFUTER_MODE"];
+    [valuesCopy setObject:v10 forKey:@"REFUTER_MODE"];
   }
 
-  v11 = [v5 objectForKey:@"SYNDROME_DAMPENING_INTERVAL"];
+  v11 = [readCopy objectForKey:@"SYNDROME_DAMPENING_INTERVAL"];
   if (v11)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithInteger:gDampeningInterval];
-    [v6 setObject:v12 forKey:@"SYNDROME_DAMPENING_INTERVAL"];
+    [valuesCopy setObject:v12 forKey:@"SYNDROME_DAMPENING_INTERVAL"];
   }
 
   return 0;
 }
 
-+ (id)getHandlerByName:(id)a3
++ (id)getHandlerByName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  p_isa = [gInstanceDictionary objectForKey:v4];
+  nameCopy = name;
+  p_isa = [gInstanceDictionary objectForKey:nameCopy];
   v6 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v4;
+    v7 = nameCopy;
     v8 = v6;
     v17 = 136315138;
-    v18 = [v4 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "getHandlerByName  %s", &v17, 0xCu);
   }
 
@@ -349,27 +349,27 @@ void __28__WiFiTriggerHandler__reset__block_invoke(uint64_t a1)
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_syndromeName, a3);
-      v13 = [v4 UTF8String];
-      if (!v13)
+      objc_storeStrong(&v12->_syndromeName, name);
+      uTF8String2 = [nameCopy UTF8String];
+      if (!uTF8String2)
       {
         [WiFiTriggerHandler getHandlerByName:?];
       }
 
-      v14 = strdup(v13);
+      v14 = strdup(uTF8String2);
       if (!v14)
       {
         [WiFiTriggerHandler getHandlerByName:?];
       }
 
       p_isa[2] = v14;
-      [gInstanceDictionary setObject:p_isa forKey:v4];
+      [gInstanceDictionary setObject:p_isa forKey:nameCopy];
       v15 = rnfLogHandle;
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v16 = p_isa[2];
         v17 = 136315138;
-        v18 = v16;
+        uTF8String = v16;
         _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEFAULT, "getHandlerByName  created %s", &v17, 0xCu);
       }
     }
@@ -382,15 +382,15 @@ void __28__WiFiTriggerHandler__reset__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (void)_triggerAllowedByRSSI:(BOOL)a3 receiptTimestamp:(id)a4
++ (void)_triggerAllowedByRSSI:(BOOL)i receiptTimestamp:(id)timestamp
 {
-  v4 = a3;
+  iCopy = i;
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  timestampCopy = timestamp;
   v6 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (iCopy)
     {
       v7 = "open";
     }
@@ -402,8 +402,8 @@ void __28__WiFiTriggerHandler__reset__block_invoke(uint64_t a1)
 
     v8 = MEMORY[0x277CBEAA8];
     v9 = v6;
-    v10 = [v8 date];
-    [v10 timeIntervalSinceDate:v5];
+    date = [v8 date];
+    [date timeIntervalSinceDate:timestampCopy];
     v27 = 136315394;
     v28 = *&v7;
     v29 = 2048;
@@ -411,8 +411,8 @@ void __28__WiFiTriggerHandler__reset__block_invoke(uint64_t a1)
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "Setting TD latch to %s with a propagation delay of %f", &v27, 0x16u);
   }
 
-  gTriggeringAllowed = (v4 | forceNoGate) & 1;
-  if (((v4 | forceNoGate) & 1) == 0)
+  gTriggeringAllowed = (iCopy | forceNoGate) & 1;
+  if (((iCopy | forceNoGate) & 1) == 0)
   {
     v18 = gOpenedTimestamp;
     gOpenedTimestamp = 0;
@@ -432,9 +432,9 @@ LABEL_15:
   }
 
   [TrackedFlow startPollingWifiFlows:300];
-  v12 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v13 = gOpenedTimestamp;
-  gOpenedTimestamp = v12;
+  gOpenedTimestamp = date2;
 
   if (!gQueuedTimestamp)
   {
@@ -449,8 +449,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v14 = [MEMORY[0x277CBEAA8] date];
-  [v14 timeIntervalSinceDate:gQueuedTimestamp];
+  date3 = [MEMORY[0x277CBEAA8] date];
+  [date3 timeIntervalSinceDate:gQueuedTimestamp];
   v16 = v15;
 
   if (v16 <= 1.0)
@@ -489,29 +489,29 @@ LABEL_20:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)triggerAllowedByRSSI:(BOOL)a3 receiptTimestamp:(id)a4
++ (void)triggerAllowedByRSSI:(BOOL)i receiptTimestamp:(id)timestamp
 {
-  v6 = a4;
+  timestampCopy = timestamp;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WiFiTriggerHandler_triggerAllowedByRSSI_receiptTimestamp___block_invoke;
   block[3] = &unk_27898A6B8;
-  v12 = a3;
-  v10 = v6;
-  v11 = a1;
-  v7 = v6;
+  iCopy = i;
+  v10 = timestampCopy;
+  selfCopy = self;
+  v7 = timestampCopy;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (id)_getAWDInfo:(id)a3
+- (id)_getAWDInfo:(id)info
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v46 = 0;
   v47 = 0;
-  v5 = [(WiFiTriggerHandler *)self _getARPFailureCount];
-  v6 = [(WiFiTriggerHandler *)self _getND6FailureCount];
+  _getARPFailureCount = [(WiFiTriggerHandler *)self _getARPFailureCount];
+  _getND6FailureCount = [(WiFiTriggerHandler *)self _getND6FailureCount];
   v7 = COERCE_DOUBLE([(WiFiTriggerHandler *)self _getDataStallsScore]);
   v8 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -535,9 +535,9 @@ LABEL_20:
   v13 = 0.0;
   if (self->_lastRefutePeriodTimestamp)
   {
-    if (v4)
+    if (infoCopy)
     {
-      [v4 timeIntervalSinceDate:?];
+      [infoCopy timeIntervalSinceDate:?];
       v15 = v14;
     }
 
@@ -557,7 +557,7 @@ LABEL_20:
     v15 = 0.0;
   }
 
-  v45 = v4;
+  v45 = infoCopy;
   if (gOpenedTimestamp)
   {
     [gOpenedTimestamp timeIntervalSinceNow];
@@ -578,11 +578,11 @@ LABEL_20:
   v49[2] = v39;
   v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyAWDARPFailureCount];
   v48[3] = v38;
-  v37 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  v37 = [MEMORY[0x277CCABB0] numberWithInteger:_getARPFailureCount];
   v49[3] = v37;
   v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyAWDND6FailureCount];
   v48[4] = v36;
-  v35 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
+  v35 = [MEMORY[0x277CCABB0] numberWithInteger:_getND6FailureCount];
   v49[4] = v35;
   v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyAWDTrafficWatchRxCount];
   v48[5] = v34;
@@ -619,9 +619,9 @@ LABEL_20:
 - (id)_getARPInfo
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v2 = [(WiFiTriggerHandler *)self _getARPFailureCount];
-  v3 = v2;
-  if (v2 == 2)
+  _getARPFailureCount = [(WiFiTriggerHandler *)self _getARPFailureCount];
+  v3 = _getARPFailureCount;
+  if (_getARPFailureCount == 2)
   {
     v4 = 25;
   }
@@ -631,7 +631,7 @@ LABEL_20:
     v4 = 0;
   }
 
-  if (v2 <= 1)
+  if (_getARPFailureCount <= 1)
   {
     v5 = 50;
   }
@@ -659,9 +659,9 @@ LABEL_20:
 - (id)_getND6Info
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v2 = [(WiFiTriggerHandler *)self _getND6FailureCount];
-  v3 = v2;
-  if (v2 == 2)
+  _getND6FailureCount = [(WiFiTriggerHandler *)self _getND6FailureCount];
+  v3 = _getND6FailureCount;
+  if (_getND6FailureCount == 2)
   {
     v4 = 25;
   }
@@ -671,7 +671,7 @@ LABEL_20:
     v4 = 0;
   }
 
-  if (v2 <= 1)
+  if (_getND6FailureCount <= 1)
   {
     v5 = 50;
   }
@@ -772,16 +772,16 @@ LABEL_20:
 
         if (v6)
         {
-          v7 = [v6 intValue];
+          intValue = [v6 intValue];
           v8 = rnfLogHandle;
           if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             v12 = 67109120;
-            LODWORD(v13) = v7;
+            LODWORD(v13) = intValue;
             _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "Data Stall consults polled flow score: %d", &v12, 8u);
           }
 
-          if (v7)
+          if (intValue)
           {
             v9 = 25;
           }
@@ -815,28 +815,28 @@ LABEL_14:
   return v9;
 }
 
-- (int)combineScoreARP:(int)a3 ND6:(int)a4 DNS:(int)a5 RTT:(int)a6 flows:(int)a7
+- (int)combineScoreARP:(int)p ND6:(int)d6 DNS:(int)s RTT:(int)t flows:(int)flows
 {
   result = 0;
-  if (a3)
+  if (p)
   {
-    if (a4)
+    if (d6)
     {
-      if (a5)
+      if (s)
       {
-        if (a6)
+        if (t)
         {
           result = 25;
-          if (a6 >= 50 && a5 >= 50 && a3 >= 50 && a4 >= 50 && a7 >= 50)
+          if (t >= 50 && s >= 50 && p >= 50 && d6 >= 50 && flows >= 50)
           {
-            if (a6 == 50)
+            if (t == 50)
             {
-              return a7;
+              return flows;
             }
 
             else
             {
-              return (a7 + a6) >> 1;
+              return (flows + t) >> 1;
             }
           }
         }
@@ -850,81 +850,81 @@ LABEL_14:
 - (id)_getNetScoreInfo
 {
   v41[3] = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiTriggerHandler *)self _getARPInfo];
-  v4 = [(WiFiTriggerHandler *)self _getND6Info];
-  v5 = [(WiFiTriggerHandler *)self _getDNSInfo];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [(WiFiTriggerHandler *)self _getAWDInfo:v6];
+  _getARPInfo = [(WiFiTriggerHandler *)self _getARPInfo];
+  _getND6Info = [(WiFiTriggerHandler *)self _getND6Info];
+  _getDNSInfo = [(WiFiTriggerHandler *)self _getDNSInfo];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [(WiFiTriggerHandler *)self _getAWDInfo:date];
 
-  if (v3)
+  if (_getARPInfo)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerScore];
-    v9 = [(__CFString *)v3 objectForKeyedSubscript:v8];
+    v9 = [(__CFString *)_getARPInfo objectForKeyedSubscript:v8];
 
     if (v9)
     {
-      v10 = [v9 intValue];
+      intValue = [v9 intValue];
     }
 
     else
     {
-      v10 = 50;
+      intValue = 50;
     }
   }
 
   else
   {
-    v10 = 50;
+    intValue = 50;
   }
 
-  v37 = v4;
-  if (v4)
+  v37 = _getND6Info;
+  if (_getND6Info)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerScore];
-    v12 = [(__CFString *)v4 objectForKeyedSubscript:v11];
+    v12 = [(__CFString *)_getND6Info objectForKeyedSubscript:v11];
 
     if (v12)
     {
-      v13 = [v12 intValue];
+      intValue2 = [v12 intValue];
     }
 
     else
     {
-      v13 = 50;
+      intValue2 = 50;
     }
   }
 
   else
   {
-    v13 = 50;
+    intValue2 = 50;
   }
 
-  v36 = v5;
-  if (v5)
+  v36 = _getDNSInfo;
+  if (_getDNSInfo)
   {
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerScore];
-    v15 = [(__CFString *)v5 objectForKeyedSubscript:v14];
+    v15 = [(__CFString *)_getDNSInfo objectForKeyedSubscript:v14];
 
     if (v15)
     {
-      v16 = [v15 intValue];
+      intValue3 = [v15 intValue];
     }
 
     else
     {
-      v16 = 50;
+      intValue3 = 50;
     }
 
-    v31 = v5;
+    v31 = _getDNSInfo;
   }
 
   else
   {
-    v16 = 50;
+    intValue3 = 50;
     v31 = @"No further info";
   }
 
-  v17 = [(WiFiTriggerHandler *)self combineScoreARP:v10 ND6:v13 DNS:v16 RTT:50 flows:50];
+  v17 = [(WiFiTriggerHandler *)self combineScoreARP:intValue ND6:intValue2 DNS:intValue3 RTT:50 flows:50];
   v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerNetScore];
   v40[0] = v35;
   v34 = [MEMORY[0x277CCABB0] numberWithInt:v17];
@@ -937,9 +937,9 @@ LABEL_14:
   [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerARPState];
   v20 = v33 = v7;
   v38[0] = v20;
-  if (v3)
+  if (_getARPInfo)
   {
-    v21 = v3;
+    v21 = _getARPInfo;
   }
 
   else
@@ -949,7 +949,7 @@ LABEL_14:
 
   v39[0] = v21;
   [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerND6State];
-  v22 = v32 = v3;
+  v22 = v32 = _getARPInfo;
   v38[1] = v22;
   if (v37)
   {
@@ -983,21 +983,21 @@ LABEL_14:
 + (id)getNetScoreInfo
 {
   v2 = +[WiFiTriggerHandler sharedInstance];
-  v3 = [v2 _getNetScoreInfo];
+  _getNetScoreInfo = [v2 _getNetScoreInfo];
 
-  return v3;
+  return _getNetScoreInfo;
 }
 
-- (int)_impactFromFlags:(unsigned int)a3 andFlows:(unint64_t)a4
+- (int)_impactFromFlags:(unsigned int)flags andFlows:(unint64_t)flows
 {
-  if (a4)
+  if (flows)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = (a3 & 4) == 0;
+    v4 = (flags & 4) == 0;
   }
 
   if (v4)
@@ -1011,16 +1011,16 @@ LABEL_14:
   }
 }
 
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
-  v7 = a6;
+  blockCopy = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__WiFiTriggerHandler_generateInfoForId_context_uuid_completionBlock___block_invoke;
   v9[3] = &unk_27898A708;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [AppTracker getWifiNetworkActivity:v9];
 }
 
@@ -1149,10 +1149,10 @@ void __69__WiFiTriggerHandler_generateInfoForId_context_uuid_completionBlock___b
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkUniqueStallCountOnInterfaceType:(int64_t)a3 stallType:(unint64_t)a4
+- (void)checkUniqueStallCountOnInterfaceType:(int64_t)type stallType:(unint64_t)stallType
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (((forceNoGate & 1) != 0 || gOpenedTimestamp) && a3 == 1 && a4 == 1)
+  if (((forceNoGate & 1) != 0 || gOpenedTimestamp) && type == 1 && stallType == 1)
   {
     v4 = [(DataStallHandler *)self->_dataStallHandler uniqStallCountForInterfaceType:1 stallType:1 foregroundOnly:1 since:gOpenedTimestamp];
     v5 = rnfLogHandle;
@@ -1173,11 +1173,11 @@ void __69__WiFiTriggerHandler_generateInfoForId_context_uuid_completionBlock___b
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
-  v3 = [a3 eventKey];
+  eventKey = [symptom eventKey];
   v4 = [SymptomStore keyFromSymptomName:@"com.apple.symptoms.kevent.arp-alive"];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [eventKey isEqualToString:v4];
 
   if (v5)
   {
@@ -1217,7 +1217,7 @@ LABEL_9:
   }
 
   v9 = [SymptomStore keyFromSymptomName:@"com.apple.symptoms.kevent.nd6-alive"];
-  v10 = [v3 isEqualToString:v9];
+  v10 = [eventKey isEqualToString:v9];
 
   if (v10)
   {
@@ -1234,7 +1234,7 @@ LABEL_9:
   }
 
   v18 = [SymptomStore keyFromSymptomName:@"com.apple.symptoms.wifi.dns.alive"];
-  v19 = [v3 isEqualToString:v18];
+  v19 = [eventKey isEqualToString:v18];
 
   if (v19)
   {
@@ -1257,7 +1257,7 @@ LABEL_9:
   }
 
   v24 = [SymptomStore keyFromSymptomName:@"com.apple.symptoms.wifi.unique_fg_data_stall"];
-  v25 = [v3 isEqualToString:v24];
+  v25 = [eventKey isEqualToString:v24];
 
   if (!v25)
   {
@@ -1289,12 +1289,12 @@ LABEL_16:
   return v6;
 }
 
-- (void)dampeningStage:(id)a3
+- (void)dampeningStage:(id)stage
 {
   *&v31[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSince1970];
+  stageCopy = stage;
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v7 = v6;
 
   LODWORD(v8) = gDampeningInterval;
@@ -1310,24 +1310,24 @@ LABEL_16:
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEFAULT, "WiFi Trigger Syndrome Handler about to cause event for %s", &v28, 0xCu);
     }
 
-    v14 = [v4 additionalInfo];
-    if (!v14)
+    additionalInfo = [stageCopy additionalInfo];
+    if (!additionalInfo)
     {
-      v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [v4 setAdditionalInfo:v14];
+      additionalInfo = objc_alloc_init(MEMORY[0x277CBEB38]);
+      [stageCopy setAdditionalInfo:additionalInfo];
     }
 
-    if ([v4 reasonCode] == 3)
+    if ([stageCopy reasonCode] == 3)
     {
-      v15 = 0;
+      date2 = 0;
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
     }
 
-    v16 = [(WiFiTriggerHandler *)self _getAWDInfo:v15];
+    v16 = [(WiFiTriggerHandler *)self _getAWDInfo:date2];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyAWDValidState];
     v18 = [v16 objectForKeyedSubscript:v17];
 
@@ -1336,7 +1336,7 @@ LABEL_16:
       goto LABEL_22;
     }
 
-    if ([v4 reasonCode] == 3)
+    if ([stageCopy reasonCode] == 3)
     {
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyAWDWiFiDNSTotalServers];
       v20 = [v16 objectForKeyedSubscript:v19];
@@ -1361,12 +1361,12 @@ LABEL_16:
     }
 
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerAWDInfo];
-    [v14 setObject:v16 forKey:v24];
+    [additionalInfo setObject:v16 forKey:v24];
 
     v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyDefRouteRTTVals];
-    [v14 setObject:@"No further RTT info" forKey:v25];
+    [additionalInfo setObject:@"No further RTT info" forKey:v25];
 
-    [(ManagedEventHandler *)self->_eventHandler didReceiveSyndrome:v4];
+    [(ManagedEventHandler *)self->_eventHandler didReceiveSyndrome:stageCopy];
 LABEL_22:
 
     goto LABEL_23;
@@ -1391,41 +1391,41 @@ LABEL_23:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)insufficientRxTrafficDetectedFrom:(id)a3 atTime:(id)a4 To:(id)a5
+- (BOOL)insufficientRxTrafficDetectedFrom:(id)from atTime:(id)time To:(id)to
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 count])
+  fromCopy = from;
+  timeCopy = time;
+  toCopy = to;
+  if (fromCopy && [fromCopy count])
   {
-    if (v10 && [v10 count])
+    if (toCopy && [toCopy count])
     {
-      v11 = [v8 firstObject];
-      v12 = [v10 firstObject];
-      v13 = [v11 objectForKeyedSubscript:@"bytesIn"];
-      v45 = [v11 objectForKeyedSubscript:@"rxOOOBytes"];
-      v44 = [v11 objectForKeyedSubscript:@"rxDupeBytes"];
-      v14 = [v12 objectForKeyedSubscript:@"bytesIn"];
-      v15 = [v12 objectForKeyedSubscript:@"rxOOOBytes"];
-      [v12 objectForKeyedSubscript:@"rxDupeBytes"];
-      v43 = v42 = v11;
+      firstObject = [fromCopy firstObject];
+      firstObject2 = [toCopy firstObject];
+      v13 = [firstObject objectForKeyedSubscript:@"bytesIn"];
+      v45 = [firstObject objectForKeyedSubscript:@"rxOOOBytes"];
+      v44 = [firstObject objectForKeyedSubscript:@"rxDupeBytes"];
+      v14 = [firstObject2 objectForKeyedSubscript:@"bytesIn"];
+      v15 = [firstObject2 objectForKeyedSubscript:@"rxOOOBytes"];
+      [firstObject2 objectForKeyedSubscript:@"rxDupeBytes"];
+      v43 = v42 = firstObject;
       if (v13 && v45 && v44 && v14 && v15 && v43 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v16 = [v13 longLongValue];
-        v17 = [v45 longLongValue];
-        v18 = v16 - (v17 + [v44 longLongValue]);
-        v40 = [v14 longLongValue];
-        v19 = [v15 longLongValue];
-        v37 = v40 - (v19 + [v43 longLongValue]);
+        longLongValue = [v13 longLongValue];
+        longLongValue2 = [v45 longLongValue];
+        v18 = longLongValue - (longLongValue2 + [v44 longLongValue]);
+        longLongValue3 = [v14 longLongValue];
+        longLongValue4 = [v15 longLongValue];
+        v37 = longLongValue3 - (longLongValue4 + [v43 longLongValue]);
         v38 = v18;
         v20 = v37 - v18;
-        v21 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         self->_lastRefutePeriodTraffic = v20;
-        [v21 timeIntervalSinceDate:v9];
+        [date timeIntervalSinceDate:timeCopy];
         self->_lastRefutePeriodDuration = v22;
-        v41 = v21;
-        objc_storeStrong(&self->_lastRefutePeriodTimestamp, v21);
+        v41 = date;
+        objc_storeStrong(&self->_lastRefutePeriodTimestamp, date);
         v23 = rnfLogHandle;
         v24 = os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT);
         v39 = v14;
@@ -1535,9 +1535,9 @@ LABEL_27:
   return v26;
 }
 
-- (void)refuteStage:(id)a3
+- (void)refuteStage:(id)stage
 {
-  v5 = a3;
+  stageCopy = stage;
   if (self->_detailsAwaitingRefuter)
   {
     v6 = rnfLogHandle;
@@ -1560,7 +1560,7 @@ LABEL_11:
     if ([NetworkAnalyticsEngine getDNSCountsOn:3 total:v20 impacted:&v19])
     {
       v10 = v20[0];
-      objc_storeStrong(&self->_detailsAwaitingRefuter, a3);
+      objc_storeStrong(&self->_detailsAwaitingRefuter, stage);
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __34__WiFiTriggerHandler_refuteStage___block_invoke;
@@ -1585,7 +1585,7 @@ LABEL_11:
       block[3] = &unk_27898A7A8;
       v15 = v9;
       block[4] = self;
-      v14 = v5;
+      v14 = stageCopy;
       dispatch_after(v12, MEMORY[0x277D85CD0], block);
     }
 
@@ -1760,16 +1760,16 @@ void __34__WiFiTriggerHandler_refuteStage___block_invoke_84(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveSyndrome:(id)a3
+- (void)didReceiveSyndrome:(id)syndrome
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  syndromeCopy = syndrome;
   v6 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
     *v33 = 136315138;
-    *&v33[4] = [v5 reason];
+    *&v33[4] = [syndromeCopy reason];
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_INFO, "%s", v33, 0xCu);
   }
 
@@ -1792,8 +1792,8 @@ void __34__WiFiTriggerHandler_refuteStage___block_invoke_84(uint64_t a1)
     }
   }
 
-  v13 = [v5 reasonCode];
-  switch(v13)
+  reasonCode = [syndromeCopy reasonCode];
+  switch(reasonCode)
   {
     case 6:
       goto LABEL_9;
@@ -1821,15 +1821,15 @@ LABEL_9:
       v16 = @"arp-failure";
 LABEL_15:
       v18 = [ManagedEventHandler getHandlerByName:v16];
-      v19 = -[DecisionDetails initWithReason:code:evaluations:]([DecisionDetails alloc], "initWithReason:code:evaluations:", v15, [v5 reasonCode], 0);
+      v19 = -[DecisionDetails initWithReason:code:evaluations:]([DecisionDetails alloc], "initWithReason:code:evaluations:", v15, [syndromeCopy reasonCode], 0);
       goto LABEL_17;
   }
 
   v19 = 0;
   v18 = 0;
 LABEL_17:
-  v20 = [v5 reasonCode];
-  switch(v20)
+  reasonCode2 = [syndromeCopy reasonCode];
+  switch(reasonCode2)
   {
     case 2:
       v21 = 1;
@@ -1861,21 +1861,21 @@ LABEL_23:
     }
 
     objc_storeStrong(&gQueuedHandler, self);
-    objc_storeStrong(&gQueuedDetails, a3);
-    v27 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&gQueuedDetails, syndrome);
+    date = [MEMORY[0x277CBEAA8] date];
     v28 = gQueuedTimestamp;
-    gQueuedTimestamp = v27;
+    gQueuedTimestamp = date;
 
     goto LABEL_60;
   }
 
-  v22 = [v5 reasonCode];
+  reasonCode3 = [syndromeCopy reasonCode];
   v23 = rnfLogHandle;
-  if (v22 > 3)
+  if (reasonCode3 > 3)
   {
-    if (v22 <= 5)
+    if (reasonCode3 <= 5)
     {
-      if (v22 != 4)
+      if (reasonCode3 != 4)
       {
         if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
         {
@@ -1899,7 +1899,7 @@ LABEL_58:
       goto LABEL_60;
     }
 
-    if (v22 == 6)
+    if (reasonCode3 == 6)
     {
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -1911,7 +1911,7 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    if (v22 == 7)
+    if (reasonCode3 == 7)
     {
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -1921,7 +1921,7 @@ LABEL_58:
       }
 
 LABEL_59:
-      [(WiFiTriggerHandler *)self dampeningStage:v5, *v33];
+      [(WiFiTriggerHandler *)self dampeningStage:syndromeCopy, *v33];
       goto LABEL_60;
     }
 
@@ -1929,18 +1929,18 @@ LABEL_49:
     if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
     {
       v30 = v23;
-      v31 = [v5 reasonCode];
+      reasonCode4 = [syndromeCopy reasonCode];
       *v33 = 134217984;
-      *&v33[4] = v31;
+      *&v33[4] = reasonCode4;
       _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_ERROR, "Unknown AWD code %llu for wifi trigger disconnect", v33, 0xCu);
     }
 
     goto LABEL_60;
   }
 
-  if (v22 != 1)
+  if (reasonCode3 != 1)
   {
-    if (v22 == 2)
+    if (reasonCode3 == 2)
     {
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -1952,7 +1952,7 @@ LABEL_49:
       goto LABEL_59;
     }
 
-    if (v22 == 3)
+    if (reasonCode3 == 3)
     {
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -1960,7 +1960,7 @@ LABEL_49:
         _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEFAULT, "DNS trigger calls refute stage", v33, 2u);
       }
 
-      [(WiFiTriggerHandler *)self refuteStage:v5];
+      [(WiFiTriggerHandler *)self refuteStage:syndromeCopy];
       goto LABEL_60;
     }
 

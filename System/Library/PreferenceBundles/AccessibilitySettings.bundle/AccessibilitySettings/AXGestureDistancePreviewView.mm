@@ -1,18 +1,18 @@
 @interface AXGestureDistancePreviewView
-- (AXGestureDistancePreviewView)initWithSpecifier:(id)a3;
+- (AXGestureDistancePreviewView)initWithSpecifier:(id)specifier;
 - (SEL)settingsGetter;
 - (double)circleRadius;
 - (double)maximumCircleRadius;
-- (void)drawCircleWithRadius:(double)a3;
+- (void)drawCircleWithRadius:(double)radius;
 - (void)layoutSubviews;
 - (void)setupPreview;
 @end
 
 @implementation AXGestureDistancePreviewView
 
-- (AXGestureDistancePreviewView)initWithSpecifier:(id)a3
+- (AXGestureDistancePreviewView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = AXGestureDistancePreviewView;
   v5 = [(AXGestureDistancePreviewView *)&v13 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -80,17 +80,17 @@ void __50__AXGestureDistancePreviewView_initWithSpecifier___block_invoke(uint64_
   v8 = [UIColor colorWithWhite:0.75 alpha:0.75];
   -[CAShapeLayer setFillColor:](v7, "setFillColor:", [v8 CGColor]);
 
-  v9 = [(AXGestureDistancePreviewView *)self layer];
-  [v9 addSublayer:self->_circleLayer];
+  layer = [(AXGestureDistancePreviewView *)self layer];
+  [layer addSublayer:self->_circleLayer];
 }
 
-- (void)drawCircleWithRadius:(double)a3
+- (void)drawCircleWithRadius:(double)radius
 {
   [(AXGestureDistancePreviewView *)self bounds];
   AX_CGRectGetCenter();
-  v6 = v5 - a3;
-  v8 = v7 - a3;
-  v9 = a3 + a3;
+  v6 = v5 - radius;
+  v8 = v7 - radius;
+  v9 = radius + radius;
   v13 = [CABasicAnimation animationWithKeyPath:@"path"];
   [v13 setFromValue:{-[CAShapeLayer path](self->_circleLayer, "path")}];
   v10 = [UIBezierPath bezierPathWithOvalInRect:v6, v8, v9, v9];

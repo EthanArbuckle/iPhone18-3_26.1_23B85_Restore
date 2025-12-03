@@ -3,20 +3,20 @@
 - (ICCloudContentTasteRequestListener)init;
 - (id)_init;
 - (void)_setupContentTasteServiceConnection;
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6;
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8;
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6;
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8;
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 configuration:(id)a6 timeStamp:(id)a7 withCompletionHandler:(id)a8;
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 persistentID:(int64_t)a6 timeStamp:(id)a7 configuration:(id)a8 withCompletionHandler:(id)a9;
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 timeStamp:(id)a6 withCompletionHandler:(id)a7;
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 configuration:(id)a5 withCompletionHandler:(id)a6;
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8;
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 withCompletionHandler:(id)a5;
-- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)a3 configuration:(id)a4 withCompletionHandler:(id)a5;
-- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)a3 withCompletionHandler:(id)a4;
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier configuration:(id)configuration timeStamp:(id)stamp withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier persistentID:(int64_t)d timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier timeStamp:(id)stamp withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d withCompletionHandler:(id)handler;
+- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)cache configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)cache withCompletionHandler:(id)handler;
 @end
 
 @implementation ICCloudContentTasteRequestListener
@@ -55,79 +55,79 @@ void __73__ICCloudContentTasteRequestListener__setupContentTasteServiceConnectio
   }
 }
 
-- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)cache withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  cacheCopy = cache;
+  handlerCopy = handler;
   v7 = [ICConnectionConfiguration alloc];
   v8 = +[ICUserIdentity activeAccount];
   v9 = +[ICUserIdentityStore defaultIdentityStore];
   v10 = [(ICConnectionConfiguration *)v7 initWithUserIdentity:v8 userIdentityStore:v9];
 
-  [(ICCloudContentTasteRequestListener *)self updateContentTasteForMediaItemsAndInvalidateLocalCache:v4 configuration:v10 withCompletionHandler:v6];
+  [(ICCloudContentTasteRequestListener *)self updateContentTasteForMediaItemsAndInvalidateLocalCache:cacheCopy configuration:v10 withCompletionHandler:handlerCopy];
 }
 
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = [ICConnectionConfiguration alloc];
   v10 = +[ICUserIdentity activeAccount];
   v11 = +[ICUserIdentityStore defaultIdentityStore];
   v12 = [(ICConnectionConfiguration *)v9 initWithUserIdentity:v10 userIdentityStore:v11];
 
-  [(ICCloudContentTasteRequestListener *)self setContentTaste:a3 forArtistStoreID:a4 configuration:v12 withCompletionHandler:v8];
+  [(ICCloudContentTasteRequestListener *)self setContentTaste:taste forArtistStoreID:d configuration:v12 withCompletionHandler:handlerCopy];
 }
 
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = [ICConnectionConfiguration alloc];
   v10 = +[ICUserIdentity activeAccount];
   v11 = +[ICUserIdentityStore defaultIdentityStore];
   v12 = [(ICConnectionConfiguration *)v9 initWithUserIdentity:v10 userIdentityStore:v11];
 
-  [(ICCloudContentTasteRequestListener *)self setContentTaste:a3 forAlbumStoreID:a4 configuration:v12 withCompletionHandler:v8];
+  [(ICCloudContentTasteRequestListener *)self setContentTaste:taste forAlbumStoreID:d configuration:v12 withCompletionHandler:handlerCopy];
 }
 
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 withCompletionHandler:(id)a5
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
+  handlerCopy = handler;
+  dCopy = d;
   v10 = [ICConnectionConfiguration alloc];
   v11 = +[ICUserIdentity activeAccount];
   v12 = +[ICUserIdentityStore defaultIdentityStore];
   v13 = [(ICConnectionConfiguration *)v10 initWithUserIdentity:v11 userIdentityStore:v12];
 
-  [(ICCloudContentTasteRequestListener *)self setContentTaste:a3 forPlaylistGlobalID:v9 configuration:v13 withCompletionHandler:v8];
+  [(ICCloudContentTasteRequestListener *)self setContentTaste:taste forPlaylistGlobalID:dCopy configuration:v13 withCompletionHandler:handlerCopy];
 }
 
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 timeStamp:(id)a6 withCompletionHandler:(id)a7
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier timeStamp:(id)stamp withCompletionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
+  handlerCopy = handler;
+  stampCopy = stamp;
   v14 = [ICConnectionConfiguration alloc];
   v15 = +[ICUserIdentity activeAccount];
   v16 = +[ICUserIdentityStore defaultIdentityStore];
   v17 = [(ICConnectionConfiguration *)v14 initWithUserIdentity:v15 userIdentityStore:v16];
 
-  [(ICCloudContentTasteRequestListener *)self setContentTaste:a3 forMediaItem:a4 storeIdentifier:a5 configuration:v17 timeStamp:v13 withCompletionHandler:v12];
+  [(ICCloudContentTasteRequestListener *)self setContentTaste:taste forMediaItem:item storeIdentifier:identifier configuration:v17 timeStamp:stampCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)a3 configuration:(id)a4 withCompletionHandler:(id)a5
+- (void)updateContentTasteForMediaItemsAndInvalidateLocalCache:(BOOL)cache configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __129__ICCloudContentTasteRequestListener_updateContentTasteForMediaItemsAndInvalidateLocalCache_configuration_withCompletionHandler___block_invoke;
   v13[3] = &unk_1E7BF9B18;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
+  v14 = configurationCopy;
+  v15 = handlerCopy;
+  cacheCopy = cache;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
+  v11 = configurationCopy;
+  v12 = handlerCopy;
   dispatch_async(accessQueue, v13);
 }
 
@@ -188,26 +188,26 @@ void __129__ICCloudContentTasteRequestListener_updateContentTasteForMediaItemsAn
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __130__ICCloudContentTasteRequestListener_setContentTaste_forArtistStoreID_persistentID_timeStamp_configuration_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF7798;
-  v25 = a4;
-  v26 = a3;
-  v27 = a5;
+  dCopy = d;
+  tasteCopy = taste;
+  iDCopy = iD;
   block[4] = self;
-  v22 = v14;
-  v23 = v15;
-  v24 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v16;
+  v22 = stampCopy;
+  v23 = configurationCopy;
+  v24 = handlerCopy;
+  v18 = configurationCopy;
+  v19 = stampCopy;
+  v20 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -288,22 +288,22 @@ void __130__ICCloudContentTasteRequestListener_setContentTaste_forArtistStoreID_
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __107__ICCloudContentTasteRequestListener_setContentTaste_forArtistStoreID_configuration_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF7748;
-  v17 = v11;
-  v18 = a4;
-  v19 = a3;
+  v17 = handlerCopy;
+  dCopy = d;
+  tasteCopy = taste;
   block[4] = self;
-  v16 = v10;
-  v13 = v10;
-  v14 = v11;
+  v16 = configurationCopy;
+  v13 = configurationCopy;
+  v14 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -374,26 +374,26 @@ void __107__ICCloudContentTasteRequestListener_setContentTaste_forArtistStoreID_
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __129__ICCloudContentTasteRequestListener_setContentTaste_forAlbumStoreID_persistentID_timeStamp_configuration_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF7798;
-  v25 = a4;
-  v26 = a3;
-  v27 = a5;
+  dCopy = d;
+  tasteCopy = taste;
+  iDCopy = iD;
   block[4] = self;
-  v22 = v14;
-  v23 = v15;
-  v24 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v16;
+  v22 = stampCopy;
+  v23 = configurationCopy;
+  v24 = handlerCopy;
+  v18 = configurationCopy;
+  v19 = stampCopy;
+  v20 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -474,22 +474,22 @@ void __129__ICCloudContentTasteRequestListener_setContentTaste_forAlbumStoreID_p
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__ICCloudContentTasteRequestListener_setContentTaste_forAlbumStoreID_configuration_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF7748;
-  v17 = v11;
-  v18 = a4;
-  v19 = a3;
+  v17 = handlerCopy;
+  dCopy = d;
+  tasteCopy = taste;
   block[4] = self;
-  v16 = v10;
-  v13 = v10;
-  v14 = v11;
+  v16 = configurationCopy;
+  v13 = configurationCopy;
+  v14 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -560,28 +560,28 @@ void __106__ICCloudContentTasteRequestListener_setContentTaste_forAlbumStoreID_c
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __133__ICCloudContentTasteRequestListener_setContentTaste_forPlaylistGlobalID_persistentID_timeStamp_configuration_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF7720;
   block[4] = self;
-  v24 = v14;
-  v27 = v17;
-  v28 = a3;
-  v29 = a5;
-  v25 = v15;
-  v26 = v16;
-  v19 = v16;
-  v20 = v15;
-  v21 = v17;
-  v22 = v14;
+  v24 = dCopy;
+  v27 = handlerCopy;
+  tasteCopy = taste;
+  iDCopy = iD;
+  v25 = stampCopy;
+  v26 = configurationCopy;
+  v19 = configurationCopy;
+  v20 = stampCopy;
+  v21 = handlerCopy;
+  v22 = dCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -659,24 +659,24 @@ void __133__ICCloudContentTasteRequestListener_setContentTaste_forPlaylistGlobal
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 configuration:(id)a5 withCompletionHandler:(id)a6
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __110__ICCloudContentTasteRequestListener_setContentTaste_forPlaylistGlobalID_configuration_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF76D0;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a3;
-  v19 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v18 = dCopy;
+  v20 = handlerCopy;
+  tasteCopy = taste;
+  v19 = configurationCopy;
+  v14 = configurationCopy;
+  v15 = handlerCopy;
+  v16 = dCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -746,27 +746,27 @@ void __110__ICCloudContentTasteRequestListener_setContentTaste_forPlaylistGlobal
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 persistentID:(int64_t)a6 timeStamp:(id)a7 configuration:(id)a8 withCompletionHandler:(id)a9
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier persistentID:(int64_t)d timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __142__ICCloudContentTasteRequestListener_setContentTaste_forMediaItem_storeIdentifier_persistentID_timeStamp_configuration_withCompletionHandler___block_invoke;
   v22[3] = &unk_1E7BF76A8;
-  v26 = a5;
-  v27 = a3;
-  v28 = a4;
-  v29 = a6;
+  identifierCopy = identifier;
+  tasteCopy = taste;
+  itemCopy = item;
+  dCopy = d;
   v22[4] = self;
-  v23 = v15;
-  v24 = v16;
-  v25 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v17;
+  v23 = stampCopy;
+  v24 = configurationCopy;
+  v25 = handlerCopy;
+  v19 = configurationCopy;
+  v20 = stampCopy;
+  v21 = handlerCopy;
   dispatch_async(accessQueue, v22);
 }
 
@@ -840,25 +840,25 @@ void __142__ICCloudContentTasteRequestListener_setContentTaste_forMediaItem_stor
   }
 }
 
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 configuration:(id)a6 timeStamp:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier configuration:(id)configuration timeStamp:(id)stamp withCompletionHandler:(id)handler
 {
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  configurationCopy = configuration;
+  stampCopy = stamp;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __129__ICCloudContentTasteRequestListener_setContentTaste_forMediaItem_storeIdentifier_configuration_timeStamp_withCompletionHandler___block_invoke;
   v20[3] = &unk_1E7BF7680;
-  v24 = a5;
-  v25 = a3;
+  identifierCopy = identifier;
+  tasteCopy = taste;
   v20[4] = self;
-  v21 = v13;
-  v22 = v14;
-  v23 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v15;
+  v21 = configurationCopy;
+  v22 = stampCopy;
+  v23 = handlerCopy;
+  v17 = stampCopy;
+  v18 = configurationCopy;
+  v19 = handlerCopy;
   dispatch_async(accessQueue, v20);
 }
 

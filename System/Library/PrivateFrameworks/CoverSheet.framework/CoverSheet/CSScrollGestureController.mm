@@ -1,16 +1,16 @@
 @interface CSScrollGestureController
-- (BOOL)handleEvent:(id)a3;
-- (CSScrollGestureController)initWithScrollableView:(id)a3;
+- (BOOL)handleEvent:(id)event;
+- (CSScrollGestureController)initWithScrollableView:(id)view;
 - (CSScrollGestureControllerDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_horizontalScrollFailureGestureRecognizerChanged:(id)a3;
-- (void)_updateForScrollingStrategy:(int64_t)a3 fromScrollingStrategy:(int64_t)a4;
+- (void)_horizontalScrollFailureGestureRecognizerChanged:(id)changed;
+- (void)_updateForScrollingStrategy:(int64_t)strategy fromScrollingStrategy:(int64_t)scrollingStrategy;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setScrollingStrategy:(int64_t)a3;
+- (void)setScrollingStrategy:(int64_t)strategy;
 @end
 
 @implementation CSScrollGestureController
@@ -25,27 +25,27 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CSScrollGestureController.m" lineNumber:62 description:@"ScrollGestureController must be invalidated before it hits dealloc."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CSScrollGestureController.m" lineNumber:62 description:@"ScrollGestureController must be invalidated before it hits dealloc."];
 }
 
-- (CSScrollGestureController)initWithScrollableView:(id)a3
+- (CSScrollGestureController)initWithScrollableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = CSScrollGestureController;
   v6 = [(CSScrollGestureController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scrollableView, a3);
-    v8 = [(CSScrollableView *)v7->_scrollableView scrollView];
+    objc_storeStrong(&v6->_scrollableView, view);
+    scrollView = [(CSScrollableView *)v7->_scrollableView scrollView];
     scrollView = v7->_scrollView;
-    v7->_scrollView = v8;
+    v7->_scrollView = scrollView;
 
-    v10 = [(UIScrollView *)v7->_scrollView panGestureRecognizer];
+    panGestureRecognizer = [(UIScrollView *)v7->_scrollView panGestureRecognizer];
     scrollViewGestureRecognizer = v7->_scrollViewGestureRecognizer;
-    v7->_scrollViewGestureRecognizer = v10;
+    v7->_scrollViewGestureRecognizer = panGestureRecognizer;
 
     [(UIGestureRecognizer *)v7->_scrollViewGestureRecognizer sbf_setPencilTouchesAllowed:1];
     v12 = [[CSHorizontalScrollFailureRecognizer alloc] initWithTarget:v7 action:sel__horizontalScrollFailureGestureRecognizerChanged_];
@@ -61,10 +61,10 @@
   return v7;
 }
 
-- (void)setScrollingStrategy:(int64_t)a3
+- (void)setScrollingStrategy:(int64_t)strategy
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_scrollingStrategy != a3)
+  if (self->_scrollingStrategy != strategy)
   {
     v5 = SBLogDashBoardScrollGestures();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -72,7 +72,7 @@
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
       v8 = NSStringFromCoverSheetScrollingStrategy(self->_scrollingStrategy);
-      v9 = NSStringFromCoverSheetScrollingStrategy(a3);
+      v9 = NSStringFromCoverSheetScrollingStrategy(strategy);
       v10 = 138543874;
       v11 = v7;
       v12 = 2112;
@@ -82,19 +82,19 @@
       _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_INFO, "%{public}@: scrolling strategy changed from %@ to %@", &v10, 0x20u);
     }
 
-    [(CSScrollGestureController *)self _updateForScrollingStrategy:a3 fromScrollingStrategy:self->_scrollingStrategy];
-    self->_scrollingStrategy = a3;
+    [(CSScrollGestureController *)self _updateForScrollingStrategy:strategy fromScrollingStrategy:self->_scrollingStrategy];
+    self->_scrollingStrategy = strategy;
   }
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 10 || v5 == 6)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type == 10 || type == 6)
   {
     [(CSScrollGestureController *)self setScrollingStrategy:1];
-    v7 = [v4 isConsumable] ^ 1;
+    v7 = [eventCopy isConsumable] ^ 1;
   }
 
   else
@@ -105,19 +105,19 @@
   return v7;
 }
 
-- (void)_horizontalScrollFailureGestureRecognizerChanged:(id)a3
+- (void)_horizontalScrollFailureGestureRecognizerChanged:(id)changed
 {
-  v8 = a3;
-  v4 = [(CSScrollGestureController *)self horizontalFailureGestureRecognizer];
+  changedCopy = changed;
+  horizontalFailureGestureRecognizer = [(CSScrollGestureController *)self horizontalFailureGestureRecognizer];
 
-  v5 = v8;
-  if (v4 == v8)
+  v5 = changedCopy;
+  if (horizontalFailureGestureRecognizer == changedCopy)
   {
-    v6 = [v8 state] == 1;
-    v5 = v8;
+    v6 = [changedCopy state] == 1;
+    v5 = changedCopy;
     if (v6)
     {
-      if ([(UIGestureRecognizer *)self->_scrollViewGestureRecognizer state]== UIGestureRecognizerStateBegan || (v6 = [(UIGestureRecognizer *)self->_scrollViewGestureRecognizer state]== UIGestureRecognizerStateChanged, v5 = v8, v6))
+      if ([(UIGestureRecognizer *)self->_scrollViewGestureRecognizer state]== UIGestureRecognizerStateBegan || (v6 = [(UIGestureRecognizer *)self->_scrollViewGestureRecognizer state]== UIGestureRecognizerStateChanged, v5 = changedCopy, v6))
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         if (objc_opt_respondsToSelector())
@@ -131,7 +131,7 @@
           [WeakRetained controllerDidCancelHorizontalScrolling:self];
         }
 
-        v5 = v8;
+        v5 = changedCopy;
       }
     }
   }
@@ -139,10 +139,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(CSScrollGestureController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSScrollGestureController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -154,30 +154,30 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSScrollGestureController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSScrollGestureController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(CSScrollGestureController *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_scrollViewGestureRecognizer withName:@"scrollGesture"];
-  v6 = [v4 appendObject:self->_horizontalFailureGestureRecognizer withName:@"horizontalCancelGesture"];
+  succinctDescriptionBuilder = [(CSScrollGestureController *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_scrollViewGestureRecognizer withName:@"scrollGesture"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_horizontalFailureGestureRecognizer withName:@"horizontalCancelGesture"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)_updateForScrollingStrategy:(int64_t)a3 fromScrollingStrategy:(int64_t)a4
+- (void)_updateForScrollingStrategy:(int64_t)strategy fromScrollingStrategy:(int64_t)scrollingStrategy
 {
   v7 = [(CSScrollGestureController *)self _shouldFailHorizontalSwipesForScrollingStrategy:?];
-  v8 = [(CSScrollGestureController *)self _shouldAllowScrollForScrollingStrategy:a4];
-  v9 = [(CSScrollGestureController *)self _shouldAllowScrollForScrollingStrategy:a3];
-  v10 = [(CSScrollGestureController *)self horizontalFailureGestureRecognizer];
-  [v10 setEnabled:v7];
+  v8 = [(CSScrollGestureController *)self _shouldAllowScrollForScrollingStrategy:scrollingStrategy];
+  v9 = [(CSScrollGestureController *)self _shouldAllowScrollForScrollingStrategy:strategy];
+  horizontalFailureGestureRecognizer = [(CSScrollGestureController *)self horizontalFailureGestureRecognizer];
+  [horizontalFailureGestureRecognizer setEnabled:v7];
 
   if (v8 != v9)
   {

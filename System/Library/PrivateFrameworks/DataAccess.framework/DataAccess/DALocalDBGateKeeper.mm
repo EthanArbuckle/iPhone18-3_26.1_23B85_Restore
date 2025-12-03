@@ -1,20 +1,20 @@
 @interface DALocalDBGateKeeper
 + (id)sharedGateKeeper;
-- (BOOL)_canWakenWaiter:(id)a3;
+- (BOOL)_canWakenWaiter:(id)waiter;
 - (DALocalDBGateKeeper)init;
 - (id)stateString;
-- (void)_abortWaiterForWrappers:(id)a3;
-- (void)_notifyWaitersForDataclasses:(id)a3;
-- (void)_registerWaiter:(id)a3 forDataclassLocks:(int64_t)a4 preempt:(BOOL)a5 completionHandler:(id)a6;
+- (void)_abortWaiterForWrappers:(id)wrappers;
+- (void)_notifyWaitersForDataclasses:(id)dataclasses;
+- (void)_registerWaiter:(id)waiter forDataclassLocks:(int64_t)locks preempt:(BOOL)preempt completionHandler:(id)handler;
 - (void)_sendAllClearNotifications;
-- (void)_setUnitTestHackRunLoopMode:(id)a3;
-- (void)claimedOwnershipOfDataclasses:(int64_t)a3;
+- (void)_setUnitTestHackRunLoopMode:(id)mode;
+- (void)claimedOwnershipOfDataclasses:(int64_t)dataclasses;
 - (void)dealloc;
-- (void)relinquishLocksForWaiter:(id)a3 dataclasses:(int64_t)a4 moreComing:(BOOL)a5;
-- (void)setContactsLockHolder:(id)a3;
-- (void)setEventsLockHolder:(id)a3;
-- (void)setNotesLockHolder:(id)a3;
-- (void)unregisterWaiterForDataclassLocks:(id)a3;
+- (void)relinquishLocksForWaiter:(id)waiter dataclasses:(int64_t)dataclasses moreComing:(BOOL)coming;
+- (void)setContactsLockHolder:(id)holder;
+- (void)setEventsLockHolder:(id)holder;
+- (void)setNotesLockHolder:(id)holder;
+- (void)unregisterWaiterForDataclassLocks:(id)locks;
 @end
 
 @implementation DALocalDBGateKeeper
@@ -78,16 +78,16 @@ uint64_t __39__DALocalDBGateKeeper_sharedGateKeeper__block_invoke()
   [v1 handleFailureInMethod:32 object:v2 file:? lineNumber:? description:?];
 }
 
-- (void)setContactsLockHolder:(id)a3
+- (void)setContactsLockHolder:(id)holder
 {
-  v5 = a3;
+  holderCopy = holder;
   contactsLockHolder = self->_contactsLockHolder;
   p_contactsLockHolder = &self->_contactsLockHolder;
   v6 = contactsLockHolder;
-  if (contactsLockHolder != v5)
+  if (contactsLockHolder != holderCopy)
   {
-    v11 = v5;
-    if (v5)
+    v11 = holderCopy;
+    if (holderCopy)
     {
       v9 = +[DAPriorityManager sharedManager];
       [v9 requestPriority:1 forClient:v11 dataclasses:2];
@@ -101,21 +101,21 @@ uint64_t __39__DALocalDBGateKeeper_sharedGateKeeper__block_invoke()
       [v10 requestPriority:0 forClient:*p_contactsLockHolder dataclasses:2];
     }
 
-    objc_storeStrong(p_contactsLockHolder, a3);
-    v5 = v11;
+    objc_storeStrong(p_contactsLockHolder, holder);
+    holderCopy = v11;
   }
 }
 
-- (void)setEventsLockHolder:(id)a3
+- (void)setEventsLockHolder:(id)holder
 {
-  v5 = a3;
+  holderCopy = holder;
   eventsLockHolder = self->_eventsLockHolder;
   p_eventsLockHolder = &self->_eventsLockHolder;
   v6 = eventsLockHolder;
-  if (eventsLockHolder != v5)
+  if (eventsLockHolder != holderCopy)
   {
-    v11 = v5;
-    if (v5)
+    v11 = holderCopy;
+    if (holderCopy)
     {
       v9 = +[DAPriorityManager sharedManager];
       [v9 requestPriority:1 forClient:v11 dataclasses:20];
@@ -129,21 +129,21 @@ uint64_t __39__DALocalDBGateKeeper_sharedGateKeeper__block_invoke()
       [v10 requestPriority:0 forClient:*p_eventsLockHolder dataclasses:20];
     }
 
-    objc_storeStrong(p_eventsLockHolder, a3);
-    v5 = v11;
+    objc_storeStrong(p_eventsLockHolder, holder);
+    holderCopy = v11;
   }
 }
 
-- (void)setNotesLockHolder:(id)a3
+- (void)setNotesLockHolder:(id)holder
 {
-  v5 = a3;
+  holderCopy = holder;
   notesLockHolder = self->_notesLockHolder;
   p_notesLockHolder = &self->_notesLockHolder;
   v6 = notesLockHolder;
-  if (notesLockHolder != v5)
+  if (notesLockHolder != holderCopy)
   {
-    v11 = v5;
-    if (v5)
+    v11 = holderCopy;
+    if (holderCopy)
     {
       v9 = +[DAPriorityManager sharedManager];
       [v9 requestPriority:1 forClient:v11 dataclasses:32];
@@ -157,37 +157,37 @@ uint64_t __39__DALocalDBGateKeeper_sharedGateKeeper__block_invoke()
       [v10 requestPriority:0 forClient:*p_notesLockHolder dataclasses:32];
     }
 
-    objc_storeStrong(p_notesLockHolder, a3);
-    v5 = v11;
+    objc_storeStrong(p_notesLockHolder, holder);
+    holderCopy = v11;
   }
 }
 
-- (BOOL)_canWakenWaiter:(id)a3
+- (BOOL)_canWakenWaiter:(id)waiter
 {
-  v4 = a3;
-  v5 = [v4 dataclasses];
-  v6 = [v4 waiterNum];
+  waiterCopy = waiter;
+  dataclasses = [waiterCopy dataclasses];
+  waiterNum = [waiterCopy waiterNum];
   v7 = 1;
-  if ((v5 & 2) != 0)
+  if ((dataclasses & 2) != 0)
   {
-    if (self->_contactsLockHolder || (-[NSMutableArray objectAtIndexedSubscript:](self->_contactsWaiters, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 waiterNum], v8, v9 != v6))
+    if (self->_contactsLockHolder || (-[NSMutableArray objectAtIndexedSubscript:](self->_contactsWaiters, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 waiterNum], v8, v9 != waiterNum))
     {
       v7 = 0;
     }
   }
 
-  v10 = v5 & 0x14;
-  if ((v5 & 0x14) != 0 && (self->_eventsLockHolder || (-[NSMutableArray objectAtIndexedSubscript:](self->_eventsWaiters, "objectAtIndexedSubscript:", 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 waiterNum], v11, v12 != v6)))
+  v10 = dataclasses & 0x14;
+  if ((dataclasses & 0x14) != 0 && (self->_eventsLockHolder || (-[NSMutableArray objectAtIndexedSubscript:](self->_eventsWaiters, "objectAtIndexedSubscript:", 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 waiterNum], v11, v12 != waiterNum)))
   {
     v7 = 0;
     v13 = 0;
-    if ((v5 & 0x20) == 0)
+    if ((dataclasses & 0x20) == 0)
     {
       goto LABEL_25;
     }
   }
 
-  else if ((v5 & 0x20) == 0)
+  else if ((dataclasses & 0x20) == 0)
   {
     if (!v7)
     {
@@ -206,32 +206,32 @@ LABEL_15:
   }
 
   v14 = [(NSMutableArray *)self->_notesWaiters objectAtIndexedSubscript:0];
-  v15 = [v14 waiterNum];
+  waiterNum2 = [v14 waiterNum];
 
   v13 = 0;
-  if (v15 == v6 && v7)
+  if (waiterNum2 == waiterNum && v7)
   {
 LABEL_18:
-    if ((v5 & 2) != 0)
+    if ((dataclasses & 2) != 0)
     {
-      v16 = [v4 waiter];
-      [(DALocalDBGateKeeper *)self setContactsLockHolder:v16];
+      waiter = [waiterCopy waiter];
+      [(DALocalDBGateKeeper *)self setContactsLockHolder:waiter];
 
       [(NSMutableArray *)self->_contactsWaiters removeObjectAtIndex:0];
     }
 
     if (v10)
     {
-      v17 = [v4 waiter];
-      [(DALocalDBGateKeeper *)self setEventsLockHolder:v17];
+      waiter2 = [waiterCopy waiter];
+      [(DALocalDBGateKeeper *)self setEventsLockHolder:waiter2];
 
       [(NSMutableArray *)self->_eventsWaiters removeObjectAtIndex:0];
     }
 
     if (!v13)
     {
-      v18 = [v4 waiter];
-      [(DALocalDBGateKeeper *)self setNotesLockHolder:v18];
+      waiter3 = [waiterCopy waiter];
+      [(DALocalDBGateKeeper *)self setNotesLockHolder:waiter3];
 
       [(NSMutableArray *)self->_notesWaiters removeObjectAtIndex:0];
     }
@@ -244,16 +244,16 @@ LABEL_25:
   return v13;
 }
 
-- (void)_abortWaiterForWrappers:(id)a3
+- (void)_abortWaiterForWrappers:(id)wrappers
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wrappersCopy = wrappers;
   v5 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = v4;
+  v6 = wrappersCopy;
   v7 = [v6 countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v7)
   {
@@ -272,14 +272,14 @@ LABEL_25:
         v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v11, "waiterNum")}];
         [v5 setObject:v11 forKeyedSubscript:v12];
 
-        v13 = [v11 waiter];
-        v14 = [v13 waiterID];
+        waiter = [v11 waiter];
+        waiterID = [waiter waiterID];
 
-        if (v14)
+        if (waiterID)
         {
-          [(NSMutableSet *)self->_waiterIDsExpectingContactsLock removeObject:v14];
-          [(NSMutableSet *)self->_waiterIDsExpectingEventsLock removeObject:v14];
-          [(NSMutableSet *)self->_waiterIDsExpectingNotesLock removeObject:v14];
+          [(NSMutableSet *)self->_waiterIDsExpectingContactsLock removeObject:waiterID];
+          [(NSMutableSet *)self->_waiterIDsExpectingEventsLock removeObject:waiterID];
+          [(NSMutableSet *)self->_waiterIDsExpectingNotesLock removeObject:waiterID];
         }
       }
 
@@ -296,8 +296,8 @@ LABEL_25:
   v29 = 0u;
   v30 = 0u;
   v27 = v5;
-  v15 = [v5 allValues];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v41 count:16];
+  allValues = [v5 allValues];
+  v16 = [allValues countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v16)
   {
     v17 = v16;
@@ -309,27 +309,27 @@ LABEL_25:
       {
         if (*v30 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allValues);
         }
 
         v21 = *(*(&v29 + 1) + 8 * j);
         v22 = DALoggingwithCategory();
         if (os_log_type_enabled(v22, v19))
         {
-          v23 = [v21 dataclasses];
-          v24 = [v21 waiter];
+          dataclasses = [v21 dataclasses];
+          waiter2 = [v21 waiter];
           *buf = 134218242;
-          v38 = v23;
+          v38 = dataclasses;
           v39 = 2112;
-          v40 = v24;
+          v40 = waiter2;
           _os_log_impl(&dword_24844D000, v22, v19, "Aborting locks for dataclasses %lx to %@", buf, 0x16u);
         }
 
-        v25 = [v21 completionHandler];
-        v25[2](v25, [v21 dataclasses], 0);
+        completionHandler = [v21 completionHandler];
+        completionHandler[2](completionHandler, [v21 dataclasses], 0);
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v29 objects:v41 count:16];
+      v17 = [allValues countByEnumeratingWithState:&v29 objects:v41 count:16];
     }
 
     while (v17);
@@ -338,53 +338,53 @@ LABEL_25:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyWaitersForDataclasses:(id)a3
+- (void)_notifyWaitersForDataclasses:(id)dataclasses
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:3];
-  v6 = self;
-  objc_sync_enter(v6);
-  v23 = v4;
-  LODWORD(self) = [v4 intValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v23 = dataclassesCopy;
+  LODWORD(self) = [dataclassesCopy intValue];
   v7 = DALoggingwithCategory();
-  v8 = self;
+  selfCopy2 = self;
   v9 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v7, v9))
   {
     *buf = 134217984;
-    v29 = v8;
+    v29 = selfCopy2;
     _os_log_impl(&dword_24844D000, v7, v9, "Notifying waiters for dataclasses %ldd", buf, 0xCu);
   }
 
-  if ((v8 & 2) != 0 && !v6->_contactsLockHolder && [(NSMutableArray *)v6->_contactsWaiters count])
+  if ((selfCopy2 & 2) != 0 && !selfCopy->_contactsLockHolder && [(NSMutableArray *)selfCopy->_contactsWaiters count])
   {
-    v10 = [(NSMutableArray *)v6->_contactsWaiters objectAtIndexedSubscript:0];
-    if ([(DALocalDBGateKeeper *)v6 _canWakenWaiter:v10])
+    v10 = [(NSMutableArray *)selfCopy->_contactsWaiters objectAtIndexedSubscript:0];
+    if ([(DALocalDBGateKeeper *)selfCopy _canWakenWaiter:v10])
     {
       [v5 addObject:v10];
     }
   }
 
-  if ((v8 & 0x14) != 0 && !v6->_eventsLockHolder && [(NSMutableArray *)v6->_eventsWaiters count])
+  if ((selfCopy2 & 0x14) != 0 && !selfCopy->_eventsLockHolder && [(NSMutableArray *)selfCopy->_eventsWaiters count])
   {
-    v11 = [(NSMutableArray *)v6->_eventsWaiters objectAtIndexedSubscript:0];
-    if ([(DALocalDBGateKeeper *)v6 _canWakenWaiter:v11])
+    v11 = [(NSMutableArray *)selfCopy->_eventsWaiters objectAtIndexedSubscript:0];
+    if ([(DALocalDBGateKeeper *)selfCopy _canWakenWaiter:v11])
     {
       [v5 addObject:v11];
     }
   }
 
-  if ((v8 & 0x20) != 0 && !v6->_notesLockHolder && [(NSMutableArray *)v6->_notesWaiters count])
+  if ((selfCopy2 & 0x20) != 0 && !selfCopy->_notesLockHolder && [(NSMutableArray *)selfCopy->_notesWaiters count])
   {
-    v12 = [(NSMutableArray *)v6->_notesWaiters objectAtIndexedSubscript:0];
-    if ([(DALocalDBGateKeeper *)v6 _canWakenWaiter:v12])
+    v12 = [(NSMutableArray *)selfCopy->_notesWaiters objectAtIndexedSubscript:0];
+    if ([(DALocalDBGateKeeper *)selfCopy _canWakenWaiter:v12])
     {
       [v5 addObject:v12];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v26 = 0u;
   v27 = 0u;
@@ -408,17 +408,17 @@ LABEL_25:
         v18 = DALoggingwithCategory();
         if (os_log_type_enabled(v18, v9))
         {
-          v19 = [v17 dataclasses];
-          v20 = [v17 waiter];
+          dataclasses = [v17 dataclasses];
+          waiter = [v17 waiter];
           *buf = 134218242;
-          v29 = v19;
+          v29 = dataclasses;
           v30 = 2112;
-          v31 = v20;
+          v31 = waiter;
           _os_log_impl(&dword_24844D000, v18, v9, "Granting locks for dataclasses %lx to %@", buf, 0x16u);
         }
 
-        v21 = [v17 completionHandler];
-        v21[2](v21, [v17 dataclasses], 1);
+        completionHandler = [v17 completionHandler];
+        completionHandler[2](completionHandler, [v17 dataclasses], 1);
       }
 
       v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -430,32 +430,32 @@ LABEL_25:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerWaiter:(id)a3 forDataclassLocks:(int64_t)a4 preempt:(BOOL)a5 completionHandler:(id)a6
+- (void)_registerWaiter:(id)waiter forDataclassLocks:(int64_t)locks preempt:(BOOL)preempt completionHandler:(id)handler
 {
-  v7 = a5;
+  preemptCopy = preempt;
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  waiterCopy = waiter;
+  handlerCopy = handler;
   v12 = DALoggingwithCategory();
   v13 = MEMORY[0x277D03988];
   v14 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v12, v14))
   {
     *buf = 138412546;
-    v29 = v10;
+    v29 = waiterCopy;
     v30 = 2048;
-    v31 = a4;
+    locksCopy = locks;
     _os_log_impl(&dword_24844D000, v12, v14, "registerWaiter %@ forDataclassLocks %lx", buf, 0x16u);
   }
 
-  v15 = self;
-  objc_sync_enter(v15);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = objc_opt_new();
-  [v16 setCompletionHandler:v11];
-  [v16 setWaiter:v10];
-  [v16 setDataclasses:a4];
-  v17 = [MEMORY[0x277D03910] isInHoldingPattern];
-  if (v17)
+  [v16 setCompletionHandler:handlerCopy];
+  [v16 setWaiter:waiterCopy];
+  [v16 setDataclasses:locks];
+  isInHoldingPattern = [MEMORY[0x277D03910] isInHoldingPattern];
+  if (isInHoldingPattern)
   {
     v18 = DALoggingwithCategory();
     v19 = *(v13 + 3);
@@ -468,35 +468,35 @@ LABEL_25:
 
     v27 = v16;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-    [(DALocalDBGateKeeper *)v15 _abortWaiterForWrappers:v20];
+    [(DALocalDBGateKeeper *)selfCopy _abortWaiterForWrappers:v20];
 
     goto LABEL_7;
   }
 
-  if ((a4 & 2) == 0)
+  if ((locks & 2) == 0)
   {
-    if ((a4 & 0x14) == 0)
+    if ((locks & 0x14) == 0)
     {
-      if ((a4 & 0x20) == 0)
+      if ((locks & 0x20) == 0)
       {
 LABEL_7:
         v21 = 0;
         goto LABEL_8;
       }
 
-      v21 = v15->_notesLockHolder == 0;
-      if (!v7)
+      v21 = selfCopy->_notesLockHolder == 0;
+      if (!preemptCopy)
       {
         goto LABEL_30;
       }
 
 LABEL_21:
-      [(NSMutableArray *)v15->_notesWaiters insertObject:v16 atIndex:0];
+      [(NSMutableArray *)selfCopy->_notesWaiters insertObject:v16 atIndex:0];
       goto LABEL_8;
     }
 
-    v21 = v15->_eventsLockHolder == 0;
-    if (!v7)
+    v21 = selfCopy->_eventsLockHolder == 0;
+    if (!preemptCopy)
     {
       goto LABEL_27;
     }
@@ -504,55 +504,55 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  contactsWaiters = v15->_contactsWaiters;
-  v21 = v15->_contactsLockHolder == 0;
-  if (v7)
+  contactsWaiters = selfCopy->_contactsWaiters;
+  v21 = selfCopy->_contactsLockHolder == 0;
+  if (preemptCopy)
   {
     [(NSMutableArray *)contactsWaiters insertObject:v16 atIndex:0];
-    if ((a4 & 0x14) == 0)
+    if ((locks & 0x14) == 0)
     {
 LABEL_19:
-      if ((a4 & 0x20) == 0)
+      if ((locks & 0x20) == 0)
       {
         goto LABEL_8;
       }
 
-      v21 = v15->_notesLockHolder == 0;
+      v21 = selfCopy->_notesLockHolder == 0;
       goto LABEL_21;
     }
 
-    v21 = v15->_eventsLockHolder == 0;
+    v21 = selfCopy->_eventsLockHolder == 0;
 LABEL_18:
-    [(NSMutableArray *)v15->_eventsWaiters insertObject:v16 atIndex:0];
+    [(NSMutableArray *)selfCopy->_eventsWaiters insertObject:v16 atIndex:0];
     goto LABEL_19;
   }
 
   [(NSMutableArray *)contactsWaiters addObject:v16];
-  if ((a4 & 0x14) != 0)
+  if ((locks & 0x14) != 0)
   {
-    v21 = v15->_eventsLockHolder == 0;
+    v21 = selfCopy->_eventsLockHolder == 0;
 LABEL_27:
-    [(NSMutableArray *)v15->_eventsWaiters addObject:v16];
+    [(NSMutableArray *)selfCopy->_eventsWaiters addObject:v16];
   }
 
-  if ((a4 & 0x20) == 0)
+  if ((locks & 0x20) == 0)
   {
     goto LABEL_8;
   }
 
-  v21 = v15->_notesLockHolder == 0;
+  v21 = selfCopy->_notesLockHolder == 0;
 LABEL_30:
-  [(NSMutableArray *)v15->_notesWaiters addObject:v16];
+  [(NSMutableArray *)selfCopy->_notesWaiters addObject:v16];
 LABEL_8:
 
-  objc_sync_exit(v15);
-  if (!(v17 & 1 | !v21))
+  objc_sync_exit(selfCopy);
+  if (!(isInHoldingPattern & 1 | !v21))
   {
-    if (v15->_unitTestHackRunLoopMode)
+    if (selfCopy->_unitTestHackRunLoopMode)
     {
-      unitTestHackRunLoopMode = v15->_unitTestHackRunLoopMode;
+      unitTestHackRunLoopMode = selfCopy->_unitTestHackRunLoopMode;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&unitTestHackRunLoopMode count:1];
-      [(DALocalDBGateKeeper *)v15 _setUnitTestHackRunLoopMode:0];
+      [(DALocalDBGateKeeper *)selfCopy _setUnitTestHackRunLoopMode:0];
     }
 
     else
@@ -560,8 +560,8 @@ LABEL_8:
       v22 = runLoopModesToPerformDelayedSelectorsIn();
     }
 
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-    [v15 da_addNullRunLoopSourceAndPerformSelector:sel__notifyWaitersForDataclasses_ withObject:v24 afterDelay:v22 inModes:0.0];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:locks];
+    [selfCopy da_addNullRunLoopSourceAndPerformSelector:sel__notifyWaitersForDataclasses_ withObject:v24 afterDelay:v22 inModes:0.0];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -683,26 +683,26 @@ LABEL_8:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterWaiterForDataclassLocks:(id)a3
+- (void)unregisterWaiterForDataclassLocks:(id)locks
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locksCopy = locks;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138412290;
-    v33 = v4;
+    v33 = locksCopy;
     _os_log_impl(&dword_24844D000, v5, v6, "unregisterWaiterForDataclassLocks %@", buf, 0xCu);
   }
 
   v7 = objc_opt_new();
-  v23 = self;
-  objc_sync_enter(v23);
-  eventsWaiters = v23->_eventsWaiters;
-  v31[0] = v23->_contactsWaiters;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventsWaiters = selfCopy->_eventsWaiters;
+  v31[0] = selfCopy->_contactsWaiters;
   v31[1] = eventsWaiters;
-  v31[2] = v23->_notesWaiters;
+  v31[2] = selfCopy->_notesWaiters;
   [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:3];
   v28 = 0u;
   v29 = 0u;
@@ -729,8 +729,8 @@ LABEL_8:
           do
           {
             v14 = [v11 objectAtIndexedSubscript:v13 - 2];
-            v15 = [v14 waiter];
-            v16 = [v15 isEqual:v4];
+            waiter = [v14 waiter];
+            v16 = [waiter isEqual:locksCopy];
 
             if (v16)
             {
@@ -751,9 +751,9 @@ LABEL_8:
     while (v9);
   }
 
-  v17 = [(DADataclassLockWatcher *)v23->_contactsLockHolder isEqual:v4];
-  v18 = [(DADataclassLockWatcher *)v23->_eventsLockHolder isEqual:v4];
-  v19 = [(DADataclassLockWatcher *)v23->_notesLockHolder isEqual:v4];
+  v17 = [(DADataclassLockWatcher *)selfCopy->_contactsLockHolder isEqual:locksCopy];
+  v18 = [(DADataclassLockWatcher *)selfCopy->_eventsLockHolder isEqual:locksCopy];
+  v19 = [(DADataclassLockWatcher *)selfCopy->_notesLockHolder isEqual:locksCopy];
   v20 = 2;
   if (!v17)
   {
@@ -775,106 +775,106 @@ LABEL_8:
     v21 = v20;
   }
 
-  objc_sync_exit(v23);
+  objc_sync_exit(selfCopy);
   if (v21)
   {
-    [(DALocalDBGateKeeper *)v23 relinquishLocksForWaiter:v4 dataclasses:v21 moreComing:0];
+    [(DALocalDBGateKeeper *)selfCopy relinquishLocksForWaiter:locksCopy dataclasses:v21 moreComing:0];
   }
 
-  [(DALocalDBGateKeeper *)v23 _abortWaiterForWrappers:v7];
-  [(DALocalDBGateKeeper *)v23 _sendAllClearNotifications];
+  [(DALocalDBGateKeeper *)selfCopy _abortWaiterForWrappers:v7];
+  [(DALocalDBGateKeeper *)selfCopy _sendAllClearNotifications];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relinquishLocksForWaiter:(id)a3 dataclasses:(int64_t)a4 moreComing:(BOOL)a5
+- (void)relinquishLocksForWaiter:(id)waiter dataclasses:(int64_t)dataclasses moreComing:(BOOL)coming
 {
-  v5 = a5;
+  comingCopy = coming;
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  waiterCopy = waiter;
   v10 = DALoggingwithCategory();
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v10, v11))
   {
     *buf = 138412546;
-    v29 = v9;
+    v29 = waiterCopy;
     v30 = 2048;
-    v31 = a4;
+    dataclassesCopy = dataclasses;
     _os_log_impl(&dword_24844D000, v10, v11, "relinquishing locks for waiter %@ dataclasses %lx", buf, 0x16u);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  if ((a4 & 2) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((dataclasses & 2) != 0)
   {
-    if (([(DADataclassLockWatcher *)v12->_contactsLockHolder isEqual:v9]& 1) == 0)
+    if (([(DADataclassLockWatcher *)selfCopy->_contactsLockHolder isEqual:waiterCopy]& 1) == 0)
     {
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:a2 object:v12 file:@"DALocalDBGateKeeper.m" lineNumber:421 description:{@"Waiter %@ tried to relinquish a lock for data class %ld, but it was held by another waiter: %@", v9, a4, v12->_contactsLockHolder}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"DALocalDBGateKeeper.m" lineNumber:421 description:{@"Waiter %@ tried to relinquish a lock for data class %ld, but it was held by another waiter: %@", waiterCopy, dataclasses, selfCopy->_contactsLockHolder}];
     }
 
-    [(DALocalDBGateKeeper *)v12 setContactsLockHolder:0];
-    v13 = [v9 waiterID];
+    [(DALocalDBGateKeeper *)selfCopy setContactsLockHolder:0];
+    waiterID = [waiterCopy waiterID];
 
-    if (v13)
+    if (waiterID)
     {
-      waiterIDsExpectingContactsLock = v12->_waiterIDsExpectingContactsLock;
-      v15 = [v9 waiterID];
-      if (v5)
+      waiterIDsExpectingContactsLock = selfCopy->_waiterIDsExpectingContactsLock;
+      waiterID2 = [waiterCopy waiterID];
+      if (comingCopy)
       {
-        [(NSMutableSet *)waiterIDsExpectingContactsLock addObject:v15];
+        [(NSMutableSet *)waiterIDsExpectingContactsLock addObject:waiterID2];
       }
 
       else
       {
-        [(NSMutableSet *)waiterIDsExpectingContactsLock removeObject:v15];
+        [(NSMutableSet *)waiterIDsExpectingContactsLock removeObject:waiterID2];
       }
     }
   }
 
-  if ((a4 & 0x14) != 0)
+  if ((dataclasses & 0x14) != 0)
   {
-    if (([(DADataclassLockWatcher *)v12->_eventsLockHolder isEqual:v9]& 1) == 0)
+    if (([(DADataclassLockWatcher *)selfCopy->_eventsLockHolder isEqual:waiterCopy]& 1) == 0)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v12 file:@"DALocalDBGateKeeper.m" lineNumber:434 description:{@"Waiter %@ tried to relinquish a lock for data class %ld, but it was held by another waiter: %@", v9, a4, v12->_eventsLockHolder}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"DALocalDBGateKeeper.m" lineNumber:434 description:{@"Waiter %@ tried to relinquish a lock for data class %ld, but it was held by another waiter: %@", waiterCopy, dataclasses, selfCopy->_eventsLockHolder}];
     }
 
-    [(DALocalDBGateKeeper *)v12 setEventsLockHolder:0];
-    v16 = [v9 waiterID];
+    [(DALocalDBGateKeeper *)selfCopy setEventsLockHolder:0];
+    waiterID3 = [waiterCopy waiterID];
 
-    if (v16)
+    if (waiterID3)
     {
-      waiterIDsExpectingEventsLock = v12->_waiterIDsExpectingEventsLock;
-      v18 = [v9 waiterID];
-      if (v5)
+      waiterIDsExpectingEventsLock = selfCopy->_waiterIDsExpectingEventsLock;
+      waiterID4 = [waiterCopy waiterID];
+      if (comingCopy)
       {
-        [(NSMutableSet *)waiterIDsExpectingEventsLock addObject:v18];
+        [(NSMutableSet *)waiterIDsExpectingEventsLock addObject:waiterID4];
       }
 
       else
       {
-        [(NSMutableSet *)waiterIDsExpectingEventsLock removeObject:v18];
+        [(NSMutableSet *)waiterIDsExpectingEventsLock removeObject:waiterID4];
       }
     }
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((dataclasses & 0x20) != 0)
   {
-    if (([(DADataclassLockWatcher *)v12->_notesLockHolder isEqual:v9]& 1) == 0)
+    if (([(DADataclassLockWatcher *)selfCopy->_notesLockHolder isEqual:waiterCopy]& 1) == 0)
     {
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:v12 file:@"DALocalDBGateKeeper.m" lineNumber:447 description:{@"Waiter %@ tried to relinquish a lock for data class %ld, but it was held by another waiter: %@", v9, a4, v12->_notesLockHolder}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"DALocalDBGateKeeper.m" lineNumber:447 description:{@"Waiter %@ tried to relinquish a lock for data class %ld, but it was held by another waiter: %@", waiterCopy, dataclasses, selfCopy->_notesLockHolder}];
     }
 
-    [(DALocalDBGateKeeper *)v12 setNotesLockHolder:0];
-    v19 = [v9 waiterID];
+    [(DALocalDBGateKeeper *)selfCopy setNotesLockHolder:0];
+    waiterID5 = [waiterCopy waiterID];
 
-    if (v19)
+    if (waiterID5)
     {
-      waiterIDsExpectingNotesLock = v12->_waiterIDsExpectingNotesLock;
-      [v9 waiterID];
-      if (v5)
+      waiterIDsExpectingNotesLock = selfCopy->_waiterIDsExpectingNotesLock;
+      [waiterCopy waiterID];
+      if (comingCopy)
         v21 = {;
         [(NSMutableSet *)waiterIDsExpectingNotesLock addObject:v21];
       }
@@ -886,17 +886,17 @@ LABEL_8:
     }
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
-  [(DALocalDBGateKeeper *)v12 _sendAllClearNotifications];
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  [(DALocalDBGateKeeper *)selfCopy _sendAllClearNotifications];
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:dataclasses];
   v23 = runLoopModesToPerformDelayedSelectorsIn();
-  [v12 da_addNullRunLoopSourceAndPerformSelector:sel__notifyWaitersForDataclasses_ withObject:v22 afterDelay:v23 inModes:0.0];
+  [selfCopy da_addNullRunLoopSourceAndPerformSelector:sel__notifyWaitersForDataclasses_ withObject:v22 afterDelay:v23 inModes:0.0];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)claimedOwnershipOfDataclasses:(int64_t)a3
+- (void)claimedOwnershipOfDataclasses:(int64_t)dataclasses
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = DALoggingwithCategory();
@@ -904,20 +904,20 @@ LABEL_8:
   if (os_log_type_enabled(v5, v6))
   {
     v8 = 134217984;
-    v9 = a3;
+    dataclassesCopy = dataclasses;
     _os_log_impl(&dword_24844D000, v5, v6, "Claiming ownership of dataclasses 0x%lx", &v8, 0xCu);
   }
 
-  if ((a3 & 2) == 0)
+  if ((dataclasses & 2) == 0)
   {
-    if ((a3 & 4) == 0)
+    if ((dataclasses & 4) == 0)
     {
       goto LABEL_5;
     }
 
 LABEL_9:
     self->_claimedOwnershipOfEvents = 1;
-    if ((a3 & 0x20) == 0)
+    if ((dataclasses & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -926,13 +926,13 @@ LABEL_9:
   }
 
   self->_claimedOwnershipOfContacts = 1;
-  if ((a3 & 4) != 0)
+  if ((dataclasses & 4) != 0)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  if ((a3 & 0x20) != 0)
+  if ((dataclasses & 0x20) != 0)
   {
 LABEL_6:
     self->_claimedOwnershipOfNotes = 1;
@@ -945,32 +945,32 @@ LABEL_7:
 - (id)stateString
 {
   v3 = [MEMORY[0x277CCAB68] stringWithString:&stru_285AA6518];
-  v4 = self;
-  objc_sync_enter(v4);
-  [v3 appendFormat:@"_contactsLockHolder %@\n", v4->_contactsLockHolder];
-  [v3 appendFormat:@"_contactsWaiters %@\n", v4->_contactsWaiters];
-  [v3 appendFormat:@"_waiterIDsExpectingContactsLock %@\n", v4->_waiterIDsExpectingContactsLock];
-  [v3 appendFormat:@"_eventsLockHolder %@\n", v4->_eventsLockHolder];
-  [v3 appendFormat:@"_eventsWaiters %@\n", v4->_eventsWaiters];
-  [v3 appendFormat:@"_waiterIDsExpectingEventsLock %@\n", v4->_waiterIDsExpectingEventsLock];
-  [v3 appendFormat:@"_notesLockHolder %@\n", v4->_notesLockHolder];
-  [v3 appendFormat:@"_notesWaiters %@\n", v4->_notesWaiters];
-  [v3 appendFormat:@"_waiterIDsExpectingNotesLock %@\n", v4->_waiterIDsExpectingNotesLock];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [v3 appendFormat:@"_contactsLockHolder %@\n", selfCopy->_contactsLockHolder];
+  [v3 appendFormat:@"_contactsWaiters %@\n", selfCopy->_contactsWaiters];
+  [v3 appendFormat:@"_waiterIDsExpectingContactsLock %@\n", selfCopy->_waiterIDsExpectingContactsLock];
+  [v3 appendFormat:@"_eventsLockHolder %@\n", selfCopy->_eventsLockHolder];
+  [v3 appendFormat:@"_eventsWaiters %@\n", selfCopy->_eventsWaiters];
+  [v3 appendFormat:@"_waiterIDsExpectingEventsLock %@\n", selfCopy->_waiterIDsExpectingEventsLock];
+  [v3 appendFormat:@"_notesLockHolder %@\n", selfCopy->_notesLockHolder];
+  [v3 appendFormat:@"_notesWaiters %@\n", selfCopy->_notesWaiters];
+  [v3 appendFormat:@"_waiterIDsExpectingNotesLock %@\n", selfCopy->_waiterIDsExpectingNotesLock];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setUnitTestHackRunLoopMode:(id)a3
+- (void)_setUnitTestHackRunLoopMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   unitTestHackRunLoopMode = self->_unitTestHackRunLoopMode;
   p_unitTestHackRunLoopMode = &self->_unitTestHackRunLoopMode;
-  if (unitTestHackRunLoopMode != v5)
+  if (unitTestHackRunLoopMode != modeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_unitTestHackRunLoopMode, a3);
-    v5 = v8;
+    v8 = modeCopy;
+    objc_storeStrong(p_unitTestHackRunLoopMode, mode);
+    modeCopy = v8;
   }
 }
 

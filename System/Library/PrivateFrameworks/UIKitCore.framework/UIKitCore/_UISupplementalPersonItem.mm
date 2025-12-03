@@ -1,23 +1,23 @@
 @interface _UISupplementalPersonItem
 + (id)new;
 - (_UISupplementalPersonItem)init;
-- (_UISupplementalPersonItem)initWithCoder:(id)a3;
-- (_UISupplementalPersonItem)initWithContact:(id)a3;
-- (_UISupplementalPersonItem)initWithContact:(id)a3 icon:(id)a4;
-- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)a3;
-- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)a3 icon:(id)a4;
-- (_UISupplementalPersonItem)initWithTISupplementalPersonItem:(id)a3 icon:(id)a4;
+- (_UISupplementalPersonItem)initWithCoder:(id)coder;
+- (_UISupplementalPersonItem)initWithContact:(id)contact;
+- (_UISupplementalPersonItem)initWithContact:(id)contact icon:(id)icon;
+- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)components;
+- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)components icon:(id)icon;
+- (_UISupplementalPersonItem)initWithTISupplementalPersonItem:(id)item icon:(id)icon;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UISupplementalPersonItem
 
 + (id)new
 {
-  v2 = a1;
+  selfCopy = self;
 
-  return [v2 init];
+  return [selfCopy init];
 }
 
 - (_UISupplementalPersonItem)init
@@ -28,18 +28,18 @@
   return v4;
 }
 
-- (_UISupplementalPersonItem)initWithTISupplementalPersonItem:(id)a3 icon:(id)a4
+- (_UISupplementalPersonItem)initWithTISupplementalPersonItem:(id)item icon:(id)icon
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  iconCopy = icon;
   v14.receiver = self;
   v14.super_class = _UISupplementalPersonItem;
-  v9 = [(_UISupplementalItem *)&v14 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(_UISupplementalItem *)&v14 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 1, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(_init + 1, item);
+    v11 = [iconCopy copy];
     [(_UISupplementalItem *)v10 setIcon:v11];
 
     v12 = v10;
@@ -48,57 +48,57 @@
   return v10;
 }
 
-- (_UISupplementalPersonItem)initWithContact:(id)a3
+- (_UISupplementalPersonItem)initWithContact:(id)contact
 {
   v4 = MEMORY[0x1E69D96C8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContact:v5];
+  contactCopy = contact;
+  v6 = [[v4 alloc] initWithContact:contactCopy];
 
   v7 = [(_UISupplementalPersonItem *)self initWithTISupplementalPersonItem:v6 icon:0];
   return v7;
 }
 
-- (_UISupplementalPersonItem)initWithContact:(id)a3 icon:(id)a4
+- (_UISupplementalPersonItem)initWithContact:(id)contact icon:(id)icon
 {
   v6 = MEMORY[0x1E69D96C8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithContact:v8];
+  iconCopy = icon;
+  contactCopy = contact;
+  v9 = [[v6 alloc] initWithContact:contactCopy];
 
-  v10 = [(_UISupplementalPersonItem *)self initWithTISupplementalPersonItem:v9 icon:v7];
+  v10 = [(_UISupplementalPersonItem *)self initWithTISupplementalPersonItem:v9 icon:iconCopy];
   return v10;
 }
 
-- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)a3
+- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)components
 {
   v4 = MEMORY[0x1E69D96C8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithPersonNameComponents:v5];
+  componentsCopy = components;
+  v6 = [[v4 alloc] initWithPersonNameComponents:componentsCopy];
 
   v7 = [(_UISupplementalPersonItem *)self initWithTISupplementalPersonItem:v6 icon:0];
   return v7;
 }
 
-- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)a3 icon:(id)a4
+- (_UISupplementalPersonItem)initWithPersonNameComponents:(id)components icon:(id)icon
 {
   v6 = MEMORY[0x1E69D96C8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithPersonNameComponents:v8];
+  iconCopy = icon;
+  componentsCopy = components;
+  v9 = [[v6 alloc] initWithPersonNameComponents:componentsCopy];
 
-  v10 = [(_UISupplementalPersonItem *)self initWithTISupplementalPersonItem:v9 icon:v7];
+  v10 = [(_UISupplementalPersonItem *)self initWithTISupplementalPersonItem:v9 icon:iconCopy];
   return v10;
 }
 
-- (_UISupplementalPersonItem)initWithCoder:(id)a3
+- (_UISupplementalPersonItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _UISupplementalPersonItem;
-  v5 = [(_UISupplementalItem *)&v10 initWithCoder:v4];
+  v5 = [(_UISupplementalItem *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unwrappedObject"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unwrappedObject"];
     internal = v5->super._internal;
     v5->super._internal = v6;
 
@@ -108,13 +108,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UISupplementalPersonItem;
-  v4 = a3;
-  [(_UISupplementalItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->super._internal forKey:{@"unwrappedObject", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_UISupplementalItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->super._internal forKey:{@"unwrappedObject", v5.receiver, v5.super_class}];
 }
 
 - (id)description

@@ -1,6 +1,6 @@
 @interface _DPHCMSWordRecord
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
 - (id)description;
 @end
 
@@ -21,13 +21,13 @@
   return v9;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = _DPHCMSWordRecord, [(_DPCMSWordRecord *)&v8 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = _DPHCMSWordRecord, [(_DPCMSWordRecord *)&v8 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
+    v5 = objectCopy;
     [v5 setFragmentBitIndex:{-[_DPHCMSWordRecord fragmentBitIndex](self, "fragmentBitIndex")}];
     [v5 setSequenceBitIndex:{-[_DPHCMSWordRecord sequenceBitIndex](self, "sequenceBitIndex")}];
 
@@ -42,17 +42,17 @@
   return v6;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DPHCMSWordRecord, [(_DPCMSWordRecord *)&v9 copyFromManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DPHCMSWordRecord, [(_DPCMSWordRecord *)&v9 copyFromManagedObject:objectCopy]))
   {
-    v5 = v4;
+    v5 = objectCopy;
     -[_DPHCMSWordRecord setFragmentBitIndex:](self, "setFragmentBitIndex:", [v5 fragmentBitIndex]);
-    v6 = [v5 sequenceBitIndex];
+    sequenceBitIndex = [v5 sequenceBitIndex];
 
-    [(_DPHCMSWordRecord *)self setSequenceBitIndex:v6];
+    [(_DPHCMSWordRecord *)self setSequenceBitIndex:sequenceBitIndex];
     v7 = 1;
   }
 

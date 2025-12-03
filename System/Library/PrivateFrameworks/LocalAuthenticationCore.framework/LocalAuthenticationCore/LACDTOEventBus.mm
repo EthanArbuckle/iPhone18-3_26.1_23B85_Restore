@@ -1,6 +1,6 @@
 @interface LACDTOEventBus
 - (LACDTOEventBus)init;
-- (void)dispatchEvent:(id)a3 sender:(id)a4;
+- (void)dispatchEvent:(id)event sender:(id)sender;
 @end
 
 @implementation LACDTOEventBus
@@ -12,31 +12,31 @@
   v2 = [(LACDTOEventBus *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     eventHandlers = v2->_eventHandlers;
-    v2->_eventHandlers = v3;
+    v2->_eventHandlers = weakObjectsHashTable;
   }
 
   return v2;
 }
 
-- (void)dispatchEvent:(id)a3 sender:(id)a4
+- (void)dispatchEvent:(id)event sender:(id)sender
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  senderCopy = sender;
   v8 = LACLogDTOEvent();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(LACDTOEventBus *)v6 dispatchEvent:v7 sender:v8];
+    [(LACDTOEventBus *)eventCopy dispatchEvent:senderCopy sender:v8];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(NSHashTable *)self->_eventHandlers allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allObjects = [(NSHashTable *)self->_eventHandlers allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -48,20 +48,20 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
-        if (v14 != v7)
+        if (v14 != senderCopy)
         {
-          [v14 handleEvent:v6 sender:v7];
+          [v14 handleEvent:eventCopy sender:senderCopy];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);

@@ -5,7 +5,7 @@
 - (NSString)logoURL;
 - (NSString)name;
 - (NSURL)OAuthURL;
-- (void)isTAFEnabledWithCompletionHandler:(id)a3;
+- (void)isTAFEnabledWithCompletionHandler:(id)handler;
 @end
 
 @implementation HUUtilityConfigurationHelper
@@ -21,7 +21,7 @@
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D564C08();
   if (!v3)
   {
@@ -38,7 +38,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C81CDF0);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_20D564BF8();
 
   v7 = sub_20D5636B8();
@@ -57,7 +57,7 @@
 
 - (NSString)logoURL
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20D564BD8();
   v4 = sub_20D564B98();
 
@@ -69,7 +69,7 @@
 
 - (NSArray)sections
 {
-  v2 = self;
+  selfCopy = self;
   UtilityConfigurationHelper.sections.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C820E30);
@@ -78,12 +78,12 @@
   return v3;
 }
 
-- (void)isTAFEnabledWithCompletionHandler:(id)a3
+- (void)isTAFEnabledWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -99,7 +99,7 @@
   v12[3] = 0;
   v12[4] = &unk_20D5C5200;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v7, &unk_20D5BCD00, v12);
 }
 

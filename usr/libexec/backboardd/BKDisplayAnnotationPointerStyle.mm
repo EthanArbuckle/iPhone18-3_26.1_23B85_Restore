@@ -1,15 +1,15 @@
 @interface BKDisplayAnnotationPointerStyle
-- (void)applyToLayer:(id)a3 forContent:(id)a4;
+- (void)applyToLayer:(id)layer forContent:(id)content;
 @end
 
 @implementation BKDisplayAnnotationPointerStyle
 
-- (void)applyToLayer:(id)a3 forContent:(id)a4
+- (void)applyToLayer:(id)layer forContent:(id)content
 {
-  v5 = a3;
-  v6 = a4;
+  layerCopy = layer;
+  contentCopy = content;
   v7 = objc_opt_class();
-  v21 = v5;
+  v21 = layerCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -31,7 +31,7 @@
   v9 = v8;
 
   v10 = objc_opt_class();
-  v11 = v6;
+  v11 = contentCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())

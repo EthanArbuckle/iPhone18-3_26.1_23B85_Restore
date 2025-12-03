@@ -1,35 +1,35 @@
 @interface SUSettingsScanOperation
 + (id)_generateStateTable;
-- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)a3;
-- (SUSettingsScanOperation)initWithUUID:(id)a3 usingSUManagerClient:(id)a4 andBetaManager:(id)a5 withCompletionQueue:(id)a6;
+- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)case;
+- (SUSettingsScanOperation)initWithUUID:(id)d usingSUManagerClient:(id)client andBetaManager:(id)manager withCompletionQueue:(id)queue;
 - (id)baseDomain;
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)action_CheckForAvailableUpdate:(id)a3 error:(id *)a4;
-- (int64_t)action_ObserveConcurrentQueries:(id)a3 error:(id *)a4;
-- (int64_t)action_QueryCurrentDownload:(id)a3 error:(id *)a4;
-- (int64_t)action_QueryFullScanMetadata:(id)a3 error:(id *)a4;
-- (int64_t)action_QueryUpdatesInfo:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportScanCanceled:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportScanOutcome:(id)a3 error:(id *)a4;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
-- (void)cancel:(id)a3;
-- (void)checkForAvailableUpdatesWithCompletionHandler:(id)a3;
-- (void)checkForAvailableUpdatesWithOptions:(id)a3 usingCompletionHandler:(id)a4;
-- (void)checkForAvailableUpdatesWithOptions:(id)a3 usingCompletionHandler:(id)a4 usingThirdPartyScanResults:(id)a5 andScanError:(id)a6;
-- (void)checkForBetaPrograms:(id)a3 withReplyHandler:(id)a4;
-- (void)checkForMDMRestrictions:(id)a3 withReplyHandler:(id)a4;
-- (void)checkIfAutoUpdateScheduled:(id)a3 withReplyHandler:(id)a4;
-- (void)checkIsEligibleForRollback:(id)a3 withReplyHandler:(id)a4;
+- (int64_t)actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)action_CheckForAvailableUpdate:(id)update error:(id *)error;
+- (int64_t)action_ObserveConcurrentQueries:(id)queries error:(id *)error;
+- (int64_t)action_QueryCurrentDownload:(id)download error:(id *)error;
+- (int64_t)action_QueryFullScanMetadata:(id)metadata error:(id *)error;
+- (int64_t)action_QueryUpdatesInfo:(id)info error:(id *)error;
+- (int64_t)action_ReportScanCanceled:(id)canceled error:(id *)error;
+- (int64_t)action_ReportScanOutcome:(id)outcome error:(id *)error;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
+- (void)cancel:(id)cancel;
+- (void)checkForAvailableUpdatesWithCompletionHandler:(id)handler;
+- (void)checkForAvailableUpdatesWithOptions:(id)options usingCompletionHandler:(id)handler;
+- (void)checkForAvailableUpdatesWithOptions:(id)options usingCompletionHandler:(id)handler usingThirdPartyScanResults:(id)results andScanError:(id)error;
+- (void)checkForBetaPrograms:(id)programs withReplyHandler:(id)handler;
+- (void)checkForMDMRestrictions:(id)restrictions withReplyHandler:(id)handler;
+- (void)checkIfAutoUpdateScheduled:(id)scheduled withReplyHandler:(id)handler;
+- (void)checkIsEligibleForRollback:(id)rollback withReplyHandler:(id)handler;
 - (void)invalidateMachine;
-- (void)queryDDMDeclaration:(id)a3 withReplyHandler:(id)a4;
-- (void)queryRollbackStatus:(id)a3 withReplyHandler:(id)a4;
-- (void)refreshBetaProgramsWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 latestUpdate:(id)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 latestUpdate:(id)a5 options:(id)a6 previouslyDiscoveredDownload:(id)a7 encounteredError:(id)a8 completionHandler:(id)a9;
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 latestUpdate:(id)a5 options:(id)a6 previouslyDiscoveredDownload:(id)a7 previouslyDiscoveredAutoInstallOperation:(id)a8 encounteredError:(id)a9 completionHandler:(id)a10;
-- (void)scanForDeviceEligibleBetaPrograms:(id)a3 withReplyHandler:(id)a4;
-- (void)scheduleConcurrentActionWithSelector:(SEL)a3 eventInfo:(id)a4;
-- (void)startRefreshOperation:(id)a3 withEventInfo:(id)a4 completionHandler:(id)a5;
+- (void)queryDDMDeclaration:(id)declaration withReplyHandler:(id)handler;
+- (void)queryRollbackStatus:(id)status withReplyHandler:(id)handler;
+- (void)refreshBetaProgramsWithOptions:(id)options completionHandler:(id)handler;
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate latestUpdate:(id)latestUpdate options:(id)options completionHandler:(id)handler;
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate latestUpdate:(id)latestUpdate options:(id)options previouslyDiscoveredDownload:(id)download encounteredError:(id)error completionHandler:(id)handler;
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate latestUpdate:(id)latestUpdate options:(id)options previouslyDiscoveredDownload:(id)download previouslyDiscoveredAutoInstallOperation:(id)operation encounteredError:(id)error completionHandler:(id)self0;
+- (void)scanForDeviceEligibleBetaPrograms:(id)programs withReplyHandler:(id)handler;
+- (void)scheduleConcurrentActionWithSelector:(SEL)selector eventInfo:(id)info;
+- (void)startRefreshOperation:(id)operation withEventInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation SUSettingsScanOperation
@@ -37,7 +37,7 @@
 + (id)_generateStateTable
 {
   v97[6] = *MEMORY[0x277D85DE8];
-  v37[2] = a1;
+  v37[2] = self;
   v37[1] = a2;
   v96[0] = @"Idle";
   v94[0] = @"CheckForAvailableUpdate";
@@ -256,28 +256,28 @@
   return v35;
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, event);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, state);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, info);
   v19 = 0;
-  objc_storeStrong(&v19, a7);
-  v15 = [(SUSettingsScanOperation *)v24 scanFSM];
-  v14 = [(SUCoreFSM *)v15 extendedStateQueue];
-  dispatch_assert_queue_V2(v14);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  v16 = MEMORY[0x277D82BE0](v24);
+  objc_storeStrong(&v19, nextState);
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
+  v16 = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(v16);
-  if (!v24->_canceled || ([location[0] isEqualToString:@"ReportScanCanceled"] & 1) != 0)
+  if (!selfCopy->_canceled || ([location[0] isEqualToString:@"ReportScanCanceled"] & 1) != 0)
   {
     v18 = 0;
   }
@@ -299,37 +299,37 @@
 
     else if ([location[0] isEqualToString:@"QueryFullScanMetadata"])
     {
-      v17 = [(SUSettingsScanOperation *)v24 action_QueryFullScanMetadata:v20 error:a8];
+      v17 = [(SUSettingsScanOperation *)selfCopy action_QueryFullScanMetadata:v20 error:error];
     }
 
     else if ([location[0] isEqualToString:@"CheckForAvailableUpdate"])
     {
-      v17 = [(SUSettingsScanOperation *)v24 action_CheckForAvailableUpdate:v20 error:a8];
+      v17 = [(SUSettingsScanOperation *)selfCopy action_CheckForAvailableUpdate:v20 error:error];
     }
 
     else if ([location[0] isEqualToString:@"QueryCurrentDownload"])
     {
-      v17 = [(SUSettingsScanOperation *)v24 action_QueryCurrentDownload:v20 error:a8];
+      v17 = [(SUSettingsScanOperation *)selfCopy action_QueryCurrentDownload:v20 error:error];
     }
 
     else if ([location[0] isEqualToString:@"QueryUpdatesInfo"])
     {
-      v17 = [(SUSettingsScanOperation *)v24 action_QueryUpdatesInfo:v20 error:a8];
+      v17 = [(SUSettingsScanOperation *)selfCopy action_QueryUpdatesInfo:v20 error:error];
     }
 
     else if ([location[0] isEqualToString:@"ObserveConcurrentQueries"])
     {
-      v17 = [(SUSettingsScanOperation *)v24 action_ObserveConcurrentQueries:v20 error:a8];
+      v17 = [(SUSettingsScanOperation *)selfCopy action_ObserveConcurrentQueries:v20 error:error];
     }
 
     else if ([location[0] isEqualToString:@"ReportScanOutcome"])
     {
-      v17 = [(SUSettingsScanOperation *)v24 action_ReportScanOutcome:v20 error:a8];
+      v17 = [(SUSettingsScanOperation *)selfCopy action_ReportScanOutcome:v20 error:error];
     }
 
     else
     {
-      v17 = [(SUSettingsScanOperation *)v24 actionUnknownAction:location[0] error:a8];
+      v17 = [(SUSettingsScanOperation *)selfCopy actionUnknownAction:location[0] error:error];
     }
 
     v25 = v17;
@@ -343,35 +343,35 @@
   return v25;
 }
 
-- (int64_t)action_QueryFullScanMetadata:(id)a3 error:(id *)a4
+- (int64_t)action_QueryFullScanMetadata:(id)metadata error:(id *)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(SUSettingsScanOperation *)v10 scanFSM];
-  v7 = [(SUCoreFSM *)v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(location, metadata);
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location[0])
   {
-    [(SUSettingsScanOperation *)v10 scheduleConcurrentActionWithSelector:sel_queryDDMDeclaration_withReplyHandler_ eventInfo:location[0]];
-    [(SUSettingsScanOperation *)v10 scheduleConcurrentActionWithSelector:sel_checkForMDMRestrictions_withReplyHandler_ eventInfo:location[0]];
-    [(SUSettingsScanOperation *)v10 scheduleConcurrentActionWithSelector:sel_checkForBetaPrograms_withReplyHandler_ eventInfo:location[0]];
-    [(SUSettingsScanOperation *)v10 scheduleConcurrentActionWithSelector:sel_queryRollbackStatus_withReplyHandler_ eventInfo:location[0]];
-    [(SUSettingsScanOperation *)v10 scheduleConcurrentActionWithSelector:sel_checkIsEligibleForRollback_withReplyHandler_ eventInfo:location[0]];
-    [(SUCoreFSM *)v10->_scanFSM followupEvent:@"PerformFullScan" withInfo:location[0]];
+    [(SUSettingsScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_queryDDMDeclaration_withReplyHandler_ eventInfo:location[0]];
+    [(SUSettingsScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_checkForMDMRestrictions_withReplyHandler_ eventInfo:location[0]];
+    [(SUSettingsScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_checkForBetaPrograms_withReplyHandler_ eventInfo:location[0]];
+    [(SUSettingsScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_queryRollbackStatus_withReplyHandler_ eventInfo:location[0]];
+    [(SUSettingsScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_checkIsEligibleForRollback_withReplyHandler_ eventInfo:location[0]];
+    [(SUCoreFSM *)selfCopy->_scanFSM followupEvent:@"PerformFullScan" withInfo:location[0]];
     v11 = 0;
   }
 
   else
   {
-    v6 = [(SUSettingsScanOperation *)v10 scanFSM];
-    v5 = [(SUCoreFSM *)v6 diag];
-    [v5 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM2 diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM2);
     v11 = 8102;
   }
 
@@ -379,59 +379,59 @@
   return v11;
 }
 
-- (int64_t)action_CheckForAvailableUpdate:(id)a3 error:(id *)a4
+- (int64_t)action_CheckForAvailableUpdate:(id)update error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v41 = a4;
-  v22 = [(SUSettingsScanOperation *)v44 scanFSM];
-  v21 = [(SUCoreFSM *)v22 extendedStateQueue];
-  dispatch_assert_queue_V2(v21);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
+  objc_storeStrong(&location, update);
+  errorCopy = error;
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
-    v17 = [location options];
+    options = [location options];
     v38 = 0;
     v36 = 0;
     v18 = 1;
-    if (v17)
+    if (options)
     {
-      v39 = [location options];
+      options2 = [location options];
       v38 = 1;
-      v37 = [v39 scanOptions];
+      scanOptions = [options2 scanOptions];
       v36 = 1;
-      v18 = v37 == 0;
+      v18 = scanOptions == 0;
     }
 
     if (v36)
     {
-      MEMORY[0x277D82BD8](v37);
+      MEMORY[0x277D82BD8](scanOptions);
     }
 
     if (v38)
     {
-      MEMORY[0x277D82BD8](v39);
+      MEMORY[0x277D82BD8](options2);
     }
 
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](options);
     if (v18)
     {
-      v16 = [(SUSettingsScanOperation *)v44 scanFSM];
-      v15 = [(SUCoreFSM *)v16 diag];
-      [v15 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"Missing eventInfo parameter: scanOptions." withResult:8102 withError:0];
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
+      scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+      diag = [(SUCoreFSM *)scanFSM2 diag];
+      [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"Missing eventInfo parameter: scanOptions." withResult:8102 withError:0];
+      MEMORY[0x277D82BD8](diag);
+      MEMORY[0x277D82BD8](scanFSM2);
       v45 = 8102;
       v40 = 1;
     }
 
     else
     {
-      objc_initWeak(&from, v44);
+      objc_initWeak(&from, selfCopy);
       v27 = MEMORY[0x277D85DD0];
       v28 = -1073741824;
       v29 = 0;
@@ -442,52 +442,52 @@
       v32 = MEMORY[0x277D82BE0](location);
       v34 = MEMORY[0x26D66A460](&v27);
       v25 = 0;
-      v13 = [location thirdPartyDiscoveredScanResults];
+      thirdPartyDiscoveredScanResults = [location thirdPartyDiscoveredScanResults];
       v14 = 0;
-      if (!v13)
+      if (!thirdPartyDiscoveredScanResults)
       {
-        v26 = [location thirdPartyDiscoveredScanError];
+        thirdPartyDiscoveredScanError = [location thirdPartyDiscoveredScanError];
         v25 = 1;
-        v14 = v26 == 0;
+        v14 = thirdPartyDiscoveredScanError == 0;
       }
 
       if (v25)
       {
-        MEMORY[0x277D82BD8](v26);
+        MEMORY[0x277D82BD8](thirdPartyDiscoveredScanError);
       }
 
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](thirdPartyDiscoveredScanResults);
       if (v14)
       {
-        v12 = [(SUSettingsScanOperation *)v44 suClient];
-        v11 = [location options];
-        v10 = [v11 scanOptions];
-        [SUManagerClient scanForUpdates:v12 withScanResults:"scanForUpdates:withScanResults:"];
-        MEMORY[0x277D82BD8](v10);
-        MEMORY[0x277D82BD8](v11);
-        MEMORY[0x277D82BD8](v12);
+        suClient = [(SUSettingsScanOperation *)selfCopy suClient];
+        options3 = [location options];
+        scanOptions2 = [options3 scanOptions];
+        [SUManagerClient scanForUpdates:suClient withScanResults:"scanForUpdates:withScanResults:"];
+        MEMORY[0x277D82BD8](scanOptions2);
+        MEMORY[0x277D82BD8](options3);
+        MEMORY[0x277D82BD8](suClient);
       }
 
       else
       {
-        v9 = [(SUSettingsScanOperation *)v44 log];
-        v24 = [(SUCoreLog *)v9 oslog];
+        v9 = [(SUSettingsScanOperation *)selfCopy log];
+        oslog = [(SUCoreLog *)v9 oslog];
         MEMORY[0x277D82BD8](v9);
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [(SUSettingsScanOperation *)v44 scanUUID];
-          __os_log_helper_16_2_2_8_32_8_66(v46, "[SUSettingsScanOperation action_CheckForAvailableUpdate:error:]", v8);
-          _os_log_impl(&dword_26AC94000, v24, OS_LOG_TYPE_DEFAULT, "%s [%{public}@]: Got third-party discovered scan results. Using them instead of performing a new scan.", v46, 0x16u);
-          MEMORY[0x277D82BD8](v8);
+          scanUUID = [(SUSettingsScanOperation *)selfCopy scanUUID];
+          __os_log_helper_16_2_2_8_32_8_66(v46, "[SUSettingsScanOperation action_CheckForAvailableUpdate:error:]", scanUUID);
+          _os_log_impl(&dword_26AC94000, oslog, OS_LOG_TYPE_DEFAULT, "%s [%{public}@]: Got third-party discovered scan results. Using them instead of performing a new scan.", v46, 0x16u);
+          MEMORY[0x277D82BD8](scanUUID);
         }
 
-        objc_storeStrong(&v24, 0);
+        objc_storeStrong(&oslog, 0);
         v7 = v34;
-        v6 = [location thirdPartyDiscoveredScanResults];
-        v5 = [location thirdPartyDiscoveredScanError];
-        v7[2](v7, v6);
-        MEMORY[0x277D82BD8](v5);
-        MEMORY[0x277D82BD8](v6);
+        thirdPartyDiscoveredScanResults2 = [location thirdPartyDiscoveredScanResults];
+        thirdPartyDiscoveredScanError2 = [location thirdPartyDiscoveredScanError];
+        v7[2](v7, thirdPartyDiscoveredScanResults2);
+        MEMORY[0x277D82BD8](thirdPartyDiscoveredScanError2);
+        MEMORY[0x277D82BD8](thirdPartyDiscoveredScanResults2);
       }
 
       v45 = 0;
@@ -501,11 +501,11 @@
 
   else
   {
-    v20 = [(SUSettingsScanOperation *)v44 scanFSM];
-    v19 = [(SUCoreFSM *)v20 diag];
-    [v19 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
+    scanFSM3 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag2 = [(SUCoreFSM *)scanFSM3 diag];
+    [diag2 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag2);
+    MEMORY[0x277D82BD8](scanFSM3);
     v45 = 8102;
     v40 = 1;
   }
@@ -664,22 +664,22 @@ LABEL_26:
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_QueryCurrentDownload:(id)a3 error:(id *)a4
+- (int64_t)action_QueryCurrentDownload:(id)download error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v37 = self;
+  selfCopy = self;
   v36 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v34 = a4;
-  v19 = [(SUSettingsScanOperation *)v37 scanFSM];
-  v18 = [(SUCoreFSM *)v19 extendedStateQueue];
-  dispatch_assert_queue_V2(v18);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
+  objc_storeStrong(&location, download);
+  errorCopy = error;
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
-    objc_initWeak(&from, v37);
+    objc_initWeak(&from, selfCopy);
     v24 = MEMORY[0x277D85DD0];
     v25 = -1073741824;
     v26 = 0;
@@ -689,46 +689,46 @@ LABEL_26:
     v30[1] = v36;
     v29 = MEMORY[0x277D82BE0](location);
     v31 = MEMORY[0x26D66A460](&v24);
-    v15 = [location currentDownload];
-    MEMORY[0x277D82BD8](v15);
-    if (v15)
+    currentDownload = [location currentDownload];
+    MEMORY[0x277D82BD8](currentDownload);
+    if (currentDownload)
     {
-      v13 = [(SUSettingsScanOperation *)v37 log];
-      v23 = [(SUCoreLog *)v13 oslog];
+      v13 = [(SUSettingsScanOperation *)selfCopy log];
+      oslog = [(SUCoreLog *)v13 oslog];
       MEMORY[0x277D82BD8](v13);
       v22 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(SUSettingsScanOperation *)v37 scanUUID];
-        v11 = [location currentDownload];
-        v10 = [v11 descriptor];
-        v9 = [v10 humanReadableUpdateName];
-        v21 = MEMORY[0x277D82BE0](v9);
-        v8 = [location currentDownload];
-        __os_log_helper_16_2_4_8_32_8_66_8_66_8_0(v39, "[SUSettingsScanOperation action_QueryCurrentDownload:error:]", v12, v21, v8);
-        _os_log_impl(&dword_26AC94000, v23, v22, "%s [%{public}@]: Scan operation has already been given a download (%{public}@, %p) - skipping on the download lookup.", v39, 0x2Au);
-        MEMORY[0x277D82BD8](v8);
-        MEMORY[0x277D82BD8](v9);
-        MEMORY[0x277D82BD8](v10);
-        MEMORY[0x277D82BD8](v11);
-        MEMORY[0x277D82BD8](v12);
+        scanUUID = [(SUSettingsScanOperation *)selfCopy scanUUID];
+        currentDownload2 = [location currentDownload];
+        descriptor = [currentDownload2 descriptor];
+        humanReadableUpdateName = [descriptor humanReadableUpdateName];
+        v21 = MEMORY[0x277D82BE0](humanReadableUpdateName);
+        currentDownload3 = [location currentDownload];
+        __os_log_helper_16_2_4_8_32_8_66_8_66_8_0(v39, "[SUSettingsScanOperation action_QueryCurrentDownload:error:]", scanUUID, v21, currentDownload3);
+        _os_log_impl(&dword_26AC94000, oslog, v22, "%s [%{public}@]: Scan operation has already been given a download (%{public}@, %p) - skipping on the download lookup.", v39, 0x2Au);
+        MEMORY[0x277D82BD8](currentDownload3);
+        MEMORY[0x277D82BD8](humanReadableUpdateName);
+        MEMORY[0x277D82BD8](descriptor);
+        MEMORY[0x277D82BD8](currentDownload2);
+        MEMORY[0x277D82BD8](scanUUID);
         objc_storeStrong(&v21, 0);
       }
 
-      objc_storeStrong(&v23, 0);
+      objc_storeStrong(&oslog, 0);
       v7 = v31;
-      v6 = [location currentDownload];
-      v5 = [location operationError];
-      v7[2](v7, v6);
-      MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      currentDownload4 = [location currentDownload];
+      operationError = [location operationError];
+      v7[2](v7, currentDownload4);
+      MEMORY[0x277D82BD8](operationError);
+      MEMORY[0x277D82BD8](currentDownload4);
     }
 
     else
     {
-      v14 = [(SUSettingsScanOperation *)v37 suClient];
-      [(SUManagerClient *)v14 download:v31];
-      MEMORY[0x277D82BD8](v14);
+      suClient = [(SUSettingsScanOperation *)selfCopy suClient];
+      [(SUManagerClient *)suClient download:v31];
+      MEMORY[0x277D82BD8](suClient);
     }
 
     v38 = 0;
@@ -741,11 +741,11 @@ LABEL_26:
 
   else
   {
-    v17 = [(SUSettingsScanOperation *)v37 scanFSM];
-    v16 = [(SUCoreFSM *)v17 diag];
-    [v16 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM2 diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM2);
     v38 = 8102;
     v33 = 1;
   }
@@ -1068,33 +1068,33 @@ void __61__SUSettingsScanOperation_action_QueryCurrentDownload_error___block_inv
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_QueryUpdatesInfo:(id)a3 error:(id *)a4
+- (int64_t)action_QueryUpdatesInfo:(id)info error:(id *)error
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v43 = a4;
-  v26 = [(SUSettingsScanOperation *)v46 scanFSM];
-  v25 = [(SUCoreFSM *)v26 extendedStateQueue];
-  dispatch_assert_queue_V2(v25);
-  MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
+  objc_storeStrong(&location, info);
+  errorCopy = error;
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
-    v21 = [location preferredDescriptor];
+    preferredDescriptor = [location preferredDescriptor];
     v40 = 0;
     v38 = 0;
-    if (v21 || (v41 = [location alternateDescriptor], v40 = 1, v20 = 1, v41))
+    if (preferredDescriptor || (v41 = [location alternateDescriptor], v40 = 1, v20 = 1, v41))
     {
-      v39 = [location agreementManager];
+      agreementManager = [location agreementManager];
       v38 = 1;
-      v20 = v39 != 0;
+      v20 = agreementManager != 0;
     }
 
     if (v38)
     {
-      MEMORY[0x277D82BD8](v39);
+      MEMORY[0x277D82BD8](agreementManager);
     }
 
     if (v40)
@@ -1102,14 +1102,14 @@ void __61__SUSettingsScanOperation_action_QueryCurrentDownload_error___block_inv
       MEMORY[0x277D82BD8](v41);
     }
 
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](preferredDescriptor);
     if (v20)
     {
-      v19 = [(SUSettingsScanOperation *)v46 scanFSM];
-      v18 = [(SUCoreFSM *)v19 diag];
-      [v18 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"Both the preferredUpdate and alternateUpdate are empty withResult:or agreementManager is missing." withError:?];
-      MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
+      scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+      diag = [(SUCoreFSM *)scanFSM2 diag];
+      [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"Both the preferredUpdate and alternateUpdate are empty withResult:or agreementManager is missing." withError:?];
+      MEMORY[0x277D82BD8](diag);
+      MEMORY[0x277D82BD8](scanFSM2);
       v47 = 8102;
       v42 = 1;
     }
@@ -1117,31 +1117,31 @@ void __61__SUSettingsScanOperation_action_QueryCurrentDownload_error___block_inv
     else
     {
       v8 = objc_alloc(MEMORY[0x277D64890]);
-      v9 = [location preferredDescriptor];
+      preferredDescriptor2 = [location preferredDescriptor];
       v37 = [v8 initWithDescriptor:?];
-      MEMORY[0x277D82BD8](v9);
-      v10 = [location options];
-      [v37 setAllowUnrestrictedCellularDownload:{objc_msgSend(v10, "allowUnrestrictedCellularDownload")}];
-      MEMORY[0x277D82BD8](v10);
-      v12 = [location agreementManager];
-      v11 = [location preferredDescriptor];
-      [v37 setDownloadFeeAgreementStatus:{objc_msgSend(v12, "cellularFeeAgreementStatusForUpdate:")}];
-      MEMORY[0x277D82BD8](v11);
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](preferredDescriptor2);
+      options = [location options];
+      [v37 setAllowUnrestrictedCellularDownload:{objc_msgSend(options, "allowUnrestrictedCellularDownload")}];
+      MEMORY[0x277D82BD8](options);
+      agreementManager2 = [location agreementManager];
+      preferredDescriptor3 = [location preferredDescriptor];
+      [v37 setDownloadFeeAgreementStatus:{objc_msgSend(agreementManager2, "cellularFeeAgreementStatusForUpdate:")}];
+      MEMORY[0x277D82BD8](preferredDescriptor3);
+      MEMORY[0x277D82BD8](agreementManager2);
       v13 = objc_alloc(MEMORY[0x277D64890]);
-      v14 = [location alternateDescriptor];
+      alternateDescriptor = [location alternateDescriptor];
       v36 = [v13 initWithDescriptor:?];
-      MEMORY[0x277D82BD8](v14);
-      v15 = [location options];
-      [v36 setAllowUnrestrictedCellularDownload:{objc_msgSend(v15, "allowUnrestrictedCellularDownload")}];
-      MEMORY[0x277D82BD8](v15);
-      v17 = [location agreementManager];
-      v16 = [location alternateDescriptor];
-      [v36 setDownloadFeeAgreementStatus:{objc_msgSend(v17, "cellularFeeAgreementStatusForUpdate:")}];
-      MEMORY[0x277D82BD8](v16);
-      MEMORY[0x277D82BD8](v17);
-      objc_initWeak(&from, v46);
-      v7 = [(SUSettingsScanOperation *)v46 suClient];
+      MEMORY[0x277D82BD8](alternateDescriptor);
+      options2 = [location options];
+      [v36 setAllowUnrestrictedCellularDownload:{objc_msgSend(options2, "allowUnrestrictedCellularDownload")}];
+      MEMORY[0x277D82BD8](options2);
+      agreementManager3 = [location agreementManager];
+      alternateDescriptor2 = [location alternateDescriptor];
+      [v36 setDownloadFeeAgreementStatus:{objc_msgSend(agreementManager3, "cellularFeeAgreementStatusForUpdate:")}];
+      MEMORY[0x277D82BD8](alternateDescriptor2);
+      MEMORY[0x277D82BD8](agreementManager3);
+      objc_initWeak(&from, selfCopy);
+      suClient = [(SUSettingsScanOperation *)selfCopy suClient];
       v5 = v37;
       v6 = v36;
       v27 = MEMORY[0x277D85DD0];
@@ -1152,9 +1152,9 @@ void __61__SUSettingsScanOperation_action_QueryCurrentDownload_error___block_inv
       objc_copyWeak(v34, &from);
       v34[1] = v45;
       v32 = MEMORY[0x277D82BE0](location);
-      v33 = MEMORY[0x277D82BE0](v46);
-      [(SUManagerClient *)v7 updatesDownloadableWithOptions:v5 alternateDownloadOptions:v6 replyHandler:&v27];
-      MEMORY[0x277D82BD8](v7);
+      v33 = MEMORY[0x277D82BE0](selfCopy);
+      [(SUManagerClient *)suClient updatesDownloadableWithOptions:v5 alternateDownloadOptions:v6 replyHandler:&v27];
+      MEMORY[0x277D82BD8](suClient);
       v47 = 0;
       v42 = 1;
       objc_storeStrong(&v33, 0);
@@ -1168,11 +1168,11 @@ void __61__SUSettingsScanOperation_action_QueryCurrentDownload_error___block_inv
 
   else
   {
-    v23 = [(SUSettingsScanOperation *)v46 scanFSM];
-    v22 = [(SUCoreFSM *)v23 diag];
-    [v22 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
+    scanFSM3 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag2 = [(SUCoreFSM *)scanFSM3 diag];
+    [diag2 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+    MEMORY[0x277D82BD8](diag2);
+    MEMORY[0x277D82BD8](scanFSM3);
     v47 = 8102;
     v42 = 1;
   }
@@ -1439,23 +1439,23 @@ void __57__SUSettingsScanOperation_action_QueryUpdatesInfo_error___block_invoke_
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_ObserveConcurrentQueries:(id)a3 error:(id *)a4
+- (int64_t)action_ObserveConcurrentQueries:(id)queries error:(id *)error
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v22 = a4;
-  v11 = [(SUSettingsScanOperation *)v25 scanFSM];
-  v10 = [(SUCoreFSM *)v11 extendedStateQueue];
-  dispatch_assert_queue_V2(v10);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  objc_storeStrong(&location, queries);
+  errorCopy = error;
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
-    objc_initWeak(&v20, v25);
-    group = v25->_scanGroup;
-    queue = v25->_concurrentQueue;
+    objc_initWeak(&v20, selfCopy);
+    group = selfCopy->_scanGroup;
+    queue = selfCopy->_concurrentQueue;
     v12 = MEMORY[0x277D85DD0];
     v13 = -1073741824;
     v14 = 0;
@@ -1464,7 +1464,7 @@ void __57__SUSettingsScanOperation_action_QueryUpdatesInfo_error___block_invoke_
     objc_copyWeak(v19, &v20);
     v19[1] = v24;
     v17 = MEMORY[0x277D82BE0](location);
-    v18 = MEMORY[0x277D82BE0](v25);
+    v18 = MEMORY[0x277D82BE0](selfCopy);
     dispatch_group_notify(group, queue, &v12);
     v26 = 0;
     v21 = 1;
@@ -1476,11 +1476,11 @@ void __57__SUSettingsScanOperation_action_QueryUpdatesInfo_error___block_invoke_
 
   else
   {
-    v8 = [(SUSettingsScanOperation *)v25 scanFSM];
-    v7 = [(SUCoreFSM *)v8 diag];
-    [v7 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM2 diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM2);
     v26 = 8102;
     v21 = 1;
   }
@@ -1580,54 +1580,54 @@ void __65__SUSettingsScanOperation_action_ObserveConcurrentQueries_error___block
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_ReportScanOutcome:(id)a3 error:(id *)a4
+- (int64_t)action_ReportScanOutcome:(id)outcome error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v40 = a4;
-  v19 = [(SUSettingsScanOperation *)v43 scanFSM];
-  v18 = [(SUCoreFSM *)v19 extendedStateQueue];
-  dispatch_assert_queue_V2(v18);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
+  objc_storeStrong(&location, outcome);
+  errorCopy = error;
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
-    v15 = [(SUSettingsScanOperation *)v43 log];
-    v38 = [(SUCoreLog *)v15 oslog];
+    v15 = [(SUSettingsScanOperation *)selfCopy log];
+    oslog = [(SUCoreLog *)v15 oslog];
     MEMORY[0x277D82BD8](v15);
     v37 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(SUSettingsScanOperation *)v43 scanUUID];
-      v12 = [location operationError];
+      scanUUID = [(SUSettingsScanOperation *)selfCopy scanUUID];
+      operationError = [location operationError];
       v4 = "successful";
-      if (v12)
+      if (operationError)
       {
         v4 = "failed";
       }
 
       v13 = v4;
-      v11 = SUSettingsScanOperationTypeToString([(SUSettingsScanOperation *)v43 operationType]);
+      v11 = SUSettingsScanOperationTypeToString([(SUSettingsScanOperation *)selfCopy operationType]);
       v36 = MEMORY[0x277D82BE0](v11);
-      __os_log_helper_16_2_4_8_32_8_66_8_32_8_66(v45, "[SUSettingsScanOperation action_ReportScanOutcome:error:]", v14, v13, v36);
-      _os_log_impl(&dword_26AC94000, v38, v37, "%s [%{public}@]: Reporting a %s scan of type: %{public}@", v45, 0x2Au);
+      __os_log_helper_16_2_4_8_32_8_66_8_32_8_66(v45, "[SUSettingsScanOperation action_ReportScanOutcome:error:]", scanUUID, v13, v36);
+      _os_log_impl(&dword_26AC94000, oslog, v37, "%s [%{public}@]: Reporting a %s scan of type: %{public}@", v45, 0x2Au);
       MEMORY[0x277D82BD8](v11);
-      MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](operationError);
+      MEMORY[0x277D82BD8](scanUUID);
       objc_storeStrong(&v36, 0);
     }
 
-    objc_storeStrong(&v38, 0);
-    objc_initWeak(&from, v43);
-    v10 = [(SUSettingsScanOperation *)v43 operationType];
-    if (v10)
+    objc_storeStrong(&oslog, 0);
+    objc_initWeak(&from, selfCopy);
+    operationType = [(SUSettingsScanOperation *)selfCopy operationType];
+    if (operationType)
     {
-      if (v10 == 1)
+      if (operationType == 1)
       {
-        queue = [(SUSettingsScanOperation *)v43 clientCompletionQueue];
+        queue = [(SUSettingsScanOperation *)selfCopy clientCompletionQueue];
         v28 = MEMORY[0x277D85DD0];
         v29 = -1073741824;
         v30 = 0;
@@ -1642,9 +1642,9 @@ void __65__SUSettingsScanOperation_action_ObserveConcurrentQueries_error___block
         objc_destroyWeak(v34);
       }
 
-      else if (v10 == 2)
+      else if (operationType == 2)
       {
-        v6 = [(SUSettingsScanOperation *)v43 clientCompletionQueue];
+        clientCompletionQueue = [(SUSettingsScanOperation *)selfCopy clientCompletionQueue];
         v21 = MEMORY[0x277D85DD0];
         v22 = -1073741824;
         v23 = 0;
@@ -1653,8 +1653,8 @@ void __65__SUSettingsScanOperation_action_ObserveConcurrentQueries_error___block
         objc_copyWeak(v27, &from);
         v27[1] = v42;
         v26 = MEMORY[0x277D82BE0](location);
-        dispatch_async(v6, &v21);
-        MEMORY[0x277D82BD8](v6);
+        dispatch_async(clientCompletionQueue, &v21);
+        MEMORY[0x277D82BD8](clientCompletionQueue);
         objc_storeStrong(&v26, 0);
         objc_destroyWeak(v27);
       }
@@ -1662,12 +1662,12 @@ void __65__SUSettingsScanOperation_action_ObserveConcurrentQueries_error___block
 
     else
     {
-      v9 = [(SUSettingsScanOperation *)v43 scanFSM];
-      v8 = [(SUCoreFSM *)v9 diag];
-      [v8 dumpTracked:@"Could not invoke a completion handler for a 'None' operation type." dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
-      MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
-      [(SUSettingsScanOperation *)v43 invalidateMachine];
+      scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+      diag = [(SUCoreFSM *)scanFSM2 diag];
+      [diag dumpTracked:@"Could not invoke a completion handler for a 'None' operation type." dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
+      MEMORY[0x277D82BD8](diag);
+      MEMORY[0x277D82BD8](scanFSM2);
+      [(SUSettingsScanOperation *)selfCopy invalidateMachine];
     }
 
     v44 = 0;
@@ -1677,11 +1677,11 @@ void __65__SUSettingsScanOperation_action_ObserveConcurrentQueries_error___block
 
   else
   {
-    v17 = [(SUSettingsScanOperation *)v43 scanFSM];
-    v16 = [(SUCoreFSM *)v17 diag];
-    [v16 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    scanFSM3 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag2 = [(SUCoreFSM *)scanFSM3 diag];
+    [diag2 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag2);
+    MEMORY[0x277D82BD8](scanFSM3);
     v44 = 8102;
     v39 = 1;
   }
@@ -1857,40 +1857,40 @@ void __58__SUSettingsScanOperation_action_ReportScanOutcome_error___block_invoke
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_ReportScanCanceled:(id)a3 error:(id *)a4
+- (int64_t)action_ReportScanCanceled:(id)canceled error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v24 = a4;
-  v12 = [(SUSettingsScanOperation *)v27 scanFSM];
-  v11 = [(SUCoreFSM *)v12 extendedStateQueue];
-  dispatch_assert_queue_V2(v11);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  objc_storeStrong(&location, canceled);
+  errorCopy = error;
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
-    v8 = [(SUSettingsScanOperation *)v27 log];
-    v22 = [(SUCoreLog *)v8 oslog];
+    v8 = [(SUSettingsScanOperation *)selfCopy log];
+    oslog = [(SUCoreLog *)v8 oslog];
     MEMORY[0x277D82BD8](v8);
     v21 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SUSettingsScanOperation *)v27 scanUUID];
-      __os_log_helper_16_2_2_8_32_8_66(v29, "[SUSettingsScanOperation action_ReportScanCanceled:error:]", v7);
-      _os_log_impl(&dword_26AC94000, v22, v21, "%s [%{public}@]: The scan was canceled. Calling the cancelation handler.", v29, 0x16u);
-      MEMORY[0x277D82BD8](v7);
+      scanUUID = [(SUSettingsScanOperation *)selfCopy scanUUID];
+      __os_log_helper_16_2_2_8_32_8_66(v29, "[SUSettingsScanOperation action_ReportScanCanceled:error:]", scanUUID);
+      _os_log_impl(&dword_26AC94000, oslog, v21, "%s [%{public}@]: The scan was canceled. Calling the cancelation handler.", v29, 0x16u);
+      MEMORY[0x277D82BD8](scanUUID);
     }
 
-    objc_storeStrong(&v22, 0);
-    v6 = [(SUSettingsScanOperation *)v27 cancelHandler];
-    MEMORY[0x277D82BD8](v6);
-    if (v6)
+    objc_storeStrong(&oslog, 0);
+    cancelHandler = [(SUSettingsScanOperation *)selfCopy cancelHandler];
+    MEMORY[0x277D82BD8](cancelHandler);
+    if (cancelHandler)
     {
-      objc_initWeak(&from, v27);
-      queue = [(SUSettingsScanOperation *)v27 clientCompletionQueue];
+      objc_initWeak(&from, selfCopy);
+      queue = [(SUSettingsScanOperation *)selfCopy clientCompletionQueue];
       block = MEMORY[0x277D85DD0];
       v15 = -1073741824;
       v16 = 0;
@@ -1906,7 +1906,7 @@ void __58__SUSettingsScanOperation_action_ReportScanOutcome_error___block_invoke
 
     else
     {
-      [(SUSettingsScanOperation *)v27 invalidateMachine];
+      [(SUSettingsScanOperation *)selfCopy invalidateMachine];
     }
 
     v28 = 0;
@@ -1915,11 +1915,11 @@ void __58__SUSettingsScanOperation_action_ReportScanOutcome_error___block_invoke
 
   else
   {
-    v10 = [(SUSettingsScanOperation *)v27 scanFSM];
-    v9 = [(SUCoreFSM *)v10 diag];
-    [v9 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM2 diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM2);
     v28 = 8102;
     v23 = 1;
   }
@@ -1970,80 +1970,80 @@ void __59__SUSettingsScanOperation_action_ReportScanCanceled_error___block_invok
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)actionUnknownAction:(id)action error:(id *)error
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16[1] = a4;
+  objc_storeStrong(location, action);
+  v16[1] = error;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v16[0] = [v4 initWithFormat:location[0]];
-  v11 = [(SUSettingsScanOperation *)v18 scanFSM];
-  v10 = [(SUCoreFSM *)v11 diag];
+  scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  diag = [(SUCoreFSM *)scanFSM diag];
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v9 = [v5 initWithFormat:@"unknown action(%@)", location[0]];
-  [v10 dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
+  [diag dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v15 = [v12 buildError:8116 underlying:0 description:v16[0]];
-  MEMORY[0x277D82BD8](v12);
-  v14 = [(SUSettingsScanOperation *)v18 scanFSM];
-  v13 = [(SUCoreFSM *)v14 diag];
-  v6 = [v15 code];
-  [v13 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"Scan FSM has reported an anomaly" withResult:v6 withError:v15];
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](diag);
+  MEMORY[0x277D82BD8](scanFSM);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v15 = [mEMORY[0x277D643F8] buildError:8116 underlying:0 description:v16[0]];
+  MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
+  scanFSM2 = [(SUSettingsScanOperation *)selfCopy scanFSM];
+  diag2 = [(SUCoreFSM *)scanFSM2 diag];
+  code = [v15 code];
+  [diag2 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"Scan FSM has reported an anomaly" withResult:code withError:v15];
+  MEMORY[0x277D82BD8](diag2);
+  MEMORY[0x277D82BD8](scanFSM2);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(v16, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (SUSettingsScanOperation)initWithUUID:(id)a3 usingSUManagerClient:(id)a4 andBetaManager:(id)a5 withCompletionQueue:(id)a6
+- (SUSettingsScanOperation)initWithUUID:(id)d usingSUManagerClient:(id)client andBetaManager:(id)manager withCompletionQueue:(id)queue
 {
   v49 = *MEMORY[0x277D85DE8];
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, client);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, manager);
   v39 = 0;
-  objc_storeStrong(&v39, a6);
-  v6 = v43;
-  v43 = 0;
+  objc_storeStrong(&v39, queue);
+  v6 = selfCopy;
+  selfCopy = 0;
   v38.receiver = v6;
   v38.super_class = SUSettingsScanOperation;
   v30 = [(SUSettingsScanOperation *)&v38 init];
-  v43 = v30;
-  objc_storeStrong(&v43, v30);
+  selfCopy = v30;
+  objc_storeStrong(&selfCopy, v30);
   if (!v30)
   {
     goto LABEL_12;
   }
 
   v7 = [objc_alloc(MEMORY[0x277D64460]) initWithCategory:@"SUSettingsScanOperation"];
-  v8 = *(v43 + 3);
-  *(v43 + 3) = v7;
+  v8 = *(selfCopy + 3);
+  *(selfCopy + 3) = v7;
   MEMORY[0x277D82BD8](v8);
-  if (!*(v43 + 3))
+  if (!*(selfCopy + 3))
   {
     v26 = SUSettingsSharedLogger();
-    v37 = [v26 oslog];
+    oslog = [v26 oslog];
     MEMORY[0x277D82BD8](v26);
     v36 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       __os_log_helper_16_2_2_8_32_8_64(v48, "[SUSettingsScanOperation initWithUUID:usingSUManagerClient:andBetaManager:withCompletionQueue:]", @"SUSettingsScanOperation");
-      _os_log_impl(&dword_26AC94000, v37, v36, "%s: Could not create a log category for %@", v48, 0x16u);
+      _os_log_impl(&dword_26AC94000, oslog, v36, "%s: Could not create a log category for %@", v48, 0x16u);
     }
 
-    objc_storeStrong(&v37, 0);
+    objc_storeStrong(&oslog, 0);
     v44 = 0;
     v35 = 1;
     goto LABEL_13;
@@ -2062,42 +2062,42 @@ void __59__SUSettingsScanOperation_action_ReportScanCanceled_error___block_invok
   v24 = NSStringFromClass(v11);
   v32 = [v23 initWithFormat:@"%@:%@(%@, %@)", v24, v34, v33, location[0]];
   MEMORY[0x277D82BD8](v24);
-  objc_storeStrong(v43 + 2, location[0]);
-  objc_storeStrong(v43 + 11, v41);
-  objc_storeStrong(v43 + 12, v40);
-  v12 = [objc_opt_class() _generateStateTable];
-  v13 = *(v43 + 13);
-  *(v43 + 13) = v12;
+  objc_storeStrong(selfCopy + 2, location[0]);
+  objc_storeStrong(selfCopy + 11, v41);
+  objc_storeStrong(selfCopy + 12, v40);
+  _generateStateTable = [objc_opt_class() _generateStateTable];
+  v13 = *(selfCopy + 13);
+  *(selfCopy + 13) = _generateStateTable;
   MEMORY[0x277D82BD8](v13);
-  *(v43 + 9) = 0;
+  *(selfCopy + 9) = 0;
   v25 = objc_alloc(MEMORY[0x277D64458]);
-  v14 = [v25 initMachine:v32 withTable:*(v43 + 13) startingIn:@"Idle" usingDelegate:v43 registeringAllInfoClass:objc_opt_class()];
-  v15 = *(v43 + 10);
-  *(v43 + 10) = v14;
+  v14 = [v25 initMachine:v32 withTable:*(selfCopy + 13) startingIn:@"Idle" usingDelegate:selfCopy registeringAllInfoClass:objc_opt_class()];
+  v15 = *(selfCopy + 10);
+  *(selfCopy + 10) = v14;
   MEMORY[0x277D82BD8](v15);
-  if (*(v43 + 10))
+  if (*(selfCopy + 10))
   {
-    v19 = [MEMORY[0x277D643F8] sharedCore];
-    v16 = [v19 selectCompletionQueue:v39];
-    v17 = *(v43 + 14);
-    *(v43 + 14) = v16;
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v16 = [mEMORY[0x277D643F8] selectCompletionQueue:v39];
+    v17 = *(selfCopy + 14);
+    *(selfCopy + 14) = v16;
     MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
     v35 = 0;
   }
 
   else
   {
     v20 = SUSettingsSharedLogger();
-    v31 = [v20 oslog];
+    oslog2 = [v20 oslog];
     MEMORY[0x277D82BD8](v20);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       __os_log_helper_16_2_1_8_32(v47, "[SUSettingsScanOperation initWithUUID:usingSUManagerClient:andBetaManager:withCompletionQueue:]");
-      _os_log_impl(&dword_26AC94000, v31, OS_LOG_TYPE_DEFAULT, "%s: Failed creating a scan FSM", v47, 0xCu);
+      _os_log_impl(&dword_26AC94000, oslog2, OS_LOG_TYPE_DEFAULT, "%s: Failed creating a scan FSM", v47, 0xCu);
     }
 
-    objc_storeStrong(&v31, 0);
+    objc_storeStrong(&oslog2, 0);
     v44 = 0;
     v35 = 1;
   }
@@ -2108,7 +2108,7 @@ void __59__SUSettingsScanOperation_action_ReportScanCanceled_error___block_invok
   if (!v35)
   {
 LABEL_12:
-    v44 = MEMORY[0x277D82BE0](v43);
+    v44 = MEMORY[0x277D82BE0](selfCopy);
     v35 = 1;
   }
 
@@ -2117,81 +2117,81 @@ LABEL_13:
   objc_storeStrong(&v40, 0);
   objc_storeStrong(&v41, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v43, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v44;
 }
 
-- (void)checkForAvailableUpdatesWithCompletionHandler:(id)a3
+- (void)checkForAvailableUpdatesWithCompletionHandler:(id)handler
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSettingsScanOperation *)v4 checkForAvailableUpdatesWithOptions:0 usingCompletionHandler:location[0] usingThirdPartyScanResults:0 andScanError:?];
+  objc_storeStrong(location, handler);
+  [(SUSettingsScanOperation *)selfCopy checkForAvailableUpdatesWithOptions:0 usingCompletionHandler:location[0] usingThirdPartyScanResults:0 andScanError:?];
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForAvailableUpdatesWithOptions:(id)a3 usingCompletionHandler:(id)a4
+- (void)checkForAvailableUpdatesWithOptions:(id)options usingCompletionHandler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(SUSettingsScanOperation *)v7 checkForAvailableUpdatesWithOptions:location[0] usingCompletionHandler:v5 usingThirdPartyScanResults:0 andScanError:?];
+  objc_storeStrong(&v5, handler);
+  [(SUSettingsScanOperation *)selfCopy checkForAvailableUpdatesWithOptions:location[0] usingCompletionHandler:v5 usingThirdPartyScanResults:0 andScanError:?];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForAvailableUpdatesWithOptions:(id)a3 usingCompletionHandler:(id)a4 usingThirdPartyScanResults:(id)a5 andScanError:(id)a6
+- (void)checkForAvailableUpdatesWithOptions:(id)options usingCompletionHandler:(id)handler usingThirdPartyScanResults:(id)results andScanError:(id)error
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, handler);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, results);
   v29 = 0;
-  objc_storeStrong(&v29, a6);
-  v24 = MEMORY[0x277D82BE0](v33);
+  objc_storeStrong(&v29, error);
+  v24 = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(v24);
-  if ([(SUSettingsScanOperation *)v33 isActive])
+  if ([(SUSettingsScanOperation *)selfCopy isActive])
   {
-    v20 = [(SUSettingsScanOperation *)v33 scanFSM];
-    v19 = [(SUCoreFSM *)v20 diag];
-    [v19 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"This scan machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
+    scanFSM = [(SUSettingsScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"This scan machine is currently process another scan request. Queuing requests is not currently supported." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM);
     v28 = 1;
   }
 
   else
   {
     v6 = MEMORY[0x26D66A460](v31);
-    fullScanCompletionHandler = v33->_fullScanCompletionHandler;
-    v33->_fullScanCompletionHandler = v6;
+    fullScanCompletionHandler = selfCopy->_fullScanCompletionHandler;
+    selfCopy->_fullScanCompletionHandler = v6;
     MEMORY[0x277D82BD8](fullScanCompletionHandler);
-    v33->_operationType = 1;
+    selfCopy->_operationType = 1;
     v8 = dispatch_group_create();
-    scanGroup = v33->_scanGroup;
-    v33->_scanGroup = v8;
+    scanGroup = selfCopy->_scanGroup;
+    selfCopy->_scanGroup = v8;
     MEMORY[0x277D82BD8](scanGroup);
     v18 = MEMORY[0x277CCACA8];
-    v17 = [(SUSettingsScanOperation *)v33 baseDomain];
-    v15 = [v18 stringWithFormat:@"%@.concurrentQueue", v17];
+    baseDomain = [(SUSettingsScanOperation *)selfCopy baseDomain];
+    v15 = [v18 stringWithFormat:@"%@.concurrentQueue", baseDomain];
     v10 = v15;
     label = [v15 UTF8String];
     v11 = dispatch_queue_create(label, MEMORY[0x277D85CD8]);
-    concurrentQueue = v33->_concurrentQueue;
-    v33->_concurrentQueue = v11;
+    concurrentQueue = selfCopy->_concurrentQueue;
+    selfCopy->_concurrentQueue = v11;
     MEMORY[0x277D82BD8](concurrentQueue);
     MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v17);
-    [(SUCoreFSM *)v33->_scanFSM activateMachine];
+    MEMORY[0x277D82BD8](baseDomain);
+    [(SUCoreFSM *)selfCopy->_scanFSM activateMachine];
     v14 = [SUSettingsScanParam alloc];
     v25 = 0;
     if (location[0])
@@ -2214,7 +2214,7 @@ LABEL_13:
 
     [v27 setThirdPartyDiscoveredScanResults:v30];
     [v27 setThirdPartyDiscoveredScanError:v29];
-    [(SUCoreFSM *)v33->_scanFSM postEvent:@"CheckForAvailableUpdate" withInfo:v27];
+    [(SUCoreFSM *)selfCopy->_scanFSM postEvent:@"CheckForAvailableUpdate" withInfo:v27];
     objc_storeStrong(&v27, 0);
     v28 = 0;
   }
@@ -2232,21 +2232,21 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 latestUpdate:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate latestUpdate:(id)latestUpdate options:(id)options completionHandler:(id)handler
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, alternateUpdate);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, latestUpdate);
   v15 = 0;
-  objc_storeStrong(&v15, a6);
+  objc_storeStrong(&v15, options);
   v14 = 0;
-  objc_storeStrong(&v14, a7);
-  v12 = v19;
+  objc_storeStrong(&v14, handler);
+  v12 = selfCopy;
   v7 = [SUSettingsScanParam alloc];
   v13 = [(SUSettingsScanParam *)v7 initWithPreferredDescriptor:location[0] alternateDescriptor:v17 andLatestDescriptor:v16];
   [SUSettingsScanOperation startRefreshOperation:v12 withEventInfo:"startRefreshOperation:withEventInfo:completionHandler:" completionHandler:@"RefreshScanResults"];
@@ -2258,25 +2258,25 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 latestUpdate:(id)a5 options:(id)a6 previouslyDiscoveredDownload:(id)a7 encounteredError:(id)a8 completionHandler:(id)a9
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate latestUpdate:(id)latestUpdate options:(id)options previouslyDiscoveredDownload:(id)download encounteredError:(id)error completionHandler:(id)handler
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, alternateUpdate);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, latestUpdate);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, options);
   v19 = 0;
-  objc_storeStrong(&v19, a7);
+  objc_storeStrong(&v19, download);
   v18 = 0;
-  objc_storeStrong(&v18, a8);
+  objc_storeStrong(&v18, error);
   v17 = 0;
-  objc_storeStrong(&v17, a9);
-  v15 = v24;
+  objc_storeStrong(&v17, handler);
+  v15 = selfCopy;
   v9 = [SUSettingsScanParam alloc];
   v16 = [(SUSettingsScanParam *)v9 initWithPreferredDescriptor:location[0] alternateDescriptor:v22 andLatestDescriptor:v21 previouslyDiscoveredDownloadedUpdate:v19 encounteredError:v18];
   [SUSettingsScanOperation startRefreshOperation:v15 withEventInfo:"startRefreshOperation:withEventInfo:completionHandler:" completionHandler:@"RefreshScanResults"];
@@ -2290,27 +2290,27 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 latestUpdate:(id)a5 options:(id)a6 previouslyDiscoveredDownload:(id)a7 previouslyDiscoveredAutoInstallOperation:(id)a8 encounteredError:(id)a9 completionHandler:(id)a10
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate latestUpdate:(id)latestUpdate options:(id)options previouslyDiscoveredDownload:(id)download previouslyDiscoveredAutoInstallOperation:(id)operation encounteredError:(id)error completionHandler:(id)self0
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, alternateUpdate);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, latestUpdate);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, options);
   v21 = 0;
-  objc_storeStrong(&v21, a7);
+  objc_storeStrong(&v21, download);
   v20 = 0;
-  objc_storeStrong(&v20, a8);
+  objc_storeStrong(&v20, operation);
   v19 = 0;
-  objc_storeStrong(&v19, a9);
+  objc_storeStrong(&v19, error);
   v18 = 0;
-  objc_storeStrong(&v18, a10);
-  v16 = v26;
+  objc_storeStrong(&v18, handler);
+  v16 = selfCopy;
   v10 = [SUSettingsScanParam alloc];
   v17 = [(SUSettingsScanParam *)v10 initWithPreferredDescriptor:location[0] alternateDescriptor:v24 andLatestDescriptor:v23 previouslyDiscoveredDownloadedUpdate:v21 previouslyDiscoveredAutoInstallOperation:v20 encounteredError:v19];
   [SUSettingsScanOperation startRefreshOperation:v16 withEventInfo:"startRefreshOperation:withEventInfo:completionHandler:" completionHandler:@"RefreshScanResultsPostDownload"];
@@ -2325,21 +2325,21 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshBetaProgramsWithOptions:(id)a3 completionHandler:(id)a4
+- (void)refreshBetaProgramsWithOptions:(id)options completionHandler:(id)handler
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, options);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  v10 = MEMORY[0x277D82BE0](v27);
+  objc_storeStrong(&v24, handler);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(v10);
-  if ([(SUSettingsScanOperation *)v27 isActive])
+  if ([(SUSettingsScanOperation *)selfCopy isActive])
   {
-    v8 = [(SUCoreFSM *)v27->_scanFSM diag];
-    [v8 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The scan machine is currently active" withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v8);
+    diag = [(SUCoreFSM *)selfCopy->_scanFSM diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The scan machine is currently active" withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v23 = 1;
   }
 
@@ -2365,8 +2365,8 @@ LABEL_13:
       MEMORY[0x277D82BD8](v21);
     }
 
-    objc_initWeak(&v19, v27);
-    v5 = v27;
+    objc_initWeak(&v19, selfCopy);
+    v5 = selfCopy;
     v4 = v22;
     v11 = MEMORY[0x277D85DD0];
     v12 = -1073741824;
@@ -2513,21 +2513,21 @@ void __76__SUSettingsScanOperation_refreshBetaProgramsWithOptions_completionHand
   *MEMORY[0x277D85DE8];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  obj = MEMORY[0x277D82BE0](v8);
+  objc_storeStrong(location, cancel);
+  obj = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(obj);
-  if ([(SUSettingsScanOperation *)v8 isActive])
+  if ([(SUSettingsScanOperation *)selfCopy isActive])
   {
-    if (![(SUSettingsScanOperation *)v8 isCanceled])
+    if (![(SUSettingsScanOperation *)selfCopy isCanceled])
     {
-      [(SUSettingsScanOperation *)v8 setCanceled:1];
-      [(SUSettingsScanOperation *)v8 setCancelHandler:location[0]];
-      scanFSM = v8->_scanFSM;
+      [(SUSettingsScanOperation *)selfCopy setCanceled:1];
+      [(SUSettingsScanOperation *)selfCopy setCancelHandler:location[0]];
+      scanFSM = selfCopy->_scanFSM;
       v4 = objc_alloc_init(SUSettingsScanParam);
       [(SUCoreFSM *)scanFSM postEvent:@"CancelScan" withInfo:v4];
       MEMORY[0x277D82BD8](v4);
@@ -2536,9 +2536,9 @@ void __76__SUSettingsScanOperation_refreshBetaProgramsWithOptions_completionHand
 
   else
   {
-    v5 = [(SUCoreFSM *)v8->_scanFSM diag];
-    [v5 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v5);
+    diag = [(SUCoreFSM *)selfCopy->_scanFSM diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
   }
 
   objc_sync_exit(obj);
@@ -2546,16 +2546,16 @@ void __76__SUSettingsScanOperation_refreshBetaProgramsWithOptions_completionHand
   objc_storeStrong(location, 0);
 }
 
-- (void)scheduleConcurrentActionWithSelector:(SEL)a3 eventInfo:(id)a4
+- (void)scheduleConcurrentActionWithSelector:(SEL)selector eventInfo:(id)info
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  selectorCopy = selector;
   location = 0;
-  objc_storeStrong(&location, a4);
-  dispatch_group_enter(v17[7]);
-  objc_initWeak(&v13, v17);
-  queue = v17[8];
+  objc_storeStrong(&location, info);
+  dispatch_group_enter(selfCopy[7]);
+  objc_initWeak(&v13, selfCopy);
+  queue = selfCopy[8];
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
@@ -2563,9 +2563,9 @@ void __76__SUSettingsScanOperation_refreshBetaProgramsWithOptions_completionHand
   v9 = &unk_279CBC6A0;
   objc_copyWeak(v12, &v13);
   v12[1] = v16;
-  v10 = MEMORY[0x277D82BE0](v17);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   v11 = MEMORY[0x277D82BE0](location);
-  v12[2] = v15;
+  v12[2] = selectorCopy;
   dispatch_async(queue, &v5);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
@@ -2811,16 +2811,16 @@ void __74__SUSettingsScanOperation_scheduleConcurrentActionWithSelector_eventInf
   *MEMORY[0x277D85DE8];
 }
 
-- (void)checkForMDMRestrictions:(id)a3 withReplyHandler:(id)a4
+- (void)checkForMDMRestrictions:(id)restrictions withReplyHandler:(id)handler
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, restrictions);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v19);
-  suClient = v19->_suClient;
+  objc_storeStrong(&v16, handler);
+  objc_initWeak(&v15, selfCopy);
+  suClient = selfCopy->_suClient;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -2829,7 +2829,7 @@ void __74__SUSettingsScanOperation_scheduleConcurrentActionWithSelector_eventInf
   objc_copyWeak(v14, &v15);
   v14[1] = v18;
   v13 = MEMORY[0x277D82BE0](v16);
-  v11 = MEMORY[0x277D82BE0](v19);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location);
   [(SUManagerClient *)suClient softwareUpdatePathRestriction:&v6];
   objc_storeStrong(&v12, 0);
@@ -3011,16 +3011,16 @@ void __68__SUSettingsScanOperation_checkForMDMRestrictions_withReplyHandler___bl
   *MEMORY[0x277D85DE8];
 }
 
-- (void)queryDDMDeclaration:(id)a3 withReplyHandler:(id)a4
+- (void)queryDDMDeclaration:(id)declaration withReplyHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, declaration);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  objc_initWeak(&v14, v18);
-  suClient = v18->_suClient;
+  objc_storeStrong(&v15, handler);
+  objc_initWeak(&v14, selfCopy);
+  suClient = selfCopy->_suClient;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -3108,53 +3108,53 @@ void __64__SUSettingsScanOperation_queryDDMDeclaration_withReplyHandler___block_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)checkForBetaPrograms:(id)a3 withReplyHandler:(id)a4
+- (void)checkForBetaPrograms:(id)programs withReplyHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, programs);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, handler);
   if (_os_feature_enabled_impl())
   {
-    if (v34->_seedingBetaManager)
+    if (selfCopy->_seedingBetaManager)
     {
-      v8 = [location options];
-      v9 = [v8 clientIsBuddy];
-      MEMORY[0x277D82BD8](v8);
-      if (v9)
+      options = [location options];
+      clientIsBuddy = [options clientIsBuddy];
+      MEMORY[0x277D82BD8](options);
+      if (clientIsBuddy)
       {
-        v7 = [(SUSettingsScanOperation *)v34 log];
-        v25 = [(SUCoreLog *)v7 oslog];
+        v7 = [(SUSettingsScanOperation *)selfCopy log];
+        oslog = [(SUCoreLog *)v7 oslog];
         MEMORY[0x277D82BD8](v7);
         v24 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [(SUSettingsScanOperation *)v34 scanUUID];
-          __os_log_helper_16_2_2_8_32_8_66(v35, "[SUSettingsScanOperation checkForBetaPrograms:withReplyHandler:]", v6);
-          _os_log_impl(&dword_26AC94000, v25, v24, "%s [%{public}@]: The client is Buddy - skipping on the Seeding feature.", v35, 0x16u);
-          MEMORY[0x277D82BD8](v6);
+          scanUUID = [(SUSettingsScanOperation *)selfCopy scanUUID];
+          __os_log_helper_16_2_2_8_32_8_66(v35, "[SUSettingsScanOperation checkForBetaPrograms:withReplyHandler:]", scanUUID);
+          _os_log_impl(&dword_26AC94000, oslog, v24, "%s [%{public}@]: The client is Buddy - skipping on the Seeding feature.", v35, 0x16u);
+          MEMORY[0x277D82BD8](scanUUID);
         }
 
-        objc_storeStrong(&v25, 0);
+        objc_storeStrong(&oslog, 0);
         (*(v31 + 2))();
         v28 = 1;
       }
 
       else
       {
-        v5 = [location currentSeedingDevice];
-        MEMORY[0x277D82BD8](v5);
-        if (v5)
+        currentSeedingDevice = [location currentSeedingDevice];
+        MEMORY[0x277D82BD8](currentSeedingDevice);
+        if (currentSeedingDevice)
         {
-          [(SUSettingsScanOperation *)v34 scanForDeviceEligibleBetaPrograms:location withReplyHandler:v31];
+          [(SUSettingsScanOperation *)selfCopy scanForDeviceEligibleBetaPrograms:location withReplyHandler:v31];
         }
 
         else
         {
-          objc_initWeak(&from, v34);
+          objc_initWeak(&from, selfCopy);
           v4 = MEMORY[0x277D4D320];
           v15 = MEMORY[0x277D85DD0];
           v16 = -1073741824;
@@ -3178,19 +3178,19 @@ void __64__SUSettingsScanOperation_queryDDMDeclaration_withReplyHandler___block_
 
     else
     {
-      v11 = [(SUSettingsScanOperation *)v34 log];
-      v27 = [(SUCoreLog *)v11 oslog];
+      v11 = [(SUSettingsScanOperation *)selfCopy log];
+      oslog2 = [(SUCoreLog *)v11 oslog];
       MEMORY[0x277D82BD8](v11);
       v26 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(SUSettingsScanOperation *)v34 scanUUID];
-        __os_log_helper_16_2_2_8_32_8_66(v36, "[SUSettingsScanOperation checkForBetaPrograms:withReplyHandler:]", v10);
-        _os_log_impl(&dword_26AC94000, v27, v26, "%s [%{public}@]: The seeding beta manager was not configured for this scan operation. Skipping.", v36, 0x16u);
-        MEMORY[0x277D82BD8](v10);
+        scanUUID2 = [(SUSettingsScanOperation *)selfCopy scanUUID];
+        __os_log_helper_16_2_2_8_32_8_66(v36, "[SUSettingsScanOperation checkForBetaPrograms:withReplyHandler:]", scanUUID2);
+        _os_log_impl(&dword_26AC94000, oslog2, v26, "%s [%{public}@]: The seeding beta manager was not configured for this scan operation. Skipping.", v36, 0x16u);
+        MEMORY[0x277D82BD8](scanUUID2);
       }
 
-      objc_storeStrong(&v27, 0);
+      objc_storeStrong(&oslog2, 0);
       (*(v31 + 2))();
       v28 = 1;
     }
@@ -3198,19 +3198,19 @@ void __64__SUSettingsScanOperation_queryDDMDeclaration_withReplyHandler___block_
 
   else
   {
-    v13 = [(SUSettingsScanOperation *)v34 log];
-    v30 = [(SUCoreLog *)v13 oslog];
+    v13 = [(SUSettingsScanOperation *)selfCopy log];
+    oslog3 = [(SUCoreLog *)v13 oslog];
     MEMORY[0x277D82BD8](v13);
     v29 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SUSettingsScanOperation *)v34 scanUUID];
-      __os_log_helper_16_2_2_8_32_8_66(v37, "[SUSettingsScanOperation checkForBetaPrograms:withReplyHandler:]", v12);
-      _os_log_impl(&dword_26AC94000, v30, v29, "%s [%{public}@]: The Seeding feature is unavailable.", v37, 0x16u);
-      MEMORY[0x277D82BD8](v12);
+      scanUUID3 = [(SUSettingsScanOperation *)selfCopy scanUUID];
+      __os_log_helper_16_2_2_8_32_8_66(v37, "[SUSettingsScanOperation checkForBetaPrograms:withReplyHandler:]", scanUUID3);
+      _os_log_impl(&dword_26AC94000, oslog3, v29, "%s [%{public}@]: The Seeding feature is unavailable.", v37, 0x16u);
+      MEMORY[0x277D82BD8](scanUUID3);
     }
 
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&oslog3, 0);
     (*(v31 + 2))();
     v28 = 1;
   }
@@ -3262,23 +3262,23 @@ void __65__SUSettingsScanOperation_checkForBetaPrograms_withReplyHandler___block
   *MEMORY[0x277D85DE8];
 }
 
-- (void)scanForDeviceEligibleBetaPrograms:(id)a3 withReplyHandler:(id)a4
+- (void)scanForDeviceEligibleBetaPrograms:(id)programs withReplyHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, programs);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  v9 = [location currentSeedingDevice];
-  MEMORY[0x277D82BD8](v9);
-  if (v9)
+  objc_storeStrong(&v24, handler);
+  currentSeedingDevice = [location currentSeedingDevice];
+  MEMORY[0x277D82BD8](currentSeedingDevice);
+  if (currentSeedingDevice)
   {
-    objc_initWeak(&from, v27);
-    seedingBetaManager = v27->_seedingBetaManager;
-    v4 = [location currentSeedingDevice];
-    v5 = [v4 platform];
+    objc_initWeak(&from, selfCopy);
+    seedingBetaManager = selfCopy->_seedingBetaManager;
+    currentSeedingDevice2 = [location currentSeedingDevice];
+    platform = [currentSeedingDevice2 platform];
     v11 = MEMORY[0x277D85DD0];
     v12 = -1073741824;
     v13 = 0;
@@ -3288,9 +3288,9 @@ void __65__SUSettingsScanOperation_checkForBetaPrograms_withReplyHandler___block
     v19[1] = v26;
     v16 = MEMORY[0x277D82BE0](location);
     v18 = MEMORY[0x277D82BE0](v24);
-    v17 = MEMORY[0x277D82BE0](v27);
-    [(SDBetaManager *)seedingBetaManager queryProgramsForSystemAccountsWithPlatforms:v5 completion:&v11];
-    MEMORY[0x277D82BD8](v4);
+    v17 = MEMORY[0x277D82BE0](selfCopy);
+    [(SDBetaManager *)seedingBetaManager queryProgramsForSystemAccountsWithPlatforms:platform completion:&v11];
+    MEMORY[0x277D82BD8](currentSeedingDevice2);
     objc_storeStrong(&v17, 0);
     objc_storeStrong(&v18, 0);
     objc_storeStrong(&v16, 0);
@@ -3301,19 +3301,19 @@ void __65__SUSettingsScanOperation_checkForBetaPrograms_withReplyHandler___block
 
   else
   {
-    v8 = [(SUSettingsScanOperation *)v27 log];
-    v23 = [(SUCoreLog *)v8 oslog];
+    v8 = [(SUSettingsScanOperation *)selfCopy log];
+    oslog = [(SUCoreLog *)v8 oslog];
     MEMORY[0x277D82BD8](v8);
     v22 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SUSettingsScanOperation *)v27 scanUUID];
-      __os_log_helper_16_2_2_8_32_8_66(v28, "[SUSettingsScanOperation scanForDeviceEligibleBetaPrograms:withReplyHandler:]", v7);
-      _os_log_impl(&dword_26AC94000, v23, v22, "%s [%{public}@]: Tried to scan for beta programs without a seeding device.", v28, 0x16u);
-      MEMORY[0x277D82BD8](v7);
+      scanUUID = [(SUSettingsScanOperation *)selfCopy scanUUID];
+      __os_log_helper_16_2_2_8_32_8_66(v28, "[SUSettingsScanOperation scanForDeviceEligibleBetaPrograms:withReplyHandler:]", scanUUID);
+      _os_log_impl(&dword_26AC94000, oslog, v22, "%s [%{public}@]: Tried to scan for beta programs without a seeding device.", v28, 0x16u);
+      MEMORY[0x277D82BD8](scanUUID);
     }
 
-    objc_storeStrong(&v23, 0);
+    objc_storeStrong(&oslog, 0);
     (*(v24 + 2))(v24, 0, 0);
     v21 = 1;
   }
@@ -3515,16 +3515,16 @@ void __78__SUSettingsScanOperation_scanForDeviceEligibleBetaPrograms_withReplyHa
   *MEMORY[0x277D85DE8];
 }
 
-- (void)queryRollbackStatus:(id)a3 withReplyHandler:(id)a4
+- (void)queryRollbackStatus:(id)status withReplyHandler:(id)handler
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, status);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v19);
-  suClient = v19->_suClient;
+  objc_storeStrong(&v16, handler);
+  objc_initWeak(&v15, selfCopy);
+  suClient = selfCopy->_suClient;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -3534,7 +3534,7 @@ void __78__SUSettingsScanOperation_scanForDeviceEligibleBetaPrograms_withReplyHa
   v14[1] = v18;
   v13 = MEMORY[0x277D82BE0](v16);
   v11 = MEMORY[0x277D82BE0](location);
-  v12 = MEMORY[0x277D82BE0](v19);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   [(SUManagerClient *)suClient isRollingBack:&v6];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
@@ -3705,16 +3705,16 @@ void __64__SUSettingsScanOperation_queryRollbackStatus_withReplyHandler___block_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)checkIsEligibleForRollback:(id)a3 withReplyHandler:(id)a4
+- (void)checkIsEligibleForRollback:(id)rollback withReplyHandler:(id)handler
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, rollback);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v19);
-  suClient = v19->_suClient;
+  objc_storeStrong(&v16, handler);
+  objc_initWeak(&v15, selfCopy);
+  suClient = selfCopy->_suClient;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -3723,7 +3723,7 @@ void __64__SUSettingsScanOperation_queryRollbackStatus_withReplyHandler___block_
   objc_copyWeak(v14, &v15);
   v14[1] = v18;
   v13 = MEMORY[0x277D82BE0](v16);
-  v11 = MEMORY[0x277D82BE0](v19);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location);
   [(SUManagerClient *)suClient eligibleRollbackWithOptions:0 withResult:&v6];
   objc_storeStrong(&v12, 0);
@@ -3893,16 +3893,16 @@ void __71__SUSettingsScanOperation_checkIsEligibleForRollback_withReplyHandler__
   *MEMORY[0x277D85DE8];
 }
 
-- (void)checkIfAutoUpdateScheduled:(id)a3 withReplyHandler:(id)a4
+- (void)checkIfAutoUpdateScheduled:(id)scheduled withReplyHandler:(id)handler
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, scheduled);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v19);
-  suClient = v19->_suClient;
+  objc_storeStrong(&v16, handler);
+  objc_initWeak(&v15, selfCopy);
+  suClient = selfCopy->_suClient;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -3912,7 +3912,7 @@ void __71__SUSettingsScanOperation_checkIsEligibleForRollback_withReplyHandler__
   v14[1] = v18;
   v13 = MEMORY[0x277D82BE0](v16);
   v11 = MEMORY[0x277D82BE0](location);
-  v12 = MEMORY[0x277D82BE0](v19);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   [(SUManagerClient *)suClient isAutoUpdateScheduled:&v6];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
@@ -4089,49 +4089,49 @@ void __71__SUSettingsScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
   *MEMORY[0x277D85DE8];
 }
 
-- (void)startRefreshOperation:(id)a3 withEventInfo:(id)a4 completionHandler:(id)a5
+- (void)startRefreshOperation:(id)operation withEventInfo:(id)info completionHandler:(id)handler
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, info);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v19 = MEMORY[0x277D82BE0](v23);
+  objc_storeStrong(&v20, handler);
+  v19 = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(v19);
-  if ([(SUSettingsScanOperation *)v23 isActive])
+  if ([(SUSettingsScanOperation *)selfCopy isActive])
   {
-    v16 = [(SUCoreFSM *)v23->_scanFSM diag];
-    [v16 trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The scan machine is currently active" withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v16);
+    diag = [(SUCoreFSM *)selfCopy->_scanFSM diag];
+    [diag trackAnomaly:@"[SUSettingsScanOperation]" forReason:@"The scan machine is currently active" withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
   }
 
   else
   {
     v5 = MEMORY[0x26D66A460](v20);
-    refreshScanCompletionHandler = v23->_refreshScanCompletionHandler;
-    v23->_refreshScanCompletionHandler = v5;
+    refreshScanCompletionHandler = selfCopy->_refreshScanCompletionHandler;
+    selfCopy->_refreshScanCompletionHandler = v5;
     MEMORY[0x277D82BD8](refreshScanCompletionHandler);
-    v23->_operationType = 2;
+    selfCopy->_operationType = 2;
     v7 = dispatch_group_create();
-    scanGroup = v23->_scanGroup;
-    v23->_scanGroup = v7;
+    scanGroup = selfCopy->_scanGroup;
+    selfCopy->_scanGroup = v7;
     MEMORY[0x277D82BD8](scanGroup);
     v15 = MEMORY[0x277CCACA8];
-    v14 = [(SUSettingsScanOperation *)v23 baseDomain];
-    v12 = [v15 stringWithFormat:@"%@.concurrentQueue", v14];
+    baseDomain = [(SUSettingsScanOperation *)selfCopy baseDomain];
+    v12 = [v15 stringWithFormat:@"%@.concurrentQueue", baseDomain];
     v9 = v12;
     label = [v12 UTF8String];
     v10 = dispatch_queue_create(label, MEMORY[0x277D85CD8]);
-    concurrentQueue = v23->_concurrentQueue;
-    v23->_concurrentQueue = v10;
+    concurrentQueue = selfCopy->_concurrentQueue;
+    selfCopy->_concurrentQueue = v10;
     MEMORY[0x277D82BD8](concurrentQueue);
     MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v14);
-    [(SUCoreFSM *)v23->_scanFSM activateMachine];
-    [(SUCoreFSM *)v23->_scanFSM postEvent:location[0] withInfo:v21];
+    MEMORY[0x277D82BD8](baseDomain);
+    [(SUCoreFSM *)selfCopy->_scanFSM activateMachine];
+    [(SUCoreFSM *)selfCopy->_scanFSM postEvent:location[0] withInfo:v21];
   }
 
   objc_sync_exit(v19);
@@ -4141,33 +4141,33 @@ void __71__SUSettingsScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)a3
+- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)case
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, case);
   if (location[0])
   {
-    v5 = [location[0] domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x277D64910]];
-    MEMORY[0x277D82BD8](v5);
+    domain = [location[0] domain];
+    v6 = [domain isEqualToString:*MEMORY[0x277D64910]];
+    MEMORY[0x277D82BD8](domain);
     if (v6)
     {
-      v7 = [location[0] code];
+      code = [location[0] code];
       v4 = 1;
-      if (v7 != 3)
+      if (code != 3)
       {
         v4 = 1;
-        if (v7 != 55)
+        if (code != 55)
         {
           v4 = 1;
-          if (v7 != 13)
+          if (code != 13)
           {
             v4 = 1;
-            if (v7 != 11)
+            if (code != 11)
             {
-              v4 = v7 == 14;
+              v4 = code == 14;
             }
           }
         }
@@ -4202,11 +4202,11 @@ void __71__SUSettingsScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
 - (id)baseDomain
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v5 = [MEMORY[0x277D643F8] sharedCore];
-  v4 = [v5 commonDomain];
-  v6 = [v3 initWithFormat:@"%@.susettings.fsm.scan.%@", v4, self->_scanUUID];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  commonDomain = [mEMORY[0x277D643F8] commonDomain];
+  v6 = [v3 initWithFormat:@"%@.susettings.fsm.scan.%@", commonDomain, self->_scanUUID];
+  MEMORY[0x277D82BD8](commonDomain);
+  MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
 
   return v6;
 }

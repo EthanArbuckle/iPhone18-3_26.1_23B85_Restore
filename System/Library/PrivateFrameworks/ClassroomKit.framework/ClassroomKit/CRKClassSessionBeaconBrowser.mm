@@ -2,32 +2,32 @@
 + (id)invitationUUID;
 - (CRKClassSessionBeaconBrowser)init;
 - (CRKClassSessionBeaconBrowserDelegate)delegate;
-- (id)organizationUUIDsMatchingZoneData:(id)a3;
+- (id)organizationUUIDsMatchingZoneData:(id)data;
 - (id)stateDictionary;
-- (id)zoneDataForAdvertisementUUID:(id)a3;
-- (id)zoneDataForOrganizationUUID:(id)a3;
+- (id)zoneDataForAdvertisementUUID:(id)d;
+- (id)zoneDataForOrganizationUUID:(id)d;
 - (void)dealloc;
-- (void)delegateDidFailWithError:(id)a3;
-- (void)delegateDidFindClassSession:(id)a3 flags:(unsigned __int16)a4;
-- (void)delegateDidFindInvitationSessionWithEndpoint:(id)a3;
-- (void)increaseScanFrequencyForDuration:(double)a3;
+- (void)delegateDidFailWithError:(id)error;
+- (void)delegateDidFindClassSession:(id)session flags:(unsigned __int16)flags;
+- (void)delegateDidFindInvitationSessionWithEndpoint:(id)endpoint;
+- (void)increaseScanFrequencyForDuration:(double)duration;
 - (void)increasedScanDurationElapsed;
-- (void)setAllowInvitationSessions:(BOOL)a3;
-- (void)setOrganizationUUIDs:(id)a3;
+- (void)setAllowInvitationSessions:(BOOL)sessions;
+- (void)setOrganizationUUIDs:(id)ds;
 - (void)startBrowsing;
 - (void)startInitialScan;
-- (void)startScanningForDevicesInZone:(id)a3;
+- (void)startScanningForDevicesInZone:(id)zone;
 - (void)stopBrowsing;
 - (void)stopScanningForDevicesInAllZones;
-- (void)stopScanningForDevicesInZone:(id)a3;
-- (void)trackerScanner:(id)a3 didUpdateDeviceScannerState:(id)a4;
-- (void)trackerScanner:(id)a3 didUpdateZoneTrackerState:(id)a4;
-- (void)trackerScanner:(id)a3 scanner:(id)a4 didFailToRegisterDevices:(id)a5 withError:(id)a6;
-- (void)trackerScanner:(id)a3 scanner:(id)a4 foundDevice:(id)a5 withData:(id)a6;
-- (void)trackerScanner:(id)a3 scanner:(id)a4 foundRequestedDevices:(id)a5;
-- (void)trackerScanner:(id)a3 zoneTracker:(id)a4 didFailToRegisterZones:(id)a5 withError:(id)a6;
-- (void)trackerScanner:(id)a3 zoneTracker:(id)a4 enteredZone:(id)a5;
-- (void)trackerScanner:(id)a3 zoneTracker:(id)a4 exitedZone:(id)a5;
+- (void)stopScanningForDevicesInZone:(id)zone;
+- (void)trackerScanner:(id)scanner didUpdateDeviceScannerState:(id)state;
+- (void)trackerScanner:(id)scanner didUpdateZoneTrackerState:(id)state;
+- (void)trackerScanner:(id)scanner scanner:(id)a4 didFailToRegisterDevices:(id)devices withError:(id)error;
+- (void)trackerScanner:(id)scanner scanner:(id)a4 foundDevice:(id)device withData:(id)data;
+- (void)trackerScanner:(id)scanner scanner:(id)a4 foundRequestedDevices:(id)devices;
+- (void)trackerScanner:(id)scanner zoneTracker:(id)tracker didFailToRegisterZones:(id)zones withError:(id)error;
+- (void)trackerScanner:(id)scanner zoneTracker:(id)tracker enteredZone:(id)zone;
+- (void)trackerScanner:(id)scanner zoneTracker:(id)tracker exitedZone:(id)zone;
 - (void)updateScanner;
 - (void)updateZones;
 @end
@@ -57,20 +57,20 @@
   return v2;
 }
 
-- (void)setOrganizationUUIDs:(id)a3
+- (void)setOrganizationUUIDs:(id)ds
 {
-  v7 = a3;
+  dsCopy = ds;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBeaconBrowser setOrganizationUUIDs:];
   }
 
   organizationUUIDs = self->_organizationUUIDs;
-  if (v7 | organizationUUIDs)
+  if (dsCopy | organizationUUIDs)
   {
-    if (([(NSSet *)organizationUUIDs isEqual:v7]& 1) == 0)
+    if (([(NSSet *)organizationUUIDs isEqual:dsCopy]& 1) == 0)
     {
-      v5 = [v7 copy];
+      v5 = [dsCopy copy];
       v6 = self->_organizationUUIDs;
       self->_organizationUUIDs = v5;
 
@@ -84,17 +84,17 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAllowInvitationSessions:(BOOL)a3
+- (void)setAllowInvitationSessions:(BOOL)sessions
 {
-  v3 = a3;
+  sessionsCopy = sessions;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBeaconBrowser setAllowInvitationSessions:];
   }
 
-  if (self->_allowInvitationSessions != v3)
+  if (self->_allowInvitationSessions != sessionsCopy)
   {
-    self->_allowInvitationSessions = v3;
+    self->_allowInvitationSessions = sessionsCopy;
     if ([(CRKClassSessionBeaconBrowser *)self isBrowsing])
     {
 
@@ -127,7 +127,7 @@
   [OUTLINED_FUNCTION_0_0(v2 v3];
 }
 
-- (void)increaseScanFrequencyForDuration:(double)a3
+- (void)increaseScanFrequencyForDuration:(double)duration
 {
   v8 = *MEMORY[0x277D85DE8];
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
@@ -139,22 +139,22 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    durationCopy = duration;
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Increasing bluetooth scan rate for %f seconds", &v6, 0xCu);
   }
 
   ++self->mIncreasedScanRequestCount;
   [(CRKClassSessionBeaconBrowser *)self updateScanner];
-  [(CRKClassSessionBeaconBrowser *)self performSelector:sel_increasedScanDurationElapsed withObject:0 afterDelay:a3];
+  [(CRKClassSessionBeaconBrowser *)self performSelector:sel_increasedScanDurationElapsed withObject:0 afterDelay:duration];
 }
 
 - (id)stateDictionary
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-  v4 = [v3 zoneTrackerState];
+  trackerScanner = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+  zoneTrackerState = [trackerScanner zoneTrackerState];
 
-  if (v4 == 3)
+  if (zoneTrackerState == 3)
   {
     v5 = objc_opt_new();
     v6 = objc_opt_new();
@@ -162,8 +162,8 @@
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v7 = [(CRKClassSessionBeaconBrowser *)self organizationUUIDs];
-    v8 = [v7 countByEnumeratingWithState:&v52 objects:v58 count:16];
+    organizationUUIDs = [(CRKClassSessionBeaconBrowser *)self organizationUUIDs];
+    v8 = [organizationUUIDs countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v8)
     {
       v9 = v8;
@@ -174,14 +174,14 @@
         {
           if (*v53 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(organizationUUIDs);
           }
 
-          v12 = [*(*(&v52 + 1) + 8 * i) UUIDString];
-          [v6 addObject:v12];
+          uUIDString = [*(*(&v52 + 1) + 8 * i) UUIDString];
+          [v6 addObject:uUIDString];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v52 objects:v58 count:16];
+        v9 = [organizationUUIDs countByEnumeratingWithState:&v52 objects:v58 count:16];
       }
 
       while (v9);
@@ -208,7 +208,7 @@
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v43 = self;
+    selfCopy = self;
     v17 = self->mScanningZones;
     v18 = [(NSMutableSet *)v17 countByEnumeratingWithState:&v48 objects:v57 count:16];
     if (v18)
@@ -227,8 +227,8 @@
           }
 
           v23 = *(*(&v48 + 1) + 8 * j);
-          v24 = [*(v21 + 2704) data];
-          v25 = [v23 isEqualToData:v24];
+          data = [*(v21 + 2704) data];
+          v25 = [v23 isEqualToData:data];
 
           if (v25)
           {
@@ -251,7 +251,7 @@ LABEL_22:
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v29 = [(CRKClassSessionBeaconBrowser *)v43 organizationUUIDsMatchingZoneData:v23];
+          v29 = [(CRKClassSessionBeaconBrowser *)selfCopy organizationUUIDsMatchingZoneData:v23];
           v30 = [v29 countByEnumeratingWithState:&v44 objects:v56 count:16];
           if (v30)
           {
@@ -266,8 +266,8 @@ LABEL_22:
                   objc_enumerationMutation(v29);
                 }
 
-                v34 = [*(*(&v44 + 1) + 8 * k) UUIDString];
-                [v14 addObject:v34];
+                uUIDString2 = [*(*(&v44 + 1) + 8 * k) UUIDString];
+                [v14 addObject:uUIDString2];
               }
 
               v31 = [v29 countByEnumeratingWithState:&v44 objects:v56 count:16];
@@ -294,8 +294,8 @@ LABEL_22:
       [v40 setObject:v36 forKeyedSubscript:@"Scanning Zones"];
     }
 
-    v37 = v41;
-    if (v43->mIncreasedScanRequestCount)
+    trackerScanner2 = v41;
+    if (selfCopy->mIncreasedScanRequestCount)
     {
       [v40 setObject:@"YES" forKeyedSubscript:@"Ranging"];
     }
@@ -305,8 +305,8 @@ LABEL_22:
   {
     v59 = @"Bluetooth State";
     v38 = MEMORY[0x277CCABB0];
-    v37 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-    v14 = [v38 numberWithInteger:{objc_msgSend(v37, "zoneTrackerState")}];
+    trackerScanner2 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+    v14 = [v38 numberWithInteger:{objc_msgSend(trackerScanner2, "zoneTrackerState")}];
     v60[0] = v14;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
   }
@@ -314,47 +314,47 @@ LABEL_22:
   return v35;
 }
 
-- (id)zoneDataForOrganizationUUID:(id)a3
+- (id)zoneDataForOrganizationUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v5[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
     v5[0] = 0;
     v5[1] = 0;
-    [a3 getUUIDBytes:v5];
-    v3 = [MEMORY[0x277CBEA90] dataWithBytes:v5 length:12];
+    [d getUUIDBytes:v5];
+    dCopy = [MEMORY[0x277CBEA90] dataWithBytes:v5 length:12];
   }
 
-  return v3;
+  return dCopy;
 }
 
-- (id)zoneDataForAdvertisementUUID:(id)a3
+- (id)zoneDataForAdvertisementUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v5[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
     v5[0] = 0;
     v5[1] = 0;
-    [a3 getUUIDBytes:v5];
-    v3 = [MEMORY[0x277CBEA90] dataWithBytes:v5 length:16];
+    [d getUUIDBytes:v5];
+    dCopy = [MEMORY[0x277CBEA90] dataWithBytes:v5 length:16];
   }
 
-  return v3;
+  return dCopy;
 }
 
-- (id)organizationUUIDsMatchingZoneData:(id)a3
+- (id)organizationUUIDsMatchingZoneData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] >= 0xC)
+  dataCopy = data;
+  if ([dataCopy length] >= 0xC)
   {
-    if ([v4 length] >= 0xD)
+    if ([dataCopy length] >= 0xD)
     {
-      v6 = [v4 subdataWithRange:{0, 12}];
+      v6 = [dataCopy subdataWithRange:{0, 12}];
 
-      v4 = v6;
+      dataCopy = v6;
     }
 
     v5 = objc_opt_new();
@@ -362,8 +362,8 @@ LABEL_22:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(CRKClassSessionBeaconBrowser *)self organizationUUIDs];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    organizationUUIDs = [(CRKClassSessionBeaconBrowser *)self organizationUUIDs];
+    v8 = [organizationUUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -374,12 +374,12 @@ LABEL_22:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(organizationUUIDs);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
           v13 = [(CRKClassSessionBeaconBrowser *)self zoneDataForOrganizationUUID:v12];
-          v14 = [v13 isEqualToData:v4];
+          v14 = [v13 isEqualToData:dataCopy];
 
           if (v14)
           {
@@ -387,7 +387,7 @@ LABEL_22:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [organizationUUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -424,10 +424,10 @@ uint64_t __46__CRKClassSessionBeaconBrowser_invitationUUID__block_invoke()
 - (void)updateZones
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-  v4 = [v3 zoneTrackerState];
+  trackerScanner = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+  zoneTrackerState = [trackerScanner zoneTrackerState];
 
-  if (v4 == 2)
+  if (zoneTrackerState == 2)
   {
     v5 = _CRKLogBluetooth_2();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -439,17 +439,17 @@ uint64_t __46__CRKClassSessionBeaconBrowser_invitationUUID__block_invoke()
     v6 = [MEMORY[0x277CBEB98] set];
     [(CRKClassSessionBeaconBrowser *)self setTrackingUUIDs:v6];
 
-    v7 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-    [v7 unregisterAllZoneChanges];
+    trackerScanner2 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+    [trackerScanner2 unregisterAllZoneChanges];
 
     [(CRKClassSessionBeaconBrowser *)self stopScanningForDevicesInAllZones];
     return;
   }
 
-  v8 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-  v9 = [v8 zoneTrackerState];
+  trackerScanner3 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+  zoneTrackerState2 = [trackerScanner3 zoneTrackerState];
 
-  if (v9 == 3)
+  if (zoneTrackerState2 == 3)
   {
     v10 = objc_opt_new();
     v52 = objc_opt_new();
@@ -458,8 +458,8 @@ uint64_t __46__CRKClassSessionBeaconBrowser_invitationUUID__block_invoke()
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v12 = [(CRKClassSessionBeaconBrowser *)self organizationUUIDs];
-    v13 = [v12 countByEnumeratingWithState:&v61 objects:v73 count:16];
+    organizationUUIDs = [(CRKClassSessionBeaconBrowser *)self organizationUUIDs];
+    v13 = [organizationUUIDs countByEnumeratingWithState:&v61 objects:v73 count:16];
     if (v13)
     {
       v14 = v13;
@@ -470,13 +470,13 @@ uint64_t __46__CRKClassSessionBeaconBrowser_invitationUUID__block_invoke()
         {
           if (*v62 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(organizationUUIDs);
           }
 
           v17 = *(*(&v61 + 1) + 8 * i);
           [v10 addObject:v17];
-          v18 = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
-          v19 = [v18 containsObject:v17];
+          trackingUUIDs = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
+          v19 = [trackingUUIDs containsObject:v17];
 
           if ((v19 & 1) == 0)
           {
@@ -488,18 +488,18 @@ uint64_t __46__CRKClassSessionBeaconBrowser_invitationUUID__block_invoke()
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v61 objects:v73 count:16];
+        v14 = [organizationUUIDs countByEnumeratingWithState:&v61 objects:v73 count:16];
       }
 
       while (v14);
     }
 
-    v21 = [objc_opt_class() invitationUUID];
-    v22 = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
-    v23 = [v22 crk_setBySubtractingSet:v10];
+    invitationUUID = [objc_opt_class() invitationUUID];
+    trackingUUIDs2 = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
+    v23 = [trackingUUIDs2 crk_setBySubtractingSet:v10];
     v24 = [v23 mutableCopy];
 
-    [v24 removeObject:v21];
+    [v24 removeObject:invitationUUID];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
@@ -534,14 +534,14 @@ uint64_t __46__CRKClassSessionBeaconBrowser_invitationUUID__block_invoke()
 
     if ([(CRKClassSessionBeaconBrowser *)self allowInvitationSessions])
     {
-      [v10 addObject:v21];
-      v31 = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
-      v32 = [v31 containsObject:v21];
+      [v10 addObject:invitationUUID];
+      trackingUUIDs3 = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
+      v32 = [trackingUUIDs3 containsObject:invitationUUID];
 
       v33 = v52;
       if ((v32 & 1) == 0)
       {
-        v34 = [(CRKClassSessionBeaconBrowser *)self zoneDataForAdvertisementUUID:v21];
+        v34 = [(CRKClassSessionBeaconBrowser *)self zoneDataForAdvertisementUUID:invitationUUID];
         if (v34)
         {
           v35 = v52;
@@ -556,13 +556,13 @@ LABEL_36:
 
     else
     {
-      v37 = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
-      v38 = [v37 containsObject:v21];
+      trackingUUIDs4 = [(CRKClassSessionBeaconBrowser *)self trackingUUIDs];
+      v38 = [trackingUUIDs4 containsObject:invitationUUID];
 
       v33 = v52;
       if (v38)
       {
-        v34 = [(CRKClassSessionBeaconBrowser *)self zoneDataForAdvertisementUUID:v21];
+        v34 = [(CRKClassSessionBeaconBrowser *)self zoneDataForAdvertisementUUID:invitationUUID];
         if (v34)
         {
           v35 = v11;
@@ -584,11 +584,11 @@ LABEL_37:
         _os_log_impl(&dword_243550000, v39, OS_LOG_TYPE_DEFAULT, "Removing %{public}@ no-longer-needed zones", buf, 0xCu);
       }
 
-      v41 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+      trackerScanner4 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
       v68 = @"ZTZonesArray";
       v69 = v11;
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-      [v41 unregisterForZoneChanges:v42];
+      [trackerScanner4 unregisterForZoneChanges:v42];
 
       v55 = 0u;
       v56 = 0u;
@@ -632,7 +632,7 @@ LABEL_37:
         _os_log_impl(&dword_243550000, v48, OS_LOG_TYPE_DEFAULT, "Adding %{public}@ zones", buf, 0xCu);
       }
 
-      v50 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+      trackerScanner5 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
       v65[0] = @"ZTZonesArray";
       v65[1] = @"ZTZoneEntry";
       v66[0] = v33;
@@ -640,7 +640,7 @@ LABEL_37:
       v65[2] = @"ZTZoneExit";
       v66[2] = MEMORY[0x277CBEC38];
       v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:v65 count:3];
-      [v50 registerForZoneChangesMatching:v51];
+      [trackerScanner5 registerForZoneChangesMatching:v51];
     }
 
     [(CRKClassSessionBeaconBrowser *)self setTrackingUUIDs:v10];
@@ -658,44 +658,44 @@ LABEL_37:
 
 - (void)startInitialScan
 {
-  v3 = [MEMORY[0x277CBEA90] data];
-  [(CRKClassSessionBeaconBrowser *)self startScanningForDevicesInZone:v3];
-  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_stopScanningForDevicesInZone_ object:v3];
-  [(CRKClassSessionBeaconBrowser *)self performSelector:sel_stopScanningForDevicesInZone_ withObject:v3 afterDelay:5.0];
+  data = [MEMORY[0x277CBEA90] data];
+  [(CRKClassSessionBeaconBrowser *)self startScanningForDevicesInZone:data];
+  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_stopScanningForDevicesInZone_ object:data];
+  [(CRKClassSessionBeaconBrowser *)self performSelector:sel_stopScanningForDevicesInZone_ withObject:data afterDelay:5.0];
 }
 
-- (void)startScanningForDevicesInZone:(id)a3
+- (void)startScanningForDevicesInZone:(id)zone
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zoneCopy = zone;
   v5 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = zoneCopy;
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Start scanning for devices in zone: %{public}@", &v6, 0xCu);
   }
 
-  [(NSMutableSet *)self->mScanningZones addObject:v4];
+  [(NSMutableSet *)self->mScanningZones addObject:zoneCopy];
   [(CRKClassSessionBeaconBrowser *)self updateScanner];
 }
 
-- (void)stopScanningForDevicesInZone:(id)a3
+- (void)stopScanningForDevicesInZone:(id)zone
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_stopScanningForDevicesInZone_ object:v4];
-  if ([(NSMutableSet *)self->mScanningZones containsObject:v4])
+  zoneCopy = zone;
+  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_stopScanningForDevicesInZone_ object:zoneCopy];
+  if ([(NSMutableSet *)self->mScanningZones containsObject:zoneCopy])
   {
     v5 = _CRKLogBluetooth_2();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v4;
+      v7 = zoneCopy;
       _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Stop scanning in zone: %{public}@", &v6, 0xCu);
     }
 
-    [(NSMutableSet *)self->mScanningZones removeObject:v4];
+    [(NSMutableSet *)self->mScanningZones removeObject:zoneCopy];
     [(CRKClassSessionBeaconBrowser *)self updateScanner];
   }
 }
@@ -739,8 +739,8 @@ LABEL_37:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "deviceScannerState")}];
+    trackerScanner = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+    v6 = [v4 numberWithInteger:{objc_msgSend(trackerScanner, "deviceScannerState")}];
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableSet count](self->mScanningZones, "count")}];
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->mIncreasedScanRequestCount];
     *buf = 138543874;
@@ -752,8 +752,8 @@ LABEL_37:
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_INFO, "Updating scanner: scanner state = %{public}@, zones count = %{public}@, increased scan request count = %{public}@", buf, 0x20u);
   }
 
-  v9 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-  if ([v9 deviceScannerState] == 3)
+  trackerScanner2 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+  if ([trackerScanner2 deviceScannerState] == 3)
   {
     v10 = [(NSMutableSet *)self->mScanningZones count];
 
@@ -770,13 +770,13 @@ LABEL_37:
       }
 
       v12 = v11;
-      v13 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+      trackerScanner3 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
       v19 = v12;
       v20 = @"kPuckTypes";
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
       v21 = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      [v13 registerForDevicesMatching:v15 options:MEMORY[0x277CBEC10]];
+      [trackerScanner3 registerForDevicesMatching:v15 options:MEMORY[0x277CBEC10]];
 
       if (![(CRKClassSessionBeaconBrowser *)self isScanning])
       {
@@ -792,8 +792,8 @@ LABEL_37:
   {
   }
 
-  v16 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-  if ([v16 deviceScannerState] == 2)
+  trackerScanner4 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+  if ([trackerScanner4 deviceScannerState] == 2)
   {
   }
 
@@ -807,8 +807,8 @@ LABEL_37:
     }
   }
 
-  v18 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
-  [v18 unregisterAllDeviceChanges];
+  trackerScanner5 = [(CRKClassSessionBeaconBrowser *)self trackerScanner];
+  [trackerScanner5 unregisterAllDeviceChanges];
 
   if ([(CRKClassSessionBeaconBrowser *)self isScanning])
   {
@@ -817,89 +817,89 @@ LABEL_37:
   }
 }
 
-- (void)trackerScanner:(id)a3 didUpdateZoneTrackerState:(id)a4
+- (void)trackerScanner:(id)scanner didUpdateZoneTrackerState:(id)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  stateCopy = state;
   mZoneTrackerLastState = self->mZoneTrackerLastState;
-  v7 = [v5 state];
-  self->mZoneTrackerLastState = [v5 state];
+  state = [stateCopy state];
+  self->mZoneTrackerLastState = [stateCopy state];
   v8 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 state];
+    state2 = [stateCopy state];
     v10 = @"YES";
-    if (mZoneTrackerLastState == v7)
+    if (mZoneTrackerLastState == state)
     {
       v10 = @"NO";
     }
 
     v11 = v10;
     v12 = 134349314;
-    v13 = v9;
+    v13 = state2;
     v14 = 2114;
     v15 = v11;
     _os_log_impl(&dword_243550000, v8, OS_LOG_TYPE_DEFAULT, "Zone tracker state %{public}ld, is changed: %{public}@", &v12, 0x16u);
   }
 
-  if (mZoneTrackerLastState != v7 && [v5 state] == 3)
+  if (mZoneTrackerLastState != state && [stateCopy state] == 3)
   {
     [(CRKClassSessionBeaconBrowser *)self updateZones];
     [(CRKClassSessionBeaconBrowser *)self startInitialScan];
   }
 }
 
-- (void)trackerScanner:(id)a3 zoneTracker:(id)a4 enteredZone:(id)a5
+- (void)trackerScanner:(id)scanner zoneTracker:(id)tracker enteredZone:(id)zone
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  zoneCopy = zone;
   v7 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v6;
+    v9 = zoneCopy;
     _os_log_impl(&dword_243550000, v7, OS_LOG_TYPE_DEFAULT, "Zone entered %{public}@", &v8, 0xCu);
   }
 
-  [(CRKClassSessionBeaconBrowser *)self startScanningForDevicesInZone:v6];
+  [(CRKClassSessionBeaconBrowser *)self startScanningForDevicesInZone:zoneCopy];
 }
 
-- (void)trackerScanner:(id)a3 zoneTracker:(id)a4 exitedZone:(id)a5
+- (void)trackerScanner:(id)scanner zoneTracker:(id)tracker exitedZone:(id)zone
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  zoneCopy = zone;
   v7 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v6;
+    v9 = zoneCopy;
     _os_log_impl(&dword_243550000, v7, OS_LOG_TYPE_DEFAULT, "Zone exited %{public}@", &v8, 0xCu);
   }
 
-  [(CRKClassSessionBeaconBrowser *)self stopScanningForDevicesInZone:v6];
+  [(CRKClassSessionBeaconBrowser *)self stopScanningForDevicesInZone:zoneCopy];
 }
 
-- (void)trackerScanner:(id)a3 zoneTracker:(id)a4 didFailToRegisterZones:(id)a5 withError:(id)a6
+- (void)trackerScanner:(id)scanner zoneTracker:(id)tracker didFailToRegisterZones:(id)zones withError:(id)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = *MEMORY[0x277CCA7E8];
-  v12[0] = a6;
+  v12[0] = error;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a6;
+  errorCopy = error;
   v9 = [v7 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
   v10 = CRKErrorWithCodeAndUserInfo(103, v9);
   [(CRKClassSessionBeaconBrowser *)self delegateDidFailWithError:v10];
 }
 
-- (void)trackerScanner:(id)a3 didUpdateDeviceScannerState:(id)a4
+- (void)trackerScanner:(id)scanner didUpdateDeviceScannerState:(id)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  stateCopy = state;
   v6 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "state")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(stateCopy, "state")}];
     v8 = 138543362;
     v9 = v7;
     _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "Device scanner state %{public}@", &v8, 0xCu);
@@ -908,39 +908,39 @@ LABEL_37:
   [(CRKClassSessionBeaconBrowser *)self updateScanner];
 }
 
-- (void)trackerScanner:(id)a3 scanner:(id)a4 foundRequestedDevices:(id)a5
+- (void)trackerScanner:(id)scanner scanner:(id)a4 foundRequestedDevices:(id)devices
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a5;
+  devicesCopy = devices;
   v6 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = devicesCopy;
     _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", &v7, 0xCu);
   }
 }
 
-- (void)trackerScanner:(id)a3 scanner:(id)a4 foundDevice:(id)a5 withData:(id)a6
+- (void)trackerScanner:(id)scanner scanner:(id)a4 foundDevice:(id)device withData:(id)data
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a6;
+  dataCopy = data;
   v7 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = dataCopy;
     _os_log_impl(&dword_243550000, v7, OS_LOG_TYPE_DEFAULT, "Found device %{public}@", &buf, 0xCu);
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"kPuckCompanyUUID"];
-  v9 = [v6 objectForKeyedSubscript:@"kPuckCompanyMajor"];
-  v10 = [v9 shortValue];
+  v8 = [dataCopy objectForKeyedSubscript:@"kPuckCompanyUUID"];
+  v9 = [dataCopy objectForKeyedSubscript:@"kPuckCompanyMajor"];
+  shortValue = [v9 shortValue];
 
-  v11 = [v6 objectForKeyedSubscript:@"kPuckCompanyMinor"];
+  v11 = [dataCopy objectForKeyedSubscript:@"kPuckCompanyMinor"];
   LOWORD(v9) = [v11 shortValue];
 
-  v12 = v9 | (v10 << 16);
+  v12 = v9 | (shortValue << 16);
   if (-[CRKClassSessionBeaconBrowser allowInvitationSessions](self, "allowInvitationSessions") && ([v8 UUIDString], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"436C6173-7372-6F6F-6D49-6E7669746531"), v13, v14))
   {
     v15 = [MEMORY[0x277CCACA8] crk_stringWithIPAddress:v12];
@@ -950,7 +950,7 @@ LABEL_37:
 
   else
   {
-    v29 = v6;
+    v29 = dataCopy;
     buf = 0uLL;
     [v8 getUUIDBytes:&buf];
     v17 = HIWORD(buf);
@@ -993,58 +993,58 @@ LABEL_37:
     }
 
     v8 = v28;
-    v6 = v29;
+    dataCopy = v29;
   }
 }
 
-- (void)trackerScanner:(id)a3 scanner:(id)a4 didFailToRegisterDevices:(id)a5 withError:(id)a6
+- (void)trackerScanner:(id)scanner scanner:(id)a4 didFailToRegisterDevices:(id)devices withError:(id)error
 {
-  v7 = a5;
-  v8 = a6;
+  devicesCopy = devices;
+  errorCopy = error;
   v9 = _CRKLogBluetooth_2();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [CRKClassSessionBeaconBrowser trackerScanner:v8 scanner:v7 didFailToRegisterDevices:v9 withError:?];
+    [CRKClassSessionBeaconBrowser trackerScanner:errorCopy scanner:devicesCopy didFailToRegisterDevices:v9 withError:?];
   }
 }
 
-- (void)delegateDidFindClassSession:(id)a3 flags:(unsigned __int16)a4
+- (void)delegateDidFindClassSession:(id)session flags:(unsigned __int16)flags
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(CRKClassSessionBeaconBrowser *)self delegate];
+  flagsCopy = flags;
+  sessionCopy = session;
+  delegate = [(CRKClassSessionBeaconBrowser *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CRKClassSessionBeaconBrowser *)self delegate];
-    [v8 beaconBrowser:self didFindBeaconForClassSession:v9 flags:v4];
+    delegate2 = [(CRKClassSessionBeaconBrowser *)self delegate];
+    [delegate2 beaconBrowser:self didFindBeaconForClassSession:sessionCopy flags:flagsCopy];
   }
 }
 
-- (void)delegateDidFindInvitationSessionWithEndpoint:(id)a3
+- (void)delegateDidFindInvitationSessionWithEndpoint:(id)endpoint
 {
-  v7 = a3;
-  v4 = [(CRKClassSessionBeaconBrowser *)self delegate];
+  endpointCopy = endpoint;
+  delegate = [(CRKClassSessionBeaconBrowser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBeaconBrowser *)self delegate];
-    [v6 beaconBrowser:self didFindBeaconForInvitationSessionWithEndpoint:v7];
+    delegate2 = [(CRKClassSessionBeaconBrowser *)self delegate];
+    [delegate2 beaconBrowser:self didFindBeaconForInvitationSessionWithEndpoint:endpointCopy];
   }
 }
 
-- (void)delegateDidFailWithError:(id)a3
+- (void)delegateDidFailWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(CRKClassSessionBeaconBrowser *)self delegate];
+  errorCopy = error;
+  delegate = [(CRKClassSessionBeaconBrowser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBeaconBrowser *)self delegate];
-    [v6 beaconBrowser:self didFailWithError:v7];
+    delegate2 = [(CRKClassSessionBeaconBrowser *)self delegate];
+    [delegate2 beaconBrowser:self didFailWithError:errorCopy];
   }
 }
 

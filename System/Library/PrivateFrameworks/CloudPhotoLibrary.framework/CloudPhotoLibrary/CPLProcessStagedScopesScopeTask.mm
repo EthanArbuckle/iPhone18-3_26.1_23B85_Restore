@@ -1,37 +1,37 @@
 @interface CPLProcessStagedScopesScopeTask
 + (void)initialize;
-- (CPLProcessStagedScopesScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7;
+- (CPLProcessStagedScopesScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope;
 - (void)_checkDestinationAndProcessCleanup;
-- (void)_cleanupStagedScopeInTransaction:(id)a3 store:(id)a4;
+- (void)_cleanupStagedScopeInTransaction:(id)transaction store:(id)store;
 - (void)_deleteStagingScopeIfNecessary;
 - (void)_excludeScopes;
 - (void)_startActualCleanup;
 - (void)cancel;
 - (void)launch;
-- (void)taskDidFinishWithError:(id)a3;
+- (void)taskDidFinishWithError:(id)error;
 @end
 
 @implementation CPLProcessStagedScopesScopeTask
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4 && (self->_destinationScope || self->_stagingScope))
+  errorCopy = error;
+  if (errorCopy && (self->_destinationScope || self->_stagingScope))
   {
-    v5 = [(CPLEngineScopedTask *)self store];
+    store = [(CPLEngineScopedTask *)self store];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __58__CPLProcessStagedScopesScopeTask_taskDidFinishWithError___block_invoke;
     v12[3] = &unk_1E86205B8;
-    v13 = v5;
-    v14 = self;
+    v13 = store;
+    selfCopy = self;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__CPLProcessStagedScopesScopeTask_taskDidFinishWithError___block_invoke_3;
     v9[3] = &unk_1E86205B8;
-    v10 = v4;
-    v11 = self;
-    v6 = v5;
+    v10 = errorCopy;
+    selfCopy2 = self;
+    v6 = store;
     v7 = [v6 performWriteTransactionWithBlock:v12 completionHandler:v9];
   }
 
@@ -39,7 +39,7 @@
   {
     v8.receiver = self;
     v8.super_class = CPLProcessStagedScopesScopeTask;
-    [(CPLEngineSyncTask *)&v8 taskDidFinishWithError:v4];
+    [(CPLEngineSyncTask *)&v8 taskDidFinishWithError:errorCopy];
   }
 }
 
@@ -461,16 +461,16 @@ LABEL_48:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_cleanupStagedScopeInTransaction:(id)a3 store:(id)a4
+- (void)_cleanupStagedScopeInTransaction:(id)transaction store:(id)store
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(CPLEngineSyncTask *)self engineLibrary];
-  v7 = [v6 transport];
+  storeCopy = store;
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  transport = [engineLibrary transport];
 
-  v8 = [v5 scopes];
-  v23 = v7;
-  v9 = [[CPLTransportScopeMapping alloc] initWithTranslator:v7];
+  scopes = [storeCopy scopes];
+  v23 = transport;
+  v9 = [[CPLTransportScopeMapping alloc] initWithTranslator:transport];
   transportScopeMapping = self->_transportScopeMapping;
   self->_transportScopeMapping = v9;
 
@@ -497,7 +497,7 @@ LABEL_48:
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v8 transportScopeForScope:v16];
+        v17 = [scopes transportScopeForScope:v16];
         if (!v17)
         {
           if ((_CPLSilentLogging & 1) == 0)
@@ -505,11 +505,11 @@ LABEL_48:
             v19 = __CPLTaskOSLogDomain_21318();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              v20 = [(CPLEngineScopedTask *)self scope];
+              scope = [(CPLEngineScopedTask *)self scope];
               *buf = 138412546;
               v30 = v16;
               v31 = 2112;
-              v32 = v20;
+              v32 = scope;
               _os_log_impl(&dword_1DC05A000, v19, OS_LOG_TYPE_ERROR, "Transport scope for %@ is unknown. Can't clean-up %@", buf, 0x16u);
             }
           }
@@ -1415,26 +1415,26 @@ LABEL_20:
 
 - (void)_excludeScopes
 {
-  v7 = [(CPLEngineSyncTask *)self session];
-  v3 = [(CPLEngineScopedTask *)self scope];
-  v4 = [v3 scopeIdentifier];
-  [v7 excludeScopeIdentifierFromPushToTransport:v4];
+  session = [(CPLEngineSyncTask *)self session];
+  scope = [(CPLEngineScopedTask *)self scope];
+  scopeIdentifier = [scope scopeIdentifier];
+  [session excludeScopeIdentifierFromPushToTransport:scopeIdentifier];
 
   destinationScope = self->_destinationScope;
   if (destinationScope)
   {
-    v6 = [(CPLEngineScope *)destinationScope scopeIdentifier];
-    [v7 excludeScopeIdentifierFromPushToTransport:v6];
+    scopeIdentifier2 = [(CPLEngineScope *)destinationScope scopeIdentifier];
+    [session excludeScopeIdentifierFromPushToTransport:scopeIdentifier2];
   }
 
-  [v7 requestSyncStateAtEndOfSyncSession:4 reschedule:0];
+  [session requestSyncStateAtEndOfSyncSession:4 reschedule:0];
 }
 
-- (CPLProcessStagedScopesScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7
+- (CPLProcessStagedScopesScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope
 {
   v12.receiver = self;
   v12.super_class = CPLProcessStagedScopesScopeTask;
-  v7 = [(CPLEngineScopedTask *)&v12 initWithEngineLibrary:a3 session:a4 clientCacheIdentifier:a5 scope:a6 transportScope:a7];
+  v7 = [(CPLEngineScopedTask *)&v12 initWithEngineLibrary:library session:session clientCacheIdentifier:identifier scope:scope transportScope:transportScope];
   if (v7)
   {
     v8 = CPLCopyDefaultSerialQueueAttributes();
@@ -1448,10 +1448,10 @@ LABEL_20:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    _dontProcessStagedScopes = [v2 BOOLForKey:@"CPLDontProcessStagedScopes"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    _dontProcessStagedScopes = [standardUserDefaults BOOLForKey:@"CPLDontProcessStagedScopes"];
   }
 }
 

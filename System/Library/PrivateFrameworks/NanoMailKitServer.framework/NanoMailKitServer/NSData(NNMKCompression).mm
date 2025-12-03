@@ -7,56 +7,56 @@
 
 - (id)compressedData
 {
-  if ([a1 length])
+  if ([self length])
   {
     memset(&v7.total_out, 0, 72);
-    v7.avail_in = [a1 length];
-    v2 = 0;
+    v7.avail_in = [self length];
+    selfCopy = 0;
     if (!deflateInit2_(&v7, -1, 8, 31, 8, 0, "1.2.12", 112))
     {
-      v2 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:0x4000];
+      selfCopy = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:0x4000];
       do
       {
         total_out = v7.total_out;
-        if (total_out >= [v2 length])
+        if (total_out >= [selfCopy length])
         {
-          [v2 increaseLengthBy:0x4000];
+          [selfCopy increaseLengthBy:0x4000];
         }
 
-        v4 = [v2 mutableBytes];
-        v7.next_out = (v4 + v7.total_out);
-        v5 = [v2 length];
+        mutableBytes = [selfCopy mutableBytes];
+        v7.next_out = (mutableBytes + v7.total_out);
+        v5 = [selfCopy length];
         v7.avail_out = v5 - LODWORD(v7.total_out);
         deflate(&v7, 4);
       }
 
       while (!v7.avail_out);
       deflateEnd(&v7);
-      [v2 setLength:v7.total_out];
+      [selfCopy setLength:v7.total_out];
     }
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)decompressedData
 {
-  if (![a1 length])
+  if (![self length])
   {
-    v11 = a1;
+    selfCopy = self;
     goto LABEL_14;
   }
 
-  v2 = [a1 length];
-  v3 = [a1 length];
+  v2 = [self length];
+  v3 = [self length];
   v4 = v3 + (v3 >> 31);
   v5 = [MEMORY[0x277CBEB28] dataWithLength:(v2 + v3 / 2)];
-  v13.avail_in = [a1 length];
+  v13.avail_in = [self length];
   v13.zalloc = 0;
   v13.zfree = 0;
   v13.total_out = 0;
@@ -74,8 +74,8 @@
       [v5 increaseLengthBy:v6];
     }
 
-    v8 = [v5 mutableBytes];
-    v13.next_out = (v8 + v13.total_out);
+    mutableBytes = [v5 mutableBytes];
+    v13.next_out = (mutableBytes + v13.total_out);
     v9 = [v5 length];
     v13.avail_out = v9 - LODWORD(v13.total_out);
     v10 = inflate(&v13, 2);
@@ -91,17 +91,17 @@
   if (inflateEnd(&v13))
   {
 LABEL_12:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
   [v5 setLength:v13.total_out];
-  v11 = [MEMORY[0x277CBEA90] dataWithData:v5];
+  selfCopy = [MEMORY[0x277CBEA90] dataWithData:v5];
 LABEL_13:
 
 LABEL_14:
 
-  return v11;
+  return selfCopy;
 }
 
 @end

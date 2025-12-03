@@ -10,21 +10,21 @@
 - (id)_locationName;
 - (id)_temperature;
 - (void)_delegateDidUpdate;
-- (void)_delegateUpdateDidFailWithError:(id)a3;
+- (void)_delegateUpdateDidFailWithError:(id)error;
 - (void)_delegateWillUpdate;
 - (void)_scheduleNewTimer;
 - (void)_setupWeatherModel;
 - (void)_teardownTimer;
 - (void)_teardownWeatherModel;
-- (void)_updateTimerFired:(id)a3;
+- (void)_updateTimerFired:(id)fired;
 - (void)_updateTodayView;
-- (void)_updateWithReason:(id)a3;
-- (void)getLocationServicesAuthorizationStatus:(id)a3;
-- (void)setUpdateInterval:(double)a3;
-- (void)todayModel:(id)a3 forecastWasUpdated:(id)a4;
-- (void)updateForChangedSettings:(id)a3;
+- (void)_updateWithReason:(id)reason;
+- (void)getLocationServicesAuthorizationStatus:(id)status;
+- (void)setUpdateInterval:(double)interval;
+- (void)todayModel:(id)model forecastWasUpdated:(id)updated;
+- (void)updateForChangedSettings:(id)settings;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation WALockscreenWidgetViewController
@@ -47,18 +47,18 @@
     [(WALockscreenWidgetViewController *)v2 setTodayView:v3];
 
     v4 = objc_opt_new();
-    v5 = [(WALockscreenWidgetViewController *)v2 todayView];
-    [v5 setStyle:v4];
+    todayView = [(WALockscreenWidgetViewController *)v2 todayView];
+    [todayView setStyle:v4];
 
-    v6 = [(WALockscreenWidgetViewController *)v2 todayView];
-    [v6 setHidden:1];
+    todayView2 = [(WALockscreenWidgetViewController *)v2 todayView];
+    [todayView2 setHidden:1];
 
-    v7 = [MEMORY[0x277D75348] clearColor];
-    v8 = [(WALockscreenWidgetViewController *)v2 todayView];
-    [v8 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    todayView3 = [(WALockscreenWidgetViewController *)v2 todayView];
+    [todayView3 setBackgroundColor:clearColor];
 
-    v9 = [(WALockscreenWidgetViewController *)v2 todayView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    todayView4 = [(WALockscreenWidgetViewController *)v2 todayView];
+    [todayView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(WALockscreenWidgetViewController *)v2 setLocationServicesActive:1];
     [(WALockscreenWidgetViewController *)v2 setUpdateInterval:300.0];
@@ -78,28 +78,28 @@
   v4.receiver = self;
   v4.super_class = WALockscreenWidgetViewController;
   [(WALockscreenWidgetViewController *)&v4 viewDidLoad];
-  v3 = [(WALockscreenWidgetViewController *)self todayView];
-  [(WALockscreenWidgetViewController *)self setView:v3];
+  todayView = [(WALockscreenWidgetViewController *)self todayView];
+  [(WALockscreenWidgetViewController *)self setView:todayView];
 
   [(WALockscreenWidgetViewController *)self _updateTodayView];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = WALockscreenWidgetViewController;
-  v7 = a4;
-  [(WALockscreenWidgetViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(WALockscreenWidgetViewController *)self todayView];
+  coordinatorCopy = coordinator;
+  [(WALockscreenWidgetViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  todayView = [(WALockscreenWidgetViewController *)self todayView];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__WALockscreenWidgetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v10[3] = &unk_279E67F50;
-  v11 = v8;
-  v9 = v8;
-  [v7 animateAlongsideTransition:v10 completion:0];
+  v11 = todayView;
+  v9 = todayView;
+  [coordinatorCopy animateAlongsideTransition:v10 completion:0];
 }
 
 void __87__WALockscreenWidgetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -117,30 +117,30 @@ void __87__WALockscreenWidgetViewController_viewWillTransitionToSize_withTransit
   [*(a1 + 32) setStyle:v10];
 }
 
-- (void)setUpdateInterval:(double)a3
+- (void)setUpdateInterval:(double)interval
 {
-  if (self->_updateInterval != a3)
+  if (self->_updateInterval != interval)
   {
     [(WALockscreenWidgetViewController *)self _teardownTimer];
-    self->_updateInterval = a3;
+    self->_updateInterval = interval;
 
     [(WALockscreenWidgetViewController *)self _scheduleNewTimer];
   }
 }
 
-- (void)updateForChangedSettings:(id)a3
+- (void)updateForChangedSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(WALockscreenWidgetViewController *)self todayView];
-  [v5 updateForChangedSettings:v4];
+  settingsCopy = settings;
+  todayView = [(WALockscreenWidgetViewController *)self todayView];
+  [todayView updateForChangedSettings:settingsCopy];
 }
 
 - (BOOL)todayViewIsVisible
 {
   if ([(WALockscreenWidgetViewController *)self isViewLoaded])
   {
-    v3 = [(WALockscreenWidgetViewController *)self todayView];
-    v4 = [v3 isHidden] ^ 1;
+    todayView = [(WALockscreenWidgetViewController *)self todayView];
+    v4 = [todayView isHidden] ^ 1;
   }
 
   else
@@ -151,13 +151,13 @@ void __87__WALockscreenWidgetViewController_viewWillTransitionToSize_withTransit
   return v4;
 }
 
-- (void)_updateWithReason:(id)a3
+- (void)_updateWithReason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WALockscreenWidgetViewController *)self todayModel];
+  reasonCopy = reason;
+  todayModel = [(WALockscreenWidgetViewController *)self todayModel];
 
-  if (!v5)
+  if (!todayModel)
   {
     [(WALockscreenWidgetViewController *)self _setupWeatherModel];
   }
@@ -170,19 +170,19 @@ void __87__WALockscreenWidgetViewController_viewWillTransitionToSize_withTransit
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = reasonCopy;
       _os_log_impl(&dword_272ACF000, v6, OS_LOG_TYPE_DEFAULT, "Updating with reason: %@", buf, 0xCu);
     }
 
     v7 = objc_loadWeakRetained(&location);
-    v8 = [v7 todayModel];
+    todayModel2 = [v7 todayModel];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__WALockscreenWidgetViewController__updateWithReason___block_invoke;
     v11[3] = &unk_279E67F78;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
-    [v8 executeModelUpdateWithCompletion:v11];
+    v12 = reasonCopy;
+    [todayModel2 executeModelUpdateWithCompletion:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -194,7 +194,7 @@ void __87__WALockscreenWidgetViewController_viewWillTransitionToSize_withTransit
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = reasonCopy;
       _os_log_impl(&dword_272ACF000, v9, OS_LOG_TYPE_DEFAULT, "Delegate said to not update with reason: %@", buf, 0xCu);
     }
   }
@@ -382,41 +382,41 @@ void __52__WALockscreenWidgetViewController__updateTodayView__block_invoke(uint6
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)todayModel:(id)a3 forecastWasUpdated:(id)a4
+- (void)todayModel:(id)model forecastWasUpdated:(id)updated
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  updatedCopy = updated;
   v8 = WALogForCategory(10);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 136315650;
     v21 = "[WALockscreenWidgetViewController todayModel:forecastWasUpdated:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = modelCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = updatedCopy;
     _os_log_impl(&dword_272ACF000, v8, OS_LOG_TYPE_DEFAULT, "%s %@ %@", &v20, 0x20u);
   }
 
   v9 = WALogForCategory(10);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-    v11 = [(WALockscreenWidgetViewController *)self todayModel];
-    v12 = [v11 forecastModel];
+    currentForecastModel = [(WALockscreenWidgetViewController *)self currentForecastModel];
+    todayModel = [(WALockscreenWidgetViewController *)self todayModel];
+    forecastModel = [todayModel forecastModel];
     v20 = 138412546;
-    v21 = v10;
+    v21 = currentForecastModel;
     v22 = 2112;
-    v23 = v12;
+    v23 = forecastModel;
     _os_log_impl(&dword_272ACF000, v9, OS_LOG_TYPE_DEFAULT, "current %@ todayModel.forcastModel %@", &v20, 0x16u);
   }
 
-  v13 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-  v14 = [(WALockscreenWidgetViewController *)self todayModel];
-  v15 = [v14 forecastModel];
+  currentForecastModel2 = [(WALockscreenWidgetViewController *)self currentForecastModel];
+  todayModel2 = [(WALockscreenWidgetViewController *)self todayModel];
+  forecastModel2 = [todayModel2 forecastModel];
 
-  if (v13 == v15)
+  if (currentForecastModel2 == forecastModel2)
   {
     v18 = WALogForCategory(10);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -428,9 +428,9 @@ void __52__WALockscreenWidgetViewController__updateTodayView__block_invoke(uint6
 
   else
   {
-    v16 = [(WALockscreenWidgetViewController *)self todayModel];
-    v17 = [v16 forecastModel];
-    [(WALockscreenWidgetViewController *)self setCurrentForecastModel:v17];
+    todayModel3 = [(WALockscreenWidgetViewController *)self todayModel];
+    forecastModel3 = [todayModel3 forecastModel];
+    [(WALockscreenWidgetViewController *)self setCurrentForecastModel:forecastModel3];
 
     [(WALockscreenWidgetViewController *)self _updateTodayView];
   }
@@ -438,7 +438,7 @@ void __52__WALockscreenWidgetViewController__updateTodayView__block_invoke(uint6
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateTimerFired:(id)a3
+- (void)_updateTimerFired:(id)fired
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -462,9 +462,9 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
 
 - (void)_scheduleNewTimer
 {
-  v3 = [(WALockscreenWidgetViewController *)self todayModel];
+  todayModel = [(WALockscreenWidgetViewController *)self todayModel];
 
-  if (v3)
+  if (todayModel)
   {
     [(WALockscreenWidgetViewController *)self updateInterval];
     if (v4 > 0.0)
@@ -475,16 +475,16 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
       v6 = [v5 scheduledTimerWithTimeInterval:self target:sel__updateTimerFired_ selector:0 userInfo:0 repeats:?];
       [(WALockscreenWidgetViewController *)self setUpdateTimer:v6];
 
-      v7 = [(WALockscreenWidgetViewController *)self updateTimer];
-      [v7 setTolerance:60.0];
+      updateTimer = [(WALockscreenWidgetViewController *)self updateTimer];
+      [updateTimer setTolerance:60.0];
     }
   }
 }
 
 - (void)_teardownTimer
 {
-  v3 = [(WALockscreenWidgetViewController *)self updateTimer];
-  [v3 invalidate];
+  updateTimer = [(WALockscreenWidgetViewController *)self updateTimer];
+  [updateTimer invalidate];
 
   [(WALockscreenWidgetViewController *)self setUpdateTimer:0];
 }
@@ -493,7 +493,7 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
 {
   if ([(WALockscreenWidgetViewController *)self shouldFakeWeather])
   {
-    v3 = objc_opt_new();
+    todayModel = objc_opt_new();
     v4 = +[WeatherInternalPreferences sharedInternalPreferences];
     v5 = [v4 objectForKey:@"FakePadWeatherLatitude"];
     v6 = [v4 objectForKey:@"FakePadWeatherLongitude"];
@@ -523,7 +523,7 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
     }
 
     v16 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v13 longitude:v15];
-    [v3 setGeoLocation:v16];
+    [todayModel setGeoLocation:v16];
 
     v17 = [v4 objectForKey:@"FakePadWeatherDisplayName"];
     v18 = v17;
@@ -537,9 +537,9 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
       v19 = @"Cupertino, CA";
     }
 
-    [v3 setDisplayName:v19];
+    [todayModel setDisplayName:v19];
 
-    v20 = [WATodayModel modelWithLocation:v3];
+    v20 = [WATodayModel modelWithLocation:todayModel];
     [(WALockscreenWidgetViewController *)self setTodayModel:v20];
 
     [(WALockscreenWidgetViewController *)self _updateWithReason:@"We're faking the weather, so let's just get some data in here"];
@@ -551,31 +551,31 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
     v10 = [WATodayModel autoupdatingLocationModelWithPreferences:v9 effectiveBundleIdentifier:0];
     [(WALockscreenWidgetViewController *)self setTodayModel:v10];
 
-    v11 = [(WALockscreenWidgetViewController *)self locationServicesActive];
-    v3 = [(WALockscreenWidgetViewController *)self todayModel];
-    [v3 setLocationServicesActive:v11];
+    locationServicesActive = [(WALockscreenWidgetViewController *)self locationServicesActive];
+    todayModel = [(WALockscreenWidgetViewController *)self todayModel];
+    [todayModel setLocationServicesActive:locationServicesActive];
   }
 
-  v21 = [(WALockscreenWidgetViewController *)self todayModel];
-  v22 = [v21 forecastModel];
-  [(WALockscreenWidgetViewController *)self setCurrentForecastModel:v22];
+  todayModel2 = [(WALockscreenWidgetViewController *)self todayModel];
+  forecastModel = [todayModel2 forecastModel];
+  [(WALockscreenWidgetViewController *)self setCurrentForecastModel:forecastModel];
 
-  v23 = [(WALockscreenWidgetViewController *)self currentForecastModel];
+  currentForecastModel = [(WALockscreenWidgetViewController *)self currentForecastModel];
 
-  if (v23)
+  if (currentForecastModel)
   {
     [(WALockscreenWidgetViewController *)self _updateTodayView];
   }
 
   [(WALockscreenWidgetViewController *)self _scheduleNewTimer];
-  v24 = [(WALockscreenWidgetViewController *)self todayModel];
-  [v24 addObserver:self];
+  todayModel3 = [(WALockscreenWidgetViewController *)self todayModel];
+  [todayModel3 addObserver:self];
 }
 
 - (void)_teardownWeatherModel
 {
-  v3 = [(WALockscreenWidgetViewController *)self todayModel];
-  [v3 removeObserver:self];
+  todayModel = [(WALockscreenWidgetViewController *)self todayModel];
+  [todayModel removeObserver:self];
 
   [(WALockscreenWidgetViewController *)self setTodayModel:0];
 }
@@ -584,9 +584,9 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
 {
   v2 = +[WeatherInternalPreferences sharedInternalPreferences];
   v3 = [v2 objectForKey:@"FakePadWeather"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)_locationName
@@ -594,28 +594,28 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
   v3 = +[WeatherInternalPreferences sharedInternalPreferences];
   if (-[WALockscreenWidgetViewController shouldFakeWeather](self, "shouldFakeWeather") && ([v3 objectForKey:@"FakePadWeatherDisplayName"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [v3 objectForKey:@"FakePadWeatherDisplayName"];
+    displayName = [v3 objectForKey:@"FakePadWeatherDisplayName"];
   }
 
   else
   {
-    v6 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-    v7 = [v6 city];
-    v8 = [v7 name];
-    v9 = v8;
-    if (v8)
+    currentForecastModel = [(WALockscreenWidgetViewController *)self currentForecastModel];
+    city = [currentForecastModel city];
+    name = [city name];
+    v9 = name;
+    if (name)
     {
-      v5 = v8;
+      displayName = name;
     }
 
     else
     {
-      v10 = [v6 location];
-      v5 = [v10 displayName];
+      location = [currentForecastModel location];
+      displayName = [location displayName];
     }
   }
 
-  return v5;
+  return displayName;
 }
 
 - (id)_temperature
@@ -625,26 +625,26 @@ void __54__WALockscreenWidgetViewController__updateTimerFired___block_invoke(uin
     [WALockscreenWidgetViewController _temperature];
   }
 
-  v3 = [MEMORY[0x277D7B2D8] sharedObserver];
-  v4 = [v3 temperatureUnit];
-  [_temperature_temperatureFormatter setOutputUnit:v4];
+  mEMORY[0x277D7B2D8] = [MEMORY[0x277D7B2D8] sharedObserver];
+  temperatureUnit = [mEMORY[0x277D7B2D8] temperatureUnit];
+  [_temperature_temperatureFormatter setOutputUnit:temperatureUnit];
 
   [_temperature_temperatureFormatter setSymbolType:!WAIsChinaSKUAndSimplifiedChinese()];
   v5 = +[WeatherInternalPreferences sharedInternalPreferences];
   if (-[WALockscreenWidgetViewController shouldFakeWeather](self, "shouldFakeWeather") && ([v5 objectForKey:@"FakePadWeatherConditionTemperature"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = _temperature_temperatureFormatter;
-    v8 = [v5 objectForKey:@"FakePadWeatherConditionTemperature"];
-    v9 = [v7 stringForObjectValue:v8];
+    currentForecastModel = [v5 objectForKey:@"FakePadWeatherConditionTemperature"];
+    v9 = [v7 stringForObjectValue:currentForecastModel];
   }
 
   else
   {
-    v8 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-    v10 = [v8 currentConditions];
+    currentForecastModel = [(WALockscreenWidgetViewController *)self currentForecastModel];
+    currentConditions = [currentForecastModel currentConditions];
     v11 = _temperature_temperatureFormatter;
-    v12 = [v10 temperature];
-    v9 = [v11 stringForObjectValue:v12];
+    temperature = [currentConditions temperature];
+    v9 = [v11 stringForObjectValue:temperature];
   }
 
   return v9;
@@ -662,35 +662,35 @@ uint64_t __48__WALockscreenWidgetViewController__temperature__block_invoke()
 - (id)_conditionsLine
 {
   v3 = +[WeatherInternalPreferences sharedInternalPreferences];
-  v4 = [v3 isV3Enabled];
+  isV3Enabled = [v3 isV3Enabled];
 
   v5 = +[WeatherInternalPreferences sharedInternalPreferences];
-  v6 = [(WALockscreenWidgetViewController *)self shouldFakeWeather];
-  if (!v4)
+  shouldFakeWeather = [(WALockscreenWidgetViewController *)self shouldFakeWeather];
+  if (!isV3Enabled)
   {
-    if (!v6 || ([v5 objectForKey:@"FakePadWeatherConditionDescription"], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
+    if (!shouldFakeWeather || ([v5 objectForKey:@"FakePadWeatherConditionDescription"], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
     {
-      v19 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-      v20 = [v19 currentConditions];
-      v21 = [v19 airQualityConditions];
+      currentForecastModel = [(WALockscreenWidgetViewController *)self currentForecastModel];
+      currentConditions = [currentForecastModel currentConditions];
+      airQualityConditions = [currentForecastModel airQualityConditions];
       v22 = WAAirQualityCategoryFromConditions();
 
-      v23 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-      v24 = [v23 location];
-      v25 = [v24 countryAbbreviation];
-      IsSignificantForCategory = WAAirQualityIsSignificantForCategory(v22, v25);
+      currentForecastModel2 = [(WALockscreenWidgetViewController *)self currentForecastModel];
+      location = [currentForecastModel2 location];
+      countryAbbreviation = [location countryAbbreviation];
+      IsSignificantForCategory = WAAirQualityIsSignificantForCategory(v22, countryAbbreviation);
 
       if (IsSignificantForCategory)
       {
-        v27 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-        v28 = [v27 location];
-        v29 = [v28 countryAbbreviation];
-        v18 = WAAirQualityDescriptionForCategory(v22, v29);
+        currentForecastModel3 = [(WALockscreenWidgetViewController *)self currentForecastModel];
+        location2 = [currentForecastModel3 location];
+        countryAbbreviation2 = [location2 countryAbbreviation];
+        v18 = WAAirQualityDescriptionForCategory(v22, countryAbbreviation2);
       }
 
       else
       {
-        v18 = WAConditionsLineStringFromCurrentForecasts(v20);
+        v18 = WAConditionsLineStringFromCurrentForecasts(currentConditions);
       }
 
       goto LABEL_16;
@@ -699,7 +699,7 @@ uint64_t __48__WALockscreenWidgetViewController__temperature__block_invoke()
     goto LABEL_9;
   }
 
-  if (v6)
+  if (shouldFakeWeather)
   {
     v7 = [v5 objectForKey:@"FakePadWeatherConditionDescription"];
 
@@ -711,23 +711,23 @@ LABEL_9:
     }
   }
 
-  v8 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-  v9 = [v8 currentConditions];
-  v10 = [v8 city];
-  v11 = [v10 airQualityScaleCategory];
+  currentForecastModel4 = [(WALockscreenWidgetViewController *)self currentForecastModel];
+  currentConditions2 = [currentForecastModel4 currentConditions];
+  city = [currentForecastModel4 city];
+  airQualityScaleCategory = [city airQualityScaleCategory];
 
-  v12 = [v11 longDescription];
-  if (v12 && (v13 = v12, v14 = [v11 categoryIndex], v15 = objc_msgSend(v11, "warningLevel"), v13, v14 > v15))
+  longDescription = [airQualityScaleCategory longDescription];
+  if (longDescription && (v13 = longDescription, v14 = [airQualityScaleCategory categoryIndex], v15 = objc_msgSend(airQualityScaleCategory, "warningLevel"), v13, v14 > v15))
   {
-    v16 = [v11 longDescription];
+    longDescription2 = [airQualityScaleCategory longDescription];
   }
 
   else
   {
-    v16 = WAConditionsLineStringFromCurrentForecasts(v9);
+    longDescription2 = WAConditionsLineStringFromCurrentForecasts(currentConditions2);
   }
 
-  v18 = v16;
+  v18 = longDescription2;
 
 LABEL_16:
 
@@ -740,16 +740,16 @@ LABEL_16:
   if (-[WALockscreenWidgetViewController shouldFakeWeather](self, "shouldFakeWeather") && ([v3 objectForKey:@"FakePadWeatherCondition"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [v3 objectForKey:@"FakePadWeatherCondition"];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
 
-    v7 = WAImageForLegacyConditionCode(v6, 0);
+    v7 = WAImageForLegacyConditionCode(intValue, 0);
   }
 
   else
   {
-    v8 = [(WALockscreenWidgetViewController *)self currentForecastModel];
-    v9 = [v8 currentConditions];
-    v7 = WAImageForLegacyConditionCode([v9 conditionCode], 0);
+    currentForecastModel = [(WALockscreenWidgetViewController *)self currentForecastModel];
+    currentConditions = [currentForecastModel currentConditions];
+    v7 = WAImageForLegacyConditionCode([currentConditions conditionCode], 0);
   }
 
   return v7;
@@ -809,15 +809,15 @@ void __65__WALockscreenWidgetViewController__delegateShouldUpdateForecast__block
 
 - (void)_delegateWillUpdate
 {
-  v3 = [(WALockscreenWidgetViewController *)self delegate];
-  if (v3)
+  delegate = [(WALockscreenWidgetViewController *)self delegate];
+  if (delegate)
   {
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__WALockscreenWidgetViewController__delegateWillUpdate__block_invoke;
     block[3] = &unk_279E68018;
-    v5 = v3;
+    v5 = delegate;
     objc_copyWeak(&v6, &location);
     dispatch_async(MEMORY[0x277D85CD0], block);
     objc_destroyWeak(&v6);
@@ -835,15 +835,15 @@ void __55__WALockscreenWidgetViewController__delegateWillUpdate__block_invoke(ui
 
 - (void)_delegateDidUpdate
 {
-  v3 = [(WALockscreenWidgetViewController *)self delegate];
-  if (v3)
+  delegate = [(WALockscreenWidgetViewController *)self delegate];
+  if (delegate)
   {
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__WALockscreenWidgetViewController__delegateDidUpdate__block_invoke;
     block[3] = &unk_279E68018;
-    v5 = v3;
+    v5 = delegate;
     objc_copyWeak(&v6, &location);
     dispatch_async(MEMORY[0x277D85CD0], block);
     objc_destroyWeak(&v6);
@@ -859,20 +859,20 @@ void __54__WALockscreenWidgetViewController__delegateDidUpdate__block_invoke(uin
   [v1 widgetViewControllerDidUpdate:WeakRetained];
 }
 
-- (void)_delegateUpdateDidFailWithError:(id)a3
+- (void)_delegateUpdateDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(WALockscreenWidgetViewController *)self delegate];
-  if (v5)
+  errorCopy = error;
+  delegate = [(WALockscreenWidgetViewController *)self delegate];
+  if (delegate)
   {
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __68__WALockscreenWidgetViewController__delegateUpdateDidFailWithError___block_invoke;
     v6[3] = &unk_279E68040;
-    v7 = v5;
+    v7 = delegate;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = errorCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
 
     objc_destroyWeak(&v9);
@@ -887,16 +887,16 @@ void __68__WALockscreenWidgetViewController__delegateUpdateDidFailWithError___bl
   [v2 widgetViewController:WeakRetained failedToUpdateWithError:*(a1 + 40)];
 }
 
-- (void)getLocationServicesAuthorizationStatus:(id)a3
+- (void)getLocationServicesAuthorizationStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = __75__WALockscreenWidgetViewController_getLocationServicesAuthorizationStatus___block_invoke();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__WALockscreenWidgetViewController_getLocationServicesAuthorizationStatus___block_invoke_3;
   block[3] = &unk_279E68090;
-  v7 = v3;
-  v5 = v3;
+  v7 = statusCopy;
+  v5 = statusCopy;
   dispatch_async(v4, block);
 }
 

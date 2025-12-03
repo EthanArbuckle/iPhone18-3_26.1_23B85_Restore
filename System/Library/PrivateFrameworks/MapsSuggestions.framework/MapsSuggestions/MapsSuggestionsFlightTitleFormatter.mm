@@ -1,19 +1,19 @@
 @interface MapsSuggestionsFlightTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta;
 @end
 
 @implementation MapsSuggestionsFlightTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 15)
+  entryCopy = entry;
+  etaCopy = eta;
+  if ([entryCopy type] == 15)
   {
     if (formatTitlesForEntry_eta__s_onceToken == -1)
     {
-      if (v7)
+      if (etaCopy)
       {
         goto LABEL_10;
       }
@@ -22,26 +22,26 @@
     else
     {
       [MapsSuggestionsFlightTitleFormatter formatTitlesForEntry:eta:];
-      if (v7)
+      if (etaCopy)
       {
         goto LABEL_10;
       }
     }
 
-    if ([v6 containsKey:@"MapsSuggestionsETAKey"])
+    if ([entryCopy containsKey:@"MapsSuggestionsETAKey"])
     {
-      v7 = [v6 ETAForKey:@"MapsSuggestionsETAKey"];
+      etaCopy = [entryCopy ETAForKey:@"MapsSuggestionsETAKey"];
     }
 
     else
     {
-      v7 = 0;
+      etaCopy = 0;
     }
 
 LABEL_10:
-    if ([v6 containsKey:@"MapsSuggestionsFlightStatusKey"])
+    if ([entryCopy containsKey:@"MapsSuggestionsFlightStatusKey"])
     {
-      v10 = [v6 stringForKey:@"MapsSuggestionsFlightStatusKey"];
+      v10 = [entryCopy stringForKey:@"MapsSuggestionsFlightStatusKey"];
       if ([v10 length])
       {
         v11 = v10;
@@ -58,7 +58,7 @@ LABEL_10:
       v11 = 0;
     }
 
-    v12 = v6;
+    v12 = entryCopy;
     if ([v12 containsKey:@"MapsSuggestionsFlightFullTargetAirportKey"] && (objc_msgSend(v12, "BOOLeanForKey:is:", @"MapsSuggestionsFlightMapItemIsTerminalKey", 1) & 1) != 0)
     {
       v13 = @"MapsSuggestionsFlightFullTargetAirportKey";
@@ -94,33 +94,33 @@ LABEL_10:
         LOBYTE(v16) = v19;
         v24 = v44;
 
-        v25 = 0;
+        trafficString = 0;
 LABEL_28:
 
 LABEL_30:
         v28 = v11;
-        v29 = [v12 subtitle];
-        if (v29)
+        subtitle = [v12 subtitle];
+        if (subtitle)
         {
-          v30 = v29;
+          v30 = subtitle;
           [v12 subtitle];
           v43 = v16;
           v32 = v31 = self;
           v45 = v12;
-          v33 = v25;
-          v34 = v6;
+          v33 = trafficString;
+          v34 = entryCopy;
           v35 = v24;
           v36 = v15;
-          v37 = v7;
+          v37 = etaCopy;
           v38 = [v32 length] | v28;
 
           self = v31;
           v39 = v38 == 0;
-          v7 = v37;
+          etaCopy = v37;
           v15 = v36;
           v24 = v35;
-          v6 = v34;
-          v25 = v33;
+          entryCopy = v34;
+          trafficString = v33;
           v12 = v45;
           v40 = v43;
           if (!v39)
@@ -142,7 +142,7 @@ LABEL_30:
         v41 = v28;
         if ((v40 & 1) == 0)
         {
-          v41 = v25;
+          v41 = trafficString;
           v28 = 0;
         }
 
@@ -152,9 +152,9 @@ LABEL_30:
       }
     }
 
-    else if (v7)
+    else if (etaCopy)
     {
-      [v7 seconds];
+      [etaCopy seconds];
       v27 = NSStringFromMapsSuggestionsShortETA(v26);
       v17 = v27;
       v24 = v15;
@@ -167,11 +167,11 @@ LABEL_30:
         }
       }
 
-      v25 = [v7 trafficString];
+      trafficString = [etaCopy trafficString];
       goto LABEL_28;
     }
 
-    v25 = 0;
+    trafficString = 0;
     v24 = v15;
     goto LABEL_30;
   }

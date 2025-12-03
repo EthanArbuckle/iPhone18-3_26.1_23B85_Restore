@@ -1,9 +1,9 @@
 @interface ContentSizedTableView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithCoder:(id)a3;
-- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithCoder:(id)coder;
+- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation ContentSizedTableView
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v5 = v6.receiver;
@@ -32,10 +32,10 @@
 - (CGSize)intrinsicContentSize
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
-  [(ContentSizedTableView *)v4 layoutIfNeeded];
+  selfCopy = self;
+  [(ContentSizedTableView *)selfCopy layoutIfNeeded];
   v5 = *MEMORY[0x277D77260];
-  v10.receiver = v4;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
   [(ContentSizedTableView *)&v10 contentSize];
   v7 = v6;
@@ -47,23 +47,23 @@
   return result;
 }
 
-- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
-  return [(ContentSizedTableView *)&v10 initWithFrame:a4 style:x, y, width, height];
+  return [(ContentSizedTableView *)&v10 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithCoder:(id)a3
+- (_TtC28MomentsOnboardingAndSettings21ContentSizedTableView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(ContentSizedTableView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ContentSizedTableView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

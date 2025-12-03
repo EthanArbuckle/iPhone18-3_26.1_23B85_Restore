@@ -1,29 +1,29 @@
 @interface FMDSharedConfiguration
 + (FMDSharedConfiguration)sharedInstance;
-+ (id)localizedStringWithKey:(id)a3;
++ (id)localizedStringWithKey:(id)key;
 - (BOOL)clearFindMySignOutTimeFile;
 - (BOOL)writeFindMySignOutTimeToFile;
 - (NSString)localeString;
-- (id)_createAwarenessStringsDictionaryWithData:(id)a3 key:(id)a4 deviceClasses:(id)a5;
-- (id)_createFollowUpStringsDictionaryWithData:(id)a3 key:(id)a4 deviceClasses:(id)a5;
-- (id)contentsWithLocale:(id)a3;
-- (id)defaultEntryForConfiguration:(id)a3 deviceClasses:(id)a4;
-- (id)entryForConfiguration:(id)a3 deviceClasses:(id)a4;
-- (id)entryForConfiguration:(id)a3 deviceClasses:(id)a4 locale:(id)a5;
-- (id)expiryDateWithContents:(id)a3;
-- (id)fileURLWithLocale:(id)a3;
+- (id)_createAwarenessStringsDictionaryWithData:(id)data key:(id)key deviceClasses:(id)classes;
+- (id)_createFollowUpStringsDictionaryWithData:(id)data key:(id)key deviceClasses:(id)classes;
+- (id)contentsWithLocale:(id)locale;
+- (id)defaultEntryForConfiguration:(id)configuration deviceClasses:(id)classes;
+- (id)entryForConfiguration:(id)configuration deviceClasses:(id)classes;
+- (id)entryForConfiguration:(id)configuration deviceClasses:(id)classes locale:(id)locale;
+- (id)expiryDateWithContents:(id)contents;
+- (id)fileURLWithLocale:(id)locale;
 - (id)readFindMySignOutTimeFromFile;
-- (id)sharedConfigurationDictionaryFromData:(id)a3 key:(id)a4 deviceClasses:(id)a5;
+- (id)sharedConfigurationDictionaryFromData:(id)data key:(id)key deviceClasses:(id)classes;
 - (id)signOutTimestampFileURL;
 - (void)clearFindMySignOutTimeFile;
-- (void)clearTheftAndLossCFUWithReply:(id)a3;
-- (void)downloadWithLocale:(id)a3 reply:(id)a4;
-- (void)downloadWithReply:(id)a3;
-- (void)forceDownloadWithLocale:(id)a3 reply:(id)a4;
-- (void)forceDownloadWithReply:(id)a3;
-- (void)getTheftAndLossCoverageWithSerialNumber:(id)a3 reply:(id)a4;
+- (void)clearTheftAndLossCFUWithReply:(id)reply;
+- (void)downloadWithLocale:(id)locale reply:(id)reply;
+- (void)downloadWithReply:(id)reply;
+- (void)forceDownloadWithLocale:(id)locale reply:(id)reply;
+- (void)forceDownloadWithReply:(id)reply;
+- (void)getTheftAndLossCoverageWithSerialNumber:(id)number reply:(id)reply;
 - (void)localeString;
-- (void)postTheftAndLossCFUWithEntry:(id)a3 reply:(id)a4;
+- (void)postTheftAndLossCFUWithEntry:(id)entry reply:(id)reply;
 - (void)writeFindMySignOutTimeToFile;
 @end
 
@@ -50,12 +50,12 @@ uint64_t __40__FMDSharedConfiguration_sharedInstance__block_invoke()
 
 - (NSString)localeString
 {
-  v2 = [MEMORY[0x1E695DF58] preferredLanguages];
-  if ([v2 count])
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  if ([preferredLanguages count])
   {
     if (objc_opt_respondsToSelector())
     {
-      v3 = [MEMORY[0x1E695DF58] minimizedLanguagesFromLanguages:v2];
+      v3 = [MEMORY[0x1E695DF58] minimizedLanguagesFromLanguages:preferredLanguages];
       v4 = [v3 componentsJoinedByString:{@", "}];
 
       goto LABEL_9;
@@ -83,23 +83,23 @@ LABEL_9:
   return v4;
 }
 
-- (id)fileURLWithLocale:(id)a3
+- (id)fileURLWithLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.icloud.findmydevice.shared-configuration"];
+  localeCopy = locale;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.icloud.findmydevice.shared-configuration"];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 URLByAppendingPathComponent:@"Library" isDirectory:1];
     v8 = [v7 URLByAppendingPathComponent:@"Application Support" isDirectory:1];
 
-    v9 = [v8 path];
-    v10 = [v4 fileExistsAtPath:v9];
+    path = [v8 path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
-    if (v10 & 1) != 0 || ([v4 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:0])
+    if (v10 & 1) != 0 || ([defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:0])
     {
-      v11 = [v3 stringByReplacingOccurrencesOfString:@" withString:{", @"~"}];
+      v11 = [localeCopy stringByReplacingOccurrencesOfString:@" withString:{", @"~"}];
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", v11];
       v13 = [v8 URLByAppendingPathComponent:v12 isDirectory:0];
 
@@ -128,13 +128,13 @@ LABEL_11:
   return v13;
 }
 
-- (id)_createAwarenessStringsDictionaryWithData:(id)a3 key:(id)a4 deviceClasses:(id)a5
+- (id)_createAwarenessStringsDictionaryWithData:(id)data key:(id)key deviceClasses:(id)classes
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  classesCopy = classes;
   v46 = 0;
-  v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v46];
+  v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v46];
   v10 = v46;
   if (!v9)
   {
@@ -161,7 +161,7 @@ LABEL_25:
     goto LABEL_34;
   }
 
-  v11 = [v9 objectForKeyedSubscript:v7];
+  v11 = [v9 objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -190,7 +190,7 @@ LABEL_25:
   }
 
   v42 = v11;
-  v43 = v7;
+  v43 = keyCopy;
   v44 = v10;
   if (![v12 count])
   {
@@ -205,7 +205,7 @@ LABEL_17:
     }
 
     v24 = 0;
-    v7 = v43;
+    keyCopy = v43;
     v10 = v44;
     goto LABEL_20;
   }
@@ -235,7 +235,7 @@ LABEL_17:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v19 = v8;
+      v19 = classesCopy;
       v20 = v14;
       v21 = v15;
       v22 = LogCategory_Unspecified();
@@ -248,11 +248,11 @@ LABEL_17:
 
       v15 = v21;
       v14 = v20;
-      v8 = v19;
+      classesCopy = v19;
       goto LABEL_16;
     }
 
-    if ([v17 isEqualToString:v8])
+    if ([v17 isEqualToString:classesCopy])
     {
       break;
     }
@@ -289,7 +289,7 @@ LABEL_16:
 
 LABEL_50:
     v24 = 0;
-    v7 = v43;
+    keyCopy = v43;
     goto LABEL_64;
   }
 
@@ -298,7 +298,7 @@ LABEL_50:
   {
     v38 = 0;
     v45 = LogCategory_Unspecified();
-    v7 = v43;
+    keyCopy = v43;
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       [FMDSharedConfiguration _createAwarenessStringsDictionaryWithData:key:deviceClasses:];
@@ -319,13 +319,13 @@ LABEL_50:
       v38 = v29;
       [FMDSharedConfiguration _createAwarenessStringsDictionaryWithData:key:deviceClasses:];
       v24 = 0;
-      v7 = v43;
+      keyCopy = v43;
     }
 
     else
     {
       v24 = 0;
-      v7 = v43;
+      keyCopy = v43;
       v38 = v41;
     }
 
@@ -337,7 +337,7 @@ LABEL_50:
   if (!v31)
   {
     v34 = LogCategory_Unspecified();
-    v7 = v43;
+    keyCopy = v43;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       [FMDSharedConfiguration _createAwarenessStringsDictionaryWithData:key:deviceClasses:];
@@ -352,7 +352,7 @@ LABEL_50:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v34 = LogCategory_Unspecified();
-    v7 = v43;
+    keyCopy = v43;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       [FMDSharedConfiguration _createAwarenessStringsDictionaryWithData:key:deviceClasses:];
@@ -374,7 +374,7 @@ LABEL_60:
     [(FMDSharedConfigurationEntry *)v24 setMessage:v41];
     [(FMDSharedConfigurationEntry *)v24 setTitle:v32];
     [(FMDSharedConfigurationEntry *)v24 setDisclaimer:v40];
-    v7 = v43;
+    keyCopy = v43;
     goto LABEL_62;
   }
 
@@ -385,7 +385,7 @@ LABEL_60:
   }
 
   v24 = 0;
-  v7 = v43;
+  keyCopy = v43;
 LABEL_61:
   v38 = v41;
 LABEL_62:
@@ -406,13 +406,13 @@ LABEL_34:
   return v24;
 }
 
-- (id)_createFollowUpStringsDictionaryWithData:(id)a3 key:(id)a4 deviceClasses:(id)a5
+- (id)_createFollowUpStringsDictionaryWithData:(id)data key:(id)key deviceClasses:(id)classes
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  classesCopy = classes;
   v51 = 0;
-  v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v51];
+  v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v51];
   v11 = v51;
   if (!v10)
   {
@@ -440,7 +440,7 @@ LABEL_75:
     goto LABEL_86;
   }
 
-  v13 = [v10 objectForKeyedSubscript:v8];
+  v13 = [v10 objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -448,7 +448,7 @@ LABEL_75:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v49 = v8;
+      v49 = keyCopy;
       v50 = v11;
       if ([v14 count])
       {
@@ -486,7 +486,7 @@ LABEL_75:
             goto LABEL_52;
           }
 
-          if (![v18 isEqualToString:v9])
+          if (![v18 isEqualToString:classesCopy])
           {
             goto LABEL_52;
           }
@@ -723,7 +723,7 @@ LABEL_67:
 
           if ((v43 & 1) == 0)
           {
-            v8 = v49;
+            keyCopy = v49;
             v11 = v50;
             goto LABEL_85;
           }
@@ -758,7 +758,7 @@ LABEL_80:
         _os_log_impl(&dword_1DF650000, v39, OS_LOG_TYPE_DEFAULT, "No match found among %lu entries", buf, 0xCu);
       }
 
-      v8 = v49;
+      keyCopy = v49;
       v11 = v50;
     }
 
@@ -790,13 +790,13 @@ LABEL_86:
   return v5;
 }
 
-- (id)sharedConfigurationDictionaryFromData:(id)a3 key:(id)a4 deviceClasses:(id)a5
+- (id)sharedConfigurationDictionaryFromData:(id)data key:(id)key deviceClasses:(id)classes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FMDSharedConfiguration *)self _createAwarenessStringsDictionaryWithData:v10 key:v9 deviceClasses:v8];
-  v12 = [(FMDSharedConfiguration *)self _createFollowUpStringsDictionaryWithData:v10 key:v9 deviceClasses:v8];
+  classesCopy = classes;
+  keyCopy = key;
+  dataCopy = data;
+  v11 = [(FMDSharedConfiguration *)self _createAwarenessStringsDictionaryWithData:dataCopy key:keyCopy deviceClasses:classesCopy];
+  v12 = [(FMDSharedConfiguration *)self _createFollowUpStringsDictionaryWithData:dataCopy key:keyCopy deviceClasses:classesCopy];
 
   if (v11 && v12)
   {
@@ -820,11 +820,11 @@ LABEL_86:
   return v13;
 }
 
-- (id)contentsWithLocale:(id)a3
+- (id)contentsWithLocale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FMDSharedConfiguration *)self fileURLWithLocale:v4];
+  localeCopy = locale;
+  v5 = [(FMDSharedConfiguration *)self fileURLWithLocale:localeCopy];
   if (!v5)
   {
     v12 = 0;
@@ -840,7 +840,7 @@ LABEL_86:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v4;
+      v17 = localeCopy;
       v18 = 2112;
       v19 = v7;
       v9 = "Failed to read contents for %@, error: %@";
@@ -863,7 +863,7 @@ LABEL_5:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = localeCopy;
       v9 = "No contents for %@";
       v10 = v8;
       v11 = 12;
@@ -880,14 +880,14 @@ LABEL_11:
   return v12;
 }
 
-+ (id)localizedStringWithKey:(id)a3
++ (id)localizedStringWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
+  keyCopy = key;
+  v5 = [MEMORY[0x1E696AAE8] bundleForClass:self];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 localizedStringForKey:v4 value:&stru_1F5A998C8 table:@"Localizable-WARRANTY_DIAGNOSTICS"];
+    v7 = [v5 localizedStringForKey:keyCopy value:&stru_1F5A998C8 table:@"Localizable-WARRANTY_DIAGNOSTICS"];
   }
 
   else
@@ -898,16 +898,16 @@ LABEL_11:
   return v7;
 }
 
-- (id)defaultEntryForConfiguration:(id)a3 deviceClasses:(id)a4
+- (id)defaultEntryForConfiguration:(id)configuration deviceClasses:(id)classes
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  classesCopy = classes;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_alloc_init(FMDSharedConfigurationEntry);
-  v30 = self;
-  v31 = v7;
-  if ([v6 isEqualToString:@"theftLoss"])
+  selfCopy = self;
+  v31 = classesCopy;
+  if ([configurationCopy isEqualToString:@"theftLoss"])
   {
     v10 = [objc_opt_class() localizedStringWithKey:@"TNL_DISCLAIMER_MESSAGE_DEFAULT"];
     v11 = [objc_opt_class() localizedStringWithKey:@"TNL_DISCLAIMER_TITLE_DEFAULT"];
@@ -919,7 +919,7 @@ LABEL_11:
       v14 = 0;
     }
 
-    v15 = v6;
+    v15 = configurationCopy;
     v16 = v8;
     if (v12)
     {
@@ -951,7 +951,7 @@ LABEL_11:
       v19 = &stru_1F5A998C8;
     }
 
-    v20 = v7;
+    v20 = classesCopy;
     if (v10)
     {
       v21 = v10;
@@ -962,9 +962,9 @@ LABEL_11:
       v21 = &stru_1F5A998C8;
     }
 
-    v22 = v17 & [v20 isEqualToString:{@"iPhone", v30, v31}];
+    v22 = v17 & [v20 isEqualToString:{@"iPhone", selfCopy, v31}];
     v8 = v16;
-    v6 = v15;
+    configurationCopy = v15;
     [(FMDSharedConfigurationEntry *)v9 setEnabled:v22];
     [(FMDSharedConfigurationEntry *)v9 setMessage:v21];
     [(FMDSharedConfigurationEntry *)v9 setTitle:v19];
@@ -977,9 +977,9 @@ LABEL_11:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v33 = v6;
+      v33 = configurationCopy;
       v34 = 2112;
-      v35 = v7;
+      v35 = classesCopy;
       _os_log_impl(&dword_1DF650000, v23, OS_LOG_TYPE_DEFAULT, "No defaults for configuration %@ (%@)", buf, 0x16u);
     }
 
@@ -987,7 +987,7 @@ LABEL_11:
   }
 
   v24 = objc_alloc_init(FMDSharedConfigurationFollowUpEntry);
-  if ([v6 isEqualToString:@"theftLoss"])
+  if ([configurationCopy isEqualToString:@"theftLoss"])
   {
     [(FMDSharedConfigurationFollowUpEntry *)v24 setReminderInMins:&unk_1F5AA4190];
     v25 = [objc_opt_class() localizedStringWithKey:@"TNL_REMINDER_INFORMATIVE_TEXT_DEFAULT"];
@@ -1000,7 +1000,7 @@ LABEL_11:
     [(FMDSharedConfigurationFollowUpEntry *)v24 setTitle:v27];
   }
 
-  [v8 setObject:v9 forKeyedSubscript:{@"awarenessStrings", v30}];
+  [v8 setObject:v9 forKeyedSubscript:{@"awarenessStrings", selfCopy}];
   [v8 setObject:v24 forKeyedSubscript:@"followUpStrings"];
 
   v28 = *MEMORY[0x1E69E9840];
@@ -1008,12 +1008,12 @@ LABEL_11:
   return v8;
 }
 
-- (id)entryForConfiguration:(id)a3 deviceClasses:(id)a4
+- (id)entryForConfiguration:(id)configuration deviceClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDSharedConfiguration *)self localeString];
-  v9 = [(FMDSharedConfiguration *)self entryForConfiguration:v6 deviceClasses:v7 locale:v8];
+  configurationCopy = configuration;
+  classesCopy = classes;
+  localeString = [(FMDSharedConfiguration *)self localeString];
+  v9 = [(FMDSharedConfiguration *)self entryForConfiguration:configurationCopy deviceClasses:classesCopy locale:localeString];
 
   if (v9)
   {
@@ -1022,7 +1022,7 @@ LABEL_11:
 
   else
   {
-    v10 = [(FMDSharedConfiguration *)self defaultEntryForConfiguration:v6 deviceClasses:v7];
+    v10 = [(FMDSharedConfiguration *)self defaultEntryForConfiguration:configurationCopy deviceClasses:classesCopy];
   }
 
   v11 = v10;
@@ -1030,20 +1030,20 @@ LABEL_11:
   return v11;
 }
 
-- (id)entryForConfiguration:(id)a3 deviceClasses:(id)a4 locale:(id)a5
+- (id)entryForConfiguration:(id)configuration deviceClasses:(id)classes locale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FMDSharedConfiguration *)self contentsWithLocale:v10];
+  configurationCopy = configuration;
+  classesCopy = classes;
+  localeCopy = locale;
+  v11 = [(FMDSharedConfiguration *)self contentsWithLocale:localeCopy];
   v12 = v11;
   if (v11)
   {
     v13 = [v11 objectForKeyedSubscript:@"DA"];
     if (v13)
     {
-      v14 = [(FMDSharedConfiguration *)self sharedConfigurationDictionaryFromData:v13 key:v8 deviceClasses:v9];
+      v14 = [(FMDSharedConfiguration *)self sharedConfigurationDictionaryFromData:v13 key:configurationCopy deviceClasses:classesCopy];
     }
 
     else
@@ -1052,7 +1052,7 @@ LABEL_11:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v10;
+        v19 = localeCopy;
         _os_log_impl(&dword_1DF650000, v15, OS_LOG_TYPE_DEFAULT, "No data for %@, returning default", &v18, 0xCu);
       }
 
@@ -1070,14 +1070,14 @@ LABEL_11:
   return v14;
 }
 
-- (id)expiryDateWithContents:(id)a3
+- (id)expiryDateWithContents:(id)contents
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"LR"];
+  contentsCopy = contents;
+  v4 = [contentsCopy objectForKeyedSubscript:@"LR"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 objectForKeyedSubscript:@"TTL"];
+    v5 = [contentsCopy objectForKeyedSubscript:@"TTL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1099,32 +1099,32 @@ LABEL_11:
   return v6;
 }
 
-- (void)downloadWithReply:(id)a3
+- (void)downloadWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(FMDSharedConfiguration *)self localeString];
+  replyCopy = reply;
+  localeString = [(FMDSharedConfiguration *)self localeString];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__FMDSharedConfiguration_downloadWithReply___block_invoke;
   v7[3] = &unk_1E86BD2D0;
-  v8 = v4;
-  v6 = v4;
-  [(FMDSharedConfiguration *)self downloadWithLocale:v5 reply:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [(FMDSharedConfiguration *)self downloadWithLocale:localeString reply:v7];
 }
 
-- (void)forceDownloadWithReply:(id)a3
+- (void)forceDownloadWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(FMDSharedConfiguration *)self localeString];
-  [(FMDSharedConfiguration *)self forceDownloadWithLocale:v5 reply:v4];
+  replyCopy = reply;
+  localeString = [(FMDSharedConfiguration *)self localeString];
+  [(FMDSharedConfiguration *)self forceDownloadWithLocale:localeString reply:replyCopy];
 }
 
-- (void)downloadWithLocale:(id)a3 reply:(id)a4
+- (void)downloadWithLocale:(id)locale reply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDSharedConfiguration *)self contentsWithLocale:v6];
+  localeCopy = locale;
+  replyCopy = reply;
+  v8 = [(FMDSharedConfiguration *)self contentsWithLocale:localeCopy];
   if (!v8)
   {
     goto LABEL_8;
@@ -1139,7 +1139,7 @@ LABEL_8:
     v14[1] = 3221225472;
     v14[2] = __51__FMDSharedConfiguration_downloadWithLocale_reply___block_invoke;
     v14[3] = &unk_1E86BD2D0;
-    v15 = v7;
+    v15 = replyCopy;
     [(FMDSharedConfiguration *)self forceDownloadWithReply:v14];
     v9 = v15;
     goto LABEL_9;
@@ -1149,22 +1149,22 @@ LABEL_8:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = localeCopy;
     v18 = 2112;
     v19 = v9;
     _os_log_impl(&dword_1DF650000, v12, OS_LOG_TYPE_DEFAULT, "Has existing shared configuration for '%@' and it has not yet expired (%@)", buf, 0x16u);
   }
 
-  (*(v7 + 2))(v7, 0);
+  (*(replyCopy + 2))(replyCopy, 0);
 LABEL_9:
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)forceDownloadWithLocale:(id)a3 reply:(id)a4
+- (void)forceDownloadWithLocale:(id)locale reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  localeCopy = locale;
   v7 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v8 = +[FMNSXPCConnectionCache sharedCache];
   v9 = [v8 resumeConnectionWithConfiguration:v7];
@@ -1173,10 +1173,10 @@ LABEL_9:
   v17[1] = 3221225472;
   v17[2] = __56__FMDSharedConfiguration_forceDownloadWithLocale_reply___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v10 = v5;
+  v10 = replyCopy;
   v18 = v10;
   [v9 addFailureBlock:v17];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__FMDSharedConfiguration_forceDownloadWithLocale_reply___block_invoke_2;
@@ -1185,7 +1185,7 @@ LABEL_9:
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 downloadSharedConfigurationWithLocale:v6 reply:v14];
+  [remoteObjectProxy downloadSharedConfigurationWithLocale:localeCopy reply:v14];
 }
 
 void __56__FMDSharedConfiguration_forceDownloadWithLocale_reply___block_invoke(uint64_t a1)
@@ -1202,10 +1202,10 @@ uint64_t __56__FMDSharedConfiguration_forceDownloadWithLocale_reply___block_invo
   return [v2 invalidate];
 }
 
-- (void)getTheftAndLossCoverageWithSerialNumber:(id)a3 reply:(id)a4
+- (void)getTheftAndLossCoverageWithSerialNumber:(id)number reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  numberCopy = number;
   v7 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v8 = +[FMNSXPCConnectionCache sharedCache];
   v9 = [v8 resumeConnectionWithConfiguration:v7];
@@ -1214,10 +1214,10 @@ uint64_t __56__FMDSharedConfiguration_forceDownloadWithLocale_reply___block_invo
   v17[1] = 3221225472;
   v17[2] = __72__FMDSharedConfiguration_getTheftAndLossCoverageWithSerialNumber_reply___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v10 = v5;
+  v10 = replyCopy;
   v18 = v10;
   [v9 addFailureBlock:v17];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__FMDSharedConfiguration_getTheftAndLossCoverageWithSerialNumber_reply___block_invoke_2;
@@ -1226,7 +1226,7 @@ uint64_t __56__FMDSharedConfiguration_forceDownloadWithLocale_reply___block_invo
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 getTheftAndLossCoverageWithSerialNumber:v6 reply:v14];
+  [remoteObjectProxy getTheftAndLossCoverageWithSerialNumber:numberCopy reply:v14];
 }
 
 void __72__FMDSharedConfiguration_getTheftAndLossCoverageWithSerialNumber_reply___block_invoke(uint64_t a1)
@@ -1243,10 +1243,10 @@ uint64_t __72__FMDSharedConfiguration_getTheftAndLossCoverageWithSerialNumber_re
   return [v2 invalidate];
 }
 
-- (void)postTheftAndLossCFUWithEntry:(id)a3 reply:(id)a4
+- (void)postTheftAndLossCFUWithEntry:(id)entry reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  entryCopy = entry;
   v7 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v8 = +[FMNSXPCConnectionCache sharedCache];
   v9 = [v8 resumeConnectionWithConfiguration:v7];
@@ -1255,10 +1255,10 @@ uint64_t __72__FMDSharedConfiguration_getTheftAndLossCoverageWithSerialNumber_re
   v17[1] = 3221225472;
   v17[2] = __61__FMDSharedConfiguration_postTheftAndLossCFUWithEntry_reply___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v10 = v5;
+  v10 = replyCopy;
   v18 = v10;
   [v9 addFailureBlock:v17];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__FMDSharedConfiguration_postTheftAndLossCFUWithEntry_reply___block_invoke_2;
@@ -1267,7 +1267,7 @@ uint64_t __72__FMDSharedConfiguration_getTheftAndLossCoverageWithSerialNumber_re
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 postTheftAndLossCFUWithEntry:v6 reply:v14];
+  [remoteObjectProxy postTheftAndLossCFUWithEntry:entryCopy reply:v14];
 }
 
 void __61__FMDSharedConfiguration_postTheftAndLossCFUWithEntry_reply___block_invoke(uint64_t a1)
@@ -1328,9 +1328,9 @@ LABEL_10:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearTheftAndLossCFUWithReply:(id)a3
+- (void)clearTheftAndLossCFUWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v5 = +[FMNSXPCConnectionCache sharedCache];
   v6 = [v5 resumeConnectionWithConfiguration:v4];
@@ -1339,10 +1339,10 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __56__FMDSharedConfiguration_clearTheftAndLossCFUWithReply___block_invoke;
   v14[3] = &unk_1E86BD0E0;
-  v7 = v3;
+  v7 = replyCopy;
   v15 = v7;
   [v6 addFailureBlock:v14];
-  v8 = [v6 remoteObjectProxy];
+  remoteObjectProxy = [v6 remoteObjectProxy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __56__FMDSharedConfiguration_clearTheftAndLossCFUWithReply___block_invoke_2;
@@ -1351,7 +1351,7 @@ LABEL_10:
   v13 = v7;
   v9 = v6;
   v10 = v7;
-  [v8 clearTheftAndLossCFUWithReply:v11];
+  [remoteObjectProxy clearTheftAndLossCFUWithReply:v11];
 }
 
 void __56__FMDSharedConfiguration_clearTheftAndLossCFUWithReply___block_invoke(uint64_t a1)
@@ -1397,18 +1397,18 @@ LABEL_6:
 
 - (id)signOutTimestampFileURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.icloud.findmydevice.followup"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.icloud.findmydevice.followup"];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 URLByAppendingPathComponent:@"Library" isDirectory:1];
     v6 = [v5 URLByAppendingPathComponent:@"Application Support" isDirectory:1];
 
-    v7 = [v6 path];
-    v8 = [v2 fileExistsAtPath:v7];
+    path = [v6 path];
+    v8 = [defaultManager fileExistsAtPath:path];
 
-    if (v8 & 1) != 0 || ([v2 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0])
+    if (v8 & 1) != 0 || ([defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0])
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"theftandloss.plist"];
       v10 = [v6 URLByAppendingPathComponent:v9 isDirectory:0];
@@ -1441,14 +1441,14 @@ LABEL_11:
 - (BOOL)writeFindMySignOutTimeToFile
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(FMDSharedConfiguration *)self signOutTimestampFileURL];
-  if (v2)
+  signOutTimestampFileURL = [(FMDSharedConfiguration *)self signOutTimestampFileURL];
+  if (signOutTimestampFileURL)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v4 setObject:v3 forKeyedSubscript:@"SignOutTimestamp"];
+    [v4 setObject:date forKeyedSubscript:@"SignOutTimestamp"];
     v16 = 0;
-    [v4 writeToURL:v2 error:&v16];
+    [v4 writeToURL:signOutTimestampFileURL error:&v16];
     v5 = v16;
     v6 = v5 == 0;
     v7 = LogCategory_Unspecified();
@@ -1464,16 +1464,16 @@ LABEL_11:
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = v3;
+      v18 = date;
       v19 = 2112;
-      v20 = v2;
+      v20 = signOutTimestampFileURL;
       _os_log_impl(&dword_1DF650000, v8, OS_LOG_TYPE_DEFAULT, "Wrote (%@) to (%@).", buf, 0x16u);
     }
 
     v9 = [MEMORY[0x1E696AD98] numberWithBool:1];
     v10 = *MEMORY[0x1E695DB80];
     v15 = 0;
-    [v2 setResourceValue:v9 forKey:v10 error:&v15];
+    [signOutTimestampFileURL setResourceValue:v9 forKey:v10 error:&v15];
     v11 = v15;
 
     if (v11)
@@ -1481,15 +1481,15 @@ LABEL_11:
       v12 = LogCategory_Unspecified();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(FMDSharedConfiguration *)v2 writeFindMySignOutTimeToFile];
+        [(FMDSharedConfiguration *)signOutTimestampFileURL writeFindMySignOutTimeToFile];
       }
     }
   }
 
   else
   {
-    v3 = LogCategory_Unspecified();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    date = LogCategory_Unspecified();
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       [FMDSharedConfiguration writeFindMySignOutTimeToFile];
     }
@@ -1504,11 +1504,11 @@ LABEL_11:
 - (id)readFindMySignOutTimeFromFile
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(FMDSharedConfiguration *)self signOutTimestampFileURL];
-  if (v2)
+  signOutTimestampFileURL = [(FMDSharedConfiguration *)self signOutTimestampFileURL];
+  if (signOutTimestampFileURL)
   {
     v12 = 0;
-    v3 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:v2 error:&v12];
+    v3 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:signOutTimestampFileURL error:&v12];
     v4 = v12;
     if (v4)
     {
@@ -1567,18 +1567,18 @@ LABEL_13:
 - (BOOL)clearFindMySignOutTimeFile
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(FMDSharedConfiguration *)self signOutTimestampFileURL];
-  if (v2)
+  signOutTimestampFileURL = [(FMDSharedConfiguration *)self signOutTimestampFileURL];
+  if (signOutTimestampFileURL)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v2 path];
-    v5 = [v3 fileExistsAtPath:v4 isDirectory:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [signOutTimestampFileURL path];
+    v5 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if (v5)
     {
-      v6 = [v2 path];
+      path2 = [signOutTimestampFileURL path];
       v13 = 0;
-      v7 = [v3 removeItemAtPath:v6 error:&v13];
+      v7 = [defaultManager removeItemAtPath:path2 error:&v13];
       v8 = v13;
 
       v9 = LogCategory_Unspecified();
@@ -1588,7 +1588,7 @@ LABEL_13:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v15 = v2;
+          v15 = signOutTimestampFileURL;
           _os_log_impl(&dword_1DF650000, v10, OS_LOG_TYPE_DEFAULT, "Removed (%@).", buf, 0xCu);
         }
       }
@@ -1614,8 +1614,8 @@ LABEL_13:
 
   else
   {
-    v3 = LogCategory_Unspecified();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    defaultManager = LogCategory_Unspecified();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       [FMDSharedConfiguration writeFindMySignOutTimeToFile];
     }

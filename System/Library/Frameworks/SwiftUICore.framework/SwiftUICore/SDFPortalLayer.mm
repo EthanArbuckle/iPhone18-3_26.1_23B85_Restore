@@ -1,11 +1,11 @@
 @interface SDFPortalLayer
 - (CALayer)sourceLayer;
 - (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)init;
-- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithCoder:(id)a3;
-- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithLayer:(id)a3;
+- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithCoder:(id)coder;
+- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithLayer:(id)layer;
 - (unint64_t)sourceLayerRenderId;
 - (unsigned)sourceContextId;
-- (void)setSourceLayer:(id)a3;
+- (void)setSourceLayer:(id)layer;
 @end
 
 @implementation SDFPortalLayer
@@ -14,9 +14,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 currentContext];
-  if (v6)
+  selfCopy = self;
+  currentContext = [v4 currentContext];
+  if (currentContext)
   {
 
     v7 = 0;
@@ -24,21 +24,21 @@
 
   else
   {
-    v10.receiver = v5;
+    v10.receiver = selfCopy;
     v10.super_class = ObjectType;
-    v8 = [(CAPortalLayer *)&v10 sourceLayer];
+    sourceLayer = [(CAPortalLayer *)&v10 sourceLayer];
 
-    v7 = v8;
+    v7 = sourceLayer;
   }
 
   return v7;
 }
 
-- (void)setSourceLayer:(id)a3
+- (void)setSourceLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(CAPortalLayer *)&v4 setSourceLayer:a3];
+  [(CAPortalLayer *)&v4 setSourceLayer:layer];
 }
 
 - (unint64_t)sourceLayerRenderId
@@ -46,10 +46,10 @@
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
-  v3 = [(CAPortalLayer *)&v7 sourceLayer];
-  if (v3)
+  sourceLayer = [(CAPortalLayer *)&v7 sourceLayer];
+  if (sourceLayer)
   {
-    v4 = v3;
+    v4 = sourceLayer;
     RenderId = CALayerGetRenderId();
   }
 
@@ -63,7 +63,7 @@
 
 - (unsigned)sourceContextId
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SDFPortalLayer.sourceContextId.getter();
 
   return v3;
@@ -76,7 +76,7 @@
   return [(SDFPortalLayer *)&v3 init];
 }
 
-- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -92,12 +92,12 @@
   return v6;
 }
 
-- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(SDFPortalLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SDFPortalLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

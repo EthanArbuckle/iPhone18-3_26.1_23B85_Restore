@@ -1,12 +1,12 @@
 @interface WeatherMapOverlayManager
-- (void)handleInvertColorsStatusDidChangeWithNotification:(id)a3;
+- (void)handleInvertColorsStatusDidChangeWithNotification:(id)notification;
 @end
 
 @implementation WeatherMapOverlayManager
 
-- (void)handleInvertColorsStatusDidChangeWithNotification:(id)a3
+- (void)handleInvertColorsStatusDidChangeWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   sub_220F63B54();
 }

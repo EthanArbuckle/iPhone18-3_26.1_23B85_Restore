@@ -1,5 +1,5 @@
 @interface CLCertificatePinningHelper
-+ (int)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
++ (int)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 + (void)initialize;
 @end
 
@@ -13,15 +13,15 @@
   }
 }
 
-+ (int)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
++ (int)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  if (![objc_msgSend(objc_msgSend(a4 protectionSpace])
+  if (![objc_msgSend(objc_msgSend(challenge protectionSpace])
   {
     goto LABEL_18;
   }
 
-  v7 = [objc_msgSend(a4 "protectionSpace")];
-  v8 = [objc_msgSend(a4 "protectionSpace")];
+  v7 = [objc_msgSend(challenge "protectionSpace")];
+  v8 = [objc_msgSend(challenge "protectionSpace")];
   v9 = [qword_102656448 objectForKeyedSubscript:v7];
   if (v9)
   {
@@ -45,7 +45,7 @@
       v38 = 2082;
       v39 = "";
       v40 = 2081;
-      v41 = [v7 UTF8String];
+      uTF8String = [v7 UTF8String];
       _os_log_impl(dword_100000000, v20, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#Warning Empty pinning rule for host, host:%{private, location:escape_only}s}", buf, 0x1Cu);
       v16 = 3;
       goto LABEL_19;
@@ -104,9 +104,9 @@ LABEL_19:
         v38 = 2082;
         v39 = "";
         v40 = 2049;
-        v41 = Code;
+        uTF8String = Code;
         v42 = 2113;
-        v43 = Domain;
+        uTF8String2 = Domain;
         _os_log_impl(dword_100000000, v28, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Can't SecTrustEvaluate returned the error, errorCode:%{private}ld, error:%{private, location:escape_only}@}", buf, 0x26u);
         if (qword_1025D4870 != -1)
         {
@@ -129,9 +129,9 @@ LABEL_50:
       v38 = 2082;
       v39 = "";
       v40 = 2049;
-      v41 = v32;
+      uTF8String = v32;
       v42 = 2113;
-      v43 = v33;
+      uTF8String2 = v33;
       v25 = "Can't SecTrustEvaluate returned the error";
       v26 = "{msg%{public}.0s:Can't SecTrustEvaluate returned the error, errorCode:%{private}ld, error:%{private, location:escape_only}@}";
       v27 = v31;
@@ -152,9 +152,9 @@ LABEL_50:
         v38 = 2082;
         v39 = "";
         v40 = 2082;
-        v41 = [v7 UTF8String];
+        uTF8String = [v7 UTF8String];
         v42 = 2082;
-        v43 = [(NSNull *)v10 UTF8String];
+        uTF8String2 = [(NSNull *)v10 UTF8String];
         _os_log_impl(dword_100000000, v21, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Unable to create a security policy, host:%{public, location:escape_only}s, leafOID:%{public, location:escape_only}s}", buf, 0x26u);
         if (qword_1025D4870 != -1)
         {
@@ -169,16 +169,16 @@ LABEL_50:
         goto LABEL_21;
       }
 
-      v23 = [v7 UTF8String];
-      v24 = [(NSNull *)v10 UTF8String];
+      uTF8String3 = [v7 UTF8String];
+      uTF8String4 = [(NSNull *)v10 UTF8String];
       *buf = 68289538;
       v37 = 0;
       v38 = 2082;
       v39 = "";
       v40 = 2082;
-      v41 = v23;
+      uTF8String = uTF8String3;
       v42 = 2082;
-      v43 = v24;
+      uTF8String2 = uTF8String4;
       v25 = "Unable to create a security policy";
       v26 = "{msg%{public}.0s:Unable to create a security policy, host:%{public, location:escape_only}s, leafOID:%{public, location:escape_only}s}";
       v27 = v22;
@@ -202,7 +202,7 @@ LABEL_50:
     v38 = 2082;
     v39 = "";
     v40 = 2081;
-    v41 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     _os_log_impl(dword_100000000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#Warning No pinning rule for host, host:%{private, location:escape_only}s}", buf, 0x1Cu);
 LABEL_18:
     v16 = 0;
@@ -218,23 +218,23 @@ LABEL_21:
     v38 = 2082;
     v39 = "";
     v40 = 2049;
-    v41 = v16;
+    uTF8String = v16;
     _os_log_impl(dword_100000000, v18, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#VerifyHost result, result:%{private}lu}", buf, 0x1Cu);
   }
 
   if (v16 == 2)
   {
-    (*(a5 + 2))(a5, 2, 0);
+    (*(handler + 2))(handler, 2, 0);
   }
 
   else if (v16 == 1)
   {
-    (*(a5 + 2))(a5, 0, +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [objc_msgSend(a4 "protectionSpace")]));
+    (*(handler + 2))(handler, 0, +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [objc_msgSend(challenge "protectionSpace")]));
   }
 
   else
   {
-    (*(a5 + 2))(a5, 1, 0);
+    (*(handler + 2))(handler, 1, 0);
   }
 
   return v16;

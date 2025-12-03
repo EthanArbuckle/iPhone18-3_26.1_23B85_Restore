@@ -8,8 +8,8 @@
 - (id)_backlightColor
 {
   v5 = 0.0;
-  v2 = [(NTKSnowglobeColorPalette *)self background];
-  [v2 getHue:&v5 saturation:0 brightness:0 alpha:0];
+  background = [(NTKSnowglobeColorPalette *)self background];
+  [background getHue:&v5 saturation:0 brightness:0 alpha:0];
 
   v3 = [MEMORY[0x277D75348] colorWithHue:v5 saturation:0.2 brightness:0.9 alpha:1.0];
 
@@ -25,21 +25,21 @@
 
   v3 = MEMORY[0x277D2C0C0];
   v4 = qword_27E1EDE38;
-  v5 = [v3 sharedInstance];
+  sharedInstance = [v3 sharedInstance];
   v6 = +[NTKSnowglobeFace pigmentFaceDomain];
-  v7 = [v5 colorOptionsForDomain:v6 bundle:v4 slot:0];
+  v7 = [sharedInstance colorOptionsForDomain:v6 bundle:v4 slot:0];
 
-  v8 = [(NTKSnowglobeColorPalette *)self background];
+  background = [(NTKSnowglobeColorPalette *)self background];
   v9 = objc_opt_new();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_23C08E138;
   v14[3] = &unk_278BACBD0;
   v14[4] = self;
-  v15 = v8;
+  v15 = background;
   v16 = v9;
   v10 = v9;
-  v11 = v8;
+  v11 = background;
   [v7 enumerateObjectsUsingBlock:v14];
   v12 = [v10 copy];
 

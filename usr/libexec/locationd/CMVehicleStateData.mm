@@ -1,33 +1,33 @@
 @interface CMVehicleStateData
-- (CMVehicleStateData)initWithCoder:(id)a3;
-- (CMVehicleStateData)initWithTimeRange:(id)a3 vehicleName:(id)a4 vehicleModelName:(id)a5 vehicleBluetoothAddress:(id)a6;
-- (CMVehicleStateData)initWithTimestamp:(id)a3 state:(unint64_t)a4 hints:(unint64_t)a5;
+- (CMVehicleStateData)initWithCoder:(id)coder;
+- (CMVehicleStateData)initWithTimeRange:(id)range vehicleName:(id)name vehicleModelName:(id)modelName vehicleBluetoothAddress:(id)address;
+- (CMVehicleStateData)initWithTimestamp:(id)timestamp state:(unint64_t)state hints:(unint64_t)hints;
 - (NSString)deviceId;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMVehicleStateData
 
-- (CMVehicleStateData)initWithTimeRange:(id)a3 vehicleName:(id)a4 vehicleModelName:(id)a5 vehicleBluetoothAddress:(id)a6
+- (CMVehicleStateData)initWithTimeRange:(id)range vehicleName:(id)name vehicleModelName:(id)modelName vehicleBluetoothAddress:(id)address
 {
   v12.receiver = self;
   v12.super_class = CMVehicleStateData;
   v10 = [(CMVehicleStateData *)&v12 init];
   if (v10)
   {
-    *(v10 + 1) = a3;
-    *(v10 + 2) = a4;
-    *(v10 + 3) = a5;
-    *(v10 + 4) = a6;
+    *(v10 + 1) = range;
+    *(v10 + 2) = name;
+    *(v10 + 3) = modelName;
+    *(v10 + 4) = address;
     *(v10 + 40) = xmmword_101C8DDA0;
   }
 
   return v10;
 }
 
-- (CMVehicleStateData)initWithTimestamp:(id)a3 state:(unint64_t)a4 hints:(unint64_t)a5
+- (CMVehicleStateData)initWithTimestamp:(id)timestamp state:(unint64_t)state hints:(unint64_t)hints
 {
   v14.receiver = self;
   v14.super_class = CMVehicleStateData;
@@ -35,15 +35,15 @@
   if (v8)
   {
     v9 = [CMMotionTimeRange alloc];
-    [a3 timeIntervalSinceReferenceDate];
+    [timestamp timeIntervalSinceReferenceDate];
     v11 = v10;
-    [a3 timeIntervalSinceReferenceDate];
+    [timestamp timeIntervalSinceReferenceDate];
     v8->fTimeRange = [(CMMotionTimeRange *)v9 initWithStartDate:v11 endDate:v12];
     v8->fVehicleName = 0;
     v8->fVehicleModelName = 0;
     v8->fVehicleBluetoothAddress = 0;
-    v8->fVehicularState = a4;
-    v8->fVehicularHints = a5;
+    v8->fVehicularState = state;
+    v8->fVehicularHints = hints;
   }
 
   return v8;
@@ -56,9 +56,9 @@
   [(CMVehicleStateData *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     *(v4 + 1) = [(CMMotionTimeRange *)self->fTimeRange copy];
@@ -71,34 +71,34 @@
   return v4;
 }
 
-- (CMVehicleStateData)initWithCoder:(id)a3
+- (CMVehicleStateData)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CMVehicleStateData;
   v4 = [(CMVehicleStateData *)&v6 init];
   if (v4)
   {
-    v4->fTimeRange = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyTimeRange"];
-    v4->fVehicleName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyVehicleName"];
-    v4->fVehicleModelName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyVehicleModelName"];
-    v4->fVehicleBluetoothAddress = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress"];
-    v4->fVehicularState = [a3 decodeIntegerForKey:@"kCMVehicleStateDataCodingKeyState"];
-    v4->fVehicularHints = [a3 decodeIntegerForKey:@"kCMVehicleStateDataCodingKeyHints"];
+    v4->fTimeRange = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyTimeRange"];
+    v4->fVehicleName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyVehicleName"];
+    v4->fVehicleModelName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyVehicleModelName"];
+    v4->fVehicleBluetoothAddress = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress"];
+    v4->fVehicularState = [coder decodeIntegerForKey:@"kCMVehicleStateDataCodingKeyState"];
+    v4->fVehicularHints = [coder decodeIntegerForKey:@"kCMVehicleStateDataCodingKeyHints"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->fTimeRange forKey:@"kCMVehicleStateDataCodingKeyTimeRange"];
-  [a3 encodeObject:self->fVehicleName forKey:@"kCMVehicleStateDataCodingKeyVehicleName"];
-  [a3 encodeObject:self->fVehicleModelName forKey:@"kCMVehicleStateDataCodingKeyVehicleModelName"];
-  [a3 encodeObject:self->fVehicleBluetoothAddress forKey:@"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress"];
-  [a3 encodeInteger:self->fVehicularState forKey:@"kCMVehicleStateDataCodingKeyState"];
+  [coder encodeObject:self->fTimeRange forKey:@"kCMVehicleStateDataCodingKeyTimeRange"];
+  [coder encodeObject:self->fVehicleName forKey:@"kCMVehicleStateDataCodingKeyVehicleName"];
+  [coder encodeObject:self->fVehicleModelName forKey:@"kCMVehicleStateDataCodingKeyVehicleModelName"];
+  [coder encodeObject:self->fVehicleBluetoothAddress forKey:@"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress"];
+  [coder encodeInteger:self->fVehicularState forKey:@"kCMVehicleStateDataCodingKeyState"];
   fVehicularHints = self->fVehicularHints;
 
-  [a3 encodeInteger:fVehicularHints forKey:@"kCMVehicleStateDataCodingKeyHints"];
+  [coder encodeInteger:fVehicularHints forKey:@"kCMVehicleStateDataCodingKeyHints"];
 }
 
 - (NSString)deviceId

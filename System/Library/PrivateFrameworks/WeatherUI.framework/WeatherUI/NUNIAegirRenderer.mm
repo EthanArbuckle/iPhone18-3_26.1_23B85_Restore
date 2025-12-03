@@ -1,35 +1,35 @@
 @interface NUNIAegirRenderer
 + (id)texturePreloadingQueue;
-- (NUNIAegirRenderer)initWithPixelFormat:(unint64_t)a3 textureSuffix:(id)a4 rendererStyle:(unint64_t)a5;
-- (id)getOrCreateUniformBufferforFrameBufferIndex:(unint64_t)a3;
-- (void)_renderLocationDot:(id)a3 uniPtr:(NUNIAegirRenderUniforms *)a4 viewport:(NUNIViewport)a5 renderEncoder:(id)a6;
-- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)a3 frameBufferIndex:(unint64_t)a4;
-- (void)_renderOffscreenBloomWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6;
-- (void)_renderOffscreenPostWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6;
-- (void)_renderOffscreenSceneWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6 drawableTexture:(id)a7;
-- (void)_renderRaytraceSpheroid:(id)a3 uniPtr:(NUNIAegirRenderUniforms *)a4 renderEncoder:(id)a5;
-- (void)_renderSpriteSpheroid:(id)a3 uniPtr:(NUNIAegirRenderUniforms *)a4 renderEncoder:(id)a5;
-- (void)_updateBaseUniformsForViewport:(NUNIViewport)a3;
-- (void)_updateStateWithScene:(id)a3 viewport:(NUNIViewport)a4;
+- (NUNIAegirRenderer)initWithPixelFormat:(unint64_t)format textureSuffix:(id)suffix rendererStyle:(unint64_t)style;
+- (id)getOrCreateUniformBufferforFrameBufferIndex:(unint64_t)index;
+- (void)_renderLocationDot:(id)dot uniPtr:(NUNIAegirRenderUniforms *)ptr viewport:(NUNIViewport)viewport renderEncoder:(id)encoder;
+- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)encoder frameBufferIndex:(unint64_t)index;
+- (void)_renderOffscreenBloomWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index;
+- (void)_renderOffscreenPostWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index;
+- (void)_renderOffscreenSceneWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index drawableTexture:(id)texture;
+- (void)_renderRaytraceSpheroid:(id)spheroid uniPtr:(NUNIAegirRenderUniforms *)ptr renderEncoder:(id)encoder;
+- (void)_renderSpriteSpheroid:(id)spheroid uniPtr:(NUNIAegirRenderUniforms *)ptr renderEncoder:(id)encoder;
+- (void)_updateBaseUniformsForViewport:(NUNIViewport)viewport;
+- (void)_updateStateWithScene:(id)scene viewport:(NUNIViewport)viewport;
 - (void)dealloc;
-- (void)prepareForRenderingSpheroids:(id)a3 completionHandler:(id)a4;
-- (void)purgeUnusedWithScene:(id)a3;
-- (void)renderOffscreenWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5;
-- (void)renderWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 passDescriptor:(id)a6;
-- (void)setRendererOptions:(id)a3;
+- (void)prepareForRenderingSpheroids:(id)spheroids completionHandler:(id)handler;
+- (void)purgeUnusedWithScene:(id)scene;
+- (void)renderOffscreenWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer;
+- (void)renderWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)setRendererOptions:(id)options;
 @end
 
 @implementation NUNIAegirRenderer
 
-- (NUNIAegirRenderer)initWithPixelFormat:(unint64_t)a3 textureSuffix:(id)a4 rendererStyle:(unint64_t)a5
+- (NUNIAegirRenderer)initWithPixelFormat:(unint64_t)format textureSuffix:(id)suffix rendererStyle:(unint64_t)style
 {
-  v8 = a4;
+  suffixCopy = suffix;
   v21.receiver = self;
   v21.super_class = NUNIAegirRenderer;
-  v9 = [(NUNIRenderer *)&v21 initWithPixelFormat:a3 textureSuffix:v8 rendererStyle:a5];
+  v9 = [(NUNIRenderer *)&v21 initWithPixelFormat:format textureSuffix:suffixCopy rendererStyle:style];
   if (v9)
   {
-    v10 = [NUNIAegirResourceManager sharedInstanceWithDisplayPixelFormat:a3];
+    v10 = [NUNIAegirResourceManager sharedInstanceWithDisplayPixelFormat:format];
     resourceManager = v9->_resourceManager;
     v9->_resourceManager = v10;
 
@@ -38,7 +38,7 @@
     device = v9->_device;
     v9->_device = v12;
 
-    v14 = [(NUNIAegirResourceManager *)v9->_resourceManager textureGroupWithSuffix:v8 device:v9->_device];
+    v14 = [(NUNIAegirResourceManager *)v9->_resourceManager textureGroupWithSuffix:suffixCopy device:v9->_device];
     textureGroup = v9->_textureGroup;
     v9->_textureGroup = v14;
 
@@ -89,22 +89,22 @@ void __43__NUNIAegirRenderer_texturePreloadingQueue__block_invoke()
   texturePreloadingQueue_queue = v0;
 }
 
-- (void)prepareForRenderingSpheroids:(id)a3 completionHandler:(id)a4
+- (void)prepareForRenderingSpheroids:(id)spheroids completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  spheroidsCopy = spheroids;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [objc_opt_class() texturePreloadingQueue];
+  texturePreloadingQueue = [objc_opt_class() texturePreloadingQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___block_invoke;
   v11[3] = &unk_1E7FF9000;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = spheroidsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = spheroidsCopy;
+  dispatch_async(texturePreloadingQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -123,109 +123,109 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   }
 }
 
-- (void)setRendererOptions:(id)a3
+- (void)setRendererOptions:(id)options
 {
-  objc_storeStrong(&self->_rendererOptions, a3);
-  v5 = a3;
-  v6 = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
+  objc_storeStrong(&self->_rendererOptions, options);
+  optionsCopy = options;
+  changeSequence = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
 
-  self->_rendererOptionsChangeSequence = v6 - 1;
+  self->_rendererOptionsChangeSequence = changeSequence - 1;
 }
 
-- (void)purgeUnusedWithScene:(id)a3
+- (void)purgeUnusedWithScene:(id)scene
 {
-  v4 = [a3 snap];
+  snap = [scene snap];
   v35 = +[CLKUIResourceManager sharedInstance];
   v5 = +[CLKUITexture nullTexture2D];
   for (i = 0; i != 24; ++i)
   {
-    if (v4 != i)
+    if (snap != i)
     {
-      v7 = [(NUNIAegirTextureGroup *)self->_textureGroup albedos];
-      v8 = [v7 objectAtIndexedSubscript:i];
+      albedos = [(NUNIAegirTextureGroup *)self->_textureGroup albedos];
+      v8 = [albedos objectAtIndexedSubscript:i];
 
       if (v8 != v5)
       {
-        v9 = [v8 atlas];
-        v10 = [v9 uuid];
-        [v35 purge:v10];
+        atlas = [v8 atlas];
+        uuid = [atlas uuid];
+        [v35 purge:uuid];
       }
 
-      v11 = [(NUNIAegirTextureGroup *)self->_textureGroup normals];
-      v12 = [v11 objectAtIndexedSubscript:i];
+      normals = [(NUNIAegirTextureGroup *)self->_textureGroup normals];
+      v12 = [normals objectAtIndexedSubscript:i];
 
       if (v12 != v5)
       {
-        v13 = [v12 atlas];
-        v14 = [v13 uuid];
-        [v35 purge:v14];
+        atlas2 = [v12 atlas];
+        uuid2 = [atlas2 uuid];
+        [v35 purge:uuid2];
       }
 
-      v15 = [(NUNIAegirTextureGroup *)self->_textureGroup emissives];
-      v16 = [v15 objectAtIndexedSubscript:i];
+      emissives = [(NUNIAegirTextureGroup *)self->_textureGroup emissives];
+      v16 = [emissives objectAtIndexedSubscript:i];
 
       if (v16 != v5)
       {
-        v17 = [v16 atlas];
-        v18 = [v17 uuid];
-        [v35 purge:v18];
+        atlas3 = [v16 atlas];
+        uuid3 = [atlas3 uuid];
+        [v35 purge:uuid3];
       }
 
-      v19 = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsLo];
-      v20 = [v19 objectAtIndexedSubscript:i];
+      cloudsLo = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsLo];
+      v20 = [cloudsLo objectAtIndexedSubscript:i];
 
       if (v20 != v5)
       {
-        v21 = [v20 atlas];
-        v22 = [v21 uuid];
-        [v35 purge:v22];
+        atlas4 = [v20 atlas];
+        uuid4 = [atlas4 uuid];
+        [v35 purge:uuid4];
       }
 
-      v23 = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsMd];
-      v24 = [v23 objectAtIndexedSubscript:i];
+      cloudsMd = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsMd];
+      v24 = [cloudsMd objectAtIndexedSubscript:i];
 
       if (v24 != v5)
       {
-        v25 = [v24 atlas];
-        v26 = [v25 uuid];
-        [v35 purge:v26];
+        atlas5 = [v24 atlas];
+        uuid5 = [atlas5 uuid];
+        [v35 purge:uuid5];
       }
 
-      v27 = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsHi];
-      v28 = [v27 objectAtIndexedSubscript:i];
+      cloudsHi = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsHi];
+      v28 = [cloudsHi objectAtIndexedSubscript:i];
 
       if (v28 != v5)
       {
-        v29 = [v28 atlas];
-        v30 = [v29 uuid];
-        [v35 purge:v30];
+        atlas6 = [v28 atlas];
+        uuid6 = [atlas6 uuid];
+        [v35 purge:uuid6];
       }
 
-      v31 = [(NUNIAegirTextureGroup *)self->_textureGroup gradients];
-      v32 = [v31 objectAtIndexedSubscript:i];
+      gradients = [(NUNIAegirTextureGroup *)self->_textureGroup gradients];
+      v32 = [gradients objectAtIndexedSubscript:i];
 
       if (v32 != v5)
       {
-        v33 = [v32 atlas];
-        v34 = [v33 uuid];
-        [v35 purge:v34];
+        atlas7 = [v32 atlas];
+        uuid7 = [atlas7 uuid];
+        [v35 purge:uuid7];
       }
     }
   }
 }
 
-- (void)_updateStateWithScene:(id)a3 viewport:(NUNIViewport)a4
+- (void)_updateStateWithScene:(id)scene viewport:(NUNIViewport)viewport
 {
-  width = a4.width;
-  height = a4.height;
-  v7 = a3;
-  [v7 cameraPosition];
+  width = viewport.width;
+  height = viewport.height;
+  sceneCopy = scene;
+  [sceneCopy cameraPosition];
   v83 = v8;
-  [v7 cameraTarget];
+  [sceneCopy cameraTarget];
   v77 = v9;
-  [v7 cameraRoll];
+  [sceneCopy cameraRoll];
   v11 = v10;
-  [v7 cameraOffset];
+  [sceneCopy cameraOffset];
   v76 = v12;
   _Q0 = vsubq_f32(v77, v83);
   _Q1 = vmulq_f32(_Q0, _Q0);
@@ -234,7 +234,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
 
   _Q1.f32[0] = sqrtf(_Q1.f32[0]);
   v84 = vdivq_f32(_Q0, vdupq_lane_s32(*_Q1.f32, 0));
-  [v7 cameraUp];
+  [sceneCopy cameraUp];
   v81 = v20;
 
   v21 = v84;
@@ -366,18 +366,18 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   *&self->_anon_e4[268] = v65;
 }
 
-- (void)_updateBaseUniformsForViewport:(NUNIViewport)a3
+- (void)_updateBaseUniformsForViewport:(NUNIViewport)viewport
 {
-  width = a3.width;
-  height = a3.height;
+  width = viewport.width;
+  height = viewport.height;
   if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * self->_frame, 2) <= 0x444444444444444uLL)
   {
-    v6 = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
-    if (v6 != self->_rendererOptionsChangeSequence)
+    changeSequence = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
+    if (changeSequence != self->_rendererOptionsChangeSequence)
     {
       v7 = 0;
-      self->_rendererOptionsChangeSequence = v6;
-      v8 = self;
+      self->_rendererOptionsChangeSequence = changeSequence;
+      selfCopy = self;
       do
       {
         v9 = _updateBaseUniformsForViewport__optionKeys[v7];
@@ -387,7 +387,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
         {
           [v10 doubleValue];
           *&v12 = v12;
-          _H1 = *v8->_anon_3b4;
+          _H1 = *selfCopy->_anon_3b4;
           __asm { FCVT            S1, H1 }
 
           if (*&v12 != _S1)
@@ -395,11 +395,11 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
             [v11 doubleValue];
             __asm { FCVT            H0, D0 }
 
-            *v8->_anon_3b4 = _D0;
+            *selfCopy->_anon_3b4 = _D0;
           }
         }
 
-        v8 = (v8 + 2);
+        selfCopy = (selfCopy + 2);
         ++v7;
       }
 
@@ -481,11 +481,11 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   *&self->_anon_250[344] = 0;
 }
 
-- (id)getOrCreateUniformBufferforFrameBufferIndex:(unint64_t)a3
+- (id)getOrCreateUniformBufferforFrameBufferIndex:(unint64_t)index
 {
-  v5 = self->_renderUniformsBuffers[a3];
-  v6 = self->_renderUniformBuffersCounts[a3];
-  self->_renderUniformBuffersCounts[a3] = v6 + 1;
+  v5 = self->_renderUniformsBuffers[index];
+  v6 = self->_renderUniformBuffersCounts[index];
+  self->_renderUniformBuffersCounts[index] = v6 + 1;
   if ([(NSMutableArray *)v5 count]<= v6)
   {
     v7 = [(MTLDevice *)self->_device newBufferWithLength:432 options:1];
@@ -500,41 +500,41 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   return v7;
 }
 
-- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)a3 frameBufferIndex:(unint64_t)a4
+- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)encoder frameBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  v17 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:a4];
+  encoderCopy = encoder;
+  v17 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:index];
   v7 = v17;
-  v8 = [v17 contents];
-  memcpy(v8, &self->_baseUniforms, 0x1B0uLL);
+  contents = [v17 contents];
+  memcpy(contents, &self->_baseUniforms, 0x1B0uLL);
   self = (self + 208);
-  *(v8 + 144) = __invert_f4(*&self->_contentMaskSurfaces[2]);
+  *(contents + 144) = __invert_f4(*&self->_contentMaskSurfaces[2]);
   *v9.i64 = UMFloat4x4MakeTranslate();
   v19.columns[0] = v9;
   v19.columns[1] = v10;
   v19.columns[2] = v11;
   v19.columns[3] = v12;
   *&v13 = UMMul(*&self->_anon_e4[12], v19);
-  *(v8 + 272) = v13;
-  *(v8 + 288) = v14;
-  *(v8 + 304) = v15;
-  *(v8 + 320) = v16;
-  [v6 setVertexBuffer:v17 offset:0 atIndex:1];
+  *(contents + 272) = v13;
+  *(contents + 288) = v14;
+  *(contents + 304) = v15;
+  *(contents + 320) = v16;
+  [encoderCopy setVertexBuffer:v17 offset:0 atIndex:1];
 }
 
-- (void)_renderRaytraceSpheroid:(id)a3 uniPtr:(NUNIAegirRenderUniforms *)a4 renderEncoder:(id)a5
+- (void)_renderRaytraceSpheroid:(id)spheroid uniPtr:(NUNIAegirRenderUniforms *)ptr renderEncoder:(id)encoder
 {
-  v108 = a3;
-  v8 = a5;
-  v9 = [v108 type];
-  if (v9 == 3)
+  spheroidCopy = spheroid;
+  encoderCopy = encoder;
+  type = [spheroidCopy type];
+  if (type == 3)
   {
     _H0 = *&self->_anon_3b4[46];
     __asm { FCVT            S8, H0 }
 
-    [v108 cloudOpacity];
+    [spheroidCopy cloudOpacity];
     v17 = v16 * _S8;
-    a4[5].var10 = v17;
+    ptr[5].var10 = v17;
     v18 = v17 > 0.00001;
     v19 = v17 > 0.00001;
   }
@@ -545,18 +545,18 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     v19 = 0;
   }
 
-  v20 = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForSpheroid:v9 config:v18];
+  v20 = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForSpheroid:type config:v18];
   if (v20)
   {
-    [v8 setLabel:@"Ægir RaytraceSpheroid"];
-    [v8 setRenderPipelineState:v20];
-    [v108 opacity];
-    a4[4].var15 = v21;
-    [v108 equatorRotation];
+    [encoderCopy setLabel:@"Ægir RaytraceSpheroid"];
+    [encoderCopy setRenderPipelineState:v20];
+    [spheroidCopy opacity];
+    ptr[4].var15 = v21;
+    [spheroidCopy equatorRotation];
     v23 = v22;
-    [v108 radius];
+    [spheroidCopy radius];
     v25 = v24;
-    [v108 radiusScale];
+    [spheroidCopy radiusScale];
     v99 = v25 * v26;
     UMFloat4x4MakeScale(v25 * v26);
     v104 = v28;
@@ -581,7 +581,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
       v102 = v37;
     }
 
-    [v108 position];
+    [spheroidCopy position];
     v90 = v39;
     *v40.i64 = UMFloat4x4MakeTranslate();
     v93 = v41;
@@ -636,16 +636,16 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     __asm { FCVT            H16, S16 }
 
     v54.i16[2] = _S16;
-    *&a4[1].var13 = v48;
-    *&a4[1].var15 = v50;
-    *&a4[1].var17 = v52;
-    *&a4[1].var19 = v54;
-    *&a4[1].var21 = v114;
-    *&a4[2].var17 = v107;
-    *&a4[2].var21 = v105;
-    *&a4[3].var5 = v103;
-    *&a4[3].var9 = v101;
-    if (v9 == 4)
+    *&ptr[1].var13 = v48;
+    *&ptr[1].var15 = v50;
+    *&ptr[1].var17 = v52;
+    *&ptr[1].var19 = v54;
+    *&ptr[1].var21 = v114;
+    *&ptr[2].var17 = v107;
+    *&ptr[2].var21 = v105;
+    *&ptr[3].var5 = v103;
+    *&ptr[3].var9 = v101;
+    if (type == 4)
     {
       _Q0 = vaddq_f32(v90, xmmword_1BCE3ABD0);
       _Q1 = vmulq_f32(_Q0, _Q0);
@@ -658,7 +658,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
 
     else
     {
-      [v108 light];
+      [spheroidCopy light];
       v96 = v60;
       v62 = __sincosf_stret(v61);
       v63 = __sincosf_stret(v96);
@@ -668,92 +668,92 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
 
     v59.i32[3] = 0;
     *&v64 = UMMul(*&self->_anon_e4[156], *&self->_anon_e4[172], *&self->_anon_e4[188], *&self->_anon_e4[204], v59);
-    *&a4->var13 = v64;
+    *&ptr->var13 = v64;
     *&v65 = UMMul(v107, v105, v103, v101, xmmword_1BCE22FD0);
     *(&v65 + 3) = v99 * v99;
-    *&a4->var9 = v65;
-    if (v9 == 3)
+    *&ptr->var9 = v65;
+    if (type == 3)
     {
-      if (a4->var15 < 0.0 && self->_supportsMTLGPUFamilyApple6)
+      if (ptr->var15 < 0.0 && self->_supportsMTLGPUFamilyApple6)
       {
-        *&a4[4].var23 = vmul_f32(vmul_n_f32(0x42DA000046B73E00, v99), *&a4[4].var20);
+        *&ptr[4].var23 = vmul_f32(vmul_n_f32(0x42DA000046B73E00, v99), *&ptr[4].var20);
       }
 
       v66 = v99 * 0.98;
       if (v19)
       {
-        a4[5].var6 = v99 * v99;
+        ptr[5].var6 = v99 * v99;
         v67 = vcvt_f32_f64(vmulq_n_f64(xmmword_1BCE3ABE0, v99));
-        *&a4[5].var7 = vmul_f32(v67, v67);
-        a4[5].var9 = v99 * 0.02;
+        *&ptr[5].var7 = vmul_f32(v67, v67);
+        ptr[5].var9 = v99 * 0.02;
       }
 
       v68 = v66 * 1.125;
-      a4[5].var5 = v66 * v66;
+      ptr[5].var5 = v66 * v66;
       v69 = v66 * 0.95;
-      a4[5].var11 = v68;
-      a4[5].var12 = v69;
+      ptr[5].var11 = v68;
+      ptr[5].var12 = v69;
     }
 
-    v70 = [(NUNIAegirTextureGroup *)self->_textureGroup albedos];
-    v71 = [v70 objectAtIndexedSubscript:v9];
+    albedos = [(NUNIAegirTextureGroup *)self->_textureGroup albedos];
+    v71 = [albedos objectAtIndexedSubscript:type];
 
-    v72 = [v71 atlas];
-    [v72 bind:v8 slot:1];
+    atlas = [v71 atlas];
+    [atlas bind:encoderCopy slot:1];
 
-    v73 = [(NUNIAegirTextureGroup *)self->_textureGroup normals];
-    v74 = [v73 objectAtIndexedSubscript:v9];
+    normals = [(NUNIAegirTextureGroup *)self->_textureGroup normals];
+    v74 = [normals objectAtIndexedSubscript:type];
 
-    v75 = [v74 atlas];
-    [v75 bind:v8 slot:2];
+    atlas2 = [v74 atlas];
+    [atlas2 bind:encoderCopy slot:2];
 
-    v76 = [(NUNIAegirTextureGroup *)self->_textureGroup emissives];
-    v77 = [v76 objectAtIndexedSubscript:v9];
+    emissives = [(NUNIAegirTextureGroup *)self->_textureGroup emissives];
+    v77 = [emissives objectAtIndexedSubscript:type];
 
-    v78 = [v77 atlas];
-    [v78 bind:v8 slot:3];
+    atlas3 = [v77 atlas];
+    [atlas3 bind:encoderCopy slot:3];
 
     if (v19)
     {
-      v79 = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsLo];
-      v80 = [v79 objectAtIndexedSubscript:v9];
+      cloudsLo = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsLo];
+      v80 = [cloudsLo objectAtIndexedSubscript:type];
 
-      v81 = [v80 atlas];
-      [v81 bind:v8 slot:5];
+      atlas4 = [v80 atlas];
+      [atlas4 bind:encoderCopy slot:5];
 
-      v82 = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsMd];
-      v83 = [v82 objectAtIndexedSubscript:v9];
+      cloudsMd = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsMd];
+      v83 = [cloudsMd objectAtIndexedSubscript:type];
 
-      v84 = [v83 atlas];
-      [v84 bind:v8 slot:6];
+      atlas5 = [v83 atlas];
+      [atlas5 bind:encoderCopy slot:6];
 
-      v85 = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsHi];
-      v77 = [v85 objectAtIndexedSubscript:v9];
+      cloudsHi = [(NUNIAegirTextureGroup *)self->_textureGroup cloudsHi];
+      v77 = [cloudsHi objectAtIndexedSubscript:type];
 
-      v86 = [v77 atlas];
-      [v86 bind:v8 slot:7];
+      atlas6 = [v77 atlas];
+      [atlas6 bind:encoderCopy slot:7];
     }
 
-    v87 = [(NUNIAegirTextureGroup *)self->_textureGroup gradients];
-    v88 = [v87 objectAtIndexedSubscript:v9];
+    gradients = [(NUNIAegirTextureGroup *)self->_textureGroup gradients];
+    v88 = [gradients objectAtIndexedSubscript:type];
 
-    v89 = [v88 atlas];
-    [v89 bind:v8 slot:4];
+    atlas7 = [v88 atlas];
+    [atlas7 bind:encoderCopy slot:4];
 
-    [v8 drawPrimitives:4 vertexStart:0 vertexCount:4];
+    [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   }
 }
 
-- (void)_renderLocationDot:(id)a3 uniPtr:(NUNIAegirRenderUniforms *)a4 viewport:(NUNIViewport)a5 renderEncoder:(id)a6
+- (void)_renderLocationDot:(id)dot uniPtr:(NUNIAegirRenderUniforms *)ptr viewport:(NUNIViewport)viewport renderEncoder:(id)encoder
 {
-  v162 = a3;
-  v10 = a6;
-  v11 = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForLocationDot];
-  if (v11)
+  dotCopy = dot;
+  encoderCopy = encoder;
+  renderOffscreenPipelineForLocationDot = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForLocationDot];
+  if (renderOffscreenPipelineForLocationDot)
   {
     p_state = &self->_state;
-    [v10 setLabel:@"Ægir LocationDot"];
-    [v10 setRenderPipelineState:v11];
+    [encoderCopy setLabel:@"Ægir LocationDot"];
+    [encoderCopy setRenderPipelineState:renderOffscreenPipelineForLocationDot];
     UMFloat4x4MakeScale(0.11);
     v152 = v14;
     v157 = v13;
@@ -773,7 +773,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     v158 = v17;
     v143 = v20;
     v148 = v19;
-    [v162 homeCoordinate];
+    [dotCopy homeCoordinate];
     v22 = v21;
     *&v23 = v23;
     *v24.i64 = UMFloat4x4MakeRotateX(*&v23 * -0.017453);
@@ -809,11 +809,11 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     v159 = v36;
     v144 = v39;
     v149 = v38;
-    [v162 equatorRotation];
+    [dotCopy equatorRotation];
     v41 = v40;
-    [v162 radius];
+    [dotCopy radius];
     v43 = v42;
-    [v162 radiusScale];
+    [dotCopy radiusScale];
     UMFloat4x4MakeScale(v43 * v44);
     v126 = v167.columns[1];
     v127 = v167.columns[0];
@@ -856,7 +856,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
       v150 = v52;
     }
 
-    [v162 position];
+    [dotCopy position];
     *v169.columns[0].i64 = UMFloat4x4MakeTranslate();
     v122 = v169.columns[1];
     v123 = v169.columns[0];
@@ -881,8 +881,8 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     *v67.i64 = UMMul(v161, v156, v151, v146, xmmword_1BCE3AC00);
     v132 = v67;
     *v68.i64 = UMMul(v161, v156, v151, v146, xmmword_1BCE22FD0);
-    v69.f32[0] = a5.width;
-    v69.f32[1] = a5.height;
+    v69.f32[0] = viewport.width;
+    v69.f32[1] = viewport.height;
     v70 = vmul_f32(v69, 0x3F0000003F000000);
     v71 = vdiv_f32(vmul_f32(v70, *v132.i8), vdup_laneq_s32(v132, 3));
     *v68.i8 = vdiv_f32(vmul_f32(v70, *v68.i8), vdup_laneq_s32(v68, 3));
@@ -897,8 +897,8 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     }
 
     v75 = v74.f32[0] * 0.23077;
-    v76 = [v162 scene];
-    [v76 locationDotMaximumRadius];
+    scene = [dotCopy scene];
+    [scene locationDotMaximumRadius];
     v78 = v77;
 
     if (v75 <= v78)
@@ -977,31 +977,31 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
       *v108.i64 = UMMul(*&p_state[12].viewport.width, v187);
     }
 
-    *&a4[3].var13 = v108;
-    *&a4[3].var17 = v109;
-    *&a4[3].var21 = v110;
-    *&a4[4].var5 = v111;
-    [v10 setCullMode:1];
-    [v10 drawPrimitives:4 vertexStart:0 vertexCount:4];
-    [v10 setCullMode:0];
+    *&ptr[3].var13 = v108;
+    *&ptr[3].var17 = v109;
+    *&ptr[3].var21 = v110;
+    *&ptr[4].var5 = v111;
+    [encoderCopy setCullMode:1];
+    [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
+    [encoderCopy setCullMode:0];
   }
 }
 
-- (void)_renderSpriteSpheroid:(id)a3 uniPtr:(NUNIAegirRenderUniforms *)a4 renderEncoder:(id)a5
+- (void)_renderSpriteSpheroid:(id)spheroid uniPtr:(NUNIAegirRenderUniforms *)ptr renderEncoder:(id)encoder
 {
-  v50 = a3;
-  v8 = a5;
-  v9 = [v50 type];
-  v10 = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForSpheroid:v9 config:0];
+  spheroidCopy = spheroid;
+  encoderCopy = encoder;
+  type = [spheroidCopy type];
+  v10 = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForSpheroid:type config:0];
   if (v10)
   {
     p_state = &self->_state;
-    [v8 setLabel:@"Ægir SpriteSpheroid"];
-    [v8 setRenderPipelineState:v10];
-    *&a4->var5 = s_sprites[[v50 spriteType]];
-    [v50 opacity];
-    a4[4].var15 = v12;
-    [v50 position];
+    [encoderCopy setLabel:@"Ægir SpriteSpheroid"];
+    [encoderCopy setRenderPipelineState:v10];
+    *&ptr->var5 = s_sprites[[spheroidCopy spriteType]];
+    [spheroidCopy opacity];
+    ptr[4].var15 = v12;
+    [spheroidCopy position];
     _Q3 = vsubq_f32(*&self->_anon_e4[12], v13);
     v15 = v13;
     _Q1 = vmulq_f32(_Q3, _Q3);
@@ -1022,11 +1022,11 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     v15.i32[3] = 1.0;
     v46 = v15;
     v47 = v22;
-    [v50 radius];
+    [spheroidCopy radius];
     v28 = v27;
-    [v50 radiusScale];
+    [spheroidCopy radiusScale];
     v30 = v28 * v29;
-    if (v9 == 14)
+    if (type == 14)
     {
       v30 = v30 + v30;
     }
@@ -1046,41 +1046,41 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     v54.columns[2] = v37;
     v54.columns[3] = v38;
     *&v39 = UMMul(*&self->_anon_e4[220], v54);
-    *&a4[3].var13 = v39;
-    *&a4[3].var17 = v40;
-    *&a4[3].var21 = v41;
-    *&a4[4].var5 = v42;
-    v43 = [(NUNIAegirTextureGroup *)self->_textureGroup gradients];
-    v44 = [v43 objectAtIndexedSubscript:v9];
+    *&ptr[3].var13 = v39;
+    *&ptr[3].var17 = v40;
+    *&ptr[3].var21 = v41;
+    *&ptr[4].var5 = v42;
+    gradients = [(NUNIAegirTextureGroup *)self->_textureGroup gradients];
+    v44 = [gradients objectAtIndexedSubscript:type];
 
-    v45 = [v44 atlas];
-    [v45 bind:v8 slot:4];
+    atlas = [v44 atlas];
+    [atlas bind:encoderCopy slot:4];
 
-    [v8 drawPrimitives:4 vertexStart:0 vertexCount:4];
+    [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   }
 }
 
-- (void)_renderOffscreenSceneWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6 drawableTexture:(id)a7
+- (void)_renderOffscreenSceneWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index drawableTexture:(id)texture
 {
   v89[4] = *MEMORY[0x1E69E9840];
-  height = a4.height;
-  v76 = a3;
-  v13 = a5;
-  v14 = a7;
-  v77 = a6;
-  v15 = &self->_offscreenScenes[a6];
+  height = viewport.height;
+  sceneCopy = scene;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  indexCopy = index;
+  v15 = &self->_offscreenScenes[index];
   v16 = *v15;
   v17 = v16;
-  v72 = v14;
-  v73 = v13;
+  v72 = textureCopy;
+  v73 = bufferCopy;
   v71 = height;
-  if (!v16 || [(NUNAegirOffscreen *)v16 width]!= a4.width || [(NUNAegirOffscreen *)v17 height]!= height)
+  if (!v16 || [(NUNAegirOffscreen *)v16 width]!= viewport.width || [(NUNAegirOffscreen *)v17 height]!= height)
   {
     v74 = +[CLKUIMetalResourceManager sharedNilTexture2D];
     v18 = objc_opt_new();
     [v18 setTextureType:2];
-    [v18 setWidth:a4.width];
-    [v18 setHeight:*&a4 >> 32];
+    [v18 setWidth:viewport.width];
+    [v18 setHeight:*&viewport >> 32];
     [v18 setDepth:1];
     [v18 setPixelFormat:10];
     [v18 setUsage:5];
@@ -1088,7 +1088,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     [v18 setResourceOptions:{objc_msgSend(v19, "defaultResourceOptionForDevice:", self->_device)}];
 
     v88[0] = *MEMORY[0x1E696CDE0];
-    v20 = [MEMORY[0x1E696AD98] numberWithInt:a4];
+    v20 = [MEMORY[0x1E696AD98] numberWithInt:viewport];
     v89[0] = v20;
     v88[1] = *MEMORY[0x1E696CD90];
     v21 = [MEMORY[0x1E696AD98] numberWithInt:height];
@@ -1102,37 +1102,37 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:4];
 
     v25 = [objc_alloc(MEMORY[0x1E696CDE8]) initWithProperties:v24];
-    v26 = self->_contentMaskSurfaces[v77];
-    self->_contentMaskSurfaces[v77] = v25;
+    v26 = self->_contentMaskSurfaces[indexCopy];
+    self->_contentMaskSurfaces[indexCopy] = v25;
 
     device = self->_device;
     v28 = v25;
     v29 = [(MTLDevice *)device newTextureWithDescriptor:v18 iosurface:v28 plane:0];
-    v30 = self->_contentMaskTextures[v77];
-    self->_contentMaskTextures[v77] = v29;
+    v30 = self->_contentMaskTextures[indexCopy];
+    self->_contentMaskTextures[indexCopy] = v29;
 
     v31 = v29;
-    v32 = [[NUNAegirOffscreen alloc] initWithDevice:self->_device width:a4 height:v71 texture0:v74 texture1:v31 loadAction:2 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
+    v32 = [[NUNAegirOffscreen alloc] initWithDevice:self->_device width:viewport height:v71 texture0:v74 texture1:v31 loadAction:2 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
 
     objc_storeStrong(v15, v32);
-    v13 = v73;
+    bufferCopy = v73;
 
-    v14 = v72;
+    textureCopy = v72;
     v17 = v32;
   }
 
-  [(NUNAegirOffscreen *)v17 setTexture0:v14];
+  [(NUNAegirOffscreen *)v17 setTexture0:textureCopy];
   v70 = v17;
-  v33 = [(NUNAegirOffscreen *)v17 renderPassDescriptor];
-  v34 = [v13 renderCommandEncoderWithDescriptor:v33];
+  renderPassDescriptor = [(NUNAegirOffscreen *)v17 renderPassDescriptor];
+  v34 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
 
   memset(v87, 0, sizeof(v87));
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v35 = [v76 spheroids];
-  v36 = [v35 countByEnumeratingWithState:&v80 objects:v84 count:16];
+  spheroids = [sceneCopy spheroids];
+  v36 = [spheroids countByEnumeratingWithState:&v80 objects:v84 count:16];
   if (v36)
   {
     v37 = v36;
@@ -1144,7 +1144,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
       {
         if (*v81 != v39)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(spheroids);
         }
 
         v41 = *(*(&v80 + 1) + 8 * i);
@@ -1156,13 +1156,13 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
           {
             if ([v41 isVisible])
             {
-              v44 = [v41 type];
-              if (v44 == 10)
+              type = [v41 type];
+              if (type == 10)
               {
                 _S0 = 1258291200;
               }
 
-              else if (v44 == 13)
+              else if (type == 13)
               {
                 _S0 = 1258291194;
               }
@@ -1170,10 +1170,10 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
               else
               {
                 _S0 = 1258291196;
-                if (((1 << v44) & 0xFFC000) == 0)
+                if (((1 << type) & 0xFFC000) == 0)
                 {
                   _S0 = 1258291198;
-                  if (v44 != 12)
+                  if (type != 12)
                   {
                     v75 = *&self->_anon_e4[12];
                     [v41 position];
@@ -1192,7 +1192,7 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
         }
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v80 objects:v84 count:16];
+      v37 = [spheroids countByEnumeratingWithState:&v80 objects:v84 count:16];
     }
 
     while (v37);
@@ -1207,14 +1207,14 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   [v34 setLabel:@"Ægir Offscreen Scene"];
   v78[0] = 0;
   v78[1] = 0;
-  *&v78[2] = a4.width;
+  *&v78[2] = viewport.width;
   *&v78[3] = v71;
   v79 = xmmword_1BCE3A870;
   [v34 setViewport:v78];
   [v34 setCullMode:0];
-  [(NUNIAegirRenderer *)self _renderOffscreenBackgroundWithRenderEncoder:v34 frameBufferIndex:v77];
-  v53 = [(NUNIAegirResourceManager *)self->_resourceManager rectVerticesBuffer];
-  [v34 setVertexBuffer:v53 offset:0 atIndex:0];
+  [(NUNIAegirRenderer *)self _renderOffscreenBackgroundWithRenderEncoder:v34 frameBufferIndex:indexCopy];
+  rectVerticesBuffer = [(NUNIAegirResourceManager *)self->_resourceManager rectVerticesBuffer];
+  [v34 setVertexBuffer:rectVerticesBuffer offset:0 atIndex:0];
 
   if (v38 >= 1)
   {
@@ -1226,40 +1226,40 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
       v54 += 2;
       v57 = *(v87 + v56);
       v58 = 1 << [v57 type];
-      v59 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:v77];
+      v59 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:indexCopy];
       [v34 setVertexBuffer:v59 offset:0 atIndex:1];
       [v34 setFragmentBuffer:v59 offset:0 atIndex:0];
-      v60 = [v59 contents];
-      memcpy(v60, &self->_baseUniforms, 0x1B0uLL);
+      contents = [v59 contents];
+      memcpy(contents, &self->_baseUniforms, 0x1B0uLL);
       if ((*&v58 & 0xFBF400) != 0)
       {
-        [(NUNIAegirRenderer *)self _renderSpriteSpheroid:v57 uniPtr:v60 renderEncoder:v34];
+        [(NUNIAegirRenderer *)self _renderSpriteSpheroid:v57 uniPtr:contents renderEncoder:v34];
       }
 
       else if ((v58 & 0x3FE) != 0)
       {
-        [(NUNIAegirRenderer *)self _renderRaytraceSpheroid:v57 uniPtr:v60 renderEncoder:v34];
+        [(NUNIAegirRenderer *)self _renderRaytraceSpheroid:v57 uniPtr:contents renderEncoder:v34];
       }
 
       if ((v58 & 8) != 0)
       {
-        [v76 locationDotAlpha];
+        [sceneCopy locationDotAlpha];
         if (v61 > 0.00001)
         {
           v62 = v61;
-          [v76 locationDotPulse];
+          [sceneCopy locationDotPulse];
           v64 = v63;
-          v65 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:v77];
+          v65 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:indexCopy];
           [v34 setVertexBuffer:v65 offset:0 atIndex:1];
           [v34 setFragmentBuffer:v65 offset:0 atIndex:0];
-          v66 = [v65 contents];
-          memcpy(v66, &self->_baseUniforms, 0x1B0uLL);
+          contents2 = [v65 contents];
+          memcpy(contents2, &self->_baseUniforms, 0x1B0uLL);
           [v57 opacity];
-          *(v66 + 360) = v62 * v67;
-          *(v66 + 364) = v64 - floorf(v64);
-          [v76 locationDotPulseOverrideAlpha];
-          *(v66 + 368) = v68;
-          [(NUNIAegirRenderer *)self _renderLocationDot:v57 uniPtr:v66 viewport:a4 renderEncoder:v34];
+          *(contents2 + 360) = v62 * v67;
+          *(contents2 + 364) = v64 - floorf(v64);
+          [sceneCopy locationDotPulseOverrideAlpha];
+          *(contents2 + 368) = v68;
+          [(NUNIAegirRenderer *)self _renderLocationDot:v57 uniPtr:contents2 viewport:viewport renderEncoder:v34];
         }
       }
 
@@ -1275,27 +1275,27 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   }
 }
 
-- (void)_renderOffscreenBloomWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6
+- (void)_renderOffscreenBloomWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index
 {
-  v10 = self->_offscreenScenes[a6];
+  v10 = self->_offscreenScenes[index];
   v11 = self->_offscreenBlooms;
-  v12 = a5;
-  v13 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:a6];
+  bufferCopy = buffer;
+  v13 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:index];
   memcpy([v13 contents], &self->_baseUniforms, 0x1B0uLL);
-  v14 = a4.width >> 1;
-  v15 = *&a4 >> 33;
+  v14 = viewport.width >> 1;
+  v15 = *&viewport >> 33;
   if (!v11 || [(NUNAegirOffscreen *)v11 width]!= v14 || [(NUNAegirOffscreen *)v11 height]!= v15)
   {
-    v16 = [[NUNAegirOffscreen alloc] initWithDevice:self->_device width:(a4.width >> 1) height:*&a4 >> 33 pixelFormat0:10 pixelFormat1:0 mipmaps:3 loadAction:0.0 clearColor0:0.0 clearColor1:0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2];
+    v16 = [[NUNAegirOffscreen alloc] initWithDevice:self->_device width:(viewport.width >> 1) height:*&viewport >> 33 pixelFormat0:10 pixelFormat1:0 mipmaps:3 loadAction:0.0 clearColor0:0.0 clearColor1:0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2];
 
     objc_storeStrong(&self->_offscreenBlooms, v16);
     v11 = v16;
   }
 
-  v17 = [(NUNAegirOffscreen *)v11 renderPassDescriptor];
-  v18 = [v12 renderCommandEncoderWithDescriptor:v17];
+  renderPassDescriptor = [(NUNAegirOffscreen *)v11 renderPassDescriptor];
+  v18 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
 
-  v19 = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForThreshold];
+  renderOffscreenPipelineForThreshold = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForThreshold];
   [v18 setLabel:@"Ægir Threshold"];
   v24[0] = 0;
   v24[1] = 0;
@@ -1304,43 +1304,43 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   v25 = xmmword_1BCE3A870;
   [v18 setViewport:v24];
   [v18 setCullMode:0];
-  [v18 setRenderPipelineState:v19];
-  v20 = [(NUNIAegirResourceManager *)self->_resourceManager rectVerticesBuffer];
-  [v18 setVertexBuffer:v20 offset:0 atIndex:0];
+  [v18 setRenderPipelineState:renderOffscreenPipelineForThreshold];
+  rectVerticesBuffer = [(NUNIAegirResourceManager *)self->_resourceManager rectVerticesBuffer];
+  [v18 setVertexBuffer:rectVerticesBuffer offset:0 atIndex:0];
 
   [v18 setVertexBuffer:v13 offset:0 atIndex:1];
   [v18 setFragmentBuffer:v13 offset:0 atIndex:0];
-  v21 = [(NUNAegirOffscreen *)v10 texture0];
-  [v18 setFragmentTexture:v21 atIndex:1];
+  texture0 = [(NUNAegirOffscreen *)v10 texture0];
+  [v18 setFragmentTexture:texture0 atIndex:1];
 
   [v18 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v18 endEncoding];
-  v22 = [v12 blitCommandEncoder];
+  blitCommandEncoder = [bufferCopy blitCommandEncoder];
 
-  v23 = [(NUNAegirOffscreen *)v11 texture0];
-  [v22 generateMipmapsForTexture:v23];
+  texture02 = [(NUNAegirOffscreen *)v11 texture0];
+  [blitCommandEncoder generateMipmapsForTexture:texture02];
 
-  [v22 endEncoding];
+  [blitCommandEncoder endEncoding];
 }
 
-- (void)_renderOffscreenPostWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6
+- (void)_renderOffscreenPostWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index
 {
-  v8 = a4;
-  height = a4.height;
-  v11 = self->_offscreenScenes[a6];
+  viewportCopy = viewport;
+  height = viewport.height;
+  v11 = self->_offscreenScenes[index];
   v12 = self->_offscreenBlooms;
   v13 = self->_offscreenPosts;
-  v14 = a5;
-  v15 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:a6];
+  bufferCopy = buffer;
+  v15 = [(NUNIAegirRenderer *)self getOrCreateUniformBufferforFrameBufferIndex:index];
   memcpy([v15 contents], &self->_baseUniforms, 0x1B0uLL);
-  if (!v13 || [(NUNAegirOffscreen *)v13 width]!= v8.width || [(NUNAegirOffscreen *)v13 height]!= height)
+  if (!v13 || [(NUNAegirOffscreen *)v13 width]!= viewportCopy.width || [(NUNAegirOffscreen *)v13 height]!= height)
   {
     v16 = +[CLKUIMetalResourceManager sharedNilTexture2D];
     v33 = v13;
-    v17 = v14;
+    v17 = bufferCopy;
     v18 = v15;
     v19 = height;
-    v20 = v8;
+    v20 = viewportCopy;
     v21 = v12;
     v22 = [NUNAegirOffscreen alloc];
     device = self->_device;
@@ -1348,11 +1348,11 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
     v24 = v34 = v11;
     v25 = v22;
     v12 = v21;
-    v8 = v20;
+    viewportCopy = v20;
     height = v19;
     v15 = v18;
-    v14 = v17;
-    v13 = [(NUNAegirOffscreen *)v25 initWithDevice:device width:v8 height:height texture0:v16 texture1:v24 loadAction:1 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
+    bufferCopy = v17;
+    v13 = [(NUNAegirOffscreen *)v25 initWithDevice:device width:viewportCopy height:height texture0:v16 texture1:v24 loadAction:1 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
 
     objc_storeStrong(&self->_offscreenPosts, v13);
     v11 = v34;
@@ -1362,51 +1362,51 @@ void __68__NUNIAegirRenderer_prepareForRenderingSpheroids_completionHandler___bl
   v27 = v26 = v11;
   [(NUNAegirOffscreen *)v13 setTexture0:v27];
 
-  v28 = [(NUNAegirOffscreen *)v13 renderPassDescriptor];
-  v29 = [v14 renderCommandEncoderWithDescriptor:v28];
+  renderPassDescriptor = [(NUNAegirOffscreen *)v13 renderPassDescriptor];
+  v29 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
 
-  v30 = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForPost];
+  renderOffscreenPipelineForPost = [(NUNIAegirResourceManager *)self->_resourceManager renderOffscreenPipelineForPost];
   [v29 setLabel:@"Ægir Post"];
-  [v29 setRenderPipelineState:v30];
+  [v29 setRenderPipelineState:renderOffscreenPipelineForPost];
   v35[0] = 0;
   v35[1] = 0;
-  *&v35[2] = v8.width;
+  *&v35[2] = viewportCopy.width;
   *&v35[3] = height;
   v36 = xmmword_1BCE3A870;
   [v29 setViewport:v35];
   [v29 setCullMode:0];
-  v31 = [(NUNIAegirResourceManager *)self->_resourceManager rectVerticesBuffer];
-  [v29 setVertexBuffer:v31 offset:0 atIndex:0];
+  rectVerticesBuffer = [(NUNIAegirResourceManager *)self->_resourceManager rectVerticesBuffer];
+  [v29 setVertexBuffer:rectVerticesBuffer offset:0 atIndex:0];
 
   [v29 setVertexBuffer:v15 offset:0 atIndex:1];
   [v29 setFragmentBuffer:v15 offset:0 atIndex:0];
-  v32 = [(NUNAegirOffscreen *)v12 texture0];
-  [v29 setFragmentTexture:v32 atIndex:1];
+  texture0 = [(NUNAegirOffscreen *)v12 texture0];
+  [v29 setFragmentTexture:texture0 atIndex:1];
 
   [v29 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v29 endEncoding];
 }
 
-- (void)renderOffscreenWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5
+- (void)renderOffscreenWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer
 {
-  [(NUNIAegirRenderer *)self _updateStateWithScene:a3 viewport:a4, a5];
+  [(NUNIAegirRenderer *)self _updateStateWithScene:scene viewport:viewport, buffer];
 
-  [(NUNIAegirRenderer *)self _updateBaseUniformsForViewport:a4];
+  [(NUNIAegirRenderer *)self _updateBaseUniformsForViewport:viewport];
 }
 
-- (void)renderWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 passDescriptor:(id)a6
+- (void)renderWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a6 colorAttachments];
-  v15 = [v12 objectAtIndexedSubscript:0];
+  bufferCopy = buffer;
+  sceneCopy = scene;
+  colorAttachments = [descriptor colorAttachments];
+  v15 = [colorAttachments objectAtIndexedSubscript:0];
 
-  v13 = [v15 texture];
+  texture = [v15 texture];
   v14 = self->_frame % 3;
   self->_renderUniformBuffersCounts[v14] = 0;
-  [(NUNIAegirRenderer *)self _renderOffscreenSceneWithScene:v11 viewport:a4 commandBuffer:v10 frameBufferIndex:v14 drawableTexture:v13];
-  [(NUNIAegirRenderer *)self _renderOffscreenBloomWithScene:v11 viewport:a4 commandBuffer:v10 frameBufferIndex:v14];
-  [(NUNIAegirRenderer *)self _renderOffscreenPostWithScene:v11 viewport:a4 commandBuffer:v10 frameBufferIndex:v14];
+  [(NUNIAegirRenderer *)self _renderOffscreenSceneWithScene:sceneCopy viewport:viewport commandBuffer:bufferCopy frameBufferIndex:v14 drawableTexture:texture];
+  [(NUNIAegirRenderer *)self _renderOffscreenBloomWithScene:sceneCopy viewport:viewport commandBuffer:bufferCopy frameBufferIndex:v14];
+  [(NUNIAegirRenderer *)self _renderOffscreenPostWithScene:sceneCopy viewport:viewport commandBuffer:bufferCopy frameBufferIndex:v14];
 
   [(CALayer *)self->_contentMaskLayer setContents:self->_contentMaskSurfaces[v14]];
   ++self->_frame;

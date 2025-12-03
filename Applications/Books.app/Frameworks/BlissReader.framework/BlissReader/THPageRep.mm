@@ -1,27 +1,27 @@
 @interface THPageRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)p_hasBookmark;
-- (BOOL)p_isToggleBookmarkGesture:(id)a3;
+- (BOOL)p_isToggleBookmarkGesture:(id)gesture;
 - (BOOL)p_shouldShowBookmark;
 - (CGRect)p_bookmarkLayerFrame;
-- (THPageRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THPageRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)childRepsForHitTesting;
-- (id)hitRep:(CGPoint)a3;
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5;
-- (id)marginNoteForAnnotation:(id)a3 inRep:(id)a4 highlightBounds:(CGRect)a5;
-- (int)marginNoteSideForPageRelativeRect:(CGRect)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (id)hitRep:(CGPoint)rep;
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test;
+- (id)marginNoteForAnnotation:(id)annotation inRep:(id)rep highlightBounds:(CGRect)bounds;
+- (int)marginNoteSideForPageRelativeRect:(CGRect)rect;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
-- (void)drawInLayerContext:(CGContext *)a3;
-- (void)insertChildRep:(id)a3 atIndex:(unint64_t)a4;
-- (void)p_setHasBookmark:(BOOL)a3;
-- (void)p_updateBookmarkStatusAnimated:(BOOL)a3;
-- (void)removeChildRep:(id)a3;
-- (void)setChildReps:(id)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)showEditorForMarginNote:(id)a3;
+- (void)didUpdateLayer:(id)layer;
+- (void)drawInLayerContext:(CGContext *)context;
+- (void)insertChildRep:(id)rep atIndex:(unint64_t)index;
+- (void)p_setHasBookmark:(BOOL)bookmark;
+- (void)p_updateBookmarkStatusAnimated:(BOOL)animated;
+- (void)removeChildRep:(id)rep;
+- (void)setChildReps:(id)reps;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)showEditorForMarginNote:(id)note;
 - (void)updateBookmarkStatus;
 - (void)updateBookmarkStatusAnimated;
 - (void)updateBookmarkVisibleState;
@@ -31,9 +31,9 @@
 
 @implementation THPageRep
 
-- (THPageRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THPageRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  [a3 info];
+  [layout info];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -42,13 +42,13 @@
 
   v13.receiver = self;
   v13.super_class = THPageRep;
-  v7 = [(THPageRep *)&v13 initWithLayout:a3 canvas:a4];
+  v7 = [(THPageRep *)&v13 initWithLayout:layout canvas:canvas];
   if (v7)
   {
     [(THPageRep *)v7 setMarginNotesController:objc_alloc_init(THMarginNotesController)];
     [objc_msgSend(-[THPageRep layout](v7 "layout")];
     [(THMarginNotesController *)[(THPageRep *)v7 marginNotesController] setOwnerSize:v8, v9];
-    [a4 viewScale];
+    [canvas viewScale];
     [(THMarginNotesController *)[(THPageRep *)v7 marginNotesController] setOwnerScale:v10];
     if ([-[THPageRep layout](v7 "layout")] && (objc_msgSend(objc_msgSend(-[THPageRep layout](v7, "layout"), "layoutController"), "isCompactWidth") & 1) != 0)
     {
@@ -85,14 +85,14 @@
   [(THPageRep *)&v4 viewScaleDidChange];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v7.receiver = self;
   v7.super_class = THPageRep;
   [(THPageRep *)&v7 didUpdateLayer:?];
   if ([(THPageRep *)self drawsPageBackground])
   {
-    [a3 setOpaque:1];
+    [layer setOpaque:1];
     if ([objc_msgSend(-[THPageRep interactiveCanvasController](self "interactiveCanvasController")])
     {
       Copy = CGColorCreateCopy([objc_msgSend(objc_msgSend(-[THPageRep interactiveCanvasController](self "interactiveCanvasController")]);
@@ -104,14 +104,14 @@
     }
 
     v6 = Copy;
-    [a3 setBackgroundColor:Copy];
+    [layer setBackgroundColor:Copy];
     CGColorRelease(v6);
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  if (!CGRectIsEmpty(a3))
+  if (!CGRectIsEmpty(rect))
   {
     v3 = +[TSUAssertionHandler currentHandler];
     v4 = [NSString stringWithUTF8String:"[THPageRep setNeedsDisplayInRect:]"];
@@ -121,7 +121,7 @@
   }
 }
 
-- (void)drawInLayerContext:(CGContext *)a3
+- (void)drawInLayerContext:(CGContext *)context
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THPageRep drawInLayerContext:]"];
@@ -130,10 +130,10 @@
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:158 description:{@"this method should never be called, and page reps should never get a bitmap allocated"}];
 }
 
-- (id)hitRep:(CGPoint)a3
+- (id)hitRep:(CGPoint)rep
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   v21.receiver = self;
   v21.super_class = THPageRep;
   v6 = [(THPageRep *)&v21 hitRep:?];
@@ -142,8 +142,8 @@
     return v6;
   }
 
-  v9 = [(THPageRep *)self interactiveCanvasController];
-  [v9 convertBoundsToUnscaledSize:{kTextMarginHitSlop[0], kTextMarginHitSlop[1]}];
+  interactiveCanvasController = [(THPageRep *)self interactiveCanvasController];
+  [interactiveCanvasController convertBoundsToUnscaledSize:{kTextMarginHitSlop[0], kTextMarginHitSlop[1]}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -186,10 +186,10 @@ LABEL_6:
   }
 }
 
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   [(THPageRep *)self naturalBounds];
   v12.x = x;
   v12.y = y;
@@ -200,7 +200,7 @@ LABEL_6:
 
   v11.receiver = self;
   v11.super_class = THPageRep;
-  return [(THPageRep *)&v11 hitRep:a4 withGesture:a5 passingTest:x, y];
+  return [(THPageRep *)&v11 hitRep:gesture withGesture:test passingTest:x, y];
 }
 
 - (id)childRepsForHitTesting
@@ -222,28 +222,28 @@ LABEL_6:
   return result;
 }
 
-- (void)setChildReps:(id)a3
+- (void)setChildReps:(id)reps
 {
   self->mSortedChildRepsForHitTesting = 0;
   v5.receiver = self;
   v5.super_class = THPageRep;
-  [(THPageRep *)&v5 setChildReps:a3];
+  [(THPageRep *)&v5 setChildReps:reps];
 }
 
-- (void)insertChildRep:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildRep:(id)rep atIndex:(unint64_t)index
 {
   self->mSortedChildRepsForHitTesting = 0;
   v7.receiver = self;
   v7.super_class = THPageRep;
-  [(THPageRep *)&v7 insertChildRep:a3 atIndex:a4];
+  [(THPageRep *)&v7 insertChildRep:rep atIndex:index];
 }
 
-- (void)removeChildRep:(id)a3
+- (void)removeChildRep:(id)rep
 {
   self->mSortedChildRepsForHitTesting = 0;
   v5.receiver = self;
   v5.super_class = THPageRep;
-  [(THPageRep *)&v5 removeChildRep:a3];
+  [(THPageRep *)&v5 removeChildRep:rep];
 }
 
 - (void)updateBookmarkVisibleState
@@ -270,9 +270,9 @@ LABEL_6:
 {
   [(THPageRep *)self frameInUnscaledCanvas];
   v3 = CGRectGetWidth(v10) + -48.0;
-  v4 = [(THPageRep *)self canvas];
+  canvas = [(THPageRep *)self canvas];
 
-  [v4 convertUnscaledToBoundsRect:{v3, 0.0, 34.0, 44.0}];
+  [canvas convertUnscaledToBoundsRect:{v3, 0.0, 34.0, 44.0}];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -288,13 +288,13 @@ LABEL_6:
   return [v3 isPageBookmarkedForPageRep:self];
 }
 
-- (void)p_setHasBookmark:(BOOL)a3
+- (void)p_setHasBookmark:(BOOL)bookmark
 {
-  v3 = a3;
+  bookmarkCopy = bookmark;
   [-[THPageRep interactiveCanvasController](self "interactiveCanvasController")];
   v5 = TSUProtocolCast();
 
-  [v5 setPageBookmarked:v3 forPageRep:self];
+  [v5 setPageBookmarked:bookmarkCopy forPageRep:self];
 }
 
 - (BOOL)p_shouldShowBookmark
@@ -305,23 +305,23 @@ LABEL_6:
   return [v2 bookmarksShouldBeVisible];
 }
 
-- (void)p_updateBookmarkStatusAnimated:(BOOL)a3
+- (void)p_updateBookmarkStatusAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(THPageRep *)self supportsBookmarking])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(CALayer *)self->mBookmarkLayer contents];
-  v6 = [(THPageRep *)self p_hasBookmark];
-  if ((((v5 == 0) ^ v6) & 1) == 0)
+  contents = [(CALayer *)self->mBookmarkLayer contents];
+  p_hasBookmark = [(THPageRep *)self p_hasBookmark];
+  if ((((contents == 0) ^ p_hasBookmark) & 1) == 0)
   {
-    v7 = v6;
-    if (v6)
+    v7 = p_hasBookmark;
+    if (p_hasBookmark)
     {
       -[CALayer setContents:](self->mBookmarkLayer, "setContents:", [+[TSUImage imageNamed:inBundle:](TSUImage imageNamed:@"ib_bookmark_on_page" inBundle:{THBundle()), "CGImage"}]);
-      if (!v3)
+      if (!animatedCopy)
       {
         [(THPageRep *)self p_bookmarkLayerFrame];
         mBookmarkLayer = self->mBookmarkLayer;
@@ -333,7 +333,7 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    if (v3)
+    if (animatedCopy)
     {
 LABEL_10:
       [(CALayer *)self->mBookmarkLayer removeAllAnimations];
@@ -414,12 +414,12 @@ LABEL_10:
   }
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = THPageRep;
   [(THPageRep *)&v5 addAdditionalChildLayersToArray:?];
-  [a3 addObjectsFromArray:{-[THMarginNotesController layers](-[THPageRep marginNotesController](self, "marginNotesController"), "layers")}];
+  [array addObjectsFromArray:{-[THMarginNotesController layers](-[THPageRep marginNotesController](self, "marginNotesController"), "layers")}];
   if ([(THPageRep *)self supportsBookmarking])
   {
     if (!self->mBookmarkLayer)
@@ -436,18 +436,18 @@ LABEL_10:
       self->mBookmarkStatusDirty = 0;
     }
 
-    [a3 addObject:self->mBookmarkLayer];
+    [array addObject:self->mBookmarkLayer];
   }
 }
 
-- (BOOL)p_isToggleBookmarkGesture:(id)a3
+- (BOOL)p_isToggleBookmarkGesture:(id)gesture
 {
   [-[THPageRep interactiveCanvasController](self "interactiveCanvasController")];
   v5 = TSUProtocolCast();
   if (v5)
   {
     v6 = v5;
-    [a3 naturalLocationForRep:self];
+    [gesture naturalLocationForRep:self];
     v8 = v7;
     v10 = v9;
     [v6 bookmarkHotspotRegionForPage:{-[THPageRep info](self, "info")}];
@@ -475,27 +475,27 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 != TSDShortTap)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind != TSDShortTap)
   {
-    v6 = [a3 gestureKind];
-    if (v6 != TSDDelayedShortTap)
+    gestureKind2 = [gesture gestureKind];
+    if (gestureKind2 != TSDDelayedShortTap)
     {
       return 0;
     }
   }
 
-  return [(THPageRep *)self p_isToggleBookmarkGesture:a3];
+  return [(THPageRep *)self p_isToggleBookmarkGesture:gesture];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDShortTap || (v6 = [a3 gestureKind], v6 == TSDDelayedShortTap))
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDShortTap || (v6 = [gesture gestureKind], v6 == TSDDelayedShortTap))
   {
-    if ([(THPageRep *)self p_isToggleBookmarkGesture:a3])
+    if ([(THPageRep *)self p_isToggleBookmarkGesture:gesture])
     {
       [(THPageRep *)self p_setHasBookmark:[(THPageRep *)self p_hasBookmark]^ 1];
     }
@@ -504,13 +504,13 @@ LABEL_10:
   return 1;
 }
 
-- (int)marginNoteSideForPageRelativeRect:(CGRect)a3
+- (int)marginNoteSideForPageRelativeRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = fabs(CGRectGetMinX(a3));
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = fabs(CGRectGetMinX(rect));
   [(THPageRep *)self naturalBounds];
   v10 = v9;
   v12.origin.x = x;
@@ -520,11 +520,11 @@ LABEL_10:
   return v8 >= vabdd_f64(v10, CGRectGetMaxX(v12));
 }
 
-- (id)marginNoteForAnnotation:(id)a3 inRep:(id)a4 highlightBounds:(CGRect)a5
+- (id)marginNoteForAnnotation:(id)annotation inRep:(id)rep highlightBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  [a4 convertNaturalRectToUnscaledCanvas:{a5.origin.x, a5.origin.y}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [rep convertNaturalRectToUnscaledCanvas:{bounds.origin.x, bounds.origin.y}];
   [(THPageRep *)self frameInUnscaledCanvas];
   [-[THPageRep canvas](self "canvas")];
   TSDRoundForScale();
@@ -532,8 +532,8 @@ LABEL_10:
   TSDRoundForScale();
   v12 = v11;
   v13 = objc_alloc_init(AEMarginNote);
-  [v13 setAnnotation:a3];
-  [v13 setTheme:{objc_msgSend(a3, "theme")}];
+  [v13 setAnnotation:annotation];
+  [v13 setTheme:{objc_msgSend(annotation, "theme")}];
   [v13 setSide:{-[THPageRep marginNoteSideForPageRelativeRect:](self, "marginNoteSideForPageRelativeRect:", v10, v12, width, height)}];
   v16.origin.x = v10;
   v16.origin.y = v12;
@@ -544,7 +544,7 @@ LABEL_10:
   return v13;
 }
 
-- (void)showEditorForMarginNote:(id)a3
+- (void)showEditorForMarginNote:(id)note
 {
   v13 = 0u;
   v14 = 0u;

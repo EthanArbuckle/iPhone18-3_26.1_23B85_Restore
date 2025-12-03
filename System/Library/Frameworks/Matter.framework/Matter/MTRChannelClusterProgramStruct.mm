@@ -1,6 +1,6 @@
 @interface MTRChannelClusterProgramStruct
 - (MTRChannelClusterProgramStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -76,65 +76,65 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterProgramStruct);
-  v5 = [(MTRChannelClusterProgramStruct *)self identifier];
-  [(MTRChannelClusterProgramStruct *)v4 setIdentifier:v5];
+  identifier = [(MTRChannelClusterProgramStruct *)self identifier];
+  [(MTRChannelClusterProgramStruct *)v4 setIdentifier:identifier];
 
-  v6 = [(MTRChannelClusterProgramStruct *)self channel];
-  [(MTRChannelClusterProgramStruct *)v4 setChannel:v6];
+  channel = [(MTRChannelClusterProgramStruct *)self channel];
+  [(MTRChannelClusterProgramStruct *)v4 setChannel:channel];
 
-  v7 = [(MTRChannelClusterProgramStruct *)self startTime];
-  [(MTRChannelClusterProgramStruct *)v4 setStartTime:v7];
+  startTime = [(MTRChannelClusterProgramStruct *)self startTime];
+  [(MTRChannelClusterProgramStruct *)v4 setStartTime:startTime];
 
-  v8 = [(MTRChannelClusterProgramStruct *)self endTime];
-  [(MTRChannelClusterProgramStruct *)v4 setEndTime:v8];
+  endTime = [(MTRChannelClusterProgramStruct *)self endTime];
+  [(MTRChannelClusterProgramStruct *)v4 setEndTime:endTime];
 
-  v9 = [(MTRChannelClusterProgramStruct *)self title];
-  [(MTRChannelClusterProgramStruct *)v4 setTitle:v9];
+  title = [(MTRChannelClusterProgramStruct *)self title];
+  [(MTRChannelClusterProgramStruct *)v4 setTitle:title];
 
-  v10 = [(MTRChannelClusterProgramStruct *)self subtitle];
-  [(MTRChannelClusterProgramStruct *)v4 setSubtitle:v10];
+  subtitle = [(MTRChannelClusterProgramStruct *)self subtitle];
+  [(MTRChannelClusterProgramStruct *)v4 setSubtitle:subtitle];
 
-  v11 = [(MTRChannelClusterProgramStruct *)self descriptionString];
-  [(MTRChannelClusterProgramStruct *)v4 setDescriptionString:v11];
+  descriptionString = [(MTRChannelClusterProgramStruct *)self descriptionString];
+  [(MTRChannelClusterProgramStruct *)v4 setDescriptionString:descriptionString];
 
-  v12 = [(MTRChannelClusterProgramStruct *)self audioLanguages];
-  [(MTRChannelClusterProgramStruct *)v4 setAudioLanguages:v12];
+  audioLanguages = [(MTRChannelClusterProgramStruct *)self audioLanguages];
+  [(MTRChannelClusterProgramStruct *)v4 setAudioLanguages:audioLanguages];
 
-  v13 = [(MTRChannelClusterProgramStruct *)self ratings];
-  [(MTRChannelClusterProgramStruct *)v4 setRatings:v13];
+  ratings = [(MTRChannelClusterProgramStruct *)self ratings];
+  [(MTRChannelClusterProgramStruct *)v4 setRatings:ratings];
 
-  v14 = [(MTRChannelClusterProgramStruct *)self thumbnailUrl];
-  [(MTRChannelClusterProgramStruct *)v4 setThumbnailUrl:v14];
+  thumbnailUrl = [(MTRChannelClusterProgramStruct *)self thumbnailUrl];
+  [(MTRChannelClusterProgramStruct *)v4 setThumbnailUrl:thumbnailUrl];
 
-  v15 = [(MTRChannelClusterProgramStruct *)self posterArtUrl];
-  [(MTRChannelClusterProgramStruct *)v4 setPosterArtUrl:v15];
+  posterArtUrl = [(MTRChannelClusterProgramStruct *)self posterArtUrl];
+  [(MTRChannelClusterProgramStruct *)v4 setPosterArtUrl:posterArtUrl];
 
-  v16 = [(MTRChannelClusterProgramStruct *)self dvbiUrl];
-  [(MTRChannelClusterProgramStruct *)v4 setDvbiUrl:v16];
+  dvbiUrl = [(MTRChannelClusterProgramStruct *)self dvbiUrl];
+  [(MTRChannelClusterProgramStruct *)v4 setDvbiUrl:dvbiUrl];
 
-  v17 = [(MTRChannelClusterProgramStruct *)self releaseDate];
-  [(MTRChannelClusterProgramStruct *)v4 setReleaseDate:v17];
+  releaseDate = [(MTRChannelClusterProgramStruct *)self releaseDate];
+  [(MTRChannelClusterProgramStruct *)v4 setReleaseDate:releaseDate];
 
-  v18 = [(MTRChannelClusterProgramStruct *)self parentalGuidanceText];
-  [(MTRChannelClusterProgramStruct *)v4 setParentalGuidanceText:v18];
+  parentalGuidanceText = [(MTRChannelClusterProgramStruct *)self parentalGuidanceText];
+  [(MTRChannelClusterProgramStruct *)v4 setParentalGuidanceText:parentalGuidanceText];
 
-  v19 = [(MTRChannelClusterProgramStruct *)self recordingFlag];
-  [(MTRChannelClusterProgramStruct *)v4 setRecordingFlag:v19];
+  recordingFlag = [(MTRChannelClusterProgramStruct *)self recordingFlag];
+  [(MTRChannelClusterProgramStruct *)v4 setRecordingFlag:recordingFlag];
 
-  v20 = [(MTRChannelClusterProgramStruct *)self seriesInfo];
-  [(MTRChannelClusterProgramStruct *)v4 setSeriesInfo:v20];
+  seriesInfo = [(MTRChannelClusterProgramStruct *)self seriesInfo];
+  [(MTRChannelClusterProgramStruct *)v4 setSeriesInfo:seriesInfo];
 
-  v21 = [(MTRChannelClusterProgramStruct *)self categoryList];
-  [(MTRChannelClusterProgramStruct *)v4 setCategoryList:v21];
+  categoryList = [(MTRChannelClusterProgramStruct *)self categoryList];
+  [(MTRChannelClusterProgramStruct *)v4 setCategoryList:categoryList];
 
-  v22 = [(MTRChannelClusterProgramStruct *)self castList];
-  [(MTRChannelClusterProgramStruct *)v4 setCastList:v22];
+  castList = [(MTRChannelClusterProgramStruct *)self castList];
+  [(MTRChannelClusterProgramStruct *)v4 setCastList:castList];
 
-  v23 = [(MTRChannelClusterProgramStruct *)self externalIDList];
-  [(MTRChannelClusterProgramStruct *)v4 setExternalIDList:v23];
+  externalIDList = [(MTRChannelClusterProgramStruct *)self externalIDList];
+  [(MTRChannelClusterProgramStruct *)v4 setExternalIDList:externalIDList];
 
   return v4;
 }

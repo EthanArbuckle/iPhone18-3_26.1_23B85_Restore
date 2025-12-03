@@ -6,8 +6,8 @@
 
 + (uint64_t)folderCustomizationEnabled
 {
-  v0 = [MEMORY[0x277D06208] folderCustomization];
-  if ([v0 isEnabled])
+  folderCustomization = [MEMORY[0x277D06208] folderCustomization];
+  if ([folderCustomization isEnabled])
   {
     v1 = 1;
   }

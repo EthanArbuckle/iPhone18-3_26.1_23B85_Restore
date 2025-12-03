@@ -1,6 +1,6 @@
 @interface MUPlaceSectionHeaderViewModel
-+ (id)viewModelForTitle:(id)a3 attribution:(id)a4 target:(id)a5 action:(SEL)a6;
-- (MUPlaceSectionHeaderViewModel)initWithTitleString:(id)a3 subtitleString:(id)a4 showSeeMore:(BOOL)a5;
++ (id)viewModelForTitle:(id)title attribution:(id)attribution target:(id)target action:(SEL)action;
+- (MUPlaceSectionHeaderViewModel)initWithTitleString:(id)string subtitleString:(id)subtitleString showSeeMore:(BOOL)more;
 - (id)target;
 @end
 
@@ -13,20 +13,20 @@
   return WeakRetained;
 }
 
-- (MUPlaceSectionHeaderViewModel)initWithTitleString:(id)a3 subtitleString:(id)a4 showSeeMore:(BOOL)a5
+- (MUPlaceSectionHeaderViewModel)initWithTitleString:(id)string subtitleString:(id)subtitleString showSeeMore:(BOOL)more
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  moreCopy = more;
+  stringCopy = string;
+  subtitleStringCopy = subtitleString;
   v16.receiver = self;
   v16.super_class = MUPlaceSectionHeaderViewModel;
   v11 = [(MUPlaceSectionHeaderViewModel *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_titleString, a3);
-    objc_storeStrong(&v12->_subtitleString, a4);
-    if (v5)
+    objc_storeStrong(&v11->_titleString, string);
+    objc_storeStrong(&v12->_subtitleString, subtitleString);
+    if (moreCopy)
     {
       v13 = _MULocalizedStringFromThisBundle(@"More [Placecard Section Header]");
       seeMoreButtonText = v12->_seeMoreButtonText;
@@ -37,27 +37,27 @@
   return v12;
 }
 
-+ (id)viewModelForTitle:(id)a3 attribution:(id)a4 target:(id)a5 action:(SEL)a6
++ (id)viewModelForTitle:(id)title attribution:(id)attribution target:(id)target action:(SEL)action
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 attributionURLs];
-  if ([v12 count])
+  titleCopy = title;
+  attributionCopy = attribution;
+  targetCopy = target;
+  attributionURLs = [attributionCopy attributionURLs];
+  if ([attributionURLs count])
   {
-    v13 = [v10 providerName];
-    v14 = [v13 length];
+    providerName = [attributionCopy providerName];
+    v14 = [providerName length];
 
     if (v14)
     {
-      v15 = [[MUPlaceSectionHeaderViewModel alloc] initWithTitleString:v9];
+      v15 = [[MUPlaceSectionHeaderViewModel alloc] initWithTitleString:titleCopy];
       v16 = MEMORY[0x1E696AEC0];
       v17 = _MULocalizedStringFromThisBundle(@"Open <provider> [Placecard]");
-      v18 = [v10 providerName];
-      v19 = [v16 stringWithFormat:v17, v18];
+      providerName2 = [attributionCopy providerName];
+      v19 = [v16 stringWithFormat:v17, providerName2];
       [(MUPlaceSectionHeaderViewModel *)v15 setSeeMoreButtonText:v19];
 
-      [(MUPlaceSectionHeaderViewModel *)v15 setTarget:v11 selector:a6];
+      [(MUPlaceSectionHeaderViewModel *)v15 setTarget:targetCopy selector:action];
       goto LABEL_6;
     }
   }
@@ -66,7 +66,7 @@
   {
   }
 
-  v15 = [[MUPlaceSectionHeaderViewModel alloc] initWithTitleString:v9 showSeeMore:0];
+  v15 = [[MUPlaceSectionHeaderViewModel alloc] initWithTitleString:titleCopy showSeeMore:0];
 LABEL_6:
 
   return v15;

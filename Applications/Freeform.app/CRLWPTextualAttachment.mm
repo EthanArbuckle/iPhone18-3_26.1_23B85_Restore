@@ -1,14 +1,14 @@
 @interface CRLWPTextualAttachment
-- (id)stringEquivalentWithLayoutParent:(id)a3;
+- (id)stringEquivalentWithLayoutParent:(id)parent;
 @end
 
 @implementation CRLWPTextualAttachment
 
-- (id)stringEquivalentWithLayoutParent:(id)a3
+- (id)stringEquivalentWithLayoutParent:(id)parent
 {
-  v3 = [(CRLWPTextualAttachment *)self stringEquivalent];
+  stringEquivalent = [(CRLWPTextualAttachment *)self stringEquivalent];
 
-  return v3;
+  return stringEquivalent;
 }
 
 @end

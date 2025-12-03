@@ -1,18 +1,18 @@
 @interface SBIconAnimator
-- (SBIconAnimator)initWithAnimationContainer:(id)a3;
+- (SBIconAnimator)initWithAnimationContainer:(id)container;
 - (SBIconAnimatorDelegate)delegate;
 - (UIView)referenceView;
 - (id)centralAnimationFactory;
-- (void)_animateToFractionFromContext:(id)a3;
+- (void)_animateToFractionFromContext:(id)context;
 - (void)_animateToFractionFromPendingContexts;
 - (void)_invalidateCompletions;
 - (void)_windowFinishedRotating;
-- (void)animateToFraction:(double)a3 afterDelay:(double)a4 withCompletion:(id)a5;
+- (void)animateToFraction:(double)fraction afterDelay:(double)delay withCompletion:(id)completion;
 - (void)cleanup;
 - (void)dealloc;
 - (void)prepare;
-- (void)setFraction:(double)a3;
-- (void)setInvalidated:(BOOL)a3;
+- (void)setFraction:(double)fraction;
+- (void)setInvalidated:(BOOL)invalidated;
 @end
 
 @implementation SBIconAnimator
@@ -27,10 +27,10 @@
 
 - (UIView)referenceView
 {
-  v2 = [(SBIconAnimator *)self animationContainer];
-  v3 = [v2 containerView];
+  animationContainer = [(SBIconAnimator *)self animationContainer];
+  containerView = [animationContainer containerView];
 
-  return v3;
+  return containerView;
 }
 
 - (void)_invalidateCompletions
@@ -56,11 +56,11 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) completion];
-        v9 = v8;
-        if (v8)
+        completion = [*(*(&v10 + 1) + 8 * v7) completion];
+        v9 = completion;
+        if (completion)
         {
-          (*(v8 + 16))(v8, 0);
+          (*(completion + 16))(completion, 0);
         }
 
         ++v7;
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBIconAnimator *)self _invalidateCompletions];
   v4.receiver = self;
@@ -96,37 +96,37 @@
   self->_backgroundDarkeningView = 0;
 }
 
-- (SBIconAnimator)initWithAnimationContainer:(id)a3
+- (SBIconAnimator)initWithAnimationContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v6 = [(SBIconAnimator *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animationContainer, a3);
+    objc_storeStrong(&v6->_animationContainer, container);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     pendedAnimationContexts = v7->_pendedAnimationContexts;
     v7->_pendedAnimationContexts = v8;
 
-    v10 = [v5 animationWindow];
-    v11 = [v10 isRotating];
-    v7->_windowIsRotating = v11;
-    if (v11)
+    animationWindow = [containerCopy animationWindow];
+    isRotating = [animationWindow isRotating];
+    v7->_windowIsRotating = isRotating;
+    if (isRotating)
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 addObserver:v7 selector:sel__windowFinishedRotating name:*MEMORY[0x1E69DE7D0] object:v10];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v7 selector:sel__windowFinishedRotating name:*MEMORY[0x1E69DE7D0] object:animationWindow];
     }
   }
 
   return v7;
 }
 
-- (void)setInvalidated:(BOOL)a3
+- (void)setInvalidated:(BOOL)invalidated
 {
-  if (self->_invalidated != a3)
+  if (self->_invalidated != invalidated)
   {
-    self->_invalidated = a3;
-    if (a3 && !self->_cleanedUp)
+    self->_invalidated = invalidated;
+    if (invalidated && !self->_cleanedUp)
     {
       [(SBIconAnimator *)self cleanup];
       [(SBIconAnimator *)self _invalidateCompletions];
@@ -139,47 +139,47 @@
 - (id)centralAnimationFactory
 {
   v2 = MEMORY[0x1E698E7D0];
-  v3 = [(SBHIconAnimationSettings *)self->_settings centralAnimationSettings];
-  v4 = [v3 BSAnimationSettings];
-  v5 = [v2 factoryWithSettings:v4];
+  centralAnimationSettings = [(SBHIconAnimationSettings *)self->_settings centralAnimationSettings];
+  bSAnimationSettings = [centralAnimationSettings BSAnimationSettings];
+  v5 = [v2 factoryWithSettings:bSAnimationSettings];
 
   [v5 setAllowsAdditiveAnimations:1];
 
   return v5;
 }
 
-- (void)setFraction:(double)a3
+- (void)setFraction:(double)fraction
 {
   if (self->_invalidated || self->_windowIsRotating || self->_startAnimationAfterRotationEnds)
   {
-    self->_fraction = a3;
+    self->_fraction = fraction;
   }
 
   else
   {
-    [(SBIconAnimator *)self _setAnimationFraction:a3];
+    [(SBIconAnimator *)self _setAnimationFraction:fraction];
   }
 }
 
-- (void)animateToFraction:(double)a3 afterDelay:(double)a4 withCompletion:(id)a5
+- (void)animateToFraction:(double)fraction afterDelay:(double)delay withCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if ([(SBIconAnimator *)self invalidated])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __62__SBIconAnimator_animateToFraction_afterDelay_withCompletion___block_invoke;
     block[3] = &unk_1E8089600;
-    v11 = v8;
+    v11 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
     v9 = objc_alloc_init(SBIconAnimationContext);
-    [(SBIconAnimationContext *)v9 setFraction:a3];
-    [(SBIconAnimationContext *)v9 setDelay:a4];
-    [(SBIconAnimationContext *)v9 setCompletion:v8];
+    [(SBIconAnimationContext *)v9 setFraction:fraction];
+    [(SBIconAnimationContext *)v9 setDelay:delay];
+    [(SBIconAnimationContext *)v9 setCompletion:completionCopy];
     if (self->_windowIsRotating || self->_startAnimationAfterRotationEnds)
     {
       [(NSMutableArray *)self->_pendedAnimationContexts addObject:v9];
@@ -207,12 +207,12 @@ uint64_t __62__SBIconAnimator_animateToFraction_afterDelay_withCompletion___bloc
 - (void)_animateToFractionFromPendingContexts
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableArray *)self->_pendedAnimationContexts lastObject];
+  lastObject = [(NSMutableArray *)self->_pendedAnimationContexts lastObject];
   v4 = objc_alloc_init(SBIconAnimationContext);
-  [v3 fraction];
+  [lastObject fraction];
   [(SBIconAnimationContext *)v4 setFraction:?];
-  v16 = v3;
-  [v3 delay];
+  v16 = lastObject;
+  [lastObject delay];
   [(SBIconAnimationContext *)v4 setDelay:?];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_pendedAnimationContexts, "count")}];
   v19 = 0u;
@@ -235,11 +235,11 @@ uint64_t __62__SBIconAnimator_animateToFraction_afterDelay_withCompletion___bloc
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 completion];
-        v13 = v12;
-        if (v12)
+        completion = [v11 completion];
+        v13 = completion;
+        if (completion)
         {
-          v14 = _Block_copy(v12);
+          v14 = _Block_copy(completion);
           [v5 addObject:v14];
 
           [v11 setCompletion:0];
@@ -298,22 +298,22 @@ void __55__SBIconAnimator__animateToFractionFromPendingContexts__block_invoke(ui
   }
 }
 
-- (void)_animateToFractionFromContext:(id)a3
+- (void)_animateToFractionFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
-  v22 = [(SBIconAnimator *)self _numberOfSignificantAnimations];
+  _numberOfSignificantAnimations = [(SBIconAnimator *)self _numberOfSignificantAnimations];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v18 = 1;
   if (v20[3])
   {
-    [v4 fraction];
+    [contextCopy fraction];
     v6 = v5;
-    [v4 delay];
+    [contextCopy delay];
     v8 = v7;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -322,7 +322,7 @@ void __55__SBIconAnimator__animateToFractionFromPendingContexts__block_invoke(ui
     v12 = v17;
     v13 = &v19;
     v10[4] = self;
-    v11 = v4;
+    v11 = contextCopy;
     [(SBIconAnimator *)self _animateToFraction:v10 afterDelay:v6 withSharedCompletion:v8];
     v9 = v11;
   }
@@ -333,7 +333,7 @@ void __55__SBIconAnimator__animateToFractionFromPendingContexts__block_invoke(ui
     block[1] = 3221225472;
     block[2] = __48__SBIconAnimator__animateToFractionFromContext___block_invoke;
     block[3] = &unk_1E8090B90;
-    v15 = v4;
+    v15 = contextCopy;
     v16 = v17;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v9 = v15;
@@ -382,11 +382,11 @@ void __48__SBIconAnimator__animateToFractionFromContext___block_invoke_2(uint64_
 
 - (void)_windowFinishedRotating
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69DE7D0];
-  v5 = [(SBIconAnimator *)self animationContainer];
-  v6 = [v5 animationWindow];
-  [v3 removeObserver:self name:v4 object:v6];
+  animationContainer = [(SBIconAnimator *)self animationContainer];
+  animationWindow = [animationContainer animationWindow];
+  [defaultCenter removeObserver:self name:v4 object:animationWindow];
 
   self->_windowIsRotating = 0;
   if (self->_startAnimationAfterRotationEnds)

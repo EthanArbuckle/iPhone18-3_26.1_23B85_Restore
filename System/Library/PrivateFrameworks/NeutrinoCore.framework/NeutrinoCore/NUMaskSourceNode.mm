@@ -1,54 +1,54 @@
 @interface NUMaskSourceNode
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
 - ($41299696D20B6C925B74A5D5E4D5CC87)croppedExtent;
-- (BOOL)supportsPipelineState:(id)a3 error:(id *)a4;
-- (NUMaskSourceNode)initWithImage:(id)a3 croppedExtent:(id *)a4 scale:(id)a5 identifier:(id)a6 orientation:(int64_t)a7;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometryWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (id)sourceImage:(id *)a3;
+- (BOOL)supportsPipelineState:(id)state error:(id *)error;
+- (NUMaskSourceNode)initWithImage:(id)image croppedExtent:(id *)extent scale:(id)scale identifier:(id)identifier orientation:(int64_t)orientation;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometryWithSourceOptions:(id)options error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
+- (id)sourceImage:(id *)image;
 @end
 
 @implementation NUMaskSourceNode
 
-- (id)_evaluateImageGeometryWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_evaluateImageGeometryWithSourceOptions:(id)options error:(id *)error
 {
   v12 = 0u;
   v13 = 0u;
-  [(NUMaskSourceNode *)self croppedExtent:a3];
-  v5 = [(NUMaskSourceNode *)self scale];
-  NUPixelRectScaleRational(v11, v5, v6, 0, &v12);
+  [(NUMaskSourceNode *)self croppedExtent:options];
+  scale = [(NUMaskSourceNode *)self scale];
+  NUPixelRectScaleRational(v11, scale, v6, 0, &v12);
   v7 = [NUImageGeometry alloc];
-  v8 = [(NUCISourceNode *)self sourceOrientation];
+  sourceOrientation = [(NUCISourceNode *)self sourceOrientation];
   v11[0] = v12;
   v11[1] = v13;
-  v9 = [(NUImageGeometry *)v7 initWithExtent:v11 renderScale:NUScaleOne orientation:v8];
+  v9 = [(NUImageGeometry *)v7 initWithExtent:v11 renderScale:NUScaleOne orientation:sourceOrientation];
 
   return v9;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = NUMaskSourceNode;
-  v4 = [(NUSourceNode *)&v19 _evaluateImage:a3];
+  v4 = [(NUSourceNode *)&v19 _evaluateImage:image];
   if (v4)
   {
     v5 = v4;
     [(NUMaskSourceNode *)self croppedExtent];
     v6 = [v5 imageByCroppingToRect:{*&v18.a, *&v18.b, *&v18.c, *&v18.d}];
 
-    v7 = [(NUMaskSourceNode *)self scale];
-    v9 = NUScaleToDouble(v7, v8);
-    v10 = [v6 imageByClampingToExtent];
+    scale = [(NUMaskSourceNode *)self scale];
+    v9 = NUScaleToDouble(scale, v8);
+    imageByClampingToExtent = [v6 imageByClampingToExtent];
 
     if (v9 <= 1.0)
     {
       memset(&v18, 0, sizeof(v18));
       CGAffineTransformMakeScale(&v18, v9, v9);
       v17 = v18;
-      v14 = [v10 imageByApplyingTransform:&v17];
+      v14 = [imageByClampingToExtent imageByApplyingTransform:&v17];
     }
 
     else
@@ -57,7 +57,7 @@
       v11 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
       v21[0] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      v13 = [v10 imageByApplyingFilter:@"CISoftCubicUpsample" withInputParameters:v12];
+      v13 = [imageByClampingToExtent imageByApplyingFilter:@"CISoftCubicUpsample" withInputParameters:v12];
 
       v14 = [v13 imageByApplyingFilter:@"CIColorThreshold" withInputParameters:&unk_1F3F829F0];
     }
@@ -77,29 +77,29 @@
   return v15;
 }
 
-- (id)sourceImage:(id *)a3
+- (id)sourceImage:(id *)image
 {
   v5.receiver = self;
   v5.super_class = NUMaskSourceNode;
-  v3 = [(NUSourceNode *)&v5 _evaluateImage:a3];
+  v3 = [(NUSourceNode *)&v5 _evaluateImage:image];
 
   return v3;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = NUMaskSourceNode;
-  v6 = [(NUCISourceNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NUCISourceNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (BOOL)supportsPipelineState:(id)a3 error:(id *)a4
+- (BOOL)supportsPipelineState:(id)state error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a4)
+  stateCopy = state;
+  if (!error)
   {
     v9 = NUAssertLogger_26149();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -120,8 +120,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -132,8 +132,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -142,21 +142,21 @@
     _NUAssertFailHandler("[NUMaskSourceNode supportsPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Mask/NUMaskSource.m", 66, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "error != NULL");
   }
 
-  v6 = v5;
-  v7 = [v5 mediaComponentType];
-  if (v7 != 1)
+  v6 = stateCopy;
+  mediaComponentType = [stateCopy mediaComponentType];
+  if (mediaComponentType != 1)
   {
-    *a4 = [NUError mismatchError:@"expected an image mediaComponentType" object:v6];
+    *error = [NUError mismatchError:@"expected an image mediaComponentType" object:v6];
   }
 
-  return v7 == 1;
+  return mediaComponentType == 1;
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale
 {
   v40 = *MEMORY[0x1E69E9840];
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"scale"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"scale"];
 
   if (!v3)
   {
@@ -179,8 +179,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v39 = 138543618;
         *&v39[4] = v21;
         *&v39[12] = 2114;
@@ -191,8 +191,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v39 = 138543362;
       *&v39[4] = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v39, 0xCu);
@@ -222,8 +222,8 @@
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v31 callStackSymbols];
+        v34 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *v39 = 138543618;
         *&v39[4] = v30;
         *&v39[12] = 2114;
@@ -234,8 +234,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *v39 = 138543362;
       *&v39[4] = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v39, 0xCu);
@@ -258,8 +258,8 @@
 - ($41299696D20B6C925B74A5D5E4D5CC87)croppedExtent
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [(NURenderNode *)self settings];
-  v38 = [v3 objectForKeyedSubscript:@"croppedExtent"];
+  settings = [(NURenderNode *)self settings];
+  v38 = [settings objectForKeyedSubscript:@"croppedExtent"];
 
   if (!v38)
   {
@@ -282,8 +282,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v19;
         v41 = 2114;
@@ -294,8 +294,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -325,8 +325,8 @@
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v29 callStackSymbols];
+        v32 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v28;
         v41 = 2114;
@@ -337,8 +337,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -352,20 +352,20 @@
   return result;
 }
 
-- (NUMaskSourceNode)initWithImage:(id)a3 croppedExtent:(id *)a4 scale:(id)a5 identifier:(id)a6 orientation:(int64_t)a7
+- (NUMaskSourceNode)initWithImage:(id)image croppedExtent:(id *)extent scale:(id)scale identifier:(id)identifier orientation:(int64_t)orientation
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = scale.var1;
+  var0 = scale.var0;
   v24[3] = *MEMORY[0x1E69E9840];
-  v24[0] = a6;
+  v24[0] = identifier;
   v23[0] = @"identifier";
   v23[1] = @"croppedExtent";
   v12 = MEMORY[0x1E696B098];
-  v13 = a4->var1;
-  v22[0] = a4->var0;
+  v13 = extent->var1;
+  v22[0] = extent->var0;
   v22[1] = v13;
-  v14 = a6;
-  v15 = a3;
+  identifierCopy = identifier;
+  imageCopy = image;
   v16 = [v12 nu_valueWithPixelRect:v22];
   v24[1] = v16;
   v23[2] = @"scale";
@@ -375,7 +375,7 @@
 
   v21.receiver = self;
   v21.super_class = NUMaskSourceNode;
-  v19 = [(NUCISourceNode *)&v21 initWithImage:v15 settings:v18 orientation:a7];
+  v19 = [(NUCISourceNode *)&v21 initWithImage:imageCopy settings:v18 orientation:orientation];
 
   return v19;
 }

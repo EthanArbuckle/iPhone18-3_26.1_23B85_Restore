@@ -1,36 +1,36 @@
 @interface ATXCategoricalFeatureFuzzyPartOfWeek
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureFuzzyPartOfWeek
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 timeContext];
+  contextCopy = context;
+  timeContext = [contextCopy timeContext];
 
-  if (v5)
+  if (timeContext)
   {
-    v6 = [v4 timeContext];
-    v7 = [v6 timeOfDay];
+    timeContext2 = [contextCopy timeContext];
+    timeOfDay = [timeContext2 timeOfDay];
 
-    if (v7 > 17)
+    if (timeOfDay > 17)
     {
-      v8 = [MEMORY[0x277CBEA80] currentCalendar];
-      v12 = [v4 timeContext];
-      v13 = [v12 date];
-      v14 = [v13 dateByAddingTimeInterval:86400.0];
-      v9 = [v8 isDateInWeekend:v14];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      timeContext3 = [contextCopy timeContext];
+      date = [timeContext3 date];
+      v14 = [date dateByAddingTimeInterval:86400.0];
+      dateInWeekend = [currentCalendar isDateInWeekend:v14];
     }
 
     else
     {
-      v8 = [v4 timeContext];
-      v9 = [v8 dateInWeekend];
+      currentCalendar = [contextCopy timeContext];
+      dateInWeekend = [currentCalendar dateInWeekend];
     }
 
     v15 = @"Weekday";
-    if (v9)
+    if (dateInWeekend)
     {
       v15 = @"Weekend";
     }

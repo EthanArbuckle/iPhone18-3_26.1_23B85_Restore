@@ -1,20 +1,20 @@
 @interface MCAction
-- (MCAction)initWithImprint:(id)a3;
+- (MCAction)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
 - (id)snapshot;
-- (void)_copySelfToSnapshot:(id)a3;
-- (void)setTracksInParent:(BOOL)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
+- (void)setTracksInParent:(BOOL)parent;
 @end
 
 @implementation MCAction
 
-- (MCAction)initWithImprint:(id)a3
+- (MCAction)initWithImprint:(id)imprint
 {
   v4 = [(MCAction *)self init];
   if (v4)
   {
-    v4->_targetObjectID = [a3 objectForKey:@"targetObjectID"];
+    v4->_targetObjectID = [imprint objectForKey:@"targetObjectID"];
   }
 
   return v4;
@@ -24,14 +24,14 @@
 {
   v5.receiver = self;
   v5.super_class = MCAction;
-  v3 = [(MCObjectLight *)&v5 imprint];
-  [v3 setObject:self->_targetObjectID forKey:@"targetObjectID"];
-  return v3;
+  imprint = [(MCObjectLight *)&v5 imprint];
+  [imprint setObject:self->_targetObjectID forKey:@"targetObjectID"];
+  return imprint;
 }
 
-- (void)setTracksInParent:(BOOL)a3
+- (void)setTracksInParent:(BOOL)parent
 {
-  if (a3)
+  if (parent)
   {
     v3 = 8;
   }
@@ -53,12 +53,12 @@
   return result;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   targetObjectID = self->_targetObjectID;
   if (targetObjectID)
   {
-    *(a3 + 2) = [(NSString *)targetObjectID copy];
+    *(snapshot + 2) = [(NSString *)targetObjectID copy];
   }
 }
 

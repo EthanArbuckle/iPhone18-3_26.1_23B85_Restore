@@ -1,21 +1,21 @@
 @interface PGShareBackLocationSource
-+ (id)suggesterInputsByDateIntervalForInputs:(id)a3;
-- (id)suggesterResultsForInputs:(id)a3 momentNodes:(id)a4 inGraph:(id)a5 error:(id *)a6;
++ (id)suggesterInputsByDateIntervalForInputs:(id)inputs;
+- (id)suggesterResultsForInputs:(id)inputs momentNodes:(id)nodes inGraph:(id)graph error:(id *)error;
 @end
 
 @implementation PGShareBackLocationSource
 
-+ (id)suggesterInputsByDateIntervalForInputs:(id)a3
++ (id)suggesterInputsByDateIntervalForInputs:(id)inputs
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inputsCopy = inputs;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v3;
+  obj = inputsCopy;
   v33 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v33)
   {
@@ -31,30 +31,30 @@
         }
 
         v7 = *(*(&v42 + 1) + 8 * i);
-        v8 = [v7 creationDate];
-        if (v8)
+        creationDate = [v7 creationDate];
+        if (creationDate)
         {
-          v9 = [v7 location];
-          v10 = [v7 timeZone];
-          v36 = v9;
-          v37 = v8;
-          v34 = v10;
+          location = [v7 location];
+          timeZone = [v7 timeZone];
+          v36 = location;
+          v37 = creationDate;
+          v34 = timeZone;
           v35 = v7;
-          if (v10)
+          if (timeZone)
           {
-            v11 = [MEMORY[0x277D27690] localDateFromUniversalDate:v8 inTimeZone:v10];
+            v11 = [MEMORY[0x277D27690] localDateFromUniversalDate:creationDate inTimeZone:timeZone];
           }
 
           else
           {
-            if (v9)
+            if (location)
             {
-              [MEMORY[0x277D27690] localDateFromUniversalDate:v8 atLocation:v9];
+              [MEMORY[0x277D27690] localDateFromUniversalDate:creationDate atLocation:location];
             }
 
             else
             {
-              [MEMORY[0x277D27690] localDateFromUniversalDate:v8];
+              [MEMORY[0x277D27690] localDateFromUniversalDate:creationDate];
             }
             v11 = ;
           }
@@ -64,8 +64,8 @@
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v13 = [v4 allKeys];
-          v14 = [v13 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          allKeys = [v4 allKeys];
+          v14 = [allKeys countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v14)
           {
             v15 = v14;
@@ -76,12 +76,12 @@ LABEL_15:
             {
               if (*v39 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allKeys);
               }
 
               v18 = *(*(&v38 + 1) + 8 * v17);
-              v19 = [v18 startDate];
-              v20 = [v5 isDate:v12 inSameDayAsDate:v19];
+              startDate = [v18 startDate];
+              v20 = [currentCalendar isDate:v12 inSameDayAsDate:startDate];
 
               if (v20)
               {
@@ -90,7 +90,7 @@ LABEL_15:
 
               if (v15 == ++v17)
               {
-                v15 = [v13 countByEnumeratingWithState:&v38 objects:v46 count:16];
+                v15 = [allKeys countByEnumeratingWithState:&v38 objects:v46 count:16];
                 if (v15)
                 {
                   goto LABEL_15;
@@ -107,11 +107,11 @@ LABEL_15:
               goto LABEL_24;
             }
 
-            v22 = [v21 startDate];
-            v23 = [v22 earlierDate:v12];
+            startDate2 = [v21 startDate];
+            v23 = [startDate2 earlierDate:v12];
 
-            v24 = [v21 endDate];
-            v25 = [v24 laterDate:v12];
+            endDate = [v21 endDate];
+            v25 = [endDate laterDate:v12];
 
             v4 = v31;
             v26 = [v31 objectForKeyedSubscript:v21];
@@ -129,7 +129,7 @@ LABEL_24:
             v4 = v31;
           }
 
-          v8 = v37;
+          creationDate = v37;
           v27 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v23 endDate:v25];
           [v4 setObject:v26 forKeyedSubscript:v27];
           [v26 addObject:v35];
@@ -147,19 +147,19 @@ LABEL_24:
   return v4;
 }
 
-- (id)suggesterResultsForInputs:(id)a3 momentNodes:(id)a4 inGraph:(id)a5 error:(id *)a6
+- (id)suggesterResultsForInputs:(id)inputs momentNodes:(id)nodes inGraph:(id)graph error:(id *)error
 {
   v86 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v41 = a4;
-  v36 = a5;
-  v44 = [(PGShareBackSource *)self loggingConnection];
+  inputsCopy = inputs;
+  nodesCopy = nodes;
+  graphCopy = graph;
+  loggingConnection = [(PGShareBackSource *)self loggingConnection];
   v76 = 0;
   v77 = &v76;
   v78 = 0x2020000000;
   v79 = 0;
   v45 = objc_opt_new();
-  if (![v41 count])
+  if (![nodesCopy count])
   {
     goto LABEL_32;
   }
@@ -176,7 +176,7 @@ LABEL_24:
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v37;
+  obj = inputsCopy;
   v40 = [obj countByEnumeratingWithState:&v64 objects:v85 count:16];
   if (v40)
   {
@@ -191,12 +191,12 @@ LABEL_4:
       }
 
       v47 = *(*(&v64 + 1) + 8 * v42);
-      v48 = [v47 location];
+      location = [v47 location];
       v62 = 0u;
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v43 = v41;
+      v43 = nodesCopy;
       v9 = [v43 countByEnumeratingWithState:&v60 objects:v84 count:16];
       if (v9)
       {
@@ -211,17 +211,17 @@ LABEL_9:
           }
 
           v11 = *(*(&v60 + 1) + 8 * v10);
-          v12 = [v11 collection];
-          v13 = [v12 urbanRoiNodes];
-          if ([v13 isEmpty])
+          collection = [v11 collection];
+          urbanRoiNodes = [collection urbanRoiNodes];
+          if ([urbanRoiNodes isEmpty])
           {
-            v14 = [v12 addressNodes];
-            v15 = [v14 cityNodes];
-            v16 = [v15 momentNodes];
-            v17 = [v16 urbanRoiNodes];
-            v18 = [v17 isEmpty];
+            addressNodes = [collection addressNodes];
+            cityNodes = [addressNodes cityNodes];
+            momentNodes = [cityNodes momentNodes];
+            urbanRoiNodes2 = [momentNodes urbanRoiNodes];
+            isEmpty = [urbanRoiNodes2 isEmpty];
 
-            v19 = v18 ^ 1;
+            v19 = isEmpty ^ 1;
           }
 
           else
@@ -229,19 +229,19 @@ LABEL_9:
             v19 = 1;
           }
 
-          v20 = [v11 happensAtFrequentLocation];
+          happensAtFrequentLocation = [v11 happensAtFrequentLocation];
           v49[0] = MEMORY[0x277D85DD0];
           v49[1] = 3221225472;
           v49[2] = __81__PGShareBackLocationSource_suggesterResultsForInputs_momentNodes_inGraph_error___block_invoke;
           v49[3] = &unk_27888A328;
           v55 = &v72;
-          v21 = v48;
+          v21 = location;
           v56 = &v68;
           v50 = v21;
           v51 = v47;
           v58 = v19;
-          v59 = v20;
-          v52 = v44;
+          v59 = happensAtFrequentLocation;
+          v52 = loggingConnection;
           v53 = v11;
           v57 = &v76;
           v54 = v45;
@@ -288,8 +288,8 @@ LABEL_9:
   if ((v73[3] & 1) == 0)
   {
     *(v77 + 12) = 2;
-    [v45 unionSet:v41];
-    v25 = v44;
+    [v45 unionSet:nodesCopy];
+    v25 = loggingConnection;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       v26 = *(v77 + 12);
@@ -321,7 +321,7 @@ LABEL_9:
 
   *(v77 + 12) = v24;
 LABEL_29:
-  v28 = v44;
+  v28 = loggingConnection;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     v29 = *(v77 + 12);
@@ -341,7 +341,7 @@ LABEL_32:
   if (*(v77 + 12))
   {
     v31 = [PGShareBackSuggesterResult alloc];
-    v32 = [(PGShareBackSuggesterResult *)v31 initWithInputs:v37 processingValue:*(v77 + 12) momentNodes:v45];
+    v32 = [(PGShareBackSuggesterResult *)v31 initWithInputs:inputsCopy processingValue:*(v77 + 12) momentNodes:v45];
     v33 = [MEMORY[0x277CBEA60] arrayWithObject:v32];
   }
 

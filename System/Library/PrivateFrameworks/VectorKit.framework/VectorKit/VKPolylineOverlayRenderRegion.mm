@@ -1,8 +1,8 @@
 @interface VKPolylineOverlayRenderRegion
-- (BOOL)isEquivalentToNewRegion:(id)a3;
+- (BOOL)isEquivalentToNewRegion:(id)region;
 - (Box<double,)visibleRect;
 - (id).cxx_construct;
-- (id)initForVisibleRect:(const void *)a3 snappingRegion:(const void *)a4 routeLineDatas:(const void *)a5;
+- (id)initForVisibleRect:(const void *)rect snappingRegion:(const void *)region routeLineDatas:(const void *)datas;
 @end
 
 @implementation VKPolylineOverlayRenderRegion
@@ -33,15 +33,15 @@
   return result;
 }
 
-- (BOOL)isEquivalentToNewRegion:(id)a3
+- (BOOL)isEquivalentToNewRegion:(id)region
 {
-  v4 = a3;
-  v5 = v4;
+  regionCopy = region;
+  v5 = regionCopy;
   v6 = 0;
   v7 = 1;
   do
   {
-    if (*&v4[8 * v6 + 32] < self->_visibleRect._minimum._e[v6] || *&v4[8 * v6 + 48] > self->_visibleRect._maximum._e[v6])
+    if (*&regionCopy[8 * v6 + 32] < self->_visibleRect._minimum._e[v6] || *&regionCopy[8 * v6 + 48] > self->_visibleRect._maximum._e[v6])
     {
       goto LABEL_25;
     }
@@ -52,7 +52,7 @@
   }
 
   while ((v8 & 1) != 0);
-  if (self->_snappingRegion._rects.__tree_.__size_ != *(v4 + 10))
+  if (self->_snappingRegion._rects.__tree_.__size_ != *(regionCopy + 10))
   {
 LABEL_25:
     v20 = 0;
@@ -63,8 +63,8 @@ LABEL_25:
   p_end_node = &self->_snappingRegion._rects.__tree_.__end_node_;
   if (begin_node != &self->_snappingRegion._rects.__tree_.__end_node_)
   {
-    v11 = v4 + 72;
-    v12 = *(v4 + 9);
+    v11 = regionCopy + 72;
+    v12 = *(regionCopy + 9);
     while (v12)
     {
       v13 = v5 + 72;
@@ -137,7 +137,7 @@ LABEL_26:
   return v20;
 }
 
-- (id)initForVisibleRect:(const void *)a3 snappingRegion:(const void *)a4 routeLineDatas:(const void *)a5
+- (id)initForVisibleRect:(const void *)rect snappingRegion:(const void *)region routeLineDatas:(const void *)datas
 {
   v31.receiver = self;
   v31.super_class = VKPolylineOverlayRenderRegion;
@@ -148,14 +148,14 @@ LABEL_26:
     return v9;
   }
 
-  v8->_visibleRect._minimum._e[0] = *a3;
-  v8->_visibleRect._minimum._e[1] = *(a3 + 1);
-  v8->_visibleRect._maximum._e[0] = *(a3 + 2);
-  v8->_visibleRect._maximum._e[1] = *(a3 + 3);
-  if (&v8->_routeLineDatas != a5)
+  v8->_visibleRect._minimum._e[0] = *rect;
+  v8->_visibleRect._minimum._e[1] = *(rect + 1);
+  v8->_visibleRect._maximum._e[0] = *(rect + 2);
+  v8->_visibleRect._maximum._e[1] = *(rect + 3);
+  if (&v8->_routeLineDatas != datas)
   {
-    v12 = *a5;
-    v10 = a5 + 8;
+    v12 = *datas;
+    v10 = datas + 8;
     v11 = v12;
     if (v8->_routeLineDatas.__tree_.__size_)
     {
@@ -312,15 +312,15 @@ LABEL_38:
     }
   }
 
-  if (v9 + 8 != a4)
+  if (v9 + 8 != region)
   {
-    std::__tree<gm::Box<double,2>,md::MultiRectSetCompare,std::allocator<gm::Box<double,2>>>::__assign_multi<std::__tree_const_iterator<gm::Box<double,2>,std::__tree_node<gm::Box<double,2>,void *> *,long>>((v9 + 8), *a4, a4 + 1);
+    std::__tree<gm::Box<double,2>,md::MultiRectSetCompare,std::allocator<gm::Box<double,2>>>::__assign_multi<std::__tree_const_iterator<gm::Box<double,2>,std::__tree_node<gm::Box<double,2>,void *> *,long>>((v9 + 8), *region, region + 1);
   }
 
-  v9[11] = *(a4 + 3);
-  v9[12] = *(a4 + 4);
-  v9[13] = *(a4 + 5);
-  v9[14] = *(a4 + 6);
+  v9[11] = *(region + 3);
+  v9[12] = *(region + 4);
+  v9[13] = *(region + 5);
+  v9[14] = *(region + 6);
   return v9;
 }
 

@@ -1,28 +1,28 @@
 @interface NTKEditOptionTransitioningView
-- (NTKEditOptionTransitioningView)initWithFrame:(CGRect)a3;
+- (NTKEditOptionTransitioningView)initWithFrame:(CGRect)frame;
 - (NTKEditOptionTransitioningViewDelegate)delegate;
-- (void)_resetTransitionImageView:(id)a3;
+- (void)_resetTransitionImageView:(id)view;
 - (void)_updateUnifiedScaleTransform;
-- (void)didAddSubview:(id)a3;
-- (void)setBreatheFraction:(double)a3;
-- (void)setFromEditOption:(id)a3;
-- (void)setOption:(id)a3;
-- (void)setRubberBandingFraction:(double)a3;
-- (void)setToEditOption:(id)a3;
-- (void)setTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5;
+- (void)didAddSubview:(id)subview;
+- (void)setBreatheFraction:(double)fraction;
+- (void)setFromEditOption:(id)option;
+- (void)setOption:(id)option;
+- (void)setRubberBandingFraction:(double)fraction;
+- (void)setToEditOption:(id)option;
+- (void)setTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption;
 @end
 
 @implementation NTKEditOptionTransitioningView
 
-- (NTKEditOptionTransitioningView)initWithFrame:(CGRect)a3
+- (NTKEditOptionTransitioningView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = NTKEditOptionTransitioningView;
-  v3 = [(NTKEditOptionTransitioningView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKEditOptionTransitioningView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
-    [(NTKEditOptionTransitioningView *)v3 setBackgroundColor:v4];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(NTKEditOptionTransitioningView *)v3 setBackgroundColor:blackColor];
 
     v5 = objc_alloc(MEMORY[0x277D75D18]);
     [(NTKEditOptionTransitioningView *)v3 bounds];
@@ -30,14 +30,14 @@
     transitionContainer = v3->_transitionContainer;
     v3->_transitionContainer = v6;
 
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v3->_transitionContainer setBackgroundColor:v8];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v3->_transitionContainer setBackgroundColor:blackColor2];
 
     [(NTKEditOptionTransitioningView *)v3 addSubview:v3->_transitionContainer];
     v3->_breathScaleModifier = 1.0;
     v3->_rubberBandScaleModifier = 1.0;
-    v9 = [MEMORY[0x277CBBAE8] currentDevice];
-    [v9 screenCornerRadius];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    [currentDevice screenCornerRadius];
     v11 = v10;
 
     v12 = objc_alloc(MEMORY[0x277D755E8]);
@@ -66,8 +66,8 @@
 
     [(UIView *)v3->_transitionDimmingView setAutoresizingMask:18];
     v21 = v3->_transitionDimmingView;
-    v22 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v21 setBackgroundColor:v22];
+    blackColor3 = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v21 setBackgroundColor:blackColor3];
 
     [(UIView *)v3->_transitionDimmingView setAlpha:0.0];
     [(NTKEditOptionTransitioningView *)v3 addSubview:v3->_transitionDimmingView];
@@ -76,24 +76,24 @@
   return v3;
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = NTKEditOptionTransitioningView;
-  [(NTKEditOptionTransitioningView *)&v4 didAddSubview:a3];
+  [(NTKEditOptionTransitioningView *)&v4 didAddSubview:subview];
   [(NTKEditOptionTransitioningView *)self bringSubviewToFront:self->_transitionDimmingView];
 }
 
-- (void)setBreatheFraction:(double)a3
+- (void)setBreatheFraction:(double)fraction
 {
-  self->_breathScaleModifier = NTKLargeElementScaleForBreathingFraction(a3);
+  self->_breathScaleModifier = NTKLargeElementScaleForBreathingFraction(fraction);
 
   [(NTKEditOptionTransitioningView *)self _updateUnifiedScaleTransform];
 }
 
-- (void)setRubberBandingFraction:(double)a3
+- (void)setRubberBandingFraction:(double)fraction
 {
-  self->_rubberBandScaleModifier = NTKScaleForRubberBandingFraction(a3);
+  self->_rubberBandScaleModifier = NTKScaleForRubberBandingFraction(fraction);
 
   [(NTKEditOptionTransitioningView *)self _updateUnifiedScaleTransform];
 }
@@ -105,22 +105,22 @@
   [(UIView *)transitionContainer setTransform:&v3];
 }
 
-- (void)setOption:(id)a3
+- (void)setOption:(id)option
 {
   toTransitionImageView = self->_toTransitionImageView;
-  v5 = a3;
+  optionCopy = option;
   [(UIImageView *)toTransitionImageView setHidden:1];
   [(UIImageView *)self->_fromTransitionImageView setHidden:0];
-  [(NTKEditOptionTransitioningView *)self setFromEditOption:v5];
+  [(NTKEditOptionTransitioningView *)self setFromEditOption:optionCopy];
 }
 
-- (void)setTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5
+- (void)setTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isEqual:v9])
+  optionCopy = option;
+  toOptionCopy = toOption;
+  if ([optionCopy isEqual:toOptionCopy])
   {
-    if ([v9 isEqual:self->_fromEditOption])
+    if ([toOptionCopy isEqual:self->_fromEditOption])
     {
       fromTransitionImageView = self->_fromTransitionImageView;
       v11 = *(MEMORY[0x277CBF2C0] + 16);
@@ -134,7 +134,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if ([v9 isEqual:self->_toEditOption])
+    if ([toOptionCopy isEqual:self->_toEditOption])
     {
       toTransitionImageView = self->_toTransitionImageView;
       v33 = *(MEMORY[0x277CBF2C0] + 16);
@@ -151,11 +151,11 @@ LABEL_9:
   {
     [(UIImageView *)self->_toTransitionImageView setHidden:0];
     [(UIImageView *)self->_fromTransitionImageView setHidden:0];
-    [(NTKEditOptionTransitioningView *)self setToEditOption:v9];
-    v13 = [(NTKEditOptionTransitioningView *)self delegate];
-    v14 = [v13 shouldFadeIncomingView];
+    [(NTKEditOptionTransitioningView *)self setToEditOption:toOptionCopy];
+    delegate = [(NTKEditOptionTransitioningView *)self delegate];
+    shouldFadeIncomingView = [delegate shouldFadeIncomingView];
 
-    if (v14)
+    if (shouldFadeIncomingView)
     {
       v27 = self->_toTransitionImageView;
       CLKCompressFraction();
@@ -165,64 +165,64 @@ LABEL_9:
     v23.f64[0] = 0.0;
     v24.f64[0] = 0.0;
     v25.f64[0] = 1.0;
-    v28 = NTKFindCubicBezierPoint(a3, v23, 0.0, v24, 0.0, v25, 0.0, v15, v16, v17, v18, v19, v20, v21, v22, v26);
+    v28 = NTKFindCubicBezierPoint(fraction, v23, 0.0, v24, 0.0, v25, 0.0, v15, v16, v17, v18, v19, v20, v21, v22, v26);
     v29 = self->_toTransitionImageView;
     CGAffineTransformMakeScale(&v34, (1.0 - v28) * -0.1 + 1.0, (1.0 - v28) * -0.1 + 1.0);
     [(UIImageView *)v29 setTransform:&v34, 0x3FF0000000000000, 0];
-    [(NTKEditOptionTransitioningView *)self setFromEditOption:v8];
+    [(NTKEditOptionTransitioningView *)self setFromEditOption:optionCopy];
     v30 = self->_fromTransitionImageView;
     [(NTKEditOptionTransitioningView *)self bounds];
-    CGAffineTransformMakeTranslation(&v34, 0.0, -(a3 * v31));
+    CGAffineTransformMakeTranslation(&v34, 0.0, -(fraction * v31));
     [(UIImageView *)v30 setTransform:&v34];
   }
 
 LABEL_10:
 }
 
-- (void)setToEditOption:(id)a3
+- (void)setToEditOption:(id)option
 {
-  v5 = a3;
-  if (self->_toEditOption != v5)
+  optionCopy = option;
+  if (self->_toEditOption != optionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_toEditOption, a3);
+    v9 = optionCopy;
+    objc_storeStrong(&self->_toEditOption, option);
     [(NTKEditOptionTransitioningView *)self _resetTransitionImageView:self->_toTransitionImageView];
     toTransitionImageView = self->_toTransitionImageView;
-    v7 = [(NTKEditOptionTransitioningView *)self delegate];
-    v8 = [v7 imageForEditOption:v9];
+    delegate = [(NTKEditOptionTransitioningView *)self delegate];
+    v8 = [delegate imageForEditOption:v9];
     [(UIImageView *)toTransitionImageView setImage:v8];
 
-    v5 = v9;
+    optionCopy = v9;
   }
 }
 
-- (void)setFromEditOption:(id)a3
+- (void)setFromEditOption:(id)option
 {
-  v5 = a3;
-  if (self->_fromEditOption != v5)
+  optionCopy = option;
+  if (self->_fromEditOption != optionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_fromEditOption, a3);
+    v9 = optionCopy;
+    objc_storeStrong(&self->_fromEditOption, option);
     [(NTKEditOptionTransitioningView *)self _resetTransitionImageView:self->_fromTransitionImageView];
     fromTransitionImageView = self->_fromTransitionImageView;
-    v7 = [(NTKEditOptionTransitioningView *)self delegate];
-    v8 = [v7 imageForEditOption:v9];
+    delegate = [(NTKEditOptionTransitioningView *)self delegate];
+    v8 = [delegate imageForEditOption:v9];
     [(UIImageView *)fromTransitionImageView setImage:v8];
 
-    v5 = v9;
+    optionCopy = v9;
   }
 }
 
-- (void)_resetTransitionImageView:(id)a3
+- (void)_resetTransitionImageView:(id)view
 {
   v4 = *(MEMORY[0x277CBF2C0] + 16);
   v6 = *MEMORY[0x277CBF2C0];
   v7 = v4;
   v8 = *(MEMORY[0x277CBF2C0] + 32);
-  v5 = a3;
-  [v5 setTransform:&v6];
+  viewCopy = view;
+  [viewCopy setTransform:&v6];
   [(NTKEditOptionTransitioningView *)self bounds:v6];
-  [v5 setFrame:?];
+  [viewCopy setFrame:?];
 }
 
 - (NTKEditOptionTransitioningViewDelegate)delegate

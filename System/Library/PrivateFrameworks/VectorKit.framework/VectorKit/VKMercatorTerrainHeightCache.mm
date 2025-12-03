@@ -1,9 +1,9 @@
 @interface VKMercatorTerrainHeightCache
 - (VKMercatorTerrainHeightProvider)heightProvider;
-- (double)heightForAnchor:(void *)a3;
+- (double)heightForAnchor:(void *)anchor;
 - (id).cxx_construct;
-- (void)invalidateRect:(const void *)a3;
-- (void)removeCachedValueForAnchor:(void *)a3;
+- (void)invalidateRect:(const void *)rect;
+- (void)removeCachedValueForAnchor:(void *)anchor;
 @end
 
 @implementation VKMercatorTerrainHeightCache
@@ -23,21 +23,21 @@
   return WeakRetained;
 }
 
-- (void)invalidateRect:(const void *)a3
+- (void)invalidateRect:(const void *)rect
 {
   p_anchorToHeight = &self->_anchorToHeight;
   begin_node = self->_anchorToHeight.__tree_.__begin_node_;
   p_end_node = &self->_anchorToHeight.__tree_.__end_node_;
   if (begin_node != &self->_anchorToHeight.__tree_.__end_node_)
   {
-    v7 = a3 + 16;
+    v7 = rect + 16;
     do
     {
       size = begin_node->_anchorToHeight.__tree_.__size_;
       (*(*size + 7))(size, a2);
       v11 = 0;
       v12 = 1;
-      while (v9 >= *(a3 + v11) && v9 < *&v7[8 * v11])
+      while (v9 >= *(rect + v11) && v9 < *&v7[8 * v11])
       {
         v13 = v12;
         v12 = 0;
@@ -84,7 +84,7 @@ LABEL_13:
   }
 }
 
-- (void)removeCachedValueForAnchor:(void *)a3
+- (void)removeCachedValueForAnchor:(void *)anchor
 {
   p_end_node = &self->_anchorToHeight.__tree_.__end_node_;
   left = self->_anchorToHeight.__tree_.__end_node_.__left_;
@@ -95,8 +95,8 @@ LABEL_13:
     do
     {
       v7 = left[4];
-      v8 = v7 >= a3;
-      v9 = v7 < a3;
+      v8 = v7 >= anchor;
+      v9 = v7 < anchor;
       if (v8)
       {
         v6 = left;
@@ -106,7 +106,7 @@ LABEL_13:
     }
 
     while (left);
-    if (v6 != p_end_node && v6[4] <= a3)
+    if (v6 != p_end_node && v6[4] <= anchor)
     {
       std::__tree<gdc::Registry *,md::RegistryIdentifierLessThan,std::allocator<gdc::Registry *>>::__remove_node_pointer(p_anchorToHeight, v6);
 
@@ -115,7 +115,7 @@ LABEL_13:
   }
 }
 
-- (double)heightForAnchor:(void *)a3
+- (double)heightForAnchor:(void *)anchor
 {
   p_end_node = &self->_anchorToHeight.__tree_.__end_node_;
   left = self->_anchorToHeight.__tree_.__end_node_.__left_;
@@ -128,8 +128,8 @@ LABEL_13:
   do
   {
     v7 = *(left + 4);
-    v8 = v7 >= a3;
-    v9 = v7 < a3;
+    v8 = v7 >= anchor;
+    v9 = v7 < anchor;
     if (v8)
     {
       v6 = left;
@@ -139,14 +139,14 @@ LABEL_13:
   }
 
   while (left);
-  if (v6 != p_end_node && v6[4].__left_ <= a3)
+  if (v6 != p_end_node && v6[4].__left_ <= anchor)
   {
     return *&v6[5].__left_;
   }
 
 LABEL_9:
   WeakRetained = objc_loadWeakRetained(&self->_heightProvider);
-  (*(*a3 + 56))(a3);
+  (*(*anchor + 56))(anchor);
   [WeakRetained heightAtPoint:?];
   v12 = v11;
 
@@ -163,7 +163,7 @@ LABEL_15:
     {
       v15 = v14;
       v16 = *(v14 + 4);
-      if (v16 <= a3)
+      if (v16 <= anchor)
       {
         break;
       }
@@ -175,7 +175,7 @@ LABEL_15:
       }
     }
 
-    if (v16 >= a3)
+    if (v16 >= anchor)
     {
       break;
     }

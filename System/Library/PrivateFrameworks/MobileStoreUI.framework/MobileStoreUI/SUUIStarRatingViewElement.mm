@@ -1,23 +1,23 @@
 @interface SUUIStarRatingViewElement
-- (SUUIStarRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIStarRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIViewElementText)text;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIStarRatingViewElement
 
-- (SUUIStarRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIStarRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v22.receiver = self;
   v22.super_class = SUUIStarRatingViewElement;
-  v9 = [(SUUIViewElement *)&v22 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v22 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (!v9)
   {
     goto LABEL_20;
   }
 
-  v10 = [v8 getAttribute:@"value"];
+  v10 = [elementCopy getAttribute:@"value"];
   v11 = v10;
   if (v10)
   {
@@ -26,7 +26,7 @@
     v9->_ratingValue = *&v12;
   }
 
-  v13 = [v8 getAttribute:@"type"];
+  v13 = [elementCopy getAttribute:@"type"];
   if (!v13)
   {
     goto LABEL_8;
@@ -48,7 +48,7 @@ LABEL_8:
   }
 
 LABEL_10:
-  v15 = [v8 getAttribute:@"disabled"];
+  v15 = [elementCopy getAttribute:@"disabled"];
   if (v15)
   {
     if ([@"yes" isEqualToString:v15])
@@ -68,9 +68,9 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:v8 usingParseBlock:0];
-    v19 = [v18 string];
-    v20 = [v19 length];
+    v18 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:elementCopy usingParseBlock:0];
+    string = [v18 string];
+    v20 = [string length];
 
     if (v20)
     {
@@ -87,30 +87,30 @@ LABEL_20:
   text = self->_text;
   if (text)
   {
-    v3 = text;
+    text = text;
   }
 
   else
   {
     v4 = [(SUUIViewElement *)self firstChildForElementType:138];
-    v3 = [v4 text];
+    text = [v4 text];
   }
 
-  return v3;
+  return text;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIStarRatingViewElement;
-  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    [(SUUIStarRatingViewElement *)v4 ratingValue];
+    [(SUUIStarRatingViewElement *)elementCopy ratingValue];
     self->_ratingValue = v7;
-    objc_storeStrong(&self->_text, v4->_text);
+    objc_storeStrong(&self->_text, elementCopy->_text);
   }
 
   return v6;

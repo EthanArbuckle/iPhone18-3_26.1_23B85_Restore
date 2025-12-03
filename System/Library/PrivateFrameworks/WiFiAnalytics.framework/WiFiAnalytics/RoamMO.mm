@@ -1,16 +1,16 @@
 @interface RoamMO
-+ (unint64_t)dwellTimeInBand:(id)a3 bandIs24:(BOOL)a4 bssid:(id)a5 maxAgeInDays:(unint64_t)a6 moc:(id)a7;
++ (unint64_t)dwellTimeInBand:(id)band bandIs24:(BOOL)is24 bssid:(id)bssid maxAgeInDays:(unint64_t)days moc:(id)moc;
 @end
 
 @implementation RoamMO
 
-+ (unint64_t)dwellTimeInBand:(id)a3 bandIs24:(BOOL)a4 bssid:(id)a5 maxAgeInDays:(unint64_t)a6 moc:(id)a7
++ (unint64_t)dwellTimeInBand:(id)band bandIs24:(BOOL)is24 bssid:(id)bssid maxAgeInDays:(unint64_t)days moc:(id)moc
 {
   v71 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v62 = a7;
-  if (!v12)
+  bandCopy = band;
+  bssidCopy = bssid;
+  mocCopy = moc;
+  if (!bandCopy)
   {
     v54 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -26,32 +26,32 @@
   }
 
   v59 = objc_autoreleasePoolPush();
-  v60 = v13;
-  v61 = v12;
-  if (v13)
+  v60 = bssidCopy;
+  v61 = bandCopy;
+  if (bssidCopy)
   {
     v14 = MEMORY[0x1E696AB28];
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.network.ssid == %@", v12];
-    v66[0] = v15;
-    v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.bssid == %@", v13];
-    v66[1] = v16;
-    v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == 0"];
-    v66[2] = v7;
+    bandCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.network.ssid == %@", bandCopy];
+    v66[0] = bandCopy;
+    bssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.bssid == %@", bssidCopy];
+    v66[1] = bssidCopy;
+    unsignedIntegerValue = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == 0"];
+    v66[2] = unsignedIntegerValue;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:3];
-    v18 = [v14 andPredicateWithSubpredicates:v17];
+    bandCopy2 = [v14 andPredicateWithSubpredicates:v17];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.network.ssid == %@", v12];
+    bandCopy2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.network.ssid == %@", bandCopy];
   }
 
-  v58 = v18;
-  if (a6)
+  v58 = bandCopy2;
+  if (days)
   {
     v19 = MEMORY[0x1E696AB28];
-    v65[0] = v18;
-    v20 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * a6)];
+    v65[0] = bandCopy2;
+    v20 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * days)];
     v65[1] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:2];
     v22 = [v19 andPredicateWithSubpredicates:v21];
@@ -64,7 +64,7 @@ LABEL_7:
       v25 = MEMORY[0x1E696AB28];
       v56 = v24;
       v57 = v23;
-      if (a4)
+      if (is24)
       {
         v64 = v22;
         v26 = &v64;
@@ -81,10 +81,10 @@ LABEL_7:
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:? count:?];
       v28 = [v25 andPredicateWithSubpredicates:v27];
 
-      v7 = 0x1E830D000;
+      unsignedIntegerValue = 0x1E830D000;
       v29 = +[RoamMO entity];
-      v30 = [v29 name];
-      v31 = [AnalyticsStoreProxy fetchRequestForEntity:v30];
+      name = [v29 name];
+      v31 = [AnalyticsStoreProxy fetchRequestForEntity:name];
 
       [v31 setResultType:2];
       [v31 setReturnsDistinctResults:1];
@@ -100,13 +100,13 @@ LABEL_7:
       v37 = [MEMORY[0x1E695DEC8] arrayWithObject:v36];
       [v31 setPropertiesToFetch:v37];
 
-      v38 = [AnalyticsStoreProxy fetch:v31 withPredicate:v28 moc:v62];
+      v38 = [AnalyticsStoreProxy fetch:v31 withPredicate:v28 moc:mocCopy];
       v39 = v38;
       v40 = v38 == 0;
       if (v38)
       {
-        v41 = [v38 lastObject];
-        [v41 valueForKey:@"dwellTimeInBand"];
+        lastObject = [v38 lastObject];
+        [lastObject valueForKey:@"dwellTimeInBand"];
         v55 = v36;
         v42 = v39;
         v43 = v31;
@@ -115,7 +115,7 @@ LABEL_7:
         v46 = v40;
         v47 = v22;
         v49 = v48 = v28;
-        v7 = [v49 unsignedIntegerValue];
+        unsignedIntegerValue = [v49 unsignedIntegerValue];
 
         v28 = v48;
         v22 = v47;
@@ -129,14 +129,14 @@ LABEL_7:
 
       else
       {
-        v41 = WALogCategoryDeviceStoreHandle();
-        if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+        lastObject = WALogCategoryDeviceStoreHandle();
+        if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
         {
           *buf = 136446466;
           v68 = "+[RoamMO dwellTimeInBand:bandIs24:bssid:maxAgeInDays:moc:]";
           v69 = 1024;
           v70 = 105;
-          _os_log_impl(&dword_1C8460000, v41, OS_LOG_TYPE_ERROR, "%{public}s::%d:resultsArray nil", buf, 0x12u);
+          _os_log_impl(&dword_1C8460000, lastObject, OS_LOG_TYPE_ERROR, "%{public}s::%d:resultsArray nil", buf, 0x12u);
         }
       }
 
@@ -148,7 +148,7 @@ LABEL_7:
 
   else
   {
-    v22 = v18;
+    v22 = bandCopy2;
     if (v22)
     {
       goto LABEL_7;
@@ -171,16 +171,16 @@ LABEL_7:
 LABEL_13:
 
   objc_autoreleasePoolPop(v50);
-  v13 = v60;
-  v12 = v61;
+  bssidCopy = v60;
+  bandCopy = v61;
   if (v40)
   {
 LABEL_14:
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v52 = *MEMORY[0x1E69E9840];
-  return v7;
+  return unsignedIntegerValue;
 }
 
 @end

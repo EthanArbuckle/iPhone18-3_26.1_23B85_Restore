@@ -1,13 +1,13 @@
 @interface FBKSHTTPClient
 - (FBKSHTTPClient)init;
-- (id)formattedRequestHeader:(id)a3 session:(id)a4 cookies:(id)a5;
-- (id)logHTTPErrorWithResponse:(id)a3 withData:(id)a4 fromRequest:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)dataForURL:(id)a3 success:(id)a4 error:(id)a5;
-- (void)dataForURLRequest:(id)a3 success:(id)a4 error:(id)a5;
-- (void)dataForURLRequest:(id)a3 successWithResponse:(id)a4 error:(id)a5;
-- (void)jsonForURLRequest:(id)a3 success:(id)a4 error:(id)a5;
+- (id)formattedRequestHeader:(id)header session:(id)session cookies:(id)cookies;
+- (id)logHTTPErrorWithResponse:(id)response withData:(id)data fromRequest:(id)request;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)dataForURL:(id)l success:(id)success error:(id)error;
+- (void)dataForURLRequest:(id)request success:(id)success error:(id)error;
+- (void)dataForURLRequest:(id)request successWithResponse:(id)response error:(id)error;
+- (void)jsonForURLRequest:(id)request success:(id)success error:(id)error;
 @end
 
 @implementation FBKSHTTPClient
@@ -20,16 +20,16 @@
   v2 = [(FBKSHTTPClient *)&v30 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-    v4 = [v3 copy];
+    defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+    v4 = [defaultSessionConfiguration copy];
 
     [v4 setURLCache:0];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v6 = [v5 infoDictionary];
+    infoDictionary = [v5 infoDictionary];
 
-    v7 = [v6 objectForKey:@"CFBundleShortVersionString"];
-    v29 = v6;
-    v8 = [v6 objectForKey:*MEMORY[0x1E695E500]];
+    v7 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    v29 = infoDictionary;
+    v8 = [infoDictionary objectForKey:*MEMORY[0x1E695E500]];
     memset(&v35, 0, 512);
     uname(&v35);
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", v35.machine];
@@ -50,10 +50,10 @@
     v12 = +[FBKSSharedConstants productVersion];
     v13 = +[FBKSSharedConstants swVers];
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [MEMORY[0x1E696AE30] processInfo];
-    v16 = [v15 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
     v26 = v9;
-    v17 = [v14 stringWithFormat:@"%@/%@ (Feedback Framework) (%@ %@) (Build %@) (Model %@)", v16, v11, @"iOS", v12, v13, v9];
+    v17 = [v14 stringWithFormat:@"%@/%@ (Feedback Framework) (%@ %@) (Build %@) (Model %@)", processName, v11, @"iOS", v12, v13, v9];
 
     v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
     v33[0] = @"X-SP-API";
@@ -87,24 +87,24 @@
   return v2;
 }
 
-- (void)jsonForURLRequest:(id)a3 success:(id)a4 error:(id)a5
+- (void)jsonForURLRequest:(id)request success:(id)success error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  successCopy = success;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke;
   v14[3] = &unk_1E7A8FFD0;
-  v15 = v8;
-  v16 = v9;
+  v15 = successCopy;
+  v16 = errorCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49;
   v12[3] = &unk_1E7A8FFF8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
-  [(FBKSHTTPClient *)self dataForURLRequest:a3 success:v14 error:v12];
+  v11 = successCopy;
+  [(FBKSHTTPClient *)self dataForURLRequest:request success:v14 error:v12];
 }
 
 void __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -152,44 +152,44 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
   return result;
 }
 
-- (void)dataForURLRequest:(id)a3 success:(id)a4 error:(id)a5
+- (void)dataForURLRequest:(id)request success:(id)success error:(id)error
 {
-  v8 = a4;
+  successCopy = success;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__FBKSHTTPClient_dataForURLRequest_success_error___block_invoke;
   v10[3] = &unk_1E7A90020;
-  v11 = v8;
-  v9 = v8;
-  [(FBKSHTTPClient *)self dataForURLRequest:a3 successWithResponse:v10 error:a5];
+  v11 = successCopy;
+  v9 = successCopy;
+  [(FBKSHTTPClient *)self dataForURLRequest:request successWithResponse:v10 error:error];
 }
 
-- (id)formattedRequestHeader:(id)a3 session:(id)a4 cookies:(id)a5
+- (id)formattedRequestHeader:(id)header session:(id)session cookies:(id)cookies
 {
   v62 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v44 = a5;
+  headerCopy = header;
+  sessionCopy = session;
+  cookiesCopy = cookies;
   v9 = MEMORY[0x1E696AD60];
-  v10 = [v7 HTTPMethod];
-  v11 = [v7 URL];
+  hTTPMethod = [headerCopy HTTPMethod];
+  v11 = [headerCopy URL];
   v12 = [v11 debugDescription];
-  v13 = [v9 stringWithFormat:@"%@ %@\n", v10, v12];
+  v13 = [v9 stringWithFormat:@"%@ %@\n", hTTPMethod, v12];
 
-  v45 = v7;
-  v14 = [v7 URL];
-  v15 = [v14 host];
-  [v13 appendFormat:@"Host: %@\n", v15];
+  v45 = headerCopy;
+  v14 = [headerCopy URL];
+  host = [v14 host];
+  [v13 appendFormat:@"Host: %@\n", host];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v46 = v8;
-  v16 = [v8 configuration];
-  v17 = [v16 HTTPAdditionalHeaders];
+  v46 = sessionCopy;
+  configuration = [sessionCopy configuration];
+  hTTPAdditionalHeaders = [configuration HTTPAdditionalHeaders];
 
-  v18 = [v17 countByEnumeratingWithState:&v55 objects:v61 count:16];
+  v18 = [hTTPAdditionalHeaders countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v18)
   {
     v19 = v18;
@@ -200,17 +200,17 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
       {
         if (*v56 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(hTTPAdditionalHeaders);
         }
 
         v22 = *(*(&v55 + 1) + 8 * i);
-        v23 = [v46 configuration];
-        v24 = [v23 HTTPAdditionalHeaders];
-        v25 = [v24 objectForKeyedSubscript:v22];
+        configuration2 = [v46 configuration];
+        hTTPAdditionalHeaders2 = [configuration2 HTTPAdditionalHeaders];
+        v25 = [hTTPAdditionalHeaders2 objectForKeyedSubscript:v22];
         [v13 appendFormat:@"%@: %@\n", v22, v25];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v55 objects:v61 count:16];
+      v19 = [hTTPAdditionalHeaders countByEnumeratingWithState:&v55 objects:v61 count:16];
     }
 
     while (v19);
@@ -220,7 +220,7 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v26 = v44;
+  v26 = cookiesCopy;
   v27 = [v26 countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (v27)
   {
@@ -236,9 +236,9 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
         }
 
         v31 = *(*(&v51 + 1) + 8 * j);
-        v32 = [v31 name];
-        v33 = [v31 value];
-        [v13 appendFormat:@"%@: %@\n", v32, v33];
+        name = [v31 name];
+        value = [v31 value];
+        [v13 appendFormat:@"%@: %@\n", name, value];
       }
 
       v28 = [v26 countByEnumeratingWithState:&v51 objects:v60 count:16];
@@ -251,8 +251,8 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v34 = [v45 allHTTPHeaderFields];
-  v35 = [v34 countByEnumeratingWithState:&v47 objects:v59 count:16];
+  allHTTPHeaderFields = [v45 allHTTPHeaderFields];
+  v35 = [allHTTPHeaderFields countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (v35)
   {
     v36 = v35;
@@ -263,7 +263,7 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
       {
         if (*v48 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(allHTTPHeaderFields);
         }
 
         v39 = *(*(&v47 + 1) + 8 * k);
@@ -271,7 +271,7 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
         [v13 appendFormat:@"%@: %@\n", v39, v40];
       }
 
-      v36 = [v34 countByEnumeratingWithState:&v47 objects:v59 count:16];
+      v36 = [allHTTPHeaderFields countByEnumeratingWithState:&v47 objects:v59 count:16];
     }
 
     while (v36);
@@ -284,38 +284,38 @@ uint64_t __50__FBKSHTTPClient_jsonForURLRequest_success_error___block_invoke_49(
   return v41;
 }
 
-- (void)dataForURLRequest:(id)a3 successWithResponse:(id)a4 error:(id)a5
+- (void)dataForURLRequest:(id)request successWithResponse:(id)response error:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  errorCopy = error;
   v11 = Log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 HTTPMethod];
-    v13 = [v8 URL];
-    v14 = [v13 path];
+    hTTPMethod = [requestCopy HTTPMethod];
+    v13 = [requestCopy URL];
+    path = [v13 path];
     *buf = 138543618;
-    v30 = v12;
+    v30 = hTTPMethod;
     v31 = 2114;
-    v32 = v14;
+    v32 = path;
     _os_log_impl(&dword_1B00C4000, v11, OS_LOG_TYPE_INFO, "-> %{public}@ %{public}@", buf, 0x16u);
   }
 
-  v15 = [(FBKSHTTPClient *)self session];
+  session = [(FBKSHTTPClient *)self session];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __62__FBKSHTTPClient_dataForURLRequest_successWithResponse_error___block_invoke;
   v24 = &unk_1E7A90098;
-  v25 = self;
-  v26 = v8;
-  v27 = v10;
-  v28 = v9;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v19 = [v15 dataTaskWithRequest:v18 completionHandler:&v21];
+  selfCopy = self;
+  v26 = requestCopy;
+  v27 = errorCopy;
+  v28 = responseCopy;
+  v16 = responseCopy;
+  v17 = errorCopy;
+  v18 = requestCopy;
+  v19 = [session dataTaskWithRequest:v18 completionHandler:&v21];
 
   [v19 resume];
   v20 = *MEMORY[0x1E69E9840];
@@ -602,18 +602,18 @@ void __62__FBKSHTTPClient_dataForURLRequest_successWithResponse_error___block_in
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dataForURL:(id)a3 success:(id)a4 error:(id)a5
+- (void)dataForURL:(id)l success:(id)success error:(id)error
 {
   v8 = MEMORY[0x1E695AC68];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 requestWithURL:a3];
-  [(FBKSHTTPClient *)self dataForURLRequest:v11 success:v10 error:v9];
+  errorCopy = error;
+  successCopy = success;
+  v11 = [v8 requestWithURL:l];
+  [(FBKSHTTPClient *)self dataForURLRequest:v11 success:successCopy error:errorCopy];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = Log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -621,10 +621,10 @@ void __62__FBKSHTTPClient_dataForURLRequest_successWithResponse_error___block_in
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v8 = +[FBKSSharedConstants environment];
   if (FBKSHasInternalUI() && (v8 & 0xFFFFFFFD) == 1)
   {
@@ -642,11 +642,11 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = [v6 protectionSpace];
-  v13 = [v12 host];
+  protectionSpace = [challengeCopy protectionSpace];
+  host = [protectionSpace host];
   v14 = +[FBKSSharedConstants appleSeedURL];
-  v15 = [v14 host];
-  v16 = [v13 isEqualToString:v15];
+  host2 = [v14 host];
+  v16 = [host isEqualToString:host2];
 
   if ((v16 & 1) == 0)
   {
@@ -664,36 +664,36 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v17 = [v6 protectionSpace];
-  v18 = [v17 authenticationMethod];
-  v19 = [v18 isEqualToString:*MEMORY[0x1E695AB80]];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace2 authenticationMethod];
+  v19 = [authenticationMethod isEqualToString:*MEMORY[0x1E695AB80]];
 
   if (!v19)
   {
 LABEL_15:
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_16;
   }
 
   v20 = +[FBKSSharedConstants appleSeedURL];
-  v21 = [v20 host];
+  host3 = [v20 host];
 
   AppleSSLPinned = SecPolicyCreateAppleSSLPinned();
   if (AppleSSLPinned)
   {
     v23 = AppleSSLPinned;
-    v24 = [v6 protectionSpace];
-    v25 = [v24 serverTrust];
+    protectionSpace3 = [challengeCopy protectionSpace];
+    serverTrust = [protectionSpace3 serverTrust];
 
-    LODWORD(v24) = SecTrustSetPolicies(v25, v23);
+    LODWORD(protectionSpace3) = SecTrustSetPolicies(serverTrust, v23);
     CFRelease(v23);
-    if (!v24)
+    if (!protectionSpace3)
     {
       error = 0;
-      if (SecTrustEvaluateWithError(v25, &error))
+      if (SecTrustEvaluateWithError(serverTrust, &error))
       {
-        v26 = [MEMORY[0x1E695AC48] credentialForTrust:v25];
-        (v7)[2](v7, 0, v26);
+        v26 = [MEMORY[0x1E695AC48] credentialForTrust:serverTrust];
+        (handlerCopy)[2](handlerCopy, 0, v26);
 
         goto LABEL_10;
       }
@@ -712,27 +712,27 @@ LABEL_15:
     }
   }
 
-  v7[2](v7, 2, 0);
+  handlerCopy[2](handlerCopy, 2, 0);
 LABEL_10:
 
 LABEL_16:
 }
 
-- (id)logHTTPErrorWithResponse:(id)a3 withData:(id)a4 fromRequest:(id)a5
+- (id)logHTTPErrorWithResponse:(id)response withData:(id)data fromRequest:(id)request
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  dataCopy = data;
+  requestCopy = request;
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:5];
   v11 = Log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [FBKSHTTPClient logHTTPErrorWithResponse:v7 withData:v9 fromRequest:v11];
+    [FBKSHTTPClient logHTTPErrorWithResponse:responseCopy withData:requestCopy fromRequest:v11];
   }
 
-  v12 = [v7 allHeaderFields];
-  v13 = [v9 URL];
+  allHeaderFields = [responseCopy allHeaderFields];
+  v13 = [requestCopy URL];
   v14 = [v13 description];
   v15 = v14;
   if (v14)
@@ -747,11 +747,11 @@ LABEL_16:
 
   [v10 setObject:v16 forKeyedSubscript:@"url"];
 
-  v17 = [v9 HTTPMethod];
-  v18 = v17;
-  if (v17)
+  hTTPMethod = [requestCopy HTTPMethod];
+  v18 = hTTPMethod;
+  if (hTTPMethod)
   {
-    v19 = v17;
+    v19 = hTTPMethod;
   }
 
   else
@@ -775,10 +775,10 @@ LABEL_16:
 
   [v10 setObject:v22 forKeyedSubscript:@"environment"];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "statusCode")}];
+  v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(responseCopy, "statusCode")}];
   [v10 setObject:v23 forKeyedSubscript:@"HTTP error"];
 
-  v24 = [v12 objectForKeyedSubscript:@"X-Request-Id"];
+  v24 = [allHeaderFields objectForKeyedSubscript:@"X-Request-Id"];
   v25 = v24;
   if (v24)
   {
@@ -792,10 +792,10 @@ LABEL_16:
 
   [v10 setObject:v26 forKeyedSubscript:@"request id"];
 
-  v27 = [v12 objectForKeyedSubscript:@"Content-Type"];
-  if ((([v27 containsString:@"application/json"] & 1) != 0 || objc_msgSend(v27, "containsString:", @"text/html")) && objc_msgSend(v7, "statusCode") != 404)
+  v27 = [allHeaderFields objectForKeyedSubscript:@"Content-Type"];
+  if ((([v27 containsString:@"application/json"] & 1) != 0 || objc_msgSend(v27, "containsString:", @"text/html")) && objc_msgSend(responseCopy, "statusCode") != 404)
   {
-    v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v8 encoding:4];
+    v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
     v28 = Log();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -805,11 +805,11 @@ LABEL_16:
     v29 = Log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v12 objectForKeyedSubscript:@"X-Request-Id"];
+      v30 = [allHeaderFields objectForKeyedSubscript:@"X-Request-Id"];
       [FBKSHTTPClient logHTTPErrorWithResponse:v30 withData:buf fromRequest:v29];
     }
 
-    v31 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:0];
+    v31 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:0];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -819,8 +819,8 @@ LABEL_16:
     v32 = [v31 objectForKeyedSubscript:@"errors"];
     if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v33 = [v32 firstObject];
-      v34 = [v33 objectForKeyedSubscript:@"message"];
+      firstObject = [v32 firstObject];
+      v34 = [firstObject objectForKeyedSubscript:@"message"];
 
       if (!v34)
       {

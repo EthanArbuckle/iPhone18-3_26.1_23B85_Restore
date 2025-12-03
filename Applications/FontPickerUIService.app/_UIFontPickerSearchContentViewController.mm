@@ -1,15 +1,15 @@
 @interface _UIFontPickerSearchContentViewController
 - (_UIFontPickerViewControllerHost)delegate;
 - (id)contentUnavailableConfigurationState;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
-- (void)_filterResultsForSearchTerm:(id)a3;
-- (void)_setConfiguration:(id)a3;
-- (void)_setResultFonts:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
+- (void)_filterResultsForSearchTerm:(id)term;
+- (void)_setConfiguration:(id)configuration;
+- (void)_setResultFonts:(id)fonts;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
 @end
 
 @implementation _UIFontPickerSearchContentViewController
@@ -19,26 +19,26 @@
   v21.receiver = self;
   v21.super_class = _UIFontPickerSearchContentViewController;
   [(_UIFontPickerSearchContentViewController *)&v21 loadView];
-  v3 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"UIFontPickerCell"];
+  tableView = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"UIFontPickerCell"];
 
-  v4 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"UIFontPickerFooter"];
+  tableView2 = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"UIFontPickerFooter"];
 
-  v5 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v5 setSeparatorInsetReference:1];
+  tableView3 = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView3 setSeparatorInsetReference:1];
 
-  v6 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v6 setKeyboardDismissMode:1];
+  tableView4 = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView4 setKeyboardDismissMode:1];
 
-  v7 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v7 setSectionFooterHeight:UITableViewAutomaticDimension];
+  tableView5 = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView5 setSectionFooterHeight:UITableViewAutomaticDimension];
 
-  v8 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v8 setRowHeight:UITableViewAutomaticDimension];
+  tableView6 = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView6 setRowHeight:UITableViewAutomaticDimension];
 
-  v9 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v9 setEstimatedRowHeight:50.0];
+  tableView7 = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView7 setEstimatedRowHeight:50.0];
 
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"FONT_PICKER_SETTINGS_LINK_FORMAT" value:@"Manage and find more fonts in Settings. %@" table:@"Localizable"];
@@ -56,18 +56,18 @@
   self->_footerText = v15;
 }
 
-- (void)_setResultFonts:(id)a3
+- (void)_setResultFonts:(id)fonts
 {
-  objc_storeStrong(&self->_fonts, a3);
-  v4 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v4 reloadData];
+  objc_storeStrong(&self->_fonts, fonts);
+  tableView = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView reloadData];
 
   [(_UIFontPickerSearchContentViewController *)self setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)_filterResultsForSearchTerm:(id)a3
+- (void)_filterResultsForSearchTerm:(id)term
 {
-  v9 = a3;
+  termCopy = term;
   v4 = objc_opt_new();
   if ([(NSArray *)self->_fonts count])
   {
@@ -75,7 +75,7 @@
     do
     {
       v6 = [(NSArray *)self->_fonts objectAtIndexedSubscript:v5];
-      if ([v6 matchesSearchString:v9])
+      if ([v6 matchesSearchString:termCopy])
       {
         [(NSArray *)v4 addObject:v6];
       }
@@ -89,33 +89,33 @@
   fonts = self->_fonts;
   self->_fonts = v4;
 
-  v8 = [(_UIFontPickerSearchContentViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(_UIFontPickerSearchContentViewController *)self tableView];
+  [tableView reloadData];
 
   [(_UIFontPickerSearchContentViewController *)self setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)_setConfiguration:(id)a3
+- (void)_setConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_configuration, configuration);
+  configurationCopy = configuration;
   [(_UIFontPickerSearchContentViewController *)self _setResultFonts:self->_fonts];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"UIFontPickerCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"UIFontPickerCell"];
   if (!v7)
   {
     v7 = [[_UIFontPickerTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"UIFontPickerCell"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_fonts, "objectAtIndexedSubscript:", [v6 row]);
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_fonts, "objectAtIndexedSubscript:", [pathCopy row]);
   v10 = sub_100074080(v9);
   v12 = *(v11 + 488);
-  v13 = [(UIFontPickerViewControllerConfiguration *)self->_configuration _clientFontContextEndpoint];
-  v14 = [v12 sharedInstanceForEndpoint:v13];
+  _clientFontContextEndpoint = [(UIFontPickerViewControllerConfiguration *)self->_configuration _clientFontContextEndpoint];
+  v14 = [v12 sharedInstanceForEndpoint:_clientFontContextEndpoint];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -125,41 +125,41 @@
   v22 = v15;
   v16 = v8;
   v23 = v16;
-  v24 = self;
+  selfCopy = self;
   [v14 runBlockInClientFontContext:v21];
   if ([(UIFontPickerViewControllerConfiguration *)self->_configuration includeFaces]&& ([(UIFontPickerViewControllerConfiguration *)self->_configuration _filterFamilyName], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
   {
-    v18 = [v16 hasMultipleFaces];
+    hasMultipleFaces = [v16 hasMultipleFaces];
   }
 
   else
   {
-    v18 = 0;
+    hasMultipleFaces = 0;
   }
 
-  [(_UIFontPickerTableViewCell *)v15 setAccessoryType:v18];
+  [(_UIFontPickerTableViewCell *)v15 setAccessoryType:hasMultipleFaces];
   v19 = v15;
 
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:0];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:0];
   fonts = self->_fonts;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v11 = [(NSArray *)fonts objectAtIndexedSubscript:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v10 = [v11 fontDescriptor];
-  [WeakRetained _pickerDidSelectFont:v10];
+  fontDescriptor = [v11 fontDescriptor];
+  [WeakRetained _pickerDidSelectFont:fontDescriptor];
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [v5 dequeueReusableHeaderFooterViewWithIdentifier:@"UIFontPickerFooter"];
+  viewCopy = view;
+  v6 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"UIFontPickerFooter"];
   if (!v6)
   {
     v6 = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:@"UIFontPickerFooter"];
@@ -176,67 +176,67 @@
     [(UITextView *)self->_footerTextView setEditable:0];
     [(UITextView *)self->_footerTextView setSelectable:1];
     [(UITextView *)self->_footerTextView setDataDetectorTypes:2];
-    v9 = [(UITextView *)self->_footerTextView textContainer];
-    [v9 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)self->_footerTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(UITextView *)self->_footerTextView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [v6 contentView];
-    [v10 addSubview:self->_footerTextView];
+    contentView = [v6 contentView];
+    [contentView addSubview:self->_footerTextView];
 
-    v50 = [v6 contentView];
-    v49 = [v50 safeAreaLayoutGuide];
-    v48 = [v49 leadingAnchor];
-    v47 = [(UITextView *)self->_footerTextView leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    contentView2 = [v6 contentView];
+    safeAreaLayoutGuide = [contentView2 safeAreaLayoutGuide];
+    leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+    leadingAnchor2 = [(UITextView *)self->_footerTextView leadingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v51[0] = v46;
-    v45 = [v6 contentView];
-    v44 = [v45 safeAreaLayoutGuide];
-    v43 = [v44 trailingAnchor];
-    v42 = [(UITextView *)self->_footerTextView trailingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    contentView3 = [v6 contentView];
+    safeAreaLayoutGuide2 = [contentView3 safeAreaLayoutGuide];
+    trailingAnchor = [safeAreaLayoutGuide2 trailingAnchor];
+    trailingAnchor2 = [(UITextView *)self->_footerTextView trailingAnchor];
+    v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v51[1] = v41;
-    v40 = [v6 contentView];
-    v39 = [v40 safeAreaLayoutGuide];
-    v38 = [v39 topAnchor];
-    v37 = [(UITextView *)self->_footerTextView topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    contentView4 = [v6 contentView];
+    safeAreaLayoutGuide3 = [contentView4 safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide3 topAnchor];
+    topAnchor2 = [(UITextView *)self->_footerTextView topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v51[2] = v36;
-    v11 = [v6 contentView];
-    v12 = [v11 safeAreaLayoutGuide];
-    v13 = [v12 bottomAnchor];
+    contentView5 = [v6 contentView];
+    safeAreaLayoutGuide4 = [contentView5 safeAreaLayoutGuide];
+    bottomAnchor = [safeAreaLayoutGuide4 bottomAnchor];
     [(UITextView *)self->_footerTextView bottomAnchor];
-    v15 = v14 = v5;
-    v16 = [v13 constraintEqualToAnchor:v15];
+    v15 = v14 = viewCopy;
+    v16 = [bottomAnchor constraintEqualToAnchor:v15];
     v51[3] = v16;
     v17 = [NSArray arrayWithObjects:v51 count:4];
     [NSLayoutConstraint activateConstraints:v17];
 
-    v5 = v14;
+    viewCopy = v14;
     v18 = +[UIColor clearColor];
     [(UITextView *)self->_footerTextView setBackgroundColor:v18];
   }
 
-  v19 = [v6 defaultContentConfiguration];
-  v20 = [v6 configurationState];
-  v21 = [v19 updatedConfigurationForState:v20];
+  defaultContentConfiguration = [v6 defaultContentConfiguration];
+  configurationState = [v6 configurationState];
+  v21 = [defaultContentConfiguration updatedConfigurationForState:configurationState];
 
   v22 = [(NSAttributedString *)self->_footerText mutableCopy];
-  v23 = [v21 textProperties];
-  v24 = [v23 font];
-  [v22 addAttribute:NSFontAttributeName value:v24 range:{0, objc_msgSend(v22, "length")}];
+  textProperties = [v21 textProperties];
+  font = [textProperties font];
+  [v22 addAttribute:NSFontAttributeName value:font range:{0, objc_msgSend(v22, "length")}];
 
-  v25 = [v21 textProperties];
-  v26 = [v25 color];
-  [v22 addAttribute:NSForegroundColorAttributeName value:v26 range:{0, objc_msgSend(v22, "length")}];
+  textProperties2 = [v21 textProperties];
+  color = [textProperties2 color];
+  [v22 addAttribute:NSForegroundColorAttributeName value:color range:{0, objc_msgSend(v22, "length")}];
 
   [(UITextView *)self->_footerTextView setAttributedText:v22];
   [v21 directionalLayoutMargins];
   v28 = v27;
-  [v5 layoutMargins];
+  [viewCopy layoutMargins];
   v30 = v29;
   [v21 directionalLayoutMargins];
   v32 = v31;
-  [v5 layoutMargins];
+  [viewCopy layoutMargins];
   v34 = v33;
 
   [(UITextView *)self->_footerTextView setTextContainerInset:v28, v30, v32, v34];
@@ -244,7 +244,7 @@
   return v6;
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
   if ([(NSArray *)self->_fonts count])
   {
@@ -261,13 +261,13 @@
 
     [v13 setSecondaryButton:v5];
     v8 = [UIAction actionWithHandler:&stru_100098F30];
-    v9 = [v13 secondaryButtonProperties];
-    [v9 setPrimaryAction:v8];
+    secondaryButtonProperties = [v13 secondaryButtonProperties];
+    [secondaryButtonProperties setPrimaryAction:v8];
 
     v10 = +[UIBackgroundConfiguration clearConfiguration];
-    v11 = [(_UIFontPickerSearchContentViewController *)self tableView];
-    v12 = [v11 backgroundColor];
-    [v10 setBackgroundColor:v12];
+    tableView = [(_UIFontPickerSearchContentViewController *)self tableView];
+    backgroundColor = [tableView backgroundColor];
+    [v10 setBackgroundColor:backgroundColor];
 
     [v13 setBackground:v10];
     v4 = v13;
@@ -281,16 +281,16 @@
 {
   v6.receiver = self;
   v6.super_class = _UIFontPickerSearchContentViewController;
-  v3 = [(_UIFontPickerSearchContentViewController *)&v6 contentUnavailableConfigurationState];
-  v4 = [(_UIFontPickerSearchContentViewController *)self searchTerm];
-  [v3 setSearchText:v4];
+  contentUnavailableConfigurationState = [(_UIFontPickerSearchContentViewController *)&v6 contentUnavailableConfigurationState];
+  searchTerm = [(_UIFontPickerSearchContentViewController *)self searchTerm];
+  [contentUnavailableConfigurationState setSearchText:searchTerm];
 
-  return v3;
+  return contentUnavailableConfigurationState;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  if (![a4 contentType])
+  if (![item contentType])
   {
     sub_10006C3C0();
   }

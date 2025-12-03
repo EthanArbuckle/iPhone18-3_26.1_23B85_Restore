@@ -1,22 +1,22 @@
 @interface UIKBScreenTraits
-+ (UIKBScreenTraits)traitsWithScreen:(id)a3 orientation:(int64_t)a4;
-+ (UIKBScreenTraits)traitsWithScreen:(id)a3 orientation:(int64_t)a4 ignoreRemoteKeyboard:(BOOL)a5;
-+ (id)_activeKeyboardWindowForScreen:(id)a3;
-+ (id)_activeUCBWindowForScreen:(id)a3;
-+ (id)fullScreenTraitsWithScreen:(id)a3 orientation:(int64_t)a4;
-+ (id)traitsForInputModeWithScreen:(id)a3;
-+ (id)traitsForPopoverEmulatingWidth:(double)a3 minorEdge:(BOOL)a4 orientation:(int64_t)a5 idiom:(int64_t)a6;
-+ (id)traitsForRemoteEmojiKeyboardForHostWidth:(double)a3 clientWidth:(double)a4 minorEdge:(BOOL)a5 orientation:(int64_t)a6 idiom:(int64_t)a7 isPopover:(BOOL)a8;
++ (UIKBScreenTraits)traitsWithScreen:(id)screen orientation:(int64_t)orientation;
++ (UIKBScreenTraits)traitsWithScreen:(id)screen orientation:(int64_t)orientation ignoreRemoteKeyboard:(BOOL)keyboard;
++ (id)_activeKeyboardWindowForScreen:(id)screen;
++ (id)_activeUCBWindowForScreen:(id)screen;
++ (id)fullScreenTraitsWithScreen:(id)screen orientation:(int64_t)orientation;
++ (id)traitsForInputModeWithScreen:(id)screen;
++ (id)traitsForPopoverEmulatingWidth:(double)width minorEdge:(BOOL)edge orientation:(int64_t)orientation idiom:(int64_t)idiom;
++ (id)traitsForRemoteEmojiKeyboardForHostWidth:(double)width clientWidth:(double)clientWidth minorEdge:(BOOL)edge orientation:(int64_t)orientation idiom:(int64_t)idiom isPopover:(BOOL)popover;
 - (CGRect)assistantViewWindowBounds;
 - (CGRect)bounds;
 - (CGSize)keyboardScreenReferenceSize;
 - (CGSize)preferredContentSizeInPopover;
 - (CGSize)stretchFactor;
-- (UIKBScreenTraits)initWithScreen:(id)a3 orientation:(int64_t)a4 allowFloating:(BOOL)a5 ignoreRemoteKeyboard:(BOOL)a6;
+- (UIKBScreenTraits)initWithScreen:(id)screen orientation:(int64_t)orientation allowFloating:(BOOL)floating ignoreRemoteKeyboard:(BOOL)keyboard;
 - (id)description;
-- (id)initForInputModeWithScreen:(id)a3;
+- (id)initForInputModeWithScreen:(id)screen;
 - (int64_t)idiom;
-- (void)updateForTextInputTraits:(id)a3 supportedInteractionModel:(unint64_t)a4;
+- (void)updateForTextInputTraits:(id)traits supportedInteractionModel:(unint64_t)model;
 @end
 
 @implementation UIKBScreenTraits
@@ -124,65 +124,65 @@
   return result;
 }
 
-+ (id)traitsForInputModeWithScreen:(id)a3
++ (id)traitsForInputModeWithScreen:(id)screen
 {
-  v3 = a3;
-  v4 = [[UIKBScreenTraits alloc] initForInputModeWithScreen:v3];
+  screenCopy = screen;
+  v4 = [[UIKBScreenTraits alloc] initForInputModeWithScreen:screenCopy];
 
   return v4;
 }
 
-+ (UIKBScreenTraits)traitsWithScreen:(id)a3 orientation:(int64_t)a4
++ (UIKBScreenTraits)traitsWithScreen:(id)screen orientation:(int64_t)orientation
 {
-  v5 = a3;
-  v6 = [[UIKBScreenTraits alloc] initWithScreen:v5 orientation:a4 allowFloating:1 ignoreRemoteKeyboard:0];
+  screenCopy = screen;
+  v6 = [[UIKBScreenTraits alloc] initWithScreen:screenCopy orientation:orientation allowFloating:1 ignoreRemoteKeyboard:0];
 
   return v6;
 }
 
-+ (UIKBScreenTraits)traitsWithScreen:(id)a3 orientation:(int64_t)a4 ignoreRemoteKeyboard:(BOOL)a5
++ (UIKBScreenTraits)traitsWithScreen:(id)screen orientation:(int64_t)orientation ignoreRemoteKeyboard:(BOOL)keyboard
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [[UIKBScreenTraits alloc] initWithScreen:v7 orientation:a4 allowFloating:1 ignoreRemoteKeyboard:v5];
+  keyboardCopy = keyboard;
+  screenCopy = screen;
+  v8 = [[UIKBScreenTraits alloc] initWithScreen:screenCopy orientation:orientation allowFloating:1 ignoreRemoteKeyboard:keyboardCopy];
 
   return v8;
 }
 
-+ (id)fullScreenTraitsWithScreen:(id)a3 orientation:(int64_t)a4
++ (id)fullScreenTraitsWithScreen:(id)screen orientation:(int64_t)orientation
 {
-  v5 = a3;
-  v6 = [[UIKBScreenTraits alloc] initWithScreen:v5 orientation:a4 allowFloating:0 ignoreRemoteKeyboard:0];
+  screenCopy = screen;
+  v6 = [[UIKBScreenTraits alloc] initWithScreen:screenCopy orientation:orientation allowFloating:0 ignoreRemoteKeyboard:0];
 
   return v6;
 }
 
-+ (id)traitsForPopoverEmulatingWidth:(double)a3 minorEdge:(BOOL)a4 orientation:(int64_t)a5 idiom:(int64_t)a6
++ (id)traitsForPopoverEmulatingWidth:(double)width minorEdge:(BOOL)edge orientation:(int64_t)orientation idiom:(int64_t)idiom
 {
-  v9 = [[UIKBScreenTraits alloc] initWithScreen:0 orientation:a5 allowFloating:0 ignoreRemoteKeyboard:0];
-  v9->_keyboardWidth = a3;
-  v9->_assistantViewWidth = a3;
+  v9 = [[UIKBScreenTraits alloc] initWithScreen:0 orientation:orientation allowFloating:0 ignoreRemoteKeyboard:0];
+  v9->_keyboardWidth = width;
+  v9->_assistantViewWidth = width;
   *&v9->_isKeyboardMinorEdgeWidth = 257;
-  v9->_orientation = a5;
+  v9->_orientation = orientation;
   v9->_isEmulatingIdiom = 1;
-  v9->_idiomToEmulate = a6;
+  v9->_idiomToEmulate = idiom;
 
   return v9;
 }
 
-+ (id)traitsForRemoteEmojiKeyboardForHostWidth:(double)a3 clientWidth:(double)a4 minorEdge:(BOOL)a5 orientation:(int64_t)a6 idiom:(int64_t)a7 isPopover:(BOOL)a8
++ (id)traitsForRemoteEmojiKeyboardForHostWidth:(double)width clientWidth:(double)clientWidth minorEdge:(BOOL)edge orientation:(int64_t)orientation idiom:(int64_t)idiom isPopover:(BOOL)popover
 {
-  v8 = a8;
-  v14 = [[UIKBScreenTraits alloc] initWithScreen:0 orientation:a6 allowFloating:0 ignoreRemoteKeyboard:0];
-  v14->_keyboardWidth = a4;
-  v14->_assistantViewWidth = a4;
-  v14->_hostKeyboardWidth = a3;
-  v14->_isKeyboardMinorEdgeWidth = a5;
-  v14->_orientation = a6;
+  popoverCopy = popover;
+  v14 = [[UIKBScreenTraits alloc] initWithScreen:0 orientation:orientation allowFloating:0 ignoreRemoteKeyboard:0];
+  v14->_keyboardWidth = clientWidth;
+  v14->_assistantViewWidth = clientWidth;
+  v14->_hostKeyboardWidth = width;
+  v14->_isKeyboardMinorEdgeWidth = edge;
+  v14->_orientation = orientation;
   v14->_isEmulatingIdiom = 1;
-  v14->_idiomToEmulate = a7;
-  v14->_isInPopover = v8;
-  if (v8)
+  v14->_idiomToEmulate = idiom;
+  v14->_isInPopover = popoverCopy;
+  if (popoverCopy)
   {
     v14->_preferredEmojiScrollingDirection = 1;
   }
@@ -192,15 +192,15 @@
   return v14;
 }
 
-+ (id)_activeKeyboardWindowForScreen:(id)a3
++ (id)_activeKeyboardWindowForScreen:(id)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   v4 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-  v5 = [v4 oldPathForSnapshot];
+  oldPathForSnapshot = [v4 oldPathForSnapshot];
 
   v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
   v7 = v6;
-  if (v5)
+  if (oldPathForSnapshot)
   {
     [v6 containerWindow];
   }
@@ -211,104 +211,104 @@
   }
   v8 = ;
 
-  v9 = [v3 _userInterfaceIdiom];
-  if (v9 == 3)
+  _userInterfaceIdiom = [screenCopy _userInterfaceIdiom];
+  if (_userInterfaceIdiom == 3)
   {
     v10 = +[UIKeyboard activeKeyboard];
-    v11 = [v10 window];
+    window = [v10 window];
 
-    v8 = v11;
+    v8 = window;
   }
 
   return v8;
 }
 
-+ (id)_activeUCBWindowForScreen:(id)a3
++ (id)_activeUCBWindowForScreen:(id)screen
 {
-  v3 = [a1 _activeKeyboardWindowForScreen:a3];
+  v3 = [self _activeKeyboardWindowForScreen:screen];
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 visualModeManager];
-  v6 = [v5 shouldShowWithinAppWindow];
+  visualModeManager = [v4 visualModeManager];
+  shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
-  if (v6)
+  if (shouldShowWithinAppWindow)
   {
     v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v8 = [v7 containerWindow];
+    containerWindow = [v7 containerWindow];
 
-    v3 = v8;
+    v3 = containerWindow;
   }
 
   return v3;
 }
 
-- (id)initForInputModeWithScreen:(id)a3
+- (id)initForInputModeWithScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v8.receiver = self;
   v8.super_class = UIKBScreenTraits;
   v5 = [(UIKBScreenTraits *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!screenCopy)
     {
-      v4 = [objc_opt_self() mainScreen];
+      screenCopy = [objc_opt_self() mainScreen];
     }
 
-    if ([v4 _userInterfaceIdiom] == -1)
+    if ([screenCopy _userInterfaceIdiom] == -1)
     {
-      v6 = [objc_opt_self() mainScreen];
+      mainScreen = [objc_opt_self() mainScreen];
 
-      v4 = v6;
+      screenCopy = mainScreen;
     }
 
-    objc_storeStrong(&v5->_screen, v4);
+    objc_storeStrong(&v5->_screen, screenCopy);
   }
 
   return v5;
 }
 
-- (UIKBScreenTraits)initWithScreen:(id)a3 orientation:(int64_t)a4 allowFloating:(BOOL)a5 ignoreRemoteKeyboard:(BOOL)a6
+- (UIKBScreenTraits)initWithScreen:(id)screen orientation:(int64_t)orientation allowFloating:(BOOL)floating ignoreRemoteKeyboard:(BOOL)keyboard
 {
-  v7 = a5;
+  floatingCopy = floating;
   v68 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  screenCopy = screen;
   v66.receiver = self;
   v66.super_class = UIKBScreenTraits;
   v11 = [(UIKBScreenTraits *)&v66 init];
   if (v11)
   {
-    if (!v10 || [v10 _userInterfaceIdiom] == -1)
+    if (!screenCopy || [screenCopy _userInterfaceIdiom] == -1)
     {
-      v12 = [objc_opt_self() mainScreen];
+      mainScreen = [objc_opt_self() mainScreen];
 
-      v10 = v12;
+      screenCopy = mainScreen;
     }
 
-    v13 = [objc_opt_class() _activeKeyboardWindowForScreen:v10];
-    v14 = [objc_opt_class() _activeUCBWindowForScreen:v10];
-    objc_storeStrong(&v11->_screen, v10);
-    v15 = [v13 _keyboardOrientation];
-    if ((!a4 || v15 == a4) && v13)
+    v13 = [objc_opt_class() _activeKeyboardWindowForScreen:screenCopy];
+    v14 = [objc_opt_class() _activeUCBWindowForScreen:screenCopy];
+    objc_storeStrong(&v11->_screen, screenCopy);
+    _keyboardOrientation = [v13 _keyboardOrientation];
+    if ((!orientation || _keyboardOrientation == orientation) && v13)
     {
       [v13 bounds];
       v11->_bounds.origin.x = v16;
       v11->_bounds.origin.y = v17;
       v11->_bounds.size.width = v18;
       v11->_bounds.size.height = v19;
-      v20 = [v13 _keyboardOrientation];
+      orientationCopy = [v13 _keyboardOrientation];
     }
 
     else
     {
-      [(UIScreen *)v11->_screen _boundsForInterfaceOrientation:a4];
+      [(UIScreen *)v11->_screen _boundsForInterfaceOrientation:orientation];
       v11->_bounds.origin.x = v21;
       v11->_bounds.origin.y = v22;
       v11->_bounds.size.width = v23;
       v11->_bounds.size.height = v24;
-      v20 = a4;
+      orientationCopy = orientation;
     }
 
-    v11->_orientation = v20;
+    v11->_orientation = orientationCopy;
     [v14 bounds];
     v11->_assistantViewWindowBounds.origin.x = v25;
     v11->_assistantViewWindowBounds.origin.y = v26;
@@ -344,9 +344,9 @@
     }
 
     v11->_isStickerPickerService = v34;
-    [v10 scale];
+    [screenCopy scale];
     v36 = v35;
-    [v10 nativeScale];
+    [screenCopy nativeScale];
     v11->_screenToNativeScaleRatio = v36 / v37;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -364,7 +364,7 @@
       *(v38 + 9) = 1;
     }
 
-    if (v7 && +[UIKeyboardImpl isFloating])
+    if (floatingCopy && +[UIKeyboardImpl isFloating])
     {
       +[UIKeyboardImpl floatingScreenWidthToEmulate];
       *(v38 + 7) = v39;
@@ -417,9 +417,9 @@
 LABEL_48:
       }
 
-      v50 = [v40 rootViewController];
-      v51 = [v50 view];
-      [v51 bounds];
+      rootViewController = [v40 rootViewController];
+      view = [rootViewController view];
+      [view bounds];
       *(v38 + 7) = v52;
 
       if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1)
@@ -450,9 +450,9 @@ LABEL_48:
 
     else
     {
-      if (!v13 || a6)
+      if (!v13 || keyboard)
       {
-        [(UIScreen *)v11->_screen _boundsForInterfaceOrientation:a4];
+        [(UIScreen *)v11->_screen _boundsForInterfaceOrientation:orientation];
       }
 
       else
@@ -474,10 +474,10 @@ LABEL_48:
       }
 
       *(v38 + 27) = v48 == v38[7];
-      if ([v10 _userInterfaceIdiom] == 2 || objc_msgSend(v10, "_userInterfaceIdiom") == 8)
+      if ([screenCopy _userInterfaceIdiom] == 2 || objc_msgSend(screenCopy, "_userInterfaceIdiom") == 8)
       {
         v11->_isLinear = 1;
-        if ([v10 _userInterfaceIdiom] == 8)
+        if ([screenCopy _userInterfaceIdiom] == 8)
         {
           *(v38 + 8) = 1;
           *(v38 + 2) = 2;
@@ -516,21 +516,21 @@ void __82__UIKBScreenTraits_initWithScreen_orientation_allowFloating_ignoreRemot
   _MergedGlobals_1197 = v3 & 1;
 }
 
-- (void)updateForTextInputTraits:(id)a3 supportedInteractionModel:(unint64_t)a4
+- (void)updateForTextInputTraits:(id)traits supportedInteractionModel:(unint64_t)model
 {
   if ([(UIScreen *)self->_screen _userInterfaceIdiom]== 3)
   {
     if (UIKeyboardCarPlayRequiresTouch())
     {
-      v6 = 1;
+      modelCopy = 1;
     }
 
     else
     {
-      v6 = a4;
+      modelCopy = model;
     }
 
-    switch(v6)
+    switch(modelCopy)
     {
       case 1uLL:
         v7 = 26;

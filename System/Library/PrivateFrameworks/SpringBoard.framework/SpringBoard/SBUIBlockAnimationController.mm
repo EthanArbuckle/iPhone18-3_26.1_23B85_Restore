@@ -1,6 +1,6 @@
 @interface SBUIBlockAnimationController
-- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)a3;
-- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)a3 animationSettings:(id)a4 animationBlock:(id)a5;
+- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)request;
+- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)request animationSettings:(id)settings animationBlock:(id)block;
 - (void)_didComplete;
 - (void)_startAnimation;
 @end
@@ -12,14 +12,14 @@
   animationBlock = self->_animationBlock;
   if (animationBlock)
   {
-    v4 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
+    workspaceTransitionRequest = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
     animationSettings = self->_animationSettings;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __47__SBUIBlockAnimationController__startAnimation__block_invoke;
     v9[3] = &unk_2783A9398;
     v9[4] = self;
-    animationBlock[2](animationBlock, self, v4, animationSettings, v9);
+    animationBlock[2](animationBlock, self, workspaceTransitionRequest, animationSettings, v9);
 
     v6 = self->_animationBlock;
     self->_animationBlock = 0;
@@ -62,33 +62,33 @@ uint64_t __47__SBUIBlockAnimationController__startAnimation__block_invoke(uint64
   [(SBUIBlockAnimationController *)&v4 _didComplete];
 }
 
-- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)a3 animationSettings:(id)a4 animationBlock:(id)a5
+- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)request animationSettings:(id)settings animationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  requestCopy = request;
+  settingsCopy = settings;
+  blockCopy = block;
+  if (!blockCopy)
   {
     [SBUIBlockAnimationController initWithWorkspaceTransitionRequest:a2 animationSettings:self animationBlock:?];
   }
 
   v17.receiver = self;
   v17.super_class = SBUIBlockAnimationController;
-  v12 = [(SBUIWorkspaceAnimationController *)&v17 initWithWorkspaceTransitionRequest:v9];
+  v12 = [(SBUIWorkspaceAnimationController *)&v17 initWithWorkspaceTransitionRequest:requestCopy];
   if (v12)
   {
-    v13 = v10;
-    if (!v10)
+    v13 = settingsCopy;
+    if (!settingsCopy)
     {
       v13 = [MEMORY[0x277CF0B70] settingsWithDuration:0.0];
     }
 
     objc_storeStrong(&v12->_animationSettings, v13);
-    if (!v10)
+    if (!settingsCopy)
     {
     }
 
-    v14 = [v11 copy];
+    v14 = [blockCopy copy];
     animationBlock = v12->_animationBlock;
     v12->_animationBlock = v14;
   }
@@ -96,7 +96,7 @@ uint64_t __47__SBUIBlockAnimationController__startAnimation__block_invoke(uint64
   return v12;
 }
 
-- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)a3
+- (SBUIBlockAnimationController)initWithWorkspaceTransitionRequest:(id)request
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE648];

@@ -2,37 +2,37 @@
 + (id)keyPathsForValuesAffectingIsEmpty;
 - (BOOL)containsSharedFolder;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToICFoldersFilterTypeSelection:(id)a3;
-- (ICFoldersFilterTypeSelection)initWithManagedObjectContext:(id)a3 inclusionType:(unint64_t)a4 folderIdentifiers:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToICFoldersFilterTypeSelection:(id)selection;
+- (ICFoldersFilterTypeSelection)initWithManagedObjectContext:(id)context inclusionType:(unint64_t)type folderIdentifiers:(id)identifiers;
 - (NSString)folderSummaryList;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)emptySummary;
 - (id)emptySummaryTitle;
-- (id)folderTitlesForIdentifiers:(id)a3;
+- (id)folderTitlesForIdentifiers:(id)identifiers;
 - (id)rawFilterValue;
 - (id)shortEmptySummary;
 - (unint64_t)hash;
-- (void)addFolderIdentifier:(id)a3;
-- (void)removeFolderIdentifier:(id)a3;
+- (void)addFolderIdentifier:(id)identifier;
+- (void)removeFolderIdentifier:(id)identifier;
 @end
 
 @implementation ICFoldersFilterTypeSelection
 
-- (ICFoldersFilterTypeSelection)initWithManagedObjectContext:(id)a3 inclusionType:(unint64_t)a4 folderIdentifiers:(id)a5
+- (ICFoldersFilterTypeSelection)initWithManagedObjectContext:(id)context inclusionType:(unint64_t)type folderIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   v14.receiver = self;
   v14.super_class = ICFoldersFilterTypeSelection;
   v11 = [(ICFoldersFilterTypeSelection *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_managedObjectContext, a3);
-    v12->_inclusionType = a4;
-    objc_storeStrong(&v12->_folderIdentifiers, a5);
+    objc_storeStrong(&v11->_managedObjectContext, context);
+    v12->_inclusionType = type;
+    objc_storeStrong(&v12->_folderIdentifiers, identifiers);
   }
 
   return v12;
@@ -41,37 +41,37 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ICFoldersFilterTypeSelection *)self inclusionType];
+  inclusionType = [(ICFoldersFilterTypeSelection *)self inclusionType];
   v5 = @"Exclude";
-  if (!v4)
+  if (!inclusionType)
   {
     v5 = @"Include";
   }
 
   v6 = v5;
-  v7 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  v8 = [folderIdentifiers componentsJoinedByString:{@", "}];
   v9 = [v3 stringWithFormat:@"inclusionType: %@\nfolder identifiers: %@", v6, v8];
 
   return v9;
 }
 
-- (void)addFolderIdentifier:(id)a3
+- (void)addFolderIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v5 = [v6 arrayByAddingObject:v4];
+  identifierCopy = identifier;
+  folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  v5 = [folderIdentifiers arrayByAddingObject:identifierCopy];
 
   [(ICFoldersFilterTypeSelection *)self setFolderIdentifiers:v5];
 }
 
-- (void)removeFolderIdentifier:(id)a3
+- (void)removeFolderIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v7 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  v7 = [folderIdentifiers mutableCopy];
 
-  [v7 removeObject:v4];
+  [v7 removeObject:identifierCopy];
   v6 = [v7 copy];
   [(ICFoldersFilterTypeSelection *)self setFolderIdentifiers:v6];
 }
@@ -79,8 +79,8 @@
 - (NSString)folderSummaryList
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v4 = [v3 count];
+  folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  v4 = [folderIdentifiers count];
 
   if (!v4)
   {
@@ -88,46 +88,46 @@
     goto LABEL_10;
   }
 
-  v5 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v6 = [v5 count];
+  folderIdentifiers2 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  v6 = [folderIdentifiers2 count];
 
-  v7 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v8 = v7;
+  folderIdentifiers3 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  firstObject3 = folderIdentifiers3;
   if (v6 == 1)
   {
-    v9 = [(ICFoldersFilterTypeSelection *)self folderTitlesForIdentifiers:v7];
-    v10 = [v9 firstObject];
+    v9 = [(ICFoldersFilterTypeSelection *)self folderTitlesForIdentifiers:folderIdentifiers3];
+    firstObject = [v9 firstObject];
   }
 
   else
   {
-    v12 = [v7 count];
+    v12 = [folderIdentifiers3 count];
 
-    v13 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-    v14 = v13;
+    folderIdentifiers4 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+    v14 = folderIdentifiers4;
     if (v12 != 2)
     {
-      v15 = [v13 firstObject];
-      v22[0] = v15;
+      firstObject2 = [folderIdentifiers4 firstObject];
+      v22[0] = firstObject2;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
       v17 = [(ICFoldersFilterTypeSelection *)self folderTitlesForIdentifiers:v16];
-      v8 = [v17 firstObject];
+      firstObject3 = [v17 firstObject];
 
       v18 = MEMORY[0x277CCACA8];
       v19 = __ICLocalizedFrameworkString_impl(@"FOLDERS_%@_AND_%lu_OTHERS", @"FOLDERS_%@_AND_%lu_OTHERS", 0, 1);
-      v20 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-      v11 = [v18 localizedStringWithFormat:v19, v8, objc_msgSend(v20, "count") - 1];
+      folderIdentifiers5 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+      v11 = [v18 localizedStringWithFormat:v19, firstObject3, objc_msgSend(folderIdentifiers5, "count") - 1];
 
       goto LABEL_9;
     }
 
-    v8 = [(ICFoldersFilterTypeSelection *)self folderTitlesForIdentifiers:v13];
+    firstObject3 = [(ICFoldersFilterTypeSelection *)self folderTitlesForIdentifiers:folderIdentifiers4];
 
     v9 = objc_alloc_init(MEMORY[0x277CCAAF0]);
-    v10 = [v9 stringFromItems:v8];
+    firstObject = [v9 stringFromItems:firstObject3];
   }
 
-  v11 = v10;
+  v11 = firstObject;
 
 LABEL_9:
 LABEL_10:
@@ -137,23 +137,23 @@ LABEL_10:
 
 - (BOOL)containsSharedFolder
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICFoldersFilterTypeSelection *)self managedObjectContext];
+  managedObjectContext = [(ICFoldersFilterTypeSelection *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__ICFoldersFilterTypeSelection_containsSharedFolder__block_invoke;
   v5[3] = &unk_278194D68;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __52__ICFoldersFilterTypeSelection_containsSharedFolder__block_invoke(uint64_t a1)
@@ -182,30 +182,30 @@ void __52__ICFoldersFilterTypeSelection_containsSharedFolder__block_invoke(uint6
   *(*(*(a1 + 40) + 8) + 24) = [v7 ic_containsObjectPassingTest:&__block_literal_global_39];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [ICFoldersFilterTypeSelection allocWithZone:?];
-  v6 = [(ICFoldersFilterTypeSelection *)self managedObjectContext];
-  v7 = [(ICFoldersFilterTypeSelection *)self inclusionType];
-  v8 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v9 = [v8 copyWithZone:a3];
-  v10 = [(ICFoldersFilterTypeSelection *)v5 initWithManagedObjectContext:v6 inclusionType:v7 folderIdentifiers:v9];
+  managedObjectContext = [(ICFoldersFilterTypeSelection *)self managedObjectContext];
+  inclusionType = [(ICFoldersFilterTypeSelection *)self inclusionType];
+  folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  v9 = [folderIdentifiers copyWithZone:zone];
+  v10 = [(ICFoldersFilterTypeSelection *)v5 initWithManagedObjectContext:managedObjectContext inclusionType:inclusionType folderIdentifiers:v9];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICFoldersFilterTypeSelection *)self isEqualToICFoldersFilterTypeSelection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICFoldersFilterTypeSelection *)self isEqualToICFoldersFilterTypeSelection:v5];
   }
 
   return v6;
@@ -216,7 +216,7 @@ void __52__ICFoldersFilterTypeSelection_containsSharedFolder__block_invoke(uint6
   v28 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ICFoldersFilterTypeSelection inclusionType](self, "inclusionType")}];
   v4 = [v3 hash];
-  v5 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v7 hash];
@@ -225,7 +225,7 @@ void __52__ICFoldersFilterTypeSelection_containsSharedFolder__block_invoke(uint6
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v5;
+  v9 = folderIdentifiers;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -270,15 +270,15 @@ void __52__ICFoldersFilterTypeSelection_containsSharedFolder__block_invoke(uint6
 
 - (BOOL)isEmpty
 {
-  v2 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-  v3 = [v2 count] == 0;
+  folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+  v3 = [folderIdentifiers count] == 0;
 
   return v3;
 }
 
 + (id)keyPathsForValuesAffectingIsEmpty
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___ICFoldersFilterTypeSelection;
   v2 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingIsValid);
   v3 = [v2 mutableCopy];
@@ -334,26 +334,26 @@ void __52__ICFoldersFilterTypeSelection_containsSharedFolder__block_invoke(uint6
   return v2;
 }
 
-- (id)folderTitlesForIdentifiers:(id)a3
+- (id)folderTitlesForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__36;
   v18 = __Block_byref_object_dispose__36;
   v19 = 0;
-  v5 = [(ICFoldersFilterTypeSelection *)self managedObjectContext];
+  managedObjectContext = [(ICFoldersFilterTypeSelection *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__ICFoldersFilterTypeSelection_folderTitlesForIdentifiers___block_invoke;
   v9[3] = &unk_2781960A8;
-  v6 = v4;
+  v6 = identifiersCopy;
   v10 = v6;
   v11 = @"title";
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
-  [v5 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -393,15 +393,15 @@ void __59__ICFoldersFilterTypeSelection_folderTitlesForIdentifiers___block_invok
   *(v10 + 40) = v9;
 }
 
-- (BOOL)isEqualToICFoldersFilterTypeSelection:(id)a3
+- (BOOL)isEqualToICFoldersFilterTypeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(ICFoldersFilterTypeSelection *)self inclusionType];
-  if (v5 == [v4 inclusionType])
+  selectionCopy = selection;
+  inclusionType = [(ICFoldersFilterTypeSelection *)self inclusionType];
+  if (inclusionType == [selectionCopy inclusionType])
   {
-    v6 = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
-    v7 = [v4 folderIdentifiers];
-    v8 = [v6 isEqualToArray:v7];
+    folderIdentifiers = [(ICFoldersFilterTypeSelection *)self folderIdentifiers];
+    folderIdentifiers2 = [selectionCopy folderIdentifiers];
+    v8 = [folderIdentifiers isEqualToArray:folderIdentifiers2];
   }
 
   else

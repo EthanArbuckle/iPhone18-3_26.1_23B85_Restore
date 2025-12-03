@@ -1,29 +1,29 @@
 @interface JSAdsObject
 - (_TtC12GameStoreKit11JSAdsObject)init;
 - (id)fetchAppBinaryTraitsOverride;
-- (id)fetchInstallStatesForAdverts:(id)a3;
-- (id)fetchOnDeviceAdPlacement:(id)a3 :(double)a4 :(id)a5 :(id)a6;
-- (id)getIdentifierForMissedOpportunity:(id)a3;
+- (id)fetchInstallStatesForAdverts:(id)adverts;
+- (id)fetchOnDeviceAdPlacement:(id)placement :(double)a4 :(id)a5 :(id)a6;
+- (id)getIdentifierForMissedOpportunity:(id)opportunity;
 - (id)isNativeAdLoggingEnabled;
-- (id)processAdvertsForSponsoredSearch:(id)a3 :(id)a4 :(id)a5 :(double)a6 :(BOOL)a7;
-- (void)debugLog:(id)a3;
-- (void)setTimeoutForCurrentOnDeviceAdFetch:(id)a3 :(double)a4;
+- (id)processAdvertsForSponsoredSearch:(id)search :(id)a4 :(id)a5 :(double)a6 :(BOOL)a7;
+- (void)debugLog:(id)log;
+- (void)setTimeoutForCurrentOnDeviceAdFetch:(id)fetch :(double)a4;
 @end
 
 @implementation JSAdsObject
 
-- (id)fetchInstallStatesForAdverts:(id)a3
+- (id)fetchInstallStatesForAdverts:(id)adverts
 {
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v5 = a3;
-  v6 = self;
+  advertsCopy = adverts;
+  selfCopy = self;
   v7 = sub_24F92C448();
   v8 = sub_24F92C458();
 
   return v8;
 }
 
-- (id)processAdvertsForSponsoredSearch:(id)a3 :(id)a4 :(id)a5 :(double)a6 :(BOOL)a7
+- (id)processAdvertsForSponsoredSearch:(id)search :(id)a4 :(id)a5 :(double)a6 :(BOOL)a7
 {
   HIDWORD(v24) = a7;
   v25 = sub_24F922028();
@@ -33,9 +33,9 @@
   v14 = sub_24F92B0D8();
   v16 = v15;
   sub_24F929778();
-  v17 = a3;
+  searchCopy = search;
   v18 = a4;
-  v19 = self;
+  selfCopy = self;
   sub_24F929768();
   sub_24F921FF8();
   sub_24F92C058();
@@ -44,8 +44,8 @@
 
   sub_24E69A5C4(0, &qword_27F21C8C8);
   v21 = sub_24F92C448();
-  v26 = v19;
-  v27 = v17;
+  v26 = selfCopy;
+  v27 = searchCopy;
   v28 = v18;
   v29 = v14;
   v30 = v16;
@@ -62,7 +62,7 @@
   return v22;
 }
 
-- (id)fetchOnDeviceAdPlacement:(id)a3 :(double)a4 :(id)a5 :(id)a6
+- (id)fetchOnDeviceAdPlacement:(id)placement :(double)a4 :(id)a5 :(id)a6
 {
   v10 = sub_24F92B0D8();
   v12 = v11;
@@ -82,35 +82,35 @@
     v13 = 0;
   }
 
-  v15 = self;
+  selfCopy = self;
   v16 = sub_24EDBEA04(v10, v12, a5, v13, a6, a4);
 
   return v16;
 }
 
-- (void)setTimeoutForCurrentOnDeviceAdFetch:(id)a3 :(double)a4
+- (void)setTimeoutForCurrentOnDeviceAdFetch:(id)fetch :(double)a4
 {
   v6 = sub_24F92B0D8();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_24EDBFCC4(v6, v8, a4);
 }
 
 - (id)isNativeAdLoggingEnabled
 {
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_24F92C448();
   v5 = sub_24F92C458();
 
   return v5;
 }
 
-- (void)debugLog:(id)a3
+- (void)debugLog:(id)log
 {
   v4 = sub_24F92B0D8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_24EDC0EF0(v4, v6);
 }
 
@@ -123,11 +123,11 @@
   return v3;
 }
 
-- (id)getIdentifierForMissedOpportunity:(id)a3
+- (id)getIdentifierForMissedOpportunity:(id)opportunity
 {
   sub_24F92B0D8();
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v4 = self;
+  selfCopy = self;
   v5 = sub_24F92C448();
   v6 = sub_24F92C458();
 

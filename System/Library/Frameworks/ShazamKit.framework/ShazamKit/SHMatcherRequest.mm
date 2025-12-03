@@ -1,108 +1,108 @@
 @interface SHMatcherRequest
-+ (id)requestOnceWithAppIntentForRequestID:(id)a3;
++ (id)requestOnceWithAppIntentForRequestID:(id)d;
 + (id)requestSignatureGenerationOnce;
-+ (id)requestSignatureGenerationOnceForRequestID:(id)a3;
-+ (id)requestSignatureGenerationUntilDeadline:(id)a3;
-+ (id)requestSignatureGenerationUntilDeadline:(id)a3 forRequestID:(id)a4;
++ (id)requestSignatureGenerationOnceForRequestID:(id)d;
++ (id)requestSignatureGenerationUntilDeadline:(id)deadline;
++ (id)requestSignatureGenerationUntilDeadline:(id)deadline forRequestID:(id)d;
 - (BOOL)hasHitDeadline;
 - (NSString)installationID;
-- (SHMatcherRequest)initWithCoder:(id)a3;
-- (SHMatcherRequest)initWithSignature:(id)a3 deadline:(id)a4 sendNotifications:(BOOL)a5 stopCondition:(int64_t)a6 requestType:(int64_t)a7 requestID:(id)a8;
+- (SHMatcherRequest)initWithCoder:(id)coder;
+- (SHMatcherRequest)initWithSignature:(id)signature deadline:(id)deadline sendNotifications:(BOOL)notifications stopCondition:(int64_t)condition requestType:(int64_t)type requestID:(id)d;
 - (double)watchdogTimeout;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHMatcherRequest
 
 + (id)requestSignatureGenerationOnce
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [a1 requestSignatureGenerationOnceForRequestID:v3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v4 = [self requestSignatureGenerationOnceForRequestID:uUID];
 
   return v4;
 }
 
-+ (id)requestSignatureGenerationOnceForRequestID:(id)a3
++ (id)requestSignatureGenerationOnceForRequestID:(id)d
 {
-  v3 = a3;
-  v4 = [[SHMatcherRequest alloc] initWithSignature:0 deadline:0 sendNotifications:0 stopCondition:0 requestType:1 requestID:v3];
+  dCopy = d;
+  v4 = [[SHMatcherRequest alloc] initWithSignature:0 deadline:0 sendNotifications:0 stopCondition:0 requestType:1 requestID:dCopy];
 
   return v4;
 }
 
-+ (id)requestSignatureGenerationUntilDeadline:(id)a3
++ (id)requestSignatureGenerationUntilDeadline:(id)deadline
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [a1 requestSignatureGenerationUntilDeadline:v5 forRequestID:v6];
+  deadlineCopy = deadline;
+  uUID = [v4 UUID];
+  v7 = [self requestSignatureGenerationUntilDeadline:deadlineCopy forRequestID:uUID];
 
   return v7;
 }
 
-+ (id)requestSignatureGenerationUntilDeadline:(id)a3 forRequestID:(id)a4
++ (id)requestSignatureGenerationUntilDeadline:(id)deadline forRequestID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SHMatcherRequest alloc] initWithSignature:0 deadline:v6 sendNotifications:0 stopCondition:3 requestType:1 requestID:v5];
+  dCopy = d;
+  deadlineCopy = deadline;
+  v7 = [[SHMatcherRequest alloc] initWithSignature:0 deadline:deadlineCopy sendNotifications:0 stopCondition:3 requestType:1 requestID:dCopy];
 
   return v7;
 }
 
-+ (id)requestOnceWithAppIntentForRequestID:(id)a3
++ (id)requestOnceWithAppIntentForRequestID:(id)d
 {
-  v3 = a3;
-  v4 = [[SHMatcherRequest alloc] initWithSignature:0 deadline:0 sendNotifications:0 stopCondition:2 requestType:3 requestID:v3];
+  dCopy = d;
+  v4 = [[SHMatcherRequest alloc] initWithSignature:0 deadline:0 sendNotifications:0 stopCondition:2 requestType:3 requestID:dCopy];
 
   return v4;
 }
 
-- (SHMatcherRequest)initWithSignature:(id)a3 deadline:(id)a4 sendNotifications:(BOOL)a5 stopCondition:(int64_t)a6 requestType:(int64_t)a7 requestID:(id)a8
+- (SHMatcherRequest)initWithSignature:(id)signature deadline:(id)deadline sendNotifications:(BOOL)notifications stopCondition:(int64_t)condition requestType:(int64_t)type requestID:(id)d
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  signatureCopy = signature;
+  deadlineCopy = deadline;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = SHMatcherRequest;
   v18 = [(SHMatcherRequest *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_signature, a3);
-    objc_storeStrong(&v19->_deadline, a4);
-    v19->_sendNotifications = a5;
-    v19->_stopCondition = a6;
-    v19->_type = a7;
-    objc_storeStrong(&v19->_requestID, a8);
+    objc_storeStrong(&v18->_signature, signature);
+    objc_storeStrong(&v19->_deadline, deadline);
+    v19->_sendNotifications = notifications;
+    v19->_stopCondition = condition;
+    v19->_type = type;
+    objc_storeStrong(&v19->_requestID, d);
   }
 
   return v19;
 }
 
-- (SHMatcherRequest)initWithCoder:(id)a3
+- (SHMatcherRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SHMatcherRequest;
   v5 = [(SHMatcherRequest *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deadline"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deadline"];
     deadline = v5->_deadline;
     v5->_deadline = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installationID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installationID"];
     installationID = v5->_installationID;
     v5->_installationID = v10;
 
-    v5->_sendNotifications = [v4 decodeBoolForKey:@"sendNotifications"];
-    v5->_stopCondition = [v4 decodeIntegerForKey:@"stopCondition"];
-    v5->_type = [v4 decodeIntegerForKey:@"requestType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
+    v5->_sendNotifications = [coderCopy decodeBoolForKey:@"sendNotifications"];
+    v5->_stopCondition = [coderCopy decodeIntegerForKey:@"stopCondition"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"requestType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
     requestID = v5->_requestID;
     v5->_requestID = v12;
   }
@@ -110,17 +110,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestID = self->_requestID;
-  v5 = a3;
-  [v5 encodeObject:requestID forKey:@"requestID"];
-  [v5 encodeObject:self->_signature forKey:@"signature"];
-  [v5 encodeObject:self->_deadline forKey:@"deadline"];
-  [v5 encodeObject:self->_installationID forKey:@"installationID"];
-  [v5 encodeBool:self->_sendNotifications forKey:@"sendNotifications"];
-  [v5 encodeInteger:self->_stopCondition forKey:@"stopCondition"];
-  [v5 encodeInteger:self->_type forKey:@"requestType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestID forKey:@"requestID"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeObject:self->_deadline forKey:@"deadline"];
+  [coderCopy encodeObject:self->_installationID forKey:@"installationID"];
+  [coderCopy encodeBool:self->_sendNotifications forKey:@"sendNotifications"];
+  [coderCopy encodeInteger:self->_stopCondition forKey:@"stopCondition"];
+  [coderCopy encodeInteger:self->_type forKey:@"requestType"];
 }
 
 - (NSString)installationID
@@ -141,28 +141,28 @@
 
 - (BOOL)hasHitDeadline
 {
-  v3 = [(SHMatcherRequest *)self deadline];
+  deadline = [(SHMatcherRequest *)self deadline];
 
-  if (!v3)
+  if (!deadline)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(SHMatcherRequest *)self deadline];
-  v6 = [v4 laterDate:v5];
-  v7 = v6 == v4;
+  date = [MEMORY[0x277CBEAA8] date];
+  deadline2 = [(SHMatcherRequest *)self deadline];
+  v6 = [date laterDate:deadline2];
+  v7 = v6 == date;
 
   return v7;
 }
 
 - (double)watchdogTimeout
 {
-  v3 = [(SHMatcherRequest *)self deadline];
-  if (v3)
+  deadline = [(SHMatcherRequest *)self deadline];
+  if (deadline)
   {
-    v4 = [(SHMatcherRequest *)self deadline];
-    [v4 timeIntervalSinceNow];
+    deadline2 = [(SHMatcherRequest *)self deadline];
+    [deadline2 timeIntervalSinceNow];
     v6 = v5;
   }
 

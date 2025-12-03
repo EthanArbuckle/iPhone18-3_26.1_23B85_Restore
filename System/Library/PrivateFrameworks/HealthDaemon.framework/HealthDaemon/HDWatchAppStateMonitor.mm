@@ -1,9 +1,9 @@
 @interface HDWatchAppStateMonitor
-+ (void)launchWorkoutAppIfNeededWithFitnessMachineSessionUUID:(id)a3;
-- (HDWatchAppStateMonitor)initWithBundleIdentifier:(id)a3;
++ (void)launchWorkoutAppIfNeededWithFitnessMachineSessionUUID:(id)d;
+- (HDWatchAppStateMonitor)initWithBundleIdentifier:(id)identifier;
 - (HDWatchAppStateMonitorDelegate)delegate;
 - (void)dealloc;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
 @end
 
 @implementation HDWatchAppStateMonitor
@@ -24,7 +24,7 @@
   {
     bundleIdentifier = self->_bundleIdentifier;
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = bundleIdentifier;
     _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing layout observer for %{public}@", buf, 0x16u);
@@ -39,17 +39,17 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (HDWatchAppStateMonitor)initWithBundleIdentifier:(id)a3
+- (HDWatchAppStateMonitor)initWithBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HDWatchAppStateMonitor;
   v6 = [(HDWatchAppStateMonitor *)&v12 init];
   if (v6)
   {
     v7 = [MEMORY[0x277D0AD08] sharedMonitorForDisplayType:0];
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
     [v7 addObserver:v6];
     _HKInitializeLogging();
     v8 = *MEMORY[0x277CCC330];
@@ -68,16 +68,16 @@
   return v6;
 }
 
-+ (void)launchWorkoutAppIfNeededWithFitnessMachineSessionUUID:(id)a3
++ (void)launchWorkoutAppIfNeededWithFitnessMachineSessionUUID:(id)d
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  dCopy = d;
   v10 = objc_alloc_init(v3);
   v5 = MEMORY[0x277CBEBC0];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v6 stringWithFormat:@"%@://%@/%@", @"SessionTrackerApp", @"startFitnessMachineSession", v7];
+  v8 = [v6 stringWithFormat:@"%@://%@/%@", @"SessionTrackerApp", @"startFitnessMachineSession", uUIDString];
   v9 = [v5 URLWithString:v8];
   [v10 setObject:v9 forKeyedSubscript:*MEMORY[0x277D0AC40]];
 
@@ -110,17 +110,17 @@ void __80__HDWatchAppStateMonitor_launchWorkoutAppIfNeededWithFitnessMachineSess
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 elements];
-  if ([v7 count] == 1)
+  layoutCopy = layout;
+  elements = [layoutCopy elements];
+  if ([elements count] == 1)
   {
-    v8 = [v6 elements];
-    v9 = [v8 firstObject];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v10 isEqualToString:self->_bundleIdentifier];
+    elements2 = [layoutCopy elements];
+    firstObject = [elements2 firstObject];
+    bundleIdentifier = [firstObject bundleIdentifier];
+    v11 = [bundleIdentifier isEqualToString:self->_bundleIdentifier];
   }
 
   else
@@ -128,7 +128,7 @@ void __80__HDWatchAppStateMonitor_launchWorkoutAppIfNeededWithFitnessMachineSess
     v11 = 0;
   }
 
-  v12 = [v6 displayBacklightLevel];
+  displayBacklightLevel = [layoutCopy displayBacklightLevel];
   _HKInitializeLogging();
   v13 = MEMORY[0x277CCC330];
   v14 = *MEMORY[0x277CCC330];
@@ -139,7 +139,7 @@ void __80__HDWatchAppStateMonitor_launchWorkoutAppIfNeededWithFitnessMachineSess
     v17 = HKStringFromBool();
     v18 = HKStringFromBool();
     v25 = 138544130;
-    v26 = self;
+    selfCopy3 = self;
     v27 = 2114;
     v28 = bundleIdentifier;
     v29 = 2114;
@@ -151,7 +151,7 @@ void __80__HDWatchAppStateMonitor_launchWorkoutAppIfNeededWithFitnessMachineSess
 
   if (v11)
   {
-    if (v12 >= 1)
+    if (displayBacklightLevel >= 1)
     {
       if (!self->_appIsActive)
       {
@@ -161,7 +161,7 @@ void __80__HDWatchAppStateMonitor_launchWorkoutAppIfNeededWithFitnessMachineSess
         {
           v20 = self->_bundleIdentifier;
           v25 = 138543618;
-          v26 = self;
+          selfCopy3 = self;
           v27 = 2114;
           v28 = v20;
           _os_log_impl(&dword_228986000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Detected app (%{public}@) onscreen", &v25, 0x16u);
@@ -170,8 +170,8 @@ void __80__HDWatchAppStateMonitor_launchWorkoutAppIfNeededWithFitnessMachineSess
         self->_appIsActive = 1;
       }
 
-      v21 = [(HDWatchAppStateMonitor *)self delegate];
-      [v21 monitorDidDetectAppActivate:self];
+      delegate = [(HDWatchAppStateMonitor *)self delegate];
+      [delegate monitorDidDetectAppActivate:self];
 LABEL_17:
     }
   }
@@ -184,15 +184,15 @@ LABEL_17:
     {
       v23 = self->_bundleIdentifier;
       v25 = 138543618;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
       v28 = v23;
       _os_log_impl(&dword_228986000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Detected app (%{public}@) deactivated", &v25, 0x16u);
     }
 
     self->_appIsActive = 0;
-    v21 = [(HDWatchAppStateMonitor *)self delegate];
-    [v21 monitorDidDetectAppDeactivate:self];
+    delegate = [(HDWatchAppStateMonitor *)self delegate];
+    [delegate monitorDidDetectAppDeactivate:self];
     goto LABEL_17;
   }
 

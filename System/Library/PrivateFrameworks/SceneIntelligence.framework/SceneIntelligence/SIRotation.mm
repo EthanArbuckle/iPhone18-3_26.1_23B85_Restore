@@ -1,25 +1,25 @@
 @interface SIRotation
-- (BOOL)rotateAndCropImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (BOOL)rotateImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (CGRect)getCenterCropSrcSize:(CGSize)a3 dstSize:(CGSize)a4;
-- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)a3;
-- (__CVBuffer)_createCVPixelBufferWithResolution:(CGSize)a3 pixelFormat:(unsigned int)a4;
-- (__CVBuffer)rotateAndCropImage:(__CVBuffer *)a3;
-- (__CVBuffer)rotateImage:(__CVBuffer *)a3;
+- (BOOL)rotateAndCropImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer;
+- (BOOL)rotateImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer;
+- (CGRect)getCenterCropSrcSize:(CGSize)size dstSize:(CGSize)dstSize;
+- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)degree;
+- (__CVBuffer)_createCVPixelBufferWithResolution:(CGSize)resolution pixelFormat:(unsigned int)format;
+- (__CVBuffer)rotateAndCropImage:(__CVBuffer *)image;
+- (__CVBuffer)rotateImage:(__CVBuffer *)image;
 - (id)getInputRotateOrientation;
 - (void)dealloc;
 @end
 
 @implementation SIRotation
 
-- (CGRect)getCenterCropSrcSize:(CGSize)a3 dstSize:(CGSize)a4
+- (CGRect)getCenterCropSrcSize:(CGSize)size dstSize:(CGSize)dstSize
 {
-  v4 = (a3.width - a4.width) * 0.5;
-  v5 = (a3.height - a4.height) * 0.5;
+  v4 = (size.width - dstSize.width) * 0.5;
+  v5 = (size.height - dstSize.height) * 0.5;
   v6 = floor(v4 + 0.0);
   v7 = floor(v5 + 0.0);
-  v8 = floor(a3.width - v4 * 2.0);
-  v9 = floor(a3.height - v5 * 2.0);
+  v8 = floor(size.width - v4 * 2.0);
+  v9 = floor(size.height - v5 * 2.0);
   v10 = v6;
   v11 = v7;
   result.size.height = v9;
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)a3
+- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)degree
 {
   v11 = *MEMORY[0x277D85DE8];
   pixelRotationSessionOut = 0;
@@ -57,29 +57,29 @@
   return result;
 }
 
-- (BOOL)rotateImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (BOOL)rotateImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!image)
   {
-    v7 = __SceneIntelligenceLogSharedInstance();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    dictionary = __SceneIntelligenceLogSharedInstance();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
     {
       v14 = 136380931;
       v15 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIRotation.m";
       v16 = 1025;
       v17 = 81;
-      _os_log_impl(&dword_21DE0D000, v7, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Recieved null image ***", &v14, 0x12u);
+      _os_log_impl(&dword_21DE0D000, dictionary, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Recieved null image ***", &v14, 0x12u);
     }
 
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [(SIRotation *)self getInputRotateOrientation];
-  [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277CE2850]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  getInputRotateOrientation = [(SIRotation *)self getInputRotateOrientation];
+  [dictionary setObject:getInputRotateOrientation forKeyedSubscript:*MEMORY[0x277CE2850]];
 
-  v9 = VTPixelRotationSessionRotateImage(self->_sessionRotate, a3, a4);
+  v9 = VTPixelRotationSessionRotateImage(self->_sessionRotate, image, buffer);
   v10 = v9 == 0;
   if (v9)
   {
@@ -101,35 +101,35 @@ LABEL_8:
   return v10;
 }
 
-- (__CVBuffer)rotateImage:(__CVBuffer *)a3
+- (__CVBuffer)rotateImage:(__CVBuffer *)image
 {
-  v3 = a3;
+  imageCopy = image;
   v15 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (image)
   {
     pixelBufferOut = 0;
     if (CVPixelBufferPoolCreatePixelBuffer(0, self->_pixelBufferCreatePool, &pixelBufferOut))
     {
-      v5 = __SceneIntelligenceLogSharedInstance();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      dictionary = __SceneIntelligenceLogSharedInstance();
+      if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
       {
         *buf = 136380931;
         v12 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIRotation.m";
         v13 = 1025;
         v14 = 98;
-        _os_log_impl(&dword_21DE0D000, v5, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failure to create pixel buffer for rotation ***", buf, 0x12u);
+        _os_log_impl(&dword_21DE0D000, dictionary, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failure to create pixel buffer for rotation ***", buf, 0x12u);
       }
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
-      v6 = [(SIRotation *)self getInputRotateOrientation];
-      [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CE2850]];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      getInputRotateOrientation = [(SIRotation *)self getInputRotateOrientation];
+      [dictionary setObject:getInputRotateOrientation forKeyedSubscript:*MEMORY[0x277CE2850]];
 
-      if (!VTPixelRotationSessionRotateImage(self->_sessionRotate, v3, pixelBufferOut))
+      if (!VTPixelRotationSessionRotateImage(self->_sessionRotate, imageCopy, pixelBufferOut))
       {
-        v3 = pixelBufferOut;
+        imageCopy = pixelBufferOut;
         goto LABEL_10;
       }
 
@@ -144,24 +144,24 @@ LABEL_8:
       }
     }
 
-    v3 = 0;
+    imageCopy = 0;
 LABEL_10:
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v3;
+  return imageCopy;
 }
 
-- (__CVBuffer)rotateAndCropImage:(__CVBuffer *)a3
+- (__CVBuffer)rotateAndCropImage:(__CVBuffer *)image
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!image)
   {
     goto LABEL_10;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  [(SIRotation *)self getCenterCropSrcSize:Width dstSize:CVPixelBufferGetHeight(a3), self->_outputResolution.width, self->_outputResolution.height];
+  Width = CVPixelBufferGetWidth(image);
+  [(SIRotation *)self getCenterCropSrcSize:Width dstSize:CVPixelBufferGetHeight(image), self->_outputResolution.width, self->_outputResolution.height];
   v6 = self->_outputResolution.width;
   height = self->_outputResolution.height;
   pixelBufferOut = 0;
@@ -211,16 +211,16 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)rotateAndCropImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (BOOL)rotateAndCropImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!image)
   {
     goto LABEL_8;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  [(SIRotation *)self getCenterCropSrcSize:Width dstSize:CVPixelBufferGetHeight(a3), self->_outputResolution.width, self->_outputResolution.height];
+  Width = CVPixelBufferGetWidth(image);
+  [(SIRotation *)self getCenterCropSrcSize:Width dstSize:CVPixelBufferGetHeight(image), self->_outputResolution.width, self->_outputResolution.height];
   if (v8 == self->_outputResolution.width && v7 == self->_outputResolution.height)
   {
     v13 = *MEMORY[0x277CBF3A0];
@@ -267,16 +267,16 @@ LABEL_9:
   return result;
 }
 
-- (__CVBuffer)_createCVPixelBufferWithResolution:(CGSize)a3 pixelFormat:(unsigned int)a4
+- (__CVBuffer)_createCVPixelBufferWithResolution:(CGSize)resolution pixelFormat:(unsigned int)format
 {
-  height = a3.height;
-  width = a3.width;
+  height = resolution.height;
+  width = resolution.width;
   v18[1] = *MEMORY[0x277D85DE8];
   v17 = *MEMORY[0x277CC4DE8];
   v18[0] = MEMORY[0x277CBEC10];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   pixelBufferOut = 0;
-  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, a4, v7, &pixelBufferOut))
+  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, format, v7, &pixelBufferOut))
   {
     v8 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))

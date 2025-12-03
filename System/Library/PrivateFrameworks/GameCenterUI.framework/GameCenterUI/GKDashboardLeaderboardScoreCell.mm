@@ -4,9 +4,9 @@
 + (id)lowRankNib;
 - (BOOL)linesVisible;
 - (void)awakeFromNib;
-- (void)setLinesVisible:(BOOL)a3;
-- (void)setScore:(id)a3;
-- (void)setupForScore:(id)a3;
+- (void)setLinesVisible:(BOOL)visible;
+- (void)setScore:(id)score;
+- (void)setupForScore:(id)score;
 @end
 
 @implementation GKDashboardLeaderboardScoreCell
@@ -43,43 +43,43 @@
   [(GKDashboardPlayerPhotoView *)self->_playerView setAvatarSize:0x10000];
 }
 
-- (void)setScore:(id)a3
+- (void)setScore:(id)score
 {
-  v5 = a3;
-  if (self->_score != v5)
+  scoreCopy = score;
+  if (self->_score != scoreCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_score, a3);
+    v6 = scoreCopy;
+    objc_storeStrong(&self->_score, score);
     [(GKDashboardLeaderboardScoreCell *)self setupForScore:v6];
-    v5 = v6;
+    scoreCopy = v6;
   }
 }
 
-- (void)setupForScore:(id)a3
+- (void)setupForScore:(id)score
 {
-  v4 = a3;
-  v8 = [v4 player];
+  scoreCopy = score;
+  player = [scoreCopy player];
   [(UIView *)self->_monogramColorView setHidden:0];
-  [(GKDashboardPlayerPhotoView *)self->_playerView setPlayer:v8];
-  v5 = [v8 displayNameWithOptions:0];
+  [(GKDashboardPlayerPhotoView *)self->_playerView setPlayer:player];
+  v5 = [player displayNameWithOptions:0];
   [(UILabel *)self->_nameLabel setText:v5];
 
-  [v4 rank];
+  [scoreCopy rank];
   v6 = GKFormattedStringWithGroupingFromInteger();
   [(UILabel *)self->_rankLabel setText:v6];
 
-  v7 = [v4 formattedValue];
+  formattedValue = [scoreCopy formattedValue];
 
-  [(UILabel *)self->_scoreLabel setText:v7];
+  [(UILabel *)self->_scoreLabel setText:formattedValue];
 }
 
-- (void)setLinesVisible:(BOOL)a3
+- (void)setLinesVisible:(BOOL)visible
 {
-  v3 = a3;
-  [(UIView *)self->_topLine setHidden:!a3];
+  visibleCopy = visible;
+  [(UIView *)self->_topLine setHidden:!visible];
   bottomLine = self->_bottomLine;
 
-  [(UIView *)bottomLine setHidden:!v3];
+  [(UIView *)bottomLine setHidden:!visibleCopy];
 }
 
 - (BOOL)linesVisible

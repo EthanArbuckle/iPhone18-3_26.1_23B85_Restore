@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = DMFInstalledApplication;
-  v2 = [(DMFApplication *)&v4 classForCoder];
+  classForCoder = [(DMFApplication *)&v4 classForCoder];
 
-  return v2;
+  return classForCoder;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface VCVirtualAVCaptureVideoDataOutput
 - (VCVirtualAVCaptureVideoDataOutput)init;
-- (id)connectionWithMediaType:(id)a3;
+- (id)connectionWithMediaType:(id)type;
 - (id)connections;
-- (void)addConnection:(id)a3;
+- (void)addConnection:(id)connection;
 - (void)dealloc;
 - (void)disconnect;
 - (void)init;
-- (void)removeConnection:(id)a3;
-- (void)setSampleBufferDelegate:(id)a3 queue:(id)a4;
+- (void)removeConnection:(id)connection;
+- (void)setSampleBufferDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation VCVirtualAVCaptureVideoDataOutput
@@ -90,25 +90,25 @@ LABEL_7:
   [(AVCaptureVideoDataOutput *)&v3 dealloc];
 }
 
-- (void)setSampleBufferDelegate:(id)a3 queue:(id)a4
+- (void)setSampleBufferDelegate:(id)delegate queue:(id)queue
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if ([(VCWeakObjectHolder *)self->_weakPushDelegate strong]!= a3)
+  if ([(VCWeakObjectHolder *)self->_weakPushDelegate strong]!= delegate)
   {
 
     self->_weakPushDelegate = 0;
-    if (a3)
+    if (delegate)
     {
-      self->_weakPushDelegate = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:a3];
+      self->_weakPushDelegate = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:delegate];
     }
   }
 
   callbackQueue = self->_callbackQueue;
-  if (callbackQueue != a4)
+  if (callbackQueue != queue)
   {
-    if (a4)
+    if (queue)
     {
-      dispatch_retain(a4);
+      dispatch_retain(queue);
       callbackQueue = self->_callbackQueue;
     }
 
@@ -117,19 +117,19 @@ LABEL_7:
       dispatch_release(callbackQueue);
     }
 
-    self->_callbackQueue = a4;
+    self->_callbackQueue = queue;
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
     os_unfair_lock_lock(&self->_stateLock);
-    if (([(NSMutableArray *)self->_connections containsObject:a3]& 1) != 0)
+    if (([(NSMutableArray *)self->_connections containsObject:connection]& 1) != 0)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 5)
       {
@@ -144,9 +144,9 @@ LABEL_7:
           v13 = 1024;
           v14 = 104;
           v15 = 2112;
-          v16 = a3;
+          connectionCopy = connection;
           v17 = 2112;
-          v18 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Attempting to add connection that is already added to the session. Connection=%@, session=%@", &v9, 0x30u);
         }
       }
@@ -154,7 +154,7 @@ LABEL_7:
 
     else
     {
-      [(NSMutableArray *)self->_connections addObject:a3];
+      [(NSMutableArray *)self->_connections addObject:connection];
     }
 
     os_unfair_lock_unlock(&self->_stateLock);
@@ -177,14 +177,14 @@ LABEL_7:
   }
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
-  if ([(NSMutableArray *)self->_connections containsObject:a3])
+  if ([(NSMutableArray *)self->_connections containsObject:connection])
   {
-    [a3 invalidate];
-    [(NSMutableArray *)self->_connections removeObject:a3];
+    [connection invalidate];
+    [(NSMutableArray *)self->_connections removeObject:connection];
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -200,9 +200,9 @@ LABEL_7:
       v11 = 1024;
       v12 = 115;
       v13 = 2112;
-      v14 = a3;
+      connectionCopy = connection;
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Attempting to remove connection that does not exist in the session. Connection=%@, session=%@", &v7, 0x30u);
     }
   }
@@ -210,15 +210,15 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (id)connectionWithMediaType:(id)a3
+- (id)connectionWithMediaType:(id)type
 {
   v25 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(VCVirtualAVCaptureVideoDataOutput *)self connections];
-  result = [v4 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  connections = [(VCVirtualAVCaptureVideoDataOutput *)self connections];
+  result = [connections countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (result)
   {
     v6 = result;
@@ -229,7 +229,7 @@ LABEL_7:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connections);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -237,8 +237,8 @@ LABEL_7:
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v10 = [v9 inputPorts];
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        inputPorts = [v9 inputPorts];
+        v11 = [inputPorts countByEnumeratingWithState:&v16 objects:v15 count:16];
         if (v11)
         {
           v12 = v11;
@@ -250,10 +250,10 @@ LABEL_7:
             {
               if (*v17 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(inputPorts);
               }
 
-              if ([*(*(&v16 + 1) + 8 * v14) mediaType] == a3)
+              if ([*(*(&v16 + 1) + 8 * v14) mediaType] == type)
               {
                 return v9;
               }
@@ -262,7 +262,7 @@ LABEL_7:
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v16 objects:v15 count:16];
+            v12 = [inputPorts countByEnumeratingWithState:&v16 objects:v15 count:16];
             if (v12)
             {
               continue;
@@ -273,7 +273,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v20 count:16];
+      v6 = [connections countByEnumeratingWithState:&v21 objects:v20 count:16];
       result = 0;
     }
 

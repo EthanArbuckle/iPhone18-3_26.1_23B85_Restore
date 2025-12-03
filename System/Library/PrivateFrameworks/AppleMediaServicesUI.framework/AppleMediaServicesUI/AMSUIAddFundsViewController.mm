@@ -4,41 +4,41 @@
 - (ACAccount)account;
 - (AMSBagProtocol)bag;
 - (AMSProcessInfo)clientInfo;
-- (AMSUIAddFundsViewController)initWithAccount:(id)a3 bag:(id)a4;
-- (AMSUIAddFundsViewController)initWithAccount:(id)a3 bag:(id)a4 clientInfo:(id)a5;
+- (AMSUIAddFundsViewController)initWithAccount:(id)account bag:(id)bag;
+- (AMSUIAddFundsViewController)initWithAccount:(id)account bag:(id)bag clientInfo:(id)info;
 - (NSDictionary)metricsOverlay;
 - (void)loadView;
-- (void)setAccount:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setMetricsOverlay:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setBag:(id)bag;
+- (void)setClientInfo:(id)info;
+- (void)setMetricsOverlay:(id)overlay;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMSUIAddFundsViewController
 
-- (AMSUIAddFundsViewController)initWithAccount:(id)a3 bag:(id)a4
+- (AMSUIAddFundsViewController)initWithAccount:(id)account bag:(id)bag
 {
   v6 = MEMORY[0x1E698CAC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentProcess];
-  v10 = [(AMSUIAddFundsViewController *)self initWithAccount:v8 bag:v7 clientInfo:v9];
+  bagCopy = bag;
+  accountCopy = account;
+  currentProcess = [v6 currentProcess];
+  v10 = [(AMSUIAddFundsViewController *)self initWithAccount:accountCopy bag:bagCopy clientInfo:currentProcess];
 
   return v10;
 }
 
-- (AMSUIAddFundsViewController)initWithAccount:(id)a3 bag:(id)a4 clientInfo:(id)a5
+- (AMSUIAddFundsViewController)initWithAccount:(id)account bag:(id)bag clientInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  bagCopy = bag;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = AMSUIAddFundsViewController;
   v11 = [(AMSUICommonViewController *)&v15 init];
   if (v11)
   {
-    v12 = [[AMSUIWebViewController alloc] initWithBag:v9 account:v8 clientInfo:v10];
+    v12 = [[AMSUIWebViewController alloc] initWithBag:bagCopy account:accountCopy clientInfo:infoCopy];
     webViewController = v11->_webViewController;
     v11->_webViewController = v12;
   }
@@ -48,62 +48,62 @@
 
 - (ACAccount)account
 {
-  v2 = [(AMSUIAddFundsViewController *)self webViewController];
-  v3 = [v2 account];
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  account = [webViewController account];
 
-  return v3;
+  return account;
 }
 
 - (AMSBagProtocol)bag
 {
-  v2 = [(AMSUIAddFundsViewController *)self webViewController];
-  v3 = [v2 bag];
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  v3 = [webViewController bag];
 
   return v3;
 }
 
 - (AMSProcessInfo)clientInfo
 {
-  v2 = [(AMSUIAddFundsViewController *)self webViewController];
-  v3 = [v2 clientInfo];
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  clientInfo = [webViewController clientInfo];
 
-  return v3;
+  return clientInfo;
 }
 
 - (NSDictionary)metricsOverlay
 {
-  v2 = [(AMSUIAddFundsViewController *)self webViewController];
-  v3 = [v2 metricsOverlay];
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  metricsOverlay = [webViewController metricsOverlay];
 
-  return v3;
+  return metricsOverlay;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSUIAddFundsViewController *)self webViewController];
-  [v5 setAccount:v4];
+  accountCopy = account;
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  [webViewController setAccount:accountCopy];
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v4 = a3;
-  v5 = [(AMSUIAddFundsViewController *)self webViewController];
-  [v5 setBag:v4];
+  bagCopy = bag;
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  [webViewController setBag:bagCopy];
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSUIAddFundsViewController *)self webViewController];
-  [v5 setClientInfo:v4];
+  infoCopy = info;
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  [webViewController setClientInfo:infoCopy];
 }
 
-- (void)setMetricsOverlay:(id)a3
+- (void)setMetricsOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(AMSUIAddFundsViewController *)self webViewController];
-  [v5 setMetricsOverlay:v4];
+  overlayCopy = overlay;
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  [webViewController setMetricsOverlay:overlayCopy];
 }
 
 - (void)loadView
@@ -111,8 +111,8 @@
   v4.receiver = self;
   v4.super_class = AMSUIAddFundsViewController;
   [(AMSUICommonViewController *)&v4 loadView];
-  v3 = [(AMSUIAddFundsViewController *)self webViewController];
-  [(AMSUICommonViewController *)self setChildViewController:v3];
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  [(AMSUICommonViewController *)self setChildViewController:webViewController];
 }
 
 - (void)viewWillLayoutSubviews
@@ -120,15 +120,15 @@
   v14.receiver = self;
   v14.super_class = AMSUIAddFundsViewController;
   [(AMSUIAddFundsViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIAddFundsViewController *)self webViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  webViewController = [(AMSUIAddFundsViewController *)self webViewController];
+  view2 = [webViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 + (id)bagKeySet
@@ -144,15 +144,15 @@
 + (id)createBagForSubProfile
 {
   v3 = MEMORY[0x1E698C7E0];
-  v4 = [a1 bagKeySet];
-  v5 = [a1 bagSubProfile];
-  v6 = [a1 bagSubProfileVersion];
-  [v3 registerBagKeySet:v4 forProfile:v5 profileVersion:v6];
+  bagKeySet = [self bagKeySet];
+  bagSubProfile = [self bagSubProfile];
+  bagSubProfileVersion = [self bagSubProfileVersion];
+  [v3 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v7 = MEMORY[0x1E698C7D8];
-  v8 = [a1 bagSubProfile];
-  v9 = [a1 bagSubProfileVersion];
-  v10 = [v7 bagForProfile:v8 profileVersion:v9];
+  bagSubProfile2 = [self bagSubProfile];
+  bagSubProfileVersion2 = [self bagSubProfileVersion];
+  v10 = [v7 bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   return v10;
 }

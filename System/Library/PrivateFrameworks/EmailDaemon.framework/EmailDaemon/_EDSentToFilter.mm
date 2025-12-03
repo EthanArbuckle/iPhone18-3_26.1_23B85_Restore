@@ -1,8 +1,8 @@
 @interface _EDSentToFilter
 - (_EDSentToFilter)init;
-- (unint64_t)mayHaveSentToSimpleAddress:(id)a3;
+- (unint64_t)mayHaveSentToSimpleAddress:(id)address;
 - (void)loadFromDisk;
-- (void)updateWithSentToSimpleAddresses:(id)a3 recentNotSentToSimpleAddresses:(id)a4;
+- (void)updateWithSentToSimpleAddresses:(id)addresses recentNotSentToSimpleAddresses:(id)simpleAddresses;
 @end
 
 @implementation _EDSentToFilter
@@ -43,18 +43,18 @@
   self->_thirdFilter = v9;
 }
 
-- (unint64_t)mayHaveSentToSimpleAddress:(id)a3
+- (unint64_t)mayHaveSentToSimpleAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
+  addressCopy = address;
+  v5 = addressCopy;
   if (self->_firstFilter)
   {
-    v6 = [v4 lowercaseString];
+    lowercaseString = [addressCopy lowercaseString];
 
-    if (([(EFBloomFilter *)self->_firstFilter mayContainString:v6]& 1) != 0)
+    if (([(EFBloomFilter *)self->_firstFilter mayContainString:lowercaseString]& 1) != 0)
     {
       secondFilter = self->_secondFilter;
-      if (!secondFilter || ![(EFBloomFilter *)secondFilter mayContainString:v6])
+      if (!secondFilter || ![(EFBloomFilter *)secondFilter mayContainString:lowercaseString])
       {
         v9 = 2;
         goto LABEL_12;
@@ -63,7 +63,7 @@
       thirdFilter = self->_thirdFilter;
       if (thirdFilter)
       {
-        if ([(EFBloomFilter *)thirdFilter mayContainString:v6])
+        if ([(EFBloomFilter *)thirdFilter mayContainString:lowercaseString])
         {
           v9 = 2;
         }
@@ -79,7 +79,7 @@
 
     v9 = 1;
 LABEL_12:
-    v5 = v6;
+    v5 = lowercaseString;
     goto LABEL_13;
   }
 
@@ -89,23 +89,23 @@ LABEL_13:
   return v9;
 }
 
-- (void)updateWithSentToSimpleAddresses:(id)a3 recentNotSentToSimpleAddresses:(id)a4
+- (void)updateWithSentToSimpleAddresses:(id)addresses recentNotSentToSimpleAddresses:(id)simpleAddresses
 {
   v92 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  addressesCopy = addresses;
+  simpleAddressesCopy = simpleAddresses;
   if (_os_feature_enabled_impl())
   {
-    v67 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v67 handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:1964 description:@"No sent to address filter needed when all data is class C."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:1964 description:@"No sent to address filter needed when all data is class C."];
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v10 = v7;
+  v10 = addressesCopy;
   v11 = [v10 countByEnumeratingWithState:&v82 objects:v91 count:16];
   if (v11)
   {
@@ -120,8 +120,8 @@ LABEL_13:
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v82 + 1) + 8 * v13) lowercaseString];
-        [v9 addObject:v14];
+        lowercaseString = [*(*(&v82 + 1) + 8 * v13) lowercaseString];
+        [v9 addObject:lowercaseString];
 
         ++v13;
       }
@@ -133,14 +133,14 @@ LABEL_13:
     while (v11);
   }
 
-  v15 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  v16 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v16 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(simpleAddressesCopy, "count")}];
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v17 = v8;
+  v17 = simpleAddressesCopy;
   v18 = [v17 countByEnumeratingWithState:&v78 objects:v90 count:16];
   if (v18)
   {
@@ -155,10 +155,10 @@ LABEL_13:
           objc_enumerationMutation(v17);
         }
 
-        v21 = [*(*(&v78 + 1) + 8 * v20) lowercaseString];
-        if (([v9 containsObject:v21] & 1) == 0)
+        lowercaseString2 = [*(*(&v78 + 1) + 8 * v20) lowercaseString];
+        if (([v9 containsObject:lowercaseString2] & 1) == 0)
         {
-          [v16 addObject:v21];
+          [v16 addObject:lowercaseString2];
         }
 
         ++v20;
@@ -171,24 +171,24 @@ LABEL_13:
     while (v18);
   }
 
-  v68 = [v16 allObjects];
+  allObjects2 = [v16 allObjects];
 
   v22 = EDSenderLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    [v15 count];
+    [allObjects count];
     [_EDSentToFilter updateWithSentToSimpleAddresses:recentNotSentToSimpleAddresses:];
   }
 
   v23 = EDSenderLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    [v68 count];
+    [allObjects2 count];
     [_EDSentToFilter updateWithSentToSimpleAddresses:recentNotSentToSimpleAddresses:];
   }
 
   v77 = 0;
-  v24 = [MEMORY[0x1E699B788] bestBloomFilterForValues:v15 excludingValues:v68 falsePositiveRate:&v77 knownFalsePositives:0.1];
+  v24 = [MEMORY[0x1E699B788] bestBloomFilterForValues:allObjects excludingValues:allObjects2 falsePositiveRate:&v77 knownFalsePositives:0.1];
   v69 = v77;
   firstFilter = self->_firstFilter;
   self->_firstFilter = v24;
@@ -205,12 +205,12 @@ LABEL_13:
     v27 = EDSenderLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      [v15 count];
+      [allObjects count];
       [_EDSentToFilter updateWithSentToSimpleAddresses:recentNotSentToSimpleAddresses:];
     }
 
     v76 = 0;
-    v28 = [MEMORY[0x1E699B788] bestBloomFilterForValues:v69 excludingValues:v15 falsePositiveRate:&v76 knownFalsePositives:0.01];
+    v28 = [MEMORY[0x1E699B788] bestBloomFilterForValues:v69 excludingValues:allObjects falsePositiveRate:&v76 knownFalsePositives:0.01];
     v29 = v76;
     secondFilter = self->_secondFilter;
     self->_secondFilter = v28;
@@ -270,8 +270,8 @@ LABEL_13:
   }
 
   v40 = self->_firstFilter;
-  v41 = [MEMORY[0x1E699AE20] mailDataDirectory];
-  v42 = [v41 URLByAppendingPathComponent:@"SentToFilter"];
+  mailDataDirectory = [MEMORY[0x1E699AE20] mailDataDirectory];
+  v42 = [mailDataDirectory URLByAppendingPathComponent:@"SentToFilter"];
 
   v74 = 0;
   v43 = [(EFBloomFilter *)v40 writeToFile:v42 options:1342177281 error:&v74];
@@ -291,20 +291,20 @@ LABEL_13:
   v46 = self->_secondFilter;
   if (v46)
   {
-    v47 = [MEMORY[0x1E699AE20] mailDataDirectory];
-    v48 = [v47 URLByAppendingPathComponent:@"SentToFilter2"];
+    mailDataDirectory2 = [MEMORY[0x1E699AE20] mailDataDirectory];
+    v48 = [mailDataDirectory2 URLByAppendingPathComponent:@"SentToFilter2"];
 
     v73 = v44;
-    LOBYTE(v47) = [(EFBloomFilter *)v46 writeToFile:v48 options:1342177281 error:&v73];
+    LOBYTE(mailDataDirectory2) = [(EFBloomFilter *)v46 writeToFile:v48 options:1342177281 error:&v73];
     v49 = v73;
 
-    if (v47)
+    if (mailDataDirectory2)
     {
       goto LABEL_51;
     }
 
-    v50 = EDSenderLog();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+    defaultManager = EDSenderLog();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       [v49 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -314,12 +314,12 @@ LABEL_13:
     goto LABEL_50;
   }
 
-  v50 = [MEMORY[0x1E696AC08] defaultManager];
-  v51 = [MEMORY[0x1E699AE20] mailDataDirectory];
-  v52 = [v51 URLByAppendingPathComponent:@"SentToFilter2"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  mailDataDirectory3 = [MEMORY[0x1E699AE20] mailDataDirectory];
+  v52 = [mailDataDirectory3 URLByAppendingPathComponent:@"SentToFilter2"];
 
   v72 = v44;
-  v53 = [v50 removeItemAtURL:v52 error:&v72];
+  v53 = [defaultManager removeItemAtURL:v52 error:&v72];
   v49 = v72;
 
   if (v53)
@@ -333,8 +333,8 @@ LABEL_50:
 
   if (!v65)
   {
-    v50 = EDSenderLog();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+    defaultManager = EDSenderLog();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       [v49 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -349,12 +349,12 @@ LABEL_51:
   v55 = self->_thirdFilter;
   if (!v55)
   {
-    v60 = [MEMORY[0x1E696AC08] defaultManager];
-    v61 = [MEMORY[0x1E699AE20] mailDataDirectory];
-    v62 = [v61 URLByAppendingPathComponent:@"SentToFilter3"];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    mailDataDirectory4 = [MEMORY[0x1E699AE20] mailDataDirectory];
+    v62 = [mailDataDirectory4 URLByAppendingPathComponent:@"SentToFilter3"];
 
     v70 = v54;
-    v63 = [v60 removeItemAtURL:v62 error:&v70];
+    v63 = [defaultManager2 removeItemAtURL:v62 error:&v70];
     v59 = v70;
 
     if (v63)
@@ -370,8 +370,8 @@ LABEL_51:
         goto LABEL_58;
       }
 
-      v60 = EDSenderLog();
-      if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
+      defaultManager2 = EDSenderLog();
+      if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_ERROR))
       {
         [v59 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -382,8 +382,8 @@ LABEL_51:
     goto LABEL_57;
   }
 
-  v56 = [MEMORY[0x1E699AE20] mailDataDirectory];
-  v57 = [v56 URLByAppendingPathComponent:@"SentToFilter3"];
+  mailDataDirectory5 = [MEMORY[0x1E699AE20] mailDataDirectory];
+  v57 = [mailDataDirectory5 URLByAppendingPathComponent:@"SentToFilter3"];
 
   v71 = v54;
   v58 = [(EFBloomFilter *)v55 writeToFile:v57 options:1342177281 error:&v71];
@@ -391,8 +391,8 @@ LABEL_51:
 
   if ((v58 & 1) == 0)
   {
-    v60 = EDSenderLog();
-    if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
+    defaultManager2 = EDSenderLog();
+    if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_ERROR))
     {
       [v59 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();

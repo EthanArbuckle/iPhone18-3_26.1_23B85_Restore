@@ -1,28 +1,28 @@
 @interface STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axElementWithinFocused;
 - (id)_accessibilityMultitaskingButtonContainer;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5;
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations;
 @end
 
 @implementation STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBWindowScene" hasInstanceMethod:@"recordingIndicatorManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRecordingIndicatorManager" hasInstanceVariable:@"_recordingIndicatorWindow" withType:"UIWindow"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBWindowScene" hasInstanceMethod:@"recordingIndicatorManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRecordingIndicatorManager" hasInstanceVariable:@"_recordingIndicatorWindow" withType:"UIWindow"];
   if (NSClassFromString(&cfstr_Stuistatusbara_0.isa))
   {
-    [v3 validateClass:@"STUIStatusBarAccessibility" hasInstanceMethod:@"_axElementWithinFocused" withFullSignature:{"B", 0}];
+    [validationsCopy validateClass:@"STUIStatusBarAccessibility" hasInstanceMethod:@"_axElementWithinFocused" withFullSignature:{"B", 0}];
   }
 
-  [v3 validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"dotsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBTopAffordanceViewController"];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"_updateDisplayedItemsWithData:styleAttributes:extraAnimations:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"dotsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBTopAffordanceViewController"];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"_updateDisplayedItemsWithData:styleAttributes:extraAnimations:" withFullSignature:{"v", "@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,12 +30,12 @@
   v7.receiver = self;
   v7.super_class = STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI;
   [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)&v7 _accessibilityLoadAccessibilityInformation];
-  v3 = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityMultitaskingButtonContainer];
-  v4 = v3;
-  if (v3)
+  _accessibilityMultitaskingButtonContainer = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityMultitaskingButtonContainer];
+  v4 = _accessibilityMultitaskingButtonContainer;
+  if (_accessibilityMultitaskingButtonContainer)
   {
-    v5 = [v3 _accessibilityViewController];
-    v6 = [v5 safeValueForKey:@"dotsView"];
+    _accessibilityViewController = [_accessibilityMultitaskingButtonContainer _accessibilityViewController];
+    v6 = [_accessibilityViewController safeValueForKey:@"dotsView"];
 
     [v6 setAccessibilityContainer:self];
   }
@@ -53,15 +53,15 @@
     v4 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     v14.receiver = self;
     v14.super_class = STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI;
-    v5 = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)&v14 accessibilityElements];
-    [v4 axSafelyAddObjectsFromArray:v5];
+    accessibilityElements = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)&v14 accessibilityElements];
+    [v4 axSafelyAddObjectsFromArray:accessibilityElements];
 
     if (![v4 count])
     {
       objc_opt_class();
       v6 = __UIAccessibilityCastAsClass();
-      v7 = [v6 subviews];
-      [v4 axSafelyAddObjectsFromArray:v7];
+      subviews = [v6 subviews];
+      [v4 axSafelyAddObjectsFromArray:subviews];
     }
 
     if ([v4 count])
@@ -71,8 +71,8 @@
       v10 = [v9 safeValueForKey:@"_recordingIndicatorWindow"];
       [v4 axSafelyAddObject:v10];
 
-      v11 = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityMultitaskingButtonContainer];
-      [v4 axSafelyAddObject:v11];
+      _accessibilityMultitaskingButtonContainer = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityMultitaskingButtonContainer];
+      [v4 axSafelyAddObject:_accessibilityMultitaskingButtonContainer];
     }
 
     if ([v4 count])
@@ -93,23 +93,23 @@
 
 - (id)_accessibilityMultitaskingButtonContainer
 {
-  v2 = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityWindow];
-  v3 = [v2 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_3];
+  _accessibilityWindow = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityWindow];
+  v3 = [_accessibilityWindow _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_3];
 
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (BOOL)_axElementWithinFocused
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityMultitaskingButtonContainer];
-  v4 = v3;
-  if (v3)
+  _accessibilityMultitaskingButtonContainer = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)self _accessibilityMultitaskingButtonContainer];
+  v4 = _accessibilityMultitaskingButtonContainer;
+  if (_accessibilityMultitaskingButtonContainer)
   {
-    v5 = [v3 _accessibilityViewController];
-    v6 = [v5 safeValueForKey:@"dotsView"];
+    _accessibilityViewController = [_accessibilityMultitaskingButtonContainer _accessibilityViewController];
+    v6 = [_accessibilityViewController safeValueForKey:@"dotsView"];
 
     v17 = 0u;
     v18 = 0u;
@@ -133,7 +133,7 @@
           if (*(*(&v15 + 1) + 8 * i) == v6)
           {
 
-            v12 = 1;
+            _axElementWithinFocused = 1;
             goto LABEL_13;
           }
         }
@@ -151,18 +151,18 @@
 
   v14.receiver = self;
   v14.super_class = STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI;
-  v12 = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)&v14 _axElementWithinFocused];
+  _axElementWithinFocused = [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)&v14 _axElementWithinFocused];
 LABEL_13:
 
-  return v12;
+  return _axElementWithinFocused;
 }
 
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations
 {
-  v8 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI;
-  [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)&v13 _updateDisplayedItemsWithData:v8 styleAttributes:a4 extraAnimations:a5];
+  [(STUIStatusBarAccessibility__SpringBoardFramework__SystemStatusUI *)&v13 _updateDisplayedItemsWithData:dataCopy styleAttributes:attributes extraAnimations:animations];
   if (!_updateDisplayedItemsWithData_styleAttributes_extraAnimations__entriesToMonitor)
   {
     v9 = [objc_allocWithZone(MEMORY[0x29EDB8E50]) initWithObjects:{@"backgroundActivityEntry", @"backNavigationEntry", @"forwardNavigationEntry", 0}];
@@ -170,9 +170,9 @@ LABEL_13:
     _updateDisplayedItemsWithData_styleAttributes_extraAnimations__entriesToMonitor = v9;
   }
 
-  if (v8)
+  if (dataCopy)
   {
-    v11 = [v8 safeSetForKey:@"existingEntryKeys"];
+    v11 = [dataCopy safeSetForKey:@"existingEntryKeys"];
     v12 = [v11 intersectsSet:_updateDisplayedItemsWithData_styleAttributes_extraAnimations__entriesToMonitor];
 
     if (v12)

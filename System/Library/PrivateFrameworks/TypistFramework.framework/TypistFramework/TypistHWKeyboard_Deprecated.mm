@@ -1,43 +1,43 @@
 @interface TypistHWKeyboard_Deprecated
-+ (id)_determineAppropriatePropertyDictionaryForHWModelStr:(id)a3;
++ (id)_determineAppropriatePropertyDictionaryForHWModelStr:(id)str;
 + (id)_getModifierMaskMap;
 + (id)keyboardCountryCodes;
 + (id)modifierCharMap;
-+ (unsigned)_convertCountryCodeToHIDKeyboardType:(unsigned __int8)a3;
-+ (unsigned)_convertGSKeyboardTypeToIOHIDKeyboardType:(unsigned __int8)a3;
-+ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)a3;
-- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)a3;
-- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)a3 andPropertyDictionaryAtPath:(id)a4;
-- (id)generateKeystrokeStream:(id)a3;
-- (id)generateKeystrokeStream:(id)a3 position:(int *)a4;
++ (unsigned)_convertCountryCodeToHIDKeyboardType:(unsigned __int8)type;
++ (unsigned)_convertGSKeyboardTypeToIOHIDKeyboardType:(unsigned __int8)type;
++ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)type;
+- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)code;
+- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)code andPropertyDictionaryAtPath:(id)path;
+- (id)generateKeystrokeStream:(id)stream;
+- (id)generateKeystrokeStream:(id)stream position:(int *)position;
 - (void)_setupCharacterToKeycodeMap;
-- (void)detach:(id)a3;
-- (void)pressAndHoldKey:(id)a3 completion:(id)a4;
-- (void)releaseKeyPressWithCompletion:(id)a3;
-- (void)typeKeyStrokeStream:(id)a3;
-- (void)typeString:(id)a3 completion:(id)a4;
+- (void)detach:(id)detach;
+- (void)pressAndHoldKey:(id)key completion:(id)completion;
+- (void)releaseKeyPressWithCompletion:(id)completion;
+- (void)typeKeyStrokeStream:(id)stream;
+- (void)typeString:(id)string completion:(id)completion;
 @end
 
 @implementation TypistHWKeyboard_Deprecated
 
-- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)a3 andPropertyDictionaryAtPath:(id)a4
+- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)code andPropertyDictionaryAtPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  pathCopy = path;
+  if (pathCopy)
   {
-    [(TypistHWKeyboard_Deprecated *)self setEmulatedModel:v7];
+    [(TypistHWKeyboard_Deprecated *)self setEmulatedModel:pathCopy];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v9 = [v8 pathForResource:v7 ofType:@"plist"];
+    v9 = [v8 pathForResource:pathCopy ofType:@"plist"];
 
     v10 = MEMORY[0x277CBEB38];
     v11 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v9];
     v12 = [v10 dictionaryWithDictionary:v11];
 
-    [v12 setValue:v6 forKey:@"CountryCode"];
+    [v12 setValue:codeCopy forKey:@"CountryCode"];
     v13 = *MEMORY[0x277CBECE8];
     v14 = IOHIDUserDeviceCreate();
-    v15 = +[TypistHWKeyboard_Deprecated _convertCountryCodeToHIDKeyboardType:](TypistHWKeyboard_Deprecated, "_convertCountryCodeToHIDKeyboardType:", [v6 unsignedIntValue]);
+    v15 = +[TypistHWKeyboard_Deprecated _convertCountryCodeToHIDKeyboardType:](TypistHWKeyboard_Deprecated, "_convertCountryCodeToHIDKeyboardType:", [codeCopy unsignedIntValue]);
     [TypistHWKeyboard_Deprecated _convertHIDKeyboardTypeToGSKeyboardType:v15];
     [(TypistHWKeyboard_Deprecated *)self setHidKeyboardType:v15];
     v32 = 0;
@@ -57,7 +57,7 @@
 
     v24 = v33[3];
     [(TypistHWKeyboard_Deprecated *)self setHardwareKeyboard:GSKeyboardCreate()];
-    [(TypistHWKeyboard_Deprecated *)self setKeyboardCountryCode:v6];
+    [(TypistHWKeyboard_Deprecated *)self setKeyboardCountryCode:codeCopy];
     v25 = dispatch_group_create();
     [(TypistHWKeyboard_Deprecated *)self setGroup:v25];
 
@@ -67,61 +67,61 @@
 
     [(TypistHWKeyboard_Deprecated *)self setTypistHWKeyboardQueue:v27];
     [(TypistHWKeyboard_Deprecated *)self _setupCharacterToKeycodeMap];
-    [v6 unsignedIntValue];
+    [codeCopy unsignedIntValue];
     GSEventSetHardwareKeyboardAttachedWithCountryCodeAndType();
     [(TypistHWKeyboard_Deprecated *)self emulatedKeyboard];
     CFRunLoopGetMain();
     v28 = *MEMORY[0x277CBF058];
     IOHIDUserDeviceScheduleWithRunLoop();
     [(TypistHWKeyboard_Deprecated *)self setTypeInterval:0.02];
-    v29 = self;
+    selfCopy = self;
     _Block_object_dispose(&v32, 8);
   }
 
   else
   {
-    v29 = 0;
+    selfCopy = 0;
   }
 
-  return v29;
+  return selfCopy;
 }
 
-- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)a3
+- (TypistHWKeyboard_Deprecated)initWithCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = [TypistKeyboardUtilities getMobileGestalt:@"HWModelStr"];
   v6 = [TypistHWKeyboard_Deprecated _determineAppropriatePropertyDictionaryForHWModelStr:v5];
 
-  v7 = [(TypistHWKeyboard_Deprecated *)self initWithCountryCode:v4 andPropertyDictionaryAtPath:v6];
+  v7 = [(TypistHWKeyboard_Deprecated *)self initWithCountryCode:codeCopy andPropertyDictionaryAtPath:v6];
   return v7;
 }
 
-- (void)detach:(id)a3
+- (void)detach:(id)detach
 {
-  v4 = a3;
-  v5 = [(TypistHWKeyboard_Deprecated *)self group];
+  detachCopy = detach;
+  group = [(TypistHWKeyboard_Deprecated *)self group];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__TypistHWKeyboard_Deprecated_detach___block_invoke;
   v7[3] = &unk_279DF4CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_group_notify(v5, MEMORY[0x277D85CD0], v7);
+  v8 = detachCopy;
+  v6 = detachCopy;
+  dispatch_group_notify(group, MEMORY[0x277D85CD0], v7);
 }
 
-+ (id)_determineAppropriatePropertyDictionaryForHWModelStr:(id)a3
++ (id)_determineAppropriatePropertyDictionaryForHWModelStr:(id)str
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"J207"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"J208") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J217") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J218"))
+  strCopy = str;
+  if ([strCopy caseInsensitiveCompare:@"J207"] && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J208") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J217") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J218"))
   {
-    if ([v3 caseInsensitiveCompare:@"J98A"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"J99A") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J120") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J121"))
+    if ([strCopy caseInsensitiveCompare:@"J98A"] && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J99A") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J120") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J121"))
     {
-      if ([v3 caseInsensitiveCompare:@"J127"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"J128") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J210") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J211") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J96") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J97"))
+      if ([strCopy caseInsensitiveCompare:@"J127"] && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J128") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J210") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J211") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J96") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J97"))
       {
-        if ([v3 caseInsensitiveCompare:@"J317"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"J318") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J317x") && objc_msgSend(v3, "caseInsensitiveCompare:", @"J318x"))
+        if ([strCopy caseInsensitiveCompare:@"J317"] && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J318") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J317x") && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J318x"))
         {
-          if ([v3 caseInsensitiveCompare:@"J320"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"J321"))
+          if ([strCopy caseInsensitiveCompare:@"J320"] && objc_msgSend(strCopy, "caseInsensitiveCompare:", @"J321"))
           {
             v4 = 0;
           }
@@ -158,29 +158,29 @@
   return v4;
 }
 
-+ (unsigned)_convertGSKeyboardTypeToIOHIDKeyboardType:(unsigned __int8)a3
++ (unsigned)_convertGSKeyboardTypeToIOHIDKeyboardType:(unsigned __int8)type
 {
-  if (a3 == 202)
+  if (type == 202)
   {
-    v3 = 0;
+    typeCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
-  if (a3 == 203)
+  if (type == 203)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = typeCopy;
   }
 
-  if (a3 == 207)
+  if (type == 207)
   {
     return 2;
   }
@@ -191,10 +191,10 @@
   }
 }
 
-+ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)a3
++ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)type
 {
-  v3 = 0xCFCBCAu >> (8 * a3);
-  if (a3 >= 3)
+  v3 = 0xCFCBCAu >> (8 * type);
+  if (type >= 3)
   {
     LOBYTE(v3) = 0;
   }
@@ -223,7 +223,7 @@
   {
     if (v3 == 40)
     {
-      v4 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+      characterToKeycodeMap = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
       v61[0] = @"keyCode";
       v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:40];
       v61[1] = @"modifier";
@@ -231,7 +231,7 @@
       v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
       v62[1] = v6;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:2];
-      v8 = v4;
+      v8 = characterToKeycodeMap;
       v9 = v7;
       v10 = @"⏎";
       goto LABEL_13;
@@ -244,7 +244,7 @@
         goto LABEL_17;
       }
 
-      v4 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+      characterToKeycodeMap = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
       v63[0] = @"keyCode";
       v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:42];
       v63[1] = @"modifier";
@@ -252,13 +252,13 @@
       v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
       v64[1] = v6;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:2];
-      v8 = v4;
+      v8 = characterToKeycodeMap;
       v9 = v7;
       v10 = @"⌫";
       goto LABEL_13;
     }
 
-    v11 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+    characterToKeycodeMap2 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
     v65[0] = @"keyCode";
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:41];
     v65[1] = @"modifier";
@@ -266,7 +266,7 @@
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
     v66[1] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:v65 count:2];
-    [v11 setObject:v14 forKey:@"␛"];
+    [characterToKeycodeMap2 setObject:v14 forKey:@"␛"];
 
 LABEL_14:
     v15 = v3++;
@@ -278,7 +278,7 @@ LABEL_14:
 
   if (v3 == 43)
   {
-    v4 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+    characterToKeycodeMap = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
     v59[0] = @"keyCode";
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:43];
     v59[1] = @"modifier";
@@ -286,7 +286,7 @@ LABEL_14:
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
     v60[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
-    v8 = v4;
+    v8 = characterToKeycodeMap;
     v9 = v7;
     v10 = @"⇥";
     goto LABEL_13;
@@ -294,7 +294,7 @@ LABEL_14:
 
   if (v3 == 44)
   {
-    v4 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+    characterToKeycodeMap = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
     v55[0] = @"keyCode";
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:44];
     v55[1] = @"modifier";
@@ -302,7 +302,7 @@ LABEL_14:
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
     v56[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:2];
-    v8 = v4;
+    v8 = characterToKeycodeMap;
     v9 = v7;
     v10 = @" ";
 LABEL_13:
@@ -318,7 +318,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  v16 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+  characterToKeycodeMap3 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
   v57[0] = @"keyCode";
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:57];
   v57[1] = @"modifier";
@@ -326,7 +326,7 @@ LABEL_17:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
   v58[1] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:2];
-  [v16 setObject:v19 forKey:@"⇪"];
+  [characterToKeycodeMap3 setObject:v19 forKey:@"⇪"];
 
 LABEL_19:
   if ([(TypistHWKeyboard_Deprecated *)self hidKeyboardType]== 2)
@@ -345,7 +345,7 @@ LABEL_23:
     [(TypistHWKeyboard_Deprecated *)self _insertKey:v21 gsKeyInfo:v20];
   }
 
-  v22 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+  characterToKeycodeMap4 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
   v53[0] = @"keyCode";
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:79];
   v53[1] = @"modifier";
@@ -353,9 +353,9 @@ LABEL_23:
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
   v54[1] = v24;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
-  [v22 setObject:v25 forKey:@"→"];
+  [characterToKeycodeMap4 setObject:v25 forKey:@"→"];
 
-  v26 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+  characterToKeycodeMap5 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
   v51[0] = @"keyCode";
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:80];
   v51[1] = @"modifier";
@@ -363,9 +363,9 @@ LABEL_23:
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
   v52[1] = v28;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:2];
-  [v26 setObject:v29 forKey:@"←"];
+  [characterToKeycodeMap5 setObject:v29 forKey:@"←"];
 
-  v30 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+  characterToKeycodeMap6 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
   v49[0] = @"keyCode";
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:81];
   v49[1] = @"modifier";
@@ -373,9 +373,9 @@ LABEL_23:
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
   v50[1] = v32;
   v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
-  [v30 setObject:v33 forKey:@"↓"];
+  [characterToKeycodeMap6 setObject:v33 forKey:@"↓"];
 
-  v34 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+  characterToKeycodeMap7 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
   v47[0] = @"keyCode";
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:82];
   v47[1] = @"modifier";
@@ -383,9 +383,9 @@ LABEL_23:
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
   v48[1] = v36;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
-  [v34 setObject:v37 forKey:@"↑"];
+  [characterToKeycodeMap7 setObject:v37 forKey:@"↑"];
 
-  v38 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+  characterToKeycodeMap8 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
   v45[0] = @"keyCode";
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
   v46[0] = v39;
@@ -396,18 +396,18 @@ LABEL_23:
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:2];
   v46[2] = v41;
   v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:3];
-  [v38 setObject:v42 forKey:@"⌨"];
+  [characterToKeycodeMap8 setObject:v42 forKey:@"⌨"];
 
   free(v20);
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateKeystrokeStream:(id)a3 position:(int *)a4
+- (id)generateKeystrokeStream:(id)stream position:(int *)position
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = *a4;
-  if ([v6 length] <= v7)
+  streamCopy = stream;
+  v7 = *position;
+  if ([streamCopy length] <= v7)
   {
     v57[0] = @"keyCode";
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
@@ -423,7 +423,7 @@ LABEL_23:
   else
   {
     v8 = +[TypistHWKeyboard_Deprecated modifierCharMap];
-    v49 = [v6 characterAtIndex:*a4];
+    v49 = [streamCopy characterAtIndex:*position];
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v10 = [MEMORY[0x277CCACA8] stringWithCharacters:&v49 length:1];
     v11 = [v8 objectForKey:v10];
@@ -431,9 +431,9 @@ LABEL_23:
     if (v11)
     {
       v41 = v9;
-      ++*a4;
-      v12 = [(TypistHWKeyboard_Deprecated *)self generateKeystrokeStream:v6 position:a4];
-      v13 = [v11 unsignedShortValue];
+      ++*position;
+      v12 = [(TypistHWKeyboard_Deprecated *)self generateKeystrokeStream:streamCopy position:position];
+      unsignedShortValue = [v11 unsignedShortValue];
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
@@ -445,7 +445,7 @@ LABEL_23:
         v16 = v15;
         v43 = v11;
         v38 = v8;
-        v39 = v6;
+        v39 = streamCopy;
         v17 = 0;
         v18 = *v46;
         do
@@ -462,7 +462,7 @@ LABEL_23:
             v17 |= [v21 unsignedShortValue];
 
             v22 = [v20 objectForKey:@"modifier"];
-            v13 |= [v22 unsignedShortValue];
+            unsignedShortValue |= [v22 unsignedShortValue];
           }
 
           v16 = [v14 countByEnumeratingWithState:&v45 objects:v56 count:16];
@@ -470,7 +470,7 @@ LABEL_23:
 
         while (v16);
         v8 = v38;
-        v6 = v39;
+        streamCopy = v39;
         v11 = v43;
       }
 
@@ -483,7 +483,7 @@ LABEL_23:
       v25 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v17];
       v54[1] = @"modifier";
       v55[0] = v25;
-      v26 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v13];
+      v26 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:unsignedShortValue];
       v55[1] = v26;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
       v9 = v41;
@@ -491,9 +491,9 @@ LABEL_23:
 
     else
     {
-      v23 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+      characterToKeycodeMap = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
       v24 = [MEMORY[0x277CCACA8] stringWithCharacters:&v49 length:1];
-      v14 = [v23 objectForKey:v24];
+      v14 = [characterToKeycodeMap objectForKey:v24];
 
       if (v14)
       {
@@ -505,8 +505,8 @@ LABEL_23:
         v44 = [MEMORY[0x277CCACA8] stringWithCharacters:&v49 length:1];
         [(TypistHWKeyboard_Deprecated *)self hardwareKeyboard];
         GSKeyboardHWKeyboardNormalizeInput();
-        v28 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
-        v42 = [v28 objectForKey:v44];
+        characterToKeycodeMap2 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+        v42 = [characterToKeycodeMap2 objectForKey:v44];
 
         v52[0] = @"keyCode";
         v40 = [v42 objectForKey:?];
@@ -520,9 +520,9 @@ LABEL_23:
         v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
 
         v8 = v31;
-        v34 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
+        characterToKeycodeMap3 = [(TypistHWKeyboard_Deprecated *)self characterToKeycodeMap];
         v35 = [MEMORY[0x277CCACA8] stringWithCharacters:&v49 length:1];
-        [v34 setObject:v33 forKey:v35];
+        [characterToKeycodeMap3 setObject:v33 forKey:v35];
 
         [v9 addObject:v33];
       }
@@ -545,9 +545,9 @@ LABEL_23:
   return v9;
 }
 
-- (id)generateKeystrokeStream:(id)a3
+- (id)generateKeystrokeStream:(id)stream
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"\t" withString:@"⇥"];
+  v4 = [stream stringByReplacingOccurrencesOfString:@"\t" withString:@"⇥"];
   v5 = [v4 stringByReplacingOccurrencesOfString:@"\n" withString:@"⏎"];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -570,14 +570,14 @@ LABEL_23:
   return v6;
 }
 
-- (void)typeKeyStrokeStream:(id)a3
+- (void)typeKeyStrokeStream:(id)stream
 {
   v32 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
+  obj = stream;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v31 count:16];
   if (v4)
   {
@@ -594,33 +594,33 @@ LABEL_23:
 
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = [v8 objectForKey:@"modifier"];
-        v10 = [v9 unsignedShortValue];
+        unsignedShortValue = [v9 unsignedShortValue];
 
         v11 = [v8 objectForKey:@"keyCode"];
-        v12 = [v11 unsignedShortValue];
+        unsignedShortValue2 = [v11 unsignedShortValue];
 
         v13 = [v8 objectForKey:@"globeKey"];
         if (v13)
         {
           v14 = [v8 objectForKey:@"globeKey"];
-          v15 = [v14 unsignedShortValue];
+          unsignedShortValue3 = [v14 unsignedShortValue];
         }
 
         else
         {
-          v15 = 0;
+          unsignedShortValue3 = 0;
         }
 
         v16 = MEMORY[0x277CCACC8];
         [(TypistHWKeyboard_Deprecated *)self typeInterval];
         [v16 sleepForTimeInterval:?];
         v24 = 1;
-        v25 = v10;
+        v25 = unsignedShortValue;
         v26 = 0;
-        v27 = v12;
+        v27 = unsignedShortValue2;
         v28 = 0;
         v29 = 0;
-        v30 = v15;
+        v30 = unsignedShortValue3;
         [(TypistHWKeyboard_Deprecated *)self emulatedKeyboard];
         IOHIDUserDeviceHandleReport();
       }
@@ -638,55 +638,55 @@ LABEL_23:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)typeString:(id)a3 completion:(id)a4
+- (void)typeString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TypistHWKeyboard_Deprecated *)self group];
-  v9 = [(TypistHWKeyboard_Deprecated *)self TypistHWKeyboardQueue];
+  stringCopy = string;
+  completionCopy = completion;
+  group = [(TypistHWKeyboard_Deprecated *)self group];
+  typistHWKeyboardQueue = [(TypistHWKeyboard_Deprecated *)self TypistHWKeyboardQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__TypistHWKeyboard_Deprecated_typeString_completion___block_invoke;
   block[3] = &unk_279DF4D20;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_group_async(v8, v9, block);
+  v13 = stringCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = stringCopy;
+  dispatch_group_async(group, typistHWKeyboardQueue, block);
 }
 
-- (void)pressAndHoldKey:(id)a3 completion:(id)a4
+- (void)pressAndHoldKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TypistHWKeyboard_Deprecated *)self group];
-  v9 = [(TypistHWKeyboard_Deprecated *)self TypistHWKeyboardQueue];
+  keyCopy = key;
+  completionCopy = completion;
+  group = [(TypistHWKeyboard_Deprecated *)self group];
+  typistHWKeyboardQueue = [(TypistHWKeyboard_Deprecated *)self TypistHWKeyboardQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__TypistHWKeyboard_Deprecated_pressAndHoldKey_completion___block_invoke;
   block[3] = &unk_279DF4D20;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_group_async(v8, v9, block);
+  v13 = keyCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = keyCopy;
+  dispatch_group_async(group, typistHWKeyboardQueue, block);
 }
 
-- (void)releaseKeyPressWithCompletion:(id)a3
+- (void)releaseKeyPressWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TypistHWKeyboard_Deprecated *)self group];
-  v6 = [(TypistHWKeyboard_Deprecated *)self TypistHWKeyboardQueue];
+  completionCopy = completion;
+  group = [(TypistHWKeyboard_Deprecated *)self group];
+  typistHWKeyboardQueue = [(TypistHWKeyboard_Deprecated *)self TypistHWKeyboardQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__TypistHWKeyboard_Deprecated_releaseKeyPressWithCompletion___block_invoke;
   v8[3] = &unk_279DF4CF8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_group_async(v5, v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_group_async(group, typistHWKeyboardQueue, v8);
 }
 
 + (id)_getModifierMaskMap
@@ -777,16 +777,16 @@ LABEL_23:
   return v3;
 }
 
-+ (unsigned)_convertCountryCodeToHIDKeyboardType:(unsigned __int8)a3
++ (unsigned)_convertCountryCodeToHIDKeyboardType:(unsigned __int8)type
 {
-  if (a3 > 29)
+  if (type > 29)
   {
-    return a3 != 30 && a3 != 33;
+    return type != 30 && type != 33;
   }
 
-  if (a3 != 15)
+  if (type != 15)
   {
-    return a3 != 16;
+    return type != 16;
   }
 
   return 2;

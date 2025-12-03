@@ -1,60 +1,60 @@
 @interface _UIDocumentPickerDocumentCollectionViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)supportsActions;
 - (NSArray)indexPathsForSelectedItems;
-- (_UIDocumentPickerDocumentCollectionViewController)initWithModel:(id)a3;
+- (_UIDocumentPickerDocumentCollectionViewController)initWithModel:(id)model;
 - (_UIDocumentPickerServiceViewController)serviceViewController;
-- (id)actionViewForLocation:(CGPoint)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsForRowAtIndexPath:(id)a5;
-- (id)itemForLocation:(CGPoint)a3;
-- (id)previewActionItemsForItem:(id)a3;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 indentationLevelForRowAtIndexPath:(id)a5;
-- (void)_dynamicTypeSizeChanged:(id)a3;
-- (void)_showMoreOptionsForRow:(id)a3 view:(id)a4;
+- (id)actionViewForLocation:(CGPoint)location;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsForRowAtIndexPath:(id)path;
+- (id)itemForLocation:(CGPoint)location;
+- (id)previewActionItemsForItem:(id)item;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)collectionView:(id)view tableLayout:(id)layout indentationLevelForRowAtIndexPath:(id)path;
+- (void)_dynamicTypeSizeChanged:(id)changed;
+- (void)_showMoreOptionsForRow:(id)row view:(id)view;
 - (void)_updateIconSpacing;
 - (void)_updateRowHeight;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 tableLayout:(id)a4 accessoryButtonTappedForRowWithIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)containersChangedWithSnapshot:(id)a3 differences:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view tableLayout:(id)layout accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)containersChangedWithSnapshot:(id)snapshot differences:(id)differences;
 - (void)dealloc;
 - (void)ensureSortViewInvisible;
-- (void)modelChanged:(id)a3;
-- (void)performAction:(int64_t)a3 forRow:(id)a4 view:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)previewingContext:(id)a3 commitViewController:(id)a4;
+- (void)modelChanged:(id)changed;
+- (void)performAction:(int64_t)action forRow:(id)row view:(id)view;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)previewingContext:(id)context commitViewController:(id)controller;
 - (void)scrollSortViewToVisible;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setContentSizeAdjustment:(double)a3;
-- (void)setDisplayMode:(int64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIndexPathsForSelectedItems:(id)a3;
-- (void)setMonitoring:(BOOL)a3;
-- (void)setPinnedHeaderView:(id)a3 animated:(BOOL)a4;
-- (void)setSortView:(id)a3;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setContentSizeAdjustment:(double)adjustment;
+- (void)setDisplayMode:(int64_t)mode;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setIndexPathsForSelectedItems:(id)items;
+- (void)setMonitoring:(BOOL)monitoring;
+- (void)setPinnedHeaderView:(id)view animated:(BOOL)animated;
+- (void)setSortView:(id)view;
 - (void)updateContentInset;
 - (void)updatePinnedHeader;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willDismissSearchController:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation _UIDocumentPickerDocumentCollectionViewController
 
-- (_UIDocumentPickerDocumentCollectionViewController)initWithModel:(id)a3
+- (_UIDocumentPickerDocumentCollectionViewController)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_alloc_init(_UIDocumentPickerFlowLayout);
   [_UIDocumentPickerCell defaultSizeForCellStyle:1 traitCollection:0];
   [(UICollectionViewFlowLayout *)v5 setItemSize:?];
@@ -72,70 +72,70 @@
     [(_UIDocumentPickerDocumentCollectionViewController *)v7 setGridLayout:v5];
     [(_UIDocumentPickerDocumentCollectionViewController *)v8 setTableLayout:v6];
     [(_UIDocumentPickerDocumentCollectionViewController *)v8 _updateRowHeight];
-    [(_UIDocumentPickerDocumentCollectionViewController *)v8 setModel:v4];
+    [(_UIDocumentPickerDocumentCollectionViewController *)v8 setModel:modelCopy];
     v9 = [_UIDocumentPickerDocumentCollectionView alloc];
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    [v10 frame];
+    collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    [collectionView frame];
     v11 = [(_UIDocumentPickerDocumentCollectionView *)v9 initWithFrame:v5 collectionViewLayout:?];
     [(_UIDocumentPickerDocumentCollectionViewController *)v8 setCollectionView:v11];
 
-    v12 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    [v12 setDataSource:v8];
+    collectionView2 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    [collectionView2 setDataSource:v8];
 
-    v13 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    [v13 setDelegate:v8];
+    collectionView3 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    [collectionView3 setDelegate:v8];
 
-    v14 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    [v14 setPrefetchingEnabled:0];
+    collectionView4 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    [collectionView4 setPrefetchingEnabled:0];
 
-    v15 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    [v15 setAlwaysBounceVertical:1];
+    collectionView5 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    [collectionView5 setAlwaysBounceVertical:1];
 
-    v16 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    [v16 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"_UIDocumentPickerDocumentCellIdentifier"];
+    collectionView6 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    [collectionView6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"_UIDocumentPickerDocumentCellIdentifier"];
 
-    v17 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    [v17 setAllowsMultipleSelectionDuringEditing:1];
+    collectionView7 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    [collectionView7 setAllowsMultipleSelectionDuringEditing:1];
 
-    v18 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 model];
-    LOBYTE(v10) = [v18 afterInitialUpdate];
+    model = [(_UIDocumentPickerDocumentCollectionViewController *)v8 model];
+    LOBYTE(collectionView) = [model afterInitialUpdate];
 
-    if ((v10 & 1) == 0)
+    if ((collectionView & 1) == 0)
     {
       v19 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
       [(_UIDocumentPickerDocumentCollectionViewController *)v8 setInitialActivityView:v19];
 
-      v20 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
-      [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+      initialActivityView = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
+      [initialActivityView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v21 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 view];
-      v22 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
-      [v21 addSubview:v22];
+      view = [(_UIDocumentPickerDocumentCollectionViewController *)v8 view];
+      initialActivityView2 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
+      [view addSubview:initialActivityView2];
 
-      v23 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
-      v24 = [v23 centerXAnchor];
-      v25 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 view];
-      v26 = [v25 centerXAnchor];
-      v27 = [v24 constraintEqualToAnchor:v26];
+      initialActivityView3 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
+      centerXAnchor = [initialActivityView3 centerXAnchor];
+      view2 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 view];
+      centerXAnchor2 = [view2 centerXAnchor];
+      v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v27 setActive:1];
 
-      v28 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
-      v29 = [v28 centerYAnchor];
-      v30 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 view];
-      v31 = [v30 centerYAnchor];
-      v32 = [v29 constraintEqualToAnchor:v31];
+      initialActivityView4 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
+      centerYAnchor = [initialActivityView4 centerYAnchor];
+      view3 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 view];
+      centerYAnchor2 = [view3 centerYAnchor];
+      v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v32 setActive:1];
 
-      v33 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
-      [v33 startAnimating];
+      initialActivityView5 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 initialActivityView];
+      [initialActivityView5 startAnimating];
     }
 
-    v34 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v34 addObserver:v8 selector:sel__dynamicTypeSizeChanged_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__dynamicTypeSizeChanged_ name:*MEMORY[0x277D76810] object:0];
 
     v35 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:v8 target:sel__unlockAnimations selector:0 userInfo:0 repeats:0.5];
-    v36 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
-    v37 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 registerForPreviewingWithDelegate:v8 sourceView:v36];
+    collectionView8 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 collectionView];
+    v37 = [(_UIDocumentPickerDocumentCollectionViewController *)v8 registerForPreviewingWithDelegate:v8 sourceView:collectionView8];
     viewControllerPreviewContext = v8->_viewControllerPreviewContext;
     v8->_viewControllerPreviewContext = v37;
   }
@@ -143,42 +143,42 @@
   return v8;
 }
 
-- (id)itemForLocation:(CGPoint)a3
+- (id)itemForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v8 = [v7 indexPathForItemAtPoint:{x, y}];
-  v9 = [v6 cellForItemAtIndexPath:v8];
+  y = location.y;
+  x = location.x;
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  collectionView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  v8 = [collectionView2 indexPathForItemAtPoint:{x, y}];
+  v9 = [collectionView cellForItemAtIndexPath:v8];
 
-  v10 = [v9 item];
+  item = [v9 item];
 
-  return v10;
+  return item;
 }
 
-- (id)actionViewForLocation:(CGPoint)a3
+- (id)actionViewForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v8 = [v7 indexPathForItemAtPoint:{x, y}];
-  v9 = [v6 cellForItemAtIndexPath:v8];
+  y = location.y;
+  x = location.x;
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  collectionView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  v8 = [collectionView2 indexPathForItemAtPoint:{x, y}];
+  v9 = [collectionView cellForItemAtIndexPath:v8];
 
   return v9;
 }
 
 - (void)_updateIconSpacing
 {
-  v31 = [(_UIDocumentPickerDocumentCollectionViewController *)self gridLayout];
-  v3 = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
-  [_UIDocumentPickerCell defaultSizeForCellStyle:1 traitCollection:v3];
+  gridLayout = [(_UIDocumentPickerDocumentCollectionViewController *)self gridLayout];
+  traitCollection = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
+  [_UIDocumentPickerCell defaultSizeForCellStyle:1 traitCollection:traitCollection];
   v5 = v4;
   v29 = v6;
 
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  [v7 frame];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  [collectionView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -189,19 +189,19 @@
   v33.size.width = v13;
   v33.size.height = v15;
   Width = CGRectGetWidth(v33);
-  v17 = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
-  v18 = [v17 _valueForTraitNamed:@"TightMargins"];
-  v19 = [v18 BOOLValue];
+  traitCollection2 = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
+  v18 = [traitCollection2 _valueForTraitNamed:@"TightMargins"];
+  bOOLValue = [v18 BOOLValue];
 
   v20 = 2.0;
   v21 = 2.0;
-  if ((v19 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v22 = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
-    v23 = [v22 _valueForTraitNamed:@"CompactIcons"];
-    v24 = [v23 BOOLValue];
+    traitCollection3 = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
+    v23 = [traitCollection3 _valueForTraitNamed:@"CompactIcons"];
+    bOOLValue2 = [v23 BOOLValue];
 
-    if (v24)
+    if (bOOLValue2)
     {
       v21 = 15.0;
     }
@@ -211,7 +211,7 @@
       v21 = 25.0;
     }
 
-    if (v24)
+    if (bOOLValue2)
     {
       v20 = 15.5;
     }
@@ -233,40 +233,40 @@
     v26 = v25;
   }
 
-  [v31 setMinimumLineSpacing:{23.0, v29}];
+  [gridLayout setMinimumLineSpacing:{23.0, v29}];
   v34.origin.x = v9;
   v34.origin.y = v11;
   v34.size.width = v13;
   v34.size.height = v15;
   v27 = (CGRectGetWidth(v34) - v26 * v5) / (v26 + 1);
   v28 = floor(v27 * 0.5);
-  [v31 setSectionInset:{v20, v28, v21, v28}];
-  [v31 setItemSize:{v5 + v27, v30}];
+  [gridLayout setSectionInset:{v20, v28, v21, v28}];
+  [gridLayout setItemSize:{v5 + v27, v30}];
 }
 
 - (void)_updateRowHeight
 {
-  v3 = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
-  v4 = [v3 cellStyle];
-  v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
-  [_UIDocumentPickerCell defaultSizeForCellStyle:v4 traitCollection:v5];
+  tableLayout = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
+  cellStyle = [tableLayout cellStyle];
+  traitCollection = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
+  [_UIDocumentPickerCell defaultSizeForCellStyle:cellStyle traitCollection:traitCollection];
 
-  v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
   UIRoundToViewScale();
   v7 = v6;
-  v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
-  [v8 setRowHeight:v7];
+  tableLayout2 = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
+  [tableLayout2 setRowHeight:v7];
 }
 
-- (void)_dynamicTypeSizeChanged:(id)a3
+- (void)_dynamicTypeSizeChanged:(id)changed
 {
-  v4 = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
-  [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollectionDidChange:v4];
+  traitCollection = [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollection];
+  [(_UIDocumentPickerDocumentCollectionViewController *)self traitCollectionDidChange:traitCollection];
 
   [(_UIDocumentPickerDocumentCollectionViewController *)self _updateIconSpacing];
   [(_UIDocumentPickerDocumentCollectionViewController *)self _updateRowHeight];
-  v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  [v5 reloadData];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)dealloc
@@ -277,16 +277,16 @@
   [(_UIDocumentPickerDocumentCollectionViewController *)&v3 dealloc];
 }
 
-- (void)containersChangedWithSnapshot:(id)a3 differences:(id)a4
+- (void)containersChangedWithSnapshot:(id)snapshot differences:(id)differences
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self initialActivityView];
-  [v8 stopAnimating];
+  snapshotCopy = snapshot;
+  differencesCopy = differences;
+  initialActivityView = [(_UIDocumentPickerDocumentCollectionViewController *)self initialActivityView];
+  [initialActivityView stopAnimating];
 
-  if ([v7 count])
+  if ([differencesCopy count])
   {
-    v9 = [v7 objectForKey:*MEMORY[0x277D77358]];
+    v9 = [differencesCopy objectForKey:*MEMORY[0x277D77358]];
     if ([v9 count])
     {
       v10 = 0;
@@ -294,7 +294,7 @@
 
     else
     {
-      v11 = [v7 objectForKey:*MEMORY[0x277D77350]];
+      v11 = [differencesCopy objectForKey:*MEMORY[0x277D77350]];
       if ([v11 count])
       {
         v10 = 0;
@@ -302,7 +302,7 @@
 
       else
       {
-        v12 = [v7 objectForKey:*MEMORY[0x277D77368]];
+        v12 = [differencesCopy objectForKey:*MEMORY[0x277D77368]];
         v10 = [v12 count] == 0;
       }
     }
@@ -317,13 +317,13 @@
   v21[1] = 3221225472;
   v21[2] = __95___UIDocumentPickerDocumentCollectionViewController_containersChangedWithSnapshot_differences___block_invoke;
   v21[3] = &unk_278DD6200;
-  v13 = v7;
+  v13 = differencesCopy;
   v22 = v13;
-  v23 = self;
+  selfCopy = self;
   v14 = MEMORY[0x245D41DF0](v21);
   if (v10)
   {
-    [(_UIDocumentPickerDocumentCollectionViewController *)self setModelObjects:v6];
+    [(_UIDocumentPickerDocumentCollectionViewController *)self setModelObjects:snapshotCopy];
     v14[2](v14);
   }
 
@@ -334,67 +334,67 @@
     v18[2] = __95___UIDocumentPickerDocumentCollectionViewController_containersChangedWithSnapshot_differences___block_invoke_2;
     v18[3] = &unk_278DD64E0;
     v18[4] = self;
-    v19 = v6;
+    v19 = snapshotCopy;
     v20 = v13;
     v15 = MEMORY[0x245D41DF0](v18);
-    v16 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-    [v16 performBatchUpdates:v15 completion:0];
+    collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+    [collectionView performBatchUpdates:v15 completion:0];
 
     v14[2](v14);
   }
 
   else
   {
-    [(_UIDocumentPickerDocumentCollectionViewController *)self setModelObjects:v6];
-    v17 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-    [v17 reloadData];
+    [(_UIDocumentPickerDocumentCollectionViewController *)self setModelObjects:snapshotCopy];
+    collectionView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+    [collectionView2 reloadData];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  [(_UIDocumentPickerDocumentCollectionViewController *)self setMonitoring:a3 != 0];
-  v4 = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
-  v5 = [v4 modelObjects];
-  [(_UIDocumentPickerDocumentCollectionViewController *)self setModelObjects:v5];
+  [(_UIDocumentPickerDocumentCollectionViewController *)self setMonitoring:controller != 0];
+  model = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
+  modelObjects = [model modelObjects];
+  [(_UIDocumentPickerDocumentCollectionViewController *)self setModelObjects:modelObjects];
 
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  [v6 reloadData];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)setMonitoring:(BOOL)a3
+- (void)setMonitoring:(BOOL)monitoring
 {
-  if (self->_monitoring != a3)
+  if (self->_monitoring != monitoring)
   {
-    v3 = a3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
-    if (v3)
+    monitoringCopy = monitoring;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    model = defaultCenter;
+    if (monitoringCopy)
     {
-      [v5 addObserver:self selector:sel_modelChanged_ name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
+      [defaultCenter addObserver:self selector:sel_modelChanged_ name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
 
-      v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
-      [v6 startMonitoringChanges];
+      model = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
+      [model startMonitoringChanges];
     }
 
     else
     {
-      [v5 removeObserver:self name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
+      [defaultCenter removeObserver:self name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
     }
 
-    self->_monitoring = v3;
+    self->_monitoring = monitoringCopy;
   }
 }
 
-- (void)modelChanged:(id)a3
+- (void)modelChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v14 = [v5 objectForKey:@"model"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v14 = [userInfo objectForKey:@"model"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v7 = [v6 objectForKey:@"changes"];
+  v7 = [userInfo2 objectForKey:@"changes"];
 
   [(_UIDocumentPickerDocumentCollectionViewController *)self containersChangedWithSnapshot:v14 differences:v7];
   if ([v7 count])
@@ -417,13 +417,13 @@
     v9 = 1;
   }
 
-  v11 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    [v13 itemsOrSelectionDidChange:v9];
+    serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    [serviceViewController2 itemsOrSelectionDidChange:v9];
   }
 }
 
@@ -435,76 +435,76 @@
   [(_UIDocumentPickerDocumentCollectionViewController *)self _updateIconSpacing];
 }
 
-- (void)setDisplayMode:(int64_t)a3
+- (void)setDisplayMode:(int64_t)mode
 {
-  if (self->_displayMode == a3)
+  if (self->_displayMode == mode)
   {
     return;
   }
 
-  self->_displayMode = a3;
-  if (a3 == 1)
+  self->_displayMode = mode;
+  if (mode == 1)
   {
-    v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self gridLayout];
-    [v8 setCellStyle:1];
+    gridLayout = [(_UIDocumentPickerDocumentCollectionViewController *)self gridLayout];
+    [gridLayout setCellStyle:1];
     [(_UIDocumentPickerDocumentCollectionViewController *)self _updateIconSpacing];
   }
 
   else
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
-      v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
-      v8 = v5;
+      tableLayout = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
+      gridLayout = tableLayout;
       v6 = 3;
     }
 
     else
     {
-      if (a3 != 2)
+      if (mode != 2)
       {
-        v8 = 0;
+        gridLayout = 0;
         goto LABEL_10;
       }
 
-      v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
-      v8 = v5;
+      tableLayout = [(_UIDocumentPickerDocumentCollectionViewController *)self tableLayout];
+      gridLayout = tableLayout;
       v6 = 2;
     }
 
-    [v5 setCellStyle:v6];
+    [tableLayout setCellStyle:v6];
     [(_UIDocumentPickerDocumentCollectionViewController *)self _updateRowHeight];
   }
 
 LABEL_10:
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  [v7 setCollectionViewLayout:v8 animated:1];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  [collectionView setCollectionViewLayout:gridLayout animated:1];
 }
 
-- (void)setContentSizeAdjustment:(double)a3
+- (void)setContentSizeAdjustment:(double)adjustment
 {
-  v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  [v5 setContentSizeAdjustment:a3];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  [collectionView setContentSizeAdjustment:adjustment];
 
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionViewLayout];
-  [v6 setContentSizeAdjustment:a3];
+  collectionViewLayout = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout setContentSizeAdjustment:adjustment];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects:a3];
+  v4 = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"_UIDocumentPickerDocumentCellIdentifier" forIndexPath:v6];
-  v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self actions];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"_UIDocumentPickerDocumentCellIdentifier" forIndexPath:pathCopy];
+  actions = [(_UIDocumentPickerDocumentCollectionViewController *)self actions];
 
-  if (!v8)
+  if (!actions)
   {
     v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:7];
     v10 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -552,56 +552,56 @@ LABEL_10:
     [(_UIDocumentPickerDocumentCollectionViewController *)self setActions:v9];
   }
 
-  v25 = [v7 actions];
+  actions2 = [v7 actions];
 
-  if (!v25)
+  if (!actions2)
   {
-    v26 = [(_UIDocumentPickerDocumentCollectionViewController *)self actions];
-    [v7 setActions:v26];
+    actions3 = [(_UIDocumentPickerDocumentCollectionViewController *)self actions];
+    [v7 setActions:actions3];
   }
 
   [v7 setCollectionView:self];
-  v27 = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects];
-  v28 = [v6 row];
+  modelObjects = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects];
+  v28 = [pathCopy row];
 
-  v29 = [v27 objectAtIndex:v28];
+  v29 = [modelObjects objectAtIndex:v28];
 
   [v7 setItem:v29];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v6 = [v10 isEditing];
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v8 = [v7 isEditing];
+  cellCopy = cell;
+  isEditing = [cellCopy isEditing];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  isEditing2 = [collectionView isEditing];
 
-  v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  [v10 setEditing:{objc_msgSend(v9, "isEditing")}];
+  collectionView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  [cellCopy setEditing:{objc_msgSend(collectionView2, "isEditing")}];
 
-  if (v6 == v8)
+  if (isEditing == isEditing2)
   {
-    [v10 updateForEditingState:0];
+    [cellCopy updateForEditingState:0];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects];
-  v7 = [v5 row];
+  pathCopy = path;
+  modelObjects = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [modelObjects objectAtIndex:v7];
 
-  v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
   LOBYTE(v7) = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    v11 = [v10 shouldHighlightItem:v8];
+    serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    v11 = [serviceViewController2 shouldHighlightItem:v8];
   }
 
   else
@@ -612,67 +612,67 @@ LABEL_10:
   return v11;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v11 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  v11 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v7 = [v11 item];
-  v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  item = [v11 item];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    [v10 didHighlightItem:v7];
+    serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    [serviceViewController2 didHighlightItem:item];
   }
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v11 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  v11 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v7 = [v11 item];
-  v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  item = [v11 item];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    [v10 didUnhighlightItem:v7];
+    serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    [serviceViewController2 didUnhighlightItem:item];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects];
-  v7 = [v5 row];
+  pathCopy = path;
+  modelObjects = [(_UIDocumentPickerDocumentCollectionViewController *)self modelObjects];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [modelObjects objectAtIndex:v7];
 
-  v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
+  firstResponder = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
   objc_opt_class();
   LOBYTE(v7) = objc_opt_isKindOfClass();
 
   if (v7)
   {
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
-    [v10 endEditing:0];
+    firstResponder2 = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
+    [firstResponder2 endEditing:0];
   }
 
   if ([v8 pickable])
   {
-    v11 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-      v14 = [v13 shouldSelectItem:v8];
+      serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+      v14 = [serviceViewController2 shouldSelectItem:v8];
     }
 
     else
@@ -689,60 +689,60 @@ LABEL_10:
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v9 = [v8 item];
-  v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self isEditing];
-  v11 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-  v12 = v11;
-  if (v10)
+  item = [v8 item];
+  isEditing = [(_UIDocumentPickerDocumentCollectionViewController *)self isEditing];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  v12 = serviceViewController;
+  if (isEditing)
   {
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-      [v14 itemsOrSelectionDidChange:1];
+      serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+      [serviceViewController2 itemsOrSelectionDidChange:1];
     }
   }
 
   else
   {
-    [v11 didSelectItem:v9];
+    [serviceViewController didSelectItem:item];
 
-    [v16 deselectItemAtIndexPath:v6 animated:1];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
   }
 
-  v15 = [MEMORY[0x277D75718] sharedMenuController];
-  [v15 setMenuVisible:0];
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  [mEMORY[0x277D75718] setMenuVisible:0];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  if ([(_UIDocumentPickerDocumentCollectionViewController *)self isEditing:a3])
+  if ([(_UIDocumentPickerDocumentCollectionViewController *)self isEditing:view])
   {
-    v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-      [v7 itemsOrSelectionDidChange:1];
+      serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+      [serviceViewController2 itemsOrSelectionDidChange:1];
     }
   }
 }
 
 - (BOOL)supportsActions
 {
-  v3 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
     v5 = (objc_opt_respondsToSelector() & 1) != 0 && [(_UIDocumentPickerDocumentCollectionViewController *)self displayMode]!= 3;
   }
 
@@ -754,53 +754,53 @@ LABEL_10:
   return v5;
 }
 
-- (void)collectionView:(id)a3 tableLayout:(id)a4 accessoryButtonTappedForRowWithIndexPath:(id)a5
+- (void)collectionView:(id)view tableLayout:(id)layout accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  [(_UIDocumentPickerDocumentCollectionViewController *)self performAction:2 forRow:v6 view:v8];
+  [(_UIDocumentPickerDocumentCollectionViewController *)self performAction:2 forRow:pathCopy view:v8];
 }
 
-- (void)performAction:(int64_t)a3 forRow:(id)a4 view:(id)a5
+- (void)performAction:(int64_t)action forRow:(id)row view:(id)view
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
-  v11 = [v10 modelObjects];
-  v12 = [v9 row];
+  viewCopy = view;
+  rowCopy = row;
+  model = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
+  modelObjects = [model modelObjects];
+  v12 = [rowCopy row];
 
-  v13 = [v11 objectAtIndex:v12];
+  v13 = [modelObjects objectAtIndex:v12];
 
-  v14 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79___UIDocumentPickerDocumentCollectionViewController_performAction_forRow_view___block_invoke;
   v15[3] = &unk_278DD61B0;
   v15[4] = self;
-  [v14 performAction:a3 item:v13 view:v8 completion:v15];
+  [serviceViewController performAction:action item:v13 view:viewCopy completion:v15];
 }
 
-- (void)_showMoreOptionsForRow:(id)a3 view:(id)a4
+- (void)_showMoreOptionsForRow:(id)row view:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
-  v9 = [v8 modelObjects];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+  rowCopy = row;
+  viewCopy = view;
+  model = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
+  modelObjects = [model modelObjects];
+  v10 = [modelObjects objectAtIndex:{objc_msgSend(rowCopy, "row")}];
 
   v11 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v12 = [v11 popoverPresentationController];
-  [v12 setSourceView:v7];
+  popoverPresentationController = [v11 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v7 bounds];
+  [viewCopy bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v11 popoverPresentationController];
-  [v21 setSourceRect:{v14, v16, v18, v20}];
+  popoverPresentationController2 = [v11 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v14, v16, v18, v20}];
 
   v22 = [v10 isActionApplicableForItem:3];
   v23 = [v10 isActionApplicableForItem:4];
@@ -808,8 +808,8 @@ LABEL_10:
   v25 = &off_243855000;
   if (v22)
   {
-    v26 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    v27 = [v26 shouldShowAction:3];
+    serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    v27 = [serviceViewController shouldShowAction:3];
 
     if (v27)
     {
@@ -821,8 +821,8 @@ LABEL_10:
       v55[2] = __81___UIDocumentPickerDocumentCollectionViewController__showMoreOptionsForRow_view___block_invoke;
       v55[3] = &unk_278DD69E0;
       v55[4] = self;
-      v56 = v6;
-      v57 = v7;
+      v56 = rowCopy;
+      v57 = viewCopy;
       v31 = [v28 actionWithTitle:v30 style:0 handler:v55];
       [v11 addAction:v31];
 
@@ -832,8 +832,8 @@ LABEL_10:
 
   if (v23)
   {
-    v32 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    v33 = [v32 shouldShowAction:4];
+    serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    v33 = [serviceViewController2 shouldShowAction:4];
 
     if (v33)
     {
@@ -845,8 +845,8 @@ LABEL_10:
       v52[2] = __81___UIDocumentPickerDocumentCollectionViewController__showMoreOptionsForRow_view___block_invoke_2;
       v52[3] = &unk_278DD69E0;
       v52[4] = self;
-      v53 = v6;
-      v54 = v7;
+      v53 = rowCopy;
+      v54 = viewCopy;
       v37 = [v34 actionWithTitle:v36 style:0 handler:v52];
       [v11 addAction:v37];
     }
@@ -854,8 +854,8 @@ LABEL_10:
 
   if (v24)
   {
-    v38 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    v39 = [v38 shouldShowAction:5];
+    serviceViewController3 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    v39 = [serviceViewController3 shouldShowAction:5];
 
     if (v39)
     {
@@ -867,8 +867,8 @@ LABEL_10:
       v49[2] = __81___UIDocumentPickerDocumentCollectionViewController__showMoreOptionsForRow_view___block_invoke_3;
       v49[3] = &unk_278DD69E0;
       v49[4] = self;
-      v50 = v6;
-      v51 = v7;
+      v50 = rowCopy;
+      v51 = viewCopy;
       v43 = [v40 actionWithTitle:v42 style:0 handler:v49];
       [v11 addAction:v43];
     }
@@ -888,31 +888,31 @@ LABEL_10:
   [(_UIDocumentPickerDocumentCollectionViewController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsForRowAtIndexPath:(id)a5
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsForRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
   if (![(_UIDocumentPickerDocumentCollectionViewController *)self supportsActions])
   {
-    v15 = 0;
+    array = 0;
     goto LABEL_18;
   }
 
-  v11 = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
-  v12 = [v11 modelObjects];
-  v13 = [v12 objectAtIndex:{objc_msgSend(v10, "row")}];
+  model = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
+  modelObjects = [model modelObjects];
+  v13 = [modelObjects objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x3032000000;
   v45[3] = __Block_byref_object_copy__2;
   v45[4] = __Block_byref_object_dispose__2;
-  v14 = self;
-  v46 = v14;
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [(_UIDocumentPickerDocumentCollectionViewController *)v14 serviceViewController];
-  if ([v16 shouldShowAction:1])
+  selfCopy = self;
+  v46 = selfCopy;
+  array = [MEMORY[0x277CBEB18] array];
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)selfCopy serviceViewController];
+  if ([serviceViewController shouldShowAction:1])
   {
     v17 = [v13 isActionApplicableForItem:1];
 
@@ -927,11 +927,11 @@ LABEL_10:
       v44[2] = __118___UIDocumentPickerDocumentCollectionViewController_collectionView_tableLayout_trailingSwipeActionsForRowAtIndexPath___block_invoke;
       v44[3] = &unk_278DD6A30;
       v44[5] = v45;
-      v44[4] = v10;
+      v44[4] = pathCopy;
       v22 = [v18 actionWithStyle:0 title:v20 handler:v44];
 
       [v22 setResetsSwipedRow:0];
-      [v15 addObject:v22];
+      [array addObject:v22];
 LABEL_12:
 
       goto LABEL_13;
@@ -945,14 +945,14 @@ LABEL_12:
   v23 = [v13 isActionApplicableForItem:3];
   v24 = [v13 isActionApplicableForItem:4];
   v25 = [v13 isActionApplicableForItem:5];
-  v26 = [(_UIDocumentPickerDocumentCollectionViewController *)v14 serviceViewController];
-  if ([v26 shouldShowAction:3] & v23)
+  serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)selfCopy serviceViewController];
+  if ([serviceViewController2 shouldShowAction:3] & v23)
   {
     goto LABEL_10;
   }
 
-  v27 = [(_UIDocumentPickerDocumentCollectionViewController *)v14 serviceViewController];
-  if (([v27 shouldShowAction:4] & v24) == 1)
+  serviceViewController3 = [(_UIDocumentPickerDocumentCollectionViewController *)selfCopy serviceViewController];
+  if (([serviceViewController3 shouldShowAction:4] & v24) == 1)
   {
 
 LABEL_10:
@@ -966,16 +966,16 @@ LABEL_11:
     v43[2] = __118___UIDocumentPickerDocumentCollectionViewController_collectionView_tableLayout_trailingSwipeActionsForRowAtIndexPath___block_invoke_2;
     v43[3] = &unk_278DD6A30;
     v43[5] = v45;
-    v43[4] = v10;
+    v43[4] = pathCopy;
     v22 = [v28 actionWithStyle:0 title:v30 handler:v43];
 
     [v22 setResetsSwipedRow:0];
-    [v15 addObject:v22];
+    [array addObject:v22];
     goto LABEL_12;
   }
 
-  v38 = [(_UIDocumentPickerDocumentCollectionViewController *)v14 serviceViewController];
-  v39 = [v38 shouldShowAction:5] & v25;
+  serviceViewController4 = [(_UIDocumentPickerDocumentCollectionViewController *)selfCopy serviceViewController];
+  v39 = [serviceViewController4 shouldShowAction:5] & v25;
 
   if (v39)
   {
@@ -983,8 +983,8 @@ LABEL_11:
   }
 
 LABEL_13:
-  v31 = [(_UIDocumentPickerDocumentCollectionViewController *)v14 serviceViewController];
-  if (![v31 shouldShowAction:0])
+  serviceViewController5 = [(_UIDocumentPickerDocumentCollectionViewController *)selfCopy serviceViewController];
+  if (![serviceViewController5 shouldShowAction:0])
   {
 LABEL_16:
 
@@ -1003,13 +1003,13 @@ LABEL_16:
     v40[2] = __118___UIDocumentPickerDocumentCollectionViewController_collectionView_tableLayout_trailingSwipeActionsForRowAtIndexPath___block_invoke_3;
     v40[3] = &unk_278DD6A30;
     v42 = v45;
-    v41 = v10;
+    v41 = pathCopy;
     v36 = [v33 actionWithStyle:1 title:v35 handler:v40];
 
     [v36 setResetsSwipedRow:0];
-    [v15 addObject:v36];
+    [array addObject:v36];
 
-    v31 = v41;
+    serviceViewController5 = v41;
     goto LABEL_16;
   }
 
@@ -1018,68 +1018,68 @@ LABEL_17:
 
 LABEL_18:
 
-  return v15;
+  return array;
 }
 
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 indentationLevelForRowAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view tableLayout:(id)layout indentationLevelForRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  if ([a4 cellStyle] == 3)
+  pathCopy = path;
+  if ([layout cellStyle] == 3)
   {
-    v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
-    v9 = [v8 modelObjects];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
+    model = [(_UIDocumentPickerDocumentCollectionViewController *)self model];
+    modelObjects = [model modelObjects];
+    v10 = [modelObjects objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v11 = [v10 indentationLevel];
+    indentationLevel = [v10 indentationLevel];
   }
 
   else
   {
-    v11 = 0;
+    indentationLevel = 0;
   }
 
-  return v11;
+  return indentationLevel;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(_UIDocumentPickerDocumentCollectionViewController *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(_UIDocumentPickerDocumentCollectionViewController *)self isEditing]!= editing)
   {
-    v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
+    firstResponder = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
-      [v9 endEditing:0];
+      firstResponder2 = [(_UIDocumentPickerDocumentCollectionViewController *)self firstResponder];
+      [firstResponder2 endEditing:0];
     }
 
     v10.receiver = self;
     v10.super_class = _UIDocumentPickerDocumentCollectionViewController;
-    [(_UIDocumentPickerDocumentCollectionViewController *)&v10 setEditing:v5 animated:v4];
+    [(_UIDocumentPickerDocumentCollectionViewController *)&v10 setEditing:editingCopy animated:animatedCopy];
   }
 }
 
 - (NSArray)indexPathsForSelectedItems
 {
-  v2 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  v3 = [v2 indexPathsForSelectedItems];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  return v3;
+  return indexPathsForSelectedItems;
 }
 
-- (void)setIndexPathsForSelectedItems:(id)a3
+- (void)setIndexPathsForSelectedItems:(id)items
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1091,62 +1091,62 @@ LABEL_18:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-        [v10 selectItemAtIndexPath:v9 animated:0 scrollPosition:0];
+        collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+        [collectionView selectItemAtIndexPath:v9 animated:0 scrollPosition:0];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setSortView:(id)a3
+- (void)setSortView:(id)view
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewCopy = view;
   sortView = self->_sortView;
-  if (sortView != v5)
+  if (sortView != viewCopy)
   {
     [(_UIDocumentPickerSortOrderView *)sortView removeFromSuperview];
-    objc_storeStrong(&self->_sortView, a3);
+    objc_storeStrong(&self->_sortView, view);
     [(_UIDocumentPickerDocumentCollectionViewController *)self updateContentInset];
-    if (v5)
+    if (viewCopy)
     {
-      v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-      [v7 addSubview:v5];
+      scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+      [scrollView addSubview:viewCopy];
 
-      [(_UIDocumentPickerSortOrderView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(_UIDocumentPickerSortOrderView *)viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
       v17 = MEMORY[0x277CCAAD0];
-      v22 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-      v21 = [v22 widthAnchor];
-      v20 = [(_UIDocumentPickerSortOrderView *)v5 widthAnchor];
-      v19 = [v21 constraintEqualToAnchor:v20];
+      scrollView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+      widthAnchor = [scrollView2 widthAnchor];
+      widthAnchor2 = [(_UIDocumentPickerSortOrderView *)viewCopy widthAnchor];
+      v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v23[0] = v19;
-      v18 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-      v8 = [v18 leftAnchor];
-      v9 = [(_UIDocumentPickerSortOrderView *)v5 leftAnchor];
-      v10 = [v8 constraintEqualToAnchor:v9];
+      scrollView3 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+      leftAnchor = [scrollView3 leftAnchor];
+      leftAnchor2 = [(_UIDocumentPickerSortOrderView *)viewCopy leftAnchor];
+      v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v23[1] = v10;
-      v11 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-      v12 = [v11 topAnchor];
-      v13 = [(_UIDocumentPickerSortOrderView *)v5 topAnchor];
+      scrollView4 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+      topAnchor = [scrollView4 topAnchor];
+      topAnchor2 = [(_UIDocumentPickerSortOrderView *)viewCopy topAnchor];
       [(_UIDocumentPickerSortOrderView *)self->_sortView frame];
-      v15 = [v12 constraintEqualToAnchor:v13 constant:v14];
+      v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v14];
       v23[2] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
       [v17 activateConstraints:v16];
 
       [(_UIDocumentPickerDocumentCollectionViewController *)self setShouldHideSortBar:1];
-      [(_UIDocumentPickerSortOrderView *)v5 setListMode:[(_UIDocumentPickerDocumentCollectionViewController *)self displayMode]];
+      [(_UIDocumentPickerSortOrderView *)viewCopy setListMode:[(_UIDocumentPickerDocumentCollectionViewController *)self displayMode]];
     }
   }
 }
@@ -1172,64 +1172,64 @@ LABEL_18:
     v8 = v7;
     v5 = v5 + v7;
     [(_UIDocumentPickerDocumentCollectionViewController *)self setContentSizeAdjustment:-v7];
-    v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-    [v9 setScrollIndicatorInsets:{v8, 0.0, 0.0, 0.0}];
+    scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+    [scrollView setScrollIndicatorInsets:{v8, 0.0, 0.0, 0.0}];
   }
 
-  v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-  [v10 setContentInset:{v5, 0.0, 0.0, 0.0}];
+  scrollView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+  [scrollView2 setContentInset:{v5, 0.0, 0.0, 0.0}];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self navigationController];
-    [v10 presentViewController:v8 animated:v6 completion:v9];
+    navigationController = [(_UIDocumentPickerDocumentCollectionViewController *)self navigationController];
+    [navigationController presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = _UIDocumentPickerDocumentCollectionViewController;
-    [(_UIDocumentPickerDocumentCollectionViewController *)&v11 presentViewController:v8 animated:v6 completion:v9];
+    [(_UIDocumentPickerDocumentCollectionViewController *)&v11 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v3 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-  [v3 setContentInset:{0.0, 0.0, 0.0, 0.0}];
+  scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+  [scrollView setContentInset:{0.0, 0.0, 0.0, 0.0}];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   [(_UIDocumentPickerDocumentCollectionViewController *)self updateContentInset];
 
   [(_UIDocumentPickerDocumentCollectionViewController *)self ensureSortViewInvisible];
 }
 
-- (void)setPinnedHeaderView:(id)a3 animated:(BOOL)a4
+- (void)setPinnedHeaderView:(id)view animated:(BOOL)animated
 {
-  v6 = a3;
+  viewCopy = view;
   pinnedHeaderView = self->_pinnedHeaderView;
-  if (pinnedHeaderView != v6)
+  if (pinnedHeaderView != viewCopy)
   {
-    v18 = v6;
+    v18 = viewCopy;
     v8 = pinnedHeaderView;
     [(UIView *)v8 removeFromSuperview];
-    objc_storeStrong(&self->_pinnedHeaderView, a3);
-    v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-    [v9 addSubview:v18];
+    objc_storeStrong(&self->_pinnedHeaderView, view);
+    scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+    [scrollView addSubview:v18];
 
     [(_UIDocumentPickerDocumentCollectionViewController *)self updateContentInset];
     [(_UIDocumentPickerDocumentCollectionViewController *)self updatePinnedHeader];
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-    [v10 contentOffset];
+    scrollView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+    [scrollView2 contentOffset];
     v12 = v11;
 
     if (v18)
@@ -1250,25 +1250,25 @@ LABEL_18:
       v14 = -v16;
     }
 
-    v17 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-    [v17 setContentOffset:0 animated:{0.0, v14}];
+    scrollView3 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+    [scrollView3 setContentOffset:0 animated:{0.0, v14}];
 
-    v6 = v18;
+    viewCopy = v18;
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  v29 = a3;
-  v8 = a5->y;
+  y = velocity.y;
+  draggingCopy = dragging;
+  v8 = offset->y;
   [(UIView *)self->_pinnedHeaderView frame];
   v10 = v8 + v9;
-  v11 = [(_UIDocumentPickerDocumentCollectionViewController *)self sortView];
-  v12 = [v11 superview];
-  v13 = [(_UIDocumentPickerDocumentCollectionViewController *)self sortView];
-  [v13 frame];
-  [v12 convertRect:v29 toView:?];
+  sortView = [(_UIDocumentPickerDocumentCollectionViewController *)self sortView];
+  superview = [sortView superview];
+  sortView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self sortView];
+  [sortView2 frame];
+  [superview convertRect:draggingCopy toView:?];
   v15 = v14;
   v17 = v16;
 
@@ -1289,9 +1289,9 @@ LABEL_18:
     if (v10 > v15 && v10 <= v21)
     {
 LABEL_24:
-      [v29 contentOffset];
+      [draggingCopy contentOffset];
       v25 = v28;
-      [v29 contentInset];
+      [draggingCopy contentInset];
       goto LABEL_25;
     }
 
@@ -1306,20 +1306,20 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  [v29 contentOffset];
+  [draggingCopy contentOffset];
   v25 = v24;
   [(UIView *)self->_pinnedHeaderView bounds];
   v27 = v26;
 LABEL_25:
-  a5->x = v25;
-  a5->y = -v27;
+  offset->x = v25;
+  offset->y = -v27;
 LABEL_26:
 }
 
 - (void)updatePinnedHeader
 {
-  v3 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-  [v3 bounds];
+  scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+  [scrollView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1329,30 +1329,30 @@ LABEL_26:
   [(UIView *)pinnedHeaderView setFrame:v5, v7, v9, 44.0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = _UIDocumentPickerDocumentCollectionViewController;
-  [(_UIDocumentPickerDocumentCollectionViewController *)&v3 viewDidAppear:a3];
+  [(_UIDocumentPickerDocumentCollectionViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(_UIDocumentPickerDocumentCollectionViewController *)self setShouldHideSortBar:1];
   [(_UIDocumentPickerDocumentCollectionViewController *)self updateContentInset];
-  v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-  [v5 setNeedsLayout];
+  scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+  [scrollView setNeedsLayout];
 
-  v6 = [(_UIDocumentPickerDocumentCollectionViewController *)self navigationController];
-  v7 = [v6 view];
-  v8 = [v7 semanticContentAttribute];
-  v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
-  [v9 setSemanticContentAttribute:v8];
+  navigationController = [(_UIDocumentPickerDocumentCollectionViewController *)self navigationController];
+  view = [navigationController view];
+  semanticContentAttribute = [view semanticContentAttribute];
+  collectionView = [(_UIDocumentPickerDocumentCollectionViewController *)self collectionView];
+  [collectionView setSemanticContentAttribute:semanticContentAttribute];
 
   v10.receiver = self;
   v10.super_class = _UIDocumentPickerDocumentCollectionViewController;
-  [(_UIDocumentPickerDocumentCollectionViewController *)&v10 viewWillAppear:v3];
+  [(_UIDocumentPickerDocumentCollectionViewController *)&v10 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1369,36 +1369,36 @@ LABEL_26:
 
 - (void)ensureSortViewInvisible
 {
-  v3 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-  [v3 contentOffset];
+  scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+  [scrollView contentOffset];
   v5 = v4;
   [(UIView *)self->_pinnedHeaderView bounds];
   v7 = -v6;
 
   if (v5 < v7)
   {
-    v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+    scrollView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
     [(UIView *)self->_pinnedHeaderView bounds];
-    [v9 setContentOffset:0 animated:{0.0, -v8}];
+    [scrollView2 setContentOffset:0 animated:{0.0, -v8}];
   }
 }
 
 - (void)scrollSortViewToVisible
 {
   [(_UIDocumentPickerDocumentCollectionViewController *)self setShouldHideSortBar:0];
-  v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-  v3 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
-  [v3 contentInset];
-  [v5 setContentOffset:0 animated:{0.0, -v4}];
+  scrollView = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+  scrollView2 = [(_UIDocumentPickerDocumentCollectionViewController *)self scrollView];
+  [scrollView2 contentInset];
+  [scrollView setContentOffset:0 animated:{0.0, -v4}];
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self itemForLocation:a3, a4.x, a4.y];
+  v5 = [(_UIDocumentPickerDocumentCollectionViewController *)self itemForLocation:context, location.x, location.y];
   if (v5 && ([(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7 & 1) != 0))
   {
-    v8 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    v9 = [v8 previewViewControllerForItem:v5];
+    serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    v9 = [serviceViewController previewViewControllerForItem:v5];
 
     if (v9)
     {
@@ -1419,19 +1419,19 @@ LABEL_26:
   return v9;
 }
 
-- (id)previewActionItemsForItem:(id)a3
+- (id)previewActionItemsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  itemCopy = item;
+  array = [MEMORY[0x277CBEB18] array];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __79___UIDocumentPickerDocumentCollectionViewController_previewActionItemsForItem___block_invoke;
   v19[3] = &unk_278DD6A80;
   v19[4] = self;
-  v20 = v4;
-  v6 = v5;
+  v20 = itemCopy;
+  v6 = array;
   v21 = v6;
-  v7 = v4;
+  v7 = itemCopy;
   v8 = MEMORY[0x245D41DF0](v19);
   v9 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v10 = [v9 localizedStringForKey:@"Rename..." value:@"Rename…" table:@"Localizable"];
@@ -1453,28 +1453,28 @@ LABEL_26:
   return v6;
 }
 
-- (void)previewingContext:(id)a3 commitViewController:(id)a4
+- (void)previewingContext:(id)context commitViewController:(id)controller
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-  v8 = [v7 shouldShowAction:6];
+  contextCopy = context;
+  controllerCopy = controller;
+  serviceViewController = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+  v8 = [serviceViewController shouldShowAction:6];
 
   if (v8)
   {
-    v9 = objc_getAssociatedObject(v6, &viewControllerItemKey);
-    v10 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
-    v11 = [v12 sourceView];
-    [v10 performAction:6 item:v9 view:v11 completion:&__block_literal_global_9];
+    navigationController = objc_getAssociatedObject(controllerCopy, &viewControllerItemKey);
+    serviceViewController2 = [(_UIDocumentPickerDocumentCollectionViewController *)self serviceViewController];
+    sourceView = [contextCopy sourceView];
+    [serviceViewController2 performAction:6 item:navigationController view:sourceView completion:&__block_literal_global_9];
   }
 
   else
   {
-    v9 = [(_UIDocumentPickerDocumentCollectionViewController *)self navigationController];
-    [v9 pushViewController:v6 animated:1];
+    navigationController = [(_UIDocumentPickerDocumentCollectionViewController *)self navigationController];
+    [navigationController pushViewController:controllerCopy animated:1];
   }
 
-  objc_setAssociatedObject(v6, &viewControllerItemKey, 0, 0x301);
+  objc_setAssociatedObject(controllerCopy, &viewControllerItemKey, 0, 0x301);
 }
 
 - (_UIDocumentPickerServiceViewController)serviceViewController

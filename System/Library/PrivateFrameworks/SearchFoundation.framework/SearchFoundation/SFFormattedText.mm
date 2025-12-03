@@ -1,54 +1,54 @@
 @interface SFFormattedText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFFormattedText)initWithCoder:(id)a3;
-- (SFFormattedText)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFFormattedText)initWithCoder:(id)coder;
+- (SFFormattedText)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFFormattedText
 
-- (SFFormattedText)initWithProtobuf:(id)a3
+- (SFFormattedText)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  v5 = [v4 text];
+  protobufCopy = protobuf;
+  text = [protobufCopy text];
   v13.receiver = self;
   v13.super_class = SFFormattedText;
-  v6 = [(SFText *)&v13 initWithProtobuf:v5];
+  v6 = [(SFText *)&v13 initWithProtobuf:text];
 
   if (v6)
   {
-    v7 = [v4 glyph];
+    glyph = [protobufCopy glyph];
 
-    if (v7)
+    if (glyph)
     {
       v8 = [SFImage alloc];
-      v9 = [v4 glyph];
-      v10 = [(SFImage *)v8 initWithProtobuf:v9];
+      glyph2 = [protobufCopy glyph];
+      v10 = [(SFImage *)v8 initWithProtobuf:glyph2];
       [(SFFormattedText *)v6 setGlyph:v10];
     }
 
-    if ([v4 isEmphasized])
+    if ([protobufCopy isEmphasized])
     {
-      -[SFFormattedText setIsEmphasized:](v6, "setIsEmphasized:", [v4 isEmphasized]);
+      -[SFFormattedText setIsEmphasized:](v6, "setIsEmphasized:", [protobufCopy isEmphasized]);
     }
 
-    if ([v4 isBold])
+    if ([protobufCopy isBold])
     {
-      -[SFFormattedText setIsBold:](v6, "setIsBold:", [v4 isBold]);
+      -[SFFormattedText setIsBold:](v6, "setIsBold:", [protobufCopy isBold]);
     }
 
-    if ([v4 textColor])
+    if ([protobufCopy textColor])
     {
-      -[SFFormattedText setTextColor:](v6, "setTextColor:", [v4 textColor]);
+      -[SFFormattedText setTextColor:](v6, "setTextColor:", [protobufCopy textColor]);
     }
 
-    if ([v4 encapsulationStyle])
+    if ([protobufCopy encapsulationStyle])
     {
-      -[SFFormattedText setEncapsulationStyle:](v6, "setEncapsulationStyle:", [v4 encapsulationStyle]);
+      -[SFFormattedText setEncapsulationStyle:](v6, "setEncapsulationStyle:", [protobufCopy encapsulationStyle]);
     }
 
     v11 = v6;
@@ -62,36 +62,36 @@
   v11.receiver = self;
   v11.super_class = SFFormattedText;
   v3 = [(SFText *)&v11 hash];
-  v4 = [(SFFormattedText *)self glyph];
-  v5 = [v4 hash];
+  glyph = [(SFFormattedText *)self glyph];
+  v5 = [glyph hash];
   v6 = v5 ^ [(SFFormattedText *)self isEmphasized];
   v7 = v6 ^ [(SFFormattedText *)self isBold];
   v8 = v7 ^ [(SFFormattedText *)self textColor]^ v3;
-  v9 = [(SFFormattedText *)self encapsulationStyle];
+  encapsulationStyle = [(SFFormattedText *)self encapsulationStyle];
 
-  return v8 ^ v9;
+  return v8 ^ encapsulationStyle;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if ([(SFFormattedText *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFFormattedText *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v18.receiver = self;
       v18.super_class = SFFormattedText;
-      if ([(SFText *)&v18 isEqual:v6])
+      if ([(SFText *)&v18 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFFormattedText *)self glyph];
-        v9 = [(SFFormattedText *)v7 glyph];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        glyph = [(SFFormattedText *)self glyph];
+        glyph2 = [(SFFormattedText *)v7 glyph];
+        if ((glyph != 0) == (glyph2 == 0))
         {
           v12 = 0;
 LABEL_19:
@@ -99,16 +99,16 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v10 = [(SFFormattedText *)self glyph];
-        if (!v10 || (-[SFFormattedText glyph](self, "glyph"), v3 = objc_claimAutoreleasedReturnValue(), -[SFFormattedText glyph](v7, "glyph"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        glyph3 = [(SFFormattedText *)self glyph];
+        if (!glyph3 || (-[SFFormattedText glyph](self, "glyph"), v3 = objc_claimAutoreleasedReturnValue(), -[SFFormattedText glyph](v7, "glyph"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v13 = [(SFFormattedText *)self isEmphasized];
-          if (v13 == [(SFFormattedText *)v7 isEmphasized]&& (v14 = [(SFFormattedText *)self isBold], v14 == [(SFFormattedText *)v7 isBold]) && (v15 = [(SFFormattedText *)self textColor], v15 == [(SFFormattedText *)v7 textColor]))
+          isEmphasized = [(SFFormattedText *)self isEmphasized];
+          if (isEmphasized == [(SFFormattedText *)v7 isEmphasized]&& (v14 = [(SFFormattedText *)self isBold], v14 == [(SFFormattedText *)v7 isBold]) && (v15 = [(SFFormattedText *)self textColor], v15 == [(SFFormattedText *)v7 textColor]))
           {
-            v16 = [(SFFormattedText *)self encapsulationStyle];
-            v11 = v16 == [(SFFormattedText *)v7 encapsulationStyle];
+            encapsulationStyle = [(SFFormattedText *)self encapsulationStyle];
+            v11 = encapsulationStyle == [(SFFormattedText *)v7 encapsulationStyle];
             v12 = v11;
-            if (!v10)
+            if (!glyph3)
             {
               goto LABEL_18;
             }
@@ -118,7 +118,7 @@ LABEL_19:
           {
             v11 = 0;
             v12 = 0;
-            if (!v10)
+            if (!glyph3)
             {
 LABEL_18:
 
@@ -145,13 +145,13 @@ LABEL_20:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFFormattedText;
-  v4 = [(SFText *)&v8 copyWithZone:a3];
-  v5 = [(SFFormattedText *)self glyph];
-  v6 = [v5 copy];
+  v4 = [(SFText *)&v8 copyWithZone:zone];
+  glyph = [(SFFormattedText *)self glyph];
+  v6 = [glyph copy];
   [v4 setGlyph:v6];
 
   [v4 setIsEmphasized:{-[SFFormattedText isEmphasized](self, "isEmphasized")}];
@@ -164,31 +164,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBFormattedText alloc] initWithFacade:self];
-  v3 = [(_SFPBFormattedText *)v2 jsonData];
+  jsonData = [(_SFPBFormattedText *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBFormattedText alloc] initWithFacade:self];
-  v3 = [(_SFPBFormattedText *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBFormattedText *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBFormattedText alloc] initWithFacade:self];
-  v5 = [(_SFPBFormattedText *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBFormattedText *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFFormattedText)initWithCoder:(id)a3
+- (SFFormattedText)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBFormattedText alloc] initWithData:v5];
   v7 = [(SFFormattedText *)self initWithProtobuf:v6];

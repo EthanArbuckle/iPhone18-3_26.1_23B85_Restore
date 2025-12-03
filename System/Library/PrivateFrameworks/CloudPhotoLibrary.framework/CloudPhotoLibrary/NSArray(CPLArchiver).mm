@@ -9,7 +9,7 @@
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 init];
+  v5 = [self init];
   v6 = v4[2];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -19,14 +19,14 @@
       v10 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v4 archiverContext];
+        archiverContext = [v4 archiverContext];
         v12 = objc_opt_class();
         v13 = v4[2];
         v14 = v12;
         v15 = objc_opt_class();
         v16 = v4[2];
         *buf = 138413058;
-        v28 = v11;
+        v28 = archiverContext;
         v29 = 2112;
         v30 = v12;
         v31 = 2112;
@@ -55,9 +55,9 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
     v6 = v4[2];
     v7 = v4[2];
     v4[2] = 0;
@@ -70,8 +70,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = a1;
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    selfCopy = self;
+    v12 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -82,14 +82,14 @@
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(selfCopy);
           }
 
           v16 = [*(*(&v20 + 1) + 8 * i) plistArchiveWithCPLArchiver:{v4, v20}];
           [v5 addObject:v16];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);

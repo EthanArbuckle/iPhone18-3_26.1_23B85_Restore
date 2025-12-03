@@ -1,18 +1,18 @@
 @interface IDMSAuthenticator
 - (id)authKitSession;
 - (id)authKitSessionConfig;
-- (int64_t)_constructAlbertRequest:(id *)a3 objectModel:(id)a4 username:(id)a5 altDSID:(id)a6 gsToken:(id)a7;
-- (int64_t)_fetchGSTokenWithPassword:(id)a3 username:(id)a4 altDSID:(id *)a5 gsToken:(id *)a6;
-- (int64_t)authenticateFromObjectModel:(id)a3 outRequest:(id *)a4;
-- (void)_appendAdditionalHeaders:(id)a3 altDSID:(id)a4 gsToken:(id)a5;
+- (int64_t)_constructAlbertRequest:(id *)request objectModel:(id)model username:(id)username altDSID:(id)d gsToken:(id)token;
+- (int64_t)_fetchGSTokenWithPassword:(id)password username:(id)username altDSID:(id *)d gsToken:(id *)token;
+- (int64_t)authenticateFromObjectModel:(id)model outRequest:(id *)request;
+- (void)_appendAdditionalHeaders:(id)headers altDSID:(id)d gsToken:(id)token;
 @end
 
 @implementation IDMSAuthenticator
 
-- (int64_t)_fetchGSTokenWithPassword:(id)a3 username:(id)a4 altDSID:(id *)a5 gsToken:(id *)a6
+- (int64_t)_fetchGSTokenWithPassword:(id)password username:(id)username altDSID:(id *)d gsToken:(id *)token
 {
-  v9 = a3;
-  v10 = a4;
+  passwordCopy = password;
+  usernameCopy = username;
   v11 = objc_opt_new();
   v12 = objc_opt_new();
   v37 = 0;
@@ -32,8 +32,8 @@
   v29 = 0x2020000000;
   v30 = -1;
   v13 = dispatch_semaphore_create(0);
-  [v11 setUsername:v10];
-  [v11 _setPassword:v9];
+  [v11 setUsername:usernameCopy];
+  [v11 _setPassword:passwordCopy];
   [v11 setShouldUpdatePersistentServiceTokens:0];
   [v11 setShouldPromptForPasswordOnly:1];
   [v11 setIsUsernameEditable:0];
@@ -77,14 +77,14 @@
     v28[3] = -200;
   }
 
-  if (a5)
+  if (d)
   {
-    *a5 = v38[5];
+    *d = v38[5];
   }
 
-  if (a6)
+  if (token)
   {
-    *a6 = v32[5];
+    *token = v32[5];
   }
 
   v19 = v28[3];
@@ -96,14 +96,14 @@
   return v19;
 }
 
-- (void)_appendAdditionalHeaders:(id)a3 altDSID:(id)a4 gsToken:(id)a5
+- (void)_appendAdditionalHeaders:(id)headers altDSID:(id)d gsToken:(id)token
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v9 ak_addDeviceUDIDHeader];
-  [v9 ak_addClientInfoHeader];
-  [v9 ak_addAuthorizationHeaderWithServiceToken:v7 forAltDSID:v8];
+  tokenCopy = token;
+  dCopy = d;
+  headersCopy = headers;
+  [headersCopy ak_addDeviceUDIDHeader];
+  [headersCopy ak_addClientInfoHeader];
+  [headersCopy ak_addAuthorizationHeaderWithServiceToken:tokenCopy forAltDSID:dCopy];
 }
 
 - (id)authKitSessionConfig
@@ -112,9 +112,9 @@
   [v2 setURLCache:0];
   [v2 setRequestCachePolicy:1];
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
 
-  v5 = [[AKAppleIDSession alloc] initWithIdentifier:v4];
+  v5 = [[AKAppleIDSession alloc] initWithIdentifier:bundleIdentifier];
   [v2 set_appleIDContext:v5];
 
   return v2;
@@ -122,17 +122,17 @@
 
 - (id)authKitSession
 {
-  v2 = [(IDMSAuthenticator *)self authKitSessionConfig];
-  v3 = [NSURLSession sessionWithConfiguration:v2];
+  authKitSessionConfig = [(IDMSAuthenticator *)self authKitSessionConfig];
+  v3 = [NSURLSession sessionWithConfiguration:authKitSessionConfig];
 
   return v3;
 }
 
-- (int64_t)authenticateFromObjectModel:(id)a3 outRequest:(id *)a4
+- (int64_t)authenticateFromObjectModel:(id)model outRequest:(id *)request
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  modelCopy = model;
+  v7 = modelCopy;
+  if (!modelCopy)
   {
     v19 = handleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -142,15 +142,15 @@
 
     v12 = 0;
     v8 = 0;
-    v15 = 0;
-    v11 = 0;
+    text2 = 0;
+    text = 0;
     v18 = 0;
     v17 = 0;
     v16 = -107;
     goto LABEL_26;
   }
 
-  v8 = [v6 subElementWithID:@"login"];
+  v8 = [modelCopy subElementWithID:@"login"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -161,14 +161,14 @@
     }
 
     v12 = 0;
-    v15 = 0;
-    v11 = 0;
+    text2 = 0;
+    text = 0;
     goto LABEL_20;
   }
 
-  v9 = [v8 tableCell];
-  v10 = [v9 editableTextField];
-  v11 = [v10 text];
+  tableCell = [v8 tableCell];
+  editableTextField = [tableCell editableTextField];
+  text = [editableTextField text];
 
   v12 = [v7 subElementWithID:@"password"];
   objc_opt_class();
@@ -180,7 +180,7 @@
       sub_10000D760();
     }
 
-    v15 = 0;
+    text2 = 0;
 LABEL_20:
     v18 = 0;
     v17 = 0;
@@ -188,11 +188,11 @@ LABEL_20:
     goto LABEL_26;
   }
 
-  v13 = [v12 tableCell];
-  v14 = [v13 editableTextField];
-  v15 = [v14 text];
+  tableCell2 = [v12 tableCell];
+  editableTextField2 = [tableCell2 editableTextField];
+  text2 = [editableTextField2 text];
 
-  if (!v11 || ![v11 length])
+  if (!text || ![text length])
   {
     v19 = handleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -203,7 +203,7 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  if (!v15 || ![v15 length])
+  if (!text2 || ![text2 length])
   {
     v19 = handleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -220,7 +220,7 @@ LABEL_25:
 
   v35 = 0;
   v36 = 0;
-  v16 = [(IDMSAuthenticator *)self _fetchGSTokenWithPassword:v15 username:v11 altDSID:&v36 gsToken:&v35];
+  v16 = [(IDMSAuthenticator *)self _fetchGSTokenWithPassword:text2 username:text altDSID:&v36 gsToken:&v35];
   v17 = v36;
   v18 = v35;
   if (v16)
@@ -234,7 +234,7 @@ LABEL_25:
 
   else
   {
-    v16 = [(IDMSAuthenticator *)self _constructAlbertRequest:a4 objectModel:v7 username:v11 altDSID:v17 gsToken:v18];
+    v16 = [(IDMSAuthenticator *)self _constructAlbertRequest:request objectModel:v7 username:text altDSID:v17 gsToken:v18];
     if (!v16)
     {
       goto LABEL_28;
@@ -252,9 +252,9 @@ LABEL_26:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v12 tableCell];
-    v27 = [v26 editableTextField];
-    [v27 setText:&stru_100018C40];
+    tableCell3 = [v12 tableCell];
+    editableTextField3 = [tableCell3 editableTextField];
+    [editableTextField3 setText:&stru_100018C40];
   }
 
 LABEL_28:
@@ -262,49 +262,49 @@ LABEL_28:
   return v16;
 }
 
-- (int64_t)_constructAlbertRequest:(id *)a3 objectModel:(id)a4 username:(id)a5 altDSID:(id)a6 gsToken:(id)a7
+- (int64_t)_constructAlbertRequest:(id *)request objectModel:(id)model username:(id)username altDSID:(id)d gsToken:(id)token
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  modelCopy = model;
+  usernameCopy = username;
+  dCopy = d;
+  tokenCopy = token;
   v16 = +[NSMutableDictionary dictionary];
   v17 = 0;
-  if (v13)
+  if (usernameCopy)
   {
     v18 = -202;
-    if (v14)
+    if (dCopy)
     {
-      v44 = self;
+      selfCopy = self;
       v19 = 0;
       v20 = 0;
-      if (v15)
+      if (tokenCopy)
       {
-        v21 = [v12 subElementWithID:@"next"];
+        v21 = [modelCopy subElementWithID:@"next"];
         v20 = v21;
         if (v21 && ([v21 attributes], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "objectForKeyedSubscript:", @"url"), v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
         {
-          v24 = [v20 attributes];
-          v19 = [v24 objectForKeyedSubscript:@"url"];
+          attributes = [v20 attributes];
+          v19 = [attributes objectForKeyedSubscript:@"url"];
 
-          v25 = [v12 sourceURL];
+          sourceURL = [modelCopy sourceURL];
 
-          if (v25)
+          if (sourceURL)
           {
-            v43 = a3;
-            v26 = [v12 sourceURL];
-            v27 = [v26 URLByAppendingPathComponent:v19];
+            requestCopy = request;
+            sourceURL2 = [modelCopy sourceURL];
+            v27 = [sourceURL2 URLByAppendingPathComponent:v19];
             v17 = [NSMutableURLRequest requestWithURL:v27];
 
             [v17 setHTTPMethod:@"POST"];
             [v17 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
-            [v16 setObject:v13 forKey:@"login"];
-            v28 = [v12 serverInfo];
+            [v16 setObject:usernameCopy forKey:@"login"];
+            serverInfo = [modelCopy serverInfo];
 
-            if (v28)
+            if (serverInfo)
             {
-              v29 = [v12 serverInfo];
-              [v16 setObject:v29 forKey:@"serverInfo"];
+              serverInfo2 = [modelCopy serverInfo];
+              [v16 setObject:serverInfo2 forKey:@"serverInfo"];
             }
 
             v45 = 0;
@@ -325,12 +325,12 @@ LABEL_28:
 
             else
             {
-              [(IDMSAuthenticator *)v44 _appendAdditionalHeaders:v17 altDSID:v14 gsToken:v15];
-              if (v43)
+              [(IDMSAuthenticator *)selfCopy _appendAdditionalHeaders:v17 altDSID:dCopy gsToken:tokenCopy];
+              if (requestCopy)
               {
                 v41 = v17;
                 v18 = 0;
-                *v43 = v17;
+                *requestCopy = v17;
               }
 
               else

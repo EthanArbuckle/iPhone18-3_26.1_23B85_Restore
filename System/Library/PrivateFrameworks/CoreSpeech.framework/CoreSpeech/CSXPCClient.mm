@@ -1,40 +1,40 @@
 @interface CSXPCClient
-+ (id)createAudioStreamMessageWithRequest:(id)a3;
-+ (id)createPrepareAudioStreamMessageWithRequest:(id)a3;
-+ (id)createStartAudioStreamMessageWithOption:(id)a3;
-+ (id)createStopAudioStreamMessageWithOption:(id)a3;
-- (BOOL)activateAudioSessionWithReason:(unint64_t)a3 dynamicAttribute:(unint64_t)a4 bundleID:(id)a5 error:(id *)a6;
-- (BOOL)deactivateAudioSession:(unint64_t)a3 error:(id *)a4;
-- (BOOL)fallbackDeactivateAudioSession:(unint64_t)a3 error:(id *)a4;
++ (id)createAudioStreamMessageWithRequest:(id)request;
++ (id)createPrepareAudioStreamMessageWithRequest:(id)request;
++ (id)createStartAudioStreamMessageWithOption:(id)option;
++ (id)createStopAudioStreamMessageWithOption:(id)option;
+- (BOOL)activateAudioSessionWithReason:(unint64_t)reason dynamicAttribute:(unint64_t)attribute bundleID:(id)d error:(id *)error;
+- (BOOL)deactivateAudioSession:(unint64_t)session error:(id *)error;
+- (BOOL)fallbackDeactivateAudioSession:(unint64_t)session error:(id *)error;
 - (BOOL)isConnected;
 - (BOOL)isNarrowBand;
 - (BOOL)isRecording;
-- (BOOL)playAlertSoundForType:(int64_t)a3;
-- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)a3;
-- (BOOL)prepareAudioProviderWithContext:(id)a3 clientType:(unint64_t)a4 error:(id *)a5;
-- (BOOL)prepareAudioStreamSync:(id)a3 request:(id)a4 error:(id *)a5;
-- (BOOL)prewarmAudioSessionWithError:(id *)a3;
-- (BOOL)sendMessageAndReplySync:(id)a3 error:(id *)a4;
-- (BOOL)setAlertSoundFromURL:(id)a3 forType:(int64_t)a4 force:(BOOL)a5;
-- (BOOL)setCurrentContext:(id)a3 error:(id *)a4;
-- (BOOL)supportsDuckingOnCurrentRouteWithError:(id *)a3;
+- (BOOL)playAlertSoundForType:(int64_t)type;
+- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)override;
+- (BOOL)prepareAudioProviderWithContext:(id)context clientType:(unint64_t)type error:(id *)error;
+- (BOOL)prepareAudioStreamSync:(id)sync request:(id)request error:(id *)error;
+- (BOOL)prewarmAudioSessionWithError:(id *)error;
+- (BOOL)sendMessageAndReplySync:(id)sync error:(id *)error;
+- (BOOL)setAlertSoundFromURL:(id)l forType:(int64_t)type force:(BOOL)force;
+- (BOOL)setCurrentContext:(id)context error:(id *)error;
+- (BOOL)supportsDuckingOnCurrentRouteWithError:(id *)error;
 - (CSAudioAlertProvidingDelegate)audioAlertProvidingDelegate;
 - (CSAudioSessionProvidingDelegate)audioSessionProvidingDelegate;
 - (CSAudioStreamProvidingDelegate)audioStreamProvidingDelegate;
-- (CSXPCClient)initWithType:(unint64_t)a3;
+- (CSXPCClient)initWithType:(unint64_t)type;
 - (CSXPCClientDelegate)delegate;
-- (float)averagePowerForChannel:(unint64_t)a3;
-- (float)peakPowerForChannel:(unint64_t)a3;
-- (id)_decodeError:(id)a3;
-- (id)_getSerialQueueWithName:(id)a3 targetQueue:(id)a4;
-- (id)audioChunkFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (id)audioChunkFrom:(unint64_t)a3 to:(unint64_t)a4 channelIdx:(unint64_t)a5;
-- (id)audioChunkToEndFrom:(unint64_t)a3;
-- (id)audioChunkToEndFrom:(unint64_t)a3 channelIdx:(unint64_t)a4;
+- (float)averagePowerForChannel:(unint64_t)channel;
+- (float)peakPowerForChannel:(unint64_t)channel;
+- (id)_decodeError:(id)error;
+- (id)_getSerialQueueWithName:(id)name targetQueue:(id)queue;
+- (id)audioChunkFrom:(unint64_t)from to:(unint64_t)to;
+- (id)audioChunkFrom:(unint64_t)from to:(unint64_t)to channelIdx:(unint64_t)idx;
+- (id)audioChunkToEndFrom:(unint64_t)from;
+- (id)audioChunkToEndFrom:(unint64_t)from channelIdx:(unint64_t)idx;
 - (id)audioDeviceInfo;
 - (id)audioMetric;
-- (id)audioStreamWithRequest:(id)a3 streamName:(id)a4 error:(id *)a5;
-- (id)holdAudioStreamWithDescription:(id)a3 option:(id)a4;
+- (id)audioStreamWithRequest:(id)request streamName:(id)name error:(id *)error;
+- (id)holdAudioStreamWithDescription:(id)description option:(id)option;
 - (id)playbackRoute;
 - (id)recordDeviceInfo;
 - (id)recordRoute;
@@ -43,57 +43,57 @@
 - (unint64_t)audioStreamId;
 - (unint64_t)hostTimeFromSampleCount:(unint64_t)uint64;
 - (unint64_t)sampleCountFromHostTime:(unint64_t)uint64;
-- (unsigned)audioSessionIdForDeviceId:(id)a3;
+- (unsigned)audioSessionIdForDeviceId:(id)id;
 - (void)_disconnect;
-- (void)_handleAlertProvidingDelegateDidFinishAlertPlayback:(id)a3;
-- (void)_handleAlertProvidingDelegateMessageBody:(id)a3;
-- (void)_handleListenerDisconnectedError:(id)a3;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
-- (void)_handleListenerMessage:(id)a3;
-- (void)_handleSessionInfoProvidingDelegateInterruptionNotification:(id)a3;
-- (void)_handleSessionInfoProvidingDelegateMediaServicesWereLostNotification:(id)a3;
-- (void)_handleSessionInfoProvidingDelegateMediaServicesWereResetNotification:(id)a3;
-- (void)_handleSessionInfoProvidingDelegateMessageBody:(id)a3;
-- (void)_handleSessionInfoProvidingDelegateRouteChangeNotification:(id)a3;
-- (void)_handleSessionProvidingDelegateBeginInterruption:(id)a3;
-- (void)_handleSessionProvidingDelegateBeginInterruptionWithContext:(id)a3;
-- (void)_handleSessionProvidingDelegateDidChangeContext:(id)a3;
-- (void)_handleSessionProvidingDelegateDidSetAudioSession:(id)a3;
-- (void)_handleSessionProvidingDelegateEndInterruption:(id)a3;
-- (void)_handleSessionProvidingDelegateMessageBody:(id)a3;
-- (void)_handleSessionProvidingDelegateStreamHandleIdInvalidation:(id)a3;
-- (void)_handleSessionProvidingDelegateWillSetAudioSession:(id)a3;
-- (void)_handleStreamProvidingDelegateChunkAvailable:(id)a3;
-- (void)_handleStreamProvidingDelegateChunkForTVAvailable:(id)a3;
-- (void)_handleStreamProvidingDelegateDidStopUnexpectedly:(id)a3;
-- (void)_handleStreamProvidingDelegateHardwareConfigChange:(id)a3;
-- (void)_handleStreamProvidingDelegateMessageBody:(id)a3;
-- (void)_sendMessageAsync:(id)a3 completion:(id)a4;
+- (void)_handleAlertProvidingDelegateDidFinishAlertPlayback:(id)playback;
+- (void)_handleAlertProvidingDelegateMessageBody:(id)body;
+- (void)_handleListenerDisconnectedError:(id)error;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
+- (void)_handleListenerMessage:(id)message;
+- (void)_handleSessionInfoProvidingDelegateInterruptionNotification:(id)notification;
+- (void)_handleSessionInfoProvidingDelegateMediaServicesWereLostNotification:(id)notification;
+- (void)_handleSessionInfoProvidingDelegateMediaServicesWereResetNotification:(id)notification;
+- (void)_handleSessionInfoProvidingDelegateMessageBody:(id)body;
+- (void)_handleSessionInfoProvidingDelegateRouteChangeNotification:(id)notification;
+- (void)_handleSessionProvidingDelegateBeginInterruption:(id)interruption;
+- (void)_handleSessionProvidingDelegateBeginInterruptionWithContext:(id)context;
+- (void)_handleSessionProvidingDelegateDidChangeContext:(id)context;
+- (void)_handleSessionProvidingDelegateDidSetAudioSession:(id)session;
+- (void)_handleSessionProvidingDelegateEndInterruption:(id)interruption;
+- (void)_handleSessionProvidingDelegateMessageBody:(id)body;
+- (void)_handleSessionProvidingDelegateStreamHandleIdInvalidation:(id)invalidation;
+- (void)_handleSessionProvidingDelegateWillSetAudioSession:(id)session;
+- (void)_handleStreamProvidingDelegateChunkAvailable:(id)available;
+- (void)_handleStreamProvidingDelegateChunkForTVAvailable:(id)available;
+- (void)_handleStreamProvidingDelegateDidStopUnexpectedly:(id)unexpectedly;
+- (void)_handleStreamProvidingDelegateHardwareConfigChange:(id)change;
+- (void)_handleStreamProvidingDelegateMessageBody:(id)body;
+- (void)_sendMessageAsync:(id)async completion:(id)completion;
 - (void)_sendXPCClientType;
-- (void)acousticSLResultForContext:(id)a3 completion:(id)a4;
-- (void)attachTandemStream:(id)a3 withConfig:(id)a4 toPrimaryStream:(id)a5 completion:(id)a6;
-- (void)audioStreamWithRequest:(id)a3 streamName:(id)a4 completion:(id)a5;
-- (void)cancelAudioStreamHold:(id)a3;
-- (void)configureAlertBehavior:(id)a3;
+- (void)acousticSLResultForContext:(id)context completion:(id)completion;
+- (void)attachTandemStream:(id)stream withConfig:(id)config toPrimaryStream:(id)primaryStream completion:(id)completion;
+- (void)audioStreamWithRequest:(id)request streamName:(id)name completion:(id)completion;
+- (void)cancelAudioStreamHold:(id)hold;
+- (void)configureAlertBehavior:(id)behavior;
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)enableMiniDucking:(BOOL)a3;
-- (void)enableSmartRoutingConsideration:(BOOL)a3;
-- (void)pingpong:(id)a3;
-- (void)prepareAudioStream:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)registerObserver:(id)a3;
-- (void)saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5;
-- (void)saveRecordingBufferToEndFrom:(unint64_t)a3 toURL:(id)a4;
-- (void)sendMessageAsync:(id)a3 completion:(id)a4;
-- (void)setAnnounceCallsEnabled:(BOOL)a3 withStreamHandleID:(unint64_t)a4;
-- (void)setDuckOthersOption:(BOOL)a3;
-- (void)setMeteringEnabled:(BOOL)a3;
-- (void)startAudioStream:(id)a3 option:(id)a4 completion:(id)a5;
-- (void)stopAudioStream:(id)a3 option:(id)a4 completion:(id)a5;
-- (void)triggerInfoForContext:(id)a3 completion:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)enableMiniDucking:(BOOL)ducking;
+- (void)enableSmartRoutingConsideration:(BOOL)consideration;
+- (void)pingpong:(id)pingpong;
+- (void)prepareAudioStream:(id)stream request:(id)request completion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l;
+- (void)saveRecordingBufferToEndFrom:(unint64_t)from toURL:(id)l;
+- (void)sendMessageAsync:(id)async completion:(id)completion;
+- (void)setAnnounceCallsEnabled:(BOOL)enabled withStreamHandleID:(unint64_t)d;
+- (void)setDuckOthersOption:(BOOL)option;
+- (void)setMeteringEnabled:(BOOL)enabled;
+- (void)startAudioStream:(id)stream option:(id)option completion:(id)completion;
+- (void)stopAudioStream:(id)stream option:(id)option completion:(id)completion;
+- (void)triggerInfoForContext:(id)context completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 - (void)updateMeters;
 @end
 
@@ -127,88 +127,88 @@
   return WeakRetained;
 }
 
-- (void)_handleStreamProvidingDelegateHardwareConfigChange:(id)a3
+- (void)_handleStreamProvidingDelegateHardwareConfigChange:(id)change
 {
-  int64 = xpc_dictionary_get_int64(a3, "hardwareConfig");
-  v5 = [(CSXPCClient *)self audioStream];
+  int64 = xpc_dictionary_get_int64(change, "hardwareConfig");
+  audioStream = [(CSXPCClient *)self audioStream];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CSXPCClient *)self audioStream];
-    [v7 audioStreamProvider:self didHardwareConfigurationChange:int64];
+    audioStream2 = [(CSXPCClient *)self audioStream];
+    [audioStream2 audioStreamProvider:self didHardwareConfigurationChange:int64];
   }
 }
 
-- (void)_handleStreamProvidingDelegateChunkForTVAvailable:(id)a3
+- (void)_handleStreamProvidingDelegateChunkForTVAvailable:(id)available
 {
-  v4 = xpc_dictionary_get_dictionary(a3, "chunk");
+  v4 = xpc_dictionary_get_dictionary(available, "chunk");
   if (v4)
   {
     v9 = v4;
     v5 = [[CSAudioChunkForTV alloc] initWithXPCObject:v4];
-    v6 = [(CSXPCClient *)self audioStream];
+    audioStream = [(CSXPCClient *)self audioStream];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CSXPCClient *)self audioStream];
-      [v8 audioStreamProvider:self audioChunkForTVAvailable:v5];
+      audioStream2 = [(CSXPCClient *)self audioStream];
+      [audioStream2 audioStreamProvider:self audioChunkForTVAvailable:v5];
     }
 
     v4 = v9;
   }
 }
 
-- (void)_handleStreamProvidingDelegateChunkAvailable:(id)a3
+- (void)_handleStreamProvidingDelegateChunkAvailable:(id)available
 {
-  v4 = xpc_dictionary_get_dictionary(a3, "chunk");
+  v4 = xpc_dictionary_get_dictionary(available, "chunk");
   if (v4)
   {
     v9 = v4;
     v5 = [[CSAudioChunk alloc] initWithXPCObject:v4];
-    v6 = [(CSXPCClient *)self audioStream];
+    audioStream = [(CSXPCClient *)self audioStream];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CSXPCClient *)self audioStream];
-      [v8 audioStreamProvider:self audioBufferAvailable:v5];
+      audioStream2 = [(CSXPCClient *)self audioStream];
+      [audioStream2 audioStreamProvider:self audioBufferAvailable:v5];
     }
 
     v4 = v9;
   }
 }
 
-- (void)_handleStreamProvidingDelegateDidStopUnexpectedly:(id)a3
+- (void)_handleStreamProvidingDelegateDidStopUnexpectedly:(id)unexpectedly
 {
-  int64 = xpc_dictionary_get_int64(a3, "stopReason");
-  v5 = [(CSXPCClient *)self audioStream];
+  int64 = xpc_dictionary_get_int64(unexpectedly, "stopReason");
+  audioStream = [(CSXPCClient *)self audioStream];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CSXPCClient *)self audioStream];
-    [v7 audioStreamProvider:self didStopStreamUnexpectedly:int64];
+    audioStream2 = [(CSXPCClient *)self audioStream];
+    [audioStream2 audioStreamProvider:self didStopStreamUnexpectedly:int64];
   }
 }
 
-- (void)_handleStreamProvidingDelegateMessageBody:(id)a3
+- (void)_handleStreamProvidingDelegateMessageBody:(id)body
 {
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "type");
+  bodyCopy = body;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v6 = int64;
   if (int64 > 2)
   {
     if (int64 == 3)
     {
-      [(CSXPCClient *)self _handleStreamProvidingDelegateChunkForTVAvailable:v4];
+      [(CSXPCClient *)self _handleStreamProvidingDelegateChunkForTVAvailable:bodyCopy];
       goto LABEL_12;
     }
 
     if (int64 == 4)
     {
-      [(CSXPCClient *)self _handleStreamProvidingDelegateHardwareConfigChange:v4];
+      [(CSXPCClient *)self _handleStreamProvidingDelegateHardwareConfigChange:bodyCopy];
       goto LABEL_12;
     }
   }
@@ -217,13 +217,13 @@
   {
     if (int64 == 1)
     {
-      [(CSXPCClient *)self _handleStreamProvidingDelegateDidStopUnexpectedly:v4];
+      [(CSXPCClient *)self _handleStreamProvidingDelegateDidStopUnexpectedly:bodyCopy];
       goto LABEL_12;
     }
 
     if (int64 == 2)
     {
-      [(CSXPCClient *)self _handleStreamProvidingDelegateChunkAvailable:v4];
+      [(CSXPCClient *)self _handleStreamProvidingDelegateChunkAvailable:bodyCopy];
       goto LABEL_12;
     }
   }
@@ -241,9 +241,9 @@
 LABEL_12:
 }
 
-- (void)_handleSessionInfoProvidingDelegateMediaServicesWereResetNotification:(id)a3
+- (void)_handleSessionInfoProvidingDelegateMediaServicesWereResetNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -289,9 +289,9 @@ LABEL_12:
   }
 }
 
-- (void)_handleSessionInfoProvidingDelegateMediaServicesWereLostNotification:(id)a3
+- (void)_handleSessionInfoProvidingDelegateMediaServicesWereLostNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -337,9 +337,9 @@ LABEL_12:
   }
 }
 
-- (void)_handleSessionInfoProvidingDelegateRouteChangeNotification:(id)a3
+- (void)_handleSessionInfoProvidingDelegateRouteChangeNotification:(id)notification
 {
-  v4 = xpc_dictionary_get_dictionary(a3, "notificationInfo");
+  v4 = xpc_dictionary_get_dictionary(notification, "notificationInfo");
   if (v4)
   {
     v5 = [NSDictionary alloc];
@@ -402,9 +402,9 @@ LABEL_12:
   }
 }
 
-- (void)_handleSessionInfoProvidingDelegateInterruptionNotification:(id)a3
+- (void)_handleSessionInfoProvidingDelegateInterruptionNotification:(id)notification
 {
-  v4 = xpc_dictionary_get_dictionary(a3, "notificationInfo");
+  v4 = xpc_dictionary_get_dictionary(notification, "notificationInfo");
   if (v4)
   {
     v5 = [NSDictionary alloc];
@@ -467,10 +467,10 @@ LABEL_12:
   }
 }
 
-- (void)_handleSessionInfoProvidingDelegateMessageBody:(id)a3
+- (void)_handleSessionInfoProvidingDelegateMessageBody:(id)body
 {
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "type");
+  bodyCopy = body;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -485,13 +485,13 @@ LABEL_12:
   {
     if (int64 == 3)
     {
-      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateMediaServicesWereLostNotification:v4];
+      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateMediaServicesWereLostNotification:bodyCopy];
       goto LABEL_14;
     }
 
     if (int64 == 4)
     {
-      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateMediaServicesWereResetNotification:v4];
+      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateMediaServicesWereResetNotification:bodyCopy];
       goto LABEL_14;
     }
   }
@@ -500,13 +500,13 @@ LABEL_12:
   {
     if (int64 == 1)
     {
-      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateInterruptionNotification:v4];
+      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateInterruptionNotification:bodyCopy];
       goto LABEL_14;
     }
 
     if (int64 == 2)
     {
-      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateRouteChangeNotification:v4];
+      [(CSXPCClient *)self _handleSessionInfoProvidingDelegateRouteChangeNotification:bodyCopy];
       goto LABEL_14;
     }
   }
@@ -524,73 +524,73 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)_handleSessionProvidingDelegateDidChangeContext:(id)a3
+- (void)_handleSessionProvidingDelegateDidChangeContext:(id)context
 {
-  v4 = xpc_dictionary_get_BOOL(a3, "didChangeContextFlag");
-  v5 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+  v4 = xpc_dictionary_get_BOOL(context, "didChangeContextFlag");
+  audioSessionProvidingDelegate = [(CSXPCClient *)self audioSessionProvidingDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CSXPCClient *)self audioSessionProvidingDelegate];
-    [v7 audioSessionProvider:self didChangeContext:v4];
+    audioSessionProvidingDelegate2 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+    [audioSessionProvidingDelegate2 audioSessionProvider:self didChangeContext:v4];
   }
 }
 
-- (void)_handleSessionProvidingDelegateStreamHandleIdInvalidation:(id)a3
+- (void)_handleSessionProvidingDelegateStreamHandleIdInvalidation:(id)invalidation
 {
-  v4 = xpc_dictionary_get_BOOL(a3, "streamHandleIdInvalidationflag");
-  v5 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+  v4 = xpc_dictionary_get_BOOL(invalidation, "streamHandleIdInvalidationflag");
+  audioSessionProvidingDelegate = [(CSXPCClient *)self audioSessionProvidingDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CSXPCClient *)self audioSessionProvidingDelegate];
-    [v7 audioSessionProvider:self providerInvalidated:v4];
+    audioSessionProvidingDelegate2 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+    [audioSessionProvidingDelegate2 audioSessionProvider:self providerInvalidated:v4];
   }
 }
 
-- (void)_handleSessionProvidingDelegateDidSetAudioSession:(id)a3
+- (void)_handleSessionProvidingDelegateDidSetAudioSession:(id)session
 {
-  v4 = xpc_dictionary_get_BOOL(a3, "didSetAudioSessionActive");
-  v5 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+  v4 = xpc_dictionary_get_BOOL(session, "didSetAudioSessionActive");
+  audioSessionProvidingDelegate = [(CSXPCClient *)self audioSessionProvidingDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CSXPCClient *)self audioSessionProvidingDelegate];
-    [v7 audioSessionProvider:self didSetAudioSessionActive:v4];
+    audioSessionProvidingDelegate2 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+    [audioSessionProvidingDelegate2 audioSessionProvider:self didSetAudioSessionActive:v4];
   }
 }
 
-- (void)_handleSessionProvidingDelegateWillSetAudioSession:(id)a3
+- (void)_handleSessionProvidingDelegateWillSetAudioSession:(id)session
 {
-  v4 = xpc_dictionary_get_BOOL(a3, "willSetAudioSessionActive");
-  v5 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+  v4 = xpc_dictionary_get_BOOL(session, "willSetAudioSessionActive");
+  audioSessionProvidingDelegate = [(CSXPCClient *)self audioSessionProvidingDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CSXPCClient *)self audioSessionProvidingDelegate];
-    [v7 audioSessionProvider:self willSetAudioSessionActive:v4];
+    audioSessionProvidingDelegate2 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+    [audioSessionProvidingDelegate2 audioSessionProvider:self willSetAudioSessionActive:v4];
   }
 }
 
-- (void)_handleSessionProvidingDelegateEndInterruption:(id)a3
+- (void)_handleSessionProvidingDelegateEndInterruption:(id)interruption
 {
-  v4 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+  audioSessionProvidingDelegate = [(CSXPCClient *)self audioSessionProvidingDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CSXPCClient *)self audioSessionProvidingDelegate];
-    [v6 audioSessionProviderEndInterruption:self];
+    audioSessionProvidingDelegate2 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+    [audioSessionProvidingDelegate2 audioSessionProviderEndInterruption:self];
   }
 }
 
-- (void)_handleSessionProvidingDelegateBeginInterruptionWithContext:(id)a3
+- (void)_handleSessionProvidingDelegateBeginInterruptionWithContext:(id)context
 {
-  v4 = xpc_dictionary_get_dictionary(a3, "interruptionContext");
+  v4 = xpc_dictionary_get_dictionary(context, "interruptionContext");
   if (v4)
   {
     v5 = [NSDictionary alloc];
@@ -606,13 +606,13 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s context : %{public}@", &v12, 0x16u);
     }
 
-    v8 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+    audioSessionProvidingDelegate = [(CSXPCClient *)self audioSessionProvidingDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(CSXPCClient *)self audioSessionProvidingDelegate];
-      [v10 audioSessionProviderBeginInterruption:self withContext:v6];
+      audioSessionProvidingDelegate2 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+      [audioSessionProvidingDelegate2 audioSessionProviderBeginInterruption:self withContext:v6];
     }
   }
 
@@ -628,22 +628,22 @@ LABEL_14:
   }
 }
 
-- (void)_handleSessionProvidingDelegateBeginInterruption:(id)a3
+- (void)_handleSessionProvidingDelegateBeginInterruption:(id)interruption
 {
-  v4 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+  audioSessionProvidingDelegate = [(CSXPCClient *)self audioSessionProvidingDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CSXPCClient *)self audioSessionProvidingDelegate];
-    [v6 audioSessionProviderBeginInterruption:self];
+    audioSessionProvidingDelegate2 = [(CSXPCClient *)self audioSessionProvidingDelegate];
+    [audioSessionProvidingDelegate2 audioSessionProviderBeginInterruption:self];
   }
 }
 
-- (void)_handleSessionProvidingDelegateMessageBody:(id)a3
+- (void)_handleSessionProvidingDelegateMessageBody:(id)body
 {
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "type");
+  bodyCopy = body;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -659,13 +659,13 @@ LABEL_14:
     switch(int64)
     {
       case 1:
-        [(CSXPCClient *)self _handleSessionProvidingDelegateWillSetAudioSession:v4];
+        [(CSXPCClient *)self _handleSessionProvidingDelegateWillSetAudioSession:bodyCopy];
         goto LABEL_21;
       case 2:
-        [(CSXPCClient *)self _handleSessionProvidingDelegateBeginInterruption:v4];
+        [(CSXPCClient *)self _handleSessionProvidingDelegateBeginInterruption:bodyCopy];
         goto LABEL_21;
       case 3:
-        [(CSXPCClient *)self _handleSessionProvidingDelegateBeginInterruptionWithContext:v4];
+        [(CSXPCClient *)self _handleSessionProvidingDelegateBeginInterruptionWithContext:bodyCopy];
         goto LABEL_21;
     }
   }
@@ -674,13 +674,13 @@ LABEL_14:
   {
     if (int64 == 10)
     {
-      [(CSXPCClient *)self _handleSessionProvidingDelegateStreamHandleIdInvalidation:v4];
+      [(CSXPCClient *)self _handleSessionProvidingDelegateStreamHandleIdInvalidation:bodyCopy];
       goto LABEL_21;
     }
 
     if (int64 == 11)
     {
-      [(CSXPCClient *)self _handleSessionProvidingDelegateDidChangeContext:v4];
+      [(CSXPCClient *)self _handleSessionProvidingDelegateDidChangeContext:bodyCopy];
       goto LABEL_21;
     }
   }
@@ -689,13 +689,13 @@ LABEL_14:
   {
     if (int64 == 4)
     {
-      [(CSXPCClient *)self _handleSessionProvidingDelegateEndInterruption:v4];
+      [(CSXPCClient *)self _handleSessionProvidingDelegateEndInterruption:bodyCopy];
       goto LABEL_21;
     }
 
     if (int64 == 5)
     {
-      [(CSXPCClient *)self _handleSessionProvidingDelegateDidSetAudioSession:v4];
+      [(CSXPCClient *)self _handleSessionProvidingDelegateDidSetAudioSession:bodyCopy];
       goto LABEL_21;
     }
   }
@@ -713,9 +713,9 @@ LABEL_14:
 LABEL_21:
 }
 
-- (void)_handleAlertProvidingDelegateDidFinishAlertPlayback:(id)a3
+- (void)_handleAlertProvidingDelegateDidFinishAlertPlayback:(id)playback
 {
-  xdict = a3;
+  xdict = playback;
   int64 = xpc_dictionary_get_int64(xdict, "didFinishAlertPlayback");
   if (xpc_dictionary_get_string(xdict, "errorDomain"))
   {
@@ -730,20 +730,20 @@ LABEL_21:
     v8 = 0;
   }
 
-  v9 = [(CSXPCClient *)self audioAlertProvidingDelegate];
+  audioAlertProvidingDelegate = [(CSXPCClient *)self audioAlertProvidingDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CSXPCClient *)self audioAlertProvidingDelegate];
-    [v11 audioAlertProvidingDidFinishAlertPlayback:self ofType:int64 error:v8];
+    audioAlertProvidingDelegate2 = [(CSXPCClient *)self audioAlertProvidingDelegate];
+    [audioAlertProvidingDelegate2 audioAlertProvidingDidFinishAlertPlayback:self ofType:int64 error:v8];
   }
 }
 
-- (void)_handleAlertProvidingDelegateMessageBody:(id)a3
+- (void)_handleAlertProvidingDelegateMessageBody:(id)body
 {
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "type");
+  bodyCopy = body;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -756,7 +756,7 @@ LABEL_21:
 
   if (int64 == 1)
   {
-    [(CSXPCClient *)self _handleAlertProvidingDelegateDidFinishAlertPlayback:v4];
+    [(CSXPCClient *)self _handleAlertProvidingDelegateDidFinishAlertPlayback:bodyCopy];
   }
 
   else
@@ -773,18 +773,18 @@ LABEL_21:
   }
 }
 
-- (void)_handleListenerDisconnectedError:(id)a3
+- (void)_handleListenerDisconnectedError:(id)error
 {
-  v4 = [(CSXPCClient *)self audioStream];
+  audioStream = [(CSXPCClient *)self audioStream];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CSXPCClient *)self audioStream];
-    [v6 audioStreamProvider:self didStopStreamUnexpectedly:1];
+    audioStream2 = [(CSXPCClient *)self audioStream];
+    [audioStream2 audioStreamProvider:self didStopStreamUnexpectedly:1];
   }
 
-  v7 = [(CSXPCClient *)self delegate];
+  delegate = [(CSXPCClient *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -794,11 +794,11 @@ LABEL_21:
   }
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v10 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -814,9 +814,9 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  if (v4 != &_xpc_error_connection_invalid && v4 != &_xpc_error_connection_interrupted)
+  if (errorCopy != &_xpc_error_connection_invalid && errorCopy != &_xpc_error_connection_interrupted)
   {
-    string = xpc_dictionary_get_string(v4, _xpc_error_key_description);
+    string = xpc_dictionary_get_string(errorCopy, _xpc_error_key_description);
     v10 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -845,13 +845,13 @@ LABEL_15:
 LABEL_13:
 }
 
-- (void)_handleListenerMessage:(id)a3
+- (void)_handleListenerMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    int64 = xpc_dictionary_get_int64(v4, "type");
+    int64 = xpc_dictionary_get_int64(messageCopy, "type");
     v7 = xpc_dictionary_get_dictionary(v5, "body");
     if (int64 > 6)
     {
@@ -909,13 +909,13 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    type = xpc_get_type(v4);
+    type = xpc_get_type(eventCopy);
     if (type == &_xpc_type_dictionary)
     {
       [(CSXPCClient *)self _handleListenerMessage:v5];
@@ -960,9 +960,9 @@ LABEL_8:
 LABEL_11:
 }
 
-- (BOOL)sendMessageAndReplySync:(id)a3 error:(id *)a4
+- (BOOL)sendMessageAndReplySync:(id)sync error:(id *)error
 {
-  v6 = a3;
+  syncCopy = sync;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -978,15 +978,15 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = sub_1000440FC;
   v11[3] = &unk_100252278;
-  v8 = v6;
+  v8 = syncCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v22;
   v15 = &v16;
   dispatch_async_and_wait(xpcClientQueue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v9 = *(v23 + 24);
@@ -997,13 +997,13 @@ LABEL_11:
   return v9;
 }
 
-- (id)_decodeError:(id)a3
+- (id)_decodeError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    string = xpc_dictionary_get_string(v3, "resultErrorDomain");
+    string = xpc_dictionary_get_string(errorCopy, "resultErrorDomain");
     if (string)
     {
       int64 = xpc_dictionary_get_int64(v4, "resultErrorCode");
@@ -1020,12 +1020,12 @@ LABEL_11:
   return string;
 }
 
-- (void)_sendMessageAsync:(id)a3 completion:(id)a4
+- (void)_sendMessageAsync:(id)async completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  asyncCopy = async;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_xpcClientQueue);
-  if (v6 && (xpcConnection = self->_xpcConnection) != 0)
+  if (asyncCopy && (xpcConnection = self->_xpcConnection) != 0)
   {
     xpcReplyQueue = self->_xpcReplyQueue;
     v11[0] = _NSConcreteStackBlock;
@@ -1033,46 +1033,46 @@ LABEL_11:
     v11[2] = sub_1000443DC;
     v11[3] = &unk_10024F1F8;
     v11[4] = self;
-    v12 = v7;
-    xpc_connection_send_message_with_reply(xpcConnection, v6, xpcReplyQueue, v11);
+    v12 = completionCopy;
+    xpc_connection_send_message_with_reply(xpcConnection, asyncCopy, xpcReplyQueue, v11);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v10 = [NSError errorWithDomain:CSErrorDomain code:1252 userInfo:0];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
-- (void)sendMessageAsync:(id)a3 completion:(id)a4
+- (void)sendMessageAsync:(id)async completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  asyncCopy = async;
+  completionCopy = completion;
   xpcClientQueue = self->_xpcClientQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004457C;
   block[3] = &unk_1002533A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = asyncCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = asyncCopy;
   dispatch_async(xpcClientQueue, block);
 }
 
-- (BOOL)fallbackDeactivateAudioSession:(unint64_t)a3 error:(id *)a4
+- (BOOL)fallbackDeactivateAudioSession:(unint64_t)session error:(id *)error
 {
   *keys = *off_10024F1E0;
   values[0] = xpc_int64_create(1);
-  values[1] = xpc_int64_create(a3);
+  values[1] = xpc_int64_create(session);
   v7 = xpc_dictionary_create(keys, values, 2uLL);
   *v15 = *off_100252E40;
   v14[0] = xpc_int64_create(17);
   v8 = v7;
   v14[1] = v8;
   v9 = xpc_dictionary_create(v15, v14, 2uLL);
-  v10 = [(CSXPCClient *)self sendMessageAndReplySync:v9 error:a4, v14[0]];
+  v10 = [(CSXPCClient *)self sendMessageAndReplySync:v9 error:error, v14[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -1219,16 +1219,16 @@ LABEL_7:
   return uint64;
 }
 
-- (unsigned)audioSessionIdForDeviceId:(id)a3
+- (unsigned)audioSessionIdForDeviceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   keys = "type";
   values = xpc_int64_create(1);
   v5 = xpc_dictionary_create(&keys, &values, 1uLL);
-  if (v4)
+  if (idCopy)
   {
-    v6 = v4;
-    xpc_dictionary_set_string(v5, "deviceID", [v4 UTF8String]);
+    v6 = idCopy;
+    xpc_dictionary_set_string(v5, "deviceID", [idCopy UTF8String]);
   }
 
   *v27 = *off_100252E40;
@@ -1296,23 +1296,23 @@ LABEL_11:
   return self;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_audioSessionInfoObservers removeObject:?];
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_audioSessionInfoObservers addObject:?];
   }
 }
 
-- (void)attachTandemStream:(id)a3 withConfig:(id)a4 toPrimaryStream:(id)a5 completion:(id)a6
+- (void)attachTandemStream:(id)stream withConfig:(id)config toPrimaryStream:(id)primaryStream completion:(id)completion
 {
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1323,7 +1323,7 @@ LABEL_11:
   }
 }
 
-- (void)setAnnounceCallsEnabled:(BOOL)a3 withStreamHandleID:(unint64_t)a4
+- (void)setAnnounceCallsEnabled:(BOOL)enabled withStreamHandleID:(unint64_t)d
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1347,7 +1347,7 @@ LABEL_11:
   return 0;
 }
 
-- (void)cancelAudioStreamHold:(id)a3
+- (void)cancelAudioStreamHold:(id)hold
 {
   v3 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1358,7 +1358,7 @@ LABEL_11:
   }
 }
 
-- (id)holdAudioStreamWithDescription:(id)a3 option:(id)a4
+- (id)holdAudioStreamWithDescription:(id)description option:(id)option
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1371,7 +1371,7 @@ LABEL_11:
   return 0;
 }
 
-- (void)saveRecordingBufferToEndFrom:(unint64_t)a3 toURL:(id)a4
+- (void)saveRecordingBufferToEndFrom:(unint64_t)from toURL:(id)l
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1382,7 +1382,7 @@ LABEL_11:
   }
 }
 
-- (void)saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5
+- (void)saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1393,7 +1393,7 @@ LABEL_11:
   }
 }
 
-- (id)audioChunkToEndFrom:(unint64_t)a3 channelIdx:(unint64_t)a4
+- (id)audioChunkToEndFrom:(unint64_t)from channelIdx:(unint64_t)idx
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1406,7 +1406,7 @@ LABEL_11:
   return 0;
 }
 
-- (id)audioChunkToEndFrom:(unint64_t)a3
+- (id)audioChunkToEndFrom:(unint64_t)from
 {
   v3 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1419,7 +1419,7 @@ LABEL_11:
   return 0;
 }
 
-- (id)audioChunkFrom:(unint64_t)a3 to:(unint64_t)a4 channelIdx:(unint64_t)a5
+- (id)audioChunkFrom:(unint64_t)from to:(unint64_t)to channelIdx:(unint64_t)idx
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1432,7 +1432,7 @@ LABEL_11:
   return 0;
 }
 
-- (id)audioChunkFrom:(unint64_t)a3 to:(unint64_t)a4
+- (id)audioChunkFrom:(unint64_t)from to:(unint64_t)to
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1481,7 +1481,7 @@ LABEL_11:
   block[3] = &unk_100252228;
   v7 = v5;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   dispatch_async_and_wait(xpcClientQueue, block);
   v8 = v17[5];
@@ -1531,7 +1531,7 @@ LABEL_11:
   block[3] = &unk_100252228;
   v7 = v5;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   dispatch_async_and_wait(xpcClientQueue, block);
   v8 = v17[5];
@@ -1576,7 +1576,7 @@ LABEL_11:
   block[3] = &unk_100252228;
   v7 = v5;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   dispatch_async_and_wait(xpcClientQueue, block);
   v8 = v19[5];
@@ -1634,7 +1634,7 @@ LABEL_6:
   block[2] = sub_100046440;
   block[3] = &unk_100252228;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v7 = v5;
   dispatch_async_and_wait(xpcClientQueue, block);
@@ -1671,7 +1671,7 @@ LABEL_6:
   block[3] = &unk_100252228;
   v7 = v5;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   dispatch_async_and_wait(xpcClientQueue, block);
   v8 = v18[5];
@@ -1729,7 +1729,7 @@ LABEL_6:
   block[3] = &unk_100252228;
   v7 = v5;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   dispatch_async_and_wait(xpcClientQueue, block);
   v8 = v17[5];
@@ -1756,19 +1756,19 @@ LABEL_6:
   return v9;
 }
 
-- (void)triggerInfoForContext:(id)a3 completion:(id)a4
+- (void)triggerInfoForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
+  contextCopy = context;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1000470B0;
   v31[3] = &unk_10024F190;
-  v7 = a4;
-  v32 = v7;
+  completionCopy = completion;
+  v32 = completionCopy;
   v8 = objc_retainBlock(v31);
   *keys = *off_10024F1B0;
   values[0] = xpc_int64_create(100);
-  values[1] = [v6 xpcObject];
+  values[1] = [contextCopy xpcObject];
   v9 = xpc_dictionary_create(keys, values, 2uLL);
   *v43 = *off_100252E40;
   v42[0] = xpc_int64_create(4);
@@ -1860,7 +1860,7 @@ LABEL_27:
 
     else
     {
-      if ([v6 isVoiceTriggered])
+      if ([contextCopy isVoiceTriggered])
       {
         v23 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1878,7 +1878,7 @@ LABEL_27:
       }
     }
 
-    if ([v6 isRTSTriggered])
+    if ([contextCopy isRTSTriggered])
     {
       v24 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1912,19 +1912,19 @@ LABEL_28:
   }
 }
 
-- (void)acousticSLResultForContext:(id)a3 completion:(id)a4
+- (void)acousticSLResultForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
+  contextCopy = context;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100047440;
   v20[3] = &unk_10024F168;
-  v7 = a4;
-  v21 = v7;
+  completionCopy = completion;
+  v21 = completionCopy;
   v8 = objc_retainBlock(v20);
   keys = *off_10024F1B0;
   values[0] = xpc_int64_create(101);
-  values[1] = [v6 xpcObject];
+  values[1] = [contextCopy xpcObject];
   v9 = xpc_dictionary_create(&keys, values, 2uLL);
   v25 = *off_100252E40;
   v24[0] = xpc_int64_create(4);
@@ -1949,7 +1949,7 @@ LABEL_28:
     block[4] = self;
     v17 = v11;
     v19 = v8;
-    v18 = v6;
+    v18 = contextCopy;
     dispatch_async(xpcClientQueue, block);
   }
 
@@ -1974,19 +1974,19 @@ LABEL_28:
   }
 }
 
-- (void)stopAudioStream:(id)a3 option:(id)a4 completion:(id)a5
+- (void)stopAudioStream:(id)stream option:(id)option completion:(id)completion
 {
-  v8 = a4;
+  optionCopy = option;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100047914;
   v12[3] = &unk_100253220;
-  v9 = a5;
-  v13 = v9;
+  completionCopy = completion;
+  v13 = completionCopy;
   v10 = objc_retainBlock(v12);
-  if (a3)
+  if (stream)
   {
-    v11 = [CSXPCClient createStopAudioStreamMessageWithOption:v8];
+    v11 = [CSXPCClient createStopAudioStreamMessageWithOption:optionCopy];
     [(CSXPCClient *)self sendMessageAsync:v11 completion:v10];
   }
 
@@ -1997,19 +1997,19 @@ LABEL_28:
   }
 }
 
-- (void)startAudioStream:(id)a3 option:(id)a4 completion:(id)a5
+- (void)startAudioStream:(id)stream option:(id)option completion:(id)completion
 {
-  v8 = a4;
+  optionCopy = option;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100047A60;
   v12[3] = &unk_100253220;
-  v9 = a5;
-  v13 = v9;
+  completionCopy = completion;
+  v13 = completionCopy;
   v10 = objc_retainBlock(v12);
-  if (a3 && v8)
+  if (stream && optionCopy)
   {
-    v11 = [CSXPCClient createStartAudioStreamMessageWithOption:v8];
+    v11 = [CSXPCClient createStartAudioStreamMessageWithOption:optionCopy];
     [(CSXPCClient *)self sendMessageAsync:v11 completion:v10];
   }
 
@@ -2020,7 +2020,7 @@ LABEL_28:
   }
 }
 
-- (BOOL)supportsDuckingOnCurrentRouteWithError:(id *)a3
+- (BOOL)supportsDuckingOnCurrentRouteWithError:(id *)error
 {
   keys = "type";
   values = xpc_int64_create(102);
@@ -2030,7 +2030,7 @@ LABEL_28:
   v6 = v5;
   v11[1] = v6;
   v7 = xpc_dictionary_create(v12, v11, 2uLL);
-  v8 = [(CSXPCClient *)self sendMessageAndReplySync:v7 error:a3, v11[0]];
+  v8 = [(CSXPCClient *)self sendMessageAndReplySync:v7 error:error, v11[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -2039,32 +2039,32 @@ LABEL_28:
   return v8;
 }
 
-- (void)prepareAudioStream:(id)a3 request:(id)a4 completion:(id)a5
+- (void)prepareAudioStream:(id)stream request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  streamCopy = stream;
+  requestCopy = request;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100047DD0;
   v16[3] = &unk_100253220;
-  v10 = a5;
-  v17 = v10;
+  completionCopy = completion;
+  v17 = completionCopy;
   v11 = objc_retainBlock(v16);
   v12 = CSLogContextFacilityCoreSpeech;
-  if (v8 && v9)
+  if (streamCopy && requestCopy)
   {
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v8 name];
+      name = [streamCopy name];
       *buf = 136315394;
       v19 = "[CSXPCClient prepareAudioStream:request:completion:]";
       v20 = 2114;
-      v21 = v14;
+      v21 = name;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s PrepareAudioStream %{public}@", buf, 0x16u);
     }
 
-    v15 = [CSXPCClient createPrepareAudioStreamMessageWithRequest:v9];
+    v15 = [CSXPCClient createPrepareAudioStreamMessageWithRequest:requestCopy];
     [(CSXPCClient *)self sendMessageAsync:v15 completion:v11];
   }
 
@@ -2082,30 +2082,30 @@ LABEL_28:
   }
 }
 
-- (BOOL)prepareAudioStreamSync:(id)a3 request:(id)a4 error:(id *)a5
+- (BOOL)prepareAudioStreamSync:(id)sync request:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  syncCopy = sync;
+  requestCopy = request;
+  v10 = requestCopy;
   v11 = CSLogContextFacilityCoreSpeech;
-  if (!v8 || !v9)
+  if (!syncCopy || !requestCopy)
   {
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
       *&buf[4] = "[CSXPCClient prepareAudioStreamSync:request:error:]";
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Invalid message: stream is nil or request is nil", buf, 0xCu);
-      if (a5)
+      if (error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_10:
       [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-      *a5 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_20;
     }
 
@@ -2116,11 +2116,11 @@ LABEL_10:
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 name];
+    name = [syncCopy name];
     *buf = 136315394;
     *&buf[4] = "[CSXPCClient prepareAudioStreamSync:request:error:]";
     *&buf[12] = 2114;
-    *&buf[14] = v13;
+    *&buf[14] = name;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s PrepareAudioStream %{public}@", buf, 0x16u);
   }
 
@@ -2152,7 +2152,7 @@ LABEL_10:
   v29 = &unk_100252278;
   v18 = v16;
   v30 = v18;
-  v31 = self;
+  selfCopy = self;
   v32 = buf;
   v33 = &v34;
   dispatch_async_and_wait(xpcClientQueue, &v26);
@@ -2160,7 +2160,7 @@ LABEL_10:
   if (!v19)
   {
     v20 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -2173,10 +2173,10 @@ LABEL_10:
   v22 = v35[5];
   v35[5] = v21;
 
-  if (a5)
+  if (error)
   {
 LABEL_12:
-    *a5 = v35[5];
+    *error = v35[5];
   }
 
 LABEL_13:
@@ -2197,20 +2197,20 @@ LABEL_20:
   return v20;
 }
 
-- (void)audioStreamWithRequest:(id)a3 streamName:(id)a4 completion:(id)a5
+- (void)audioStreamWithRequest:(id)request streamName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  nameCopy = name;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10004855C;
   v23[3] = &unk_10024F0E8;
-  v10 = a5;
-  v24 = v10;
+  completionCopy = completion;
+  v24 = completionCopy;
   v11 = objc_retainBlock(v23);
-  if (v8)
+  if (requestCopy)
   {
-    v12 = [CSXPCClient createPrepareAudioStreamMessageWithRequest:v8];
+    v12 = [CSXPCClient createPrepareAudioStreamMessageWithRequest:requestCopy];
     if (v12)
     {
       v13 = v12;
@@ -2220,7 +2220,7 @@ LABEL_20:
         *buf = 136315394;
         v26 = "[CSXPCClient audioStreamWithRequest:streamName:completion:]";
         v27 = 2114;
-        v28 = v9;
+        v28 = nameCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s audioStreamWithRequest for stream %{public}@", buf, 0x16u);
       }
 
@@ -2232,8 +2232,8 @@ LABEL_20:
       v18[4] = self;
       v16 = v13;
       v19 = v16;
-      v20 = v9;
-      v21 = v8;
+      v20 = nameCopy;
+      v21 = requestCopy;
       v22 = v11;
       dispatch_async(xpcClientQueue, v18);
     }
@@ -2254,15 +2254,15 @@ LABEL_20:
   }
 }
 
-- (id)audioStreamWithRequest:(id)a3 streamName:(id)a4 error:(id *)a5
+- (id)audioStreamWithRequest:(id)request streamName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  requestCopy = request;
+  nameCopy = name;
+  if (requestCopy)
   {
     *keys = *off_10024F130;
     values[0] = xpc_int64_create(2);
-    values[1] = [v8 xpcObject];
+    values[1] = [requestCopy xpcObject];
     v10 = xpc_dictionary_create(keys, values, 2uLL);
     *v48 = *off_100252E40;
     v47[0] = xpc_int64_create(4);
@@ -2283,7 +2283,7 @@ LABEL_20:
         *buf = 136315394;
         *&buf[4] = "[CSXPCClient audioStreamWithRequest:streamName:error:]";
         *&buf[12] = 2114;
-        *&buf[14] = v9;
+        *&buf[14] = nameCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s audioStreamWithRequest for stream %{public}@", buf, 0x16u);
       }
 
@@ -2298,15 +2298,15 @@ LABEL_20:
       v30 = 3221225472;
       v31 = sub_100048C78;
       v32 = &unk_100252278;
-      v33 = self;
+      selfCopy = self;
       v35 = buf;
       v34 = v12;
       v36 = &v37;
       dispatch_async_and_wait(xpcClientQueue, &v29);
       v15 = *(*&buf[8] + 40);
-      if (v15 && (v16 = xpc_dictionary_get_BOOL(v15, "result"), [(CSXPCClient *)self _decodeError:*(*&buf[8] + 40), v29, v30, v31, v32, v33], v17 = objc_claimAutoreleasedReturnValue(), v18 = v38[5], v38[5] = v17, v18, v16))
+      if (v15 && (v16 = xpc_dictionary_get_BOOL(v15, "result"), [(CSXPCClient *)self _decodeError:*(*&buf[8] + 40), v29, v30, v31, v32, selfCopy], v17 = objc_claimAutoreleasedReturnValue(), v18 = v38[5], v38[5] = v17, v18, v16))
       {
-        v19 = [[CSAudioStream alloc] initWithAudioStreamProvider:self streamName:v9 streamRequest:v8];
+        v19 = [[CSAudioStream alloc] initWithAudioStreamProvider:self streamName:nameCopy streamRequest:requestCopy];
         audioStream = self->_audioStream;
         p_audioStream = &self->_audioStream;
         *p_audioStream = v19;
@@ -2320,7 +2320,7 @@ LABEL_20:
       }
 
       _Block_object_dispose(buf, 8);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_15;
       }
@@ -2333,13 +2333,13 @@ LABEL_20:
       v38[5] = v24;
 
       v22 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_15;
       }
     }
 
-    *a5 = v38[5];
+    *error = v38[5];
 LABEL_15:
     v23 = v22;
     _Block_object_dispose(&v37, 8);
@@ -2355,10 +2355,10 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (*a5)
+  if (*error)
   {
     [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-    *a5 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -2371,14 +2371,14 @@ LABEL_19:
   return v23;
 }
 
-- (BOOL)setCurrentContext:(id)a3 error:(id *)a4
+- (BOOL)setCurrentContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     *keys = *off_10024F1B0;
     values[0] = xpc_int64_create(1);
-    values[1] = [v6 xpcObject];
+    values[1] = [contextCopy xpcObject];
     v7 = xpc_dictionary_create(keys, values, 2uLL);
     *v40 = *off_100252E40;
     v39[0] = xpc_int64_create(4);
@@ -2404,7 +2404,7 @@ LABEL_19:
     v22 = &unk_100252278;
     v11 = v9;
     v23 = v11;
-    v24 = self;
+    selfCopy = self;
     v25 = &v33;
     v26 = &v27;
     dispatch_async_and_wait(xpcClientQueue, &v19);
@@ -2416,7 +2416,7 @@ LABEL_19:
       v15 = v28[5];
       v28[5] = v14;
 
-      if (!a4)
+      if (!error)
       {
 LABEL_9:
 
@@ -2438,20 +2438,20 @@ LABEL_9:
     else
     {
       v13 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
     }
 
-    *a4 = v28[5];
+    *error = v28[5];
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -2486,7 +2486,7 @@ LABEL_13:
   block[2] = sub_1000492DC;
   block[3] = &unk_100252228;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v7 = v5;
   dispatch_async_and_wait(xpcClientQueue, block);
@@ -2500,11 +2500,11 @@ LABEL_13:
   return v8;
 }
 
-- (float)averagePowerForChannel:(unint64_t)a3
+- (float)averagePowerForChannel:(unint64_t)channel
 {
   *keys = *off_10024F0D0;
   values[0] = xpc_int64_create(4);
-  values[1] = xpc_uint64_create(a3);
+  values[1] = xpc_uint64_create(channel);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v23 = *off_100252E40;
   v22[0] = xpc_int64_create(8);
@@ -2521,7 +2521,7 @@ LABEL_13:
   block[2] = sub_10004979C;
   block[3] = &unk_100252228;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   v9 = v7;
   dispatch_async_and_wait(xpcClientQueue, block);
@@ -2542,11 +2542,11 @@ LABEL_13:
   return v10;
 }
 
-- (float)peakPowerForChannel:(unint64_t)a3
+- (float)peakPowerForChannel:(unint64_t)channel
 {
   *keys = *off_10024F0D0;
   values[0] = xpc_int64_create(3);
-  values[1] = xpc_uint64_create(a3);
+  values[1] = xpc_uint64_create(channel);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v23 = *off_100252E40;
   v22[0] = xpc_int64_create(8);
@@ -2563,7 +2563,7 @@ LABEL_13:
   block[2] = sub_100049AF0;
   block[3] = &unk_100252228;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   v9 = v7;
   dispatch_async_and_wait(xpcClientQueue, block);
@@ -2601,11 +2601,11 @@ LABEL_13:
   }
 }
 
-- (void)setMeteringEnabled:(BOOL)a3
+- (void)setMeteringEnabled:(BOOL)enabled
 {
   *keys = *off_10024F0C0;
   values[0] = xpc_int64_create(1);
-  values[1] = xpc_BOOL_create(a3);
+  values[1] = xpc_BOOL_create(enabled);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(8);
@@ -2623,12 +2623,12 @@ LABEL_13:
   }
 }
 
-- (void)configureAlertBehavior:(id)a3
+- (void)configureAlertBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   *keys = *off_10024F0B0;
   values[0] = xpc_int64_create(5);
-  values[1] = [v4 _cs_xpcObject];
+  values[1] = [behaviorCopy _cs_xpcObject];
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(6);
@@ -2666,7 +2666,7 @@ LABEL_13:
   block[2] = sub_10004A194;
   block[3] = &unk_100252228;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v7 = v5;
   dispatch_async_and_wait(xpcClientQueue, block);
@@ -2683,11 +2683,11 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)a3
+- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)override
 {
   *keys = *off_10024F0A0;
   values[0] = xpc_int64_create(3);
-  values[1] = xpc_int64_create(a3);
+  values[1] = xpc_int64_create(override);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v13 = *off_100252E40;
   v12[0] = xpc_int64_create(6);
@@ -2707,11 +2707,11 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)playAlertSoundForType:(int64_t)a3
+- (BOOL)playAlertSoundForType:(int64_t)type
 {
   *keys = *off_10024F090;
   values[0] = xpc_int64_create(2);
-  values[1] = xpc_int64_create(a3);
+  values[1] = xpc_int64_create(type);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v13 = *off_100252E40;
   v12[0] = xpc_int64_create(6);
@@ -2731,25 +2731,25 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)setAlertSoundFromURL:(id)a3 forType:(int64_t)a4 force:(BOOL)a5
+- (BOOL)setAlertSoundFromURL:(id)l forType:(int64_t)type force:(BOOL)force
 {
-  v8 = a3;
+  lCopy = l;
   *keys = *off_10024F078;
   v24 = "forceSetAlert";
   values[0] = xpc_int64_create(1);
-  values[1] = xpc_int64_create(a4);
-  values[2] = xpc_BOOL_create(a5);
+  values[1] = xpc_int64_create(type);
+  values[2] = xpc_BOOL_create(force);
   v9 = xpc_dictionary_create(keys, values, 3uLL);
-  if (v8)
+  if (lCopy)
   {
-    v10 = [v8 path];
-    v11 = v10 == 0;
+    path = [lCopy path];
+    v11 = path == 0;
 
     if (!v11)
     {
-      v12 = [v8 path];
-      v13 = v12;
-      xpc_dictionary_set_string(v9, "soundPath", [v12 UTF8String]);
+      path2 = [lCopy path];
+      v13 = path2;
+      xpc_dictionary_set_string(v9, "soundPath", [path2 UTF8String]);
     }
   }
 
@@ -2771,11 +2771,11 @@ LABEL_13:
   return v16;
 }
 
-- (void)enableMiniDucking:(BOOL)a3
+- (void)enableMiniDucking:(BOOL)ducking
 {
   *keys = *off_10024F068;
   values[0] = xpc_int64_create(6);
-  values[1] = xpc_BOOL_create(a3);
+  values[1] = xpc_BOOL_create(ducking);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(2);
@@ -2793,11 +2793,11 @@ LABEL_13:
   }
 }
 
-- (void)enableSmartRoutingConsideration:(BOOL)a3
+- (void)enableSmartRoutingConsideration:(BOOL)consideration
 {
   *keys = *off_10024F058;
   values[0] = xpc_int64_create(9);
-  values[1] = xpc_BOOL_create(a3);
+  values[1] = xpc_BOOL_create(consideration);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(2);
@@ -2815,11 +2815,11 @@ LABEL_13:
   }
 }
 
-- (void)setDuckOthersOption:(BOOL)a3
+- (void)setDuckOthersOption:(BOOL)option
 {
   *keys = *off_10024F048;
   values[0] = xpc_int64_create(5);
-  values[1] = xpc_BOOL_create(a3);
+  values[1] = xpc_BOOL_create(option);
   v5 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(2);
@@ -2837,18 +2837,18 @@ LABEL_13:
   }
 }
 
-- (BOOL)deactivateAudioSession:(unint64_t)a3 error:(id *)a4
+- (BOOL)deactivateAudioSession:(unint64_t)session error:(id *)error
 {
   *keys = *off_10024F038;
   values[0] = xpc_int64_create(3);
-  values[1] = xpc_int64_create(a3);
+  values[1] = xpc_int64_create(session);
   v7 = xpc_dictionary_create(keys, values, 2uLL);
   *v15 = *off_100252E40;
   v14[0] = xpc_int64_create(2);
   v8 = v7;
   v14[1] = v8;
   v9 = xpc_dictionary_create(v15, v14, 2uLL);
-  v10 = [(CSXPCClient *)self sendMessageAndReplySync:v9 error:a4, v14[0]];
+  v10 = [(CSXPCClient *)self sendMessageAndReplySync:v9 error:error, v14[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -2861,15 +2861,15 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)activateAudioSessionWithReason:(unint64_t)a3 dynamicAttribute:(unint64_t)a4 bundleID:(id)a5 error:(id *)a6
+- (BOOL)activateAudioSessionWithReason:(unint64_t)reason dynamicAttribute:(unint64_t)attribute bundleID:(id)d error:(id *)error
 {
-  v10 = a5;
-  v11 = v10;
+  dCopy = d;
+  v11 = dCopy;
   *keys = *off_10024F018;
   v25 = *off_10024F028;
-  if (v10)
+  if (dCopy)
   {
-    v12 = xpc_string_create([v10 UTF8String]);
+    v12 = xpc_string_create([dCopy UTF8String]);
   }
 
   else
@@ -2878,8 +2878,8 @@ LABEL_13:
   }
 
   values[0] = xpc_int64_create(2);
-  values[1] = xpc_int64_create(a3);
-  values[2] = xpc_int64_create(a4);
+  values[1] = xpc_int64_create(reason);
+  values[2] = xpc_int64_create(attribute);
   v13 = v12;
   values[3] = v13;
   v14 = xpc_dictionary_create(keys, values, 4uLL);
@@ -2888,7 +2888,7 @@ LABEL_13:
   v15 = v14;
   v21[1] = v15;
   v16 = xpc_dictionary_create(v22, v21, 2uLL);
-  v17 = [(CSXPCClient *)self sendMessageAndReplySync:v16 error:a6, v21[0]];
+  v17 = [(CSXPCClient *)self sendMessageAndReplySync:v16 error:error, v21[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -2901,7 +2901,7 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)prewarmAudioSessionWithError:(id *)a3
+- (BOOL)prewarmAudioSessionWithError:(id *)error
 {
   keys = "type";
   values = xpc_int64_create(1);
@@ -2911,7 +2911,7 @@ LABEL_13:
   v6 = v5;
   v11[1] = v6;
   v7 = xpc_dictionary_create(v12, v11, 2uLL);
-  v8 = [(CSXPCClient *)self sendMessageAndReplySync:v7 error:a3, v11[0]];
+  v8 = [(CSXPCClient *)self sendMessageAndReplySync:v7 error:error, v11[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -2920,14 +2920,14 @@ LABEL_13:
   return v8;
 }
 
-- (void)pingpong:(id)a3
+- (void)pingpong:(id)pingpong
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_10004B098;
   v10 = &unk_100253220;
-  v11 = a3;
-  v4 = v11;
+  pingpongCopy = pingpong;
+  v4 = pingpongCopy;
   v5 = objc_retainBlock(&v7);
   keys = "type";
   values = xpc_int64_create(1);
@@ -2935,31 +2935,31 @@ LABEL_13:
   [(CSXPCClient *)self sendMessageAsync:v6 completion:v5, v7, v8, v9, v10];
 }
 
-- (BOOL)prepareAudioProviderWithContext:(id)a3 clientType:(unint64_t)a4 error:(id *)a5
+- (BOOL)prepareAudioProviderWithContext:(id)context clientType:(unint64_t)type error:(id *)error
 {
-  v8 = a3;
+  contextCopy = context;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[CSXPCClient prepareAudioProviderWithContext:clientType:error:]";
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = contextCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s Prepare Audio Provider with Context : %{public}@", buf, 0x16u);
   }
 
   *buf = *off_10024F000;
   *&buf[16] = "clientType";
   values[0] = xpc_int64_create(1);
-  values[1] = [v8 xpcObject];
-  values[2] = xpc_uint64_create(a4);
+  values[1] = [contextCopy xpcObject];
+  values[2] = xpc_uint64_create(type);
   v10 = xpc_dictionary_create(buf, values, 3uLL);
   *keys = *off_100252E40;
   v17[0] = xpc_int64_create(13);
   v11 = v10;
   v17[1] = v11;
   v12 = xpc_dictionary_create(keys, v17, 2uLL);
-  v13 = [(CSXPCClient *)self sendMessageAndReplySync:v12 error:a5, v17[0]];
+  v13 = [(CSXPCClient *)self sendMessageAndReplySync:v12 error:error, v17[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -3001,17 +3001,17 @@ LABEL_13:
   }
 }
 
-- (id)_getSerialQueueWithName:(id)a3 targetQueue:(id)a4
+- (id)_getSerialQueueWithName:(id)name targetQueue:(id)queue
 {
-  v5 = a4;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v6 = dispatch_queue_create_with_target_V2([a3 UTF8String], 0, v5);
+    v6 = dispatch_queue_create_with_target_V2([name UTF8String], 0, queueCopy);
   }
 
   else
   {
-    v6 = [CSUtils getSerialQueueWithQOS:33 name:a3 fixedPriority:kCSDefaultSerialQueueFixedPriority];
+    v6 = [CSUtils getSerialQueueWithQOS:33 name:name fixedPriority:kCSDefaultSerialQueueFixedPriority];
   }
 
   v7 = v6;
@@ -3080,7 +3080,7 @@ LABEL_13:
   return v3;
 }
 
-- (CSXPCClient)initWithType:(unint64_t)a3
+- (CSXPCClient)initWithType:(unint64_t)type
 {
   v18.receiver = self;
   v18.super_class = CSXPCClient;
@@ -3114,22 +3114,22 @@ LABEL_13:
     audioSessionInfoObservers = v4->_audioSessionInfoObservers;
     v4->_audioSessionInfoObservers = v12;
 
-    v4->_xpcClientType = a3;
+    v4->_xpcClientType = type;
     v14 = +[NSUUID UUID];
-    v15 = [v14 UUIDString];
+    uUIDString = [v14 UUIDString];
     UUID = v4->_UUID;
-    v4->_UUID = v15;
+    v4->_UUID = uUIDString;
   }
 
   return v4;
 }
 
-+ (id)createStopAudioStreamMessageWithOption:(id)a3
++ (id)createStopAudioStreamMessageWithOption:(id)option
 {
-  v3 = a3;
+  optionCopy = option;
   *keys = *off_10024F150;
   values[0] = xpc_int64_create(5);
-  values[1] = [v3 xpcObject];
+  values[1] = [optionCopy xpcObject];
   v4 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(4);
@@ -3147,12 +3147,12 @@ LABEL_13:
   return v6;
 }
 
-+ (id)createStartAudioStreamMessageWithOption:(id)a3
++ (id)createStartAudioStreamMessageWithOption:(id)option
 {
-  v3 = a3;
+  optionCopy = option;
   *keys = *off_10024F140;
   values[0] = xpc_int64_create(4);
-  values[1] = [v3 xpcObject];
+  values[1] = [optionCopy xpcObject];
   v4 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(4);
@@ -3170,12 +3170,12 @@ LABEL_13:
   return v6;
 }
 
-+ (id)createPrepareAudioStreamMessageWithRequest:(id)a3
++ (id)createPrepareAudioStreamMessageWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   *keys = *off_10024F130;
   values[0] = xpc_int64_create(3);
-  values[1] = [v3 xpcObject];
+  values[1] = [requestCopy xpcObject];
   v4 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(4);
@@ -3193,12 +3193,12 @@ LABEL_13:
   return v6;
 }
 
-+ (id)createAudioStreamMessageWithRequest:(id)a3
++ (id)createAudioStreamMessageWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   *keys = *off_10024F130;
   values[0] = xpc_int64_create(2);
-  values[1] = [v3 xpcObject];
+  values[1] = [requestCopy xpcObject];
   v4 = xpc_dictionary_create(keys, values, 2uLL);
   *v11 = *off_100252E40;
   v10[0] = xpc_int64_create(4);

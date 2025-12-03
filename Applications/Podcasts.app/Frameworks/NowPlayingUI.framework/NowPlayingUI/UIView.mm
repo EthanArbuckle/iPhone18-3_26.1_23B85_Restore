@@ -2,11 +2,11 @@
 - (CGRect)untransformedFrame;
 - (UIEdgeInsets)music_inheritedLayoutInsets;
 - (UIEdgeInsets)music_layoutInsets;
-- (void)_music_layoutInsets_didMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (void)_music_layoutInsets_didMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)_music_layoutInsets_didMoveToSuperview;
 - (void)_music_updateInheritedLayoutInsets;
-- (void)music_setLayoutInsets:(UIEdgeInsets)a3;
-- (void)setUntransformedFrame:(CGRect)a3;
+- (void)music_setLayoutInsets:(UIEdgeInsets)insets;
+- (void)setUntransformedFrame:(CGRect)frame;
 @end
 
 @implementation UIView
@@ -73,12 +73,12 @@
   return result;
 }
 
-- (void)music_setLayoutInsets:(UIEdgeInsets)a3
+- (void)music_setLayoutInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if (sSetupOnceToken[0] != -1)
   {
     [UIView(MusicLayoutAdditions) music_layoutInsets];
@@ -88,8 +88,8 @@
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
     v15 = _UIViewMusicLayoutAdditionsAssociatedObjectKeyLayoutInsets;
-    v16 = [NSValue valueWithUIEdgeInsets:top, left, bottom, right];
-    objc_setAssociatedObject(self, v15, v16, &stru_2E8.segname[9]);
+    right = [NSValue valueWithUIEdgeInsets:top, left, bottom, right];
+    objc_setAssociatedObject(self, v15, right, &stru_2E8.segname[9]);
 
     if ([(UIView *)self _isInAWindow])
     {
@@ -113,11 +113,11 @@
   [(UIView *)self _music_layoutInsets_didMoveToSuperview];
 }
 
-- (void)_music_layoutInsets_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_music_layoutInsets_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
   [(UIView *)self _music_updateInheritedLayoutInsets];
 
-  [(UIView *)self _music_layoutInsets_didMoveFromWindow:a3 toWindow:a4];
+  [(UIView *)self _music_layoutInsets_didMoveFromWindow:window toWindow:toWindow];
 }
 
 - (void)_music_updateInheritedLayoutInsets
@@ -129,11 +129,11 @@
   v10 = v9;
   if ([(UIView *)self _isInAWindow])
   {
-    v11 = [(UIView *)self superview];
-    if (v11)
+    superview = [(UIView *)self superview];
+    if (superview)
     {
-      v12 = [(UIView *)self superview];
-      [v12 music_inheritedLayoutInsets];
+      superview2 = [(UIView *)self superview];
+      [superview2 music_inheritedLayoutInsets];
       v14 = v13;
       v16 = v15;
       v18 = v17;
@@ -193,8 +193,8 @@
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v39 = [(UIView *)self subviews];
-    v40 = [v39 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    subviews = [(UIView *)self subviews];
+    v40 = [subviews countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v40)
     {
       v41 = v40;
@@ -205,13 +205,13 @@
         {
           if (*v45 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v44 + 1) + 8 * i) _music_updateInheritedLayoutInsets];
         }
 
-        v41 = [v39 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        v41 = [subviews countByEnumeratingWithState:&v44 objects:v48 count:16];
       }
 
       while (v41);
@@ -221,13 +221,13 @@
 
 - (CGRect)untransformedFrame
 {
-  v2 = self;
-  [(UIView *)v2 bounds];
+  selfCopy = self;
+  [(UIView *)selfCopy bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [(UIView *)v2 center];
+  [(UIView *)selfCopy center];
   v12 = v11;
   v14 = v13;
   v23.origin.x = v4;
@@ -262,14 +262,14 @@
   return result;
 }
 
-- (void)setUntransformedFrame:(CGRect)a3
+- (void)setUntransformedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = self;
-  [(UIView *)v5 setBounds:0.0, 0.0, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  selfCopy = self;
+  [(UIView *)selfCopy setBounds:0.0, 0.0, width, height];
   sub_144F2C();
-  [(UIView *)v5 setCenter:?];
+  [(UIView *)selfCopy setCenter:?];
 }
 
 @end

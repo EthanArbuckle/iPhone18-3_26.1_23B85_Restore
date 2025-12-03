@@ -1,43 +1,43 @@
 @interface SMTTRPCandidate
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMTTRPCandidate)initWithBuilder:(id)a3;
-- (SMTTRPCandidate)initWithCoder:(id)a3;
-- (SMTTRPCandidate)initWithTrpCandidateId:(id)a3 requestId:(id)a4 tcuList:(id)a5;
-- (SMTTRPCandidate)initWithTrpCandidateId:(id)a3 requestId:(id)a4 tcuList:(id)a5 userId:(id)a6;
-- (SMTTRPCandidate)initWithTrpCandidateId:(id)a3 tcuList:(id)a4;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SMTTRPCandidate)initWithBuilder:(id)builder;
+- (SMTTRPCandidate)initWithCoder:(id)coder;
+- (SMTTRPCandidate)initWithTrpCandidateId:(id)id requestId:(id)requestId tcuList:(id)list;
+- (SMTTRPCandidate)initWithTrpCandidateId:(id)id requestId:(id)requestId tcuList:(id)list userId:(id)userId;
+- (SMTTRPCandidate)initWithTrpCandidateId:(id)id tcuList:(id)list;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMTTRPCandidate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   trpCandidateId = self->_trpCandidateId;
-  v5 = a3;
-  [v5 encodeObject:trpCandidateId forKey:@"trpCandidateId"];
-  [v5 encodeObject:self->_requestId forKey:@"requestId"];
-  [v5 encodeObject:self->_tcuList forKey:@"tcuList"];
-  [v5 encodeObject:self->_userId forKey:@"userId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:trpCandidateId forKey:@"trpCandidateId"];
+  [coderCopy encodeObject:self->_requestId forKey:@"requestId"];
+  [coderCopy encodeObject:self->_tcuList forKey:@"tcuList"];
+  [coderCopy encodeObject:self->_userId forKey:@"userId"];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isContinuous];
-  [v5 encodeObject:v6 forKey:@"isContinuous"];
+  [coderCopy encodeObject:v6 forKey:@"isContinuous"];
 }
 
-- (SMTTRPCandidate)initWithCoder:(id)a3
+- (SMTTRPCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trpCandidateId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trpCandidateId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"tcuList"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"tcuList"];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userId"];
-  v12 = [v4 decodeBoolForKey:@"isContinuous"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userId"];
+  v12 = [coderCopy decodeBoolForKey:@"isContinuous"];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -68,10 +68,10 @@ void __33__SMTTRPCandidate_initWithCoder___block_invoke(uint64_t a1, void *a2)
   [v4 setIsContinuous:*(a1 + 64)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -81,22 +81,22 @@ void __33__SMTTRPCandidate_initWithCoder___block_invoke(uint64_t a1, void *a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SMTTRPCandidate *)v5 trpCandidateId];
+      v5 = equalCopy;
+      trpCandidateId = [(SMTTRPCandidate *)v5 trpCandidateId];
       trpCandidateId = self->_trpCandidateId;
-      if (trpCandidateId == v6 || [(NSString *)trpCandidateId isEqual:v6])
+      if (trpCandidateId == trpCandidateId || [(NSString *)trpCandidateId isEqual:trpCandidateId])
       {
-        v8 = [(SMTTRPCandidate *)v5 requestId];
+        requestId = [(SMTTRPCandidate *)v5 requestId];
         requestId = self->_requestId;
-        if (requestId == v8 || [(NSString *)requestId isEqual:v8])
+        if (requestId == requestId || [(NSString *)requestId isEqual:requestId])
         {
-          v10 = [(SMTTRPCandidate *)v5 tcuList];
+          tcuList = [(SMTTRPCandidate *)v5 tcuList];
           tcuList = self->_tcuList;
-          if (tcuList == v10 || [(NSArray *)tcuList isEqual:v10])
+          if (tcuList == tcuList || [(NSArray *)tcuList isEqual:tcuList])
           {
-            v12 = [(SMTTRPCandidate *)v5 userId];
+            userId = [(SMTTRPCandidate *)v5 userId];
             userId = self->_userId;
-            v14 = (userId == v12 || [(NSString *)userId isEqual:v12]) && self->_isContinuous == [(SMTTRPCandidate *)v5 isContinuous];
+            v14 = (userId == userId || [(NSString *)userId isEqual:userId]) && self->_isContinuous == [(SMTTRPCandidate *)v5 isContinuous];
           }
 
           else
@@ -137,7 +137,7 @@ void __33__SMTTRPCandidate_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return v5 ^ v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -148,24 +148,24 @@ void __33__SMTTRPCandidate_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (SMTTRPCandidate)initWithTrpCandidateId:(id)a3 requestId:(id)a4 tcuList:(id)a5 userId:(id)a6
+- (SMTTRPCandidate)initWithTrpCandidateId:(id)id requestId:(id)requestId tcuList:(id)list userId:(id)userId
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  requestIdCopy = requestId;
+  listCopy = list;
+  userIdCopy = userId;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __67__SMTTRPCandidate_initWithTrpCandidateId_requestId_tcuList_userId___block_invoke;
   v20[3] = &unk_2784D5EB8;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v21 = idCopy;
+  v22 = requestIdCopy;
+  v23 = listCopy;
+  v24 = userIdCopy;
+  v14 = userIdCopy;
+  v15 = listCopy;
+  v16 = requestIdCopy;
+  v17 = idCopy;
   v18 = [(SMTTRPCandidate *)self initWithBuilder:v20];
 
   return v18;
@@ -181,18 +181,18 @@ void __67__SMTTRPCandidate_initWithTrpCandidateId_requestId_tcuList_userId___blo
   [v4 setUserId:a1[7]];
 }
 
-- (SMTTRPCandidate)initWithTrpCandidateId:(id)a3 tcuList:(id)a4
+- (SMTTRPCandidate)initWithTrpCandidateId:(id)id tcuList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  listCopy = list;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __50__SMTTRPCandidate_initWithTrpCandidateId_tcuList___block_invoke;
   v12[3] = &unk_2784D5E90;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = idCopy;
+  v14 = listCopy;
+  v8 = listCopy;
+  v9 = idCopy;
   v10 = [(SMTTRPCandidate *)self initWithBuilder:v12];
 
   return v10;
@@ -207,21 +207,21 @@ void __50__SMTTRPCandidate_initWithTrpCandidateId_tcuList___block_invoke(uint64_
   [v4 setTcuList:*(a1 + 40)];
 }
 
-- (SMTTRPCandidate)initWithTrpCandidateId:(id)a3 requestId:(id)a4 tcuList:(id)a5
+- (SMTTRPCandidate)initWithTrpCandidateId:(id)id requestId:(id)requestId tcuList:(id)list
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  requestIdCopy = requestId;
+  listCopy = list;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __60__SMTTRPCandidate_initWithTrpCandidateId_requestId_tcuList___block_invoke;
   v16[3] = &unk_2784D5E68;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v17 = idCopy;
+  v18 = requestIdCopy;
+  v19 = listCopy;
+  v11 = listCopy;
+  v12 = requestIdCopy;
+  v13 = idCopy;
   v14 = [(SMTTRPCandidate *)self initWithBuilder:v16];
 
   return v14;
@@ -236,36 +236,36 @@ void __60__SMTTRPCandidate_initWithTrpCandidateId_requestId_tcuList___block_invo
   [v4 setTcuList:a1[6]];
 }
 
-- (SMTTRPCandidate)initWithBuilder:(id)a3
+- (SMTTRPCandidate)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = SMTTRPCandidate;
   v5 = [(SMTTRPCandidate *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SMTTRPCandidateMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SMTTRPCandidateMutation *)v7 isDirty])
     {
-      v8 = [(_SMTTRPCandidateMutation *)v7 getTrpCandidateId];
-      v9 = [v8 copy];
+      getTrpCandidateId = [(_SMTTRPCandidateMutation *)v7 getTrpCandidateId];
+      v9 = [getTrpCandidateId copy];
       trpCandidateId = v6->_trpCandidateId;
       v6->_trpCandidateId = v9;
 
-      v11 = [(_SMTTRPCandidateMutation *)v7 getRequestId];
-      v12 = [v11 copy];
+      getRequestId = [(_SMTTRPCandidateMutation *)v7 getRequestId];
+      v12 = [getRequestId copy];
       requestId = v6->_requestId;
       v6->_requestId = v12;
 
-      v14 = [(_SMTTRPCandidateMutation *)v7 getTcuList];
-      v15 = [v14 copy];
+      getTcuList = [(_SMTTRPCandidateMutation *)v7 getTcuList];
+      v15 = [getTcuList copy];
       tcuList = v6->_tcuList;
       v6->_tcuList = v15;
 
-      v17 = [(_SMTTRPCandidateMutation *)v7 getUserId];
-      v18 = [v17 copy];
+      getUserId = [(_SMTTRPCandidateMutation *)v7 getUserId];
+      v18 = [getUserId copy];
       userId = v6->_userId;
       v6->_userId = v18;
 
@@ -276,46 +276,46 @@ void __60__SMTTRPCandidate_initWithTrpCandidateId_requestId_tcuList___block_invo
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SMTTRPCandidateMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SMTTRPCandidateMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SMTTRPCandidate);
-      v7 = [(_SMTTRPCandidateMutation *)v5 getTrpCandidateId];
-      v8 = [v7 copy];
+      getTrpCandidateId = [(_SMTTRPCandidateMutation *)v5 getTrpCandidateId];
+      v8 = [getTrpCandidateId copy];
       trpCandidateId = v6->_trpCandidateId;
       v6->_trpCandidateId = v8;
 
-      v10 = [(_SMTTRPCandidateMutation *)v5 getRequestId];
-      v11 = [v10 copy];
+      getRequestId = [(_SMTTRPCandidateMutation *)v5 getRequestId];
+      v11 = [getRequestId copy];
       requestId = v6->_requestId;
       v6->_requestId = v11;
 
-      v13 = [(_SMTTRPCandidateMutation *)v5 getTcuList];
-      v14 = [v13 copy];
+      getTcuList = [(_SMTTRPCandidateMutation *)v5 getTcuList];
+      v14 = [getTcuList copy];
       tcuList = v6->_tcuList;
       v6->_tcuList = v14;
 
-      v16 = [(_SMTTRPCandidateMutation *)v5 getRequestId];
-      v17 = [v16 copy];
+      getRequestId2 = [(_SMTTRPCandidateMutation *)v5 getRequestId];
+      v17 = [getRequestId2 copy];
       v18 = v6->_requestId;
       v6->_requestId = v17;
 
-      v19 = [(_SMTTRPCandidateMutation *)v5 getUserId];
-      v20 = [v19 copy];
+      getUserId = [(_SMTTRPCandidateMutation *)v5 getUserId];
+      v20 = [getUserId copy];
       userId = v6->_userId;
       v6->_userId = v20;
 

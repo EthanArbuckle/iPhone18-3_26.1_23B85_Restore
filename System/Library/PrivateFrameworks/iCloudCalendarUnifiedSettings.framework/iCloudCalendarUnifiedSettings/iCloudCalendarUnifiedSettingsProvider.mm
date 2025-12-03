@@ -1,21 +1,21 @@
 @interface iCloudCalendarUnifiedSettingsProvider
 - (iCloudCalendarUnifiedSettingsProvider)init;
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 - (void)navigateToiCloudCalendarSettings;
-- (void)navigateToiCloudCalendarSettingsWith:(id)a3;
+- (void)navigateToiCloudCalendarSettingsWith:(id)with;
 @end
 
 @implementation iCloudCalendarUnifiedSettingsProvider
 
 - (void)navigateToiCloudCalendarSettings
 {
-  v2 = self;
+  selfCopy = self;
   sub_2755069B8(0, 0);
 }
 
-- (void)navigateToiCloudCalendarSettingsWith:(id)a3
+- (void)navigateToiCloudCalendarSettingsWith:(id)with
 {
-  if (a3)
+  if (with)
   {
     v4 = sub_275508F04();
     v6 = v5;
@@ -27,7 +27,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_2755069B8(v4, v6);
 }
 
@@ -38,10 +38,10 @@
   return result;
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   _s29iCloudCalendarUnifiedSettings01iabcD8ProviderC8accounts3forSDySo15AIDAServiceTypeaSo9ACAccountCGSo18AIDAAccountManagerC_tF_0();
 
   type metadata accessor for AIDAServiceType();

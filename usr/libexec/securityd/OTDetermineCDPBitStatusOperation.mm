@@ -1,5 +1,5 @@
 @interface OTDetermineCDPBitStatusOperation
-- (OTDetermineCDPBitStatusOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
+- (OTDetermineCDPBitStatusOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -14,17 +14,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Checking CDP status", &buf, 2u);
   }
 
-  v4 = [(OTDetermineCDPBitStatusOperation *)self deps];
-  v5 = [v4 stateHolder];
+  deps = [(OTDetermineCDPBitStatusOperation *)self deps];
+  stateHolder = [deps stateHolder];
   v32 = 0;
-  v6 = [v5 loadOrCreateAccountMetadata:&v32];
+  v6 = [stateHolder loadOrCreateAccountMetadata:&v32];
   v7 = v32;
 
   if (v7)
   {
-    v8 = [(OTDetermineCDPBitStatusOperation *)self deps];
-    v9 = [v8 lockStateTracker];
-    v10 = [v9 isLockedError:v7];
+    deps2 = [(OTDetermineCDPBitStatusOperation *)self deps];
+    lockStateTracker = [deps2 lockStateTracker];
+    v10 = [lockStateTracker isLockedError:v7];
 
     v11 = sub_100006274("octagon-cdp-status");
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -58,15 +58,15 @@
     v13 = sub_100006274("octagon-cdp-status");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 cdpState];
-      if (v14 >= 3)
+      cdpState = [v6 cdpState];
+      if (cdpState >= 3)
       {
-        v15 = [NSString stringWithFormat:@"(unknown: %i)", v14];
+        v15 = [NSString stringWithFormat:@"(unknown: %i)", cdpState];
       }
 
       else
       {
-        v15 = *(&off_1003369E0 + v14);
+        v15 = *(&off_1003369E0 + cdpState);
       }
 
       LODWORD(buf) = 138412290;
@@ -76,8 +76,8 @@
 
     if ([v6 cdpState] == 2)
     {
-      v16 = [(OTDetermineCDPBitStatusOperation *)self intendedState];
-      [(OTDetermineCDPBitStatusOperation *)self setNextState:v16];
+      intendedState = [(OTDetermineCDPBitStatusOperation *)self intendedState];
+      [(OTDetermineCDPBitStatusOperation *)self setNextState:intendedState];
     }
 
     else
@@ -87,30 +87,30 @@
       v36 = 0x2020000000;
       v37 = 0;
       objc_initWeak(&location, self);
-      v17 = [(OTDetermineCDPBitStatusOperation *)self deps];
-      v18 = [v17 cuttlefishXPCWrapper];
-      v19 = [(OTDetermineCDPBitStatusOperation *)self deps];
-      v20 = [v19 activeAccount];
+      deps3 = [(OTDetermineCDPBitStatusOperation *)self deps];
+      cuttlefishXPCWrapper = [deps3 cuttlefishXPCWrapper];
+      deps4 = [(OTDetermineCDPBitStatusOperation *)self deps];
+      activeAccount = [deps4 activeAccount];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_1000CD3D0;
       v29[3] = &unk_1003369C0;
       objc_copyWeak(&v30, &location);
       v29[4] = &buf;
-      [v18 trustStatusWithSpecificUser:v20 reply:v29];
+      [cuttlefishXPCWrapper trustStatusWithSpecificUser:activeAccount reply:v29];
 
-      v21 = [v6 cdpState];
-      if (v21 != *(*(&buf + 1) + 24))
+      cdpState2 = [v6 cdpState];
+      if (cdpState2 != *(*(&buf + 1) + 24))
       {
-        v22 = [(OTDetermineCDPBitStatusOperation *)self deps];
-        v23 = [v22 stateHolder];
+        deps5 = [(OTDetermineCDPBitStatusOperation *)self deps];
+        stateHolder2 = [deps5 stateHolder];
         v27 = 0;
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_1000CD7DC;
         v28[3] = &unk_100337FC0;
         v28[4] = &buf;
-        [v23 persistAccountChanges:v28 error:&v27];
+        [stateHolder2 persistAccountChanges:v28 error:&v27];
         v24 = v27;
 
         if (v24)
@@ -126,13 +126,13 @@
           [(CKKSResultOperation *)self setError:v24];
         }
 
-        v21 = *(*(&buf + 1) + 24);
+        cdpState2 = *(*(&buf + 1) + 24);
       }
 
-      if (v21 == 2)
+      if (cdpState2 == 2)
       {
-        v26 = [(OTDetermineCDPBitStatusOperation *)self intendedState];
-        [(OTDetermineCDPBitStatusOperation *)self setNextState:v26];
+        intendedState2 = [(OTDetermineCDPBitStatusOperation *)self intendedState];
+        [(OTDetermineCDPBitStatusOperation *)self setNextState:intendedState2];
       }
 
       else
@@ -147,20 +147,20 @@
   }
 }
 
-- (OTDetermineCDPBitStatusOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (OTDetermineCDPBitStatusOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = OTDetermineCDPBitStatusOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deps, a3);
-    objc_storeStrong(&v13->_intendedState, a4);
-    objc_storeStrong(&v13->_nextState, a5);
+    objc_storeStrong(&v12->_deps, dependencies);
+    objc_storeStrong(&v13->_intendedState, state);
+    objc_storeStrong(&v13->_nextState, errorState);
   }
 
   return v13;

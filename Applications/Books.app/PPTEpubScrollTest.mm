@@ -9,20 +9,20 @@
   [(PPTBasicTest *)self setTestTimeout:60];
   [(PPTBasicTest *)self setRunning:1];
   objc_opt_class();
-  v3 = [(PPTBasicTest *)self bookController];
+  bookController = [(PPTBasicTest *)self bookController];
   v4 = BUDynamicCast();
 
   if (v4)
   {
-    v5 = [(PPTBasicTest *)self name];
-    v6 = [v4 _performScrollTest:v5 iterations:1 delta:20];
+    name = [(PPTBasicTest *)self name];
+    v6 = [v4 _performScrollTest:name iterations:1 delta:20];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v7 = [(PPTBasicTest *)self bookController];
-  v8 = [_TtC5Books12RETestDriver isValidWithViewController:v7];
+  bookController2 = [(PPTBasicTest *)self bookController];
+  v8 = [_TtC5Books12RETestDriver isValidWithViewController:bookController2];
 
   v9 = sub_1001E65B0();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -34,9 +34,9 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Asking RETestDriver to scroll", buf, 2u);
     }
 
-    v5 = [(PPTBasicTest *)self bookController];
-    v11 = [(PPTBasicTest *)self name];
-    v6 = [_TtC5Books12RETestDriver performScrollTestWithViewController:v5 name:v11 iterations:1 delta:20];
+    name = [(PPTBasicTest *)self bookController];
+    name2 = [(PPTBasicTest *)self name];
+    v6 = [_TtC5Books12RETestDriver performScrollTestWithViewController:name name:name2 iterations:1 delta:20];
 
     goto LABEL_7;
   }

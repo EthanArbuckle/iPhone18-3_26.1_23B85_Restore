@@ -5,23 +5,23 @@
 - (FINode)source;
 - (FINode)targetNode;
 - (FINodePropertyList)nodePropertyList;
-- (FIOperationRecord)initWithOperationRecord:(const void *)a3;
-- (FIOperationRecord)initWithSource:(id)a3 destination:(id)a4 propertyList:(OpaquePropertyListRef *)a5 requestedOperation:(unsigned int)a6;
+- (FIOperationRecord)initWithOperationRecord:(const void *)record;
+- (FIOperationRecord)initWithSource:(id)source destination:(id)destination propertyList:(OpaquePropertyListRef *)list requestedOperation:(unsigned int)operation;
 - (id).cxx_construct;
 - (shared_ptr<TDSOperationRecord>)operationRecord;
-- (void)setNodePropertyList:(id)a3;
+- (void)setNodePropertyList:(id)list;
 @end
 
 @implementation FIOperationRecord
 
-- (FIOperationRecord)initWithOperationRecord:(const void *)a3
+- (FIOperationRecord)initWithOperationRecord:(const void *)record
 {
   v10.receiver = self;
   v10.super_class = FIOperationRecord;
   v4 = [(FIOperationRecord *)&v10 init];
   v5 = v4;
-  v7 = *a3;
-  v6 = *(a3 + 1);
+  v7 = *record;
+  v6 = *(record + 1);
   if (v6)
   {
     atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -38,17 +38,17 @@
   return v5;
 }
 
-- (FIOperationRecord)initWithSource:(id)a3 destination:(id)a4 propertyList:(OpaquePropertyListRef *)a5 requestedOperation:(unsigned int)a6
+- (FIOperationRecord)initWithSource:(id)source destination:(id)destination propertyList:(OpaquePropertyListRef *)list requestedOperation:(unsigned int)operation
 {
-  v10 = a3;
-  v11 = a4;
-  v15 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  destinationCopy = destination;
+  listCopy = list;
+  operationCopy = operation;
   v13.receiver = self;
   v13.super_class = FIOperationRecord;
   [(FIOperationRecord *)&v13 init];
-  TNodeFromFINode(v10);
-  TNodeFromFINode(v11);
+  TNodeFromFINode(sourceCopy);
+  TNodeFromFINode(destinationCopy);
   std::allocate_shared[abi:ne200100]<TDSOperationRecord,std::allocator<TDSOperationRecord>,TNode *,TNode *,OpaquePropertyListRef *&,OperationType &,0>();
 }
 
@@ -77,10 +77,10 @@
   return v2;
 }
 
-- (void)setNodePropertyList:(id)a3
+- (void)setNodePropertyList:(id)list
 {
-  v4 = a3;
-  -[FIOperationRecord setPropertyList:](self, "setPropertyList:", [v4 propertyListRef]);
+  listCopy = list;
+  -[FIOperationRecord setPropertyList:](self, "setPropertyList:", [listCopy propertyListRef]);
 }
 
 - (FINode)originalSourceParent

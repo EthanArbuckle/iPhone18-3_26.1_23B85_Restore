@@ -1,60 +1,60 @@
 @interface CRKASMCertificateVendor
-- (BOOL)isEqual:(id)a3;
-- (CRKASMCertificateVendor)initWithCredentialStore:(id)a3;
-- (id)certificatesForUserIdentifier:(id)a3;
-- (id)certificatesForUserIdentifiers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRKASMCertificateVendor)initWithCredentialStore:(id)store;
+- (id)certificatesForUserIdentifier:(id)identifier;
+- (id)certificatesForUserIdentifiers:(id)identifiers;
 - (id)manifest;
 - (unint64_t)hash;
-- (void)forgetPersistentIDs:(id)a3;
+- (void)forgetPersistentIDs:(id)ds;
 @end
 
 @implementation CRKASMCertificateVendor
 
-- (CRKASMCertificateVendor)initWithCredentialStore:(id)a3
+- (CRKASMCertificateVendor)initWithCredentialStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = CRKASMCertificateVendor;
   v6 = [(CRKASMCertificateVendor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_credentialStore, a3);
+    objc_storeStrong(&v6->_credentialStore, store);
   }
 
   return v7;
 }
 
-- (id)certificatesForUserIdentifier:(id)a3
+- (id)certificatesForUserIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:identifier];
   v5 = [(CRKASMCertificateVendor *)self certificatesForUserIdentifiers:v4];
 
   return v5;
 }
 
-- (id)certificatesForUserIdentifiers:(id)a3
+- (id)certificatesForUserIdentifiers:(id)identifiers
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v32 = objc_opt_new();
   v36 = objc_opt_new();
-  v37 = self;
-  v5 = [(CRKASMCertificateVendor *)self manifest];
-  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process certificate manifest contents for %lu user identifiers", objc_msgSend(v4, "count")];
+  selfCopy = self;
+  manifest = [(CRKASMCertificateVendor *)self manifest];
+  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process certificate manifest contents for %lu user identifiers", objc_msgSend(identifiersCopy, "count")];
   v30 = [CRKExecutionTimer startedTimerWithDescription:?];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = [v5 persistentIDs];
+  obj = [manifest persistentIDs];
   v6 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
-  v35 = v5;
+  v35 = manifest;
   if (v6)
   {
     v7 = v6;
     v8 = *v41;
-    v34 = v4;
+    v34 = identifiersCopy;
     do
     {
       v9 = 0;
@@ -68,18 +68,18 @@
 
         v10 = *(*(&v40 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v5 entryForPersistentID:v10];
+        v12 = [manifest entryForPersistentID:v10];
         if ([v12 isFullyPopulated])
         {
-          v13 = [v12 userIdentifier];
-          v14 = [v4 containsObject:v13];
+          userIdentifier = [v12 userIdentifier];
+          v14 = [identifiersCopy containsObject:userIdentifier];
 
-          v15 = [v12 validityInterval];
-          v16 = [v15 crk_containsCurrentDate];
+          validityInterval = [v12 validityInterval];
+          crk_containsCurrentDate = [validityInterval crk_containsCurrentDate];
 
           if (v14)
           {
-            v17 = v16 == 0;
+            v17 = crk_containsCurrentDate == 0;
           }
 
           else
@@ -89,22 +89,22 @@
 
           if (!v17)
           {
-            v18 = [(CRKASMCertificateVendor *)v37 credentialStore];
-            v19 = [v18 certificateWithPersistentID:v10];
+            credentialStore = [(CRKASMCertificateVendor *)selfCopy credentialStore];
+            v19 = [credentialStore certificateWithPersistentID:v10];
 
             if (!v19)
             {
               goto LABEL_18;
             }
 
-            v20 = [v12 fingerprint];
-            if (v20 || ([v19 fingerprint], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+            fingerprint = [v12 fingerprint];
+            if (fingerprint || ([v19 fingerprint], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v21 = [v12 fingerprint];
-              v22 = [v19 fingerprint];
-              v23 = [v21 isEqual:v22];
+              fingerprint2 = [v12 fingerprint];
+              fingerprint3 = [v19 fingerprint];
+              v23 = [fingerprint2 isEqual:fingerprint3];
 
-              if (v20)
+              if (fingerprint)
               {
               }
 
@@ -112,8 +112,8 @@
               {
               }
 
-              v4 = v34;
-              v5 = v35;
+              identifiersCopy = v34;
+              manifest = v35;
               if ((v23 & 1) == 0)
               {
 LABEL_18:
@@ -148,13 +148,13 @@ LABEL_21:
     while (v7);
   }
 
-  [(CRKASMCertificateVendor *)v37 forgetPersistentIDs:v36];
+  [(CRKASMCertificateVendor *)selfCopy forgetPersistentIDs:v36];
   v26 = _CRKLogASM_17();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v30 stop];
+    stop = [v30 stop];
     *buf = 138412290;
-    v45 = v27;
+    v45 = stop;
     _os_log_impl(&dword_243550000, v26, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
@@ -167,49 +167,49 @@ LABEL_21:
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = [CRKExecutionTimer startedTimerWithDescription:@"Read certificate manifest"];
-  v4 = [(CRKASMCertificateVendor *)self credentialStore];
-  v5 = [v4 certificateManifest];
+  credentialStore = [(CRKASMCertificateVendor *)self credentialStore];
+  certificateManifest = [credentialStore certificateManifest];
 
   v6 = _CRKLogASM_17();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v3 stop];
+    stop = [v3 stop];
     v9 = 138412290;
-    v10 = v7;
+    v10 = stop;
     _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "%@", &v9, 0xCu);
   }
 
-  return v5;
+  return certificateManifest;
 }
 
-- (void)forgetPersistentIDs:(id)a3
+- (void)forgetPersistentIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v5 = _CRKLogASM_17();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(CRKASMCertificateVendor *)v4 forgetPersistentIDs:v5];
+      [(CRKASMCertificateVendor *)dsCopy forgetPersistentIDs:v5];
     }
 
-    v6 = [(CRKASMCertificateVendor *)self credentialStore];
-    [v6 forgetCertificatesWithPersistentIDs:v4];
+    credentialStore = [(CRKASMCertificateVendor *)self credentialStore];
+    [credentialStore forgetCertificatesWithPersistentIDs:dsCopy];
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CRKASMCertificateVendor *)self credentialStore];
-  v3 = [v2 hash];
+  credentialStore = [(CRKASMCertificateVendor *)self credentialStore];
+  v3 = [credentialStore hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"credentialStore" componentsSeparatedByString:{@", "}];
   v6 = [v5 mutableCopy];
 
@@ -221,10 +221,10 @@ LABEL_21:
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -253,7 +253,7 @@ LABEL_21:
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMCertificateVendor *)v8 valueForKey:v16];
+          v18 = [(CRKASMCertificateVendor *)selfCopy valueForKey:v16];
           v19 = [(CRKASMCertificateVendor *)v17 valueForKey:v16];
 
           if (v18 | v19)

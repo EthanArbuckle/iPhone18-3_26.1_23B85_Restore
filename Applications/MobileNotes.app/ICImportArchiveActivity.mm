@@ -1,25 +1,25 @@
 @interface ICImportArchiveActivity
-- (ICImportArchiveActivity)initWithNoteContainer:(id)a3 markdown:(BOOL)a4 presentingViewController:(id)a5;
+- (ICImportArchiveActivity)initWithNoteContainer:(id)container markdown:(BOOL)markdown presentingViewController:(id)controller;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICImportArchiveActivity
 
-- (ICImportArchiveActivity)initWithNoteContainer:(id)a3 markdown:(BOOL)a4 presentingViewController:(id)a5
+- (ICImportArchiveActivity)initWithNoteContainer:(id)container markdown:(BOOL)markdown presentingViewController:(id)controller
 {
-  v9 = a3;
-  v10 = a5;
+  containerCopy = container;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = ICImportArchiveActivity;
   v11 = [(ICImportArchiveActivity *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_noteContainer, a3);
-    objc_storeWeak(&v12->_presentingViewController, v10);
-    v12->_markdown = a4;
+    objc_storeStrong(&v11->_noteContainer, container);
+    objc_storeWeak(&v12->_presentingViewController, controllerCopy);
+    v12->_markdown = markdown;
   }
 
   return v12;
@@ -45,36 +45,36 @@
   return v6;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICImportArchiveActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICImportArchiveActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v6 = [ICImportArchiveController alloc];
-    v7 = [(ICImportArchiveActivity *)self presentingViewController];
-    v8 = [(ICImportArchiveController *)v6 initForPresentingInViewController:v7 markdown:[(ICImportArchiveActivity *)self markdown]];
+    presentingViewController2 = [(ICImportArchiveActivity *)self presentingViewController];
+    v8 = [(ICImportArchiveController *)v6 initForPresentingInViewController:presentingViewController2 markdown:[(ICImportArchiveActivity *)self markdown]];
     [(ICImportArchiveActivity *)self setImportArchiveController:v8];
 
-    v9 = [(ICImportArchiveActivity *)self importArchiveController];
-    v10 = [(ICImportArchiveActivity *)self noteContainer];
+    importArchiveController = [(ICImportArchiveActivity *)self importArchiveController];
+    noteContainer = [(ICImportArchiveActivity *)self noteContainer];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10003C378;
     v12[3] = &unk_100645570;
     v12[4] = self;
-    v13 = v4;
-    [v9 importIntoNoteContainer:v10 completion:v12];
+    v13 = completionCopy;
+    [importArchiveController importIntoNoteContainer:noteContainer completion:v12];
   }
 
   else
   {
     [(ICImportArchiveActivity *)self activityDidFinish:0];
-    if (v4)
+    if (completionCopy)
     {
-      v11 = [(ICImportArchiveActivity *)self activityType];
-      (*(v4 + 2))(v4, 0, v11);
+      activityType = [(ICImportArchiveActivity *)self activityType];
+      (*(completionCopy + 2))(completionCopy, 0, activityType);
     }
   }
 }

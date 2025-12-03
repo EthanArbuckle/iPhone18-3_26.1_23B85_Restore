@@ -1,12 +1,12 @@
 @interface MSSSharedLibraryPreviewController
-- (MSSSharedLibraryPreviewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MSSSharedLibraryPreviewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)deepLinkURL;
 - (id)pathComponentsLocalizedResource;
 - (id)specifiers;
-- (void)exitSetup:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setParentController:(id)a3;
-- (void)startSetup:(id)a3;
+- (void)exitSetup:(id)setup;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setParentController:(id)controller;
+- (void)startSetup:(id)setup;
 @end
 
 @implementation MSSSharedLibraryPreviewController
@@ -15,8 +15,8 @@
 {
   v3 = +[MSSSettingsUtilities photosMainPaneLocalizedResource];
   v7[0] = v3;
-  v4 = [(MSSSharedLibraryPreviewController *)self paneTitleLocalizedResource];
-  v7[1] = v4;
+  paneTitleLocalizedResource = [(MSSSharedLibraryPreviewController *)self paneTitleLocalizedResource];
+  v7[1] = paneTitleLocalizedResource;
   v5 = [NSArray arrayWithObjects:v7 count:2];
 
   return v5;
@@ -62,11 +62,11 @@
   return v4;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (off_33368 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (off_33368 != context)
   {
     v14 = +[NSAssertionHandler currentHandler];
     [v14 handleFailureInMethod:a2 object:self file:@"MSSSharedLibraryPreviewController.m" lineNumber:83 description:@"Code which should be unreachable has been reached"];
@@ -74,48 +74,48 @@
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v15 = v9;
-    v10 = [(MSSSharedLibraryPreviewController *)self statusProvider];
-    v11 = [v10 hasPreview];
+    v15 = observableCopy;
+    statusProvider = [(MSSSharedLibraryPreviewController *)self statusProvider];
+    hasPreview = [statusProvider hasPreview];
 
-    v9 = v15;
-    if ((v11 & 1) == 0)
+    observableCopy = v15;
+    if ((hasPreview & 1) == 0)
     {
-      v12 = [(MSSSharedLibraryPreviewController *)self navigationController];
-      v13 = [v12 popToRootViewControllerAnimated:1];
+      navigationController = [(MSSSharedLibraryPreviewController *)self navigationController];
+      v13 = [navigationController popToRootViewControllerAnimated:1];
 
-      v9 = v15;
+      observableCopy = v15;
     }
   }
 }
 
-- (void)exitSetup:(id)a3
+- (void)exitSetup:(id)setup
 {
-  v4 = [(MSSSharedLibraryPreviewController *)self navigationController];
-  v5 = [PXViewControllerPresenter defaultPresenterWithViewController:v4];
+  navigationController = [(MSSSharedLibraryPreviewController *)self navigationController];
+  v5 = [PXViewControllerPresenter defaultPresenterWithViewController:navigationController];
 
-  v6 = [(MSSSharedLibraryPreviewController *)self statusProvider];
+  statusProvider = [(MSSSharedLibraryPreviewController *)self statusProvider];
   PXSharedLibraryExitSharedLibraryOrPreview();
 }
 
-- (void)startSetup:(id)a3
+- (void)startSetup:(id)setup
 {
-  v4 = [(MSSSharedLibraryPreviewController *)self navigationController];
-  v6 = [PXViewControllerPresenter defaultPresenterWithViewController:v4];
+  navigationController = [(MSSSharedLibraryPreviewController *)self navigationController];
+  v6 = [PXViewControllerPresenter defaultPresenterWithViewController:navigationController];
 
-  v5 = [(MSSSharedLibraryPreviewController *)self statusProvider];
+  statusProvider = [(MSSSharedLibraryPreviewController *)self statusProvider];
   PXSharedLibrarySetupSharedLibraryOrPreview();
 }
 
-- (void)setParentController:(id)a3
+- (void)setParentController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = OBJC_IVAR___PSViewController__parentController;
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
 
-  if (WeakRetained != v5)
+  if (WeakRetained != controllerCopy)
   {
     v8 = objc_loadWeakRetained(&self->PSListController_opaque[v6]);
 
@@ -128,20 +128,20 @@
 
     v20.receiver = self;
     v20.super_class = MSSSharedLibraryPreviewController;
-    [(MSSSharedLibraryPreviewController *)&v20 setParentController:v5];
+    [(MSSSharedLibraryPreviewController *)&v20 setParentController:controllerCopy];
     v10 = objc_loadWeakRetained(&self->PSListController_opaque[v6]);
 
     if (v10)
     {
-      v11 = v5;
+      v11 = controllerCopy;
       if (v11)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
 LABEL_7:
-          v12 = [v11 systemPhotoLibrary];
-          v13 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v12];
+          systemPhotoLibrary = [v11 systemPhotoLibrary];
+          v13 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:systemPhotoLibrary];
           v14 = self->_statusProvider;
           self->_statusProvider = v13;
 
@@ -152,8 +152,8 @@ LABEL_7:
         v15 = +[NSAssertionHandler currentHandler];
         v18 = objc_opt_class();
         v17 = NSStringFromClass(v18);
-        v19 = [v11 px_descriptionForAssertionMessage];
-        [v15 handleFailureInMethod:a2 object:self file:@"MSSSharedLibraryPreviewController.m" lineNumber:51 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parentController", v17, v19}];
+        px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+        [v15 handleFailureInMethod:a2 object:self file:@"MSSSharedLibraryPreviewController.m" lineNumber:51 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parentController", v17, px_descriptionForAssertionMessage}];
       }
 
       else
@@ -171,11 +171,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (MSSSharedLibraryPreviewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MSSSharedLibraryPreviewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = MSSSharedLibraryPreviewController;
-  v4 = [(MSSSharedLibraryPreviewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(MSSSharedLibraryPreviewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = PXLocalizedSharedLibraryString();

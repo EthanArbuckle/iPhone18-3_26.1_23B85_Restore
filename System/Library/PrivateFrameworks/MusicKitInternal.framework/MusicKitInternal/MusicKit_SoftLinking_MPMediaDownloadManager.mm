@@ -24,9 +24,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedManager];
-  v5 = [v4 allMediaDownloadLibraryIdentifiers];
-  [v4 cancelDownloads:v5];
+  sharedManager = [v2 sharedManager];
+  allMediaDownloadLibraryIdentifiers = [sharedManager allMediaDownloadLibraryIdentifiers];
+  [sharedManager cancelDownloads:allMediaDownloadLibraryIdentifiers];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface BLSHSystemWaker
 + (id)sharedSystemActivityFactory;
-+ (id)wakerWithIdentifier:(id)a3 osInterfaceProvider:(id)a4;
-- (BLSHSystemWaker)initWithIdentifier:(id)a3 osInterfaceProvider:(id)a4;
++ (id)wakerWithIdentifier:(id)identifier osInterfaceProvider:(id)provider;
+- (BLSHSystemWaker)initWithIdentifier:(id)identifier osInterfaceProvider:(id)provider;
 - (NSString)description;
-- (void)callCompletionForReason:(id)a3;
+- (void)callCompletionForReason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
 - (void)startWatchdogTimer;
-- (void)wakeWithCompletion:(id)a3;
-- (void)watchdogTimerFired:(id)a3;
+- (void)wakeWithCompletion:(id)completion;
+- (void)watchdogTimerFired:(id)fired;
 @end
 
 @implementation BLSHSystemWaker
@@ -34,19 +34,19 @@ uint64_t __46__BLSHSystemWaker_sharedSystemActivityFactory__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)wakerWithIdentifier:(id)a3 osInterfaceProvider:(id)a4
++ (id)wakerWithIdentifier:(id)identifier osInterfaceProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 osInterfaceProvider:v6];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy osInterfaceProvider:providerCopy];
 
   return v8;
 }
 
-- (BLSHSystemWaker)initWithIdentifier:(id)a3 osInterfaceProvider:(id)a4
+- (BLSHSystemWaker)initWithIdentifier:(id)identifier osInterfaceProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = BLSHSystemWaker;
   v8 = [(BLSHSystemWaker *)&v16 init];
@@ -54,11 +54,11 @@ uint64_t __46__BLSHSystemWaker_sharedSystemActivityFactory__block_invoke()
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"waking system for: %@", v6];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"waking system for: %@", identifierCopy];
     identifier = v9->_identifier;
-    v9->_identifier = v10;
+    v9->_identifier = identifierCopy;
 
-    objc_storeStrong(&v9->_osInterfaceProvider, a4);
+    objc_storeStrong(&v9->_osInterfaceProvider, provider);
     v12 = +[BLSHSystemWaker sharedSystemActivityFactory];
     objc_initWeak(&location, v9);
     objc_copyWeak(&v14, &location);
@@ -81,7 +81,7 @@ uint64_t __58__BLSHSystemWaker_initWithIdentifier_osInterfaceProvider___block_in
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"must invalidate %@ before dealloc", a1];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"must invalidate %@ before dealloc", self];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v4 = NSStringFromSelector(a2);
@@ -111,7 +111,7 @@ uint64_t __58__BLSHSystemWaker_initWithIdentifier_osInterfaceProvider___block_in
   v9 = __30__BLSHSystemWaker_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];
@@ -147,9 +147,9 @@ id __30__BLSHSystemWaker_description__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)wakeWithCompletion:(id)a3
+- (void)wakeWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = self->_osInterfaceProvider;
   v7 = self->_identifier;
   os_unfair_lock_lock(&self->_lock);
@@ -159,7 +159,7 @@ id __30__BLSHSystemWaker_description__block_invoke(uint64_t a1)
   }
 
   self->_lock_waking = 1;
-  v8 = MEMORY[0x223D70730](v5);
+  v8 = MEMORY[0x223D70730](completionCopy);
   lock_completion = self->_lock_completion;
   self->_lock_completion = v8;
 
@@ -298,10 +298,10 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
   [v3 invalidate];
 }
 
-- (void)callCompletionForReason:(id)a3
+- (void)callCompletionForReason:(id)reason
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   lock_invalidated = self->_lock_invalidated;
   v6 = MEMORY[0x223D70730](self->_lock_completion);
@@ -313,14 +313,14 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
   self->_lock_didWakeTimestamp = mach_continuous_time();
   self->_lock_didCallCompletion = 1;
   os_unfair_lock_unlock(&self->_lock);
-  v10 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-  v11 = v10;
+  systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+  v11 = systemSleepMonitor;
   if (!lock_invalidated && v6)
   {
-    v12 = [v10 isAwakeOrAbortingSleep];
+    isAwakeOrAbortingSleep = [systemSleepMonitor isAwakeOrAbortingSleep];
     v13 = bls_backlight_log();
     v14 = v13;
-    if (v12)
+    if (isAwakeOrAbortingSleep)
     {
       v15 = OS_LOG_TYPE_DEBUG;
     }
@@ -335,19 +335,19 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
       identifier = self->_identifier;
       BSTimeDifferenceFromMachTimeToMachTime();
       v18 = v17;
-      v19 = [v11 aggregateState];
+      aggregateState = [v11 aggregateState];
       v21 = 134219266;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = identifier;
       v25 = 2114;
-      v26 = v4;
+      v26 = reasonCopy;
       v27 = 2048;
       v28 = v18;
       v29 = 2114;
-      v30 = v19;
+      v30 = aggregateState;
       v31 = 1024;
-      v32 = [(BLSHSystemActivityAsserting *)v8 isActive];
+      isActive = [(BLSHSystemActivityAsserting *)v8 isActive];
       _os_log_impl(&dword_21FD11000, v14, v15, "%p waited for system awake :%{public}@ details:%{public}@ elapsed:%.4lfs %{public}@ activityActive:%{BOOL}u", &v21, 0x3Au);
     }
 
@@ -357,15 +357,15 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)watchdogTimerFired:(id)a3
+- (void)watchdogTimerFired:(id)fired
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  firedCopy = fired;
   v6 = self->_identifier;
   os_unfair_lock_lock(&self->_lock);
   lock_invalidated = self->_lock_invalidated;
   v8 = self->_lock_systemActivity;
-  if (!lock_invalidated && (lock_wakeWatchdogTimer = self->_lock_wakeWatchdogTimer, lock_wakeWatchdogTimer == v5))
+  if (!lock_invalidated && (lock_wakeWatchdogTimer = self->_lock_wakeWatchdogTimer, lock_wakeWatchdogTimer == firedCopy))
   {
     self->_lock_wakeWatchdogTimer = 0;
 
@@ -383,7 +383,7 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
   lock_waitStartTimestamp = self->_lock_waitStartTimestamp;
   lock_didWakeTimestamp = self->_lock_didWakeTimestamp;
   lock_didCallCompletion = self->_lock_didCallCompletion;
-  v14 = [(BLSHSystemActivityAsserting *)v8 isActive];
+  isActive = [(BLSHSystemActivityAsserting *)v8 isActive];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
@@ -396,7 +396,7 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
       v18 = v17;
       if (os_variant_has_internal_diagnostics())
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system waker not invalidated after elapsed:%.4lfs sinceCompletionCalled:%.4lfs systemActivityIsActive:%u identifier:%@", self, v16, v18, v14, v6];
+        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system waker not invalidated after elapsed:%.4lfs sinceCompletionCalled:%.4lfs systemActivityIsActive:%u identifier:%@", self, v16, v18, isActive, v6];
         BLSHRecordCriticalAssertFailure(v19, 1, 0);
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
@@ -405,7 +405,7 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
         v33[4] = self;
         v35 = v16;
         v36 = v18;
-        v38 = v14;
+        v38 = isActive;
         v34 = v6;
         v37 = a2;
         v20 = MEMORY[0x223D70730](v33);
@@ -427,13 +427,13 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
           *buf = 134219010;
-          v40 = self;
+          selfCopy2 = self;
           v41 = 2048;
           v42 = v16;
           v43 = 2048;
           *v44 = v18;
           *&v44[8] = 1024;
-          *&v44[10] = v14;
+          *&v44[10] = isActive;
           v45 = 2114;
           v46 = v6;
           _os_log_fault_impl(&dword_21FD11000, v24, OS_LOG_TYPE_FAULT, "%p system waker not invalidated after elapsed:%.4lfs sinceCompletionCalled:%.4lfs systemActivityIsActive:%{BOOL}u identifier:%{public}@", buf, 0x30u);
@@ -445,7 +445,7 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
     {
       if (os_variant_has_internal_diagnostics())
       {
-        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system waker did not wake after elapsed:%.4lfs systemActivityIsActive:%u identifier:%@", self, v16, v14, v6];
+        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system waker did not wake after elapsed:%.4lfs systemActivityIsActive:%u identifier:%@", self, v16, isActive, v6];
         BLSHRecordCriticalAssertFailure(v21, 1, 0);
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
@@ -453,7 +453,7 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
         v28[3] = &unk_278420B78;
         v28[4] = self;
         v30 = v16;
-        v32 = v14;
+        v32 = isActive;
         v29 = v6;
         v31 = a2;
         v22 = MEMORY[0x223D70730](v28);
@@ -475,11 +475,11 @@ void __37__BLSHSystemWaker_startWatchdogTimer__block_invoke(uint64_t a1, void *a
         if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
         {
           *buf = 134218754;
-          v40 = self;
+          selfCopy2 = self;
           v41 = 2048;
           v42 = v16;
           v43 = 1024;
-          *v44 = v14;
+          *v44 = isActive;
           *&v44[4] = 2114;
           *&v44[6] = v6;
           _os_log_fault_impl(&dword_21FD11000, v21, OS_LOG_TYPE_FAULT, "%p system waker did not wake after elapsed:%.4lfs systemActivityIsActive:%{BOOL}u identifier:%{public}@", buf, 0x26u);

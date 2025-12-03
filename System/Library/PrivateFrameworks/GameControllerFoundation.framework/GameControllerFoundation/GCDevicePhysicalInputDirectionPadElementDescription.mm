@@ -1,10 +1,10 @@
 @interface GCDevicePhysicalInputDirectionPadElementDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCDevicePhysicalInputDirectionPadElementDescription)init;
-- (GCDevicePhysicalInputDirectionPadElementDescription)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GCDevicePhysicalInputDirectionPadElementDescription)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCDevicePhysicalInputDirectionPadElementDescription
@@ -21,96 +21,96 @@
   return result;
 }
 
-- (GCDevicePhysicalInputDirectionPadElementDescription)initWithCoder:(id)a3
+- (GCDevicePhysicalInputDirectionPadElementDescription)initWithCoder:(id)coder
 {
   v42.receiver = self;
   v42.super_class = GCDevicePhysicalInputDirectionPadElementDescription;
-  v3 = a3;
-  v4 = [(GCDevicePhysicalInputElementDescription *)&v42 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(GCDevicePhysicalInputElementDescription *)&v42 initWithCoder:coderCopy];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0, v42.receiver, v42.super_class}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"xySources"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"xySources"];
   xySources = v4->_xySources;
   v4->_xySources = v8;
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"xSources"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"xSources"];
   xSources = v4->_xSources;
   v4->_xSources = v13;
 
   v15 = MEMORY[0x1E695DFD8];
   v16 = objc_opt_class();
   v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-  v18 = [v3 decodeObjectOfClasses:v17 forKey:@"ySources"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"ySources"];
   ySources = v4->_ySources;
   v4->_ySources = v18;
 
   v20 = MEMORY[0x1E695DFD8];
   v21 = objc_opt_class();
   v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-  v23 = [v3 decodeObjectOfClasses:v22 forKey:@"upSources"];
+  v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"upSources"];
   upSources = v4->_upSources;
   v4->_upSources = v23;
 
   v25 = MEMORY[0x1E695DFD8];
   v26 = objc_opt_class();
   v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-  v28 = [v3 decodeObjectOfClasses:v27 forKey:@"leftSources"];
+  v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"leftSources"];
   leftSources = v4->_leftSources;
   v4->_leftSources = v28;
 
   v30 = MEMORY[0x1E695DFD8];
   v31 = objc_opt_class();
   v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-  v33 = [v3 decodeObjectOfClasses:v32 forKey:@"downSources"];
+  v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"downSources"];
   downSources = v4->_downSources;
   v4->_downSources = v33;
 
   v35 = MEMORY[0x1E695DFD8];
   v36 = objc_opt_class();
   v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-  v38 = [v3 decodeObjectOfClasses:v37 forKey:@"rightSources"];
+  v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"rightSources"];
   rightSources = v4->_rightSources;
   v4->_rightSources = v38;
 
-  v4->_analog = [v3 decodeBoolForKey:@"analog"];
-  v4->_eventUpValueField = [v3 decodeIntegerForKey:@"eventUpValueField"];
-  v4->_eventDownValueField = [v3 decodeIntegerForKey:@"eventDownValueField"];
-  v4->_eventLeftValueField = [v3 decodeIntegerForKey:@"eventLeftValueField"];
-  v40 = [v3 decodeIntegerForKey:@"eventRightValueField"];
+  v4->_analog = [coderCopy decodeBoolForKey:@"analog"];
+  v4->_eventUpValueField = [coderCopy decodeIntegerForKey:@"eventUpValueField"];
+  v4->_eventDownValueField = [coderCopy decodeIntegerForKey:@"eventDownValueField"];
+  v4->_eventLeftValueField = [coderCopy decodeIntegerForKey:@"eventLeftValueField"];
+  v40 = [coderCopy decodeIntegerForKey:@"eventRightValueField"];
 
   v4->_eventRightValueField = v40;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GCDevicePhysicalInputDirectionPadElementDescription;
-  v4 = a3;
-  [(GCDevicePhysicalInputElementDescription *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_xySources forKey:{@"xySources", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_xSources forKey:@"xSources"];
-  [v4 encodeObject:self->_ySources forKey:@"ySources"];
-  [v4 encodeObject:self->_upSources forKey:@"upSources"];
-  [v4 encodeObject:self->_leftSources forKey:@"leftSources"];
-  [v4 encodeObject:self->_downSources forKey:@"downSources"];
-  [v4 encodeObject:self->_rightSources forKey:@"rightSources"];
-  [v4 encodeBool:self->_analog forKey:@"analog"];
-  [v4 encodeInteger:self->_eventUpValueField forKey:@"eventUpValueField"];
-  [v4 encodeInteger:self->_eventDownValueField forKey:@"eventDownValueField"];
-  [v4 encodeInteger:self->_eventLeftValueField forKey:@"eventLeftValueField"];
-  [v4 encodeInteger:self->_eventRightValueField forKey:@"eventRightValueField"];
+  coderCopy = coder;
+  [(GCDevicePhysicalInputElementDescription *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_xySources forKey:{@"xySources", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_xSources forKey:@"xSources"];
+  [coderCopy encodeObject:self->_ySources forKey:@"ySources"];
+  [coderCopy encodeObject:self->_upSources forKey:@"upSources"];
+  [coderCopy encodeObject:self->_leftSources forKey:@"leftSources"];
+  [coderCopy encodeObject:self->_downSources forKey:@"downSources"];
+  [coderCopy encodeObject:self->_rightSources forKey:@"rightSources"];
+  [coderCopy encodeBool:self->_analog forKey:@"analog"];
+  [coderCopy encodeInteger:self->_eventUpValueField forKey:@"eventUpValueField"];
+  [coderCopy encodeInteger:self->_eventDownValueField forKey:@"eventDownValueField"];
+  [coderCopy encodeInteger:self->_eventLeftValueField forKey:@"eventLeftValueField"];
+  [coderCopy encodeInteger:self->_eventRightValueField forKey:@"eventRightValueField"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = GCDevicePhysicalInputDirectionPadElementDescription;
-  v4 = [(GCDevicePhysicalInputElementDescription *)&v6 copyWithZone:a3];
+  v4 = [(GCDevicePhysicalInputElementDescription *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 7, self->_xySources);
   objc_storeStrong(v4 + 8, self->_xSources);
   objc_storeStrong(v4 + 9, self->_ySources);
@@ -126,9 +126,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -137,20 +137,20 @@
 
   v14.receiver = self;
   v14.super_class = GCDevicePhysicalInputDirectionPadElementDescription;
-  if (![(GCDevicePhysicalInputElementDescription *)&v14 isEqual:v4])
+  if (![(GCDevicePhysicalInputElementDescription *)&v14 isEqual:equalCopy])
   {
     goto LABEL_22;
   }
 
   xySources = self->_xySources;
-  if (xySources != v4[7] && ![(NSArray *)xySources isEqual:?])
+  if (xySources != equalCopy[7] && ![(NSArray *)xySources isEqual:?])
   {
     goto LABEL_22;
   }
 
-  if (((xSources = self->_xSources, xSources == v4[8]) || [(NSArray *)xSources isEqual:?]) && ((ySources = self->_ySources, ySources == v4[9]) || [(NSArray *)ySources isEqual:?]) && ((upSources = self->_upSources, upSources == v4[10]) || [(NSArray *)upSources isEqual:?]) && ((leftSources = self->_leftSources, leftSources == v4[11]) || [(NSArray *)leftSources isEqual:?]) && ((downSources = self->_downSources, downSources == v4[12]) || [(NSArray *)downSources isEqual:?]) && ((rightSources = self->_rightSources, rightSources == v4[13]) || [(NSArray *)rightSources isEqual:?]) && self->_analog == *(v4 + 48) && self->_eventUpValueField == v4[14] && self->_eventDownValueField == v4[15] && self->_eventLeftValueField == v4[16])
+  if (((xSources = self->_xSources, xSources == equalCopy[8]) || [(NSArray *)xSources isEqual:?]) && ((ySources = self->_ySources, ySources == equalCopy[9]) || [(NSArray *)ySources isEqual:?]) && ((upSources = self->_upSources, upSources == equalCopy[10]) || [(NSArray *)upSources isEqual:?]) && ((leftSources = self->_leftSources, leftSources == equalCopy[11]) || [(NSArray *)leftSources isEqual:?]) && ((downSources = self->_downSources, downSources == equalCopy[12]) || [(NSArray *)downSources isEqual:?]) && ((rightSources = self->_rightSources, rightSources == equalCopy[13]) || [(NSArray *)rightSources isEqual:?]) && self->_analog == *(equalCopy + 48) && self->_eventUpValueField == equalCopy[14] && self->_eventDownValueField == equalCopy[15] && self->_eventLeftValueField == equalCopy[16])
   {
-    v12 = self->_eventRightValueField == v4[17];
+    v12 = self->_eventRightValueField == equalCopy[17];
   }
 
   else

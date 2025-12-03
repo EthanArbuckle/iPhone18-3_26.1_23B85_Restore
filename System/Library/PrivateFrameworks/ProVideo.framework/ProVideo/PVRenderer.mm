@@ -1,32 +1,32 @@
 @interface PVRenderer
-- (HGRef<HGBitmap>)getDestinationBuffer:(CGSize)a3 cvPixelBufferFormat:(unsigned int)a4;
-- (HGRef<HGCVPixelBuffer>)hgCVPixelBufferFromCVPoolForSize:(CGSize)a3 withFormat:(unsigned int)a4;
-- (PVRenderer)initWithOptions:(id)a3;
+- (HGRef<HGBitmap>)getDestinationBuffer:(CGSize)buffer cvPixelBufferFormat:(unsigned int)format;
+- (HGRef<HGCVPixelBuffer>)hgCVPixelBufferFromCVPoolForSize:(CGSize)size withFormat:(unsigned int)format;
+- (PVRenderer)initWithOptions:(id)options;
 - (id).cxx_construct;
 - (void)_statsLogCheck;
 - (void)cleanupMemoryCaches;
 - (void)dealloc;
-- (void)loadInstructionGraphEffects:(id)a3;
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3;
-- (void)startRenderRequest:(id)a3 completionHandler:(id)a4;
+- (void)loadInstructionGraphEffects:(id)effects;
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished;
+- (void)startRenderRequest:(id)request completionHandler:(id)handler;
 - (void)updateDestinationFormatForOutputColorSpace;
 @end
 
 @implementation PVRenderer
 
-- (PVRenderer)initWithOptions:(id)a3
+- (PVRenderer)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = PVRenderer;
-  if ([(PVRendererBase *)&v8 initWithOptions:v4])
+  if ([(PVRendererBase *)&v8 initWithOptions:optionsCopy])
   {
-    if (v4)
+    if (optionsCopy)
     {
-      v5 = [v4 objectForKeyedSubscript:@"kPVRendererPoolDestinationBuffers"];
+      v5 = [optionsCopy objectForKeyedSubscript:@"kPVRendererPoolDestinationBuffers"];
       if (v5)
       {
-        v6 = [v4 objectForKeyedSubscript:@"kPVRendererPoolDestinationBuffers"];
+        v6 = [optionsCopy objectForKeyedSubscript:@"kPVRendererPoolDestinationBuffers"];
         [v6 BOOLValue];
       }
     }
@@ -79,17 +79,17 @@
   [(PVRendererBase *)&v7 dealloc];
 }
 
-- (void)startRenderRequest:(id)a3 completionHandler:(id)a4
+- (void)startRenderRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 outputNodes];
-  if (v8 && ([v6 outputNodes], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v10) && (objc_msgSend(v6, "outputSize"), v11 != 0.0) && (objc_msgSend(v6, "outputSize"), v12 != 0.0))
+  requestCopy = request;
+  handlerCopy = handler;
+  outputNodes = [requestCopy outputNodes];
+  if (outputNodes && ([requestCopy outputNodes], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, outputNodes, v10) && (objc_msgSend(requestCopy, "outputSize"), v11 != 0.0) && (objc_msgSend(requestCopy, "outputSize"), v12 != 0.0))
   {
-    v13 = [[PVRenderRequestJobDelegate alloc] initWithRequest:v6 completionHandler:v7 pvRenderer:self];
-    if (v6)
+    v13 = [[PVRenderRequestJobDelegate alloc] initWithRequest:requestCopy completionHandler:handlerCopy pvRenderer:self];
+    if (requestCopy)
     {
-      [v6 time];
+      [requestCopy time];
     }
 
     else
@@ -110,34 +110,34 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0, v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, requestCopy, 0);
   }
 }
 
-- (void)loadInstructionGraphEffects:(id)a3
+- (void)loadInstructionGraphEffects:(id)effects
 {
-  v4 = a3;
-  v5 = [(PVRendererBase *)self compositingContext];
-  [v4 outputSize];
+  effectsCopy = effects;
+  compositingContext = [(PVRendererBase *)self compositingContext];
+  [effectsCopy outputSize];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 highQuality];
+  highQuality = [effectsCopy highQuality];
   [(PVRenderer *)self frameDuration];
   v11 = HGObject::operator new(0xA8uLL);
   v16 = v15;
   v17.width = v7;
   v17.height = v9;
-  PVRendererInstructionGraphContext::PVRendererInstructionGraphContext(v11, v5, v17, v10, &v16);
+  PVRendererInstructionGraphContext::PVRendererInstructionGraphContext(v11, compositingContext, v17, highQuality, &v16);
 
   effectLoader = self->_effectLoader;
-  v13 = [v4 outputNodes];
+  outputNodes = [effectsCopy outputNodes];
   v14 = v11;
   if (v11)
   {
     (*(*v11 + 16))(v11);
   }
 
-  [(PVRenderEffectLoader *)effectLoader loadEffectsForGraphs:v13 loadContext:&v14];
+  [(PVRenderEffectLoader *)effectLoader loadEffectsForGraphs:outputNodes loadContext:&v14];
   if (v14)
   {
     (*(*v14 + 24))(v14);
@@ -182,14 +182,14 @@
   HGSynchronizable::Unlock(cvPoolsLock);
 }
 
-- (HGRef<HGBitmap>)getDestinationBuffer:(CGSize)a3 cvPixelBufferFormat:(unsigned int)a4
+- (HGRef<HGBitmap>)getDestinationBuffer:(CGSize)buffer cvPixelBufferFormat:(unsigned int)format
 {
-  v5 = *&a4;
-  height = a3.height;
-  width = a3.width;
+  v5 = *&format;
+  height = buffer.height;
+  width = buffer.width;
   v9 = v4;
   *v4 = 0;
-  if (PVIsMultiplaneCoreVideo420Format(a4) || PVIsMultiplaneCoreVideo422Format(v5))
+  if (PVIsMultiplaneCoreVideo420Format(format) || PVIsMultiplaneCoreVideo422Format(v5))
   {
     v32.width = width;
     v32.height = height;
@@ -218,9 +218,9 @@
     if (v30)
     {
       v12 = *(v30 + 3);
-      v13 = [(PVRendererBase *)self compositingContext];
-      v14 = [v13 outputColorSpace];
-      PVAddColorSpaceAttributesToCVPixelBuffer(v12, v14);
+      compositingContext = [(PVRendererBase *)self compositingContext];
+      outputColorSpace = [compositingContext outputColorSpace];
+      PVAddColorSpaceAttributesToCVPixelBuffer(v12, outputColorSpace);
 
       if (PVIsMultiplaneCoreVideo420Format(v5) || PVIsMultiplaneCoreVideo422Format(v5))
       {
@@ -271,9 +271,9 @@
     v19 = HGRectMake4f(v11, 0.0, 0.0, v17, v18);
     v21 = v20;
     v23 = HGCV::HGFormatForCVPixelFormat(v5, 0, v22);
-    v24 = [(PVRendererBase *)self compositingContext];
-    v25 = [v24 outputColorSpace];
-    PVCreateHGBitmapWithStorage(v19, v21, v23, v25, &v30);
+    compositingContext2 = [(PVRendererBase *)self compositingContext];
+    outputColorSpace2 = [compositingContext2 outputColorSpace];
+    PVCreateHGBitmapWithStorage(v19, v21, v23, outputColorSpace2, &v30);
     if (v30)
     {
       *v9 = v30;
@@ -284,9 +284,9 @@
   return v26;
 }
 
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished
 {
-  v20 = *a3.var0;
+  v20 = *finished.var0;
   if (v20)
   {
     (*(*v20 + 16))(v20, a2);
@@ -409,20 +409,20 @@ void __28__PVRenderer__statsLogCheck__block_invoke(uint64_t a1)
 
 - (void)updateDestinationFormatForOutputColorSpace
 {
-  v3 = [(PVRendererBase *)self compositingContext];
-  v4 = [v3 outputColorSpace];
-  v5 = [v4 isHDRSpace];
+  compositingContext = [(PVRendererBase *)self compositingContext];
+  outputColorSpace = [compositingContext outputColorSpace];
+  isHDRSpace = [outputColorSpace isHDRSpace];
 
-  if (v5)
+  if (isHDRSpace)
   {
     v6 = 2016686640;
   }
 
   else
   {
-    v7 = [(PVRendererBase *)self compositingContext];
-    v8 = [v7 outputColorSpace];
-    [v8 isP3d65GammaColorSpace];
+    compositingContext2 = [(PVRendererBase *)self compositingContext];
+    outputColorSpace2 = [compositingContext2 outputColorSpace];
+    [outputColorSpace2 isP3d65GammaColorSpace];
 
     v6 = 1111970369;
   }
@@ -430,11 +430,11 @@ void __28__PVRenderer__statsLogCheck__block_invoke(uint64_t a1)
   self->_destinationPixelFormat = v6;
 }
 
-- (HGRef<HGCVPixelBuffer>)hgCVPixelBufferFromCVPoolForSize:(CGSize)a3 withFormat:(unsigned int)a4
+- (HGRef<HGCVPixelBuffer>)hgCVPixelBufferFromCVPoolForSize:(CGSize)size withFormat:(unsigned int)format
 {
-  v5 = *&a4;
-  height = a3.height;
-  width = a3.width;
+  v5 = *&format;
+  height = size.height;
+  width = size.width;
   v9 = v4;
   cvPoolsLock = self->_cvPoolsLock;
   v23 = 0;
@@ -476,8 +476,8 @@ void __28__PVRenderer__statsLogCheck__block_invoke(uint64_t a1)
     }
 
 LABEL_9:
-    v14 = [(PVRendererBase *)self name];
-    NSLog(&cfstr_CouldNotFindPo.isa, v14, width, height);
+    name = [(PVRendererBase *)self name];
+    NSLog(&cfstr_CouldNotFindPo.isa, name, width, height);
 
     v15 = HGObject::operator new(0x30uLL);
     PVCVPixelBufferPool::PVCVPixelBufferPool(v15, width, height, v5);

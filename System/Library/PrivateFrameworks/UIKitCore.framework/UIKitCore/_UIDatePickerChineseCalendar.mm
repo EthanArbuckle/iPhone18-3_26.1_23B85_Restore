@@ -1,28 +1,28 @@
 @interface _UIDatePickerChineseCalendar
-+ (id)cyclicalFromRelated:(id)a3;
-+ (id)relatedFromCyclical:(id)a3;
-- (_NSRange)maximumRangeOfUnit:(unint64_t)a3;
-- (_NSRange)rangeOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5;
-- (_UIDatePickerChineseCalendar)initWithCalendar:(id)a3;
-- (id)components:(unint64_t)a3 fromDate:(id)a4;
-- (id)components:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5 options:(unint64_t)a6;
-- (id)dateFromComponents:(id)a3;
++ (id)cyclicalFromRelated:(id)related;
++ (id)relatedFromCyclical:(id)cyclical;
+- (_NSRange)maximumRangeOfUnit:(unint64_t)unit;
+- (_NSRange)rangeOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date;
+- (_UIDatePickerChineseCalendar)initWithCalendar:(id)calendar;
+- (id)components:(unint64_t)components fromDate:(id)date;
+- (id)components:(unint64_t)components fromDate:(id)date toDate:(id)toDate options:(unint64_t)options;
+- (id)dateFromComponents:(id)components;
 @end
 
 @implementation _UIDatePickerChineseCalendar
 
-+ (id)relatedFromCyclical:(id)a3
++ (id)relatedFromCyclical:(id)cyclical
 {
-  if ([a3 year] != 0x7FFFFFFFFFFFFFFFLL || (v4 = a3, objc_msgSend(a3, "month") != 0x7FFFFFFFFFFFFFFFLL))
+  if ([cyclical year] != 0x7FFFFFFFFFFFFFFFLL || (v4 = cyclical, objc_msgSend(cyclical, "month") != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v4 = [a3 copy];
+    v4 = [cyclical copy];
   }
 
-  if ([a3 year] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([cyclical year] != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v4 setEra:1];
-    v5 = [a3 era];
-    v6 = [a3 year] + 60 * v5;
+    v5 = [cyclical era];
+    v6 = [cyclical year] + 60 * v5;
     if (v6 == 112)
     {
 LABEL_6:
@@ -52,38 +52,38 @@ LABEL_6:
     [v4 setYear:v7];
   }
 
-  if ([a3 month] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([cyclical month] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 setMonth:{2 * objc_msgSend(a3, "month") - (objc_msgSend(a3, "isLeapMonth") ^ 1)}];
+    [v4 setMonth:{2 * objc_msgSend(cyclical, "month") - (objc_msgSend(cyclical, "isLeapMonth") ^ 1)}];
     [v4 setLeapMonth:0];
   }
 
   return v4;
 }
 
-+ (id)cyclicalFromRelated:(id)a3
++ (id)cyclicalFromRelated:(id)related
 {
-  v6 = [a3 month];
-  v7 = (v6 - 1) / 2 + 1;
-  v8 = [a3 year];
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL || (v9 = a3, v6 != 0x7FFFFFFFFFFFFFFFLL))
+  month = [related month];
+  v7 = (month - 1) / 2 + 1;
+  year = [related year];
+  if (year != 0x7FFFFFFFFFFFFFFFLL || (v9 = related, month != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = [a3 copy];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL && v8 == 1604)
+    v9 = [related copy];
+    if (month == 0x7FFFFFFFFFFFFFFFLL && year == 1604)
     {
       [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
     }
 
     else
     {
-      if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+      if (year == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_10;
       }
 
-      if (v8 != 1604)
+      if (year != 1604)
       {
-        v10 = v8 + 2636;
+        v10 = year + 2636;
         goto LABEL_9;
       }
     }
@@ -96,39 +96,39 @@ LABEL_9:
   }
 
 LABEL_10:
-  if ([a3 month] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([related month] != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v9 setMonth:v7];
-    [v9 setLeapMonth:(v6 & 1) == 0];
+    [v9 setLeapMonth:(month & 1) == 0];
   }
 
   return v9;
 }
 
-- (_UIDatePickerChineseCalendar)initWithCalendar:(id)a3
+- (_UIDatePickerChineseCalendar)initWithCalendar:(id)calendar
 {
   v6.receiver = self;
   v6.super_class = _UIDatePickerChineseCalendar;
-  -[_UIDatePickerChineseCalendar initWithCalendarIdentifier:](&v6, sel_initWithCalendarIdentifier_, [a3 calendarIdentifier]);
+  -[_UIDatePickerChineseCalendar initWithCalendarIdentifier:](&v6, sel_initWithCalendarIdentifier_, [calendar calendarIdentifier]);
   if (self)
   {
-    [(_UIDatePickerChineseCalendar *)self setRealCalendar:a3];
+    [(_UIDatePickerChineseCalendar *)self setRealCalendar:calendar];
   }
 
   return self;
 }
 
-- (id)dateFromComponents:(id)a3
+- (id)dateFromComponents:(id)components
 {
   realCalendar = self->_realCalendar;
-  v4 = [objc_opt_class() cyclicalFromRelated:a3];
+  v4 = [objc_opt_class() cyclicalFromRelated:components];
 
   return [(NSCalendar *)realCalendar dateFromComponents:v4];
 }
 
-- (id)components:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5 options:(unint64_t)a6
+- (id)components:(unint64_t)components fromDate:(id)date toDate:(id)toDate options:(unint64_t)options
 {
-  v6 = [(NSCalendar *)self->_realCalendar components:a3 fromDate:a4 toDate:a5 options:a6];
+  v6 = [(NSCalendar *)self->_realCalendar components:components fromDate:date toDate:toDate options:options];
   if ([(NSDateComponents *)v6 year]!= 0x7FFFFFFFFFFFFFFFLL && [(NSDateComponents *)v6 era]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSDateComponents *)v6 setYear:[(NSDateComponents *)v6 year]+ 60 * [(NSDateComponents *)v6 era]];
@@ -138,34 +138,34 @@ LABEL_10:
   return v6;
 }
 
-- (id)components:(unint64_t)a3 fromDate:(id)a4
+- (id)components:(unint64_t)components fromDate:(id)date
 {
-  if ((a3 & 8) != 0)
+  if ((components & 8) != 0)
   {
     v7 = 6;
   }
 
   else
   {
-    v7 = (a3 >> 1) & 2;
+    v7 = (components >> 1) & 2;
   }
 
   v8 = objc_opt_class();
-  v9 = [(NSCalendar *)self->_realCalendar components:v7 | a3 fromDate:a4];
+  v9 = [(NSCalendar *)self->_realCalendar components:v7 | components fromDate:date];
 
   return [v8 relatedFromCyclical:v9];
 }
 
-- (_NSRange)maximumRangeOfUnit:(unint64_t)a3
+- (_NSRange)maximumRangeOfUnit:(unint64_t)unit
 {
-  if (a3 == 2)
+  if (unit == 2)
   {
     goto LABEL_4;
   }
 
-  if (a3 != 8)
+  if (unit != 8)
   {
-    if (a3 != 4)
+    if (unit != 4)
     {
       realCalendar = self->_realCalendar;
       goto LABEL_7;
@@ -174,7 +174,7 @@ LABEL_10:
 LABEL_4:
     realCalendar = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
 LABEL_7:
-    v5 = [(NSCalendar *)realCalendar maximumRangeOfUnit:a3];
+    v5 = [(NSCalendar *)realCalendar maximumRangeOfUnit:unit];
     goto LABEL_8;
   }
 
@@ -186,27 +186,27 @@ LABEL_8:
   return result;
 }
 
-- (_NSRange)rangeOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5
+- (_NSRange)rangeOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date
 {
-  if (a3 == 4 && a4 == 2)
+  if (unit == 4 && inUnit == 2)
   {
     realCalendar = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-    a3 = 4;
-    a4 = 2;
+    unit = 4;
+    inUnit = 2;
   }
 
   else
   {
     realCalendar = self->_realCalendar;
-    if (a3 == 8 && a4 == 4)
+    if (unit == 8 && inUnit == 4)
     {
-      v7 = [(NSCalendar *)realCalendar rangeOfUnit:8 inUnit:4 forDate:a5];
+      v7 = [(NSCalendar *)realCalendar rangeOfUnit:8 inUnit:4 forDate:date];
       v8 = 2 * v9;
       goto LABEL_8;
     }
   }
 
-  v7 = [(NSCalendar *)realCalendar rangeOfUnit:a3 inUnit:a4 forDate:a5];
+  v7 = [(NSCalendar *)realCalendar rangeOfUnit:unit inUnit:inUnit forDate:date];
 LABEL_8:
   result.length = v8;
   result.location = v7;

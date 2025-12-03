@@ -9,16 +9,16 @@
   v3 = MEMORY[0x1E696AEC0];
   specificPresetIdentifier = self->_specificPresetIdentifier;
   v5 = AVTPresetCategoryToString([(AVTPreset *)self->_presetOfOtherCategory category]);
-  v6 = [(AVTPreset *)self->_presetOfOtherCategory identifier];
-  v7 = v6;
+  identifier = [(AVTPreset *)self->_presetOfOtherCategory identifier];
+  v7 = identifier;
   if (specificPresetIdentifier)
   {
-    [v3 stringWithFormat:@"%@ is %@ and self is %@", v5, v6, self->_specificPresetIdentifier];
+    [v3 stringWithFormat:@"%@ is %@ and self is %@", v5, identifier, self->_specificPresetIdentifier];
   }
 
   else
   {
-    [v3 stringWithFormat:@"%@ is %@", v5, v6, v10];
+    [v3 stringWithFormat:@"%@ is %@", v5, identifier, v10];
   }
   v8 = ;
 

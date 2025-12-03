@@ -1,14 +1,14 @@
 @interface AXInvertColors_AVFoundation
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_AVFoundation
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVCaptureVideoPreviewLayer"];
-  [v3 validateClass:@"AVCaptureVideoPreviewLayer" isKindOfClass:@"CALayer"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVCaptureVideoPreviewLayer"];
+  [validationsCopy validateClass:@"AVCaptureVideoPreviewLayer" isKindOfClass:@"CALayer"];
 }
 
 @end

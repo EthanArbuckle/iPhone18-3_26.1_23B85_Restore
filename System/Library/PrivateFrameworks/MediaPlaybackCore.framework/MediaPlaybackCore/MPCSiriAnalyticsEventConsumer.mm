@@ -1,9 +1,9 @@
 @interface MPCSiriAnalyticsEventConsumer
 - (MPCPlaybackEngine)playbackEngine;
-- (MPCSiriAnalyticsEventConsumer)initWithPlaybackEngine:(id)a3;
-- (id)_validateAndBuildContextWithEvent:(id)a3;
-- (void)_handleAssetLoadEnd:(id)a3 cursor:(id)a4;
-- (void)subscribeToEventStream:(id)a3;
+- (MPCSiriAnalyticsEventConsumer)initWithPlaybackEngine:(id)engine;
+- (id)_validateAndBuildContextWithEvent:(id)event;
+- (void)_handleAssetLoadEnd:(id)end cursor:(id)cursor;
+- (void)subscribeToEventStream:(id)stream;
 @end
 
 @implementation MPCSiriAnalyticsEventConsumer
@@ -15,12 +15,12 @@
   return WeakRetained;
 }
 
-- (id)_validateAndBuildContextWithEvent:(id)a3
+- (id)_validateAndBuildContextWithEvent:(id)event
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKeyedSubscript:@"queue-reporting-metadata"];
+  eventCopy = event;
+  payload = [eventCopy payload];
+  v6 = [payload objectForKeyedSubscript:@"queue-reporting-metadata"];
 
   if (v6)
   {
@@ -35,8 +35,8 @@
         v20[1] = @"endTimeReciever";
         v21[0] = v8;
         v11 = MEMORY[0x1E696AD98];
-        v12 = [v4 date];
-        [v12 timeIntervalSinceReferenceDate];
+        date = [eventCopy date];
+        [date timeIntervalSinceReferenceDate];
         v13 = [v11 numberWithDouble:?];
         v21[1] = v13;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -69,26 +69,26 @@
   return v9;
 }
 
-- (void)_handleAssetLoadEnd:(id)a3 cursor:(id)a4
+- (void)_handleAssetLoadEnd:(id)end cursor:(id)cursor
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  v9 = [v8 isEqualToString:@"asset-load-end"];
+  endCopy = end;
+  cursorCopy = cursor;
+  type = [endCopy type];
+  v9 = [type isEqualToString:@"asset-load-end"];
 
   if (v9)
   {
-    v10 = [v6 payload];
-    v11 = [v10 objectForKeyedSubscript:@"queue-section-id"];
+    payload = [endCopy payload];
+    v11 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-    v12 = [v6 payload];
-    v13 = [v12 objectForKeyedSubscript:@"queue-item-id"];
+    payload2 = [endCopy payload];
+    v13 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
     v32 = @"queue-section-id";
     v33[0] = v11;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-    v15 = [v7 findPreviousEventWithType:@"queue-add" matchingPayload:v14];
+    v15 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:v14];
 
     v16 = [(MPCSiriAnalyticsEventConsumer *)self _validateAndBuildContextWithEvent:v15];
     v17 = [v16 mutableCopy];
@@ -100,10 +100,10 @@
       v31[0] = v11;
       v31[1] = v13;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
-      v19 = [v7 findPreviousEventWithType:@"asset-load-begin" matchingPayload:v18];
+      v19 = [cursorCopy findPreviousEventWithType:@"asset-load-begin" matchingPayload:v18];
 
       v20 = MEMORY[0x1E696AD98];
-      [v19 durationSinceEvent:v6];
+      [v19 durationSinceEvent:endCopy];
       v22 = [v20 numberWithDouble:v21 * 1000.0];
       [v17 setObject:v22 forKeyedSubscript:@"Duration"];
 
@@ -114,10 +114,10 @@
         _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_DEFAULT, "MPCSiriAnalyticsEventConsumer: AFAnalyticsEventTypeMusicPlaybackAssetLoad", buf, 2u);
       }
 
-      v24 = [MEMORY[0x1E698D0C8] sharedAnalytics];
-      if (v6)
+      mEMORY[0x1E698D0C8] = [MEMORY[0x1E698D0C8] sharedAnalytics];
+      if (endCopy)
       {
-        [v6 monotonicTime];
+        [endCopy monotonicTime];
         v25 = *(&v26 + 1);
       }
 
@@ -129,45 +129,45 @@
         v27 = 0u;
       }
 
-      [v24 logEventWithType:2903 machAbsoluteTime:v25 context:{v17, v26, v27, v28}];
+      [mEMORY[0x1E698D0C8] logEventWithType:2903 machAbsoluteTime:v25 context:{v17, v26, v27, v28}];
     }
   }
 }
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
-  objc_storeStrong(&self->_subscription, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_subscription, stream);
+  streamCopy = stream;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__MPCSiriAnalyticsEventConsumer_subscribeToEventStream___block_invoke;
   v10[3] = &unk_1E8232330;
   v10[4] = self;
-  [v5 subscribeToEventType:@"session-will-begin" handler:v10];
+  [streamCopy subscribeToEventType:@"session-will-begin" handler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__MPCSiriAnalyticsEventConsumer_subscribeToEventStream___block_invoke_13;
   v9[3] = &unk_1E8232330;
   v9[4] = self;
-  [v5 subscribeToEventType:@"item-buffer-ready" handler:v9];
+  [streamCopy subscribeToEventType:@"item-buffer-ready" handler:v9];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__MPCSiriAnalyticsEventConsumer_subscribeToEventStream___block_invoke_15;
   v8[3] = &unk_1E8232330;
   v8[4] = self;
-  [v5 subscribeToEventType:@"item-first-audio-frame" handler:v8];
+  [streamCopy subscribeToEventType:@"item-first-audio-frame" handler:v8];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__MPCSiriAnalyticsEventConsumer_subscribeToEventStream___block_invoke_27;
   v7[3] = &unk_1E8232330;
   v7[4] = self;
-  [v5 subscribeToEventType:@"item-begin" handler:v7];
+  [streamCopy subscribeToEventType:@"item-begin" handler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__MPCSiriAnalyticsEventConsumer_subscribeToEventStream___block_invoke_2;
   v6[3] = &unk_1E8232330;
   v6[4] = self;
-  [v5 subscribeToEventType:@"asset-load-end" handler:v6];
+  [streamCopy subscribeToEventType:@"asset-load-end" handler:v6];
 }
 
 uint64_t __56__MPCSiriAnalyticsEventConsumer_subscribeToEventStream___block_invoke(uint64_t a1, void *a2)
@@ -551,16 +551,16 @@ void __56__MPCSiriAnalyticsEventConsumer_subscribeToEventStream___block_invoke_2
   objc_storeStrong((*(*(a1 + 32) + 8) + 40), v8);
 }
 
-- (MPCSiriAnalyticsEventConsumer)initWithPlaybackEngine:(id)a3
+- (MPCSiriAnalyticsEventConsumer)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v12.receiver = self;
   v12.super_class = MPCSiriAnalyticsEventConsumer;
   v5 = [(MPCSiriAnalyticsEventConsumer *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
     v7 = dispatch_queue_create("com.apple.MediaPlaybackCore.SiriAnalyticsEventConsumer.eventQueue", 0);
     eventQueue = v6->_eventQueue;
     v6->_eventQueue = v7;

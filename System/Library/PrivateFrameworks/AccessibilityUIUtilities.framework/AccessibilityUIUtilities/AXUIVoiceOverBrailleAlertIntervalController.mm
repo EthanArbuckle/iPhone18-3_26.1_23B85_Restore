@@ -2,56 +2,56 @@
 - (BOOL)infiniteTimeEnabled;
 - (BOOL)numericalPreferenceEnabled;
 - (double)numericalPreferenceValue;
-- (void)setInfiniteTimeEnabled:(BOOL)a3;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setInfiniteTimeEnabled:(BOOL)enabled;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation AXUIVoiceOverBrailleAlertIntervalController
 
 - (BOOL)numericalPreferenceEnabled
 {
-  v2 = [MEMORY[0x1E6989890] sharedInstance];
-  v3 = [v2 voiceOverBrailleAlertsEnabled];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  voiceOverBrailleAlertsEnabled = [mEMORY[0x1E6989890] voiceOverBrailleAlertsEnabled];
 
-  return v3;
+  return voiceOverBrailleAlertsEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6989890] sharedInstance];
-  [v4 setVoiceOverBrailleAlertsEnabled:v3];
+  userCopy = user;
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  [mEMORY[0x1E6989890] setVoiceOverBrailleAlertsEnabled:userCopy];
 }
 
 - (double)numericalPreferenceValue
 {
-  v2 = [MEMORY[0x1E6989890] sharedInstance];
-  [v2 voiceOverBrailleAlertDisplayDuration];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  [mEMORY[0x1E6989890] voiceOverBrailleAlertDisplayDuration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
-  v4 = [MEMORY[0x1E6989890] sharedInstance];
-  [v4 setVoiceOverBrailleAlertDisplayDuration:a3];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  [mEMORY[0x1E6989890] setVoiceOverBrailleAlertDisplayDuration:user];
 }
 
 - (BOOL)infiniteTimeEnabled
 {
-  v2 = [MEMORY[0x1E6989890] sharedInstance];
-  v3 = [v2 voiceOverBrailleAlertShowUntilDismissed];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  voiceOverBrailleAlertShowUntilDismissed = [mEMORY[0x1E6989890] voiceOverBrailleAlertShowUntilDismissed];
 
-  return v3;
+  return voiceOverBrailleAlertShowUntilDismissed;
 }
 
-- (void)setInfiniteTimeEnabled:(BOOL)a3
+- (void)setInfiniteTimeEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6989890] sharedInstance];
-  [v4 setVoiceOverBrailleAlertShowUntilDismissed:v3];
+  enabledCopy = enabled;
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  [mEMORY[0x1E6989890] setVoiceOverBrailleAlertShowUntilDismissed:enabledCopy];
 }
 
 @end

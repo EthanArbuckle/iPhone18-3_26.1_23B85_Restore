@@ -1,9 +1,9 @@
 @interface FedStatsCohortQueryInstalledApps
 + (id)cohortInstance;
 + (void)initialize;
-- (BOOL)_isSupportedIntentMediaApp:(id)a3 :(id)a4 :(id)a5;
+- (BOOL)_isSupportedIntentMediaApp:(id)app :(id)a4 :(id)a5;
 - (FedStatsCohortQueryInstalledApps)init;
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4;
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error;
 - (void)applyFilteringForMediaDomain;
 - (void)lsAppRecords;
 - (void)lsPluginKitExtensions;
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [NSSet setWithArray:&off_100030418];
     v3 = qword_1000395C8;
@@ -62,19 +62,19 @@
   return v2;
 }
 
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error
 {
   v5 = [NSString stringWithFormat:@"Invalid call to FedStatsCohortQueryInstalledApps#.cohortKeyForParameters"];
   v6 = [FedStatsError errorWithCode:900 description:v5];
-  v7 = *a4;
-  *a4 = v6;
+  v7 = *error;
+  *error = v6;
 
   return 0;
 }
 
 + (id)cohortInstance
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -117,49 +117,49 @@
 - (void)lsAppRecords
 {
   v3 = [LSApplicationRecord enumeratorWithOptions:0];
-  v4 = [v3 nextObject];
-  if (v4)
+  nextObject = [v3 nextObject];
+  if (nextObject)
   {
-    v6 = v4;
+    v6 = nextObject;
     v7 = &selRef_typesInCombination;
     *&v5 = 138412802;
     v22 = v5;
     v23 = v3;
     do
     {
-      v8 = [v6 bundleIdentifier];
-      if (v8)
+      bundleIdentifier = [v6 bundleIdentifier];
+      if (bundleIdentifier)
       {
-        v9 = [v6 supportedIntentMediaCategories];
-        v10 = [NSSet setWithArray:v9];
+        supportedIntentMediaCategories = [v6 supportedIntentMediaCategories];
+        framework2 = [NSSet setWithArray:supportedIntentMediaCategories];
 
-        v11 = [v6 supportedIntents];
-        if ([(FedStatsCohortQueryInstalledApps *)self _isSupportedIntentMediaApp:v8])
+        supportedIntents = [v6 supportedIntents];
+        if ([(FedStatsCohortQueryInstalledApps *)self _isSupportedIntentMediaApp:bundleIdentifier])
         {
           v12 = [InstalledApp alloc];
-          v13 = [v6 supportedIntentMediaCategories];
+          supportedIntentMediaCategories2 = [v6 supportedIntentMediaCategories];
           [v6 localizedName];
-          v14 = self;
+          selfCopy = self;
           v16 = v15 = v7;
-          v17 = [(InstalledApp *)v12 initWithBundleIdentifier:v8 supportedMediaCategories:v13 supportedIntents:v11 appName:v16];
+          v17 = [(InstalledApp *)v12 initWithBundleIdentifier:bundleIdentifier supportedMediaCategories:supportedIntentMediaCategories2 supportedIntents:supportedIntents appName:v16];
 
           v7 = v15;
-          self = v14;
+          self = selfCopy;
 
-          v18 = [(NSDictionary *)v14->_domainToInstalledApps objectForKeyedSubscript:@"media"];
+          v18 = [(NSDictionary *)selfCopy->_domainToInstalledApps objectForKeyedSubscript:@"media"];
           [v18 addObject:v17];
 
-          v19 = [v7 + 454 framework];
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+          framework = [v7 + 454 framework];
+          if (os_log_type_enabled(framework, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v6 supportedIntentMediaCategories];
+            supportedIntentMediaCategories3 = [v6 supportedIntentMediaCategories];
             *buf = v22;
-            v25 = v8;
+            v25 = bundleIdentifier;
             v26 = 2112;
-            v27 = v11;
+            v27 = supportedIntents;
             v28 = 2112;
-            v29 = v21;
-            _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "bundle record: %@ has supported intent %@ and supported media categories: %@", buf, 0x20u);
+            v29 = supportedIntentMediaCategories3;
+            _os_log_debug_impl(&_mh_execute_header, framework, OS_LOG_TYPE_DEBUG, "bundle record: %@ has supported intent %@ and supported media categories: %@", buf, 0x20u);
           }
 
           v3 = v23;
@@ -168,31 +168,31 @@
 
       else
       {
-        v10 = [v7 + 454 framework];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        framework2 = [v7 + 454 framework];
+        if (os_log_type_enabled(framework2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v25 = v6;
-          _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Error enumerating app records; app record: %@ has nil bundle identifier", buf, 0xCu);
+          _os_log_error_impl(&_mh_execute_header, framework2, OS_LOG_TYPE_ERROR, "Error enumerating app records; app record: %@ has nil bundle identifier", buf, 0xCu);
         }
       }
 
-      v20 = [v3 nextObject];
+      nextObject2 = [v3 nextObject];
 
-      v6 = v20;
+      v6 = nextObject2;
     }
 
-    while (v20);
+    while (nextObject2);
   }
 }
 
 - (void)lsPluginKitExtensions
 {
-  v3 = [qword_1000395D0 allObjects];
+  allObjects = [qword_1000395D0 allObjects];
   v10[0] = NSExtensionPointName;
   v10[1] = INExtensionAttributesIntentsSupportedKey;
   v11[0] = INIntentsServiceExtensionPointName;
-  v11[1] = v3;
+  v11[1] = allObjects;
   v4 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
   v5 = +[LSApplicationWorkspace defaultWorkspace];
   v7[0] = _NSConcreteStackBlock;
@@ -200,17 +200,17 @@
   v7[2] = sub_10001B098;
   v7[3] = &unk_10002C920;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   [v5 enumeratePluginsMatchingQuery:v6 withBlock:v7];
 }
 
-- (BOOL)_isSupportedIntentMediaApp:(id)a3 :(id)a4 :(id)a5
+- (BOOL)_isSupportedIntentMediaApp:(id)app :(id)a4 :(id)a5
 {
-  v7 = a3;
+  appCopy = app;
   v8 = a4;
   v9 = a5;
-  if ([v7 isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"com.apple.podcasts"))
+  if ([appCopy isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(appCopy, "isEqualToString:", @"com.apple.podcasts"))
   {
     v10 = 1;
   }
@@ -244,8 +244,8 @@
 
 - (void)applyFilteringForMediaDomain
 {
-  v2 = [(FedStatsCohortQueryInstalledApps *)self domainToInstalledApps];
-  v6 = [v2 objectForKeyedSubscript:@"media"];
+  domainToInstalledApps = [(FedStatsCohortQueryInstalledApps *)self domainToInstalledApps];
+  v6 = [domainToInstalledApps objectForKeyedSubscript:@"media"];
 
   v3 = [v6 objectsPassingTest:&stru_10002C960];
   v4 = [v3 objectsPassingTest:&stru_10002C980];

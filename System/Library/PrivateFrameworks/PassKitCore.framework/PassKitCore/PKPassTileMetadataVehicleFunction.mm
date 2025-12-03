@@ -1,25 +1,25 @@
 @interface PKPassTileMetadataVehicleFunction
-- (BOOL)_setUpWithDictionary:(id)a3 privateDictionary:(id)a4;
-- (PKPassTileMetadataVehicleFunction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)_setUpWithDictionary:(id)dictionary privateDictionary:(id)privateDictionary;
+- (PKPassTileMetadataVehicleFunction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileMetadataVehicleFunction
 
-- (BOOL)_setUpWithDictionary:(id)a3 privateDictionary:(id)a4
+- (BOOL)_setUpWithDictionary:(id)dictionary privateDictionary:(id)privateDictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKPassTileMetadataVehicleFunction;
-  if (![(PKPassTileMetadata *)&v13 _setUpWithDictionary:v6 privateDictionary:a4])
+  if (![(PKPassTileMetadata *)&v13 _setUpWithDictionary:dictionaryCopy privateDictionary:privateDictionary])
   {
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
   }
 
-  v7 = [v6 PKArrayContaining:objc_opt_class() forKey:@"vehicleFunctions"];
+  v7 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"vehicleFunctions"];
   vehicleFunctions = self->_vehicleFunctions;
   self->_vehicleFunctions = v7;
 
@@ -28,11 +28,11 @@ LABEL_7:
     v10 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PKPassTileMetadata *)self identifier];
+      identifier = [(PKPassTileMetadata *)self identifier];
       *buf = 134218242;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v11;
+      v17 = identifier;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "PKPassTileMetadataVehicleFunction (%p): tile %@ invalid - must have vehicle functions.", buf, 0x16u);
     }
 
@@ -45,15 +45,15 @@ LABEL_8:
   return v9;
 }
 
-- (PKPassTileMetadataVehicleFunction)initWithCoder:(id)a3
+- (PKPassTileMetadataVehicleFunction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPassTileMetadataVehicleFunction;
-  v5 = [(PKPassTileMetadata *)&v9 initWithCoder:v4];
+  v5 = [(PKPassTileMetadata *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"vehicleFunctions"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"vehicleFunctions"];
     vehicleFunctions = v5->_vehicleFunctions;
     v5->_vehicleFunctions = v6;
   }
@@ -61,13 +61,13 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileMetadataVehicleFunction;
-  v4 = a3;
-  [(PKPassTileMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_vehicleFunctions forKey:{@"vehicleFunctions", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPassTileMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_vehicleFunctions forKey:{@"vehicleFunctions", v5.receiver, v5.super_class}];
 }
 
 @end

@@ -7,7 +7,7 @@
 
 + (MPSCNNFullyConnectedGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage convolutionGradientState:(MPSCNNConvolutionGradientStateNode *)gradientState weights:(id)weights
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSourceGradient_sourceImage_convolutionGradientState_weights_(v10, v11, sourceGradient, sourceImage, gradientState, weights, v12, v13);
 
   return v14;

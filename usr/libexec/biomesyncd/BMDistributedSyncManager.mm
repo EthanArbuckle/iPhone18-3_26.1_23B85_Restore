@@ -1,43 +1,43 @@
 @interface BMDistributedSyncManager
-+ (id)writeAtomBatchData:(id)a3 atomBatchVectors:(id)a4 forLocation:(id)a5 protectionClass:(unint64_t)a6 sessionContext:(id)a7 db:(id)a8;
-- (BMDistributedSyncManager)initWithStreamConfiguration:(id)a3 streamCRDT:(id)a4 database:(id)a5 localSiteIdentifier:(id)a6 changeReporter:(id)a7;
++ (id)writeAtomBatchData:(id)data atomBatchVectors:(id)vectors forLocation:(id)location protectionClass:(unint64_t)class sessionContext:(id)context db:(id)db;
+- (BMDistributedSyncManager)initWithStreamConfiguration:(id)configuration streamCRDT:(id)t database:(id)database localSiteIdentifier:(id)identifier changeReporter:(id)reporter;
 - (id)deletedLocations;
-- (unint64_t)handleDeferredDeletedLocationsForStream:(id)a3;
-- (void)mergeAtomBatch:(id)a3 deletedLocations:(id)a4 sessionContext:(id)a5;
-- (void)updateClockVectorByUnionWithUnseenSiteIdentifiers:(id)a3;
+- (unint64_t)handleDeferredDeletedLocationsForStream:(id)stream;
+- (void)mergeAtomBatch:(id)batch deletedLocations:(id)locations sessionContext:(id)context;
+- (void)updateClockVectorByUnionWithUnseenSiteIdentifiers:(id)identifiers;
 @end
 
 @implementation BMDistributedSyncManager
 
-- (BMDistributedSyncManager)initWithStreamConfiguration:(id)a3 streamCRDT:(id)a4 database:(id)a5 localSiteIdentifier:(id)a6 changeReporter:(id)a7
+- (BMDistributedSyncManager)initWithStreamConfiguration:(id)configuration streamCRDT:(id)t database:(id)database localSiteIdentifier:(id)identifier changeReporter:(id)reporter
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  configurationCopy = configuration;
+  tCopy = t;
+  databaseCopy = database;
+  identifierCopy = identifier;
+  reporterCopy = reporter;
   v23.receiver = self;
   v23.super_class = BMDistributedSyncManager;
   v18 = [(BMDistributedSyncManager *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_streamConfiguration, a3);
-    objc_storeStrong(&v19->_streamCRDT, a4);
-    objc_storeStrong(&v19->_db, a5);
-    v20 = [v16 copy];
+    objc_storeStrong(&v18->_streamConfiguration, configuration);
+    objc_storeStrong(&v19->_streamCRDT, t);
+    objc_storeStrong(&v19->_db, database);
+    v20 = [identifierCopy copy];
     localSiteIdentifier = v19->_localSiteIdentifier;
     v19->_localSiteIdentifier = v20;
 
-    objc_storeStrong(&v19->_changeReporter, a7);
+    objc_storeStrong(&v19->_changeReporter, reporter);
   }
 
   return v19;
 }
 
-- (void)updateClockVectorByUnionWithUnseenSiteIdentifiers:(id)a3
+- (void)updateClockVectorByUnionWithUnseenSiteIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v7 = [CKDistributedSiteIdentifier alloc];
@@ -47,8 +47,8 @@
   v30 = v9;
   [v5 addObject:v9];
   db = self->_db;
-  v11 = [(BMStreamConfiguration *)self->_streamConfiguration syncIdentifier];
-  v12 = [(BMSyncDatabase *)db CKAtomRowSiteIdentifiersForStreamIdentifier:v11];
+  syncIdentifier = [(BMStreamConfiguration *)self->_streamConfiguration syncIdentifier];
+  v12 = [(BMSyncDatabase *)db CKAtomRowSiteIdentifiersForStreamIdentifier:syncIdentifier];
 
   v37 = 0u;
   v38 = 0u;
@@ -86,8 +86,8 @@
     while (v15);
   }
 
-  v22 = [v4 allSiteIdentifiers];
-  [v6 unionSet:v22];
+  allSiteIdentifiers = [identifiersCopy allSiteIdentifiers];
+  [v6 unionSet:allSiteIdentifiers];
 
   [v5 minusSet:v6];
   v33 = 0u;
@@ -112,7 +112,7 @@
 
         v28 = *(*(&v31 + 1) + 8 * v27);
         v29 = sub_100005BD4(0);
-        [v4 addClockValuesInIndexSet:v29 forSiteIdentifier:v28];
+        [identifiersCopy addClockValuesInIndexSet:v29 forSiteIdentifier:v28];
 
         v27 = v27 + 1;
       }
@@ -125,56 +125,56 @@
   }
 }
 
-+ (id)writeAtomBatchData:(id)a3 atomBatchVectors:(id)a4 forLocation:(id)a5 protectionClass:(unint64_t)a6 sessionContext:(id)a7 db:(id)a8
++ (id)writeAtomBatchData:(id)data atomBatchVectors:(id)vectors forLocation:(id)location protectionClass:(unint64_t)class sessionContext:(id)context db:(id)db
 {
-  v59 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = [BMDistributedSyncManager atomFileHandleForLocation:v15 flags:514 protectionClass:a6 fileName:0 suffix:@".ORC"];
-  v19 = [v18 attributes];
-  v20 = [v19 path];
+  dataCopy = data;
+  vectorsCopy = vectors;
+  locationCopy = location;
+  contextCopy = context;
+  dbCopy = db;
+  v18 = [BMDistributedSyncManager atomFileHandleForLocation:locationCopy flags:514 protectionClass:class fileName:0 suffix:@".ORC"];
+  attributes = [v18 attributes];
+  path = [attributes path];
 
-  if (!v18 || !v20)
+  if (!v18 || !path)
   {
     v21 = __biome_log_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      sub_10004BB5C(v15, v21, v24, v25, v26, v27, v28, v29);
+      sub_10004BB5C(locationCopy, v21, v24, v25, v26, v27, v28, v29);
     }
 
     goto LABEL_13;
   }
 
-  v21 = [v17 insertLocationIfNotExists:v15 withState:2];
-  if (([v17 addAtomBatchFileNameToAtomBatchFiles:v20 sessionContext:v16 locationRow:v21] & 1) == 0)
+  v21 = [dbCopy insertLocationIfNotExists:locationCopy withState:2];
+  if (([dbCopy addAtomBatchFileNameToAtomBatchFiles:path sessionContext:contextCopy locationRow:v21] & 1) == 0)
   {
     v30 = __biome_log_for_category();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      sub_10004BBC8(v20, v30, v31, v32, v33, v34, v35, v36);
+      sub_10004BBC8(path, v30, v31, v32, v33, v34, v35, v36);
     }
 
     v37 = +[BMPaths syncDirectory];
     v23 = [BMFileManager fileManagerWithDirectAccessToDirectory:v37 cachingOptions:0];
 
     v63 = 0;
-    [v23 removeFileAtPath:v20 error:&v63];
+    [v23 removeFileAtPath:path error:&v63];
     goto LABEL_12;
   }
 
-  v58 = v14;
+  v58 = vectorsCopy;
 
-  v22 = [v18 nsFileHandle];
+  nsFileHandle = [v18 nsFileHandle];
   v62 = 0;
-  [v22 writeData:v59 error:&v62];
+  [nsFileHandle writeData:dataCopy error:&v62];
   v21 = v62;
 
   if (v21)
   {
     v23 = __biome_log_for_category();
-    v14 = v58;
+    vectorsCopy = v58;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       sub_10004BC34();
@@ -187,21 +187,21 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = v58;
+  vectorsCopy = v58;
   if (!v58)
   {
     v21 = 0;
     goto LABEL_33;
   }
 
-  v40 = [BMDistributedSyncManager vectorFileNameFromORCFileName:v20];
-  v41 = [a1 atomFileHandleForLocation:v15 flags:514 protectionClass:a6 fileName:v40 suffix:0];
+  v40 = [BMDistributedSyncManager vectorFileNameFromORCFileName:path];
+  v41 = [self atomFileHandleForLocation:locationCopy flags:514 protectionClass:class fileName:v40 suffix:0];
   if (!v41)
   {
     v47 = __biome_log_for_category();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
-      sub_10004BDC0(v15, v47, v48, v49, v50, v51, v52, v53);
+      sub_10004BDC0(locationCopy, v47, v48, v49, v50, v51, v52, v53);
     }
 
     v21 = 0;
@@ -227,9 +227,9 @@ LABEL_13:
     goto LABEL_31;
   }
 
-  v45 = [v42 nsFileHandle];
+  nsFileHandle2 = [v42 nsFileHandle];
   v60 = 0;
-  [v45 writeData:v57 error:&v60];
+  [nsFileHandle2 writeData:v57 error:&v60];
   v21 = v60;
 
   if (v21)
@@ -241,7 +241,7 @@ LABEL_13:
       sub_10004BCA0(v42, v21, v46);
     }
 
-    v14 = v58;
+    vectorsCopy = v58;
 LABEL_31:
 
     v54 = 0;
@@ -250,7 +250,7 @@ LABEL_31:
   }
 
   v54 = 1;
-  v14 = v58;
+  vectorsCopy = v58;
 LABEL_32:
 
   if (!v54)
@@ -259,41 +259,41 @@ LABEL_32:
   }
 
 LABEL_33:
-  v38 = v20;
+  v38 = path;
 LABEL_14:
 
   return v38;
 }
 
-- (void)mergeAtomBatch:(id)a3 deletedLocations:(id)a4 sessionContext:(id)a5
+- (void)mergeAtomBatch:(id)batch deletedLocations:(id)locations sessionContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v55 = a5;
+  batchCopy = batch;
+  locationsCopy = locations;
+  contextCopy = context;
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = [v8 count];
+    *&buf[4] = [batchCopy count];
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = locationsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "mergeAtomBatches: %lu deletedLocations: %@", buf, 0x16u);
   }
 
-  v57 = v8;
+  v57 = batchCopy;
 
-  v11 = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
-  v12 = [v11 protectionClass];
+  storeConfig = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
+  protectionClass = [storeConfig protectionClass];
 
-  v13 = self;
-  v14 = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
-  v54 = [v14 currentDevice];
+  selfCopy = self;
+  storeConfig2 = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
+  currentDevice = [storeConfig2 currentDevice];
 
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v9;
+  obj = locationsCopy;
   v15 = [obj countByEnumeratingWithState:&v67 objects:v78 count:16];
   if (v15)
   {
@@ -311,31 +311,31 @@ LABEL_14:
 
         v20 = *(*(&v67 + 1) + 8 * i);
         v21 = objc_autoreleasePoolPush();
-        if ((v18 & 1) != 0 && [v54 canOpenFilesForProtectionClass:v12])
+        if ((v18 & 1) != 0 && [currentDevice canOpenFilesForProtectionClass:protectionClass])
         {
-          [(BMStreamCKCRDT *)v13->_streamCRDT handleDeletedLocation:v20 deleteCKRecord:0];
-          changeReporter = v13->_changeReporter;
-          v23 = [v20 streamName];
-          v24 = [v20 siteIdentifier];
-          [(BMSyncChangeReporter *)changeReporter streamUpdatedForStreamName:v23 deviceIdentifier:v24 error:0];
+          [(BMStreamCKCRDT *)selfCopy->_streamCRDT handleDeletedLocation:v20 deleteCKRecord:0];
+          changeReporter = selfCopy->_changeReporter;
+          streamName = [v20 streamName];
+          siteIdentifier = [v20 siteIdentifier];
+          [(BMSyncChangeReporter *)changeReporter streamUpdatedForStreamName:streamName deviceIdentifier:siteIdentifier error:0];
           v18 = 1;
         }
 
         else
         {
-          v23 = [[BMSyncCRDTLocationRow alloc] initWithLocation:v20 state:5];
-          if ([(BMSyncDatabase *)v13->_db upsertLocation:v23])
+          streamName = [[BMSyncCRDTLocationRow alloc] initWithLocation:v20 state:5];
+          if ([(BMSyncDatabase *)selfCopy->_db upsertLocation:streamName])
           {
             v18 = 0;
             goto LABEL_17;
           }
 
-          v24 = __biome_log_for_category();
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+          siteIdentifier = __biome_log_for_category();
+          if (os_log_type_enabled(siteIdentifier, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             *&buf[4] = v20;
-            _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "unable to update deleted location: %@ to BMSyncCRDTLocationStatePendingMergeDelete", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, siteIdentifier, OS_LOG_TYPE_ERROR, "unable to update deleted location: %@ to BMSyncCRDTLocationStatePendingMergeDelete", buf, 0xCu);
           }
 
           v18 = 0;
@@ -355,11 +355,11 @@ LABEL_17:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     v26 = [v57 count];
-    v27 = [(BMStreamConfiguration *)v13->_streamConfiguration streamIdentifier];
+    streamIdentifier = [(BMStreamConfiguration *)selfCopy->_streamConfiguration streamIdentifier];
     *buf = 134218242;
     *&buf[4] = v26;
     *&buf[12] = 2112;
-    *&buf[14] = v27;
+    *&buf[14] = streamIdentifier;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Merging %lu atom batches into %@", buf, 0x16u);
   }
 
@@ -369,12 +369,12 @@ LABEL_17:
   v64 = 0u;
   v58 = v57;
   v28 = [v58 countByEnumeratingWithState:&v63 objects:v77 count:16];
-  v29 = v55;
+  v29 = contextCopy;
   if (v28)
   {
     v30 = v28;
     v31 = *v64;
-    v52 = v13;
+    v52 = selfCopy;
     v53 = *v64;
     do
     {
@@ -435,20 +435,20 @@ LABEL_17:
         else
         {
           v39 = [BMStreamCRDTLocation alloc];
-          v40 = [v35 mergeableValueID];
-          v41 = [(BMStreamCRDTLocation *)v39 initWithCKMergeableValueID:v40];
+          mergeableValueID = [v35 mergeableValueID];
+          v41 = [(BMStreamCRDTLocation *)v39 initWithCKMergeableValueID:mergeableValueID];
 
           if (v41)
           {
-            v42 = [v35 vectors];
-            v43 = [(BMStreamConfiguration *)v13->_streamConfiguration storeConfig];
-            v44 = [v43 protectionClass];
-            v45 = [(BMDistributedSyncManager *)v13 db];
-            v46 = v44;
-            v29 = v55;
-            v47 = [BMDistributedSyncManager writeAtomBatchData:v33 atomBatchVectors:v42 forLocation:v41 protectionClass:v46 sessionContext:v55 db:v45];
+            vectors = [v35 vectors];
+            storeConfig3 = [(BMStreamConfiguration *)selfCopy->_streamConfiguration storeConfig];
+            protectionClass2 = [storeConfig3 protectionClass];
+            v45 = [(BMDistributedSyncManager *)selfCopy db];
+            v46 = protectionClass2;
+            v29 = contextCopy;
+            v47 = [BMDistributedSyncManager writeAtomBatchData:v33 atomBatchVectors:vectors forLocation:v41 protectionClass:v46 sessionContext:contextCopy db:v45];
 
-            v13 = v52;
+            selfCopy = v52;
             if (v47)
             {
               streamCRDT = v52->_streamCRDT;
@@ -457,8 +457,8 @@ LABEL_17:
               v71 = v47;
               v50 = [NSArray arrayWithObjects:&v71 count:1];
               v51 = streamCRDT;
-              v29 = v55;
-              [(BMStreamCKCRDT *)v51 mergeAtomBatches:v49 atomBatchFilenames:v50 sessionContext:v55 forLocation:v41];
+              v29 = contextCopy;
+              [(BMStreamCKCRDT *)v51 mergeAtomBatches:v49 atomBatchFilenames:v50 sessionContext:contextCopy forLocation:v41];
             }
 
             v31 = v53;
@@ -488,16 +488,16 @@ LABEL_17:
   }
 }
 
-- (unint64_t)handleDeferredDeletedLocationsForStream:(id)a3
+- (unint64_t)handleDeferredDeletedLocationsForStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
-  v6 = [v5 protectionClass];
+  streamCopy = stream;
+  storeConfig = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
+  protectionClass = [storeConfig protectionClass];
 
-  v7 = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
-  v8 = [v7 currentDevice];
+  storeConfig2 = [(BMStreamConfiguration *)self->_streamConfiguration storeConfig];
+  currentDevice = [storeConfig2 currentDevice];
 
-  [(BMSyncDatabase *)self->_db locationsWithState:5 stream:v4];
+  [(BMSyncDatabase *)self->_db locationsWithState:5 stream:streamCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -506,7 +506,7 @@ LABEL_17:
   if (v10)
   {
     v11 = v10;
-    v21 = v4;
+    v21 = streamCopy;
     v12 = *v23;
     while (2)
     {
@@ -518,20 +518,20 @@ LABEL_17:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        if (![v8 canOpenFilesForProtectionClass:v6])
+        if (![currentDevice canOpenFilesForProtectionClass:protectionClass])
         {
-          v4 = v21;
+          streamCopy = v21;
           v19 = 2;
           goto LABEL_12;
         }
 
-        v15 = [(BMDistributedSyncManager *)self streamCRDT];
-        [v15 handleDeletedLocation:v14 deleteCKRecord:0];
+        streamCRDT = [(BMDistributedSyncManager *)self streamCRDT];
+        [streamCRDT handleDeletedLocation:v14 deleteCKRecord:0];
 
-        v16 = [(BMDistributedSyncManager *)self changeReporter];
-        v17 = [v14 streamName];
-        v18 = [v14 siteIdentifier];
-        [v16 streamUpdatedForStreamName:v17 deviceIdentifier:v18 error:0];
+        changeReporter = [(BMDistributedSyncManager *)self changeReporter];
+        streamName = [v14 streamName];
+        siteIdentifier = [v14 siteIdentifier];
+        [changeReporter streamUpdatedForStreamName:streamName deviceIdentifier:siteIdentifier error:0];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -544,7 +544,7 @@ LABEL_17:
     }
 
     v19 = 1;
-    v4 = v21;
+    streamCopy = v21;
   }
 
   else
@@ -559,8 +559,8 @@ LABEL_12:
 
 - (id)deletedLocations
 {
-  v3 = [(BMStreamConfiguration *)self->_streamConfiguration syncIdentifier];
-  v4 = [(BMSyncDatabase *)self->_db highestDeletedLocationsForStream:v3];
+  syncIdentifier = [(BMStreamConfiguration *)self->_streamConfiguration syncIdentifier];
+  v4 = [(BMSyncDatabase *)self->_db highestDeletedLocationsForStream:syncIdentifier];
 
   return v4;
 }

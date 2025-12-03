@@ -1,14 +1,14 @@
 @interface InternalViewController
-+ (id)createControllerWith:(id)a3;
++ (id)createControllerWith:(id)with;
 - (_TtC14BatteryUsageUI22InternalViewController)init;
 @end
 
 @implementation InternalViewController
 
-+ (id)createControllerWith:(id)a3
++ (id)createControllerWith:(id)with
 {
-  v3 = a3;
-  v4 = sub_489FC(v3);
+  withCopy = with;
+  v4 = sub_489FC(withCopy);
 
   return v4;
 }

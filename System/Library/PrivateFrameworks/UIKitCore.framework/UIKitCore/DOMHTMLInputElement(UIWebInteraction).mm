@@ -8,15 +8,15 @@
 
 - (uint64_t)isAssistedDateType
 {
-  v1 = [a1 type];
-  if ([v1 isEqualToString:@"date"] & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", @"datetime-local") & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", @"month"))
+  type = [self type];
+  if ([type isEqualToString:@"date"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"datetime-local") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"month"))
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 isEqualToString:@"time"];
+    v2 = [type isEqualToString:@"time"];
   }
 
   return v2;
@@ -24,25 +24,25 @@
 
 - (uint64_t)isLikelyToBeginPageLoad
 {
-  v1 = [a1 type];
-  v2 = [v1 isEqual:@"submit"];
+  type = [self type];
+  v2 = [type isEqual:@"submit"];
 
   return v2;
 }
 
 - (uint64_t)nodeCanBecomeFirstResponder
 {
-  if ([a1 readOnly])
+  if ([self readOnly])
   {
     return 0;
   }
 
-  if ([a1 isTextControl])
+  if ([self isTextControl])
   {
     return 1;
   }
 
-  return [a1 isAssistedDateType];
+  return [self isAssistedDateType];
 }
 
 @end

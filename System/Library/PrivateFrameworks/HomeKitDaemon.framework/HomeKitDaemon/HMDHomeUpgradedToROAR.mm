@@ -1,30 +1,30 @@
 @interface HMDHomeUpgradedToROAR
-+ (id)defaultModelForHome:(id)a3;
-+ (id)modelIDForHome:(id)a3;
++ (id)defaultModelForHome:(id)home;
++ (id)modelIDForHome:(id)home;
 @end
 
 @implementation HMDHomeUpgradedToROAR
 
-+ (id)defaultModelForHome:(id)a3
++ (id)defaultModelForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HMDHomeUpgradedToROAR alloc];
-  v6 = [a1 modelIDForHome:v4];
-  v7 = [v4 uuid];
+  v6 = [self modelIDForHome:homeCopy];
+  uuid = [homeCopy uuid];
 
-  v8 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v7];
+  v8 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:uuid];
 
   return v8;
 }
 
-+ (id)modelIDForHome:(id)a3
++ (id)modelIDForHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   v4 = [@"HMDROARModelUUIDSalt" dataUsingEncoding:4];
   v5 = MEMORY[0x277CCAD78];
-  v6 = [v3 uuid];
+  uuid = [homeCopy uuid];
 
-  v7 = [v5 hmf_UUIDWithNamespace:v6 data:v4];
+  v7 = [v5 hmf_UUIDWithNamespace:uuid data:v4];
 
   return v7;
 }

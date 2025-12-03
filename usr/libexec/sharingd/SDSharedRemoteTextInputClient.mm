@@ -2,16 +2,16 @@
 + (id)sharedClient;
 - (SDSharedRemoteTextInputClient)init;
 - (void)_ensureStarted;
-- (void)_logEvent:(unint64_t)a3 stopClock:(BOOL)a4;
-- (void)_rtiHandleEventWithData:(id)a3;
-- (void)_rtiHandleInputDidBeginWithFlags:(unint64_t)a3 sessionInfo:(id)a4;
-- (void)_rtiHandleInputDidEndWithFlags:(unint64_t)a3 sessionInfo:(id)a4;
+- (void)_logEvent:(unint64_t)event stopClock:(BOOL)clock;
+- (void)_rtiHandleEventWithData:(id)data;
+- (void)_rtiHandleInputDidBeginWithFlags:(unint64_t)flags sessionInfo:(id)info;
+- (void)_rtiHandleInputDidEndWithFlags:(unint64_t)flags sessionInfo:(id)info;
 - (void)_startClockWithResetIfNeeded;
 - (void)activate;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)invalidate;
 - (void)removeAllDelegates;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation SDSharedRemoteTextInputClient
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v7 = a3;
+  delegateCopy = delegate;
   if (dword_100971508 <= 30 && (dword_100971508 != -1 || _LogCategory_Initialize()))
   {
     sub_10013F86C();
@@ -134,23 +134,23 @@
     delegates = self->_delegates;
   }
 
-  [(NSMutableSet *)delegates addObject:v7];
+  [(NSMutableSet *)delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v6 = v4;
+  delegateCopy = delegate;
+  v6 = delegateCopy;
   if (dword_100971508 <= 30)
   {
-    if (dword_100971508 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_100971508 != -1 || (v5 = _LogCategory_Initialize(), delegateCopy = v6, v5))
     {
       sub_10013F8AC();
-      v4 = v6;
+      delegateCopy = v6;
     }
   }
 
-  [(NSMutableSet *)self->_delegates removeObject:v4];
+  [(NSMutableSet *)self->_delegates removeObject:delegateCopy];
 }
 
 - (void)removeAllDelegates
@@ -160,9 +160,9 @@
   self->_delegates = 0;
 }
 
-- (void)_rtiHandleEventWithData:(id)a3
+- (void)_rtiHandleEventWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (dword_100971508 <= 30 && (dword_100971508 != -1 || _LogCategory_Initialize()))
   {
     sub_10013F8EC();
@@ -173,14 +173,14 @@
   v7[1] = 3221225472;
   v7[2] = sub_10013F178;
   v7[3] = &unk_1008D1500;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [(NSMutableSet *)delegates enumerateObjectsUsingBlock:v7];
 }
 
-- (void)_rtiHandleInputDidBeginWithFlags:(unint64_t)a3 sessionInfo:(id)a4
+- (void)_rtiHandleInputDidBeginWithFlags:(unint64_t)flags sessionInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (dword_100971508 <= 30 && (dword_100971508 != -1 || _LogCategory_Initialize()))
   {
     sub_10013F948();
@@ -192,15 +192,15 @@
   v9[1] = 3221225472;
   v9[2] = sub_10013F2C0;
   v9[3] = &unk_1008D1528;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = infoCopy;
+  flagsCopy = flags;
+  v8 = infoCopy;
   [(NSMutableSet *)delegates enumerateObjectsUsingBlock:v9];
 }
 
-- (void)_rtiHandleInputDidEndWithFlags:(unint64_t)a3 sessionInfo:(id)a4
+- (void)_rtiHandleInputDidEndWithFlags:(unint64_t)flags sessionInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (dword_100971508 <= 30 && (dword_100971508 != -1 || _LogCategory_Initialize()))
   {
     sub_10013F988();
@@ -212,25 +212,25 @@
   v9[1] = 3221225472;
   v9[2] = sub_10013F40C;
   v9[3] = &unk_1008D1528;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = infoCopy;
+  flagsCopy = flags;
+  v8 = infoCopy;
   [(NSMutableSet *)delegates enumerateObjectsUsingBlock:v9];
 }
 
-- (void)_logEvent:(unint64_t)a3 stopClock:(BOOL)a4
+- (void)_logEvent:(unint64_t)event stopClock:(BOOL)clock
 {
   sessionClock = self->_sessionClock;
   if (sessionClock)
   {
-    v6 = a4;
+    clockCopy = clock;
     [(NSDate *)sessionClock timeIntervalSinceNow];
     [(NSDate *)self->_sessionClock timeIntervalSinceNow];
-    if (v6)
+    if (clockCopy)
     {
       if (dword_100971508 <= 30 && (dword_100971508 != -1 || _LogCategory_Initialize()))
       {
-        sub_10013F9C8(a3);
+        sub_10013F9C8(event);
       }
 
       v8 = self->_sessionClock;

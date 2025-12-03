@@ -1,61 +1,61 @@
 @interface WiFiStallDetectInput
-- (WiFiStallDetectInput)initWithAC_problem_bitfield:(double)a3 TxBE_expiredCompletions:(double)a4 TxBE_failedCompletions:(double)a5 TxBE_noAckCompletions:(double)a6 TxBE_otherErrCompletions:(double)a7 TxBK_expiredCompletions:(double)a8 TxBK_failedCompletions:(double)a9 TxBK_noAckCompletions:(double)a10 TxBK_otherErrCompletions:(double)a11 TxVI_expiredCompletions:(double)a12 TxVI_failedCompletions:(double)a13 TxVI_noAckCompletions:(double)a14 TxVI_otherErrCompletions:(double)a15 TxVO_expiredCompletions:(double)a16 TxVO_failedCompletions:(double)a17 TxVO_noAckCompletions:(double)a18 TxVO_otherErrCompletions:(double)a19 bt_abort:(double)a20 bt_grant:(double)a21 bt_request:(double)a22 bt_uch_latency:(double)a23 cca_bin:(double)a24 completions_chipmodeerror:(double)a25 completions_expired:(double)a26 completions_internalerror:(double)a27 completions_ioerror:(double)a28 completions_noack:(double)a29 completions_nobuf:(double)a30 completions_noremotepeer:(double)a31 completions_noresources:(double)a32 completions_txfailure:(double)a33 roam_count:(double)a34 roam_duration:(double)a35 rssi_bin:(double)a36 snr_bin:(double)a37;
-- (id)featureValueForName:(id)a3;
+- (WiFiStallDetectInput)initWithAC_problem_bitfield:(double)c_problem_bitfield TxBE_expiredCompletions:(double)completions TxBE_failedCompletions:(double)e_failedCompletions TxBE_noAckCompletions:(double)ackCompletions TxBE_otherErrCompletions:(double)errCompletions TxBK_expiredCompletions:(double)k_expiredCompletions TxBK_failedCompletions:(double)k_failedCompletions TxBK_noAckCompletions:(double)self0 TxBK_otherErrCompletions:(double)self1 TxVI_expiredCompletions:(double)self2 TxVI_failedCompletions:(double)self3 TxVI_noAckCompletions:(double)self4 TxVI_otherErrCompletions:(double)self5 TxVO_expiredCompletions:(double)self6 TxVO_failedCompletions:(double)self7 TxVO_noAckCompletions:(double)self8 TxVO_otherErrCompletions:(double)self9 bt_abort:(double)bt_abort bt_grant:(double)bt_grant bt_request:(double)bt_request bt_uch_latency:(double)bt_uch_latency cca_bin:(double)cca_bin completions_chipmodeerror:(double)completions_chipmodeerror completions_expired:(double)completions_expired completions_internalerror:(double)completions_internalerror completions_ioerror:(double)completions_ioerror completions_noack:(double)completions_noack completions_nobuf:(double)c_problem_bitfield0 completions_noremotepeer:(double)c_problem_bitfield1 completions_noresources:(double)c_problem_bitfield2 completions_txfailure:(double)c_problem_bitfield3 roam_count:(double)c_problem_bitfield4 roam_duration:(double)c_problem_bitfield5 rssi_bin:(double)c_problem_bitfield6 snr_bin:(double)c_problem_bitfield7;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation WiFiStallDetectInput
 
-- (WiFiStallDetectInput)initWithAC_problem_bitfield:(double)a3 TxBE_expiredCompletions:(double)a4 TxBE_failedCompletions:(double)a5 TxBE_noAckCompletions:(double)a6 TxBE_otherErrCompletions:(double)a7 TxBK_expiredCompletions:(double)a8 TxBK_failedCompletions:(double)a9 TxBK_noAckCompletions:(double)a10 TxBK_otherErrCompletions:(double)a11 TxVI_expiredCompletions:(double)a12 TxVI_failedCompletions:(double)a13 TxVI_noAckCompletions:(double)a14 TxVI_otherErrCompletions:(double)a15 TxVO_expiredCompletions:(double)a16 TxVO_failedCompletions:(double)a17 TxVO_noAckCompletions:(double)a18 TxVO_otherErrCompletions:(double)a19 bt_abort:(double)a20 bt_grant:(double)a21 bt_request:(double)a22 bt_uch_latency:(double)a23 cca_bin:(double)a24 completions_chipmodeerror:(double)a25 completions_expired:(double)a26 completions_internalerror:(double)a27 completions_ioerror:(double)a28 completions_noack:(double)a29 completions_nobuf:(double)a30 completions_noremotepeer:(double)a31 completions_noresources:(double)a32 completions_txfailure:(double)a33 roam_count:(double)a34 roam_duration:(double)a35 rssi_bin:(double)a36 snr_bin:(double)a37
+- (WiFiStallDetectInput)initWithAC_problem_bitfield:(double)c_problem_bitfield TxBE_expiredCompletions:(double)completions TxBE_failedCompletions:(double)e_failedCompletions TxBE_noAckCompletions:(double)ackCompletions TxBE_otherErrCompletions:(double)errCompletions TxBK_expiredCompletions:(double)k_expiredCompletions TxBK_failedCompletions:(double)k_failedCompletions TxBK_noAckCompletions:(double)self0 TxBK_otherErrCompletions:(double)self1 TxVI_expiredCompletions:(double)self2 TxVI_failedCompletions:(double)self3 TxVI_noAckCompletions:(double)self4 TxVI_otherErrCompletions:(double)self5 TxVO_expiredCompletions:(double)self6 TxVO_failedCompletions:(double)self7 TxVO_noAckCompletions:(double)self8 TxVO_otherErrCompletions:(double)self9 bt_abort:(double)bt_abort bt_grant:(double)bt_grant bt_request:(double)bt_request bt_uch_latency:(double)bt_uch_latency cca_bin:(double)cca_bin completions_chipmodeerror:(double)completions_chipmodeerror completions_expired:(double)completions_expired completions_internalerror:(double)completions_internalerror completions_ioerror:(double)completions_ioerror completions_noack:(double)completions_noack completions_nobuf:(double)c_problem_bitfield0 completions_noremotepeer:(double)c_problem_bitfield1 completions_noresources:(double)c_problem_bitfield2 completions_txfailure:(double)c_problem_bitfield3 roam_count:(double)c_problem_bitfield4 roam_duration:(double)c_problem_bitfield5 rssi_bin:(double)c_problem_bitfield6 snr_bin:(double)c_problem_bitfield7
 {
   v46.receiver = self;
   v46.super_class = WiFiStallDetectInput;
   result = [(WiFiStallDetectInput *)&v46 init];
   if (result)
   {
-    result->_AC_problem_bitfield = a3;
-    result->_TxBE_expiredCompletions = a4;
-    result->_TxBE_failedCompletions = a5;
-    result->_TxBE_noAckCompletions = a6;
-    result->_TxBE_otherErrCompletions = a7;
-    result->_TxBK_expiredCompletions = a8;
-    result->_TxBK_failedCompletions = a9;
-    result->_TxBK_noAckCompletions = a10;
-    result->_TxBK_otherErrCompletions = a11;
-    result->_TxVI_expiredCompletions = a12;
-    result->_TxVI_failedCompletions = a13;
-    result->_TxVI_noAckCompletions = a14;
-    result->_TxVI_otherErrCompletions = a15;
-    result->_TxVO_expiredCompletions = a16;
-    result->_TxVO_failedCompletions = a17;
-    result->_TxVO_noAckCompletions = a18;
-    result->_TxVO_otherErrCompletions = a19;
-    result->_bt_abort = a20;
-    result->_bt_grant = a21;
-    result->_bt_request = a22;
-    result->_bt_uch_latency = a23;
-    result->_cca_bin = a24;
-    result->_completions_chipmodeerror = a25;
-    result->_completions_expired = a26;
-    result->_completions_internalerror = a27;
-    result->_completions_ioerror = a28;
-    result->_completions_noack = a29;
-    result->_completions_nobuf = a30;
-    result->_completions_noremotepeer = a31;
-    result->_completions_noresources = a32;
-    result->_completions_txfailure = a33;
-    result->_roam_count = a34;
-    result->_roam_duration = a35;
-    result->_rssi_bin = a36;
-    result->_snr_bin = a37;
+    result->_AC_problem_bitfield = c_problem_bitfield;
+    result->_TxBE_expiredCompletions = completions;
+    result->_TxBE_failedCompletions = e_failedCompletions;
+    result->_TxBE_noAckCompletions = ackCompletions;
+    result->_TxBE_otherErrCompletions = errCompletions;
+    result->_TxBK_expiredCompletions = k_expiredCompletions;
+    result->_TxBK_failedCompletions = k_failedCompletions;
+    result->_TxBK_noAckCompletions = k_noAckCompletions;
+    result->_TxBK_otherErrCompletions = k_otherErrCompletions;
+    result->_TxVI_expiredCompletions = i_expiredCompletions;
+    result->_TxVI_failedCompletions = i_failedCompletions;
+    result->_TxVI_noAckCompletions = i_noAckCompletions;
+    result->_TxVI_otherErrCompletions = i_otherErrCompletions;
+    result->_TxVO_expiredCompletions = o_expiredCompletions;
+    result->_TxVO_failedCompletions = o_failedCompletions;
+    result->_TxVO_noAckCompletions = o_noAckCompletions;
+    result->_TxVO_otherErrCompletions = o_otherErrCompletions;
+    result->_bt_abort = bt_abort;
+    result->_bt_grant = bt_grant;
+    result->_bt_request = bt_request;
+    result->_bt_uch_latency = bt_uch_latency;
+    result->_cca_bin = cca_bin;
+    result->_completions_chipmodeerror = completions_chipmodeerror;
+    result->_completions_expired = completions_expired;
+    result->_completions_internalerror = completions_internalerror;
+    result->_completions_ioerror = completions_ioerror;
+    result->_completions_noack = completions_noack;
+    result->_completions_nobuf = completions_nobuf;
+    result->_completions_noremotepeer = completions_noremotepeer;
+    result->_completions_noresources = completions_noresources;
+    result->_completions_txfailure = completions_txfailure;
+    result->_roam_count = roam_count;
+    result->_roam_duration = roam_duration;
+    result->_rssi_bin = rssi_bin;
+    result->_snr_bin = snr_bin;
   }
 
   return result;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AC_problem_bitfield"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AC_problem_bitfield"])
   {
     [(WiFiStallDetectInput *)self AC_problem_bitfield];
 LABEL_71:
@@ -63,205 +63,205 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if ([v4 isEqualToString:@"TxBE_expiredCompletions"])
+  if ([nameCopy isEqualToString:@"TxBE_expiredCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBE_expiredCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxBE_failedCompletions"])
+  if ([nameCopy isEqualToString:@"TxBE_failedCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBE_failedCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxBE_noAckCompletions"])
+  if ([nameCopy isEqualToString:@"TxBE_noAckCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBE_noAckCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxBE_otherErrCompletions"])
+  if ([nameCopy isEqualToString:@"TxBE_otherErrCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBE_otherErrCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxBK_expiredCompletions"])
+  if ([nameCopy isEqualToString:@"TxBK_expiredCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBK_expiredCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxBK_failedCompletions"])
+  if ([nameCopy isEqualToString:@"TxBK_failedCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBK_failedCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxBK_noAckCompletions"])
+  if ([nameCopy isEqualToString:@"TxBK_noAckCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBK_noAckCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxBK_otherErrCompletions"])
+  if ([nameCopy isEqualToString:@"TxBK_otherErrCompletions"])
   {
     [(WiFiStallDetectInput *)self TxBK_otherErrCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVI_expiredCompletions"])
+  if ([nameCopy isEqualToString:@"TxVI_expiredCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVI_expiredCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVI_failedCompletions"])
+  if ([nameCopy isEqualToString:@"TxVI_failedCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVI_failedCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVI_noAckCompletions"])
+  if ([nameCopy isEqualToString:@"TxVI_noAckCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVI_noAckCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVI_otherErrCompletions"])
+  if ([nameCopy isEqualToString:@"TxVI_otherErrCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVI_otherErrCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVO_expiredCompletions"])
+  if ([nameCopy isEqualToString:@"TxVO_expiredCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVO_expiredCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVO_failedCompletions"])
+  if ([nameCopy isEqualToString:@"TxVO_failedCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVO_failedCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVO_noAckCompletions"])
+  if ([nameCopy isEqualToString:@"TxVO_noAckCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVO_noAckCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"TxVO_otherErrCompletions"])
+  if ([nameCopy isEqualToString:@"TxVO_otherErrCompletions"])
   {
     [(WiFiStallDetectInput *)self TxVO_otherErrCompletions];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"bt_abort"])
+  if ([nameCopy isEqualToString:@"bt_abort"])
   {
     [(WiFiStallDetectInput *)self bt_abort];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"bt_grant"])
+  if ([nameCopy isEqualToString:@"bt_grant"])
   {
     [(WiFiStallDetectInput *)self bt_grant];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"bt_request"])
+  if ([nameCopy isEqualToString:@"bt_request"])
   {
     [(WiFiStallDetectInput *)self bt_request];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"bt_uch_latency"])
+  if ([nameCopy isEqualToString:@"bt_uch_latency"])
   {
     [(WiFiStallDetectInput *)self bt_uch_latency];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"cca_bin"])
+  if ([nameCopy isEqualToString:@"cca_bin"])
   {
     [(WiFiStallDetectInput *)self cca_bin];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_chipmodeerror"])
+  if ([nameCopy isEqualToString:@"completions_chipmodeerror"])
   {
     [(WiFiStallDetectInput *)self completions_chipmodeerror];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_expired"])
+  if ([nameCopy isEqualToString:@"completions_expired"])
   {
     [(WiFiStallDetectInput *)self completions_expired];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_internalerror"])
+  if ([nameCopy isEqualToString:@"completions_internalerror"])
   {
     [(WiFiStallDetectInput *)self completions_internalerror];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_ioerror"])
+  if ([nameCopy isEqualToString:@"completions_ioerror"])
   {
     [(WiFiStallDetectInput *)self completions_ioerror];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_noack"])
+  if ([nameCopy isEqualToString:@"completions_noack"])
   {
     [(WiFiStallDetectInput *)self completions_noack];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_nobuf"])
+  if ([nameCopy isEqualToString:@"completions_nobuf"])
   {
     [(WiFiStallDetectInput *)self completions_nobuf];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_noremotepeer"])
+  if ([nameCopy isEqualToString:@"completions_noremotepeer"])
   {
     [(WiFiStallDetectInput *)self completions_noremotepeer];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_noresources"])
+  if ([nameCopy isEqualToString:@"completions_noresources"])
   {
     [(WiFiStallDetectInput *)self completions_noresources];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"completions_txfailure"])
+  if ([nameCopy isEqualToString:@"completions_txfailure"])
   {
     [(WiFiStallDetectInput *)self completions_txfailure];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"roam_count"])
+  if ([nameCopy isEqualToString:@"roam_count"])
   {
     [(WiFiStallDetectInput *)self roam_count];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"roam_duration"])
+  if ([nameCopy isEqualToString:@"roam_duration"])
   {
     [(WiFiStallDetectInput *)self roam_duration];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"rssi_bin"])
+  if ([nameCopy isEqualToString:@"rssi_bin"])
   {
     [(WiFiStallDetectInput *)self rssi_bin];
     goto LABEL_71;
   }
 
-  if ([v4 isEqualToString:@"snr_bin"])
+  if ([nameCopy isEqualToString:@"snr_bin"])
   {
     [(WiFiStallDetectInput *)self snr_bin];
     goto LABEL_71;

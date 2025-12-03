@@ -2,7 +2,7 @@
 + (UIAccessibilityGameController)sharedGameController;
 - (UIAccessibilityGameController)init;
 - (void)init;
-- (void)pressButton:(id)a3;
+- (void)pressButton:(id)button;
 @end
 
 @implementation UIAccessibilityGameController
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __53__UIAccessibilityGameController_sharedGameController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGameController_onceToken != -1)
   {
     dispatch_once(&sharedGameController_onceToken, block);
@@ -122,12 +122,12 @@ uint64_t __53__UIAccessibilityGameController_sharedGameController__block_invoke(
   return v2;
 }
 
-- (void)pressButton:(id)a3
+- (void)pressButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   get_GCGamepadEventImplClass();
   v5 = objc_opt_new();
-  switch([v4 button])
+  switch([buttonCopy button])
   {
     case 1:
       LODWORD(v6) = 1.0;
@@ -178,9 +178,9 @@ uint64_t __53__UIAccessibilityGameController_sharedGameController__block_invoke(
       [v5 setDpadRightValue:v6];
       break;
     case 13:
-      [v4 xMagnitude];
+      [buttonCopy xMagnitude];
       v8 = v7;
-      [v4 yMagnitude];
+      [buttonCopy yMagnitude];
       v10 = *&v9;
       if (v8 <= 0.0)
       {
@@ -208,9 +208,9 @@ uint64_t __53__UIAccessibilityGameController_sharedGameController__block_invoke(
 
       break;
     case 14:
-      [v4 xMagnitude];
+      [buttonCopy xMagnitude];
       v13 = v12;
-      [v4 yMagnitude];
+      [buttonCopy yMagnitude];
       v15 = *&v14;
       if (v13 <= 0.0)
       {
@@ -241,12 +241,12 @@ uint64_t __53__UIAccessibilityGameController_sharedGameController__block_invoke(
       break;
   }
 
-  v17 = [(UIAccessibilityGameController *)self eventSource];
-  [v17 publishGamepadEvent:v5];
-  v20 = v4;
-  v21 = v17;
-  v18 = v17;
-  v19 = v4;
+  eventSource = [(UIAccessibilityGameController *)self eventSource];
+  [eventSource publishGamepadEvent:v5];
+  v20 = buttonCopy;
+  v21 = eventSource;
+  v18 = eventSource;
+  v19 = buttonCopy;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -313,9 +313,9 @@ void __45__UIAccessibilityGameController_pressButton___block_invoke(uint64_t a1)
 
 - (void)init
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL _publishCustomControllerSoft(GCController *__strong)"];
-  [v0 handleFailureInFunction:v1 file:@"UIAccessibilityGameController.m" lineNumber:21 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"UIAccessibilityGameController.m" lineNumber:21 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

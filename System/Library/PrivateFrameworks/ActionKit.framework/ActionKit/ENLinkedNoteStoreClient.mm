@@ -1,5 +1,5 @@
 @interface ENLinkedNoteStoreClient
-+ (id)noteStoreClientForLinkedNotebookRef:(id)a3;
++ (id)noteStoreClientForLinkedNotebookRef:(id)ref;
 - (ENLinkedNoteStoreClientDelegate)delegate;
 - (id)authenticationToken;
 - (id)noteStoreUrl;
@@ -16,34 +16,34 @@
 
 - (id)noteStoreUrl
 {
-  v2 = [(ENLinkedNoteStoreClient *)self linkedNotebookRef];
-  v3 = [v2 noteStoreUrl];
+  linkedNotebookRef = [(ENLinkedNoteStoreClient *)self linkedNotebookRef];
+  noteStoreUrl = [linkedNotebookRef noteStoreUrl];
 
-  return v3;
+  return noteStoreUrl;
 }
 
 - (id)authenticationToken
 {
-  v4 = [(ENLinkedNoteStoreClient *)self delegate];
+  delegate = [(ENLinkedNoteStoreClient *)self delegate];
 
-  if (!v4)
+  if (!delegate)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"ENLinkedNoteStoreClient.m" lineNumber:46 description:@"ENLinkedNoteStoreClient delegate not set"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ENLinkedNoteStoreClient.m" lineNumber:46 description:@"ENLinkedNoteStoreClient delegate not set"];
   }
 
-  v5 = [(ENLinkedNoteStoreClient *)self delegate];
-  v6 = [(ENLinkedNoteStoreClient *)self linkedNotebookRef];
-  v7 = [v5 authenticationTokenForLinkedNotebookRef:v6];
+  delegate2 = [(ENLinkedNoteStoreClient *)self delegate];
+  linkedNotebookRef = [(ENLinkedNoteStoreClient *)self linkedNotebookRef];
+  v7 = [delegate2 authenticationTokenForLinkedNotebookRef:linkedNotebookRef];
 
   return v7;
 }
 
-+ (id)noteStoreClientForLinkedNotebookRef:(id)a3
++ (id)noteStoreClientForLinkedNotebookRef:(id)ref
 {
-  v3 = a3;
+  refCopy = ref;
   v4 = objc_alloc_init(ENLinkedNoteStoreClient);
-  [(ENLinkedNoteStoreClient *)v4 setLinkedNotebookRef:v3];
+  [(ENLinkedNoteStoreClient *)v4 setLinkedNotebookRef:refCopy];
 
   return v4;
 }

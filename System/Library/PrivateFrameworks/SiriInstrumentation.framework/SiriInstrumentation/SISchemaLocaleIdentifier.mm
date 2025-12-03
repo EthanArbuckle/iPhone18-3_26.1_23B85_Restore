@@ -1,24 +1,24 @@
 @interface SISchemaLocaleIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaLocaleIdentifier)initWithDictionary:(id)a3;
-- (SISchemaLocaleIdentifier)initWithJSON:(id)a3;
+- (SISchemaLocaleIdentifier)initWithDictionary:(id)dictionary;
+- (SISchemaLocaleIdentifier)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaLocaleIdentifier
 
-- (SISchemaLocaleIdentifier)initWithDictionary:(id)a3
+- (SISchemaLocaleIdentifier)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaLocaleIdentifier;
   v5 = [(SISchemaLocaleIdentifier *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"countryCode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       [(SISchemaLocaleIdentifier *)v5 setCountryCode:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"languageCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"languageCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SISchemaLocaleIdentifier)initWithJSON:(id)a3
+- (SISchemaLocaleIdentifier)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaLocaleIdentifier *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaLocaleIdentifier *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaLocaleIdentifier *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,48 +76,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_countryCode)
   {
-    v4 = [(SISchemaLocaleIdentifier *)self countryCode];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"countryCode"];
+    countryCode = [(SISchemaLocaleIdentifier *)self countryCode];
+    v5 = [countryCode copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"countryCode"];
   }
 
   if (self->_languageCode)
   {
-    v6 = [(SISchemaLocaleIdentifier *)self languageCode];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"languageCode"];
+    languageCode = [(SISchemaLocaleIdentifier *)self languageCode];
+    v7 = [languageCode copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"languageCode"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaLocaleIdentifier *)self countryCode];
-  v6 = [v4 countryCode];
-  if ((v5 != 0) == (v6 == 0))
+  countryCode = [(SISchemaLocaleIdentifier *)self countryCode];
+  countryCode2 = [equalCopy countryCode];
+  if ((countryCode != 0) == (countryCode2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaLocaleIdentifier *)self countryCode];
-  if (v7)
+  countryCode3 = [(SISchemaLocaleIdentifier *)self countryCode];
+  if (countryCode3)
   {
-    v8 = v7;
-    v9 = [(SISchemaLocaleIdentifier *)self countryCode];
-    v10 = [v4 countryCode];
-    v11 = [v9 isEqual:v10];
+    v8 = countryCode3;
+    countryCode4 = [(SISchemaLocaleIdentifier *)self countryCode];
+    countryCode5 = [equalCopy countryCode];
+    v11 = [countryCode4 isEqual:countryCode5];
 
     if (!v11)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(SISchemaLocaleIdentifier *)self languageCode];
-  v6 = [v4 languageCode];
-  if ((v5 != 0) != (v6 == 0))
+  countryCode = [(SISchemaLocaleIdentifier *)self languageCode];
+  countryCode2 = [equalCopy languageCode];
+  if ((countryCode != 0) != (countryCode2 == 0))
   {
-    v12 = [(SISchemaLocaleIdentifier *)self languageCode];
-    if (!v12)
+    languageCode = [(SISchemaLocaleIdentifier *)self languageCode];
+    if (!languageCode)
     {
 
 LABEL_15:
@@ -142,10 +142,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaLocaleIdentifier *)self languageCode];
-    v15 = [v4 languageCode];
-    v16 = [v14 isEqual:v15];
+    v13 = languageCode;
+    languageCode2 = [(SISchemaLocaleIdentifier *)self languageCode];
+    languageCode3 = [equalCopy languageCode];
+    v16 = [languageCode2 isEqual:languageCode3];
 
     if (v16)
     {
@@ -165,19 +165,19 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SISchemaLocaleIdentifier *)self countryCode];
+  toCopy = to;
+  countryCode = [(SISchemaLocaleIdentifier *)self countryCode];
 
-  if (v4)
+  if (countryCode)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaLocaleIdentifier *)self languageCode];
+  languageCode = [(SISchemaLocaleIdentifier *)self languageCode];
 
-  if (v5)
+  if (languageCode)
   {
     PBDataWriterWriteStringField();
   }

@@ -1,27 +1,27 @@
 @interface RideBookingCurrencyAmount
-+ (id)_currencySymbolForCode:(id)a3;
-+ (id)_localeForCode:(id)a3;
++ (id)_currencySymbolForCode:(id)code;
++ (id)_localeForCode:(id)code;
 - (NSString)currencySymbol;
-- (RideBookingCurrencyAmount)initWithAmount:(id)a3 currencyCode:(id)a4;
-- (id)formattedStringIncludeSymbol:(BOOL)a3;
+- (RideBookingCurrencyAmount)initWithAmount:(id)amount currencyCode:(id)code;
+- (id)formattedStringIncludeSymbol:(BOOL)symbol;
 @end
 
 @implementation RideBookingCurrencyAmount
 
-- (RideBookingCurrencyAmount)initWithAmount:(id)a3 currencyCode:(id)a4
+- (RideBookingCurrencyAmount)initWithAmount:(id)amount currencyCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  amountCopy = amount;
+  codeCopy = code;
   v14.receiver = self;
   v14.super_class = RideBookingCurrencyAmount;
   v8 = [(RideBookingCurrencyAmount *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [amountCopy copy];
     amount = v8->_amount;
     v8->_amount = v9;
 
-    v11 = [v7 copy];
+    v11 = [codeCopy copy];
     currencyCode = v8->_currencyCode;
     v8->_currencyCode = v11;
   }
@@ -31,27 +31,27 @@
 
 - (NSString)currencySymbol
 {
-  v2 = [(RideBookingCurrencyAmount *)self currencyCode];
-  v3 = [RideBookingCurrencyAmount _currencySymbolForCode:v2];
+  currencyCode = [(RideBookingCurrencyAmount *)self currencyCode];
+  v3 = [RideBookingCurrencyAmount _currencySymbolForCode:currencyCode];
 
   return v3;
 }
 
-- (id)formattedStringIncludeSymbol:(BOOL)a3
+- (id)formattedStringIncludeSymbol:(BOOL)symbol
 {
-  v3 = a3;
-  v5 = [(RideBookingCurrencyAmount *)self amount];
-  if (v5 && (v6 = v5, [(RideBookingCurrencyAmount *)self currencyCode], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  symbolCopy = symbol;
+  amount = [(RideBookingCurrencyAmount *)self amount];
+  if (amount && (v6 = amount, [(RideBookingCurrencyAmount *)self currencyCode], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     if (qword_10195E9D0 != -1)
     {
       dispatch_once(&qword_10195E9D0, &stru_10164CC38);
     }
 
-    v8 = [(RideBookingCurrencyAmount *)self currencyCode];
-    [qword_10195E9C8 setCurrencyCode:v8];
+    currencyCode = [(RideBookingCurrencyAmount *)self currencyCode];
+    [qword_10195E9C8 setCurrencyCode:currencyCode];
 
-    if (v3)
+    if (symbolCopy)
     {
       v9 = 0;
     }
@@ -63,8 +63,8 @@
 
     [qword_10195E9C8 setCurrencySymbol:v9];
     v11 = qword_10195E9C8;
-    v12 = [(RideBookingCurrencyAmount *)self amount];
-    v10 = [v11 stringFromNumber:v12];
+    amount2 = [(RideBookingCurrencyAmount *)self amount];
+    v10 = [v11 stringFromNumber:amount2];
   }
 
   else
@@ -75,36 +75,36 @@
   return v10;
 }
 
-+ (id)_currencySymbolForCode:(id)a3
++ (id)_currencySymbolForCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = objc_alloc_init(NSNumberFormatter);
-  v6 = [a1 _localeForCode:v4];
+  v6 = [self _localeForCode:codeCopy];
 
   if (v6)
   {
     [v5 setLocale:v6];
     [v5 setNumberStyle:2];
-    v7 = [v5 currencySymbol];
-    if ([v7 length] >= 2)
+    currencySymbol = [v5 currencySymbol];
+    if ([currencySymbol length] >= 2)
     {
-      v8 = [v7 substringToIndex:1];
+      v8 = [currencySymbol substringToIndex:1];
 
-      v7 = v8;
+      currencySymbol = v8;
     }
   }
 
   else
   {
-    v7 = 0;
+    currencySymbol = 0;
   }
 
-  return v7;
+  return currencySymbol;
 }
 
-+ (id)_localeForCode:(id)a3
++ (id)_localeForCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   +[NSLocale availableLocaleIdentifiers];
   v14 = 0u;
   v15 = 0u;
@@ -128,7 +128,7 @@
         v10 = [NSLocale alloc];
         v11 = [v10 initWithLocaleIdentifier:{v9, v14}];
         v12 = [v11 objectForKey:NSLocaleCurrencyCode];
-        if ([v12 isEqualToString:v3])
+        if ([v12 isEqualToString:codeCopy])
         {
 
           goto LABEL_11;

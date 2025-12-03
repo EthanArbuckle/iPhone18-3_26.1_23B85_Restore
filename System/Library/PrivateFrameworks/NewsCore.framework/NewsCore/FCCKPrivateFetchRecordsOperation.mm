@@ -1,6 +1,6 @@
 @interface FCCKPrivateFetchRecordsOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,9 +11,9 @@
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = FCCKPrivateFetchRecordsOperation;
-  v3 = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
-  v4 = [(FCCKPrivateFetchRecordsOperation *)self recordIDs];
-  v5 = [v4 count];
+  validateOperation = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
+  recordIDs = [(FCCKPrivateFetchRecordsOperation *)self recordIDs];
+  v5 = [recordIDs count];
 
   if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -31,7 +31,7 @@
 
   if (v5)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -56,24 +56,24 @@
     v4 = 2;
   }
 
-  v5 = [(FCCKPrivateDatabaseOperation *)self database];
-  v6 = [(FCCKPrivateFetchRecordsOperation *)self recordIDs];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
+  recordIDs = [(FCCKPrivateFetchRecordsOperation *)self recordIDs];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__FCCKPrivateFetchRecordsOperation_performOperation__block_invoke;
   v10[3] = &unk_1E7C39678;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v7 = v3;
-  [(FCCKPrivateDatabase *)v5 enumeratePayloadsWithRecordIDs:v6 records:0 zoneIDs:0 zones:0 options:v4 payloadHandler:v10];
+  [(FCCKPrivateDatabase *)database enumeratePayloadsWithRecordIDs:recordIDs records:0 zoneIDs:0 zones:0 options:v4 payloadHandler:v10];
 
-  v8 = [(FCCKPrivateFetchRecordsOperation *)self qualityOfService];
+  qualityOfService = [(FCCKPrivateFetchRecordsOperation *)self qualityOfService];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__FCCKPrivateFetchRecordsOperation_performOperation__block_invoke_3;
   v9[3] = &unk_1E7C37750;
   v9[4] = self;
-  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:v8 completionHandler:v9];
+  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:qualityOfService completionHandler:v9];
 }
 
 void __52__FCCKPrivateFetchRecordsOperation_performOperation__block_invoke(uint64_t a1, void *a2)
@@ -149,16 +149,16 @@ void __52__FCCKPrivateFetchRecordsOperation_performOperation__block_invoke_3(uin
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCCKPrivateFetchRecordsOperation *)self fetchRecordsCompletionBlock];
+  errorCopy = error;
+  fetchRecordsCompletionBlock = [(FCCKPrivateFetchRecordsOperation *)self fetchRecordsCompletionBlock];
 
-  if (v4)
+  if (fetchRecordsCompletionBlock)
   {
-    v5 = [(FCCKPrivateFetchRecordsOperation *)self fetchRecordsCompletionBlock];
-    v6 = [(FCCKPrivateFetchRecordsOperation *)self resultRecordsByRecordID];
-    (v5)[2](v5, v6, v7);
+    fetchRecordsCompletionBlock2 = [(FCCKPrivateFetchRecordsOperation *)self fetchRecordsCompletionBlock];
+    resultRecordsByRecordID = [(FCCKPrivateFetchRecordsOperation *)self resultRecordsByRecordID];
+    (fetchRecordsCompletionBlock2)[2](fetchRecordsCompletionBlock2, resultRecordsByRecordID, errorCopy);
   }
 }
 

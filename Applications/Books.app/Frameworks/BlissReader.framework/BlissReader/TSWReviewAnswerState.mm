@@ -1,6 +1,6 @@
 @interface TSWReviewAnswerState
 - (TSWReviewAnswerState)init;
-- (TSWReviewAnswerState)initWithCoder:(id)a3;
+- (TSWReviewAnswerState)initWithCoder:(id)coder;
 @end
 
 @implementation TSWReviewAnswerState
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (TSWReviewAnswerState)initWithCoder:(id)a3
+- (TSWReviewAnswerState)initWithCoder:(id)coder
 {
   v4 = [(TSWReviewAnswerState *)self init];
-  if (v4 && [a3 containsValueForKey:@"TSWReviewAnswerStateVersion"])
+  if (v4 && [coder containsValueForKey:@"TSWReviewAnswerStateVersion"])
   {
-    v4->mVersion = [objc_msgSend(a3 valueForKey:{@"TSWReviewAnswerStateVersion", "unsignedIntegerValue"}];
+    v4->mVersion = [objc_msgSend(coder valueForKey:{@"TSWReviewAnswerStateVersion", "unsignedIntegerValue"}];
   }
 
   return v4;

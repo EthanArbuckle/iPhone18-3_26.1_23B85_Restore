@@ -1,37 +1,37 @@
 @interface MSDIPAInstallOperation
 - (BOOL)_IXInstallAppIPA;
-- (BOOL)_fulfillIXSZTransferPromise:(id)a3 withFile:(id)a4 outError:(id *)a5;
+- (BOOL)_fulfillIXSZTransferPromise:(id)promise withFile:(id)file outError:(id *)error;
 - (BOOL)_verifyInstalledApp;
 - (BOOL)rollback;
-- (MSDIPAInstallOperation)initWithContext:(id)a3;
-- (MSDIPAInstallOperation)initWithContext:(id)a3 andContentCacheManager:(id)a4;
+- (MSDIPAInstallOperation)initWithContext:(id)context;
+- (MSDIPAInstallOperation)initWithContext:(id)context andContentCacheManager:(id)manager;
 - (id)methodSelectors;
 - (void)_createFullIPAInstallOperationsAsFallback;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully;
 @end
 
 @implementation MSDIPAInstallOperation
 
-- (MSDIPAInstallOperation)initWithContext:(id)a3
+- (MSDIPAInstallOperation)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[MSDContentCacheManager sharedInstance];
-  v6 = [(MSDIPAInstallOperation *)self initWithContext:v4 andContentCacheManager:v5];
+  v6 = [(MSDIPAInstallOperation *)self initWithContext:contextCopy andContentCacheManager:v5];
 
   return v6;
 }
 
-- (MSDIPAInstallOperation)initWithContext:(id)a3 andContentCacheManager:(id)a4
+- (MSDIPAInstallOperation)initWithContext:(id)context andContentCacheManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = MSDIPAInstallOperation;
-  v7 = [(MSDOperation *)&v11 initWithContext:a3];
+  v7 = [(MSDOperation *)&v11 initWithContext:context];
   v8 = v7;
   if (v7)
   {
-    [(MSDIPAInstallOperation *)v7 setContentCacheProtocol:v6];
+    [(MSDIPAInstallOperation *)v7 setContentCacheProtocol:managerCopy];
     v9 = dispatch_semaphore_create(0);
     [(MSDIPAInstallOperation *)v8 setSemaphore:v9];
 
@@ -52,11 +52,11 @@
 
 - (BOOL)rollback
 {
-  v3 = [(MSDOperation *)self context];
-  [v3 setUninstallOperation:1];
+  context = [(MSDOperation *)self context];
+  [context setUninstallOperation:1];
 
-  v4 = [(MSDOperation *)self context];
-  v5 = [MSDOperationRepository createOperationFromIdentifier:@"MSDIPAUninstallOperation" withContext:v4];
+  context2 = [(MSDOperation *)self context];
+  v5 = [MSDOperationRepository createOperationFromIdentifier:@"MSDIPAUninstallOperation" withContext:context2];
 
   [(MSDOperation *)self produceNewDependentOperation:v5 forRollback:1];
   return 1;
@@ -65,56 +65,56 @@
 - (BOOL)_IXInstallAppIPA
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(MSDOperation *)self context];
-  v5 = [v4 stagingRootPath];
+  context = [(MSDOperation *)self context];
+  stagingRootPath = [context stagingRootPath];
 
-  v6 = [(MSDOperation *)self context];
-  v7 = [v6 identifier];
+  context2 = [(MSDOperation *)self context];
+  identifier = [context2 identifier];
 
-  v8 = [(MSDOperation *)self context];
-  v9 = [v8 uniqueIdentifier];
+  context3 = [(MSDOperation *)self context];
+  uniqueIdentifier = [context3 uniqueIdentifier];
 
-  v10 = [(MSDOperation *)self context];
-  v11 = [v10 currentUniqueIdentifier];
+  context4 = [(MSDOperation *)self context];
+  currentUniqueIdentifier = [context4 currentUniqueIdentifier];
 
-  v12 = [(MSDOperation *)self context];
-  v13 = [v12 alreadyInstalled];
+  context5 = [(MSDOperation *)self context];
+  alreadyInstalled = [context5 alreadyInstalled];
 
-  v14 = [(MSDOperation *)self context];
-  v15 = [v14 useDiffPatch];
+  context6 = [(MSDOperation *)self context];
+  useDiffPatch = [context6 useDiffPatch];
 
   v16 = sub_100063A54();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v83 = v7;
+    v83 = identifier;
     v84 = 2114;
-    *v85 = v9;
+    *v85 = uniqueIdentifier;
     *&v85[8] = 2114;
-    v86 = v11;
+    v86 = currentUniqueIdentifier;
     v87 = 1026;
-    v88 = v15;
+    v88 = useDiffPatch;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Installing IPA for app: %{public}@ <UID %{public}@, CurrentUID: %{public}@, DiffPatch: %{public, BOOL}d>", buf, 0x26u);
   }
 
   v17 = +[MSDAppHelper sharedInstance];
-  v62 = [v17 acquireAppTerminationAssertionForApp:v7];
+  v62 = [v17 acquireAppTerminationAssertionForApp:identifier];
 
-  if (v15)
+  if (useDiffPatch)
   {
-    v18 = [(MSDIPAInstallOperation *)self contentCacheProtocol];
-    [v18 appDiffPatchFileForSourceAppUID:v11 targetAppUID:v9];
+    contentCacheProtocol = [(MSDIPAInstallOperation *)self contentCacheProtocol];
+    [contentCacheProtocol appDiffPatchFileForSourceAppUID:currentUniqueIdentifier targetAppUID:uniqueIdentifier];
   }
 
   else
   {
-    v18 = [(MSDOperation *)self context];
-    [v18 fileHash];
+    contentCacheProtocol = [(MSDOperation *)self context];
+    [contentCacheProtocol fileHash];
   }
   v69 = ;
 
-  v19 = [v7 stringByAppendingPathExtension:@"ipa"];
-  v70 = [v5 stringByAppendingPathComponent:v19];
+  v19 = [identifier stringByAppendingPathExtension:@"ipa"];
+  v70 = [stagingRootPath stringByAppendingPathComponent:v19];
 
   v20 = sub_100063A54();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -124,17 +124,17 @@
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "IPA/Patch file hash to use: %{public}@", buf, 0xCu);
   }
 
-  v65 = v11;
+  v65 = currentUniqueIdentifier;
 
   v68 = v3;
-  v64 = v5;
-  v66 = v9;
-  if (v13)
+  v64 = stagingRootPath;
+  v66 = uniqueIdentifier;
+  if (alreadyInstalled)
   {
     v81 = 0;
-    v21 = [IXUpdatingAppInstallCoordinator coordinatorForAppWithBundleID:v7 withClientID:9 createIfNotExisting:1 created:0 error:&v81];
+    v21 = [IXUpdatingAppInstallCoordinator coordinatorForAppWithBundleID:identifier withClientID:9 createIfNotExisting:1 created:0 error:&v81];
     v22 = v81;
-    v23 = v22;
+    installError = v22;
     if (!v21)
     {
       sub_1000DA4F8(v22);
@@ -150,9 +150,9 @@ LABEL_66:
   else
   {
     v80 = 0;
-    v21 = [IXInitiatingAppInstallCoordinator coordinatorForAppWithBundleID:v7 withClientID:9 createIfNotExisting:1 created:0 error:&v80];
+    v21 = [IXInitiatingAppInstallCoordinator coordinatorForAppWithBundleID:identifier withClientID:9 createIfNotExisting:1 created:0 error:&v80];
     v24 = v80;
-    v23 = v24;
+    installError = v24;
     if (!v21)
     {
       sub_1000DA010(v24);
@@ -160,20 +160,20 @@ LABEL_66:
     }
   }
 
-  v25 = v23;
-  [v21 setObserver:{self, v62, v5}];
-  v79 = v23;
+  v25 = installError;
+  [v21 setObserver:{self, v62, stagingRootPath}];
+  v79 = installError;
   v26 = [v21 setImportance:3 error:&v79];
-  v23 = v79;
+  installError = v79;
 
   if ((v26 & 1) == 0)
   {
-    sub_1000DA0C4(v23);
+    sub_1000DA0C4(installError);
     goto LABEL_66;
   }
 
   v27 = +[NSArray array];
-  v78 = v23;
+  v78 = installError;
   v28 = [v21 setInitialODRAssetPromises:v27 error:&v78];
   v29 = v78;
 
@@ -185,11 +185,11 @@ LABEL_66:
     v67 = 0;
     v30 = 0;
 LABEL_64:
-    v23 = v29;
+    installError = v29;
     goto LABEL_32;
   }
 
-  if (v15)
+  if (useDiffPatch)
   {
     v30 = [[IXPromisedStreamingZipTransfer alloc] initWithName:@"IPAPromise" client:9 streamingZipOptions:&__NSDictionary0__struct archiveSize:0 diskSpaceNeeded:0];
   }
@@ -202,20 +202,20 @@ LABEL_64:
   }
 
   v77[1] = v29;
-  v67 = [[IXPlaceholder alloc] initAppPlaceholderWithBundleName:@"TempApp" bundleID:v7 installType:1 client:9];
+  v67 = [[IXPlaceholder alloc] initAppPlaceholderWithBundleName:@"TempApp" bundleID:identifier installType:1 client:9];
   v33 = [v21 setPlaceholderPromise:? error:?];
-  v23 = v29;
+  installError = v29;
 
   if ((v33 & 1) == 0)
   {
-    sub_1000DA1FC(v23);
+    sub_1000DA1FC(installError);
 LABEL_62:
     v45 = 0;
     v41 = 0;
     goto LABEL_32;
   }
 
-  v77[0] = v23;
+  v77[0] = installError;
   v34 = [v21 setAppAssetPromise:v30 error:v77];
   v35 = v77[0];
 
@@ -224,23 +224,23 @@ LABEL_62:
     sub_1000DA298(v35);
     v45 = 0;
     v41 = 0;
-    v23 = v35;
+    installError = v35;
     goto LABEL_32;
   }
 
   v76 = v35;
   v36 = [v67 setConfigurationCompleteWithError:&v76];
-  v23 = v76;
+  installError = v76;
 
   if ((v36 & 1) == 0)
   {
-    sub_1000DA334(v23);
+    sub_1000DA334(installError);
     goto LABEL_62;
   }
 
-  v37 = [(MSDIPAInstallOperation *)self contentCacheProtocol];
-  v38 = [(MSDOperation *)self context];
-  v39 = [v37 copyFileIfPresentInCache:v69 toLocation:v70 verifyHash:{objc_msgSend(v38, "verifyFileHash")}];
+  contentCacheProtocol2 = [(MSDIPAInstallOperation *)self contentCacheProtocol];
+  context7 = [(MSDOperation *)self context];
+  v39 = [contentCacheProtocol2 copyFileIfPresentInCache:v69 toLocation:v70 verifyHash:{objc_msgSend(context7, "verifyFileHash")}];
 
   if ((v39 & 1) == 0)
   {
@@ -248,7 +248,7 @@ LABEL_62:
     goto LABEL_62;
   }
 
-  if (([v7 isEqualToString:@"com.retailtech.arkenstone"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"com.apple.ist.windward") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"com.apple.ist.DemoDiscoveryApp"))
+  if (([identifier isEqualToString:@"com.retailtech.arkenstone"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"com.apple.ist.windward") & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"com.apple.ist.DemoDiscoveryApp"))
   {
     v40 = +[F13Server sharedInstance];
     [v40 windwardAppInstallationStarted];
@@ -256,7 +256,7 @@ LABEL_62:
 
   v41 = objc_alloc_init(MIInstallOptions);
   [v41 setInstallTargetType:1];
-  v75 = v23;
+  v75 = installError;
   v42 = [v21 setInstallOptions:v41 error:&v75];
   v29 = v75;
 
@@ -267,11 +267,11 @@ LABEL_62:
     goto LABEL_64;
   }
 
-  if (v15)
+  if (useDiffPatch)
   {
     v74 = v29;
     v43 = [(MSDIPAInstallOperation *)self _fulfillIXSZTransferPromise:v30 withFile:v70 outError:&v74];
-    v23 = v74;
+    installError = v74;
 
     if ((v43 & 1) == 0)
     {
@@ -279,7 +279,7 @@ LABEL_62:
       goto LABEL_32;
     }
 
-    v29 = v23;
+    v29 = installError;
   }
 
   else
@@ -287,24 +287,24 @@ LABEL_62:
     [v30 setComplete:1];
   }
 
-  v44 = [(MSDIPAInstallOperation *)self semaphore];
-  dispatch_semaphore_wait(v44, 0xFFFFFFFFFFFFFFFFLL);
+  semaphore = [(MSDIPAInstallOperation *)self semaphore];
+  dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
-  v23 = [(MSDIPAInstallOperation *)self installError];
+  installError = [(MSDIPAInstallOperation *)self installError];
 
-  v45 = v23 == 0;
+  v45 = installError == 0;
 LABEL_32:
   v46 = sub_100063BEC();
-  v47 = [(MSDOperation *)self signpostId];
-  if (v47 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(MSDOperation *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v48 = v47;
+    v48 = signpostId;
     if (os_signpost_enabled(v46))
     {
       *buf = 138412802;
-      v83 = v7;
+      v83 = identifier;
       v84 = 1024;
-      *v85 = v15;
+      *v85 = useDiffPatch;
       *&v85[4] = 1024;
       *&v85[6] = v45;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v46, OS_SIGNPOST_EVENT, v48, "Install IPA", "App identifier: %{xcode:string}@ Use diff patch: %{xcode:BOOLean}d Install Result: %{xcode:BOOLean}d", buf, 0x18u);
@@ -313,12 +313,12 @@ LABEL_32:
 
   if (v45)
   {
-    v49 = v23;
+    v49 = installError;
   }
 
   else
   {
-    v73 = v23;
+    v73 = installError;
     sub_1000C1424(&v73, 3727740962, @"Cannot install app.");
     v49 = v73;
 
@@ -331,8 +331,8 @@ LABEL_32:
       v72[3] = &unk_10016ACA0;
       v72[4] = self;
       [v30 cancelForReason:v49 client:9 completion:v72];
-      v50 = [(MSDIPAInstallOperation *)self semaphore];
-      dispatch_semaphore_wait(v50, 0xFFFFFFFFFFFFFFFFLL);
+      semaphore2 = [(MSDIPAInstallOperation *)self semaphore];
+      dispatch_semaphore_wait(semaphore2, 0xFFFFFFFFFFFFFFFFLL);
     }
 
     [(MSDIPAInstallOperation *)self _createFullIPAInstallOperationsAsFallback];
@@ -359,16 +359,16 @@ LABEL_32:
     v52 = v49;
   }
 
-  if (v15)
+  if (useDiffPatch)
   {
-    v54 = [(MSDIPAInstallOperation *)self contentCacheProtocol];
-    [v54 removeAppDiffPatchFileForSourceAppUID:v65 targetAppUID:v66];
+    contentCacheProtocol3 = [(MSDIPAInstallOperation *)self contentCacheProtocol];
+    [contentCacheProtocol3 removeAppDiffPatchFileForSourceAppUID:v65 targetAppUID:v66];
   }
 
-  v55 = [(MSDOperation *)self context];
-  v56 = [v55 deleteInstallableFileAfterInstall];
+  context8 = [(MSDOperation *)self context];
+  deleteInstallableFileAfterInstall = [context8 deleteInstallableFileAfterInstall];
 
-  if (!v56)
+  if (!deleteInstallableFileAfterInstall)
   {
     v59 = sub_100063A54();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -381,8 +381,8 @@ LABEL_32:
     goto LABEL_54;
   }
 
-  v57 = [(MSDIPAInstallOperation *)self contentCacheProtocol];
-  v58 = [v57 deleteFromCache:v69];
+  contentCacheProtocol4 = [(MSDIPAInstallOperation *)self contentCacheProtocol];
+  v58 = [contentCacheProtocol4 deleteFromCache:v69];
 
   if ((v58 & 1) == 0)
   {
@@ -396,21 +396,21 @@ LABEL_54:
   }
 
   v60 = +[MSDAppHelper sharedInstance];
-  [v60 releaseAppTerminationAssertion:v63 forApp:v7];
+  [v60 releaseAppTerminationAssertion:v63 forApp:identifier];
 
   return v45;
 }
 
 - (BOOL)_verifyInstalledApp
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 identifier];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
-  v5 = [(MSDOperation *)self context];
-  v6 = [v5 uniqueIdentifier];
+  context2 = [(MSDOperation *)self context];
+  uniqueIdentifier = [context2 uniqueIdentifier];
 
   v7 = +[MSDAppHelper sharedInstance];
-  v8 = [v7 bundlePathForInstalledApp:v4];
+  v8 = [v7 bundlePathForInstalledApp:identifier];
 
   v9 = [MSDiOSApp appWithPath:v8];
   v10 = v9;
@@ -424,20 +424,20 @@ LABEL_54:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Cannot create MSDiOSApp from bundle path %{public}@", &v15, 0xCu);
     }
 
-    v11 = 0;
+    uniqueIdentifier2 = 0;
     goto LABEL_10;
   }
 
-  v11 = [v9 uniqueIdentifier];
-  if (([v11 isEqualToString:v6] & 1) == 0)
+  uniqueIdentifier2 = [v9 uniqueIdentifier];
+  if (([uniqueIdentifier2 isEqualToString:uniqueIdentifier] & 1) == 0)
   {
     v14 = sub_100063A54();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = v11;
+      v16 = uniqueIdentifier2;
       v17 = 2114;
-      v18 = v6;
+      v18 = uniqueIdentifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "The installed app has UID %{public}@ but the expected UID is %{public}@", &v15, 0x16u);
     }
 
@@ -454,10 +454,10 @@ LABEL_4:
   return v12;
 }
 
-- (BOOL)_fulfillIXSZTransferPromise:(id)a3 withFile:(id)a4 outError:(id *)a5
+- (BOOL)_fulfillIXSZTransferPromise:(id)promise withFile:(id)file outError:(id *)error
 {
-  v26 = a3;
-  v24 = a4;
+  promiseCopy = promise;
+  fileCopy = file;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -473,12 +473,12 @@ LABEL_4:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v24;
+    *&buf[4] = fileCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Sending bytes to IXPromisedStreamingZipTransfer from file: %{public}@", buf, 0xCu);
   }
 
-  v8 = v24;
-  v9 = open([v24 fileSystemRepresentation], 0);
+  v8 = fileCopy;
+  v9 = open([fileCopy fileSystemRepresentation], 0);
   v25 = v9;
   if (v9 < 0)
   {
@@ -486,7 +486,7 @@ LABEL_4:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = __error();
-      sub_1000DA870(v24, v22, buf, v21);
+      sub_1000DA870(fileCopy, v22, buf, v21);
     }
 
 LABEL_18:
@@ -502,9 +502,9 @@ LABEL_18:
   v29[3] = &unk_10016B5F8;
   v29[4] = self;
   v29[5] = &v35;
-  [v26 prepareForExtraction:v29];
-  v11 = [(MSDIPAInstallOperation *)self semaphore];
-  dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
+  [promiseCopy prepareForExtraction:v29];
+  semaphore = [(MSDIPAInstallOperation *)self semaphore];
+  dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   if (!v36[5])
   {
@@ -525,8 +525,8 @@ LABEL_18:
         v13 = malloc_type_malloc(v12, 0xD2E5A910uLL);
         if (!v13)
         {
-          v14 = sub_100063A54();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          semaphore3 = sub_100063A54();
+          if (os_log_type_enabled(semaphore3, OS_LOG_TYPE_ERROR))
           {
             sub_1000DA808();
           }
@@ -536,22 +536,22 @@ LABEL_18:
 
         if (read(v25, v13, v12) != v12)
         {
-          v14 = sub_100063A54();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          semaphore3 = sub_100063A54();
+          if (os_log_type_enabled(semaphore3, OS_LOG_TYPE_ERROR))
           {
             v19 = __error();
-            sub_1000DA754(v19, buf, v14);
+            sub_1000DA754(v19, buf, semaphore3);
           }
 
           goto LABEL_16;
         }
 
-        v14 = [NSData dataWithBytesNoCopy:v13 length:v12 freeWhenDone:1];
-        if (!v14)
+        semaphore3 = [NSData dataWithBytesNoCopy:v13 length:v12 freeWhenDone:1];
+        if (!semaphore3)
         {
           v20 = sub_100063A54();
           sub_1000DA7A0(v20, buf);
-          v14 = *buf;
+          semaphore3 = *buf;
           goto LABEL_16;
         }
 
@@ -562,9 +562,9 @@ LABEL_18:
         v28[5] = &v35;
         v28[6] = &v31;
         v28[4] = self;
-        [v26 supplyBytes:v14 withCompletionBlock:v28];
-        v15 = [(MSDIPAInstallOperation *)self semaphore];
-        dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
+        [promiseCopy supplyBytes:semaphore3 withCompletionBlock:v28];
+        semaphore2 = [(MSDIPAInstallOperation *)self semaphore];
+        dispatch_semaphore_wait(semaphore2, 0xFFFFFFFFFFFFFFFFLL);
 
         if (v36[5])
         {
@@ -585,9 +585,9 @@ LABEL_18:
     v27[3] = &unk_100169E68;
     v27[4] = self;
     v27[5] = &v35;
-    [v26 finishStreamWithCompletionBlock:v27];
-    v14 = [(MSDIPAInstallOperation *)self semaphore];
-    dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
+    [promiseCopy finishStreamWithCompletionBlock:v27];
+    semaphore3 = [(MSDIPAInstallOperation *)self semaphore];
+    dispatch_semaphore_wait(semaphore3, 0xFFFFFFFFFFFFFFFFLL);
 LABEL_16:
   }
 
@@ -597,12 +597,12 @@ LABEL_16:
   }
 
 LABEL_19:
-  if (a5)
+  if (error)
   {
     v16 = v36[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -615,27 +615,27 @@ LABEL_19:
 
 - (void)_createFullIPAInstallOperationsAsFallback
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 identifier];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
-  v5 = [(MSDOperation *)self dependents];
-  v6 = [v5 copy];
+  dependents = [(MSDOperation *)self dependents];
+  v6 = [dependents copy];
 
-  v7 = [(MSDOperation *)self context];
-  v8 = [v7 useDiffPatch];
+  context2 = [(MSDOperation *)self context];
+  useDiffPatch = [context2 useDiffPatch];
 
-  if (v8)
+  if (useDiffPatch)
   {
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v4;
+      v25 = identifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Falling back to install full IPA for app: %{public}@", buf, 0xCu);
     }
 
-    v10 = [(MSDOperation *)self context];
-    v11 = [v10 copy];
+    context3 = [(MSDOperation *)self context];
+    v11 = [context3 copy];
 
     [v11 setAlreadyInstalled:0];
     [v11 setCurrentUniqueIdentifier:0];
@@ -680,42 +680,42 @@ LABEL_19:
   }
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully
 {
-  v4 = a3;
+  successfullyCopy = successfully;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleID];
+    bundleID = [successfullyCopy bundleID];
     v8 = 138543362;
-    v9 = v6;
+    v9 = bundleID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "App %{public}@ successfully installed.", &v8, 0xCu);
   }
 
   [(MSDIPAInstallOperation *)self setInstallError:0];
-  v7 = [(MSDIPAInstallOperation *)self semaphore];
-  dispatch_semaphore_signal(v7);
+  semaphore = [(MSDIPAInstallOperation *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  reasonCopy = reason;
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 bundleID];
-    v11 = [v8 localizedDescription];
+    bundleID = [coordinatorCopy bundleID];
+    localizedDescription = [reasonCopy localizedDescription];
     v13 = 138543618;
-    v14 = v10;
+    v14 = bundleID;
     v15 = 2114;
-    v16 = v11;
+    v16 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "App %{public}@ cannot be installed: %{public}@", &v13, 0x16u);
   }
 
-  [(MSDIPAInstallOperation *)self setInstallError:v8];
-  v12 = [(MSDIPAInstallOperation *)self semaphore];
-  dispatch_semaphore_signal(v12);
+  [(MSDIPAInstallOperation *)self setInstallError:reasonCopy];
+  semaphore = [(MSDIPAInstallOperation *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
 @end

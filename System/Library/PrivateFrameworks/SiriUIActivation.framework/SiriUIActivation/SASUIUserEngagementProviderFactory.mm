@@ -1,13 +1,13 @@
 @interface SASUIUserEngagementProviderFactory
-+ (id)_attentionAwarenessConfigurationWithIdentifier:(id)a3 eventMask:(unint64_t)a4 samplingInterval:(double)a5 attentionLossTimeout:(double)a6;
-- (SASUIUserEngagementProviderFactory)initWithSamplingInterval:(double)a3 attentionLostTimeout:(double)a4;
++ (id)_attentionAwarenessConfigurationWithIdentifier:(id)identifier eventMask:(unint64_t)mask samplingInterval:(double)interval attentionLossTimeout:(double)timeout;
+- (SASUIUserEngagementProviderFactory)initWithSamplingInterval:(double)interval attentionLostTimeout:(double)timeout;
 - (id)buttonPressAwarenessClient;
 - (id)touchAttentionAwarenessClient;
 @end
 
 @implementation SASUIUserEngagementProviderFactory
 
-- (SASUIUserEngagementProviderFactory)initWithSamplingInterval:(double)a3 attentionLostTimeout:(double)a4
+- (SASUIUserEngagementProviderFactory)initWithSamplingInterval:(double)interval attentionLostTimeout:(double)timeout
 {
   v9.receiver = self;
   v9.super_class = SASUIUserEngagementProviderFactory;
@@ -15,8 +15,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_samplingInterval = a3;
-    v6->_attentionLossTimeout = a4;
+    v6->_samplingInterval = interval;
+    v6->_attentionLossTimeout = timeout;
     v6->_supportedAttentionAwarenessEvents = [(SASUIUserEngagementProviderFactory *)v6 supportedEvents];
   }
 
@@ -41,16 +41,16 @@
   return v3;
 }
 
-+ (id)_attentionAwarenessConfigurationWithIdentifier:(id)a3 eventMask:(unint64_t)a4 samplingInterval:(double)a5 attentionLossTimeout:(double)a6
++ (id)_attentionAwarenessConfigurationWithIdentifier:(id)identifier eventMask:(unint64_t)mask samplingInterval:(double)interval attentionLossTimeout:(double)timeout
 {
   v9 = MEMORY[0x277CEF768];
-  v10 = a3;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(v9);
-  [v11 setIdentifier:v10];
+  [v11 setIdentifier:identifierCopy];
 
-  [v11 setEventMask:a4];
-  [v11 setSamplingInterval:a5];
-  [v11 setAttentionLostTimeout:a6];
+  [v11 setEventMask:mask];
+  [v11 setSamplingInterval:interval];
+  [v11 setAttentionLostTimeout:timeout];
 
   return v11;
 }

@@ -1,17 +1,17 @@
 @interface _UIAccessDeniedView
-- (_UIAccessDeniedView)initWithFrame:(CGRect)a3;
+- (_UIAccessDeniedView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation _UIAccessDeniedView
 
-- (_UIAccessDeniedView)initWithFrame:(CGRect)a3
+- (_UIAccessDeniedView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _UIAccessDeniedView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -43,12 +43,12 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v6 = a3;
+  messageCopy = message;
   if (![(NSString *)self->_message isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [messageCopy copy];
     message = self->_message;
     self->_message = v4;
 
@@ -74,8 +74,8 @@
     self->_titleLabel = v10;
 
     v12 = self->_titleLabel;
-    v13 = [(_UIAccessDeniedView *)self title];
-    [(UILabel *)v12 setText:v13];
+    title = [(_UIAccessDeniedView *)self title];
+    [(UILabel *)v12 setText:title];
 
     v14 = self->_titleLabel;
     [off_1E70ECC18 defaultFontSize];
@@ -83,8 +83,8 @@
     [(UILabel *)v14 setFont:v15];
 
     v16 = self->_titleLabel;
-    v17 = [(_UIAccessDeniedView *)self _textColor];
-    [(UILabel *)v16 setTextColor:v17];
+    _textColor = [(_UIAccessDeniedView *)self _textColor];
+    [(UILabel *)v16 setTextColor:_textColor];
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     [(UILabel *)self->_titleLabel setNumberOfLines:0];
@@ -99,16 +99,16 @@
     self->_messageLabel = v18;
 
     v20 = self->_messageLabel;
-    v21 = [(_UIAccessDeniedView *)self message];
-    [(UILabel *)v20 setText:v21];
+    message = [(_UIAccessDeniedView *)self message];
+    [(UILabel *)v20 setText:message];
 
     v22 = self->_messageLabel;
     v23 = [off_1E70ECC18 systemFontOfSize:15.0];
     [(UILabel *)v22 setFont:v23];
 
     v24 = self->_messageLabel;
-    v25 = [(_UIAccessDeniedView *)self _textColor];
-    [(UILabel *)v24 setTextColor:v25];
+    _textColor2 = [(_UIAccessDeniedView *)self _textColor];
+    [(UILabel *)v24 setTextColor:_textColor2];
 
     [(UILabel *)self->_messageLabel setTextAlignment:1];
     [(UILabel *)self->_messageLabel setNumberOfLines:0];

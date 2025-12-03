@@ -1,26 +1,26 @@
 @interface UGCPOIEnrichmentViewController
 - (NSArray)sectionControllers;
-- (UGCPOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)a3 presentationContext:(int64_t)a4;
+- (UGCPOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)form presentationContext:(int64_t)context;
 - (UGCPOIEnrichmentViewControllerDelegate)delegate;
 - (int)currentTarget;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateConstraints;
 - (void)_updateRowItems;
-- (void)_updateScrollViewHairlinesAnimated:(BOOL)a3;
-- (void)captureUserAction:(int)a3 withValue:(id)a4;
-- (void)photosSectionController:(id)a3 selectedAddPhotosUsingSourceType:(int64_t)a4 presentationOptions:(id)a5;
-- (void)photosSectionController:(id)a3 userActionCapturedForAction:(int)a4 value:(id)a5;
-- (void)photosSectionController:(id)a3 willShowPhotoCarousel:(BOOL)a4;
-- (void)ratingsSectionController:(id)a3 presentInformedConsentIfNeededWithCompletion:(id)a4;
-- (void)ratingsSectionController:(id)a3 userActionCapturedForRatingCategoryState:(int64_t)a4 value:(id)a5;
-- (void)ratingsSectionControllerPresentPOIEnrichment:(id)a3;
-- (void)sectionControllerDidUpdateRowItems:(id)a3;
-- (void)sectionControllerRequestsLegalAttribution:(id)a3;
-- (void)setFormInteractionEnabled:(BOOL)a3;
-- (void)setIsInlineMode:(BOOL)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)submissionFinishedWithError:(id)a3;
+- (void)_updateScrollViewHairlinesAnimated:(BOOL)animated;
+- (void)captureUserAction:(int)action withValue:(id)value;
+- (void)photosSectionController:(id)controller selectedAddPhotosUsingSourceType:(int64_t)type presentationOptions:(id)options;
+- (void)photosSectionController:(id)controller userActionCapturedForAction:(int)action value:(id)value;
+- (void)photosSectionController:(id)controller willShowPhotoCarousel:(BOOL)carousel;
+- (void)ratingsSectionController:(id)controller presentInformedConsentIfNeededWithCompletion:(id)completion;
+- (void)ratingsSectionController:(id)controller userActionCapturedForRatingCategoryState:(int64_t)state value:(id)value;
+- (void)ratingsSectionControllerPresentPOIEnrichment:(id)enrichment;
+- (void)sectionControllerDidUpdateRowItems:(id)items;
+- (void)sectionControllerRequestsLegalAttribution:(id)attribution;
+- (void)setFormInteractionEnabled:(BOOL)enabled;
+- (void)setIsInlineMode:(BOOL)mode;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)submissionFinishedWithError:(id)error;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -34,124 +34,124 @@
   return WeakRetained;
 }
 
-- (void)captureUserAction:(int)a3 withValue:(id)a4
+- (void)captureUserAction:(int)action withValue:(id)value
 {
-  v4 = *&a3;
-  v6 = a4;
-  [GEOAPPortal captureUserAction:v4 target:[(UGCPOIEnrichmentViewController *)self currentTarget] value:v6];
+  v4 = *&action;
+  valueCopy = value;
+  [GEOAPPortal captureUserAction:v4 target:[(UGCPOIEnrichmentViewController *)self currentTarget] value:valueCopy];
 }
 
 - (int)currentTarget
 {
-  v2 = [(UGCPOIEnrichmentViewController *)self presentationContext];
-  if (v2 > 2)
+  presentationContext = [(UGCPOIEnrichmentViewController *)self presentationContext];
+  if (presentationContext > 2)
   {
     return 0;
   }
 
   else
   {
-    return dword_101215418[v2];
+    return dword_101215418[presentationContext];
   }
 }
 
-- (void)photosSectionController:(id)a3 userActionCapturedForAction:(int)a4 value:(id)a5
+- (void)photosSectionController:(id)controller userActionCapturedForAction:(int)action value:(id)value
 {
-  v5 = *&a4;
-  v10 = a5;
-  v7 = [(UGCPOIEnrichmentViewController *)self delegate];
+  v5 = *&action;
+  valueCopy = value;
+  delegate = [(UGCPOIEnrichmentViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(UGCPOIEnrichmentViewController *)self delegate];
-    [v9 poiEnrichmentViewController:self captureUserAction:v5 value:v10 target:{-[UGCPOIEnrichmentViewController currentTarget](self, "currentTarget")}];
+    delegate2 = [(UGCPOIEnrichmentViewController *)self delegate];
+    [delegate2 poiEnrichmentViewController:self captureUserAction:v5 value:valueCopy target:{-[UGCPOIEnrichmentViewController currentTarget](self, "currentTarget")}];
   }
 }
 
-- (void)photosSectionController:(id)a3 selectedAddPhotosUsingSourceType:(int64_t)a4 presentationOptions:(id)a5
+- (void)photosSectionController:(id)controller selectedAddPhotosUsingSourceType:(int64_t)type presentationOptions:(id)options
 {
-  v10 = a5;
+  optionsCopy = options;
   if ([(UGCPOIEnrichmentViewController *)self defersPhotoPresentationToParent])
   {
-    v7 = [(UGCPOIEnrichmentViewController *)self delegate];
+    delegate = [(UGCPOIEnrichmentViewController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(UGCPOIEnrichmentViewController *)self delegate];
-      [v9 poiEnrichmentViewController:self didSelectAddPhotosUsingSourceType:a4 presentationOptions:v10];
+      delegate2 = [(UGCPOIEnrichmentViewController *)self delegate];
+      [delegate2 poiEnrichmentViewController:self didSelectAddPhotosUsingSourceType:type presentationOptions:optionsCopy];
     }
   }
 }
 
-- (void)ratingsSectionControllerPresentPOIEnrichment:(id)a3
+- (void)ratingsSectionControllerPresentPOIEnrichment:(id)enrichment
 {
-  v4 = [(UGCPOIEnrichmentViewController *)self delegate];
+  delegate = [(UGCPOIEnrichmentViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UGCPOIEnrichmentViewController *)self delegate];
-    [v6 poiEnrichmentViewControllerPresentPOIEnrichment:self];
+    delegate2 = [(UGCPOIEnrichmentViewController *)self delegate];
+    [delegate2 poiEnrichmentViewControllerPresentPOIEnrichment:self];
   }
 }
 
-- (void)ratingsSectionController:(id)a3 userActionCapturedForRatingCategoryState:(int64_t)a4 value:(id)a5
+- (void)ratingsSectionController:(id)controller userActionCapturedForRatingCategoryState:(int64_t)state value:(id)value
 {
-  v10 = a5;
-  v7 = [(UGCPOIEnrichmentViewController *)self delegate];
+  valueCopy = value;
+  delegate = [(UGCPOIEnrichmentViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(UGCPOIEnrichmentViewController *)self delegate];
-    [v9 poiEnrichmentViewController:self captureUserActionForRatingCategoryState:a4 value:v10 target:{-[UGCPOIEnrichmentViewController currentTarget](self, "currentTarget")}];
+    delegate2 = [(UGCPOIEnrichmentViewController *)self delegate];
+    [delegate2 poiEnrichmentViewController:self captureUserActionForRatingCategoryState:state value:valueCopy target:{-[UGCPOIEnrichmentViewController currentTarget](self, "currentTarget")}];
   }
 }
 
-- (void)ratingsSectionController:(id)a3 presentInformedConsentIfNeededWithCompletion:(id)a4
+- (void)ratingsSectionController:(id)controller presentInformedConsentIfNeededWithCompletion:(id)completion
 {
-  v8 = a4;
-  v5 = [(UGCPOIEnrichmentViewController *)self delegate];
+  completionCopy = completion;
+  delegate = [(UGCPOIEnrichmentViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UGCPOIEnrichmentViewController *)self delegate];
-    [v7 poiEnrichmentViewController:self presentInformedConsentIfNeededWithCompletion:v8];
+    delegate2 = [(UGCPOIEnrichmentViewController *)self delegate];
+    [delegate2 poiEnrichmentViewController:self presentInformedConsentIfNeededWithCompletion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)sectionControllerRequestsLegalAttribution:(id)a3
+- (void)sectionControllerRequestsLegalAttribution:(id)attribution
 {
   v4 = GEOConfigGetString();
   v7 = [NSURL URLWithString:v4];
 
-  v5 = [(UGCPOIEnrichmentViewController *)self delegate];
+  delegate = [(UGCPOIEnrichmentViewController *)self delegate];
   LOBYTE(v4) = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(UGCPOIEnrichmentViewController *)self delegate];
-    [v6 poiEnrichmentViewController:self didSelectTermsOfServiceURL:v7];
+    delegate2 = [(UGCPOIEnrichmentViewController *)self delegate];
+    [delegate2 poiEnrichmentViewController:self didSelectTermsOfServiceURL:v7];
   }
 
   else
   {
-    v6 = [[SFSafariViewController alloc] initWithURL:v7];
-    [(UGCPOIEnrichmentViewController *)self presentViewController:v6 animated:1 completion:0];
+    delegate2 = [[SFSafariViewController alloc] initWithURL:v7];
+    [(UGCPOIEnrichmentViewController *)self presentViewController:delegate2 animated:1 completion:0];
   }
 }
 
-- (void)photosSectionController:(id)a3 willShowPhotoCarousel:(BOOL)a4
+- (void)photosSectionController:(id)controller willShowPhotoCarousel:(BOOL)carousel
 {
-  if ([(UGCPOIEnrichmentViewController *)self hasTransitionedToPhotoCarousel]!= a4)
+  if ([(UGCPOIEnrichmentViewController *)self hasTransitionedToPhotoCarousel]!= carousel)
   {
     [(UGCPOIEnrichmentViewController *)self setHasTransitionedToPhotoCarousel:1];
 
@@ -159,29 +159,29 @@
   }
 }
 
-- (void)sectionControllerDidUpdateRowItems:(id)a3
+- (void)sectionControllerDidUpdateRowItems:(id)items
 {
   [(UGCPOIEnrichmentViewController *)self _updateRowItems];
-  v4 = [(UGCPOIEnrichmentViewController *)self delegate];
+  delegate = [(UGCPOIEnrichmentViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UGCPOIEnrichmentViewController *)self delegate];
-    [v6 contentDidUpdate];
+    delegate2 = [(UGCPOIEnrichmentViewController *)self delegate];
+    [delegate2 contentDidUpdate];
   }
 }
 
-- (void)submissionFinishedWithError:(id)a3
+- (void)submissionFinishedWithError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(UGCPOIEnrichmentViewController *)self sectionControllers];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    sectionControllers = [(UGCPOIEnrichmentViewController *)self sectionControllers];
+    v4 = [sectionControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -193,7 +193,7 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(sectionControllers);
           }
 
           [*(*(&v8 + 1) + 8 * v7) handleSuccessfulSubmission];
@@ -201,7 +201,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [sectionControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -209,9 +209,9 @@
   }
 }
 
-- (void)_updateScrollViewHairlinesAnimated:(BOOL)a3
+- (void)_updateScrollViewHairlinesAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(UGCPOIEnrichmentViewController *)self isViewLoaded])
   {
     topScrollHairline = self->_topScrollHairline;
@@ -223,8 +223,8 @@
         v7 = self->_topScrollHairline;
         self->_topScrollHairline = v6;
 
-        v8 = [(UGCPOIEnrichmentViewController *)self view];
-        [v8 addSubview:self->_topScrollHairline];
+        view = [(UGCPOIEnrichmentViewController *)self view];
+        [view addSubview:self->_topScrollHairline];
 
         v9 = [[MUEdgeLayout alloc] initWithItem:self->_topScrollHairline container:self->_scrollView];
         [v9 setEdges:11];
@@ -237,8 +237,8 @@
         bottomScrollHairline = self->_bottomScrollHairline;
         self->_bottomScrollHairline = v12;
 
-        v14 = [(UGCPOIEnrichmentViewController *)self view];
-        [v14 addSubview:self->_bottomScrollHairline];
+        view2 = [(UGCPOIEnrichmentViewController *)self view];
+        [view2 addSubview:self->_bottomScrollHairline];
 
         v15 = [[MUEdgeLayout alloc] initWithItem:self->_bottomScrollHairline container:self->_scrollView];
         [v15 setEdges:14];
@@ -266,7 +266,7 @@
       v21[2] = sub_100B1949C;
       v21[3] = &unk_101638478;
       v21[4] = self;
-      [UIScrollView _maps_updateHairlineAlpha:v3 animated:v22 getter:v21 setter:v17];
+      [UIScrollView _maps_updateHairlineAlpha:animatedCopy animated:v22 getter:v21 setter:v17];
       if ((v16 & 4) != 0)
       {
         v18 = 1.0;
@@ -287,7 +287,7 @@
       v19[1] = 3221225472;
       v19[2] = sub_100B194C4;
       v19[3] = &unk_101638478;
-      [UIScrollView _maps_updateHairlineAlpha:v3 animated:v20 getter:v19 setter:v18];
+      [UIScrollView _maps_updateHairlineAlpha:animatedCopy animated:v20 getter:v19 setter:v18];
     }
 
     else
@@ -343,8 +343,8 @@
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v7 = [v6 rowItems];
-        v8 = [v7 countByEnumeratingWithState:&v46 objects:v55 count:16];
+        rowItems = [v6 rowItems];
+        v8 = [rowItems countByEnumeratingWithState:&v46 objects:v55 count:16];
         if (v8)
         {
           v9 = v8;
@@ -355,17 +355,17 @@
             {
               if (*v47 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(rowItems);
               }
 
               v12 = *(*(&v46 + 1) + 8 * i);
-              v13 = [v12 rowView];
-              if (([v13 isHidden] & 1) == 0)
+              rowView = [v12 rowView];
+              if (([rowView isHidden] & 1) == 0)
               {
-                [v13 setPreservesSuperviewLayoutMargins:1];
-                [v3 addObject:v13];
-                [(UIView *)self->_contentView addSubview:v13];
-                [(MUStackLayout *)self->_stackLayout addArrangedLayoutItem:v13];
+                [rowView setPreservesSuperviewLayoutMargins:1];
+                [v3 addObject:rowView];
+                [(UIView *)self->_contentView addSubview:rowView];
+                [(MUStackLayout *)self->_stackLayout addArrangedLayoutItem:rowView];
                 [v12 bottomSpacing];
                 if (v14 > 0.0)
                 {
@@ -374,12 +374,12 @@
                   [v12 bottomSpacing];
                   v17 = stackLayout;
                   v3 = v15;
-                  [(MUStackLayout *)v17 setPadding:v13 forArrangedLayoutItem:0.0, v4, v18, v4];
+                  [(MUStackLayout *)v17 setPadding:rowView forArrangedLayoutItem:0.0, v4, v18, v4];
                 }
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v46 objects:v55 count:16];
+            v9 = [rowItems countByEnumeratingWithState:&v46 objects:v55 count:16];
           }
 
           while (v9);
@@ -395,16 +395,16 @@
     while (v40);
   }
 
-  v19 = [(MUStackLayout *)self->_stackLayout arrangedLayoutItems];
-  v20 = [v19 count];
+  arrangedLayoutItems = [(MUStackLayout *)self->_stackLayout arrangedLayoutItems];
+  v20 = [arrangedLayoutItems count];
 
   if (v20)
   {
     if (self->_scrollEnabled && sub_10000FA08(self) != 5)
     {
       v29 = self->_stackLayout;
-      v22 = [(MUStackLayout *)v29 arrangedLayoutItems];
-      v23 = [v22 lastObject];
+      arrangedLayoutItems2 = [(MUStackLayout *)v29 arrangedLayoutItems];
+      lastObject = [arrangedLayoutItems2 lastObject];
       top = 0.0;
       bottom = 12.0;
       v28 = v29;
@@ -415,8 +415,8 @@
     else
     {
       v21 = self->_stackLayout;
-      v22 = [(MUStackLayout *)v21 arrangedLayoutItems];
-      v23 = [v22 lastObject];
+      arrangedLayoutItems2 = [(MUStackLayout *)v21 arrangedLayoutItems];
+      lastObject = [arrangedLayoutItems2 lastObject];
       top = NSDirectionalEdgeInsetsZero.top;
       leading = NSDirectionalEdgeInsetsZero.leading;
       bottom = NSDirectionalEdgeInsetsZero.bottom;
@@ -424,7 +424,7 @@
       v28 = v21;
     }
 
-    [(MUStackLayout *)v28 setPadding:v23 forArrangedLayoutItem:top, leading, bottom, trailing];
+    [(MUStackLayout *)v28 setPadding:lastObject forArrangedLayoutItem:top, leading, bottom, trailing];
   }
 
   [(MUStackLayout *)self->_stackLayout activate];
@@ -465,20 +465,20 @@
   self->_rowViews = v36;
 }
 
-- (void)setFormInteractionEnabled:(BOOL)a3
+- (void)setFormInteractionEnabled:(BOOL)enabled
 {
-  if (self->_formInteractionEnabled != a3)
+  if (self->_formInteractionEnabled != enabled)
   {
-    v3 = a3;
-    self->_formInteractionEnabled = a3;
+    enabledCopy = enabled;
+    self->_formInteractionEnabled = enabled;
     if ([(UGCPOIEnrichmentViewController *)self isViewLoaded])
     {
       v12 = 0u;
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v5 = [(UGCPOIEnrichmentViewController *)self sectionControllers];
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      sectionControllers = [(UGCPOIEnrichmentViewController *)self sectionControllers];
+      v6 = [sectionControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         v7 = v6;
@@ -489,13 +489,13 @@
           {
             if (*v11 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(sectionControllers);
             }
 
-            [*(*(&v10 + 1) + 8 * i) setFormInteractionEnabled:v3];
+            [*(*(&v10 + 1) + 8 * i) setFormInteractionEnabled:enabledCopy];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v7 = [sectionControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
         }
 
         while (v7);
@@ -504,11 +504,11 @@
   }
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  if (self->_scrollEnabled != a3)
+  if (self->_scrollEnabled != enabled)
   {
-    self->_scrollEnabled = a3;
+    self->_scrollEnabled = enabled;
     if ([(UGCPOIEnrichmentViewController *)self isViewLoaded])
     {
       [(UIScrollView *)self->_scrollView setScrollEnabled:self->_scrollEnabled];
@@ -519,14 +519,14 @@
   }
 }
 
-- (void)setIsInlineMode:(BOOL)a3
+- (void)setIsInlineMode:(BOOL)mode
 {
-  v3 = a3;
-  self->_isInlineMode = a3;
-  [(UGCPOIEnrichmentViewController *)self setScrollEnabled:!a3];
-  [(UGCPOIEnrichmentViewController *)self setDefersPhotoPresentationToParent:v3];
+  modeCopy = mode;
+  self->_isInlineMode = mode;
+  [(UGCPOIEnrichmentViewController *)self setScrollEnabled:!mode];
+  [(UGCPOIEnrichmentViewController *)self setDefersPhotoPresentationToParent:modeCopy];
 
-  [(UGCPOIEnrichmentViewController *)self setUseTopPromotedAndInsetGroupedNutritionLabel:v3];
+  [(UGCPOIEnrichmentViewController *)self setUseTopPromotedAndInsetGroupedNutritionLabel:modeCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -549,8 +549,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(UGCPOIEnrichmentViewController *)self sectionControllers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  sectionControllers = [(UGCPOIEnrichmentViewController *)self sectionControllers];
+  v4 = [sectionControllers countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -562,7 +562,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sectionControllers);
         }
 
         [*(*(&v8 + 1) + 8 * v7) setFormInteractionEnabled:self->_formInteractionEnabled];
@@ -570,7 +570,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [sectionControllers countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -586,13 +586,13 @@
 {
   [(NSLayoutConstraint *)self->_heightConstraint setActive:0];
   scrollEnabled = self->_scrollEnabled;
-  v4 = [(UIScrollView *)self->_scrollView frameLayoutGuide];
-  v5 = [v4 heightAnchor];
-  v6 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v7 = [v6 heightAnchor];
+  frameLayoutGuide = [(UIScrollView *)self->_scrollView frameLayoutGuide];
+  heightAnchor = [frameLayoutGuide heightAnchor];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  heightAnchor2 = [contentLayoutGuide heightAnchor];
   if (scrollEnabled)
   {
-    v8 = [v5 constraintGreaterThanOrEqualToAnchor:v7];
+    v8 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
     heightConstraint = self->_heightConstraint;
     self->_heightConstraint = v8;
 
@@ -602,7 +602,7 @@
 
   else
   {
-    v11 = [v5 constraintEqualToAnchor:v7];
+    v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v12 = self->_heightConstraint;
     self->_heightConstraint = v11;
   }
@@ -616,19 +616,19 @@
 {
   v3 = [MUEdgeLayout alloc];
   scrollView = self->_scrollView;
-  v5 = [(UGCPOIEnrichmentViewController *)self view];
-  v6 = [v3 initWithItem:scrollView container:v5];
+  view = [(UGCPOIEnrichmentViewController *)self view];
+  v6 = [v3 initWithItem:scrollView container:view];
 
   v7 = [MUEdgeLayout alloc];
   contentView = self->_contentView;
-  v9 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v10 = [v7 initWithItem:contentView container:v9];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  v10 = [v7 initWithItem:contentView container:contentLayoutGuide];
 
-  v11 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v12 = [v11 widthAnchor];
-  v13 = [(UIScrollView *)self->_scrollView frameLayoutGuide];
-  v14 = [v13 widthAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  contentLayoutGuide2 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  widthAnchor = [contentLayoutGuide2 widthAnchor];
+  frameLayoutGuide = [(UIScrollView *)self->_scrollView frameLayoutGuide];
+  widthAnchor2 = [frameLayoutGuide widthAnchor];
+  v15 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
   v19[0] = self->_stackLayout;
   v19[1] = v6;
@@ -643,11 +643,11 @@
 {
   [(UGCPOIEnrichmentViewController *)self _mapsui_resetViewLayoutMargins];
   v3 = +[UIColor clearColor];
-  v4 = [(UGCPOIEnrichmentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UGCPOIEnrichmentViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(UGCPOIEnrichmentViewController *)self view];
-  [v5 setAccessibilityIdentifier:@"UGCPOIEnrichmentView"];
+  view2 = [(UGCPOIEnrichmentViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"UGCPOIEnrichmentView"];
 
   v6 = [UIScrollView alloc];
   y = CGRectZero.origin.y;
@@ -694,8 +694,8 @@
     [(UIScrollView *)self->_scrollView setContentInsetAdjustmentBehavior:3];
   }
 
-  v16 = [(UGCPOIEnrichmentViewController *)self view];
-  [v16 addSubview:self->_scrollView];
+  view3 = [(UGCPOIEnrichmentViewController *)self view];
+  [view3 addSubview:self->_scrollView];
 
   v17 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   contentView = self->_contentView;
@@ -717,9 +717,9 @@
   if (!self->_ratingsSectionController)
   {
     v3 = [UGCRatingsSectionController alloc];
-    v4 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm ratingsForm];
-    v5 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm mapItem];
-    v6 = [(UGCRatingsSectionController *)v3 initWithRatingsForm:v4 mapItem:v5 analyticsDelegate:self isInlineMode:[(UGCPOIEnrichmentViewController *)self isInlineMode]];
+    ratingsForm = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm ratingsForm];
+    mapItem = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm mapItem];
+    v6 = [(UGCRatingsSectionController *)v3 initWithRatingsForm:ratingsForm mapItem:mapItem analyticsDelegate:self isInlineMode:[(UGCPOIEnrichmentViewController *)self isInlineMode]];
     ratingsSectionController = self->_ratingsSectionController;
     self->_ratingsSectionController = v6;
 
@@ -729,9 +729,9 @@
   if (!self->_photosSectionController)
   {
     v8 = [UGCPhotosSectionController alloc];
-    v9 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm photosForm];
-    v10 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm mapItem];
-    v11 = [(UGCPhotosSectionController *)v8 initWithPhotosForm:v9 mapItem:v10 presentingViewController:self deferAddPhotoPresentationToParent:[(UGCPOIEnrichmentViewController *)self defersPhotoPresentationToParent] analyticsDelegate:self showSuggestedPhotos:!self->_isInlineMode];
+    photosForm = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm photosForm];
+    mapItem2 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm mapItem];
+    v11 = [(UGCPhotosSectionController *)v8 initWithPhotosForm:photosForm mapItem:mapItem2 presentingViewController:self deferAddPhotoPresentationToParent:[(UGCPOIEnrichmentViewController *)self defersPhotoPresentationToParent] analyticsDelegate:self showSuggestedPhotos:!self->_isInlineMode];
     photosSectionController = self->_photosSectionController;
     self->_photosSectionController = v11;
 
@@ -747,14 +747,14 @@
     [(UGCUserInformationSectionController *)self->_userInfoSectionController setDelegate:self];
   }
 
-  v15 = [(UGCPOIEnrichmentViewController *)self suppressRatings];
+  suppressRatings = [(UGCPOIEnrichmentViewController *)self suppressRatings];
   IsEnabled_ARPCommunityID = MapsFeature_IsEnabled_ARPCommunityID();
-  v17 = [(UGCPOIEnrichmentViewController *)self useTopPromotedAndInsetGroupedNutritionLabel];
+  useTopPromotedAndInsetGroupedNutritionLabel = [(UGCPOIEnrichmentViewController *)self useTopPromotedAndInsetGroupedNutritionLabel];
   if (IsEnabled_ARPCommunityID)
   {
-    if (v17)
+    if (useTopPromotedAndInsetGroupedNutritionLabel)
     {
-      if (v15)
+      if (suppressRatings)
       {
         v52 = self->_photosSectionController;
         v18 = &v52;
@@ -777,7 +777,7 @@ LABEL_20:
       goto LABEL_30;
     }
 
-    if (v15)
+    if (suppressRatings)
     {
       v20 = self->_userInfoSectionController;
       v47 = self->_photosSectionController;
@@ -786,16 +786,16 @@ LABEL_20:
       goto LABEL_30;
     }
 
-    v24 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm photosForm];
-    if ([v24 numberOfAddedPhotos])
+    photosForm2 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm photosForm];
+    if ([photosForm2 numberOfAddedPhotos])
     {
     }
 
     else
     {
-      v27 = [(UGCPOIEnrichmentViewController *)self hasTransitionedToPhotoCarousel];
+      hasTransitionedToPhotoCarousel = [(UGCPOIEnrichmentViewController *)self hasTransitionedToPhotoCarousel];
 
-      if ((v27 & 1) == 0)
+      if ((hasTransitionedToPhotoCarousel & 1) == 0)
       {
         v29 = self->_photosSectionController;
         v42 = self->_ratingsSectionController;
@@ -815,9 +815,9 @@ LABEL_28:
     goto LABEL_31;
   }
 
-  if (!v17)
+  if (!useTopPromotedAndInsetGroupedNutritionLabel)
   {
-    if (v15)
+    if (suppressRatings)
     {
       v21 = self->_userInfoSectionController;
       v35 = self->_photosSectionController;
@@ -834,7 +834,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v15)
+  if (!suppressRatings)
   {
     v23 = self->_ratingsSectionController;
     v37 = self->_userInfoSectionController;
@@ -856,9 +856,9 @@ LABEL_31:
   return v30;
 }
 
-- (UGCPOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)a3 presentationContext:(int64_t)a4
+- (UGCPOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)form presentationContext:(int64_t)context
 {
-  v7 = a3;
+  formCopy = form;
   v12.receiver = self;
   v12.super_class = UGCPOIEnrichmentViewController;
   v8 = [(UGCPOIEnrichmentViewController *)&v12 initWithNibName:0 bundle:0];
@@ -867,10 +867,10 @@ LABEL_31:
   {
     v8->_scrollEnabled = 1;
     v8->_formInteractionEnabled = 1;
-    objc_storeStrong(&v8->_poiEnrichmentForm, a3);
-    v9->_presentationContext = a4;
-    v10 = [(UGCPOIEnrichmentForm *)v9->_poiEnrichmentForm photosForm];
-    [v10 addObserver:v9];
+    objc_storeStrong(&v8->_poiEnrichmentForm, form);
+    v9->_presentationContext = context;
+    photosForm = [(UGCPOIEnrichmentForm *)v9->_poiEnrichmentForm photosForm];
+    [photosForm addObserver:v9];
   }
 
   return v9;

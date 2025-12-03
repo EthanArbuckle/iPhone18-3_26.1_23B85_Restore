@@ -1,19 +1,19 @@
 @interface SGExtractedOrderSuggestion
-- (id)makePreviewControllerWithMessageID:(id)a3 orderNumber:(id)a4 completion:(id)a5;
+- (id)makePreviewControllerWithMessageID:(id)d orderNumber:(id)number completion:(id)completion;
 - (id)walletLogo;
 @end
 
 @implementation SGExtractedOrderSuggestion
 
-- (id)makePreviewControllerWithMessageID:(id)a3 orderNumber:(id)a4 completion:(id)a5
+- (id)makePreviewControllerWithMessageID:(id)d orderNumber:(id)number completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  numberCopy = number;
+  completionCopy = completion;
   FKExtractedOrderSuggestionsBannerProviderClass = getFKExtractedOrderSuggestionsBannerProviderClass();
   if (objc_opt_respondsToSelector())
   {
-    v11 = [FKExtractedOrderSuggestionsBannerProviderClass makePreviewControllerWithMessageID:v7 orderNumber:v8 completion:v9];
+    v11 = [FKExtractedOrderSuggestionsBannerProviderClass makePreviewControllerWithMessageID:dCopy orderNumber:numberCopy completion:completionCopy];
   }
 
   else
@@ -29,15 +29,15 @@
   FKExtractedOrderSuggestionsBannerProviderClass = getFKExtractedOrderSuggestionsBannerProviderClass();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [FKExtractedOrderSuggestionsBannerProviderClass walletLogo];
+    walletLogo = [FKExtractedOrderSuggestionsBannerProviderClass walletLogo];
   }
 
   else
   {
-    v3 = 0;
+    walletLogo = 0;
   }
 
-  return v3;
+  return walletLogo;
 }
 
 @end

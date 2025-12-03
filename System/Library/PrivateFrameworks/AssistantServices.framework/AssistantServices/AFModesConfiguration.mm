@@ -1,142 +1,142 @@
 @interface AFModesConfiguration
-+ (id)newWithBuilder:(id)a3;
-- (AFModesConfiguration)initWithBuilder:(id)a3;
-- (AFModesConfiguration)initWithCoder:(id)a3;
-- (AFModesConfiguration)initWithIsEyesFree:(BOOL)a3 isUIFree:(BOOL)a4 isForCarDND:(BOOL)a5 isInAmbient:(BOOL)a6 isMapsNavigationActive:(BOOL)a7 isVoiceTriggerRequest:(BOOL)a8 isConnectedToCarPlay:(BOOL)a9 isRequestMadeWithPhysicalDeviceInteraction:(BOOL)a10 isAudioAccessoryButtonActivation:(BOOL)a11 isSiriAutoPrompt:(BOOL)a12 isFlexibleFollowup:(BOOL)a13 userTypedInSiri:(BOOL)a14 modeOverrideValue:(id)a15 isDeviceUnlocked:(BOOL)a16 isDeviceScreenON:(BOOL)a17 isInitialBringUp:(BOOL)a18 isUserEngagedWithDevice:(int64_t)a19;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFModesConfiguration)initWithBuilder:(id)builder;
+- (AFModesConfiguration)initWithCoder:(id)coder;
+- (AFModesConfiguration)initWithIsEyesFree:(BOOL)free isUIFree:(BOOL)iFree isForCarDND:(BOOL)d isInAmbient:(BOOL)ambient isMapsNavigationActive:(BOOL)active isVoiceTriggerRequest:(BOOL)request isConnectedToCarPlay:(BOOL)play isRequestMadeWithPhysicalDeviceInteraction:(BOOL)self0 isAudioAccessoryButtonActivation:(BOOL)self1 isSiriAutoPrompt:(BOOL)self2 isFlexibleFollowup:(BOOL)self3 userTypedInSiri:(BOOL)self4 modeOverrideValue:(id)self5 isDeviceUnlocked:(BOOL)self6 isDeviceScreenON:(BOOL)self7 isInitialBringUp:(BOOL)self8 isUserEngagedWithDevice:(int64_t)self9;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFModesConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   isEyesFree = self->_isEyesFree;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:isEyesFree];
-  [v6 encodeObject:v7 forKey:@"AFModesConfiguration::isEyesFree"];
+  [coderCopy encodeObject:v7 forKey:@"AFModesConfiguration::isEyesFree"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isUIFree];
-  [v6 encodeObject:v8 forKey:@"AFModesConfiguration::isUIFree"];
+  [coderCopy encodeObject:v8 forKey:@"AFModesConfiguration::isUIFree"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_isForCarDND];
-  [v6 encodeObject:v9 forKey:@"AFModesConfiguration::isForCarDND"];
+  [coderCopy encodeObject:v9 forKey:@"AFModesConfiguration::isForCarDND"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isInAmbient];
-  [v6 encodeObject:v10 forKey:@"AFModesConfiguration::isInAmbient"];
+  [coderCopy encodeObject:v10 forKey:@"AFModesConfiguration::isInAmbient"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_isMapsNavigationActive];
-  [v6 encodeObject:v11 forKey:@"AFModesConfiguration::isMapsNavigationActive"];
+  [coderCopy encodeObject:v11 forKey:@"AFModesConfiguration::isMapsNavigationActive"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_isVoiceTriggerRequest];
-  [v6 encodeObject:v12 forKey:@"AFModesConfiguration::isVoiceTriggerRequest"];
+  [coderCopy encodeObject:v12 forKey:@"AFModesConfiguration::isVoiceTriggerRequest"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_isConnectedToCarPlay];
-  [v6 encodeObject:v13 forKey:@"AFModesConfiguration::isConnectedToCarPlay"];
+  [coderCopy encodeObject:v13 forKey:@"AFModesConfiguration::isConnectedToCarPlay"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_isRequestMadeWithPhysicalDeviceInteraction];
-  [v6 encodeObject:v14 forKey:@"AFModesConfiguration::isRequestMadeWithPhysicalDeviceInteraction"];
+  [coderCopy encodeObject:v14 forKey:@"AFModesConfiguration::isRequestMadeWithPhysicalDeviceInteraction"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_isAudioAccessoryButtonActivation];
-  [v6 encodeObject:v15 forKey:@"AFModesConfiguration::isAudioAccessoryButtonActivation"];
+  [coderCopy encodeObject:v15 forKey:@"AFModesConfiguration::isAudioAccessoryButtonActivation"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSiriAutoPrompt];
-  [v6 encodeObject:v16 forKey:@"AFModesConfiguration::isSiriAutoPrompt"];
+  [coderCopy encodeObject:v16 forKey:@"AFModesConfiguration::isSiriAutoPrompt"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_isFlexibleFollowup];
-  [v6 encodeObject:v17 forKey:@"AFModesConfiguration::isFlexibleFollowup"];
+  [coderCopy encodeObject:v17 forKey:@"AFModesConfiguration::isFlexibleFollowup"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_userTypedInSiri];
-  [v6 encodeObject:v18 forKey:@"AFModesConfiguration::userTypedInSiri"];
+  [coderCopy encodeObject:v18 forKey:@"AFModesConfiguration::userTypedInSiri"];
 
-  [v6 encodeObject:self->_modeOverrideValue forKey:@"AFModesConfiguration::modeOverrideValue"];
+  [coderCopy encodeObject:self->_modeOverrideValue forKey:@"AFModesConfiguration::modeOverrideValue"];
   v19 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDeviceUnlocked];
-  [v6 encodeObject:v19 forKey:@"AFModesConfiguration::isDeviceUnlocked"];
+  [coderCopy encodeObject:v19 forKey:@"AFModesConfiguration::isDeviceUnlocked"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDeviceScreenON];
-  [v6 encodeObject:v20 forKey:@"AFModesConfiguration::isDeviceScreenON"];
+  [coderCopy encodeObject:v20 forKey:@"AFModesConfiguration::isDeviceScreenON"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:self->_isInitialBringUp];
-  [v6 encodeObject:v21 forKey:@"AFModesConfiguration::isInitialBringUp"];
+  [coderCopy encodeObject:v21 forKey:@"AFModesConfiguration::isInitialBringUp"];
 
   v22 = [MEMORY[0x1E696AD98] numberWithInteger:self->_isUserEngagedWithDevice];
-  [v6 encodeObject:v22 forKey:@"AFModesConfiguration::isUserEngagedWithDevice"];
+  [coderCopy encodeObject:v22 forKey:@"AFModesConfiguration::isUserEngagedWithDevice"];
 }
 
-- (AFModesConfiguration)initWithCoder:(id)a3
+- (AFModesConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isEyesFree"];
-  v35 = [v4 BOOLValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isEyesFree"];
+  bOOLValue = [v4 BOOLValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isUIFree"];
-  v34 = [v5 BOOLValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isUIFree"];
+  bOOLValue2 = [v5 BOOLValue];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isForCarDND"];
-  v33 = [v6 BOOLValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isForCarDND"];
+  bOOLValue3 = [v6 BOOLValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isInAmbient"];
-  v32 = [v7 BOOLValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isInAmbient"];
+  bOOLValue4 = [v7 BOOLValue];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isMapsNavigationActive"];
-  v31 = [v8 BOOLValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isMapsNavigationActive"];
+  bOOLValue5 = [v8 BOOLValue];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isVoiceTriggerRequest"];
-  v30 = [v9 BOOLValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isVoiceTriggerRequest"];
+  bOOLValue6 = [v9 BOOLValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isConnectedToCarPlay"];
-  v29 = [v10 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isConnectedToCarPlay"];
+  bOOLValue7 = [v10 BOOLValue];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isRequestMadeWithPhysicalDeviceInteraction"];
-  v28 = [v11 BOOLValue];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isRequestMadeWithPhysicalDeviceInteraction"];
+  bOOLValue8 = [v11 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isAudioAccessoryButtonActivation"];
-  v27 = [v12 BOOLValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isAudioAccessoryButtonActivation"];
+  bOOLValue9 = [v12 BOOLValue];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isSiriAutoPrompt"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isSiriAutoPrompt"];
   LOBYTE(v12) = [v13 BOOLValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isFlexibleFollowup"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isFlexibleFollowup"];
   LOBYTE(v13) = [v14 BOOLValue];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::userTypedInSiri"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::userTypedInSiri"];
   LOBYTE(v14) = [v15 BOOLValue];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::modeOverrideValue"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isDeviceUnlocked"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::modeOverrideValue"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isDeviceUnlocked"];
   LOBYTE(v11) = [v17 BOOLValue];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isDeviceScreenON"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isDeviceScreenON"];
   LOBYTE(v17) = [v18 BOOLValue];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isInitialBringUp"];
-  v20 = [v19 BOOLValue];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isInitialBringUp"];
+  bOOLValue10 = [v19 BOOLValue];
 
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isUserEngagedWithDevice"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFModesConfiguration::isUserEngagedWithDevice"];
 
-  v22 = [v21 integerValue];
-  BYTE2(v26) = v20;
+  integerValue = [v21 integerValue];
+  BYTE2(v26) = bOOLValue10;
   BYTE1(v26) = v17;
   LOBYTE(v26) = v11;
   BYTE5(v25) = v14;
   BYTE4(v25) = v13;
   BYTE3(v25) = v12;
-  BYTE2(v25) = v27;
-  BYTE1(v25) = v28;
-  LOBYTE(v25) = v29;
-  v23 = [AFModesConfiguration initWithIsEyesFree:"initWithIsEyesFree:isUIFree:isForCarDND:isInAmbient:isMapsNavigationActive:isVoiceTriggerRequest:isConnectedToCarPlay:isRequestMadeWithPhysicalDeviceInteraction:isAudioAccessoryButtonActivation:isSiriAutoPrompt:isFlexibleFollowup:userTypedInSiri:modeOverrideValue:isDeviceUnlocked:isDeviceScreenON:isInitialBringUp:isUserEngagedWithDevice:" isUIFree:v35 isForCarDND:v34 isInAmbient:v33 isMapsNavigationActive:v32 isVoiceTriggerRequest:v31 isConnectedToCarPlay:v30 isRequestMadeWithPhysicalDeviceInteraction:v25 isAudioAccessoryButtonActivation:v16 isSiriAutoPrompt:v26 isFlexibleFollowup:v22 userTypedInSiri:? modeOverrideValue:? isDeviceUnlocked:? isDeviceScreenON:? isInitialBringUp:? isUserEngagedWithDevice:?];
+  BYTE2(v25) = bOOLValue9;
+  BYTE1(v25) = bOOLValue8;
+  LOBYTE(v25) = bOOLValue7;
+  v23 = [AFModesConfiguration initWithIsEyesFree:"initWithIsEyesFree:isUIFree:isForCarDND:isInAmbient:isMapsNavigationActive:isVoiceTriggerRequest:isConnectedToCarPlay:isRequestMadeWithPhysicalDeviceInteraction:isAudioAccessoryButtonActivation:isSiriAutoPrompt:isFlexibleFollowup:userTypedInSiri:modeOverrideValue:isDeviceUnlocked:isDeviceScreenON:isInitialBringUp:isUserEngagedWithDevice:" isUIFree:bOOLValue isForCarDND:bOOLValue2 isInAmbient:bOOLValue3 isMapsNavigationActive:bOOLValue4 isVoiceTriggerRequest:bOOLValue5 isConnectedToCarPlay:bOOLValue6 isRequestMadeWithPhysicalDeviceInteraction:v25 isAudioAccessoryButtonActivation:v16 isSiriAutoPrompt:v26 isFlexibleFollowup:integerValue userTypedInSiri:? modeOverrideValue:? isDeviceUnlocked:? isDeviceScreenON:? isInitialBringUp:? isUserEngagedWithDevice:?];
 
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
@@ -146,7 +146,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isEyesFree = self->_isEyesFree;
       if (isEyesFree != [(AFModesConfiguration *)v5 isEyesFree])
       {
@@ -204,9 +204,9 @@
       isSiriAutoPrompt = self->_isSiriAutoPrompt;
       if (isSiriAutoPrompt == [(AFModesConfiguration *)v5 isSiriAutoPrompt]&& (isFlexibleFollowup = self->_isFlexibleFollowup, isFlexibleFollowup == [(AFModesConfiguration *)v5 isFlexibleFollowup]) && (userTypedInSiri = self->_userTypedInSiri, userTypedInSiri == [(AFModesConfiguration *)v5 userTypedInSiri]) && (isDeviceUnlocked = self->_isDeviceUnlocked, isDeviceUnlocked == [(AFModesConfiguration *)v5 isDeviceUnlocked]) && (isDeviceScreenON = self->_isDeviceScreenON, isDeviceScreenON == [(AFModesConfiguration *)v5 isDeviceScreenON]) && (isInitialBringUp = self->_isInitialBringUp, isInitialBringUp == [(AFModesConfiguration *)v5 isInitialBringUp]) && (isUserEngagedWithDevice = self->_isUserEngagedWithDevice, isUserEngagedWithDevice == [(AFModesConfiguration *)v5 isUserEngagedWithDevice]))
       {
-        v22 = [(AFModesConfiguration *)v5 modeOverrideValue];
+        modeOverrideValue = [(AFModesConfiguration *)v5 modeOverrideValue];
         modeOverrideValue = self->_modeOverrideValue;
-        v24 = modeOverrideValue == v22 || [(NSString *)modeOverrideValue isEqual:v22];
+        v24 = modeOverrideValue == modeOverrideValue || [(NSString *)modeOverrideValue isEqual:modeOverrideValue];
       }
 
       else
@@ -264,7 +264,7 @@ LABEL_24:
   return v24 ^ v26;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v32 = objc_alloc(MEMORY[0x1E696AEC0]);
   v33.receiver = self;
@@ -444,31 +444,31 @@ LABEL_24:
   return v22;
 }
 
-- (AFModesConfiguration)initWithIsEyesFree:(BOOL)a3 isUIFree:(BOOL)a4 isForCarDND:(BOOL)a5 isInAmbient:(BOOL)a6 isMapsNavigationActive:(BOOL)a7 isVoiceTriggerRequest:(BOOL)a8 isConnectedToCarPlay:(BOOL)a9 isRequestMadeWithPhysicalDeviceInteraction:(BOOL)a10 isAudioAccessoryButtonActivation:(BOOL)a11 isSiriAutoPrompt:(BOOL)a12 isFlexibleFollowup:(BOOL)a13 userTypedInSiri:(BOOL)a14 modeOverrideValue:(id)a15 isDeviceUnlocked:(BOOL)a16 isDeviceScreenON:(BOOL)a17 isInitialBringUp:(BOOL)a18 isUserEngagedWithDevice:(int64_t)a19
+- (AFModesConfiguration)initWithIsEyesFree:(BOOL)free isUIFree:(BOOL)iFree isForCarDND:(BOOL)d isInAmbient:(BOOL)ambient isMapsNavigationActive:(BOOL)active isVoiceTriggerRequest:(BOOL)request isConnectedToCarPlay:(BOOL)play isRequestMadeWithPhysicalDeviceInteraction:(BOOL)self0 isAudioAccessoryButtonActivation:(BOOL)self1 isSiriAutoPrompt:(BOOL)self2 isFlexibleFollowup:(BOOL)self3 userTypedInSiri:(BOOL)self4 modeOverrideValue:(id)self5 isDeviceUnlocked:(BOOL)self6 isDeviceScreenON:(BOOL)self7 isInitialBringUp:(BOOL)self8 isUserEngagedWithDevice:(int64_t)self9
 {
-  v23 = a15;
+  valueCopy = value;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __363__AFModesConfiguration_initWithIsEyesFree_isUIFree_isForCarDND_isInAmbient_isMapsNavigationActive_isVoiceTriggerRequest_isConnectedToCarPlay_isRequestMadeWithPhysicalDeviceInteraction_isAudioAccessoryButtonActivation_isSiriAutoPrompt_isFlexibleFollowup_userTypedInSiri_modeOverrideValue_isDeviceUnlocked_isDeviceScreenON_isInitialBringUp_isUserEngagedWithDevice___block_invoke;
   v30[3] = &unk_1E7345BD0;
-  v33 = a3;
-  v34 = a4;
-  v35 = a5;
-  v36 = a6;
-  v37 = a7;
-  v38 = a8;
-  v39 = a9;
-  v40 = a10;
-  v41 = a11;
-  v42 = a12;
-  v43 = a13;
-  v44 = a14;
-  v45 = a16;
-  v46 = a17;
-  v47 = a18;
-  v31 = v23;
-  v32 = a19;
-  v24 = v23;
+  freeCopy = free;
+  iFreeCopy = iFree;
+  dCopy = d;
+  ambientCopy = ambient;
+  activeCopy = active;
+  requestCopy = request;
+  playCopy = play;
+  interactionCopy = interaction;
+  activationCopy = activation;
+  promptCopy = prompt;
+  followupCopy = followup;
+  siriCopy = siri;
+  unlockedCopy = unlocked;
+  nCopy = n;
+  upCopy = up;
+  v31 = valueCopy;
+  deviceCopy = device;
+  v24 = valueCopy;
   v25 = [(AFModesConfiguration *)self initWithBuilder:v30];
 
   return v25;
@@ -497,17 +497,17 @@ void __363__AFModesConfiguration_initWithIsEyesFree_isUIFree_isForCarDND_isInAmb
   [v4 setIsUserEngagedWithDevice:*(a1 + 40)];
 }
 
-- (AFModesConfiguration)initWithBuilder:(id)a3
+- (AFModesConfiguration)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFModesConfiguration;
   v5 = [(AFModesConfiguration *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFModesConfigurationMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFModesConfigurationMutation *)v7 isDirty])
     {
       v6->_isEyesFree = [(_AFModesConfigurationMutation *)v7 getIsEyesFree];
@@ -522,8 +522,8 @@ void __363__AFModesConfiguration_initWithIsEyesFree_isUIFree_isForCarDND_isInAmb
       v6->_isSiriAutoPrompt = [(_AFModesConfigurationMutation *)v7 getIsSiriAutoPrompt];
       v6->_isFlexibleFollowup = [(_AFModesConfigurationMutation *)v7 getIsFlexibleFollowup];
       v6->_userTypedInSiri = [(_AFModesConfigurationMutation *)v7 getUserTypedInSiri];
-      v8 = [(_AFModesConfigurationMutation *)v7 getModeOverrideValue];
-      v9 = [v8 copy];
+      getModeOverrideValue = [(_AFModesConfigurationMutation *)v7 getModeOverrideValue];
+      v9 = [getModeOverrideValue copy];
       modeOverrideValue = v6->_modeOverrideValue;
       v6->_modeOverrideValue = v9;
 
@@ -537,21 +537,21 @@ void __363__AFModesConfiguration_initWithIsEyesFree_isUIFree_isForCarDND_isInAmb
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFModesConfigurationMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFModesConfigurationMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFModesConfiguration);
@@ -567,8 +567,8 @@ void __363__AFModesConfiguration_initWithIsEyesFree_isUIFree_isForCarDND_isInAmb
       v6->_isSiriAutoPrompt = [(_AFModesConfigurationMutation *)v5 getIsSiriAutoPrompt];
       v6->_isFlexibleFollowup = [(_AFModesConfigurationMutation *)v5 getIsFlexibleFollowup];
       v6->_userTypedInSiri = [(_AFModesConfigurationMutation *)v5 getUserTypedInSiri];
-      v7 = [(_AFModesConfigurationMutation *)v5 getModeOverrideValue];
-      v8 = [v7 copy];
+      getModeOverrideValue = [(_AFModesConfigurationMutation *)v5 getModeOverrideValue];
+      v8 = [getModeOverrideValue copy];
       modeOverrideValue = v6->_modeOverrideValue;
       v6->_modeOverrideValue = v8;
 

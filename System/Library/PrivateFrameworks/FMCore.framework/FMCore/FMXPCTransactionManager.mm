@@ -4,13 +4,13 @@
 - (id)dumpActiveTransactions;
 - (id)initSingleton;
 - (void)_disableKeepAlive;
-- (void)_disableLaunchOnRebootActivity:(id)a3;
+- (void)_disableLaunchOnRebootActivity:(id)activity;
 - (void)_disableOldKeepAliveActivity;
 - (void)_enableKeepAlive;
-- (void)beginTransaction:(id)a3;
+- (void)beginTransaction:(id)transaction;
 - (void)dealloc;
-- (void)endTransaction:(id)a3;
-- (void)setLaunchOnRebootActivity:(id)a3 keepAliveActivity:(id)a4;
+- (void)endTransaction:(id)transaction;
+- (void)setLaunchOnRebootActivity:(id)activity keepAliveActivity:(id)aliveActivity;
 @end
 
 @implementation FMXPCTransactionManager
@@ -74,11 +74,11 @@ void __41__FMXPCTransactionManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)setLaunchOnRebootActivity:(id)a3 keepAliveActivity:(id)a4
+- (void)setLaunchOnRebootActivity:(id)activity keepAliveActivity:(id)aliveActivity
 {
-  v6 = a4;
-  [(FMXPCTransactionManager *)self _disableLaunchOnRebootActivity:a3];
-  [(FMXPCTransactionManager *)self setKeepAliveActivityIdentifier:v6];
+  aliveActivityCopy = aliveActivity;
+  [(FMXPCTransactionManager *)self _disableLaunchOnRebootActivity:activity];
+  [(FMXPCTransactionManager *)self setKeepAliveActivityIdentifier:aliveActivityCopy];
 
   [(FMXPCTransactionManager *)self _disableOldKeepAliveActivity];
 }
@@ -86,26 +86,26 @@ void __41__FMXPCTransactionManager_sharedInstance__block_invoke()
 - (void)dealloc
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 fm_logID];
+  fm_logID = [self fm_logID];
   v5 = 138412290;
-  v6 = v3;
+  v6 = fm_logID;
   _os_log_debug_impl(&dword_24A2EE000, a2, OS_LOG_TYPE_DEBUG, "%@ deallocating...", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginTransaction:(id)a3
+- (void)beginTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(FMXPCTransactionManager *)self txn_ops_queue];
+  transactionCopy = transaction;
+  txn_ops_queue = [(FMXPCTransactionManager *)self txn_ops_queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__FMXPCTransactionManager_beginTransaction___block_invoke;
   v7[3] = &unk_278FD9690;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = transactionCopy;
+  selfCopy = self;
+  v6 = transactionCopy;
+  dispatch_sync(txn_ops_queue, v7);
 }
 
 void __44__FMXPCTransactionManager_beginTransaction___block_invoke(uint64_t a1)
@@ -146,18 +146,18 @@ void __44__FMXPCTransactionManager_beginTransaction___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endTransaction:(id)a3
+- (void)endTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(FMXPCTransactionManager *)self txn_ops_queue];
+  transactionCopy = transaction;
+  txn_ops_queue = [(FMXPCTransactionManager *)self txn_ops_queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__FMXPCTransactionManager_endTransaction___block_invoke;
   v7[3] = &unk_278FD9690;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = transactionCopy;
+  v6 = transactionCopy;
+  dispatch_sync(txn_ops_queue, v7);
 }
 
 void __42__FMXPCTransactionManager_endTransaction___block_invoke(uint64_t a1)
@@ -219,14 +219,14 @@ void __42__FMXPCTransactionManager_endTransaction___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(FMXPCTransactionManager *)self txn_ops_queue];
+  txn_ops_queue = [(FMXPCTransactionManager *)self txn_ops_queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__FMXPCTransactionManager_dumpActiveTransactions__block_invoke;
   v6[3] = &unk_278FD99D8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(txn_ops_queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -245,9 +245,9 @@ void __49__FMXPCTransactionManager_dumpActiveTransactions__block_invoke(uint64_t
 
 - (void)_enableKeepAlive
 {
-  v3 = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
+  keepAliveActivityIdentifier = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
 
-  if (v3)
+  if (keepAliveActivityIdentifier)
   {
     v4 = LogCategory_Unspecified();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -264,8 +264,8 @@ void __49__FMXPCTransactionManager_dumpActiveTransactions__block_invoke(uint64_t
     xpc_dictionary_set_BOOL(v5, *MEMORY[0x277D86330], 1);
     xpc_dictionary_set_int64(v5, *MEMORY[0x277D86250], 600);
     xpc_dictionary_set_int64(v5, *MEMORY[0x277D86270], 60);
-    v6 = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
-    v7 = [v6 cStringUsingEncoding:4];
+    keepAliveActivityIdentifier2 = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
+    v7 = [keepAliveActivityIdentifier2 cStringUsingEncoding:4];
 
     xpc_activity_register(v7, v5, &__block_literal_global_7);
   }
@@ -314,9 +314,9 @@ LABEL_6:
 
 - (void)_disableKeepAlive
 {
-  v3 = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
+  keepAliveActivityIdentifier = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
 
-  if (v3)
+  if (keepAliveActivityIdentifier)
   {
     v4 = LogCategory_Unspecified();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -325,14 +325,14 @@ LABEL_6:
       _os_log_impl(&dword_24A2EE000, v4, OS_LOG_TYPE_INFO, "Unregistering keep-alive-on-dirty XPC activity", v6, 2u);
     }
 
-    v5 = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
-    xpc_activity_unregister([v5 cStringUsingEncoding:4]);
+    keepAliveActivityIdentifier2 = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
+    xpc_activity_unregister([keepAliveActivityIdentifier2 cStringUsingEncoding:4]);
   }
 }
 
-- (void)_disableLaunchOnRebootActivity:(id)a3
+- (void)_disableLaunchOnRebootActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = LogCategory_Unspecified();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -340,7 +340,7 @@ LABEL_6:
     _os_log_impl(&dword_24A2EE000, v4, OS_LOG_TYPE_INFO, "Unregistering launch-on-reboot XPC activity", v6, 2u);
   }
 
-  v5 = [v3 cStringUsingEncoding:4];
+  v5 = [activityCopy cStringUsingEncoding:4];
   xpc_activity_unregister(v5);
 }
 
@@ -353,8 +353,8 @@ LABEL_6:
     _os_log_impl(&dword_24A2EE000, v3, OS_LOG_TYPE_INFO, "Unregistering old keep-alive-on-dirty XPC activity", v5, 2u);
   }
 
-  v4 = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
-  xpc_activity_unregister([v4 cStringUsingEncoding:4]);
+  keepAliveActivityIdentifier = [(FMXPCTransactionManager *)self keepAliveActivityIdentifier];
+  xpc_activity_unregister([keepAliveActivityIdentifier cStringUsingEncoding:4]);
 }
 
 @end

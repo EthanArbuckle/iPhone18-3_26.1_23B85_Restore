@@ -1,29 +1,29 @@
 @interface EKContactDescriptionGenerator
-+ (id)EKLabeledDisplayStringForContact:(id)a3 label:(id)a4;
-+ (id)EKLabeledDisplayStringForContact:(id)a3 label:(id)a4 isMe:(BOOL)a5;
++ (id)EKLabeledDisplayStringForContact:(id)contact label:(id)label;
++ (id)EKLabeledDisplayStringForContact:(id)contact label:(id)label isMe:(BOOL)me;
 @end
 
 @implementation EKContactDescriptionGenerator
 
-+ (id)EKLabeledDisplayStringForContact:(id)a3 label:(id)a4
++ (id)EKLabeledDisplayStringForContact:(id)contact label:(id)label
 {
   v6 = MEMORY[0x1E6992F50];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultProvider];
-  v10 = [v8 identifier];
-  v11 = [v9 contactIdentifierIsMe:v10];
+  labelCopy = label;
+  contactCopy = contact;
+  defaultProvider = [v6 defaultProvider];
+  identifier = [contactCopy identifier];
+  v11 = [defaultProvider contactIdentifierIsMe:identifier];
 
-  v12 = [a1 EKLabeledDisplayStringForContact:v8 label:v7 isMe:v11];
+  v12 = [self EKLabeledDisplayStringForContact:contactCopy label:labelCopy isMe:v11];
 
   return v12;
 }
 
-+ (id)EKLabeledDisplayStringForContact:(id)a3 label:(id)a4 isMe:(BOOL)a5
++ (id)EKLabeledDisplayStringForContact:(id)contact label:(id)label isMe:(BOOL)me
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  meCopy = me;
+  contactCopy = contact;
+  labelCopy = label;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -42,14 +42,14 @@
 
   v10 = v9;
   _Block_object_dispose(&v23, 8);
-  v11 = [v9 localizedStringForLabel:v8];
-  v12 = [v11 localizedCapitalizedString];
+  v11 = [v9 localizedStringForLabel:labelCopy];
+  localizedCapitalizedString = [v11 localizedCapitalizedString];
 
-  if (v5)
+  if (meCopy)
   {
-    if (v12)
+    if (localizedCapitalizedString)
     {
-      v13 = v12;
+      v13 = localizedCapitalizedString;
       goto LABEL_15;
     }
 
@@ -59,16 +59,16 @@
 
   else
   {
-    v14 = [getCNContactFormatterClass() stringFromContact:v7 style:0];
-    if ([v7 contactType] != 1)
+    v14 = [getCNContactFormatterClass() stringFromContact:contactCopy style:0];
+    if ([contactCopy contactType] != 1)
     {
       v16 = MEMORY[0x1E696AEC0];
       v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v18 = v17;
-      if (v12)
+      if (localizedCapitalizedString)
       {
         v19 = [v17 localizedStringForKey:@"%@’s %@" value:&stru_1F1B49D68 table:0];
-        [v16 localizedStringWithFormat:v19, v14, v12];
+        [v16 localizedStringWithFormat:v19, v14, localizedCapitalizedString];
       }
 
       else

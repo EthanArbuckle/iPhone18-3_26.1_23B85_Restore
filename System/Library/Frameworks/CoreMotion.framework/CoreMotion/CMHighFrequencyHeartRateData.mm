@@ -1,29 +1,29 @@
 @interface CMHighFrequencyHeartRateData
-- (CMHighFrequencyHeartRateData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMHighFrequencyHeartRateData)initWithCoder:(id)a3;
-- (CMHighFrequencyHeartRateData)initWithHeartRateData:(id)a3;
+- (CMHighFrequencyHeartRateData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMHighFrequencyHeartRateData)initWithCoder:(id)coder;
+- (CMHighFrequencyHeartRateData)initWithHeartRateData:(id)data;
 - (CMHighFrequencyHeartRateDataConfidence)confidence;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMHighFrequencyHeartRateData
 
-- (CMHighFrequencyHeartRateData)initWithHeartRateData:(id)a3
+- (CMHighFrequencyHeartRateData)initWithHeartRateData:(id)data
 {
-  objc_msgSend_frequency(a3, a2, a3);
-  if (v7 >= 1.0 && (objc_msgSend_confidence(a3, v5, v6), v10 >= 0.4))
+  objc_msgSend_frequency(data, a2, data);
+  if (v7 >= 1.0 && (objc_msgSend_confidence(data, v5, v6), v10 >= 0.4))
   {
-    objc_msgSend_timestamp(a3, v8, v9);
+    objc_msgSend_timestamp(data, v8, v9);
     v19.receiver = self;
     v19.super_class = CMHighFrequencyHeartRateData;
     v11 = [(CMLogItem *)&v19 initWithTimestamp:?];
     if (v11)
     {
-      started = a3;
+      started = data;
       goto LABEL_7;
     }
   }
@@ -54,11 +54,11 @@ LABEL_7:
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CMHighFrequencyHeartRateData;
-  v6 = [(CMLogItem *)&v8 copyWithZone:a3];
+  v6 = [(CMLogItem *)&v8 copyWithZone:zone];
   if (v6)
   {
     v6[2] = objc_msgSend_copy(self->_heartRateData, v4, v5);
@@ -67,7 +67,7 @@ LABEL_7:
   return v6;
 }
 
-- (CMHighFrequencyHeartRateData)initWithCoder:(id)a3
+- (CMHighFrequencyHeartRateData)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CMHighFrequencyHeartRateData;
@@ -75,18 +75,18 @@ LABEL_7:
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_heartRateData = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMHighFrequencyHeartRateDataCodingKeyData");
+    v4->_heartRateData = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMHighFrequencyHeartRateDataCodingKeyData");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CMHighFrequencyHeartRateData;
   [(CMLogItem *)&v6 encodeWithCoder:?];
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_heartRateData, @"kCMHighFrequencyHeartRateDataCodingKeyData");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_heartRateData, @"kCMHighFrequencyHeartRateDataCodingKeyData");
 }
 
 - (CMHighFrequencyHeartRateDataConfidence)confidence
@@ -124,9 +124,9 @@ LABEL_7:
   return v5;
 }
 
-- (CMHighFrequencyHeartRateData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMHighFrequencyHeartRateData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (!objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (!objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     goto LABEL_7;
   }
@@ -144,7 +144,7 @@ LABEL_7:
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v12 = objc_msgSend_initWithObjects_(v8, v11, v9, v10, 0);
-  v14 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(v7, v13, v12, a3, 0);
+  v14 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(v7, v13, v12, representation, 0);
   if (!v14)
   {
 LABEL_7:

@@ -1,10 +1,10 @@
 @interface WeakNotificationObserver
-- (void)handleWithNotification:(id)a3;
+- (void)handleWithNotification:(id)notification;
 @end
 
 @implementation WeakNotificationObserver
 
-- (void)handleWithNotification:(id)a3
+- (void)handleWithNotification:(id)notification
 {
   v4 = sub_3E5954();
   v5 = *(v4 - 8);

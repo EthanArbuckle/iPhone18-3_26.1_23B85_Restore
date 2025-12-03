@@ -1,25 +1,25 @@
 @interface CNiOSABInstantMessageAddressContactPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNiOSABInstantMessageAddressContactPredicate)initWithCoder:(id)a3;
-- (CNiOSABInstantMessageAddressContactPredicate)initWithInstantMessageAddress:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNiOSABInstantMessageAddressContactPredicate)initWithCoder:(id)coder;
+- (CNiOSABInstantMessageAddressContactPredicate)initWithInstantMessageAddress:(id)address;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABInstantMessageAddressContactPredicate
 
-- (CNiOSABInstantMessageAddressContactPredicate)initWithInstantMessageAddress:(id)a3
+- (CNiOSABInstantMessageAddressContactPredicate)initWithInstantMessageAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v10.receiver = self;
   v10.super_class = CNiOSABInstantMessageAddressContactPredicate;
   v5 = [(CNPredicate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     imAddress = v5->_imAddress;
     v5->_imAddress = v6;
 
@@ -29,15 +29,15 @@
   return v5;
 }
 
-- (CNiOSABInstantMessageAddressContactPredicate)initWithCoder:(id)a3
+- (CNiOSABInstantMessageAddressContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABInstantMessageAddressContactPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imAddress"];
     v7 = [v6 copy];
     imAddress = v5->_imAddress;
     v5->_imAddress = v7;
@@ -48,19 +48,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABInstantMessageAddressContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_imAddress forKey:{@"_imAddress", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_imAddress forKey:{@"_imAddress", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v13 = 0;
-  v8 = [(CNiOSABInstantMessageAddressContactPredicate *)self cn_copyPeopleInAddressBook:a3 fetchRequest:a4 matchInfos:a5 environment:a6 nserror:&v13];
+  v8 = [(CNiOSABInstantMessageAddressContactPredicate *)self cn_copyPeopleInAddressBook:book fetchRequest:request matchInfos:infos environment:environment nserror:&v13];
   v9 = v13;
   v10 = v9;
   if (v8)
@@ -68,53 +68,53 @@
     v11 = v8;
   }
 
-  else if (a7)
+  else if (error)
   {
-    *a7 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  if (a5)
+  requestCopy = request;
+  environmentCopy = environment;
+  if (infos)
   {
-    *a5 = 0;
+    *infos = 0;
   }
 
   v14 = +[CN instantMessagAddressesDescription];
-  v15 = [(CNiOSABInstantMessageAddressContactPredicate *)self imAddress];
-  v16 = [objc_msgSend(v14 ABMultiValueValueFromCNLabeledValueValue:{v15), "mutableCopy"}];
+  imAddress = [(CNiOSABInstantMessageAddressContactPredicate *)self imAddress];
+  v16 = [objc_msgSend(v14 ABMultiValueValueFromCNLabeledValueValue:{imAddress), "mutableCopy"}];
 
   [v16 removeObjectForKey:*MEMORY[0x1E698A328]];
   v17 = MEMORY[0x1E698A128];
-  v18 = [v12 sortOrder];
-  v19 = [v17 personPredicateWithValue:v16 comparison:v18 forProperty:*MEMORY[0x1E698A3C8]];
+  sortOrder = [requestCopy sortOrder];
+  v19 = [v17 personPredicateWithValue:v16 comparison:sortOrder forProperty:*MEMORY[0x1E698A3C8]];
   v20 = v19;
   if (v19)
   {
     v30[0] = v19;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-    v22 = v13;
-    v23 = a3;
-    v24 = [v12 sortOrder];
-    v25 = [v12 options];
-    v26 = v23;
-    v13 = v22;
-    v27 = [CNiOSFetchExecution contactsMatchingPredicates:v21 sortOrdering:v24 matchInfos:a5 options:v25 addressBook:v26 environment:v22 error:a7];
+    v22 = environmentCopy;
+    bookCopy = book;
+    sortOrder2 = [requestCopy sortOrder];
+    options = [requestCopy options];
+    v26 = bookCopy;
+    environmentCopy = v22;
+    v27 = [CNiOSFetchExecution contactsMatchingPredicates:v21 sortOrdering:sortOrder2 matchInfos:infos options:options addressBook:v26 environment:v22 error:nserror];
   }
 
   else
   {
     v28 = [CNErrorFactory errorWithCode:400 userInfo:0];
-    if (a7)
+    if (nserror)
     {
       v28 = v28;
-      *a7 = v28;
+      *nserror = v28;
     }
 
     v27 = 0;
@@ -127,25 +127,25 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingInstantMessageAddress:]"];
-  v5 = [(CNiOSABInstantMessageAddressContactPredicate *)self imAddress];
-  v6 = [v3 appendName:@"im" object:v5];
+  imAddress = [(CNiOSABInstantMessageAddressContactPredicate *)self imAddress];
+  v6 = [v3 appendName:@"im" object:imAddress];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__CNiOSABInstantMessageAddressContactPredicate_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v8, 0}];
 
   return self;

@@ -1,10 +1,10 @@
 @interface HIDReportInfo
-- (HIDReportInfo)initWithID:(unsigned __int8)a3 type:(unsigned __int8)a4;
+- (HIDReportInfo)initWithID:(unsigned __int8)d type:(unsigned __int8)type;
 @end
 
 @implementation HIDReportInfo
 
-- (HIDReportInfo)initWithID:(unsigned __int8)a3 type:(unsigned __int8)a4
+- (HIDReportInfo)initWithID:(unsigned __int8)d type:(unsigned __int8)type
 {
   v12.receiver = self;
   v12.super_class = HIDReportInfo;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_ID = a3;
-    v6->_type = a4;
+    v6->_ID = d;
+    v6->_type = type;
     v6->_isValid = 1;
     v8 = objc_alloc_init(NSCondition);
     commandCondition = v7->_commandCondition;

@@ -1,12 +1,12 @@
 @interface TIWordSearchCangjie
-- (BOOL)validateCode:(id)a3 withOption:(unint64_t)a4;
-- (id)initTIWordSearchWithInputMode:(id)a3;
-- (id)uncachedCandidatesForOperation:(id)a3;
+- (BOOL)validateCode:(id)code withOption:(unint64_t)option;
+- (id)initTIWordSearchWithInputMode:(id)mode;
+- (id)uncachedCandidatesForOperation:(id)operation;
 @end
 
 @implementation TIWordSearchCangjie
 
-- (BOOL)validateCode:(id)a3 withOption:(unint64_t)a4
+- (BOOL)validateCode:(id)code withOption:(unint64_t)option
 {
   ASCIIFromInputKeyString = MecabraInputKeyPropertiesCreateASCIIFromInputKeyString();
   if ([(TIWordSearchCangjie *)self suchengEnabled])
@@ -18,7 +18,7 @@
   {
     v9.receiver = self;
     v9.super_class = TIWordSearchCangjie;
-    v7 = [(TIWordSearchShapeBased *)&v9 validateCode:ASCIIFromInputKeyString withOption:a4];
+    v7 = [(TIWordSearchShapeBased *)&v9 validateCode:ASCIIFromInputKeyString withOption:option];
   }
 
   else
@@ -31,23 +31,23 @@
   return v7;
 }
 
-- (id)uncachedCandidatesForOperation:(id)a3
+- (id)uncachedCandidatesForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = objc_alloc_init(MEMORY[0x277D6FF00]);
-  v6 = [v4 inputString];
+  inputString = [operationCopy inputString];
   context = objc_autoreleasePoolPush();
-  v7 = [(TIWordSearchCangjie *)self supportsEnglish];
-  v8 = [(TIWordSearchCangjie *)self suchengEnabled];
-  v35 = v6;
-  if ([v6 length])
+  supportsEnglish = [(TIWordSearchCangjie *)self supportsEnglish];
+  suchengEnabled = [(TIWordSearchCangjie *)self suchengEnabled];
+  v35 = inputString;
+  if ([inputString length])
   {
-    if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:v6])
+    if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:inputString])
     {
       v9 = 0;
       v33 = 0;
       v10 = 0;
-      if (!v7)
+      if (!supportsEnglish)
       {
         goto LABEL_31;
       }
@@ -56,13 +56,13 @@
     else
     {
       v20 = 2048;
-      if (!v8)
+      if (!suchengEnabled)
       {
         v20 = 0;
       }
 
-      v21 = v4;
-      if (v7)
+      v21 = operationCopy;
+      if (supportsEnglish)
       {
         v22 = v20;
       }
@@ -74,7 +74,7 @@
 
       v23 = v22 | 0x200000;
       v36 = 0;
-      v24 = [(TIWordSearchShapeBased *)self autoconvertLongestValidPrefixes:v6 option:v22 | 0x200000 candidateResultSet:v5 autoconvertedCandidateArray:&v36];
+      v24 = [(TIWordSearchShapeBased *)self autoconvertLongestValidPrefixes:inputString option:v22 | 0x200000 candidateResultSet:v5 autoconvertedCandidateArray:&v36];
       v9 = v36;
       v33 = v9 != 0;
       if (!v9)
@@ -82,11 +82,11 @@
         v23 = v22;
       }
 
-      v4 = v21;
-      v25 = [(TIWordSearch *)self mecabraEnvironment];
-      v10 = [v25 analyzeString:v24 options:v23];
+      operationCopy = v21;
+      mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+      v10 = [mecabraEnvironment analyzeString:v24 options:v23];
 
-      if (!v7)
+      if (!supportsEnglish)
       {
 LABEL_31:
         ASCIIFromInputKeyString = 0;
@@ -96,7 +96,7 @@ LABEL_31:
         }
 
 LABEL_7:
-        if (!v7)
+        if (!supportsEnglish)
         {
           goto LABEL_39;
         }
@@ -111,7 +111,7 @@ LABEL_7:
     v9 = 0;
     v33 = 0;
     v10 = 1;
-    if (!v7)
+    if (!supportsEnglish)
     {
       goto LABEL_31;
     }
@@ -144,16 +144,16 @@ LABEL_32:
 
     else
     {
-      v29 = [v28 candidate];
-      LOBYTE(v10) = [ASCIIFromInputKeyString isEqualToString:v29];
+      candidate = [v28 candidate];
+      LOBYTE(v10) = [ASCIIFromInputKeyString isEqualToString:candidate];
     }
   }
 
-  if (!v7)
+  if (!supportsEnglish)
   {
 LABEL_39:
-    v30 = [v5 candidates];
-    if ([v30 count])
+    candidates = [v5 candidates];
+    if ([candidates count])
     {
     }
 
@@ -171,7 +171,7 @@ LABEL_39:
   }
 
 LABEL_8:
-  if (v33 && (!v8 ? (v12 = 0) : (v12 = 2048), -[TIWordSearch mecabraEnvironment](self, "mecabraEnvironment"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 analyzeString:v35 options:v12], v13, v14))
+  if (v33 && (!suchengEnabled ? (v12 = 0) : (v12 = 2048), -[TIWordSearch mecabraEnvironment](self, "mecabraEnvironment"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 analyzeString:v35 options:v12], v13, v14))
   {
     for (i = 0; ; ++i)
     {
@@ -197,8 +197,8 @@ LABEL_8:
 
       else
       {
-        v19 = [v18 candidate];
-        LOBYTE(v10) = [ASCIIFromInputKeyString isEqualToString:v19];
+        candidate2 = [v18 candidate];
+        LOBYTE(v10) = [ASCIIFromInputKeyString isEqualToString:candidate2];
       }
     }
 
@@ -230,11 +230,11 @@ LABEL_47:
   return v5;
 }
 
-- (id)initTIWordSearchWithInputMode:(id)a3
+- (id)initTIWordSearchWithInputMode:(id)mode
 {
   v6.receiver = self;
   v6.super_class = TIWordSearchCangjie;
-  v3 = [(TIWordSearch *)&v6 initTIWordSearchWithInputMode:a3];
+  v3 = [(TIWordSearch *)&v6 initTIWordSearchWithInputMode:mode];
   v4 = v3;
   if (v3)
   {

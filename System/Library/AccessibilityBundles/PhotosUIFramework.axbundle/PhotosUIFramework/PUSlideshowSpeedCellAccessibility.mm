@@ -1,16 +1,16 @@
 @interface PUSlideshowSpeedCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PUSlideshowSpeedCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PUSlideshowSpeedCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PUSlideshowSpeedCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUSlideshowSpeedCell" hasInstanceVariable:@"_slider" withType:"UISlider"];
-  [v3 validateClass:@"PUSlideshowSpeedCell" hasInstanceMethod:@"initWithStyle: reuseIdentifier:" withFullSignature:{"q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUSlideshowSpeedCell" hasInstanceVariable:@"_slider" withType:"UISlider"];
+  [validationsCopy validateClass:@"PUSlideshowSpeedCell" hasInstanceMethod:@"initWithStyle: reuseIdentifier:" withFullSignature:{"q", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,11 +23,11 @@
   [v3 setAccessibilityLabel:v4];
 }
 
-- (PUSlideshowSpeedCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PUSlideshowSpeedCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PUSlideshowSpeedCellAccessibility;
-  v4 = [(PUSlideshowSpeedCellAccessibility *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PUSlideshowSpeedCellAccessibility *)&v6 initWithStyle:style reuseIdentifier:identifier];
   [(PUSlideshowSpeedCellAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

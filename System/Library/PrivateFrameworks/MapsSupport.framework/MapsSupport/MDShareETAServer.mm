@@ -1,5 +1,5 @@
 @interface MDShareETAServer
-- (MDShareETAServer)initWithState:(id)a3;
+- (MDShareETAServer)initWithState:(id)state;
 - (void)_updateSharedETAServerState;
 - (void)dealloc;
 - (void)updateSharedETAServerState;
@@ -7,16 +7,16 @@
 
 @implementation MDShareETAServer
 
-- (MDShareETAServer)initWithState:(id)a3
+- (MDShareETAServer)initWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v19.receiver = self;
   v19.super_class = MDShareETAServer;
   v6 = [(MDShareETAServer *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_state, a3);
+    objc_storeStrong(&v6->_state, state);
     +[MSPSharedTripServer migrateIfNeeded];
     objc_initWeak(&location, v7);
     v8 = &_dispatch_main_q;
@@ -132,8 +132,8 @@
     self->_sharedTripServer = v9;
 
     v11 = self->_sharedTripServer;
-    v12 = [(MDState *)self->_state notificationCenter];
-    [(MSPSharedTripServer *)v11 _setNotificationCenter:v12];
+    notificationCenter = [(MDState *)self->_state notificationCenter];
+    [(MSPSharedTripServer *)v11 _setNotificationCenter:notificationCenter];
 
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))

@@ -11,11 +11,11 @@
 + (id)selectedEffects;
 + (id)selectedEffectsForARDarkStyle;
 + (id)selectedEffectsForDarkModeStyle;
-- (ASVBlurredBackgroundView)initWithFrame:(CGRect)a3 backgroundStyle:(int64_t)a4 controlStyle:(int64_t)a5;
-- (void)setControlStyle:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (ASVBlurredBackgroundView)initWithFrame:(CGRect)frame backgroundStyle:(int64_t)style controlStyle:(int64_t)controlStyle;
+- (void)setControlStyle:(int64_t)style;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 - (void)updateBackgroundEffects;
 @end
 
@@ -403,57 +403,57 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
   selectedEffectsForDarkModeStyle_selectedEffectsForDarkModeStyle = v6;
 }
 
-- (ASVBlurredBackgroundView)initWithFrame:(CGRect)a3 backgroundStyle:(int64_t)a4 controlStyle:(int64_t)a5
+- (ASVBlurredBackgroundView)initWithFrame:(CGRect)frame backgroundStyle:(int64_t)style controlStyle:(int64_t)controlStyle
 {
   v10.receiver = self;
   v10.super_class = ASVBlurredBackgroundView;
-  v7 = [(ASVBlurredBackgroundView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(ASVBlurredBackgroundView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
     v7->_enabled = 1;
     v7->_selected = 0;
     v7->_highlighted = 0;
-    v7->_backgroundStyle = a4;
-    v7->_controlStyle = a5;
+    v7->_backgroundStyle = style;
+    v7->_controlStyle = controlStyle;
     [(ASVBlurredBackgroundView *)v7 updateBackgroundEffects];
   }
 
   return v8;
 }
 
-- (void)setControlStyle:(int64_t)a3
+- (void)setControlStyle:(int64_t)style
 {
-  if (self->_controlStyle != a3)
+  if (self->_controlStyle != style)
   {
-    self->_controlStyle = a3;
+    self->_controlStyle = style;
     [(ASVBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(ASVBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(ASVBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(ASVBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
@@ -464,12 +464,12 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
   {
     if ([(ASVBlurredBackgroundView *)self isHighlighted]|| [(ASVBlurredBackgroundView *)self isSelected])
     {
-      v3 = [objc_opt_class() selectedEffectsForARDarkStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() selectedEffectsForARDarkStyle];
     }
 
     else
     {
-      v3 = [objc_opt_class() normalEffectsForARDarkStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() normalEffectsForARDarkStyle];
     }
   }
 
@@ -477,12 +477,12 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
   {
     if ([(ASVBlurredBackgroundView *)self isHighlighted]|| [(ASVBlurredBackgroundView *)self isSelected])
     {
-      v3 = [objc_opt_class() selectedEffectsForDarkModeStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() selectedEffectsForDarkModeStyle];
     }
 
     else
     {
-      v3 = [objc_opt_class() normalEffectsForDarkModeStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() normalEffectsForDarkModeStyle];
     }
   }
 
@@ -490,9 +490,9 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
   {
     if ([(ASVBlurredBackgroundView *)self isSelected]|| [(ASVBlurredBackgroundView *)self backgroundStyle]== 1)
     {
-      v4 = [(ASVBlurredBackgroundView *)self isEnabled];
+      isEnabled = [(ASVBlurredBackgroundView *)self isEnabled];
       v5 = objc_opt_class();
-      if (v4)
+      if (isEnabled)
       {
         [v5 selectedEffects];
       }
@@ -505,12 +505,12 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
 
     else if ([(ASVBlurredBackgroundView *)self isEnabled])
     {
-      v6 = [(ASVBlurredBackgroundView *)self isHighlighted];
-      v7 = [(ASVBlurredBackgroundView *)self controlStyle];
+      isHighlighted = [(ASVBlurredBackgroundView *)self isHighlighted];
+      controlStyle = [(ASVBlurredBackgroundView *)self controlStyle];
       v8 = objc_opt_class();
-      if (v6)
+      if (isHighlighted)
       {
-        if (v7)
+        if (controlStyle)
         {
           [v8 highlightedEffectsForARStyle];
         }
@@ -521,7 +521,7 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
         }
       }
 
-      else if (v7)
+      else if (controlStyle)
       {
         [v8 normalEffectsForARStyle];
       }
@@ -534,9 +534,9 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
 
     else
     {
-      v9 = [(ASVBlurredBackgroundView *)self controlStyle];
+      controlStyle2 = [(ASVBlurredBackgroundView *)self controlStyle];
       v10 = objc_opt_class();
-      if (v9)
+      if (controlStyle2)
       {
         [v10 disabledEffectsForARStyle];
       }
@@ -546,11 +546,11 @@ void __59__ASVBlurredBackgroundView_selectedEffectsForDarkModeStyle__block_invok
         [v10 disabledEffectsForStudioStyle];
       }
     }
-    v3 = ;
+    selectedEffectsForARDarkStyle = ;
   }
 
-  v11 = v3;
-  [(ASVBlurredBackgroundView *)self setBackgroundEffects:v3];
+  v11 = selectedEffectsForARDarkStyle;
+  [(ASVBlurredBackgroundView *)self setBackgroundEffects:selectedEffectsForARDarkStyle];
 }
 
 @end

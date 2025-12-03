@@ -1,24 +1,24 @@
 @interface CarFocusableControl
 - ($1AB5FA073B851C12C2339EC22442E995)metrics;
 - (BOOL)canBecomeFocused;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CarFocusableControl)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CarFocusableControl)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)focusLayerInsets;
 - (UIEdgeInsets)touchInsets;
 - (UIView)contentView;
-- (id)_adjustedColor:(id)a3 forState:(unint64_t)a4;
-- (void)_selectButtonPressed:(id)a3;
-- (void)addSubview:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (id)_adjustedColor:(id)color forState:(unint64_t)state;
+- (void)_selectButtonPressed:(id)pressed;
+- (void)addSubview:(id)subview;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFocusLayerInsets:(UIEdgeInsets)a3;
-- (void)setFocusableControlStyle:(unint64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMetrics:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFocusLayerInsets:(UIEdgeInsets)insets;
+- (void)setFocusableControlStyle:(unint64_t)style;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMetrics:(id)metrics;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation CarFocusableControl
@@ -41,20 +41,20 @@
   v52.receiver = self;
   v52.super_class = CarFocusableControl;
   [(CarFocusableControl *)&v52 layoutSubviews];
-  v3 = [(CarFocusableControl *)self isFocused];
-  if (v3)
+  isFocused = [(CarFocusableControl *)self isFocused];
+  if (isFocused)
   {
-    v4 = [(CarFocusableControl *)self focusedTintColor];
-    v5 = [(CarFocusableControl *)self _adjustedColor:v4 forState:[(CarFocusableControl *)self state]];
+    focusedTintColor = [(CarFocusableControl *)self focusedTintColor];
+    v5 = [(CarFocusableControl *)self _adjustedColor:focusedTintColor forState:[(CarFocusableControl *)self state]];
     [(CarFocusableControl *)self setTintColor:v5];
 
-    v6 = [(CarFocusableControl *)self focusableControlStyle];
-    if (!v6)
+    focusableControlStyle = [(CarFocusableControl *)self focusableControlStyle];
+    if (!focusableControlStyle)
     {
-      v7 = [(CarFocusableControl *)self focusedBackgroundColor];
+      focusedBackgroundColor = [(CarFocusableControl *)self focusedBackgroundColor];
 LABEL_14:
-      v17 = v7;
-      [(CarFocusableControl *)self setBackgroundColor:v7];
+      v17 = focusedBackgroundColor;
+      [(CarFocusableControl *)self setBackgroundColor:focusedBackgroundColor];
 
       return;
     }
@@ -62,19 +62,19 @@ LABEL_14:
 
   else
   {
-    v8 = [(CarFocusableControl *)self unfocusedTintColor];
-    v9 = [(CarFocusableControl *)self _adjustedColor:v8 forState:[(CarFocusableControl *)self state]];
+    unfocusedTintColor = [(CarFocusableControl *)self unfocusedTintColor];
+    v9 = [(CarFocusableControl *)self _adjustedColor:unfocusedTintColor forState:[(CarFocusableControl *)self state]];
     [(CarFocusableControl *)self setTintColor:v9];
 
-    v6 = [(CarFocusableControl *)self focusableControlStyle];
-    if (!v6)
+    focusableControlStyle = [(CarFocusableControl *)self focusableControlStyle];
+    if (!focusableControlStyle)
     {
-      v7 = [(CarFocusableControl *)self unfocusedBackgroundColor];
+      focusedBackgroundColor = [(CarFocusableControl *)self unfocusedBackgroundColor];
       goto LABEL_14;
     }
   }
 
-  v10 = v6;
+  v10 = focusableControlStyle;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   if (!self->_focusShapeLayer)
@@ -84,8 +84,8 @@ LABEL_14:
     self->_focusShapeLayer = v11;
 
     [(CAShapeLayer *)self->_focusShapeLayer setNeedsDisplayOnBoundsChange:1];
-    v13 = [(CarFocusableControl *)self layer];
-    [v13 insertSublayer:self->_focusShapeLayer atIndex:0];
+    layer = [(CarFocusableControl *)self layer];
+    [layer insertSublayer:self->_focusShapeLayer atIndex:0];
   }
 
   if (v10 - 2 >= 2)
@@ -94,7 +94,7 @@ LABEL_14:
     {
       [(CAShapeLayer *)self->_focusShapeLayer setBorderWidth:self->_metrics.selectedBorderWidth];
       [(CAShapeLayer *)self->_focusShapeLayer setBorderColor:[(UIColor *)self->_focusedBackgroundColor CGColor]];
-      if (v3)
+      if (isFocused)
       {
         [(CAShapeLayer *)self->_focusShapeLayer setBackgroundColor:[(UIColor *)self->_focusedBackgroundColor CGColor]];
         [(CAShapeLayer *)self->_focusShapeLayer setCornerRadius:self->_metrics.focusCornerRadius];
@@ -118,9 +118,9 @@ LABEL_14:
 
   else
   {
-    if (v3)
+    if (isFocused)
     {
-      v14 = [(CarFocusableControl *)self focusedBackgroundColor];
+      focusedBackgroundColor2 = [(CarFocusableControl *)self focusedBackgroundColor];
     }
 
     else
@@ -134,18 +134,18 @@ LABEL_14:
       {
         [(CarFocusableControl *)self unfocusedBackgroundColor];
       }
-      v14 = ;
+      focusedBackgroundColor2 = ;
     }
 
-    v19 = v14;
+    v19 = focusedBackgroundColor2;
     if (v10 == 2)
     {
-      -[CAShapeLayer setBorderColor:](self->_focusShapeLayer, "setBorderColor:", [v14 CGColor]);
+      -[CAShapeLayer setBorderColor:](self->_focusShapeLayer, "setBorderColor:", [focusedBackgroundColor2 CGColor]);
       v20 = +[UIColor clearColor];
       -[CAShapeLayer setBackgroundColor:](self->_focusShapeLayer, "setBackgroundColor:", [v20 CGColor]);
 
-      v21 = [(CarFocusableControl *)self layer];
-      [v21 addSublayer:self->_focusShapeLayer];
+      layer2 = [(CarFocusableControl *)self layer];
+      [layer2 addSublayer:self->_focusShapeLayer];
     }
 
     else
@@ -228,17 +228,17 @@ LABEL_14:
 {
   v5.receiver = self;
   v5.super_class = CarFocusableControl;
-  v3 = [(CarFocusableControl *)&v5 canBecomeFocused];
-  if (v3)
+  canBecomeFocused = [(CarFocusableControl *)&v5 canBecomeFocused];
+  if (canBecomeFocused)
   {
-    v3 = [(CarFocusableControl *)self isEnabled];
-    if (v3)
+    canBecomeFocused = [(CarFocusableControl *)self isEnabled];
+    if (canBecomeFocused)
     {
-      LOBYTE(v3) = [(CarFocusableControl *)self isHidden]^ 1;
+      LOBYTE(canBecomeFocused) = [(CarFocusableControl *)self isHidden]^ 1;
     }
   }
 
-  return v3;
+  return canBecomeFocused;
 }
 
 - (UIEdgeInsets)focusLayerInsets
@@ -265,65 +265,65 @@ LABEL_14:
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CarFocusableControl *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CarFocusableControl *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = CarFocusableControl;
-  [(CarFocusableControl *)&v6 setHighlighted:v3];
-  if (v5 != [(CarFocusableControl *)self isHighlighted])
+  [(CarFocusableControl *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(CarFocusableControl *)self isHighlighted])
   {
     [(CarFocusableControl *)self setNeedsLayout];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = CarFocusableControl;
-  v6 = a3;
-  [(CarFocusableControl *)&v8 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  contextCopy = context;
+  [(CarFocusableControl *)&v8 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  [(CarFocusableControl *)self focusDidChange:v7 == self];
+  [(CarFocusableControl *)self focusDidChange:nextFocusedItem == self];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CarFocusableControl *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(CarFocusableControl *)self isEnabled];
   v6.receiver = self;
   v6.super_class = CarFocusableControl;
-  [(CarFocusableControl *)&v6 setEnabled:v3];
-  if (v5 != [(CarFocusableControl *)self isEnabled])
+  [(CarFocusableControl *)&v6 setEnabled:enabledCopy];
+  if (isEnabled != [(CarFocusableControl *)self isEnabled])
   {
     [(CarFocusableControl *)self setNeedsFocusUpdate];
     [(CarFocusableControl *)self setNeedsLayout];
   }
 }
 
-- (id)_adjustedColor:(id)a3 forState:(unint64_t)a4
+- (id)_adjustedColor:(id)color forState:(unint64_t)state
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  stateCopy = state;
+  colorCopy = color;
+  v6 = colorCopy;
+  if (stateCopy)
   {
     v10 = 0.0;
     v11 = 0.0;
-    [v5 getWhite:&v11 alpha:&v10];
+    [colorCopy getWhite:&v11 alpha:&v10];
     v7 = [UIColor colorWithWhite:v11 alpha:v10 * 0.349999994];
   }
 
-  else if ((v4 & 2) != 0)
+  else if ((stateCopy & 2) != 0)
   {
-    v7 = [v5 colorWithAlphaComponent:0.200000003];
+    v7 = [colorCopy colorWithAlphaComponent:0.200000003];
   }
 
   else
   {
-    v7 = v5;
+    v7 = colorCopy;
   }
 
   v8 = v7;
@@ -331,25 +331,25 @@ LABEL_14:
   return v8;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = CarFocusableControl;
-  [(CarFocusableControl *)&v5 willMoveToSuperview:a3];
+  [(CarFocusableControl *)&v5 willMoveToSuperview:superview];
   [(CAShapeLayer *)self->_focusShapeLayer removeFromSuperlayer];
   focusShapeLayer = self->_focusShapeLayer;
   self->_focusShapeLayer = 0;
 }
 
-- (void)_selectButtonPressed:(id)a3
+- (void)_selectButtonPressed:(id)pressed
 {
-  v9 = a3;
-  v4 = [(CarFocusableControl *)self isEnabled];
-  v5 = v9;
-  if (v4)
+  pressedCopy = pressed;
+  isEnabled = [(CarFocusableControl *)self isEnabled];
+  v5 = pressedCopy;
+  if (isEnabled)
   {
-    v6 = [v9 state];
-    if (v6 == 3)
+    state = [pressedCopy state];
+    if (state == 3)
     {
       [(CarFocusableControl *)self setHighlighted:0];
       [(CarFocusableControl *)self sendActionsForControlEvents:64];
@@ -357,29 +357,29 @@ LABEL_14:
 
     else
     {
-      if (v6 == 1)
+      if (state == 1)
       {
-        v7 = self;
+        selfCopy2 = self;
         v8 = 1;
       }
 
       else
       {
-        v7 = self;
+        selfCopy2 = self;
         v8 = 0;
       }
 
-      [(CarFocusableControl *)v7 setHighlighted:v8];
+      [(CarFocusableControl *)selfCopy2 setHighlighted:v8];
     }
 
-    v5 = v9;
+    v5 = pressedCopy;
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CarFocusableControl *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -398,15 +398,15 @@ LABEL_14:
   return CGRectContainsPoint(*&v22, *&v25);
 }
 
-- (void)setFocusLayerInsets:(UIEdgeInsets)a3
+- (void)setFocusLayerInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vcltz_s16(vshl_n_s16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_focusLayerInsets.top), vceqq_f64(v4, *&self->_focusLayerInsets.bottom))), 0xFuLL))) & 1) == 0)
   {
-    self->_focusLayerInsets = a3;
+    self->_focusLayerInsets = insets;
     [(CAShapeLayer *)self->_focusShapeLayer removeFromSuperlayer];
     focusShapeLayer = self->_focusShapeLayer;
     self->_focusShapeLayer = 0;
@@ -415,11 +415,11 @@ LABEL_14:
   }
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  if (a3.var0 != self->_metrics.selectedBorderWidth || a3.var1 != self->_metrics.selectedCornerRadius || a3.var2 != self->_metrics.focusCornerRadius)
+  if (metrics.var0 != self->_metrics.selectedBorderWidth || metrics.var1 != self->_metrics.selectedCornerRadius || metrics.var2 != self->_metrics.focusCornerRadius)
   {
-    self->_metrics = a3;
+    self->_metrics = metrics;
     [(CAShapeLayer *)self->_focusShapeLayer removeFromSuperlayer];
     focusShapeLayer = self->_focusShapeLayer;
     self->_focusShapeLayer = 0;
@@ -428,11 +428,11 @@ LABEL_14:
   }
 }
 
-- (void)setFocusableControlStyle:(unint64_t)a3
+- (void)setFocusableControlStyle:(unint64_t)style
 {
-  if (self->_focusableControlStyle != a3)
+  if (self->_focusableControlStyle != style)
   {
-    self->_focusableControlStyle = a3;
+    self->_focusableControlStyle = style;
     [(CAShapeLayer *)self->_focusShapeLayer removeFromSuperlayer];
     focusShapeLayer = self->_focusShapeLayer;
     self->_focusShapeLayer = 0;
@@ -441,17 +441,17 @@ LABEL_14:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = CarFocusableControl;
-  v4 = a3;
-  [(CarFocusableControl *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CarFocusableControl *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(CarFocusableControl *)self traitCollection:v9.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(CAShapeLayer *)self->_focusShapeLayer removeFromSuperlayer];
     focusShapeLayer = self->_focusShapeLayer;
@@ -461,12 +461,12 @@ LABEL_14:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (self->_focusShapeLayer)
   {
     [(CarFocusableControl *)self bounds];
@@ -483,13 +483,13 @@ LABEL_14:
   [(CarFocusableControl *)&v12 setBounds:x, y, width, height];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = CarFocusableControl;
-  v3 = a3;
-  [(CarFocusableControl *)&v4 addSubview:v3];
-  [v3 setUserInteractionEnabled:{0, v4.receiver, v4.super_class}];
+  subviewCopy = subview;
+  [(CarFocusableControl *)&v4 addSubview:subviewCopy];
+  [subviewCopy setUserInteractionEnabled:{0, v4.receiver, v4.super_class}];
 }
 
 - (UIView)contentView
@@ -507,8 +507,8 @@ LABEL_14:
     [(CarFocusableControl *)self addSubview:self->_contentView];
     LODWORD(v7) = 1148846080;
     v8 = [(UIView *)self->_contentView _maps_constraintsEqualToEdgesOfView:self priority:v7];
-    v9 = [v8 allConstraints];
-    [NSLayoutConstraint activateConstraints:v9];
+    allConstraints = [v8 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
     contentView = self->_contentView;
   }
@@ -516,11 +516,11 @@ LABEL_14:
   return contentView;
 }
 
-- (CarFocusableControl)initWithFrame:(CGRect)a3
+- (CarFocusableControl)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = CarFocusableControl;
-  v3 = [(CarFocusableControl *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarFocusableControl *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

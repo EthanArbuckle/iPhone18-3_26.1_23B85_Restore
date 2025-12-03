@@ -1,60 +1,60 @@
 @interface CellularNrUlPdcpStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDrb:(id)a3;
-- (void)addSrb:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDrb:(id)drb;
+- (void)addSrb:(id)srb;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrUlPdcpStats
 
-- (void)addDrb:(id)a3
+- (void)addDrb:(id)drb
 {
-  v4 = a3;
+  drbCopy = drb;
   drbs = self->_drbs;
-  v8 = v4;
+  v8 = drbCopy;
   if (!drbs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_drbs;
     self->_drbs = v6;
 
-    v4 = v8;
+    drbCopy = v8;
     drbs = self->_drbs;
   }
 
-  [(NSMutableArray *)drbs addObject:v4];
+  [(NSMutableArray *)drbs addObject:drbCopy];
 }
 
-- (void)addSrb:(id)a3
+- (void)addSrb:(id)srb
 {
-  v4 = a3;
+  srbCopy = srb;
   srbs = self->_srbs;
-  v8 = v4;
+  v8 = srbCopy;
   if (!srbs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_srbs;
     self->_srbs = v6;
 
-    v4 = v8;
+    srbCopy = v8;
     srbs = self->_srbs;
   }
 
-  [(NSMutableArray *)srbs addObject:v4];
+  [(NSMutableArray *)srbs addObject:srbCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 2;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 4;
   }
@@ -102,8 +102,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrUlPdcpStats;
   v3 = [(CellularNrUlPdcpStats *)&v7 description];
-  v4 = [(CellularNrUlPdcpStats *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrUlPdcpStats *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -139,8 +139,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -174,8 +174,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -231,9 +231,9 @@ LABEL_25:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -337,23 +337,23 @@ LABEL_21:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 60) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 60) |= 1u;
   }
 
-  v15 = v4;
+  v15 = toCopy;
   if ([(CellularNrUlPdcpStats *)self drbsCount])
   {
     [v15 clearDrbs];
-    v5 = [(CellularNrUlPdcpStats *)self drbsCount];
-    if (v5)
+    drbsCount = [(CellularNrUlPdcpStats *)self drbsCount];
+    if (drbsCount)
     {
-      v6 = v5;
+      v6 = drbsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(CellularNrUlPdcpStats *)self drbAtIndex:i];
@@ -365,10 +365,10 @@ LABEL_21:
   if ([(CellularNrUlPdcpStats *)self srbsCount])
   {
     [v15 clearSrbs];
-    v9 = [(CellularNrUlPdcpStats *)self srbsCount];
-    if (v9)
+    srbsCount = [(CellularNrUlPdcpStats *)self srbsCount];
+    if (srbsCount)
     {
-      v10 = v9;
+      v10 = srbsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(CellularNrUlPdcpStats *)self srbAtIndex:j];
@@ -418,9 +418,9 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -447,7 +447,7 @@ LABEL_15:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         [v6 addDrb:v12];
       }
 
@@ -476,7 +476,7 @@ LABEL_15:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{a3, v23}];
+        v18 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{zone, v23}];
         [v6 addSrb:v18];
       }
 
@@ -522,31 +522,31 @@ LABEL_20:
   }
 
 LABEL_21:
-  v20 = [(NSData *)self->_plmn copyWithZone:a3, v23];
+  v20 = [(NSData *)self->_plmn copyWithZone:zone, v23];
   v21 = *(v6 + 4);
   *(v6 + 4) = v20;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
 LABEL_28:
     v10 = 0;
@@ -554,13 +554,13 @@ LABEL_28:
   }
 
   drbs = self->_drbs;
-  if (drbs | *(v4 + 2) && ![(NSMutableArray *)drbs isEqual:?])
+  if (drbs | *(equalCopy + 2) && ![(NSMutableArray *)drbs isEqual:?])
   {
     goto LABEL_28;
   }
 
   srbs = self->_srbs;
-  if (srbs | *(v4 + 6))
+  if (srbs | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)srbs isEqual:?])
     {
@@ -568,48 +568,48 @@ LABEL_28:
     }
   }
 
-  v8 = *(v4 + 60);
+  v8 = *(equalCopy + 60);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_subsId != *(v4 + 14))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_subsId != *(equalCopy + 14))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_numSubs != *(v4 + 6))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_numSubs != *(equalCopy + 6))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_psPref != *(v4 + 10))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_psPref != *(equalCopy + 10))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 4))
+  if (plmn | *(equalCopy + 4))
   {
     v10 = [(NSData *)plmn isEqual:?];
   }
@@ -676,13 +676,13 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSData *)self->_plmn hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 60))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 60))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -690,7 +690,7 @@ LABEL_7:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {

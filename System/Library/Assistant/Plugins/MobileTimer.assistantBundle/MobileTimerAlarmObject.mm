@@ -1,15 +1,15 @@
 @interface MobileTimerAlarmObject
-+ (id)alarmObjectWithDictionary:(id)a3;
++ (id)alarmObjectWithDictionary:(id)dictionary;
 - (NSURL)alarmId;
 @end
 
 @implementation MobileTimerAlarmObject
 
-+ (id)alarmObjectWithDictionary:(id)a3
++ (id)alarmObjectWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MobileTimerAlarmObject);
-  [(MobileTimerAlarmObject *)v4 setDictionary:v3];
+  [(MobileTimerAlarmObject *)v4 setDictionary:dictionaryCopy];
 
   return v4;
 }

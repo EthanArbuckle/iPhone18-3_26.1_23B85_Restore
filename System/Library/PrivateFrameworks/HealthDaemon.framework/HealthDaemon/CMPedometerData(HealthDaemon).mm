@@ -8,8 +8,8 @@
 
 - (BOOL)hd_hasWorkout
 {
-  v1 = [a1 workoutType];
-  v2 = [v1 integerValue] != 0;
+  workoutType = [self workoutType];
+  v2 = [workoutType integerValue] != 0;
 
   return v2;
 }
@@ -17,24 +17,24 @@
 - (uint64_t)hd_compare:()HealthDaemon
 {
   v4 = a3;
-  v5 = [a1 recordId];
-  v6 = [v4 recordId];
+  recordId = [self recordId];
+  recordId2 = [v4 recordId];
 
-  if (v5 < v6)
+  if (recordId < recordId2)
   {
     return -1;
   }
 
   else
   {
-    return v5 > v6;
+    return recordId > recordId2;
   }
 }
 
 - (id)hd_unitForType:()HealthDaemon
 {
-  v3 = [a3 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CCCB40]];
+  identifier = [a3 identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x277CCCB40]];
 
   if (v4)
   {

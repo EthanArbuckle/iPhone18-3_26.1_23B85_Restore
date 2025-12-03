@@ -1,6 +1,6 @@
 @interface SHSheetImageIdentificationUtilities
 + (BOOL)isImageAnalysisFeatureEnabled;
-+ (id)personIdResultsFromImage:(id)a3;
++ (id)personIdResultsFromImage:(id)image;
 @end
 
 @implementation SHSheetImageIdentificationUtilities
@@ -22,22 +22,22 @@
   return 0;
 }
 
-+ (id)personIdResultsFromImage:(id)a3
++ (id)personIdResultsFromImage:(id)image
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc_init(getMADPersonIdentificationRequestClass());
   [v5 setMaximumFaceCount:4];
   v33 = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
-  if (v4)
+  if (imageCopy)
   {
     v7 = MEMORY[0x1E696ACD0];
     getMADPersonIdentificationRequestClass();
-    v8 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
-    if (v8 || ![a1 isImageAnalysisFeatureEnabled])
+    v8 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:imageCopy error:0];
+    if (v8 || ![self isImageAnalysisFeatureEnabled])
     {
-      v19 = v4;
+      v19 = imageCopy;
     }
 
     else
@@ -69,10 +69,10 @@
       _Block_object_dispose(&v29, 8);
       if (v10)
       {
-        v12 = [v10 service];
+        service = [v10 service];
         v13 = *MEMORY[0x1E6982D60];
         v28 = 0;
-        [v12 performRequests:v6 onImageData:v4 withUniformTypeIdentifier:v13 andIdentifier:@"UIActivityViewControllerSharingMediaServiceAnalysis" error:&v28];
+        [service performRequests:v6 onImageData:imageCopy withUniformTypeIdentifier:v13 andIdentifier:@"UIActivityViewControllerSharingMediaServiceAnalysis" error:&v28];
         v14 = v28;
         if (v14)
         {
@@ -80,9 +80,9 @@
           v16 = share_sheet_log();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v15 localizedDescription];
+            localizedDescription = [v15 localizedDescription];
             LODWORD(buf) = 138412290;
-            *(&buf + 4) = v17;
+            *(&buf + 4) = localizedDescription;
             _os_log_impl(&dword_18B359000, v16, OS_LOG_TYPE_DEFAULT, "While processing suggestedImageData, encountered Error: %@", &buf, 0xCu);
           }
 
@@ -91,19 +91,19 @@
 
         else
         {
-          v22 = [v6 firstObject];
-          v23 = [v22 results];
+          firstObject = [v6 firstObject];
+          results = [firstObject results];
 
-          if ([v23 count])
+          if ([results count])
           {
             v24 = MEMORY[0x1E696ACC8];
-            v25 = [v6 firstObject];
-            v18 = [v24 archivedDataWithRootObject:v25 requiringSecureCoding:1 error:0];
+            firstObject2 = [v6 firstObject];
+            v18 = [v24 archivedDataWithRootObject:firstObject2 requiringSecureCoding:1 error:0];
 
             v26 = share_sheet_log();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v23 count];
+              v27 = [results count];
               LODWORD(buf) = 134217984;
               *(&buf + 4) = v27;
               _os_log_impl(&dword_18B359000, v26, OS_LOG_TYPE_DEFAULT, "Screenshot service: Image data processed, Result count: %ld", &buf, 0xCu);

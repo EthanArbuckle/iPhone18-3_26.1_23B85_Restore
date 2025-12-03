@@ -1,40 +1,40 @@
 @interface NanoRoutePlanningState
-- (NanoRoutePlanningState)initWithStateManager:(id)a3 isolationQueue:(id)a4;
+- (NanoRoutePlanningState)initWithStateManager:(id)manager isolationQueue:(id)queue;
 - (NanoRoutePlanningStateManager)manager;
-- (void)enterToState:(int64_t)a3 fromState:(int64_t)a4;
-- (void)leaveToState:(int64_t)a3;
-- (void)setActive:(BOOL)a3;
+- (void)enterToState:(int64_t)state fromState:(int64_t)fromState;
+- (void)leaveToState:(int64_t)state;
+- (void)setActive:(BOOL)active;
 - (void)stop;
 @end
 
 @implementation NanoRoutePlanningState
 
-- (NanoRoutePlanningState)initWithStateManager:(id)a3 isolationQueue:(id)a4
+- (NanoRoutePlanningState)initWithStateManager:(id)manager isolationQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = NanoRoutePlanningState;
   v8 = [(NanoRoutePlanningState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_manager, v6);
+    objc_storeWeak(&v8->_manager, managerCopy);
     v9->_sessionState = -1;
-    objc_storeStrong(&v9->_isolationQueue, a4);
+    objc_storeStrong(&v9->_isolationQueue, queue);
   }
 
   return v9;
 }
 
-- (void)enterToState:(int64_t)a3 fromState:(int64_t)a4
+- (void)enterToState:(int64_t)state fromState:(int64_t)fromState
 {
-  self->_sessionState = a3;
-  self->_previousState = a4;
+  self->_sessionState = state;
+  self->_previousState = fromState;
   v6 = sub_100053324();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = sub_100013558(a3);
+    v7 = sub_100013558(state);
     *buf = 138412290;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Entering '%@' state", buf, 0xCu);
@@ -48,18 +48,18 @@
   v10[2] = sub_10000E7D0;
   v10[3] = &unk_100085248;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = state;
   dispatch_async(isolationQueue, v10);
 }
 
-- (void)leaveToState:(int64_t)a3
+- (void)leaveToState:(int64_t)state
 {
-  v5 = [(NanoRoutePlanningState *)self sessionState];
-  self->_nextState = a3;
+  sessionState = [(NanoRoutePlanningState *)self sessionState];
+  self->_nextState = state;
   v6 = sub_100053324();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = sub_100013558(v5);
+    v7 = sub_100013558(sessionState);
     +[NSDate timeIntervalSinceReferenceDate];
     v9 = v8 - self->_timestampStarted;
     *buf = 138412546;
@@ -75,7 +75,7 @@
   v11[2] = sub_10000E9E8;
   v11[3] = &unk_100085248;
   v11[4] = self;
-  v11[5] = v5;
+  v11[5] = sessionState;
   dispatch_async(isolationQueue, v11);
 }
 
@@ -99,7 +99,7 @@
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   isolationQueue = self->_isolationQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -107,7 +107,7 @@
   v4[2] = sub_10000EBBC;
   v4[3] = &unk_100084F60;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(isolationQueue, v4);
 }
 

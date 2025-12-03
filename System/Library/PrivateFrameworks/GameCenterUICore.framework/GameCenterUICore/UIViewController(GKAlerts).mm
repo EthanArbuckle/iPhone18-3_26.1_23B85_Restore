@@ -10,11 +10,11 @@
 
 + (id)_gkKeyWindowRootViewController
 {
-  v0 = [MEMORY[0x277D75128] sharedApplication];
-  v1 = [v0 keyWindow];
-  v2 = [v1 rootViewController];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  return v2;
+  return rootViewController;
 }
 
 - (id)_gkPresentAlertWithTitle:()GKAlerts message:buttonTitle:dismissHandler:presentationCompletionHandler:
@@ -34,7 +34,7 @@
   v19 = [v17 actionWithTitle:v15 style:0 handler:v21];
 
   [v16 addAction:v19];
-  [a1 presentViewController:v16 animated:1 completion:v14];
+  [self presentViewController:v16 animated:1 completion:v14];
 
   return v16;
 }
@@ -59,7 +59,7 @@
   [v16 _gkAddCancelButtonWithAction:v14];
 
   [v16 setPreferredAction:v19];
-  [a1 presentViewController:v16 animated:1 completion:0];
+  [self presentViewController:v16 animated:1 completion:0];
 
   return v16;
 }
@@ -79,20 +79,20 @@
 
   else
   {
-    [UIViewController(GKAlerts) _gkPresentAlertForError:a2 title:a1 defaultMessage:?];
+    [UIViewController(GKAlerts) _gkPresentAlertForError:a2 title:self defaultMessage:?];
     if (v10)
     {
       goto LABEL_3;
     }
   }
 
-  [UIViewController(GKAlerts) _gkPresentAlertForError:a2 title:a1 defaultMessage:?];
+  [UIViewController(GKAlerts) _gkPresentAlertForError:a2 title:self defaultMessage:?];
 LABEL_3:
-  v12 = [v9 localizedDescription];
-  v13 = v12;
-  if (v11 | v12)
+  localizedDescription = [v9 localizedDescription];
+  v13 = localizedDescription;
+  if (v11 | localizedDescription)
   {
-    v14 = v12;
+    v14 = localizedDescription;
     if (v13)
     {
       goto LABEL_6;
@@ -101,7 +101,7 @@ LABEL_3:
 
   else
   {
-    [UIViewController(GKAlerts) _gkPresentAlertForError:a2 title:a1 defaultMessage:?];
+    [UIViewController(GKAlerts) _gkPresentAlertForError:a2 title:self defaultMessage:?];
   }
 
   v14 = v11;
@@ -114,7 +114,7 @@ LABEL_6:
   v20 = [v17 actionWithTitle:v19 style:0 handler:&__block_literal_global_12];
 
   [v16 addAction:v20];
-  [a1 presentViewController:v16 animated:1 completion:0];
+  [self presentViewController:v16 animated:1 completion:0];
 
   return v16;
 }
@@ -123,15 +123,15 @@ LABEL_6:
 {
   v3 = a3;
   v4 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1 && (*MEMORY[0x277D0C258] != 1 || (_GKIsRemoteUIUsingPadIdiom & 1) != 0))
+  if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (_GKIsRemoteUIUsingPadIdiom & 1) != 0))
   {
     [v4 setModalPresentationStyle:7];
-    v7 = [v4 popoverPresentationController];
-    [v7 setPermittedArrowDirections:15];
-    [v7 setBarButtonItem:v3];
+    popoverPresentationController = [v4 popoverPresentationController];
+    [popoverPresentationController setPermittedArrowDirections:15];
+    [popoverPresentationController setBarButtonItem:v3];
   }
 
   return v4;

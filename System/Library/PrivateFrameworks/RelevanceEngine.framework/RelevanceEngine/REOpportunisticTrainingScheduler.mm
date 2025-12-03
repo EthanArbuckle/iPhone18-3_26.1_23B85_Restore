@@ -4,7 +4,7 @@
 - (void)_queue_unschedule;
 - (void)cancelPendindTasks;
 - (void)dealloc;
-- (void)performTask:(id)a3;
+- (void)performTask:(id)task;
 @end
 
 @implementation REOpportunisticTrainingScheduler
@@ -31,9 +31,9 @@
     xpc_dictionary_set_int64(v2->_criteria, *MEMORY[0x277D86270], 600);
     xpc_dictionary_set_int64(v2->_criteria, *MEMORY[0x277D86250], 300);
     xpc_dictionary_set_string(v2->_criteria, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     blocks = v2->_blocks;
-    v2->_blocks = v8;
+    v2->_blocks = array;
   }
 
   return v2;
@@ -47,11 +47,11 @@
   [(REOpportunisticTrainingScheduler *)&v3 dealloc];
 }
 
-- (void)performTask:(id)a3
+- (void)performTask:(id)task
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  taskCopy = task;
+  v5 = taskCopy;
+  if (taskCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -59,7 +59,7 @@
     v7[2] = __48__REOpportunisticTrainingScheduler_performTask___block_invoke;
     v7[3] = &unk_2785F9A40;
     v7[4] = self;
-    v8 = v4;
+    v8 = taskCopy;
     dispatch_async(queue, v7);
   }
 }

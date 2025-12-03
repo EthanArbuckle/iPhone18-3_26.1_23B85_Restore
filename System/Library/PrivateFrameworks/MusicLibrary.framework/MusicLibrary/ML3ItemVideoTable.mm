@@ -10,7 +10,7 @@
   columns = self->_columns;
   if (!columns)
   {
-    v46 = self;
+    selfCopy = self;
     v45 = [ML3DatabaseColumn columnWithName:@"item_pid" datatype:2 constraints:1 defaultValue:0];
     v47[0] = v45;
     v44 = [ML3DatabaseColumn columnWithName:@"video_quality" datatype:2 constraints:16 defaultValue:&unk_2840C9770];
@@ -90,10 +90,10 @@
     v12 = [ML3DatabaseColumn columnWithName:@"hls_key_server_protocol" datatype:4 constraints:16 defaultValue:&stru_28408B690];
     v47[38] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:39];
-    v14 = v46->_columns;
-    v46->_columns = v13;
+    v14 = selfCopy->_columns;
+    selfCopy->_columns = v13;
 
-    columns = v46->_columns;
+    columns = selfCopy->_columns;
   }
 
   return columns;

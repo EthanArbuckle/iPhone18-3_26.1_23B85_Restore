@@ -1,31 +1,31 @@
 @interface CNContactFetchRequestEffectiveKeyExtender
-+ (id)extendRequestedKeys:(id)a3 shouldUnifyResults:(BOOL)a4 sortOrder:(int64_t)a5;
++ (id)extendRequestedKeys:(id)keys shouldUnifyResults:(BOOL)results sortOrder:(int64_t)order;
 @end
 
 @implementation CNContactFetchRequestEffectiveKeyExtender
 
-+ (id)extendRequestedKeys:(id)a3 shouldUnifyResults:(BOOL)a4 sortOrder:(int64_t)a5
++ (id)extendRequestedKeys:(id)keys shouldUnifyResults:(BOOL)results sortOrder:(int64_t)order
 {
-  v5 = a4;
+  resultsCopy = results;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
-  v8 = [v6 array];
-  [v8 addObjectsFromArray:v7];
+  keysCopy = keys;
+  array = [v6 array];
+  [array addObjectsFromArray:keysCopy];
   v9 = +[CNContact alwaysFetchedKeys];
-  v10 = [v9 allObjects];
-  [v8 addObjectsFromArray:v10];
+  allObjects = [v9 allObjects];
+  [array addObjectsFromArray:allObjects];
 
-  v11 = [v7 _cn_any:&__block_literal_global_138];
-  if (v5)
+  v11 = [keysCopy _cn_any:&__block_literal_global_138];
+  if (resultsCopy)
   {
-    [v8 addObject:@"linkIdentifier"];
-    [v8 addObject:@"preferredForName"];
+    [array addObject:@"linkIdentifier"];
+    [array addObject:@"preferredForName"];
     if (!v11)
     {
       goto LABEL_7;
     }
 
-    [v8 addObject:@"sharedPhotoDisplayPreference"];
+    [array addObject:@"sharedPhotoDisplayPreference"];
     v12 = &CNContactPreferredForImageKey;
     v13 = &CNContactisUsingSharedPhotoKey;
   }
@@ -41,11 +41,11 @@
     v13 = &CNContactSharedPhotoDisplayPreferenceKey;
   }
 
-  [v8 addObject:*v13];
-  [v8 addObject:*v12];
+  [array addObject:*v13];
+  [array addObject:*v12];
 LABEL_7:
 
-  return v8;
+  return array;
 }
 
 uint64_t __94__CNContactFetchRequestEffectiveKeyExtender_extendRequestedKeys_shouldUnifyResults_sortOrder___block_invoke(uint64_t a1, void *a2)

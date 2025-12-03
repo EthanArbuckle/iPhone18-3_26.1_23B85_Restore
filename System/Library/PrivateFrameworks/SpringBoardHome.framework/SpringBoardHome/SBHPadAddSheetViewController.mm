@@ -1,115 +1,115 @@
 @interface SBHPadAddSheetViewController
 - (NSMutableDictionary)userInfo;
-- (SBHPadAddSheetViewController)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 appCellConfigurator:(id)a6 addWidgetSheetStyle:(unint64_t)a7;
+- (SBHPadAddSheetViewController)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets appCellConfigurator:(id)configurator addWidgetSheetStyle:(unint64_t)style;
 - (SBHPadAddWidgetSheetMetrics)_metricsForCurrentOrientation;
-- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)a3;
+- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)orientation;
 - (SBHWidgetDragHandling)widgetDragHandler;
 - (SBHWidgetSheetViewControllerPresenter)presenter;
-- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)a3;
+- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)orientation;
 - (double)_columnSpacing;
-- (double)_paddedSidebarWidthForInterfaceOrientation:(int64_t)a3;
-- (double)_widthNeededForWidgetColumns:(unint64_t)a3;
+- (double)_paddedSidebarWidthForInterfaceOrientation:(int64_t)orientation;
+- (double)_widthNeededForWidgetColumns:(unint64_t)columns;
 - (id)_detailViewController;
 - (id)_newBackgroundView;
-- (id)addWidgetSheetViewController:(id)a3 detailViewControllerForWidgetCollection:(id)a4;
-- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)a3;
-- (id)galleryViewControllerForAddWidgetSheetViewController:(id)a3;
-- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)a3;
-- (unint64_t)_numberOfWidgetColumnsThatFitInWidth:(double)a3;
+- (id)addWidgetSheetViewController:(id)controller detailViewControllerForWidgetCollection:(id)collection;
+- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)controller;
+- (id)galleryViewControllerForAddWidgetSheetViewController:(id)controller;
+- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)size;
+- (unint64_t)_numberOfWidgetColumnsThatFitInWidth:(double)width;
 - (void)_layoutSearchBarGradientMaskLayers;
 - (void)_layoutSeparatorView;
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4;
-- (void)addWidgetSheetViewControllerDidAppear:(id)a3;
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3;
-- (void)addWidgetSheetViewControllerDidDisappear:(id)a3;
-- (void)addWidgetSheetViewControllerWillAppear:(id)a3;
-- (void)addWidgetSheetViewControllerWillDisappear:(id)a3;
-- (void)closeButtonTapped:(id)a3;
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view;
+- (void)addWidgetSheetViewControllerDidAppear:(id)appear;
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel;
+- (void)addWidgetSheetViewControllerDidDisappear:(id)disappear;
+- (void)addWidgetSheetViewControllerWillAppear:(id)appear;
+- (void)addWidgetSheetViewControllerWillDisappear:(id)disappear;
+- (void)closeButtonTapped:(id)tapped;
 - (void)configureViewsForCurrentInterfaceOrientation;
-- (void)configureViewsForInterfaceOrientation:(int64_t)a3;
+- (void)configureViewsForInterfaceOrientation:(int64_t)orientation;
 - (void)dealloc;
-- (void)setAddWidgetSheetWidgetBackgroundType:(unint64_t)a3;
-- (void)setApplicationWidgetCollections:(id)a3;
-- (void)setCustomApplicationWidgetCollections:(id)a3;
-- (void)setDisfavoredApplicationWidgetCollections:(id)a3;
-- (void)setFavoredApplicationWidgetCollections:(id)a3;
-- (void)setGalleryLayoutSize:(unint64_t)a3;
-- (void)setPresenter:(id)a3;
-- (void)setSuggestedItems:(id)a3 forGalleryLayoutSize:(unint64_t)a4;
-- (void)setWantsBottomAttachedPresentation:(BOOL)a3;
-- (void)setWantsSeparator:(BOOL)a3;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setAddWidgetSheetWidgetBackgroundType:(unint64_t)type;
+- (void)setApplicationWidgetCollections:(id)collections;
+- (void)setCustomApplicationWidgetCollections:(id)collections;
+- (void)setDisfavoredApplicationWidgetCollections:(id)collections;
+- (void)setFavoredApplicationWidgetCollections:(id)collections;
+- (void)setGalleryLayoutSize:(unint64_t)size;
+- (void)setPresenter:(id)presenter;
+- (void)setSuggestedItems:(id)items forGalleryLayoutSize:(unint64_t)size;
+- (void)setWantsBottomAttachedPresentation:(BOOL)presentation;
+- (void)setWantsSeparator:(BOOL)separator;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBHPadAddSheetViewController
 
-- (SBHPadAddSheetViewController)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 appCellConfigurator:(id)a6 addWidgetSheetStyle:(unint64_t)a7
+- (SBHPadAddSheetViewController)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets appCellConfigurator:(id)configurator addWidgetSheetStyle:(unint64_t)style
 {
   v37.receiver = self;
   v37.super_class = SBHPadAddSheetViewController;
-  v7 = [(SBHAddWidgetSheetViewControllerBase *)&v37 initWithListLayoutProvider:a3 iconViewProvider:a4 allowedWidgets:a5.families appCellConfigurator:*&a5.includesNonStackable addWidgetSheetStyle:a6, a7];
-  if (v7)
+  style = [(SBHAddWidgetSheetViewControllerBase *)&v37 initWithListLayoutProvider:provider iconViewProvider:viewProvider allowedWidgets:widgets.families appCellConfigurator:*&widgets.includesNonStackable addWidgetSheetStyle:configurator, style];
+  if (style)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    v9 = *(v7 + 197);
-    *(v7 + 197) = v8;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v9 = *(style + 197);
+    *(style + 197) = dictionary;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:style selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
     v11 = SBHScreenTypeForCurrentDevice();
     SBHPadAddWidgetSheetMetricsForScreenTypeAndInterfaceOrientation(v11, 3, &v27);
     v12 = v28;
-    *(v7 + 1240) = v27;
-    *(v7 + 1256) = v12;
+    *(style + 1240) = v27;
+    *(style + 1256) = v12;
     v13 = v29;
     v14 = v30;
     v15 = v32;
-    *(v7 + 1304) = v31;
-    *(v7 + 1320) = v15;
-    *(v7 + 1272) = v13;
-    *(v7 + 1288) = v14;
+    *(style + 1304) = v31;
+    *(style + 1320) = v15;
+    *(style + 1272) = v13;
+    *(style + 1288) = v14;
     v16 = v33;
     v17 = v34;
     v18 = v35;
-    *(v7 + 173) = v36;
-    *(v7 + 1352) = v17;
-    *(v7 + 1368) = v18;
-    *(v7 + 1336) = v16;
+    *(style + 173) = v36;
+    *(style + 1352) = v17;
+    *(style + 1368) = v18;
+    *(style + 1336) = v16;
     SBHPadAddWidgetSheetMetricsForScreenTypeAndInterfaceOrientation(v11, 1, &v27);
     v19 = v28;
-    *(v7 + 87) = v27;
-    *(v7 + 88) = v19;
+    *(style + 87) = v27;
+    *(style + 88) = v19;
     v20 = v29;
     v21 = v30;
     v22 = v32;
-    *(v7 + 91) = v31;
-    *(v7 + 92) = v22;
-    *(v7 + 89) = v20;
-    *(v7 + 90) = v21;
+    *(style + 91) = v31;
+    *(style + 92) = v22;
+    *(style + 89) = v20;
+    *(style + 90) = v21;
     v23 = v33;
     v24 = v34;
     v25 = v35;
-    *(v7 + 192) = v36;
-    *(v7 + 94) = v24;
-    *(v7 + 95) = v25;
-    *(v7 + 93) = v23;
-    [v7 setWantsBottomAttachedPresentation:1];
+    *(style + 192) = v36;
+    *(style + 94) = v24;
+    *(style + 95) = v25;
+    *(style + 93) = v23;
+    [style setWantsBottomAttachedPresentation:1];
   }
 
-  return v7;
+  return style;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = SBHPadAddSheetViewController;
@@ -122,54 +122,54 @@
   v53.receiver = self;
   v53.super_class = SBHPadAddSheetViewController;
   [(SBHPadAddSheetViewController *)&v53 viewDidLoad];
-  v3 = [(SBHPadAddSheetViewController *)self view];
-  v4 = [v3 window];
-  v5 = [(SBHPadAddSheetViewController *)self _newBackgroundView];
+  view = [(SBHPadAddSheetViewController *)self view];
+  window = [view window];
+  _newBackgroundView = [(SBHPadAddSheetViewController *)self _newBackgroundView];
   backgroundView = self->_backgroundView;
-  self->_backgroundView = v5;
+  self->_backgroundView = _newBackgroundView;
 
   v7 = self->_backgroundView;
-  [v3 bounds];
+  [view bounds];
   [(MTMaterialView *)v7 setFrame:?];
   [(MTMaterialView *)self->_backgroundView setAutoresizingMask:18];
-  [v3 addSubview:self->_backgroundView];
+  [view addSubview:self->_backgroundView];
   v8 = [objc_alloc(MEMORY[0x1E69DCF78]) initWithStyle:1];
   splitViewController = self->_splitViewController;
   self->_splitViewController = v8;
 
   [(UISplitViewController *)self->_splitViewController _setOverrideHorizontalSizeClass:2];
-  v10 = [(UISplitViewController *)self->_splitViewController view];
-  v11 = [MEMORY[0x1E69DC888] clearColor];
-  [v10 setBackgroundColor:v11];
+  view2 = [(UISplitViewController *)self->_splitViewController view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view2 setBackgroundColor:clearColor];
 
   [(UISplitViewController *)self->_splitViewController setGutterWidth:0.0];
   [(UISplitViewController *)self->_splitViewController setPreferredSplitBehavior:1];
   [(UISplitViewController *)self->_splitViewController setPreferredDisplayMode:2];
   [(UISplitViewController *)self->_splitViewController setDisplayModeButtonVisibility:1];
   [(UISplitViewController *)self->_splitViewController setPrimaryBackgroundStyle:1];
-  v52 = v4;
-  if (v4)
+  v52 = window;
+  if (window)
   {
-    v12 = v4;
+    selfCopy = window;
   }
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  [(SBHPadAddSheetViewController *)self _paddedSidebarWidthForInterfaceOrientation:[(SBHPadAddSheetViewController *)v12 interfaceOrientation]];
+  [(SBHPadAddSheetViewController *)self _paddedSidebarWidthForInterfaceOrientation:[(SBHPadAddSheetViewController *)selfCopy interfaceOrientation]];
   v14 = v13;
   [(UISplitViewController *)self->_splitViewController setPreferredPrimaryColumnWidth:?];
   [(UISplitViewController *)self->_splitViewController setMaximumPrimaryColumnWidth:v14];
   [(UISplitViewController *)self->_splitViewController setMinimumPrimaryColumnWidth:v14];
   [(SBHPadAddSheetViewController *)self bs_addChildViewController:self->_splitViewController];
-  v15 = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
+  addWidgetSheetStyle = [(SBHAddWidgetSheetViewControllerBase *)self addWidgetSheetStyle];
   v16 = [SBHAddWidgetSheetViewController alloc];
-  v17 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-  v18 = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
-  v19 = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
-  v21 = [(SBHAddWidgetSheetViewControllerBase *)v16 initWithListLayoutProvider:v17 iconViewProvider:v18 allowedWidgets:v19 addWidgetSheetStyle:v20, v15];
+  listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+  iconViewProvider = [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
+  allowedWidgets = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
+  v21 = [(SBHAddWidgetSheetViewControllerBase *)v16 initWithListLayoutProvider:listLayoutProvider iconViewProvider:iconViewProvider allowedWidgets:allowedWidgets addWidgetSheetStyle:v20, addWidgetSheetStyle];
   left = self->_left;
   self->_left = v21;
 
@@ -188,15 +188,15 @@
 
   [(SBHAddWidgetSheetViewController *)self->_left setGalleryLayoutSize:self->_galleryLayoutSize];
   [(SBHAddWidgetSheetViewControllerBase *)self->_left setDelegate:self];
-  v27 = [(SBHAddWidgetSheetViewController *)self->_left view];
-  v28 = [MEMORY[0x1E69DC888] clearColor];
-  [v27 setBackgroundColor:v28];
+  view3 = [(SBHAddWidgetSheetViewController *)self->_left view];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [view3 setBackgroundColor:clearColor2];
 
   [(UISplitViewController *)self->_splitViewController setViewController:self->_left forColumn:0];
   v29 = SBHBundle();
   v30 = [v29 localizedStringForKey:@"WIDGET_ADD_SHEET_SEARCH_PLACEHOLDER" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
 
-  v31 = [[SBHWidgetSearchController alloc] initWithAddWidgetSheetStyle:v15 placeholderText:v30];
+  v31 = [[SBHWidgetSearchController alloc] initWithAddWidgetSheetStyle:addWidgetSheetStyle placeholderText:v30];
   widgetSearchController = self->_widgetSearchController;
   self->_widgetSearchController = v31;
 
@@ -206,14 +206,14 @@
   [(SBHWidgetSearchController *)self->_widgetSearchController setAlwaysShowBarBackground:self->_wantsSeparator];
   [(SBHWidgetSearchController *)self->_widgetSearchController setShouldInsetContentForGrabber:self->_wantsBottomAttachedPresentation];
   v33 = [(MTMaterialView *)self->_backgroundView visualStylingProviderForCategory:2];
-  v34 = [(SBHWidgetSearchController *)self->_widgetSearchController searchBarTextFieldBackgroundView];
-  [v33 automaticallyUpdateView:v34 withStyle:2];
+  searchBarTextFieldBackgroundView = [(SBHWidgetSearchController *)self->_widgetSearchController searchBarTextFieldBackgroundView];
+  [v33 automaticallyUpdateView:searchBarTextFieldBackgroundView withStyle:2];
 
-  v35 = [(SBHAddWidgetSheetViewController *)self->_left navigationItem];
+  navigationItem = [(SBHAddWidgetSheetViewController *)self->_left navigationItem];
   [(SBHAddWidgetSheetViewController *)self->_left setDefinesPresentationContext:1];
-  [v35 setLargeTitleDisplayMode:2];
-  [v35 setSearchBarPlacementAllowsToolbarIntegration:0];
-  [v35 setHidesSearchBarWhenScrolling:0];
+  [navigationItem setLargeTitleDisplayMode:2];
+  [navigationItem setSearchBarPlacementAllowsToolbarIntegration:0];
+  [navigationItem setHidesSearchBarWhenScrolling:0];
   v36 = objc_alloc_init(MEMORY[0x1E69DD5E8]);
   [v36 setHideBackButton:1];
   [v36 setHideStandardTitle:1];
@@ -221,13 +221,13 @@
   [v36 setHideTrailingBarButtons:1];
   [v36 setHideLeadingBarButtons:1];
   [v36 setHeight:20.0];
-  [v35 setTitleView:v36];
-  [v35 setSearchController:self->_widgetSearchController];
-  v37 = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
-  [v37 sizeToFit];
+  [navigationItem setTitleView:v36];
+  [navigationItem setSearchController:self->_widgetSearchController];
+  searchBar = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
+  [searchBar sizeToFit];
 
-  v38 = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
-  [v38 layoutIfNeeded];
+  searchBar2 = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
+  [searchBar2 layoutIfNeeded];
 
   [(SBHAddWidgetSheetViewController *)self->_left setExternalSearchController:self->_widgetSearchController];
   if ([(SBHPadAddSheetViewController *)self wantsCloseButton])
@@ -235,27 +235,27 @@
     v39 = [MEMORY[0x1E69DC738] buttonWithType:7];
     [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v39 addTarget:self action:sel_closeButtonTapped_ forControlEvents:64];
-    v40 = [(UISplitViewController *)self->_splitViewController view];
-    v50 = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
-    [v50 setCornerStyle:4];
-    [v39 setConfiguration:v50];
-    [v40 addSubview:v39];
+    view4 = [(UISplitViewController *)self->_splitViewController view];
+    borderedButtonConfiguration = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
+    [borderedButtonConfiguration setCornerStyle:4];
+    [v39 setConfiguration:borderedButtonConfiguration];
+    [view4 addSubview:v39];
     v47 = MEMORY[0x1E696ACD8];
-    v49 = [v39 trailingAnchor];
-    [v40 trailingAnchor];
-    v48 = v51 = v3;
-    v41 = [v49 constraintEqualToAnchor:v48 constant:-21.0];
+    trailingAnchor = [v39 trailingAnchor];
+    [view4 trailingAnchor];
+    v48 = v51 = view;
+    v41 = [trailingAnchor constraintEqualToAnchor:v48 constant:-21.0];
     v54[0] = v41;
-    v42 = [v39 topAnchor];
-    v43 = [v40 topAnchor];
-    [v42 constraintEqualToAnchor:v43 constant:21.0];
+    topAnchor = [v39 topAnchor];
+    topAnchor2 = [view4 topAnchor];
+    [topAnchor constraintEqualToAnchor:topAnchor2 constant:21.0];
     v45 = v44 = v30;
     v54[1] = v45;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
     [v47 activateConstraints:v46];
 
     v30 = v44;
-    v3 = v51;
+    view = v51;
   }
 }
 
@@ -267,12 +267,12 @@
   return v2;
 }
 
-- (void)setWantsSeparator:(BOOL)a3
+- (void)setWantsSeparator:(BOOL)separator
 {
-  if (self->_wantsSeparator != a3)
+  if (self->_wantsSeparator != separator)
   {
-    self->_wantsSeparator = a3;
-    if (a3)
+    self->_wantsSeparator = separator;
+    if (separator)
     {
       [(SBHPadAddSheetViewController *)self loadViewIfNeeded];
       v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -280,17 +280,17 @@
       self->_separatorView = v4;
 
       v6 = self->_separatorView;
-      v7 = [MEMORY[0x1E69DC888] separatorColor];
-      [(UIView *)v6 setBackgroundColor:v7];
+      separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+      [(UIView *)v6 setBackgroundColor:separatorColor];
 
-      v8 = [(UISplitViewController *)self->_splitViewController view];
-      [v8 addSubview:self->_separatorView];
+      view = [(UISplitViewController *)self->_splitViewController view];
+      [view addSubview:self->_separatorView];
     }
 
     else
     {
       [(UIView *)self->_separatorView removeFromSuperview];
-      v8 = self->_separatorView;
+      view = self->_separatorView;
       self->_separatorView = 0;
     }
 
@@ -302,28 +302,28 @@
   }
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 addWidgetSheetViewControllerDidCancel:self];
+    [delegate addWidgetSheetViewControllerDidCancel:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHPadAddSheetViewController;
-  [(SBHPadAddSheetViewController *)&v4 viewWillAppear:a3];
+  [(SBHPadAddSheetViewController *)&v4 viewWillAppear:appear];
   [(SBHPadAddSheetViewController *)self configureViewsForCurrentInterfaceOrientation];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHPadAddSheetViewController;
-  [(SBHPadAddSheetViewController *)&v4 viewDidAppear:a3];
+  [(SBHPadAddSheetViewController *)&v4 viewDidAppear:appear];
   [(SBHPadAddSheetViewController *)self _layoutSeparatorView];
 }
 
@@ -332,54 +332,54 @@
   v5.receiver = self;
   v5.super_class = SBHPadAddSheetViewController;
   [(SBHPadAddSheetViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
-  [v3 layoutIfNeeded];
+  searchBar = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
+  [searchBar layoutIfNeeded];
 
   [(SBHPadAddSheetViewController *)self _layoutSearchBarGradientMaskLayers];
   [(SBHPadAddSheetViewController *)self _layoutSeparatorView];
-  v4 = [(SBHPadAddSheetViewController *)self sheetPresentationController];
+  sheetPresentationController = [(SBHPadAddSheetViewController *)self sheetPresentationController];
   [(SBHWidgetSearchController *)self->_widgetSearchController grabberTopSpacing];
-  [v4 _setGrabberTopSpacing:?];
+  [sheetPresentationController _setGrabberTopSpacing:?];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = SBFWindowForViewControllerTransition();
-  v9 = [v8 _toWindowOrientation];
+  _toWindowOrientation = [v8 _toWindowOrientation];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__SBHPadAddSheetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v11[3] = &unk_1E808B460;
   v11[4] = self;
-  v11[5] = v9;
-  [v7 animateAlongsideTransition:v11 completion:0];
+  v11[5] = _toWindowOrientation;
+  [coordinatorCopy animateAlongsideTransition:v11 completion:0];
   v10.receiver = self;
   v10.super_class = SBHPadAddSheetViewController;
-  [(SBHPadAddSheetViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SBHPadAddSheetViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  [(SBHAddWidgetSheetViewController *)self->_left updateSearchResultsForSearchController:a3];
+  [(SBHAddWidgetSheetViewController *)self->_left updateSearchResultsForSearchController:controller];
 
   [(SBHPadAddSheetViewController *)self setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [(SBHAddWidgetSheetViewController *)self->_left _updatedContentUnavailableConfigurationUsingState:a3];
+  v4 = [(SBHAddWidgetSheetViewController *)self->_left _updatedContentUnavailableConfigurationUsingState:state];
   [(SBHAddWidgetSheetViewController *)self->_left setContentUnavailableConfiguration:v4];
 }
 
-- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)orientation
 {
   v10 = 0;
   memset(v9, 0, sizeof(v9));
   v4 = SBHScreenTypeForCurrentDevice();
-  SBHPadAddWidgetSheetMetricsForScreenTypeAndInterfaceOrientation(v4, a3, v9);
+  SBHPadAddWidgetSheetMetricsForScreenTypeAndInterfaceOrientation(v4, orientation, v9);
   v5 = *v9;
   v6 = 0.0;
   v7 = 0.0;
@@ -391,25 +391,25 @@
   return result;
 }
 
-- (void)setAddWidgetSheetWidgetBackgroundType:(unint64_t)a3
+- (void)setAddWidgetSheetWidgetBackgroundType:(unint64_t)type
 {
   v6.receiver = self;
   v6.super_class = SBHPadAddSheetViewController;
   [(SBHAddWidgetSheetViewControllerBase *)&v6 setAddWidgetSheetWidgetBackgroundType:?];
-  [(SBHAddWidgetSheetViewControllerBase *)self->_left setAddWidgetSheetWidgetBackgroundType:a3];
-  v5 = [(SBHPadAddSheetViewController *)self _detailViewController];
-  [v5 setAddWidgetSheetWidgetBackgroundType:a3];
+  [(SBHAddWidgetSheetViewControllerBase *)self->_left setAddWidgetSheetWidgetBackgroundType:type];
+  _detailViewController = [(SBHPadAddSheetViewController *)self _detailViewController];
+  [_detailViewController setAddWidgetSheetWidgetBackgroundType:type];
 }
 
-- (void)configureViewsForInterfaceOrientation:(int64_t)a3
+- (void)configureViewsForInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(SBHPadAddSheetViewController *)self view];
-  v6 = [v5 _screen];
-  [v6 _referenceBounds];
+  view = [(SBHPadAddSheetViewController *)self view];
+  _screen = [view _screen];
+  [_screen _referenceBounds];
   v8 = v7;
   v10 = v9;
 
-  if ((a3 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     v11 = v10;
   }
@@ -419,43 +419,43 @@
     v11 = v8;
   }
 
-  if ((a3 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     v8 = v10;
   }
 
-  [(SBHPadAddSheetViewController *)self preferredInsetsForSheetPresentationInInterfaceOrientation:a3];
+  [(SBHPadAddSheetViewController *)self preferredInsetsForSheetPresentationInInterfaceOrientation:orientation];
   [(SBHPadAddSheetViewController *)self setPreferredContentSize:v8 - (v12 + v13), v11 - (v14 + v15)];
-  [(SBHPadAddSheetViewController *)self _paddedSidebarWidthForInterfaceOrientation:a3];
+  [(SBHPadAddSheetViewController *)self _paddedSidebarWidthForInterfaceOrientation:orientation];
   v17 = v16;
   [(UISplitViewController *)self->_splitViewController setPreferredPrimaryColumnWidth:?];
   [(UISplitViewController *)self->_splitViewController setMaximumPrimaryColumnWidth:v17];
   [(UISplitViewController *)self->_splitViewController setMinimumPrimaryColumnWidth:v17];
-  v18 = [(UISplitViewController *)self->_splitViewController view];
-  [v18 layoutIfNeeded];
+  view2 = [(UISplitViewController *)self->_splitViewController view];
+  [view2 layoutIfNeeded];
 
-  v19 = [(SBHPadAddSheetViewController *)self view];
-  [v19 setNeedsLayout];
+  view3 = [(SBHPadAddSheetViewController *)self view];
+  [view3 setNeedsLayout];
 }
 
 - (void)configureViewsForCurrentInterfaceOrientation
 {
-  v3 = [(SBHPadAddSheetViewController *)self view];
-  v5 = [v3 window];
+  view = [(SBHPadAddSheetViewController *)self view];
+  window = [view window];
 
-  v4 = v5;
-  if (!v5)
+  selfCopy = window;
+  if (!window)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  [(SBHPadAddSheetViewController *)self configureViewsForInterfaceOrientation:[(SBHPadAddSheetViewController *)v4 interfaceOrientation]];
+  [(SBHPadAddSheetViewController *)self configureViewsForInterfaceOrientation:[(SBHPadAddSheetViewController *)selfCopy interfaceOrientation]];
 }
 
 - (double)_columnSpacing
 {
-  v2 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-  v3 = [v2 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+  v3 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   [v3 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassSmall"];
   v5 = v4;
@@ -465,17 +465,17 @@
   return v7;
 }
 
-- (unint64_t)_numberOfWidgetColumnsThatFitInWidth:(double)a3
+- (unint64_t)_numberOfWidgetColumnsThatFitInWidth:(double)width
 {
-  v5 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-  v6 = [v5 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+  v6 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   [v6 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassSmall"];
   v8 = v7;
   [v6 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassMedium"];
   v10 = v9 - v8;
   [(SBHPadAddSheetViewController *)self _metricsForCurrentOrientation:0];
-  v11 = ((v10 - v8 - 0.0 - 0.0 + a3) / v10);
+  v11 = ((v10 - v8 - 0.0 - 0.0 + width) / v10);
   if (v11 <= 2)
   {
     v11 = 2;
@@ -494,10 +494,10 @@
   return v12;
 }
 
-- (double)_widthNeededForWidgetColumns:(unint64_t)a3
+- (double)_widthNeededForWidgetColumns:(unint64_t)columns
 {
-  v5 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
-  v6 = [v5 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+  v6 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   [v6 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassSmall"];
   v8 = v7;
@@ -505,17 +505,17 @@
   v10 = v9 - v8;
   [(SBHPadAddSheetViewController *)self _metricsForCurrentOrientation:0];
 
-  return 0.0 - (v10 - v8 - a3 * v10) + 0.0;
+  return 0.0 - (v10 - v8 - columns * v10) + 0.0;
 }
 
-- (double)_paddedSidebarWidthForInterfaceOrientation:(int64_t)a3
+- (double)_paddedSidebarWidthForInterfaceOrientation:(int64_t)orientation
 {
   if ([(SBHPadAddSheetViewController *)self addWidgetSheetLocation]== 1)
   {
     return *MEMORY[0x1E69DE3C8];
   }
 
-  [(SBHPadAddSheetViewController *)self _metricsForOrientation:a3, 0];
+  [(SBHPadAddSheetViewController *)self _metricsForOrientation:orientation, 0];
   return 0.0 + 0.0 + 0.0 + 0.0;
 }
 
@@ -527,8 +527,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
-  [v11 frame];
+  searchBar = [(SBHWidgetSearchController *)self->_widgetSearchController searchBar];
+  [searchBar frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -571,19 +571,19 @@
 
 - (void)_layoutSeparatorView
 {
-  v3 = [(SBHPadAddSheetViewController *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SBHPadAddSheetViewController *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
-  v6 = [(UISplitViewController *)self->_splitViewController view];
-  v7 = [(SBHAddWidgetSheetViewController *)self->_left view];
-  [v7 bounds];
+  view = [(UISplitViewController *)self->_splitViewController view];
+  view2 = [(SBHAddWidgetSheetViewController *)self->_left view];
+  [view2 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SBHAddWidgetSheetViewController *)self->_left view];
-  [v6 convertRect:v16 fromView:{v9, v11, v13, v15}];
+  view3 = [(SBHAddWidgetSheetViewController *)self->_left view];
+  [view convertRect:view3 fromView:{v9, v11, v13, v15}];
   MaxX = CGRectGetMaxX(v24);
 
   if (v5 <= 0.0)
@@ -596,8 +596,8 @@
     v18 = 1.0 / v5;
   }
 
-  v19 = [(SBHPadAddSheetViewController *)self view];
-  [v19 bounds];
+  view4 = [(SBHPadAddSheetViewController *)self view];
+  [view4 bounds];
   v21 = v20;
 
   separatorView = self->_separatorView;
@@ -607,8 +607,8 @@
 
 - (id)_detailViewController
 {
-  v2 = [(SBHPadAddSheetViewController *)self splitViewController];
-  v3 = [v2 viewControllerForColumn:2];
+  splitViewController = [(SBHPadAddSheetViewController *)self splitViewController];
+  v3 = [splitViewController viewControllerForColumn:2];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -633,19 +633,19 @@
 
   if (v7)
   {
-    v8 = v7;
+    navigationController = v7;
   }
 
   else
   {
-    v8 = [v5 navigationController];
+    navigationController = [v5 navigationController];
   }
 
-  v9 = v8;
+  v9 = navigationController;
 
-  v10 = [v9 topViewController];
+  topViewController = [v9 topViewController];
   v11 = objc_opt_class();
-  v12 = v10;
+  v12 = topViewController;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -664,7 +664,7 @@
   return v11;
 }
 
-- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)a3
+- (SBHPadAddWidgetSheetMetrics)_metricsForOrientation:(SEL)orientation
 {
   if ((a4 - 3) >= 2)
   {
@@ -696,103 +696,103 @@
 
 - (SBHPadAddWidgetSheetMetrics)_metricsForCurrentOrientation
 {
-  v4 = [(SBHPadAddSheetViewController *)self view];
-  v7 = [v4 window];
+  view = [(SBHPadAddSheetViewController *)self view];
+  window = [view window];
 
-  v5 = v7;
-  if (!v7)
+  selfCopy = window;
+  if (!window)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  [(SBHPadAddSheetViewController *)self _metricsForOrientation:[(SBHPadAddSheetViewController *)v5 interfaceOrientation]];
+  [(SBHPadAddSheetViewController *)self _metricsForOrientation:[(SBHPadAddSheetViewController *)selfCopy interfaceOrientation]];
 
   return result;
 }
 
-- (void)setApplicationWidgetCollections:(id)a3
+- (void)setApplicationWidgetCollections:(id)collections
 {
-  objc_storeStrong(&self->_applicationWidgetCollections, a3);
-  v5 = a3;
-  [(SBHAddWidgetSheetViewController *)self->_left setApplicationWidgetCollections:v5];
-  v6 = [(SBHPadAddSheetViewController *)self _detailViewController];
-  [v6 setApplicationWidgetCollections:v5];
+  objc_storeStrong(&self->_applicationWidgetCollections, collections);
+  collectionsCopy = collections;
+  [(SBHAddWidgetSheetViewController *)self->_left setApplicationWidgetCollections:collectionsCopy];
+  _detailViewController = [(SBHPadAddSheetViewController *)self _detailViewController];
+  [_detailViewController setApplicationWidgetCollections:collectionsCopy];
 }
 
-- (void)setFavoredApplicationWidgetCollections:(id)a3
+- (void)setFavoredApplicationWidgetCollections:(id)collections
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  collectionsCopy = collections;
+  v5 = [collectionsCopy copy];
   favoredApplicationWidgetCollections = self->_favoredApplicationWidgetCollections;
   self->_favoredApplicationWidgetCollections = v5;
 
-  [(SBHAddWidgetSheetViewController *)self->_left setFavoredApplicationWidgetCollections:v4];
-  v7 = [(SBHPadAddSheetViewController *)self _detailViewController];
-  [v7 setFavoredApplicationWidgetCollections:v4];
+  [(SBHAddWidgetSheetViewController *)self->_left setFavoredApplicationWidgetCollections:collectionsCopy];
+  _detailViewController = [(SBHPadAddSheetViewController *)self _detailViewController];
+  [_detailViewController setFavoredApplicationWidgetCollections:collectionsCopy];
 }
 
-- (void)setDisfavoredApplicationWidgetCollections:(id)a3
+- (void)setDisfavoredApplicationWidgetCollections:(id)collections
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  collectionsCopy = collections;
+  v5 = [collectionsCopy copy];
   disfavoredApplicationWidgetCollections = self->_disfavoredApplicationWidgetCollections;
   self->_disfavoredApplicationWidgetCollections = v5;
 
-  [(SBHAddWidgetSheetViewController *)self->_left setDisfavoredApplicationWidgetCollections:v4];
-  v7 = [(SBHPadAddSheetViewController *)self _detailViewController];
-  [v7 setDisfavoredApplicationWidgetCollections:v4];
+  [(SBHAddWidgetSheetViewController *)self->_left setDisfavoredApplicationWidgetCollections:collectionsCopy];
+  _detailViewController = [(SBHPadAddSheetViewController *)self _detailViewController];
+  [_detailViewController setDisfavoredApplicationWidgetCollections:collectionsCopy];
 }
 
-- (void)setSuggestedItems:(id)a3 forGalleryLayoutSize:(unint64_t)a4
+- (void)setSuggestedItems:(id)items forGalleryLayoutSize:(unint64_t)size
 {
-  v11 = a3;
+  itemsCopy = items;
   suggestedItemsByGalleryLayoutSize = self->_suggestedItemsByGalleryLayoutSize;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   v8 = [(NSMutableDictionary *)suggestedItemsByGalleryLayoutSize objectForKeyedSubscript:v7];
 
-  if (v8 != v11)
+  if (v8 != itemsCopy)
   {
     v9 = self->_suggestedItemsByGalleryLayoutSize;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)v9 setObject:v11 forKeyedSubscript:v10];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+    [(NSMutableDictionary *)v9 setObject:itemsCopy forKeyedSubscript:v10];
 
-    [(SBHAddWidgetSheetViewController *)self->_left setSuggestedItems:v11 forGalleryLayoutSize:a4];
+    [(SBHAddWidgetSheetViewController *)self->_left setSuggestedItems:itemsCopy forGalleryLayoutSize:size];
   }
 }
 
-- (void)setCustomApplicationWidgetCollections:(id)a3
+- (void)setCustomApplicationWidgetCollections:(id)collections
 {
-  objc_storeStrong(&self->_customApplicationWidgetCollections, a3);
-  v5 = a3;
-  [(SBHAddWidgetSheetViewController *)self->_left setCustomApplicationWidgetCollections:v5];
-  v6 = [(SBHPadAddSheetViewController *)self _detailViewController];
-  [v6 setCustomApplicationWidgetCollections:v5];
+  objc_storeStrong(&self->_customApplicationWidgetCollections, collections);
+  collectionsCopy = collections;
+  [(SBHAddWidgetSheetViewController *)self->_left setCustomApplicationWidgetCollections:collectionsCopy];
+  _detailViewController = [(SBHPadAddSheetViewController *)self _detailViewController];
+  [_detailViewController setCustomApplicationWidgetCollections:collectionsCopy];
 }
 
-- (void)setWantsBottomAttachedPresentation:(BOOL)a3
+- (void)setWantsBottomAttachedPresentation:(BOOL)presentation
 {
-  if (self->_wantsBottomAttachedPresentation != a3)
+  if (self->_wantsBottomAttachedPresentation != presentation)
   {
-    v4 = a3;
-    self->_wantsBottomAttachedPresentation = a3;
+    presentationCopy = presentation;
+    self->_wantsBottomAttachedPresentation = presentation;
     [(SBHWidgetSearchController *)self->_widgetSearchController setShouldInsetContentForGrabber:?];
-    v6 = [(SBHPadAddSheetViewController *)self sheetPresentationController];
-    [v6 _setWantsBottomAttached:v4];
+    sheetPresentationController = [(SBHPadAddSheetViewController *)self sheetPresentationController];
+    [sheetPresentationController _setWantsBottomAttached:presentationCopy];
   }
 }
 
-- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)a3
+- (id)suggestedItemsForGalleryLayoutSize:(unint64_t)size
 {
   suggestedItemsByGalleryLayoutSize = self->_suggestedItemsByGalleryLayoutSize;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   v5 = [(NSMutableDictionary *)suggestedItemsByGalleryLayoutSize objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)setPresenter:(id)a3
+- (void)setPresenter:(id)presenter
 {
-  obj = a3;
+  obj = presenter;
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
 
   if (WeakRetained != obj)
@@ -802,9 +802,9 @@
   }
 }
 
-- (void)setGalleryLayoutSize:(unint64_t)a3
+- (void)setGalleryLayoutSize:(unint64_t)size
 {
-  self->_galleryLayoutSize = a3;
+  self->_galleryLayoutSize = size;
   [(SBHAddWidgetSheetViewController *)self->_left setGalleryLayoutSize:?];
 
   [(SBHPadAddSheetViewController *)self configureViewsForCurrentInterfaceOrientation];
@@ -825,65 +825,65 @@
   return userInfo;
 }
 
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v6 addWidgetSheetViewController:self didSelectWidgetIconView:v5];
+  viewCopy = view;
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewController:self didSelectWidgetIconView:viewCopy];
 }
 
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerDidCancel:self];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerDidCancel:self];
 }
 
-- (void)addWidgetSheetViewControllerWillAppear:(id)a3
+- (void)addWidgetSheetViewControllerWillAppear:(id)appear
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerWillAppear:self];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerWillAppear:self];
 }
 
-- (void)addWidgetSheetViewControllerDidAppear:(id)a3
+- (void)addWidgetSheetViewControllerDidAppear:(id)appear
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerDidAppear:self];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerDidAppear:self];
 }
 
-- (void)addWidgetSheetViewControllerWillDisappear:(id)a3
+- (void)addWidgetSheetViewControllerWillDisappear:(id)disappear
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerWillDisappear:self];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerWillDisappear:self];
 }
 
-- (void)addWidgetSheetViewControllerDidDisappear:(id)a3
+- (void)addWidgetSheetViewControllerDidDisappear:(id)disappear
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerDidDisappear:self];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerDidDisappear:self];
 }
 
 - (SBHWidgetDragHandling)widgetDragHandler
 {
-  v2 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  v3 = [v2 widgetDragHandler];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  widgetDragHandler = [delegate widgetDragHandler];
 
-  return v3;
+  return widgetDragHandler;
 }
 
-- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)a3
+- (id)backgroundViewMatchingMaterialBeneathAddWidgetSheetViewController:(id)controller
 {
-  v3 = [(SBHPadAddSheetViewController *)self _newBackgroundView];
+  _newBackgroundView = [(SBHPadAddSheetViewController *)self _newBackgroundView];
 
-  return v3;
+  return _newBackgroundView;
 }
 
-- (id)addWidgetSheetViewController:(id)a3 detailViewControllerForWidgetCollection:(id)a4
+- (id)addWidgetSheetViewController:(id)controller detailViewControllerForWidgetCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  collectionCopy = collection;
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 addWidgetSheetViewController:self detailViewControllerForWidgetCollection:v5];
+    v7 = [delegate addWidgetSheetViewController:self detailViewControllerForWidgetCollection:collectionCopy];
   }
 
   else
@@ -894,12 +894,12 @@
   return v7;
 }
 
-- (id)galleryViewControllerForAddWidgetSheetViewController:(id)a3
+- (id)galleryViewControllerForAddWidgetSheetViewController:(id)controller
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 galleryViewControllerForAddWidgetSheetViewController:self];
+    v5 = [delegate galleryViewControllerForAddWidgetSheetViewController:self];
   }
 
   else

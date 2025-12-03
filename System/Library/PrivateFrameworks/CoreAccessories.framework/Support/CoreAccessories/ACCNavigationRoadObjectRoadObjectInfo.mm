@@ -1,9 +1,9 @@
 @interface ACCNavigationRoadObjectRoadObjectInfo
-+ (id)keyForType:(unsigned __int16)a3;
++ (id)keyForType:(unsigned __int16)type;
 - (ACCNavigationRoadObjectRoadObjectInfo)init;
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4;
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data;
 - (id)description;
-- (void)setInfoFromDictionary:(id)a3;
+- (void)setInfoFromDictionary:(id)dictionary;
 @end
 
 @implementation ACCNavigationRoadObjectRoadObjectInfo
@@ -40,11 +40,11 @@
   return v12;
 }
 
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 > 9)
+  typeCopy = type;
+  dataCopy = data;
+  if (typeCopy > 9)
   {
     if (gLogObjects)
     {
@@ -75,7 +75,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109120;
-      v11[1] = v4;
+      v11[1] = typeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown RoadObjectDetection:RoadObject InfoType %d", v11, 8u);
     }
 
@@ -91,34 +91,34 @@
   return isKindOfClass & 1;
 }
 
-- (void)setInfoFromDictionary:(id)a3
+- (void)setInfoFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     infoDict = self->_infoDict;
-    v5 = a3;
+    dictionaryCopy = dictionary;
     [(NSMutableDictionary *)infoDict removeAllObjects];
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_ID);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_State);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_Type);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_IsMoving);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_LateralOffset);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_LateralSpeed);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_LateralAccel);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_ForwardOffset);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_ForwardSpeed);
-    _setInfoFromDictionary(v5, self->_infoDict, ACCNav_RODUpdate_RoadObject_ForwardAccel);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_ID);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_State);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_Type);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_IsMoving);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_LateralOffset);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_LateralSpeed);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_LateralAccel);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_ForwardOffset);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_ForwardSpeed);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_RoadObject_ForwardAccel);
   }
 }
 
-+ (id)keyForType:(unsigned __int16)a3
++ (id)keyForType:(unsigned __int16)type
 {
-  v3 = a3;
-  if (a3 > 4)
+  typeCopy = type;
+  if (type > 4)
   {
-    if (a3 <= 6)
+    if (type <= 6)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         v4 = &ACCNav_RODUpdate_RoadObject_LateralSpeed;
       }
@@ -131,7 +131,7 @@
       goto LABEL_22;
     }
 
-    switch(a3)
+    switch(type)
     {
       case 7u:
         v4 = &ACCNav_RODUpdate_RoadObject_ForwardOffset;
@@ -149,14 +149,14 @@ LABEL_22:
 
   else
   {
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v4 = &ACCNav_RODUpdate_RoadObject_Type;
       }
 
-      else if (a3 == 3)
+      else if (type == 3)
       {
         v4 = &ACCNav_RODUpdate_RoadObject_IsMoving;
       }
@@ -169,13 +169,13 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    if (!a3)
+    if (!type)
     {
       v4 = &ACCNav_RODUpdate_RoadObject_ID;
       goto LABEL_22;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = &ACCNav_RODUpdate_RoadObject_State;
       goto LABEL_22;
@@ -201,7 +201,7 @@ LABEL_22:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = typeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown RoadObjectDetectionInfo infoType %d", v9, 8u);
   }
 

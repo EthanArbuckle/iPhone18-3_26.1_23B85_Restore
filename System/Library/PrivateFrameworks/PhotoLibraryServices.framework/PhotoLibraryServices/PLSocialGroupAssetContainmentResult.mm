@@ -1,21 +1,21 @@
 @interface PLSocialGroupAssetContainmentResult
-- (PLSocialGroupAssetContainmentResult)initWithInclusiveAssetIDs:(id)a3 exclusiveAssetIDs:(id)a4;
+- (PLSocialGroupAssetContainmentResult)initWithInclusiveAssetIDs:(id)ds exclusiveAssetIDs:(id)iDs;
 @end
 
 @implementation PLSocialGroupAssetContainmentResult
 
-- (PLSocialGroupAssetContainmentResult)initWithInclusiveAssetIDs:(id)a3 exclusiveAssetIDs:(id)a4
+- (PLSocialGroupAssetContainmentResult)initWithInclusiveAssetIDs:(id)ds exclusiveAssetIDs:(id)iDs
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v12.receiver = self;
   v12.super_class = PLSocialGroupAssetContainmentResult;
   v9 = [(PLSocialGroupAssetContainmentResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_inclusiveAssetIDs, a3);
-    objc_storeStrong(&v10->_exclusiveAssetIDs, a4);
+    objc_storeStrong(&v9->_inclusiveAssetIDs, ds);
+    objc_storeStrong(&v10->_exclusiveAssetIDs, iDs);
   }
 
   return v10;

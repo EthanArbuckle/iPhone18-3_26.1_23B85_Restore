@@ -2,12 +2,12 @@
 + (BOOL)wifiEnabled;
 + (id)sharedInstance;
 - (PSSystemConfigurationDynamicStoreWifiWatcher)init;
-- (id)_wifiNameWithState:(id)a3;
-- (id)_wifiPowerWithState:(id)a3;
-- (id)_wifiTetheringWithState:(id)a3;
+- (id)_wifiNameWithState:(id)state;
+- (id)_wifiPowerWithState:(id)state;
+- (id)_wifiTetheringWithState:(id)state;
 - (id)wifiConfig;
 - (void)dealloc;
-- (void)findKeysAirPortState:(id *)a3 andTetheringState:(id *)a4;
+- (void)findKeysAirPortState:(id *)state andTetheringState:(id *)tetheringState;
 @end
 
 @implementation PSSystemConfigurationDynamicStoreWifiWatcher
@@ -34,14 +34,14 @@ void __62__PSSystemConfigurationDynamicStoreWifiWatcher_sharedInstance__block_in
 + (BOOL)wifiEnabled
 {
   v2 = +[PSSystemConfigurationDynamicStoreWifiWatcher sharedInstance];
-  v3 = [v2 wifiConfig];
-  v4 = [v3 objectForKey:@"wifiPower"];
-  v5 = [v4 BOOLValue];
+  wifiConfig = [v2 wifiConfig];
+  v4 = [wifiConfig objectForKey:@"wifiPower"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)findKeysAirPortState:(id *)a3 andTetheringState:(id *)a4
+- (void)findKeysAirPortState:(id *)state andTetheringState:(id *)tetheringState
 {
   v84 = *MEMORY[0x1E69E9840];
   v7 = *MEMORY[0x1E69822F0];
@@ -74,8 +74,8 @@ void __62__PSSystemConfigurationDynamicStoreWifiWatcher_sharedInstance__block_in
     goto LABEL_33;
   }
 
-  v64 = a4;
-  v65 = a3;
+  tetheringStateCopy = tetheringState;
+  stateCopy = state;
   if (CFArrayGetCount(v17))
   {
     v19 = socket(2, 2, 0);
@@ -153,20 +153,20 @@ LABEL_26:
   CFRelease(v13);
   wifiKey = self->_wifiKey;
   theArraya = v25;
-  v68 = self;
+  selfCopy = self;
   if (wifiKey)
   {
     v28 = SCDynamicStoreCopyValue(self->_prefs, wifiKey);
     if (v28)
     {
       v29 = v28;
-      if (v65)
+      if (stateCopy)
       {
         v30 = CFGetTypeID(v28);
         if (v30 == CFDictionaryGetTypeID())
         {
           v31 = v29;
-          *v65 = v29;
+          *stateCopy = v29;
         }
       }
 
@@ -203,31 +203,31 @@ LABEL_26:
             if (v39)
             {
               v40 = v39;
-              v41 = SCDynamicStoreCopyValue(v68->_prefs, v39);
+              v41 = SCDynamicStoreCopyValue(selfCopy->_prefs, v39);
               if (v41)
               {
                 v42 = v41;
-                v43 = v68->_wifiKey;
+                v43 = selfCopy->_wifiKey;
                 if (v43)
                 {
                   CFRelease(v43);
                 }
 
-                wifiInterface = v68->_wifiInterface;
+                wifiInterface = selfCopy->_wifiInterface;
                 if (wifiInterface)
                 {
                   CFRelease(wifiInterface);
                 }
 
-                v68->_wifiKey = v40;
-                v68->_wifiInterface = CFRetain(v37);
-                if (v65)
+                selfCopy->_wifiKey = v40;
+                selfCopy->_wifiInterface = CFRetain(v37);
+                if (stateCopy)
                 {
                   v45 = CFGetTypeID(v42);
                   if (v45 == CFDictionaryGetTypeID())
                   {
                     v46 = v42;
-                    *v65 = v42;
+                    *stateCopy = v42;
                   }
                 }
 
@@ -253,7 +253,7 @@ LABEL_26:
 LABEL_55:
 
     v25 = theArraya;
-    self = v68;
+    self = selfCopy;
   }
 
   if (self->_wifiInterface)
@@ -287,24 +287,24 @@ LABEL_55:
             if (v55)
             {
               v56 = v55;
-              v57 = SCDynamicStoreCopyValue(v68->_prefs, v55);
+              v57 = SCDynamicStoreCopyValue(selfCopy->_prefs, v55);
               if (v57)
               {
                 v58 = v57;
-                tetheringLink = v68->_tetheringLink;
+                tetheringLink = selfCopy->_tetheringLink;
                 if (tetheringLink)
                 {
                   CFRelease(tetheringLink);
                 }
 
-                v68->_tetheringLink = v56;
-                if (v64)
+                selfCopy->_tetheringLink = v56;
+                if (tetheringStateCopy)
                 {
                   v60 = CFGetTypeID(v58);
                   if (v60 == CFDictionaryGetTypeID())
                   {
                     v61 = v58;
-                    *v64 = v58;
+                    *tetheringStateCopy = v58;
                   }
                 }
 
@@ -330,7 +330,7 @@ LABEL_55:
 LABEL_76:
 
     v25 = theArraya;
-    self = v68;
+    self = selfCopy;
   }
 
   v62 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
@@ -349,9 +349,9 @@ LABEL_76:
 LABEL_33:
 }
 
-- (id)_wifiTetheringWithState:(id)a3
+- (id)_wifiTetheringWithState:(id)state
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E6982548]];
+  v3 = [state objectForKey:*MEMORY[0x1E6982548]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -368,9 +368,9 @@ LABEL_33:
   return v5;
 }
 
-- (id)_wifiPowerWithState:(id)a3
+- (id)_wifiPowerWithState:(id)state
 {
-  v3 = [a3 objectForKey:@"POWER"];
+  v3 = [state objectForKey:@"POWER"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 count])
   {
@@ -388,10 +388,10 @@ LABEL_6:
   return v4;
 }
 
-- (id)_wifiNameWithState:(id)a3
+- (id)_wifiNameWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"WiFiNetworkType"];
+  stateCopy = state;
+  v4 = [stateCopy objectForKey:@"WiFiNetworkType"];
   v5 = v4;
   if (v4 && [v4 intValue] == 1)
   {
@@ -400,7 +400,7 @@ LABEL_6:
 
   else
   {
-    v6 = [v3 objectForKey:@"SSID_STR"];
+    v6 = [stateCopy objectForKey:@"SSID_STR"];
   }
 
   return v6;

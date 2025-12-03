@@ -14,8 +14,8 @@
   if (v2)
   {
     [(NCDigestPlatterBackgroundView *)v2 setUserInteractionEnabled:0];
-    v4 = [(NCDigestPlatterBackgroundView *)v3 layer];
-    [v4 setGroupName:@"NCDigestPlatterBackgroundView"];
+    layer = [(NCDigestPlatterBackgroundView *)v3 layer];
+    [layer setGroupName:@"NCDigestPlatterBackgroundView"];
 
     [(NCDigestPlatterBackgroundView *)v3 _setupBackground];
   }
@@ -25,28 +25,28 @@
 
 - (void)_setupBackground
 {
-  v3 = [(NCDigestPlatterBackgroundView *)self layer];
-  v4 = [MEMORY[0x277D75348] quaternarySystemFillColor];
-  [v3 setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+  layer = [(NCDigestPlatterBackgroundView *)self layer];
+  quaternarySystemFillColor = [MEMORY[0x277D75348] quaternarySystemFillColor];
+  [layer setBackgroundColor:{objc_msgSend(quaternarySystemFillColor, "CGColor")}];
 
-  v5 = [(NCDigestPlatterBackgroundView *)self traitCollection];
-  if ([v5 userInterfaceStyle] == 1)
+  traitCollection = [(NCDigestPlatterBackgroundView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
-    v6 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    v10 = [v6 colorWithAlphaComponent:0.75];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    quaternaryLabelColor = [systemGroupedBackgroundColor colorWithAlphaComponent:0.75];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75348] quaternaryLabelColor];
+    quaternaryLabelColor = [MEMORY[0x277D75348] quaternaryLabelColor];
   }
 
-  v7 = [(NCDigestPlatterBackgroundView *)self layer];
-  [v7 setBorderWidth:1.2];
+  layer2 = [(NCDigestPlatterBackgroundView *)self layer];
+  [layer2 setBorderWidth:1.2];
 
-  v8 = [(NCDigestPlatterBackgroundView *)self layer];
-  v9 = v10;
-  [v8 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+  layer3 = [(NCDigestPlatterBackgroundView *)self layer];
+  v9 = quaternaryLabelColor;
+  [layer3 setBorderColor:{objc_msgSend(quaternaryLabelColor, "CGColor")}];
 }
 
 @end

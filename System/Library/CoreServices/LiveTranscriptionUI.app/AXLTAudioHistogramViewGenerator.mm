@@ -3,8 +3,8 @@
 - (_TtC19LiveTranscriptionUI31AXLTAudioHistogramViewGenerator)init;
 - (double)height;
 - (id)viewController;
-- (void)setHeight:(double)a3;
-- (void)setHistogram:(id)a3;
+- (void)setHeight:(double)height;
+- (void)setHistogram:(id)histogram;
 @end
 
 @implementation AXLTAudioHistogramViewGenerator
@@ -14,14 +14,14 @@
   v3 = *(&self->super.isa + OBJC_IVAR____TtC19LiveTranscriptionUI31AXLTAudioHistogramViewGenerator_config);
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
 
   static Published.subscript.getter();
 
   return v6;
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC19LiveTranscriptionUI31AXLTAudioHistogramViewGenerator_config);
   swift_getKeyPath();
@@ -35,7 +35,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR____TtC19LiveTranscriptionUI31AXLTAudioHistogramViewGenerator_config);
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
 
   static Published.subscript.getter();
 
@@ -44,7 +44,7 @@
   return v5.super.isa;
 }
 
-- (void)setHistogram:(id)a3
+- (void)setHistogram:(id)histogram
 {
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC19LiveTranscriptionUI31AXLTAudioHistogramViewGenerator_config);

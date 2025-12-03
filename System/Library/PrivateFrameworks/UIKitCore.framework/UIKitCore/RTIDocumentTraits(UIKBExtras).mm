@@ -10,19 +10,19 @@
   v105 = *MEMORY[0x1E69E9840];
   v0 = objc_alloc_init(MEMORY[0x1E69C6F40]);
   v1 = +[UIKeyboardImpl activeInstance];
-  v2 = [v1 keyboardState];
-  v3 = [v2 textInputTraits];
-  [v0 setTextInputTraits:v3];
+  keyboardState = [v1 keyboardState];
+  textInputTraits = [keyboardState textInputTraits];
+  [v0 setTextInputTraits:textInputTraits];
 
-  v4 = [v1 delegateAsResponder];
+  delegateAsResponder = [v1 delegateAsResponder];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 textInputContextIdentifier];
-    [v0 setTextInputContextIdentifier:v5];
+    textInputContextIdentifier = [delegateAsResponder textInputContextIdentifier];
+    [v0 setTextInputContextIdentifier:textInputContextIdentifier];
   }
 
   v6 = +[UIKeyboardInputModeController sharedInputModeController];
-  v7 = [v6 textInputModeForResponder:v4];
+  v7 = [v6 textInputModeForResponder:delegateAsResponder];
 
   if (v7)
   {
@@ -34,13 +34,13 @@
   }
 
   v93 = v7;
-  v9 = [v4 _additionalTextInputLocales];
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  _additionalTextInputLocales = [delegateAsResponder _additionalTextInputLocales];
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_additionalTextInputLocales, "count")}];
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v11 = v9;
+  v11 = _additionalTextInputLocales;
   v12 = [v11 countByEnumeratingWithState:&v97 objects:v104 count:16];
   if (v12)
   {
@@ -55,8 +55,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v97 + 1) + 8 * i) localeIdentifier];
-        [v10 addObject:v16];
+        localeIdentifier = [*(*(&v97 + 1) + 8 * i) localeIdentifier];
+        [v10 addObject:localeIdentifier];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v97 objects:v104 count:16];
@@ -70,48 +70,48 @@
     [v0 setAdditionalLocaleIdentifiers:v10];
   }
 
-  v17 = [v2 recipientIdentifier];
-  [v0 setRecipientId:v17];
+  recipientIdentifier = [keyboardState recipientIdentifier];
+  [v0 setRecipientId:recipientIdentifier];
 
-  v18 = [v2 responseContext];
-  [v0 setResponseContext:v18];
+  responseContext = [keyboardState responseContext];
+  [v0 setResponseContext:responseContext];
 
-  v19 = [v2 inputContextHistory];
-  v20 = [v19 copy];
+  inputContextHistory = [keyboardState inputContextHistory];
+  v20 = [inputContextHistory copy];
   [v0 setInputContextHistory:v20];
 
-  v21 = [v2 supportedPayloadIds];
-  [v0 setSupportedPayloadIds:v21];
+  supportedPayloadIds = [keyboardState supportedPayloadIds];
+  [v0 setSupportedPayloadIds:supportedPayloadIds];
 
   v22 = +[UIKeyboardImpl activeInstance];
-  v23 = [v22 textInputTraits];
-  [v0 setHidePrediction:{objc_msgSend(v23, "hidePrediction")}];
+  textInputTraits2 = [v22 textInputTraits];
+  [v0 setHidePrediction:{objc_msgSend(textInputTraits2, "hidePrediction")}];
 
   v24 = +[UIKeyboardImpl activeInstance];
-  v25 = [v24 textInputTraits];
-  v26 = [v25 disablePrediction];
+  textInputTraits3 = [v24 textInputTraits];
+  disablePrediction = [textInputTraits3 disablePrediction];
 
-  [v0 setDisablePrediction:v26];
+  [v0 setDisablePrediction:disablePrediction];
   v27 = +[UIKeyboardImpl activeInstance];
-  v28 = [v27 inputDelegate];
-  v29 = [v28 textInputView];
-  [v0 setShouldReverseLayoutDirection:{objc_msgSend(v29, "_shouldReverseLayoutDirection")}];
+  inputDelegate = [v27 inputDelegate];
+  textInputView = [inputDelegate textInputView];
+  [v0 setShouldReverseLayoutDirection:{objc_msgSend(textInputView, "_shouldReverseLayoutDirection")}];
 
-  [v0 setAutofillMode:{objc_msgSend(v2, "autofillMode")}];
-  [v0 setAutofillSubMode:{objc_msgSend(v2, "autofillSubMode")}];
-  v30 = [v2 autofillContext];
-  [v0 setAutofillContext:v30];
+  [v0 setAutofillMode:{objc_msgSend(keyboardState, "autofillMode")}];
+  [v0 setAutofillSubMode:{objc_msgSend(keyboardState, "autofillSubMode")}];
+  autofillContext = [keyboardState autofillContext];
+  [v0 setAutofillContext:autofillContext];
 
   v31 = +[UIKeyboardImpl activeInstance];
-  v32 = [v31 _passwordRules];
-  [v0 setPasswordRules:v32];
+  _passwordRules = [v31 _passwordRules];
+  [v0 setPasswordRules:_passwordRules];
 
   v33 = +[UIKeyboardImpl activeInstance];
   [v0 setShouldLoadAutofillSignUp:{objc_msgSend(v33, "shouldLoadAutofillSignUpInputViewController")}];
 
-  if ([v2 supplementalLexiconIdentifier])
+  if ([keyboardState supplementalLexiconIdentifier])
   {
-    v34 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v2, "supplementalLexiconIdentifier")}];
+    v34 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(keyboardState, "supplementalLexiconIdentifier")}];
     v103 = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v103 count:1];
     [v0 setEnabledSupplementalLexiconIdentifiers:v35];
@@ -122,84 +122,84 @@
     [v0 setEnabledSupplementalLexiconIdentifiers:0];
   }
 
-  v36 = [v1 keyboardStateManager];
-  [v0 setDelegateConformanceType:{objc_msgSend(v36, "delegateConformanceType")}];
+  keyboardStateManager = [v1 keyboardStateManager];
+  [v0 setDelegateConformanceType:{objc_msgSend(keyboardStateManager, "delegateConformanceType")}];
 
   if (objc_opt_respondsToSelector())
   {
-    v37 = [v1 inputDelegate];
+    inputDelegate2 = [v1 inputDelegate];
     v38 = objc_opt_respondsToSelector();
 
     if (v38)
     {
-      v39 = [v1 inputDelegate];
-      [v0 setDisableAutomaticKeyboardUI:{objc_msgSend(v39, "_disableAutomaticKeyboardUI")}];
+      inputDelegate3 = [v1 inputDelegate];
+      [v0 setDisableAutomaticKeyboardUI:{objc_msgSend(inputDelegate3, "_disableAutomaticKeyboardUI")}];
     }
   }
 
-  v40 = [v4 _responderWindow];
-  v41 = [v40 windowScene];
-  v90 = [v41 _sceneIdentifier];
+  _responderWindow = [delegateAsResponder _responderWindow];
+  windowScene = [_responderWindow windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
   [v0 setSceneID:?];
-  [v0 setContextID:{objc_msgSend(v40, "_contextId")}];
-  v42 = [v40 layer];
+  [v0 setContextID:{objc_msgSend(_responderWindow, "_contextId")}];
+  layer = [_responderWindow layer];
   [v0 setLayerID:CALayerGetRenderId()];
 
   [v0 setSupportsImagePaste:{objc_msgSend(v1, "delegateSupportsImagePaste")}];
-  v43 = [v1 textInputTraits];
-  [v0 setDevicePasscodeEntry:{objc_msgSend(v43, "isDevicePasscodeEntry")}];
+  textInputTraits4 = [v1 textInputTraits];
+  [v0 setDevicePasscodeEntry:{objc_msgSend(textInputTraits4, "isDevicePasscodeEntry")}];
 
-  v44 = [v1 textInputTraits];
-  [v0 setDisableInputBars:{objc_msgSend(v44, "disableInputBars")}];
+  textInputTraits5 = [v1 textInputTraits];
+  [v0 setDisableInputBars:{objc_msgSend(textInputTraits5, "disableInputBars")}];
 
   v45 = +[UIKeyboardImpl activeInstance];
-  v89 = [v45 delegateAsResponder];
+  delegateAsResponder2 = [v45 delegateAsResponder];
 
   v101[0] = @"ForceFloatingKeyboard";
   v46 = MEMORY[0x1E696AD98];
-  v88 = [v1 textInputTraits];
-  v87 = [v46 numberWithBool:{objc_msgSend(v88, "forceFloatingKeyboard")}];
+  textInputTraits6 = [v1 textInputTraits];
+  v87 = [v46 numberWithBool:{objc_msgSend(textInputTraits6, "forceFloatingKeyboard")}];
   v102[0] = v87;
   v101[1] = @"ForceDisableDictation";
   v47 = MEMORY[0x1E696AD98];
-  v86 = [v1 textInputTraits];
-  v85 = [v47 numberWithBool:{objc_msgSend(v86, "forceDisableDictation")}];
+  textInputTraits7 = [v1 textInputTraits];
+  v85 = [v47 numberWithBool:{objc_msgSend(textInputTraits7, "forceDisableDictation")}];
   v102[1] = v85;
   v101[2] = @"UseAutomaticEndpointing";
   v48 = MEMORY[0x1E696AD98];
-  v84 = [v1 textInputTraits];
-  v83 = [v48 numberWithBool:{objc_msgSend(v84, "useAutomaticEndpointing")}];
+  textInputTraits8 = [v1 textInputTraits];
+  v83 = [v48 numberWithBool:{objc_msgSend(textInputTraits8, "useAutomaticEndpointing")}];
   v102[2] = v83;
   v101[3] = @"AcceptsDictationResults";
   v49 = MEMORY[0x1E696AD98];
-  v82 = [v1 textInputTraits];
-  v81 = [v49 numberWithBool:{objc_msgSend(v82, "acceptsDictationSearchResults")}];
+  textInputTraits9 = [v1 textInputTraits];
+  v81 = [v49 numberWithBool:{objc_msgSend(textInputTraits9, "acceptsDictationSearchResults")}];
   v102[3] = v81;
   v101[4] = @"ShouldUseDictationSearchFieldBehavior";
   v50 = MEMORY[0x1E696AD98];
   NSClassFromString(&cfstr_Uisearchtextfi_4.isa);
-  v94 = v4;
-  v91 = v41;
-  v92 = v40;
+  v94 = delegateAsResponder;
+  v91 = windowScene;
+  v92 = _responderWindow;
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v69 = [v1 textInputTraits];
-    v51 = [v69 showDictationButton];
+    textInputTraits10 = [v1 textInputTraits];
+    showDictationButton = [textInputTraits10 showDictationButton];
   }
 
   else
   {
-    v51 = 0;
+    showDictationButton = 0;
   }
 
-  v79 = [v50 numberWithInt:v51];
+  v79 = [v50 numberWithInt:showDictationButton];
   v102[4] = v79;
   v101[5] = @"ForceEnableDictation";
   v52 = MEMORY[0x1E696AD98];
   v96 = v1;
-  v78 = [v1 textInputTraits];
-  v77 = [v52 numberWithBool:{objc_msgSend(v78, "forceEnableDictation")}];
+  textInputTraits11 = [v1 textInputTraits];
+  v77 = [v52 numberWithBool:{objc_msgSend(textInputTraits11, "forceEnableDictation")}];
   v102[5] = v77;
   v101[6] = @"ShouldSuppressSoftwareKeyboard";
   v53 = MEMORY[0x1E696AD98];
@@ -240,8 +240,8 @@
 
   v102[11] = v62;
   v101[12] = @"CorrectionLearningAllowed";
-  v95 = v2;
-  v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v2, "wordLearningEnabled")}];
+  v95 = keyboardState;
+  v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(keyboardState, "wordLearningEnabled")}];
   v102[12] = v63;
   v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:13];
   [v0 setUserInfo:v64];
@@ -257,8 +257,8 @@
   if (objc_opt_respondsToSelector())
   {
     v65 = +[UIKeyboardImpl activeInstance];
-    v66 = [v65 textInputTraits];
-    [v0 setSingleLineDocument:{objc_msgSend(v66, "isSingleLineDocument")}];
+    textInputTraits12 = [v65 textInputTraits];
+    [v0 setSingleLineDocument:{objc_msgSend(textInputTraits12, "isSingleLineDocument")}];
   }
 
   v67 = _UIMainBundleIdentifier();
@@ -278,9 +278,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v5 = [v3 image];
+  image = [v3 image];
 
-  if (!v5)
+  if (!image)
   {
     v21 = _UIKeyboardLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -292,53 +292,53 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v6 = [v4 accessibilityLabel];
-  if (v6)
+  accessibilityLabel = [v4 accessibilityLabel];
+  if (accessibilityLabel)
   {
-    v7 = v6;
-    v8 = [v4 accessibilityLabel];
-    v9 = [v8 length];
+    v7 = accessibilityLabel;
+    accessibilityLabel2 = [v4 accessibilityLabel];
+    v9 = [accessibilityLabel2 length];
 
     if (v9)
     {
-      v10 = [v4 accessibilityLabel];
+      accessibilityLabel3 = [v4 accessibilityLabel];
 LABEL_9:
-      v11 = v10;
+      title = accessibilityLabel3;
       goto LABEL_10;
     }
   }
 
-  v11 = [v4 title];
-  if (v11)
+  title = [v4 title];
+  if (title)
   {
-    v12 = [v4 title];
-    v13 = [v12 length];
+    title2 = [v4 title];
+    v13 = [title2 length];
 
     if (!v13)
     {
-      v11 = 0;
+      title = 0;
       goto LABEL_10;
     }
 
-    v10 = [v4 title];
+    accessibilityLabel3 = [v4 title];
     goto LABEL_9;
   }
 
 LABEL_10:
-  v14 = [v4 tintColor];
+  tintColor = [v4 tintColor];
 
-  if (v14)
+  if (tintColor)
   {
     v15 = MEMORY[0x1E69C6F28];
-    v16 = [v4 tintColor];
-    v14 = [v15 colorWithCGColor:{objc_msgSend(v16, "CGColor")}];
+    tintColor2 = [v4 tintColor];
+    tintColor = [v15 colorWithCGColor:{objc_msgSend(tintColor2, "CGColor")}];
   }
 
   v17 = MEMORY[0x1E696ACC8];
-  v18 = [v4 image];
-  v19 = [v17 archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
+  image2 = [v4 image];
+  v19 = [v17 archivedDataWithRootObject:image2 requiringSecureCoding:1 error:0];
 
-  v20 = [MEMORY[0x1E69C6FA0] actionButtonWithSystemImageData:v19 backgroundColor:v14 accessibilityTitle:v11];
+  v20 = [MEMORY[0x1E69C6FA0] actionButtonWithSystemImageData:v19 backgroundColor:tintColor accessibilityTitle:title];
   [v20 setIsEnabled:{objc_msgSend(v4, "isEnabled")}];
 
 LABEL_17:

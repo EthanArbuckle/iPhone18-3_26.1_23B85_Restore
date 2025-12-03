@@ -11,14 +11,14 @@
 {
   v3 = a3;
   v4 = MEMORY[0x277D755B8];
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v4 vuiImageNamed:v3 inBundle:v5];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [v4 vuiImageNamed:v3 inBundle:mainBundle];
 
   if (!v6)
   {
     v7 = MEMORY[0x277D755B8];
-    v8 = [MEMORY[0x277CCA8D8] vui_videosUIBundle];
-    v6 = [v7 vuiImageNamed:v3 inBundle:v8];
+    vui_videosUIBundle = [MEMORY[0x277CCA8D8] vui_videosUIBundle];
+    v6 = [v7 vuiImageNamed:v3 inBundle:vui_videosUIBundle];
   }
 
   return v6;
@@ -45,16 +45,16 @@
 
 - (uint64_t)vuiCGImage
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGImage];
+  return [selfCopy CGImage];
 }
 
 - (id)vuiTemplateImage
 {
-  v2 = [a1 accessibilityLabel];
-  v3 = [a1 imageWithRenderingMode:2];
-  [v3 setAccessibilityLabel:v2];
+  accessibilityLabel = [self accessibilityLabel];
+  v3 = [self imageWithRenderingMode:2];
+  [v3 setAccessibilityLabel:accessibilityLabel];
 
   return v3;
 }

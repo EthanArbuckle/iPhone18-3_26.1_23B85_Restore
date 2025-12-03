@@ -1,10 +1,10 @@
 @interface NotificationPreviewView
-- (_TtC28HealthExposureNotificationUI23NotificationPreviewView)initWithCoder:(id)a3;
+- (_TtC28HealthExposureNotificationUI23NotificationPreviewView)initWithCoder:(id)coder;
 @end
 
 @implementation NotificationPreviewView
 
-- (_TtC28HealthExposureNotificationUI23NotificationPreviewView)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI23NotificationPreviewView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC28HealthExposureNotificationUI23NotificationPreviewView_content;
   type metadata accessor for NotificationContent();

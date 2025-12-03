@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneSearchMultiTermQuery_RewriteMethod
-- (id)getTermsEnumWithOrgApacheLuceneSearchMultiTermQuery:(id)a3 withOrgApacheLuceneIndexTerms:(id)a4 withOrgApacheLuceneUtilAttributeSource:(id)a5;
+- (id)getTermsEnumWithOrgApacheLuceneSearchMultiTermQuery:(id)query withOrgApacheLuceneIndexTerms:(id)terms withOrgApacheLuceneUtilAttributeSource:(id)source;
 @end
 
 @implementation OrgApacheLuceneSearchMultiTermQuery_RewriteMethod
 
-- (id)getTermsEnumWithOrgApacheLuceneSearchMultiTermQuery:(id)a3 withOrgApacheLuceneIndexTerms:(id)a4 withOrgApacheLuceneUtilAttributeSource:(id)a5
+- (id)getTermsEnumWithOrgApacheLuceneSearchMultiTermQuery:(id)query withOrgApacheLuceneIndexTerms:(id)terms withOrgApacheLuceneUtilAttributeSource:(id)source
 {
-  if (!a3)
+  if (!query)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 getTermsEnumWithOrgApacheLuceneIndexTerms:a4 withOrgApacheLuceneUtilAttributeSource:a5];
+  return [query getTermsEnumWithOrgApacheLuceneIndexTerms:terms withOrgApacheLuceneUtilAttributeSource:source];
 }
 
 @end

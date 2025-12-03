@@ -1,12 +1,12 @@
 @interface MFNullAnimationTransitionCoordinator
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5;
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion;
 - (CGAffineTransform)targetTransform;
 - (UIView)containerView;
 - (id)_alongsideAnimations;
 - (id)_alongsideCompletions;
-- (void)_addAlongsideAnimation:(id)a3;
-- (void)_addAlongsideCompletion:(id)a3;
-- (void)_applyBlocks:(id)a3;
+- (void)_addAlongsideAnimation:(id)animation;
+- (void)_addAlongsideCompletion:(id)completion;
+- (void)_applyBlocks:(id)blocks;
 - (void)_runAlongsideAnimations;
 - (void)_runAlongsideCompletionsAfterCommit;
 @end
@@ -22,33 +22,33 @@
   return self;
 }
 
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  animationCopy = animation;
+  completionCopy = completion;
   transitionIsInFlight = self->_transitionIsInFlight;
-  if (v9 && !self->_transitionIsInFlight)
+  if (animationCopy && !self->_transitionIsInFlight)
   {
-    [(MFNullAnimationTransitionCoordinator *)self _addAlongsideAnimation:v9];
+    [(MFNullAnimationTransitionCoordinator *)self _addAlongsideAnimation:animationCopy];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    [(MFNullAnimationTransitionCoordinator *)self _addAlongsideCompletion:v10];
+    [(MFNullAnimationTransitionCoordinator *)self _addAlongsideCompletion:completionCopy];
   }
 
-  return v9 == 0 || !transitionIsInFlight;
+  return animationCopy == 0 || !transitionIsInFlight;
 }
 
-- (void)_addAlongsideAnimation:(id)a3
+- (void)_addAlongsideAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   alongsideAnimations = self->_alongsideAnimations;
-  v10 = v4;
+  v10 = animationCopy;
   if (alongsideAnimations)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(animationCopy);
     [(NSMutableArray *)alongsideAnimations addObject:v6];
   }
 
@@ -62,14 +62,14 @@
   }
 }
 
-- (void)_addAlongsideCompletion:(id)a3
+- (void)_addAlongsideCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   alongsideCompletions = self->_alongsideCompletions;
-  v10 = v4;
+  v10 = completionCopy;
   if (alongsideCompletions)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(completionCopy);
     [(NSMutableArray *)alongsideCompletions addObject:v6];
   }
 
@@ -110,15 +110,15 @@
   v4 = -2;
   do
   {
-    v7 = [(MFNullAnimationTransitionCoordinator *)self _alongsideAnimations];
+    _alongsideAnimations = [(MFNullAnimationTransitionCoordinator *)self _alongsideAnimations];
 
-    if (!v7)
+    if (!_alongsideAnimations)
     {
       break;
     }
 
     [(MFNullAnimationTransitionCoordinator *)self _applyBlocks:?];
-    v3 = v7;
+    v3 = _alongsideAnimations;
   }
 
   while (!__CFADD__(v4++, 1));
@@ -138,14 +138,14 @@
   [UIApp _performBlockAfterCATransactionCommits:v2];
 }
 
-- (void)_applyBlocks:(id)a3
+- (void)_applyBlocks:(id)blocks
 {
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  blocksCopy = blocks;
+  v4 = [blocksCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
     v5 = *v8;
@@ -156,7 +156,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(blocksCopy);
         }
 
         (*(*(*(&v7 + 1) + 8 * v6) + 16))(*(*(&v7 + 1) + 8 * v6));
@@ -164,7 +164,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [blocksCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);

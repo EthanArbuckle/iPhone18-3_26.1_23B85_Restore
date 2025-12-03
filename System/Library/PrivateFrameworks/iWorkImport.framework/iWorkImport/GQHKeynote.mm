@@ -1,22 +1,22 @@
 @interface GQHKeynote
-+ (Class)enterSlideDrawables:(id)a3 state:(id)a4;
-+ (int)beginSlide:(id)a3 state:(id)a4;
-+ (int)endPresentation:(id)a3 state:(id)a4;
-+ (int)endSlide:(id)a3 state:(id)a4;
-+ (int)handleSlideSize:(id)a3 state:(id)a4;
++ (Class)enterSlideDrawables:(id)drawables state:(id)state;
++ (int)beginSlide:(id)slide state:(id)state;
++ (int)endPresentation:(id)presentation state:(id)state;
++ (int)endSlide:(id)slide state:(id)state;
++ (int)handleSlideSize:(id)size state:(id)state;
 @end
 
 @implementation GQHKeynote
 
-+ (int)endPresentation:(id)a3 state:(id)a4
++ (int)endPresentation:(id)presentation state:(id)state
 {
-  v4 = [a4 generatorState];
-  v5 = [v4 htmlDoc];
-  [v5 startElement:"div"];
-  [v5 setAttribute:"id" cfStringValue:@"slideId_last"];
-  [v5 endElement];
-  [v5 endElement];
-  if ([v4 finishMainHtml])
+  generatorState = [state generatorState];
+  htmlDoc = [generatorState htmlDoc];
+  [htmlDoc startElement:"div"];
+  [htmlDoc setAttribute:"id" cfStringValue:@"slideId_last"];
+  [htmlDoc endElement];
+  [htmlDoc endElement];
+  if ([generatorState finishMainHtml])
   {
     return 1;
   }
@@ -27,45 +27,45 @@
   }
 }
 
-+ (int)handleSlideSize:(id)a3 state:(id)a4
++ (int)handleSlideSize:(id)size state:(id)state
 {
-  [a3 slideSize];
+  [size slideSize];
   v6 = v5;
   v8 = v7;
   v9 = v7 + 18.0;
-  [objc_msgSend(a4 "outputBundle")];
-  [objc_msgSend(a4 "outputBundle")];
-  [a4 outputBundle];
+  [objc_msgSend(state "outputBundle")];
+  [objc_msgSend(state "outputBundle")];
+  [state outputBundle];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [objc_msgSend(a4 "outputBundle")];
+    [objc_msgSend(state "outputBundle")];
   }
 
-  v10 = [(GQHState *)[GQHKeynoteState alloc] initWithState:a4 documentSize:v6 + 18.0, v9];
-  [a4 setGeneratorState:v10];
+  v10 = [(GQHState *)[GQHKeynoteState alloc] initWithState:state documentSize:v6 + 18.0, v9];
+  [state setGeneratorState:v10];
 
-  v11 = [(GQHState *)v10 htmlDoc];
-  if ([v11 isProgressive])
+  htmlDoc = [(GQHState *)v10 htmlDoc];
+  if ([htmlDoc isProgressive])
   {
-    [objc_msgSend(a4 "outputBundle")];
+    [objc_msgSend(state "outputBundle")];
     [(GQHKeynoteState *)v10 setProgressiveIndex:2];
   }
 
   [-[GQHState shapeContext](v10 "shapeContext")];
-  v12 = [a4 filename];
-  if (v12)
+  filename = [state filename];
+  if (filename)
   {
-    v13 = v12;
-    [v11 startElement:"title"];
-    [v11 addContent:v13];
-    [v11 endElement];
+    v13 = filename;
+    [htmlDoc startElement:"title"];
+    [htmlDoc addContent:v13];
+    [htmlDoc endElement];
   }
 
-  [v11 endElement];
-  [v11 startElement:"body"];
+  [htmlDoc endElement];
+  [htmlDoc startElement:"body"];
   v14 = objc_alloc_init(GQHStyle);
-  if ([a4 isGeneratingThumbnail])
+  if ([state isGeneratingThumbnail])
   {
     [(GQHStyle *)v14 addAttribute:off_9CE00 value:@"white"];
     [(GQHStyle *)v14 addAttribute:off_9CEB0 pxValue:0];
@@ -95,7 +95,7 @@
   [(GQHStyle *)v15 addAttribute:@"-webkit-box-shadow" value:@"5px 5px 5px rgba(0, 0, 0, 0.5)"];
   [(GQHStyle *)v15 addAttribute:off_9CE00 value:@"white"];
   v20 = [(GQHStyle *)v15 createNamedStyle:off_9D0F8];
-  [v11 addStyleClass:v20];
+  [htmlDoc addStyleClass:v20];
   CFRelease(v20);
 
   v21 = objc_alloc_init(GQHStyle);
@@ -114,86 +114,86 @@
   [(GQHStyle *)v21 addAttribute:@"-webkit-box-shadow" value:@"5px 5px 5px rgba(0, 0, 0, 0.5)"];
   [(GQHStyle *)v21 addAttribute:off_9CE00 value:@"white"];
   v24 = [(GQHStyle *)v21 createNamedStyle:off_9D100];
-  [v11 addStyleClass:v24];
+  [htmlDoc addStyleClass:v24];
   CFRelease(v24);
 
-  [GQHTextBox createExternalWrapSandbagStyles:v11];
+  [GQHTextBox createExternalWrapSandbagStyles:htmlDoc];
   return 1;
 }
 
-+ (int)beginSlide:(id)a3 state:(id)a4
++ (int)beginSlide:(id)slide state:(id)state
 {
-  v5 = [a4 generatorState];
-  [v5 incrementCurrentSlide];
-  v6 = [v5 htmlDoc];
-  [v5 enterGraphicObject];
-  [v6 startElement:"div"];
-  [v6 setAttribute:"id" value:{objc_msgSend(a3, "ID")}];
-  [v6 endElement];
-  [v6 startElement:"div"];
-  v7 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"slideId_%d", [v5 currentSlide]);
-  [v6 setAttribute:"id" cfStringValue:v7];
+  generatorState = [state generatorState];
+  [generatorState incrementCurrentSlide];
+  htmlDoc = [generatorState htmlDoc];
+  [generatorState enterGraphicObject];
+  [htmlDoc startElement:"div"];
+  [htmlDoc setAttribute:"id" value:{objc_msgSend(slide, "ID")}];
+  [htmlDoc endElement];
+  [htmlDoc startElement:"div"];
+  v7 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"slideId_%d", [generatorState currentSlide]);
+  [htmlDoc setAttribute:"id" cfStringValue:v7];
   CFRelease(v7);
   return 1;
 }
 
-+ (int)endSlide:(id)a3 state:(id)a4
++ (int)endSlide:(id)slide state:(id)state
 {
-  v6 = [a4 generatorState];
-  v7 = [v6 htmlDoc];
-  [v6 leaveGraphicObject];
-  [v7 endElement];
-  if (([objc_msgSend(a3 "noteFrame")] & 1) == 0)
+  generatorState = [state generatorState];
+  htmlDoc = [generatorState htmlDoc];
+  [generatorState leaveGraphicObject];
+  [htmlDoc endElement];
+  if (([objc_msgSend(slide "noteFrame")] & 1) == 0)
   {
-    [v6 enterGraphicObject];
-    [v7 startElement:"div"];
+    [generatorState enterGraphicObject];
+    [htmlDoc startElement:"div"];
     v8 = objc_alloc_init(GQHStyle);
     [(GQHStyle *)v8 addClass:off_9D100];
-    v9 = [a3 noteFrame];
-    v10 = [v9 layoutStyle];
-    v11 = [v9 storage];
-    [GQHParagraphStyle mapStyle:v10 style:v8 state:v6];
-    [(GQHStyle *)v8 setStyleOnCurrentNode:v6];
+    noteFrame = [slide noteFrame];
+    layoutStyle = [noteFrame layoutStyle];
+    storage = [noteFrame storage];
+    [GQHParagraphStyle mapStyle:layoutStyle style:v8 state:generatorState];
+    [(GQHStyle *)v8 setStyleOnCurrentNode:generatorState];
 
-    [GQHTextBox handleLayoutStorage:v11 state:v6];
-    [v7 endElement];
-    [v6 leaveGraphicObject];
+    [GQHTextBox handleLayoutStorage:storage state:generatorState];
+    [htmlDoc endElement];
+    [generatorState leaveGraphicObject];
   }
 
-  if ([v7 isProgressive] && objc_msgSend(v6, "shouldStreamContent"))
+  if ([htmlDoc isProgressive] && objc_msgSend(generatorState, "shouldStreamContent"))
   {
-    v12 = [v7 createProgressiveHtml];
-    if ([v6 currentSlide] == 2)
+    createProgressiveHtml = [htmlDoc createProgressiveHtml];
+    if ([generatorState currentSlide] == 2)
     {
-      v13 = [v7 createProgressiveeCSSwithStyleTags:0];
-      [objc_msgSend(a4 "outputBundle")];
+      v13 = [htmlDoc createProgressiveeCSSwithStyleTags:0];
+      [objc_msgSend(state "outputBundle")];
     }
 
     else
     {
-      v13 = [v7 createProgressiveeCSSwithStyleTags:1];
-      [v12 appendData:v13];
+      v13 = [htmlDoc createProgressiveeCSSwithStyleTags:1];
+      [createProgressiveHtml appendData:v13];
     }
 
     CFRelease(v13);
-    [objc_msgSend(a4 "outputBundle")];
-    CFRelease(v12);
+    [objc_msgSend(state "outputBundle")];
+    CFRelease(createProgressiveHtml);
   }
 
   return 1;
 }
 
-+ (Class)enterSlideDrawables:(id)a3 state:(id)a4
++ (Class)enterSlideDrawables:(id)drawables state:(id)state
 {
-  v6 = [a4 generatorState];
-  [a4 setStylesheet:{objc_msgSend(a3, "stylesheet")}];
-  v7 = [a3 slideStyle];
+  generatorState = [state generatorState];
+  [state setStylesheet:{objc_msgSend(drawables, "stylesheet")}];
+  slideStyle = [drawables slideStyle];
   v12 = 0;
   v8 = objc_alloc_init(GQHStyle);
   [(GQHStyle *)v8 addClass:off_9D0F8];
-  if ([v7 hasValueForObjectProperty:67 value:&v12])
+  if ([slideStyle hasValueForObjectProperty:67 value:&v12])
   {
-    [GQHGraphicStyle mapFill:v12 style:v8 state:v6];
+    [GQHGraphicStyle mapFill:v12 style:v8 state:generatorState];
     theString1 = 0;
     if ([(GQHStyle *)v8 getAttribute:off_9CE10 value:&theString1])
     {
@@ -210,7 +210,7 @@
       if (!v12)
       {
         [(GQHStyle *)v8 addAttribute:off_9CE08 value:@"white"];
-        [v6 setColoredBackground:1];
+        [generatorState setColoredBackground:1];
       }
     }
 
@@ -220,7 +220,7 @@
     }
   }
 
-  [(GQHStyle *)v8 setStyleOnCurrentNode:v6];
+  [(GQHStyle *)v8 setStyleOnCurrentNode:generatorState];
 
   return objc_opt_class();
 }

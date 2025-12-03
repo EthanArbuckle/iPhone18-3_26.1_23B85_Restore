@@ -1,7 +1,7 @@
 @interface ICMusicLibraryRecommendationsRequest
-- (ICMusicLibraryRecommendationsRequest)initWithStoreRequestContext:(id)a3 params:(id)a4;
+- (ICMusicLibraryRecommendationsRequest)initWithStoreRequestContext:(id)context params:(id)params;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICMusicLibraryRecommendationsRequest
@@ -18,14 +18,14 @@
   [v3 getBagForRequestContext:storeRequestContext withCompletionHandler:v5];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.itunescloudd", "LibraryRecommendations");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Beginning request for AMPMusicArtistNewContentResponse", buf, 0xCu);
   }
 
@@ -34,21 +34,21 @@
   v7[2] = sub_1000B7514;
   v7[3] = &unk_1001DFC28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ICMusicLibraryRecommendationsRequest *)self performRequestWithCompletionHandler:v7];
 }
 
-- (ICMusicLibraryRecommendationsRequest)initWithStoreRequestContext:(id)a3 params:(id)a4
+- (ICMusicLibraryRecommendationsRequest)initWithStoreRequestContext:(id)context params:(id)params
 {
-  v6 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = ICMusicLibraryRecommendationsRequest;
   v7 = [(ICMusicLibraryRecommendationsRequest *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_storeRequestContext, a3);
+    objc_storeStrong(&v7->_storeRequestContext, context);
   }
 
   return v8;

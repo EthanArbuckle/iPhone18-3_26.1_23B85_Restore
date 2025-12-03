@@ -1,84 +1,84 @@
 @interface PXContextualMemoriesSettingsController
 + (id)sharedController;
 - (PXContextualMemoriesSettingsController)init;
-- (void)registerForLocationPrefetchingWithIdentifier:(id)a3;
-- (void)requestUpdatedContextualMemoriesSettingsWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)unregisterForLocationPrefetchingWithIdentifier:(id)a3;
+- (void)registerForLocationPrefetchingWithIdentifier:(id)identifier;
+- (void)requestUpdatedContextualMemoriesSettingsWithOptions:(id)options completionHandler:(id)handler;
+- (void)unregisterForLocationPrefetchingWithIdentifier:(id)identifier;
 @end
 
 @implementation PXContextualMemoriesSettingsController
 
-- (void)unregisterForLocationPrefetchingWithIdentifier:(id)a3
+- (void)unregisterForLocationPrefetchingWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PLMemoriesGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[Settings] Unregister for location pre-fetching: %@", &v9, 0xCu);
   }
 
-  v6 = [(PXContextualMemoriesSettingsController *)self registrationIdentifiers];
-  [v6 removeObject:v4];
-  if (![v6 count])
+  registrationIdentifiers = [(PXContextualMemoriesSettingsController *)self registrationIdentifiers];
+  [registrationIdentifiers removeObject:identifierCopy];
+  if (![registrationIdentifiers count])
   {
-    v7 = [(PXContextualMemoriesSettingsController *)self settings];
-    v8 = [v7 locationSetting];
-    [v8 setMonitorsCurrentLocation:0];
+    settings = [(PXContextualMemoriesSettingsController *)self settings];
+    locationSetting = [settings locationSetting];
+    [locationSetting setMonitorsCurrentLocation:0];
   }
 }
 
-- (void)registerForLocationPrefetchingWithIdentifier:(id)a3
+- (void)registerForLocationPrefetchingWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PLMemoriesGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[Settings] Register for location pre-fetching: %@", &v9, 0xCu);
   }
 
-  v6 = [(PXContextualMemoriesSettingsController *)self registrationIdentifiers];
-  [v6 addObject:v4];
-  v7 = [(PXContextualMemoriesSettingsController *)self settings];
-  v8 = [v7 locationSetting];
-  [v8 setMonitorsCurrentLocation:1];
+  registrationIdentifiers = [(PXContextualMemoriesSettingsController *)self registrationIdentifiers];
+  [registrationIdentifiers addObject:identifierCopy];
+  settings = [(PXContextualMemoriesSettingsController *)self settings];
+  locationSetting = [settings locationSetting];
+  [locationSetting setMonitorsCurrentLocation:1];
 }
 
-- (void)requestUpdatedContextualMemoriesSettingsWithOptions:(id)a3 completionHandler:(id)a4
+- (void)requestUpdatedContextualMemoriesSettingsWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!optionsCopy)
   {
-    v6 = objc_opt_new();
+    optionsCopy = objc_opt_new();
   }
 
-  v8 = [(PXContextualMemoriesSettingsController *)self completionHandlers];
-  v9 = _Block_copy(v7);
-  [v8 addObject:v9];
+  completionHandlers = [(PXContextualMemoriesSettingsController *)self completionHandlers];
+  v9 = _Block_copy(handlerCopy);
+  [completionHandlers addObject:v9];
 
   if (![(PXContextualMemoriesSettingsController *)self isRequestingUpdates])
   {
     [(PXContextualMemoriesSettingsController *)self setRequestingUpdates:1];
-    v10 = [(PXContextualMemoriesSettingsController *)self settings];
-    v11 = [v10 locationSetting];
-    [v6 accuracy];
+    settings = [(PXContextualMemoriesSettingsController *)self settings];
+    locationSetting = [settings locationSetting];
+    [optionsCopy accuracy];
     v13 = v12;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __112__PXContextualMemoriesSettingsController_requestUpdatedContextualMemoriesSettingsWithOptions_completionHandler___block_invoke;
     v15[3] = &unk_1E7744F50;
-    v16 = v10;
-    v17 = v6;
-    v18 = self;
-    v19 = v8;
-    v14 = v10;
-    [v11 requestLocationUpdateWithAccuracy:v15 completionHandler:v13];
+    v16 = settings;
+    v17 = optionsCopy;
+    selfCopy = self;
+    v19 = completionHandlers;
+    v14 = settings;
+    [locationSetting requestLocationUpdateWithAccuracy:v15 completionHandler:v13];
   }
 }
 
@@ -139,7 +139,7 @@ void __112__PXContextualMemoriesSettingsController_requestUpdatedContextualMemor
   block[1] = 3221225472;
   block[2] = __58__PXContextualMemoriesSettingsController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken_107656 != -1)
   {
     dispatch_once(&sharedController_onceToken_107656, block);

@@ -1,5 +1,5 @@
 @interface _AFAudioPowerXPCSharedMemory
-- (_AFAudioPowerXPCSharedMemory)initWithXPCObject:(id)a3;
+- (_AFAudioPowerXPCSharedMemory)initWithXPCObject:(id)object;
 - (void)_destroyMapping;
 - (void)dealloc;
 @end
@@ -45,10 +45,10 @@
   [(_AFAudioPowerXPCSharedMemory *)&v3 dealloc];
 }
 
-- (_AFAudioPowerXPCSharedMemory)initWithXPCObject:(id)a3
+- (_AFAudioPowerXPCSharedMemory)initWithXPCObject:(id)object
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = _AFAudioPowerXPCSharedMemory;
   v6 = [(_AFAudioPowerXPCSharedMemory *)&v18 init];
@@ -57,9 +57,9 @@
     goto LABEL_21;
   }
 
-  if (v5)
+  if (objectCopy)
   {
-    if (MEMORY[0x193AFBC20](v5) != MEMORY[0x1E69E9F08])
+    if (MEMORY[0x193AFBC20](objectCopy) != MEMORY[0x1E69E9F08])
     {
       v7 = AFSiriLogContextUtility;
       if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
@@ -75,8 +75,8 @@ LABEL_8:
       goto LABEL_20;
     }
 
-    objc_storeStrong(&v6->_xpcObject, a3);
-    v9 = xpc_shmem_map(v5, &v6->_sharedRegion);
+    objc_storeStrong(&v6->_xpcObject, object);
+    v9 = xpc_shmem_map(objectCopy, &v6->_sharedRegion);
     v6->_mappedLength = v9;
     sharedRegion = v6->_sharedRegion;
     if (sharedRegion)

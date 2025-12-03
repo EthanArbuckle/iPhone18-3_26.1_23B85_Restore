@@ -1,6 +1,6 @@
 @interface CSUModelCatalogVisualGenerationBase
 - (CSUModelCatalogVisualGenerationBase)init;
-- (id)fetchWithAssetLock:(id)a3 error:(id *)a4;
+- (id)fetchWithAssetLock:(id)lock error:(id *)error;
 - (id)getAssetVersion;
 @end
 
@@ -17,16 +17,16 @@
   return [(CSUModelCatalogVisualGenerationBase *)&v5 init];
 }
 
-- (id)fetchWithAssetLock:(id)a3 error:(id *)a4
+- (id)fetchWithAssetLock:(id)lock error:(id *)error
 {
   v6 = sub_1AC123E9C();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = a3;
-  v12 = self;
-  sub_1AC0D6C88(v11, v10);
+  lockCopy = lock;
+  selfCopy = self;
+  sub_1AC0D6C88(lockCopy, v10);
 
   v13 = sub_1AC123E8C();
   (*(v7 + 8))(v10, v6);
@@ -37,7 +37,7 @@
 - (id)getAssetVersion
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x60);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   v4 = sub_1AC12400C();

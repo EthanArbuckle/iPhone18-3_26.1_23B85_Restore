@@ -1,5 +1,5 @@
 @interface PLInitialSuggestionDateFilter
-- (PLInitialSuggestionDateFilter)initWithTemplateDateType:(unint64_t)a3 psiDateFilter:(id)a4;
+- (PLInitialSuggestionDateFilter)initWithTemplateDateType:(unint64_t)type psiDateFilter:(id)filter;
 - (id)description;
 - (void)dealloc;
 @end
@@ -18,23 +18,23 @@
     Count = 0;
   }
 
-  v4 = [(PLInitialSuggestionDateFilter *)self templateDateType];
-  if (v4 - 1 > 8)
+  templateDateType = [(PLInitialSuggestionDateFilter *)self templateDateType];
+  if (templateDateType - 1 > 8)
   {
     v5 = @"PLSearchSuggestionDateTemplateCategoryTypeNone";
   }
 
   else
   {
-    v5 = off_1E7564C90[v4 - 1];
+    v5 = off_1E7564C90[templateDateType - 1];
   }
 
   v6 = v5;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(PLInitialSuggestionDateFilter *)self psiDateFilter];
-  v9 = [v7 stringWithFormat:@"template date type: %@, date filter: %@, assetIds: %tu", v6, v8, Count];
+  psiDateFilter = [(PLInitialSuggestionDateFilter *)self psiDateFilter];
+  count = [v7 stringWithFormat:@"template date type: %@, date filter: %@, assetIds: %tu", v6, psiDateFilter, Count];
 
-  return v9;
+  return count;
 }
 
 - (void)dealloc
@@ -50,17 +50,17 @@
   [(PLInitialSuggestionDateFilter *)&v4 dealloc];
 }
 
-- (PLInitialSuggestionDateFilter)initWithTemplateDateType:(unint64_t)a3 psiDateFilter:(id)a4
+- (PLInitialSuggestionDateFilter)initWithTemplateDateType:(unint64_t)type psiDateFilter:(id)filter
 {
-  v7 = a4;
+  filterCopy = filter;
   v11.receiver = self;
   v11.super_class = PLInitialSuggestionDateFilter;
   v8 = [(PLInitialSuggestionDateFilter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_templateDateType = a3;
-    objc_storeStrong(&v8->_psiDateFilter, a4);
+    v8->_templateDateType = type;
+    objc_storeStrong(&v8->_psiDateFilter, filter);
   }
 
   return v9;

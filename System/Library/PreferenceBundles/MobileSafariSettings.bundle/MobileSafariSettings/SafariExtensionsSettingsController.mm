@@ -1,29 +1,29 @@
 @interface SafariExtensionsSettingsController
 - (id)_adamIDsForInstalledAndCloudExtensions;
 - (id)_adamIDsForInstalledExtensions;
-- (id)_availableAppSpecifierWithLockupView:(id)a3;
+- (id)_availableAppSpecifierWithLockupView:(id)view;
 - (id)_contentBlockerAndWebExtensionSpecifiers;
 - (id)_contentBlockerManager;
 - (id)_contentBlockerWrappers;
 - (id)_shareAcrossDevicesSectionAndToggle;
-- (id)_valueOfExtensionSpecifier:(id)a3;
-- (id)_valueOfExtensionSyncSpecifier:(id)a3;
+- (id)_valueOfExtensionSpecifier:(id)specifier;
+- (id)_valueOfExtensionSyncSpecifier:(id)specifier;
 - (id)_webExtensionWrappers;
 - (id)_webExtensionsController;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_cloudExtensionEligibilityStateDidChange:(id)a3;
-- (void)_cloudExtensionStateOrPrimaryAppleAccountDidChange:(id)a3;
-- (void)_extensionEnabledStateDidChange:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_cloudExtensionEligibilityStateDidChange:(id)change;
+- (void)_cloudExtensionStateOrPrimaryAppleAccountDidChange:(id)change;
+- (void)_extensionEnabledStateDidChange:(id)change;
 - (void)_filterExtensionAppLockupViews;
-- (void)_managedConfigurationSettingsDidChange:(id)a3;
-- (void)_moreExtensionsButtonTapped:(id)a3;
-- (void)_reloadSpecifiersSoon:(BOOL)a3;
-- (void)_setExtensionSyncValue:(id)a3 forSpecifier:(id)a4;
+- (void)_managedConfigurationSettingsDidChange:(id)change;
+- (void)_moreExtensionsButtonTapped:(id)tapped;
+- (void)_reloadSpecifiersSoon:(BOOL)soon;
+- (void)_setExtensionSyncValue:(id)value forSpecifier:(id)specifier;
 - (void)_updateLockupViews;
 - (void)_updateRecommendedLockupViews;
-- (void)contentBlockerManagerExtensionListDidChange:(id)a3;
-- (void)extensionsControllerExtensionListDidChange:(id)a3;
+- (void)contentBlockerManagerExtensionListDidChange:(id)change;
+- (void)extensionsControllerExtensionListDidChange:(id)change;
 @end
 
 @implementation SafariExtensionsSettingsController
@@ -31,8 +31,8 @@
 - (id)_webExtensionsController
 {
   v2 = +[SafariSettingsController extensionsProfilesDataSource];
-  v3 = [v2 profileServerIDToWebExtensionsControllers];
-  v4 = [v3 objectForKeyedSubscript:WBSDefaultProfileIdentifier];
+  profileServerIDToWebExtensionsControllers = [v2 profileServerIDToWebExtensionsControllers];
+  v4 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:WBSDefaultProfileIdentifier];
 
   return v4;
 }
@@ -40,8 +40,8 @@
 - (id)_contentBlockerManager
 {
   v2 = +[SafariSettingsController extensionsProfilesDataSource];
-  v3 = [v2 profileServerIDToContentBlockerManagers];
-  v4 = [v3 objectForKeyedSubscript:WBSDefaultProfileIdentifier];
+  profileServerIDToContentBlockerManagers = [v2 profileServerIDToContentBlockerManagers];
+  v4 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:WBSDefaultProfileIdentifier];
 
   return v4;
 }
@@ -106,13 +106,13 @@ _BYTE *__53__SafariExtensionsSettingsController_viewWillAppear___block_invoke_2(
   else
   {
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [(SafariExtensionsSettingsController *)self _contentBlockerAndWebExtensionSpecifiers];
-    [v6 addObjectsFromArray:v7];
+    _contentBlockerAndWebExtensionSpecifiers = [(SafariExtensionsSettingsController *)self _contentBlockerAndWebExtensionSpecifiers];
+    [v6 addObjectsFromArray:_contentBlockerAndWebExtensionSpecifiers];
 
     v8 = +[WBSManagedFeatureAvailability sharedInstance];
-    v9 = [v8 shouldHideExtensionDiscovery];
+    shouldHideExtensionDiscovery = [v8 shouldHideExtensionDiscovery];
 
-    if ((v9 & 1) == 0 && [(NSArray *)self->_filteredExtensionAppLockupViews count])
+    if ((shouldHideExtensionDiscovery & 1) == 0 && [(NSArray *)self->_filteredExtensionAppLockupViews count])
     {
       v10 = [PSSpecifier groupSpecifierWithID:@"AvailableExtensionsGroup"];
       v11 = SafariSettingsLocalizedString(@"On Other Devices Header", @"Extensions");
@@ -151,11 +151,11 @@ _BYTE *__53__SafariExtensionsSettingsController_viewWillAppear___block_invoke_2(
 
     if (self->_safariSyncEnabled)
     {
-      v18 = [(SafariExtensionsSettingsController *)self _shareAcrossDevicesSectionAndToggle];
-      [v6 addObjectsFromArray:v18];
+      _shareAcrossDevicesSectionAndToggle = [(SafariExtensionsSettingsController *)self _shareAcrossDevicesSectionAndToggle];
+      [v6 addObjectsFromArray:_shareAcrossDevicesSectionAndToggle];
     }
 
-    if ((v9 & 1) == 0)
+    if ((shouldHideExtensionDiscovery & 1) == 0)
     {
       if ([(NSArray *)self->_filteredRecommendedAppLockupViews count]|| self->_waitingForLockupViews)
       {
@@ -253,15 +253,15 @@ _BYTE *__53__SafariExtensionsSettingsController_viewWillAppear___block_invoke_2(
   return v9;
 }
 
-- (id)_availableAppSpecifierWithLockupView:(id)a3
+- (id)_availableAppSpecifierWithLockupView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:3 edit:0];
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
   v5 = [NSNumber numberWithDouble:UITableViewAutomaticDimension];
   [v4 setObject:v5 forKeyedSubscript:PSTableCellHeightKey];
 
-  [v4 setUserInfo:v3];
+  [v4 setUserInfo:viewCopy];
 
   return v4;
 }
@@ -277,15 +277,15 @@ _BYTE *__53__SafariExtensionsSettingsController_viewWillAppear___block_invoke_2(
   [v29 setProperty:v4 forKey:PSFooterTextGroupKey];
 
   [v36 addObject:v29];
-  v5 = [(SafariExtensionsSettingsController *)self _webExtensionWrappers];
-  v6 = [(SafariExtensionsSettingsController *)self _contentBlockerWrappers];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  _webExtensionWrappers = [(SafariExtensionsSettingsController *)self _webExtensionWrappers];
+  _contentBlockerWrappers = [(SafariExtensionsSettingsController *)self _contentBlockerWrappers];
+  v7 = [_webExtensionWrappers arrayByAddingObjectsFromArray:_contentBlockerWrappers];
   v28 = [v7 sortedArrayUsingSelector:"localizedCompare:"];
 
   if ([v28 count])
   {
-    v38 = [(SafariExtensionsSettingsController *)self _webExtensionsController];
-    v35 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v38 parentalControlsAreEnabledForExtensions] ^ 1);
+    _webExtensionsController = [(SafariExtensionsSettingsController *)self _webExtensionsController];
+    v35 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [_webExtensionsController parentalControlsAreEnabledForExtensions] ^ 1);
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -309,19 +309,19 @@ _BYTE *__53__SafariExtensionsSettingsController_viewWillAppear___block_invoke_2(
           }
 
           v9 = *(*(&v44 + 1) + 8 * i);
-          v10 = [v9 displayName];
+          displayName = [v9 displayName];
           if ([v9 contentBlockerHasSameNameAsWebExtensionFromSameApp:obj])
           {
             v11 = SafariSettingsLocalizedString(@"%@ — Content Blocker", @"Extensions");
-            v12 = [v9 displayName];
-            v13 = [NSString stringWithFormat:v11, v12];
+            displayName2 = [v9 displayName];
+            v13 = [NSString stringWithFormat:v11, displayName2];
 
-            v10 = v13;
+            displayName = v13;
           }
 
-          v14 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", v10, self, 0, "_valueOfExtensionSpecifier:", [v9 settingsPermissionClass], 2, 0);
+          v14 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", displayName, self, 0, "_valueOfExtensionSpecifier:", [v9 settingsPermissionClass], 2, 0);
           objc_initWeak(&location, self);
-          v15 = [v9 extension];
+          extension = [v9 extension];
           v40[0] = _NSConcreteStackBlock;
           v40[1] = 3221225472;
           v40[2] = __78__SafariExtensionsSettingsController__contentBlockerAndWebExtensionSpecifiers__block_invoke;
@@ -330,33 +330,33 @@ _BYTE *__53__SafariExtensionsSettingsController_viewWillAppear___block_invoke_2(
           objc_copyWeak(&v42, &location);
           v16 = v14;
           v41 = v16;
-          [v38 _isExtensionBlockedByBlocklist:v15 completionHandler:v40];
+          [_webExtensionsController _isExtensionBlockedByBlocklist:extension completionHandler:v40];
 
           if ([v9 isContentBlocker])
           {
             goto LABEL_12;
           }
 
-          v17 = [v9 extension];
-          v18 = [v38 webExtensionForExtension:v17];
+          extension2 = [v9 extension];
+          v18 = [_webExtensionsController webExtensionForExtension:extension2];
 
           if (!v18)
           {
             goto LABEL_12;
           }
 
-          v19 = [v18 preferencesIcon];
+          preferencesIcon = [v18 preferencesIcon];
           v20 = [ISImageDescriptor imageDescriptorNamed:v30];
           [v20 size];
-          v21 = [WBSImageUtilities resizedImage:v19 withSize:?];
+          v21 = [WBSImageUtilities resizedImage:preferencesIcon withSize:?];
 
           if (!v21)
           {
 LABEL_12:
-            v22 = [v9 extension];
-            v23 = [v22 _plugIn];
-            v24 = [v23 uuid];
-            v25 = [LSPlugInKitProxy pluginKitProxyForUUID:v24];
+            extension3 = [v9 extension];
+            _plugIn = [extension3 _plugIn];
+            uuid = [_plugIn uuid];
+            v25 = [LSPlugInKitProxy pluginKitProxyForUUID:uuid];
 
             v21 = [UIImage _iconForResourceProxy:v25 format:0];
           }
@@ -420,15 +420,15 @@ void __78__SafariExtensionsSettingsController__contentBlockerAndWebExtensionSpec
 
 - (id)_webExtensionWrappers
 {
-  v3 = [(SafariExtensionsSettingsController *)self _webExtensionsController];
-  v4 = [v3 extensions];
+  _webExtensionsController = [(SafariExtensionsSettingsController *)self _webExtensionsController];
+  extensions = [_webExtensionsController extensions];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __59__SafariExtensionsSettingsController__webExtensionWrappers__block_invoke;
   v8[3] = &unk_8A378;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 safari_mapAndFilterObjectsUsingBlock:v8];
+  v9 = _webExtensionsController;
+  v5 = _webExtensionsController;
+  v6 = [extensions safari_mapAndFilterObjectsUsingBlock:v8];
 
   self->_showingExtensions = [v6 count] != 0;
 
@@ -450,25 +450,25 @@ id __59__SafariExtensionsSettingsController__webExtensionWrappers__block_invoke(
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(SafariExtensionsSettingsController *)self _contentBlockerManager];
-    v6 = [v5 extensions];
+    _contentBlockerManager = [(SafariExtensionsSettingsController *)self _contentBlockerManager];
+    extensions = [_contentBlockerManager extensions];
     *buf = 138477827;
-    v22 = v6;
+    v22 = extensions;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Creating content blocker wrappers for: %{private}@", buf, 0xCu);
   }
 
-  v7 = [(SafariExtensionsSettingsController *)self _webExtensionsController];
-  v8 = [(SafariExtensionsSettingsController *)self _contentBlockerManager];
-  v9 = [v8 extensions];
-  v10 = [v9 allObjects];
+  _webExtensionsController = [(SafariExtensionsSettingsController *)self _webExtensionsController];
+  _contentBlockerManager2 = [(SafariExtensionsSettingsController *)self _contentBlockerManager];
+  extensions2 = [_contentBlockerManager2 extensions];
+  allObjects = [extensions2 allObjects];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = __61__SafariExtensionsSettingsController__contentBlockerWrappers__block_invoke;
   v18 = &unk_8A3A0;
-  v19 = v7;
-  v20 = self;
-  v11 = v7;
-  v12 = [v10 safari_mapAndFilterObjectsUsingBlock:&v15];
+  v19 = _webExtensionsController;
+  selfCopy = self;
+  v11 = _webExtensionsController;
+  v12 = [allObjects safari_mapAndFilterObjectsUsingBlock:&v15];
 
   v13 = WBS_LOG_CHANNEL_PREFIXExtensions();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -492,29 +492,29 @@ id __61__SafariExtensionsSettingsController__contentBlockerWrappers__block_invok
   return v5;
 }
 
-- (id)_valueOfExtensionSpecifier:(id)a3
+- (id)_valueOfExtensionSpecifier:(id)specifier
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 isEnabled];
-  if (v4 && [v3 isEnabledInAllNamedProfiles])
+  userInfo = [specifier userInfo];
+  isEnabled = [userInfo isEnabled];
+  if (isEnabled && [userInfo isEnabledInAllNamedProfiles])
   {
     v5 = @"On Text";
 LABEL_8:
-    v9 = SafariSettingsLocalizedString(v5, @"Extensions");
+    title = SafariSettingsLocalizedString(v5, @"Extensions");
     goto LABEL_19;
   }
 
-  if (([v3 isEnabledInAnyProfile] & 1) == 0)
+  if (([userInfo isEnabledInAnyProfile] & 1) == 0)
   {
     v5 = @"Off Text";
     goto LABEL_8;
   }
 
-  v6 = [v3 enabledNamedProfiles];
-  if (v6)
+  enabledNamedProfiles = [userInfo enabledNamedProfiles];
+  if (enabledNamedProfiles)
   {
-    v7 = [v3 enabledNamedProfiles];
-    v8 = [v7 mutableCopy];
+    enabledNamedProfiles2 = [userInfo enabledNamedProfiles];
+    v8 = [enabledNamedProfiles2 mutableCopy];
   }
 
   else
@@ -522,52 +522,52 @@ LABEL_8:
     v8 = +[NSMutableArray array];
   }
 
-  if (v4)
+  if (isEnabled)
   {
     v10 = +[SafariSettingsController tabGroupManager];
-    v11 = [v10 defaultProfile];
-    [v8 insertObject:v11 atIndex:0];
+    defaultProfile = [v10 defaultProfile];
+    [v8 insertObject:defaultProfile atIndex:0];
   }
 
   if ([v8 count] == &dword_0 + 1)
   {
-    v12 = [v8 firstObject];
-    v9 = [v12 title];
+    firstObject = [v8 firstObject];
+    title = [firstObject title];
   }
 
   else
   {
     v13 = [v8 count];
-    v12 = [v8 objectAtIndexedSubscript:0];
-    v14 = [v12 title];
+    firstObject = [v8 objectAtIndexedSubscript:0];
+    title2 = [firstObject title];
     v15 = [v8 objectAtIndexedSubscript:1];
-    v16 = [v15 title];
-    v17 = v16;
+    title3 = [v15 title];
+    v17 = title3;
     if (v13 == &dword_0 + 2)
     {
-      [NSString stringWithFormat:@"%@, %@", v14, v16, v19];
+      [NSString stringWithFormat:@"%@, %@", title2, title3, v19];
     }
 
     else
     {
-      +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@, %@, +%lu", v14, v16, [v8 count] - 2);
+      +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@, %@, +%lu", title2, title3, [v8 count] - 2);
     }
-    v9 = ;
+    title = ;
   }
 
 LABEL_19:
 
-  return v9;
+  return title;
 }
 
-- (void)_moreExtensionsButtonTapped:(id)a3
+- (void)_moreExtensionsButtonTapped:(id)tapped
 {
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v3 = [NSURL URLWithString:appStoreSafariExtensionsCategoryURLString];
   [v4 openURL:v3 withOptions:0];
 }
 
-- (id)_valueOfExtensionSyncSpecifier:(id)a3
+- (id)_valueOfExtensionSyncSpecifier:(id)specifier
 {
   v3 = +[WBSCloudExtensionStateManager sharedManager];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isExtensionSyncEnabled]);
@@ -575,19 +575,19 @@ LABEL_19:
   return v4;
 }
 
-- (void)_setExtensionSyncValue:(id)a3 forSpecifier:(id)a4
+- (void)_setExtensionSyncValue:(id)value forSpecifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [value BOOLValue];
   v5 = +[WBSCloudExtensionStateManager sharedManager];
-  [v5 setExtensionSyncEnabled:v4];
+  [v5 setExtensionSyncEnabled:bOOLValue];
 }
 
 - (void)_updateLockupViews
 {
   v3 = +[WBSManagedFeatureAvailability sharedInstance];
-  v4 = [v3 shouldHideExtensionDiscovery];
+  shouldHideExtensionDiscovery = [v3 shouldHideExtensionDiscovery];
 
-  if (v4)
+  if (shouldHideExtensionDiscovery)
   {
     if ([(NSArray *)self->_filteredExtensionAppLockupViews count])
     {
@@ -720,10 +720,10 @@ void __67__SafariExtensionsSettingsController__updateRecommendedLockupViews__blo
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) lockup];
-        v10 = [v9 id];
-        v11 = [v10 stringValue];
-        [v3 safari_addObjectUnlessNil:v11];
+        lockup = [*(*(&v15 + 1) + 8 * i) lockup];
+        v10 = [lockup id];
+        stringValue = [v10 stringValue];
+        [v3 safari_addObjectUnlessNil:stringValue];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -732,8 +732,8 @@ void __67__SafariExtensionsSettingsController__updateRecommendedLockupViews__blo
     while (v6);
   }
 
-  v12 = [(SafariExtensionsSettingsController *)self _adamIDsForInstalledExtensions];
-  v13 = [v12 setByAddingObjectsFromSet:v3];
+  _adamIDsForInstalledExtensions = [(SafariExtensionsSettingsController *)self _adamIDsForInstalledExtensions];
+  v13 = [_adamIDsForInstalledExtensions setByAddingObjectsFromSet:v3];
 
   return v13;
 }
@@ -745,8 +745,8 @@ void __67__SafariExtensionsSettingsController__updateRecommendedLockupViews__blo
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [(SafariExtensionsSettingsController *)self _webExtensionWrappers];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  _webExtensionWrappers = [(SafariExtensionsSettingsController *)self _webExtensionWrappers];
+  v5 = [_webExtensionWrappers countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -757,15 +757,15 @@ void __67__SafariExtensionsSettingsController__updateRecommendedLockupViews__blo
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_webExtensionWrappers);
         }
 
-        v9 = [*(*(&v24 + 1) + 8 * i) extension];
-        v10 = [v9 safari_containingAppAdamID];
-        [v3 safari_addObjectUnlessNil:v10];
+        extension = [*(*(&v24 + 1) + 8 * i) extension];
+        safari_containingAppAdamID = [extension safari_containingAppAdamID];
+        [v3 safari_addObjectUnlessNil:safari_containingAppAdamID];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v6 = [_webExtensionWrappers countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v6);
@@ -775,8 +775,8 @@ void __67__SafariExtensionsSettingsController__updateRecommendedLockupViews__blo
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [(SafariExtensionsSettingsController *)self _contentBlockerWrappers];
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  _contentBlockerWrappers = [(SafariExtensionsSettingsController *)self _contentBlockerWrappers];
+  v12 = [_contentBlockerWrappers countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -787,15 +787,15 @@ void __67__SafariExtensionsSettingsController__updateRecommendedLockupViews__blo
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(_contentBlockerWrappers);
         }
 
-        v16 = [*(*(&v20 + 1) + 8 * j) extension];
-        v17 = [v16 safari_containingAppAdamID];
-        [v3 safari_addObjectUnlessNil:v17];
+        extension2 = [*(*(&v20 + 1) + 8 * j) extension];
+        safari_containingAppAdamID2 = [extension2 safari_containingAppAdamID];
+        [v3 safari_addObjectUnlessNil:safari_containingAppAdamID2];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v13 = [_contentBlockerWrappers countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v13);
@@ -808,26 +808,26 @@ void __67__SafariExtensionsSettingsController__updateRecommendedLockupViews__blo
 
 - (void)_filterExtensionAppLockupViews
 {
-  v3 = [(SafariExtensionsSettingsController *)self _adamIDsForInstalledExtensions];
+  _adamIDsForInstalledExtensions = [(SafariExtensionsSettingsController *)self _adamIDsForInstalledExtensions];
   extensionAppLockupViews = self->_extensionAppLockupViews;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __68__SafariExtensionsSettingsController__filterExtensionAppLockupViews__block_invoke;
   v15[3] = &unk_8B270;
-  v16 = v3;
-  v5 = v3;
+  v16 = _adamIDsForInstalledExtensions;
+  v5 = _adamIDsForInstalledExtensions;
   v6 = [(NSArray *)extensionAppLockupViews safari_filterObjectsUsingBlock:v15];
   filteredExtensionAppLockupViews = self->_filteredExtensionAppLockupViews;
   self->_filteredExtensionAppLockupViews = v6;
 
-  v8 = [(SafariExtensionsSettingsController *)self _adamIDsForInstalledAndCloudExtensions];
+  _adamIDsForInstalledAndCloudExtensions = [(SafariExtensionsSettingsController *)self _adamIDsForInstalledAndCloudExtensions];
   recommendedAppLockupViews = self->_recommendedAppLockupViews;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __68__SafariExtensionsSettingsController__filterExtensionAppLockupViews__block_invoke_2;
   v13[3] = &unk_8B270;
-  v14 = v8;
-  v10 = v8;
+  v14 = _adamIDsForInstalledAndCloudExtensions;
+  v10 = _adamIDsForInstalledAndCloudExtensions;
   v11 = [(NSArray *)recommendedAppLockupViews safari_filterObjectsUsingBlock:v13];
   filteredRecommendedAppLockupViews = self->_filteredRecommendedAppLockupViews;
   self->_filteredRecommendedAppLockupViews = v11;
@@ -855,9 +855,9 @@ uint64_t __68__SafariExtensionsSettingsController__filterExtensionAppLockupViews
   return v2 ^ 1;
 }
 
-- (void)_reloadSpecifiersSoon:(BOOL)a3
+- (void)_reloadSpecifiersSoon:(BOOL)soon
 {
-  if (a3)
+  if (soon)
   {
     objc_initWeak(&location, self);
     [(NSTimer *)self->_reloadSpecifiersTimer invalidate];
@@ -892,7 +892,7 @@ void __60__SafariExtensionsSettingsController__reloadSpecifiersSoon___block_invo
   }
 }
 
-- (void)_managedConfigurationSettingsDidChange:(id)a3
+- (void)_managedConfigurationSettingsDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -910,7 +910,7 @@ id __77__SafariExtensionsSettingsController__managedConfigurationSettingsDidChan
   return [v2 _updateLockupViews];
 }
 
-- (void)_extensionEnabledStateDidChange:(id)a3
+- (void)_extensionEnabledStateDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -920,7 +920,7 @@ id __77__SafariExtensionsSettingsController__managedConfigurationSettingsDidChan
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cloudExtensionStateOrPrimaryAppleAccountDidChange:(id)a3
+- (void)_cloudExtensionStateOrPrimaryAppleAccountDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -930,7 +930,7 @@ id __77__SafariExtensionsSettingsController__managedConfigurationSettingsDidChan
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cloudExtensionEligibilityStateDidChange:(id)a3
+- (void)_cloudExtensionEligibilityStateDidChange:(id)change
 {
   v4 = +[WBSCloudExtensionStateManager sharedManager];
   self->_manateeAvailable = [v4 manateeState] == &dword_0 + 1;
@@ -945,45 +945,45 @@ id __77__SafariExtensionsSettingsController__managedConfigurationSettingsDidChan
   }
 }
 
-- (void)contentBlockerManagerExtensionListDidChange:(id)a3
+- (void)contentBlockerManagerExtensionListDidChange:(id)change
 {
   [(SafariExtensionsSettingsController *)self _reloadSpecifiersSoon:self->_showingContentBlockers];
 
   [(SafariExtensionsSettingsController *)self _updateLockupViews];
 }
 
-- (void)extensionsControllerExtensionListDidChange:(id)a3
+- (void)extensionsControllerExtensionListDidChange:(id)change
 {
   [(SafariExtensionsSettingsController *)self _reloadSpecifiersSoon:self->_showingExtensions];
 
   [(SafariExtensionsSettingsController *)self _updateLockupViews];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = SafariExtensionsSettingsController;
-  v7 = [(SafariExtensionsSettingsController *)&v15 tableView:v6 cellForRowAtIndexPath:a4];
-  v8 = [v7 textLabel];
-  [v8 setNumberOfLines:2];
+  v7 = [(SafariExtensionsSettingsController *)&v15 tableView:viewCopy cellForRowAtIndexPath:path];
+  textLabel = [v7 textLabel];
+  [textLabel setNumberOfLines:2];
 
-  v9 = [v7 detailTextLabel];
-  [v9 setNumberOfLines:2];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setNumberOfLines:2];
 
-  v10 = [v7 detailTextLabel];
-  [v10 setLineBreakMode:5];
+  detailTextLabel2 = [v7 detailTextLabel];
+  [detailTextLabel2 setLineBreakMode:5];
 
   [v7 frame];
   Width = CGRectGetWidth(v17);
   if (Width != 0.0)
   {
     v12 = Width + Width / -3.0;
-    v13 = [v7 textLabel];
-    [v13 setPreferredMaxLayoutWidth:v12];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setPreferredMaxLayoutWidth:v12];
   }
 
-  [v6 setSelfSizingInvalidation:2];
+  [viewCopy setSelfSizingInvalidation:2];
 
   return v7;
 }

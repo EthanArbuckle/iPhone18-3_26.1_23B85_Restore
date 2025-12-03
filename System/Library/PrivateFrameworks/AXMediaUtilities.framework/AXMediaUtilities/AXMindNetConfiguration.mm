@@ -1,18 +1,18 @@
 @interface AXMindNetConfiguration
-- (AXMindNetConfiguration)initWithURL:(id)a3;
+- (AXMindNetConfiguration)initWithURL:(id)l;
 @end
 
 @implementation AXMindNetConfiguration
 
-- (AXMindNetConfiguration)initWithURL:(id)a3
+- (AXMindNetConfiguration)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = AXMindNetConfiguration;
   v5 = [(AXMindNetConfiguration *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v4];
+    v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy];
     filterThresholds = v5->_filterThresholds;
     v5->_filterThresholds = &unk_1F240B550;
 

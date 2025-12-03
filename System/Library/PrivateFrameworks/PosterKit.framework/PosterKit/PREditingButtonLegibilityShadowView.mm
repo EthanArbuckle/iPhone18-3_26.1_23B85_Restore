@@ -2,7 +2,7 @@
 + (CAColorMatrix)legibilityColorMatrix;
 - (PREditingButtonLegibilityShadowView)init;
 - (id)vibrantColorFilter;
-- (void)configureShadowMaskWithFrame:(CGRect)a3;
+- (void)configureShadowMaskWithFrame:(CGRect)frame;
 @end
 
 @implementation PREditingButtonLegibilityShadowView
@@ -16,13 +16,13 @@
   if (v2)
   {
     [(PREditingButtonLegibilityShadowView *)v2 setClipsToBounds:0];
-    v4 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     shadowMaskLayer = v3->_shadowMaskLayer;
-    v3->_shadowMaskLayer = v4;
+    v3->_shadowMaskLayer = layer;
 
-    v6 = [(PREditingButtonLegibilityShadowView *)v3 vibrantColorFilter];
+    vibrantColorFilter = [(PREditingButtonLegibilityShadowView *)v3 vibrantColorFilter];
     vibrantFilter = v3->_vibrantFilter;
-    v3->_vibrantFilter = v6;
+    v3->_vibrantFilter = vibrantColorFilter;
   }
 
   return v3;
@@ -62,12 +62,12 @@
   return v2;
 }
 
-- (void)configureShadowMaskWithFrame:(CGRect)a3
+- (void)configureShadowMaskWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19[1] = *MEMORY[0x1E69E9840];
   [(CAShapeLayer *)self->_shadowMaskLayer frame];
   v21.origin.x = v8;
@@ -85,8 +85,8 @@
     [(CAShapeLayer *)self->_shadowMaskLayer setMasksToBounds:0];
     [(CAShapeLayer *)self->_shadowMaskLayer setShadowRadius:30.0];
     shadowMaskLayer = self->_shadowMaskLayer;
-    v14 = [MEMORY[0x1E69DC888] blackColor];
-    -[CAShapeLayer setShadowColor:](shadowMaskLayer, "setShadowColor:", [v14 CGColor]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    -[CAShapeLayer setShadowColor:](shadowMaskLayer, "setShadowColor:", [blackColor CGColor]);
 
     [(CAShapeLayer *)self->_shadowMaskLayer setShadowOffset:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
     LODWORD(v15) = 1.0;
@@ -97,8 +97,8 @@
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     [(CAShapeLayer *)v16 setFilters:v17];
 
-    v18 = [(PREditingButtonLegibilityShadowView *)self layer];
-    [v18 addSublayer:self->_shadowMaskLayer];
+    layer = [(PREditingButtonLegibilityShadowView *)self layer];
+    [layer addSublayer:self->_shadowMaskLayer];
   }
 }
 

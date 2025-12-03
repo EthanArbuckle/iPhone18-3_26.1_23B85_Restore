@@ -1,10 +1,10 @@
 @interface PDCPreflightManager
 + (BOOL)isPreflightFeatureEnabled;
-- (BOOL)_requiresPreflightForApplication:(id)a3;
-- (BOOL)_requiresPreflightForApplicationRecord:(id)a3;
-- (PDCPreflightManager)initWithTargetQueue:(id)a3;
-- (PDCPreflightManager)initWithTargetQueue:(id)a3 consentStore:(id)a4;
-- (id)_preflightLaunchForApplication:(id)a3 withCompletionHandler:(id)a4;
+- (BOOL)_requiresPreflightForApplication:(id)application;
+- (BOOL)_requiresPreflightForApplicationRecord:(id)record;
+- (PDCPreflightManager)initWithTargetQueue:(id)queue;
+- (PDCPreflightManager)initWithTargetQueue:(id)queue consentStore:(id)store;
+- (id)_preflightLaunchForApplication:(id)application withCompletionHandler:(id)handler;
 @end
 
 @implementation PDCPreflightManager
@@ -38,50 +38,50 @@ void __48__PDCPreflightManager_isPreflightFeatureEnabled__block_invoke()
   isPreflightFeatureEnabled_result = (isRunningInDemoMode_result ^ 1) & (v2 | v1) & (v0 | v3);
 }
 
-- (PDCPreflightManager)initWithTargetQueue:(id)a3
+- (PDCPreflightManager)initWithTargetQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = PDCGlobalConsentStoreInstance();
-  v6 = [(PDCPreflightManager *)self initWithTargetQueue:v4 consentStore:v5];
+  v6 = [(PDCPreflightManager *)self initWithTargetQueue:queueCopy consentStore:v5];
 
   return v6;
 }
 
-- (PDCPreflightManager)initWithTargetQueue:(id)a3 consentStore:(id)a4
+- (PDCPreflightManager)initWithTargetQueue:(id)queue consentStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = PDCPreflightManager;
   v8 = [(PDCPreflightManager *)&v16 init];
   if (v8)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"PDCPreflightManager.0x%p", v8];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create_with_target_V2(v10, v11, v6);
+    v12 = dispatch_queue_create_with_target_V2(uTF8String, v11, queueCopy);
     queue = v8->_queue;
     v8->_queue = v12;
 
-    objc_storeStrong(&v8->_consentStore, a4);
+    objc_storeStrong(&v8->_consentStore, store);
     v14 = v8;
   }
 
   return v8;
 }
 
-- (BOOL)_requiresPreflightForApplication:(id)a3
+- (BOOL)_requiresPreflightForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v10 = 0;
-  v5 = [v4 findApplicationRecordWithError:&v10];
+  v5 = [applicationCopy findApplicationRecordWithError:&v10];
   v6 = v10;
   if (v6)
   {
     v7 = PDC_LOG_CHANNEL_PREFIXPrivacyDisclosureCore();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      PDCCurrentRegulatoryDisclosureVersionForApplicationIdentity_cold_1(v4, v6, v7);
+      PDCCurrentRegulatoryDisclosureVersionForApplicationIdentity_cold_1(applicationCopy, v6, v7);
     }
 
     v8 = 0;
@@ -95,19 +95,19 @@ void __48__PDCPreflightManager_isPreflightFeatureEnabled__block_invoke()
   return v8;
 }
 
-- (BOOL)_requiresPreflightForApplicationRecord:(id)a3
+- (BOOL)_requiresPreflightForApplicationRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if (+[PDCPreflightManager isPreflightFeatureEnabled])
   {
-    v5 = [v4 regulatoryPrivacyDisclosureVersion];
-    if (v5)
+    regulatoryPrivacyDisclosureVersion = [recordCopy regulatoryPrivacyDisclosureVersion];
+    if (regulatoryPrivacyDisclosureVersion)
     {
-      v6 = [(PDCPreflightManager *)self consentStore];
-      v7 = [v4 bundleIdentifier];
-      v8 = [v6 userConsentedRegulatoryDisclosureVersionForBundleIdentifier:v7];
+      consentStore = [(PDCPreflightManager *)self consentStore];
+      bundleIdentifier = [recordCopy bundleIdentifier];
+      v8 = [consentStore userConsentedRegulatoryDisclosureVersionForBundleIdentifier:bundleIdentifier];
 
-      v9 = [v5 isEqual:v8] ^ 1;
+      v9 = [regulatoryPrivacyDisclosureVersion isEqual:v8] ^ 1;
     }
 
     else
@@ -124,13 +124,13 @@ void __48__PDCPreflightManager_isPreflightFeatureEnabled__block_invoke()
   return v9;
 }
 
-- (id)_preflightLaunchForApplication:(id)a3 withCompletionHandler:(id)a4
+- (id)_preflightLaunchForApplication:(id)application withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PDCPreflightManager *)self _requiresPreflightForApplication:v6])
+  applicationCopy = application;
+  handlerCopy = handler;
+  if ([(PDCPreflightManager *)self _requiresPreflightForApplication:applicationCopy])
   {
-    v8 = [[PDCPreflightRequestHandle alloc] initWithQueue:self->_queue completionHandler:v7];
+    v8 = [[PDCPreflightRequestHandle alloc] initWithQueue:self->_queue completionHandler:handlerCopy];
     v9 = +[PDCPrivacyAlertPresenter sharedPresenter];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -139,7 +139,7 @@ void __48__PDCPreflightManager_isPreflightFeatureEnabled__block_invoke()
     v10 = &v15;
     v11 = v8;
     v15 = v11;
-    [v9 activateRemoteAlertWithIdentity:v6 requestHandle:v11 forcePresent:0 completionHandler:v14];
+    [v9 activateRemoteAlertWithIdentity:applicationCopy requestHandle:v11 forcePresent:0 completionHandler:v14];
   }
 
   else
@@ -150,7 +150,7 @@ void __48__PDCPreflightManager_isPreflightFeatureEnabled__block_invoke()
     block[2] = __76__PDCPreflightManager__preflightLaunchForApplication_withCompletionHandler___block_invoke;
     block[3] = &unk_279AA1F28;
     v10 = &v17;
-    v17 = v7;
+    v17 = handlerCopy;
     dispatch_async(queue, block);
     v11 = +[PDCPreflightRequestHandle alreadyCompletedRequestHandle];
   }

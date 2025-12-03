@@ -8,13 +8,13 @@
 
 - (void)doConsolePaneDebuggerDisplay
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6B18E60();
 }
 
 - (void)doConsolePaneLoggerDisplay
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6B18E60();
 }
 

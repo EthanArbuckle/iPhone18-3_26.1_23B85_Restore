@@ -1,15 +1,15 @@
 @interface FKSaveOrder
-+ (void)saveOrderAtURL:(id)a3 completion:(id)a4;
++ (void)saveOrderAtURL:(id)l completion:(id)completion;
 @end
 
 @implementation FKSaveOrder
 
-+ (void)saveOrderAtURL:(id)a3 completion:(id)a4
++ (void)saveOrderAtURL:(id)l completion:(id)completion
 {
   v5 = MEMORY[0x277CBEA90];
   v11 = 0;
-  v6 = a4;
-  v7 = [v5 dataWithContentsOfURL:a3 options:1 error:&v11];
+  completionCopy = completion;
+  v7 = [v5 dataWithContentsOfURL:l options:1 error:&v11];
   v8 = v11;
   v9 = v8;
   if (v7)
@@ -24,12 +24,12 @@
 
   if (v10)
   {
-    [_TtC12FinanceKitUI17SaveOrderProvider saveOrderWithData:v7 completionHandler:v6];
+    [_TtC12FinanceKitUI17SaveOrderProvider saveOrderWithData:v7 completionHandler:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 1, v8);
+    completionCopy[2](completionCopy, 1, v8);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface MSDCryptoHandler
 + (id)sharedInstance;
 - (BOOL)deleteSecretKeyInKeychain;
-- (BOOL)preserveAndEncryptKeychainItemsForKey:(id)a3 toFile:(id)a4;
-- (BOOL)restoreAndDecryptKeychainItemsForKey:(id)a3 fromFile:(id)a4;
-- (BOOL)saveSecretKeyInKeychain:(id)a3;
-- (id)archiveAndEncryptKeychainItems:(id)a3;
+- (BOOL)preserveAndEncryptKeychainItemsForKey:(id)key toFile:(id)file;
+- (BOOL)restoreAndDecryptKeychainItemsForKey:(id)key fromFile:(id)file;
+- (BOOL)saveSecretKeyInKeychain:(id)keychain;
+- (id)archiveAndEncryptKeychainItems:(id)items;
 - (id)copySecretKeyFromKeychain;
-- (id)decryptAndUnarchiveKeychainItems:(id)a3;
+- (id)decryptAndUnarchiveKeychainItems:(id)items;
 - (id)generateRandomBytesWithFixedLength;
-- (id)performCryptoWithSecretKeyOnData:(id)a3 isDecipher:(BOOL)a4;
+- (id)performCryptoWithSecretKeyOnData:(id)data isDecipher:(BOOL)decipher;
 - (void)createSecretKeyIfNeeded;
 - (void)deleteSecretKey;
 @end
@@ -29,15 +29,15 @@
 
 - (void)createSecretKeyIfNeeded
 {
-  v3 = [(MSDCryptoHandler *)self copySecretKeyFromKeychain];
+  copySecretKeyFromKeychain = [(MSDCryptoHandler *)self copySecretKeyFromKeychain];
 
-  if (!v3)
+  if (!copySecretKeyFromKeychain)
   {
-    v4 = [(MSDCryptoHandler *)self generateRandomBytesWithFixedLength];
-    if (v4)
+    generateRandomBytesWithFixedLength = [(MSDCryptoHandler *)self generateRandomBytesWithFixedLength];
+    if (generateRandomBytesWithFixedLength)
     {
-      v5 = v4;
-      v6 = [(MSDCryptoHandler *)self saveSecretKeyInKeychain:v4];
+      v5 = generateRandomBytesWithFixedLength;
+      v6 = [(MSDCryptoHandler *)self saveSecretKeyInKeychain:generateRandomBytesWithFixedLength];
       v7 = sub_100063A54();
       v8 = v7;
       if (v6)
@@ -66,12 +66,12 @@
   }
 }
 
-- (BOOL)preserveAndEncryptKeychainItemsForKey:(id)a3 toFile:(id)a4
+- (BOOL)preserveAndEncryptKeychainItemsForKey:(id)key toFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  fileCopy = file;
   v8 = +[MSDKeychainManager sharedInstance];
-  v9 = [v8 getAllItemsForKey:v6 withAttributes:1];
+  v9 = [v8 getAllItemsForKey:keyCopy withAttributes:1];
 
   if (!v9)
   {
@@ -104,7 +104,7 @@ LABEL_13:
 
   v11 = v10;
   v17 = 0;
-  v12 = [v10 writeToFile:v7 options:0 error:&v17];
+  v12 = [v10 writeToFile:fileCopy options:0 error:&v17];
   v13 = v17;
   if ((v12 & 1) == 0)
   {
@@ -123,12 +123,12 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)restoreAndDecryptKeychainItemsForKey:(id)a3 fromFile:(id)a4
+- (BOOL)restoreAndDecryptKeychainItemsForKey:(id)key fromFile:(id)file
 {
-  v26 = a3;
-  v6 = a4;
+  keyCopy = key;
+  fileCopy = file;
   v31 = 0;
-  v7 = [NSData dataWithContentsOfFile:v6 options:0 error:&v31];
+  v7 = [NSData dataWithContentsOfFile:fileCopy options:0 error:&v31];
   v8 = v31;
   if (!v7)
   {
@@ -157,7 +157,7 @@ LABEL_21:
 
   v23 = v8;
   v24 = v7;
-  v25 = v6;
+  v25 = fileCopy;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -182,7 +182,7 @@ LABEL_21:
         v17 = [v15 mutableCopy];
         [v17 removeObjectForKey:kSecValueData];
         v18 = +[MSDKeychainManager sharedInstance];
-        v19 = [v18 saveItem:v16 forKey:v26 withAttributes:v17];
+        v19 = [v18 saveItem:v16 forKey:keyCopy withAttributes:v17];
 
         if ((v19 & 1) == 0)
         {
@@ -210,18 +210,18 @@ LABEL_21:
   v20 = 1;
 LABEL_15:
   v7 = v24;
-  v6 = v25;
+  fileCopy = v25;
   v8 = v23;
 LABEL_16:
 
   return v20;
 }
 
-- (BOOL)saveSecretKeyInKeychain:(id)a3
+- (BOOL)saveSecretKeyInKeychain:(id)keychain
 {
-  v3 = a3;
+  keychainCopy = keychain;
   v4 = +[MSDKeychainManager sharedInstance];
-  v5 = [v4 saveItem:v3 forKey:@"com.apple.mobilestoredemo.wifi.key"];
+  v5 = [v4 saveItem:keychainCopy forKey:@"com.apple.mobilestoredemo.wifi.key"];
 
   v6 = sub_100063A54();
   v7 = v6;
@@ -274,10 +274,10 @@ LABEL_16:
   return v3;
 }
 
-- (id)archiveAndEncryptKeychainItems:(id)a3
+- (id)archiveAndEncryptKeychainItems:(id)items
 {
-  v22 = self;
-  v3 = a3;
+  selfCopy = self;
+  itemsCopy = items;
   v36[0] = kSecAttrService;
   v36[1] = kSecAttrAccount;
   v36[2] = kSecAttrLabel;
@@ -288,7 +288,7 @@ LABEL_16:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v5 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v5)
   {
@@ -351,7 +351,7 @@ LABEL_16:
   v18 = v25;
   if (v17)
   {
-    v19 = [(MSDCryptoHandler *)v22 performCryptoWithSecretKeyOnData:v17 isDecipher:0];
+    v19 = [(MSDCryptoHandler *)selfCopy performCryptoWithSecretKeyOnData:v17 isDecipher:0];
     if (v19)
     {
       goto LABEL_19;
@@ -379,11 +379,11 @@ LABEL_19:
   return v19;
 }
 
-- (id)decryptAndUnarchiveKeychainItems:(id)a3
+- (id)decryptAndUnarchiveKeychainItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[MSDCryptoHandler sharedInstance];
-  v5 = [v4 performCryptoWithSecretKeyOnData:v3 isDecipher:1];
+  v5 = [v4 performCryptoWithSecretKeyOnData:itemsCopy isDecipher:1];
 
   if (v5)
   {
@@ -419,9 +419,9 @@ LABEL_19:
 
 - (void)deleteSecretKey
 {
-  v3 = [(MSDCryptoHandler *)self copySecretKeyFromKeychain];
+  copySecretKeyFromKeychain = [(MSDCryptoHandler *)self copySecretKeyFromKeychain];
 
-  if (v3 && [(MSDCryptoHandler *)self deleteSecretKeyInKeychain])
+  if (copySecretKeyFromKeychain && [(MSDCryptoHandler *)self deleteSecretKeyInKeychain])
   {
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -432,23 +432,23 @@ LABEL_19:
   }
 }
 
-- (id)performCryptoWithSecretKeyOnData:(id)a3 isDecipher:(BOOL)a4
+- (id)performCryptoWithSecretKeyOnData:(id)data isDecipher:(BOOL)decipher
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = v7;
+  decipherCopy = decipher;
+  dataCopy = data;
+  v8 = dataCopy;
   v52 = 0;
-  op = v5;
-  if (v5)
+  op = decipherCopy;
+  if (decipherCopy)
   {
-    v9 = [v7 length] - 32;
-    v10 = +[NSData dataWithBytesNoCopy:length:freeWhenDone:](NSData, "dataWithBytesNoCopy:length:freeWhenDone:", [v8 bytes], 32, 0);
+    v9 = [dataCopy length] - 32;
+    generateRandomBytesWithFixedLength = +[NSData dataWithBytesNoCopy:length:freeWhenDone:](NSData, "dataWithBytesNoCopy:length:freeWhenDone:", [v8 bytes], 32, 0);
     v11 = +[NSData dataWithBytesNoCopy:length:freeWhenDone:](NSData, "dataWithBytesNoCopy:length:freeWhenDone:", [v8 bytes] + 32, v9, 0);
   }
 
   else
   {
-    v10 = [(MSDCryptoHandler *)self generateRandomBytesWithFixedLength];
+    generateRandomBytesWithFixedLength = [(MSDCryptoHandler *)self generateRandomBytesWithFixedLength];
     v11 = v8;
   }
 
@@ -461,7 +461,7 @@ LABEL_19:
 LABEL_36:
       v15 = 0;
       v25 = 0;
-      v13 = 0;
+      copySecretKeyFromKeychain = 0;
       goto LABEL_26;
     }
 
@@ -472,7 +472,7 @@ LABEL_39:
     goto LABEL_36;
   }
 
-  if (!v10)
+  if (!generateRandomBytesWithFixedLength)
   {
     v44 = sub_100063A54();
     if (!sub_1000AE14C(v44))
@@ -484,8 +484,8 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v13 = [(MSDCryptoHandler *)self copySecretKeyFromKeychain];
-  if (v13)
+  copySecretKeyFromKeychain = [(MSDCryptoHandler *)self copySecretKeyFromKeychain];
+  if (copySecretKeyFromKeychain)
   {
     v50 = v8;
     v14 = [[NSMutableData alloc] initWithLength:{objc_msgSend(v12, "length") + 32}];
@@ -494,11 +494,11 @@ LABEL_39:
       v15 = v14;
       while (1)
       {
-        v16 = [v13 bytes];
-        v17 = [v13 length];
-        v18 = [v10 bytes];
-        v4 = [v12 bytes];
-        v19 = CCCrypt(op, 0, 1u, v16, v17, v18, v4, [v12 length], objc_msgSend(v15, "mutableBytes"), objc_msgSend(v15, "length"), &v52);
+        bytes = [copySecretKeyFromKeychain bytes];
+        v17 = [copySecretKeyFromKeychain length];
+        bytes2 = [generateRandomBytesWithFixedLength bytes];
+        bytes3 = [v12 bytes];
+        v19 = CCCrypt(op, 0, 1u, bytes, v17, bytes2, bytes3, [v12 length], objc_msgSend(v15, "mutableBytes"), objc_msgSend(v15, "length"), &v52);
         if (v19 != -4301)
         {
           break;
@@ -525,21 +525,21 @@ LABEL_39:
       {
         if (op)
         {
-          v24 = [v15 mutableBytes];
-          v25 = [NSMutableData dataWithBytes:v24 length:v52];
+          mutableBytes = [v15 mutableBytes];
+          v25 = [NSMutableData dataWithBytes:mutableBytes length:v52];
         }
 
         else
         {
-          v25 = [NSMutableData dataWithData:v10];
-          v27 = [v15 mutableBytes];
-          v28 = [NSData dataWithBytes:v27 length:v52];
+          v25 = [NSMutableData dataWithData:generateRandomBytesWithFixedLength];
+          mutableBytes2 = [v15 mutableBytes];
+          v28 = [NSData dataWithBytes:mutableBytes2 length:v52];
           [v25 appendData:v28];
         }
 
         v8 = v50;
-        v4 = sub_100063A54();
-        if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+        bytes3 = sub_100063A54();
+        if (os_log_type_enabled(bytes3, OS_LOG_TYPE_DEFAULT))
         {
           v29 = "encrypted";
           if (op)
@@ -549,7 +549,7 @@ LABEL_39:
 
           *buf = 136446210;
           v54 = v29;
-          _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Input data is %{public}s.", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, bytes3, OS_LOG_TYPE_DEFAULT, "Input data is %{public}s.", buf, 0xCu);
         }
 
         goto LABEL_26;

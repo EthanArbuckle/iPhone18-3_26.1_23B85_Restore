@@ -1,31 +1,31 @@
 @interface RERelevanceValue
-- (BOOL)isEqual:(id)a3;
-- (RERelevanceValue)initWithValues:(id)a3 isHistoric:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RERelevanceValue)initWithValues:(id)values isHistoric:(BOOL)historic;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RERelevanceValue
 
-- (RERelevanceValue)initWithValues:(id)a3 isHistoric:(BOOL)a4
+- (RERelevanceValue)initWithValues:(id)values isHistoric:(BOOL)historic
 {
-  v4 = a4;
-  v7 = a3;
+  historicCopy = historic;
+  valuesCopy = values;
   v14.receiver = self;
   v14.super_class = RERelevanceValue;
   v8 = [(RERelevanceValue *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_values, a3);
-    v9->_historic = v4;
+    objc_storeStrong(&v8->_values, values);
+    v9->_historic = historicCopy;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __46__RERelevanceValue_initWithValues_isHistoric___block_invoke;
     v12[3] = &unk_2785FBCA0;
     v10 = v9;
     v13 = v10;
-    [v7 enumerateFeatureValuesUsingBlock:v12];
-    v10->_hash ^= v4;
+    [valuesCopy enumerateFeatureValuesUsingBlock:v12];
+    v10->_hash ^= historicCopy;
   }
 
   return v9;
@@ -38,19 +38,19 @@ uint64_t __46__RERelevanceValue_initWithValues_isHistoric___block_invoke(uint64_
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(RERelevanceValue *)self values];
-  v6 = [v4 initWithValues:v5 isHistoric:{-[RERelevanceValue isHistoric](self, "isHistoric")}];
+  values = [(RERelevanceValue *)self values];
+  v6 = [v4 initWithValues:values isHistoric:{-[RERelevanceValue isHistoric](self, "isHistoric")}];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v9) = 1;
   }
@@ -60,13 +60,13 @@ uint64_t __46__RERelevanceValue_initWithValues_isHistoric___block_invoke(uint64_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RERelevanceValue *)self values];
-      v7 = [(RERelevanceValue *)v5 values];
-      if (v6 == v7 || [v6 isEqual:v7])
+      v5 = equalCopy;
+      values = [(RERelevanceValue *)self values];
+      values2 = [(RERelevanceValue *)v5 values];
+      if (values == values2 || [values isEqual:values2])
       {
-        v8 = [(RERelevanceValue *)self isHistoric];
-        v9 = v8 ^ [(RERelevanceValue *)v5 isHistoric]^ 1;
+        isHistoric = [(RERelevanceValue *)self isHistoric];
+        v9 = isHistoric ^ [(RERelevanceValue *)v5 isHistoric]^ 1;
       }
 
       else

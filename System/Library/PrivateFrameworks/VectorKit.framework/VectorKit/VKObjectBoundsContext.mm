@@ -2,7 +2,7 @@
 - ($C9B3965AAA5284750DDDB08D9AABF973)boundingRect;
 - (VKEdgeInsets)edgePadding;
 - (id).cxx_construct;
-- (void)addPoints:(const void *)a3;
+- (void)addPoints:(const void *)points;
 @end
 
 @implementation VKObjectBoundsContext
@@ -96,11 +96,11 @@
   return result;
 }
 
-- (void)addPoints:(const void *)a3
+- (void)addPoints:(const void *)points
 {
-  v4 = *a3;
-  v3 = *(a3 + 1);
-  v5 = v3 - *a3;
+  v4 = *points;
+  v3 = *(points + 1);
+  v5 = v3 - *points;
   if (v5 >> 4 >= 1)
   {
     end = self->_points.__end_;

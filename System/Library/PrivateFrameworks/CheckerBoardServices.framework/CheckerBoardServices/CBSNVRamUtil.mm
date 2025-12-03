@@ -1,15 +1,15 @@
 @interface CBSNVRamUtil
-+ (BOOL)readNVRamVariable:(id)a3 value:(id *)a4;
-+ (void)clearNVRamVariable:(id)a3;
-+ (void)writeNVRamVariable:(id)a3 value:(id)a4;
++ (BOOL)readNVRamVariable:(id)variable value:(id *)value;
++ (void)clearNVRamVariable:(id)variable;
++ (void)writeNVRamVariable:(id)variable value:(id)value;
 @end
 
 @implementation CBSNVRamUtil
 
-+ (BOOL)readNVRamVariable:(id)a3 value:(id *)a4
++ (BOOL)readNVRamVariable:(id)variable value:(id *)value
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  variableCopy = variable;
   v6 = IORegistryEntryFromPath(*MEMORY[0x277CD2898], "IODeviceTree:/options");
   if (v6)
   {
@@ -42,21 +42,21 @@
       goto LABEL_20;
     }
 
-    v13 = [(__CFDictionary *)properties objectForKeyedSubscript:v5];
+    v13 = [(__CFDictionary *)properties objectForKeyedSubscript:variableCopy];
     v14 = v13;
     v15 = v13 != 0;
     if (v13)
     {
       v16 = v13;
-      *a4 = v14;
+      *value = v14;
       v17 = CheckerBoardLogHandleForCategory(4);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = *a4;
+        v18 = *value;
         *buf = 138412546;
         v26 = v18;
         v27 = 2112;
-        v28 = v5;
+        v28 = variableCopy;
         v19 = "Found value %@ for NVRAM key %@";
         v20 = v17;
         v21 = 22;
@@ -71,7 +71,7 @@ LABEL_18:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v5;
+        v26 = variableCopy;
         v19 = "No NVRAM value found for key %@";
         v20 = v17;
         v21 = 12;
@@ -98,22 +98,22 @@ LABEL_21:
   return v15;
 }
 
-+ (void)writeNVRamVariable:(id)a3 value:(id)a4
++ (void)writeNVRamVariable:(id)variable value:(id)value
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  variableCopy = variable;
+  valueCopy = value;
   v7 = IORegistryEntryFromPath(*MEMORY[0x277CD2898], "IODeviceTree:/options");
   if (v7)
   {
     v8 = v7;
-    v9 = IORegistryEntrySetCFProperty(v7, v5, v6);
+    v9 = IORegistryEntrySetCFProperty(v7, variableCopy, valueCopy);
     v10 = CheckerBoardLogHandleForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = "failed";
       v13 = 138412802;
-      v14 = v5;
+      v14 = variableCopy;
       if (!v9)
       {
         v11 = "succeeded.";
@@ -132,21 +132,21 @@ LABEL_21:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)clearNVRamVariable:(id)a3
++ (void)clearNVRamVariable:(id)variable
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  variableCopy = variable;
   v4 = IORegistryEntryFromPath(*MEMORY[0x277CD2898], "IODeviceTree:/options");
   if (v4)
   {
     v5 = v4;
-    v6 = IORegistryEntrySetCFProperty(v4, @"IONVRAM-DELETE-PROPERTY", v3);
+    v6 = IORegistryEntrySetCFProperty(v4, @"IONVRAM-DELETE-PROPERTY", variableCopy);
     v7 = CheckerBoardLogHandleForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "failed";
       v10 = 138412802;
-      v11 = v3;
+      v11 = variableCopy;
       if (!v6)
       {
         v8 = "succeeded.";

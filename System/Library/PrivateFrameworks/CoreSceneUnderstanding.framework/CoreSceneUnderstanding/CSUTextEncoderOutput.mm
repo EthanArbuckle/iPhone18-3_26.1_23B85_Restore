@@ -1,6 +1,6 @@
 @interface CSUTextEncoderOutput
 - (CSUTextEncoderOutput)init;
-- (CSUTextEncoderOutput)initWithTextEmbedding:(id)a3;
+- (CSUTextEncoderOutput)initWithTextEmbedding:(id)embedding;
 @end
 
 @implementation CSUTextEncoderOutput
@@ -25,16 +25,16 @@
   return v3;
 }
 
-- (CSUTextEncoderOutput)initWithTextEmbedding:(id)a3
+- (CSUTextEncoderOutput)initWithTextEmbedding:(id)embedding
 {
-  v5 = a3;
+  embeddingCopy = embedding;
   v10.receiver = self;
   v10.super_class = CSUTextEncoderOutput;
   v6 = [(CSUTextEncoderOutput *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_CSUTextEmbedding, a3);
+    objc_storeStrong(&v6->_CSUTextEmbedding, embedding);
     v8 = v7;
   }
 

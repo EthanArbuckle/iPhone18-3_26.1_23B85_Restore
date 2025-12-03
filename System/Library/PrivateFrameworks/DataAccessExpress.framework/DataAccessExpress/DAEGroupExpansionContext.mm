@@ -1,19 +1,19 @@
 @interface DAEGroupExpansionContext
-- (DAEGroupExpansionContext)initWithCompletionBlock:(id)a3;
-- (void)finishedWithError:(id)a3;
+- (DAEGroupExpansionContext)initWithCompletionBlock:(id)block;
+- (void)finishedWithError:(id)error;
 @end
 
 @implementation DAEGroupExpansionContext
 
-- (DAEGroupExpansionContext)initWithCompletionBlock:(id)a3
+- (DAEGroupExpansionContext)initWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = DAEGroupExpansionContext;
   v5 = [(DAEGroupExpansionContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     completionBlock = v5->_completionBlock;
     v5->_completionBlock = v6;
   }
@@ -21,9 +21,9 @@
   return v5;
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_completionBlock)
   {
     queue = self->_queue;
@@ -43,7 +43,7 @@
     v8[2] = __46__DAEGroupExpansionContext_finishedWithError___block_invoke;
     v8[3] = &unk_27851FED8;
     v8[4] = self;
-    v9 = v4;
+    v9 = errorCopy;
     dispatch_async(v7, v8);
   }
 }

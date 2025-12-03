@@ -1,7 +1,7 @@
 @interface ADPhoneticEmbedder
 + (id)sharedEmbedder;
-- (void)findAlternativesForString:(id)a3 maxResults:(int)a4 completion:(id)a5;
-- (void)preheatEuclidModelWithLanguageCode:(id)a3 clientID:(id)a4;
+- (void)findAlternativesForString:(id)string maxResults:(int)results completion:(id)completion;
+- (void)preheatEuclidModelWithLanguageCode:(id)code clientID:(id)d;
 @end
 
 @implementation ADPhoneticEmbedder
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_10032B370;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590A90 != -1)
   {
     dispatch_once(&qword_100590A90, block);
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (void)findAlternativesForString:(id)a3 maxResults:(int)a4 completion:(id)a5
+- (void)findAlternativesForString:(id)string maxResults:(int)results completion:(id)completion
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = v8;
+  v5 = *&results;
+  completionCopy = completion;
+  v9 = completionCopy;
   phoneticEmbedder = self->phoneticEmbedder;
   if (phoneticEmbedder)
   {
@@ -35,8 +35,8 @@
     v13[1] = 3221225472;
     v13[2] = sub_10032B4CC;
     v13[3] = &unk_10051C150;
-    v14 = v8;
-    [(CESRPhoneticEmbedder *)phoneticEmbedder findAlternativesForString:a3 maxResults:v5 completion:v13];
+    v14 = completionCopy;
+    [(CESRPhoneticEmbedder *)phoneticEmbedder findAlternativesForString:string maxResults:v5 completion:v13];
   }
 
   else
@@ -47,11 +47,11 @@
   }
 }
 
-- (void)preheatEuclidModelWithLanguageCode:(id)a3 clientID:(id)a4
+- (void)preheatEuclidModelWithLanguageCode:(id)code clientID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CESRPhoneticEmbedder alloc] initWithLocaleIdentifier:v7 clientID:v6];
+  dCopy = d;
+  codeCopy = code;
+  v8 = [[CESRPhoneticEmbedder alloc] initWithLocaleIdentifier:codeCopy clientID:dCopy];
 
   phoneticEmbedder = self->phoneticEmbedder;
   self->phoneticEmbedder = v8;

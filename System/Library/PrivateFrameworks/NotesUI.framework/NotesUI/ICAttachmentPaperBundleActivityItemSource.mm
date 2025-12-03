@@ -1,32 +1,32 @@
 @interface ICAttachmentPaperBundleActivityItemSource
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 @end
 
 @implementation ICAttachmentPaperBundleActivityItemSource
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICAttachmentActivityItemSource *)self attachment];
-  v9 = [v8 isPasswordProtected];
+  controllerCopy = controller;
+  typeCopy = type;
+  attachment = [(ICAttachmentActivityItemSource *)self attachment];
+  isPasswordProtected = [attachment isPasswordProtected];
 
-  if (v9)
+  if (isPasswordProtected)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [(ICAttachmentActivityItemSource *)self attachment];
-    v12 = [v11 fallbackPDFData];
+    attachment2 = [(ICAttachmentActivityItemSource *)self attachment];
+    fallbackPDFData = [attachment2 fallbackPDFData];
 
     objc_autoreleasePoolPop(v10);
   }
 
   else
   {
-    v13 = [(ICAttachmentActivityItemSource *)self attachment];
-    v12 = [v13 previewItemURL];
+    attachment3 = [(ICAttachmentActivityItemSource *)self attachment];
+    fallbackPDFData = [attachment3 previewItemURL];
   }
 
-  return v12;
+  return fallbackPDFData;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface MCNewPlainCertificatePayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4;
-- (__SecIdentity)_copyContentsOfPKCS12DataWithPasscode:(id)a3 outError:(id *)a4;
-- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)a3 outError:(id *)a4;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error;
+- (__SecIdentity)_copyContentsOfPKCS12DataWithPasscode:(id)passcode outError:(id *)error;
+- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)client outError:(id *)error;
 - (id)_cannotStoreCertificateError;
 - (id)_cannotStoreRootCertificateError;
 - (id)_invalidPasscodeError;
 - (id)_malformedCertificateError;
-- (id)_storeCertificate:(__SecCertificate *)a3 allowSSLTrust:(BOOL)a4 outError:(id *)a5;
+- (id)_storeCertificate:(__SecCertificate *)certificate allowSSLTrust:(BOOL)trust outError:(id *)error;
 - (id)_tooManyCertificatesError;
 - (id)userInputFields;
-- (int)_grantPartialNonSSLTrustPolicyForCertificate:(__SecCertificate *)a3;
+- (int)_grantPartialNonSSLTrustPolicyForCertificate:(__SecCertificate *)certificate;
 - (void)_revertFullSSLTrustIfNeeded;
 - (void)dealloc;
 - (void)remove;
@@ -22,17 +22,17 @@
 
 - (id)userInputFields
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  if ([v2 dataEncoding] == 1)
+  payload = [(MCNewPayloadHandler *)self payload];
+  if ([payload dataEncoding] == 1)
   {
     v3 = +[NSMutableArray array];
-    v4 = [v2 password];
-    v5 = [v4 length];
+    password = [payload password];
+    v5 = [password length];
 
     if (!v5)
     {
       v6 = MCLocalizedString();
-      v7 = [v2 certificateFileName];
+      certificateFileName = [payload certificateFileName];
       v8 = MCLocalizedFormat();
       v9 = [MCNewPayloadHandler promptDictionaryForKey:@"certificatePassword" title:v6 description:v8 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:3 flags:?];
       [v3 addObject:v9];
@@ -60,36 +60,36 @@
   [(MCNewPlainCertificatePayloadHandler *)&v4 dealloc];
 }
 
-- (__SecIdentity)_copyContentsOfPKCS12DataWithPasscode:(id)a3 outError:(id *)a4
+- (__SecIdentity)_copyContentsOfPKCS12DataWithPasscode:(id)passcode outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MCNewPayloadHandler *)self payload];
+  passcodeCopy = passcode;
+  payload = [(MCNewPayloadHandler *)self payload];
   theArray = 0;
-  if (v6)
+  if (passcodeCopy)
   {
     v17 = kSecImportExportPassphrase;
-    v18 = v6;
+    v18 = passcodeCopy;
     v8 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    if (SecPKCS12Import([v7 certificateData], v8, &theArray))
+    if (SecPKCS12Import([payload certificateData], v8, &theArray))
     {
-      v9 = [(MCNewPlainCertificatePayloadHandler *)self _invalidPasscodeError];
+      _invalidPasscodeError = [(MCNewPlainCertificatePayloadHandler *)self _invalidPasscodeError];
     }
 
     else
     {
       if (CFArrayGetCount(theArray) == 1)
       {
-        v10 = 0;
+        _invalidPasscodeError2 = 0;
         goto LABEL_10;
       }
 
-      v9 = [(MCNewPlainCertificatePayloadHandler *)self _tooManyCertificatesError];
+      _invalidPasscodeError = [(MCNewPlainCertificatePayloadHandler *)self _tooManyCertificatesError];
     }
 
-    v10 = v9;
+    _invalidPasscodeError2 = _invalidPasscodeError;
 LABEL_10:
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -97,18 +97,18 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(MCNewPlainCertificatePayloadHandler *)self _invalidPasscodeError];
-  if (!a4)
+  _invalidPasscodeError2 = [(MCNewPlainCertificatePayloadHandler *)self _invalidPasscodeError];
+  if (!error)
   {
     goto LABEL_13;
   }
 
 LABEL_11:
-  if (v10)
+  if (_invalidPasscodeError2)
   {
-    v11 = v10;
+    v11 = _invalidPasscodeError2;
     v12 = 0;
-    *a4 = v10;
+    *error = _invalidPasscodeError2;
     goto LABEL_17;
   }
 
@@ -131,14 +131,14 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MCNewPayloadHandler *)self payload];
-  if ([v7 dataEncoding] == 1)
+  responsesCopy = responses;
+  payload = [(MCNewPayloadHandler *)self payload];
+  if ([payload dataEncoding] == 1)
   {
-    v8 = [v7 password];
-    v9 = [MCNewPayloadHandler prioritizeUserInput:v6 key:@"certificatePassword" overField:v8];
+    password = [payload password];
+    v9 = [MCNewPayloadHandler prioritizeUserInput:responsesCopy key:@"certificatePassword" overField:password];
 
     v15 = 0;
     v10 = [(MCNewPlainCertificatePayloadHandler *)self _copyContentsOfPKCS12DataWithPasscode:v9 outError:&v15];
@@ -149,10 +149,10 @@ LABEL_17:
     }
 
     v12 = v11 == 0;
-    if (a4 && v11)
+    if (error && v11)
     {
       v13 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -164,58 +164,58 @@ LABEL_17:
   return v12;
 }
 
-- (id)_storeCertificate:(__SecCertificate *)a3 allowSSLTrust:(BOOL)a4 outError:(id *)a5
+- (id)_storeCertificate:(__SecCertificate *)certificate allowSSLTrust:(BOOL)trust outError:(id *)error
 {
-  v6 = a4;
-  v8 = [(MCNewPayloadHandler *)self payload];
-  v9 = [(MCNewCertificatePayloadHandler *)self accessibility];
+  trustCopy = trust;
+  payload = [(MCNewPayloadHandler *)self payload];
+  accessibility = [(MCNewCertificatePayloadHandler *)self accessibility];
   v10 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v70 = v9;
+    v70 = accessibility;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Storing certificate, storing with accessibility %@", buf, 0xCu);
   }
 
-  v11 = [v8 UUID];
+  uUID = [payload UUID];
   v12 = kMCAppleCertificatesKeychainGroup;
-  v13 = [(MCNewPayloadHandler *)self profileHandler];
-  v14 = [v13 profile];
-  v15 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", a3, v11, v12, [v14 isInstalledForSystem], v9);
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile = [profileHandler profile];
+  v15 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", certificate, uUID, v12, [profile isInstalledForSystem], accessibility);
 
-  v56 = v8;
+  v56 = payload;
   if (!v15)
   {
-    v18 = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreCertificateError];
+    _cannotStoreCertificateError = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreCertificateError];
     goto LABEL_10;
   }
 
-  v16 = [v8 UUID];
-  [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v15 andUUID:v16];
+  uUID2 = [payload UUID];
+  [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v15 andUUID:uUID2];
 
-  [v8 setCertificatePersistentID:v15];
-  v17 = a3;
-  if (([v8 isFullyTrustedRootCert] & 1) == 0 && SecCertificateIsSelfSignedCA())
+  [payload setCertificatePersistentID:v15];
+  certificateCopy2 = certificate;
+  if (([payload isFullyTrustedRootCert] & 1) == 0 && SecCertificateIsSelfSignedCA())
   {
-    if (v6)
+    if (trustCopy)
     {
       SecTrustStoreForDomain();
       if (SecTrustStoreSetTrustSettings())
       {
 LABEL_8:
-        v18 = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreRootCertificateError];
+        _cannotStoreCertificateError = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreRootCertificateError];
 LABEL_10:
-        v19 = v18;
-        if (!v18)
+        v19 = _cannotStoreCertificateError;
+        if (!_cannotStoreCertificateError)
         {
           goto LABEL_56;
         }
 
-        if (a5)
+        if (error)
         {
-          v20 = v18;
+          v20 = _cannotStoreCertificateError;
           v21 = 0;
-          *a5 = v19;
+          *error = v19;
         }
 
         else
@@ -227,7 +227,7 @@ LABEL_10:
       }
     }
 
-    else if ([(MCNewPlainCertificatePayloadHandler *)self _grantPartialNonSSLTrustPolicyForCertificate:a3])
+    else if ([(MCNewPlainCertificatePayloadHandler *)self _grantPartialNonSSLTrustPolicyForCertificate:certificate])
     {
       goto LABEL_8;
     }
@@ -270,7 +270,7 @@ LABEL_10:
       {
         v30 = v29;
         trust = 0;
-        if (SecTrustCreateWithCertificates(v17, v29, &trust))
+        if (SecTrustCreateWithCertificates(certificateCopy2, v29, &trust))
         {
           v31 = _MCLogObjects[0];
           if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -294,8 +294,8 @@ LABEL_10:
           CFRelease(v33);
         }
 
-        v35 = [v34 MCHexString];
-        v36 = [NSString stringWithFormat:@"S/MIME: %@ - %@", v28, v35];
+        mCHexString = [v34 MCHexString];
+        v36 = [NSString stringWithFormat:@"S/MIME: %@ - %@", v28, mCHexString];
 
         v66[0] = kSecClass;
         v66[1] = kSecAttrGeneric;
@@ -357,7 +357,7 @@ LABEL_37:
 LABEL_39:
 
             v23 = v57;
-            v17 = a3;
+            certificateCopy2 = certificate;
 LABEL_40:
             CFRelease(trust);
 LABEL_41:
@@ -391,7 +391,7 @@ LABEL_41:
                 _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Saving certificate as the S/MIME encryption certificate for %{public}@", buf, 0xCu);
               }
 
-              v51 = [MFMessageKeychainManager saveEncryptionCertificate:a3 forAddress:v28];
+              v51 = [MFMessageKeychainManager saveEncryptionCertificate:certificate forAddress:v28];
               goto LABEL_39;
             }
 
@@ -444,113 +444,113 @@ LABEL_57:
   return v21;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCNewPayloadHandler *)self payload];
-  v12 = [v11 UUID];
-  if ([v11 dataEncoding] != 1)
+  optionsCopy = options;
+  clientCopy = client;
+  payload = [(MCNewPayloadHandler *)self payload];
+  uUID = [payload UUID];
+  if ([payload dataEncoding] != 1)
   {
-    if ([v11 dataEncoding])
+    if ([payload dataEncoding])
     {
-      v14 = [(MCNewPlainCertificatePayloadHandler *)self _malformedCertificateError];
+      _malformedCertificateError = [(MCNewPlainCertificatePayloadHandler *)self _malformedCertificateError];
       v20 = 0;
 LABEL_13:
-      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v20 andUUID:v12];
+      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v20 andUUID:uUID];
 
       goto LABEL_14;
     }
 
-    v33 = a6;
-    v22 = [v11 certificateData];
-    v23 = [MCCrypto copyCertificateRefFromPKCS1Data:v22];
+    errorCopy = error;
+    certificateData = [payload certificateData];
+    v23 = [MCCrypto copyCertificateRefFromPKCS1Data:certificateData];
 
-    if (v23 || ([v11 certificateData], v24 = objc_claimAutoreleasedReturnValue(), v23 = +[MCCrypto copyCertificateRefFromPEMData:](MCCrypto, "copyCertificateRefFromPEMData:", v24), v24, v23))
+    if (v23 || ([payload certificateData], v24 = objc_claimAutoreleasedReturnValue(), v23 = +[MCCrypto copyCertificateRefFromPEMData:](MCCrypto, "copyCertificateRefFromPEMData:", v24), v24, v23))
     {
-      v25 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-      v26 = [v25 BOOLValue];
+      v25 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+      bOOLValue = [v25 BOOLValue];
 
-      v27 = [v11 profile];
-      v28 = [v27 containsPayloadOfClass:objc_opt_class()];
+      profile = [payload profile];
+      v28 = [profile containsPayloadOfClass:objc_opt_class()];
 
       v34 = 0;
-      v20 = [(MCNewPlainCertificatePayloadHandler *)self _storeCertificate:v23 allowSSLTrust:(v10 == 0) | v28 & 1 | v26 & 1u outError:&v34];
-      v14 = v34;
+      v20 = [(MCNewPlainCertificatePayloadHandler *)self _storeCertificate:v23 allowSSLTrust:(clientCopy == 0) | v28 & 1 | bOOLValue & 1u outError:&v34];
+      _malformedCertificateError = v34;
       CFRelease(v23);
       if (v20)
       {
-        [v11 setCertificatePersistentID:v20];
-        a6 = v33;
+        [payload setCertificatePersistentID:v20];
+        error = errorCopy;
         goto LABEL_13;
       }
 
-      v30 = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreCertificateError];
+      _cannotStoreCertificateError = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreCertificateError];
 
-      v14 = v30;
+      _malformedCertificateError = _cannotStoreCertificateError;
     }
 
     else
     {
-      v14 = [(MCNewPlainCertificatePayloadHandler *)self _malformedCertificateError];
+      _malformedCertificateError = [(MCNewPlainCertificatePayloadHandler *)self _malformedCertificateError];
     }
 
-    a6 = v33;
+    error = errorCopy;
     goto LABEL_14;
   }
 
   v35 = 0;
-  v13 = [(MCNewPlainCertificatePayloadHandler *)self copyIdentityImmediatelyWithInteractionClient:v10 outError:&v35];
-  v14 = v35;
-  if (!v14)
+  v13 = [(MCNewPlainCertificatePayloadHandler *)self copyIdentityImmediatelyWithInteractionClient:clientCopy outError:&v35];
+  _malformedCertificateError = v35;
+  if (!_malformedCertificateError)
   {
-    v31 = v9;
-    v32 = a6;
-    v15 = [(MCNewCertificatePayloadHandler *)self accessibility];
+    v31 = optionsCopy;
+    errorCopy2 = error;
+    accessibility = [(MCNewCertificatePayloadHandler *)self accessibility];
     v16 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *&buf[4] = v15;
+      *&buf[4] = accessibility;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Storing identity, storing with accessibility %@", buf, 0xCu);
     }
 
     v17 = kMCAppleIdentitiesKeychainGroup;
-    v18 = [(MCNewPayloadHandler *)self profileHandler];
-    v19 = [v18 profile];
-    v20 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v13, v12, v17, [v19 isInstalledForSystem], -[MCNewCertificatePayloadHandler accessibility](self, "accessibility"));
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    profile2 = [profileHandler profile];
+    v20 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v13, uUID, v17, [profile2 isInstalledForSystem], -[MCNewCertificatePayloadHandler accessibility](self, "accessibility"));
 
     if (!v20)
     {
       CFRelease(v13);
-      v14 = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreCertificateError];
-      v9 = v31;
-      a6 = v32;
+      _malformedCertificateError = [(MCNewPlainCertificatePayloadHandler *)self _cannotStoreCertificateError];
+      optionsCopy = v31;
+      error = errorCopy2;
       goto LABEL_14;
     }
 
-    [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v20 andUUID:v12];
-    [v11 setCertificatePersistentID:v20];
+    [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v20 andUUID:uUID];
+    [payload setCertificatePersistentID:v20];
     *buf = 0;
     SecIdentityCopyCertificate(v13, buf);
     v21 = SecCertificateCopySubjectSummary(*buf);
     CFRelease(v13);
     CFRelease(*buf);
-    [v11 setDisplayName:v21];
+    [payload setDisplayName:v21];
 
-    v14 = 0;
-    v9 = v31;
-    a6 = v32;
+    _malformedCertificateError = 0;
+    optionsCopy = v31;
+    error = errorCopy2;
     goto LABEL_13;
   }
 
 LABEL_14:
-  if (a6 && v14)
+  if (error && _malformedCertificateError)
   {
-    *a6 = [v14 MCCopyAsPrimaryError];
+    *error = [_malformedCertificateError MCCopyAsPrimaryError];
   }
 
-  return v14 == 0;
+  return _malformedCertificateError == 0;
 }
 
 - (void)setAside
@@ -563,14 +563,14 @@ LABEL_14:
 
 - (void)unsetAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 profile];
-  if ([v4 shouldHaveFullSSLTrust] && objc_msgSend(v3, "isRoot"))
+  payload = [(MCNewPayloadHandler *)self payload];
+  profile = [payload profile];
+  if ([profile shouldHaveFullSSLTrust] && objc_msgSend(payload, "isRoot"))
   {
-    v5 = [v3 copyCertificate];
-    if (v5)
+    copyCertificate = [payload copyCertificate];
+    if (copyCertificate)
     {
-      v6 = v5;
+      v6 = copyCertificate;
       v7 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
       {
@@ -613,10 +613,10 @@ LABEL_14:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v4 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
     [(MCNewPlainCertificatePayloadHandler *)self _revertFullSSLTrustIfNeeded];
   }
@@ -628,10 +628,10 @@ LABEL_14:
 
 - (void)_revertFullSSLTrustIfNeeded
 {
-  v2 = self;
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 profile];
-  if (![v4 shouldHaveFullSSLTrust])
+  selfCopy = self;
+  payload = [(MCNewPayloadHandler *)self payload];
+  profile = [payload profile];
+  if (![profile shouldHaveFullSSLTrust])
   {
     v6 = _MCLogObjects[0];
     if (!os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
@@ -646,10 +646,10 @@ LABEL_32:
     goto LABEL_41;
   }
 
-  v5 = [v3 isFullyTrustedRootCert];
+  isFullyTrustedRootCert = [payload isFullyTrustedRootCert];
   v6 = _MCLogObjects[0];
   v7 = os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO);
-  if (!v5)
+  if (!isFullyTrustedRootCert)
   {
     if (!v7)
     {
@@ -667,33 +667,33 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Removing fully-trusted root cert payload.", buf, 2u);
   }
 
-  v8 = [v3 UUID];
+  uUID = [payload UUID];
   v9 = +[MCDependencyManager sharedManager];
-  v10 = [v3 persistentResourceID];
-  v11 = [v9 dependentsOfParent:v10 inDomain:kMCDMCertificateToPayloadUUIDDependencyKey];
+  persistentResourceID = [payload persistentResourceID];
+  v11 = [v9 dependentsOfParent:persistentResourceID inDomain:kMCDMCertificateToPayloadUUIDDependencyKey];
   v12 = [v11 mutableCopy];
 
-  [v12 removeObject:v8];
+  [v12 removeObject:uUID];
   if ([v12 count])
   {
-    v13 = [v4 identifier];
+    identifier = [profile identifier];
     v14 = +[MCManifest sharedManifest];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v15 = [v14 allInstalledProfileIdentifiers];
-    v45 = [v15 countByEnumeratingWithState:&v50 objects:v59 count:16];
+    allInstalledProfileIdentifiers = [v14 allInstalledProfileIdentifiers];
+    v45 = [allInstalledProfileIdentifiers countByEnumeratingWithState:&v50 objects:v59 count:16];
     if (v45)
     {
       v16 = *v51;
-      v38 = v8;
-      v39 = v4;
-      v43 = v13;
+      v38 = uUID;
+      v39 = profile;
+      v43 = identifier;
       v44 = v12;
       v36 = *v51;
-      v37 = v2;
-      v41 = v15;
+      v37 = selfCopy;
+      v41 = allInstalledProfileIdentifiers;
       v42 = v14;
       do
       {
@@ -701,11 +701,11 @@ LABEL_32:
         {
           if (*v51 != v16)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allInstalledProfileIdentifiers);
           }
 
           v18 = *(*(&v50 + 1) + 8 * i);
-          if (([v18 isEqual:{v13, v36, v37}] & 1) == 0)
+          if (([v18 isEqual:{identifier, v36, v37}] & 1) == 0)
           {
             v40 = v18;
             v19 = [v14 installedProfileWithIdentifier:v18];
@@ -733,9 +733,9 @@ LABEL_32:
                   if (v26)
                   {
                     v27 = v26;
-                    v28 = [v19 shouldHaveFullSSLTrust];
+                    shouldHaveFullSSLTrust = [v19 shouldHaveFullSSLTrust];
 
-                    if (v28)
+                    if (shouldHaveFullSSLTrust)
                     {
                       v33 = _MCLogObjects[0];
                       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
@@ -748,9 +748,9 @@ LABEL_32:
                       }
 
                       v34 = _MCLogObjects[0];
-                      v8 = v38;
-                      v4 = v39;
-                      v13 = v43;
+                      uUID = v38;
+                      profile = v39;
+                      identifier = v43;
                       v12 = v44;
                       v14 = v42;
                       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
@@ -774,18 +774,18 @@ LABEL_32:
               }
             }
 
-            v13 = v43;
+            identifier = v43;
             v12 = v44;
             v16 = v36;
-            v2 = v37;
-            v15 = v41;
+            selfCopy = v37;
+            allInstalledProfileIdentifiers = v41;
             v14 = v42;
           }
         }
 
-        v8 = v38;
-        v4 = v39;
-        v45 = [v15 countByEnumeratingWithState:&v50 objects:v59 count:16];
+        uUID = v38;
+        profile = v39;
+        v45 = [allInstalledProfileIdentifiers countByEnumeratingWithState:&v50 objects:v59 count:16];
       }
 
       while (v45);
@@ -798,11 +798,11 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Root cert was installed with full trust, and no other certs have a full-trust dependency. Attempting to restore partial trust.", buf, 2u);
     }
 
-    v30 = [v3 copyCertificate];
-    if (v30)
+    copyCertificate = [payload copyCertificate];
+    if (copyCertificate)
     {
-      v31 = v30;
-      [(MCNewPlainCertificatePayloadHandler *)v2 _grantPartialNonSSLTrustPolicyForCertificate:v30];
+      v31 = copyCertificate;
+      [(MCNewPlainCertificatePayloadHandler *)selfCopy _grantPartialNonSSLTrustPolicyForCertificate:copyCertificate];
       CFRelease(v31);
     }
 
@@ -822,9 +822,9 @@ LABEL_37:
 LABEL_41:
 }
 
-- (int)_grantPartialNonSSLTrustPolicyForCertificate:(__SecCertificate *)a3
+- (int)_grantPartialNonSSLTrustPolicyForCertificate:(__SecCertificate *)certificate
 {
-  CFRetain(a3);
+  CFRetain(certificate);
   SSL = SecPolicyCreateSSL(1u, 0);
   v5 = _MCLogObjects[0];
   if (SSL)
@@ -875,91 +875,91 @@ LABEL_41:
     v10 = -50;
   }
 
-  CFRelease(a3);
+  CFRelease(certificate);
   return v10;
 }
 
 - (id)_invalidPasscodeError
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v3 = MCCertificateErrorDomain;
-  v4 = [v2 certificateFileName];
+  certificateFileName = [payload certificateFileName];
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:9000 descriptionArray:v5 errorType:MCErrorTypeNeedsRetry, v4, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:9000 descriptionArray:v5 errorType:MCErrorTypeNeedsRetry, certificateFileName, 0];
 
   return v6;
 }
 
 - (id)_tooManyCertificatesError
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v3 = MCCertificateErrorDomain;
-  v4 = [v2 certificateFileName];
+  certificateFileName = [payload certificateFileName];
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:9001 descriptionArray:v5 errorType:MCErrorTypeFatal, v4, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:9001 descriptionArray:v5 errorType:MCErrorTypeFatal, certificateFileName, 0];
 
   return v6;
 }
 
 - (id)_cannotStoreCertificateError
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v3 = MCCertificateErrorDomain;
-  v4 = [v2 certificateFileName];
+  certificateFileName = [payload certificateFileName];
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:9002 descriptionArray:v5 errorType:MCErrorTypeFatal, v4, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:9002 descriptionArray:v5 errorType:MCErrorTypeFatal, certificateFileName, 0];
 
   return v6;
 }
 
 - (id)_cannotStoreRootCertificateError
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v3 = MCCertificateErrorDomain;
-  v4 = [v2 certificateFileName];
+  certificateFileName = [payload certificateFileName];
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:9004 descriptionArray:v5 errorType:MCErrorTypeFatal, v4, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:9004 descriptionArray:v5 errorType:MCErrorTypeFatal, certificateFileName, 0];
 
   return v6;
 }
 
 - (id)_malformedCertificateError
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v3 = MCCertificateErrorDomain;
-  v4 = [v2 certificateFileName];
+  certificateFileName = [payload certificateFileName];
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:9005 descriptionArray:v5 errorType:MCErrorTypeFatal, v4, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:9005 descriptionArray:v5 errorType:MCErrorTypeFatal, certificateFileName, 0];
 
   return v6;
 }
 
-- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)a3 outError:(id *)a4
+- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)client outError:(id *)error
 {
   identity = self->_identity;
   if (!identity)
   {
-    v8 = [(MCNewPayloadHandler *)self payload];
-    if ([v8 dataEncoding] == 1)
+    payload = [(MCNewPayloadHandler *)self payload];
+    if ([payload dataEncoding] == 1)
     {
-      v9 = [(MCNewPayloadHandler *)self userInputResponses];
-      v10 = [v8 password];
-      v11 = [MCNewPayloadHandler prioritizeUserInput:v9 key:@"certificatePassword" overField:v10];
+      userInputResponses = [(MCNewPayloadHandler *)self userInputResponses];
+      password = [payload password];
+      v11 = [MCNewPayloadHandler prioritizeUserInput:userInputResponses key:@"certificatePassword" overField:password];
 
       if (v11)
       {
         v23 = 0;
         v12 = [(MCNewPlainCertificatePayloadHandler *)self _copyContentsOfPKCS12DataWithPasscode:v11 outError:&v23];
-        v13 = v23;
+        _invalidPasscodeError = v23;
         self->_identity = v12;
       }
 
       else
       {
-        v13 = [(MCNewPlainCertificatePayloadHandler *)self _invalidPasscodeError];
+        _invalidPasscodeError = [(MCNewPlainCertificatePayloadHandler *)self _invalidPasscodeError];
       }
 
-      if (!v13)
+      if (!_invalidPasscodeError)
       {
 LABEL_13:
         v21 = self->_identity;
@@ -981,29 +981,29 @@ LABEL_15:
     else
     {
       v14 = MCCertificateErrorDomain;
-      v15 = [v8 friendlyName];
+      friendlyName = [payload friendlyName];
       v16 = MCErrorArray();
-      v13 = [NSError MCErrorWithDomain:v14 code:9006 descriptionArray:v16 errorType:MCErrorTypeFatal, v15, 0];
+      _invalidPasscodeError = [NSError MCErrorWithDomain:v14 code:9006 descriptionArray:v16 errorType:MCErrorTypeFatal, friendlyName, 0];
 
-      if (!v13)
+      if (!_invalidPasscodeError)
       {
         goto LABEL_13;
       }
     }
 
-    if (a4)
+    if (error)
     {
-      v17 = v13;
-      *a4 = v13;
+      v17 = _invalidPasscodeError;
+      *error = _invalidPasscodeError;
     }
 
     v18 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v19 = v18;
-      v20 = [v13 MCVerboseDescription];
+      mCVerboseDescription = [_invalidPasscodeError MCVerboseDescription];
       *buf = 138543362;
-      v25 = v20;
+      v25 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Cannot copy identity: %{public}@", buf, 0xCu);
     }
 

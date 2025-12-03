@@ -1,22 +1,22 @@
 @interface ENRegionTravelerServerDownloadConfiguration
-- (ENRegionTravelerServerDownloadConfiguration)initWithCoder:(id)a3;
-- (ENRegionTravelerServerDownloadConfiguration)initWithServerResponseDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ENRegionTravelerServerDownloadConfiguration)initWithCoder:(id)coder;
+- (ENRegionTravelerServerDownloadConfiguration)initWithServerResponseDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegionTravelerServerDownloadConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tekTravelerDownloadBaseURL = self->_tekTravelerDownloadBaseURL;
-  v5 = a3;
-  [v5 encodeObject:tekTravelerDownloadBaseURL forKey:@"tekTravelerDownloadBasePath"];
-  [v5 encodeObject:self->_tekTravelerDownloadIndexURL forKey:@"tekTravelerDownloadIndexFile"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tekTravelerDownloadBaseURL forKey:@"tekTravelerDownloadBasePath"];
+  [coderCopy encodeObject:self->_tekTravelerDownloadIndexURL forKey:@"tekTravelerDownloadIndexFile"];
 }
 
-- (ENRegionTravelerServerDownloadConfiguration)initWithServerResponseDictionary:(id)a3
+- (ENRegionTravelerServerDownloadConfiguration)initWithServerResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ENRegionTravelerServerDownloadConfiguration;
   v5 = [(ENRegionTravelerServerDownloadConfiguration *)&v12 init];
@@ -57,13 +57,13 @@
   return v10;
 }
 
-- (ENRegionTravelerServerDownloadConfiguration)initWithCoder:(id)a3
+- (ENRegionTravelerServerDownloadConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tekTravelerDownloadBasePath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tekTravelerDownloadBasePath"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tekTravelerDownloadIndexFile"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tekTravelerDownloadIndexFile"];
     if (v6)
     {
       v11.receiver = self;
@@ -77,21 +77,21 @@
       }
 
       self = p_isa;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

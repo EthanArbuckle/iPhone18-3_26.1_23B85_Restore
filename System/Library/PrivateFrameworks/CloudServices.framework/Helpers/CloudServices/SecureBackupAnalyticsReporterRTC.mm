@@ -1,6 +1,6 @@
 @interface SecureBackupAnalyticsReporterRTC
 + (id)rtcAnalyticsReporter;
-+ (void)sendMetricWithEvent:(id)a3 success:(BOOL)a4 error:(id)a5;
++ (void)sendMetricWithEvent:(id)event success:(BOOL)success error:(id)error;
 @end
 
 @implementation SecureBackupAnalyticsReporterRTC
@@ -17,21 +17,21 @@
   return v3;
 }
 
-+ (void)sendMetricWithEvent:(id)a3 success:(BOOL)a4 error:(id)a5
++ (void)sendMetricWithEvent:(id)event success:(BOOL)success error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 permittedToSendMetrics])
+  eventCopy = event;
+  errorCopy = error;
+  if ([eventCopy permittedToSendMetrics])
   {
-    v9 = [v7 queue];
+    queue = [eventCopy queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100041E90;
     block[3] = &unk_100076168;
-    v11 = v7;
-    v13 = a4;
-    v12 = v8;
-    dispatch_sync(v9, block);
+    v11 = eventCopy;
+    successCopy = success;
+    v12 = errorCopy;
+    dispatch_sync(queue, block);
   }
 }
 

@@ -1,18 +1,18 @@
 @interface QLCacheDeleteHandler
-+ (id)dateBeforePurgingThumbnailsForUrgency:(int)a3;
-+ (void)setUpCacheDeleteWithThumbnailAdditionIndex:(id)a3;
++ (id)dateBeforePurgingThumbnailsForUrgency:(int)urgency;
++ (void)setUpCacheDeleteWithThumbnailAdditionIndex:(id)index;
 @end
 
 @implementation QLCacheDeleteHandler
 
-+ (void)setUpCacheDeleteWithThumbnailAdditionIndex:(id)a3
++ (void)setUpCacheDeleteWithThumbnailAdditionIndex:(id)index
 {
-  v3 = a3;
+  indexCopy = index;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__QLCacheDeleteHandler_setUpCacheDeleteWithThumbnailAdditionIndex___block_invoke;
   aBlock[3] = &unk_279ADD0D0;
-  v4 = v3;
+  v4 = indexCopy;
   v24 = v4;
   v5 = _Block_copy(aBlock);
   v21[0] = MEMORY[0x277D85DD0];
@@ -169,14 +169,14 @@ void __67__QLCacheDeleteHandler_setUpCacheDeleteWithThumbnailAdditionIndex___blo
   [v2 setShouldRemoveThumbnailsForDeletedFiles:0];
 }
 
-+ (id)dateBeforePurgingThumbnailsForUrgency:(int)a3
++ (id)dateBeforePurgingThumbnailsForUrgency:(int)urgency
 {
-  if ((a3 + 1) >= 6)
+  if ((urgency + 1) >= 6)
   {
     v5 = _log_2();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(QLCacheDeleteHandler *)a3 dateBeforePurgingThumbnailsForUrgency:v5];
+      [(QLCacheDeleteHandler *)urgency dateBeforePurgingThumbnailsForUrgency:v5];
     }
 
     v3 = 978307200.0;
@@ -184,7 +184,7 @@ void __67__QLCacheDeleteHandler_setUpCacheDeleteWithThumbnailAdditionIndex___blo
 
   else
   {
-    v3 = dbl_2616304D0[a3 + 1];
+    v3 = dbl_2616304D0[urgency + 1];
   }
 
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-v3];

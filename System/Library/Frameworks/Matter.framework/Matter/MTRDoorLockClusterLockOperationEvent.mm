@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterLockOperationEvent
 - (MTRDoorLockClusterLockOperationEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterLockOperationEvent);
-  v5 = [(MTRDoorLockClusterLockOperationEvent *)self lockOperationType];
-  [(MTRDoorLockClusterLockOperationEvent *)v4 setLockOperationType:v5];
+  lockOperationType = [(MTRDoorLockClusterLockOperationEvent *)self lockOperationType];
+  [(MTRDoorLockClusterLockOperationEvent *)v4 setLockOperationType:lockOperationType];
 
-  v6 = [(MTRDoorLockClusterLockOperationEvent *)self operationSource];
-  [(MTRDoorLockClusterLockOperationEvent *)v4 setOperationSource:v6];
+  operationSource = [(MTRDoorLockClusterLockOperationEvent *)self operationSource];
+  [(MTRDoorLockClusterLockOperationEvent *)v4 setOperationSource:operationSource];
 
-  v7 = [(MTRDoorLockClusterLockOperationEvent *)self userIndex];
-  [(MTRDoorLockClusterLockOperationEvent *)v4 setUserIndex:v7];
+  userIndex = [(MTRDoorLockClusterLockOperationEvent *)self userIndex];
+  [(MTRDoorLockClusterLockOperationEvent *)v4 setUserIndex:userIndex];
 
-  v8 = [(MTRDoorLockClusterLockOperationEvent *)self fabricIndex];
-  [(MTRDoorLockClusterLockOperationEvent *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRDoorLockClusterLockOperationEvent *)self fabricIndex];
+  [(MTRDoorLockClusterLockOperationEvent *)v4 setFabricIndex:fabricIndex];
 
-  v9 = [(MTRDoorLockClusterLockOperationEvent *)self sourceNode];
-  [(MTRDoorLockClusterLockOperationEvent *)v4 setSourceNode:v9];
+  sourceNode = [(MTRDoorLockClusterLockOperationEvent *)self sourceNode];
+  [(MTRDoorLockClusterLockOperationEvent *)v4 setSourceNode:sourceNode];
 
-  v10 = [(MTRDoorLockClusterLockOperationEvent *)self credentials];
-  [(MTRDoorLockClusterLockOperationEvent *)v4 setCredentials:v10];
+  credentials = [(MTRDoorLockClusterLockOperationEvent *)self credentials];
+  [(MTRDoorLockClusterLockOperationEvent *)v4 setCredentials:credentials];
 
   return v4;
 }

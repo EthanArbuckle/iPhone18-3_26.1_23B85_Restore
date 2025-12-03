@@ -1,36 +1,36 @@
 @interface SBHIconLibraryPredicateQueryEngine
-- (void)_processingQueue_teardownQueryContext:(id)a3;
-- (void)executeQuery:(id)a3;
+- (void)_processingQueue_teardownQueryContext:(id)context;
+- (void)executeQuery:(id)query;
 @end
 
 @implementation SBHIconLibraryPredicateQueryEngine
 
-- (void)executeQuery:(id)a3
+- (void)executeQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(SBHIconLibraryAbstractQueryEngine *)self iconModel];
-  v6 = [v5 leafIcons];
+  queryCopy = query;
+  iconModel = [(SBHIconLibraryAbstractQueryEngine *)self iconModel];
+  leafIcons = [iconModel leafIcons];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __51__SBHIconLibraryPredicateQueryEngine_executeQuery___block_invoke;
   v17[3] = &unk_1E808A1B8;
-  v7 = v5;
+  v7 = iconModel;
   v18 = v7;
-  v8 = [v6 bs_filter:v17];
+  v8 = [leafIcons bs_filter:v17];
 
   objc_initWeak(&location, self);
-  v9 = [(SBHIconLibraryAbstractQueryEngine *)self processingQueue];
+  processingQueue = [(SBHIconLibraryAbstractQueryEngine *)self processingQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__SBHIconLibraryPredicateQueryEngine_executeQuery___block_invoke_2;
   v12[3] = &unk_1E808A1E0;
   objc_copyWeak(&v15, &location);
   v12[4] = self;
-  v13 = v4;
+  v13 = queryCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v4;
-  dispatch_async(v9, v12);
+  v11 = queryCopy;
+  dispatch_async(processingQueue, v12);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -84,19 +84,19 @@ uint64_t __51__SBHIconLibraryPredicateQueryEngine_executeQuery___block_invoke_2(
   return MEMORY[0x1EEE66BB8](WeakRetained, v3);
 }
 
-- (void)_processingQueue_teardownQueryContext:(id)a3
+- (void)_processingQueue_teardownQueryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_currentlyRunningQueryContext);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == contextCopy)
   {
     objc_storeWeak(&self->_currentlyRunningQueryContext, 0);
   }
 
   v6.receiver = self;
   v6.super_class = SBHIconLibraryPredicateQueryEngine;
-  [(SBHIconLibraryAbstractQueryEngine *)&v6 _processingQueue_teardownQueryContext:v4];
+  [(SBHIconLibraryAbstractQueryEngine *)&v6 _processingQueue_teardownQueryContext:contextCopy];
 }
 
 @end

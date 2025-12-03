@@ -1,23 +1,23 @@
 @interface HFSwitchServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
 @end
 
 @implementation HFSwitchServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  optionsCopy = options;
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v6 = MEMORY[0x277CBEB98];
   v7 = [HFPowerStateControlItem alloc];
   v14 = @"title";
-  v8 = HFItemOptionalLocalizedString(@"HFControlShortTitlePower", v4);
+  v8 = HFItemOptionalLocalizedString(@"HFControlShortTitlePower", optionsCopy);
 
   v15[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v10 = [(HFPowerStateControlItem *)v7 initWithValueSource:v5 displayResults:v9];
+  v10 = [(HFPowerStateControlItem *)v7 initWithValueSource:controlItemValueSourceForPrimaryService displayResults:v9];
   v11 = [v6 setWithObject:v10];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -25,13 +25,13 @@
   return v11;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = *MEMORY[0x277CCF9F0];
-  v6 = a3;
+  optionsCopy = options;
   v7 = [v4 setWithObject:v5];
-  v8 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v7 options:v6];
+  v8 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v7 options:optionsCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;

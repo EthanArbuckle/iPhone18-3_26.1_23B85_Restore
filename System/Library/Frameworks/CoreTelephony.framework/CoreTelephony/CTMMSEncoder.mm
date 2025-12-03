@@ -1,26 +1,26 @@
 @interface CTMMSEncoder
-+ (id)decodeMessageFromData:(id)a3;
-+ (id)decodeMessageFromData:(id)a3 data:(id)a4;
-+ (id)decodeSmsFromData:(id)a3;
-+ (id)decodeSmsFromData:(id)a3 data:(id)a4;
-+ (id)encodeMessage:(id)a3;
-+ (id)encodeSms:(id)a3;
++ (id)decodeMessageFromData:(id)data;
++ (id)decodeMessageFromData:(id)data data:(id)a4;
++ (id)decodeSmsFromData:(id)data;
++ (id)decodeSmsFromData:(id)data data:(id)a4;
++ (id)encodeMessage:(id)message;
++ (id)encodeSms:(id)sms;
 @end
 
 @implementation CTMMSEncoder
 
-+ (id)decodeSmsFromData:(id)a3
++ (id)decodeSmsFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:1];
-  v6 = [a1 decodeSmsFromData:v5 data:v4];
+  v6 = [self decodeSmsFromData:v5 data:dataCopy];
 
   return v6;
 }
 
-+ (id)decodeSmsFromData:(id)a3 data:(id)a4
++ (id)decodeSmsFromData:(id)data data:(id)a4
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = a4;
   memset(&v32, 0, sizeof(v32));
   v33 = 0;
@@ -36,7 +36,7 @@
     v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v33];
     v9 = [(CTMessage *)v7 initWithDate:v8];
 
-    [(CTMessage *)v9 setContext:v5];
+    [(CTMessage *)v9 setContext:dataCopy];
     [(CTMessage *)v9 setMessageType:1];
     if ((v32.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
@@ -51,7 +51,7 @@
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v10];
     if ([CTPhoneNumber isValidPhoneNumber:v11])
     {
-      +[CTPhoneNumber phoneNumberWithDigits:digits:countryCode:](CTPhoneNumber, "phoneNumberWithDigits:digits:countryCode:", [v5 slotID], v11, @"1");
+      +[CTPhoneNumber phoneNumberWithDigits:digits:countryCode:](CTPhoneNumber, "phoneNumberWithDigits:digits:countryCode:", [dataCopy slotID], v11, @"1");
     }
 
     else
@@ -69,7 +69,7 @@
 
     if (size)
     {
-      v14 = [v5 slotID];
+      slotID = [dataCopy slotID];
       if ((v30.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
       {
         v15 = &v30;
@@ -81,7 +81,7 @@
       }
 
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v15];
-      v17 = [CTPhoneNumber phoneNumberWithDigits:v14 digits:v16 countryCode:@"1"];
+      v17 = [CTPhoneNumber phoneNumberWithDigits:slotID digits:v16 countryCode:@"1"];
       [(CTMessage *)v9 setServiceCenter:v17];
     }
 
@@ -149,10 +149,10 @@
   return v9;
 }
 
-+ (id)encodeSms:(id)a3
++ (id)encodeSms:(id)sms
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  smsCopy = sms;
   memset(v68, 0, sizeof(v68));
   v67 = 0u;
   v66 = 0u;
@@ -185,23 +185,23 @@
   v38 = 0u;
   v53 = 0;
   v37 = 0;
-  v4 = [v3 recipients];
-  v5 = [v4 objectAtIndex:0];
-  v6 = [v5 canonicalFormat];
+  recipients = [smsCopy recipients];
+  v5 = [recipients objectAtIndex:0];
+  canonicalFormat = [v5 canonicalFormat];
 
-  if ([v6 getCString:&v53 maxLength:255 encoding:4])
+  if ([canonicalFormat getCString:&v53 maxLength:255 encoding:4])
   {
-    v7 = [v3 items];
-    v8 = [v7 objectAtIndex:0];
+    items = [smsCopy items];
+    v8 = [items objectAtIndex:0];
 
     __dst = 0;
     v35 = 0;
     v36 = 0;
-    v9 = [v8 data];
-    v10 = v9;
-    v11 = [v9 bytes];
-    v12 = [v8 data];
-    v13 = [v12 length];
+    data = [v8 data];
+    v10 = data;
+    bytes = [data bytes];
+    data2 = [v8 data];
+    v13 = [data2 length];
     v14 = v13;
     if (v13 >= 0x7FFFFFFFFFFFFFF8)
     {
@@ -216,15 +216,15 @@
     HIBYTE(v36) = v13;
     if (v13)
     {
-      memmove(&__dst, v11, v13);
+      memmove(&__dst, bytes, v13);
     }
 
     *(&__dst + v14) = 0;
 
-    v17 = [v3 serviceCenter];
-    v18 = v17 == 0;
+    serviceCenter = [smsCopy serviceCenter];
+    v18 = serviceCenter == 0;
 
-    if (v18 || ([v3 serviceCenter], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "formatForCallingCountry:", @"1"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "getCString:maxLength:encoding:", &v37, 255, 4), v20, v19, (v21 & 1) != 0))
+    if (v18 || ([smsCopy serviceCenter], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "formatForCallingCountry:", @"1"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "getCString:maxLength:encoding:", &v37, 255, 4), v20, v19, (v21 & 1) != 0))
     {
       v22 = HIBYTE(v36);
       v23 = SHIBYTE(v36);
@@ -319,10 +319,10 @@ LABEL_35:
   return v16;
 }
 
-+ (id)encodeMessage:(id)a3
++ (id)encodeMessage:(id)message
 {
   v23 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  messageCopy = message;
   *buf = 0;
   MobileUser = _CFStringGetMobileUser();
   *v19 = CFPreferencesCopyValue(@"MMS", @"com.apple.carrier_1", MobileUser, *MEMORY[0x1E695E898]);
@@ -375,9 +375,9 @@ LABEL_35:
     _os_log_impl(&dword_182E9B000, v6, OS_LOG_TYPE_DEFAULT, "*****************Using mime encoding hint: %u***********************\n", buf, 8u);
   }
 
-  if ([v16 messageType] == 1)
+  if ([messageCopy messageType] == 1)
   {
-    v7 = [a1 encodeSms:v16];
+    v7 = [self encodeSms:messageCopy];
   }
 
   else
@@ -386,8 +386,8 @@ LABEL_35:
     *buf = 0u;
     v21 = 0u;
     MMSPduEncoder::MMSPduEncoder(buf);
-    v8 = [v16 items];
-    v9 = [v8 count] == 0;
+    items = [messageCopy items];
+    v9 = [items count] == 0;
 
     if (v9)
     {
@@ -400,8 +400,8 @@ LABEL_35:
 
     else
     {
-      v10 = [v16 recipients];
-      v11 = [v10 count] == 0;
+      recipients = [messageCopy recipients];
+      v11 = [recipients count] == 0;
 
       if (!v11)
       {
@@ -427,19 +427,19 @@ LABEL_35:
   return v7;
 }
 
-+ (id)decodeMessageFromData:(id)a3
++ (id)decodeMessageFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:1];
-  v6 = [a1 decodeMessageFromData:v5 data:v4];
+  v6 = [self decodeMessageFromData:v5 data:dataCopy];
 
   return v6;
 }
 
-+ (id)decodeMessageFromData:(id)a3 data:(id)a4
++ (id)decodeMessageFromData:(id)data data:(id)a4
 {
   v9 = *MEMORY[0x1E69E9840];
-  a3;
+  data;
   v8 = 0;
   memset(v7, 0, sizeof(v7));
   v6 = a4;

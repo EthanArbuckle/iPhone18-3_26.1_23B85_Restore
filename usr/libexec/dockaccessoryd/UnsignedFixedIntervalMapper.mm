@@ -1,48 +1,48 @@
 @interface UnsignedFixedIntervalMapper
-- (UnsignedFixedIntervalMapper)initWithBins:(id)a3 intervalCreationBlock:(id)a4 valueComparisonBlock:(id)a5;
-- (id)intervalForValue:(unint64_t)a3;
-- (id)intervalIndexForValue:(unint64_t)a3;
+- (UnsignedFixedIntervalMapper)initWithBins:(id)bins intervalCreationBlock:(id)block valueComparisonBlock:(id)comparisonBlock;
+- (id)intervalForValue:(unint64_t)value;
+- (id)intervalIndexForValue:(unint64_t)value;
 @end
 
 @implementation UnsignedFixedIntervalMapper
 
-- (UnsignedFixedIntervalMapper)initWithBins:(id)a3 intervalCreationBlock:(id)a4 valueComparisonBlock:(id)a5
+- (UnsignedFixedIntervalMapper)initWithBins:(id)bins intervalCreationBlock:(id)block valueComparisonBlock:(id)comparisonBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  binsCopy = bins;
+  blockCopy = block;
+  comparisonBlockCopy = comparisonBlock;
   v29.receiver = self;
   v29.super_class = UnsignedFixedIntervalMapper;
   v11 = [(UnsignedFixedIntervalMapper *)&v29 init];
   if (v11)
   {
-    v12 = objc_retainBlock(v9);
+    v12 = objc_retainBlock(blockCopy);
     creationBlock = v11->_creationBlock;
     v11->_creationBlock = v12;
 
-    v14 = objc_retainBlock(v10);
+    v14 = objc_retainBlock(comparisonBlockCopy);
     comparisonBlock = v11->_comparisonBlock;
     v11->_comparisonBlock = v14;
 
-    v16 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count") + 1}];
-    if ([v8 count])
+    v16 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(binsCopy, "count") + 1}];
+    if ([binsCopy count])
     {
       v17 = 0;
       v18 = &off_1002823E0;
       do
       {
-        v19 = [(UnsignedFixedIntervalMapper *)v11 creationBlock];
-        v20 = [v8 objectAtIndexedSubscript:v17];
-        v21 = (v19)[2](v19, v18, v20);
+        creationBlock = [(UnsignedFixedIntervalMapper *)v11 creationBlock];
+        v20 = [binsCopy objectAtIndexedSubscript:v17];
+        v21 = (creationBlock)[2](creationBlock, v18, v20);
         [v16 addObject:v21];
 
-        v22 = [v8 objectAtIndexedSubscript:v17];
+        v22 = [binsCopy objectAtIndexedSubscript:v17];
 
         ++v17;
         v18 = v22;
       }
 
-      while ([v8 count] > v17);
+      while ([binsCopy count] > v17);
     }
 
     else
@@ -50,9 +50,9 @@
       v22 = &off_1002823E0;
     }
 
-    v23 = [(UnsignedFixedIntervalMapper *)v11 creationBlock];
+    creationBlock2 = [(UnsignedFixedIntervalMapper *)v11 creationBlock];
     v24 = +[DKMInterval positiveInfinityEnd];
-    v25 = (v23)[2](v23, v22, v24);
+    v25 = (creationBlock2)[2](creationBlock2, v22, v24);
     [v16 addObject:v25];
 
     v26 = [v16 copy];
@@ -63,10 +63,10 @@
   return v11;
 }
 
-- (id)intervalIndexForValue:(unint64_t)a3
+- (id)intervalIndexForValue:(unint64_t)value
 {
-  v5 = [(UnsignedFixedIntervalMapper *)self intervals];
-  v6 = [v5 count];
+  intervals = [(UnsignedFixedIntervalMapper *)self intervals];
+  v6 = [intervals count];
 
   if (v6 == 1)
   {
@@ -78,11 +78,11 @@
     v7 = 0;
     do
     {
-      v8 = [(UnsignedFixedIntervalMapper *)self comparisonBlock];
-      v9 = [(UnsignedFixedIntervalMapper *)self intervals];
-      v10 = [v9 objectAtIndexedSubscript:v7];
+      comparisonBlock = [(UnsignedFixedIntervalMapper *)self comparisonBlock];
+      intervals2 = [(UnsignedFixedIntervalMapper *)self intervals];
+      v10 = [intervals2 objectAtIndexedSubscript:v7];
       v11 = [v10 end];
-      v12 = (v8)[2](v8, a3, v11);
+      v12 = (comparisonBlock)[2](comparisonBlock, value, v11);
 
       if (v12)
       {
@@ -90,8 +90,8 @@
       }
 
       ++v7;
-      v13 = [(UnsignedFixedIntervalMapper *)self intervals];
-      v14 = [v13 count] - 1;
+      intervals3 = [(UnsignedFixedIntervalMapper *)self intervals];
+      v14 = [intervals3 count] - 1;
     }
 
     while (v7 < v14);
@@ -100,11 +100,11 @@
   return [NSNumber numberWithInteger:v7];
 }
 
-- (id)intervalForValue:(unint64_t)a3
+- (id)intervalForValue:(unint64_t)value
 {
-  v5 = [(UnsignedFixedIntervalMapper *)self intervals];
-  v6 = [(UnsignedFixedIntervalMapper *)self intervalIndexForValue:a3];
-  v7 = [v5 objectAtIndexedSubscript:{objc_msgSend(v6, "unsignedIntValue")}];
+  intervals = [(UnsignedFixedIntervalMapper *)self intervals];
+  v6 = [(UnsignedFixedIntervalMapper *)self intervalIndexForValue:value];
+  v7 = [intervals objectAtIndexedSubscript:{objc_msgSend(v6, "unsignedIntValue")}];
 
   return v7;
 }

@@ -1,31 +1,31 @@
 @interface WFSetLowPowerModeAction
 - (id)disabledOnPlatforms;
-- (void)finishRunningWithError:(id)a3;
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)finishRunningWithError:(id)error;
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFSetLowPowerModeAction
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
-  v4 = a3;
-  if (v4 || ([(WFSetLowPowerModeAction *)self runningDelegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
+  errorCopy = error;
+  if (errorCopy || ([(WFSetLowPowerModeAction *)self runningDelegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
   {
     v9.receiver = self;
     v9.super_class = WFSetLowPowerModeAction;
-    [(WFHandleIntentAction *)&v9 finishRunningWithError:v4];
+    [(WFHandleIntentAction *)&v9 finishRunningWithError:errorCopy];
   }
 
   else
   {
-    v7 = [(WFSetLowPowerModeAction *)self stateBeforeRun];
+    stateBeforeRun = [(WFSetLowPowerModeAction *)self stateBeforeRun];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__WFSetLowPowerModeAction_finishRunningWithError___block_invoke;
     v8[3] = &unk_278C1B928;
     v8[4] = self;
-    [WFLowPowerModeSettingsClient getBookmarkForFirstEventAfterBookmark:v7 completionHandler:v8];
+    [WFLowPowerModeSettingsClient getBookmarkForFirstEventAfterBookmark:stateBeforeRun completionHandler:v8];
   }
 }
 
@@ -48,21 +48,21 @@ void __50__WFSetLowPowerModeAction_finishRunningWithError___block_invoke(uint64_
   }
 }
 
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 wf_slotName];
-  if (![v17 isEqualToString:@"state"])
+  slotCopy = slot;
+  valueCopy = value;
+  parameterCopy = parameter;
+  inputCopy = input;
+  completionCopy = completion;
+  wf_slotName = [slotCopy wf_slotName];
+  if (![wf_slotName isEqualToString:@"state"])
   {
     goto LABEL_6;
   }
 
-  v18 = [(WFSetLowPowerModeAction *)self runningDelegate];
+  runningDelegate = [(WFSetLowPowerModeAction *)self runningDelegate];
   v19 = objc_opt_respondsToSelector();
 
   if ((v19 & 1) == 0)
@@ -70,15 +70,15 @@ void __50__WFSetLowPowerModeAction_finishRunningWithError___block_invoke(uint64_
     goto LABEL_6;
   }
 
-  v20 = [(WFSetLowPowerModeAction *)self runningDelegate];
-  v21 = [v20 actionReversalStateForAction:self];
+  runningDelegate2 = [(WFSetLowPowerModeAction *)self runningDelegate];
+  v21 = [runningDelegate2 actionReversalStateForAction:self];
 
   if (v21)
   {
     v22 = [objc_alloc(MEMORY[0x277D7C858]) initWithActionReversalState:v21];
     if (v22)
     {
-      [WFLowPowerModeSettingsClient getReversalStateWithBookmark:v22 completionHandler:v16];
+      [WFLowPowerModeSettingsClient getReversalStateWithBookmark:v22 completionHandler:completionCopy];
     }
 
     else
@@ -93,7 +93,7 @@ void __50__WFSetLowPowerModeAction_finishRunningWithError___block_invoke(uint64_
         _os_log_impl(&dword_23DE30000, v24, OS_LOG_TYPE_FAULT, "%s Couldn't turn action reversal state %@ into a settings client bookmark", buf, 0x16u);
       }
 
-      (*(v16 + 2))(v16, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -102,24 +102,24 @@ void __50__WFSetLowPowerModeAction_finishRunningWithError___block_invoke(uint64_
 LABEL_6:
     v25.receiver = self;
     v25.super_class = WFSetLowPowerModeAction;
-    [(WFHandleIntentAction *)&v25 resolveSlot:v12 withProcessedValue:v13 parameter:v14 input:v15 completion:v16];
+    [(WFHandleIntentAction *)&v25 resolveSlot:slotCopy withProcessedValue:valueCopy parameter:parameterCopy input:inputCopy completion:completionCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__WFSetLowPowerModeAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C1B900;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = inputCopy;
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   [WFLowPowerModeSettingsClient getBookmarkForCurrentStateWithCompletionHandler:v6];
 
   objc_destroyWeak(&v9);
@@ -142,8 +142,8 @@ void __54__WFSetLowPowerModeAction_runAsynchronouslyWithInput___block_invoke(uin
 {
   v5.receiver = self;
   v5.super_class = WFSetLowPowerModeAction;
-  v2 = [(WFHandleCustomIntentAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFHandleCustomIntentAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface FigExternalSyncDevice
-- (FigExternalSyncDevice)initWithHpmEntID:(unint64_t)a3 ssamEntID:(unint64_t)a4 connectionState:(BOOL)a5 vid:(unint64_t)a6 pid:(unint64_t)a7;
+- (FigExternalSyncDevice)initWithHpmEntID:(unint64_t)d ssamEntID:(unint64_t)iD connectionState:(BOOL)state vid:(unint64_t)vid pid:(unint64_t)pid;
 - (id)getDeviceInfoDict;
-- (void)_SSAMDeivceTerminatedService:(unint64_t)a3;
-- (void)_setSSAMPortEnabled:(BOOL)a3;
+- (void)_SSAMDeivceTerminatedService:(unint64_t)service;
+- (void)_setSSAMPortEnabled:(BOOL)enabled;
 - (void)_setupSSAMInterestNotification;
 - (void)_teardownSSAMInterestNotification;
 - (void)dealloc;
@@ -11,7 +11,7 @@
 
 @implementation FigExternalSyncDevice
 
-- (FigExternalSyncDevice)initWithHpmEntID:(unint64_t)a3 ssamEntID:(unint64_t)a4 connectionState:(BOOL)a5 vid:(unint64_t)a6 pid:(unint64_t)a7
+- (FigExternalSyncDevice)initWithHpmEntID:(unint64_t)d ssamEntID:(unint64_t)iD connectionState:(BOOL)state vid:(unint64_t)vid pid:(unint64_t)pid
 {
   v20.receiver = self;
   v20.super_class = FigExternalSyncDevice;
@@ -19,11 +19,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_usbConnected = a5;
-    v12->_hpmentid = a3;
-    v12->_ssamentid = a4;
-    v12->_pid = a7;
-    v12->_vid = a6;
+    v12->_usbConnected = state;
+    v12->_hpmentid = d;
+    v12->_ssamentid = iD;
+    v12->_pid = pid;
+    v12->_vid = vid;
     v12->_queue = dispatch_queue_create("com.apple.cameracapture.figexternalsyncdevice", 0);
     v14 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%llu, %llu", v13->_vid, v13->_pid), "UTF8String"];
     v15 = strlen(v14);
@@ -115,7 +115,7 @@
   }
 }
 
-- (void)_SSAMDeivceTerminatedService:(unint64_t)a3
+- (void)_SSAMDeivceTerminatedService:(unint64_t)service
 {
   dispatch_assert_queue_V2(self->_queue);
   if (dword_1EB58E5E0)
@@ -125,7 +125,7 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (self->_ssamentid == a3)
+  if (self->_ssamentid == service)
   {
     *&self->_usbConnected = 0;
     [(FigExternalSyncDevice *)self _teardownSSAMInterestNotification];
@@ -133,10 +133,10 @@
   }
 }
 
-- (void)_setSSAMPortEnabled:(BOOL)a3
+- (void)_setSSAMPortEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(FigExternalSyncDevice *)self isSSAMEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(FigExternalSyncDevice *)self isSSAMEnabled]!= enabled)
   {
     v5 = IORegistryEntryIDMatching(self->_hpmentid);
     MatchingService = IOServiceGetMatchingService(*MEMORY[0x1E696CD60], v5);
@@ -166,7 +166,7 @@
         ((*theInterface)->Release)(theInterface);
         if (v16)
         {
-          (*(*v16 + 48))(v16, v3, 0, 0);
+          (*(*v16 + 48))(v16, enabledCopy, 0, 0);
           if (dword_1EB58E5E0)
           {
             os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -174,7 +174,7 @@
             fig_log_call_emit_and_clean_up_after_send_and_compose();
           }
 
-          self->_ssamEnabled = v3;
+          self->_ssamEnabled = enabledCopy;
         }
       }
     }
@@ -193,10 +193,10 @@
 
 - (id)getDeviceInfoDict
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_pid), @"ExternalSyncDeviceDiscoverySessionUpdatePID"}];
-  [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_vid), @"ExternalSyncDeviceDiscoverySessionUpdateVID"}];
-  return v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_pid), @"ExternalSyncDeviceDiscoverySessionUpdatePID"}];
+  [dictionary setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_vid), @"ExternalSyncDeviceDiscoverySessionUpdateVID"}];
+  return dictionary;
 }
 
 @end

@@ -6,7 +6,7 @@
 - (double)p_shadowRadiusForCurrentScreenScale;
 - (id).cxx_construct;
 - (id)p_borderColorForCurrentScreenScale;
-- (id)p_commonInit:(BOOL)a3 darkMode:(BOOL)a4;
+- (id)p_commonInit:(BOOL)init darkMode:(BOOL)mode;
 - (void)clearContents;
 - (void)dealloc;
 - (void)layoutSublayers;
@@ -20,19 +20,19 @@
 - (void)p_setupTitleLabel;
 - (void)p_updateFlipAffordanceDisplay;
 - (void)p_updatePageNumberDisplay;
-- (void)setBodyLayer:(id)a3;
-- (void)setCardNumberString:(id)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setDarkMode:(BOOL)a3;
-- (void)setDisplayAttributes:(_THNoteCardDisplayAttributes)a3 animated:(BOOL)a4 duration:(double)a5;
-- (void)setLayoutContext:(id)a3;
-- (void)setPageNumber:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBodyLayer:(id)layer;
+- (void)setCardNumberString:(id)string;
+- (void)setContentsScale:(double)scale;
+- (void)setDarkMode:(BOOL)mode;
+- (void)setDisplayAttributes:(_THNoteCardDisplayAttributes)attributes animated:(BOOL)animated duration:(double)duration;
+- (void)setLayoutContext:(id)context;
+- (void)setPageNumber:(id)number;
+- (void)setTitle:(id)title;
 @end
 
 @implementation THNoteCardContentLayer
 
-- (id)p_commonInit:(BOOL)a3 darkMode:(BOOL)a4
+- (id)p_commonInit:(BOOL)init darkMode:(BOOL)mode
 {
   v8.receiver = self;
   v8.super_class = THNoteCardContentLayer;
@@ -41,8 +41,8 @@
   {
     TSDRectWithSize();
     [(THNoteCardContentLayer *)v6 setFrame:?];
-    v6->_isBackLayer = a3;
-    v6->_darkMode = a4;
+    v6->_isBackLayer = init;
+    v6->_darkMode = mode;
     [(THNoteCardContentLayer *)v6 p_setupBackground];
     [(THNoteCardContentLayer *)v6 p_setupBorder];
     [(THNoteCardContentLayer *)v6 p_setupBodyScrollLayer];
@@ -75,38 +75,38 @@
   [(CALayer *)colorBarLayer setBackgroundColor:0];
 }
 
-- (void)setBodyLayer:(id)a3
+- (void)setBodyLayer:(id)layer
 {
   bodyLayer = self->_bodyLayer;
-  if (bodyLayer != a3)
+  if (bodyLayer != layer)
   {
 
-    v6 = a3;
-    self->_bodyLayer = v6;
-    [(THNoteCardBodyLayer *)v6 setLayoutContext:self->_layoutContext];
+    layerCopy = layer;
+    self->_bodyLayer = layerCopy;
+    [(THNoteCardBodyLayer *)layerCopy setLayoutContext:self->_layoutContext];
     [(THInteractiveScrollLayer *)self->_bodyScrollLayer setContentLayer:self->_bodyLayer];
 
     [(THNoteCardContentLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(THMultiLineLabel *)self->_titleLabel setText:a3];
+  [(THMultiLineLabel *)self->_titleLabel setText:title];
 
   [(THNoteCardContentLayer *)self setNeedsLayout];
 }
 
-- (void)setCardNumberString:(id)a3
+- (void)setCardNumberString:(id)string
 {
-  [(THMultiLineLabel *)self->_cardNumberLabel setText:a3];
+  [(THMultiLineLabel *)self->_cardNumberLabel setText:string];
 
   [(THNoteCardContentLayer *)self setNeedsLayout];
 }
 
-- (void)setPageNumber:(id)a3
+- (void)setPageNumber:(id)number
 {
-  -[THMultiLineLabel setText:](self->_pageNumberLabel, "setText:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"page %@" value:&stru_471858 table:0], a3));
+  -[THMultiLineLabel setText:](self->_pageNumberLabel, "setText:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"page %@" value:&stru_471858 table:0], number));
 
   [(THNoteCardContentLayer *)self setNeedsLayout];
 }
@@ -137,14 +137,14 @@
   return result;
 }
 
-- (void)setLayoutContext:(id)a3
+- (void)setLayoutContext:(id)context
 {
   layoutContext = self->_layoutContext;
-  if (layoutContext != a3)
+  if (layoutContext != context)
   {
 
-    self->_layoutContext = a3;
-    [(THNoteCardBodyLayer *)self->_bodyLayer setLayoutContext:a3];
+    self->_layoutContext = context;
+    [(THNoteCardBodyLayer *)self->_bodyLayer setLayoutContext:context];
     [(THNoteCardLayoutContext *)self->_layoutContext noteCardShadowOpacity];
     *&v6 = v6;
     [(CALayer *)self->_backgroundLayer setShadowOpacity:v6];
@@ -152,13 +152,13 @@
     [(CALayer *)self->_backgroundLayer setShadowOffset:?];
     [(THNoteCardContentLayer *)self p_shadowRadiusForCurrentScreenScale];
     [(CALayer *)self->_backgroundLayer setShadowRadius:?];
-    [a3 textScale];
+    [context textScale];
     [(THMultiLineLabel *)self->_titleLabel setScale:?];
-    [a3 textScale];
+    [context textScale];
     [(THMultiLineLabel *)self->_pageNumberLabel setScale:?];
-    [a3 textScale];
+    [context textScale];
     [(THMultiLineLabel *)self->_cardNumberLabel setScale:?];
-    [a3 textScale];
+    [context textScale];
     [(THMultiLineLabel *)self->_flipLabel setScale:?];
 
     [(THNoteCardContentLayer *)self setNeedsLayout];
@@ -169,19 +169,19 @@
 {
   [(THNoteCardContentLayer *)self layoutIfNeeded];
   v3 = [NSMutableArray arrayWithObjects:self->_bodyScrollLayer, 0];
-  v4 = [(THNoteCardBodyLayer *)self->_bodyLayer interactiveLayers];
-  if (v4)
+  interactiveLayers = [(THNoteCardBodyLayer *)self->_bodyLayer interactiveLayers];
+  if (interactiveLayers)
   {
-    [(NSMutableArray *)v3 addObjectsFromArray:v4];
+    [(NSMutableArray *)v3 addObjectsFromArray:interactiveLayers];
   }
 
   return &v3->super;
 }
 
-- (void)setDisplayAttributes:(_THNoteCardDisplayAttributes)a3 animated:(BOOL)a4 duration:(double)a5
+- (void)setDisplayAttributes:(_THNoteCardDisplayAttributes)attributes animated:(BOOL)animated duration:(double)duration
 {
-  v6 = a4;
-  v7 = *&a3.drawBorder;
+  animatedCopy = animated;
+  v7 = *&attributes.drawBorder;
   if (!self->_backgroundLayer)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -207,15 +207,15 @@
 
   if (v7)
   {
-    v11 = [(THNoteCardContentLayer *)self p_borderColorForCurrentScreenScale];
+    p_borderColorForCurrentScreenScale = [(THNoteCardContentLayer *)self p_borderColorForCurrentScreenScale];
   }
 
   else
   {
-    v11 = +[TSUColor clearColor];
+    p_borderColorForCurrentScreenScale = +[TSUColor clearColor];
   }
 
-  v12 = v11;
+  v12 = p_borderColorForCurrentScreenScale;
   if ((v7 & 0x100) != 0)
   {
     v13 = +[TSUColor blackColor];
@@ -227,7 +227,7 @@
   }
 
   v14 = v13;
-  if (v6)
+  if (animatedCopy)
   {
     v15 = [CABasicAnimation animationWithKeyPath:@"backgroundColor"];
     [(CABasicAnimation *)v15 setFromValue:[(CALayer *)self->_backgroundLayer backgroundColor]];
@@ -237,12 +237,12 @@
     -[CABasicAnimation setToValue:](v16, "setToValue:", [v14 CGColor]);
     v17 = +[CAAnimationGroup animation];
     [v17 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v15, v16, 0)}];
-    [v17 setDuration:a5];
+    [v17 setDuration:duration];
     [(CALayer *)self->_backgroundLayer addAnimation:v17 forKey:@"displayAttributes"];
     v18 = [CABasicAnimation animationWithKeyPath:@"borderColor"];
     [(CABasicAnimation *)v18 setFromValue:[(CALayer *)self->_borderLayer borderColor]];
     -[CABasicAnimation setToValue:](v18, "setToValue:", [v12 CGColor]);
-    [(CABasicAnimation *)v18 setDuration:a5];
+    [(CABasicAnimation *)v18 setDuration:duration];
     [(CALayer *)self->_borderLayer addAnimation:v18 forKey:@"displayAttributes"];
   }
 
@@ -255,11 +255,11 @@
   self->_displayAttributes.useDarkerBackground = BYTE4(v7);
 }
 
-- (void)setDarkMode:(BOOL)a3
+- (void)setDarkMode:(BOOL)mode
 {
-  if (self->_darkMode != a3)
+  if (self->_darkMode != mode)
   {
-    self->_darkMode = a3;
+    self->_darkMode = mode;
     [(THNoteCardContentLayer *)self setDisplayAttributes:*&self->_displayAttributes.drawBorder | (self->_displayAttributes.useDarkerBackground << 32) animated:0 duration:0.0];
     [(THMultiLineLabel *)self->_titleLabel setTextColor:THNoteCardHeaderColor([(THNoteCardContentLayer *)self darkMode])];
     [(THMultiLineLabel *)self->_pageNumberLabel setTextColor:THNoteCardHeaderColor([(THNoteCardContentLayer *)self darkMode])];
@@ -274,7 +274,7 @@
   v97.receiver = self;
   v97.super_class = THNoteCardContentLayer;
   [(THNoteCardContentLayer *)&v97 layoutSublayers];
-  v3 = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
   [(THNoteCardContentLayer *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -296,9 +296,9 @@
   [(CALayer *)self->_backgroundLayer setFrame:v99.origin.x, v99.origin.y, v99.size.width, v99.size.height];
   [(CALayer *)self->_backgroundLayer bounds];
   -[CALayer setShadowPath:](self->_backgroundLayer, "setShadowPath:", [+[TSDBezierPath bezierPathWithRect:](TSDBezierPath CGPath]);
-  v20 = [(THNoteCardBodyLayer *)self->_bodyLayer shouldForceCentered];
+  shouldForceCentered = [(THNoteCardBodyLayer *)self->_bodyLayer shouldForceCentered];
   layoutContext = self->_layoutContext;
-  if (v20)
+  if (shouldForceCentered)
   {
     [(THNoteCardLayoutContext *)layoutContext noteCardBodyWidth];
     [(THNoteCardLayoutContext *)self->_layoutContext noteCardBodyHeight];
@@ -318,7 +318,7 @@
   [(THNoteCardBodyLayer *)self->_bodyLayer setFrame:?];
   [(THNoteCardBodyLayer *)self->_bodyLayer sizeToFit];
   [(THMultiLineLabel *)self->_pageNumberLabel resizeToFitTightly];
-  if (v3 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     [(THNoteCardLayoutContext *)self->_layoutContext noteCardRightMargin];
     v23 = v22;
@@ -357,7 +357,7 @@
   }
 
   [(THNoteCardLayoutContext *)self->_layoutContext noteCardLeftMargin];
-  if (v3 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v43 = v5 - v31 - v42;
   }
@@ -377,7 +377,7 @@
   v103 = CGRectIntegral(v102);
   [(THMultiLineLabel *)self->_titleLabel setFrame:v103.origin.x, v103.origin.y, v103.size.width, v103.size.height];
   [(THMultiLineLabel *)self->_cardNumberLabel resizeToFitTightly];
-  if (v3 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     [(THMultiLineLabel *)self->_cardNumberLabel bounds];
     v48 = v5 - v47;
@@ -399,7 +399,7 @@
   v105 = CGRectIntegral(v104);
   [(THMultiLineLabel *)self->_cardNumberLabel setFrame:v105.origin.x, v105.origin.y, v105.size.width, v105.size.height];
   [(THMultiLineLabel *)self->_flipLabel resizeToFitTightly];
-  if (v3 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     [(THNoteCardLayoutContext *)self->_layoutContext noteCardLeftMargin];
     v56 = v55;
@@ -434,7 +434,7 @@
   [(THNoteCardLayoutContext *)self->_layoutContext noteCardColorBarPaddingFromScrollBottom];
   v77 = v76;
   v78 = self->_layoutContext;
-  if (v3 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     [(THNoteCardLayoutContext *)v78 noteCardColorBarWidth];
     v80 = v5 - v79;
@@ -481,11 +481,11 @@
   [(CALayer *)self->_colorBarLayer setFrame:v93, v88, v92, v90 - CGRectGetMinY(v112)];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v4.receiver = self;
   v4.super_class = THNoteCardContentLayer;
-  [(THNoteCardContentLayer *)&v4 setContentsScale:a3];
+  [(THNoteCardContentLayer *)&v4 setContentsScale:scale];
   [(THNoteCardContentLayer *)self p_borderWidthForCurrentScreenScale];
   [(CALayer *)self->_borderLayer setBorderWidth:?];
   if (self->_displayAttributes.drawBorder)
@@ -630,16 +630,16 @@
 {
   if ([(THNoteCardContentLayer *)self pageNumberHovered])
   {
-    v3 = [(THNoteCardContentLayer *)self pageNumberPressed];
-    v4 = [(THNoteCardContentLayer *)self darkMode];
-    if (v3)
+    pageNumberPressed = [(THNoteCardContentLayer *)self pageNumberPressed];
+    darkMode = [(THNoteCardContentLayer *)self darkMode];
+    if (pageNumberPressed)
     {
-      v5 = THNoteCardPressedTextColor(v4);
+      v5 = THNoteCardPressedTextColor(darkMode);
     }
 
     else
     {
-      v5 = THNoteCardHoveredTextColor(v4);
+      v5 = THNoteCardHoveredTextColor(darkMode);
     }
   }
 
@@ -656,16 +656,16 @@
 
 - (void)p_updateFlipAffordanceDisplay
 {
-  v3 = [(THNoteCardContentLayer *)self flipAffordancePressed];
-  v4 = [(THNoteCardContentLayer *)self darkMode];
-  if (v3)
+  flipAffordancePressed = [(THNoteCardContentLayer *)self flipAffordancePressed];
+  darkMode = [(THNoteCardContentLayer *)self darkMode];
+  if (flipAffordancePressed)
   {
-    v5 = THNoteCardPressedTextColor(v4);
+    v5 = THNoteCardPressedTextColor(darkMode);
   }
 
   else
   {
-    v5 = THNoteCardFooterFlipCardColor(v4);
+    v5 = THNoteCardFooterFlipCardColor(darkMode);
   }
 
   v6 = v5;
@@ -678,9 +678,9 @@
 {
   [(THNoteCardContentLayer *)self contentsScale];
   v4 = v3 > 1.0;
-  v5 = [(THNoteCardContentLayer *)self darkMode];
+  darkMode = [(THNoteCardContentLayer *)self darkMode];
 
-  return THNoteCardBorderColor(v5, v4);
+  return THNoteCardBorderColor(darkMode, v4);
 }
 
 - (CGSize)p_shadowOffsetForCurrentScreenScale

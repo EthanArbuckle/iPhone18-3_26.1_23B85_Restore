@@ -1,6 +1,6 @@
 @interface MetalHUDLocationController
 - (id)specifiers;
-- (void)selectLocation:(id)a3;
+- (void)selectLocation:(id)location;
 @end
 
 @implementation MetalHUDLocationController
@@ -57,8 +57,8 @@
           [v20 setUserInfo:v16];
           [v20 setButtonAction:"selectLocation:"];
           [v33 addObject:v20];
-          v21 = [(MetalHUDLocationPreferences *)self->_locations location];
-          LODWORD(v16) = [v16 isEqualToString:v21];
+          location = [(MetalHUDLocationPreferences *)self->_locations location];
+          LODWORD(v16) = [v16 isEqualToString:location];
 
           if (v16)
           {
@@ -112,19 +112,19 @@ LABEL_19:
   return v8;
 }
 
-- (void)selectLocation:(id)a3
+- (void)selectLocation:(id)location
 {
-  v7 = a3;
-  v4 = [v7 userInfo];
+  locationCopy = location;
+  userInfo = [locationCopy userInfo];
 
-  if (v4)
+  if (userInfo)
   {
     locations = self->_locations;
-    v6 = [v7 userInfo];
-    [(MetalHUDLocationPreferences *)locations setLocation:v6];
+    userInfo2 = [locationCopy userInfo];
+    [(MetalHUDLocationPreferences *)locations setLocation:userInfo2];
   }
 
-  [(PSSpecifier *)self->_locationGroupSpec setProperty:v7 forKey:PSRadioGroupCheckedSpecifierKey];
+  [(PSSpecifier *)self->_locationGroupSpec setProperty:locationCopy forKey:PSRadioGroupCheckedSpecifierKey];
   [(MetalHUDLocationController *)self reloadSpecifier:self->_locationGroupSpec];
 }
 

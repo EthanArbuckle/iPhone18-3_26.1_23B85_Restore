@@ -11,7 +11,7 @@
 - (BOOL)elementsHiddenByDefault;
 - (BOOL)ignoreDeviceLockState;
 - (BOOL)ignoresInstalledApplications;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)wantsBackup;
 - (BOOL)wantsImmutableContent;
 - (NSArray)interactionDescriptors;
@@ -28,15 +28,15 @@
 - (REFeatureSet)primaryFeatures;
 - (RELocationManager)locationManager;
 - (REPredictorManager)predictorManager;
-- (RERelevanceEngineConfiguration)initWithDictionary:(id)a3;
+- (RERelevanceEngineConfiguration)initWithDictionary:(id)dictionary;
 - (RERelevanceEngineMetricsRecorder)metricsRecorder;
 - (RERelevanceProviderManagerLoader)relevanceProviderManagerLoader;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueForKey:(id)a3 ofClass:(Class)a4 defaultValue:(id)a5;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueForKey:(id)key ofClass:(Class)class defaultValue:(id)value;
 - (unint64_t)modelStorageBehavior;
 - (unint64_t)modelVersion;
 - (unint64_t)trainingBehavior;
-- (void)setValue:(id)a3 forKey:(id)a4 ofClass:(Class)a5;
+- (void)setValue:(id)value forKey:(id)key ofClass:(Class)class;
 @end
 
 @implementation RERelevanceEngineConfiguration
@@ -74,39 +74,39 @@
   return v4;
 }
 
-- (RERelevanceEngineConfiguration)initWithDictionary:(id)a3
+- (RERelevanceEngineConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = RERelevanceEngineConfiguration;
   v5 = [(RERelevanceEngineConfiguration *)&v20 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     values = v5->_values;
-    v5->_values = v6;
+    v5->_values = dictionary;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v9 = v5->_values;
     v10 = NSStringFromSelector(sel_sectionDescriptors);
-    [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)v9 setObject:array forKeyedSubscript:v10];
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v12 = v5->_values;
     v13 = NSStringFromSelector(sel_interactionDescriptors);
-    [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)v12 setObject:array2 forKeyedSubscript:v13];
 
-    v14 = [objc_opt_class() _defaultModelFileURL];
+    _defaultModelFileURL = [objc_opt_class() _defaultModelFileURL];
     v15 = v5->_values;
     v16 = NSStringFromSelector(sel_baseModelFileURL);
-    [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
+    [(NSMutableDictionary *)v15 setObject:_defaultModelFileURL forKeyedSubscript:v16];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __53__RERelevanceEngineConfiguration_initWithDictionary___block_invoke;
     v18[3] = &unk_2785F9940;
     v19 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v18];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v18];
   }
 
   return v5;
@@ -164,11 +164,11 @@ LABEL_6:
   [*(*(a1 + 32) + 8) setObject:v8 forKeyedSubscript:v5];
 }
 
-- (id)valueForKey:(id)a3 ofClass:(Class)a4 defaultValue:(id)a5
+- (id)valueForKey:(id)key ofClass:(Class)class defaultValue:(id)value
 {
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_values objectForKeyedSubscript:a3];
-  if (a4 && (objc_opt_isKindOfClass() & 1) == 0)
+  valueCopy = value;
+  v9 = [(NSMutableDictionary *)self->_values objectForKeyedSubscript:key];
+  if (class && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
     v9 = 0;
@@ -181,7 +181,7 @@ LABEL_6:
 
   else
   {
-    v10 = v8;
+    v10 = valueCopy;
   }
 
   v11 = v10;
@@ -189,14 +189,14 @@ LABEL_6:
   return v10;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 ofClass:(Class)a5
+- (void)setValue:(id)value forKey:(id)key ofClass:(Class)class
 {
-  v12 = a3;
-  v8 = a4;
-  if (a5 && (objc_opt_isKindOfClass() & 1) == 0)
+  valueCopy = value;
+  keyCopy = key;
+  if (class && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v12 = 0;
+    valueCopy = 0;
   }
 
   if (setValue_forKey_ofClass__onceToken != -1)
@@ -204,8 +204,8 @@ LABEL_6:
     [RERelevanceEngineConfiguration setValue:forKey:ofClass:];
   }
 
-  v9 = [setValue_forKey_ofClass__EmptyConfig valueForKey:v8];
-  v10 = [v9 isEqual:v12];
+  v9 = [setValue_forKey_ofClass__EmptyConfig valueForKey:keyCopy];
+  v10 = [v9 isEqual:valueCopy];
 
   if (v10)
   {
@@ -215,7 +215,7 @@ LABEL_6:
 
   else
   {
-    v11 = v12;
+    v11 = valueCopy;
   }
 
   v13 = v11;
@@ -231,10 +231,10 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -245,7 +245,7 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
     if (objc_opt_isKindOfClass())
     {
       values = self->_values;
-      v6 = v4->_values;
+      v6 = equalCopy->_values;
       v7 = values;
       v8 = v7;
       if (v7 == v6)
@@ -268,7 +268,7 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [REMutableRelevanceEngineConfiguration alloc];
   values = self->_values;
@@ -312,18 +312,18 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
 {
   v3 = NSStringFromSelector(sel_modelVersion);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:&unk_283BBD4D0];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)allowsUpdatingModelFile
 {
   v3 = NSStringFromSelector(sel_allowsUpdatingModelFile);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC38]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (REDataSourceLoader)dataSourceLoader
@@ -358,18 +358,18 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
 {
   v3 = NSStringFromSelector(sel_trainingBehavior);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:&unk_283BBD4E8];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)modelStorageBehavior
 {
   v3 = NSStringFromSelector(sel_modelStorageBehavior);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:&unk_283BBD500];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (NSArray)sectionDescriptors
@@ -426,9 +426,9 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
 {
   v3 = NSStringFromSelector(sel_wantsImmutableContent);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (NSString)preferenceDomain
@@ -443,36 +443,36 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
 {
   v3 = NSStringFromSelector(sel_allowsRemoteTraining);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)wantsBackup
 {
   v3 = NSStringFromSelector(sel_wantsBackup);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)ignoreDeviceLockState
 {
   v3 = NSStringFromSelector(sel_ignoreDeviceLockState);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)allowsDiagnosticExtension
 {
   v3 = NSStringFromSelector(sel_allowsDiagnosticExtension);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (RERelevanceEngineMetricsRecorder)metricsRecorder
@@ -487,18 +487,18 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
 {
   v3 = NSStringFromSelector(sel_ignoresInstalledApplications);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)createDefaultRelevanceProviders
 {
   v3 = NSStringFromSelector(sel_createDefaultRelevanceProviders);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC38]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)disableAutomaticContentManagement
@@ -515,9 +515,9 @@ uint64_t __58__RERelevanceEngineConfiguration_setValue_forKey_ofClass___block_in
 
   v4 = NSStringFromSelector(sel_disableAutomaticContentManagement);
   v5 = [(RERelevanceEngineConfiguration *)self valueForKey:v4 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 void __67__RERelevanceEngineConfiguration_disableAutomaticContentManagement__block_invoke()
@@ -549,9 +549,9 @@ void __67__RERelevanceEngineConfiguration_disableAutomaticContentManagement__blo
 {
   v3 = NSStringFromSelector(sel_elementsHiddenByDefault);
   v4 = [(RERelevanceEngineConfiguration *)self valueForKey:v3 ofClass:objc_opt_class() defaultValue:MEMORY[0x277CBEC28]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (id)defaultUpNextConfiguration
@@ -1293,8 +1293,8 @@ BOOL __83__RERelevanceEngineConfiguration_REUpNextConfiguration__defaultUpNextCo
   v2 = +[RERelevanceEngineConfiguration defaultUpNextConfiguration];
   v3 = [v2 mutableCopy];
 
-  v4 = [v3 sectionDescriptors];
-  v5 = [v4 count];
+  sectionDescriptors = [v3 sectionDescriptors];
+  v5 = [sectionDescriptors count];
 
   v6 = 0x277CBE000uLL;
   v36 = v5;
@@ -1303,8 +1303,8 @@ BOOL __83__RERelevanceEngineConfiguration_REUpNextConfiguration__defaultUpNextCo
     v7 = 0;
     do
     {
-      v8 = [v3 sectionDescriptors];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      sectionDescriptors2 = [v3 sectionDescriptors];
+      v9 = [sectionDescriptors2 objectAtIndexedSubscript:v7];
 
       v10 = RESampleFeature();
       v11 = [RECondition conditionHasValueForFeature:v10];
@@ -1326,8 +1326,8 @@ BOOL __83__RERelevanceEngineConfiguration_REUpNextConfiguration__defaultUpNextCo
       v22 = [v20 setWithArray:v21];
       [v9 setRules:v22];
 
-      v23 = [v9 historicSectionDescriptor];
-      if (v23)
+      historicSectionDescriptor = [v9 historicSectionDescriptor];
+      if (historicSectionDescriptor)
       {
         v24 = MEMORY[0x277CBEB98];
         v38[0] = v16;
@@ -1335,10 +1335,10 @@ BOOL __83__RERelevanceEngineConfiguration_REUpNextConfiguration__defaultUpNextCo
         [*(v6 + 2656) arrayWithObjects:v38 count:2];
         v26 = v25 = v6;
         v27 = [v24 setWithArray:v26];
-        [v23 setRules:v27];
+        [historicSectionDescriptor setRules:v27];
 
         v6 = v25;
-        [v9 setHistoricSectionDescriptor:v23];
+        [v9 setHistoricSectionDescriptor:historicSectionDescriptor];
       }
 
       [v3 removeSectionAtIndex:v7];

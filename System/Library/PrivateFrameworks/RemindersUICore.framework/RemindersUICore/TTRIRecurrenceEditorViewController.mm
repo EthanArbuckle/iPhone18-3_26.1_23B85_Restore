@@ -1,20 +1,20 @@
 @interface TTRIRecurrenceEditorViewController
-- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation TTRIRecurrenceEditorViewController
 
-- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithCoder:(id)a3
+- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);
@@ -23,66 +23,66 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D557B30();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21D557C8C(a3);
+  selfCopy = self;
+  sub_21D557C8C(appear);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_21D5580A8(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21D5580A8(controller);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     v5 = sub_21D55AC6C();
     swift_unknownObjectRelease();
 
-    v6 = *(v5 + 16);
+    sectionCopy = *(v5 + 16);
 
-    return v6;
+    return sectionCopy;
   }
 
-  v6 = a4;
-  if (a4 == 1)
+  sectionCopy = section;
+  if (section == 1)
   {
-    return v6;
+    return sectionCopy;
   }
 
   __break(1u);
   return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_21DBF5D5C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = (&v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0));
   sub_21DBF5CAC();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_21D5582B0(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_21D5582B0(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     if ((*(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIRecurrenceEditorViewController_presenter))[8])
     {
@@ -106,43 +106,43 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_21DBF5D5C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_21D55973C();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_21DBF5D5C();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_21D559820(v13, v11);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_21D559820(cellCopy, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithStyle:(int64_t)a3
+- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore34TTRIRecurrenceEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

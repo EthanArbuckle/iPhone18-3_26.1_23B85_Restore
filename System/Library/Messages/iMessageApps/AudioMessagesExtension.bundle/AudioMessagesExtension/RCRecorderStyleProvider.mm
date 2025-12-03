@@ -12,7 +12,7 @@
 - (BOOL)isAccessibilityLargerTextSizeEnabled;
 - (BOOL)librarySupportsBlueCellSelectionStyle;
 - (BOOL)needsTouchDownWorkaround;
-- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)a3;
+- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)class;
 - (CGSize)actionMenuImageSize;
 - (CGSize)centerClusterControlSize;
 - (CGSize)centerClusterControlSizeRecentlyDeleted;
@@ -96,51 +96,51 @@
 - (id)editingToolbarButtonTextColor;
 - (id)editingToolbarTitleLabelFont;
 - (id)ellipsisImage;
-- (id)emptyLibraryBackgroundColor:(BOOL)a3;
-- (id)emptyLibraryMessageTextColor:(BOOL)a3;
+- (id)emptyLibraryBackgroundColor:(BOOL)color;
+- (id)emptyLibraryMessageTextColor:(BOOL)color;
 - (id)expandCompactRecordingCardPropertyAnimator;
 - (id)favoriteImage;
 - (id)folderSelectionCollectionViewCellColor;
 - (id)folderSelectionNavBarNewFolderImageTintColor;
-- (id)formattedDateStringFromDate:(id)a3 forUUID:(id)a4;
+- (id)formattedDateStringFromDate:(id)date forUUID:(id)d;
 - (id)libraryGoBackwardImage;
 - (id)libraryGoForwardImage;
 - (id)libraryPauseImage;
 - (id)libraryPlayImage;
 - (id)mainViewBackgroundColor;
-- (id)maxTrackTintColor:(BOOL)a3;
-- (id)minTrackTintColor:(BOOL)a3;
+- (id)maxTrackTintColor:(BOOL)color;
+- (id)minTrackTintColor:(BOOL)color;
 - (id)moveToFolderImage;
 - (id)notFavoriteImage;
-- (id)playbackCardBottomGradientColor:(BOOL)a3;
+- (id)playbackCardBottomGradientColor:(BOOL)color;
 - (id)playbackCardSecondaryLabelFontColor;
-- (id)playbackCardTopBorderColor1:(BOOL)a3;
-- (id)playbackCardTopBorderColor2:(BOOL)a3;
-- (id)playbackCardTopGradientColor:(BOOL)a3;
+- (id)playbackCardTopBorderColor1:(BOOL)color1;
+- (id)playbackCardTopBorderColor2:(BOOL)color2;
+- (id)playbackCardTopGradientColor:(BOOL)color;
 - (id)playbackPositionBarColor;
 - (id)playbackViewTimeLabelFont;
-- (id)progressViewBackgroundColorTableViewCell:(BOOL)a3;
+- (id)progressViewBackgroundColorTableViewCell:(BOOL)cell;
 - (id)recentlyDeleteToolBarDividerColor;
-- (id)recordingCardDefaultBackgroundColor:(BOOL)a3;
+- (id)recordingCardDefaultBackgroundColor:(BOOL)color;
 - (id)recordingControlInnerColorResume;
-- (id)recordingControlOuterColor:(BOOL)a3;
+- (id)recordingControlOuterColor:(BOOL)color;
 - (id)selectionOverlayColor;
 - (id)sidebarCollectionViewBackgroundColor;
 - (id)sidebarNavBarNewFolderImageTintColor;
-- (id)splitViewSeparatorColor:(BOOL)a3;
+- (id)splitViewSeparatorColor:(BOOL)color;
 - (id)standardInteractionTintColor;
 - (id)swipeTrashImage;
 - (id)tableViewBackgroundColor;
 - (id)tableViewSelectedCellTextColor;
 - (id)tableViewToolboxSeparatorColor;
 - (id)timeLineLabelFont;
-- (id)timelinePlaybackBackgroundColor:(BOOL)a3;
-- (id)transportControlsColorForPlaybackCard:(BOOL)a3;
-- (id)waveformPlaybackBackgroundColor:(BOOL)a3;
-- (id)waveformPlaybackHighlightedBackgroundColor:(BOOL)a3;
+- (id)timelinePlaybackBackgroundColor:(BOOL)color;
+- (id)transportControlsColorForPlaybackCard:(BOOL)card;
+- (id)waveformPlaybackBackgroundColor:(BOOL)color;
+- (id)waveformPlaybackHighlightedBackgroundColor:(BOOL)color;
 - (id)waveformRecordingColor;
-- (id)waveformStandardColor:(BOOL)a3;
-- (id)windowHeaderSpacerViewBackgroundColor:(BOOL)a3;
+- (id)waveformStandardColor:(BOOL)color;
+- (id)windowHeaderSpacerViewBackgroundColor:(BOOL)color;
 - (int64_t)cellSelectionStyle;
 - (int64_t)sidebarCollectionViewListAppearance;
 - (unint64_t)supportedInterfaceOrientations;
@@ -160,20 +160,20 @@
   return v3;
 }
 
-- (id)formattedDateStringFromDate:(id)a3 forUUID:(id)a4
+- (id)formattedDateStringFromDate:(id)date forUUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dateCopy = date;
   v7 = +[RCDateFormatter sharedDateFormatter];
-  v8 = [v7 formattedDateStringFromDate:v6 forUUID:v5];
+  v8 = [v7 formattedDateStringFromDate:dateCopy forUUID:dCopy];
 
   return v8;
 }
 
-- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)a3
+- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)class
 {
-  v5 = [(RCRecorderStyleProvider *)self _horizontalSizeClassFromSplitView]!= a3;
-  [(RCRecorderStyleProvider *)self set_horizontalSizeClassFromSplitView:a3];
+  v5 = [(RCRecorderStyleProvider *)self _horizontalSizeClassFromSplitView]!= class;
+  [(RCRecorderStyleProvider *)self set_horizontalSizeClassFromSplitView:class];
   return v5;
 }
 
@@ -193,8 +193,8 @@
 - (BOOL)appIsRightToLeft
 {
   v2 = +[_TtC22AudioMessagesExtension24AMMessagesViewController sharedMessagesViewController];
-  v3 = [v2 view];
-  v4 = [v3 effectiveUserInterfaceLayoutDirection] == &dword_0 + 1;
+  view = [v2 view];
+  v4 = [view effectiveUserInterfaceLayoutDirection] == &dword_0 + 1;
 
   return v4;
 }
@@ -235,9 +235,9 @@
 
   else
   {
-    v6 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = v5 + -58.0;
-    if (v6)
+    if (_isIOSMac)
     {
       return 260.0;
     }
@@ -269,9 +269,9 @@
 
 - (double)librarySelectedMoreAndTrashButtonPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIPad];
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
   result = 4.0;
-  if (v2)
+  if (_isWideIPad)
   {
     return 0.0;
   }
@@ -313,9 +313,9 @@
 
 - (double)topScreenSpacerHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 30.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 0.0;
   }
@@ -341,9 +341,9 @@
 
 - (double)recordingControlHorizontalOffset
 {
-  v2 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 0.0;
-  if (v2)
+  if (_usesVibrantUI)
   {
     return 8.0;
   }
@@ -358,9 +358,9 @@
     return 48.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 57.0;
-  if (v4)
+  if (_isIOSMac)
   {
     return 61.038961;
   }
@@ -370,9 +370,9 @@
 
 - (double)overviewWaveformCornerRadius
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 5.19480519;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 4.0;
   }
@@ -382,9 +382,9 @@
 
 - (double)recordingSectionBottomPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 39.0;
-  if (!v2)
+  if (!_usesVibrantUI)
   {
     return 0.0;
   }
@@ -399,9 +399,9 @@
     return 76.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 70.0;
-  if (v4)
+  if (_isIOSMac)
   {
     return 151.948052;
   }
@@ -411,9 +411,9 @@
 
 - (double)positionReadoutLabelYOffset
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 1.2987013;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 0.0;
   }
@@ -423,9 +423,9 @@
 
 - (double)editToolbarHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
+  _isVibrantUIOrIOSMac = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
   result = 50.0;
-  if (v2)
+  if (_isVibrantUIOrIOSMac)
   {
     return 75.0;
   }
@@ -435,9 +435,9 @@
 
 - (double)topMarginMinSafeAreaTopInsetForCardView
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
+  _isWideIpadOrIOSMac = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
   result = 32.0;
-  if (v2)
+  if (_isWideIpadOrIOSMac)
   {
     return 0.0;
   }
@@ -447,13 +447,13 @@
 
 - (double)recordingViewWaveformOverviewSpaceBetweenMainWaveformAndOverview
 {
-  v3 = [(RCRecorderStyleProvider *)self _isWideIPad];
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
   result = 22.0;
-  if ((v3 & 1) == 0)
+  if ((_isWideIPad & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = 116.0;
-    if (v5)
+    if (_isIOSMac)
     {
       return 49.3506494;
     }
@@ -464,9 +464,9 @@
 
 - (double)recordingViewWaveformOverviewSpaceBetweenTimelabelAndOverview
 {
-  v3 = [(RCRecorderStyleProvider *)self _isWideIPad];
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
   result = 24.0;
-  if ((v3 & 1) == 0)
+  if ((_isWideIPad & 1) == 0)
   {
     [(RCRecorderStyleProvider *)self _isIOSMac];
     return 0.0;
@@ -488,9 +488,9 @@
 
 - (double)virtualNavBarWidthInset
 {
-  v2 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 0.0;
-  if (v2)
+  if (_usesVibrantUI)
   {
     return -4.0;
   }
@@ -500,9 +500,9 @@
 
 - (double)virtualNavBarButtonExtraSpaceItemSpacing
 {
-  v2 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 0.0;
-  if (v2)
+  if (_usesVibrantUI)
   {
     return 22.0;
   }
@@ -512,9 +512,9 @@
 
 - (double)trimDeleteButtonLeftPaddingDistance
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 15.5844156;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 10.0;
   }
@@ -524,15 +524,15 @@
 
 - (CGSize)trimDeleteButtonLeftSize
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   v3 = 80.0;
-  if (v2)
+  if (_isIOSMac)
   {
     v3 = 116.883117;
   }
 
   v4 = 32.0;
-  if (v2)
+  if (_isIOSMac)
   {
     v4 = 36.3636364;
   }
@@ -544,15 +544,15 @@
 
 - (CGSize)doneCancelButtonRightSize
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   v3 = 136.0;
-  if (v2)
+  if (_isIOSMac)
   {
     v3 = 90.0;
   }
 
   v4 = 50.0;
-  if (v2)
+  if (_isIOSMac)
   {
     v4 = 36.0;
   }
@@ -572,9 +572,9 @@
 
 - (double)jumpBackwardForwardButtonSpacing
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIPad];
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
   result = 35.0;
-  if (!v2)
+  if (!_isWideIPad)
   {
     return 0.0;
   }
@@ -618,9 +618,9 @@
     return 60.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 70.0;
-  if (v4)
+  if (_isIOSMac)
   {
     return 150.649351;
   }
@@ -630,9 +630,9 @@
 
 - (double)playbackViewTimeSectionBottomPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIpad];
+  _isIpad = [(RCRecorderStyleProvider *)self _isIpad];
   result = 0.0;
-  if (v2)
+  if (_isIpad)
   {
     return 18.0;
   }
@@ -642,9 +642,9 @@
 
 - (double)playbackViewTimeLabelYOffset
 {
-  v2 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 2.5974026;
-  if (!v2)
+  if (!_usesVibrantUI)
   {
     return 0.0;
   }
@@ -670,9 +670,9 @@
 
 - (double)playbackViewTopPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self presentsTitleAndAdditionalEditingControlsInPlaybackCard];
+  presentsTitleAndAdditionalEditingControlsInPlaybackCard = [(RCRecorderStyleProvider *)self presentsTitleAndAdditionalEditingControlsInPlaybackCard];
   result = 50.0;
-  if (v2)
+  if (presentsTitleAndAdditionalEditingControlsInPlaybackCard)
   {
     return 4.0;
   }
@@ -682,9 +682,9 @@
 
 - (double)playbackViewWaveformOverviewSidePadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 42.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 42.8571429;
   }
@@ -694,13 +694,13 @@
 
 - (double)playbackViewVerticalSpacingAboveOverviewWaveform
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIpad];
+  _isIpad = [(RCRecorderStyleProvider *)self _isIpad];
   result = 22.0;
-  if ((v3 & 1) == 0)
+  if ((_isIpad & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = 62.0;
-    if (v5)
+    if (_isIOSMac)
     {
       return 49.3506494;
     }
@@ -711,13 +711,13 @@
 
 - (double)playbackViewVerticalSpacingBelowOverviewWaveform
 {
-  v3 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 23.0;
-  if ((v3 & 1) == 0)
+  if ((_usesVibrantUI & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = 41.0;
-    if (v5)
+    if (_isIOSMac)
     {
       return 0.0;
     }
@@ -728,9 +728,9 @@
 
 - (double)playbackViewCornerRadius
 {
-  v2 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 0.0;
-  if (v2)
+  if (_usesVibrantUI)
   {
     return 10.0;
   }
@@ -741,10 +741,10 @@
 - (BOOL)_isPortrait
 {
   v2 = +[_TtC22AudioMessagesExtension24AMMessagesViewController sharedMessagesViewController];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation] - 1 < &dword_0 + 2;
+  view = [v2 view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v6 = [windowScene interfaceOrientation] - 1 < &dword_0 + 2;
 
   return v6;
 }
@@ -752,10 +752,10 @@
 - (BOOL)_isLandscape
 {
   v2 = +[_TtC22AudioMessagesExtension24AMMessagesViewController sharedMessagesViewController];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation] - 3 < &dword_0 + 2;
+  view = [v2 view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v6 = [windowScene interfaceOrientation] - 3 < &dword_0 + 2;
 
   return v6;
 }
@@ -841,9 +841,9 @@
     return 35.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self isAccessibilityLargerTextSizeEnabled];
+  isAccessibilityLargerTextSizeEnabled = [(RCRecorderStyleProvider *)self isAccessibilityLargerTextSizeEnabled];
   result = 35.0;
-  if (!v4)
+  if (!isAccessibilityLargerTextSizeEnabled)
   {
     return 29.0;
   }
@@ -872,9 +872,9 @@
 
 - (double)descriptionViewSecondaryLabelsTopMargin
 {
-  v2 = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
+  _isVibrantUIOrIOSMac = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
   result = 4.0;
-  if (v2)
+  if (_isVibrantUIOrIOSMac)
   {
     return 2.0;
   }
@@ -884,9 +884,9 @@
 
 - (double)descriptionViewTitleToSecondaryPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
+  _isVibrantUIOrIOSMac = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
   result = 3.0;
-  if (v2)
+  if (_isVibrantUIOrIOSMac)
   {
     return 4.0;
   }
@@ -896,13 +896,13 @@
 
 - (double)waveformVerticalHeightReduction
 {
-  v3 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = -8.0;
-  if ((v3 & 1) == 0)
+  if ((_usesVibrantUI & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = 90.0;
-    if (v5)
+    if (_isIOSMac)
     {
       return -38.0;
     }
@@ -918,9 +918,9 @@
     return 52.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 21.0;
-  if (v4)
+  if (_isIOSMac)
   {
     return 25.0;
   }
@@ -935,9 +935,9 @@
     return 52.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 70.0;
-  if (v4)
+  if (_isIOSMac)
   {
     return 0.0;
   }
@@ -947,13 +947,13 @@
 
 - (double)waveformViewBottomPadding
 {
-  v3 = [(RCRecorderStyleProvider *)self _usesVibrantUI];
+  _usesVibrantUI = [(RCRecorderStyleProvider *)self _usesVibrantUI];
   result = 10.0;
-  if ((v3 & 1) == 0)
+  if ((_usesVibrantUI & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = 12.987013;
-    if (!v5)
+    if (!_isIOSMac)
     {
       return 24.0;
     }
@@ -964,9 +964,9 @@
 
 - (double)waveformWaveWidth
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 1.2987013;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 1.0;
   }
@@ -976,10 +976,10 @@
 
 - (double)waveformHorizontalSpacing
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   [(RCRecorderStyleProvider *)self waveformWaveWidth];
   result = v4 + 3.0;
-  if (v3)
+  if (_isIOSMac)
   {
     return result / 0.77;
   }
@@ -989,9 +989,9 @@
 
 - (double)overviewWaveformWaveWidth
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 1.2987013;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 1.0;
   }
@@ -1001,10 +1001,10 @@
 
 - (double)overviewWaveformHorizontalSpacing
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   [(RCRecorderStyleProvider *)self overviewWaveformWaveWidth];
   result = v4 + 1.0;
-  if (v3)
+  if (_isIOSMac)
   {
     return result / 0.77;
   }
@@ -1014,9 +1014,9 @@
 
 - (double)waveformWaveVerticalPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 12.987013;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 10.0;
   }
@@ -1026,9 +1026,9 @@
 
 - (double)overviewWaveformWaveVerticalPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 12.987013;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 10.0;
   }
@@ -1038,9 +1038,9 @@
 
 - (double)compactWaveformWaveVerticalPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 23.3766234;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 18.0;
   }
@@ -1050,9 +1050,9 @@
 
 - (double)beginEndLabelsTopPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 6.49350649;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 5.0;
   }
@@ -1062,9 +1062,9 @@
 
 - (double)timeLineMajorTickHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 12.987013;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 10.0;
   }
@@ -1074,9 +1074,9 @@
 
 - (double)timeLineMinorTickHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 6.49350649;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 5.0;
   }
@@ -1086,9 +1086,9 @@
 
 - (double)annotationViewHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 35.0649351;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 27.0;
   }
@@ -1098,9 +1098,9 @@
 
 - (double)editToolbarTitleTopInset
 {
-  v2 = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
+  _isVibrantUIOrIOSMac = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
   result = 12.5;
-  if (v2)
+  if (_isVibrantUIOrIOSMac)
   {
     return 16.0;
   }
@@ -1110,9 +1110,9 @@
 
 - (double)editToolbarButtonTopInset
 {
-  v2 = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
+  _isVibrantUIOrIOSMac = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
   result = 6.0;
-  if (v2)
+  if (_isVibrantUIOrIOSMac)
   {
     return 9.0;
   }
@@ -1122,9 +1122,9 @@
 
 - (double)editTrimToolbarButtonTopInset
 {
-  v2 = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
+  _isVibrantUIOrIOSMac = [(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
   result = 14.0;
-  if (v2)
+  if (_isVibrantUIOrIOSMac)
   {
     return 11.0;
   }
@@ -1134,9 +1134,9 @@
 
 - (double)selectionKnobRadius
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 4.54545455;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 3.5;
   }
@@ -1146,9 +1146,9 @@
 
 - (double)selectionBarWidth
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 1.2987013;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 1.0;
   }
@@ -1158,9 +1158,9 @@
 
 - (double)compactStyleTimeBarDefaultHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 63.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 81.8181818;
   }
@@ -1179,8 +1179,8 @@
 
 - (id)cardPlayImage
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIPad];
-  if (v2)
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
+  if (_isWideIPad)
   {
     v3 = 4;
   }
@@ -1191,7 +1191,7 @@
   }
 
   v4 = 42.0;
-  if (v2)
+  if (_isWideIPad)
   {
     v4 = 50.0;
   }
@@ -1214,8 +1214,8 @@
 
 - (id)cardPauseImage
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIPad];
-  if (v2)
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
+  if (_isWideIPad)
   {
     v3 = 4;
   }
@@ -1226,7 +1226,7 @@
   }
 
   v4 = 42.0;
-  if (v2)
+  if (_isWideIPad)
   {
     v4 = 50.0;
   }
@@ -1241,16 +1241,16 @@
 - (id)libraryGoBackwardImage
 {
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:2 scale:22.0];
-  v4 = [(RCRecorderStyleProvider *)self _gobackwardSystemImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  _gobackwardSystemImage = [(RCRecorderStyleProvider *)self _gobackwardSystemImage];
+  v5 = [_gobackwardSystemImage imageWithSymbolConfiguration:v3];
 
   return v5;
 }
 
 - (id)cardGoBackwardImage
 {
-  v3 = [(RCRecorderStyleProvider *)self _isWideIPad];
-  if (v3)
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
+  if (_isWideIPad)
   {
     v4 = 4;
   }
@@ -1261,14 +1261,14 @@
   }
 
   v5 = 25.0;
-  if (v3)
+  if (_isWideIPad)
   {
     v5 = 31.0;
   }
 
   v6 = [UIImageSymbolConfiguration configurationWithPointSize:v4 weight:2 scale:v5];
-  v7 = [(RCRecorderStyleProvider *)self _gobackwardSystemImage];
-  v8 = [v7 imageWithSymbolConfiguration:v6];
+  _gobackwardSystemImage = [(RCRecorderStyleProvider *)self _gobackwardSystemImage];
+  v8 = [_gobackwardSystemImage imageWithSymbolConfiguration:v6];
 
   return v8;
 }
@@ -1292,16 +1292,16 @@
 - (id)libraryGoForwardImage
 {
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:2 scale:22.0];
-  v4 = [(RCRecorderStyleProvider *)self _goforwardSystemImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  _goforwardSystemImage = [(RCRecorderStyleProvider *)self _goforwardSystemImage];
+  v5 = [_goforwardSystemImage imageWithSymbolConfiguration:v3];
 
   return v5;
 }
 
 - (id)cardGoForwardImage
 {
-  v3 = [(RCRecorderStyleProvider *)self _isWideIPad];
-  if (v3)
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
+  if (_isWideIPad)
   {
     v4 = 4;
   }
@@ -1312,14 +1312,14 @@
   }
 
   v5 = 25.0;
-  if (v3)
+  if (_isWideIPad)
   {
     v5 = 31.0;
   }
 
   v6 = [UIImageSymbolConfiguration configurationWithPointSize:v4 weight:2 scale:v5];
-  v7 = [(RCRecorderStyleProvider *)self _goforwardSystemImage];
-  v8 = [v7 imageWithSymbolConfiguration:v6];
+  _goforwardSystemImage = [(RCRecorderStyleProvider *)self _goforwardSystemImage];
+  v8 = [_goforwardSystemImage imageWithSymbolConfiguration:v6];
 
   return v8;
 }
@@ -1374,16 +1374,16 @@
 
 - (id)favoriteImage
 {
-  v2 = [(RCRecorderStyleProvider *)self favoriteImageName];
-  v3 = [UIImage systemImageNamed:v2];
+  favoriteImageName = [(RCRecorderStyleProvider *)self favoriteImageName];
+  v3 = [UIImage systemImageNamed:favoriteImageName];
 
   return v3;
 }
 
 - (id)notFavoriteImage
 {
-  v2 = [(RCRecorderStyleProvider *)self notFavoriteImageName];
-  v3 = [UIImage systemImageNamed:v2];
+  notFavoriteImageName = [(RCRecorderStyleProvider *)self notFavoriteImageName];
+  v3 = [UIImage systemImageNamed:notFavoriteImageName];
 
   return v3;
 }
@@ -1404,9 +1404,9 @@
   return v3;
 }
 
-- (id)windowHeaderSpacerViewBackgroundColor:(BOOL)a3
+- (id)windowHeaderSpacerViewBackgroundColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     +[UIColor blackColor];
   }
@@ -1420,10 +1420,10 @@
   return v3;
 }
 
-- (id)transportControlsColorForPlaybackCard:(BOOL)a3
+- (id)transportControlsColorForPlaybackCard:(BOOL)card
 {
   v3 = 0.129411765;
-  if (a3)
+  if (card)
   {
     v3 = 1.0;
   }
@@ -1434,14 +1434,14 @@
 - (id)actionControlsColorForPlaybackCard
 {
   v2 = objc_opt_new();
-  v3 = [v2 tintColor];
+  tintColor = [v2 tintColor];
 
-  return v3;
+  return tintColor;
 }
 
-- (id)playbackCardTopGradientColor:(BOOL)a3
+- (id)playbackCardTopGradientColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     [(RCRecorderStyleProvider *)self recordingCardTopGradientColor];
   }
@@ -1455,9 +1455,9 @@
   return v3;
 }
 
-- (id)playbackCardBottomGradientColor:(BOOL)a3
+- (id)playbackCardBottomGradientColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     [(RCRecorderStyleProvider *)self recordingCardBottomGradientColor];
   }
@@ -1471,9 +1471,9 @@
   return v3;
 }
 
-- (id)playbackCardTopBorderColor1:(BOOL)a3
+- (id)playbackCardTopBorderColor1:(BOOL)color1
 {
-  if (a3)
+  if (color1)
   {
     [(RCRecorderStyleProvider *)self recordingCardTopBorderColor1];
   }
@@ -1487,9 +1487,9 @@
   return v3;
 }
 
-- (id)playbackCardTopBorderColor2:(BOOL)a3
+- (id)playbackCardTopBorderColor2:(BOOL)color2
 {
-  if (a3)
+  if (color2)
   {
     [(RCRecorderStyleProvider *)self recordingCardTopBorderColor2];
   }
@@ -1503,9 +1503,9 @@
   return v3;
 }
 
-- (id)splitViewSeparatorColor:(BOOL)a3
+- (id)splitViewSeparatorColor:(BOOL)color
 {
-  if ([(RCRecorderStyleProvider *)self _isIOSMac]&& a3)
+  if ([(RCRecorderStyleProvider *)self _isIOSMac]&& color)
   {
     v5 = +[UIColor systemBlackColor];
   }
@@ -1513,19 +1513,19 @@
   else
   {
     v6 = +[UIColor separatorColor];
-    v7 = [(RCRecorderStyleProvider *)self sidebarCollectionViewBackgroundColor];
+    sidebarCollectionViewBackgroundColor = [(RCRecorderStyleProvider *)self sidebarCollectionViewBackgroundColor];
     [v6 alphaComponent];
-    v5 = [v7 colorWithAlphaComponent:?];
+    v5 = [sidebarCollectionViewBackgroundColor colorWithAlphaComponent:?];
   }
 
   return v5;
 }
 
-- (id)recordingCardDefaultBackgroundColor:(BOOL)a3
+- (id)recordingCardDefaultBackgroundColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   v5 = +[UIColor secondarySystemBackgroundColor];
-  if ([(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac]|| !v3)
+  if ([(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac]|| !colorCopy)
   {
     v6 = +[UIColor systemBackgroundColor];
 
@@ -1563,15 +1563,15 @@
 {
   if ([(RCRecorderStyleProvider *)self recordingTableViewSupportsSidebarBackgroundConfiguration])
   {
-    v3 = [(RCRecorderStyleProvider *)self recordingCardBottomAccessoryBackgroundColor];
+    recordingCardBottomAccessoryBackgroundColor = [(RCRecorderStyleProvider *)self recordingCardBottomAccessoryBackgroundColor];
   }
 
   else
   {
-    v3 = 0;
+    recordingCardBottomAccessoryBackgroundColor = 0;
   }
 
-  return v3;
+  return recordingCardBottomAccessoryBackgroundColor;
 }
 
 - (id)sidebarNavBarNewFolderImageTintColor
@@ -1634,9 +1634,9 @@
 
 - (double)sidebarCollectionViewTopPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 0.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 7.0;
   }
@@ -1646,9 +1646,9 @@
 
 - (double)presentedViewsMinimumWidth
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 500.0;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 0.0;
   }
@@ -1672,11 +1672,11 @@
   return v2;
 }
 
-- (id)recordingControlOuterColor:(BOOL)a3
+- (id)recordingControlOuterColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[UIColor systemGrayColor];
-  if (v3)
+  if (colorCopy)
   {
     v5 = +[UIColor labelColor];
 
@@ -1697,9 +1697,9 @@
 
 - (double)recordingSectionDoneButtonDisabledOpacity
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
+  _isWideIpadOrIOSMac = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
   result = 0.2;
-  if (v2)
+  if (_isWideIpadOrIOSMac)
   {
     return 0.575;
   }
@@ -1707,10 +1707,10 @@
   return result;
 }
 
-- (id)emptyLibraryMessageTextColor:(BOOL)a3
+- (id)emptyLibraryMessageTextColor:(BOOL)color
 {
   v3 = 0.59;
-  if (a3)
+  if (color)
   {
     v3 = 0.39;
   }
@@ -1720,9 +1720,9 @@
   return v4;
 }
 
-- (id)emptyLibraryBackgroundColor:(BOOL)a3
+- (id)emptyLibraryBackgroundColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   if ([(RCRecorderStyleProvider *)self showsEmptyLibraryMessageInLibrary])
   {
     [(RCRecorderStyleProvider *)self tableViewBackgroundColor];
@@ -1730,7 +1730,7 @@
 
   else
   {
-    [(RCRecorderStyleProvider *)self playbackViewBackgroundColor:v3];
+    [(RCRecorderStyleProvider *)self playbackViewBackgroundColor:colorCopy];
   }
   v5 = ;
 
@@ -1807,10 +1807,10 @@
   return v3;
 }
 
-- (id)waveformPlaybackBackgroundColor:(BOOL)a3
+- (id)waveformPlaybackBackgroundColor:(BOOL)color
 {
-  v3 = a3;
-  if ([(RCRecorderStyleProvider *)self _isIpadOrIOSMac]&& v3)
+  colorCopy = color;
+  if ([(RCRecorderStyleProvider *)self _isIpadOrIOSMac]&& colorCopy)
   {
     v5 = +[UIColor tertiarySystemFillColor];
     [v5 alphaComponent];
@@ -1835,10 +1835,10 @@
   return v12;
 }
 
-- (id)waveformPlaybackHighlightedBackgroundColor:(BOOL)a3
+- (id)waveformPlaybackHighlightedBackgroundColor:(BOOL)color
 {
-  v3 = a3;
-  if ([(RCRecorderStyleProvider *)self _isIpadOrIOSMac]&& v3)
+  colorCopy = color;
+  if ([(RCRecorderStyleProvider *)self _isIpadOrIOSMac]&& colorCopy)
   {
     v5 = +[UIColor tertiarySystemFillColor];
     [v5 alphaComponent];
@@ -1851,14 +1851,14 @@
 
   else
   {
-    v11 = [(RCRecorderStyleProvider *)self _isCompactWidth];
+    _isCompactWidth = [(RCRecorderStyleProvider *)self _isCompactWidth];
     v12 = +[UIColor quaternarySystemFillColor];
     [v12 alphaComponent];
     v14 = v13;
 
     v8 = +[UIColor quaternarySystemFillColor];
     v9 = v8;
-    if (v11 && v3)
+    if (_isCompactWidth && colorCopy)
     {
       v15 = 0.65;
     }
@@ -1876,9 +1876,9 @@
   return v16;
 }
 
-- (id)waveformStandardColor:(BOOL)a3
+- (id)waveformStandardColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     +[UIColor whiteColor];
   }
@@ -1892,11 +1892,11 @@
   return v3;
 }
 
-- (id)timelinePlaybackBackgroundColor:(BOOL)a3
+- (id)timelinePlaybackBackgroundColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   v5 = +[UIColor systemBackgroundColor];
-  if (v3 && [(RCRecorderStyleProvider *)self _isIphone])
+  if (colorCopy && [(RCRecorderStyleProvider *)self _isIphone])
   {
     v6 = +[UIColor secondarySystemBackgroundColor];
 
@@ -1930,9 +1930,9 @@
   return v3;
 }
 
-- (id)minTrackTintColor:(BOOL)a3
+- (id)minTrackTintColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 0.898039216;
     v4 = 0.917647059;
@@ -1949,9 +1949,9 @@
   return v5;
 }
 
-- (id)maxTrackTintColor:(BOOL)a3
+- (id)maxTrackTintColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 0.180392157;
     v4 = 0.184313725;
@@ -2008,9 +2008,9 @@
   v4 = 28.0;
   if (![(RCRecorderStyleProvider *)self _isIOSMac])
   {
-    v5 = [(RCRecorderStyleProvider *)self _isWideIPad];
-    v4 = v5 ? 34.0 : 22.0;
-    if (v5)
+    _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
+    v4 = _isWideIPad ? 34.0 : 22.0;
+    if (_isWideIPad)
     {
       v3 = UIFontWeightBold;
     }
@@ -2034,15 +2034,15 @@
 
 - (id)editingToolbarTitleLabelFont
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWatch];
+  _isWatch = [(RCRecorderStyleProvider *)self _isWatch];
   v3 = 17.0;
-  if (v2)
+  if (_isWatch)
   {
     v3 = 21.0;
   }
 
   v4 = &UIFontWeightMedium;
-  if (!v2)
+  if (!_isWatch)
   {
     v4 = &UIFontWeightSemibold;
   }
@@ -2054,9 +2054,9 @@
 
 - (id)durationLabelFontForCompactRecordingView
 {
-  v2 = [(RCRecorderStyleProvider *)self isAccessibilityLargerTextSizeEnabled];
+  isAccessibilityLargerTextSizeEnabled = [(RCRecorderStyleProvider *)self isAccessibilityLargerTextSizeEnabled];
   v3 = 17.0;
-  if (v2)
+  if (isAccessibilityLargerTextSizeEnabled)
   {
     v3 = 15.0;
   }
@@ -2068,9 +2068,9 @@
 
 - (id)timeLineLabelFont
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   v3 = 15.5844156;
-  if (!v2)
+  if (!_isIOSMac)
   {
     v3 = 12.0;
   }
@@ -2078,12 +2078,12 @@
   return [UIFont systemFontOfSize:v3];
 }
 
-- (id)progressViewBackgroundColorTableViewCell:(BOOL)a3
+- (id)progressViewBackgroundColorTableViewCell:(BOOL)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   if ([(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac])
   {
-    [(RCRecorderStyleProvider *)self progressViewBackgroundColorEditingCard:v3];
+    [(RCRecorderStyleProvider *)self progressViewBackgroundColorEditingCard:cellCopy];
   }
 
   else
@@ -2139,10 +2139,10 @@
 - (BOOL)isAccessibilityLargerTextSizeEnabled
 {
   v3 = +[UIContentSizeCategoryPreference system];
-  v4 = [v3 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
 
-  v5 = [(RCRecorderStyleProvider *)self accessibilityLargeSizes];
-  LOBYTE(v3) = [v5 containsObject:v4];
+  accessibilityLargeSizes = [(RCRecorderStyleProvider *)self accessibilityLargeSizes];
+  LOBYTE(v3) = [accessibilityLargeSizes containsObject:preferredContentSizeCategory];
 
   return v3;
 }
@@ -2185,13 +2185,13 @@
 
 - (BOOL)needsTouchDownWorkaround
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIpad];
-  if (v3)
+  _isIpad = [(RCRecorderStyleProvider *)self _isIpad];
+  if (_isIpad)
   {
-    LOBYTE(v3) = ![(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
+    LOBYTE(_isIpad) = ![(RCRecorderStyleProvider *)self _isVibrantUIOrIOSMac];
   }
 
-  return v3;
+  return _isIpad;
 }
 
 - (id)activityImageSymbolConfiguration

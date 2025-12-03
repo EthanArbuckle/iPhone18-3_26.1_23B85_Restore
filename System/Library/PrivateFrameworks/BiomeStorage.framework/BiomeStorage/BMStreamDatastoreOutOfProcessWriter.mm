@@ -1,22 +1,22 @@
 @interface BMStreamDatastoreOutOfProcessWriter
-- (BMStreamDatastoreOutOfProcessWriter)initWithStream:(id)a3 user:(unsigned int)a4 eventDataClass:(Class)a5;
-- (BOOL)writeEventWithEventBody:(id)a3 timestamp:(double)a4 outEventSize:(unint64_t *)a5;
+- (BMStreamDatastoreOutOfProcessWriter)initWithStream:(id)stream user:(unsigned int)user eventDataClass:(Class)class;
+- (BOOL)writeEventWithEventBody:(id)body timestamp:(double)timestamp outEventSize:(unint64_t *)size;
 @end
 
 @implementation BMStreamDatastoreOutOfProcessWriter
 
-- (BMStreamDatastoreOutOfProcessWriter)initWithStream:(id)a3 user:(unsigned int)a4 eventDataClass:(Class)a5
+- (BMStreamDatastoreOutOfProcessWriter)initWithStream:(id)stream user:(unsigned int)user eventDataClass:(Class)class
 {
-  v8 = a3;
+  streamCopy = stream;
   v14.receiver = self;
   v14.super_class = BMStreamDatastoreOutOfProcessWriter;
   v9 = [(BMStreamDatastoreOutOfProcessWriter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_class = a5;
-    v9->_user = a4;
-    v11 = [v8 copy];
+    v9->_class = class;
+    v9->_user = user;
+    v11 = [streamCopy copy];
     streamIdentifier = v10->_streamIdentifier;
     v10->_streamIdentifier = v11;
 
@@ -26,12 +26,12 @@
   return v10;
 }
 
-- (BOOL)writeEventWithEventBody:(id)a3 timestamp:(double)a4 outEventSize:(unint64_t *)a5
+- (BOOL)writeEventWithEventBody:(id)body timestamp:(double)timestamp outEventSize:(unint64_t *)size
 {
-  v8 = a3;
+  bodyCopy = body;
   v9 = objc_autoreleasePoolPush();
-  v10 = [v8 serialize];
-  v11 = [v8 dataVersion];
+  serialize = [bodyCopy serialize];
+  dataVersion = [bodyCopy dataVersion];
   os_unfair_lock_lock(&self->_lock);
   v12 = self->_class;
   if (v12)
@@ -68,13 +68,13 @@
   streamIdentifier = self->_streamIdentifier;
   user = self->_user;
   v23 = 0;
-  v14 = [(BMWriteService *)writeService writeData:v10 version:v11 timestamp:streamIdentifier toStream:user asUser:&v23 error:a4];
+  v14 = [(BMWriteService *)writeService writeData:serialize version:dataVersion timestamp:streamIdentifier toStream:user asUser:&v23 error:timestamp];
   v13 = v23;
   if (v14)
   {
-    if (a5)
+    if (size)
     {
-      *a5 = [v10 length];
+      *size = [serialize length];
     }
   }
 

@@ -20,15 +20,15 @@
 
   if (newCookieStorageEnabled(void)::enabled == 1)
   {
-    v3 = [[NSHTTPCookieStorageToCookie2Storage alloc] initMemoryCookieStore];
+    initMemoryCookieStore = [[NSHTTPCookieStorageToCookie2Storage alloc] initMemoryCookieStore];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    initMemoryCookieStore = objc_opt_new();
   }
 
-  [v2 setHTTPCookieStorage:v3];
+  [v2 setHTTPCookieStorage:initMemoryCookieStore];
   if (dyld_program_sdk_at_least())
   {
     v4 = 512000;
@@ -126,7 +126,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_self() == a1)
+  if (objc_opt_self() == self)
   {
     [MEMORY[0x1E696ACD0] setClass:objc_opt_class() forClassName:@"__NSCFURLSessionConfiguration"];
     [MEMORY[0x1E696ACD0] setClass:objc_opt_class() forClassName:@"__NSCFURLSessionConfiguration_Mutable"];
@@ -162,15 +162,15 @@ char *__56__NSURLSessionConfiguration_defaultSessionConfiguration__block_invoke(
   {
     if (self->_disposition == qword_1EE5B0CA8)
     {
-      v3 = [[_NSHSTSStorage alloc] initInMemoryStore];
+      initInMemoryStore = [[_NSHSTSStorage alloc] initInMemoryStore];
     }
 
     else
     {
-      v3 = +[_NSHSTSStorage sharedPersistentStore];
+      initInMemoryStore = +[_NSHSTSStorage sharedPersistentStore];
     }
 
-    [(NSURLSessionConfiguration *)self set_hstsStorage:v3];
+    [(NSURLSessionConfiguration *)self set_hstsStorage:initInMemoryStore];
   }
 
   return [(NSURLSessionConfiguration *)self _phskip_hstsStorage];

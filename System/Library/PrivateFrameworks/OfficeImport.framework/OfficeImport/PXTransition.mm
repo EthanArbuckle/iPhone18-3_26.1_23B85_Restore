@@ -1,27 +1,27 @@
 @interface PXTransition
-+ (BOOL)isPowerPoint2010TransitionType:(int)a3;
-+ (BOOL)isPowerPoint2013TransitionType:(int)a3;
-+ (BOOL)mapDirection:(id)a3 outDir:(int *)a4;
++ (BOOL)isPowerPoint2010TransitionType:(int)type;
++ (BOOL)isPowerPoint2013TransitionType:(int)type;
++ (BOOL)mapDirection:(id)direction outDir:(int *)dir;
 + (TCEnumerationMap)directionAttributeMap;
 + (TCEnumerationMap)reverseDirectionAttributeMap;
 + (TCEnumerationMap)transitionNodeMap;
-+ (int)readDirection:(_xmlNode *)a3 defaultValue:(int)a4;
-+ (int)readInOut:(_xmlNode *)a3 defaultValue:(int)a4;
-+ (int)readOrientation:(_xmlNode *)a3 attribute:(const char *)a4 defaultValue:(int)a5;
-+ (int)readReverseDirection:(_xmlNode *)a3 defaultValue:(int)a4;
++ (int)readDirection:(_xmlNode *)direction defaultValue:(int)value;
++ (int)readInOut:(_xmlNode *)out defaultValue:(int)value;
++ (int)readOrientation:(_xmlNode *)orientation attribute:(const char *)attribute defaultValue:(int)value;
++ (int)readReverseDirection:(_xmlNode *)direction defaultValue:(int)value;
 + (void)directionAttributeMap;
-+ (void)readTransitionFromNode:(_xmlNode *)a3 tgtTransition:(id)a4 drawingState:(id)a5;
++ (void)readTransitionFromNode:(_xmlNode *)node tgtTransition:(id)transition drawingState:(id)state;
 + (void)reverseDirectionAttributeMap;
 + (void)transitionNodeMap;
-+ (void)writeDirection:(int)a3 file:(id)a4;
-+ (void)writeInOut:(int)a3 file:(id)a4;
-+ (void)writeOrientation:(int)a3 withAttributeName:(id)a4 file:(id)a5;
-+ (void)writeReverseDirection:(int)a3 file:(id)a4;
-+ (void)writeReverseInOut:(int)a3 file:(id)a4;
-+ (void)writeReverseOrientation:(int)a3 withAttributeName:(id)a4 file:(id)a5;
-+ (void)writeTransitionAttributes:(id)a3 attributePrefix:(id)a4 file:(id)a5;
-+ (void)writeTransitionFromSlideBase:(id)a3 file:(id)a4 state:(id)a5;
-+ (void)writeTransitionOptions:(id)a3 transitionType:(int)a4 file:(id)a5;
++ (void)writeDirection:(int)direction file:(id)file;
++ (void)writeInOut:(int)out file:(id)file;
++ (void)writeOrientation:(int)orientation withAttributeName:(id)name file:(id)file;
++ (void)writeReverseDirection:(int)direction file:(id)file;
++ (void)writeReverseInOut:(int)out file:(id)file;
++ (void)writeReverseOrientation:(int)orientation withAttributeName:(id)name file:(id)file;
++ (void)writeTransitionAttributes:(id)attributes attributePrefix:(id)prefix file:(id)file;
++ (void)writeTransitionFromSlideBase:(id)base file:(id)file state:(id)state;
++ (void)writeTransitionOptions:(id)options transitionType:(int)type file:(id)file;
 @end
 
 @implementation PXTransition
@@ -95,15 +95,15 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
   +[PXTransition reverseDirectionAttributeMap]::sReverseDirectionAttributeMap = v0;
 }
 
-+ (void)readTransitionFromNode:(_xmlNode *)a3 tgtTransition:(id)a4 drawingState:(id)a5
++ (void)readTransitionFromNode:(_xmlNode *)node tgtTransition:(id)transition drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v44 = v8;
-  [v8 setType:0];
-  v42 = a3;
-  v43 = v9;
-  v10 = OCXFirstChild(a3);
+  transitionCopy = transition;
+  stateCopy = state;
+  v44 = transitionCopy;
+  [transitionCopy setType:0];
+  nodeCopy = node;
+  v43 = stateCopy;
+  v10 = OCXFirstChild(node);
   v11 = 0;
   while (v10)
   {
@@ -128,12 +128,12 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
 
     if ([v12 length])
     {
-      v13 = [a1 transitionNodeMap];
-      v14 = [v13 valueForString:v12];
+      transitionNodeMap = [self transitionNodeMap];
+      v14 = [transitionNodeMap valueForString:v12];
 
       if (v14 != -130883970)
       {
-        [v8 setType:v14];
+        [transitionCopy setType:v14];
         v11 = v10;
       }
     }
@@ -141,10 +141,10 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     v10 = OCXNextSibling(v10);
   }
 
-  v15 = [v8 type];
-  v16 = v42;
+  type = [transitionCopy type];
+  v16 = nodeCopy;
   v17 = 0;
-  switch(v15)
+  switch(type)
   {
     case 0:
       break;
@@ -154,7 +154,7 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     case 14:
     case 38:
     case 51:
-      v18 = [a1 readOrientation:v11 attribute:"dir" defaultValue:0];
+      v18 = [self readOrientation:v11 attribute:"dir" defaultValue:0];
       v17 = objc_alloc_init(PDOrientationOptions);
       [(PDOrientationOptions *)v17 setOrientation:v18];
       break;
@@ -165,7 +165,7 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     case 36:
     case 44:
     case 52:
-      v35 = [a1 readDirection:v11 defaultValue:1];
+      v35 = [self readDirection:v11 defaultValue:1];
       v17 = objc_alloc_init(PDSideDirectionOptions);
       [(PDOrientationOptions *)v17 setDirection:v35];
       break;
@@ -173,7 +173,7 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     case 35:
     case 40:
     case 45:
-      if (v15 == 40)
+      if (type == 40)
       {
         v19 = 8;
       }
@@ -183,13 +183,13 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
         v19 = 1;
       }
 
-      v20 = [a1 readDirection:v11 defaultValue:{v19, v42, v43}];
+      v20 = [self readDirection:v11 defaultValue:{v19, nodeCopy, v43}];
       v17 = objc_alloc_init(PDEightDirectionOptions);
       [(PDOrientationOptions *)v17 setDirection:v20];
       break;
     case 9:
     case 34:
-      v26 = [a1 readDirection:v11 defaultValue:1];
+      v26 = [self readDirection:v11 defaultValue:1];
       v17 = objc_alloc_init(PDPrismOptions);
       [(PDOrientationOptions *)v17 setDirection:v26];
       v27 = CXDefaultBoolAttribute(v11, CXNoNamespace, "isContent", 0);
@@ -208,7 +208,7 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
       [(PDOrientationOptions *)v17 setInOut:1];
       break;
     case 20:
-      v34 = [a1 readDirection:v11 defaultValue:1];
+      v34 = [self readDirection:v11 defaultValue:1];
       v17 = objc_alloc_init(PDEightDirectionOptions);
       [(PDOrientationOptions *)v17 setDirection:v34];
       break;
@@ -216,13 +216,13 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     case 41:
     case 46:
     case 53:
-      v24 = v15 != 21 && v15 != 41;
-      v25 = [a1 readInOut:v11 defaultValue:{v24, v42, v43}];
+      v24 = type != 21 && type != 41;
+      v25 = [self readInOut:v11 defaultValue:{v24, nodeCopy, v43}];
       v17 = objc_alloc_init(PDInOutDirectionOptions);
       [(PDOrientationOptions *)v17 setInOut:v25];
       break;
     case 24:
-      v33 = [a1 readReverseDirection:v11 defaultValue:3];
+      v33 = [self readReverseDirection:v11 defaultValue:3];
       v17 = objc_alloc_init(PDEightDirectionOptions);
       [(PDOrientationOptions *)v17 setDirection:v33];
       break;
@@ -242,20 +242,20 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
       [(PDOrientationOptions *)v17 setIsInvY:v22];
       break;
     case 39:
-      v37 = [a1 readDirection:v11 defaultValue:1];
+      v37 = [self readDirection:v11 defaultValue:1];
       v17 = objc_alloc_init(PDRevealOptions);
       [(PDOrientationOptions *)v17 setDirection:v37];
       [(PDOrientationOptions *)v17 setIsThroughBlack:CXDefaultBoolAttribute(v11, CXNoNamespace, "thruBlk", 0)];
       break;
     case 42:
-      v30 = [a1 readOrientation:v11 attribute:"orient" defaultValue:0];
-      v31 = [a1 readInOut:v11 defaultValue:1];
+      v30 = [self readOrientation:v11 attribute:"orient" defaultValue:0];
+      v31 = [self readInOut:v11 defaultValue:1];
       v17 = objc_alloc_init(PDSplitDirectionOptions);
       [(PDOrientationOptions *)v17 setInOut:v31];
       [(PDOrientationOptions *)v17 setOrientation:v30];
       break;
     case 43:
-      v32 = [a1 readDirection:v11 defaultValue:4];
+      v32 = [self readDirection:v11 defaultValue:4];
       v17 = objc_alloc_init(PDCornerDirectionOptions);
       [(PDOrientationOptions *)v17 setDirection:v32];
       break;
@@ -295,7 +295,7 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
       v40 = 0;
     }
 
-    [v44 setSpeed:{v40, v42}];
+    [v44 setSpeed:{v40, nodeCopy}];
   }
 
   v46 = 0;
@@ -311,12 +311,12 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     [v44 setDuration:v41];
   }
 
-  [v44 setOptions:{v17, v42}];
+  [v44 setOptions:{v17, nodeCopy}];
 }
 
-+ (BOOL)isPowerPoint2010TransitionType:(int)a3
++ (BOOL)isPowerPoint2010TransitionType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v4 = +[PXTransition isPowerPoint2010TransitionType:]::ppt2010TransitionTypes;
   if (!+[PXTransition isPowerPoint2010TransitionType:]::ppt2010TransitionTypes)
   {
@@ -356,9 +356,9 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
   return v12;
 }
 
-+ (BOOL)isPowerPoint2013TransitionType:(int)a3
++ (BOOL)isPowerPoint2013TransitionType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v4 = +[PXTransition isPowerPoint2013TransitionType:]::ppt2013TransitionTypes;
   if (!+[PXTransition isPowerPoint2013TransitionType:]::ppt2013TransitionTypes)
   {
@@ -392,21 +392,21 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
   return v16;
 }
 
-+ (void)writeTransitionOptions:(id)a3 transitionType:(int)a4 file:(id)a5
++ (void)writeTransitionOptions:(id)options transitionType:(int)type file:(id)file
 {
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  fileCopy = file;
   v32 = 0;
-  v10 = [a1 mapDirection:v8 outDir:&v32];
-  switch(a4)
+  v10 = [self mapDirection:optionsCopy outDir:&v32];
+  switch(type)
   {
     case 2:
       v24 = objc_opt_class();
-      v25 = TSUDynamicCast(v24, v8);
+      v25 = TSUDynamicCast(v24, optionsCopy);
       v14 = v25;
       if (v25)
       {
-        [a1 writeReverseOrientation:objc_msgSend(v25 withAttributeName:"orientation") file:{@"dir", v9}];
+        [self writeReverseOrientation:objc_msgSend(v25 withAttributeName:"orientation") file:{@"dir", fileCopy}];
       }
 
       goto LABEL_37;
@@ -416,11 +416,11 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     case 38:
     case 51:
       v12 = objc_opt_class();
-      v13 = TSUDynamicCast(v12, v8);
+      v13 = TSUDynamicCast(v12, optionsCopy);
       v14 = v13;
       if (v13)
       {
-        [a1 writeOrientation:objc_msgSend(v13 withAttributeName:"orientation") file:{@"dir", v9}];
+        [self writeOrientation:objc_msgSend(v13 withAttributeName:"orientation") file:{@"dir", fileCopy}];
       }
 
       goto LABEL_37;
@@ -447,7 +447,7 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     case 11:
     case 16:
       v17 = objc_opt_class();
-      v18 = TSUDynamicCast(v17, v8);
+      v18 = TSUDynamicCast(v17, optionsCopy);
       v14 = v18;
       if (v18)
       {
@@ -459,11 +459,11 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
     case 41:
     case 53:
       v15 = objc_opt_class();
-      v16 = TSUDynamicCast(v15, v8);
+      v16 = TSUDynamicCast(v15, optionsCopy);
       v14 = v16;
       if (v16)
       {
-        [a1 writeInOut:objc_msgSend(v16 file:{"inOut"), v9}];
+        [self writeInOut:objc_msgSend(v16 file:{"inOut"), fileCopy}];
       }
 
       goto LABEL_37;
@@ -481,40 +481,40 @@ void __44__PXTransition_reverseDirectionAttributeMap__block_invoke()
       }
 
 LABEL_4:
-      [a1 writeDirection:v11 file:v9];
+      [self writeDirection:v11 file:fileCopy];
       break;
     case 21:
     case 46:
       v19 = objc_opt_class();
-      v20 = TSUDynamicCast(v19, v8);
+      v20 = TSUDynamicCast(v19, optionsCopy);
       v14 = v20;
       if (v20)
       {
-        [a1 writeReverseInOut:objc_msgSend(v20 file:{"inOut"), v9}];
+        [self writeReverseInOut:objc_msgSend(v20 file:{"inOut"), fileCopy}];
       }
 
       goto LABEL_37;
     case 24:
       if (v10)
       {
-        [a1 writeReverseDirection:v32 file:v9];
+        [self writeReverseDirection:v32 file:fileCopy];
       }
 
       break;
     case 31:
       v26 = objc_opt_class();
-      v27 = TSUDynamicCast(v26, v8);
+      v27 = TSUDynamicCast(v26, optionsCopy);
       v14 = v27;
       if (v27)
       {
         if ([v27 isInvX])
         {
-          [v9 writeAttribute:@"invX" BOOLContent:1];
+          [fileCopy writeAttribute:@"invX" BOOLContent:1];
         }
 
         if ([v14 isInvY])
         {
-          [v9 writeAttribute:@"invY" BOOLContent:1];
+          [fileCopy writeAttribute:@"invY" BOOLContent:1];
         }
       }
 
@@ -522,53 +522,53 @@ LABEL_4:
     case 34:
       if (v10)
       {
-        [a1 writeDirection:v32 file:v9];
+        [self writeDirection:v32 file:fileCopy];
       }
 
       v30 = objc_opt_class();
-      v31 = TSUDynamicCast(v30, v8);
+      v31 = TSUDynamicCast(v30, optionsCopy);
       v14 = v31;
       if (v31)
       {
-        [v9 writeAttribute:@"isContent" BOOLContent:{objc_msgSend(v31, "isContent")}];
-        [v9 writeAttribute:@"isInverted" BOOLContent:{objc_msgSend(v14, "isInverted")}];
+        [fileCopy writeAttribute:@"isContent" BOOLContent:{objc_msgSend(v31, "isContent")}];
+        [fileCopy writeAttribute:@"isInverted" BOOLContent:{objc_msgSend(v14, "isInverted")}];
       }
 
       goto LABEL_37;
     case 39:
       if (v10)
       {
-        [a1 writeDirection:v32 file:v9];
+        [self writeDirection:v32 file:fileCopy];
       }
 
       v21 = objc_opt_class();
-      v18 = TSUDynamicCast(v21, v8);
+      v18 = TSUDynamicCast(v21, optionsCopy);
       v14 = v18;
       if (v18)
       {
 LABEL_10:
-        [v9 writeAttribute:@"thruBlk" BOOLContent:{objc_msgSend(v18, "isThroughBlack")}];
+        [fileCopy writeAttribute:@"thruBlk" BOOLContent:{objc_msgSend(v18, "isThroughBlack")}];
       }
 
       goto LABEL_37;
     case 42:
       v28 = objc_opt_class();
-      v29 = TSUDynamicCast(v28, v8);
+      v29 = TSUDynamicCast(v28, optionsCopy);
       v14 = v29;
       if (v29)
       {
-        [a1 writeOrientation:objc_msgSend(v29 withAttributeName:"orientation") file:{@"orient", v9}];
-        [a1 writeInOut:objc_msgSend(v14 file:{"inOut"), v9}];
+        [self writeOrientation:objc_msgSend(v29 withAttributeName:"orientation") file:{@"orient", fileCopy}];
+        [self writeInOut:objc_msgSend(v14 file:{"inOut"), fileCopy}];
       }
 
       goto LABEL_37;
     case 48:
       v22 = objc_opt_class();
-      v23 = TSUDynamicCast(v22, v8);
+      v23 = TSUDynamicCast(v22, optionsCopy);
       v14 = v23;
       if (v23)
       {
-        [v9 writeAttribute:@"spokes" intContent:{objc_msgSend(v23, "spokes")}];
+        [fileCopy writeAttribute:@"spokes" intContent:{objc_msgSend(v23, "spokes")}];
       }
 
 LABEL_37:
@@ -579,72 +579,72 @@ LABEL_37:
   }
 }
 
-+ (void)writeTransitionFromSlideBase:(id)a3 file:(id)a4 state:(id)a5
++ (void)writeTransitionFromSlideBase:(id)base file:(id)file state:(id)state
 {
-  v26 = a3;
-  v7 = a4;
-  v8 = [v26 transition];
-  v9 = v8;
-  if (v8 && ([v8 hasType] & 1) != 0)
+  baseCopy = base;
+  fileCopy = file;
+  transition = [baseCopy transition];
+  v9 = transition;
+  if (transition && ([transition hasType] & 1) != 0)
   {
-    v10 = [v9 type];
-    if (!v10)
+    type = [v9 type];
+    if (!type)
     {
-      [v7 startElement:@"transition"];
-      [v7 writeNamespace:@"p14" uri:{objc_msgSend(PXPowerPoint2010Namespace, "uri")}];
-      [a1 writeTransitionAttributes:v9 attributePrefix:@"p14" file:v7];
-      [v7 endElement];
+      [fileCopy startElement:@"transition"];
+      [fileCopy writeNamespace:@"p14" uri:{objc_msgSend(PXPowerPoint2010Namespace, "uri")}];
+      [self writeTransitionAttributes:v9 attributePrefix:@"p14" file:fileCopy];
+      [fileCopy endElement];
       goto LABEL_27;
     }
 
-    [v7 startElement:@"AlternateContent" prefix:@"mc" ns:{objc_msgSend(OCXMarkupCompatibilityNamespace, "uri")}];
-    v11 = [v9 hasTransitionOptions];
-    if ([a1 isPowerPoint2013TransitionType:v10])
+    [fileCopy startElement:@"AlternateContent" prefix:@"mc" ns:{objc_msgSend(OCXMarkupCompatibilityNamespace, "uri")}];
+    hasTransitionOptions = [v9 hasTransitionOptions];
+    if ([self isPowerPoint2013TransitionType:type])
     {
-      [v7 startElement:@"Choice" prefix:@"mc" ns:0];
-      [v7 writeNamespace:@"p15" uri:{objc_msgSend(PXPowerPoint2012Namespace, "uri")}];
-      [v7 writeAttribute:@"Requires" content:@"p15" prefix:0 ns:0];
-      [v7 startElement:@"transition"];
-      [v7 writeNamespace:@"p14" uri:{objc_msgSend(PXPowerPoint2010Namespace, "uri")}];
-      [a1 writeTransitionAttributes:v9 attributePrefix:@"p14" file:v7];
-      [v7 startElement:@"prstTrans" prefix:@"p15" ns:0];
-      v12 = [a1 transitionNodeMap];
-      v13 = [v12 stringForValue:v10];
-      [v7 writeAttribute:@"prst" content:v13];
+      [fileCopy startElement:@"Choice" prefix:@"mc" ns:0];
+      [fileCopy writeNamespace:@"p15" uri:{objc_msgSend(PXPowerPoint2012Namespace, "uri")}];
+      [fileCopy writeAttribute:@"Requires" content:@"p15" prefix:0 ns:0];
+      [fileCopy startElement:@"transition"];
+      [fileCopy writeNamespace:@"p14" uri:{objc_msgSend(PXPowerPoint2010Namespace, "uri")}];
+      [self writeTransitionAttributes:v9 attributePrefix:@"p14" file:fileCopy];
+      [fileCopy startElement:@"prstTrans" prefix:@"p15" ns:0];
+      transitionNodeMap = [self transitionNodeMap];
+      v13 = [transitionNodeMap stringForValue:type];
+      [fileCopy writeAttribute:@"prst" content:v13];
 
-      if (v11)
+      if (hasTransitionOptions)
       {
-        v14 = [v9 options];
-        [a1 writeTransitionOptions:v14 transitionType:v10 file:v7];
+        options = [v9 options];
+        [self writeTransitionOptions:options transitionType:type file:fileCopy];
       }
 
       else
       {
-        v14 = 0;
+        options = 0;
       }
 
-      [v7 endElement];
-      [v7 endElement];
-      [v7 endElement];
-      v16 = [v26 ppt2011Transition];
+      [fileCopy endElement];
+      [fileCopy endElement];
+      [fileCopy endElement];
+      ppt2011Transition = [baseCopy ppt2011Transition];
 
-      if (!v16 || ([v26 ppt2011Transition], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!ppt2011Transition || ([baseCopy ppt2011Transition], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v15 = 0;
 LABEL_26:
-        [v7 startElement:@"Fallback" prefix:@"mc" ns:0];
-        [v7 startElement:@"transition"];
-        v23 = [v26 transition];
-        [a1 writeTransitionAttributes:v23 attributePrefix:0 file:v7];
+        [fileCopy startElement:@"Fallback" prefix:@"mc" ns:0];
+        [fileCopy startElement:@"transition"];
+        transition2 = [baseCopy transition];
+        [self writeTransitionAttributes:transition2 attributePrefix:0 file:fileCopy];
 
-        v24 = [a1 transitionNodeMap];
-        v25 = [v24 stringForValue:16];
-        [v7 startElement:v25];
+        transitionNodeMap2 = [self transitionNodeMap];
+        v25 = [transitionNodeMap2 stringForValue:16];
+        [fileCopy startElement:v25];
 
-        [v7 endElement];
-        [v7 endElement];
-        [v7 endElement];
-        [v7 endElement];
+        [fileCopy endElement];
+        [fileCopy endElement];
+        [fileCopy endElement];
+        [fileCopy endElement];
 
         goto LABEL_27;
       }
@@ -655,159 +655,159 @@ LABEL_26:
     else
     {
       v15 = v9;
-      v14 = 0;
+      options = 0;
     }
 
-    v18 = [v15 type];
-    [v7 startElement:@"Choice" prefix:@"mc" ns:0];
-    [v7 writeNamespace:@"p14" uri:{objc_msgSend(PXPowerPoint2010Namespace, "uri")}];
-    [v7 writeAttribute:@"Requires" content:@"p14" prefix:0 ns:0];
-    [v7 startElement:@"transition"];
-    [a1 writeTransitionAttributes:v15 attributePrefix:@"p14" file:v7];
-    if ([a1 isPowerPoint2010TransitionType:v18])
+    type2 = [v15 type];
+    [fileCopy startElement:@"Choice" prefix:@"mc" ns:0];
+    [fileCopy writeNamespace:@"p14" uri:{objc_msgSend(PXPowerPoint2010Namespace, "uri")}];
+    [fileCopy writeAttribute:@"Requires" content:@"p14" prefix:0 ns:0];
+    [fileCopy startElement:@"transition"];
+    [self writeTransitionAttributes:v15 attributePrefix:@"p14" file:fileCopy];
+    if ([self isPowerPoint2010TransitionType:type2])
     {
-      if (v18 == 53)
+      if (type2 == 53)
       {
         v19 = 46;
       }
 
       else
       {
-        v19 = v18;
+        v19 = type2;
       }
 
       if (v19 == 9)
       {
-        v18 = 34;
+        type2 = 34;
       }
 
       else
       {
-        v18 = v19;
+        type2 = v19;
       }
 
-      v20 = [a1 transitionNodeMap];
-      v21 = [v20 stringForValue:v18];
-      [v7 startElement:v21 prefix:@"p14" ns:0];
+      transitionNodeMap3 = [self transitionNodeMap];
+      v21 = [transitionNodeMap3 stringForValue:type2];
+      [fileCopy startElement:v21 prefix:@"p14" ns:0];
     }
 
     else
     {
-      v20 = [a1 transitionNodeMap];
-      v21 = [v20 stringForValue:v18];
-      [v7 startElement:v21];
+      transitionNodeMap3 = [self transitionNodeMap];
+      v21 = [transitionNodeMap3 stringForValue:type2];
+      [fileCopy startElement:v21];
     }
 
     if ([v15 hasTransitionOptions])
     {
-      v22 = [v15 options];
+      options2 = [v15 options];
 
-      v14 = v22;
-      [a1 writeTransitionOptions:v22 transitionType:v18 file:v7];
+      options = options2;
+      [self writeTransitionOptions:options2 transitionType:type2 file:fileCopy];
     }
 
-    [v7 endElement];
-    [v7 endElement];
-    [v7 endElement];
+    [fileCopy endElement];
+    [fileCopy endElement];
+    [fileCopy endElement];
     goto LABEL_26;
   }
 
 LABEL_27:
 }
 
-+ (int)readDirection:(_xmlNode *)a3 defaultValue:(int)a4
++ (int)readDirection:(_xmlNode *)direction defaultValue:(int)value
 {
   v10 = 0;
-  v6 = CXOptionalStringAttribute(a3, CXNoNamespace, "dir", &v10);
+  v6 = CXOptionalStringAttribute(direction, CXNoNamespace, "dir", &v10);
   v7 = v10;
   if (v6)
   {
-    v8 = [a1 directionAttributeMap];
-    a4 = [v8 valueForString:v7];
+    directionAttributeMap = [self directionAttributeMap];
+    value = [directionAttributeMap valueForString:v7];
   }
 
-  return a4;
+  return value;
 }
 
-+ (int)readReverseDirection:(_xmlNode *)a3 defaultValue:(int)a4
++ (int)readReverseDirection:(_xmlNode *)direction defaultValue:(int)value
 {
   v10 = 0;
-  v6 = CXOptionalStringAttribute(a3, CXNoNamespace, "dir", &v10);
+  v6 = CXOptionalStringAttribute(direction, CXNoNamespace, "dir", &v10);
   v7 = v10;
   if (v6)
   {
-    v8 = [a1 reverseDirectionAttributeMap];
-    a4 = [v8 valueForString:v7];
+    reverseDirectionAttributeMap = [self reverseDirectionAttributeMap];
+    value = [reverseDirectionAttributeMap valueForString:v7];
   }
 
-  return a4;
+  return value;
 }
 
-+ (int)readOrientation:(_xmlNode *)a3 attribute:(const char *)a4 defaultValue:(int)a5
++ (int)readOrientation:(_xmlNode *)orientation attribute:(const char *)attribute defaultValue:(int)value
 {
   v10 = 0;
-  v6 = CXOptionalStringAttribute(a3, CXNoNamespace, a4, &v10);
+  v6 = CXOptionalStringAttribute(orientation, CXNoNamespace, attribute, &v10);
   v7 = v10;
   v8 = v7;
   if (v6)
   {
     if ([v7 isEqualToString:@"horz"])
     {
-      a5 = 0;
+      value = 0;
     }
 
     else if ([v8 isEqualToString:@"vert"])
     {
-      a5 = 1;
+      value = 1;
     }
   }
 
-  return a5;
+  return value;
 }
 
-+ (int)readInOut:(_xmlNode *)a3 defaultValue:(int)a4
++ (int)readInOut:(_xmlNode *)out defaultValue:(int)value
 {
   v9 = 0;
-  v5 = CXOptionalStringAttribute(a3, CXNoNamespace, "dir", &v9);
+  v5 = CXOptionalStringAttribute(out, CXNoNamespace, "dir", &v9);
   v6 = v9;
   v7 = v6;
   if (v5)
   {
     if ([v6 isEqualToString:@"out"])
     {
-      a4 = 1;
+      value = 1;
     }
 
     else if ([v7 isEqualToString:@"in"])
     {
-      a4 = 0;
+      value = 0;
     }
   }
 
-  return a4;
+  return value;
 }
 
-+ (void)writeDirection:(int)a3 file:(id)a4
++ (void)writeDirection:(int)direction file:(id)file
 {
-  v4 = *&a3;
-  v8 = a4;
-  v6 = [a1 directionAttributeMap];
-  v7 = [v6 stringForValue:v4];
-  [v8 writeAttribute:@"dir" content:v7];
+  v4 = *&direction;
+  fileCopy = file;
+  directionAttributeMap = [self directionAttributeMap];
+  v7 = [directionAttributeMap stringForValue:v4];
+  [fileCopy writeAttribute:@"dir" content:v7];
 }
 
-+ (void)writeReverseDirection:(int)a3 file:(id)a4
++ (void)writeReverseDirection:(int)direction file:(id)file
 {
-  v4 = *&a3;
-  v8 = a4;
-  v6 = [a1 reverseDirectionAttributeMap];
-  v7 = [v6 stringForValue:v4];
-  [v8 writeAttribute:@"dir" content:v7];
+  v4 = *&direction;
+  fileCopy = file;
+  reverseDirectionAttributeMap = [self reverseDirectionAttributeMap];
+  v7 = [reverseDirectionAttributeMap stringForValue:v4];
+  [fileCopy writeAttribute:@"dir" content:v7];
 }
 
-+ (void)writeOrientation:(int)a3 withAttributeName:(id)a4 file:(id)a5
++ (void)writeOrientation:(int)orientation withAttributeName:(id)name file:(id)file
 {
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v6 = @"vert";
   }
@@ -817,12 +817,12 @@ LABEL_27:
     v6 = @"horz";
   }
 
-  [a5 writeAttribute:a4 content:v6];
+  [file writeAttribute:name content:v6];
 }
 
-+ (void)writeReverseOrientation:(int)a3 withAttributeName:(id)a4 file:(id)a5
++ (void)writeReverseOrientation:(int)orientation withAttributeName:(id)name file:(id)file
 {
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v6 = @"horz";
   }
@@ -832,12 +832,12 @@ LABEL_27:
     v6 = @"vert";
   }
 
-  [a5 writeAttribute:a4 content:v6];
+  [file writeAttribute:name content:v6];
 }
 
-+ (void)writeInOut:(int)a3 file:(id)a4
++ (void)writeInOut:(int)out file:(id)file
 {
-  if (a3)
+  if (out)
   {
     v5 = @"out";
   }
@@ -847,12 +847,12 @@ LABEL_27:
     v5 = @"in";
   }
 
-  [a4 writeAttribute:@"dir" content:v5];
+  [file writeAttribute:@"dir" content:v5];
 }
 
-+ (void)writeReverseInOut:(int)a3 file:(id)a4
++ (void)writeReverseInOut:(int)out file:(id)file
 {
-  if (a3)
+  if (out)
   {
     v5 = @"in";
   }
@@ -862,44 +862,44 @@ LABEL_27:
     v5 = @"out";
   }
 
-  [a4 writeAttribute:@"dir" content:v5];
+  [file writeAttribute:@"dir" content:v5];
 }
 
-+ (BOOL)mapDirection:(id)a3 outDir:(int *)a4
++ (BOOL)mapDirection:(id)direction outDir:(int *)dir
 {
-  v5 = a3;
+  directionCopy = direction;
   v6 = 0;
-  if (v5 && a4)
+  if (directionCopy && dir)
   {
     v7 = objc_opt_class();
-    v8 = TSUDynamicCast(v7, v5);
+    v8 = TSUDynamicCast(v7, directionCopy);
     v9 = v8;
     if (v8)
     {
-      *a4 = [v8 direction];
+      *dir = [v8 direction];
       v6 = 1;
     }
 
     else
     {
       v10 = objc_opt_class();
-      v11 = TSUDynamicCast(v10, v5);
+      v11 = TSUDynamicCast(v10, directionCopy);
       v12 = v11;
       if (v11)
       {
-        *a4 = [v11 direction];
+        *dir = [v11 direction];
         v6 = 1;
       }
 
       else
       {
         v13 = objc_opt_class();
-        v14 = TSUDynamicCast(v13, v5);
+        v14 = TSUDynamicCast(v13, directionCopy);
         v15 = v14;
         v6 = v14 != 0;
         if (v14)
         {
-          *a4 = [v14 direction];
+          *dir = [v14 direction];
         }
       }
     }
@@ -908,23 +908,23 @@ LABEL_27:
   return v6;
 }
 
-+ (void)writeTransitionAttributes:(id)a3 attributePrefix:(id)a4 file:(id)a5
++ (void)writeTransitionAttributes:(id)attributes attributePrefix:(id)prefix file:(id)file
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v19)
+  attributesCopy = attributes;
+  prefixCopy = prefix;
+  fileCopy = file;
+  if (attributesCopy)
   {
-    if ([v19 hasSpeed])
+    if ([attributesCopy hasSpeed])
     {
-      v9 = [v19 speed];
+      speed = [attributesCopy speed];
       v10 = @"fast";
-      if (v9 == 1)
+      if (speed == 1)
       {
         v10 = @"med";
       }
 
-      if (v9 == 2)
+      if (speed == 2)
       {
         v11 = @"slow";
       }
@@ -934,39 +934,39 @@ LABEL_27:
         v11 = v10;
       }
 
-      [v8 writeAttribute:@"spd" content:v11];
+      [fileCopy writeAttribute:@"spd" content:v11];
     }
 
-    if (v7)
+    if (prefixCopy)
     {
-      if ([v19 hasIsAdvanceOnClick])
+      if ([attributesCopy hasIsAdvanceOnClick])
       {
-        v12 = [v19 isAdvanceOnClick];
-        [v8 writeAttribute:@"advClick" BOOLContent:v12];
-        if ((v12 & 1) == 0)
+        isAdvanceOnClick = [attributesCopy isAdvanceOnClick];
+        [fileCopy writeAttribute:@"advClick" BOOLContent:isAdvanceOnClick];
+        if ((isAdvanceOnClick & 1) == 0)
         {
-          if ([v19 hasAdvanceAfterTime])
+          if ([attributesCopy hasAdvanceAfterTime])
           {
-            [v8 writeAttribute:@"advTm" intContent:{objc_msgSend(v19, "advanceAfterTime")}];
+            [fileCopy writeAttribute:@"advTm" intContent:{objc_msgSend(attributesCopy, "advanceAfterTime")}];
           }
         }
       }
 
-      v13 = [v19 duration];
-      if (v13)
+      duration = [attributesCopy duration];
+      if (duration)
       {
-        v14 = [v19 type];
+        type = [attributesCopy type];
 
-        if (v14)
+        if (type)
         {
-          v15 = [v8 currentElementPrefix];
-          v16 = [v8 pushStateWithElementPrefix:v15 attributePrefix:v7];
+          currentElementPrefix = [fileCopy currentElementPrefix];
+          v16 = [fileCopy pushStateWithElementPrefix:currentElementPrefix attributePrefix:prefixCopy];
 
-          v17 = [v19 duration];
-          [v17 doubleValue];
-          [v8 writeAttribute:@"dur" intContent:(v18 * 1000.0)];
+          duration2 = [attributesCopy duration];
+          [duration2 doubleValue];
+          [fileCopy writeAttribute:@"dur" intContent:(v18 * 1000.0)];
 
-          [v8 popState];
+          [fileCopy popState];
         }
       }
     }

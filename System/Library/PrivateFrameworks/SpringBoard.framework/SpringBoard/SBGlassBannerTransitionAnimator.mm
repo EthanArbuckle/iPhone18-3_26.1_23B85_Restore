@@ -1,11 +1,11 @@
 @interface SBGlassBannerTransitionAnimator
 + (id)settings;
-+ (void)performAnimationsForTransition:(id)a3 completion:(id)a4;
-- (BOOL)_viewHasGaussianBlurFilter:(id)a3;
-- (void)_addGaussianBlurToViewIfNeeded:(id)a3;
-- (void)_removeGaussianBlurFromViewIfNeeded:(id)a3;
-- (void)performActionsForTransition:(id)a3;
-- (void)prepareForTransition:(id)a3;
++ (void)performAnimationsForTransition:(id)transition completion:(id)completion;
+- (BOOL)_viewHasGaussianBlurFilter:(id)filter;
+- (void)_addGaussianBlurToViewIfNeeded:(id)needed;
+- (void)_removeGaussianBlurFromViewIfNeeded:(id)needed;
+- (void)performActionsForTransition:(id)transition;
+- (void)prepareForTransition:(id)transition;
 @end
 
 @implementation SBGlassBannerTransitionAnimator
@@ -29,35 +29,35 @@ void __43__SBGlassBannerTransitionAnimator_settings__block_invoke()
   settings_settings_1 = v0;
 }
 
-- (void)performActionsForTransition:(id)a3
+- (void)performActionsForTransition:(id)transition
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 finalFrame];
+  transitionCopy = transition;
+  [transitionCopy finalFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   HIDWORD(v43) = [(BNBannerTransitionAnimator *)self isPresenting];
-  v13 = [v4 transitionContext];
-  LODWORD(v43) = [v13 isAnimated];
+  transitionContext = [transitionCopy transitionContext];
+  LODWORD(v43) = [transitionContext isAnimated];
 
-  v46 = self;
-  v14 = [objc_opt_class() settings];
-  v15 = [v14 customBannerTransitionStyleGlass_transformScaleX];
-  v16 = [v14 customBannerTransitionStyleGlass_transformScaleY];
-  v17 = [v14 customBannerTransitionStyleGlass_transformTranslationY];
-  v18 = [v14 customBannerTransitionStyleGlass_alphaBlurSpring];
+  selfCopy = self;
+  settings = [objc_opt_class() settings];
+  customBannerTransitionStyleGlass_transformScaleX = [settings customBannerTransitionStyleGlass_transformScaleX];
+  customBannerTransitionStyleGlass_transformScaleY = [settings customBannerTransitionStyleGlass_transformScaleY];
+  customBannerTransitionStyleGlass_transformTranslationY = [settings customBannerTransitionStyleGlass_transformTranslationY];
+  customBannerTransitionStyleGlass_alphaBlurSpring = [settings customBannerTransitionStyleGlass_alphaBlurSpring];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v45 = v15;
-  v70[0] = v15;
-  v70[1] = v16;
-  v44 = v16;
-  v70[2] = v17;
-  v70[3] = v18;
+  v45 = customBannerTransitionStyleGlass_transformScaleX;
+  v70[0] = customBannerTransitionStyleGlass_transformScaleX;
+  v70[1] = customBannerTransitionStyleGlass_transformScaleY;
+  v44 = customBannerTransitionStyleGlass_transformScaleY;
+  v70[2] = customBannerTransitionStyleGlass_transformTranslationY;
+  v70[3] = customBannerTransitionStyleGlass_alphaBlurSpring;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:4];
   v20 = [v19 countByEnumeratingWithState:&v66 objects:v71 count:16];
   if (v20)
@@ -127,14 +127,14 @@ void __43__SBGlassBannerTransitionAnimator_settings__block_invoke()
   }
 
   v30 = objc_alloc(MEMORY[0x277D75D18]);
-  [v4 initialFrame];
+  [transitionCopy initialFrame];
   v31 = [v30 initWithFrame:?];
   [v31 setUserInteractionEnabled:0];
-  v32 = [v4 transitionContext];
-  v33 = [v32 containerView];
-  [v33 addSubview:v31];
+  transitionContext2 = [transitionCopy transitionContext];
+  containerView = [transitionContext2 containerView];
+  [containerView addSubview:v31];
 
-  v34 = [v4 transitionView];
+  transitionView = [transitionCopy transitionView];
   v35 = MEMORY[0x277D65DA0];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
@@ -142,14 +142,14 @@ void __43__SBGlassBannerTransitionAnimator_settings__block_invoke()
   v51[3] = &unk_2783C3A38;
   v52 = v45;
   v59 = v29;
-  v53 = v34;
+  v53 = transitionView;
   v54 = v44;
   v60 = v27;
   v61 = v6;
   v62 = v8;
   v63 = v10;
-  v55 = v17;
-  v56 = v18;
+  v55 = customBannerTransitionStyleGlass_transformTranslationY;
+  v56 = customBannerTransitionStyleGlass_alphaBlurSpring;
   v64 = v12;
   v65 = v28;
   v57 = v22;
@@ -159,13 +159,13 @@ void __43__SBGlassBannerTransitionAnimator_settings__block_invoke()
   v47[2] = __63__SBGlassBannerTransitionAnimator_performActionsForTransition___block_invoke_11;
   v47[3] = &unk_2783AE490;
   v48 = v58;
-  v49 = v46;
+  v49 = selfCopy;
   v50 = v53;
   v36 = v53;
   v37 = v58;
   v38 = v22;
-  v39 = v18;
-  v40 = v17;
+  v39 = customBannerTransitionStyleGlass_alphaBlurSpring;
+  v40 = customBannerTransitionStyleGlass_transformTranslationY;
   v41 = v44;
   v42 = v45;
   [v35 perform:v51 finalCompletion:v47];
@@ -364,30 +364,30 @@ uint64_t __63__SBGlassBannerTransitionAnimator_performActionsForTransition___blo
   return [v2 _removeGaussianBlurFromViewIfNeeded:v3];
 }
 
-+ (void)performAnimationsForTransition:(id)a3 completion:(id)a4
++ (void)performAnimationsForTransition:(id)transition completion:(id)completion
 {
   v6 = MEMORY[0x277D75D18];
-  v7 = a4;
-  v8 = a3;
-  v10 = [a1 settings];
-  v9 = [v10 customBannerTransitionStyleSystemAction];
-  [v6 sb_animateWithSettings:v9 mode:3 animations:v8 completion:v7];
+  completionCopy = completion;
+  transitionCopy = transition;
+  settings = [self settings];
+  customBannerTransitionStyleSystemAction = [settings customBannerTransitionStyleSystemAction];
+  [v6 sb_animateWithSettings:customBannerTransitionStyleSystemAction mode:3 animations:transitionCopy completion:completionCopy];
 }
 
-- (void)prepareForTransition:(id)a3
+- (void)prepareForTransition:(id)transition
 {
-  v4 = a3;
-  [v4 initialFrame];
+  transitionCopy = transition;
+  [transitionCopy initialFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(BNBannerTransitionAnimator *)self isPresenting];
+  isPresenting = [(BNBannerTransitionAnimator *)self isPresenting];
   v14 = 0.19;
   v15 = MEMORY[0x277D75D18];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
-  if (!v13)
+  if (!isPresenting)
   {
     v14 = 1.0;
   }
@@ -396,7 +396,7 @@ uint64_t __63__SBGlassBannerTransitionAnimator_performActionsForTransition___blo
   v18[3] = &unk_2783AE868;
   v21 = v14;
   v22 = v6;
-  if (v13)
+  if (isPresenting)
   {
     v16 = 18.0;
   }
@@ -408,11 +408,11 @@ uint64_t __63__SBGlassBannerTransitionAnimator_performActionsForTransition___blo
 
   v23 = v8;
   v24 = v10;
-  v19 = v4;
-  v20 = self;
+  v19 = transitionCopy;
+  selfCopy = self;
   v25 = v12;
   v26 = v16;
-  v17 = v4;
+  v17 = transitionCopy;
   [v15 performWithoutAnimation:v18];
 }
 
@@ -434,14 +434,14 @@ void __56__SBGlassBannerTransitionAnimator_prepareForTransition___block_invoke(u
   [v2 layoutIfNeeded];
 }
 
-- (void)_addGaussianBlurToViewIfNeeded:(id)a3
+- (void)_addGaussianBlurToViewIfNeeded:(id)needed
 {
-  v15 = a3;
-  v4 = [(SBGlassBannerTransitionAnimator *)self _viewHasGaussianBlurFilter:v15];
-  v5 = v15;
+  neededCopy = needed;
+  v4 = [(SBGlassBannerTransitionAnimator *)self _viewHasGaussianBlurFilter:neededCopy];
+  v5 = neededCopy;
   if (!v4)
   {
-    v6 = [v15 layer];
+    layer = [neededCopy layer];
     v7 = *MEMORY[0x277CDA328];
     v8 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v8 setName:v7];
@@ -450,8 +450,8 @@ void __56__SBGlassBannerTransitionAnimator_prepareForTransition___block_invoke(u
     v9 = MEMORY[0x277CBEC28];
     [v8 setValue:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CDA4C8]];
     [v8 setValue:v9 forKey:*MEMORY[0x277CDA4A0]];
-    v10 = [v6 filters];
-    v11 = [v10 mutableCopy];
+    filters = [layer filters];
+    v11 = [filters mutableCopy];
     v12 = v11;
     if (v11)
     {
@@ -466,22 +466,22 @@ void __56__SBGlassBannerTransitionAnimator_prepareForTransition___block_invoke(u
     v14 = v13;
 
     [v14 addObject:v8];
-    [v6 setFilters:v14];
+    [layer setFilters:v14];
 
-    v5 = v15;
+    v5 = neededCopy;
   }
 }
 
-- (void)_removeGaussianBlurFromViewIfNeeded:(id)a3
+- (void)_removeGaussianBlurFromViewIfNeeded:(id)needed
 {
-  v7 = a3;
+  neededCopy = needed;
   if ([(SBGlassBannerTransitionAnimator *)self _viewHasGaussianBlurFilter:?])
   {
-    v4 = [v7 layer];
-    v5 = [v4 filters];
-    v6 = [v5 bs_filter:&__block_literal_global_37_6];
+    layer = [neededCopy layer];
+    filters = [layer filters];
+    v6 = [filters bs_filter:&__block_literal_global_37_6];
 
-    [v4 setFilters:v6];
+    [layer setFilters:v6];
   }
 }
 
@@ -493,11 +493,11 @@ uint64_t __71__SBGlassBannerTransitionAnimator__removeGaussianBlurFromViewIfNeed
   return v3 ^ 1u;
 }
 
-- (BOOL)_viewHasGaussianBlurFilter:(id)a3
+- (BOOL)_viewHasGaussianBlurFilter:(id)filter
 {
-  v3 = [a3 layer];
-  v4 = [v3 filters];
-  v5 = [v4 bs_containsObjectPassingTest:&__block_literal_global_39_3];
+  layer = [filter layer];
+  filters = [layer filters];
+  v5 = [filters bs_containsObjectPassingTest:&__block_literal_global_39_3];
 
   return v5;
 }

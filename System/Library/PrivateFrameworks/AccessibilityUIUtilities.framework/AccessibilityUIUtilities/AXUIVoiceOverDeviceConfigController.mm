@@ -1,20 +1,20 @@
 @interface AXUIVoiceOverDeviceConfigController
 - (AXUIVoiceOverDeviceConfigController)init;
 - (BOOL)_isDisplayHIMS;
-- (id)disconnectOnSleep:(id)a3;
-- (id)himsUsesDot7ForCommand:(id)a3;
+- (id)disconnectOnSleep:(id)sleep;
+- (id)himsUsesDot7ForCommand:(id)command;
 - (id)specifiers;
 - (int64_t)axDeviceControllerType;
 - (void)_allowUSBRM;
 - (void)_clearVOUSBRMDisabler;
 - (void)_doReallyForgetDevice;
 - (void)dealloc;
-- (void)deviceConnectedHandler:(id)a3;
-- (void)deviceRemoved:(id)a3;
-- (void)deviceUpdated:(id)a3;
-- (void)forgetDevice:(id)a3;
-- (void)setDisconnectOnSleep:(id)a3 specifier:(id)a4;
-- (void)setHIMSUsesDot7ForCommand:(id)a3 specifier:(id)a4;
+- (void)deviceConnectedHandler:(id)handler;
+- (void)deviceRemoved:(id)removed;
+- (void)deviceUpdated:(id)updated;
+- (void)forgetDevice:(id)device;
+- (void)setDisconnectOnSleep:(id)sleep specifier:(id)specifier;
+- (void)setHIMSUsesDot7ForCommand:(id)command specifier:(id)specifier;
 @end
 
 @implementation AXUIVoiceOverDeviceConfigController
@@ -26,17 +26,17 @@
   v2 = [(AXUISettingsSetupCapableListController *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_deviceRemoved_ name:*MEMORY[0x1E69898C8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_deviceRemoved_ name:*MEMORY[0x1E69898C8] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_deviceUpdated_ name:*MEMORY[0x1E69898D0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_deviceUpdated_ name:*MEMORY[0x1E69898D0] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x1E69898C0] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x1E69898C0] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x1E69898B8] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x1E69898B8] object:0];
 
     v7 = [objc_alloc(MEMORY[0x1E69C9D00]) initWithDelegate:v2];
     brailleClient = v2->_brailleClient;
@@ -51,8 +51,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXUIVoiceOverDeviceConfigController;
@@ -73,8 +73,8 @@
     _os_log_impl(&dword_1C0DFB000, v3, OS_LOG_TYPE_INFO, "Unpair device: %@", &v7, 0xCu);
   }
 
-  v5 = [(AXUIVoiceOverDeviceConfigController *)self navigationController];
-  v6 = [v5 popViewControllerAnimated:1];
+  navigationController = [(AXUIVoiceOverDeviceConfigController *)self navigationController];
+  v6 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)_clearVOUSBRMDisabler
@@ -86,11 +86,11 @@
 
 - (void)_allowUSBRM
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  [v2 setBoolValue:1 forSetting:*MEMORY[0x1E69ADF78]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  [mEMORY[0x1E69ADFB8] setBoolValue:1 forSetting:*MEMORY[0x1E69ADF78]];
 }
 
-- (void)forgetDevice:(id)a3
+- (void)forgetDevice:(id)device
 {
   v37 = *MEMORY[0x1E69E9840];
   [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
@@ -122,17 +122,17 @@ LABEL_17:
 
       v10 = *(*(&v32 + 1) + 8 * i);
       v11 = [v10 objectForKey:*MEMORY[0x1E69C9D18]];
-      v12 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-      v13 = v12 == 4;
-      if (v12 == 4)
+      v13 = unsignedIntegerValue == 4;
+      if (unsignedIntegerValue == 4)
       {
         ++v7;
       }
 
       v14 = [v10 objectForKey:*MEMORY[0x1E69C9D08]];
-      v15 = [(AXUIBluetoothDevice *)self->_device identifier];
-      v16 = [v14 isEqual:v15];
+      identifier = [(AXUIBluetoothDevice *)self->_device identifier];
+      v16 = [v14 isEqual:identifier];
 
       if (v16)
       {
@@ -197,17 +197,17 @@ uint64_t __52__AXUIVoiceOverDeviceConfigController_forgetDevice___block_invoke_2
   return [v2 _doReallyForgetDevice];
 }
 
-- (void)deviceConnectedHandler:(id)a3
+- (void)deviceConnectedHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 object];
-  v7 = [MEMORY[0x1E69887B8] sharedInstance];
-  v8 = [v7 ignoreLogging];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  mEMORY[0x1E69887B8] = [MEMORY[0x1E69887B8] sharedInstance];
+  ignoreLogging = [mEMORY[0x1E69887B8] ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v9 = [MEMORY[0x1E69887B8] identifier];
+    identifier = [MEMORY[0x1E69887B8] identifier];
     v10 = AXLoggerForFacility();
 
     v11 = AXOSLogLevelFromAXLogLevel();
@@ -215,9 +215,9 @@ uint64_t __52__AXUIVoiceOverDeviceConfigController_forgetDevice___block_invoke_2
     {
       v12 = AXColorizeFormatLog();
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 name];
-      [v6 name];
-      v22 = v21 = v14;
+      name = [handlerCopy name];
+      [object name];
+      v22 = v21 = name;
       v20 = v13;
       v15 = _AXStringForArgs();
 
@@ -230,9 +230,9 @@ uint64_t __52__AXUIVoiceOverDeviceConfigController_forgetDevice___block_invoke_2
     }
   }
 
-  v16 = [v6 identifier];
-  v17 = [(AXUIBluetoothDevice *)self->_device identifier];
-  if (![v16 isEqualToString:v17])
+  identifier2 = [object identifier];
+  identifier3 = [(AXUIBluetoothDevice *)self->_device identifier];
+  if (![identifier2 isEqualToString:identifier3])
   {
 
 LABEL_12:
@@ -244,11 +244,11 @@ LABEL_12:
   if (!dismissed)
   {
     v19 = [(NSArray *)self->_deviceSpecifiers objectAtIndex:3];
-    v16 = v19;
+    identifier2 = v19;
     if (v19)
     {
       [v19 setProperty:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69C58C8]];
-      [(AXUIVoiceOverDeviceConfigController *)self reloadSpecifier:v16];
+      [(AXUIVoiceOverDeviceConfigController *)self reloadSpecifier:identifier2];
     }
 
     goto LABEL_12;
@@ -257,12 +257,12 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)deviceUpdated:(id)a3
+- (void)deviceUpdated:(id)updated
 {
-  v7 = [a3 object];
-  v4 = [v7 identifier];
-  v5 = [(AXUIBluetoothDevice *)self->_device identifier];
-  if ([v4 isEqualToString:v5])
+  object = [updated object];
+  identifier = [object identifier];
+  identifier2 = [(AXUIBluetoothDevice *)self->_device identifier];
+  if ([identifier isEqualToString:identifier2])
   {
     dismissed = self->_dismissed;
 
@@ -271,8 +271,8 @@ LABEL_13:
       goto LABEL_6;
     }
 
-    v4 = [(AXUIBluetoothDevice *)self->_device name];
-    [(AXUIVoiceOverDeviceConfigController *)self setTitle:v4];
+    identifier = [(AXUIBluetoothDevice *)self->_device name];
+    [(AXUIVoiceOverDeviceConfigController *)self setTitle:identifier];
   }
 
   else
@@ -282,24 +282,24 @@ LABEL_13:
 LABEL_6:
 }
 
-- (void)deviceRemoved:(id)a3
+- (void)deviceRemoved:(id)removed
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
+  object = [removed object];
   v5 = AXLogBrailleHW();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     device = self->_device;
     v10 = 138412546;
-    v11 = v4;
+    v11 = object;
     v12 = 2112;
     v13 = device;
     _os_log_impl(&dword_1C0DFB000, v5, OS_LOG_TYPE_DEFAULT, "Device removed: %@, current device: %@", &v10, 0x16u);
   }
 
-  v7 = [v4 identifier];
-  v8 = [(AXUIBluetoothDevice *)self->_device identifier];
-  if ([v7 isEqualToString:v8])
+  identifier = [object identifier];
+  identifier2 = [(AXUIBluetoothDevice *)self->_device identifier];
+  if ([identifier isEqualToString:identifier2])
   {
     dismissed = self->_dismissed;
 
@@ -317,12 +317,12 @@ LABEL_6:
 
 - (int64_t)axDeviceControllerType
 {
-  v2 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
-  v3 = [v2 properties];
-  v4 = [v3 objectForKey:@"axDeviceControllerType"];
-  v5 = [v4 intValue];
+  specifier = [(AXUIVoiceOverDeviceConfigController *)self specifier];
+  properties = [specifier properties];
+  v4 = [properties objectForKey:@"axDeviceControllerType"];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
 - (id)specifiers
@@ -332,8 +332,8 @@ LABEL_6:
   {
     buf[0] = 0;
     objc_opt_class();
-    v3 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
-    v4 = [v3 userInfo];
+    specifier = [(AXUIVoiceOverDeviceConfigController *)self specifier];
+    userInfo = [specifier userInfo];
     v5 = __UIAccessibilityCastAsClass();
 
     v6 = [v5 objectForKey:@"bt-device"];
@@ -344,13 +344,13 @@ LABEL_6:
   v8 = AXLogBrailleHW();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
-    v10 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
-    v11 = [v10 userInfo];
+    specifier2 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
+    specifier3 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
+    userInfo2 = [specifier3 userInfo];
     *buf = 138412546;
-    v71 = v9;
+    v71 = specifier2;
     v72 = 2112;
-    v73 = v11;
+    v73 = userInfo2;
     _os_log_impl(&dword_1C0DFB000, v8, OS_LOG_TYPE_DEFAULT, "SPEC: %@ / %@", buf, 0x16u);
   }
 
@@ -401,15 +401,15 @@ LABEL_6:
     v65 = v29;
     [v29 setName:v33];
 
-    v34 = [MEMORY[0x1E69DC938] currentDevice];
-    v35 = [v34 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v35 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v36 = MEMORY[0x1E696AEC0];
       v37 = AXUILocalizedStringForKey(@"FORGET_ALERT_TITLE");
-      v38 = [(AXUIBluetoothDevice *)self->_device name];
-      v39 = [v36 stringWithFormat:v37, v38];
+      name = [(AXUIBluetoothDevice *)self->_device name];
+      v39 = [v36 stringWithFormat:v37, name];
 
       v40 = MEMORY[0x1E695DF20];
       v41 = *MEMORY[0x1E69C5890];
@@ -441,14 +441,14 @@ LABEL_6:
     v49 = [(NSArray *)self->_deviceSpecifiers objectAtIndex:3];
     [v49 setupWithDictionary:v31];
 
-    v50 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
+    parentController = [(AXUIVoiceOverDeviceConfigController *)self parentController];
     v51 = objc_opt_respondsToSelector();
 
     v12 = v69;
     if (v51)
     {
-      v52 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
-      v53 = [v52 detailSpecifiersForDevice:self->_device withTarget:self];
+      parentController2 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
+      v53 = [parentController2 detailSpecifiersForDevice:self->_device withTarget:self];
 
       if ([v53 count])
       {
@@ -468,31 +468,31 @@ LABEL_6:
       [v66 addObjectsFromArray:v54];
     }
 
-    v55 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
+    parentController3 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_25;
     }
 
-    v56 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
+    parentController4 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
     v57 = objc_opt_respondsToSelector();
 
     if (v57)
     {
-      v55 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
-      if (![v55 bluetoothIsBusy] || (-[AXUIBluetoothDevice isBTLEDevice](self->_device, "isBTLEDevice") & 1) != 0)
+      parentController3 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
+      if (![parentController3 bluetoothIsBusy] || (-[AXUIBluetoothDevice isBTLEDevice](self->_device, "isBTLEDevice") & 1) != 0)
       {
         goto LABEL_25;
       }
 
-      v58 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
-      v59 = [v58 currentSpecifier];
-      v60 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
+      parentController5 = [(AXUIVoiceOverDeviceConfigController *)self parentController];
+      currentSpecifier = [parentController5 currentSpecifier];
+      specifier4 = [(AXUIVoiceOverDeviceConfigController *)self specifier];
 
-      if (v59 == v60)
+      if (currentSpecifier == specifier4)
       {
-        v55 = [(NSArray *)self->_deviceSpecifiers objectAtIndex:3];
-        [v55 setProperty:*MEMORY[0x1E695E4C0] forKey:*MEMORY[0x1E69C58C8]];
+        parentController3 = [(NSArray *)self->_deviceSpecifiers objectAtIndex:3];
+        [parentController3 setProperty:*MEMORY[0x1E695E4C0] forKey:*MEMORY[0x1E69C58C8]];
 LABEL_25:
       }
     }
@@ -501,21 +501,21 @@ LABEL_25:
     *(&self->super.super.super.super.super.super.super.isa + v69) = v66;
   }
 
-  v62 = [(AXUIBluetoothDevice *)self->_device name];
-  [(AXUIVoiceOverDeviceConfigController *)self setTitle:v62];
+  name2 = [(AXUIBluetoothDevice *)self->_device name];
+  [(AXUIVoiceOverDeviceConfigController *)self setTitle:name2];
 
   v63 = *(&self->super.super.super.super.super.super.super.isa + v12);
 
   return v63;
 }
 
-- (id)disconnectOnSleep:(id)a3
+- (id)disconnectOnSleep:(id)sleep
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E6989890] sharedInstance];
-  v5 = [v4 voiceOverBrailleDisconnectOnSleep];
-  v6 = [(AXUIBluetoothDevice *)self->_device address];
-  v7 = [v5 objectForKey:v6];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  voiceOverBrailleDisconnectOnSleep = [mEMORY[0x1E6989890] voiceOverBrailleDisconnectOnSleep];
+  address = [(AXUIBluetoothDevice *)self->_device address];
+  v7 = [voiceOverBrailleDisconnectOnSleep objectForKey:address];
 
   if (v7)
   {
@@ -547,15 +547,15 @@ LABEL_25:
 
           v14 = *(*(&v23 + 1) + 8 * i);
           v15 = [v14 objectForKey:{*v12, v21}];
-          v16 = [(AXUIBluetoothDevice *)self->_device identifier];
-          v17 = [v15 isEqual:v16];
+          identifier = [(AXUIBluetoothDevice *)self->_device identifier];
+          v17 = [v15 isEqual:identifier];
 
           if (v17)
           {
             v18 = [v14 objectForKey:*MEMORY[0x1E69C9D18]];
-            v19 = [v18 unsignedIntegerValue];
+            unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-            if (v19 == 8)
+            if (unsignedIntegerValue == 8)
             {
               v7 = v21;
               v8 = MEMORY[0x1E695E110];
@@ -588,24 +588,24 @@ LABEL_15:
   return v8;
 }
 
-- (void)setDisconnectOnSleep:(id)a3 specifier:(id)a4
+- (void)setDisconnectOnSleep:(id)sleep specifier:(id)specifier
 {
   v5 = MEMORY[0x1E6989890];
-  v6 = a3;
-  v7 = [v5 sharedInstance];
-  v8 = [v7 voiceOverBrailleDisconnectOnSleep];
-  v11 = [v8 mutableCopy];
+  sleepCopy = sleep;
+  sharedInstance = [v5 sharedInstance];
+  voiceOverBrailleDisconnectOnSleep = [sharedInstance voiceOverBrailleDisconnectOnSleep];
+  v11 = [voiceOverBrailleDisconnectOnSleep mutableCopy];
 
   if (!v11)
   {
     v11 = objc_opt_new();
   }
 
-  v9 = [(AXUIBluetoothDevice *)self->_device address];
-  [v11 setObject:v6 forKeyedSubscript:v9];
+  address = [(AXUIBluetoothDevice *)self->_device address];
+  [v11 setObject:sleepCopy forKeyedSubscript:address];
 
-  v10 = [MEMORY[0x1E6989890] sharedInstance];
-  [v10 setVoiceOverBrailleDisconnectOnSleep:v11];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  [mEMORY[0x1E6989890] setVoiceOverBrailleDisconnectOnSleep:v11];
 }
 
 - (BOOL)_isDisplayHIMS
@@ -633,8 +633,8 @@ LABEL_15:
 
         v8 = *(*(&v16 + 1) + 8 * i);
         v9 = [v8 objectForKey:*v6];
-        v10 = [(AXUIBluetoothDevice *)self->_device identifier];
-        v11 = [v9 isEqual:v10];
+        identifier = [(AXUIBluetoothDevice *)self->_device identifier];
+        v11 = [v9 isEqual:identifier];
 
         if (v11)
         {
@@ -661,18 +661,18 @@ LABEL_11:
   return v12;
 }
 
-- (void)setHIMSUsesDot7ForCommand:(id)a3 specifier:(id)a4
+- (void)setHIMSUsesDot7ForCommand:(id)command specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
-  v5 = [MEMORY[0x1E6989890] sharedInstance];
-  [v5 setVoiceOverTouchBrailleHIMSUsesDot7ForCommand:v4];
+  bOOLValue = [command BOOLValue];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  [mEMORY[0x1E6989890] setVoiceOverTouchBrailleHIMSUsesDot7ForCommand:bOOLValue];
 }
 
-- (id)himsUsesDot7ForCommand:(id)a3
+- (id)himsUsesDot7ForCommand:(id)command
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [MEMORY[0x1E6989890] sharedInstance];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "voiceOverTouchBrailleHIMSUsesDot7ForCommand")}];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  v5 = [v3 numberWithBool:{objc_msgSend(mEMORY[0x1E6989890], "voiceOverTouchBrailleHIMSUsesDot7ForCommand")}];
 
   return v5;
 }

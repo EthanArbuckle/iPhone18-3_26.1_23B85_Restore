@@ -1,21 +1,21 @@
 @interface SVXTapToRadarManager
 + (id)sharedInstance;
-+ (id)sharedInstanceWithRadarFiler:(id)a3;
-- (BOOL)_hasFileTTRWithIssue:(id)a3;
-- (BOOL)_hasFileTTRWithRequestID:(id)a3;
-- (BOOL)_skipFirstTimeTTR:(id)a3;
-- (id)_initWithRadarFiler:(id)a3;
-- (void)_updateTTRHistory:(id)a3;
-- (void)createProblem:(id)a3 extraContent:(id)a4 completionHandler:(id)a5;
++ (id)sharedInstanceWithRadarFiler:(id)filer;
+- (BOOL)_hasFileTTRWithIssue:(id)issue;
+- (BOOL)_hasFileTTRWithRequestID:(id)d;
+- (BOOL)_skipFirstTimeTTR:(id)r;
+- (id)_initWithRadarFiler:(id)filer;
+- (void)_updateTTRHistory:(id)history;
+- (void)createProblem:(id)problem extraContent:(id)content completionHandler:(id)handler;
 @end
 
 @implementation SVXTapToRadarManager
 
-- (void)_updateTTRHistory:(id)a3
+- (void)_updateTTRHistory:(id)history
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  historyCopy = history;
+  if (historyCopy)
   {
     v5 = AFBuildVersion();
     v6 = [(NSUserDefaults *)self->_ttrHistory arrayForKey:v5];
@@ -23,7 +23,7 @@
     if (!v6)
     {
       ttrHistory = self->_ttrHistory;
-      v17 = v4;
+      v17 = historyCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
       [(NSUserDefaults *)ttrHistory setObject:v12 forKey:v5];
 
@@ -35,14 +35,14 @@
         v20 = 2112;
         v21 = v5;
         v22 = 2112;
-        v23 = v4;
+        v23 = historyCopy;
         _os_log_impl(&dword_2695B9000, v13, OS_LOG_TYPE_INFO, "%s First entry created for build %@, with error %@", buf, 0x20u);
       }
 
       goto LABEL_13;
     }
 
-    if ([v6 containsObject:v4])
+    if ([v6 containsObject:historyCopy])
     {
       v8 = *MEMORY[0x277CEF098];
       if (!os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -56,7 +56,7 @@ LABEL_13:
       *buf = 136315906;
       v19 = "[SVXTapToRadarManager _updateTTRHistory:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = historyCopy;
       v22 = 2112;
       v23 = v5;
       v24 = 2048;
@@ -66,7 +66,7 @@ LABEL_13:
 
     else
     {
-      v9 = [v7 arrayByAddingObject:v4];
+      v9 = [v7 arrayByAddingObject:historyCopy];
       [(NSUserDefaults *)self->_ttrHistory setObject:v9 forKey:v5];
       v14 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -75,7 +75,7 @@ LABEL_13:
         *buf = 136316162;
         v19 = "[SVXTapToRadarManager _updateTTRHistory:]";
         v20 = 2112;
-        v21 = v4;
+        v21 = historyCopy;
         v22 = 2112;
         v23 = v5;
         v24 = 2048;
@@ -102,16 +102,16 @@ LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_hasFileTTRWithIssue:(id)a3
+- (BOOL)_hasFileTTRWithIssue:(id)issue
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  issueCopy = issue;
   v5 = AFBuildVersion();
   v6 = [(NSUserDefaults *)self->_ttrHistory arrayForKey:v5];
   v7 = v6;
   if (v6)
   {
-    if ([v6 containsObject:v4])
+    if ([v6 containsObject:issueCopy])
     {
       v8 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -120,7 +120,7 @@ LABEL_14:
         v14 = 136315906;
         v15 = "[SVXTapToRadarManager _hasFileTTRWithIssue:]";
         v16 = 2112;
-        v17 = v4;
+        v17 = issueCopy;
         v18 = 2112;
         v19 = v5;
         v20 = 2048;
@@ -145,22 +145,22 @@ LABEL_14:
     [(NSUserDefaults *)self->_ttrHistory removePersistentDomainForName:@"com.apple.siri.sirivox.ttr"];
   }
 
-  v11 = [(SVXRadarRateLimiter *)self->_radarRateLimiter isRateLimited];
+  isRateLimited = [(SVXRadarRateLimiter *)self->_radarRateLimiter isRateLimited];
 
   v12 = *MEMORY[0x277D85DE8];
-  return v11;
+  return isRateLimited;
 }
 
-- (BOOL)_skipFirstTimeTTR:(id)a3
+- (BOOL)_skipFirstTimeTTR:(id)r
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rCopy = r;
   v5 = AFBuildVersion();
   v6 = [(NSUserDefaults *)self->_ttrHistory arrayForKey:v5];
   v7 = v6;
   if (v6)
   {
-    if ([v6 containsObject:v4])
+    if ([v6 containsObject:rCopy])
     {
       v8 = MEMORY[0x277CEF098];
       v9 = *MEMORY[0x277CEF098];
@@ -170,7 +170,7 @@ LABEL_14:
         *buf = 136315906;
         v19 = "[SVXTapToRadarManager _skipFirstTimeTTR:]";
         v20 = 2112;
-        v21 = v4;
+        v21 = rCopy;
         v22 = 2112;
         v23 = v5;
         v24 = 2048;
@@ -178,8 +178,8 @@ LABEL_14:
         _os_log_impl(&dword_2695B9000, v10, OS_LOG_TYPE_INFO, "%s Issue %@ for %@ has been invoked before. Total error count = %ld", buf, 0x2Au);
       }
 
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"ttrFiled_", v4];
-      if ([v7 containsObject:v11])
+      rCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"ttrFiled_", rCopy];
+      if ([v7 containsObject:rCopy])
       {
         v12 = *v8;
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -190,13 +190,13 @@ LABEL_14:
         }
       }
 
-      else if (![&unk_287A33E98 containsObject:v4])
+      else if (![&unk_287A33E98 containsObject:rCopy])
       {
-        v15 = 0;
+        isRateLimited = 0;
         goto LABEL_16;
       }
 
-      v15 = [(SVXRadarRateLimiter *)self->_radarRateLimiter isRateLimited];
+      isRateLimited = [(SVXRadarRateLimiter *)self->_radarRateLimiter isRateLimited];
 LABEL_16:
 
       goto LABEL_17;
@@ -219,13 +219,13 @@ LABEL_16:
   }
 
   v14 = *MEMORY[0x277CEF098];
-  v15 = 1;
+  isRateLimited = 1;
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v19 = "[SVXTapToRadarManager _skipFirstTimeTTR:]";
     v20 = 2112;
-    v21 = v4;
+    v21 = rCopy;
     v22 = 2112;
     v23 = v5;
     _os_log_impl(&dword_2695B9000, v14, OS_LOG_TYPE_INFO, "%s New issue %@ for %@ occurred. Skip radar as this is the first time", buf, 0x20u);
@@ -234,15 +234,15 @@ LABEL_16:
 LABEL_17:
 
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return isRateLimited;
 }
 
-- (BOOL)_hasFileTTRWithRequestID:(id)a3
+- (BOOL)_hasFileTTRWithRequestID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   requestID = self->_requestID;
-  if (requestID && [(NSUUID *)requestID isEqual:v4])
+  if (requestID && [(NSUUID *)requestID isEqual:dCopy])
   {
     v6 = *MEMORY[0x277CEF098];
     v7 = 1;
@@ -251,7 +251,7 @@ LABEL_17:
       v10 = 136315394;
       v11 = "[SVXTapToRadarManager _hasFileTTRWithRequestID:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = dCopy;
       _os_log_impl(&dword_2695B9000, v6, OS_LOG_TYPE_INFO, "%s A radar was prompted for request %@ before", &v10, 0x16u);
     }
   }
@@ -265,23 +265,23 @@ LABEL_17:
   return v7;
 }
 
-- (void)createProblem:(id)a3 extraContent:(id)a4 completionHandler:(id)a5
+- (void)createProblem:(id)problem extraContent:(id)content completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  problemCopy = problem;
+  contentCopy = content;
+  handlerCopy = handler;
   performer = self->_performer;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__SVXTapToRadarManager_createProblem_extraContent_completionHandler___block_invoke;
   v15[3] = &unk_279C69038;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = problemCopy;
+  v17 = contentCopy;
+  v18 = handlerCopy;
+  v12 = contentCopy;
+  v13 = handlerCopy;
+  v14 = problemCopy;
   [(SVXPerforming *)performer performBlock:v15];
 }
 
@@ -436,9 +436,9 @@ void __69__SVXTapToRadarManager_createProblem_extraContent_completionHandler___b
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_initWithRadarFiler:(id)a3
+- (id)_initWithRadarFiler:(id)filer
 {
-  v5 = a3;
+  filerCopy = filer;
   v21.receiver = self;
   v21.super_class = SVXTapToRadarManager;
   v6 = [(SVXTapToRadarManager *)&v21 init];
@@ -471,22 +471,22 @@ void __69__SVXTapToRadarManager_createProblem_extraContent_completionHandler___b
     radarRateLimiter = v7->_radarRateLimiter;
     v7->_radarRateLimiter = v18;
 
-    objc_storeStrong(&v7->_radarFiler, a3);
+    objc_storeStrong(&v7->_radarFiler, filer);
   }
 
   return v7;
 }
 
-+ (id)sharedInstanceWithRadarFiler:(id)a3
++ (id)sharedInstanceWithRadarFiler:(id)filer
 {
-  v3 = a3;
+  filerCopy = filer;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SVXTapToRadarManager_sharedInstanceWithRadarFiler___block_invoke;
   block[3] = &unk_279C68FC0;
-  v10 = v3;
+  v10 = filerCopy;
   v4 = sharedInstanceWithRadarFiler__onceToken;
-  v5 = v3;
+  v5 = filerCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceWithRadarFiler__onceToken, block);
@@ -531,7 +531,7 @@ void __53__SVXTapToRadarManager_sharedInstanceWithRadarFiler___block_invoke(uint
 + (id)sharedInstance
 {
   v3 = objc_alloc_init(SVXRadarFiler);
-  v4 = [a1 sharedInstanceWithRadarFiler:v3];
+  v4 = [self sharedInstanceWithRadarFiler:v3];
 
   return v4;
 }

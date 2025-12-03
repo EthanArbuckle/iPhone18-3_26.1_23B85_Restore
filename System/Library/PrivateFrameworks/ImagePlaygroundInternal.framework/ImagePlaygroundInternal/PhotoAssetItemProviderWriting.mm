@@ -1,7 +1,7 @@
 @interface PhotoAssetItemProviderWriting
 + (NSArray)writableTypeIdentifiersForItemProvider;
 - (_TtC23ImagePlaygroundInternal29PhotoAssetItemProviderWriting)init;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 @end
 
 @implementation PhotoAssetItemProviderWriting
@@ -18,14 +18,14 @@
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_1D28780A8();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  v10 = sub_1D2639EF8(v6, v8, v9, v5);
+  selfCopy = self;
+  v10 = sub_1D2639EF8(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 

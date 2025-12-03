@@ -1,21 +1,21 @@
 @interface CNChangeHistoryClearRequest
-- (CNChangeHistoryClearRequest)initWithClientIdentifier:(id)a3;
-- (CNChangeHistoryClearRequest)initWithCoder:(id)a3;
+- (CNChangeHistoryClearRequest)initWithClientIdentifier:(id)identifier;
+- (CNChangeHistoryClearRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryClearRequest
 
-- (CNChangeHistoryClearRequest)initWithClientIdentifier:(id)a3
+- (CNChangeHistoryClearRequest)initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = CNChangeHistoryClearRequest;
   v5 = [(CNChangeHistoryClearRequest *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 
@@ -25,20 +25,20 @@
   return v5;
 }
 
-- (CNChangeHistoryClearRequest)initWithCoder:(id)a3
+- (CNChangeHistoryClearRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = CNChangeHistoryClearRequest;
   v5 = [(CNChangeHistoryClearRequest *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientIdentifier"];
     v7 = [v6 copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_toChangeAnchor"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_toChangeAnchor"];
     v10 = [v9 copy];
     toChangeAnchor = v5->_toChangeAnchor;
     v5->_toChangeAnchor = v10;
@@ -46,7 +46,7 @@
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_contactChangeIDs"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_contactChangeIDs"];
     v16 = [v15 copy];
     contactChangeIDs = v5->_contactChangeIDs;
     v5->_contactChangeIDs = v16;
@@ -54,12 +54,12 @@
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"_groupChangeIDs"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"_groupChangeIDs"];
     v22 = [v21 copy];
     groupChangeIDs = v5->_groupChangeIDs;
     v5->_groupChangeIDs = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
     v25 = [v24 copy];
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v25;
@@ -70,38 +70,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientIdentifier = self->_clientIdentifier;
-  v5 = a3;
-  [v5 encodeObject:clientIdentifier forKey:@"_clientIdentifier"];
-  [v5 encodeObject:self->_toChangeAnchor forKey:@"_toChangeAnchor"];
-  [v5 encodeObject:self->_contactChangeIDs forKey:@"_contactChangeIDs"];
-  [v5 encodeObject:self->_groupChangeIDs forKey:@"_groupChangeIDs"];
-  [v5 encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientIdentifier forKey:@"_clientIdentifier"];
+  [coderCopy encodeObject:self->_toChangeAnchor forKey:@"_toChangeAnchor"];
+  [coderCopy encodeObject:self->_contactChangeIDs forKey:@"_contactChangeIDs"];
+  [coderCopy encodeObject:self->_groupChangeIDs forKey:@"_groupChangeIDs"];
+  [coderCopy encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryClearRequest *)self clientIdentifier];
-  v5 = [v3 appendName:@"clientIdentifier" object:v4];
+  clientIdentifier = [(CNChangeHistoryClearRequest *)self clientIdentifier];
+  v5 = [v3 appendName:@"clientIdentifier" object:clientIdentifier];
 
-  v6 = [(CNChangeHistoryClearRequest *)self toChangeAnchor];
-  v7 = [v3 appendName:@"toChangeAnchor" object:v6];
+  toChangeAnchor = [(CNChangeHistoryClearRequest *)self toChangeAnchor];
+  v7 = [v3 appendName:@"toChangeAnchor" object:toChangeAnchor];
 
-  v8 = [(CNChangeHistoryClearRequest *)self contactChangeIDs];
-  v9 = [v3 appendName:@"contactChangeIDs" object:v8];
+  contactChangeIDs = [(CNChangeHistoryClearRequest *)self contactChangeIDs];
+  v9 = [v3 appendName:@"contactChangeIDs" object:contactChangeIDs];
 
-  v10 = [(CNChangeHistoryClearRequest *)self groupChangeIDs];
-  v11 = [v3 appendName:@"groupChangeIDs" object:v10];
+  groupChangeIDs = [(CNChangeHistoryClearRequest *)self groupChangeIDs];
+  v11 = [v3 appendName:@"groupChangeIDs" object:groupChangeIDs];
 
-  v12 = [(CNChangeHistoryClearRequest *)self containerIdentifier];
-  v13 = [v3 appendName:@"containerIdentifier" object:v12];
+  containerIdentifier = [(CNChangeHistoryClearRequest *)self containerIdentifier];
+  v13 = [v3 appendName:@"containerIdentifier" object:containerIdentifier];
 
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 @end

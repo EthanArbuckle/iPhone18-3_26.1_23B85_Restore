@@ -1,16 +1,16 @@
 @interface PXDisplayAssetView
-+ (CGRect)preferredContentsRectForAsset:(id)a3 targetSize:(CGSize)a4;
-+ (id)localizedTitleForAsset:(id)a3;
++ (CGRect)preferredContentsRectForAsset:(id)asset targetSize:(CGSize)size;
++ (id)localizedTitleForAsset:(id)asset;
 - (CGRect)imageFrame;
 - (CGRect)stillImageContentsRect;
 - (CGSize)viewportSize;
-- (PXDisplayAssetView)initWithCoder:(id)a3;
-- (PXDisplayAssetView)initWithFrame:(CGRect)a3 options:(unint64_t)a4;
+- (PXDisplayAssetView)initWithCoder:(id)coder;
+- (PXDisplayAssetView)initWithFrame:(CGRect)frame options:(unint64_t)options;
 - (PXImageRequester)imageRequester;
 - (PXRegionOfInterest)contentRegionOfInterest;
 - (UIImage)currentImage;
-- (int64_t)photosAssetDebugOverlayViewEffectivePreferredImageDynamicRange:(id)a3;
-- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)a3;
+- (int64_t)photosAssetDebugOverlayViewEffectivePreferredImageDynamicRange:(id)range;
+- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)range;
 - (void)_addDebugOverlayViewIfNeeded;
 - (void)_commonPXDisplayAssetViewInit;
 - (void)_invalidateContentView;
@@ -24,23 +24,23 @@
 - (void)_updateContentViewProperties;
 - (void)_updateViewModelProperties;
 - (void)dealloc;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photosAssetDebugOverlayView:(id)a3 didRequestPreferredImageDynamicRange:(int64_t)a4;
-- (void)setAllowsTextSelection:(BOOL)a3;
-- (void)setAsset:(id)a3;
-- (void)setAudioIdentifiersToHighlight:(id)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentView:(id)a3;
-- (void)setHumanActionIdentifiersToHighlight:(id)a3;
-- (void)setMediaProvider:(id)a3;
-- (void)setPersonLocalIdentifiersToHighlight:(id)a3;
-- (void)setPreferredImageDynamicRange:(int64_t)a3;
-- (void)setSceneIdentifiersToHighlight:(id)a3;
-- (void)setStillImageContentsRect:(CGRect)a3;
-- (void)setStringsToHighlight:(id)a3;
-- (void)setViewportSize:(CGSize)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photosAssetDebugOverlayView:(id)view didRequestPreferredImageDynamicRange:(int64_t)range;
+- (void)setAllowsTextSelection:(BOOL)selection;
+- (void)setAsset:(id)asset;
+- (void)setAudioIdentifiersToHighlight:(id)highlight;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentView:(id)view;
+- (void)setHumanActionIdentifiersToHighlight:(id)highlight;
+- (void)setMediaProvider:(id)provider;
+- (void)setPersonLocalIdentifiersToHighlight:(id)highlight;
+- (void)setPreferredImageDynamicRange:(int64_t)range;
+- (void)setSceneIdentifiersToHighlight:(id)highlight;
+- (void)setStillImageContentsRect:(CGRect)rect;
+- (void)setStringsToHighlight:(id)highlight;
+- (void)setViewportSize:(CGSize)size;
 @end
 
 @implementation PXDisplayAssetView
@@ -54,43 +54,43 @@
   return result;
 }
 
-- (int64_t)photosAssetDebugOverlayViewEffectivePreferredImageDynamicRange:(id)a3
+- (int64_t)photosAssetDebugOverlayViewEffectivePreferredImageDynamicRange:(id)range
 {
-  v3 = [(PXDisplayAssetView *)self contentView];
-  v4 = _PUImageDynamicRangeFromPXImageDynamicRange([v3 effectivePreferredImageDynamicRange]);
+  contentView = [(PXDisplayAssetView *)self contentView];
+  v4 = _PUImageDynamicRangeFromPXImageDynamicRange([contentView effectivePreferredImageDynamicRange]);
 
   return v4;
 }
 
-- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)a3
+- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)range
 {
-  v3 = [(PXDisplayAssetView *)self preferredImageDynamicRange];
+  preferredImageDynamicRange = [(PXDisplayAssetView *)self preferredImageDynamicRange];
 
-  return _PUImageDynamicRangeFromPXImageDynamicRange(v3);
+  return _PUImageDynamicRangeFromPXImageDynamicRange(preferredImageDynamicRange);
 }
 
-- (void)photosAssetDebugOverlayView:(id)a3 didRequestPreferredImageDynamicRange:(int64_t)a4
+- (void)photosAssetDebugOverlayView:(id)view didRequestPreferredImageDynamicRange:(int64_t)range
 {
-  if (a4 >= 4)
+  if (range >= 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = a4 - 1;
+    v4 = range - 1;
   }
 
   [(PXDisplayAssetView *)self setPreferredImageDynamicRange:v4];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (ViewModelObservationContext_242866 != a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_242866 != context)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetView.m" lineNumber:440 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetView.m" lineNumber:440 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -98,8 +98,8 @@
 
 - (void)_invalidateDebugOverlayView
 {
-  v2 = [(PXDisplayAssetView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDebugOverlayView];
+  updater = [(PXDisplayAssetView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDebugOverlayView];
 }
 
 - (void)_updateContentViewLayout
@@ -109,90 +109,90 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXDisplayAssetView *)self contentMode];
-  if (v11 == 1)
+  contentMode = [(PXDisplayAssetView *)self contentMode];
+  if (contentMode == 1)
   {
-    v12 = [(PXDisplayAssetView *)self asset];
-    [v12 pixelWidth];
-    [v12 pixelHeight];
+    asset = [(PXDisplayAssetView *)self asset];
+    [asset pixelWidth];
+    [asset pixelHeight];
     PXSizeGetAspectRatioWithDefault();
   }
 
-  v13 = v11;
-  v14 = [(PXDisplayAssetView *)self contentView];
-  [v14 setFrame:{v4, v6, v8, v10}];
-  [v14 setContentMode:v13];
+  v13 = contentMode;
+  contentView = [(PXDisplayAssetView *)self contentView];
+  [contentView setFrame:{v4, v6, v8, v10}];
+  [contentView setContentMode:v13];
 }
 
 - (void)_invalidateContentViewLayout
 {
-  v2 = [(PXDisplayAssetView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContentViewLayout];
+  updater = [(PXDisplayAssetView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContentViewLayout];
 }
 
 - (void)_updateContentViewProperties
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(PXDisplayAssetView *)self contentView];
-  v4 = [(PXDisplayAssetView *)self viewModel];
-  v5 = [(PXDisplayAssetView *)self mediaProvider];
-  if (!v5)
+  contentView = [(PXDisplayAssetView *)self contentView];
+  viewModel = [(PXDisplayAssetView *)self viewModel];
+  mediaProvider = [(PXDisplayAssetView *)self mediaProvider];
+  if (!mediaProvider)
   {
     PXAssertGetLog();
   }
 
-  [v3 setMediaProvider:v5];
-  [v3 setAnimatedContentEnabled:1];
-  [v3 setViewModel:v4];
-  [v3 setPreferredImageDynamicRange:{-[PXDisplayAssetView preferredImageDynamicRange](self, "preferredImageDynamicRange")}];
+  [contentView setMediaProvider:mediaProvider];
+  [contentView setAnimatedContentEnabled:1];
+  [contentView setViewModel:viewModel];
+  [contentView setPreferredImageDynamicRange:{-[PXDisplayAssetView preferredImageDynamicRange](self, "preferredImageDynamicRange")}];
 }
 
 - (void)_invalidateContentViewProperties
 {
-  v2 = [(PXDisplayAssetView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContentViewProperties];
+  updater = [(PXDisplayAssetView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContentViewProperties];
 }
 
 - (void)_updateContentView
 {
   [(PXDisplayAssetView *)self setContentView:0];
-  v3 = [(PXDisplayAssetView *)self asset];
-  if (v3)
+  asset = [(PXDisplayAssetView *)self asset];
+  if (asset)
   {
-    v6 = v3;
+    v6 = asset;
     if (([(PXDisplayAssetView *)self options]& 1) != 0)
     {
-      v4 = 1;
+      playbackStyle = 1;
     }
 
     else
     {
-      v4 = [v6 playbackStyle];
+      playbackStyle = [v6 playbackStyle];
     }
 
-    v5 = [PXDisplayAssetContentView checkOutViewForAsset:v6 withPlaybackStyle:v4];
+    v5 = [PXDisplayAssetContentView checkOutViewForAsset:v6 withPlaybackStyle:playbackStyle];
     [v5 setCanDisplayLoadingIndicator:0];
     [(PXDisplayAssetView *)self setContentView:v5];
 
-    v3 = v6;
+    asset = v6;
   }
 }
 
 - (void)_invalidateContentView
 {
-  v2 = [(PXDisplayAssetView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContentView];
+  updater = [(PXDisplayAssetView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContentView];
 }
 
 - (void)_updateViewModelProperties
 {
-  v3 = [(PXDisplayAssetView *)self viewModel];
+  viewModel = [(PXDisplayAssetView *)self viewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__PXDisplayAssetView__updateViewModelProperties__block_invoke;
   v4[3] = &unk_1E774A128;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [viewModel performChanges:v4];
 }
 
 void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t a1, void *a2)
@@ -222,8 +222,8 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
 
 - (void)_invalidateViewModelProperties
 {
-  v2 = [(PXDisplayAssetView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewModelProperties];
+  updater = [(PXDisplayAssetView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewModelProperties];
 }
 
 - (void)_setNeedsUpdate
@@ -238,8 +238,8 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
 {
   if (self->_isPerformingLayout)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetView.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"!_isPerformingLayout"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetView.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"!_isPerformingLayout"}];
   }
 
   self->_isPerformingLayout = 1;
@@ -249,11 +249,11 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   v8 = v7;
   v10 = v9;
   [(PXDisplayAssetView *)self setViewportSize:v7, v9];
-  v11 = [(PXDisplayAssetView *)self overlayView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  overlayView = [(PXDisplayAssetView *)self overlayView];
+  [overlayView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(PXDisplayAssetView *)self updater];
-  [v12 updateIfNeeded];
+  updater = [(PXDisplayAssetView *)self updater];
+  [updater updateIfNeeded];
 
   self->_isPerformingLayout = 0;
   [(PXDisplayAssetView *)self bounds];
@@ -262,37 +262,37 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   [(PUPhotosAssetDebugOverlayView *)debugOverlayView setFrame:?];
 }
 
-- (void)setViewportSize:(CGSize)a3
+- (void)setViewportSize:(CGSize)size
 {
-  if (a3.width != self->_viewportSize.width || a3.height != self->_viewportSize.height)
+  if (size.width != self->_viewportSize.width || size.height != self->_viewportSize.height)
   {
-    self->_viewportSize = a3;
+    self->_viewportSize = size;
     [(PXDisplayAssetView *)self _invalidateContentViewLayout];
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     if (contentView)
     {
       [PXDisplayAssetContentView checkInView:?];
       [(PXDisplayAssetContentView *)self->_contentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(PXDisplayAssetContentView *)self->_contentView setDelegate:self];
     if (self->_contentView)
     {
-      v7 = [(PXDisplayAssetView *)self overlayView];
+      overlayView = [(PXDisplayAssetView *)self overlayView];
       v8 = self->_contentView;
-      if (v7)
+      if (overlayView)
       {
-        [(PXDisplayAssetView *)self insertSubview:v8 belowSubview:v7];
+        [(PXDisplayAssetView *)self insertSubview:v8 belowSubview:overlayView];
       }
 
       else
@@ -303,14 +303,14 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
 
     [(PXDisplayAssetView *)self _invalidateContentViewProperties];
     [(PXDisplayAssetView *)self _invalidateContentViewLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
 - (CGRect)imageFrame
 {
-  v2 = [(PXDisplayAssetView *)self contentView];
-  [v2 frame];
+  contentView = [(PXDisplayAssetView *)self contentView];
+  [contentView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -329,32 +329,32 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
 
 - (UIImage)currentImage
 {
-  v2 = [(PXDisplayAssetView *)self contentView];
-  v3 = [v2 currentImage];
+  contentView = [(PXDisplayAssetView *)self contentView];
+  currentImage = [contentView currentImage];
 
-  return v3;
+  return currentImage;
 }
 
 - (PXImageRequester)imageRequester
 {
-  v2 = [(PXDisplayAssetView *)self contentView];
-  v3 = [v2 imageRequester];
+  contentView = [(PXDisplayAssetView *)self contentView];
+  imageRequester = [contentView imageRequester];
 
-  return v3;
+  return imageRequester;
 }
 
 - (PXRegionOfInterest)contentRegionOfInterest
 {
-  v2 = [(PXDisplayAssetView *)self contentView];
-  v3 = [v2 regionOfInterest];
+  contentView = [(PXDisplayAssetView *)self contentView];
+  regionOfInterest = [contentView regionOfInterest];
 
-  return v3;
+  return regionOfInterest;
 }
 
 - (CGRect)stillImageContentsRect
 {
-  v2 = [(PXDisplayAssetView *)self viewModel];
-  [v2 stillImageContentsRect];
+  viewModel = [(PXDisplayAssetView *)self viewModel];
+  [viewModel stillImageContentsRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -371,13 +371,13 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setStillImageContentsRect:(CGRect)a3
+- (void)setStillImageContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PXDisplayAssetView *)self viewModel];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewModel = [(PXDisplayAssetView *)self viewModel];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__PXDisplayAssetView_setStillImageContentsRect___block_invoke;
@@ -386,17 +386,17 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   *&v8[5] = y;
   *&v8[6] = width;
   *&v8[7] = height;
-  [v7 performChanges:v8];
+  [viewModel performChanges:v8];
 }
 
-- (void)setPersonLocalIdentifiersToHighlight:(id)a3
+- (void)setPersonLocalIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_personLocalIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_personLocalIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -410,14 +410,14 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   }
 }
 
-- (void)setHumanActionIdentifiersToHighlight:(id)a3
+- (void)setHumanActionIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_humanActionIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_humanActionIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -431,14 +431,14 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   }
 }
 
-- (void)setAudioIdentifiersToHighlight:(id)a3
+- (void)setAudioIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_audioIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_audioIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -452,14 +452,14 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   }
 }
 
-- (void)setSceneIdentifiersToHighlight:(id)a3
+- (void)setSceneIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_sceneIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_sceneIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -473,14 +473,14 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   }
 }
 
-- (void)setStringsToHighlight:(id)a3
+- (void)setStringsToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_stringsToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_stringsToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -494,68 +494,68 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   }
 }
 
-- (void)setAllowsTextSelection:(BOOL)a3
+- (void)setAllowsTextSelection:(BOOL)selection
 {
-  if (self->_allowsTextSelection != a3)
+  if (self->_allowsTextSelection != selection)
   {
-    self->_allowsTextSelection = a3;
+    self->_allowsTextSelection = selection;
     [(PXDisplayAssetView *)self _invalidateViewModelProperties];
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if ([(PXDisplayAssetView *)self contentMode]!= a3)
+  if ([(PXDisplayAssetView *)self contentMode]!= mode)
   {
     v5.receiver = self;
     v5.super_class = PXDisplayAssetView;
-    [(PXDisplayAssetView *)&v5 setContentMode:a3];
+    [(PXDisplayAssetView *)&v5 setContentMode:mode];
     [(PXDisplayAssetView *)self _invalidateViewModelProperties];
     [(PXDisplayAssetView *)self _invalidateContentViewLayout];
   }
 }
 
-- (void)setPreferredImageDynamicRange:(int64_t)a3
+- (void)setPreferredImageDynamicRange:(int64_t)range
 {
-  if (self->_preferredImageDynamicRange != a3)
+  if (self->_preferredImageDynamicRange != range)
   {
-    self->_preferredImageDynamicRange = a3;
-    v6 = [(PXDisplayAssetView *)self contentView];
-    [v6 setPreferredImageDynamicRange:a3];
+    self->_preferredImageDynamicRange = range;
+    contentView = [(PXDisplayAssetView *)self contentView];
+    [contentView setPreferredImageDynamicRange:range];
 
     [(PXDisplayAssetView *)self _invalidateDebugOverlayView];
   }
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  v6 = providerCopy;
+  if (self->_mediaProvider != providerCopy)
   {
-    v8 = v5;
-    v7 = [(PXUIMediaProvider *)v5 isEqual:?];
+    v8 = providerCopy;
+    v7 = [(PXUIMediaProvider *)providerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_mediaProvider, a3);
+      objc_storeStrong(&self->_mediaProvider, provider);
       [(PXDisplayAssetView *)self _invalidateContentViewProperties];
       v6 = v8;
     }
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(PXDisplayAssetView *)self _invalidateViewModelProperties];
     [(PXDisplayAssetView *)self _invalidateContentView];
     [(PXDisplayAssetView *)self _invalidateContentViewLayout];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
@@ -598,12 +598,12 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   [(PXDisplayAssetView *)&v5 dealloc];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v5.receiver = self;
   v5.super_class = PXDisplayAssetView;
-  [(PXDisplayAssetView *)&v5 didAddSubview:v4];
+  [(PXDisplayAssetView *)&v5 didAddSubview:subviewCopy];
   if (self->_debugOverlayView)
   {
     objc_opt_class();
@@ -645,11 +645,11 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   [(PXDisplayAssetView *)self _addDebugOverlayViewIfNeeded];
 }
 
-- (PXDisplayAssetView)initWithCoder:(id)a3
+- (PXDisplayAssetView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXDisplayAssetView;
-  v3 = [(PXDisplayAssetView *)&v6 initWithCoder:a3];
+  v3 = [(PXDisplayAssetView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -659,24 +659,24 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   return v4;
 }
 
-- (PXDisplayAssetView)initWithFrame:(CGRect)a3 options:(unint64_t)a4
+- (PXDisplayAssetView)initWithFrame:(CGRect)frame options:(unint64_t)options
 {
   v8.receiver = self;
   v8.super_class = PXDisplayAssetView;
-  v5 = [(PXDisplayAssetView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PXDisplayAssetView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_options = a4;
+    v5->_options = options;
     [(PXDisplayAssetView *)v5 _commonPXDisplayAssetViewInit];
   }
 
   return v6;
 }
 
-+ (CGRect)preferredContentsRectForAsset:(id)a3 targetSize:(CGSize)a4
++ (CGRect)preferredContentsRectForAsset:(id)asset targetSize:(CGSize)size
 {
-  [PXDisplayAssetContentView preferredContentsRectForAsset:a3 targetSize:a4.width, a4.height];
+  [PXDisplayAssetContentView preferredContentsRectForAsset:asset targetSize:size.width, size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -684,14 +684,14 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
   return result;
 }
 
-+ (id)localizedTitleForAsset:(id)a3
++ (id)localizedTitleForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 localizedGeoDescription];
-  if (!v5)
+  assetCopy = asset;
+  localizedGeoDescription = [assetCopy localizedGeoDescription];
+  if (!localizedGeoDescription)
   {
-    v6 = [v4 localCreationDate];
-    if (v6)
+    localCreationDate = [assetCopy localCreationDate];
+    if (localCreationDate)
     {
       v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
       [v7 setDateStyle:3];
@@ -699,21 +699,21 @@ void __48__PXDisplayAssetView__updateViewModelProperties__block_invoke(uint64_t 
       v8 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
       [v7 setTimeZone:v8];
 
-      v9 = [a1 currentLocaleForTesting];
-      [v7 setLocale:v9];
+      currentLocaleForTesting = [self currentLocaleForTesting];
+      [v7 setLocale:currentLocaleForTesting];
 
-      v5 = [v7 stringFromDate:v6];
+      localizedGeoDescription = [v7 stringFromDate:localCreationDate];
     }
 
     else
     {
-      v5 = 0;
+      localizedGeoDescription = 0;
     }
   }
 
-  if (v5)
+  if (localizedGeoDescription)
   {
-    v10 = v5;
+    v10 = localizedGeoDescription;
   }
 
   else

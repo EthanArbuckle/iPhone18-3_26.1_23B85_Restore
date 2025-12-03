@@ -1,68 +1,68 @@
 @interface VCPPhotosFaceIdentificationTask
-+ (id)taskWithFaceLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 withCompletionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (VCPPhotosFaceIdentificationTask)initWithFaceLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 withCompletionHandler:(id)a5;
-- (void)_classifyPerson:(id)a3 usingModel:(id)a4 withResults:(id *)a5;
-- (void)_classifyPet:(id)a3 usingModel:(id)a4 withResults:(id *)a5;
++ (id)taskWithFaceLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withCompletionHandler:(id)handler;
+- (BOOL)run:(id *)run;
+- (VCPPhotosFaceIdentificationTask)initWithFaceLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withCompletionHandler:(id)handler;
+- (void)_classifyPerson:(id)person usingModel:(id)model withResults:(id *)results;
+- (void)_classifyPet:(id)pet usingModel:(id)model withResults:(id *)results;
 @end
 
 @implementation VCPPhotosFaceIdentificationTask
 
-- (VCPPhotosFaceIdentificationTask)initWithFaceLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 withCompletionHandler:(id)a5
+- (VCPPhotosFaceIdentificationTask)initWithFaceLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
+  identifiersCopy = identifiers;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = VCPPhotosFaceIdentificationTask;
-  v11 = [(VCPPhotosFaceIdentificationTask *)&v14 initWithCompletionHandler:a5];
+  v11 = [(VCPPhotosFaceIdentificationTask *)&v14 initWithCompletionHandler:handler];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_faceLocalIdentifiers, a3);
-    objc_storeStrong(&v12->_photoLibraryURL, a4);
+    objc_storeStrong(&v11->_faceLocalIdentifiers, identifiers);
+    objc_storeStrong(&v12->_photoLibraryURL, l);
   }
 
   return v12;
 }
 
-+ (id)taskWithFaceLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 withCompletionHandler:(id)a5
++ (id)taskWithFaceLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithFaceLocalIdentifiers:v9 fromPhotoLibraryWithURL:v8 withCompletionHandler:v7];
+  handlerCopy = handler;
+  lCopy = l;
+  identifiersCopy = identifiers;
+  v10 = [objc_alloc(objc_opt_class()) initWithFaceLocalIdentifiers:identifiersCopy fromPhotoLibraryWithURL:lCopy withCompletionHandler:handlerCopy];
 
   return v10;
 }
 
-- (void)_classifyPerson:(id)a3 usingModel:(id)a4 withResults:(id *)a5
+- (void)_classifyPerson:(id)person usingModel:(id)model withResults:(id *)results
 {
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  modelCopy = model;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v9 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v9))
     {
-      v10 = [v7 localIdentifier];
+      localIdentifier = [personCopy localIdentifier];
       *buf = 138412290;
-      v50 = v10;
+      v50 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[%@] Predicting person(s) from VIP model", buf, 0xCu);
     }
   }
 
-  v11 = [v7 faceClusteringProperties];
-  v12 = [v11 faceprint];
+  faceClusteringProperties = [personCopy faceClusteringProperties];
+  faceprint = [faceClusteringProperties faceprint];
 
-  if (v12)
+  if (faceprint)
   {
-    v13 = [v12 faceprintData];
-    v14 = [VCPFaceIDModel faceObservationFromFaceprintData:v13];
+    faceprintData = [faceprint faceprintData];
+    v14 = [VCPFaceIDModel faceObservationFromFaceprintData:faceprintData];
 
     if (v14)
     {
       v48 = 0;
-      v15 = [v8 predictPersonFromFaceObservation:v14 limit:10 canceller:0 error:&v48];
+      v15 = [modelCopy predictPersonFromFaceObservation:v14 limit:10 canceller:0 error:&v48];
       v16 = v48;
       if (v16)
       {
@@ -71,10 +71,10 @@
           v17 = VCPLogToOSLogType[4];
           if (os_log_type_enabled(&_os_log_default, v17))
           {
-            v18 = [v7 localIdentifier];
+            localIdentifier2 = [personCopy localIdentifier];
             v19 = [v16 description];
             *buf = 138412546;
-            v50 = v18;
+            v50 = localIdentifier2;
             v51 = 2112;
             v52[0] = v19;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "[%@] Face prediction failed (%@); skipping", buf, 0x16u);
@@ -84,7 +84,7 @@
 
       else
       {
-        v42 = a5;
+        resultsCopy = results;
         v43 = v14;
         v24 = +[NSMutableDictionary dictionary];
         v44 = 0u;
@@ -115,8 +115,8 @@
               {
                 [v30 confidence];
                 v34 = [NSNumber numberWithFloat:?];
-                v35 = [v30 predictedPersonUniqueIdentifier];
-                [v24 setObject:v34 forKeyedSubscript:v35];
+                predictedPersonUniqueIdentifier = [v30 predictedPersonUniqueIdentifier];
+                [v24 setObject:v34 forKeyedSubscript:predictedPersonUniqueIdentifier];
               }
             }
 
@@ -131,11 +131,11 @@
           v36 = VCPLogToOSLogType[7];
           if (os_log_type_enabled(&_os_log_default, v36))
           {
-            v37 = [v7 localIdentifier];
+            localIdentifier3 = [personCopy localIdentifier];
             v38 = [v25 count];
             v39 = [v24 count];
             *buf = 138412802;
-            v50 = v37;
+            v50 = localIdentifier3;
             v51 = 1024;
             LODWORD(v52[0]) = v38;
             WORD2(v52[0]) = 1024;
@@ -144,10 +144,10 @@
           }
         }
 
-        if (v42)
+        if (resultsCopy)
         {
           v40 = v24;
-          *v42 = v24;
+          *resultsCopy = v24;
         }
 
         v14 = v43;
@@ -161,9 +161,9 @@
       v22 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v22))
       {
-        v23 = [v7 localIdentifier];
+        localIdentifier4 = [personCopy localIdentifier];
         *buf = 138412290;
-        v50 = v23;
+        v50 = localIdentifier4;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[%@] Failed to obtain face observation; skipping", buf, 0xCu);
       }
     }
@@ -174,42 +174,42 @@
     v20 = VCPLogToOSLogType[4];
     if (os_log_type_enabled(&_os_log_default, v20))
     {
-      v21 = [v7 localIdentifier];
+      localIdentifier5 = [personCopy localIdentifier];
       *buf = 138412290;
-      v50 = v21;
+      v50 = localIdentifier5;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v20, "[%@] Failed to obtain faceprint; skipping", buf, 0xCu);
     }
   }
 }
 
-- (void)_classifyPet:(id)a3 usingModel:(id)a4 withResults:(id *)a5
+- (void)_classifyPet:(id)pet usingModel:(id)model withResults:(id *)results
 {
-  v7 = a3;
-  v8 = a4;
+  petCopy = pet;
+  modelCopy = model;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v9 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v9))
     {
-      v10 = [v7 localIdentifier];
+      localIdentifier = [petCopy localIdentifier];
       *buf = 138412290;
-      v51 = v10;
+      v51 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[%@] Predicting pet(s) from VIP model", buf, 0xCu);
     }
   }
 
-  v11 = [v7 faceClusteringProperties];
-  v12 = [v11 faceprint];
+  faceClusteringProperties = [petCopy faceClusteringProperties];
+  faceprint = [faceClusteringProperties faceprint];
 
-  if (v12)
+  if (faceprint)
   {
-    v13 = [v12 faceprintData];
-    v14 = [VCPFaceIDModel animalObservationFromAnimalprintData:v13];
+    faceprintData = [faceprint faceprintData];
+    v14 = [VCPFaceIDModel animalObservationFromAnimalprintData:faceprintData];
 
     if (v14)
     {
       v49 = 0;
-      v15 = [v8 entityPredictionsForObservation:v14 limit:10 canceller:0 error:&v49];
+      v15 = [modelCopy entityPredictionsForObservation:v14 limit:10 canceller:0 error:&v49];
       v16 = v49;
       if (v16)
       {
@@ -218,10 +218,10 @@
           v17 = VCPLogToOSLogType[4];
           if (os_log_type_enabled(&_os_log_default, v17))
           {
-            v18 = [v7 localIdentifier];
+            localIdentifier2 = [petCopy localIdentifier];
             v19 = [v16 description];
             *buf = 138412546;
-            v51 = v18;
+            v51 = localIdentifier2;
             v52 = 2112;
             v53[0] = v19;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "[%@] Pet prediction failed (%@); skipping", buf, 0x16u);
@@ -231,9 +231,9 @@
 
       else
       {
-        v42 = a5;
-        v43 = v8;
-        v44 = v7;
+        resultsCopy = results;
+        v43 = modelCopy;
+        v44 = petCopy;
         v24 = +[NSMutableDictionary dictionary];
         v45 = 0u;
         v46 = 0u;
@@ -263,8 +263,8 @@
               {
                 [v30 confidence];
                 v34 = [NSNumber numberWithFloat:?];
-                v35 = [v30 entityUniqueIdentifier];
-                [v24 setObject:v34 forKeyedSubscript:v35];
+                entityUniqueIdentifier = [v30 entityUniqueIdentifier];
+                [v24 setObject:v34 forKeyedSubscript:entityUniqueIdentifier];
               }
             }
 
@@ -274,17 +274,17 @@
           while (v27);
         }
 
-        v7 = v44;
+        petCopy = v44;
         if (MediaAnalysisLogLevel() >= 7)
         {
           v36 = VCPLogToOSLogType[7];
           if (os_log_type_enabled(&_os_log_default, v36))
           {
-            v37 = [v44 localIdentifier];
+            localIdentifier3 = [v44 localIdentifier];
             v38 = [v25 count];
             v39 = [v24 count];
             *buf = 138412802;
-            v51 = v37;
+            v51 = localIdentifier3;
             v52 = 1024;
             LODWORD(v53[0]) = v38;
             WORD2(v53[0]) = 1024;
@@ -293,13 +293,13 @@
           }
         }
 
-        if (v42)
+        if (resultsCopy)
         {
           v40 = v24;
-          *v42 = v24;
+          *resultsCopy = v24;
         }
 
-        v8 = v43;
+        modelCopy = v43;
         v16 = 0;
         v15 = v41;
       }
@@ -310,9 +310,9 @@
       v22 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v22))
       {
-        v23 = [v7 localIdentifier];
+        localIdentifier4 = [petCopy localIdentifier];
         *buf = 138412290;
-        v51 = v23;
+        v51 = localIdentifier4;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[%@] Failed to obtain pet observation; skipping", buf, 0xCu);
       }
     }
@@ -323,15 +323,15 @@
     v20 = VCPLogToOSLogType[4];
     if (os_log_type_enabled(&_os_log_default, v20))
     {
-      v21 = [v7 localIdentifier];
+      localIdentifier5 = [petCopy localIdentifier];
       *buf = 138412290;
-      v51 = v21;
+      v51 = localIdentifier5;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v20, "[%@] Failed to obtain animalprint; skipping", buf, 0xCu);
     }
   }
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -353,29 +353,29 @@
 
   if (v9)
   {
-    v10 = [v9 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [v9 librarySpecificFetchOptions];
     v83 = PHFacePropertySetClustering;
     v11 = [NSArray arrayWithObjects:&v83 count:1];
-    [v10 setFetchPropertySets:v11];
+    [librarySpecificFetchOptions setFetchPropertySets:v11];
 
-    [v10 setIncludedDetectionTypes:&off_1002963E0];
-    v12 = [PHFace fetchFacesWithLocalIdentifiers:self->_faceLocalIdentifiers options:v10];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&off_1002963E0];
+    v12 = [PHFace fetchFacesWithLocalIdentifiers:self->_faceLocalIdentifiers options:librarySpecificFetchOptions];
     if (![v12 count])
     {
-      if (!a3)
+      if (!run)
       {
         v28 = 0;
         goto LABEL_73;
       }
 
       v81 = NSLocalizedDescriptionKey;
-      v18 = [NSString stringWithFormat:@"Face fetch did not return any results"];
-      v82 = v18;
+      defaultPhotoLibrary = [NSString stringWithFormat:@"Face fetch did not return any results"];
+      v82 = defaultPhotoLibrary;
       v23 = [NSDictionary dictionaryWithObjects:&v82 forKeys:&v81 count:1];
       v29 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v23];
       v28 = 0;
-      v30 = *a3;
-      *a3 = v29;
+      v30 = *run;
+      *run = v29;
       goto LABEL_71;
     }
 
@@ -397,16 +397,16 @@
 
     v65 = v12;
     v17 = +[VCPDefaultPhotoLibraryManager sharedManager];
-    v18 = [v17 defaultPhotoLibrary];
+    defaultPhotoLibrary = [v17 defaultPhotoLibrary];
 
-    v67 = v18;
-    v19 = [v18 vcp_vipModelFilepathForVIPType:0];
+    v67 = defaultPhotoLibrary;
+    v19 = [defaultPhotoLibrary vcp_vipModelFilepathForVIPType:0];
     v20 = +[NSFileManager defaultManager];
     v21 = [v20 fileExistsAtPath:v19];
 
     if (v21)
     {
-      v22 = v10;
+      v22 = librarySpecificFetchOptions;
       v75 = 0;
       v23 = [VCPFaceIDModel loadVIPModelAtPath:v19 withVIPType:0 error:&v75];
       v24 = v75;
@@ -422,7 +422,7 @@
         }
       }
 
-      v10 = v22;
+      librarySpecificFetchOptions = v22;
     }
 
     else
@@ -441,13 +441,13 @@
       v23 = 0;
     }
 
-    v32 = [v18 vcp_vipModelFilepathForVIPType:1];
+    v32 = [defaultPhotoLibrary vcp_vipModelFilepathForVIPType:1];
 
     v30 = v32;
     v33 = +[NSFileManager defaultManager];
     v34 = [v33 fileExistsAtPath:v30];
 
-    v64 = a3;
+    runCopy = run;
     if (v34)
     {
       v74 = 0;
@@ -489,14 +489,14 @@
     {
       v62 = v30;
       v63 = v9;
-      v61 = v10;
+      v61 = librarySpecificFetchOptions;
       v40 = +[NSMutableDictionary dictionary];
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
-      v41 = v12;
-      v42 = [v41 countByEnumeratingWithState:&v70 objects:v78 count:16];
+      completionHandler = v12;
+      v42 = [completionHandler countByEnumeratingWithState:&v70 objects:v78 count:16];
       if (v42)
       {
         v43 = v42;
@@ -508,21 +508,21 @@ LABEL_39:
         {
           if (*v71 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(completionHandler);
           }
 
           v46 = *(*(&v70 + 1) + 8 * v45);
           if ([(VCPPhotosFaceIdentificationTask *)self isCanceled])
           {
-            if (v64)
+            if (runCopy)
             {
               v76 = NSLocalizedDescriptionKey;
               v56 = [NSString stringWithFormat:@"Face identification canceled"];
               v77 = v56;
               v57 = [NSDictionary dictionaryWithObjects:&v77 forKeys:&v76 count:1];
               v58 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v57];
-              v59 = *v64;
-              *v64 = v58;
+              v59 = *runCopy;
+              *runCopy = v58;
             }
 
             v28 = 0;
@@ -538,9 +538,9 @@ LABEL_39:
                 goto LABEL_51;
               }
 
-              v49 = [v46 localIdentifier];
+              localIdentifier = [v46 localIdentifier];
               *buf = 138412290;
-              *v87 = v49;
+              *v87 = localIdentifier;
               v51 = type;
               v52 = "[%@] Skipped for Person (no identity model)";
               goto LABEL_59;
@@ -560,9 +560,9 @@ LABEL_39:
                 goto LABEL_51;
               }
 
-              v49 = [v46 localIdentifier];
+              localIdentifier = [v46 localIdentifier];
               *buf = 138412290;
-              *v87 = v49;
+              *v87 = localIdentifier;
               v51 = type;
               v52 = "[%@] Skipped for Pet (no identity model)";
 LABEL_59:
@@ -578,9 +578,9 @@ LABEL_59:
           v48 = *v47;
           if (v48)
           {
-            v49 = v48;
-            v50 = [v46 localIdentifier];
-            [v40 setObject:v49 forKeyedSubscript:v50];
+            localIdentifier = v48;
+            localIdentifier2 = [v46 localIdentifier];
+            [v40 setObject:localIdentifier forKeyedSubscript:localIdentifier2];
 
 LABEL_50:
           }
@@ -588,7 +588,7 @@ LABEL_50:
 LABEL_51:
           if (v43 == ++v45)
           {
-            v53 = [v41 countByEnumeratingWithState:&v70 objects:v78 count:16];
+            v53 = [completionHandler countByEnumeratingWithState:&v70 objects:v78 count:16];
             v43 = v53;
             if (v53)
             {
@@ -600,17 +600,17 @@ LABEL_51:
         }
       }
 
-      v41 = [(VCPPhotosFaceIdentificationTask *)self completionHandler];
-      (*(v41 + 2))(v41, v40, 0);
+      completionHandler = [(VCPPhotosFaceIdentificationTask *)self completionHandler];
+      (*(completionHandler + 2))(completionHandler, v40, 0);
       v28 = 1;
 LABEL_68:
-      v10 = v61;
+      librarySpecificFetchOptions = v61;
       v12 = v65;
     }
 
     else
     {
-      if (!v64)
+      if (!runCopy)
       {
         v28 = 0;
         goto LABEL_70;
@@ -621,15 +621,15 @@ LABEL_68:
       v79 = NSLocalizedDescriptionKey;
       v40 = [NSString stringWithFormat:@"Failed to load both Person and Pet Identity Models"];
       v80 = v40;
-      v41 = [NSDictionary dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-      v54 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v41];
-      v55 = *v64;
-      *v64 = v54;
+      completionHandler = [NSDictionary dictionaryWithObjects:&v80 forKeys:&v79 count:1];
+      v54 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:completionHandler];
+      v55 = *runCopy;
+      *runCopy = v54;
 
       v28 = 0;
     }
 
-    v18 = v67;
+    defaultPhotoLibrary = v67;
 
     v30 = v62;
     v9 = v63;
@@ -639,16 +639,16 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if (a3)
+  if (run)
   {
     v84 = NSLocalizedDescriptionKey;
-    v10 = [NSString stringWithFormat:@"Failed to open specified Photo Library (%@)", self->_photoLibraryURL];
-    v85 = v10;
+    librarySpecificFetchOptions = [NSString stringWithFormat:@"Failed to open specified Photo Library (%@)", self->_photoLibraryURL];
+    v85 = librarySpecificFetchOptions;
     v12 = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
     v27 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v12];
     v28 = 0;
-    v18 = *a3;
-    *a3 = v27;
+    defaultPhotoLibrary = *run;
+    *run = v27;
 LABEL_72:
 
 LABEL_73:

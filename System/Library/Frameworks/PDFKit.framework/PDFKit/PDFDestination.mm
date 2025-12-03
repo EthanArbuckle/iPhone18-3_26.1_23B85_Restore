@@ -3,11 +3,11 @@
 - (CGPoint)point;
 - (NSComparisonResult)compare:(PDFDestination *)destination;
 - (PDFDestination)init;
-- (PDFDestination)initWithDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4;
+- (PDFDestination)initWithDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document;
 - (PDFDestination)initWithPage:(PDFPage *)page atPoint:(CGPoint)point;
 - (PDFPage)page;
 - (__CFArray)createArrayRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)document;
 - (id)pageIfExists;
@@ -43,34 +43,34 @@
     v8 = [(PDFDestination *)self init];
     if (!v8)
     {
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
     v9 = v8;
-    v10 = [(PDFPage *)v7 document];
-    objc_storeWeak(&v9->_private->document, v10);
+    document = [(PDFPage *)v7 document];
+    objc_storeWeak(&v9->_private->document, document);
 
     objc_storeWeak(&v9->_private->page, v7);
     v9->_private->type = 0;
     v9->_private->left = x;
     v9->_private->top = y;
     self = v9;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
 LABEL_7:
-  return v11;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4[1] + 32) = self->_private->type;
   *(v4[1] + 40) = self->_private->left;
   *(v4[1] + 48) = self->_private->top;
@@ -111,20 +111,20 @@ LABEL_7:
     v4 = objc_loadWeakRetained(&self->_private->document);
     if (v4 && (array = self->_private->array, v4, array))
     {
-      v6 = [(PDFDestination *)self document];
+      document = [(PDFDestination *)self document];
       value = 0;
       if (CGPDFArrayGetDictionary(self->_private->array, 0, &value))
       {
-        v7 = [(PDFDestination *)self document];
-        WeakRetained = [v7 findPageWithCGPDFDictionaryPageRef:value];
+        document2 = [(PDFDestination *)self document];
+        WeakRetained = [document2 findPageWithCGPDFDictionaryPageRef:value];
       }
 
       else
       {
         v10 = 0;
-        if (CGPDFArrayGetInteger(self->_private->array, 0, &v10) && (v8 = v10, v8 < [v6 pageCount]))
+        if (CGPDFArrayGetInteger(self->_private->array, 0, &v10) && (v8 = v10, v8 < [document pageCount]))
         {
-          WeakRetained = [v6 pageAtIndex:v10];
+          WeakRetained = [document pageAtIndex:v10];
         }
 
         else
@@ -196,21 +196,21 @@ LABEL_7:
 - (NSComparisonResult)compare:(PDFDestination *)destination
 {
   v4 = destination;
-  v5 = [(PDFDestination *)self page];
-  v6 = [(PDFDestination *)v4 page];
-  v7 = 0;
+  page = [(PDFDestination *)self page];
+  page2 = [(PDFDestination *)v4 page];
+  document2 = 0;
   v8 = NSOrderedAscending;
-  v9 = 0;
-  if (v6)
+  document = 0;
+  if (page2)
   {
-    if (v5)
+    if (page)
     {
-      v9 = [v5 document];
-      v7 = [v6 document];
-      if (v7 == v9)
+      document = [page document];
+      document2 = [page2 document];
+      if (document2 == document)
       {
-        v10 = [v9 indexForPage:v5];
-        v11 = [v7 indexForPage:v6];
+        v10 = [document indexForPage:page];
+        v11 = [document2 indexForPage:page2];
         if (v10 <= v11)
         {
           if (v10 >= v11)
@@ -221,13 +221,13 @@ LABEL_7:
             v15 = v14;
             if (MaxY == 3.40282347e38)
             {
-              [v5 boundsForBox:0];
+              [page boundsForBox:0];
               MaxY = PDFRectGetMaxY(v16, v17, v18, v19);
             }
 
             if (v15 == 3.40282347e38)
             {
-              [v6 boundsForBox:0];
+              [page2 boundsForBox:0];
               v15 = PDFRectGetMaxY(v20, v21, v22, v23);
             }
 
@@ -261,11 +261,11 @@ LABEL_7:
 
 - (id)description
 {
-  v3 = [(PDFDestination *)self page];
-  if (v3)
+  page = [(PDFDestination *)self page];
+  if (page)
   {
-    v4 = [(PDFDestination *)self document];
-    v5 = [v4 indexForPage:v3];
+    document = [(PDFDestination *)self document];
+    v5 = [document indexForPage:page];
 
     v6 = v5;
   }
@@ -275,12 +275,12 @@ LABEL_7:
     v6 = 0xFFFFFFFFLL;
   }
 
-  v7 = [(PDFDestination *)self type];
-  if (v7 <= 2)
+  type = [(PDFDestination *)self type];
+  if (type <= 2)
   {
-    if (v7 > 0)
+    if (type > 0)
     {
-      if (v7 == 1)
+      if (type == 1)
       {
         [MEMORY[0x1E696AEC0] stringWithFormat:@"Fit, page = %d\n", v6, v13, v14, v15, v16];
       }
@@ -293,13 +293,13 @@ LABEL_7:
       goto LABEL_23;
     }
 
-    if (v7 == -1)
+    if (type == -1)
     {
       v9 = 0;
       goto LABEL_24;
     }
 
-    if (!v7)
+    if (!type)
     {
       if (self->_private->left == 3.40282347e38)
       {
@@ -339,9 +339,9 @@ LABEL_7:
     goto LABEL_22;
   }
 
-  if (v7 <= 4)
+  if (type <= 4)
   {
-    if (v7 == 3)
+    if (type == 3)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"FitV, page = %d, l = %.1f\n", v6, *&self->_private->left, v14, v15, v16];
     }
@@ -354,14 +354,14 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  if (v7 == 5)
+  if (type == 5)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"FitB, page = %d\n", v6, v13, v14, v15, v16];
   }
 
   else
   {
-    if (v7 != 6)
+    if (type != 6)
     {
 LABEL_22:
       [MEMORY[0x1E696AEC0] stringWithFormat:@"FitBV, page = %d, l = %.1f\n", v6, *&self->_private->left, v14, v15, v16];
@@ -377,9 +377,9 @@ LABEL_24:
   return v9;
 }
 
-- (PDFDestination)initWithDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4
+- (PDFDestination)initWithDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document
 {
-  v6 = a4;
+  documentCopy = document;
   array = 0;
   value = 0;
   __s1 = 0;
@@ -390,8 +390,8 @@ LABEL_24:
     goto LABEL_20;
   }
 
-  objc_storeWeak(&v7->_private->document, v6);
-  if (!CGPDFDictionaryGetObject(a3, "Dest", &value) && !CGPDFDictionaryGetObject(a3, "D", &value))
+  objc_storeWeak(&v7->_private->document, documentCopy);
+  if (!CGPDFDictionaryGetObject(dictionary, "Dest", &value) && !CGPDFDictionaryGetObject(dictionary, "D", &value))
   {
     goto LABEL_20;
   }
@@ -399,7 +399,7 @@ LABEL_24:
   if (CGPDFObjectGetValue(value, kCGPDFObjectTypeString, 0) || CGPDFObjectGetValue(value, kCGPDFObjectTypeName, 0))
   {
     dict = 0;
-    [v6 documentRef];
+    [documentCopy documentRef];
     Destination = CGPDFDocumentGetDestination();
     value = Destination;
     if (!Destination)
@@ -545,10 +545,10 @@ LABEL_35:
   v52 = 0;
   *cf = 0u;
   *v51 = 0u;
-  v3 = [(PDFDestination *)self page];
+  page = [(PDFDestination *)self page];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [v3 document];
-  v6 = [v4 stringWithFormat:@"/#%ld", objc_msgSend(v5, "indexForPage:", v3) + 1];
+  document = [page document];
+  v6 = [v4 stringWithFormat:@"/#%ld", objc_msgSend(document, "indexForPage:", page) + 1];
   values = v6;
 
   if (!v6)

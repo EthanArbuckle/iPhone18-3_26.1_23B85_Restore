@@ -1,20 +1,20 @@
 @interface BiometricAutoBugCapture
-- (BOOL)sendAutoBugCaptureEvent:(unint64_t)a3;
-- (BiometricAutoBugCapture)initWithDomain:(id)a3 process:(id)a4 dispatchQueue:(id)a5;
-- (id)getSignatureForReason:(unint64_t)a3;
-- (id)getSubtypeForReason:(unint64_t)a3;
-- (id)getTypeForReason:(unint64_t)a3;
-- (void)sendAutoBugCaptureEvent:(unint64_t)a3 withContext:(id)a4 replyBlock:(id)a5;
-- (void)sendSignature:(id)a3 withDuration:(double)a4 replyBlock:(id)a5;
+- (BOOL)sendAutoBugCaptureEvent:(unint64_t)event;
+- (BiometricAutoBugCapture)initWithDomain:(id)domain process:(id)process dispatchQueue:(id)queue;
+- (id)getSignatureForReason:(unint64_t)reason;
+- (id)getSubtypeForReason:(unint64_t)reason;
+- (id)getTypeForReason:(unint64_t)reason;
+- (void)sendAutoBugCaptureEvent:(unint64_t)event withContext:(id)context replyBlock:(id)block;
+- (void)sendSignature:(id)signature withDuration:(double)duration replyBlock:(id)block;
 @end
 
 @implementation BiometricAutoBugCapture
 
-- (BiometricAutoBugCapture)initWithDomain:(id)a3 process:(id)a4 dispatchQueue:(id)a5
+- (BiometricAutoBugCapture)initWithDomain:(id)domain process:(id)process dispatchQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  domainCopy = domain;
+  processCopy = process;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = BiometricAutoBugCapture;
   v12 = [(BiometricAutoBugCapture *)&v22 init];
@@ -26,9 +26,9 @@
 
     if (v12->_reporter)
     {
-      objc_storeStrong(&v12->_domain, a3);
-      objc_storeStrong(&v12->_process, a4);
-      objc_storeStrong(&v12->_dispatchQueue, a5);
+      objc_storeStrong(&v12->_domain, domain);
+      objc_storeStrong(&v12->_process, process);
+      objc_storeStrong(&v12->_dispatchQueue, queue);
       v12->_serialLogEnabled = 0;
       v15 = getBootArgs();
       v16 = v15;
@@ -57,36 +57,36 @@
   return v12;
 }
 
-- (id)getTypeForReason:(unint64_t)a3
+- (id)getTypeForReason:(unint64_t)reason
 {
-  if (a3 - 4097 > 5)
+  if (reason - 4097 > 5)
   {
     return @"Default";
   }
 
   else
   {
-    return off_2784FA198[a3 - 4097];
+    return off_2784FA198[reason - 4097];
   }
 }
 
-- (id)getSubtypeForReason:(unint64_t)a3
+- (id)getSubtypeForReason:(unint64_t)reason
 {
-  if (a3 - 4097 > 5)
+  if (reason - 4097 > 5)
   {
     return @"Default";
   }
 
   else
   {
-    return off_2784FA1C8[a3 - 4097];
+    return off_2784FA1C8[reason - 4097];
   }
 }
 
-- (id)getSignatureForReason:(unint64_t)a3
+- (id)getSignatureForReason:(unint64_t)reason
 {
   v5 = [(BiometricAutoBugCapture *)self getTypeForReason:?];
-  v6 = [(BiometricAutoBugCapture *)self getSubtypeForReason:a3];
+  v6 = [(BiometricAutoBugCapture *)self getSubtypeForReason:reason];
   v7 = v6;
   if (v5)
   {
@@ -110,9 +110,9 @@ LABEL_4:
   return v8;
 }
 
-- (BOOL)sendAutoBugCaptureEvent:(unint64_t)a3
+- (BOOL)sendAutoBugCaptureEvent:(unint64_t)event
 {
-  v4 = [(BiometricAutoBugCapture *)self getSignatureForReason:a3];
+  v4 = [(BiometricAutoBugCapture *)self getSignatureForReason:event];
   if (v4)
   {
     v5 = [(BiometricAutoBugCapture *)self sendSignature:v4 withDuration:*&DEFAULT_SNAPSHOT_TIME];
@@ -127,20 +127,20 @@ LABEL_4:
   return v5;
 }
 
-- (void)sendAutoBugCaptureEvent:(unint64_t)a3 withContext:(id)a4 replyBlock:(id)a5
+- (void)sendAutoBugCaptureEvent:(unint64_t)event withContext:(id)context replyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(BiometricAutoBugCapture *)self getSignatureForReason:a3];
+  contextCopy = context;
+  blockCopy = block;
+  v10 = [(BiometricAutoBugCapture *)self getSignatureForReason:event];
   v11 = v10;
   if (v10)
   {
-    if (v8)
+    if (contextCopy)
     {
-      [v10 setObject:v8 forKeyedSubscript:*MEMORY[0x277D6B1F8]];
+      [v10 setObject:contextCopy forKeyedSubscript:*MEMORY[0x277D6B1F8]];
     }
 
-    [(BiometricAutoBugCapture *)self sendSignature:v11 withDuration:v9 replyBlock:0.0];
+    [(BiometricAutoBugCapture *)self sendSignature:v11 withDuration:blockCopy replyBlock:0.0];
   }
 
   else
@@ -161,28 +161,28 @@ LABEL_4:
       _os_log_impl(&dword_223E00000, v12, OS_LOG_TYPE_ERROR, "Failed to create ABC signature\n", v13, 2u);
     }
 
-    if (v9)
+    if (blockCopy)
     {
-      v9[2](v9, *MEMORY[0x277D6B060]);
+      blockCopy[2](blockCopy, *MEMORY[0x277D6B060]);
     }
   }
 }
 
-- (void)sendSignature:(id)a3 withDuration:(double)a4 replyBlock:(id)a5
+- (void)sendSignature:(id)signature withDuration:(double)duration replyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  signatureCopy = signature;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__BiometricAutoBugCapture_sendSignature_withDuration_replyBlock___block_invoke;
   v13[3] = &unk_2784FA178;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = signatureCopy;
+  durationCopy = duration;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = signatureCopy;
   dispatch_async(dispatchQueue, v13);
 }
 

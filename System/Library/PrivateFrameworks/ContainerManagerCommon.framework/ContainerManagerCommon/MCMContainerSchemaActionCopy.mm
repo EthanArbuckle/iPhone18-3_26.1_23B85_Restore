@@ -1,24 +1,24 @@
 @interface MCMContainerSchemaActionCopy
 + (id)actionIdentifier;
-- (BOOL)performWithError:(id *)a3;
-- (MCMContainerSchemaActionCopy)initWithSourcePathArgument:(id)a3 destinationPathArgument:(id)a4 destFinalPathArgument:(id)a5 context:(id)a6;
+- (BOOL)performWithError:(id *)error;
+- (MCMContainerSchemaActionCopy)initWithSourcePathArgument:(id)argument destinationPathArgument:(id)pathArgument destFinalPathArgument:(id)finalPathArgument context:(id)context;
 - (NSString)description;
 @end
 
 @implementation MCMContainerSchemaActionCopy
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(NSURL *)self->_sourceURL path];
-  v6 = [(NSURL *)self->_destURL path];
-  if ([v5 isEqualToString:v6])
+  path = [(NSURL *)self->_sourceURL path];
+  path2 = [(NSURL *)self->_destURL path];
+  if ([path isEqualToString:path2])
   {
     v7 = container_log_handle_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v5;
+      v21 = path;
       v22 = 2114;
       v23 = 0;
       _os_log_error_impl(&dword_1DF2C3000, v7, OS_LOG_TYPE_ERROR, "ignoring attempt to copy [%@] to itself: %{public}@", buf, 0x16u);
@@ -52,19 +52,19 @@ LABEL_6:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v21 = v5;
+    v21 = path;
     v22 = 2112;
-    v23 = v6;
+    v23 = path2;
     v24 = 2114;
     v25 = v8;
     _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "failed to copy [%@] to [%@]: %{public}@", buf, 0x20u);
   }
 
-  if (a3)
+  if (error)
   {
     v16 = v8;
     v12 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -174,33 +174,33 @@ uint64_t __49__MCMContainerSchemaActionCopy_performWithError___block_invoke_2(ui
 - (NSString)description
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() actionIdentifier];
-  v4 = [(NSURL *)self->_sourceURL path];
-  v5 = [(NSURL *)self->_destURL path];
-  v6 = [v3 stringByAppendingFormat:@" [%@] → [%@]", v4, v5];
+  actionIdentifier = [objc_opt_class() actionIdentifier];
+  path = [(NSURL *)self->_sourceURL path];
+  path2 = [(NSURL *)self->_destURL path];
+  v6 = [actionIdentifier stringByAppendingFormat:@" [%@] → [%@]", path, path2];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (MCMContainerSchemaActionCopy)initWithSourcePathArgument:(id)a3 destinationPathArgument:(id)a4 destFinalPathArgument:(id)a5 context:(id)a6
+- (MCMContainerSchemaActionCopy)initWithSourcePathArgument:(id)argument destinationPathArgument:(id)pathArgument destFinalPathArgument:(id)finalPathArgument context:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  argumentCopy = argument;
+  pathArgumentCopy = pathArgument;
   v18.receiver = self;
   v18.super_class = MCMContainerSchemaActionCopy;
-  v11 = [(MCMContainerSchemaActionBase *)&v18 initWithContext:a6];
+  v11 = [(MCMContainerSchemaActionBase *)&v18 initWithContext:context];
   if (v11)
   {
-    v12 = [v9 fileURL];
+    fileURL = [argumentCopy fileURL];
     sourceURL = v11->_sourceURL;
-    v11->_sourceURL = v12;
+    v11->_sourceURL = fileURL;
 
-    v14 = [v10 fileURL];
+    fileURL2 = [pathArgumentCopy fileURL];
     destURL = v11->_destURL;
-    v11->_destURL = v14;
+    v11->_destURL = fileURL2;
 
     if (!v11->_sourceURL || !v11->_destURL)
     {

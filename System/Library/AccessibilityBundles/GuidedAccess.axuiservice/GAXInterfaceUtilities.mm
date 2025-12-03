@@ -1,22 +1,22 @@
 @interface GAXInterfaceUtilities
-+ (CGSize)labelSizeThatFitsText:(id)a3 constrainedToSize:(CGSize)a4 font:(id)a5 styleProvider:(id)a6;
-+ (id)imageWithImage:(id)a3 size:(CGSize)a4;
-+ (id)labelWithText:(id)a3 font:(id)a4 allowMultipleLines:(BOOL)a5 textAlignment:(int64_t)a6 styleProvider:(id)a7;
-+ (id)resizableOptionsButtonBackgroundImageWithStyleProvider:(id)a3;
-+ (id)statusBarWithStyle:(int64_t)a3 containerViewBounds:(CGRect)a4;
++ (CGSize)labelSizeThatFitsText:(id)text constrainedToSize:(CGSize)size font:(id)font styleProvider:(id)provider;
++ (id)imageWithImage:(id)image size:(CGSize)size;
++ (id)labelWithText:(id)text font:(id)font allowMultipleLines:(BOOL)lines textAlignment:(int64_t)alignment styleProvider:(id)provider;
++ (id)resizableOptionsButtonBackgroundImageWithStyleProvider:(id)provider;
++ (id)statusBarWithStyle:(int64_t)style containerViewBounds:(CGRect)bounds;
 @end
 
 @implementation GAXInterfaceUtilities
 
-+ (id)imageWithImage:(id)a3 size:(CGSize)a4
++ (id)imageWithImage:(id)image size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   v10.width = width;
   v10.height = height;
   UIGraphicsBeginImageContextWithOptions(v10, 0, 0.0);
-  [v6 drawInRect:{0.0, 0.0, width, height}];
+  [imageCopy drawInRect:{0.0, 0.0, width, height}];
 
   v7 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -24,23 +24,23 @@
   return v7;
 }
 
-+ (id)resizableOptionsButtonBackgroundImageWithStyleProvider:(id)a3
++ (id)resizableOptionsButtonBackgroundImageWithStyleProvider:(id)provider
 {
-  v3 = a3;
-  [v3 featureViewOptionsButtonHeight];
+  providerCopy = provider;
+  [providerCopy featureViewOptionsButtonHeight];
   v5 = v4;
-  [v3 featureViewOptionsButtonLineWidth];
+  [providerCopy featureViewOptionsButtonLineWidth];
   v7 = v6 * 0.5;
-  [v3 featureViewOptionsButtonHeight];
+  [providerCopy featureViewOptionsButtonHeight];
   v9 = v8 + 1.0;
-  v10 = [v3 featureViewOptionsButtonLineColor];
-  v11 = [v10 CGColor];
+  featureViewOptionsButtonLineColor = [providerCopy featureViewOptionsButtonLineColor];
+  cGColor = [featureViewOptionsButtonLineColor CGColor];
 
-  [v3 featureViewOptionsButtonHeight];
+  [providerCopy featureViewOptionsButtonHeight];
   v13 = v12;
-  [v3 featureViewOptionsButtonLineWidth];
+  [providerCopy featureViewOptionsButtonLineWidth];
   v15 = (v13 - v14) * 0.5;
-  [v3 featureViewOptionsButtonLineWidth];
+  [providerCopy featureViewOptionsButtonLineWidth];
   v17 = v16;
 
   v25.width = v9;
@@ -49,7 +49,7 @@
   UIGraphicsBeginImageContextWithOptions(v25, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineWidth(CurrentContext, v17);
-  CGContextSetStrokeColorWithColor(CurrentContext, v11);
+  CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
   CGContextMoveToPoint(CurrentContext, v7 + v15, v7);
   v19 = v9 - v7;
   CGContextAddLineToPoint(CurrentContext, v19 - v15, v7);
@@ -67,25 +67,25 @@
   return v21;
 }
 
-+ (id)labelWithText:(id)a3 font:(id)a4 allowMultipleLines:(BOOL)a5 textAlignment:(int64_t)a6 styleProvider:(id)a7
++ (id)labelWithText:(id)text font:(id)font allowMultipleLines:(BOOL)lines textAlignment:(int64_t)alignment styleProvider:(id)provider
 {
-  v8 = a5;
-  v11 = a7;
-  v12 = a4;
-  v13 = a3;
+  linesCopy = lines;
+  providerCopy = provider;
+  fontCopy = font;
+  textCopy = text;
   v14 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v15 = [v11 defaultLabelTextColor];
-  [v14 setTextColor:v15];
+  defaultLabelTextColor = [providerCopy defaultLabelTextColor];
+  [v14 setTextColor:defaultLabelTextColor];
 
-  v16 = [v11 defaultLabelBackgroundColor];
+  defaultLabelBackgroundColor = [providerCopy defaultLabelBackgroundColor];
 
-  [v14 setBackgroundColor:v16];
-  [v14 setFont:v12];
+  [v14 setBackgroundColor:defaultLabelBackgroundColor];
+  [v14 setFont:fontCopy];
 
-  [v14 setTextAlignment:a6];
-  [v14 setText:v13];
+  [v14 setTextAlignment:alignment];
+  [v14 setText:textCopy];
 
-  if (v8)
+  if (linesCopy)
   {
     [v14 setLineBreakMode:0];
     [v14 setNumberOfLines:0];
@@ -96,26 +96,26 @@
   return v14;
 }
 
-+ (CGSize)labelSizeThatFitsText:(id)a3 constrainedToSize:(CGSize)a4 font:(id)a5 styleProvider:(id)a6
++ (CGSize)labelSizeThatFitsText:(id)text constrainedToSize:(CGSize)size font:(id)font styleProvider:(id)provider
 {
-  [a3 _legacy_sizeWithFont:a5 constrainedToSize:{a4.width, a4.height}];
+  [text _legacy_sizeWithFont:font constrainedToSize:{size.width, size.height}];
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-+ (id)statusBarWithStyle:(int64_t)a3 containerViewBounds:(CGRect)a4
++ (id)statusBarWithStyle:(int64_t)style containerViewBounds:(CGRect)bounds
 {
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = [[UIStatusBar alloc] initWithFrame:1 showForegroundView:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v8 frame];
   [v8 setFrame:{x, y, width, CGRectGetHeight(v11)}];
   [v8 setAutoresizingMask:34];
   [v8 setUserInteractionEnabled:0];
   [v8 forceUpdateData:0];
-  [v8 requestStyle:a3];
+  [v8 requestStyle:style];
   [v8 setAccessibilityElementsHidden:1];
 
   return v8;

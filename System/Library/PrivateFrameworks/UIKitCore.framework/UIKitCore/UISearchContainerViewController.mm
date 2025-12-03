@@ -1,12 +1,12 @@
 @interface UISearchContainerViewController
-- (UISearchContainerViewController)initWithCoder:(id)a3;
+- (UISearchContainerViewController)initWithCoder:(id)coder;
 - (UISearchContainerViewController)initWithSearchController:(UISearchController *)searchController;
-- (void)_prepareForContainerTransition:(id)a3;
+- (void)_prepareForContainerTransition:(id)transition;
 - (void)_presentSearchControllerIfNecessary;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTabBarObservedScrollView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTabBarObservedScrollView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -28,15 +28,15 @@
   return v7;
 }
 
-- (UISearchContainerViewController)initWithCoder:(id)a3
+- (UISearchContainerViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UISearchContainerViewController;
-  v5 = [(UIViewController *)&v9 initWithCoder:v4];
+  v5 = [(UIViewController *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UISearchContainerViewControllerSearchController"];
+    v6 = [coderCopy decodeObjectForKey:@"UISearchContainerViewControllerSearchController"];
     searchController = v5->_searchController;
     v5->_searchController = v6;
 
@@ -46,38 +46,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UISearchContainerViewController;
-  v4 = a3;
-  [(UIViewController *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_searchController forKey:{@"UISearchContainerViewControllerSearchController", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UIViewController *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_searchController forKey:{@"UISearchContainerViewControllerSearchController", v5.receiver, v5.super_class}];
 }
 
 - (void)_presentSearchControllerIfNecessary
 {
-  v3 = [(UIViewController *)self view];
-  v4 = [v3 window];
-  if (!v4)
+  view = [(UIViewController *)self view];
+  window = [view window];
+  if (!window)
   {
     goto LABEL_6;
   }
 
-  v5 = v4;
-  v6 = [(UISearchContainerViewController *)self searchController];
-  v7 = [v6 presentingViewController];
-  v8 = v7;
-  if (v7 == self)
+  v5 = window;
+  searchController = [(UISearchContainerViewController *)self searchController];
+  presentingViewController = [searchController presentingViewController];
+  v8 = presentingViewController;
+  if (presentingViewController == self)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [(UISearchContainerViewController *)self isPresentingSearchController];
+  isPresentingSearchController = [(UISearchContainerViewController *)self isPresentingSearchController];
 
-  if (!v9)
+  if (!isPresentingSearchController)
   {
     [(UISearchContainerViewController *)self setIsPresentingSearchController:1];
     v14[0] = MEMORY[0x1E69E9820];
@@ -90,16 +90,16 @@ LABEL_6:
   }
 
 LABEL_7:
-  v10 = [(UISearchContainerViewController *)self searchController];
-  [v10 _updateSystemInputViewController];
+  searchController2 = [(UISearchContainerViewController *)self searchController];
+  [searchController2 _updateSystemInputViewController];
 
-  v11 = [(UIViewController *)self traitCollection];
-  v12 = [v11 userInterfaceIdiom];
+  traitCollection = [(UIViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v12 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    v13 = [(UISearchContainerViewController *)self searchController];
-    [v13 _limitedUIDidChangeAnimated:0];
+    searchController3 = [(UISearchContainerViewController *)self searchController];
+    [searchController3 _limitedUIDidChangeAnimated:0];
   }
 }
 
@@ -148,12 +148,12 @@ void __70__UISearchContainerViewController__presentSearchControllerIfNecessary__
   [WeakRetained setIsPresentingSearchController:0];
 }
 
-- (void)_prepareForContainerTransition:(id)a3
+- (void)_prepareForContainerTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self parentViewController];
+  transitionCopy = transition;
+  parentViewController = [(UIViewController *)self parentViewController];
 
-  if (v5 == v4)
+  if (parentViewController == transitionCopy)
   {
 
     [(UISearchContainerViewController *)self _presentSearchControllerIfNecessary];
@@ -168,14 +168,14 @@ void __70__UISearchContainerViewController__presentSearchControllerIfNecessary__
   [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:_UIBarsApplyChromelessEverywhere() ^ 1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = UISearchContainerViewController;
-  [(UIViewController *)&v5 viewDidAppear:a3];
+  [(UIViewController *)&v5 viewDidAppear:appear];
   [(UISearchContainerViewController *)self _presentSearchControllerIfNecessary];
-  v4 = [(UISearchContainerViewController *)self searchController];
-  [v4 set_shouldLogAppearance:0];
+  searchController = [(UISearchContainerViewController *)self searchController];
+  [searchController set_shouldLogAppearance:0];
 
   AnalyticsSendEventLazy();
 }
@@ -200,11 +200,11 @@ id __49__UISearchContainerViewController_viewDidAppear___block_invoke()
   return v2;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = UISearchContainerViewController;
-  [(UIViewController *)&v3 viewDidDisappear:a3];
+  [(UIViewController *)&v3 viewDidDisappear:disappear];
   AnalyticsSendEventLazy();
 }
 
@@ -228,17 +228,17 @@ id __52__UISearchContainerViewController_viewDidDisappear___block_invoke()
   return v2;
 }
 
-- (void)setTabBarObservedScrollView:(id)a3
+- (void)setTabBarObservedScrollView:(id)view
 {
-  v4 = a3;
-  v5 = [(UISearchContainerViewController *)self searchController];
-  v6 = [v5 _tvShouldScrollWithObservedScrollViewIfPossible];
+  viewCopy = view;
+  searchController = [(UISearchContainerViewController *)self searchController];
+  _tvShouldScrollWithObservedScrollViewIfPossible = [searchController _tvShouldScrollWithObservedScrollViewIfPossible];
 
-  if (v6)
+  if (_tvShouldScrollWithObservedScrollViewIfPossible)
   {
     v7.receiver = self;
     v7.super_class = UISearchContainerViewController;
-    [(UISearchContainerViewController *)&v7 setTabBarObservedScrollView:v4];
+    [(UISearchContainerViewController *)&v7 setTabBarObservedScrollView:viewCopy];
   }
 }
 

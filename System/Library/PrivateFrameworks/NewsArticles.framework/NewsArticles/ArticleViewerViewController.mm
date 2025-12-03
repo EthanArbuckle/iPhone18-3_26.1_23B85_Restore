@@ -1,29 +1,29 @@
 @interface ArticleViewerViewController
-- (_TtC12NewsArticles27ArticleViewerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)showMessage:(int64_t)a3;
-- (void)enableNavigation:(BOOL)a3;
+- (_TtC12NewsArticles27ArticleViewerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)showMessage:(int64_t)message;
+- (void)enableNavigation:(BOOL)navigation;
 - (void)smartInvertStatusDidChange;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ArticleViewerViewController
 
 - (void)smartInvertStatusDidChange
 {
-  v3 = self;
-  v2 = [(ArticleViewerViewController *)v3 traitCollection];
-  [(ArticleViewerViewController *)v3 traitCollectionDidChange:v2];
+  selfCopy = self;
+  traitCollection = [(ArticleViewerViewController *)selfCopy traitCollection];
+  [(ArticleViewerViewController *)selfCopy traitCollectionDidChange:traitCollection];
 }
 
-- (_TtC12NewsArticles27ArticleViewerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles27ArticleViewerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -32,37 +32,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewerViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  ArticleViewerViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  ArticleViewerViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  ArticleViewerViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  ArticleViewerViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ArticleViewerViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  ArticleViewerViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ArticleViewerViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  ArticleViewerViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewerViewController.viewWillLayoutSubviews()();
 }
 
@@ -85,21 +85,21 @@
   sub_1D7D2AEAC();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  ArticleViewerViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  ArticleViewerViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)enableNavigation:(BOOL)a3
+- (void)enableNavigation:(BOOL)navigation
 {
-  v3 = a3;
-  v4 = self;
-  if (v3)
+  navigationCopy = navigation;
+  selfCopy = self;
+  if (navigationCopy)
   {
     sub_1D7C10660();
   }
@@ -107,10 +107,10 @@
   sub_1D7D2AA9C();
 }
 
-- (id)showMessage:(int64_t)a3
+- (id)showMessage:(int64_t)message
 {
-  v4 = self;
-  ArticleViewerViewController.show(_:)(a3, v13);
+  selfCopy = self;
+  ArticleViewerViewController.show(_:)(message, v13);
 
   v5 = v14;
   if (v14)

@@ -1,29 +1,29 @@
 @interface ODDSiriSchemaODDRequestsWithoutAssetsDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)assetFailureReasonAtIndex:(unint64_t)a3;
+- (int)assetFailureReasonAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addAssetFailureReason:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssetFailureReason:(int)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDRequestsWithoutAssetsDimensions
 
-- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = ODDSiriSchemaODDRequestsWithoutAssetsDimensions;
   v5 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assistantDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assistantDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)v5 setAssistantDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"assetSetId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assetSetId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)v5 setAssetSetId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"assetSetName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"assetSetName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)v5 setAssetSetName:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"previousSystemBuild"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"previousSystemBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,14 +55,14 @@
       [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)v5 setPreviousSystemBuild:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDRequestsWithoutAssetsDimensions setBuildInstallationTimestampInSecondsSince1970:](v5, "setBuildInstallationTimestampInSecondsSince1970:", [v14 unsignedLongLongValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"assetFailureReason"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"assetFailureReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,30 +119,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDRequestsWithoutAssetsDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -155,60 +155,60 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_assetFailureReasons count])
   {
-    v4 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetFailureReason"];
+    assetFailureReasons = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
+    v5 = [assetFailureReasons copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetFailureReason"];
   }
 
   if (self->_assetSetId)
   {
-    v6 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"assetSetId"];
+    assetSetId = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
+    v7 = [assetSetId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"assetSetId"];
   }
 
   if (self->_assetSetName)
   {
-    v8 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"assetSetName"];
+    assetSetName = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
+    v9 = [assetSetName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"assetSetName"];
   }
 
   if (self->_assistantDimensions)
   {
-    v10 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    assistantDimensions = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
+    dictionaryRepresentation = [assistantDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"assistantDimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assistantDimensions"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"assistantDimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assistantDimensions"];
     }
   }
 
   if (*&self->_has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODDSiriSchemaODDRequestsWithoutAssetsDimensions buildInstallationTimestampInSecondsSince1970](self, "buildInstallationTimestampInSecondsSince1970")}];
-    [v3 setObject:v13 forKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
+    [dictionary setObject:v13 forKeyedSubscript:@"buildInstallationTimestampInSecondsSince1970"];
   }
 
   if (self->_previousSystemBuild)
   {
-    v14 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"previousSystemBuild"];
+    previousSystemBuild = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
+    v15 = [previousSystemBuild copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"previousSystemBuild"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -230,28 +230,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSArray *)self->_assetFailureReasons hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
-  v6 = [v4 assistantDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
+  assistantDimensions2 = [equalCopy assistantDimensions];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_29;
   }
 
-  v7 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
-  if (v7)
+  assistantDimensions3 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
+  if (assistantDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
-    v10 = [v4 assistantDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = assistantDimensions3;
+    assistantDimensions4 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
+    assistantDimensions5 = [equalCopy assistantDimensions];
+    v11 = [assistantDimensions4 isEqual:assistantDimensions5];
 
     if (!v11)
     {
@@ -263,20 +263,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
-  v6 = [v4 assetSetId];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
+  assistantDimensions2 = [equalCopy assetSetId];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
-  if (v12)
+  assetSetId = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
+  if (assetSetId)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
-    v15 = [v4 assetSetId];
-    v16 = [v14 isEqual:v15];
+    v13 = assetSetId;
+    assetSetId2 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
+    assetSetId3 = [equalCopy assetSetId];
+    v16 = [assetSetId2 isEqual:assetSetId3];
 
     if (!v16)
     {
@@ -288,20 +288,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
-  v6 = [v4 assetSetName];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
+  assistantDimensions2 = [equalCopy assetSetName];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_29;
   }
 
-  v17 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
-  if (v17)
+  assetSetName = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
+  if (assetSetName)
   {
-    v18 = v17;
-    v19 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
-    v20 = [v4 assetSetName];
-    v21 = [v19 isEqual:v20];
+    v18 = assetSetName;
+    assetSetName2 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
+    assetSetName3 = [equalCopy assetSetName];
+    v21 = [assetSetName2 isEqual:assetSetName3];
 
     if (!v21)
     {
@@ -313,20 +313,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
-  v6 = [v4 previousSystemBuild];
-  if ((v5 != 0) == (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
+  assistantDimensions2 = [equalCopy previousSystemBuild];
+  if ((assistantDimensions != 0) == (assistantDimensions2 == 0))
   {
     goto LABEL_29;
   }
 
-  v22 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
-  if (v22)
+  previousSystemBuild = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
+  if (previousSystemBuild)
   {
-    v23 = v22;
-    v24 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
-    v25 = [v4 previousSystemBuild];
-    v26 = [v24 isEqual:v25];
+    v23 = previousSystemBuild;
+    previousSystemBuild2 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
+    previousSystemBuild3 = [equalCopy previousSystemBuild];
+    v26 = [previousSystemBuild2 isEqual:previousSystemBuild3];
 
     if (!v26)
     {
@@ -338,7 +338,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_30;
   }
@@ -346,18 +346,18 @@
   if (*&self->_has)
   {
     buildInstallationTimestampInSecondsSince1970 = self->_buildInstallationTimestampInSecondsSince1970;
-    if (buildInstallationTimestampInSecondsSince1970 != [v4 buildInstallationTimestampInSecondsSince1970])
+    if (buildInstallationTimestampInSecondsSince1970 != [equalCopy buildInstallationTimestampInSecondsSince1970])
     {
       goto LABEL_30;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
-  v6 = [v4 assetFailureReasons];
-  if ((v5 != 0) != (v6 == 0))
+  assistantDimensions = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
+  assistantDimensions2 = [equalCopy assetFailureReasons];
+  if ((assistantDimensions != 0) != (assistantDimensions2 == 0))
   {
-    v28 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
-    if (!v28)
+    assetFailureReasons = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
+    if (!assetFailureReasons)
     {
 
 LABEL_33:
@@ -365,10 +365,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v29 = v28;
-    v30 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
-    v31 = [v4 assetFailureReasons];
-    v32 = [v30 isEqual:v31];
+    v29 = assetFailureReasons;
+    assetFailureReasons2 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetFailureReasons];
+    assetFailureReasons3 = [equalCopy assetFailureReasons];
+    v32 = [assetFailureReasons2 isEqual:assetFailureReasons3];
 
     if (v32)
     {
@@ -388,35 +388,35 @@ LABEL_31:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
+  toCopy = to;
+  assistantDimensions = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
 
-  if (v5)
+  if (assistantDimensions)
   {
-    v6 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
+    assistantDimensions2 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
+  assetSetId = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetId];
 
-  if (v7)
+  if (assetSetId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
+  assetSetName = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assetSetName];
 
-  if (v8)
+  if (assetSetName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
+  previousSystemBuild = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self previousSystemBuild];
 
-  if (v9)
+  if (previousSystemBuild)
   {
     PBDataWriterWriteStringField();
   }
@@ -459,23 +459,23 @@ LABEL_31:
   }
 }
 
-- (int)assetFailureReasonAtIndex:(unint64_t)a3
+- (int)assetFailureReasonAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_assetFailureReasons objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_assetFailureReasons objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addAssetFailureReason:(int)a3
+- (void)addAssetFailureReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   assetFailureReasons = self->_assetFailureReasons;
   if (!assetFailureReasons)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_assetFailureReasons;
-    self->_assetFailureReasons = v6;
+    self->_assetFailureReasons = array;
 
     assetFailureReasons = self->_assetFailureReasons;
   }
@@ -484,17 +484,17 @@ LABEL_31:
   [(NSArray *)assetFailureReasons addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDRequestsWithoutAssetsDimensions;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self assistantDimensions:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDRequestsWithoutAssetsDimensions *)self deleteAssistantDimensions];
   }

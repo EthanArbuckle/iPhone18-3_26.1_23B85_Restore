@@ -1,55 +1,55 @@
 @interface SWURLInteraction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SWURLInteraction)initWithURL:(id)a3 navigationManager:(id)a4;
+- (SWURLInteraction)initWithURL:(id)l navigationManager:(id)manager;
 - (void)perform;
 @end
 
 @implementation SWURLInteraction
 
-- (SWURLInteraction)initWithURL:(id)a3 navigationManager:(id)a4
+- (SWURLInteraction)initWithURL:(id)l navigationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  lCopy = l;
+  managerCopy = manager;
+  if (lCopy)
   {
     v13.receiver = self;
     v13.super_class = SWURLInteraction;
     v8 = [(SWURLInteraction *)&v13 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [lCopy copy];
       URL = v8->_URL;
       v8->_URL = v9;
 
-      objc_storeStrong(&v8->_navigationManager, a4);
+      objc_storeStrong(&v8->_navigationManager, manager);
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)perform
 {
-  v6 = [(SWURLInteraction *)self navigationManager];
+  navigationManager = [(SWURLInteraction *)self navigationManager];
   v3 = MEMORY[0x1E696AF68];
   v4 = [(SWURLInteraction *)self URL];
   v5 = [v3 requestWithURL:v4];
-  [v6 actionForRequest:v5];
+  [navigationManager actionForRequest:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -57,10 +57,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(SWURLInteraction *)self type], v5 == [(SWURLInteraction *)v4 type]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(SWURLInteraction *)self type], v5 == [(SWURLInteraction *)equalCopy type]))
     {
       v6 = [(SWURLInteraction *)self URL];
-      v7 = [(SWURLInteraction *)v4 URL];
+      v7 = [(SWURLInteraction *)equalCopy URL];
       v8 = [v6 isEqual:v7];
     }
 

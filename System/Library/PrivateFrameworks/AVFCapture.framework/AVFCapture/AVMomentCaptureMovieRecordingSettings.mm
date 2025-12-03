@@ -1,25 +1,25 @@
 @interface AVMomentCaptureMovieRecordingSettings
 + (id)movieRecordingSettings;
-+ (id)movieRecordingSettingsFromMomentCaptureSettings:(id)a3;
++ (id)movieRecordingSettingsFromMomentCaptureSettings:(id)settings;
 - (NSArray)movieMetadata;
 - (NSArray)spatialOverCaptureMovieMetadata;
-- (id)_initFromMomentCaptureSettings:(id)a3;
-- (id)_sanitizedMovieMetadataArrayForMovieMetadataArray:(id)a3 exceptionReason:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initFromMomentCaptureSettings:(id)settings;
+- (id)_sanitizedMovieMetadataArrayForMovieMetadataArray:(id)array exceptionReason:(id *)reason;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)spatialOverCaptureGroupIdentifier;
 - (void)dealloc;
-- (void)setMovieMetadata:(id)a3;
-- (void)setSpatialOverCaptureMovieMetadata:(id)a3;
-- (void)setVideoCodecType:(id)a3;
+- (void)setMovieMetadata:(id)metadata;
+- (void)setSpatialOverCaptureMovieMetadata:(id)metadata;
+- (void)setVideoCodecType:(id)type;
 @end
 
 @implementation AVMomentCaptureMovieRecordingSettings
 
-+ (id)movieRecordingSettingsFromMomentCaptureSettings:(id)a3
++ (id)movieRecordingSettingsFromMomentCaptureSettings:(id)settings
 {
-  v3 = [objc_alloc(objc_opt_class()) _initFromMomentCaptureSettings:a3];
+  v3 = [objc_alloc(objc_opt_class()) _initFromMomentCaptureSettings:settings];
 
   return v3;
 }
@@ -28,18 +28,18 @@
 {
   v3 = +[AVMomentCaptureSettings settingsWithUserInitiatedCaptureTime:uniqueID:](AVMomentCaptureSettings, "settingsWithUserInitiatedCaptureTime:uniqueID:", mach_absolute_time(), +[AVCaptureMovieFileOutput uniqueID]);
 
-  return [a1 movieRecordingSettingsFromMomentCaptureSettings:v3];
+  return [self movieRecordingSettingsFromMomentCaptureSettings:v3];
 }
 
-- (id)_initFromMomentCaptureSettings:(id)a3
+- (id)_initFromMomentCaptureSettings:(id)settings
 {
   v6.receiver = self;
   v6.super_class = AVMomentCaptureMovieRecordingSettings;
   v4 = [(AVMomentCaptureMovieRecordingSettings *)&v6 init];
   if (v4)
   {
-    v4->_uniqueID = [a3 uniqueID];
-    v4->_userInitiatedCaptureTime = [a3 userInitiatedCaptureTime];
+    v4->_uniqueID = [settings uniqueID];
+    v4->_userInitiatedCaptureTime = [settings userInitiatedCaptureTime];
     v4->_videoCodecType = *MEMORY[0x1E6987CF0];
   }
 
@@ -53,7 +53,7 @@
   [(AVMomentCaptureMovieRecordingSettings *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AVMomentCaptureMovieRecordingSettings alloc] _initFromMomentCaptureSettings:[AVMomentCaptureSettings settingsWithUserInitiatedCaptureTime:self->_userInitiatedCaptureTime]];
   v4[1] = self->_uniqueID;
@@ -89,12 +89,12 @@
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[AVMomentCaptureMovieRecordingSettings debugDescription](self, "debugDescription")];
 }
 
-- (void)setVideoCodecType:(id)a3
+- (void)setVideoCodecType:(id)type
 {
-  if (a3)
+  if (type)
   {
 
-    self->_videoCodecType = [a3 copy];
+    self->_videoCodecType = [type copy];
   }
 
   else
@@ -142,10 +142,10 @@
   return v4;
 }
 
-- (void)setMovieMetadata:(id)a3
+- (void)setMovieMetadata:(id)metadata
 {
   v7 = 0;
-  v4 = [(AVMomentCaptureMovieRecordingSettings *)self _sanitizedMovieMetadataArrayForMovieMetadataArray:a3 exceptionReason:&v7];
+  v4 = [(AVMomentCaptureMovieRecordingSettings *)self _sanitizedMovieMetadataArrayForMovieMetadataArray:metadata exceptionReason:&v7];
   if (v7)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
@@ -191,10 +191,10 @@
   return v4;
 }
 
-- (void)setSpatialOverCaptureMovieMetadata:(id)a3
+- (void)setSpatialOverCaptureMovieMetadata:(id)metadata
 {
   v7 = 0;
-  v4 = [(AVMomentCaptureMovieRecordingSettings *)self _sanitizedMovieMetadataArrayForMovieMetadataArray:a3 exceptionReason:&v7];
+  v4 = [(AVMomentCaptureMovieRecordingSettings *)self _sanitizedMovieMetadataArrayForMovieMetadataArray:metadata exceptionReason:&v7];
   if (v7)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
@@ -214,9 +214,9 @@
   }
 }
 
-- (id)_sanitizedMovieMetadataArrayForMovieMetadataArray:(id)a3 exceptionReason:(id *)a4
+- (id)_sanitizedMovieMetadataArrayForMovieMetadataArray:(id)array exceptionReason:(id *)reason
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
@@ -225,7 +225,7 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+  v6 = [array countByEnumeratingWithState:&v27 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -237,7 +237,7 @@
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         objc_opt_class();
@@ -245,16 +245,16 @@
         {
 LABEL_25:
           result = 0;
-          if (a4)
+          if (reason)
           {
-            *a4 = v9;
+            *reason = v9;
           }
 
           return result;
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+      v7 = [array countByEnumeratingWithState:&v27 objects:v26 count:16];
       if (v7)
       {
         continue;
@@ -264,12 +264,12 @@ LABEL_25:
     }
   }
 
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(array, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [a3 countByEnumeratingWithState:&v22 objects:v21 count:16];
+  v12 = [array countByEnumeratingWithState:&v22 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -283,7 +283,7 @@ LABEL_25:
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v19 = *(*(&v22 + 1) + 8 * j);
@@ -302,7 +302,7 @@ LABEL_25:
         [v11 addObject:{objc_msgSend(v19, "copy")}];
       }
 
-      v13 = [a3 countByEnumeratingWithState:&v22 objects:v21 count:16];
+      v13 = [array countByEnumeratingWithState:&v22 objects:v21 count:16];
       if (v13)
       {
         continue;

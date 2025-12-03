@@ -1,31 +1,31 @@
 @interface ASTSuiteResultSection
-- (ASTSuiteResultSection)initWithDictionary:(id)a3 error:(id *)a4;
-- (ASTSuiteResultSection)initWithTitle:(id)a3 tests:(id)a4;
+- (ASTSuiteResultSection)initWithDictionary:(id)dictionary error:(id *)error;
+- (ASTSuiteResultSection)initWithTitle:(id)title tests:(id)tests;
 @end
 
 @implementation ASTSuiteResultSection
 
-- (ASTSuiteResultSection)initWithTitle:(id)a3 tests:(id)a4
+- (ASTSuiteResultSection)initWithTitle:(id)title tests:(id)tests
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  testsCopy = tests;
   v12.receiver = self;
   v12.super_class = ASTSuiteResultSection;
   v9 = [(ASTSuiteResultSection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_tests, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_tests, tests);
   }
 
   return v10;
 }
 
-- (ASTSuiteResultSection)initWithDictionary:(id)a3 error:(id *)a4
+- (ASTSuiteResultSection)initWithDictionary:(id)dictionary error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = ASTSuiteResultSection;
   v7 = [(ASTSuiteResultSection *)&v30 init];
@@ -36,7 +36,7 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"title"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -44,12 +44,12 @@ LABEL_19:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"tests"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"tests"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v25 = v6;
-    v12 = [MEMORY[0x277CBEB18] array];
+    v25 = dictionaryCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -70,17 +70,17 @@ LABEL_19:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [[ASTSuiteResultTest alloc] initWithDictionary:*(*(&v26 + 1) + 8 * v17) error:a4];
+          v18 = [[ASTSuiteResultTest alloc] initWithDictionary:*(*(&v26 + 1) + 8 * v17) error:error];
           if (!v18)
           {
 
             v11 = 0;
-            v6 = v25;
+            dictionaryCopy = v25;
             goto LABEL_21;
           }
 
           v19 = v18;
-          [(NSArray *)v12 addObject:v18];
+          [(NSArray *)array addObject:v18];
 
           ++v17;
         }
@@ -101,9 +101,9 @@ LABEL_19:
     v21 = v8;
 
     tests = v7->_tests;
-    v7->_tests = v12;
+    v7->_tests = array;
 
-    v6 = v25;
+    dictionaryCopy = v25;
     goto LABEL_19;
   }
 
@@ -113,9 +113,9 @@ LABEL_19:
     [ASTSuiteResult initWithDictionary:v7 error:v10];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
   }
 
   v11 = 0;

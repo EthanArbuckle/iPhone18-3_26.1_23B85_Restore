@@ -1,11 +1,11 @@
 @interface LPSpecializationMetadata
 + (id)keyPathsForValuesAffecting_dummyPropertyForObservation;
-- (LPSpecializationMetadata)initWithCoder:(id)a3;
+- (LPSpecializationMetadata)initWithCoder:(id)coder;
 @end
 
 @implementation LPSpecializationMetadata
 
-- (LPSpecializationMetadata)initWithCoder:(id)a3
+- (LPSpecializationMetadata)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = LPSpecializationMetadata;

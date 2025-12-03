@@ -5,7 +5,7 @@
 - (void)didTapCloseButton;
 - (void)didTapOnboardingButton;
 - (void)prepareForReuse;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 - (void)showPrivacyPrompt;
 @end
 
@@ -25,14 +25,14 @@
   return *(self + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR____TtC12MobileSafari25SFStartPageOnboardingCell_configuration;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = configuration;
+  configurationCopy = configuration;
+  selfCopy = self;
 
   sub_18BACD23C();
   sub_18BACC3D4();
@@ -72,13 +72,13 @@
 
 - (void)didTapOnboardingButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BACDE78();
 }
 
 - (void)didTapCloseButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BACDECC();
 }
 

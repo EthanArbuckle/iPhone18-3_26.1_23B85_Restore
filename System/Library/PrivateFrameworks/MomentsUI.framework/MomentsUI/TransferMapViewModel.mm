@@ -1,14 +1,14 @@
 @interface TransferMapViewModel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransferMapViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TransferMapViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TransferMapViewModel.encode(with:)(coderCopy);
 }
 
 @end

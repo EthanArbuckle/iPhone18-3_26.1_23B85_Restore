@@ -1,26 +1,26 @@
 @interface AXInvertColors_PlatterKit
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_PlatterKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_iconButtons" withType:"NSArray"];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_configureIconButtonsForIcons:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PLPlatterView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PLPlatterView" hasInstanceMethod:@"materialRecipe" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PLPlatterView" hasInstanceMethod:@"backgroundMaterialView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTMaterialView" hasInstanceMethod:@"_materialLayer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_iconButtons" withType:"NSArray"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_configureIconButtonsForIcons:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PLPlatterView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PLPlatterView" hasInstanceMethod:@"materialRecipe" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PLPlatterView" hasInstanceMethod:@"backgroundMaterialView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTMaterialView" hasInstanceMethod:@"_materialLayer" withFullSignature:{"@", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PLPlatterHeaderContentViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PLPlatterViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PLPlatterHeaderContentViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PLPlatterViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

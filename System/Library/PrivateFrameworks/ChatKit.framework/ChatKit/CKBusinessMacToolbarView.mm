@@ -1,15 +1,15 @@
 @interface CKBusinessMacToolbarView
 - (CGRect)detailsPopoverFrame;
-- (CGSize)_maxSizeForImage:(id)a3;
+- (CGSize)_maxSizeForImage:(id)image;
 - (UILabel)fallbackTitleLabel;
 - (id)_generateScaledImageFromBannerData;
-- (void)_updateBannerImage:(id)a3;
+- (void)_updateBannerImage:(id)image;
 - (void)layoutSubviews;
-- (void)setBannerImageData:(id)a3;
-- (void)setFallbackTitle:(id)a3;
-- (void)setFallbackTitleColor:(id)a3;
-- (void)setPreferredHeight:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBannerImageData:(id)data;
+- (void)setFallbackTitle:(id)title;
+- (void)setFallbackTitleColor:(id)color;
+- (void)setPreferredHeight:(double)height;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKBusinessMacToolbarView
@@ -19,23 +19,23 @@
   v46.receiver = self;
   v46.super_class = CKBusinessMacToolbarView;
   [(CKBusinessMacToolbarView *)&v46 layoutSubviews];
-  v3 = [(CKBusinessMacToolbarView *)self _shouldReverseLayoutDirection];
-  v4 = [(CKBusinessMacToolbarView *)self leftItemView];
-  [v4 frame];
+  _shouldReverseLayoutDirection = [(CKBusinessMacToolbarView *)self _shouldReverseLayoutDirection];
+  leftItemView = [(CKBusinessMacToolbarView *)self leftItemView];
+  [leftItemView frame];
 
-  v5 = [(CKBusinessMacToolbarView *)self bannerImage];
-  [(CKBusinessMacToolbarView *)self _maxSizeForImage:v5];
+  bannerImage = [(CKBusinessMacToolbarView *)self bannerImage];
+  [(CKBusinessMacToolbarView *)self _maxSizeForImage:bannerImage];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CKBusinessMacToolbarView *)self bannerImage];
-  [v10 size];
+  bannerImage2 = [(CKBusinessMacToolbarView *)self bannerImage];
+  [bannerImage2 size];
   v12 = v11;
   v14 = v13;
 
   if (v12 <= 0.0 || v14 <= 0.0)
   {
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       [(CKBusinessMacToolbarView *)self detailsPopoverFrame];
       v18 = v17;
@@ -72,7 +72,7 @@
 
   [(CKBusinessMacToolbarView *)self preferredHeight];
   v29 = v28;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     [(CKBusinessMacToolbarView *)self frame];
     v31 = v30;
@@ -80,7 +80,7 @@
     [v32 macNavbarLeftMargin];
     v34 = v31 - v33 - v16;
 
-    v35 = [(CKBusinessMacToolbarView *)self showingInStandAloneWindow];
+    showingInStandAloneWindow = [(CKBusinessMacToolbarView *)self showingInStandAloneWindow];
     v36 = -73.0;
   }
 
@@ -90,104 +90,104 @@
     [v37 macNavbarLeftMargin];
     v34 = v38;
 
-    v35 = [(CKBusinessMacToolbarView *)self showingInStandAloneWindow];
+    showingInStandAloneWindow = [(CKBusinessMacToolbarView *)self showingInStandAloneWindow];
     v36 = 73.0;
   }
 
   v39 = v34 + v36;
-  if (v35)
+  if (showingInStandAloneWindow)
   {
     v34 = v39;
   }
 
   v40 = (v29 - v9) * 0.5;
-  v41 = [(CKBusinessMacToolbarView *)self traitCollection];
-  [v41 displayScale];
+  traitCollection = [(CKBusinessMacToolbarView *)self traitCollection];
+  [traitCollection displayScale];
   v43 = round(v34 * v42) / v42;
   v44 = round(v40 * v42) / v42;
 
-  v45 = [(CKBusinessMacToolbarView *)self leftItemView];
-  [v45 setFrame:{v43, v44, v16, v9}];
+  leftItemView2 = [(CKBusinessMacToolbarView *)self leftItemView];
+  [leftItemView2 setFrame:{v43, v44, v16, v9}];
 }
 
-- (void)setBannerImageData:(id)a3
+- (void)setBannerImageData:(id)data
 {
-  v6 = a3;
-  if (([v6 isEqualToData:self->_bannerImageData] & 1) == 0)
+  dataCopy = data;
+  if (([dataCopy isEqualToData:self->_bannerImageData] & 1) == 0)
   {
-    objc_storeStrong(&self->_bannerImageData, a3);
-    v5 = [(CKBusinessMacToolbarView *)self _generateScaledImageFromBannerData];
-    if (v5)
+    objc_storeStrong(&self->_bannerImageData, data);
+    _generateScaledImageFromBannerData = [(CKBusinessMacToolbarView *)self _generateScaledImageFromBannerData];
+    if (_generateScaledImageFromBannerData)
     {
-      [(CKBusinessMacToolbarView *)self _updateBannerImage:v5];
+      [(CKBusinessMacToolbarView *)self _updateBannerImage:_generateScaledImageFromBannerData];
     }
   }
 }
 
-- (void)setFallbackTitle:(id)a3
+- (void)setFallbackTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(CKBusinessMacToolbarView *)self fallbackTitleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  fallbackTitleLabel = [(CKBusinessMacToolbarView *)self fallbackTitleLabel];
+  [fallbackTitleLabel setText:titleCopy];
 
-  v6 = [(CKBusinessMacToolbarView *)self bannerImage];
+  bannerImage = [(CKBusinessMacToolbarView *)self bannerImage];
 
-  if (!v6)
+  if (!bannerImage)
   {
-    v7 = [(CKBusinessMacToolbarView *)self leftItemView];
-    v8 = [v7 superview];
+    leftItemView = [(CKBusinessMacToolbarView *)self leftItemView];
+    superview = [leftItemView superview];
 
-    if (v8)
+    if (superview)
     {
-      v9 = [(CKBusinessMacToolbarView *)self leftItemView];
-      [v9 removeFromSuperview];
+      leftItemView2 = [(CKBusinessMacToolbarView *)self leftItemView];
+      [leftItemView2 removeFromSuperview];
     }
 
-    if (v4)
+    if (titleCopy)
     {
-      v10 = [(CKBusinessMacToolbarView *)self fallbackTitleLabel];
-      [(CKBusinessMacToolbarView *)self setLeftItemView:v10];
+      fallbackTitleLabel2 = [(CKBusinessMacToolbarView *)self fallbackTitleLabel];
+      [(CKBusinessMacToolbarView *)self setLeftItemView:fallbackTitleLabel2];
 
-      v11 = [(CKBusinessMacToolbarView *)self leftItemView];
-      [(CKBusinessMacToolbarView *)self addSubview:v11];
+      leftItemView3 = [(CKBusinessMacToolbarView *)self leftItemView];
+      [(CKBusinessMacToolbarView *)self addSubview:leftItemView3];
 
       [(CKBusinessMacToolbarView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setFallbackTitleColor:(id)a3
+- (void)setFallbackTitleColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CKBusinessMacToolbarView *)self fallbackTitleLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  fallbackTitleLabel = [(CKBusinessMacToolbarView *)self fallbackTitleLabel];
+  [fallbackTitleLabel setTextColor:colorCopy];
 }
 
-- (void)setPreferredHeight:(double)a3
+- (void)setPreferredHeight:(double)height
 {
-  if (self->_preferredHeight != a3)
+  if (self->_preferredHeight != height)
   {
-    self->_preferredHeight = a3;
+    self->_preferredHeight = height;
     [(CKBusinessMacToolbarView *)self setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  [a3 displayScale];
+  [change displayScale];
   v5 = v4;
-  v6 = [(CKBusinessMacToolbarView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(CKBusinessMacToolbarView *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
   if (v5 != v8)
   {
-    v9 = [(CKBusinessMacToolbarView *)self _generateScaledImageFromBannerData];
-    if (v9)
+    _generateScaledImageFromBannerData = [(CKBusinessMacToolbarView *)self _generateScaledImageFromBannerData];
+    if (_generateScaledImageFromBannerData)
     {
-      v10 = v9;
-      [(CKBusinessMacToolbarView *)self _updateBannerImage:v9];
-      v9 = v10;
+      v10 = _generateScaledImageFromBannerData;
+      [(CKBusinessMacToolbarView *)self _updateBannerImage:_generateScaledImageFromBannerData];
+      _generateScaledImageFromBannerData = v10;
     }
   }
 }
@@ -210,23 +210,23 @@
 
 - (id)_generateScaledImageFromBannerData
 {
-  v3 = [(CKBusinessMacToolbarView *)self bannerImageData];
+  bannerImageData = [(CKBusinessMacToolbarView *)self bannerImageData];
 
-  if (v3)
+  if (bannerImageData)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [(CKBusinessMacToolbarView *)self bannerImageData];
-    v6 = [(CKBusinessMacToolbarView *)self traitCollection];
-    [v6 displayScale];
-    v7 = [v4 imageWithData:v5 scale:?];
+    bannerImageData2 = [(CKBusinessMacToolbarView *)self bannerImageData];
+    traitCollection = [(CKBusinessMacToolbarView *)self traitCollection];
+    [traitCollection displayScale];
+    v7 = [v4 imageWithData:bannerImageData2 scale:?];
 
-    v8 = [MEMORY[0x1E69DCA80] preferredFormat];
-    v9 = [(CKBusinessMacToolbarView *)self traitCollection];
-    [v9 displayScale];
-    [v8 setScale:?];
+    preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+    traitCollection2 = [(CKBusinessMacToolbarView *)self traitCollection];
+    [traitCollection2 displayScale];
+    [preferredFormat setScale:?];
 
-    [v8 setPreferredRange:0];
-    [v8 setOpaque:0];
+    [preferredFormat setPreferredRange:0];
+    [preferredFormat setOpaque:0];
     [(CKBusinessMacToolbarView *)self _maxSizeForImage:v7];
     v11 = v10;
     v13 = v12;
@@ -239,7 +239,7 @@
 
     v17 = v14 * v16;
     v18 = v15 * v16;
-    v19 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithBounds:v8 format:{0.0, 0.0, v14 * v16, v15 * v16}];
+    v19 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithBounds:preferredFormat format:{0.0, 0.0, v14 * v16, v15 * v16}];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __62__CKBusinessMacToolbarView__generateScaledImageFromBannerData__block_invoke;
@@ -261,37 +261,37 @@
   return v21;
 }
 
-- (void)_updateBannerImage:(id)a3
+- (void)_updateBannerImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v4 = a3;
-    [(CKBusinessMacToolbarView *)self setBannerImage:v4];
-    v5 = [(CKBusinessMacToolbarView *)self leftItemView];
-    v6 = [v5 superview];
+    imageCopy = image;
+    [(CKBusinessMacToolbarView *)self setBannerImage:imageCopy];
+    leftItemView = [(CKBusinessMacToolbarView *)self leftItemView];
+    superview = [leftItemView superview];
 
-    if (v6)
+    if (superview)
     {
-      v7 = [(CKBusinessMacToolbarView *)self leftItemView];
-      [v7 removeFromSuperview];
+      leftItemView2 = [(CKBusinessMacToolbarView *)self leftItemView];
+      [leftItemView2 removeFromSuperview];
     }
 
-    v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
+    v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
 
     [v9 setClipsToBounds:1];
     [(CKBusinessMacToolbarView *)self setLeftItemView:v9];
-    v8 = [(CKBusinessMacToolbarView *)self leftItemView];
-    [(CKBusinessMacToolbarView *)self addSubview:v8];
+    leftItemView3 = [(CKBusinessMacToolbarView *)self leftItemView];
+    [(CKBusinessMacToolbarView *)self addSubview:leftItemView3];
 
     [(CKBusinessMacToolbarView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)_maxSizeForImage:(id)a3
+- (CGSize)_maxSizeForImage:(id)image
 {
-  v3 = a3;
-  [v3 size];
-  if (v4 > 0.0 && ([v3 size], v5 > 0.0) && (objc_msgSend(v3, "size"), v7 = v6, objc_msgSend(v3, "size"), v7 == v8))
+  imageCopy = image;
+  [imageCopy size];
+  if (v4 > 0.0 && ([imageCopy size], v5 > 0.0) && (objc_msgSend(imageCopy, "size"), v7 = v6, objc_msgSend(imageCopy, "size"), v7 == v8))
   {
     v9 = +[CKUIBehavior sharedBehaviors];
     [v9 businessSquareToolbarLogoHeight];

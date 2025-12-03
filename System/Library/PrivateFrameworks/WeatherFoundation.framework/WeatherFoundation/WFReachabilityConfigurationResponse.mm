@@ -1,40 +1,40 @@
 @interface WFReachabilityConfigurationResponse
 - (NWPathEvaluator)pathEvaluator;
-- (WFReachabilityConfigurationResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFReachabilityConfigurationResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFReachabilityConfigurationResponse
 
-- (WFReachabilityConfigurationResponse)initWithCoder:(id)a3
+- (WFReachabilityConfigurationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFReachabilityConfigurationResponse;
-  v5 = [(WFResponse *)&v8 initWithCoder:v4];
+  v5 = [(WFResponse *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFReachabilityConfiguratiionReachabilityHostURLKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFReachabilityConfiguratiionReachabilityHostURLKey"];
     [(WFReachabilityConfigurationResponse *)v5 setReachabilityHostURL:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFReachabilityConfigurationResponse;
-  v4 = a3;
-  [(WFResponse *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFResponse *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFReachabilityConfigurationResponse *)self reachabilityHostURL:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"WFReachabilityConfiguratiionReachabilityHostURLKey"];
+  [coderCopy encodeObject:v5 forKey:@"WFReachabilityConfiguratiionReachabilityHostURLKey"];
 }
 
 - (NWPathEvaluator)pathEvaluator
 {
-  v2 = [(WFReachabilityConfigurationResponse *)self reachabilityHostURL];
-  v3 = [MEMORY[0x277CD9200] wf_pathEvaluatorForURL:v2];
+  reachabilityHostURL = [(WFReachabilityConfigurationResponse *)self reachabilityHostURL];
+  v3 = [MEMORY[0x277CD9200] wf_pathEvaluatorForURL:reachabilityHostURL];
 
   return v3;
 }

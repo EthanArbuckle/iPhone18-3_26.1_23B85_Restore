@@ -7,8 +7,8 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(PosterBoardFrameworkUIButtonAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"poster.switcher.focus.button"];
+  accessibilityIdentification = [(PosterBoardFrameworkUIButtonAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"poster.switcher.focus.button"];
 
   if (v4)
   {
@@ -22,40 +22,40 @@
       v5 = @"poster.switcher.focus.button.link.focus.label";
     }
 
-    v6 = accessibilityLocalizedString(v5);
+    accessibilityLabel = accessibilityLocalizedString(v5);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PosterBoardFrameworkUIButtonAccessibility;
-    v6 = [(PosterBoardFrameworkUIButtonAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(PosterBoardFrameworkUIButtonAccessibility *)&v8 accessibilityLabel];
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(PosterBoardFrameworkUIButtonAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"poster.switcher.focus.button"];
+  accessibilityIdentification = [(PosterBoardFrameworkUIButtonAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"poster.switcher.focus.button"];
 
   if (v4 && [(PosterBoardFrameworkUIButtonAccessibility *)self overrideUserInterfaceStyle]== 1)
   {
-    v10 = self;
+    selfCopy = self;
     v5 = &selRef_accessibilityLabel;
-    v6 = &v10;
+    v6 = &selfCopy;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v5 = &selRef_accessibilityValue;
-    v6 = &v9;
+    v6 = &selfCopy2;
   }
 
   v6[1] = PosterBoardFrameworkUIButtonAccessibility;
-  v7 = objc_msgSendSuper2(v6, *v5, v9);
+  v7 = objc_msgSendSuper2(v6, *v5, selfCopy2);
 
   return v7;
 }

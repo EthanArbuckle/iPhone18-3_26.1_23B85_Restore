@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterPushTransportBeginEvent
 - (MTRPushAVStreamTransportClusterPushTransportBeginEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterPushTransportBeginEvent);
-  v5 = [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)self connectionID];
-  [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)v4 setConnectionID:v5];
+  connectionID = [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)self connectionID];
+  [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)v4 setConnectionID:connectionID];
 
-  v6 = [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)self triggerType];
-  [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)v4 setTriggerType:v6];
+  triggerType = [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)self triggerType];
+  [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)v4 setTriggerType:triggerType];
 
-  v7 = [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)self activationReason];
-  [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)v4 setActivationReason:v7];
+  activationReason = [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)self activationReason];
+  [(MTRPushAVStreamTransportClusterPushTransportBeginEvent *)v4 setActivationReason:activationReason];
 
   return v4;
 }

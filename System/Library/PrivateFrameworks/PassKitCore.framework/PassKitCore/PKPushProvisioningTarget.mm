@@ -1,64 +1,64 @@
 @interface PKPushProvisioningTarget
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProvisioningTarget:(id)a3;
-- (PKPushProvisioningTarget)initWithAppleIdentifier:(id)a3 appleIdentifierType:(int64_t)a4 provisioningCredentialIdentifier:(id)a5 cardConfigurationIdentifier:(id)a6 sharingInstanceIdentifier:(id)a7 nonce:(id)a8 accountHash:(id)a9 templateIdentifier:(id)a10 relyingPartyIdentifier:(id)a11 requiresSimultaneousRequestRouting:(BOOL)a12 targetDevice:(unint64_t)a13 issuingCountryCode:(id)a14 documentType:(int64_t)a15 environmentIdentifier:(id)a16;
-- (PKPushProvisioningTarget)initWithCoder:(id)a3;
-- (PKPushProvisioningTarget)initWithProvisioningDict:(id)a3;
-- (id)_jsonRepresentationWithSanitization:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProvisioningTarget:(id)target;
+- (PKPushProvisioningTarget)initWithAppleIdentifier:(id)identifier appleIdentifierType:(int64_t)type provisioningCredentialIdentifier:(id)credentialIdentifier cardConfigurationIdentifier:(id)configurationIdentifier sharingInstanceIdentifier:(id)instanceIdentifier nonce:(id)nonce accountHash:(id)hash templateIdentifier:(id)self0 relyingPartyIdentifier:(id)self1 requiresSimultaneousRequestRouting:(BOOL)self2 targetDevice:(unint64_t)self3 issuingCountryCode:(id)self4 documentType:(int64_t)self5 environmentIdentifier:(id)self6;
+- (PKPushProvisioningTarget)initWithCoder:(id)coder;
+- (PKPushProvisioningTarget)initWithProvisioningDict:(id)dict;
+- (id)_jsonRepresentationWithSanitization:(BOOL)sanitization;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPushProvisioningTarget
 
-- (PKPushProvisioningTarget)initWithAppleIdentifier:(id)a3 appleIdentifierType:(int64_t)a4 provisioningCredentialIdentifier:(id)a5 cardConfigurationIdentifier:(id)a6 sharingInstanceIdentifier:(id)a7 nonce:(id)a8 accountHash:(id)a9 templateIdentifier:(id)a10 relyingPartyIdentifier:(id)a11 requiresSimultaneousRequestRouting:(BOOL)a12 targetDevice:(unint64_t)a13 issuingCountryCode:(id)a14 documentType:(int64_t)a15 environmentIdentifier:(id)a16
+- (PKPushProvisioningTarget)initWithAppleIdentifier:(id)identifier appleIdentifierType:(int64_t)type provisioningCredentialIdentifier:(id)credentialIdentifier cardConfigurationIdentifier:(id)configurationIdentifier sharingInstanceIdentifier:(id)instanceIdentifier nonce:(id)nonce accountHash:(id)hash templateIdentifier:(id)self0 relyingPartyIdentifier:(id)self1 requiresSimultaneousRequestRouting:(BOOL)self2 targetDevice:(unint64_t)self3 issuingCountryCode:(id)self4 documentType:(int64_t)self5 environmentIdentifier:(id)self6
 {
-  v39 = a3;
-  v31 = a5;
-  v38 = a5;
-  v37 = a6;
-  v32 = a7;
-  v36 = a7;
-  v35 = a8;
-  v34 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a14;
-  v24 = a16;
+  identifierCopy = identifier;
+  credentialIdentifierCopy = credentialIdentifier;
+  credentialIdentifierCopy2 = credentialIdentifier;
+  configurationIdentifierCopy = configurationIdentifier;
+  instanceIdentifierCopy = instanceIdentifier;
+  instanceIdentifierCopy2 = instanceIdentifier;
+  nonceCopy = nonce;
+  hashCopy = hash;
+  templateIdentifierCopy = templateIdentifier;
+  partyIdentifierCopy = partyIdentifier;
+  codeCopy = code;
+  environmentIdentifierCopy = environmentIdentifier;
   v40.receiver = self;
   v40.super_class = PKPushProvisioningTarget;
   v25 = [(PKPushProvisioningTarget *)&v40 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_appleIdentifier, a3);
-    v26->_appleIdentifierType = a4;
-    objc_storeStrong(&v26->_provisioningCredentialIdentifier, v31);
-    objc_storeStrong(&v26->_cardConfigurationIdentifier, a6);
-    objc_storeStrong(&v26->_sharingInstanceIdentifier, v32);
+    objc_storeStrong(&v25->_appleIdentifier, identifier);
+    v26->_appleIdentifierType = type;
+    objc_storeStrong(&v26->_provisioningCredentialIdentifier, credentialIdentifierCopy);
+    objc_storeStrong(&v26->_cardConfigurationIdentifier, configurationIdentifier);
+    objc_storeStrong(&v26->_sharingInstanceIdentifier, instanceIdentifierCopy);
     v27 = objc_alloc_init(MEMORY[0x1E695DF00]);
     creationDate = v26->_creationDate;
     v26->_creationDate = v27;
 
-    objc_storeStrong(&v26->_nonce, a8);
-    objc_storeStrong(&v26->_accountHash, a9);
-    objc_storeStrong(&v26->_templateIdentifier, a10);
-    objc_storeStrong(&v26->_relyingPartyIdentifier, a11);
-    v26->_requiresSimultaneousRequestRouting = a12;
-    v26->_targetDevice = a13;
-    objc_storeStrong(&v26->_environmentIdentifier, a16);
-    objc_storeStrong(&v26->_issuingCountryCode, a14);
-    v26->_documentType = a15;
+    objc_storeStrong(&v26->_nonce, nonce);
+    objc_storeStrong(&v26->_accountHash, hash);
+    objc_storeStrong(&v26->_templateIdentifier, templateIdentifier);
+    objc_storeStrong(&v26->_relyingPartyIdentifier, partyIdentifier);
+    v26->_requiresSimultaneousRequestRouting = routing;
+    v26->_targetDevice = device;
+    objc_storeStrong(&v26->_environmentIdentifier, environmentIdentifier);
+    objc_storeStrong(&v26->_issuingCountryCode, code);
+    v26->_documentType = documentType;
   }
 
   return v26;
 }
 
-- (PKPushProvisioningTarget)initWithProvisioningDict:(id)a3
+- (PKPushProvisioningTarget)initWithProvisioningDict:(id)dict
 {
-  v5 = a3;
-  if (v5)
+  dictCopy = dict;
+  if (dictCopy)
   {
     v18.receiver = self;
     v18.super_class = PKPushProvisioningTarget;
@@ -66,64 +66,64 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_additionalProvisioningDictionary, a3);
+      objc_storeStrong(&v6->_additionalProvisioningDictionary, dict);
       v8 = objc_alloc_init(MEMORY[0x1E695DF00]);
       creationDate = v7->_creationDate;
       v7->_creationDate = v8;
 
-      v10 = [v5 PKStringForKey:@"accountHash"];
+      v10 = [dictCopy PKStringForKey:@"accountHash"];
       accountHash = v7->_accountHash;
       v7->_accountHash = v10;
 
-      v12 = [v5 PKStringForKey:@"relyingPartyIdentifier"];
+      v12 = [dictCopy PKStringForKey:@"relyingPartyIdentifier"];
       relyingPartyIdentifier = v7->_relyingPartyIdentifier;
       v7->_relyingPartyIdentifier = v12;
 
-      v7->_requiresSimultaneousRequestRouting = [v5 PKBoolForKey:@"requiresUnifiedAccessCapableDevice"];
-      v14 = [v5 PKStringForKey:@"provisioningCredentialIdentifier"];
+      v7->_requiresSimultaneousRequestRouting = [dictCopy PKBoolForKey:@"requiresUnifiedAccessCapableDevice"];
+      v14 = [dictCopy PKStringForKey:@"provisioningCredentialIdentifier"];
       provisioningCredentialIdentifier = v7->_provisioningCredentialIdentifier;
       v7->_provisioningCredentialIdentifier = v14;
     }
 
     self = v7;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPushProvisioningTarget *)self isEqualToProvisioningTarget:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPushProvisioningTarget *)self isEqualToProvisioningTarget:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToProvisioningTarget:(id)a3
+- (BOOL)isEqualToProvisioningTarget:(id)target
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  targetCopy = target;
+  v5 = targetCopy;
+  if (!targetCopy)
   {
     goto LABEL_55;
   }
 
-  v6 = *(v4 + 4);
+  v6 = *(targetCopy + 4);
   v7 = self->_appleIdentifier;
   v8 = v6;
   v9 = v8;
@@ -437,54 +437,54 @@ LABEL_56:
   return v7;
 }
 
-- (PKPushProvisioningTarget)initWithCoder:(id)a3
+- (PKPushProvisioningTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = PKPushProvisioningTarget;
   v5 = [(PKPushProvisioningTarget *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     appleIdentifier = v5->_appleIdentifier;
     v5->_appleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifier"];
     provisioningCredentialIdentifier = v5->_provisioningCredentialIdentifier;
     v5->_provisioningCredentialIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardConfigurationIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardConfigurationIdentifier"];
     cardConfigurationIdentifier = v5->_cardConfigurationIdentifier;
     v5->_cardConfigurationIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
     sharingInstanceIdentifier = v5->_sharingInstanceIdentifier;
     v5->_sharingInstanceIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v16;
 
-    v5->_appleIdentifierType = [v4 decodeIntegerForKey:@"identifierType"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountHash"];
+    v5->_appleIdentifierType = [coderCopy decodeIntegerForKey:@"identifierType"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountHash"];
     accountHash = v5->_accountHash;
     v5->_accountHash = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateIdentifier"];
     templateIdentifier = v5->_templateIdentifier;
     v5->_templateIdentifier = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
     relyingPartyIdentifier = v5->_relyingPartyIdentifier;
     v5->_relyingPartyIdentifier = v22;
 
-    v5->_requiresSimultaneousRequestRouting = [v4 decodeBoolForKey:@"requiresSimultaneousRequestRouting"];
-    v5->_targetDevice = [v4 decodeIntegerForKey:@"targetDevice"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environmentIdentifier"];
+    v5->_requiresSimultaneousRequestRouting = [coderCopy decodeBoolForKey:@"requiresSimultaneousRequestRouting"];
+    v5->_targetDevice = [coderCopy decodeIntegerForKey:@"targetDevice"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environmentIdentifier"];
     environmentIdentifier = v5->_environmentIdentifier;
     v5->_environmentIdentifier = v24;
 
@@ -492,89 +492,89 @@ LABEL_56:
     v27 = objc_opt_class();
     v28 = objc_opt_class();
     v29 = [v26 setWithObjects:{v27, v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"additionalProvisioningDictionary"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"additionalProvisioningDictionary"];
     additionalProvisioningDictionary = v5->_additionalProvisioningDictionary;
     v5->_additionalProvisioningDictionary = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verificationCode"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verificationCode"];
     verificationCode = v5->_verificationCode;
     v5->_verificationCode = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondarySource"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondarySource"];
     secondarySource = v5->_secondarySource;
     v5->_secondarySource = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuingCountryCode"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuingCountryCode"];
     issuingCountryCode = v5->_issuingCountryCode;
     v5->_issuingCountryCode = v36;
 
-    v5->_documentType = [v4 decodeIntegerForKey:@"documentType"];
+    v5->_documentType = [coderCopy decodeIntegerForKey:@"documentType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appleIdentifier = self->_appleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:appleIdentifier forKey:@"identifier"];
-  [v5 encodeObject:self->_provisioningCredentialIdentifier forKey:@"provisioningCredentialIdentifier"];
-  [v5 encodeObject:self->_cardConfigurationIdentifier forKey:@"cardConfigurationIdentifier"];
-  [v5 encodeObject:self->_sharingInstanceIdentifier forKey:@"sharingInstanceIdentifier"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_nonce forKey:@"nonce"];
-  [v5 encodeInteger:self->_appleIdentifierType forKey:@"identifierType"];
-  [v5 encodeObject:self->_accountHash forKey:@"accountHash"];
-  [v5 encodeObject:self->_templateIdentifier forKey:@"templateIdentifier"];
-  [v5 encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v5 encodeBool:self->_requiresSimultaneousRequestRouting forKey:@"requiresSimultaneousRequestRouting"];
-  [v5 encodeInteger:self->_targetDevice forKey:@"targetDevice"];
-  [v5 encodeObject:self->_environmentIdentifier forKey:@"environmentIdentifier"];
-  [v5 encodeObject:self->_additionalProvisioningDictionary forKey:@"additionalProvisioningDictionary"];
-  [v5 encodeObject:self->_verificationCode forKey:@"verificationCode"];
-  [v5 encodeObject:self->_secondarySource forKey:@"secondarySource"];
-  [v5 encodeObject:self->_issuingCountryCode forKey:@"issuingCountryCode"];
-  [v5 encodeInteger:self->_documentType forKey:@"documentType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appleIdentifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_provisioningCredentialIdentifier forKey:@"provisioningCredentialIdentifier"];
+  [coderCopy encodeObject:self->_cardConfigurationIdentifier forKey:@"cardConfigurationIdentifier"];
+  [coderCopy encodeObject:self->_sharingInstanceIdentifier forKey:@"sharingInstanceIdentifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
+  [coderCopy encodeInteger:self->_appleIdentifierType forKey:@"identifierType"];
+  [coderCopy encodeObject:self->_accountHash forKey:@"accountHash"];
+  [coderCopy encodeObject:self->_templateIdentifier forKey:@"templateIdentifier"];
+  [coderCopy encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeBool:self->_requiresSimultaneousRequestRouting forKey:@"requiresSimultaneousRequestRouting"];
+  [coderCopy encodeInteger:self->_targetDevice forKey:@"targetDevice"];
+  [coderCopy encodeObject:self->_environmentIdentifier forKey:@"environmentIdentifier"];
+  [coderCopy encodeObject:self->_additionalProvisioningDictionary forKey:@"additionalProvisioningDictionary"];
+  [coderCopy encodeObject:self->_verificationCode forKey:@"verificationCode"];
+  [coderCopy encodeObject:self->_secondarySource forKey:@"secondarySource"];
+  [coderCopy encodeObject:self->_issuingCountryCode forKey:@"issuingCountryCode"];
+  [coderCopy encodeInteger:self->_documentType forKey:@"documentType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appleIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appleIdentifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_provisioningCredentialIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_provisioningCredentialIdentifier copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_cardConfigurationIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_cardConfigurationIdentifier copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_sharingInstanceIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_sharingInstanceIdentifier copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(NSDate *)self->_creationDate copyWithZone:a3];
+  v14 = [(NSDate *)self->_creationDate copyWithZone:zone];
   v15 = *(v5 + 64);
   *(v5 + 64) = v14;
 
-  v16 = [(NSString *)self->_nonce copyWithZone:a3];
+  v16 = [(NSString *)self->_nonce copyWithZone:zone];
   v17 = *(v5 + 120);
   *(v5 + 120) = v16;
 
   *(v5 + 24) = self->_appleIdentifierType;
-  v18 = [(NSString *)self->_accountHash copyWithZone:a3];
+  v18 = [(NSString *)self->_accountHash copyWithZone:zone];
   v19 = *(v5 + 72);
   *(v5 + 72) = v18;
 
-  v20 = [(NSString *)self->_templateIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_templateIdentifier copyWithZone:zone];
   v21 = *(v5 + 80);
   *(v5 + 80) = v20;
 
-  v22 = [(NSString *)self->_relyingPartyIdentifier copyWithZone:a3];
+  v22 = [(NSString *)self->_relyingPartyIdentifier copyWithZone:zone];
   v23 = *(v5 + 104);
   *(v5 + 104) = v22;
 
@@ -604,7 +604,7 @@ LABEL_56:
   return v5;
 }
 
-- (id)_jsonRepresentationWithSanitization:(BOOL)a3
+- (id)_jsonRepresentationWithSanitization:(BOOL)sanitization
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v5 setObject:self->_appleIdentifier forKeyedSubscript:@"identifier"];
@@ -625,7 +625,7 @@ LABEL_56:
   [v5 setObject:v8 forKeyedSubscript:@"creationDate"];
 
   [v5 setObject:self->_nonce forKeyedSubscript:@"nonce"];
-  if (a3)
+  if (sanitization)
   {
     sharingInstanceIdentifier = @"<redacted>";
     [v5 setObject:@"<redacted>" forKeyedSubscript:@"provisioningCredentialIdentifier"];

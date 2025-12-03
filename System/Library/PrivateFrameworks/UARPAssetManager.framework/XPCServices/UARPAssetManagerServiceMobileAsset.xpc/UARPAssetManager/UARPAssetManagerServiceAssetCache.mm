@@ -1,17 +1,17 @@
 @interface UARPAssetManagerServiceAssetCache
 + (id)encodedClasses;
-- (BOOL)clearAssetCacheForDomain:(id)a3;
+- (BOOL)clearAssetCacheForDomain:(id)domain;
 - (BOOL)pruneExpiredRegistryEntries;
 - (UARPAssetManagerServiceAssetCache)init;
 - (double)assetExpirationTime;
-- (id)assetCacheFileURLForAsset:(id)a3 withSubscription:(id)a4;
+- (id)assetCacheFileURLForAsset:(id)asset withSubscription:(id)subscription;
 - (id)assetCacheRootDirectory;
-- (id)cacheRecordForSubscription:(id)a3;
+- (id)cacheRecordForSubscription:(id)subscription;
 - (id)copyAllSubscriptions;
 - (id)copyCache;
-- (id)createCacheRecordForAsset:(id)a3 withSubscription:(id)a4 withPath:(id)a5;
-- (id)subscribeForAsset:(id)a3;
-- (id)updateSubscription:(id)a3 forAsset:(id)a4 withPath:(id)a5;
+- (id)createCacheRecordForAsset:(id)asset withSubscription:(id)subscription withPath:(id)path;
+- (id)subscribeForAsset:(id)asset;
+- (id)updateSubscription:(id)subscription forAsset:(id)asset withPath:(id)path;
 - (void)save;
 @end
 
@@ -33,18 +33,18 @@
     v7 = *(v2 + 2);
     *(v2 + 2) = v6;
 
-    v8 = [v2 assetCacheRootDirectory];
+    assetCacheRootDirectory = [v2 assetCacheRootDirectory];
     v9 = *(v2 + 1);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v37 = "[UARPAssetManagerServiceAssetCache init]";
       v38 = 2112;
-      v39 = v8;
+      v39 = assetCacheRootDirectory;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Initializing Asset Cache at path: %@", buf, 0x16u);
     }
 
-    v10 = [v8 stringByAppendingPathComponent:@"UARPCacheRegistry.plist"];
+    v10 = [assetCacheRootDirectory stringByAppendingPathComponent:@"UARPCacheRegistry.plist"];
     if ([v3 isReadableFileAtPath:v10])
     {
       v11 = *(v2 + 1);
@@ -66,7 +66,7 @@
         if (v14)
         {
           v27 = v12;
-          v28 = v8;
+          v28 = assetCacheRootDirectory;
           v29 = v3;
           v15 = [v14 mutableCopy];
           v16 = *(v2 + 3);
@@ -107,7 +107,7 @@
             while (v19);
           }
 
-          v8 = v28;
+          assetCacheRootDirectory = v28;
           v3 = v29;
           v12 = v27;
         }
@@ -145,9 +145,9 @@
   return v2;
 }
 
-- (id)cacheRecordForSubscription:(id)a3
+- (id)cacheRecordForSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -160,9 +160,9 @@
   block[2] = sub_1000078E8;
   block[3] = &unk_1000145A8;
   block[4] = self;
-  v10 = v4;
+  v10 = subscriptionCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = subscriptionCopy;
   dispatch_sync(cacheQueue, block);
   v7 = v13[5];
 
@@ -171,9 +171,9 @@
   return v7;
 }
 
-- (id)subscribeForAsset:(id)a3
+- (id)subscribeForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -186,9 +186,9 @@
   block[2] = sub_100007B4C;
   block[3] = &unk_1000145A8;
   block[4] = self;
-  v10 = v4;
+  v10 = assetCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = assetCopy;
   dispatch_sync(cacheQueue, block);
   v7 = v13[5];
 
@@ -197,11 +197,11 @@
   return v7;
 }
 
-- (id)updateSubscription:(id)a3 forAsset:(id)a4 withPath:(id)a5
+- (id)updateSubscription:(id)subscription forAsset:(id)asset withPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subscriptionCopy = subscription;
+  assetCopy = asset;
+  pathCopy = path;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -212,7 +212,7 @@
   v23 = sub_1000078D0;
   v24 = sub_1000078E0;
   v25 = 0;
-  if (v10)
+  if (pathCopy)
   {
     cacheQueue = self->_cacheQueue;
     v14[0] = _NSConcreteStackBlock;
@@ -220,10 +220,10 @@
     v14[2] = sub_100007F00;
     v14[3] = &unk_1000145D0;
     v14[4] = self;
-    v15 = v8;
+    v15 = subscriptionCopy;
     v18 = &v20;
-    v16 = v9;
-    v17 = v10;
+    v16 = assetCopy;
+    v17 = pathCopy;
     v19 = v26;
     dispatch_sync(cacheQueue, v14);
     v12 = v21[5];
@@ -285,9 +285,9 @@
   return v4;
 }
 
-- (BOOL)clearAssetCacheForDomain:(id)a3
+- (BOOL)clearAssetCacheForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -298,7 +298,7 @@
   block[2] = sub_10000868C;
   block[3] = &unk_1000145A8;
   block[4] = self;
-  v6 = v4;
+  v6 = domainCopy;
   v10 = v6;
   v11 = &v12;
   dispatch_sync(cacheQueue, block);
@@ -340,16 +340,16 @@
 
 - (void)save
 {
-  v3 = [(UARPAssetManagerServiceAssetCache *)self assetCacheRootDirectory];
+  assetCacheRootDirectory = [(UARPAssetManagerServiceAssetCache *)self assetCacheRootDirectory];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:0];
+  v5 = [v4 fileExistsAtPath:assetCacheRootDirectory isDirectory:0];
 
   v6 = 0;
   if ((v5 & 1) == 0)
   {
     v7 = +[NSFileManager defaultManager];
     v15 = 0;
-    v8 = [v7 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v15];
+    v8 = [v7 createDirectoryAtPath:assetCacheRootDirectory withIntermediateDirectories:1 attributes:0 error:&v15];
     v6 = v15;
 
     if ((v8 & 1) == 0 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -365,7 +365,7 @@
 
   if (v10)
   {
-    v12 = [v3 stringByAppendingPathComponent:@"UARPCacheRegistry.plist"];
+    v12 = [assetCacheRootDirectory stringByAppendingPathComponent:@"UARPCacheRegistry.plist"];
     if (([v10 writeToFile:v12 atomically:1] & 1) == 0)
     {
       log = self->_log;
@@ -393,7 +393,7 @@
   return 0;
 }
 
-- (id)assetCacheFileURLForAsset:(id)a3 withSubscription:(id)a4
+- (id)assetCacheFileURLForAsset:(id)asset withSubscription:(id)subscription
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -415,7 +415,7 @@
   return 0.0;
 }
 
-- (id)createCacheRecordForAsset:(id)a3 withSubscription:(id)a4 withPath:(id)a5
+- (id)createCacheRecordForAsset:(id)asset withSubscription:(id)subscription withPath:(id)path
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))

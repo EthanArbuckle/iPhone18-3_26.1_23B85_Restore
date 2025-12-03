@@ -1,16 +1,16 @@
 @interface _PSInteractionsStatisticsFeatureProvider
-- (_PSInteractionsStatisticsFeatureProvider)initWithInteractionsStatistics:(id)a3;
-- (id)featureValueForFeature:(id)a3 forConversationId:(id)a4;
+- (_PSInteractionsStatisticsFeatureProvider)initWithInteractionsStatistics:(id)statistics;
+- (id)featureValueForFeature:(id)feature forConversationId:(id)id;
 - (id)mlFeatures;
-- (id)mlFeaturesForConversationId:(id)a3;
+- (id)mlFeaturesForConversationId:(id)id;
 @end
 
 @implementation _PSInteractionsStatisticsFeatureProvider
 
-- (_PSInteractionsStatisticsFeatureProvider)initWithInteractionsStatistics:(id)a3
+- (_PSInteractionsStatisticsFeatureProvider)initWithInteractionsStatistics:(id)statistics
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statisticsCopy = statistics;
   v42.receiver = self;
   v42.super_class = _PSInteractionsStatisticsFeatureProvider;
   v5 = [(_PSInteractionsStatisticsFeatureProvider *)&v42 init];
@@ -24,7 +24,7 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = [v4 properties];
+    obj = [statisticsCopy properties];
     v8 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v8)
     {
@@ -41,8 +41,8 @@
 
           v12 = *(*(&v38 + 1) + 8 * i);
           v13 = objc_opt_new();
-          v14 = [v4 properties];
-          v15 = [v14 objectForKeyedSubscript:v12];
+          properties = [statisticsCopy properties];
+          v15 = [properties objectForKeyedSubscript:v12];
           v36[0] = MEMORY[0x1E69E9820];
           v36[1] = 3221225472;
           v36[2] = __75___PSInteractionsStatisticsFeatureProvider_initWithInteractionsStatistics___block_invoke;
@@ -64,7 +64,7 @@
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obja = [v4 features];
+    obja = [statisticsCopy features];
     v17 = [obja countByEnumeratingWithState:&v32 objects:v43 count:16];
     if (v17)
     {
@@ -87,8 +87,8 @@
             [(NSMutableDictionary *)v5->_mlFeatures setObject:v22 forKeyedSubscript:v21];
           }
 
-          v23 = [v4 features];
-          v24 = [v23 objectForKeyedSubscript:v21];
+          features = [statisticsCopy features];
+          v24 = [features objectForKeyedSubscript:v21];
           v30[0] = MEMORY[0x1E69E9820];
           v30[1] = 3221225472;
           v30[2] = __75___PSInteractionsStatisticsFeatureProvider_initWithInteractionsStatistics___block_invoke_2;
@@ -116,20 +116,20 @@
   return v2;
 }
 
-- (id)mlFeaturesForConversationId:(id)a3
+- (id)mlFeaturesForConversationId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_mlFeatures objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_mlFeatures objectForKeyedSubscript:id];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)featureValueForFeature:(id)a3 forConversationId:(id)a4
+- (id)featureValueForFeature:(id)feature forConversationId:(id)id
 {
   mlFeatures = self->_mlFeatures;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)mlFeatures objectForKeyedSubscript:a4];
-  v8 = [v7 featureValueForName:v6];
+  featureCopy = feature;
+  v7 = [(NSMutableDictionary *)mlFeatures objectForKeyedSubscript:id];
+  v8 = [v7 featureValueForName:featureCopy];
 
   v9 = [v8 copy];
 

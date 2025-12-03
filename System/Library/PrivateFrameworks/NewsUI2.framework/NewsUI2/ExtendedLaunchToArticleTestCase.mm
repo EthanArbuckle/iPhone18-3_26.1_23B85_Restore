@@ -1,7 +1,7 @@
 @interface ExtendedLaunchToArticleTestCase
 - (NSString)testName;
 - (_TtC7NewsUI231ExtendedLaunchToArticleTestCase)init;
-- (void)runTestWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ExtendedLaunchToArticleTestCase
@@ -14,13 +14,13 @@
   return v2;
 }
 
-- (void)runTestWithContext:(id)a3 completion:(id)a4
+- (void)runTestWithContext:(id)context completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = qword_280E8D830;
-  v9 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();

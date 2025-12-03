@@ -1,22 +1,22 @@
 @interface PKTransactionSupportStatementNameSectionController
-- (PKTransactionSupportStatementNameSectionController)initWithMerchantStatementName:(id)a3;
-- (id)_decorateListCell:(id)a3 forRowItem:(id)a4;
-- (id)headerAttributedStringForIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (PKTransactionSupportStatementNameSectionController)initWithMerchantStatementName:(id)name;
+- (id)_decorateListCell:(id)cell forRowItem:(id)item;
+- (id)headerAttributedStringForIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 @end
 
 @implementation PKTransactionSupportStatementNameSectionController
 
-- (PKTransactionSupportStatementNameSectionController)initWithMerchantStatementName:(id)a3
+- (PKTransactionSupportStatementNameSectionController)initWithMerchantStatementName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = PKTransactionSupportStatementNameSectionController;
   v6 = [(PKPaymentSetupListSectionController *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_merchantStatementName, a3);
+    objc_storeStrong(&v6->_merchantStatementName, name);
     objc_initWeak(&location, v7);
     v8 = MEMORY[0x1E69DC800];
     v9 = objc_opt_class();
@@ -47,26 +47,26 @@ void __84__PKTransactionSupportStatementNameSectionController_initWithMerchantSt
   }
 }
 
-- (id)headerAttributedStringForIdentifier:(id)a3
+- (id)headerAttributedStringForIdentifier:(id)identifier
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = PKLocalizedPaymentString(&cfstr_TransactionDet_51.isa);
-  v4 = [v3 localizedUppercaseString];
+  localizedUppercaseString = [v3 localizedUppercaseString];
 
   v5 = objc_alloc(MEMORY[0x1E696AAB0]);
   v11[0] = *MEMORY[0x1E69DB648];
   v6 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC70], 0, 0);
   v12[0] = v6;
   v11[1] = *MEMORY[0x1E69DB650];
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v12[1] = v7;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v12[1] = secondaryLabelColor;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
-  v9 = [v5 initWithString:v4 attributes:v8];
+  v9 = [v5 initWithString:localizedUppercaseString attributes:v8];
 
   return v9;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -77,17 +77,17 @@ void __84__PKTransactionSupportStatementNameSectionController_initWithMerchantSt
   return v5;
 }
 
-- (id)_decorateListCell:(id)a3 forRowItem:(id)a4
+- (id)_decorateListCell:(id)cell forRowItem:(id)item
 {
   v5 = MEMORY[0x1E69DCC28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 valueCellConfiguration];
-  [v8 setText:v6];
+  itemCopy = item;
+  cellCopy = cell;
+  valueCellConfiguration = [v5 valueCellConfiguration];
+  [valueCellConfiguration setText:itemCopy];
 
-  [v7 setContentConfiguration:v8];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 
-  return v8;
+  return valueCellConfiguration;
 }
 
 @end

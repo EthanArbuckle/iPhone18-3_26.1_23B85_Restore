@@ -4,7 +4,7 @@
 - (NTKTimeTravelSettings)init;
 - (void)_handlePrefsChanged;
 - (void)dealloc;
-- (void)setTimeTravelEnabled:(BOOL)a3;
+- (void)setTimeTravelEnabled:(BOOL)enabled;
 @end
 
 @implementation NTKTimeTravelSettings
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __39__NTKTimeTravelSettings_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -48,8 +48,8 @@ void __39__NTKTimeTravelSettings_sharedInstance__block_invoke(uint64_t a1)
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _NTKTimeTravelSettings_HandleSettingsChanged, @"com.apple.NanoTimeKit.NTKNanoPrefsChanges", v2, CFNotificationSuspensionBehaviorDeliverImmediately);
     CFPreferencesAppSynchronize(@"com.apple.NanoTimeKit");
     v2->_timeTravelEnabled = [(NTKTimeTravelSettings *)v2 _isTimeTravelEnabledInPreferences];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handlePrefsChanged name:*MEMORY[0x277D37C08] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handlePrefsChanged name:*MEMORY[0x277D37C08] object:0];
   }
 
   return v2;
@@ -59,8 +59,8 @@ void __39__NTKTimeTravelSettings_sharedInstance__block_invoke(uint64_t a1)
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = NTKTimeTravelSettings;
@@ -77,13 +77,13 @@ void __39__NTKTimeTravelSettings_sharedInstance__block_invoke(uint64_t a1)
   return v4 & 1;
 }
 
-- (void)setTimeTravelEnabled:(BOOL)a3
+- (void)setTimeTravelEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_timeTravelEnabled = a3;
+  enabledCopy = enabled;
+  self->_timeTravelEnabled = enabled;
   v10 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.NanoTimeKit"];
-  [v10 setBool:v3 forKey:@"timeTravelEnabled"];
-  v5 = [v10 synchronize];
+  [v10 setBool:enabledCopy forKey:@"timeTravelEnabled"];
+  synchronize = [v10 synchronize];
   npsManager = self->_npsManager;
   if (!npsManager)
   {

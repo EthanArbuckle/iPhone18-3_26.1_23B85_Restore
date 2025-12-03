@@ -1,75 +1,75 @@
 @interface STSchemaSTAnswerSynthesisDataMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTAnswerSynthesisDataMetrics)initWithDictionary:(id)a3;
-- (STSchemaSTAnswerSynthesisDataMetrics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTAnswerSynthesisDataMetrics)initWithDictionary:(id)dictionary;
+- (STSchemaSTAnswerSynthesisDataMetrics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAnswerSynthesisHydrationMetrics:(id)a3;
-- (void)setHasNumAnswers:(BOOL)a3;
-- (void)setHasNumQueriesTriggered:(BOOL)a3;
-- (void)setHasPqaModelPromptLength:(BOOL)a3;
-- (void)setHasPromptLength:(BOOL)a3;
-- (void)setHasResponseLength:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnswerSynthesisHydrationMetrics:(id)metrics;
+- (void)setHasNumAnswers:(BOOL)answers;
+- (void)setHasNumQueriesTriggered:(BOOL)triggered;
+- (void)setHasPqaModelPromptLength:(BOOL)length;
+- (void)setHasPromptLength:(BOOL)length;
+- (void)setHasResponseLength:(BOOL)length;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTAnswerSynthesisDataMetrics
 
-- (STSchemaSTAnswerSynthesisDataMetrics)initWithDictionary:(id)a3
+- (STSchemaSTAnswerSynthesisDataMetrics)initWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = STSchemaSTAnswerSynthesisDataMetrics;
   v5 = [(STSchemaSTAnswerSynthesisDataMetrics *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numLLMCalls"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numLLMCalls"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisDataMetrics setNumLLMCalls:](v5, "setNumLLMCalls:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"promptLength"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"promptLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisDataMetrics setPromptLength:](v5, "setPromptLength:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"responseLength"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"responseLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisDataMetrics setResponseLength:](v5, "setResponseLength:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numAnswers"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numAnswers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisDataMetrics setNumAnswers:](v5, "setNumAnswers:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numQueriesTriggered"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numQueriesTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisDataMetrics setNumQueriesTriggered:](v5, "setNumQueriesTriggered:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"pqaModelPromptLength"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"pqaModelPromptLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisDataMetrics setPqaModelPromptLength:](v5, "setPqaModelPromptLength:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"answerSynthesisHydrationMetrics"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisHydrationMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,30 +123,30 @@
   return v5;
 }
 
-- (STSchemaSTAnswerSynthesisDataMetrics)initWithJSON:(id)a3
+- (STSchemaSTAnswerSynthesisDataMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTAnswerSynthesisDataMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTAnswerSynthesisDataMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTAnswerSynthesisDataMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -160,10 +160,10 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_answerSynthesisHydrationMetrics count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -183,16 +183,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -202,14 +202,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"answerSynthesisHydrationMetrics"];
+    [dictionary setObject:array forKeyedSubscript:@"answerSynthesisHydrationMetrics"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisDataMetrics numAnswers](self, "numAnswers")}];
-    [v3 setObject:v15 forKeyedSubscript:@"numAnswers"];
+    [dictionary setObject:v15 forKeyedSubscript:@"numAnswers"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -230,7 +230,7 @@ LABEL_15:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisDataMetrics numLLMCalls](self, "numLLMCalls", v20)}];
-  [v3 setObject:v16 forKeyedSubscript:@"numLLMCalls"];
+  [dictionary setObject:v16 forKeyedSubscript:@"numLLMCalls"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -246,7 +246,7 @@ LABEL_16:
 
 LABEL_25:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisDataMetrics numQueriesTriggered](self, "numQueriesTriggered", v20)}];
-  [v3 setObject:v17 forKeyedSubscript:@"numQueriesTriggered"];
+  [dictionary setObject:v17 forKeyedSubscript:@"numQueriesTriggered"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -262,7 +262,7 @@ LABEL_17:
 
 LABEL_26:
   v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisDataMetrics pqaModelPromptLength](self, "pqaModelPromptLength", v20)}];
-  [v3 setObject:v18 forKeyedSubscript:@"pqaModelPromptLength"];
+  [dictionary setObject:v18 forKeyedSubscript:@"pqaModelPromptLength"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -278,19 +278,19 @@ LABEL_18:
 
 LABEL_27:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisDataMetrics promptLength](self, "promptLength", v20)}];
-  [v3 setObject:v19 forKeyedSubscript:@"promptLength"];
+  [dictionary setObject:v19 forKeyedSubscript:@"promptLength"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_19:
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisDataMetrics responseLength](self, "responseLength", v20)}];
-    [v3 setObject:v13 forKeyedSubscript:@"responseLength"];
+    [dictionary setObject:v13 forKeyedSubscript:@"responseLength"];
   }
 
 LABEL_20:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v20];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v20];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -375,16 +375,16 @@ LABEL_7:
   return v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSArray *)self->_answerSynthesisHydrationMetrics hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_30;
@@ -393,13 +393,13 @@ LABEL_7:
   if (*&has)
   {
     numLLMCalls = self->_numLLMCalls;
-    if (numLLMCalls != [v4 numLLMCalls])
+    if (numLLMCalls != [equalCopy numLLMCalls])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -408,13 +408,13 @@ LABEL_7:
     if (v8)
     {
       promptLength = self->_promptLength;
-      if (promptLength != [v4 promptLength])
+      if (promptLength != [equalCopy promptLength])
       {
         goto LABEL_30;
       }
 
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -423,13 +423,13 @@ LABEL_7:
       if (v10)
       {
         responseLength = self->_responseLength;
-        if (responseLength != [v4 responseLength])
+        if (responseLength != [equalCopy responseLength])
         {
           goto LABEL_30;
         }
 
         has = self->_has;
-        v6 = v4[40];
+        v6 = equalCopy[40];
       }
 
       v12 = (*&has >> 3) & 1;
@@ -438,13 +438,13 @@ LABEL_7:
         if (v12)
         {
           numAnswers = self->_numAnswers;
-          if (numAnswers != [v4 numAnswers])
+          if (numAnswers != [equalCopy numAnswers])
           {
             goto LABEL_30;
           }
 
           has = self->_has;
-          v6 = v4[40];
+          v6 = equalCopy[40];
         }
 
         v14 = (*&has >> 4) & 1;
@@ -453,27 +453,27 @@ LABEL_7:
           if (v14)
           {
             numQueriesTriggered = self->_numQueriesTriggered;
-            if (numQueriesTriggered != [v4 numQueriesTriggered])
+            if (numQueriesTriggered != [equalCopy numQueriesTriggered])
             {
               goto LABEL_30;
             }
 
             has = self->_has;
-            v6 = v4[40];
+            v6 = equalCopy[40];
           }
 
           v16 = (*&has >> 5) & 1;
           if (v16 == ((v6 >> 5) & 1))
           {
-            if (!v16 || (pqaModelPromptLength = self->_pqaModelPromptLength, pqaModelPromptLength == [v4 pqaModelPromptLength]))
+            if (!v16 || (pqaModelPromptLength = self->_pqaModelPromptLength, pqaModelPromptLength == [equalCopy pqaModelPromptLength]))
             {
-              v18 = [(STSchemaSTAnswerSynthesisDataMetrics *)self answerSynthesisHydrationMetrics];
-              v19 = [v4 answerSynthesisHydrationMetrics];
-              v20 = v19;
-              if ((v18 != 0) != (v19 == 0))
+              answerSynthesisHydrationMetrics = [(STSchemaSTAnswerSynthesisDataMetrics *)self answerSynthesisHydrationMetrics];
+              answerSynthesisHydrationMetrics2 = [equalCopy answerSynthesisHydrationMetrics];
+              v20 = answerSynthesisHydrationMetrics2;
+              if ((answerSynthesisHydrationMetrics != 0) != (answerSynthesisHydrationMetrics2 == 0))
               {
-                v21 = [(STSchemaSTAnswerSynthesisDataMetrics *)self answerSynthesisHydrationMetrics];
-                if (!v21)
+                answerSynthesisHydrationMetrics3 = [(STSchemaSTAnswerSynthesisDataMetrics *)self answerSynthesisHydrationMetrics];
+                if (!answerSynthesisHydrationMetrics3)
                 {
 
 LABEL_33:
@@ -481,10 +481,10 @@ LABEL_33:
                   goto LABEL_31;
                 }
 
-                v22 = v21;
-                v23 = [(STSchemaSTAnswerSynthesisDataMetrics *)self answerSynthesisHydrationMetrics];
-                v24 = [v4 answerSynthesisHydrationMetrics];
-                v25 = [v23 isEqual:v24];
+                v22 = answerSynthesisHydrationMetrics3;
+                answerSynthesisHydrationMetrics4 = [(STSchemaSTAnswerSynthesisDataMetrics *)self answerSynthesisHydrationMetrics];
+                answerSynthesisHydrationMetrics5 = [equalCopy answerSynthesisHydrationMetrics];
+                v25 = [answerSynthesisHydrationMetrics4 isEqual:answerSynthesisHydrationMetrics5];
 
                 if (v25)
                 {
@@ -509,10 +509,10 @@ LABEL_31:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -614,27 +614,27 @@ LABEL_8:
   }
 }
 
-- (void)addAnswerSynthesisHydrationMetrics:(id)a3
+- (void)addAnswerSynthesisHydrationMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   answerSynthesisHydrationMetrics = self->_answerSynthesisHydrationMetrics;
-  v8 = v4;
+  v8 = metricsCopy;
   if (!answerSynthesisHydrationMetrics)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_answerSynthesisHydrationMetrics;
-    self->_answerSynthesisHydrationMetrics = v6;
+    self->_answerSynthesisHydrationMetrics = array;
 
-    v4 = v8;
+    metricsCopy = v8;
     answerSynthesisHydrationMetrics = self->_answerSynthesisHydrationMetrics;
   }
 
-  [(NSArray *)answerSynthesisHydrationMetrics addObject:v4];
+  [(NSArray *)answerSynthesisHydrationMetrics addObject:metricsCopy];
 }
 
-- (void)setHasPqaModelPromptLength:(BOOL)a3
+- (void)setHasPqaModelPromptLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 32;
   }
@@ -647,9 +647,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNumQueriesTriggered:(BOOL)a3
+- (void)setHasNumQueriesTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 16;
   }
@@ -662,9 +662,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasNumAnswers:(BOOL)a3
+- (void)setHasNumAnswers:(BOOL)answers
 {
-  if (a3)
+  if (answers)
   {
     v3 = 8;
   }
@@ -677,9 +677,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasResponseLength:(BOOL)a3
+- (void)setHasResponseLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 4;
   }
@@ -692,9 +692,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPromptLength:(BOOL)a3
+- (void)setHasPromptLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -707,14 +707,14 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = STSchemaSTAnswerSynthesisDataMetrics;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(STSchemaSTAnswerSynthesisDataMetrics *)self answerSynthesisHydrationMetrics:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(STSchemaSTAnswerSynthesisDataMetrics *)self setAnswerSynthesisHydrationMetrics:v7];
 

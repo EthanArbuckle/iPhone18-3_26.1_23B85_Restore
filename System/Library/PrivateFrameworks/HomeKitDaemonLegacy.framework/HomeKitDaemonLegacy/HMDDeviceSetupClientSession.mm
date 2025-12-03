@@ -2,16 +2,16 @@
 + (BOOL)isSupported;
 + (id)allowedClasses;
 + (id)logCategory;
-- (BOOL)processSessionData:(id)a3 outAccessoryUUID:(id *)a4 outAccessoryCategory:(id *)a5 outAccessoryIDSIdentifier:(id *)a6 error:(id *)a7;
-- (HMDDeviceSetupClientSession)initWithHomeManager:(id)a3 userDefaults:(id)a4 sessionIdentifier:(id)a5;
+- (BOOL)processSessionData:(id)data outAccessoryUUID:(id *)d outAccessoryCategory:(id *)category outAccessoryIDSIdentifier:(id *)identifier error:(id *)error;
+- (HMDDeviceSetupClientSession)initWithHomeManager:(id)manager userDefaults:(id)defaults sessionIdentifier:(id)identifier;
 @end
 
 @implementation HMDDeviceSetupClientSession
 
-- (BOOL)processSessionData:(id)a3 outAccessoryUUID:(id *)a4 outAccessoryCategory:(id *)a5 outAccessoryIDSIdentifier:(id *)a6 error:(id *)a7
+- (BOOL)processSessionData:(id)data outAccessoryUUID:(id *)d outAccessoryCategory:(id *)category outAccessoryIDSIdentifier:(id *)identifier error:(id *)error
 {
   v157 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  dataCopy = data;
   logger = self->_logger;
   if (os_signpost_enabled(logger))
   {
@@ -19,24 +19,24 @@
     _os_signpost_emit_with_name_impl(&dword_2531F8000, logger, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientDeviceSessionProcess", "", buf, 2u);
   }
 
-  if (!v12)
+  if (!dataCopy)
   {
     v18 = 0;
 LABEL_13:
-    v33 = [(HMDDeviceSetupSessionInternal *)self homeManager];
-    v146 = [MEMORY[0x277CBEB38] dictionary];
-    v34 = [(HMDDeviceSetupSessionInternal *)self state];
-    if (v34 != 2)
+    homeManager = [(HMDDeviceSetupSessionInternal *)self homeManager];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    state = [(HMDDeviceSetupSessionInternal *)self state];
+    if (state != 2)
     {
-      if (v34 == 1)
+      if (state == 1)
       {
         v147 = 0;
-        v35 = [v33 getOrCreateLocalPairingIdentity:&v147];
+        v35 = [homeManager getOrCreateLocalPairingIdentity:&v147];
         v36 = v147;
         if (!v36 && v35)
         {
           v37 = objc_autoreleasePoolPush();
-          v38 = self;
+          selfCopy = self;
           v39 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
@@ -49,20 +49,20 @@ LABEL_13:
           }
 
           objc_autoreleasePoolPop(v37);
-          v41 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDDeviceSetupSessionInternal state](v38, "state")}];
-          [v146 setObject:v41 forKeyedSubscript:@"st"];
+          v41 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDDeviceSetupSessionInternal state](selfCopy, "state")}];
+          [dictionary setObject:v41 forKeyedSubscript:@"st"];
 
-          [v146 setObject:v35 forKeyedSubscript:@"pi"];
+          [dictionary setObject:v35 forKeyedSubscript:@"pi"];
           v42 = MEMORY[0x277CCABB0];
-          v43 = [v33 hh2FrameworkSwitch];
-          v44 = [v42 numberWithBool:{objc_msgSend(v43, "checkExistenceOfHH2SentinelZone")}];
-          [v146 setObject:v44 forKeyedSubscript:@"sz.hh2"];
+          hh2FrameworkSwitch = [homeManager hh2FrameworkSwitch];
+          v44 = [v42 numberWithBool:{objc_msgSend(hh2FrameworkSwitch, "checkExistenceOfHH2SentinelZone")}];
+          [dictionary setObject:v44 forKeyedSubscript:@"sz.hh2"];
 
-          v45 = [(HMDDeviceSetupClientSession *)v38 sessionIdentifier];
-          v46 = [v45 UUIDString];
+          sessionIdentifier = [(HMDDeviceSetupClientSession *)selfCopy sessionIdentifier];
+          uUIDString = [sessionIdentifier UUIDString];
 
           v47 = objc_autoreleasePoolPush();
-          v48 = v38;
+          v48 = selfCopy;
           v49 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
@@ -71,19 +71,19 @@ LABEL_13:
             *buf = 138543618;
             v152 = v51;
             v153 = 2112;
-            v154 = v46;
+            v154 = uUIDString;
             _os_log_impl(&dword_2531F8000, v49, OS_LOG_TYPE_DEFAULT, "%{public}@Sending setup session identifier %@ as part of payload", buf, 0x16u);
 
             v35 = v50;
           }
 
           objc_autoreleasePoolPop(v47);
-          [v146 setObject:v46 forKeyedSubscript:@"session.id"];
-          v52 = [v33 mediaSystemHints];
+          [dictionary setObject:uUIDString forKeyedSubscript:@"session.id"];
+          mediaSystemHints = [homeManager mediaSystemHints];
 
-          if (v52)
+          if (mediaSystemHints)
           {
-            v143 = v46;
+            v143 = uUIDString;
             v138 = v35;
             v53 = objc_autoreleasePoolPush();
             v54 = v48;
@@ -91,33 +91,33 @@ LABEL_13:
             if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
             {
               v56 = HMFGetLogIdentifier();
-              v57 = [v33 mediaSystemHints];
+              mediaSystemHints2 = [homeManager mediaSystemHints];
               *buf = 138543618;
               v152 = v56;
               v153 = 2112;
-              v154 = v57;
+              v154 = mediaSystemHints2;
               _os_log_impl(&dword_2531F8000, v55, OS_LOG_TYPE_DEFAULT, "%{public}@Sending media system hints %@", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v53);
-            v58 = [v33 mediaSystemHints];
-            v59 = [v58 mediaSystemHomeUUIDString];
-            [v146 setObject:v59 forKeyedSubscript:*MEMORY[0x277CD2450]];
+            mediaSystemHints3 = [homeManager mediaSystemHints];
+            mediaSystemHomeUUIDString = [mediaSystemHints3 mediaSystemHomeUUIDString];
+            [dictionary setObject:mediaSystemHomeUUIDString forKeyedSubscript:*MEMORY[0x277CD2450]];
 
-            v60 = [v33 mediaSystemHints];
-            v61 = [v60 mediaSystemUUIDString];
-            [v146 setObject:v61 forKeyedSubscript:*MEMORY[0x277CD2470]];
+            mediaSystemHints4 = [homeManager mediaSystemHints];
+            mediaSystemUUIDString = [mediaSystemHints4 mediaSystemUUIDString];
+            [dictionary setObject:mediaSystemUUIDString forKeyedSubscript:*MEMORY[0x277CD2470]];
 
-            v62 = [v33 mediaSystemHints];
-            v63 = [v62 peerAccessoryUUIDString];
-            [v146 setObject:v63 forKeyedSubscript:*MEMORY[0x277CD24A0]];
+            mediaSystemHints5 = [homeManager mediaSystemHints];
+            peerAccessoryUUIDString = [mediaSystemHints5 peerAccessoryUUIDString];
+            [dictionary setObject:peerAccessoryUUIDString forKeyedSubscript:*MEMORY[0x277CD24A0]];
 
-            v64 = [v33 mediaSystemHints];
-            v65 = [v64 peerAccessoryRoleString];
-            [v146 setObject:v65 forKeyedSubscript:*MEMORY[0x277CD2498]];
+            mediaSystemHints6 = [homeManager mediaSystemHints];
+            peerAccessoryRoleString = [mediaSystemHints6 peerAccessoryRoleString];
+            [dictionary setObject:peerAccessoryRoleString forKeyedSubscript:*MEMORY[0x277CD2498]];
 
             v35 = v138;
-            v46 = v143;
+            uUIDString = v143;
           }
 
           [(HMDDeviceSetupSessionInternal *)v48 setState:2];
@@ -128,13 +128,13 @@ LABEL_13:
         goto LABEL_95;
       }
 
-      if (a7)
+      if (error)
       {
         v88 = MEMORY[0x277CCA9B8];
         v89 = 23;
 LABEL_60:
         [v88 hmErrorWithCode:v89];
-        *a7 = v68 = 0;
+        *error = v68 = 0;
 LABEL_96:
 
         goto LABEL_97;
@@ -146,21 +146,21 @@ LABEL_96:
     if (!v18)
     {
       v90 = objc_autoreleasePoolPush();
-      v91 = self;
+      selfCopy2 = self;
       v92 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
       {
         v93 = HMFGetLogIdentifier();
-        v94 = [(HMDDeviceSetupSessionInternal *)v91 state];
+        state2 = [(HMDDeviceSetupSessionInternal *)selfCopy2 state];
         *buf = 138543618;
         v152 = v93;
         v153 = 2048;
-        v154 = v94;
+        v154 = state2;
         _os_log_impl(&dword_2531F8000, v92, OS_LOG_TYPE_DEFAULT, "%{public}@Invalid request state: %tu", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v90);
-      if (a7)
+      if (error)
       {
         v88 = MEMORY[0x277CCA9B8];
         v89 = 58;
@@ -172,7 +172,7 @@ LABEL_95:
       goto LABEL_96;
     }
 
-    v144 = a4;
+    dCopy = d;
     v74 = [v18 objectForKeyedSubscript:@"ac"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -196,7 +196,7 @@ LABEL_80:
       if ([(HMDDeviceSetupSessionInternal *)self state]!= 3)
       {
         v110 = objc_autoreleasePoolPush();
-        v111 = self;
+        selfCopy3 = self;
         v112 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
         {
@@ -204,38 +204,38 @@ LABEL_80:
           *buf = 138543618;
           v152 = v113;
           v153 = 2112;
-          v154 = v146;
+          v154 = dictionary;
           _os_log_impl(&dword_2531F8000, v112, OS_LOG_TYPE_DEFAULT, "%{public}@Response: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v110);
-        v114 = encodeRootObjectForRemote(v146, 0, 0);
-        [(HMDDeviceSetupSessionInternal *)v111 setSessionData:v114];
+        v114 = encodeRootObjectForRemote(dictionary, 0, 0);
+        [(HMDDeviceSetupSessionInternal *)selfCopy3 setSessionData:v114];
       }
 
       v68 = 1;
       goto LABEL_96;
     }
 
-    v141 = a6;
+    identifierCopy = identifier;
     v76 = objc_autoreleasePoolPush();
-    v77 = self;
+    selfCopy4 = self;
     v78 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
     {
       HMFGetLogIdentifier();
-      v136 = a7;
-      v79 = v77;
-      v81 = v80 = a5;
+      errorCopy = error;
+      v79 = selfCopy4;
+      v81 = v80 = category;
       *buf = 138543618;
       v152 = v81;
       v153 = 2112;
       v154 = v35;
       _os_log_impl(&dword_2531F8000, v78, OS_LOG_TYPE_DEFAULT, "%{public}@Received accessory description: %@", buf, 0x16u);
 
-      a5 = v80;
-      v77 = v79;
-      a7 = v136;
+      category = v80;
+      selfCopy4 = v79;
+      error = errorCopy;
     }
 
     objc_autoreleasePoolPop(v76);
@@ -257,29 +257,29 @@ LABEL_80:
     if ((isKindOfClass & 1) == 0)
     {
 LABEL_74:
-      v107 = [v33 accessoryBrowser];
-      [v107 addUnassociatedAccessory:v82 forDeviceSetup:1];
+      accessoryBrowser = [homeManager accessoryBrowser];
+      [accessoryBrowser addUnassociatedAccessory:v82 forDeviceSetup:1];
 
-      if (v144)
+      if (dCopy)
       {
-        *v144 = [v82 uuid];
+        *dCopy = [v82 uuid];
       }
 
-      if (a5)
+      if (category)
       {
-        *a5 = [v82 category];
+        *category = [v82 category];
       }
 
       v108 = encodeRootObjectForIncomingXPCMessage(v82, 0);
       v149 = *MEMORY[0x277CCEA00];
       v150 = v108;
       v109 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-      [(HMDDeviceSetupSessionInternal *)v77 setUserInfo:v109];
+      [(HMDDeviceSetupSessionInternal *)selfCopy4 setUserInfo:v109];
 
       goto LABEL_79;
     }
 
-    v132 = v77;
+    v132 = selfCopy4;
     v85 = [v18 objectForKeyedSubscript:@"hk"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -307,7 +307,7 @@ LABEL_74:
       v134 = 0;
     }
 
-    v131 = a5;
+    categoryCopy = category;
     v95 = objc_autoreleasePoolPush();
     v96 = v132;
     v97 = HMFGetOSLogHandle();
@@ -323,12 +323,12 @@ LABEL_74:
 
     objc_autoreleasePoolPop(v95);
     v133 = +[HMDDeviceCapabilities supportedPairingCapabilities];
-    v99 = [v137 minimumRequiredPairingSoftwareVersion];
-    if (v99)
+    minimumRequiredPairingSoftwareVersion = [v137 minimumRequiredPairingSoftwareVersion];
+    if (minimumRequiredPairingSoftwareVersion)
     {
       v100 = +[HMDHomeKitVersion currentVersion];
-      v101 = [v137 minimumRequiredPairingSoftwareVersion];
-      v130 = [v100 isAtLeastVersion:v101];
+      minimumRequiredPairingSoftwareVersion2 = [v137 minimumRequiredPairingSoftwareVersion];
+      v130 = [v100 isAtLeastVersion:minimumRequiredPairingSoftwareVersion2];
     }
 
     else
@@ -354,18 +354,18 @@ LABEL_74:
 
     objc_autoreleasePoolPop(v102);
     v82 = v137;
-    a5 = v131;
+    category = categoryCopy;
     if ([v137 canPairGivenCapabilities:v133])
     {
       if (v130)
       {
-        if (v141)
+        if (identifierCopy)
         {
-          *v141 = [v137 idsIdentifierString];
+          *identifierCopy = [v137 idsIdentifierString];
         }
 
         v35 = v139;
-        v77 = v132;
+        selfCopy4 = v132;
         goto LABEL_74;
       }
 
@@ -381,7 +381,7 @@ LABEL_74:
       }
 
       objc_autoreleasePoolPop(v121);
-      if (!a7)
+      if (!error)
       {
 LABEL_94:
 
@@ -406,7 +406,7 @@ LABEL_94:
       }
 
       objc_autoreleasePoolPop(v115);
-      if (!a7)
+      if (!error)
       {
         goto LABEL_94;
       }
@@ -417,17 +417,17 @@ LABEL_94:
 
     v125 = MEMORY[0x277CCA9B8];
     v126 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:{v120, v129}];
-    *a7 = [v125 hmErrorWithCode:48 description:@"Pairing not supported" reason:v119 suggestion:0 underlyingError:v126];
+    *error = [v125 hmErrorWithCode:48 description:@"Pairing not supported" reason:v119 suggestion:0 underlyingError:v126];
 
     goto LABEL_94;
   }
 
-  v140 = a6;
-  v142 = a4;
+  identifierCopy2 = identifier;
+  dCopy2 = d;
   v14 = MEMORY[0x277CCAAC8];
   v15 = +[HMDDeviceSetupServerSession allowedClasses];
   v148 = 0;
-  v16 = [v14 unarchivedObjectOfClasses:v15 fromData:v12 error:&v148];
+  v16 = [v14 unarchivedObjectOfClasses:v15 fromData:dataCopy error:&v148];
   v17 = v148;
 
   v18 = v16;
@@ -445,7 +445,7 @@ LABEL_94:
   v20 = v19;
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy5 = self;
   v23 = HMFGetOSLogHandle();
   v24 = v23;
   if (v20)
@@ -454,60 +454,60 @@ LABEL_94:
     {
       HMFGetLogIdentifier();
       v145 = v17;
-      v25 = self;
+      selfCopy6 = self;
       v26 = v18;
-      v27 = a7;
-      v28 = v12;
-      v30 = v29 = a5;
+      errorCopy2 = error;
+      v28 = dataCopy;
+      v30 = v29 = category;
       *buf = 138543618;
       v152 = v30;
       v153 = 2112;
       v154 = v20;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@Processing request: %@", buf, 0x16u);
 
-      a5 = v29;
-      v12 = v28;
-      a7 = v27;
+      category = v29;
+      dataCopy = v28;
+      error = errorCopy2;
       v18 = v26;
-      self = v25;
+      self = selfCopy6;
       v17 = v145;
     }
 
     objc_autoreleasePoolPop(v21);
     v31 = [v20 hmf_numberForKey:@"st"];
-    v32 = [v31 integerValue];
-    if (v32 == [(HMDDeviceSetupSessionInternal *)v22 state])
+    integerValue = [v31 integerValue];
+    if (integerValue == [(HMDDeviceSetupSessionInternal *)selfCopy5 state])
     {
 
-      a6 = v140;
-      a4 = v142;
+      identifier = identifierCopy2;
+      d = dCopy2;
       goto LABEL_13;
     }
 
     v69 = objc_autoreleasePoolPush();
-    v70 = v22;
+    v70 = selfCopy5;
     v71 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
     {
       v72 = HMFGetLogIdentifier();
-      v73 = [(HMDDeviceSetupSessionInternal *)v70 state];
+      state3 = [(HMDDeviceSetupSessionInternal *)v70 state];
       *buf = 138543874;
       v152 = v72;
       v153 = 2112;
       v154 = v31;
       v155 = 2048;
-      v156 = v73;
+      v156 = state3;
       _os_log_impl(&dword_2531F8000, v71, OS_LOG_TYPE_DEFAULT, "%{public}@Request state number, %@, does not match expected state number: %tu", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v69);
-    if (a7)
+    if (error)
     {
-      *a7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
+      *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
     }
 
     v68 = 0;
-    v33 = v17;
+    homeManager = v17;
   }
 
   else
@@ -523,11 +523,11 @@ LABEL_94:
     }
 
     objc_autoreleasePoolPop(v21);
-    if (a7)
+    if (error)
     {
       v67 = v17;
       v68 = 0;
-      *a7 = v17;
+      *error = v17;
     }
 
     else
@@ -535,7 +535,7 @@ LABEL_94:
       v68 = 0;
     }
 
-    v33 = v18;
+    homeManager = v18;
     v18 = v17;
   }
 
@@ -545,19 +545,19 @@ LABEL_97:
   return v68;
 }
 
-- (HMDDeviceSetupClientSession)initWithHomeManager:(id)a3 userDefaults:(id)a4 sessionIdentifier:(id)a5
+- (HMDDeviceSetupClientSession)initWithHomeManager:(id)manager userDefaults:(id)defaults sessionIdentifier:(id)identifier
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HMDDeviceSetupClientSession;
-  v10 = [(HMDDeviceSetupSessionInternal *)&v14 initWithHomeManager:a3 userDefaults:a4];
+  v10 = [(HMDDeviceSetupSessionInternal *)&v14 initWithHomeManager:manager userDefaults:defaults];
   if (v10)
   {
     v11 = HMFGetOSLogHandle();
     logger = v10->_logger;
     v10->_logger = v11;
 
-    objc_storeStrong(&v10->_sessionIdentifier, a5);
+    objc_storeStrong(&v10->_sessionIdentifier, identifier);
   }
 
   return v10;
@@ -588,7 +588,7 @@ uint64_t __42__HMDDeviceSetupClientSession_logCategory__block_invoke()
 + (id)allowedClasses
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___HMDDeviceSetupClientSession;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClasses);
   v3 = [v2 mutableCopy];
@@ -605,9 +605,9 @@ uint64_t __42__HMDDeviceSetupClientSession_logCategory__block_invoke()
 + (BOOL)isSupported
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 supportsKeychainSync];
+  supportsKeychainSync = [v2 supportsKeychainSync];
 
-  return v3;
+  return supportsKeychainSync;
 }
 
 @end

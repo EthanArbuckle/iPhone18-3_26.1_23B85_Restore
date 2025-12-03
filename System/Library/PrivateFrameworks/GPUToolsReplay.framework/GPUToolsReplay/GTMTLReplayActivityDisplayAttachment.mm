@@ -1,16 +1,16 @@
 @interface GTMTLReplayActivityDisplayAttachment
-- (GTMTLReplayActivityDisplayAttachment)initWithIndex:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityDisplayAttachment)initWithIndex:(id)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
-- (void)outputToLog:(id)a3;
+- (void)outputToLog:(id)log;
 @end
 
 @implementation GTMTLReplayActivityDisplayAttachment
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->super._activityType;
     function = self->_currentIndex.function;
@@ -21,7 +21,7 @@
     v12 = function;
     v13 = 1024;
     v14 = subCommand;
-    _os_log_impl(&dword_24D764000, a3, OS_LOG_TYPE_INFO, "%{public}@:\t%u:%u", &v9, 0x18u);
+    _os_log_impl(&dword_24D764000, log, OS_LOG_TYPE_INFO, "%{public}@:\t%u:%u", &v9, 0x18u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -51,11 +51,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = GTMTLReplayActivityDisplayAttachment;
-  result = [(GTMTLReplayActivity *)&v5 copyWithZone:a3];
+  result = [(GTMTLReplayActivity *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 5) = self->_currentIndex;
@@ -64,14 +64,14 @@
   return result;
 }
 
-- (GTMTLReplayActivityDisplayAttachment)initWithIndex:(id)a3
+- (GTMTLReplayActivityDisplayAttachment)initWithIndex:(id)index
 {
   v5.receiver = self;
   v5.super_class = GTMTLReplayActivityDisplayAttachment;
   result = [(GTMTLReplayActivity *)&v5 initWithType:@"displayAttachment"];
   if (result)
   {
-    result->_currentIndex = a3;
+    result->_currentIndex = index;
   }
 
   return result;

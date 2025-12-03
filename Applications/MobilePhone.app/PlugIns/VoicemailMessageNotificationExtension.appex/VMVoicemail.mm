@@ -1,42 +1,42 @@
 @interface VMVoicemail
 - (BOOL)hasAcceptableConfidenceForDisplay;
 - (BOOL)hasReducedConfidence;
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(float)a3;
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(float)time;
 @end
 
 @implementation VMVoicemail
 
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(float)a3
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(float)time
 {
   if (([(VMVoicemail *)self isRead]& 1) != 0)
   {
     return 0;
   }
 
-  if (a3 > 5.0)
+  if (time > 5.0)
   {
     return 1;
   }
 
   [(VMVoicemail *)self duration];
-  return v6 / 3.0 < a3;
+  return v6 / 3.0 < time;
 }
 
 - (BOOL)hasAcceptableConfidenceForDisplay
 {
-  v3 = [(VMVoicemail *)self transcript];
-  v4 = [v3 confidenceRating];
+  transcript = [(VMVoicemail *)self transcript];
+  confidenceRating = [transcript confidenceRating];
 
-  v5 = [(VMVoicemail *)self transcript];
-  v6 = v5;
-  if (v4)
+  transcript2 = [(VMVoicemail *)self transcript];
+  v6 = transcript2;
+  if (confidenceRating)
   {
-    v7 = [v5 confidenceRating] > 1;
+    v7 = [transcript2 confidenceRating] > 1;
   }
 
   else
   {
-    [v5 confidence];
+    [transcript2 confidence];
     v7 = v8 >= PHVoicemailConfidenceThresholdForTranscript();
   }
 
@@ -45,31 +45,31 @@
 
 - (BOOL)hasReducedConfidence
 {
-  v3 = [(VMVoicemail *)self transcript];
-  v4 = [v3 confidenceRating];
+  transcript = [(VMVoicemail *)self transcript];
+  confidenceRating = [transcript confidenceRating];
 
-  v5 = [(VMVoicemail *)self transcript];
-  v6 = v5;
-  if (v4)
+  transcript2 = [(VMVoicemail *)self transcript];
+  v6 = transcript2;
+  if (confidenceRating)
   {
-    v7 = [v5 confidenceRating] == 2;
+    hasAcceptableConfidenceForDisplay = [transcript2 confidenceRating] == 2;
   }
 
   else
   {
-    [v5 confidence];
+    [transcript2 confidence];
     if (v8 <= PHVoicemailLowQualityConfidenceThresholdForTranscript())
     {
-      v7 = [(VMVoicemail *)self hasAcceptableConfidenceForDisplay];
+      hasAcceptableConfidenceForDisplay = [(VMVoicemail *)self hasAcceptableConfidenceForDisplay];
     }
 
     else
     {
-      v7 = 0;
+      hasAcceptableConfidenceForDisplay = 0;
     }
   }
 
-  return v7;
+  return hasAcceptableConfidenceForDisplay;
 }
 
 @end

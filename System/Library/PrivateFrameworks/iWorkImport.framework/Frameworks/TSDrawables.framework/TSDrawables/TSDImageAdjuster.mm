@@ -1,39 +1,39 @@
 @interface TSDImageAdjuster
-+ (id)p_adjustedImageNameForSourceImageProvider:(id)a3 adjustedImageType:(id)a4 filenameSuffix:(id)a5;
-- (CGImage)newFilteredImageForImage:(CGImage *)a3 enhancedImage:(CGImage *)a4;
-- (CGImage)p_createImageByToneMappingHDRImageToSDR:(CGImage *)a3;
-- (CGImage)p_newImageFromCIImage:(id)a3 underlyingImage:(CGImage *)a4;
-- (TSDImageAdjuster)initWithImageAdjustments:(id)a3;
-- (id)p_dataForPNGRepresentationOfImage:(CGImage *)a3 redrawnInHDRColorSpaceWithOrientation:(int64_t)a4;
-- (id)p_dataForSDRCGImage:(CGImage *)a3 HDRCGImage:(CGImage *)a4 provider:(id)a5 filenameSuffix:(id)a6;
-- (void)generateEnhancedAndAdjustedImageDataForSourceImage:(id)a3 enhancedImageData:(id)a4 completionHandler:(id)a5;
++ (id)p_adjustedImageNameForSourceImageProvider:(id)provider adjustedImageType:(id)type filenameSuffix:(id)suffix;
+- (CGImage)newFilteredImageForImage:(CGImage *)image enhancedImage:(CGImage *)enhancedImage;
+- (CGImage)p_createImageByToneMappingHDRImageToSDR:(CGImage *)r;
+- (CGImage)p_newImageFromCIImage:(id)image underlyingImage:(CGImage *)underlyingImage;
+- (TSDImageAdjuster)initWithImageAdjustments:(id)adjustments;
+- (id)p_dataForPNGRepresentationOfImage:(CGImage *)image redrawnInHDRColorSpaceWithOrientation:(int64_t)orientation;
+- (id)p_dataForSDRCGImage:(CGImage *)image HDRCGImage:(CGImage *)gImage provider:(id)provider filenameSuffix:(id)suffix;
+- (void)generateEnhancedAndAdjustedImageDataForSourceImage:(id)image enhancedImageData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation TSDImageAdjuster
 
-- (TSDImageAdjuster)initWithImageAdjustments:(id)a3
+- (TSDImageAdjuster)initWithImageAdjustments:(id)adjustments
 {
-  v5 = a3;
+  adjustmentsCopy = adjustments;
   v9.receiver = self;
   v9.super_class = TSDImageAdjuster;
   v6 = [(TSDImageAdjuster *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageAdjustments, a3);
+    objc_storeStrong(&v6->_imageAdjustments, adjustments);
   }
 
   return v7;
 }
 
-+ (id)p_adjustedImageNameForSourceImageProvider:(id)a3 adjustedImageType:(id)a4 filenameSuffix:(id)a5
++ (id)p_adjustedImageNameForSourceImageProvider:(id)provider adjustedImageType:(id)type filenameSuffix:(id)suffix
 {
-  v7 = a4;
-  v8 = a5;
-  v11 = objc_msgSend_imageData(a3, v9, v10);
+  typeCopy = type;
+  suffixCopy = suffix;
+  v11 = objc_msgSend_imageData(provider, v9, v10);
   v14 = objc_msgSend_filename(v11, v12, v13);
 
-  if (!v7)
+  if (!typeCopy)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "+[TSDImageAdjuster p_adjustedImageNameForSourceImageProvider:adjustedImageType:filenameSuffix:]");
@@ -48,22 +48,22 @@
     v14 = @"image.png";
   }
 
-  v24 = objc_msgSend_tsu_UTIFilenameExtension(v7, v15, v16);
+  v24 = objc_msgSend_tsu_UTIFilenameExtension(typeCopy, v15, v16);
   v27 = objc_msgSend_stringByDeletingPathExtension(v14, v25, v26);
-  v29 = objc_msgSend_stringByAppendingString_(v27, v28, v8);
+  v29 = objc_msgSend_stringByAppendingString_(v27, v28, suffixCopy);
 
   v31 = objc_msgSend_stringByAppendingPathExtension_(v29, v30, v24);
 
   return v31;
 }
 
-- (void)generateEnhancedAndAdjustedImageDataForSourceImage:(id)a3 enhancedImageData:(id)a4 completionHandler:(id)a5
+- (void)generateEnhancedAndAdjustedImageDataForSourceImage:(id)image enhancedImageData:(id)data completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  dataCopy = data;
+  handlerCopy = handler;
+  imageCopy = image;
   v12 = objc_msgSend_sharedPool(TSDImageProviderPool, v10, v11);
-  v14 = objc_msgSend_temporaryProviderForData_shouldValidate_(v12, v13, v9, 1);
+  v14 = objc_msgSend_temporaryProviderForData_shouldValidate_(v12, v13, imageCopy, 1);
 
   objc_opt_class();
   v15 = TSUDynamicCast();
@@ -107,10 +107,10 @@
     }
 
     v76 = 0uLL;
-    if (v7)
+    if (dataCopy)
     {
       v38 = objc_msgSend_sharedPool(TSDImageProviderPool, v34, v35);
-      v40 = objc_msgSend_temporaryProviderForData_shouldValidate_(v38, v39, v7, 1);
+      v40 = objc_msgSend_temporaryProviderForData_shouldValidate_(v38, v39, dataCopy, 1);
 
       objc_opt_class();
       v41 = TSUDynamicCast();
@@ -247,7 +247,7 @@ LABEL_52:
 
           if (v63 == 1 && v62)
           {
-            (*(v8 + 2))(v8, v71, 0, 0);
+            (*(handlerCopy + 2))(handlerCopy, v71, 0, 0);
             v14 = v72;
             v64 = v73;
             v65 = v74;
@@ -280,7 +280,7 @@ LABEL_71:
               }
 
               v70 = v69;
-              (*(v8 + 2))(v8, v71, v67, v69);
+              (*(handlerCopy + 2))(handlerCopy, v71, v67, v69);
 
               goto LABEL_75;
             }
@@ -294,7 +294,7 @@ LABEL_70:
             goto LABEL_71;
           }
 
-          v68 = v7;
+          v68 = dataCopy;
           goto LABEL_70;
         }
 
@@ -333,14 +333,14 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  (*(v8 + 2))(v8, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
 LABEL_76:
 }
 
-- (CGImage)p_createImageByToneMappingHDRImageToSDR:(CGImage *)a3
+- (CGImage)p_createImageByToneMappingHDRImageToSDR:(CGImage *)r
 {
   v4 = objc_alloc(MEMORY[0x277CBF758]);
-  v6 = objc_msgSend_initWithCGImage_(v4, v5, a3);
+  v6 = objc_msgSend_initWithCGImage_(v4, v5, r);
   v8 = objc_msgSend_filterWithName_(MEMORY[0x277CBF750], v7, @"CIToneMapHeadroom");
   objc_msgSend_setValue_forKey_(v8, v9, v6, @"inputImage");
   v10 = MEMORY[0x277CCABB0];
@@ -350,8 +350,8 @@ LABEL_76:
 
   objc_msgSend_setValue_forKey_(v8, v15, &unk_28859C6A8, @"inputTargetHeadroom");
   v16 = objc_alloc_init(MEMORY[0x277CBF740]);
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(r);
+  Height = CGImageGetHeight(r);
   v19 = TSUP3ColorSpace();
   v22 = objc_msgSend_outputImage(v8, v20, v21);
   CGImage_fromRect_format_colorSpace = objc_msgSend_createCGImage_fromRect_format_colorSpace_(v16, v23, v22, *MEMORY[0x277CBF9D8], v19, 0.0, 0.0, Width, Height);
@@ -359,27 +359,27 @@ LABEL_76:
   return CGImage_fromRect_format_colorSpace;
 }
 
-- (id)p_dataForSDRCGImage:(CGImage *)a3 HDRCGImage:(CGImage *)a4 provider:(id)a5 filenameSuffix:(id)a6
+- (id)p_dataForSDRCGImage:(CGImage *)image HDRCGImage:(CGImage *)gImage provider:(id)provider filenameSuffix:(id)suffix
 {
   v120[1] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v12 = a6;
-  if (a3 | a4)
+  providerCopy = provider;
+  suffixCopy = suffix;
+  if (image | gImage)
   {
     v23 = objc_msgSend_contextWithOptions_(MEMORY[0x277CBF740], v11, 0);
-    if (a3 && a4)
+    if (image && gImage)
     {
-      v24 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], v21, a3);
+      v24 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], v21, image);
       v119 = *MEMORY[0x277CD3410];
       v25 = MEMORY[0x277CCABB0];
-      objc_msgSend_orientation(v10, v26, v27);
+      objc_msgSend_orientation(providerCopy, v26, v27);
       v28 = CGImagePropertyOrientationValueForTSUImageOrientation();
       v30 = objc_msgSend_numberWithUnsignedInt_(v25, v29, v28);
       v120[0] = v30;
       v32 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v31, v120, &v119, 1);
       v34 = objc_msgSend_imageBySettingProperties_(v24, v33, v32);
 
-      v36 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], v35, a4);
+      v36 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], v35, gImage);
       v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v40 = v37;
       if (v36)
@@ -387,10 +387,10 @@ LABEL_76:
         objc_msgSend_setObject_forKeyedSubscript_(v37, v38, v36, *MEMORY[0x277CBFA98]);
       }
 
-      if (objc_msgSend_isOpaque(v10, v38, v39) && (objc_msgSend_imageData(v10, v41, v42), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend_type(v43, v44, v45), v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend_highEfficiencyImageTypes(MEMORY[0x277D81200], v47, v48), v49 = v40, v50 = v36, v51 = v34, v52 = v12, v53 = v23, v54 = objc_claimAutoreleasedReturnValue(), v114 = objc_msgSend_tsu_conformsToAnyUTI_(v46, v55, v54), v54, v23 = v53, v12 = v52, v34 = v51, v36 = v50, v40 = v49, v46, v43, (v114 & 1) == 0))
+      if (objc_msgSend_isOpaque(providerCopy, v38, v39) && (objc_msgSend_imageData(providerCopy, v41, v42), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend_type(v43, v44, v45), v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend_highEfficiencyImageTypes(MEMORY[0x277D81200], v47, v48), v49 = v40, v50 = v36, v51 = v34, v52 = suffixCopy, v53 = v23, v54 = objc_claimAutoreleasedReturnValue(), v114 = objc_msgSend_tsu_conformsToAnyUTI_(v46, v55, v54), v54, v23 = v53, suffixCopy = v52, v34 = v51, v36 = v50, v40 = v49, v46, v43, (v114 & 1) == 0))
       {
         v56 = objc_msgSend_identifier(*MEMORY[0x277CE1DC0], v41, v42);
-        ColorSpace = CGImageGetColorSpace(a3);
+        ColorSpace = CGImageGetColorSpace(image);
         v60 = objc_msgSend_JPEGRepresentationOfImage_colorSpace_options_(v23, v97, v34, ColorSpace, v49);
       }
 
@@ -398,7 +398,7 @@ LABEL_76:
       {
         v56 = objc_msgSend_identifier(*MEMORY[0x277CE1D98], v41, v42);
         v57 = *MEMORY[0x277CBF9C8];
-        v58 = CGImageGetColorSpace(a3);
+        v58 = CGImageGetColorSpace(image);
         v60 = objc_msgSend_HEIFRepresentationOfImage_format_colorSpace_options_(v23, v59, v34, v57, v58, v40);
       }
 
@@ -407,12 +407,12 @@ LABEL_76:
 
     else
     {
-      if (!a3)
+      if (!image)
       {
-        a3 = a4;
+        image = gImage;
       }
 
-      v61 = objc_msgSend_imageData(v10, v21, v22);
+      v61 = objc_msgSend_imageData(providerCopy, v21, v22);
       v64 = objc_msgSend_type(v61, v62, v63);
       v67 = objc_msgSend_highEfficiencyImageTypes(MEMORY[0x277D81200], v65, v66);
       v69 = objc_msgSend_tsu_conformsToAnyUTI_(v64, v68, v67);
@@ -420,10 +420,10 @@ LABEL_76:
       if (v69)
       {
         v56 = objc_msgSend_identifier(*MEMORY[0x277CE1D98], v70, v71);
-        v73 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], v72, a3);
+        v73 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], v72, image);
         v117 = *MEMORY[0x277CD3410];
         v74 = MEMORY[0x277CCABB0];
-        objc_msgSend_orientation(v10, v75, v76);
+        objc_msgSend_orientation(providerCopy, v75, v76);
         v77 = CGImagePropertyOrientationValueForTSUImageOrientation();
         v79 = objc_msgSend_numberWithUnsignedInt_(v74, v78, v77);
         v118 = v79;
@@ -431,7 +431,7 @@ LABEL_76:
         v83 = objc_msgSend_imageBySettingProperties_(v73, v82, v81);
 
         v84 = *MEMORY[0x277CBF9C8];
-        v85 = CGImageGetColorSpace(a3);
+        v85 = CGImageGetColorSpace(image);
         v115 = *MEMORY[0x277CD2D48];
         v116 = &unk_28859C6B8;
         v87 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v86, &v116, &v115, 1);
@@ -440,26 +440,26 @@ LABEL_76:
 
       else
       {
-        if (a3 == a4)
+        if (image == gImage)
         {
           v56 = objc_msgSend_identifier(*MEMORY[0x277CE1E10], v70, v71);
-          v100 = objc_msgSend_orientation(v10, v98, v99);
-          v95 = objc_msgSend_p_dataForPNGRepresentationOfImage_redrawnInHDRColorSpaceWithOrientation_(self, v101, a3, v100);
+          v100 = objc_msgSend_orientation(providerCopy, v98, v99);
+          v95 = objc_msgSend_p_dataForPNGRepresentationOfImage_redrawnInHDRColorSpaceWithOrientation_(self, v101, image, v100);
         }
 
         else
         {
-          if (objc_msgSend_isOpaque(v10, v70, v71))
+          if (objc_msgSend_isOpaque(providerCopy, v70, v71))
           {
             v56 = objc_msgSend_identifier(*MEMORY[0x277CE1DC0], v91, v92);
-            objc_msgSend_orientation(v10, v93, v94);
+            objc_msgSend_orientation(providerCopy, v93, v94);
             CGImageJPEGRepresentationWithOrientation();
           }
 
           else
           {
             v56 = objc_msgSend_identifier(*MEMORY[0x277CE1E10], v91, v92);
-            objc_msgSend_orientation(v10, v102, v103);
+            objc_msgSend_orientation(providerCopy, v102, v103);
             CGImagePNGRepresentationWithOrientation();
           }
           v95 = ;
@@ -469,9 +469,9 @@ LABEL_76:
       }
     }
 
-    v104 = objc_msgSend_p_adjustedImageNameForSourceImageProvider_adjustedImageType_filenameSuffix_(TSDImageAdjuster, v90, v10, v56, v12);
+    v104 = objc_msgSend_p_adjustedImageNameForSourceImageProvider_adjustedImageType_filenameSuffix_(TSDImageAdjuster, v90, providerCopy, v56, suffixCopy);
     v105 = MEMORY[0x277D80828];
-    v108 = objc_msgSend_imageData(v10, v106, v107);
+    v108 = objc_msgSend_imageData(providerCopy, v106, v107);
     v111 = objc_msgSend_context(v108, v109, v110);
     v20 = objc_msgSend_dataFromNSData_filename_context_(v105, v112, v89, v104, v111);
   }
@@ -490,34 +490,34 @@ LABEL_76:
   return v20;
 }
 
-- (CGImage)newFilteredImageForImage:(CGImage *)a3 enhancedImage:(CGImage *)a4
+- (CGImage)newFilteredImageForImage:(CGImage *)image enhancedImage:(CGImage *)enhancedImage
 {
   v268[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
-  v4 = a3;
+  imageCopy = image;
   imageAdjustments = self->_imageAdjustments;
   if (imageAdjustments)
   {
-    v8 = objc_msgSend_enhance(imageAdjustments, a2, a3);
+    v8 = objc_msgSend_enhance(imageAdjustments, a2, image);
     v9 = 0;
-    if (a4)
+    if (enhancedImage)
     {
       if (v8)
       {
-        v9 = *a4 != 0;
-        if (*a4)
+        v9 = *enhancedImage != 0;
+        if (*enhancedImage)
         {
-          v4 = *a4;
+          imageCopy = *enhancedImage;
         }
       }
     }
 
     v10 = objc_alloc(MEMORY[0x277CBF758]);
-    v12 = objc_msgSend_initWithCGImage_(v10, v11, v4);
+    v12 = objc_msgSend_initWithCGImage_(v10, v11, imageCopy);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v16 = objc_msgSend_enhance(self->_imageAdjustments, v14, v15);
     if (!v9 && v16)
@@ -532,7 +532,7 @@ LABEL_76:
         objc_msgSend_addObjectsFromArray_(v13, v22, v21);
       }
 
-      if (a4 && objc_msgSend_count(v21, v22, v23))
+      if (enhancedImage && objc_msgSend_count(v21, v22, v23))
       {
         v249 = v12;
         v24 = v12;
@@ -573,7 +573,7 @@ LABEL_76:
           while (v29);
         }
 
-        *a4 = objc_msgSend_p_newImageFromCIImage_underlyingImage_(self, v35, v24, v4);
+        *enhancedImage = objc_msgSend_p_newImageFromCIImage_underlyingImage_(self, v35, v24, imageCopy);
         v256 = 0u;
         v257 = 0u;
         v258 = 0u;
@@ -755,7 +755,7 @@ LABEL_76:
     if (objc_msgSend_count(v13, v209, v212))
     {
       v250 = v12;
-      v251 = v4;
+      v251 = imageCopy;
       v233 = v12;
       v252 = 0u;
       v253 = 0u;
@@ -801,24 +801,24 @@ LABEL_76:
 
     else
     {
-      v246 = CGImageRetain(v4);
+      v246 = CGImageRetain(imageCopy);
     }
 
     return v246;
   }
 
-  return CGImageRetain(a3);
+  return CGImageRetain(image);
 }
 
-- (CGImage)p_newImageFromCIImage:(id)a3 underlyingImage:(CGImage *)a4
+- (CGImage)p_newImageFromCIImage:(id)image underlyingImage:(CGImage *)underlyingImage
 {
-  v5 = a3;
-  CGImageGetWidth(a4);
-  CGImageGetHeight(a4);
-  v8 = objc_msgSend_colorSpace(v5, v6, v7);
+  imageCopy = image;
+  CGImageGetWidth(underlyingImage);
+  CGImageGetHeight(underlyingImage);
+  v8 = objc_msgSend_colorSpace(imageCopy, v6, v7);
   if (!v8)
   {
-    ColorSpace = CGImageGetColorSpace(a4);
+    ColorSpace = CGImageGetColorSpace(underlyingImage);
     if (!CGColorSpaceIsPQBased(ColorSpace))
     {
       goto LABEL_5;
@@ -837,23 +837,23 @@ LABEL_5:
   v10 = objc_autoreleasePoolPush();
   v11 = objc_alloc_init(MEMORY[0x277CBF740]);
   TSURectWithSize();
-  CGImage_fromRect_format_colorSpace = objc_msgSend_createCGImage_fromRect_format_colorSpace_(v11, v12, v5, *MEMORY[0x277CBF9D8], ColorSpace);
+  CGImage_fromRect_format_colorSpace = objc_msgSend_createCGImage_fromRect_format_colorSpace_(v11, v12, imageCopy, *MEMORY[0x277CBF9D8], ColorSpace);
 
   objc_autoreleasePoolPop(v10);
   return CGImage_fromRect_format_colorSpace;
 }
 
-- (id)p_dataForPNGRepresentationOfImage:(CGImage *)a3 redrawnInHDRColorSpaceWithOrientation:(int64_t)a4
+- (id)p_dataForPNGRepresentationOfImage:(CGImage *)image redrawnInHDRColorSpaceWithOrientation:(int64_t)orientation
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v5 = TSUHLGColorSpace();
   v6 = CGColorSpaceGetName(v5);
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v9 = TSUHLGColorSpace();
   v10 = TSDBitmapContextCreateWithColorSpace(v9, 0x63, Width, Height);
   TSURectWithSize();
-  CGContextDrawImage(v10, v23, a3);
+  CGContextDrawImage(v10, v23, image);
   Image = CGBitmapContextCreateImage(v10);
   CGContextRelease(v10);
   v20[0] = *MEMORY[0x277CD3410];

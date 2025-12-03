@@ -3,7 +3,7 @@
 - (_MTLObjectWithLabel)init;
 - (id)retainedLabel;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation _MTLObjectWithLabel
@@ -24,9 +24,9 @@
 
 - (NSString)label
 {
-  v2 = [(_MTLObjectWithLabel *)self retainedLabel];
+  retainedLabel = [(_MTLObjectWithLabel *)self retainedLabel];
 
-  return v2;
+  return retainedLabel;
 }
 
 - (id)retainedLabel
@@ -45,11 +45,11 @@
   [(_MTLObjectWithLabel *)&v3 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (self->_label != a3)
+  if (self->_label != label)
   {
-    v5 = [a3 copy];
+    v5 = [label copy];
     os_unfair_lock_lock(&self->_labelLock);
     label = self->_label;
     self->_label = v5;

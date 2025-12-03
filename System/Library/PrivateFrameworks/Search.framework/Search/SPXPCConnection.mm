@@ -1,17 +1,17 @@
 @interface SPXPCConnection
 - (NSString)bundleID;
 - (NSString)serviceName;
-- (SPXPCConnection)initWithServiceName:(id)a3 onQueue:(id)a4;
+- (SPXPCConnection)initWithServiceName:(id)name onQueue:(id)queue;
 - (id)eventQueue;
-- (id)eventQueueWithQOS:(unsigned int)a3;
-- (void)_handleXPCError:(id)a3;
-- (void)_handleXPCMessage:(id)a3;
-- (void)_sendInteractiveMessage:(id)a3 handler:(id)a4;
-- (void)_sendMessage:(id)a3 handler:(id)a4;
-- (void)_setEventHandlerOnConnection:(id)a3;
+- (id)eventQueueWithQOS:(unsigned int)s;
+- (void)_handleXPCError:(id)error;
+- (void)_handleXPCMessage:(id)message;
+- (void)_sendInteractiveMessage:(id)message handler:(id)handler;
+- (void)_sendMessage:(id)message handler:(id)handler;
+- (void)_setEventHandlerOnConnection:(id)connection;
 - (void)dealloc;
-- (void)sendInteractiveMessage:(id)a3 withReply:(id)a4;
-- (void)sendMessage:(id)a3 withReply:(id)a4;
+- (void)sendInteractiveMessage:(id)message withReply:(id)reply;
+- (void)sendMessage:(id)message withReply:(id)reply;
 - (void)shutdown;
 @end
 
@@ -65,20 +65,20 @@
   return eventQueue;
 }
 
-- (SPXPCConnection)initWithServiceName:(id)a3 onQueue:(id)a4
+- (SPXPCConnection)initWithServiceName:(id)name onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = SPXPCConnection;
   v8 = [(SPXPCConnection *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_eventQueue, a4);
-    v10 = [v6 UTF8String];
-    v11 = [(SPXPCConnection *)v9 eventQueue];
-    mach_service = xpc_connection_create_mach_service(v10, v11, 0);
+    objc_storeStrong(&v8->_eventQueue, queue);
+    uTF8String = [nameCopy UTF8String];
+    eventQueue = [(SPXPCConnection *)v9 eventQueue];
+    mach_service = xpc_connection_create_mach_service(uTF8String, eventQueue, 0);
     conn = v9->_conn;
     v9->_conn = mach_service;
 
@@ -113,14 +113,14 @@
   return conn;
 }
 
-- (id)eventQueueWithQOS:(unsigned int)a3
+- (id)eventQueueWithQOS:(unsigned int)s
 {
   eventQueue = self->_eventQueue;
   if (!eventQueue)
   {
     self->_ownsQueue = 1;
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_attr_make_with_qos_class(v6, a3, 0);
+    v7 = dispatch_queue_attr_make_with_qos_class(v6, s, 0);
     v8 = dispatch_queue_create("com.apple.search.XPCEvent", v7);
     v9 = self->_eventQueue;
     self->_eventQueue = v8;
@@ -131,13 +131,13 @@
   return eventQueue;
 }
 
-- (void)_sendMessage:(id)a3 handler:(id)a4
+- (void)_sendMessage:(id)message handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 name];
+  messageCopy = message;
+  handlerCopy = handler;
+  name = [messageCopy name];
 
-  if (!v9)
+  if (!name)
   {
     [SPXPCConnection _sendMessage:a2 handler:self];
   }
@@ -149,31 +149,31 @@
       [SPXPCConnection _sendMessage:handler:];
     }
 
-    v10 = [v7 _createXPCMessage];
-    if (v10)
+    _createXPCMessage = [messageCopy _createXPCMessage];
+    if (_createXPCMessage)
     {
       conn = self->_conn;
-      if (v8)
+      if (handlerCopy)
       {
-        v12 = [(SPXPCConnection *)self eventQueue];
-        xpc_connection_send_message_with_reply(conn, v10, v12, v8);
+        eventQueue = [(SPXPCConnection *)self eventQueue];
+        xpc_connection_send_message_with_reply(conn, _createXPCMessage, eventQueue, handlerCopy);
       }
 
       else
       {
-        xpc_connection_send_message(self->_conn, v10);
+        xpc_connection_send_message(self->_conn, _createXPCMessage);
       }
     }
   }
 }
 
-- (void)_sendInteractiveMessage:(id)a3 handler:(id)a4
+- (void)_sendInteractiveMessage:(id)message handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 name];
+  messageCopy = message;
+  handlerCopy = handler;
+  name = [messageCopy name];
 
-  if (!v9)
+  if (!name)
   {
     [SPXPCConnection _sendInteractiveMessage:a2 handler:self];
   }
@@ -187,8 +187,8 @@
 
     v10 = self->_conn;
     v11 = dispatch_get_global_queue(33, 0);
-    v13 = v7;
-    v14 = v8;
+    v13 = messageCopy;
+    v14 = handlerCopy;
     v12 = v10;
     tracing_dispatch_async();
   }
@@ -219,35 +219,35 @@ void __51__SPXPCConnection__sendInteractiveMessage_handler___block_invoke(uint64
   }
 }
 
-- (void)sendMessage:(id)a3 withReply:(id)a4
+- (void)sendMessage:(id)message withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  replyCopy = reply;
   v8 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (messageCopy)
   {
     if (v8)
     {
-      [SPXPCConnection sendMessage:v6 withReply:?];
-      if (v7)
+      [SPXPCConnection sendMessage:messageCopy withReply:?];
+      if (replyCopy)
       {
         goto LABEL_4;
       }
     }
 
-    else if (v7)
+    else if (replyCopy)
     {
 LABEL_4:
       v10 = MEMORY[0x1E69E9820];
       v11 = 3221225472;
       v12 = __41__SPXPCConnection_sendMessage_withReply___block_invoke;
       v13 = &unk_1E82F95D0;
-      v14 = self;
-      v15 = v7;
+      selfCopy = self;
+      v15 = replyCopy;
       v9 = MEMORY[0x1CCA71310](&v10);
 
 LABEL_9:
-      [(SPXPCConnection *)self _sendMessage:v6 handler:v9, v10, v11, v12, v13, v14];
+      [(SPXPCConnection *)self _sendMessage:messageCopy handler:v9, v10, v11, v12, v13, selfCopy];
 
       goto LABEL_10;
     }
@@ -299,35 +299,35 @@ void __41__SPXPCConnection_sendMessage_withReply___block_invoke(uint64_t a1, voi
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendInteractiveMessage:(id)a3 withReply:(id)a4
+- (void)sendInteractiveMessage:(id)message withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  replyCopy = reply;
   v8 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (messageCopy)
   {
     if (v8)
     {
-      [SPXPCConnection sendMessage:v6 withReply:?];
-      if (v7)
+      [SPXPCConnection sendMessage:messageCopy withReply:?];
+      if (replyCopy)
       {
         goto LABEL_4;
       }
     }
 
-    else if (v7)
+    else if (replyCopy)
     {
 LABEL_4:
       v10 = MEMORY[0x1E69E9820];
       v11 = 3221225472;
       v12 = __52__SPXPCConnection_sendInteractiveMessage_withReply___block_invoke;
       v13 = &unk_1E82F95D0;
-      v14 = self;
-      v15 = v7;
+      selfCopy = self;
+      v15 = replyCopy;
       v9 = MEMORY[0x1CCA71310](&v10);
 
 LABEL_9:
-      [(SPXPCConnection *)self _sendInteractiveMessage:v6 handler:v9, v10, v11, v12, v13, v14];
+      [(SPXPCConnection *)self _sendInteractiveMessage:messageCopy handler:v9, v10, v11, v12, v13, selfCopy];
 
       goto LABEL_10;
     }
@@ -379,11 +379,11 @@ void __52__SPXPCConnection_sendInteractiveMessage_withReply___block_invoke(uint6
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleXPCError:(id)a3
+- (void)_handleXPCError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 == MEMORY[0x1E69E9E18])
+  errorCopy = error;
+  if (errorCopy == MEMORY[0x1E69E9E18])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -393,11 +393,11 @@ void __52__SPXPCConnection_sendInteractiveMessage_withReply___block_invoke(uint6
 
   else
   {
-    if (v4 != MEMORY[0x1E69E9E20])
+    if (errorCopy != MEMORY[0x1E69E9E20])
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
-        string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E28]);
+        string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x1E69E9E28]);
         v6 = "Unknown error";
         if (string)
         {
@@ -448,12 +448,12 @@ void __27__SPXPCConnection_shutdown__block_invoke(uint64_t a1)
   *(v2 + 8) = 0;
 }
 
-- (void)_handleXPCMessage:(id)a3
+- (void)_handleXPCMessage:(id)message
 {
   if (self->_messageHandler)
   {
-    v4 = a3;
-    v5 = [[SPXPCMessage alloc] _initWithXPCMessage:v4 onConnection:self];
+    messageCopy = message;
+    v5 = [[SPXPCMessage alloc] _initWithXPCMessage:messageCopy onConnection:self];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -464,16 +464,16 @@ void __27__SPXPCConnection_shutdown__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setEventHandlerOnConnection:(id)a3
+- (void)_setEventHandlerOnConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__SPXPCConnection__setEventHandlerOnConnection___block_invoke;
   v5[3] = &unk_1E82F95F8;
   objc_copyWeak(&v6, &location);
-  xpc_connection_set_event_handler(v4, v5);
+  xpc_connection_set_event_handler(connectionCopy, v5);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

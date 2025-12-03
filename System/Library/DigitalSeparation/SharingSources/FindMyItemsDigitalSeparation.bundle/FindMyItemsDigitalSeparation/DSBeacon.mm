@@ -1,12 +1,12 @@
 @interface DSBeacon
 - (NSArray)participants;
 - (_TtC28FindMyItemsDigitalSeparation8DSBeacon)init;
-- (_TtC28FindMyItemsDigitalSeparation8DSBeacon)initWithCoder:(id)a3;
+- (_TtC28FindMyItemsDigitalSeparation8DSBeacon)initWithCoder:(id)coder;
 @end
 
 @implementation DSBeacon
 
-- (_TtC28FindMyItemsDigitalSeparation8DSBeacon)initWithCoder:(id)a3
+- (_TtC28FindMyItemsDigitalSeparation8DSBeacon)initWithCoder:(id)coder
 {
   result = sub_117F4();
   __break(1u);
@@ -15,7 +15,7 @@
 
 - (NSArray)participants
 {
-  v2 = self;
+  selfCopy = self;
   sub_1051C();
 
   sub_F3B8(&unk_1F030, qword_14160);

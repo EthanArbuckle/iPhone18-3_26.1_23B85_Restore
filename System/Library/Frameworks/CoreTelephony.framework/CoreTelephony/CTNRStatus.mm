@@ -1,11 +1,11 @@
 @interface CTNRStatus
 + (id)default;
-- (BOOL)isEqual:(id)a3;
-- (CTNRStatus)initWithCoder:(id)a3;
-- (CTNRStatus)initWithSASwitchVisible:(BOOL)a3 saSwitchConfigurable:(BOOL)a4 saDisabledByBaseband:(BOOL)a5 saDisabledReasonMask:(unint64_t)a6 nsaDisabledByBaseband:(BOOL)a7 nsaDisabledReasonMask:(unint64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTNRStatus)initWithCoder:(id)coder;
+- (CTNRStatus)initWithSASwitchVisible:(BOOL)visible saSwitchConfigurable:(BOOL)configurable saDisabledByBaseband:(BOOL)baseband saDisabledReasonMask:(unint64_t)mask nsaDisabledByBaseband:(BOOL)byBaseband nsaDisabledReasonMask:(unint64_t)reasonMask;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTNRStatus
@@ -17,19 +17,19 @@
   return v2;
 }
 
-- (CTNRStatus)initWithSASwitchVisible:(BOOL)a3 saSwitchConfigurable:(BOOL)a4 saDisabledByBaseband:(BOOL)a5 saDisabledReasonMask:(unint64_t)a6 nsaDisabledByBaseband:(BOOL)a7 nsaDisabledReasonMask:(unint64_t)a8
+- (CTNRStatus)initWithSASwitchVisible:(BOOL)visible saSwitchConfigurable:(BOOL)configurable saDisabledByBaseband:(BOOL)baseband saDisabledReasonMask:(unint64_t)mask nsaDisabledByBaseband:(BOOL)byBaseband nsaDisabledReasonMask:(unint64_t)reasonMask
 {
   v15.receiver = self;
   v15.super_class = CTNRStatus;
   result = [(CTNRStatus *)&v15 init];
   if (result)
   {
-    result->_saSwitchVisible = a3;
-    result->_saSwitchConfigurable = a4;
-    result->_saDisabled = a5;
-    result->_nsaDisabled = a7;
-    result->_saDisabledReasonMask = a6;
-    result->_nsaDisabledReasonMask = a8;
+    result->_saSwitchVisible = visible;
+    result->_saSwitchConfigurable = configurable;
+    result->_saDisabled = baseband;
+    result->_nsaDisabled = byBaseband;
+    result->_saDisabledReasonMask = mask;
+    result->_nsaDisabledReasonMask = reasonMask;
   }
 
   return result;
@@ -55,10 +55,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -66,10 +66,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTNRStatus *)self isSASwitchVisible], v5 == [(CTNRStatus *)v4 isSASwitchVisible]) && (v6 = [(CTNRStatus *)self isSASwitchConfigurable], v6 == [(CTNRStatus *)v4 isSASwitchConfigurable]) && (v7 = [(CTNRStatus *)self isSADisabled], v7 == [(CTNRStatus *)v4 isSADisabled]) && (v8 = [(CTNRStatus *)self saDisabledReasonMask], v8 == [(CTNRStatus *)v4 saDisabledReasonMask]) && (v9 = [(CTNRStatus *)self isNSADisabled], v9 == [(CTNRStatus *)v4 isNSADisabled]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTNRStatus *)self isSASwitchVisible], v5 == [(CTNRStatus *)equalCopy isSASwitchVisible]) && (v6 = [(CTNRStatus *)self isSASwitchConfigurable], v6 == [(CTNRStatus *)equalCopy isSASwitchConfigurable]) && (v7 = [(CTNRStatus *)self isSADisabled], v7 == [(CTNRStatus *)equalCopy isSADisabled]) && (v8 = [(CTNRStatus *)self saDisabledReasonMask], v8 == [(CTNRStatus *)equalCopy saDisabledReasonMask]) && (v9 = [(CTNRStatus *)self isNSADisabled], v9 == [(CTNRStatus *)equalCopy isNSADisabled]))
     {
-      v12 = [(CTNRStatus *)self nsaDisabledReasonMask];
-      v10 = v12 == [(CTNRStatus *)v4 nsaDisabledReasonMask];
+      nsaDisabledReasonMask = [(CTNRStatus *)self nsaDisabledReasonMask];
+      v10 = nsaDisabledReasonMask == [(CTNRStatus *)equalCopy nsaDisabledReasonMask];
     }
 
     else
@@ -81,49 +81,49 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CTNRStatus *)self isSASwitchVisible];
-  v6 = [(CTNRStatus *)self isSASwitchConfigurable];
-  v7 = [(CTNRStatus *)self isSADisabled];
-  v8 = [(CTNRStatus *)self saDisabledReasonMask];
-  v9 = [(CTNRStatus *)self isNSADisabled];
-  v10 = [(CTNRStatus *)self nsaDisabledReasonMask];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  isSASwitchVisible = [(CTNRStatus *)self isSASwitchVisible];
+  isSASwitchConfigurable = [(CTNRStatus *)self isSASwitchConfigurable];
+  isSADisabled = [(CTNRStatus *)self isSADisabled];
+  saDisabledReasonMask = [(CTNRStatus *)self saDisabledReasonMask];
+  isNSADisabled = [(CTNRStatus *)self isNSADisabled];
+  nsaDisabledReasonMask = [(CTNRStatus *)self nsaDisabledReasonMask];
 
-  return [v4 initWithSASwitchVisible:v5 saSwitchConfigurable:v6 saDisabledByBaseband:v7 saDisabledReasonMask:v8 nsaDisabledByBaseband:v9 nsaDisabledReasonMask:v10];
+  return [v4 initWithSASwitchVisible:isSASwitchVisible saSwitchConfigurable:isSASwitchConfigurable saDisabledByBaseband:isSADisabled saDisabledReasonMask:saDisabledReasonMask nsaDisabledByBaseband:isNSADisabled nsaDisabledReasonMask:nsaDisabledReasonMask];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTNRStatus isSASwitchVisible](self forKey:{"isSASwitchVisible"), @"saSwitchVisible"}];
-  [v4 encodeBool:-[CTNRStatus isSASwitchConfigurable](self forKey:{"isSASwitchConfigurable"), @"saSwitchConfigurable"}];
-  [v4 encodeBool:-[CTNRStatus isSADisabled](self forKey:{"isSADisabled"), @"saDisabled"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTNRStatus isSASwitchVisible](self forKey:{"isSASwitchVisible"), @"saSwitchVisible"}];
+  [coderCopy encodeBool:-[CTNRStatus isSASwitchConfigurable](self forKey:{"isSASwitchConfigurable"), @"saSwitchConfigurable"}];
+  [coderCopy encodeBool:-[CTNRStatus isSADisabled](self forKey:{"isSADisabled"), @"saDisabled"}];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CTNRStatus saDisabledReasonMask](self, "saDisabledReasonMask")}];
-  [v4 encodeObject:v5 forKey:@"saDisabledReasonMask"];
+  [coderCopy encodeObject:v5 forKey:@"saDisabledReasonMask"];
 
-  [v4 encodeBool:-[CTNRStatus isNSADisabled](self forKey:{"isNSADisabled"), @"nsaDisabled"}];
+  [coderCopy encodeBool:-[CTNRStatus isNSADisabled](self forKey:{"isNSADisabled"), @"nsaDisabled"}];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CTNRStatus nsaDisabledReasonMask](self, "nsaDisabledReasonMask")}];
-  [v4 encodeObject:v6 forKey:@"nsaDisabledReasonMask"];
+  [coderCopy encodeObject:v6 forKey:@"nsaDisabledReasonMask"];
 }
 
-- (CTNRStatus)initWithCoder:(id)a3
+- (CTNRStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTNRStatus;
   v5 = [(CTNRStatus *)&v9 init];
   if (v5)
   {
-    v5->_saSwitchVisible = [v4 decodeBoolForKey:@"saSwitchVisible"];
-    v5->_saSwitchConfigurable = [v4 decodeBoolForKey:@"saSwitchConfigurable"];
-    v5->_saDisabled = [v4 decodeBoolForKey:@"saDisabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saDisabledReasonMask"];
+    v5->_saSwitchVisible = [coderCopy decodeBoolForKey:@"saSwitchVisible"];
+    v5->_saSwitchConfigurable = [coderCopy decodeBoolForKey:@"saSwitchConfigurable"];
+    v5->_saDisabled = [coderCopy decodeBoolForKey:@"saDisabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saDisabledReasonMask"];
     v5->_saDisabledReasonMask = [v6 unsignedIntegerValue];
 
-    v5->_nsaDisabled = [v4 decodeBoolForKey:@"nsaDisabled"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nsaDisabledReasonMask"];
+    v5->_nsaDisabled = [coderCopy decodeBoolForKey:@"nsaDisabled"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nsaDisabledReasonMask"];
     v5->_nsaDisabledReasonMask = [v7 unsignedIntegerValue];
   }
 

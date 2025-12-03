@@ -1,13 +1,13 @@
 @interface NumberedTextTableViewCell
-- (_TtC5Heart25NumberedTextTableViewCell)initWithCoder:(id)a3;
-- (_TtC5Heart25NumberedTextTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC5Heart25NumberedTextTableViewCell)initWithCoder:(id)coder;
+- (_TtC5Heart25NumberedTextTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation NumberedTextTableViewCell
 
-- (_TtC5Heart25NumberedTextTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5Heart25NumberedTextTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_29D939D68();
   }
@@ -21,7 +21,7 @@
   return sub_29D92DB38(v4, v5);
 }
 
-- (_TtC5Heart25NumberedTextTableViewCell)initWithCoder:(id)a3
+- (_TtC5Heart25NumberedTextTableViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC5Heart25NumberedTextTableViewCell_item;
   *v3 = 0u;

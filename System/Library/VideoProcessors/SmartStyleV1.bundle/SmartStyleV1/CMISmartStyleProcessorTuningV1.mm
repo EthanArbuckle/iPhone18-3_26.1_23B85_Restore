@@ -1,10 +1,10 @@
 @interface CMISmartStyleProcessorTuningV1
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CMISmartStyleProcessorTuningV1
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CMISmartStyleProcessorTuningV1 allocWithZone:?]];
   v6 = v4;

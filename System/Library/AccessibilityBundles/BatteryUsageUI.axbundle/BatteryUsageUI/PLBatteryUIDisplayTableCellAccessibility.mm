@@ -1,19 +1,19 @@
 @interface PLBatteryUIDisplayTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PLBatteryUIDisplayTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLBatteryUIDisplayTableCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PLBatteryUIDisplayTableCell" isKindOfClass:@"PSTableCell"];
-  [v3 validateClass:@"PLBatteryUIDisplayTableCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLBatteryUIDisplayTableCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PLBatteryUIDisplayTableCell" isKindOfClass:@"PSTableCell"];
+  [validationsCopy validateClass:@"PLBatteryUIDisplayTableCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,28 +24,28 @@
   [(PLBatteryUIDisplayTableCellAccessibility *)self setAccessibilityLabel:0];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 specifier];
+  specifier = [v3 specifier];
 
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
   objc_opt_class();
-  v6 = [v5 accessoryView];
+  accessoryView = [v5 accessoryView];
   v7 = __UIAccessibilityCastAsClass();
 
-  if (v4)
+  if (specifier)
   {
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"PLIconDisplayTypeKey"];
-      v9 = [v8 intValue];
+      v8 = [specifier objectForKeyedSubscript:@"PLIconDisplayTypeKey"];
+      intValue = [v8 intValue];
 
-      if (v9 == 1)
+      if (intValue == 1)
       {
-        v10 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
+        v10 = [specifier objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
         [v10 doubleValue];
         v12 = v11;
 
-        v13 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
+        v13 = [specifier objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
         [v13 doubleValue];
         v15 = v14;
 
@@ -59,20 +59,20 @@
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = PLBatteryUIDisplayTableCellAccessibility;
-  [(PLBatteryUIDisplayTableCellAccessibility *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(PLBatteryUIDisplayTableCellAccessibility *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(PLBatteryUIDisplayTableCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(PLBatteryUIDisplayTableCellAccessibility *)self textLabel];
-  v4 = [v3 accessibilityLabel];
-  v5 = [(PLBatteryUIDisplayTableCellAccessibility *)self detailTextLabel];
-  v8 = [v5 accessibilityLabel];
+  textLabel = [(PLBatteryUIDisplayTableCellAccessibility *)self textLabel];
+  accessibilityLabel = [textLabel accessibilityLabel];
+  detailTextLabel = [(PLBatteryUIDisplayTableCellAccessibility *)self detailTextLabel];
+  accessibilityLabel2 = [detailTextLabel accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -81,17 +81,17 @@
 - (id)accessibilityValue
 {
   v2 = __UIAccessibilitySafeClass();
-  v3 = [v2 accessoryView];
-  v4 = [v3 accessibilityLabel];
+  accessoryView = [v2 accessoryView];
+  accessibilityLabel = [accessoryView accessibilityLabel];
 
-  if (([v4 isEqualToString:@" —"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @" — ") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"—"))
+  if (([accessibilityLabel isEqualToString:@" —"] & 1) != 0 || (objc_msgSend(accessibilityLabel, "isEqualToString:", @" — ") & 1) != 0 || objc_msgSend(accessibilityLabel, "isEqualToString:", @"—"))
   {
     v5 = accessibilityLocalizedString(@"battery.app.usage.unavailable");
 
-    v4 = v5;
+    accessibilityLabel = v5;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

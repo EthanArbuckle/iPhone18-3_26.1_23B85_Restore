@@ -1,42 +1,42 @@
 @interface MBFollowUpExtensionViewController
-- (void)_allowRestoreOverCellularWithAccount:(id)a3;
-- (void)_dismissFollowUpItem:(id)a3;
+- (void)_allowRestoreOverCellularWithAccount:(id)account;
+- (void)_dismissFollowUpItem:(id)item;
 - (void)_openThermalKbase;
-- (void)_openiCloudSettingsWithAccount:(id)a3;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (void)_openiCloudSettingsWithAccount:(id)account;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation MBFollowUpExtensionViewController
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = v10;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
+  v11 = itemCopy;
+  v12 = completionCopy;
   v13 = MBGetDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v54 = v11;
     v55 = 2114;
-    v56 = v9;
+    v56 = actionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Follow up extension processing item:%{public}@, action:%{public}@", buf, 0x16u);
     v37 = v11;
-    v38 = v9;
+    v38 = actionCopy;
     _MBLog();
   }
 
-  v14 = [v11 userInfo];
-  v15 = [v14 objectForKeyedSubscript:@"FollowUpType"];
+  userInfo = [v11 userInfo];
+  v15 = [userInfo objectForKeyedSubscript:@"FollowUpType"];
 
-  v16 = [v9 userInfo];
-  v17 = [v16 objectForKeyedSubscript:@"ActionType"];
+  userInfo2 = [actionCopy userInfo];
+  v17 = [userInfo2 objectForKeyedSubscript:@"ActionType"];
 
   if (v15)
   {
-    v42 = self;
+    selfCopy = self;
     v45 = v17;
     v18 = +[ACAccountStore defaultStore];
     v43 = [v18 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierAppleAccount];
@@ -53,7 +53,7 @@
       v47 = *v49;
       v21 = ACAccountPropertyRemoteManagingAccountIdentifier;
       v40 = v12;
-      v41 = v9;
+      v41 = actionCopy;
       v39 = v15;
 LABEL_6:
       v22 = 0;
@@ -66,16 +66,16 @@ LABEL_6:
 
         v23 = *(*(&v48 + 1) + 8 * v22);
         v24 = [v23 objectForKeyedSubscript:{v21, v37, v38}];
-        v25 = [v23 identifier];
-        v26 = [v11 accountIdentifier];
-        if ([v25 isEqualToString:v26])
+        identifier = [v23 identifier];
+        accountIdentifier = [v11 accountIdentifier];
+        if ([identifier isEqualToString:accountIdentifier])
         {
           break;
         }
 
         v27 = v11;
-        v28 = [v11 accountIdentifier];
-        v29 = [v24 isEqualToString:v28];
+        accountIdentifier2 = [v11 accountIdentifier];
+        v29 = [v24 isEqualToString:accountIdentifier2];
 
         if (v29)
         {
@@ -88,7 +88,7 @@ LABEL_6:
         {
           v20 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
           v12 = v40;
-          v9 = v41;
+          actionCopy = v41;
           v15 = v39;
           if (v20)
           {
@@ -106,7 +106,7 @@ LABEL_18:
 
       v11 = v27;
       v12 = v40;
-      v9 = v41;
+      actionCopy = v41;
       v15 = v39;
       v17 = v45;
       if (v31)
@@ -122,9 +122,9 @@ LABEL_13:
       v17 = v45;
     }
 
-    v32 = [v11 accountIdentifier];
+    accountIdentifier3 = [v11 accountIdentifier];
 
-    if (v32)
+    if (accountIdentifier3)
     {
       v33 = MBGetDefaultLog();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -135,46 +135,46 @@ LABEL_13:
         _MBLog();
       }
 
-      [(MBFollowUpExtensionViewController *)v42 _dismissFollowUpItem:v11];
+      [(MBFollowUpExtensionViewController *)selfCopy _dismissFollowUpItem:v11];
       v12[2](v12, 1);
       goto LABEL_43;
     }
 
     v31 = 0;
 LABEL_24:
-    v34 = [v15 intValue];
-    if (v34 > 5)
+    intValue = [v15 intValue];
+    if (intValue > 5)
     {
-      if (v34 != 6)
+      if (intValue != 6)
       {
-        if (v34 != 8)
+        if (intValue != 8)
         {
           goto LABEL_39;
         }
 
         if (v17 && [v17 intValue] == 1)
         {
-          [(MBFollowUpExtensionViewController *)v42 _openiCloudSettingsWithAccount:v31];
+          [(MBFollowUpExtensionViewController *)selfCopy _openiCloudSettingsWithAccount:v31];
         }
 
         goto LABEL_38;
       }
     }
 
-    else if (v34 != 1)
+    else if (intValue != 1)
     {
-      if (v34 == 5)
+      if (intValue == 5)
       {
         if (v17)
         {
           if ([v17 intValue] == 5)
           {
-            [(MBFollowUpExtensionViewController *)v42 _allowRestoreOverCellularWithAccount:v31];
+            [(MBFollowUpExtensionViewController *)selfCopy _allowRestoreOverCellularWithAccount:v31];
           }
 
           else if ([v17 intValue] == 6)
           {
-            [(MBFollowUpExtensionViewController *)v42 _openThermalKbase];
+            [(MBFollowUpExtensionViewController *)selfCopy _openThermalKbase];
           }
         }
 
@@ -185,9 +185,9 @@ LABEL_39:
       v35 = MBGetDefaultLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v15 intValue];
+        intValue2 = [v15 intValue];
         *buf = 67109120;
-        LODWORD(v54) = v36;
+        LODWORD(v54) = intValue2;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Unknown follow up item of type %u", buf, 8u);
         [v15 intValue];
         _MBLog();
@@ -198,7 +198,7 @@ LABEL_39:
 
     if (v17 && [v17 intValue] == 1)
     {
-      [(MBFollowUpExtensionViewController *)v42 _openiCloudSettingsWithAccount:v31];
+      [(MBFollowUpExtensionViewController *)selfCopy _openiCloudSettingsWithAccount:v31];
 LABEL_42:
       v12[2](v12, 1);
 
@@ -207,7 +207,7 @@ LABEL_43:
     }
 
 LABEL_38:
-    [(MBFollowUpExtensionViewController *)v42 _dismissFollowUpItem:v11];
+    [(MBFollowUpExtensionViewController *)selfCopy _dismissFollowUpItem:v11];
     goto LABEL_42;
   }
 
@@ -223,14 +223,14 @@ LABEL_38:
 LABEL_44:
 }
 
-- (void)_openiCloudSettingsWithAccount:(id)a3
+- (void)_openiCloudSettingsWithAccount:(id)account
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ![v3 aa_isAccountClass:AAAccountClassPrimary])
+  accountCopy = account;
+  v4 = accountCopy;
+  if (accountCopy && ![accountCopy aa_isAccountClass:AAAccountClassPrimary])
   {
-    v6 = [v4 username];
-    v7 = [NSString stringWithFormat:@"prefs:root=ManagedAccount:%@&path=ICLOUD_SERVICE/com.apple.Dataclass.Backup", v6];
+    username = [v4 username];
+    v7 = [NSString stringWithFormat:@"prefs:root=ManagedAccount:%@&path=ICLOUD_SERVICE/com.apple.Dataclass.Backup", username];
     v5 = [NSURL URLWithString:v7];
   }
 
@@ -284,9 +284,9 @@ LABEL_44:
   }
 }
 
-- (void)_dismissFollowUpItem:(id)a3
+- (void)_dismissFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (!self->_followUpController)
   {
     v5 = [[FLFollowUpController alloc] initWithClientIdentifier:@"com.apple.backupd"];
@@ -302,15 +302,15 @@ LABEL_44:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v4;
+    v25 = itemCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Clearing follow-up item %{public}@", buf, 0xCu);
-    v20 = v4;
+    uniqueIdentifier3 = itemCopy;
     _MBLog();
   }
 
   v10 = self->_followUpController;
-  v11 = [v4 uniqueIdentifier];
-  v28 = v11;
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v28 = uniqueIdentifier;
   v12 = [NSArray arrayWithObjects:&v28 count:1];
   v22 = 0;
   v13 = [(FLFollowUpController *)v10 clearPendingFollowUpItemsWithUniqueIdentifiers:v12 error:&v22];
@@ -321,35 +321,35 @@ LABEL_44:
     v15 = MBGetDefaultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v4 uniqueIdentifier];
+      uniqueIdentifier2 = [itemCopy uniqueIdentifier];
       *buf = 138412546;
-      v25 = v16;
+      v25 = uniqueIdentifier2;
       v26 = 2112;
       v27 = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Couldn't dismiss follow-up %@ with error %@", buf, 0x16u);
 
-      v20 = [v4 uniqueIdentifier];
+      uniqueIdentifier3 = [itemCopy uniqueIdentifier];
       v21 = v14;
       _MBLog();
     }
   }
 
   v17 = self->_legacyController;
-  v18 = [v4 uniqueIdentifier];
-  v23 = v18;
+  uniqueIdentifier4 = [itemCopy uniqueIdentifier];
+  v23 = uniqueIdentifier4;
   v19 = [NSArray arrayWithObjects:&v23 count:1];
   [(FLFollowUpController *)v17 clearPendingFollowUpItemsWithUniqueIdentifiers:v19 error:0];
 }
 
-- (void)_allowRestoreOverCellularWithAccount:(id)a3
+- (void)_allowRestoreOverCellularWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
+  accountCopy = account;
+  v5 = accountCopy;
   if (!self->_manager)
   {
-    v6 = [v4 personaIdentifier];
+    personaIdentifier = [accountCopy personaIdentifier];
 
-    if (v6)
+    if (personaIdentifier)
     {
       v7 = [[MBManager alloc] initWithAccount:v5 delegate:0 eventQueue:0];
     }

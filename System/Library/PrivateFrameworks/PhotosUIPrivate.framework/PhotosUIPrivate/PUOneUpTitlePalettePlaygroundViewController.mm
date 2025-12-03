@@ -1,14 +1,14 @@
 @interface PUOneUpTitlePalettePlaygroundViewController
 - (BOOL)hasExuberatedHeight;
 - (NSArray)configurations;
-- (PUOneUpTitlePalettePlaygroundViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUOneUpTitlePalettePlaygroundViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UILabel)exuberatedHeightStatusLabel;
 - (UISegmentedControl)segmentedControl;
 - (UITableView)tableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)segmentedControlChanged;
-- (void)setConfigurations:(id)a3;
+- (void)setConfigurations:(id)configurations;
 - (void)setupView;
 - (void)updateConfigurationData;
 - (void)updateExuberatedHeightStatusLabel;
@@ -19,25 +19,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PUOneUpTitlePalettePlaygroundViewController.viewDidLoad()();
 }
 
 - (void)setupView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37D6734();
 }
 
 - (void)updateExuberatedHeightStatusLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37D7184();
 }
 
 - (BOOL)hasExuberatedHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B37D72E0();
 
   return v3 & 1;
@@ -45,13 +45,13 @@
 
 - (void)segmentedControlChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37D7314();
 }
 
 - (void)updateConfigurationData
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37D73C4();
 }
 
@@ -85,17 +85,17 @@
   return v2;
 }
 
-- (void)setConfigurations:(id)a3
+- (void)setConfigurations:(id)configurations
 {
   _s26TitleSubtitleConfigurationCMa();
   v4 = sub_1B3C9C788();
-  v5 = self;
+  selfCopy = self;
   sub_1B37D7E44(v4);
 }
 
-- (PUOneUpTitlePalettePlaygroundViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUOneUpTitlePalettePlaygroundViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1B3C9C5E8();
     v7 = v6;
@@ -107,29 +107,29 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return PUOneUpTitlePalettePlaygroundViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return PUOneUpTitlePalettePlaygroundViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
-  v8 = PUOneUpTitlePalettePlaygroundViewController.tableView(_:numberOfRowsInSection:)(v6, v7);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = PUOneUpTitlePalettePlaygroundViewController.tableView(_:numberOfRowsInSection:)(selfCopy, v7);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1B3C98298();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B3C98268();
-  v10 = a3;
-  v11 = self;
-  v12 = PUOneUpTitlePalettePlaygroundViewController.tableView(_:cellForRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = PUOneUpTitlePalettePlaygroundViewController.tableView(_:cellForRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 

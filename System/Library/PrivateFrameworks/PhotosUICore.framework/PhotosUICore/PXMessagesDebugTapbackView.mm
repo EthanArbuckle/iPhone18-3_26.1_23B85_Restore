@@ -1,14 +1,14 @@
 @interface PXMessagesDebugTapbackView
-- (BOOL)shouldReloadForUserData:(id)a3;
+- (BOOL)shouldReloadForUserData:(id)data;
 - (CGRect)clippingRect;
-- (PXMessagesDebugTapbackView)initWithFrame:(CGRect)a3;
+- (PXMessagesDebugTapbackView)initWithFrame:(CGRect)frame;
 - (void)_bounce;
 - (void)_updateFinalAlpha;
 - (void)becomeReusable;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setUserData:(id)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXMessagesDebugTapbackView
@@ -28,9 +28,9 @@
 
 - (void)_updateFinalAlpha
 {
-  v3 = [(PXMessagesDebugTapbackView *)self isAnimating];
+  isAnimating = [(PXMessagesDebugTapbackView *)self isAnimating];
   v4 = 1.0;
-  if (!v3)
+  if (!isAnimating)
   {
     [(PXMessagesDebugTapbackView *)self desiredAlpha];
   }
@@ -40,20 +40,20 @@
   [(PXMessagesDebugTapbackView *)&v5 setAlpha:v4];
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    self->_isAnimating = a3;
+    self->_isAnimating = animating;
     [(PXMessagesDebugTapbackView *)self _updateFinalAlpha];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_desiredAlpha != a3)
+  if (self->_desiredAlpha != alpha)
   {
-    self->_desiredAlpha = a3;
+    self->_desiredAlpha = alpha;
     [(PXMessagesDebugTapbackView *)self _updateFinalAlpha];
   }
 }
@@ -116,40 +116,40 @@ uint64_t __37__PXMessagesDebugTapbackView__bounce__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v13 = a3;
+  dataCopy = data;
   v5 = self->_userData;
   v6 = v5;
-  if (v5 == v13)
+  if (v5 == dataCopy)
   {
   }
 
   else
   {
-    v7 = [(PXMessagesDebugTapbackUserData *)v5 isEqual:v13];
+    v7 = [(PXMessagesDebugTapbackUserData *)v5 isEqual:dataCopy];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_userData, a3);
-      v8 = [(PXMessagesDebugTapbackUserData *)v13 asset];
-      v9 = [v8 isFavorite];
+      objc_storeStrong(&self->_userData, data);
+      asset = [(PXMessagesDebugTapbackUserData *)dataCopy asset];
+      isFavorite = [asset isFavorite];
 
-      if (v9)
+      if (isFavorite)
       {
-        v10 = [(PXMessagesDebugTapbackUserData *)v13 asset];
-        v11 = [v10 isFavorite];
+        asset2 = [(PXMessagesDebugTapbackUserData *)dataCopy asset];
+        isFavorite2 = [asset2 isFavorite];
         v12 = 0.0;
-        if (v11)
+        if (isFavorite2)
         {
           v12 = 1.0;
         }
 
         [(UIImageView *)self->_heartImageView setAlpha:v12];
 
-        if ([(PXMessagesDebugTapbackUserData *)v13 shouldAnimate])
+        if ([(PXMessagesDebugTapbackUserData *)dataCopy shouldAnimate])
         {
-          [(PXMessagesDebugTapbackUserData *)v13 setShouldAnimate:0];
+          [(PXMessagesDebugTapbackUserData *)dataCopy setShouldAnimate:0];
           [(PXMessagesDebugTapbackView *)self _bounce];
         }
       }
@@ -157,18 +157,18 @@ uint64_t __37__PXMessagesDebugTapbackView__bounce__block_invoke_3(uint64_t a1)
   }
 }
 
-- (BOOL)shouldReloadForUserData:(id)a3
+- (BOOL)shouldReloadForUserData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [v5 isFavorite];
+  dataCopy = data;
+  asset = [dataCopy asset];
+  isFavorite = [asset isFavorite];
 
-  if (v6)
+  if (isFavorite)
   {
-    v7 = [(PXMessagesDebugTapbackUserData *)self->_userData asset];
-    v8 = [v7 isFavorite];
-    v9 = [v4 asset];
-    v10 = v8 ^ [v9 isFavorite];
+    asset2 = [(PXMessagesDebugTapbackUserData *)self->_userData asset];
+    isFavorite2 = [asset2 isFavorite];
+    asset3 = [dataCopy asset];
+    v10 = isFavorite2 ^ [asset3 isFavorite];
   }
 
   else
@@ -183,8 +183,8 @@ uint64_t __37__PXMessagesDebugTapbackView__bounce__block_invoke_3(uint64_t a1)
 {
   [(PXMessagesDebugTapbackView *)self setReuseCounter:[(PXMessagesDebugTapbackView *)self reuseCounter]+ 1];
   [(UIImageView *)self->_heartImageView setAlpha:0.0];
-  v3 = [(UIImageView *)self->_heartImageView layer];
-  [v3 removeAllAnimations];
+  layer = [(UIImageView *)self->_heartImageView layer];
+  [layer removeAllAnimations];
 
   [(PXMessagesDebugTapbackView *)self setIsAnimating:0];
 
@@ -200,11 +200,11 @@ uint64_t __37__PXMessagesDebugTapbackView__bounce__block_invoke_3(uint64_t a1)
   PXRectGetCenter();
 }
 
-- (PXMessagesDebugTapbackView)initWithFrame:(CGRect)a3
+- (PXMessagesDebugTapbackView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PXMessagesDebugTapbackView;
-  v3 = [(PXMessagesDebugTapbackView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXMessagesDebugTapbackView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"heart.circle.fill"];
@@ -212,8 +212,8 @@ uint64_t __37__PXMessagesDebugTapbackView__bounce__block_invoke_3(uint64_t a1)
     heartImageView = v3->_heartImageView;
     v3->_heartImageView = v5;
 
-    v7 = [MEMORY[0x1E69DC888] orangeColor];
-    [(UIImageView *)v3->_heartImageView setTintColor:v7];
+    orangeColor = [MEMORY[0x1E69DC888] orangeColor];
+    [(UIImageView *)v3->_heartImageView setTintColor:orangeColor];
 
     [(PXMessagesDebugTapbackView *)v3 addSubview:v3->_heartImageView];
   }

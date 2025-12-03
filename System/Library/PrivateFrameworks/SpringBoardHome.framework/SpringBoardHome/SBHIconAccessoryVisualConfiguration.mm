@@ -1,11 +1,11 @@
 @interface SBHIconAccessoryVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)offset;
 - (CGSize)size;
 - (SBHIconAccessoryVisualConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -57,10 +57,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -72,7 +72,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v9 = self->_size.width == v7[2] && self->_size.height == v7[3] && self->_offset.y == v7[5] && self->_offset.x == v7[4];
     }
 
@@ -87,31 +87,31 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconAccessoryVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconAccessoryVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconAccessoryVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconAccessoryVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHIconAccessoryVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHIconAccessoryVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHIconAccessoryVisualConfiguration *)self fontSize];
-  v5 = [v4 appendFloat:@"fontSize" withName:?];
+  v5 = [succinctDescriptionBuilder appendFloat:@"fontSize" withName:?];
   [(SBHIconAccessoryVisualConfiguration *)self size];
-  v6 = [v4 appendSize:@"size" withName:?];
+  v6 = [succinctDescriptionBuilder appendSize:@"size" withName:?];
   [(SBHIconAccessoryVisualConfiguration *)self offset];
-  v7 = [v4 appendPoint:@"offset" withName:?];
+  v7 = [succinctDescriptionBuilder appendPoint:@"offset" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

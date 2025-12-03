@@ -1,61 +1,61 @@
 @interface BRCSharingProcessFolderSubitemsOperation
-- (BOOL)_completeAfterProcessingClientTruthIfNecessaryWithError:(id)a3;
-- (BOOL)_completeAfterProcessingServerTruthIfNecessaryWithError:(id)a3;
-- (BOOL)deleteShareInfoFromZone:(id)a3 zoneRowID:(id)a4 itemID:(id)a5 sharingOptions:(unint64_t)a6 itemsTable:(id)a7;
-- (BRCSharingProcessFolderSubitemsOperation)initWithItem:(id)a3 sessionContext:(id)a4 processType:(unint64_t)a5 maxSubitemsToFail:(unint64_t)a6;
-- (id)computeURLForItemID:(id)a3 rootURL:(id)a4;
+- (BOOL)_completeAfterProcessingClientTruthIfNecessaryWithError:(id)error;
+- (BOOL)_completeAfterProcessingServerTruthIfNecessaryWithError:(id)error;
+- (BOOL)deleteShareInfoFromZone:(id)zone zoneRowID:(id)d itemID:(id)iD sharingOptions:(unint64_t)options itemsTable:(id)table;
+- (BRCSharingProcessFolderSubitemsOperation)initWithItem:(id)item sessionContext:(id)context processType:(unint64_t)type maxSubitemsToFail:(unint64_t)fail;
+- (id)computeURLForItemID:(id)d rootURL:(id)l;
 - (id)createActivity;
 - (void)_stopObservingListOperation;
 - (void)dealloc;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation;
 - (void)main;
-- (void)processClientTruthWithCompletion:(id)a3;
-- (void)processServerItemsUnderItemID:(id)a3 completion:(id)a4;
-- (void)removeSharedSubitemsWithCompletion:(id)a3;
+- (void)processClientTruthWithCompletion:(id)completion;
+- (void)processServerItemsUnderItemID:(id)d completion:(id)completion;
+- (void)removeSharedSubitemsWithCompletion:(id)completion;
 @end
 
 @implementation BRCSharingProcessFolderSubitemsOperation
 
-- (BRCSharingProcessFolderSubitemsOperation)initWithItem:(id)a3 sessionContext:(id)a4 processType:(unint64_t)a5 maxSubitemsToFail:(unint64_t)a6
+- (BRCSharingProcessFolderSubitemsOperation)initWithItem:(id)item sessionContext:(id)context processType:(unint64_t)type maxSubitemsToFail:(unint64_t)fail
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 itemID];
-  v13 = [v12 debugItemIDString];
-  v14 = [@"sharing/clean-subitems" stringByAppendingPathComponent:v13];
+  itemCopy = item;
+  contextCopy = context;
+  itemID = [itemCopy itemID];
+  debugItemIDString = [itemID debugItemIDString];
+  v14 = [@"sharing/clean-subitems" stringByAppendingPathComponent:debugItemIDString];
 
-  v15 = [v10 serverZone];
-  v16 = [v15 metadataSyncContext];
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v49.receiver = self;
   v49.super_class = BRCSharingProcessFolderSubitemsOperation;
-  v17 = [(_BRCOperation *)&v49 initWithName:v14 syncContext:v16 sessionContext:v11];
+  v17 = [(_BRCOperation *)&v49 initWithName:v14 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v17)
   {
-    v18 = [v10 itemID];
-    if ([v18 isDocumentsFolder])
+    itemID2 = [itemCopy itemID];
+    if ([itemID2 isDocumentsFolder])
     {
 LABEL_3:
 
 LABEL_5:
       v17->_isFSRoot = 1;
 LABEL_6:
-      v17->_alreadyHasShareID = ([v10 sharingOptions] & 4) != 0;
-      v17->_rowID = [v10 dbRowID];
-      v20 = [v10 clientZone];
-      v21 = [v20 asPrivateClientZone];
+      v17->_alreadyHasShareID = ([itemCopy sharingOptions] & 4) != 0;
+      v17->_rowID = [itemCopy dbRowID];
+      clientZone = [itemCopy clientZone];
+      asPrivateClientZone = [clientZone asPrivateClientZone];
       rootClientZone = v17->_rootClientZone;
-      v17->_rootClientZone = v21;
+      v17->_rootClientZone = asPrivateClientZone;
 
-      v23 = [v10 itemID];
+      itemID3 = [itemCopy itemID];
       rootItemID = v17->_rootItemID;
-      v17->_rootItemID = v23;
+      v17->_rootItemID = itemID3;
 
-      v25 = [v10 appLibrary];
-      v26 = [v25 dbRowID];
+      appLibrary = [itemCopy appLibrary];
+      dbRowID = [appLibrary dbRowID];
       appLibraryRowID = v17->_appLibraryRowID;
-      v17->_appLibraryRowID = v26;
+      v17->_appLibraryRowID = dbRowID;
 
       v28 = objc_opt_new();
       shareIDsToDelete = v17->_shareIDsToDelete;
@@ -80,33 +80,33 @@ LABEL_6:
       v38 = [BRCUserDefaults defaultsForMangledID:0];
       v17->_batchSize = [v38 deleteShareIDBatchCount];
 
-      v17->_failedSubitemsLeft = a6;
-      v17->_processType = a5;
-      v39 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-      [(_BRCOperation *)v17 setGroup:v39];
+      v17->_failedSubitemsLeft = fail;
+      v17->_processType = type;
+      br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+      [(_BRCOperation *)v17 setGroup:br_sharingMisc];
 
       goto LABEL_7;
     }
 
-    v19 = [v10 isFSRoot];
+    isFSRoot = [itemCopy isFSRoot];
 
-    if (v19)
+    if (isFSRoot)
     {
       goto LABEL_5;
     }
 
-    v18 = [v10 st];
-    v41 = [v18 parentID];
-    if ([v41 isNonDesktopRoot])
+    itemID2 = [itemCopy st];
+    parentID = [itemID2 parentID];
+    if ([parentID isNonDesktopRoot])
     {
-      v42 = [v10 clientZone];
-      if ([v42 isCloudDocsZone])
+      clientZone2 = [itemCopy clientZone];
+      if ([clientZone2 isCloudDocsZone])
       {
-        v43 = [v10 st];
-        v44 = [v43 filename];
-        if (([v44 isEqualToString:*MEMORY[0x277CFAD80]] & 1) == 0)
+        v43 = [itemCopy st];
+        filename = [v43 filename];
+        if (([filename isEqualToString:*MEMORY[0x277CFAD80]] & 1) == 0)
         {
-          v46 = [v10 st];
+          v46 = [itemCopy st];
           [v46 filename];
           v45 = v47 = v43;
           v48 = [v45 isEqualToString:*MEMORY[0x277CFAD90]];
@@ -134,13 +134,13 @@ LABEL_7:
 - (void)_stopObservingListOperation
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = v2->_activeListOperations;
+  v3 = selfCopy->_activeListOperations;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -155,7 +155,7 @@ LABEL_7:
           objc_enumerationMutation(v3);
         }
 
-        [*(*(&v8 + 1) + 8 * v6++) endObservingChangesWithDelegate:{v2, v8}];
+        [*(*(&v8 + 1) + 8 * v6++) endObservingChangesWithDelegate:{selfCopy, v8}];
       }
 
       while (v4 != v6);
@@ -165,8 +165,8 @@ LABEL_7:
     while (v4);
   }
 
-  [(NSMutableArray *)v2->_activeListOperations removeAllObjects];
-  objc_sync_exit(v2);
+  [(NSMutableArray *)selfCopy->_activeListOperations removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -179,23 +179,23 @@ LABEL_7:
   [(_BRCOperation *)&v3 dealloc];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v5.receiver = self;
   v5.super_class = BRCSharingProcessFolderSubitemsOperation;
-  [(_BRCFrameworkOperation *)&v5 finishWithResult:a3 error:a4];
+  [(_BRCFrameworkOperation *)&v5 finishWithResult:result error:error];
   [(BRCSharingProcessFolderSubitemsOperation *)self _stopObservingListOperation];
 }
 
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableArray *)v7->_activeListOperations removeObject:v8];
-  [(NSMutableArray *)v7->_activeListOperations addObject:v6];
-  objc_sync_exit(v7);
+  operationCopy = operation;
+  byOperationCopy = byOperation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_activeListOperations removeObject:operationCopy];
+  [(NSMutableArray *)selfCopy->_activeListOperations addObject:byOperationCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)createActivity
@@ -205,9 +205,9 @@ LABEL_7:
   return v2;
 }
 
-- (void)removeSharedSubitemsWithCompletion:(id)a3
+- (void)removeSharedSubitemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -215,16 +215,16 @@ LABEL_7:
     [BRCSharingProcessFolderSubitemsOperation removeSharedSubitemsWithCompletion:];
   }
 
-  v7 = [(BRCSyncContext *)self->super.super._syncContext session];
-  v8 = [v7 clientTruthWorkloop];
+  session = [(BRCSyncContext *)self->super.super._syncContext session];
+  clientTruthWorkloop = [session clientTruthWorkloop];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__BRCSharingProcessFolderSubitemsOperation_removeSharedSubitemsWithCompletion___block_invoke;
   v10[3] = &unk_278500048;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_async(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_async(clientTruthWorkloop, v10);
 }
 
 void __79__BRCSharingProcessFolderSubitemsOperation_removeSharedSubitemsWithCompletion___block_invoke(uint64_t a1)
@@ -469,12 +469,12 @@ void __79__BRCSharingProcessFolderSubitemsOperation_removeSharedSubitemsWithComp
   [a1[4] removeSharedSubitemsWithCompletion:{a1[6], v5, v6, v7, v8, v9}];
 }
 
-- (BOOL)_completeAfterProcessingClientTruthIfNecessaryWithError:(id)a3
+- (BOOL)_completeAfterProcessingClientTruthIfNecessaryWithError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
-    v5 = [(BRCClientZone *)self->_rootClientZone dbRowID];
-    if (v5)
+    dbRowID = [(BRCClientZone *)self->_rootClientZone dbRowID];
+    if (dbRowID)
     {
       if (![(NSMutableArray *)self->_sharedClientSubitems count])
       {
@@ -484,25 +484,25 @@ void __79__BRCSharingProcessFolderSubitemsOperation_removeSharedSubitemsWithComp
 
       v6 = objc_opt_new();
       v7 = objc_opt_new();
-      v8 = [(BRCSessionContext *)self->super.super._sessionContext clientExpensiveReadDatabaseFacade];
+      clientExpensiveReadDatabaseFacade = [(BRCSessionContext *)self->super.super._sessionContext clientExpensiveReadDatabaseFacade];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __100__BRCSharingProcessFolderSubitemsOperation__completeAfterProcessingClientTruthIfNecessaryWithError___block_invoke;
       v26[3] = &unk_278506A28;
-      v27 = v5;
+      v27 = dbRowID;
       v9 = v6;
       v28 = v9;
       v10 = v7;
       v29 = v10;
       v11 = MEMORY[0x22AA4A310](v26);
       v12 = dispatch_group_create();
-      v13 = [v8 serialQueue];
+      serialQueue = [clientExpensiveReadDatabaseFacade serialQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __100__BRCSharingProcessFolderSubitemsOperation__completeAfterProcessingClientTruthIfNecessaryWithError___block_invoke_2;
       block[3] = &unk_2785011B8;
       block[4] = self;
-      v21 = v8;
+      v21 = clientExpensiveReadDatabaseFacade;
       v22 = v12;
       v23 = v9;
       v24 = v10;
@@ -511,8 +511,8 @@ void __79__BRCSharingProcessFolderSubitemsOperation_removeSharedSubitemsWithComp
       v15 = v9;
       v16 = v11;
       v17 = v12;
-      v18 = v8;
-      dispatch_async(v13, block);
+      v18 = clientExpensiveReadDatabaseFacade;
+      dispatch_async(serialQueue, block);
     }
 
     else
@@ -527,7 +527,7 @@ LABEL_9:
     return v4;
   }
 
-  [(_BRCOperation *)self completedWithResult:0 error:a3];
+  [(_BRCOperation *)self completedWithResult:0 error:error];
   return 1;
 }
 
@@ -659,26 +659,26 @@ void __100__BRCSharingProcessFolderSubitemsOperation__completeAfterProcessingCli
   [*(a1 + 48) completedWithResult:0 error:v2];
 }
 
-- (id)computeURLForItemID:(id)a3 rootURL:(id)a4
+- (id)computeURLForItemID:(id)d rootURL:(id)l
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v32 = a4;
-  v33 = [(BRCSyncContext *)self->super.super._syncContext session];
-  v7 = [v33 serverDB];
-  [v7 assertOnQueue];
-  v8 = [(BRCClientZone *)self->_rootClientZone dbRowID];
-  v9 = [(BRCClientZone *)self->_rootClientZone dbRowID];
-  v34 = v6;
-  v10 = [v7 fetch:{@"WITH RECURSIVE item_parents (item_filename, item_parent_id) AS(    SELECT item_filename, item_parent_id FROM server_items      WHERE zone_rowid = %@ AND item_id = %@  UNION ALL     SELECT si.item_filename, si.item_parent_id FROM server_items AS si INNER JOIN item_parents AS p      WHERE si.item_id = p.item_parent_id        AND si.zone_rowid = %@) SELECT item_filename FROM item_parents", v8, v6, v9}];
+  dCopy = d;
+  lCopy = l;
+  session = [(BRCSyncContext *)self->super.super._syncContext session];
+  serverDB = [session serverDB];
+  [serverDB assertOnQueue];
+  dbRowID = [(BRCClientZone *)self->_rootClientZone dbRowID];
+  dbRowID2 = [(BRCClientZone *)self->_rootClientZone dbRowID];
+  v34 = dCopy;
+  v10 = [serverDB fetch:{@"WITH RECURSIVE item_parents (item_filename, item_parent_id) AS(    SELECT item_filename, item_parent_id FROM server_items      WHERE zone_rowid = %@ AND item_id = %@  UNION ALL     SELECT si.item_filename, si.item_parent_id FROM server_items AS si INNER JOIN item_parents AS p      WHERE si.item_id = p.item_parent_id        AND si.zone_rowid = %@) SELECT item_filename FROM item_parents", dbRowID, dCopy, dbRowID2}];
 
   v11 = objc_opt_new();
   if (![v10 next])
   {
 LABEL_21:
     v13 = [v11 componentsJoinedByString:@"/"];
-    v27 = v32;
-    v28 = [v32 URLByAppendingPathComponent:v13];
+    v27 = lCopy;
+    v28 = [lCopy URLByAppendingPathComponent:v13];
     goto LABEL_22;
   }
 
@@ -712,7 +712,7 @@ LABEL_20:
     goto LABEL_29;
   }
 
-  v14 = [v7 stringWithSQL:{@"SELECT item_alias_target FROM server_items WHERE item_id = %@ AND zone_rowid = %@", v34, self->_rootClientZone}];
+  v14 = [serverDB stringWithSQL:{@"SELECT item_alias_target FROM server_items WHERE item_id = %@ AND zone_rowid = %@", v34, self->_rootClientZone}];
   if (!v14)
   {
     v13 = brc_bread_crumbs();
@@ -723,7 +723,7 @@ LABEL_20:
     }
 
 LABEL_29:
-    v27 = v32;
+    v27 = lCopy;
 
     v28 = 0;
     goto LABEL_22;
@@ -753,13 +753,13 @@ LABEL_29:
     goto LABEL_18;
   }
 
-  v18 = [v33 serverZoneByMangledID:v36];
+  v18 = [session serverZoneByMangledID:v36];
   v19 = v18;
   if (v18)
   {
     v20 = v37;
-    v21 = [v18 dbRowID];
-    v13 = [v7 stringWithSQL:{@"SELECT item_filename FROM server_items WHERE item_id = %@ AND zone_rowid = %@", v20, v21}];
+    dbRowID3 = [v18 dbRowID];
+    v13 = [serverDB stringWithSQL:{@"SELECT item_filename FROM server_items WHERE item_id = %@ AND zone_rowid = %@", v20, dbRowID3}];
 
     if (v13)
     {
@@ -811,7 +811,7 @@ LABEL_19:
   }
 
   v28 = 0;
-  v27 = v32;
+  v27 = lCopy;
 LABEL_22:
 
   v29 = *MEMORY[0x277D85DE8];
@@ -819,11 +819,11 @@ LABEL_22:
   return v28;
 }
 
-- (BOOL)_completeAfterProcessingServerTruthIfNecessaryWithError:(id)a3
+- (BOOL)_completeAfterProcessingServerTruthIfNecessaryWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    [(_BRCOperation *)self completedWithResult:0 error:a3];
+    [(_BRCOperation *)self completedWithResult:0 error:error];
   }
 
   else
@@ -843,16 +843,16 @@ LABEL_22:
       }
     }
 
-    v4 = [(BRCSyncContext *)self->super.super._syncContext session];
-    v5 = [v4 serverTruthWorkloop];
+    session = [(BRCSyncContext *)self->super.super._syncContext session];
+    serverTruthWorkloop = [session serverTruthWorkloop];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __100__BRCSharingProcessFolderSubitemsOperation__completeAfterProcessingServerTruthIfNecessaryWithError___block_invoke;
     v9[3] = &unk_2784FF478;
     v9[4] = self;
-    v10 = v4;
-    v6 = v4;
-    dispatch_async(v5, v9);
+    v10 = session;
+    v6 = session;
+    dispatch_async(serverTruthWorkloop, v9);
   }
 
   LOBYTE(v7) = 1;
@@ -1012,10 +1012,10 @@ uint64_t __100__BRCSharingProcessFolderSubitemsOperation__completeAfterProcessin
   }
 }
 
-- (void)processServerItemsUnderItemID:(id)a3 completion:(id)a4
+- (void)processServerItemsUnderItemID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1023,18 +1023,18 @@ uint64_t __100__BRCSharingProcessFolderSubitemsOperation__completeAfterProcessin
     [BRCSharingProcessFolderSubitemsOperation processServerItemsUnderItemID:completion:];
   }
 
-  v10 = [(BRCSyncContext *)self->super.super._syncContext session];
-  v11 = [v10 clientTruthWorkloop];
+  session = [(BRCSyncContext *)self->super.super._syncContext session];
+  clientTruthWorkloop = [session clientTruthWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__BRCSharingProcessFolderSubitemsOperation_processServerItemsUnderItemID_completion___block_invoke;
   block[3] = &unk_2784FF5B8;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v15 = dCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = dCopy;
+  dispatch_async(clientTruthWorkloop, block);
 }
 
 void __85__BRCSharingProcessFolderSubitemsOperation_processServerItemsUnderItemID_completion___block_invoke(uint64_t a1)
@@ -1322,25 +1322,25 @@ void __85__BRCSharingProcessFolderSubitemsOperation_processServerItemsUnderItemI
   objc_sync_exit(obj);
 }
 
-- (BOOL)deleteShareInfoFromZone:(id)a3 zoneRowID:(id)a4 itemID:(id)a5 sharingOptions:(unint64_t)a6 itemsTable:(id)a7
+- (BOOL)deleteShareInfoFromZone:(id)zone zoneRowID:(id)d itemID:(id)iD sharingOptions:(unint64_t)options itemsTable:(id)table
 {
-  v8 = a6;
+  optionsCopy = options;
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
+  zoneCopy = zone;
+  iDCopy = iD;
   syncContext = self->super.super._syncContext;
-  v15 = a7;
-  v16 = a4;
-  v17 = [(BRCSyncContext *)syncContext session];
-  v18 = [v17 clientDB];
+  tableCopy = table;
+  dCopy = d;
+  session = [(BRCSyncContext *)syncContext session];
+  clientDB = [session clientDB];
 
   v19 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v20 = [v12 zoneID];
-  v21 = [v19 initShareIDWithItemID:v13 zoneID:v20];
+  zoneID = [zoneCopy zoneID];
+  v21 = [v19 initShareIDWithItemID:iDCopy zoneID:zoneID];
 
-  v22 = [MEMORY[0x277D82C10] nameWithString:v15];
+  v22 = [MEMORY[0x277D82C10] nameWithString:tableCopy];
 
-  v23 = [v18 fetch:{@"SELECT item_type, item_stat_ckinfo, version_ckinfo from %@ WHERE item_id = %@ AND zone_rowid = %@", v22, v13, v16}];
+  v23 = [clientDB fetch:{@"SELECT item_type, item_stat_ckinfo, version_ckinfo from %@ WHERE item_id = %@ AND zone_rowid = %@", v22, iDCopy, dCopy}];
   if (![v23 next])
   {
     v28 = brc_bread_crumbs();
@@ -1370,15 +1370,15 @@ LABEL_7:
   }
 
   v25 = 1 << v24;
-  v41 = v8;
-  v42 = v18;
+  v41 = optionsCopy;
+  v42 = clientDB;
   if ((v25 & 0x611) == 0)
   {
     if ((v25 & 0x106) != 0)
     {
       v32 = objc_alloc(MEMORY[0x277CBC5A0]);
-      v27 = [v12 zoneID];
-      v33 = [v13 contentsRecordIDInZoneID:v27];
+      zoneID2 = [zoneCopy zoneID];
+      v33 = [iDCopy contentsRecordIDInZoneID:zoneID2];
       v28 = [v32 initWithRecordType:@"content" recordID:v33];
 
       v29 = 2;
@@ -1389,8 +1389,8 @@ LABEL_7:
   }
 
   v26 = objc_alloc(MEMORY[0x277CBC5A0]);
-  v27 = [v13 directoryStructureRecordIDInZone:v12];
-  v28 = [v26 initWithRecordType:@"structure" recordID:v27];
+  zoneID2 = [iDCopy directoryStructureRecordIDInZone:zoneCopy];
+  v28 = [v26 initWithRecordType:@"structure" recordID:zoneID2];
   v29 = 1;
 LABEL_10:
 
@@ -1424,16 +1424,16 @@ LABEL_10:
 
   v31 = 1;
   v21 = v34;
-  v18 = v42;
+  clientDB = v42;
 LABEL_14:
 
   v38 = *MEMORY[0x277D85DE8];
   return v31;
 }
 
-- (void)processClientTruthWithCompletion:(id)a3
+- (void)processClientTruthWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1441,18 +1441,18 @@ LABEL_14:
     [BRCSharingProcessFolderSubitemsOperation processClientTruthWithCompletion:];
   }
 
-  v7 = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
-  v8 = [v7 workloop];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
+  workloop = [clientReadWriteDatabaseFacade workloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__BRCSharingProcessFolderSubitemsOperation_processClientTruthWithCompletion___block_invoke;
   block[3] = &unk_2784FF5B8;
   block[4] = self;
-  v12 = v7;
-  v13 = v4;
-  v9 = v4;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = clientReadWriteDatabaseFacade;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = clientReadWriteDatabaseFacade;
+  dispatch_async(workloop, block);
 }
 
 void __77__BRCSharingProcessFolderSubitemsOperation_processClientTruthWithCompletion___block_invoke(void *a1)
@@ -1542,8 +1542,8 @@ void __77__BRCSharingProcessFolderSubitemsOperation_processClientTruthWithComple
 {
   if (self->_isFSRoot)
   {
-    v5 = [MEMORY[0x277CCA9B8] brc_errorItemNotShareable];
-    [(_BRCOperation *)self completedWithResult:0 error:v5];
+    brc_errorItemNotShareable = [MEMORY[0x277CCA9B8] brc_errorItemNotShareable];
+    [(_BRCOperation *)self completedWithResult:0 error:brc_errorItemNotShareable];
   }
 
   else if (self->_alreadyHasShareID)

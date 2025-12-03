@@ -40,7 +40,7 @@
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [v4 objectForKey:v9];
-        v11 = [a1 objectForKey:v9];
+        v11 = [self objectForKey:v9];
         v12 = v11;
         if (v10)
         {
@@ -69,7 +69,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v10 MCMutableDeepCopy];
+          mCMutableDeepCopy = [v10 MCMutableDeepCopy];
         }
 
         else
@@ -79,11 +79,11 @@
             goto LABEL_18;
           }
 
-          v14 = [v10 copy];
+          mCMutableDeepCopy = [v10 copy];
         }
 
-        v15 = v14;
-        [a1 setObject:v14 forKey:v9];
+        v15 = mCMutableDeepCopy;
+        [self setObject:mCMutableDeepCopy forKey:v9];
 
 LABEL_18:
       }
@@ -120,7 +120,7 @@ LABEL_18:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [a1 objectForKey:v9];
+        v10 = [self objectForKey:v9];
         v11 = [v4 objectForKey:v9];
         if (v11)
         {
@@ -142,7 +142,7 @@ LABEL_18:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v11 MCMutableDeepCopy];
+            mCMutableDeepCopy = [v11 MCMutableDeepCopy];
           }
 
           else
@@ -152,11 +152,11 @@ LABEL_18:
               goto LABEL_20;
             }
 
-            v13 = [v11 copy];
+            mCMutableDeepCopy = [v11 copy];
           }
 
-          v15 = v13;
-          [a1 setObject:v13 forKey:v9];
+          v15 = mCMutableDeepCopy;
+          [self setObject:mCMutableDeepCopy forKey:v9];
         }
 
         else
@@ -189,10 +189,10 @@ LABEL_20:
 {
   if (a3)
   {
-    return [a1 setObject:? forKey:?];
+    return [self setObject:? forKey:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)MCSetBoolRestriction:()MCUtilities value:
@@ -200,9 +200,9 @@ LABEL_20:
   v23[2] = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = +[MCRestrictionManager sharedManager];
-  v8 = [v7 defaultRestrictions];
+  defaultRestrictions = [v7 defaultRestrictions];
 
-  v9 = [v8 objectForKeyedSubscript:@"restrictedBool"];
+  v9 = [defaultRestrictions objectForKeyedSubscript:@"restrictedBool"];
   v10 = [v9 objectForKeyedSubscript:v6];
   v11 = [v10 objectForKeyedSubscript:@"preference"];
 
@@ -217,12 +217,12 @@ LABEL_20:
     objc_exception_throw(v20);
   }
 
-  v12 = [a1 objectForKeyedSubscript:@"restrictedBool"];
-  v13 = [v12 mutableCopy];
+  v12 = [self objectForKeyedSubscript:@"restrictedBool"];
+  dictionary = [v12 mutableCopy];
 
-  if (!v13)
+  if (!dictionary)
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
   v22[0] = @"preference";
@@ -231,16 +231,16 @@ LABEL_20:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:a4];
   v23[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
-  [v13 setObject:v15 forKeyedSubscript:v6];
+  [dictionary setObject:v15 forKeyedSubscript:v6];
 
-  [a1 setObject:v13 forKeyedSubscript:@"restrictedBool"];
+  [self setObject:dictionary forKeyedSubscript:@"restrictedBool"];
   v16 = *MEMORY[0x1E69E9840];
 }
 
 - (void)MCDeleteBoolRestriction:()MCUtilities
 {
   v8 = a3;
-  v4 = [a1 objectForKeyedSubscript:@"restrictedBool"];
+  v4 = [self objectForKeyedSubscript:@"restrictedBool"];
   v5 = [v4 mutableCopy];
 
   if (v5)
@@ -248,17 +248,17 @@ LABEL_20:
     [v5 removeObjectForKey:v8];
     if ([v5 count])
     {
-      v6 = a1;
+      selfCopy2 = self;
       v7 = v5;
     }
 
     else
     {
-      v6 = a1;
+      selfCopy2 = self;
       v7 = 0;
     }
 
-    [v6 setObject:v7 forKeyedSubscript:@"restrictedBool"];
+    [selfCopy2 setObject:v7 forKeyedSubscript:@"restrictedBool"];
   }
 }
 
@@ -270,9 +270,9 @@ LABEL_20:
   if (v7)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultRestrictions];
+    defaultRestrictions = [v8 defaultRestrictions];
 
-    v10 = [v9 objectForKeyedSubscript:@"restrictedValue"];
+    v10 = [defaultRestrictions objectForKeyedSubscript:@"restrictedValue"];
     v11 = [v10 objectForKeyedSubscript:v6];
     v12 = [v11 objectForKeyedSubscript:@"preferSmallerValues"];
 
@@ -287,12 +287,12 @@ LABEL_20:
       objc_exception_throw(v24);
     }
 
-    v13 = [a1 objectForKeyedSubscript:@"restrictedValue"];
-    v14 = [v13 mutableCopy];
+    v13 = [self objectForKeyedSubscript:@"restrictedValue"];
+    dictionary = [v13 mutableCopy];
 
-    if (!v14)
+    if (!dictionary)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     v26[0] = @"preferSmallerValues";
@@ -300,14 +300,14 @@ LABEL_20:
     v27[0] = v12;
     v27[1] = v7;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-    [v14 setObject:v15 forKeyedSubscript:v6];
+    [dictionary setObject:v15 forKeyedSubscript:v6];
 
-    [a1 setObject:v14 forKeyedSubscript:@"restrictedValue"];
+    [self setObject:dictionary forKeyedSubscript:@"restrictedValue"];
   }
 
   else
   {
-    v16 = [a1 objectForKeyedSubscript:@"restrictedValue"];
+    v16 = [self objectForKeyedSubscript:@"restrictedValue"];
     v17 = [v16 mutableCopy];
 
     if (v17)
@@ -315,17 +315,17 @@ LABEL_20:
       [v17 removeObjectForKey:v6];
       if ([v17 count])
       {
-        v18 = a1;
+        selfCopy2 = self;
         v19 = v17;
       }
 
       else
       {
-        v18 = a1;
+        selfCopy2 = self;
         v19 = 0;
       }
 
-      [v18 setObject:v19 forKeyedSubscript:@"restrictedValue"];
+      [selfCopy2 setObject:v19 forKeyedSubscript:@"restrictedValue"];
     }
   }
 
@@ -340,9 +340,9 @@ LABEL_20:
   if (v7)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultRestrictions];
+    defaultRestrictions = [v8 defaultRestrictions];
 
-    v10 = [v9 objectForKeyedSubscript:@"intersection"];
+    v10 = [defaultRestrictions objectForKeyedSubscript:@"intersection"];
     v11 = [v10 objectForKeyedSubscript:v6];
 
     if (!v11)
@@ -356,25 +356,25 @@ LABEL_20:
       objc_exception_throw(v23);
     }
 
-    v12 = [a1 objectForKeyedSubscript:@"intersection"];
-    v13 = [v12 mutableCopy];
+    v12 = [self objectForKeyedSubscript:@"intersection"];
+    dictionary = [v12 mutableCopy];
 
-    if (!v13)
+    if (!dictionary)
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     v25 = @"values";
     v26[0] = v7;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    [v13 setObject:v14 forKeyedSubscript:v6];
+    [dictionary setObject:v14 forKeyedSubscript:v6];
 
-    [a1 setObject:v13 forKeyedSubscript:@"intersection"];
+    [self setObject:dictionary forKeyedSubscript:@"intersection"];
   }
 
   else
   {
-    v15 = [a1 objectForKeyedSubscript:@"intersection"];
+    v15 = [self objectForKeyedSubscript:@"intersection"];
     v16 = [v15 mutableCopy];
 
     if (v16)
@@ -382,17 +382,17 @@ LABEL_20:
       [v16 removeObjectForKey:v6];
       if ([v16 count])
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = v16;
       }
 
       else
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = 0;
       }
 
-      [v17 setObject:v18 forKeyedSubscript:@"intersection"];
+      [selfCopy2 setObject:v18 forKeyedSubscript:@"intersection"];
     }
   }
 
@@ -407,9 +407,9 @@ LABEL_20:
   if (v7)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultRestrictions];
+    defaultRestrictions = [v8 defaultRestrictions];
 
-    v10 = [v9 objectForKeyedSubscript:@"union"];
+    v10 = [defaultRestrictions objectForKeyedSubscript:@"union"];
     v11 = [v10 objectForKeyedSubscript:v6];
 
     if (!v11)
@@ -423,25 +423,25 @@ LABEL_20:
       objc_exception_throw(v23);
     }
 
-    v12 = [a1 objectForKeyedSubscript:@"union"];
-    v13 = [v12 mutableCopy];
+    v12 = [self objectForKeyedSubscript:@"union"];
+    dictionary = [v12 mutableCopy];
 
-    if (!v13)
+    if (!dictionary)
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     v25 = @"values";
     v26[0] = v7;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    [v13 setObject:v14 forKeyedSubscript:v6];
+    [dictionary setObject:v14 forKeyedSubscript:v6];
 
-    [a1 setObject:v13 forKeyedSubscript:@"union"];
+    [self setObject:dictionary forKeyedSubscript:@"union"];
   }
 
   else
   {
-    v15 = [a1 objectForKeyedSubscript:@"union"];
+    v15 = [self objectForKeyedSubscript:@"union"];
     v16 = [v15 mutableCopy];
 
     if (v16)
@@ -449,17 +449,17 @@ LABEL_20:
       [v16 removeObjectForKey:v6];
       if ([v16 count])
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = v16;
       }
 
       else
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = 0;
       }
 
-      [v17 setObject:v18 forKeyedSubscript:@"union"];
+      [selfCopy2 setObject:v18 forKeyedSubscript:@"union"];
     }
   }
 
@@ -474,9 +474,9 @@ LABEL_20:
   if (v7)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultSettings];
+    defaultSettings = [v8 defaultSettings];
 
-    v10 = [v9 objectForKeyedSubscript:@"intersection"];
+    v10 = [defaultSettings objectForKeyedSubscript:@"intersection"];
     v11 = [v10 objectForKeyedSubscript:v6];
 
     if (!v11)
@@ -490,25 +490,25 @@ LABEL_20:
       objc_exception_throw(v23);
     }
 
-    v12 = [a1 objectForKeyedSubscript:@"intersection"];
-    v13 = [v12 mutableCopy];
+    v12 = [self objectForKeyedSubscript:@"intersection"];
+    dictionary = [v12 mutableCopy];
 
-    if (!v13)
+    if (!dictionary)
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     v25 = @"values";
     v26[0] = v7;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    [v13 setObject:v14 forKeyedSubscript:v6];
+    [dictionary setObject:v14 forKeyedSubscript:v6];
 
-    [a1 setObject:v13 forKeyedSubscript:@"intersection"];
+    [self setObject:dictionary forKeyedSubscript:@"intersection"];
   }
 
   else
   {
-    v15 = [a1 objectForKeyedSubscript:@"intersection"];
+    v15 = [self objectForKeyedSubscript:@"intersection"];
     v16 = [v15 mutableCopy];
 
     if (v16)
@@ -516,17 +516,17 @@ LABEL_20:
       [v16 removeObjectForKey:v6];
       if ([v16 count])
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = v16;
       }
 
       else
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = 0;
       }
 
-      [v17 setObject:v18 forKeyedSubscript:@"intersection"];
+      [selfCopy2 setObject:v18 forKeyedSubscript:@"intersection"];
     }
   }
 
@@ -541,9 +541,9 @@ LABEL_20:
   if (v7)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultSettings];
+    defaultSettings = [v8 defaultSettings];
 
-    v10 = [v9 objectForKeyedSubscript:@"union"];
+    v10 = [defaultSettings objectForKeyedSubscript:@"union"];
     v11 = [v10 objectForKeyedSubscript:v6];
 
     if (!v11)
@@ -557,25 +557,25 @@ LABEL_20:
       objc_exception_throw(v23);
     }
 
-    v12 = [a1 objectForKeyedSubscript:@"union"];
-    v13 = [v12 mutableCopy];
+    v12 = [self objectForKeyedSubscript:@"union"];
+    dictionary = [v12 mutableCopy];
 
-    if (!v13)
+    if (!dictionary)
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     v25 = @"values";
     v26[0] = v7;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    [v13 setObject:v14 forKeyedSubscript:v6];
+    [dictionary setObject:v14 forKeyedSubscript:v6];
 
-    [a1 setObject:v13 forKeyedSubscript:@"union"];
+    [self setObject:dictionary forKeyedSubscript:@"union"];
   }
 
   else
   {
-    v15 = [a1 objectForKeyedSubscript:@"union"];
+    v15 = [self objectForKeyedSubscript:@"union"];
     v16 = [v15 mutableCopy];
 
     if (v16)
@@ -583,17 +583,17 @@ LABEL_20:
       [v16 removeObjectForKey:v6];
       if ([v16 count])
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = v16;
       }
 
       else
       {
-        v17 = a1;
+        selfCopy2 = self;
         v18 = 0;
       }
 
-      [v17 setObject:v18 forKeyedSubscript:@"union"];
+      [selfCopy2 setObject:v18 forKeyedSubscript:@"union"];
     }
   }
 
@@ -610,7 +610,7 @@ LABEL_20:
     v9[1] = 3221225472;
     v9[2] = __78__NSMutableDictionary_MCUtilities___MCFilterRestrictionPayloadKeys_filterOut___block_invoke;
     v9[3] = &unk_1E77CFEB8;
-    v9[4] = a1;
+    v9[4] = self;
     v10 = v6;
     v11 = a4;
     v8 = MEMORY[0x1AC55F990](v9);
@@ -623,9 +623,9 @@ LABEL_20:
 
 - (void)MCFixUpRestrictionsDictionaryForMDMReporting
 {
-  v1 = a1;
+  selfCopy = self;
   v51 = *MEMORY[0x1E69E9840];
-  v2 = [a1 objectForKey:@"restrictedValue"];
+  v2 = [self objectForKey:@"restrictedValue"];
   v3 = v2;
   if (v2)
   {
@@ -639,11 +639,11 @@ LABEL_20:
       v9 = v8;
       if (v8)
       {
-        v10 = v1;
+        v10 = selfCopy;
         v11 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v8, "longValue") / 60}];
         [v7 setObject:v11 forKey:@"value"];
 
-        v1 = v10;
+        selfCopy = v10;
       }
 
       [v4 setObject:v7 forKey:@"maxGracePeriod"];
@@ -658,24 +658,24 @@ LABEL_20:
       v16 = v15;
       if (v15)
       {
-        v17 = v1;
+        v17 = selfCopy;
         v18 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v15, "longValue") / 60}];
         [v14 setObject:v18 forKey:@"value"];
 
-        v1 = v17;
+        selfCopy = v17;
       }
 
       [v4 setObject:v14 forKey:@"maxInactivity"];
     }
 
-    [v1 setObject:v4 forKey:@"restrictedValue"];
+    [selfCopy setObject:v4 forKey:@"restrictedValue"];
   }
 
-  v19 = [v1 objectForKey:@"intersection"];
+  v19 = [selfCopy objectForKey:@"intersection"];
   if (v19)
   {
     v35 = v19;
-    v36 = v1;
+    v36 = selfCopy;
     v37 = v3;
     v20 = [v19 mutableCopy];
     +[MCRestrictionUtilities intersectionFeaturesWithPayloadRestictionKeyAlias];
@@ -770,9 +770,9 @@ LABEL_20:
 {
   v65 = *MEMORY[0x1E69E9840];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 defaultRestrictions];
+  defaultRestrictions = [v2 defaultRestrictions];
 
-  v4 = [a1 objectForKeyedSubscript:@"restrictedBool"];
+  v4 = [self objectForKeyedSubscript:@"restrictedBool"];
   v5 = [v4 mutableCopy];
   v57 = 0u;
   v58 = 0u;
@@ -794,7 +794,7 @@ LABEL_20:
         }
 
         v11 = *(*(&v57 + 1) + 8 * i);
-        if (([a1 MCValidateBoolRestriction:v11 inRestrictions:v6 defaultRestrictions:v3] & 1) == 0)
+        if (([self MCValidateBoolRestriction:v11 inRestrictions:v6 defaultRestrictions:defaultRestrictions] & 1) == 0)
         {
           [v5 setObject:0 forKeyedSubscript:v11];
         }
@@ -809,9 +809,9 @@ LABEL_20:
   v43 = v6;
 
   v12 = [v5 copy];
-  [a1 setObject:v12 forKeyedSubscript:@"restrictedBool"];
+  [self setObject:v12 forKeyedSubscript:@"restrictedBool"];
 
-  v13 = [a1 objectForKeyedSubscript:@"restrictedValue"];
+  v13 = [self objectForKeyedSubscript:@"restrictedValue"];
   v14 = [v13 mutableCopy];
   v53 = 0u;
   v54 = 0u;
@@ -833,7 +833,7 @@ LABEL_20:
         }
 
         v20 = *(*(&v53 + 1) + 8 * j);
-        if (([a1 MCValidateValueRestriction:v20 inRestrictions:v15 defaultRestrictions:v3] & 1) == 0)
+        if (([self MCValidateValueRestriction:v20 inRestrictions:v15 defaultRestrictions:defaultRestrictions] & 1) == 0)
         {
           [v14 setObject:0 forKeyedSubscript:v20];
         }
@@ -849,9 +849,9 @@ LABEL_20:
 
   v42 = v14;
   v21 = [v14 copy];
-  [a1 setObject:v21 forKeyedSubscript:@"restrictedValue"];
+  [self setObject:v21 forKeyedSubscript:@"restrictedValue"];
 
-  v22 = [a1 objectForKeyedSubscript:@"intersection"];
+  v22 = [self objectForKeyedSubscript:@"intersection"];
   v23 = [v22 mutableCopy];
   v49 = 0u;
   v50 = 0u;
@@ -873,7 +873,7 @@ LABEL_20:
         }
 
         v29 = *(*(&v49 + 1) + 8 * k);
-        if (([a1 MCValidateIntersectionRestriction:v29 inRestrictions:v24 defaultRestrictions:v3] & 1) == 0)
+        if (([self MCValidateIntersectionRestriction:v29 inRestrictions:v24 defaultRestrictions:defaultRestrictions] & 1) == 0)
         {
           [v23 setObject:0 forKeyedSubscript:v29];
         }
@@ -887,9 +887,9 @@ LABEL_20:
 
   v41 = v23;
   v30 = [v23 copy];
-  [a1 setObject:v30 forKeyedSubscript:@"intersection"];
+  [self setObject:v30 forKeyedSubscript:@"intersection"];
 
-  v31 = [a1 objectForKeyedSubscript:?];
+  v31 = [self objectForKeyedSubscript:?];
   v32 = [v31 mutableCopy];
   v45 = 0u;
   v46 = 0u;
@@ -911,7 +911,7 @@ LABEL_20:
         }
 
         v38 = *(*(&v45 + 1) + 8 * m);
-        if (([a1 MCValidateUnionRestriction:v38 inRestrictions:v33 defaultRestrictions:v3] & 1) == 0)
+        if (([self MCValidateUnionRestriction:v38 inRestrictions:v33 defaultRestrictions:defaultRestrictions] & 1) == 0)
         {
           [v32 setObject:0 forKeyedSubscript:v38];
         }
@@ -924,7 +924,7 @@ LABEL_20:
   }
 
   v39 = [v32 copy];
-  [a1 setObject:v39 forKeyedSubscript:@"union"];
+  [self setObject:v39 forKeyedSubscript:@"union"];
 
   v40 = *MEMORY[0x1E69E9840];
 }

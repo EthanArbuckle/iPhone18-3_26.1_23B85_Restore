@@ -1,10 +1,10 @@
 @interface WFLinkActionBoolParameterDefinition
-- (WFLinkActionBoolParameterDefinition)initWithParameterMetadata:(id)a3;
+- (WFLinkActionBoolParameterDefinition)initWithParameterMetadata:(id)metadata;
 - (id)falseDisplayName;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)localizedTitleForLinkValue:(id)a3;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)localizedTitleForLinkValue:(id)value;
 - (id)parameterDefinitionDictionary;
-- (id)parameterStateFromLinkValue:(id)a3;
+- (id)parameterStateFromLinkValue:(id)value;
 - (id)trueDisplayName;
 @end
 
@@ -21,18 +21,18 @@
 - (id)parameterDefinitionDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(WFLinkActionBoolParameterDefinition *)self trueDisplayName];
-  v5 = [v4 wf_localizedString];
-  [v3 setValue:v5 forKey:@"OnDisplayName"];
+  trueDisplayName = [(WFLinkActionBoolParameterDefinition *)self trueDisplayName];
+  wf_localizedString = [trueDisplayName wf_localizedString];
+  [v3 setValue:wf_localizedString forKey:@"OnDisplayName"];
 
-  v6 = [(WFLinkActionBoolParameterDefinition *)self falseDisplayName];
-  v7 = [v6 wf_localizedString];
-  [v3 setValue:v7 forKey:@"OffDisplayName"];
+  falseDisplayName = [(WFLinkActionBoolParameterDefinition *)self falseDisplayName];
+  wf_localizedString2 = [falseDisplayName wf_localizedString];
+  [v3 setValue:wf_localizedString2 forKey:@"OffDisplayName"];
 
   v11.receiver = self;
   v11.super_class = WFLinkActionBoolParameterDefinition;
-  v8 = [(WFLinkActionParameterDefinition *)&v11 parameterDefinitionDictionary];
-  v9 = [v8 definitionByAddingEntriesInDictionary:v3];
+  parameterDefinitionDictionary = [(WFLinkActionParameterDefinition *)&v11 parameterDefinitionDictionary];
+  v9 = [parameterDefinitionDictionary definitionByAddingEntriesInDictionary:v3];
 
   return v9;
 }
@@ -45,15 +45,15 @@
   return [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:v3 ofClass:v4];
 }
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
-  v4 = [a3 value];
-  if (v4)
+  value = [value value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = value;
     }
 
     else
@@ -69,16 +69,16 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  if (v7)
+  bOOLValue = [v6 BOOLValue];
+  if (bOOLValue)
   {
-    v8 = [(WFLinkActionBoolParameterDefinition *)self trueDisplayName];
-    if (v8)
+    trueDisplayName = [(WFLinkActionBoolParameterDefinition *)self trueDisplayName];
+    if (trueDisplayName)
     {
-      v9 = [(WFLinkActionBoolParameterDefinition *)self trueDisplayName];
+      trueDisplayName2 = [(WFLinkActionBoolParameterDefinition *)self trueDisplayName];
 LABEL_11:
-      v10 = v9;
-      v11 = [v9 wf_localizedString];
+      v10 = trueDisplayName2;
+      wf_localizedString = [trueDisplayName2 wf_localizedString];
 
       goto LABEL_15;
     }
@@ -88,47 +88,47 @@ LABEL_11:
 
   else
   {
-    v8 = [(WFLinkActionBoolParameterDefinition *)self falseDisplayName];
-    if (v8)
+    trueDisplayName = [(WFLinkActionBoolParameterDefinition *)self falseDisplayName];
+    if (trueDisplayName)
     {
-      v9 = [(WFLinkActionBoolParameterDefinition *)self falseDisplayName];
+      trueDisplayName2 = [(WFLinkActionBoolParameterDefinition *)self falseDisplayName];
       goto LABEL_11;
     }
 
     v12 = @"False";
   }
 
-  v11 = WFLocalizedString(v12);
+  wf_localizedString = WFLocalizedString(v12);
 LABEL_15:
 
-  return v11;
+  return wf_localizedString;
 }
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 value];
-  if (v4)
+  value = [value value];
+  if (value)
   {
-    v5 = [(WFLinkActionParameterDefinition *)self valueType];
-    v6 = [v5 objectIsMemberOfType:v4];
+    valueType = [(WFLinkActionParameterDefinition *)self valueType];
+    v6 = [valueType objectIsMemberOfType:value];
 
     if (v6)
     {
-      v7 = -[WFBooleanSubstitutableState initWithBoolValue:]([WFBooleanSubstitutableState alloc], "initWithBoolValue:", [v4 BOOLValue]);
+      v7 = -[WFBooleanSubstitutableState initWithBoolValue:]([WFBooleanSubstitutableState alloc], "initWithBoolValue:", [value BOOLValue]);
       goto LABEL_8;
     }
 
     v8 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(WFLinkActionParameterDefinition *)self valueType];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
       v12 = 136315650;
       v13 = "[WFLinkActionBoolParameterDefinition parameterStateFromLinkValue:]";
       v14 = 2114;
-      v15 = v4;
+      v15 = value;
       v16 = 2114;
-      v17 = v9;
+      v17 = valueType2;
     }
   }
 
@@ -140,15 +140,15 @@ LABEL_8:
   return v7;
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  stateCopy = state;
+  actionCopy = action;
+  v8 = stateCopy;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 number];
-    v10 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v9];
+    number = [v8 number];
+    v10 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:number];
   }
 
   else
@@ -156,20 +156,20 @@ LABEL_8:
 
     v12.receiver = self;
     v12.super_class = WFLinkActionBoolParameterDefinition;
-    v10 = [(WFLinkActionParameterDefinition *)&v12 linkValueFromParameterState:v8 action:v7];
+    v10 = [(WFLinkActionParameterDefinition *)&v12 linkValueFromParameterState:v8 action:actionCopy];
   }
 
   return v10;
 }
 
-- (WFLinkActionBoolParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionBoolParameterDefinition)initWithParameterMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E69AC938];
-  v5 = a3;
-  v6 = [v4 BOOLValueType];
+  metadataCopy = metadata;
+  bOOLValueType = [v4 BOOLValueType];
   v9.receiver = self;
   v9.super_class = WFLinkActionBoolParameterDefinition;
-  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:v6 parameterMetadata:v5];
+  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:bOOLValueType parameterMetadata:metadataCopy];
 
   return v7;
 }

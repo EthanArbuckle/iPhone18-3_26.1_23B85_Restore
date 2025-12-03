@@ -1,22 +1,22 @@
 @interface FTTranslationSupportedLanguagesResponse
-- (FTTranslationSupportedLanguagesResponse)initWithFlatbuffData:(id)a3 root:(const TranslationSupportedLanguagesResponse *)a4 verify:(BOOL)a5;
+- (FTTranslationSupportedLanguagesResponse)initWithFlatbuffData:(id)data root:(const TranslationSupportedLanguagesResponse *)root verify:(BOOL)verify;
 - (NSArray)language_pairs;
 - (NSString)request_id;
 - (NSString)return_string;
-- (Offset<siri::speech::schema_fb::TranslationSupportedLanguagesResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TranslationSupportedLanguagesResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)language_pairs_objectAtIndex:(unint64_t)a3;
+- (id)language_pairs_objectAtIndex:(unint64_t)index;
 - (int)return_code;
 - (unint64_t)language_pairs_count;
-- (void)language_pairs_enumerateObjectsUsingBlock:(id)a3;
+- (void)language_pairs_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTTranslationSupportedLanguagesResponse
 
-- (FTTranslationSupportedLanguagesResponse)initWithFlatbuffData:(id)a3 root:(const TranslationSupportedLanguagesResponse *)a4 verify:(BOOL)a5
+- (FTTranslationSupportedLanguagesResponse)initWithFlatbuffData:(id)data root:(const TranslationSupportedLanguagesResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTranslationSupportedLanguagesResponse;
   v10 = [(FTTranslationSupportedLanguagesResponse *)&v25 init];
@@ -25,35 +25,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -145,12 +145,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"language_pairs"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __57__FTTranslationSupportedLanguagesResponse_language_pairs__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTranslationSupportedLanguagesResponse *)self language_pairs_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"language_pairs"];
@@ -159,13 +159,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)language_pairs_objectAtIndex:(unint64_t)a3
+- (id)language_pairs_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"language_pairs"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -178,7 +178,7 @@ LABEL_3:
     v11 = *v10[10].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTranslationSupportedLanguagesResponse_LanguagePair alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -217,14 +217,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)language_pairs_enumerateObjectsUsingBlock:(id)a3
+- (void)language_pairs_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"language_pairs"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -247,7 +247,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTranslationSupportedLanguagesResponse_LanguagePair alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -268,45 +268,45 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::TranslationSupportedLanguagesResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TranslationSupportedLanguagesResponse>)addObjectToBuffer:(void *)buffer
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = [(FTTranslationSupportedLanguagesResponse *)self request_id];
-  v6 = v5;
-  if (!v5)
+  request_id = [(FTTranslationSupportedLanguagesResponse *)self request_id];
+  v6 = request_id;
+  if (!request_id)
   {
-    v5 = &stru_284834138;
+    request_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)request_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTTranslationSupportedLanguagesResponse *)self return_code];
-  v11 = [(FTTranslationSupportedLanguagesResponse *)self return_string];
-  v12 = v11;
-  if (!v11)
+  return_code = [(FTTranslationSupportedLanguagesResponse *)self return_code];
+  return_string = [(FTTranslationSupportedLanguagesResponse *)self return_string];
+  v12 = return_string;
+  if (!return_string)
   {
-    v11 = &stru_284834138;
+    return_string = &stru_284834138;
   }
 
-  v13 = [(__CFString *)v11 UTF8String];
-  v14 = strlen(v13);
-  LODWORD(v13) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v13, v14);
+  uTF8String2 = [(__CFString *)return_string UTF8String];
+  v14 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v14);
 
   memset(&v45, 0, sizeof(v45));
-  v15 = [(FTTranslationSupportedLanguagesResponse *)self language_pairs];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v45, [v15 count]);
+  language_pairs = [(FTTranslationSupportedLanguagesResponse *)self language_pairs];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v45, [language_pairs count]);
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v16 = [(FTTranslationSupportedLanguagesResponse *)self language_pairs];
-  v38 = v13;
+  language_pairs2 = [(FTTranslationSupportedLanguagesResponse *)self language_pairs];
+  v38 = uTF8String2;
   v39 = String;
-  v40 = v10;
-  v17 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  v40 = return_code;
+  v17 = [language_pairs2 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v17)
   {
     v18 = *v42;
@@ -316,10 +316,10 @@ LABEL_8:
       {
         if (*v42 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(language_pairs2);
         }
 
-        v20 = [*(*(&v41 + 1) + 8 * i) addObjectToBuffer:a3];
+        v20 = [*(*(&v41 + 1) + 8 * i) addObjectToBuffer:buffer];
         end = v45.__end_;
         if (v45.__end_ >= v45.__end_cap_.__value_)
         {
@@ -375,7 +375,7 @@ LABEL_8:
         v45.__end_ = v22;
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v17 = [language_pairs2 countByEnumeratingWithState:&v41 objects:v46 count:16];
     }
 
     while (v17);
@@ -391,16 +391,16 @@ LABEL_8:
     v30 = v45.__begin_;
   }
 
-  v31 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v30, v45.__end_ - v45.__begin_);
-  *(a3 + 70) = 1;
-  v32 = *(a3 + 8);
-  v33 = *(a3 + 12);
-  v34 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v39);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v40, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v38);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v31);
-  v35.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v32 - v33 + v34);
+  v31 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v30, v45.__end_ - v45.__begin_);
+  *(buffer + 70) = 1;
+  v32 = *(buffer + 8);
+  v33 = *(buffer + 12);
+  v34 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, v39);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v40, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v38);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v31);
+  v35.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v32 - v33 + v34);
   if (v45.__begin_)
   {
     v45.__end_ = v45.__begin_;

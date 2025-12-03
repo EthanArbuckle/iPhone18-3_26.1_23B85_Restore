@@ -1,68 +1,68 @@
 @interface SLMicroBlogUserRecord
-+ (SLMicroBlogUserRecord)userRecordWithDictionaryRepresentation:(id)a3;
-- (SLMicroBlogUserRecord)initWithCoder:(id)a3;
++ (SLMicroBlogUserRecord)userRecordWithDictionaryRepresentation:(id)representation;
+- (SLMicroBlogUserRecord)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValuesWithUserDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValuesWithUserDictionary:(id)dictionary;
 @end
 
 @implementation SLMicroBlogUserRecord
 
-+ (SLMicroBlogUserRecord)userRecordWithDictionaryRepresentation:(id)a3
++ (SLMicroBlogUserRecord)userRecordWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = objc_alloc_init(SLMicroBlogUserRecord);
   v5 = v4;
-  if (v3)
+  if (representationCopy)
   {
-    [(SLMicroBlogUserRecord *)v4 setValuesWithUserDictionary:v3];
+    [(SLMicroBlogUserRecord *)v4 setValuesWithUserDictionary:representationCopy];
   }
 
   return v5;
 }
 
-- (void)setValuesWithUserDictionary:(id)a3
+- (void)setValuesWithUserDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"name"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"name"];
   [(SLMicroBlogUserRecord *)self setName:v5];
 
-  v6 = [v4 objectForKey:@"screen_name"];
+  v6 = [dictionaryCopy objectForKey:@"screen_name"];
   [(SLMicroBlogUserRecord *)self setScreen_name:v6];
 
-  v7 = [v4 objectForKey:@"profile_image_url"];
+  v7 = [dictionaryCopy objectForKey:@"profile_image_url"];
 
   [(SLMicroBlogUserRecord *)self setProfile_image_url:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLMicroBlogUserRecord *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(SLMicroBlogUserRecord *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(SLMicroBlogUserRecord *)self screen_name];
-  [v4 encodeObject:v6 forKey:@"screen_name"];
+  screen_name = [(SLMicroBlogUserRecord *)self screen_name];
+  [coderCopy encodeObject:screen_name forKey:@"screen_name"];
 
-  v7 = [(SLMicroBlogUserRecord *)self profile_image_url];
-  [v4 encodeObject:v7 forKey:@"profile_image_url"];
+  profile_image_url = [(SLMicroBlogUserRecord *)self profile_image_url];
+  [coderCopy encodeObject:profile_image_url forKey:@"profile_image_url"];
 }
 
-- (SLMicroBlogUserRecord)initWithCoder:(id)a3
+- (SLMicroBlogUserRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SLMicroBlogUserRecord;
   v5 = [(SLMicroBlogUserRecord *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(SLMicroBlogUserRecord *)v5 setName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"screen_name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"screen_name"];
     [(SLMicroBlogUserRecord *)v5 setScreen_name:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profile_image_url"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profile_image_url"];
     [(SLMicroBlogUserRecord *)v5 setProfile_image_url:v8];
   }
 
@@ -75,9 +75,9 @@
   v9.receiver = self;
   v9.super_class = SLMicroBlogUserRecord;
   v4 = [(SLMicroBlogUserRecord *)&v9 description];
-  v5 = [(SLMicroBlogUserRecord *)self screen_name];
-  v6 = [(SLMicroBlogUserRecord *)self name];
-  v7 = [v3 stringWithFormat:@"%@ screenName: %@ name: %@", v4, v5, v6];
+  screen_name = [(SLMicroBlogUserRecord *)self screen_name];
+  name = [(SLMicroBlogUserRecord *)self name];
+  v7 = [v3 stringWithFormat:@"%@ screenName: %@ name: %@", v4, screen_name, name];
 
   return v7;
 }

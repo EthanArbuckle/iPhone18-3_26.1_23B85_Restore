@@ -10,53 +10,53 @@
   v22.receiver = self;
   v22.super_class = CCUIFluidPagingSettings;
   [(PTSettings *)&v22 setDefaultValues];
-  v3 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
-  [v3 setDefaultValues];
+  scrollAnimationSettings = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings setDefaultValues];
 
-  v4 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
-  [v4 setDampingRatio:0.7];
+  scrollAnimationSettings2 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings2 setDampingRatio:0.7];
 
-  v5 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
-  [v5 setResponse:0.4];
+  scrollAnimationSettings3 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings3 setResponse:0.4];
 
-  v6 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
-  [v6 setTrackingDampingRatio:1.0];
+  scrollAnimationSettings4 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings4 setTrackingDampingRatio:1.0];
 
-  v7 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
-  [v7 setTrackingResponse:0.1];
+  scrollAnimationSettings5 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings5 setTrackingResponse:0.1];
 
-  v8 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
+  scrollAnimationSettings6 = [(CCUIFluidPagingSettings *)self scrollAnimationSettings];
   v23 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v8 setFrameRateRange:2031617 highFrameRateReason:{*&v23.minimum, *&v23.maximum, *&v23.preferred}];
+  [scrollAnimationSettings6 setFrameRateRange:2031617 highFrameRateReason:{*&v23.minimum, *&v23.maximum, *&v23.preferred}];
 
-  v9 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
-  [v9 setDefaultValues];
+  scrollSettlingAnimationSettings = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
+  [scrollSettlingAnimationSettings setDefaultValues];
 
-  v10 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
-  [v10 setDampingRatio:0.8];
+  scrollSettlingAnimationSettings2 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
+  [scrollSettlingAnimationSettings2 setDampingRatio:0.8];
 
-  v11 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
-  [v11 setRetargetImpulse:0.04];
+  scrollSettlingAnimationSettings3 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
+  [scrollSettlingAnimationSettings3 setRetargetImpulse:0.04];
 
-  v12 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
-  [v12 setResponse:0.5];
+  scrollSettlingAnimationSettings4 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
+  [scrollSettlingAnimationSettings4 setResponse:0.5];
 
-  v13 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
+  scrollSettlingAnimationSettings5 = [(CCUIFluidPagingSettings *)self scrollSettlingAnimationSettings];
   v24 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v13 setFrameRateRange:2031617 highFrameRateReason:{*&v24.minimum, *&v24.maximum, *&v24.preferred}];
+  [scrollSettlingAnimationSettings5 setFrameRateRange:2031617 highFrameRateReason:{*&v24.minimum, *&v24.maximum, *&v24.preferred}];
 
-  v14 = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
-  [v14 setDefaultValues];
+  stretchAnimationSettings = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
+  [stretchAnimationSettings setDefaultValues];
 
-  v15 = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
-  [v15 setDampingRatio:0.75];
+  stretchAnimationSettings2 = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
+  [stretchAnimationSettings2 setDampingRatio:0.75];
 
-  v16 = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
-  [v16 setResponse:0.35];
+  stretchAnimationSettings3 = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
+  [stretchAnimationSettings3 setResponse:0.35];
 
-  v17 = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
+  stretchAnimationSettings4 = [(CCUIFluidPagingSettings *)self stretchAnimationSettings];
   v25 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v17 setFrameRateRange:2031617 highFrameRateReason:{*&v25.minimum, *&v25.maximum, *&v25.preferred}];
+  [stretchAnimationSettings4 setFrameRateRange:2031617 highFrameRateReason:{*&v25.minimum, *&v25.maximum, *&v25.preferred}];
 
   [(CCUIFluidPagingSettings *)self setVelocityForMaxStretch:1000.0];
   [(CCUIFluidPagingSettings *)self setMaxVelocityStretchScaleMagnitudeForPages:0.0];
@@ -64,18 +64,18 @@
   [(CCUIFluidPagingSettings *)self setMaxVelocityStretchScaleScalarMagnitudeForPages:0.03];
   [(CCUIFluidPagingSettings *)self setMaxVelocityStretchScaleScalarMagnitudeForModules:0.05];
   [(CCUIFluidPagingSettings *)self setVelocityStretchPercentageQuantum:0.01];
-  v18 = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
-  [v18 setDefaultValues];
+  velocityModuleSpreadAnimationSettings = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
+  [velocityModuleSpreadAnimationSettings setDefaultValues];
 
-  v19 = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
-  [v19 setDampingRatio:0.8];
+  velocityModuleSpreadAnimationSettings2 = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
+  [velocityModuleSpreadAnimationSettings2 setDampingRatio:0.8];
 
-  v20 = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
-  [v20 setResponse:0.35];
+  velocityModuleSpreadAnimationSettings3 = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
+  [velocityModuleSpreadAnimationSettings3 setResponse:0.35];
 
-  v21 = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
+  velocityModuleSpreadAnimationSettings4 = [(CCUIFluidPagingSettings *)self velocityModuleSpreadAnimationSettings];
   v26 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v21 setFrameRateRange:2031617 highFrameRateReason:{*&v26.minimum, *&v26.maximum, *&v26.preferred}];
+  [velocityModuleSpreadAnimationSettings4 setFrameRateRange:2031617 highFrameRateReason:{*&v26.minimum, *&v26.maximum, *&v26.preferred}];
 
   [(CCUIFluidPagingSettings *)self setVelocityForMaxModuleSpread:1000.0];
   [(CCUIFluidPagingSettings *)self setMaxVelocityModuleSpreadDistance:5.0];
@@ -146,8 +146,8 @@
   v23 = v22;
   v24 = [MEMORY[0x277D43218] sectionWithRows:v22 title:@"Velocity-Based Module Spread"];
   v25 = MEMORY[0x277D431A8];
-  v26 = [MEMORY[0x277D43238] action];
-  v27 = [v25 rowWithTitle:@"Restore Defaults" action:v26];
+  action = [MEMORY[0x277D43238] action];
+  v27 = [v25 rowWithTitle:@"Restore Defaults" action:action];
 
   v28 = MEMORY[0x277D43218];
   v53 = v27;

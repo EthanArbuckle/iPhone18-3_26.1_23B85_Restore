@@ -2,7 +2,7 @@
 - (id)_bk_getDelegateZoomView;
 - (void)centerContent;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation _BKExpandedImageContentCenteringScrollView
@@ -15,12 +15,12 @@
   [(_BKExpandedImageContentCenteringScrollView *)self centerContent];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_BKExpandedImageContentCenteringScrollView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -30,11 +30,11 @@
   v12 = v9 == width && v11 == height;
   if (!v12 || ![(_BKExpandedImageContentCenteringScrollView *)self hasCalculatedMinZoomScale])
   {
-    v13 = [(_BKExpandedImageContentCenteringScrollView *)self _bk_getDelegateZoomView];
-    v14 = v13;
-    if (v13)
+    _bk_getDelegateZoomView = [(_BKExpandedImageContentCenteringScrollView *)self _bk_getDelegateZoomView];
+    v14 = _bk_getDelegateZoomView;
+    if (_bk_getDelegateZoomView)
     {
-      [v13 bounds];
+      [_bk_getDelegateZoomView bounds];
       CGSizeScaleThatFitsInCGSize();
       if (v15 <= 2.0)
       {
@@ -67,10 +67,10 @@
 
 - (void)centerContent
 {
-  v3 = [(_BKExpandedImageContentCenteringScrollView *)self _bk_getDelegateZoomView];
-  if (v3)
+  _bk_getDelegateZoomView = [(_BKExpandedImageContentCenteringScrollView *)self _bk_getDelegateZoomView];
+  if (_bk_getDelegateZoomView)
   {
-    v10 = v3;
+    v10 = _bk_getDelegateZoomView;
     [(_BKExpandedImageContentCenteringScrollView *)self bounds];
     Width = CGRectGetWidth(v12);
     [v10 frame];
@@ -82,16 +82,16 @@
     v8 = fmax(trunc(v5 * 0.5), 0.0);
     v9 = fmax(trunc(v7 * 0.5), 0.0);
     [(_BKExpandedImageContentCenteringScrollView *)self setContentInset:v9, v8, fmax(trunc(v7 - v9), 0.0), fmax(trunc(v5 - v8), 0.0)];
-    v3 = v10;
+    _bk_getDelegateZoomView = v10;
   }
 }
 
 - (id)_bk_getDelegateZoomView
 {
-  v3 = [(_BKExpandedImageContentCenteringScrollView *)self delegate];
+  delegate = [(_BKExpandedImageContentCenteringScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 viewForZoomingInScrollView:self];
+    v4 = [delegate viewForZoomingInScrollView:self];
   }
 
   else

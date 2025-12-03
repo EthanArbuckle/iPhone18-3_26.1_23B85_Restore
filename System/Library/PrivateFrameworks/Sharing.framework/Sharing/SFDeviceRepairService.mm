@@ -3,20 +3,20 @@
 - (SFDeviceRepairService)init;
 - (id)_whenLastProblemWasRecorded;
 - (unint64_t)_lastProblemRecorded;
-- (void)_handleFinishRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleGetProblemsRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleSessionEnded:(id)a3;
-- (void)_handleSessionStarted:(id)a3;
+- (void)_handleFinishRequest:(id)request responseHandler:(id)handler;
+- (void)_handleGetProblemsRequest:(id)request responseHandler:(id)handler;
+- (void)_handleSessionEnded:(id)ended;
+- (void)_handleSessionStarted:(id)started;
 - (void)_invalidate;
-- (void)_recordNewProblem:(unint64_t)a3;
+- (void)_recordNewProblem:(unint64_t)problem;
 - (void)_registerAppleIDSetupIfNecessary;
 - (void)_registerCDPAndTouchRemoteIfNecessary;
 - (void)_repairMetricsDailyPush;
-- (void)_repairMetricsNewProblemFlags:(unint64_t)a3;
+- (void)_repairMetricsNewProblemFlags:(unint64_t)flags;
 - (void)_sfServiceStart;
 - (void)activate;
-- (void)invalidateWithFlags:(unsigned int)a3;
-- (void)setProblemFlags:(unint64_t)a3;
+- (void)invalidateWithFlags:(unsigned int)flags;
+- (void)setProblemFlags:(unint64_t)flags;
 @end
 
 @implementation SFDeviceRepairService
@@ -83,16 +83,16 @@ uint64_t __33__SFDeviceRepairService_activate__block_invoke(uint64_t a1)
   return [*(a1 + 32) _sfServiceStart];
 }
 
-- (void)setProblemFlags:(unint64_t)a3
+- (void)setProblemFlags:(unint64_t)flags
 {
-  if ([(SFDeviceRepairService *)self _lastProblemRecorded]!= a3)
+  if ([(SFDeviceRepairService *)self _lastProblemRecorded]!= flags)
   {
-    [(SFDeviceRepairService *)self _repairMetricsNewProblemFlags:a3];
-    [(SFDeviceRepairService *)self _recordNewProblem:a3];
+    [(SFDeviceRepairService *)self _repairMetricsNewProblemFlags:flags];
+    [(SFDeviceRepairService *)self _recordNewProblem:flags];
   }
 
-  self->_problemFlags = a3;
-  if (a3)
+  self->_problemFlags = flags;
+  if (flags)
   {
     v5 = 10;
   }
@@ -103,13 +103,13 @@ uint64_t __33__SFDeviceRepairService_activate__block_invoke(uint64_t a1)
   }
 
   [(SFService *)self->_sfService setDeviceActionType:v5];
-  [(SFService *)self->_sfService setProblemFlags:a3];
+  [(SFService *)self->_sfService setProblemFlags:flags];
   sfService = self->_sfService;
 
-  [(SFService *)sfService setNeedsSetup:a3 != 0];
+  [(SFService *)sfService setNeedsSetup:flags != 0];
 }
 
-- (void)invalidateWithFlags:(unsigned int)a3
+- (void)invalidateWithFlags:(unsigned int)flags
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -117,7 +117,7 @@ uint64_t __33__SFDeviceRepairService_activate__block_invoke(uint64_t a1)
   v4[2] = __45__SFDeviceRepairService_invalidateWithFlags___block_invoke;
   v4[3] = &unk_1E788D970;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -291,13 +291,13 @@ void __40__SFDeviceRepairService__sfServiceStart__block_invoke_3(uint64_t a1, vo
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v7 = [v6 mutableCopy];
 
-  v8 = [(SFDeviceRepairService *)self _whenLastProblemWasRecorded];
-  if (v8)
+  _whenLastProblemWasRecorded = [(SFDeviceRepairService *)self _whenLastProblemWasRecorded];
+  if (_whenLastProblemWasRecorded)
   {
     v9 = self->_problemFlags;
     v10 = MEMORY[0x1E696AD98];
     v11 = [MEMORY[0x1E695DF00] now];
-    [v11 timeIntervalSinceDate:v8];
+    [v11 timeIntervalSinceDate:_whenLastProblemWasRecorded];
     v12 = [v10 numberWithDouble:?];
     if (v9)
     {
@@ -318,10 +318,10 @@ void __40__SFDeviceRepairService__sfServiceStart__block_invoke_3(uint64_t a1, vo
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_repairMetricsNewProblemFlags:(unint64_t)a3
+- (void)_repairMetricsNewProblemFlags:(unint64_t)flags
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v5 = [(SFDeviceRepairService *)self _lastProblemRecorded];
+  _lastProblemRecorded = [(SFDeviceRepairService *)self _lastProblemRecorded];
   NSAppendPrintF();
   v6 = 0;
   problemFlags = self->_problemFlags;
@@ -330,7 +330,7 @@ void __40__SFDeviceRepairService__sfServiceStart__block_invoke_3(uint64_t a1, vo
   NSAppendPrintF();
   v8 = 0;
   v29[0] = @"flags";
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{a3, v5, &unk_1A998F80E}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{flags, _lastProblemRecorded, &unk_1A998F80E}];
   v10 = v9;
   v28 = v6;
   if (v6)
@@ -363,7 +363,7 @@ void __40__SFDeviceRepairService__sfServiceStart__block_invoke_3(uint64_t a1, vo
   v30[3] = v14;
   v29[3] = @"prevFlagsStr";
   v29[4] = @"lastProblem";
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:_lastProblemRecorded];
   v16 = v15;
   v29[5] = @"lastProblemStr";
   if (v8)
@@ -381,23 +381,23 @@ void __40__SFDeviceRepairService__sfServiceStart__block_invoke_3(uint64_t a1, vo
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:6];
   v19 = [v18 mutableCopy];
 
-  v20 = [(SFDeviceRepairService *)self _whenLastProblemWasRecorded];
-  if (v20)
+  _whenLastProblemWasRecorded = [(SFDeviceRepairService *)self _whenLastProblemWasRecorded];
+  if (_whenLastProblemWasRecorded)
   {
-    if (a3 && !v5)
+    if (flags && !_lastProblemRecorded)
     {
       v21 = @"timeInGood";
 LABEL_17:
       v22 = MEMORY[0x1E696AD98];
       v23 = [MEMORY[0x1E695DF00] now];
-      [v23 timeIntervalSinceDate:v20];
+      [v23 timeIntervalSinceDate:_whenLastProblemWasRecorded];
       v24 = [v22 numberWithDouble:?];
       [v19 setObject:v24 forKeyedSubscript:v21];
 
       goto LABEL_18;
     }
 
-    if (!a3 && v5)
+    if (!flags && _lastProblemRecorded)
     {
       v21 = @"timeInBad";
       goto LABEL_17;
@@ -411,41 +411,41 @@ LABEL_18:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recordNewProblem:(unint64_t)a3
+- (void)_recordNewProblem:(unint64_t)problem
 {
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AD98];
   v5 = [MEMORY[0x1E695DF00] now];
   [v5 timeIntervalSinceReferenceDate];
   v6 = [v4 numberWithDouble:?];
-  [v8 setObject:v6 forKey:@"lastProblemTimeIntervalSince1970"];
+  [standardUserDefaults setObject:v6 forKey:@"lastProblemTimeIntervalSince1970"];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
-  [v8 setObject:v7 forKey:@"lastProblemFlags"];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:problem];
+  [standardUserDefaults setObject:v7 forKey:@"lastProblemFlags"];
 }
 
 - (unint64_t)_lastProblemRecorded
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"lastProblemFlags"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"lastProblemFlags"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (id)_whenLastProblemWasRecorded
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"lastProblemTimeIntervalSince1970"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"lastProblemTimeIntervalSince1970"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -461,14 +461,14 @@ LABEL_18:
   return v4;
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   if (self->_sfSession)
   {
     if (gLogCategory_SFDeviceRepairService <= 60 && (gLogCategory_SFDeviceRepairService != -1 || _LogCategory_Initialize()))
     {
-      [(SFDeviceRepairService *)v5 _handleSessionStarted:?];
+      [(SFDeviceRepairService *)startedCopy _handleSessionStarted:?];
     }
   }
 
@@ -476,14 +476,14 @@ LABEL_18:
   {
     if (gLogCategory_SFDeviceRepairService <= 30 && (gLogCategory_SFDeviceRepairService != -1 || _LogCategory_Initialize()))
     {
-      [SFDeviceRepairService _handleSessionStarted:v5];
+      [SFDeviceRepairService _handleSessionStarted:startedCopy];
     }
 
     v6 = mach_absolute_time();
     problemFlags = self->_problemFlags;
     self->_startTicks = v6;
     self->_startProblemFlags = problemFlags;
-    objc_storeStrong(&self->_sfSession, a3);
+    objc_storeStrong(&self->_sfSession, started);
     v8 = WiFiManagerClientCreate();
     self->_wifiManager = v8;
     if (v8)
@@ -508,7 +508,7 @@ LABEL_18:
     self->_wifiSetupHandler = v10;
 
     [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler setDispatchQueue:self->_dispatchQueue];
-    [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler setSfSession:v5];
+    [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler setSfSession:startedCopy];
     [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler activate];
     if (SFDeviceClassCodeGet() == 4)
     {
@@ -517,7 +517,7 @@ LABEL_18:
       self->_captiveNetworkHandler = v12;
 
       [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler setDispatchQueue:self->_dispatchQueue];
-      [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler setSfSession:v5];
+      [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler setSfSession:startedCopy];
       [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler activate];
     }
 
@@ -533,8 +533,8 @@ LABEL_18:
     self->_homeKitSetupHandler = v15;
 
     v17 = self->_homeKitSetupHandler;
-    v18 = [(SFSession *)self->_sfSession trSession];
-    [(HMDeviceSetupOperationHandler *)v17 registerMessageHandlersForSession:v18];
+    trSession = [(SFSession *)self->_sfSession trSession];
+    [(HMDeviceSetupOperationHandler *)v17 registerMessageHandlersForSession:trSession];
   }
 }
 
@@ -568,9 +568,9 @@ LABEL_18:
     self->_touchRemoteHandler = v7;
 
     v9 = self->_touchRemoteHandler;
-    v10 = [(SFSession *)self->_sfSession trSession];
+    trSession = [(SFSession *)self->_sfSession trSession];
     v12 = 0;
-    LOBYTE(v9) = [(SFTouchRemoteAccountServicesHandler *)v9 activateWithSession:v10 error:&v12];
+    LOBYTE(v9) = [(SFTouchRemoteAccountServicesHandler *)v9 activateWithSession:trSession error:&v12];
     v11 = v12;
 
     if ((v9 & 1) == 0 && gLogCategory_SFDeviceRepairService <= 90 && (gLogCategory_SFDeviceRepairService != -1 || _LogCategory_Initialize()))
@@ -597,14 +597,14 @@ LABEL_18:
   {
     if (self->_altDSID)
     {
-      v3 = [(SFSession *)self->_sfSession messageSessionTemplate];
+      messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
 
-      if (v3)
+      if (messageSessionTemplate)
       {
         v6 = objc_alloc_init(getAISRepairControllerClass[0]());
         v4 = [objc_alloc(getAISRepairContextClass[0]()) initWithAltDSID:self->_altDSID];
-        v5 = [(SFSession *)self->_sfSession messageSessionTemplate];
-        [v4 setMessageSessionTemplate:v5];
+        messageSessionTemplate2 = [(SFSession *)self->_sfSession messageSessionTemplate];
+        [v4 setMessageSessionTemplate:messageSessionTemplate2];
 
         [v4 setRemoteRole:4];
         if (gLogCategory_SFDeviceRepairService <= 30 && (gLogCategory_SFDeviceRepairService != -1 || _LogCategory_Initialize()))
@@ -646,17 +646,17 @@ void __57__SFDeviceRepairService__registerAppleIDSetupIfNecessary__block_invoke(
   }
 }
 
-- (void)_handleSessionEnded:(id)a3
+- (void)_handleSessionEnded:(id)ended
 {
   v29[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endedCopy = ended;
   sfSession = self->_sfSession;
-  if (sfSession != v4)
+  if (sfSession != endedCopy)
   {
     goto LABEL_22;
   }
 
-  if (v4 && gLogCategory_SFDeviceRepairService <= 30)
+  if (endedCopy && gLogCategory_SFDeviceRepairService <= 30)
   {
     if (gLogCategory_SFDeviceRepairService == -1)
     {
@@ -668,7 +668,7 @@ void __57__SFDeviceRepairService__registerAppleIDSetupIfNecessary__block_invoke(
       sfSession = self->_sfSession;
     }
 
-    v25 = [(SFSession *)sfSession peer];
+    peer = [(SFSession *)sfSession peer];
     LogPrintF();
   }
 
@@ -764,16 +764,16 @@ LABEL_22:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleGetProblemsRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleGetProblemsRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceRepairService <= 30 && (gLogCategory_SFDeviceRepairService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceRepairService _handleGetProblemsRequest:responseHandler:];
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"ff"];
+  v8 = [requestCopy objectForKeyedSubscript:@"ff"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -816,25 +816,25 @@ LABEL_22:
 
   if (!self->_akAccountManager)
   {
-    v12 = [getAKAccountManagerClass[0]() sharedInstance];
+    sharedInstance = [getAKAccountManagerClass[0]() sharedInstance];
     akAccountManager = self->_akAccountManager;
-    self->_akAccountManager = v12;
+    self->_akAccountManager = sharedInstance;
   }
 
   accountStore = self->_accountStore;
   if (!accountStore)
   {
-    v15 = [(objc_class *)getACAccountStoreClass_3() defaultStore];
+    defaultStore = [(objc_class *)getACAccountStoreClass_3() defaultStore];
     v16 = self->_accountStore;
-    self->_accountStore = v15;
+    self->_accountStore = defaultStore;
 
     accountStore = self->_accountStore;
   }
 
-  v17 = [(ACAccountStore *)accountStore aa_primaryAppleAccount];
-  v18 = [v17 aa_altDSID];
+  aa_primaryAppleAccount = [(ACAccountStore *)accountStore aa_primaryAppleAccount];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
 
-  v19 = [(AKAccountManager *)self->_akAccountManager authKitAccountWithAltDSID:v18];
+  v19 = [(AKAccountManager *)self->_akAccountManager authKitAccountWithAltDSID:aa_altDSID];
   v20 = [(AKAccountManager *)self->_akAccountManager continuationTokenForAccount:v19];
   if ((SFDeviceClassCodeGet() == 4 || SFDeviceClassCodeGet() == 6) && !v20)
   {
@@ -894,19 +894,19 @@ LABEL_22:
   }
 
 LABEL_41:
-  (*(v7 + 2))(v7, 0, 0, v21);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v21);
 }
 
-- (void)_handleFinishRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleFinishRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceRepairService <= 30 && (gLogCategory_SFDeviceRepairService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceRepairService _handleFinishRequest:responseHandler:];
   }
 
-  (*(v7 + 2))(v7, 0, 0, MEMORY[0x1E695E0F8]);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x1E695E0F8]);
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

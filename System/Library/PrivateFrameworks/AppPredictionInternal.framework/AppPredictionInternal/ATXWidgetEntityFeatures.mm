@@ -1,6 +1,6 @@
 @interface ATXWidgetEntityFeatures
 - (ATXWidgetEntityFeatures)init;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 @end
 
@@ -27,23 +27,23 @@
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v13.receiver = self;
   v13.super_class = ATXWidgetEntityFeatures;
   v5 = [(ATXWidgetEntityFeatures *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"parentAppScore"];
+    v6 = [nCopy objectForKeyedSubscript:@"parentAppScore"];
     parentAppScore = v5->_parentAppScore;
     v5->_parentAppScore = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"parentAppGlobalPrior"];
+    v8 = [nCopy objectForKeyedSubscript:@"parentAppGlobalPrior"];
     parentAppGlobalPrior = v5->_parentAppGlobalPrior;
     v5->_parentAppGlobalPrior = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"widgetGlobalPrior"];
+    v10 = [nCopy objectForKeyedSubscript:@"widgetGlobalPrior"];
     widgetGlobalPrior = v5->_widgetGlobalPrior;
     v5->_widgetGlobalPrior = v10;
   }

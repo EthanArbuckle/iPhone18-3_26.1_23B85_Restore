@@ -1,14 +1,14 @@
 @interface StickersBaseMessagesViewController
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
 @end
 
 @implementation StickersBaseMessagesViewController
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(block + 2))(block, 0);
   }
 }
 

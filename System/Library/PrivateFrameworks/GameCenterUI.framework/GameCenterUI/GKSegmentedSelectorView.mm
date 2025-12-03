@@ -1,19 +1,19 @@
 @interface GKSegmentedSelectorView
-- (GKSegmentedSelectorView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)pinningStateChangedTo:(BOOL)a3;
+- (GKSegmentedSelectorView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)pinningStateChangedTo:(BOOL)to;
 - (void)prepareForReuse;
-- (void)setTarget:(id)a3;
+- (void)setTarget:(id)target;
 @end
 
 @implementation GKSegmentedSelectorView
 
-- (GKSegmentedSelectorView)initWithFrame:(CGRect)a3
+- (GKSegmentedSelectorView)initWithFrame:(CGRect)frame
 {
   v33[1] = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = GKSegmentedSelectorView;
-  v3 = [(GKHeaderWithUnderlineView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKHeaderWithUnderlineView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v3)
   {
     return v3;
@@ -24,7 +24,7 @@
   v3->_segmentedControl = v4;
 
   [(UISegmentedControl *)v3->_segmentedControl setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x277D0C868] sharedPalette];
+  mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
   if (GKHasSlowerGraphicsHardware_onceToken != -1)
   {
     [GKSegmentedSelectorView initWithFrame:];
@@ -38,10 +38,10 @@
       goto LABEL_9;
     }
 
-    v8 = [(GKSegmentedSelectorView *)v3 segmentedControl];
+    segmentedControl = [(GKSegmentedSelectorView *)v3 segmentedControl];
     v30 = *MEMORY[0x277D740C0];
-    v9 = [v6 emphasizedTextOnDarkBackgroundColor];
-    v31 = v9;
+    emphasizedTextOnDarkBackgroundColor = [mEMORY[0x277D0C868] emphasizedTextOnDarkBackgroundColor];
+    v31 = emphasizedTextOnDarkBackgroundColor;
     v10 = MEMORY[0x277CBEAC0];
     v11 = &v31;
     v12 = &v30;
@@ -49,24 +49,24 @@
 
   else
   {
-    v8 = [(GKSegmentedSelectorView *)v3 segmentedControl];
+    segmentedControl = [(GKSegmentedSelectorView *)v3 segmentedControl];
     v32 = *MEMORY[0x277D740C0];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    v33[0] = v9;
+    emphasizedTextOnDarkBackgroundColor = [MEMORY[0x277D75348] whiteColor];
+    v33[0] = emphasizedTextOnDarkBackgroundColor;
     v10 = MEMORY[0x277CBEAC0];
     v11 = v33;
     v12 = &v32;
   }
 
   v13 = [v10 dictionaryWithObjects:v11 forKeys:v12 count:1];
-  [v8 setTitleTextAttributes:v13 forState:4];
+  [segmentedControl setTitleTextAttributes:v13 forState:4];
 
 LABEL_9:
   [(GKSegmentedSelectorView *)v3 addSubview:v3->_segmentedControl];
-  v14 = [(GKHeaderWithUnderlineView *)v3 metrics];
+  metrics = [(GKHeaderWithUnderlineView *)v3 metrics];
   v15 = MEMORY[0x277CCAAD0];
   v16 = v3->_segmentedControl;
-  v17 = [v14 objectForKeyedSubscript:@"hairline"];
+  v17 = [metrics objectForKeyedSubscript:@"hairline"];
   [v17 floatValue];
   v19 = [v15 constraintWithItem:v16 attribute:10 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:-v18];
   [(GKSegmentedSelectorView *)v3 addConstraint:v19];
@@ -74,10 +74,10 @@ LABEL_9:
   v20 = [MEMORY[0x277CCAAD0] constraintWithItem:v3->_segmentedControl attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
   [(GKSegmentedSelectorView *)v3 addConstraint:v20];
 
-  v21 = [MEMORY[0x277D75418] currentDevice];
-  v22 = [v21 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v22 == 1 && (*v7 != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+  if (userInterfaceIdiom == 1 && (*v7 != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
   {
     v23 = [MEMORY[0x277CCAAD0] constraintWithItem:v3->_segmentedControl attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:664.0];
     LODWORD(v25) = 1144750080;
@@ -101,16 +101,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = GKSegmentedSelectorView;
-  [(GKHeaderWithUnderlineView *)&v9 applyLayoutAttributes:v4];
+  [(GKHeaderWithUnderlineView *)&v9 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = attributesCopy;
     [v5 leadingMargin];
     v7 = v6;
     [v5 trailingMargin];
@@ -129,29 +129,29 @@ LABEL_9:
   }
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  v4 = a3;
-  v5 = v4;
+  targetCopy = target;
+  v5 = targetCopy;
   target = self->_target;
-  if (target != v4)
+  if (target != targetCopy)
   {
-    v7 = v4;
+    v7 = targetCopy;
     if (target)
     {
-      v4 = [(UISegmentedControl *)self->_segmentedControl removeTarget:target action:sel_selectedSegmentChanged_ forControlEvents:4096];
+      targetCopy = [(UISegmentedControl *)self->_segmentedControl removeTarget:target action:sel_selectedSegmentChanged_ forControlEvents:4096];
       v5 = v7;
     }
 
     self->_target = v5;
     if (v5)
     {
-      v4 = [(UISegmentedControl *)self->_segmentedControl addTarget:v5 action:sel_selectedSegmentChanged_ forControlEvents:4096];
+      targetCopy = [(UISegmentedControl *)self->_segmentedControl addTarget:v5 action:sel_selectedSegmentChanged_ forControlEvents:4096];
       v5 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](targetCopy, v5);
 }
 
 - (void)prepareForReuse
@@ -163,15 +163,15 @@ LABEL_9:
   [(GKSegmentedSelectorView *)self setTarget:0];
 }
 
-- (void)pinningStateChangedTo:(BOOL)a3
+- (void)pinningStateChangedTo:(BOOL)to
 {
-  v3 = a3;
+  toCopy = to;
   v13[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = GKSegmentedSelectorView;
   [(GKHeaderWithUnderlineView *)&v11 pinningStateChangedTo:?];
   v5 = 0.0;
-  if (v3)
+  if (toCopy)
   {
     v5 = -10.0;
   }
@@ -186,19 +186,19 @@ LABEL_9:
 
     if (GKHasSlowerGraphicsHardware_processorCount >= 2)
     {
-      v6 = [MEMORY[0x277D0C868] sharedPalette];
-      v7 = [(GKSegmentedSelectorView *)self segmentedControl];
-      v8 = v7;
-      if (v3)
+      mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+      segmentedControl = [(GKSegmentedSelectorView *)self segmentedControl];
+      v8 = segmentedControl;
+      if (toCopy)
       {
-        [v7 setTitleTextAttributes:MEMORY[0x277CBEC10] forState:4];
+        [segmentedControl setTitleTextAttributes:MEMORY[0x277CBEC10] forState:4];
       }
 
       else
       {
         v12 = *MEMORY[0x277D740C0];
-        v9 = [v6 emphasizedTextOnDarkBackgroundColor];
-        v13[0] = v9;
+        emphasizedTextOnDarkBackgroundColor = [mEMORY[0x277D0C868] emphasizedTextOnDarkBackgroundColor];
+        v13[0] = emphasizedTextOnDarkBackgroundColor;
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
         [v8 setTitleTextAttributes:v10 forState:4];
       }

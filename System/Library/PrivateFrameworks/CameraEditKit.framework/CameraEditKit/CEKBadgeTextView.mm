@@ -1,31 +1,31 @@
 @interface CEKBadgeTextView
 + (UIEdgeInsets)_defaultTextInsets;
-+ (double)_heightForContentSize:(id)a3 textInsets:(UIEdgeInsets)a4;
-+ (double)_textHeightForContentSize:(id)a3;
-+ (id)_textAttributesForContentSize:(id)a3 fontStyle:(unint64_t)a4;
-- (CEKBadgeTextView)initWithFrame:(CGRect)a3;
++ (double)_heightForContentSize:(id)size textInsets:(UIEdgeInsets)insets;
++ (double)_textHeightForContentSize:(id)size;
++ (id)_textAttributesForContentSize:(id)size fontStyle:(unint64_t)style;
+- (CEKBadgeTextView)initWithFrame:(CGRect)frame;
 - (CGSize)_textSize;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)_textInsets;
 - (id)_maskImage;
 - (void)_didUpdateContents;
 - (void)_preferredContentSizeCategoryChanged;
-- (void)_setSymbol:(id)a3;
-- (void)_setText:(id)a3;
-- (void)_setTextAttributes:(id)a3;
-- (void)_setTextInsets:(UIEdgeInsets)a3;
+- (void)_setSymbol:(id)symbol;
+- (void)_setText:(id)text;
+- (void)_setTextAttributes:(id)attributes;
+- (void)_setTextInsets:(UIEdgeInsets)insets;
 - (void)_updateAttributedString;
-- (void)setFontStyle:(unint64_t)a3;
+- (void)setFontStyle:(unint64_t)style;
 @end
 
 @implementation CEKBadgeTextView
 
-- (CEKBadgeTextView)initWithFrame:(CGRect)a3
+- (CEKBadgeTextView)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = CEKBadgeTextView;
-  v3 = [(CEKBadgeView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKBadgeView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,15 +63,15 @@
   return result;
 }
 
-- (void)setFontStyle:(unint64_t)a3
+- (void)setFontStyle:(unint64_t)style
 {
-  if (self->_fontStyle != a3)
+  if (self->_fontStyle != style)
   {
-    self->_fontStyle = a3;
+    self->_fontStyle = style;
     v6 = objc_opt_class();
-    v9 = [(CEKBadgeTextView *)self traitCollection];
-    v7 = [v9 preferredContentSizeCategory];
-    v8 = [v6 _textAttributesForContentSize:v7 fontStyle:a3];
+    traitCollection = [(CEKBadgeTextView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v8 = [v6 _textAttributesForContentSize:preferredContentSizeCategory fontStyle:style];
     [(CEKBadgeTextView *)self _setTextAttributes:v8];
   }
 }
@@ -90,19 +90,19 @@
   v21.width = v4;
   v21.height = v6;
   UIGraphicsBeginImageContextWithOptions(v21, 0, 0.0);
-  v15 = [(CEKBadgeTextView *)self _symbolText];
+  _symbolText = [(CEKBadgeTextView *)self _symbolText];
 
-  if (v15)
+  if (_symbolText)
   {
-    v16 = [(CEKBadgeTextView *)self _symbolText];
-    [v16 drawInRect:{v14, v12, v8, v10}];
+    _symbolText2 = [(CEKBadgeTextView *)self _symbolText];
+    [_symbolText2 drawInRect:{v14, v12, v8, v10}];
   }
 
   else
   {
-    v16 = [(CEKBadgeTextView *)self _text];
-    v17 = [(CEKBadgeTextView *)self _textAttributes];
-    [v16 drawInRect:v17 withAttributes:{v14, v12, v8, v10}];
+    _symbolText2 = [(CEKBadgeTextView *)self _text];
+    _textAttributes = [(CEKBadgeTextView *)self _textAttributes];
+    [_symbolText2 drawInRect:_textAttributes withAttributes:{v14, v12, v8, v10}];
   }
 
   v18 = UIGraphicsGetImageFromCurrentImageContext();
@@ -113,19 +113,19 @@
 
 - (CGSize)_textSize
 {
-  v3 = [(CEKBadgeTextView *)self _textAttributes];
-  v4 = [(CEKBadgeTextView *)self _symbolText];
+  _textAttributes = [(CEKBadgeTextView *)self _textAttributes];
+  _symbolText = [(CEKBadgeTextView *)self _symbolText];
 
-  if (v4)
+  if (_symbolText)
   {
-    v5 = [(CEKBadgeTextView *)self _symbolText];
-    [v5 size];
+    _symbolText2 = [(CEKBadgeTextView *)self _symbolText];
+    [_symbolText2 size];
   }
 
   else
   {
-    v5 = [(CEKBadgeTextView *)self _text];
-    [v5 sizeWithAttributes:v3];
+    _symbolText2 = [(CEKBadgeTextView *)self _text];
+    [_symbolText2 sizeWithAttributes:_textAttributes];
   }
 
   UICeilToViewScale();
@@ -156,79 +156,79 @@
 
 - (void)_preferredContentSizeCategoryChanged
 {
-  v3 = [(CEKBadgeTextView *)self traitCollection];
-  v5 = [v3 preferredContentSizeCategory];
+  traitCollection = [(CEKBadgeTextView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = [objc_opt_class() _textAttributesForContentSize:v5 fontStyle:{-[CEKBadgeTextView fontStyle](self, "fontStyle")}];
+  v4 = [objc_opt_class() _textAttributesForContentSize:preferredContentSizeCategory fontStyle:{-[CEKBadgeTextView fontStyle](self, "fontStyle")}];
   [(CEKBadgeTextView *)self _setTextAttributes:v4];
 }
 
-- (void)_setText:(id)a3
+- (void)_setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   text = self->__text;
-  if (text != v5)
+  if (text != textCopy)
   {
-    v7 = v5;
-    text = [text isEqualToString:v5];
-    v5 = v7;
+    v7 = textCopy;
+    text = [text isEqualToString:textCopy];
+    textCopy = v7;
     if ((text & 1) == 0)
     {
-      objc_storeStrong(&self->__text, a3);
+      objc_storeStrong(&self->__text, text);
       text = [(CEKBadgeTextView *)self _didUpdateContents];
-      v5 = v7;
+      textCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](text, v5);
+  MEMORY[0x1EEE66BB8](text, textCopy);
 }
 
-- (void)_setSymbol:(id)a3
+- (void)_setSymbol:(id)symbol
 {
-  v5 = a3;
+  symbolCopy = symbol;
   symbol = self->__symbol;
-  if (symbol != v5)
+  if (symbol != symbolCopy)
   {
-    v7 = v5;
-    symbol = [symbol isEqualToString:v5];
-    v5 = v7;
+    v7 = symbolCopy;
+    symbol = [symbol isEqualToString:symbolCopy];
+    symbolCopy = v7;
     if ((symbol & 1) == 0)
     {
-      objc_storeStrong(&self->__symbol, a3);
+      objc_storeStrong(&self->__symbol, symbol);
       symbol = [(CEKBadgeTextView *)self _didUpdateContents];
-      v5 = v7;
+      symbolCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](symbol, v5);
+  MEMORY[0x1EEE66BB8](symbol, symbolCopy);
 }
 
 - (void)_updateAttributedString
 {
-  v3 = [(CEKBadgeTextView *)self _symbol];
+  _symbol = [(CEKBadgeTextView *)self _symbol];
 
-  if (v3)
+  if (_symbol)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [(CEKBadgeTextView *)self _symbol];
-    v13 = [v4 systemImageNamed:v5];
+    _symbol2 = [(CEKBadgeTextView *)self _symbol];
+    v13 = [v4 systemImageNamed:_symbol2];
 
     v6 = objc_alloc_init(MEMORY[0x1E696AD40]);
     v7 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v13];
     v8 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v7];
     [v6 appendAttributedString:v8];
-    v9 = [(CEKBadgeTextView *)self _text];
-    if (v9)
+    _text = [(CEKBadgeTextView *)self _text];
+    if (_text)
     {
       v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
       [v6 appendAttributedString:v10];
 
-      v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v9];
+      v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:_text];
       [v6 appendAttributedString:v11];
     }
 
-    v12 = [(CEKBadgeTextView *)self _textAttributes];
-    [v6 addAttributes:v12 range:{0, objc_msgSend(v6, "length")}];
+    _textAttributes = [(CEKBadgeTextView *)self _textAttributes];
+    [v6 addAttributes:_textAttributes range:{0, objc_msgSend(v6, "length")}];
 
     [(CEKBadgeTextView *)self _setSymbolText:v6];
   }
@@ -240,35 +240,35 @@
   }
 }
 
-- (void)_setTextAttributes:(id)a3
+- (void)_setTextAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   textAttributes = self->__textAttributes;
-  if (textAttributes != v5)
+  if (textAttributes != attributesCopy)
   {
-    v7 = v5;
-    textAttributes = [textAttributes isEqualToDictionary:v5];
-    v5 = v7;
+    v7 = attributesCopy;
+    textAttributes = [textAttributes isEqualToDictionary:attributesCopy];
+    attributesCopy = v7;
     if ((textAttributes & 1) == 0)
     {
-      objc_storeStrong(&self->__textAttributes, a3);
+      objc_storeStrong(&self->__textAttributes, attributes);
       textAttributes = [(CEKBadgeTextView *)self _didUpdateContents];
-      v5 = v7;
+      attributesCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](textAttributes, v5);
+  MEMORY[0x1EEE66BB8](textAttributes, attributesCopy);
 }
 
-- (void)_setTextInsets:(UIEdgeInsets)a3
+- (void)_setTextInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->__textInsets.top, v3), vceqq_f64(*&self->__textInsets.bottom, v4)))) & 1) == 0)
   {
-    self->__textInsets = a3;
+    self->__textInsets = insets;
     [(CEKBadgeTextView *)self _didUpdateContents];
   }
 }
@@ -278,19 +278,19 @@
   [(CEKBadgeTextView *)self _updateAttributedString];
   [(CEKBadgeTextView *)self setNeedsDisplay];
   [(CEKBadgeTextView *)self invalidateIntrinsicContentSize];
-  v3 = [(CEKBadgeView *)self delegate];
-  [v3 badgeViewDidChangeIntrinsicContentSize:self];
+  delegate = [(CEKBadgeView *)self delegate];
+  [delegate badgeViewDidChangeIntrinsicContentSize:self];
 }
 
-+ (id)_textAttributesForContentSize:(id)a3 fontStyle:(unint64_t)a4
++ (id)_textAttributesForContentSize:(id)size fontStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _fontForContentSize:v5 fontStyle:a4];
+  sizeCopy = size;
+  v6 = [objc_opt_class() _fontForContentSize:sizeCopy fontStyle:style];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB648]];
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v7 setObject:whiteColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
   v9 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v6 leading];
@@ -311,12 +311,12 @@
   return v7;
 }
 
-+ (double)_textHeightForContentSize:(id)a3
++ (double)_textHeightForContentSize:(id)size
 {
-  v3 = [a1 _fontForContentSize:a3 fontStyle:0];
+  v3 = [self _fontForContentSize:size fontStyle:0];
   [v3 lineHeight];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
 
   UICeilToScale();
   v6 = v5;
@@ -324,11 +324,11 @@
   return v6;
 }
 
-+ (double)_heightForContentSize:(id)a3 textInsets:(UIEdgeInsets)a4
++ (double)_heightForContentSize:(id)size textInsets:(UIEdgeInsets)insets
 {
-  [a1 _textHeightForContentSize:{a3, a4.top, a4.left, a4.bottom, a4.right}];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  [self _textHeightForContentSize:{size, insets.top, insets.left, insets.bottom, insets.right}];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
 
   UICeilToScale();
   return result;

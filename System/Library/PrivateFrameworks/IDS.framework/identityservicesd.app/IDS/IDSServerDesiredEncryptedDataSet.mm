@@ -1,27 +1,27 @@
 @interface IDSServerDesiredEncryptedDataSet
-- (BOOL)isEqual:(id)a3;
-- (IDSServerDesiredEncryptedDataSet)initWithEncryptedData:(id)a3 type:(int)a4 forPublicIdentity:(__SecKey *)a5 forParticipantID:(unint64_t)a6;
-- (id)_wrapData:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (IDSServerDesiredEncryptedDataSet)initWithEncryptedData:(id)data type:(int)type forPublicIdentity:(__SecKey *)identity forParticipantID:(unint64_t)d;
+- (id)_wrapData:(id)data error:(id *)error;
 - (id)materialDataByID;
 - (void)dealloc;
 @end
 
 @implementation IDSServerDesiredEncryptedDataSet
 
-- (IDSServerDesiredEncryptedDataSet)initWithEncryptedData:(id)a3 type:(int)a4 forPublicIdentity:(__SecKey *)a5 forParticipantID:(unint64_t)a6
+- (IDSServerDesiredEncryptedDataSet)initWithEncryptedData:(id)data type:(int)type forPublicIdentity:(__SecKey *)identity forParticipantID:(unint64_t)d
 {
-  v11 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = IDSServerDesiredEncryptedDataSet;
   v12 = [(IDSServerDesiredEncryptedDataSet *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_encryptedData, a3);
-    v13->_type = a4;
-    CFRetain(a5);
-    v13->_forPublicIdentity = a5;
-    v13->_forParticipantID = a6;
+    objc_storeStrong(&v12->_encryptedData, data);
+    v13->_type = type;
+    CFRetain(identity);
+    v13->_forPublicIdentity = identity;
+    v13->_forParticipantID = d;
     v13->_requireSignature = 1;
   }
 
@@ -36,14 +36,14 @@
   [(IDSServerDesiredEncryptedDataSet *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 encryptedData];
-    v7 = v6 == self->_encryptedData && [v5 forPublicIdentity] == self->_forPublicIdentity && objc_msgSend(v5, "forParticipantID") == self->_forParticipantID;
+    v5 = equalCopy;
+    encryptedData = [v5 encryptedData];
+    v7 = encryptedData == self->_encryptedData && [v5 forPublicIdentity] == self->_forPublicIdentity && objc_msgSend(v5, "forParticipantID") == self->_forParticipantID;
   }
 
   else
@@ -54,19 +54,19 @@
   return v7;
 }
 
-- (id)_wrapData:(id)a3 error:(id *)a4
+- (id)_wrapData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [GFTKeyWrapping encrypt:v6 toKey:self->_forPublicIdentity error:a4];
+  dataCopy = data;
+  v7 = [GFTKeyWrapping encrypt:dataCopy toKey:self->_forPublicIdentity error:error];
   v8 = v7;
-  if (a4 || !v7)
+  if (error || !v7)
   {
     v9 = +[IDSFoundationLog ServerMaterialExchange];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       forPublicIdentity = self->_forPublicIdentity;
       forParticipantID = self->_forParticipantID;
-      v13 = *a4;
+      v13 = *error;
       v14 = 134218754;
       v15 = forParticipantID;
       v16 = 2112;
@@ -74,7 +74,7 @@
       v18 = 2112;
       v19 = v13;
       v20 = 2112;
-      v21 = v6;
+      v21 = dataCopy;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "_wrapData: Couldn't protect the data for _forParticipantID: %llu _forPublicIdentity: %@ (error: %@), data: %@", &v14, 0x2Au);
     }
   }
@@ -117,13 +117,13 @@ LABEL_10:
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(IDSServerDesiredEncryptedDataSet *)self forParticipantID];
-        v17 = [(IDSServerDesiredEncryptedDataSet *)self forPublicIdentity];
+        forParticipantID = [(IDSServerDesiredEncryptedDataSet *)self forParticipantID];
+        forPublicIdentity = [(IDSServerDesiredEncryptedDataSet *)self forPublicIdentity];
         v18 = self->_encryptedData;
         *buf = 134218754;
-        v25 = v16;
+        v25 = forParticipantID;
         v26 = 2112;
-        v27 = v17;
+        v27 = forPublicIdentity;
         v28 = 2112;
         v29 = v18;
         v30 = 2112;

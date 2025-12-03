@@ -1,37 +1,37 @@
 @interface DevicePINPaneAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHasDeletableText;
-- (DevicePINPaneAccessibility)initWithFrame:(CGRect)a3;
+- (DevicePINPaneAccessibility)initWithFrame:(CGRect)frame;
 - (id)_accessibilityResponderElement;
 - (unint64_t)_accessibilityHandwritingAttributeAllowedCharacterSets;
 - (unint64_t)_accessibilityHandwritingAttributePreferredCharacterSet;
-- (void)_accessibilityInsertText:(id)a3;
+- (void)_accessibilityInsertText:(id)text;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4;
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string;
 @end
 
 @implementation DevicePINPaneAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DevicePINPane" hasInstanceMethod:@"simplePIN" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DevicePINPane" hasInstanceMethod:@"insertText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"DevicePINPane" hasInstanceMethod:@"hasText" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DevicePINPane" hasInstanceMethod:@"deleteBackward" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"DevicePINPane" hasInstanceMethod:@"pinView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DevicePINPane" isKindOfClass:@"PSEditingPane"];
-  [v3 validateClass:@"PSEditingPane" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"DevicePINPane" hasInstanceVariable:@"_transitionView" withType:"UITransitionView"];
-  [v3 validateClass:@"PSBulletedPINView" hasInstanceVariable:@"_passcodeField" withType:"PSPasscodeField"];
-  [v3 validateClass:@"DevicePINPane" hasInstanceMethod:@"slideToNewPasscodeField:requiresKeyboard:numericOnly:transition:showsOptionsButton:" withFullSignature:{"v", "B", "B", "B", "i", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DevicePINPane" hasInstanceMethod:@"simplePIN" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DevicePINPane" hasInstanceMethod:@"insertText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"DevicePINPane" hasInstanceMethod:@"hasText" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DevicePINPane" hasInstanceMethod:@"deleteBackward" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"DevicePINPane" hasInstanceMethod:@"pinView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DevicePINPane" isKindOfClass:@"PSEditingPane"];
+  [validationsCopy validateClass:@"PSEditingPane" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"DevicePINPane" hasInstanceVariable:@"_transitionView" withType:"UITransitionView"];
+  [validationsCopy validateClass:@"PSBulletedPINView" hasInstanceVariable:@"_passcodeField" withType:"PSPasscodeField"];
+  [validationsCopy validateClass:@"DevicePINPane" hasInstanceMethod:@"slideToNewPasscodeField:requiresKeyboard:numericOnly:transition:showsOptionsButton:" withFullSignature:{"v", "B", "B", "B", "i", "B", 0}];
 }
 
-- (DevicePINPaneAccessibility)initWithFrame:(CGRect)a3
+- (DevicePINPaneAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DevicePINPaneAccessibility;
-  v3 = [(DevicePINPaneAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DevicePINPaneAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,22 +52,22 @@
 
 - (id)_accessibilityResponderElement
 {
-  if (!-[DevicePINPaneAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"simplePIN") || (-[DevicePINPaneAccessibility safeValueForKey:](self, "safeValueForKey:", @"pinView"), v3 = objc_claimAutoreleasedReturnValue(), [v3 safeValueForKey:@"_passcodeField"], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  if (!-[DevicePINPaneAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"simplePIN") || (-[DevicePINPaneAccessibility safeValueForKey:](self, "safeValueForKey:", @"pinView"), v3 = objc_claimAutoreleasedReturnValue(), [v3 safeValueForKey:@"_passcodeField"], _accessibilityResponderElement = objc_claimAutoreleasedReturnValue(), v3, !_accessibilityResponderElement))
   {
     v6.receiver = self;
     v6.super_class = DevicePINPaneAccessibility;
-    v4 = [(DevicePINPaneAccessibility *)&v6 _accessibilityResponderElement];
+    _accessibilityResponderElement = [(DevicePINPaneAccessibility *)&v6 _accessibilityResponderElement];
   }
 
-  return v4;
+  return _accessibilityResponderElement;
 }
 
 - (unint64_t)_accessibilityHandwritingAttributePreferredCharacterSet
 {
   v2 = [(DevicePINPaneAccessibility *)self safeValueForKey:@"simplePIN"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
     return 4;
   }
@@ -81,9 +81,9 @@
 - (unint64_t)_accessibilityHandwritingAttributeAllowedCharacterSets
 {
   v2 = [(DevicePINPaneAccessibility *)self safeValueForKey:@"simplePIN"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
     return 4;
   }
@@ -113,13 +113,13 @@ uint64_t __60__DevicePINPaneAccessibility__accessibilityHasDeletableText__block_
   return result;
 }
 
-- (void)_accessibilityInsertText:(id)a3
+- (void)_accessibilityInsertText:(id)text
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  textCopy = text;
+  v4 = textCopy;
+  if (textCopy)
   {
-    v5 = v3;
+    v5 = textCopy;
     AXPerformSafeBlock();
   }
 }
@@ -133,10 +133,10 @@ uint64_t __55__DevicePINPaneAccessibility__accessibilityInsertText___block_invok
   return [v2 insertText:v3];
 }
 
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string
 {
-  v5 = a4;
-  v4 = v5;
+  stringCopy = string;
+  v4 = stringCopy;
   AXPerformSafeBlock();
 }
 

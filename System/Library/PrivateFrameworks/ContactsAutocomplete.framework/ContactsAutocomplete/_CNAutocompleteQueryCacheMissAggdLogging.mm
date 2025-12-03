@@ -1,8 +1,8 @@
 @interface _CNAutocompleteQueryCacheMissAggdLogging
 - (_CNAutocompleteQueryCacheMissAggdLogging)init;
-- (_CNAutocompleteQueryCacheMissAggdLogging)initWithProbe:(id)a3;
-- (void)didReturnCacheFalseNegatives:(id)a3;
-- (void)didReturnCacheFalsePositives:(id)a3;
+- (_CNAutocompleteQueryCacheMissAggdLogging)initWithProbe:(id)probe;
+- (void)didReturnCacheFalseNegatives:(id)negatives;
+- (void)didReturnCacheFalsePositives:(id)positives;
 @end
 
 @implementation _CNAutocompleteQueryCacheMissAggdLogging
@@ -22,47 +22,47 @@
   return v7;
 }
 
-- (_CNAutocompleteQueryCacheMissAggdLogging)initWithProbe:(id)a3
+- (_CNAutocompleteQueryCacheMissAggdLogging)initWithProbe:(id)probe
 {
-  v5 = a3;
+  probeCopy = probe;
   v10.receiver = self;
   v10.super_class = _CNAutocompleteQueryCacheMissAggdLogging;
   v6 = [(_CNAutocompleteQueryCacheMissAggdLogging *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_probe, a3);
+    objc_storeStrong(&v6->_probe, probe);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)didReturnCacheFalseNegatives:(id)a3
+- (void)didReturnCacheFalseNegatives:(id)negatives
 {
-  v7 = a3;
-  if ([v7 count])
+  negativesCopy = negatives;
+  if ([negativesCopy count])
   {
-    v4 = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-    [v4 recordAddValue:v5 forKey:@"false-negatives"];
+    probe = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(negativesCopy, "count")}];
+    [probe recordAddValue:v5 forKey:@"false-negatives"];
 
-    v6 = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
-    [v6 sendData];
+    probe2 = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
+    [probe2 sendData];
   }
 }
 
-- (void)didReturnCacheFalsePositives:(id)a3
+- (void)didReturnCacheFalsePositives:(id)positives
 {
-  v7 = a3;
-  if ([v7 count])
+  positivesCopy = positives;
+  if ([positivesCopy count])
   {
-    v4 = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-    [v4 recordAddValue:v5 forKey:@"false-positives"];
+    probe = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(positivesCopy, "count")}];
+    [probe recordAddValue:v5 forKey:@"false-positives"];
 
-    v6 = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
-    [v6 sendData];
+    probe2 = [(_CNAutocompleteQueryCacheMissAggdLogging *)self probe];
+    [probe2 sendData];
   }
 }
 

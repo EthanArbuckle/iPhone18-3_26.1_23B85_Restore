@@ -1,11 +1,11 @@
 @interface VirtualGarageServiceTask
 - (VirtualGarageServiceTask)init;
-- (void)_mapsTerminated:(id)a3;
+- (void)_mapsTerminated:(id)terminated;
 - (void)_setupVirtualGarageIfNeeded;
 - (void)_tearDownVirtualGarage;
 - (void)dealloc;
-- (void)setUsesVirtualGarage:(BOOL)a3;
-- (void)valueChangedForMapsFeature:(id)a3 enabled:(BOOL)a4;
+- (void)setUsesVirtualGarage:(BOOL)garage;
+- (void)valueChangedForMapsFeature:(id)feature enabled:(BOOL)enabled;
 @end
 
 @implementation VirtualGarageServiceTask
@@ -30,7 +30,7 @@
 
 - (void)_setupVirtualGarageIfNeeded
 {
-  v3 = [(VirtualGarageServiceTask *)self serviceQueue];
+  serviceQueue = [(VirtualGarageServiceTask *)self serviceQueue];
   MapsFeature_AddDelegateListener();
   MapsFeature_AddDelegateListener();
   objc_initWeak(&location, self);
@@ -39,15 +39,15 @@
   v4[2] = sub_100022AE8;
   v4[3] = &unk_101661B98;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(serviceQueue, v4);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)valueChangedForMapsFeature:(id)a3 enabled:(BOOL)a4
+- (void)valueChangedForMapsFeature:(id)feature enabled:(BOOL)enabled
 {
-  v5 = a3.var0.var0 == MapsFeaturesConfig_EnableEVRouting && a3.var0.var1 == *(&MapsFeaturesConfig_EnableEVRouting + 1);
-  if (v5 || (a3.var0.var0 == LODWORD(MapsFeaturesConfig_EnableAlberta[0]) ? (v6 = a3.var0.var1 == MapsFeaturesConfig_EnableAlberta[1]) : (v6 = 0), v6))
+  v5 = feature.var0.var0 == MapsFeaturesConfig_EnableEVRouting && feature.var0.var1 == *(&MapsFeaturesConfig_EnableEVRouting + 1);
+  if (v5 || (feature.var0.var0 == LODWORD(MapsFeaturesConfig_EnableAlberta[0]) ? (v6 = feature.var0.var1 == MapsFeaturesConfig_EnableAlberta[1]) : (v6 = 0), v6))
   {
     if (MapsFeature_IsEnabled_EVRouting())
     {
@@ -108,33 +108,33 @@
   }
 }
 
-- (void)_mapsTerminated:(id)a3
+- (void)_mapsTerminated:(id)terminated
 {
-  v4 = a3;
+  terminatedCopy = terminated;
   objc_initWeak(&location, self);
-  v5 = [(VirtualGarageServiceTask *)self serviceQueue];
+  serviceQueue = [(VirtualGarageServiceTask *)self serviceQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100C1AAD4;
   v6[3] = &unk_101661B98;
   objc_copyWeak(&v7, &location);
-  dispatch_sync(v5, v6);
+  dispatch_sync(serviceQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)setUsesVirtualGarage:(BOOL)a3
+- (void)setUsesVirtualGarage:(BOOL)garage
 {
-  if (self->_usesVirtualGarage != a3)
+  if (self->_usesVirtualGarage != garage)
   {
     v14 = v3;
     v15 = v4;
-    v5 = a3;
-    self->_usesVirtualGarage = a3;
+    garageCopy = garage;
+    self->_usesVirtualGarage = garage;
     v7 = sub_100022C48();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (garageCopy)
     {
       if (v8)
       {
@@ -148,8 +148,8 @@
       v10 = +[NSNotificationCenter defaultCenter];
       [v10 addObserver:self selector:"_mapsTerminated:" name:UIApplicationWillTerminateNotification object:0];
 
-      v11 = [(VirtualGarageServiceTask *)self serviceQueue];
-      dispatch_async(v11, &stru_10164DE38);
+      serviceQueue = [(VirtualGarageServiceTask *)self serviceQueue];
+      dispatch_async(serviceQueue, &stru_10164DE38);
     }
 
     else
@@ -161,8 +161,8 @@
       }
 
       [(VirtualGarageServiceTask *)self _tearDownVirtualGarage];
-      v11 = +[NSNotificationCenter defaultCenter];
-      [v11 removeObserver:self name:UIApplicationWillTerminateNotification object:0];
+      serviceQueue = +[NSNotificationCenter defaultCenter];
+      [serviceQueue removeObserver:self name:UIApplicationWillTerminateNotification object:0];
     }
   }
 }

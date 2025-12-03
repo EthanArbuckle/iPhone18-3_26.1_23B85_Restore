@@ -1,15 +1,15 @@
 @interface StopwatchApertureControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation StopwatchApertureControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ClockAngel.StopwatchApertureController" hasSwiftField:@"leadingView" withSwiftType:"Optional<UIView & SBUISystemApertureAccessoryView>"];
-  [v3 validateClass:@"ClockAngel.StopwatchApertureController" hasSwiftField:@"minimalView" withSwiftType:"Optional<UIView & SBUISystemApertureAccessoryView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ClockAngel.StopwatchApertureController" hasSwiftField:@"leadingView" withSwiftType:"Optional<UIView & SBUISystemApertureAccessoryView>"];
+  [validationsCopy validateClass:@"ClockAngel.StopwatchApertureController" hasSwiftField:@"minimalView" withSwiftType:"Optional<UIView & SBUISystemApertureAccessoryView>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

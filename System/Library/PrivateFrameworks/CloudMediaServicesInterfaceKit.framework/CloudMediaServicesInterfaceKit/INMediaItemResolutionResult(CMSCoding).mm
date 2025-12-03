@@ -24,9 +24,9 @@
       if (v9)
       {
         v10 = v9;
-        v11 = [MEMORY[0x277CD3DC0] disambiguationWithMediaItemsToDisambiguate:v9];
+        unsupported = [MEMORY[0x277CD3DC0] disambiguationWithMediaItemsToDisambiguate:v9];
 LABEL_18:
-        v8 = v11;
+        v8 = unsupported;
         goto LABEL_19;
       }
     }
@@ -44,7 +44,7 @@ LABEL_18:
 
       if (v14)
       {
-        v11 = [MEMORY[0x277CD3DC0] unsupported];
+        unsupported = [MEMORY[0x277CD3DC0] unsupported];
         goto LABEL_18;
       }
 
@@ -52,7 +52,7 @@ LABEL_18:
 
       if (v15)
       {
-        v11 = [MEMORY[0x277CD3DC0] needsValue];
+        unsupported = [MEMORY[0x277CD3DC0] needsValue];
         goto LABEL_18;
       }
 
@@ -60,7 +60,7 @@ LABEL_18:
 
       if (v8)
       {
-        v11 = [MEMORY[0x277CD3DC0] notRequired];
+        unsupported = [MEMORY[0x277CD3DC0] notRequired];
         goto LABEL_18;
       }
     }

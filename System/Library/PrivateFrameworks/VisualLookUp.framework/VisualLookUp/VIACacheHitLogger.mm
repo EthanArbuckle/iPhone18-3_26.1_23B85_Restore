@@ -1,30 +1,30 @@
 @interface VIACacheHitLogger
 + (id)feedbackNamesToLog;
-- (VIACacheHitLogger)initWithQueue:(id)a3 feedbackSubmitter:(id)a4;
-- (void)_logEvent:(id)a3;
-- (void)didObserveEvent:(id)a3;
-- (void)logEvent:(id)a3;
+- (VIACacheHitLogger)initWithQueue:(id)queue feedbackSubmitter:(id)submitter;
+- (void)_logEvent:(id)event;
+- (void)didObserveEvent:(id)event;
+- (void)logEvent:(id)event;
 @end
 
 @implementation VIACacheHitLogger
 
-- (VIACacheHitLogger)initWithQueue:(id)a3 feedbackSubmitter:(id)a4
+- (VIACacheHitLogger)initWithQueue:(id)queue feedbackSubmitter:(id)submitter
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  submitterCopy = submitter;
   v16.receiver = self;
   v16.super_class = VIACacheHitLogger;
   v9 = [(VIACacheHitLogger *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_feedbackSubmitter, a4);
-    v11 = [[VIAEventCache alloc] initWithQueue:v7];
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_feedbackSubmitter, submitter);
+    v11 = [[VIAEventCache alloc] initWithQueue:queueCopy];
     engagementEventCache = v10->_engagementEventCache;
     v10->_engagementEventCache = v11;
 
-    v13 = [[VIAEventCache alloc] initWithQueue:v7];
+    v13 = [[VIAEventCache alloc] initWithQueue:queueCopy];
     rankingEventCache = v10->_rankingEventCache;
     v10->_rankingEventCache = v13;
   }
@@ -32,38 +32,38 @@
   return v10;
 }
 
-- (void)didObserveEvent:(id)a3
+- (void)didObserveEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 feedback];
+  eventCopy = event;
+  feedback = [eventCopy feedback];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(VIAEventCache *)self->_engagementEventCache cacheEvent:v8];
+    [(VIAEventCache *)self->_engagementEventCache cacheEvent:eventCopy];
   }
 
-  v6 = [v8 feedback];
+  feedback2 = [eventCopy feedback];
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
 
   if (v7)
   {
-    [(VIAEventCache *)self->_rankingEventCache cacheEvent:v8];
+    [(VIAEventCache *)self->_rankingEventCache cacheEvent:eventCopy];
   }
 }
 
-- (void)logEvent:(id)a3
+- (void)logEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v5;
+      v4 = eventCopy;
     }
 
     else
@@ -85,14 +85,14 @@
   return v5;
 }
 
-- (void)_logEvent:(id)a3
+- (void)_logEvent:(id)event
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v39 = [v4 engagementSuggestionType];
+  eventCopy = event;
+  engagementSuggestionType = [eventCopy engagementSuggestionType];
   engagementEventCache = self->_engagementEventCache;
-  v6 = [v4 originatingApplication];
-  v7 = -[VIAEventCache cachedEventForBundleID:queryID:](engagementEventCache, "cachedEventForBundleID:queryID:", v6, [v4 cachedResultQueryID]);
+  originatingApplication = [eventCopy originatingApplication];
+  v7 = -[VIAEventCache cachedEventForBundleID:queryID:](engagementEventCache, "cachedEventForBundleID:queryID:", originatingApplication, [eventCopy cachedResultQueryID]);
 
   v47 = 0u;
   v48 = 0u;
@@ -115,19 +115,19 @@
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
-        v14 = [v13 feedback];
+        feedback = [v13 feedback];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v15 = 0;
+          feedback2 = 0;
           goto LABEL_13;
         }
 
-        v15 = [v13 feedback];
+        feedback2 = [v13 feedback];
 
         if (v13)
         {
-          v16 = v15 == 0;
+          v16 = feedback2 == 0;
         }
 
         else
@@ -137,19 +137,19 @@
 
         if (!v16)
         {
-          v14 = [v15 VI_searchSuggestionForSuggestionType:v39];
-          v17 = [objc_alloc(MEMORY[0x1E69CA4C0]) initWithSuggestion:v14];
-          [v17 setQueryId:{objc_msgSend(v4, "queryID")}];
+          feedback = [feedback2 VI_searchSuggestionForSuggestionType:engagementSuggestionType];
+          v17 = [objc_alloc(MEMORY[0x1E69CA4C0]) initWithSuggestion:feedback];
+          [v17 setQueryId:{objc_msgSend(eventCopy, "queryID")}];
           feedbackSubmitter = self->_feedbackSubmitter;
-          v19 = [v4 queryID];
+          queryID = [eventCopy queryID];
           v20 = feedbackSubmitter;
           v8 = v38;
-          [(VIAFeedbackSubmitter *)v20 reportFeedback:v17 queryId:v19];
+          [(VIAFeedbackSubmitter *)v20 reportFeedback:v17 queryId:queryID];
 
 LABEL_13:
         }
 
-        -[VIAFeedbackSubmitter didHitCacheForQueryId:](self->_feedbackSubmitter, "didHitCacheForQueryId:", [v4 queryID]);
+        -[VIAFeedbackSubmitter didHitCacheForQueryId:](self->_feedbackSubmitter, "didHitCacheForQueryId:", [eventCopy queryID]);
       }
 
       v10 = [v8 countByEnumeratingWithState:&v45 objects:v54 count:16];
@@ -159,8 +159,8 @@ LABEL_13:
   }
 
   rankingEventCache = self->_rankingEventCache;
-  v22 = [v4 originatingApplication];
-  v23 = -[VIAEventCache cachedEventForBundleID:queryID:](rankingEventCache, "cachedEventForBundleID:queryID:", v22, [v4 cachedResultQueryID]);
+  originatingApplication2 = [eventCopy originatingApplication];
+  v23 = -[VIAEventCache cachedEventForBundleID:queryID:](rankingEventCache, "cachedEventForBundleID:queryID:", originatingApplication2, [eventCopy cachedResultQueryID]);
 
   v43 = 0u;
   v44 = 0u;
@@ -184,20 +184,20 @@ LABEL_13:
         }
 
         v29 = *(*(&v41 + 1) + 8 * j);
-        v30 = [v29 feedback];
+        feedback3 = [v29 feedback];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v31 = [v29 feedback];
+          feedback4 = [v29 feedback];
 
-          if (v31)
+          if (feedback4)
           {
             v32 = objc_alloc(MEMORY[0x1E69CA340]);
-            v33 = [v31 sections];
-            [v31 blendingDuration];
-            v34 = [v32 initWithSections:v33 blendingDuration:?];
+            sections = [feedback4 sections];
+            [feedback4 blendingDuration];
+            v34 = [v32 initWithSections:sections blendingDuration:?];
 
-            -[VIAFeedbackSubmitter reportFeedback:queryId:](self->_feedbackSubmitter, "reportFeedback:queryId:", v34, [v4 cachedResultQueryID]);
+            -[VIAFeedbackSubmitter reportFeedback:queryId:](self->_feedbackSubmitter, "reportFeedback:queryId:", v34, [eventCopy cachedResultQueryID]);
             goto LABEL_28;
           }
         }
@@ -211,16 +211,16 @@ LABEL_13:
           continue;
         }
 
-        v31 = +[_TtC12VisualLookUp8VILogger log];
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+        feedback4 = +[_TtC12VisualLookUp8VILogger log];
+        if (os_log_type_enabled(feedback4, OS_LOG_TYPE_ERROR))
         {
-          v35 = [v4 originatingApplication];
-          v36 = [v4 cachedResultQueryID];
+          originatingApplication3 = [eventCopy originatingApplication];
+          cachedResultQueryID = [eventCopy cachedResultQueryID];
           *buf = v37;
-          v50 = v35;
+          v50 = originatingApplication3;
           v51 = 2048;
-          v52 = v36;
-          _os_log_impl(&dword_1D9962000, v31, OS_LOG_TYPE_ERROR, "Expected ranking event missing from cache for application=%{public}@, queryID=%llu", buf, 0x16u);
+          v52 = cachedResultQueryID;
+          _os_log_impl(&dword_1D9962000, feedback4, OS_LOG_TYPE_ERROR, "Expected ranking event missing from cache for application=%{public}@, queryID=%llu", buf, 0x16u);
         }
 
 LABEL_28:

@@ -1,14 +1,14 @@
 @interface OISpotlightImporter
 - (OISpotlightImporter)init;
-- (id)searchableAttributesForOfficeFileAtURL:(id)a3 error:(id *)a4;
-- (id)searchableAttributesForXMLOfficeFileOfType:(unint64_t)a3 atURL:(id)a4 error:(id *)a5;
-- (id)sheetNamesFromWorkbookPart:(id)a3;
-- (id)textContentForReader:(id)a3 withType:(unint64_t)a4;
-- (id)textContentFromExcelReader:(id)a3;
-- (id)textContentFromPowerPointReader:(id)a3;
-- (id)textContentFromWordReader:(id)a3;
-- (id)textFromElementsNamed:(const char *)a3 skippingElementsNamed:(const char *)a4 insertingNewlinesOnElementsNamed:(const char *)a5 tabulationsOnElementsNamed:(const char *)a6 inNamespaces:(const char *)a7 inPackagePart:(id)a8;
-- (void)addPackagePropertiesFromReader:(id)a3 toSearchableAttributes:(id)a4;
+- (id)searchableAttributesForOfficeFileAtURL:(id)l error:(id *)error;
+- (id)searchableAttributesForXMLOfficeFileOfType:(unint64_t)type atURL:(id)l error:(id *)error;
+- (id)sheetNamesFromWorkbookPart:(id)part;
+- (id)textContentForReader:(id)reader withType:(unint64_t)type;
+- (id)textContentFromExcelReader:(id)reader;
+- (id)textContentFromPowerPointReader:(id)reader;
+- (id)textContentFromWordReader:(id)reader;
+- (id)textFromElementsNamed:(const char *)named skippingElementsNamed:(const char *)elementsNamed insertingNewlinesOnElementsNamed:(const char *)onElementsNamed tabulationsOnElementsNamed:(const char *)tabulationsOnElementsNamed inNamespaces:(const char *)namespaces inPackagePart:(id)part;
+- (void)addPackagePropertiesFromReader:(id)reader toSearchableAttributes:(id)attributes;
 @end
 
 @implementation OISpotlightImporter
@@ -32,99 +32,99 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
   return objc_opt_class();
 }
 
-- (void)addPackagePropertiesFromReader:(id)a3 toSearchableAttributes:(id)a4
+- (void)addPackagePropertiesFromReader:(id)reader toSearchableAttributes:(id)attributes
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 zipPackage];
-  v8 = [v7 properties];
-  v9 = [v8 creator];
-  v10 = [v9 length];
+  readerCopy = reader;
+  attributesCopy = attributes;
+  zipPackage = [readerCopy zipPackage];
+  properties = [zipPackage properties];
+  creator = [properties creator];
+  v10 = [creator length];
 
   if (v10)
   {
-    v11 = [v8 creator];
-    v32[0] = v11;
+    creator2 = [properties creator];
+    v32[0] = creator2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-    [v6 setAuthorNames:v12];
+    [attributesCopy setAuthorNames:v12];
   }
 
-  v13 = [v8 description];
+  v13 = [properties description];
   v14 = [v13 length] == 0;
 
   if (!v14)
   {
-    v15 = [v8 description];
-    [v6 setContentDescription:v15];
+    v15 = [properties description];
+    [attributesCopy setContentDescription:v15];
   }
 
-  v16 = [v8 keywords];
-  v17 = [v16 length] == 0;
+  keywords = [properties keywords];
+  v17 = [keywords length] == 0;
 
   if (!v17)
   {
-    v18 = [v8 keywords];
-    v31 = v18;
+    keywords2 = [properties keywords];
+    v31 = keywords2;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-    [v6 setKeywords:v19];
+    [attributesCopy setKeywords:v19];
   }
 
-  v20 = [v8 title];
-  v21 = [v20 length] == 0;
+  title = [properties title];
+  v21 = [title length] == 0;
 
   if (!v21)
   {
-    v22 = [v8 title];
-    [v6 setTitle:v22];
+    title2 = [properties title];
+    [attributesCopy setTitle:title2];
   }
 
-  v23 = [v8 company];
-  v24 = [v23 length] == 0;
+  company = [properties company];
+  v24 = [company length] == 0;
 
   if (!v24)
   {
-    v25 = [v8 company];
-    v30 = v25;
+    company2 = [properties company];
+    v30 = company2;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-    [v6 setOrganizations:v26];
+    [attributesCopy setOrganizations:v26];
   }
 
-  v27 = [v8 subject];
-  v28 = [v27 length] == 0;
+  subject = [properties subject];
+  v28 = [subject length] == 0;
 
   if (!v28)
   {
-    v29 = [v8 subject];
-    [v6 setSubject:v29];
+    subject2 = [properties subject];
+    [attributesCopy setSubject:subject2];
   }
 }
 
-- (id)textFromElementsNamed:(const char *)a3 skippingElementsNamed:(const char *)a4 insertingNewlinesOnElementsNamed:(const char *)a5 tabulationsOnElementsNamed:(const char *)a6 inNamespaces:(const char *)a7 inPackagePart:(id)a8
+- (id)textFromElementsNamed:(const char *)named skippingElementsNamed:(const char *)elementsNamed insertingNewlinesOnElementsNamed:(const char *)onElementsNamed tabulationsOnElementsNamed:(const char *)tabulationsOnElementsNamed inNamespaces:(const char *)namespaces inPackagePart:(id)part
 {
-  v13 = a8;
+  partCopy = part;
   v14 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v15 = [v13 xmlReader];
+  xmlReader = [partCopy xmlReader];
   v16 = 0;
-  while (xmlTextReaderRead(v15) == 1)
+  while (xmlTextReaderRead(xmlReader) == 1)
   {
-    if (xmlTextReaderNodeType(v15) == 1)
+    if (xmlTextReaderNodeType(xmlReader) == 1)
     {
-      v17 = xmlTextReaderConstLocalName(v15);
-      if (xmlStrcmp(v17, a3))
+      v17 = xmlTextReaderConstLocalName(xmlReader);
+      if (xmlStrcmp(v17, named))
       {
-        if (a4 && !xmlStrcmp(v17, a4) && isCurrentTextReaderElementInNamespaces(v15, a7))
+        if (elementsNamed && !xmlStrcmp(v17, elementsNamed) && isCurrentTextReaderElementInNamespaces(xmlReader, namespaces))
         {
             ;
           }
         }
 
-        else if (a5 == 0 || !v16 || xmlStrcmp(v17, a5) || !isCurrentTextReaderElementInNamespaces(v15, a7))
+        else if (onElementsNamed == 0 || !v16 || xmlStrcmp(v17, onElementsNamed) || !isCurrentTextReaderElementInNamespaces(xmlReader, namespaces))
         {
-          if (a6 != 0 && v16)
+          if (tabulationsOnElementsNamed != 0 && v16)
           {
             v16 = 1;
-            if (!xmlStrcmp(v17, a6) && isCurrentTextReaderElementInNamespaces(v15, a7))
+            if (!xmlStrcmp(v17, tabulationsOnElementsNamed) && isCurrentTextReaderElementInNamespaces(xmlReader, namespaces))
             {
               [v14 appendString:@"\t"];
             }
@@ -138,38 +138,38 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
         }
       }
 
-      else if (isCurrentTextReaderElementInNamespaces(v15, a7))
+      else if (isCurrentTextReaderElementInNamespaces(xmlReader, namespaces))
       {
-        v18 = xmlTextReaderExpand(v15);
+        v18 = xmlTextReaderExpand(xmlReader);
         Content = xmlNodeGetContent(v18);
         if (Content)
         {
           v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:Content];
           [v14 appendString:v20];
 
-          if (!a5)
+          if (!onElementsNamed)
           {
             [v14 appendString:@"\n"];
           }
 
           free(Content);
-          v16 = a5 != 0;
+          v16 = onElementsNamed != 0;
         }
       }
     }
   }
 
-  xmlFreeTextReader(v15);
+  xmlFreeTextReader(xmlReader);
 
   return v14;
 }
 
-- (id)textContentFromPowerPointReader:(id)a3
+- (id)textContentFromPowerPointReader:(id)reader
 {
   v41[3] = *MEMORY[0x277D85DE8];
-  v4 = [a3 zipPackage];
-  v22 = [v4 mainDocumentPart];
-  v5 = [v22 relationshipsByType:@"http://purl.oclc.org/ooxml/officeDocument/relationships/slide"];
+  zipPackage = [reader zipPackage];
+  mainDocumentPart = [zipPackage mainDocumentPart];
+  v5 = [mainDocumentPart relationshipsByType:@"http://purl.oclc.org/ooxml/officeDocument/relationships/slide"];
   v6 = v5;
   if (v5)
   {
@@ -178,7 +178,7 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
 
   else
   {
-    v23 = [v22 relationshipsByType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide"];
+    v23 = [mainDocumentPart relationshipsByType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide"];
   }
 
   v41[0] = "http://schemas.openxmlformats.org/drawingml/2006/main";
@@ -204,8 +204,8 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v35 + 1) + 8 * i) targetLocation];
-        v29 = [v4 partForLocation:v8];
+        targetLocation = [*(*(&v35 + 1) + 8 * i) targetLocation];
+        v29 = [zipPackage partForLocation:targetLocation];
 
         v27 = [(OISpotlightImporter *)self textFromElementsNamed:"t" skippingElementsNamed:0 insertingNewlinesOnElementsNamed:"p" tabulationsOnElementsNamed:0 inNamespaces:v41 inPackagePart:v29];
         if ([v27 length])
@@ -251,8 +251,8 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
                 objc_enumerationMutation(v13);
               }
 
-              v17 = [*(*(&v31 + 1) + 8 * j) targetLocation];
-              v18 = [v4 partForLocation:v17];
+              targetLocation2 = [*(*(&v31 + 1) + 8 * j) targetLocation];
+              v18 = [zipPackage partForLocation:targetLocation2];
 
               v19 = [(OISpotlightImporter *)self textFromElementsNamed:"t" skippingElementsNamed:"fld" insertingNewlinesOnElementsNamed:"p" tabulationsOnElementsNamed:0 inNamespaces:v41 inPackagePart:v18];
               if ([v19 length])
@@ -280,7 +280,7 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
   return v20;
 }
 
-- (id)textContentFromWordReader:(id)a3
+- (id)textContentFromWordReader:(id)reader
 {
   v37[5] = *MEMORY[0x277D85DE8];
   v37[0] = "http://purl.oclc.org/ooxml/wordprocessingml/main";
@@ -288,14 +288,14 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
   v37[2] = "http://schemas.microsoft.com/office/word/2012/wordml";
   v37[3] = "http://schemas.microsoft.com/office/word/2010/wordml";
   v37[4] = 0;
-  v26 = [a3 zipPackage];
-  v23 = [v26 mainDocumentPart];
+  zipPackage = [reader zipPackage];
+  mainDocumentPart = [zipPackage mainDocumentPart];
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [v23 relationshipsByType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"];
+  obj = [mainDocumentPart relationshipsByType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"];
   v5 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v5)
   {
@@ -309,8 +309,8 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v31 + 1) + 8 * i) targetLocation];
-        v9 = [v26 partForLocation:v8];
+        targetLocation = [*(*(&v31 + 1) + 8 * i) targetLocation];
+        v9 = [zipPackage partForLocation:targetLocation];
 
         v10 = [(OISpotlightImporter *)self textFromElementsNamed:"t" skippingElementsNamed:0 insertingNewlinesOnElementsNamed:"p" tabulationsOnElementsNamed:"tab" inNamespaces:v37 inPackagePart:v9];
         [v4 appendString:v10];
@@ -322,11 +322,11 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
     while (v5);
   }
 
-  v11 = [(OISpotlightImporter *)self textFromElementsNamed:"t" skippingElementsNamed:0 insertingNewlinesOnElementsNamed:"p" tabulationsOnElementsNamed:"tab" inNamespaces:v37 inPackagePart:v23];
+  v11 = [(OISpotlightImporter *)self textFromElementsNamed:"t" skippingElementsNamed:0 insertingNewlinesOnElementsNamed:"p" tabulationsOnElementsNamed:"tab" inNamespaces:v37 inPackagePart:mainDocumentPart];
   [v4 appendString:v11];
 
-  v12 = [v23 firstPartWithRelationshipOfType:@"http://purl.oclc.org/ooxml/officeDocument/relationships/footnotes"];
-  if (v12 || ([v23 firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  v12 = [mainDocumentPart firstPartWithRelationshipOfType:@"http://purl.oclc.org/ooxml/officeDocument/relationships/footnotes"];
+  if (v12 || ([mainDocumentPart firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = [(OISpotlightImporter *)self textFromElementsNamed:"t" skippingElementsNamed:0 insertingNewlinesOnElementsNamed:"p" tabulationsOnElementsNamed:"tab" inNamespaces:v37 inPackagePart:v12];
     [v4 appendString:v13];
@@ -341,7 +341,7 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obja = [v23 relationshipsByType:{@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer", v21}];
+  obja = [mainDocumentPart relationshipsByType:{@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer", v21}];
   v14 = [obja countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v14)
   {
@@ -355,8 +355,8 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
           objc_enumerationMutation(obja);
         }
 
-        v17 = [*(*(&v27 + 1) + 8 * j) targetLocation];
-        v18 = [v26 partForLocation:v17];
+        targetLocation2 = [*(*(&v27 + 1) + 8 * j) targetLocation];
+        v18 = [zipPackage partForLocation:targetLocation2];
 
         v19 = [(OISpotlightImporter *)self textFromElementsNamed:"t" skippingElementsNamed:0 insertingNewlinesOnElementsNamed:"p" tabulationsOnElementsNamed:"tab" inNamespaces:v37 inPackagePart:v18];
         [v4 appendString:v19];
@@ -371,38 +371,38 @@ uint64_t __27__OISpotlightImporter_init__block_invoke()
   return v4;
 }
 
-- (id)sheetNamesFromWorkbookPart:(id)a3
+- (id)sheetNamesFromWorkbookPart:(id)part
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  partCopy = part;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v3 xmlReader];
+  xmlReader = [partCopy xmlReader];
   v6 = 0;
   v16 = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
   v17 = "http://purl.oclc.org/ooxml/spreadsheetml/main";
   v18 = 0;
-  while (xmlTextReaderRead(v5) == 1)
+  while (xmlTextReaderRead(xmlReader) == 1)
   {
-    if ((v6 & 1) != 0 && xmlTextReaderNodeType(v5) == 15)
+    if ((v6 & 1) != 0 && xmlTextReaderNodeType(xmlReader) == 15)
     {
-      v7 = xmlTextReaderConstLocalName(v5);
+      v7 = xmlTextReaderConstLocalName(xmlReader);
       if (xmlStrEqual(v7, "sheets"))
       {
-        if (isCurrentTextReaderElementInNamespaces(v5, &v16))
+        if (isCurrentTextReaderElementInNamespaces(xmlReader, &v16))
         {
           break;
         }
       }
     }
 
-    if (xmlTextReaderNodeType(v5) == 1)
+    if (xmlTextReaderNodeType(xmlReader) == 1)
     {
-      v8 = xmlTextReaderConstLocalName(v5);
+      v8 = xmlTextReaderConstLocalName(xmlReader);
       if (xmlStrEqual(v8, "sheet"))
       {
-        if (isCurrentTextReaderElementInNamespaces(v5, &v16))
+        if (isCurrentTextReaderElementInNamespaces(xmlReader, &v16))
         {
-          v9 = xmlTextReaderExpand(v5);
+          v9 = xmlTextReaderExpand(xmlReader);
           if (v9)
           {
             properties = v9->properties;
@@ -440,23 +440,23 @@ LABEL_17:
     }
   }
 
-  xmlFreeTextReader(v5);
+  xmlFreeTextReader(xmlReader);
   v14 = [v4 componentsJoinedByString:{@"\n", v16, v17, v18, v19}];
 
   return v14;
 }
 
-- (id)textContentFromExcelReader:(id)a3
+- (id)textContentFromExcelReader:(id)reader
 {
   v15[4] = *MEMORY[0x277D85DE8];
   v15[0] = "http://purl.oclc.org/ooxml/spreadsheetml/main";
   v15[1] = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
   v15[2] = "http://schemas.openxmlformats.org/spreadsheetml/2006/7/main";
   v15[3] = 0;
-  v4 = [a3 zipPackage];
-  v5 = [v4 mainDocumentPart];
-  v6 = [(OISpotlightImporter *)self sheetNamesFromWorkbookPart:v5];
-  v7 = [v5 firstPartWithRelationshipOfType:@"http://purl.oclc.org/ooxml/officeDocument/relationships/sharedStrings"];
+  zipPackage = [reader zipPackage];
+  mainDocumentPart = [zipPackage mainDocumentPart];
+  v6 = [(OISpotlightImporter *)self sheetNamesFromWorkbookPart:mainDocumentPart];
+  v7 = [mainDocumentPart firstPartWithRelationshipOfType:@"http://purl.oclc.org/ooxml/officeDocument/relationships/sharedStrings"];
   v8 = v7;
   if (v7)
   {
@@ -465,7 +465,7 @@ LABEL_17:
 
   else
   {
-    v9 = [v5 firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings"];
+    v9 = [mainDocumentPart firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings"];
   }
 
   v10 = v9;
@@ -477,26 +477,26 @@ LABEL_17:
   return v13;
 }
 
-- (id)textContentForReader:(id)a3 withType:(unint64_t)a4
+- (id)textContentForReader:(id)reader withType:(unint64_t)type
 {
-  v7 = a3;
-  switch(a4)
+  readerCopy = reader;
+  switch(type)
   {
     case 2uLL:
-      v8 = [(OISpotlightImporter *)self textContentFromWordReader:v7];
+      v8 = [(OISpotlightImporter *)self textContentFromWordReader:readerCopy];
       goto LABEL_7;
     case 6uLL:
-      v8 = [(OISpotlightImporter *)self textContentFromPowerPointReader:v7];
+      v8 = [(OISpotlightImporter *)self textContentFromPowerPointReader:readerCopy];
       goto LABEL_7;
     case 4uLL:
-      v8 = [(OISpotlightImporter *)self textContentFromExcelReader:v7];
+      v8 = [(OISpotlightImporter *)self textContentFromExcelReader:readerCopy];
 LABEL_7:
       v9 = v8;
       goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"OISpotlightImporter.mm" lineNumber:387 description:@"Unknown file type"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"OISpotlightImporter.mm" lineNumber:387 description:@"Unknown file type"];
 
   v9 = 0;
 LABEL_9:
@@ -504,18 +504,18 @@ LABEL_9:
   return v9;
 }
 
-- (id)searchableAttributesForXMLOfficeFileOfType:(unint64_t)a3 atURL:(id)a4 error:(id *)a5
+- (id)searchableAttributesForXMLOfficeFileOfType:(unint64_t)type atURL:(id)l error:(id *)error
 {
-  v7 = a4;
+  lCopy = l;
   v8 = [(OCDReader *)[OCXReader alloc] initWithCancelDelegate:0];
-  v9 = [v7 path];
-  [(OCDReader *)v8 setFileName:v9];
+  path = [lCopy path];
+  [(OCDReader *)v8 setFileName:path];
 
   if ([(OCXReader *)v8 start])
   {
     v10 = objc_alloc_init(MEMORY[0x277CC34B8]);
     [(OISpotlightImporter *)self addPackagePropertiesFromReader:v8 toSearchableAttributes:v10];
-    v11 = [(OISpotlightImporter *)self textContentForReader:v8 withType:a3];
+    v11 = [(OISpotlightImporter *)self textContentForReader:v8 withType:type];
     [v10 setTextContent:v11];
 
     v12 = v10;
@@ -529,33 +529,33 @@ LABEL_9:
   return v12;
 }
 
-- (id)searchableAttributesForOfficeFileAtURL:(id)a3 error:(id *)a4
+- (id)searchableAttributesForOfficeFileAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [CMFileManager getFileTypeFromPath:v7];
+  lCopy = l;
+  path = [lCopy path];
+  v8 = [CMFileManager getFileTypeFromPath:path];
 
   if (v8 <= 6)
   {
     if (((1 << v8) & 0x2A) != 0)
     {
-      v9 = [QLTop searchableAttributesForBinaryOfficeFileAtURL:v6 error:a4];
+      v9 = [QLTop searchableAttributesForBinaryOfficeFileAtURL:lCopy error:error];
       goto LABEL_6;
     }
 
     if (((1 << v8) & 0x54) != 0)
     {
-      v9 = [(OISpotlightImporter *)self searchableAttributesForXMLOfficeFileOfType:v8 atURL:v6 error:a4];
+      v9 = [(OISpotlightImporter *)self searchableAttributesForXMLOfficeFileOfType:v8 atURL:lCopy error:error];
 LABEL_6:
       v10 = v9;
       goto LABEL_7;
     }
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"OIErrorDomain" code:2 userInfo:0];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else

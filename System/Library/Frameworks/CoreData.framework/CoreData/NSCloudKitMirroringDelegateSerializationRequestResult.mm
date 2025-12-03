@@ -1,20 +1,20 @@
 @interface NSCloudKitMirroringDelegateSerializationRequestResult
-- (NSCloudKitMirroringDelegateSerializationRequestResult)initWithRequest:(id)a3 storeIdentifier:(id)a4 serializedObjects:(id)a5 error:(id)a6;
+- (NSCloudKitMirroringDelegateSerializationRequestResult)initWithRequest:(id)request storeIdentifier:(id)identifier serializedObjects:(id)objects error:(id)error;
 - (void)dealloc;
 @end
 
 @implementation NSCloudKitMirroringDelegateSerializationRequestResult
 
-- (NSCloudKitMirroringDelegateSerializationRequestResult)initWithRequest:(id)a3 storeIdentifier:(id)a4 serializedObjects:(id)a5 error:(id)a6
+- (NSCloudKitMirroringDelegateSerializationRequestResult)initWithRequest:(id)request storeIdentifier:(id)identifier serializedObjects:(id)objects error:(id)error
 {
   v10.receiver = self;
   v10.super_class = NSCloudKitMirroringDelegateSerializationRequestResult;
-  v7 = [(NSCloudKitMirroringResult *)&v10 initWithRequest:a3 storeIdentifier:a4 success:a5 != 0 madeChanges:0 error:a6];
+  v7 = [(NSCloudKitMirroringResult *)&v10 initWithRequest:request storeIdentifier:identifier success:objects != 0 madeChanges:0 error:error];
   if (v7)
   {
-    if (a5)
+    if (objects)
     {
-      v8 = [a5 copy];
+      v8 = [objects copy];
     }
 
     else

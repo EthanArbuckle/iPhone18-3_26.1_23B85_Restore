@@ -1,38 +1,38 @@
 @interface WebAppViewController
-- (WebAppViewController)initWithWebClip:(id)a3;
+- (WebAppViewController)initWithWebClip:(id)clip;
 - (void)_cancelHideSnapshotTimer;
 - (void)_connectToService;
 - (void)_removeRemoteView;
-- (void)_setUpContentViewController:(id)a3;
+- (void)_setUpContentViewController:(id)controller;
 - (void)dealloc;
 - (void)hideLoadingView;
-- (void)notificationActivated:(id)a3;
+- (void)notificationActivated:(id)activated;
 - (void)openURLWithCustomSchemeIfNeeded;
-- (void)processWebPushWithIdentifier:(id)a3;
+- (void)processWebPushWithIdentifier:(id)identifier;
 - (void)timeLimitForLoadCompletionExpired;
-- (void)webAppViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4;
+- (void)webAppViewController:(id)controller viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation WebAppViewController
 
-- (WebAppViewController)initWithWebClip:(id)a3
+- (WebAppViewController)initWithWebClip:(id)clip
 {
-  v5 = a3;
+  clipCopy = clip;
   v17.receiver = self;
   v17.super_class = WebAppViewController;
   v6 = [(WebAppViewController *)&v17 initWithNibName:0 bundle:0];
   v6->_orientation = [*MEMORY[0x277D76620] interfaceOrientation];
-  objc_storeStrong(&v6->_webClip, a3);
-  v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v8 = [(WebAppViewController *)v6 view];
-  [v8 setBackgroundColor:v7];
+  objc_storeStrong(&v6->_webClip, clip);
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(WebAppViewController *)v6 view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v9 = [(UIWebClip *)v6->_webClip pageURL];
-  if ([v9 safari_hasCustomScheme])
+  pageURL = [(UIWebClip *)v6->_webClip pageURL];
+  if ([pageURL safari_hasCustomScheme])
   {
-    v10 = [v9 safari_isDataURL];
-    v6->_hasCustomScheme = v10 ^ 1;
-    if ((v10 & 1) == 0)
+    safari_isDataURL = [pageURL safari_isDataURL];
+    v6->_hasCustomScheme = safari_isDataURL ^ 1;
+    if ((safari_isDataURL & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -43,7 +43,7 @@
     v6->_hasCustomScheme = 0;
   }
 
-  v11 = [[LoadingViewController alloc] initWithWebClip:v5 orientation:v6->_orientation];
+  v11 = [[LoadingViewController alloc] initWithWebClip:clipCopy orientation:v6->_orientation];
   loadingViewController = v6->_loadingViewController;
   v6->_loadingViewController = v11;
 
@@ -51,8 +51,8 @@
   hideSnapshotTimer = v6->_hideSnapshotTimer;
   v6->_hideSnapshotTimer = v13;
 
-  v15 = [MEMORY[0x277D75128] sharedApplication];
-  [v15 setNetworkActivityIndicatorVisible:1];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:1];
 
   [(WebAppViewController *)v6 _connectToService];
 LABEL_6:
@@ -70,7 +70,7 @@ LABEL_6:
 
 - (void)_connectToService
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__WebAppViewController__connectToService__block_invoke;
@@ -105,36 +105,36 @@ void __41__WebAppViewController__connectToService__block_invoke(uint64_t a1, voi
 
 - (void)_removeRemoteView
 {
-  v3 = [(_SFWebAppViewController *)self->_contentViewController view];
-  [v3 removeFromSuperview];
+  view = [(_SFWebAppViewController *)self->_contentViewController view];
+  [view removeFromSuperview];
 
   [(_SFWebAppViewController *)self->_contentViewController removeFromParentViewController];
   contentViewController = self->_contentViewController;
   self->_contentViewController = 0;
 }
 
-- (void)_setUpContentViewController:(id)a3
+- (void)_setUpContentViewController:(id)controller
 {
-  v10 = a3;
-  objc_storeStrong(&self->_contentViewController, a3);
-  v5 = [v10 view];
-  v6 = [(WebAppViewController *)self view];
-  [v6 bounds];
-  [v5 setFrame:?];
+  controllerCopy = controller;
+  objc_storeStrong(&self->_contentViewController, controller);
+  view = [controllerCopy view];
+  view2 = [(WebAppViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v10 setDelegate:self];
+  [controllerCopy setDelegate:self];
   if (!self->_wasLaunchedForWebPush)
   {
-    v7 = [(WebAppViewController *)self webClip];
-    v8 = [v7 identifier];
-    [v10 loadWebAppWithIdentifier:v8];
+    webClip = [(WebAppViewController *)self webClip];
+    identifier = [webClip identifier];
+    [controllerCopy loadWebAppWithIdentifier:identifier];
   }
 
-  [(WebAppViewController *)self addChildViewController:v10];
-  v9 = [(WebAppViewController *)self view];
-  [v9 addSubview:v5];
+  [(WebAppViewController *)self addChildViewController:controllerCopy];
+  view3 = [(WebAppViewController *)self view];
+  [view3 addSubview:view];
 
-  [v10 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
   [(WebAppViewController *)self setNeedsStatusBarAppearanceUpdate];
   [(WebAppViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
   [(WebAppViewController *)self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
@@ -163,10 +163,10 @@ void __41__WebAppViewController__connectToService__block_invoke(uint64_t a1, voi
 {
   if (self->_loadingViewController)
   {
-    v3 = [(WebAppViewController *)self presentedViewController];
+    presentedViewController = [(WebAppViewController *)self presentedViewController];
     loadingViewController = self->_loadingViewController;
 
-    if (v3 == loadingViewController)
+    if (presentedViewController == loadingViewController)
     {
       [(WebAppViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
@@ -184,19 +184,19 @@ void __41__WebAppViewController__connectToService__block_invoke(uint64_t a1, voi
     v4 = [MEMORY[0x277CBEBC0] URLWithString:&stru_2882569F8];
     [v7 setReferrerURL:v4];
 
-    v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v6 = [(UIWebClip *)self->_webClip pageURL];
-    [v5 openURL:v6 configuration:v7 completionHandler:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    pageURL = [(UIWebClip *)self->_webClip pageURL];
+    [defaultWorkspace openURL:pageURL configuration:v7 completionHandler:0];
   }
 }
 
-- (void)processWebPushWithIdentifier:(id)a3
+- (void)processWebPushWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   contentViewController = self->_contentViewController;
   if (contentViewController)
   {
-    [(_SFWebAppViewController *)contentViewController processWebPushForWebAppWithIdentifier:v4];
+    [(_SFWebAppViewController *)contentViewController processWebPushForWebAppWithIdentifier:identifierCopy];
   }
 
   else
@@ -215,18 +215,18 @@ void __41__WebAppViewController__connectToService__block_invoke(uint64_t a1, voi
     v9[1] = 3221225472;
     v9[2] = __53__WebAppViewController_processWebPushWithIdentifier___block_invoke;
     v9[3] = &unk_279E740C0;
-    v10 = v4;
+    v10 = identifierCopy;
     [(CPSPromise *)connectionPromiseForPush addCompletionBlock:v9];
   }
 }
 
-- (void)notificationActivated:(id)a3
+- (void)notificationActivated:(id)activated
 {
-  v4 = a3;
+  activatedCopy = activated;
   contentViewController = self->_contentViewController;
   if (contentViewController)
   {
-    [(_SFWebAppViewController *)contentViewController handlePushNotificationActivation:v4];
+    [(_SFWebAppViewController *)contentViewController handlePushNotificationActivation:activatedCopy];
   }
 
   else
@@ -245,15 +245,15 @@ void __41__WebAppViewController__connectToService__block_invoke(uint64_t a1, voi
     v9[1] = 3221225472;
     v9[2] = __46__WebAppViewController_notificationActivated___block_invoke;
     v9[3] = &unk_279E740C0;
-    v10 = v4;
+    v10 = activatedCopy;
     [(CPSPromise *)connectionPromiseForPush addCompletionBlock:v9];
   }
 }
 
-- (void)webAppViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4
+- (void)webAppViewController:(id)controller viewServiceDidTerminateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   objc_initWeak(&location, self);
   [(WebAppViewController *)self _removeRemoteView];
   if (!self->_loadingViewController)

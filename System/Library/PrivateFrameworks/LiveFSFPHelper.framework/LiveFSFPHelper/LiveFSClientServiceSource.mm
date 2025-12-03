@@ -1,21 +1,21 @@
 @interface LiveFSClientServiceSource
-- (LiveFSClientServiceSource)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4;
+- (LiveFSClientServiceSource)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier;
 @end
 
 @implementation LiveFSClientServiceSource
 
-- (LiveFSClientServiceSource)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4
+- (LiveFSClientServiceSource)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = LiveFSClientServiceSource;
   v9 = [(LiveFSClientServiceSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->ex, a3);
-    objc_storeStrong(&v10->ident, a4);
+    objc_storeStrong(&v9->ex, extension);
+    objc_storeStrong(&v10->ident, identifier);
   }
 
   return v10;

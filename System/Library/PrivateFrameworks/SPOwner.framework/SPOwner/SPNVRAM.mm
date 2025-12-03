@@ -1,5 +1,5 @@
 @interface SPNVRAM
-+ (BOOL)write:(id)a3;
++ (BOOL)write:(id)write;
 + (id)read;
 + (void)clear;
 @end
@@ -10,14 +10,14 @@
 {
   v2 = dispatch_group_create();
   dispatch_group_enter(v2);
-  v3 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __16__SPNVRAM_clear__block_invoke;
   v6[3] = &unk_279B587C8;
   v7 = v2;
   v4 = v2;
-  [v3 clearOfflineFindingInfoWithCompletion:v6];
+  [mEMORY[0x277D08F78] clearOfflineFindingInfoWithCompletion:v6];
 
   v5 = dispatch_time(0, 30000000000);
   dispatch_group_wait(v4, v5);
@@ -66,7 +66,7 @@ void __16__SPNVRAM_clear__block_invoke(uint64_t a1, void *a2)
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "Beginning read of keys from NVRAM.", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __15__SPNVRAM_read__block_invoke;
@@ -74,7 +74,7 @@ void __16__SPNVRAM_clear__block_invoke(uint64_t a1, void *a2)
   v5 = v2;
   v18 = v5;
   v19 = &v20;
-  [v4 fetchOfflineFindingInfoWithCompletion:&v14];
+  [mEMORY[0x277D08F78] fetchOfflineFindingInfoWithCompletion:&v14];
 
   v6 = dispatch_time(0, 30000000000);
   dispatch_group_wait(v5, v6);
@@ -150,10 +150,10 @@ void __15__SPNVRAM_read__block_invoke(uint64_t a1, void *a2, void *a3)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)write:(id)a3
++ (BOOL)write:(id)write
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  writeCopy = write;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -163,7 +163,7 @@ void __15__SPNVRAM_read__block_invoke(uint64_t a1, void *a2, void *a3)
   v5 = LogCategory_NVRAM();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v3 length];
+    v6 = [writeCopy length];
     *buf = 134217984;
     v22 = v6;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "Writing %lu bytes to NVRAM.", buf, 0xCu);
@@ -172,11 +172,11 @@ void __15__SPNVRAM_read__block_invoke(uint64_t a1, void *a2, void *a3)
   v7 = LogCategory_NVRAM();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v3 fm_hexString];
-    [(SPNVRAM *)v8 write:buf, v7];
+    fm_hexString = [writeCopy fm_hexString];
+    [(SPNVRAM *)fm_hexString write:buf, v7];
   }
 
-  v9 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __17__SPNVRAM_write___block_invoke;
@@ -184,15 +184,15 @@ void __15__SPNVRAM_read__block_invoke(uint64_t a1, void *a2, void *a3)
   v16 = &v17;
   v10 = v4;
   v15 = v10;
-  [v9 storeOfflineFindingInfo:v3 completion:v14];
+  [mEMORY[0x277D08F78] storeOfflineFindingInfo:writeCopy completion:v14];
 
   v11 = dispatch_time(0, 30000000000);
   dispatch_group_wait(v10, v11);
-  LOBYTE(v9) = *(v18 + 24);
+  LOBYTE(mEMORY[0x277D08F78]) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
   v12 = *MEMORY[0x277D85DE8];
-  return v9 & 1;
+  return mEMORY[0x277D08F78] & 1;
 }
 
 void __17__SPNVRAM_write___block_invoke(uint64_t a1, void *a2)

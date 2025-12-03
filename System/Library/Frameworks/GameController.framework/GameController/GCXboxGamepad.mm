@@ -1,16 +1,16 @@
 @interface GCXboxGamepad
-- (GCXboxGamepad)initWithCoder:(id)a3;
-- (GCXboxGamepad)initWithController:(id)a3;
-- (GCXboxGamepad)initWithIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCXboxGamepad)initWithCoder:(id)coder;
+- (GCXboxGamepad)initWithController:(id)controller;
+- (GCXboxGamepad)initWithIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 - (void)initializeExtraControllerElements;
 @end
 
 @implementation GCXboxGamepad
 
-- (GCXboxGamepad)initWithController:(id)a3
+- (GCXboxGamepad)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -33,18 +33,18 @@
   v33 = 0;
   v21.receiver = self;
   v21.super_class = GCXboxGamepad;
-  v6 = [(GCExtendedGamepad *)&v21 initWithController:v4 initInfo:v22];
+  v6 = [(GCExtendedGamepad *)&v21 initWithController:controllerCopy initInfo:v22];
   v7 = v6;
   if (v6)
   {
-    v8 = [(GCPhysicalInputProfile *)v6 controller];
-    v9 = [v8 hidServices];
-    v10 = [v9 firstObject];
-    v11 = [v10 numberPropertyForKey:@"ProductID"];
-    v12 = [v11 unsignedIntValue];
+    controller = [(GCPhysicalInputProfile *)v6 controller];
+    hidServices = [controller hidServices];
+    firstObject = [hidServices firstObject];
+    v11 = [firstObject numberPropertyForKey:@"ProductID"];
+    unsignedIntValue = [v11 unsignedIntValue];
 
-    v13 = v12 - 2;
-    if ((v12 - 2818) <= 0x3A)
+    v13 = unsignedIntValue - 2;
+    if ((unsignedIntValue - 2818) <= 0x3A)
     {
       if (((1 << v13) & 0x400000100000009) != 0)
       {
@@ -106,11 +106,11 @@ LABEL_21:
   return v7;
 }
 
-- (GCXboxGamepad)initWithIdentifier:(id)a3
+- (GCXboxGamepad)initWithIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = GCXboxGamepad;
-  v3 = [(GCExtendedGamepad *)&v6 initWithIdentifier:a3];
+  v3 = [(GCExtendedGamepad *)&v6 initWithIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -120,29 +120,29 @@ LABEL_21:
   return v4;
 }
 
-- (GCXboxGamepad)initWithCoder:(id)a3
+- (GCXboxGamepad)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GCXboxGamepad;
-  v5 = [(GCExtendedGamepad *)&v7 initWithCoder:v4];
+  v5 = [(GCExtendedGamepad *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"GCXboxGamepadType"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"GCXboxGamepadType"];
     [(GCXboxGamepad *)v5 initializeExtraControllerElements];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GCXboxGamepad;
-  v4 = a3;
-  [(GCExtendedGamepad *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:+[GCXboxGamepad version](GCXboxGamepad forKey:{"version", v5.receiver, v5.super_class), @"version"}];
-  [v4 encodeInteger:self->_type forKey:@"GCXboxGamepadType"];
+  coderCopy = coder;
+  [(GCExtendedGamepad *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:+[GCXboxGamepad version](GCXboxGamepad forKey:{"version", v5.receiver, v5.super_class), @"version"}];
+  [coderCopy encodeInteger:self->_type forKey:@"GCXboxGamepadType"];
 }
 
 - (void)initializeExtraControllerElements
@@ -210,71 +210,71 @@ LABEL_21:
     self->_paddleButton4 = v9;
   }
 
-  v11 = [(GCExtendedGamepad *)self leftTrigger];
-  [v11 setUnmappedSfSymbolsName:@"lt.rectangle.roundedtop"];
+  leftTrigger = [(GCExtendedGamepad *)self leftTrigger];
+  [leftTrigger setUnmappedSfSymbolsName:@"lt.rectangle.roundedtop"];
 
-  v12 = [(GCExtendedGamepad *)self rightTrigger];
-  [v12 setUnmappedSfSymbolsName:@"rt.rectangle.roundedtop"];
+  rightTrigger = [(GCExtendedGamepad *)self rightTrigger];
+  [rightTrigger setUnmappedSfSymbolsName:@"rt.rectangle.roundedtop"];
 
-  v13 = [(GCExtendedGamepad *)self leftShoulder];
-  [v13 setUnmappedSfSymbolsName:@"lb.rectangle.roundedbottom"];
+  leftShoulder = [(GCExtendedGamepad *)self leftShoulder];
+  [leftShoulder setUnmappedSfSymbolsName:@"lb.rectangle.roundedbottom"];
 
-  v14 = [(GCExtendedGamepad *)self rightShoulder];
-  [v14 setUnmappedSfSymbolsName:@"rb.rectangle.roundedbottom"];
+  rightShoulder = [(GCExtendedGamepad *)self rightShoulder];
+  [rightShoulder setUnmappedSfSymbolsName:@"rb.rectangle.roundedbottom"];
 
-  v15 = [(GCExtendedGamepad *)self buttonHome];
-  [v15 setUnmappedSfSymbolsName:@"logo.xbox"];
+  buttonHome = [(GCExtendedGamepad *)self buttonHome];
+  [buttonHome setUnmappedSfSymbolsName:@"logo.xbox"];
 
-  v16 = [(GCExtendedGamepad *)self buttonOptions];
-  [v16 setUnmappedSfSymbolsName:@"rectangle.fill.on.rectangle.fill.circle"];
+  buttonOptions = [(GCExtendedGamepad *)self buttonOptions];
+  [buttonOptions setUnmappedSfSymbolsName:@"rectangle.fill.on.rectangle.fill.circle"];
 
-  v17 = [(GCExtendedGamepad *)self buttonHome];
-  [v17 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_HOME"];
+  buttonHome2 = [(GCExtendedGamepad *)self buttonHome];
+  [buttonHome2 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_HOME"];
 
-  v18 = [(GCExtendedGamepad *)self buttonOptions];
-  [v18 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_OPTIONS"];
+  buttonOptions2 = [(GCExtendedGamepad *)self buttonOptions];
+  [buttonOptions2 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_OPTIONS"];
 
-  v19 = [(GCExtendedGamepad *)self buttonMenu];
-  [v19 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_MENU"];
+  buttonMenu = [(GCExtendedGamepad *)self buttonMenu];
+  [buttonMenu setUnmappedNameLocalizationKey:@"XBOX_BUTTON_MENU"];
 
-  v20 = [(GCExtendedGamepad *)self dpad];
-  [v20 setUnmappedNameLocalizationKey:@"XBOX_DIRECTION_PAD"];
+  dpad = [(GCExtendedGamepad *)self dpad];
+  [dpad setUnmappedNameLocalizationKey:@"XBOX_DIRECTION_PAD"];
 
-  v21 = [(GCExtendedGamepad *)self buttonA];
-  [v21 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_A"];
+  buttonA = [(GCExtendedGamepad *)self buttonA];
+  [buttonA setUnmappedNameLocalizationKey:@"XBOX_BUTTON_A"];
 
-  v22 = [(GCExtendedGamepad *)self buttonB];
-  [v22 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_B"];
+  buttonB = [(GCExtendedGamepad *)self buttonB];
+  [buttonB setUnmappedNameLocalizationKey:@"XBOX_BUTTON_B"];
 
-  v23 = [(GCExtendedGamepad *)self buttonX];
-  [v23 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_X"];
+  buttonX = [(GCExtendedGamepad *)self buttonX];
+  [buttonX setUnmappedNameLocalizationKey:@"XBOX_BUTTON_X"];
 
-  v24 = [(GCExtendedGamepad *)self buttonY];
-  [v24 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_Y"];
+  buttonY = [(GCExtendedGamepad *)self buttonY];
+  [buttonY setUnmappedNameLocalizationKey:@"XBOX_BUTTON_Y"];
 
-  v25 = [(GCExtendedGamepad *)self leftShoulder];
-  [v25 setUnmappedNameLocalizationKey:@"XBOX_LEFT_SHOULDER"];
+  leftShoulder2 = [(GCExtendedGamepad *)self leftShoulder];
+  [leftShoulder2 setUnmappedNameLocalizationKey:@"XBOX_LEFT_SHOULDER"];
 
-  v26 = [(GCExtendedGamepad *)self rightShoulder];
-  [v26 setUnmappedNameLocalizationKey:@"XBOX_RIGHT_SHOULDER"];
+  rightShoulder2 = [(GCExtendedGamepad *)self rightShoulder];
+  [rightShoulder2 setUnmappedNameLocalizationKey:@"XBOX_RIGHT_SHOULDER"];
 
-  v27 = [(GCExtendedGamepad *)self leftTrigger];
-  [v27 setUnmappedNameLocalizationKey:@"XBOX_LEFT_TRIGGER"];
+  leftTrigger2 = [(GCExtendedGamepad *)self leftTrigger];
+  [leftTrigger2 setUnmappedNameLocalizationKey:@"XBOX_LEFT_TRIGGER"];
 
-  v28 = [(GCExtendedGamepad *)self rightTrigger];
-  [v28 setUnmappedNameLocalizationKey:@"XBOX_RIGHT_TRIGGER"];
+  rightTrigger2 = [(GCExtendedGamepad *)self rightTrigger];
+  [rightTrigger2 setUnmappedNameLocalizationKey:@"XBOX_RIGHT_TRIGGER"];
 
-  v29 = [(GCExtendedGamepad *)self leftThumbstick];
-  [v29 setUnmappedNameLocalizationKey:@"XBOX_LEFT_THUMBSTICK"];
+  leftThumbstick = [(GCExtendedGamepad *)self leftThumbstick];
+  [leftThumbstick setUnmappedNameLocalizationKey:@"XBOX_LEFT_THUMBSTICK"];
 
-  v30 = [(GCExtendedGamepad *)self rightThumbstick];
-  [v30 setUnmappedNameLocalizationKey:@"XBOX_RIGHT_THUMBSTICK"];
+  rightThumbstick = [(GCExtendedGamepad *)self rightThumbstick];
+  [rightThumbstick setUnmappedNameLocalizationKey:@"XBOX_RIGHT_THUMBSTICK"];
 
-  v31 = [(GCExtendedGamepad *)self leftThumbstickButton];
-  [v31 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_LEFT_THUMBSTICK"];
+  leftThumbstickButton = [(GCExtendedGamepad *)self leftThumbstickButton];
+  [leftThumbstickButton setUnmappedNameLocalizationKey:@"XBOX_BUTTON_LEFT_THUMBSTICK"];
 
-  v32 = [(GCExtendedGamepad *)self rightThumbstickButton];
-  [v32 setUnmappedNameLocalizationKey:@"XBOX_BUTTON_RIGHT_THUMBSTICK"];
+  rightThumbstickButton = [(GCExtendedGamepad *)self rightThumbstickButton];
+  [rightThumbstickButton setUnmappedNameLocalizationKey:@"XBOX_BUTTON_RIGHT_THUMBSTICK"];
 }
 
 - (void)initWithController:(NSObject *)a1 .cold.1(NSObject *a1)

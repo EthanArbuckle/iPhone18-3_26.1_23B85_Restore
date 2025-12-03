@@ -1,10 +1,10 @@
 @interface Postprocess
 - (BOOL)createModules;
 - (BOOL)setupMetal;
-- (Postprocess)initWithDevice:(id)a3 commandQueue:(id)a4;
+- (Postprocess)initWithDevice:(id)device commandQueue:(id)queue;
 - (Postprocess)initWithMode;
-- (int64_t)encodePostprocessOutputToCommandBuffer:(id)a3 input:(id)a4 loss:(id)a5 fullresEdge:(id)a6 destination:(id)a7;
-- (int64_t)encodeSmoothAlphaMapToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5;
+- (int64_t)encodePostprocessOutputToCommandBuffer:(id)buffer input:(id)input loss:(id)loss fullresEdge:(id)edge destination:(id)destination;
+- (int64_t)encodeSmoothAlphaMapToCommandBuffer:(id)buffer input:(id)input output:(id)output;
 - (void)dealloc;
 @end
 
@@ -61,11 +61,11 @@
   return v4;
 }
 
-- (Postprocess)initWithDevice:(id)a3 commandQueue:(id)a4
+- (Postprocess)initWithDevice:(id)device commandQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = Postprocess;
-  v4 = [(VEMetalBase *)&v8 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v8 initWithDevice:device commmandQueue:queue];
   v5 = v4;
   if (v4 && [(Postprocess *)v4 createModules]&& [(Postprocess *)v5 setupMetal])
   {
@@ -110,40 +110,40 @@
   return v14;
 }
 
-- (int64_t)encodePostprocessOutputToCommandBuffer:(id)a3 input:(id)a4 loss:(id)a5 fullresEdge:(id)a6 destination:(id)a7
+- (int64_t)encodePostprocessOutputToCommandBuffer:(id)buffer input:(id)input loss:(id)loss fullresEdge:(id)edge destination:(id)destination
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  inputCopy = input;
+  lossCopy = loss;
+  edgeCopy = edge;
+  destinationCopy = destination;
   v16 = 12;
-  if (v12 && v13)
+  if (inputCopy && lossCopy)
   {
-    v17 = [a3 computeCommandEncoder];
-    if (v17)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v18 = [v13 width];
-      v25 = v18 / [v12 width];
-      v19 = [v15 arrayLength];
+      width = [lossCopy width];
+      v25 = width / [inputCopy width];
+      arrayLength = [destinationCopy arrayLength];
       v20 = &OBJC_IVAR___Postprocess__postprocessArrayOutputKernel;
-      if (v19 == 1)
+      if (arrayLength == 1)
       {
         v20 = &OBJC_IVAR___Postprocess__postprocessOutputKernel;
       }
 
-      [v17 setComputePipelineState:*(&self->super.super.isa + *v20)];
-      [v17 setTexture:v12 atIndex:0];
-      [v17 setTexture:v13 atIndex:1];
-      [v17 setTexture:v14 atIndex:2];
-      [v17 setTexture:v15 atIndex:3];
-      [v17 setBytes:&v25 length:4 atIndex:0];
-      v24[0] = ([v15 width] + 15) >> 4;
-      v24[1] = ([v15 height] + 15) >> 4;
+      [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v20)];
+      [computeCommandEncoder setTexture:inputCopy atIndex:0];
+      [computeCommandEncoder setTexture:lossCopy atIndex:1];
+      [computeCommandEncoder setTexture:edgeCopy atIndex:2];
+      [computeCommandEncoder setTexture:destinationCopy atIndex:3];
+      [computeCommandEncoder setBytes:&v25 length:4 atIndex:0];
+      v24[0] = ([destinationCopy width] + 15) >> 4;
+      v24[1] = ([destinationCopy height] + 15) >> 4;
       v24[2] = 1;
       v22 = vdupq_n_s64(0x10uLL);
       v23 = 1;
-      [v17 dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
-      [v17 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
+      [computeCommandEncoder endEncoding];
       v16 = 0;
     }
 
@@ -156,20 +156,20 @@
   return v16;
 }
 
-- (int64_t)encodeSmoothAlphaMapToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5
+- (int64_t)encodeSmoothAlphaMapToCommandBuffer:(id)buffer input:(id)input output:(id)output
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  inputCopy = input;
+  outputCopy = output;
+  v10 = outputCopy;
   v11 = 12;
-  if (v8 && v9)
+  if (inputCopy && outputCopy)
   {
-    v12 = [a3 computeCommandEncoder];
-    v13 = v12;
-    if (v12)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    v13 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v12 setComputePipelineState:self->_smoothAlphaKernel];
-      [v13 setTexture:v8 atIndex:0];
+      [computeCommandEncoder setComputePipelineState:self->_smoothAlphaKernel];
+      [v13 setTexture:inputCopy atIndex:0];
       [v13 setTexture:v10 atIndex:1];
       v17[0] = ([v10 width] + 15) >> 4;
       v17[1] = ([v10 height] + 15) >> 4;

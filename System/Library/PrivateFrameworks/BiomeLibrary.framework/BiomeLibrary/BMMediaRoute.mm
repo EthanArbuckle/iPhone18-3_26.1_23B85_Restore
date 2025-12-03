@@ -1,16 +1,16 @@
 @interface BMMediaRoute
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMediaRoute)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMediaRoute)initWithRouteType:(int)a3 groupLeaderOutputDeviceID:(id)a4 isRemoteControl:(id)a5 outputDevices:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMMediaRoute)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMediaRoute)initWithRouteType:(int)type groupLeaderOutputDeviceID:(id)d isRemoteControl:(id)control outputDevices:(id)devices;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_outputDevicesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaRoute
@@ -37,10 +37,10 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMMediaRouteRouteTypeAsString([(BMMediaRoute *)self routeType]);
-  v5 = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
+  groupLeaderOutputDeviceID = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaRoute isRemoteControl](self, "isRemoteControl")}];
-  v7 = [(BMMediaRoute *)self outputDevices];
-  v8 = [v3 initWithFormat:@"BMMediaRoute with routeType: %@, groupLeaderOutputDeviceID: %@, isRemoteControl: %@, outputDevices: %@", v4, v5, v6, v7];
+  outputDevices = [(BMMediaRoute *)self outputDevices];
+  v8 = [v3 initWithFormat:@"BMMediaRoute with routeType: %@, groupLeaderOutputDeviceID: %@, isRemoteControl: %@, outputDevices: %@", v4, groupLeaderOutputDeviceID, v6, outputDevices];
 
   return v8;
 }
@@ -49,33 +49,33 @@
 {
   v3 = objc_opt_new();
   [(BMMediaRoute *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMediaRoute *)self routeType];
-    if (v6 == [v5 routeType])
+    v5 = equalCopy;
+    routeType = [(BMMediaRoute *)self routeType];
+    if (routeType == [v5 routeType])
     {
-      v7 = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
-      v8 = [v5 groupLeaderOutputDeviceID];
-      v9 = v8;
-      if (v7 == v8)
+      groupLeaderOutputDeviceID = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
+      groupLeaderOutputDeviceID2 = [v5 groupLeaderOutputDeviceID];
+      v9 = groupLeaderOutputDeviceID2;
+      if (groupLeaderOutputDeviceID == groupLeaderOutputDeviceID2)
       {
       }
 
       else
       {
-        v10 = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
-        v11 = [v5 groupLeaderOutputDeviceID];
-        v12 = [v10 isEqual:v11];
+        groupLeaderOutputDeviceID3 = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
+        groupLeaderOutputDeviceID4 = [v5 groupLeaderOutputDeviceID];
+        v12 = [groupLeaderOutputDeviceID3 isEqual:groupLeaderOutputDeviceID4];
 
         if (!v12)
         {
@@ -85,18 +85,18 @@
 
       if (!-[BMMediaRoute hasIsRemoteControl](self, "hasIsRemoteControl") && ![v5 hasIsRemoteControl] || -[BMMediaRoute hasIsRemoteControl](self, "hasIsRemoteControl") && objc_msgSend(v5, "hasIsRemoteControl") && (v14 = -[BMMediaRoute isRemoteControl](self, "isRemoteControl"), v14 == objc_msgSend(v5, "isRemoteControl")))
       {
-        v16 = [(BMMediaRoute *)self outputDevices];
-        v17 = [v5 outputDevices];
-        if (v16 == v17)
+        outputDevices = [(BMMediaRoute *)self outputDevices];
+        outputDevices2 = [v5 outputDevices];
+        if (outputDevices == outputDevices2)
         {
           v13 = 1;
         }
 
         else
         {
-          v18 = [(BMMediaRoute *)self outputDevices];
-          v19 = [v5 outputDevices];
-          v13 = [v18 isEqual:v19];
+          outputDevices3 = [(BMMediaRoute *)self outputDevices];
+          outputDevices4 = [v5 outputDevices];
+          v13 = [outputDevices3 isEqual:outputDevices4];
         }
 
         goto LABEL_14;
@@ -120,7 +120,7 @@ LABEL_15:
 {
   v15[4] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaRoute routeType](self, "routeType")}];
-  v4 = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
+  groupLeaderOutputDeviceID = [(BMMediaRoute *)self groupLeaderOutputDeviceID];
   if ([(BMMediaRoute *)self hasIsRemoteControl])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaRoute isRemoteControl](self, "isRemoteControl")}];
@@ -131,41 +131,41 @@ LABEL_15:
     v5 = 0;
   }
 
-  v6 = [(BMMediaRoute *)self _outputDevicesJSONArray];
+  _outputDevicesJSONArray = [(BMMediaRoute *)self _outputDevicesJSONArray];
   v14[0] = @"routeType";
-  v7 = v3;
+  null = v3;
   if (!v3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"groupLeaderOutputDeviceID";
-  v8 = v4;
-  if (!v4)
+  null2 = groupLeaderOutputDeviceID;
+  if (!groupLeaderOutputDeviceID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"isRemoteControl";
-  v9 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"outputDevices";
-  v10 = v6;
-  if (!v6)
+  null4 = _outputDevicesJSONArray;
+  if (!_outputDevicesJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (v6)
+  if (_outputDevicesJSONArray)
   {
     if (v5)
     {
@@ -179,7 +179,7 @@ LABEL_15:
     if (v5)
     {
 LABEL_14:
-      if (v4)
+      if (groupLeaderOutputDeviceID)
       {
         goto LABEL_15;
       }
@@ -195,7 +195,7 @@ LABEL_21:
     }
   }
 
-  if (!v4)
+  if (!groupLeaderOutputDeviceID)
   {
     goto LABEL_21;
   }
@@ -222,8 +222,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMediaRoute *)self outputDevices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  outputDevices = [(BMMediaRoute *)self outputDevices];
+  v5 = [outputDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -234,14 +234,14 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputDevices);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [outputDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -252,30 +252,30 @@ LABEL_16:
   return v3;
 }
 
-- (BMMediaRoute)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMediaRoute)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v89[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"routeType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"routeType"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"groupLeaderOutputDeviceID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"groupLeaderOutputDeviceID"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
-          v27 = 0;
+          selfCopy2 = 0;
           goto LABEL_52;
         }
 
         v28 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v64 = a4;
+        errorCopy = error;
         v29 = *MEMORY[0x1E698F240];
         v86 = *MEMORY[0x1E696A578];
         v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"groupLeaderOutputDeviceID"];
@@ -284,10 +284,10 @@ LABEL_9:
         v32 = v28;
         v13 = v31;
         v33 = v29;
-        a4 = v30;
+        error = v30;
         v11 = 0;
-        v27 = 0;
-        *v64 = [v32 initWithDomain:v33 code:2 userInfo:v31];
+        selfCopy2 = 0;
+        *errorCopy = [v32 initWithDomain:v33 code:2 userInfo:v31];
         goto LABEL_51;
       }
 
@@ -299,7 +299,7 @@ LABEL_9:
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"isRemoteControl"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isRemoteControl"];
     v70 = v10;
     v71 = v7;
     v69 = v12;
@@ -308,10 +308,10 @@ LABEL_9:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v34 = v11;
-          v35 = a4;
+          errorCopy2 = error;
           v36 = objc_alloc(MEMORY[0x1E696ABC0]);
           v37 = *MEMORY[0x1E698F240];
           v84 = *MEMORY[0x1E696A578];
@@ -319,14 +319,14 @@ LABEL_9:
           v85 = v14;
           v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
           v38 = [v36 initWithDomain:v37 code:2 userInfo:v17];
-          a4 = 0;
-          v27 = 0;
-          *v35 = v38;
+          error = 0;
+          selfCopy2 = 0;
+          *errorCopy2 = v38;
           v11 = v34;
           goto LABEL_49;
         }
 
-        v27 = 0;
+        selfCopy2 = 0;
 LABEL_51:
 
         goto LABEL_52;
@@ -340,16 +340,16 @@ LABEL_51:
       v68 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"outputDevices"];
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v16 = [v14 isEqual:v15];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"outputDevices"];
+    null = [MEMORY[0x1E695DFB0] null];
+    v16 = [v14 isEqual:null];
 
     if (v16)
     {
-      v63 = a4;
+      errorCopy4 = error;
       v65 = v11;
-      v66 = self;
-      v67 = v6;
+      selfCopy3 = self;
+      v67 = dictionaryCopy;
 
       v14 = 0;
 LABEL_20:
@@ -387,11 +387,11 @@ LABEL_22:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v6 = v67;
-          a4 = v68;
+          dictionaryCopy = v67;
+          error = v68;
           v8 = v62;
-          v39 = v63;
-          if (!v63)
+          v39 = errorCopy4;
+          if (!errorCopy4)
           {
             goto LABEL_48;
           }
@@ -415,21 +415,21 @@ LABEL_22:
         if (v26)
         {
           v45 = v26;
-          if (v63)
+          if (errorCopy4)
           {
             v47 = v26;
-            *v63 = v45;
+            *errorCopy4 = v45;
           }
 
-          v6 = v67;
-          a4 = v68;
+          dictionaryCopy = v67;
+          error = v68;
           v8 = v62;
 LABEL_47:
 
 LABEL_48:
-          v27 = 0;
+          selfCopy2 = 0;
           v11 = v65;
-          self = v66;
+          self = selfCopy3;
           goto LABEL_49;
         }
 
@@ -447,21 +447,21 @@ LABEL_48:
 LABEL_30:
 
           v11 = v65;
-          a4 = v68;
-          self = -[BMMediaRoute initWithRouteType:groupLeaderOutputDeviceID:isRemoteControl:outputDevices:](v66, "initWithRouteType:groupLeaderOutputDeviceID:isRemoteControl:outputDevices:", [v8 intValue], v65, v68, v17);
-          v27 = self;
-          v6 = v67;
+          error = v68;
+          self = -[BMMediaRoute initWithRouteType:groupLeaderOutputDeviceID:isRemoteControl:outputDevices:](selfCopy3, "initWithRouteType:groupLeaderOutputDeviceID:isRemoteControl:outputDevices:", [v8 intValue], v65, v68, v17);
+          selfCopy2 = self;
+          dictionaryCopy = v67;
 LABEL_49:
 
           goto LABEL_50;
         }
       }
 
-      v6 = v67;
-      a4 = v68;
+      dictionaryCopy = v67;
+      error = v68;
       v8 = v62;
-      v39 = v63;
-      if (!v63)
+      v39 = errorCopy4;
+      if (!errorCopy4)
       {
         goto LABEL_48;
       }
@@ -477,40 +477,40 @@ LABEL_49:
 LABEL_43:
       v45 = [v42 dictionaryWithObjects:v43 forKeys:v44 count:1];
       v46 = v40;
-      a4 = v68;
+      error = v68;
       *v39 = [v46 initWithDomain:v41 code:2 userInfo:v45];
       goto LABEL_47;
     }
 
     if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v63 = a4;
+      errorCopy4 = error;
       v65 = v11;
-      v66 = self;
-      v67 = v6;
+      selfCopy3 = self;
+      v67 = dictionaryCopy;
       goto LABEL_20;
     }
 
-    if (a4)
+    if (error)
     {
       v50 = objc_alloc(MEMORY[0x1E696ABC0]);
       v51 = v11;
-      v52 = a4;
+      errorCopy5 = error;
       v53 = *MEMORY[0x1E698F240];
       v82 = *MEMORY[0x1E696A578];
       v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"outputDevices"];
       v83 = v17;
       v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
-      *v52 = [v50 initWithDomain:v53 code:2 userInfo:v54];
+      *errorCopy5 = [v50 initWithDomain:v53 code:2 userInfo:v54];
       v11 = v51;
 
-      v27 = 0;
-      a4 = v68;
+      selfCopy2 = 0;
+      error = v68;
       goto LABEL_49;
     }
 
-    v27 = 0;
-    a4 = v68;
+    selfCopy2 = 0;
+    error = v68;
 LABEL_50:
 
     v10 = v70;
@@ -535,39 +535,39 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v27 = 0;
+    selfCopy2 = 0;
     goto LABEL_53;
   }
 
   v55 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v56 = a4;
+  errorCopy6 = error;
   v57 = *MEMORY[0x1E698F240];
   v88 = *MEMORY[0x1E696A578];
-  v58 = self;
+  selfCopy4 = self;
   v59 = objc_alloc(MEMORY[0x1E696AEC0]);
   v61 = objc_opt_class();
   v60 = v59;
-  self = v58;
+  self = selfCopy4;
   v11 = [v60 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", v61, @"routeType"];
   v89[0] = v11;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:&v88 count:1];
   v8 = 0;
-  v27 = 0;
-  *v56 = [v55 initWithDomain:v57 code:2 userInfo:v10];
+  selfCopy2 = 0;
+  *errorCopy6 = [v55 initWithDomain:v57 code:2 userInfo:v10];
 LABEL_52:
 
 LABEL_53:
   v48 = *MEMORY[0x1E69E9840];
-  return v27;
+  return selfCopy2;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   routeType = self->_routeType;
   PBDataWriterWriteUint32Field();
   if (self->_groupLeaderOutputDeviceID)
@@ -602,7 +602,7 @@ LABEL_53:
 
         v12 = *(*(&v14 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v12 writeTo:v4];
+        [v12 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -615,9 +615,9 @@ LABEL_53:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v41.receiver = self;
   v41.super_class = BMMediaRoute;
   v5 = [(BMEventBase *)&v41 init];
@@ -627,12 +627,12 @@ LABEL_53:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_54;
       }
@@ -643,18 +643,18 @@ LABEL_53:
       while (1)
       {
         LOBYTE(v42[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v42 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v42[0] & 0x7F) << v8;
@@ -672,9 +672,9 @@ LABEL_53:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_54;
       }
@@ -694,18 +694,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v42[0]) = 0;
-          v31 = [v4 position] + 1;
-          if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+          v31 = [fromCopy position] + 1;
+          if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:v42 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v30 |= (v42[0] & 0x7F) << v28;
@@ -723,7 +723,7 @@ LABEL_16:
           }
         }
 
-        v34 = (v30 != 0) & ~[v4 hasError];
+        v34 = (v30 != 0) & ~[fromCopy hasError];
 LABEL_52:
         v5->_isRemoteControl = v34;
         goto LABEL_53;
@@ -736,7 +736,7 @@ LABEL_52:
 
       v42[0] = 0;
       v42[1] = 0;
-      if (!PBReaderPlaceMark() || (v19 = [[BMMediaRouteOutputDevice alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v19 = [[BMMediaRouteOutputDevice alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_58:
 
@@ -748,8 +748,8 @@ LABEL_58:
       PBReaderRecallMark();
 
 LABEL_53:
-      v35 = [v4 position];
-      if (v35 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_54;
       }
@@ -763,18 +763,18 @@ LABEL_53:
       while (1)
       {
         LOBYTE(v42[0]) = 0;
-        v24 = [v4 position] + 1;
-        if (v24 >= [v4 position] && (v25 = objc_msgSend(v4, "position") + 1, v25 <= objc_msgSend(v4, "length")))
+        v24 = [fromCopy position] + 1;
+        if (v24 >= [fromCopy position] && (v25 = objc_msgSend(fromCopy, "position") + 1, v25 <= objc_msgSend(fromCopy, "length")))
         {
-          v26 = [v4 data];
-          [v26 getBytes:v42 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v23 |= (v42[0] & 0x7F) << v21;
@@ -790,7 +790,7 @@ LABEL_53:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v23 > 2)
+      if (([fromCopy hasError] & 1) != 0 || v23 > 2)
       {
 LABEL_49:
         LODWORD(v23) = 0;
@@ -823,8 +823,8 @@ LABEL_54:
   outputDevices = v5->_outputDevices;
   v5->_outputDevices = v36;
 
-  v38 = [v4 hasError];
-  if (v38)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_55:
     v39 = 0;
@@ -839,23 +839,23 @@ LABEL_56:
   return v39;
 }
 
-- (BMMediaRoute)initWithRouteType:(int)a3 groupLeaderOutputDeviceID:(id)a4 isRemoteControl:(id)a5 outputDevices:(id)a6
+- (BMMediaRoute)initWithRouteType:(int)type groupLeaderOutputDeviceID:(id)d isRemoteControl:(id)control outputDevices:(id)devices
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  controlCopy = control;
+  devicesCopy = devices;
   v16.receiver = self;
   v16.super_class = BMMediaRoute;
   v14 = [(BMEventBase *)&v16 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    v14->_routeType = a3;
-    objc_storeStrong(&v14->_groupLeaderOutputDeviceID, a4);
-    if (v12)
+    v14->_routeType = type;
+    objc_storeStrong(&v14->_groupLeaderOutputDeviceID, d);
+    if (controlCopy)
     {
       v14->_hasIsRemoteControl = 1;
-      v14->_isRemoteControl = [v12 BOOLValue];
+      v14->_isRemoteControl = [controlCopy BOOLValue];
     }
 
     else
@@ -864,7 +864,7 @@ LABEL_56:
       v14->_isRemoteControl = 0;
     }
 
-    objc_storeStrong(&v14->_outputDevices, a6);
+    objc_storeStrong(&v14->_outputDevices, devices);
   }
 
   return v14;
@@ -897,9 +897,9 @@ id __23__BMMediaRoute_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -907,8 +907,8 @@ id __23__BMMediaRoute_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMediaRoute alloc] initByReadFrom:v7];
     v4 = v8;

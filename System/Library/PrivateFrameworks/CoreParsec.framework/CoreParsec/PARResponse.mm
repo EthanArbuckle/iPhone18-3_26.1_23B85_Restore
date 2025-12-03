@@ -1,72 +1,72 @@
 @interface PARResponse
-+ (id)responseFromData:(id)a3 session:(id)a4 request:(id)a5;
-+ (id)responseFromJSON:(id)a3 session:(id)a4;
-+ (id)responseFromReply:(id)a3;
-- (PARResponse)initWithReply:(id)a3;
-- (PARResponse)initWithReply:(id)a3 factory:(id)a4 responseData:(id)a5;
++ (id)responseFromData:(id)data session:(id)session request:(id)request;
++ (id)responseFromJSON:(id)n session:(id)session;
++ (id)responseFromReply:(id)reply;
+- (PARResponse)initWithReply:(id)reply;
+- (PARResponse)initWithReply:(id)reply factory:(id)factory responseData:(id)data;
 @end
 
 @implementation PARResponse
 
-- (PARResponse)initWithReply:(id)a3 factory:(id)a4 responseData:(id)a5
+- (PARResponse)initWithReply:(id)reply factory:(id)factory responseData:(id)data
 {
-  v7 = a3;
+  replyCopy = reply;
   swift_unknownObjectRetain();
-  v8 = a5;
+  dataCopy = data;
   sub_1B11218CC();
 
-  return PARResponse.init(reply:factory:responseData:)(v7, a4);
+  return PARResponse.init(reply:factory:responseData:)(replyCopy, factory);
 }
 
-- (PARResponse)initWithReply:(id)a3
+- (PARResponse)initWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v11.receiver = self;
   v11.super_class = PARResponse;
   v6 = [(PARResponse *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reply, a3);
-    v8 = [v5 rawResponse];
+    objc_storeStrong(&v6->_reply, reply);
+    rawResponse = [replyCopy rawResponse];
     rawResponse = v7->_rawResponse;
-    v7->_rawResponse = v8;
+    v7->_rawResponse = rawResponse;
   }
 
   return v7;
 }
 
-+ (id)responseFromReply:(id)a3
++ (id)responseFromReply:(id)reply
 {
   v126 = *MEMORY[0x1E69E9840];
-  v100 = a3;
-  v3 = [v100 task];
-  v99 = [v3 request];
+  replyCopy = reply;
+  task = [replyCopy task];
+  request = [task request];
 
-  [v99 scale];
+  [request scale];
   if (v4 > 0.0)
   {
-    [v100 scale];
+    [replyCopy scale];
     if (v5 == 0.0)
     {
-      [v99 scale];
-      [v100 setScale:?];
+      [request scale];
+      [replyCopy setScale:?];
     }
   }
 
-  [v100 scale];
+  [replyCopy scale];
   v7 = v6;
-  v92 = [v99 queryId];
-  v8 = [v100 task];
-  v98 = [v8 session];
+  queryId = [request queryId];
+  task2 = [replyCopy task];
+  session = [task2 session];
 
   context = objc_autoreleasePoolPush();
-  v9 = [v98 configuration];
-  v10 = [v9 factory];
-  v11 = v10;
-  if (v10)
+  configuration = [session configuration];
+  factory = [configuration factory];
+  v11 = factory;
+  if (factory)
   {
-    v12 = v10;
+    v12 = factory;
   }
 
   else
@@ -76,13 +76,13 @@
 
   v96 = v12;
 
-  v13 = [[PARResponse alloc] initWithReply:v100];
-  v97 = [(PARResponse *)v13 rawResponse];
-  v14 = [v97 firstObject];
-  v102 = v14;
-  if (v14)
+  v13 = [[PARResponse alloc] initWithReply:replyCopy];
+  rawResponse = [(PARResponse *)v13 rawResponse];
+  firstObject = [rawResponse firstObject];
+  v102 = firstObject;
+  if (firstObject)
   {
-    v15 = [v14 parsec_stringForKey:@"prefix"];
+    v15 = [firstObject parsec_stringForKey:@"prefix"];
     prefix = v13->_prefix;
     v13->_prefix = v15;
 
@@ -107,7 +107,7 @@
     v13->_engagementSignal = v21;
 
     v23 = [v102 parsec_stringForKey:@"sqf"];
-    v82 = [v23 parsec_base64DecodedData];
+    parsec_base64DecodedData = [v23 parsec_base64DecodedData];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -123,10 +123,10 @@ LABEL_32:
       v118[1] = 3221225472;
       v118[2] = __33__PARResponse_responseFromReply___block_invoke_2;
       v118[3] = &unk_1E7AC67F0;
-      v42 = v100;
+      v42 = replyCopy;
       v119 = v42;
       v43 = [v84 parsec_mapObjectsUsingBlock:v118];
-      v44 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v116 = 0u;
       v117 = 0u;
       v114 = 0u;
@@ -146,9 +146,9 @@ LABEL_32:
             }
 
             v49 = *(*(&v114 + 1) + 8 * i);
-            v50 = [v49 detailText];
-            v51 = [v49 suggestion];
-            [v44 setObject:v50 forKeyedSubscript:v51];
+            detailText = [v49 detailText];
+            suggestion = [v49 suggestion];
+            [dictionary setObject:detailText forKeyedSubscript:suggestion];
           }
 
           v46 = [v45 countByEnumeratingWithState:&v114 objects:v125 count:16];
@@ -160,8 +160,8 @@ LABEL_32:
       obj = objc_alloc_init(MEMORY[0x1E695DF70]);
       if ([v45 count])
       {
-        v52 = [v45 firstObject];
-        [obj insertObject:v52 atIndex:0];
+        firstObject2 = [v45 firstObject];
+        [obj insertObject:firstObject2 atIndex:0];
 
         if ([v45 count] >= 2)
         {
@@ -177,8 +177,8 @@ LABEL_32:
       corrections = v13->_corrections;
       v13->_corrections = v54;
 
-      v56 = [MEMORY[0x1E695DF90] dictionary];
-      v57 = [MEMORY[0x1E695DF70] array];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      array = [MEMORY[0x1E695DF70] array];
       v95 = [v102 parsec_arrayForKey:@"results"];
       v58 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v95, "count")}];
       v103[0] = MEMORY[0x1E69E9820];
@@ -187,16 +187,16 @@ LABEL_32:
       v103[3] = &unk_1E7AC6818;
       v104 = v42;
       v105 = v96;
-      v112 = v92;
+      v112 = queryId;
       v78 = v80;
       v106 = v78;
-      v107 = v98;
+      v107 = session;
       v113 = v7;
       v81 = v58;
       v108 = v81;
-      v79 = v56;
+      v79 = dictionary2;
       v109 = v79;
-      v59 = v57;
+      v59 = array;
       v110 = v59;
       v60 = v13;
       v111 = v60;
@@ -215,14 +215,14 @@ LABEL_32:
       {
         v76 = v13->_prefix;
         v64 = v63;
-        v77 = [(PARResponse *)v60 suggestions];
-        v65 = [v77 count];
-        v66 = [(PARResponse *)v60 results];
-        v67 = [v66 count];
-        v68 = [(PARResponse *)v60 alternativeResults];
-        v69 = [v68 count];
+        suggestions = [(PARResponse *)v60 suggestions];
+        v65 = [suggestions count];
+        results = [(PARResponse *)v60 results];
+        v67 = [results count];
+        alternativeResults = [(PARResponse *)v60 alternativeResults];
+        v69 = [alternativeResults count];
         *buf = 134219011;
-        *&buf[4] = v92;
+        *&buf[4] = queryId;
         *&buf[12] = 2117;
         *&buf[14] = v76;
         *&buf[22] = 2048;
@@ -241,14 +241,14 @@ LABEL_32:
       v72 = v111;
       v73 = v60;
 
-      v14 = v102;
+      firstObject = v102;
       goto LABEL_47;
     }
 
-    v24 = v99;
-    v25 = [v24 queryString];
-    v26 = v82;
-    v27 = v25;
+    v24 = request;
+    queryString = [v24 queryString];
+    v26 = parsec_base64DecodedData;
+    v27 = queryString;
     v28 = v27;
     if (v26)
     {
@@ -600,31 +600,31 @@ id __33__PARResponse_responseFromReply___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-+ (id)responseFromJSON:(id)a3 session:(id)a4
++ (id)responseFromJSON:(id)n session:(id)session
 {
-  v6 = a4;
-  if (a3)
+  sessionCopy = session;
+  if (n)
   {
-    a3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:0];
+    n = [MEMORY[0x1E696ACB0] dataWithJSONObject:n options:0 error:0];
   }
 
-  v7 = [a1 responseFromData:a3 session:v6 request:0];
+  v7 = [self responseFromData:n session:sessionCopy request:0];
 
   return v7;
 }
 
-+ (id)responseFromData:(id)a3 session:(id)a4 request:(id)a5
++ (id)responseFromData:(id)data session:(id)session request:(id)request
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  requestCopy = request;
+  sessionCopy = session;
+  dataCopy = data;
   v10 = objc_alloc_init(PARReply);
-  [(PARReply *)v10 setData:v9];
+  [(PARReply *)v10 setData:dataCopy];
 
   v11 = objc_alloc_init(PARTask);
-  [(PARTask *)v11 setSession:v8];
+  [(PARTask *)v11 setSession:sessionCopy];
 
-  [(PARTask *)v11 setRequest:v7];
+  [(PARTask *)v11 setRequest:requestCopy];
   [(PARReply *)v10 setTask:v11];
   v12 = [PARResponse responseFromReply:v10];
 

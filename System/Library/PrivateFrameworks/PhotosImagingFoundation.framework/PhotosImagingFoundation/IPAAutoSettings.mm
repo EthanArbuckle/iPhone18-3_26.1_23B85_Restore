@@ -1,30 +1,30 @@
 @interface IPAAutoSettings
-+ (id)pendingWithIdentifier:(id)a3;
-- (BOOL)_applyArchiveDictionary:(id)a3;
-- (BOOL)applyArchiveDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAutoSettings:(id)a3;
++ (id)pendingWithIdentifier:(id)identifier;
+- (BOOL)_applyArchiveDictionary:(id)dictionary;
+- (BOOL)applyArchiveDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAutoSettings:(id)settings;
 - (IPAAutoSettings)init;
-- (IPAAutoSettings)initWithIdentifier:(id)a3;
+- (IPAAutoSettings)initWithIdentifier:(id)identifier;
 - (NSString)debugDescription;
 - (id)archiveDictionary;
-- (void)_archiveIntoDictionary:(id)a3;
+- (void)_archiveIntoDictionary:(id)dictionary;
 @end
 
 @implementation IPAAutoSettings
 
-+ (id)pendingWithIdentifier:(id)a3
++ (id)pendingWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(IPAAutoSettings *)[IPAPendingAutoSettings alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(IPAAutoSettings *)[IPAPendingAutoSettings alloc] initWithIdentifier:identifierCopy];
 
   return v4;
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(IPAAutoSettings *)self archiveDictionary];
-  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:1 error:0];
+  archiveDictionary = [(IPAAutoSettings *)self archiveDictionary];
+  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:archiveDictionary options:1 error:0];
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:1];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p %@>", objc_opt_class(), self, v5];
@@ -46,13 +46,13 @@
   return v3;
 }
 
-- (BOOL)applyArchiveDictionary:(id)a3
+- (BOOL)applyArchiveDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = v4;
-    v6 = [(IPAAutoSettings *)self _applyArchiveDictionary:v4];
+    v5 = dictionaryCopy;
+    v6 = [(IPAAutoSettings *)self _applyArchiveDictionary:dictionaryCopy];
 
     return v6;
   }
@@ -64,31 +64,31 @@
   }
 }
 
-- (BOOL)isEqualToAutoSettings:(id)a3
+- (BOOL)isEqualToAutoSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(IPAAutoSettings *)self archiveDictionary];
-  v6 = [v4 archiveDictionary];
+  settingsCopy = settings;
+  archiveDictionary = [(IPAAutoSettings *)self archiveDictionary];
+  archiveDictionary2 = [settingsCopy archiveDictionary];
 
-  LOBYTE(v4) = [v5 isEqualToDictionary:v6];
-  return v4;
+  LOBYTE(settingsCopy) = [archiveDictionary isEqualToDictionary:archiveDictionary2];
+  return settingsCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAutoSettings *)self isEqualToAutoSettings:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAutoSettings *)self isEqualToAutoSettings:equalCopy];
 
   return v5;
 }
 
-- (IPAAutoSettings)initWithIdentifier:(id)a3
+- (IPAAutoSettings)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
     v12.receiver = self;
     v12.super_class = IPAAutoSettings;
     v6 = [(IPAAutoSettings *)&v12 init];
@@ -116,9 +116,9 @@
   return 0;
 }
 
-- (void)_archiveIntoDictionary:(id)a3
+- (void)_archiveIntoDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();
@@ -126,9 +126,9 @@
   [(IPAAutoSettings *)v5 _applyArchiveDictionary:v6, v7];
 }
 
-- (BOOL)_applyArchiveDictionary:(id)a3
+- (BOOL)_applyArchiveDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();

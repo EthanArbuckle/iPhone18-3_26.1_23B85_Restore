@@ -1,11 +1,11 @@
 @interface VTSuperResolutionScalerParameters
-- (VTSuperResolutionScalerParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 previousOutputFrame:(id)a5 opticalFlow:(id)a6 submissionMode:(int64_t)a7 destinationFrame:(id)a8;
+- (VTSuperResolutionScalerParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame previousOutputFrame:(id)outputFrame opticalFlow:(id)flow submissionMode:(int64_t)mode destinationFrame:(id)destinationFrame;
 - (void)dealloc;
 @end
 
 @implementation VTSuperResolutionScalerParameters
 
-- (VTSuperResolutionScalerParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 previousOutputFrame:(id)a5 opticalFlow:(id)a6 submissionMode:(int64_t)a7 destinationFrame:(id)a8
+- (VTSuperResolutionScalerParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame previousOutputFrame:(id)outputFrame opticalFlow:(id)flow submissionMode:(int64_t)mode destinationFrame:(id)destinationFrame
 {
   if (loadVEFrameworkOnce())
   {
@@ -15,12 +15,12 @@
     if (v15)
     {
       v16 = NSClassFromString(&cfstr_Vesuperresolut_0.isa);
-      v15->_sourceFrame = a3;
-      v15->_previousFrame = a4;
-      v15->_previousOutputFrame = a5;
-      v15->_destinationFrame = a8;
-      v15->_opticalFlow = a6;
-      v15->_veParameters = [[v16 alloc] initWithSourceFrame:-[VTFrameProcessorFrame veFrame](v15->_sourceFrame previousFrame:"veFrame") previousOutputFrame:-[VTFrameProcessorFrame veFrame](v15->_previousFrame opticalFlow:"veFrame") submissionMode:-[VTFrameProcessorFrame veFrame](v15->_previousOutputFrame destinationFrame:{"veFrame"), -[VTFrameProcessorOpticalFlow veFrameOpticalFlow](v15->_opticalFlow, "veFrameOpticalFlow"), a7, -[VTFrameProcessorFrame veFrame](v15->_destinationFrame, "veFrame")}];
+      v15->_sourceFrame = frame;
+      v15->_previousFrame = previousFrame;
+      v15->_previousOutputFrame = outputFrame;
+      v15->_destinationFrame = destinationFrame;
+      v15->_opticalFlow = flow;
+      v15->_veParameters = [[v16 alloc] initWithSourceFrame:-[VTFrameProcessorFrame veFrame](v15->_sourceFrame previousFrame:"veFrame") previousOutputFrame:-[VTFrameProcessorFrame veFrame](v15->_previousFrame opticalFlow:"veFrame") submissionMode:-[VTFrameProcessorFrame veFrame](v15->_previousOutputFrame destinationFrame:{"veFrame"), -[VTFrameProcessorOpticalFlow veFrameOpticalFlow](v15->_opticalFlow, "veFrameOpticalFlow"), mode, -[VTFrameProcessorFrame veFrame](v15->_destinationFrame, "veFrame")}];
     }
 
     else

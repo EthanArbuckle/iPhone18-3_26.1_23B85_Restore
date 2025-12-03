@@ -3,15 +3,15 @@
 - (BOOL)isMaintenanceDue;
 - (TILanguageModelMaintainer)init;
 - (void)dealloc;
-- (void)dynamicLearningCacheTimerFired:(id)a3;
-- (void)keyboardActivityDidTransition:(id)a3;
+- (void)dynamicLearningCacheTimerFired:(id)fired;
+- (void)keyboardActivityDidTransition:(id)transition;
 - (void)performMaintenanceIfNecessary;
 - (void)touchDynamicLearningCacheTimer;
 @end
 
 @implementation TILanguageModelMaintainer
 
-- (void)dynamicLearningCacheTimerFired:(id)a3
+- (void)dynamicLearningCacheTimerFired:(id)fired
 {
   v6 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -70,11 +70,11 @@
       [v7 releaseAllInputManagers];
     }
 
-    v8 = [MEMORY[0x277D46BD8] sharedManager];
-    [v8 flushDynamicData];
+    mEMORY[0x277D46BD8] = [MEMORY[0x277D46BD8] sharedManager];
+    [mEMORY[0x277D46BD8] flushDynamicData];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 postNotificationName:@"TILanguageModelPerformBackgroundMaintenanceNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TILanguageModelPerformBackgroundMaintenanceNotification" object:0];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -82,12 +82,12 @@
 
 - (BOOL)isMaintenanceDue
 {
-  v3 = [(TILanguageModelMaintainer *)self nextEligibleMaintenanceDate];
-  if (v3)
+  nextEligibleMaintenanceDate = [(TILanguageModelMaintainer *)self nextEligibleMaintenanceDate];
+  if (nextEligibleMaintenanceDate)
   {
-    v4 = [(TILanguageModelMaintainer *)self nextEligibleMaintenanceDate];
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v4 compare:v5] == -1;
+    nextEligibleMaintenanceDate2 = [(TILanguageModelMaintainer *)self nextEligibleMaintenanceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [nextEligibleMaintenanceDate2 compare:date] == -1;
   }
 
   else
@@ -100,28 +100,28 @@
 
 - (void)touchDynamicLearningCacheTimer
 {
-  v3 = [(TILanguageModelMaintainer *)self dynamicLearningCacheTimer];
-  v4 = [v3 isValid];
+  dynamicLearningCacheTimer = [(TILanguageModelMaintainer *)self dynamicLearningCacheTimer];
+  isValid = [dynamicLearningCacheTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
-    v6 = [(TILanguageModelMaintainer *)self dynamicLearningCacheTimer];
+    dynamicLearningCacheTimer2 = [(TILanguageModelMaintainer *)self dynamicLearningCacheTimer];
     v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:900.0];
-    [v6 setFireDate:v5];
+    [dynamicLearningCacheTimer2 setFireDate:v5];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_dynamicLearningCacheTimerFired_ selector:0 userInfo:0 repeats:900.0];
+    dynamicLearningCacheTimer2 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_dynamicLearningCacheTimerFired_ selector:0 userInfo:0 repeats:900.0];
     [(TILanguageModelMaintainer *)self setDynamicLearningCacheTimer:?];
   }
 }
 
-- (void)keyboardActivityDidTransition:(id)a3
+- (void)keyboardActivityDidTransition:(id)transition
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [a3 toState];
-  if (v4 == 3)
+  toState = [transition toState];
+  if (toState == 3)
   {
     v7 = *MEMORY[0x277D85DE8];
 
@@ -130,7 +130,7 @@
 
   else
   {
-    if (v4 == 2)
+    if (toState == 2)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -142,7 +142,7 @@
       [(TILanguageModelMaintainer *)self touchDynamicLearningCacheTimer];
     }
 
-    else if (v4 == 1)
+    else if (toState == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -151,8 +151,8 @@
         _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Invalidating dynamic learning cache timer", &v8, 0xCu);
       }
 
-      v5 = [(TILanguageModelMaintainer *)self dynamicLearningCacheTimer];
-      [v5 invalidate];
+      dynamicLearningCacheTimer = [(TILanguageModelMaintainer *)self dynamicLearningCacheTimer];
+      [dynamicLearningCacheTimer invalidate];
     }
 
     v6 = *MEMORY[0x277D85DE8];

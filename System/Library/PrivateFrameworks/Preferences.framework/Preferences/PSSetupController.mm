@@ -2,16 +2,16 @@
 - (PSSetupController)init;
 - (id)controller;
 - (id)parentController;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleURL:(id)a3;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleURL:(id)l;
 - (void)popControllerOnParent;
-- (void)pushControllerOnParentWithSpecifier:(id)a3;
-- (void)setParentController:(id)a3;
+- (void)pushControllerOnParentWithSpecifier:(id)specifier;
+- (void)setParentController:(id)controller;
 - (void)setupController;
-- (void)showController:(id)a3 animate:(BOOL)a4;
-- (void)statusBarWillChangeHeight:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)showController:(id)controller animate:(BOOL)animate;
+- (void)statusBarWillChangeHeight:(id)height;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PSSetupController
@@ -30,13 +30,13 @@
   return v3;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v5 = a3;
-  v4 = [(PSSetupController *)self topViewController];
-  if ([v4 conformsToProtocol:&unk_1EFE6C730] && (objc_opt_respondsToSelector() & 1) != 0)
+  lCopy = l;
+  topViewController = [(PSSetupController *)self topViewController];
+  if ([topViewController conformsToProtocol:&unk_1EFE6C730] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 handleURL:v5];
+    [topViewController handleURL:lCopy];
   }
 }
 
@@ -49,8 +49,8 @@
 
 - (void)setupController
 {
-  v3 = [(PSSetupController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(PSSetupController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (!v4)
   {
@@ -68,9 +68,9 @@
       objc_storeWeak(&self->super._specifier->target, self);
     }
 
-    v8 = [(PSSpecifier *)self->super._specifier properties];
+    properties = [(PSSpecifier *)self->super._specifier properties];
     rootInfo = self->_rootInfo;
-    self->_rootInfo = v8;
+    self->_rootInfo = properties;
 
     [v6 setParentController:self];
     [v6 setRootController:self];
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PSSetupController;
-  [(PSRootController *)&v4 viewWillDisappear:a3];
+  [(PSRootController *)&v4 viewWillDisappear:disappear];
   if ([(PSSetupController *)self usePopupStyle])
   {
     [(PSRootController *)self->_parentRootController willDismissPopupView];
@@ -95,11 +95,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PSSetupController;
-  [(PSRootController *)&v4 viewDidDisappear:a3];
+  [(PSRootController *)&v4 viewDidDisappear:disappear];
   if ([(PSSetupController *)self usePopupStyle])
   {
     [(PSRootController *)self->_parentRootController didDismissPopupView];
@@ -111,16 +111,16 @@
   }
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 specifier];
-    v7 = [v6 propertyForKey:@"dontAnimate"];
-    v8 = [v7 BOOLValue];
+    specifier = [controllerCopy specifier];
+    v7 = [specifier propertyForKey:@"dontAnimate"];
+    bOOLValue = [v7 BOOLValue];
 
-    v9 = v8 ^ 1u;
+    v9 = bOOLValue ^ 1u;
   }
 
   else
@@ -130,86 +130,86 @@
 
   v10.receiver = self;
   v10.super_class = PSSetupController;
-  [(PSRootController *)&v10 showController:v5 animate:v9];
+  [(PSRootController *)&v10 showController:controllerCopy animate:v9];
 }
 
-- (void)setParentController:(id)a3
+- (void)setParentController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_parentController, obj);
-    v5 = [obj rootController];
+    rootController = [obj rootController];
     parentRootController = self->_parentRootController;
-    self->_parentRootController = v5;
+    self->_parentRootController = rootController;
   }
 }
 
 - (id)controller
 {
-  v2 = [(PSSetupController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(PSSetupController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (![(PSSetupController *)self usePopupStyle])
   {
-    v9 = [(PSSetupController *)self parentController];
-    [v9 performSelector:sel__setNotShowingSetupController];
+    parentController = [(PSSetupController *)self parentController];
+    [parentController performSelector:sel__setNotShowingSetupController];
 
-    v10 = [(PSSetupController *)self presentingViewController];
-    [v10 dismissViewControllerAnimated:v4 completion:v11];
+    presentingViewController = [(PSSetupController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 LABEL_7:
 
     goto LABEL_8;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  v7 = [WeakRetained presentedViewController];
+  presentedViewController = [WeakRetained presentedViewController];
 
-  if (v7 == self)
+  if (presentedViewController == self)
   {
-    v10 = objc_loadWeakRetained(&self->_parentController);
-    [v10 dismissPopoverWithCompletion:v11];
+    presentingViewController = objc_loadWeakRetained(&self->_parentController);
+    [presentingViewController dismissPopoverWithCompletion:completionCopy];
     goto LABEL_7;
   }
 
-  v8 = [(PSRootController *)self->_parentRootController presentedViewController];
+  presentedViewController2 = [(PSRootController *)self->_parentRootController presentedViewController];
 
-  if (v8 == self)
+  if (presentedViewController2 == self)
   {
-    [(PSRootController *)self->_parentRootController dismissViewControllerAnimated:1 completion:v11];
+    [(PSRootController *)self->_parentRootController dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
 LABEL_8:
 }
 
-- (void)pushControllerOnParentWithSpecifier:(id)a3
+- (void)pushControllerOnParentWithSpecifier:(id)specifier
 {
-  v11 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = CreateDetailControllerInstanceWithClass(v11[6]);
+    v6 = CreateDetailControllerInstanceWithClass(specifierCopy[6]);
     [v6 setRootController:self->_parentRootController];
     v7 = objc_loadWeakRetained(&self->_parentController);
     [v6 setParentController:v7];
 
-    [v6 setSpecifier:v11];
+    [v6 setSpecifier:specifierCopy];
     v8 = objc_loadWeakRetained(&self->_parentController);
-    v9 = [v8 navigationController];
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    [v9 pushViewController:v6 animated:{objc_msgSend(v10, "sf_isiPad")}];
+    navigationController = [v8 navigationController];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    [navigationController pushViewController:v6 animated:{objc_msgSend(currentDevice, "sf_isiPad")}];
   }
 }
 
@@ -222,19 +222,19 @@ LABEL_8:
   if (isKindOfClass)
   {
     v7 = objc_loadWeakRetained(&self->_parentController);
-    v5 = [v7 navigationController];
-    v6 = [v5 popViewControllerAnimated:0];
+    navigationController = [v7 navigationController];
+    v6 = [navigationController popViewControllerAnimated:0];
   }
 }
 
-- (void)statusBarWillChangeHeight:(id)a3
+- (void)statusBarWillChangeHeight:(id)height
 {
-  v4 = a3;
+  heightCopy = height;
   if (![(PSSetupController *)self usePopupStyle]&& [(PSSetupController *)self modalPresentationStyle]!= 2)
   {
     v5.receiver = self;
     v5.super_class = PSSetupController;
-    [(PSRootController *)&v5 statusBarWillChangeHeight:v4];
+    [(PSRootController *)&v5 statusBarWillChangeHeight:heightCopy];
   }
 }
 

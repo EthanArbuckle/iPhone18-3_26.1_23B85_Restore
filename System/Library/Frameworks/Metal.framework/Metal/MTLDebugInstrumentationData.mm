@@ -1,15 +1,15 @@
 @interface MTLDebugInstrumentationData
-- (MTLDebugInstrumentationData)initWithData:(id)a3 linkedDynamicLibraries:(id)a4;
+- (MTLDebugInstrumentationData)initWithData:(id)data linkedDynamicLibraries:(id)libraries;
 - (id).cxx_construct;
-- (id)debugLocationForID:(unsigned int)a3;
-- (id)debugSubProgramForID:(unsigned int)a3;
-- (id)stringForID:(unsigned int)a3;
+- (id)debugLocationForID:(unsigned int)d;
+- (id)debugSubProgramForID:(unsigned int)d;
+- (id)stringForID:(unsigned int)d;
 - (void)dealloc;
 @end
 
 @implementation MTLDebugInstrumentationData
 
-- (MTLDebugInstrumentationData)initWithData:(id)a3 linkedDynamicLibraries:(id)a4
+- (MTLDebugInstrumentationData)initWithData:(id)data linkedDynamicLibraries:(id)libraries
 {
   v24.receiver = self;
   v24.super_class = MTLDebugInstrumentationData;
@@ -18,7 +18,7 @@
   if (v6)
   {
     size_ptr = 0;
-    v6->_dataMap = dispatch_data_create_map(a3, &v6->_data, &size_ptr);
+    v6->_dataMap = dispatch_data_create_map(data, &v6->_data, &size_ptr);
     std::vector<__CFString const*>::resize(&v7->_strings.__begin_, *(v7->_data + 2));
     data = v7->_data;
     if (data[2])
@@ -88,51 +88,51 @@
       v7->_userReflectionData = dispatch_data_create(v17 + v17[13] + 48, v21, 0, 0);
     }
 
-    v7->_linkedDynamicLibraries = a4;
+    v7->_linkedDynamicLibraries = libraries;
   }
 
   return v7;
 }
 
-- (id)stringForID:(unsigned int)a3
+- (id)stringForID:(unsigned int)d
 {
   begin = self->_strings.__begin_;
-  if (a3 >= (self->_strings.__end_ - begin))
+  if (d >= (self->_strings.__end_ - begin))
   {
     return 0;
   }
 
   else
   {
-    return begin[a3];
+    return begin[d];
   }
 }
 
-- (id)debugLocationForID:(unsigned int)a3
+- (id)debugLocationForID:(unsigned int)d
 {
   begin = self->_debugLocations.__begin_;
-  if (a3 >= (self->_debugLocations.var0 - begin))
+  if (d >= (self->_debugLocations.var0 - begin))
   {
     return 0;
   }
 
   else
   {
-    return begin[a3];
+    return begin[d];
   }
 }
 
-- (id)debugSubProgramForID:(unsigned int)a3
+- (id)debugSubProgramForID:(unsigned int)d
 {
   begin = self->_debugSubPrograms.__begin_;
-  if (a3 >= (self->_debugSubPrograms.var0 - begin))
+  if (d >= (self->_debugSubPrograms.var0 - begin))
   {
     return 0;
   }
 
   else
   {
-    return begin[a3];
+    return begin[d];
   }
 }
 

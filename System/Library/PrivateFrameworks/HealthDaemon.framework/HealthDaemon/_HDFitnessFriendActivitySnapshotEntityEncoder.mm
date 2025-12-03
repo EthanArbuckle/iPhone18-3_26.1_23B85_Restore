@@ -1,7 +1,7 @@
 @interface _HDFitnessFriendActivitySnapshotEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -29,19 +29,19 @@
   v9[16] = @"vulcan_condition";
   v9[17] = @"timezone_offset";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:18];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -66,7 +66,7 @@
     [(HDCodableFitnessFriendActivitySnapshot *)v10 setMmv:?];
     HDSQLiteColumnWithNameAsDouble();
     [(HDCodableFitnessFriendActivitySnapshot *)v10 setMmg:?];
-    [(HDCodableFitnessFriendActivitySnapshot *)v10 setAmm:HDEntityActivityModeModeForRowAndColumnName(a4)];
+    [(HDCodableFitnessFriendActivitySnapshot *)v10 setAmm:HDEntityActivityModeModeForRowAndColumnName(row)];
     HDSQLiteColumnWithNameAsDouble();
     [(HDCodableFitnessFriendActivitySnapshot *)v10 setWalkingAndRunningDistance:?];
     HDSQLiteColumnWithNameAsDouble();
@@ -94,60 +94,60 @@
   return v10;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCDDC8]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCDDC8]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
     v13 = HDSQLiteColumnWithNameAsUUID();
-    [v10 setFriendUUID:v13];
+    [objectCopy setFriendUUID:v13];
 
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setActiveHours:?];
+    [objectCopy setActiveHours:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setActiveHoursGoal:?];
+    [objectCopy setActiveHoursGoal:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setBriskMinutes:?];
+    [objectCopy setBriskMinutes:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setBriskMinutesGoal:?];
+    [objectCopy setBriskMinutesGoal:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setEnergyBurned:?];
+    [objectCopy setEnergyBurned:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setEnergyBurnedGoal:?];
+    [objectCopy setEnergyBurnedGoal:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setMmv:?];
+    [objectCopy setMmv:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setMmg:?];
-    [v10 setAmm:HDEntityActivityModeModeForRowAndColumnName(a5)];
+    [objectCopy setMmg:?];
+    [objectCopy setAmm:HDEntityActivityModeModeForRowAndColumnName(row)];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setWalkingAndRunningDistance:?];
+    [objectCopy setWalkingAndRunningDistance:?];
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setStepCount:?];
+    [objectCopy setStepCount:?];
     v14 = HDSQLiteColumnWithNameAsUUID();
-    [v10 setSourceUUID:v14];
+    [objectCopy setSourceUUID:v14];
 
-    [v10 setSnapshotIndex:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy setSnapshotIndex:HDSQLiteColumnWithNameAsInt64()];
     v15 = HDSQLiteColumnWithNameAsDate();
-    [v10 setSnapshotUploadedDate:v15];
+    [objectCopy setSnapshotUploadedDate:v15];
 
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setPushCount:?];
-    [v10 setWheelchairUse:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy setPushCount:?];
+    [objectCopy setWheelchairUse:HDSQLiteColumnWithNameAsInt64()];
     v16 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v16) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v16) & 1) == 0)
     {
       v17 = [MEMORY[0x277CCABB0] numberWithLongLong:HDSQLiteColumnAsInt64()];
-      [v10 setTimeZoneOffsetFromUTCForNoon:v17];
+      [objectCopy setTimeZoneOffsetFromUTCForNoon:v17];
     }
   }
 

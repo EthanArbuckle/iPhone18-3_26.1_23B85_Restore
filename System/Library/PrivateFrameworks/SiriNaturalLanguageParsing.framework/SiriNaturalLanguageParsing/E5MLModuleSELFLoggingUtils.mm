@@ -1,42 +1,42 @@
 @interface E5MLModuleSELFLoggingUtils
-+ (id)_buildMetadataWithNlId:(id)a3;
-+ (id)_buildMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithResultCandidateId:(id)a5;
++ (id)_buildMetadataWithNlId:(id)id;
++ (id)_buildMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithResultCandidateId:(id)candidateId;
 + (id)_generateRandomUUID;
 + (id)logMilCompilationStarted;
-+ (id)logMilCompilationStartedWithMetadata:(id)a3;
-+ (void)emitEvent:(id)a3;
-+ (void)emitEventMilAssetAcquisition:(id)a3 milAssetAcquisitionContextBuilder:(id)a4;
-+ (void)emitEventMilAssetAcquisitionWithMetadata:(id)a3 milAssetAcquisitionContextBuilder:(id)a4;
++ (id)logMilCompilationStartedWithMetadata:(id)metadata;
++ (void)emitEvent:(id)event;
++ (void)emitEventMilAssetAcquisition:(id)acquisition milAssetAcquisitionContextBuilder:(id)builder;
++ (void)emitEventMilAssetAcquisitionWithMetadata:(id)metadata milAssetAcquisitionContextBuilder:(id)builder;
 @end
 
 @implementation E5MLModuleSELFLoggingUtils
 
 + (id)_generateRandomUUID
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  [v2 getUUIDBytes:&v5];
-  v3 = [objc_alloc(MEMORY[0x277D5AC78]) initWithNSUUID:v2];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [uUID getUUIDBytes:&v5];
+  v3 = [objc_alloc(MEMORY[0x277D5AC78]) initWithNSUUID:uUID];
 
   return v3;
 }
 
-+ (void)emitEventMilAssetAcquisitionWithMetadata:(id)a3 milAssetAcquisitionContextBuilder:(id)a4
++ (void)emitEventMilAssetAcquisitionWithMetadata:(id)metadata milAssetAcquisitionContextBuilder:(id)builder
 {
-  v6 = a3;
+  metadataCopy = metadata;
   v7 = MEMORY[0x277D590C0];
-  v8 = a4;
+  builderCopy = builder;
   v9 = objc_alloc_init(v7);
-  v8[2](v8, v9);
+  builderCopy[2](builderCopy, v9);
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __105__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisitionWithMetadata_milAssetAcquisitionContextBuilder___block_invoke;
   v12[3] = &unk_2784B6F08;
-  v13 = v6;
+  v13 = metadataCopy;
   v14 = v9;
   v10 = v9;
-  v11 = v6;
-  [a1 emitEvent:v12];
+  v11 = metadataCopy;
+  [self emitEvent:v12];
 }
 
 void __105__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisitionWithMetadata_milAssetAcquisitionContextBuilder___block_invoke(uint64_t a1, void *a2)
@@ -47,15 +47,15 @@ void __105__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisitionWithMetadata_
   [v4 setMilAssetAcquisitionContext:*(a1 + 40)];
 }
 
-+ (void)emitEventMilAssetAcquisition:(id)a3 milAssetAcquisitionContextBuilder:(id)a4
++ (void)emitEventMilAssetAcquisition:(id)acquisition milAssetAcquisitionContextBuilder:(id)builder
 {
   v6 = MEMORY[0x277D590C0];
-  v7 = a4;
-  v8 = a3;
+  builderCopy = builder;
+  acquisitionCopy = acquisition;
   v9 = objc_alloc_init(v6);
-  v10 = [a1 _buildMetadataWithNlId:v8];
+  v10 = [self _buildMetadataWithNlId:acquisitionCopy];
 
-  v7[2](v7, v9);
+  builderCopy[2](builderCopy, v9);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisition_milAssetAcquisitionContextBuilder___block_invoke;
@@ -64,7 +64,7 @@ void __105__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisitionWithMetadata_
   v15 = v9;
   v11 = v9;
   v12 = v10;
-  [a1 emitEvent:v13];
+  [self emitEvent:v13];
 }
 
 void __93__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisition_milAssetAcquisitionContextBuilder___block_invoke(uint64_t a1, void *a2)
@@ -75,34 +75,34 @@ void __93__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisition_milAssetAcqui
   [v4 setMilAssetAcquisitionContext:*(a1 + 40)];
 }
 
-+ (void)emitEvent:(id)a3
++ (void)emitEvent:(id)event
 {
   v3 = MEMORY[0x277D590F0];
-  v4 = a3;
+  eventCopy = event;
   v6 = objc_alloc_init(v3);
-  v4[2](v4, v6);
+  eventCopy[2](eventCopy, v6);
 
-  v5 = [MEMORY[0x277D552C0] sharedStream];
-  [v5 emitMessage:v6];
+  mEMORY[0x277D552C0] = [MEMORY[0x277D552C0] sharedStream];
+  [mEMORY[0x277D552C0] emitMessage:v6];
 }
 
-+ (id)_buildMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithResultCandidateId:(id)a5
++ (id)_buildMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithResultCandidateId:(id)candidateId
 {
-  v7 = a4;
-  v8 = a5;
+  trpIdCopy = trpId;
+  candidateIdCopy = candidateId;
   v9 = MEMORY[0x277D590F8];
-  v10 = a3;
+  idCopy = id;
   v11 = objc_alloc_init(v9);
-  [v11 setNlId:v10];
+  [v11 setNlId:idCopy];
 
-  if (v7)
+  if (trpIdCopy)
   {
-    [v11 setTrpId:v7];
+    [v11 setTrpId:trpIdCopy];
   }
 
-  if (v8)
+  if (candidateIdCopy)
   {
-    [v11 setResultCandidateId:v8];
+    [v11 setResultCandidateId:candidateIdCopy];
   }
 
   [v11 setComponentInvocationSource:0];
@@ -110,12 +110,12 @@ void __93__E5MLModuleSELFLoggingUtils_emitEventMilAssetAcquisition_milAssetAcqui
   return v11;
 }
 
-+ (id)_buildMetadataWithNlId:(id)a3
++ (id)_buildMetadataWithNlId:(id)id
 {
   v3 = MEMORY[0x277D590F8];
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc_init(v3);
-  [v5 setNlId:v4];
+  [v5 setNlId:idCopy];
 
   return v5;
 }
@@ -140,16 +140,16 @@ void __69__E5MLModuleSELFLoggingUtils_logMilCompilationEnded_acquisitionType___b
 {
   v3 = objc_alloc_init(MEMORY[0x277D590D8]);
   [v3 setModel:1];
-  v4 = [a1 _generateRandomUUID];
+  _generateRandomUUID = [self _generateRandomUUID];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__E5MLModuleSELFLoggingUtils_logMilCompilationStarted__block_invoke;
   v10[3] = &unk_2784B6E70;
   v11 = v3;
-  v5 = v4;
+  v5 = _generateRandomUUID;
   v12 = v5;
   v6 = v3;
-  [a1 emitEventMilAssetAcquisition:v5 milAssetAcquisitionContextBuilder:v10];
+  [self emitEventMilAssetAcquisition:v5 milAssetAcquisitionContextBuilder:v10];
   v7 = v12;
   v8 = v5;
 
@@ -180,22 +180,22 @@ void __91__E5MLModuleSELFLoggingUtils_logMilCompilationEndedWithMetadata_context
   [v4 setContextId:*(a1 + 40)];
 }
 
-+ (id)logMilCompilationStartedWithMetadata:(id)a3
++ (id)logMilCompilationStartedWithMetadata:(id)metadata
 {
   v4 = MEMORY[0x277D590D8];
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = objc_alloc_init(v4);
   [v6 setModel:1];
-  v7 = [a1 _generateRandomUUID];
+  _generateRandomUUID = [self _generateRandomUUID];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__E5MLModuleSELFLoggingUtils_logMilCompilationStartedWithMetadata___block_invoke;
   v13[3] = &unk_2784B6E70;
   v14 = v6;
-  v8 = v7;
+  v8 = _generateRandomUUID;
   v15 = v8;
   v9 = v6;
-  [a1 emitEventMilAssetAcquisitionWithMetadata:v5 milAssetAcquisitionContextBuilder:v13];
+  [self emitEventMilAssetAcquisitionWithMetadata:metadataCopy milAssetAcquisitionContextBuilder:v13];
 
   v10 = v15;
   v11 = v8;

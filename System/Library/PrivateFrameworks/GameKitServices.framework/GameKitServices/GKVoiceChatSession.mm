@@ -1,20 +1,20 @@
 @interface GKVoiceChatSession
-- (BOOL)didReceiveVoiceChatData:(id)a3 fromPeerID:(id)a4;
-- (GKVoiceChatSession)initWithGKSession:(id)a3 sessionName:(id)a4;
-- (GKVoiceChatSession)initWithGameStateSession:(id)a3 sessionName:(id)a4;
+- (BOOL)didReceiveVoiceChatData:(id)data fromPeerID:(id)d;
+- (GKVoiceChatSession)initWithGKSession:(id)session sessionName:(id)name;
+- (GKVoiceChatSession)initWithGameStateSession:(id)session sessionName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation GKVoiceChatSession
 
-- (GKVoiceChatSession)initWithGKSession:(id)a3 sessionName:(id)a4
+- (GKVoiceChatSession)initWithGKSession:(id)session sessionName:(id)name
 {
-  v6 = [a3 privateImpl];
+  privateImpl = [session privateImpl];
 
-  return [(GKVoiceChatSession *)self initWithGameStateSession:v6 sessionName:a4];
+  return [(GKVoiceChatSession *)self initWithGameStateSession:privateImpl sessionName:name];
 }
 
-- (GKVoiceChatSession)initWithGameStateSession:(id)a3 sessionName:(id)a4
+- (GKVoiceChatSession)initWithGameStateSession:(id)session sessionName:(id)name
 {
   v40 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
@@ -22,7 +22,7 @@
   v6 = [(GKVoiceChatSession *)&v23 init];
   if (v6)
   {
-    v6->opaqueSession = [[GKVoiceChatSessionInternal alloc] initWithGameStateSession:a3 publicWrapper:v6 sessionName:a4];
+    v6->opaqueSession = [[GKVoiceChatSessionInternal alloc] initWithGameStateSession:session publicWrapper:v6 sessionName:name];
     if (objc_opt_class() == v6)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -45,7 +45,7 @@
           v32 = 2080;
           v33 = Name;
           v34 = 2112;
-          v35 = a4;
+          nameCopy = name;
           v13 = " [%s] %s:%d [%p] GKVoiceChatSession init'd using session=%s with sessionName=%@";
           v14 = v9;
           v15 = 58;
@@ -87,11 +87,11 @@ LABEL_12:
           v32 = 2048;
           v33 = v6;
           v34 = 2048;
-          v35 = v18;
+          nameCopy = v18;
           v36 = 2080;
           v37 = v20;
           v38 = 2112;
-          v39 = a4;
+          nameCopy2 = name;
           v13 = " [%s] %s:%d %@(%p) [%p] GKVoiceChatSession init'd using session=%s with sessionName=%@";
           v14 = v17;
           v15 = 78;
@@ -105,7 +105,7 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)didReceiveVoiceChatData:(id)a3 fromPeerID:(id)a4
+- (BOOL)didReceiveVoiceChatData:(id)data fromPeerID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
   if (objc_opt_class() != self)
@@ -141,9 +141,9 @@ LABEL_12:
     WORD2(v21) = 2112;
     *(&v21 + 6) = v7;
     HIWORD(v21) = 2048;
-    v22 = self;
+    selfCopy = self;
     LOWORD(v23) = 2112;
-    *(&v23 + 2) = a4;
+    *(&v23 + 2) = d;
     v10 = " [%s] %s:%d %@(%p) GKVoiceChatSession receive data from peerID=%@";
     v11 = v14;
     v12 = 58;
@@ -163,7 +163,7 @@ LABEL_12:
       *&v20[22] = 1024;
       LODWORD(v21) = 47;
       WORD2(v21) = 2112;
-      *(&v21 + 6) = a4;
+      *(&v21 + 6) = d;
       v10 = " [%s] %s:%d GKVoiceChatSession receive data from peerID=%@";
       v11 = v9;
       v12 = 38;
@@ -173,16 +173,16 @@ LABEL_11:
   }
 
 LABEL_12:
-  v15 = [GKOOBMessageFactory newMessageFromData:a3, *v20, *&v20[16], v21, v22, v23];
-  v16 = [self->opaqueSession conferenceID];
-  v17 = [v15 conferenceID];
-  if (v16 == v17)
+  v15 = [GKOOBMessageFactory newMessageFromData:data, *v20, *&v20[16], v21, selfCopy, v23];
+  conferenceID = [self->opaqueSession conferenceID];
+  conferenceID2 = [v15 conferenceID];
+  if (conferenceID == conferenceID2)
   {
-    [self->opaqueSession session:0 didReceiveOOBAudioPacket:v15 fromPeerID:a4];
+    [self->opaqueSession session:0 didReceiveOOBAudioPacket:v15 fromPeerID:d];
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v16 == v17;
+  return conferenceID == conferenceID2;
 }
 
 - (void)dealloc

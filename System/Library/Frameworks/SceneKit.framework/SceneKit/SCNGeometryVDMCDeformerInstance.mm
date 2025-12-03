@@ -1,20 +1,20 @@
 @interface SCNGeometryVDMCDeformerInstance
-- (id)initWithNode:(uint64_t)a3 deformer:(uint64_t)a4 outputs:(uint64_t)a5 computeVertexCount:(void *)a6 context:;
-- (unint64_t)updateWithContext:(id)a3;
+- (id)initWithNode:(uint64_t)node deformer:(uint64_t)deformer outputs:(uint64_t)outputs computeVertexCount:(void *)count context:;
+- (unint64_t)updateWithContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation SCNGeometryVDMCDeformerInstance
 
-- (id)initWithNode:(uint64_t)a3 deformer:(uint64_t)a4 outputs:(uint64_t)a5 computeVertexCount:(void *)a6 context:
+- (id)initWithNode:(uint64_t)node deformer:(uint64_t)deformer outputs:(uint64_t)outputs computeVertexCount:(void *)count context:
 {
   *(&v130[2] + 4) = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v126.receiver = a1;
+  v126.receiver = self;
   v126.super_class = SCNGeometryVDMCDeformerInstance;
   v68 = objc_msgSendSuper2(&v126, sel_init);
   if (!v68)
@@ -24,7 +24,7 @@
 
   Geometry = C3DNodeGetGeometry([a2 nodeRef]);
   Mesh = C3DGeometryGetMesh(Geometry);
-  v8 = [a6 _currentResourceManager];
+  _currentResourceManager = [count _currentResourceManager];
   if (!C3DEntityGetName(Mesh))
   {
     C3DEntityGetName(Geometry);
@@ -33,7 +33,7 @@
   ElementsCount = C3DMeshGetElementsCount(Mesh);
   v61 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:ElementsCount];
   *(v68 + 2) = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:ElementsCount];
-  [SCNMTLResourceManager newBufferWithLength:v8 options:?];
+  [SCNMTLResourceManager newBufferWithLength:_currentResourceManager options:?];
   newValue = v9;
   memset(&v125, 0, sizeof(v125));
   v122 = 0;
@@ -70,25 +70,25 @@
           }
         }
 
-        v17 = [SCNMTLResourceManager renderResourceForMeshElement:v8];
-        v18 = [(SCNMTLResourceManager *)v17 commandQueue];
+        v17 = [SCNMTLResourceManager renderResourceForMeshElement:_currentResourceManager];
+        commandQueue = [(SCNMTLResourceManager *)v17 commandQueue];
         C3DMeshElementGetPrimitiveCount(ElementAtIndex);
-        std::vector<unsigned int>::reserve(&v125, v125.__end_ - v125.__begin_ + v18);
+        std::vector<unsigned int>::reserve(&v125, v125.__end_ - v125.__begin_ + commandQueue);
         if (![(SCNMTLMesh *)v17 elements])
         {
-          v19 = [-[SCNMTLMeshElement indexBuffer](v17) buffer];
-          [a6 currentBlitEncoder];
-          v20 = newUInt32BufferFromUInt16Buffer(v19, v18, v8);
+          buffer = [-[SCNMTLMeshElement indexBuffer](v17) buffer];
+          [count currentBlitEncoder];
+          v20 = newUInt32BufferFromUInt16Buffer(buffer, commandQueue, _currentResourceManager);
           v21 = objc_alloc_init(SCNMTLBuffer);
           [(SCNMTLMeshElement *)v17 setIndexBuffer:v21];
           [-[SCNMTLMeshElement indexBuffer](v17) setBuffer:v20];
         }
 
-        v22 = [-[SCNMTLMeshElement indexBuffer](v17) contents];
-        if (v18 >= 1)
+        contents = [-[SCNMTLMeshElement indexBuffer](v17) contents];
+        if (commandQueue >= 1)
         {
-          v23 = v22;
-          v24 = v18 & 0x7FFFFFFF;
+          v23 = contents;
+          v24 = commandQueue & 0x7FFFFFFF;
           end = v125.__end_;
           do
           {
@@ -169,7 +169,7 @@
   }
 
   v39 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:C3DMeshGetSourcesCount(Mesh)];
-  v40 = [MEMORY[0x277CD7090] vertexDescriptor];
+  vertexDescriptor = [MEMORY[0x277CD7090] vertexDescriptor];
   v115[0] = 0;
   v115[1] = v115;
   v115[2] = 0x2020000000;
@@ -253,21 +253,21 @@
     std::vector<double>::__vallocate[abi:nn200100](&v72, (*(&v88 + 1) - v88) >> 3);
   }
 
-  v41 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v8, v78, v79 - v78, [a6 currentBlitEncoder]);
-  v42 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v8, v75, v76 - v75, [a6 currentBlitEncoder]);
-  v43 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v8, v72, v73 - v72, [a6 currentBlitEncoder]);
-  v44 = [a6 currentBlitEncoder];
-  v45 = [(SCNMTLResourceManager *)v8 newPrivateBufferWithBytes:v109 length:*(&v109 + 1) - v109 blitEncoder:v44];
-  v46 = [a6 currentBlitEncoder];
-  v47 = [(SCNMTLResourceManager *)v8 newPrivateBufferWithBytes:v112 length:*(&v112 + 1) - v112 blitEncoder:v46];
+  v41 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](_currentResourceManager, v78, v79 - v78, [count currentBlitEncoder]);
+  v42 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](_currentResourceManager, v75, v76 - v75, [count currentBlitEncoder]);
+  v43 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](_currentResourceManager, v72, v73 - v72, [count currentBlitEncoder]);
+  currentBlitEncoder = [count currentBlitEncoder];
+  v45 = [(SCNMTLResourceManager *)_currentResourceManager newPrivateBufferWithBytes:v109 length:*(&v109 + 1) - v109 blitEncoder:currentBlitEncoder];
+  currentBlitEncoder2 = [count currentBlitEncoder];
+  v47 = [(SCNMTLResourceManager *)_currentResourceManager newPrivateBufferWithBytes:v112 length:*(&v112 + 1) - v112 blitEncoder:currentBlitEncoder2];
   v70 = (*(&v109 + 1) - v109) >> 2;
   v71 = (*(&v112 + 1) - v112) >> 3;
-  v48 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v8, v69, 48, [a6 currentBlitEncoder]);
-  [SCNMTLResourceManager _fillVertexDescriptor:v40 withSemantic:0 inputSet:0 bufferIndex:0 vertexFormat:30 offset:0 stride:16];
+  v48 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](_currentResourceManager, v69, 48, [count currentBlitEncoder]);
+  [SCNMTLResourceManager _fillVertexDescriptor:vertexDescriptor withSemantic:0 inputSet:0 bufferIndex:0 vertexFormat:30 offset:0 stride:16];
   [v39 addObject:v41];
-  [SCNMTLResourceManager _fillVertexDescriptor:v40 withSemantic:1 inputSet:0 bufferIndex:1 vertexFormat:30 offset:0 stride:16];
+  [SCNMTLResourceManager _fillVertexDescriptor:vertexDescriptor withSemantic:1 inputSet:0 bufferIndex:1 vertexFormat:30 offset:0 stride:16];
   [v39 addObject:v42];
-  [SCNMTLResourceManager _fillVertexDescriptor:v40 withSemantic:3 inputSet:0 bufferIndex:2 vertexFormat:29 offset:0 stride:8];
+  [SCNMTLResourceManager _fillVertexDescriptor:vertexDescriptor withSemantic:3 inputSet:0 bufferIndex:2 vertexFormat:29 offset:0 stride:8];
   [v39 addObject:v43];
   if (ElementsCount >= 1)
   {
@@ -301,7 +301,7 @@
 
   v58 = objc_alloc_init(SCNMTLMesh);
   *(v68 + 1) = v58;
-  [(SCNMTLMesh *)v58 setVertexDescriptor:v40];
+  [(SCNMTLMesh *)v58 setVertexDescriptor:vertexDescriptor];
   [(SCNMTLMesh *)*(v68 + 1) setBuffers:v39];
   [(SCNMTLMesh *)*(v68 + 1) setElements:v61];
 
@@ -484,16 +484,16 @@ void __92__SCNGeometryVDMCDeformerInstance_initWithNode_deformer_outputs_compute
   [(SCNGeometryVDMCDeformerInstance *)&v3 dealloc];
 }
 
-- (unint64_t)updateWithContext:(id)a3
+- (unint64_t)updateWithContext:(id)context
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = -[SCNMTLRenderContext resourceComputeEncoder]([a3 _currentRenderContext]);
+  v5 = -[SCNMTLRenderContext resourceComputeEncoder]([context _currentRenderContext]);
   [(MTLComputeCommandEncoder *)v5->_encoder pushDebugGroup:@"VDMC deformer"];
   bzero(v57, 0xC0uLL);
-  if (a3)
+  if (context)
   {
-    [a3 _currentTransforms];
-    [a3 _currentFrustumInfo];
+    [context _currentTransforms];
+    [context _currentFrustumInfo];
   }
 
   else
@@ -732,11 +732,11 @@ LABEL_57:
 
 LABEL_58:
             OUTLINED_FUNCTION_0_13(v33, v34, v35, v36, v37, v38, v39, v40, v51, v52, v53[0]);
-            v41 = [(SCNMTLOpenSubdivComputeEvaluator *)*(v18 + 136) computeEvaluator];
-            if (v5->_computePipelineState != v41)
+            computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)*(v18 + 136) computeEvaluator];
+            if (v5->_computePipelineState != computeEvaluator)
             {
-              v5->_computePipelineState = v41;
-              [(MTLComputeCommandEncoder *)v5->_encoder setComputePipelineState:v41];
+              v5->_computePipelineState = computeEvaluator;
+              [(MTLComputeCommandEncoder *)v5->_encoder setComputePipelineState:computeEvaluator];
             }
 
             v20 = SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v5, v29);
@@ -811,11 +811,11 @@ LABEL_72:
         v45 = 0;
       }
 
-      v46 = [(SCNMTLOpenSubdivComputeEvaluator *)v45 computeEvaluator];
-      if (v5->_computePipelineState != v46)
+      computeEvaluator2 = [(SCNMTLOpenSubdivComputeEvaluator *)v45 computeEvaluator];
+      if (v5->_computePipelineState != computeEvaluator2)
       {
-        v5->_computePipelineState = v46;
-        [(MTLComputeCommandEncoder *)v5->_encoder setComputePipelineState:v46];
+        v5->_computePipelineState = computeEvaluator2;
+        [(MTLComputeCommandEncoder *)v5->_encoder setComputePipelineState:computeEvaluator2];
       }
 
       v47 = SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v5, 1uLL);

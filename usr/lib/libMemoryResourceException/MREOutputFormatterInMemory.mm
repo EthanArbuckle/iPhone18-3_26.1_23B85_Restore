@@ -1,13 +1,13 @@
 @interface MREOutputFormatterInMemory
 - (MREOutputFormatterInMemory)init;
-- (void)printGlobalAuxData:(id)a3;
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4;
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5;
-- (void)printProcessHeader:(id)a3;
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4;
-- (void)printProcessesWithWarnings:(id)a3 processesWithErrors:(id)a4 globalErrors:(id)a5;
-- (void)printSharedCategories:(id)a3 sharedWith:(id)a4 forProcess:(id)a5 hasProcessView:(BOOL)a6 total:(id *)a7;
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5;
+- (void)printGlobalAuxData:(id)data;
+- (void)printProcessAuxData:(id)data forProcess:(id)process;
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process;
+- (void)printProcessHeader:(id)header;
+- (void)printProcessTotal:(id)total forProcess:(id)process;
+- (void)printProcessesWithWarnings:(id)warnings processesWithErrors:(id)errors globalErrors:(id)globalErrors;
+- (void)printSharedCategories:(id)categories sharedWith:(id)with forProcess:(id)process hasProcessView:(BOOL)view total:(id *)total;
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors;
 @end
 
 @implementation MREOutputFormatterInMemory
@@ -38,8 +38,8 @@
     v18[2] = v2->_processes;
     v17[2] = @"processes";
     v17[3] = @"shared";
-    v9 = [MEMORY[0x29EDB8DE8] array];
-    v18[3] = v9;
+    array = [MEMORY[0x29EDB8DE8] array];
+    v18[3] = array;
     v18[4] = v8;
     v17[4] = @"auxiliary";
     v17[5] = @"unit";
@@ -63,16 +63,16 @@
   return v2;
 }
 
-- (void)printProcessHeader:(id)a3
+- (void)printProcessHeader:(id)header
 {
   v56[5] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  headerCopy = header;
   v5 = MEMORY[0x29EDB8E00];
   v55[0] = @"name";
-  v6 = [v4 name];
-  v56[0] = v6;
+  name = [headerCopy name];
+  v56[0] = name;
   v55[1] = @"pid";
-  v7 = [MEMORY[0x29EDBA070] numberWithInt:{objc_msgSend(v4, "pid")}];
+  v7 = [MEMORY[0x29EDBA070] numberWithInt:{objc_msgSend(headerCopy, "pid")}];
   v56[1] = v7;
   v56[2] = &unk_2A1E95180;
   v55[2] = @"footprint";
@@ -84,51 +84,51 @@
   v9 = [v5 dictionaryWithDictionary:v8];
 
   v10 = v9;
-  v11 = [v4 errors];
-  v12 = [v11 count];
+  errors = [headerCopy errors];
+  v12 = [errors count];
 
   if (v12)
   {
-    v13 = [v4 errors];
-    [v10 setObject:v13 forKeyedSubscript:@"errors"];
+    errors2 = [headerCopy errors];
+    [v10 setObject:errors2 forKeyedSubscript:@"errors"];
   }
 
-  v14 = [v4 warnings];
-  v15 = [v14 count];
+  warnings = [headerCopy warnings];
+  v15 = [warnings count];
 
   if (v15)
   {
-    v16 = [v4 warnings];
-    [v10 setObject:v16 forKeyedSubscript:@"warnings"];
+    warnings2 = [headerCopy warnings];
+    [v10 setObject:warnings2 forKeyedSubscript:@"warnings"];
   }
 
   if (self->_verbose)
   {
-    v44 = self;
+    selfCopy = self;
     v17 = MEMORY[0x29EDB8DE8];
-    v18 = [v4 memoryRegions];
-    v19 = [v17 arrayWithCapacity:{objc_msgSend(v18, "count")}];
+    memoryRegions = [headerCopy memoryRegions];
+    v19 = [v17 arrayWithCapacity:{objc_msgSend(memoryRegions, "count")}];
 
     [v10 setObject:v19 forKeyedSubscript:@"regions"];
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v20 = [v4 memoryRegions];
-    v47 = [v20 countByEnumeratingWithState:&v48 objects:v54 count:16];
+    memoryRegions2 = [headerCopy memoryRegions];
+    v47 = [memoryRegions2 countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v47)
     {
       v42 = v10;
-      v43 = v4;
+      v43 = headerCopy;
       v45 = *v49;
-      v46 = v20;
+      v46 = memoryRegions2;
       do
       {
         for (i = 0; i != v47; ++i)
         {
           if (*v49 != v45)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(memoryRegions2);
           }
 
           v22 = *(*(&v48 + 1) + 8 * i);
@@ -137,8 +137,8 @@
           v24 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v22, "object_id")}];
           v53[0] = v24;
           v52[1] = @"name";
-          v25 = [v22 name];
-          v53[1] = v25;
+          name2 = [v22 name];
+          v53[1] = name2;
           v52[2] = @"addr";
           v26 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v22, "start")}];
           v53[2] = v26;
@@ -187,7 +187,7 @@
           v36 = [v29 copy];
           [v19 addObject:v36];
 
-          v20 = v46;
+          memoryRegions2 = v46;
         }
 
         v47 = [v46 countByEnumeratingWithState:&v48 objects:v54 count:16];
@@ -195,10 +195,10 @@
 
       while (v47);
 
-      v4 = v43;
-      self = v44;
+      headerCopy = v43;
+      self = selfCopy;
       v10 = v42;
-      if (!v44)
+      if (!selfCopy)
       {
         processes = 0;
         v38 = 1;
@@ -209,7 +209,7 @@
     else
     {
 
-      self = v44;
+      self = selfCopy;
     }
   }
 
@@ -219,7 +219,7 @@ LABEL_29:
   [(NSMutableArray *)processes addObject:v10];
   if (!self->_isPageSizeSet)
   {
-    v39 = [MEMORY[0x29EDBA070] numberWithUnsignedLong:{objc_msgSend(v4, "pageSize")}];
+    v39 = [MEMORY[0x29EDBA070] numberWithUnsignedLong:{objc_msgSend(headerCopy, "pageSize")}];
     if (v38)
     {
       data = 0;
@@ -238,7 +238,7 @@ LABEL_29:
   v41 = *MEMORY[0x29EDCA608];
 }
 
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4
+- (void)printProcessTotal:(id)total forProcess:(id)process
 {
   if (self)
   {
@@ -250,14 +250,14 @@ LABEL_29:
     processes = 0;
   }
 
-  v5 = a3;
-  v6 = [(NSMutableArray *)processes lastObject];
-  [v6 setObject:v5 forKeyedSubscript:@"footprint"];
+  totalCopy = total;
+  lastObject = [(NSMutableArray *)processes lastObject];
+  [lastObject setObject:totalCopy forKeyedSubscript:@"footprint"];
 }
 
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process
 {
-  v8 = sub_297E35F18(self, a3);
+  v8 = sub_297E35F18(self, categories);
   if (self)
   {
     processes = self->_processes;
@@ -268,38 +268,38 @@ LABEL_29:
     processes = 0;
   }
 
-  v7 = [(NSMutableArray *)processes lastObject];
-  [v7 setObject:v8 forKeyedSubscript:@"categories"];
+  lastObject = [(NSMutableArray *)processes lastObject];
+  [lastObject setObject:v8 forKeyedSubscript:@"categories"];
 }
 
-- (void)printSharedCategories:(id)a3 sharedWith:(id)a4 forProcess:(id)a5 hasProcessView:(BOOL)a6 total:(id *)a7
+- (void)printSharedCategories:(id)categories sharedWith:(id)with forProcess:(id)process hasProcessView:(BOOL)view total:(id *)total
 {
-  v7 = a6;
+  viewCopy = view;
   v38 = *MEMORY[0x29EDCA608];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v7)
+  categoriesCopy = categories;
+  withCopy = with;
+  processCopy = process;
+  if (!viewCopy)
   {
-    if (([(NSMutableSet *)self->_addedProcessGroups containsObject:v12]& 1) != 0)
+    if (([(NSMutableSet *)self->_addedProcessGroups containsObject:withCopy]& 1) != 0)
     {
       goto LABEL_14;
     }
 
-    [(NSMutableSet *)self->_addedProcessGroups addObject:v12];
+    [(NSMutableSet *)self->_addedProcessGroups addObject:withCopy];
   }
 
-  v30 = v13;
+  v30 = processCopy;
   v14 = MEMORY[0x29EDB8DE8];
-  v15 = [v12 processes];
-  v16 = [v14 arrayWithCapacity:{objc_msgSend(v15, "count")}];
+  processes = [withCopy processes];
+  v16 = [v14 arrayWithCapacity:{objc_msgSend(processes, "count")}];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = [v12 processes];
-  v18 = [v17 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  processes2 = [withCopy processes];
+  v18 = [processes2 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v18)
   {
     v19 = v18;
@@ -311,17 +311,17 @@ LABEL_29:
       {
         if (*v32 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(processes2);
         }
 
-        v22 = [*(*(&v31 + 1) + 8 * v21) asNumber];
-        [v16 addObject:v22];
+        asNumber = [*(*(&v31 + 1) + 8 * v21) asNumber];
+        [v16 addObject:asNumber];
 
         ++v21;
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      v19 = [processes2 countByEnumeratingWithState:&v31 objects:v37 count:16];
     }
 
     while (v19);
@@ -331,16 +331,16 @@ LABEL_29:
   v35[0] = @"pids";
   v35[1] = @"categories";
   v36[0] = v16;
-  v24 = sub_297E35F18(self, v11);
+  v24 = sub_297E35F18(self, categoriesCopy);
   v36[1] = v24;
   v25 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
   v26 = [v23 initWithDictionary:v25];
 
-  v13 = v30;
-  if (v7)
+  processCopy = v30;
+  if (viewCopy)
   {
-    v27 = [v30 asNumber];
-    [v26 setObject:v27 forKeyedSubscript:@"specific_to_pid"];
+    asNumber2 = [v30 asNumber];
+    [v26 setObject:asNumber2 forKeyedSubscript:@"specific_to_pid"];
   }
 
   v28 = [(NSMutableDictionary *)self->_data objectForKeyedSubscript:@"shared"];
@@ -350,9 +350,9 @@ LABEL_14:
   v29 = *MEMORY[0x29EDCA608];
 }
 
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4
+- (void)printProcessAuxData:(id)data forProcess:(id)process
 {
-  v7 = [a3 fp_jsonRepresentation];
+  fp_jsonRepresentation = [data fp_jsonRepresentation];
   if (self)
   {
     processes = self->_processes;
@@ -363,22 +363,22 @@ LABEL_14:
     processes = 0;
   }
 
-  v6 = [(NSMutableArray *)processes lastObject];
-  [v6 setObject:v7 forKeyedSubscript:@"auxiliary"];
+  lastObject = [(NSMutableArray *)processes lastObject];
+  [lastObject setObject:fp_jsonRepresentation forKeyedSubscript:@"auxiliary"];
 }
 
-- (void)printProcessesWithWarnings:(id)a3 processesWithErrors:(id)a4 globalErrors:(id)a5
+- (void)printProcessesWithWarnings:(id)warnings processesWithErrors:(id)errors globalErrors:(id)globalErrors
 {
   v36 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x29EDB8DE8] arrayWithArray:a5];
+  warningsCopy = warnings;
+  errorsCopy = errors;
+  v10 = [MEMORY[0x29EDB8DE8] arrayWithArray:globalErrors];
   v11 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v8;
+  v12 = warningsCopy;
   v13 = [v12 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v13)
   {
@@ -394,8 +394,8 @@ LABEL_14:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * v16) warnings];
-        [v11 addObjectsFromArray:v17];
+        warnings = [*(*(&v30 + 1) + 8 * v16) warnings];
+        [v11 addObjectsFromArray:warnings];
 
         ++v16;
       }
@@ -411,7 +411,7 @@ LABEL_14:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = v9;
+  v18 = errorsCopy;
   v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v19)
   {
@@ -427,8 +427,8 @@ LABEL_14:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) errors];
-        [v10 addObjectsFromArray:v23];
+        errors = [*(*(&v26 + 1) + 8 * v22) errors];
+        [v10 addObjectsFromArray:errors];
 
         ++v22;
       }
@@ -457,13 +457,13 @@ LABEL_14:
   v25 = *MEMORY[0x29EDCA608];
 }
 
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors
 {
   v24[6] = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  if (v7)
+  categoriesCopy = categories;
+  if (categoriesCopy)
   {
-    v8 = sub_297E35F18(self, v7);
+    v8 = sub_297E35F18(self, categoriesCopy);
     if (self)
     {
       data = self->_data;
@@ -478,25 +478,25 @@ LABEL_14:
   }
 
   v23[0] = @"dirty";
-  v21 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a4->var1 + a4->var0];
+  v21 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:total->var1 + total->var0];
   v24[0] = v21;
   v23[1] = @"swapped";
-  v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a4->var1];
+  v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:total->var1];
   v24[1] = v10;
   v23[2] = @"clean";
-  v11 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a4->var2];
+  v11 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:total->var2];
   v24[2] = v11;
   v23[3] = @"reclaimable";
-  v12 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a4->var3];
+  v12 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:total->var3];
   v24[3] = v12;
   v23[4] = @"wired";
-  v13 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a4->var4];
+  v13 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:total->var4];
   v24[4] = v13;
   v23[5] = @"regions";
-  v14 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:a4->var5];
+  v14 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:total->var5];
   v24[5] = v14;
   v15 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v24 forKeys:v23 count:6];
-  v22 = v7;
+  v22 = categoriesCopy;
   if (self)
   {
     v16 = self->_data;
@@ -510,7 +510,7 @@ LABEL_14:
   v17 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:@"summary"];
   [v17 setObject:v15 forKeyedSubscript:@"total"];
 
-  v18 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a4->var1 + a4->var0];
+  v18 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:total->var1 + total->var0];
   if (self)
   {
     v19 = self->_data;
@@ -526,9 +526,9 @@ LABEL_14:
   v20 = *MEMORY[0x29EDCA608];
 }
 
-- (void)printGlobalAuxData:(id)a3
+- (void)printGlobalAuxData:(id)data
 {
-  v4 = [a3 fp_jsonRepresentation];
+  fp_jsonRepresentation = [data fp_jsonRepresentation];
   if (self)
   {
     data = self->_data;
@@ -539,8 +539,8 @@ LABEL_14:
     data = 0;
   }
 
-  v6 = v4;
-  [(NSMutableDictionary *)data setObject:v4 forKeyedSubscript:@"auxiliary"];
+  v6 = fp_jsonRepresentation;
+  [(NSMutableDictionary *)data setObject:fp_jsonRepresentation forKeyedSubscript:@"auxiliary"];
 }
 
 @end

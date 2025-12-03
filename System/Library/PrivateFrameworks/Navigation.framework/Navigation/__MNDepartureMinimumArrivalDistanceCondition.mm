@@ -1,24 +1,24 @@
 @interface __MNDepartureMinimumArrivalDistanceCondition
-- (__MNDepartureMinimumArrivalDistanceCondition)initWithUpdater:(id)a3 distanceThreshold:(double)a4;
-- (double)scoreForLocation:(id)a3;
+- (__MNDepartureMinimumArrivalDistanceCondition)initWithUpdater:(id)updater distanceThreshold:(double)threshold;
+- (double)scoreForLocation:(id)location;
 @end
 
 @implementation __MNDepartureMinimumArrivalDistanceCondition
 
-- (double)scoreForLocation:(id)a3
+- (double)scoreForLocation:(id)location
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->_updater);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_updater);
-    v7 = [v6 arrivalLeg];
+    arrivalLeg = [v6 arrivalLeg];
 
-    [v4 coordinate];
-    v8 = [v7 destination];
-    [v8 coordinate];
+    [locationCopy coordinate];
+    destination = [arrivalLeg destination];
+    [destination coordinate];
 
     GEOCalculateDistance();
     v10 = v9;
@@ -35,17 +35,17 @@
     }
 
     v12 = objc_loadWeakRetained(&self->_updater);
-    v13 = [v12 route];
-    v14 = [v4 routeMatch];
-    v15 = [v13 segmentIndexForPointIndex:{objc_msgSend(v14, "routeCoordinate")}];
+    route = [v12 route];
+    routeMatch = [locationCopy routeMatch];
+    v15 = [route segmentIndexForPointIndex:{objc_msgSend(routeMatch, "routeCoordinate")}];
 
     v16 = -1.0;
-    if ([v4 state] == 1)
+    if ([locationCopy state] == 1)
     {
       v17 = objc_loadWeakRetained(&self->_updater);
-      v18 = [v17 arrivalWaypointLegIndex];
+      arrivalWaypointLegIndex = [v17 arrivalWaypointLegIndex];
 
-      if (v15 > v18)
+      if (v15 > arrivalWaypointLegIndex)
       {
         closestDistanceToWaypoint = self->_closestDistanceToWaypoint;
         threshold = self->_threshold;
@@ -55,11 +55,11 @@
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             v22 = objc_loadWeakRetained(&self->_updater);
-            v23 = [v22 arrivalWaypointLegIndex];
+            arrivalWaypointLegIndex2 = [v22 arrivalWaypointLegIndex];
             v24 = self->_closestDistanceToWaypoint;
             v25 = self->_threshold;
             v28 = 67109632;
-            *v29 = v23;
+            *v29 = arrivalWaypointLegIndex2;
             *&v29[4] = 2048;
             *&v29[6] = v24;
             v30 = 2048;
@@ -87,17 +87,17 @@
   return v16;
 }
 
-- (__MNDepartureMinimumArrivalDistanceCondition)initWithUpdater:(id)a3 distanceThreshold:(double)a4
+- (__MNDepartureMinimumArrivalDistanceCondition)initWithUpdater:(id)updater distanceThreshold:(double)threshold
 {
-  v6 = a3;
+  updaterCopy = updater;
   v11.receiver = self;
   v11.super_class = __MNDepartureMinimumArrivalDistanceCondition;
   v7 = [(__MNDepartureMinimumArrivalDistanceCondition *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_updater, v6);
-    v8->_threshold = a4;
+    objc_storeWeak(&v7->_updater, updaterCopy);
+    v8->_threshold = threshold;
     v8->_closestDistanceToWaypoint = 1.79769313e308;
     v9 = v8;
   }

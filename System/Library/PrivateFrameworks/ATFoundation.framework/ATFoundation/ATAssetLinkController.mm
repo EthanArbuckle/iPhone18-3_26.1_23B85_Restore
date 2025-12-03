@@ -1,46 +1,46 @@
 @interface ATAssetLinkController
 + (id)sharedInstance;
 - (ATAssetLinkController)init;
-- (BOOL)_assetIsEnqueued:(id)a3;
-- (BOOL)_canEnqueueAsset:(id)a3;
-- (BOOL)_canEnqueueAsset:(id)a3 onLink:(id)a4;
+- (BOOL)_assetIsEnqueued:(id)enqueued;
+- (BOOL)_canEnqueueAsset:(id)asset;
+- (BOOL)_canEnqueueAsset:(id)asset onLink:(id)link;
 - (BOOL)_shouldReleaseKeepAliveTransaction;
-- (BOOL)assetIsEnqueued:(id)a3;
+- (BOOL)assetIsEnqueued:(id)enqueued;
 - (id)allAssets;
-- (id)filteredAssetsToDownloadForAssets:(id)a3;
+- (id)filteredAssetsToDownloadForAssets:(id)assets;
 - (unint64_t)_getMaxThermalPressureThreshold;
-- (void)_addFailedLink:(id)a3 forAsset:(id)a4;
+- (void)_addFailedLink:(id)link forAsset:(id)asset;
 - (void)_assetsDidChange;
-- (void)_cancelAssets:(id)a3 withError:(id)a4 completion:(id)a5;
-- (void)_finishAsset:(id)a3 withError:(id)a4;
-- (void)_handleEnqueue:(id)a3 onLink:(id)a4 withPriority:(BOOL)a5;
-- (void)_performSelectorOnObservers:(SEL)a3 object:(id)a4 object:(id)a5;
-- (void)_prioritizeAsset:(id)a3 onLinkClass:(Class)a4;
-- (void)_updateCountsForFinishedTrackAssetTypes:(id)a3;
-- (void)addAssetLink:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)assetLink:(id)a3 didCloseWithOutstandingAssets:(id)a4;
-- (void)assetLink:(id)a3 didFinishAsset:(id)a4 error:(id)a5 retryable:(BOOL)a6 cancelPendingAssetsInBatch:(BOOL)a7;
-- (void)assetLink:(id)a3 didOpenWithPendingAssets:(id)a4;
-- (void)assetLink:(id)a3 didPauseAsseDownload:(id)a4 error:(id)a5;
-- (void)assetLink:(id)a3 didUpdateAsset:(id)a4 progress:(double)a5;
-- (void)assetLink:(id)a3 didUpdateDownloadPauseReasonForAssets:(id)a4;
-- (void)assetLinkDidChange:(id)a3;
-- (void)cancelAllAssetsMatchingPredicate:(id)a3 excludeActiveDownloads:(BOOL)a4 withError:(id)a5 completion:(id)a6;
-- (void)cancelAssets:(id)a3 withError:(id)a4 completion:(id)a5;
+- (void)_cancelAssets:(id)assets withError:(id)error completion:(id)completion;
+- (void)_finishAsset:(id)asset withError:(id)error;
+- (void)_handleEnqueue:(id)enqueue onLink:(id)link withPriority:(BOOL)priority;
+- (void)_performSelectorOnObservers:(SEL)observers object:(id)object object:(id)a5;
+- (void)_prioritizeAsset:(id)asset onLinkClass:(Class)class;
+- (void)_updateCountsForFinishedTrackAssetTypes:(id)types;
+- (void)addAssetLink:(id)link;
+- (void)addObserver:(id)observer;
+- (void)assetLink:(id)link didCloseWithOutstandingAssets:(id)assets;
+- (void)assetLink:(id)link didFinishAsset:(id)asset error:(id)error retryable:(BOOL)retryable cancelPendingAssetsInBatch:(BOOL)batch;
+- (void)assetLink:(id)link didOpenWithPendingAssets:(id)assets;
+- (void)assetLink:(id)link didPauseAsseDownload:(id)download error:(id)error;
+- (void)assetLink:(id)link didUpdateAsset:(id)asset progress:(double)progress;
+- (void)assetLink:(id)link didUpdateDownloadPauseReasonForAssets:(id)assets;
+- (void)assetLinkDidChange:(id)change;
+- (void)cancelAllAssetsMatchingPredicate:(id)predicate excludeActiveDownloads:(BOOL)downloads withError:(id)error completion:(id)completion;
+- (void)cancelAssets:(id)assets withError:(id)error completion:(id)completion;
 - (void)dealloc;
-- (void)enqueueAssetForStoreDownload:(int64_t)a3 withCompletion:(id)a4;
-- (void)enqueueAssets:(id)a3;
-- (void)enqueueAssets:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)environmentMonitorDidChangeNetworkType:(id)a3;
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3;
-- (void)installCompleteForAssets:(id)a3;
-- (void)prioritizeAsset:(id)a3;
-- (void)prioritizeAssetWithStoreForLibraryIdentifier:(int64_t)a3 withCompletion:(id)a4;
-- (void)removeAssetLink:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setPendingAssets:(id)a3;
+- (void)enqueueAssetForStoreDownload:(int64_t)download withCompletion:(id)completion;
+- (void)enqueueAssets:(id)assets;
+- (void)enqueueAssets:(id)assets progress:(id)progress completion:(id)completion;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)environmentMonitorDidChangeNetworkType:(id)type;
+- (void)environmentMonitorDidChangeThermalLevel:(id)level;
+- (void)installCompleteForAssets:(id)assets;
+- (void)prioritizeAsset:(id)asset;
+- (void)prioritizeAssetWithStoreForLibraryIdentifier:(int64_t)identifier withCompletion:(id)completion;
+- (void)removeAssetLink:(id)link;
+- (void)removeObserver:(id)observer;
+- (void)setPendingAssets:(id)assets;
 @end
 
 @implementation ATAssetLinkController
@@ -89,19 +89,19 @@ uint64_t __34__ATAssetLinkController_allAssets__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_updateCountsForFinishedTrackAssetTypes:(id)a3
+- (void)_updateCountsForFinishedTrackAssetTypes:(id)types
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v24 = v4;
+    v24 = typesCopy;
     v5 = [MEMORY[0x277CBEB58] set];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v6 = v4;
+    v6 = typesCopy;
     v7 = [v6 countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v7)
     {
@@ -196,7 +196,7 @@ uint64_t __34__ATAssetLinkController_allAssets__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *v36 = 138543362;
-        v37 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22392A000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished processing all track assets.", v36, 0xCu);
       }
 
@@ -205,7 +205,7 @@ uint64_t __34__ATAssetLinkController_allAssets__block_invoke(uint64_t a1)
 
     _Block_object_dispose(buf, 8);
 
-    v4 = v24;
+    typesCopy = v24;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -225,10 +225,10 @@ uint64_t __65__ATAssetLinkController__updateCountsForFinishedTrackAssetTypes___b
   return result;
 }
 
-- (BOOL)_assetIsEnqueued:(id)a3
+- (BOOL)_assetIsEnqueued:(id)enqueued
 {
-  v4 = a3;
-  if (([(NSMutableOrderedSet *)self->_assetQueue containsObject:v4]& 1) != 0 || ([(NSMapTable *)self->_assetsToLinks objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  enqueuedCopy = enqueued;
+  if (([(NSMutableOrderedSet *)self->_assetQueue containsObject:enqueuedCopy]& 1) != 0 || ([(NSMapTable *)self->_assetsToLinks objectForKey:enqueuedCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = 1;
   }
@@ -244,7 +244,7 @@ uint64_t __65__ATAssetLinkController__updateCountsForFinishedTrackAssetTypes___b
     v14[1] = 3221225472;
     v14[2] = __42__ATAssetLinkController__assetIsEnqueued___block_invoke;
     v14[3] = &unk_2784E9030;
-    v9 = v4;
+    v9 = enqueuedCopy;
     v15 = v9;
     v16 = &v17;
     [(NSMutableDictionary *)trackAssetsPendingInstallByAssetType enumerateKeysAndObjectsUsingBlock:v14];
@@ -302,36 +302,36 @@ uint64_t __42__ATAssetLinkController__assetIsEnqueued___block_invoke_2(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
   if ([(NSMutableOrderedSet *)self->_assetQueue count]|| [(NSMapTable *)self->_assetsToLinks count])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(isActive) = 0;
   }
 
   else
   {
-    v3 = [(MSVXPCTransaction *)self->_activeDownLoadsKeepAliveTransaction isActive];
-    if (v3)
+    isActive = [(MSVXPCTransaction *)self->_activeDownLoadsKeepAliveTransaction isActive];
+    if (isActive)
     {
       v5 = _ATLogCategoryFramework();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138543362;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22392A000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Done with all downloads - release keep alive transaction.", &v7, 0xCu);
       }
 
-      LOBYTE(v3) = 1;
+      LOBYTE(isActive) = 1;
     }
   }
 
   v4 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isActive;
 }
 
-- (void)_prioritizeAsset:(id)a3 onLinkClass:(Class)a4
+- (void)_prioritizeAsset:(id)asset onLinkClass:(Class)class
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_assetsToLinks objectForKey:v6];
-  if (v7 && ![(NSMutableOrderedSet *)self->_assetQueue containsObject:v6])
+  assetCopy = asset;
+  v7 = [(NSMapTable *)self->_assetsToLinks objectForKey:assetCopy];
+  if (v7 && ![(NSMutableOrderedSet *)self->_assetQueue containsObject:assetCopy])
   {
     goto LABEL_28;
   }
@@ -357,16 +357,16 @@ uint64_t __42__ATAssetLinkController__assetIsEnqueued___block_invoke_2(uint64_t 
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        if (a4 && (v14 = *(*(&v23 + 1) + 8 * i), (objc_opt_isKindOfClass() & 1) == 0))
+        if (class && (v14 = *(*(&v23 + 1) + 8 * i), (objc_opt_isKindOfClass() & 1) == 0))
         {
           v15 = _ATLogCategoryFramework();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [(objc_class *)a4 description];
+            v16 = [(objc_class *)class description];
             *buf = 138544130;
-            v28 = self;
+            selfCopy3 = self;
             v29 = 2114;
-            v30 = v6;
+            v30 = assetCopy;
             v31 = 2114;
             v32 = v13;
             v33 = 2114;
@@ -375,9 +375,9 @@ uint64_t __42__ATAssetLinkController__assetIsEnqueued___block_invoke_2(uint64_t 
           }
         }
 
-        else if ([(ATAssetLinkController *)self _canEnqueueAsset:v6 onLink:v13])
+        else if ([(ATAssetLinkController *)self _canEnqueueAsset:assetCopy onLink:v13])
         {
-          v35 = v6;
+          v35 = assetCopy;
           v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
           v18 = [v13 enqueueAssets:v17 force:1];
 
@@ -387,17 +387,17 @@ uint64_t __42__ATAssetLinkController__assetIsEnqueued___block_invoke_2(uint64_t 
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              v28 = self;
+              selfCopy3 = self;
               v29 = 2114;
               v30 = v13;
               v31 = 2114;
-              v32 = v6;
+              v32 = assetCopy;
               _os_log_impl(&dword_22392A000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueued asset due to prioritization on %{public}@: %{public}@", buf, 0x20u);
             }
 
             v7 = v13;
-            [(NSMutableOrderedSet *)self->_assetQueue removeObject:v6];
-            [(NSMapTable *)self->_assetsToLinks setObject:v7 forKey:v6];
+            [(NSMutableOrderedSet *)self->_assetQueue removeObject:assetCopy];
+            [(NSMapTable *)self->_assetsToLinks setObject:v7 forKey:assetCopy];
           }
 
           else
@@ -406,14 +406,14 @@ uint64_t __42__ATAssetLinkController__assetIsEnqueued___block_invoke_2(uint64_t 
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v28 = self;
+              selfCopy3 = self;
               v29 = 2114;
               v30 = v13;
               _os_log_impl(&dword_22392A000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ couldn't enqueue prioritized asset on %{public}@ - move to top of the queue", buf, 0x16u);
             }
 
-            [(NSMutableOrderedSet *)self->_assetQueue removeObject:v6];
-            [(NSMutableOrderedSet *)self->_assetQueue insertObject:v6 atIndex:0];
+            [(NSMutableOrderedSet *)self->_assetQueue removeObject:assetCopy];
+            [(NSMutableOrderedSet *)self->_assetQueue insertObject:assetCopy atIndex:0];
             v7 = v22;
           }
 
@@ -438,7 +438,7 @@ LABEL_27:
   if (v7)
   {
 LABEL_28:
-    [v7 prioritizeAsset:v6];
+    [v7 prioritizeAsset:assetCopy];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -446,11 +446,11 @@ LABEL_28:
 
 - (unint64_t)_getMaxThermalPressureThreshold
 {
-  v2 = [MEMORY[0x277D7FA80] currentDeviceInfo];
-  if ([v2 isWatch])
+  currentDeviceInfo = [MEMORY[0x277D7FA80] currentDeviceInfo];
+  if ([currentDeviceInfo isWatch])
   {
-    v3 = [MEMORY[0x277D7FA90] sharedMonitor];
-    [v3 currentBatteryLevel];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    [mEMORY[0x277D7FA90] currentBatteryLevel];
     if (v4 <= 0.8)
     {
       v5 = 20;
@@ -476,7 +476,7 @@ LABEL_28:
   v29 = [(NSMutableOrderedSet *)self->_assetQueue copy];
   if ([(NSMutableOrderedSet *)self->_assetQueue count])
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -547,24 +547,24 @@ LABEL_28:
                   if (v18)
                   {
                     [(NSMapTable *)self->_assetsToLinks setObject:v8 forKey:v15];
-                    v19 = [v15 isPrioritized];
+                    isPrioritized = [v15 isPrioritized];
                     v20 = v9;
-                    if ((v19 & 1) == 0)
+                    if ((isPrioritized & 1) == 0)
                     {
                       if (self->_cachedThermalLevel >= [(ATAssetLinkController *)self _getMaxThermalPressureThreshold])
                       {
-                        v22 = v3;
+                        v22 = array;
                         v23 = _ATLogCategoryFramework();
                         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
                         {
                           *buf = 138543618;
-                          v44 = self;
+                          selfCopy2 = self;
                           v45 = 2114;
                           v46 = v15;
                           _os_log_impl(&dword_22392A000, v23, OS_LOG_TYPE_DEBUG, "%{public}@ Not enqueuing %{public}@ due to thermal pressure.", buf, 0x16u);
                         }
 
-                        v3 = v22;
+                        array = v22;
                         v9 = v33;
                         if ([v15 downloadPauseReason])
                         {
@@ -572,17 +572,17 @@ LABEL_28:
                         }
 
                         [v15 setDownloadPauseReason:{objc_msgSend(v15, "downloadPauseReason") | 1}];
-                        v20 = v3;
+                        v20 = array;
                       }
 
                       else
                       {
-                        v21 = [v15 downloadPauseReason];
+                        downloadPauseReason = [v15 downloadPauseReason];
                         v20 = v34;
-                        if (v21)
+                        if (downloadPauseReason)
                         {
                           [v15 setDownloadPauseReason:{objc_msgSend(v15, "downloadPauseReason") & 0xFFFFFFFFFFFFFFFELL}];
-                          [v3 addObject:v15];
+                          [array addObject:v15];
                           v20 = v34;
                         }
                       }
@@ -625,19 +625,19 @@ LABEL_32:
       while (v5);
     }
 
-    if ([v3 count])
+    if ([array count])
     {
       v25 = _ATLogCategoryFramework_Oversize();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v44 = self;
+        selfCopy2 = self;
         v45 = 2114;
-        v46 = v3;
+        v46 = array;
         _os_log_impl(&dword_22392A000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ Download paused reason changed for %{public}@", buf, 0x16u);
       }
 
-      [(ATAssetLinkController *)self _performSelectorOnObservers:sel_assetLinkController_didChangeDownloadStateForAssets_ object:self object:v3];
+      [(ATAssetLinkController *)self _performSelectorOnObservers:sel_assetLinkController_didChangeDownloadStateForAssets_ object:self object:array];
     }
   }
 
@@ -650,22 +650,22 @@ LABEL_32:
       _os_log_impl(&dword_22392A000, v26, OS_LOG_TYPE_DEFAULT, "No active downloads - posting ATAssetLinkControllerDidFinishAllAssets notification.", buf, 2u);
     }
 
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"ATAssetLinkControllerDidFinishAllAssets" object:self];
+    array = [MEMORY[0x277CCAB98] defaultCenter];
+    [array postNotificationName:@"ATAssetLinkControllerDidFinishAllAssets" object:self];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleEnqueue:(id)a3 onLink:(id)a4 withPriority:(BOOL)a5
+- (void)_handleEnqueue:(id)enqueue onLink:(id)link withPriority:(BOOL)priority
 {
-  v5 = a5;
+  priorityCopy = priority;
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  enqueueCopy = enqueue;
+  linkCopy = link;
+  if ([enqueueCopy count])
   {
-    v10 = [v9 enqueueAssets:v8 force:0];
+    v10 = [linkCopy enqueueAssets:enqueueCopy force:0];
     v11 = v10;
     if (v10 && [v10 count])
     {
@@ -677,7 +677,7 @@ LABEL_32:
         v15 = @"assets";
         *buf = 138544130;
         v44 = 1024;
-        v43 = self;
+        selfCopy = self;
         if (v14 == 1)
         {
           v15 = @"asset";
@@ -687,12 +687,12 @@ LABEL_32:
         v46 = 2114;
         v47 = v15;
         v48 = 2114;
-        v49 = v9;
+        v49 = linkCopy;
         _os_log_impl(&dword_22392A000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueued %d %{public}@ on %{public}@:", buf, 0x26u);
       }
 
-      v29 = self;
-      v31 = v8;
+      selfCopy2 = self;
+      v31 = enqueueCopy;
 
       v38 = 0u;
       v39 = 0u;
@@ -719,7 +719,7 @@ LABEL_32:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v43 = v21;
+              selfCopy = v21;
               _os_log_impl(&dword_22392A000, v22, OS_LOG_TYPE_DEFAULT, "    %{public}@", buf, 0xCu);
             }
 
@@ -733,7 +733,7 @@ LABEL_32:
         while (v18);
       }
 
-      [(NSMutableOrderedSet *)v29->_assetQueue removeObjectsInArray:v16];
+      [(NSMutableOrderedSet *)selfCopy2->_assetQueue removeObjectsInArray:v16];
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
@@ -753,9 +753,9 @@ LABEL_32:
               objc_enumerationMutation(v23);
             }
 
-            if (v5)
+            if (priorityCopy)
             {
-              [v9 prioritizeAsset:*(*(&v32 + 1) + 8 * j)];
+              [linkCopy prioritizeAsset:*(*(&v32 + 1) + 8 * j)];
             }
           }
 
@@ -765,7 +765,7 @@ LABEL_32:
         while (v25);
       }
 
-      v8 = v31;
+      enqueueCopy = v31;
       v11 = v30;
     }
   }
@@ -773,10 +773,10 @@ LABEL_32:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canEnqueueAsset:(id)a3
+- (BOOL)_canEnqueueAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -796,7 +796,7 @@ LABEL_32:
           objc_enumerationMutation(v5);
         }
 
-        if ([(ATAssetLinkController *)self _canEnqueueAsset:v4 onLink:*(*(&v13 + 1) + 8 * i), v13])
+        if ([(ATAssetLinkController *)self _canEnqueueAsset:assetCopy onLink:*(*(&v13 + 1) + 8 * i), v13])
         {
           v10 = 1;
           goto LABEL_11;
@@ -820,15 +820,15 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_canEnqueueAsset:(id)a3 onLink:(id)a4
+- (BOOL)_canEnqueueAsset:(id)asset onLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 canEnqueueAsset:v6] && objc_msgSend(v7, "isOpen"))
+  assetCopy = asset;
+  linkCopy = link;
+  if ([linkCopy canEnqueueAsset:assetCopy] && objc_msgSend(linkCopy, "isOpen"))
   {
-    v8 = [(NSMapTable *)self->_assetsToFailedLinks objectForKey:v6];
+    v8 = [(NSMapTable *)self->_assetsToFailedLinks objectForKey:assetCopy];
     v9 = v8;
-    v10 = !v8 || ([v8 containsObject:v7] & 1) == 0;
+    v10 = !v8 || ([v8 containsObject:linkCopy] & 1) == 0;
   }
 
   else
@@ -839,106 +839,106 @@ LABEL_11:
   return v10;
 }
 
-- (void)_addFailedLink:(id)a3 forAsset:(id)a4
+- (void)_addFailedLink:(id)link forAsset:(id)asset
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_assetsToFailedLinks objectForKey:v6];
-  if (!v7)
+  linkCopy = link;
+  assetCopy = asset;
+  weakObjectsHashTable = [(NSMapTable *)self->_assetsToFailedLinks objectForKey:assetCopy];
+  if (!weakObjectsHashTable)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(NSMapTable *)self->_assetsToFailedLinks setObject:v7 forKey:v6];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(NSMapTable *)self->_assetsToFailedLinks setObject:weakObjectsHashTable forKey:assetCopy];
   }
 
-  [v7 addObject:v8];
+  [weakObjectsHashTable addObject:linkCopy];
 }
 
-- (void)_finishAsset:(id)a3 withError:(id)a4
+- (void)_finishAsset:(id)asset withError:(id)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!ATIsPendingDownloadError(v7))
+  assetCopy = asset;
+  errorCopy = error;
+  if (!ATIsPendingDownloadError(errorCopy))
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v14 = v13;
-    [v6 queueStartTime];
-    [v6 setQueueDuration:v14 - v15];
-    [v6 transferStartTime];
+    [assetCopy queueStartTime];
+    [assetCopy setQueueDuration:v14 - v15];
+    [assetCopy transferStartTime];
     if (v16 != 0.0)
     {
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       v18 = v17;
-      [v6 transferStartTime];
-      [v6 setTransferDuration:v18 - v19];
+      [assetCopy transferStartTime];
+      [assetCopy setTransferDuration:v18 - v19];
     }
 
-    [(NSMapTable *)self->_assetsToFailedLinks removeObjectForKey:v6];
-    v20 = [v6 assetType];
-    if ([v6 assetParts])
+    [(NSMapTable *)self->_assetsToFailedLinks removeObjectForKey:assetCopy];
+    assetType = [assetCopy assetType];
+    if ([assetCopy assetParts])
     {
-      v24 = [(NSMutableDictionary *)self->_trackAssetsPendingInstallByAssetType objectForKey:v20];
+      v24 = [(NSMutableDictionary *)self->_trackAssetsPendingInstallByAssetType objectForKey:assetType];
       if (v24)
       {
         v23 = v24;
-        [v24 addObject:v6];
+        [v24 addObject:assetCopy];
       }
 
       else
       {
-        v23 = [MEMORY[0x277CBEB58] setWithObject:v6];
-        [(NSMutableDictionary *)self->_trackAssetsPendingInstallByAssetType setObject:v23 forKey:v20];
+        v23 = [MEMORY[0x277CBEB58] setWithObject:assetCopy];
+        [(NSMutableDictionary *)self->_trackAssetsPendingInstallByAssetType setObject:v23 forKey:assetType];
       }
 
-      v32 = [(NSMutableDictionary *)self->_activeTrackAssetsByAssetType objectForKey:v20];
-      [v32 removeObject:v6];
+      v32 = [(NSMutableDictionary *)self->_activeTrackAssetsByAssetType objectForKey:assetType];
+      [v32 removeObject:assetCopy];
     }
 
     else
     {
       nonTrackAssetsPendingInstallByAssetType = self->_nonTrackAssetsPendingInstallByAssetType;
-      v22 = [v6 assetType];
-      v23 = [(NSMutableDictionary *)nonTrackAssetsPendingInstallByAssetType objectForKey:v22];
+      assetType2 = [assetCopy assetType];
+      v23 = [(NSMutableDictionary *)nonTrackAssetsPendingInstallByAssetType objectForKey:assetType2];
 
       if (v23)
       {
-        [v23 addObject:v6];
+        [v23 addObject:assetCopy];
       }
 
       else
       {
-        v23 = [MEMORY[0x277CBEB58] setWithObject:v6];
+        v23 = [MEMORY[0x277CBEB58] setWithObject:assetCopy];
         v30 = self->_nonTrackAssetsPendingInstallByAssetType;
-        v31 = [v6 assetType];
-        [(NSMutableDictionary *)v30 setObject:v23 forKey:v31];
+        assetType3 = [assetCopy assetType];
+        [(NSMutableDictionary *)v30 setObject:v23 forKey:assetType3];
       }
     }
 
-    [(NSMutableDictionary *)self->_progressBlocksForAssetsInFlight removeObjectForKey:v6];
-    [v6 setError:v7];
-    [v6 setAssetState:2];
-    v33 = [v6 completionBlock];
+    [(NSMutableDictionary *)self->_progressBlocksForAssetsInFlight removeObjectForKey:assetCopy];
+    [assetCopy setError:errorCopy];
+    [assetCopy setAssetState:2];
+    completionBlock = [assetCopy completionBlock];
 
-    if (v33)
+    if (completionBlock)
     {
-      v34 = [v6 completionBlock];
-      (v34)[2](v34, v6);
+      completionBlock2 = [assetCopy completionBlock];
+      (completionBlock2)[2](completionBlock2, assetCopy);
     }
 
-    [(ATAssetLinkController *)self _performSelectorOnObservers:sel_assetLinkController_didFinishAsset_ object:self object:v6];
+    [(ATAssetLinkController *)self _performSelectorOnObservers:sel_assetLinkController_didFinishAsset_ object:self object:assetCopy];
     v35 = +[ATStatusMonitor sharedMonitor];
-    v42 = v6;
+    v42 = assetCopy;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
     [v35 updateAssets:v36];
 
-    if (v7)
+    if (errorCopy)
     {
-      v37 = [v7 domain];
-      if ([v37 isEqualToString:@"ATError"])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:@"ATError"])
       {
-        v38 = [v7 code];
+        code = [errorCopy code];
 
-        if (v38 == 2)
+        if (code == 2)
         {
           v39 = MEMORY[0x277CEA480];
 LABEL_30:
@@ -960,82 +960,82 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  [v6 setAssetState:1];
-  v8 = [v6 progressBlock];
+  [assetCopy setAssetState:1];
+  progressBlock = [assetCopy progressBlock];
 
-  if (v8)
+  if (progressBlock)
   {
-    v9 = [(NSMutableDictionary *)self->_progressBlocksForAssetsInFlight objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_progressBlocksForAssetsInFlight objectForKey:assetCopy];
     if (v9)
     {
       v10 = v9;
-      v11 = [v6 progressBlock];
-      v12 = [v11 copy];
+      progressBlock2 = [assetCopy progressBlock];
+      v12 = [progressBlock2 copy];
       [v10 addObject:v12];
     }
 
     else
     {
       v25 = MEMORY[0x277CBEB18];
-      v26 = [v6 progressBlock];
-      v27 = [v26 copy];
+      progressBlock3 = [assetCopy progressBlock];
+      v27 = [progressBlock3 copy];
       v10 = [v25 arrayWithObject:v27];
 
-      [(NSMutableDictionary *)self->_progressBlocksForAssetsInFlight setObject:v10 forKey:v6];
+      [(NSMutableDictionary *)self->_progressBlocksForAssetsInFlight setObject:v10 forKey:assetCopy];
     }
 
     v28 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v44 = self;
+      selfCopy = self;
       v45 = 2114;
-      v46 = v6;
+      v46 = assetCopy;
       _os_log_impl(&dword_22392A000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ Added progress callback for pending asset %{public}@", buf, 0x16u);
     }
   }
 
-  [v6 setError:v7];
-  v29 = [v6 completionBlock];
+  [assetCopy setError:errorCopy];
+  completionBlock3 = [assetCopy completionBlock];
 
-  if (v29)
+  if (completionBlock3)
   {
-    v20 = [v6 completionBlock];
-    (v20)[2](v20, v6);
+    assetType = [assetCopy completionBlock];
+    (assetType)[2](assetType, assetCopy);
 LABEL_31:
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelAssets:(id)a3 withError:(id)a4 completion:(id)a5
+- (void)_cancelAssets:(id)assets withError:(id)error completion:(id)completion
 {
   v75 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v65 = self;
+    selfCopy4 = self;
     v66 = 2048;
-    v67 = [v8 count];
+    v67 = [assetsCopy count];
     _os_log_impl(&dword_22392A000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ cancelling %lu assets", buf, 0x16u);
   }
 
-  if ([v8 count])
+  if ([assetsCopy count])
   {
-    v47 = v10;
-    v49 = v9;
+    v47 = completionCopy;
+    v49 = errorCopy;
     v12 = [MEMORY[0x277CBEB58] set];
-    v50 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v48 = v8;
-    v13 = v8;
+    v48 = assetsCopy;
+    v13 = assetsCopy;
     v14 = [v13 countByEnumeratingWithState:&v59 objects:v74 count:16];
     if (v14)
     {
@@ -1058,7 +1058,7 @@ LABEL_31:
           {
             if (v20)
             {
-              v23 = [v50 objectForKey:v20];
+              v23 = [strongToStrongObjectsMapTable objectForKey:v20];
               if (v23)
               {
                 v24 = v23;
@@ -1068,7 +1068,7 @@ LABEL_31:
               else
               {
                 v24 = [MEMORY[0x277CBEB18] arrayWithObject:v18];
-                [v50 setObject:v24 forKey:v21];
+                [strongToStrongObjectsMapTable setObject:v24 forKey:v21];
               }
             }
 
@@ -1081,7 +1081,7 @@ LABEL_31:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v65 = self;
+              selfCopy4 = self;
               v66 = 2114;
               v67 = v18;
               _os_log_impl(&dword_22392A000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ is not enqueued and will not be cancelled", buf, 0x16u);
@@ -1103,15 +1103,15 @@ LABEL_31:
     v58 = v25;
     v26 = MEMORY[0x223DED9F0](v57);
     assetQueue = self->_assetQueue;
-    v28 = [v12 allObjects];
-    [(NSMutableOrderedSet *)assetQueue removeObjectsInArray:v28];
+    allObjects = [v12 allObjects];
+    [(NSMutableOrderedSet *)assetQueue removeObjectsInArray:allObjects];
 
     v29 = _ATLogCategoryFramework_Oversize();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       v30 = self->_assetQueue;
       *buf = 138544386;
-      v65 = self;
+      selfCopy4 = self;
       v66 = 2114;
       v67 = v13;
       v68 = 2114;
@@ -1155,13 +1155,13 @@ LABEL_31:
       while (v33);
     }
 
-    v38 = v50;
-    v39 = [v50 keyEnumerator];
-    v40 = [v39 nextObject];
-    v8 = v48;
-    if (v40)
+    v38 = strongToStrongObjectsMapTable;
+    keyEnumerator = [strongToStrongObjectsMapTable keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    assetsCopy = v48;
+    if (nextObject)
     {
-      v41 = v40;
+      v41 = nextObject;
       do
       {
         v42 = [v38 objectForKey:v41];
@@ -1169,7 +1169,7 @@ LABEL_31:
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          v65 = self;
+          selfCopy4 = self;
           v66 = 2114;
           v67 = v42;
           v68 = 2114;
@@ -1178,29 +1178,29 @@ LABEL_31:
         }
 
         [v41 cancelAssets:v42];
-        v44 = [v39 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
 
-        v41 = v44;
-        v38 = v50;
+        v41 = nextObject2;
+        v38 = strongToStrongObjectsMapTable;
       }
 
-      while (v44);
+      while (nextObject2);
     }
 
     [(ATAssetLinkController *)self _assetsDidChange];
 
-    v9 = v49;
-    v10 = v47;
+    errorCopy = v49;
+    completionCopy = v47;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__ATAssetLinkController__cancelAssets_withError_completion___block_invoke_58;
     block[3] = &unk_2784E9198;
-    v52 = v10;
+    v52 = completionCopy;
     dispatch_async(callbackQueue, block);
   }
 
@@ -1244,9 +1244,9 @@ id __60__ATAssetLinkController__cancelAssets_withError_completion___block_invoke
   return v8;
 }
 
-- (void)_performSelectorOnObservers:(SEL)a3 object:(id)a4 object:(id)a5
+- (void)_performSelectorOnObservers:(SEL)observers object:(id)object object:(id)a5
 {
-  v8 = a4;
+  objectCopy = object;
   v9 = a5;
   v10 = [(NSHashTable *)self->_observers copy];
   callbackQueue = self->_callbackQueue;
@@ -1255,11 +1255,11 @@ id __60__ATAssetLinkController__cancelAssets_withError_completion___block_invoke
   v15[2] = __67__ATAssetLinkController__performSelectorOnObservers_object_object___block_invoke;
   v15[3] = &unk_2784E8FE0;
   v16 = v10;
-  v17 = v8;
+  v17 = objectCopy;
   v18 = v9;
-  v19 = a3;
+  observersCopy = observers;
   v12 = v9;
-  v13 = v8;
+  v13 = objectCopy;
   v14 = v10;
   dispatch_async(callbackQueue, v15);
 }
@@ -1307,17 +1307,17 @@ void __67__ATAssetLinkController__performSelectorOnObservers_object_object___blo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
+  reachabilityCopy = reachability;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ATAssetLinkController_environmentMonitorDidChangeNetworkReachability___block_invoke;
   v7[3] = &unk_2784E9608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reachabilityCopy;
+  selfCopy = self;
+  v6 = reachabilityCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1350,17 +1350,17 @@ uint64_t __72__ATAssetLinkController_environmentMonitorDidChangeNetworkReachabil
   return result;
 }
 
-- (void)environmentMonitorDidChangeNetworkType:(id)a3
+- (void)environmentMonitorDidChangeNetworkType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__ATAssetLinkController_environmentMonitorDidChangeNetworkType___block_invoke;
   v7[3] = &unk_2784E9608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = typeCopy;
+  selfCopy = self;
+  v6 = typeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1394,17 +1394,17 @@ uint64_t __64__ATAssetLinkController_environmentMonitorDidChangeNetworkType___bl
   return result;
 }
 
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3
+- (void)environmentMonitorDidChangeThermalLevel:(id)level
 {
-  v4 = a3;
+  levelCopy = level;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ATAssetLinkController_environmentMonitorDidChangeThermalLevel___block_invoke;
   v7[3] = &unk_2784E9608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = levelCopy;
+  selfCopy = self;
+  v6 = levelCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1457,21 +1457,21 @@ LABEL_17:
   return result;
 }
 
-- (void)assetLink:(id)a3 didUpdateDownloadPauseReasonForAssets:(id)a4
+- (void)assetLink:(id)link didUpdateDownloadPauseReasonForAssets:(id)assets
 {
-  v5 = a4;
+  assetsCopy = assets;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__ATAssetLinkController_assetLink_didUpdateDownloadPauseReasonForAssets___block_invoke;
   v8[3] = &unk_2784E9608;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = assetsCopy;
+  v7 = assetsCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)assetLinkDidChange:(id)a3
+- (void)assetLinkDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1482,18 +1482,18 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)assetLink:(id)a3 didUpdateAsset:(id)a4 progress:(double)a5
+- (void)assetLink:(id)link didUpdateAsset:(id)asset progress:(double)progress
 {
-  v7 = a4;
+  assetCopy = asset;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ATAssetLinkController_assetLink_didUpdateAsset_progress___block_invoke;
   block[3] = &unk_2784E8FB8;
-  v13 = a5;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
+  progressCopy = progress;
+  v11 = assetCopy;
+  selfCopy = self;
+  v9 = assetCopy;
   dispatch_async(queue, block);
 }
 
@@ -1553,7 +1553,7 @@ id __59__ATAssetLinkController_assetLink_didUpdateAsset_progress___block_invoke_
   return (*(v1 + 16))(v1, v2);
 }
 
-- (void)assetLink:(id)a3 didPauseAsseDownload:(id)a4 error:(id)a5
+- (void)assetLink:(id)link didPauseAsseDownload:(id)download error:(id)error
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1564,24 +1564,24 @@ id __59__ATAssetLinkController_assetLink_didUpdateAsset_progress___block_invoke_
   dispatch_async(queue, block);
 }
 
-- (void)assetLink:(id)a3 didFinishAsset:(id)a4 error:(id)a5 retryable:(BOOL)a6 cancelPendingAssetsInBatch:(BOOL)a7
+- (void)assetLink:(id)link didFinishAsset:(id)asset error:(id)error retryable:(BOOL)retryable cancelPendingAssetsInBatch:(BOOL)batch
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  linkCopy = link;
+  assetCopy = asset;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__ATAssetLinkController_assetLink_didFinishAsset_error_retryable_cancelPendingAssetsInBatch___block_invoke;
   block[3] = &unk_2784E8F68;
   block[4] = self;
-  v19 = v12;
-  v22 = a7;
-  v20 = v13;
-  v21 = v11;
-  v15 = v11;
-  v16 = v13;
-  v17 = v12;
+  v19 = assetCopy;
+  batchCopy = batch;
+  v20 = errorCopy;
+  v21 = linkCopy;
+  v15 = linkCopy;
+  v16 = errorCopy;
+  v17 = assetCopy;
   dispatch_async(queue, block);
 }
 
@@ -1840,20 +1840,20 @@ LABEL_54:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetLink:(id)a3 didCloseWithOutstandingAssets:(id)a4
+- (void)assetLink:(id)link didCloseWithOutstandingAssets:(id)assets
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  assetsCopy = assets;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v6;
+    v20 = linkCopy;
     v21 = 2114;
-    v22 = v7;
+    v22 = assetsCopy;
     _os_log_impl(&dword_22392A000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Asset link %{public}@ did close with outstanding assets %{public}@", buf, 0x20u);
   }
 
@@ -1862,11 +1862,11 @@ LABEL_54:
   block[1] = 3221225472;
   block[2] = __65__ATAssetLinkController_assetLink_didCloseWithOutstandingAssets___block_invoke;
   block[3] = &unk_2784E9568;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = linkCopy;
+  selfCopy2 = self;
+  v16 = assetsCopy;
+  v10 = assetsCopy;
+  v11 = linkCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1992,20 +1992,20 @@ void __65__ATAssetLinkController_assetLink_didCloseWithOutstandingAssets___block
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetLink:(id)a3 didOpenWithPendingAssets:(id)a4
+- (void)assetLink:(id)link didOpenWithPendingAssets:(id)assets
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  assetsCopy = assets;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v6;
+    v20 = linkCopy;
     v21 = 2114;
-    v22 = v7;
+    v22 = assetsCopy;
     _os_log_impl(&dword_22392A000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Asset link %{public}@ did open with pending assets %{public}@", buf, 0x20u);
   }
 
@@ -2014,11 +2014,11 @@ void __65__ATAssetLinkController_assetLink_didCloseWithOutstandingAssets___block
   block[1] = 3221225472;
   block[2] = __60__ATAssetLinkController_assetLink_didOpenWithPendingAssets___block_invoke;
   block[3] = &unk_2784E9568;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
-  v10 = v6;
-  v11 = v7;
+  v14 = assetsCopy;
+  selfCopy2 = self;
+  v16 = linkCopy;
+  v10 = linkCopy;
+  v11 = assetsCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2062,9 +2062,9 @@ uint64_t __60__ATAssetLinkController_assetLink_didOpenWithPendingAssets___block_
   return result;
 }
 
-- (void)installCompleteForAssets:(id)a3
+- (void)installCompleteForAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
@@ -2082,11 +2082,11 @@ uint64_t __60__ATAssetLinkController_assetLink_didOpenWithPendingAssets___block_
   v7[1] = 3221225472;
   v7[2] = __50__ATAssetLinkController_installCompleteForAssets___block_invoke;
   v7[3] = &unk_2784E8F40;
-  v8 = v4;
-  v9 = self;
+  v8 = assetsCopy;
+  selfCopy = self;
   v10 = v14;
   v11 = v12;
-  v6 = v4;
+  v6 = assetsCopy;
   dispatch_async(queue, v7);
 
   _Block_object_dispose(v12, 8);
@@ -2192,66 +2192,66 @@ LABEL_12:
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__ATAssetLinkController_removeObserver___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ATAssetLinkController_addObserver___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setPendingAssets:(id)a3
+- (void)setPendingAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ATAssetLinkController_setPendingAssets___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetsCopy;
+  v6 = assetsCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)filteredAssetsToDownloadForAssets:(id)a3
+- (id)filteredAssetsToDownloadForAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__670;
   v17 = __Block_byref_object_dispose__671;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ATAssetLinkController_filteredAssetsToDownloadForAssets___block_invoke;
   block[3] = &unk_2784E9590;
-  v10 = v4;
-  v11 = self;
+  v10 = assetsCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = assetsCopy;
   dispatch_sync(queue, block);
   v7 = v14[5];
 
@@ -2298,9 +2298,9 @@ void __59__ATAssetLinkController_filteredAssetsToDownloadForAssets___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)assetIsEnqueued:(id)a3
+- (BOOL)assetIsEnqueued:(id)enqueued
 {
-  v4 = a3;
+  enqueuedCopy = enqueued;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2310,10 +2310,10 @@ void __59__ATAssetLinkController_filteredAssetsToDownloadForAssets___block_invok
   block[1] = 3221225472;
   block[2] = __41__ATAssetLinkController_assetIsEnqueued___block_invoke;
   block[3] = &unk_2784E9590;
-  v9 = v4;
+  v9 = enqueuedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = enqueuedCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -2328,24 +2328,24 @@ uint64_t __41__ATAssetLinkController_assetIsEnqueued___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)cancelAllAssetsMatchingPredicate:(id)a3 excludeActiveDownloads:(BOOL)a4 withError:(id)a5 completion:(id)a6
+- (void)cancelAllAssetsMatchingPredicate:(id)predicate excludeActiveDownloads:(BOOL)downloads withError:(id)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  predicateCopy = predicate;
+  errorCopy = error;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__ATAssetLinkController_cancelAllAssetsMatchingPredicate_excludeActiveDownloads_withError_completion___block_invoke;
   block[3] = &unk_2784E8F18;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = predicateCopy;
+  downloadsCopy = downloads;
+  v19 = errorCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = errorCopy;
+  v16 = predicateCopy;
   dispatch_async(queue, block);
 }
 
@@ -2472,29 +2472,29 @@ void __102__ATAssetLinkController_cancelAllAssetsMatchingPredicate_excludeActive
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelAssets:(id)a3 withError:(id)a4 completion:(id)a5
+- (void)cancelAssets:(id)assets withError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  errorCopy = error;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__ATAssetLinkController_cancelAssets_withError_completion___block_invoke;
   v15[3] = &unk_2784E8EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = assetsCopy;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = errorCopy;
+  v14 = assetsCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)prioritizeAssetWithStoreForLibraryIdentifier:(int64_t)a3 withCompletion:(id)a4
+- (void)prioritizeAssetWithStoreForLibraryIdentifier:(int64_t)identifier withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -2507,10 +2507,10 @@ void __102__ATAssetLinkController_cancelAllAssetsMatchingPredicate_excludeActive
   v9[2] = __85__ATAssetLinkController_prioritizeAssetWithStoreForLibraryIdentifier_withCompletion___block_invoke;
   v9[3] = &unk_2784E8EC8;
   v11 = v13;
-  v12 = a3;
+  identifierCopy = identifier;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, v9);
 
   _Block_object_dispose(v13, 8);
@@ -2610,17 +2610,17 @@ LABEL_16:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prioritizeAsset:(id)a3
+- (void)prioritizeAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__ATAssetLinkController_prioritizeAsset___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2763,18 +2763,18 @@ LABEL_3:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueAssetForStoreDownload:(int64_t)a3 withCompletion:(id)a4
+- (void)enqueueAssetForStoreDownload:(int64_t)download withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__ATAssetLinkController_enqueueAssetForStoreDownload_withCompletion___block_invoke;
   block[3] = &unk_2784E8EA0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  downloadCopy = download;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -2953,17 +2953,17 @@ LABEL_24:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueAssets:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)enqueueAssets:(id)assets progress:(id)progress completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  progressCopy = progress;
+  completionCopy = completion;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [assetsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2974,31 +2974,31 @@ LABEL_24:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        [v15 setProgressBlock:v9];
-        [v15 setCompletionBlock:v10];
+        [v15 setProgressBlock:progressCopy];
+        [v15 setCompletionBlock:completionCopy];
       }
 
-      v12 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [assetsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
   }
 
-  [(ATAssetLinkController *)self enqueueAssets:v8];
+  [(ATAssetLinkController *)self enqueueAssets:assetsCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueAssets:(id)a3
+- (void)enqueueAssets:(id)assets
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D7FA90] sharedMonitor];
-  v6 = [v5 isCharging];
+  assetsCopy = assets;
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  isCharging = [mEMORY[0x277D7FA90] isCharging];
 
   v7 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3006,7 +3006,7 @@ LABEL_24:
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = [v4 count];
+    *&buf[14] = [assetsCopy count];
     _os_log_impl(&dword_22392A000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueuing %lu assets:", buf, 0x16u);
   }
 
@@ -3014,7 +3014,7 @@ LABEL_24:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v4;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v9)
   {
@@ -3032,7 +3032,7 @@ LABEL_24:
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        [v14 setDeviceWasChargingWhenEnqueued:{v6, v19}];
+        [v14 setDeviceWasChargingWhenEnqueued:{isCharging, v19}];
         v15 = _ATLogCategoryFramework();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
@@ -3058,7 +3058,7 @@ LABEL_24:
   block[2] = __39__ATAssetLinkController_enqueueAssets___block_invoke;
   block[3] = &unk_2784E9590;
   v21 = v8;
-  v22 = self;
+  selfCopy = self;
   v23 = buf;
   v17 = v8;
   dispatch_async(queue, block);
@@ -3226,17 +3226,17 @@ LABEL_30:
   return result;
 }
 
-- (void)removeAssetLink:(id)a3
+- (void)removeAssetLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__ATAssetLinkController_removeAssetLink___block_invoke;
   v7[3] = &unk_2784E9608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = linkCopy;
+  selfCopy = self;
+  v6 = linkCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -3249,17 +3249,17 @@ uint64_t __41__ATAssetLinkController_removeAssetLink___block_invoke(uint64_t a1)
   return [v3 removeObject:v2];
 }
 
-- (void)addAssetLink:(id)a3
+- (void)addAssetLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ATAssetLinkController_addAssetLink___block_invoke;
   v7[3] = &unk_2784E9608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = linkCopy;
+  selfCopy = self;
+  v6 = linkCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -3306,8 +3306,8 @@ uint64_t __38__ATAssetLinkController_addAssetLink___block_invoke_2(uint64_t a1, 
     [(MSVXPCTransaction *)self->_activeDownLoadsKeepAliveTransaction endTransaction];
   }
 
-  v3 = [MEMORY[0x277D7FA90] sharedMonitor];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  [mEMORY[0x277D7FA90] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = ATAssetLinkController;
@@ -3332,9 +3332,9 @@ uint64_t __38__ATAssetLinkController_addAssetLink___block_invoke_2(uint64_t a1, 
     callbackQueue = v2->_callbackQueue;
     v2->_callbackQueue = v7;
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v9;
+    v2->_observers = weakObjectsHashTable;
 
     v11 = objc_opt_new();
     assetLinks = v2->_assetLinks;
@@ -3344,36 +3344,36 @@ uint64_t __38__ATAssetLinkController_addAssetLink___block_invoke_2(uint64_t a1, 
     assetQueue = v2->_assetQueue;
     v2->_assetQueue = v13;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     activeTrackAssetsByAssetType = v2->_activeTrackAssetsByAssetType;
-    v2->_activeTrackAssetsByAssetType = v15;
+    v2->_activeTrackAssetsByAssetType = dictionary;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     trackAssetsPendingInstallByAssetType = v2->_trackAssetsPendingInstallByAssetType;
-    v2->_trackAssetsPendingInstallByAssetType = v17;
+    v2->_trackAssetsPendingInstallByAssetType = dictionary2;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     nonTrackAssetsPendingInstallByAssetType = v2->_nonTrackAssetsPendingInstallByAssetType;
-    v2->_nonTrackAssetsPendingInstallByAssetType = v19;
+    v2->_nonTrackAssetsPendingInstallByAssetType = dictionary3;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     progressBlocksForAssetsInFlight = v2->_progressBlocksForAssetsInFlight;
-    v2->_progressBlocksForAssetsInFlight = v21;
+    v2->_progressBlocksForAssetsInFlight = dictionary4;
 
-    v23 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     assetsToLinks = v2->_assetsToLinks;
-    v2->_assetsToLinks = v23;
+    v2->_assetsToLinks = strongToWeakObjectsMapTable;
 
-    v25 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     assetsToFailedLinks = v2->_assetsToFailedLinks;
-    v2->_assetsToFailedLinks = v25;
+    v2->_assetsToFailedLinks = strongToStrongObjectsMapTable;
 
-    v27 = [MEMORY[0x277D7FA90] sharedMonitor];
-    [v27 registerObserver:v2];
-    v2->_cachedThermalLevel = [v27 currentThermalLevel];
-    [v27 networkType];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    [mEMORY[0x277D7FA90] registerObserver:v2];
+    v2->_cachedThermalLevel = [mEMORY[0x277D7FA90] currentThermalLevel];
+    [mEMORY[0x277D7FA90] networkType];
     v2->_currentNetworkIsCellularType = ICEnvironmentNetworkTypeIsCellular();
-    v2->_isNetworkConstrained = [v27 isNetworkConstrained];
+    v2->_isNetworkConstrained = [mEMORY[0x277D7FA90] isNetworkConstrained];
     v28 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {

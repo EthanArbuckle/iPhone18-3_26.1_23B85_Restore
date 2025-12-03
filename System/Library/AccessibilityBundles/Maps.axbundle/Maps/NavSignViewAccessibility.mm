@@ -1,24 +1,24 @@
 @interface NavSignViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation NavSignViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NavSignView" hasInstanceMethod:@"majorLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavSignView" hasInstanceMethod:@"minorLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavSignLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"NavSignView" hasInstanceMethod:@"maneuverSign" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GuidanceManeuverArtwork" hasInstanceMethod:@"maneuver" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"NavManeuverSignView" hasInstanceMethod:@"maneuverGuidanceInfo" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavSignManeuverGuidanceInfo" hasInstanceMethod:@"shieldInfo" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavSignManeuverGuidanceInfo" hasInstanceMethod:@"maneuverArtwork" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavSignShieldInfo" hasInstanceMethod:@"shieldText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavSignManeuverGuidanceInfo" hasInstanceMethod:@"minorText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKServerFormattedString" hasInstanceMethod:@"geoServerString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NavSignView" hasInstanceMethod:@"majorLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavSignView" hasInstanceMethod:@"minorLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavSignLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"NavSignView" hasInstanceMethod:@"maneuverSign" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GuidanceManeuverArtwork" hasInstanceMethod:@"maneuver" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"NavManeuverSignView" hasInstanceMethod:@"maneuverGuidanceInfo" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavSignManeuverGuidanceInfo" hasInstanceMethod:@"shieldInfo" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavSignManeuverGuidanceInfo" hasInstanceMethod:@"maneuverArtwork" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavSignShieldInfo" hasInstanceMethod:@"shieldText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavSignManeuverGuidanceInfo" hasInstanceMethod:@"minorText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKServerFormattedString" hasInstanceMethod:@"geoServerString" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -29,12 +29,12 @@
 
   if ([v4 _accessibilityViewIsVisible])
   {
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
   else
   {
-    v5 = &stru_2A21E4020;
+    accessibilityLabel = &stru_2A21E4020;
   }
 
   objc_opt_class();
@@ -43,10 +43,10 @@
 
   if ([v7 _accessibilityViewIsVisible])
   {
-    v11 = [v7 accessibilityLabel];
+    accessibilityLabel2 = [v7 accessibilityLabel];
     v8 = __UIAXStringForVariables();
 
-    v5 = v8;
+    accessibilityLabel = v8;
   }
 
   v9 = __UIAXStringForVariables();

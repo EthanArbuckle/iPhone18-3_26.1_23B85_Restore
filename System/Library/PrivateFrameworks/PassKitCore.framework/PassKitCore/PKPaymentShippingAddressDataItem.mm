@@ -1,17 +1,17 @@
 @interface PKPaymentShippingAddressDataItem
 - (BOOL)hasShippingAddress;
-- (BOOL)isClientError:(id)a3;
+- (BOOL)isClientError:(id)error;
 - (BOOL)isShippingEditable;
-- (BOOL)isShippingServiceableWithError:(id *)a3;
-- (BOOL)isValidWithError:(id *)a3;
+- (BOOL)isShippingServiceableWithError:(id *)error;
+- (BOOL)isValidWithError:(id *)error;
 - (CNContact)shippingAddress;
 - (NSAttributedString)formattedAddressString;
 - (NSString)shippingType;
 - (id)_shippingName;
 - (id)createIncompleteShippingAddressError;
 - (id)createRequiredShippingAddressError;
-- (id)createShippingAddressErrorFromError:(id)a3;
-- (id)createShippingAddressErrorWithDescription:(id)a3 failureReason:(id)a4;
+- (id)createShippingAddressErrorFromError:(id)error;
+- (id)createShippingAddressErrorWithDescription:(id)description failureReason:(id)reason;
 - (id)createUnavailableShippingAddressError;
 - (id)errors;
 - (id)firstModelError;
@@ -30,22 +30,22 @@
 
 - (id)_shippingName
 {
-  v3 = [(PKPaymentDataItem *)self model];
-  v4 = [v3 shippingAddress];
+  model = [(PKPaymentDataItem *)self model];
+  shippingAddress = [model shippingAddress];
 
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentRequest];
-  v7 = [v6 requiredShippingContactFields];
-  v8 = [v7 containsObject:@"phoneticName"];
+  model2 = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model2 paymentRequest];
+  requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+  v8 = [requiredShippingContactFields containsObject:@"phoneticName"];
 
   if (v8)
   {
-    [v4 pkFullAndPhoneticName];
+    [shippingAddress pkFullAndPhoneticName];
   }
 
   else
   {
-    [v4 pkFullName];
+    [shippingAddress pkFullName];
   }
   v9 = ;
 
@@ -54,41 +54,41 @@
 
 - (NSAttributedString)formattedAddressString
 {
-  v3 = [(PKPaymentDataItem *)self model];
-  v4 = [v3 paymentRequest];
-  v5 = [v4 requiredShippingContactFields];
-  v6 = [v5 containsObject:@"phoneticName"];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+  v6 = [requiredShippingContactFields containsObject:@"phoneticName"];
 
-  v7 = [(PKPaymentShippingAddressDataItem *)self shippingAddress];
-  v8 = [v7 pkFormattedContactAddressIncludingPhoneticName:v6];
-  v9 = [v8 pk_uppercaseAttributedString];
+  shippingAddress = [(PKPaymentShippingAddressDataItem *)self shippingAddress];
+  v8 = [shippingAddress pkFormattedContactAddressIncludingPhoneticName:v6];
+  pk_uppercaseAttributedString = [v8 pk_uppercaseAttributedString];
 
-  return v9;
+  return pk_uppercaseAttributedString;
 }
 
 - (CNContact)shippingAddress
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 shippingAddress];
+  model = [(PKPaymentDataItem *)self model];
+  shippingAddress = [model shippingAddress];
 
-  return v3;
+  return shippingAddress;
 }
 
 - (BOOL)hasShippingAddress
 {
-  v2 = [(PKPaymentShippingAddressDataItem *)self shippingAddress];
-  v3 = [v2 postalAddresses];
-  v4 = [v3 count] != 0;
+  shippingAddress = [(PKPaymentShippingAddressDataItem *)self shippingAddress];
+  postalAddresses = [shippingAddress postalAddresses];
+  v4 = [postalAddresses count] != 0;
 
   return v4;
 }
 
 - (NSString)shippingType
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 shippingType];
+  model = [(PKPaymentDataItem *)self model];
+  shippingType = [model shippingType];
 
-  return v3;
+  return shippingType;
 }
 
 - (id)errors
@@ -99,9 +99,9 @@
   v9[1] = @"name";
   v9[2] = @"phoneticName";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentErrors];
-  v7 = [v3 pk_FilteredShippingErrorsForContactFields:v4 errors:v6];
+  model = [(PKPaymentDataItem *)self model];
+  paymentErrors = [model paymentErrors];
+  v7 = [v3 pk_FilteredShippingErrorsForContactFields:v4 errors:paymentErrors];
 
   return v7;
 }
@@ -114,39 +114,39 @@
   v9[1] = @"name";
   v9[2] = @"phoneticName";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentContactFormatErrors];
-  v7 = [v3 pk_FilteredShippingErrorsForContactFields:v4 errors:v6];
+  model = [(PKPaymentDataItem *)self model];
+  paymentContactFormatErrors = [model paymentContactFormatErrors];
+  v7 = [v3 pk_FilteredShippingErrorsForContactFields:v4 errors:paymentContactFormatErrors];
 
   return v7;
 }
 
 - (BOOL)isShippingEditable
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 isShippingEditable];
+  model = [(PKPaymentDataItem *)self model];
+  isShippingEditable = [model isShippingEditable];
 
-  return v3;
+  return isShippingEditable;
 }
 
-- (BOOL)isShippingServiceableWithError:(id *)a3
+- (BOOL)isShippingServiceableWithError:(id *)error
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = [(PKPaymentShippingAddressDataItem *)self errors];
-  v6 = [v5 pk_firstObjectPassingTest:&__block_literal_global_289];
+  errors = [(PKPaymentShippingAddressDataItem *)self errors];
+  v6 = [errors pk_firstObjectPassingTest:&__block_literal_global_289];
 
-  if (a3 && v6)
+  if (error && v6)
   {
-    v7 = [(PKPaymentShippingAddressDataItem *)self hasShippingAddress];
+    hasShippingAddress = [(PKPaymentShippingAddressDataItem *)self hasShippingAddress];
     v8 = MEMORY[0x1E696ABC0];
     v13[0] = *MEMORY[0x1E696A578];
-    v9 = [v6 localizedDescription];
-    v14[0] = v9;
+    localizedDescription = [v6 localizedDescription];
+    v14[0] = localizedDescription;
     v13[1] = @"PKPaymentErrorIsFieldEmpty";
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:!v7];
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:!hasShippingAddress];
     v14[1] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-    *a3 = [v8 errorWithDomain:@"PKPassKitErrorDomain" code:-3003 userInfo:v11];
+    *error = [v8 errorWithDomain:@"PKPassKitErrorDomain" code:-3003 userInfo:v11];
   }
 
   return v6 == 0;
@@ -169,16 +169,16 @@ BOOL __67__PKPaymentShippingAddressDataItem_isShippingServiceableWithError___blo
   return v4;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
-  v4 = [(PKPaymentShippingAddressDataItem *)self validate];
-  if (a3 && v4)
+  validate = [(PKPaymentShippingAddressDataItem *)self validate];
+  if (error && validate)
   {
-    v4 = v4;
-    *a3 = v4;
+    validate = validate;
+    *error = validate;
   }
 
-  v5 = v4 == 0;
+  v5 = validate == 0;
 
   return v5;
 }
@@ -191,10 +191,10 @@ BOOL __67__PKPaymentShippingAddressDataItem_isShippingServiceableWithError___blo
     goto LABEL_11;
   }
 
-  v3 = [(PKPaymentShippingAddressDataItem *)self firstModelError];
-  if (v3)
+  firstModelError = [(PKPaymentShippingAddressDataItem *)self firstModelError];
+  if (firstModelError)
   {
-    v4 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorFromError:v3];
+    createIncompleteShippingAddressError = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorFromError:firstModelError];
   }
 
   else if ([(PKPaymentShippingAddressDataItem *)self hasShippingAddress])
@@ -205,15 +205,15 @@ BOOL __67__PKPaymentShippingAddressDataItem_isShippingServiceableWithError___blo
       goto LABEL_10;
     }
 
-    v4 = [(PKPaymentShippingAddressDataItem *)self createIncompleteShippingAddressError];
+    createIncompleteShippingAddressError = [(PKPaymentShippingAddressDataItem *)self createIncompleteShippingAddressError];
   }
 
   else
   {
-    v4 = [(PKPaymentShippingAddressDataItem *)self createRequiredShippingAddressError];
+    createIncompleteShippingAddressError = [(PKPaymentShippingAddressDataItem *)self createRequiredShippingAddressError];
   }
 
-  v5 = v4;
+  v5 = createIncompleteShippingAddressError;
 LABEL_10:
 
 LABEL_11:
@@ -223,62 +223,62 @@ LABEL_11:
 
 - (id)firstModelError
 {
-  v3 = [(PKPaymentShippingAddressDataItem *)self errors];
-  v4 = [v3 firstObject];
-  v5 = v4;
-  if (v4)
+  errors = [(PKPaymentShippingAddressDataItem *)self errors];
+  firstObject = [errors firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
-    v6 = v4;
+    firstObject2 = firstObject;
   }
 
   else
   {
-    v7 = [(PKPaymentShippingAddressDataItem *)self paymentContactFormatErrors];
-    v6 = [v7 firstObject];
+    paymentContactFormatErrors = [(PKPaymentShippingAddressDataItem *)self paymentContactFormatErrors];
+    firstObject2 = [paymentContactFormatErrors firstObject];
   }
 
-  return v6;
+  return firstObject2;
 }
 
 - (unint64_t)rawShippingType
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentRequest];
-  v4 = [v3 shippingType];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  shippingType = [paymentRequest shippingType];
 
-  return v4;
+  return shippingType;
 }
 
-- (id)createShippingAddressErrorFromError:(id)a3
+- (id)createShippingAddressErrorFromError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E696A578]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
 
-  if (-[PKPaymentShippingAddressDataItem isClientError:](self, "isClientError:", v4) && [v6 length])
+  if (-[PKPaymentShippingAddressDataItem isClientError:](self, "isClientError:", errorCopy) && [v6 length])
   {
-    v7 = [(PKPaymentShippingAddressDataItem *)self incompleteShippingAddressErrorDescription];
-    v8 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:v7 failureReason:v6];
+    incompleteShippingAddressErrorDescription = [(PKPaymentShippingAddressDataItem *)self incompleteShippingAddressErrorDescription];
+    v8 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:incompleteShippingAddressErrorDescription failureReason:v6];
 LABEL_17:
     v15 = v8;
     goto LABEL_18;
   }
 
-  v9 = [v4 userInfo];
-  v7 = [v9 objectForKey:@"PKPaymentErrorContactField"];
+  userInfo2 = [errorCopy userInfo];
+  incompleteShippingAddressErrorDescription = [userInfo2 objectForKey:@"PKPaymentErrorContactField"];
 
-  if ([v7 isEqualToString:@"name"])
+  if ([incompleteShippingAddressErrorDescription isEqualToString:@"name"])
   {
-    v10 = [(PKPaymentDataItem *)self model];
-    v11 = [v10 shippingAddress];
-    v12 = [v11 pkFullName];
+    model = [(PKPaymentDataItem *)self model];
+    shippingAddress = [model shippingAddress];
+    pkFullName = [shippingAddress pkFullName];
   }
 
   else
   {
-    if (![v7 isEqualToString:@"phoneticName"])
+    if (![incompleteShippingAddressErrorDescription isEqualToString:@"phoneticName"])
     {
-      if ([v4 code] == 1)
+      if ([errorCopy code] == 1)
       {
         [(PKPaymentShippingAddressDataItem *)self createIncompleteShippingAddressError];
       }
@@ -291,43 +291,43 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v10 = [(PKPaymentDataItem *)self model];
-    v11 = [v10 shippingAddress];
-    v12 = [v11 pkPhoneticName];
+    model = [(PKPaymentDataItem *)self model];
+    shippingAddress = [model shippingAddress];
+    pkFullName = [shippingAddress pkPhoneticName];
   }
 
-  v13 = v12;
+  v13 = pkFullName;
 
   if (v13 && [v13 length])
   {
-    v14 = [(PKPaymentShippingAddressDataItem *)self createIncompleteShippingAddressError];
+    createIncompleteShippingAddressError = [(PKPaymentShippingAddressDataItem *)self createIncompleteShippingAddressError];
   }
 
   else
   {
-    v14 = [(PKPaymentShippingAddressDataItem *)self createRequiredShippingAddressError];
+    createIncompleteShippingAddressError = [(PKPaymentShippingAddressDataItem *)self createRequiredShippingAddressError];
   }
 
-  v15 = v14;
+  v15 = createIncompleteShippingAddressError;
 
 LABEL_18:
 
   return v15;
 }
 
-- (BOOL)isClientError:(id)a3
+- (BOOL)isClientError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 PKBoolForKey:@"PKPaymentErrorIsFromClient"];
+  userInfo = [error userInfo];
+  v4 = [userInfo PKBoolForKey:@"PKPaymentErrorIsFromClient"];
 
   return v4;
 }
 
 - (id)createRequiredShippingAddressError
 {
-  v3 = [(PKPaymentShippingAddressDataItem *)self requiredShippingAddressErrorDescription];
-  v4 = [(PKPaymentShippingAddressDataItem *)self requiredShippingAddressErrorFailureReason];
-  v5 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:v3 failureReason:v4];
+  requiredShippingAddressErrorDescription = [(PKPaymentShippingAddressDataItem *)self requiredShippingAddressErrorDescription];
+  requiredShippingAddressErrorFailureReason = [(PKPaymentShippingAddressDataItem *)self requiredShippingAddressErrorFailureReason];
+  v5 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:requiredShippingAddressErrorDescription failureReason:requiredShippingAddressErrorFailureReason];
 
   return v5;
 }
@@ -370,9 +370,9 @@ LABEL_18:
 
 - (id)createIncompleteShippingAddressError
 {
-  v3 = [(PKPaymentShippingAddressDataItem *)self incompleteShippingAddressErrorDescription];
-  v4 = [(PKPaymentShippingAddressDataItem *)self incompleteShippingAddressErrorFailureReason];
-  v5 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:v3 failureReason:v4];
+  incompleteShippingAddressErrorDescription = [(PKPaymentShippingAddressDataItem *)self incompleteShippingAddressErrorDescription];
+  incompleteShippingAddressErrorFailureReason = [(PKPaymentShippingAddressDataItem *)self incompleteShippingAddressErrorFailureReason];
+  v5 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:incompleteShippingAddressErrorDescription failureReason:incompleteShippingAddressErrorFailureReason];
 
   return v5;
 }
@@ -415,9 +415,9 @@ LABEL_18:
 
 - (id)createUnavailableShippingAddressError
 {
-  v3 = [(PKPaymentShippingAddressDataItem *)self unavailableShippingAddressErrorDescription];
-  v4 = [(PKPaymentShippingAddressDataItem *)self unavailableShippingAddressErrorFailureReason];
-  v5 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:v3 failureReason:v4];
+  unavailableShippingAddressErrorDescription = [(PKPaymentShippingAddressDataItem *)self unavailableShippingAddressErrorDescription];
+  unavailableShippingAddressErrorFailureReason = [(PKPaymentShippingAddressDataItem *)self unavailableShippingAddressErrorFailureReason];
+  v5 = [(PKPaymentShippingAddressDataItem *)self createShippingAddressErrorWithDescription:unavailableShippingAddressErrorDescription failureReason:unavailableShippingAddressErrorFailureReason];
 
   return v5;
 }
@@ -458,20 +458,20 @@ LABEL_18:
   return v4;
 }
 
-- (id)createShippingAddressErrorWithDescription:(id)a3 failureReason:(id)a4
+- (id)createShippingAddressErrorWithDescription:(id)description failureReason:(id)reason
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentShippingAddressDataItem *)self hasShippingAddress];
+  reasonCopy = reason;
+  descriptionCopy = description;
+  hasShippingAddress = [(PKPaymentShippingAddressDataItem *)self hasShippingAddress];
   v9 = MEMORY[0x1E696ABC0];
   v10 = *MEMORY[0x1E696A588];
   v15[0] = *MEMORY[0x1E696A578];
   v15[1] = v10;
-  v16[0] = v7;
-  v16[1] = v6;
+  v16[0] = descriptionCopy;
+  v16[1] = reasonCopy;
   v15[2] = @"PKPaymentErrorIsFieldEmpty";
-  v11 = [MEMORY[0x1E696AD98] numberWithInt:!v8];
+  v11 = [MEMORY[0x1E696AD98] numberWithInt:!hasShippingAddress];
   v16[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v13 = [v9 errorWithDomain:@"PKPassKitErrorDomain" code:-3003 userInfo:v12];

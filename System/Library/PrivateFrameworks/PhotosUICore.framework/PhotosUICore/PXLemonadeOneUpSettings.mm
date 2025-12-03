@@ -10,8 +10,8 @@
 {
   v9.receiver = self;
   v9.super_class = PXLemonadeOneUpSettings;
-  v3 = [(PTSettings *)&v9 setDefaultValues];
-  v4 = MEMORY[0x1A590D320](v3);
+  setDefaultValues = [(PTSettings *)&v9 setDefaultValues];
+  v4 = MEMORY[0x1A590D320](setDefaultValues);
   if (v4)
   {
     v5 = PFIsCameraMessagesApp() ^ 1;
@@ -100,9 +100,9 @@
 + (BOOL)isOneUpRefreshEnabled
 {
   v2 = +[PXLemonadeOneUpSettings sharedInstance];
-  v3 = [v2 internal_isOneUpRefreshEnabled];
+  internal_isOneUpRefreshEnabled = [v2 internal_isOneUpRefreshEnabled];
 
-  return v3;
+  return internal_isOneUpRefreshEnabled;
 }
 
 + (id)sharedInstance

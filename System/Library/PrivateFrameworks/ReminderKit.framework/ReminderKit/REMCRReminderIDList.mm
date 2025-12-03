@@ -1,15 +1,15 @@
 @interface REMCRReminderIDList
-+ (id)listFromSerializedData:(id)a3 replica:(id)a4;
++ (id)listFromSerializedData:(id)data replica:(id)replica;
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
++ (id)objectIDWithUUID:(id)d;
 - (BOOL)wantsUndoCommands;
 - (REMCRReminderIDList)init;
-- (REMCRReminderIDList)initWithDocument:(id)a3 objectID:(id)a4;
+- (REMCRReminderIDList)initWithDocument:(id)document objectID:(id)d;
 - (REMCRReminderIDListDelegate)delegate;
-- (id)copyForReplica:(id)a3;
-- (void)addReminder:(id)a3;
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4;
-- (void)mergeWith:(id)a3;
+- (id)copyForReplica:(id)replica;
+- (void)addReminder:(id)reminder;
+- (void)addUndoCommandsForObject:(id)object block:(id)block;
+- (void)mergeWith:(id)with;
 @end
 
 @implementation REMCRReminderIDList
@@ -17,8 +17,8 @@
 - (REMCRReminderIDList)init
 {
   v3 = [CRTTCompatibleDocument alloc];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [(CRDocument *)v3 initWithReplica:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v5 = [(CRDocument *)v3 initWithReplica:uUID];
 
   v6 = [[CRTombstoneOrderedSet alloc] initWithDocument:v5];
   [(CRDocument *)v5 setRootObject:v6];
@@ -29,37 +29,37 @@
   return v8;
 }
 
-- (REMCRReminderIDList)initWithDocument:(id)a3 objectID:(id)a4
+- (REMCRReminderIDList)initWithDocument:(id)document objectID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  documentCopy = document;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = REMCRReminderIDList;
   v9 = [(REMCRReminderIDList *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remObjectID, a4);
-    objc_storeStrong(&v10->_document, a3);
-    v11 = [v7 rootObject];
+    objc_storeStrong(&v9->_remObjectID, d);
+    objc_storeStrong(&v10->_document, document);
+    rootObject = [documentCopy rootObject];
     reminderIDsStorage = v10->_reminderIDsStorage;
-    v10->_reminderIDsStorage = v11;
+    v10->_reminderIDsStorage = rootObject;
 
     [(CRTombstoneOrderedSet *)v10->_reminderIDsStorage setDelegate:v10];
-    v13 = [v7 replica];
+    replica = [documentCopy replica];
     replica = v10->_replica;
-    v10->_replica = v13;
+    v10->_replica = replica;
   }
 
   return v10;
 }
 
-+ (id)listFromSerializedData:(id)a3 replica:(id)a4
++ (id)listFromSerializedData:(id)data replica:(id)replica
 {
-  v5 = a4;
-  v6 = a3;
+  replicaCopy = replica;
+  dataCopy = data;
   +[REMObjectID rem_registerClassAtCRCoderIfNeeded];
-  v7 = [CRDocument unarchiveFromData:v6 replica:v5];
+  v7 = [CRDocument unarchiveFromData:dataCopy replica:replicaCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -74,49 +74,49 @@
   return v10;
 }
 
-- (id)copyForReplica:(id)a3
+- (id)copyForReplica:(id)replica
 {
-  v4 = a3;
-  v5 = [(REMCRReminderIDList *)self document];
-  v6 = [v5 copyForReplica:v4];
+  replicaCopy = replica;
+  document = [(REMCRReminderIDList *)self document];
+  v6 = [document copyForReplica:replicaCopy];
 
   v7 = [REMCRReminderIDList alloc];
-  v8 = [(REMCRReminderIDList *)self remObjectID];
-  v9 = [(REMCRReminderIDList *)v7 initWithDocument:v6 objectID:v8];
+  remObjectID = [(REMCRReminderIDList *)self remObjectID];
+  v9 = [(REMCRReminderIDList *)v7 initWithDocument:v6 objectID:remObjectID];
 
   return v9;
 }
 
-- (void)addReminder:(id)a3
+- (void)addReminder:(id)reminder
 {
-  v4 = a3;
-  v6 = [(REMCRReminderIDList *)self reminderIDsProxy];
-  v5 = [v4 objectID];
+  reminderCopy = reminder;
+  reminderIDsProxy = [(REMCRReminderIDList *)self reminderIDsProxy];
+  objectID = [reminderCopy objectID];
 
-  [v6 addObject:v5];
+  [reminderIDsProxy addObject:objectID];
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v4 = a3;
-  v6 = [(REMCRReminderIDList *)self document];
-  v5 = [v4 document];
+  withCopy = with;
+  document = [(REMCRReminderIDList *)self document];
+  document2 = [withCopy document];
 
-  [v6 mergeWithDocument:v5];
+  [document mergeWithDocument:document2];
 }
 
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4
+- (void)addUndoCommandsForObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = [(REMCRReminderIDList *)self delegate];
+  blockCopy = block;
+  delegate = [(REMCRReminderIDList *)self delegate];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__REMCRReminderIDList_addUndoCommandsForObject_block___block_invoke;
   v8[3] = &unk_1E7509560;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 addUndoCommandsForList:self block:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [delegate addUndoCommandsForList:self block:v8];
 }
 
 void __54__REMCRReminderIDList_addUndoCommandsForObject_block___block_invoke(uint64_t a1, void *a2)
@@ -145,25 +145,25 @@ void __54__REMCRReminderIDList_addUndoCommandsForObject_block___block_invoke(uin
 
 - (BOOL)wantsUndoCommands
 {
-  v2 = [(REMCRReminderIDList *)self delegate];
-  v3 = [v2 wantsUndoCommands];
+  delegate = [(REMCRReminderIDList *)self delegate];
+  wantsUndoCommands = [delegate wantsUndoCommands];
 
-  return v3;
+  return wantsUndoCommands;
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }

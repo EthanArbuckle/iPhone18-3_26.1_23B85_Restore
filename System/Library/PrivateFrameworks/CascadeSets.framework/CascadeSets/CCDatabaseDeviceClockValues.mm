@@ -1,8 +1,8 @@
 @interface CCDatabaseDeviceClockValues
 - (CCDatabaseDeviceClockValues)init;
-- (CCDatabaseDeviceClockValues)initWithDeviceRowId:(id)a3 missingAtomsImplied:(BOOL)a4;
+- (CCDatabaseDeviceClockValues)initWithDeviceRowId:(id)id missingAtomsImplied:(BOOL)implied;
 - (id)description;
-- (void)updateMax:(unint64_t)a3;
+- (void)updateMax:(unint64_t)max;
 @end
 
 @implementation CCDatabaseDeviceClockValues
@@ -13,16 +13,16 @@
   objc_exception_throw(v2);
 }
 
-- (CCDatabaseDeviceClockValues)initWithDeviceRowId:(id)a3 missingAtomsImplied:(BOOL)a4
+- (CCDatabaseDeviceClockValues)initWithDeviceRowId:(id)id missingAtomsImplied:(BOOL)implied
 {
-  v7 = a3;
+  idCopy = id;
   v17.receiver = self;
   v17.super_class = CCDatabaseDeviceClockValues;
   v8 = [(CCDatabaseDeviceClockValues *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_deviceRowId, a3);
+    objc_storeStrong(&v8->_deviceRowId, id);
     v9->_max = 0;
     v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
     present = v9->_present;
@@ -32,7 +32,7 @@
     tombstoned = v9->_tombstoned;
     v9->_tombstoned = v12;
 
-    if (!a4)
+    if (!implied)
     {
       v14 = objc_alloc_init(MEMORY[0x1E696AD50]);
       missing = v9->_missing;
@@ -52,11 +52,11 @@
   return v5;
 }
 
-- (void)updateMax:(unint64_t)a3
+- (void)updateMax:(unint64_t)max
 {
-  if (self->_max < a3)
+  if (self->_max < max)
   {
-    self->_max = a3;
+    self->_max = max;
   }
 }
 

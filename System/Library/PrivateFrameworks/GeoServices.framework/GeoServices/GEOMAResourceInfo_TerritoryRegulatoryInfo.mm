@@ -13,9 +13,9 @@
 {
   v4.receiver = self;
   v4.super_class = GEOMAResourceInfo_TerritoryRegulatoryInfo;
-  v2 = [(GEOMAResourceInfo *)&v4 _backgroundDownloadOptions];
+  _backgroundDownloadOptions = [(GEOMAResourceInfo *)&v4 _backgroundDownloadOptions];
 
-  return v2;
+  return _backgroundDownloadOptions;
 }
 
 - (double)timeToLive
@@ -78,7 +78,7 @@
   v5[2] = sub_100038BAC;
   v5[3] = &unk_1000830A8;
   v5[4] = &v6;
-  v5[5] = a1;
+  v5[5] = self;
   [GEOMAResource onFileAccessQueueSync:v5];
   v2 = v7[5];
   if (!v2)

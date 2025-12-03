@@ -7,11 +7,11 @@
 - (CGRect)imageBounds;
 - (PXCTFrame)ctFrame;
 - (PXCTLine)init;
-- (PXCTLine)initWithLine:(__CTLine *)a3 origin:(CGPoint)a4 frame:(id)a5 referenceAttributedString:(id)a6 truncated:(BOOL)a7;
+- (PXCTLine)initWithLine:(__CTLine *)line origin:(CGPoint)origin frame:(id)frame referenceAttributedString:(id)string truncated:(BOOL)truncated;
 - (_NSRange)stringRange;
 - (double)width;
 - (id)description;
-- (void)_transformBy:(CGAffineTransform *)a3;
+- (void)_transformBy:(CGAffineTransform *)by;
 - (void)dealloc;
 - (void)draw;
 - (void)prepare;
@@ -57,22 +57,22 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXCTLine *)self string];
-  v6 = [v3 stringWithFormat:@"<%@ %p string='%@' CTLine=%@>", v4, self, v5, -[PXCTLine line](self, "line")];
+  string = [(PXCTLine *)self string];
+  v6 = [v3 stringWithFormat:@"<%@ %p string='%@' CTLine=%@>", v4, self, string, -[PXCTLine line](self, "line")];
 
   return v6;
 }
 
-- (void)_transformBy:(CGAffineTransform *)a3
+- (void)_transformBy:(CGAffineTransform *)by
 {
   v4 = *&self->_transform.c;
   *&t1.a = *&self->_transform.a;
   *&t1.c = v4;
   *&t1.tx = *&self->_transform.tx;
-  v5 = *&a3->c;
-  *&v7.a = *&a3->a;
+  v5 = *&by->c;
+  *&v7.a = *&by->a;
   *&v7.c = v5;
-  *&v7.tx = *&a3->tx;
+  *&v7.tx = *&by->tx;
   CGAffineTransformConcat(&v9, &t1, &v7);
   v6 = *&v9.c;
   *&self->_transform.a = *&v9.a;
@@ -196,34 +196,34 @@
 
 - (void)draw
 {
-  v3 = [(PXCTLine *)self context];
-  CGContextSaveGState(v3);
+  context = [(PXCTLine *)self context];
+  CGContextSaveGState(context);
   v4 = *&self->_transform.c;
   *&v17.a = *&self->_transform.a;
   *&v17.c = v4;
   *&v17.tx = *&self->_transform.tx;
-  CGContextConcatCTM(v3, &v17);
+  CGContextConcatCTM(context, &v17);
   [(PXCTLine *)self origin];
-  CGContextSetTextPosition(v3, v5, v6);
-  CGContextSetShouldSmoothFonts(v3, 0);
-  v7 = [(PXCTLine *)self shadow];
-  v8 = v7;
-  if (v7)
+  CGContextSetTextPosition(context, v5, v6);
+  CGContextSetShouldSmoothFonts(context, 0);
+  shadow = [(PXCTLine *)self shadow];
+  v8 = shadow;
+  if (shadow)
   {
-    [v7 shadowOffset];
+    [shadow shadowOffset];
     v10 = v9;
     v12 = v11;
     [v8 shadowBlurRadius];
     v14 = v13;
-    v15 = [v8 shadowColor];
-    v16 = [v15 CGColor];
+    shadowColor = [v8 shadowColor];
+    cGColor = [shadowColor CGColor];
     v18.width = v10;
     v18.height = v12;
-    CGContextSetShadowWithColor(v3, v18, v14, v16);
+    CGContextSetShadowWithColor(context, v18, v14, cGColor);
   }
 
-  CTLineDraw([(PXCTLine *)self line], v3);
-  CGContextRestoreGState(v3);
+  CTLineDraw([(PXCTLine *)self line], context);
+  CGContextRestoreGState(context);
 }
 
 - (void)prepare
@@ -231,25 +231,25 @@
   if (!self->_prepared)
   {
     self->_prepared = 1;
-    v4 = [(PXCTLine *)self ctFrame];
-    v5 = [v4 framesetter];
+    ctFrame = [(PXCTLine *)self ctFrame];
+    framesetter = [ctFrame framesetter];
 
-    if (!v5)
+    if (!framesetter)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:255 description:@"missing framesetter"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:255 description:@"missing framesetter"];
     }
 
-    self->_context = [v5 context];
-    v6 = [v5 shadow];
+    self->_context = [framesetter context];
+    shadow = [framesetter shadow];
     shadow = self->_shadow;
-    self->_shadow = v6;
+    self->_shadow = shadow;
 
-    v8 = [(PXCTLine *)self line];
-    self->_width = CTLineGetTypographicBounds(v8, &self->_ascent, &self->_descent, 0);
-    self->_imageBounds = CTLineGetImageBounds(v8, self->_context);
-    v9 = [(PXCTLine *)self ctFrame];
-    [v9 origin];
+    line = [(PXCTLine *)self line];
+    self->_width = CTLineGetTypographicBounds(line, &self->_ascent, &self->_descent, 0);
+    self->_imageBounds = CTLineGetImageBounds(line, self->_context);
+    ctFrame2 = [(PXCTLine *)self ctFrame];
+    [ctFrame2 origin];
     v11 = v10;
     v13 = v12;
 
@@ -258,10 +258,10 @@
     *&self->_transform.a = *&v26.a;
     *&self->_transform.c = v14;
     *&self->_transform.tx = *&v26.tx;
-    self->_stringRange = CTLineGetStringRange(v8);
-    v15 = [(PXCTLine *)self referenceAttributedString];
-    v16 = [v15 string];
-    v17 = [v16 substringWithRange:{self->_stringRange.location, self->_stringRange.length}];
+    self->_stringRange = CTLineGetStringRange(line);
+    referenceAttributedString = [(PXCTLine *)self referenceAttributedString];
+    string = [referenceAttributedString string];
+    v17 = [string substringWithRange:{self->_stringRange.location, self->_stringRange.length}];
     string = self->_string;
     self->_string = v17;
 
@@ -279,10 +279,10 @@
 
     else
     {
-      v21 = [(PXCTLine *)self stringRange];
-      v23 = v21 + v22;
-      v24 = [(PXCTLine *)self referenceAttributedString];
-      self->_endOfString = v23 == [v24 length];
+      stringRange = [(PXCTLine *)self stringRange];
+      v23 = stringRange + v22;
+      referenceAttributedString2 = [(PXCTLine *)self referenceAttributedString];
+      self->_endOfString = v23 == [referenceAttributedString2 length];
     }
   }
 }
@@ -295,23 +295,23 @@
   [(PXCTLine *)&v3 dealloc];
 }
 
-- (PXCTLine)initWithLine:(__CTLine *)a3 origin:(CGPoint)a4 frame:(id)a5 referenceAttributedString:(id)a6 truncated:(BOOL)a7
+- (PXCTLine)initWithLine:(__CTLine *)line origin:(CGPoint)origin frame:(id)frame referenceAttributedString:(id)string truncated:(BOOL)truncated
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a5;
-  v14 = a6;
+  y = origin.y;
+  x = origin.x;
+  frameCopy = frame;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = PXCTLine;
   v15 = [(PXCTLine *)&v17 init];
   if (v15)
   {
-    v15->_line = CFRetain(a3);
+    v15->_line = CFRetain(line);
     v15->_origin.x = x;
     v15->_origin.y = y;
-    objc_storeWeak(&v15->_ctFrame, v13);
-    objc_storeStrong(&v15->_referenceAttributedString, a6);
-    v15->_truncated = a7;
+    objc_storeWeak(&v15->_ctFrame, frameCopy);
+    objc_storeStrong(&v15->_referenceAttributedString, string);
+    v15->_truncated = truncated;
   }
 
   return v15;
@@ -319,8 +319,8 @@
 
 - (PXCTLine)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:229 description:{@"%s is not available as initializer", "-[PXCTLine init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:229 description:{@"%s is not available as initializer", "-[PXCTLine init]"}];
 
   abort();
 }

@@ -1,15 +1,15 @@
 @interface ASPublicKeyCredentialOperationTestDelegate
-- (void)didCompleteRegistrationWithCredential:(id)a3 error:(id)a4;
+- (void)didCompleteRegistrationWithCredential:(id)credential error:(id)error;
 @end
 
 @implementation ASPublicKeyCredentialOperationTestDelegate
 
-- (void)didCompleteRegistrationWithCredential:(id)a3 error:(id)a4
+- (void)didCompleteRegistrationWithCredential:(id)credential error:(id)error
 {
   didCompletionRegistrationCallback = self->_didCompletionRegistrationCallback;
   if (didCompletionRegistrationCallback)
   {
-    didCompletionRegistrationCallback[2](didCompletionRegistrationCallback, a3, a4);
+    didCompletionRegistrationCallback[2](didCompletionRegistrationCallback, credential, error);
     didCompletionRegistrationCallback = self->_didCompletionRegistrationCallback;
   }
 

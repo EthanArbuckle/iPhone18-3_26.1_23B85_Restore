@@ -34,7 +34,7 @@
   v16[3] = &unk_278189F30;
   v17 = v10;
   v18 = v11;
-  v19 = a1;
+  selfCopy = self;
   v13 = v11;
   v14 = v10;
   v15 = [v6 contactForContext:v12 handler:v16];
@@ -47,17 +47,17 @@
   v6 = _EFLocalizedString();
   v7 = [v4 actionWithTitle:v6 style:1 handler:v5];
 
-  [a1 addAction:v7];
+  [self addAction:v7];
 }
 
 - (void)mf_presentFromViewController:()MailUI withSource:
 {
   v6 = a4;
   v8 = a3;
-  v7 = [a1 popoverPresentationController];
-  [v7 setSourceItem:v6];
+  popoverPresentationController = [self popoverPresentationController];
+  [popoverPresentationController setSourceItem:v6];
 
-  [v8 presentViewController:a1 animated:1 completion:0];
+  [v8 presentViewController:self animated:1 completion:0];
 }
 
 @end

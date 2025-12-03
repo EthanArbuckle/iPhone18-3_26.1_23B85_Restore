@@ -1,15 +1,15 @@
 @interface NSFilePresenterAsynchronousOperation
-+ (id)operationWithBlock:(id)a3;
++ (id)operationWithBlock:(id)block;
 - (void)finish;
 - (void)start;
 @end
 
 @implementation NSFilePresenterAsynchronousOperation
 
-+ (id)operationWithBlock:(id)a3
++ (id)operationWithBlock:(id)block
 {
-  v4 = objc_alloc_init(a1);
-  v4[31] = [a3 copy];
+  v4 = objc_alloc_init(self);
+  v4[31] = [block copy];
 
   return v4;
 }

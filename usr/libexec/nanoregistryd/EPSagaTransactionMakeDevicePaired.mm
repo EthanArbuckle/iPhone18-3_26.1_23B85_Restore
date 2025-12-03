@@ -1,9 +1,9 @@
 @interface EPSagaTransactionMakeDevicePaired
 - (EPTransactionDelegate)delegate;
-- (id)_makeIsSetupNoDeviceCollection:(id)a3 diffWithPairingID:(id)a4;
+- (id)_makeIsSetupNoDeviceCollection:(id)collection diffWithPairingID:(id)d;
 - (id)registry;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionMakeDevicePaired
@@ -16,7 +16,7 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (id)_makeIsSetupNoDeviceCollection:(id)a3 diffWithPairingID:(id)a4
+- (id)_makeIsSetupNoDeviceCollection:(id)collection diffWithPairingID:(id)d
 {
   v4 = [NRDevicePropertyDiffType alloc];
   v5 = [[NRDevicePropertyDiff alloc] initWithValue:&__kCFBooleanFalse];
@@ -31,56 +31,56 @@
   return v9;
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  objc_storeStrong(&self->_serviceRegistry, a4);
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v9 = [v6 objectForKeyedSubscript:@"isPaired"];
-  v10 = [v9 BOOLValue];
-  v11 = [(EPSagaTransactionMakeDevicePaired *)self registry];
+  entryCopy = entry;
+  objc_storeStrong(&self->_serviceRegistry, registry);
+  registryCopy = registry;
+  v8 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
+  v9 = [entryCopy objectForKeyedSubscript:@"isPaired"];
+  bOOLValue = [v9 BOOLValue];
+  registry = [(EPSagaTransactionMakeDevicePaired *)self registry];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10006C3A4;
   v14[3] = &unk_100177F38;
   v15 = v8;
-  v16 = self;
-  v18 = v10;
-  v17 = v6;
-  v12 = v6;
+  selfCopy = self;
+  v18 = bOOLValue;
+  v17 = entryCopy;
+  v12 = entryCopy;
   v13 = v8;
-  [v11 grabRegistryWithWriteBlockAsync:v14];
+  [registry grabRegistryWithWriteBlockAsync:v14];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"shouldRollBack"];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [entryCopy objectForKeyedSubscript:@"shouldRollBack"];
   if ([v8 BOOLValue])
   {
-    objc_storeStrong(&self->_serviceRegistry, a4);
-    v9 = [v6 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"isPaired"];
-    v11 = [v10 BOOLValue];
-    v12 = [(EPSagaTransactionMakeDevicePaired *)self registry];
+    objc_storeStrong(&self->_serviceRegistry, registry);
+    v9 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
+    delegate = [entryCopy objectForKeyedSubscript:@"isPaired"];
+    bOOLValue = [delegate BOOLValue];
+    registry = [(EPSagaTransactionMakeDevicePaired *)self registry];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10006C69C;
     v14[3] = &unk_100177F38;
     v15 = v9;
-    v16 = self;
-    v18 = v11;
-    v17 = v6;
+    selfCopy = self;
+    v18 = bOOLValue;
+    v17 = entryCopy;
     v13 = v9;
-    [v12 grabRegistryWithWriteBlockAsync:v14];
+    [registry grabRegistryWithWriteBlockAsync:v14];
   }
 
   else
   {
-    v10 = [(EPSagaTransactionMakeDevicePaired *)self delegate];
-    [v10 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionMakeDevicePaired *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 

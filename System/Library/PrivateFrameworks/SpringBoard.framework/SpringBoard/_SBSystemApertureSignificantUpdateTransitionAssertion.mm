@@ -1,16 +1,16 @@
 @interface _SBSystemApertureSignificantUpdateTransitionAssertion
 - (SAElement)element;
-- (_SBSystemApertureSignificantUpdateTransitionAssertion)initWithElement:(id)a3;
+- (_SBSystemApertureSignificantUpdateTransitionAssertion)initWithElement:(id)element;
 - (id)_descriptionConstituents;
 @end
 
 @implementation _SBSystemApertureSignificantUpdateTransitionAssertion
 
-- (_SBSystemApertureSignificantUpdateTransitionAssertion)initWithElement:(id)a3
+- (_SBSystemApertureSignificantUpdateTransitionAssertion)initWithElement:(id)element
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  elementCopy = element;
+  if (!elementCopy)
   {
     [_SBSystemApertureSignificantUpdateTransitionAssertion initWithElement:];
   }
@@ -21,7 +21,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_element, v4);
+    objc_storeWeak(&v5->_element, elementCopy);
     v7 = SBLogSystemApertureController();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -42,22 +42,22 @@
   {
     v10.receiver = self;
     v10.super_class = _SBSystemApertureSignificantUpdateTransitionAssertion;
-    v4 = [(SAAssertion *)&v10 _descriptionConstituents];
+    _descriptionConstituents = [(SAAssertion *)&v10 _descriptionConstituents];
     v11 = @"element";
     v5 = MEMORY[0x223D6CED0](WeakRetained);
     v12[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    v7 = [v4 arrayByAddingObject:v6];
+    _descriptionConstituents2 = [_descriptionConstituents arrayByAddingObject:v6];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _SBSystemApertureSignificantUpdateTransitionAssertion;
-    v7 = [(SAAssertion *)&v9 _descriptionConstituents];
+    _descriptionConstituents2 = [(SAAssertion *)&v9 _descriptionConstituents];
   }
 
-  return v7;
+  return _descriptionConstituents2;
 }
 
 - (SAElement)element

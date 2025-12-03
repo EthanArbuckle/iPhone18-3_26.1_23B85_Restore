@@ -1,49 +1,49 @@
 @interface CLSSocialServiceContacts
 + (BOOL)canAccessContactsStore;
 + (id)defaultKeysToFetch;
-- (CLSSocialServiceContacts)initWithLocationCache:(id)a3;
+- (CLSSocialServiceContacts)initWithLocationCache:(id)cache;
 - (CLSSocialServiceContactsDelegate)delegate;
-- (float)_confidenceInPersonRecord:(id)a3 viewPerson:(id)a4 forName:(id)a5 components:(id)a6;
-- (float)_fuzzyMatchingScoreBetweenNameComponents:(id)a3 andNameComponents:(id)a4;
-- (id)__newPersonWithContact:(id)a3 viewPerson:(id)a4;
+- (float)_confidenceInPersonRecord:(id)record viewPerson:(id)person forName:(id)name components:(id)components;
+- (float)_fuzzyMatchingScoreBetweenNameComponents:(id)components andNameComponents:(id)nameComponents;
+- (id)__newPersonWithContact:(id)contact viewPerson:(id)person;
 - (id)_allPersons;
-- (id)_cnPostalAddressForGDLocationAddress:(id)a3;
-- (id)_fullNameWithContact:(id)a3;
+- (id)_cnPostalAddressForGDLocationAddress:(id)address;
+- (id)_fullNameWithContact:(id)contact;
 - (id)_initializeVisualIdentifierView;
-- (id)_personResultsForPersonLocalIdentifier:(id)a3 isLackingFaces:(BOOL *)a4 inPhotoLibrary:(id)a5;
-- (id)_personResultsForfullName:(id)a3;
-- (id)_personWithContact:(id)a3 viewPerson:(id)a4 createPersonIfNeeded:(BOOL)a5;
-- (id)_personWithContactIdentifier:(id)a3;
-- (id)_personsMatchingPredicate:(id)a3;
-- (id)contactsByIdentifierForIdentifiers:(id)a3;
-- (id)contactsForIdentifiers:(id)a3;
-- (id)fetchMeCardFromContactStore:(id)a3;
-- (id)inferredDeviceOwnerForPhotoLibrary:(id)a3 ignoreContactLinking:(BOOL)a4;
-- (id)matchingDictionaryForContactIdentifier:(id)a3;
+- (id)_personResultsForPersonLocalIdentifier:(id)identifier isLackingFaces:(BOOL *)faces inPhotoLibrary:(id)library;
+- (id)_personResultsForfullName:(id)name;
+- (id)_personWithContact:(id)contact viewPerson:(id)person createPersonIfNeeded:(BOOL)needed;
+- (id)_personWithContactIdentifier:(id)identifier;
+- (id)_personsMatchingPredicate:(id)predicate;
+- (id)contactsByIdentifierForIdentifiers:(id)identifiers;
+- (id)contactsForIdentifiers:(id)identifiers;
+- (id)fetchMeCardFromContactStore:(id)store;
+- (id)inferredDeviceOwnerForPhotoLibrary:(id)library ignoreContactLinking:(BOOL)linking;
+- (id)matchingDictionaryForContactIdentifier:(id)identifier;
 - (id)mePerson;
-- (id)personForIdentifier:(id)a3;
-- (id)personForPersonHandle:(id)a3;
-- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)a3;
-- (id)personResultsForName:(id)a3 inPhotoLibrary:(id)a4;
-- (id)personsInContactStoreForContactIdentifiers:(id)a3 needsRefetching:(BOOL)a4 progressBlock:(id)a5;
-- (id)potentialBirthdayDateForCNIdentifier:(id)a3 fullName:(id)a4;
+- (id)personForIdentifier:(id)identifier;
+- (id)personForPersonHandle:(id)handle;
+- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)identifier;
+- (id)personResultsForName:(id)name inPhotoLibrary:(id)library;
+- (id)personsInContactStoreForContactIdentifiers:(id)identifiers needsRefetching:(BOOL)refetching progressBlock:(id)block;
+- (id)potentialBirthdayDateForCNIdentifier:(id)identifier fullName:(id)name;
 - (id)suggestionsService;
-- (id)visionCacheStorageDirectoryURLForPhotoLibrary:(id)a3;
-- (unint64_t)_ageCategoryFromFaceAgeType:(unsigned __int16)a3;
-- (unint64_t)_relationshipForContact:(id)a3;
-- (unint64_t)_relationshipForLabel:(id)a3;
-- (unint64_t)_sexFromFaceBiologicalSex:(unsigned __int16)a3;
-- (void)_addAddressesToPerson:(id)a3 withContact:(id)a4;
-- (void)_addDelegateAddressesToPerson:(id)a3 ofType:(unint64_t)a4;
-- (void)_addMissingPropertiesToPerson:(id)a3 withViewPerson:(id)a4;
-- (void)enumerateAllPersonsUsingBlock:(id)a3;
-- (void)enumeratePersonsAndPotentialBirthdayDateForContactIdentifiers:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePersonsAndRelationshipUsingBlock:(id)a3;
-- (void)enumeratePersonsForFullName:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePersonsForIdentifiers:(id)a3 usingBlock:(id)a4;
-- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)a3;
-- (void)invalidateCacheForPersonWithContactIdentifiers:(id)a3;
-- (void)invalidateCacheForPersonWithLocalIdentifiers:(id)a3;
+- (id)visionCacheStorageDirectoryURLForPhotoLibrary:(id)library;
+- (unint64_t)_ageCategoryFromFaceAgeType:(unsigned __int16)type;
+- (unint64_t)_relationshipForContact:(id)contact;
+- (unint64_t)_relationshipForLabel:(id)label;
+- (unint64_t)_sexFromFaceBiologicalSex:(unsigned __int16)sex;
+- (void)_addAddressesToPerson:(id)person withContact:(id)contact;
+- (void)_addDelegateAddressesToPerson:(id)person ofType:(unint64_t)type;
+- (void)_addMissingPropertiesToPerson:(id)person withViewPerson:(id)viewPerson;
+- (void)enumerateAllPersonsUsingBlock:(id)block;
+- (void)enumeratePersonsAndPotentialBirthdayDateForContactIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumeratePersonsAndRelationshipUsingBlock:(id)block;
+- (void)enumeratePersonsForFullName:(id)name usingBlock:(id)block;
+- (void)enumeratePersonsForIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)identifiers;
+- (void)invalidateCacheForPersonWithContactIdentifiers:(id)identifiers;
+- (void)invalidateCacheForPersonWithLocalIdentifiers:(id)identifiers;
 - (void)invalidateMePerson;
 - (void)invalidateMemoryCaches;
 - (void)refreshMeContactIfNeeded;
@@ -58,86 +58,86 @@
   return WeakRetained;
 }
 
-- (float)_confidenceInPersonRecord:(id)a3 viewPerson:(id)a4 forName:(id)a5 components:(id)a6
+- (float)_confidenceInPersonRecord:(id)record viewPerson:(id)person forName:(id)name components:(id)components
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  if (!v13)
+  recordCopy = record;
+  personCopy = person;
+  nameCopy = name;
+  componentsCopy = components;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  if (!componentsCopy)
   {
-    v13 = [v12 clsBetterComponentsSeparatedByCharactersInSet:v14];
+    componentsCopy = [nameCopy clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
-  v15 = [(CLSSocialServiceContacts *)self _fullNameWithContact:v10];
-  v16 = [v15 stringByTrimmingCharactersInSet:v14];
+  v15 = [(CLSSocialServiceContacts *)self _fullNameWithContact:recordCopy];
+  v16 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v17 = [v11 names];
-  v18 = [v17 firstObject];
-  v19 = [v18 stringByTrimmingCharactersInSet:v14];
+  names = [personCopy names];
+  firstObject = [names firstObject];
+  v19 = [firstObject stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  if ((!v16 || [v16 compare:v12]) && (!v19 || objc_msgSend(v19, "compare:", v12)))
+  if ((!v16 || [v16 compare:nameCopy]) && (!v19 || objc_msgSend(v19, "compare:", nameCopy)))
   {
     v55 = v19;
-    v58 = [v11 nameComponents];
-    v20 = [(CLSSocialServiceContacts *)self _firstNameForPersonRecord:v10];
+    nameComponents = [personCopy nameComponents];
+    v20 = [(CLSSocialServiceContacts *)self _firstNameForPersonRecord:recordCopy];
     v21 = v20;
-    v54 = v11;
+    v54 = personCopy;
     if (v20)
     {
-      v22 = v20;
+      firstObject2 = v20;
     }
 
     else
     {
-      v24 = [v11 nameComponents];
-      v25 = [v24 givenNames];
-      v22 = [v25 firstObject];
+      nameComponents2 = [personCopy nameComponents];
+      givenNames = [nameComponents2 givenNames];
+      firstObject2 = [givenNames firstObject];
     }
 
-    v26 = [v22 stringByTrimmingCharactersInSet:v14];
+    v26 = [firstObject2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v27 = [(CLSSocialServiceContacts *)self _lastNameForPersonRecord:v10];
+    v27 = [(CLSSocialServiceContacts *)self _lastNameForPersonRecord:recordCopy];
     v28 = v27;
     if (v27)
     {
-      v29 = v27;
+      firstObject3 = v27;
     }
 
     else
     {
-      v30 = [v58 familyNames];
-      v29 = [v30 firstObject];
+      familyNames = [nameComponents familyNames];
+      firstObject3 = [familyNames firstObject];
     }
 
-    v31 = [v29 stringByTrimmingCharactersInSet:v14];
+    v31 = [firstObject3 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v32 = [(CLSSocialServiceContacts *)self _nicknameForPersonRecord:v10];
+    v32 = [(CLSSocialServiceContacts *)self _nicknameForPersonRecord:recordCopy];
     v33 = v32;
     v56 = v31;
     if (v32)
     {
-      v34 = v32;
+      firstObject4 = v32;
     }
 
     else
     {
-      v35 = [v58 nicknames];
-      v34 = [v35 firstObject];
+      nicknames = [nameComponents nicknames];
+      firstObject4 = [nicknames firstObject];
 
       v31 = v56;
     }
 
-    v36 = [v34 stringByTrimmingCharactersInSet:v14];
+    v36 = [firstObject4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v37 = [(CLSSocialServiceContacts *)self _maidenNameForPersonRecord:v10];
-    v57 = [v37 stringByTrimmingCharactersInSet:v14];
+    v37 = [(CLSSocialServiceContacts *)self _maidenNameForPersonRecord:recordCopy];
+    v57 = [v37 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    if ([v13 count] == 1 && v26)
+    if ([componentsCopy count] == 1 && v26)
     {
       v38 = v57;
-      if (![v12 compare:v26 options:129] || !objc_msgSend(v12, "compare:options:", v31, 129) || !objc_msgSend(v12, "compare:options:", v36, 129) || (v23 = 0.0, !objc_msgSend(v12, "compare:options:", v57, 129)))
+      if (![nameCopy compare:v26 options:129] || !objc_msgSend(nameCopy, "compare:options:", v31, 129) || !objc_msgSend(nameCopy, "compare:options:", v36, 129) || (v23 = 0.0, !objc_msgSend(nameCopy, "compare:options:", v57, 129)))
       {
         v23 = 0.5;
       }
@@ -149,13 +149,13 @@
     v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (v26)
     {
-      v40 = [v26 clsBetterComponentsSeparatedByCharactersInSet:v14];
+      v40 = [v26 clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
       [v39 addObjectsFromArray:v40];
     }
 
     if (v56)
     {
-      v41 = [v56 clsBetterComponentsSeparatedByCharactersInSet:v14];
+      v41 = [v56 clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
       [v39 addObjectsFromArray:v41];
     }
 
@@ -164,15 +164,15 @@
     {
       if (v16)
       {
-        v42 = [v16 clsBetterComponentsSeparatedByCharactersInSet:v14];
-        [(CLSSocialServiceContacts *)self _fuzzyMatchingScoreBetweenNameComponents:v13 andNameComponents:v42];
+        v42 = [v16 clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
+        [(CLSSocialServiceContacts *)self _fuzzyMatchingScoreBetweenNameComponents:componentsCopy andNameComponents:v42];
         v23 = v43;
       }
 
       if (v55)
       {
-        v44 = [v55 clsBetterComponentsSeparatedByCharactersInSet:v14];
-        [(CLSSocialServiceContacts *)self _fuzzyMatchingScoreBetweenNameComponents:v13 andNameComponents:v44];
+        v44 = [v55 clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
+        [(CLSSocialServiceContacts *)self _fuzzyMatchingScoreBetweenNameComponents:componentsCopy andNameComponents:v44];
         if (v45 > v23)
         {
           v23 = v45;
@@ -191,19 +191,19 @@ LABEL_41:
         v36 = v53;
 LABEL_42:
 
-        v11 = v54;
+        personCopy = v54;
         v19 = v55;
         goto LABEL_43;
       }
 
       v46 = objc_alloc(MEMORY[0x277CBEB18]);
-      v47 = [v26 clsBetterComponentsSeparatedByCharactersInSet:v14];
+      v47 = [v26 clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
       v48 = [v46 initWithArray:v47];
 
-      v49 = [v57 clsBetterComponentsSeparatedByCharactersInSet:v14];
+      v49 = [v57 clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
       [v48 addObjectsFromArray:v49];
 
-      [(CLSSocialServiceContacts *)self _fuzzyMatchingScoreBetweenNameComponents:v13 andNameComponents:v48];
+      [(CLSSocialServiceContacts *)self _fuzzyMatchingScoreBetweenNameComponents:componentsCopy andNameComponents:v48];
       if (v50 > v23)
       {
         v23 = v50;
@@ -220,33 +220,33 @@ LABEL_43:
   return v23;
 }
 
-- (float)_fuzzyMatchingScoreBetweenNameComponents:(id)a3 andNameComponents:(id)a4
+- (float)_fuzzyMatchingScoreBetweenNameComponents:(id)components andNameComponents:(id)nameComponents
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  v8 = [v6 count];
+  componentsCopy = components;
+  nameComponentsCopy = nameComponents;
+  v7 = [componentsCopy count];
+  v8 = [nameComponentsCopy count];
   v9 = v7 >= v8;
   if (v7 >= v8)
   {
-    v10 = v6;
+    v10 = nameComponentsCopy;
   }
 
   else
   {
-    v10 = v5;
+    v10 = componentsCopy;
   }
 
   v29 = 0;
   v30 = &v29;
   if (!v9)
   {
-    v5 = v6;
+    componentsCopy = nameComponentsCopy;
   }
 
   v31 = 0x2020000000;
   v32 = 0;
-  v11 = [v5 mutableCopy];
+  v11 = [componentsCopy mutableCopy];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __87__CLSSocialServiceContacts__fuzzyMatchingScoreBetweenNameComponents_andNameComponents___block_invoke;
@@ -271,7 +271,7 @@ LABEL_43:
   v13 = v30[6];
   v14 = [v10 count];
   v15 = [v12 count];
-  v16 = (v13 / v14) * (1.0 - (v15 / [v5 count]));
+  v16 = (v13 / v14) * (1.0 - (v15 / [componentsCopy count]));
 
   _Block_object_dispose(&v29, 8);
   return v16;
@@ -333,14 +333,14 @@ void __87__CLSSocialServiceContacts__fuzzyMatchingScoreBetweenNameComponents_and
 LABEL_8:
 }
 
-- (id)potentialBirthdayDateForCNIdentifier:(id)a3 fullName:(id)a4
+- (id)potentialBirthdayDateForCNIdentifier:(id)identifier fullName:(id)name
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CLSSocialServiceContacts *)self suggestionsService];
+  identifierCopy = identifier;
+  nameCopy = name;
+  suggestionsService = [(CLSSocialServiceContacts *)self suggestionsService];
   v54 = 0;
-  v9 = [v8 contactMatchesWithContactIdentifier:v6 limitTo:10 error:&v54];
+  v9 = [suggestionsService contactMatchesWithContactIdentifier:identifierCopy limitTo:10 error:&v54];
   v10 = v54;
   if (v10)
   {
@@ -365,8 +365,8 @@ LABEL_8:
     {
       v14 = v13;
       v39 = v9;
-      v41 = v8;
-      v43 = v6;
+      v41 = suggestionsService;
+      v43 = identifierCopy;
       v15 = 0;
       v16 = *v51;
       do
@@ -378,11 +378,11 @@ LABEL_8:
             objc_enumerationMutation(v12);
           }
 
-          v18 = [*(*(&v50 + 1) + 8 * i) contact];
-          v19 = [v18 birthday];
-          v20 = [v19 dateComponents];
+          contact = [*(*(&v50 + 1) + 8 * i) contact];
+          birthday = [contact birthday];
+          dateComponents = [birthday dateComponents];
 
-          v21 = [CLSCalendar dateFromComponents:v20 inTimeZone:0];
+          v21 = [CLSCalendar dateFromComponents:dateComponents inTimeZone:0];
           v22 = v21;
           if (v21)
           {
@@ -397,9 +397,9 @@ LABEL_8:
 
       while (v14);
 
-      v6 = v43;
+      identifierCopy = v43;
       v9 = v39;
-      v8 = v41;
+      suggestionsService = v41;
       if (v15)
       {
         v10 = 0;
@@ -412,11 +412,11 @@ LABEL_8:
     }
   }
 
-  if ([v7 length])
+  if ([nameCopy length])
   {
 
     v49 = 0;
-    v24 = [v8 suggestContactMatchesWithFullTextSearch:v7 limitTo:10 error:&v49];
+    v24 = [suggestionsService suggestContactMatchesWithFullTextSearch:nameCopy limitTo:10 error:&v49];
     v10 = v49;
     if (v10)
     {
@@ -434,8 +434,8 @@ LABEL_8:
     else
     {
       v40 = v9;
-      v42 = v8;
-      v44 = v6;
+      v42 = suggestionsService;
+      v44 = identifierCopy;
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
@@ -457,11 +457,11 @@ LABEL_8:
               objc_enumerationMutation(v26);
             }
 
-            v31 = [*(*(&v45 + 1) + 8 * j) contact];
-            v32 = [v31 birthday];
-            v33 = [v32 dateComponents];
+            contact2 = [*(*(&v45 + 1) + 8 * j) contact];
+            birthday2 = [contact2 birthday];
+            dateComponents2 = [birthday2 dateComponents];
 
-            v34 = [CLSCalendar dateFromComponents:v33 inTimeZone:0];
+            v34 = [CLSCalendar dateFromComponents:dateComponents2 inTimeZone:0];
             v35 = v34;
             if (v34)
             {
@@ -482,9 +482,9 @@ LABEL_8:
         v15 = 0;
       }
 
-      v6 = v44;
+      identifierCopy = v44;
       v9 = v40;
-      v8 = v42;
+      suggestionsService = v42;
       v24 = v38;
     }
   }
@@ -499,18 +499,18 @@ LABEL_35:
   return v15;
 }
 
-- (void)enumeratePersonsAndPotentialBirthdayDateForContactIdentifiers:(id)a3 usingBlock:(id)a4
+- (void)enumeratePersonsAndPotentialBirthdayDateForContactIdentifiers:(id)identifiers usingBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v17 = [MEMORY[0x277CBEB38] dictionary];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v9)
   {
@@ -529,9 +529,9 @@ LABEL_35:
         v14 = [(CLSSocialServiceContacts *)self potentialBirthdayDateForCNIdentifier:v13 fullName:0];
         if (v14)
         {
-          [v17 setObject:v14 forKeyedSubscript:v13];
+          [dictionary setObject:v14 forKeyedSubscript:v13];
           v15 = [(CLSSocialServiceContacts *)self personForIdentifier:v13];
-          v7[2](v7, v15, v14, &v22);
+          blockCopy[2](blockCopy, v15, v14, &v22);
           v16 = v22;
 
           if (v16 == 1)
@@ -560,9 +560,9 @@ LABEL_12:
   suggestionsService = self->_suggestionsService;
   if (!suggestionsService)
   {
-    v4 = [MEMORY[0x277D02118] serviceForContacts];
+    serviceForContacts = [MEMORY[0x277D02118] serviceForContacts];
     v5 = self->_suggestionsService;
-    self->_suggestionsService = v4;
+    self->_suggestionsService = serviceForContacts;
 
     [(SGSuggestionsServiceContactsProtocol *)self->_suggestionsService setSyncTimeout:30.0];
     suggestionsService = self->_suggestionsService;
@@ -571,93 +571,93 @@ LABEL_12:
   return suggestionsService;
 }
 
-- (unint64_t)_ageCategoryFromFaceAgeType:(unsigned __int16)a3
+- (unint64_t)_ageCategoryFromFaceAgeType:(unsigned __int16)type
 {
-  if (a3 > 5u)
+  if (type > 5u)
   {
     return 0;
   }
 
   else
   {
-    return qword_22F992750[a3];
+    return qword_22F992750[type];
   }
 }
 
-- (unint64_t)_sexFromFaceBiologicalSex:(unsigned __int16)a3
+- (unint64_t)_sexFromFaceBiologicalSex:(unsigned __int16)sex
 {
-  if (a3 > 2u)
+  if (sex > 2u)
   {
     return 0;
   }
 
   else
   {
-    return qword_22F992738[a3];
+    return qword_22F992738[sex];
   }
 }
 
-- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)a3
+- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v4 = self->_personsInContactStoreForCNIdentifiers;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_personsInContactStoreForCNIdentifiers removeObjectsForKeys:v5];
+  [(NSMutableDictionary *)self->_personsInContactStoreForCNIdentifiers removeObjectsForKeys:identifiersCopy];
   objc_sync_exit(v4);
 }
 
-- (void)invalidateCacheForPersonWithContactIdentifiers:(id)a3
+- (void)invalidateCacheForPersonWithContactIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v4 = self->_personsForCNIdentifiers;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_personsForCNIdentifiers removeObjectsForKeys:v5];
+  [(NSMutableDictionary *)self->_personsForCNIdentifiers removeObjectsForKeys:identifiersCopy];
   objc_sync_exit(v4);
 }
 
-- (void)invalidateCacheForPersonWithLocalIdentifiers:(id)a3
+- (void)invalidateCacheForPersonWithLocalIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v4 = self->_personsForLocalIdentifier;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_personsForLocalIdentifier removeObjectsForKeys:v5];
+  [(NSMutableDictionary *)self->_personsForLocalIdentifier removeObjectsForKeys:identifiersCopy];
   objc_sync_exit(v4);
 }
 
-- (id)_personsMatchingPredicate:(id)a3
+- (id)_personsMatchingPredicate:(id)predicate
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   contactStore = self->_contactStore;
   v6 = +[CLSSocialServiceContacts defaultKeysToFetch];
   v27 = 0;
-  v7 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v4 keysToFetch:v6 error:&v27];
+  v7 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:predicateCopy keysToFetch:v6 error:&v27];
   v8 = v27;
 
   if (v8)
   {
     v9 = +[CLSLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v30 = v8;
-      _os_log_error_impl(&dword_22F907000, v10, OS_LOG_TYPE_ERROR, "Error fetching contact from predicate %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Error fetching contact from predicate %@", buf, 0xCu);
     }
 
-    v11 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v7;
-    v12 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    loggingConnection = v7;
+    v12 = [loggingConnection countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -669,19 +669,19 @@ LABEL_12:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(loggingConnection);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
           visualIdentifierView = self->_visualIdentifierView;
-          v18 = [v16 identifier];
-          v19 = [(GDVisualIdentifierView *)visualIdentifierView personForIdentifier:v18];
+          identifier = [v16 identifier];
+          v19 = [(GDVisualIdentifierView *)visualIdentifierView personForIdentifier:identifier];
 
           v20 = [(CLSSocialServiceContacts *)self _personWithContact:v16 viewPerson:v19 createPersonIfNeeded:1];
-          [v11 addObject:v20];
+          [array addObject:v20];
         }
 
-        v13 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v13 = [loggingConnection countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v13);
@@ -690,40 +690,40 @@ LABEL_12:
     }
   }
 
-  return v11;
+  return array;
 }
 
-- (void)enumeratePersonsForFullName:(id)a3 usingBlock:(id)a4
+- (void)enumeratePersonsForFullName:(id)name usingBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && ([(NSMutableSet *)self->_nonFoundFullNames containsObject:v6]& 1) == 0)
+  nameCopy = name;
+  blockCopy = block;
+  if (blockCopy && ([(NSMutableSet *)self->_nonFoundFullNames containsObject:nameCopy]& 1) == 0)
   {
-    v8 = [(NSMutableDictionary *)self->_personByFullName objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_personByFullName objectForKey:nameCopy];
     if (v8)
     {
       v9 = v8;
-      [(NSMutableDictionary *)self->_personByFullName setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_personByFullName setObject:v8 forKeyedSubscript:nameCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:v6];
+      v10 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:nameCopy];
       v9 = [(CLSSocialServiceContacts *)self _personsMatchingPredicate:v10];
       if (![v9 count])
       {
         v15 = +[CLSLogging sharedLogging];
-        v16 = [v15 loggingConnection];
+        loggingConnection = [v15 loggingConnection];
 
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v23 = v6;
-          _os_log_impl(&dword_22F907000, v16, OS_LOG_TYPE_INFO, "Contact %@ not found in Contact DB@", buf, 0xCu);
+          v23 = nameCopy;
+          _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Contact %@ not found in Contact DB@", buf, 0xCu);
         }
 
-        [(NSMutableSet *)self->_nonFoundFullNames addObject:v6];
+        [(NSMutableSet *)self->_nonFoundFullNames addObject:nameCopy];
 LABEL_16:
 
         goto LABEL_17;
@@ -755,7 +755,7 @@ LABEL_9:
           break;
         }
 
-        v7[2](v7, *(*(&v17 + 1) + 8 * v14++), buf);
+        blockCopy[2](blockCopy, *(*(&v17 + 1) + 8 * v14++), buf);
         if (v12 == v14)
         {
           v12 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -775,60 +775,60 @@ LABEL_9:
 LABEL_17:
 }
 
-- (id)personForPersonHandle:(id)a3
+- (id)personForPersonHandle:(id)handle
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableSet *)self->_nonFoundHandles containsObject:v4]& 1) == 0)
+  handleCopy = handle;
+  if (handleCopy && ([(NSMutableSet *)self->_nonFoundHandles containsObject:handleCopy]& 1) == 0)
   {
-    v5 = [(NSMutableDictionary *)self->_personByHandle objectForKey:v4];
-    if (!v5)
+    firstObject = [(NSMutableDictionary *)self->_personByHandle objectForKey:handleCopy];
+    if (!firstObject)
     {
-      if ([v4 containsString:@"@"])
+      if ([handleCopy containsString:@"@"])
       {
-        v6 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v4];
+        v6 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:handleCopy];
       }
 
       else
       {
-        v7 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v4];
+        v7 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:handleCopy];
         v6 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v7];
       }
 
       v8 = [(CLSSocialServiceContacts *)self _personsMatchingPredicate:v6];
       if ([v8 count])
       {
-        v5 = [v8 firstObject];
-        [(NSMutableDictionary *)self->_personByHandle setObject:v5 forKeyedSubscript:v4];
+        firstObject = [v8 firstObject];
+        [(NSMutableDictionary *)self->_personByHandle setObject:firstObject forKeyedSubscript:handleCopy];
       }
 
       else
       {
-        [(NSMutableSet *)self->_nonFoundHandles addObject:v4];
-        v5 = 0;
+        [(NSMutableSet *)self->_nonFoundHandles addObject:handleCopy];
+        firstObject = 0;
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)a3
+- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)identifier
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CLSSocialServiceContacts *)self personForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(CLSSocialServiceContacts *)self personForIdentifier:identifierCopy];
   if ([v5 hasContactProfilePicture])
   {
     v43[0] = *MEMORY[0x277CBD158];
-    v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
-    v7 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v6];
+    loggingConnection2 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
+    v7 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:loggingConnection2];
     v8 = MEMORY[0x277CBDA58];
-    v42 = v4;
+    v42 = identifierCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
     v10 = [v8 predicateForContactsWithIdentifiers:v9];
     [v7 setPredicate:v10];
@@ -852,7 +852,7 @@ LABEL_17:
     v21[1] = 3221225472;
     v21[2] = __92__CLSSocialServiceContacts_personLocalIdentifierMatchingContactPictureForContactIdentifier___block_invoke;
     v21[3] = &unk_2788A84E8;
-    v13 = v4;
+    v13 = identifierCopy;
     v22 = v13;
     p_buf = &buf;
     v14 = v11;
@@ -863,15 +863,15 @@ LABEL_17:
     if (v15)
     {
       v16 = +[CLSLogging sharedLogging];
-      v17 = [v16 loggingConnection];
+      loggingConnection = [v16 loggingConnection];
 
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *v33 = 138412546;
         v34 = v13;
         v35 = 2112;
         v36 = v15;
-        _os_log_error_impl(&dword_22F907000, v17, OS_LOG_TYPE_ERROR, "Error while enumerating contacts for identifier %@: %@", v33, 0x16u);
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Error while enumerating contacts for identifier %@: %@", v33, 0x16u);
       }
     }
 
@@ -884,13 +884,13 @@ LABEL_17:
   else
   {
     v19 = +[CLSLogging sharedLogging];
-    v6 = [v19 loggingConnection];
+    loggingConnection2 = [v19 loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
-      _os_log_impl(&dword_22F907000, v6, OS_LOG_TYPE_INFO, "ContactImage: Contact %@ has no profile picture", &buf, 0xCu);
+      *(&buf + 4) = identifierCopy;
+      _os_log_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_INFO, "ContactImage: Contact %@ has no profile picture", &buf, 0xCu);
     }
 
     v18 = 0;
@@ -1079,17 +1079,17 @@ void __92__CLSSocialServiceContacts_personLocalIdentifierMatchingContactPictureF
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)enumeratePersonsAndRelationshipUsingBlock:(id)a3
+- (void)enumeratePersonsAndRelationshipUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___block_invoke;
     v6[3] = &unk_2788A8498;
-    v7 = v4;
+    v7 = blockCopy;
     [(CLSSocialServiceContacts *)self enumerateAllPersonsUsingBlock:v6];
   }
 }
@@ -1103,42 +1103,42 @@ void __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___
   }
 }
 
-- (id)_fullNameWithContact:(id)a3
+- (id)_fullNameWithContact:(id)contact
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactCopy = contact;
   v4 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:0];
   v12[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v6 = [v3 areKeysAvailable:v5];
+  v6 = [contactCopy areKeysAvailable:v5];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CBDA78] stringFromContact:v3 style:0];
+    v7 = [MEMORY[0x277CBDA78] stringFromContact:contactCopy style:0];
   }
 
   else
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v3 givenName];
-    v10 = [v3 familyName];
-    v7 = [v8 stringWithFormat:@"%@ %@", v9, v10];
+    givenName = [contactCopy givenName];
+    familyName = [contactCopy familyName];
+    v7 = [v8 stringWithFormat:@"%@ %@", givenName, familyName];
   }
 
   return v7;
 }
 
-- (id)personForIdentifier:(id)a3
+- (id)personForIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__5623;
   v13 = __Block_byref_object_dispose__5624;
   v14 = 0;
-  v15[0] = v4;
+  v15[0] = identifierCopy;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1153,12 +1153,12 @@ void __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___
   return v6;
 }
 
-- (void)enumeratePersonsForIdentifiers:(id)a3 usingBlock:(id)a4
+- (void)enumeratePersonsForIdentifiers:(id)identifiers usingBlock:(id)block
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v37 = a4;
-  if (!v37)
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  if (!blockCopy)
   {
     goto LABEL_36;
   }
@@ -1168,7 +1168,7 @@ void __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v7 = v6;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v8)
   {
@@ -1198,7 +1198,7 @@ void __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___
   }
 
   v14 = [v38 count];
-  v35 = v6;
+  v35 = identifiersCopy;
   if (v14)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v14];
@@ -1225,8 +1225,8 @@ void __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___
           }
 
           v22 = *(*(&v44 + 1) + 8 * j);
-          v23 = [v22 identifier];
-          [v14 setObject:v22 forKeyedSubscript:v23];
+          identifier = [v22 identifier];
+          [v14 setObject:v22 forKeyedSubscript:identifier];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v44 objects:v53 count:16];
@@ -1263,8 +1263,8 @@ void __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___
       {
         v30 = v29;
         visualIdentifierView = self->_visualIdentifierView;
-        v32 = [v29 identifier];
-        v33 = [(GDVisualIdentifierView *)visualIdentifierView personForIdentifier:v32];
+        identifier2 = [v29 identifier];
+        v33 = [(GDVisualIdentifierView *)visualIdentifierView personForIdentifier:identifier2];
 
         v34 = [(CLSSocialServiceContacts *)self _personWithContact:v30 viewPerson:v33 createPersonIfNeeded:1];
 
@@ -1285,7 +1285,7 @@ void __70__CLSSocialServiceContacts_enumeratePersonsAndRelationshipUsingBlock___
       }
 
       v39 = 0;
-      v37[2](v37, v34, &v39);
+      blockCopy[2](blockCopy, v34, &v39);
       if (v39)
       {
 
@@ -1306,24 +1306,24 @@ LABEL_31:
 
 LABEL_35:
 
-  v6 = v35;
+  identifiersCopy = v35;
 LABEL_36:
 }
 
-- (id)personsInContactStoreForContactIdentifiers:(id)a3 needsRefetching:(BOOL)a4 progressBlock:(id)a5
+- (id)personsInContactStoreForContactIdentifiers:(id)identifiers needsRefetching:(BOOL)refetching progressBlock:(id)block
 {
-  v6 = a4;
+  refetchingCopy = refetching;
   v58 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v39 = a5;
+  identifiersCopy = identifiers;
+  blockCopy = block;
   v54 = 0;
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v41 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v40 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if (v6)
+  if (refetchingCopy)
   {
-    [v40 unionSet:v38];
+    [v40 unionSet:identifiersCopy];
   }
 
   else
@@ -1332,7 +1332,7 @@ LABEL_36:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v9 = v38;
+    v9 = identifiersCopy;
     v10 = [v9 countByEnumeratingWithState:&v50 objects:v57 count:16];
     if (v10)
     {
@@ -1349,12 +1349,12 @@ LABEL_36:
           v13 = *(*(&v50 + 1) + 8 * i);
           if ([v13 length])
           {
-            v14 = [(NSMutableDictionary *)v8->_personsInContactStoreForCNIdentifiers objectForKeyedSubscript:v13];
+            v14 = [(NSMutableDictionary *)selfCopy->_personsInContactStoreForCNIdentifiers objectForKeyedSubscript:v13];
             v15 = v14;
             if (v14)
             {
-              v16 = [v14 CNIdentifier];
-              v17 = [v16 length] == 0;
+              cNIdentifier = [v14 CNIdentifier];
+              v17 = [cNIdentifier length] == 0;
 
               if (!v17)
               {
@@ -1378,7 +1378,7 @@ LABEL_36:
 
   if ([v40 count])
   {
-    [(CLSSocialServiceContacts *)v8 contactsForIdentifiers:v38];
+    [(CLSSocialServiceContacts *)selfCopy contactsForIdentifiers:identifiersCopy];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -1398,17 +1398,17 @@ LABEL_36:
 
           v22 = *(*(&v46 + 1) + 8 * j);
           v23 = objc_autoreleasePoolPush();
-          v39[2](v39, &v54, 0.5);
+          blockCopy[2](blockCopy, &v54, 0.5);
           v24 = v54;
           if ((v54 & 1) == 0)
           {
-            v25 = [v22 identifier];
-            if ([v25 length])
+            identifier = [v22 identifier];
+            if ([identifier length])
             {
-              v26 = [(CLSSocialServiceContacts *)v8 __newPersonWithContact:v22 viewPerson:0];
-              [v26 prefetchPersonAddressesIfNeededWithLocationCache:v8->_locationCache];
-              [v41 setObject:v26 forKeyedSubscript:v25];
-              [(NSMutableDictionary *)v8->_personsInContactStoreForCNIdentifiers setObject:v26 forKeyedSubscript:v25];
+              v26 = [(CLSSocialServiceContacts *)selfCopy __newPersonWithContact:v22 viewPerson:0];
+              [v26 prefetchPersonAddressesIfNeededWithLocationCache:selfCopy->_locationCache];
+              [v41 setObject:v26 forKeyedSubscript:identifier];
+              [(NSMutableDictionary *)selfCopy->_personsInContactStoreForCNIdentifiers setObject:v26 forKeyedSubscript:identifier];
             }
           }
 
@@ -1432,8 +1432,8 @@ LABEL_36:
     }
 
     v27 = MEMORY[0x277CBEB98];
-    v28 = [v41 allKeys];
-    v37 = [v27 setWithArray:v28];
+    allKeys = [v41 allKeys];
+    v37 = [v27 setWithArray:allKeys];
 
     [v40 minusSet:v37];
     v44 = 0u;
@@ -1458,7 +1458,7 @@ LABEL_36:
           if ([v33 length])
           {
             v34 = objc_alloc_init(CLSPersonIdentity);
-            [(NSMutableDictionary *)v8->_personsInContactStoreForCNIdentifiers setObject:v34 forKeyedSubscript:v33];
+            [(NSMutableDictionary *)selfCopy->_personsInContactStoreForCNIdentifiers setObject:v34 forKeyedSubscript:v33];
           }
         }
 
@@ -1472,20 +1472,20 @@ LABEL_36:
   v35 = v41;
 LABEL_42:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v35;
 }
 
-- (id)matchingDictionaryForContactIdentifier:(id)a3
+- (id)matchingDictionaryForContactIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:identifier];
   v5 = [(CLSSocialServiceContacts *)self contactsForIdentifiers:v4];
 
   if ([v5 count] == 1)
   {
-    v6 = [v5 anyObject];
-    v7 = [MEMORY[0x277D3AC28] matchingDictionaryForContact:v6 contactStore:self->_contactStore];
+    anyObject = [v5 anyObject];
+    v7 = [MEMORY[0x277D3AC28] matchingDictionaryForContact:anyObject contactStore:self->_contactStore];
   }
 
   else
@@ -1496,28 +1496,28 @@ LABEL_42:
   return v7;
 }
 
-- (id)contactsByIdentifierForIdentifiers:(id)a3
+- (id)contactsByIdentifierForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v5 = objc_alloc(MEMORY[0x277CBDA70]);
     v6 = +[CLSSocialServiceContacts defaultKeysToFetch];
     v7 = [v5 initWithKeysToFetch:v6];
 
     v8 = MEMORY[0x277CBDA58];
-    v9 = [v4 allObjects];
-    v10 = [v8 predicateForContactsWithIdentifiers:v9];
+    allObjects = [identifiersCopy allObjects];
+    v10 = [v8 predicateForContactsWithIdentifiers:allObjects];
     [v7 setPredicate:v10];
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     contactStore = self->_contactStore;
     v18 = 0;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __63__CLSSocialServiceContacts_contactsByIdentifierForIdentifiers___block_invoke;
     v16[3] = &unk_2788A8470;
-    v13 = v11;
+    v13 = dictionary;
     v17 = v13;
     [(CNContactStore *)contactStore enumerateContactsWithFetchRequest:v7 error:&v18 usingBlock:v16];
     v14 = v18;
@@ -1539,18 +1539,18 @@ void __63__CLSSocialServiceContacts_contactsByIdentifierForIdentifiers___block_i
   [v2 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (id)contactsForIdentifiers:(id)a3
+- (id)contactsForIdentifiers:(id)identifiers
 {
   v4 = MEMORY[0x277CBDA70];
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = [v4 alloc];
   v7 = +[CLSSocialServiceContacts defaultKeysToFetch];
   v8 = [v6 initWithKeysToFetch:v7];
 
   v9 = MEMORY[0x277CBDA58];
-  v10 = [v5 allObjects];
+  allObjects = [identifiersCopy allObjects];
 
-  v11 = [v9 predicateForContactsWithIdentifiers:v10];
+  v11 = [v9 predicateForContactsWithIdentifiers:allObjects];
   [v8 setPredicate:v11];
 
   v12 = [MEMORY[0x277CBEB58] set];
@@ -1576,16 +1576,16 @@ void __63__CLSSocialServiceContacts_contactsByIdentifierForIdentifiers___block_i
   return allPersons;
 }
 
-- (void)enumerateAllPersonsUsingBlock:(id)a3
+- (void)enumerateAllPersonsUsingBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  allPersons = v5->_allPersons;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allPersons = selfCopy->_allPersons;
   if (allPersons)
   {
-    if (v4)
+    if (blockCopy)
     {
       buf[0] = 0;
       v20 = 0u;
@@ -1606,7 +1606,7 @@ LABEL_5:
             objc_enumerationMutation(v7);
           }
 
-          v4[2](v4, *(*(&v20 + 1) + 8 * v10), buf);
+          blockCopy[2](blockCopy, *(*(&v20 + 1) + 8 * v10), buf);
           if (buf[0])
           {
             break;
@@ -1629,39 +1629,39 @@ LABEL_5:
 
   else
   {
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = v5->_allPersons;
-    v5->_allPersons = v11;
+    array = [MEMORY[0x277CBEB18] array];
+    v12 = selfCopy->_allPersons;
+    selfCopy->_allPersons = array;
 
     v13 = objc_alloc(MEMORY[0x277CBDA70]);
     v14 = +[CLSSocialServiceContacts defaultKeysToFetch];
     v15 = [v13 initWithKeysToFetch:v14];
 
-    contactStore = v5->_contactStore;
+    contactStore = selfCopy->_contactStore;
     v26 = 0;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke;
     v24[3] = &unk_2788A8448;
-    v24[4] = v5;
-    v25 = v4;
+    v24[4] = selfCopy;
+    v25 = blockCopy;
     [(CNContactStore *)contactStore enumerateContactsWithFetchRequest:v15 error:&v26 usingBlock:v24];
     v17 = v26;
     if (v17)
     {
       v18 = +[CLSLogging sharedLogging];
-      v19 = [v18 loggingConnection];
+      loggingConnection = [v18 loggingConnection];
 
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v29 = v17;
-        _os_log_error_impl(&dword_22F907000, v19, OS_LOG_TYPE_ERROR, "Error fetching all persons: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Error fetching all persons: %@", buf, 0xCu);
       }
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1685,13 +1685,13 @@ void __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke
   }
 }
 
-- (unint64_t)_relationshipForContact:(id)a3
+- (unint64_t)_relationshipForContact:(id)contact
 {
   v41[13] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(CNContact *)self->_meContact identifier];
-  v7 = [v5 isEqualToString:v6];
+  contactCopy = contact;
+  identifier = [contactCopy identifier];
+  identifier2 = [(CNContact *)self->_meContact identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (v7)
   {
@@ -1720,9 +1720,9 @@ void __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke
     v41[11] = v14;
     v41[12] = *MEMORY[0x277CBD3E0];
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:13];
-    v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v17 = [(CLSSocialServiceContacts *)self _fullNameWithContact:v4];
-    v18 = [v17 clsBetterComponentsSeparatedByCharactersInSet:v16];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v17 = [(CLSSocialServiceContacts *)self _fullNameWithContact:contactCopy];
+    v18 = [v17 clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     [(CNContact *)self->_meContact contactRelations];
     v36 = 0u;
@@ -1733,7 +1733,7 @@ void __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke
     if (v8)
     {
       v34 = v15;
-      v35 = v4;
+      v35 = contactCopy;
       v20 = *v37;
       while (2)
       {
@@ -1745,18 +1745,18 @@ void __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke
           }
 
           v22 = *(*(&v36 + 1) + 8 * i);
-          v23 = [v22 value];
-          v24 = [v23 name];
+          value = [v22 value];
+          name = [value name];
 
-          v25 = [v24 clsBetterComponentsSeparatedByCharactersInSet:v16];
+          v25 = [name clsBetterComponentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
           [(CLSSocialServiceContacts *)self _fuzzyMatchingScoreBetweenNameComponents:v25 andNameComponents:v18];
           v27 = v26;
 
           if (v27 >= 0.8)
           {
-            v28 = [v22 label];
+            label = [v22 label];
             v15 = v34;
-            v29 = [v34 indexOfObject:v28];
+            v29 = [v34 indexOfObject:label];
             if (v29 > 0xC)
             {
               v8 = 0;
@@ -1767,7 +1767,7 @@ void __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke
               v8 = qword_22F9926D0[v29];
             }
 
-            v4 = v35;
+            contactCopy = v35;
 
             goto LABEL_16;
           }
@@ -1782,16 +1782,16 @@ void __58__CLSSocialServiceContacts_enumerateAllPersonsUsingBlock___block_invoke
         break;
       }
 
-      v4 = v35;
+      contactCopy = v35;
       v15 = v34;
     }
 
 LABEL_16:
 
-    v30 = [(CNContact *)self->_meContact organizationName];
-    v31 = [v4 organizationName];
-    v32 = v31;
-    if (v30 && v31 && (![v30 rangeOfString:v31 options:129] || !objc_msgSend(v32, "rangeOfString:options:", v30, 129)))
+    organizationName = [(CNContact *)self->_meContact organizationName];
+    organizationName2 = [contactCopy organizationName];
+    v32 = organizationName2;
+    if (organizationName && organizationName2 && (![organizationName rangeOfString:organizationName2 options:129] || !objc_msgSend(v32, "rangeOfString:options:", organizationName, 129)))
     {
       v8 |= 1uLL;
     }
@@ -1800,15 +1800,15 @@ LABEL_16:
   return v8;
 }
 
-- (void)_addAddressesToPerson:(id)a3 withContact:(id)a4
+- (void)_addAddressesToPerson:(id)person withContact:(id)contact
 {
   v27 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v21 = [MEMORY[0x277CBEB18] array];
-  v19 = v5;
-  [v5 postalAddresses];
+  personCopy = person;
+  contactCopy = contact;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v19 = contactCopy;
+  [contactCopy postalAddresses];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1830,13 +1830,13 @@ LABEL_16:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 label];
-        v16 = v15;
-        v17 = v6;
-        if (v15 == v11 || (v17 = v6, ([v15 isEqualToString:v11] & 1) != 0) || (v17 = v21, v16 == v12) || (v17 = v21, objc_msgSend(v16, "isEqualToString:", v12)))
+        label = [v14 label];
+        v16 = label;
+        v17 = array;
+        if (label == v11 || (v17 = array, ([label isEqualToString:v11] & 1) != 0) || (v17 = array2, v16 == v12) || (v17 = array2, objc_msgSend(v16, "isEqualToString:", v12)))
         {
-          v18 = [v14 value];
-          [v17 addObject:v18];
+          value = [v14 value];
+          [v17 addObject:value];
         }
       }
 
@@ -1846,29 +1846,29 @@ LABEL_16:
     while (v9);
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    [v20 addAddresses:v6 ofType:0];
+    [personCopy addAddresses:array ofType:0];
   }
 
-  if ([v21 count])
+  if ([array2 count])
   {
-    [v20 addAddresses:v21 ofType:1];
+    [personCopy addAddresses:array2 ofType:1];
   }
 }
 
-- (id)_cnPostalAddressForGDLocationAddress:(id)a3
+- (id)_cnPostalAddressForGDLocationAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = objc_alloc_init(MEMORY[0x277CBDB78]);
-  v5 = [v3 thoroughfare];
-  if (v5)
+  thoroughfare = [addressCopy thoroughfare];
+  if (thoroughfare)
   {
-    v6 = v5;
-    v7 = [v3 subThoroughfare];
-    if (v7)
+    v6 = thoroughfare;
+    subThoroughfare = [addressCopy subThoroughfare];
+    if (subThoroughfare)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v6, v7];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v6, subThoroughfare];
 
       v6 = v8;
     }
@@ -1876,105 +1876,105 @@ LABEL_16:
     [v4 setValue:v6 forKey:*MEMORY[0x277CBD980]];
   }
 
-  v9 = [v3 subLocality];
-  if (v9)
+  subLocality = [addressCopy subLocality];
+  if (subLocality)
   {
-    [v4 setValue:v9 forKey:*MEMORY[0x277CBD990]];
+    [v4 setValue:subLocality forKey:*MEMORY[0x277CBD990]];
   }
 
-  v10 = [v3 locality];
-  if (v10)
+  locality = [addressCopy locality];
+  if (locality)
   {
-    [v4 setValue:v10 forKey:*MEMORY[0x277CBD948]];
+    [v4 setValue:locality forKey:*MEMORY[0x277CBD948]];
   }
 
-  v11 = [v3 postalCode];
-  if (v11)
+  postalCode = [addressCopy postalCode];
+  if (postalCode)
   {
-    [v4 setValue:v11 forKey:*MEMORY[0x277CBD968]];
+    [v4 setValue:postalCode forKey:*MEMORY[0x277CBD968]];
   }
 
-  v12 = [v3 subAdministrativeArea];
-  if (v12)
+  subAdministrativeArea = [addressCopy subAdministrativeArea];
+  if (subAdministrativeArea)
   {
-    [v4 setValue:v12 forKey:*MEMORY[0x277CBD988]];
+    [v4 setValue:subAdministrativeArea forKey:*MEMORY[0x277CBD988]];
   }
 
-  v13 = [v3 administrativeArea];
-  if (v13)
+  administrativeArea = [addressCopy administrativeArea];
+  if (administrativeArea)
   {
-    [v4 setValue:v13 forKey:*MEMORY[0x277CBD978]];
+    [v4 setValue:administrativeArea forKey:*MEMORY[0x277CBD978]];
   }
 
-  v14 = [v3 country];
-  if (v14)
+  country = [addressCopy country];
+  if (country)
   {
-    [v4 setValue:v14 forKey:*MEMORY[0x277CBD950]];
+    [v4 setValue:country forKey:*MEMORY[0x277CBD950]];
   }
 
-  v15 = [v3 ISOCountryCode];
-  if (v15)
+  iSOCountryCode = [addressCopy ISOCountryCode];
+  if (iSOCountryCode)
   {
-    [v4 setValue:v15 forKey:*MEMORY[0x277CBD958]];
+    [v4 setValue:iSOCountryCode forKey:*MEMORY[0x277CBD958]];
   }
 
   return v4;
 }
 
-- (unint64_t)_relationshipForLabel:(id)a3
+- (unint64_t)_relationshipForLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CBD4A8]])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:*MEMORY[0x277CBD4A8]])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD5F0]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD5F0]])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD678]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD678]])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD2C8]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD2C8]])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD6F0]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD6F0]])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD318]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD318]])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD4E8]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD4E8]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD6D0]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CBD760]))
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD6D0]] & 1) != 0 || (objc_msgSend(labelCopy, "isEqualToString:", *MEMORY[0x277CBD760]))
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD248]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CBD5E8]))
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD248]] & 1) != 0 || (objc_msgSend(labelCopy, "isEqualToString:", *MEMORY[0x277CBD5E8]))
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD740]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD740]])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD3E0]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CBD3E0]])
   {
     v4 = 6;
   }
@@ -1987,52 +1987,52 @@ LABEL_16:
   return v4;
 }
 
-- (void)_addMissingPropertiesToPerson:(id)a3 withViewPerson:(id)a4
+- (void)_addMissingPropertiesToPerson:(id)person withViewPerson:(id)viewPerson
 {
   v62 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v49 = v5;
-  v7 = [v5 anniversaryDate];
-  if (!v7)
+  personCopy = person;
+  viewPersonCopy = viewPerson;
+  v49 = personCopy;
+  anniversaryDate = [personCopy anniversaryDate];
+  if (!anniversaryDate)
   {
-    v8 = [v6 anniversary];
+    anniversary = [viewPersonCopy anniversary];
 
-    if (!v8)
+    if (!anniversary)
     {
       goto LABEL_5;
     }
 
-    v7 = [v6 anniversary];
-    v9 = [CLSCalendar dateFromComponents:v7 inTimeZone:0];
-    [v5 setAnniversaryDate:v9];
+    anniversaryDate = [viewPersonCopy anniversary];
+    v9 = [CLSCalendar dateFromComponents:anniversaryDate inTimeZone:0];
+    [personCopy setAnniversaryDate:v9];
   }
 
 LABEL_5:
-  v10 = [v5 birthdayDate];
-  if (v10)
+  birthdayDate = [personCopy birthdayDate];
+  if (birthdayDate)
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v11 = [v6 dateOfBirth];
+  dateOfBirth = [viewPersonCopy dateOfBirth];
 
-  if (v11)
+  if (dateOfBirth)
   {
-    v10 = [v6 dateOfBirth];
-    v12 = [CLSCalendar dateFromComponents:v10 inTimeZone:0];
-    [v5 setBirthdayDate:v12];
+    birthdayDate = [viewPersonCopy dateOfBirth];
+    v12 = [CLSCalendar dateFromComponents:birthdayDate inTimeZone:0];
+    [personCopy setBirthdayDate:v12];
 
     goto LABEL_8;
   }
 
 LABEL_9:
-  if (([v5 hasAddresses] & 1) == 0)
+  if (([personCopy hasAddresses] & 1) == 0)
   {
-    v13 = [v6 locations];
-    v14 = [v13 count];
+    locations = [viewPersonCopy locations];
+    v14 = [locations count];
 
     if (v14)
     {
@@ -2040,9 +2040,9 @@ LABEL_9:
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v47 = v6;
-      v15 = [v6 locations];
-      v16 = [v15 countByEnumeratingWithState:&v54 objects:v61 count:16];
+      v47 = viewPersonCopy;
+      locations2 = [viewPersonCopy locations];
+      v16 = [locations2 countByEnumeratingWithState:&v54 objects:v61 count:16];
       if (!v16)
       {
         goto LABEL_24;
@@ -2058,18 +2058,18 @@ LABEL_9:
         {
           if (*v55 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(locations2);
           }
 
           v22 = *(*(&v54 + 1) + 8 * i);
-          v23 = [v22 label];
-          if ([v23 length])
+          label = [v22 label];
+          if ([label length])
           {
-            if ([v23 isEqualToString:v19])
+            if ([label isEqualToString:v19])
             {
-              v24 = [v22 addresses];
-              v25 = [v24 firstObject];
-              v26 = [(CLSSocialServiceContacts *)self _cnPostalAddressForGDLocationAddress:v25];
+              addresses = [v22 addresses];
+              firstObject = [addresses firstObject];
+              v26 = [(CLSSocialServiceContacts *)self _cnPostalAddressForGDLocationAddress:firstObject];
 
               v27 = 0;
               v60 = v26;
@@ -2078,14 +2078,14 @@ LABEL_9:
 
             else
             {
-              if (![v23 isEqualToString:v20])
+              if (![label isEqualToString:v20])
               {
                 goto LABEL_22;
               }
 
-              v29 = [v22 addresses];
-              v30 = [v29 firstObject];
-              v26 = [(CLSSocialServiceContacts *)self _cnPostalAddressForGDLocationAddress:v30];
+              addresses2 = [v22 addresses];
+              firstObject2 = [addresses2 firstObject];
+              v26 = [(CLSSocialServiceContacts *)self _cnPostalAddressForGDLocationAddress:firstObject2];
 
               v59 = v26;
               v28 = &v59;
@@ -2099,12 +2099,12 @@ LABEL_9:
 LABEL_22:
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v54 objects:v61 count:16];
+        v17 = [locations2 countByEnumeratingWithState:&v54 objects:v61 count:16];
         if (!v17)
         {
 LABEL_24:
 
-          v6 = v47;
+          viewPersonCopy = v47;
           break;
         }
       }
@@ -2115,21 +2115,21 @@ LABEL_24:
   {
     if (![v49 relationship])
     {
-      v32 = [v6 relatedPeople];
-      v33 = [v32 count];
+      relatedPeople = [viewPersonCopy relatedPeople];
+      v33 = [relatedPeople count];
 
       if (v33)
       {
-        v34 = [(GDVisualIdentifierViewPerson *)self->_meViewPerson entityIdentifier];
-        v35 = [v34 stringValue];
+        entityIdentifier = [(GDVisualIdentifierViewPerson *)self->_meViewPerson entityIdentifier];
+        stringValue = [entityIdentifier stringValue];
 
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v36 = v6;
-        v37 = [v6 relatedPeople];
-        v38 = [v37 countByEnumeratingWithState:&v50 objects:v58 count:16];
+        v36 = viewPersonCopy;
+        relatedPeople2 = [viewPersonCopy relatedPeople];
+        v38 = [relatedPeople2 countByEnumeratingWithState:&v50 objects:v58 count:16];
         if (v38)
         {
           v39 = v38;
@@ -2140,54 +2140,54 @@ LABEL_24:
             {
               if (*v51 != v40)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(relatedPeople2);
               }
 
               v42 = *(*(&v50 + 1) + 8 * j);
-              v43 = [v42 linkedPersonEntityIdentifier];
-              v44 = [v43 stringValue];
-              v45 = [v44 isEqualToString:v35];
+              linkedPersonEntityIdentifier = [v42 linkedPersonEntityIdentifier];
+              stringValue2 = [linkedPersonEntityIdentifier stringValue];
+              v45 = [stringValue2 isEqualToString:stringValue];
 
               if (v45)
               {
-                v46 = [v42 relationshipLabel];
-                [v49 setRelationship:{-[CLSSocialServiceContacts _relationshipForLabel:](self, "_relationshipForLabel:", v46)}];
+                relationshipLabel = [v42 relationshipLabel];
+                [v49 setRelationship:{-[CLSSocialServiceContacts _relationshipForLabel:](self, "_relationshipForLabel:", relationshipLabel)}];
               }
             }
 
-            v39 = [v37 countByEnumeratingWithState:&v50 objects:v58 count:16];
+            v39 = [relatedPeople2 countByEnumeratingWithState:&v50 objects:v58 count:16];
           }
 
           while (v39);
         }
 
-        v6 = v36;
+        viewPersonCopy = v36;
       }
     }
   }
 }
 
-- (void)_addDelegateAddressesToPerson:(id)a3 ofType:(unint64_t)a4
+- (void)_addDelegateAddressesToPerson:(id)person ofType:(unint64_t)type
 {
-  v6 = a3;
+  personCopy = person;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained mePersonAddressesOfType:a4];
+  v8 = [WeakRetained mePersonAddressesOfType:type];
 
-  [v6 prefetchPersonAddressesIfNeededWithLocationCache:self->_locationCache];
+  [personCopy prefetchPersonAddressesIfNeededWithLocationCache:self->_locationCache];
   v9 = MEMORY[0x277CCAC30];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __65__CLSSocialServiceContacts__addDelegateAddressesToPerson_ofType___block_invoke;
   v16 = &unk_2788A8420;
-  v10 = v6;
+  v10 = personCopy;
   v17 = v10;
-  v18 = a4;
+  typeCopy = type;
   v11 = [v9 predicateWithBlock:&v13];
   v12 = [v8 filteredArrayUsingPredicate:{v11, v13, v14, v15, v16}];
 
   if ([v12 count])
   {
-    [v10 addAddresses:v12 ofType:a4];
+    [v10 addAddresses:v12 ofType:type];
   }
 }
 
@@ -2228,15 +2228,15 @@ void __65__CLSSocialServiceContacts__addDelegateAddressesToPerson_ofType___block
   }
 }
 
-- (id)__newPersonWithContact:(id)a3 viewPerson:(id)a4
+- (id)__newPersonWithContact:(id)contact viewPerson:(id)person
 {
   v90 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  contactCopy = contact;
+  personCopy = person;
+  v8 = personCopy;
+  if (!contactCopy)
   {
-    if (v7)
+    if (personCopy)
     {
       goto LABEL_45;
     }
@@ -2245,18 +2245,18 @@ void __65__CLSSocialServiceContacts__addDelegateAddressesToPerson_ofType___block
     goto LABEL_47;
   }
 
-  v9 = [v6 identifier];
-  v10 = [CLSPersonIdentity personWithCNIdentifier:v9];
+  identifier = [contactCopy identifier];
+  v10 = [CLSPersonIdentity personWithCNIdentifier:identifier];
 
-  v11 = [v6 givenName];
-  if ([v11 length])
+  givenName = [contactCopy givenName];
+  if ([givenName length])
   {
   }
 
   else
   {
-    v12 = [v6 familyName];
-    v13 = [v12 length];
+    familyName = [contactCopy familyName];
+    v13 = [familyName length];
 
     if (!v13)
     {
@@ -2265,51 +2265,51 @@ void __65__CLSSocialServiceContacts__addDelegateAddressesToPerson_ofType___block
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CCAC00]);
-  v15 = [v6 givenName];
-  [v14 setGivenName:v15];
+  givenName2 = [contactCopy givenName];
+  [v14 setGivenName:givenName2];
 
-  v16 = [v6 familyName];
-  [v14 setFamilyName:v16];
+  familyName2 = [contactCopy familyName];
+  [v14 setFamilyName:familyName2];
 
   v17 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v14 style:1 options:0];
   [v10 setLocalizedShortName:v17];
 
 LABEL_8:
   v71 = v8;
-  v18 = [(CLSSocialServiceContacts *)self _fullNameWithContact:v6];
+  v18 = [(CLSSocialServiceContacts *)self _fullNameWithContact:contactCopy];
   [v10 setFullName:v18];
-  v19 = [v6 givenName];
-  [v10 setFirstName:v19];
+  givenName3 = [contactCopy givenName];
+  [v10 setFirstName:givenName3];
 
-  v20 = [v6 middleName];
-  [v10 setMiddleName:v20];
+  middleName = [contactCopy middleName];
+  [v10 setMiddleName:middleName];
 
-  v21 = [v6 familyName];
-  [v10 setLastName:v21];
+  familyName3 = [contactCopy familyName];
+  [v10 setLastName:familyName3];
 
-  v22 = [v6 nickname];
-  [v10 setNickname:v22];
+  nickname = [contactCopy nickname];
+  [v10 setNickname:nickname];
 
-  v23 = [v6 birthday];
-  v24 = [CLSCalendar dateFromComponents:v23 inTimeZone:0];
+  birthday = [contactCopy birthday];
+  v24 = [CLSCalendar dateFromComponents:birthday inTimeZone:0];
   [v10 setBirthdayDate:v24];
 
-  v25 = [v10 birthdayDate];
+  birthdayDate = [v10 birthdayDate];
 
-  if (!v25)
+  if (!birthdayDate)
   {
-    v26 = [v6 identifier];
-    v27 = [(CLSSocialServiceContacts *)self potentialBirthdayDateForCNIdentifier:v26 fullName:v18];
+    identifier2 = [contactCopy identifier];
+    v27 = [(CLSSocialServiceContacts *)self potentialBirthdayDateForCNIdentifier:identifier2 fullName:v18];
 
     [v10 setPotentialBirthdayDate:v27];
   }
 
   v69 = v18;
-  v28 = [v6 organizationName];
-  [v10 setCompanyName:v28];
+  organizationName = [contactCopy organizationName];
+  [v10 setCompanyName:organizationName];
 
-  [v10 setRelationship:{-[CLSSocialServiceContacts _relationshipForContact:](self, "_relationshipForContact:", v6)}];
-  [v6 dates];
+  [v10 setRelationship:{-[CLSSocialServiceContacts _relationshipForContact:](self, "_relationshipForContact:", contactCopy)}];
+  [contactCopy dates];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
@@ -2330,12 +2330,12 @@ LABEL_8:
         }
 
         v35 = *(*(&v83 + 1) + 8 * i);
-        v36 = [v35 label];
-        v37 = v36;
-        if (v36 == v33 || [v36 isEqualToString:v33])
+        label = [v35 label];
+        v37 = label;
+        if (label == v33 || [label isEqualToString:v33])
         {
-          v38 = [v35 value];
-          v39 = [CLSCalendar dateFromComponents:v38 inTimeZone:0];
+          value = [v35 value];
+          v39 = [CLSCalendar dateFromComponents:value inTimeZone:0];
           [v10 setAnniversaryDate:v39];
 
           goto LABEL_21;
@@ -2353,10 +2353,10 @@ LABEL_8:
   }
 
 LABEL_21:
-  v70 = self;
+  selfCopy = self;
 
-  v40 = [v6 phoneNumbers];
-  v41 = [v40 count];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v41 = [phoneNumbers count];
 
   if (v41)
   {
@@ -2368,8 +2368,8 @@ LABEL_21:
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v43 = [v6 emailAddresses];
-  v44 = [v43 countByEnumeratingWithState:&v79 objects:v88 count:16];
+  emailAddresses = [contactCopy emailAddresses];
+  v44 = [emailAddresses countByEnumeratingWithState:&v79 objects:v88 count:16];
   if (v44)
   {
     v45 = v44;
@@ -2380,15 +2380,15 @@ LABEL_21:
       {
         if (*v80 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v48 = [*(*(&v79 + 1) + 8 * j) value];
-        v49 = [v48 lowercaseString];
-        [v42 addObject:v49];
+        value2 = [*(*(&v79 + 1) + 8 * j) value];
+        lowercaseString = [value2 lowercaseString];
+        [v42 addObject:lowercaseString];
       }
 
-      v45 = [v43 countByEnumeratingWithState:&v79 objects:v88 count:16];
+      v45 = [emailAddresses countByEnumeratingWithState:&v79 objects:v88 count:16];
     }
 
     while (v45);
@@ -2400,8 +2400,8 @@ LABEL_21:
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v51 = [v6 phoneNumbers];
-  v52 = [v51 countByEnumeratingWithState:&v75 objects:v87 count:16];
+  phoneNumbers2 = [contactCopy phoneNumbers];
+  v52 = [phoneNumbers2 countByEnumeratingWithState:&v75 objects:v87 count:16];
   if (v52)
   {
     v53 = v52;
@@ -2412,41 +2412,41 @@ LABEL_21:
       {
         if (*v76 != v54)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(phoneNumbers2);
         }
 
-        v56 = [*(*(&v75 + 1) + 8 * k) value];
-        v57 = [v56 stringValue];
-        [v50 addObject:v57];
+        value3 = [*(*(&v75 + 1) + 8 * k) value];
+        stringValue = [value3 stringValue];
+        [v50 addObject:stringValue];
       }
 
-      v53 = [v51 countByEnumeratingWithState:&v75 objects:v87 count:16];
+      v53 = [phoneNumbers2 countByEnumeratingWithState:&v75 objects:v87 count:16];
     }
 
     while (v53);
   }
 
   [v10 setPhoneNumbers:v50];
-  self = v70;
-  [(CLSSocialServiceContacts *)v70 _addAddressesToPerson:v10 withContact:v6];
+  self = selfCopy;
+  [(CLSSocialServiceContacts *)selfCopy _addAddressesToPerson:v10 withContact:contactCopy];
   v8 = v71;
   if ([v10 isMe])
   {
-    WeakRetained = objc_loadWeakRetained(&v70->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     if ([WeakRetained hasAddressesForMePerson])
     {
-      [(CLSSocialServiceContacts *)v70 _addDelegateAddressesToPerson:v10 ofType:0];
-      [(CLSSocialServiceContacts *)v70 _addDelegateAddressesToPerson:v10 ofType:1];
+      [(CLSSocialServiceContacts *)selfCopy _addDelegateAddressesToPerson:v10 ofType:0];
+      [(CLSSocialServiceContacts *)selfCopy _addDelegateAddressesToPerson:v10 ofType:1];
     }
   }
 
-  v59 = [v6 socialProfiles];
-  v60 = [v59 count];
+  socialProfiles = [contactCopy socialProfiles];
+  v60 = [socialProfiles count];
 
   if (v60)
   {
     v61 = objc_opt_new();
-    v62 = [v6 socialProfiles];
+    socialProfiles2 = [contactCopy socialProfiles];
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
     v72[2] = __62__CLSSocialServiceContacts___newPersonWithContact_viewPerson___block_invoke;
@@ -2455,14 +2455,14 @@ LABEL_21:
     v73 = v63;
     v74 = v61;
     v64 = v61;
-    [v62 enumerateObjectsUsingBlock:v72];
+    [socialProfiles2 enumerateObjectsUsingBlock:v72];
 
     [v63 setSocialProfiles:v64];
   }
 
-  [v10 setHasContactProfilePicture:{objc_msgSend(v6, "imageDataAvailable")}];
-  v65 = [v6 identifier];
-  [v10 setSourceService:@"contacts" andID:v65];
+  [v10 setHasContactProfilePicture:{objc_msgSend(contactCopy, "imageDataAvailable")}];
+  identifier3 = [contactCopy identifier];
+  [v10 setSourceService:@"contacts" andID:identifier3];
 
   if (v71)
   {
@@ -2474,11 +2474,11 @@ LABEL_46:
     }
 
 LABEL_45:
-    v66 = [v8 entityIdentifier];
-    v67 = [v66 stringValue];
+    entityIdentifier = [v8 entityIdentifier];
+    stringValue2 = [entityIdentifier stringValue];
 
-    v10 = [CLSPersonIdentity personWithGDIdentifier:v67];
-    [v10 setSourceService:@"megadome" andID:v67];
+    v10 = [CLSPersonIdentity personWithGDIdentifier:stringValue2];
+    [v10 setSourceService:@"megadome" andID:stringValue2];
 
     goto LABEL_46;
   }
@@ -2516,36 +2516,36 @@ void __62__CLSSocialServiceContacts___newPersonWithContact_viewPerson___block_in
   }
 }
 
-- (id)_personWithContactIdentifier:(id)a3
+- (id)_personWithContactIdentifier:(id)identifier
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__5623;
   v17 = __Block_byref_object_dispose__5624;
   v18 = 0;
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_personsForCNIdentifiers objectForKeyedSubscript:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_personsForCNIdentifiers objectForKeyedSubscript:identifierCopy];
     v7 = v14[5];
     v14[5] = v6;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     v8 = v14[5];
     if (!v8)
     {
-      v19[0] = v4;
+      v19[0] = identifierCopy;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __57__CLSSocialServiceContacts__personWithContactIdentifier___block_invoke;
       v12[3] = &unk_2788A83A0;
       v12[4] = &v13;
-      [(CLSSocialServiceContacts *)v5 enumeratePersonsForIdentifiers:v9 usingBlock:v12];
+      [(CLSSocialServiceContacts *)selfCopy enumeratePersonsForIdentifiers:v9 usingBlock:v12];
 
       v8 = v14[5];
     }
@@ -2562,17 +2562,17 @@ void __62__CLSSocialServiceContacts___newPersonWithContact_viewPerson___block_in
   return v10;
 }
 
-- (id)_personWithContact:(id)a3 viewPerson:(id)a4 createPersonIfNeeded:(BOOL)a5
+- (id)_personWithContact:(id)contact viewPerson:(id)person createPersonIfNeeded:(BOOL)needed
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v8)
+  neededCopy = needed;
+  contactCopy = contact;
+  personCopy = person;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (contactCopy)
   {
-    v11 = [v8 identifier];
-    v12 = [(NSMutableDictionary *)v10->_personsForCNIdentifiers objectForKeyedSubscript:v11];
+    identifier = [contactCopy identifier];
+    v12 = [(NSMutableDictionary *)selfCopy->_personsForCNIdentifiers objectForKeyedSubscript:identifier];
     if (v12)
     {
       v13 = 1;
@@ -2580,15 +2580,15 @@ void __62__CLSSocialServiceContacts___newPersonWithContact_viewPerson___block_in
 
     else
     {
-      v13 = !v5;
+      v13 = !neededCopy;
     }
 
     if (!v13)
     {
-      v12 = [(CLSSocialServiceContacts *)v10 __newPersonWithContact:v8 viewPerson:v9];
+      v12 = [(CLSSocialServiceContacts *)selfCopy __newPersonWithContact:contactCopy viewPerson:personCopy];
       if (v12)
       {
-        [(NSMutableDictionary *)v10->_personsForCNIdentifiers setObject:v12 forKeyedSubscript:v11];
+        [(NSMutableDictionary *)selfCopy->_personsForCNIdentifiers setObject:v12 forKeyedSubscript:identifier];
       }
     }
 
@@ -2597,12 +2597,12 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v9)
+  if (personCopy)
   {
-    v14 = [v9 entityIdentifier];
-    v11 = [v14 stringValue];
+    entityIdentifier = [personCopy entityIdentifier];
+    identifier = [entityIdentifier stringValue];
 
-    v12 = [(NSMutableDictionary *)v10->_personsForGDIdentifiers objectForKeyedSubscript:v11];
+    v12 = [(NSMutableDictionary *)selfCopy->_personsForGDIdentifiers objectForKeyedSubscript:identifier];
     if (v12)
     {
       v15 = 1;
@@ -2610,15 +2610,15 @@ LABEL_15:
 
     else
     {
-      v15 = !v5;
+      v15 = !neededCopy;
     }
 
     if (!v15)
     {
-      v12 = [(CLSSocialServiceContacts *)v10 __newPersonWithContact:0 viewPerson:v9];
+      v12 = [(CLSSocialServiceContacts *)selfCopy __newPersonWithContact:0 viewPerson:personCopy];
       if (v12)
       {
-        [(NSMutableDictionary *)v10->_personsForGDIdentifiers setObject:v12 forKeyedSubscript:v11];
+        [(NSMutableDictionary *)selfCopy->_personsForGDIdentifiers setObject:v12 forKeyedSubscript:identifier];
       }
     }
 
@@ -2627,111 +2627,111 @@ LABEL_15:
 
   v12 = 0;
 LABEL_16:
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (id)_personResultsForPersonLocalIdentifier:(id)a3 isLackingFaces:(BOOL *)a4 inPhotoLibrary:(id)a5
+- (id)_personResultsForPersonLocalIdentifier:(id)identifier isLackingFaces:(BOOL *)faces inPhotoLibrary:(id)library
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4)
+  identifierCopy = identifier;
+  libraryCopy = library;
+  v10 = libraryCopy;
+  if (faces)
   {
-    *a4 = 0;
+    *faces = 0;
   }
 
-  v37 = [v9 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v11 = MEMORY[0x277CD9938];
-  v40[0] = v8;
+  v40[0] = identifierCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-  v13 = [v11 fetchPersonsWithLocalIdentifiers:v12 options:v37];
+  v13 = [v11 fetchPersonsWithLocalIdentifiers:v12 options:librarySpecificFetchOptions];
 
   if ([v13 count])
   {
-    v14 = [v13 firstObject];
-    v15 = [v10 librarySpecificFetchOptions];
+    firstObject = [v13 firstObject];
+    librarySpecificFetchOptions2 = [v10 librarySpecificFetchOptions];
     v39 = *MEMORY[0x277CD9BC8];
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-    [v15 setFetchPropertySets:v16];
+    [librarySpecificFetchOptions2 setFetchPropertySets:v16];
 
-    v17 = [MEMORY[0x277CD9868] fetchKeyFaceForPerson:v14 options:v15];
-    v18 = [v17 firstObject];
-    v36 = -[CLSSocialServiceContacts _sexFromFaceBiologicalSex:](self, "_sexFromFaceBiologicalSex:", [v18 sexType]);
-    v35 = -[CLSSocialServiceContacts _ageCategoryFromFaceAgeType:](self, "_ageCategoryFromFaceAgeType:", [v18 ageType]);
-    v19 = [v14 name];
-    v20 = [v14 personUri];
+    v17 = [MEMORY[0x277CD9868] fetchKeyFaceForPerson:firstObject options:librarySpecificFetchOptions2];
+    firstObject2 = [v17 firstObject];
+    v36 = -[CLSSocialServiceContacts _sexFromFaceBiologicalSex:](self, "_sexFromFaceBiologicalSex:", [firstObject2 sexType]);
+    v35 = -[CLSSocialServiceContacts _ageCategoryFromFaceAgeType:](self, "_ageCategoryFromFaceAgeType:", [firstObject2 ageType]);
+    name = [firstObject name];
+    personUri = [firstObject personUri];
 
-    if (v20 && [v20 length])
+    if (personUri && [personUri length])
     {
-      v21 = [(CLSSocialServiceContacts *)self _personWithContactIdentifier:v20];
+      person = [(CLSSocialServiceContacts *)self _personWithContactIdentifier:personUri];
     }
 
     else
     {
-      v21 = 0;
+      person = 0;
     }
 
     v22 = 1.0;
-    if (v19 && [v19 length] && !v21)
+    if (name && [name length] && !person)
     {
-      v23 = [(CLSSocialServiceContacts *)self _personResultsForfullName:v19];
+      v23 = [(CLSSocialServiceContacts *)self _personResultsForfullName:name];
       if ([v23 count])
       {
-        v24 = [v23 firstObject];
-        [v24 confidence];
+        firstObject3 = [v23 firstObject];
+        [firstObject3 confidence];
         if (v25 >= 1.0)
         {
-          v21 = [v24 person];
-          [v24 confidence];
+          person = [firstObject3 person];
+          [firstObject3 confidence];
           v22 = v27;
         }
 
         else
         {
-          v21 = 0;
+          person = 0;
         }
       }
 
       else
       {
-        v21 = 0;
+        person = 0;
       }
     }
 
-    if (v21)
+    if (person)
     {
-      v28 = [v21 sourceService];
-      v29 = [v28 isEqualToString:@"megadome"];
+      sourceService = [person sourceService];
+      v29 = [sourceService isEqualToString:@"megadome"];
 
       if (v29)
       {
-        v30 = [v14 name];
-        [v21 setFullName:v30];
+        name2 = [firstObject name];
+        [person setFullName:name2];
       }
 
-      [v21 setLocalIdentifier:v8];
-      [v21 setIsFavorite:{objc_msgSend(v14, "type") == 1}];
-      [v21 setIsHidden:{objc_msgSend(v14, "type") == -1}];
-      [v21 setIsUserCreated:1];
+      [person setLocalIdentifier:identifierCopy];
+      [person setIsFavorite:{objc_msgSend(firstObject, "type") == 1}];
+      [person setIsHidden:{objc_msgSend(firstObject, "type") == -1}];
+      [person setIsUserCreated:1];
     }
 
     else
     {
-      v21 = [CLSPersonIdentity personWithPHPerson:v14];
+      person = [CLSPersonIdentity personWithPHPerson:firstObject];
     }
 
-    [v21 setAgeCategory:v35];
-    [v21 setSex:v36];
+    [person setAgeCategory:v35];
+    [person setSex:v36];
     v31 = self->_personsForLocalIdentifier;
     objc_sync_enter(v31);
-    [(NSMutableDictionary *)self->_personsForLocalIdentifier setObject:v21 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_personsForLocalIdentifier setObject:person forKeyedSubscript:identifierCopy];
     objc_sync_exit(v31);
 
     *&v32 = v22;
-    v33 = [CLSPersonIdentityResult personResultWithPerson:v21 andConfidence:v32];
+    v33 = [CLSPersonIdentityResult personResultWithPerson:person andConfidence:v32];
     v38 = v33;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
   }
@@ -2744,17 +2744,17 @@ LABEL_16:
   return v26;
 }
 
-- (id)_personResultsForfullName:(id)a3
+- (id)_personResultsForfullName:(id)name
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__CLSSocialServiceContacts__personResultsForfullName___block_invoke;
   aBlock[3] = &unk_2788A8300;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v48 = v6;
   v51 = 0;
   v7 = v5;
@@ -2807,12 +2807,12 @@ LABEL_16:
           }
 
           v23 = *(*(&v38 + 1) + 8 * i);
-          v24 = [v23 contactIdentifiers];
-          v25 = [v24 firstObject];
+          contactIdentifiers = [v23 contactIdentifiers];
+          firstObject = [contactIdentifiers firstObject];
 
-          if ([v25 length])
+          if ([firstObject length])
           {
-            v26 = [v17 objectForKeyedSubscript:v25];
+            v26 = [v17 objectForKeyedSubscript:firstObject];
           }
 
           else
@@ -2950,17 +2950,17 @@ uint64_t __54__CLSSocialServiceContacts__personResultsForfullName___block_invoke
   return v9;
 }
 
-- (id)personResultsForName:(id)a3 inPhotoLibrary:(id)a4
+- (id)personResultsForName:(id)name inPhotoLibrary:(id)library
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  libraryCopy = library;
   v8 = self->_personsForLocalIdentifier;
   objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)self->_personsForLocalIdentifier objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_personsForLocalIdentifier objectForKeyedSubscript:nameCopy];
   objc_sync_exit(v8);
 
-  if (v9 || (v11 = self->_personsInContactStoreForCNIdentifiers, objc_sync_enter(v11), [(NSMutableDictionary *)self->_personsInContactStoreForCNIdentifiers objectForKeyedSubscript:v6], v9 = objc_claimAutoreleasedReturnValue(), objc_sync_exit(v11), v11, v9))
+  if (v9 || (v11 = self->_personsInContactStoreForCNIdentifiers, objc_sync_enter(v11), [(NSMutableDictionary *)self->_personsInContactStoreForCNIdentifiers objectForKeyedSubscript:nameCopy], v9 = objc_claimAutoreleasedReturnValue(), objc_sync_exit(v11), v11, v9))
   {
     LODWORD(v10) = 1.0;
     v12 = [CLSPersonIdentityResult personResultWithPerson:v9 andConfidence:v10];
@@ -2973,7 +2973,7 @@ uint64_t __54__CLSSocialServiceContacts__personResultsForfullName___block_invoke
       goto LABEL_11;
     }
 
-    if (!v7)
+    if (!libraryCopy)
     {
       goto LABEL_10;
     }
@@ -2982,13 +2982,13 @@ uint64_t __54__CLSSocialServiceContacts__personResultsForfullName___block_invoke
   else
   {
     v15 = 0;
-    if (!v7)
+    if (!libraryCopy)
     {
       goto LABEL_10;
     }
   }
 
-  v13 = [(CLSSocialServiceContacts *)self _personResultsForPersonLocalIdentifier:v6 isLackingFaces:&v15 inPhotoLibrary:v7];
+  v13 = [(CLSSocialServiceContacts *)self _personResultsForPersonLocalIdentifier:nameCopy isLackingFaces:&v15 inPhotoLibrary:libraryCopy];
   if (v13)
   {
     goto LABEL_11;
@@ -3001,7 +3001,7 @@ uint64_t __54__CLSSocialServiceContacts__personResultsForfullName___block_invoke
   }
 
 LABEL_10:
-  v13 = [(CLSSocialServiceContacts *)self _personResultsForfullName:v6];
+  v13 = [(CLSSocialServiceContacts *)self _personResultsForfullName:nameCopy];
 LABEL_11:
 
   return v13;
@@ -3010,18 +3010,18 @@ LABEL_11:
 - (id)mePerson
 {
   v34 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_mePerson)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_mePerson)
   {
-    meContact = v2->_meContact;
+    meContact = selfCopy->_meContact;
     if (meContact)
     {
-      visualIdentifierView = v2->_visualIdentifierView;
-      v5 = [(CNContact *)meContact identifier];
-      v6 = [(GDVisualIdentifierView *)visualIdentifierView personForIdentifier:v5];
+      visualIdentifierView = selfCopy->_visualIdentifierView;
+      identifier = [(CNContact *)meContact identifier];
+      v6 = [(GDVisualIdentifierView *)visualIdentifierView personForIdentifier:identifier];
 
-      v7 = v2->_meContact;
+      v7 = selfCopy->_meContact;
     }
 
     else
@@ -3030,62 +3030,62 @@ LABEL_11:
       v6 = 0;
     }
 
-    v8 = [(CLSSocialServiceContacts *)v2 _personWithContact:v7 viewPerson:v6 createPersonIfNeeded:1];
+    v8 = [(CLSSocialServiceContacts *)selfCopy _personWithContact:v7 viewPerson:v6 createPersonIfNeeded:1];
     v9 = v8;
     if (!v8)
     {
 LABEL_14:
-      mePerson = v2->_mePerson;
-      v2->_mePerson = v9;
+      mePerson = selfCopy->_mePerson;
+      selfCopy->_mePerson = v9;
       v19 = v9;
 
-      meViewPerson = v2->_meViewPerson;
-      v2->_meViewPerson = v6;
+      meViewPerson = selfCopy->_meViewPerson;
+      selfCopy->_meViewPerson = v6;
 
       goto LABEL_15;
     }
 
-    v10 = [(CLSPersonIdentity *)v8 localIdentifier];
-    if (!v10)
+    localIdentifier = [(CLSPersonIdentity *)v8 localIdentifier];
+    if (!localIdentifier)
     {
-      v11 = [(CLSPersonIdentity *)v9 fullName];
+      fullName = [(CLSPersonIdentity *)v9 fullName];
 
-      if (!v11)
+      if (!fullName)
       {
         goto LABEL_10;
       }
 
-      v10 = v2->_personsForLocalIdentifier;
-      objc_sync_enter(v10);
-      personsForLocalIdentifier = v2->_personsForLocalIdentifier;
-      v13 = [(CLSPersonIdentity *)v9 fullName];
-      v14 = [(NSMutableDictionary *)personsForLocalIdentifier objectForKeyedSubscript:v13];
-      v15 = [v14 localIdentifier];
-      [(CLSPersonIdentity *)v9 setLocalIdentifier:v15];
+      localIdentifier = selfCopy->_personsForLocalIdentifier;
+      objc_sync_enter(localIdentifier);
+      personsForLocalIdentifier = selfCopy->_personsForLocalIdentifier;
+      fullName2 = [(CLSPersonIdentity *)v9 fullName];
+      v14 = [(NSMutableDictionary *)personsForLocalIdentifier objectForKeyedSubscript:fullName2];
+      localIdentifier2 = [v14 localIdentifier];
+      [(CLSPersonIdentity *)v9 setLocalIdentifier:localIdentifier2];
 
-      objc_sync_exit(v10);
+      objc_sync_exit(localIdentifier);
     }
 
 LABEL_10:
     if (![(CLSPersonIdentity *)v9 isMe])
     {
       v16 = +[CLSLogging sharedLogging];
-      v17 = [v16 loggingConnection];
+      loggingConnection = [v16 loggingConnection];
 
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_FAULT))
       {
-        v23 = [(CLSPersonIdentity *)v9 relationship];
-        v24 = [(CNContact *)v2->_meContact identifier];
-        v25 = [(CLSPersonIdentity *)v9 CNIdentifier];
+        relationship = [(CLSPersonIdentity *)v9 relationship];
+        identifier2 = [(CNContact *)selfCopy->_meContact identifier];
+        cNIdentifier = [(CLSPersonIdentity *)v9 CNIdentifier];
         v26 = 134218754;
-        v27 = v23;
+        v27 = relationship;
         v28 = 2048;
         v29 = 14;
         v30 = 2112;
-        v31 = v24;
+        v31 = identifier2;
         v32 = 2112;
-        v33 = v25;
-        _os_log_fault_impl(&dword_22F907000, v17, OS_LOG_TYPE_FAULT, "mePerson has invalid relationship: %tu, expected %tu. meContact id: %@, mePerson id: %@", &v26, 0x2Au);
+        v33 = cNIdentifier;
+        _os_log_fault_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_FAULT, "mePerson has invalid relationship: %tu, expected %tu. meContact id: %@, mePerson id: %@", &v26, 0x2Au);
       }
     }
 
@@ -3093,9 +3093,9 @@ LABEL_10:
   }
 
 LABEL_15:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v21 = v2->_mePerson;
+  v21 = selfCopy->_mePerson;
 
   return v21;
 }
@@ -3103,68 +3103,68 @@ LABEL_15:
 - (void)refreshMeContactIfNeeded
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_meContact && v2->_contactStore)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_meContact && selfCopy->_contactStore)
   {
-    v3 = [(CLSSocialServiceContacts *)v2 fetchMeCardFromContactStore:?];
-    meContact = v2->_meContact;
-    v2->_meContact = v3;
+    v3 = [(CLSSocialServiceContacts *)selfCopy fetchMeCardFromContactStore:?];
+    meContact = selfCopy->_meContact;
+    selfCopy->_meContact = v3;
 
     v5 = +[CLSLogging sharedLogging];
-    v6 = [v5 loggingConnection];
+    loggingConnection = [v5 loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
-      v7 = v2->_meContact;
+      v7 = selfCopy->_meContact;
       v8 = 138412290;
       v9 = v7;
-      _os_log_impl(&dword_22F907000, v6, OS_LOG_TYPE_INFO, "Fetched me contact card, got %@", &v8, 0xCu);
+      _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Fetched me contact card, got %@", &v8, 0xCu);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)inferredDeviceOwnerForPhotoLibrary:(id)a3 ignoreContactLinking:(BOOL)a4
+- (id)inferredDeviceOwnerForPhotoLibrary:(id)library ignoreContactLinking:(BOOL)linking
 {
-  v4 = a4;
+  linkingCopy = linking;
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CLSSocialServiceContacts *)self visionCacheStorageDirectoryURLForPhotoLibrary:v6];
+  libraryCopy = library;
+  v7 = [(CLSSocialServiceContacts *)self visionCacheStorageDirectoryURLForPhotoLibrary:libraryCopy];
   v28 = 0;
   v8 = [[CLSVisualUnderstandingServiceClient alloc] initWithVisionCacheURL:v7 error:&v28];
   v9 = v28;
   if (v8)
   {
-    v10 = [(CLSVisualUnderstandingServiceClient *)v8 deviceOwnerPersonUUIDWithIgnoreContactsLinking:v4];
+    v10 = [(CLSVisualUnderstandingServiceClient *)v8 deviceOwnerPersonUUIDWithIgnoreContactsLinking:linkingCopy];
     v11 = +[CLSLogging sharedLogging];
-    v12 = [v11 loggingConnection];
+    loggingConnection = [v11 loggingConnection];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v31 = v10;
-      _os_log_impl(&dword_22F907000, v12, OS_LOG_TYPE_INFO, "Device owner uuid %@", buf, 0xCu);
+      _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Device owner uuid %@", buf, 0xCu);
     }
 
     if (v10)
     {
-      v13 = [v6 librarySpecificFetchOptions];
-      [v13 setPersonContext:1];
-      [v13 setFetchLimit:1];
+      librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+      [librarySpecificFetchOptions setPersonContext:1];
+      [librarySpecificFetchOptions setFetchLimit:1];
       v27 = v7;
       v14 = v9;
       v15 = MEMORY[0x277CD9938];
-      v16 = [v10 UUIDString];
-      v17 = [v15 localIdentifierWithUUID:v16];
+      uUIDString = [v10 UUIDString];
+      v17 = [v15 localIdentifierWithUUID:uUIDString];
 
       v18 = MEMORY[0x277CD9938];
       v29 = v17;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-      v20 = [v18 fetchPersonsWithLocalIdentifiers:v19 options:v13];
-      v21 = [v20 fetchedObjects];
-      v22 = [v21 firstObject];
+      v20 = [v18 fetchPersonsWithLocalIdentifiers:v19 options:librarySpecificFetchOptions];
+      fetchedObjects = [v20 fetchedObjects];
+      firstObject = [fetchedObjects firstObject];
 
       v9 = v14;
       v7 = v27;
@@ -3172,24 +3172,24 @@ LABEL_15:
 
     else
     {
-      v22 = 0;
+      firstObject = 0;
     }
 
-    v24 = v22;
+    loggingConnection2 = firstObject;
 
-    v25 = v24;
+    v25 = loggingConnection2;
   }
 
   else
   {
     v23 = +[CLSLogging sharedLogging];
-    v24 = [v23 loggingConnection];
+    loggingConnection2 = [v23 loggingConnection];
 
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v31 = v9;
-      _os_log_error_impl(&dword_22F907000, v24, OS_LOG_TYPE_ERROR, "Failed to get VU Service %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "Failed to get VU Service %@", buf, 0xCu);
     }
 
     v25 = 0;
@@ -3198,35 +3198,35 @@ LABEL_15:
   return v25;
 }
 
-- (id)visionCacheStorageDirectoryURLForPhotoLibrary:(id)a3
+- (id)visionCacheStorageDirectoryURLForPhotoLibrary:(id)library
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isSystemPhotoLibrary])
+  libraryCopy = library;
+  if ([libraryCopy isSystemPhotoLibrary])
   {
     v10 = 0;
-    v4 = [v3 urlForApplicationDataFolderIdentifier:2 error:&v10];
+    v4 = [libraryCopy urlForApplicationDataFolderIdentifier:2 error:&v10];
 
     v5 = v10;
     if (!v4)
     {
       v6 = +[CLSLogging sharedLogging];
-      v7 = [v6 loggingConnection];
+      loggingConnection = [v6 loggingConnection];
 
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v12 = v5;
-        _os_log_error_impl(&dword_22F907000, v7, OS_LOG_TYPE_ERROR, "Failed to access the visual service URL. Error: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to access the visual service URL. Error: %@", buf, 0xCu);
       }
     }
   }
 
   else
   {
-    v8 = [v3 photoLibraryURL];
+    photoLibraryURL = [libraryCopy photoLibraryURL];
 
-    v4 = [v8 URLByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision"];
+    v4 = [photoLibraryURL URLByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision"];
   }
 
   return v4;
@@ -3234,29 +3234,29 @@ LABEL_15:
 
 - (void)invalidateMemoryCaches
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   personByHandle = self->_personByHandle;
-  self->_personByHandle = v3;
+  self->_personByHandle = dictionary;
 
   v5 = [MEMORY[0x277CBEB58] set];
   nonFoundHandles = self->_nonFoundHandles;
   self->_nonFoundHandles = v5;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   personByFullName = self->_personByFullName;
-  self->_personByFullName = v7;
+  self->_personByFullName = dictionary2;
 
   v9 = [MEMORY[0x277CBEB58] set];
   nonFoundFullNames = self->_nonFoundFullNames;
   self->_nonFoundFullNames = v9;
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   personsForLocalIdentifier = self->_personsForLocalIdentifier;
-  self->_personsForLocalIdentifier = v11;
+  self->_personsForLocalIdentifier = dictionary3;
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
   personsForCNIdentifiers = self->_personsForCNIdentifiers;
-  self->_personsForCNIdentifiers = v13;
+  self->_personsForCNIdentifiers = dictionary4;
 
   self->_personsForGDIdentifiers = [MEMORY[0x277CBEB38] dictionary];
 
@@ -3276,9 +3276,9 @@ LABEL_15:
 - (id)_initializeVisualIdentifierView
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D1F480] defaultService];
+  defaultService = [MEMORY[0x277D1F480] defaultService];
   v9 = 0;
-  v3 = [v2 visualIdentifierViewWithError:&v9];
+  v3 = [defaultService visualIdentifierViewWithError:&v9];
   v4 = v9;
   if (v3)
   {
@@ -3333,25 +3333,25 @@ uint64_t __59__CLSSocialServiceContacts__initializeVisualIdentifierView__block_i
   return result;
 }
 
-- (id)fetchMeCardFromContactStore:(id)a3
+- (id)fetchMeCardFromContactStore:(id)store
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  storeCopy = store;
   v4 = +[CLSSocialServiceContacts defaultKeysToFetch];
   v11 = 0;
-  v5 = [v3 _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v11];
+  v5 = [storeCopy _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v11];
 
   v6 = v11;
   if (v6)
   {
     v7 = +[CLSLogging sharedLogging];
-    v8 = [v7 loggingConnection];
+    loggingConnection = [v7 loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v13 = v6;
-      _os_log_error_impl(&dword_22F907000, v8, OS_LOG_TYPE_ERROR, "Error gaining access to me: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Error gaining access to me: %@", buf, 0xCu);
     }
 
     v9 = 0;
@@ -3365,36 +3365,36 @@ uint64_t __59__CLSSocialServiceContacts__initializeVisualIdentifierView__block_i
   return v9;
 }
 
-- (CLSSocialServiceContacts)initWithLocationCache:(id)a3
+- (CLSSocialServiceContacts)initWithLocationCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v47.receiver = self;
   v47.super_class = CLSSocialServiceContacts;
   v6 = [(CLSSocialServiceContacts *)&v47 init];
   v7 = v6;
   if (v6)
   {
-    v8 = [(CLSSocialServiceContacts *)v6 _initializeVisualIdentifierView];
+    _initializeVisualIdentifierView = [(CLSSocialServiceContacts *)v6 _initializeVisualIdentifierView];
     visualIdentifierView = v7->_visualIdentifierView;
-    v7->_visualIdentifierView = v8;
+    v7->_visualIdentifierView = _initializeVisualIdentifierView;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     personByFullName = v7->_personByFullName;
-    v7->_personByFullName = v10;
+    v7->_personByFullName = dictionary;
 
     v12 = [MEMORY[0x277CBEB58] set];
     nonFoundFullNames = v7->_nonFoundFullNames;
     v7->_nonFoundFullNames = v12;
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     personByHandle = v7->_personByHandle;
-    v7->_personByHandle = v14;
+    v7->_personByHandle = dictionary2;
 
     v16 = [MEMORY[0x277CBEB58] set];
     nonFoundHandles = v7->_nonFoundHandles;
     v7->_nonFoundHandles = v16;
 
-    objc_storeStrong(&v7->_locationCache, a3);
+    objc_storeStrong(&v7->_locationCache, cache);
     v18 = objc_alloc_init(MEMORY[0x277CBDAB8]);
     v41 = 0;
     v42 = &v41;
@@ -3425,21 +3425,21 @@ uint64_t __59__CLSSocialServiceContacts__initializeVisualIdentifierView__block_i
     {
       objc_storeStrong(&v7->_contactStore, v18);
       objc_storeStrong(&v7->_meContact, v42[5]);
-      v22 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
       personsForCNIdentifiers = v7->_personsForCNIdentifiers;
-      v7->_personsForCNIdentifiers = v22;
+      v7->_personsForCNIdentifiers = dictionary3;
 
-      v24 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary4 = [MEMORY[0x277CBEB38] dictionary];
       personsInContactStoreForCNIdentifiers = v7->_personsInContactStoreForCNIdentifiers;
-      v7->_personsInContactStoreForCNIdentifiers = v24;
+      v7->_personsInContactStoreForCNIdentifiers = dictionary4;
 
-      v26 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary5 = [MEMORY[0x277CBEB38] dictionary];
       personsForGDIdentifiers = v7->_personsForGDIdentifiers;
-      v7->_personsForGDIdentifiers = v26;
+      v7->_personsForGDIdentifiers = dictionary5;
 
-      v28 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary6 = [MEMORY[0x277CBEB38] dictionary];
       personsForLocalIdentifier = v7->_personsForLocalIdentifier;
-      v7->_personsForLocalIdentifier = v28;
+      v7->_personsForLocalIdentifier = dictionary6;
     }
 
     else

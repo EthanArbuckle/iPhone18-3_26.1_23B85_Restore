@@ -1,32 +1,32 @@
 @interface PXStoryDefaultSongResourceProducerFactory
-- (id)songResourceProducerForPersistableRecipe:(id)a3 configuration:(id)a4;
+- (id)songResourceProducerForPersistableRecipe:(id)recipe configuration:(id)configuration;
 @end
 
 @implementation PXStoryDefaultSongResourceProducerFactory
 
-- (id)songResourceProducerForPersistableRecipe:(id)a3 configuration:(id)a4
+- (id)songResourceProducerForPersistableRecipe:(id)recipe configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 songsProducerKind];
-  if (![v6 isAllowedToPlayAnyMusicOrSound])
+  recipeCopy = recipe;
+  configurationCopy = configuration;
+  songsProducerKind = [configurationCopy songsProducerKind];
+  if (![configurationCopy isAllowedToPlayAnyMusicOrSound])
   {
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!songsProducerKind)
   {
     v8 = +[PXStorySettings sharedInstance];
-    v7 = [v8 songsProducerKind];
+    songsProducerKind = [v8 songsProducerKind];
   }
 
-  if (v7 < 3)
+  if (songsProducerKind < 3)
   {
-    v9 = [[PXStoryPersistableRecipeSongResourceProducer alloc] initWithPersistableRecipe:v5 configuration:v6];
+    v9 = [[PXStoryPersistableRecipeSongResourceProducer alloc] initWithPersistableRecipe:recipeCopy configuration:configurationCopy];
     goto LABEL_8;
   }
 
-  if (v7 - 3 >= 2)
+  if (songsProducerKind - 3 >= 2)
   {
     v9 = 0;
   }

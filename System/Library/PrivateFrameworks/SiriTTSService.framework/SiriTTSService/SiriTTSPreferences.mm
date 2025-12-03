@@ -1,6 +1,6 @@
 @interface SiriTTSPreferences
 + (SiriTTSPreferences)shared;
-- (BOOL)uiFirstTimeAssistantLanguageWithLanguageCode:(id)a3;
+- (BOOL)uiFirstTimeAssistantLanguageWithLanguageCode:(id)code;
 @end
 
 @implementation SiriTTSPreferences
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (BOOL)uiFirstTimeAssistantLanguageWithLanguageCode:(id)a3
+- (BOOL)uiFirstTimeAssistantLanguageWithLanguageCode:(id)code
 {
   v4 = sub_1B1C2CB58();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1B1BD4994(v4, v6);
   LOBYTE(v4) = v8;
 

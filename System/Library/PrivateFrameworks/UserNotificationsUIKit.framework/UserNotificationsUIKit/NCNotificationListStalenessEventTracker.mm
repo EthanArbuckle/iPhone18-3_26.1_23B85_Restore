@@ -2,37 +2,37 @@
 + (NCNotificationListStalenessEventTracker)eventTrackerWithAutomaticCollation;
 + (id)_allMetricsSafeBundleIdentifiers;
 + (id)_metricsSafeBundleIdentifierByBundleIdentifier;
-+ (id)_metricsSafeBundleIdentifierForBundleIdentifier:(id)a3;
++ (id)_metricsSafeBundleIdentifierForBundleIdentifier:(id)identifier;
 - (NCNotificationListSection)notificationList;
 - (NCNotificationListStalenessEventTracker)init;
 - (NCNotificationStructuredSectionList)structuredSectionList;
 - (void)_handleListPresentedEvent;
 - (void)_queue_collateAndRecordMetrics;
-- (void)_queue_processRequests:(id)a3 timestamp:(id)a4;
+- (void)_queue_processRequests:(id)requests timestamp:(id)timestamp;
 - (void)_startAutocollation;
 - (void)_stopAutocollation;
 - (void)collateAndRecordMetrics;
 - (void)dealloc;
-- (void)handleEvent:(unint64_t)a3;
+- (void)handleEvent:(unint64_t)event;
 @end
 
 @implementation NCNotificationListStalenessEventTracker
 
 - (void)_handleListPresentedEvent
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(NCNotificationListStalenessEventTracker *)self structuredSectionList];
-  v5 = [v4 allNotificationRequests];
+  date = [MEMORY[0x277CBEAA8] date];
+  structuredSectionList = [(NCNotificationListStalenessEventTracker *)self structuredSectionList];
+  allNotificationRequests = [structuredSectionList allNotificationRequests];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__NCNotificationListStalenessEventTracker__handleListPresentedEvent__block_invoke;
   block[3] = &unk_2783715C0;
   block[4] = self;
-  v10 = v5;
-  v11 = v3;
-  v7 = v3;
-  v8 = v5;
+  v10 = allNotificationRequests;
+  v11 = date;
+  v7 = date;
+  v8 = allNotificationRequests;
   dispatch_async(queue, block);
 }
 
@@ -45,7 +45,7 @@
 
 + (NCNotificationListStalenessEventTracker)eventTrackerWithAutomaticCollation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 _startAutocollation];
 
   return v2;
@@ -69,8 +69,8 @@
     v2->_lastDisplayedDateByNotificationMetadata = v6;
 
     v8 = MEMORY[0x277D41DA0];
-    v9 = [objc_opt_class() _allMetricsSafeBundleIdentifiers];
-    v10 = [v8 propertyWithName:@"bundleIdentifier" possibleValues:v9 autoSanitizeValues:0];
+    _allMetricsSafeBundleIdentifiers = [objc_opt_class() _allMetricsSafeBundleIdentifiers];
+    v10 = [v8 propertyWithName:@"bundleIdentifier" possibleValues:_allMetricsSafeBundleIdentifiers autoSanitizeValues:0];
 
     v11 = MEMORY[0x277D41DA0];
     v22[0] = &unk_283015470;
@@ -132,25 +132,25 @@
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SignificantTimeChangeNotification", 0);
 }
 
-- (void)handleEvent:(unint64_t)a3
+- (void)handleEvent:(unint64_t)event
 {
-  if (!a3)
+  if (!event)
   {
     [(NCNotificationListStalenessEventTracker *)self _handleListPresentedEvent];
   }
 }
 
-- (void)_queue_processRequests:(id)a3 timestamp:(id)a4
+- (void)_queue_processRequests:(id)requests timestamp:(id)timestamp
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  timestampCopy = timestamp;
   dispatch_assert_queue_V2(self->_queue);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
+  v8 = requestsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -167,7 +167,7 @@
         }
 
         v13 = [NCEventTrackerNotificationMetadata metadataForNotificationRequest:*(*(&v14 + 1) + 8 * v12), v14];
-        [(NSMutableDictionary *)self->_lastDisplayedDateByNotificationMetadata setObject:v7 forKey:v13];
+        [(NSMutableDictionary *)self->_lastDisplayedDateByNotificationMetadata setObject:timestampCopy forKey:v13];
 
         ++v12;
       }
@@ -219,14 +219,14 @@
 
           v7 = *(*(&v49 + 1) + 8 * i);
           v8 = [(NSMutableDictionary *)self->_lastDisplayedDateByNotificationMetadata objectForKey:v7];
-          v9 = [v7 date];
-          [v8 timeIntervalSinceDate:v9];
+          date = [v7 date];
+          [v8 timeIntervalSinceDate:date];
           v11 = v10;
 
           v12 = NCTimeIntervalBinForTimeInterval(v11);
           v13 = objc_opt_class();
-          v14 = [v7 bundleIdentifier];
-          v15 = [v13 _metricsSafeBundleIdentifierForBundleIdentifier:v14];
+          bundleIdentifier = [v7 bundleIdentifier];
+          v15 = [v13 _metricsSafeBundleIdentifierForBundleIdentifier:bundleIdentifier];
 
           v16 = [v3 objectForKey:v15];
           if (!v16)
@@ -248,7 +248,7 @@
       while (v5);
     }
 
-    v20 = self;
+    selfCopy = self;
 
     v21 = BBEventTrackingSyncDeviceCount();
     if (v21 >= 0x63)
@@ -304,7 +304,7 @@
 
                 v31 = *(*(&v41 + 1) + 8 * j);
                 v32 = [v26 objectForKey:v31];
-                stalenessEventTracker = v20->_stalenessEventTracker;
+                stalenessEventTracker = selfCopy->_stalenessEventTracker;
                 v53[0] = v25;
                 v53[1] = v31;
                 v53[2] = v23;
@@ -328,7 +328,7 @@
       while (v36);
     }
 
-    [(NSMutableDictionary *)v20->_lastDisplayedDateByNotificationMetadata removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_lastDisplayedDateByNotificationMetadata removeAllObjects];
   }
 }
 
@@ -353,24 +353,24 @@ void __89__NCNotificationListStalenessEventTracker__metricsSafeBundleIdentifierB
 + (id)_allMetricsSafeBundleIdentifiers
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 _metricsSafeBundleIdentifierByBundleIdentifier];
-  v3 = [v2 allValues];
+  _metricsSafeBundleIdentifierByBundleIdentifier = [self _metricsSafeBundleIdentifierByBundleIdentifier];
+  allValues = [_metricsSafeBundleIdentifierByBundleIdentifier allValues];
 
   v7[0] = @"1stParty";
   v7[1] = @"3rdParty";
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  v5 = [allValues arrayByAddingObjectsFromArray:v4];
 
   return v5;
 }
 
-+ (id)_metricsSafeBundleIdentifierForBundleIdentifier:(id)a3
++ (id)_metricsSafeBundleIdentifierForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 un_isFirstPartyIdentifier])
+  identifierCopy = identifier;
+  if ([identifierCopy un_isFirstPartyIdentifier])
   {
-    v5 = [a1 _metricsSafeBundleIdentifierByBundleIdentifier];
-    v6 = [v5 objectForKey:v4];
+    _metricsSafeBundleIdentifierByBundleIdentifier = [self _metricsSafeBundleIdentifierByBundleIdentifier];
+    v6 = [_metricsSafeBundleIdentifierByBundleIdentifier objectForKey:identifierCopy];
     v7 = v6;
     v8 = @"1stParty";
     if (v6)

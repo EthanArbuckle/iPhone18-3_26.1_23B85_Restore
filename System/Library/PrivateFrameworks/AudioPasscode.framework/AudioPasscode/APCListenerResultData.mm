@@ -1,10 +1,10 @@
 @interface APCListenerResultData
-- (APCListenerResultData)initWithPasscodeDurationNSec:(unint64_t)a3;
+- (APCListenerResultData)initWithPasscodeDurationNSec:(unint64_t)sec;
 @end
 
 @implementation APCListenerResultData
 
-- (APCListenerResultData)initWithPasscodeDurationNSec:(unint64_t)a3
+- (APCListenerResultData)initWithPasscodeDurationNSec:(unint64_t)sec
 {
   v4.receiver = self;
   v4.super_class = APCListenerResultData;

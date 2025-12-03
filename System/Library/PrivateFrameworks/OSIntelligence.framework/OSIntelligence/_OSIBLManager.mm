@@ -1,42 +1,42 @@
 @interface _OSIBLManager
 + (id)sharedInstance;
-- (BOOL)hasVariationForMedianLevels:(id)a3;
+- (BOOL)hasVariationForMedianLevels:(id)levels;
 - (BOOL)isIBLMCurrentlyEnabled;
 - (BOOL)isLPMEnabled;
 - (BOOL)isPluggedIn;
 - (BOOL)queryAndUpdateCurrentConsoleModeState;
 - (BOOL)shouldOverrideMitigations;
 - (BOOL)shouldRunForShadowAnalytics;
-- (BOOL)updateFeatureState:(int64_t)a3 withError:(id *)a4;
-- (BOOL)updateNotificationsState:(int64_t)a3 withError:(id *)a4;
+- (BOOL)updateFeatureState:(int64_t)state withError:(id *)error;
+- (BOOL)updateNotificationsState:(int64_t)state withError:(id *)error;
 - (_OSIBLManager)init;
-- (id)currentMitigationWithError:(id *)a3;
+- (id)currentMitigationWithError:(id *)error;
 - (id)dateFormatter;
-- (id)drainResultWithModel:(int64_t)a3 withError:(id *)a4;
-- (id)isHighDrainOverAggregatedMedianWithError:(id *)a3;
-- (id)mitigationWithLevel:(int64_t)a3;
-- (id)predictMitigationLevelWithError:(id *)a3;
+- (id)drainResultWithModel:(int64_t)model withError:(id *)error;
+- (id)isHighDrainOverAggregatedMedianWithError:(id *)error;
+- (id)mitigationWithLevel:(int64_t)level;
+- (id)predictMitigationLevelWithError:(id *)error;
 - (id)testOverridenMitigation;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin;
 - (void)cancelTask;
 - (void)consoleModeNotificationHandler;
 - (void)evaluate;
-- (void)handleCLPCTestOverride:(id)a3;
-- (void)handleCallback:(id)a3;
+- (void)handleCLPCTestOverride:(id)override;
+- (void)handleCallback:(id)callback;
 - (void)handleEngagementNotification;
 - (void)handleFeatureDisabled;
 - (void)handlePPSTaskingStarted;
-- (void)handleTestOverride:(id)a3;
-- (void)notifyMitigationChange:(id)a3;
-- (void)overrideAllMitigations:(unint64_t)a3;
-- (void)overrideCLPCMitigations:(unint64_t)a3;
+- (void)handleTestOverride:(id)override;
+- (void)notifyMitigationChange:(id)change;
+- (void)overrideAllMitigations:(unint64_t)mitigations;
+- (void)overrideCLPCMitigations:(unint64_t)mitigations;
 - (void)queryAndUpdateCurrentConsoleModeState;
 - (void)resetMitigation;
-- (void)shadowEvaluateForModels:(id)a3;
+- (void)shadowEvaluateForModels:(id)models;
 - (void)start;
 - (void)submitTask;
 - (void)triggerIBLMNotification;
-- (void)updateMitigationTo:(id)a3;
+- (void)updateMitigationTo:(id)to;
 - (void)updateTrialOSIParameters;
 - (void)updateTrialPXPParameters;
 @end
@@ -93,36 +93,36 @@
     }
 
     *(v2 + 13) = 0;
-    v17 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     v18 = *(v2 + 12);
-    *(v2 + 12) = v17;
+    *(v2 + 12) = userContext;
 
     v19 = +[_OSIBLMState loadCurrentIBLMState];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 integerValue];
+      integerValue = [v19 integerValue];
     }
 
     else
     {
-      v21 = +[_OSIBLMState isIBLMDefaultOn];
+      integerValue = +[_OSIBLMState isIBLMDefaultOn];
     }
 
-    *(v2 + 14) = v21;
+    *(v2 + 14) = integerValue;
     v22 = +[_OSIBLMState loadCurrentIBLMNotificationsState];
     v23 = v22;
     if (v22)
     {
-      v24 = [v22 integerValue];
+      integerValue2 = [v22 integerValue];
     }
 
     else
     {
-      v24 = +[_OSIBLMState isIBLMNotificationsDefaultOn];
+      integerValue2 = +[_OSIBLMState isIBLMNotificationsDefaultOn];
     }
 
-    *(v2 + 15) = v24;
+    *(v2 + 15) = integerValue2;
     v25 = [*(v2 + 8) objectForKey:@"kLastIBLMPredictionFetchDate"];
     v26 = *(v2 + 10);
     *(v2 + 10) = v25;
@@ -137,7 +137,7 @@
 
     *(v2 + 20) = 0x3FE6666666666666;
     notify_register_check([@"com.apple.osintelligence.iblm.mitigationchanged" UTF8String], v2 + 5);
-    v31 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
     v32 = *(v2 + 5);
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
@@ -145,7 +145,7 @@
     v57[3] = &unk_2799C1798;
     v33 = v2;
     v58 = v33;
-    [v31 registerForTaskWithIdentifier:@"com.apple.osintelligence.iblm.evaluate" usingQueue:v32 launchHandler:v57];
+    [mEMORY[0x277CF0810] registerForTaskWithIdentifier:@"com.apple.osintelligence.iblm.evaluate" usingQueue:v32 launchHandler:v57];
     v34 = [MEMORY[0x277D73660] clientWithIdentifier:293];
     v35 = v33[16];
     v33[16] = v34;
@@ -240,9 +240,9 @@ LABEL_8:
   dispatch_sync(queue, block);
 }
 
-- (void)handleCallback:(id)a3
+- (void)handleCallback:(id)callback
 {
-  string = xpc_dictionary_get_string(a3, *MEMORY[0x277D86430]);
+  string = xpc_dictionary_get_string(callback, *MEMORY[0x277D86430]);
   if (!strcmp(string, [@"kPLTaskingStartNotificationGlobal" UTF8String]))
   {
     [(_OSIBLManager *)self handlePPSTaskingStarted];
@@ -334,35 +334,35 @@ LABEL_8:
 - (BOOL)isPluggedIn
 {
   context = self->_context;
-  v3 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v4 = [(_CDLocalContext *)context objectForKeyedSubscript:v3];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v4 = [(_CDLocalContext *)context objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v5 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 BOOLValue];
+  batteryRawExternalConnectedKey = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
+  v6 = [v4 objectForKeyedSubscript:batteryRawExternalConnectedKey];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)isLPMEnabled
 {
   context = self->_context;
-  v3 = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
-  v4 = [(_CDLocalContext *)context objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  keyPathForLowPowerModeStatus = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
+  v4 = [(_CDLocalContext *)context objectForKeyedSubscript:keyPathForLowPowerModeStatus];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)handleCLPCTestOverride:(id)a3
+- (void)handleCLPCTestOverride:(id)override
 {
-  v4 = a3;
-  if (v4)
+  overrideCopy = override;
+  if (overrideCopy)
   {
-    v9 = v4;
-    v5 = [v4 BOOLValue];
+    v9 = overrideCopy;
+    bOOLValue = [overrideCopy BOOLValue];
     v6 = +[_OSICLPCInterface sharedInstance];
-    if (v5)
+    if (bOOLValue)
     {
       v7 = 50;
     }
@@ -375,7 +375,7 @@ LABEL_8:
     v8 = [(_OSIBLManager *)self mitigationWithLevel:v7];
     [v6 updatePerformanceControlWithMitigation:v8];
 
-    v4 = v9;
+    overrideCopy = v9;
   }
 }
 
@@ -390,21 +390,21 @@ LABEL_8:
   dispatch_sync(managerStartStopQueue, block);
 }
 
-- (void)notifyMitigationChange:(id)a3
+- (void)notifyMitigationChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  notify_set_state(self->_notifyToken, [v4 level]);
+  changeCopy = change;
+  notify_set_state(self->_notifyToken, [changeCopy level]);
   notify_post([@"com.apple.osintelligence.iblm.mitigationchanged" UTF8String]);
   defaults = self->_defaults;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [(NSUserDefaults *)defaults setObject:v6 forKey:@"kLastIBLMMitigationChangeDate"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NSUserDefaults *)defaults setObject:date forKey:@"kLastIBLMMitigationChangeDate"];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_25D171000, log, OS_LOG_TYPE_DEFAULT, "Setting IBLM mitigation to %@", &v9, 0xCu);
   }
 
@@ -425,9 +425,9 @@ LABEL_8:
       lastNotificationDate = self->_lastNotificationDate;
       if (!lastNotificationDate)
       {
-        v6 = [MEMORY[0x277CBEAA8] distantPast];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
         v7 = self->_lastNotificationDate;
-        self->_lastNotificationDate = v6;
+        self->_lastNotificationDate = distantPast;
 
         v8 = +[_OSIBLMAnalyticsHandler sharedInstance];
         [v8 recordIBLMFirstUserNotificationTrigger:1];
@@ -439,16 +439,16 @@ LABEL_8:
     [(NSDate *)lastNotificationDate timeIntervalSinceNow];
     v10 = v9;
     context = self->_context;
-    v12 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-    v13 = [(_CDLocalContext *)context objectForContextualKeyPath:v12];
-    v14 = [v13 integerValue];
+    keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+    v13 = [(_CDLocalContext *)context objectForContextualKeyPath:keyPathForBatteryLevel];
+    integerValue = [v13 integerValue];
 
-    if (v10 < -72000.0 && v14 <= 80)
+    if (v10 < -72000.0 && integerValue <= 80)
     {
       [(_OSIBLManager *)self triggerIBLMNotification];
-      v15 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v16 = self->_lastNotificationDate;
-      self->_lastNotificationDate = v15;
+      self->_lastNotificationDate = date;
 
       defaults = self->_defaults;
       v18 = self->_lastNotificationDate;
@@ -479,10 +479,10 @@ LABEL_8:
   }
 }
 
-- (void)updateMitigationTo:(id)a3
+- (void)updateMitigationTo:(id)to
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v5 = [(NSUserDefaults *)self->_defaults objectForKey:@"testOverrideMitigationAlways"];
   v6 = [(NSUserDefaults *)self->_defaults objectForKey:@"testOverrideCLPCMitigationAlways"];
   if (v5 | v6)
@@ -504,13 +504,13 @@ LABEL_8:
     {
       v9 = v8;
       v29 = 134217984;
-      v30 = [v4 level];
+      level = [toCopy level];
       _os_log_impl(&dword_25D171000, v9, OS_LOG_TYPE_DEFAULT, "Trial overriding mitigation %ld", &v29, 0xCu);
     }
 
     v10 = [(_OSIBLManager *)self mitigationWithLevel:0];
 
-    v4 = v10;
+    toCopy = v10;
   }
 
   p_currentMitigation = &self->_currentMitigation;
@@ -524,8 +524,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = [(_OSIBLMitigation *)currentMitigation level];
-  if (v13 != [v4 level])
+  level2 = [(_OSIBLMitigation *)currentMitigation level];
+  if (level2 != [toCopy level])
   {
     v16 = *p_currentMitigation;
     goto LABEL_13;
@@ -534,19 +534,19 @@ LABEL_13:
   v14 = 0;
   v15 = 0;
 LABEL_14:
-  objc_storeStrong(&self->_currentMitigation, v4);
+  objc_storeStrong(&self->_currentMitigation, toCopy);
   v17 = [MEMORY[0x277CBEAA8] now];
   lastMitigationChangeDate = self->_lastMitigationChangeDate;
   self->_lastMitigationChangeDate = v17;
 
   defaults = self->_defaults;
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "level")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(toCopy, "level")}];
   [(NSUserDefaults *)defaults setObject:v20 forKey:@"lastMitigationLevel"];
 
   [(NSUserDefaults *)self->_defaults setObject:self->_lastMitigationChangeDate forKey:@"lastMitigationChangeDate"];
   if (v15)
   {
-    [(_OSIBLManager *)self notifyMitigationChange:v4];
+    [(_OSIBLManager *)self notifyMitigationChange:toCopy];
     if (+[_OSICLPCInterface supportsPerformanceControl]&& self->_trialPerformanceMitigationEnabled)
     {
       v21 = +[_OSICLPCInterface sharedInstance];
@@ -560,18 +560,18 @@ LABEL_14:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [(_OSIBLMitigation *)v14 level];
-      v26 = [(_OSIBLMitigation *)*p_currentMitigation level];
+      level3 = [(_OSIBLMitigation *)v14 level];
+      level4 = [(_OSIBLMitigation *)*p_currentMitigation level];
       v29 = 134218240;
-      v30 = v25;
+      level = level3;
       v31 = 2048;
-      v32 = v26;
+      v32 = level4;
       _os_log_impl(&dword_25D171000, v24, OS_LOG_TYPE_DEFAULT, "Updated IBLM Mitigation from %ld to %ld", &v29, 0x16u);
     }
   }
 
   v27 = +[_OSIBLMAnalyticsHandler sharedInstance];
-  [v27 reportNewMitigation:v4];
+  [v27 reportNewMitigation:toCopy];
 
   if ([(_OSIBLMitigation *)*p_currentMitigation level]>= 1)
   {
@@ -591,13 +591,13 @@ LABEL_23:
   [(_OSIBLManager *)self updateMitigationTo:v3];
 }
 
-- (void)handleTestOverride:(id)a3
+- (void)handleTestOverride:(id)override
 {
-  v4 = a3;
-  if (v4)
+  overrideCopy = override;
+  if (overrideCopy)
   {
-    v8 = v4;
-    if ([v4 BOOLValue])
+    v8 = overrideCopy;
+    if ([overrideCopy BOOLValue])
     {
       v5 = 50;
     }
@@ -612,13 +612,13 @@ LABEL_23:
     v7 = +[_OSICLPCInterface sharedInstance];
     [v7 updatePerformanceControlWithMitigation:v6];
 
-    v4 = v8;
+    overrideCopy = v8;
   }
 }
 
-- (void)overrideAllMitigations:(unint64_t)a3
+- (void)overrideAllMitigations:(unint64_t)mitigations
 {
-  if (a3 == 2)
+  if (mitigations == 2)
   {
     [(NSUserDefaults *)self->_defaults removeObjectForKey:@"testOverrideMitigationAlways"];
     v4 = MEMORY[0x277CBEC28];
@@ -633,13 +633,13 @@ LABEL_23:
 
     defaults = self->_defaults;
 
-    [(NSUserDefaults *)defaults setBool:a3 != 0 forKey:@"testOverrideMitigationAlways"];
+    [(NSUserDefaults *)defaults setBool:mitigations != 0 forKey:@"testOverrideMitigationAlways"];
   }
 }
 
-- (void)overrideCLPCMitigations:(unint64_t)a3
+- (void)overrideCLPCMitigations:(unint64_t)mitigations
 {
-  if (a3 == 2)
+  if (mitigations == 2)
   {
     [(NSUserDefaults *)self->_defaults removeObjectForKey:@"testOverrideCLPCMitigationAlways"];
     v4 = MEMORY[0x277CBEC28];
@@ -654,14 +654,14 @@ LABEL_23:
 
     defaults = self->_defaults;
 
-    [(NSUserDefaults *)defaults setBool:a3 != 0 forKey:@"testOverrideCLPCMitigationAlways"];
+    [(NSUserDefaults *)defaults setBool:mitigations != 0 forKey:@"testOverrideCLPCMitigationAlways"];
   }
 }
 
-- (void)shadowEvaluateForModels:(id)a3
+- (void)shadowEvaluateForModels:(id)models
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelsCopy = models;
   if ([(_OSIBLManager *)self isLPMEnabled])
   {
     log = self->_log;
@@ -718,7 +718,7 @@ LABEL_8:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = v4;
+    v12 = modelsCopy;
     v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v13)
     {
@@ -734,9 +734,9 @@ LABEL_8:
           }
 
           v17 = *(*(&v26 + 1) + 8 * i);
-          v18 = [v17 integerValue];
+          integerValue = [v17 integerValue];
           v25 = 0;
-          v19 = [(_OSIBLManager *)self drainResultWithModel:v18 withError:&v25];
+          v19 = [(_OSIBLManager *)self drainResultWithModel:integerValue withError:&v25];
           v20 = v25;
           if (v20)
           {
@@ -834,10 +834,10 @@ LABEL_12:
     goto LABEL_24;
   }
 
-  v15 = [(_OSIBLManager *)self isLPMEnabled];
+  isLPMEnabled = [(_OSIBLManager *)self isLPMEnabled];
   v16 = self->_log;
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v15)
+  if (isLPMEnabled)
   {
     if (!v17)
     {
@@ -885,43 +885,43 @@ LABEL_24:
   return v3;
 }
 
-- (BOOL)hasVariationForMedianLevels:(id)a3
+- (BOOL)hasVariationForMedianLevels:(id)levels
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  levelsCopy = levels;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [levelsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    integerValue2 = 0;
     v8 = *v16;
-    v9 = 101;
+    integerValue = 101;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(levelsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 integerValue] < v9)
+        if ([v11 integerValue] < integerValue)
         {
-          v9 = [v11 integerValue];
+          integerValue = [v11 integerValue];
         }
 
-        if ([v11 integerValue] > v7)
+        if ([v11 integerValue] > integerValue2)
         {
-          v7 = [v11 integerValue];
+          integerValue2 = [v11 integerValue];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [levelsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -929,31 +929,31 @@ LABEL_24:
 
   else
   {
-    v7 = 0;
-    v9 = 101;
+    integerValue2 = 0;
+    integerValue = 101;
   }
 
-  if (v7 - v9 <= 50)
+  if (integerValue2 - integerValue <= 50)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      [(_OSIBLManager *)log hasVariationForMedianLevels:v9, v7];
+      [(_OSIBLManager *)log hasVariationForMedianLevels:integerValue, integerValue2];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v7 - v9 > 50;
+  return integerValue2 - integerValue > 50;
 }
 
-- (id)isHighDrainOverAggregatedMedianWithError:(id *)a3
+- (id)isHighDrainOverAggregatedMedianWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.osintelligence.medianBatteryLevelsModel"];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [OSIUtilities midnightDateFrom:v6];
-  v8 = [(_OSIBLManager *)self dateFormatter];
-  v9 = [v8 stringFromDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [OSIUtilities midnightDateFrom:date];
+  dateFormatter = [(_OSIBLManager *)self dateFormatter];
+  v9 = [dateFormatter stringFromDate:v7];
 
   v10 = objc_alloc_init(_OSDayDrainResult);
   v11 = [v5 valueForKey:@"medianLevels"];
@@ -963,7 +963,7 @@ LABEL_24:
     goto LABEL_2;
   }
 
-  v37 = a3;
+  errorCopy = error;
   v28 = +[_OSBatteryPredictor predictor];
   v38 = 0;
   v12 = [v28 typicalBatteryLevelWithReferenceDays:0 aggregatedOverTimeWidth:15 withError:&v38];
@@ -971,9 +971,9 @@ LABEL_24:
 
   if (!v29)
   {
-    v34 = [MEMORY[0x277CBEB38] dictionary];
-    [v34 setObject:v12 forKeyedSubscript:v9];
-    [v5 setObject:v34 forKey:@"medianLevels"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:v12 forKeyedSubscript:v9];
+    [v5 setObject:dictionary forKey:@"medianLevels"];
 
 LABEL_2:
     log = self->_log;
@@ -986,24 +986,24 @@ LABEL_2:
     {
       v36 = v5;
       context = self->_context;
-      v15 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-      v16 = [(_CDLocalContext *)context objectForContextualKeyPath:v15];
-      v17 = [v16 integerValue];
+      keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+      v16 = [(_CDLocalContext *)context objectForContextualKeyPath:keyPathForBatteryLevel];
+      integerValue = [v16 integerValue];
 
-      v35 = v6;
-      [v6 timeIntervalSinceDate:v7];
+      v35 = date;
+      [date timeIntervalSinceDate:v7];
       v19 = [v12 objectAtIndexedSubscript:(v18 / 900.0)];
-      v20 = [v19 integerValue];
+      integerValue2 = [v19 integerValue];
 
-      v21 = v20 - v17;
-      v22 = (v20 - v17);
+      v21 = integerValue2 - integerValue;
+      v22 = (integerValue2 - integerValue);
       v23 = self->_log;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v24 = MEMORY[0x277CCABB0];
         v25 = v23;
-        v26 = [v24 numberWithInteger:v20];
-        v27 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
+        v26 = [v24 numberWithInteger:integerValue2];
+        v27 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
         *buf = 138412546;
         v40 = v26;
         v41 = 2112;
@@ -1014,7 +1014,7 @@ LABEL_2:
       [(_OSDayDrainResult *)v10 setIsHighDrain:v21 > 10];
       [(_OSDayDrainResult *)v10 setBatteryDifference:v22];
       [(_OSDayDrainResult *)v10 setConfidence:100.0];
-      v6 = v35;
+      date = v35;
       v5 = v36;
     }
 
@@ -1033,7 +1033,7 @@ LABEL_2:
   }
 
   v31 = v29;
-  *v37 = v29;
+  *errorCopy = v29;
   [(_OSDayDrainResult *)v10 setIsHighDrain:0];
 
 LABEL_13:
@@ -1042,18 +1042,18 @@ LABEL_13:
   return v10;
 }
 
-- (id)drainResultWithModel:(int64_t)a3 withError:(id *)a4
+- (id)drainResultWithModel:(int64_t)model withError:(id *)error
 {
-  v4 = a4;
-  if (a3 == 2)
+  errorCopy = error;
+  if (model == 2)
   {
-    v4 = [(_OSIBLManager *)self isHighDrainOverAggregatedMedianWithError:a4];
+    errorCopy = [(_OSIBLManager *)self isHighDrainOverAggregatedMedianWithError:error];
   }
 
-  else if (a3 == 1)
+  else if (model == 1)
   {
     v5 = +[_OSBatteryPredictor predictor];
-    v4 = [v5 highDayDrainAroundCurrentDateWithError:v4];
+    errorCopy = [v5 highDayDrainAroundCurrentDateWithError:errorCopy];
   }
 
   else
@@ -1063,13 +1063,13 @@ LABEL_13:
       [_OSIBLManager drainResultWithModel:withError:];
     }
 
-    *v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.OSIntelligence" code:6 userInfo:0];
+    *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.OSIntelligence" code:6 userInfo:0];
   }
 
-  return v4;
+  return errorCopy;
 }
 
-- (id)predictMitigationLevelWithError:(id *)a3
+- (id)predictMitigationLevelWithError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   p_lastPrediction = &self->_lastPrediction;
@@ -1093,14 +1093,14 @@ LABEL_13:
   }
 
   v10 = +[_OSBatteryPredictor predictor];
-  v7 = [v10 highDayDrainAroundCurrentDateWithError:a3];
+  v7 = [v10 highDayDrainAroundCurrentDateWithError:error];
 
-  if (!a3)
+  if (!error)
   {
     objc_storeStrong(p_lastPrediction, v7);
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastPredictionDate = self->_lastPredictionDate;
-    self->_lastPredictionDate = v12;
+    self->_lastPredictionDate = date;
 
     [(NSUserDefaults *)self->_defaults setObject:self->_lastPredictionDate forKey:@"kLastIBLMPredictionFetchDate"];
 LABEL_10:
@@ -1137,7 +1137,7 @@ LABEL_10:
 
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    [_OSIBLManager predictMitigationLevelWithError:a3];
+    [_OSIBLManager predictMitigationLevelWithError:error];
   }
 
   v11 = 0;
@@ -1157,10 +1157,10 @@ LABEL_15:
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin
 {
   self->_viewfinderIsActive = 1;
-  if ([(_OSIBLMitigation *)self->_currentMitigation level:a3])
+  if ([(_OSIBLMitigation *)self->_currentMitigation level:viewfinder])
   {
     v5 = [(_OSIBLManager *)self mitigationWithLevel:0];
     [(_OSIBLManager *)self updateMitigationTo:v5];
@@ -1247,10 +1247,10 @@ LABEL_7:
   return 0;
 }
 
-- (id)mitigationWithLevel:(int64_t)a3
+- (id)mitigationWithLevel:(int64_t)level
 {
   v4 = objc_opt_new();
-  [v4 setLevel:a3];
+  [v4 setLevel:level];
   [v4 setConfidence:1.0];
 
   return v4;
@@ -1283,10 +1283,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)currentMitigationWithError:(id *)a3
+- (id)currentMitigationWithError:(id *)error
 {
-  v4 = [(_OSIBLManager *)self testOverridenMitigation];
-  if (v4)
+  testOverridenMitigation = [(_OSIBLManager *)self testOverridenMitigation];
+  if (testOverridenMitigation)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -1295,7 +1295,7 @@ LABEL_7:
       _os_log_impl(&dword_25D171000, log, OS_LOG_TYPE_DEFAULT, "Returning test overridden mitigation", buf, 2u);
     }
 
-    v6 = v4;
+    v6 = testOverridenMitigation;
   }
 
   else
@@ -1343,7 +1343,7 @@ LABEL_10:
   dispatch_sync(managerStartStopQueue, block);
 }
 
-- (BOOL)updateFeatureState:(int64_t)a3 withError:(id *)a4
+- (BOOL)updateFeatureState:(int64_t)state withError:(id *)error
 {
   featureStatusQueue = self->_featureStatusQueue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1351,12 +1351,12 @@ LABEL_10:
   v6[2] = __46___OSIBLManager_updateFeatureState_withError___block_invoke;
   v6[3] = &unk_2799C1860;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = state;
   dispatch_sync(featureStatusQueue, v6);
   return 1;
 }
 
-- (BOOL)updateNotificationsState:(int64_t)a3 withError:(id *)a4
+- (BOOL)updateNotificationsState:(int64_t)state withError:(id *)error
 {
   featureStatusQueue = self->_featureStatusQueue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1364,7 +1364,7 @@ LABEL_10:
   v6[2] = __52___OSIBLManager_updateNotificationsState_withError___block_invoke;
   v6[3] = &unk_2799C1860;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = state;
   dispatch_sync(featureStatusQueue, v6);
   return 1;
 }

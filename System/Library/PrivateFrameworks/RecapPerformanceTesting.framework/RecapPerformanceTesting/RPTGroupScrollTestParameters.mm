@@ -1,29 +1,29 @@
 @interface RPTGroupScrollTestParameters
-+ (id)newWithTestName:(id)a3 parameters:(id)a4 completionHandler:(id)a5;
++ (id)newWithTestName:(id)name parameters:(id)parameters completionHandler:(id)handler;
 - (id)composerBlock;
-- (void)prepareWithComposer:(id)a3;
+- (void)prepareWithComposer:(id)composer;
 @end
 
 @implementation RPTGroupScrollTestParameters
 
-- (void)prepareWithComposer:(id)a3
+- (void)prepareWithComposer:(id)composer
 {
-  v4 = a3;
-  v6 = [(RPTGroupScrollTestParameters *)self parameters];
-  v5 = [v6 firstObject];
-  [v5 prepareWithComposer:v4];
+  composerCopy = composer;
+  parameters = [(RPTGroupScrollTestParameters *)self parameters];
+  firstObject = [parameters firstObject];
+  [firstObject prepareWithComposer:composerCopy];
 }
 
-+ (id)newWithTestName:(id)a3 parameters:(id)a4 completionHandler:(id)a5
++ (id)newWithTestName:(id)name parameters:(id)parameters completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  nameCopy = name;
   v10 = objc_opt_new();
-  [v10 setTestName:v9];
+  [v10 setTestName:nameCopy];
 
-  [v10 setParameters:v8];
-  [v10 setCompletionHandler:v7];
+  [v10 setParameters:parametersCopy];
+  [v10 setCompletionHandler:handlerCopy];
 
   return v10;
 }

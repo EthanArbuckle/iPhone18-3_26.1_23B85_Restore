@@ -1,29 +1,29 @@
 @interface SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsStableEmbeddingsVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsStableEmbeddingsVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v10 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v10 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput *)self setEmbeddingVersion:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
   embeddingTensor = self->_embeddingTensor;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (embeddingTensor)
   {
     if (!v6)
@@ -44,10 +44,10 @@
     [(SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput *)self setEmbeddingTensor:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_9:
   sentenceEmbeddingTensor = self->_sentenceEmbeddingTensor;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (sentenceEmbeddingTensor)
   {
     if (!v8)
@@ -68,19 +68,19 @@ LABEL_9:
     [(SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput *)self setSentenceEmbeddingTensor:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_15:
-  v9 = *(v4 + 44);
+  v9 = *(fromCopy + 44);
   if (v9)
   {
-    self->_embeddingDim = *(v4 + 1);
+    self->_embeddingDim = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v9 = *(v4 + 44);
+    v9 = *(fromCopy + 44);
   }
 
   if ((v9 & 2) != 0)
   {
-    self->_isStableEmbeddingsVersion = *(v4 + 40);
+    self->_isStableEmbeddingsVersion = *(fromCopy + 40);
     *&self->_has |= 2u;
   }
 
@@ -116,16 +116,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   embeddingVersion = self->_embeddingVersion;
-  if (embeddingVersion | *(v4 + 3))
+  if (embeddingVersion | *(equalCopy + 3))
   {
     if (![(NSString *)embeddingVersion isEqual:?])
     {
@@ -134,7 +134,7 @@ LABEL_3:
   }
 
   embeddingTensor = self->_embeddingTensor;
-  if (embeddingTensor | *(v4 + 2))
+  if (embeddingTensor | *(equalCopy + 2))
   {
     if (![(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddingTensor isEqual:?])
     {
@@ -143,7 +143,7 @@ LABEL_3:
   }
 
   sentenceEmbeddingTensor = self->_sentenceEmbeddingTensor;
-  if (sentenceEmbeddingTensor | *(v4 + 4))
+  if (sentenceEmbeddingTensor | *(equalCopy + 4))
   {
     if (![(SIRINLUINTERNALNLv4EmbeddingTensor *)sentenceEmbeddingTensor isEqual:?])
     {
@@ -153,21 +153,21 @@ LABEL_3:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_embeddingDim != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_embeddingDim != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_15;
   }
 
-  v8 = (*(v4 + 44) & 2) == 0;
+  v8 = (*(equalCopy + 44) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
 LABEL_15:
       v8 = 0;
@@ -176,13 +176,13 @@ LABEL_15:
 
     if (self->_isStableEmbeddingsVersion)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_15;
     }
@@ -195,18 +195,18 @@ LABEL_16:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_embeddingVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_embeddingVersion copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_embeddingTensor copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_embeddingTensor copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_sentenceEmbeddingTensor copyWithZone:a3];
+  v10 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_sentenceEmbeddingTensor copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -227,63 +227,63 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_embeddingVersion)
   {
-    [v4 setEmbeddingVersion:?];
-    v4 = v6;
+    [toCopy setEmbeddingVersion:?];
+    toCopy = v6;
   }
 
   if (self->_embeddingTensor)
   {
     [v6 setEmbeddingTensor:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sentenceEmbeddingTensor)
   {
     [v6 setSentenceEmbeddingTensor:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_embeddingDim;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = self->_embeddingDim;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 40) = self->_isStableEmbeddingsVersion;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 40) = self->_isStableEmbeddingsVersion;
+    *(toCopy + 44) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_embeddingVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_embeddingTensor)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_sentenceEmbeddingTensor)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -291,7 +291,7 @@ LABEL_16:
   {
     embeddingDim = self->_embeddingDim;
     PBDataWriterWriteUint64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -299,32 +299,32 @@ LABEL_16:
   {
     isStableEmbeddingsVersion = self->_isStableEmbeddingsVersion;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   embeddingVersion = self->_embeddingVersion;
   if (embeddingVersion)
   {
-    [v3 setObject:embeddingVersion forKey:@"embedding_version"];
+    [dictionary setObject:embeddingVersion forKey:@"embedding_version"];
   }
 
   embeddingTensor = self->_embeddingTensor;
   if (embeddingTensor)
   {
-    v7 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddingTensor dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"embedding_tensor"];
+    dictionaryRepresentation = [(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddingTensor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"embedding_tensor"];
   }
 
   sentenceEmbeddingTensor = self->_sentenceEmbeddingTensor;
   if (sentenceEmbeddingTensor)
   {
-    v9 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)sentenceEmbeddingTensor dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"sentence_embedding_tensor"];
+    dictionaryRepresentation2 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)sentenceEmbeddingTensor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"sentence_embedding_tensor"];
   }
 
   has = self->_has;
@@ -351,15 +351,15 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput;
   v4 = [(SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput *)&v8 description];
-  v5 = [(SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALEMBEDDINGEmbeddingTensorOutput *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasIsStableEmbeddingsVersion:(BOOL)a3
+- (void)setHasIsStableEmbeddingsVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }

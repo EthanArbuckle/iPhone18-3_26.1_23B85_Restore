@@ -1,15 +1,15 @@
 @interface __HMFWiFiAssertion
-- (BOOL)acquire:(id *)a3;
-- (__HMFWiFiAssertion)initWithName:(id)a3;
-- (__HMFWiFiAssertion)initWithOptions:(unint64_t)a3 manager:(id)a4 reason:(id)a5;
+- (BOOL)acquire:(id *)acquire;
+- (__HMFWiFiAssertion)initWithName:(id)name;
+- (__HMFWiFiAssertion)initWithOptions:(unint64_t)options manager:(id)manager reason:(id)reason;
 - (void)invalidate;
 @end
 
 @implementation __HMFWiFiAssertion
 
-- (__HMFWiFiAssertion)initWithName:(id)a3
+- (__HMFWiFiAssertion)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -21,17 +21,17 @@
   objc_exception_throw(v10);
 }
 
-- (__HMFWiFiAssertion)initWithOptions:(unint64_t)a3 manager:(id)a4 reason:(id)a5
+- (__HMFWiFiAssertion)initWithOptions:(unint64_t)options manager:(id)manager reason:(id)reason
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  managerCopy = manager;
+  reasonCopy = reason;
+  if (!managerCopy)
   {
     _HMFPreconditionFailure(@"manager");
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = reasonCopy;
+  if (!reasonCopy)
   {
     _HMFPreconditionFailure(@"reason");
   }
@@ -51,19 +51,19 @@
   v16 = v15;
   if (v15)
   {
-    v15->_options = a3;
-    objc_storeStrong(&v15->_manager, a4);
+    v15->_options = options;
+    objc_storeStrong(&v15->_manager, manager);
     v16->super._valid = 0;
   }
 
   return v16;
 }
 
-- (BOOL)acquire:(id *)a3
+- (BOOL)acquire:(id *)acquire
 {
   v6.receiver = self;
   v6.super_class = __HMFWiFiAssertion;
-  v4 = [(HMFAssertion *)&v6 acquire:a3];
+  v4 = [(HMFAssertion *)&v6 acquire:acquire];
   if (v4)
   {
     [(HMFWiFiManager *)self->_manager __updateActiveAssertions];

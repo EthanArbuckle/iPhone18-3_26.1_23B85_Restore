@@ -1,48 +1,48 @@
 @interface TRIClientExperimentArtifact
 + (id)allReferencedCKRecordKeys;
-+ (id)artifactWithExperiment:(id)a3;
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)hasNamespacesAvailableForExperimentWithDatabase:(id)a3;
-- (BOOL)hasValidNamespacesWithError:(id *)a3;
++ (id)artifactWithExperiment:(id)experiment;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)hasNamespacesAvailableForExperimentWithDatabase:(id)database;
+- (BOOL)hasValidNamespacesWithError:(id *)error;
 - (BOOL)isCompatibleCounterfactual;
-- (BOOL)isCompatibleWithNamespaceDescriptorProvider:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCompatibleWithNamespaceDescriptorProvider:(id)provider error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (BOOL)saveWithDatabase:(id)a3 paths:(id)a4;
+- (BOOL)saveWithDatabase:(id)database paths:(id)paths;
 - (TRIClientExperiment)experiment;
 - (TRIClientExperimentArtifact)init;
-- (TRIClientExperimentArtifact)initWithCoder:(id)a3;
-- (TRIClientExperimentArtifact)initWithExperiment:(id)a3;
+- (TRIClientExperimentArtifact)initWithCoder:(id)coder;
+- (TRIClientExperimentArtifact)initWithExperiment:(id)experiment;
 - (TRIExperimentDeployment)experimentDeployment;
 - (id)asPersistedArtifact;
-- (id)counterfactualsTreatmentsToFactorPackSetIdsWithActiveTreatmentId:(id)a3;
+- (id)counterfactualsTreatmentsToFactorPackSetIdsWithActiveTreatmentId:(id)id;
 - (id)data;
-- (id)factorPackSetIdForTreatmentId:(id)a3;
+- (id)factorPackSetIdForTreatmentId:(id)id;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIClientExperimentArtifact
 
 - (TRIExperimentDeployment)experimentDeployment
 {
-  v3 = [(TRIClientExperimentArtifact *)self experimentId];
+  experimentId = [(TRIClientExperimentArtifact *)self experimentId];
 
-  if (v3)
+  if (experimentId)
   {
     if ([(TRIClientExperimentArtifact *)self hasDeploymentId])
     {
-      v4 = [(TRIClientExperimentArtifact *)self deploymentId];
+      deploymentId = [(TRIClientExperimentArtifact *)self deploymentId];
     }
 
     else
     {
-      v4 = 0xFFFFFFFFLL;
+      deploymentId = 0xFFFFFFFFLL;
     }
 
     v6 = objc_alloc(MEMORY[0x277D736C0]);
-    v7 = [(TRIClientExperimentArtifact *)self experimentId];
-    v5 = [v6 initWithExperimentId:v7 deploymentId:v4];
+    experimentId2 = [(TRIClientExperimentArtifact *)self experimentId];
+    v5 = [v6 initWithExperimentId:experimentId2 deploymentId:deploymentId];
   }
 
   else
@@ -53,10 +53,10 @@
   return v5;
 }
 
-+ (id)artifactWithExperiment:(id)a3
++ (id)artifactWithExperiment:(id)experiment
 {
-  v3 = a3;
-  v4 = [[TRIClientExperimentArtifact alloc] initWithExperiment:v3];
+  experimentCopy = experiment;
+  v4 = [[TRIClientExperimentArtifact alloc] initWithExperiment:experimentCopy];
 
   return v4;
 }
@@ -67,24 +67,24 @@
   objc_exception_throw(v2);
 }
 
-- (TRIClientExperimentArtifact)initWithExperiment:(id)a3
+- (TRIClientExperimentArtifact)initWithExperiment:(id)experiment
 {
-  v5 = a3;
+  experimentCopy = experiment;
   v10.receiver = self;
   v10.super_class = TRIClientExperimentArtifact;
   v6 = [(TRIClientExperimentArtifact *)&v10 init];
   if (v6)
   {
-    if (!v5)
+    if (!experimentCopy)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v6 file:@"TRIClientExperimentArtifact.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"experiment"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"TRIClientExperimentArtifact.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"experiment"}];
     }
 
-    v7 = [v5 experimentId];
-    [(TRIClientExperimentArtifact *)v6 setExperimentId:v7];
+    experimentId = [experimentCopy experimentId];
+    [(TRIClientExperimentArtifact *)v6 setExperimentId:experimentId];
 
-    -[TRIClientExperimentArtifact setDeploymentId:](v6, "setDeploymentId:", [v5 deploymentId]);
+    -[TRIClientExperimentArtifact setDeploymentId:](v6, "setDeploymentId:", [experimentCopy deploymentId]);
   }
 
   return v6;
@@ -93,14 +93,14 @@
 - (TRIClientExperiment)experiment
 {
   *&v29[5] = *MEMORY[0x277D85DE8];
-  v3 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
+  encodedExperimentDefinition = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
 
-  if (v3)
+  if (encodedExperimentDefinition)
   {
     v4 = MEMORY[0x277D73AD0];
-    v5 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
+    encodedExperimentDefinition2 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
     v25 = 0;
-    v6 = [v4 parseFromData:v5 error:&v25];
+    v6 = [v4 parseFromData:encodedExperimentDefinition2 error:&v25];
     v7 = v25;
 
     if (v7 || !v6)
@@ -121,33 +121,33 @@
         v8 = TRILogCategory_Server();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v22 = [(TRIClientExperimentArtifact *)self experimentId];
+          experimentId = [(TRIClientExperimentArtifact *)self experimentId];
           *buf = 138412290;
-          v27 = v22;
+          v27 = experimentId;
           _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "experiment definition contains no experiment id.  assume id %@", buf, 0xCu);
         }
 
-        v9 = [(TRIClientExperimentArtifact *)self experimentId];
-        [v6 setExperimentId:v9];
+        experimentId2 = [(TRIClientExperimentArtifact *)self experimentId];
+        [v6 setExperimentId:experimentId2];
       }
 
-      v10 = [(TRIClientExperimentArtifact *)self experimentId];
-      v11 = [v6 experimentId];
-      v12 = [v10 isEqualToString:v11];
+      experimentId3 = [(TRIClientExperimentArtifact *)self experimentId];
+      experimentId4 = [v6 experimentId];
+      v12 = [experimentId3 isEqualToString:experimentId4];
 
       if (v12)
       {
         if ([v6 hasDeploymentId])
         {
-          v13 = [v6 deploymentId];
+          deploymentId = [v6 deploymentId];
         }
 
         else
         {
-          v13 = -1;
+          deploymentId = -1;
         }
 
-        if ([(TRIClientExperimentArtifact *)self deploymentId]== v13)
+        if ([(TRIClientExperimentArtifact *)self deploymentId]== deploymentId)
         {
           v15 = v6;
 LABEL_26:
@@ -158,14 +158,14 @@ LABEL_26:
         v17 = TRILogCategory_Server();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v23 = [(TRIClientExperimentArtifact *)self experimentId];
-          v24 = [(TRIClientExperimentArtifact *)self deploymentId];
+          experimentId5 = [(TRIClientExperimentArtifact *)self experimentId];
+          deploymentId2 = [(TRIClientExperimentArtifact *)self deploymentId];
           *buf = 138412802;
-          v27 = v23;
+          v27 = experimentId5;
           v28 = 1024;
-          *v29 = v24;
+          *v29 = deploymentId2;
           v29[2] = 1024;
-          *&v29[3] = v13;
+          *&v29[3] = deploymentId;
           _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "deployment id mismatch for experiment %@: %d != %d", buf, 0x18u);
         }
       }
@@ -175,12 +175,12 @@ LABEL_26:
         v17 = TRILogCategory_Server();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [(TRIClientExperimentArtifact *)self experimentId];
-          v19 = [v6 experimentId];
+          experimentId6 = [(TRIClientExperimentArtifact *)self experimentId];
+          experimentId7 = [v6 experimentId];
           *buf = 138412546;
-          v27 = v18;
+          v27 = experimentId6;
           v28 = 2112;
-          *v29 = v19;
+          *v29 = experimentId7;
           _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "experiment id mismatch: %@ != %@", buf, 0x16u);
         }
       }
@@ -193,9 +193,9 @@ LABEL_26:
   v7 = TRILogCategory_Server();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(TRIClientExperimentArtifact *)self experimentId];
+    experimentId8 = [(TRIClientExperimentArtifact *)self experimentId];
     *buf = 138412546;
-    v27 = v14;
+    v27 = experimentId8;
     v28 = 1024;
     *v29 = [(TRIClientExperimentArtifact *)self experimentType];
     _os_log_impl(&dword_26F567000, v7, OS_LOG_TYPE_DEFAULT, "no experiment definition to decode experimentId: %@ type: %d", buf, 0x12u);
@@ -258,15 +258,15 @@ id __59__TRIClientExperimentArtifact__convertNamespaceIdsToNames___block_invoke(
 
 - (BOOL)isValid
 {
-  v3 = [(TRIClientExperimentArtifact *)self publicCertificate];
-  if (v3)
+  publicCertificate = [(TRIClientExperimentArtifact *)self publicCertificate];
+  if (publicCertificate)
   {
-    v4 = [TRISignatureKey keyFromData:v3];
+    v4 = [TRISignatureKey keyFromData:publicCertificate];
     if (v4)
     {
-      v5 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
-      v6 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
-      v7 = [v4 validateBase64Signature:v5 data:v6];
+      encodedExperimentDefinitionSignature = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
+      encodedExperimentDefinition = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
+      v7 = [v4 validateBase64Signature:encodedExperimentDefinitionSignature data:encodedExperimentDefinition];
     }
 
     else
@@ -283,29 +283,29 @@ id __59__TRIClientExperimentArtifact__convertNamespaceIdsToNames___block_invoke(
   return v7;
 }
 
-- (BOOL)hasValidNamespacesWithError:(id *)a3
+- (BOOL)hasValidNamespacesWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [(TRIClientExperimentArtifact *)self namespaces];
-  if (!v5 || (v6 = v5, -[TRIClientExperimentArtifact namespaces](self, "namespaces"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, !v8))
+  namespaces = [(TRIClientExperimentArtifact *)self namespaces];
+  if (!namespaces || (v6 = namespaces, -[TRIClientExperimentArtifact namespaces](self, "namespaces"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, !v8))
   {
     v14 = TRILogCategory_Server();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v29 = [(TRIClientExperimentArtifact *)self experimentId];
+      experimentId = [(TRIClientExperimentArtifact *)self experimentId];
       *buf = 138412290;
-      v36 = v29;
+      v36 = experimentId;
       _os_log_error_impl(&dword_26F567000, v14, OS_LOG_TYPE_ERROR, "missing namespaces in definition of experiment %@", buf, 0xCu);
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [(TRIClientExperimentArtifact *)self experimentId];
-    v17 = [v15 stringWithFormat:@"missing namespaces in definition of experiment %@", v16];
+    experimentId2 = [(TRIClientExperimentArtifact *)self experimentId];
+    v17 = [v15 stringWithFormat:@"missing namespaces in definition of experiment %@", experimentId2];
 
     v18 = objc_alloc(MEMORY[0x277CCA9B8]);
     v33 = *MEMORY[0x277CCA450];
@@ -316,30 +316,30 @@ id __59__TRIClientExperimentArtifact__convertNamespaceIdsToNames___block_invoke(
     goto LABEL_13;
   }
 
-  v9 = [(TRIClientExperimentArtifact *)self namespaces];
-  v10 = [v9 count];
-  v11 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
-  v12 = [v11 count];
+  namespaces2 = [(TRIClientExperimentArtifact *)self namespaces];
+  v10 = [namespaces2 count];
+  namespaceCompatibilityVersions = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
+  v12 = [namespaceCompatibilityVersions count];
 
   if (v10 != v12)
   {
     v22 = TRILogCategory_Server();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v30 = [(TRIClientExperimentArtifact *)self experimentId];
+      experimentId3 = [(TRIClientExperimentArtifact *)self experimentId];
       *buf = 138412290;
-      v36 = v30;
+      v36 = experimentId3;
       _os_log_error_impl(&dword_26F567000, v22, OS_LOG_TYPE_ERROR, "mismatch in namespaces and namespace compatibility versions in definition of experiment %@", buf, 0xCu);
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
 
     v23 = MEMORY[0x277CCACA8];
-    v24 = [(TRIClientExperimentArtifact *)self experimentId];
-    v17 = [v23 stringWithFormat:@"mismatch in namespaces and namespace compatibility versions in definition of experiment %@", v24];
+    experimentId4 = [(TRIClientExperimentArtifact *)self experimentId];
+    v17 = [v23 stringWithFormat:@"mismatch in namespaces and namespace compatibility versions in definition of experiment %@", experimentId4];
 
     v18 = objc_alloc(MEMORY[0x277CCA9B8]);
     v31 = *MEMORY[0x277CCA450];
@@ -350,8 +350,8 @@ id __59__TRIClientExperimentArtifact__convertNamespaceIdsToNames___block_invoke(
 LABEL_13:
     v25 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:1];
     v26 = [v18 initWithDomain:@"TRIGeneralErrorDomain" code:1 userInfo:v25];
-    v27 = *a3;
-    *a3 = v26;
+    v27 = *error;
+    *error = v26;
 
 LABEL_14:
     result = 0;
@@ -364,25 +364,25 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isCompatibleWithNamespaceDescriptorProvider:(id)a3 error:(id *)a4
+- (BOOL)isCompatibleWithNamespaceDescriptorProvider:(id)provider error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  providerCopy = provider;
   if ([(TRIClientExperimentArtifact *)self experimentType]== 1)
   {
-    if ([(TRIClientExperimentArtifact *)self hasValidNamespacesWithError:a4])
+    if ([(TRIClientExperimentArtifact *)self hasValidNamespacesWithError:error])
     {
       if ([(TRIClientExperimentArtifact *)self deploymentEnvironment])
       {
         v7 = TRILogCategory_Server();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [(TRIClientExperimentArtifact *)self experimentDeployment];
-          v9 = [v8 shortDesc];
+          experimentDeployment = [(TRIClientExperimentArtifact *)self experimentDeployment];
+          shortDesc = [experimentDeployment shortDesc];
           v10 = TRIDeploymentEnvironment_EnumDescriptor();
           v11 = [v10 enumNameForValue:{-[TRIClientExperimentArtifact deploymentEnvironment](self, "deploymentEnvironment")}];
           *buf = 138412546;
-          v25 = v9;
+          v25 = shortDesc;
           v26 = 2112;
           v27 = v11;
           _os_log_impl(&dword_26F567000, v7, OS_LOG_TYPE_DEFAULT, "experiment %@ has deployment environment %@; bypassing namespace descriptor checks.", buf, 0x16u);
@@ -395,19 +395,19 @@ LABEL_15:
       {
         v13 = objc_opt_new();
         v14 = objc_opt_new();
-        v15 = [(TRIClientExperimentArtifact *)self namespaces];
+        namespaces = [(TRIClientExperimentArtifact *)self namespaces];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __81__TRIClientExperimentArtifact_isCompatibleWithNamespaceDescriptorProvider_error___block_invoke;
         v19[3] = &unk_279DDF5E0;
         v19[4] = self;
-        v20 = v6;
+        v20 = providerCopy;
         v21 = v13;
         v22 = v14;
-        v23 = a4;
+        errorCopy = error;
         v16 = v14;
         v7 = v13;
-        [v15 enumerateObjectsUsingBlock:v19];
+        [namespaces enumerateObjectsUsingBlock:v19];
 
         v12 = [v16 isEqualToSet:v7];
       }
@@ -518,49 +518,49 @@ LABEL_13:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)saveWithDatabase:(id)a3 paths:(id)a4
+- (BOOL)saveWithDatabase:(id)database paths:(id)paths
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(TRIClientExperimentArtifact *)self experiment];
-  v7 = v6;
-  if (v6)
+  databaseCopy = database;
+  experiment = [(TRIClientExperimentArtifact *)self experiment];
+  v7 = experiment;
+  if (experiment)
   {
-    v8 = [v6 experimentId];
+    experimentId = [experiment experimentId];
     if ([v7 hasDeploymentId])
     {
-      v9 = [v7 deploymentId];
-      if (v8)
+      deploymentId = [v7 deploymentId];
+      if (experimentId)
       {
-        if (v9 != -1)
+        if (deploymentId != -1)
         {
-          v10 = [objc_alloc(MEMORY[0x277D736C0]) initWithExperimentId:v8 deploymentId:v9];
+          v10 = [objc_alloc(MEMORY[0x277D736C0]) initWithExperimentId:experimentId deploymentId:deploymentId];
           v11 = objc_opt_new();
-          v12 = [(TRIClientExperimentArtifact *)self namespaces];
-          if (v12)
+          namespaces = [(TRIClientExperimentArtifact *)self namespaces];
+          if (namespaces)
           {
-            v13 = v12;
-            v14 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
-            if (v14)
+            v13 = namespaces;
+            namespaceCompatibilityVersions = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
+            if (namespaceCompatibilityVersions)
             {
-              v15 = v14;
+              v15 = namespaceCompatibilityVersions;
               [(TRIClientExperimentArtifact *)self namespaces];
               v16 = v32 = v11;
               v31 = [v16 count];
-              v17 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
-              v18 = [v17 count];
+              namespaceCompatibilityVersions2 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
+              v18 = [namespaceCompatibilityVersions2 count];
 
               v11 = v32;
               if (v31 == v18)
               {
-                v19 = [(TRIClientExperimentArtifact *)self namespaces];
+                namespaces2 = [(TRIClientExperimentArtifact *)self namespaces];
                 v33[0] = MEMORY[0x277D85DD0];
                 v33[1] = 3221225472;
                 v33[2] = __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke;
                 v33[3] = &unk_279DDF608;
                 v33[4] = self;
                 v34 = v32;
-                [v19 enumerateObjectsUsingBlock:v33];
+                [namespaces2 enumerateObjectsUsingBlock:v33];
               }
             }
 
@@ -571,27 +571,27 @@ LABEL_13:
 
           if ([v7 hasStartDate])
           {
-            v26 = [v7 startDate];
-            v27 = [v26 date];
+            startDate = [v7 startDate];
+            date = [startDate date];
           }
 
           else
           {
-            v27 = 0;
+            date = 0;
           }
 
           if ([v7 hasEndDate])
           {
-            v28 = [v7 endDate];
-            v29 = [v28 date];
+            endDate = [v7 endDate];
+            date2 = [endDate date];
           }
 
           else
           {
-            v29 = 0;
+            date2 = 0;
           }
 
-          v20 = [v5 addExperimentWithExperimentDeployment:v10 environment:-[TRIClientExperimentArtifact deploymentEnvironment](self type:"deploymentEnvironment") status:objc_msgSend(v7 startDate:"type") endDate:0 namespaces:v27 artifact:{v29, v11, self}] != 0;
+          v20 = [databaseCopy addExperimentWithExperimentDeployment:v10 environment:-[TRIClientExperimentArtifact deploymentEnvironment](self type:"deploymentEnvironment") status:objc_msgSend(v7 startDate:"type") endDate:0 namespaces:date artifact:{date2, v11, self}] != 0;
 
           goto LABEL_17;
         }
@@ -601,7 +601,7 @@ LABEL_13:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v36 = v8;
+          v36 = experimentId;
           v21 = "can't save experiment id %@ with nil deploymentId";
           v22 = v10;
           v23 = 12;
@@ -614,7 +614,7 @@ LABEL_28:
       }
     }
 
-    else if (v8)
+    else if (experimentId)
     {
       goto LABEL_13;
     }
@@ -636,13 +636,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v8 = TRILogCategory_Server();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  experimentId = TRILogCategory_Server();
+  if (os_log_type_enabled(experimentId, OS_LOG_TYPE_ERROR))
   {
-    v30 = [(TRIClientExperimentArtifact *)self experimentId];
+    experimentId2 = [(TRIClientExperimentArtifact *)self experimentId];
     *buf = 138412290;
-    v36 = v30;
-    _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "no client experiment found on artifact for experiment id %@", buf, 0xCu);
+    v36 = experimentId2;
+    _os_log_error_impl(&dword_26F567000, experimentId, OS_LOG_TYPE_ERROR, "no client experiment found on artifact for experiment id %@", buf, 0xCu);
   }
 
   v20 = 0;
@@ -664,54 +664,54 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
   [*(a1 + 40) addObject:v10];
 }
 
-- (BOOL)hasNamespacesAvailableForExperimentWithDatabase:(id)a3
+- (BOOL)hasNamespacesAvailableForExperimentWithDatabase:(id)database
 {
-  v5 = a3;
-  if (!v5)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRIClientExperimentArtifact.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientExperimentArtifact.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
-  v6 = [(TRIClientExperimentArtifact *)self experiment];
-  v7 = [(TRIClientExperimentArtifact *)self experimentDeployment];
-  v8 = v7;
-  if (v6 && v7 && ([v7 hasDeploymentId] & 1) != 0)
+  experiment = [(TRIClientExperimentArtifact *)self experiment];
+  experimentDeployment = [(TRIClientExperimentArtifact *)self experimentDeployment];
+  v8 = experimentDeployment;
+  if (experiment && experimentDeployment && ([experimentDeployment hasDeploymentId] & 1) != 0)
   {
-    if ([v6 experimentType] == 1)
+    if ([experiment experimentType] == 1)
     {
       v9 = 1;
     }
 
     else
     {
-      if ([v6 hasStartDate])
+      if ([experiment hasStartDate])
       {
-        v12 = [v6 startDate];
-        v13 = [v12 date];
+        startDate = [experiment startDate];
+        date = [startDate date];
       }
 
       else
       {
-        v13 = 0;
+        date = 0;
       }
 
-      if ([v6 hasEndDate])
+      if ([experiment hasEndDate])
       {
-        v14 = [v6 endDate];
-        v15 = [v14 date];
+        endDate = [experiment endDate];
+        date2 = [endDate date];
       }
 
       else
       {
-        v15 = 0;
+        date2 = 0;
       }
 
-      v16 = [(TRIClientExperimentArtifact *)self namespaces];
-      v17 = v16;
-      if (v16)
+      namespaces = [(TRIClientExperimentArtifact *)self namespaces];
+      v17 = namespaces;
+      if (namespaces)
       {
-        v18 = v16;
+        v18 = namespaces;
       }
 
       else
@@ -719,7 +719,7 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
         v18 = MEMORY[0x277CBEBF8];
       }
 
-      v9 = [v5 namespacesAreAvailableForExperiment:v8 startDate:v13 endDate:v15 namespaces:v18];
+      v9 = [databaseCopy namespacesAreAvailableForExperiment:v8 startDate:date endDate:date2 namespaces:v18];
     }
   }
 
@@ -742,8 +742,8 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
 {
   v35 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(TRIClientExperimentArtifact *)self experimentId];
-  [v3 setExperimentId:v4];
+  experimentId = [(TRIClientExperimentArtifact *)self experimentId];
+  [v3 setExperimentId:experimentId];
 
   if (([(TRIClientExperimentArtifact *)self deploymentId]& 0x80000000) == 0)
   {
@@ -751,71 +751,71 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
   }
 
   [v3 setCloudKitContainer:{-[TRIClientExperimentArtifact cloudKitContainer](self, "cloudKitContainer")}];
-  v5 = [(TRIClientExperimentArtifact *)self teamId];
+  teamId = [(TRIClientExperimentArtifact *)self teamId];
 
-  if (v5)
+  if (teamId)
   {
-    v6 = [(TRIClientExperimentArtifact *)self teamId];
-    [v3 setTeamId:v6];
+    teamId2 = [(TRIClientExperimentArtifact *)self teamId];
+    [v3 setTeamId:teamId2];
   }
 
-  v7 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
+  encodedExperimentDefinition = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
 
-  if (v7)
+  if (encodedExperimentDefinition)
   {
-    v8 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
-    [v3 setEncodedExperimentDefinition:v8];
+    encodedExperimentDefinition2 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
+    [v3 setEncodedExperimentDefinition:encodedExperimentDefinition2];
   }
 
-  v9 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
+  encodedExperimentDefinitionSignature = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
 
-  if (v9)
+  if (encodedExperimentDefinitionSignature)
   {
-    v10 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
-    [v3 setEncodedExperimentDefinitionSignature:v10];
+    encodedExperimentDefinitionSignature2 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
+    [v3 setEncodedExperimentDefinitionSignature:encodedExperimentDefinitionSignature2];
   }
 
-  v11 = [(TRIClientExperimentArtifact *)self publicCertificate];
+  publicCertificate = [(TRIClientExperimentArtifact *)self publicCertificate];
 
-  if (v11)
+  if (publicCertificate)
   {
-    v12 = [(TRIClientExperimentArtifact *)self publicCertificate];
-    [v3 setPublicCertificate:v12];
+    publicCertificate2 = [(TRIClientExperimentArtifact *)self publicCertificate];
+    [v3 setPublicCertificate:publicCertificate2];
   }
 
   [v3 setStatus:{-[TRIClientExperimentArtifact experimentState](self, "experimentState")}];
   [v3 setType:{-[TRIClientExperimentArtifact experimentType](self, "experimentType")}];
   [v3 setPriority:{-[TRIClientExperimentArtifact experimentPriority](self, "experimentPriority")}];
   [v3 setInternalBuildOnly:{-[TRIClientExperimentArtifact internalBuildOnly](self, "internalBuildOnly")}];
-  v13 = [(TRIClientExperimentArtifact *)self deploymentDate];
+  deploymentDate = [(TRIClientExperimentArtifact *)self deploymentDate];
 
-  if (v13)
+  if (deploymentDate)
   {
     v14 = objc_alloc(MEMORY[0x277D73B88]);
-    v15 = [(TRIClientExperimentArtifact *)self deploymentDate];
-    v16 = [v14 initWithDate:v15];
+    deploymentDate2 = [(TRIClientExperimentArtifact *)self deploymentDate];
+    v16 = [v14 initWithDate:deploymentDate2];
     [v3 setDeploymentDate:v16];
   }
 
-  v17 = [(TRIClientExperimentArtifact *)self namespaces];
+  namespaces = [(TRIClientExperimentArtifact *)self namespaces];
 
-  if (v17)
+  if (namespaces)
   {
-    v18 = [(TRIClientExperimentArtifact *)self namespaces];
-    v19 = [v18 mutableCopy];
+    namespaces2 = [(TRIClientExperimentArtifact *)self namespaces];
+    v19 = [namespaces2 mutableCopy];
     [v3 setNamespacesArray:v19];
   }
 
-  v20 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
+  namespaceCompatibilityVersions = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
 
-  if (v20)
+  if (namespaceCompatibilityVersions)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v21 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
-    v22 = [v21 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    namespaceCompatibilityVersions2 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
+    v22 = [namespaceCompatibilityVersions2 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v22)
     {
       v23 = v22;
@@ -826,15 +826,15 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
         {
           if (*v31 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(namespaceCompatibilityVersions2);
           }
 
           v26 = *(*(&v30 + 1) + 8 * i);
-          v27 = [v3 namespaceCompatibilityVersionsArray];
-          [v27 addValue:{objc_msgSend(v26, "unsignedIntValue")}];
+          namespaceCompatibilityVersionsArray = [v3 namespaceCompatibilityVersionsArray];
+          [namespaceCompatibilityVersionsArray addValue:{objc_msgSend(v26, "unsignedIntValue")}];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v23 = [namespaceCompatibilityVersions2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v23);
@@ -850,27 +850,27 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
 - (id)data
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [(TRIClientExperimentArtifact *)self asPersistedArtifact];
-  v6 = [v5 data];
+  asPersistedArtifact = [(TRIClientExperimentArtifact *)self asPersistedArtifact];
+  data = [asPersistedArtifact data];
 
-  if (!v6)
+  if (!data)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIClientExperimentArtifact.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientExperimentArtifact.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"result"}];
   }
 
   objc_autoreleasePoolPop(v4);
 
-  return v6;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_autoreleasePoolPush();
   v34 = 0;
-  v7 = [(TRIPBMessage *)TRIPersistedExperimentArtifact parseFromData:v5 error:&v34];
+  v7 = [(TRIPBMessage *)TRIPersistedExperimentArtifact parseFromData:dataCopy error:&v34];
   v8 = v34;
   v9 = v8;
   if (v7)
@@ -878,25 +878,25 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
     if ([v7 hasExperimentId])
     {
       v10 = objc_alloc(MEMORY[0x277D736C0]);
-      v11 = [v7 experimentId];
+      experimentId = [v7 experimentId];
       if ([v7 hasDeploymentId])
       {
-        v12 = [v7 deploymentId];
+        deploymentId = [v7 deploymentId];
       }
 
       else
       {
-        v12 = 0xFFFFFFFFLL;
+        deploymentId = 0xFFFFFFFFLL;
       }
 
-      v15 = [v10 initWithExperimentId:v11 deploymentId:v12];
+      v15 = [v10 initWithExperimentId:experimentId deploymentId:deploymentId];
 
       v14 = [TRIClientExperimentArtifact artifactWithExperiment:v15];
       [v14 setCloudKitContainer:{objc_msgSend(v7, "cloudKitContainer")}];
       if ([v7 hasTeamId])
       {
-        v19 = [v7 teamId];
-        [v14 setTeamId:v19];
+        teamId = [v7 teamId];
+        [v14 setTeamId:teamId];
       }
 
       else
@@ -906,8 +906,8 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
 
       if ([v7 hasEncodedExperimentDefinition])
       {
-        v20 = [v7 encodedExperimentDefinition];
-        [v14 setEncodedExperimentDefinition:v20];
+        encodedExperimentDefinition = [v7 encodedExperimentDefinition];
+        [v14 setEncodedExperimentDefinition:encodedExperimentDefinition];
       }
 
       else
@@ -917,8 +917,8 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
 
       if ([v7 hasEncodedExperimentDefinitionSignature])
       {
-        v21 = [v7 encodedExperimentDefinitionSignature];
-        [v14 setEncodedExperimentDefinitionSignature:v21];
+        encodedExperimentDefinitionSignature = [v7 encodedExperimentDefinitionSignature];
+        [v14 setEncodedExperimentDefinitionSignature:encodedExperimentDefinitionSignature];
       }
 
       else
@@ -928,8 +928,8 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
 
       if ([v7 hasPublicCertificate])
       {
-        v22 = [v7 publicCertificate];
-        [v14 setPublicCertificate:v22];
+        publicCertificate = [v7 publicCertificate];
+        [v14 setPublicCertificate:publicCertificate];
       }
 
       else
@@ -942,20 +942,20 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
       [v14 setExperimentPriority:{objc_msgSend(v7, "priority")}];
       if ([v7 hasInternalBuildOnly])
       {
-        v23 = [v7 internalBuildOnly];
+        internalBuildOnly = [v7 internalBuildOnly];
       }
 
       else
       {
-        v23 = 0;
+        internalBuildOnly = 0;
       }
 
-      [v14 setInternalBuildOnly:v23];
+      [v14 setInternalBuildOnly:internalBuildOnly];
       if ([v7 hasDeploymentDate])
       {
-        v24 = [v7 deploymentDate];
-        v25 = [v24 date];
-        [v14 setDeploymentDate:v25];
+        deploymentDate = [v7 deploymentDate];
+        date = [deploymentDate date];
+        [v14 setDeploymentDate:date];
       }
 
       else
@@ -965,8 +965,8 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
 
       if ([v7 namespacesArray_Count])
       {
-        v26 = [v7 namespacesArray];
-        [v14 setNamespaces:v26];
+        namespacesArray = [v7 namespacesArray];
+        [v14 setNamespaces:namespacesArray];
       }
 
       else
@@ -978,14 +978,14 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
       if ([v7 namespaceCompatibilityVersionsArray_Count])
       {
         v27 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "namespaceCompatibilityVersionsArray_Count")}];
-        v28 = [v7 namespaceCompatibilityVersionsArray];
+        namespaceCompatibilityVersionsArray = [v7 namespaceCompatibilityVersionsArray];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke;
         v32[3] = &unk_279DDF630;
         v33 = v27;
         v29 = v27;
-        [v28 enumerateValuesWithBlock:v32];
+        [namespaceCompatibilityVersionsArray enumerateValuesWithBlock:v32];
 
         [v14 setNamespaceCompatibilityVersions:v29];
       }
@@ -993,15 +993,15 @@ void __54__TRIClientExperimentArtifact_saveWithDatabase_paths___block_invoke(uin
       goto LABEL_34;
     }
 
-    if (a4)
+    if (error)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v35 = *MEMORY[0x277CCA450];
       v36[0] = @"TRIPersistedExperimentArtifact has nil experimentId";
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
       v17 = [v16 initWithDomain:@"TRIGeneralErrorDomain" code:1 userInfo:v15];
-      v18 = *a4;
-      *a4 = v17;
+      v18 = *error;
+      *error = v17;
 
       v14 = 0;
       goto LABEL_34;
@@ -1012,15 +1012,15 @@ LABEL_9:
     goto LABEL_35;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_9;
   }
 
   v13 = v8;
   v14 = 0;
-  v15 = *a4;
-  *a4 = v13;
+  v15 = *error;
+  *error = v13;
 LABEL_34:
 
 LABEL_35:
@@ -1038,29 +1038,29 @@ void __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke(uint64
   [v2 addObject:v3];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIClientExperimentArtifact.m" lineNumber:410 description:@"Do not use NSSecureCoding to persist TRIClientExperimentArtifact to disk. Use protobuf serialization."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientExperimentArtifact.m" lineNumber:410 description:@"Do not use NSSecureCoding to persist TRIClientExperimentArtifact to disk. Use protobuf serialization."];
   }
 
-  v5 = [(TRIClientExperimentArtifact *)self data];
-  [v7 encodeObject:v5 forKey:@"data"];
+  data = [(TRIClientExperimentArtifact *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (TRIClientExperimentArtifact)initWithCoder:(id)a3
+- (TRIClientExperimentArtifact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TRIClientExperimentArtifact;
   v5 = [(TRIClientExperimentArtifact *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     if (v6)
     {
       v11 = 0;
@@ -1073,7 +1073,7 @@ void __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke(uint64
 
       else
       {
-        [v4 failWithError:v11];
+        [coderCopy failWithError:v11];
       }
     }
 
@@ -1093,45 +1093,45 @@ void __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke(uint64
 
 - (unint64_t)hash
 {
-  v2 = [(TRIClientExperimentArtifact *)self experimentDeployment];
-  v3 = [v2 hash];
+  experimentDeployment = [(TRIClientExperimentArtifact *)self experimentDeployment];
+  v3 = [experimentDeployment hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(TRIClientExperimentArtifact *)self experimentDeployment];
-        v8 = [(TRIClientExperimentArtifact *)v6 experimentDeployment];
-        v9 = v8;
-        if (v7 == v8)
+        experimentDeployment = [(TRIClientExperimentArtifact *)self experimentDeployment];
+        experimentDeployment2 = [(TRIClientExperimentArtifact *)v6 experimentDeployment];
+        experiment = experimentDeployment2;
+        if (experimentDeployment == experimentDeployment2)
         {
         }
 
         else
         {
           v10 = 0;
-          if (!v7 || !v8)
+          if (!experimentDeployment || !experimentDeployment2)
           {
             goto LABEL_52;
           }
 
-          v11 = [v7 isEqualToDeployment:v8];
+          v11 = [experimentDeployment isEqualToDeployment:experimentDeployment2];
 
           if ((v11 & 1) == 0)
           {
@@ -1139,34 +1139,34 @@ void __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke(uint64
           }
         }
 
-        v12 = [(TRIClientExperimentArtifact *)self deploymentEnvironment];
-        if (v12 != [(TRIClientExperimentArtifact *)v6 deploymentEnvironment])
+        deploymentEnvironment = [(TRIClientExperimentArtifact *)self deploymentEnvironment];
+        if (deploymentEnvironment != [(TRIClientExperimentArtifact *)v6 deploymentEnvironment])
         {
           goto LABEL_36;
         }
 
-        v13 = [(TRIClientExperimentArtifact *)self cloudKitContainer];
-        if (v13 != [(TRIClientExperimentArtifact *)v6 cloudKitContainer])
+        cloudKitContainer = [(TRIClientExperimentArtifact *)self cloudKitContainer];
+        if (cloudKitContainer != [(TRIClientExperimentArtifact *)v6 cloudKitContainer])
         {
           goto LABEL_36;
         }
 
-        v7 = [(TRIClientExperimentArtifact *)self teamId];
-        v14 = [(TRIClientExperimentArtifact *)v6 teamId];
-        v9 = v14;
-        if (v7 == v14)
+        experimentDeployment = [(TRIClientExperimentArtifact *)self teamId];
+        teamId = [(TRIClientExperimentArtifact *)v6 teamId];
+        experiment = teamId;
+        if (experimentDeployment == teamId)
         {
         }
 
         else
         {
           v10 = 0;
-          if (!v7 || !v14)
+          if (!experimentDeployment || !teamId)
           {
             goto LABEL_52;
           }
 
-          v15 = [v7 isEqualToString:v14];
+          v15 = [experimentDeployment isEqualToString:teamId];
 
           if ((v15 & 1) == 0)
           {
@@ -1174,22 +1174,22 @@ void __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke(uint64
           }
         }
 
-        v7 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
-        v16 = [(TRIClientExperimentArtifact *)v6 encodedExperimentDefinition];
-        v9 = v16;
-        if (v7 == v16)
+        experimentDeployment = [(TRIClientExperimentArtifact *)self encodedExperimentDefinition];
+        encodedExperimentDefinition = [(TRIClientExperimentArtifact *)v6 encodedExperimentDefinition];
+        experiment = encodedExperimentDefinition;
+        if (experimentDeployment == encodedExperimentDefinition)
         {
         }
 
         else
         {
           v10 = 0;
-          if (!v7 || !v16)
+          if (!experimentDeployment || !encodedExperimentDefinition)
           {
             goto LABEL_52;
           }
 
-          v17 = [v7 isEqualToData:v16];
+          v17 = [experimentDeployment isEqualToData:encodedExperimentDefinition];
 
           if ((v17 & 1) == 0)
           {
@@ -1197,22 +1197,22 @@ void __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke(uint64
           }
         }
 
-        v7 = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
-        v18 = [(TRIClientExperimentArtifact *)v6 encodedExperimentDefinitionSignature];
-        v9 = v18;
-        if (v7 == v18)
+        experimentDeployment = [(TRIClientExperimentArtifact *)self encodedExperimentDefinitionSignature];
+        encodedExperimentDefinitionSignature = [(TRIClientExperimentArtifact *)v6 encodedExperimentDefinitionSignature];
+        experiment = encodedExperimentDefinitionSignature;
+        if (experimentDeployment == encodedExperimentDefinitionSignature)
         {
         }
 
         else
         {
           v10 = 0;
-          if (!v7 || !v18)
+          if (!experimentDeployment || !encodedExperimentDefinitionSignature)
           {
             goto LABEL_52;
           }
 
-          v19 = [v7 isEqualToString:v18];
+          v19 = [experimentDeployment isEqualToString:encodedExperimentDefinitionSignature];
 
           if ((v19 & 1) == 0)
           {
@@ -1220,22 +1220,22 @@ void __51__TRIClientExperimentArtifact_parseFromData_error___block_invoke(uint64
           }
         }
 
-        v7 = [(TRIClientExperimentArtifact *)self publicCertificate];
-        v20 = [(TRIClientExperimentArtifact *)v6 publicCertificate];
-        v9 = v20;
-        if (v7 == v20)
+        experimentDeployment = [(TRIClientExperimentArtifact *)self publicCertificate];
+        publicCertificate = [(TRIClientExperimentArtifact *)v6 publicCertificate];
+        experiment = publicCertificate;
+        if (experimentDeployment == publicCertificate)
         {
         }
 
         else
         {
           v10 = 0;
-          if (!v7 || !v20)
+          if (!experimentDeployment || !publicCertificate)
           {
             goto LABEL_52;
           }
 
-          v21 = [v7 isEqualToData:v20];
+          v21 = [experimentDeployment isEqualToData:publicCertificate];
 
           if ((v21 & 1) == 0)
           {
@@ -1247,13 +1247,13 @@ LABEL_53:
           }
         }
 
-        v7 = [(TRIClientExperimentArtifact *)self experiment];
-        v9 = [(TRIClientExperimentArtifact *)v6 experiment];
-        v22 = [v7 isEqual:v9];
+        experimentDeployment = [(TRIClientExperimentArtifact *)self experiment];
+        experiment = [(TRIClientExperimentArtifact *)v6 experiment];
+        v22 = [experimentDeployment isEqual:experiment];
         if ((v22 & 1) == 0)
         {
-          v27 = [(TRIClientExperimentArtifact *)self experiment];
-          if (v27)
+          experiment2 = [(TRIClientExperimentArtifact *)self experiment];
+          if (experiment2)
           {
             v10 = 0;
 LABEL_51:
@@ -1262,20 +1262,20 @@ LABEL_52:
             goto LABEL_53;
           }
 
-          v28 = [(TRIClientExperimentArtifact *)v6 experiment];
-          if (v28)
+          experiment3 = [(TRIClientExperimentArtifact *)v6 experiment];
+          if (experiment3)
           {
             v10 = 0;
 LABEL_49:
 
 LABEL_50:
-            v27 = 0;
+            experiment2 = 0;
             goto LABEL_51;
           }
         }
 
-        v23 = [(TRIClientExperimentArtifact *)self experimentState];
-        if (v23 != [(TRIClientExperimentArtifact *)v6 experimentState]|| (v24 = [(TRIClientExperimentArtifact *)self experimentType], v24 != [(TRIClientExperimentArtifact *)v6 experimentType]) || (v25 = [(TRIClientExperimentArtifact *)self experimentPriority], v25 != [(TRIClientExperimentArtifact *)v6 experimentPriority]) || (v26 = [(TRIClientExperimentArtifact *)self internalBuildOnly], v26 != [(TRIClientExperimentArtifact *)v6 internalBuildOnly]))
+        experimentState = [(TRIClientExperimentArtifact *)self experimentState];
+        if (experimentState != [(TRIClientExperimentArtifact *)v6 experimentState]|| (v24 = [(TRIClientExperimentArtifact *)self experimentType], v24 != [(TRIClientExperimentArtifact *)v6 experimentType]) || (v25 = [(TRIClientExperimentArtifact *)self experimentPriority], v25 != [(TRIClientExperimentArtifact *)v6 experimentPriority]) || (v26 = [(TRIClientExperimentArtifact *)self internalBuildOnly], v26 != [(TRIClientExperimentArtifact *)v6 internalBuildOnly]))
         {
 LABEL_43:
           v10 = 0;
@@ -1287,21 +1287,21 @@ LABEL_43:
           goto LABEL_50;
         }
 
-        v30 = [(TRIClientExperimentArtifact *)self deploymentDate];
-        v31 = [(TRIClientExperimentArtifact *)v6 deploymentDate];
-        v32 = v31;
-        if (v30 == v31)
+        deploymentDate = [(TRIClientExperimentArtifact *)self deploymentDate];
+        deploymentDate2 = [(TRIClientExperimentArtifact *)v6 deploymentDate];
+        v32 = deploymentDate2;
+        if (deploymentDate == deploymentDate2)
         {
         }
 
         else
         {
-          if (!v30 || !v31)
+          if (!deploymentDate || !deploymentDate2)
           {
             goto LABEL_66;
           }
 
-          v33 = [v30 isEqualToDate:v31];
+          v33 = [deploymentDate isEqualToDate:deploymentDate2];
 
           if ((v33 & 1) == 0)
           {
@@ -1309,17 +1309,17 @@ LABEL_43:
           }
         }
 
-        v30 = [(TRIClientExperimentArtifact *)self namespaces];
-        v34 = [(TRIClientExperimentArtifact *)v6 namespaces];
-        v32 = v34;
-        if (v30 == v34)
+        deploymentDate = [(TRIClientExperimentArtifact *)self namespaces];
+        namespaces = [(TRIClientExperimentArtifact *)v6 namespaces];
+        v32 = namespaces;
+        if (deploymentDate == namespaces)
         {
 
 LABEL_69:
-          v36 = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
-          v37 = [(TRIClientExperimentArtifact *)v6 namespaceCompatibilityVersions];
-          v38 = v37;
-          if (v36 == v37)
+          namespaceCompatibilityVersions = [(TRIClientExperimentArtifact *)self namespaceCompatibilityVersions];
+          namespaceCompatibilityVersions2 = [(TRIClientExperimentArtifact *)v6 namespaceCompatibilityVersions];
+          v38 = namespaceCompatibilityVersions2;
+          if (namespaceCompatibilityVersions == namespaceCompatibilityVersions2)
           {
             v10 = 1;
           }
@@ -1327,9 +1327,9 @@ LABEL_69:
           else
           {
             v10 = 0;
-            if (v36 && v37)
+            if (namespaceCompatibilityVersions && namespaceCompatibilityVersions2)
             {
-              v10 = [v36 isEqualToArray:v37];
+              v10 = [namespaceCompatibilityVersions isEqualToArray:namespaceCompatibilityVersions2];
             }
           }
 
@@ -1339,13 +1339,13 @@ LABEL_69:
           }
 
 LABEL_75:
-          v28 = 0;
+          experiment3 = 0;
           goto LABEL_49;
         }
 
-        if (v30 && v34)
+        if (deploymentDate && namespaces)
         {
-          v35 = [v30 isEqualToArray:v34];
+          v35 = [deploymentDate isEqualToArray:namespaces];
 
           if ((v35 & 1) == 0)
           {
@@ -1408,45 +1408,45 @@ LABEL_54:
 
 - (BOOL)isCompatibleCounterfactual
 {
-  v3 = [(TRIClientExperimentArtifact *)self experiment];
+  experiment = [(TRIClientExperimentArtifact *)self experiment];
 
-  if (!v3)
+  if (!experiment)
   {
     return 0;
   }
 
-  v4 = [(TRIClientExperimentArtifact *)self experiment];
-  v5 = [v4 hasCounterfactualLogging];
+  experiment2 = [(TRIClientExperimentArtifact *)self experiment];
+  hasCounterfactualLogging = [experiment2 hasCounterfactualLogging];
 
-  if (!v5)
+  if (!hasCounterfactualLogging)
   {
     return 0;
   }
 
-  v6 = [(TRIClientExperimentArtifact *)self experiment];
-  v7 = [v6 counterfactualLogging];
-  v8 = [v7 version] == 1;
+  experiment3 = [(TRIClientExperimentArtifact *)self experiment];
+  counterfactualLogging = [experiment3 counterfactualLogging];
+  v8 = [counterfactualLogging version] == 1;
 
   return v8;
 }
 
-- (id)counterfactualsTreatmentsToFactorPackSetIdsWithActiveTreatmentId:(id)a3
+- (id)counterfactualsTreatmentsToFactorPackSetIdsWithActiveTreatmentId:(id)id
 {
-  v4 = a3;
-  if ([(TRIClientExperimentArtifact *)self isCompatibleCounterfactual]&& v4)
+  idCopy = id;
+  if ([(TRIClientExperimentArtifact *)self isCompatibleCounterfactual]&& idCopy)
   {
     v5 = objc_opt_new();
-    v6 = [(TRIClientExperimentArtifact *)self experiment];
-    v7 = [v6 factorPackSetMapping];
+    experiment = [(TRIClientExperimentArtifact *)self experiment];
+    factorPackSetMapping = [experiment factorPackSetMapping];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __113__TRIClientExperimentArtifact_Counterfactuals__counterfactualsTreatmentsToFactorPackSetIdsWithActiveTreatmentId___block_invoke;
     v10[3] = &unk_279DDF658;
     v8 = v5;
     v11 = v8;
-    [v7 enumerateKeysAndObjectsUsingBlock:v10];
+    [factorPackSetMapping enumerateKeysAndObjectsUsingBlock:v10];
 
-    [v8 removeObjectForKey:v4];
+    [v8 removeObjectForKey:idCopy];
   }
 
   else
@@ -1464,13 +1464,13 @@ void __113__TRIClientExperimentArtifact_Counterfactuals__counterfactualsTreatmen
   [*(a1 + 32) setObject:v4 forKeyedSubscript:v3];
 }
 
-- (id)factorPackSetIdForTreatmentId:(id)a3
+- (id)factorPackSetIdForTreatmentId:(id)id
 {
-  v4 = a3;
-  v5 = [(TRIClientExperimentArtifact *)self experiment];
-  v6 = [v5 factorPackSetMapping];
+  idCopy = id;
+  experiment = [(TRIClientExperimentArtifact *)self experiment];
+  factorPackSetMapping = [experiment factorPackSetMapping];
 
-  v7 = [v6 valueForKey:v4];
+  v7 = [factorPackSetMapping valueForKey:idCopy];
 
   return v7;
 }

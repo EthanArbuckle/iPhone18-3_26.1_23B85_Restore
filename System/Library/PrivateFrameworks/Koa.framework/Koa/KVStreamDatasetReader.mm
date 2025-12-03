@@ -1,6 +1,6 @@
 @interface KVStreamDatasetReader
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (KVStreamDatasetReader)initWithData:(id)a3 error:(id *)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
+- (KVStreamDatasetReader)initWithData:(id)data error:(id *)error;
 - (NSString)description;
 @end
 
@@ -13,10 +13,10 @@
   return v5;
 }
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v69 = a4;
+  blockCopy = block;
   v10 = objc_msgSend_buffer(self->_datasetInfo, v5, v6, v7, v8, v9);
   self->_offset = objc_msgSend_length(v10, v11, v12, v13, v14, v15) + 4;
 
@@ -46,10 +46,10 @@ LABEL_11:
       v73[0] = v51;
       v54 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v52, v73, &v72, 1, v53);
       v57 = objc_msgSend_errorWithDomain_code_userInfo_(v50, v55, @"com.apple.koa.profile", 10, v54, v56);
-      if (a3 && v57)
+      if (error && v57)
       {
         v57 = v57;
-        *a3 = v57;
+        *error = v57;
       }
 
       goto LABEL_20;
@@ -63,10 +63,10 @@ LABEL_11:
       v71 = v59;
       v62 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v60, &v71, &v70, 1, v61);
       v65 = objc_msgSend_errorWithDomain_code_userInfo_(v58, v63, @"com.apple.koa.profile", 7, v62, v64);
-      if (a3 && v65)
+      if (error && v65)
       {
         v65 = v65;
-        *a3 = v65;
+        *error = v65;
       }
 
 LABEL_20:
@@ -79,13 +79,13 @@ LABEL_20:
     v45 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x277CBEA90], v34, v27 + v44, v43, 0, v37);
     self->_offset += v43;
     v46 = [KVItem alloc];
-    v48 = objc_msgSend_initWithBuffer_verify_copy_error_(v46, v47, v45, 1, 1, a3);
+    v48 = objc_msgSend_initWithBuffer_verify_copy_error_(v46, v47, v45, 1, 1, error);
     if (!v48)
     {
       goto LABEL_22;
     }
 
-    if ((v69[2](v69, v48) & 1) == 0)
+    if ((blockCopy[2](blockCopy, v48) & 1) == 0)
     {
       break;
     }
@@ -105,18 +105,18 @@ LABEL_23:
   return v39;
 }
 
-- (KVStreamDatasetReader)initWithData:(id)a3 error:(id *)a4
+- (KVStreamDatasetReader)initWithData:(id)data error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = KVStreamDatasetReader;
   v8 = [(KVStreamDatasetReader *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_data, a3);
+    objc_storeStrong(&v8->_data, data);
     v10 = [KVDatasetInfo alloc];
-    v14 = objc_msgSend_initWithSizePrefixedBuffer_error_(v10, v11, v7, a4, v12, v13);
+    v14 = objc_msgSend_initWithSizePrefixedBuffer_error_(v10, v11, dataCopy, error, v12, v13);
     datasetInfo = v9->_datasetInfo;
     v9->_datasetInfo = v14;
 

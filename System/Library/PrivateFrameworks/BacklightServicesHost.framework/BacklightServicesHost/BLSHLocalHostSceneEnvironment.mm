@@ -1,5 +1,5 @@
 @interface BLSHLocalHostSceneEnvironment
-- (BLSHLocalHostSceneEnvironment)initWithBacklightSceneEnvironment:(id)a3;
+- (BLSHLocalHostSceneEnvironment)initWithBacklightSceneEnvironment:(id)environment;
 - (BOOL)clientAlwaysOnContentIs1hz;
 - (BOOL)clientHasDelegate;
 - (BOOL)clientSupportsAlwaysOn;
@@ -10,35 +10,35 @@
 - (id)presentationDate;
 - (id)visualState;
 - (void)clearPresentationDate;
-- (void)requestDateSpecifiersForDateInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 completion:(id)a6;
-- (void)requestedFidelityForInactiveContentWithCompletion:(id)a3;
-- (void)setLiveUpdating:(BOOL)a3;
-- (void)setUnrestrictedFramerateUpdates:(BOOL)a3;
-- (void)updateToDateSpecifier:(id)a3 sceneContentsUpdated:(id)a4;
-- (void)updateToVisualState:(id)a3 presentationDateSpecifier:(id)a4 animated:(BOOL)a5 triggerEvent:(id)a6 touchTargetable:(BOOL)a7 sceneContentsUpdated:(id)a8 performBacklightRamp:(id)a9 animationComplete:(id)a10;
+- (void)requestDateSpecifiersForDateInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset completion:(id)completion;
+- (void)requestedFidelityForInactiveContentWithCompletion:(id)completion;
+- (void)setLiveUpdating:(BOOL)updating;
+- (void)setUnrestrictedFramerateUpdates:(BOOL)updates;
+- (void)updateToDateSpecifier:(id)specifier sceneContentsUpdated:(id)updated;
+- (void)updateToVisualState:(id)state presentationDateSpecifier:(id)specifier animated:(BOOL)animated triggerEvent:(id)event touchTargetable:(BOOL)targetable sceneContentsUpdated:(id)updated performBacklightRamp:(id)ramp animationComplete:(id)self0;
 @end
 
 @implementation BLSHLocalHostSceneEnvironment
 
-- (BLSHLocalHostSceneEnvironment)initWithBacklightSceneEnvironment:(id)a3
+- (BLSHLocalHostSceneEnvironment)initWithBacklightSceneEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  environmentCopy = environment;
+  identifier = [environmentCopy identifier];
   v12.receiver = self;
   v12.super_class = BLSHLocalHostSceneEnvironment;
-  v6 = [(BLSHBaseSceneHostEnvironment *)&v12 initWithIdentifier:v5];
+  v6 = [(BLSHBaseSceneHostEnvironment *)&v12 initWithIdentifier:identifier];
 
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v6->_clientEnvironment, v4);
-    v7 = [v4 visualState];
+    objc_storeWeak(&v6->_clientEnvironment, environmentCopy);
+    visualState = [environmentCopy visualState];
     lock_visualState = v6->_lock_visualState;
-    v6->_lock_visualState = v7;
+    v6->_lock_visualState = visualState;
 
-    v9 = [v4 presentationDate];
+    presentationDate = [environmentCopy presentationDate];
     lock_presentationDate = v6->_lock_presentationDate;
-    v6->_lock_presentationDate = v9;
+    v6->_lock_presentationDate = presentationDate;
 
     [(BLSHBaseSceneHostEnvironment *)v6 setAlwaysOnEnabledForEnvironment:1];
   }
@@ -57,8 +57,8 @@
 - (BOOL)clientHasDelegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v3 = [WeakRetained delegate];
-  v4 = v3 != 0;
+  delegate = [WeakRetained delegate];
+  v4 = delegate != 0;
 
   return v4;
 }
@@ -66,9 +66,9 @@
 - (BOOL)isClientActive
 {
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v3 = [WeakRetained isDelegateActive];
+  isDelegateActive = [WeakRetained isDelegateActive];
 
-  return v3;
+  return isDelegateActive;
 }
 
 - (id)visualState
@@ -83,28 +83,28 @@
 - (BOOL)clientSupportsAlwaysOn
 {
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v3 = [WeakRetained supportsAlwaysOn];
+  supportsAlwaysOn = [WeakRetained supportsAlwaysOn];
 
-  return v3;
+  return supportsAlwaysOn;
 }
 
 - (BOOL)clientAlwaysOnContentIs1hz
 {
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v3 = [WeakRetained alwaysOnContentIs1hz];
+  alwaysOnContentIs1hz = [WeakRetained alwaysOnContentIs1hz];
 
-  return v3;
+  return alwaysOnContentIs1hz;
 }
 
 - (BOOL)isLiveUpdating
 {
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v3 = [WeakRetained isLiveUpdating];
+  isLiveUpdating = [WeakRetained isLiveUpdating];
 
-  return v3;
+  return isLiveUpdating;
 }
 
-- (void)setLiveUpdating:(BOOL)a3
+- (void)setLiveUpdating:(BOOL)updating
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Shouldn't be called on this subclass"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -117,7 +117,7 @@
     v11 = 2114;
     v12 = v8;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BLSHLocalHostSceneEnvironment.m";
     v17 = 1024;
@@ -135,12 +135,12 @@
 - (BOOL)hasUnrestrictedFramerateUpdates
 {
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v3 = [WeakRetained hasUnrestrictedFramerateUpdates];
+  hasUnrestrictedFramerateUpdates = [WeakRetained hasUnrestrictedFramerateUpdates];
 
-  return v3;
+  return hasUnrestrictedFramerateUpdates;
 }
 
-- (void)setUnrestrictedFramerateUpdates:(BOOL)a3
+- (void)setUnrestrictedFramerateUpdates:(BOOL)updates
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Shouldn't be called on this subclass"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -153,7 +153,7 @@
     v11 = 2114;
     v12 = v8;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BLSHLocalHostSceneEnvironment.m";
     v17 = 1024;
@@ -196,11 +196,11 @@
 
   if (os_log_type_enabled(v3, v6))
   {
-    v7 = [(NSDate *)lock_presentationDate bls_shortLoggingString];
+    bls_shortLoggingString = [(NSDate *)lock_presentationDate bls_shortLoggingString];
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v7;
+    v12 = bls_shortLoggingString;
     _os_log_impl(&dword_21FD11000, v4, v6, "%p (localHostEnv) not clearing cached presentation date:%{public}@ (should be cleared later by host)", &v9, 0x16u);
   }
 
@@ -208,26 +208,26 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDateSpecifiersForDateInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 completion:(id)a6
+- (void)requestDateSpecifiersForDateInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  intervalCopy = interval;
+  dateCopy = date;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v13 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __118__BLSHLocalHostSceneEnvironment_requestDateSpecifiersForDateInterval_previousPresentationDate_shouldReset_completion___block_invoke;
   v18[3] = &unk_278420768;
-  v19 = v10;
+  v19 = dateCopy;
   v20 = WeakRetained;
-  v21 = v9;
-  v22 = v11;
-  v14 = v11;
-  v15 = v9;
+  v21 = intervalCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = intervalCopy;
   v16 = WeakRetained;
-  v17 = v10;
-  [v13 environment:v16 timelinesForDateInterval:v15 previousSpecifier:0 completion:v18];
+  v17 = dateCopy;
+  [delegate environment:v16 timelinesForDateInterval:v15 previousSpecifier:0 completion:v18];
 }
 
 void __118__BLSHLocalHostSceneEnvironment_requestDateSpecifiersForDateInterval_previousPresentationDate_shouldReset_completion___block_invoke(uint64_t a1, void *a2)
@@ -265,54 +265,54 @@ id __118__BLSHLocalHostSceneEnvironment_requestDateSpecifiersForDateInterval_pre
   return v8;
 }
 
-- (void)requestedFidelityForInactiveContentWithCompletion:(id)a3
+- (void)requestedFidelityForInactiveContentWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v6 = [WeakRetained visualState];
-  (*(a3 + 2))(v5, [v6 updateFidelity]);
+  visualState = [WeakRetained visualState];
+  (*(completion + 2))(completionCopy, [visualState updateFidelity]);
 }
 
-- (void)updateToDateSpecifier:(id)a3 sceneContentsUpdated:(id)a4
+- (void)updateToDateSpecifier:(id)specifier sceneContentsUpdated:(id)updated
 {
   v103 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  specifierCopy = specifier;
+  updatedCopy = updated;
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v10 = [WeakRetained visualState];
-  v11 = [v7 userObject];
-  v81 = v10;
-  v78 = v11;
+  visualState = [WeakRetained visualState];
+  userObject = [specifierCopy userObject];
+  v81 = visualState;
+  v78 = userObject;
   v75 = a2;
-  if (v11)
+  if (userObject)
   {
-    v12 = v11;
+    v12 = userObject;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(BLSHLocalHostSceneEnvironment *)self updateToDateSpecifier:v7 sceneContentsUpdated:a2];
+      [(BLSHLocalHostSceneEnvironment *)self updateToDateSpecifier:specifierCopy sceneContentsUpdated:a2];
     }
 
-    v13 = [v12 context];
-    v14 = [v13 isAnimated];
-    v15 = [v13 isTouchTargetable];
-    v80 = [v13 previousVisualState];
-    v16 = [v13 triggerEvent];
+    context = [v12 context];
+    isAnimated = [context isAnimated];
+    isTouchTargetable = [context isTouchTargetable];
+    previousVisualState = [context previousVisualState];
+    triggerEvent = [context triggerEvent];
 
-    if (v16)
+    if (triggerEvent)
     {
       [BLSHLocalHostSceneEnvironment updateToDateSpecifier:v75 sceneContentsUpdated:?];
     }
 
-    v17 = [v13 visualState];
-    v18 = [v17 isEqual:v81];
+    visualState2 = [context visualState];
+    v18 = [visualState2 isEqual:v81];
 
     if ((v18 & 1) == 0)
     {
       v57 = MEMORY[0x277CCACA8];
-      v58 = [(BLSHBaseSceneHostEnvironment *)self identifier];
-      v59 = [v13 visualState];
-      v60 = [v57 stringWithFormat:@"%p %@: scene update visual state and clientEnvironment's visual state don't match: %@, %@", self, v58, v59, v81];
+      identifier = [(BLSHBaseSceneHostEnvironment *)self identifier];
+      visualState3 = [context visualState];
+      v60 = [v57 stringWithFormat:@"%p %@: scene update visual state and clientEnvironment's visual state don't match: %@, %@", self, identifier, visualState3, v81];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -328,28 +328,28 @@ id __118__BLSHLocalHostSceneEnvironment_requestDateSpecifiersForDateInterval_pre
 
   else
   {
-    v80 = v10;
-    v15 = 0;
-    v14 = 0;
+    previousVisualState = visualState;
+    isTouchTargetable = 0;
+    isAnimated = 0;
   }
 
-  v19 = [WeakRetained alwaysOnSession];
-  v20 = [v7 date];
-  v77 = v19;
-  v21 = [v19 specifierForPresentationDate:v20];
+  alwaysOnSession = [WeakRetained alwaysOnSession];
+  date = [specifierCopy date];
+  v77 = alwaysOnSession;
+  v21 = [alwaysOnSession specifierForPresentationDate:date];
 
   if (v21)
   {
-    v22 = [v21 grantedFidelity];
-    if (v22 != [v7 fidelity])
+    grantedFidelity = [v21 grantedFidelity];
+    if (grantedFidelity != [specifierCopy fidelity])
     {
       v52 = MEMORY[0x277CCACA8];
-      v53 = [(BLSHBaseSceneHostEnvironment *)self identifier];
+      identifier2 = [(BLSHBaseSceneHostEnvironment *)self identifier];
       [v21 grantedFidelity];
       v54 = NSStringFromBLSUpdateFidelity();
-      [v7 fidelity];
+      [specifierCopy fidelity];
       v55 = NSStringFromBLSUpdateFidelity();
-      v56 = [v52 stringWithFormat:@"%p %@:frameSpecifier %@ grantedFidelity (%@) doesn't match dateSpecifier %@ fidelity (%@)", self, v53, v21, v54, v7, v55];
+      v56 = [v52 stringWithFormat:@"%p %@:frameSpecifier %@ grantedFidelity (%@) doesn't match dateSpecifier %@ fidelity (%@)", self, identifier2, v21, v54, specifierCopy, v55];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -364,28 +364,28 @@ id __118__BLSHLocalHostSceneEnvironment_requestDateSpecifiersForDateInterval_pre
   }
 
   BYTE1(v66) = 1;
-  LOBYTE(v66) = v15;
-  v79 = [objc_alloc(MEMORY[0x277CF08A0]) initForEnvironment:WeakRetained visualState:v81 previousVisualState:v80 frameSpecifier:v21 animated:v14 triggerEvent:0 touchTargetable:v66 isUpdateToDateSpecifier:v8 sceneContentsUpdated:0 performBacklightRamp:0 sceneContentsAnimationComplete:?];
+  LOBYTE(v66) = isTouchTargetable;
+  v79 = [objc_alloc(MEMORY[0x277CF08A0]) initForEnvironment:WeakRetained visualState:v81 previousVisualState:previousVisualState frameSpecifier:v21 animated:isAnimated triggerEvent:0 touchTargetable:v66 isUpdateToDateSpecifier:updatedCopy sceneContentsUpdated:0 performBacklightRamp:0 sceneContentsAnimationComplete:?];
   os_unfair_lock_lock(&self->_lock);
-  v23 = [v21 presentationInterval];
-  v24 = v23;
-  v76 = v8;
-  if (v23)
+  presentationInterval = [v21 presentationInterval];
+  v24 = presentationInterval;
+  v76 = updatedCopy;
+  if (presentationInterval)
   {
-    v25 = [v23 startDate];
+    startDate = [presentationInterval startDate];
     lock_presentationDate = self->_lock_presentationDate;
-    self->_lock_presentationDate = v25;
+    self->_lock_presentationDate = startDate;
 
     v88 = 0.0;
-    v27 = [WeakRetained presentationDate];
-    v28 = [v24 bls_containsDate:v27 withEpsilon:&v88 outDelta:0.0001];
+    presentationDate = [WeakRetained presentationDate];
+    v28 = [v24 bls_containsDate:presentationDate withEpsilon:&v88 outDelta:0.0001];
 
     if ((v28 & 1) == 0)
     {
       v29 = bls_environment_log();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
       {
-        v73 = [WeakRetained identifier];
+        identifier3 = [WeakRetained identifier];
         v47 = @"early";
         if (v88 > 0.0)
         {
@@ -403,29 +403,29 @@ id __118__BLSHLocalHostSceneEnvironment_requestDateSpecifiersForDateInterval_pre
           v48 = -v88;
         }
 
-        v70 = [v7 bls_shortLoggingString];
-        v49 = [WeakRetained frameSpecifier];
-        v50 = [v81 bls_shortLoggingString];
-        v51 = [v81 bls_shortLoggingString];
+        bls_shortLoggingString = [specifierCopy bls_shortLoggingString];
+        frameSpecifier = [WeakRetained frameSpecifier];
+        bls_shortLoggingString2 = [v81 bls_shortLoggingString];
+        bls_shortLoggingString3 = [v81 bls_shortLoggingString];
         *buf = 138544898;
-        v90 = v73;
+        selfCopy2 = identifier3;
         v91 = 2112;
         v92 = v67;
         v93 = 2048;
         v94 = v48;
         v95 = 2114;
-        v96 = v70;
+        v96 = bls_shortLoggingString;
         v97 = 2114;
-        v98 = v49;
+        v98 = frameSpecifier;
         v99 = 2114;
-        v100 = v50;
+        v100 = bls_shortLoggingString2;
         v101 = 2114;
-        v102 = v51;
+        v102 = bls_shortLoggingString3;
         _os_log_fault_impl(&dword_21FD11000, v29, OS_LOG_TYPE_FAULT, "updateToDateSpecifier: %{public}@ clientEnv.presentationDate too %@ for presentationInterval by %0.4fs dateSpecifier:%{public}@ clientEnv.frameSpecifier:%{public}@ visualState:%{public}@ clientEnv.visualState:%{public}@", buf, 0x48u);
       }
     }
 
-    if (v7)
+    if (specifierCopy)
     {
       goto LABEL_14;
     }
@@ -433,17 +433,17 @@ id __118__BLSHLocalHostSceneEnvironment_requestDateSpecifiersForDateInterval_pre
 
   else
   {
-    v33 = [WeakRetained presentationDate];
+    presentationDate2 = [WeakRetained presentationDate];
     v34 = self->_lock_presentationDate;
-    self->_lock_presentationDate = v33;
+    self->_lock_presentationDate = presentationDate2;
 
-    if (v7)
+    if (specifierCopy)
     {
 LABEL_14:
-      v30 = [v7 fidelity];
-      if ([(BLSBacklightSceneVisualState *)self->_lock_visualState updateFidelity]!= v30)
+      fidelity = [specifierCopy fidelity];
+      if ([(BLSBacklightSceneVisualState *)self->_lock_visualState updateFidelity]!= fidelity)
       {
-        v31 = [(BLSBacklightSceneVisualState *)self->_lock_visualState newVisualStateWithUpdateFidelity:v30];
+        v31 = [(BLSBacklightSceneVisualState *)self->_lock_visualState newVisualStateWithUpdateFidelity:fidelity];
         lock_visualState = self->_lock_visualState;
         self->_lock_visualState = v31;
       }
@@ -466,26 +466,26 @@ LABEL_20:
     v38 = bls_environment_log();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
     {
-      v72 = [(BLSBacklightSceneVisualState *)v36 bls_shortLoggingString];
-      v69 = [WeakRetained identifier];
-      v45 = [v81 bls_shortLoggingString];
+      bls_shortLoggingString4 = [(BLSBacklightSceneVisualState *)v36 bls_shortLoggingString];
+      identifier4 = [WeakRetained identifier];
+      bls_shortLoggingString5 = [v81 bls_shortLoggingString];
       *buf = 138543874;
-      v90 = v72;
+      selfCopy2 = bls_shortLoggingString4;
       v91 = 2114;
-      v92 = v69;
+      v92 = identifier4;
       v93 = 2114;
-      v94 = *&v45;
-      v46 = v45;
+      v94 = *&bls_shortLoggingString5;
+      v46 = bls_shortLoggingString5;
       _os_log_fault_impl(&dword_21FD11000, v38, OS_LOG_TYPE_FAULT, "hostSceneVisualState != clientEnvVisualState. visualState:%{public}@ clientEnvironment:%{public}@ clientEnvVisualState:%{public}@", buf, 0x20u);
     }
 
     if (os_variant_has_internal_diagnostics() && ([(BLSBacklightSceneVisualState *)v36 isEqual:v81]& 1) == 0)
     {
       v71 = MEMORY[0x277CCACA8];
-      v74 = [(BLSBacklightSceneVisualState *)v36 bls_shortLoggingString];
-      v68 = [WeakRetained identifier];
-      v61 = [v81 bls_shortLoggingString];
-      v62 = [v71 stringWithFormat:@"visualState:%@ clientEnvironment:%@ clientEnvVisualState:%@", v74, v68, v61];
+      bls_shortLoggingString6 = [(BLSBacklightSceneVisualState *)v36 bls_shortLoggingString];
+      identifier5 = [WeakRetained identifier];
+      bls_shortLoggingString7 = [v81 bls_shortLoggingString];
+      v62 = [v71 stringWithFormat:@"visualState:%@ clientEnvironment:%@ clientEnvVisualState:%@", bls_shortLoggingString6, identifier5, bls_shortLoggingString7];
 
       v63 = v62;
       BLSHRecordCriticalAssertFailure(v62, 1, 0);
@@ -495,7 +495,7 @@ LABEL_20:
       v82[3] = &unk_278420790;
       v83 = v36;
       v84 = WeakRetained;
-      v86 = self;
+      selfCopy = self;
       v87 = v75;
       v85 = v81;
       v64 = MEMORY[0x223D70730](v82);
@@ -526,14 +526,14 @@ LABEL_20:
 
   if (os_log_type_enabled(v39, v40))
   {
-    v41 = [(BLSHBaseSceneHostEnvironment *)self identifier];
-    v42 = [WeakRetained delegate];
+    identifier6 = [(BLSHBaseSceneHostEnvironment *)self identifier];
+    delegate = [WeakRetained delegate];
     *buf = 134218754;
-    v90 = self;
+    selfCopy2 = self;
     v91 = 2114;
-    v92 = v41;
+    v92 = identifier6;
     v93 = 2114;
-    v94 = *&v42;
+    v94 = *&delegate;
     v95 = 2114;
     v96 = v79;
     _os_log_impl(&dword_21FD11000, v39, v40, "%p (localHostEnv) updateToDateSpecifier: calling performBacklightSceneUpdate: on delegate for %{public}@ %{public}@ with %{public}@", buf, 0x2Au);
@@ -541,8 +541,8 @@ LABEL_20:
     v37 = v81;
   }
 
-  v43 = [WeakRetained delegate];
-  [v43 environment:WeakRetained performBacklightSceneUpdate:v79];
+  delegate2 = [WeakRetained delegate];
+  [delegate2 environment:WeakRetained performBacklightSceneUpdate:v79];
 
   v44 = *MEMORY[0x277D85DE8];
 }
@@ -584,73 +584,73 @@ void __76__BLSHLocalHostSceneEnvironment_updateToDateSpecifier_sceneContentsUpda
   __break(0);
 }
 
-- (void)updateToVisualState:(id)a3 presentationDateSpecifier:(id)a4 animated:(BOOL)a5 triggerEvent:(id)a6 touchTargetable:(BOOL)a7 sceneContentsUpdated:(id)a8 performBacklightRamp:(id)a9 animationComplete:(id)a10
+- (void)updateToVisualState:(id)state presentationDateSpecifier:(id)specifier animated:(BOOL)animated triggerEvent:(id)event touchTargetable:(BOOL)targetable sceneContentsUpdated:(id)updated performBacklightRamp:(id)ramp animationComplete:(id)self0
 {
-  v88 = a5;
+  animatedCopy = animated;
   v111 = *MEMORY[0x277D85DE8];
-  v94 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  stateCopy = state;
+  specifierCopy = specifier;
+  eventCopy = event;
+  updatedCopy = updated;
+  rampCopy = ramp;
+  completeCopy = complete;
   WeakRetained = objc_loadWeakRetained(&self->_clientEnvironment);
-  v95 = v14;
-  v20 = [v14 userObject];
+  v95 = specifierCopy;
+  userObject = [specifierCopy userObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v76 = MEMORY[0x277CCACA8];
-    v77 = [WeakRetained identifier];
-    v78 = [v76 stringWithFormat:@"%p %@: userObject on %@ is not a BLSBacklightSceneUpdate", self, v77, v14];
+    identifier = [WeakRetained identifier];
+    specifierCopy = [v76 stringWithFormat:@"%p %@: userObject on %@ is not a BLSBacklightSceneUpdate", self, identifier, specifierCopy];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [BLSHLocalHostSceneEnvironment updateToVisualState:a2 presentationDateSpecifier:? animated:? triggerEvent:? touchTargetable:? sceneContentsUpdated:? performBacklightRamp:? animationComplete:?];
     }
 
-    [v78 UTF8String];
+    [specifierCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x21FD6A4ACLL);
   }
 
-  v93 = v20;
-  [v20 context];
-  v22 = v21 = v16;
-  v23 = [v22 previousVisualState];
+  v93 = userObject;
+  [userObject context];
+  v22 = v21 = updatedCopy;
+  previousVisualState = [v22 previousVisualState];
 
   [WeakRetained alwaysOnSession];
   v25 = v24 = self;
-  v26 = [v95 date];
+  date = [v95 date];
   v83 = v25;
   v27 = v25;
   v28 = v24;
-  v29 = [v27 specifierForPresentationDate:v26];
+  v29 = [v27 specifierForPresentationDate:date];
 
   v30 = objc_alloc(MEMORY[0x277CF08A0]);
-  v91 = v18;
-  v84 = v17;
+  v91 = completeCopy;
+  v84 = rampCopy;
   v85 = v21;
-  LOWORD(v79) = a7;
-  v31 = v88;
-  v87 = v23;
-  v89 = v15;
-  v81 = [v30 initForEnvironment:WeakRetained visualState:v94 previousVisualState:v23 frameSpecifier:v29 animated:v31 triggerEvent:v15 touchTargetable:v79 isUpdateToDateSpecifier:v21 sceneContentsUpdated:v17 performBacklightRamp:v18 sceneContentsAnimationComplete:?];
+  LOWORD(v79) = targetable;
+  v31 = animatedCopy;
+  v87 = previousVisualState;
+  v89 = eventCopy;
+  v81 = [v30 initForEnvironment:WeakRetained visualState:stateCopy previousVisualState:previousVisualState frameSpecifier:v29 animated:v31 triggerEvent:eventCopy touchTargetable:v79 isUpdateToDateSpecifier:v21 sceneContentsUpdated:rampCopy performBacklightRamp:completeCopy sceneContentsAnimationComplete:?];
   os_unfair_lock_lock(&v28->_lock);
   v82 = v29;
-  v32 = [v29 presentationInterval];
-  v33 = v32;
-  v34 = v94;
-  if (v32)
+  presentationInterval = [v29 presentationInterval];
+  v33 = presentationInterval;
+  v34 = stateCopy;
+  if (presentationInterval)
   {
-    v35 = [v32 startDate];
+    startDate = [presentationInterval startDate];
     lock_presentationDate = v28->_lock_presentationDate;
-    v28->_lock_presentationDate = v35;
+    v28->_lock_presentationDate = startDate;
 
     v96 = 0.0;
-    v37 = [WeakRetained presentationDate];
-    v38 = [v33 bls_containsDate:v37 withEpsilon:&v96 outDelta:0.0001];
+    presentationDate = [WeakRetained presentationDate];
+    v38 = [v33 bls_containsDate:presentationDate withEpsilon:&v96 outDelta:0.0001];
 
     v39 = WeakRetained;
     if ((v38 & 1) == 0)
@@ -658,7 +658,7 @@ void __76__BLSHLocalHostSceneEnvironment_updateToDateSpecifier_sceneContentsUpda
       v40 = bls_environment_log();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
       {
-        v68 = [WeakRetained identifier];
+        identifier2 = [WeakRetained identifier];
         v69 = @"early";
         if (v96 > 0.0)
         {
@@ -676,44 +676,44 @@ void __76__BLSHLocalHostSceneEnvironment_updateToDateSpecifier_sceneContentsUpda
           v70 = -v96;
         }
 
-        v71 = [v95 bls_shortLoggingString];
-        v72 = [WeakRetained frameSpecifier];
-        v73 = [(__CFString *)v94 bls_shortLoggingString];
-        v74 = [WeakRetained visualState];
-        v75 = [v74 bls_shortLoggingString];
+        bls_shortLoggingString = [v95 bls_shortLoggingString];
+        frameSpecifier = [WeakRetained frameSpecifier];
+        bls_shortLoggingString2 = [(__CFString *)stateCopy bls_shortLoggingString];
+        visualState = [WeakRetained visualState];
+        bls_shortLoggingString3 = [visualState bls_shortLoggingString];
         *buf = 138544898;
-        v98 = v68;
+        v98 = identifier2;
         v99 = 2112;
         v100 = v80;
         v101 = 2048;
         v102 = v70;
         v103 = 2114;
-        v104 = v71;
+        v104 = bls_shortLoggingString;
         v105 = 2114;
-        v106 = v72;
+        v106 = frameSpecifier;
         v107 = 2114;
-        v108 = v73;
+        v108 = bls_shortLoggingString2;
         v109 = 2114;
-        v110 = v75;
+        v110 = bls_shortLoggingString3;
         _os_log_fault_impl(&dword_21FD11000, v40, OS_LOG_TYPE_FAULT, "updateToVisualState: %{public}@ clientEnv.presentationDate too %@ for presentationInterval by %0.4fs presentationDateSpecifier:%{public}@ clientEnv.frameSpecifier:%{public}@ visualState:%{public}@ clientEnv.visualState:%{public}@", buf, 0x48u);
 
-        v34 = v94;
+        v34 = stateCopy;
       }
     }
   }
 
   else
   {
-    v41 = [WeakRetained presentationDate];
+    presentationDate2 = [WeakRetained presentationDate];
     v42 = v28->_lock_presentationDate;
-    v28->_lock_presentationDate = v41;
+    v28->_lock_presentationDate = presentationDate2;
 
     v39 = WeakRetained;
   }
 
   lock_visualStateMismatchStartTime = v28->_lock_visualStateMismatchStartTime;
-  v44 = [v39 visualState];
-  v45 = [(__CFString *)v34 isEssentiallyEqualToVisualState:v44];
+  visualState2 = [v39 visualState];
+  v45 = [(__CFString *)v34 isEssentiallyEqualToVisualState:visualState2];
 
   v46 = v28->_lock_visualStateMismatchStartTime;
   if (lock_visualStateMismatchStartTime && v45)
@@ -721,7 +721,7 @@ void __76__BLSHLocalHostSceneEnvironment_updateToDateSpecifier_sceneContentsUpda
     v47 = v28->_lock_visualStateMismatchStartTime;
     v28->_lock_visualStateMismatchStartTime = 0;
     v48 = v93;
-    v49 = a3;
+    stateCopy4 = state;
   }
 
   else
@@ -729,7 +729,7 @@ void __76__BLSHLocalHostSceneEnvironment_updateToDateSpecifier_sceneContentsUpda
     v48 = v93;
     if ((lock_visualStateMismatchStartTime != 0) | v45 & 1)
     {
-      v49 = a3;
+      stateCopy4 = state;
       goto LABEL_14;
     }
 
@@ -740,11 +740,11 @@ void __76__BLSHLocalHostSceneEnvironment_updateToDateSpecifier_sceneContentsUpda
     v52 = v50;
     v47 = v46;
     v46 = v52;
-    v49 = a3;
+    stateCopy4 = state;
   }
 
 LABEL_14:
-  objc_storeStrong(&v28->_lock_visualState, v49);
+  objc_storeStrong(&v28->_lock_visualState, stateCopy4);
   os_unfair_lock_unlock(&v28->_lock);
   v53 = v33;
   if (v45)
@@ -759,13 +759,13 @@ LABEL_14:
     v56 = bls_environment_log();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
-      v57 = [(NSDate *)v46 bls_loggingString];
+      bls_loggingString = [(NSDate *)v46 bls_loggingString];
       *buf = 134218498;
       v98 = v28;
       v99 = 2114;
-      v100 = v57;
+      v100 = bls_loggingString;
       v101 = 2114;
-      v102 = *&v94;
+      v102 = *&stateCopy;
       _os_log_impl(&dword_21FD11000, v56, OS_LOG_TYPE_DEFAULT, "%p: (localhostEnv) resolved visualStateMismatch from %{public}@ to %{public}@", buf, 0x20u);
     }
   }
@@ -787,19 +787,19 @@ LABEL_14:
     v55 = v81;
     if (os_log_type_enabled(v58, v59))
     {
-      v60 = [v39 visualState];
-      v61 = [v39 identifier];
-      v62 = [(NSDate *)v46 bls_loggingString];
+      visualState3 = [v39 visualState];
+      identifier3 = [v39 identifier];
+      bls_loggingString2 = [(NSDate *)v46 bls_loggingString];
       *buf = 134219010;
       v98 = v28;
       v99 = 2112;
-      v100 = v94;
+      v100 = stateCopy;
       v101 = 2112;
-      v102 = *&v60;
+      v102 = *&visualState3;
       v103 = 2112;
-      v104 = v61;
+      v104 = identifier3;
       v105 = 2114;
-      v106 = v62;
+      v106 = bls_loggingString2;
       _os_log_impl(&dword_21FD11000, v56, v59, "%p (localHostEnv) new visualState %@ is not the same as visualState from clientEnvironment: %@, %@ mismatch began at %{public}@", buf, 0x34u);
     }
 
@@ -811,14 +811,14 @@ LABEL_25:
   v63 = bls_environment_log();
   if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
   {
-    v66 = [(BLSHBaseSceneHostEnvironment *)v28 identifier];
-    v67 = [v39 delegate];
+    identifier4 = [(BLSHBaseSceneHostEnvironment *)v28 identifier];
+    delegate = [v39 delegate];
     *buf = 134218754;
     v98 = v28;
     v99 = 2114;
-    v100 = v66;
+    v100 = identifier4;
     v101 = 2114;
-    v102 = *&v67;
+    v102 = *&delegate;
     v103 = 2114;
     v104 = v55;
     _os_log_debug_impl(&dword_21FD11000, v63, OS_LOG_TYPE_DEBUG, "%p (localHostEnv) updateToVisualState: calling performBacklightSceneUpdate: on delegate for %{public}@ %{public}@ with %{public}@", buf, 0x2Au);
@@ -826,8 +826,8 @@ LABEL_25:
     v54 = v91;
   }
 
-  v64 = [v39 delegate];
-  [v64 environment:v39 performBacklightSceneUpdate:v55];
+  delegate2 = [v39 delegate];
+  [delegate2 environment:v39 performBacklightSceneUpdate:v55];
 
   v65 = *MEMORY[0x277D85DE8];
 }

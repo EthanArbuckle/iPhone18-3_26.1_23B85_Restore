@@ -1,18 +1,18 @@
 @interface PGFeatureExtractorFaceCountScore
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorFaceCountScore
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 mediaAnalysisProperties];
-  v6 = [v5 faceCount];
+  mediaAnalysisProperties = [entity mediaAnalysisProperties];
+  faceCount = [mediaAnalysisProperties faceCount];
   v7 = MEMORY[0x277D22C40];
-  v8 = [(PGFeatureExtractorFaceCountScore *)self featureLength];
-  *&v9 = v6;
-  v10 = [v7 vectorRepeatingFloat:v8 count:v9];
+  featureLength = [(PGFeatureExtractorFaceCountScore *)self featureLength];
+  *&v9 = faceCount;
+  v10 = [v7 vectorRepeatingFloat:featureLength count:v9];
 
   return v10;
 }

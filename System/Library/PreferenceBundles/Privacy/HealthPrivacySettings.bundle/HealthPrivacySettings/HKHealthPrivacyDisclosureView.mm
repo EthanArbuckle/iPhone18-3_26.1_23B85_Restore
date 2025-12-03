@@ -1,66 +1,66 @@
 @interface HKHealthPrivacyDisclosureView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HKHealthPrivacyDisclosureView)initWithBodyText:(id)a3 linkText:(id)a4 linkAction:(id)a5;
-- (void)_setUpFooterTextViewWithBodyText:(id)a3 linkRange:(_NSRange)a4 link:(id)a5;
-- (void)_setUpFooterTextViewWithFullText:(id)a3 linkText:(id)a4 link:(id)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HKHealthPrivacyDisclosureView)initWithBodyText:(id)text linkText:(id)linkText linkAction:(id)action;
+- (void)_setUpFooterTextViewWithBodyText:(id)text linkRange:(_NSRange)range link:(id)link;
+- (void)_setUpFooterTextViewWithFullText:(id)text linkText:(id)linkText link:(id)link;
 - (void)_setupConstraints;
 @end
 
 @implementation HKHealthPrivacyDisclosureView
 
-- (HKHealthPrivacyDisclosureView)initWithBodyText:(id)a3 linkText:(id)a4 linkAction:(id)a5
+- (HKHealthPrivacyDisclosureView)initWithBodyText:(id)text linkText:(id)linkText linkAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  linkTextCopy = linkText;
+  actionCopy = action;
   v17.receiver = self;
   v17.super_class = HKHealthPrivacyDisclosureView;
   v11 = [(HKHealthPrivacyDisclosureView *)&v17 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v11)
   {
-    v12 = objc_retainBlock(v10);
+    v12 = objc_retainBlock(actionCopy);
     linkAction = v11->_linkAction;
     v11->_linkAction = v12;
 
     v14 = [NSURL URLWithString:@"tap://"];
-    v15 = [NSString stringWithFormat:@"%@\n%@", v8, v9];
-    [(HKHealthPrivacyDisclosureView *)v11 _setUpFooterTextViewWithFullText:v15 linkText:v9 link:v14];
+    linkTextCopy = [NSString stringWithFormat:@"%@\n%@", textCopy, linkTextCopy];
+    [(HKHealthPrivacyDisclosureView *)v11 _setUpFooterTextViewWithFullText:linkTextCopy linkText:linkTextCopy link:v14];
     [(HKHealthPrivacyDisclosureView *)v11 _setupConstraints];
   }
 
   return v11;
 }
 
-- (void)_setUpFooterTextViewWithFullText:(id)a3 linkText:(id)a4 link:(id)a5
+- (void)_setUpFooterTextViewWithFullText:(id)text linkText:(id)linkText link:(id)link
 {
-  v8 = a5;
-  v11 = a3;
-  v9 = [v11 rangeOfString:a4];
-  [(HKHealthPrivacyDisclosureView *)self _setUpFooterTextViewWithBodyText:v11 linkRange:v9 link:v10, v8];
+  linkCopy = link;
+  textCopy = text;
+  v9 = [textCopy rangeOfString:linkText];
+  [(HKHealthPrivacyDisclosureView *)self _setUpFooterTextViewWithBodyText:textCopy linkRange:v9 link:v10, linkCopy];
 }
 
-- (void)_setUpFooterTextViewWithBodyText:(id)a3 linkRange:(_NSRange)a4 link:(id)a5
+- (void)_setUpFooterTextViewWithBodyText:(id)text linkRange:(_NSRange)range link:(id)link
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = a3;
+  length = range.length;
+  location = range.location;
+  linkCopy = link;
+  textCopy = text;
   v11 = +[UIListContentConfiguration footerConfiguration];
-  v12 = [v11 textProperties];
-  v13 = [v12 color];
+  textProperties = [v11 textProperties];
+  color = [textProperties color];
 
   v39[0] = NSFontAttributeName;
   v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
   v39[1] = NSForegroundColorAttributeName;
   v40[0] = v14;
-  v40[1] = v13;
+  v40[1] = color;
   v15 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
 
-  v16 = [[NSMutableAttributedString alloc] initWithString:v10 attributes:v15];
+  v16 = [[NSMutableAttributedString alloc] initWithString:textCopy attributes:v15];
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
     v37 = NSLinkAttributeName;
-    v38 = v9;
+    v38 = linkCopy;
     v17 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     [v16 addAttributes:v17 range:{location, length}];
   }
@@ -68,44 +68,44 @@
   v18 = [[UITextView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(HKHealthPrivacyDisclosureView *)self setFooterTextView:v18];
 
-  v19 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v19 setAttributedText:v16];
+  footerTextView = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView setAttributedText:v16];
 
   v35 = NSForegroundColorAttributeName;
   v20 = +[UIColor hk_appKeyColor];
   v36 = v20;
   v21 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-  v22 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v22 setLinkTextAttributes:v21];
+  footerTextView2 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView2 setLinkTextAttributes:v21];
 
-  v23 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v23 setAdjustsFontForContentSizeCategory:1];
+  footerTextView3 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView3 setAdjustsFontForContentSizeCategory:1];
 
-  v24 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  footerTextView4 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v25 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v25 setScrollEnabled:0];
+  footerTextView5 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView5 setScrollEnabled:0];
 
-  v26 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v26 setUserInteractionEnabled:1];
+  footerTextView6 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView6 setUserInteractionEnabled:1];
 
-  v27 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v27 setDelegate:self];
+  footerTextView7 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView7 setDelegate:self];
 
-  v28 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v28 setEditable:0];
+  footerTextView8 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView8 setEditable:0];
 
-  v29 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v29 _setInteractiveTextSelectionDisabled:1];
+  footerTextView9 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView9 _setInteractiveTextSelectionDisabled:1];
 
   v30 = +[UIColor clearColor];
-  v31 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v31 setBackgroundColor:v30];
+  footerTextView10 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [footerTextView10 setBackgroundColor:v30];
 
-  v32 = [(HKHealthPrivacyDisclosureView *)self contentView];
-  v33 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  [v32 addSubview:v33];
+  contentView = [(HKHealthPrivacyDisclosureView *)self contentView];
+  footerTextView11 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  [contentView addSubview:footerTextView11];
 
   v34 = +[UIColor clearColor];
   [(HKHealthPrivacyDisclosureView *)self setBackgroundColor:v34];
@@ -113,17 +113,17 @@
 
 - (void)_setupConstraints
 {
-  v4 = [(HKHealthPrivacyDisclosureView *)self footerTextView];
-  v3 = [(HKHealthPrivacyDisclosureView *)self contentView];
-  [v4 hk_alignConstraintsWithView:v3];
+  footerTextView = [(HKHealthPrivacyDisclosureView *)self footerTextView];
+  contentView = [(HKHealthPrivacyDisclosureView *)self contentView];
+  [footerTextView hk_alignConstraintsWithView:contentView];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   linkAction = self->_linkAction;
   if (linkAction)
   {
-    linkAction[2](self->_linkAction, a2, a3, a4, a5.location, a5.length, a6);
+    linkAction[2](self->_linkAction, a2, view, l, range.location, range.length, interaction);
   }
 
   return linkAction == 0;

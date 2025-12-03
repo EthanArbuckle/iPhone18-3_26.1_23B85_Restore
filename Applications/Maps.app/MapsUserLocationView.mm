@@ -4,10 +4,10 @@
 - (BOOL)isVLFPuckVisible;
 - (BOOL)shouldShowVLFBanner;
 - (BOOL)shouldShowVLFPuck;
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3;
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated;
 - (CGPoint)_bottomCalloutOffset;
 - (CGRect)_significantBounds;
-- (MapsUserLocationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (MapsUserLocationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)_annotationTrackingInsets;
 - (VLFCalloutView)vlfCalloutView;
 - (VLFPuckModeCircleView)vlfPuckModeCircleView;
@@ -18,29 +18,29 @@
 - (id)vlfSessionTask;
 - (unint64_t)_allowedCalloutEdges;
 - (void)_mapVisibleCenteringRectChanged;
-- (void)_setIsOnAnotherFloorInVenue:(BOOL)a3;
-- (void)_setMapPitchRadians:(double)a3;
+- (void)_setIsOnAnotherFloorInVenue:(BOOL)venue;
+- (void)_setMapPitchRadians:(double)radians;
 - (void)_updateFromMap;
 - (void)adjustVLFUIVisibility;
 - (void)animateVLFPuckOnce;
-- (void)calloutViewWasDismissed:(id)a3;
+- (void)calloutViewWasDismissed:(id)dismissed;
 - (void)checkIsWithinEdgeInsets;
 - (void)dealloc;
 - (void)deselectOrUpdateCalloutViewIfNeeded;
 - (void)selectOrUpdateCalloutViewIfNeeded;
-- (void)setIsPedestrianARAvailable:(BOOL)a3;
-- (void)setVlfMode:(int64_t)a3;
-- (void)setVlfOutsideEdgeInsets:(BOOL)a3;
-- (void)setVlfOverlappingFloatingControls:(BOOL)a3;
-- (void)updateStateFromLocation:(id)a3 duration:(double)a4;
+- (void)setIsPedestrianARAvailable:(BOOL)available;
+- (void)setVlfMode:(int64_t)mode;
+- (void)setVlfOutsideEdgeInsets:(BOOL)insets;
+- (void)setVlfOverlappingFloatingControls:(BOOL)controls;
+- (void)updateStateFromLocation:(id)location duration:(double)duration;
 - (void)updateVLFCalloutWidth;
 - (void)updateVlfCalloutAlpha;
-- (void)vlfContaineeViewControllerDidDisappearNotification:(id)a3;
-- (void)vlfContaineeViewControllerWillHideFailureViewNotification:(id)a3;
-- (void)vlfContaineeViewControllerWillShowFailureViewNotification:(id)a3;
-- (void)vlfSessionDidStartNotification:(id)a3;
-- (void)vlfSessionDidStopNotification:(id)a3;
-- (void)vlfSessionTaskWillShowVLFUINotification:(id)a3;
+- (void)vlfContaineeViewControllerDidDisappearNotification:(id)notification;
+- (void)vlfContaineeViewControllerWillHideFailureViewNotification:(id)notification;
+- (void)vlfContaineeViewControllerWillShowFailureViewNotification:(id)notification;
+- (void)vlfSessionDidStartNotification:(id)notification;
+- (void)vlfSessionDidStopNotification:(id)notification;
+- (void)vlfSessionTaskWillShowVLFUINotification:(id)notification;
 @end
 
 @implementation MapsUserLocationView
@@ -49,17 +49,17 @@
 {
   if ([(MapsUserLocationView *)self vlfMode]== 2)
   {
-    v3 = [(MapsUserLocationView *)self vlfCalloutView];
+    vlfCalloutView = [(MapsUserLocationView *)self vlfCalloutView];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MapsUserLocationView;
-    v3 = [(MapsUserLocationView *)&v5 detailCalloutAccessoryView];
+    vlfCalloutView = [(MapsUserLocationView *)&v5 detailCalloutAccessoryView];
   }
 
-  return v3;
+  return vlfCalloutView;
 }
 
 - (VLFPuckModeCircleView)vlfPuckModeCircleView
@@ -101,30 +101,30 @@
     self->_vlfPuckModeCircleView = v4;
 
     [(MapsUserLocationView *)self addSubview:self->_vlfPuckModeCircleView];
-    v6 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView centerXAnchor];
-    v7 = [(MapsUserLocationView *)self centerXAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    centerXAnchor = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView centerXAnchor];
+    centerXAnchor2 = [(MapsUserLocationView *)self centerXAnchor];
+    v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v25[0] = v8;
-    v9 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView centerYAnchor];
-    v10 = [(MapsUserLocationView *)self centerYAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    centerYAnchor = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView centerYAnchor];
+    centerYAnchor2 = [(MapsUserLocationView *)self centerYAnchor];
+    v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v25[1] = v11;
     v12 = [NSArray arrayWithObjects:v25 count:2];
     [NSLayoutConstraint activateConstraints:v12];
 
     [*&self->super._MKUserLocationView_opaque[OBJC_IVAR____MKPuckAnnotationView__puckLayer] zPosition];
     v14 = v13 + 1.0;
-    v15 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView layer];
-    [v15 setZPosition:v14];
+    layer = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView layer];
+    [layer setZPosition:v14];
 
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
     [(MapsUserLocationView *)self _mapPitchRadians];
     CATransform3DMakeRotation(&v23, v16, 1.0, 0.0, 0.0);
-    v17 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView backgroundView];
-    v18 = [v17 layer];
+    backgroundView = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView backgroundView];
+    layer2 = [backgroundView layer];
     buf = v23;
-    [v18 setTransform:&buf];
+    [layer2 setTransform:&buf];
 
     +[CATransaction commit];
     vlfPuckModeCircleView = self->_vlfPuckModeCircleView;
@@ -135,7 +135,7 @@
 
 - (void)updateVlfCalloutAlpha
 {
-  v3 = [(MapsUserLocationView *)self _calloutView];
+  _calloutView = [(MapsUserLocationView *)self _calloutView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -143,31 +143,31 @@
   {
     if ([(MapsUserLocationView *)self isVLFOverlappingFloatingControls]|| [(MapsUserLocationView *)self isVLFOutsideEdgeInsets])
     {
-      v5 = [(MapsUserLocationView *)self _calloutView];
-      [v5 setAlpha:0.0];
+      _calloutView2 = [(MapsUserLocationView *)self _calloutView];
+      [_calloutView2 setAlpha:0.0];
     }
 
     else
     {
-      v16 = [(MapsUserLocationView *)self _calloutView];
-      [v16 alpha];
+      _calloutView3 = [(MapsUserLocationView *)self _calloutView];
+      [_calloutView3 alpha];
       v18 = v17;
 
       [(MapsUserLocationView *)self vlfCalloutAlpha];
       v20 = v19;
-      v21 = [(MapsUserLocationView *)self _calloutView];
-      [v21 setAlpha:v20];
+      _calloutView4 = [(MapsUserLocationView *)self _calloutView];
+      [_calloutView4 setAlpha:v20];
 
       if (fabs(v18) <= 2.22044605e-16)
       {
-        v22 = [(MapsUserLocationView *)self _calloutView];
-        [v22 alpha];
+        _calloutView5 = [(MapsUserLocationView *)self _calloutView];
+        [_calloutView5 alpha];
         v24 = v23;
 
         if (v24 > 0.0)
         {
-          v25 = [(MapsUserLocationView *)self vlfSessionAnalyticsTracker];
-          [v25 registerVLFCalloutWasShown];
+          vlfSessionAnalyticsTracker = [(MapsUserLocationView *)self vlfSessionAnalyticsTracker];
+          [vlfSessionAnalyticsTracker registerVLFCalloutWasShown];
         }
       }
 
@@ -175,9 +175,9 @@
       if (v26 > 0.0)
       {
         v27 = +[VLFSessionUsageTracker sharedInstance];
-        v28 = [v27 hasUserSeenVLFCallout];
+        hasUserSeenVLFCallout = [v27 hasUserSeenVLFCallout];
 
-        if ((v28 & 1) == 0)
+        if ((hasUserSeenVLFCallout & 1) == 0)
         {
           v29 = +[VLFSessionUsageTracker sharedInstance];
           [v29 registerUserWasShownCallout];
@@ -194,8 +194,8 @@
       }
     }
 
-    v6 = [(MapsUserLocationView *)self _calloutView];
-    [v6 alpha];
+    _calloutView6 = [(MapsUserLocationView *)self _calloutView];
+    [_calloutView6 alpha];
     v8 = v7;
 
     if (v8 <= 0.0)
@@ -205,22 +205,22 @@
 
     else
     {
-      v9 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-      [v9 startPulsing];
+      vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+      [vlfPuckModeCircleView startPulsing];
     }
   }
 
   else
   {
-    v10 = [(MapsUserLocationView *)self _calloutView];
-    v11 = [v10 layer];
-    v12 = [v11 animationKeys];
-    v13 = [v12 count];
+    _calloutView7 = [(MapsUserLocationView *)self _calloutView];
+    layer = [_calloutView7 layer];
+    animationKeys = [layer animationKeys];
+    v13 = [animationKeys count];
 
     if (!v13)
     {
-      v14 = [(MapsUserLocationView *)self _calloutView];
-      [v14 setAlpha:1.0];
+      _calloutView8 = [(MapsUserLocationView *)self _calloutView];
+      [_calloutView8 setAlpha:1.0];
 
       vlfPuckModeCircleView = self->_vlfPuckModeCircleView;
 
@@ -235,26 +235,26 @@
   {
     [(MapsUserLocationView *)self setCanShowCallout:1];
     v3 = +[VLFSessionUsageTracker sharedInstance];
-    v4 = [v3 hasUserSeenVLFCallout];
+    hasUserSeenVLFCallout = [v3 hasUserSeenVLFCallout];
 
-    if (v4)
+    if (hasUserSeenVLFCallout)
     {
-      v5 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-      v6 = [v5 isVisible];
+      vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+      isVisible = [vlfPuckModeCircleView isVisible];
 
-      v7 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-      [v7 show];
+      vlfPuckModeCircleView2 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+      [vlfPuckModeCircleView2 show];
 
-      if ((v6 & 1) == 0)
+      if ((isVisible & 1) == 0)
       {
-        v8 = [(MapsUserLocationView *)self vlfSessionAnalyticsTracker];
-        [v8 registerVLFPuckWasShown];
+        vlfSessionAnalyticsTracker = [(MapsUserLocationView *)self vlfSessionAnalyticsTracker];
+        [vlfSessionAnalyticsTracker registerVLFPuckWasShown];
 
         if ([(MapsUserLocationView *)self isSelected])
         {
-          v9 = [(MapsUserLocationView *)self _mapView];
-          v10 = [(MapsUserLocationView *)self annotation];
-          [v9 deselectAnnotation:v10 animated:1];
+          _mapView = [(MapsUserLocationView *)self _mapView];
+          annotation = [(MapsUserLocationView *)self annotation];
+          [_mapView deselectAnnotation:annotation animated:1];
         }
       }
     }
@@ -301,40 +301,40 @@ LABEL_13:
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(MapsUserLocationView *)self _mapView];
-    [(VLFPuckModeCircleView *)vlfPuckModeCircleView convertRect:v12 toView:v5, v7, v9, v11];
+    _mapView = [(MapsUserLocationView *)self _mapView];
+    [(VLFPuckModeCircleView *)vlfPuckModeCircleView convertRect:_mapView toView:v5, v7, v9, v11];
     v63 = v14;
     v64 = v13;
     v61 = v16;
     v62 = v15;
 
-    v17 = [(MapsUserLocationView *)self _calloutView];
-    v18 = [(MapsUserLocationView *)self _calloutView];
-    [v18 bounds];
+    _calloutView = [(MapsUserLocationView *)self _calloutView];
+    _calloutView2 = [(MapsUserLocationView *)self _calloutView];
+    [_calloutView2 bounds];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [(MapsUserLocationView *)self _mapView];
-    [v17 convertRect:v27 toView:{v20, v22, v24, v26}];
+    _mapView2 = [(MapsUserLocationView *)self _mapView];
+    [_calloutView convertRect:_mapView2 toView:{v20, v22, v24, v26}];
     v59 = v29;
     v60 = v28;
     v57 = v31;
     rect2 = v30;
 
-    v32 = [(MapsUserLocationView *)self _mapView];
-    [v32 _edgeInsets];
+    _mapView3 = [(MapsUserLocationView *)self _mapView];
+    [_mapView3 _edgeInsets];
     v34 = v33;
 
-    v35 = [(MapsUserLocationView *)self _mapView];
-    [v35 bounds];
+    _mapView4 = [(MapsUserLocationView *)self _mapView];
+    [_mapView4 bounds];
     v37 = v36;
     v39 = v38;
     v41 = v40;
     v43 = v42;
 
-    v44 = [(MapsUserLocationView *)self _mapView];
-    [v44 bounds];
+    _mapView5 = [(MapsUserLocationView *)self _mapView];
+    [_mapView5 bounds];
     v56 = v45;
     v47 = v46;
     v49 = v48;
@@ -369,17 +369,17 @@ LABEL_13:
 {
   if (self->_alwaysShowVLFPuck)
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(vlfMode) = 1;
   }
 
   else
   {
-    v2 = [(MapsUserLocationView *)self vlfMode];
-    if (v2)
+    vlfMode = [(MapsUserLocationView *)self vlfMode];
+    if (vlfMode)
     {
       if ([(MapsUserLocationView *)self isPedestrianARAvailable])
       {
-        LOBYTE(v2) = 0;
+        LOBYTE(vlfMode) = 0;
       }
 
       else
@@ -401,42 +401,42 @@ LABEL_13:
         }
 
         [(MapsUserLocationView *)self _locationAccuracyInScreenPoints];
-        LOBYTE(v2) = v7 && v11 >= 44.0;
+        LOBYTE(vlfMode) = v7 && v11 >= 44.0;
       }
     }
   }
 
-  return v2;
+  return vlfMode;
 }
 
 - (BOOL)isVLFBannerVisible
 {
-  v3 = [(MapsUserLocationView *)self _calloutView];
+  _calloutView = [(MapsUserLocationView *)self _calloutView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MapsUserLocationView *)self _calloutView];
-    v5 = [v4 isVisible];
+    _calloutView2 = [(MapsUserLocationView *)self _calloutView];
+    isVisible = [_calloutView2 isVisible];
   }
 
   else
   {
-    v5 = 0;
+    isVisible = 0;
   }
 
-  return v5;
+  return isVisible;
 }
 
 - (double)maxVLFCalloutWidth
 {
-  v3 = [(MapsUserLocationView *)self _mapView];
-  [v3 bounds];
+  _mapView = [(MapsUserLocationView *)self _mapView];
+  [_mapView bounds];
   v5 = v4;
-  v6 = [(MapsUserLocationView *)self _mapView];
-  [v6 bounds];
+  _mapView2 = [(MapsUserLocationView *)self _mapView];
+  [_mapView2 bounds];
   v8 = v7;
-  v9 = [(MapsUserLocationView *)self _mapView];
-  [v9 bounds];
+  _mapView3 = [(MapsUserLocationView *)self _mapView];
+  [_mapView3 bounds];
   v11 = v10;
   v13 = v12;
 
@@ -457,11 +457,11 @@ LABEL_13:
 {
   [(MapsUserLocationView *)self maxVLFCalloutWidth];
   v4 = v3 + -27.0;
-  v5 = [(MapsUserLocationView *)self vlfCalloutViewWidthConstraint];
-  [v5 setConstant:v4];
+  vlfCalloutViewWidthConstraint = [(MapsUserLocationView *)self vlfCalloutViewWidthConstraint];
+  [vlfCalloutViewWidthConstraint setConstant:v4];
 }
 
-- (void)vlfContaineeViewControllerWillHideFailureViewNotification:(id)a3
+- (void)vlfContaineeViewControllerWillHideFailureViewNotification:(id)notification
 {
   if ([(MapsUserLocationView *)self shouldShowVLFPuck])
   {
@@ -478,8 +478,8 @@ LABEL_13:
       v6 = 0.2;
     }
 
-    v8 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-    [v8 hideWithDuration:0 startingOpacity:1 shouldShrink:v6 suppressOtherAnimations:1.0];
+    vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+    [vlfPuckModeCircleView hideWithDuration:0 startingOpacity:1 shouldShrink:v6 suppressOtherAnimations:1.0];
   }
 
   else
@@ -493,7 +493,7 @@ LABEL_13:
   }
 }
 
-- (void)vlfContaineeViewControllerWillShowFailureViewNotification:(id)a3
+- (void)vlfContaineeViewControllerWillShowFailureViewNotification:(id)notification
 {
   if ([(MapsUserLocationView *)self shouldShowVLFPuck])
   {
@@ -510,8 +510,8 @@ LABEL_13:
       v6 = 0.3;
     }
 
-    v8 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-    [v8 showWithDuration:0 startingOpacity:1 shouldGrow:v6 suppressOtherAnimations:0.0];
+    vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+    [vlfPuckModeCircleView showWithDuration:0 startingOpacity:1 shouldGrow:v6 suppressOtherAnimations:0.0];
   }
 
   else
@@ -525,7 +525,7 @@ LABEL_13:
   }
 }
 
-- (void)vlfContaineeViewControllerDidDisappearNotification:(id)a3
+- (void)vlfContaineeViewControllerDidDisappearNotification:(id)notification
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"VLFContaineeViewControllerDidDisappearNotification" object:0];
@@ -533,14 +533,14 @@ LABEL_13:
   [(MapsUserLocationView *)self setVlfLocalizationInProgress:0];
   if (![(MapsUserLocationView *)self shouldShowVLFPuck])
   {
-    v5 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-    v6 = [v5 layer];
-    [v6 removeAllAnimations];
+    vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+    layer = [vlfPuckModeCircleView layer];
+    [layer removeAllAnimations];
 
-    v7 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-    v8 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView layer];
-    [v8 opacity];
-    [v7 hideWithDuration:1 startingOpacity:0 shouldShrink:0.0 suppressOtherAnimations:v9];
+    vlfPuckModeCircleView2 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+    layer2 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView layer];
+    [layer2 opacity];
+    [vlfPuckModeCircleView2 hideWithDuration:1 startingOpacity:0 shouldShrink:0.0 suppressOtherAnimations:v9];
   }
 
   if ([(UserLocationView *)self mode])
@@ -558,19 +558,19 @@ LABEL_13:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = 134217984;
-    v13 = [(MapsUserLocationView *)self headingIndicatorStyle];
+    headingIndicatorStyle = [(MapsUserLocationView *)self headingIndicatorStyle];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "VLFSession stopped; resetting heading indicator style: %ld", &v12, 0xCu);
   }
 
   [(MapsUserLocationView *)self setEnabled:1];
 }
 
-- (void)vlfSessionTaskWillShowVLFUINotification:(id)a3
+- (void)vlfSessionTaskWillShowVLFUINotification:(id)notification
 {
   if ([(MapsUserLocationView *)self isVLFBannerVisible])
   {
-    v4 = [(MapsUserLocationView *)self _calloutView];
-    [v4 alpha];
+    _calloutView = [(MapsUserLocationView *)self _calloutView];
+    [_calloutView alpha];
     v6 = v5;
 
     if (v6 > 0.0)
@@ -597,25 +597,25 @@ LABEL_13:
   [v10 addObserver:self selector:"vlfContaineeViewControllerDidDisappearNotification:" name:@"VLFContaineeViewControllerDidDisappearNotification" object:0];
 }
 
-- (void)vlfSessionDidStopNotification:(id)a3
+- (void)vlfSessionDidStopNotification:(id)notification
 {
-  v4 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-  [v4 setHidden:0];
+  vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+  [vlfPuckModeCircleView setHidden:0];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"VLFSessionDidStopNotification" object:0];
 }
 
-- (void)vlfSessionDidStartNotification:(id)a3
+- (void)vlfSessionDidStartNotification:(id)notification
 {
-  v4 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-  [v4 setHidden:1];
+  vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+  [vlfPuckModeCircleView setHidden:1];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"vlfSessionDidStopNotification:" name:@"VLFSessionDidStopNotification" object:0];
 }
 
-- (void)calloutViewWasDismissed:(id)a3
+- (void)calloutViewWasDismissed:(id)dismissed
 {
   v3 = +[VLFSessionUsageTracker sharedInstance];
   [v3 registerUserDismissedCallout];
@@ -623,18 +623,18 @@ LABEL_13:
 
 - (id)vlfSessionAnalyticsTracker
 {
-  v2 = [(MapsUserLocationView *)self vlfSessionTask];
-  v3 = [v2 analyticsTracker];
+  vlfSessionTask = [(MapsUserLocationView *)self vlfSessionTask];
+  analyticsTracker = [vlfSessionTask analyticsTracker];
 
-  return v3;
+  return analyticsTracker;
 }
 
 - (id)vlfSessionTask
 {
   v2 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v2 platformController];
-  v4 = [v3 auxiliaryTasksManager];
-  v5 = [v4 auxilaryTaskForClass:objc_opt_class()];
+  platformController = [v2 platformController];
+  auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+  v5 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
   return v5;
 }
@@ -649,9 +649,9 @@ LABEL_13:
     self->_vlfCalloutView = v4;
 
     [(VLFCalloutView *)self->_vlfCalloutView setDelegate:self];
-    v6 = [(VLFCalloutView *)self->_vlfCalloutView widthAnchor];
+    widthAnchor = [(VLFCalloutView *)self->_vlfCalloutView widthAnchor];
     [(MapsUserLocationView *)self maxVLFCalloutWidth];
-    v7 = [v6 constraintEqualToConstant:?];
+    v7 = [widthAnchor constraintEqualToConstant:?];
     vlfCalloutViewWidthConstraint = self->_vlfCalloutViewWidthConstraint;
     self->_vlfCalloutViewWidthConstraint = v7;
 
@@ -665,11 +665,11 @@ LABEL_13:
   return vlfCalloutView;
 }
 
-- (void)setIsPedestrianARAvailable:(BOOL)a3
+- (void)setIsPedestrianARAvailable:(BOOL)available
 {
-  if (self->_isPedestrianARAvailable != a3)
+  if (self->_isPedestrianARAvailable != available)
   {
-    self->_isPedestrianARAvailable = a3;
+    self->_isPedestrianARAvailable = available;
     v4 = sub_100E107A8();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -694,11 +694,11 @@ LABEL_13:
   }
 }
 
-- (void)setVlfMode:(int64_t)a3
+- (void)setVlfMode:(int64_t)mode
 {
-  if (self->_vlfMode != a3)
+  if (self->_vlfMode != mode)
   {
-    self->_vlfMode = a3;
+    self->_vlfMode = mode;
     v4 = sub_100E107A8();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -755,35 +755,35 @@ LABEL_13:
 
 - (BOOL)isVLFPuckVisible
 {
-  v3 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView isVisible];
-  if (v3)
+  isVisible = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView isVisible];
+  if (isVisible)
   {
-    LOBYTE(v3) = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView isHidden]^ 1;
+    LOBYTE(isVisible) = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView isHidden]^ 1;
   }
 
-  return v3;
+  return isVisible;
 }
 
 - (void)animateVLFPuckOnce
 {
-  v2 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-  [v2 pulseOnce];
+  vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+  [vlfPuckModeCircleView pulseOnce];
 }
 
-- (void)setVlfOutsideEdgeInsets:(BOOL)a3
+- (void)setVlfOutsideEdgeInsets:(BOOL)insets
 {
-  if (self->_vlfOutsideEdgeInsets != a3)
+  if (self->_vlfOutsideEdgeInsets != insets)
   {
-    self->_vlfOutsideEdgeInsets = a3;
+    self->_vlfOutsideEdgeInsets = insets;
     [(MapsUserLocationView *)self updateVlfCalloutAlpha];
   }
 }
 
-- (void)setVlfOverlappingFloatingControls:(BOOL)a3
+- (void)setVlfOverlappingFloatingControls:(BOOL)controls
 {
-  if (self->_vlfOverlappingFloatingControls != a3)
+  if (self->_vlfOverlappingFloatingControls != controls)
   {
-    self->_vlfOverlappingFloatingControls = a3;
+    self->_vlfOverlappingFloatingControls = controls;
     [(MapsUserLocationView *)self updateVlfCalloutAlpha];
   }
 }
@@ -817,10 +817,10 @@ LABEL_13:
 {
   if ([(MapsUserLocationView *)self isVLFPuckVisible])
   {
-    v3 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-    v4 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
-    [v4 bounds];
-    [v3 convertRect:self toView:?];
+    vlfPuckModeCircleView = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+    vlfPuckModeCircleView2 = [(MapsUserLocationView *)self vlfPuckModeCircleView];
+    [vlfPuckModeCircleView2 bounds];
+    [vlfPuckModeCircleView convertRect:self toView:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -853,12 +853,12 @@ LABEL_13:
 {
   if ([(MapsUserLocationView *)self isVLFLocalizationInProgress])
   {
-    v3 = [(MapsUserLocationView *)self _mapView];
-    [v3 bounds];
+    _mapView = [(MapsUserLocationView *)self _mapView];
+    [_mapView bounds];
     v5 = v4;
     v7 = v6;
-    v8 = [(MapsUserLocationView *)self _mapView];
-    [v8 _edgeInsets];
+    _mapView2 = [(MapsUserLocationView *)self _mapView];
+    [_mapView2 _edgeInsets];
     v11 = v5 - (v9 + v10);
     v14 = v7 - (v12 + v13);
 
@@ -883,15 +883,15 @@ LABEL_13:
   return result;
 }
 
-- (void)_setIsOnAnotherFloorInVenue:(BOOL)a3
+- (void)_setIsOnAnotherFloorInVenue:(BOOL)venue
 {
-  if (self->_isOnAnotherFloorInVenue != a3)
+  if (self->_isOnAnotherFloorInVenue != venue)
   {
     v13 = v8;
     v14 = v7;
     v15 = v3;
-    self->_isOnAnotherFloorInVenue = a3;
-    if (a3)
+    self->_isOnAnotherFloorInVenue = venue;
+    if (venue)
     {
       v10 = 0.300000012;
     }
@@ -901,7 +901,7 @@ LABEL_13:
       v10 = 1.0;
     }
 
-    if (a3)
+    if (venue)
     {
       v11 = 249.0;
     }
@@ -951,17 +951,17 @@ LABEL_13:
   return [(MapsUserLocationView *)&v4 _allowedCalloutEdges];
 }
 
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MapsUserLocationView *)self isSelected];
-  v6 = [(MapsUserLocationView *)self annotation];
-  if (!v6)
+  animatedCopy = animated;
+  isSelected = [(MapsUserLocationView *)self isSelected];
+  annotation = [(MapsUserLocationView *)self annotation];
+  if (!annotation)
   {
     goto LABEL_20;
   }
 
-  if (v5 && ![(MapsUserLocationView *)self isVLFPuckVisible])
+  if (isSelected && ![(MapsUserLocationView *)self isVLFPuckVisible])
   {
     v7 = +[MKMapService sharedService];
     [v7 captureUserAction:1034 onTarget:0 eventValue:0];
@@ -973,7 +973,7 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"NO";
-      if (v5)
+      if (isSelected)
       {
         v11 = @"YES";
       }
@@ -984,16 +984,16 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Updating regular callout for selected: %@", buf, 0xCu);
     }
 
-    v13 = [v6 annotation];
-    [v13 setSelected:v5];
+    v6Annotation = [annotation annotation];
+    [v6Annotation setSelected:isSelected];
     v21.receiver = self;
     v21.super_class = MapsUserLocationView;
-    v14 = [(MapsUserLocationView *)&v21 updateCalloutViewIfNeededAnimated:v3];
+    v14 = [(MapsUserLocationView *)&v21 updateCalloutViewIfNeededAnimated:animatedCopy];
 
     goto LABEL_21;
   }
 
-  if ([(MapsUserLocationView *)self shouldShowVLFBanner]&& ![(MapsUserLocationView *)self isVLFBannerVisible]&& ((v5 ^ 1) & 1) == 0)
+  if ([(MapsUserLocationView *)self shouldShowVLFBanner]&& ![(MapsUserLocationView *)self isVLFBannerVisible]&& ((isSelected ^ 1) & 1) == 0)
   {
     v15 = sub_100E107A8();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1006,16 +1006,16 @@ LABEL_13:
     v20.receiver = self;
     v20.super_class = MapsUserLocationView;
     v14 = [(MapsUserLocationView *)&v20 updateCalloutViewIfNeededAnimated:0];
-    v16 = [(MapsUserLocationView *)self _calloutView];
-    [v16 setHideTitle:1];
-    [v16 _updateCalloutAnimated:0];
-    [v16 _layoutSubviews:0];
+    _calloutView = [(MapsUserLocationView *)self _calloutView];
+    [_calloutView setHideTitle:1];
+    [_calloutView _updateCalloutAnimated:0];
+    [_calloutView _layoutSubviews:0];
     [(MapsUserLocationView *)self _setCalloutStyle:1];
 
     goto LABEL_21;
   }
 
-  if ([(MapsUserLocationView *)self shouldShowVLFBanner]|| v5 & 1 | ![(MapsUserLocationView *)self isVLFBannerVisible])
+  if ([(MapsUserLocationView *)self shouldShowVLFBanner]|| isSelected & 1 | ![(MapsUserLocationView *)self isVLFBannerVisible])
   {
 LABEL_20:
     v14 = 0;
@@ -1031,13 +1031,13 @@ LABEL_20:
 
   v19.receiver = self;
   v19.super_class = MapsUserLocationView;
-  v14 = [(MapsUserLocationView *)&v19 updateCalloutViewIfNeededAnimated:v3];
+  v14 = [(MapsUserLocationView *)&v19 updateCalloutViewIfNeededAnimated:animatedCopy];
 LABEL_21:
 
   return v14;
 }
 
-- (void)_setMapPitchRadians:(double)a3
+- (void)_setMapPitchRadians:(double)radians
 {
   v9.receiver = self;
   v9.super_class = MapsUserLocationView;
@@ -1048,22 +1048,22 @@ LABEL_21:
     {
       +[CATransaction begin];
       [CATransaction setDisableActions:1];
-      CATransform3DMakeRotation(&v8, a3, 1.0, 0.0, 0.0);
-      v5 = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView backgroundView];
-      v6 = [v5 layer];
+      CATransform3DMakeRotation(&v8, radians, 1.0, 0.0, 0.0);
+      backgroundView = [(VLFPuckModeCircleView *)self->_vlfPuckModeCircleView backgroundView];
+      layer = [backgroundView layer];
       v7 = v8;
-      [v6 setTransform:&v7];
+      [layer setTransform:&v7];
 
       +[CATransaction commit];
     }
   }
 }
 
-- (void)updateStateFromLocation:(id)a3 duration:(double)a4
+- (void)updateStateFromLocation:(id)location duration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = MapsUserLocationView;
-  [(UserLocationView *)&v5 updateStateFromLocation:a3 duration:a4];
+  [(UserLocationView *)&v5 updateStateFromLocation:location duration:duration];
   if (+[VLFSessionTask isVLFModeSupported])
   {
     [(MapsUserLocationView *)self checkIsWithinEdgeInsets];
@@ -1103,13 +1103,13 @@ LABEL_21:
   [(MapsUserLocationView *)&v3 dealloc];
 }
 
-- (MapsUserLocationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (MapsUserLocationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  annotationCopy = annotation;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = MapsUserLocationView;
-  v8 = [(UserLocationView *)&v20 initWithAnnotation:v6 reuseIdentifier:v7];
+  v8 = [(UserLocationView *)&v20 initWithAnnotation:annotationCopy reuseIdentifier:identifierCopy];
   v9 = v8;
   if (v8)
   {

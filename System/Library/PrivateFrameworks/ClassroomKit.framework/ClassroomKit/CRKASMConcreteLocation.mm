@@ -1,27 +1,27 @@
 @interface CRKASMConcreteLocation
-- (BOOL)isEqual:(id)a3;
-- (CRKASMConcreteLocation)initWithBackingLocation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRKASMConcreteLocation)initWithBackingLocation:(id)location;
 - (NSString)description;
 - (unint64_t)hash;
 @end
 
 @implementation CRKASMConcreteLocation
 
-- (CRKASMConcreteLocation)initWithBackingLocation:(id)a3
+- (CRKASMConcreteLocation)initWithBackingLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v13.receiver = self;
   v13.super_class = CRKASMConcreteLocation;
   v5 = [(CRKASMConcreteLocation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectID];
-    v7 = [v6 copy];
+    objectID = [locationCopy objectID];
+    v7 = [objectID copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 locationName];
-    v10 = [v9 copy];
+    locationName = [locationCopy locationName];
+    v10 = [locationName copy];
     name = v5->_name;
     v5->_name = v10;
   }
@@ -31,18 +31,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRKASMConcreteLocation *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(CRKASMConcreteLocation *)self name];
-  v6 = [v5 hash];
+  identifier = [(CRKASMConcreteLocation *)self identifier];
+  v4 = [identifier hash];
+  name = [(CRKASMConcreteLocation *)self name];
+  v6 = [name hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"identifier name"];
   v6 = [v5 mutableCopy];
 
@@ -54,10 +54,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -86,7 +86,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMConcreteLocation *)v8 valueForKey:v16];
+          v18 = [(CRKASMConcreteLocation *)selfCopy valueForKey:v16];
           v19 = [(CRKASMConcreteLocation *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -133,9 +133,9 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKASMConcreteLocation *)self identifier];
-  v6 = [(CRKASMConcreteLocation *)self name];
-  v7 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, name = %@ }>", v4, self, v5, v6];
+  identifier = [(CRKASMConcreteLocation *)self identifier];
+  name = [(CRKASMConcreteLocation *)self name];
+  v7 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, name = %@ }>", v4, self, identifier, name];
 
   return v7;
 }

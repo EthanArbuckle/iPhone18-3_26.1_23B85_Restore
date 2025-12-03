@@ -7,10 +7,10 @@
 
 + (id)smu_preferredRendererFormat
 {
-  v0 = [MEMORY[0x277D759A0] mainScreen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
   v1 = MEMORY[0x277D75568];
-  v2 = [v0 traitCollection];
-  v3 = [v1 formatForTraitCollection:v2];
+  traitCollection = [mainScreen traitCollection];
+  v3 = [v1 formatForTraitCollection:traitCollection];
 
   return v3;
 }
@@ -18,21 +18,21 @@
 + (id)smu_formatForImage:()SeymourMedia
 {
   v3 = a3;
-  v4 = [objc_opt_class() smu_preferredRendererFormat];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 smu_supportsDeepColor];
+  smu_preferredRendererFormat = [objc_opt_class() smu_preferredRendererFormat];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  smu_supportsDeepColor = [currentDevice smu_supportsDeepColor];
 
-  if (v7)
+  if (smu_supportsDeepColor)
   {
-    v8 = [v3 imageRendererFormat];
+    imageRendererFormat = [v3 imageRendererFormat];
 
-    [v5 scale];
-    [v8 setScale:?];
-    v4 = v8;
+    [mainScreen scale];
+    [imageRendererFormat setScale:?];
+    smu_preferredRendererFormat = imageRendererFormat;
   }
 
-  return v4;
+  return smu_preferredRendererFormat;
 }
 
 @end

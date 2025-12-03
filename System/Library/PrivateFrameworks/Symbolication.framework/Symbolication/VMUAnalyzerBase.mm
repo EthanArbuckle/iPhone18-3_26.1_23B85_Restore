@@ -1,6 +1,6 @@
 @interface VMUAnalyzerBase
 + (id)analyzerClasses;
-- (VMUAnalyzerBase)initWithGraph:(id)a3 regionIdentifier:(id)a4 debugTimer:(id)a5;
+- (VMUAnalyzerBase)initWithGraph:(id)graph regionIdentifier:(id)identifier debugTimer:(id)timer;
 @end
 
 @implementation VMUAnalyzerBase
@@ -18,18 +18,18 @@
   return v2;
 }
 
-- (VMUAnalyzerBase)initWithGraph:(id)a3 regionIdentifier:(id)a4 debugTimer:(id)a5
+- (VMUAnalyzerBase)initWithGraph:(id)graph regionIdentifier:(id)identifier debugTimer:(id)timer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  graphCopy = graph;
+  identifierCopy = identifier;
+  timerCopy = timer;
   v12 = [(VMUAnalyzerBase *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_graph, a3);
-    objc_storeStrong(&v13->_regionIdentifier, a4);
-    objc_storeStrong(&v13->_debugTimer, a5);
+    objc_storeStrong(&v12->_graph, graph);
+    objc_storeStrong(&v13->_regionIdentifier, identifier);
+    objc_storeStrong(&v13->_debugTimer, timer);
   }
 
   return v13;

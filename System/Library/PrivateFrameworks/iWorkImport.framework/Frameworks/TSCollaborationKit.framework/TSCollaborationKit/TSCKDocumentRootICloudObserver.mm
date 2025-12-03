@@ -1,21 +1,21 @@
 @interface TSCKDocumentRootICloudObserver
-- (TSCKDocumentRootICloudObserver)initWithSuspendedCollaboration:(BOOL)a3 block:(id)a4;
-- (void)invokeWithDocumentRoot:(id)a3 reason:(unint64_t)a4;
+- (TSCKDocumentRootICloudObserver)initWithSuspendedCollaboration:(BOOL)collaboration block:(id)block;
+- (void)invokeWithDocumentRoot:(id)root reason:(unint64_t)reason;
 @end
 
 @implementation TSCKDocumentRootICloudObserver
 
-- (TSCKDocumentRootICloudObserver)initWithSuspendedCollaboration:(BOOL)a3 block:(id)a4
+- (TSCKDocumentRootICloudObserver)initWithSuspendedCollaboration:(BOOL)collaboration block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = TSCKDocumentRootICloudObserver;
   v7 = [(TSCKDocumentRootICloudObserver *)&v15 init];
   v11 = v7;
   if (v7)
   {
-    v7->_suspendedCollaboration = a3;
-    v12 = objc_msgSend_copy(v6, v8, v9, v10);
+    v7->_suspendedCollaboration = collaboration;
+    v12 = objc_msgSend_copy(blockCopy, v8, v9, v10);
     block = v11->_block;
     v11->_block = v12;
 
@@ -25,9 +25,9 @@
   return v11;
 }
 
-- (void)invokeWithDocumentRoot:(id)a3 reason:(unint64_t)a4
+- (void)invokeWithDocumentRoot:(id)root reason:(unint64_t)reason
 {
-  v19 = a3;
+  rootCopy = root;
   if ((objc_msgSend_isMainThread(MEMORY[0x277CCACC8], v5, v6, v7) & 1) == 0)
   {
     v10 = MEMORY[0x277D81150];

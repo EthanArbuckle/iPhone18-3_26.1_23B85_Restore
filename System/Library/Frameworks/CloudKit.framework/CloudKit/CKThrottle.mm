@@ -1,21 +1,21 @@
 @interface CKThrottle
-- (BOOL)appliesToCriteria:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)appliesToCriteria:(id)criteria;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
 - (CKThrottle)init;
-- (CKThrottle)initWithCoder:(id)a3;
+- (CKThrottle)initWithCoder:(id)coder;
 - (NSNumber)currentRequestWindowIndex;
 - (NSNumber)sentRequestCount;
 - (double)delayUntilNextOperationAllowed;
 - (id)CKDeepCopy;
-- (id)CKDeepCopyWithLeafNodeCopyBlock:(id)a3;
+- (id)CKDeepCopyWithLeafNodeCopyBlock:(id)block;
 - (id)copy;
 - (id)throttleBlockingUntilNextRequestWindow;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)incrementSentRequestCount;
-- (void)setCurrentRequestWindowIndex:(id)a3;
-- (void)setSentRequestCount:(id)a3;
+- (void)setCurrentRequestWindowIndex:(id)index;
+- (void)setSentRequestCount:(id)count;
 @end
 
 @implementation CKThrottle
@@ -131,50 +131,50 @@
   return v3;
 }
 
-- (id)CKDeepCopyWithLeafNodeCopyBlock:(id)a3
+- (id)CKDeepCopyWithLeafNodeCopyBlock:(id)block
 {
-  result = a3;
+  result = block;
   __break(1u);
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  objc_msgSend_encodeEntry_withCoder_(CKThrottleTable, v5, v4, v6);
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_encodeEntry_withCoder_(CKThrottleTable, v5, selfCopy, coderCopy);
+  objc_sync_exit(selfCopy);
 }
 
-- (CKThrottle)initWithCoder:(id)a3
+- (CKThrottle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CKThrottle;
   v6 = [(CKThrottle *)&v8 init];
   if (v6)
   {
-    objc_msgSend_decodeEntry_withCoder_(CKThrottleTable, v5, v6, v4);
+    objc_msgSend_decodeEntry_withCoder_(CKThrottleTable, v5, v6, coderCopy);
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     HaveEqualProperties_other_includePrimaryKey = 1;
   }
 
   else
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    HaveEqualProperties_other_includePrimaryKey = objc_msgSend_entriesHaveEqualProperties_other_includePrimaryKey_(CKThrottleTable, v6, v5, v4, 0);
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    HaveEqualProperties_other_includePrimaryKey = objc_msgSend_entriesHaveEqualProperties_other_includePrimaryKey_(CKThrottleTable, v6, selfCopy, equalCopy, 0);
+    objc_sync_exit(selfCopy);
   }
 
   return HaveEqualProperties_other_includePrimaryKey;
@@ -213,10 +213,10 @@
   return v4 < 0.0;
 }
 
-- (BOOL)appliesToCriteria:(id)a3
+- (BOOL)appliesToCriteria:(id)criteria
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  criteriaCopy = criteria;
   objc_msgSend_timeIntervalSinceNow(self->_throttleStartDate, v5, v6);
   if (v9 > 0.0)
   {
@@ -231,7 +231,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = objc_msgSend_containerID(v4, v7, v8);
+    v10 = objc_msgSend_containerID(criteriaCopy, v7, v8);
     v13 = v10;
     if (v10)
     {
@@ -260,7 +260,7 @@ LABEL_10:
       goto LABEL_53;
     }
 
-    v23 = objc_msgSend_databaseScope(v4, v21, v22);
+    v23 = objc_msgSend_databaseScope(criteriaCopy, v21, v22);
     if (v23)
     {
       if (v20 != v23)
@@ -286,7 +286,7 @@ LABEL_10:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v26 = objc_msgSend_relevantZoneIDs(v4, v24, v25, 0);
+    v26 = objc_msgSend_relevantZoneIDs(criteriaCopy, v24, v25, 0);
     v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v68, v74, 16);
     if (v28)
     {
@@ -341,7 +341,7 @@ LABEL_21:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v73 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_1883EA000, v65, OS_LOG_TYPE_ERROR, "Not enforcing throttle with operation type none: %@", buf, 0xCu);
     }
 
@@ -349,7 +349,7 @@ LABEL_21:
   }
 
   v39 = v38;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend_isOperationType_(v4, v40, v39))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend_isOperationType_(criteriaCopy, v40, v39))
   {
 LABEL_53:
     hasPrefix = 0;
@@ -364,7 +364,7 @@ LABEL_33:
       goto LABEL_53;
     }
 
-    v43 = objc_msgSend_serviceName(v4, v41, v42);
+    v43 = objc_msgSend_serviceName(criteriaCopy, v41, v42);
     if (v43)
     {
       v45 = v43;
@@ -384,7 +384,7 @@ LABEL_33:
       goto LABEL_53;
     }
 
-    v49 = objc_msgSend_functionName(v4, v47, v48);
+    v49 = objc_msgSend_functionName(criteriaCopy, v47, v48);
     if (v49)
     {
       v51 = v49;
@@ -404,7 +404,7 @@ LABEL_33:
       goto LABEL_53;
     }
 
-    v55 = objc_msgSend_applicationBundleIdentifierForContainerAccess(v4, v53, v54);
+    v55 = objc_msgSend_applicationBundleIdentifierForContainerAccess(criteriaCopy, v53, v54);
     if (v55)
     {
       v57 = v55;
@@ -428,7 +428,7 @@ LABEL_33:
     goto LABEL_53;
   }
 
-  v61 = objc_msgSend_operationGroupName(v4, v59, v60);
+  v61 = objc_msgSend_operationGroupName(criteriaCopy, v59, v60);
   v63 = v61;
   if (v61)
   {
@@ -465,9 +465,9 @@ LABEL_54:
   if (v15)
   {
     v16 = v14;
-    v17 = self;
-    objc_sync_enter(v17);
-    v20 = objc_msgSend_unsignedIntValue(v17->_sentRequestCount, v18, v19);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v20 = objc_msgSend_unsignedIntValue(selfCopy->_sentRequestCount, v18, v19);
     v25 = 0.0;
     if (v20 >= objc_msgSend_unsignedIntValue(self->_allowedRequestCount, v21, v22))
     {
@@ -478,20 +478,20 @@ LABEL_54:
         v11 = v16;
       }
 
-      objc_msgSend_timeIntervalSinceDate_(v26, v27, v17->_throttleStartDate);
+      objc_msgSend_timeIntervalSinceDate_(v26, v27, selfCopy->_throttleStartDate);
       v30 = v29;
-      v33 = objc_msgSend_unsignedIntValue(v17->_currentRequestWindowIndex, v31, v32);
+      v33 = objc_msgSend_unsignedIntValue(selfCopy->_currentRequestWindowIndex, v31, v32);
       v36 = v11;
       v37 = v30 / v11;
       v38 = vcvtms_u32_f32(v37);
       if (v38 != v33)
       {
-        sentRequestCount = v17->_sentRequestCount;
-        v17->_sentRequestCount = &unk_1EFA850E0;
+        sentRequestCount = selfCopy->_sentRequestCount;
+        selfCopy->_sentRequestCount = &unk_1EFA850E0;
 
         v41 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v40, v38);
-        currentRequestWindowIndex = v17->_currentRequestWindowIndex;
-        v17->_currentRequestWindowIndex = v41;
+        currentRequestWindowIndex = selfCopy->_currentRequestWindowIndex;
+        selfCopy->_currentRequestWindowIndex = v41;
 
         if (v8)
         {
@@ -499,7 +499,7 @@ LABEL_54:
         }
       }
 
-      v43 = v16 + v36 * objc_msgSend_unsignedIntValue(v17->_currentRequestWindowIndex, v34, v35);
+      v43 = v16 + v36 * objc_msgSend_unsignedIntValue(selfCopy->_currentRequestWindowIndex, v34, v35);
       v44 = v43 - v30;
       if (v44 < 0.0)
       {
@@ -517,7 +517,7 @@ LABEL_54:
       }
     }
 
-    objc_sync_exit(v17);
+    objc_sync_exit(selfCopy);
 
     return v25;
   }
@@ -527,21 +527,21 @@ LABEL_54:
 
 - (NSNumber)sentRequestCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sentRequestCount;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sentRequestCount;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setSentRequestCount:(id)a3
+- (void)setSentRequestCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   obj = self;
   objc_sync_enter(obj);
   sentRequestCount = obj->_sentRequestCount;
-  obj->_sentRequestCount = v4;
+  obj->_sentRequestCount = countCopy;
 
   objc_sync_exit(obj);
 }
@@ -561,21 +561,21 @@ LABEL_54:
 
 - (NSNumber)currentRequestWindowIndex
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentRequestWindowIndex;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentRequestWindowIndex;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setCurrentRequestWindowIndex:(id)a3
+- (void)setCurrentRequestWindowIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   obj = self;
   objc_sync_enter(obj);
   currentRequestWindowIndex = obj->_currentRequestWindowIndex;
-  obj->_currentRequestWindowIndex = v4;
+  obj->_currentRequestWindowIndex = indexCopy;
 
   objc_sync_exit(obj);
 }

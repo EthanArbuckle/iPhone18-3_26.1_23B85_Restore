@@ -1,8 +1,8 @@
 @interface MPCSleepTimerEngineObserver
-- (MPCSleepTimerEngineObserver)initWithDelegate:(id)a3;
+- (MPCSleepTimerEngineObserver)initWithDelegate:(id)delegate;
 - (MPCSleepTimerEngineObserverDelegate)delegate;
-- (void)engine:(id)a3 didChangeItemElapsedTime:(double)a4 rate:(float)a5;
-- (void)engine:(id)a3 didEndPlaybackOfItem:(id)a4;
+- (void)engine:(id)engine didChangeItemElapsedTime:(double)time rate:(float)rate;
+- (void)engine:(id)engine didEndPlaybackOfItem:(id)item;
 @end
 
 @implementation MPCSleepTimerEngineObserver
@@ -14,34 +14,34 @@
   return WeakRetained;
 }
 
-- (void)engine:(id)a3 didChangeItemElapsedTime:(double)a4 rate:(float)a5
+- (void)engine:(id)engine didChangeItemElapsedTime:(double)time rate:(float)rate
 {
-  v6 = [(MPCSleepTimerEngineObserver *)self delegate];
+  delegate = [(MPCSleepTimerEngineObserver *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 didChangeItemElapsedTime:a4];
+    [delegate didChangeItemElapsedTime:time];
   }
 }
 
-- (void)engine:(id)a3 didEndPlaybackOfItem:(id)a4
+- (void)engine:(id)engine didEndPlaybackOfItem:(id)item
 {
-  v4 = [(MPCSleepTimerEngineObserver *)self delegate:a3];
+  v4 = [(MPCSleepTimerEngineObserver *)self delegate:engine];
   if (objc_opt_respondsToSelector())
   {
     [v4 didEndPlaybackForCurrentItem];
   }
 }
 
-- (MPCSleepTimerEngineObserver)initWithDelegate:(id)a3
+- (MPCSleepTimerEngineObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MPCSleepTimerEngineObserver;
   v5 = [(MPCSleepTimerEngineObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MPCSleepTimerEngineObserver *)v5 setDelegate:v4];
+    [(MPCSleepTimerEngineObserver *)v5 setDelegate:delegateCopy];
   }
 
   return v6;

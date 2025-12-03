@@ -1,5 +1,5 @@
 @interface KtraceLoggingDataSource
-- (KtraceLoggingDataSource)initWithKtraceFile:(ktrace_file *)a3;
+- (KtraceLoggingDataSource)initWithKtraceFile:(ktrace_file *)file;
 - (id)nextEventDataChunk;
 - (void)dealloc;
 @end
@@ -14,7 +14,7 @@
   [(KtraceLoggingDataSource *)&v3 dealloc];
 }
 
-- (KtraceLoggingDataSource)initWithKtraceFile:(ktrace_file *)a3
+- (KtraceLoggingDataSource)initWithKtraceFile:(ktrace_file *)file
 {
   v8.receiver = self;
   v8.super_class = KtraceLoggingDataSource;
@@ -22,13 +22,13 @@
   v5 = v4;
   if (v4)
   {
-    v4->_ktfile = a3;
+    v4->_ktfile = file;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__KtraceLoggingDataSource_initWithKtraceFile___block_invoke;
     v7[3] = &unk_27886DF68;
     v7[4] = v4;
-    if (ktrace_file_iterate(a3, 0, v7) || !v5->_metadata)
+    if (ktrace_file_iterate(file, 0, v7) || !v5->_metadata)
     {
       [(KtraceLoggingDataSource *)v5 set_metadata:0];
       return 0;

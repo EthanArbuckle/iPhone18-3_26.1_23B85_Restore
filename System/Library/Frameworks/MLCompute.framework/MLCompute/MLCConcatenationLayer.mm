@@ -1,11 +1,11 @@
 @interface MLCConcatenationLayer
 + (MLCConcatenationLayer)layer;
 + (MLCConcatenationLayer)layerWithDimension:(NSUInteger)dimension;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCConcatenationLayer)initWithDimension:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCConcatenationLayer)initWithDimension:(unint64_t)dimension;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
 @end
 
@@ -13,38 +13,38 @@
 
 + (MLCConcatenationLayer)layer
 {
-  v2 = [[a1 alloc] initWithDimension:1];
+  v2 = [[self alloc] initWithDimension:1];
 
   return v2;
 }
 
 + (MLCConcatenationLayer)layerWithDimension:(NSUInteger)dimension
 {
-  v3 = [[a1 alloc] initWithDimension:dimension];
+  v3 = [[self alloc] initWithDimension:dimension];
 
   return v3;
 }
 
-- (MLCConcatenationLayer)initWithDimension:(unint64_t)a3
+- (MLCConcatenationLayer)initWithDimension:(unint64_t)dimension
 {
   v5.receiver = self;
   v5.super_class = MLCConcatenationLayer;
   result = [(MLCLayer *)&v5 initWithLabel:@"Concat"];
   if (result)
   {
-    result->_dimension = a3;
+    result->_dimension = dimension;
   }
 
   return result;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  if (!tensorsCopy)
   {
     v34 = +[MLCLog framework];
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@
     goto LABEL_35;
   }
 
-  if (![v10 count])
+  if (![tensorsCopy count])
   {
     v34 = +[MLCLog framework];
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -67,18 +67,18 @@
   }
 
   aSelector = a2;
-  v12 = [v10 count];
+  v12 = [tensorsCopy count];
   if (v12)
   {
     v13 = v12;
     v14 = 0;
     while (1)
     {
-      v15 = [v10 objectAtIndexedSubscript:v14];
-      v16 = [v15 descriptor];
-      v17 = [v16 dataType];
+      v15 = [tensorsCopy objectAtIndexedSubscript:v14];
+      descriptor = [v15 descriptor];
+      dataType = [descriptor dataType];
 
-      if (![MLCConcatenationLayer supportsDataType:v17 onDevice:v9])
+      if (![MLCConcatenationLayer supportsDataType:dataType onDevice:deviceCopy])
       {
         break;
       }
@@ -98,9 +98,9 @@
       v49 = 2048;
       v50 = v14;
       v51 = 1024;
-      v52 = v17;
+      v52 = dataType;
       v53 = 2112;
-      v54 = v9;
+      v54 = deviceCopy;
       _os_log_error_impl(&dword_238C1D000, v34, OS_LOG_TYPE_ERROR, "%@: sourceTensor[%lu] uses unsupported data type = %d on a device = %@", buf, 0x26u);
     }
 
@@ -108,27 +108,27 @@
   }
 
 LABEL_7:
-  v18 = [v10 objectAtIndexedSubscript:0];
-  v19 = [v18 descriptor];
-  v20 = [v19 shape];
-  v21 = [v20 count];
+  v18 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v18 descriptor];
+  shape = [descriptor2 shape];
+  v21 = [shape count];
 
-  if ([v10 count] >= 2)
+  if ([tensorsCopy count] >= 2)
   {
     v22 = 1;
     while (1)
     {
-      v23 = [v10 objectAtIndexedSubscript:v22];
-      v24 = [v23 descriptor];
-      v25 = [v24 shape];
-      v26 = [v25 count];
+      v23 = [tensorsCopy objectAtIndexedSubscript:v22];
+      descriptor3 = [v23 descriptor];
+      shape2 = [descriptor3 shape];
+      v26 = [shape2 count];
 
       if (v21 != v26)
       {
         break;
       }
 
-      if (++v22 >= [v10 count])
+      if (++v22 >= [tensorsCopy count])
       {
         goto LABEL_11;
       }
@@ -144,10 +144,10 @@ LABEL_7:
   }
 
 LABEL_11:
-  v27 = [v9 computeEngine];
+  computeEngine = [deviceCopy computeEngine];
   v28 = objc_opt_respondsToSelector();
 
-  v29 = [v9 computeEngine];
+  computeEngine2 = [deviceCopy computeEngine];
   if ((v28 & 1) == 0)
   {
     v38 = objc_opt_respondsToSelector();
@@ -159,15 +159,15 @@ LABEL_11:
       goto LABEL_31;
     }
 
-    v39 = [v9 computeEngine];
-    v34 = [v39 splitLayerWithDimension:{-[MLCConcatenationLayer dimension](self, "dimension")}];
+    computeEngine3 = [deviceCopy computeEngine];
+    v34 = [computeEngine3 splitLayerWithDimension:{-[MLCConcatenationLayer dimension](self, "dimension")}];
 
     if (v34 && [v34 count])
     {
-      v35 = [v9 computeEngine];
-      v46 = v11;
+      computeEngine4 = [deviceCopy computeEngine];
+      v46 = tensorCopy;
       v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-      v36 = [v35 compileLayerDeviceOps:v34 sourceTensors:v10 resultTensors:v40];
+      v36 = [computeEngine4 compileLayerDeviceOps:v34 sourceTensors:tensorsCopy resultTensors:v40];
 
       goto LABEL_25;
     }
@@ -181,11 +181,11 @@ LABEL_11:
     goto LABEL_33;
   }
 
-  v30 = [(MLCConcatenationLayer *)self dimension];
-  v31 = [v10 objectAtIndexedSubscript:0];
-  v32 = [v31 descriptor];
-  v33 = [v32 shape];
-  v34 = [v29 concatLayerWithConcatDimension:v30 sourceShapeCount:{objc_msgSend(v33, "count")}];
+  dimension = [(MLCConcatenationLayer *)self dimension];
+  v31 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor4 = [v31 descriptor];
+  shape3 = [descriptor4 shape];
+  v34 = [computeEngine2 concatLayerWithConcatDimension:dimension sourceShapeCount:{objc_msgSend(shape3, "count")}];
 
   if (!v34 || ![v34 count])
   {
@@ -204,74 +204,74 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v35 = [v9 computeEngine];
-  v36 = [v35 compileLayerDeviceOps:v34 sourceTensors:v10 resultTensor:v11];
+  computeEngine4 = [deviceCopy computeEngine];
+  v36 = [computeEngine4 compileLayerDeviceOps:v34 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 LABEL_25:
 
 LABEL_31:
   v45.receiver = self;
   v45.super_class = MLCConcatenationLayer;
-  [(MLCLayer *)&v45 bindDevice:v9 deviceOps:v34];
+  [(MLCLayer *)&v45 bindDevice:deviceCopy deviceOps:v34];
 LABEL_36:
 
   v42 = *MEMORY[0x277D85DE8];
   return v36;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourcesCopy = sources;
   v5 = [MEMORY[0x277CBEBF8] mutableCopy];
   v6 = 0;
   v35 = 0u;
   v36 = 0u;
   while (1)
   {
-    v7 = [v4 objectAtIndexedSubscript:{0, v35, v36}];
-    v8 = [v7 descriptor];
-    v9 = [v8 shape];
-    v10 = [v9 count];
+    v7 = [sourcesCopy objectAtIndexedSubscript:{0, v35, v36}];
+    descriptor = [v7 descriptor];
+    shape = [descriptor shape];
+    v10 = [shape count];
 
     if (v6 >= v10)
     {
       break;
     }
 
-    v11 = [v4 objectAtIndexedSubscript:0];
-    v12 = [v11 descriptor];
-    v13 = [v12 shape];
-    v14 = [v13 objectAtIndexedSubscript:v6];
+    v11 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor2 = [v11 descriptor];
+    shape2 = [descriptor2 shape];
+    v14 = [shape2 objectAtIndexedSubscript:v6];
     *(&v35 + v6) = [v14 unsignedIntegerValue];
 
     ++v6;
   }
 
-  if ([v4 count] >= 2)
+  if ([sourcesCopy count] >= 2)
   {
     v15 = 1;
     do
     {
-      v16 = [v4 objectAtIndexedSubscript:v15];
-      v17 = [v16 descriptor];
-      v18 = [v17 shape];
-      v19 = [v18 objectAtIndexedSubscript:{-[MLCConcatenationLayer dimension](self, "dimension")}];
-      v20 = [v19 unsignedIntegerValue];
-      v21 = [(MLCConcatenationLayer *)self dimension];
-      *(&v35 + v21) += v20;
+      v16 = [sourcesCopy objectAtIndexedSubscript:v15];
+      descriptor3 = [v16 descriptor];
+      shape3 = [descriptor3 shape];
+      v19 = [shape3 objectAtIndexedSubscript:{-[MLCConcatenationLayer dimension](self, "dimension")}];
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
+      dimension = [(MLCConcatenationLayer *)self dimension];
+      *(&v35 + dimension) += unsignedIntegerValue;
 
       ++v15;
     }
 
-    while (v15 < [v4 count]);
+    while (v15 < [sourcesCopy count]);
   }
 
   for (i = 0; ; ++i)
   {
-    v23 = [v4 objectAtIndexedSubscript:0];
-    v24 = [v23 descriptor];
-    v25 = [v24 shape];
-    v26 = [v25 count];
+    v23 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor4 = [v23 descriptor];
+    shape4 = [descriptor4 shape];
+    v26 = [shape4 count];
 
     if (i >= v26)
     {
@@ -283,9 +283,9 @@ LABEL_36:
   }
 
   v28 = [v5 copy];
-  v29 = [v4 objectAtIndexedSubscript:0];
-  v30 = [v29 descriptor];
-  v31 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v28, [v30 dataType]);
+  v29 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor5 = [v29 descriptor];
+  v31 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v28, [descriptor5 dataType]);
 
   v32 = [MLCTensor tensorWithDescriptor:v31];
 
@@ -299,10 +299,10 @@ LABEL_36:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCConcatenationLayer *)self dimension];
-  v7 = [(MLCLayer *)self conditionalTreeNode];
-  v8 = [(MLCLayer *)self resultTensors];
-  v9 = [v3 stringWithFormat:@"%@: { dimension=%lu : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v6, v7, v8];
+  dimension = [(MLCConcatenationLayer *)self dimension];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v9 = [v3 stringWithFormat:@"%@: { dimension=%lu : conditionalTreeNode=%@ : resultTensor=%@ }", v5, dimension, conditionalTreeNode, resultTensors];
 
   return v9;
 }
@@ -317,12 +317,12 @@ LABEL_36:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MLCConcatenationLayer *)self dimension];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  dimension = [(MLCConcatenationLayer *)self dimension];
 
-  return [v4 initWithDimension:v5];
+  return [v4 initWithDimension:dimension];
 }
 
 - (void)compileForDevice:(const char *)a1 sourceTensors:resultTensor:.cold.1(const char *a1)

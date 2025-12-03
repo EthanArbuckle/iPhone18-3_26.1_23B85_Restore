@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)hasManagedCellularData;
 - (BOOL)isGlobalDataModificationRestricted;
-- (BOOL)isManaged:(id)a3;
+- (BOOL)isManaged:(id)managed;
 - (NSString)mdmName;
 - (PSCellularManagementCache)init;
 - (id)initPrivate;
@@ -46,14 +46,14 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
     managedCellDataAppCache = v2->_managedCellDataAppCache;
     v2->_managedCellDataAppCache = 0;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v3 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel_managedConfigurationSettingsDidChange name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel_managedConfigurationSettingsDidChange name:*MEMORY[0x277D25CA0] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v3 selector:sel_managedConfigurationProfileListDidChange name:*MEMORY[0x277D26148] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v3 selector:sel_managedConfigurationProfileListDidChange name:*MEMORY[0x277D26148] object:0];
   }
 
   return v3;
@@ -62,12 +62,12 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
 - (PSCellularManagementCache)init
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [(PSCellularManagementCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSCellularManagementCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     v3 = 136315138;
     v4 = "[PSCellularManagementCache init]";
-    _os_log_error_impl(&dword_2658CA000, v2, OS_LOG_TYPE_ERROR, "unsupported initializer called: %s", &v3, 0xCu);
+    _os_log_error_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_ERROR, "unsupported initializer called: %s", &v3, 0xCu);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -75,11 +75,11 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
 
 - (void)clearCache
 {
-  v3 = [(PSCellularManagementCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSCellularManagementCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Clearing cellular management cache", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing cellular management cache", v4, 2u);
   }
 
   [(PSCellularManagementCache *)self setManagedCellDataAppCache:0];
@@ -87,11 +87,11 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
 
 - (void)willEnterForeground
 {
-  v3 = [(PSCellularManagementCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSCellularManagementCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Received willEnterForeground notification", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Received willEnterForeground notification", v4, 2u);
   }
 
   [(PSCellularManagementCache *)self clearCache];
@@ -99,11 +99,11 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
 
 - (void)managedConfigurationSettingsDidChange
 {
-  v3 = [(PSCellularManagementCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSCellularManagementCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Received managedConfigurationSettingsDidChange notification", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Received managedConfigurationSettingsDidChange notification", v4, 2u);
   }
 
   [(PSCellularManagementCache *)self clearCache];
@@ -111,11 +111,11 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
 
 - (void)managedConfigurationProfileListDidChange
 {
-  v3 = [(PSCellularManagementCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSCellularManagementCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Received managedConfigurationProfileListDidChange notification", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Received managedConfigurationProfileListDidChange notification", v4, 2u);
   }
 
   [(PSCellularManagementCache *)self clearCache];
@@ -123,49 +123,49 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
 
 - (BOOL)isGlobalDataModificationRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25D10]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25D10]] == 2;
 
   return v3;
 }
 
 - (NSString)mdmName
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 installedMDMProfileIdentifier];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  installedMDMProfileIdentifier = [mEMORY[0x277D262A0] installedMDMProfileIdentifier];
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 installedProfileWithIdentifier:v3];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0]2 installedProfileWithIdentifier:installedMDMProfileIdentifier];
 
-  v6 = [v5 friendlyName];
+  friendlyName = [v5 friendlyName];
 
-  return v6;
+  return friendlyName;
 }
 
 - (id)managedAppBundleIDs
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 managedAppIDs];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  managedAppIDs = [mEMORY[0x277D262A0] managedAppIDs];
 
-  return v3;
+  return managedAppIDs;
 }
 
 - (id)managedCellDataAppBundleIDs
 {
-  v2 = self;
+  selfCopy = self;
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(PSCellularManagementCache *)self managedCellDataAppCache];
+  managedCellDataAppCache = [(PSCellularManagementCache *)self managedCellDataAppCache];
 
-  if (!v3)
+  if (!managedCellDataAppCache)
   {
     v4 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v2;
-    v5 = [(PSCellularManagementCache *)v2 managedAppBundleIDs];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v17 = selfCopy;
+    managedAppBundleIDs = [(PSCellularManagementCache *)selfCopy managedAppBundleIDs];
+    v6 = [managedAppBundleIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -177,15 +177,15 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(managedAppBundleIDs);
           }
 
           v10 = *(*(&v18 + 1) + 8 * v9);
           v11 = +[PSAppDataUsagePolicyCache sharedInstance];
           v12 = [v11 policiesFor:v10];
-          v13 = [v12 isManaged];
+          isManaged = [v12 isManaged];
 
-          if (v13)
+          if (isManaged)
           {
             [v4 addObject:v10];
           }
@@ -194,39 +194,39 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [managedAppBundleIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
     }
 
-    v2 = v17;
+    selfCopy = v17;
     [(PSCellularManagementCache *)v17 setManagedCellDataAppCache:v4];
   }
 
-  v14 = [(PSCellularManagementCache *)v2 managedCellDataAppCache];
+  managedCellDataAppCache2 = [(PSCellularManagementCache *)selfCopy managedCellDataAppCache];
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return managedCellDataAppCache2;
 }
 
 - (BOOL)hasManagedCellularData
 {
-  v2 = [(PSCellularManagementCache *)self managedCellDataAppBundleIDs];
-  v3 = [v2 count] != 0;
+  managedCellDataAppBundleIDs = [(PSCellularManagementCache *)self managedCellDataAppBundleIDs];
+  v3 = [managedCellDataAppBundleIDs count] != 0;
 
   return v3;
 }
 
-- (BOOL)isManaged:(id)a3
+- (BOOL)isManaged:(id)managed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSCellularManagementCache *)self managedCellDataAppBundleIDs];
-  v6 = [v5 containsObject:v4];
+  managedCopy = managed;
+  managedCellDataAppBundleIDs = [(PSCellularManagementCache *)self managedCellDataAppBundleIDs];
+  v6 = [managedCellDataAppBundleIDs containsObject:managedCopy];
 
-  v7 = [(PSCellularManagementCache *)self getLogger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  getLogger = [(PSCellularManagementCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
   {
     v8 = @"is not managed";
     if (v6)
@@ -235,10 +235,10 @@ uint64_t __43__PSCellularManagementCache_sharedInstance__block_invoke()
     }
 
     v11 = 138543618;
-    v12 = v4;
+    v12 = managedCopy;
     v13 = 2112;
     v14 = v8;
-    _os_log_impl(&dword_2658CA000, v7, OS_LOG_TYPE_INFO, "For %{public}@, policy: %@", &v11, 0x16u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_INFO, "For %{public}@, policy: %@", &v11, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];

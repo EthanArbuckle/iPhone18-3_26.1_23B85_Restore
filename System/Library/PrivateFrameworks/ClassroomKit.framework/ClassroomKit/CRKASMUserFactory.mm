@@ -1,39 +1,39 @@
 @interface CRKASMUserFactory
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isUser:(id)a3 suitableForPerson:(id)a4;
-- (CRKASMUserFactory)initWithConfiguration:(id)a3 certificateVendor:(id)a4;
-- (id)cachedTrustedUserForPerson:(id)a3;
-- (id)cachedUserForPerson:(id)a3;
-- (id)makeTrustedUserForPerson:(id)a3;
-- (id)makeUserForPerson:(id)a3;
-- (id)trustedUserForPerson:(id)a3;
-- (id)userForPerson:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isUser:(id)user suitableForPerson:(id)person;
+- (CRKASMUserFactory)initWithConfiguration:(id)configuration certificateVendor:(id)vendor;
+- (id)cachedTrustedUserForPerson:(id)person;
+- (id)cachedUserForPerson:(id)person;
+- (id)makeTrustedUserForPerson:(id)person;
+- (id)makeUserForPerson:(id)person;
+- (id)trustedUserForPerson:(id)person;
+- (id)userForPerson:(id)person;
 - (unint64_t)hash;
 @end
 
 @implementation CRKASMUserFactory
 
-- (CRKASMUserFactory)initWithConfiguration:(id)a3 certificateVendor:(id)a4
+- (CRKASMUserFactory)initWithConfiguration:(id)configuration certificateVendor:(id)vendor
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  vendorCopy = vendor;
   v12.receiver = self;
   v12.super_class = CRKASMUserFactory;
   v9 = [(CRKASMUserFactory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_certificateVendor, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_certificateVendor, vendor);
   }
 
   return v10;
 }
 
-- (id)userForPerson:(id)a3
+- (id)userForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(CRKASMUserFactory *)self cachedUserForPerson:v4];
+  personCopy = person;
+  v5 = [(CRKASMUserFactory *)self cachedUserForPerson:personCopy];
   v6 = v5;
   if (v5)
   {
@@ -42,7 +42,7 @@
 
   else
   {
-    v7 = [(CRKASMUserFactory *)self makeUserForPerson:v4];
+    v7 = [(CRKASMUserFactory *)self makeUserForPerson:personCopy];
   }
 
   v8 = v7;
@@ -50,10 +50,10 @@
   return v8;
 }
 
-- (id)trustedUserForPerson:(id)a3
+- (id)trustedUserForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(CRKASMUserFactory *)self cachedTrustedUserForPerson:v4];
+  personCopy = person;
+  v5 = [(CRKASMUserFactory *)self cachedTrustedUserForPerson:personCopy];
   v6 = v5;
   if (v5)
   {
@@ -62,7 +62,7 @@
 
   else
   {
-    v7 = [(CRKASMUserFactory *)self makeTrustedUserForPerson:v4];
+    v7 = [(CRKASMUserFactory *)self makeTrustedUserForPerson:personCopy];
   }
 
   v8 = v7;
@@ -70,15 +70,15 @@
   return v8;
 }
 
-- (id)cachedUserForPerson:(id)a3
+- (id)cachedUserForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(CRKASMUserFactory *)self configuration];
-  v6 = [v5 userCache];
-  v7 = [v4 objectID];
-  v8 = [v6 objectForKey:v7];
+  personCopy = person;
+  configuration = [(CRKASMUserFactory *)self configuration];
+  userCache = [configuration userCache];
+  objectID = [personCopy objectID];
+  v8 = [userCache objectForKey:objectID];
 
-  LODWORD(self) = [(CRKASMUserFactory *)self isUser:v8 suitableForPerson:v4];
+  LODWORD(self) = [(CRKASMUserFactory *)self isUser:v8 suitableForPerson:personCopy];
   if (self)
   {
     v9 = v8;
@@ -92,28 +92,28 @@
   return v9;
 }
 
-- (id)makeUserForPerson:(id)a3
+- (id)makeUserForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [[CRKASMConcreteUser alloc] initWithBackingPerson:v4];
-  v6 = [(CRKASMUserFactory *)self configuration];
-  v7 = [v6 userCache];
-  v8 = [v4 objectID];
+  personCopy = person;
+  v5 = [[CRKASMConcreteUser alloc] initWithBackingPerson:personCopy];
+  configuration = [(CRKASMUserFactory *)self configuration];
+  userCache = [configuration userCache];
+  objectID = [personCopy objectID];
 
-  [v7 setObject:v5 forKey:v8];
+  [userCache setObject:v5 forKey:objectID];
 
   return v5;
 }
 
-- (id)cachedTrustedUserForPerson:(id)a3
+- (id)cachedTrustedUserForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(CRKASMUserFactory *)self configuration];
-  v6 = [v5 trustedUserCache];
-  v7 = [v4 objectID];
-  v8 = [v6 objectForKey:v7];
+  personCopy = person;
+  configuration = [(CRKASMUserFactory *)self configuration];
+  trustedUserCache = [configuration trustedUserCache];
+  objectID = [personCopy objectID];
+  v8 = [trustedUserCache objectForKey:objectID];
 
-  LODWORD(self) = [(CRKASMUserFactory *)self isUser:v8 suitableForPerson:v4];
+  LODWORD(self) = [(CRKASMUserFactory *)self isUser:v8 suitableForPerson:personCopy];
   if (self)
   {
     v9 = v8;
@@ -127,40 +127,40 @@
   return v9;
 }
 
-- (id)makeTrustedUserForPerson:(id)a3
+- (id)makeTrustedUserForPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = [CRKASMConcreteTrustedUser alloc];
-  v6 = [(CRKASMUserFactory *)self certificateVendor];
-  v7 = [(CRKASMConcreteTrustedUser *)v5 initWithBackingPerson:v4 certificateVendor:v6];
+  certificateVendor = [(CRKASMUserFactory *)self certificateVendor];
+  v7 = [(CRKASMConcreteTrustedUser *)v5 initWithBackingPerson:personCopy certificateVendor:certificateVendor];
 
-  v8 = [(CRKASMUserFactory *)self configuration];
-  v9 = [v8 trustedUserCache];
-  v10 = [v4 objectID];
+  configuration = [(CRKASMUserFactory *)self configuration];
+  trustedUserCache = [configuration trustedUserCache];
+  objectID = [personCopy objectID];
 
-  [v9 setObject:v7 forKey:v10];
+  [trustedUserCache setObject:v7 forKey:objectID];
 
   return v7;
 }
 
-- (BOOL)isUser:(id)a3 suitableForPerson:(id)a4
+- (BOOL)isUser:(id)user suitableForPerson:(id)person
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  userCopy = user;
+  v6 = userCopy;
+  if (userCopy)
   {
-    v7 = v5;
-    v8 = a4;
+    v7 = userCopy;
+    personCopy = person;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [CRKASMUserFactory isUser:suitableForPerson:];
     }
 
-    v9 = [v7 backingPersonInitialModificationDate];
-    v10 = [v8 dateLastModified];
+    backingPersonInitialModificationDate = [v7 backingPersonInitialModificationDate];
+    dateLastModified = [personCopy dateLastModified];
 
-    v11 = [v9 isEqualToDate:v10];
+    v11 = [backingPersonInitialModificationDate isEqualToDate:dateLastModified];
   }
 
   else
@@ -173,16 +173,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CRKASMUserFactory *)self configuration];
-  v3 = [v2 hash];
+  configuration = [(CRKASMUserFactory *)self configuration];
+  v3 = [configuration hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"configuration" componentsSeparatedByString:{@", "}];
   v6 = [v5 mutableCopy];
 
@@ -194,10 +194,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -226,7 +226,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMUserFactory *)v8 valueForKey:v16];
+          v18 = [(CRKASMUserFactory *)selfCopy valueForKey:v16];
           v19 = [(CRKASMUserFactory *)v17 valueForKey:v16];
 
           if (v18 | v19)

@@ -1,47 +1,47 @@
 @interface MASubGraph
-+ (id)subGraphIntersectionsWithSubGraphs:(id)a3;
-+ (id)subGraphWithGraph:(id)a3;
++ (id)subGraphIntersectionsWithSubGraphs:(id)graphs;
++ (id)subGraphWithGraph:(id)graph;
 - (MASubGraph)init;
 - (id)allEdges;
 - (id)allNamedEdges;
 - (id)allNamedNodes;
 - (id)allNodes;
 - (id)description;
-- (id)edgeForIdentifier:(unint64_t)a3;
-- (id)edgesForLabel:(id)a3;
-- (id)edgesForLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (id)edgesForName:(id)a3;
+- (id)edgeForIdentifier:(unint64_t)identifier;
+- (id)edgesForLabel:(id)label;
+- (id)edgesForLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (id)edgesForName:(id)name;
 - (id)edgesLabels;
 - (id)edgesNames;
 - (id)graphRepresentation;
-- (id)nodeForIdentifier:(unint64_t)a3;
-- (id)nodesForLabel:(id)a3;
-- (id)nodesForLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (id)nodesForName:(id)a3;
-- (id)nodesForName:(id)a3 fromNode:(id)a4;
-- (id)nodesForNames:(id)a3;
+- (id)nodeForIdentifier:(unint64_t)identifier;
+- (id)nodesForLabel:(id)label;
+- (id)nodesForLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (id)nodesForName:(id)name;
+- (id)nodesForName:(id)name fromNode:(id)node;
+- (id)nodesForNames:(id)names;
 - (id)nodesLabels;
 - (id)nodesNames;
-- (unint64_t)edgesCountForLabel:(id)a3;
-- (unint64_t)edgesCountForName:(id)a3;
-- (unint64_t)nodesCountForLabel:(id)a3;
-- (unint64_t)nodesCountForName:(id)a3;
-- (unint64_t)nodesCountForName:(id)a3 fromNode:(id)a4;
-- (void)_addEdge:(id)a3 withName:(id)a4;
-- (void)_addNode:(id)a3 withName:(id)a4;
-- (void)_addNode:(id)a3 withName:(id)a4 forKeyNode:(id)a5;
-- (void)addEdges:(id)a3 withName:(id)a4;
-- (void)addNodes:(id)a3 withName:(id)a4;
-- (void)enumerateEdgesByNameUsingBlock:(id)a3;
-- (void)enumerateEdgesWithBlock:(id)a3;
-- (void)enumerateEdgesWithLabel:(id)a3 domain:(unsigned __int16)a4 usingBlock:(id)a5;
-- (void)enumerateEdgesWithName:(id)a3 usingBlock:(id)a4;
-- (void)enumerateNodesByNameUsingBlock:(id)a3;
-- (void)enumerateNodesWithBlock:(id)a3;
-- (void)enumerateNodesWithLabel:(id)a3 domain:(unsigned __int16)a4 usingBlock:(id)a5;
-- (void)enumerateNodesWithName:(id)a3 fromNode:(id)a4 usingBlock:(id)a5;
-- (void)enumerateNodesWithName:(id)a3 usingBlock:(id)a4;
-- (void)mergeWithSubGraph:(id)a3;
+- (unint64_t)edgesCountForLabel:(id)label;
+- (unint64_t)edgesCountForName:(id)name;
+- (unint64_t)nodesCountForLabel:(id)label;
+- (unint64_t)nodesCountForName:(id)name;
+- (unint64_t)nodesCountForName:(id)name fromNode:(id)node;
+- (void)_addEdge:(id)edge withName:(id)name;
+- (void)_addNode:(id)node withName:(id)name;
+- (void)_addNode:(id)node withName:(id)name forKeyNode:(id)keyNode;
+- (void)addEdges:(id)edges withName:(id)name;
+- (void)addNodes:(id)nodes withName:(id)name;
+- (void)enumerateEdgesByNameUsingBlock:(id)block;
+- (void)enumerateEdgesWithBlock:(id)block;
+- (void)enumerateEdgesWithLabel:(id)label domain:(unsigned __int16)domain usingBlock:(id)block;
+- (void)enumerateEdgesWithName:(id)name usingBlock:(id)block;
+- (void)enumerateNodesByNameUsingBlock:(id)block;
+- (void)enumerateNodesWithBlock:(id)block;
+- (void)enumerateNodesWithLabel:(id)label domain:(unsigned __int16)domain usingBlock:(id)block;
+- (void)enumerateNodesWithName:(id)name fromNode:(id)node usingBlock:(id)block;
+- (void)enumerateNodesWithName:(id)name usingBlock:(id)block;
+- (void)mergeWithSubGraph:(id)graph;
 @end
 
 @implementation MASubGraph
@@ -49,13 +49,13 @@
 - (id)graphRepresentation
 {
   v75 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = +[MAGraph graph];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v45 = self;
+  selfCopy = self;
   obj = [(NSMutableDictionary *)self->_nodesByName objectEnumerator];
   v51 = [obj countByEnumeratingWithState:&v67 objects:v74 count:16];
   if (v51)
@@ -93,14 +93,14 @@
               }
 
               v12 = *(*(&v63 + 1) + 8 * i);
-              v13 = [v12 label];
-              v14 = [v12 domain];
-              v15 = [v12 propertyDictionary];
+              label = [v12 label];
+              domain = [v12 domain];
+              propertyDictionary = [v12 propertyDictionary];
               LODWORD(v16) = 1.0;
-              v17 = [v4 addUniqueNodeWithLabel:v13 domain:v14 weight:v15 properties:0 didCreate:v16];
+              v17 = [v4 addUniqueNodeWithLabel:label domain:domain weight:propertyDictionary properties:0 didCreate:v16];
 
               v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "identifier")}];
-              [v3 setObject:v17 forKey:v18];
+              [dictionary setObject:v17 forKey:v18];
             }
 
             v9 = [v7 countByEnumeratingWithState:&v63 objects:v73 count:16];
@@ -123,13 +123,13 @@
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v19 = [(NSMutableDictionary *)v45->_edgesByName objectEnumerator];
-  obja = [v19 countByEnumeratingWithState:&v59 objects:v72 count:16];
+  objectEnumerator = [(NSMutableDictionary *)selfCopy->_edgesByName objectEnumerator];
+  obja = [objectEnumerator countByEnumeratingWithState:&v59 objects:v72 count:16];
   if (obja)
   {
     v20 = *v60;
     v46 = *v60;
-    v52 = v19;
+    v52 = objectEnumerator;
     do
     {
       v21 = 0;
@@ -137,7 +137,7 @@
       {
         if (*v60 != v20)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v50 = v21;
@@ -163,14 +163,14 @@
 
               v27 = *(*(&v55 + 1) + 8 * j);
               v28 = MEMORY[0x277CCABB0];
-              v29 = [v27 sourceNode];
-              v30 = [v28 numberWithUnsignedInteger:{objc_msgSend(v29, "identifier")}];
-              v31 = [v3 objectForKey:v30];
+              sourceNode = [v27 sourceNode];
+              v30 = [v28 numberWithUnsignedInteger:{objc_msgSend(sourceNode, "identifier")}];
+              v31 = [dictionary objectForKey:v30];
 
               v32 = MEMORY[0x277CCABB0];
-              v33 = [v27 targetNode];
-              v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(v33, "identifier")}];
-              v35 = [v3 objectForKey:v34];
+              targetNode = [v27 targetNode];
+              v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(targetNode, "identifier")}];
+              v35 = [dictionary objectForKey:v34];
 
               if (v31)
               {
@@ -190,11 +190,11 @@
                 goto LABEL_35;
               }
 
-              v37 = [v27 label];
-              v38 = [v27 domain];
-              v39 = [v27 propertyDictionary];
+              label2 = [v27 label];
+              domain2 = [v27 domain];
+              propertyDictionary2 = [v27 propertyDictionary];
               LODWORD(v40) = 1.0;
-              v41 = [v4 addUniqueEdgeWithLabel:v37 sourceNode:v31 targetNode:v35 domain:v38 weight:v39 properties:v40];
+              v41 = [v4 addUniqueEdgeWithLabel:label2 sourceNode:v31 targetNode:v35 domain:domain2 weight:propertyDictionary2 properties:v40];
             }
 
             v25 = [v23 countByEnumeratingWithState:&v55 objects:v71 count:16];
@@ -209,7 +209,7 @@
 
         v21 = v50 + 1;
         v20 = v46;
-        v19 = v52;
+        objectEnumerator = v52;
       }
 
       while ((v50 + 1) != obja);
@@ -227,17 +227,17 @@ LABEL_35:
   return v42;
 }
 
-- (void)enumerateEdgesWithBlock:(id)a3
+- (void)enumerateEdgesWithBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v28 = 0;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(NSMutableDictionary *)self->_edgesByLabel objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_edgesByLabel objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -250,7 +250,7 @@ LABEL_35:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = v9;
@@ -274,7 +274,7 @@ LABEL_35:
                 objc_enumerationMutation(v13);
               }
 
-              v4[2](v4, *(*(&v20 + 1) + 8 * j), &v28);
+              blockCopy[2](blockCopy, *(*(&v20 + 1) + 8 * j), &v28);
               if (v28)
               {
 
@@ -296,7 +296,7 @@ LABEL_35:
         v8 = v19;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v7);
@@ -307,13 +307,13 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEdgesWithName:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesWithName:(id)name usingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v20 = 0;
   v7 = MEMORY[0x277CBEB70];
-  v8 = [(NSMutableDictionary *)self->_edgesByName objectForKey:a3];
+  v8 = [(NSMutableDictionary *)self->_edgesByName objectForKey:name];
   v9 = [v7 orderedSetWithOrderedSet:v8];
 
   v18 = 0u;
@@ -335,7 +335,7 @@ LABEL_3:
         objc_enumerationMutation(v10);
       }
 
-      v6[2](v6, *(*(&v16 + 1) + 8 * v14), &v20);
+      blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v14), &v20);
       if (v20)
       {
         break;
@@ -357,14 +357,14 @@ LABEL_3:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEdgesWithLabel:(id)a3 domain:(unsigned __int16)a4 usingBlock:(id)a5
+- (void)enumerateEdgesWithLabel:(id)label domain:(unsigned __int16)domain usingBlock:(id)block
 {
-  v5 = a4;
+  domainCopy = domain;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   v23 = 0;
   v9 = MEMORY[0x277CBEB70];
-  v10 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:a3];
+  v10 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:label];
   v11 = [v9 orderedSetWithOrderedSet:v10];
 
   v21 = 0u;
@@ -387,9 +387,9 @@ LABEL_3:
       }
 
       v17 = *(*(&v19 + 1) + 8 * v16);
-      if (!v5 || [*(*(&v19 + 1) + 8 * v16) domain] == v5)
+      if (!domainCopy || [*(*(&v19 + 1) + 8 * v16) domain] == domainCopy)
       {
-        v8[2](v8, v17, &v23);
+        blockCopy[2](blockCopy, v17, &v23);
         if (v23)
         {
           break;
@@ -412,16 +412,16 @@ LABEL_3:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEdgesByNameUsingBlock:(id)a3
+- (void)enumerateEdgesByNameUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   edgesByName = self->_edgesByName;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke;
   v7[3] = &unk_2797FF1A8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)edgesByName enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -436,15 +436,15 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
 - (id)allNamedEdges
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MASubGraph *)v2 edgesNames];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  edgesNames = [(MASubGraph *)selfCopy edgesNames];
+  v5 = [edgesNames countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -454,22 +454,22 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(edgesNames);
         }
 
-        v8 = [(NSMutableDictionary *)v2->_edgesByName objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
-        [v3 unionOrderedSet:v8];
+        v8 = [(NSMutableDictionary *)selfCopy->_edgesByName objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
+        [orderedSet unionOrderedSet:v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [edgesNames countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [v3 set];
+  v9 = [orderedSet set];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
@@ -477,15 +477,15 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
 
 - (id)allEdges
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x277CBEB40];
-  v4 = [(NSMutableDictionary *)v2->_edgesByIdentifier allValues];
-  v5 = [v3 orderedSetWithArray:v4];
+  allValues = [(NSMutableDictionary *)selfCopy->_edgesByIdentifier allValues];
+  v5 = [v3 orderedSetWithArray:allValues];
 
   v6 = [v5 set];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -498,8 +498,8 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMutableDictionary *)self->_edgesByName keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_edgesByName keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -510,7 +510,7 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -520,7 +520,7 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -536,38 +536,38 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
 - (id)edgesLabels
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_edgesByLabel allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_edgesByLabel allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (unint64_t)edgesCountForName:(id)a3
+- (unint64_t)edgesCountForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_edgesByName objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_edgesByName objectForKey:name];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (unint64_t)edgesCountForLabel:(id)a3
+- (unint64_t)edgesCountForLabel:(id)label
 {
-  v3 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:label];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)edgesForLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (id)edgesForLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v5 = a4;
+  domainCopy = domain;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:a3];
+  propertiesCopy = properties;
+  v9 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:label];
   v10 = [MEMORY[0x277CBEB58] set];
-  if (v8)
+  if (propertiesCopy)
   {
-    v11 = [v8 count] == 0;
+    v11 = [propertiesCopy count] == 0;
   }
 
   else
@@ -595,7 +595,7 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        if ((!v5 || [*(*(&v21 + 1) + 8 * i) domain] == v5) && (v11 || objc_msgSend(v17, "hasProperties:", v8)))
+        if ((!domainCopy || [*(*(&v21 + 1) + 8 * i) domain] == domainCopy) && (v11 || objc_msgSend(v17, "hasProperties:", propertiesCopy)))
         {
           [v10 addObject:{v17, v21}];
         }
@@ -614,78 +614,78 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
   return v18;
 }
 
-- (id)edgesForName:(id)a3
+- (id)edgesForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_edgesByName objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_edgesByName objectForKey:name];
   v4 = [v3 set];
 
   return v4;
 }
 
-- (id)edgesForLabel:(id)a3
+- (id)edgesForLabel:(id)label
 {
-  v3 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_edgesByLabel objectForKey:label];
   v4 = [v3 set];
 
   return v4;
 }
 
-- (id)edgeForIdentifier:(unint64_t)a3
+- (id)edgeForIdentifier:(unint64_t)identifier
 {
   edgesByIdentifier = self->_edgesByIdentifier;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
   v5 = [(NSMutableDictionary *)edgesByIdentifier objectForKey:v4];
 
   return v5;
 }
 
-- (void)_addEdge:(id)a3 withName:(id)a4
+- (void)_addEdge:(id)edge withName:(id)name
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  edgesByIdentifier = v7->_edgesByIdentifier;
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "identifier")}];
-  [(NSMutableDictionary *)edgesByIdentifier setObject:v16 forKey:v9];
+  edgeCopy = edge;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  edgesByIdentifier = selfCopy->_edgesByIdentifier;
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(edgeCopy, "identifier")}];
+  [(NSMutableDictionary *)edgesByIdentifier setObject:edgeCopy forKey:v9];
 
-  edgesByLabel = v7->_edgesByLabel;
-  v11 = [v16 label];
-  v12 = [(NSMutableDictionary *)edgesByLabel objectForKey:v11];
+  edgesByLabel = selfCopy->_edgesByLabel;
+  label = [edgeCopy label];
+  orderedSet = [(NSMutableDictionary *)edgesByLabel objectForKey:label];
 
-  if (!v12)
+  if (!orderedSet)
   {
-    v12 = [MEMORY[0x277CBEB40] orderedSet];
-    v13 = v7->_edgesByLabel;
-    v14 = [v16 label];
-    [(NSMutableDictionary *)v13 setObject:v12 forKey:v14];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    v13 = selfCopy->_edgesByLabel;
+    label2 = [edgeCopy label];
+    [(NSMutableDictionary *)v13 setObject:orderedSet forKey:label2];
   }
 
-  [v12 addObject:v16];
-  v15 = [(NSMutableDictionary *)v7->_edgesByName objectForKey:v6];
-  if (!v15)
+  [orderedSet addObject:edgeCopy];
+  orderedSet2 = [(NSMutableDictionary *)selfCopy->_edgesByName objectForKey:nameCopy];
+  if (!orderedSet2)
   {
-    v15 = [MEMORY[0x277CBEB40] orderedSet];
-    [(NSMutableDictionary *)v7->_edgesByName setObject:v15 forKey:v6];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
+    [(NSMutableDictionary *)selfCopy->_edgesByName setObject:orderedSet2 forKey:nameCopy];
   }
 
-  [v15 addObject:v16];
+  [orderedSet2 addObject:edgeCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addEdges:(id)a3 withName:(id)a4
+- (void)addEdges:(id)edges withName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  edgesCopy = edges;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v6;
+  v9 = edgesCopy;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -700,7 +700,7 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
           objc_enumerationMutation(v9);
         }
 
-        [(MASubGraph *)v8 _addEdge:*(*(&v14 + 1) + 8 * v12++) withName:v7, v14];
+        [(MASubGraph *)selfCopy _addEdge:*(*(&v14 + 1) + 8 * v12++) withName:nameCopy, v14];
       }
 
       while (v10 != v12);
@@ -710,37 +710,37 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateNodesWithName:(id)a3 fromNode:(id)a4 usingBlock:(id)a5
+- (void)enumerateNodesWithName:(id)name fromNode:(id)node usingBlock:(id)block
 {
-  if (a5)
+  if (block)
   {
     nodesByNameGroupByNodes = self->_nodesByNameGroupByNodes;
-    v8 = a5;
-    v9 = a4;
-    v11 = [(NSMutableDictionary *)nodesByNameGroupByNodes objectForKey:a3];
-    v10 = [v11 objectForKey:v9];
+    blockCopy = block;
+    nodeCopy = node;
+    v11 = [(NSMutableDictionary *)nodesByNameGroupByNodes objectForKey:name];
+    v10 = [v11 objectForKey:nodeCopy];
 
-    [v10 enumerateObjectsUsingBlock:v8];
+    [v10 enumerateObjectsUsingBlock:blockCopy];
   }
 }
 
-- (void)enumerateNodesWithBlock:(id)a3
+- (void)enumerateNodesWithBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v28 = 0;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = [(NSMutableDictionary *)self->_nodesByLabel objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_nodesByLabel objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -753,7 +753,7 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
         {
           if (*v25 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v11 = v9;
@@ -777,7 +777,7 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
                   objc_enumerationMutation(v13);
                 }
 
-                v4[2](v4, *(*(&v20 + 1) + 8 * j), &v28);
+                blockCopy[2](blockCopy, *(*(&v20 + 1) + 8 * j), &v28);
                 if (v28)
                 {
 
@@ -799,7 +799,7 @@ void __45__MASubGraph_enumerateEdgesByNameUsingBlock___block_invoke(uint64_t a1,
           v8 = v19;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v30 count:16];
       }
 
       while (v7);
@@ -811,15 +811,15 @@ LABEL_19:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateNodesWithName:(id)a3 usingBlock:(id)a4
+- (void)enumerateNodesWithName:(id)name usingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     v20 = 0;
     v7 = MEMORY[0x277CBEB70];
-    v8 = [(NSMutableDictionary *)self->_nodesByName objectForKey:a3];
+    v8 = [(NSMutableDictionary *)self->_nodesByName objectForKey:name];
     v9 = [v7 orderedSetWithOrderedSet:v8];
 
     v18 = 0u;
@@ -841,7 +841,7 @@ LABEL_4:
           objc_enumerationMutation(v10);
         }
 
-        v6[2](v6, *(*(&v16 + 1) + 8 * v14), &v20);
+        blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v14), &v20);
         if (v20)
         {
           break;
@@ -864,16 +864,16 @@ LABEL_4:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateNodesWithLabel:(id)a3 domain:(unsigned __int16)a4 usingBlock:(id)a5
+- (void)enumerateNodesWithLabel:(id)label domain:(unsigned __int16)domain usingBlock:(id)block
 {
-  v5 = a4;
+  domainCopy = domain;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  blockCopy = block;
+  if (blockCopy)
   {
     v23 = 0;
     v9 = MEMORY[0x277CBEB70];
-    v10 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:a3];
+    v10 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:label];
     v11 = [v9 orderedSetWithOrderedSet:v10];
 
     v21 = 0u;
@@ -896,9 +896,9 @@ LABEL_4:
         }
 
         v17 = *(*(&v19 + 1) + 8 * v16);
-        if (!v5 || [*(*(&v19 + 1) + 8 * v16) domain] == v5)
+        if (!domainCopy || [*(*(&v19 + 1) + 8 * v16) domain] == domainCopy)
         {
-          v8[2](v8, v17, &v23);
+          blockCopy[2](blockCopy, v17, &v23);
           if (v23)
           {
             break;
@@ -922,18 +922,18 @@ LABEL_4:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateNodesByNameUsingBlock:(id)a3
+- (void)enumerateNodesByNameUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     nodesByName = self->_nodesByName;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke;
     v7[3] = &unk_2797FF1A8;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableDictionary *)nodesByName enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
@@ -949,15 +949,15 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
 - (id)allNamedNodes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MASubGraph *)v2 nodesNames];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  nodesNames = [(MASubGraph *)selfCopy nodesNames];
+  v5 = [nodesNames countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -967,22 +967,22 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodesNames);
         }
 
-        v8 = [(NSMutableDictionary *)v2->_nodesByName objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
-        [v3 unionOrderedSet:v8];
+        v8 = [(NSMutableDictionary *)selfCopy->_nodesByName objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
+        [orderedSet unionOrderedSet:v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [nodesNames countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [v3 set];
+  v9 = [orderedSet set];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
@@ -990,15 +990,15 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
 
 - (id)allNodes
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x277CBEB40];
-  v4 = [(NSMutableDictionary *)v2->_nodesByIdentifier allValues];
-  v5 = [v3 orderedSetWithArray:v4];
+  allValues = [(NSMutableDictionary *)selfCopy->_nodesByIdentifier allValues];
+  v5 = [v3 orderedSetWithArray:allValues];
 
   v6 = [v5 set];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -1011,8 +1011,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMutableDictionary *)self->_nodesByName keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_nodesByName keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1023,7 +1023,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -1033,7 +1033,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1049,22 +1049,22 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
 - (id)nodesLabels
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_nodesByLabel allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_nodesByLabel allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)nodesForLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (id)nodesForLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v5 = a4;
+  domainCopy = domain;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:a3];
+  propertiesCopy = properties;
+  v9 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:label];
   v10 = [MEMORY[0x277CBEB58] set];
-  if (v8)
+  if (propertiesCopy)
   {
-    v11 = [v8 count] == 0;
+    v11 = [propertiesCopy count] == 0;
   }
 
   else
@@ -1092,7 +1092,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        if ((!v5 || [*(*(&v21 + 1) + 8 * i) domain] == v5) && (v11 || objc_msgSend(v17, "hasProperties:", v8)))
+        if ((!domainCopy || [*(*(&v21 + 1) + 8 * i) domain] == domainCopy) && (v11 || objc_msgSend(v17, "hasProperties:", propertiesCopy)))
         {
           [v10 addObject:{v17, v21}];
         }
@@ -1111,55 +1111,55 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   return v18;
 }
 
-- (unint64_t)nodesCountForName:(id)a3 fromNode:(id)a4
+- (unint64_t)nodesCountForName:(id)name fromNode:(id)node
 {
   nodesByNameGroupByNodes = self->_nodesByNameGroupByNodes;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)nodesByNameGroupByNodes objectForKey:a3];
-  v8 = [v7 objectForKey:v6];
+  nodeCopy = node;
+  v7 = [(NSMutableDictionary *)nodesByNameGroupByNodes objectForKey:name];
+  v8 = [v7 objectForKey:nodeCopy];
 
   v9 = [v8 count];
   return v9;
 }
 
-- (unint64_t)nodesCountForName:(id)a3
+- (unint64_t)nodesCountForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_nodesByName objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_nodesByName objectForKey:name];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (unint64_t)nodesCountForLabel:(id)a3
+- (unint64_t)nodesCountForLabel:(id)label
 {
-  v3 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:label];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)nodesForName:(id)a3 fromNode:(id)a4
+- (id)nodesForName:(id)name fromNode:(id)node
 {
   nodesByNameGroupByNodes = self->_nodesByNameGroupByNodes;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)nodesByNameGroupByNodes objectForKey:a3];
-  v8 = [v7 objectForKey:v6];
+  nodeCopy = node;
+  v7 = [(NSMutableDictionary *)nodesByNameGroupByNodes objectForKey:name];
+  v8 = [v7 objectForKey:nodeCopy];
 
   v9 = [MEMORY[0x277CBEB98] setWithSet:v8];
 
   return v9;
 }
 
-- (id)nodesForNames:(id)a3
+- (id)nodesForNames:(id)names
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = [MEMORY[0x277CBEB58] set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1190,104 +1190,104 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (id)nodesForName:(id)a3
+- (id)nodesForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_nodesByName objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_nodesByName objectForKey:name];
   v4 = [v3 set];
 
   return v4;
 }
 
-- (id)nodesForLabel:(id)a3
+- (id)nodesForLabel:(id)label
 {
-  v3 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_nodesByLabel objectForKey:label];
   v4 = [v3 set];
 
   return v4;
 }
 
-- (id)nodeForIdentifier:(unint64_t)a3
+- (id)nodeForIdentifier:(unint64_t)identifier
 {
   nodesByIdentifier = self->_nodesByIdentifier;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
   v5 = [(NSMutableDictionary *)nodesByIdentifier objectForKey:v4];
 
   return v5;
 }
 
-- (void)_addNode:(id)a3 withName:(id)a4 forKeyNode:(id)a5
+- (void)_addNode:(id)node withName:(id)name forKeyNode:(id)keyNode
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(NSMutableDictionary *)v10->_nodesByNameGroupByNodes objectForKey:v8];
-  if (!v11)
+  nodeCopy = node;
+  nameCopy = name;
+  keyNodeCopy = keyNode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strongToStrongObjectsMapTable = [(NSMutableDictionary *)selfCopy->_nodesByNameGroupByNodes objectForKey:nameCopy];
+  if (!strongToStrongObjectsMapTable)
   {
-    v11 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-    [(NSMutableDictionary *)v10->_nodesByNameGroupByNodes setObject:v11 forKey:v8];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    [(NSMutableDictionary *)selfCopy->_nodesByNameGroupByNodes setObject:strongToStrongObjectsMapTable forKey:nameCopy];
   }
 
-  v12 = [v11 objectForKey:v9];
+  v12 = [strongToStrongObjectsMapTable objectForKey:keyNodeCopy];
   if (!v12)
   {
     v12 = [MEMORY[0x277CBEB58] set];
-    [v11 setObject:v12 forKey:v9];
+    [strongToStrongObjectsMapTable setObject:v12 forKey:keyNodeCopy];
   }
 
-  [v12 addObject:v13];
+  [v12 addObject:nodeCopy];
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_addNode:(id)a3 withName:(id)a4
+- (void)_addNode:(id)node withName:(id)name
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  nodesByIdentifier = v7->_nodesByIdentifier;
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "identifier")}];
-  [(NSMutableDictionary *)nodesByIdentifier setObject:v16 forKey:v9];
+  nodeCopy = node;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nodesByIdentifier = selfCopy->_nodesByIdentifier;
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(nodeCopy, "identifier")}];
+  [(NSMutableDictionary *)nodesByIdentifier setObject:nodeCopy forKey:v9];
 
-  nodesByLabel = v7->_nodesByLabel;
-  v11 = [v16 label];
-  v12 = [(NSMutableDictionary *)nodesByLabel objectForKey:v11];
+  nodesByLabel = selfCopy->_nodesByLabel;
+  label = [nodeCopy label];
+  orderedSet = [(NSMutableDictionary *)nodesByLabel objectForKey:label];
 
-  if (!v12)
+  if (!orderedSet)
   {
-    v12 = [MEMORY[0x277CBEB40] orderedSet];
-    v13 = v7->_nodesByLabel;
-    v14 = [v16 label];
-    [(NSMutableDictionary *)v13 setObject:v12 forKey:v14];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    v13 = selfCopy->_nodesByLabel;
+    label2 = [nodeCopy label];
+    [(NSMutableDictionary *)v13 setObject:orderedSet forKey:label2];
   }
 
-  [v12 addObject:v16];
-  v15 = [(NSMutableDictionary *)v7->_nodesByName objectForKey:v6];
-  if (!v15)
+  [orderedSet addObject:nodeCopy];
+  orderedSet2 = [(NSMutableDictionary *)selfCopy->_nodesByName objectForKey:nameCopy];
+  if (!orderedSet2)
   {
-    v15 = [MEMORY[0x277CBEB40] orderedSet];
-    [(NSMutableDictionary *)v7->_nodesByName setObject:v15 forKey:v6];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
+    [(NSMutableDictionary *)selfCopy->_nodesByName setObject:orderedSet2 forKey:nameCopy];
   }
 
-  [v15 addObject:v16];
+  [orderedSet2 addObject:nodeCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addNodes:(id)a3 withName:(id)a4
+- (void)addNodes:(id)nodes withName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  nodesCopy = nodes;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v6;
+  v9 = nodesCopy;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -1302,7 +1302,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
           objc_enumerationMutation(v9);
         }
 
-        [(MASubGraph *)v8 _addNode:*(*(&v14 + 1) + 8 * v12++) withName:v7, v14];
+        [(MASubGraph *)selfCopy _addNode:*(*(&v14 + 1) + 8 * v12++) withName:nameCopy, v14];
       }
 
       while (v10 != v12);
@@ -1312,47 +1312,47 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mergeWithSubGraph:(id)a3
+- (void)mergeWithSubGraph:(id)graph
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v4;
+  graphCopy = graph;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = graphCopy;
   objc_sync_enter(v6);
   v27 = v6;
-  p_isa = &v5->super.isa;
-  v7 = [(MASubGraph *)v5 graph];
-  v8 = [v6 graph];
+  p_isa = &selfCopy->super.isa;
+  graph = [(MASubGraph *)selfCopy graph];
+  graph2 = [v6 graph];
 
-  if (v7 == v8)
+  if (graph == graph2)
   {
     context = objc_autoreleasePoolPush();
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __32__MASubGraph_mergeWithSubGraph___block_invoke;
     v38[3] = &unk_2797FF180;
-    v38[4] = v5;
+    v38[4] = selfCopy;
     [v6 enumerateNodesByNameUsingBlock:v38];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __32__MASubGraph_mergeWithSubGraph___block_invoke_2;
     v37[3] = &unk_2797FF180;
-    v37[4] = v5;
+    v37[4] = selfCopy;
     [v6 enumerateEdgesByNameUsingBlock:v37];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = [v6[8] keyEnumerator];
-    v26 = [v9 countByEnumeratingWithState:&v33 objects:v40 count:16];
+    keyEnumerator = [v6[8] keyEnumerator];
+    v26 = [keyEnumerator countByEnumeratingWithState:&v33 objects:v40 count:16];
     if (v26)
     {
-      obj = v9;
+      obj = keyEnumerator;
       v25 = *v34;
       do
       {
@@ -1372,8 +1372,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v14 = [v12 keyEnumerator];
-            v15 = [v14 countByEnumeratingWithState:&v29 objects:v39 count:16];
+            keyEnumerator2 = [v12 keyEnumerator];
+            v15 = [keyEnumerator2 countByEnumeratingWithState:&v29 objects:v39 count:16];
             if (v15)
             {
               v16 = *v30;
@@ -1383,7 +1383,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
                 {
                   if (*v30 != v16)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(keyEnumerator2);
                   }
 
                   v18 = *(*(&v29 + 1) + 8 * j);
@@ -1401,7 +1401,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
                   }
                 }
 
-                v15 = [v14 countByEnumeratingWithState:&v29 objects:v39 count:16];
+                v15 = [keyEnumerator2 countByEnumeratingWithState:&v29 objects:v39 count:16];
               }
 
               while (v15);
@@ -1414,7 +1414,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
           }
         }
 
-        v9 = obj;
+        keyEnumerator = obj;
         v26 = [obj countByEnumeratingWithState:&v33 objects:v40 count:16];
       }
 
@@ -1427,7 +1427,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
 
   else
   {
-    [MEMORY[0x277CBEAD8] raise:@"MASubGraphInvalidGraph" format:{@"SubGraph invalid for graph %@", v5->_graph}];
+    [MEMORY[0x277CBEAD8] raise:@"MASubGraphInvalidGraph" format:{@"SubGraph invalid for graph %@", selfCopy->_graph}];
   }
 
   objc_sync_exit(v6);
@@ -1444,8 +1444,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v4 = [(MASubGraph *)self nodesLabels];
-  v5 = [v4 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  nodesLabels = [(MASubGraph *)self nodesLabels];
+  v5 = [nodesLabels countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1456,20 +1456,20 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v58 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodesLabels);
         }
 
         [v3 appendFormat:@"[%@](%ld), ", *(*(&v57 + 1) + 8 * i), -[MASubGraph nodesCountForLabel:](self, "nodesCountForLabel:", *(*(&v57 + 1) + 8 * i))];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v57 objects:v64 count:16];
+      v6 = [nodesLabels countByEnumeratingWithState:&v57 objects:v64 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(MASubGraph *)self nodesLabels];
-  v10 = [v9 count];
+  nodesLabels2 = [(MASubGraph *)self nodesLabels];
+  v10 = [nodesLabels2 count];
 
   if (v10)
   {
@@ -1481,8 +1481,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v12 = [(MASubGraph *)self edgesLabels];
-  v13 = [v12 countByEnumeratingWithState:&v53 objects:v63 count:16];
+  edgesLabels = [(MASubGraph *)self edgesLabels];
+  v13 = [edgesLabels countByEnumeratingWithState:&v53 objects:v63 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1493,20 +1493,20 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v54 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(edgesLabels);
         }
 
         [v11 appendFormat:@"[%@](%ld), ", *(*(&v53 + 1) + 8 * j), -[MASubGraph edgesCountForLabel:](self, "edgesCountForLabel:", *(*(&v53 + 1) + 8 * j))];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v53 objects:v63 count:16];
+      v14 = [edgesLabels countByEnumeratingWithState:&v53 objects:v63 count:16];
     }
 
     while (v14);
   }
 
-  v17 = [(MASubGraph *)self edgesLabels];
-  v18 = [v17 count];
+  edgesLabels2 = [(MASubGraph *)self edgesLabels];
+  v18 = [edgesLabels2 count];
 
   if (v18)
   {
@@ -1519,8 +1519,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v20 = [(MASubGraph *)self nodesNames];
-  v21 = [v20 countByEnumeratingWithState:&v49 objects:v62 count:16];
+  nodesNames = [(MASubGraph *)self nodesNames];
+  v21 = [nodesNames countByEnumeratingWithState:&v49 objects:v62 count:16];
   if (v21)
   {
     v22 = v21;
@@ -1531,20 +1531,20 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v50 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(nodesNames);
         }
 
         [v19 appendFormat:@"[%@](%ld), ", *(*(&v49 + 1) + 8 * k), -[MASubGraph nodesCountForName:](self, "nodesCountForName:", *(*(&v49 + 1) + 8 * k))];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v49 objects:v62 count:16];
+      v22 = [nodesNames countByEnumeratingWithState:&v49 objects:v62 count:16];
     }
 
     while (v22);
   }
 
-  v25 = [(MASubGraph *)self nodesNames];
-  v26 = [v25 count];
+  nodesNames2 = [(MASubGraph *)self nodesNames];
+  v26 = [nodesNames2 count];
 
   if (v26)
   {
@@ -1556,8 +1556,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v28 = [(MASubGraph *)self edgesNames];
-  v29 = [v28 countByEnumeratingWithState:&v45 objects:v61 count:16];
+  edgesNames = [(MASubGraph *)self edgesNames];
+  v29 = [edgesNames countByEnumeratingWithState:&v45 objects:v61 count:16];
   if (v29)
   {
     v30 = v29;
@@ -1568,20 +1568,20 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v46 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(edgesNames);
         }
 
         [v27 appendFormat:@"[%@](%ld), ", *(*(&v45 + 1) + 8 * m), -[MASubGraph edgesCountForName:](self, "edgesCountForName:", *(*(&v45 + 1) + 8 * m))];
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v45 objects:v61 count:16];
+      v30 = [edgesNames countByEnumeratingWithState:&v45 objects:v61 count:16];
     }
 
     while (v30);
   }
 
-  v33 = [(MASubGraph *)self edgesNames];
-  v34 = [v33 count];
+  edgesNames2 = [(MASubGraph *)self edgesNames];
+  v34 = [edgesNames2 count];
 
   if (v34)
   {
@@ -1591,10 +1591,10 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v43 = MEMORY[0x277CCACA8];
   v35 = objc_opt_class();
   v36 = NSStringFromClass(v35);
-  v37 = [(MASubGraph *)self graph];
-  v38 = [v37 identifier];
-  v39 = [v38 UUIDString];
-  v40 = [v43 stringWithFormat:@"[%@] id:[%@] nodesCount:[%ld] edgesCount:[%ld]\n\tnodesLabels:[%@]\n\tedgesLabels:[%@]\n\tnodesNames:[%@]\n\tedgesNames:[%@]", v36, v39, -[MASubGraph nodesCount](self, "nodesCount"), -[MASubGraph edgesCount](self, "edgesCount"), v44, v11, v19, v27];
+  graph = [(MASubGraph *)self graph];
+  identifier = [graph identifier];
+  uUIDString = [identifier UUIDString];
+  v40 = [v43 stringWithFormat:@"[%@] id:[%@] nodesCount:[%ld] edgesCount:[%ld]\n\tnodesLabels:[%@]\n\tedgesLabels:[%@]\n\tnodesNames:[%@]\n\tedgesNames:[%@]", v36, uUIDString, -[MASubGraph nodesCount](self, "nodesCount"), -[MASubGraph edgesCount](self, "edgesCount"), v44, v11, v19, v27];
 
   v41 = *MEMORY[0x277D85DE8];
 
@@ -1644,29 +1644,29 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   return v3;
 }
 
-+ (id)subGraphIntersectionsWithSubGraphs:(id)a3
++ (id)subGraphIntersectionsWithSubGraphs:(id)graphs
 {
   v99 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 graph];
-  v7 = [a1 subGraphWithGraph:v6];
+  graphsCopy = graphs;
+  firstObject = [graphsCopy firstObject];
+  graph = [firstObject graph];
+  v7 = [self subGraphWithGraph:graph];
 
-  v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v10 = v4;
+  v10 = graphsCopy;
   v55 = [v10 countByEnumeratingWithState:&v90 objects:v98 count:16];
   if (v55)
   {
     v54 = *v91;
     v58 = v7;
     v52 = v10;
-    v53 = v8;
-    v51 = v9;
+    v53 = strongToStrongObjectsMapTable;
+    v51 = strongToStrongObjectsMapTable2;
     while (2)
     {
       v11 = 0;
@@ -1678,14 +1678,14 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
         }
 
         v12 = *(*(&v90 + 1) + 8 * v11);
-        v13 = [v7 graph];
-        v14 = [v12 graph];
+        graph2 = [v7 graph];
+        graph3 = [v12 graph];
 
-        if (v13 != v14)
+        if (graph2 != graph3)
         {
           v47 = MEMORY[0x277CBEAD8];
-          v48 = [v7 graph];
-          [v47 raise:@"MASubGraphInvalidGraph" format:{@"SubGraph invalid for graph %@", v48, v85, v88}];
+          graph4 = [v7 graph];
+          [v47 raise:@"MASubGraphInvalidGraph" format:{@"SubGraph invalid for graph %@", graph4, v85, v88}];
 
           v46 = 0;
           goto LABEL_48;
@@ -1696,14 +1696,14 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
         v87[1] = 3221225472;
         v88[0] = __49__MASubGraph_subGraphIntersectionsWithSubGraphs___block_invoke;
         v88[1] = &unk_2797FF180;
-        v61 = v8;
+        v61 = strongToStrongObjectsMapTable;
         v89 = v61;
         [v12 enumerateNodesByNameUsingBlock:v87];
         v84[0] = MEMORY[0x277D85DD0];
         v84[1] = 3221225472;
         v85[0] = __49__MASubGraph_subGraphIntersectionsWithSubGraphs___block_invoke_2;
         v85[1] = &unk_2797FF180;
-        v86 = v9;
+        v86 = strongToStrongObjectsMapTable2;
         [v12 enumerateEdgesByNameUsingBlock:v84];
         v82 = 0u;
         v83 = 0u;
@@ -1743,8 +1743,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
               v79 = 0u;
               v76 = 0u;
               v77 = 0u;
-              v21 = [v18 keyEnumerator];
-              v22 = [v21 countByEnumeratingWithState:&v76 objects:v96 count:16];
+              keyEnumerator = [v18 keyEnumerator];
+              v22 = [keyEnumerator countByEnumeratingWithState:&v76 objects:v96 count:16];
               if (v22)
               {
                 v23 = v22;
@@ -1755,7 +1755,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
                   {
                     if (*v77 != v24)
                     {
-                      objc_enumerationMutation(v21);
+                      objc_enumerationMutation(keyEnumerator);
                     }
 
                     v26 = *(*(&v76 + 1) + 8 * i);
@@ -1787,7 +1787,7 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
                     }
                   }
 
-                  v23 = [v21 countByEnumeratingWithState:&v76 objects:v96 count:16];
+                  v23 = [keyEnumerator countByEnumeratingWithState:&v76 objects:v96 count:16];
                 }
 
                 while (v23);
@@ -1815,8 +1815,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
 
         v11 = v56 + 1;
         v10 = v52;
-        v8 = v53;
-        v9 = v51;
+        strongToStrongObjectsMapTable = v53;
+        strongToStrongObjectsMapTable2 = v51;
       }
 
       while (v56 + 1 != v55);
@@ -1834,8 +1834,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v32 = [v8 keyEnumerator];
-  v33 = [v32 countByEnumeratingWithState:&v70 objects:v95 count:16];
+  keyEnumerator2 = [strongToStrongObjectsMapTable keyEnumerator];
+  v33 = [keyEnumerator2 countByEnumeratingWithState:&v70 objects:v95 count:16];
   if (v33)
   {
     v34 = v33;
@@ -1846,15 +1846,15 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v71 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
         v37 = *(*(&v70 + 1) + 8 * j);
-        v38 = [v8 objectForKey:v37];
+        v38 = [strongToStrongObjectsMapTable objectForKey:v37];
         [v7 addNodes:v38 withName:v37];
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v70 objects:v95 count:16];
+      v34 = [keyEnumerator2 countByEnumeratingWithState:&v70 objects:v95 count:16];
     }
 
     while (v34);
@@ -1864,8 +1864,8 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v39 = [v9 keyEnumerator];
-  v40 = [v39 countByEnumeratingWithState:&v66 objects:v94 count:16];
+  keyEnumerator3 = [strongToStrongObjectsMapTable2 keyEnumerator];
+  v40 = [keyEnumerator3 countByEnumeratingWithState:&v66 objects:v94 count:16];
   if (v40)
   {
     v41 = v40;
@@ -1876,15 +1876,15 @@ void __45__MASubGraph_enumerateNodesByNameUsingBlock___block_invoke(uint64_t a1,
       {
         if (*v67 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(keyEnumerator3);
         }
 
         v44 = *(*(&v66 + 1) + 8 * k);
-        v45 = [v9 objectForKey:v44];
+        v45 = [strongToStrongObjectsMapTable2 objectForKey:v44];
         [v7 addNodes:v45 withName:v44];
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v66 objects:v94 count:16];
+      v41 = [keyEnumerator3 countByEnumeratingWithState:&v66 objects:v94 count:16];
     }
 
     while (v41);
@@ -1949,12 +1949,12 @@ void __49__MASubGraph_subGraphIntersectionsWithSubGraphs___block_invoke_3(uint64
   NSEndMapTableEnumeration(&enumerator);
 }
 
-+ (id)subGraphWithGraph:(id)a3
++ (id)subGraphWithGraph:(id)graph
 {
-  v3 = a3;
+  graphCopy = graph;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4[1];
-  v4[1] = v3;
+  v4[1] = graphCopy;
 
   return v4;
 }

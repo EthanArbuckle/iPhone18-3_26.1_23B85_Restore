@@ -1,22 +1,22 @@
 @interface IMMetricsUtil
-+ (void)configureEvent:(id)a3 withDataSource:(id)a4;
++ (void)configureEvent:(id)event withDataSource:(id)source;
 @end
 
 @implementation IMMetricsUtil
 
-+ (void)configureEvent:(id)a3 withDataSource:(id)a4
++ (void)configureEvent:(id)event withDataSource:(id)source
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v5 metricsContentIdentifier];
-  [v8 im_setContentIdentifier:v6];
+  eventCopy = event;
+  sourceCopy = source;
+  metricsContentIdentifier = [sourceCopy metricsContentIdentifier];
+  [eventCopy im_setContentIdentifier:metricsContentIdentifier];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 metricsAdditionalData];
-    if (v7)
+    metricsAdditionalData = [sourceCopy metricsAdditionalData];
+    if (metricsAdditionalData)
     {
-      [v8 im_addPropertiesWithDictionary:v7];
+      [eventCopy im_addPropertiesWithDictionary:metricsAdditionalData];
     }
   }
 }

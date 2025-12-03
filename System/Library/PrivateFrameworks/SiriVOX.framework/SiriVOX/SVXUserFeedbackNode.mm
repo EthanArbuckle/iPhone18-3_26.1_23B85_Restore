@@ -1,50 +1,50 @@
 @interface SVXUserFeedbackNode
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXUserFeedbackNode)initWithCoder:(id)a3;
-- (SVXUserFeedbackNode)initWithIdentifier:(id)a3 duration:(double)a4 feedback:(id)a5 dependentNodes:(id)a6;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXUserFeedbackNode)initWithCoder:(id)coder;
+- (SVXUserFeedbackNode)initWithIdentifier:(id)identifier duration:(double)duration feedback:(id)feedback dependentNodes:(id)nodes;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXUserFeedbackNode
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"SVXUserFeedbackNode::identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"SVXUserFeedbackNode::identifier"];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-  [v6 encodeObject:v5 forKey:@"SVXUserFeedbackNode::duration"];
+  [coderCopy encodeObject:v5 forKey:@"SVXUserFeedbackNode::duration"];
 
-  [v6 encodeObject:self->_feedback forKey:@"SVXUserFeedbackNode::feedback"];
-  [v6 encodeObject:self->_dependentNodes forKey:@"SVXUserFeedbackNode::dependentNodes"];
+  [coderCopy encodeObject:self->_feedback forKey:@"SVXUserFeedbackNode::feedback"];
+  [coderCopy encodeObject:self->_dependentNodes forKey:@"SVXUserFeedbackNode::dependentNodes"];
 }
 
-- (SVXUserFeedbackNode)initWithCoder:(id)a3
+- (SVXUserFeedbackNode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackNode::identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackNode::duration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackNode::identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackNode::duration"];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackNode::feedback"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackNode::feedback"];
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"SVXUserFeedbackNode::dependentNodes"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"SVXUserFeedbackNode::dependentNodes"];
 
   v14 = [(SVXUserFeedbackNode *)self initWithIdentifier:v5 duration:v9 feedback:v13 dependentNodes:v8];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -54,22 +54,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       duration = self->_duration;
       [(SVXUserFeedbackNode *)v5 duration];
       if (duration == v7)
       {
-        v9 = [(SVXUserFeedbackNode *)v5 identifier];
+        identifier = [(SVXUserFeedbackNode *)v5 identifier];
         identifier = self->_identifier;
-        if (identifier == v9 || [(NSString *)identifier isEqual:v9])
+        if (identifier == identifier || [(NSString *)identifier isEqual:identifier])
         {
-          v11 = [(SVXUserFeedbackNode *)v5 feedback];
+          feedback = [(SVXUserFeedbackNode *)v5 feedback];
           feedback = self->_feedback;
-          if (feedback == v11 || [(SVXUserFeedback *)feedback isEqual:v11])
+          if (feedback == feedback || [(SVXUserFeedback *)feedback isEqual:feedback])
           {
-            v13 = [(SVXUserFeedbackNode *)v5 dependentNodes];
+            dependentNodes = [(SVXUserFeedbackNode *)v5 dependentNodes];
             dependentNodes = self->_dependentNodes;
-            v8 = dependentNodes == v13 || [(NSSet *)dependentNodes isEqual:v13];
+            v8 = dependentNodes == dependentNodes || [(NSSet *)dependentNodes isEqual:dependentNodes];
           }
 
           else
@@ -110,7 +110,7 @@
   return v5 ^ v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -121,26 +121,26 @@
   return v6;
 }
 
-- (SVXUserFeedbackNode)initWithIdentifier:(id)a3 duration:(double)a4 feedback:(id)a5 dependentNodes:(id)a6
+- (SVXUserFeedbackNode)initWithIdentifier:(id)identifier duration:(double)duration feedback:(id)feedback dependentNodes:(id)nodes
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  feedbackCopy = feedback;
+  nodesCopy = nodes;
   v21.receiver = self;
   v21.super_class = SVXUserFeedbackNode;
   v13 = [(SVXUserFeedbackNode *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v13->_duration = a4;
-    v16 = [v11 copy];
+    v13->_duration = duration;
+    v16 = [feedbackCopy copy];
     feedback = v13->_feedback;
     v13->_feedback = v16;
 
-    v18 = [v12 copy];
+    v18 = [nodesCopy copy];
     dependentNodes = v13->_dependentNodes;
     v13->_dependentNodes = v18;
   }
@@ -148,36 +148,36 @@
   return v13;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXUserFeedbackNodeMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXUserFeedbackNodeMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXUserFeedbackNodeMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXUserFeedbackNode *)self copy];
+    generate = [(SVXUserFeedbackNode *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXUserFeedbackNodeMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXUserFeedbackNodeMutation *)v4 generate];
+  generate = [(_SVXUserFeedbackNodeMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

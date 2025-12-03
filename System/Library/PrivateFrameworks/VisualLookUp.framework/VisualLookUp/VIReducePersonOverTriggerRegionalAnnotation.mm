@@ -1,40 +1,40 @@
 @interface VIReducePersonOverTriggerRegionalAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
-- (VIReducePersonOverTriggerRegionalAnnotation)initWithLabel:(id)a3 boundingBox:(CGRect)a4 confidence:(float)a5 faceCount:(int)a6;
+- (VIReducePersonOverTriggerRegionalAnnotation)initWithLabel:(id)label boundingBox:(CGRect)box confidence:(float)confidence faceCount:(int)count;
 @end
 
 @implementation VIReducePersonOverTriggerRegionalAnnotation
 
-- (VIReducePersonOverTriggerRegionalAnnotation)initWithLabel:(id)a3 boundingBox:(CGRect)a4 confidence:(float)a5 faceCount:(int)a6
+- (VIReducePersonOverTriggerRegionalAnnotation)initWithLabel:(id)label boundingBox:(CGRect)box confidence:(float)confidence faceCount:(int)count
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  labelCopy = label;
   v18.receiver = self;
   v18.super_class = VIReducePersonOverTriggerRegionalAnnotation;
   v15 = [(VIReducePersonOverTriggerRegionalAnnotation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_label, a3);
+    objc_storeStrong(&v15->_label, label);
     v16->_boundingBox.origin.x = x;
     v16->_boundingBox.origin.y = y;
     v16->_boundingBox.size.width = width;
     v16->_boundingBox.size.height = height;
-    v16->_confidence = a5;
-    v16->_faceCount = a6;
+    v16->_confidence = confidence;
+    v16->_faceCount = count;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -61,8 +61,8 @@
     if (CGRectEqualToRect(self->_boundingBox, v18))
     {
       label = self->_label;
-      v12 = [(VIReducePersonOverTriggerRegionalAnnotation *)v6 label];
-      if (label == v12 && (confidence = self->_confidence, [(VIReducePersonOverTriggerRegionalAnnotation *)v6 confidence], confidence == v15))
+      label = [(VIReducePersonOverTriggerRegionalAnnotation *)v6 label];
+      if (label == label && (confidence = self->_confidence, [(VIReducePersonOverTriggerRegionalAnnotation *)v6 confidence], confidence == v15))
       {
         faceCount = self->_faceCount;
         v13 = faceCount == [(VIReducePersonOverTriggerRegionalAnnotation *)v6 faceCount];

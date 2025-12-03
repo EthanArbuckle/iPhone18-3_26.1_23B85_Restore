@@ -1,5 +1,5 @@
 @interface IMCloudKitEventNotificationManagerRuntimeTest
-- (id)createSyncStatisticsForMockSyncState:(id)a3;
+- (id)createSyncStatisticsForMockSyncState:(id)state;
 - (void)sendSyncStateChangedEvent;
 - (void)setUp;
 - (void)startTest;
@@ -45,11 +45,11 @@
   [(IMRuntimeTest *)&v16 tearDown];
 }
 
-- (id)createSyncStatisticsForMockSyncState:(id)a3
+- (id)createSyncStatisticsForMockSyncState:(id)state
 {
-  v3 = a3;
-  v6 = objc_msgSend_IMCloudKitSyncControllerSyncState(v3, v4, v5);
-  objc_msgSend_IMCloudKitSyncControllerSyncRecordType(v3, v7, v8);
+  stateCopy = state;
+  v6 = objc_msgSend_IMCloudKitSyncControllerSyncState(stateCopy, v4, v5);
+  objc_msgSend_IMCloudKitSyncControllerSyncRecordType(stateCopy, v7, v8);
 
   return MEMORY[0x1EEE66B58](IMCloudKitSyncStatistics, sel__createSyncStatisticsDictionaryForSyncControllerSyncState_syncType_count_max_unresolved_, v6);
 }

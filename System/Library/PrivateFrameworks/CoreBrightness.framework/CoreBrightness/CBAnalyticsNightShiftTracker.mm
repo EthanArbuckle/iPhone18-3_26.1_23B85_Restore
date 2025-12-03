@@ -1,38 +1,38 @@
 @interface CBAnalyticsNightShiftTracker
 - (CBAnalyticsNightShiftTracker)init;
-- (void)update:(int)a3 isEnabled:(BOOL)a4;
+- (void)update:(int)update isEnabled:(BOOL)enabled;
 @end
 
 @implementation CBAnalyticsNightShiftTracker
 
 - (CBAnalyticsNightShiftTracker)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CBAnalyticsNightShiftTracker;
-  v5 = [(CBAnalyticsNightShiftTracker *)&v3 init];
-  if (v5)
+  selfCopy = [(CBAnalyticsNightShiftTracker *)&v3 init];
+  if (selfCopy)
   {
-    v5->_modeChangeTimestamp = NAN;
+    selfCopy->_modeChangeTimestamp = NAN;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)update:(int)a3 isEnabled:(BOOL)a4
+- (void)update:(int)update isEnabled:(BOOL)enabled
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  updateCopy = update;
+  enabledCopy = enabled;
   context = objc_autoreleasePoolPush();
   Current = CFAbsoluteTimeGetCurrent();
-  modeChangeTimestamp = v10->_modeChangeTimestamp;
-  v5 = Current - v10->_modeChangeTimestamp;
-  v10->_modeChangeTimestamp = Current;
+  modeChangeTimestamp = selfCopy->_modeChangeTimestamp;
+  v5 = Current - selfCopy->_modeChangeTimestamp;
+  selfCopy->_modeChangeTimestamp = Current;
   [CBAnalytics send:@".NightShift.Usage" withBlock:?];
-  v10->_isEnabled = v7;
+  selfCopy->_isEnabled = enabledCopy;
   objc_autoreleasePoolPop(context);
 }
 

@@ -1,6 +1,6 @@
 @interface HealthURLActivityItemProvider
-- (_TtC18HealthExperienceUI29HealthURLActivityItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (_TtC18HealthExperienceUI29HealthURLActivityItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 - (id)item;
 @end
 
@@ -16,15 +16,15 @@
   return v7;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1BA05984C();
 
   return v4;
 }
 
-- (_TtC18HealthExperienceUI29HealthURLActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC18HealthExperienceUI29HealthURLActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_1BA4A7BF8();

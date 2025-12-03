@@ -1,48 +1,48 @@
 @interface AWDWiFiLPMReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssociatedSleepDuration:(BOOL)a3;
-- (void)setHasBeaconReceivedInLpas:(BOOL)a3;
-- (void)setHasBeaconsEarlyTerminatedInLpas:(BOOL)a3;
-- (void)setHasBeaconsMissedInLpas:(BOOL)a3;
-- (void)setHasBeaconsScheduledInLpas:(BOOL)a3;
-- (void)setHasLpasPowerBudgetRemaining:(BOOL)a3;
-- (void)setHasLpasPowerPeriodRemaining:(BOOL)a3;
-- (void)setHasPhyOffDuration:(BOOL)a3;
-- (void)setHasPowerConsumedInSelfManagedLPASMode:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToAWDLRx:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToAWDLTx:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToAssocScan:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToEPNOScan:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToFRTS:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToMac:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToRF:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToRoamScan:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToRx:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToTx:(BOOL)a3;
-- (void)setHasPowerConsumptionDueToUserScan:(BOOL)a3;
-- (void)setHasReceiveDuration:(BOOL)a3;
-- (void)setHasRoamDuration:(BOOL)a3;
-- (void)setHasSleepDuration:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTotalLPASDuration:(BOOL)a3;
-- (void)setHasTotalLpasPowerBudget:(BOOL)a3;
-- (void)setHasTotalLpasPowerMonitoringPeriod:(BOOL)a3;
-- (void)setHasTotalTimeForBugetExpiry:(BOOL)a3;
-- (void)setHasTransmitDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssociatedSleepDuration:(BOOL)duration;
+- (void)setHasBeaconReceivedInLpas:(BOOL)lpas;
+- (void)setHasBeaconsEarlyTerminatedInLpas:(BOOL)lpas;
+- (void)setHasBeaconsMissedInLpas:(BOOL)lpas;
+- (void)setHasBeaconsScheduledInLpas:(BOOL)lpas;
+- (void)setHasLpasPowerBudgetRemaining:(BOOL)remaining;
+- (void)setHasLpasPowerPeriodRemaining:(BOOL)remaining;
+- (void)setHasPhyOffDuration:(BOOL)duration;
+- (void)setHasPowerConsumedInSelfManagedLPASMode:(BOOL)mode;
+- (void)setHasPowerConsumptionDueToAWDLRx:(BOOL)rx;
+- (void)setHasPowerConsumptionDueToAWDLTx:(BOOL)tx;
+- (void)setHasPowerConsumptionDueToAssocScan:(BOOL)scan;
+- (void)setHasPowerConsumptionDueToEPNOScan:(BOOL)scan;
+- (void)setHasPowerConsumptionDueToFRTS:(BOOL)s;
+- (void)setHasPowerConsumptionDueToMac:(BOOL)mac;
+- (void)setHasPowerConsumptionDueToRF:(BOOL)f;
+- (void)setHasPowerConsumptionDueToRoamScan:(BOOL)scan;
+- (void)setHasPowerConsumptionDueToRx:(BOOL)rx;
+- (void)setHasPowerConsumptionDueToTx:(BOOL)tx;
+- (void)setHasPowerConsumptionDueToUserScan:(BOOL)scan;
+- (void)setHasReceiveDuration:(BOOL)duration;
+- (void)setHasRoamDuration:(BOOL)duration;
+- (void)setHasSleepDuration:(BOOL)duration;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTotalLPASDuration:(BOOL)duration;
+- (void)setHasTotalLpasPowerBudget:(BOOL)budget;
+- (void)setHasTotalLpasPowerMonitoringPeriod:(BOOL)period;
+- (void)setHasTotalTimeForBugetExpiry:(BOOL)expiry;
+- (void)setHasTransmitDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiLPMReport
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 0x1000000;
   }
@@ -55,9 +55,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasSleepDuration:(BOOL)a3
+- (void)setHasSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x800000;
   }
@@ -70,9 +70,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasRoamDuration:(BOOL)a3
+- (void)setHasRoamDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x400000;
   }
@@ -85,9 +85,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasPhyOffDuration:(BOOL)a3
+- (void)setHasPhyOffDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -100,9 +100,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasTransmitDuration:(BOOL)a3
+- (void)setHasTransmitDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x20000000;
   }
@@ -115,9 +115,9 @@
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (void)setHasReceiveDuration:(BOOL)a3
+- (void)setHasReceiveDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x200000;
   }
@@ -130,9 +130,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasTotalLPASDuration:(BOOL)a3
+- (void)setHasTotalLPASDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x2000000;
   }
@@ -145,9 +145,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasPowerConsumedInSelfManagedLPASMode:(BOOL)a3
+- (void)setHasPowerConsumedInSelfManagedLPASMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 512;
   }
@@ -160,9 +160,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToMac:(BOOL)a3
+- (void)setHasPowerConsumptionDueToMac:(BOOL)mac
 {
-  if (a3)
+  if (mac)
   {
     v3 = 0x8000;
   }
@@ -175,9 +175,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToRF:(BOOL)a3
+- (void)setHasPowerConsumptionDueToRF:(BOOL)f
 {
-  if (a3)
+  if (f)
   {
     v3 = 0x10000;
   }
@@ -190,9 +190,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToUserScan:(BOOL)a3
+- (void)setHasPowerConsumptionDueToUserScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 0x100000;
   }
@@ -205,9 +205,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToRoamScan:(BOOL)a3
+- (void)setHasPowerConsumptionDueToRoamScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 0x20000;
   }
@@ -220,9 +220,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToAssocScan:(BOOL)a3
+- (void)setHasPowerConsumptionDueToAssocScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 4096;
   }
@@ -235,9 +235,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToEPNOScan:(BOOL)a3
+- (void)setHasPowerConsumptionDueToEPNOScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 0x2000;
   }
@@ -250,9 +250,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToTx:(BOOL)a3
+- (void)setHasPowerConsumptionDueToTx:(BOOL)tx
 {
-  if (a3)
+  if (tx)
   {
     v3 = 0x80000;
   }
@@ -265,9 +265,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToRx:(BOOL)a3
+- (void)setHasPowerConsumptionDueToRx:(BOOL)rx
 {
-  if (a3)
+  if (rx)
   {
     v3 = 0x40000;
   }
@@ -280,9 +280,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToFRTS:(BOOL)a3
+- (void)setHasPowerConsumptionDueToFRTS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 0x4000;
   }
@@ -295,9 +295,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToAWDLTx:(BOOL)a3
+- (void)setHasPowerConsumptionDueToAWDLTx:(BOOL)tx
 {
-  if (a3)
+  if (tx)
   {
     v3 = 2048;
   }
@@ -310,9 +310,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasPowerConsumptionDueToAWDLRx:(BOOL)a3
+- (void)setHasPowerConsumptionDueToAWDLRx:(BOOL)rx
 {
-  if (a3)
+  if (rx)
   {
     v3 = 1024;
   }
@@ -325,9 +325,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasBeaconReceivedInLpas:(BOOL)a3
+- (void)setHasBeaconReceivedInLpas:(BOOL)lpas
 {
-  if (a3)
+  if (lpas)
   {
     v3 = 4;
   }
@@ -340,9 +340,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasBeaconsMissedInLpas:(BOOL)a3
+- (void)setHasBeaconsMissedInLpas:(BOOL)lpas
 {
-  if (a3)
+  if (lpas)
   {
     v3 = 16;
   }
@@ -355,9 +355,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasBeaconsEarlyTerminatedInLpas:(BOOL)a3
+- (void)setHasBeaconsEarlyTerminatedInLpas:(BOOL)lpas
 {
-  if (a3)
+  if (lpas)
   {
     v3 = 8;
   }
@@ -370,9 +370,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasBeaconsScheduledInLpas:(BOOL)a3
+- (void)setHasBeaconsScheduledInLpas:(BOOL)lpas
 {
-  if (a3)
+  if (lpas)
   {
     v3 = 32;
   }
@@ -385,9 +385,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasTotalLpasPowerBudget:(BOOL)a3
+- (void)setHasTotalLpasPowerBudget:(BOOL)budget
 {
-  if (a3)
+  if (budget)
   {
     v3 = 0x4000000;
   }
@@ -400,9 +400,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasLpasPowerBudgetRemaining:(BOOL)a3
+- (void)setHasLpasPowerBudgetRemaining:(BOOL)remaining
 {
-  if (a3)
+  if (remaining)
   {
     v3 = 64;
   }
@@ -415,9 +415,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTotalLpasPowerMonitoringPeriod:(BOOL)a3
+- (void)setHasTotalLpasPowerMonitoringPeriod:(BOOL)period
 {
-  if (a3)
+  if (period)
   {
     v3 = 0x8000000;
   }
@@ -430,9 +430,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasLpasPowerPeriodRemaining:(BOOL)a3
+- (void)setHasLpasPowerPeriodRemaining:(BOOL)remaining
 {
-  if (a3)
+  if (remaining)
   {
     v3 = 128;
   }
@@ -445,9 +445,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasAssociatedSleepDuration:(BOOL)a3
+- (void)setHasAssociatedSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -460,9 +460,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasTotalTimeForBugetExpiry:(BOOL)a3
+- (void)setHasTotalTimeForBugetExpiry:(BOOL)expiry
 {
-  if (a3)
+  if (expiry)
   {
     v3 = 0x10000000;
   }
@@ -484,11 +484,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 0x1000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 1) == 0)
     {
@@ -507,7 +507,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_associatedDuration), @"associatedDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_associatedDuration), @"associatedDuration"}];
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -521,7 +521,7 @@ LABEL_4:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sleepDuration), @"sleepDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sleepDuration), @"sleepDuration"}];
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -535,7 +535,7 @@ LABEL_5:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_roamDuration), @"roamDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_roamDuration), @"roamDuration"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -549,7 +549,7 @@ LABEL_6:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_phyOffDuration), @"phyOffDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_phyOffDuration), @"phyOffDuration"}];
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -563,7 +563,7 @@ LABEL_7:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_transmitDuration), @"transmitDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_transmitDuration), @"transmitDuration"}];
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -577,7 +577,7 @@ LABEL_8:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_receiveDuration), @"receiveDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_receiveDuration), @"receiveDuration"}];
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -591,7 +591,7 @@ LABEL_9:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalLPASDuration), @"totalLPASDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalLPASDuration), @"totalLPASDuration"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -605,7 +605,7 @@ LABEL_10:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumedInSelfManagedLPASMode), @"powerConsumedInSelfManagedLPASMode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumedInSelfManagedLPASMode), @"powerConsumedInSelfManagedLPASMode"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -619,7 +619,7 @@ LABEL_11:
   }
 
 LABEL_42:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToMac), @"powerConsumptionDueToMac"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToMac), @"powerConsumptionDueToMac"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -633,7 +633,7 @@ LABEL_12:
   }
 
 LABEL_43:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToRF), @"powerConsumptionDueToRF"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToRF), @"powerConsumptionDueToRF"}];
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -647,7 +647,7 @@ LABEL_13:
   }
 
 LABEL_44:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToUserScan), @"powerConsumptionDueToUserScan"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToUserScan), @"powerConsumptionDueToUserScan"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -661,7 +661,7 @@ LABEL_14:
   }
 
 LABEL_45:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToRoamScan), @"powerConsumptionDueToRoamScan"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToRoamScan), @"powerConsumptionDueToRoamScan"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -675,7 +675,7 @@ LABEL_15:
   }
 
 LABEL_46:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToAssocScan), @"powerConsumptionDueToAssocScan"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToAssocScan), @"powerConsumptionDueToAssocScan"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -689,7 +689,7 @@ LABEL_16:
   }
 
 LABEL_47:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToEPNOScan), @"powerConsumptionDueToEPNOScan"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToEPNOScan), @"powerConsumptionDueToEPNOScan"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -703,7 +703,7 @@ LABEL_17:
   }
 
 LABEL_48:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToTx), @"powerConsumptionDueToTx"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToTx), @"powerConsumptionDueToTx"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -717,7 +717,7 @@ LABEL_18:
   }
 
 LABEL_49:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToRx), @"powerConsumptionDueToRx"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToRx), @"powerConsumptionDueToRx"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -731,7 +731,7 @@ LABEL_19:
   }
 
 LABEL_50:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToFRTS), @"powerConsumptionDueToFRTS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToFRTS), @"powerConsumptionDueToFRTS"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -745,7 +745,7 @@ LABEL_20:
   }
 
 LABEL_51:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToAWDLTx), @"powerConsumptionDueToAWDLTx"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToAWDLTx), @"powerConsumptionDueToAWDLTx"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -759,7 +759,7 @@ LABEL_21:
   }
 
 LABEL_52:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToAWDLRx), @"powerConsumptionDueToAWDLRx"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_powerConsumptionDueToAWDLRx), @"powerConsumptionDueToAWDLRx"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -773,7 +773,7 @@ LABEL_22:
   }
 
 LABEL_53:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconReceivedInLpas), @"beaconReceivedInLpas"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconReceivedInLpas), @"beaconReceivedInLpas"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -787,7 +787,7 @@ LABEL_23:
   }
 
 LABEL_54:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconsMissedInLpas), @"beaconsMissedInLpas"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconsMissedInLpas), @"beaconsMissedInLpas"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -801,7 +801,7 @@ LABEL_24:
   }
 
 LABEL_55:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconsEarlyTerminatedInLpas), @"beaconsEarlyTerminatedInLpas"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconsEarlyTerminatedInLpas), @"beaconsEarlyTerminatedInLpas"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -815,7 +815,7 @@ LABEL_25:
   }
 
 LABEL_56:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconsScheduledInLpas), @"beaconsScheduledInLpas"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconsScheduledInLpas), @"beaconsScheduledInLpas"}];
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -829,7 +829,7 @@ LABEL_26:
   }
 
 LABEL_57:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalLpasPowerBudget), @"totalLpasPowerBudget"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalLpasPowerBudget), @"totalLpasPowerBudget"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -843,7 +843,7 @@ LABEL_27:
   }
 
 LABEL_58:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lpasPowerBudgetRemaining), @"lpasPowerBudgetRemaining"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lpasPowerBudgetRemaining), @"lpasPowerBudgetRemaining"}];
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -857,7 +857,7 @@ LABEL_28:
   }
 
 LABEL_59:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalLpasPowerMonitoringPeriod), @"totalLpasPowerMonitoringPeriod"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalLpasPowerMonitoringPeriod), @"totalLpasPowerMonitoringPeriod"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -868,17 +868,17 @@ LABEL_29:
     }
 
 LABEL_61:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_associatedSleepDuration), @"associatedSleepDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_associatedSleepDuration), @"associatedSleepDuration"}];
     if ((*&self->_has & 0x10000000) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_31;
   }
 
 LABEL_60:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lpasPowerPeriodRemaining), @"lpasPowerPeriodRemaining"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lpasPowerPeriodRemaining), @"lpasPowerPeriodRemaining"}];
   has = self->_has;
   if ((*&has & 2) != 0)
   {
@@ -889,13 +889,13 @@ LABEL_30:
   if ((*&has & 0x10000000) != 0)
   {
 LABEL_31:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalTimeForBugetExpiry), @"totalTimeForBugetExpiry"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalTimeForBugetExpiry), @"totalTimeForBugetExpiry"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x1000000) != 0)
@@ -1338,13 +1338,13 @@ LABEL_61:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x1000000) != 0)
   {
-    *(a3 + 25) = self->_timestamp;
-    *(a3 + 62) |= 0x1000000u;
+    *(to + 25) = self->_timestamp;
+    *(to + 62) |= 0x1000000u;
     has = self->_has;
     if ((*&has & 1) == 0)
     {
@@ -1363,8 +1363,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 1) = self->_associatedDuration;
-  *(a3 + 62) |= 1u;
+  *(to + 1) = self->_associatedDuration;
+  *(to + 62) |= 1u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1378,8 +1378,8 @@ LABEL_4:
   }
 
 LABEL_34:
-  *(a3 + 24) = self->_sleepDuration;
-  *(a3 + 62) |= 0x800000u;
+  *(to + 24) = self->_sleepDuration;
+  *(to + 62) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1393,8 +1393,8 @@ LABEL_5:
   }
 
 LABEL_35:
-  *(a3 + 23) = self->_roamDuration;
-  *(a3 + 62) |= 0x400000u;
+  *(to + 23) = self->_roamDuration;
+  *(to + 62) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1408,8 +1408,8 @@ LABEL_6:
   }
 
 LABEL_36:
-  *(a3 + 9) = self->_phyOffDuration;
-  *(a3 + 62) |= 0x100u;
+  *(to + 9) = self->_phyOffDuration;
+  *(to + 62) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -1423,8 +1423,8 @@ LABEL_7:
   }
 
 LABEL_37:
-  *(a3 + 30) = self->_transmitDuration;
-  *(a3 + 62) |= 0x20000000u;
+  *(to + 30) = self->_transmitDuration;
+  *(to + 62) |= 0x20000000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1438,8 +1438,8 @@ LABEL_8:
   }
 
 LABEL_38:
-  *(a3 + 22) = self->_receiveDuration;
-  *(a3 + 62) |= 0x200000u;
+  *(to + 22) = self->_receiveDuration;
+  *(to + 62) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1453,8 +1453,8 @@ LABEL_9:
   }
 
 LABEL_39:
-  *(a3 + 26) = self->_totalLPASDuration;
-  *(a3 + 62) |= 0x2000000u;
+  *(to + 26) = self->_totalLPASDuration;
+  *(to + 62) |= 0x2000000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1468,8 +1468,8 @@ LABEL_10:
   }
 
 LABEL_40:
-  *(a3 + 10) = self->_powerConsumedInSelfManagedLPASMode;
-  *(a3 + 62) |= 0x200u;
+  *(to + 10) = self->_powerConsumedInSelfManagedLPASMode;
+  *(to + 62) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1483,8 +1483,8 @@ LABEL_11:
   }
 
 LABEL_41:
-  *(a3 + 16) = self->_powerConsumptionDueToMac;
-  *(a3 + 62) |= 0x8000u;
+  *(to + 16) = self->_powerConsumptionDueToMac;
+  *(to + 62) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1498,8 +1498,8 @@ LABEL_12:
   }
 
 LABEL_42:
-  *(a3 + 17) = self->_powerConsumptionDueToRF;
-  *(a3 + 62) |= 0x10000u;
+  *(to + 17) = self->_powerConsumptionDueToRF;
+  *(to + 62) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1513,8 +1513,8 @@ LABEL_13:
   }
 
 LABEL_43:
-  *(a3 + 21) = self->_powerConsumptionDueToUserScan;
-  *(a3 + 62) |= 0x100000u;
+  *(to + 21) = self->_powerConsumptionDueToUserScan;
+  *(to + 62) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1528,8 +1528,8 @@ LABEL_14:
   }
 
 LABEL_44:
-  *(a3 + 18) = self->_powerConsumptionDueToRoamScan;
-  *(a3 + 62) |= 0x20000u;
+  *(to + 18) = self->_powerConsumptionDueToRoamScan;
+  *(to + 62) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1543,8 +1543,8 @@ LABEL_15:
   }
 
 LABEL_45:
-  *(a3 + 13) = self->_powerConsumptionDueToAssocScan;
-  *(a3 + 62) |= 0x1000u;
+  *(to + 13) = self->_powerConsumptionDueToAssocScan;
+  *(to + 62) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1558,8 +1558,8 @@ LABEL_16:
   }
 
 LABEL_46:
-  *(a3 + 14) = self->_powerConsumptionDueToEPNOScan;
-  *(a3 + 62) |= 0x2000u;
+  *(to + 14) = self->_powerConsumptionDueToEPNOScan;
+  *(to + 62) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1573,8 +1573,8 @@ LABEL_17:
   }
 
 LABEL_47:
-  *(a3 + 20) = self->_powerConsumptionDueToTx;
-  *(a3 + 62) |= 0x80000u;
+  *(to + 20) = self->_powerConsumptionDueToTx;
+  *(to + 62) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1588,8 +1588,8 @@ LABEL_18:
   }
 
 LABEL_48:
-  *(a3 + 19) = self->_powerConsumptionDueToRx;
-  *(a3 + 62) |= 0x40000u;
+  *(to + 19) = self->_powerConsumptionDueToRx;
+  *(to + 62) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1603,8 +1603,8 @@ LABEL_19:
   }
 
 LABEL_49:
-  *(a3 + 15) = self->_powerConsumptionDueToFRTS;
-  *(a3 + 62) |= 0x4000u;
+  *(to + 15) = self->_powerConsumptionDueToFRTS;
+  *(to + 62) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1618,8 +1618,8 @@ LABEL_20:
   }
 
 LABEL_50:
-  *(a3 + 12) = self->_powerConsumptionDueToAWDLTx;
-  *(a3 + 62) |= 0x800u;
+  *(to + 12) = self->_powerConsumptionDueToAWDLTx;
+  *(to + 62) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1633,8 +1633,8 @@ LABEL_21:
   }
 
 LABEL_51:
-  *(a3 + 11) = self->_powerConsumptionDueToAWDLRx;
-  *(a3 + 62) |= 0x400u;
+  *(to + 11) = self->_powerConsumptionDueToAWDLRx;
+  *(to + 62) |= 0x400u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1648,8 +1648,8 @@ LABEL_22:
   }
 
 LABEL_52:
-  *(a3 + 3) = self->_beaconReceivedInLpas;
-  *(a3 + 62) |= 4u;
+  *(to + 3) = self->_beaconReceivedInLpas;
+  *(to + 62) |= 4u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1663,8 +1663,8 @@ LABEL_23:
   }
 
 LABEL_53:
-  *(a3 + 5) = self->_beaconsMissedInLpas;
-  *(a3 + 62) |= 0x10u;
+  *(to + 5) = self->_beaconsMissedInLpas;
+  *(to + 62) |= 0x10u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1678,8 +1678,8 @@ LABEL_24:
   }
 
 LABEL_54:
-  *(a3 + 4) = self->_beaconsEarlyTerminatedInLpas;
-  *(a3 + 62) |= 8u;
+  *(to + 4) = self->_beaconsEarlyTerminatedInLpas;
+  *(to + 62) |= 8u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1693,8 +1693,8 @@ LABEL_25:
   }
 
 LABEL_55:
-  *(a3 + 6) = self->_beaconsScheduledInLpas;
-  *(a3 + 62) |= 0x20u;
+  *(to + 6) = self->_beaconsScheduledInLpas;
+  *(to + 62) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1708,8 +1708,8 @@ LABEL_26:
   }
 
 LABEL_56:
-  *(a3 + 27) = self->_totalLpasPowerBudget;
-  *(a3 + 62) |= 0x4000000u;
+  *(to + 27) = self->_totalLpasPowerBudget;
+  *(to + 62) |= 0x4000000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1723,8 +1723,8 @@ LABEL_27:
   }
 
 LABEL_57:
-  *(a3 + 7) = self->_lpasPowerBudgetRemaining;
-  *(a3 + 62) |= 0x40u;
+  *(to + 7) = self->_lpasPowerBudgetRemaining;
+  *(to + 62) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1738,8 +1738,8 @@ LABEL_28:
   }
 
 LABEL_58:
-  *(a3 + 28) = self->_totalLpasPowerMonitoringPeriod;
-  *(a3 + 62) |= 0x8000000u;
+  *(to + 28) = self->_totalLpasPowerMonitoringPeriod;
+  *(to + 62) |= 0x8000000u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1753,8 +1753,8 @@ LABEL_29:
   }
 
 LABEL_59:
-  *(a3 + 8) = self->_lpasPowerPeriodRemaining;
-  *(a3 + 62) |= 0x80u;
+  *(to + 8) = self->_lpasPowerPeriodRemaining;
+  *(to + 62) |= 0x80u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1765,23 +1765,23 @@ LABEL_30:
     }
 
 LABEL_61:
-    *(a3 + 29) = self->_totalTimeForBugetExpiry;
-    *(a3 + 62) |= 0x10000000u;
+    *(to + 29) = self->_totalTimeForBugetExpiry;
+    *(to + 62) |= 0x10000000u;
     return;
   }
 
 LABEL_60:
-  *(a3 + 2) = self->_associatedSleepDuration;
-  *(a3 + 62) |= 2u;
+  *(to + 2) = self->_associatedSleepDuration;
+  *(to + 62) |= 2u;
   if ((*&self->_has & 0x10000000) != 0)
   {
     goto LABEL_61;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x1000000) != 0)
   {
@@ -2223,16 +2223,16 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 62);
+    v7 = *(equal + 62);
     if ((*&has & 0x1000000) != 0)
     {
-      if ((v7 & 0x1000000) == 0 || self->_timestamp != *(a3 + 25))
+      if ((v7 & 0x1000000) == 0 || self->_timestamp != *(equal + 25))
       {
         goto LABEL_151;
       }
@@ -2247,7 +2247,7 @@ LABEL_151:
 
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_associatedDuration != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_associatedDuration != *(equal + 1))
       {
         goto LABEL_151;
       }
@@ -2260,7 +2260,7 @@ LABEL_151:
 
     if ((*&has & 0x800000) != 0)
     {
-      if ((v7 & 0x800000) == 0 || self->_sleepDuration != *(a3 + 24))
+      if ((v7 & 0x800000) == 0 || self->_sleepDuration != *(equal + 24))
       {
         goto LABEL_151;
       }
@@ -2273,7 +2273,7 @@ LABEL_151:
 
     if ((*&has & 0x400000) != 0)
     {
-      if ((v7 & 0x400000) == 0 || self->_roamDuration != *(a3 + 23))
+      if ((v7 & 0x400000) == 0 || self->_roamDuration != *(equal + 23))
       {
         goto LABEL_151;
       }
@@ -2286,7 +2286,7 @@ LABEL_151:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_phyOffDuration != *(a3 + 9))
+      if ((v7 & 0x100) == 0 || self->_phyOffDuration != *(equal + 9))
       {
         goto LABEL_151;
       }
@@ -2299,7 +2299,7 @@ LABEL_151:
 
     if ((*&has & 0x20000000) != 0)
     {
-      if ((v7 & 0x20000000) == 0 || self->_transmitDuration != *(a3 + 30))
+      if ((v7 & 0x20000000) == 0 || self->_transmitDuration != *(equal + 30))
       {
         goto LABEL_151;
       }
@@ -2312,7 +2312,7 @@ LABEL_151:
 
     if ((*&has & 0x200000) != 0)
     {
-      if ((v7 & 0x200000) == 0 || self->_receiveDuration != *(a3 + 22))
+      if ((v7 & 0x200000) == 0 || self->_receiveDuration != *(equal + 22))
       {
         goto LABEL_151;
       }
@@ -2325,7 +2325,7 @@ LABEL_151:
 
     if ((*&has & 0x2000000) != 0)
     {
-      if ((v7 & 0x2000000) == 0 || self->_totalLPASDuration != *(a3 + 26))
+      if ((v7 & 0x2000000) == 0 || self->_totalLPASDuration != *(equal + 26))
       {
         goto LABEL_151;
       }
@@ -2338,7 +2338,7 @@ LABEL_151:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_powerConsumedInSelfManagedLPASMode != *(a3 + 10))
+      if ((v7 & 0x200) == 0 || self->_powerConsumedInSelfManagedLPASMode != *(equal + 10))
       {
         goto LABEL_151;
       }
@@ -2351,7 +2351,7 @@ LABEL_151:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v7 & 0x8000) == 0 || self->_powerConsumptionDueToMac != *(a3 + 16))
+      if ((v7 & 0x8000) == 0 || self->_powerConsumptionDueToMac != *(equal + 16))
       {
         goto LABEL_151;
       }
@@ -2364,7 +2364,7 @@ LABEL_151:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v7 & 0x10000) == 0 || self->_powerConsumptionDueToRF != *(a3 + 17))
+      if ((v7 & 0x10000) == 0 || self->_powerConsumptionDueToRF != *(equal + 17))
       {
         goto LABEL_151;
       }
@@ -2377,7 +2377,7 @@ LABEL_151:
 
     if ((*&has & 0x100000) != 0)
     {
-      if ((v7 & 0x100000) == 0 || self->_powerConsumptionDueToUserScan != *(a3 + 21))
+      if ((v7 & 0x100000) == 0 || self->_powerConsumptionDueToUserScan != *(equal + 21))
       {
         goto LABEL_151;
       }
@@ -2390,7 +2390,7 @@ LABEL_151:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v7 & 0x20000) == 0 || self->_powerConsumptionDueToRoamScan != *(a3 + 18))
+      if ((v7 & 0x20000) == 0 || self->_powerConsumptionDueToRoamScan != *(equal + 18))
       {
         goto LABEL_151;
       }
@@ -2403,7 +2403,7 @@ LABEL_151:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_powerConsumptionDueToAssocScan != *(a3 + 13))
+      if ((v7 & 0x1000) == 0 || self->_powerConsumptionDueToAssocScan != *(equal + 13))
       {
         goto LABEL_151;
       }
@@ -2416,7 +2416,7 @@ LABEL_151:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v7 & 0x2000) == 0 || self->_powerConsumptionDueToEPNOScan != *(a3 + 14))
+      if ((v7 & 0x2000) == 0 || self->_powerConsumptionDueToEPNOScan != *(equal + 14))
       {
         goto LABEL_151;
       }
@@ -2429,7 +2429,7 @@ LABEL_151:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v7 & 0x80000) == 0 || self->_powerConsumptionDueToTx != *(a3 + 20))
+      if ((v7 & 0x80000) == 0 || self->_powerConsumptionDueToTx != *(equal + 20))
       {
         goto LABEL_151;
       }
@@ -2442,7 +2442,7 @@ LABEL_151:
 
     if ((*&has & 0x40000) != 0)
     {
-      if ((v7 & 0x40000) == 0 || self->_powerConsumptionDueToRx != *(a3 + 19))
+      if ((v7 & 0x40000) == 0 || self->_powerConsumptionDueToRx != *(equal + 19))
       {
         goto LABEL_151;
       }
@@ -2455,7 +2455,7 @@ LABEL_151:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_powerConsumptionDueToFRTS != *(a3 + 15))
+      if ((v7 & 0x4000) == 0 || self->_powerConsumptionDueToFRTS != *(equal + 15))
       {
         goto LABEL_151;
       }
@@ -2468,7 +2468,7 @@ LABEL_151:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_powerConsumptionDueToAWDLTx != *(a3 + 12))
+      if ((v7 & 0x800) == 0 || self->_powerConsumptionDueToAWDLTx != *(equal + 12))
       {
         goto LABEL_151;
       }
@@ -2481,7 +2481,7 @@ LABEL_151:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_powerConsumptionDueToAWDLRx != *(a3 + 11))
+      if ((v7 & 0x400) == 0 || self->_powerConsumptionDueToAWDLRx != *(equal + 11))
       {
         goto LABEL_151;
       }
@@ -2494,7 +2494,7 @@ LABEL_151:
 
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_beaconReceivedInLpas != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_beaconReceivedInLpas != *(equal + 3))
       {
         goto LABEL_151;
       }
@@ -2507,7 +2507,7 @@ LABEL_151:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_beaconsMissedInLpas != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_beaconsMissedInLpas != *(equal + 5))
       {
         goto LABEL_151;
       }
@@ -2520,7 +2520,7 @@ LABEL_151:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_beaconsEarlyTerminatedInLpas != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_beaconsEarlyTerminatedInLpas != *(equal + 4))
       {
         goto LABEL_151;
       }
@@ -2533,7 +2533,7 @@ LABEL_151:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_beaconsScheduledInLpas != *(a3 + 6))
+      if ((v7 & 0x20) == 0 || self->_beaconsScheduledInLpas != *(equal + 6))
       {
         goto LABEL_151;
       }
@@ -2546,7 +2546,7 @@ LABEL_151:
 
     if ((*&has & 0x4000000) != 0)
     {
-      if ((v7 & 0x4000000) == 0 || self->_totalLpasPowerBudget != *(a3 + 27))
+      if ((v7 & 0x4000000) == 0 || self->_totalLpasPowerBudget != *(equal + 27))
       {
         goto LABEL_151;
       }
@@ -2559,7 +2559,7 @@ LABEL_151:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_lpasPowerBudgetRemaining != *(a3 + 7))
+      if ((v7 & 0x40) == 0 || self->_lpasPowerBudgetRemaining != *(equal + 7))
       {
         goto LABEL_151;
       }
@@ -2572,7 +2572,7 @@ LABEL_151:
 
     if ((*&has & 0x8000000) != 0)
     {
-      if ((v7 & 0x8000000) == 0 || self->_totalLpasPowerMonitoringPeriod != *(a3 + 28))
+      if ((v7 & 0x8000000) == 0 || self->_totalLpasPowerMonitoringPeriod != *(equal + 28))
       {
         goto LABEL_151;
       }
@@ -2585,7 +2585,7 @@ LABEL_151:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_lpasPowerPeriodRemaining != *(a3 + 8))
+      if ((v7 & 0x80) == 0 || self->_lpasPowerPeriodRemaining != *(equal + 8))
       {
         goto LABEL_151;
       }
@@ -2598,7 +2598,7 @@ LABEL_151:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_associatedSleepDuration != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_associatedSleepDuration != *(equal + 2))
       {
         goto LABEL_151;
       }
@@ -2612,7 +2612,7 @@ LABEL_151:
     LOBYTE(v5) = (v7 & 0x10000000) == 0;
     if ((*&has & 0x10000000) != 0)
     {
-      if ((v7 & 0x10000000) == 0 || self->_totalTimeForBugetExpiry != *(a3 + 29))
+      if ((v7 & 0x10000000) == 0 || self->_totalTimeForBugetExpiry != *(equal + 29))
       {
         goto LABEL_151;
       }
@@ -3043,14 +3043,14 @@ LABEL_31:
   return v32 ^ v33 ^ v31 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x1000000) != 0)
   {
-    self->_timestamp = *(a3 + 25);
+    self->_timestamp = *(from + 25);
     *&self->_has |= 0x1000000u;
-    v3 = *(a3 + 62);
+    v3 = *(from + 62);
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -3068,9 +3068,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_associatedDuration = *(a3 + 1);
+  self->_associatedDuration = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x800000) == 0)
   {
 LABEL_4:
@@ -3083,9 +3083,9 @@ LABEL_4:
   }
 
 LABEL_34:
-  self->_sleepDuration = *(a3 + 24);
+  self->_sleepDuration = *(from + 24);
   *&self->_has |= 0x800000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x400000) == 0)
   {
 LABEL_5:
@@ -3098,9 +3098,9 @@ LABEL_5:
   }
 
 LABEL_35:
-  self->_roamDuration = *(a3 + 23);
+  self->_roamDuration = *(from + 23);
   *&self->_has |= 0x400000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x100) == 0)
   {
 LABEL_6:
@@ -3113,9 +3113,9 @@ LABEL_6:
   }
 
 LABEL_36:
-  self->_phyOffDuration = *(a3 + 9);
+  self->_phyOffDuration = *(from + 9);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x20000000) == 0)
   {
 LABEL_7:
@@ -3128,9 +3128,9 @@ LABEL_7:
   }
 
 LABEL_37:
-  self->_transmitDuration = *(a3 + 30);
+  self->_transmitDuration = *(from + 30);
   *&self->_has |= 0x20000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x200000) == 0)
   {
 LABEL_8:
@@ -3143,9 +3143,9 @@ LABEL_8:
   }
 
 LABEL_38:
-  self->_receiveDuration = *(a3 + 22);
+  self->_receiveDuration = *(from + 22);
   *&self->_has |= 0x200000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x2000000) == 0)
   {
 LABEL_9:
@@ -3158,9 +3158,9 @@ LABEL_9:
   }
 
 LABEL_39:
-  self->_totalLPASDuration = *(a3 + 26);
+  self->_totalLPASDuration = *(from + 26);
   *&self->_has |= 0x2000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x200) == 0)
   {
 LABEL_10:
@@ -3173,9 +3173,9 @@ LABEL_10:
   }
 
 LABEL_40:
-  self->_powerConsumedInSelfManagedLPASMode = *(a3 + 10);
+  self->_powerConsumedInSelfManagedLPASMode = *(from + 10);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_11:
@@ -3188,9 +3188,9 @@ LABEL_11:
   }
 
 LABEL_41:
-  self->_powerConsumptionDueToMac = *(a3 + 16);
+  self->_powerConsumptionDueToMac = *(from + 16);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_12:
@@ -3203,9 +3203,9 @@ LABEL_12:
   }
 
 LABEL_42:
-  self->_powerConsumptionDueToRF = *(a3 + 17);
+  self->_powerConsumptionDueToRF = *(from + 17);
   *&self->_has |= 0x10000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x100000) == 0)
   {
 LABEL_13:
@@ -3218,9 +3218,9 @@ LABEL_13:
   }
 
 LABEL_43:
-  self->_powerConsumptionDueToUserScan = *(a3 + 21);
+  self->_powerConsumptionDueToUserScan = *(from + 21);
   *&self->_has |= 0x100000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x20000) == 0)
   {
 LABEL_14:
@@ -3233,9 +3233,9 @@ LABEL_14:
   }
 
 LABEL_44:
-  self->_powerConsumptionDueToRoamScan = *(a3 + 18);
+  self->_powerConsumptionDueToRoamScan = *(from + 18);
   *&self->_has |= 0x20000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_15:
@@ -3248,9 +3248,9 @@ LABEL_15:
   }
 
 LABEL_45:
-  self->_powerConsumptionDueToAssocScan = *(a3 + 13);
+  self->_powerConsumptionDueToAssocScan = *(from + 13);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_16:
@@ -3263,9 +3263,9 @@ LABEL_16:
   }
 
 LABEL_46:
-  self->_powerConsumptionDueToEPNOScan = *(a3 + 14);
+  self->_powerConsumptionDueToEPNOScan = *(from + 14);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x80000) == 0)
   {
 LABEL_17:
@@ -3278,9 +3278,9 @@ LABEL_17:
   }
 
 LABEL_47:
-  self->_powerConsumptionDueToTx = *(a3 + 20);
+  self->_powerConsumptionDueToTx = *(from + 20);
   *&self->_has |= 0x80000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x40000) == 0)
   {
 LABEL_18:
@@ -3293,9 +3293,9 @@ LABEL_18:
   }
 
 LABEL_48:
-  self->_powerConsumptionDueToRx = *(a3 + 19);
+  self->_powerConsumptionDueToRx = *(from + 19);
   *&self->_has |= 0x40000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_19:
@@ -3308,9 +3308,9 @@ LABEL_19:
   }
 
 LABEL_49:
-  self->_powerConsumptionDueToFRTS = *(a3 + 15);
+  self->_powerConsumptionDueToFRTS = *(from + 15);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x800) == 0)
   {
 LABEL_20:
@@ -3323,9 +3323,9 @@ LABEL_20:
   }
 
 LABEL_50:
-  self->_powerConsumptionDueToAWDLTx = *(a3 + 12);
+  self->_powerConsumptionDueToAWDLTx = *(from + 12);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x400) == 0)
   {
 LABEL_21:
@@ -3338,9 +3338,9 @@ LABEL_21:
   }
 
 LABEL_51:
-  self->_powerConsumptionDueToAWDLRx = *(a3 + 11);
+  self->_powerConsumptionDueToAWDLRx = *(from + 11);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 4) == 0)
   {
 LABEL_22:
@@ -3353,9 +3353,9 @@ LABEL_22:
   }
 
 LABEL_52:
-  self->_beaconReceivedInLpas = *(a3 + 3);
+  self->_beaconReceivedInLpas = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x10) == 0)
   {
 LABEL_23:
@@ -3368,9 +3368,9 @@ LABEL_23:
   }
 
 LABEL_53:
-  self->_beaconsMissedInLpas = *(a3 + 5);
+  self->_beaconsMissedInLpas = *(from + 5);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 8) == 0)
   {
 LABEL_24:
@@ -3383,9 +3383,9 @@ LABEL_24:
   }
 
 LABEL_54:
-  self->_beaconsEarlyTerminatedInLpas = *(a3 + 4);
+  self->_beaconsEarlyTerminatedInLpas = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x20) == 0)
   {
 LABEL_25:
@@ -3398,9 +3398,9 @@ LABEL_25:
   }
 
 LABEL_55:
-  self->_beaconsScheduledInLpas = *(a3 + 6);
+  self->_beaconsScheduledInLpas = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x4000000) == 0)
   {
 LABEL_26:
@@ -3413,9 +3413,9 @@ LABEL_26:
   }
 
 LABEL_56:
-  self->_totalLpasPowerBudget = *(a3 + 27);
+  self->_totalLpasPowerBudget = *(from + 27);
   *&self->_has |= 0x4000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x40) == 0)
   {
 LABEL_27:
@@ -3428,9 +3428,9 @@ LABEL_27:
   }
 
 LABEL_57:
-  self->_lpasPowerBudgetRemaining = *(a3 + 7);
+  self->_lpasPowerBudgetRemaining = *(from + 7);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x8000000) == 0)
   {
 LABEL_28:
@@ -3443,9 +3443,9 @@ LABEL_28:
   }
 
 LABEL_58:
-  self->_totalLpasPowerMonitoringPeriod = *(a3 + 28);
+  self->_totalLpasPowerMonitoringPeriod = *(from + 28);
   *&self->_has |= 0x8000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x80) == 0)
   {
 LABEL_29:
@@ -3458,9 +3458,9 @@ LABEL_29:
   }
 
 LABEL_59:
-  self->_lpasPowerPeriodRemaining = *(a3 + 8);
+  self->_lpasPowerPeriodRemaining = *(from + 8);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 2) == 0)
   {
 LABEL_30:
@@ -3470,15 +3470,15 @@ LABEL_30:
     }
 
 LABEL_61:
-    self->_totalTimeForBugetExpiry = *(a3 + 29);
+    self->_totalTimeForBugetExpiry = *(from + 29);
     *&self->_has |= 0x10000000u;
     return;
   }
 
 LABEL_60:
-  self->_associatedSleepDuration = *(a3 + 2);
+  self->_associatedSleepDuration = *(from + 2);
   *&self->_has |= 2u;
-  if ((*(a3 + 62) & 0x10000000) != 0)
+  if ((*(from + 62) & 0x10000000) != 0)
   {
     goto LABEL_61;
   }

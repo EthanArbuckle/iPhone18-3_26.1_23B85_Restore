@@ -1,20 +1,20 @@
 @interface HSPCTroubleshootingTipsViewController
-- (HSPCTroubleshootingTipsViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCTroubleshootingTipsViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (UITableView)tableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (unint64_t)_tipCount;
-- (unint64_t)_tipForIndexPath:(id)a3;
-- (void)actionInvokedForTip:(unint64_t)a3;
-- (void)setPage:(unint64_t)a3;
+- (unint64_t)_tipForIndexPath:(id)path;
+- (void)actionInvokedForTip:(unint64_t)tip;
+- (void)setPage:(unint64_t)page;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCTroubleshootingTipsViewController
 
-- (HSPCTroubleshootingTipsViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCTroubleshootingTipsViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [[UITableView alloc] initWithFrame:0 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v10 = [[PRXScrollableContentView alloc] initWithCardStyle:0 scrollView:v9];
   v20.receiver = self;
@@ -23,8 +23,8 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_coordinator, a3);
-    objc_storeStrong(&v12->_config, a4);
+    objc_storeStrong(&v11->_coordinator, coordinator);
+    objc_storeStrong(&v12->_config, config);
     v13 = objc_storeWeak(&v12->_tableView, v9);
     [v9 setAllowsSelection:0];
 
@@ -44,12 +44,12 @@
   return v12;
 }
 
-- (void)setPage:(unint64_t)a3
+- (void)setPage:(unint64_t)page
 {
-  self->_page = a3;
-  if (a3)
+  self->_page = page;
+  if (page)
   {
-    if (a3 != 1)
+    if (page != 1)
     {
       return;
     }
@@ -71,27 +71,27 @@
   v4.receiver = self;
   v4.super_class = HSPCTroubleshootingTipsViewController;
   [(HSPCTroubleshootingTipsViewController *)&v4 viewDidLoad];
-  v3 = [(HSPCTroubleshootingTipsViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(HSPCTroubleshootingTipsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)actionInvokedForTip:(unint64_t)a3
+- (void)actionInvokedForTip:(unint64_t)tip
 {
-  if (a3)
+  if (tip)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v11 = a3;
+      tipCopy = tip;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Unknown action to invoke for tip %lu", buf, 0xCu);
     }
   }
 
   else
   {
-    v6 = [(HSPCTroubleshootingTipsViewController *)self coordinator];
-    v7 = [v6 didReceiveSetupCode:0 withPayload:0 fromViewController:self];
+    coordinator = [(HSPCTroubleshootingTipsViewController *)self coordinator];
+    v7 = [coordinator didReceiveSetupCode:0 withPayload:0 fromViewController:self];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000387E4;
@@ -101,38 +101,38 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell"];
   if (!v7)
   {
     v7 = [[HSSetupTroubleshootingTipCell alloc] initWithStyle:0 reuseIdentifier:@"Cell"];
   }
 
-  [(HSSetupTroubleshootingTipCell *)v7 setTip:[(HSPCTroubleshootingTipsViewController *)self _tipForIndexPath:v6]];
+  [(HSSetupTroubleshootingTipCell *)v7 setTip:[(HSPCTroubleshootingTipsViewController *)self _tipForIndexPath:pathCopy]];
   [(HSSetupTroubleshootingTipCell *)v7 setDelegate:self];
 
   return v7;
 }
 
-- (unint64_t)_tipForIndexPath:(id)a3
+- (unint64_t)_tipForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HSPCTroubleshootingTipsViewController *)self _tips];
-  v6 = [v5 objectAtIndexedSubscript:{-[HSPCTroubleshootingTipsViewController page](self, "page")}];
-  v7 = [v4 row];
+  pathCopy = path;
+  _tips = [(HSPCTroubleshootingTipsViewController *)self _tips];
+  v6 = [_tips objectAtIndexedSubscript:{-[HSPCTroubleshootingTipsViewController page](self, "page")}];
+  v7 = [pathCopy row];
 
   v8 = [v6 objectAtIndexedSubscript:v7];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)_tipCount
 {
-  v3 = [(HSPCTroubleshootingTipsViewController *)self _tips];
-  v4 = [v3 objectAtIndexedSubscript:{-[HSPCTroubleshootingTipsViewController page](self, "page")}];
+  _tips = [(HSPCTroubleshootingTipsViewController *)self _tips];
+  v4 = [_tips objectAtIndexedSubscript:{-[HSPCTroubleshootingTipsViewController page](self, "page")}];
   v5 = [v4 count];
 
   return v5;

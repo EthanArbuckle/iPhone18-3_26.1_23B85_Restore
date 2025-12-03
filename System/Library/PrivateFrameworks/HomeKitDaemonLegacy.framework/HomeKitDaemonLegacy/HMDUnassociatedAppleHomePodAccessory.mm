@@ -1,35 +1,35 @@
 @interface HMDUnassociatedAppleHomePodAccessory
-- (HMDUnassociatedAppleHomePodAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 productColor:(int64_t)a6 idsIdentifierString:(id)a7 requiredPairingCapabilities:(unint64_t)a8 minimumPairingSoftware:(id)a9 rawAccessoryCapabilities:(id)a10 rawResidentCapabilities:(id)a11 messageDispatcher:(id)a12;
-- (id)modelForChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
+- (HMDUnassociatedAppleHomePodAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category productColor:(int64_t)color idsIdentifierString:(id)string requiredPairingCapabilities:(unint64_t)capabilities minimumPairingSoftware:(id)software rawAccessoryCapabilities:(id)self0 rawResidentCapabilities:(id)self1 messageDispatcher:(id)self2;
+- (id)modelForChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
 @end
 
 @implementation HMDUnassociatedAppleHomePodAccessory
 
-- (HMDUnassociatedAppleHomePodAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 productColor:(int64_t)a6 idsIdentifierString:(id)a7 requiredPairingCapabilities:(unint64_t)a8 minimumPairingSoftware:(id)a9 rawAccessoryCapabilities:(id)a10 rawResidentCapabilities:(id)a11 messageDispatcher:(id)a12
+- (HMDUnassociatedAppleHomePodAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category productColor:(int64_t)color idsIdentifierString:(id)string requiredPairingCapabilities:(unint64_t)capabilities minimumPairingSoftware:(id)software rawAccessoryCapabilities:(id)self0 rawResidentCapabilities:(id)self1 messageDispatcher:(id)self2
 {
   v13.receiver = self;
   v13.super_class = HMDUnassociatedAppleHomePodAccessory;
-  return [(HMDUnassociatedAppleMediaAccessory *)&v13 initWithIdentifier:a3 name:a4 category:a5 requiredPairingCapabilities:a8 minimumPairingSoftware:a9 productColor:a6 idsIdentifierString:a7 rawAccessoryCapabilities:a10 rawResidentCapabilities:a11 messageDispatcher:a12];
+  return [(HMDUnassociatedAppleMediaAccessory *)&v13 initWithIdentifier:identifier name:name category:category requiredPairingCapabilities:capabilities minimumPairingSoftware:software productColor:color idsIdentifierString:string rawAccessoryCapabilities:accessoryCapabilities rawResidentCapabilities:residentCapabilities messageDispatcher:dispatcher];
 }
 
-- (id)modelForChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
+- (id)modelForChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDUnassociatedAppleMediaAccessory *)self variant];
+  uuidCopy = uuid;
+  dCopy = d;
+  variant = [(HMDUnassociatedAppleMediaAccessory *)self variant];
   v11 = off_27971A000;
-  if (v10 <= 3)
+  if (variant <= 3)
   {
-    if (v10)
+    if (variant)
     {
-      if (v10 != 1)
+      if (variant != 1)
       {
         goto LABEL_16;
       }
 
       v12 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
@@ -44,7 +44,7 @@
     }
 
     v12 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
@@ -62,16 +62,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v10 == 4)
+  if (variant == 4)
   {
     v11 = off_27971A010;
     goto LABEL_16;
   }
 
-  if (v10 == 32 || v10 == 128)
+  if (variant == 32 || variant == 128)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
@@ -89,7 +89,7 @@ LABEL_14:
   }
 
 LABEL_16:
-  v19 = [(__objc2_class *)*v11 homePodAccessoryModelWithChangeType:a3 uuid:v8 parentUUID:v9, *v22];
+  v19 = [(__objc2_class *)*v11 homePodAccessoryModelWithChangeType:type uuid:uuidCopy parentUUID:dCopy, *v22];
 
   v20 = *MEMORY[0x277D85DE8];
 

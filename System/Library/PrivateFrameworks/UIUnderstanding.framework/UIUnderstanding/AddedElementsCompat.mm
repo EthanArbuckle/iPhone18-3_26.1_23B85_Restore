@@ -1,6 +1,6 @@
 @interface AddedElementsCompat
 - (AddedElementsCompat)init;
-- (AddedElementsCompat)initWithGroupID:(id)a3 dedupeElements:(id)a4;
+- (AddedElementsCompat)initWithGroupID:(id)d dedupeElements:(id)elements;
 - (NSArray)dedupeElements;
 - (NSString)groupID;
 @end
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (AddedElementsCompat)initWithGroupID:(id)a3 dedupeElements:(id)a4
+- (AddedElementsCompat)initWithGroupID:(id)d dedupeElements:(id)elements
 {
   v5 = sub_2702B402C();
   v7 = v6;

@@ -1,16 +1,16 @@
 @interface SBConsumableTokenWrapper
-+ (SBConsumableTokenWrapper)consumableTokenWrapperWithToken:(id)a3;
++ (SBConsumableTokenWrapper)consumableTokenWrapperWithToken:(id)token;
 - (id)consumeToken;
 @end
 
 @implementation SBConsumableTokenWrapper
 
-+ (SBConsumableTokenWrapper)consumableTokenWrapperWithToken:(id)a3
++ (SBConsumableTokenWrapper)consumableTokenWrapperWithToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_alloc_init(SBConsumableTokenWrapper);
   token = v4->_token;
-  v4->_token = v3;
+  v4->_token = tokenCopy;
 
   return v4;
 }

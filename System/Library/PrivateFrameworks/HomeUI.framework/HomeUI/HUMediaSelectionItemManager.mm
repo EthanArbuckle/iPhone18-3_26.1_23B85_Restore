@@ -1,45 +1,45 @@
 @interface HUMediaSelectionItemManager
 - (HFMediaPlaybackActionBuilder)actionBuilder;
 - (HFPlaybackArchive)pickedPlaybackArchive;
-- (HUMediaSelectionItemManager)initWithDelegate:(id)a3 mediaPlaybackActionBuilder:(id)a4;
-- (HUMediaSelectionItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
+- (HUMediaSelectionItemManager)initWithDelegate:(id)delegate mediaPlaybackActionBuilder:(id)builder;
+- (HUMediaSelectionItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_itemsToHideInSet:(id)set;
 - (id)_volumeForMediaAction;
 - (id)selectedPlaybackStateItemBasedOnActionBuilderState;
 - (id)selectedVolumeItemBasedOnActionBuilderState;
-- (void)mediaPlaybackOptionsItem:(id)a3 switchedOn:(BOOL)a4;
-- (void)mediaVolumeValueChanged:(double)a3;
-- (void)setPickedPlaybackArchive:(id)a3;
-- (void)setSelectedPlaybackStateItem:(id)a3;
-- (void)setSelectedVolumeItem:(id)a3;
+- (void)mediaPlaybackOptionsItem:(id)item switchedOn:(BOOL)on;
+- (void)mediaVolumeValueChanged:(double)changed;
+- (void)setPickedPlaybackArchive:(id)archive;
+- (void)setSelectedPlaybackStateItem:(id)item;
+- (void)setSelectedVolumeItem:(id)item;
 @end
 
 @implementation HUMediaSelectionItemManager
 
-- (HUMediaSelectionItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUMediaSelectionItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_mediaPlaybackActionBuilder_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUMediaSelectionItemManager.m" lineNumber:73 description:{@"%s is unavailable; use %@ instead", "-[HUMediaSelectionItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMediaSelectionItemManager.m" lineNumber:73 description:{@"%s is unavailable; use %@ instead", "-[HUMediaSelectionItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUMediaSelectionItemManager)initWithDelegate:(id)a3 mediaPlaybackActionBuilder:(id)a4
+- (HUMediaSelectionItemManager)initWithDelegate:(id)delegate mediaPlaybackActionBuilder:(id)builder
 {
-  v7 = a4;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = HUMediaSelectionItemManager;
-  v8 = [(HFItemManager *)&v12 initWithDelegate:a3 sourceItem:0];
+  v8 = [(HFItemManager *)&v12 initWithDelegate:delegate sourceItem:0];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CDD348]);
     cloudServiceController = v8->_cloudServiceController;
     v8->_cloudServiceController = v9;
 
-    objc_storeStrong(&v8->_actionSetBuilder, a4);
+    objc_storeStrong(&v8->_actionSetBuilder, builder);
   }
 
   return v8;
@@ -47,23 +47,23 @@
 
 - (HFMediaPlaybackActionBuilder)actionBuilder
 {
-  v2 = [(HUMediaSelectionItemManager *)self actionSetBuilder];
-  v3 = [v2 mediaAction];
+  actionSetBuilder = [(HUMediaSelectionItemManager *)self actionSetBuilder];
+  mediaAction = [actionSetBuilder mediaAction];
 
-  return v3;
+  return mediaAction;
 }
 
 - (id)selectedPlaybackStateItemBasedOnActionBuilderState
 {
-  v3 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  v4 = [v3 targetPlayState];
+  actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+  targetPlayState = [actionBuilder targetPlayState];
 
-  if (v4 == 1)
+  if (targetPlayState == 1)
   {
-    v6 = [(HUMediaSelectionItemManager *)self actionBuilder];
-    v7 = [v6 playbackArchive];
+    actionBuilder2 = [(HUMediaSelectionItemManager *)self actionBuilder];
+    playbackArchive = [actionBuilder2 playbackArchive];
 
-    if (v7)
+    if (playbackArchive)
     {
       [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
     }
@@ -74,7 +74,7 @@
     }
   }
 
-  else if (v4 == 2)
+  else if (targetPlayState == 2)
   {
     [(HUMediaSelectionItemManager *)self playbackStatePauseItem];
   }
@@ -90,10 +90,10 @@
 
 - (id)selectedVolumeItemBasedOnActionBuilderState
 {
-  v3 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  v4 = [v3 targetVolume];
+  actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+  targetVolume = [actionBuilder targetVolume];
 
-  if (v4)
+  if (targetVolume)
   {
     [(HUMediaSelectionItemManager *)self useCustomVolumeItem];
   }
@@ -107,69 +107,69 @@
   return v5;
 }
 
-- (void)setSelectedPlaybackStateItem:(id)a3
+- (void)setSelectedPlaybackStateItem:(id)item
 {
-  v6 = a3;
-  if (self->_selectedPlaybackStateItem != v6)
+  itemCopy = item;
+  if (self->_selectedPlaybackStateItem != itemCopy)
   {
-    v26 = v6;
-    objc_storeStrong(&self->_selectedPlaybackStateItem, a3);
-    v7 = [(HFStaticItem *)v26 latestResults];
+    v26 = itemCopy;
+    objc_storeStrong(&self->_selectedPlaybackStateItem, item);
+    latestResults = [(HFStaticItem *)v26 latestResults];
 
-    if (v7)
+    if (latestResults)
     {
-      v8 = [(HFStaticItem *)v26 latestResults];
-      v9 = [v8 objectForKeyedSubscript:@"HOMediaSelectionPlayControlResultKey"];
-      v10 = [v9 integerValue];
+      latestResults2 = [(HFStaticItem *)v26 latestResults];
+      v9 = [latestResults2 objectForKeyedSubscript:@"HOMediaSelectionPlayControlResultKey"];
+      integerValue = [v9 integerValue];
 
-      v11 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      [v11 setTargetPlayState:v10];
+      actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+      [actionBuilder setTargetPlayState:integerValue];
     }
 
-    v12 = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
-    if (v12 == v26)
+    playbackStatePlayItem = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
+    if (playbackStatePlayItem == v26)
     {
     }
 
     else
     {
-      v13 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      v14 = [v13 playbackArchive];
+      actionBuilder2 = [(HUMediaSelectionItemManager *)self actionBuilder];
+      playbackArchive = [actionBuilder2 playbackArchive];
 
-      if (v14)
+      if (playbackArchive)
       {
-        v15 = [(HUMediaSelectionItemManager *)self actionBuilder];
-        v16 = [v15 playbackArchive];
-        [(HUMediaSelectionItemManager *)self setLastSelectedArchive:v16];
+        actionBuilder3 = [(HUMediaSelectionItemManager *)self actionBuilder];
+        playbackArchive2 = [actionBuilder3 playbackArchive];
+        [(HUMediaSelectionItemManager *)self setLastSelectedArchive:playbackArchive2];
 
-        v17 = [(HUMediaSelectionItemManager *)self actionBuilder];
-        [(HFStaticItem *)v17 setPlaybackArchive:0];
+        actionBuilder4 = [(HUMediaSelectionItemManager *)self actionBuilder];
+        [(HFStaticItem *)actionBuilder4 setPlaybackArchive:0];
         goto LABEL_9;
       }
     }
 
-    v17 = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
-    if (v17 == v26)
+    actionBuilder4 = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
+    if (actionBuilder4 == v26)
     {
-      v22 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      v23 = [v22 playbackArchive];
+      actionBuilder5 = [(HUMediaSelectionItemManager *)self actionBuilder];
+      playbackArchive3 = [actionBuilder5 playbackArchive];
 
-      if (v23)
+      if (playbackArchive3)
       {
         goto LABEL_10;
       }
 
-      v17 = [(HUMediaSelectionItemManager *)self lastSelectedArchive];
-      v24 = v17;
-      if (!v17)
+      actionBuilder4 = [(HUMediaSelectionItemManager *)self lastSelectedArchive];
+      v24 = actionBuilder4;
+      if (!actionBuilder4)
       {
         v24 = [objc_alloc(MEMORY[0x277D14948]) initWithMediaPlayerPlaybackArchive:0];
       }
 
-      v25 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      [v25 setPlaybackArchive:v24];
+      actionBuilder6 = [(HUMediaSelectionItemManager *)self actionBuilder];
+      [actionBuilder6 setPlaybackArchive:v24];
 
-      if (!v17)
+      if (!actionBuilder4)
       {
       }
     }
@@ -177,57 +177,57 @@
 LABEL_9:
 
 LABEL_10:
-    v18 = [(HUMediaSelectionItemManager *)self actionSetBuilder];
-    v19 = [(HUMediaSelectionItemManager *)self actionBuilder];
-    [v18 updateAction:v19];
+    actionSetBuilder = [(HUMediaSelectionItemManager *)self actionSetBuilder];
+    actionBuilder7 = [(HUMediaSelectionItemManager *)self actionBuilder];
+    [actionSetBuilder updateAction:actionBuilder7];
 
-    v20 = [(HFItemManager *)self itemProviders];
-    v21 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v20 senderSelector:a2];
+    itemProviders = [(HFItemManager *)self itemProviders];
+    v21 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:itemProviders senderSelector:a2];
 
-    v6 = v26;
+    itemCopy = v26;
   }
 }
 
-- (void)setSelectedVolumeItem:(id)a3
+- (void)setSelectedVolumeItem:(id)item
 {
-  v6 = a3;
-  if (self->_selectedVolumeItem != v6)
+  itemCopy = item;
+  if (self->_selectedVolumeItem != itemCopy)
   {
-    v17 = v6;
-    objc_storeStrong(&self->_selectedVolumeItem, a3);
-    v7 = [(HUMediaSelectionItemManager *)self useCurrentVolumeItem];
+    v17 = itemCopy;
+    objc_storeStrong(&self->_selectedVolumeItem, item);
+    useCurrentVolumeItem = [(HUMediaSelectionItemManager *)self useCurrentVolumeItem];
 
-    if (v7 == v17)
+    if (useCurrentVolumeItem == v17)
     {
-      v11 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      v12 = [v11 targetVolume];
-      [(HUMediaSelectionItemManager *)self setLastSelectedVolume:v12];
+      actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+      targetVolume = [actionBuilder targetVolume];
+      [(HUMediaSelectionItemManager *)self setLastSelectedVolume:targetVolume];
 
-      v9 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      [v9 setTargetVolume:0];
+      actionBuilder2 = [(HUMediaSelectionItemManager *)self actionBuilder];
+      [actionBuilder2 setTargetVolume:0];
     }
 
     else
     {
-      v8 = [(HUMediaSelectionItemManager *)self useCustomVolumeItem];
+      useCustomVolumeItem = [(HUMediaSelectionItemManager *)self useCustomVolumeItem];
 
-      if (v8 != v17)
+      if (useCustomVolumeItem != v17)
       {
 LABEL_7:
-        v13 = [(HUMediaSelectionItemManager *)self actionSetBuilder];
-        v14 = [(HUMediaSelectionItemManager *)self actionBuilder];
-        [v13 updateAction:v14];
+        actionSetBuilder = [(HUMediaSelectionItemManager *)self actionSetBuilder];
+        actionBuilder3 = [(HUMediaSelectionItemManager *)self actionBuilder];
+        [actionSetBuilder updateAction:actionBuilder3];
 
-        v15 = [(HFItemManager *)self itemProviders];
-        v16 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v15 senderSelector:a2];
+        itemProviders = [(HFItemManager *)self itemProviders];
+        v16 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:itemProviders senderSelector:a2];
 
-        v6 = v17;
+        itemCopy = v17;
         goto LABEL_8;
       }
 
-      v9 = [(HUMediaSelectionItemManager *)self _volumeForMediaAction];
-      v10 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      [v10 setTargetVolume:v9];
+      actionBuilder2 = [(HUMediaSelectionItemManager *)self _volumeForMediaAction];
+      actionBuilder4 = [(HUMediaSelectionItemManager *)self actionBuilder];
+      [actionBuilder4 setTargetVolume:actionBuilder2];
     }
 
     goto LABEL_7;
@@ -238,79 +238,79 @@ LABEL_8:
 
 - (HFPlaybackArchive)pickedPlaybackArchive
 {
-  v2 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  v3 = [v2 playbackArchive];
+  actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+  playbackArchive = [actionBuilder playbackArchive];
 
-  return v3;
+  return playbackArchive;
 }
 
-- (void)setPickedPlaybackArchive:(id)a3
+- (void)setPickedPlaybackArchive:(id)archive
 {
-  v5 = a3;
-  v6 = [v5 mediaPlayerPlaybackArchive];
-  v7 = [v6 displayProperties];
-  v8 = [(HUMediaSelectionItemManager *)self chosenMediaItem];
-  [v8 setPlaybackArchiveDisplayProperties:v7];
+  archiveCopy = archive;
+  mediaPlayerPlaybackArchive = [archiveCopy mediaPlayerPlaybackArchive];
+  displayProperties = [mediaPlayerPlaybackArchive displayProperties];
+  chosenMediaItem = [(HUMediaSelectionItemManager *)self chosenMediaItem];
+  [chosenMediaItem setPlaybackArchiveDisplayProperties:displayProperties];
 
-  v9 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  [v9 setPlaybackArchive:v5];
+  actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+  [actionBuilder setPlaybackArchive:archiveCopy];
 
-  v10 = [(HUMediaSelectionItemManager *)self actionSetBuilder];
-  v11 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  [v10 updateAction:v11];
+  actionSetBuilder = [(HUMediaSelectionItemManager *)self actionSetBuilder];
+  actionBuilder2 = [(HUMediaSelectionItemManager *)self actionBuilder];
+  [actionSetBuilder updateAction:actionBuilder2];
 
-  v13 = [(HFItemManager *)self itemProviders];
-  v12 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v13 senderSelector:a2];
+  itemProviders = [(HFItemManager *)self itemProviders];
+  v12 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:itemProviders senderSelector:a2];
 }
 
-- (void)mediaPlaybackOptionsItem:(id)a3 switchedOn:(BOOL)a4
+- (void)mediaPlaybackOptionsItem:(id)item switchedOn:(BOOL)on
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(HUMediaSelectionItemManager *)self shuffleItem];
+  onCopy = on;
+  itemCopy = item;
+  shuffleItem = [(HUMediaSelectionItemManager *)self shuffleItem];
 
-  if (v6 == v12)
+  if (shuffleItem == itemCopy)
   {
-    v8 = [(HUMediaSelectionItemManager *)self actionBuilder];
-    v9 = [v8 playbackArchive];
-    [v9 setShuffleEnabled:v4];
+    actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+    playbackArchive = [actionBuilder playbackArchive];
+    [playbackArchive setShuffleEnabled:onCopy];
   }
 
   else
   {
-    v7 = [(HUMediaSelectionItemManager *)self repeatItem];
+    repeatItem = [(HUMediaSelectionItemManager *)self repeatItem];
 
-    if (v7 != v12)
+    if (repeatItem != itemCopy)
     {
       goto LABEL_6;
     }
 
-    v8 = [(HUMediaSelectionItemManager *)self actionBuilder];
-    v9 = [v8 playbackArchive];
-    [v9 setRepeatEnabled:v4];
+    actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+    playbackArchive = [actionBuilder playbackArchive];
+    [playbackArchive setRepeatEnabled:onCopy];
   }
 
 LABEL_6:
-  v10 = [(HUMediaSelectionItemManager *)self actionSetBuilder];
-  v11 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  [v10 updateAction:v11];
+  actionSetBuilder = [(HUMediaSelectionItemManager *)self actionSetBuilder];
+  actionBuilder2 = [(HUMediaSelectionItemManager *)self actionBuilder];
+  [actionSetBuilder updateAction:actionBuilder2];
 }
 
-- (void)mediaVolumeValueChanged:(double)a3
+- (void)mediaVolumeValueChanged:(double)changed
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v5 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  [v5 setTargetVolume:v4];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:changed];
+  actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+  [actionBuilder setTargetVolume:v4];
 
-  v7 = [(HUMediaSelectionItemManager *)self actionSetBuilder];
-  v6 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  [v7 updateAction:v6];
+  actionSetBuilder = [(HUMediaSelectionItemManager *)self actionSetBuilder];
+  actionBuilder2 = [(HUMediaSelectionItemManager *)self actionBuilder];
+  [actionSetBuilder updateAction:actionBuilder2];
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v92[2] = *MEMORY[0x277D85DE8];
-  v68 = a3;
+  homeCopy = home;
   v5 = objc_alloc(MEMORY[0x277D14B38]);
   v91[0] = *MEMORY[0x277D13F60];
   v6 = v91[0];
@@ -351,19 +351,19 @@ LABEL_6:
   v19 = [v18 initWithResultsBlock:v78];
   [(HUMediaSelectionItemManager *)self setPlaybackStatePlayItem:v19];
 
-  v20 = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
-  v86[0] = v20;
-  v21 = [(HUMediaSelectionItemManager *)self playbackStatePauseItem];
-  v86[1] = v21;
-  v22 = [(HUMediaSelectionItemManager *)self playbackStateResumeItem];
-  v86[2] = v22;
-  v23 = [(HUMediaSelectionItemManager *)self playbackStateAdjustVolumeOnlyItem];
-  v86[3] = v23;
+  playbackStatePlayItem = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
+  v86[0] = playbackStatePlayItem;
+  playbackStatePauseItem = [(HUMediaSelectionItemManager *)self playbackStatePauseItem];
+  v86[1] = playbackStatePauseItem;
+  playbackStateResumeItem = [(HUMediaSelectionItemManager *)self playbackStateResumeItem];
+  v86[2] = playbackStateResumeItem;
+  playbackStateAdjustVolumeOnlyItem = [(HUMediaSelectionItemManager *)self playbackStateAdjustVolumeOnlyItem];
+  v86[3] = playbackStateAdjustVolumeOnlyItem;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v86 count:4];
   [(HUMediaSelectionItemManager *)self setPlaybackStateItems:v24];
 
-  v25 = [(HUMediaSelectionItemManager *)self selectedPlaybackStateItemBasedOnActionBuilderState];
-  [(HUMediaSelectionItemManager *)self setSelectedPlaybackStateItem:v25];
+  selectedPlaybackStateItemBasedOnActionBuilderState = [(HUMediaSelectionItemManager *)self selectedPlaybackStateItemBasedOnActionBuilderState];
+  [(HUMediaSelectionItemManager *)self setSelectedPlaybackStateItem:selectedPlaybackStateItemBasedOnActionBuilderState];
 
   objc_initWeak(&location, self);
   v26 = objc_alloc(MEMORY[0x277D14B38]);
@@ -377,17 +377,17 @@ LABEL_6:
   [(HUMediaSelectionItemManager *)self setMediaPickerItem:v27];
 
   v28 = [HUMediaItem alloc];
-  v29 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  v30 = [v29 playbackArchive];
-  v31 = [v30 mediaPlayerPlaybackArchive];
-  v32 = [v31 displayProperties];
-  v33 = [(HUMediaItem *)v28 initWithPlaybackArchiveDisplayProperties:v32];
+  actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+  playbackArchive = [actionBuilder playbackArchive];
+  mediaPlayerPlaybackArchive = [playbackArchive mediaPlayerPlaybackArchive];
+  displayProperties = [mediaPlayerPlaybackArchive displayProperties];
+  v33 = [(HUMediaItem *)v28 initWithPlaybackArchiveDisplayProperties:displayProperties];
   [(HUMediaSelectionItemManager *)self setChosenMediaItem:v33];
 
-  v34 = [(HUMediaSelectionItemManager *)self chosenMediaItem];
-  v85[0] = v34;
-  v35 = [(HUMediaSelectionItemManager *)self mediaPickerItem];
-  v85[1] = v35;
+  chosenMediaItem = [(HUMediaSelectionItemManager *)self chosenMediaItem];
+  v85[0] = chosenMediaItem;
+  mediaPickerItem = [(HUMediaSelectionItemManager *)self mediaPickerItem];
+  v85[1] = mediaPickerItem;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:2];
   [(HUMediaSelectionItemManager *)self setMediaPickerRowItems:v36];
 
@@ -409,10 +409,10 @@ LABEL_6:
   v40 = [v39 initWithResultsBlock:v72];
   [(HUMediaSelectionItemManager *)self setShuffleItem:v40];
 
-  v41 = [(HUMediaSelectionItemManager *)self repeatItem];
-  v84[0] = v41;
-  v42 = [(HUMediaSelectionItemManager *)self shuffleItem];
-  v84[1] = v42;
+  repeatItem = [(HUMediaSelectionItemManager *)self repeatItem];
+  v84[0] = repeatItem;
+  shuffleItem = [(HUMediaSelectionItemManager *)self shuffleItem];
+  v84[1] = shuffleItem;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v84 count:2];
   [(HUMediaSelectionItemManager *)self setPlaybackOptionsItems:v43];
 
@@ -433,8 +433,8 @@ LABEL_6:
   v49 = [v46 initWithResults:v48];
   [(HUMediaSelectionItemManager *)self setUseCustomVolumeItem:v49];
 
-  v50 = [(HUMediaSelectionItemManager *)self selectedVolumeItemBasedOnActionBuilderState];
-  [(HUMediaSelectionItemManager *)self setSelectedVolumeItem:v50];
+  selectedVolumeItemBasedOnActionBuilderState = [(HUMediaSelectionItemManager *)self selectedVolumeItemBasedOnActionBuilderState];
+  [(HUMediaSelectionItemManager *)self setSelectedVolumeItem:selectedVolumeItemBasedOnActionBuilderState];
 
   v51 = objc_alloc(MEMORY[0x277D14B38]);
   v69[0] = MEMORY[0x277D85DD0];
@@ -445,33 +445,33 @@ LABEL_6:
   v52 = [v51 initWithResultsBlock:v69];
   [(HUMediaSelectionItemManager *)self setVolumeSliderItem:v52];
 
-  v53 = [(HUMediaSelectionItemManager *)self useCurrentVolumeItem];
-  v81[0] = v53;
-  v54 = [(HUMediaSelectionItemManager *)self useCustomVolumeItem];
-  v81[1] = v54;
+  useCurrentVolumeItem = [(HUMediaSelectionItemManager *)self useCurrentVolumeItem];
+  v81[0] = useCurrentVolumeItem;
+  useCustomVolumeItem = [(HUMediaSelectionItemManager *)self useCustomVolumeItem];
+  v81[1] = useCustomVolumeItem;
   v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:2];
   [(HUMediaSelectionItemManager *)self setCustomVolumeItems:v55];
 
-  v56 = [(HUMediaSelectionItemManager *)self volumeSliderItem];
-  v80 = v56;
+  volumeSliderItem = [(HUMediaSelectionItemManager *)self volumeSliderItem];
+  v80 = volumeSliderItem;
   v57 = [MEMORY[0x277CBEA60] arrayWithObjects:&v80 count:1];
   [(HUMediaSelectionItemManager *)self setVolumeSliderItems:v57];
 
   v58 = MEMORY[0x277CBEB58];
-  v59 = [(HUMediaSelectionItemManager *)self playbackStateItems];
-  v60 = [v58 setWithArray:v59];
+  playbackStateItems = [(HUMediaSelectionItemManager *)self playbackStateItems];
+  v60 = [v58 setWithArray:playbackStateItems];
 
-  v61 = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
-  [v60 addObjectsFromArray:v61];
+  mediaPickerRowItems = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
+  [v60 addObjectsFromArray:mediaPickerRowItems];
 
-  v62 = [(HUMediaSelectionItemManager *)self customVolumeItems];
-  [v60 addObjectsFromArray:v62];
+  customVolumeItems = [(HUMediaSelectionItemManager *)self customVolumeItems];
+  [v60 addObjectsFromArray:customVolumeItems];
 
-  v63 = [(HUMediaSelectionItemManager *)self volumeSliderItems];
-  [v60 addObjectsFromArray:v63];
+  volumeSliderItems = [(HUMediaSelectionItemManager *)self volumeSliderItems];
+  [v60 addObjectsFromArray:volumeSliderItems];
 
-  v64 = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
-  [v60 addObjectsFromArray:v64];
+  playbackOptionsItems = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
+  [v60 addObjectsFromArray:playbackOptionsItems];
 
   v65 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v60];
   v79 = v65;
@@ -1060,177 +1060,177 @@ id __58__HUMediaSelectionItemManager__buildItemProvidersForHome___block_invoke_4
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(HUMediaSelectionItemManager *)self playbackStateItems];
-  v8 = [v6 setWithArray:v7];
-  v9 = [v4 intersectsSet:v8];
+  playbackStateItems = [(HUMediaSelectionItemManager *)self playbackStateItems];
+  v8 = [v6 setWithArray:playbackStateItems];
+  v9 = [itemsCopy intersectsSet:v8];
 
   if (v9)
   {
     v10 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HOMediaSelectionActionSectionIdentifier"];
-    v11 = [(HUMediaSelectionItemManager *)self playbackStateItems];
-    [v10 setItems:v11];
+    playbackStateItems2 = [(HUMediaSelectionItemManager *)self playbackStateItems];
+    [v10 setItems:playbackStateItems2];
 
-    [v5 addObject:v10];
+    [array addObject:v10];
   }
 
   v12 = MEMORY[0x277CBEB98];
-  v13 = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
-  v14 = [v12 setWithArray:v13];
-  v15 = [v4 intersectsSet:v14];
+  mediaPickerRowItems = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
+  v14 = [v12 setWithArray:mediaPickerRowItems];
+  v15 = [itemsCopy intersectsSet:v14];
 
   if (v15)
   {
     v16 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HOMediaSelectionPickerSectionIdentifier"];
-    v17 = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
+    mediaPickerRowItems2 = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __64__HUMediaSelectionItemManager__buildSectionsWithDisplayedItems___block_invoke;
     v45[3] = &unk_277DBDE18;
-    v46 = v4;
-    v18 = [v17 na_filter:v45];
+    v46 = itemsCopy;
+    v18 = [mediaPickerRowItems2 na_filter:v45];
     [v16 setItems:v18];
 
-    [v5 addObject:v16];
+    [array addObject:v16];
   }
 
   v19 = MEMORY[0x277CBEB98];
-  v20 = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
-  v21 = [v19 setWithArray:v20];
-  v22 = [v4 intersectsSet:v21];
+  playbackOptionsItems = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
+  v21 = [v19 setWithArray:playbackOptionsItems];
+  v22 = [itemsCopy intersectsSet:v21];
 
   if (v22)
   {
     v23 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HOMediaSelectionOptionsSectionIdentifier"];
-    v24 = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
-    [v23 setItems:v24];
+    playbackOptionsItems2 = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
+    [v23 setItems:playbackOptionsItems2];
 
-    [v5 addObject:v23];
+    [array addObject:v23];
   }
 
   v25 = MEMORY[0x277CBEB98];
-  v26 = [(HUMediaSelectionItemManager *)self customVolumeItems];
-  v27 = [v25 setWithArray:v26];
-  v28 = [v4 intersectsSet:v27];
+  customVolumeItems = [(HUMediaSelectionItemManager *)self customVolumeItems];
+  v27 = [v25 setWithArray:customVolumeItems];
+  v28 = [itemsCopy intersectsSet:v27];
 
   if (v28)
   {
     v29 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HOMediaSelectionVolumeSelectionSectionIdentifier"];
-    v30 = [(HUMediaSelectionItemManager *)self customVolumeItems];
+    customVolumeItems2 = [(HUMediaSelectionItemManager *)self customVolumeItems];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __64__HUMediaSelectionItemManager__buildSectionsWithDisplayedItems___block_invoke_2;
     v43[3] = &unk_277DBDE18;
-    v44 = v4;
-    v31 = [v30 na_filter:v43];
+    v44 = itemsCopy;
+    v31 = [customVolumeItems2 na_filter:v43];
     [v29 setItems:v31];
 
     v32 = _HULocalizedStringWithDefaultValue(@"HUMediaSelectionVolumeSectionTitle", @"HUMediaSelectionVolumeSectionTitle", 1);
     [v29 setHeaderTitle:v32];
 
-    [v5 addObject:v29];
+    [array addObject:v29];
   }
 
   v33 = MEMORY[0x277CBEB98];
-  v34 = [(HUMediaSelectionItemManager *)self volumeSliderItems];
-  v35 = [v33 setWithArray:v34];
-  v36 = [v4 intersectsSet:v35];
+  volumeSliderItems = [(HUMediaSelectionItemManager *)self volumeSliderItems];
+  v35 = [v33 setWithArray:volumeSliderItems];
+  v36 = [itemsCopy intersectsSet:v35];
 
   if (v36)
   {
     v37 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HOMediaSelectionVolumeSliderSectionIdentifier"];
-    v38 = [(HUMediaSelectionItemManager *)self volumeSliderItems];
+    volumeSliderItems2 = [(HUMediaSelectionItemManager *)self volumeSliderItems];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __64__HUMediaSelectionItemManager__buildSectionsWithDisplayedItems___block_invoke_3;
     v41[3] = &unk_277DBDE18;
-    v42 = v4;
-    v39 = [v38 na_filter:v41];
+    v42 = itemsCopy;
+    v39 = [volumeSliderItems2 na_filter:v41];
     [v37 setItems:v39];
 
-    [v5 addObject:v37];
+    [array addObject:v37];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v27.receiver = self;
   v27.super_class = HUMediaSelectionItemManager;
-  v4 = [(HFItemManager *)&v27 _itemsToHideInSet:a3];
+  v4 = [(HFItemManager *)&v27 _itemsToHideInSet:set];
   v5 = [v4 mutableCopy];
 
-  v6 = [(HUMediaSelectionItemManager *)self selectedPlaybackStateItem];
-  v7 = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
+  selectedPlaybackStateItem = [(HUMediaSelectionItemManager *)self selectedPlaybackStateItem];
+  playbackStatePlayItem = [(HUMediaSelectionItemManager *)self playbackStatePlayItem];
 
-  if (v6 != v7)
+  if (selectedPlaybackStateItem != playbackStatePlayItem)
   {
-    v8 = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
-    [v5 addObjectsFromArray:v8];
+    mediaPickerRowItems = [(HUMediaSelectionItemManager *)self mediaPickerRowItems];
+    [v5 addObjectsFromArray:mediaPickerRowItems];
 
-    v9 = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
-    [v5 addObjectsFromArray:v9];
+    playbackOptionsItems = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
+    [v5 addObjectsFromArray:playbackOptionsItems];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v10 = [(HUMediaSelectionItemManager *)self pickedPlaybackArchive];
-  v11 = [v10 mediaPlayerPlaybackArchive];
+  pickedPlaybackArchive = [(HUMediaSelectionItemManager *)self pickedPlaybackArchive];
+  mediaPlayerPlaybackArchive = [pickedPlaybackArchive mediaPlayerPlaybackArchive];
 
-  if (!v11)
+  if (!mediaPlayerPlaybackArchive)
   {
-    v12 = [(HUMediaSelectionItemManager *)self chosenMediaItem];
-    [v5 addObject:v12];
+    chosenMediaItem = [(HUMediaSelectionItemManager *)self chosenMediaItem];
+    [v5 addObject:chosenMediaItem];
 
-    v13 = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
-    [v5 addObjectsFromArray:v13];
+    playbackOptionsItems2 = [(HUMediaSelectionItemManager *)self playbackOptionsItems];
+    [v5 addObjectsFromArray:playbackOptionsItems2];
   }
 
-  v14 = [(HUMediaSelectionItemManager *)self pickedPlaybackArchive];
-  v15 = [v14 isRepeatSupported];
+  pickedPlaybackArchive2 = [(HUMediaSelectionItemManager *)self pickedPlaybackArchive];
+  isRepeatSupported = [pickedPlaybackArchive2 isRepeatSupported];
 
-  if ((v15 & 1) == 0)
+  if ((isRepeatSupported & 1) == 0)
   {
-    v16 = [(HUMediaSelectionItemManager *)self repeatItem];
-    [v5 addObject:v16];
+    repeatItem = [(HUMediaSelectionItemManager *)self repeatItem];
+    [v5 addObject:repeatItem];
   }
 
-  v17 = [(HUMediaSelectionItemManager *)self pickedPlaybackArchive];
-  v18 = [v17 isShuffleSupported];
+  pickedPlaybackArchive3 = [(HUMediaSelectionItemManager *)self pickedPlaybackArchive];
+  isShuffleSupported = [pickedPlaybackArchive3 isShuffleSupported];
 
-  if ((v18 & 1) == 0)
+  if ((isShuffleSupported & 1) == 0)
   {
-    v9 = [(HUMediaSelectionItemManager *)self shuffleItem];
-    [v5 addObject:v9];
+    playbackOptionsItems = [(HUMediaSelectionItemManager *)self shuffleItem];
+    [v5 addObject:playbackOptionsItems];
     goto LABEL_9;
   }
 
 LABEL_10:
-  v19 = [(HUMediaSelectionItemManager *)self selectedPlaybackStateItem];
-  v20 = [(HUMediaSelectionItemManager *)self playbackStatePauseItem];
+  selectedPlaybackStateItem2 = [(HUMediaSelectionItemManager *)self selectedPlaybackStateItem];
+  playbackStatePauseItem = [(HUMediaSelectionItemManager *)self playbackStatePauseItem];
 
-  if (v19 == v20)
+  if (selectedPlaybackStateItem2 == playbackStatePauseItem)
   {
-    v21 = [(HUMediaSelectionItemManager *)self customVolumeItems];
-    [v5 addObjectsFromArray:v21];
+    customVolumeItems = [(HUMediaSelectionItemManager *)self customVolumeItems];
+    [v5 addObjectsFromArray:customVolumeItems];
 
-    v22 = [(HUMediaSelectionItemManager *)self volumeSliderItems];
-    [v5 addObjectsFromArray:v22];
+    volumeSliderItems = [(HUMediaSelectionItemManager *)self volumeSliderItems];
+    [v5 addObjectsFromArray:volumeSliderItems];
   }
 
-  v23 = [(HUMediaSelectionItemManager *)self selectedVolumeItem];
-  v24 = [(HUMediaSelectionItemManager *)self useCurrentVolumeItem];
+  selectedVolumeItem = [(HUMediaSelectionItemManager *)self selectedVolumeItem];
+  useCurrentVolumeItem = [(HUMediaSelectionItemManager *)self useCurrentVolumeItem];
 
-  if (v23 == v24)
+  if (selectedVolumeItem == useCurrentVolumeItem)
   {
-    v25 = [(HUMediaSelectionItemManager *)self volumeSliderItems];
-    [v5 addObjectsFromArray:v25];
+    volumeSliderItems2 = [(HUMediaSelectionItemManager *)self volumeSliderItems];
+    [v5 addObjectsFromArray:volumeSliderItems2];
   }
 
   return v5;
@@ -1238,28 +1238,28 @@ LABEL_10:
 
 - (id)_volumeForMediaAction
 {
-  v3 = [(HUMediaSelectionItemManager *)self actionBuilder];
-  v4 = [v3 targetVolume];
-  v5 = v4;
-  if (v4)
+  actionBuilder = [(HUMediaSelectionItemManager *)self actionBuilder];
+  targetVolume = [actionBuilder targetVolume];
+  v5 = targetVolume;
+  if (targetVolume)
   {
-    v6 = v4;
+    v6 = targetVolume;
   }
 
   else
   {
-    v7 = [(HUMediaSelectionItemManager *)self lastSelectedVolume];
-    v8 = v7;
-    if (v7)
+    lastSelectedVolume = [(HUMediaSelectionItemManager *)self lastSelectedVolume];
+    v8 = lastSelectedVolume;
+    if (lastSelectedVolume)
     {
-      v6 = v7;
+      v6 = lastSelectedVolume;
     }
 
     else
     {
-      v9 = [(HUMediaSelectionItemManager *)self actionBuilder];
-      v10 = [v9 mediaProfiles];
-      v6 = [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:v10];
+      actionBuilder2 = [(HUMediaSelectionItemManager *)self actionBuilder];
+      mediaProfiles = [actionBuilder2 mediaProfiles];
+      v6 = [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:mediaProfiles];
     }
   }
 

@@ -1,67 +1,67 @@
 @interface TUCallHistoryController
-+ (TUCallHistoryController)callHistoryControllerWithCoalescingStrategy:(unint64_t)a3 options:(unint64_t)a4;
++ (TUCallHistoryController)callHistoryControllerWithCoalescingStrategy:(unint64_t)strategy options:(unint64_t)options;
 + (TUCallHistoryController)sharedController;
-+ (id)sharedControllerWithCoalescingStrategy:(unint64_t)a3 options:(unint64_t)a4;
++ (id)sharedControllerWithCoalescingStrategy:(unint64_t)strategy options:(unint64_t)options;
 + (void)sharedController;
 - (BOOL)canLoadOlderRecentCalls;
 - (NSArray)recentCalls;
 - (NSOperationQueue)searchQueue;
 - (TUCallHistoryController)init;
-- (TUCallHistoryController)initWithCoalescingStrategy:(unint64_t)a3 options:(unint64_t)a4 dataSource:(id)a5 shouldUpdateMetadataCache:(BOOL)a6;
-- (id)_callHistoryCoalescingStrategyForCoalescingStrategy:(unint64_t)a3;
+- (TUCallHistoryController)initWithCoalescingStrategy:(unint64_t)strategy options:(unint64_t)options dataSource:(id)source shouldUpdateMetadataCache:(BOOL)cache;
+- (id)_callHistoryCoalescingStrategyForCoalescingStrategy:(unint64_t)strategy;
 - (id)callHistoryManagerInitializationDispatchBlock;
 - (id)callHistoryManagerLoadOlderRecentCallsDispatchBlock;
 - (id)callHistoryManagerRecentCallsDispatchBlock;
-- (id)callsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6;
-- (id)recentCallsWithPredicate:(id)a3;
+- (id)callsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)recentCallsWithPredicate:(id)predicate;
 - (int64_t)callHistoryControllerCallHistoryFetchLimit;
 - (unint64_t)coalescingStrategy;
 - (unint64_t)options;
 - (unint64_t)unreadCallCount;
 - (void)_updateCallHistoryManagerUsingCurrentOptions;
 - (void)boostQualityOfService;
-- (void)callHistoryDatabaseChanged:(id)a3;
+- (void)callHistoryDatabaseChanged:(id)changed;
 - (void)cancelSearchFetchOperations;
 - (void)dealloc;
 - (void)deleteAllRecentCalls;
-- (void)deleteRecentCall:(id)a3;
-- (void)deleteRecentCalls:(id)a3;
-- (void)dispatcherDidFinishBoost:(id)a3;
+- (void)deleteRecentCall:(id)call;
+- (void)deleteRecentCalls:(id)calls;
+- (void)dispatcherDidFinishBoost:(id)boost;
 - (void)loadDispatchQueue;
 - (void)loadOlderRecentCalls;
 - (void)markRecentAudioCallsAsRead;
-- (void)markRecentCallsAsReadWithPredicate:(id)a3;
+- (void)markRecentCallsAsReadWithPredicate:(id)predicate;
 - (void)markRecentVideoCallsAsRead;
-- (void)markUnreadRecentCallsAsReadWithPredicate:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)setCallHistoryManager:(id)a3;
-- (void)setCoalescingStrategy:(unint64_t)a3;
-- (void)setOptions:(unint64_t)a3;
-- (void)setPreFetchingPredicate:(id)a3;
-- (void)setRecentCalls:(id)a3;
-- (void)setUnreadCallCount:(unint64_t)a3;
-- (void)updateReminderUUID:(id)a3 forRecentCall:(id)a4;
+- (void)markUnreadRecentCallsAsReadWithPredicate:(id)predicate;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)setCallHistoryManager:(id)manager;
+- (void)setCoalescingStrategy:(unint64_t)strategy;
+- (void)setOptions:(unint64_t)options;
+- (void)setPreFetchingPredicate:(id)predicate;
+- (void)setRecentCalls:(id)calls;
+- (void)setUnreadCallCount:(unint64_t)count;
+- (void)updateReminderUUID:(id)d forRecentCall:(id)call;
 @end
 
 @implementation TUCallHistoryController
 
 - (void)loadDispatchQueue
 {
-  v3 = [(TUCallHistoryController *)self dispatcher];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__TUCallHistoryController_loadDispatchQueue__block_invoke;
   v8[3] = &unk_1E7424950;
   v8[4] = self;
-  [v3 dispatchAsynchronousBlock:v8];
+  [dispatcher dispatchAsynchronousBlock:v8];
 
-  v4 = [(TUCallHistoryController *)self dispatcher];
-  v5 = [(TUCallHistoryController *)self callHistoryManagerInitializationDispatchBlock];
-  [v4 dispatchAsynchronousBlock:v5];
+  dispatcher2 = [(TUCallHistoryController *)self dispatcher];
+  callHistoryManagerInitializationDispatchBlock = [(TUCallHistoryController *)self callHistoryManagerInitializationDispatchBlock];
+  [dispatcher2 dispatchAsynchronousBlock:callHistoryManagerInitializationDispatchBlock];
 
-  v6 = [(TUCallHistoryController *)self dispatcher];
-  v7 = [(TUCallHistoryController *)self callHistoryManagerRecentCallsDispatchBlock];
-  [v6 dispatchAsynchronousBlock:v7];
+  dispatcher3 = [(TUCallHistoryController *)self dispatcher];
+  callHistoryManagerRecentCallsDispatchBlock = [(TUCallHistoryController *)self callHistoryManagerRecentCallsDispatchBlock];
+  [dispatcher3 dispatchAsynchronousBlock:callHistoryManagerRecentCallsDispatchBlock];
 }
 
 - (id)callHistoryManagerRecentCallsDispatchBlock
@@ -213,8 +213,8 @@ void __69__TUCallHistoryController_callHistoryManagerRecentCallsDispatchBlock__b
   v7[4] = self;
   v7[5] = &v8;
   v3 = _Block_copy(v7);
-  v4 = [(TUCallHistoryController *)self dispatcher];
-  [v4 dispatchSynchronousBlock:v3];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchSynchronousBlock:v3];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -224,17 +224,17 @@ void __69__TUCallHistoryController_callHistoryManagerRecentCallsDispatchBlock__b
 
 - (void)_updateCallHistoryManagerUsingCurrentOptions
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkCHLimitServiceProviderKey(void)"];
-  [v0 handleFailureInFunction:v1 file:@"TUCallHistoryController.m" lineNumber:29 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"TUCallHistoryController.m" lineNumber:29 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (int64_t)callHistoryControllerCallHistoryFetchLimit
 {
-  v2 = [(TUCallHistoryController *)self featureFlags];
-  if ([v2 increaseCallHistoryEnabled])
+  featureFlags = [(TUCallHistoryController *)self featureFlags];
+  if ([featureFlags increaseCallHistoryEnabled])
   {
     v3 = 2000;
   }
@@ -253,14 +253,14 @@ void __69__TUCallHistoryController_callHistoryManagerRecentCallsDispatchBlock__b
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(TUCallHistoryController *)self simpleIvarDispatcher];
+  simpleIvarDispatcher = [(TUCallHistoryController *)self simpleIvarDispatcher];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__TUCallHistoryController_unreadCallCount__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 dispatchSynchronousBlock:v6];
+  [simpleIvarDispatcher dispatchSynchronousBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -285,26 +285,26 @@ void __69__TUCallHistoryController_callHistoryManagerRecentCallsDispatchBlock__b
 
 - (BOOL)canLoadOlderRecentCalls
 {
-  v3 = [(TUCallHistoryController *)self featureFlags];
-  if ([v3 increaseCallHistoryEnabled])
+  featureFlags = [(TUCallHistoryController *)self featureFlags];
+  if ([featureFlags increaseCallHistoryEnabled])
   {
-    v4 = [(TUCallHistoryController *)self callHistoryManager];
-    v5 = [v4 canLoadOlderRecentCalls];
+    callHistoryManager = [(TUCallHistoryController *)self callHistoryManager];
+    canLoadOlderRecentCalls = [callHistoryManager canLoadOlderRecentCalls];
   }
 
   else
   {
-    v5 = 0;
+    canLoadOlderRecentCalls = 0;
   }
 
-  return v5;
+  return canLoadOlderRecentCalls;
 }
 
 - (void)loadOlderRecentCalls
 {
-  v4 = [(TUCallHistoryController *)self dispatcher];
-  v3 = [(TUCallHistoryController *)self callHistoryManagerLoadOlderRecentCallsDispatchBlock];
-  [v4 dispatchAsynchronousBlock:v3];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  callHistoryManagerLoadOlderRecentCallsDispatchBlock = [(TUCallHistoryController *)self callHistoryManagerLoadOlderRecentCallsDispatchBlock];
+  [dispatcher dispatchAsynchronousBlock:callHistoryManagerLoadOlderRecentCallsDispatchBlock];
 }
 
 - (id)callHistoryManagerLoadOlderRecentCallsDispatchBlock
@@ -409,12 +409,12 @@ void __78__TUCallHistoryController_callHistoryManagerLoadOlderRecentCallsDispatc
   return v5;
 }
 
-+ (id)sharedControllerWithCoalescingStrategy:(unint64_t)a3 options:(unint64_t)a4
++ (id)sharedControllerWithCoalescingStrategy:(unint64_t)strategy options:(unint64_t)options
 {
   v5 = gSharedCallHistoryInstance;
   if (!gSharedCallHistoryInstance)
   {
-    v6 = [a1 callHistoryControllerWithCoalescingStrategy:a3 options:a4];
+    v6 = [self callHistoryControllerWithCoalescingStrategy:strategy options:options];
     v7 = gSharedCallHistoryInstance;
     gSharedCallHistoryInstance = v6;
 
@@ -424,11 +424,11 @@ void __78__TUCallHistoryController_callHistoryManagerLoadOlderRecentCallsDispatc
   return v5;
 }
 
-+ (TUCallHistoryController)callHistoryControllerWithCoalescingStrategy:(unint64_t)a3 options:(unint64_t)a4
++ (TUCallHistoryController)callHistoryControllerWithCoalescingStrategy:(unint64_t)strategy options:(unint64_t)options
 {
   v6 = objc_opt_class();
 
-  return [v6 callHistoryControllerWithCoalescingStrategy:a3 options:a4 shouldUpdateMetadataCache:1];
+  return [v6 callHistoryControllerWithCoalescingStrategy:strategy options:options shouldUpdateMetadataCache:1];
 }
 
 - (TUCallHistoryController)init
@@ -438,8 +438,8 @@ void __78__TUCallHistoryController_callHistoryManagerLoadOlderRecentCallsDispatc
 
   if (_TUAssertShouldCrashApplication())
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"TUCallHistoryController.m" lineNumber:147 description:{@"%s is not available for use. To create an object instance use the designated initializer.", "-[TUCallHistoryController init]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TUCallHistoryController.m" lineNumber:147 description:{@"%s is not available for use. To create an object instance use the designated initializer.", "-[TUCallHistoryController init]"}];
   }
 
   return 0;
@@ -447,8 +447,8 @@ void __78__TUCallHistoryController_callHistoryManagerLoadOlderRecentCallsDispatc
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TUCallHistoryController;
@@ -468,25 +468,25 @@ void __78__TUCallHistoryController_callHistoryManagerLoadOlderRecentCallsDispatc
   v7[4] = self;
   v7[5] = &v8;
   v3 = _Block_copy(v7);
-  v4 = [(TUCallHistoryController *)self dispatcher];
-  [v4 dispatchSynchronousBlock:v3];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchSynchronousBlock:v3];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (void)setCoalescingStrategy:(unint64_t)a3
+- (void)setCoalescingStrategy:(unint64_t)strategy
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__TUCallHistoryController_setCoalescingStrategy___block_invoke;
   v6[3] = &unk_1E7425340;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = strategy;
   v4 = _Block_copy(v6);
-  v5 = [(TUCallHistoryController *)self dispatcher];
-  [v5 dispatchAsynchronousBlock:v4];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchAsynchronousBlock:v4];
 }
 
 void __49__TUCallHistoryController_setCoalescingStrategy___block_invoke(uint64_t a1)
@@ -518,25 +518,25 @@ void __49__TUCallHistoryController_setCoalescingStrategy___block_invoke(uint64_t
   v7[4] = self;
   v7[5] = &v8;
   v3 = _Block_copy(v7);
-  v4 = [(TUCallHistoryController *)self dispatcher];
-  [v4 dispatchSynchronousBlock:v3];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchSynchronousBlock:v3];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__TUCallHistoryController_setOptions___block_invoke;
   v6[3] = &unk_1E7425340;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = options;
   v4 = _Block_copy(v6);
-  v5 = [(TUCallHistoryController *)self dispatcher];
-  [v5 dispatchAsynchronousBlock:v4];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchAsynchronousBlock:v4];
 }
 
 void __38__TUCallHistoryController_setOptions___block_invoke(uint64_t a1)
@@ -554,13 +554,13 @@ void __38__TUCallHistoryController_setOptions___block_invoke(uint64_t a1)
 
 - (void)cancelSearchFetchOperations
 {
-  v2 = [(TUCallHistoryController *)self searchQueue];
-  [v2 cancelAllOperations];
+  searchQueue = [(TUCallHistoryController *)self searchQueue];
+  [searchQueue cancelAllOperations];
 }
 
-- (void)setPreFetchingPredicate:(id)a3
+- (void)setPreFetchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(MEMORY[0x1E696AAE0]);
   objc_initWeak(&location, v5);
   v8 = MEMORY[0x1E69E9820];
@@ -568,8 +568,8 @@ void __38__TUCallHistoryController_setOptions___block_invoke(uint64_t a1)
   v10 = __51__TUCallHistoryController_setPreFetchingPredicate___block_invoke;
   v11 = &unk_1E7425368;
   objc_copyWeak(&v14, &location);
-  v12 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = predicateCopy;
   v13 = v6;
   [v5 addExecutionBlock:&v8];
   v7 = [(TUCallHistoryController *)self searchQueue:v8];
@@ -637,12 +637,12 @@ void __51__TUCallHistoryController_setPreFetchingPredicate___block_invoke(uint64
 LABEL_7:
 }
 
-- (void)setRecentCalls:(id)a3
+- (void)setRecentCalls:(id)calls
 {
-  v5 = a3;
-  if (self->_recentCalls != v5)
+  callsCopy = calls;
+  if (self->_recentCalls != callsCopy)
   {
-    objc_storeStrong(&self->_recentCalls, a3);
+    objc_storeStrong(&self->_recentCalls, calls);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__TUCallHistoryController_setRecentCalls___block_invoke;
@@ -658,16 +658,16 @@ void __42__TUCallHistoryController_setRecentCalls___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"TUCallHistoryControllerRecentCallsDidChangeNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (void)setUnreadCallCount:(unint64_t)a3
+- (void)setUnreadCallCount:(unint64_t)count
 {
-  v5 = [(TUCallHistoryController *)self simpleIvarDispatcher];
+  simpleIvarDispatcher = [(TUCallHistoryController *)self simpleIvarDispatcher];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__TUCallHistoryController_setUnreadCallCount___block_invoke;
   v6[3] = &unk_1E7425340;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 dispatchAsynchronousBlock:v6];
+  v6[5] = count;
+  [simpleIvarDispatcher dispatchAsynchronousBlock:v6];
 }
 
 void __46__TUCallHistoryController_setUnreadCallCount___block_invoke(uint64_t a1)
@@ -696,8 +696,8 @@ void __46__TUCallHistoryController_setUnreadCallCount___block_invoke_2(uint64_t 
 
 - (void)boostQualityOfService
 {
-  v2 = [(TUCallHistoryController *)self dispatcher];
-  [v2 boostQualityOfService];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher boostQualityOfService];
 }
 
 - (void)deleteAllRecentCalls
@@ -708,8 +708,8 @@ void __46__TUCallHistoryController_setUnreadCallCount___block_invoke_2(uint64_t 
   aBlock[3] = &unk_1E7424950;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(TUCallHistoryController *)self dispatcher];
-  [v4 dispatchAsynchronousBlock:v3];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchAsynchronousBlock:v3];
 }
 
 void __47__TUCallHistoryController_deleteAllRecentCalls__block_invoke(uint64_t a1)
@@ -721,18 +721,18 @@ void __47__TUCallHistoryController_deleteAllRecentCalls__block_invoke(uint64_t a
   [v3 allCallHistoryDeleted];
 }
 
-- (void)deleteRecentCall:(id)a3
+- (void)deleteRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  callCopy = call;
+  v5 = callCopy;
+  if (callCopy)
   {
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __44__TUCallHistoryController_deleteRecentCall___block_invoke;
     v11 = &unk_1E7424898;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = callCopy;
     v6 = _Block_copy(&v8);
     v7 = [(TUCallHistoryController *)self dispatcher:v8];
     [v7 dispatchAsynchronousBlock:v6];
@@ -766,17 +766,17 @@ void __44__TUCallHistoryController_deleteRecentCall___block_invoke_2(uint64_t a1
   [v3 recentCallsDeleted:v2];
 }
 
-- (void)deleteRecentCalls:(id)a3
+- (void)deleteRecentCalls:(id)calls
 {
-  v4 = a3;
-  if ([v4 count])
+  callsCopy = calls;
+  if ([callsCopy count])
   {
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __45__TUCallHistoryController_deleteRecentCalls___block_invoke;
     v10 = &unk_1E7424898;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = callsCopy;
     v5 = _Block_copy(&v7);
     v6 = [(TUCallHistoryController *)self dispatcher:v7];
     [v6 dispatchAsynchronousBlock:v5];
@@ -808,19 +808,19 @@ void __45__TUCallHistoryController_deleteRecentCalls___block_invoke_2(uint64_t a
   [v2 recentCallsDeleted:*(a1 + 40)];
 }
 
-- (void)markUnreadRecentCallsAsReadWithPredicate:(id)a3
+- (void)markUnreadRecentCallsAsReadWithPredicate:(id)predicate
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = MEMORY[0x1E695DF70];
   v6 = [getCHRecentCallClass() predicateForCallsWithStatusRead:0];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v8 = [v5 arrayWithArray:v7];
 
-  if (v4)
+  if (predicateCopy)
   {
-    [v8 addObject:v4];
+    [v8 addObject:predicateCopy];
   }
 
   v9 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v8];
@@ -859,16 +859,16 @@ void __45__TUCallHistoryController_deleteRecentCalls___block_invoke_2(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markRecentCallsAsReadWithPredicate:(id)a3
+- (void)markRecentCallsAsReadWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __62__TUCallHistoryController_markRecentCallsAsReadWithPredicate___block_invoke;
   v11 = &unk_1E7424898;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = predicateCopy;
+  v5 = predicateCopy;
   v6 = _Block_copy(&v8);
   v7 = [(TUCallHistoryController *)self dispatcher:v8];
   [v7 dispatchAsynchronousBlock:v6];
@@ -880,22 +880,22 @@ void __62__TUCallHistoryController_markRecentCallsAsReadWithPredicate___block_in
   [v2 setRead:1 forCallsWithPredicate:*(a1 + 40) completion:0];
 }
 
-- (void)updateReminderUUID:(id)a3 forRecentCall:(id)a4
+- (void)updateReminderUUID:(id)d forRecentCall:(id)call
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  callCopy = call;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__TUCallHistoryController_updateReminderUUID_forRecentCall___block_invoke;
   aBlock[3] = &unk_1E7424FD8;
   aBlock[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = dCopy;
+  v14 = callCopy;
+  v8 = callCopy;
+  v9 = dCopy;
   v10 = _Block_copy(aBlock);
-  v11 = [(TUCallHistoryController *)self dispatcher];
-  [v11 dispatchAsynchronousBlock:v10];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchAsynchronousBlock:v10];
 }
 
 void __60__TUCallHistoryController_updateReminderUUID_forRecentCall___block_invoke(uint64_t a1)
@@ -904,9 +904,9 @@ void __60__TUCallHistoryController_updateReminderUUID_forRecentCall___block_invo
   [v2 updateReminderUUID:*(a1 + 40) forRecentCall:*(a1 + 48)];
 }
 
-- (id)recentCallsWithPredicate:(id)a3
+- (id)recentCallsWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -919,11 +919,11 @@ void __60__TUCallHistoryController_updateReminderUUID_forRecentCall___block_invo
   aBlock[3] = &unk_1E7425390;
   v12 = &v13;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = predicateCopy;
   v11 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(TUCallHistoryController *)self dispatcher];
-  [v7 dispatchSynchronousBlock:v6];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  [dispatcher dispatchSynchronousBlock:v6];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -940,9 +940,9 @@ void __52__TUCallHistoryController_recentCallsWithPredicate___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (id)callsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6
+- (id)callsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
-  v10 = a3;
+  predicateCopy = predicate;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -954,12 +954,12 @@ void __52__TUCallHistoryController_recentCallsWithPredicate___block_invoke(uint6
   v18 = __69__TUCallHistoryController_callsWithPredicate_limit_offset_batchSize___block_invoke;
   v19 = &unk_1E74253B8;
   v22 = &v26;
-  v20 = self;
-  v11 = v10;
+  selfCopy = self;
+  v11 = predicateCopy;
   v21 = v11;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
+  limitCopy = limit;
+  offsetCopy = offset;
+  sizeCopy = size;
   v12 = _Block_copy(&v16);
   v13 = [(TUCallHistoryController *)self dispatcher:v16];
   [v13 dispatchSynchronousBlock:v12];
@@ -979,9 +979,9 @@ void __69__TUCallHistoryController_callsWithPredicate_limit_offset_batchSize___b
   *(v3 + 40) = v2;
 }
 
-- (TUCallHistoryController)initWithCoalescingStrategy:(unint64_t)a3 options:(unint64_t)a4 dataSource:(id)a5 shouldUpdateMetadataCache:(BOOL)a6
+- (TUCallHistoryController)initWithCoalescingStrategy:(unint64_t)strategy options:(unint64_t)options dataSource:(id)source shouldUpdateMetadataCache:(BOOL)cache
 {
-  v11 = a5;
+  sourceCopy = source;
   v34.receiver = self;
   v34.super_class = TUCallHistoryController;
   v12 = [(TUCallHistoryController *)&v34 init];
@@ -989,16 +989,16 @@ void __69__TUCallHistoryController_callsWithPredicate_limit_offset_batchSize___b
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v15 = [v14 bundleIdentifier];
+    bundleIdentifier = [v14 bundleIdentifier];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = [v13 stringWithFormat:@"%@.%@", v15, v17];
+    v18 = [v13 stringWithFormat:@"%@.%@", bundleIdentifier, v17];
 
     v19 = objc_alloc_init(TUFeatureFlags);
     featureFlags = v12->_featureFlags;
     v12->_featureFlags = v19;
 
-    v12->_coalescingStrategy = a3;
+    v12->_coalescingStrategy = strategy;
     v21 = [TUDispatcher dispatcherWithIdentifier:v18];
     dispatcher = v12->_dispatcher;
     v12->_dispatcher = v21;
@@ -1008,35 +1008,35 @@ void __69__TUCallHistoryController_callsWithPredicate_limit_offset_batchSize___b
     simpleIvarDispatcher = v12->_simpleIvarDispatcher;
     v12->_simpleIvarDispatcher = v24;
 
-    v12->_options = a4;
+    v12->_options = options;
     v26 = objc_opt_new();
     metadataPreCachedOptions = v12->_metadataPreCachedOptions;
     v12->_metadataPreCachedOptions = v26;
 
-    v12->_shouldUpdateMetadataCache = a6;
+    v12->_shouldUpdateMetadataCache = cache;
     v28 = objc_alloc_init(TUCallProviderManager);
     callProviderManager = v12->_callProviderManager;
     v12->_callProviderManager = v28;
 
     v30 = v12->_callProviderManager;
-    v31 = [(TUDispatcher *)v12->_dispatcher dispatchQueue];
-    [(TUCallProviderManager *)v30 addDelegate:v12 queue:v31];
+    dispatchQueue = [(TUDispatcher *)v12->_dispatcher dispatchQueue];
+    [(TUCallProviderManager *)v30 addDelegate:v12 queue:dispatchQueue];
 
-    objc_storeStrong(&v12->_dataSource, a5);
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v12 selector:sel_dispatcherDidFinishBoost_ name:@"TUDispatcherDidFinishBoostQualityOfServiceNotification" object:v12->_dispatcher];
+    objc_storeStrong(&v12->_dataSource, source);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_dispatcherDidFinishBoost_ name:@"TUDispatcherDidFinishBoostQualityOfServiceNotification" object:v12->_dispatcher];
     [(TUCallHistoryController *)v12 loadDispatchQueue];
   }
 
   return v12;
 }
 
-- (void)setCallHistoryManager:(id)a3
+- (void)setCallHistoryManager:(id)manager
 {
-  v5 = a3;
-  if (self->_callHistoryManager != v5)
+  managerCopy = manager;
+  if (self->_callHistoryManager != managerCopy)
   {
-    objc_storeStrong(&self->_callHistoryManager, a3);
+    objc_storeStrong(&self->_callHistoryManager, manager);
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
@@ -1060,16 +1060,16 @@ void __69__TUCallHistoryController_callsWithPredicate_limit_offset_batchSize___b
     callHistoryManager = self->_callHistoryManager;
     v10 = MEMORY[0x1E696AD88];
     v11 = v8;
-    v12 = [v10 defaultCenter];
-    v13 = v12;
+    defaultCenter = [v10 defaultCenter];
+    v13 = defaultCenter;
     if (callHistoryManager)
     {
-      [v12 addObserver:self selector:sel_callHistoryDatabaseChanged_ name:v11 object:0];
+      [defaultCenter addObserver:self selector:sel_callHistoryDatabaseChanged_ name:v11 object:0];
     }
 
     else
     {
-      [v12 removeObserver:self name:v11 object:0];
+      [defaultCenter removeObserver:self name:v11 object:0];
     }
   }
 }
@@ -1086,7 +1086,7 @@ void __78__TUCallHistoryController_callHistoryManagerLoadOlderRecentCallsDispatc
   [v2 updateMetadataForRecentCalls:*(a1 + 32)];
 }
 
-- (id)_callHistoryCoalescingStrategyForCoalescingStrategy:(unint64_t)a3
+- (id)_callHistoryCoalescingStrategyForCoalescingStrategy:(unint64_t)strategy
 {
   v4 = getkCHCoalescingStrategyRecents();
   v19 = 0;
@@ -1151,12 +1151,12 @@ void __78__TUCallHistoryController_callHistoryManagerLoadOlderRecentCallsDispatc
   v13 = *v11;
   v14 = v13;
   v15 = 0;
-  if (a3 > 2)
+  if (strategy > 2)
   {
     v16 = v10;
-    if (a3 != 3)
+    if (strategy != 3)
     {
-      if (a3 != 4)
+      if (strategy != 4)
       {
         goto LABEL_18;
       }
@@ -1170,13 +1170,13 @@ LABEL_17:
   }
 
   v16 = v4;
-  if (a3 == 1)
+  if (strategy == 1)
   {
     goto LABEL_17;
   }
 
   v16 = v7;
-  if (a3 == 2)
+  if (strategy == 2)
   {
     goto LABEL_17;
   }
@@ -1187,26 +1187,26 @@ LABEL_18:
   return v15;
 }
 
-- (void)callHistoryDatabaseChanged:(id)a3
+- (void)callHistoryDatabaseChanged:(id)changed
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changedCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@", &v9, 0xCu);
   }
 
-  v6 = [(TUCallHistoryController *)self dispatcher];
-  v7 = [(TUCallHistoryController *)self callHistoryManagerRecentCallsDispatchBlock];
-  [v6 dispatchAsynchronousBlock:v7];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
+  callHistoryManagerRecentCallsDispatchBlock = [(TUCallHistoryController *)self callHistoryManagerRecentCallsDispatchBlock];
+  [dispatcher dispatchAsynchronousBlock:callHistoryManagerRecentCallsDispatchBlock];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dispatcherDidFinishBoost:(id)a3
+- (void)dispatcherDidFinishBoost:(id)boost
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1222,27 +1222,27 @@ void __52__TUCallHistoryController_dispatcherDidFinishBoost___block_invoke(uint6
   [v2 postNotificationName:@"TUCallHistoryControllerDidFinishBoostNotification" object:*(a1 + 32)];
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = managerCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v6 = [(TUCallHistoryController *)self dispatcher];
+  dispatcher = [(TUCallHistoryController *)self dispatcher];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__TUCallHistoryController_providersChangedForProviderManager___block_invoke;
   v9[3] = &unk_1E7424898;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  [v6 dispatchAsynchronousBlock:v9];
+  v10 = managerCopy;
+  v7 = managerCopy;
+  [dispatcher dispatchAsynchronousBlock:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -1267,8 +1267,8 @@ void __62__TUCallHistoryController_providersChangedForProviderManager___block_in
 
 + (void)sharedController
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"TUCallHistoryController.m" lineNumber:117 description:@"The controller should have been initialized with sharedControllerWithCoalescingStrategy: before attempting to access the instance with the sharedController convenience method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"TUCallHistoryController.m" lineNumber:117 description:@"The controller should have been initialized with sharedControllerWithCoalescingStrategy: before attempting to access the instance with the sharedController convenience method"];
 
   *a3 = gSharedCallHistoryInstance;
 }

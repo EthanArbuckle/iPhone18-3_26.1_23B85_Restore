@@ -1,10 +1,10 @@
 @interface FMFContactsDataController
-- (void)contactStoreChangedWithNotification:(id)a3;
+- (void)contactStoreChangedWithNotification:(id)notification;
 @end
 
 @implementation FMFContactsDataController
 
-- (void)contactStoreChangedWithNotification:(id)a3
+- (void)contactStoreChangedWithNotification:(id)notification
 {
   if (swift_unknownObjectWeakLoadStrong())
   {

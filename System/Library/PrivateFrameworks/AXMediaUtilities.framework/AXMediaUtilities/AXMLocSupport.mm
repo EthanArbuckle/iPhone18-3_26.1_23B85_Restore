@@ -1,9 +1,9 @@
 @interface AXMLocSupport
 + (id)sharedInstance;
-- (BOOL)localeBaseLanguageIsEnglish:(id)a3;
+- (BOOL)localeBaseLanguageIsEnglish:(id)english;
 - (NSLocale)en_USLocale;
-- (id)localeForLanguageCode:(id)a3;
-- (id)localeMatchingBaseLanguageOfLocale:(id)a3 fromLocales:(id)a4;
+- (id)localeForLanguageCode:(id)code;
+- (id)localeMatchingBaseLanguageOfLocale:(id)locale fromLocales:(id)locales;
 @end
 
 @implementation AXMLocSupport
@@ -42,33 +42,33 @@ void __31__AXMLocSupport_sharedInstance__block_invoke()
   return en_USLocale;
 }
 
-- (id)localeForLanguageCode:(id)a3
+- (id)localeForLanguageCode:(id)code
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  v4 = [code stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
   v5 = [v3 localeWithLocaleIdentifier:v4];
 
   return v5;
 }
 
-- (BOOL)localeBaseLanguageIsEnglish:(id)a3
+- (BOOL)localeBaseLanguageIsEnglish:(id)english
 {
-  v3 = [a3 languageCode];
-  v4 = [v3 isEqual:@"en"];
+  languageCode = [english languageCode];
+  v4 = [languageCode isEqual:@"en"];
 
   return v4;
 }
 
-- (id)localeMatchingBaseLanguageOfLocale:(id)a3 fromLocales:(id)a4
+- (id)localeMatchingBaseLanguageOfLocale:(id)locale fromLocales:(id)locales
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  localeCopy = locale;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  localesCopy = locales;
+  v7 = [localesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -78,13 +78,13 @@ void __31__AXMLocSupport_sharedInstance__block_invoke()
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(localesCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v5 languageCode];
-        v12 = [v10 languageCode];
-        v13 = [v11 isEqual:v12];
+        languageCode = [localeCopy languageCode];
+        languageCode2 = [v10 languageCode];
+        v13 = [languageCode isEqual:languageCode2];
 
         if (v13)
         {
@@ -93,7 +93,7 @@ void __31__AXMLocSupport_sharedInstance__block_invoke()
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [localesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

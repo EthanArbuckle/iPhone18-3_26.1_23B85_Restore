@@ -1,72 +1,72 @@
 @interface HMProtoResidentCapabilities
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSupports12r9go0ci9109:(BOOL)a3;
-- (void)setHasSupports5348b248a25f84b0c83e:(BOOL)a3;
-- (void)setHasSupports946950341b318ffd:(BOOL)a3;
-- (void)setHasSupports9907491178:(BOOL)a3;
-- (void)setHasSupportsAccessCodes:(BOOL)a3;
-- (void)setHasSupportsAnnounce:(BOOL)a3;
-- (void)setHasSupportsCHIP:(BOOL)a3;
-- (void)setHasSupportsCameraActivityZones:(BOOL)a3;
-- (void)setHasSupportsCameraPackageDetection:(BOOL)a3;
-- (void)setHasSupportsCameraRecording:(BOOL)a3;
-- (void)setHasSupportsCameraRecordingReachabilityNotifications:(BOOL)a3;
-- (void)setHasSupportsCameraSignificantEventNotifications:(BOOL)a3;
-- (void)setHasSupportsCustomMediaApplicationDestination:(BOOL)a3;
-- (void)setHasSupportsDistributedExecutionOnPrimary:(BOOL)a3;
-- (void)setHasSupportsEventLog:(BOOL)a3;
-- (void)setHasSupportsFaceClassification:(BOOL)a3;
-- (void)setHasSupportsFirmwareUpdate:(BOOL)a3;
-- (void)setHasSupportsHomeHub:(BOOL)a3;
-- (void)setHasSupportsLockNotificationContext:(BOOL)a3;
-- (void)setHasSupportsMatterOwnerCertFetch:(BOOL)a3;
-- (void)setHasSupportsMatterTTU:(BOOL)a3;
-- (void)setHasSupportsMediaActions:(BOOL)a3;
-- (void)setHasSupportsNaturalLighting:(BOOL)a3;
-- (void)setHasSupportsResidentActionSetStateEvaluation:(BOOL)a3;
-- (void)setHasSupportsResidentFirmwareUpdate:(BOOL)a3;
-- (void)setHasSupportsResidentFirstAccessoryCommunication:(BOOL)a3;
-- (void)setHasSupportsResidentSelection:(BOOL)a3;
-- (void)setHasSupportsRestrictedGuest:(BOOL)a3;
-- (void)setHasSupportsRouterManagement:(BOOL)a3;
-- (void)setHasSupportsShortcutActions:(BOOL)a3;
-- (void)setHasSupportsSiriEndpointSetup:(BOOL)a3;
-- (void)setHasSupportsThreadBorderRouter:(BOOL)a3;
-- (void)setHasSupportsThreadNetworkCredentialSharing:(BOOL)a3;
-- (void)setHasSupportsUnifiedMediaNotifications:(BOOL)a3;
-- (void)setHasSupportsWakeOnLAN:(BOOL)a3;
-- (void)setHasSupportsWalletKey:(BOOL)a3;
-- (void)setHasSupportsa15324f096ec183d:(BOOL)a3;
-- (void)setHasSupportsd36b1a5183a0f:(BOOL)a3;
-- (void)setHasSupportsdafedc977558:(BOOL)a3;
-- (void)setHasSupportsheephfaid6gg1p54:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSupports12r9go0ci9109:(BOOL)supports12r9go0ci9109;
+- (void)setHasSupports5348b248a25f84b0c83e:(BOOL)supports5348b248a25f84b0c83e;
+- (void)setHasSupports946950341b318ffd:(BOOL)supports946950341b318ffd;
+- (void)setHasSupports9907491178:(BOOL)supports9907491178;
+- (void)setHasSupportsAccessCodes:(BOOL)codes;
+- (void)setHasSupportsAnnounce:(BOOL)announce;
+- (void)setHasSupportsCHIP:(BOOL)p;
+- (void)setHasSupportsCameraActivityZones:(BOOL)zones;
+- (void)setHasSupportsCameraPackageDetection:(BOOL)detection;
+- (void)setHasSupportsCameraRecording:(BOOL)recording;
+- (void)setHasSupportsCameraRecordingReachabilityNotifications:(BOOL)notifications;
+- (void)setHasSupportsCameraSignificantEventNotifications:(BOOL)notifications;
+- (void)setHasSupportsCustomMediaApplicationDestination:(BOOL)destination;
+- (void)setHasSupportsDistributedExecutionOnPrimary:(BOOL)primary;
+- (void)setHasSupportsEventLog:(BOOL)log;
+- (void)setHasSupportsFaceClassification:(BOOL)classification;
+- (void)setHasSupportsFirmwareUpdate:(BOOL)update;
+- (void)setHasSupportsHomeHub:(BOOL)hub;
+- (void)setHasSupportsLockNotificationContext:(BOOL)context;
+- (void)setHasSupportsMatterOwnerCertFetch:(BOOL)fetch;
+- (void)setHasSupportsMatterTTU:(BOOL)u;
+- (void)setHasSupportsMediaActions:(BOOL)actions;
+- (void)setHasSupportsNaturalLighting:(BOOL)lighting;
+- (void)setHasSupportsResidentActionSetStateEvaluation:(BOOL)evaluation;
+- (void)setHasSupportsResidentFirmwareUpdate:(BOOL)update;
+- (void)setHasSupportsResidentFirstAccessoryCommunication:(BOOL)communication;
+- (void)setHasSupportsResidentSelection:(BOOL)selection;
+- (void)setHasSupportsRestrictedGuest:(BOOL)guest;
+- (void)setHasSupportsRouterManagement:(BOOL)management;
+- (void)setHasSupportsShortcutActions:(BOOL)actions;
+- (void)setHasSupportsSiriEndpointSetup:(BOOL)setup;
+- (void)setHasSupportsThreadBorderRouter:(BOOL)router;
+- (void)setHasSupportsThreadNetworkCredentialSharing:(BOOL)sharing;
+- (void)setHasSupportsUnifiedMediaNotifications:(BOOL)notifications;
+- (void)setHasSupportsWakeOnLAN:(BOOL)n;
+- (void)setHasSupportsWalletKey:(BOOL)key;
+- (void)setHasSupportsa15324f096ec183d:(BOOL)supportsa15324f096ec183d;
+- (void)setHasSupportsd36b1a5183a0f:(BOOL)supportsd36b1a5183a0f;
+- (void)setHasSupportsdafedc977558:(BOOL)supportsdafedc977558;
+- (void)setHasSupportsheephfaid6gg1p54:(BOOL)supportsheephfaid6gg1p54;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMProtoResidentCapabilities
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HMProtoResidentCapabilities *)self setTag:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x400) != 0)
   {
-    self->_supportsCameraRecording = v4[26];
+    self->_supportsCameraRecording = fromCopy[26];
     *&self->_has |= 0x400uLL;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
     if ((v5 & 0x20000000) == 0)
     {
 LABEL_5:
@@ -84,9 +84,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_supportsRouterManagement = v4[45];
+  self->_supportsRouterManagement = fromCopy[45];
   *&self->_has |= 0x20000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_6:
@@ -99,9 +99,9 @@ LABEL_6:
   }
 
 LABEL_50:
-  self->_supportsShortcutActions = v4[46];
+  self->_supportsShortcutActions = fromCopy[46];
   *&self->_has |= 0x40000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_7:
@@ -114,9 +114,9 @@ LABEL_7:
   }
 
 LABEL_51:
-  self->_supportsMediaActions = v4[38];
+  self->_supportsMediaActions = fromCopy[38];
   *&self->_has |= 0x400000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_8:
@@ -129,9 +129,9 @@ LABEL_8:
   }
 
 LABEL_52:
-  self->_supportsCameraSignificantEventNotifications = v4[28];
+  self->_supportsCameraSignificantEventNotifications = fromCopy[28];
   *&self->_has |= 0x1000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_9:
@@ -144,9 +144,9 @@ LABEL_9:
   }
 
 LABEL_53:
-  self->_supportsFirmwareUpdate = v4[33];
+  self->_supportsFirmwareUpdate = fromCopy[33];
   *&self->_has |= 0x20000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_10:
@@ -159,9 +159,9 @@ LABEL_10:
   }
 
 LABEL_54:
-  self->_supportsResidentFirmwareUpdate = v4[41];
+  self->_supportsResidentFirmwareUpdate = fromCopy[41];
   *&self->_has |= 0x2000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x100) == 0)
   {
 LABEL_11:
@@ -174,9 +174,9 @@ LABEL_11:
   }
 
 LABEL_55:
-  self->_supportsCameraActivityZones = v4[24];
+  self->_supportsCameraActivityZones = fromCopy[24];
   *&self->_has |= 0x100uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_12:
@@ -189,9 +189,9 @@ LABEL_12:
   }
 
 LABEL_56:
-  self->_supportsFaceClassification = v4[32];
+  self->_supportsFaceClassification = fromCopy[32];
   *&self->_has |= 0x10000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_13:
@@ -204,9 +204,9 @@ LABEL_13:
   }
 
 LABEL_57:
-  self->_supportsNaturalLighting = v4[39];
+  self->_supportsNaturalLighting = fromCopy[39];
   *&self->_has |= 0x800000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x800) == 0)
   {
 LABEL_14:
@@ -219,9 +219,9 @@ LABEL_14:
   }
 
 LABEL_58:
-  self->_supportsCameraRecordingReachabilityNotifications = v4[27];
+  self->_supportsCameraRecordingReachabilityNotifications = fromCopy[27];
   *&self->_has |= 0x800uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x40) == 0)
   {
 LABEL_15:
@@ -234,9 +234,9 @@ LABEL_15:
   }
 
 LABEL_59:
-  self->_supportsAnnounce = v4[22];
+  self->_supportsAnnounce = fromCopy[22];
   *&self->_has |= 0x40uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x800000000) == 0)
   {
 LABEL_16:
@@ -249,9 +249,9 @@ LABEL_16:
   }
 
 LABEL_60:
-  self->_supportsWakeOnLAN = v4[51];
+  self->_supportsWakeOnLAN = fromCopy[51];
   *&self->_has |= 0x800000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_17:
@@ -264,9 +264,9 @@ LABEL_17:
   }
 
 LABEL_61:
-  self->_supportsLockNotificationContext = v4[35];
+  self->_supportsLockNotificationContext = fromCopy[35];
   *&self->_has |= 0x80000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x1000000000) == 0)
   {
 LABEL_18:
@@ -279,9 +279,9 @@ LABEL_18:
   }
 
 LABEL_62:
-  self->_supportsWalletKey = v4[52];
+  self->_supportsWalletKey = fromCopy[52];
   *&self->_has |= 0x1000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x200) == 0)
   {
 LABEL_19:
@@ -294,9 +294,9 @@ LABEL_19:
   }
 
 LABEL_63:
-  self->_supportsCameraPackageDetection = v4[25];
+  self->_supportsCameraPackageDetection = fromCopy[25];
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x20) == 0)
   {
 LABEL_20:
@@ -309,9 +309,9 @@ LABEL_20:
   }
 
 LABEL_64:
-  self->_supportsAccessCodes = v4[21];
+  self->_supportsAccessCodes = fromCopy[21];
   *&self->_has |= 0x20uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x80) == 0)
   {
 LABEL_21:
@@ -324,9 +324,9 @@ LABEL_21:
   }
 
 LABEL_65:
-  self->_supportsCHIP = v4[23];
+  self->_supportsCHIP = fromCopy[23];
   *&self->_has |= 0x80uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x100000000) == 0)
   {
 LABEL_22:
@@ -339,9 +339,9 @@ LABEL_22:
   }
 
 LABEL_66:
-  self->_supportsThreadBorderRouter = v4[48];
+  self->_supportsThreadBorderRouter = fromCopy[48];
   *&self->_has |= 0x100000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x80000000) == 0)
   {
 LABEL_23:
@@ -354,9 +354,9 @@ LABEL_23:
   }
 
 LABEL_67:
-  self->_supportsSiriEndpointSetup = v4[47];
+  self->_supportsSiriEndpointSetup = fromCopy[47];
   *&self->_has |= 0x80000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_24:
@@ -369,9 +369,9 @@ LABEL_24:
   }
 
 LABEL_68:
-  self->_supportsCustomMediaApplicationDestination = v4[29];
+  self->_supportsCustomMediaApplicationDestination = fromCopy[29];
   *&self->_has |= 0x2000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x400000000) == 0)
   {
 LABEL_25:
@@ -384,9 +384,9 @@ LABEL_25:
   }
 
 LABEL_69:
-  self->_supportsUnifiedMediaNotifications = v4[50];
+  self->_supportsUnifiedMediaNotifications = fromCopy[50];
   *&self->_has |= 0x400000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_26:
@@ -399,9 +399,9 @@ LABEL_26:
   }
 
 LABEL_70:
-  self->_supportsHomeHub = v4[34];
+  self->_supportsHomeHub = fromCopy[34];
   *&self->_has |= 0x40000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_27:
@@ -414,9 +414,9 @@ LABEL_27:
   }
 
 LABEL_71:
-  self->_supportsResidentFirstAccessoryCommunication = v4[42];
+  self->_supportsResidentFirstAccessoryCommunication = fromCopy[42];
   *&self->_has |= 0x4000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_28:
@@ -429,9 +429,9 @@ LABEL_28:
   }
 
 LABEL_72:
-  self->_supportsThreadNetworkCredentialSharing = v4[49];
+  self->_supportsThreadNetworkCredentialSharing = fromCopy[49];
   *&self->_has |= 0x200000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 4) == 0)
   {
 LABEL_29:
@@ -444,9 +444,9 @@ LABEL_29:
   }
 
 LABEL_73:
-  self->_supports5348b248a25f84b0c83e = v4[18];
+  self->_supports5348b248a25f84b0c83e = fromCopy[18];
   *&self->_has |= 4uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_30:
@@ -459,9 +459,9 @@ LABEL_30:
   }
 
 LABEL_74:
-  self->_supportsEventLog = v4[31];
+  self->_supportsEventLog = fromCopy[31];
   *&self->_has |= 0x8000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_31:
@@ -474,9 +474,9 @@ LABEL_31:
   }
 
 LABEL_75:
-  self->_supportsMatterTTU = v4[37];
+  self->_supportsMatterTTU = fromCopy[37];
   *&self->_has |= 0x200000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_32:
@@ -489,9 +489,9 @@ LABEL_32:
   }
 
 LABEL_76:
-  self->_supportsDistributedExecutionOnPrimary = v4[30];
+  self->_supportsDistributedExecutionOnPrimary = fromCopy[30];
   *&self->_has |= 0x4000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_33:
@@ -504,9 +504,9 @@ LABEL_33:
   }
 
 LABEL_77:
-  self->_supportsResidentActionSetStateEvaluation = v4[40];
+  self->_supportsResidentActionSetStateEvaluation = fromCopy[40];
   *&self->_has |= 0x1000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10) == 0)
   {
 LABEL_34:
@@ -519,9 +519,9 @@ LABEL_34:
   }
 
 LABEL_78:
-  self->_supports9907491178 = v4[20];
+  self->_supports9907491178 = fromCopy[20];
   *&self->_has |= 0x10uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_35:
@@ -534,9 +534,9 @@ LABEL_35:
   }
 
 LABEL_79:
-  self->_supportsRestrictedGuest = v4[44];
+  self->_supportsRestrictedGuest = fromCopy[44];
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_36:
@@ -549,9 +549,9 @@ LABEL_36:
   }
 
 LABEL_80:
-  self->_supportsMatterOwnerCertFetch = v4[36];
+  self->_supportsMatterOwnerCertFetch = fromCopy[36];
   *&self->_has |= 0x100000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x2000000000) == 0)
   {
 LABEL_37:
@@ -564,9 +564,9 @@ LABEL_37:
   }
 
 LABEL_81:
-  self->_supportsa15324f096ec183d = v4[53];
+  self->_supportsa15324f096ec183d = fromCopy[53];
   *&self->_has |= 0x2000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_38:
@@ -579,9 +579,9 @@ LABEL_38:
   }
 
 LABEL_82:
-  self->_supportsResidentSelection = v4[43];
+  self->_supportsResidentSelection = fromCopy[43];
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 8) == 0)
   {
 LABEL_39:
@@ -594,9 +594,9 @@ LABEL_39:
   }
 
 LABEL_83:
-  self->_supports946950341b318ffd = v4[19];
+  self->_supports946950341b318ffd = fromCopy[19];
   *&self->_has |= 8uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 2) == 0)
   {
 LABEL_40:
@@ -609,9 +609,9 @@ LABEL_40:
   }
 
 LABEL_84:
-  self->_supports12r9go0ci9109 = v4[17];
+  self->_supports12r9go0ci9109 = fromCopy[17];
   *&self->_has |= 2uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10000000000) == 0)
   {
 LABEL_41:
@@ -624,9 +624,9 @@ LABEL_41:
   }
 
 LABEL_85:
-  self->_supportsheephfaid6gg1p54 = v4[56];
+  self->_supportsheephfaid6gg1p54 = fromCopy[56];
   *&self->_has |= 0x10000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x8000000000) == 0)
   {
 LABEL_42:
@@ -639,9 +639,9 @@ LABEL_42:
   }
 
 LABEL_86:
-  self->_supportsdafedc977558 = v4[55];
+  self->_supportsdafedc977558 = fromCopy[55];
   *&self->_has |= 0x8000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x4000000000) == 0)
   {
 LABEL_43:
@@ -654,12 +654,12 @@ LABEL_43:
   }
 
 LABEL_87:
-  self->_supportsd36b1a5183a0f = v4[54];
+  self->_supportsd36b1a5183a0f = fromCopy[54];
   *&self->_has |= 0x4000000000uLL;
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
 LABEL_44:
-    self->_supports03e098e86062k = v4[16];
+    self->_supports03e098e86062k = fromCopy[16];
     *&self->_has |= 1uLL;
   }
 
@@ -1240,16 +1240,16 @@ LABEL_42:
   return v45 ^ v46 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_329;
   }
 
   tag = self->_tag;
-  if (tag | *(v4 + 1))
+  if (tag | *(equalCopy + 1))
   {
     if (![(NSString *)tag isEqual:?])
     {
@@ -1258,7 +1258,7 @@ LABEL_42:
   }
 
   has = self->_has;
-  v7 = *(v4 + 60);
+  v7 = *(equalCopy + 60);
   if ((*&has & 0x400) != 0)
   {
     if ((v7 & 0x400) == 0)
@@ -1266,16 +1266,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v8 = v4[26];
+    v8 = equalCopy[26];
     if (self->_supportsCameraRecording)
     {
-      if ((v4[26] & 1) == 0)
+      if ((equalCopy[26] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[26])
+    else if (equalCopy[26])
     {
       goto LABEL_329;
     }
@@ -1293,16 +1293,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v9 = v4[45];
+    v9 = equalCopy[45];
     if (self->_supportsRouterManagement)
     {
-      if ((v4[45] & 1) == 0)
+      if ((equalCopy[45] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[45])
+    else if (equalCopy[45])
     {
       goto LABEL_329;
     }
@@ -1320,16 +1320,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v10 = v4[46];
+    v10 = equalCopy[46];
     if (self->_supportsShortcutActions)
     {
-      if ((v4[46] & 1) == 0)
+      if ((equalCopy[46] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[46])
+    else if (equalCopy[46])
     {
       goto LABEL_329;
     }
@@ -1347,16 +1347,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v11 = v4[38];
+    v11 = equalCopy[38];
     if (self->_supportsMediaActions)
     {
-      if ((v4[38] & 1) == 0)
+      if ((equalCopy[38] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[38])
+    else if (equalCopy[38])
     {
       goto LABEL_329;
     }
@@ -1374,16 +1374,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v12 = v4[28];
+    v12 = equalCopy[28];
     if (self->_supportsCameraSignificantEventNotifications)
     {
-      if ((v4[28] & 1) == 0)
+      if ((equalCopy[28] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[28])
+    else if (equalCopy[28])
     {
       goto LABEL_329;
     }
@@ -1401,16 +1401,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v13 = v4[33];
+    v13 = equalCopy[33];
     if (self->_supportsFirmwareUpdate)
     {
-      if ((v4[33] & 1) == 0)
+      if ((equalCopy[33] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[33])
+    else if (equalCopy[33])
     {
       goto LABEL_329;
     }
@@ -1428,16 +1428,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v14 = v4[41];
+    v14 = equalCopy[41];
     if (self->_supportsResidentFirmwareUpdate)
     {
-      if ((v4[41] & 1) == 0)
+      if ((equalCopy[41] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[41])
+    else if (equalCopy[41])
     {
       goto LABEL_329;
     }
@@ -1455,16 +1455,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v15 = v4[24];
+    v15 = equalCopy[24];
     if (self->_supportsCameraActivityZones)
     {
-      if ((v4[24] & 1) == 0)
+      if ((equalCopy[24] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[24])
+    else if (equalCopy[24])
     {
       goto LABEL_329;
     }
@@ -1482,16 +1482,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v16 = v4[32];
+    v16 = equalCopy[32];
     if (self->_supportsFaceClassification)
     {
-      if ((v4[32] & 1) == 0)
+      if ((equalCopy[32] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[32])
+    else if (equalCopy[32])
     {
       goto LABEL_329;
     }
@@ -1509,16 +1509,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v17 = v4[39];
+    v17 = equalCopy[39];
     if (self->_supportsNaturalLighting)
     {
-      if ((v4[39] & 1) == 0)
+      if ((equalCopy[39] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[39])
+    else if (equalCopy[39])
     {
       goto LABEL_329;
     }
@@ -1536,16 +1536,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v18 = v4[27];
+    v18 = equalCopy[27];
     if (self->_supportsCameraRecordingReachabilityNotifications)
     {
-      if ((v4[27] & 1) == 0)
+      if ((equalCopy[27] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[27])
+    else if (equalCopy[27])
     {
       goto LABEL_329;
     }
@@ -1563,16 +1563,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v19 = v4[22];
+    v19 = equalCopy[22];
     if (self->_supportsAnnounce)
     {
-      if ((v4[22] & 1) == 0)
+      if ((equalCopy[22] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[22])
+    else if (equalCopy[22])
     {
       goto LABEL_329;
     }
@@ -1590,16 +1590,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v20 = v4[51];
+    v20 = equalCopy[51];
     if (self->_supportsWakeOnLAN)
     {
-      if ((v4[51] & 1) == 0)
+      if ((equalCopy[51] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[51])
+    else if (equalCopy[51])
     {
       goto LABEL_329;
     }
@@ -1617,16 +1617,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v21 = v4[35];
+    v21 = equalCopy[35];
     if (self->_supportsLockNotificationContext)
     {
-      if ((v4[35] & 1) == 0)
+      if ((equalCopy[35] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[35])
+    else if (equalCopy[35])
     {
       goto LABEL_329;
     }
@@ -1644,16 +1644,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v22 = v4[52];
+    v22 = equalCopy[52];
     if (self->_supportsWalletKey)
     {
-      if ((v4[52] & 1) == 0)
+      if ((equalCopy[52] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[52])
+    else if (equalCopy[52])
     {
       goto LABEL_329;
     }
@@ -1671,16 +1671,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v23 = v4[25];
+    v23 = equalCopy[25];
     if (self->_supportsCameraPackageDetection)
     {
-      if ((v4[25] & 1) == 0)
+      if ((equalCopy[25] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[25])
+    else if (equalCopy[25])
     {
       goto LABEL_329;
     }
@@ -1698,16 +1698,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v24 = v4[21];
+    v24 = equalCopy[21];
     if (self->_supportsAccessCodes)
     {
-      if ((v4[21] & 1) == 0)
+      if ((equalCopy[21] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[21])
+    else if (equalCopy[21])
     {
       goto LABEL_329;
     }
@@ -1725,16 +1725,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v25 = v4[23];
+    v25 = equalCopy[23];
     if (self->_supportsCHIP)
     {
-      if ((v4[23] & 1) == 0)
+      if ((equalCopy[23] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[23])
+    else if (equalCopy[23])
     {
       goto LABEL_329;
     }
@@ -1752,16 +1752,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v26 = v4[48];
+    v26 = equalCopy[48];
     if (self->_supportsThreadBorderRouter)
     {
-      if ((v4[48] & 1) == 0)
+      if ((equalCopy[48] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[48])
+    else if (equalCopy[48])
     {
       goto LABEL_329;
     }
@@ -1779,16 +1779,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v27 = v4[47];
+    v27 = equalCopy[47];
     if (self->_supportsSiriEndpointSetup)
     {
-      if ((v4[47] & 1) == 0)
+      if ((equalCopy[47] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[47])
+    else if (equalCopy[47])
     {
       goto LABEL_329;
     }
@@ -1806,16 +1806,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v28 = v4[29];
+    v28 = equalCopy[29];
     if (self->_supportsCustomMediaApplicationDestination)
     {
-      if ((v4[29] & 1) == 0)
+      if ((equalCopy[29] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[29])
+    else if (equalCopy[29])
     {
       goto LABEL_329;
     }
@@ -1833,16 +1833,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v29 = v4[50];
+    v29 = equalCopy[50];
     if (self->_supportsUnifiedMediaNotifications)
     {
-      if ((v4[50] & 1) == 0)
+      if ((equalCopy[50] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[50])
+    else if (equalCopy[50])
     {
       goto LABEL_329;
     }
@@ -1860,16 +1860,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v30 = v4[34];
+    v30 = equalCopy[34];
     if (self->_supportsHomeHub)
     {
-      if ((v4[34] & 1) == 0)
+      if ((equalCopy[34] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[34])
+    else if (equalCopy[34])
     {
       goto LABEL_329;
     }
@@ -1887,16 +1887,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v31 = v4[42];
+    v31 = equalCopy[42];
     if (self->_supportsResidentFirstAccessoryCommunication)
     {
-      if ((v4[42] & 1) == 0)
+      if ((equalCopy[42] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[42])
+    else if (equalCopy[42])
     {
       goto LABEL_329;
     }
@@ -1914,16 +1914,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v32 = v4[49];
+    v32 = equalCopy[49];
     if (self->_supportsThreadNetworkCredentialSharing)
     {
-      if ((v4[49] & 1) == 0)
+      if ((equalCopy[49] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[49])
+    else if (equalCopy[49])
     {
       goto LABEL_329;
     }
@@ -1941,16 +1941,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v33 = v4[18];
+    v33 = equalCopy[18];
     if (self->_supports5348b248a25f84b0c83e)
     {
-      if ((v4[18] & 1) == 0)
+      if ((equalCopy[18] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[18])
+    else if (equalCopy[18])
     {
       goto LABEL_329;
     }
@@ -1968,16 +1968,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v34 = v4[31];
+    v34 = equalCopy[31];
     if (self->_supportsEventLog)
     {
-      if ((v4[31] & 1) == 0)
+      if ((equalCopy[31] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[31])
+    else if (equalCopy[31])
     {
       goto LABEL_329;
     }
@@ -1995,16 +1995,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v35 = v4[37];
+    v35 = equalCopy[37];
     if (self->_supportsMatterTTU)
     {
-      if ((v4[37] & 1) == 0)
+      if ((equalCopy[37] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[37])
+    else if (equalCopy[37])
     {
       goto LABEL_329;
     }
@@ -2022,16 +2022,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v36 = v4[30];
+    v36 = equalCopy[30];
     if (self->_supportsDistributedExecutionOnPrimary)
     {
-      if ((v4[30] & 1) == 0)
+      if ((equalCopy[30] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[30])
+    else if (equalCopy[30])
     {
       goto LABEL_329;
     }
@@ -2049,16 +2049,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v37 = v4[40];
+    v37 = equalCopy[40];
     if (self->_supportsResidentActionSetStateEvaluation)
     {
-      if ((v4[40] & 1) == 0)
+      if ((equalCopy[40] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[40])
+    else if (equalCopy[40])
     {
       goto LABEL_329;
     }
@@ -2076,16 +2076,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v38 = v4[20];
+    v38 = equalCopy[20];
     if (self->_supports9907491178)
     {
-      if ((v4[20] & 1) == 0)
+      if ((equalCopy[20] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[20])
+    else if (equalCopy[20])
     {
       goto LABEL_329;
     }
@@ -2103,16 +2103,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v39 = v4[44];
+    v39 = equalCopy[44];
     if (self->_supportsRestrictedGuest)
     {
-      if ((v4[44] & 1) == 0)
+      if ((equalCopy[44] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[44])
+    else if (equalCopy[44])
     {
       goto LABEL_329;
     }
@@ -2130,16 +2130,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v40 = v4[36];
+    v40 = equalCopy[36];
     if (self->_supportsMatterOwnerCertFetch)
     {
-      if ((v4[36] & 1) == 0)
+      if ((equalCopy[36] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[36])
+    else if (equalCopy[36])
     {
       goto LABEL_329;
     }
@@ -2157,16 +2157,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v41 = v4[53];
+    v41 = equalCopy[53];
     if (self->_supportsa15324f096ec183d)
     {
-      if ((v4[53] & 1) == 0)
+      if ((equalCopy[53] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[53])
+    else if (equalCopy[53])
     {
       goto LABEL_329;
     }
@@ -2177,7 +2177,7 @@ LABEL_42:
     goto LABEL_329;
   }
 
-  v42 = *(v4 + 60);
+  v42 = *(equalCopy + 60);
   if ((*&has & 0x8000000) != 0)
   {
     if ((v42 & 0x8000000) == 0)
@@ -2185,16 +2185,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v43 = v4[43];
+    v43 = equalCopy[43];
     if (self->_supportsResidentSelection)
     {
-      if ((v4[43] & 1) == 0)
+      if ((equalCopy[43] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[43])
+    else if (equalCopy[43])
     {
       goto LABEL_329;
     }
@@ -2212,16 +2212,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v44 = v4[19];
+    v44 = equalCopy[19];
     if (self->_supports946950341b318ffd)
     {
-      if ((v4[19] & 1) == 0)
+      if ((equalCopy[19] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[19])
+    else if (equalCopy[19])
     {
       goto LABEL_329;
     }
@@ -2239,16 +2239,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v45 = v4[17];
+    v45 = equalCopy[17];
     if (self->_supports12r9go0ci9109)
     {
-      if ((v4[17] & 1) == 0)
+      if ((equalCopy[17] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[17])
+    else if (equalCopy[17])
     {
       goto LABEL_329;
     }
@@ -2266,16 +2266,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v46 = v4[56];
+    v46 = equalCopy[56];
     if (self->_supportsheephfaid6gg1p54)
     {
-      if ((v4[56] & 1) == 0)
+      if ((equalCopy[56] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[56])
+    else if (equalCopy[56])
     {
       goto LABEL_329;
     }
@@ -2293,16 +2293,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v47 = v4[55];
+    v47 = equalCopy[55];
     if (self->_supportsdafedc977558)
     {
-      if ((v4[55] & 1) == 0)
+      if ((equalCopy[55] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[55])
+    else if (equalCopy[55])
     {
       goto LABEL_329;
     }
@@ -2320,16 +2320,16 @@ LABEL_42:
       goto LABEL_329;
     }
 
-    v48 = v4[54];
+    v48 = equalCopy[54];
     if (self->_supportsd36b1a5183a0f)
     {
-      if ((v4[54] & 1) == 0)
+      if ((equalCopy[54] & 1) == 0)
       {
         goto LABEL_329;
       }
     }
 
-    else if (v4[54])
+    else if (equalCopy[54])
     {
       goto LABEL_329;
     }
@@ -2346,13 +2346,13 @@ LABEL_42:
     {
       if (self->_supports03e098e86062k)
       {
-        if ((v4[16] & 1) == 0)
+        if ((equalCopy[16] & 1) == 0)
         {
           goto LABEL_329;
         }
       }
 
-      else if (v4[16])
+      else if (equalCopy[16])
       {
         goto LABEL_329;
       }
@@ -2366,16 +2366,16 @@ LABEL_329:
     goto LABEL_330;
   }
 
-  v49 = (*(v4 + 60) & 1) == 0;
+  v49 = (*(equalCopy + 60) & 1) == 0;
 LABEL_330:
 
   return v49;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_tag copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_tag copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -2987,21 +2987,21 @@ LABEL_43:
   return v9;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_tag)
   {
-    v6 = v4;
-    [v4 setTag:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setTag:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((*&has & 0x400) != 0)
   {
-    v4[26] = self->_supportsCameraRecording;
-    *(v4 + 60) |= 0x400uLL;
+    toCopy[26] = self->_supportsCameraRecording;
+    *(toCopy + 60) |= 0x400uLL;
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
     {
@@ -3020,8 +3020,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v4[45] = self->_supportsRouterManagement;
-  *(v4 + 60) |= 0x20000000uLL;
+  toCopy[45] = self->_supportsRouterManagement;
+  *(toCopy + 60) |= 0x20000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -3035,8 +3035,8 @@ LABEL_6:
   }
 
 LABEL_50:
-  v4[46] = self->_supportsShortcutActions;
-  *(v4 + 60) |= 0x40000000uLL;
+  toCopy[46] = self->_supportsShortcutActions;
+  *(toCopy + 60) |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -3050,8 +3050,8 @@ LABEL_7:
   }
 
 LABEL_51:
-  v4[38] = self->_supportsMediaActions;
-  *(v4 + 60) |= 0x400000uLL;
+  toCopy[38] = self->_supportsMediaActions;
+  *(toCopy + 60) |= 0x400000uLL;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -3065,8 +3065,8 @@ LABEL_8:
   }
 
 LABEL_52:
-  v4[28] = self->_supportsCameraSignificantEventNotifications;
-  *(v4 + 60) |= 0x1000uLL;
+  toCopy[28] = self->_supportsCameraSignificantEventNotifications;
+  *(toCopy + 60) |= 0x1000uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -3080,8 +3080,8 @@ LABEL_9:
   }
 
 LABEL_53:
-  v4[33] = self->_supportsFirmwareUpdate;
-  *(v4 + 60) |= 0x20000uLL;
+  toCopy[33] = self->_supportsFirmwareUpdate;
+  *(toCopy + 60) |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -3095,8 +3095,8 @@ LABEL_10:
   }
 
 LABEL_54:
-  v4[41] = self->_supportsResidentFirmwareUpdate;
-  *(v4 + 60) |= 0x2000000uLL;
+  toCopy[41] = self->_supportsResidentFirmwareUpdate;
+  *(toCopy + 60) |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -3110,8 +3110,8 @@ LABEL_11:
   }
 
 LABEL_55:
-  v4[24] = self->_supportsCameraActivityZones;
-  *(v4 + 60) |= 0x100uLL;
+  toCopy[24] = self->_supportsCameraActivityZones;
+  *(toCopy + 60) |= 0x100uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -3125,8 +3125,8 @@ LABEL_12:
   }
 
 LABEL_56:
-  v4[32] = self->_supportsFaceClassification;
-  *(v4 + 60) |= 0x10000uLL;
+  toCopy[32] = self->_supportsFaceClassification;
+  *(toCopy + 60) |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -3140,8 +3140,8 @@ LABEL_13:
   }
 
 LABEL_57:
-  v4[39] = self->_supportsNaturalLighting;
-  *(v4 + 60) |= 0x800000uLL;
+  toCopy[39] = self->_supportsNaturalLighting;
+  *(toCopy + 60) |= 0x800000uLL;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -3155,8 +3155,8 @@ LABEL_14:
   }
 
 LABEL_58:
-  v4[27] = self->_supportsCameraRecordingReachabilityNotifications;
-  *(v4 + 60) |= 0x800uLL;
+  toCopy[27] = self->_supportsCameraRecordingReachabilityNotifications;
+  *(toCopy + 60) |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -3170,8 +3170,8 @@ LABEL_15:
   }
 
 LABEL_59:
-  v4[22] = self->_supportsAnnounce;
-  *(v4 + 60) |= 0x40uLL;
+  toCopy[22] = self->_supportsAnnounce;
+  *(toCopy + 60) |= 0x40uLL;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -3185,8 +3185,8 @@ LABEL_16:
   }
 
 LABEL_60:
-  v4[51] = self->_supportsWakeOnLAN;
-  *(v4 + 60) |= 0x800000000uLL;
+  toCopy[51] = self->_supportsWakeOnLAN;
+  *(toCopy + 60) |= 0x800000000uLL;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -3200,8 +3200,8 @@ LABEL_17:
   }
 
 LABEL_61:
-  v4[35] = self->_supportsLockNotificationContext;
-  *(v4 + 60) |= 0x80000uLL;
+  toCopy[35] = self->_supportsLockNotificationContext;
+  *(toCopy + 60) |= 0x80000uLL;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -3215,8 +3215,8 @@ LABEL_18:
   }
 
 LABEL_62:
-  v4[52] = self->_supportsWalletKey;
-  *(v4 + 60) |= 0x1000000000uLL;
+  toCopy[52] = self->_supportsWalletKey;
+  *(toCopy + 60) |= 0x1000000000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -3230,8 +3230,8 @@ LABEL_19:
   }
 
 LABEL_63:
-  v4[25] = self->_supportsCameraPackageDetection;
-  *(v4 + 60) |= 0x200uLL;
+  toCopy[25] = self->_supportsCameraPackageDetection;
+  *(toCopy + 60) |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -3245,8 +3245,8 @@ LABEL_20:
   }
 
 LABEL_64:
-  v4[21] = self->_supportsAccessCodes;
-  *(v4 + 60) |= 0x20uLL;
+  toCopy[21] = self->_supportsAccessCodes;
+  *(toCopy + 60) |= 0x20uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -3260,8 +3260,8 @@ LABEL_21:
   }
 
 LABEL_65:
-  v4[23] = self->_supportsCHIP;
-  *(v4 + 60) |= 0x80uLL;
+  toCopy[23] = self->_supportsCHIP;
+  *(toCopy + 60) |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -3275,8 +3275,8 @@ LABEL_22:
   }
 
 LABEL_66:
-  v4[48] = self->_supportsThreadBorderRouter;
-  *(v4 + 60) |= 0x100000000uLL;
+  toCopy[48] = self->_supportsThreadBorderRouter;
+  *(toCopy + 60) |= 0x100000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -3290,8 +3290,8 @@ LABEL_23:
   }
 
 LABEL_67:
-  v4[47] = self->_supportsSiriEndpointSetup;
-  *(v4 + 60) |= 0x80000000uLL;
+  toCopy[47] = self->_supportsSiriEndpointSetup;
+  *(toCopy + 60) |= 0x80000000uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -3305,8 +3305,8 @@ LABEL_24:
   }
 
 LABEL_68:
-  v4[29] = self->_supportsCustomMediaApplicationDestination;
-  *(v4 + 60) |= 0x2000uLL;
+  toCopy[29] = self->_supportsCustomMediaApplicationDestination;
+  *(toCopy + 60) |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -3320,8 +3320,8 @@ LABEL_25:
   }
 
 LABEL_69:
-  v4[50] = self->_supportsUnifiedMediaNotifications;
-  *(v4 + 60) |= 0x400000000uLL;
+  toCopy[50] = self->_supportsUnifiedMediaNotifications;
+  *(toCopy + 60) |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -3335,8 +3335,8 @@ LABEL_26:
   }
 
 LABEL_70:
-  v4[34] = self->_supportsHomeHub;
-  *(v4 + 60) |= 0x40000uLL;
+  toCopy[34] = self->_supportsHomeHub;
+  *(toCopy + 60) |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -3350,8 +3350,8 @@ LABEL_27:
   }
 
 LABEL_71:
-  v4[42] = self->_supportsResidentFirstAccessoryCommunication;
-  *(v4 + 60) |= 0x4000000uLL;
+  toCopy[42] = self->_supportsResidentFirstAccessoryCommunication;
+  *(toCopy + 60) |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -3365,8 +3365,8 @@ LABEL_28:
   }
 
 LABEL_72:
-  v4[49] = self->_supportsThreadNetworkCredentialSharing;
-  *(v4 + 60) |= 0x200000000uLL;
+  toCopy[49] = self->_supportsThreadNetworkCredentialSharing;
+  *(toCopy + 60) |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -3380,8 +3380,8 @@ LABEL_29:
   }
 
 LABEL_73:
-  v4[18] = self->_supports5348b248a25f84b0c83e;
-  *(v4 + 60) |= 4uLL;
+  toCopy[18] = self->_supports5348b248a25f84b0c83e;
+  *(toCopy + 60) |= 4uLL;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -3395,8 +3395,8 @@ LABEL_30:
   }
 
 LABEL_74:
-  v4[31] = self->_supportsEventLog;
-  *(v4 + 60) |= 0x8000uLL;
+  toCopy[31] = self->_supportsEventLog;
+  *(toCopy + 60) |= 0x8000uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -3410,8 +3410,8 @@ LABEL_31:
   }
 
 LABEL_75:
-  v4[37] = self->_supportsMatterTTU;
-  *(v4 + 60) |= 0x200000uLL;
+  toCopy[37] = self->_supportsMatterTTU;
+  *(toCopy + 60) |= 0x200000uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -3425,8 +3425,8 @@ LABEL_32:
   }
 
 LABEL_76:
-  v4[30] = self->_supportsDistributedExecutionOnPrimary;
-  *(v4 + 60) |= 0x4000uLL;
+  toCopy[30] = self->_supportsDistributedExecutionOnPrimary;
+  *(toCopy + 60) |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -3440,8 +3440,8 @@ LABEL_33:
   }
 
 LABEL_77:
-  v4[40] = self->_supportsResidentActionSetStateEvaluation;
-  *(v4 + 60) |= 0x1000000uLL;
+  toCopy[40] = self->_supportsResidentActionSetStateEvaluation;
+  *(toCopy + 60) |= 0x1000000uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -3455,8 +3455,8 @@ LABEL_34:
   }
 
 LABEL_78:
-  v4[20] = self->_supports9907491178;
-  *(v4 + 60) |= 0x10uLL;
+  toCopy[20] = self->_supports9907491178;
+  *(toCopy + 60) |= 0x10uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -3470,8 +3470,8 @@ LABEL_35:
   }
 
 LABEL_79:
-  v4[44] = self->_supportsRestrictedGuest;
-  *(v4 + 60) |= 0x10000000uLL;
+  toCopy[44] = self->_supportsRestrictedGuest;
+  *(toCopy + 60) |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -3485,8 +3485,8 @@ LABEL_36:
   }
 
 LABEL_80:
-  v4[36] = self->_supportsMatterOwnerCertFetch;
-  *(v4 + 60) |= 0x100000uLL;
+  toCopy[36] = self->_supportsMatterOwnerCertFetch;
+  *(toCopy + 60) |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -3500,8 +3500,8 @@ LABEL_37:
   }
 
 LABEL_81:
-  v4[53] = self->_supportsa15324f096ec183d;
-  *(v4 + 60) |= 0x2000000000uLL;
+  toCopy[53] = self->_supportsa15324f096ec183d;
+  *(toCopy + 60) |= 0x2000000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -3515,8 +3515,8 @@ LABEL_38:
   }
 
 LABEL_82:
-  v4[43] = self->_supportsResidentSelection;
-  *(v4 + 60) |= 0x8000000uLL;
+  toCopy[43] = self->_supportsResidentSelection;
+  *(toCopy + 60) |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -3530,8 +3530,8 @@ LABEL_39:
   }
 
 LABEL_83:
-  v4[19] = self->_supports946950341b318ffd;
-  *(v4 + 60) |= 8uLL;
+  toCopy[19] = self->_supports946950341b318ffd;
+  *(toCopy + 60) |= 8uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -3545,8 +3545,8 @@ LABEL_40:
   }
 
 LABEL_84:
-  v4[17] = self->_supports12r9go0ci9109;
-  *(v4 + 60) |= 2uLL;
+  toCopy[17] = self->_supports12r9go0ci9109;
+  *(toCopy + 60) |= 2uLL;
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
   {
@@ -3560,8 +3560,8 @@ LABEL_41:
   }
 
 LABEL_85:
-  v4[56] = self->_supportsheephfaid6gg1p54;
-  *(v4 + 60) |= 0x10000000000uLL;
+  toCopy[56] = self->_supportsheephfaid6gg1p54;
+  *(toCopy + 60) |= 0x10000000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -3575,8 +3575,8 @@ LABEL_42:
   }
 
 LABEL_86:
-  v4[55] = self->_supportsdafedc977558;
-  *(v4 + 60) |= 0x8000000000uLL;
+  toCopy[55] = self->_supportsdafedc977558;
+  *(toCopy + 60) |= 0x8000000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -3590,26 +3590,26 @@ LABEL_43:
   }
 
 LABEL_87:
-  v4[54] = self->_supportsd36b1a5183a0f;
-  *(v4 + 60) |= 0x4000000000uLL;
+  toCopy[54] = self->_supportsd36b1a5183a0f;
+  *(toCopy + 60) |= 0x4000000000uLL;
   if (*&self->_has)
   {
 LABEL_44:
-    v4[16] = self->_supports03e098e86062k;
-    *(v4 + 60) |= 1uLL;
+    toCopy[16] = self->_supports03e098e86062k;
+    *(toCopy + 60) |= 1uLL;
   }
 
 LABEL_45:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v47 = v4;
+  toCopy = to;
+  v47 = toCopy;
   if (self->_tag)
   {
     PBDataWriterWriteStringField();
-    v4 = v47;
+    toCopy = v47;
   }
 
   has = self->_has;
@@ -3617,7 +3617,7 @@ LABEL_45:
   {
     supportsCameraRecording = self->_supportsCameraRecording;
     PBDataWriterWriteBOOLField();
-    v4 = v47;
+    toCopy = v47;
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
     {
@@ -3638,7 +3638,7 @@ LABEL_5:
 
   supportsRouterManagement = self->_supportsRouterManagement;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -3654,7 +3654,7 @@ LABEL_6:
 LABEL_50:
   supportsShortcutActions = self->_supportsShortcutActions;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -3670,7 +3670,7 @@ LABEL_7:
 LABEL_51:
   supportsMediaActions = self->_supportsMediaActions;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -3686,7 +3686,7 @@ LABEL_8:
 LABEL_52:
   supportsCameraSignificantEventNotifications = self->_supportsCameraSignificantEventNotifications;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -3702,7 +3702,7 @@ LABEL_9:
 LABEL_53:
   supportsFirmwareUpdate = self->_supportsFirmwareUpdate;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -3718,7 +3718,7 @@ LABEL_10:
 LABEL_54:
   supportsResidentFirmwareUpdate = self->_supportsResidentFirmwareUpdate;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -3734,7 +3734,7 @@ LABEL_11:
 LABEL_55:
   supportsCameraActivityZones = self->_supportsCameraActivityZones;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -3750,7 +3750,7 @@ LABEL_12:
 LABEL_56:
   supportsFaceClassification = self->_supportsFaceClassification;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -3766,7 +3766,7 @@ LABEL_13:
 LABEL_57:
   supportsNaturalLighting = self->_supportsNaturalLighting;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -3782,7 +3782,7 @@ LABEL_14:
 LABEL_58:
   supportsCameraRecordingReachabilityNotifications = self->_supportsCameraRecordingReachabilityNotifications;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -3798,7 +3798,7 @@ LABEL_15:
 LABEL_59:
   supportsAnnounce = self->_supportsAnnounce;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -3814,7 +3814,7 @@ LABEL_16:
 LABEL_60:
   supportsWakeOnLAN = self->_supportsWakeOnLAN;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -3830,7 +3830,7 @@ LABEL_17:
 LABEL_61:
   supportsLockNotificationContext = self->_supportsLockNotificationContext;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -3846,7 +3846,7 @@ LABEL_18:
 LABEL_62:
   supportsWalletKey = self->_supportsWalletKey;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -3862,7 +3862,7 @@ LABEL_19:
 LABEL_63:
   supportsCameraPackageDetection = self->_supportsCameraPackageDetection;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -3878,7 +3878,7 @@ LABEL_20:
 LABEL_64:
   supportsAccessCodes = self->_supportsAccessCodes;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -3894,7 +3894,7 @@ LABEL_21:
 LABEL_65:
   supportsCHIP = self->_supportsCHIP;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -3910,7 +3910,7 @@ LABEL_22:
 LABEL_66:
   supportsThreadBorderRouter = self->_supportsThreadBorderRouter;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -3926,7 +3926,7 @@ LABEL_23:
 LABEL_67:
   supportsSiriEndpointSetup = self->_supportsSiriEndpointSetup;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -3942,7 +3942,7 @@ LABEL_24:
 LABEL_68:
   supportsCustomMediaApplicationDestination = self->_supportsCustomMediaApplicationDestination;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -3958,7 +3958,7 @@ LABEL_25:
 LABEL_69:
   supportsUnifiedMediaNotifications = self->_supportsUnifiedMediaNotifications;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -3974,7 +3974,7 @@ LABEL_26:
 LABEL_70:
   supportsHomeHub = self->_supportsHomeHub;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -3990,7 +3990,7 @@ LABEL_27:
 LABEL_71:
   supportsResidentFirstAccessoryCommunication = self->_supportsResidentFirstAccessoryCommunication;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -4006,7 +4006,7 @@ LABEL_28:
 LABEL_72:
   supportsThreadNetworkCredentialSharing = self->_supportsThreadNetworkCredentialSharing;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -4022,7 +4022,7 @@ LABEL_29:
 LABEL_73:
   supports5348b248a25f84b0c83e = self->_supports5348b248a25f84b0c83e;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -4038,7 +4038,7 @@ LABEL_30:
 LABEL_74:
   supportsEventLog = self->_supportsEventLog;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -4054,7 +4054,7 @@ LABEL_31:
 LABEL_75:
   supportsMatterTTU = self->_supportsMatterTTU;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -4070,7 +4070,7 @@ LABEL_32:
 LABEL_76:
   supportsDistributedExecutionOnPrimary = self->_supportsDistributedExecutionOnPrimary;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -4086,7 +4086,7 @@ LABEL_33:
 LABEL_77:
   supportsResidentActionSetStateEvaluation = self->_supportsResidentActionSetStateEvaluation;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -4102,7 +4102,7 @@ LABEL_34:
 LABEL_78:
   supports9907491178 = self->_supports9907491178;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -4118,7 +4118,7 @@ LABEL_35:
 LABEL_79:
   supportsRestrictedGuest = self->_supportsRestrictedGuest;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -4134,7 +4134,7 @@ LABEL_36:
 LABEL_80:
   supportsMatterOwnerCertFetch = self->_supportsMatterOwnerCertFetch;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -4150,7 +4150,7 @@ LABEL_37:
 LABEL_81:
   supportsa15324f096ec183d = self->_supportsa15324f096ec183d;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -4166,7 +4166,7 @@ LABEL_38:
 LABEL_82:
   supportsResidentSelection = self->_supportsResidentSelection;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -4182,7 +4182,7 @@ LABEL_39:
 LABEL_83:
   supports946950341b318ffd = self->_supports946950341b318ffd;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -4198,7 +4198,7 @@ LABEL_40:
 LABEL_84:
   supports12r9go0ci9109 = self->_supports12r9go0ci9109;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
   {
@@ -4214,7 +4214,7 @@ LABEL_41:
 LABEL_85:
   supportsheephfaid6gg1p54 = self->_supportsheephfaid6gg1p54;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -4230,7 +4230,7 @@ LABEL_42:
 LABEL_86:
   supportsdafedc977558 = self->_supportsdafedc977558;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -4246,13 +4246,13 @@ LABEL_43:
 LABEL_87:
   supportsd36b1a5183a0f = self->_supportsd36b1a5183a0f;
   PBDataWriterWriteBOOLField();
-  v4 = v47;
+  toCopy = v47;
   if (*&self->_has)
   {
 LABEL_44:
     supports03e098e86062k = self->_supports03e098e86062k;
     PBDataWriterWriteBOOLField();
-    v4 = v47;
+    toCopy = v47;
   }
 
 LABEL_45:
@@ -4260,12 +4260,12 @@ LABEL_45:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   tag = self->_tag;
   if (tag)
   {
-    [v3 setObject:tag forKey:@"tag"];
+    [dictionary setObject:tag forKey:@"tag"];
   }
 
   has = self->_has;
@@ -4922,16 +4922,16 @@ LABEL_45:
   v8.receiver = self;
   v8.super_class = HMProtoResidentCapabilities;
   v4 = [(HMProtoResidentCapabilities *)&v8 description];
-  v5 = [(HMProtoResidentCapabilities *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMProtoResidentCapabilities *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasSupportsd36b1a5183a0f:(BOOL)a3
+- (void)setHasSupportsd36b1a5183a0f:(BOOL)supportsd36b1a5183a0f
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!supportsd36b1a5183a0f)
   {
     v3 = 0;
   }
@@ -4939,10 +4939,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsdafedc977558:(BOOL)a3
+- (void)setHasSupportsdafedc977558:(BOOL)supportsdafedc977558
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!supportsdafedc977558)
   {
     v3 = 0;
   }
@@ -4950,10 +4950,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsheephfaid6gg1p54:(BOOL)a3
+- (void)setHasSupportsheephfaid6gg1p54:(BOOL)supportsheephfaid6gg1p54
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!supportsheephfaid6gg1p54)
   {
     v3 = 0;
   }
@@ -4961,10 +4961,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupports12r9go0ci9109:(BOOL)a3
+- (void)setHasSupports12r9go0ci9109:(BOOL)supports12r9go0ci9109
 {
   v3 = 2;
-  if (!a3)
+  if (!supports12r9go0ci9109)
   {
     v3 = 0;
   }
@@ -4972,10 +4972,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasSupports946950341b318ffd:(BOOL)a3
+- (void)setHasSupports946950341b318ffd:(BOOL)supports946950341b318ffd
 {
   v3 = 8;
-  if (!a3)
+  if (!supports946950341b318ffd)
   {
     v3 = 0;
   }
@@ -4983,10 +4983,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasSupportsResidentSelection:(BOOL)a3
+- (void)setHasSupportsResidentSelection:(BOOL)selection
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!selection)
   {
     v3 = 0;
   }
@@ -4994,10 +4994,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasSupportsa15324f096ec183d:(BOOL)a3
+- (void)setHasSupportsa15324f096ec183d:(BOOL)supportsa15324f096ec183d
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!supportsa15324f096ec183d)
   {
     v3 = 0;
   }
@@ -5005,10 +5005,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsMatterOwnerCertFetch:(BOOL)a3
+- (void)setHasSupportsMatterOwnerCertFetch:(BOOL)fetch
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!fetch)
   {
     v3 = 0;
   }
@@ -5016,10 +5016,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasSupportsRestrictedGuest:(BOOL)a3
+- (void)setHasSupportsRestrictedGuest:(BOOL)guest
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!guest)
   {
     v3 = 0;
   }
@@ -5027,10 +5027,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasSupports9907491178:(BOOL)a3
+- (void)setHasSupports9907491178:(BOOL)supports9907491178
 {
   v3 = 16;
-  if (!a3)
+  if (!supports9907491178)
   {
     v3 = 0;
   }
@@ -5038,10 +5038,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasSupportsResidentActionSetStateEvaluation:(BOOL)a3
+- (void)setHasSupportsResidentActionSetStateEvaluation:(BOOL)evaluation
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!evaluation)
   {
     v3 = 0;
   }
@@ -5049,10 +5049,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsDistributedExecutionOnPrimary:(BOOL)a3
+- (void)setHasSupportsDistributedExecutionOnPrimary:(BOOL)primary
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!primary)
   {
     v3 = 0;
   }
@@ -5060,10 +5060,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasSupportsMatterTTU:(BOOL)a3
+- (void)setHasSupportsMatterTTU:(BOOL)u
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!u)
   {
     v3 = 0;
   }
@@ -5071,10 +5071,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasSupportsEventLog:(BOOL)a3
+- (void)setHasSupportsEventLog:(BOOL)log
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!log)
   {
     v3 = 0;
   }
@@ -5082,10 +5082,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasSupports5348b248a25f84b0c83e:(BOOL)a3
+- (void)setHasSupports5348b248a25f84b0c83e:(BOOL)supports5348b248a25f84b0c83e
 {
   v3 = 4;
-  if (!a3)
+  if (!supports5348b248a25f84b0c83e)
   {
     v3 = 0;
   }
@@ -5093,10 +5093,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasSupportsThreadNetworkCredentialSharing:(BOOL)a3
+- (void)setHasSupportsThreadNetworkCredentialSharing:(BOOL)sharing
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!sharing)
   {
     v3 = 0;
   }
@@ -5104,10 +5104,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsResidentFirstAccessoryCommunication:(BOOL)a3
+- (void)setHasSupportsResidentFirstAccessoryCommunication:(BOOL)communication
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!communication)
   {
     v3 = 0;
   }
@@ -5115,10 +5115,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsHomeHub:(BOOL)a3
+- (void)setHasSupportsHomeHub:(BOOL)hub
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!hub)
   {
     v3 = 0;
   }
@@ -5126,10 +5126,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasSupportsUnifiedMediaNotifications:(BOOL)a3
+- (void)setHasSupportsUnifiedMediaNotifications:(BOOL)notifications
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!notifications)
   {
     v3 = 0;
   }
@@ -5137,10 +5137,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsCustomMediaApplicationDestination:(BOOL)a3
+- (void)setHasSupportsCustomMediaApplicationDestination:(BOOL)destination
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!destination)
   {
     v3 = 0;
   }
@@ -5148,10 +5148,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasSupportsSiriEndpointSetup:(BOOL)a3
+- (void)setHasSupportsSiriEndpointSetup:(BOOL)setup
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!setup)
   {
     v3 = 0;
   }
@@ -5159,10 +5159,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsThreadBorderRouter:(BOOL)a3
+- (void)setHasSupportsThreadBorderRouter:(BOOL)router
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!router)
   {
     v3 = 0;
   }
@@ -5170,10 +5170,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsCHIP:(BOOL)a3
+- (void)setHasSupportsCHIP:(BOOL)p
 {
   v3 = 128;
-  if (!a3)
+  if (!p)
   {
     v3 = 0;
   }
@@ -5181,10 +5181,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasSupportsAccessCodes:(BOOL)a3
+- (void)setHasSupportsAccessCodes:(BOOL)codes
 {
   v3 = 32;
-  if (!a3)
+  if (!codes)
   {
     v3 = 0;
   }
@@ -5192,10 +5192,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasSupportsCameraPackageDetection:(BOOL)a3
+- (void)setHasSupportsCameraPackageDetection:(BOOL)detection
 {
   v3 = 512;
-  if (!a3)
+  if (!detection)
   {
     v3 = 0;
   }
@@ -5203,10 +5203,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasSupportsWalletKey:(BOOL)a3
+- (void)setHasSupportsWalletKey:(BOOL)key
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!key)
   {
     v3 = 0;
   }
@@ -5214,10 +5214,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsLockNotificationContext:(BOOL)a3
+- (void)setHasSupportsLockNotificationContext:(BOOL)context
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -5225,10 +5225,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasSupportsWakeOnLAN:(BOOL)a3
+- (void)setHasSupportsWakeOnLAN:(BOOL)n
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!n)
   {
     v3 = 0;
   }
@@ -5236,10 +5236,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsAnnounce:(BOOL)a3
+- (void)setHasSupportsAnnounce:(BOOL)announce
 {
   v3 = 64;
-  if (!a3)
+  if (!announce)
   {
     v3 = 0;
   }
@@ -5247,10 +5247,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasSupportsCameraRecordingReachabilityNotifications:(BOOL)a3
+- (void)setHasSupportsCameraRecordingReachabilityNotifications:(BOOL)notifications
 {
   v3 = 2048;
-  if (!a3)
+  if (!notifications)
   {
     v3 = 0;
   }
@@ -5258,10 +5258,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasSupportsNaturalLighting:(BOOL)a3
+- (void)setHasSupportsNaturalLighting:(BOOL)lighting
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!lighting)
   {
     v3 = 0;
   }
@@ -5269,10 +5269,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasSupportsFaceClassification:(BOOL)a3
+- (void)setHasSupportsFaceClassification:(BOOL)classification
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!classification)
   {
     v3 = 0;
   }
@@ -5280,10 +5280,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasSupportsCameraActivityZones:(BOOL)a3
+- (void)setHasSupportsCameraActivityZones:(BOOL)zones
 {
   v3 = 256;
-  if (!a3)
+  if (!zones)
   {
     v3 = 0;
   }
@@ -5291,10 +5291,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasSupportsResidentFirmwareUpdate:(BOOL)a3
+- (void)setHasSupportsResidentFirmwareUpdate:(BOOL)update
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!update)
   {
     v3 = 0;
   }
@@ -5302,10 +5302,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsFirmwareUpdate:(BOOL)a3
+- (void)setHasSupportsFirmwareUpdate:(BOOL)update
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!update)
   {
     v3 = 0;
   }
@@ -5313,10 +5313,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasSupportsCameraSignificantEventNotifications:(BOOL)a3
+- (void)setHasSupportsCameraSignificantEventNotifications:(BOOL)notifications
 {
   v3 = 4096;
-  if (!a3)
+  if (!notifications)
   {
     v3 = 0;
   }
@@ -5324,10 +5324,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasSupportsMediaActions:(BOOL)a3
+- (void)setHasSupportsMediaActions:(BOOL)actions
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!actions)
   {
     v3 = 0;
   }
@@ -5335,10 +5335,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasSupportsShortcutActions:(BOOL)a3
+- (void)setHasSupportsShortcutActions:(BOOL)actions
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!actions)
   {
     v3 = 0;
   }
@@ -5346,10 +5346,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsRouterManagement:(BOOL)a3
+- (void)setHasSupportsRouterManagement:(BOOL)management
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!management)
   {
     v3 = 0;
   }
@@ -5357,10 +5357,10 @@ LABEL_45:
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsCameraRecording:(BOOL)a3
+- (void)setHasSupportsCameraRecording:(BOOL)recording
 {
   v3 = 1024;
-  if (!a3)
+  if (!recording)
   {
     v3 = 0;
   }

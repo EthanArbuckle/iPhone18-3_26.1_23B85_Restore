@@ -16,16 +16,16 @@
 
 - (NSURL)libraryPath
 {
-  v2 = [(NTKUtilityFaceDialCachePathProvider *)self defaultPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Library"];
+  defaultPath = [(NTKUtilityFaceDialCachePathProvider *)self defaultPath];
+  v3 = [defaultPath URLByAppendingPathComponent:@"Library"];
 
   return v3;
 }
 
 - (NSURL)cachesPath
 {
-  v2 = [(NTKUtilityFaceDialCachePathProvider *)self libraryPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Caches"];
+  libraryPath = [(NTKUtilityFaceDialCachePathProvider *)self libraryPath];
+  v3 = [libraryPath URLByAppendingPathComponent:@"Caches"];
 
   return v3;
 }

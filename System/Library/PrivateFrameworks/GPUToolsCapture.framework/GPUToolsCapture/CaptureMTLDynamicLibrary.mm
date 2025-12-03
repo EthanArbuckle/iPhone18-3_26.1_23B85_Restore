@@ -1,27 +1,27 @@
 @interface CaptureMTLDynamicLibrary
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4;
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)a3 captureCompiler:(id)a4;
-- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)a3 captureCompiler:(id)a4 captureLibrary:(id)a5;
-- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureLibrary:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)serializeToURL:(id)l error:(id *)error;
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)object captureCompiler:(id)compiler;
+- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)object captureCompiler:(id)compiler captureLibrary:(id)library;
+- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)object captureDevice:(id)device captureLibrary:(id)library;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
-- (void)setRelocations:(id)a3;
+- (void)setLabel:(id)label;
+- (void)setRelocations:(id)relocations;
 - (void)touch;
 @end
 
 @implementation CaptureMTLDynamicLibrary
 
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLDynamicLibrary_serializeToURL_options_error", "Dynamic Libraries", 0, 0);
-  LOBYTE(a5) = [(MTLDynamicLibrarySPI *)self->_baseObject serializeToURL:v8 options:a4 error:a5];
+  LOBYTE(error) = [(MTLDynamicLibrarySPI *)self->_baseObject serializeToURL:lCopy options:options error:error];
 
-  return a5;
+  return error;
 }
 
 - (void)dealloc
@@ -50,10 +50,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLDynamicLibrary *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLDynamicLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -72,22 +72,22 @@
   [(CaptureMTLDynamicLibrary *)&v13 dealloc];
 }
 
-- (void)setRelocations:(id)a3
+- (void)setRelocations:(id)relocations
 {
-  v4 = a3;
+  relocationsCopy = relocations;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLDynamicLibrary_setRelocations", "Relocations", 0, 0);
-  [(MTLDynamicLibrarySPI *)self->_baseObject setRelocations:v4];
+  [(MTLDynamicLibrarySPI *)self->_baseObject setRelocations:relocationsCopy];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLDynamicLibrarySPI *)self->_baseObject setLabel:v4];
+  [(MTLDynamicLibrarySPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15676;
   v7 = BYTE9(v20);
@@ -107,10 +107,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLDynamicLibrary *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLDynamicLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -118,16 +118,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -136,13 +136,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLDynamicLibrarySPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLDynamicLibrarySPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -197,15 +197,15 @@
   }
 }
 
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4
+- (BOOL)serializeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v23);
-  v8 = [(MTLDynamicLibrarySPI *)self->_baseObject serializeToURL:v6 error:a4];
+  v8 = [(MTLDynamicLibrarySPI *)self->_baseObject serializeToURL:lCopy error:error];
   v9 = v24;
   *(v24 + 8) = -15674;
   v10 = BYTE9(v25);
@@ -225,14 +225,14 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLDynamicLibrary *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLDynamicLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
-    if (a4)
+    var0 = traceStream->var0;
+    if (error)
     {
 LABEL_6:
-      v16 = *a4;
+      v16 = *error;
       goto LABEL_9;
     }
   }
@@ -240,7 +240,7 @@ LABEL_6:
   else
   {
     var0 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -248,18 +248,18 @@ LABEL_6:
 
   v16 = 0;
 LABEL_9:
-  v17 = [v6 fileSystemRepresentation];
-  if (v17)
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
-    v18 = [v6 fileSystemRepresentation];
-    v19 = strlen([v6 fileSystemRepresentation]);
-    LOBYTE(v17) = GTTraceEncoder_storeBytes(&v23, v18, v19 + 1);
+    fileSystemRepresentation2 = [lCopy fileSystemRepresentation];
+    v19 = strlen([lCopy fileSystemRepresentation]);
+    LOBYTE(fileSystemRepresentation) = GTTraceEncoder_storeBytes(&v23, fileSystemRepresentation2, v19 + 1);
   }
 
   *v11 = var0;
   *(v11 + 1) = v16;
   *(v11 + 4) = v8;
-  v11[20] = v17;
+  v11[20] = fileSystemRepresentation;
   *(v11 + 21) = 0;
   v11[23] = 0;
   s();
@@ -270,43 +270,43 @@ LABEL_9:
   return v8;
 }
 
-- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)a3 captureCompiler:(id)a4 captureLibrary:(id)a5
+- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)object captureCompiler:(id)compiler captureLibrary:(id)library
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 device];
-  v11 = [(CaptureMTLDynamicLibrary *)self initWithBaseObject:v9 captureDevice:v10 captureLibrary:v8];
+  libraryCopy = library;
+  objectCopy = object;
+  device = [compiler device];
+  v11 = [(CaptureMTLDynamicLibrary *)self initWithBaseObject:objectCopy captureDevice:device captureLibrary:libraryCopy];
 
   return v11;
 }
 
-- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)a3 captureCompiler:(id)a4
+- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)object captureCompiler:(id)compiler
 {
-  v6 = a3;
-  v7 = [a4 device];
-  v8 = [(CaptureMTLDynamicLibrary *)self initWithBaseObject:v6 captureDevice:v7 captureLibrary:0];
+  objectCopy = object;
+  device = [compiler device];
+  v8 = [(CaptureMTLDynamicLibrary *)self initWithBaseObject:objectCopy captureDevice:device captureLibrary:0];
 
   return v8;
 }
 
-- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureLibrary:(id)a5
+- (CaptureMTLDynamicLibrary)initWithBaseObject:(id)object captureDevice:(id)device captureLibrary:(id)library
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  deviceCopy = device;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = CaptureMTLDynamicLibrary;
   v12 = [(CaptureMTLDynamicLibrary *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_captureDevice, a4);
-    objc_storeStrong(&v13->_captureLibrary, a5);
-    v14 = [v10 traceContext];
-    v13->_traceContext = v14;
-    v15 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v14, v15, v13);
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_captureDevice, device);
+    objc_storeStrong(&v13->_captureLibrary, library);
+    traceContext = [deviceCopy traceContext];
+    v13->_traceContext = traceContext;
+    v15 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v15, v13);
   }
 
   return v13;

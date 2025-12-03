@@ -1,8 +1,8 @@
 @interface MADImageEmbeddingRequest
 - (MADImageEmbeddingRequest)init;
-- (MADImageEmbeddingRequest)initWithCoder:(id)a3;
+- (MADImageEmbeddingRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADImageEmbeddingRequest
@@ -27,50 +27,50 @@
   return v2;
 }
 
-- (MADImageEmbeddingRequest)initWithCoder:(id)a3
+- (MADImageEmbeddingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADImageEmbeddingRequest;
-  v5 = [(MADRequest *)&v7 initWithCoder:v4];
+  v5 = [(MADRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_version = [v4 decodeIntegerForKey:@"Version"];
-    v5->_bypassNormalizaton = [v4 decodeBoolForKey:@"bypassNormalizaton"];
-    v5->_embeddingRequestType = [v4 decodeIntegerForKey:@"embeddingRequestType"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"Version"];
+    v5->_bypassNormalizaton = [coderCopy decodeBoolForKey:@"bypassNormalizaton"];
+    v5->_embeddingRequestType = [coderCopy decodeIntegerForKey:@"embeddingRequestType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADImageEmbeddingRequest;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_version forKey:@"Version"];
-  [v4 encodeBool:self->_bypassNormalizaton forKey:@"bypassNormalizaton"];
-  [v4 encodeInteger:self->_embeddingRequestType forKey:@"embeddingRequestType"];
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_version forKey:@"Version"];
+  [coderCopy encodeBool:self->_bypassNormalizaton forKey:@"bypassNormalizaton"];
+  [coderCopy encodeInteger:self->_embeddingRequestType forKey:@"embeddingRequestType"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"version: %d, ", self->_version];
-  [v3 appendFormat:@"bypassNormalizaton: %d, ", self->_bypassNormalizaton];
-  [v3 appendFormat:@"requestedEmbeddingType: %d, ", self->_embeddingRequestType];
-  v6 = [(MADImageEmbeddingRequest *)self embeddingResults];
-  [v3 appendFormat:@"results: %@, ", v6];
+  [string appendFormat:@"version: %d, ", self->_version];
+  [string appendFormat:@"bypassNormalizaton: %d, ", self->_bypassNormalizaton];
+  [string appendFormat:@"requestedEmbeddingType: %d, ", self->_embeddingRequestType];
+  embeddingResults = [(MADImageEmbeddingRequest *)self embeddingResults];
+  [string appendFormat:@"results: %@, ", embeddingResults];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

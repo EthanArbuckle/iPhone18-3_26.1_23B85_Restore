@@ -1,30 +1,30 @@
 @interface TUIKBKeyView
 - (BOOL)isTransitioning;
-- (TUIKBKeyView)initWithKey:(id)a3;
+- (TUIKBKeyView)initWithKey:(id)key;
 - (TUIKeyViewLayoutDelegate)layoutDelegate;
-- (UIEdgeInsets)backgroundInsetsForStyle:(int64_t)a3;
+- (UIEdgeInsets)backgroundInsetsForStyle:(int64_t)style;
 - (UIKBRenderFactory)floatingFactory;
 - (UIKBRenderFactory)splitFactory;
 - (UIKBRenderFactory)unsplitFactory;
-- (double)multiplierForDisplayType:(int)a3;
+- (double)multiplierForDisplayType:(int)type;
 - (id)description;
-- (id)factoryForKeyStyle:(int64_t)a3;
-- (id)shapeWhenMergedWithKey:(id)a3 insets:(UIEdgeInsets)a4;
-- (void)_startStateTransitionAnimationsFrom:(int)a3 to:(int)a4;
+- (id)factoryForKeyStyle:(int64_t)style;
+- (id)shapeWhenMergedWithKey:(id)key insets:(UIEdgeInsets)insets;
+- (void)_startStateTransitionAnimationsFrom:(int)from to:(int)to;
 - (void)addActiveKeyCapView;
 - (void)addContentView;
-- (void)dimKeyUsingOpacities:(id)a3;
-- (void)finishTransitionAnimated:(BOOL)a3;
+- (void)dimKeyUsingOpacities:(id)opacities;
+- (void)finishTransitionAnimated:(BOOL)animated;
 - (void)prepareForTransition;
-- (void)prepareUpdatesForStyle:(int64_t)a3 toStyle:(int64_t)a4;
+- (void)prepareUpdatesForStyle:(int64_t)style toStyle:(int64_t)toStyle;
 - (void)resetPanAnimations;
-- (void)setBounds:(CGRect)a3;
-- (void)setDrawFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDrawFrame:(CGRect)frame;
 - (void)updateConstraints;
-- (void)updateForTransitionProgress:(double)a3;
-- (void)updateLabelWeight:(unint64_t)a3;
-- (void)updateStateFrom:(int)a3 to:(int)a4;
-- (void)updateStyle:(int64_t)a3;
+- (void)updateForTransitionProgress:(double)progress;
+- (void)updateLabelWeight:(unint64_t)weight;
+- (void)updateStateFrom:(int)from to:(int)to;
+- (void)updateStyle:(int64_t)style;
 @end
 
 @implementation TUIKBKeyView
@@ -32,57 +32,57 @@
 - (void)addContentView
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBContainerKeyView *)self contentsKeyView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(TUIKBKeyView *)self subviews];
-  v5 = [v4 containsObject:v3];
+  contentsKeyView = [(UIKBContainerKeyView *)self contentsKeyView];
+  [contentsKeyView setTranslatesAutoresizingMaskIntoConstraints:0];
+  subviews = [(TUIKBKeyView *)self subviews];
+  v5 = [subviews containsObject:contentsKeyView];
 
   if ((v5 & 1) == 0)
   {
-    [(TUIKBKeyView *)self addSubview:v3];
+    [(TUIKBKeyView *)self addSubview:contentsKeyView];
   }
 
-  v6 = [(TUIKBKeyView *)self contentViewConstraints];
+  contentViewConstraints = [(TUIKBKeyView *)self contentViewConstraints];
 
-  if (!v6)
+  if (!contentViewConstraints)
   {
-    v24 = [v3 topAnchor];
-    v23 = [(TUIKBKeyView *)self topAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    topAnchor = [contentsKeyView topAnchor];
+    topAnchor2 = [(TUIKBKeyView *)self topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v25[0] = v22;
-    v21 = [v3 leadingAnchor];
-    v20 = [(TUIKBKeyView *)self leadingAnchor];
-    v7 = [v21 constraintEqualToAnchor:v20];
+    leadingAnchor = [contentsKeyView leadingAnchor];
+    leadingAnchor2 = [(TUIKBKeyView *)self leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[1] = v7;
-    v8 = [(TUIKBKeyView *)self bottomAnchor];
-    v9 = [v3 bottomAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    bottomAnchor = [(TUIKBKeyView *)self bottomAnchor];
+    bottomAnchor2 = [contentsKeyView bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v25[2] = v10;
-    v11 = [(TUIKBKeyView *)self trailingAnchor];
-    v12 = [v3 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(TUIKBKeyView *)self trailingAnchor];
+    trailingAnchor2 = [contentsKeyView trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[3] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
     [(TUIKBKeyView *)self setContentViewConstraints:v14];
   }
 
-  v15 = [(TUIKBKeyView *)self contentViewConstraints];
-  v16 = [v15 firstObject];
-  v17 = [v16 isActive];
+  contentViewConstraints2 = [(TUIKBKeyView *)self contentViewConstraints];
+  firstObject = [contentViewConstraints2 firstObject];
+  isActive = [firstObject isActive];
 
-  if ((v17 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     v18 = MEMORY[0x1E696ACD8];
-    v19 = [(TUIKBKeyView *)self contentViewConstraints];
-    [v18 activateConstraints:v19];
+    contentViewConstraints3 = [(TUIKBKeyView *)self contentViewConstraints];
+    [v18 activateConstraints:contentViewConstraints3];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(TUIKBKeyView *)self contentViewConstraints];
+  contentViewConstraints = [(TUIKBKeyView *)self contentViewConstraints];
 
-  if (!v3)
+  if (!contentViewConstraints)
   {
     [(TUIKBKeyView *)self addContentView];
   }
@@ -104,7 +104,7 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(TUIKBKeyView *)self key];
-  v6 = [v5 name];
+  name = [v5 name];
   [(TUIKBKeyView *)self frame];
   v8 = v7;
   [(TUIKBKeyView *)self frame];
@@ -113,33 +113,33 @@
   v12 = v11;
   [(TUIKBKeyView *)self frame];
   v14 = v13;
-  v15 = [(TUIKBKeyView *)self keyStyle];
+  keyStyle = [(TUIKBKeyView *)self keyStyle];
   v16 = @"NO";
-  if (v15 == 1)
+  if (keyStyle == 1)
   {
     v16 = @"YES";
   }
 
-  v17 = [v3 stringWithFormat:@"<%@: %p name = %@; frame = (%0.f %0.f; %0.f %0.f); usesSmallKeys = %@>", v4, self, v6, v8, v10, v12, v14, v16];;
+  v17 = [v3 stringWithFormat:@"<%@: %p name = %@; frame = (%0.f %0.f; %0.f %0.f); usesSmallKeys = %@>", v4, self, name, v8, v10, v12, v14, v16];;
 
   return v17;
 }
 
-- (double)multiplierForDisplayType:(int)a3
+- (double)multiplierForDisplayType:(int)type
 {
-  if (a3 <= 20)
+  if (type <= 20)
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      if ((a3 - 13) >= 2)
+      if ((type - 13) >= 2)
       {
         result = 1.25;
-        if (a3 == 5)
+        if (type == 5)
         {
           return result;
         }
 
-        if (a3 != 18)
+        if (type != 18)
         {
           return 1.0;
         }
@@ -150,14 +150,14 @@
       goto LABEL_20;
     }
 
-    if (!a3)
+    if (!type)
     {
       return 1.5;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         return 1.0;
       }
@@ -168,11 +168,11 @@
     return dbl_1900C0F70[[(TUIKBKeyView *)self keyStyle]== 1];
   }
 
-  if (a3 > 50)
+  if (type > 50)
   {
-    if (a3 != 51)
+    if (type != 51)
     {
-      if (a3 == 52)
+      if (type == 52)
       {
 LABEL_19:
         v4 = [(TUIKBKeyView *)self keyStyle]== 1;
@@ -196,7 +196,7 @@ LABEL_20:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 21:
         v5 = [(TUIKBKeyView *)self keyStyle]== 1;
@@ -223,13 +223,13 @@ LABEL_20:
   return result;
 }
 
-- (UIEdgeInsets)backgroundInsetsForStyle:(int64_t)a3
+- (UIEdgeInsets)backgroundInsetsForStyle:(int64_t)style
 {
   v3 = 2.0;
   v4 = 4.0;
   v5 = 6.0;
   v6 = 11.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     v7 = 1.0;
   }
@@ -239,7 +239,7 @@ LABEL_20:
     v7 = 3.0;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v3 = 6.0;
   }
@@ -250,7 +250,7 @@ LABEL_20:
     v5 = 3.0;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     v8 = 1.0;
   }
@@ -260,7 +260,7 @@ LABEL_20:
     v8 = v7;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     v9 = 4.0;
   }
@@ -270,7 +270,7 @@ LABEL_20:
     v9 = v3;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     v10 = 7.0;
   }
@@ -280,7 +280,7 @@ LABEL_20:
     v10 = v6;
   }
 
-  if (a3 != 3)
+  if (style != 3)
   {
     v4 = v5;
   }
@@ -292,9 +292,9 @@ LABEL_20:
   return result;
 }
 
-- (void)finishTransitionAnimated:(BOOL)a3
+- (void)finishTransitionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__TUIKBKeyView_finishTransitionAnimated___block_invoke;
@@ -307,9 +307,9 @@ LABEL_20:
   v16[3] = &unk_1E72D8488;
   v16[4] = self;
   v6 = _Block_copy(v16);
-  v7 = [(TUIKBKeyView *)self isTransitioning];
-  v8 = !v3;
-  v9 = v7 || !v3;
+  isTransitioning = [(TUIKBKeyView *)self isTransitioning];
+  v8 = !animatedCopy;
+  v9 = isTransitioning || !animatedCopy;
   if (v8)
   {
     v6[2](v6, v9);
@@ -370,73 +370,73 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
   }
 }
 
-- (void)updateForTransitionProgress:(double)a3
+- (void)updateForTransitionProgress:(double)progress
 {
-  v4 = [(TUIKBKeyView *)self liveContentView];
-  [v4 updateForTransitionProgress:a3];
+  liveContentView = [(TUIKBKeyView *)self liveContentView];
+  [liveContentView updateForTransitionProgress:progress];
 }
 
 - (void)prepareForTransition
 {
   v41[4] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBContainerKeyView *)self contentsKeyView];
-  [v3 setHidden:1];
+  contentsKeyView = [(UIKBContainerKeyView *)self contentsKeyView];
+  [contentsKeyView setHidden:1];
 
   unsplitFactory = self->_unsplitFactory;
   self->_unsplitFactory = 0;
 
   v5 = [(TUIKBKeyView *)self factoryForKeyStyle:[(TUIKBKeyView *)self keyStyle]];
-  v6 = [(TUIKBKeyView *)self representedKey];
-  v7 = [(TUIKBKeyView *)self backingKey];
-  v8 = [v7 keyplane];
-  v9 = [v5 traitsForKey:v6 onKeyplane:v8];
+  representedKey = [(TUIKBKeyView *)self representedKey];
+  backingKey = [(TUIKBKeyView *)self backingKey];
+  keyplane = [backingKey keyplane];
+  v9 = [v5 traitsForKey:representedKey onKeyplane:keyplane];
 
-  v10 = [(TUIKBKeyView *)self representedKey];
-  v11 = [v5 displayContentsForKey:v10];
+  representedKey2 = [(TUIKBKeyView *)self representedKey];
+  v11 = [v5 displayContentsForKey:representedKey2];
 
-  v12 = [(TUIKBKeyView *)self liveContentView];
+  liveContentView = [(TUIKBKeyView *)self liveContentView];
 
-  if (v12)
+  if (liveContentView)
   {
-    v13 = [(TUIKBKeyView *)self liveContentView];
-    [v13 updateRenderTraits:v9 displayContents:v11];
+    liveContentView2 = [(TUIKBKeyView *)self liveContentView];
+    [liveContentView2 updateRenderTraits:v9 displayContents:v11];
   }
 
   else
   {
     v14 = [TUILiveKeyView alloc];
-    v15 = [(TUIKBKeyView *)self backingKey];
-    v16 = [(UIKBContainerKeyView *)self factory];
-    v17 = [(TUILiveKeyView *)v14 initWithKey:v15 renderTraits:v9 displayContents:v11 inheritedFactory:v16];
+    backingKey2 = [(TUIKBKeyView *)self backingKey];
+    factory = [(UIKBContainerKeyView *)self factory];
+    v17 = [(TUILiveKeyView *)v14 initWithKey:backingKey2 renderTraits:v9 displayContents:v11 inheritedFactory:factory];
     [(TUIKBKeyView *)self setLiveContentView:v17];
 
-    v18 = [(TUIKBKeyView *)self liveContentView];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    liveContentView3 = [(TUIKBKeyView *)self liveContentView];
+    [liveContentView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(TUIKBKeyView *)self liveContentView];
-    [(TUIKBKeyView *)self addSubview:v19];
+    liveContentView4 = [(TUIKBKeyView *)self liveContentView];
+    [(TUIKBKeyView *)self addSubview:liveContentView4];
 
     v32 = MEMORY[0x1E696ACD8];
-    v39 = [(TUIKBKeyView *)self liveContentView];
-    v38 = [v39 topAnchor];
-    v37 = [(TUIKBKeyView *)self topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    liveContentView5 = [(TUIKBKeyView *)self liveContentView];
+    topAnchor = [liveContentView5 topAnchor];
+    topAnchor2 = [(TUIKBKeyView *)self topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v41[0] = v36;
-    v35 = [(TUIKBKeyView *)self liveContentView];
-    v34 = [v35 leadingAnchor];
-    v33 = [(TUIKBKeyView *)self leadingAnchor];
-    v31 = [v34 constraintEqualToAnchor:v33];
+    liveContentView6 = [(TUIKBKeyView *)self liveContentView];
+    leadingAnchor = [liveContentView6 leadingAnchor];
+    leadingAnchor2 = [(TUIKBKeyView *)self leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v41[1] = v31;
-    v29 = [(TUIKBKeyView *)self bottomAnchor];
+    bottomAnchor = [(TUIKBKeyView *)self bottomAnchor];
     [(TUIKBKeyView *)self liveContentView];
     v30 = v40 = v9;
-    v20 = [v30 bottomAnchor];
-    v21 = [v29 constraintEqualToAnchor:v20];
+    bottomAnchor2 = [v30 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v41[2] = v21;
-    v22 = [(TUIKBKeyView *)self trailingAnchor];
-    v23 = [(TUIKBKeyView *)self liveContentView];
-    v24 = [v23 trailingAnchor];
-    [v22 constraintEqualToAnchor:v24];
+    trailingAnchor = [(TUIKBKeyView *)self trailingAnchor];
+    liveContentView7 = [(TUIKBKeyView *)self liveContentView];
+    trailingAnchor2 = [liveContentView7 trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26 = v25 = v11;
     v41[3] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
@@ -446,17 +446,17 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
     v9 = v40;
   }
 
-  v28 = [(TUIKBKeyView *)self liveContentView];
-  [v28 setHidden:0];
+  liveContentView8 = [(TUIKBKeyView *)self liveContentView];
+  [liveContentView8 setHidden:0];
 }
 
 - (BOOL)isTransitioning
 {
-  v3 = [(TUIKBKeyView *)self liveContentView];
-  if (v3)
+  liveContentView = [(TUIKBKeyView *)self liveContentView];
+  if (liveContentView)
   {
-    v4 = [(TUIKBKeyView *)self liveContentView];
-    [v4 alpha];
+    liveContentView2 = [(TUIKBKeyView *)self liveContentView];
+    [liveContentView2 alpha];
     v6 = v5 > 0.0;
   }
 
@@ -468,16 +468,16 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
   return v6;
 }
 
-- (id)factoryForKeyStyle:(int64_t)a3
+- (id)factoryForKeyStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    v3 = [(TUIKBKeyView *)self floatingFactory];
+    floatingFactory = [(TUIKBKeyView *)self floatingFactory];
   }
 
   else
   {
-    if (a3 == 4)
+    if (style == 4)
     {
       [(TUIKBKeyView *)self splitFactory];
     }
@@ -486,10 +486,10 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
     {
       [(TUIKBKeyView *)self unsplitFactory];
     }
-    v3 = ;
+    floatingFactory = ;
   }
 
-  return v3;
+  return floatingFactory;
 }
 
 - (UIKBRenderFactory)floatingFactory
@@ -497,24 +497,24 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
   floatingFactory = self->_floatingFactory;
   if (!floatingFactory)
   {
-    v4 = [(UIKBContainerKeyView *)self keyplane];
-    v5 = [v4 visualStyling];
+    keyplane = [(UIKBContainerKeyView *)self keyplane];
+    visualStyling = [keyplane visualStyling];
 
     v6 = MEMORY[0x1E69DCB60];
-    v7 = [(UIKBContainerKeyView *)self renderConfig];
-    v8 = [v6 renderingContextForRenderConfig:v7];
+    renderConfig = [(UIKBContainerKeyView *)self renderConfig];
+    v8 = [v6 renderingContextForRenderConfig:renderConfig];
 
     [v8 setIsFloating:1];
-    v9 = [MEMORY[0x1E69DCB50] factoryForVisualStyle:v5 & 0xFFFFFFFFFFFFFF00 | 0x40 renderingContext:v8 skipLayoutSegments:1];
+    v9 = [MEMORY[0x1E69DCB50] factoryForVisualStyle:visualStyling & 0xFFFFFFFFFFFFFF00 | 0x40 renderingContext:v8 skipLayoutSegments:1];
     v10 = self->_floatingFactory;
     self->_floatingFactory = v9;
 
-    v11 = [(UIKBContainerKeyView *)self factory];
-    [v11 scale];
+    factory = [(UIKBContainerKeyView *)self factory];
+    [factory scale];
     [(UIKBRenderFactory *)self->_floatingFactory setScale:?];
 
-    v12 = [(UIKBContainerKeyView *)self factory];
-    [v12 stretchFactor];
+    factory2 = [(UIKBContainerKeyView *)self factory];
+    [factory2 stretchFactor];
     [(UIKBRenderFactory *)self->_floatingFactory setStretchFactor:?];
 
     floatingFactory = self->_floatingFactory;
@@ -528,34 +528,34 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
   unsplitFactory = self->_unsplitFactory;
   if (!unsplitFactory)
   {
-    v4 = [(UIKBContainerKeyView *)self keyplane];
-    v5 = [v4 visualStyling];
+    keyplane = [(UIKBContainerKeyView *)self keyplane];
+    visualStyling = [keyplane visualStyling];
 
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v8 = MEMORY[0x1E69DCB60];
-    v9 = [(UIKBContainerKeyView *)self renderConfig];
-    v10 = [v8 renderingContextForRenderConfig:v9];
+    renderConfig = [(UIKBContainerKeyView *)self renderConfig];
+    v10 = [v8 renderingContextForRenderConfig:renderConfig];
 
     [v10 setIsFloating:0];
-    v11 = [MEMORY[0x1E69DCB50] factoryForVisualStyle:v5 & 0xFFFFFFFFFFFFFF00 | v7 & 0x3F | 0x40 renderingContext:v10 skipLayoutSegments:1];
+    v11 = [MEMORY[0x1E69DCB50] factoryForVisualStyle:visualStyling & 0xFFFFFFFFFFFFFF00 | userInterfaceIdiom & 0x3F | 0x40 renderingContext:v10 skipLayoutSegments:1];
     v12 = self->_unsplitFactory;
     self->_unsplitFactory = v11;
 
-    v13 = [(UIKBContainerKeyView *)self factory];
-    [v13 scale];
+    factory = [(UIKBContainerKeyView *)self factory];
+    [factory scale];
     [(UIKBRenderFactory *)self->_unsplitFactory setScale:?];
 
-    v14 = [(UIKBContainerKeyView *)self factory];
-    [v14 stretchFactor];
+    factory2 = [(UIKBContainerKeyView *)self factory];
+    [factory2 stretchFactor];
     [(UIKBRenderFactory *)self->_unsplitFactory setStretchFactor:?];
 
-    v15 = [(UIKBContainerKeyView *)self factory];
-    -[UIKBRenderFactory setDynamicFactory:](self->_unsplitFactory, "setDynamicFactory:", [v15 dynamicFactory]);
+    factory3 = [(UIKBContainerKeyView *)self factory];
+    -[UIKBRenderFactory setDynamicFactory:](self->_unsplitFactory, "setDynamicFactory:", [factory3 dynamicFactory]);
 
-    v16 = [(UIKBContainerKeyView *)self factory];
-    -[UIKBRenderFactory setPreferStringKeycapOverImage:](self->_unsplitFactory, "setPreferStringKeycapOverImage:", [v16 preferStringKeycapOverImage]);
+    factory4 = [(UIKBContainerKeyView *)self factory];
+    -[UIKBRenderFactory setPreferStringKeycapOverImage:](self->_unsplitFactory, "setPreferStringKeycapOverImage:", [factory4 preferStringKeycapOverImage]);
 
     unsplitFactory = self->_unsplitFactory;
   }
@@ -568,26 +568,26 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
   splitFactory = self->_splitFactory;
   if (!splitFactory)
   {
-    v4 = [(UIKBContainerKeyView *)self keyplane];
-    v5 = [v4 visualStyling];
+    keyplane = [(UIKBContainerKeyView *)self keyplane];
+    visualStyling = [keyplane visualStyling];
 
     v6 = MEMORY[0x1E69DCB50];
-    v7 = [(UIKBContainerKeyView *)self factory];
-    v8 = [v7 renderingContext];
-    v9 = [v6 factoryForVisualStyle:v5 | 0x80 renderingContext:v8 skipLayoutSegments:1];
+    factory = [(UIKBContainerKeyView *)self factory];
+    renderingContext = [factory renderingContext];
+    v9 = [v6 factoryForVisualStyle:visualStyling | 0x80 renderingContext:renderingContext skipLayoutSegments:1];
     v10 = self->_splitFactory;
     self->_splitFactory = v9;
 
-    v11 = [(UIKBContainerKeyView *)self factory];
-    [v11 scale];
+    factory2 = [(UIKBContainerKeyView *)self factory];
+    [factory2 scale];
     [(UIKBRenderFactory *)self->_splitFactory setScale:?];
 
-    v12 = [(UIKBContainerKeyView *)self factory];
-    [v12 stretchFactor];
+    factory3 = [(UIKBContainerKeyView *)self factory];
+    [factory3 stretchFactor];
     [(UIKBRenderFactory *)self->_splitFactory setStretchFactor:?];
 
-    v13 = [(UIKBContainerKeyView *)self factory];
-    -[UIKBRenderFactory setPreferStringKeycapOverImage:](self->_unsplitFactory, "setPreferStringKeycapOverImage:", [v13 preferStringKeycapOverImage]);
+    factory4 = [(UIKBContainerKeyView *)self factory];
+    -[UIKBRenderFactory setPreferStringKeycapOverImage:](self->_unsplitFactory, "setPreferStringKeycapOverImage:", [factory4 preferStringKeycapOverImage]);
 
     splitFactory = self->_splitFactory;
   }
@@ -597,9 +597,9 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
 
 - (void)addActiveKeyCapView
 {
-  v3 = [(TUIKBKeyView *)self activeKeyCap];
+  activeKeyCap = [(TUIKBKeyView *)self activeKeyCap];
 
-  if (!v3)
+  if (!activeKeyCap)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCB30]);
     [(TUIKBKeyView *)self bounds];
@@ -607,47 +607,47 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(UIKBContainerKeyView *)self keyplane];
+    keyplane = [(UIKBContainerKeyView *)self keyplane];
     v14 = [(TUIKBKeyView *)self key];
-    v15 = [v4 initWithFrame:v13 keyplane:v14 key:{v6, v8, v10, v12}];
+    v15 = [v4 initWithFrame:keyplane keyplane:v14 key:{v6, v8, v10, v12}];
     [(TUIKBKeyView *)self setActiveKeyCap:v15];
 
-    v16 = [(TUIKBKeyView *)self activeKeyCap];
-    [(TUIKBKeyView *)self addSubview:v16];
+    activeKeyCap2 = [(TUIKBKeyView *)self activeKeyCap];
+    [(TUIKBKeyView *)self addSubview:activeKeyCap2];
 
-    v17 = [(TUIKBKeyView *)self activeKeyCap];
-    v18 = [(UIKBContainerKeyView *)self factory];
-    [v17 setFactory:v18];
+    activeKeyCap3 = [(TUIKBKeyView *)self activeKeyCap];
+    factory = [(UIKBContainerKeyView *)self factory];
+    [activeKeyCap3 setFactory:factory];
 
-    v19 = [(TUIKBKeyView *)self activeKeyCap];
-    v20 = [(UIKBContainerKeyView *)self renderConfig];
-    [v19 setRenderConfig:v20];
+    activeKeyCap4 = [(TUIKBKeyView *)self activeKeyCap];
+    renderConfig = [(UIKBContainerKeyView *)self renderConfig];
+    [activeKeyCap4 setRenderConfig:renderConfig];
 
-    v21 = [(TUIKBKeyView *)self activeKeyCap];
+    activeKeyCap5 = [(TUIKBKeyView *)self activeKeyCap];
     [(UIKBContainerKeyView *)self drawFrame];
-    [v21 setDrawFrame:?];
+    [activeKeyCap5 setDrawFrame:?];
 
-    v22 = [(TUIKBKeyView *)self activeKeyCap];
-    [v22 changeBackgroundToActiveIfNecessary];
+    activeKeyCap6 = [(TUIKBKeyView *)self activeKeyCap];
+    [activeKeyCap6 changeBackgroundToActiveIfNecessary];
 
-    v23 = [(TUIKBKeyView *)self activeKeyCap];
-    [v23 setNeedsDisplay];
+    activeKeyCap7 = [(TUIKBKeyView *)self activeKeyCap];
+    [activeKeyCap7 setNeedsDisplay];
 
-    v24 = [(TUIKBKeyView *)self activeKeyCap];
-    [v24 prepareForDisplay];
+    activeKeyCap8 = [(TUIKBKeyView *)self activeKeyCap];
+    [activeKeyCap8 prepareForDisplay];
   }
 }
 
 - (void)resetPanAnimations
 {
-  v3 = [(TUIKBKeyView *)self representedKey];
-  v4 = [v3 displayTypeHint];
+  representedKey = [(TUIKBKeyView *)self representedKey];
+  displayTypeHint = [representedKey displayTypeHint];
 
-  if (v4 == 10)
+  if (displayTypeHint == 10)
   {
     v12 = [(UIKBContainerKeyView *)self layerForRenderFlags:4];
-    v5 = [v12 animationKeys];
-    v6 = [v5 count];
+    animationKeys = [v12 animationKeys];
+    v6 = [animationKeys count];
 
     v7 = v12;
     if (v6)
@@ -674,34 +674,34 @@ void __41__TUIKBKeyView_finishTransitionAnimated___block_invoke_2(uint64_t a1, i
   }
 }
 
-- (void)_startStateTransitionAnimationsFrom:(int)a3 to:(int)a4
+- (void)_startStateTransitionAnimationsFrom:(int)from to:(int)to
 {
-  v6 = [(UIKBContainerKeyView *)self renderConfig];
-  if (![v6 animatedBackground])
+  renderConfig = [(UIKBContainerKeyView *)self renderConfig];
+  if (![renderConfig animatedBackground])
   {
     goto LABEL_4;
   }
 
-  v7 = [(TUIKBKeyView *)self representedKey];
-  if ([v7 displayTypeHint] == 10)
+  representedKey = [(TUIKBKeyView *)self representedKey];
+  if ([representedKey displayTypeHint] == 10)
   {
 
 LABEL_4:
 LABEL_5:
-    v8 = [(TUIKBKeyView *)self activeKeyCap];
+    activeKeyCap = [(TUIKBKeyView *)self activeKeyCap];
 
-    if (!v8)
+    if (!activeKeyCap)
     {
       goto LABEL_8;
     }
 
-    v9 = [(TUIKBKeyView *)self activeKeyCap];
+    activeKeyCap2 = [(TUIKBKeyView *)self activeKeyCap];
 LABEL_7:
-    [v9 removeFromSuperview];
+    [activeKeyCap2 removeFromSuperview];
 
     [(TUIKBKeyView *)self setActiveKeyCap:0];
 LABEL_8:
-    if (a4 == 2)
+    if (to == 2)
     {
 
       [(TUIKBKeyView *)self resetPanAnimations];
@@ -710,44 +710,44 @@ LABEL_8:
     return;
   }
 
-  v10 = [(TUIKBKeyView *)self representedKey];
-  v11 = [v10 displayType];
+  representedKey2 = [(TUIKBKeyView *)self representedKey];
+  displayType = [representedKey2 displayType];
 
-  if (v11 == 7)
+  if (displayType == 7)
   {
     goto LABEL_5;
   }
 
-  v12 = [(TUIKBKeyView *)self activeKeyCap];
-  v9 = v12;
-  if ((a4 & 4) == 0)
+  activeKeyCap3 = [(TUIKBKeyView *)self activeKeyCap];
+  activeKeyCap2 = activeKeyCap3;
+  if ((to & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!activeKeyCap2)
   {
 
     [(TUIKBKeyView *)self addActiveKeyCapView];
   }
 }
 
-- (void)updateLabelWeight:(unint64_t)a3
+- (void)updateLabelWeight:(unint64_t)weight
 {
-  v5 = [(TUIKBKeyView *)self liveContentView];
+  liveContentView = [(TUIKBKeyView *)self liveContentView];
 
-  if (v5)
+  if (liveContentView)
   {
-    v6 = [(TUIKBKeyView *)self liveContentView];
-    [v6 updateLabelWeight:a3];
+    liveContentView2 = [(TUIKBKeyView *)self liveContentView];
+    [liveContentView2 updateLabelWeight:weight];
   }
 }
 
-- (void)updateStateFrom:(int)a3 to:(int)a4
+- (void)updateStateFrom:(int)from to:(int)to
 {
-  [(TUIKBKeyView *)self _startStateTransitionAnimationsFrom:*&a3 to:*&a4];
-  v7 = [(TUIKBKeyView *)self backingKey];
-  if ([v7 layoutType])
+  [(TUIKBKeyView *)self _startStateTransitionAnimationsFrom:*&from to:*&to];
+  backingKey = [(TUIKBKeyView *)self backingKey];
+  if ([backingKey layoutType])
   {
     [(TUIKBKeyView *)self center];
     v6 = v5;
@@ -765,49 +765,49 @@ LABEL_8:
   }
 }
 
-- (void)dimKeyUsingOpacities:(id)a3
+- (void)dimKeyUsingOpacities:(id)opacities
 {
-  v4 = a3;
+  opacitiesCopy = opacities;
   if (objc_opt_respondsToSelector())
   {
     v5.receiver = self;
     v5.super_class = TUIKBKeyView;
-    [(UIKBContainerKeyView *)&v5 dimContentKeyView:v4];
+    [(UIKBContainerKeyView *)&v5 dimContentKeyView:opacitiesCopy];
   }
 }
 
-- (void)updateStyle:(int64_t)a3
+- (void)updateStyle:(int64_t)style
 {
-  if (self->_keyStyle != a3)
+  if (self->_keyStyle != style)
   {
-    self->_keyStyle = a3;
-    v5 = [(TUIKBKeyView *)self liveContentView];
+    self->_keyStyle = style;
+    liveContentView = [(TUIKBKeyView *)self liveContentView];
 
-    if (v5)
+    if (liveContentView)
     {
-      v6 = [(TUIKBKeyView *)self factoryForKeyStyle:a3];
-      v7 = [(TUIKBKeyView *)self representedKey];
-      v8 = [(TUIKBKeyView *)self backingKey];
-      v9 = [v8 keyplane];
-      v18 = [v6 traitsForKey:v7 onKeyplane:v9];
+      v6 = [(TUIKBKeyView *)self factoryForKeyStyle:style];
+      representedKey = [(TUIKBKeyView *)self representedKey];
+      backingKey = [(TUIKBKeyView *)self backingKey];
+      keyplane = [backingKey keyplane];
+      v18 = [v6 traitsForKey:representedKey onKeyplane:keyplane];
 
-      v10 = [(TUIKBKeyView *)self factoryForKeyStyle:a3];
-      v11 = [(TUIKBKeyView *)self representedKey];
-      v12 = [v10 displayContentsForKey:v11];
+      v10 = [(TUIKBKeyView *)self factoryForKeyStyle:style];
+      representedKey2 = [(TUIKBKeyView *)self representedKey];
+      v12 = [v10 displayContentsForKey:representedKey2];
 
-      v13 = [(TUIKBKeyView *)self liveContentView];
-      [v13 updateKeyStyle:a3];
+      liveContentView2 = [(TUIKBKeyView *)self liveContentView];
+      [liveContentView2 updateKeyStyle:style];
 
-      v14 = [(TUIKBKeyView *)self liveContentView];
-      [v14 updateRenderTraits:v18 displayContents:v12];
+      liveContentView3 = [(TUIKBKeyView *)self liveContentView];
+      [liveContentView3 updateRenderTraits:v18 displayContents:v12];
 
-      v15 = [(TUIKBKeyView *)self backingKey];
-      v16 = [v15 layoutType];
+      backingKey2 = [(TUIKBKeyView *)self backingKey];
+      layoutType = [backingKey2 layoutType];
 
-      if (v16 == 3)
+      if (layoutType == 3)
       {
-        v17 = [(TUIKBKeyView *)self representedKey];
-        -[TUIKBKeyView updateLabelWeight:](self, "updateLabelWeight:", [v17 dynamicDisplayCorner]);
+        representedKey3 = [(TUIKBKeyView *)self representedKey];
+        -[TUIKBKeyView updateLabelWeight:](self, "updateLabelWeight:", [representedKey3 dynamicDisplayCorner]);
       }
     }
 
@@ -819,35 +819,35 @@ LABEL_8:
   }
 }
 
-- (void)prepareUpdatesForStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)prepareUpdatesForStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  v7 = [(TUIKBKeyView *)self liveContentView];
+  liveContentView = [(TUIKBKeyView *)self liveContentView];
 
-  if (v7)
+  if (liveContentView)
   {
-    v39 = [(TUIKBKeyView *)self factoryForKeyStyle:a3];
-    v8 = [(TUIKBKeyView *)self representedKey];
-    v9 = [(TUIKBKeyView *)self backingKey];
-    v10 = [v9 keyplane];
-    v11 = [v39 traitsForKey:v8 onKeyplane:v10];
+    v39 = [(TUIKBKeyView *)self factoryForKeyStyle:style];
+    representedKey = [(TUIKBKeyView *)self representedKey];
+    backingKey = [(TUIKBKeyView *)self backingKey];
+    keyplane = [backingKey keyplane];
+    v11 = [v39 traitsForKey:representedKey onKeyplane:keyplane];
 
-    v12 = [(TUIKBKeyView *)self representedKey];
-    v38 = [v39 displayContentsForKey:v12];
+    representedKey2 = [(TUIKBKeyView *)self representedKey];
+    v38 = [v39 displayContentsForKey:representedKey2];
 
-    v13 = [(TUIKBKeyView *)self liveContentView];
-    [v13 updateKeyStyle:a3];
+    liveContentView2 = [(TUIKBKeyView *)self liveContentView];
+    [liveContentView2 updateKeyStyle:style];
 
-    v14 = [(TUIKBKeyView *)self liveContentView];
-    [v14 updateRenderTraits:v11 displayContents:v38];
+    liveContentView3 = [(TUIKBKeyView *)self liveContentView];
+    [liveContentView3 updateRenderTraits:v11 displayContents:v38];
 
-    v15 = [(TUIKBKeyView *)self factoryForKeyStyle:a4];
-    v16 = [(TUIKBKeyView *)self representedKey];
-    v17 = [(TUIKBKeyView *)self backingKey];
-    v18 = [v17 keyplane];
-    v19 = [v15 traitsForKey:v16 onKeyplane:v18];
+    v15 = [(TUIKBKeyView *)self factoryForKeyStyle:toStyle];
+    representedKey3 = [(TUIKBKeyView *)self representedKey];
+    backingKey2 = [(TUIKBKeyView *)self backingKey];
+    keyplane2 = [backingKey2 keyplane];
+    v19 = [v15 traitsForKey:representedKey3 onKeyplane:keyplane2];
 
-    v20 = a3 == 1;
-    v21 = a4 != 1;
+    v20 = style == 1;
+    v21 = toStyle != 1;
     v22 = !v20 || !v21;
     if (v20 && v21)
     {
@@ -871,56 +871,56 @@ LABEL_8:
 
     if (v22)
     {
-      v25 = a4;
+      styleCopy = toStyle;
     }
 
     else
     {
-      v25 = a3;
+      styleCopy = style;
     }
 
     if (!v22)
     {
-      a3 = a4;
+      style = toStyle;
     }
 
     v26 = v24;
     v27 = v23;
     v28 = objc_alloc_init(TUIKeyAnimationProperties);
-    v29 = [v27 geometry];
-    [v29 roundRectRadius];
+    geometry = [v27 geometry];
+    [geometry roundRectRadius];
     [(TUIKeyAnimationProperties *)v28 setStartingCornerRadius:?];
 
-    v30 = [v26 geometry];
-    [v30 roundRectRadius];
+    geometry2 = [v26 geometry];
+    [geometry2 roundRectRadius];
     [(TUIKeyAnimationProperties *)v28 setEndingCornerRadius:?];
 
-    v31 = [v27 symbolStyle];
-    [v31 fontSize];
+    symbolStyle = [v27 symbolStyle];
+    [symbolStyle fontSize];
     [(TUIKeyAnimationProperties *)v28 setStartingFontSize:?];
 
-    v32 = [v26 symbolStyle];
-    [v32 fontSize];
+    symbolStyle2 = [v26 symbolStyle];
+    [symbolStyle2 fontSize];
     [(TUIKeyAnimationProperties *)v28 setEndingFontSize:?];
 
-    v33 = [v27 secondarySymbolStyles];
+    secondarySymbolStyles = [v27 secondarySymbolStyles];
 
-    v34 = [v33 firstObject];
-    [v34 fontSize];
+    firstObject = [secondarySymbolStyles firstObject];
+    [firstObject fontSize];
     [(TUIKeyAnimationProperties *)v28 setStartingSecondaryFontSize:?];
 
-    v35 = [v26 secondarySymbolStyles];
+    secondarySymbolStyles2 = [v26 secondarySymbolStyles];
 
-    v36 = [v35 firstObject];
-    [v36 fontSize];
+    firstObject2 = [secondarySymbolStyles2 firstObject];
+    [firstObject2 fontSize];
     [(TUIKeyAnimationProperties *)v28 setEndingSecondaryFontSize:?];
 
-    [(TUIKBKeyView *)self backgroundInsetsForStyle:v25];
+    [(TUIKBKeyView *)self backgroundInsetsForStyle:styleCopy];
     [(TUIKeyAnimationProperties *)v28 setStartingBackgroundInsets:?];
-    [(TUIKBKeyView *)self backgroundInsetsForStyle:a3];
+    [(TUIKBKeyView *)self backgroundInsetsForStyle:style];
     [(TUIKeyAnimationProperties *)v28 setEndingBackgroundInsets:?];
-    v37 = [(TUIKBKeyView *)self liveContentView];
-    [v37 setAnimationProperties:v28];
+    liveContentView4 = [(TUIKBKeyView *)self liveContentView];
+    [liveContentView4 setAnimationProperties:v28];
   }
 
   else
@@ -930,12 +930,12 @@ LABEL_8:
   }
 }
 
-- (void)setDrawFrame:(CGRect)a3
+- (void)setDrawFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = TUIKBKeyView;
   [(UIKBContainerKeyView *)&v10 setDrawFrame:?];
@@ -945,10 +945,10 @@ LABEL_8:
   v11.size.height = height;
   if (!CGRectIsEmpty(v11) && ![(TUIKBKeyView *)self isTransitioning])
   {
-    v8 = [(UIKBContainerKeyView *)self renderConfig];
-    v9 = [v8 colorAdaptiveBackground];
+    renderConfig = [(UIKBContainerKeyView *)self renderConfig];
+    colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-    if ((v9 & 1) == 0)
+    if ((colorAdaptiveBackground & 1) == 0)
     {
       [(UIKBContainerKeyView *)self setNeedsDisplay];
       [(UIKBContainerKeyView *)self prepareForDisplay];
@@ -956,24 +956,24 @@ LABEL_8:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v6.receiver = self;
   v6.super_class = TUIKBKeyView;
-  [(TUIKBKeyView *)&v6 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TUIKBKeyView *)&v6 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (![(TUIKBKeyView *)self isTransitioning])
   {
-    v4 = [(TUIKBKeyView *)self layoutDelegate];
-    v5 = [(TUIKBKeyView *)self representedKey];
-    [v4 boundsChangedForKey:v5];
+    layoutDelegate = [(TUIKBKeyView *)self layoutDelegate];
+    representedKey = [(TUIKBKeyView *)self representedKey];
+    [layoutDelegate boundsChangedForKey:representedKey];
   }
 }
 
-- (id)shapeWhenMergedWithKey:(id)a3 insets:(UIEdgeInsets)a4
+- (id)shapeWhenMergedWithKey:(id)key insets:(UIEdgeInsets)insets
 {
-  top = a4.top;
-  v5 = a3;
-  [v5 frame];
+  top = insets.top;
+  keyCopy = key;
+  [keyCopy frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -989,7 +989,7 @@ LABEL_8:
   v48.size.height = v13;
   if (CGRectIsEmpty(v48) || (v49.origin.x = v15, v49.origin.y = v17, v49.size.width = v19, v49.size.height = v21, CGRectIsEmpty(v49)) || (v50.origin.x = v7, v50.origin.y = v9, v50.size.width = v11, v50.size.height = v13, v58.origin.x = v15, v58.origin.y = v17, v58.size.width = v19, v58.size.height = v21, v51 = CGRectUnion(v50, v58), y = v51.origin.y, x = v51.origin.x, height = v51.size.height, width = v51.size.width, UIRectInset(), v44 = v52.origin.x, v45 = v52.origin.y, v43 = v52.size.width, v38 = v52.size.height, v59.origin.x = v15, v59.origin.y = v17, v59.size.width = v19, v59.size.height = v21, CGRectEqualToRect(v52, v59)))
   {
-    v22 = [MEMORY[0x1E69DCB70] shape];
+    shape = [MEMORY[0x1E69DCB70] shape];
     goto LABEL_5;
   }
 
@@ -1014,13 +1014,13 @@ LABEL_8:
   v56.size.width = v19;
   v56.size.height = v21;
   v34 = CGRectGetMaxX(v56);
-  v24 = [MEMORY[0x1E69DCB70] shape];
-  [v24 setFrame:{x, y, width, height}];
-  [v24 setPaddedFrame:{v44, v45, v43, v38}];
+  shape2 = [MEMORY[0x1E69DCB70] shape];
+  [shape2 setFrame:{x, y, width, height}];
+  [shape2 setPaddedFrame:{v44, v45, v43, v38}];
   if (vabdd_f64(v36, MinX) >= 5.0 || vabdd_f64(v34, MaxX) >= 5.0)
   {
-    v25 = [v5 rowNumber];
-    if (v25 < [(TUIKBKeyView *)self rowNumber])
+    rowNumber = [keyCopy rowNumber];
+    if (rowNumber < [(TUIKBKeyView *)self rowNumber])
     {
       v26 = v36 - MinX;
       if (v36 - MinX <= 5.0)
@@ -1075,8 +1075,8 @@ LABEL_8:
         v27 = 4;
       }
 
-      [v24 setConcaveCorner:v27];
-      [v24 setConcaveCornerOffset:{v26, top + rect2 - v45}];
+      [shape2 setConcaveCorner:v27];
+      [shape2 setConcaveCornerOffset:{v26, top + rect2 - v45}];
       goto LABEL_29;
     }
   }
@@ -1094,70 +1094,70 @@ LABEL_8:
     if (!CGRectEqualToRect(v57, v60))
     {
 LABEL_29:
-      v28 = v24;
+      shape3 = shape2;
       goto LABEL_30;
     }
   }
 
-  v28 = [MEMORY[0x1E69DCB70] shape];
+  shape3 = [MEMORY[0x1E69DCB70] shape];
 LABEL_30:
-  v22 = v28;
+  shape = shape3;
 
 LABEL_5:
 
-  return v22;
+  return shape;
 }
 
-- (TUIKBKeyView)initWithKey:(id)a3
+- (TUIKBKeyView)initWithKey:(id)key
 {
-  v5 = a3;
-  v6 = [v5 keyplane];
-  v7 = [v5 backingTree];
+  keyCopy = key;
+  keyplane = [keyCopy keyplane];
+  backingTree = [keyCopy backingTree];
   v31.receiver = self;
   v31.super_class = TUIKBKeyView;
-  v8 = [(UIKBContainerKeyView *)&v31 initWithFrame:v6 keyplane:v7 key:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v8 = [(UIKBContainerKeyView *)&v31 initWithFrame:keyplane keyplane:backingTree key:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   if (!v8)
   {
     goto LABEL_27;
   }
 
-  v8->_keyStyle = [v5 style];
-  objc_storeStrong(&v8->_backingKey, a3);
-  if ([v5 style] == -1)
+  v8->_keyStyle = [keyCopy style];
+  objc_storeStrong(&v8->_backingKey, key);
+  if ([keyCopy style] == -1)
   {
     v8->_keyStyle = 2;
   }
 
-  v9 = [v5 backingTree];
+  backingTree2 = [keyCopy backingTree];
   representedKey = v8->_representedKey;
-  v8->_representedKey = v9;
+  v8->_representedKey = backingTree2;
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v5 backingTree];
-  v13 = [v12 displayString];
-  v14 = [v11 stringWithFormat:@"%@_key", v13];
+  backingTree3 = [keyCopy backingTree];
+  displayString = [backingTree3 displayString];
+  v14 = [v11 stringWithFormat:@"%@_key", displayString];
   [(TUIKBKeyView *)v8 setAccessibilityIdentifier:v14];
 
-  if ([v5 layoutType] == 3)
+  if ([keyCopy layoutType] == 3)
   {
     v8->_layoutType = 3;
-    if ([v5 layoutShape] == 2)
+    if ([keyCopy layoutShape] == 2)
     {
-      v15 = [v5 layoutShape];
+      layoutShape = [keyCopy layoutShape];
     }
 
     else
     {
-      v15 = 0;
+      layoutShape = 0;
     }
 
-    v8->_layoutShape = v15;
-    [v5 multiplier];
+    v8->_layoutShape = layoutShape;
+    [keyCopy multiplier];
     if (v21 > 0.0)
     {
 LABEL_23:
-      [v5 multiplier];
+      [keyCopy multiplier];
       v8->_multiplier = v25;
       goto LABEL_24;
     }
@@ -1165,50 +1165,50 @@ LABEL_23:
 
   else
   {
-    if ([v5 layoutType] == 4)
+    if ([keyCopy layoutType] == 4)
     {
       v8->_layoutType = 4;
-      [v5 multiplier];
+      [keyCopy multiplier];
       v17 = v16;
       v18 = 1.0;
       if (v17 > 0.0)
       {
-        [v5 multiplier];
+        [keyCopy multiplier];
       }
 
       v8->_multiplier = v18;
       v8->_layoutShape = 0;
-      v19 = [v5 backingTree];
-      v20 = [v19 name];
-      [(TUIKBKeyView *)v8 setAccessibilityIdentifier:v20];
+      backingTree4 = [keyCopy backingTree];
+      name = [backingTree4 name];
+      [(TUIKBKeyView *)v8 setAccessibilityIdentifier:name];
 
       goto LABEL_24;
     }
 
-    if ([v5 layoutShape] == -1)
+    if ([keyCopy layoutShape] == -1)
     {
-      v22 = 0;
+      layoutShape2 = 0;
     }
 
     else
     {
-      v22 = [v5 layoutShape];
+      layoutShape2 = [keyCopy layoutShape];
     }
 
-    v8->_layoutShape = v22;
-    if ([v5 layoutType] == -1)
+    v8->_layoutShape = layoutShape2;
+    if ([keyCopy layoutType] == -1)
     {
-      v23 = 2;
+      layoutType = 2;
     }
 
     else
     {
-      v23 = [v5 layoutType];
+      layoutType = [keyCopy layoutType];
     }
 
-    v8->_layoutType = v23;
-    [v5 multiplier];
-    if (v24 > 0.0 || ![v5 layoutType])
+    v8->_layoutType = layoutType;
+    [keyCopy multiplier];
+    if (v24 > 0.0 || ![keyCopy layoutType])
     {
       goto LABEL_23;
     }
@@ -1216,14 +1216,14 @@ LABEL_23:
 
   v8->_multiplier = 1.0;
 LABEL_24:
-  v26 = [v5 backingTree];
-  v27 = [v26 displayType];
+  backingTree5 = [keyCopy backingTree];
+  displayType = [backingTree5 displayType];
 
-  if (v27 == 1 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (displayType == 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v28 = [v5 backingTree];
-    v29 = [v5 keyplane];
-    [(TUIKBKeyView *)v8 performSelector:sel_updateSpecialtyKeyViewForKey_inKeyplane_ withObject:v28 withObject:v29];
+    backingTree6 = [keyCopy backingTree];
+    keyplane2 = [keyCopy keyplane];
+    [(TUIKBKeyView *)v8 performSelector:sel_updateSpecialtyKeyViewForKey_inKeyplane_ withObject:backingTree6 withObject:keyplane2];
   }
 
 LABEL_27:

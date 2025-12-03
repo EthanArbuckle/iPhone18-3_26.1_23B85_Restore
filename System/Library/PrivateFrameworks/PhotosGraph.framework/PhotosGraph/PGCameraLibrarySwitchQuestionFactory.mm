@@ -1,99 +1,99 @@
 @interface PGCameraLibrarySwitchQuestionFactory
-+ (BOOL)isSharedLibraryQuestionsEnabledForPhotoLibrary:(id)a3;
-+ (id)_libraryScopeFromPhotoLibrary:(id)a3;
-- (id)_assetsFetchResultFromMoment:(id)a3;
++ (BOOL)isSharedLibraryQuestionsEnabledForPhotoLibrary:(id)library;
++ (id)_libraryScopeFromPhotoLibrary:(id)library;
+- (id)_assetsFetchResultFromMoment:(id)moment;
 - (id)_momentsForQuestions;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGCameraLibrarySwitchQuestionFactory
 
-+ (id)_libraryScopeFromPhotoLibrary:(id)a3
++ (id)_libraryScopeFromPhotoLibrary:(id)library
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v3 = [a3 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v17[0] = v4;
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v17[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  [v3 setSortDescriptors:v6];
+  [librarySpecificFetchOptions setSortDescriptors:v6];
 
-  v7 = [MEMORY[0x277CD98A8] fetchActiveLibraryScopeWithOptions:v3];
+  v7 = [MEMORY[0x277CD98A8] fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
   if ([v7 count])
   {
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     if ([v7 count] < 2)
     {
       goto LABEL_9;
     }
 
     v9 = +[PGLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 localIdentifier];
+      localIdentifier = [firstObject localIdentifier];
       v15 = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "[PGCameraLibrarySwitchQuestionFactory] more than 1 scope configured, using first one: %@", &v15, 0xCu);
+      v16 = localIdentifier;
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PGCameraLibrarySwitchQuestionFactory] more than 1 scope configured, using first one: %@", &v15, 0xCu);
     }
   }
 
   else
   {
     v12 = +[PGLogging sharedLogging];
-    v10 = [v12 loggingConnection];
+    loggingConnection = [v12 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       LOWORD(v15) = 0;
-      _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] no active scope", &v15, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] no active scope", &v15, 2u);
     }
 
-    v8 = 0;
+    firstObject = 0;
   }
 
 LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
-+ (BOOL)isSharedLibraryQuestionsEnabledForPhotoLibrary:(id)a3
++ (BOOL)isSharedLibraryQuestionsEnabledForPhotoLibrary:(id)library
 {
-  v3 = [a1 _libraryScopeFromPhotoLibrary:a3];
+  v3 = [self _libraryScopeFromPhotoLibrary:library];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_assetsFetchResultFromMoment:(id)a3
+- (id)_assetsFetchResultFromMoment:(id)moment
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGSurveyQuestionFactory *)self workingContext];
-  v6 = [v5 photoLibrary];
+  momentCopy = moment;
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
 
-  v7 = [v6 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v18[0] = v8;
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-  [v7 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setSortDescriptors:v10];
 
   v11 = *MEMORY[0x277CD9AB8];
   v17[0] = *MEMORY[0x277CD9A78];
   v17[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  [v7 setFetchPropertySets:v12];
+  [librarySpecificFetchOptions setFetchPropertySets:v12];
 
   v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d || %K== %d", @"additionalAttributes.importedBy", 1, @"additionalAttributes.importedBy", 2];
-  [v7 setInternalPredicate:v13];
+  [librarySpecificFetchOptions setInternalPredicate:v13];
 
-  [v7 setWantsIncrementalChangeDetails:0];
-  v14 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v4 options:v7];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  v14 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:momentCopy options:librarySpecificFetchOptions];
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -103,72 +103,72 @@ LABEL_9:
 - (id)_momentsForQuestions
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v2 = [(PGSurveyQuestionFactory *)self workingContext];
-  v3 = [v2 photoLibrary];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
 
-  v4 = [objc_opt_class() _libraryScopeFromPhotoLibrary:v3];
+  v4 = [objc_opt_class() _libraryScopeFromPhotoLibrary:photoLibrary];
   if (v4)
   {
-    v5 = [v3 librarySpecificFetchOptions];
-    [v5 setFetchLimit:1];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
     v32[0] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-    [v5 setSortDescriptors:v7];
+    [librarySpecificFetchOptions setSortDescriptors:v7];
 
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K & %i) != 0", @"libraryScopeShareState", 8];
-    [v5 setInternalPredicate:v8];
+    [librarySpecificFetchOptions setInternalPredicate:v8];
 
-    v9 = [MEMORY[0x277CD97A8] fetchAssetsInLibraryScope:v4 options:v5];
+    v9 = [MEMORY[0x277CD97A8] fetchAssetsInLibraryScope:v4 options:librarySpecificFetchOptions];
     if ([v9 count])
     {
-      v10 = [v9 firstObject];
-      v11 = [v10 creationDate];
+      firstObject = [v9 firstObject];
+      creationDate = [firstObject creationDate];
 
       v12 = +[PGLogging sharedLogging];
-      v13 = [v12 loggingConnection];
+      loggingConnection = [v12 loggingConnection];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
-        v14 = [v4 localIdentifier];
+        localIdentifier = [v4 localIdentifier];
         *buf = 138412546;
-        v29 = v14;
+        v29 = localIdentifier;
         v30 = 2112;
-        v31 = v11;
-        _os_log_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] getting moments from active scope: %@, first smart share date: %@", buf, 0x16u);
+        v31 = creationDate;
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] getting moments from active scope: %@, first smart share date: %@", buf, 0x16u);
       }
 
-      v15 = [v3 librarySpecificFetchOptions];
+      librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
       v27 = *MEMORY[0x277CD9AA8];
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-      [v15 setFetchPropertySets:v16];
+      [librarySpecificFetchOptions2 setFetchPropertySets:v16];
 
-      [v15 setFetchLimit:100];
+      [librarySpecificFetchOptions2 setFetchLimit:100];
       v17 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
       v26[0] = v17;
       v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
       v26[1] = v18;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-      [v15 setSortDescriptors:v19];
+      [librarySpecificFetchOptions2 setSortDescriptors:v19];
 
-      v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"endDate >= %@", v11];
-      [v15 setPredicate:v20];
+      v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"endDate >= %@", creationDate];
+      [librarySpecificFetchOptions2 setPredicate:v20];
 
-      [v15 setWantsIncrementalChangeDetails:0];
-      v21 = [MEMORY[0x277CD98F8] fetchMomentsWithOptions:v15];
+      [librarySpecificFetchOptions2 setWantsIncrementalChangeDetails:0];
+      v21 = [MEMORY[0x277CD98F8] fetchMomentsWithOptions:librarySpecificFetchOptions2];
     }
 
     else
     {
       v22 = +[PGLogging sharedLogging];
-      v11 = [v22 loggingConnection];
+      creationDate = [v22 loggingConnection];
 
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(creationDate, OS_LOG_TYPE_INFO))
       {
-        v23 = [v4 localIdentifier];
+        localIdentifier2 = [v4 localIdentifier];
         *buf = 138412290;
-        v29 = v23;
-        _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] no smart sharing assets in library scope: %@", buf, 0xCu);
+        v29 = localIdentifier2;
+        _os_log_impl(&dword_22F0FC000, creationDate, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] no smart sharing assets in library scope: %@", buf, 0xCu);
       }
 
       v21 = 0;
@@ -185,36 +185,36 @@ LABEL_9:
   return v21;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v112 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = _Block_copy(v5);
+  blockCopy = block;
+  v6 = _Block_copy(blockCopy);
   v7 = 0.0;
   if (!v6 || (v8 = CFAbsoluteTimeGetCurrent(), v8 < 0.01))
   {
 LABEL_8:
-    v10 = [(PGSurveyQuestionFactory *)self workingContext];
-    v11 = [v10 photoLibrary];
+    workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+    photoLibrary = [workingContext photoLibrary];
 
-    if ([objc_opt_class() isSharedLibraryQuestionsEnabledForPhotoLibrary:v11])
+    if ([objc_opt_class() isSharedLibraryQuestionsEnabledForPhotoLibrary:photoLibrary])
     {
-      if (a3)
+      if (limit)
       {
-        v12 = [objc_opt_class() _libraryScopeFromPhotoLibrary:v11];
+        v12 = [objc_opt_class() _libraryScopeFromPhotoLibrary:photoLibrary];
         v13 = v12;
         if (!v12)
         {
-          v9 = MEMORY[0x277CBEBF8];
+          allObjects = MEMORY[0x277CBEBF8];
 LABEL_100:
 
           goto LABEL_101;
         }
 
-        v86 = [v12 uuid];
+        uuid = [v12 uuid];
         v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        v15 = [(PGCameraLibrarySwitchQuestionFactory *)self _momentsForQuestions];
-        v16 = [v15 count];
+        _momentsForQuestions = [(PGCameraLibrarySwitchQuestionFactory *)self _momentsForQuestions];
+        v16 = [_momentsForQuestions count];
         if (v16)
         {
           v17 = v16;
@@ -222,7 +222,7 @@ LABEL_100:
           v104 = 0u;
           v101 = 0u;
           v102 = 0u;
-          v18 = v15;
+          v18 = _momentsForQuestions;
           v77 = [v18 countByEnumeratingWithState:&v101 objects:v111 count:16];
           if (v77)
           {
@@ -230,13 +230,13 @@ LABEL_100:
             v20 = *v102;
             v21 = 0.0;
             v75 = v6;
-            v76 = v5;
+            v76 = blockCopy;
             v73 = v13;
-            v74 = v11;
+            v74 = photoLibrary;
             v83 = v14;
             v71 = v18;
-            v72 = v15;
-            v85 = self;
+            v72 = _momentsForQuestions;
+            selfCopy = self;
             v70 = *v102;
 LABEL_14:
             v22 = 0;
@@ -269,7 +269,7 @@ LABEL_15:
 LABEL_21:
               context = objc_autoreleasePoolPush();
               v26 = [(PGCameraLibrarySwitchQuestionFactory *)self _assetsFetchResultFromMoment:v24];
-              v93 = [MEMORY[0x277CBEAA8] distantPast];
+              distantPast = [MEMORY[0x277CBEAA8] distantPast];
               v97 = 0u;
               v98 = 0u;
               v99 = 0u;
@@ -320,13 +320,13 @@ LABEL_64:
                   }
 
                   v6 = v75;
-                  v5 = v76;
+                  blockCopy = v76;
                   v13 = v73;
-                  v11 = v74;
+                  photoLibrary = v74;
                   v14 = v83;
                   v18 = v71;
-                  v15 = v72;
-                  self = v85;
+                  _momentsForQuestions = v72;
+                  self = selfCopy;
                   v64 = v92;
 LABEL_68:
 
@@ -351,29 +351,29 @@ LABEL_68:
                 }
               }
 
-              v38 = [v37 libraryScopeProperties];
-              v39 = [v38 suggestedByClientType];
-              v88 = v39 == 3;
-              v95 = [v38 assetRejectedByCamera];
-              v87 = v39 == 2;
-              if (v39 == -1)
+              libraryScopeProperties = [v37 libraryScopeProperties];
+              suggestedByClientType = [libraryScopeProperties suggestedByClientType];
+              v88 = suggestedByClientType == 3;
+              assetRejectedByCamera = [libraryScopeProperties assetRejectedByCamera];
+              v87 = suggestedByClientType == 2;
+              if (suggestedByClientType == -1)
               {
-                v91 = [v38 assetManuallyRejectedByUser];
+                assetManuallyRejectedByUser = [libraryScopeProperties assetManuallyRejectedByUser];
               }
 
               else
               {
-                v91 = 0;
+                assetManuallyRejectedByUser = 0;
                 v40 = 0;
                 v41 = @"auto on";
-                if (v39 == 3)
+                if (suggestedByClientType == 3)
                 {
 LABEL_41:
                   v89 = v40;
                   v94 = v41;
-                  v43 = [v37 creationDate];
-                  [v43 timeIntervalSinceDate:v93];
-                  if (v44 >= 180.0 || (v33 & ((v39 & 0xFFFE) == 2)) != 0 || (v32 & (v91 | v95) & 1) != 0 || ((v31 | v30) & ((v39 == 3) | v95) & 1) != 0 || ((v29 ^ v89) & 1) != 0)
+                  creationDate = [v37 creationDate];
+                  [creationDate timeIntervalSinceDate:distantPast];
+                  if (v44 >= 180.0 || (v33 & ((suggestedByClientType & 0xFFFE) == 2)) != 0 || (v32 & (assetManuallyRejectedByUser | assetRejectedByCamera) & 1) != 0 || ((v31 | v30) & ((suggestedByClientType == 3) | assetRejectedByCamera) & 1) != 0 || ((v29 ^ v89) & 1) != 0)
                   {
                     v45 = v92;
                     v46 = @"none";
@@ -384,29 +384,29 @@ LABEL_41:
 
                     v47 = v46;
                     v48 = [PGCameraLibrarySwitchQuestion alloc];
-                    v49 = [v37 uuid];
-                    v50 = [(PGCameraLibrarySwitchQuestion *)v48 initWithAssetUUID:v49 libraryScopeUUID:v86 previousSwitchState:v47 currentSwitchState:v94];
+                    uuid2 = [v37 uuid];
+                    v50 = [(PGCameraLibrarySwitchQuestion *)v48 initWithAssetUUID:uuid2 libraryScopeUUID:uuid previousSwitchState:v47 currentSwitchState:v94];
 
                     v14 = v83;
-                    if ([(PGSurveyQuestionFactory *)v85 shouldAddQuestion:v50 toAlreadyGeneratedQuestions:v83])
+                    if ([(PGSurveyQuestionFactory *)selfCopy shouldAddQuestion:v50 toAlreadyGeneratedQuestions:v83])
                     {
                       v51 = +[PGLogging sharedLogging];
-                      v52 = [v51 loggingConnection];
+                      loggingConnection = [v51 loggingConnection];
 
-                      if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
+                      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
                       {
-                        v53 = [v37 uuid];
+                        uuid3 = [v37 uuid];
                         *buf = 138412802;
-                        *v107 = v53;
+                        *v107 = uuid3;
                         *&v107[8] = 2112;
                         *&v107[10] = v47;
                         v108 = 2112;
                         v109 = v94;
-                        _os_log_impl(&dword_22F0FC000, v52, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] question for asset %@, camera library switch state: %@ -> %@", buf, 0x20u);
+                        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] question for asset %@, camera library switch state: %@ -> %@", buf, 0x20u);
                       }
 
                       [v83 addObject:v50];
-                      if ([v83 count] >= a3)
+                      if ([v83 count] >= limit)
                       {
                         goto LABEL_90;
                       }
@@ -421,13 +421,13 @@ LABEL_41:
                       }
 
                       v55 = v54;
-                      v56 = [[PGCameraLibrarySwitchQuestion alloc] initWithAssetUUID:v96 libraryScopeUUID:v86 previousSwitchState:v55 currentSwitchState:v47];
-                      if ([(PGSurveyQuestionFactory *)v85 shouldAddQuestion:v56 toAlreadyGeneratedQuestions:v83])
+                      v56 = [[PGCameraLibrarySwitchQuestion alloc] initWithAssetUUID:v96 libraryScopeUUID:uuid previousSwitchState:v55 currentSwitchState:v47];
+                      if ([(PGSurveyQuestionFactory *)selfCopy shouldAddQuestion:v56 toAlreadyGeneratedQuestions:v83])
                       {
                         v57 = +[PGLogging sharedLogging];
-                        v58 = [v57 loggingConnection];
+                        loggingConnection2 = [v57 loggingConnection];
 
-                        if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
+                        if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
                         {
                           *buf = 138412802;
                           *v107 = v96;
@@ -435,12 +435,12 @@ LABEL_41:
                           *&v107[10] = v55;
                           v108 = 2112;
                           v109 = v47;
-                          _os_log_impl(&dword_22F0FC000, v58, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] question for previous asset %@, camera library switch state: %@ -> %@", buf, 0x20u);
+                          _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[PGCameraLibrarySwitchQuestionFactory] question for previous asset %@, camera library switch state: %@ -> %@", buf, 0x20u);
                         }
 
                         v14 = v83;
                         [v83 addObject:v56];
-                        if ([v83 count] >= a3)
+                        if ([v83 count] >= limit)
                         {
 
                           v45 = v92;
@@ -448,18 +448,18 @@ LABEL_90:
 
                           objc_autoreleasePoolPop(context);
                           v6 = v75;
-                          v5 = v76;
+                          blockCopy = v76;
                           v13 = v73;
-                          v11 = v74;
+                          photoLibrary = v74;
                           v18 = v71;
-                          v15 = v72;
+                          _momentsForQuestions = v72;
                           goto LABEL_91;
                         }
                       }
                     }
                   }
 
-                  v59 = v43;
+                  v59 = creationDate;
 
                   v60 = @"none";
                   if (v92)
@@ -470,17 +470,17 @@ LABEL_90:
                   v61 = v60;
 
                   v62 = v94;
-                  v63 = [v37 uuid];
+                  uuid4 = [v37 uuid];
 
-                  v96 = v63;
+                  v96 = uuid4;
                   v90 = v61;
                   v92 = v62;
-                  v93 = v59;
+                  distantPast = v59;
                   v32 = v88;
                   v29 = v89;
-                  v30 = v91;
+                  v30 = assetManuallyRejectedByUser;
                   v31 = v87;
-                  v33 = v95;
+                  v33 = assetRejectedByCamera;
                   v27 = v81;
                   v35 = v82;
                   v34 = v80;
@@ -488,18 +488,18 @@ LABEL_90:
                 }
               }
 
-              if (v39 == 2)
+              if (suggestedByClientType == 2)
               {
                 v42 = 1;
               }
 
               else
               {
-                v42 = v95;
+                v42 = assetRejectedByCamera;
               }
 
               v41 = @"user on";
-              if (v95)
+              if (assetRejectedByCamera)
               {
                 v41 = @"auto off";
               }
@@ -512,12 +512,12 @@ LABEL_90:
               else
               {
                 v41 = @"default off";
-                if (v91)
+                if (assetManuallyRejectedByUser)
                 {
                   v41 = @"user off";
                 }
 
-                v40 = v91 ^ 1;
+                v40 = assetManuallyRejectedByUser ^ 1;
               }
 
               goto LABEL_41;
@@ -539,14 +539,14 @@ LABEL_91:
 
           if (!v6 || CFAbsoluteTimeGetCurrent() - v7 < 0.01 || (v105 = 0, v6[2](v6, &v105, 1.0), !v105))
           {
-            v9 = [v14 allObjects];
+            allObjects = [v14 allObjects];
             goto LABEL_99;
           }
 
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
 LABEL_97:
-            v9 = MEMORY[0x277CBEBF8];
+            allObjects = MEMORY[0x277CBEBF8];
 LABEL_99:
 
             goto LABEL_100;
@@ -592,7 +592,7 @@ LABEL_99:
       if (!v6 || CFAbsoluteTimeGetCurrent() - v7 < 0.01 || (v105 = 0, v6[2](v6, &v105, 1.0), !v105) || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
 LABEL_82:
-        v9 = MEMORY[0x277CBEBF8];
+        allObjects = MEMORY[0x277CBEBF8];
 LABEL_101:
 
         goto LABEL_102;
@@ -652,12 +652,12 @@ LABEL_101:
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
   }
 
-  v9 = MEMORY[0x277CBEBF8];
+  allObjects = MEMORY[0x277CBEBF8];
 LABEL_102:
 
   v68 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return allObjects;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MCAppEnforcedRestrictions
-+ (id)enforcedRestrictionsForBundleID:(id)a3 countryCode:(id)a4;
++ (id)enforcedRestrictionsForBundleID:(id)d countryCode:(id)code;
 + (id)restrictionEnforcingApps;
-+ (id)setOfActiveRestrictionUUIDsForCountryCode:(id)a3;
++ (id)setOfActiveRestrictionUUIDsForCountryCode:(id)code;
 @end
 
 @implementation MCAppEnforcedRestrictions
@@ -18,13 +18,13 @@
   return v3;
 }
 
-+ (id)enforcedRestrictionsForBundleID:(id)a3 countryCode:(id)a4
++ (id)enforcedRestrictionsForBundleID:(id)d countryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  codeCopy = code;
+  if (codeCopy)
   {
-    v8 = [NSSet setWithObject:v7];
+    v8 = [NSSet setWithObject:codeCopy];
   }
 
   else
@@ -32,8 +32,8 @@
     v8 = 0;
   }
 
-  v9 = [a1 restrictionEnforcingApps];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  restrictionEnforcingApps = [self restrictionEnforcingApps];
+  v10 = [restrictionEnforcingApps objectForKeyedSubscript:dCopy];
 
   if (v10)
   {
@@ -42,7 +42,7 @@
 
     if (v12)
     {
-      v13 = [MCAppEnforcedRestrictionUtilities enforcedRestrictionsForBundleID:v6 restrictionPlistURL:v12 countryCodes:v8];
+      v13 = [MCAppEnforcedRestrictionUtilities enforcedRestrictionsForBundleID:dCopy restrictionPlistURL:v12 countryCodes:v8];
     }
 
     else
@@ -51,7 +51,7 @@
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
       {
         v17 = 138543362;
-        v18 = v6;
+        v18 = dCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Could not find restriction plist for app “%{public}@”", &v17, 0xCu);
       }
 
@@ -65,7 +65,7 @@
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v17 = 138543362;
-      v18 = v6;
+      v18 = dCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Attempted to enforce restrictions for unhandled app “%{public}@”", &v17, 0xCu);
     }
 
@@ -75,9 +75,9 @@
   return v13;
 }
 
-+ (id)setOfActiveRestrictionUUIDsForCountryCode:(id)a3
++ (id)setOfActiveRestrictionUUIDsForCountryCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = +[NSMutableSet set];
   v14 = 0u;
   v15 = 0u;
@@ -99,7 +99,7 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [MCAppEnforcedRestrictions enforcedRestrictionsForBundleID:v10 countryCode:v3];
+        v11 = [MCAppEnforcedRestrictions enforcedRestrictionsForBundleID:v10 countryCode:codeCopy];
         if ([v11 count])
         {
           v12 = [MCAppEnforcedRestrictionUtilities clientUUIDForBundleID:v10];

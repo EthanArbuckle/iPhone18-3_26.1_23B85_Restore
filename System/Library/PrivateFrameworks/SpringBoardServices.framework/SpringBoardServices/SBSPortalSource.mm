@@ -1,31 +1,31 @@
 @interface SBSPortalSource
-- (BOOL)isEqual:(id)a3;
-- (SBSPortalSource)initWithCoder:(id)a3;
-- (SBSPortalSource)initWithSourceContextID:(unsigned int)a3 sourceLayerRenderID:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (SBSPortalSource)initWithCoder:(id)coder;
+- (SBSPortalSource)initWithSourceContextID:(unsigned int)d sourceLayerRenderID:(unint64_t)iD;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSPortalSource
 
-- (SBSPortalSource)initWithSourceContextID:(unsigned int)a3 sourceLayerRenderID:(unint64_t)a4
+- (SBSPortalSource)initWithSourceContextID:(unsigned int)d sourceLayerRenderID:(unint64_t)iD
 {
   v7.receiver = self;
   v7.super_class = SBSPortalSource;
   result = [(SBSPortalSource *)&v7 init];
   if (result)
   {
-    result->_sourceContextID = a3;
-    result->_sourceLayerRenderID = a4;
+    result->_sourceContextID = d;
+    result->_sourceLayerRenderID = iD;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -33,7 +33,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_sourceContextID == self->_sourceContextID && v4->_sourceLayerRenderID == self->_sourceLayerRenderID;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_sourceContextID == self->_sourceContextID && equalCopy->_sourceLayerRenderID == self->_sourceLayerRenderID;
   }
 
   return v5;
@@ -49,27 +49,27 @@
   return v6;
 }
 
-- (SBSPortalSource)initWithCoder:(id)a3
+- (SBSPortalSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SBSPortalSource;
   v5 = [(SBSPortalSource *)&v7 init];
   if (v5)
   {
-    v5->_sourceContextID = [v4 decodeInt32ForKey:@"sourceContextID"];
-    v5->_sourceLayerRenderID = [v4 decodeInt64ForKey:@"sourceLayerRenderID"];
+    v5->_sourceContextID = [coderCopy decodeInt32ForKey:@"sourceContextID"];
+    v5->_sourceLayerRenderID = [coderCopy decodeInt64ForKey:@"sourceLayerRenderID"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceContextID = self->_sourceContextID;
-  v5 = a3;
-  [v5 encodeInt32:sourceContextID forKey:@"sourceContextID"];
-  [v5 encodeInt64:self->_sourceLayerRenderID forKey:@"sourceLayerRenderID"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:sourceContextID forKey:@"sourceContextID"];
+  [coderCopy encodeInt64:self->_sourceLayerRenderID forKey:@"sourceLayerRenderID"];
 }
 
 @end

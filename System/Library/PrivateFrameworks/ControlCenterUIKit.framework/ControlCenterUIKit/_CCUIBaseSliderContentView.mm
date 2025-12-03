@@ -1,6 +1,6 @@
 @interface _CCUIBaseSliderContentView
 - (CCUIBaseSliderView)containingSliderView;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 @end
 
 @implementation _CCUIBaseSliderContentView
@@ -12,13 +12,13 @@
   return WeakRetained;
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = _CCUIBaseSliderContentView;
-  [(_CCUIBaseSliderContentView *)&v5 didAddSubview:a3];
-  v4 = [(_CCUIBaseSliderContentView *)self containingSliderView];
-  [v4 setNeedsLayout];
+  [(_CCUIBaseSliderContentView *)&v5 didAddSubview:subview];
+  containingSliderView = [(_CCUIBaseSliderContentView *)self containingSliderView];
+  [containingSliderView setNeedsLayout];
 }
 
 @end

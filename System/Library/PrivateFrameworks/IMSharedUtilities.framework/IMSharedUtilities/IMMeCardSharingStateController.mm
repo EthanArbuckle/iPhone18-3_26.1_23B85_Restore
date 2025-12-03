@@ -8,11 +8,11 @@
 - (void)_migrateMeCardDomains;
 - (void)_syncPreferenceDidChange;
 - (void)postNameFormatChangedNotification;
-- (void)setImageForkedFromMeCard:(BOOL)a3;
-- (void)setNameForkedFromMeCard:(BOOL)a3;
-- (void)setNameFormat:(unint64_t)a3;
-- (void)setSharingAudience:(unint64_t)a3;
-- (void)setSharingEnabled:(BOOL)a3;
+- (void)setImageForkedFromMeCard:(BOOL)card;
+- (void)setNameForkedFromMeCard:(BOOL)card;
+- (void)setNameFormat:(unint64_t)format;
+- (void)setSharingAudience:(unint64_t)audience;
+- (void)setSharingEnabled:(BOOL)enabled;
 @end
 
 @implementation IMMeCardSharingStateController
@@ -92,9 +92,9 @@
   return v2;
 }
 
-- (void)setSharingEnabled:(BOOL)a3
+- (void)setSharingEnabled:(BOOL)enabled
 {
-  [MEMORY[0x1E696AD98] numberWithBool:a3];
+  [MEMORY[0x1E696AD98] numberWithBool:enabled];
   IMSetDomainValueForKey();
 
   MEMORY[0x1EEE66B58](self, sel__syncPreferenceDidChange);
@@ -112,22 +112,22 @@
   return v3;
 }
 
-- (void)setSharingAudience:(unint64_t)a3
+- (void)setSharingAudience:(unint64_t)audience
 {
-  if (a3 <= 1)
+  if (audience <= 1)
   {
-    a3 = 1;
+    audience = 1;
   }
 
-  [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  [MEMORY[0x1E696AD98] numberWithUnsignedInteger:audience];
   IMSetDomainValueForKey();
 
   MEMORY[0x1EEE66B58](self, sel__syncPreferenceDidChange);
 }
 
-- (void)setNameFormat:(unint64_t)a3
+- (void)setNameFormat:(unint64_t)format
 {
-  [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  [MEMORY[0x1E696AD98] numberWithUnsignedInteger:format];
 
   IMSetDomainValueForKey();
 }
@@ -139,17 +139,17 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.MeCardSharingNameFormat.changed", 0, 0, 1u);
 }
 
-- (void)setNameForkedFromMeCard:(BOOL)a3
+- (void)setNameForkedFromMeCard:(BOOL)card
 {
-  [MEMORY[0x1E696AD98] numberWithBool:a3];
+  [MEMORY[0x1E696AD98] numberWithBool:card];
   IMSetDomainValueForKey();
 
   MEMORY[0x1EEE66B58](self, sel__syncPreferenceDidChange);
 }
 
-- (void)setImageForkedFromMeCard:(BOOL)a3
+- (void)setImageForkedFromMeCard:(BOOL)card
 {
-  [MEMORY[0x1E696AD98] numberWithBool:a3];
+  [MEMORY[0x1E696AD98] numberWithBool:card];
   IMSetDomainValueForKey();
 
   MEMORY[0x1EEE66B58](self, sel__syncPreferenceDidChange);
@@ -179,9 +179,9 @@
 - (void)_syncPreferenceDidChange
 {
   [(IMMeCardSharingStateController *)self _incrementSharingVersion];
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v2 postNotificationName:@"__kIMNicknamePreferencesDidChangeNotification" object:0];
+  [defaultCenter postNotificationName:@"__kIMNicknamePreferencesDidChangeNotification" object:0];
 }
 
 - (BOOL)wasSharingEverEnabled

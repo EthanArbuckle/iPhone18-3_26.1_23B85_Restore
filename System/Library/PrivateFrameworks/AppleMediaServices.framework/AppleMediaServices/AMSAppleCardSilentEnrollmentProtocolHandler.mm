@@ -1,25 +1,25 @@
 @interface AMSAppleCardSilentEnrollmentProtocolHandler
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler;
 @end
 
 @implementation AMSAppleCardSilentEnrollmentProtocolHandler
 
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
+  redirectCopy = redirect;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __109__AMSAppleCardSilentEnrollmentProtocolHandler_reconfigureNewRequest_originalTask_redirect_completionHandler___block_invoke;
   v13[3] = &unk_1E73B3A10;
-  v15 = v6;
+  v15 = redirectCopy;
   v13[4] = self;
-  v14 = v10;
+  v14 = handlerCopy;
   v12.receiver = self;
   v12.super_class = AMSAppleCardSilentEnrollmentProtocolHandler;
-  v11 = v10;
-  [(AMSURLProtocolHandler *)&v12 reconfigureNewRequest:a3 originalTask:a4 redirect:v6 completionHandler:v13];
+  v11 = handlerCopy;
+  [(AMSURLProtocolHandler *)&v12 reconfigureNewRequest:request originalTask:task redirect:redirectCopy completionHandler:v13];
 }
 
 void __109__AMSAppleCardSilentEnrollmentProtocolHandler_reconfigureNewRequest_originalTask_redirect_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -78,14 +78,14 @@ LABEL_7:
 LABEL_14:
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  v10 = [[AMSAuthenticateTask alloc] initWithRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  v10 = [[AMSAuthenticateTask alloc] initWithRequest:requestCopy];
 
-  v9 = [(AMSAuthenticateTask *)v10 performAuthentication];
-  [v9 addFinishBlock:v7];
+  performAuthentication = [(AMSAuthenticateTask *)v10 performAuthentication];
+  [performAuthentication addFinishBlock:completionCopy];
 }
 
 @end

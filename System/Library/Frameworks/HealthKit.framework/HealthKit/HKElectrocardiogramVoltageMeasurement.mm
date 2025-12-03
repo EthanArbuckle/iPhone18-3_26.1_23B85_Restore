@@ -1,24 +1,24 @@
 @interface HKElectrocardiogramVoltageMeasurement
-- (BOOL)isEqual:(id)a3;
-- (HKElectrocardiogramVoltageMeasurement)initWithLeadIVoltage:(id)a3 timeSinceSampleStart:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKElectrocardiogramVoltageMeasurement)initWithLeadIVoltage:(id)voltage timeSinceSampleStart:(double)start;
 - (HKQuantity)quantityForLead:(HKElectrocardiogramLead)lead;
 @end
 
 @implementation HKElectrocardiogramVoltageMeasurement
 
-- (HKElectrocardiogramVoltageMeasurement)initWithLeadIVoltage:(id)a3 timeSinceSampleStart:(double)a4
+- (HKElectrocardiogramVoltageMeasurement)initWithLeadIVoltage:(id)voltage timeSinceSampleStart:(double)start
 {
-  v6 = a3;
+  voltageCopy = voltage;
   v11.receiver = self;
   v11.super_class = HKElectrocardiogramVoltageMeasurement;
   v7 = [(HKElectrocardiogramVoltageMeasurement *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [voltageCopy copy];
     leadIVoltage = v7->_leadIVoltage;
     v7->_leadIVoltage = v8;
 
-    v7->_timeSinceSampleStart = a4;
+    v7->_timeSinceSampleStart = start;
   }
 
   return v7;
@@ -39,22 +39,22 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_8;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_timeSinceSampleStart != v4->_timeSinceSampleStart)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_timeSinceSampleStart != equalCopy->_timeSinceSampleStart)
   {
     goto LABEL_7;
   }
 
   leadIVoltage = self->_leadIVoltage;
-  v6 = v4->_leadIVoltage;
+  v6 = equalCopy->_leadIVoltage;
   if (leadIVoltage == v6)
   {
 LABEL_8:

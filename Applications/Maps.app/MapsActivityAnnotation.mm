@@ -1,7 +1,7 @@
 @interface MapsActivityAnnotation
 - (CLLocationCoordinate2D)coordinate;
-- (MapsActivityAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4 subtitle:(id)a5;
-- (MapsActivityAnnotation)initWithSearchResult:(id)a3;
+- (MapsActivityAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title subtitle:(id)subtitle;
+- (MapsActivityAnnotation)initWithSearchResult:(id)result;
 @end
 
 @implementation MapsActivityAnnotation
@@ -15,12 +15,12 @@
   return result;
 }
 
-- (MapsActivityAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4 subtitle:(id)a5
+- (MapsActivityAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title subtitle:(id)subtitle
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a4;
-  v10 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v18.receiver = self;
   v18.super_class = MapsActivityAnnotation;
   v11 = [(MapsActivityAnnotation *)&v18 init];
@@ -29,11 +29,11 @@
   {
     v11->_coordinate.latitude = latitude;
     v11->_coordinate.longitude = longitude;
-    v13 = [v9 copy];
+    v13 = [titleCopy copy];
     title = v12->_title;
     v12->_title = v13;
 
-    v15 = [v10 copy];
+    v15 = [subtitleCopy copy];
     subtitle = v12->_subtitle;
     v12->_subtitle = v15;
   }
@@ -41,16 +41,16 @@
   return v12;
 }
 
-- (MapsActivityAnnotation)initWithSearchResult:(id)a3
+- (MapsActivityAnnotation)initWithSearchResult:(id)result
 {
-  v4 = a3;
-  [v4 coordinate];
+  resultCopy = result;
+  [resultCopy coordinate];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 title];
-  v10 = [v4 subtitle];
+  title = [resultCopy title];
+  subtitle = [resultCopy subtitle];
 
-  v11 = [(MapsActivityAnnotation *)self initWithCoordinate:v9 title:v10 subtitle:v6, v8];
+  v11 = [(MapsActivityAnnotation *)self initWithCoordinate:title title:subtitle subtitle:v6, v8];
   return v11;
 }
 

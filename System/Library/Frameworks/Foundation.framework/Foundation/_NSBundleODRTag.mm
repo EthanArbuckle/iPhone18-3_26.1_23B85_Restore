@@ -1,12 +1,12 @@
 @interface _NSBundleODRTag
-- (_NSBundleODRTag)initWithCoder:(id)a3;
+- (_NSBundleODRTag)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSBundleODRTag
 
-- (_NSBundleODRTag)initWithCoder:(id)a3
+- (_NSBundleODRTag)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -14,20 +14,20 @@
   v4 = [(_NSBundleODRTag *)&v7 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"pp"];
+    [coder decodeDoubleForKey:@"pp"];
     v4->_preservationPriority = v5;
-    v4->_alwaysPreserved = [a3 decodeBoolForKey:@"always"];
+    v4->_alwaysPreserved = [coder decodeBoolForKey:@"always"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"pp" forKey:self->_preservationPriority];
+  [coder encodeDouble:@"pp" forKey:self->_preservationPriority];
   alwaysPreserved = self->_alwaysPreserved;
 
-  [a3 encodeBool:alwaysPreserved forKey:@"always"];
+  [coder encodeBool:alwaysPreserved forKey:@"always"];
 }
 
 - (id)description

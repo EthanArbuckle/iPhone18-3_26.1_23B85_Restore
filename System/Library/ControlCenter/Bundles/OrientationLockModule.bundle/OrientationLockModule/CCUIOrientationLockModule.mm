@@ -1,5 +1,5 @@
 @interface CCUIOrientationLockModule
-- (CCUIOrientationLockModule)initWithSystemAgent:(id)a3;
+- (CCUIOrientationLockModule)initWithSystemAgent:(id)agent;
 - (id)glyphPackageDescription;
 - (id)glyphState;
 - (id)selectedValueText;
@@ -9,21 +9,21 @@
 - (void)_unobserveSystemNotifications;
 - (void)_updateState;
 - (void)dealloc;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CCUIOrientationLockModule
 
-- (CCUIOrientationLockModule)initWithSystemAgent:(id)a3
+- (CCUIOrientationLockModule)initWithSystemAgent:(id)agent
 {
-  v5 = a3;
+  agentCopy = agent;
   v9.receiver = self;
   v9.super_class = CCUIOrientationLockModule;
   v6 = [(CCUIOrientationLockModule *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_systemAgent, a3);
+    objc_storeStrong(&v6->_systemAgent, agent);
     [(CCUIOrientationLockModule *)v7 _observeSystemNotifications];
   }
 
@@ -93,19 +93,19 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(CCUIOrientationLockModule *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(CCUIOrientationLockModule *)self isSelected]!= selected)
   {
     systemAgent = self->_systemAgent;
-    if (v3)
+    if (selectedCopy)
     {
       [(CCUIControlCenterSystemAgent *)systemAgent lockOrientation];
-      v6 = [MEMORY[0x29EDC7A58] currentDevice];
-      v7 = [v6 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v7 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v8 = @"CONTROL_CENTER_STATUS_ORIENTATION_LOCK_ON";
       }
@@ -121,10 +121,10 @@
     else
     {
       [(CCUIControlCenterSystemAgent *)systemAgent unlockOrientation];
-      v10 = [MEMORY[0x29EDC7A58] currentDevice];
-      v11 = [v10 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x29EDC7A58] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if (v11 == 1)
+      if (userInterfaceIdiom2 == 1)
       {
         v8 = @"CONTROL_CENTER_STATUS_ORIENTATION_LOCK_OFF";
       }
@@ -140,25 +140,25 @@
     v12 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
     v15 = [v12 localizedStringForKey:v8 value:&stru_2A23F0058 table:0];
 
-    v13 = [(CCUIToggleModule *)self contentModuleContext];
+    contentModuleContext = [(CCUIToggleModule *)self contentModuleContext];
     v14 = [MEMORY[0x29EDC0CF0] statusUpdateWithMessage:v15 type:v9];
-    [v13 enqueueStatusUpdate:v14];
+    [contentModuleContext enqueueStatusUpdate:v14];
   }
 }
 
 - (void)_observeSystemNotifications
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel__updateState name:*MEMORY[0x29EDC6D10] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateState name:*MEMORY[0x29EDC6D10] object:0];
 
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 addObserver:self selector:sel__updateForDarkerSystemColorsChange name:*MEMORY[0x29EDC7EB0] object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__updateForDarkerSystemColorsChange name:*MEMORY[0x29EDC7EB0] object:0];
 }
 
 - (void)_unobserveSystemNotifications
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_updateState

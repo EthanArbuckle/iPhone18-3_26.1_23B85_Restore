@@ -1,6 +1,6 @@
 @interface DADiscoveryExtensionSession
 - (void)invalidate;
-- (void)reportEvent:(id)a3;
+- (void)reportEvent:(id)event;
 @end
 
 @implementation DADiscoveryExtensionSession
@@ -12,14 +12,14 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   v4 = _Block_copy(self->_eventHandler);
   v5 = v4;
   if (v4)
   {
-    (*(v4 + 2))(v4, v6);
+    (*(v4 + 2))(v4, eventCopy);
   }
 }
 

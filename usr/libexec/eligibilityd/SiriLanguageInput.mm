@@ -1,35 +1,35 @@
 @interface SiriLanguageInput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)language;
 - (SiriLanguageInput)init;
-- (SiriLanguageInput)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SiriLanguageInput)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriLanguageInput
 
 - (id)description
 {
-  v3 = [(SiriLanguageInput *)self language];
+  language = [(SiriLanguageInput *)self language];
   v7.receiver = self;
   v7.super_class = SiriLanguageInput;
   v4 = [(EligibilityInput *)&v7 description];
-  v5 = [NSString stringWithFormat:@"[SiriLanguageInput language:%@ %@]", v3, v4];
+  v5 = [NSString stringWithFormat:@"[SiriLanguageInput language:%@ %@]", language, v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = SiriLanguageInput;
-  if ([(EligibilityInput *)&v7 isEqual:v4])
+  if ([(EligibilityInput *)&v7 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       isKindOfClass = 1;
     }
@@ -56,25 +56,25 @@
   return [(EligibilityInput *)&v3 hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = SiriLanguageInput;
-  return [(EligibilityInput *)&v4 copyWithZone:a3];
+  return [(EligibilityInput *)&v4 copyWithZone:zone];
 }
 
-- (SiriLanguageInput)initWithCoder:(id)a3
+- (SiriLanguageInput)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SiriLanguageInput;
-  return [(EligibilityInput *)&v4 initWithCoder:a3];
+  return [(EligibilityInput *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SiriLanguageInput;
-  [(EligibilityInput *)&v3 encodeWithCoder:a3];
+  [(EligibilityInput *)&v3 encodeWithCoder:coder];
 }
 
 - (SiriLanguageInput)init
@@ -87,11 +87,11 @@
 - (NSString)language
 {
   v2 = +[GlobalConfiguration sharedInstance];
-  v3 = [v2 currentUsername];
+  currentUsername = [v2 currentUsername];
 
-  if (v3)
+  if (currentUsername)
   {
-    v4 = CFPreferencesCopyValue(@"Session Language", @"com.apple.assistant.backedup", v3, kCFPreferencesAnyHost);
+    v4 = CFPreferencesCopyValue(@"Session Language", @"com.apple.assistant.backedup", currentUsername, kCFPreferencesAnyHost);
     objc_opt_class();
     v5 = v4;
     if (objc_opt_isKindOfClass())

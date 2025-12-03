@@ -7,9 +7,9 @@
 
 - (double)sliderLength
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
   result = 294.0;
-  if (v2 >= 5)
+  if (currentLayoutStyle >= 5)
   {
     return 0.0;
   }
@@ -19,9 +19,9 @@
 
 - (double)standardBottomBarHeight
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
   result = 141.0;
-  if (v2 >= 5)
+  if (currentLayoutStyle >= 5)
   {
     return 0.0;
   }

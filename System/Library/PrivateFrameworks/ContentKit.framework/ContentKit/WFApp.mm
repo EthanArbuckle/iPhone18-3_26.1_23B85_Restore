@@ -1,63 +1,63 @@
 @interface WFApp
 + (id)allApps;
-+ (id)findAppWithBundleIdentifier:(id)a3 name:(id)a4;
++ (id)findAppWithBundleIdentifier:(id)identifier name:(id)name;
 - (BOOL)isAvailableInUserFacingContext;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedName;
-- (WFApp)initWithBundleIdentifier:(id)a3 displayRepresentation:(id)a4;
-- (WFApp)initWithBundleIdentifier:(id)a3 localizedName:(id)a4;
-- (WFApp)initWithCoder:(id)a3;
-- (WFApp)initWithRecord:(id)a3;
+- (WFApp)initWithBundleIdentifier:(id)identifier displayRepresentation:(id)representation;
+- (WFApp)initWithBundleIdentifier:(id)identifier localizedName:(id)name;
+- (WFApp)initWithCoder:(id)coder;
+- (WFApp)initWithRecord:(id)record;
 - (id)icon;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFApp
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFApp *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(WFApp *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(WFApp *)self localizedName];
-  [v4 encodeObject:v6 forKey:@"localizedName"];
+  localizedName = [(WFApp *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 }
 
-- (WFApp)initWithCoder:(id)a3
+- (WFApp)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     self = [(WFApp *)self initWithBundleIdentifier:v5 localizedName:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFApp *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(WFApp *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WFApp *)self bundleIdentifier];
-  v6 = v4;
+  equalCopy = equal;
+  bundleIdentifier = [(WFApp *)self bundleIdentifier];
+  v6 = equalCopy;
   if (v6)
   {
     objc_opt_class();
@@ -79,10 +79,10 @@
 
   v8 = v7;
 
-  v9 = [v8 bundleIdentifier];
+  bundleIdentifier2 = [v8 bundleIdentifier];
 
-  v10 = v5;
-  v11 = v9;
+  v10 = bundleIdentifier;
+  v11 = bundleIdentifier2;
   v12 = v11;
   if (v10 == v11)
   {
@@ -104,100 +104,100 @@
 - (id)icon
 {
   v2 = MEMORY[0x277D79FC8];
-  v3 = [(WFApp *)self bundleIdentifier];
-  v4 = [v2 applicationIconImageForBundleIdentifier:v3 format:2];
+  bundleIdentifier = [(WFApp *)self bundleIdentifier];
+  v4 = [v2 applicationIconImageForBundleIdentifier:bundleIdentifier format:2];
 
   return v4;
 }
 
 - (BOOL)isAvailableInUserFacingContext
 {
-  v3 = [(WFApp *)self bundleIdentifier];
+  bundleIdentifier = [(WFApp *)self bundleIdentifier];
 
-  if (!v3)
+  if (!bundleIdentifier)
   {
     return 0;
   }
 
   v4 = objc_alloc(MEMORY[0x277CC1E70]);
-  v5 = [(WFApp *)self bundleIdentifier];
-  v6 = [v4 initWithBundleIdentifier:v5 allowPlaceholder:1 error:0];
+  bundleIdentifier2 = [(WFApp *)self bundleIdentifier];
+  v6 = [v4 initWithBundleIdentifier:bundleIdentifier2 allowPlaceholder:1 error:0];
 
-  LOBYTE(v5) = [v6 wf_isAvailableInContext:0];
-  return v5;
+  LOBYTE(bundleIdentifier2) = [v6 wf_isAvailableInContext:0];
+  return bundleIdentifier2;
 }
 
 - (NSString)localizedName
 {
-  v3 = [(WFAppDisplayRepresentation *)self->_displayRepresentation title];
+  title = [(WFAppDisplayRepresentation *)self->_displayRepresentation title];
 
-  if (v3)
+  if (title)
   {
-    v4 = [(WFAppDisplayRepresentation *)self->_displayRepresentation title];
+    title2 = [(WFAppDisplayRepresentation *)self->_displayRepresentation title];
   }
 
   else
   {
-    v5 = [(WFApp *)self bundleIdentifier];
+    bundleIdentifier = [(WFApp *)self bundleIdentifier];
 
-    if (v5)
+    if (bundleIdentifier)
     {
       v6 = objc_alloc(MEMORY[0x277CC1E70]);
-      v7 = [(WFApp *)self bundleIdentifier];
-      v8 = [v6 initWithBundleIdentifier:v7 allowPlaceholder:1 error:0];
+      bundleIdentifier2 = [(WFApp *)self bundleIdentifier];
+      v8 = [v6 initWithBundleIdentifier:bundleIdentifier2 allowPlaceholder:1 error:0];
 
-      v4 = [v8 localizedName];
+      title2 = [v8 localizedName];
     }
 
     else
     {
-      v4 = 0;
+      title2 = 0;
     }
   }
 
-  return v4;
+  return title2;
 }
 
-- (WFApp)initWithBundleIdentifier:(id)a3 displayRepresentation:(id)a4
+- (WFApp)initWithBundleIdentifier:(id)identifier displayRepresentation:(id)representation
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  representationCopy = representation;
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v10 = [(WFApp *)self init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundleIdentifier, a3);
-    objc_storeStrong(&v11->_displayRepresentation, a4);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
+    objc_storeStrong(&v11->_displayRepresentation, representation);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (WFApp)initWithBundleIdentifier:(id)a3 localizedName:(id)a4
+- (WFApp)initWithBundleIdentifier:(id)identifier localizedName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (!identifierCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v10 = [(WFApp *)self init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundleIdentifier, a3);
-    if (v9)
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
+    if (nameCopy)
     {
-      v12 = [WFAppDisplayRepresentation withTitle:v9];
+      v12 = [WFAppDisplayRepresentation withTitle:nameCopy];
       displayRepresentation = v11->_displayRepresentation;
       v11->_displayRepresentation = v12;
     }
@@ -208,24 +208,24 @@
   return v11;
 }
 
-- (WFApp)initWithRecord:(id)a3
+- (WFApp)initWithRecord:(id)record
 {
-  v5 = a3;
-  if (!v5)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"record"}];
   }
 
   v6 = [(WFApp *)self init];
   if (v6)
   {
-    v7 = [v5 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     bundleIdentifier = v6->_bundleIdentifier;
-    v6->_bundleIdentifier = v7;
+    v6->_bundleIdentifier = bundleIdentifier;
 
-    v9 = [v5 localizedName];
-    v10 = [WFAppDisplayRepresentation withTitle:v9];
+    localizedName = [recordCopy localizedName];
+    v10 = [WFAppDisplayRepresentation withTitle:localizedName];
     displayRepresentation = v6->_displayRepresentation;
     v6->_displayRepresentation = v10;
 
@@ -279,24 +279,24 @@
   return v2;
 }
 
-+ (id)findAppWithBundleIdentifier:(id)a3 name:(id)a4
++ (id)findAppWithBundleIdentifier:(id)identifier name:(id)name
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (identifierCopy)
   {
     v33 = 0;
-    v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v5 allowPlaceholder:1 error:&v33];
+    v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v33];
     v8 = v33;
-    v9 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
 
-    if (v9)
+    if (bundleIdentifier)
     {
       v10 = [WFApp alloc];
-      v11 = [v7 bundleIdentifier];
-      v12 = [v7 localizedName];
-      v13 = [(WFApp *)v10 initWithBundleIdentifier:v11 localizedName:v12];
+      bundleIdentifier2 = [v7 bundleIdentifier];
+      localizedName = [v7 localizedName];
+      v13 = [(WFApp *)v10 initWithBundleIdentifier:bundleIdentifier2 localizedName:localizedName];
 
       goto LABEL_22;
     }
@@ -307,7 +307,7 @@
     v8 = 0;
   }
 
-  if ([v6 length])
+  if ([nameCopy length])
   {
     v31 = 0u;
     v32 = 0u;
@@ -321,7 +321,7 @@
       v15 = v14;
       v16 = *v30;
       v27 = v8;
-      v28 = v5;
+      v28 = identifierCopy;
       while (2)
       {
         for (i = 0; i != v15; ++i)
@@ -333,24 +333,24 @@
 
           v18 = *(*(&v29 + 1) + 8 * i);
           v19 = objc_autoreleasePoolPush();
-          v20 = [v18 localizedName];
-          if ([v20 isEqualToString:v6])
+          localizedName2 = [v18 localizedName];
+          if ([localizedName2 isEqualToString:nameCopy])
           {
 
 LABEL_21:
             v23 = [WFApp alloc];
-            v24 = [v18 bundleIdentifier];
-            v25 = [v18 localizedName];
-            v13 = [(WFApp *)v23 initWithBundleIdentifier:v24 localizedName:v25];
+            bundleIdentifier3 = [v18 bundleIdentifier];
+            localizedName3 = [v18 localizedName];
+            v13 = [(WFApp *)v23 initWithBundleIdentifier:bundleIdentifier3 localizedName:localizedName3];
 
             objc_autoreleasePoolPop(v19);
             v8 = v27;
-            v5 = v28;
+            identifierCopy = v28;
             goto LABEL_22;
           }
 
-          v21 = [v18 localizedShortName];
-          v22 = [v21 isEqualToString:v6];
+          localizedShortName = [v18 localizedShortName];
+          v22 = [localizedShortName isEqualToString:nameCopy];
 
           if (v22)
           {
@@ -362,7 +362,7 @@ LABEL_21:
 
         v15 = [v7 countByEnumeratingWithState:&v29 objects:v38 count:16];
         v8 = v27;
-        v5 = v28;
+        identifierCopy = v28;
         if (v15)
         {
           continue;

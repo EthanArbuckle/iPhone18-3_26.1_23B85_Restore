@@ -1,106 +1,106 @@
 @interface ICQBuddyOfferViewController
-- (ICQBuddyOfferViewController)initWithPageSpecification:(id)a3;
+- (ICQBuddyOfferViewController)initWithPageSpecification:(id)specification;
 - (ICQPageDelegate)pageDelegate;
-- (void)bottomButtonTapped:(id)a3;
+- (void)bottomButtonTapped:(id)tapped;
 - (void)hideSpinner;
-- (void)purchase2ButtonTapped:(id)a3;
-- (void)purchaseButtonTapped:(id)a3;
-- (void)sender:(id)a3 action:(int64_t)a4 parameters:(id)a5;
+- (void)purchase2ButtonTapped:(id)tapped;
+- (void)purchaseButtonTapped:(id)tapped;
+- (void)sender:(id)sender action:(int64_t)action parameters:(id)parameters;
 @end
 
 @implementation ICQBuddyOfferViewController
 
-- (ICQBuddyOfferViewController)initWithPageSpecification:(id)a3
+- (ICQBuddyOfferViewController)initWithPageSpecification:(id)specification
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pageSpecification, a3);
-  v6 = v5;
+  specificationCopy = specification;
+  objc_storeStrong(&self->_pageSpecification, specification);
+  v6 = specificationCopy;
   v7 = MEMORY[0x277D7F390];
-  v8 = [v6 message];
-  v9 = [v6 altMessage];
-  v10 = [v7 stringWithPlaceholderFormat:v8 alternateString:v9];
+  message = [v6 message];
+  altMessage = [v6 altMessage];
+  v10 = [v7 stringWithPlaceholderFormat:message alternateString:altMessage];
 
   v11 = [MEMORY[0x277D755B8] icqBundleImageNamed:@"iCloudLargeTransparent"];
-  v12 = [v6 title];
+  title = [v6 title];
   v45.receiver = self;
   v45.super_class = ICQBuddyOfferViewController;
-  v13 = [(ICQBuddyOfferViewController *)&v45 initWithTitle:v12 detailText:v10 icon:v11 contentLayout:2];
+  v13 = [(ICQBuddyOfferViewController *)&v45 initWithTitle:title detailText:v10 icon:v11 contentLayout:2];
 
   if (v13)
   {
-    v14 = [v6 purchaseLink];
-    v15 = [v14 text];
-    v16 = [v15 length];
+    purchaseLink = [v6 purchaseLink];
+    text = [purchaseLink text];
+    v16 = [text length];
 
-    v17 = [v6 purchase2Link];
-    v18 = [v17 text];
-    v19 = [v18 length];
+    purchase2Link = [v6 purchase2Link];
+    text2 = [purchase2Link text];
+    v19 = [text2 length];
 
-    v20 = [v6 bottomLink];
-    v21 = [v20 text];
-    v22 = [v21 length];
+    bottomLink = [v6 bottomLink];
+    text3 = [bottomLink text];
+    v22 = [text3 length];
 
     if (v16)
     {
-      v23 = [MEMORY[0x277D37618] boldButton];
-      v24 = [v6 purchaseLink];
-      v25 = [v24 text];
-      [v23 setTitle:v25 forState:0];
+      boldButton = [MEMORY[0x277D37618] boldButton];
+      purchaseLink2 = [v6 purchaseLink];
+      text4 = [purchaseLink2 text];
+      [boldButton setTitle:text4 forState:0];
 
-      [v23 addTarget:v13 action:sel_purchaseButtonTapped_ forControlEvents:64];
-      v26 = [(ICQBuddyOfferViewController *)v13 buttonTray];
-      [v26 addButton:v23];
+      [boldButton addTarget:v13 action:sel_purchaseButtonTapped_ forControlEvents:64];
+      buttonTray = [(ICQBuddyOfferViewController *)v13 buttonTray];
+      [buttonTray addButton:boldButton];
 
       purchaseButton = v13->_purchaseButton;
-      v13->_purchaseButton = v23;
+      v13->_purchaseButton = boldButton;
     }
 
     if (v19)
     {
-      v28 = [MEMORY[0x277D37618] boldButton];
-      v29 = [v6 purchase2Link];
-      v30 = [v29 text];
-      [v28 setTitle:v30 forState:0];
+      boldButton2 = [MEMORY[0x277D37618] boldButton];
+      purchase2Link2 = [v6 purchase2Link];
+      text5 = [purchase2Link2 text];
+      [boldButton2 setTitle:text5 forState:0];
 
-      [v28 addTarget:v13 action:sel_purchase2ButtonTapped_ forControlEvents:64];
-      v31 = [(ICQBuddyOfferViewController *)v13 buttonTray];
-      [v31 addButton:v28];
+      [boldButton2 addTarget:v13 action:sel_purchase2ButtonTapped_ forControlEvents:64];
+      buttonTray2 = [(ICQBuddyOfferViewController *)v13 buttonTray];
+      [buttonTray2 addButton:boldButton2];
 
       purchase2Button = v13->_purchase2Button;
-      v13->_purchase2Button = v28;
+      v13->_purchase2Button = boldButton2;
     }
 
     if (v22)
     {
-      v33 = [MEMORY[0x277D37650] linkButton];
-      v34 = [v6 bottomLink];
-      v35 = [v34 text];
-      [v33 setTitle:v35 forState:0];
+      linkButton = [MEMORY[0x277D37650] linkButton];
+      bottomLink2 = [v6 bottomLink];
+      text6 = [bottomLink2 text];
+      [linkButton setTitle:text6 forState:0];
 
-      [v33 addTarget:v13 action:sel_bottomButtonTapped_ forControlEvents:64];
-      v36 = [(ICQBuddyOfferViewController *)v13 buttonTray];
-      [v36 addButton:v33];
+      [linkButton addTarget:v13 action:sel_bottomButtonTapped_ forControlEvents:64];
+      buttonTray3 = [(ICQBuddyOfferViewController *)v13 buttonTray];
+      [buttonTray3 addButton:linkButton];
     }
 
-    v37 = [v6 fineprintFormat];
-    v38 = [v37 length];
+    fineprintFormat = [v6 fineprintFormat];
+    v38 = [fineprintFormat length];
 
     if (v38)
     {
-      v39 = [v6 fineprintLinks];
-      v40 = [v39 firstObject];
-      v41 = [v40 serverUIURL];
+      fineprintLinks = [v6 fineprintLinks];
+      firstObject = [fineprintLinks firstObject];
+      serverUIURL = [firstObject serverUIURL];
 
-      v42 = [(ICQBuddyOfferViewController *)v13 buttonTray];
-      v43 = [v6 fineprintFormat];
-      if (v41)
+      buttonTray4 = [(ICQBuddyOfferViewController *)v13 buttonTray];
+      fineprintFormat2 = [v6 fineprintFormat];
+      if (serverUIURL)
       {
-        [v42 setCaptionText:v43 learnMoreURL:v41];
+        [buttonTray4 setCaptionText:fineprintFormat2 learnMoreURL:serverUIURL];
       }
 
       else
       {
-        [v42 setCaptionText:v43];
+        [buttonTray4 setCaptionText:fineprintFormat2];
       }
     }
   }
@@ -108,7 +108,7 @@
   return v13;
 }
 
-- (void)purchaseButtonTapped:(id)a3
+- (void)purchaseButtonTapped:(id)tapped
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -118,16 +118,16 @@
   }
 
   [(OBBoldTrayButton *)self->_purchaseButton showsBusyIndicator];
-  v5 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
-  v6 = [v5 purchaseLink];
-  v7 = [v6 action];
-  v8 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
-  v9 = [v8 purchaseLink];
-  v10 = [v9 parameters];
-  [(ICQBuddyOfferViewController *)self sender:self action:v7 parameters:v10];
+  upgradeOfferPageSpecification = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
+  purchaseLink = [upgradeOfferPageSpecification purchaseLink];
+  action = [purchaseLink action];
+  upgradeOfferPageSpecification2 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
+  purchaseLink2 = [upgradeOfferPageSpecification2 purchaseLink];
+  parameters = [purchaseLink2 parameters];
+  [(ICQBuddyOfferViewController *)self sender:self action:action parameters:parameters];
 }
 
-- (void)purchase2ButtonTapped:(id)a3
+- (void)purchase2ButtonTapped:(id)tapped
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -137,16 +137,16 @@
   }
 
   [(OBBoldTrayButton *)self->_purchase2Button showsBusyIndicator];
-  v5 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
-  v6 = [v5 purchase2Link];
-  v7 = [v6 action];
-  v8 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
-  v9 = [v8 purchase2Link];
-  v10 = [v9 parameters];
-  [(ICQBuddyOfferViewController *)self sender:self action:v7 parameters:v10];
+  upgradeOfferPageSpecification = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
+  purchase2Link = [upgradeOfferPageSpecification purchase2Link];
+  action = [purchase2Link action];
+  upgradeOfferPageSpecification2 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
+  purchase2Link2 = [upgradeOfferPageSpecification2 purchase2Link];
+  parameters = [purchase2Link2 parameters];
+  [(ICQBuddyOfferViewController *)self sender:self action:action parameters:parameters];
 }
 
-- (void)bottomButtonTapped:(id)a3
+- (void)bottomButtonTapped:(id)tapped
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -155,19 +155,19 @@
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "ICQBuddyOfferViewController bottom button tapped", v11, 2u);
   }
 
-  v5 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
-  v6 = [v5 bottomLink];
-  v7 = [v6 action];
-  v8 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
-  v9 = [v8 bottomLink];
-  v10 = [v9 parameters];
-  [(ICQBuddyOfferViewController *)self sender:self action:v7 parameters:v10];
+  upgradeOfferPageSpecification = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
+  bottomLink = [upgradeOfferPageSpecification bottomLink];
+  action = [bottomLink action];
+  upgradeOfferPageSpecification2 = [(ICQBuddyOfferViewController *)self upgradeOfferPageSpecification];
+  bottomLink2 = [upgradeOfferPageSpecification2 bottomLink];
+  parameters = [bottomLink2 parameters];
+  [(ICQBuddyOfferViewController *)self sender:self action:action parameters:parameters];
 }
 
-- (void)sender:(id)a3 action:(int64_t)a4 parameters:(id)a5
+- (void)sender:(id)sender action:(int64_t)action parameters:(id)parameters
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  parametersCopy = parameters;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,16 +175,16 @@
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "ICQBuddyOfferViewController sender:action:parameters:", &v18, 2u);
   }
 
-  v9 = [(ICQBuddyOfferViewController *)self pageDelegate];
+  pageDelegate = [(ICQBuddyOfferViewController *)self pageDelegate];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = _ICQGetLogSystem();
-  v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
+  pageDelegate3 = _ICQGetLogSystem();
+  v12 = os_log_type_enabled(pageDelegate3, OS_LOG_TYPE_DEFAULT);
   if (v10)
   {
     if (v12)
     {
-      v13 = [(ICQBuddyOfferViewController *)self pageDelegate];
+      pageDelegate2 = [(ICQBuddyOfferViewController *)self pageDelegate];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = _ICQStringForAction();
@@ -193,20 +193,20 @@
       v20 = 2112;
       v21 = v16;
       v22 = 2112;
-      v23 = v7;
-      _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "pageDelegate %@ being sent action:%@ parameters:%@", &v18, 0x20u);
+      v23 = parametersCopy;
+      _os_log_impl(&dword_275623000, pageDelegate3, OS_LOG_TYPE_DEFAULT, "pageDelegate %@ being sent action:%@ parameters:%@", &v18, 0x20u);
     }
 
-    v11 = [(ICQBuddyOfferViewController *)self pageDelegate];
-    [v11 sender:self action:a4 parameters:v7];
+    pageDelegate3 = [(ICQBuddyOfferViewController *)self pageDelegate];
+    [pageDelegate3 sender:self action:action parameters:parametersCopy];
   }
 
   else if (v12)
   {
-    v17 = [(ICQBuddyOfferViewController *)self pageDelegate];
+    pageDelegate4 = [(ICQBuddyOfferViewController *)self pageDelegate];
     v18 = 138412290;
-    v19 = v17;
-    _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "ICQViewController - page delegate %@ does not respond to sender:action:parameters:", &v18, 0xCu);
+    v19 = pageDelegate4;
+    _os_log_impl(&dword_275623000, pageDelegate3, OS_LOG_TYPE_DEFAULT, "ICQViewController - page delegate %@ does not respond to sender:action:parameters:", &v18, 0xCu);
   }
 }
 

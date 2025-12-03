@@ -1,31 +1,31 @@
 @interface PKPeerPaymentCounterpartHandleFormatter
-+ (id)displayNameForCounterpartHandle:(id)a3 contact:(id)a4;
-+ (id)formatCounterpartHandle:(id)a3;
-+ (id)redactedDisplayNameForCounterpartHandle:(id)a3 contact:(id)a4;
++ (id)displayNameForCounterpartHandle:(id)handle contact:(id)contact;
++ (id)formatCounterpartHandle:(id)handle;
++ (id)redactedDisplayNameForCounterpartHandle:(id)handle contact:(id)contact;
 + (id)requiredContactKeys;
 @end
 
 @implementation PKPeerPaymentCounterpartHandleFormatter
 
-+ (id)displayNameForCounterpartHandle:(id)a3 contact:(id)a4
++ (id)displayNameForCounterpartHandle:(id)handle contact:(id)contact
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  contactCopy = contact;
   v8 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v14[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [v7 areKeysAvailable:v9];
+  v10 = [contactCopy areKeysAvailable:v9];
 
   v11 = 0;
   if (v10)
   {
-    v11 = [MEMORY[0x1E695CD80] stringFromContact:v7 style:0];
+    v11 = [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
   }
 
   if (![v11 length])
   {
-    v12 = [a1 formatCounterpartHandle:v6];
+    v12 = [self formatCounterpartHandle:handleCopy];
 
     v11 = v12;
   }
@@ -33,21 +33,21 @@
   return v11;
 }
 
-+ (id)formatCounterpartHandle:(id)a3
++ (id)formatCounterpartHandle:(id)handle
 {
-  v3 = a3;
-  if ([v3 length] && objc_msgSend(v3, "hasPrefix:", @"+"))
+  handleCopy = handle;
+  if ([handleCopy length] && objc_msgSend(handleCopy, "hasPrefix:", @"+"))
   {
-    v4 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v3];
-    v5 = [v4 pkFormattedStringValue];
+    v4 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:handleCopy];
+    pkFormattedStringValue = [v4 pkFormattedStringValue];
   }
 
   else
   {
-    v5 = v3;
+    pkFormattedStringValue = handleCopy;
   }
 
-  return v5;
+  return pkFormattedStringValue;
 }
 
 + (id)requiredContactKeys
@@ -63,30 +63,30 @@
   return v4;
 }
 
-+ (id)redactedDisplayNameForCounterpartHandle:(id)a3 contact:(id)a4
++ (id)redactedDisplayNameForCounterpartHandle:(id)handle contact:(id)contact
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  handleCopy = handle;
+  contactCopy = contact;
+  if (contactCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695CD80]);
     [v7 setStyle:1000];
-    v8 = [v7 stringFromContact:v6];
+    v8 = [v7 stringFromContact:contactCopy];
     if (![v8 length])
     {
-      v9 = [v6 givenName];
-      v10 = v9;
-      if (v9)
+      givenName = [contactCopy givenName];
+      v10 = givenName;
+      if (givenName)
       {
-        v11 = v9;
+        familyName = givenName;
       }
 
       else
       {
-        v11 = [v6 familyName];
+        familyName = [contactCopy familyName];
       }
 
-      v12 = v11;
+      v12 = familyName;
 
       v8 = v12;
     }
@@ -99,14 +99,14 @@
 
   if (![v8 length])
   {
-    v13 = [objc_alloc(MEMORY[0x1E699B240]) initWithString:v5];
+    v13 = [objc_alloc(MEMORY[0x1E699B240]) initWithString:handleCopy];
     if (v13)
     {
-      v14 = [v5 mutableCopy];
-      v15 = [v13 localPart];
-      v16 = [v15 mutableCopy];
+      v14 = [handleCopy mutableCopy];
+      localPart = [v13 localPart];
+      v16 = [localPart mutableCopy];
 
-      v17 = [v5 rangeOfString:v16];
+      v17 = [handleCopy rangeOfString:v16];
       v19 = v18;
       v20 = [v16 length];
       v21 = v20 - 2;
@@ -129,12 +129,12 @@
 
   if (![v8 length])
   {
-    v23 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v5];
+    v23 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:handleCopy];
     if (v23)
     {
       v24 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"***"];
-      v25 = [v23 lastFourDigits];
-      [v24 appendString:v25];
+      lastFourDigits = [v23 lastFourDigits];
+      [v24 appendString:lastFourDigits];
 
       v26 = [v24 copy];
       v8 = v26;

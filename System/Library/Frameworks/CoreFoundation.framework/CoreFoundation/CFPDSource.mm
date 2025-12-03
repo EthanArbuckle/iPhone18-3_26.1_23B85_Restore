@@ -1,22 +1,22 @@
 @interface CFPDSource
 - (BOOL)_getUncanonicalizedPath:(_BOOL8)result;
-- (BOOL)enqueueNewKey:(id)a3 value:(id)a4 encoding:(int)a5 inBatch:(BOOL)a6 fromMessage:(id)a7;
-- (BOOL)getUncanonicalizedPath:(uint64_t)a1;
+- (BOOL)enqueueNewKey:(id)key value:(id)value encoding:(int)encoding inBatch:(BOOL)batch fromMessage:(id)message;
+- (BOOL)getUncanonicalizedPath:(uint64_t)path;
 - (BOOL)shouldBePurgable;
-- (BOOL)validateSandboxForWrite:(const char *)a3 containerPath:;
-- (CFPDSource)initWithDomain:(__CFString *)a3 userName:(__CFString *)a4 byHost:(BOOL)a5 managed:(BOOL)a6 shmemIndex:(signed __int16)a7 daemon:(id)a8;
+- (BOOL)validateSandboxForWrite:(const char *)write containerPath:;
+- (CFPDSource)initWithDomain:(__CFString *)domain userName:(__CFString *)name byHost:(BOOL)host managed:(BOOL)managed shmemIndex:(signed __int16)index daemon:(id)daemon;
 - (CFStringRef)_copyUncanonicalizedPath;
 - (__CFString)_canTrustUserPropertyForPOSIXPermissionCheckForAccessType:(__CFString *)result;
 - (__CFString)copyUncanonicalizedPath;
 - (__CFString)debugDump;
 - (const)endHandlingRequest;
 - (const)hasObservers;
-- (id)acceptMessage:(id)a3;
-- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(BOOL)a3 andReturnFileUID:(unsigned int *)a4 andMode:(unsigned __int16 *)a5;
+- (id)acceptMessage:(id)message;
+- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(BOOL)plist andReturnFileUID:(unsigned int *)d andMode:(unsigned __int16 *)mode;
 - (id)createDiskWrite;
 - (id)description;
-- (int)cacheFileInfoForWriting:(BOOL)a3 euid:(unsigned int)a4 egid:(unsigned int)a5 didCreate:(BOOL *)a6;
-- (int)validateMessage:(id)a3 withNewKey:(id)a4 newValue:(id)a5 plistIsAvailableToRead:(BOOL)a6 containerPath:(const char *)a7 fileUID:(unsigned int)a8 mode:(unsigned __int16)a9 diagnosticMessage:(const char *)a10;
+- (int)cacheFileInfoForWriting:(BOOL)writing euid:(unsigned int)euid egid:(unsigned int)egid didCreate:(BOOL *)create;
+- (int)validateMessage:(id)message withNewKey:(id)key newValue:(id)value plistIsAvailableToRead:(BOOL)read containerPath:(const char *)path fileUID:(unsigned int)d mode:(unsigned __int16)mode diagnosticMessage:(const char *)self0;
 - (uint64_t)approximatePlistSizeIncludingPendingChanges;
 - (uint64_t)beginHandlingRequest;
 - (uint64_t)closeFileDescriptors;
@@ -24,42 +24,42 @@
 - (uint64_t)isEmpty;
 - (uint64_t)markNeedsToReloadFromDiskDueToFailedWrite;
 - (uint64_t)openActualPath;
-- (uint64_t)openPropertyListWithoutDrainingPendingChangesOrValidatingPlistAndReturnFileUID:(mode_t *)a3 andMode:;
-- (uint64_t)shouldStayDirtyAfterOpenForWritingFailureWithErrno:(void *)a1;
+- (uint64_t)openPropertyListWithoutDrainingPendingChangesOrValidatingPlistAndReturnFileUID:(mode_t *)d andMode:;
+- (uint64_t)shouldStayDirtyAfterOpenForWritingFailureWithErrno:(void *)errno;
 - (uint64_t)tryEndAccessingPlist;
-- (uint64_t)validateAccessToken:(int)a3 accessType:;
-- (uint64_t)validatePOSIXPermissionsForMessage:(int)a3 accessType:(int)a4 fileUID:(int)a5 mode:(char *)a6 fullyValidated:;
-- (uint64_t)validateSandboxForRead:(const char *)a3 containerPath:;
-- (uint64_t)validateSandboxPermissionsForMessage:(const char *)a3 containerPath:(int)a4 accessType:;
-- (void)asyncNotifyObserversOfWriteFromConnection:(id)a3 message:(id)a4;
-- (void)attachSizeWarningsToReply:(unint64_t)a3 forByteCount:;
+- (uint64_t)validateAccessToken:(int)token accessType:;
+- (uint64_t)validatePOSIXPermissionsForMessage:(int)message accessType:(int)type fileUID:(int)d mode:(char *)mode fullyValidated:;
+- (uint64_t)validateSandboxForRead:(const char *)read containerPath:;
+- (uint64_t)validateSandboxPermissionsForMessage:(const char *)message containerPath:(int)path accessType:;
+- (void)asyncNotifyObserversOfWriteFromConnection:(id)connection message:(id)message;
+- (void)attachSizeWarningsToReply:(unint64_t)reply forByteCount:;
 - (void)beginHandlingRequest;
 - (void)cleanUpIfNecessaryAfterCreatingPlist;
-- (void)clearCacheForReason:(__CFString *)a3;
+- (void)clearCacheForReason:(__CFString *)reason;
 - (void)clearPlist;
 - (void)createDiskWrite;
 - (void)dealloc;
 - (void)drainPendingChanges;
-- (void)finishedNonRequestWriteWithResult:(__CFDictionary *)a3;
+- (void)finishedNonRequestWriteWithResult:(__CFDictionary *)result;
 - (void)handleAvoidCache;
 - (void)handleEUIDorEGIDMismatch;
 - (void)handleNeverCache;
 - (void)handleNoPlistFound;
 - (void)handleSynchronous;
-- (void)handleWritingResult:(__CFDictionary *)a3;
-- (void)lockedAsync:(id)a3;
-- (void)lockedSync:(id)a3;
-- (void)observingConnectionWasInvalidated:(id)a3;
-- (void)observingConnectionsLockedSync:(uint64_t)a1;
-- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)a3 replacingWithTombstone:(id *)a4;
+- (void)handleWritingResult:(__CFDictionary *)result;
+- (void)lockedAsync:(id)async;
+- (void)lockedSync:(id)sync;
+- (void)observingConnectionWasInvalidated:(id)invalidated;
+- (void)observingConnectionsLockedSync:(uint64_t)sync;
+- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)source replacingWithTombstone:(id *)tombstone;
 - (void)respondToFileWrittenToBehindOurBack;
-- (void)setDirty:(BOOL)a3;
-- (void)setObserved:(void *)a3 bySenderOfMessage:;
-- (void)setPlist:(int)a3 owner:(unsigned int)a4 mode:;
-- (void)setUncanonicalizedPathCached:(BOOL)a3;
-- (void)stopNotifyingObserver:(uint64_t)a1;
+- (void)setDirty:(BOOL)dirty;
+- (void)setObserved:(void *)observed bySenderOfMessage:;
+- (void)setPlist:(int)plist owner:(unsigned int)owner mode:;
+- (void)setUncanonicalizedPathCached:(BOOL)cached;
+- (void)stopNotifyingObserver:(uint64_t)observer;
 - (void)syncWriteToDisk;
-- (void)syncWriteToDiskAndFlushCacheForReason:(__CFString *)a3;
+- (void)syncWriteToDiskAndFlushCacheForReason:(__CFString *)reason;
 @end
 
 @implementation CFPDSource
@@ -100,14 +100,14 @@
 
 - (void)clearPlist
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 108));
+    os_unfair_lock_assert_owner((self + 108));
 
-    *(a1 + 16) = 0;
-    *(a1 + 112) = 0;
-    *(a1 + 142) &= ~0x80u;
-    *(a1 + 143) &= ~1u;
+    *(self + 16) = 0;
+    *(self + 112) = 0;
+    *(self + 142) &= ~0x80u;
+    *(self + 143) &= ~1u;
   }
 }
 
@@ -286,8 +286,8 @@ LABEL_17:
 - (void)beginHandlingRequest
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 40);
-  v1 = *(a1 + 48);
+  v2 = *(self + 40);
+  v1 = *(self + 48);
   OUTLINED_FUNCTION_1_17();
   v7 = v3;
   _os_log_debug_impl(&dword_1830E6000, v4, OS_LOG_TYPE_DEBUG, "Data for { %@, %@ } was purged due to memory pressure", v6, 0x16u);
@@ -296,7 +296,7 @@ LABEL_17:
 
 - (uint64_t)beginHandlingRequest
 {
-  *a2 = a1 | 1;
+  *a2 = self | 1;
   if ([*(a3 + 16) purgable])
   {
     v4 = ([*(a3 + 16) beginAccessing] << 31) >> 31;
@@ -313,10 +313,10 @@ LABEL_17:
 - (uint64_t)approximatePlistSizeIncludingPendingChanges
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 32);
-    v3 = *(a1 + 16);
+    v2 = *(self + 32);
+    v3 = *(self + 16);
     if (v3)
     {
       v2 += [v3 length];
@@ -324,11 +324,11 @@ LABEL_17:
 
     else
     {
-      v4 = *(a1 + 128);
+      v4 = *(self + 128);
       if (v4 != -1)
       {
         bzero(&v9, 0x90uLL);
-        v5 = fstatat(v4, *(a1 + 64), &v9, 0);
+        v5 = fstatat(v4, *(self + 64), &v9, 0);
         st_size = v9.st_size;
         if (v5)
         {
@@ -512,16 +512,16 @@ LABEL_17:
 
 - (uint64_t)openActualPath
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = *(a1 + 132);
+  v2 = *(self + 132);
   if (v2 == -1)
   {
     v4 = OUTLINED_FUNCTION_15_0();
-    if (v5 || (v6 = *(a1 + 64)) == 0)
+    if (v5 || (v6 = *(self + 64)) == 0)
     {
       *__error() = 22;
       return 0xFFFFFFFFLL;
@@ -532,7 +532,7 @@ LABEL_17:
       v3 = openat(v4, v6, 0);
       if (v3 != -1 && _canDup())
       {
-        *(a1 + 132) = dup(v3);
+        *(self + 132) = dup(v3);
       }
     }
   }
@@ -540,7 +540,7 @@ LABEL_17:
   else
   {
     v3 = dup(v2);
-    lseek(*(a1 + 132), 0, 0);
+    lseek(*(self + 132), 0, 0);
   }
 
   return v3;
@@ -548,22 +548,22 @@ LABEL_17:
 
 - (void)syncWriteToDisk
 {
-  v3 = [(CFPDSource *)self createDiskWrite];
-  if (v3)
+  createDiskWrite = [(CFPDSource *)self createDiskWrite];
+  if (createDiskWrite)
   {
-    v5 = v3;
-    v4 = v3[2]();
+    v5 = createDiskWrite;
+    v4 = createDiskWrite[2]();
     [(CFPDSource *)self handleWritingResult:v4];
-    v3 = v5;
+    createDiskWrite = v5;
     if (v4)
     {
       CFRelease(v4);
-      v3 = v5;
+      createDiskWrite = v5;
     }
   }
 }
 
-- (int)cacheFileInfoForWriting:(BOOL)a3 euid:(unsigned int)a4 egid:(unsigned int)a5 didCreate:(BOOL *)a6
+- (int)cacheFileInfoForWriting:(BOOL)writing euid:(unsigned int)euid egid:(unsigned int)egid didCreate:(BOOL *)create
 {
   v6 = MEMORY[0x1EEE9AC00](self, a2);
   v8 = v7;
@@ -943,19 +943,19 @@ LABEL_80:
   return v16;
 }
 
-- (void)setUncanonicalizedPathCached:(BOOL)a3
+- (void)setUncanonicalizedPathCached:(BOOL)cached
 {
-  v3 = a3;
+  cachedCopy = cached;
   os_unfair_lock_lock(&self->_uncanonicalizedPathCacheLock);
   uncanonicalizedPathCache = self->_uncanonicalizedPathCache;
-  if (v3)
+  if (cachedCopy)
   {
     if (uncanonicalizedPathCache)
     {
       goto LABEL_7;
     }
 
-    v6 = [(CFPDSource *)self _copyUncanonicalizedPath];
+    _copyUncanonicalizedPath = [(CFPDSource *)self _copyUncanonicalizedPath];
   }
 
   else
@@ -966,16 +966,16 @@ LABEL_80:
     }
 
     CFRelease(uncanonicalizedPathCache);
-    v6 = 0;
+    _copyUncanonicalizedPath = 0;
   }
 
-  self->_uncanonicalizedPathCache = v6;
+  self->_uncanonicalizedPathCache = _copyUncanonicalizedPath;
 LABEL_7:
 
   os_unfair_lock_unlock(&self->_uncanonicalizedPathCacheLock);
 }
 
-- (CFPDSource)initWithDomain:(__CFString *)a3 userName:(__CFString *)a4 byHost:(BOOL)a5 managed:(BOOL)a6 shmemIndex:(signed __int16)a7 daemon:(id)a8
+- (CFPDSource)initWithDomain:(__CFString *)domain userName:(__CFString *)name byHost:(BOOL)host managed:(BOOL)managed shmemIndex:(signed __int16)index daemon:(id)daemon
 {
   v19 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -984,15 +984,15 @@ LABEL_7:
   v15 = v14;
   if (v14)
   {
-    v14->_cfprefsd = a8;
+    v14->_cfprefsd = daemon;
     *&v14->_uncanonicalizedPathCacheLock._os_unfair_lock_opaque = 0;
     *&v14->_writeLock._os_unfair_lock_opaque = 0;
     *(v14 + 142) &= ~2u;
-    v14->_byHost = a5;
-    v14->_domain = _internString(a3);
-    v15->_userName = _internString(a4);
-    v15->_managed = a6;
-    v15->_generationShmemIndex = a7;
+    v14->_byHost = host;
+    v14->_domain = _internString(domain);
+    v15->_userName = _internString(name);
+    v15->_managed = managed;
+    v15->_generationShmemIndex = index;
     *&v15->_parentFD = -1;
   }
 
@@ -1023,24 +1023,24 @@ uint64_t __49__CFPDSource_respondToFileWrittenToBehindOurBack__block_invoke(uint
 
 - (id)description
 {
-  v2 = [(CFPDSource *)self debugDump];
+  debugDump = [(CFPDSource *)self debugDump];
 
-  return v2;
+  return debugDump;
 }
 
-- (void)setDirty:(BOOL)a3
+- (void)setDirty:(BOOL)dirty
 {
-  v3 = a3;
+  dirtyCopy = dirty;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v3)
+  if (dirtyCopy)
   {
     [(CFPDSource *)self updateShmemEntry];
   }
 
   v5 = *(self + 142);
-  if (((((v5 & 2) == 0) ^ v3) & 1) == 0)
+  if (((((v5 & 2) == 0) ^ dirtyCopy) & 1) == 0)
   {
-    if (v3)
+    if (dirtyCopy)
     {
       v6 = 2;
     }
@@ -1051,7 +1051,7 @@ uint64_t __49__CFPDSource_respondToFileWrittenToBehindOurBack__block_invoke(uint
     }
 
     *(self + 142) = v5 & 0xFD | v6;
-    if (v3)
+    if (dirtyCopy)
     {
       [CFPDSource setDirty:?];
     }
@@ -1064,11 +1064,11 @@ uint64_t __49__CFPDSource_respondToFileWrittenToBehindOurBack__block_invoke(uint
   }
 }
 
-- (void)handleWritingResult:(__CFDictionary *)a3
+- (void)handleWritingResult:(__CFDictionary *)result
 {
   v16 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
-  if (!a3)
+  if (!result)
   {
 LABEL_4:
     if ((*(self + 142) & 2) == 0)
@@ -1094,7 +1094,7 @@ LABEL_4:
     goto LABEL_13;
   }
 
-  Value = CFDictionaryGetValue(a3, self);
+  Value = CFDictionaryGetValue(result, self);
   if (Value != 28)
   {
     if (Value)
@@ -1122,33 +1122,33 @@ LABEL_13:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPlist:(int)a3 owner:(unsigned int)a4 mode:
+- (void)setPlist:(int)plist owner:(unsigned int)owner mode:
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 108));
-    if ([*(a1 + 16) purgable])
+    os_unfair_lock_assert_owner((self + 108));
+    if ([*(self + 16) purgable])
     {
       [CFPDSource setPlist:owner:mode:];
     }
 
-    v8 = *(a1 + 16);
-    *(a1 + 16) = a2;
+    v8 = *(self + 16);
+    *(self + 16) = a2;
     if (v8)
     {
     }
 
-    *(a1 + 112) = a3;
-    *(a1 + 142) = (a4 >> 1) & 0x80 | *(a1 + 142) & 0x7F;
-    *(a1 + 143) = *(a1 + 143) & 0xFE | ((a4 & 4) != 0);
+    *(self + 112) = plist;
+    *(self + 142) = (owner >> 1) & 0x80 | *(self + 142) & 0x7F;
+    *(self + 143) = *(self + 143) & 0xFE | ((owner & 4) != 0);
   }
 }
 
-- (void)syncWriteToDiskAndFlushCacheForReason:(__CFString *)a3
+- (void)syncWriteToDiskAndFlushCacheForReason:(__CFString *)reason
 {
   [(CFPDSource *)self syncWriteToDisk];
 
-  [(CFPDSource *)self clearCacheForReason:a3];
+  [(CFPDSource *)self clearCacheForReason:reason];
 }
 
 uint64_t __55__CFPDSource_markNeedsToReloadFromDiskDueToFailedWrite__block_invoke(uint64_t a1)
@@ -1185,9 +1185,9 @@ uint64_t __32__CFPDSource_handleDeviceUnlock__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(BOOL)a3 andReturnFileUID:(unsigned int *)a4 andMode:(unsigned __int16 *)a5
+- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(BOOL)plist andReturnFileUID:(unsigned int *)d andMode:(unsigned __int16 *)mode
 {
-  v7 = a3;
+  plistCopy = plist;
   v48 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
   if ([(CFPDDataBuffer *)self->_plist purgable])
@@ -1198,7 +1198,7 @@ uint64_t __32__CFPDSource_handleDeviceUnlock__block_invoke(uint64_t a1)
   plist = self->_plist;
   if (plist)
   {
-    v10 = !v7;
+    v10 = !plistCopy;
   }
 
   else
@@ -1223,10 +1223,10 @@ uint64_t __32__CFPDSource_handleDeviceUnlock__block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [(CFPDDataBuffer *)plist validatePlist];
+    validatePlist = [(CFPDDataBuffer *)plist validatePlist];
     v12 = _CFPrefsDaemonLog();
     v13 = v12;
-    if (v11)
+    if (validatePlist)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -1255,12 +1255,12 @@ uint64_t __32__CFPDSource_handleDeviceUnlock__block_invoke(uint64_t a1)
   if (v16)
   {
 LABEL_16:
-    if (a4)
+    if (d)
     {
-      *a4 = self->_plistFileOwner;
+      *d = self->_plistFileOwner;
     }
 
-    if (!a5)
+    if (!mode)
     {
       goto LABEL_37;
     }
@@ -1315,8 +1315,8 @@ LABEL_22:
   {
     if (!strstr(self->_actualPath, "Preferences/"))
     {
-      v26 = [(CFPDSource *)self copyUncanonicalizedPath];
-      if (v26 && (v27 = v26, v49.length = CFStringGetLength(v26), v49.location = 0, v28 = CFStringFindWithOptions(v27, @"Preferences/", v49, 0, 0), CFRelease(v27), v28))
+      copyUncanonicalizedPath = [(CFPDSource *)self copyUncanonicalizedPath];
+      if (copyUncanonicalizedPath && (v27 = copyUncanonicalizedPath, v49.length = CFStringGetLength(copyUncanonicalizedPath), v49.location = 0, v28 = CFStringFindWithOptions(v27, @"Preferences/", v49, 0, 0), CFRelease(v27), v28))
       {
         v25 = *(self + 142);
       }
@@ -1330,8 +1330,8 @@ LABEL_22:
     *(self + 142) = v25 | 8;
   }
 
-  v29 = [(CFPDSource *)self openActualPath];
-  if ((v29 & 0x80000000) != 0)
+  openActualPath = [(CFPDSource *)self openActualPath];
+  if ((openActualPath & 0x80000000) != 0)
   {
 LABEL_26:
     os_unfair_lock_unlock(&self->_writeLock);
@@ -1339,9 +1339,9 @@ LABEL_26:
 
   else
   {
-    v30 = v29;
+    v30 = openActualPath;
     v31 = !self->_managed && (*(self + 142) & 4) == 0;
-    v16 = [CFPDDataBuffer newBufferFromFile:v29 allowMappingIfSafe:v31];
+    v16 = [CFPDDataBuffer newBufferFromFile:openActualPath allowMappingIfSafe:v31];
     memset(&buf, 0, sizeof(buf));
     if (v16)
     {
@@ -1368,12 +1368,12 @@ LABEL_26:
 
       [(CFPDSource *)self setPlist:v16 owner:st_uid mode:st_mode];
 
-      if (v7)
+      if (plistCopy)
       {
-        v35 = [(CFPDDataBuffer *)v16 validatePlist];
+        validatePlist2 = [(CFPDDataBuffer *)v16 validatePlist];
         v36 = _CFPrefsDaemonLog();
         v37 = v36;
-        if (v35)
+        if (validatePlist2)
         {
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
@@ -1425,12 +1425,12 @@ LABEL_26:
     }
   }
 
-  if (a4)
+  if (d)
   {
-    *a4 = self->_lastEuid;
+    *d = self->_lastEuid;
   }
 
-  if (a5)
+  if (mode)
   {
     v20 = 384;
     if ((*(self + 142) & 0x10) != 0)
@@ -1453,7 +1453,7 @@ LABEL_26:
     }
 
 LABEL_36:
-    *a5 = v20;
+    *mode = v20;
     goto LABEL_37;
   }
 
@@ -1483,7 +1483,7 @@ void __100__CFPDSource_copyPropertyListWithoutDrainingPendingChangesValidatingPl
   }
 }
 
-- (void)asyncNotifyObserversOfWriteFromConnection:(id)a3 message:(id)a4
+- (void)asyncNotifyObserversOfWriteFromConnection:(id)connection message:(id)message
 {
   v5 = *MEMORY[0x1E69E9840];
   [CFPDSource observingConnectionsLockedSync:?];
@@ -1579,23 +1579,23 @@ void __33__CFPDSource_drainPendingChanges__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)enqueueNewKey:(id)a3 value:(id)a4 encoding:(int)a5 inBatch:(BOOL)a6 fromMessage:(id)a7
+- (BOOL)enqueueNewKey:(id)key value:(id)value encoding:(int)encoding inBatch:(BOOL)batch fromMessage:(id)message
 {
   applier[6] = *MEMORY[0x1E69E9840];
-  if (object_getClass(a3) != MEMORY[0x1E69E9F10])
+  if (object_getClass(key) != MEMORY[0x1E69E9F10])
   {
     [CFPDSource enqueueNewKey:value:encoding:inBatch:fromMessage:];
   }
 
-  if (a5 == 1)
+  if (encoding == 1)
   {
     applier[0] = MEMORY[0x1E69E9820];
     applier[1] = 3221225472;
     applier[2] = __63__CFPDSource_enqueueNewKey_value_encoding_inBatch_fromMessage___block_invoke;
     applier[3] = &unk_1E6DD1A68;
     applier[4] = self;
-    applier[5] = a7;
-    xpc_dictionary_apply(a4, applier);
+    applier[5] = message;
+    xpc_dictionary_apply(value, applier);
   }
 
   else
@@ -1620,7 +1620,7 @@ void __33__CFPDSource_drainPendingChanges__block_invoke(uint64_t a1)
       while (1)
       {
         value = xpc_array_get_value(self->_pendingChangesQueue, v16 - 1);
-        if (xpc_equal(a3, value))
+        if (xpc_equal(key, value))
         {
           break;
         }
@@ -1634,28 +1634,28 @@ void __33__CFPDSource_drainPendingChanges__block_invoke(uint64_t a1)
       }
 
       v20 = xpc_array_get_value(self->_pendingChangesQueue, v16);
-      v21 = _CFPrefsSizeOfValue(a4, 0);
+      v21 = _CFPrefsSizeOfValue(value, 0);
       v22 = v21 - _CFPrefsSizeOfValue(v20, 0);
       v23 = self->_pendingChangesQueue;
       self->_pendingChangesSize += v22;
-      xpc_array_set_value(v23, v16, a4);
+      xpc_array_set_value(v23, v16, value);
     }
 
     else
     {
 LABEL_11:
-      xpc_array_append_value(self->_pendingChangesQueue, a3);
-      xpc_array_append_value(self->_pendingChangesQueue, a4);
-      if (object_getClass(a4) != MEMORY[0x1E69E9ED0])
+      xpc_array_append_value(self->_pendingChangesQueue, key);
+      xpc_array_append_value(self->_pendingChangesQueue, value);
+      if (object_getClass(value) != MEMORY[0x1E69E9ED0])
       {
-        v19 = _CFPrefsSizeOfValue(a4, 0);
-        self->_pendingChangesSize += _CFPrefsSizeOfValue(a3, 0) + v19;
+        v19 = _CFPrefsSizeOfValue(value, 0);
+        self->_pendingChangesSize += _CFPrefsSizeOfValue(key, 0) + v19;
       }
     }
   }
 
   [(CFPDSource *)self setDirty:1];
-  if (!a6 && self->_pendingChangesSize > 0x20000)
+  if (!batch && self->_pendingChangesSize > 0x20000)
   {
 
     self->_pendingChangesSize = 0;
@@ -1675,7 +1675,7 @@ uint64_t __63__CFPDSource_enqueueNewKey_value_encoding_inBatch_fromMessage___blo
 
 - (__CFString)debugDump
 {
-  v3 = [(CFPDSource *)self copyUncanonicalizedPath];
+  copyUncanonicalizedPath = [(CFPDSource *)self copyUncanonicalizedPath];
   userName = self->_userName;
   domain = self->_domain;
   plist = self->_plist;
@@ -1697,16 +1697,16 @@ uint64_t __63__CFPDSource_enqueueNewKey_value_encoding_inBatch_fromMessage___blo
     }
   }
 
-  v12 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"\n*****************************************************\nDomain: %@\nUser: %@\nPath: %@\nplist data:%@\nshmem index:%d\ndirty:%d\nbyHost:%d\nmode:%o\n", domain, userName, v3, plist, generationShmemIndex, v9, byHost, v11);
-  if (v3)
+  v12 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"\n*****************************************************\nDomain: %@\nUser: %@\nPath: %@\nplist data:%@\nshmem index:%d\ndirty:%d\nbyHost:%d\nmode:%o\n", domain, userName, copyUncanonicalizedPath, plist, generationShmemIndex, v9, byHost, v11);
+  if (copyUncanonicalizedPath)
   {
-    CFRelease(v3);
+    CFRelease(copyUncanonicalizedPath);
   }
 
   return v12;
 }
 
-- (void)lockedAsync:(id)a3
+- (void)lockedAsync:(id)async
 {
   block[6] = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -1714,7 +1714,7 @@ uint64_t __63__CFPDSource_enqueueNewKey_value_encoding_inBatch_fromMessage___blo
   block[2] = __26__CFPDSource_lockedAsync___block_invoke;
   block[3] = &unk_1E6DD1A90;
   block[4] = self;
-  block[5] = a3;
+  block[5] = async;
   v3 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, block);
   v4 = qos_class_self();
   global_queue = dispatch_get_global_queue(v4, 0);
@@ -1735,17 +1735,17 @@ uint64_t __26__CFPDSource_lockedAsync___block_invoke(uint64_t a1)
   return [(os_unfair_lock *)v1 unlock];
 }
 
-- (void)lockedSync:(id)a3
+- (void)lockedSync:(id)sync
 {
   [(CFPDSource *)self lock];
   [(CFPDSource *)self beginHandlingRequest];
-  (*(a3 + 2))(a3);
+  (*(sync + 2))(sync);
   [(CFPDSource *)self endHandlingRequest];
 
   [(CFPDSource *)self unlock];
 }
 
-- (BOOL)validateSandboxForWrite:(const char *)a3 containerPath:
+- (BOOL)validateSandboxForWrite:(const char *)write containerPath:
 {
   v38 = *MEMORY[0x1E69E9840];
   if (result)
@@ -1785,10 +1785,10 @@ uint64_t __26__CFPDSource_lockedAsync___block_invoke(uint64_t a1)
       if (v8 == 1)
       {
         string = xpc_dictionary_get_string(a2, "CFPreferencesDomain");
-        v10 = strlen(a3);
+        v10 = strlen(write);
         if (v10)
         {
-          v11 = strncmp(*(v5 + 56), a3, v10) != 0;
+          v11 = strncmp(*(v5 + 56), write, v10) != 0;
         }
 
         else
@@ -1930,7 +1930,7 @@ uint64_t __26__CFPDSource_lockedAsync___block_invoke(uint64_t a1)
   return result;
 }
 
-- (uint64_t)validateSandboxForRead:(const char *)a3 containerPath:
+- (uint64_t)validateSandboxForRead:(const char *)read containerPath:
 {
   v39 = *MEMORY[0x1E69E9840];
   if (result)
@@ -2040,10 +2040,10 @@ LABEL_40:
 
       else
       {
-        v23 = strlen(a3);
+        v23 = strlen(read);
         if (v23)
         {
-          v24 = strncmp(*(v5 + 56), a3, v23) != 0;
+          v24 = strncmp(*(v5 + 56), read, v23) != 0;
         }
 
         else
@@ -2119,14 +2119,14 @@ LABEL_43:
   return result;
 }
 
-- (uint64_t)validatePOSIXPermissionsForMessage:(int)a3 accessType:(int)a4 fileUID:(int)a5 mode:(char *)a6 fullyValidated:
+- (uint64_t)validatePOSIXPermissionsForMessage:(int)message accessType:(int)type fileUID:(int)d mode:(char *)mode fullyValidated:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_assert_owner(a1 + 27);
+  os_unfair_lock_assert_owner(self + 27);
   remote_connection = xpc_dictionary_get_remote_connection(a2);
   if (!remote_connection)
   {
@@ -2141,9 +2141,9 @@ LABEL_43:
   v15 = cfprefsdEuid();
   if (euid && v15 != euid)
   {
-    if (a3 == 1 || (euid != a4 ? (v16 = 4) : (v16 = 256), (v16 & a5) == 0))
+    if (message == 1 || (euid != type ? (v16 = 4) : (v16 = 256), (v16 & d) == 0))
     {
-      if (([CFPDSource validatePOSIXPermissionsForMessage:a1 accessType:a3 fileUID:euid mode:a6 fullyValidated:?]& 1) == 0)
+      if (([CFPDSource validatePOSIXPermissionsForMessage:self accessType:message fileUID:euid mode:mode fullyValidated:?]& 1) == 0)
       {
         return 1;
       }
@@ -2157,7 +2157,7 @@ LABEL_43:
   {
 LABEL_18:
     v20 = xpc_dictionary_dup_fd(a2, "CFPreferencesAccessToken");
-    v18 = [(CFPDSource *)a1 validateAccessToken:v20 accessType:a3];
+    v18 = [(CFPDSource *)self validateAccessToken:v20 accessType:message];
     if ((v20 & 0x80000000) == 0)
     {
       close(v20);
@@ -2169,18 +2169,18 @@ LABEL_18:
 
   v18 = 1;
 LABEL_14:
-  *a6 = v17;
+  *mode = v17;
   return v18;
 }
 
-- (int)validateMessage:(id)a3 withNewKey:(id)a4 newValue:(id)a5 plistIsAvailableToRead:(BOOL)a6 containerPath:(const char *)a7 fileUID:(unsigned int)a8 mode:(unsigned __int16)a9 diagnosticMessage:(const char *)a10
+- (int)validateMessage:(id)message withNewKey:(id)key newValue:(id)value plistIsAvailableToRead:(BOOL)read containerPath:(const char *)path fileUID:(unsigned int)d mode:(unsigned __int16)mode diagnosticMessage:(const char *)self0
 {
-  v12 = a6;
+  readCopy = read;
   v28 = *MEMORY[0x1E69E9840];
-  v17 = a4 != 0;
-  if (!eduModeEnabled() || !xpc_dictionary_get_BOOL(a3, "AllowWritingSpecialKeysToGlobalPreferences"))
+  v17 = key != 0;
+  if (!eduModeEnabled() || !xpc_dictionary_get_BOOL(message, "AllowWritingSpecialKeysToGlobalPreferences"))
   {
-    if (a4 || v12)
+    if (key || readCopy)
     {
       goto LABEL_11;
     }
@@ -2190,7 +2190,7 @@ LABEL_8:
     goto LABEL_27;
   }
 
-  if (!a4)
+  if (!key)
   {
     goto LABEL_8;
   }
@@ -2199,20 +2199,20 @@ LABEL_8:
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (xpc_dictionary_get_BOOL(a3, "MultiKeySet"))
+  if (xpc_dictionary_get_BOOL(message, "MultiKeySet"))
   {
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __118__CFPDSource_validateMessage_withNewKey_newValue_plistIsAvailableToRead_containerPath_fileUID_mode_diagnosticMessage___block_invoke;
     v23[3] = &unk_1E6D7DAB0;
     v23[4] = &v24;
-    xpc_dictionary_apply(a5, v23);
+    xpc_dictionary_apply(value, v23);
     v18 = *(v25 + 24);
   }
 
   else
   {
-    string_ptr = xpc_string_get_string_ptr(a4);
+    string_ptr = xpc_string_get_string_ptr(key);
     v18 = isSpecialKey(string_ptr);
     *(v25 + 24) = v18;
   }
@@ -2225,7 +2225,7 @@ LABEL_8:
 
 LABEL_11:
   LOBYTE(v24) = 0;
-  result = [(CFPDSource *)self validatePOSIXPermissionsForMessage:a3 accessType:v17 fileUID:a8 mode:a9 fullyValidated:&v24];
+  result = [(CFPDSource *)self validatePOSIXPermissionsForMessage:message accessType:v17 fileUID:d mode:mode fullyValidated:&v24];
   if (v24 == 1)
   {
     if (result == 3)
@@ -2238,14 +2238,14 @@ LABEL_11:
     {
       v21 = "accessing another user's preferences requires sufficient permissions to be able to read the file";
 LABEL_26:
-      *a10 = v21;
+      *diagnosticMessage = v21;
     }
   }
 
   else
   {
-    result = [(CFPDSource *)self validateSandboxPermissionsForMessage:a3 containerPath:a7 accessType:v17];
-    if (a7 && *a7)
+    result = [(CFPDSource *)self validateSandboxPermissionsForMessage:message containerPath:path accessType:v17];
+    if (path && *path)
     {
       if (result == 3)
       {
@@ -2289,16 +2289,16 @@ uint64_t __118__CFPDSource_validateMessage_withNewKey_newValue_plistIsAvailableT
   return *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (void)setObserved:(void *)a3 bySenderOfMessage:
+- (void)setObserved:(void *)observed bySenderOfMessage:
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner(a1 + 27);
-    remote_connection = xpc_dictionary_get_remote_connection(a3);
+    os_unfair_lock_assert_owner(self + 27);
+    remote_connection = xpc_dictionary_get_remote_connection(observed);
     if (!remote_connection)
     {
-      value = xpc_dictionary_get_value(a3, "connection");
+      value = xpc_dictionary_get_value(observed, "connection");
       if (!value || (remote_connection = value, object_getClass(value) != MEMORY[0x1E69E9E68]))
       {
         [CFPDSource setObserved:bySenderOfMessage:];
@@ -2310,7 +2310,7 @@ uint64_t __118__CFPDSource_validateMessage_withNewKey_newValue_plistIsAvailableT
     v11[2] = __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke;
     v11[3] = &unk_1E6DD1AB8;
     v12 = a2;
-    v11[4] = a1;
+    v11[4] = self;
     if (withClientContext(remote_connection, v11))
     {
       v9[0] = MEMORY[0x1E69E9820];
@@ -2318,12 +2318,12 @@ uint64_t __118__CFPDSource_validateMessage_withNewKey_newValue_plistIsAvailableT
       v9[2] = __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2;
       v9[3] = &unk_1E6DD1AE0;
       v10 = a2;
-      v9[4] = a1;
-      v9[5] = a3;
+      v9[4] = self;
+      v9[5] = observed;
       v9[6] = remote_connection;
-      os_unfair_lock_lock(a1 + 25);
+      os_unfair_lock_lock(self + 25);
       __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2(v9);
-      os_unfair_lock_unlock(a1 + 25);
+      os_unfair_lock_unlock(self + 25);
     }
   }
 
@@ -2439,7 +2439,7 @@ void __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2(uint64_t a1
   }
 }
 
-- (id)acceptMessage:(id)a3
+- (id)acceptMessage:(id)message
 {
   v81 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
@@ -2448,7 +2448,7 @@ void __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2(uint64_t a1
     [CFPDSource acceptMessage:];
   }
 
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(message);
   if (!reply)
   {
     reply = xpc_dictionary_create(0, 0, 0);
@@ -2462,41 +2462,41 @@ void __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2(uint64_t a1
     v78[2] = __DEBUG_REQUEST_block_invoke;
     v78[3] = &unk_1E6DD1ED0;
     v78[4] = self;
-    _extractCFPDBits(a3, 0, self, v78);
+    _extractCFPDBits(message, 0, self, v78);
   }
 
   v68 = 0;
   v69 = 0;
   v67 = 0;
-  int64 = xpc_dictionary_get_int64(a3, "CFPreferencesOperation");
-  v8 = _CFPrefsDecodeKeyValuePairFromXPCMessage(a3, &v69, &v68, &v67);
+  int64 = xpc_dictionary_get_int64(message, "CFPreferencesOperation");
+  v8 = _CFPrefsDecodeKeyValuePairFromXPCMessage(message, &v69, &v68, &v67);
   v66 = 0;
-  if (xpc_dictionary_get_BOOL(a3, "CFPreferencesAvoidCache"))
+  if (xpc_dictionary_get_BOOL(message, "CFPreferencesAvoidCache"))
   {
     [(CFPDSource *)self syncWriteToDiskAndFlushCacheForReason:@"we're avoiding the cache"];
   }
 
-  if (xpc_dictionary_get_BOOL(a3, "CFPreferencesRestrictedReadability"))
+  if (xpc_dictionary_get_BOOL(message, "CFPreferencesRestrictedReadability"))
   {
     *(self + 142) |= 0x10u;
   }
 
-  if (xpc_dictionary_get_BOOL(a3, "CFPreferencesDisableBackups"))
+  if (xpc_dictionary_get_BOOL(message, "CFPreferencesDisableBackups"))
   {
     *(self + 142) |= 0x40u;
   }
 
-  self->_fileProtectionClass = xpc_dictionary_get_int64(a3, "CFPreferencesFileProtectionClass");
-  if (xpc_dictionary_get_BOOL(a3, "kCFPreferencesTestingSimulateSlowFilesystem"))
+  self->_fileProtectionClass = xpc_dictionary_get_int64(message, "CFPreferencesFileProtectionClass");
+  if (xpc_dictionary_get_BOOL(message, "kCFPreferencesTestingSimulateSlowFilesystem"))
   {
     byte_1EA84A4F3 = 1;
   }
 
-  atomic_store(xpc_dictionary_get_int64(a3, "kCFPreferencesTestingSimulateOutOfDiskSpace"), &dword_1EA84A4FC);
-  remote_connection = xpc_dictionary_get_remote_connection(a3);
+  atomic_store(xpc_dictionary_get_int64(message, "kCFPreferencesTestingSimulateOutOfDiskSpace"), &dword_1EA84A4FC);
+  remote_connection = xpc_dictionary_get_remote_connection(message);
   if (!remote_connection)
   {
-    value = xpc_dictionary_get_value(a3, "connection");
+    value = xpc_dictionary_get_value(message, "connection");
     if (!value || (remote_connection = value, object_getClass(value) != MEMORY[0x1E69E9E68]))
     {
       [CFPDSource acceptMessage:];
@@ -2506,7 +2506,7 @@ void __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2(uint64_t a1
   v78[0] = 0;
   v79 = 0u;
   v80 = 0u;
-  data = xpc_dictionary_get_data(a3, "CFPreferencesAuditToken", v78);
+  data = xpc_dictionary_get_data(message, "CFPreferencesAuditToken", v78);
   if (data && v78[0] == 32)
   {
     v12 = data[1];
@@ -2516,9 +2516,9 @@ void __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2(uint64_t a1
 
   else
   {
-    if (!xpc_dictionary_get_remote_connection(a3))
+    if (!xpc_dictionary_get_remote_connection(message))
     {
-      v13 = xpc_dictionary_get_value(a3, "connection");
+      v13 = xpc_dictionary_get_value(message, "connection");
       if (!v13 || object_getClass(v13) != MEMORY[0x1E69E9E68])
       {
         [CFPDSource acceptMessage:];
@@ -2539,7 +2539,7 @@ void __44__CFPDSource_setObserved_bySenderOfMessage___block_invoke_2(uint64_t a1
 
   if ((_CFPrefsReadOnly() & 1) == 0)
   {
-    if (xpc_dictionary_get_BOOL(a3, "CFPreferencesUseCorrectOwner"))
+    if (xpc_dictionary_get_BOOL(message, "CFPreferencesUseCorrectOwner"))
     {
       Length = CFStringGetLength(self->_userName);
       MaximumSizeForEncoding = CFStringGetMaximumSizeForEncoding(Length, 0x8000100u);
@@ -2588,7 +2588,7 @@ LABEL_40:
   v65 = 0;
   v64 = 0;
   v63 = 0;
-  v25 = xpc_dictionary_get_BOOL(a3, "ValidatePlist");
+  v25 = xpc_dictionary_get_BOOL(message, "ValidatePlist");
   if ((v8 & 1) != 0 || (v30 = v25, !self->_plist) && self->_parentFD == -1 && ([(CFPDSource *)self cacheFileInfo], self->_parentFD == -1))
   {
     v26 = 0;
@@ -2617,7 +2617,7 @@ LABEL_40:
       *&v76 = __ERROR_LOG_PREUNLOCK_ACCESS_block_invoke;
       *(&v76 + 1) = &__block_descriptor_40_e29_v64__0i8_12_20_28_36_44_52B60l;
       v77 = actualPath;
-      _extractCFPDBits(a3, 0, self, &v75);
+      _extractCFPDBits(message, 0, self, &v75);
     }
   }
 
@@ -2638,7 +2638,7 @@ LABEL_40:
   {
 LABEL_42:
     LOWORD(v58) = v64;
-    v14 = [(CFPDSource *)self validateMessage:a3 withNewKey:v69 newValue:v68 plistIsAvailableToRead:v26 containerPath:v78 fileUID:v63 mode:v58 diagnosticMessage:&v65];
+    v14 = [(CFPDSource *)self validateMessage:message withNewKey:v69 newValue:v68 plistIsAvailableToRead:v26 containerPath:v78 fileUID:v63 mode:v58 diagnosticMessage:&v65];
   }
 
 LABEL_43:
@@ -2744,7 +2744,7 @@ LABEL_82:
   {
     if ((int64 - 7) <= 1)
     {
-      [(CFPDSource *)self setObserved:a3 bySenderOfMessage:?];
+      [(CFPDSource *)self setObserved:message bySenderOfMessage:?];
       goto LABEL_90;
     }
 
@@ -2756,11 +2756,11 @@ LABEL_82:
       v62[3] = &unk_1E6D81EC0;
       v62[4] = self;
       [v27 quicklyValidatePlistAndOnFailureInvokeBlock:v62];
-      v50 = [v27 copyXPCData];
-      if (v50)
+      copyXPCData = [v27 copyXPCData];
+      if (copyXPCData)
       {
-        xpc_dictionary_set_value(reply, "CFPreferencesPropertyList", v50);
-        xpc_release(v50);
+        xpc_dictionary_set_value(reply, "CFPreferencesPropertyList", copyXPCData);
+        xpc_release(copyXPCData);
       }
 
       if (v28 != -1)
@@ -2784,14 +2784,14 @@ LABEL_82:
       }
 
       v54 = self->_actualPath;
-      if (v50)
+      if (copyXPCData)
       {
-        DEBUG_READ(a3, self, v54);
+        DEBUG_READ(message, self, v54);
       }
 
       else
       {
-        DEBUG_READ_EMPTY(a3, self, v54);
+        DEBUG_READ_EMPTY(message, self, v54);
       }
     }
 
@@ -2803,8 +2803,8 @@ LABEL_82:
     goto LABEL_146;
   }
 
-  v45 = [(CFPDSource *)self approximatePlistSizeIncludingPendingChanges];
-  if (![(CFPDSource *)self enqueueNewKey:v69 value:v68 encoding:v67 inBatch:0 fromMessage:a3])
+  approximatePlistSizeIncludingPendingChanges = [(CFPDSource *)self approximatePlistSizeIncludingPendingChanges];
+  if (![(CFPDSource *)self enqueueNewKey:v69 value:v68 encoding:v67 inBatch:0 fromMessage:message])
   {
     v29 = "Couldn't enqueue updated values";
     v34 = reply;
@@ -2812,13 +2812,13 @@ LABEL_82:
     goto LABEL_89;
   }
 
-  v46 = [(CFPDSource *)self approximatePlistSizeIncludingPendingChanges];
-  if (v46 > v45)
+  approximatePlistSizeIncludingPendingChanges2 = [(CFPDSource *)self approximatePlistSizeIncludingPendingChanges];
+  if (approximatePlistSizeIncludingPendingChanges2 > approximatePlistSizeIncludingPendingChanges)
   {
-    [(CFPDSource *)self attachSizeWarningsToReply:v46 forByteCount:?];
+    [(CFPDSource *)self attachSizeWarningsToReply:approximatePlistSizeIncludingPendingChanges2 forByteCount:?];
   }
 
-  if (xpc_dictionary_get_BOOL(a3, "CFPreferencesShouldWriteSynchronously") || v66 == 1)
+  if (xpc_dictionary_get_BOOL(message, "CFPreferencesShouldWriteSynchronously") || v66 == 1)
   {
     [(CFPDSource *)self syncWriteToDisk];
   }
@@ -2839,10 +2839,10 @@ LABEL_82:
       v57 = v59;
     }
 
-    _extractCFPDBits(a3, v57, self, &__block_literal_global_409);
+    _extractCFPDBits(message, v57, self, &__block_literal_global_409);
   }
 
-  [(CFPDSource *)self asyncNotifyObserversOfWriteFromConnection:remote_connection message:a3];
+  [(CFPDSource *)self asyncNotifyObserversOfWriteFromConnection:remote_connection message:message];
 LABEL_90:
   xpc_dictionary_set_int64(reply, "CFPreferencesShmemIndex", self->_generationShmemIndex);
   bzero(&v75, 0x400uLL);
@@ -2887,7 +2887,7 @@ LABEL_90:
       v72 = __ERROR_WRITE_REJECTED_block_invoke;
       v73 = &__block_descriptor_40_e29_v64__0i8_12_20_28_36_44_52B60l;
       v74 = string;
-      v42 = a3;
+      messageCopy2 = message;
       goto LABEL_100;
     }
 
@@ -2898,10 +2898,10 @@ LABEL_90:
     v74 = string;
   }
 
-  v42 = a3;
+  messageCopy2 = message;
   v41 = 0;
 LABEL_100:
-  _extractCFPDBits(v42, v41, self, &v70);
+  _extractCFPDBits(messageCopy2, v41, self, &v70);
 LABEL_101:
   if (v66 == 1)
   {
@@ -2950,20 +2950,20 @@ void __28__CFPDSource_acceptMessage___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)a3 replacingWithTombstone:(id *)a4
+- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)source replacingWithTombstone:(id *)tombstone
 {
   v23 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
-  if (*a3)
+  if (*source)
   {
     if ((*(self + 142) & 0x20) != 0)
     {
-      *a3 = 0;
+      *source = 0;
     }
 
     else
     {
-      [(CFPDSource *)self processEndOfMessageIntendingToRemoveSource:v22 replacingWithTombstone:a4, a3];
+      [(CFPDSource *)self processEndOfMessageIntendingToRemoveSource:v22 replacingWithTombstone:tombstone, source];
     }
   }
 
@@ -2984,7 +2984,7 @@ void __28__CFPDSource_acceptMessage___block_invoke_2(uint64_t a1)
           CFRelease(PathComponent);
           if (v11)
           {
-            v12 = *a3;
+            v12 = *source;
             os_unfair_lock_assert_owner(&self->_lock);
             if (v12)
             {
@@ -3090,9 +3090,9 @@ LABEL_32:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getUncanonicalizedPath:(uint64_t)a1
+- (BOOL)getUncanonicalizedPath:(uint64_t)path
 {
-  if (!a1)
+  if (!path)
   {
     return 0;
   }
@@ -3154,20 +3154,20 @@ id __58__CFPDSource_cacheFileInfoForWriting_euid_egid_didCreate___block_invoke(u
     v5 = *(v3 + 40);
     v4 = *(v3 + 48);
     v6 = *(v3 + 138);
-    v7 = [v3 container];
+    container = [v3 container];
     v8 = *(v2 + 139);
     v9 = *(v2 + 140);
 
-    return [CFPrefsDaemon _getUncanonicalizedSourcePath:v1 withDomain:v4 user:v5 byHost:v6 containerPath:v7 managed:v8 managedUsesContainer:v9];
+    return [CFPrefsDaemon _getUncanonicalizedSourcePath:v1 withDomain:v4 user:v5 byHost:v6 containerPath:container managed:v8 managedUsesContainer:v9];
   }
 
   return result;
 }
 
-- (uint64_t)shouldStayDirtyAfterOpenForWritingFailureWithErrno:(void *)a1
+- (uint64_t)shouldStayDirtyAfterOpenForWritingFailureWithErrno:(void *)errno
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!errno)
   {
 LABEL_7:
     v6 = 0;
@@ -3180,7 +3180,7 @@ LABEL_7:
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v12 = a1[7];
+      v12 = errno[7];
       strerror(a2);
       v18 = 136380931;
       v19 = v12;
@@ -3195,8 +3195,8 @@ LABEL_7:
   v6 = 1;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v8 = a1[5];
-    v7 = a1[6];
+    v8 = errno[5];
+    v7 = errno[6];
     OUTLINED_FUNCTION_1_17();
     v20 = v9;
     _os_log_impl(&dword_1830E6000, v5, OS_LOG_TYPE_INFO, "Re-marking { %@, %@ } as dirty because attempt to open temporary path failed with ENOSPC", &v18, 0x16u);
@@ -3210,21 +3210,21 @@ LABEL_8:
 - (void)cleanUpIfNecessaryAfterCreatingPlist
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 108));
+    os_unfair_lock_assert_owner((self + 108));
     bzero(&v13, 0x90uLL);
     v2 = OUTLINED_FUNCTION_15_0();
     if (!v3)
     {
-      if (fstatat(v2, *(a1 + 64), &v13, 32))
+      if (fstatat(v2, *(self + 64), &v13, 32))
       {
         if (*__error() != 2)
         {
           v4 = _CFPrefsDaemonLog();
           if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
           {
-            v5 = *(a1 + 56);
+            v5 = *(self + 56);
             v6 = __error();
             strerror(*v6);
             v11 = 136380931;
@@ -3235,12 +3235,12 @@ LABEL_8:
         }
       }
 
-      else if (!v13.st_size && (v13.st_mode & 0xF000) == 0x8000 && unlinkat(*(a1 + 128), *(a1 + 64), 0) == -1)
+      else if (!v13.st_size && (v13.st_mode & 0xF000) == 0x8000 && unlinkat(*(self + 128), *(self + 64), 0) == -1)
       {
         v7 = _CFPrefsDaemonLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
         {
-          v9 = *(a1 + 56);
+          v9 = *(self + 56);
           v10 = __error();
           strerror(*v10);
           v11 = 136380931;
@@ -3270,30 +3270,30 @@ LABEL_8:
   return result;
 }
 
-- (void)finishedNonRequestWriteWithResult:(__CFDictionary *)a3
+- (void)finishedNonRequestWriteWithResult:(__CFDictionary *)result
 {
   [(CFPDSource *)self lock];
-  [(CFPDSource *)self handleWritingResult:a3];
+  [(CFPDSource *)self handleWritingResult:result];
   [(CFPDSource *)self tryEndAccessingPlist];
 
   [(CFPDSource *)self unlock];
 }
 
-- (uint64_t)openPropertyListWithoutDrainingPendingChangesOrValidatingPlistAndReturnFileUID:(mode_t *)a3 andMode:
+- (uint64_t)openPropertyListWithoutDrainingPendingChangesOrValidatingPlistAndReturnFileUID:(mode_t *)d andMode:
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 104));
+    os_unfair_lock_lock((self + 104));
     v6 = OUTLINED_FUNCTION_15_0();
-    if (v7 && ([a1 cacheFileInfo], v6 = OUTLINED_FUNCTION_15_0(), v7))
+    if (v7 && ([self cacheFileInfo], v6 = OUTLINED_FUNCTION_15_0(), v7))
     {
       v8 = 0xFFFFFFFFLL;
     }
 
     else
     {
-      v8 = openat(v6, *(a1 + 64), 256);
+      v8 = openat(v6, *(self + 64), 256);
       if (v8 != -1)
       {
         bzero(&v11, 0x90uLL);
@@ -3308,14 +3308,14 @@ LABEL_8:
           *a2 = v11.st_uid;
         }
 
-        if (a3)
+        if (d)
         {
-          *a3 = v11.st_mode;
+          *d = v11.st_mode;
         }
       }
     }
 
-    os_unfair_lock_unlock((a1 + 104));
+    os_unfair_lock_unlock((self + 104));
   }
 
   else
@@ -3327,9 +3327,9 @@ LABEL_8:
   return v8;
 }
 
-- (void)observingConnectionsLockedSync:(uint64_t)a1
+- (void)observingConnectionsLockedSync:(uint64_t)sync
 {
-  if (a1)
+  if (sync)
   {
     OUTLINED_FUNCTION_11_0();
     os_unfair_lock_lock(v3 + 25);
@@ -3339,16 +3339,16 @@ LABEL_8:
   }
 }
 
-- (void)observingConnectionWasInvalidated:(id)a3
+- (void)observingConnectionWasInvalidated:(id)invalidated
 {
   v4 = *MEMORY[0x1E69E9840];
   [CFPDSource observingConnectionsLockedSync:?];
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopNotifyingObserver:(uint64_t)a1
+- (void)stopNotifyingObserver:(uint64_t)observer
 {
-  if (a1)
+  if (observer)
   {
     OUTLINED_FUNCTION_11_0();
     os_unfair_lock_assert_owner(v3 + 25);
@@ -3365,7 +3365,7 @@ LABEL_8:
   }
 }
 
-- (void)clearCacheForReason:(__CFString *)a3
+- (void)clearCacheForReason:(__CFString *)reason
 {
   v9[5] = *MEMORY[0x1E69E9840];
   v5 = _CFPrefsDaemonLog();
@@ -3375,7 +3375,7 @@ LABEL_8:
     v9[1] = 3221225472;
     v9[2] = __DEBUG_CACHE_EVICT_block_invoke;
     v9[3] = &__block_descriptor_40_e29_v64__0i8_12_20_28_36_44_52B60l;
-    v9[4] = a3;
+    v9[4] = reason;
     _extractCFPDBits(0, 0, self, v9);
   }
 
@@ -3404,10 +3404,10 @@ LABEL_8:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)validateAccessToken:(int)a3 accessType:
+- (uint64_t)validateAccessToken:(int)token accessType:
 {
   v59 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v6 = 0;
     goto LABEL_28;
@@ -3418,7 +3418,7 @@ LABEL_8:
     goto LABEL_27;
   }
 
-  if (a3)
+  if (token)
   {
     v6 = 3;
   }
@@ -3461,7 +3461,7 @@ LABEL_13:
       goto LABEL_41;
     }
 
-    v15 = *(a1 + 56);
+    v15 = *(self + 56);
     if (v15)
     {
       v16 = strdup(v15);
@@ -3472,10 +3472,10 @@ LABEL_13:
       v16 = 0;
     }
 
-    if (*(a1 + 128) == -1)
+    if (*(self + 128) == -1)
     {
-      [a1 cacheFileInfo];
-      if (*(a1 + 128) == -1)
+      [self cacheFileInfo];
+      if (*(self + 128) == -1)
       {
         v22 = _CFPrefsDaemonLog();
         if (OUTLINED_FUNCTION_12_0(v22))
@@ -3490,12 +3490,12 @@ LABEL_13:
       }
     }
 
-    if (v16 && strcmp(*(a1 + 56), v16))
+    if (v16 && strcmp(*(self + 56), v16))
     {
       v18 = _CFPrefsDaemonLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = *(a1 + 56);
+        v19 = *(self + 56);
         *buf = 136315394;
         v53 = v16;
         v54 = 2080;
@@ -3503,7 +3503,7 @@ LABEL_13:
         _os_log_impl(&dword_1830E6000, v18, OS_LOG_TYPE_INFO, "Failed access token check because _actualPath has changed since the last-known path (%s vs %s)", buf, 0x16u);
       }
 
-      [a1 clearCacheForReason:@"observed actual path changed"];
+      [self clearCacheForReason:@"observed actual path changed"];
       free(v16);
       goto LABEL_27;
     }
@@ -3511,14 +3511,14 @@ LABEL_13:
     free(v16);
     if (byte_1EA84A4F9)
     {
-      [a1 setDirty:1];
-      [a1 syncWriteToDisk];
-      [a1 cacheFileInfo];
+      [self setDirty:1];
+      [self syncWriteToDisk];
+      [self cacheFileInfo];
       byte_1EA84A4F9 = 0;
     }
 
-    v28 = [(CFPDSource *)a1 openActualPath];
-    if (v28 == -1)
+    openActualPath = [(CFPDSource *)self openActualPath];
+    if (openActualPath == -1)
     {
       v37 = _CFPrefsDaemonLog();
       if (!OUTLINED_FUNCTION_12_0(v37))
@@ -3529,7 +3529,7 @@ LABEL_13:
       goto LABEL_41;
     }
 
-    v29 = v28;
+    v29 = openActualPath;
     bzero(&v56, 0x90uLL);
     if (fstat(v29, &v56))
     {
@@ -3582,13 +3582,13 @@ LABEL_38:
       goto LABEL_13;
     }
 
-    v42 = *(a1 + 56);
+    v42 = *(self + 56);
     if (!v42 || strcmp(buf, v42))
     {
       v43 = _CFPrefsDaemonLog();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
-        v44 = *(a1 + 56);
+        v44 = *(self + 56);
         *v48 = 136315394;
         v49 = __s2;
         v50 = 2080;
@@ -3596,7 +3596,7 @@ LABEL_38:
         _os_log_impl(&dword_1830E6000, v43, OS_LOG_TYPE_INFO, "Failed access token check because verification path doesn't match known actual path (%s vs %s)", v48, 0x16u);
       }
 
-      [a1 clearCacheForReason:@"observed actual path changed"];
+      [self clearCacheForReason:@"observed actual path changed"];
       goto LABEL_28;
     }
 
@@ -3604,7 +3604,7 @@ LABEL_38:
     {
       if (v56.st_nlink)
       {
-        if (a3 != 1 || (fcntl(a2, 3, 0) & 3) == 2)
+        if (token != 1 || (fcntl(a2, 3, 0) & 3) == 2)
         {
           v6 = 1;
           goto LABEL_28;
@@ -3679,13 +3679,13 @@ LABEL_28:
   return result;
 }
 
-- (uint64_t)validateSandboxPermissionsForMessage:(const char *)a3 containerPath:(int)a4 accessType:
+- (uint64_t)validateSandboxPermissionsForMessage:(const char *)message containerPath:(int)path accessType:
 {
   if (result)
   {
-    if (a4 == 1)
+    if (path == 1)
     {
-      if ([(CFPDSource *)result validateSandboxForWrite:a2 containerPath:a3])
+      if ([(CFPDSource *)result validateSandboxForWrite:a2 containerPath:message])
       {
         return 1;
       }
@@ -3699,7 +3699,7 @@ LABEL_28:
     else
     {
 
-      return [(CFPDSource *)result validateSandboxForRead:a2 containerPath:a3];
+      return [(CFPDSource *)result validateSandboxForRead:a2 containerPath:message];
     }
   }
 
@@ -3756,11 +3756,11 @@ LABEL_28:
   return result;
 }
 
-- (void)attachSizeWarningsToReply:(unint64_t)a3 forByteCount:
+- (void)attachSizeWarningsToReply:(unint64_t)reply forByteCount:
 {
-  if (a1)
+  if (self)
   {
-    v4 = _CFPrefsDomainSizeAcceptabilityForByteCount(a3);
+    v4 = _CFPrefsDomainSizeAcceptabilityForByteCount(reply);
 
     xpc_dictionary_set_int64(a2, "CFPreferencesByteCountThreshold", v4);
   }

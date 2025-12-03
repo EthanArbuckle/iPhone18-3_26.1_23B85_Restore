@@ -1,13 +1,13 @@
 @interface UIScrollViewPagingSwipeGestureRecognizer
 - (UIScrollView)scrollView;
-- (void)_processNewLocation:(CGPoint)a3;
+- (void)_processNewLocation:(CGPoint)location;
 - (void)_resetGestureRecognizer;
 - (void)clearTimer;
 - (void)dealloc;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIScrollViewPagingSwipeGestureRecognizer
@@ -43,29 +43,29 @@
   [(UIGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)_processNewLocation:(CGPoint)a3
+- (void)_processNewLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v21 = [(UIScrollViewPagingSwipeGestureRecognizer *)self scrollView];
-  v6 = [(UIGestureRecognizer *)self view];
+  y = location.y;
+  x = location.x;
+  scrollView = [(UIScrollViewPagingSwipeGestureRecognizer *)self scrollView];
+  view = [(UIGestureRecognizer *)self view];
   v7 = CACurrentMediaTime();
-  v8 = [v6 window];
-  [v8 _convertOffsetFromSceneReferenceSpace:{x - self->_lastLocation.x, y - self->_lastLocation.y}];
-  v11 = [(UIView *)v6 _convertOffset:v9 fromView:v10];
+  window = [view window];
+  [window _convertOffsetFromSceneReferenceSpace:{x - self->_lastLocation.x, y - self->_lastLocation.y}];
+  v11 = [(UIView *)view _convertOffset:v9 fromView:v10];
   v13 = v12;
 
   v14 = self->_lastTime - v7;
-  [v21 _horizontalVelocity];
+  [scrollView _horizontalVelocity];
   v16 = fabs(v15);
-  [v21 _verticalVelocity];
+  [scrollView _verticalVelocity];
   if (v16 < 1.0 && fabs(v11 / v14 / 1000.0) >= v16 || (v18 = fabs(v17), v18 < 1.0) && fabs(v13 / v14 / 1000.0) >= v18)
   {
     v20 = @"exceededVelocity";
     goto LABEL_16;
   }
 
-  if ([v21 _pagingLeft] && v11 < 0.0 || objc_msgSend(v21, "_pagingRight") && v11 > 0.0 || objc_msgSend(v21, "_pagingUp") && v13 < 0.0 || objc_msgSend(v21, "_pagingDown") && v13 > 0.0)
+  if ([scrollView _pagingLeft] && v11 < 0.0 || objc_msgSend(scrollView, "_pagingRight") && v11 > 0.0 || objc_msgSend(scrollView, "_pagingUp") && v13 < 0.0 || objc_msgSend(scrollView, "_pagingDown") && v13 > 0.0)
   {
     directionalFailureCount = self->_directionalFailureCount;
     if (directionalFailureCount >= 1)
@@ -92,19 +92,19 @@ LABEL_18:
   self->_lastTime = v7;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(UIScrollViewPagingSwipeGestureRecognizer *)self scrollView];
+  beganCopy = began;
+  eventCopy = event;
+  scrollView = [(UIScrollViewPagingSwipeGestureRecognizer *)self scrollView];
   [(UIScrollViewPagingSwipeGestureRecognizer *)self clearTimer];
-  if (([v7 _pagingLeft] & 1) == 0 && (objc_msgSend(v7, "_pagingRight") & 1) == 0 && (objc_msgSend(v7, "_pagingUp") & 1) == 0 && (objc_msgSend(v7, "_pagingDown") & 1) == 0)
+  if (([scrollView _pagingLeft] & 1) == 0 && (objc_msgSend(scrollView, "_pagingRight") & 1) == 0 && (objc_msgSend(scrollView, "_pagingUp") & 1) == 0 && (objc_msgSend(scrollView, "_pagingDown") & 1) == 0)
   {
     v8 = @"pagingIsIdle";
     goto LABEL_9;
   }
 
-  if ([v15 count] != 1)
+  if ([beganCopy count] != 1)
   {
     v8 = @"tooManyTouches";
     goto LABEL_9;
@@ -123,7 +123,7 @@ LABEL_9:
   swipeFailureDelay = self->_swipeFailureDelay;
   self->_swipeFailureDelay = v10;
 
-  v12 = [v6 touchesForGestureRecognizer:self];
+  v12 = [eventCopy touchesForGestureRecognizer:self];
   [(UIGestureRecognizer *)self _centroidOfTouches:v12 excludingEnded:0];
   self->_startLocation.x = v13;
   self->_startLocation.y = v14;
@@ -133,9 +133,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [a4 touchesForGestureRecognizer:self];
+  v5 = [event touchesForGestureRecognizer:self];
   [(UIGestureRecognizer *)self _centroidOfTouches:v5 excludingEnded:0];
   v7 = v6;
   v9 = v8;
@@ -147,19 +147,19 @@ LABEL_10:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a4;
-  v20 = [(UIGestureRecognizer *)self view];
-  v6 = [v5 touchesForGestureRecognizer:self];
+  eventCopy = event;
+  view = [(UIGestureRecognizer *)self view];
+  v6 = [eventCopy touchesForGestureRecognizer:self];
 
   [(UIGestureRecognizer *)self _centroidOfTouches:v6 excludingEnded:0];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v20 window];
-  [v11 _convertOffsetFromSceneReferenceSpace:{v8 - self->_startLocation.x, v10 - self->_startLocation.y}];
-  v14 = [(UIView *)v20 _convertOffset:v12 fromView:v13];
+  window = [view window];
+  [window _convertOffsetFromSceneReferenceSpace:{v8 - self->_startLocation.x, v10 - self->_startLocation.y}];
+  v14 = [(UIView *)view _convertOffset:v12 fromView:v13];
   v16 = v15;
 
   [(UIScrollViewPagingSwipeGestureRecognizer *)self _processNewLocation:v8, v10];
@@ -190,9 +190,9 @@ LABEL_11:
   [(UIScrollViewPagingSwipeGestureRecognizer *)self clearTimer];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(UIScrollViewPagingSwipeGestureRecognizer *)self clearTimer:a3];
+  [(UIScrollViewPagingSwipeGestureRecognizer *)self clearTimer:cancelled];
 
   [(UIGestureRecognizer *)self _failWithReason:@"touchesCancelled"];
 }

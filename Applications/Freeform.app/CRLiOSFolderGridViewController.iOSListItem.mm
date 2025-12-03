@@ -2,7 +2,7 @@
 - (BOOL)accessibilityPerformMagicTap;
 - (BOOL)isSelected;
 - (NSArray)accessibilityCustomActions;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CRLiOSFolderGridViewController.iOSListItem
@@ -14,15 +14,15 @@
   return [(CRLiOSFolderGridViewController.iOSListItem *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_1008F30E4(a3);
+  selfCopy = self;
+  sub_1008F30E4(selected);
 }
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1008F4CAC();
 
   if (v3)
@@ -41,7 +41,7 @@
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1008F5A74();
 
   return v3 & 1;

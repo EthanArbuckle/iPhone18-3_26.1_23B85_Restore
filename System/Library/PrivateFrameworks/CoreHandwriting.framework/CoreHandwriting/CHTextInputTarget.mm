@@ -1,28 +1,28 @@
 @interface CHTextInputTarget
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInputTarget:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInputTarget:(id)target;
 - (CGRect)frame;
-- (CHTextInputTarget)initWithCoder:(id)a3;
-- (CHTextInputTarget)initWithIdentifier:(id)a3 frame:(CGRect)a4;
+- (CHTextInputTarget)initWithCoder:(id)coder;
+- (CHTextInputTarget)initWithIdentifier:(id)identifier frame:(CGRect)frame;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHTextInputTarget
 
-- (CHTextInputTarget)initWithIdentifier:(id)a3 frame:(CGRect)a4
+- (CHTextInputTarget)initWithIdentifier:(id)identifier frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CHTextInputTarget;
   v15 = [(CHTextInputTarget *)&v19 init];
   if (v15)
   {
-    v16 = objc_msgSend_copy(v9, v10, v11, v12, v13, v14);
+    v16 = objc_msgSend_copy(identifierCopy, v10, v11, v12, v13, v14);
     inputTargetIdentifier = v15->_inputTargetIdentifier;
     v15->_inputTargetIdentifier = v16;
 
@@ -45,37 +45,37 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   inputTargetIdentifier = self->_inputTargetIdentifier;
-  v28 = a3;
-  objc_msgSend_encodeObject_forKey_(v28, v5, inputTargetIdentifier, @"inputTargetIdentifier", v6, v7);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, inputTargetIdentifier, @"inputTargetIdentifier", v6, v7);
   x = self->_frame.origin.x;
   *&x = x;
-  objc_msgSend_encodeFloat_forKey_(v28, v9, @"frameXOrigin", v10, v11, v12, x);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v9, @"frameXOrigin", v10, v11, v12, x);
   y = self->_frame.origin.y;
   *&y = y;
-  objc_msgSend_encodeFloat_forKey_(v28, v14, @"frameYOrigin", v15, v16, v17, y);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v14, @"frameYOrigin", v15, v16, v17, y);
   width = self->_frame.size.width;
   *&width = width;
-  objc_msgSend_encodeFloat_forKey_(v28, v19, @"frameWidth", v20, v21, v22, width);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v19, @"frameWidth", v20, v21, v22, width);
   height = self->_frame.size.height;
   *&height = height;
-  objc_msgSend_encodeFloat_forKey_(v28, v24, @"frameHeight", v25, v26, v27, height);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v24, @"frameHeight", v25, v26, v27, height);
 }
 
-- (CHTextInputTarget)initWithCoder:(id)a3
+- (CHTextInputTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"inputTargetIdentifier", v7, v8);
-  objc_msgSend_decodeFloatForKey_(v4, v10, @"frameXOrigin", v11, v12, v13);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"inputTargetIdentifier", v7, v8);
+  objc_msgSend_decodeFloatForKey_(coderCopy, v10, @"frameXOrigin", v11, v12, v13);
   v15 = v14;
-  objc_msgSend_decodeFloatForKey_(v4, v16, @"frameYOrigin", v17, v18, v19);
+  objc_msgSend_decodeFloatForKey_(coderCopy, v16, @"frameYOrigin", v17, v18, v19);
   v21 = v20;
-  objc_msgSend_decodeFloatForKey_(v4, v22, @"frameWidth", v23, v24, v25);
+  objc_msgSend_decodeFloatForKey_(coderCopy, v22, @"frameWidth", v23, v24, v25);
   v27 = v26;
-  objc_msgSend_decodeFloatForKey_(v4, v28, @"frameHeight", v29, v30, v31);
+  objc_msgSend_decodeFloatForKey_(coderCopy, v28, @"frameHeight", v29, v30, v31);
   v33 = v32;
 
   if (v9)
@@ -86,11 +86,11 @@
   return self;
 }
 
-- (BOOL)isEqualToInputTarget:(id)a3
+- (BOOL)isEqualToInputTarget:(id)target
 {
-  v4 = a3;
-  v10 = v4;
-  if (self == v4)
+  targetCopy = target;
+  v10 = targetCopy;
+  if (self == targetCopy)
   {
     v30 = 1;
   }
@@ -98,7 +98,7 @@
   else
   {
     inputTargetIdentifier = self->_inputTargetIdentifier;
-    v12 = objc_msgSend_inputTargetIdentifier(v4, v5, v6, v7, v8, v9);
+    v12 = objc_msgSend_inputTargetIdentifier(targetCopy, v5, v6, v7, v8, v9);
     v18 = v12;
     if (inputTargetIdentifier == v12)
     {
@@ -136,13 +136,13 @@ LABEL_11:
   return v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToInputTarget = objc_msgSend_isEqualToInputTarget_(self, v5, v4, v6, v7, v8);
+    isEqualToInputTarget = objc_msgSend_isEqualToInputTarget_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToInputTarget;
   }

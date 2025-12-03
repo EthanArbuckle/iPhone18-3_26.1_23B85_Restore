@@ -1,6 +1,6 @@
 @interface MessageListCellLayoutValues
 - (BOOL)isAvatarHidden;
-- (BOOL)useSelectedColorForConfigurationState:(id)a3 backgroundConfiguration:(id)a4;
+- (BOOL)useSelectedColorForConfigurationState:(id)state backgroundConfiguration:(id)configuration;
 - (NSDirectionalEdgeInsets)padding;
 - (NSDirectionalEdgeInsets)systemLayoutMargins;
 - (UIBackgroundConfiguration)defaultBackgroundConfiguration;
@@ -11,10 +11,10 @@
 - (double)addressCapHeight;
 - (double)backgroundCornerRadius;
 - (double)bodyLeading;
-- (double)bottomLeadingSeparatorInsetShowingAvatar:(BOOL)a3;
+- (double)bottomLeadingSeparatorInsetShowingAvatar:(BOOL)avatar;
 - (double)bottomMargin;
 - (double)bottomPadding;
-- (double)heightWithNumberOfSummaryLines:(int64_t)a3 isAvatarHidden:(BOOL)a4;
+- (double)heightWithNumberOfSummaryLines:(int64_t)lines isAvatarHidden:(BOOL)hidden;
 - (double)indicatorMaxWidth;
 - (double)indicatorToTrailingMargin;
 - (double)leadingPadding;
@@ -25,20 +25,20 @@
 - (double)topMargin;
 - (double)trailingPadding;
 - (id)_init;
-- (id)absentDataColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5;
-- (id)addressColorForContentConfiguration:(id)a3;
-- (id)annotationColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5;
-- (id)backgroundColorForConfigurationState:(id)a3 backgroundConfiguration:(id)a4;
-- (id)dateColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5;
-- (id)recipientColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5;
-- (id)subjectColorForContentConfiguration:(id)a3;
-- (id)summaryColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5;
-- (id)summarySymbolColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5;
-- (id)threadDisclosureColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5;
-- (int64_t)actualLineCountForSummary:(id)a3 hasGeneratedSummary:(BOOL)a4 bounds:(CGRect)a5;
-- (void)_invalidateAndNotify:(BOOL)a3;
-- (void)setSystemLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setTraitCollection:(id)a3;
+- (id)absentDataColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration;
+- (id)addressColorForContentConfiguration:(id)configuration;
+- (id)annotationColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration;
+- (id)backgroundColorForConfigurationState:(id)state backgroundConfiguration:(id)configuration;
+- (id)dateColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration;
+- (id)recipientColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration;
+- (id)subjectColorForContentConfiguration:(id)configuration;
+- (id)summaryColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration;
+- (id)summarySymbolColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration;
+- (id)threadDisclosureColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration;
+- (int64_t)actualLineCountForSummary:(id)summary hasGeneratedSummary:(BOOL)generatedSummary bounds:(CGRect)bounds;
+- (void)_invalidateAndNotify:(BOOL)notify;
+- (void)setSystemLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation MessageListCellLayoutValues
@@ -52,16 +52,16 @@
   if (v2)
   {
     [(MessageListCellLayoutValues *)v2 _invalidateAndNotify:0];
-    v4 = [MEMORY[0x277CBEBD0] em_userDefaults];
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
     v5 = *MEMORY[0x277D06C88];
-    v3->_isAvatarHidden = [v4 BOOLForKey:*MEMORY[0x277D06C88]];
+    v3->_isAvatarHidden = [em_userDefaults BOOLForKey:*MEMORY[0x277D06C88]];
     objc_initWeak(&location, v3);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __36__MessageListCellLayoutValues__init__block_invoke;
     v10[3] = &unk_278188C80;
     objc_copyWeak(&v12, &location);
-    v6 = v4;
+    v6 = em_userDefaults;
     v11 = v6;
     v7 = [v6 ef_observeKeyPath:v5 options:1 autoCancelToken:1 usingBlock:v10];
     isAvatarHiddenToken = v3->_isAvatarHiddenToken;
@@ -99,8 +99,8 @@
   result = self->_indicatorMaxWidth;
   if (result == 2.22507386e-308)
   {
-    v4 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     result = 30.0;
     if (!IsAccessibilityCategory)
@@ -126,11 +126,11 @@
     return 44.0;
   }
 
-  v4 = [(MessageListCellLayoutValues *)self addressFont];
-  [v4 lineHeight];
+  addressFont = [(MessageListCellLayoutValues *)self addressFont];
+  [addressFont lineHeight];
   v6 = v5;
-  v7 = [(MessageListCellLayoutValues *)self subjectFont];
-  [v7 lineHeight];
+  subjectFont = [(MessageListCellLayoutValues *)self subjectFont];
+  [subjectFont lineHeight];
   v3 = v6 + v8;
 
   return v3;
@@ -158,8 +158,8 @@
     {
       if (self->_useSidebarAppearance)
       {
-        v4 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-        IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+        preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+        IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
         if (IsAccessibilityCategory)
         {
@@ -230,11 +230,11 @@
 
     else
     {
-      v3 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-      UIContentSizeCategoryIsAccessibilityCategory(v3);
+      preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+      UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-      v4 = [(MessageListCellLayoutValues *)self summaryFont];
-      [v4 _bodyLeading];
+      summaryFont = [(MessageListCellLayoutValues *)self summaryFont];
+      [summaryFont _bodyLeading];
       [(MessageListCellLayoutValues *)self bottomMargin];
       UIRoundToViewScale();
       self->_bottomPadding = v5;
@@ -249,10 +249,10 @@
   v3 = MUISolariumFeatureEnabled();
   [(MessageListCellLayoutValues *)self addressCapHeight];
   v5 = v4;
-  v6 = [(MessageListCellLayoutValues *)self isSubjectVisible];
+  isSubjectVisible = [(MessageListCellLayoutValues *)self isSubjectVisible];
   if (v3)
   {
-    if (v6)
+    if (isSubjectVisible)
     {
       [(MessageListCellLayoutValues *)self subjectHeight];
       return v5 + v7;
@@ -261,15 +261,15 @@
 
   else
   {
-    if (v6)
+    if (isSubjectVisible)
     {
-      v8 = [(MessageListCellLayoutValues *)self subjectNumberOfLines];
+      subjectNumberOfLines = [(MessageListCellLayoutValues *)self subjectNumberOfLines];
       [(MessageListCellLayoutValues *)self bodyLeading];
-      v5 = v5 + v8 * v9;
+      v5 = v5 + subjectNumberOfLines * v9;
     }
 
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v5 = v5 + 1.0 / v11;
   }
 
@@ -281,16 +281,16 @@
   if (self->_addressCapHeight == 2.22507386e-308)
   {
     v3 = MUISolariumFeatureEnabled();
-    v4 = [(MessageListCellLayoutValues *)self addressFont];
-    v5 = v4;
+    addressFont = [(MessageListCellLayoutValues *)self addressFont];
+    v5 = addressFont;
     if (v3)
     {
-      [v4 lineHeight];
+      [addressFont lineHeight];
     }
 
     else
     {
-      [v4 capHeight];
+      [addressFont capHeight];
     }
 
     UICeilToViewScale();
@@ -305,8 +305,8 @@
   if (self->_subjectHeight == 2.22507386e-308)
   {
     v3 = MUISolariumFeatureEnabled();
-    v4 = [(MessageListCellLayoutValues *)self subjectFont];
-    [v4 lineHeight];
+    subjectFont = [(MessageListCellLayoutValues *)self subjectFont];
+    [subjectFont lineHeight];
     [(MessageListCellLayoutValues *)self subjectNumberOfLines];
     if (v3)
     {
@@ -316,8 +316,8 @@
 
     else
     {
-      v6 = [(MessageListCellLayoutValues *)self subjectFont];
-      [v6 descender];
+      subjectFont2 = [(MessageListCellLayoutValues *)self subjectFont];
+      [subjectFont2 descender];
       UIRoundToViewScale();
       self->_subjectHeight = v7;
     }
@@ -355,8 +355,8 @@
     return 1;
   }
 
-  v3 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -366,8 +366,8 @@
   result = self->_bodyLeading;
   if (result == 2.22507386e-308)
   {
-    v4 = [(MessageListCellLayoutValues *)self summaryFont];
-    [v4 _bodyLeading];
+    summaryFont = [(MessageListCellLayoutValues *)self summaryFont];
+    [summaryFont _bodyLeading];
     UIRoundToViewScale();
     self->_bodyLeading = v5;
 
@@ -388,9 +388,9 @@ void __36__MessageListCellLayoutValues__init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_invalidateAndNotify:(BOOL)a3
+- (void)_invalidateAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   if (pthread_main_np() != 1)
   {
     [MessageListCellLayoutValues _invalidateAndNotify:];
@@ -419,32 +419,32 @@ void __36__MessageListCellLayoutValues__init__block_invoke(uint64_t a1)
   *&self->_addressCapHeight = v10;
   *&self->_bottomPadding = v10;
   *&self->_indicatorToTrailingMargin = v10;
-  if (v3)
+  if (notifyCopy)
   {
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"kMessageListCellLayoutValuesDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"kMessageListCellLayoutValuesDidChangeNotification" object:self];
   }
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v6 = a3;
+  collectionCopy = collection;
   traitCollection = self->_traitCollection;
-  if (!traitCollection || [(UITraitCollection *)traitCollection mf_traitDifferenceAffectsTextLayout:v6])
+  if (!traitCollection || [(UITraitCollection *)traitCollection mf_traitDifferenceAffectsTextLayout:collectionCopy])
   {
-    objc_storeStrong(&self->_traitCollection, a3);
-    self->_useSidebarAppearance = [v6 mf_useSplitViewStyling];
+    objc_storeStrong(&self->_traitCollection, collection);
+    self->_useSidebarAppearance = [collectionCopy mf_useSplitViewStyling];
     [(MessageListCellLayoutValues *)self _invalidateAndNotify:0];
   }
 }
 
-- (void)setSystemLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setSystemLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
-  v8 = self->_systemLayoutMargins.leading - a3.leading;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
+  v8 = self->_systemLayoutMargins.leading - margins.leading;
   if (v8 < 0.0)
   {
     v8 = -v8;
@@ -455,7 +455,7 @@ void __36__MessageListCellLayoutValues__init__block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  v9 = self->_systemLayoutMargins.trailing - a3.trailing;
+  v9 = self->_systemLayoutMargins.trailing - margins.trailing;
   if (v9 < 0.0)
   {
     v9 = -v9;
@@ -472,32 +472,32 @@ LABEL_7:
   }
 }
 
-- (double)heightWithNumberOfSummaryLines:(int64_t)a3 isAvatarHidden:(BOOL)a4
+- (double)heightWithNumberOfSummaryLines:(int64_t)lines isAvatarHidden:(BOOL)hidden
 {
   [(MessageListCellLayoutValues *)self topPadding];
   v8 = v7;
-  if (a3 || a4)
+  if (lines || hidden)
   {
     [(MessageListCellLayoutValues *)self addressAndSubjectHeight];
-    v13 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v13);
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
-      v15 = [(MessageListCellLayoutValues *)self dateFont];
-      [v15 _bodyLeading];
-      [v15 descender];
+      dateFont = [(MessageListCellLayoutValues *)self dateFont];
+      [dateFont _bodyLeading];
+      [dateFont descender];
     }
 
-    if (a3)
+    if (lines)
     {
-      v16 = [(MessageListCellLayoutValues *)self summaryFont];
-      v17 = [(MessageListCellLayoutValues *)self summaryFont];
-      [v17 lineHeight];
+      summaryFont = [(MessageListCellLayoutValues *)self summaryFont];
+      summaryFont2 = [(MessageListCellLayoutValues *)self summaryFont];
+      [summaryFont2 lineHeight];
 
-      if (a3 >= 2)
+      if (lines >= 2)
       {
-        [v16 _bodyLeading];
+        [summaryFont _bodyLeading];
       }
     }
 
@@ -528,9 +528,9 @@ LABEL_7:
   result = self->_topMargin;
   if (result == 2.22507386e-308)
   {
-    v4 = [MEMORY[0x277D759A0] mui_isLargeFormatPad];
+    mui_isLargeFormatPad = [MEMORY[0x277D759A0] mui_isLargeFormatPad];
     result = 0.0;
-    if (v4)
+    if (mui_isLargeFormatPad)
     {
       result = 4.0;
     }
@@ -546,9 +546,9 @@ LABEL_7:
   result = self->_bottomMargin;
   if (result == 2.22507386e-308)
   {
-    v4 = [MEMORY[0x277D759A0] mui_isLargeFormatPad];
+    mui_isLargeFormatPad = [MEMORY[0x277D759A0] mui_isLargeFormatPad];
     result = 0.0;
-    if (v4)
+    if (mui_isLargeFormatPad)
     {
       result = 4.0;
     }
@@ -580,8 +580,8 @@ LABEL_7:
   result = self->_leadingToIndicatorMargin;
   if (result == 2.22507386e-308)
   {
-    v4 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     result = 4.0;
     if (!IsAccessibilityCategory)
@@ -605,10 +605,10 @@ LABEL_7:
 
 - (double)topLeadingSeparatorInset
 {
-  v3 = [MEMORY[0x277D07148] currentDevice];
-  v4 = [v3 isPad];
+  currentDevice = [MEMORY[0x277D07148] currentDevice];
+  isPad = [currentDevice isPad];
 
-  if (v4)
+  if (isPad)
   {
     return 0.0;
   }
@@ -617,9 +617,9 @@ LABEL_7:
   return result;
 }
 
-- (double)bottomLeadingSeparatorInsetShowingAvatar:(BOOL)a3
+- (double)bottomLeadingSeparatorInsetShowingAvatar:(BOOL)avatar
 {
-  v3 = a3;
+  avatarCopy = avatar;
   [(MessageListCellLayoutValues *)self leadingPadding];
   v6 = v5;
   if (MUISolariumFeatureEnabled())
@@ -630,7 +630,7 @@ LABEL_7:
     v6 = v6 + v8 + v9;
   }
 
-  if (v3)
+  if (avatarCopy)
   {
     [(MessageListCellLayoutValues *)self avatarSize];
     v11 = v10;
@@ -656,14 +656,14 @@ LABEL_7:
   return summarySymbolFont;
 }
 
-- (id)backgroundColorForConfigurationState:(id)a3 backgroundConfiguration:(id)a4
+- (id)backgroundColorForConfigurationState:(id)state backgroundConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isSelected];
-  v9 = [v6 isFocused];
-  v10 = [v6 isEditing];
-  if ([v6 isPriority] && _os_feature_enabled_impl())
+  stateCopy = state;
+  configurationCopy = configuration;
+  isSelected = [stateCopy isSelected];
+  isFocused = [stateCopy isFocused];
+  isEditing = [stateCopy isEditing];
+  if ([stateCopy isPriority] && _os_feature_enabled_impl())
   {
     v11 = EMIsGreymatterAvailable() ^ 1;
   }
@@ -675,128 +675,128 @@ LABEL_7:
 
   if (self->_useSidebarAppearance)
   {
-    v12 = [v6 isFocusSystemActive];
-    if (((v8 ^ 1 | v9) & 1) == 0 && ((v10 ^ 1) & 1) == 0)
+    isFocusSystemActive = [stateCopy isFocusSystemActive];
+    if (((isSelected ^ 1 | isFocused) & 1) == 0 && ((isEditing ^ 1) & 1) == 0)
     {
-      v13 = [v6 copy];
+      v13 = [stateCopy copy];
       [v13 setEditing:0];
-      v14 = [v7 updatedConfigurationForState:v13];
+      v14 = [configurationCopy updatedConfigurationForState:v13];
 
-      v15 = [(MessageListCellLayoutValues *)self tintColor];
-      v16 = [v14 resolvedBackgroundColorForTintColor:v15];
+      tintColor = [(MessageListCellLayoutValues *)self tintColor];
+      v16 = [v14 resolvedBackgroundColorForTintColor:tintColor];
 
-      v7 = v14;
+      configurationCopy = v14;
       goto LABEL_20;
     }
 
-    if ((v12 | v8 ^ 1))
+    if ((isFocusSystemActive | isSelected ^ 1))
     {
-      if ((v8 | v9))
+      if ((isSelected | isFocused))
       {
 LABEL_15:
         v16 = 0;
         goto LABEL_20;
       }
 
-      if ([v6 isParent])
+      if ([stateCopy isParent])
       {
-        v17 = [MEMORY[0x277D75348] mailMessageListSecondarySelectionColor];
+        mailMessageListSecondarySelectionColor = [MEMORY[0x277D75348] mailMessageListSecondarySelectionColor];
       }
 
       else
       {
-        if (![v6 isChild])
+        if (![stateCopy isChild])
         {
           goto LABEL_15;
         }
 
-        v17 = [MEMORY[0x277D75348] mailMessageListTertiarySelectionColor];
+        mailMessageListSecondarySelectionColor = [MEMORY[0x277D75348] mailMessageListTertiarySelectionColor];
       }
     }
 
     else
     {
-      v17 = [(MessageListCellLayoutValues *)self tintColor];
+      mailMessageListSecondarySelectionColor = [(MessageListCellLayoutValues *)self tintColor];
     }
   }
 
-  else if ((v11 | v8 | v9))
+  else if ((v11 | isSelected | isFocused))
   {
-    if (v11 & 1 | ((v10 & 1) == 0) || ((v8 ^ 1) & 1) != 0)
+    if (v11 & 1 | ((isEditing & 1) == 0) || ((isSelected ^ 1) & 1) != 0)
     {
-      v17 = -[MessageListCellLayoutValues backgroundColorForSelectedState:disclosureEnabled:](self, "backgroundColorForSelectedState:disclosureEnabled:", v8, [v6 isParent]);
+      mailMessageListSecondarySelectionColor = -[MessageListCellLayoutValues backgroundColorForSelectedState:disclosureEnabled:](self, "backgroundColorForSelectedState:disclosureEnabled:", isSelected, [stateCopy isParent]);
     }
 
     else
     {
-      v17 = [MEMORY[0x277D75348] mailMessageListPriorityEditSelectionColor];
+      mailMessageListSecondarySelectionColor = [MEMORY[0x277D75348] mailMessageListPriorityEditSelectionColor];
     }
   }
 
   else
   {
-    v17 = [MEMORY[0x277D75348] clearColor];
+    mailMessageListSecondarySelectionColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v16 = v17;
+  v16 = mailMessageListSecondarySelectionColor;
 LABEL_20:
 
   return v16;
 }
 
-- (id)addressColorForContentConfiguration:(id)a3
+- (id)addressColorForContentConfiguration:(id)configuration
 {
-  v3 = [a3 textProperties];
-  v4 = [v3 resolvedColor];
+  textProperties = [configuration textProperties];
+  resolvedColor = [textProperties resolvedColor];
 
-  return v4;
+  return resolvedColor;
 }
 
-- (id)subjectColorForContentConfiguration:(id)a3
+- (id)subjectColorForContentConfiguration:(id)configuration
 {
-  v3 = [a3 textProperties];
-  v4 = [v3 resolvedColor];
+  textProperties = [configuration textProperties];
+  resolvedColor = [textProperties resolvedColor];
 
-  return v4;
+  return resolvedColor;
 }
 
-- (id)absentDataColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5
+- (id)absentDataColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration
 {
-  v8 = a4;
-  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:a3 backgroundConfiguration:a5])
+  configurationCopy = configuration;
+  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:state backgroundConfiguration:backgroundConfiguration])
   {
-    v9 = [MEMORY[0x277D75348] mailMessageListSelectedSummaryColor];
+    mailMessageListSelectedSummaryColor = [MEMORY[0x277D75348] mailMessageListSelectedSummaryColor];
   }
 
   else
   {
-    v10 = [v8 secondaryTextProperties];
-    v9 = [v10 resolvedColor];
+    secondaryTextProperties = [configurationCopy secondaryTextProperties];
+    mailMessageListSelectedSummaryColor = [secondaryTextProperties resolvedColor];
   }
 
-  return v9;
+  return mailMessageListSelectedSummaryColor;
 }
 
-- (id)summaryColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5
+- (id)summaryColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration
 {
-  v8 = a4;
-  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:a3 backgroundConfiguration:a5])
+  configurationCopy = configuration;
+  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:state backgroundConfiguration:backgroundConfiguration])
   {
-    v9 = [MEMORY[0x277D75348] mailMessageListSelectedSummaryColor];
+    mailMessageListSelectedSummaryColor = [MEMORY[0x277D75348] mailMessageListSelectedSummaryColor];
   }
 
   else
   {
-    v10 = [v8 secondaryTextProperties];
-    v9 = [v10 resolvedColor];
+    secondaryTextProperties = [configurationCopy secondaryTextProperties];
+    mailMessageListSelectedSummaryColor = [secondaryTextProperties resolvedColor];
   }
 
-  return v9;
+  return mailMessageListSelectedSummaryColor;
 }
 
-- (id)summarySymbolColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5
+- (id)summarySymbolColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration
 {
-  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:a3 backgroundConfiguration:a5])
+  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:state backgroundConfiguration:backgroundConfiguration])
   {
     [MEMORY[0x277D75348] mailMessageListSelectedSummarySymbolColor];
   }
@@ -810,108 +810,108 @@ LABEL_20:
   return v5;
 }
 
-- (id)annotationColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5
+- (id)annotationColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration
 {
-  v8 = a4;
-  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:a3 backgroundConfiguration:a5])
+  configurationCopy = configuration;
+  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:state backgroundConfiguration:backgroundConfiguration])
   {
-    v9 = [MEMORY[0x277D75348] mailMessageListSelectedAnnotationColor];
+    mailMessageListSelectedAnnotationColor = [MEMORY[0x277D75348] mailMessageListSelectedAnnotationColor];
   }
 
   else
   {
-    v10 = [v8 secondaryTextProperties];
-    v9 = [v10 resolvedColor];
+    secondaryTextProperties = [configurationCopy secondaryTextProperties];
+    mailMessageListSelectedAnnotationColor = [secondaryTextProperties resolvedColor];
   }
 
-  return v9;
+  return mailMessageListSelectedAnnotationColor;
 }
 
-- (id)dateColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5
+- (id)dateColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration
 {
-  v8 = a3;
-  v9 = a5;
+  stateCopy = state;
+  backgroundConfigurationCopy = backgroundConfiguration;
   v10 = *MEMORY[0x277D76620];
-  v11 = a4;
-  v12 = [v10 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  configurationCopy = configuration;
+  preferredContentSizeCategory = [v10 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v14 = [v11 textProperties];
+    textProperties = [configurationCopy textProperties];
 
-    v15 = [v14 resolvedColor];
-    v11 = v14;
+    resolvedColor = [textProperties resolvedColor];
+    configurationCopy = textProperties;
   }
 
   else
   {
-    v15 = [(MessageListCellLayoutValues *)self summaryColorForConfigurationState:v8 contentConfiguration:v11 backgroundConfiguration:v9];
+    resolvedColor = [(MessageListCellLayoutValues *)self summaryColorForConfigurationState:stateCopy contentConfiguration:configurationCopy backgroundConfiguration:backgroundConfigurationCopy];
   }
 
-  return v15;
+  return resolvedColor;
 }
 
-- (id)threadDisclosureColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5
+- (id)threadDisclosureColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration
 {
-  v8 = a4;
-  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:a3 backgroundConfiguration:a5])
+  configurationCopy = configuration;
+  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:state backgroundConfiguration:backgroundConfiguration])
   {
-    v9 = [v8 textProperties];
-    v10 = [v9 resolvedColor];
+    textProperties = [configurationCopy textProperties];
+    resolvedColor = [textProperties resolvedColor];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75348] mailInteractiveColor];
+    resolvedColor = [MEMORY[0x277D75348] mailInteractiveColor];
   }
 
-  return v10;
+  return resolvedColor;
 }
 
-- (id)recipientColorForConfigurationState:(id)a3 contentConfiguration:(id)a4 backgroundConfiguration:(id)a5
+- (id)recipientColorForConfigurationState:(id)state contentConfiguration:(id)configuration backgroundConfiguration:(id)backgroundConfiguration
 {
-  v8 = a4;
-  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:a3 backgroundConfiguration:a5])
+  configurationCopy = configuration;
+  if ([(MessageListCellLayoutValues *)self useSelectedColorForConfigurationState:state backgroundConfiguration:backgroundConfiguration])
   {
-    v9 = [MEMORY[0x277D75348] mailMessageListSelectedRecipientColor];
+    mailMessageListSelectedRecipientColor = [MEMORY[0x277D75348] mailMessageListSelectedRecipientColor];
   }
 
   else
   {
-    v10 = [v8 secondaryTextProperties];
-    v9 = [v10 resolvedColor];
+    secondaryTextProperties = [configurationCopy secondaryTextProperties];
+    mailMessageListSelectedRecipientColor = [secondaryTextProperties resolvedColor];
   }
 
-  return v9;
+  return mailMessageListSelectedRecipientColor;
 }
 
-- (int64_t)actualLineCountForSummary:(id)a3 hasGeneratedSummary:(BOOL)a4 bounds:(CGRect)a5
+- (int64_t)actualLineCountForSummary:(id)summary hasGeneratedSummary:(BOOL)generatedSummary bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  generatedSummaryCopy = generatedSummary;
   v34[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  summaryCopy = summary;
   v12 = [(MessageListCellLayoutValues *)self linesOfSummaryForCompactHeight:0];
   v13 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v14 = [(MessageListCellLayoutValues *)self summaryFont];
-  [v13 setFont:v14];
+  summaryFont = [(MessageListCellLayoutValues *)self summaryFont];
+  [v13 setFont:summaryFont];
 
   [v13 setNumberOfLines:0];
-  if (v9)
+  if (generatedSummaryCopy)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"xx %@", v11];
+    summaryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"xx %@", summaryCopy];
 
-    v11 = v15;
+    summaryCopy = summaryCopy;
   }
 
-  [v13 setText:v11];
+  [v13 setText:summaryCopy];
 
-  v16 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v16);
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -922,19 +922,19 @@ LABEL_20:
   [v13 setFrame:{x, y, width, height}];
   [v13 frame];
   v20 = v19;
-  v21 = [v13 text];
+  text = [v13 text];
   v33 = *MEMORY[0x277D740A8];
-  v22 = [v13 font];
-  v34[0] = v22;
+  font = [v13 font];
+  v34[0] = font;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-  [v21 boundingRectWithSize:1 options:v23 attributes:0 context:{v20, 3.40282347e38}];
+  [text boundingRectWithSize:1 options:v23 attributes:0 context:{v20, 3.40282347e38}];
   v25 = v24;
 
-  v26 = [v13 font];
-  [v26 _bodyLeading];
+  font2 = [v13 font];
+  [font2 _bodyLeading];
   v28 = v27;
-  v29 = [v13 font];
-  [v29 descender];
+  font3 = [v13 font];
+  [font3 descender];
   v31 = vcvtpd_s64_f64(v25 / (v28 - v30));
 
   if (v12 >= v31)
@@ -945,24 +945,24 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)useSelectedColorForConfigurationState:(id)a3 backgroundConfiguration:(id)a4
+- (BOOL)useSelectedColorForConfigurationState:(id)state backgroundConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  configurationCopy = configuration;
   if (self->_useSidebarAppearance)
   {
-    v8 = [v6 isSelected];
-    v9 = [v6 isFocusSystemActive];
-    if (v8 && !v9 || ([v6 isFocused] & 1) != 0 || (v12 = objc_msgSend(v6, "isEditing"), (v8 & objc_msgSend(v6, "isFocusingOnMessageListCell")) == 1) && ((v12 & 1) != 0 || -[MessageListCellLayoutValues inMultiSelectionMode](self, "inMultiSelectionMode")))
+    isSelected = [stateCopy isSelected];
+    isFocusSystemActive = [stateCopy isFocusSystemActive];
+    if (isSelected && !isFocusSystemActive || ([stateCopy isFocused] & 1) != 0 || (v12 = objc_msgSend(stateCopy, "isEditing"), (isSelected & objc_msgSend(stateCopy, "isFocusingOnMessageListCell")) == 1) && ((v12 & 1) != 0 || -[MessageListCellLayoutValues inMultiSelectionMode](self, "inMultiSelectionMode")))
     {
       v10 = 1;
     }
 
     else
     {
-      v13 = [v7 backgroundColor];
-      v14 = [(MessageListCellLayoutValues *)self tintColor];
-      v10 = [v13 isEqual:v14];
+      backgroundColor = [configurationCopy backgroundColor];
+      tintColor = [(MessageListCellLayoutValues *)self tintColor];
+      v10 = [backgroundColor isEqual:tintColor];
     }
   }
 

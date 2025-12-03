@@ -1,14 +1,14 @@
 @interface MetalLayer
 - (CGSize)backingSize;
 - (GGLLayerDelegate)renderDelegate;
-- (MetalLayer)initWithDevice:(shared_ptr<ggl:(BOOL)a4 :MetalDevice>)a3 sRGB:;
+- (MetalLayer)initWithDevice:(shared_ptr<ggl:(BOOL)device :MetalDevice>)a3 sRGB:;
 - (id).cxx_construct;
 - (id)_updateDrawable;
 - (int)backingFormat;
 - (void)_createTexture;
-- (void)_onTimerFired:(double)a3 withPresent:(id)a4;
-- (void)onTimerFired:(double)a3 presentAfterMinimumDuration:(double)a4;
-- (void)onTimerFired:(double)a3 presentAtTime:(double)a4;
+- (void)_onTimerFired:(double)fired withPresent:(id)present;
+- (void)onTimerFired:(double)fired presentAfterMinimumDuration:(double)duration;
+- (void)onTimerFired:(double)fired presentAtTime:(double)time;
 @end
 
 @implementation MetalLayer
@@ -40,29 +40,29 @@
   return WeakRetained;
 }
 
-- (void)onTimerFired:(double)a3 presentAfterMinimumDuration:(double)a4
+- (void)onTimerFired:(double)fired presentAfterMinimumDuration:(double)duration
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55__MetalLayer_onTimerFired_presentAfterMinimumDuration___block_invoke;
   v4[3] = &__block_descriptor_40_e27_v16__0___CAMetalDrawable__8l;
-  *&v4[4] = a4;
-  [(MetalLayer *)self _onTimerFired:v4 withPresent:a3];
+  *&v4[4] = duration;
+  [(MetalLayer *)self _onTimerFired:v4 withPresent:fired];
 }
 
-- (void)onTimerFired:(double)a3 presentAtTime:(double)a4
+- (void)onTimerFired:(double)fired presentAtTime:(double)time
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __41__MetalLayer_onTimerFired_presentAtTime___block_invoke;
   v4[3] = &__block_descriptor_40_e27_v16__0___CAMetalDrawable__8l;
-  *&v4[4] = a4;
-  [(MetalLayer *)self _onTimerFired:v4 withPresent:a3];
+  *&v4[4] = time;
+  [(MetalLayer *)self _onTimerFired:v4 withPresent:fired];
 }
 
-- (void)_onTimerFired:(double)a3 withPresent:(id)a4
+- (void)_onTimerFired:(double)fired withPresent:(id)present
 {
-  v6 = a4;
+  presentCopy = present;
   v7 = mach_absolute_time();
   v8 = objc_autoreleasePoolPush();
   [(MetalLayer *)self _createTexture];
@@ -87,12 +87,12 @@
   }
 
   v13 = objc_loadWeakRetained(&self->_delegate);
-  v14 = [v13 isDelayedRenderQueueConsumptionSupported];
+  isDelayedRenderQueueConsumptionSupported = [v13 isDelayedRenderQueueConsumptionSupported];
 
-  if (v14)
+  if (isDelayedRenderQueueConsumptionSupported)
   {
     v15 = objc_loadWeakRetained(&self->_delegate);
-    v16 = [v15 renderQueueForTimestamp:a3];
+    v16 = [v15 renderQueueForTimestamp:fired];
   }
 
   else
@@ -103,17 +103,17 @@
   v17 = objc_loadWeakRetained(&self->_delegate);
   [v17 willUpdateFrameTexture];
 
-  v18 = [(MetalLayer *)self _updateDrawable];
+  _updateDrawable = [(MetalLayer *)self _updateDrawable];
   v19 = objc_loadWeakRetained(&self->_delegate);
   [v19 didUpdateFrameTexture];
 
-  if (v18)
+  if (_updateDrawable)
   {
     v27 = v7;
-    if ((v14 & 1) == 0)
+    if ((isDelayedRenderQueueConsumptionSupported & 1) == 0)
     {
       v20 = objc_loadWeakRetained(&self->_delegate);
-      v16 = [v20 renderQueueForTimestamp:a3];
+      v16 = [v20 renderQueueForTimestamp:fired];
     }
 
     v21 = objc_loadWeakRetained(&self->_delegate);
@@ -123,7 +123,7 @@
     v28[2] = __40__MetalLayer__onTimerFired_withPresent___block_invoke;
     v28[3] = &unk_1E7B3F110;
     v28[4] = self;
-    v23 = v18;
+    v23 = _updateDrawable;
     v29 = v23;
     [v21 drawToTexture:v22 withRenderQueue:v16 completionHandler:v28];
 
@@ -131,7 +131,7 @@
     [v24 willPresent];
 
     v7 = v27;
-    v6[2](v6, v23);
+    presentCopy[2](presentCopy, v23);
     ggl::MetalResourceManager::updateTextureWithResource(*(self->_device.__ptr_ + 10), *p_texture, 0);
     v25 = objc_loadWeakRetained(&self->_delegate);
     [v25 didPresent];
@@ -156,9 +156,9 @@
     goto LABEL_9;
   }
 
-  v3 = [(CAMetalLayer *)self nextDrawable];
-  v4 = v3;
-  if (!v3)
+  nextDrawable = [(CAMetalLayer *)self nextDrawable];
+  v4 = nextDrawable;
+  if (!nextDrawable)
   {
     NSLog(@"Nil drawable for layer %@", self);
     goto LABEL_7;
@@ -172,7 +172,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  ggl::MetalResourceManager::updateTextureWithResource(*(self->_device.__ptr_ + 10), ptr, [v3 texture]);
+  ggl::MetalResourceManager::updateTextureWithResource(*(self->_device.__ptr_ + 10), ptr, [nextDrawable texture]);
   v6 = v4;
 LABEL_8:
 
@@ -214,7 +214,7 @@ LABEL_9:
   }
 }
 
-- (MetalLayer)initWithDevice:(shared_ptr<ggl:(BOOL)a4 :MetalDevice>)a3 sRGB:
+- (MetalLayer)initWithDevice:(shared_ptr<ggl:(BOOL)device :MetalDevice>)a3 sRGB:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -243,20 +243,20 @@ LABEL_9:
 
     v7->_sRGB = cntrl;
     v21[0] = @"bounds";
-    v12 = [MEMORY[0x1E695DFB0] null];
-    v22[0] = v12;
+    null = [MEMORY[0x1E695DFB0] null];
+    v22[0] = null;
     v21[1] = @"position";
-    v13 = [MEMORY[0x1E695DFB0] null];
-    v22[1] = v13;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v22[1] = null2;
     v21[2] = @"contentsScale";
-    v14 = [MEMORY[0x1E695DFB0] null];
-    v22[2] = v14;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v22[2] = null3;
     v21[3] = @"hidden";
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v22[3] = v15;
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v22[3] = null4;
     v21[4] = @"contents";
-    v16 = [MEMORY[0x1E695DFB0] null];
-    v22[4] = v16;
+    null5 = [MEMORY[0x1E695DFB0] null];
+    v22[4] = null5;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:5];
     [(MetalLayer *)v7 setActions:v17];
 

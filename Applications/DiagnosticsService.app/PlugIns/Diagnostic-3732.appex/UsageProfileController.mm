@@ -1,6 +1,6 @@
 @interface UsageProfileController
-- (id)stringFromDate:(id)a3;
-- (void)parseLogsWithCollector:(id)a3;
+- (id)stringFromDate:(id)date;
+- (void)parseLogsWithCollector:(id)collector;
 - (void)start;
 @end
 
@@ -17,7 +17,7 @@
   [(UsageProfileController *)self setFinished:1];
 }
 
-- (void)parseLogsWithCollector:(id)a3
+- (void)parseLogsWithCollector:(id)collector
 {
   v59 = 0;
   v60 = &v59;
@@ -59,12 +59,12 @@
   v34[7] = &v47;
   v34[8] = &v41;
   v34[9] = &v35;
-  v31 = a3;
-  [v31 enumerateLogLinesWithBlock:v34];
+  collectorCopy = collector;
+  [collectorCopy enumerateLogLinesWithBlock:v34];
   if (([(UsageProfileController *)self isCancelled]& 1) != 0)
   {
-    v32 = 0;
-    v33 = 0;
+    date2 = 0;
+    date = 0;
   }
 
   else
@@ -72,31 +72,31 @@
     v4 = v60[5];
     if (v4)
     {
-      v5 = [v4 usageTime];
-      v6 = [v60[5] standbyTime];
-      v7 = [v60[5] batteryLevel];
+      usageTime = [v4 usageTime];
+      standbyTime = [v60[5] standbyTime];
+      batteryLevel = [v60[5] batteryLevel];
     }
 
     else
     {
-      v7 = 0;
-      v6 = 0;
-      v5 = 0;
+      batteryLevel = 0;
+      standbyTime = 0;
+      usageTime = 0;
     }
 
     v8 = v54[5];
     if (v8)
     {
-      v9 = [v8 usageTime];
-      v10 = [v54[5] batteryLevel];
-      v33 = [v54[5] date];
+      usageTime2 = [v8 usageTime];
+      batteryLevel2 = [v54[5] batteryLevel];
+      date = [v54[5] date];
     }
 
     else
     {
-      v9 = 0;
-      v10 = 0;
-      v33 = 0;
+      usageTime2 = 0;
+      batteryLevel2 = 0;
+      date = 0;
     }
 
     v11 = v48[5];
@@ -104,20 +104,20 @@
     {
       HIDWORD(v27) = [v11 standbyTime];
       LODWORD(v27) = [v48[5] batteryLevel];
-      v32 = [v48[5] date];
+      date2 = [v48[5] date];
     }
 
     else
     {
       v27 = 0;
-      v32 = 0;
+      date2 = 0;
     }
 
     if (v42[5] && (v12 = v36[5]) != 0)
     {
-      v13 = [v12 date];
-      v14 = [v42[5] date];
-      [v13 timeIntervalSinceDate:v14];
+      date3 = [v12 date];
+      date4 = [v42[5] date];
+      [date3 timeIntervalSinceDate:date4];
       v16 = v15 > 0.0;
     }
 
@@ -127,28 +127,28 @@
     }
 
     v65[0] = @"lastUsageLength";
-    v30 = [NSNumber numberWithInt:v5];
+    v30 = [NSNumber numberWithInt:usageTime];
     v66[0] = v30;
     v65[1] = @"lastStandbyLength";
-    v29 = [NSNumber numberWithInt:v6];
+    v29 = [NSNumber numberWithInt:standbyTime];
     v66[1] = v29;
     v65[2] = @"batteryLevelAfterLastUsage";
-    v28 = [NSNumber numberWithInt:v7];
+    v28 = [NSNumber numberWithInt:batteryLevel];
     v66[2] = v28;
     v65[3] = @"pluggedInAfterLastUsage";
     v17 = [NSNumber numberWithBool:v16];
     v66[3] = v17;
     v65[4] = @"longestUsageLength";
-    v18 = [NSNumber numberWithInt:v9];
+    v18 = [NSNumber numberWithInt:usageTime2];
     v66[4] = v18;
     v65[5] = @"longestUsageDate";
-    v19 = [(UsageProfileController *)self stringFromDate:v33];
+    v19 = [(UsageProfileController *)self stringFromDate:date];
     v66[5] = v19;
     v65[6] = @"batteryLevelAfterLongestUsage";
-    v20 = [NSNumber numberWithInt:v10];
+    v20 = [NSNumber numberWithInt:batteryLevel2];
     v66[6] = v20;
     v65[7] = @"longestStandbyDate";
-    v21 = [(UsageProfileController *)self stringFromDate:v32];
+    v21 = [(UsageProfileController *)self stringFromDate:date2];
     v66[7] = v21;
     v65[8] = @"longestStandbyLength";
     v22 = [NSNumber numberWithInt:HIDWORD(v27)];
@@ -157,11 +157,11 @@
     v23 = [NSNumber numberWithInt:v27];
     v66[9] = v23;
     v24 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:10];
-    v25 = [(UsageProfileController *)self result];
-    [v25 setData:v24];
+    result = [(UsageProfileController *)self result];
+    [result setData:v24];
 
-    v26 = [(UsageProfileController *)self result];
-    [v26 setStatusCode:&off_100004310];
+    result2 = [(UsageProfileController *)self result];
+    [result2 setStatusCode:&off_100004310];
   }
 
   _Block_object_dispose(&v35, 8);
@@ -173,14 +173,14 @@
   _Block_object_dispose(&v59, 8);
 }
 
-- (id)stringFromDate:(id)a3
+- (id)stringFromDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
     v4 = +[DSDateFormatter sharedFormatter];
     v5 = [v4 formatterWithType:0];
-    v6 = [v5 stringFromDate:v3];
+    v6 = [v5 stringFromDate:dateCopy];
     v7 = stringOrNull(v6);
   }
 

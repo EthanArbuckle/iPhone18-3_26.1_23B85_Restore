@@ -1,17 +1,17 @@
 @interface SKUIGroupedHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIGroupedHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIGroupedHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SKUIGroupedHeaderView
 
-- (SKUIGroupedHeaderView)initWithFrame:(CGRect)a3
+- (SKUIGroupedHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGroupedHeaderView initWithFrame:];
@@ -19,54 +19,54 @@
 
   v25.receiver = self;
   v25.super_class = SKUIGroupedHeaderView;
-  v8 = [(SKUIGroupedHeaderView *)&v25 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIGroupedHeaderView *)&v25 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.94 alpha:1.0];
-    [(SKUIGroupedHeaderView *)v8 setBackgroundColor:v9];
+    [(SKUIGroupedHeaderView *)height setBackgroundColor:v9];
 
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
-    titleLabel = v8->_titleLabel;
-    v8->_titleLabel = v10;
+    titleLabel = height->_titleLabel;
+    height->_titleLabel = v10;
 
-    v12 = v8->_titleLabel;
+    v12 = height->_titleLabel;
     v13 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
     [(UILabel *)v12 setFont:v13];
 
-    v14 = v8->_titleLabel;
+    v14 = height->_titleLabel;
     v15 = [MEMORY[0x277D75348] colorWithWhite:0.43 alpha:1.0];
     [(UILabel *)v14 setTextColor:v15];
 
-    [(SKUIGroupedHeaderView *)v8 addSubview:v8->_titleLabel];
+    [(SKUIGroupedHeaderView *)height addSubview:height->_titleLabel];
     v16 = objc_alloc_init(MEMORY[0x277D75D18]);
-    topBorder = v8->_topBorder;
-    v8->_topBorder = v16;
+    topBorder = height->_topBorder;
+    height->_topBorder = v16;
 
-    v18 = v8->_topBorder;
+    v18 = height->_topBorder;
     v19 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
     [(UIView *)v18 setBackgroundColor:v19];
 
-    [(SKUIGroupedHeaderView *)v8 addSubview:v8->_topBorder];
+    [(SKUIGroupedHeaderView *)height addSubview:height->_topBorder];
     v20 = objc_alloc_init(MEMORY[0x277D75D18]);
-    botBorder = v8->_botBorder;
-    v8->_botBorder = v20;
+    botBorder = height->_botBorder;
+    height->_botBorder = v20;
 
-    v22 = v8->_botBorder;
+    v22 = height->_botBorder;
     v23 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
     [(UIView *)v22 setBackgroundColor:v23];
 
-    [(SKUIGroupedHeaderView *)v8 addSubview:v8->_botBorder];
+    [(SKUIGroupedHeaderView *)height addSubview:height->_botBorder];
   }
 
-  return v8;
+  return height;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UILabel *)self->_titleLabel text];
-  v6 = [v5 length];
+  height = fits.height;
+  width = fits.width;
+  text = [(UILabel *)self->_titleLabel text];
+  v6 = [text length];
 
   v7 = 35.0;
   if (v6)
@@ -117,13 +117,13 @@
   }
 
   [(UILabel *)self->_titleLabel setTextAlignment:v15];
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v18 = 1.0 / v17;
 
   [(UIView *)self->_topBorder setFrame:v4, v6, v8, v18];
-  v19 = [MEMORY[0x277D759A0] mainScreen];
-  [v19 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v21 = 1.0 / v20;
 
   v24.origin.x = v4;

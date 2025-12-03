@@ -1,130 +1,130 @@
 @interface RTTripClusterWaypoint
-+ (id)divideArray:(id)a3 intoChunks:(int64_t)a4;
-+ (id)getWaypointDataFromWaypoints:(id)a3 maxWaypointsPerChunk:(int)a4;
-+ (id)getWaypointsFromWaypointData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWaypoint:(id)a3;
-- (RTTripClusterWaypoint)initWithClusterID:(id)a3 clRoadID:(unint64_t)a4 latitude:(double)a5 longitude:(double)a6 course:(double)a7 sequence:(unsigned __int16)a8 followedByUTurn:(BOOL)a9;
-- (RTTripClusterWaypoint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)divideArray:(id)array intoChunks:(int64_t)chunks;
++ (id)getWaypointDataFromWaypoints:(id)waypoints maxWaypointsPerChunk:(int)chunk;
++ (id)getWaypointsFromWaypointData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWaypoint:(id)waypoint;
+- (RTTripClusterWaypoint)initWithClusterID:(id)d clRoadID:(unint64_t)iD latitude:(double)latitude longitude:(double)longitude course:(double)course sequence:(unsigned __int16)sequence followedByUTurn:(BOOL)turn;
+- (RTTripClusterWaypoint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripClusterWaypoint
 
-- (RTTripClusterWaypoint)initWithClusterID:(id)a3 clRoadID:(unint64_t)a4 latitude:(double)a5 longitude:(double)a6 course:(double)a7 sequence:(unsigned __int16)a8 followedByUTurn:(BOOL)a9
+- (RTTripClusterWaypoint)initWithClusterID:(id)d clRoadID:(unint64_t)iD latitude:(double)latitude longitude:(double)longitude course:(double)course sequence:(unsigned __int16)sequence followedByUTurn:(BOOL)turn
 {
-  v17 = a3;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = RTTripClusterWaypoint;
   v18 = [(RTTripClusterWaypoint *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    v18->_clRoadID = a4;
-    objc_storeStrong(&v18->_clusterID, a3);
-    v19->_latitude = a5;
-    v19->_longitude = a6;
-    v19->_sequence = a8;
-    v19->_course = a7;
-    v19->_followedByUTurn = a9;
+    v18->_clRoadID = iD;
+    objc_storeStrong(&v18->_clusterID, d);
+    v19->_latitude = latitude;
+    v19->_longitude = longitude;
+    v19->_sequence = sequence;
+    v19->_course = course;
+    v19->_followedByUTurn = turn;
   }
 
   return v19;
 }
 
-- (RTTripClusterWaypoint)initWithCoder:(id)a3
+- (RTTripClusterWaypoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"clRoadID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterID"];
-  [v4 decodeDoubleForKey:@"latitude"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"clRoadID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterID"];
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"course"];
+  [coderCopy decodeDoubleForKey:@"course"];
   v12 = v11;
-  v13 = [v4 decodeIntForKey:@"sequence"];
-  v14 = [v4 decodeBoolForKey:@"uturn"];
+  v13 = [coderCopy decodeIntForKey:@"sequence"];
+  v14 = [coderCopy decodeBoolForKey:@"uturn"];
 
   v15 = [(RTTripClusterWaypoint *)self initWithClusterID:v6 clRoadID:v5 latitude:v13 longitude:v14 course:v8 sequence:v10 followedByUTurn:v12];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt64:-[RTTripClusterWaypoint clRoadID](self forKey:{"clRoadID"), @"clRoadID"}];
-  v4 = [(RTTripClusterWaypoint *)self clusterID];
-  [v5 encodeObject:v4 forKey:@"clusterID"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[RTTripClusterWaypoint clRoadID](self forKey:{"clRoadID"), @"clRoadID"}];
+  clusterID = [(RTTripClusterWaypoint *)self clusterID];
+  [coderCopy encodeObject:clusterID forKey:@"clusterID"];
 
   [(RTTripClusterWaypoint *)self latitude];
-  [v5 encodeDouble:@"latitude" forKey:?];
+  [coderCopy encodeDouble:@"latitude" forKey:?];
   [(RTTripClusterWaypoint *)self longitude];
-  [v5 encodeDouble:@"longitude" forKey:?];
+  [coderCopy encodeDouble:@"longitude" forKey:?];
   [(RTTripClusterWaypoint *)self course];
-  [v5 encodeDouble:@"course" forKey:?];
-  [v5 encodeInt:-[RTTripClusterWaypoint sequence](self forKey:{"sequence"), @"sequence"}];
-  [v5 encodeBool:-[RTTripClusterWaypoint followedByUTurn](self forKey:{"followedByUTurn"), @"uturn"}];
+  [coderCopy encodeDouble:@"course" forKey:?];
+  [coderCopy encodeInt:-[RTTripClusterWaypoint sequence](self forKey:{"sequence"), @"sequence"}];
+  [coderCopy encodeBool:-[RTTripClusterWaypoint followedByUTurn](self forKey:{"followedByUTurn"), @"uturn"}];
 }
 
-+ (id)divideArray:(id)a3 intoChunks:(int64_t)a4
++ (id)divideArray:(id)array intoChunks:(int64_t)chunks
 {
-  v5 = a3;
+  arrayCopy = array;
   v6 = MEMORY[0x277CBEBF8];
-  if (v5 && a4)
+  if (arrayCopy && chunks)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v6 = v7;
-    if (a4 < 0)
+    array = [MEMORY[0x277CBEB18] array];
+    v6 = array;
+    if (chunks < 0)
     {
-      [v7 addObject:v5];
+      [array addObject:arrayCopy];
     }
 
-    else if ([v5 count])
+    else if ([arrayCopy count])
     {
       v8 = 0;
       v9 = 0;
       do
       {
-        v10 = [v5 count];
-        if (v10 + v8 >= a4)
+        v10 = [arrayCopy count];
+        if (v10 + v8 >= chunks)
         {
-          v11 = a4;
+          chunksCopy = chunks;
         }
 
         else
         {
-          v11 = v10 + v8;
+          chunksCopy = v10 + v8;
         }
 
-        v12 = [v5 subarrayWithRange:{v9, v11}];
+        v12 = [arrayCopy subarrayWithRange:{v9, chunksCopy}];
         [v6 addObject:v12];
 
-        v9 += a4;
-        v8 -= a4;
+        v9 += chunks;
+        v8 -= chunks;
       }
 
-      while (v9 < [v5 count]);
+      while (v9 < [arrayCopy count]);
     }
   }
 
   return v6;
 }
 
-+ (id)getWaypointDataFromWaypoints:(id)a3 maxWaypointsPerChunk:(int)a4
++ (id)getWaypointDataFromWaypoints:(id)waypoints maxWaypointsPerChunk:(int)chunk
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  waypointsCopy = waypoints;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v4;
+  obj = waypointsCopy;
   v7 = [obj countByEnumeratingWithState:&v52 objects:v67 count:16];
   if (v7)
   {
@@ -140,21 +140,21 @@
         }
 
         v11 = *(*(&v52 + 1) + 8 * i);
-        v12 = [v11 clusterID];
-        v13 = [v6 objectForKey:v12];
+        clusterID = [v11 clusterID];
+        v13 = [v6 objectForKey:clusterID];
 
         if (v13)
         {
-          v14 = [v11 clusterID];
-          v15 = [v6 objectForKey:v14];
-          [v15 addObject:v11];
+          clusterID2 = [v11 clusterID];
+          clusterID3 = [v6 objectForKey:clusterID2];
+          [clusterID3 addObject:v11];
         }
 
         else
         {
-          v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v11, 0}];
-          v15 = [v11 clusterID];
-          [v6 setObject:v14 forKey:v15];
+          clusterID2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v11, 0}];
+          clusterID3 = [v11 clusterID];
+          [v6 setObject:clusterID2 forKey:clusterID3];
         }
       }
 
@@ -207,13 +207,13 @@
               v62 = 2112;
               v63 = v19;
               v64 = 1024;
-              v65 = a4;
+              chunkCopy = chunk;
               _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@,%@,%lu waypoints passed in for clusterID %@, maxWaypoints per chunk, %d", buf, 0x30u);
             }
           }
 
           v45 = v20;
-          v26 = [RTTripClusterWaypoint divideArray:v20 intoChunks:a4];
+          v26 = [RTTripClusterWaypoint divideArray:v20 intoChunks:chunk];
           if ([v26 count])
           {
             v27 = 0;
@@ -271,15 +271,15 @@
   return v17;
 }
 
-+ (id)getWaypointsFromWaypointData:(id)a3
++ (id)getWaypointsFromWaypointData:(id)data
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), +[RTTripClusterWaypoint classForCoder](RTTripClusterWaypoint, "classForCoder"), +[RTTripClusterWaypointData classForCoder](RTTripClusterWaypointData, "classForCoder"), 0}];
   v5 = MEMORY[0x277CCAAC8];
-  v6 = [v3 waypoints];
+  waypoints = [dataCopy waypoints];
   v30 = 0;
-  v7 = [v5 unarchivedObjectOfClasses:v4 fromData:v6 error:&v30];
+  v7 = [v5 unarchivedObjectOfClasses:v4 fromData:waypoints error:&v30];
   v8 = v30;
 
   v28 = 0u;
@@ -338,7 +338,7 @@
       v16 = NSStringFromClass(v15);
       v17 = NSStringFromSelector(a2);
       v18 = [v9 count];
-      v19 = [v3 clusterID];
+      clusterID = [dataCopy clusterID];
       *buf = 138413058;
       v32 = v16;
       v33 = 2112;
@@ -346,7 +346,7 @@
       v35 = 2048;
       v36 = v18;
       v37 = 2112;
-      v38 = v19;
+      v38 = clusterID;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@,%@,converted %lu waypoints for clusterID,%@", buf, 0x2Au);
     }
   }
@@ -360,23 +360,23 @@ LABEL_17:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTTripClusterWaypoint *)self clusterID];
-  v5 = [v4 UUIDString];
-  v6 = [(RTTripClusterWaypoint *)self clRoadID];
-  v7 = [(RTTripClusterWaypoint *)self sequence];
+  clusterID = [(RTTripClusterWaypoint *)self clusterID];
+  uUIDString = [clusterID UUIDString];
+  clRoadID = [(RTTripClusterWaypoint *)self clRoadID];
+  sequence = [(RTTripClusterWaypoint *)self sequence];
   [(RTTripClusterWaypoint *)self latitude];
   v9 = v8;
   [(RTTripClusterWaypoint *)self longitude];
   v11 = v10;
   [(RTTripClusterWaypoint *)self course];
-  v13 = [v3 stringWithFormat:@"clusterID, %@, clRoadID, %llu, sequence, %d, lat, %.7f, lon, %.7f, course, %.3f, uturn, %d", v5, v6, v7, v9, v11, v12, -[RTTripClusterWaypoint followedByUTurn](self, "followedByUTurn")];
+  v13 = [v3 stringWithFormat:@"clusterID, %@, clRoadID, %llu, sequence, %d, lat, %.7f, lon, %.7f, course, %.3f, uturn, %d", uUIDString, clRoadID, sequence, v9, v11, v12, -[RTTripClusterWaypoint followedByUTurn](self, "followedByUTurn")];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   clusterID = self->_clusterID;
   clRoadID = self->_clRoadID;
   latitude = self->_latitude;
@@ -388,15 +388,15 @@ LABEL_17:
   return [v4 initWithClusterID:clusterID clRoadID:clRoadID latitude:sequence longitude:followedByUTurn course:latitude sequence:longitude followedByUTurn:course];
 }
 
-- (BOOL)isEqualToWaypoint:(id)a3
+- (BOOL)isEqualToWaypoint:(id)waypoint
 {
-  v4 = a3;
-  v5 = [(RTTripClusterWaypoint *)self clusterID];
-  v6 = [v4 clusterID];
-  if ([v5 isEqual:v6] && (v7 = -[RTTripClusterWaypoint clRoadID](self, "clRoadID"), v7 == objc_msgSend(v4, "clRoadID")) && (-[RTTripClusterWaypoint latitude](self, "latitude"), v9 = v8, objc_msgSend(v4, "latitude"), vabdd_f64(v9, v10) < 0.0000001) && (-[RTTripClusterWaypoint longitude](self, "longitude"), v12 = v11, objc_msgSend(v4, "longitude"), vabdd_f64(v12, v13) < 0.0000001) && (-[RTTripClusterWaypoint course](self, "course"), v15 = v14, objc_msgSend(v4, "course"), vabdd_f64(v15, v16) < 0.001) && (v17 = -[RTTripClusterWaypoint sequence](self, "sequence"), v17 == objc_msgSend(v4, "sequence")))
+  waypointCopy = waypoint;
+  clusterID = [(RTTripClusterWaypoint *)self clusterID];
+  clusterID2 = [waypointCopy clusterID];
+  if ([clusterID isEqual:clusterID2] && (v7 = -[RTTripClusterWaypoint clRoadID](self, "clRoadID"), v7 == objc_msgSend(waypointCopy, "clRoadID")) && (-[RTTripClusterWaypoint latitude](self, "latitude"), v9 = v8, objc_msgSend(waypointCopy, "latitude"), vabdd_f64(v9, v10) < 0.0000001) && (-[RTTripClusterWaypoint longitude](self, "longitude"), v12 = v11, objc_msgSend(waypointCopy, "longitude"), vabdd_f64(v12, v13) < 0.0000001) && (-[RTTripClusterWaypoint course](self, "course"), v15 = v14, objc_msgSend(waypointCopy, "course"), vabdd_f64(v15, v16) < 0.001) && (v17 = -[RTTripClusterWaypoint sequence](self, "sequence"), v17 == objc_msgSend(waypointCopy, "sequence")))
   {
-    v18 = [(RTTripClusterWaypoint *)self followedByUTurn];
-    v19 = v18 ^ [v4 followedByUTurn] ^ 1;
+    followedByUTurn = [(RTTripClusterWaypoint *)self followedByUTurn];
+    v19 = followedByUTurn ^ [waypointCopy followedByUTurn] ^ 1;
   }
 
   else
@@ -407,18 +407,18 @@ LABEL_17:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterWaypoint *)self isEqualToWaypoint:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterWaypoint *)self isEqualToWaypoint:v5];
   }
 
   return v6;
@@ -428,8 +428,8 @@ LABEL_17:
 {
   v16[7] = *MEMORY[0x277D85DE8];
   v15[0] = @"clusterID";
-  v3 = [(RTTripClusterWaypoint *)self clusterID];
-  v16[0] = v3;
+  clusterID = [(RTTripClusterWaypoint *)self clusterID];
+  v16[0] = clusterID;
   v15[1] = @"clRoadID";
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[RTTripClusterWaypoint clRoadID](self, "clRoadID")}];
   v16[1] = v4;

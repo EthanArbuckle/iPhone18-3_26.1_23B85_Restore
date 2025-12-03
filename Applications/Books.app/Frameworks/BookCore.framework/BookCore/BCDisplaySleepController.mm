@@ -1,7 +1,7 @@
 @interface BCDisplaySleepController
 - (BCDisplaySleepController)init;
 - (UIWindow)window;
-- (void)setWindow:(id)a3;
+- (void)setWindow:(id)window;
 @end
 
 @implementation BCDisplaySleepController
@@ -13,13 +13,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v5 = OBJC_IVAR___BCDisplaySleepController_window;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = window;
+  windowCopy = window;
 }
 
 - (BCDisplaySleepController)init

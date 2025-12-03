@@ -1,14 +1,14 @@
 @interface _MKFAnalysisEventBulletinRegistration
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFAnalysisEventBulletinRegistrationDatabaseID)databaseID;
 - (MKFHome)home;
 @end
 
 @implementation _MKFAnalysisEventBulletinRegistration
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -22,10 +22,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFAnalysisEventBulletinRegistration *)self user];
-  v3 = [v2 home];
+  user = [(_MKFAnalysisEventBulletinRegistration *)self user];
+  home = [user home];
 
-  return v3;
+  return home;
 }
 
 - (MKFAnalysisEventBulletinRegistrationDatabaseID)databaseID

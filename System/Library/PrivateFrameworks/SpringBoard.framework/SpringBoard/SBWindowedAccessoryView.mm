@@ -1,21 +1,21 @@
 @interface SBWindowedAccessoryView
-- (SBWindowedAccessoryView)initWithFrame:(CGRect)a3;
+- (SBWindowedAccessoryView)initWithFrame:(CGRect)frame;
 - (SBWindowedAccessoryViewDelegate)delegate;
-- (void)_forceDetachWindowedAcessoryButtonTapped:(id)a3;
+- (void)_forceDetachWindowedAcessoryButtonTapped:(id)tapped;
 - (void)layoutSubviews;
 @end
 
 @implementation SBWindowedAccessoryView
 
-- (SBWindowedAccessoryView)initWithFrame:(CGRect)a3
+- (SBWindowedAccessoryView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SBWindowedAccessoryView;
-  v3 = [(SBWindowedAccessoryView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBWindowedAccessoryView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(SBWindowedAccessoryView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBWindowedAccessoryView *)v3 setBackgroundColor:clearColor];
 
     v5 = [MEMORY[0x277D75220] buttonWithType:1];
     forceDetachWindowedAcessoryButton = v3->_forceDetachWindowedAcessoryButton;
@@ -27,8 +27,8 @@
 
     [(UIButton *)v3->_forceDetachWindowedAcessoryButton setImage:v8 forState:0];
     v9 = v3->_forceDetachWindowedAcessoryButton;
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [(UIButton *)v9 setTintColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIButton *)v9 setTintColor:whiteColor];
 
     [(SBWindowedAccessoryView *)v3 addSubview:v3->_forceDetachWindowedAcessoryButton];
   }
@@ -41,8 +41,8 @@
   v13.receiver = self;
   v13.super_class = SBWindowedAccessoryView;
   [(SBWindowedAccessoryView *)&v13 layoutSubviews];
-  v3 = [(SBWindowedAccessoryView *)self superview];
-  [v3 bounds];
+  superview = [(SBWindowedAccessoryView *)self superview];
+  [superview bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -54,7 +54,7 @@
   [(UIButton *)self->_forceDetachWindowedAcessoryButton setFrame:v9 - (v12 + 20.0), 40.0];
 }
 
-- (void)_forceDetachWindowedAcessoryButtonTapped:(id)a3
+- (void)_forceDetachWindowedAcessoryButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained forceDetachWindowedAcessoryButtonTapped:self];

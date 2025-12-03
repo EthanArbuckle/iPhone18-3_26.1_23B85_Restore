@@ -1,26 +1,26 @@
 @interface HKSPProvenanceInfo
 + (HKSPProvenanceInfo)unknownProvenance;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProvenanceInfo:(id)a3;
-- (HKSPProvenanceInfo)initWithSource:(id)a3 presentation:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProvenanceInfo:(id)info;
+- (HKSPProvenanceInfo)initWithSource:(id)source presentation:(id)presentation;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HKSPProvenanceInfo
 
-- (HKSPProvenanceInfo)initWithSource:(id)a3 presentation:(id)a4
+- (HKSPProvenanceInfo)initWithSource:(id)source presentation:(id)presentation
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  presentationCopy = presentation;
   v13.receiver = self;
   v13.super_class = HKSPProvenanceInfo;
   v9 = [(HKSPProvenanceInfo *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_source, a3);
-    objc_storeStrong(&v10->_presentation, a4);
+    objc_storeStrong(&v9->_source, source);
+    objc_storeStrong(&v10->_presentation, presentation);
     v11 = v10;
   }
 
@@ -44,16 +44,16 @@
   return v6;
 }
 
-- (BOOL)isEqualToProvenanceInfo:(id)a3
+- (BOOL)isEqualToProvenanceInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(HKSPProvenanceInfo *)self source];
-  v6 = [v4 source];
-  if ([v5 isEqualToString:v6])
+  infoCopy = info;
+  source = [(HKSPProvenanceInfo *)self source];
+  source2 = [infoCopy source];
+  if ([source isEqualToString:source2])
   {
-    v7 = [(HKSPProvenanceInfo *)self presentation];
-    v8 = [v4 presentation];
-    v9 = [v7 isEqualToString:v8];
+    presentation = [(HKSPProvenanceInfo *)self presentation];
+    presentation2 = [infoCopy presentation];
+    v9 = [presentation isEqualToString:presentation2];
   }
 
   else
@@ -64,10 +64,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -75,7 +75,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKSPProvenanceInfo *)self isEqualToProvenanceInfo:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKSPProvenanceInfo *)self isEqualToProvenanceInfo:equalCopy];
   }
 
   return v5;
@@ -83,10 +83,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKSPProvenanceInfo *)self source];
-  v4 = [v3 hash];
-  v5 = [(HKSPProvenanceInfo *)self presentation];
-  v6 = [v5 hash];
+  source = [(HKSPProvenanceInfo *)self source];
+  v4 = [source hash];
+  presentation = [(HKSPProvenanceInfo *)self presentation];
+  v6 = [presentation hash];
 
   return v6 ^ v4;
 }

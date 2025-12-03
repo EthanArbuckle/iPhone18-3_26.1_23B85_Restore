@@ -1,47 +1,47 @@
 @interface AutocompleteAnalyticsManager
 - (AutocompleteAnalyticsManager)init;
-- (void)addAPlaceTappedWithNumberOfResults:(unint64_t)a3;
+- (void)addAPlaceTappedWithNumberOfResults:(unint64_t)results;
 - (void)cleanupCuratedCollectionsEvent;
-- (void)containmentParentUnitTappedWithMuid:(unint64_t)a3;
-- (void)curatedCollectionTappedWithMUID:(unint64_t)a3 isCurrentlySaved:(BOOL)a4 verticalIndex:(int64_t)a5;
-- (void)guidesHomeChildItemButtonTappedWithVerticalIndex:(int64_t)a3;
-- (void)placeContextMultipleCollectionsTappedWithMuids:(id)a3 verticalIndex:(int64_t)a4;
-- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)a3 isCurrentlySaved:(BOOL)a4 verticalIndex:(int64_t)a5;
-- (void)publisherChildItemButtonTappedWithPublisherMuid:(unint64_t)a3 verticalIndex:(int64_t)a4;
-- (void)publisherTappedWithMuid:(unint64_t)a3 verticalIndex:(int64_t)a4;
-- (void)resultRefinementTappedWithKey:(id)a3;
-- (void)tappableEntryUnitTappedWithMuid:(unint64_t)a3;
+- (void)containmentParentUnitTappedWithMuid:(unint64_t)muid;
+- (void)curatedCollectionTappedWithMUID:(unint64_t)d isCurrentlySaved:(BOOL)saved verticalIndex:(int64_t)index;
+- (void)guidesHomeChildItemButtonTappedWithVerticalIndex:(int64_t)index;
+- (void)placeContextMultipleCollectionsTappedWithMuids:(id)muids verticalIndex:(int64_t)index;
+- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)muid isCurrentlySaved:(BOOL)saved verticalIndex:(int64_t)index;
+- (void)publisherChildItemButtonTappedWithPublisherMuid:(unint64_t)muid verticalIndex:(int64_t)index;
+- (void)publisherTappedWithMuid:(unint64_t)muid verticalIndex:(int64_t)index;
+- (void)resultRefinementTappedWithKey:(id)key;
+- (void)tappableEntryUnitTappedWithMuid:(unint64_t)muid;
 - (void)userGeneratedGuideUnitTapped;
 @end
 
 @implementation AutocompleteAnalyticsManager
 
-- (void)addAPlaceTappedWithNumberOfResults:(unint64_t)a3
+- (void)addAPlaceTappedWithNumberOfResults:(unint64_t)results
 {
-  v4 = [NSString stringWithFormat:@"%lu", a3];
+  results = [NSString stringWithFormat:@"%lu", results];
   v3 = +[MKMapService sharedService];
-  [v3 captureUserAction:222 onTarget:11 eventValue:v4];
+  [v3 captureUserAction:222 onTarget:11 eventValue:results];
 }
 
-- (void)resultRefinementTappedWithKey:(id)a3
+- (void)resultRefinementTappedWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[MKMapService sharedService];
-  [v4 captureUserAction:200 onTarget:11 eventValue:v3];
+  [v4 captureUserAction:200 onTarget:11 eventValue:keyCopy];
 }
 
-- (void)tappableEntryUnitTappedWithMuid:(unint64_t)a3
+- (void)tappableEntryUnitTappedWithMuid:(unint64_t)muid
 {
   v5 = objc_alloc_init(GEOPlaceActionDetails);
-  [v5 setBusinessID:a3];
+  [v5 setBusinessID:muid];
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:198 onTarget:11 eventValue:@"PLACE_SUMMARY_LAYOUT_UNIT_TYPE_STRING" placeActionDetails:v5];
 }
 
-- (void)containmentParentUnitTappedWithMuid:(unint64_t)a3
+- (void)containmentParentUnitTappedWithMuid:(unint64_t)muid
 {
   v5 = objc_alloc_init(GEOPlaceActionDetails);
-  [v5 setBusinessID:a3];
+  [v5 setBusinessID:muid];
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:198 onTarget:11 eventValue:@"PLACE_SUMMARY_LAYOUT_UNIT_TYPE_CONTAINMENT" placeActionDetails:v5];
 }
@@ -74,28 +74,28 @@
   self->_curatedCollectionsEvent.verticalIndex = 0;
 }
 
-- (void)guidesHomeChildItemButtonTappedWithVerticalIndex:(int64_t)a3
+- (void)guidesHomeChildItemButtonTappedWithVerticalIndex:(int64_t)index
 {
   [(AutocompleteAnalyticsManager *)self cleanupCuratedCollectionsEvent];
   self->_curatedCollectionsEvent.action = 258;
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_curatedCollectionsEvent.verticalIndex;
   self->_curatedCollectionsEvent.verticalIndex = v5;
 
   [(AutocompleteAnalyticsManager *)self logCuratedCollectionsEvent];
 }
 
-- (void)placeContextMultipleCollectionsTappedWithMuids:(id)a3 verticalIndex:(int64_t)a4
+- (void)placeContextMultipleCollectionsTappedWithMuids:(id)muids verticalIndex:(int64_t)index
 {
-  v6 = a3;
+  muidsCopy = muids;
   [(AutocompleteAnalyticsManager *)self cleanupCuratedCollectionsEvent];
   self->_curatedCollectionsEvent.action = 2100;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(muidsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = muidsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -111,8 +111,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * v12) stringValue];
-        [v7 addObject:v13];
+        stringValue = [*(*(&v19 + 1) + 8 * v12) stringValue];
+        [v7 addObject:stringValue];
 
         v12 = v12 + 1;
       }
@@ -128,7 +128,7 @@
   value = self->_curatedCollectionsEvent.value;
   self->_curatedCollectionsEvent.value = v14;
 
-  v16 = [NSNumber numberWithInteger:a4];
+  v16 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_curatedCollectionsEvent.verticalIndex;
   self->_curatedCollectionsEvent.verticalIndex = v16;
 
@@ -137,20 +137,20 @@
   [v18 captureUserAction:198 onTarget:11 eventValue:@"PLACE_SUMMARY_LAYOUT_UNIT_TYPE_CURATED_GUIDES"];
 }
 
-- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)a3 isCurrentlySaved:(BOOL)a4 verticalIndex:(int64_t)a5
+- (void)placeContextSingleCollectionTappedWithMuid:(unint64_t)muid isCurrentlySaved:(BOOL)saved verticalIndex:(int64_t)index
 {
-  v6 = a4;
+  savedCopy = saved;
   [(AutocompleteAnalyticsManager *)self cleanupCuratedCollectionsEvent];
   self->_curatedCollectionsEvent.action = 2099;
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
+  v9 = [NSNumber numberWithUnsignedLongLong:muid];
   collectionId = self->_curatedCollectionsEvent.collectionId;
   self->_curatedCollectionsEvent.collectionId = v9;
 
-  v11 = [NSNumber numberWithBool:v6];
+  v11 = [NSNumber numberWithBool:savedCopy];
   collectionCurrentlySaved = self->_curatedCollectionsEvent.collectionCurrentlySaved;
   self->_curatedCollectionsEvent.collectionCurrentlySaved = v11;
 
-  v13 = [NSNumber numberWithInteger:a5];
+  v13 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_curatedCollectionsEvent.verticalIndex;
   self->_curatedCollectionsEvent.verticalIndex = v13;
 
@@ -162,54 +162,54 @@
   [v16 captureUserAction:198 onTarget:11 eventValue:@"PLACE_SUMMARY_LAYOUT_UNIT_TYPE_CURATED_GUIDES"];
 }
 
-- (void)publisherChildItemButtonTappedWithPublisherMuid:(unint64_t)a3 verticalIndex:(int64_t)a4
+- (void)publisherChildItemButtonTappedWithPublisherMuid:(unint64_t)muid verticalIndex:(int64_t)index
 {
   [(AutocompleteAnalyticsManager *)self cleanupCuratedCollectionsEvent];
   self->_curatedCollectionsEvent.action = 2195;
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
+  v7 = [NSNumber numberWithUnsignedLongLong:muid];
   v12 = v7;
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   publisherIds = self->_curatedCollectionsEvent.publisherIds;
   self->_curatedCollectionsEvent.publisherIds = v8;
 
-  v10 = [NSNumber numberWithInteger:a4];
+  v10 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_curatedCollectionsEvent.verticalIndex;
   self->_curatedCollectionsEvent.verticalIndex = v10;
 
   [(AutocompleteAnalyticsManager *)self logCuratedCollectionsEvent];
 }
 
-- (void)publisherTappedWithMuid:(unint64_t)a3 verticalIndex:(int64_t)a4
+- (void)publisherTappedWithMuid:(unint64_t)muid verticalIndex:(int64_t)index
 {
   [(AutocompleteAnalyticsManager *)self cleanupCuratedCollectionsEvent];
   self->_curatedCollectionsEvent.action = 2102;
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
+  v7 = [NSNumber numberWithUnsignedLongLong:muid];
   v12 = v7;
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   publisherIds = self->_curatedCollectionsEvent.publisherIds;
   self->_curatedCollectionsEvent.publisherIds = v8;
 
-  v10 = [NSNumber numberWithInteger:a4];
+  v10 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_curatedCollectionsEvent.verticalIndex;
   self->_curatedCollectionsEvent.verticalIndex = v10;
 
   [(AutocompleteAnalyticsManager *)self logCuratedCollectionsEvent];
 }
 
-- (void)curatedCollectionTappedWithMUID:(unint64_t)a3 isCurrentlySaved:(BOOL)a4 verticalIndex:(int64_t)a5
+- (void)curatedCollectionTappedWithMUID:(unint64_t)d isCurrentlySaved:(BOOL)saved verticalIndex:(int64_t)index
 {
-  v6 = a4;
+  savedCopy = saved;
   [(AutocompleteAnalyticsManager *)self cleanupCuratedCollectionsEvent];
   self->_curatedCollectionsEvent.action = 2099;
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
+  v9 = [NSNumber numberWithUnsignedLongLong:d];
   collectionId = self->_curatedCollectionsEvent.collectionId;
   self->_curatedCollectionsEvent.collectionId = v9;
 
-  v11 = [NSNumber numberWithBool:v6];
+  v11 = [NSNumber numberWithBool:savedCopy];
   collectionCurrentlySaved = self->_curatedCollectionsEvent.collectionCurrentlySaved;
   self->_curatedCollectionsEvent.collectionCurrentlySaved = v11;
 
-  v13 = [NSNumber numberWithInteger:a5];
+  v13 = [NSNumber numberWithInteger:index];
   verticalIndex = self->_curatedCollectionsEvent.verticalIndex;
   self->_curatedCollectionsEvent.verticalIndex = v13;
 

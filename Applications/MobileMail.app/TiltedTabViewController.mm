@@ -1,42 +1,42 @@
 @interface TiltedTabViewController
-- (CATransform3D)tiltedTabView:(SEL)a3 expanded:(id)a4 layerTransformForItemAtIndex:(BOOL)a5;
-- (CGRect)tiltedTabView:(id)a3 frameForItemAtIndex:(unint64_t)a4;
-- (TiltedTabViewController)initWithInitialDockedStates:(id)a3 persistence:(id)a4 primaryViewController:(id)a5 daemonInterface:(id)a6;
+- (CATransform3D)tiltedTabView:(SEL)view expanded:(id)expanded layerTransformForItemAtIndex:(BOOL)index;
+- (CGRect)tiltedTabView:(id)view frameForItemAtIndex:(unint64_t)index;
+- (TiltedTabViewController)initWithInitialDockedStates:(id)states persistence:(id)persistence primaryViewController:(id)controller daemonInterface:(id)interface;
 - (TiltedTabViewControllerDelegate)delegate;
-- (UIEdgeInsets)tiltedTabView:(id)a3 expanded:(BOOL)a4 edgeInsetsForItemAtIndex:(unint64_t)a5;
-- (double)tiltedTabView:(id)a3 headerHeightForItemAtIndex:(unint64_t)a4;
-- (id)placeholderFactoryForState:(id)a3;
-- (id)tiltedTabView:(id)a3 snapshotViewForItemAtIndex:(unint64_t)a4;
-- (int64_t)numberOfItemsInTiltedTabView:(id)a3;
+- (UIEdgeInsets)tiltedTabView:(id)view expanded:(BOOL)expanded edgeInsetsForItemAtIndex:(unint64_t)index;
+- (double)tiltedTabView:(id)view headerHeightForItemAtIndex:(unint64_t)index;
+- (id)placeholderFactoryForState:(id)state;
+- (id)tiltedTabView:(id)view snapshotViewForItemAtIndex:(unint64_t)index;
+- (int64_t)numberOfItemsInTiltedTabView:(id)view;
 - (void)dismiss;
-- (void)dockContainerPersistence:(id)a3 observer:(id)a4 updatedDockedStates:(id)a5;
-- (void)presentAnimated:(BOOL)a3;
-- (void)tiltedTabView:(id)a3 closeItemAtIndex:(unint64_t)a4;
-- (void)tiltedTabView:(id)a3 didSelectItemAtIndex:(unint64_t)a4;
+- (void)dockContainerPersistence:(id)persistence observer:(id)observer updatedDockedStates:(id)states;
+- (void)presentAnimated:(BOOL)animated;
+- (void)tiltedTabView:(id)view closeItemAtIndex:(unint64_t)index;
+- (void)tiltedTabView:(id)view didSelectItemAtIndex:(unint64_t)index;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TiltedTabViewController
 
-- (TiltedTabViewController)initWithInitialDockedStates:(id)a3 persistence:(id)a4 primaryViewController:(id)a5 daemonInterface:(id)a6
+- (TiltedTabViewController)initWithInitialDockedStates:(id)states persistence:(id)persistence primaryViewController:(id)controller daemonInterface:(id)interface
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  statesCopy = states;
+  persistenceCopy = persistence;
+  controllerCopy = controller;
+  interfaceCopy = interface;
   v23.receiver = self;
   v23.super_class = TiltedTabViewController;
   v14 = [(TiltedTabViewController *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_primaryViewController, a5);
-    objc_storeStrong(&v15->_persistence, a4);
-    v16 = [v10 reverseObjectEnumerator];
-    v17 = [v16 allObjects];
-    v18 = [v17 mutableCopy];
+    objc_storeStrong(&v14->_primaryViewController, controller);
+    objc_storeStrong(&v15->_persistence, persistence);
+    reverseObjectEnumerator = [statesCopy reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v18 = [allObjects mutableCopy];
     dockedStates = v15->_dockedStates;
     v15->_dockedStates = v18;
 
@@ -44,7 +44,7 @@
     placeholderFactories = v15->_placeholderFactories;
     v15->_placeholderFactories = v20;
 
-    objc_storeStrong(&v15->_daemonInterface, a6);
+    objc_storeStrong(&v15->_daemonInterface, interface);
   }
 
   return v15;
@@ -56,62 +56,62 @@
   v9.super_class = TiltedTabViewController;
   [(TiltedTabViewController *)&v9 viewDidLoad];
   v3 = +[UIColor blackColor];
-  v4 = [(TiltedTabViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(TiltedTabViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [MFTiltedTabView alloc];
-  v6 = [(TiltedTabViewController *)self view];
-  [v6 bounds];
+  view2 = [(TiltedTabViewController *)self view];
+  [view2 bounds];
   v7 = [(MFTiltedTabView *)v5 initWithFrame:?];
 
   [(MFTiltedTabView *)v7 setReorderingEnabled:0];
   [(MFTiltedTabView *)v7 setDelegate:self];
-  v8 = [(TiltedTabViewController *)self view];
-  [v8 addSubview:v7];
+  view3 = [(TiltedTabViewController *)self view];
+  [view3 addSubview:v7];
 
   [(TiltedTabViewController *)self setTiltedTabView:v7];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(TiltedTabViewController *)self view];
-  [v3 bounds];
+  view = [(TiltedTabViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(TiltedTabViewController *)self tiltedTabView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  tiltedTabView = [(TiltedTabViewController *)self tiltedTabView];
+  [tiltedTabView setFrame:{v5, v7, v9, v11}];
 
   v13.receiver = self;
   v13.super_class = TiltedTabViewController;
   [(TiltedTabViewController *)&v13 viewWillLayoutSubviews];
 }
 
-- (void)presentAnimated:(BOOL)a3
+- (void)presentAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(TiltedTabViewController *)self tiltedTabView];
-  [v4 setPresented:1 animated:v3];
+  animatedCopy = animated;
+  tiltedTabView = [(TiltedTabViewController *)self tiltedTabView];
+  [tiltedTabView setPresented:1 animated:animatedCopy];
 }
 
 - (void)dismiss
 {
-  v3 = [(TiltedTabViewController *)self tiltedTabView];
-  [v3 setPresented:0 animated:0];
+  tiltedTabView = [(TiltedTabViewController *)self tiltedTabView];
+  [tiltedTabView setPresented:0 animated:0];
 
-  v4 = [(TiltedTabViewController *)self tiltedTabView];
-  [v4 layoutIfNeeded];
+  tiltedTabView2 = [(TiltedTabViewController *)self tiltedTabView];
+  [tiltedTabView2 layoutIfNeeded];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = TiltedTabViewController;
-  [(TiltedTabViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(TiltedTabViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -122,64 +122,64 @@
   v8[1] = 3221225472;
   v8[2] = sub_100252070;
   v8[3] = &unk_10064CC00;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
-- (int64_t)numberOfItemsInTiltedTabView:(id)a3
+- (int64_t)numberOfItemsInTiltedTabView:(id)view
 {
-  v3 = [(TiltedTabViewController *)self dockedStates];
-  v4 = [v3 count];
+  dockedStates = [(TiltedTabViewController *)self dockedStates];
+  v4 = [dockedStates count];
 
   return v4 + 1;
 }
 
-- (void)tiltedTabView:(id)a3 closeItemAtIndex:(unint64_t)a4
+- (void)tiltedTabView:(id)view closeItemAtIndex:(unint64_t)index
 {
-  v6 = [(TiltedTabViewController *)self dockedStates];
-  v15 = [v6 objectAtIndex:a4 - 1];
+  dockedStates = [(TiltedTabViewController *)self dockedStates];
+  v15 = [dockedStates objectAtIndex:index - 1];
 
-  v7 = [(TiltedTabViewController *)self dockedStates];
-  [v7 removeObject:v15];
+  dockedStates2 = [(TiltedTabViewController *)self dockedStates];
+  [dockedStates2 removeObject:v15];
 
-  v8 = [(TiltedTabViewController *)self persistence];
-  v9 = [v15 dockIdentifier];
-  [v8 removeDockedStateWithIdentifier:v9 sender:self];
+  persistence = [(TiltedTabViewController *)self persistence];
+  dockIdentifier = [v15 dockIdentifier];
+  [persistence removeDockedStateWithIdentifier:dockIdentifier sender:self];
 
   v10 = +[MSAutosave autosave];
-  v11 = [v15 dockIdentifier];
-  [v10 removeAutosavedMessageWithIdentifier:v11];
+  dockIdentifier2 = [v15 dockIdentifier];
+  [v10 removeAutosavedMessageWithIdentifier:dockIdentifier2];
 
-  v12 = [(TiltedTabViewController *)self dockedStates];
-  v13 = [v12 count];
+  dockedStates3 = [(TiltedTabViewController *)self dockedStates];
+  v13 = [dockedStates3 count];
 
   if (!v13)
   {
-    v14 = [(TiltedTabViewController *)self delegate];
-    [v14 tiltedTabViewControllerDidCancel:self];
+    delegate = [(TiltedTabViewController *)self delegate];
+    [delegate tiltedTabViewControllerDidCancel:self];
   }
 }
 
-- (void)tiltedTabView:(id)a3 didSelectItemAtIndex:(unint64_t)a4
+- (void)tiltedTabView:(id)view didSelectItemAtIndex:(unint64_t)index
 {
-  v11 = a3;
-  v6 = [(TiltedTabViewController *)self delegate];
-  v7 = v6;
-  if (a4)
+  viewCopy = view;
+  delegate = [(TiltedTabViewController *)self delegate];
+  v7 = delegate;
+  if (index)
   {
-    v8 = [(TiltedTabViewController *)self dockedStates];
-    v9 = [v8 objectAtIndex:a4 - 1];
+    dockedStates = [(TiltedTabViewController *)self dockedStates];
+    v9 = [dockedStates objectAtIndex:index - 1];
 
-    v10 = [v11 tabItemAtIndex:a4];
+    v10 = [viewCopy tabItemAtIndex:index];
     [v7 tiltedTabViewController:self didSelectView:v10 representingState:v9];
   }
 
   else
   {
-    [v6 tiltedTabViewControllerDidCancel:self];
+    [delegate tiltedTabViewControllerDidCancel:self];
   }
 }
 
-- (UIEdgeInsets)tiltedTabView:(id)a3 expanded:(BOOL)a4 edgeInsetsForItemAtIndex:(unint64_t)a5
+- (UIEdgeInsets)tiltedTabView:(id)view expanded:(BOOL)expanded edgeInsetsForItemAtIndex:(unint64_t)index
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
@@ -192,7 +192,7 @@
   return result;
 }
 
-- (CATransform3D)tiltedTabView:(SEL)a3 expanded:(id)a4 layerTransformForItemAtIndex:(BOOL)a5
+- (CATransform3D)tiltedTabView:(SEL)view expanded:(id)expanded layerTransformForItemAtIndex:(BOOL)index
 {
   v6 = *&CATransform3DIdentity.m33;
   *&retstr->m31 = *&CATransform3DIdentity.m31;
@@ -209,15 +209,15 @@
   return self;
 }
 
-- (CGRect)tiltedTabView:(id)a3 frameForItemAtIndex:(unint64_t)a4
+- (CGRect)tiltedTabView:(id)view frameForItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  viewCopy = view;
+  v7 = viewCopy;
+  if (!index)
   {
-    v8 = [(TiltedTabViewController *)self primaryViewController];
-    v17 = [v8 view];
-    [v17 frame];
+    primaryViewController = [(TiltedTabViewController *)self primaryViewController];
+    view = [primaryViewController view];
+    [view frame];
 LABEL_6:
     v10 = v18;
     v12 = v19;
@@ -227,18 +227,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (([v6 isPresented] & 1) == 0)
+  if (([viewCopy isPresented] & 1) == 0)
   {
-    v22 = [(TiltedTabViewController *)self dockedStates];
-    v8 = [v22 objectAtIndex:a4 - 1];
+    dockedStates = [(TiltedTabViewController *)self dockedStates];
+    primaryViewController = [dockedStates objectAtIndex:index - 1];
 
-    v17 = [(TiltedTabViewController *)self delegate];
-    [v17 tiltedTabViewController:self dockedFrameForViewRepresentingState:v8];
+    view = [(TiltedTabViewController *)self delegate];
+    [view tiltedTabViewController:self dockedFrameForViewRepresentingState:primaryViewController];
     goto LABEL_6;
   }
 
-  v8 = [(TiltedTabViewController *)self view];
-  [SheetMetrics frameForPresentedSheetIn:v8];
+  primaryViewController = [(TiltedTabViewController *)self view];
+  [SheetMetrics frameForPresentedSheetIn:primaryViewController];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -256,10 +256,10 @@ LABEL_7:
   return result;
 }
 
-- (double)tiltedTabView:(id)a3 headerHeightForItemAtIndex:(unint64_t)a4
+- (double)tiltedTabView:(id)view headerHeightForItemAtIndex:(unint64_t)index
 {
   result = 40.0;
-  if (!a4)
+  if (!index)
   {
     return 0.0;
   }
@@ -267,33 +267,33 @@ LABEL_7:
   return result;
 }
 
-- (id)tiltedTabView:(id)a3 snapshotViewForItemAtIndex:(unint64_t)a4
+- (id)tiltedTabView:(id)view snapshotViewForItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (index)
   {
-    v7 = [(TiltedTabViewController *)self view];
-    [SheetMetrics frameForPresentedSheetIn:v7];
+    view = [(TiltedTabViewController *)self view];
+    [SheetMetrics frameForPresentedSheetIn:view];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(TiltedTabViewController *)self dockedStates];
-    v17 = [v16 objectAtIndex:a4 - 1];
+    dockedStates = [(TiltedTabViewController *)self dockedStates];
+    primaryViewController = [dockedStates objectAtIndex:index - 1];
 
-    v18 = [(TiltedTabViewController *)self placeholderFactoryForState:v17];
-    v19 = [v17 storedUserActivity];
-    v20 = [(TiltedTabViewController *)self view];
-    [v20 layoutMargins];
-    v25 = [v18 placeholderViewForUserActivity:v19 frame:v9 parentMargins:{v11, v13, v15, v21, v22, v23, v24}];
+    view3 = [(TiltedTabViewController *)self placeholderFactoryForState:primaryViewController];
+    storedUserActivity = [primaryViewController storedUserActivity];
+    view2 = [(TiltedTabViewController *)self view];
+    [view2 layoutMargins];
+    v25 = [view3 placeholderViewForUserActivity:storedUserActivity frame:v9 parentMargins:{v11, v13, v15, v21, v22, v23, v24}];
   }
 
   else
   {
-    v17 = [(TiltedTabViewController *)self primaryViewController];
-    v18 = [v17 view];
-    v25 = [v18 snapshotViewAfterScreenUpdates:0];
+    primaryViewController = [(TiltedTabViewController *)self primaryViewController];
+    view3 = [primaryViewController view];
+    v25 = [view3 snapshotViewAfterScreenUpdates:0];
   }
 
   [v25 setClipsToBounds:1];
@@ -305,50 +305,50 @@ LABEL_7:
   return v25;
 }
 
-- (id)placeholderFactoryForState:(id)a3
+- (id)placeholderFactoryForState:(id)state
 {
-  v4 = a3;
-  v5 = NSStringFromClass([v4 storedViewControllerClass]);
-  v6 = [(TiltedTabViewController *)self placeholderFactories];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  stateCopy = state;
+  v5 = NSStringFromClass([stateCopy storedViewControllerClass]);
+  placeholderFactories = [(TiltedTabViewController *)self placeholderFactories];
+  v7 = [placeholderFactories objectForKeyedSubscript:v5];
 
   if (!v7)
   {
-    v8 = objc_alloc([objc_msgSend(v4 "storedViewControllerClass")]);
-    v9 = [(TiltedTabViewController *)self daemonInterface];
-    v7 = [v8 initWithDaemonInterface:v9];
+    v8 = objc_alloc([objc_msgSend(stateCopy "storedViewControllerClass")]);
+    daemonInterface = [(TiltedTabViewController *)self daemonInterface];
+    v7 = [v8 initWithDaemonInterface:daemonInterface];
 
-    v10 = [(TiltedTabViewController *)self placeholderFactories];
-    [v10 setObject:v7 forKeyedSubscript:v5];
+    placeholderFactories2 = [(TiltedTabViewController *)self placeholderFactories];
+    [placeholderFactories2 setObject:v7 forKeyedSubscript:v5];
   }
 
   return v7;
 }
 
-- (void)dockContainerPersistence:(id)a3 observer:(id)a4 updatedDockedStates:(id)a5
+- (void)dockContainerPersistence:(id)persistence observer:(id)observer updatedDockedStates:(id)states
 {
-  v10 = a5;
-  v6 = [(TiltedTabViewController *)self dockedStates];
-  v7 = [v6 isEqualToArray:v10];
+  statesCopy = states;
+  dockedStates = [(TiltedTabViewController *)self dockedStates];
+  v7 = [dockedStates isEqualToArray:statesCopy];
 
-  v8 = [(TiltedTabViewController *)self dockedStates];
-  [v8 setArray:v10];
+  dockedStates2 = [(TiltedTabViewController *)self dockedStates];
+  [dockedStates2 setArray:statesCopy];
 
-  if ([v10 count])
+  if ([statesCopy count])
   {
     if (!v7)
     {
       goto LABEL_6;
     }
 
-    v9 = [(TiltedTabViewController *)self tiltedTabView];
-    [v9 layoutItemsAnimated:1];
+    tiltedTabView = [(TiltedTabViewController *)self tiltedTabView];
+    [tiltedTabView layoutItemsAnimated:1];
   }
 
   else
   {
-    v9 = [(TiltedTabViewController *)self delegate];
-    [v9 tiltedTabViewControllerDidCancel:self];
+    tiltedTabView = [(TiltedTabViewController *)self delegate];
+    [tiltedTabView tiltedTabViewControllerDidCancel:self];
   }
 
 LABEL_6:

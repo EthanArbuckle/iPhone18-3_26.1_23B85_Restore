@@ -1,10 +1,10 @@
 @interface MapsPrintingInfo
-- (MapsPrintingInfo)initWithNumberOfPages:(int64_t)a3;
+- (MapsPrintingInfo)initWithNumberOfPages:(int64_t)pages;
 @end
 
 @implementation MapsPrintingInfo
 
-- (MapsPrintingInfo)initWithNumberOfPages:(int64_t)a3
+- (MapsPrintingInfo)initWithNumberOfPages:(int64_t)pages
 {
   v8.receiver = self;
   v8.super_class = MapsPrintingInfo;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_numberOfPages = a3;
+    v4->_numberOfPages = pages;
     v6 = v4;
   }
 

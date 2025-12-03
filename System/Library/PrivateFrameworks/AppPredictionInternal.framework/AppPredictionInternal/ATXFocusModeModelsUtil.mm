@@ -1,18 +1,18 @@
 @interface ATXFocusModeModelsUtil
-+ (id)setupPredictionModelNameForMode:(unint64_t)a3;
++ (id)setupPredictionModelNameForMode:(unint64_t)mode;
 @end
 
 @implementation ATXFocusModeModelsUtil
 
-+ (id)setupPredictionModelNameForMode:(unint64_t)a3
++ (id)setupPredictionModelNameForMode:(unint64_t)mode
 {
   v3 = @"ATXModeHomeSetupPredictionModel";
-  if (a3 != 1)
+  if (mode != 1)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return @"ATXModeWorkingSetupPredictionModel";
   }

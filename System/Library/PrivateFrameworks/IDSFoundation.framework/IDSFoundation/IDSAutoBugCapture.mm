@@ -1,15 +1,15 @@
 @interface IDSAutoBugCapture
-+ (void)triggerCaptureWithEvent:(int64_t)a3 destinations:(id)a4 context:(id)a5 completion:(id)a6;
++ (void)triggerCaptureWithEvent:(int64_t)event destinations:(id)destinations context:(id)context completion:(id)completion;
 @end
 
 @implementation IDSAutoBugCapture
 
-+ (void)triggerCaptureWithEvent:(int64_t)a3 destinations:(id)a4 context:(id)a5 completion:(id)a6
++ (void)triggerCaptureWithEvent:(int64_t)event destinations:(id)destinations context:(id)context completion:(id)completion
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  destinationsCopy = destinations;
+  contextCopy = context;
+  completionCopy = completion;
   if ([objc_opt_class() isSupported])
   {
     if (qword_1EB2B87C0 != -1)
@@ -26,16 +26,16 @@
       v15 = 0;
       v16 = [v14 dictionaryWithObjects:v32 forKeys:&v31 count:1];
       v17 = [v13 errorWithDomain:@"IDSAutoBugCaptureErrorDomain" code:-100 userInfo:v16];
-      v11[2](v11, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
 LABEL_39:
 
       goto LABEL_40;
     }
 
     v12 = @"Unknown";
-    if (a3 <= 199)
+    if (event <= 199)
     {
-      if ((a3 - 100) >= 8)
+      if ((event - 100) >= 8)
       {
         goto LABEL_20;
       }
@@ -43,16 +43,16 @@ LABEL_39:
 
     else
     {
-      if (a3 <= 206)
+      if (event <= 206)
       {
-        if ((a3 - 200) < 6)
+        if ((event - 200) < 6)
         {
 LABEL_8:
           v12 = @"Registration";
           goto LABEL_20;
         }
 
-        if (a3 == 206)
+        if (event == 206)
         {
           v12 = @"Push Token";
 LABEL_49:
@@ -60,38 +60,38 @@ LABEL_49:
 LABEL_38:
           v25 = MEMORY[0x1E696AE30];
           v17 = qword_1EB2B87B8;
-          v26 = [v25 processInfo];
-          v27 = [v26 processName];
-          v16 = [v17 signatureWithDomain:@"IDS" type:v12 subType:v18 subtypeContext:v10 detectedProcess:v27 triggerThresholdValues:0];
+          processInfo = [v25 processInfo];
+          processName = [processInfo processName];
+          v16 = [v17 signatureWithDomain:@"IDS" type:v12 subType:v18 subtypeContext:contextCopy detectedProcess:processName triggerThresholdValues:0];
 
           v29[0] = MEMORY[0x1E69E9820];
           v29[1] = 3221225472;
           v29[2] = sub_1A7C06D9C;
           v29[3] = &unk_1E77E17C8;
-          v30 = v11;
-          [v17 snapshotWithSignature:v16 withIDSDestinations:v9 validFor:0 delay:0 events:0 payload:v29 actions:0.0 reply:0.0];
+          v30 = completionCopy;
+          [v17 snapshotWithSignature:v16 withIDSDestinations:destinationsCopy validFor:0 delay:0 events:0 payload:v29 actions:0.0 reply:0.0];
           v15 = v30;
           goto LABEL_39;
         }
 
 LABEL_20:
         v18 = @"Unknown";
-        if (a3 <= 105)
+        if (event <= 105)
         {
           v19 = @"QueryRateLimited";
           v20 = @"SecondaryEncryptionFailed";
           v21 = @"SecondaryDecryptionFailed";
-          if (a3 != 105)
+          if (event != 105)
           {
             v21 = @"Unknown";
           }
 
-          if (a3 != 104)
+          if (event != 104)
           {
             v20 = v21;
           }
 
-          if (a3 != 103)
+          if (event != 103)
           {
             v19 = v20;
           }
@@ -99,22 +99,22 @@ LABEL_20:
           v22 = @"ECCEncryptionFailed";
           v23 = @"ECCDecryptionFailed";
           v24 = @"NiceRateLimited";
-          if (a3 != 102)
+          if (event != 102)
           {
             v24 = @"Unknown";
           }
 
-          if (a3 != 101)
+          if (event != 101)
           {
             v23 = v24;
           }
 
-          if (a3 != 100)
+          if (event != 100)
           {
             v22 = v23;
           }
 
-          if (a3 <= 102)
+          if (event <= 102)
           {
             v18 = v22;
           }
@@ -127,7 +127,7 @@ LABEL_20:
 
         else
         {
-          switch(a3)
+          switch(event)
           {
             case 200:
               v18 = @"RegistrationFailed";
@@ -171,12 +171,12 @@ LABEL_20:
               break;
             default:
               v28 = @"SenderKeyNotFound";
-              if (a3 != 107)
+              if (event != 107)
               {
                 v28 = @"Unknown";
               }
 
-              if (a3 == 106)
+              if (event == 106)
               {
                 v18 = @"DifferedQueryCacheResults";
               }
@@ -193,14 +193,14 @@ LABEL_20:
         goto LABEL_38;
       }
 
-      if (a3 <= 210)
+      if (event <= 210)
       {
-        if (a3 == 207 || a3 == 209)
+        if (event == 207 || event == 209)
         {
           v12 = @"System";
         }
 
-        else if (a3 == 210)
+        else if (event == 210)
         {
           goto LABEL_8;
         }
@@ -208,7 +208,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      if ((a3 - 211) > 2)
+      if ((event - 211) > 2)
       {
         goto LABEL_20;
       }
@@ -218,7 +218,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v11[2](v11, 0, 0);
+  completionCopy[2](completionCopy, 0, 0);
 LABEL_40:
 }
 

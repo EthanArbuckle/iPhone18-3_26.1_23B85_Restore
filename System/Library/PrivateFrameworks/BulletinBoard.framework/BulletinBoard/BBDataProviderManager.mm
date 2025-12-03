@@ -1,34 +1,34 @@
 @interface BBDataProviderManager
-- (BBDataProviderManager)initWithDelegate:(id)a3 queue:(id)a4;
-- (id)_configureDataProvider:(id)a3 performMigration:(BOOL)a4;
-- (id)_configureSectionInfo:(id)a3 forDataProvider:(id)a4;
-- (id)_queue_dataProvidersForUniversalSectionID:(id)a3;
-- (id)dataProviderForSectionID:(id)a3;
-- (id)debugDescriptionWithChildren:(unint64_t)a3;
-- (id)localSectionIdentifiersFromDismissalSectionIdentifer:(id)a3;
-- (id)rebuildSectionInfo:(id)a3 forSectionID:(id)a4;
-- (id)universalSectionIDForSectionID:(id)a3;
-- (void)dataProviderStore:(id)a3 didAddDataProvider:(id)a4 performMigration:(BOOL)a5 completion:(id)a6;
-- (void)dataProviderStore:(id)a3 didAddParentSectionFactory:(id)a4;
-- (void)dataProviderStore:(id)a3 didRemoveDataProvider:(id)a4;
+- (BBDataProviderManager)initWithDelegate:(id)delegate queue:(id)queue;
+- (id)_configureDataProvider:(id)provider performMigration:(BOOL)migration;
+- (id)_configureSectionInfo:(id)info forDataProvider:(id)provider;
+- (id)_queue_dataProvidersForUniversalSectionID:(id)d;
+- (id)dataProviderForSectionID:(id)d;
+- (id)debugDescriptionWithChildren:(unint64_t)children;
+- (id)localSectionIdentifiersFromDismissalSectionIdentifer:(id)identifer;
+- (id)rebuildSectionInfo:(id)info forSectionID:(id)d;
+- (id)universalSectionIDForSectionID:(id)d;
+- (void)dataProviderStore:(id)store didAddDataProvider:(id)provider performMigration:(BOOL)migration completion:(id)completion;
+- (void)dataProviderStore:(id)store didAddParentSectionFactory:(id)factory;
+- (void)dataProviderStore:(id)store didRemoveDataProvider:(id)provider;
 - (void)dealloc;
-- (void)noteSettingsChanged:(id)a3 forSectionID:(id)a4;
-- (void)performBlockOnDataProviders:(id)a3;
-- (void)reloadIdentityForSectionID:(id)a3 withCompletion:(id)a4;
+- (void)noteSettingsChanged:(id)changed forSectionID:(id)d;
+- (void)performBlockOnDataProviders:(id)providers;
+- (void)reloadIdentityForSectionID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation BBDataProviderManager
 
-- (BBDataProviderManager)initWithDelegate:(id)a3 queue:(id)a4
+- (BBDataProviderManager)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v9 = [(BBDataProviderManager *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_delegate, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_delegate, delegate);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.bulletinboard.BBDataProviderManager.loadDataProviderQueue", v11);
     loadDataProviderQueue = v10->_loadDataProviderQueue;
@@ -60,20 +60,20 @@
   [(BBDataProviderManager *)&v3 dealloc];
 }
 
-- (id)debugDescriptionWithChildren:(unint64_t)a3
+- (id)debugDescriptionWithChildren:(unint64_t)children
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCAB68] stringWithString:&stru_28541A970];
-  if (a3)
+  if (children)
   {
-    v6 = a3;
+    childrenCopy = children;
     do
     {
       [v5 appendString:@"    "];
-      --v6;
+      --childrenCopy;
     }
 
-    while (v6);
+    while (childrenCopy);
   }
 
   v7 = MEMORY[0x277CCAB68];
@@ -119,10 +119,10 @@
     }
   }
 
-  v16 = [(BBLocalDataProviderStore *)self->_localDataProviderStore debugDescriptionWithChildren:a3 + 1];
+  v16 = [(BBLocalDataProviderStore *)self->_localDataProviderStore debugDescriptionWithChildren:children + 1];
   [v10 appendFormat:@"\n%@", v16];
 
-  v17 = [(BBRemoteDataProviderConnectionResolver *)self->_remoteDataProviderResolver debugDescriptionWithChildren:a3 + 1];
+  v17 = [(BBRemoteDataProviderConnectionResolver *)self->_remoteDataProviderResolver debugDescriptionWithChildren:children + 1];
   [v10 appendFormat:@"\n%@", v17];
 
   dispatch_resume(self->_queue);
@@ -131,15 +131,15 @@
   return v10;
 }
 
-- (void)noteSettingsChanged:(id)a3 forSectionID:(id)a4
+- (void)noteSettingsChanged:(id)changed forSectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BBDataProviderManager *)self dataProviderForSectionID:v7];
+  changedCopy = changed;
+  dCopy = d;
+  v8 = [(BBDataProviderManager *)self dataProviderForSectionID:dCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 noteSectionInfoDidChange:v6];
+    [v8 noteSectionInfoDidChange:changedCopy];
   }
 
   else if (os_log_type_enabled(BBLogDataProvider, OS_LOG_TYPE_ERROR))
@@ -148,15 +148,15 @@
   }
 }
 
-- (id)rebuildSectionInfo:(id)a3 forSectionID:(id)a4
+- (id)rebuildSectionInfo:(id)info forSectionID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BBDataProviderManager *)self dataProviderForSectionID:v7];
+  infoCopy = info;
+  dCopy = d;
+  v8 = [(BBDataProviderManager *)self dataProviderForSectionID:dCopy];
   if (!v8)
   {
-    v9 = [(BBDataProviderManager *)self _queue_getSectionInfoForSectionID:v7];
+    v9 = [(BBDataProviderManager *)self _queue_getSectionInfoForSectionID:dCopy];
     v10 = v9;
     if (v9)
     {
@@ -164,8 +164,8 @@
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v11 = [v9 dataProviderIDs];
-      v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      dataProviderIDs = [v9 dataProviderIDs];
+      v12 = [dataProviderIDs countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
         v13 = v12;
@@ -176,13 +176,13 @@
           {
             if (*v21 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(dataProviderIDs);
             }
 
-            v16 = [(BBDataProviderManager *)self rebuildSectionInfo:v6 forSectionID:*(*(&v20 + 1) + 8 * i)];
+            v16 = [(BBDataProviderManager *)self rebuildSectionInfo:infoCopy forSectionID:*(*(&v20 + 1) + 8 * i)];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v13 = [dataProviderIDs countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v13);
@@ -195,18 +195,18 @@
     }
   }
 
-  v17 = [(BBDataProviderManager *)self _configureSectionInfo:v6 forDataProvider:v8];
+  v17 = [(BBDataProviderManager *)self _configureSectionInfo:infoCopy forDataProvider:v8];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (void)reloadIdentityForSectionID:(id)a3 withCompletion:(id)a4
+- (void)reloadIdentityForSectionID:(id)d withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BBDataProviderManager *)self dataProviderForSectionID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(BBDataProviderManager *)self dataProviderForSectionID:dCopy];
   if (v8)
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -214,7 +214,7 @@
     v9[2] = __67__BBDataProviderManager_reloadIdentityForSectionID_withCompletion___block_invoke;
     v9[3] = &unk_278D2B870;
     v9[4] = self;
-    v11 = v7;
+    v11 = completionCopy;
     v10 = v8;
     [v10 reloadIdentityWithCompletion:v9];
   }
@@ -248,12 +248,12 @@ uint64_t __67__BBDataProviderManager_reloadIdentityForSectionID_withCompletion__
   return result;
 }
 
-- (id)localSectionIdentifiersFromDismissalSectionIdentifer:(id)a3
+- (id)localSectionIdentifiersFromDismissalSectionIdentifer:(id)identifer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identiferCopy = identifer;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6 = [(BBDataProviderManager *)self _queue_dataProvidersForUniversalSectionID:v4];
+  v6 = [(BBDataProviderManager *)self _queue_dataProvidersForUniversalSectionID:identiferCopy];
   if ([v6 count])
   {
     v17 = 0u;
@@ -275,8 +275,8 @@ uint64_t __67__BBDataProviderManager_reloadIdentityForSectionID_withCompletion__
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) sectionIdentifier];
-          [v5 addObject:v12];
+          sectionIdentifier = [*(*(&v15 + 1) + 8 * i) sectionIdentifier];
+          [v5 addObject:sectionIdentifier];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -286,9 +286,9 @@ uint64_t __67__BBDataProviderManager_reloadIdentityForSectionID_withCompletion__
     }
   }
 
-  else if ([v4 length])
+  else if ([identiferCopy length])
   {
-    [v5 addObject:v4];
+    [v5 addObject:identiferCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -296,10 +296,10 @@ uint64_t __67__BBDataProviderManager_reloadIdentityForSectionID_withCompletion__
   return v5;
 }
 
-- (void)performBlockOnDataProviders:(id)a3
+- (void)performBlockOnDataProviders:(id)providers
 {
-  v5 = a3;
-  if (!v5)
+  providersCopy = providers;
+  if (!providersCopy)
   {
     [(BBDataProviderManager *)a2 performBlockOnDataProviders:?];
   }
@@ -310,7 +310,7 @@ uint64_t __67__BBDataProviderManager_reloadIdentityForSectionID_withCompletion__
   v12[2] = __53__BBDataProviderManager_performBlockOnDataProviders___block_invoke;
   v12[3] = &unk_278D2C180;
   v12[4] = self;
-  v7 = v5;
+  v7 = providersCopy;
   v13 = v7;
   [(BBLocalDataProviderStore *)localDataProviderStore performBlockOnDataProviders:v12];
   remoteDataProviderResolver = self->_remoteDataProviderResolver;
@@ -354,44 +354,44 @@ void __53__BBDataProviderManager_performBlockOnDataProviders___block_invoke_3(ui
   dispatch_async(v4, v7);
 }
 
-- (id)dataProviderForSectionID:(id)a3
+- (id)dataProviderForSectionID:(id)d
 {
-  v4 = a3;
-  v5 = [(BBLocalDataProviderStore *)self->_localDataProviderStore dataProviderForSectionID:v4];
+  dCopy = d;
+  v5 = [(BBLocalDataProviderStore *)self->_localDataProviderStore dataProviderForSectionID:dCopy];
   if (!v5)
   {
-    v5 = [(BBRemoteDataProviderConnectionResolver *)self->_remoteDataProviderResolver dataProviderForSectionID:v4];
+    v5 = [(BBRemoteDataProviderConnectionResolver *)self->_remoteDataProviderResolver dataProviderForSectionID:dCopy];
   }
 
   return v5;
 }
 
-- (id)universalSectionIDForSectionID:(id)a3
+- (id)universalSectionIDForSectionID:(id)d
 {
-  v4 = a3;
-  v5 = [(BBDataProviderManager *)self dataProviderForSectionID:v4];
+  dCopy = d;
+  v5 = [(BBDataProviderManager *)self dataProviderForSectionID:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 universalSectionIdentifier];
+    universalSectionIdentifier = [v5 universalSectionIdentifier];
   }
 
   else
   {
-    v8 = [(BBDataProviderManager *)self parentSectionDataProviderFactoryForSectionID:v4];
-    v7 = [v8 universalSectionIdentifier];
+    v8 = [(BBDataProviderManager *)self parentSectionDataProviderFactoryForSectionID:dCopy];
+    universalSectionIdentifier = [v8 universalSectionIdentifier];
   }
 
-  return v7;
+  return universalSectionIdentifier;
 }
 
-- (id)_queue_dataProvidersForUniversalSectionID:(id)a3
+- (id)_queue_dataProvidersForUniversalSectionID:(id)d
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(v4);
-  v7 = [(BBLocalDataProviderStore *)self->_localDataProviderStore dataProvidersForUniversalSectionID:v5];
-  v8 = [(BBRemoteDataProviderConnectionResolver *)self->_remoteDataProviderResolver dataProvidersForUniversalSectionID:v5];
+  v7 = [(BBLocalDataProviderStore *)self->_localDataProviderStore dataProvidersForUniversalSectionID:dCopy];
+  v8 = [(BBRemoteDataProviderConnectionResolver *)self->_remoteDataProviderResolver dataProvidersForUniversalSectionID:dCopy];
 
   [v6 unionSet:v7];
   [v6 unionSet:v8];
@@ -399,17 +399,17 @@ void __53__BBDataProviderManager_performBlockOnDataProviders___block_invoke_3(ui
   return v6;
 }
 
-- (void)dataProviderStore:(id)a3 didAddParentSectionFactory:(id)a4
+- (void)dataProviderStore:(id)store didAddParentSectionFactory:(id)factory
 {
-  v5 = a4;
+  factoryCopy = factory;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__BBDataProviderManager_dataProviderStore_didAddParentSectionFactory___block_invoke;
   v8[3] = &unk_278D2A628;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = factoryCopy;
+  selfCopy = self;
+  v7 = factoryCopy;
   dispatch_async(queue, v8);
 }
 
@@ -435,21 +435,21 @@ uint64_t __70__BBDataProviderManager_dataProviderStore_didAddParentSectionFactor
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)dataProviderStore:(id)a3 didAddDataProvider:(id)a4 performMigration:(BOOL)a5 completion:(id)a6
+- (void)dataProviderStore:(id)store didAddDataProvider:(id)provider performMigration:(BOOL)migration completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
+  providerCopy = provider;
+  completionCopy = completion;
   loadDataProviderQueue = self->_loadDataProviderQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __90__BBDataProviderManager_dataProviderStore_didAddDataProvider_performMigration_completion___block_invoke;
   v14[3] = &unk_278D2C1A8;
   v14[4] = self;
-  v15 = v9;
-  v17 = a5;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = providerCopy;
+  migrationCopy = migration;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = providerCopy;
   dispatch_async(loadDataProviderQueue, v14);
 }
 
@@ -499,17 +499,17 @@ void __90__BBDataProviderManager_dataProviderStore_didAddDataProvider_performMig
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataProviderStore:(id)a3 didRemoveDataProvider:(id)a4
+- (void)dataProviderStore:(id)store didRemoveDataProvider:(id)provider
 {
-  v5 = a4;
+  providerCopy = provider;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__BBDataProviderManager_dataProviderStore_didRemoveDataProvider___block_invoke;
   v8[3] = &unk_278D2A628;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = providerCopy;
+  v7 = providerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -558,21 +558,21 @@ void __65__BBDataProviderManager_dataProviderStore_didRemoveDataProvider___block
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_configureDataProvider:(id)a3 performMigration:(BOOL)a4
+- (id)_configureDataProvider:(id)provider performMigration:(BOOL)migration
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 sectionIdentifier];
-  if (!a4)
+  providerCopy = provider;
+  sectionIdentifier = [providerCopy sectionIdentifier];
+  if (!migration)
   {
-    v10 = [(BBDataProviderManager *)self _queue_getSectionInfoForSectionID:v7];
+    v10 = [(BBDataProviderManager *)self _queue_getSectionInfoForSectionID:sectionIdentifier];
     goto LABEL_5;
   }
 
-  v8 = [v6 canPerformMigration];
-  v9 = [(BBDataProviderManager *)self _queue_getSectionInfoForSectionID:v7];
+  canPerformMigration = [providerCopy canPerformMigration];
+  v9 = [(BBDataProviderManager *)self _queue_getSectionInfoForSectionID:sectionIdentifier];
   v10 = v9;
-  if (!v8)
+  if (!canPerformMigration)
   {
 LABEL_5:
     v12 = 0;
@@ -583,18 +583,18 @@ LABEL_5:
   v11 = [v9 copy];
   v12 = 1;
 LABEL_6:
-  v13 = [(BBDataProviderManager *)self _configureSectionInfo:v10 forDataProvider:v6];
+  v13 = [(BBDataProviderManager *)self _configureSectionInfo:v10 forDataProvider:providerCopy];
   v14 = v13;
   if (v12 && v11)
   {
     v15 = [v13 copy];
-    if ([v6 migrateSectionInfo:v15 oldSectionInfo:v11])
+    if ([providerCopy migrateSectionInfo:v15 oldSectionInfo:v11])
     {
       v16 = BBLogMigration;
       if (os_log_type_enabled(BBLogMigration, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138544130;
-        v21 = v7;
+        v21 = sectionIdentifier;
         v22 = 2114;
         v23 = v11;
         v24 = 2114;
@@ -612,7 +612,7 @@ LABEL_6:
   if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138543618;
-    v21 = v7;
+    v21 = sectionIdentifier;
     v22 = 2114;
     v23 = v14;
     _os_log_impl(&dword_241EFF000, v17, OS_LOG_TYPE_DEFAULT, "Section settings for data provider %{public}@: %{public}@", &v20, 0x16u);
@@ -626,29 +626,29 @@ LABEL_16:
   return v15;
 }
 
-- (id)_configureSectionInfo:(id)a3 forDataProvider:(id)a4
+- (id)_configureSectionInfo:(id)info forDataProvider:(id)provider
 {
   v78 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v56 = [v6 sectionIdentifier];
-  v58 = v6;
-  v7 = [BBSectionInfo defaultSectionInfoForSection:v6];
+  infoCopy = info;
+  providerCopy = provider;
+  sectionIdentifier = [providerCopy sectionIdentifier];
+  v58 = providerCopy;
+  v7 = [BBSectionInfo defaultSectionInfoForSection:providerCopy];
   v8 = v7;
-  if (v5 || !v7)
+  if (infoCopy || !v7)
   {
-    [v5 updateWithDefaultSectionInfo:v7];
+    [infoCopy updateWithDefaultSectionInfo:v7];
   }
 
   if ([v8 suppressFromSettings])
   {
 
-    v5 = 0;
+    infoCopy = 0;
   }
 
-  if (v5)
+  if (infoCopy)
   {
-    v9 = v5;
+    v9 = infoCopy;
   }
 
   else
@@ -658,33 +658,33 @@ LABEL_16:
 
   v10 = v9;
 
-  v11 = [v58 defaultSubsectionInfos];
-  if ([v11 count])
+  defaultSubsectionInfos = [v58 defaultSubsectionInfos];
+  if ([defaultSubsectionInfos count])
   {
   }
 
   else
   {
-    v12 = [v10 subsections];
-    v13 = [v12 count];
+    subsections = [v10 subsections];
+    v13 = [subsections count];
 
     if (!v13)
     {
-      v57 = 0;
+      array = 0;
       goto LABEL_57;
     }
   }
 
   v55 = v8;
-  v57 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v15 = [MEMORY[0x277CBEB58] set];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v16 = [v58 defaultSubsectionInfos];
-  v17 = [v16 countByEnumeratingWithState:&v67 objects:v77 count:16];
+  defaultSubsectionInfos2 = [v58 defaultSubsectionInfos];
+  v17 = [defaultSubsectionInfos2 countByEnumeratingWithState:&v67 objects:v77 count:16];
   if (v17)
   {
     v18 = v17;
@@ -695,15 +695,15 @@ LABEL_16:
       {
         if (*v68 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(defaultSubsectionInfos2);
         }
 
         v21 = *(*(&v67 + 1) + 8 * i);
-        v22 = [v21 subsectionID];
-        if (v22 && ([v15 containsObject:v22] & 1) == 0)
+        subsectionID = [v21 subsectionID];
+        if (subsectionID && ([v15 containsObject:subsectionID] & 1) == 0)
         {
-          [v14 addObject:v21];
-          [v15 addObject:v22];
+          [array2 addObject:v21];
+          [v15 addObject:subsectionID];
         }
 
         else
@@ -712,27 +712,27 @@ LABEL_16:
           if (os_log_type_enabled(BBLogDataProvider, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v74 = v22;
+            v74 = subsectionID;
             v75 = 2112;
-            v76 = v56;
+            v76 = sectionIdentifier;
             _os_log_error_impl(&dword_241EFF000, v23, OS_LOG_TYPE_ERROR, "BBServer: Ignoring empty or duplicate subsectionID (%@) from data provider %@.", buf, 0x16u);
           }
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v67 objects:v77 count:16];
+      v18 = [defaultSubsectionInfos2 countByEnumeratingWithState:&v67 objects:v77 count:16];
     }
 
     while (v18);
   }
 
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v25 = [v10 subsections];
-  v26 = [v25 countByEnumeratingWithState:&v63 objects:v72 count:16];
+  subsections2 = [v10 subsections];
+  v26 = [subsections2 countByEnumeratingWithState:&v63 objects:v72 count:16];
   if (v26)
   {
     v27 = v26;
@@ -743,15 +743,15 @@ LABEL_16:
       {
         if (*v64 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(subsections2);
         }
 
         v30 = *(*(&v63 + 1) + 8 * j);
-        v31 = [v30 subsectionID];
-        [v24 setObject:v30 forKey:v31];
+        subsectionID2 = [v30 subsectionID];
+        [dictionary setObject:v30 forKey:subsectionID2];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v63 objects:v72 count:16];
+      v27 = [subsections2 countByEnumeratingWithState:&v63 objects:v72 count:16];
     }
 
     while (v27);
@@ -761,7 +761,7 @@ LABEL_16:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v32 = v14;
+  v32 = array2;
   v33 = [v32 countByEnumeratingWithState:&v59 objects:v71 count:16];
   if (v33)
   {
@@ -777,8 +777,8 @@ LABEL_16:
         }
 
         v37 = *(*(&v59 + 1) + 8 * k);
-        v38 = [v37 subsectionID];
-        if (!v38)
+        subsectionID3 = [v37 subsectionID];
+        if (!subsectionID3)
         {
           v42 = BBLogDataProvider;
           if (!os_log_type_enabled(BBLogDataProvider, OS_LOG_TYPE_ERROR))
@@ -787,7 +787,7 @@ LABEL_16:
           }
 
           *buf = 138412290;
-          v74 = v56;
+          v74 = sectionIdentifier;
           v43 = v42;
           v44 = "BBServer: Ignoring subsection with no subsectionID, from data provider %@.";
           v45 = 12;
@@ -805,16 +805,16 @@ LABEL_48:
           }
 
           *buf = 138412546;
-          v74 = v38;
+          v74 = subsectionID3;
           v75 = 2112;
-          v76 = v56;
+          v76 = sectionIdentifier;
           v43 = v46;
           v44 = "BBServer: Ignoring subsection (%@) not flagged as BBSectionTypeSubsection from data provider %@.";
           v45 = 22;
           goto LABEL_48;
         }
 
-        v39 = [v24 objectForKey:v38];
+        v39 = [dictionary objectForKey:subsectionID3];
         if (v37)
         {
           v40 = v39 == 0;
@@ -827,13 +827,13 @@ LABEL_48:
 
         if (v40)
         {
-          [v37 setSectionID:v56];
+          [v37 setSectionID:sectionIdentifier];
           [v10 _addSubsection:v37];
           v41 = v37;
-          [v24 removeObjectForKey:v38];
+          [dictionary removeObjectForKey:subsectionID3];
 LABEL_50:
-          [v57 addObject:v41];
-          v47 = [v58 displayNameForSubsectionID:v38];
+          [array addObject:v41];
+          v47 = [v58 displayNameForSubsectionID:subsectionID3];
           [v41 setDisplayName:v47];
 
           goto LABEL_51;
@@ -841,7 +841,7 @@ LABEL_50:
 
         v41 = v39;
         [v39 updateWithDefaultSectionInfo:v37];
-        [v24 removeObjectForKey:v38];
+        [dictionary removeObjectForKey:subsectionID3];
         if (v41)
         {
           goto LABEL_50;
@@ -856,26 +856,26 @@ LABEL_51:
     while (v34);
   }
 
-  if ([v24 count])
+  if ([dictionary count])
   {
     v48 = BBLogDataProvider;
     if (os_log_type_enabled(BBLogDataProvider, OS_LOG_TYPE_DEFAULT))
     {
       v49 = v48;
-      v50 = [v24 allKeys];
+      allKeys = [dictionary allKeys];
       *buf = 138543618;
-      v74 = v56;
+      v74 = sectionIdentifier;
       v75 = 2114;
-      v76 = v50;
+      v76 = allKeys;
       _os_log_impl(&dword_241EFF000, v49, OS_LOG_TYPE_DEFAULT, "Abandoned subsections for data provider <%{public}@>, removing them: %{public}@", buf, 0x16u);
     }
   }
 
   v8 = v55;
 LABEL_57:
-  if ([v57 count])
+  if ([array count])
   {
-    v51 = v57;
+    v51 = array;
   }
 
   else

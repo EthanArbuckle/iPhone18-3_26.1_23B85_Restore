@@ -1,7 +1,7 @@
 @interface QSSAcousticFeature
 - (NSArray)acoustic_feature_per_frame;
-- (Offset<siri::speech::schema_fb::AcousticFeature>)addObjectToBuffer:(void *)a3;
-- (QSSAcousticFeature)initWithFlatbuffData:(id)a3 root:(const AcousticFeature *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::AcousticFeature>)addObjectToBuffer:(void *)buffer;
+- (QSSAcousticFeature)initWithFlatbuffData:(id)data root:(const AcousticFeature *)root verify:(BOOL)verify;
 - (float)frame_duration;
 - (id)flatbuffData;
 @end
@@ -37,19 +37,19 @@ flatbuffers::DetachedBuffer *__34__QSSAcousticFeature_flatbuffData__block_invoke
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::AcousticFeature>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AcousticFeature>)addObjectToBuffer:(void *)buffer
 {
   v29 = *MEMORY[0x277D85DE8];
   memset(&v27, 0, sizeof(v27));
-  v5 = [(QSSAcousticFeature *)self acoustic_feature_per_frame];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v27, [v5 count]);
+  acoustic_feature_per_frame = [(QSSAcousticFeature *)self acoustic_feature_per_frame];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v27, [acoustic_feature_per_frame count]);
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(QSSAcousticFeature *)self acoustic_feature_per_frame];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  acoustic_feature_per_frame2 = [(QSSAcousticFeature *)self acoustic_feature_per_frame];
+  v7 = [acoustic_feature_per_frame2 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = *v24;
@@ -59,7 +59,7 @@ flatbuffers::DetachedBuffer *__34__QSSAcousticFeature_flatbuffData__block_invoke
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(acoustic_feature_per_frame2);
         }
 
         [*(*(&v23 + 1) + 8 * i) floatValue];
@@ -67,7 +67,7 @@ flatbuffers::DetachedBuffer *__34__QSSAcousticFeature_flatbuffData__block_invoke
         std::vector<float>::push_back[abi:ne200100](&v27, &v22);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [acoustic_feature_per_frame2 countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
@@ -84,17 +84,17 @@ flatbuffers::DetachedBuffer *__34__QSSAcousticFeature_flatbuffData__block_invoke
     v12 = v27.__begin_;
   }
 
-  v13 = flatbuffers::FlatBufferBuilder::CreateVector<int>(a3, v12, v27.__end_ - v27.__begin_);
+  v13 = flatbuffers::FlatBufferBuilder::CreateVector<int>(buffer, v12, v27.__end_ - v27.__begin_);
   [(QSSAcousticFeature *)self frame_duration];
   v15 = v14;
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v16 = *(a3 + 8);
-  v17 = *(a3 + 12);
-  v18 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v13);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 6, v15);
-  v19.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v16 - v17 + v18);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v16 = *(buffer + 8);
+  v17 = *(buffer + 12);
+  v18 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v13);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 6, v15);
+  v19.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v16 - v17 + v18);
   if (begin)
   {
     operator delete(begin);
@@ -123,10 +123,10 @@ flatbuffers::DetachedBuffer *__34__QSSAcousticFeature_flatbuffData__block_invoke
 
 - (NSArray)acoustic_feature_per_frame
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"acoustic_feature_per_frame"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"acoustic_feature_per_frame"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v6 = &root[-*root->var0];
     if (*v6->var0 >= 5u)
@@ -144,7 +144,7 @@ flatbuffers::DetachedBuffer *__34__QSSAcousticFeature_flatbuffData__block_invoke
           {
             LODWORD(v4) = *v11->var0;
             v12 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-            [v3 addObject:v12];
+            [array addObject:v12];
 
             v11 += 4;
             v10 -= 4;
@@ -155,48 +155,48 @@ flatbuffers::DetachedBuffer *__34__QSSAcousticFeature_flatbuffData__block_invoke
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"acoustic_feature_per_frame"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"acoustic_feature_per_frame"];
   }
 
-  return v3;
+  return array;
 }
 
-- (QSSAcousticFeature)initWithFlatbuffData:(id)a3 root:(const AcousticFeature *)a4 verify:(BOOL)a5
+- (QSSAcousticFeature)initWithFlatbuffData:(id)data root:(const AcousticFeature *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSAcousticFeature;
   v10 = [(QSSAcousticFeature *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -218,9 +218,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

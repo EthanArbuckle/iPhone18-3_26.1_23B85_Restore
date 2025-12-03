@@ -1,9 +1,9 @@
 @interface CoreRCInterface
-- (BOOL)doesNotImplement:(SEL)a3 error:(id *)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)propertyForKey:(id)a3 error:(id *)a4;
+- (BOOL)doesNotImplement:(SEL)implement error:(id *)error;
+- (BOOL)setProperty:(id)property forKey:(id)key error:(id *)error;
+- (id)propertyForKey:(id)key error:(id *)error;
 - (void)dealloc;
-- (void)dispatchAsyncHighPriority:(id)a3;
+- (void)dispatchAsyncHighPriority:(id)priority;
 @end
 
 @implementation CoreRCInterface
@@ -16,12 +16,12 @@
   [(CoreRCInterface *)&v3 dealloc];
 }
 
-- (BOOL)doesNotImplement:(SEL)a3 error:(id *)a4
+- (BOOL)doesNotImplement:(SEL)implement error:(id *)error
 {
   if (gLogCategory_CoreRCInterface <= 60 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
-    [CoreRCInterface doesNotImplement:a3 error:?];
-    if (!a4)
+    [CoreRCInterface doesNotImplement:implement error:?];
+    if (!error)
     {
       return 0;
     }
@@ -29,46 +29,46 @@
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_5:
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6735 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6735 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setProperty:(id)property forKey:(id)key error:(id *)error
 {
   if (gLogCategory_CoreRCInterface <= 10 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
-    v11 = a4;
-    v12 = a3;
+    keyCopy = key;
+    propertyCopy = property;
     LogPrintF();
   }
 
-  v9 = [a4 isEqualToString:{@"CoreRCInterfaceTest", v11, v12}];
+  v9 = [key isEqualToString:{@"CoreRCInterfaceTest", keyCopy, propertyCopy}];
   if (v9)
   {
-    [(CoreRCInterface *)self setTestProperty:a3];
+    [(CoreRCInterface *)self setTestProperty:property];
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6727 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6727 userInfo:0];
   }
 
   return v9;
 }
 
-- (id)propertyForKey:(id)a3 error:(id *)a4
+- (id)propertyForKey:(id)key error:(id *)error
 {
   if (gLogCategory_CoreRCInterface <= 10 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
     [CoreRCInterface propertyForKey:error:];
   }
 
-  if ([a3 isEqualToString:@"CoreRCInterfaceTest"])
+  if ([key isEqualToString:@"CoreRCInterfaceTest"])
   {
     result = [(CoreRCInterface *)self testProperty];
     if (!result)
@@ -79,11 +79,11 @@ LABEL_5:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6727 userInfo:0];
     result = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -94,9 +94,9 @@ LABEL_5:
   return result;
 }
 
-- (void)dispatchAsyncHighPriority:(id)a3
+- (void)dispatchAsyncHighPriority:(id)priority
 {
-  v4 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, a3);
+  v4 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, priority);
   dispatch_async([(CoreRCInterface *)self serialQueue], v4);
 
   _Block_release(v4);

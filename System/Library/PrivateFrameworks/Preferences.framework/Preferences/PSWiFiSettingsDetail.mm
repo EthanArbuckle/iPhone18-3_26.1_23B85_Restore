@@ -1,13 +1,13 @@
 @interface PSWiFiSettingsDetail
 + (BOOL)isEnabled;
-+ (void)setEnabled:(BOOL)a3;
++ (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PSWiFiSettingsDetail
 
-+ (void)setEnabled:(BOOL)a3
++ (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = PSWiFiManagerClientCreate(*MEMORY[0x1E695E480]);
   if (v4)
   {
@@ -20,7 +20,7 @@
     {
       v9 = [v8 objectAtIndexedSubscript:0];
 
-      if (PSWiFiDeviceClientGetPower(v9) != v3)
+      if (PSWiFiDeviceClientGetPower(v9) != enabledCopy)
       {
         v10 = _PSLoggingFacility();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -56,7 +56,7 @@
           _Unwind_Resume(v15);
         }
 
-        v11(v5, v3);
+        v11(v5, enabledCopy);
       }
     }
 

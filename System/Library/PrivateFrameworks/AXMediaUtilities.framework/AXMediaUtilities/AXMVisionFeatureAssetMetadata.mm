@@ -1,105 +1,105 @@
 @interface AXMVisionFeatureAssetMetadata
-+ (id)assetMetadataFromURL:(id)a3;
-+ (id)assetMetadataFromURL:(id)a3 localIdentifier:(id)a4 photoLibraryURL:(id)a5;
-+ (id)assetMetadataWithLocalIdentifier:(id)a3 photoLibraryURL:(id)a4 creationDate:(id)a5 UTI:(id)a6;
-- (AXMVisionFeatureAssetMetadata)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)assetMetadataFromURL:(id)l;
++ (id)assetMetadataFromURL:(id)l localIdentifier:(id)identifier photoLibraryURL:(id)rL;
++ (id)assetMetadataWithLocalIdentifier:(id)identifier photoLibraryURL:(id)l creationDate:(id)date UTI:(id)i;
+- (AXMVisionFeatureAssetMetadata)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionFeatureAssetMetadata
 
-- (AXMVisionFeatureAssetMetadata)initWithCoder:(id)a3
+- (AXMVisionFeatureAssetMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = AXMVisionFeatureAssetMetadata;
   v5 = [(AXMVisionFeatureAssetMetadata *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyAssetURL];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyAssetURL];
     [(AXMVisionFeatureAssetMetadata *)v5 setAssetURL:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyName];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyName];
     [(AXMVisionFeatureAssetMetadata *)v5 setName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyCreationDate];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyCreationDate];
     [(AXMVisionFeatureAssetMetadata *)v5 setCreationDate:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyUTI];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyUTI];
     [(AXMVisionFeatureAssetMetadata *)v5 setUti:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalizedTypeDescription];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalizedTypeDescription];
     [(AXMVisionFeatureAssetMetadata *)v5 setLocalizedTypeDescription:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyTIFFImageDescription];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyTIFFImageDescription];
     [(AXMVisionFeatureAssetMetadata *)v5 setTIFFImageDescription:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyIPTCCaptionAbstract];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyIPTCCaptionAbstract];
     [(AXMVisionFeatureAssetMetadata *)v5 setIPTCCaptionAbstract:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyEXIFUserComment];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyEXIFUserComment];
     [(AXMVisionFeatureAssetMetadata *)v5 setEXIFUserComment:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyPNGImageDescription];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyPNGImageDescription];
     [(AXMVisionFeatureAssetMetadata *)v5 setPNGImageDescription:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalIdentifier];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalIdentifier];
     [(AXMVisionFeatureAssetMetadata *)v5 setImageAssetLocalIdentifier:v15];
 
-    -[AXMVisionFeatureAssetMetadata setImageAssetLocallyAvailable:](v5, "setImageAssetLocallyAvailable:", [v4 decodeBoolForKey:AXMVisionFeatureAssetMetadataCodingKeyAssetLocallyAvailableIdentifier]);
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingkeyPhotoLibraryURL];
+    -[AXMVisionFeatureAssetMetadata setImageAssetLocallyAvailable:](v5, "setImageAssetLocallyAvailable:", [coderCopy decodeBoolForKey:AXMVisionFeatureAssetMetadataCodingKeyAssetLocallyAvailableIdentifier]);
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureAssetMetadataCodingkeyPhotoLibraryURL];
     [(AXMVisionFeatureAssetMetadata *)v5 setImageAssetPhotoLibraryURL:v16];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXMVisionFeatureAssetMetadata *)self assetURL];
-  [v4 encodeObject:v5 forKey:AXMVisionFeatureAssetMetadataCodingKeyAssetURL];
+  coderCopy = coder;
+  assetURL = [(AXMVisionFeatureAssetMetadata *)self assetURL];
+  [coderCopy encodeObject:assetURL forKey:AXMVisionFeatureAssetMetadataCodingKeyAssetURL];
 
-  v6 = [(AXMVisionFeatureAssetMetadata *)self name];
-  [v4 encodeObject:v6 forKey:AXMVisionFeatureAssetMetadataCodingKeyName];
+  name = [(AXMVisionFeatureAssetMetadata *)self name];
+  [coderCopy encodeObject:name forKey:AXMVisionFeatureAssetMetadataCodingKeyName];
 
-  v7 = [(AXMVisionFeatureAssetMetadata *)self creationDate];
-  [v4 encodeObject:v7 forKey:AXMVisionFeatureAssetMetadataCodingKeyCreationDate];
+  creationDate = [(AXMVisionFeatureAssetMetadata *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:AXMVisionFeatureAssetMetadataCodingKeyCreationDate];
 
   v8 = [(AXMVisionFeatureAssetMetadata *)self uti];
-  [v4 encodeObject:v8 forKey:AXMVisionFeatureAssetMetadataCodingKeyUTI];
+  [coderCopy encodeObject:v8 forKey:AXMVisionFeatureAssetMetadataCodingKeyUTI];
 
-  v9 = [(AXMVisionFeatureAssetMetadata *)self localizedTypeDescription];
-  [v4 encodeObject:v9 forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalizedTypeDescription];
+  localizedTypeDescription = [(AXMVisionFeatureAssetMetadata *)self localizedTypeDescription];
+  [coderCopy encodeObject:localizedTypeDescription forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalizedTypeDescription];
 
-  v10 = [(AXMVisionFeatureAssetMetadata *)self TIFFImageDescription];
-  [v4 encodeObject:v10 forKey:AXMVisionFeatureAssetMetadataCodingKeyTIFFImageDescription];
+  tIFFImageDescription = [(AXMVisionFeatureAssetMetadata *)self TIFFImageDescription];
+  [coderCopy encodeObject:tIFFImageDescription forKey:AXMVisionFeatureAssetMetadataCodingKeyTIFFImageDescription];
 
-  v11 = [(AXMVisionFeatureAssetMetadata *)self IPTCCaptionAbstract];
-  [v4 encodeObject:v11 forKey:AXMVisionFeatureAssetMetadataCodingKeyIPTCCaptionAbstract];
+  iPTCCaptionAbstract = [(AXMVisionFeatureAssetMetadata *)self IPTCCaptionAbstract];
+  [coderCopy encodeObject:iPTCCaptionAbstract forKey:AXMVisionFeatureAssetMetadataCodingKeyIPTCCaptionAbstract];
 
-  v12 = [(AXMVisionFeatureAssetMetadata *)self EXIFUserComment];
-  [v4 encodeObject:v12 forKey:AXMVisionFeatureAssetMetadataCodingKeyEXIFUserComment];
+  eXIFUserComment = [(AXMVisionFeatureAssetMetadata *)self EXIFUserComment];
+  [coderCopy encodeObject:eXIFUserComment forKey:AXMVisionFeatureAssetMetadataCodingKeyEXIFUserComment];
 
-  v13 = [(AXMVisionFeatureAssetMetadata *)self PNGImageDescription];
-  [v4 encodeObject:v13 forKey:AXMVisionFeatureAssetMetadataCodingKeyPNGImageDescription];
+  pNGImageDescription = [(AXMVisionFeatureAssetMetadata *)self PNGImageDescription];
+  [coderCopy encodeObject:pNGImageDescription forKey:AXMVisionFeatureAssetMetadataCodingKeyPNGImageDescription];
 
-  v14 = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocalIdentifier];
-  [v4 encodeObject:v14 forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalIdentifier];
+  imageAssetLocalIdentifier = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocalIdentifier];
+  [coderCopy encodeObject:imageAssetLocalIdentifier forKey:AXMVisionFeatureAssetMetadataCodingKeyLocalIdentifier];
 
-  v15 = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocallyAvailable];
-  [v4 encodeBool:v15 forKey:AXMVisionFeatureAssetMetadataCodingKeyAssetLocallyAvailableIdentifier];
-  v16 = [(AXMVisionFeatureAssetMetadata *)self imageAssetPhotoLibraryURL];
-  [v4 encodeObject:v16 forKey:AXMVisionFeatureAssetMetadataCodingkeyPhotoLibraryURL];
+  imageAssetLocallyAvailable = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocallyAvailable];
+  [coderCopy encodeBool:imageAssetLocallyAvailable forKey:AXMVisionFeatureAssetMetadataCodingKeyAssetLocallyAvailableIdentifier];
+  imageAssetPhotoLibraryURL = [(AXMVisionFeatureAssetMetadata *)self imageAssetPhotoLibraryURL];
+  [coderCopy encodeObject:imageAssetPhotoLibraryURL forKey:AXMVisionFeatureAssetMetadataCodingkeyPhotoLibraryURL];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -109,10 +109,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXMVisionFeatureAssetMetadata *)self localIdentifier];
-      v7 = [(AXMVisionFeatureAssetMetadata *)v5 localIdentifier];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      localIdentifier = [(AXMVisionFeatureAssetMetadata *)self localIdentifier];
+      localIdentifier2 = [(AXMVisionFeatureAssetMetadata *)v5 localIdentifier];
+      v8 = [localIdentifier isEqual:localIdentifier2];
 
       if (v8)
       {
@@ -140,8 +140,8 @@
 {
   v3 = [(AXMVisionFeatureAssetMetadata *)self url];
   v4 = [v3 hash];
-  v5 = [(AXMVisionFeatureAssetMetadata *)self localIdentifier];
-  v6 = [v5 hash];
+  localIdentifier = [(AXMVisionFeatureAssetMetadata *)self localIdentifier];
+  v6 = [localIdentifier hash];
 
   return v6 ^ v4;
 }
@@ -149,25 +149,25 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXMVisionFeatureAssetMetadata *)self name];
-  v5 = [(AXMVisionFeatureAssetMetadata *)self creationDate];
+  name = [(AXMVisionFeatureAssetMetadata *)self name];
+  creationDate = [(AXMVisionFeatureAssetMetadata *)self creationDate];
   v6 = [(AXMVisionFeatureAssetMetadata *)self uti];
-  v7 = [(AXMVisionFeatureAssetMetadata *)self localizedTypeDescription];
-  v8 = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocalIdentifier];
-  v9 = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocallyAvailable];
-  v10 = [(AXMVisionFeatureAssetMetadata *)self imageAssetPhotoLibraryURL];
-  v11 = [v3 stringWithFormat:@"name:%@ created:%@ UTI:%@ typeDesc:%@ assetLocalIdentifier:%@ isAssetLocallyAvailable:%d photoLibraryURL:%@", v4, v5, v6, v7, v8, v9, v10];
+  localizedTypeDescription = [(AXMVisionFeatureAssetMetadata *)self localizedTypeDescription];
+  imageAssetLocalIdentifier = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocalIdentifier];
+  imageAssetLocallyAvailable = [(AXMVisionFeatureAssetMetadata *)self imageAssetLocallyAvailable];
+  imageAssetPhotoLibraryURL = [(AXMVisionFeatureAssetMetadata *)self imageAssetPhotoLibraryURL];
+  v11 = [v3 stringWithFormat:@"name:%@ created:%@ UTI:%@ typeDesc:%@ assetLocalIdentifier:%@ isAssetLocallyAvailable:%d photoLibraryURL:%@", name, creationDate, v6, localizedTypeDescription, imageAssetLocalIdentifier, imageAssetLocallyAvailable, imageAssetPhotoLibraryURL];
 
   return v11;
 }
 
-+ (id)assetMetadataFromURL:(id)a3
++ (id)assetMetadataFromURL:(id)l
 {
   v32[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(AXMVisionFeatureAssetMetadata);
-  [(AXMVisionFeatureAssetMetadata *)v4 setAssetURL:v3];
-  if (v3)
+  [(AXMVisionFeatureAssetMetadata *)v4 setAssetURL:lCopy];
+  if (lCopy)
   {
     v5 = *MEMORY[0x1E695DC30];
     v6 = *MEMORY[0x1E695DAA8];
@@ -180,7 +180,7 @@
     v32[4] = *MEMORY[0x1E695DB20];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:5];
     v31 = 0;
-    v10 = [v3 resourceValuesForKeys:v9 error:&v31];
+    v10 = [lCopy resourceValuesForKeys:v9 error:&v31];
     v11 = v31;
     if (v11)
     {
@@ -203,7 +203,7 @@
     v16 = [v10 objectForKeyedSubscript:v8];
     [(AXMVisionFeatureAssetMetadata *)v4 setLocalizedTypeDescription:v16];
 
-    v17 = CGImageSourceCreateWithURL(v3, 0);
+    v17 = CGImageSourceCreateWithURL(lCopy, 0);
     if (v17)
     {
       v18 = v17;
@@ -236,34 +236,34 @@
   return v4;
 }
 
-+ (id)assetMetadataFromURL:(id)a3 localIdentifier:(id)a4 photoLibraryURL:(id)a5
++ (id)assetMetadataFromURL:(id)l localIdentifier:(id)identifier photoLibraryURL:(id)rL
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 assetMetadataFromURL:a3];
-  [v10 setImageAssetLocalIdentifier:v9];
+  rLCopy = rL;
+  identifierCopy = identifier;
+  v10 = [self assetMetadataFromURL:l];
+  [v10 setImageAssetLocalIdentifier:identifierCopy];
 
   [v10 setImageAssetLocallyAvailable:0];
-  [v10 setImageAssetPhotoLibraryURL:v8];
+  [v10 setImageAssetPhotoLibraryURL:rLCopy];
 
   return v10;
 }
 
-+ (id)assetMetadataWithLocalIdentifier:(id)a3 photoLibraryURL:(id)a4 creationDate:(id)a5 UTI:(id)a6
++ (id)assetMetadataWithLocalIdentifier:(id)identifier photoLibraryURL:(id)l creationDate:(id)date UTI:(id)i
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  lCopy = l;
+  dateCopy = date;
+  iCopy = i;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(AXMVisionFeatureAssetMetadata);
-  [(AXMVisionFeatureAssetMetadata *)v13 setImageAssetLocalIdentifier:v12];
+  [(AXMVisionFeatureAssetMetadata *)v13 setImageAssetLocalIdentifier:identifierCopy];
 
   [(AXMVisionFeatureAssetMetadata *)v13 setImageAssetLocallyAvailable:1];
-  if (v12)
+  if (identifierCopy)
   {
-    [(AXMVisionFeatureAssetMetadata *)v13 setCreationDate:v10];
-    [(AXMVisionFeatureAssetMetadata *)v13 setUti:v11];
-    [(AXMVisionFeatureAssetMetadata *)v13 setImageAssetPhotoLibraryURL:v9];
+    [(AXMVisionFeatureAssetMetadata *)v13 setCreationDate:dateCopy];
+    [(AXMVisionFeatureAssetMetadata *)v13 setUti:iCopy];
+    [(AXMVisionFeatureAssetMetadata *)v13 setImageAssetPhotoLibraryURL:lCopy];
   }
 
   return v13;

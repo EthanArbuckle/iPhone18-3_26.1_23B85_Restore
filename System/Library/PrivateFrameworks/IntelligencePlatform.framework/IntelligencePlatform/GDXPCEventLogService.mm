@@ -1,23 +1,23 @@
 @interface GDXPCEventLogService
-- (BOOL)logEndWithId:(int64_t)a3 timestamp:(id)a4 dependencies:(id)a5 payloadType:(id)a6 payloadVariant:(id)a7 payload:(id)a8 error:(id *)a9;
-- (BOOL)logInstantWithId:(int64_t)a3 timestamp:(id)a4 name:(id)a5 parent:(int64_t)a6 dependencies:(id)a7 payloadType:(id)a8 payloadVariant:(id)a9 payload:(id)a10 error:(id *)a11;
-- (BOOL)logStartWithId:(int64_t)a3 timestamp:(id)a4 name:(id)a5 parent:(int64_t)a6 error:(id *)a7;
+- (BOOL)logEndWithId:(int64_t)id timestamp:(id)timestamp dependencies:(id)dependencies payloadType:(id)type payloadVariant:(id)variant payload:(id)payload error:(id *)error;
+- (BOOL)logInstantWithId:(int64_t)id timestamp:(id)timestamp name:(id)name parent:(int64_t)parent dependencies:(id)dependencies payloadType:(id)type payloadVariant:(id)variant payload:(id)self0 error:(id *)self1;
+- (BOOL)logStartWithId:(int64_t)id timestamp:(id)timestamp name:(id)name parent:(int64_t)parent error:(id *)error;
 - (GDXPCEventLogService)init;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCEventLogService
 
-- (BOOL)logInstantWithId:(int64_t)a3 timestamp:(id)a4 name:(id)a5 parent:(int64_t)a6 dependencies:(id)a7 payloadType:(id)a8 payloadVariant:(id)a9 payload:(id)a10 error:(id *)a11
+- (BOOL)logInstantWithId:(int64_t)id timestamp:(id)timestamp name:(id)name parent:(int64_t)parent dependencies:(id)dependencies payloadType:(id)type payloadVariant:(id)variant payload:(id)self0 error:(id *)self1
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  timestampCopy = timestamp;
+  nameCopy = name;
+  dependenciesCopy = dependencies;
+  typeCopy = type;
+  variantCopy = variant;
+  payloadCopy = payload;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -42,12 +42,12 @@
   v28[2] = sub_1ABF10594;
   v28[3] = &unk_1E79624F8;
   v28[4] = &v31;
-  [v23 logInstantWithId:a3 timestamp:v16 name:v17 parent:a6 dependencies:v18 payloadType:v19 payloadVariant:v20 payload:v21 completion:v28];
+  [v23 logInstantWithId:id timestamp:timestampCopy name:nameCopy parent:parent dependencies:dependenciesCopy payloadType:typeCopy payloadVariant:variantCopy payload:payloadCopy completion:v28];
 
-  if (a11 && (v24 = v32[5]) != 0)
+  if (error && (v24 = v32[5]) != 0)
   {
     v25 = 0;
-    *a11 = v24;
+    *error = v24;
   }
 
   else
@@ -60,13 +60,13 @@
   return v25;
 }
 
-- (BOOL)logEndWithId:(int64_t)a3 timestamp:(id)a4 dependencies:(id)a5 payloadType:(id)a6 payloadVariant:(id)a7 payload:(id)a8 error:(id *)a9
+- (BOOL)logEndWithId:(int64_t)id timestamp:(id)timestamp dependencies:(id)dependencies payloadType:(id)type payloadVariant:(id)variant payload:(id)payload error:(id *)error
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  timestampCopy = timestamp;
+  dependenciesCopy = dependencies;
+  typeCopy = type;
+  variantCopy = variant;
+  payloadCopy = payload;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -91,12 +91,12 @@
   v25[2] = sub_1ABF108B0;
   v25[3] = &unk_1E79624F8;
   v25[4] = &v28;
-  [v21 logEndWithId:a3 timestamp:v15 dependencies:v16 payloadType:v17 payloadVariant:v18 payload:v19 completion:v25];
+  [v21 logEndWithId:id timestamp:timestampCopy dependencies:dependenciesCopy payloadType:typeCopy payloadVariant:variantCopy payload:payloadCopy completion:v25];
 
-  if (a9 && (v22 = v29[5]) != 0)
+  if (error && (v22 = v29[5]) != 0)
   {
     v23 = 0;
-    *a9 = v22;
+    *error = v22;
   }
 
   else
@@ -109,10 +109,10 @@
   return v23;
 }
 
-- (BOOL)logStartWithId:(int64_t)a3 timestamp:(id)a4 name:(id)a5 parent:(int64_t)a6 error:(id *)a7
+- (BOOL)logStartWithId:(int64_t)id timestamp:(id)timestamp name:(id)name parent:(int64_t)parent error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  timestampCopy = timestamp;
+  nameCopy = name;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -137,12 +137,12 @@
   v19[2] = sub_1ABF10B90;
   v19[3] = &unk_1E79624F8;
   v19[4] = &v22;
-  [v15 logStartWithId:a3 timestamp:v12 name:v13 parent:a6 completion:v19];
+  [v15 logStartWithId:id timestamp:timestampCopy name:nameCopy parent:parent completion:v19];
 
-  if (a7 && (v16 = v23[5]) != 0)
+  if (error && (v16 = v23[5]) != 0)
   {
     v17 = 0;
-    *a7 = v16;
+    *error = v16;
   }
 
   else
@@ -155,14 +155,14 @@
   return v17;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCEventLogService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCEventLogService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

@@ -1,45 +1,45 @@
 @interface MRURoutingHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRURoutingHeaderView)initWithReuseIdentifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRURoutingHeaderView)initWithReuseIdentifier:(id)identifier;
 - (UIEdgeInsets)contentEdgeInsets;
 - (void)layoutSubviews;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setStylingProvider:(id)provider;
+- (void)setTitle:(id)title;
 - (void)updateContentSizeCategory;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRURoutingHeaderView
 
-- (MRURoutingHeaderView)initWithReuseIdentifier:(id)a3
+- (MRURoutingHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = MRURoutingHeaderView;
-  v3 = [(MRURoutingHeaderView *)&v17 initWithReuseIdentifier:a3];
+  v3 = [(MRURoutingHeaderView *)&v17 initWithReuseIdentifier:identifier];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(MRURoutingHeaderView *)v3 setTintColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MRURoutingHeaderView *)v3 setTintColor:clearColor];
 
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v5;
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:2];
-    v7 = [(MRURoutingHeaderView *)v3 contentView];
-    [v7 addSubview:v3->_titleLabel];
+    contentView = [(MRURoutingHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
     separatorView = v3->_separatorView;
     v3->_separatorView = v8;
 
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v3->_separatorView setBackgroundColor:v10];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v3->_separatorView setBackgroundColor:whiteColor];
 
-    v11 = [(MRURoutingHeaderView *)v3 contentView];
-    [v11 addSubview:v3->_separatorView];
+    contentView2 = [(MRURoutingHeaderView *)v3 contentView];
+    [contentView2 addSubview:v3->_separatorView];
 
     v19[0] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -60,8 +60,8 @@
   v24.receiver = self;
   v24.super_class = MRURoutingHeaderView;
   [(MRURoutingHeaderView *)&v24 layoutSubviews];
-  v3 = [(MRURoutingHeaderView *)self contentView];
-  [v3 bounds];
+  contentView = [(MRURoutingHeaderView *)self contentView];
+  [contentView bounds];
   top = self->_contentEdgeInsets.top;
   left = self->_contentEdgeInsets.left;
   v7 = v6 + left;
@@ -69,8 +69,8 @@
   v11 = v10 - (left + self->_contentEdgeInsets.right);
   v13 = v12 - (top + self->_contentEdgeInsets.bottom);
 
-  v14 = [(MRURoutingHeaderView *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(MRURoutingHeaderView *)self traitCollection];
+  [traitCollection displayScale];
 
   v25.origin.x = v7;
   v25.origin.y = v9;
@@ -95,8 +95,8 @@
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(UILabel *)self->_titleLabel font];
-  [v23 descender];
+  font = [(UILabel *)self->_titleLabel font];
+  [font descender];
   UIRoundToViewScale();
 
   [(UILabel *)self->_titleLabel sizeThatFits:v20, v22];
@@ -121,14 +121,14 @@
   [(UILabel *)self->_titleLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = 16.0 * 2.0 + 10.0 + 1.0;
-  v6 = a3.width - (self->_contentEdgeInsets.left + self->_contentEdgeInsets.right);
-  v7 = a3.height - v5;
-  v8 = [(UILabel *)self->_titleLabel font];
-  [v8 descender];
+  v6 = fits.width - (self->_contentEdgeInsets.left + self->_contentEdgeInsets.right);
+  v7 = fits.height - v5;
+  font = [(UILabel *)self->_titleLabel font];
+  [font descender];
   UIRoundToViewScale();
   v10 = v9;
 
@@ -141,33 +141,33 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(MRURoutingHeaderView *)self setNeedsLayout];
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
   self->_contentEdgeInsets.top = 0.0;
-  self->_contentEdgeInsets.left = a3.left;
+  self->_contentEdgeInsets.left = insets.left;
   self->_contentEdgeInsets.bottom = 0.0;
-  self->_contentEdgeInsets.right = a3.right;
+  self->_contentEdgeInsets.right = insets.right;
   [(MRURoutingHeaderView *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRURoutingHeaderView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -175,19 +175,19 @@
 {
   stylingProvider = self->_stylingProvider;
   titleLabel = self->_titleLabel;
-  v5 = [(MRURoutingHeaderView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:1 toView:titleLabel traitCollection:v5];
+  traitCollection = [(MRURoutingHeaderView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:1 toView:titleLabel traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   separatorView = self->_separatorView;
-  v8 = [(MRURoutingHeaderView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:4 toView:separatorView traitCollection:v8];
+  traitCollection2 = [(MRURoutingHeaderView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:4 toView:separatorView traitCollection:traitCollection2];
 }
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_routingHeaderFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  mru_routingHeaderFont = [MEMORY[0x1E69DB878] mru_routingHeaderFont];
+  [(UILabel *)self->_titleLabel setFont:mru_routingHeaderFont];
 }
 
 - (UIEdgeInsets)contentEdgeInsets

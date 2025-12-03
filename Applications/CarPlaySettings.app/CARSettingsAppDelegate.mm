@@ -1,6 +1,6 @@
 @interface CARSettingsAppDelegate
 + (CARSettingsAppDelegate)sharedDelegate;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 @end
 
 @implementation CARSettingsAppDelegate
@@ -8,12 +8,12 @@
 + (CARSettingsAppDelegate)sharedDelegate
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = objc_alloc_init(CARCarManager);
   carManager = self->_carManager;

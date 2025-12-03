@@ -1,23 +1,23 @@
 @interface DADiagnosticsPSController
 + (id)dumpRuntimeStateSpecifiers;
 + (id)linkSpecifier;
-- (BOOL)saveFileAtPath:(id)a3 toDirectory:(id)a4 withExtension:(id)a5 error:(id *)a6;
-- (id)BOOLeanPropertyWithSpecifier:(id)a3;
+- (BOOL)saveFileAtPath:(id)path toDirectory:(id)directory withExtension:(id)extension error:(id *)error;
+- (id)BOOLeanPropertyWithSpecifier:(id)specifier;
 - (id)diagnosticSpecifiers;
 - (id)specifiers;
 - (void)_dismissSavingDataAlert;
 - (void)_presentNotesController;
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
-- (void)handleClearAllLogsForSpecifier:(id)a3;
-- (void)handleDumpRuntimeStateForSpecifier:(id)a3;
-- (void)handleSaveAllLogsForSpecifier:(id)a3;
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
+- (void)handleClearAllLogsForSpecifier:(id)specifier;
+- (void)handleDumpRuntimeStateForSpecifier:(id)specifier;
+- (void)handleSaveAllLogsForSpecifier:(id)specifier;
 - (void)handleSaveAllLogsStep2;
-- (void)purgeFileAtPath:(id)a3;
-- (void)runSimpleAlertWithTitle:(id)a3 message:(id)a4;
-- (void)runSimpleAlertWithTitle:(id)a3 message:(id)a4 dismissedSelector:(SEL)a5;
-- (void)saveLogsWithNotes:(id)a3;
-- (void)setBooleanProperty:(id)a3 withSpecifier:(id)a4;
+- (void)purgeFileAtPath:(id)path;
+- (void)runSimpleAlertWithTitle:(id)title message:(id)message;
+- (void)runSimpleAlertWithTitle:(id)title message:(id)message dismissedSelector:(SEL)selector;
+- (void)saveLogsWithNotes:(id)notes;
+- (void)setBooleanProperty:(id)property withSpecifier:(id)specifier;
 - (void)suspend;
 @end
 
@@ -43,42 +43,42 @@
 
 + (id)dumpRuntimeStateSpecifiers
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:&stru_285ACAC78];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = MEMORY[0x277D3FAD8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"DIAG_DUMP_RUNTIME_STATE" value:&stru_285ACAC78 table:@"Diagnostic"];
   v7 = [v4 buttonSpecifierWithTitle:v6 target:0 action:sel_handleDumpRuntimeStateForSpecifier_ confirmationInfo:0];
-  [v2 addObject:v7];
+  [array addObject:v7];
 
-  return v2;
+  return array;
 }
 
 - (id)diagnosticSpecifiers
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [objc_opt_class() dumpRuntimeStateSpecifiers];
-  if (v3)
+  array = [MEMORY[0x277CBEB18] array];
+  dumpRuntimeStateSpecifiers = [objc_opt_class() dumpRuntimeStateSpecifiers];
+  if (dumpRuntimeStateSpecifiers)
   {
-    [v2 addObjectsFromArray:v3];
+    [array addObjectsFromArray:dumpRuntimeStateSpecifiers];
   }
 
-  [v3 lastObject];
+  [dumpRuntimeStateSpecifiers lastObject];
 
-  return v2;
+  return array;
 }
 
 - (id)specifiers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(DADiagnosticsPSController *)self diagnosticSpecifiers];
+  diagnosticSpecifiers = [(DADiagnosticsPSController *)self diagnosticSpecifiers];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [diagnosticSpecifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -91,14 +91,14 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(diagnosticSpecifiers);
         }
 
         objc_storeWeak((*(*(&v16 + 1) + 8 * v8++) + *v7), self);
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [diagnosticSpecifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -106,8 +106,8 @@
 
   v9 = *MEMORY[0x277D3FC48];
   v10 = *(&self->super.super.super.super.super.isa + v9);
-  *(&self->super.super.super.super.super.isa + v9) = v3;
-  v11 = v3;
+  *(&self->super.super.super.super.super.isa + v9) = diagnosticSpecifiers;
+  v11 = diagnosticSpecifiers;
 
   v12 = *(&self->super.super.super.super.super.isa + v9);
   v13 = v12;
@@ -116,11 +116,11 @@
   return v12;
 }
 
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   simpleAlert = self->_simpleAlert;
-  if (simpleAlert == v6)
+  if (simpleAlert == viewCopy)
   {
     self->_simpleAlert = 0;
 
@@ -136,14 +136,14 @@
   {
     v10.receiver = self;
     v10.super_class = DADiagnosticsPSController;
-    [(DADiagnosticsPSController *)&v10 alertView:v6 clickedButtonAtIndex:a4];
+    [(DADiagnosticsPSController *)&v10 alertView:viewCopy clickedButtonAtIndex:index];
   }
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
   savingDataAlert = self->_savingDataAlert;
-  if (savingDataAlert == a3)
+  if (savingDataAlert == view)
   {
     self->_savingDataAlert = 0;
 
@@ -151,70 +151,70 @@
   }
 }
 
-- (void)runSimpleAlertWithTitle:(id)a3 message:(id)a4 dismissedSelector:(SEL)a5
+- (void)runSimpleAlertWithTitle:(id)title message:(id)message dismissedSelector:(SEL)selector
 {
   v8 = MEMORY[0x277D75118];
-  v9 = a4;
-  v10 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v11 = [v8 alloc];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"OK" value:&stru_285ACAC78 table:@"Diagnostic"];
-  v14 = [v11 initWithTitle:v10 message:v9 delegate:self cancelButtonTitle:v13 otherButtonTitles:0];
+  v14 = [v11 initWithTitle:titleCopy message:messageCopy delegate:self cancelButtonTitle:v13 otherButtonTitles:0];
 
   simpleAlert = self->_simpleAlert;
   self->_simpleAlert = v14;
 
-  if (a5)
+  if (selector)
   {
-    v16 = a5;
+    selectorCopy = selector;
   }
 
   else
   {
-    v16 = 0;
+    selectorCopy = 0;
   }
 
-  self->_simpleConfirmSheetDismissedSEL = v16;
+  self->_simpleConfirmSheetDismissedSEL = selectorCopy;
   v17 = self->_simpleAlert;
 
   [(UIAlertView *)v17 show];
 }
 
-- (void)runSimpleAlertWithTitle:(id)a3 message:(id)a4
+- (void)runSimpleAlertWithTitle:(id)title message:(id)message
 {
   v6 = *MEMORY[0x277D76620];
-  v7 = a4;
-  alertHeader = a3;
+  messageCopy = message;
+  alertHeader = title;
   if ([v6 isSuspended])
   {
     v9 = 0;
-    CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, alertHeader, v7, 0, 0, 0, &v9);
+    CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, alertHeader, messageCopy, 0, 0, 0, &v9);
   }
 
   else
   {
-    [(DADiagnosticsPSController *)self runSimpleAlertWithTitle:alertHeader message:v7 dismissedSelector:0];
+    [(DADiagnosticsPSController *)self runSimpleAlertWithTitle:alertHeader message:messageCopy dismissedSelector:0];
   }
 }
 
-- (void)setBooleanProperty:(id)a3 withSpecifier:(id)a4
+- (void)setBooleanProperty:(id)property withSpecifier:(id)specifier
 {
-  v8 = a4;
-  v6 = [a3 BOOLValue];
-  v7 = [v8 identifier];
-  if ([v7 isEqualToString:DiagnosticsEnabledKey])
+  specifierCopy = specifier;
+  bOOLValue = [property BOOLValue];
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:DiagnosticsEnabledKey])
   {
-    [(DADiagnosticsPSController *)self setLoggingEnabled:v6 forSpecifier:v8];
+    [(DADiagnosticsPSController *)self setLoggingEnabled:bOOLValue forSpecifier:specifierCopy];
   }
 }
 
-- (id)BOOLeanPropertyWithSpecifier:(id)a3
+- (id)BOOLeanPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:DiagnosticsEnabledKey])
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:DiagnosticsEnabledKey])
   {
-    v6 = [(DADiagnosticsPSController *)self isLoggingEnabledForSpecifier:v4];
+    v6 = [(DADiagnosticsPSController *)self isLoggingEnabledForSpecifier:specifierCopy];
   }
 
   else
@@ -227,9 +227,9 @@
   return v7;
 }
 
-- (void)handleDumpRuntimeStateForSpecifier:(id)a3
+- (void)handleDumpRuntimeStateForSpecifier:(id)specifier
 {
-  v3 = MEMORY[0x24C1D24D0](@"dataaccessd", a2, a3);
+  v3 = MEMORY[0x24C1D24D0](@"dataaccessd", a2, specifier);
   if ((v3 & 0x80000000) == 0)
   {
 
@@ -237,59 +237,59 @@
   }
 }
 
-- (BOOL)saveFileAtPath:(id)a3 toDirectory:(id)a4 withExtension:(id)a5 error:(id *)a6
+- (BOOL)saveFileAtPath:(id)path toDirectory:(id)directory withExtension:(id)extension error:(id *)error
 {
-  v9 = a3;
+  pathCopy = path;
   v10 = MEMORY[0x277CCAA00];
-  v11 = a4;
-  v12 = [v10 defaultManager];
-  v13 = [v9 lastPathComponent];
-  v14 = [v11 stringByAppendingPathComponent:v13];
+  directoryCopy = directory;
+  defaultManager = [v10 defaultManager];
+  lastPathComponent = [pathCopy lastPathComponent];
+  v14 = [directoryCopy stringByAppendingPathComponent:lastPathComponent];
 
-  if (a5)
+  if (extension)
   {
-    v15 = [v14 pathExtension];
-    if ([v15 isEqual:@"log"])
+    pathExtension = [v14 pathExtension];
+    if ([pathExtension isEqual:@"log"])
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v16 = [v14 pathExtension];
-    v17 = [v16 isEqual:@"gz"];
+    pathExtension2 = [v14 pathExtension];
+    v17 = [pathExtension2 isEqual:@"gz"];
 
     if ((v17 & 1) == 0)
     {
       [v14 stringByAppendingPathExtension:@"log"];
-      v14 = v15 = v14;
+      v14 = pathExtension = v14;
       goto LABEL_5;
     }
   }
 
 LABEL_6:
   v22 = 0;
-  [v12 copyItemAtPath:v9 toPath:v14 error:&v22];
+  [defaultManager copyItemAtPath:pathCopy toPath:v14 error:&v22];
   v18 = v22;
   v19 = v18;
-  if (a6 && v18)
+  if (error && v18)
   {
     v20 = v18;
-    *a6 = v19;
+    *error = v19;
   }
 
   return v19 == 0;
 }
 
-- (void)saveLogsWithNotes:(id)a3
+- (void)saveLogsWithNotes:(id)notes
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DADiagnosticsPSController *)self pathsOfAllLogFiles];
-  v6 = validPathsForPaths(v5);
+  notesCopy = notes;
+  pathsOfAllLogFiles = [(DADiagnosticsPSController *)self pathsOfAllLogFiles];
+  v6 = validPathsForPaths(pathsOfAllLogFiles);
 
-  v7 = [MEMORY[0x277CCA8F8] calendarDate];
-  v8 = [v7 descriptionWithCalendarFormat:@"%Y-%m-%d-%H%M%S"];
+  calendarDate = [MEMORY[0x277CCA8F8] calendarDate];
+  v8 = [calendarDate descriptionWithCalendarFormat:@"%Y-%m-%d-%H%M%S"];
 
   v9 = NSHomeDirectory();
   v10 = MEMORY[0x277CCACA8];
@@ -297,15 +297,15 @@ LABEL_6:
   v12 = [v10 stringWithFormat:@"Library/Logs/CrashReporter/%@/Logs-%@", v11, v8];
   v13 = [v9 stringByAppendingPathComponent:v12];
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  [v14 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log Notes [%@]\n==========================================================\n%@\n==========================================================\n", v8, v4];
+  notesCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Log Notes [%@]\n==========================================================\n%@\n==========================================================\n", v8, notesCopy];
 
   if (v13)
   {
     v16 = [v13 stringByAppendingPathComponent:@"Notes.log"];
-    [v15 writeToFile:v16 atomically:1 encoding:4 error:0];
+    [notesCopy writeToFile:v16 atomically:1 encoding:4 error:0];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -380,7 +380,7 @@ LABEL_4:
   block[2] = __47__DADiagnosticsPSController_saveLogsWithNotes___block_invoke;
   block[3] = &unk_278F21738;
   v31 = v13;
-  v32 = self;
+  selfCopy = self;
   v27 = v13;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -425,8 +425,8 @@ void __47__DADiagnosticsPSController_saveLogsWithNotes___block_invoke(uint64_t a
 
 - (void)handleSaveAllLogsStep2
 {
-  v3 = [(DADiagnosticsPSController *)self pathsOfAllLogFiles];
-  v8 = validPathsForPaths(v3);
+  pathsOfAllLogFiles = [(DADiagnosticsPSController *)self pathsOfAllLogFiles];
+  v8 = validPathsForPaths(pathsOfAllLogFiles);
 
   if ([v8 count])
   {
@@ -447,17 +447,17 @@ void __47__DADiagnosticsPSController_saveLogsWithNotes___block_invoke(uint64_t a
 {
   [(UIAlertView *)self->_savingDataAlert dismissWithClickedButtonIndex:0 animated:1];
   [*MEMORY[0x277D76620] setIgnoresInteractionEvents:0];
-  v3 = [(DADiagnosticsPSController *)self rootController];
-  [v3 taskFinished:self];
+  rootController = [(DADiagnosticsPSController *)self rootController];
+  [rootController taskFinished:self];
 }
 
-- (void)handleSaveAllLogsForSpecifier:(id)a3
+- (void)handleSaveAllLogsForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v14 = [(DADiagnosticsPSController *)self rootController];
-  [(DADiagnosticsPSController *)self handleDumpRuntimeStateForSpecifier:v4];
+  specifierCopy = specifier;
+  rootController = [(DADiagnosticsPSController *)self rootController];
+  [(DADiagnosticsPSController *)self handleDumpRuntimeStateForSpecifier:specifierCopy];
 
-  [v14 addTask:self];
+  [rootController addTask:self];
   v5 = objc_alloc(MEMORY[0x277D75118]);
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"DIAG_SAVING_ADDITIONAL_DATA_TITLE" value:&stru_285ACAC78 table:@"Diagnostic"];
@@ -478,20 +478,20 @@ void __47__DADiagnosticsPSController_saveLogsWithNotes___block_invoke(uint64_t a
 {
   if (([*MEMORY[0x277D76620] isSuspendedEventsOnly] & 1) == 0)
   {
-    v3 = [(DADiagnosticsPSController *)self navigationController];
-    [v3 dismissViewControllerAnimated:0 completion:0];
+    navigationController = [(DADiagnosticsPSController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:0 completion:0];
   }
 }
 
-- (void)handleClearAllLogsForSpecifier:(id)a3
+- (void)handleClearAllLogsForSpecifier:(id)specifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [(DADiagnosticsPSController *)self pathsOfAllLogFiles];
+  pathsOfAllLogFiles = [(DADiagnosticsPSController *)self pathsOfAllLogFiles];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [pathsOfAllLogFiles countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -503,14 +503,14 @@ void __47__DADiagnosticsPSController_saveLogsWithNotes___block_invoke(uint64_t a
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pathsOfAllLogFiles);
         }
 
         [(DADiagnosticsPSController *)self purgeFileAtPath:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [pathsOfAllLogFiles countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -519,19 +519,19 @@ void __47__DADiagnosticsPSController_saveLogsWithNotes___block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeFileAtPath:(id)a3
+- (void)purgeFileAtPath:(id)path
 {
-  v5 = a3;
-  v3 = [v5 lastPathComponent];
-  if ([v3 isEqualToString:@"dataaccess.log"])
+  pathCopy = path;
+  lastPathComponent = [pathCopy lastPathComponent];
+  if ([lastPathComponent isEqualToString:@"dataaccess.log"])
   {
-    truncate([v5 fileSystemRepresentation], 0);
+    truncate([pathCopy fileSystemRepresentation], 0);
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    [v4 removeItemAtPath:v5 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:pathCopy error:0];
   }
 }
 

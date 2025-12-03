@@ -1,24 +1,24 @@
 @interface ACXDeviceConnectionServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ACXDeviceConnectionServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = +[ACXDeviceConnectionProtocolInterface interface];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = objc_opt_new();
-  [v4 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
   v7 = +[ACXDeviceConnectionDelegateProtocolInterface interface];
-  [v4 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
-  [v6 setXpcConnection:v4];
-  [v4 setInterruptionHandler:&stru_10008E100];
-  [v4 setInvalidationHandler:&stru_10008E120];
-  [v4 resume];
+  [v6 setXpcConnection:connectionCopy];
+  [connectionCopy setInterruptionHandler:&stru_10008E100];
+  [connectionCopy setInvalidationHandler:&stru_10008E120];
+  [connectionCopy resume];
 
   return 1;
 }

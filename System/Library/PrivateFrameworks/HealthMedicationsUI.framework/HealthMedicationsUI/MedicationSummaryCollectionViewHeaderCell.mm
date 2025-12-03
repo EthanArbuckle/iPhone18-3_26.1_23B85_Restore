@@ -1,16 +1,16 @@
 @interface MedicationSummaryCollectionViewHeaderCell
-- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MedicationSummaryCollectionViewHeaderCell
 
-- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell_item;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -24,7 +24,7 @@
   return [(MedicationSummaryCollectionViewHeaderCell *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI41MedicationSummaryCollectionViewHeaderCell_item;
   *v3 = 0u;

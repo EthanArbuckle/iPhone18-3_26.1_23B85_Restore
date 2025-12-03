@@ -6,13 +6,13 @@
 
 - (id)flow
 {
-  if ([a1 conformsToProtocol:&unk_28758ABD0])
+  if ([self conformsToProtocol:&unk_28758ABD0])
   {
-    v2 = [a1 delegate];
+    delegate = [self delegate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = delegate;
     }
 
     else

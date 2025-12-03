@@ -7,18 +7,18 @@
 - (id)npk_errorWithDomain:()NanoPassKit code:
 {
   v6 = a3;
-  v7 = a1;
-  if (v7)
+  selfCopy = self;
+  if (selfCopy)
   {
     v8 = *MEMORY[0x277CCA7E8];
     do
     {
-      v9 = [v7 domain];
-      if ([v9 isEqualToString:v6])
+      domain = [selfCopy domain];
+      if ([domain isEqualToString:v6])
       {
-        v10 = [v7 code];
+        code = [selfCopy code];
 
-        if (v10 == a4)
+        if (code == a4)
         {
           break;
         }
@@ -28,16 +28,16 @@
       {
       }
 
-      v11 = [v7 userInfo];
-      v12 = [v11 objectForKeyedSubscript:v8];
+      userInfo = [selfCopy userInfo];
+      v12 = [userInfo objectForKeyedSubscript:v8];
 
-      v7 = v12;
+      selfCopy = v12;
     }
 
     while (v12);
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

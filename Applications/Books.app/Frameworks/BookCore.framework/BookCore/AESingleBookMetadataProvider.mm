@@ -1,46 +1,46 @@
 @interface AESingleBookMetadataProvider
-+ (id)singleBookMetadataProviderWithAssetID:(id)a3 assetURL:(id)a4 bookVersionString:(id)a5 pathToAssetContextDirectory:(id)a6 isManagedBook:(BOOL)a7;
-- (AESingleBookMetadataProvider)initWithAssetID:(id)a3 assetURL:(id)a4 bookVersionString:(id)a5 pathToAssetContextDirectory:(id)a6 isManagedBook:(BOOL)a7;
-- (BOOL)isManagedWithAssetID:(id)a3;
++ (id)singleBookMetadataProviderWithAssetID:(id)d assetURL:(id)l bookVersionString:(id)string pathToAssetContextDirectory:(id)directory isManagedBook:(BOOL)book;
+- (AESingleBookMetadataProvider)initWithAssetID:(id)d assetURL:(id)l bookVersionString:(id)string pathToAssetContextDirectory:(id)directory isManagedBook:(BOOL)book;
+- (BOOL)isManagedWithAssetID:(id)d;
 - (NSString)description;
-- (id)assetURLForAssetID:(id)a3;
-- (id)bookVersionStringForAssetID:(id)a3;
-- (id)pathToContextDirectoryForAssetID:(id)a3;
+- (id)assetURLForAssetID:(id)d;
+- (id)bookVersionStringForAssetID:(id)d;
+- (id)pathToContextDirectoryForAssetID:(id)d;
 @end
 
 @implementation AESingleBookMetadataProvider
 
-+ (id)singleBookMetadataProviderWithAssetID:(id)a3 assetURL:(id)a4 bookVersionString:(id)a5 pathToAssetContextDirectory:(id)a6 isManagedBook:(BOOL)a7
++ (id)singleBookMetadataProviderWithAssetID:(id)d assetURL:(id)l bookVersionString:(id)string pathToAssetContextDirectory:(id)directory isManagedBook:(BOOL)book
 {
-  v7 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[AESingleBookMetadataProvider alloc] initWithAssetID:v14 assetURL:v13 bookVersionString:v12 pathToAssetContextDirectory:v11 isManagedBook:v7];
+  bookCopy = book;
+  directoryCopy = directory;
+  stringCopy = string;
+  lCopy = l;
+  dCopy = d;
+  v15 = [[AESingleBookMetadataProvider alloc] initWithAssetID:dCopy assetURL:lCopy bookVersionString:stringCopy pathToAssetContextDirectory:directoryCopy isManagedBook:bookCopy];
 
   return v15;
 }
 
-- (AESingleBookMetadataProvider)initWithAssetID:(id)a3 assetURL:(id)a4 bookVersionString:(id)a5 pathToAssetContextDirectory:(id)a6 isManagedBook:(BOOL)a7
+- (AESingleBookMetadataProvider)initWithAssetID:(id)d assetURL:(id)l bookVersionString:(id)string pathToAssetContextDirectory:(id)directory isManagedBook:(BOOL)book
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  bookCopy = book;
+  dCopy = d;
+  lCopy = l;
+  stringCopy = string;
+  directoryCopy = directory;
   v26.receiver = self;
   v26.super_class = AESingleBookMetadataProvider;
   v16 = [(AESingleBookMetadataProvider *)&v26 init];
   v17 = v16;
   if (v16)
   {
-    [(AESingleBookMetadataProvider *)v16 setAssetID:v12];
-    [(AESingleBookMetadataProvider *)v17 setAssetURL:v13];
-    [(AESingleBookMetadataProvider *)v17 setBookVersionString:v14];
-    [(AESingleBookMetadataProvider *)v17 setPathToAssetContextDirectory:v15];
-    [(AESingleBookMetadataProvider *)v17 setManagedBook:v7];
-    if (!v12)
+    [(AESingleBookMetadataProvider *)v16 setAssetID:dCopy];
+    [(AESingleBookMetadataProvider *)v17 setAssetURL:lCopy];
+    [(AESingleBookMetadataProvider *)v17 setBookVersionString:stringCopy];
+    [(AESingleBookMetadataProvider *)v17 setPathToAssetContextDirectory:directoryCopy];
+    [(AESingleBookMetadataProvider *)v17 setManagedBook:bookCopy];
+    if (!dCopy)
     {
       sub_1EB5CC(v17, v18, v19, v20, v21, v22, v23, v24);
       v17 = 0;
@@ -54,84 +54,84 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(AESingleBookMetadataProvider *)self assetID];
-  v6 = [(AESingleBookMetadataProvider *)self assetURL];
-  v7 = [(AESingleBookMetadataProvider *)self bookVersionString];
-  v8 = [(AESingleBookMetadataProvider *)self pathToAssetContextDirectory];
-  v9 = [(AESingleBookMetadataProvider *)self isManagedBook];
+  assetID = [(AESingleBookMetadataProvider *)self assetID];
+  assetURL = [(AESingleBookMetadataProvider *)self assetURL];
+  bookVersionString = [(AESingleBookMetadataProvider *)self bookVersionString];
+  pathToAssetContextDirectory = [(AESingleBookMetadataProvider *)self pathToAssetContextDirectory];
+  isManagedBook = [(AESingleBookMetadataProvider *)self isManagedBook];
   v10 = @"NO";
-  if (v9)
+  if (isManagedBook)
   {
     v10 = @"YES";
   }
 
-  v11 = [NSString stringWithFormat:@"<%@(%p) id=%@ url=%@ version=%@ cd=%@ managed=%@>", v4, self, v5, v6, v7, v8, v10];
+  v11 = [NSString stringWithFormat:@"<%@(%p) id=%@ url=%@ version=%@ cd=%@ managed=%@>", v4, self, assetID, assetURL, bookVersionString, pathToAssetContextDirectory, v10];
 
   return v11;
 }
 
-- (id)assetURLForAssetID:(id)a3
+- (id)assetURLForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(AESingleBookMetadataProvider *)self assetID];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  assetID = [(AESingleBookMetadataProvider *)self assetID];
+  v6 = [dCopy isEqualToString:assetID];
 
   if ((v6 & 1) == 0)
   {
     sub_1EB614(self);
   }
 
-  v7 = [(AESingleBookMetadataProvider *)self assetURL];
+  assetURL = [(AESingleBookMetadataProvider *)self assetURL];
 
-  return v7;
+  return assetURL;
 }
 
-- (id)bookVersionStringForAssetID:(id)a3
+- (id)bookVersionStringForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(AESingleBookMetadataProvider *)self assetID];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  assetID = [(AESingleBookMetadataProvider *)self assetID];
+  v6 = [dCopy isEqualToString:assetID];
 
   if ((v6 & 1) == 0)
   {
     sub_1EB688(self);
   }
 
-  v7 = [(AESingleBookMetadataProvider *)self bookVersionString];
+  bookVersionString = [(AESingleBookMetadataProvider *)self bookVersionString];
 
-  return v7;
+  return bookVersionString;
 }
 
-- (id)pathToContextDirectoryForAssetID:(id)a3
+- (id)pathToContextDirectoryForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(AESingleBookMetadataProvider *)self assetID];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  assetID = [(AESingleBookMetadataProvider *)self assetID];
+  v6 = [dCopy isEqualToString:assetID];
 
   if ((v6 & 1) == 0)
   {
     sub_1EB6FC(self);
   }
 
-  v7 = [(AESingleBookMetadataProvider *)self pathToAssetContextDirectory];
+  pathToAssetContextDirectory = [(AESingleBookMetadataProvider *)self pathToAssetContextDirectory];
 
-  return v7;
+  return pathToAssetContextDirectory;
 }
 
-- (BOOL)isManagedWithAssetID:(id)a3
+- (BOOL)isManagedWithAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(AESingleBookMetadataProvider *)self assetID];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  assetID = [(AESingleBookMetadataProvider *)self assetID];
+  v6 = [dCopy isEqualToString:assetID];
 
   if ((v6 & 1) == 0)
   {
     sub_1EB770(self);
   }
 
-  v7 = [(AESingleBookMetadataProvider *)self isManagedBook];
+  isManagedBook = [(AESingleBookMetadataProvider *)self isManagedBook];
 
-  return v7;
+  return isManagedBook;
 }
 
 @end

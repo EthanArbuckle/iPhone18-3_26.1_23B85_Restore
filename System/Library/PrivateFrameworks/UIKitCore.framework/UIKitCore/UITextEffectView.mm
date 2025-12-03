@@ -1,6 +1,6 @@
 @interface UITextEffectView
-- (_TtC5UIKit16UITextEffectView)initWithFrame:(CGRect)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (_TtC5UIKit16UITextEffectView)initWithFrame:(CGRect)frame;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -14,19 +14,19 @@
   v5.super_class = type metadata accessor for UITextEffectView();
   v2 = v5.receiver;
   [(UIView *)&v5 didMoveToSuperview];
-  v3 = [v2 _scroller];
-  if (v3)
+  _scroller = [v2 _scroller];
+  if (_scroller)
   {
-    v4 = v3;
-    [v3 _addScrollViewScrollObserver_];
+    v4 = _scroller;
+    [_scroller _addScrollViewScrollObserver_];
   }
 }
 
 - (void)didMoveToWindow
 {
-  v3 = self;
-  v2 = [(UIView *)v3 window];
-  if (v2)
+  selfCopy = self;
+  window = [(UIView *)selfCopy window];
+  if (window)
   {
   }
 
@@ -45,20 +45,20 @@
   sub_18900264C();
 }
 
-- (_TtC5UIKit16UITextEffectView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit16UITextEffectView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for UITextEffectView();
-  v4 = a3;
+  scrollCopy = scroll;
   v5 = v6.receiver;
-  [(UIView *)&v6 _observeScrollViewDidScroll:v4];
+  [(UIView *)&v6 _observeScrollViewDidScroll:scrollCopy];
   sub_18900264C();
 }
 

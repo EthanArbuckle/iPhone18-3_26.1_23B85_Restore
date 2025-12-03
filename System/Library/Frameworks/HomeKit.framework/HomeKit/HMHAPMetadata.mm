@@ -1,28 +1,28 @@
 @interface HMHAPMetadata
-+ (id)encodeProtobufWithVersion:(id)a3 characteristics:(id)a4 services:(id)a5 categories:(id)a6;
++ (id)encodeProtobufWithVersion:(id)version characteristics:(id)characteristics services:(id)services categories:(id)categories;
 + (id)getSharedInstance;
-- (BOOL)applyProtoBufData:(id)a3;
-- (BOOL)shouldNotCacheCharacteristicOfType:(id)a3;
+- (BOOL)applyProtoBufData:(id)data;
+- (BOOL)shouldNotCacheCharacteristicOfType:(id)type;
 - (NSNumber)version;
-- (id)categoryForCategoryUUIDString:(id)a3;
-- (id)categoryForIdentifier:(id)a3;
-- (id)characteristicTypeDescription:(id)a3;
-- (id)serviceTypeDescription:(id)a3;
-- (void)setVersion:(id)a3;
+- (id)categoryForCategoryUUIDString:(id)string;
+- (id)categoryForIdentifier:(id)identifier;
+- (id)characteristicTypeDescription:(id)description;
+- (id)serviceTypeDescription:(id)description;
+- (void)setVersion:(id)version;
 @end
 
 @implementation HMHAPMetadata
 
-- (BOOL)shouldNotCacheCharacteristicOfType:(id)a3
+- (BOOL)shouldNotCacheCharacteristicOfType:(id)type
 {
   v3 = shouldNotCacheCharacteristicOfType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&shouldNotCacheCharacteristicOfType__onceToken, &__block_literal_global_104);
   }
 
-  v5 = [shouldNotCacheCharacteristicOfType__noCacheCharacteristicTypes containsObject:v4];
+  v5 = [shouldNotCacheCharacteristicOfType__noCacheCharacteristicTypes containsObject:typeCopy];
 
   return v5;
 }
@@ -38,18 +38,18 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)applyProtoBufData:(id)a3
+- (BOOL)applyProtoBufData:(id)data
 {
   v76 = *MEMORY[0x1E69E9840];
-  v51 = a3;
+  dataCopy = data;
   context = objc_autoreleasePoolPush();
   v4 = objc_autoreleasePoolPush();
-  v52 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v51, "length")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
     *buf = 138543618;
     v73 = v6;
     v74 = 2112;
@@ -58,22 +58,22 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
   }
 
   objc_autoreleasePoolPop(v4);
-  v53 = [[HMPBMetadata alloc] initWithData:v51];
+  v53 = [[HMPBMetadata alloc] initWithData:dataCopy];
   if (v53)
   {
     os_unfair_lock_lock_with_options();
-    if ([(NSNumber *)v52->_version integerValue]>= v53->_version)
+    if ([(NSNumber *)selfCopy->_version integerValue]>= v53->_version)
     {
-      os_unfair_lock_unlock(&v52->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
     }
 
     else
     {
       v8 = [MEMORY[0x1E696AD98] numberWithInt:?];
-      version = v52->_version;
-      v52->_version = v8;
+      version = selfCopy->_version;
+      selfCopy->_version = v8;
 
-      os_unfair_lock_unlock(&v52->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v56 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableArray count](v53->_hapCharacteristics, "count")}];
       v67 = 0u;
       v68 = 0u;
@@ -114,8 +114,8 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
             v19 = v18;
             [(HMHAPMetadataCharacteristic *)v16 setChrDescription:v19];
 
-            v20 = [(HMHAPMetadataCharacteristic *)v16 uuidStr];
-            [v56 setObject:v16 forKey:v20];
+            uuidStr = [(HMHAPMetadataCharacteristic *)v16 uuidStr];
+            [v56 setObject:v16 forKey:uuidStr];
 
             ++v13;
           }
@@ -128,7 +128,7 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
         while (v21);
       }
 
-      [(HMHAPMetadata *)v52 setHapChrMap:v56];
+      [(HMHAPMetadata *)selfCopy setHapChrMap:v56];
       v55 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableArray count](v53->_hapServices, "count")}];
       v63 = 0u;
       v64 = 0u;
@@ -169,8 +169,8 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
             v31 = v30;
             [(HMHAPMetadataService *)v28 setSvcDescription:v31];
 
-            v32 = [(HMHAPMetadataService *)v28 uuidStr];
-            [v55 setObject:v28 forKey:v32];
+            uuidStr2 = [(HMHAPMetadataService *)v28 uuidStr];
+            [v55 setObject:v28 forKey:uuidStr2];
 
             ++v25;
           }
@@ -183,7 +183,7 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
         while (v33);
       }
 
-      [(HMHAPMetadata *)v52 setHapSvcMap:v55];
+      [(HMHAPMetadata *)selfCopy setHapSvcMap:v55];
       v34 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableArray count](v53->_hapCategories, "count")}];
       v59 = 0u;
       v60 = 0u;
@@ -238,8 +238,8 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
             v44 = v43;
             [(HMHAPMetadataCategory *)v39 setCatDescription:v44];
 
-            v45 = [(HMHAPMetadataCategory *)v39 identifier];
-            [v34 setObject:v39 forKey:v45];
+            identifier = [(HMHAPMetadataCategory *)v39 identifier];
+            [v34 setObject:v39 forKey:identifier];
 
             ++v37;
           }
@@ -252,7 +252,7 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
         while (v47);
       }
 
-      [(HMHAPMetadata *)v52 setHapCategoryMap:v34];
+      [(HMHAPMetadata *)selfCopy setHapCategoryMap:v34];
     }
   }
 
@@ -261,18 +261,18 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
   return 0;
 }
 
-- (id)categoryForCategoryUUIDString:(id)a3
+- (id)categoryForCategoryUUIDString:(id)string
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(HMHAPMetadata *)self hapCategoryMap];
-  v6 = [v5 allValues];
+  hapCategoryMap = [(HMHAPMetadata *)self hapCategoryMap];
+  allValues = [hapCategoryMap allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = *v20;
@@ -282,19 +282,19 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 uuidStr];
-        v12 = [v11 isEqual:v4];
+        uuidStr = [v10 uuidStr];
+        v12 = [uuidStr isEqual:stringCopy];
 
         if (v12)
         {
           v13 = [HMAccessoryCategory alloc];
-          v14 = [v10 uuidStr];
-          v15 = [v10 catDescription];
-          v16 = [(HMAccessoryCategory *)v13 initWithType:v14 name:v15];
+          uuidStr2 = [v10 uuidStr];
+          catDescription = [v10 catDescription];
+          v16 = [(HMAccessoryCategory *)v13 initWithType:uuidStr2 name:catDescription];
 
           v7 = [HMFObjectCacheHMAccessoryCategory cachedInstanceForHMAccessoryCategory:v16];
 
@@ -302,7 +302,7 @@ void __52__HMHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         continue;
@@ -319,15 +319,15 @@ LABEL_11:
   return v7;
 }
 
-- (id)categoryForIdentifier:(id)a3
+- (id)categoryForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && (-[HMHAPMetadata hapCategoryMap](self, "hapCategoryMap"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
+  identifierCopy = identifier;
+  if (identifierCopy && (-[HMHAPMetadata hapCategoryMap](self, "hapCategoryMap"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:identifierCopy], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
     v7 = [HMAccessoryCategory alloc];
-    v8 = [v6 uuidStr];
-    v9 = [v6 catDescription];
-    v10 = [(HMAccessoryCategory *)v7 initWithType:v8 name:v9];
+    uuidStr = [v6 uuidStr];
+    catDescription = [v6 catDescription];
+    v10 = [(HMAccessoryCategory *)v7 initWithType:uuidStr name:catDescription];
   }
 
   else
@@ -340,17 +340,17 @@ LABEL_11:
   return v11;
 }
 
-- (id)characteristicTypeDescription:(id)a3
+- (id)characteristicTypeDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(HMHAPMetadata *)self hapChrMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  descriptionCopy = description;
+  hapChrMap = [(HMHAPMetadata *)self hapChrMap];
+  v6 = [hapChrMap objectForKeyedSubscript:descriptionCopy];
 
-  v7 = [v6 chrDescription];
-  v8 = v7;
-  if (v7)
+  chrDescription = [v6 chrDescription];
+  v8 = chrDescription;
+  if (chrDescription)
   {
-    v9 = v7;
+    v9 = chrDescription;
   }
 
   else
@@ -363,17 +363,17 @@ LABEL_11:
   return v9;
 }
 
-- (id)serviceTypeDescription:(id)a3
+- (id)serviceTypeDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(HMHAPMetadata *)self hapSvcMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  descriptionCopy = description;
+  hapSvcMap = [(HMHAPMetadata *)self hapSvcMap];
+  v6 = [hapSvcMap objectForKeyedSubscript:descriptionCopy];
 
-  v7 = [v6 svcDescription];
-  v8 = v7;
-  if (v7)
+  svcDescription = [v6 svcDescription];
+  v8 = svcDescription;
+  if (svcDescription)
   {
-    v9 = v7;
+    v9 = svcDescription;
   }
 
   else
@@ -386,12 +386,12 @@ LABEL_11:
   return v9;
 }
 
-- (void)setVersion:(id)a3
+- (void)setVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   os_unfair_lock_lock_with_options();
   version = self->_version;
-  self->_version = v4;
+  self->_version = versionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -405,27 +405,27 @@ LABEL_11:
   return v3;
 }
 
-+ (id)encodeProtobufWithVersion:(id)a3 characteristics:(id)a4 services:(id)a5 categories:(id)a6
++ (id)encodeProtobufWithVersion:(id)version characteristics:(id)characteristics services:(id)services categories:(id)categories
 {
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v45 = a5;
-  v43 = a6;
+  versionCopy = version;
+  characteristicsCopy = characteristics;
+  servicesCopy = services;
+  categoriesCopy = categories;
   v11 = objc_alloc_init(HMPBMetadata);
-  v42 = v9;
-  v12 = [v9 intValue];
+  v42 = versionCopy;
+  intValue = [versionCopy intValue];
   if (v11)
   {
     *&v11->_has |= 1u;
-    v11->_version = v12;
+    v11->_version = intValue;
   }
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v10;
+  obj = characteristicsCopy;
   v13 = [obj countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (v13)
   {
@@ -442,16 +442,16 @@ LABEL_11:
 
         v17 = *(*(&v56 + 1) + 8 * i);
         v18 = objc_alloc_init(HMPBMetadataCharacteristic);
-        v19 = [v17 uuidStr];
+        uuidStr = [v17 uuidStr];
         if (v18)
         {
-          objc_storeStrong(&v18->_uuidStr, v19);
+          objc_storeStrong(&v18->_uuidStr, uuidStr);
         }
 
-        v20 = [v17 chrDescription];
+        chrDescription = [v17 chrDescription];
         if (v18)
         {
-          objc_storeStrong(&v18->_chrDescription, v20);
+          objc_storeStrong(&v18->_chrDescription, chrDescription);
         }
 
         [(HMPBMetadata *)v11 addHapCharacteristics:v18];
@@ -467,7 +467,7 @@ LABEL_11:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v46 = v45;
+  v46 = servicesCopy;
   v21 = [v46 countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v21)
   {
@@ -484,16 +484,16 @@ LABEL_11:
 
         v25 = *(*(&v52 + 1) + 8 * j);
         v26 = objc_alloc_init(HMPBMetadataService);
-        v27 = [v25 uuidStr];
+        uuidStr2 = [v25 uuidStr];
         if (v26)
         {
-          objc_storeStrong(&v26->_uuidStr, v27);
+          objc_storeStrong(&v26->_uuidStr, uuidStr2);
         }
 
-        v28 = [v25 svcDescription];
+        svcDescription = [v25 svcDescription];
         if (v26)
         {
-          objc_storeStrong(&v26->_svcDescription, v28);
+          objc_storeStrong(&v26->_svcDescription, svcDescription);
         }
 
         [(HMPBMetadata *)v11 addHapServices:v26];
@@ -509,7 +509,7 @@ LABEL_11:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v44 = v43;
+  v44 = categoriesCopy;
   v29 = [v44 countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (v29)
   {
@@ -526,24 +526,24 @@ LABEL_11:
 
         v33 = *(*(&v48 + 1) + 8 * k);
         v34 = objc_alloc_init(HMPBMetadataCategory);
-        v35 = [v33 uuidStr];
+        uuidStr3 = [v33 uuidStr];
         if (v34)
         {
-          objc_storeStrong(&v34->_uuidStr, v35);
+          objc_storeStrong(&v34->_uuidStr, uuidStr3);
         }
 
-        v36 = [v33 catDescription];
+        catDescription = [v33 catDescription];
         if (v34)
         {
-          objc_storeStrong(&v34->_catDescription, v36);
+          objc_storeStrong(&v34->_catDescription, catDescription);
         }
 
-        v37 = [v33 identifier];
-        v38 = [v37 intValue];
+        identifier = [v33 identifier];
+        intValue2 = [identifier intValue];
         if (v34)
         {
           *&v34->_has |= 1u;
-          v34->_identifier = v38;
+          v34->_identifier = intValue2;
         }
 
         [(HMPBMetadata *)v11 addHapCategories:v34];
@@ -555,11 +555,11 @@ LABEL_11:
     while (v30);
   }
 
-  v39 = [(HMPBMetadata *)v11 data];
+  data = [(HMPBMetadata *)v11 data];
 
   v40 = *MEMORY[0x1E69E9840];
 
-  return v39;
+  return data;
 }
 
 + (id)getSharedInstance

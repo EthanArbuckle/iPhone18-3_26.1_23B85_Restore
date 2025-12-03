@@ -2,18 +2,18 @@
 - (BOOL)isTransparent;
 - (NSArray)mainViewElements;
 - (NSArray)navigationPalettes;
-- (SKUINavigationBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUINavigationBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (UIColor)tintColor;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUINavigationBarViewElement
 
-- (SKUINavigationBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUINavigationBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUINavigationBarViewElement initWithDOMElement:parent:elementFactory:];
@@ -21,13 +21,13 @@
 
   v15.receiver = self;
   v15.super_class = SKUINavigationBarViewElement;
-  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"hideShadow"];
+    v12 = [elementCopy getAttribute:@"hideShadow"];
     v11->_hidesShadow = [v12 BOOLValue];
 
-    v13 = [v8 getAttribute:@"hideBackButton"];
+    v13 = [elementCopy getAttribute:@"hideBackButton"];
     v11->_hidesBackButton = [v13 BOOLValue];
   }
 
@@ -36,14 +36,14 @@
 
 - (BOOL)isTransparent
 {
-  v2 = [(SKUINavigationBarViewElement *)self style];
-  v3 = [v2 ikBackgroundColor];
+  style = [(SKUINavigationBarViewElement *)self style];
+  ikBackgroundColor = [style ikBackgroundColor];
 
-  if (v3)
+  if (ikBackgroundColor)
   {
     v7 = 0.0;
-    v4 = [v3 color];
-    [v4 getWhite:0 alpha:&v7];
+    color = [ikBackgroundColor color];
+    [color getWhite:0 alpha:&v7];
 
     v5 = v7 < 0.00000011920929;
   }
@@ -58,24 +58,24 @@
 
 - (UIColor)tintColor
 {
-  v2 = [(SKUINavigationBarViewElement *)self style];
-  v3 = [v2 ikColor];
-  v4 = [v3 color];
+  style = [(SKUINavigationBarViewElement *)self style];
+  ikColor = [style ikColor];
+  color = [ikColor color];
 
-  return v4;
+  return color;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUINavigationBarViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_hidesShadow = [(SKUINavigationBarViewElement *)v4 hidesShadow];
-    self->_hidesBackButton = [(SKUINavigationBarViewElement *)v4 hidesBackButton];
+    self->_hidesShadow = [(SKUINavigationBarViewElement *)elementCopy hidesShadow];
+    self->_hidesBackButton = [(SKUINavigationBarViewElement *)elementCopy hidesBackButton];
   }
 
   return v6;
@@ -83,12 +83,12 @@
 
 - (NSArray)mainViewElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__SKUINavigationBarViewElement_mainViewElements__block_invoke;
   v6[3] = &unk_2781F9640;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -108,12 +108,12 @@ void __48__SKUINavigationBarViewElement_mainViewElements__block_invoke(uint64_t 
 
 - (NSArray)navigationPalettes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__SKUINavigationBarViewElement_navigationPalettes__block_invoke;
   v6[3] = &unk_2781F9640;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];
 

@@ -1,19 +1,19 @@
 @interface _UISplitViewControllerAdaptiveNavigationItemObserver
-- (id)initWithDelegate:(void *)a1;
-- (void)navigationItemUpdatedLeftBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedRightBarButtonItems:(id)a3 animated:(BOOL)a4;
+- (id)initWithDelegate:(void *)delegate;
+- (void)navigationItemUpdatedLeftBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)navigationItemUpdatedRightBarButtonItems:(id)items animated:(BOOL)animated;
 @end
 
 @implementation _UISplitViewControllerAdaptiveNavigationItemObserver
 
-- (id)initWithDelegate:(void *)a1
+- (id)initWithDelegate:(void *)delegate
 {
-  if (!a1)
+  if (!delegate)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = delegate;
   v6.super_class = _UISplitViewControllerAdaptiveNavigationItemObserver;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -25,28 +25,28 @@
   return v4;
 }
 
-- (void)navigationItemUpdatedLeftBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedLeftBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
   }
 
-  v5 = self;
-  [(_UISplitViewControllerAdaptiveNavigationItemObserver *)self navigationItemBarButtonItemGroupsDidChange:v4, a4];
+  selfCopy2 = self;
+  [(_UISplitViewControllerAdaptiveNavigationItemObserver *)self navigationItemBarButtonItemGroupsDidChange:selfCopy, animated];
 }
 
-- (void)navigationItemUpdatedRightBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedRightBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
   }
 
-  v5 = self;
-  [(_UISplitViewControllerAdaptiveNavigationItemObserver *)self navigationItemBarButtonItemGroupsDidChange:v4, a4];
+  selfCopy2 = self;
+  [(_UISplitViewControllerAdaptiveNavigationItemObserver *)self navigationItemBarButtonItemGroupsDidChange:selfCopy, animated];
 }
 
 @end

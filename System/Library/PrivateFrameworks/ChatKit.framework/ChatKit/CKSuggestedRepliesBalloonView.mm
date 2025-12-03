@@ -1,20 +1,20 @@
 @interface CKSuggestedRepliesBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithCoder:(id)a3;
-- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithFrame:(CGRect)a3;
-- (void)configureForMessagePart:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithCoder:(id)coder;
+- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithFrame:(CGRect)frame;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation CKSuggestedRepliesBalloonView
 
-- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit29CKSuggestedRepliesBalloonView_view) = 0;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit29CKSuggestedRepliesBalloonView_balloonMask) = 0;
   v8.receiver = self;
@@ -22,7 +22,7 @@
   return [(CKImageBalloonView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithCoder:(id)a3
+- (_TtC7ChatKit29CKSuggestedRepliesBalloonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit29CKSuggestedRepliesBalloonView_view) = 0;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit29CKSuggestedRepliesBalloonView_balloonMask) = 0;
@@ -31,11 +31,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_19086A3E0(width, height);
   v9 = v8;
   v11 = v10;
@@ -49,20 +49,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190869C00();
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
-  v5 = self;
-  sub_190869DF4(v4);
+  partCopy = part;
+  selfCopy = self;
+  sub_190869DF4(partCopy);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_19086A01C();
 }
 

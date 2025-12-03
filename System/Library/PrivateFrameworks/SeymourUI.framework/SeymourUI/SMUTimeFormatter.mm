@@ -1,6 +1,6 @@
 @interface SMUTimeFormatter
 - (SMUTimeFormatter)init;
-- (id)stringFromCMTime:(id *)a3;
+- (id)stringFromCMTime:(id *)time;
 @end
 
 @implementation SMUTimeFormatter
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (id)stringFromCMTime:(id *)a3
+- (id)stringFromCMTime:(id *)time
 {
   formatter = self->_formatter;
-  v6 = *a3;
+  v6 = *time;
   v4 = [(AVTimeFormatter *)formatter stringFromCMTime:&v6];
 
   return v4;

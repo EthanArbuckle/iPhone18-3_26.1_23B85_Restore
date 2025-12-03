@@ -3,34 +3,34 @@
 + (id)deviceLanguageIdentifier;
 + (id)preferredLanguages;
 - (COSInternationalController)init;
-- (id)calendar:(id)a3;
-- (id)canonicalLocaleIdentifierWithValidCalendarForComponents:(id)a3;
+- (id)calendar:(id)calendar;
+- (id)canonicalLocaleIdentifierWithValidCalendarForComponents:(id)components;
 - (id)currentInflectionDisplayString;
-- (id)defaultCalendarForLocaleID:(id)a3;
-- (id)effectiveCalendarFromLocale:(id)a3;
-- (id)localizedDeviceDisplayLanguageNameFromPreferredLanguages:(id)a3;
+- (id)defaultCalendarForLocaleID:(id)d;
+- (id)effectiveCalendarFromLocale:(id)locale;
+- (id)localizedDeviceDisplayLanguageNameFromPreferredLanguages:(id)languages;
 - (id)localizedMirroringDetailFooter;
-- (id)localizedRegionNameForLocale:(id)a3;
+- (id)localizedRegionNameForLocale:(id)locale;
 - (id)numberingSystemSpecifier;
 - (id)numberingSystemsValues;
-- (id)regionForCurrentLocale:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (id)regionForCurrentLocale:(id)locale;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
 - (id)specifiersInCustomSection;
-- (id)validateLocale:(id)a3;
-- (void)addNumberingSystemSpecifier:(id)a3;
-- (void)changeLanguage:(id)a3;
-- (void)handleLocalesInfo:(id)a3 error:(id)a4;
-- (void)inflectionSettingsViewController:(id)a3 inflectionDidChange:(id)a4;
+- (id)validateLocale:(id)locale;
+- (void)addNumberingSystemSpecifier:(id)specifier;
+- (void)changeLanguage:(id)language;
+- (void)handleLocalesInfo:(id)info error:(id)error;
+- (void)inflectionSettingsViewController:(id)controller inflectionDidChange:(id)change;
 - (void)queryGizmoForLocalesInfo;
 - (void)reloadNumberingSystemSpecifier;
-- (void)setCalendar:(id)a3 specifier:(id)a4;
-- (void)setLanguage:(id)a3;
-- (void)setLocaleOnly:(id)a3;
-- (void)setPreferredLanguages:(id)a3;
-- (void)startSpinnerInCellForSpecifier:(id)a3;
+- (void)setCalendar:(id)calendar specifier:(id)specifier;
+- (void)setLanguage:(id)language;
+- (void)setLocaleOnly:(id)only;
+- (void)setPreferredLanguages:(id)languages;
+- (void)startSpinnerInCellForSpecifier:(id)specifier;
 - (void)stopSpinner;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation COSInternationalController
@@ -81,15 +81,15 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleLocalesInfo:(id)a3 error:(id)a4
+- (void)handleLocalesInfo:(id)info error:(id)error
 {
-  v27 = a3;
-  v6 = a4;
+  infoCopy = info;
+  errorCopy = error;
   self->_hasFetchedLocalesInfo = 1;
-  if (!v27 || v6)
+  if (!infoCopy || errorCopy)
   {
     self->_errorHasOccurred = 1;
-    NSLog(@"Error has occured: %@", v6);
+    NSLog(@"Error has occured: %@", errorCopy);
     systemLanguages = self->_systemLanguages;
     self->_systemLanguages = 0;
 
@@ -111,41 +111,41 @@
   else
   {
     self->_errorHasOccurred = 0;
-    v7 = [v27 objectForKeyedSubscript:kNSSLocalesInfoSystemLanguagesKey];
+    v7 = [infoCopy objectForKeyedSubscript:kNSSLocalesInfoSystemLanguagesKey];
     v8 = self->_systemLanguages;
     self->_systemLanguages = v7;
 
-    v9 = [v27 objectForKeyedSubscript:kNSSLocalesInfoAvailableLocaleIdentifiers];
+    v9 = [infoCopy objectForKeyedSubscript:kNSSLocalesInfoAvailableLocaleIdentifiers];
     v10 = self->_availableLocaleIdentifiers;
     self->_availableLocaleIdentifiers = v9;
 
-    v11 = [v27 objectForKeyedSubscript:kNSSLocalesInfoDefaultNumberingSystems];
+    v11 = [infoCopy objectForKeyedSubscript:kNSSLocalesInfoDefaultNumberingSystems];
     v12 = self->_numberingSystems;
     self->_numberingSystems = v11;
 
-    v13 = [v27 objectForKeyedSubscript:kNSSLocalesInfoSupportedCalendars];
+    v13 = [infoCopy objectForKeyedSubscript:kNSSLocalesInfoSupportedCalendars];
     v14 = self->_supportedCalendars;
     self->_supportedCalendars = v13;
 
-    v15 = [v27 objectForKeyedSubscript:kNSSLocalesInfoDefaultCalendars];
+    v15 = [infoCopy objectForKeyedSubscript:kNSSLocalesInfoDefaultCalendars];
     v16 = self->_defaultCalendars;
     self->_defaultCalendars = v15;
 
     if (self->_remoteLoadingSpecifier)
     {
       v17 = [(COSInternationalController *)self indexPathForSpecifier:?];
-      v18 = [(COSInternationalController *)self table];
-      [(COSInternationalController *)self tableView:v18 didSelectRowAtIndexPath:v17];
+      table = [(COSInternationalController *)self table];
+      [(COSInternationalController *)self tableView:table didSelectRowAtIndexPath:v17];
     }
 
     [(COSInternationalController *)self reloadNumberingSystemSpecifier];
     v19 = [(COSInternationalController *)self specifierForID:@"CALENDAR"];
     [(COSInternationalController *)self reloadSpecifier:v19];
 
-    v20 = [(COSInternationalController *)self mirrorController];
-    v21 = [v20 shouldShowMirroringAsEnabled];
+    mirrorController = [(COSInternationalController *)self mirrorController];
+    shouldShowMirroringAsEnabled = [mirrorController shouldShowMirroringAsEnabled];
 
-    if (v21)
+    if (shouldShowMirroringAsEnabled)
     {
       [(COSInternationalController *)self reloadSpecifiers];
     }
@@ -154,24 +154,24 @@
   [(COSInternationalController *)self stopSpinner];
 }
 
-- (void)addNumberingSystemSpecifier:(id)a3
+- (void)addNumberingSystemSpecifier:(id)specifier
 {
-  v7 = a3;
-  v4 = [(COSInternationalController *)self numberingSystemsValues];
-  v5 = [v4 count];
+  specifierCopy = specifier;
+  numberingSystemsValues = [(COSInternationalController *)self numberingSystemsValues];
+  v5 = [numberingSystemsValues count];
 
   if (v5 >= 2)
   {
-    v6 = [(COSInternationalController *)self numberingSystemSpecifier];
-    [v7 insertObject:v6 atIndex:{objc_msgSend(v7, "indexOfSpecifierWithID:", @"LOCALE"}];
+    numberingSystemSpecifier = [(COSInternationalController *)self numberingSystemSpecifier];
+    [specifierCopy insertObject:numberingSystemSpecifier atIndex:{objc_msgSend(specifierCopy, "indexOfSpecifierWithID:", @"LOCALE"}];
   }
 }
 
 - (void)reloadNumberingSystemSpecifier
 {
   v3 = [(COSInternationalController *)self specifierForID:@"NUMBERING_SYSTEM"];
-  v4 = [(COSInternationalController *)self numberingSystemsValues];
-  v5 = [v4 count];
+  numberingSystemsValues = [(COSInternationalController *)self numberingSystemsValues];
+  v5 = [numberingSystemsValues count];
 
   if (v5 < 2)
   {
@@ -183,13 +183,13 @@
 
   else
   {
-    v6 = [(COSInternationalController *)self mirrorController];
-    v7 = [v6 shouldShowMirroringAsEnabled];
+    mirrorController = [(COSInternationalController *)self mirrorController];
+    shouldShowMirroringAsEnabled = [mirrorController shouldShowMirroringAsEnabled];
 
-    if ((v7 & 1) == 0 && !v3)
+    if ((shouldShowMirroringAsEnabled & 1) == 0 && !v3)
     {
-      v8 = [(COSInternationalController *)self numberingSystemSpecifier];
-      [(COSInternationalController *)self insertSpecifier:v8 afterSpecifierID:@"LOCALE" animated:1];
+      numberingSystemSpecifier = [(COSInternationalController *)self numberingSystemSpecifier];
+      [(COSInternationalController *)self insertSpecifier:numberingSystemSpecifier afterSpecifierID:@"LOCALE" animated:1];
     }
   }
 
@@ -212,32 +212,32 @@
   return v2;
 }
 
-- (id)validateLocale:(id)a3
+- (id)validateLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [NSLocale componentsFromLocaleIdentifier:v4];
+  localeCopy = locale;
+  v5 = [NSLocale componentsFromLocaleIdentifier:localeCopy];
   v6 = [v5 objectForKeyedSubscript:NSLocaleLanguageCode];
 
   if ([(NSArray *)self->_availableLocaleIdentifiers containsObject:v6])
   {
-    v7 = v4;
+    v7 = localeCopy;
   }
 
   else
   {
-    v8 = [(COSLanguageSelector *)self->_languageSelector appleLanguages];
-    if (![v8 count])
+    appleLanguages = [(COSLanguageSelector *)self->_languageSelector appleLanguages];
+    if (![appleLanguages count])
     {
       sub_1A794();
     }
 
     v20 = v6;
-    v21 = v4;
+    v21 = localeCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v8;
+    v9 = appleLanguages;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -258,7 +258,7 @@
 
           if ([(NSArray *)self->_availableLocaleIdentifiers containsObject:v16])
           {
-            v4 = v21;
+            localeCopy = v21;
             v7 = [NSLocale canonicalLocaleIdentifier:v21 withNewLanguageIdentifier:v14];
 
             goto LABEL_14;
@@ -275,11 +275,11 @@
       }
     }
 
-    v17 = [(COSLocaleSelector *)self->_localeSelector currentLocale];
-    v18 = [v17 localeIdentifier];
-    v7 = [NSLocale canonicalLocaleIdentifierFromString:v18];
+    currentLocale = [(COSLocaleSelector *)self->_localeSelector currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    v7 = [NSLocale canonicalLocaleIdentifierFromString:localeIdentifier];
 
-    v4 = v21;
+    localeCopy = v21;
 LABEL_14:
     v6 = v20;
   }
@@ -287,26 +287,26 @@ LABEL_14:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COSInternationalController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(COSInternationalController *)self indexForIndexPath:pathCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_17;
   }
 
   v9 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  if ([v10 isEqualToString:@"MIRROR_MY_COMPANION_ID"])
+  identifier = [v9 identifier];
+  if ([identifier isEqualToString:@"MIRROR_MY_COMPANION_ID"])
   {
   }
 
   else
   {
-    v11 = [v9 identifier];
-    v12 = [v11 isEqualToString:@"CUSTOM_ID"];
+    identifier2 = [v9 identifier];
+    v12 = [identifier2 isEqualToString:@"CUSTOM_ID"];
 
     if (!v12)
     {
@@ -314,45 +314,45 @@ LABEL_14:
     }
   }
 
-  v13 = [v9 identifier];
-  v14 = [v13 isEqualToString:@"MIRROR_MY_COMPANION_ID"];
+  identifier3 = [v9 identifier];
+  v14 = [identifier3 isEqualToString:@"MIRROR_MY_COMPANION_ID"];
 
-  v15 = [(COSInternationalController *)self mirrorController];
-  [v15 setMirrorSettings:v14];
+  mirrorController = [(COSInternationalController *)self mirrorController];
+  [mirrorController setMirrorSettings:v14];
 
   if (v14)
   {
-    v16 = [(COSInternationalController *)self languageSelector];
+    languageSelector = [(COSInternationalController *)self languageSelector];
     v17 = +[NSLocale preferredLanguages];
-    [v16 setLanguages:v17];
+    [languageSelector setLanguages:v17];
 
-    v18 = [(COSInternationalController *)self localeSelector];
+    localeSelector = [(COSInternationalController *)self localeSelector];
     v19 = +[NSLocale preferredLocale];
-    v20 = [v19 localeIdentifier];
-    [v18 setLocale:v20];
+    localeIdentifier = [v19 localeIdentifier];
+    [localeSelector setLocale:localeIdentifier];
 
-    v21 = [(COSInternationalController *)self inflectionSelector];
+    inflectionSelector = [(COSInternationalController *)self inflectionSelector];
     v22 = +[_NSAttributedStringGrammarInflection _currentGlobalUserInflection];
-    [v21 setInflection:v22];
+    [inflectionSelector setInflection:v22];
 
-    v23 = [(COSInternationalController *)self inflectionSelector];
-    [v23 setCanShareInflectionWithApps:{+[_NSAttributedStringGrammarInflection _thirdPartyApplicationsCanAccessUserInflection](_NSAttributedStringGrammarInflection, "_thirdPartyApplicationsCanAccessUserInflection")}];
+    inflectionSelector2 = [(COSInternationalController *)self inflectionSelector];
+    [inflectionSelector2 setCanShareInflectionWithApps:{+[_NSAttributedStringGrammarInflection _thirdPartyApplicationsCanAccessUserInflection](_NSAttributedStringGrammarInflection, "_thirdPartyApplicationsCanAccessUserInflection")}];
 
-    v24 = [(COSInternationalController *)self navigationItem];
-    [v24 setRightBarButtonItem:0];
+    navigationItem = [(COSInternationalController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v25 = [objc_opt_class() preferredLanguages];
-  v26 = [v25 count];
+  preferredLanguages = [objc_opt_class() preferredLanguages];
+  v26 = [preferredLanguages count];
 
   if (v26 >= 2)
   {
-    v24 = [(COSInternationalController *)self editButtonItem];
-    v27 = [(COSInternationalController *)self navigationItem];
-    [v27 setRightBarButtonItem:v24];
+    navigationItem = [(COSInternationalController *)self editButtonItem];
+    navigationItem2 = [(COSInternationalController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:navigationItem];
 
     goto LABEL_9;
   }
@@ -365,12 +365,12 @@ LABEL_11:
     [(COSInternationalController *)self stopSpinner];
     v28.receiver = self;
     v28.super_class = COSInternationalController;
-    [(COSInternationalController *)&v28 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(COSInternationalController *)&v28 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     [(COSInternationalController *)self startSpinnerInCellForSpecifier:v9];
     if (self->_errorHasOccurred)
     {
@@ -390,18 +390,18 @@ LABEL_17:
     v5 = [(COSInternationalController *)self loadSpecifiersFromPlistName:@"Companion" target:self bundle:v4];
 
     v6 = [v5 specifierForID:BPSMirrorGroupID];
-    v7 = [(COSInternationalController *)self mirrorController];
-    v8 = [v7 shouldShowMirroringAsEnabled];
+    mirrorController = [(COSInternationalController *)self mirrorController];
+    shouldShowMirroringAsEnabled = [mirrorController shouldShowMirroringAsEnabled];
 
-    if (v8)
+    if (shouldShowMirroringAsEnabled)
     {
-      v9 = [v5 specifierForID:BPSMirrorSwitchID];
-      [v6 setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
-      v10 = [(COSInternationalController *)self localizedMirroringDetailFooter];
-      [v6 setProperty:v10 forKey:PSFooterTextGroupKey];
+      specifiersInCustomSection = [v5 specifierForID:BPSMirrorSwitchID];
+      [v6 setProperty:specifiersInCustomSection forKey:PSRadioGroupCheckedSpecifierKey];
+      localizedMirroringDetailFooter = [(COSInternationalController *)self localizedMirroringDetailFooter];
+      [v6 setProperty:localizedMirroringDetailFooter forKey:PSFooterTextGroupKey];
 
-      v11 = [(COSInternationalController *)self navigationItem];
-      [v11 setRightBarButtonItem:0];
+      navigationItem = [(COSInternationalController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:0];
     }
 
     else
@@ -417,22 +417,22 @@ LABEL_17:
         [v6 setProperty:v12 forKey:PSRadioGroupCheckedSpecifierKey];
       }
 
-      v9 = [(COSInternationalController *)self specifiersInCustomSection];
-      [v5 addObjectsFromArray:v9];
-      v13 = [objc_opt_class() preferredLanguages];
-      v14 = [v13 count];
+      specifiersInCustomSection = [(COSInternationalController *)self specifiersInCustomSection];
+      [v5 addObjectsFromArray:specifiersInCustomSection];
+      preferredLanguages = [objc_opt_class() preferredLanguages];
+      v14 = [preferredLanguages count];
 
       if (v14 < 2)
       {
-        v15 = [(COSInternationalController *)self navigationItem];
-        [v15 setRightBarButtonItem:0];
+        navigationItem2 = [(COSInternationalController *)self navigationItem];
+        [navigationItem2 setRightBarButtonItem:0];
       }
 
       else
       {
-        v15 = [(COSInternationalController *)self editButtonItem];
-        v16 = [(COSInternationalController *)self navigationItem];
-        [v16 setRightBarButtonItem:v15];
+        navigationItem2 = [(COSInternationalController *)self editButtonItem];
+        navigationItem3 = [(COSInternationalController *)self navigationItem];
+        [navigationItem3 setRightBarButtonItem:navigationItem2];
       }
 
       [(ISInternationalViewController *)self addLanguagesToSpecifiers:v5];
@@ -456,9 +456,9 @@ LABEL_17:
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [(COSInternationalController *)self loadSpecifiersFromPlistName:@"CompanionCustom" target:self bundle:v3];
 
-  v5 = [(COSInternationalController *)self languageSelector];
-  v6 = [v5 appleLanguages];
-  if (![_NSAttributedStringGrammarInflection _canSelectUserInflectionWithPreferredLanguages:v6])
+  languageSelector = [(COSInternationalController *)self languageSelector];
+  appleLanguages = [languageSelector appleLanguages];
+  if (![_NSAttributedStringGrammarInflection _canSelectUserInflectionWithPreferredLanguages:appleLanguages])
   {
 
     goto LABEL_5;
@@ -476,25 +476,25 @@ LABEL_5:
   return v4;
 }
 
-- (void)startSpinnerInCellForSpecifier:(id)a3
+- (void)startSpinnerInCellForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   [(COSInternationalController *)self stopSpinner];
-  v8 = [v4 propertyForKey:PSTableCellKey];
+  v8 = [specifierCopy propertyForKey:PSTableCellKey];
   if (v8)
   {
     v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [v5 startAnimating];
     [v8 setForceHideDisclosureIndicator:1];
     [v8 setAccessoryView:v5];
-    v6 = [v8 detailTextLabel];
-    [v6 setHidden:1];
+    detailTextLabel = [v8 detailTextLabel];
+    [detailTextLabel setHidden:1];
 
-    [(COSInternationalController *)self reloadSpecifier:v4];
+    [(COSInternationalController *)self reloadSpecifier:specifierCopy];
   }
 
   remoteLoadingSpecifier = self->_remoteLoadingSpecifier;
-  self->_remoteLoadingSpecifier = v4;
+  self->_remoteLoadingSpecifier = specifierCopy;
 }
 
 - (void)stopSpinner
@@ -505,32 +505,32 @@ LABEL_5:
     v6 = [(PSSpecifier *)remoteLoadingSpecifier propertyForKey:PSTableCellKey];
     [v6 setAccessoryView:0];
     [v6 setForceHideDisclosureIndicator:0];
-    v4 = [v6 detailTextLabel];
-    [v4 setHidden:0];
+    detailTextLabel = [v6 detailTextLabel];
+    [detailTextLabel setHidden:0];
 
     v5 = self->_remoteLoadingSpecifier;
     self->_remoteLoadingSpecifier = 0;
   }
 }
 
-- (id)localizedDeviceDisplayLanguageNameFromPreferredLanguages:(id)a3
+- (id)localizedDeviceDisplayLanguageNameFromPreferredLanguages:(id)languages
 {
-  v4 = a3;
-  v5 = [objc_opt_class() deviceLanguageFrom:v4];
+  languagesCopy = languages;
+  v5 = [objc_opt_class() deviceLanguageFrom:languagesCopy];
 
   if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
     sub_1A7C0();
   }
 
-  v6 = [(COSInternationalController *)self localeSelector];
-  v7 = [v6 currentLocale];
-  v8 = [v7 regionCode];
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  currentLocale = [localeSelector currentLocale];
+  regionCode = [currentLocale regionCode];
 
   v9 = [NSLocale localeWithLocaleIdentifier:v5];
-  v10 = [v9 regionCode];
+  regionCode2 = [v9 regionCode];
 
-  if ([v8 isEqualToString:v10])
+  if ([regionCode isEqualToString:regionCode2])
   {
     v11 = [NSLocale baseLanguageFromLanguage:v5];
 
@@ -538,48 +538,48 @@ LABEL_5:
   }
 
   v12 = [IPLanguage languageWithIdentifier:v5];
-  v13 = [v12 localizedStringForName];
+  localizedStringForName = [v12 localizedStringForName];
 
-  return v13;
+  return localizedStringForName;
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v14 = a3;
-  v4 = [NSLocale localeWithLocaleIdentifier:v14];
-  v5 = [v4 regionCode];
+  languageCopy = language;
+  v4 = [NSLocale localeWithLocaleIdentifier:languageCopy];
+  regionCode = [v4 regionCode];
 
-  v6 = v14;
-  if (!v5)
+  v6 = languageCopy;
+  if (!regionCode)
   {
-    v7 = [(COSInternationalController *)self localeSelector];
-    v8 = [v7 currentLocale];
-    v9 = [v8 regionCode];
-    v6 = [NSLocale languageFromLanguage:v14 byReplacingRegion:v9];
+    localeSelector = [(COSInternationalController *)self localeSelector];
+    currentLocale = [localeSelector currentLocale];
+    regionCode2 = [currentLocale regionCode];
+    v6 = [NSLocale languageFromLanguage:languageCopy byReplacingRegion:regionCode2];
   }
 
-  v10 = [(COSInternationalController *)self languageSelector];
-  v11 = [v10 appleLanguages];
+  languageSelector = [(COSInternationalController *)self languageSelector];
+  appleLanguages = [languageSelector appleLanguages];
 
-  v12 = [NSLocale languageArrayAfterSettingLanguage:v6 fallback:0 toLanguageArray:v11];
-  if ([v12 count] && (objc_msgSend(v11, "isEqualToArray:", v12) & 1) == 0)
+  v12 = [NSLocale languageArrayAfterSettingLanguage:v6 fallback:0 toLanguageArray:appleLanguages];
+  if ([v12 count] && (objc_msgSend(appleLanguages, "isEqualToArray:", v12) & 1) == 0)
   {
     [(COSInternationalController *)self setPreferredLanguages:v12];
   }
 
-  v13 = [(COSInternationalController *)self localeSelector];
-  [v13 setLocaleFromLanguageIdentifier:v14];
+  localeSelector2 = [(COSInternationalController *)self localeSelector];
+  [localeSelector2 setLocaleFromLanguageIdentifier:languageCopy];
 }
 
-- (void)setPreferredLanguages:(id)a3
+- (void)setPreferredLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   v5 = +[NSMutableOrderedSet orderedSet];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = languagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -613,51 +613,51 @@ LABEL_5:
 
   if ([v5 count])
   {
-    v12 = [(COSInternationalController *)self languageSelector];
-    v13 = [v5 array];
-    [v12 setLanguages:v13];
+    languageSelector = [(COSInternationalController *)self languageSelector];
+    array = [v5 array];
+    [languageSelector setLanguages:array];
 
     [(ISInternationalViewController *)self setUpdatedAppleLanguages:0];
   }
 
-  v14 = [(COSInternationalController *)self localeSelector];
-  v15 = [v5 firstObject];
-  [v14 setLocaleFromLanguageIdentifier:v15];
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  firstObject = [v5 firstObject];
+  [localeSelector setLocaleFromLanguageIdentifier:firstObject];
 }
 
-- (void)setLocaleOnly:(id)a3
+- (void)setLocaleOnly:(id)only
 {
-  v4 = a3;
-  v5 = [(COSInternationalController *)self localeSelector];
-  [v5 setLocaleOnly:v4];
+  onlyCopy = only;
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  [localeSelector setLocaleOnly:onlyCopy];
 }
 
 - (id)currentInflectionDisplayString
 {
-  v2 = [(COSInternationalController *)self inflectionSelector];
-  v3 = [v2 currentInflection];
-  v4 = [v3 localizedShortDescription];
+  inflectionSelector = [(COSInternationalController *)self inflectionSelector];
+  currentInflection = [inflectionSelector currentInflection];
+  localizedShortDescription = [currentInflection localizedShortDescription];
 
-  return v4;
+  return localizedShortDescription;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = COSInternationalController;
-  v4 = a3;
-  v5 = [(COSInternationalController *)&v12 selectSpecifier:v4];
-  v6 = [v4 detailControllerClass];
+  specifierCopy = specifier;
+  v5 = [(COSInternationalController *)&v12 selectSpecifier:specifierCopy];
+  detailControllerClass = [specifierCopy detailControllerClass];
 
-  if (v6 == objc_opt_class())
+  if (detailControllerClass == objc_opt_class())
   {
     v7 = v5;
-    v8 = [(COSInternationalController *)self inflectionSelector];
-    v9 = [v8 currentInflection];
-    [v7 setInflection:v9];
+    inflectionSelector = [(COSInternationalController *)self inflectionSelector];
+    currentInflection = [inflectionSelector currentInflection];
+    [v7 setInflection:currentInflection];
 
-    v10 = [(COSInternationalController *)self inflectionSelector];
-    [v7 setCanShareInflection:{objc_msgSend(v10, "canShareInflectionWithApps")}];
+    inflectionSelector2 = [(COSInternationalController *)self inflectionSelector];
+    [v7 setCanShareInflection:{objc_msgSend(inflectionSelector2, "canShareInflectionWithApps")}];
 
     [v7 setDelegate:self];
   }
@@ -665,73 +665,73 @@ LABEL_5:
   return v5;
 }
 
-- (void)inflectionSettingsViewController:(id)a3 inflectionDidChange:(id)a4
+- (void)inflectionSettingsViewController:(id)controller inflectionDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(COSInternationalController *)self inflectionSelector];
-  [v6 setInflection:v5];
+  changeCopy = change;
+  inflectionSelector = [(COSInternationalController *)self inflectionSelector];
+  [inflectionSelector setInflection:changeCopy];
 
   [(COSInternationalController *)self reloadSpecifiers];
 }
 
-- (id)localizedRegionNameForLocale:(id)a3
+- (id)localizedRegionNameForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  localeCopy = locale;
+  v4 = localeCopy;
+  if (localeCopy)
   {
-    v5 = [v3 regionCode];
+    regionCode = [localeCopy regionCode];
   }
 
   else
   {
-    v5 = 0;
+    regionCode = 0;
   }
 
-  if (![(__CFString *)v5 length])
+  if (![(__CFString *)regionCode length])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
       sub_1A848();
     }
 
-    v5 = @"US";
+    regionCode = @"US";
   }
 
   v6 = +[NSLocale currentLocale];
-  v7 = [v6 localizedStringForRegion:v5 context:3 short:0];
+  v7 = [v6 localizedStringForRegion:regionCode context:3 short:0];
 
   return v7;
 }
 
-- (id)regionForCurrentLocale:(id)a3
+- (id)regionForCurrentLocale:(id)locale
 {
-  v4 = [(COSInternationalController *)self localeSelector];
-  v5 = [v4 currentLocale];
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  currentLocale = [localeSelector currentLocale];
 
-  v6 = [(COSInternationalController *)self localizedRegionNameForLocale:v5];
+  v6 = [(COSInternationalController *)self localizedRegionNameForLocale:currentLocale];
 
   return v6;
 }
 
-- (void)setCalendar:(id)a3 specifier:(id)a4
+- (void)setCalendar:(id)calendar specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(COSInternationalController *)self localeSelector];
-  [v6 setLocaleFromCalendarID:v5];
+  calendarCopy = calendar;
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  [localeSelector setLocaleFromCalendarID:calendarCopy];
 }
 
-- (id)effectiveCalendarFromLocale:(id)a3
+- (id)effectiveCalendarFromLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [v4 localeIdentifier];
-  v6 = [NSLocale componentsFromLocaleIdentifier:v5];
+  localeCopy = locale;
+  localeIdentifier = [localeCopy localeIdentifier];
+  v6 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
 
   v7 = [v6 objectForKey:@"calendar"];
   if (!v7)
   {
-    v8 = [v4 localeIdentifier];
-    v7 = [(COSInternationalController *)self defaultCalendarForLocaleID:v8];
+    localeIdentifier2 = [localeCopy localeIdentifier];
+    v7 = [(COSInternationalController *)self defaultCalendarForLocaleID:localeIdentifier2];
   }
 
   if (![(NSArray *)self->_supportedCalendars containsObject:v7])
@@ -744,31 +744,31 @@ LABEL_5:
   return v7;
 }
 
-- (id)calendar:(id)a3
+- (id)calendar:(id)calendar
 {
-  v4 = [(COSInternationalController *)self localeSelector];
-  v5 = [v4 currentLocale];
-  v6 = [(COSInternationalController *)self effectiveCalendarFromLocale:v5];
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  currentLocale = [localeSelector currentLocale];
+  v6 = [(COSInternationalController *)self effectiveCalendarFromLocale:currentLocale];
 
   return v6;
 }
 
-- (id)defaultCalendarForLocaleID:(id)a3
+- (id)defaultCalendarForLocaleID:(id)d
 {
-  v4 = a3;
-  v5 = [NSLocale localeWithLocaleIdentifier:v4];
-  v6 = [v5 regionCode];
+  dCopy = d;
+  v5 = [NSLocale localeWithLocaleIdentifier:dCopy];
+  regionCode = [v5 regionCode];
 
-  if (!v6 || (defaultCalendars = self->_defaultCalendars, [@"*_" stringByAppendingString:v6], v8 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](defaultCalendars, "objectForKeyedSubscript:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if (!regionCode || (defaultCalendars = self->_defaultCalendars, [@"*_" stringByAppendingString:regionCode], v8 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](defaultCalendars, "objectForKeyedSubscript:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
-    v10 = [NSLocale componentsFromLocaleIdentifier:v4];
+    v10 = [NSLocale componentsFromLocaleIdentifier:dCopy];
     v11 = objc_opt_new();
     v12 = [v10 objectForKeyedSubscript:NSLocaleLanguageCode];
     [v11 setObject:v12 forKeyedSubscript:NSLocaleLanguageCode];
 
-    if (v6)
+    if (regionCode)
     {
-      [v11 setObject:v6 forKeyedSubscript:NSLocaleCountryCode];
+      [v11 setObject:regionCode forKeyedSubscript:NSLocaleCountryCode];
     }
 
     v13 = [v10 objectForKeyedSubscript:NSLocaleScriptCode];
@@ -799,16 +799,16 @@ LABEL_5:
   return v9;
 }
 
-- (id)canonicalLocaleIdentifierWithValidCalendarForComponents:(id)a3
+- (id)canonicalLocaleIdentifierWithValidCalendarForComponents:(id)components
 {
-  v4 = a3;
-  v5 = [NSLocale canonicalLocaleIdentifierFromComponents:v4];
+  componentsCopy = components;
+  v5 = [NSLocale canonicalLocaleIdentifierFromComponents:componentsCopy];
   v6 = [(COSInternationalController *)self defaultCalendarForLocaleID:v5];
-  v7 = [v4 objectForKey:@"calendar"];
+  v7 = [componentsCopy objectForKey:@"calendar"];
 
   if (v7)
   {
-    v8 = [v4 objectForKey:@"calendar"];
+    v8 = [componentsCopy objectForKey:@"calendar"];
     v9 = [v8 isEqualToString:v6];
 
     if (!v9)
@@ -816,7 +816,7 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    [v4 removeObjectForKey:@"calendar"];
+    [componentsCopy removeObjectForKey:@"calendar"];
   }
 
   else
@@ -826,10 +826,10 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    [v4 setObject:NSCalendarIdentifierGregorian forKey:@"calendar"];
+    [componentsCopy setObject:NSCalendarIdentifierGregorian forKey:@"calendar"];
   }
 
-  v10 = [NSLocale canonicalLocaleIdentifierFromComponents:v4];
+  v10 = [NSLocale canonicalLocaleIdentifierFromComponents:componentsCopy];
 
   v5 = v10;
 LABEL_7:
@@ -839,11 +839,11 @@ LABEL_7:
 
 - (id)numberingSystemsValues
 {
-  v3 = [(COSInternationalController *)self localeSelector];
-  v4 = [v3 currentLocale];
-  v5 = [v4 localeIdentifier];
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  currentLocale = [localeSelector currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  if ([v5 isEqualToString:@"root"])
+  if ([localeIdentifier isEqualToString:@"root"])
   {
     v6 = 0;
   }
@@ -852,8 +852,8 @@ LABEL_7:
   {
     while (1)
     {
-      v7 = [(COSInternationalController *)self numberingSystems];
-      v6 = [v7 objectForKeyedSubscript:v5];
+      numberingSystems = [(COSInternationalController *)self numberingSystems];
+      v6 = [numberingSystems objectForKeyedSubscript:localeIdentifier];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -861,13 +861,13 @@ LABEL_7:
         break;
       }
 
-      v8 = [IntlUtility parentLocaleIdentifierForIdentifier:v5];
+      v8 = [IntlUtility parentLocaleIdentifierForIdentifier:localeIdentifier];
 
-      v5 = v8;
+      localeIdentifier = v8;
       if ([v8 isEqualToString:@"root"])
       {
         v6 = 0;
-        v5 = v8;
+        localeIdentifier = v8;
         break;
       }
     }
@@ -894,7 +894,7 @@ LABEL_7:
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_28F98 table:@"Companion"];
 
-  v61 = self;
+  selfCopy = self;
   v9 = [(COSInternationalController *)self localizedDeviceDisplayLanguageNameFromPreferredLanguages:v3];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"LANGUAGE" value:&stru_28F98 table:@"InternationalSettings"];
@@ -943,24 +943,24 @@ LABEL_7:
 
           v21 = *(*(&v66 + 1) + 8 * i);
           v22 = +[NSLocale preferredLocale];
-          v23 = [v22 regionCode];
+          regionCode = [v22 regionCode];
 
           v24 = [NSLocale localeWithLocaleIdentifier:v21];
-          v25 = [v24 regionCode];
+          regionCode2 = [v24 regionCode];
 
-          if (v25)
+          if (regionCode2)
           {
-            v26 = [v24 regionCode];
+            regionCode3 = [v24 regionCode];
           }
 
           else
           {
-            v26 = v23;
+            regionCode3 = regionCode;
           }
 
-          v27 = v26;
+          v27 = regionCode3;
           v28 = v21;
-          if ([v27 isEqualToString:v23])
+          if ([v27 isEqualToString:regionCode])
           {
             v29 = [NSLocale baseLanguageFromLanguage:v28];
 
@@ -968,8 +968,8 @@ LABEL_7:
           }
 
           v30 = [IPLanguage languageWithIdentifier:v28];
-          v31 = [v30 localizedStringForName];
-          [v65 appendFormat:@"• %@\n", v31];
+          localizedStringForName = [v30 localizedStringForName];
+          [v65 appendFormat:@"• %@\n", localizedStringForName];
         }
 
         v18 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
@@ -987,42 +987,42 @@ LABEL_7:
   v33 = v32;
   if (v32)
   {
-    v34 = [v32 localizedShortDescription];
+    localizedShortDescription = [v32 localizedShortDescription];
     v35 = [NSBundle bundleForClass:objc_opt_class()];
     v36 = [v35 localizedStringForKey:@"INFLECTION" value:&stru_28F98 table:@"InternationalSettings"];
-    [v14 appendFormat:v8, v36, v34];
+    [v14 appendFormat:v8, v36, localizedShortDescription];
   }
 
   v37 = +[NSLocale preferredLocale];
-  v38 = v61;
-  v39 = [(COSInternationalController *)v61 localizedRegionNameForLocale:v37];
+  v38 = selfCopy;
+  v39 = [(COSInternationalController *)selfCopy localizedRegionNameForLocale:v37];
   v40 = [NSBundle bundleForClass:objc_opt_class()];
   v41 = [v40 localizedStringForKey:@"LOCALE" value:&stru_28F98 table:@"InternationalSettings"];
   [v14 appendFormat:v8, v41, v39];
 
-  v42 = [v37 localeIdentifier];
-  v43 = [IntlUtility numberingSystemsForLocaleID:v42];
+  localeIdentifier = [v37 localeIdentifier];
+  v43 = [IntlUtility numberingSystemsForLocaleID:localeIdentifier];
 
   if ([v43 count] >= 2)
   {
-    v44 = [v37 localeIdentifier];
-    v45 = [NSLocale componentsFromLocaleIdentifier:v44];
+    localeIdentifier2 = [v37 localeIdentifier];
+    v45 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier2];
 
     v46 = [v45 objectForKey:@"numbers"];
     if (!v46)
     {
-      v47 = [v37 localeIdentifier];
-      v46 = [IntlUtility defaultNumberingSystemForLocaleID:v47];
+      localeIdentifier3 = [v37 localeIdentifier];
+      v46 = [IntlUtility defaultNumberingSystemForLocaleID:localeIdentifier3];
     }
 
-    v48 = [v37 localeIdentifier];
-    v49 = [IntlUtility shortDisplayNameForNumberingSystemWithIdentifier:v46 localeIdentifier:v48];
+    localeIdentifier4 = [v37 localeIdentifier];
+    v49 = [IntlUtility shortDisplayNameForNumberingSystemWithIdentifier:v46 localeIdentifier:localeIdentifier4];
 
     v50 = [NSBundle bundleForClass:objc_opt_class()];
     v51 = [v50 localizedStringForKey:@"NUMBERING_SYSTEM" value:&stru_28F98 table:@"InternationalSettings"];
     [v65 appendFormat:v63, v51, v49];
 
-    v38 = v61;
+    v38 = selfCopy;
   }
 
   if (qword_30308[0] != -1)
@@ -1046,37 +1046,37 @@ LABEL_7:
 + (id)preferredLanguages
 {
   v2 = [[COSLanguageSelector alloc] initWithInternationalController:0];
-  v3 = [(COSLanguageSelector *)v2 appleLanguages];
+  appleLanguages = [(COSLanguageSelector *)v2 appleLanguages];
 
-  return v3;
+  return appleLanguages;
 }
 
 + (id)currentLocale
 {
   v2 = [[COSLocaleSelector alloc] initWithInternationalController:0];
-  v3 = [(COSLocaleSelector *)v2 currentLocale];
+  currentLocale = [(COSLocaleSelector *)v2 currentLocale];
 
-  return v3;
+  return currentLocale;
 }
 
 + (id)deviceLanguageIdentifier
 {
-  v3 = [a1 preferredLanguages];
-  v4 = [a1 deviceLanguageFrom:v3];
+  preferredLanguages = [self preferredLanguages];
+  v4 = [self deviceLanguageFrom:preferredLanguages];
 
   return v4;
 }
 
-- (void)changeLanguage:(id)a3
+- (void)changeLanguage:(id)language
 {
-  v4 = [(COSInternationalController *)self languageSelector];
-  v5 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  [v4 setLanguages:v5];
+  languageSelector = [(COSInternationalController *)self languageSelector];
+  updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
+  [languageSelector setLanguages:updatedAppleLanguages];
 
-  v6 = [(COSInternationalController *)self localeSelector];
-  v7 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  v8 = [v7 firstObject];
-  [v6 setLocaleFromLanguageIdentifier:v8];
+  localeSelector = [(COSInternationalController *)self localeSelector];
+  updatedAppleLanguages2 = [(ISInternationalViewController *)self updatedAppleLanguages];
+  firstObject = [updatedAppleLanguages2 firstObject];
+  [localeSelector setLocaleFromLanguageIdentifier:firstObject];
 
   [(ISInternationalViewController *)self setUpdatedAppleLanguages:0];
   [(ISInternationalViewController *)self setEditing:0 animated:1];

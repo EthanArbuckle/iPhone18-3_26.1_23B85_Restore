@@ -1,7 +1,7 @@
 @interface CKDFetchTranscodeServerPublicKeyOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDFetchTranscodeServerPublicKeyOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchTranscodeServerPublicKeyOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)determineTranscodeServerPublicKeyURL;
 - (void)fetchCachedTranscodePublicKey;
@@ -11,19 +11,19 @@
 
 @implementation CKDFetchTranscodeServerPublicKeyOperation
 
-- (CKDFetchTranscodeServerPublicKeyOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchTranscodeServerPublicKeyOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = CKDFetchTranscodeServerPublicKeyOperation;
-  v9 = [(CKDOperation *)&v15 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v15 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_transcodeServerHostname(v6, v7, v8);
+    v10 = objc_msgSend_transcodeServerHostname(infoCopy, v7, v8);
     transcodeServerHostname = v9->_transcodeServerHostname;
     v9->_transcodeServerHostname = v10;
 
-    v9->_type = objc_msgSend_type(v6, v12, v13);
+    v9->_type = objc_msgSend_type(infoCopy, v12, v13);
   }
 
   return v9;
@@ -57,7 +57,7 @@
     *buf = 138544130;
     v26 = v14;
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v19;
     v31 = 2112;
@@ -273,7 +273,7 @@
   v38 = sub_2251A4394;
   v39 = &unk_2785476F0;
   objc_copyWeak(&v41, location);
-  v40 = self;
+  selfCopy = self;
   objc_msgSend_setCompletionBlock_(v16, v25, &v36);
   objc_msgSend_setRequest_(self, v26, v16, v36, v37, v38, v39);
   v29 = objc_msgSend_container(self, v27, v28);
@@ -327,20 +327,20 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 3)
+  if (state - 2 >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDFetchTranscodeServerPublicKeyOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_278548790[a3 - 2];
+    v5 = off_278548790[state - 2];
   }
 
   return v5;

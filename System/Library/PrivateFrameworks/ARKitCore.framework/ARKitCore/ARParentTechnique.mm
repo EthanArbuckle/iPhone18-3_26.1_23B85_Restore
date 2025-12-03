@@ -1,52 +1,52 @@
 @interface ARParentTechnique
-+ (id)parentTechniqueOfClass:(Class)a3 inArray:(id)a4;
-+ (id)techniqueInArray:(id)a3 passingTest:(id)a4;
-+ (id)techniquesByForceReplacingTechniques:(id)a3 withMatchingClassTechniques:(id)a4;
-+ (id)techniquesByReplacingOriginalTechniques:(id)a3 withReplacementTechniques:(id)a4 passingTest:(id)a5;
-- (ARParentTechnique)initWithParallelTechniques:(id)a3;
-- (ARParentTechnique)initWithTechniques:(id)a3 delegate:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)reconfigurableFrom:(id)a3;
++ (id)parentTechniqueOfClass:(Class)class inArray:(id)array;
++ (id)techniqueInArray:(id)array passingTest:(id)test;
++ (id)techniquesByForceReplacingTechniques:(id)techniques withMatchingClassTechniques:(id)classTechniques;
++ (id)techniquesByReplacingOriginalTechniques:(id)techniques withReplacementTechniques:(id)replacementTechniques passingTest:(id)test;
+- (ARParentTechnique)initWithParallelTechniques:(id)techniques;
+- (ARParentTechnique)initWithTechniques:(id)techniques delegate:(id)delegate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)reconfigurableFrom:(id)from;
 - (NSString)description;
 - (double)requiredTimeInterval;
 - (id)_fullDescription;
-- (id)predictedResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (id)processData:(id)a3;
-- (id)processData:(id)a3 onTechniques:(id)a4;
+- (id)predictedResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (id)processData:(id)data;
+- (id)processData:(id)data onTechniques:(id)techniques;
 - (id)resultDataClasses;
-- (id)techniqueConformsToProtocol:(id)a3;
-- (id)techniqueMatchingPredicate:(id)a3;
-- (id)techniqueOfClass:(Class)a3;
-- (id)toJSONWithRootName:(id)a3;
+- (id)techniqueConformsToProtocol:(id)protocol;
+- (id)techniqueMatchingPredicate:(id)predicate;
+- (id)techniqueOfClass:(Class)class;
+- (id)toJSONWithRootName:(id)name;
 - (unint64_t)requiredSensorDataTypes;
-- (void)dotGraphWithLines:(id)a3 rootName:(id)a4;
-- (void)prepare:(BOOL)a3;
-- (void)reconfigureFrom:(id)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4 onTechniques:(id)a5 withTimeout:(double)a6;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4 withTimeout:(double)a5;
-- (void)reuseTechniques:(id)a3;
-- (void)setBonusLatency:(double)a3;
-- (void)setPowerUsage:(unint64_t)a3;
-- (void)setTechniques:(id)a3;
-- (void)siblingTechniquesDidChange:(id)a3;
-- (void)submitResultsForTimestamp:(double)a3 context:(id)a4;
-- (void)technique:(id)a3 didFailWithError:(id)a4;
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6;
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6 onTechniques:(id)a7;
+- (void)dotGraphWithLines:(id)lines rootName:(id)name;
+- (void)prepare:(BOOL)prepare;
+- (void)reconfigureFrom:(id)from;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context onTechniques:(id)techniques withTimeout:(double)timeout;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context withTimeout:(double)timeout;
+- (void)reuseTechniques:(id)techniques;
+- (void)setBonusLatency:(double)latency;
+- (void)setPowerUsage:(unint64_t)usage;
+- (void)setTechniques:(id)techniques;
+- (void)siblingTechniquesDidChange:(id)change;
+- (void)submitResultsForTimestamp:(double)timestamp context:(id)context;
+- (void)technique:(id)technique didFailWithError:(id)error;
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context;
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context onTechniques:(id)techniques;
 @end
 
 @implementation ARParentTechnique
 
-+ (id)parentTechniqueOfClass:(Class)a3 inArray:(id)a4
++ (id)parentTechniqueOfClass:(Class)class inArray:(id)array
 {
   v33 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  arrayCopy = array;
+  v6 = [arrayCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -58,7 +58,7 @@
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
@@ -70,8 +70,8 @@
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v12 = [v11 _internalTechniques];
-          v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          _internalTechniques = [v11 _internalTechniques];
+          v13 = [_internalTechniques countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v13)
           {
             v14 = v13;
@@ -82,7 +82,7 @@ LABEL_9:
             {
               if (*v24 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(_internalTechniques);
               }
 
               if (objc_opt_isKindOfClass())
@@ -92,7 +92,7 @@ LABEL_9:
 
               if (v14 == ++v16)
               {
-                v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                v14 = [_internalTechniques countByEnumeratingWithState:&v23 objects:v31 count:16];
                 if (v14)
                 {
                   goto LABEL_9;
@@ -103,14 +103,14 @@ LABEL_9:
             }
           }
 
-          v17 = [v11 _internalTechniques];
-          v18 = [ARParentTechnique parentTechniqueOfClass:a3 inArray:v17];
+          _internalTechniques2 = [v11 _internalTechniques];
+          v18 = [ARParentTechnique parentTechniqueOfClass:class inArray:_internalTechniques2];
 
-          if (v18 || ([v11 splitTechniques], v19 = objc_claimAutoreleasedReturnValue(), +[ARParentTechnique parentTechniqueOfClass:inArray:](ARParentTechnique, "parentTechniqueOfClass:inArray:", a3, v19), v18 = objc_claimAutoreleasedReturnValue(), v19, v18))
+          if (v18 || ([v11 splitTechniques], v19 = objc_claimAutoreleasedReturnValue(), +[ARParentTechnique parentTechniqueOfClass:inArray:](ARParentTechnique, "parentTechniqueOfClass:inArray:", class, v19), v18 = objc_claimAutoreleasedReturnValue(), v19, v18))
           {
             v20 = v18;
 
-            v12 = v11;
+            _internalTechniques = v11;
             v11 = v20;
 LABEL_23:
 
@@ -121,7 +121,7 @@ LABEL_23:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
       v11 = 0;
       if (v7)
       {
@@ -142,18 +142,18 @@ LABEL_24:
   return v11;
 }
 
-- (ARParentTechnique)initWithTechniques:(id)a3 delegate:(id)a4
+- (ARParentTechnique)initWithTechniques:(id)techniques delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  techniquesCopy = techniques;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = ARParentTechnique;
   v8 = [(ARTechnique *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(ARTechnique *)v8 setDelegate:v7];
-    [(ARParentTechnique *)v9 setTechniques:v6];
+    [(ARTechnique *)v8 setDelegate:delegateCopy];
+    [(ARParentTechnique *)v9 setTechniques:techniquesCopy];
     v10 = ARCreateFixedPriorityDispatchQueue("com.apple.arkit.technique");
     queue = v9->_queue;
     v9->_queue = v10;
@@ -164,9 +164,9 @@ LABEL_24:
   return v9;
 }
 
-- (ARParentTechnique)initWithParallelTechniques:(id)a3
+- (ARParentTechnique)initWithParallelTechniques:(id)techniques
 {
-  result = [(ARParentTechnique *)self initWithTechniques:a3 delegate:0];
+  result = [(ARParentTechnique *)self initWithTechniques:techniques delegate:0];
   if (result)
   {
     result->_parallelExecution = 1;
@@ -178,11 +178,11 @@ LABEL_24:
   return result;
 }
 
-- (void)reuseTechniques:(id)a3
+- (void)reuseTechniques:(id)techniques
 {
-  v4 = a3;
-  v5 = [(ARParentTechnique *)self techniques];
-  v7 = [ARParentTechnique techniquesByReplacingOriginalTechniques:v5 withReplacementTechniques:v4 passingTest:&__block_literal_global_30];
+  techniquesCopy = techniques;
+  techniques = [(ARParentTechnique *)self techniques];
+  v7 = [ARParentTechnique techniquesByReplacingOriginalTechniques:techniques withReplacementTechniques:techniquesCopy passingTest:&__block_literal_global_30];
 
   v6 = v7;
   if (v7)
@@ -205,21 +205,21 @@ uint64_t __37__ARParentTechnique_reuseTechniques___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
-  v5 = [(ARParentTechnique *)self techniques];
-  v6 = [(ARParentTechnique *)self processData:v4 onTechniques:v5];
+  dataCopy = data;
+  techniques = [(ARParentTechnique *)self techniques];
+  v6 = [(ARParentTechnique *)self processData:dataCopy onTechniques:techniques];
 
   return v6;
 }
 
-- (id)processData:(id)a3 onTechniques:(id)a4
+- (id)processData:(id)data onTechniques:(id)techniques
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  dataCopy = data;
+  techniquesCopy = techniques;
+  v8 = dataCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -234,7 +234,7 @@ uint64_t __37__ARParentTechnique_reuseTechniques___block_invoke(uint64_t a1, voi
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v7;
+  v12 = techniquesCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   v14 = v8;
   if (v13)
@@ -273,45 +273,45 @@ uint64_t __37__ARParentTechnique_reuseTechniques___block_invoke(uint64_t a1, voi
   return v19;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
-  v6 = a4;
-  v7 = [(ARParentTechnique *)self techniques];
-  [(ARParentTechnique *)self requestResultDataAtTimestamp:v6 context:v7 onTechniques:a3 withTimeout:0.0];
+  contextCopy = context;
+  techniques = [(ARParentTechnique *)self techniques];
+  [(ARParentTechnique *)self requestResultDataAtTimestamp:contextCopy context:techniques onTechniques:timestamp withTimeout:0.0];
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4 withTimeout:(double)a5
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context withTimeout:(double)timeout
 {
-  v8 = a4;
-  v9 = [(ARParentTechnique *)self techniques];
-  [(ARParentTechnique *)self requestResultDataAtTimestamp:v8 context:v9 onTechniques:a3 withTimeout:a5];
+  contextCopy = context;
+  techniques = [(ARParentTechnique *)self techniques];
+  [(ARParentTechnique *)self requestResultDataAtTimestamp:contextCopy context:techniques onTechniques:timestamp withTimeout:timeout];
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4 onTechniques:(id)a5 withTimeout:(double)a6
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context onTechniques:(id)techniques withTimeout:(double)timeout
 {
   v62 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  if ([v11 count])
+  contextCopy = context;
+  techniquesCopy = techniques;
+  if ([techniquesCopy count])
   {
     if (self->_parallelExecution)
     {
-      v12 = [v11 indexesOfObjectsPassingTest:&__block_literal_global_12];
-      v13 = [v11 indexesOfObjectsPassingTest:&__block_literal_global_14];
+      v12 = [techniquesCopy indexesOfObjectsPassingTest:&__block_literal_global_12];
+      v13 = [techniquesCopy indexesOfObjectsPassingTest:&__block_literal_global_14];
       os_unfair_lock_lock(&self->_previousContext_lock);
       v43 = v13;
       v44 = v12;
-      v14 = [[ARTechniqueParallelGatherContext alloc] initWithParentContext:v10 previousContext:self->_previousContext requiredTechniqueIndices:v12 deterministicTechniqueIndices:v13 techniques:v11];
+      v14 = [[ARTechniqueParallelGatherContext alloc] initWithParentContext:contextCopy previousContext:self->_previousContext requiredTechniqueIndices:v12 deterministicTechniqueIndices:v13 techniques:techniquesCopy];
       [(ARTechniqueParallelGatherContext *)self->_previousContext clearPreviousContext];
       objc_storeStrong(&self->_previousContext, v14);
-      v15 = self;
+      selfCopy = self;
       os_unfair_lock_unlock(&self->_previousContext_lock);
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v45 = v11;
-      obj = v11;
+      v45 = techniquesCopy;
+      obj = techniquesCopy;
       v16 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
       if (v16)
       {
@@ -328,31 +328,31 @@ uint64_t __37__ARParentTechnique_reuseTechniques___block_invoke(uint64_t a1, voi
             }
 
             v20 = *(*(&v55 + 1) + 8 * v19);
-            v21 = [v20 traceKey];
+            traceKey = [v20 traceKey];
             if (ARTechnique_Request_to_Result_onceToken != -1)
             {
               [ARParentTechnique requestResultDataAtTimestamp:context:onTechniques:withTimeout:];
             }
 
-            v22 = [ARTechnique_Request_to_Result_keyToCode objectForKeyedSubscript:v21];
+            v22 = [ARTechnique_Request_to_Result_keyToCode objectForKeyedSubscript:traceKey];
             [v22 intValue];
 
             kdebug_trace();
-            v23 = [v20 traceKey];
+            traceKey2 = [v20 traceKey];
             if (ARTechnique_Request_begin_onceToken != -1)
             {
               [ARParentTechnique requestResultDataAtTimestamp:context:onTechniques:withTimeout:];
             }
 
-            v24 = [ARTechnique_Request_begin_keyToCode objectForKeyedSubscript:v23];
+            v24 = [ARTechnique_Request_begin_keyToCode objectForKeyedSubscript:traceKey2];
             [v24 intValue];
 
             kdebug_trace();
             v60 = v20;
             v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v60 count:1];
-            [(ARParentTechnique *)v15 _logTechniqueState:@"requestingResultDataParallel" state:v25 data:a3];
+            [(ARParentTechnique *)selfCopy _logTechniqueState:@"requestingResultDataParallel" state:v25 data:timestamp];
 
-            [v20 requestResultDataAtTimestamp:v14 context:a3];
+            [v20 requestResultDataAtTimestamp:v14 context:timestamp];
             ++v19;
           }
 
@@ -363,50 +363,50 @@ uint64_t __37__ARParentTechnique_reuseTechniques___block_invoke(uint64_t a1, voi
         while (v17);
       }
 
-      if (v15->_useLowLatencyPath)
+      if (selfCopy->_useLowLatencyPath)
       {
-        v11 = v45;
+        techniquesCopy = v45;
         v27 = v43;
-        v26 = v44;
+        firstObject = v44;
         if ([(ARTechniqueParallelGatherContext *)v14 isComplete])
         {
-          [(ARParentTechnique *)v15 submitResultsForTimestamp:v14 context:a3];
+          [(ARParentTechnique *)selfCopy submitResultsForTimestamp:v14 context:timestamp];
         }
       }
 
       else
       {
-        v26 = v44;
-        v11 = v45;
+        firstObject = v44;
+        techniquesCopy = v45;
         v27 = v43;
-        if (a6 == 0.0)
+        if (timeout == 0.0)
         {
-          [(ARParentTechnique *)v15 requiredTimeInterval];
+          [(ARParentTechnique *)selfCopy requiredTimeInterval];
           v38 = v37;
-          [(ARTechnique *)v15 bonusLatency];
+          [(ARTechnique *)selfCopy bonusLatency];
           v40 = v38 - v39;
           if (v40 >= 0.0001)
           {
-            a6 = v40;
+            timeout = v40;
           }
 
           else
           {
-            a6 = 0.0001;
+            timeout = 0.0001;
           }
         }
 
-        objc_initWeak(&location, v15);
-        v41 = dispatch_time(0, (a6 * 1000000000.0));
-        queue = v15->_queue;
+        objc_initWeak(&location, selfCopy);
+        v41 = dispatch_time(0, (timeout * 1000000000.0));
+        queue = selfCopy->_queue;
         v50[0] = MEMORY[0x1E69E9820];
         v50[1] = 3221225472;
         v50[2] = __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_withTimeout___block_invoke_3;
         v50[3] = &unk_1E817C5C8;
         v51 = v14;
-        v52 = v15;
+        v52 = selfCopy;
         objc_copyWeak(v53, &location);
-        v53[1] = *&a3;
+        v53[1] = *&timestamp;
         dispatch_after(v41, queue, v50);
         objc_destroyWeak(v53);
 
@@ -416,36 +416,36 @@ uint64_t __37__ARParentTechnique_reuseTechniques___block_invoke(uint64_t a1, voi
 
     else
     {
-      v26 = [v11 firstObject];
-      v27 = [[ARTechniqueSequentialGatherContext alloc] initWithParentContext:v10];
-      v30 = [v26 traceKey];
+      firstObject = [techniquesCopy firstObject];
+      v27 = [[ARTechniqueSequentialGatherContext alloc] initWithParentContext:contextCopy];
+      traceKey3 = [firstObject traceKey];
       if (ARTechnique_Request_to_Result_onceToken != -1)
       {
         [ARParentTechnique requestResultDataAtTimestamp:context:onTechniques:withTimeout:];
       }
 
-      v31 = [ARTechnique_Request_to_Result_keyToCode objectForKeyedSubscript:v30];
+      v31 = [ARTechnique_Request_to_Result_keyToCode objectForKeyedSubscript:traceKey3];
       [v31 intValue];
 
       kdebug_trace();
-      v32 = [v26 traceKey];
+      traceKey4 = [firstObject traceKey];
       if (ARTechnique_Request_begin_onceToken != -1)
       {
         [ARParentTechnique requestResultDataAtTimestamp:context:onTechniques:withTimeout:];
       }
 
-      v33 = [ARTechnique_Request_begin_keyToCode objectForKeyedSubscript:v32];
+      v33 = [ARTechnique_Request_begin_keyToCode objectForKeyedSubscript:traceKey4];
       [v33 intValue];
 
       kdebug_trace();
-      v59 = v26;
+      v59 = firstObject;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
-      [(ARParentTechnique *)self _logTechniqueState:@"requestingResultDataSerial" state:v34 data:a3];
+      [(ARParentTechnique *)self _logTechniqueState:@"requestingResultDataSerial" state:v34 data:timestamp];
 
-      if (a6 > 0.0 && self->_useLowLatencyPath && !self->_isDeterministicMode)
+      if (timeout > 0.0 && self->_useLowLatencyPath && !self->_isDeterministicMode)
       {
         objc_initWeak(&location, self);
-        v35 = dispatch_time(0, (a6 * 1000000000.0));
+        v35 = dispatch_time(0, (timeout * 1000000000.0));
         v36 = self->_queue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -453,26 +453,26 @@ uint64_t __37__ARParentTechnique_reuseTechniques___block_invoke(uint64_t a1, voi
         block[3] = &unk_1E817C5F0;
         v48 = v27;
         objc_copyWeak(v49, &location);
-        v49[1] = *&a3;
+        v49[1] = *&timestamp;
         dispatch_after(v35, v36, block);
         objc_destroyWeak(v49);
 
         objc_destroyWeak(&location);
       }
 
-      [v26 requestResultDataAtTimestamp:v27 context:a3];
+      [firstObject requestResultDataAtTimestamp:v27 context:timestamp];
     }
 
     goto LABEL_35;
   }
 
-  v28 = [(ARTechnique *)self delegate];
+  delegate = [(ARTechnique *)self delegate];
   v29 = objc_opt_respondsToSelector();
 
   if (v29)
   {
-    v26 = [(ARTechnique *)self delegate];
-    [v26 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:v10 context:a3];
+    firstObject = [(ARTechnique *)self delegate];
+    [firstObject technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:contextCopy context:timestamp];
 LABEL_35:
   }
 }
@@ -505,19 +505,19 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
   [v3 submitResultsForTimestamp:*(a1 + 32) context:*(a1 + 48)];
 }
 
-- (id)predictedResultDataAtTimestamp:(double)a3 context:(id)a4
+- (id)predictedResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(ARParentTechnique *)self techniques];
-  if ([v7 count])
+  contextCopy = context;
+  techniques = [(ARParentTechnique *)self techniques];
+  if ([techniques count])
   {
-    v8 = [[ARTechniqueSequentialGatherContext alloc] initWithParentContext:v6];
+    v8 = [[ARTechniqueSequentialGatherContext alloc] initWithParentContext:contextCopy];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v7;
+    v9 = techniques;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -532,7 +532,7 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) predictedResultDataAtTimestamp:v8 context:{a3, v17}];
+          v14 = [*(*(&v17 + 1) + 8 * i) predictedResultDataAtTimestamp:v8 context:{timestamp, v17}];
           [(ARTechniqueSequentialGatherContext *)v8 addResultData:v14];
         }
 
@@ -542,18 +542,18 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
       while (v11);
     }
 
-    v15 = [(ARTechniqueSequentialGatherContext *)v8 gatheredData];
+    gatheredData = [(ARTechniqueSequentialGatherContext *)v8 gatheredData];
   }
 
   else
   {
-    v15 = MEMORY[0x1E695E0F0];
+    gatheredData = MEMORY[0x1E695E0F0];
   }
 
-  return v15;
+  return gatheredData;
 }
 
-- (void)setPowerUsage:(unint64_t)a3
+- (void)setPowerUsage:(unint64_t)usage
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -563,8 +563,8 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(ARParentTechnique *)self techniques];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v6 = [techniques countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -576,29 +576,29 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(techniques);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setPowerUsage:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setPowerUsage:usage];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [techniques countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setTechniques:(id)a3
+- (void)setTechniques:(id)techniques
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  techniquesCopy = techniques;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [techniquesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -609,19 +609,19 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(techniquesCopy);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 delegate];
+        delegate = [v9 delegate];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v12 = [v9 delegate];
-          v13 = [(ARTechnique *)self delegate];
-          [v12 setDelegate:v13];
+          delegate2 = [v9 delegate];
+          delegate3 = [(ARTechnique *)self delegate];
+          [delegate2 setDelegate:delegate3];
         }
 
         [v9 setPowerUsage:{-[ARTechnique powerUsage](self, "powerUsage")}];
@@ -629,7 +629,7 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
         [v9 setBonusLatency:0.0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [techniquesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -639,11 +639,11 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
   {
     [(ARTechnique *)self bonusLatency];
     v15 = v14;
-    v16 = [v4 firstObject];
-    [v16 setBonusLatency:v15];
+    firstObject = [techniquesCopy firstObject];
+    [firstObject setBonusLatency:v15];
   }
 
-  v17 = [v4 copy];
+  v17 = [techniquesCopy copy];
   [(ARParentTechnique *)self set_internalTechniques:v17];
 }
 
@@ -654,8 +654,8 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(ARParentTechnique *)self techniques];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v3 = [techniques countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -667,13 +667,13 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(techniques);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) requiredSensorDataTypes];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [techniques countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -694,8 +694,8 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(ARParentTechnique *)self techniques];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v4 = [techniques countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -707,7 +707,7 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(techniques);
         }
 
         parallelExecution = self->_parallelExecution;
@@ -734,7 +734,7 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [techniques countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -756,8 +756,8 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ARParentTechnique *)self techniques];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v5 = [techniques countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -768,14 +768,14 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(techniques);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) resultDataClasses];
-        [v3 unionSet:v9];
+        resultDataClasses = [*(*(&v12 + 1) + 8 * i) resultDataClasses];
+        [v3 unionSet:resultDataClasses];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [techniques countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -786,18 +786,18 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
   return v10;
 }
 
-- (BOOL)reconfigurableFrom:(id)a3
+- (BOOL)reconfigurableFrom:(id)from
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  fromCopy = from;
+  if ([fromCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(ARParentTechnique *)self techniques];
-    v7 = [v5 techniques];
-    v8 = [v6 count];
-    if (v8 == [v7 count])
+    v5 = fromCopy;
+    techniques = [(ARParentTechnique *)self techniques];
+    techniques2 = [v5 techniques];
+    v8 = [techniques count];
+    if (v8 == [techniques2 count])
     {
-      if ([v6 count])
+      if ([techniques count])
       {
         v9 = 0;
         v10 = MEMORY[0x1E69E9820];
@@ -807,10 +807,10 @@ void __83__ARParentTechnique_requestResultDataAtTimestamp_context_onTechniques_w
           v15[1] = 3221225472;
           v15[2] = __40__ARParentTechnique_reconfigurableFrom___block_invoke;
           v15[3] = &unk_1E817C618;
-          v11 = v6;
+          v11 = techniques;
           v16 = v11;
           v17 = v9;
-          v12 = [ARParentTechnique techniqueInArray:v7 passingTest:v15];
+          v12 = [ARParentTechnique techniqueInArray:techniques2 passingTest:v15];
           v13 = v12 != 0;
 
           if (!v12)
@@ -855,16 +855,16 @@ uint64_t __40__ARParentTechnique_reconfigurableFrom___block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (void)reconfigureFrom:(id)a3
+- (void)reconfigureFrom:(id)from
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  fromCopy = from;
+  if ([fromCopy isMemberOfClass:objc_opt_class()])
   {
-    v15 = v4;
-    v5 = v4;
-    v6 = [(ARParentTechnique *)self techniques];
-    v7 = [v5 techniques];
-    if ([v6 count])
+    v15 = fromCopy;
+    v5 = fromCopy;
+    techniques = [(ARParentTechnique *)self techniques];
+    techniques2 = [v5 techniques];
+    if ([techniques count])
     {
       v8 = 0;
       v9 = MEMORY[0x1E69E9820];
@@ -874,10 +874,10 @@ uint64_t __40__ARParentTechnique_reconfigurableFrom___block_invoke(uint64_t a1, 
         v16[1] = 3221225472;
         v16[2] = __37__ARParentTechnique_reconfigureFrom___block_invoke;
         v16[3] = &unk_1E817C618;
-        v10 = v6;
+        v10 = techniques;
         v17 = v10;
         v18 = v8;
-        v11 = [ARParentTechnique techniqueInArray:v7 passingTest:v16];
+        v11 = [ARParentTechnique techniqueInArray:techniques2 passingTest:v16];
         v12 = [v10 objectAtIndexedSubscript:v8];
         [v12 reconfigureFrom:v11];
 
@@ -887,13 +887,13 @@ uint64_t __40__ARParentTechnique_reconfigurableFrom___block_invoke(uint64_t a1, 
       while (v8 < [v10 count]);
     }
 
-    v13 = [v5 splitTechniques];
-    [(ARTechnique *)self setSplitTechniques:v13];
+    splitTechniques = [v5 splitTechniques];
+    [(ARTechnique *)self setSplitTechniques:splitTechniques];
 
-    v14 = [v5 splitTechniqueFowardingStrategy];
-    [(ARTechnique *)self setSplitTechniqueFowardingStrategy:v14];
+    splitTechniqueFowardingStrategy = [v5 splitTechniqueFowardingStrategy];
+    [(ARTechnique *)self setSplitTechniqueFowardingStrategy:splitTechniqueFowardingStrategy];
 
-    v4 = v15;
+    fromCopy = v15;
   }
 }
 
@@ -908,16 +908,16 @@ uint64_t __37__ARParentTechnique_reconfigureFrom___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (void)siblingTechniquesDidChange:(id)a3
+- (void)siblingTechniquesDidChange:(id)change
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(ARParentTechnique *)self techniques];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v6 = [techniques countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -929,21 +929,21 @@ uint64_t __37__ARParentTechnique_reconfigureFrom___block_invoke(uint64_t a1, voi
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(techniques);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) siblingTechniquesDidChange:v4];
+        [*(*(&v10 + 1) + 8 * v9++) siblingTechniquesDidChange:changeCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [techniques countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)techniqueOfClass:(Class)a3
+- (id)techniqueOfClass:(Class)class
 {
   v10.receiver = self;
   v10.super_class = ARParentTechnique;
@@ -956,19 +956,19 @@ uint64_t __37__ARParentTechnique_reconfigureFrom___block_invoke(uint64_t a1, voi
 
   else
   {
-    v8 = [(ARParentTechnique *)self techniques];
-    v7 = [ARTechnique techniqueOfClass:a3 inArray:v8];
+    techniques = [(ARParentTechnique *)self techniques];
+    v7 = [ARTechnique techniqueOfClass:class inArray:techniques];
   }
 
   return v7;
 }
 
-- (id)techniqueConformsToProtocol:(id)a3
+- (id)techniqueConformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v10.receiver = self;
   v10.super_class = ARParentTechnique;
-  v5 = [(ARTechnique *)&v10 techniqueConformsToProtocol:v4];
+  v5 = [(ARTechnique *)&v10 techniqueConformsToProtocol:protocolCopy];
   v6 = v5;
   if (v5)
   {
@@ -977,20 +977,20 @@ uint64_t __37__ARParentTechnique_reconfigureFrom___block_invoke(uint64_t a1, voi
 
   else
   {
-    v8 = [(ARParentTechnique *)self techniques];
-    v7 = [ARTechnique techniqueConformsToProtocol:v4 inArray:v8];
+    techniques = [(ARParentTechnique *)self techniques];
+    v7 = [ARTechnique techniqueConformsToProtocol:protocolCopy inArray:techniques];
   }
 
   return v7;
 }
 
-- (id)techniqueMatchingPredicate:(id)a3
+- (id)techniqueMatchingPredicate:(id)predicate
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v19.receiver = self;
   v19.super_class = ARParentTechnique;
-  v5 = [(ARTechnique *)&v19 techniqueMatchingPredicate:v4];
+  v5 = [(ARTechnique *)&v19 techniqueMatchingPredicate:predicateCopy];
   v6 = v5;
   if (v5)
   {
@@ -1003,8 +1003,8 @@ uint64_t __37__ARParentTechnique_reconfigureFrom___block_invoke(uint64_t a1, voi
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(ARParentTechnique *)self techniques];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    techniques = [(ARParentTechnique *)self techniques];
+    v9 = [techniques countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1015,10 +1015,10 @@ uint64_t __37__ARParentTechnique_reconfigureFrom___block_invoke(uint64_t a1, voi
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(techniques);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) techniqueMatchingPredicate:v4];
+          v13 = [*(*(&v15 + 1) + 8 * i) techniqueMatchingPredicate:predicateCopy];
           if (v13)
           {
             v7 = v13;
@@ -1027,7 +1027,7 @@ uint64_t __37__ARParentTechnique_reconfigureFrom___block_invoke(uint64_t a1, voi
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v10 = [techniques countByEnumeratingWithState:&v15 objects:v20 count:16];
         if (v10)
         {
           continue;
@@ -1045,27 +1045,27 @@ LABEL_13:
   return v7;
 }
 
-- (void)setBonusLatency:(double)a3
+- (void)setBonusLatency:(double)latency
 {
   v7.receiver = self;
   v7.super_class = ARParentTechnique;
   [(ARTechnique *)&v7 setBonusLatency:?];
   if (!self->_parallelExecution)
   {
-    v5 = [(ARParentTechnique *)self techniques];
-    v6 = [v5 firstObject];
-    [v6 setBonusLatency:a3];
+    techniques = [(ARParentTechnique *)self techniques];
+    firstObject = [techniques firstObject];
+    [firstObject setBonusLatency:latency];
   }
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
-  v3 = a3;
+  prepareCopy = prepare;
   v26 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = ARParentTechnique;
   [(ARTechnique *)&v23 prepare:?];
-  if (v3)
+  if (prepareCopy)
   {
     self->_parallelExecution = 0;
     self->_isDeterministicMode = 1;
@@ -1075,8 +1075,8 @@ LABEL_13:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(ARParentTechnique *)self techniques];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v6 = [techniques countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1087,13 +1087,13 @@ LABEL_13:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(techniques);
         }
 
-        [*(*(&v19 + 1) + 8 * i) prepare:v3];
+        [*(*(&v19 + 1) + 8 * i) prepare:prepareCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v7 = [techniques countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v7);
@@ -1103,8 +1103,8 @@ LABEL_13:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(ARTechnique *)self splitTechniques];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v24 count:16];
+  splitTechniques = [(ARTechnique *)self splitTechniques];
+  v11 = [splitTechniques countByEnumeratingWithState:&v15 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1115,13 +1115,13 @@ LABEL_13:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(splitTechniques);
         }
 
-        [*(*(&v15 + 1) + 8 * j) prepare:v3];
+        [*(*(&v15 + 1) + 8 * j) prepare:prepareCopy];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v24 count:16];
+      v12 = [splitTechniques countByEnumeratingWithState:&v15 objects:v24 count:16];
     }
 
     while (v12);
@@ -1138,8 +1138,8 @@ LABEL_13:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(ARParentTechnique *)self techniques];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v5 = [techniques countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1150,14 +1150,14 @@ LABEL_13:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(techniques);
         }
 
         v9 = [*(*(&v18 + 1) + 8 * i) description];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [techniques countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -1192,25 +1192,25 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = ARParentTechnique;
-  if ([(ARTechnique *)&v14 isEqual:v4])
+  if ([(ARTechnique *)&v14 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_parallelExecution)
     {
       if (v5[56])
       {
         v6 = MEMORY[0x1E695DFD8];
-        v7 = [(ARParentTechnique *)self techniques];
-        v8 = [v6 setWithArray:v7];
+        techniques = [(ARParentTechnique *)self techniques];
+        techniques3 = [v6 setWithArray:techniques];
         v9 = MEMORY[0x1E695DFD8];
-        v10 = [v5 techniques];
-        v11 = [v9 setWithArray:v10];
-        v12 = [v8 isEqualToSet:v11];
+        techniques2 = [v5 techniques];
+        v11 = [v9 setWithArray:techniques2];
+        v12 = [techniques3 isEqualToSet:v11];
 
 LABEL_9:
         goto LABEL_10;
@@ -1219,9 +1219,9 @@ LABEL_9:
 
     else if ((v5[56] & 1) == 0)
     {
-      v7 = [(ARParentTechnique *)self techniques];
-      v8 = [v5 techniques];
-      v12 = [v7 isEqualToArray:v8];
+      techniques = [(ARParentTechnique *)self techniques];
+      techniques3 = [v5 techniques];
+      v12 = [techniques isEqualToArray:techniques3];
       goto LABEL_9;
     }
 
@@ -1243,8 +1243,8 @@ LABEL_11:
   v3 = MEMORY[0x1E696AD60];
   v23.receiver = self;
   v23.super_class = ARParentTechnique;
-  v4 = [(ARTechnique *)&v23 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARTechnique *)&v23 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
   v6 = [(ARTechniqueParallelGatherContext *)self->_previousContext description];
   v7 = [v6 description];
@@ -1271,8 +1271,8 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) _fullDescription];
-        v14 = [v13 description];
+        _fullDescription2 = [*(*(&v19 + 1) + 8 * i) _fullDescription];
+        v14 = [_fullDescription2 description];
         v15 = [v14 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t|\t"];
         [v5 appendFormat:@"\t| - %@\n", v15];
       }
@@ -1288,67 +1288,67 @@ LABEL_11:
   return v16;
 }
 
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(ARParentTechnique *)self techniques];
-  [(ARParentTechnique *)self technique:v12 didOutputResultData:v11 timestamp:v10 context:v13 onTechniques:a5];
+  contextCopy = context;
+  dataCopy = data;
+  techniqueCopy = technique;
+  techniques = [(ARParentTechnique *)self techniques];
+  [(ARParentTechnique *)self technique:techniqueCopy didOutputResultData:dataCopy timestamp:contextCopy context:techniques onTechniques:timestamp];
 }
 
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6 onTechniques:(id)a7
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context onTechniques:(id)techniques
 {
   v94 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v73 = a6;
-  v14 = a7;
-  [(ARParentTechnique *)self _logTechniqueState:@"receivedResultData" state:v13 data:a5];
-  v15 = [v14 indexOfObject:v12];
+  techniqueCopy = technique;
+  dataCopy = data;
+  contextCopy = context;
+  techniquesCopy = techniques;
+  [(ARParentTechnique *)self _logTechniqueState:@"receivedResultData" state:dataCopy data:timestamp];
+  v15 = [techniquesCopy indexOfObject:techniqueCopy];
   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = v15;
-    v17 = [v12 traceKey];
-    v69 = self;
+    traceKey = [techniqueCopy traceKey];
+    selfCopy = self;
     if (ARTechnique_Request_to_ResultEnd_onceToken != -1)
     {
       [ARParentTechnique technique:didOutputResultData:timestamp:context:onTechniques:];
     }
 
-    v18 = [ARTechnique_Request_to_ResultEnd_keyToCode objectForKeyedSubscript:v17];
+    v18 = [ARTechnique_Request_to_ResultEnd_keyToCode objectForKeyedSubscript:traceKey];
     [v18 intValue];
 
     kdebug_trace();
-    v19 = [v12 traceKey];
+    traceKey2 = [techniqueCopy traceKey];
     if (ARTechnique_Request_fulfilled_onceToken != -1)
     {
       [ARParentTechnique technique:didOutputResultData:timestamp:context:onTechniques:];
     }
 
-    v20 = [ARTechnique_Request_fulfilled_keyToCode objectForKeyedSubscript:v19];
+    v20 = [ARTechnique_Request_fulfilled_keyToCode objectForKeyedSubscript:traceKey2];
     [v20 intValue];
 
     kdebug_trace();
-    [(ARTechnique *)v69 techniqueLevel];
-    [v13 count];
+    [(ARTechnique *)selfCopy techniqueLevel];
+    [dataCopy count];
     kdebug_trace();
     objc_opt_class();
-    v72 = v12;
+    v72 = techniqueCopy;
     if (objc_opt_isKindOfClass())
     {
-      v68 = v73;
-      obj = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+      v68 = contextCopy;
+      obj = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dataCopy, "count")}];
       v82 = 0u;
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
-      v21 = v13;
+      v21 = dataCopy;
       v22 = [v21 countByEnumeratingWithState:&v82 objects:v93 count:16];
       if (v22)
       {
         v23 = v22;
-        v67 = v13;
+        v67 = dataCopy;
         v24 = *v83;
         v25 = v16 + 1;
         do
@@ -1361,9 +1361,9 @@ LABEL_11:
             }
 
             v27 = *(*(&v82 + 1) + 8 * i);
-            for (j = v25; j < [v14 count]; v27 = v32)
+            for (j = v25; j < [techniquesCopy count]; v27 = v32)
             {
-              v29 = [v14 objectAtIndexedSubscript:j];
+              v29 = [techniquesCopy objectAtIndexedSubscript:j];
               v30 = [v29 processData:v27];
 
               if (v30)
@@ -1391,8 +1391,8 @@ LABEL_11:
         }
 
         while (v23);
-        v12 = v72;
-        v13 = v67;
+        techniqueCopy = v72;
+        dataCopy = v67;
       }
 
       else
@@ -1401,39 +1401,39 @@ LABEL_11:
       }
 
       [v68 addResultData:obj];
-      if (v25 >= [v14 count])
+      if (v25 >= [techniquesCopy count])
       {
-        [(ARParentTechnique *)v69 submitResultsForTimestamp:v68 context:a5];
+        [(ARParentTechnique *)selfCopy submitResultsForTimestamp:v68 context:timestamp];
       }
 
       else
       {
-        v41 = [v14 objectAtIndexedSubscript:v25];
-        v42 = [v41 traceKey];
+        v41 = [techniquesCopy objectAtIndexedSubscript:v25];
+        traceKey3 = [v41 traceKey];
         if (ARTechnique_Request_to_Result_onceToken != -1)
         {
           [ARParentTechnique requestResultDataAtTimestamp:context:onTechniques:withTimeout:];
         }
 
-        v43 = [ARTechnique_Request_to_Result_keyToCode objectForKeyedSubscript:v42];
+        v43 = [ARTechnique_Request_to_Result_keyToCode objectForKeyedSubscript:traceKey3];
         [v43 intValue];
 
         kdebug_trace();
-        v44 = [v41 traceKey];
+        traceKey4 = [v41 traceKey];
         if (ARTechnique_Request_begin_onceToken != -1)
         {
           [ARParentTechnique requestResultDataAtTimestamp:context:onTechniques:withTimeout:];
         }
 
-        v45 = [ARTechnique_Request_begin_keyToCode objectForKeyedSubscript:v44];
+        v45 = [ARTechnique_Request_begin_keyToCode objectForKeyedSubscript:traceKey4];
         [v45 intValue];
 
         kdebug_trace();
         v92 = v41;
         v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v92 count:1];
-        [(ARParentTechnique *)v69 _logTechniqueState:@"requestingResultDataSerial" state:v46 data:a5];
+        [(ARParentTechnique *)selfCopy _logTechniqueState:@"requestingResultDataSerial" state:v46 data:timestamp];
 
-        [v41 requestResultDataAtTimestamp:v68 context:a5];
+        [v41 requestResultDataAtTimestamp:v68 context:timestamp];
       }
 
       goto LABEL_48;
@@ -1447,14 +1447,14 @@ LABEL_48:
       v81 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v33 = [v12 splitTechniques];
-      v48 = [v33 countByEnumeratingWithState:&v78 objects:v87 count:16];
+      splitTechniques = [techniqueCopy splitTechniques];
+      v48 = [splitTechniques countByEnumeratingWithState:&v78 objects:v87 count:16];
       if (v48)
       {
         v49 = v48;
-        v50 = v13;
+        v50 = dataCopy;
         v51 = *v79;
-        obja = v33;
+        obja = splitTechniques;
         do
         {
           for (k = 0; k != v49; ++k)
@@ -1465,18 +1465,18 @@ LABEL_48:
             }
 
             v53 = *(*(&v78 + 1) + 8 * k);
-            v54 = [v12 splitTechniqueFowardingStrategy];
+            splitTechniqueFowardingStrategy = [techniqueCopy splitTechniqueFowardingStrategy];
 
-            if (!v54 || ([v12 splitTechniqueFowardingStrategy], v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v55, "shouldRequestResultDataAtTimestamp:context:", v73, a5), v55, v56))
+            if (!splitTechniqueFowardingStrategy || ([techniqueCopy splitTechniqueFowardingStrategy], v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v55, "shouldRequestResultDataAtTimestamp:context:", contextCopy, timestamp), v55, v56))
             {
               v57 = [ARTechniqueSequentialGatherContext alloc];
-              v58 = [v73 parentContext];
-              v59 = [(ARTechniqueSequentialGatherContext *)v57 initWithParentContext:v58];
+              parentContext = [contextCopy parentContext];
+              v59 = [(ARTechniqueSequentialGatherContext *)v57 initWithParentContext:parentContext];
 
-              v60 = [v73 gatheredData];
-              [(ARTechniqueSequentialGatherContext *)v59 addResultData:v60];
+              gatheredData = [contextCopy gatheredData];
+              [(ARTechniqueSequentialGatherContext *)v59 addResultData:gatheredData];
 
-              [v53 requestResultDataAtTimestamp:v59 context:a5];
+              [v53 requestResultDataAtTimestamp:v59 context:timestamp];
             }
 
             v76 = 0u;
@@ -1507,15 +1507,15 @@ LABEL_48:
               while (v63);
             }
 
-            v12 = v72;
+            techniqueCopy = v72;
           }
 
-          v33 = obja;
+          splitTechniques = obja;
           v49 = [obja countByEnumeratingWithState:&v78 objects:v87 count:16];
         }
 
         while (v49);
-        v13 = v50;
+        dataCopy = v50;
       }
 
 LABEL_66:
@@ -1523,11 +1523,11 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    v33 = v73;
-    v34 = [v14 count];
-    if (v34 != [v33 techniqueCount])
+    splitTechniques = contextCopy;
+    v34 = [techniquesCopy count];
+    if (v34 != [splitTechniques techniqueCount])
     {
-      v35 = [v33 indexForTechnique:v12];
+      v35 = [splitTechniques indexForTechnique:techniqueCopy];
       if (v35 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v36 = _ARLogTechnique_8();
@@ -1535,8 +1535,8 @@ LABEL_66:
         {
           v37 = objc_opt_class();
           v38 = NSStringFromClass(v37);
-          v39 = [v33 imageData];
-          [v39 timestamp];
+          imageData = [splitTechniques imageData];
+          [imageData timestamp];
           *buf = 138412546;
           v89 = v38;
           v90 = 2048;
@@ -1550,26 +1550,26 @@ LABEL_66:
       v16 = v35;
     }
 
-    v47 = [v33 addResultData:v13 forTechniqueAtIndex:v16];
+    v47 = [splitTechniques addResultData:dataCopy forTechniqueAtIndex:v16];
     if (v47)
     {
-      [v12 mergeResultData:v47 intoData:v13 context:v33];
+      [techniqueCopy mergeResultData:v47 intoData:dataCopy context:splitTechniques];
     }
 
-    if ([v12 deterministicMode])
+    if ([techniqueCopy deterministicMode])
     {
-      if (![v33 requiredTimeIntervalComplete] || !objc_msgSend(v33, "deterministicResultsCaptured"))
+      if (![splitTechniques requiredTimeIntervalComplete] || !objc_msgSend(splitTechniques, "deterministicResultsCaptured"))
       {
         goto LABEL_47;
       }
     }
 
-    else if (!v69->_useLowLatencyPath || ![v33 isComplete])
+    else if (!selfCopy->_useLowLatencyPath || ![splitTechniques isComplete])
     {
       goto LABEL_47;
     }
 
-    [(ARParentTechnique *)v69 submitResultsForTimestamp:v33 context:a5];
+    [(ARParentTechnique *)selfCopy submitResultsForTimestamp:splitTechniques context:timestamp];
 LABEL_47:
 
     goto LABEL_48;
@@ -1578,33 +1578,33 @@ LABEL_47:
 LABEL_67:
 }
 
-- (void)technique:(id)a3 didFailWithError:(id)a4
+- (void)technique:(id)technique didFailWithError:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(ARTechnique *)self delegate];
+  techniqueCopy = technique;
+  errorCopy = error;
+  delegate = [(ARTechnique *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(ARTechnique *)self delegate];
-    [v9 technique:v10 didFailWithError:v6];
+    delegate2 = [(ARTechnique *)self delegate];
+    [delegate2 technique:techniqueCopy didFailWithError:errorCopy];
   }
 }
 
-- (id)toJSONWithRootName:(id)a3
+- (id)toJSONWithRootName:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = ARParentTechnique;
-  v4 = [(ARTechnique *)&v27 toJSONWithRootName:a3];
-  v5 = [MEMORY[0x1E695DF70] array];
+  v4 = [(ARTechnique *)&v27 toJSONWithRootName:name];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(ARParentTechnique *)self techniques];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v7 = [techniques countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1615,14 +1615,14 @@ LABEL_67:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(techniques);
         }
 
         v11 = [*(*(&v23 + 1) + 8 * i) toJSONWithRootName:0];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v8 = [techniques countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v8);
@@ -1632,8 +1632,8 @@ LABEL_67:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(ARTechnique *)self splitTechniques];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v28 count:16];
+  splitTechniques = [(ARTechnique *)self splitTechniques];
+  v13 = [splitTechniques countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1644,39 +1644,39 @@ LABEL_67:
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(splitTechniques);
         }
 
         v17 = [*(*(&v19 + 1) + 8 * j) toJSONWithRootName:@"Split"];
-        [v5 addObject:v17];
+        [array addObject:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v28 count:16];
+      v14 = [splitTechniques countByEnumeratingWithState:&v19 objects:v28 count:16];
     }
 
     while (v14);
   }
 
-  [v4 setObject:v5 forKeyedSubscript:@"children"];
+  [v4 setObject:array forKeyedSubscript:@"children"];
 
   return v4;
 }
 
-- (void)submitResultsForTimestamp:(double)a3 context:(id)a4
+- (void)submitResultsForTimestamp:(double)timestamp context:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (([v6 gatheredDataWasAlreadyCaptured] & 1) == 0)
+  contextCopy = context;
+  if (([contextCopy gatheredDataWasAlreadyCaptured] & 1) == 0)
   {
     kdebug_trace();
-    v7 = [v6 captureGatheredData];
-    [(ARParentTechnique *)self _logTechniqueState:@"submittedResultData" state:v7 data:a3];
+    captureGatheredData = [contextCopy captureGatheredData];
+    [(ARParentTechnique *)self _logTechniqueState:@"submittedResultData" state:captureGatheredData data:timestamp];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(ARParentTechnique *)self techniques];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    techniques = [(ARParentTechnique *)self techniques];
+    v9 = [techniques countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1684,51 +1684,51 @@ LABEL_67:
       do
       {
         v12 = 0;
-        v13 = v7;
+        v13 = captureGatheredData;
         do
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(techniques);
           }
 
-          v7 = [*(*(&v18 + 1) + 8 * v12) processResultData:v13 timestamp:v6 context:a3];
+          captureGatheredData = [*(*(&v18 + 1) + 8 * v12) processResultData:v13 timestamp:contextCopy context:timestamp];
 
           ++v12;
-          v13 = v7;
+          v13 = captureGatheredData;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [techniques countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
     }
 
-    v14 = [(ARTechnique *)self delegate];
+    delegate = [(ARTechnique *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(ARTechnique *)self delegate];
-      v17 = [v6 parentContext];
-      [v16 technique:self didOutputResultData:v7 timestamp:v17 context:a3];
+      delegate2 = [(ARTechnique *)self delegate];
+      parentContext = [contextCopy parentContext];
+      [delegate2 technique:self didOutputResultData:captureGatheredData timestamp:parentContext context:timestamp];
     }
 
     kdebug_trace();
   }
 }
 
-+ (id)techniqueInArray:(id)a3 passingTest:(id)a4
++ (id)techniqueInArray:(id)array passingTest:(id)test
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  testCopy = test;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -1744,14 +1744,14 @@ LABEL_67:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if (v7[2](v7, v13))
+        if (testCopy[2](testCopy, v13))
         {
           v15 = v13;
           goto LABEL_13;
         }
 
-        v14 = [v13 techniques];
-        v15 = [a1 techniqueInArray:v14 passingTest:v7];
+        techniques = [v13 techniques];
+        v15 = [self techniqueInArray:techniques passingTest:testCopy];
 
         if (v15)
         {
@@ -1780,12 +1780,12 @@ LABEL_13:
   return v15;
 }
 
-+ (id)techniquesByReplacingOriginalTechniques:(id)a3 withReplacementTechniques:(id)a4 passingTest:(id)a5
++ (id)techniquesByReplacingOriginalTechniques:(id)techniques withReplacementTechniques:(id)replacementTechniques passingTest:(id)test
 {
   v54 = *MEMORY[0x1E69E9840];
-  v37 = a4;
-  v36 = a5;
-  v7 = [a3 mutableCopy];
+  replacementTechniquesCopy = replacementTechniques;
+  testCopy = test;
+  v7 = [techniques mutableCopy];
   v8 = [v7 count];
   if (!v8)
   {
@@ -1804,11 +1804,11 @@ LABEL_13:
     v42[1] = 3221225472;
     v42[2] = __99__ARParentTechnique_techniquesByReplacingOriginalTechniques_withReplacementTechniques_passingTest___block_invoke;
     v42[3] = &unk_1E817C640;
-    v15 = v36;
+    v15 = testCopy;
     v44 = v15;
     v16 = v13;
     v43 = v16;
-    v17 = [v14 techniqueInArray:v37 passingTest:v42];
+    v17 = [v14 techniqueInArray:replacementTechniquesCopy passingTest:v42];
     if (v17)
     {
       v18 = _ARLogTechnique_8();
@@ -1839,8 +1839,8 @@ LABEL_13:
       if (objc_opt_isKindOfClass())
       {
         v23 = v16;
-        v24 = [v23 techniques];
-        v25 = [a1 techniquesByReplacingOriginalTechniques:v24 withReplacementTechniques:v37 passingTest:v15];
+        techniques = [v23 techniques];
+        v25 = [self techniquesByReplacingOriginalTechniques:techniques withReplacementTechniques:replacementTechniquesCopy passingTest:v15];
 
         if (v25)
         {
@@ -1900,10 +1900,10 @@ LABEL_21:
   return v33;
 }
 
-+ (id)techniquesByForceReplacingTechniques:(id)a3 withMatchingClassTechniques:(id)a4
++ (id)techniquesByForceReplacingTechniques:(id)techniques withMatchingClassTechniques:(id)classTechniques
 {
-  v6 = a3;
-  v7 = [a1 techniquesByReplacingOriginalTechniques:v6 withReplacementTechniques:a4 passingTest:&__block_literal_global_105];
+  techniquesCopy = techniques;
+  v7 = [self techniquesByReplacingOriginalTechniques:techniquesCopy withReplacementTechniques:classTechniques passingTest:&__block_literal_global_105];
   v8 = v7;
   if (v7)
   {
@@ -1912,7 +1912,7 @@ LABEL_21:
 
   else
   {
-    v9 = v6;
+    v9 = techniquesCopy;
   }
 
   v10 = v9;
@@ -1938,19 +1938,19 @@ BOOL __86__ARParentTechnique_techniquesByForceReplacingTechniques_withMatchingCl
   return v6;
 }
 
-- (void)dotGraphWithLines:(id)a3 rootName:(id)a4
+- (void)dotGraphWithLines:(id)lines rootName:(id)name
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  linesCopy = lines;
   v23.receiver = self;
   v23.super_class = ARParentTechnique;
-  [(ARTechnique *)&v23 dotGraphWithLines:v6 rootName:a4];
+  [(ARTechnique *)&v23 dotGraphWithLines:linesCopy rootName:name];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"subgraph cluster_%p {", self];
-  [v6 addObject:v7];
+  [linesCopy addObject:v7];
 
-  v8 = [(ARParentTechnique *)self isParallel];
+  isParallel = [(ARParentTechnique *)self isParallel];
   v9 = @"orange";
-  if (v8)
+  if (isParallel)
   {
     v9 = @"blue";
   }
@@ -1960,8 +1960,8 @@ BOOL __86__ARParentTechnique_techniquesByForceReplacingTechniques_withMatchingCl
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [(ARParentTechnique *)self techniques];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v12 = [techniques countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1972,24 +1972,24 @@ BOOL __86__ARParentTechnique_techniquesByForceReplacingTechniques_withMatchingCl
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(techniques);
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%p) -> (%p)[style=bold color=%@]", self, v16, v10];
-        [v6 addObject:v17];
+        [linesCopy addObject:v17];
 
-        [v16 dotGraphWithLines:v6 rootName:0];
+        [v16 dotGraphWithLines:linesCopy rootName:0];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v13 = [techniques countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v13);
   }
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"}"];
-  [v6 addObject:v18];
+  [linesCopy addObject:v18];
 }
 
 @end

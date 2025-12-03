@@ -1,10 +1,10 @@
 @interface TSPKnownFieldVersionRequirementsMap
-+ (id)newKnownFieldVersionRequirementsMapForMessage:(const Message *)a3 knownFieldRuleProvider:(id)a4;
-+ (void)updateMap:(void *)a3 message:(const Message *)a4 byAddingRulesFromKnownFieldRuleProvider:(id)a5;
++ (id)newKnownFieldVersionRequirementsMapForMessage:(const Message *)message knownFieldRuleProvider:(id)provider;
++ (void)updateMap:(void *)map message:(const Message *)message byAddingRulesFromKnownFieldRuleProvider:(id)provider;
 - (TSPKnownFieldVersionRequirementsMap)init;
-- (TSPKnownFieldVersionRequirementsMap)initWithMap:(void *)a3;
-- (void)addRulesFromKnownFieldRuleProvider:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (TSPKnownFieldVersionRequirementsMap)initWithMap:(void *)map;
+- (void)addRulesFromKnownFieldRuleProvider:(id)provider;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPKnownFieldVersionRequirementsMap
@@ -25,10 +25,10 @@
   objc_exception_throw(v13);
 }
 
-- (TSPKnownFieldVersionRequirementsMap)initWithMap:(void *)a3
+- (TSPKnownFieldVersionRequirementsMap)initWithMap:(void *)map
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = map;
+  if (map)
   {
     v7.receiver = self;
     v7.super_class = TSPKnownFieldVersionRequirementsMap;
@@ -36,23 +36,23 @@
     v5 = v4;
     if (v4)
     {
-      sub_276A1B874(v4 + 1, v3);
+      sub_276A1B874(v4 + 1, selfCopy);
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-+ (id)newKnownFieldVersionRequirementsMapForMessage:(const Message *)a3 knownFieldRuleProvider:(id)a4
++ (id)newKnownFieldVersionRequirementsMapForMessage:(const Message *)message knownFieldRuleProvider:(id)provider
 {
-  v6 = a4;
-  updated = objc_msgSend_updateMap_message_byAddingRulesFromKnownFieldRuleProvider_(a1, v7, 0, a3, v6);
+  providerCopy = provider;
+  updated = objc_msgSend_updateMap_message_byAddingRulesFromKnownFieldRuleProvider_(self, v7, 0, message, providerCopy);
   if (updated)
   {
-    v9 = [a1 alloc];
+    v9 = [self alloc];
     v11 = objc_msgSend_initWithMap_(v9, v10, updated);
   }
 
@@ -64,21 +64,21 @@
   return v11;
 }
 
-+ (void)updateMap:(void *)a3 message:(const Message *)a4 byAddingRulesFromKnownFieldRuleProvider:(id)a5
++ (void)updateMap:(void *)map message:(const Message *)message byAddingRulesFromKnownFieldRuleProvider:(id)provider
 {
-  v7 = a5;
+  providerCopy = provider;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  v19 = a3;
+  mapCopy = map;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_276A1AD34;
   v12[3] = &unk_27A6E4708;
   v14 = &v16;
-  v15 = a4;
-  v13 = v7;
-  v8 = v7;
+  messageCopy = message;
+  v13 = providerCopy;
+  v8 = providerCopy;
   objc_msgSend_enumerateKnownFieldRulesUsingBlock_(v8, v9, v12);
   v10 = v17[3];
 
@@ -86,9 +86,9 @@
   return v10;
 }
 
-- (void)addRulesFromKnownFieldRuleProvider:(id)a3
+- (void)addRulesFromKnownFieldRuleProvider:(id)provider
 {
-  v19 = a3;
+  providerCopy = provider;
   ptr = self->_map.__ptr_;
   if (!ptr)
   {
@@ -103,7 +103,7 @@
   }
 
   v5 = objc_opt_class();
-  if (objc_msgSend_updateMap_message_byAddingRulesFromKnownFieldRuleProvider_(v5, v6, ptr, 0, v19) != ptr)
+  if (objc_msgSend_updateMap_message_byAddingRulesFromKnownFieldRuleProvider_(v5, v6, ptr, 0, providerCopy) != ptr)
   {
     TSUSetCrashReporterInfo();
     v13 = MEMORY[0x277D81150];
@@ -117,9 +117,9 @@ LABEL_8:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v13 = a3;
+  archiverCopy = archiver;
   ptr = self->_map.__ptr_;
   if (!ptr)
   {
@@ -133,7 +133,7 @@ LABEL_8:
     abort();
   }
 
-  for (i = ptr + 16; ; objc_msgSend_addDocumentFeatureInfoWithIdentifier_readVersion_writeVersion_validatingValues_(v13, v4, *(i + 9), *(i + 10), *(i + 8), (i[88] & 1) == 0))
+  for (i = ptr + 16; ; objc_msgSend_addDocumentFeatureInfoWithIdentifier_readVersion_writeVersion_validatingValues_(archiverCopy, v4, *(i + 9), *(i + 10), *(i + 8), (i[88] & 1) == 0))
   {
     i = *i;
     if (!i)

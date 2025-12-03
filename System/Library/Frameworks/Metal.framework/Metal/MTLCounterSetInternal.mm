@@ -1,6 +1,6 @@
 @interface MTLCounterSetInternal
-- (BOOL)isEqual:(id)a3;
-- (MTLCounterSetInternal)initWithName:(id)a3 description:(id)a4 counters:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (MTLCounterSetInternal)initWithName:(id)name description:(id)description counters:(id)counters;
 - (NSString)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -8,14 +8,14 @@
 
 @implementation MTLCounterSetInternal
 
-- (MTLCounterSetInternal)initWithName:(id)a3 description:(id)a4 counters:(id)a5
+- (MTLCounterSetInternal)initWithName:(id)name description:(id)description counters:(id)counters
 {
   v10.receiver = self;
   v10.super_class = MTLCounterSetInternal;
   v8 = [(MTLCounterSetInternal *)&v10 init];
-  v8->_name = a3;
-  v8->_description = a4;
-  v8->_counters = [a5 copy];
+  v8->_name = name;
+  v8->_description = description;
+  v8->_counters = [counters copy];
   return v8;
 }
 
@@ -58,9 +58,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -71,7 +71,7 @@
     v21 = v4;
     v22 = v3;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
 LABEL_3:
       LOBYTE(v12) = 0;
@@ -79,13 +79,13 @@ LABEL_3:
     }
 
     name = self->_name;
-    if (name == *(a3 + 1) || (v12 = [(NSString *)name isEqual:?]) != 0)
+    if (name == *(equal + 1) || (v12 = [(NSString *)name isEqual:?]) != 0)
     {
       description = self->_description;
-      if (description == *(a3 + 2) || (v12 = [(NSString *)description isEqual:?]) != 0)
+      if (description == *(equal + 2) || (v12 = [(NSString *)description isEqual:?]) != 0)
       {
         v15 = [(NSArray *)self->_counters count:v6];
-        if (v15 != [*(a3 + 3) count])
+        if (v15 != [*(equal + 3) count])
         {
           goto LABEL_3;
         }
@@ -96,9 +96,9 @@ LABEL_3:
           do
           {
             v17 = [(NSArray *)self->_counters objectAtIndexedSubscript:v16];
-            if (v17 != [*(a3 + 3) objectAtIndexedSubscript:v16])
+            if (v17 != [*(equal + 3) objectAtIndexedSubscript:v16])
             {
-              v12 = [-[NSArray objectAtIndexedSubscript:](self->_counters objectAtIndexedSubscript:{v16), "isEqual:", objc_msgSend(*(a3 + 3), "objectAtIndexedSubscript:", v16)}];
+              v12 = [-[NSArray objectAtIndexedSubscript:](self->_counters objectAtIndexedSubscript:{v16), "isEqual:", objc_msgSend(*(equal + 3), "objectAtIndexedSubscript:", v16)}];
               if (!v12)
               {
                 break;

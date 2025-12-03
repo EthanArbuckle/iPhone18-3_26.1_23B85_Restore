@@ -6,10 +6,10 @@
 - (NewsUpdaterDelegate)delegate;
 - (void)clearNewsCacheOnDisk;
 - (void)didParseData;
-- (void)failWithError:(id)a3;
-- (void)fetchNewsForStock:(id)a3 withCompletion:(id)a4;
-- (void)loadNewsCacheFromDiskForSymbol:(id)a3;
-- (void)parseData:(id)a3;
+- (void)failWithError:(id)error;
+- (void)fetchNewsForStock:(id)stock withCompletion:(id)completion;
+- (void)loadNewsCacheFromDiskForSymbol:(id)symbol;
+- (void)parseData:(id)data;
 - (void)resetLocale;
 - (void)saveLastResponse;
 @end
@@ -61,8 +61,8 @@
 
 - (BOOL)shouldReloadOnResume
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"nidtk"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"nidtk"];
   v4 = CFAbsoluteTimeGetCurrent() - v3 > 1800.0;
 
   return v4;
@@ -70,33 +70,33 @@
 
 - (void)clearNewsCacheOnDisk
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 removeObjectForKey:@"nidtk"];
-  [v2 removeObjectForKey:@"nidak"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"nidtk"];
+  [standardUserDefaults removeObjectForKey:@"nidak"];
 }
 
-- (void)loadNewsCacheFromDiskForSymbol:(id)a3
+- (void)loadNewsCacheFromDiskForSymbol:(id)symbol
 {
-  v12 = a3;
-  if ([v12 length])
+  symbolCopy = symbol;
+  if ([symbolCopy length])
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v4 doubleForKey:@"nidtk"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"nidtk"];
     v6 = v5;
     if (CFAbsoluteTimeGetCurrent() - v5 <= 345600.0)
     {
-      v7 = [v4 arrayForKey:@"nidak"];
+      v7 = [standardUserDefaults arrayForKey:@"nidak"];
       if (v7)
       {
         v8 = [[StockNewsItemCollection alloc] initWithArchiveArray:v7];
-        v9 = [(StockNewsItemCollection *)v8 newsItems];
-        v10 = [v9 count];
+        newsItems = [(StockNewsItemCollection *)v8 newsItems];
+        v10 = [newsItems count];
 
         if (v10)
         {
           [(StockNewsItemCollection *)v8 setExpirationTime:v6 + 60.0];
           v11 = +[NewsUpdater _newsItemCollectionCache];
-          [v11 setObject:v8 forKey:v12];
+          [v11 setObject:v8 forKey:symbolCopy];
         }
       }
     }
@@ -108,52 +108,52 @@
   }
 }
 
-- (void)fetchNewsForStock:(id)a3 withCompletion:(id)a4
+- (void)fetchNewsForStock:(id)stock withCompletion:(id)completion
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  stockCopy = stock;
+  completionCopy = completion;
   v10 = StocksLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(Stock *)v8 symbol];
+    symbol = [(Stock *)stockCopy symbol];
     v12 = +[NetPreferences sharedPreferences];
-    v13 = [v12 isNetworkReachable];
+    isNetworkReachable = [v12 isNetworkReachable];
     v14 = "NO";
-    if (v13)
+    if (isNetworkReachable)
     {
       v14 = "YES";
     }
 
     *buf = 138412546;
-    v62 = v11;
+    v62 = symbol;
     v63 = 2080;
     v64 = v14;
     _os_log_impl(&dword_26BAAD000, v10, OS_LOG_TYPE_DEFAULT, "#NewsUpdater fetchNewsForStock: %@ (reachable: %s)", buf, 0x16u);
   }
 
-  if (!v8)
+  if (!stockCopy)
   {
     [NewsUpdater fetchNewsForStock:a2 withCompletion:self];
   }
 
-  v15 = [objc_opt_class() shouldGenerateOfflineData];
+  shouldGenerateOfflineData = [objc_opt_class() shouldGenerateOfflineData];
   v16 = +[NetPreferences sharedPreferences];
-  v17 = [v16 isNetworkReachable];
+  isNetworkReachable2 = [v16 isNetworkReachable];
 
-  if (v17)
+  if (isNetworkReachable2)
   {
-    if (v8)
+    if (stockCopy)
     {
-      v53 = v9;
-      if (self->_stock != v8)
+      v53 = completionCopy;
+      if (self->_stock != stockCopy)
       {
-        v18 = [v9 copy];
+        v18 = [completionCopy copy];
         updateCompletionHandler = self->_updateCompletionHandler;
         self->_updateCompletionHandler = v18;
 
         [(YQLRequest *)self cancel];
-        if (!(v15 & 1 | !self->_firstLoad))
+        if (!(shouldGenerateOfflineData & 1 | !self->_firstLoad))
         {
           self->_firstLoad = 0;
           stock = [MEMORY[0x277CBEBD0] standardUserDefaults];
@@ -180,19 +180,19 @@
               dispatch_async(MEMORY[0x277D85CD0], block);
 
 LABEL_35:
-              v9 = v53;
+              completionCopy = v53;
               goto LABEL_36;
             }
           }
         }
 
         v33 = +[NewsUpdater _newsItemCollectionCache];
-        v34 = [(Stock *)v8 symbol];
-        stock = [v33 objectForKey:v34];
+        symbol2 = [(Stock *)stockCopy symbol];
+        stock = [v33 objectForKey:symbol2];
 
         if (stock)
         {
-          v35 = v15;
+          v35 = shouldGenerateOfflineData;
         }
 
         else
@@ -202,38 +202,38 @@ LABEL_35:
 
         if ((v35 & 1) != 0 || (Current = CFAbsoluteTimeGetCurrent(), [stock expirationTime], Current >= v37) || (objc_msgSend(stock, "newsItems"), v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "count"), v38, !v39))
         {
-          objc_storeStrong(&self->_stock, a3);
+          objc_storeStrong(&self->_stock, stock);
           v40 = +[NetPreferences sharedPreferences];
-          v41 = [(YQLRequest *)self YQLLanguageCode];
-          v42 = [(YQLRequest *)self YQLCountryCode];
+          yQLLanguageCode = [(YQLRequest *)self YQLLanguageCode];
+          yQLCountryCode = [(YQLRequest *)self YQLCountryCode];
           v60[0] = @"json";
           v59[0] = @"format";
           v59[1] = @"tickers";
-          v43 = [(Stock *)v8 symbol];
-          v60[1] = v43;
-          v60[2] = v41;
+          symbol3 = [(Stock *)stockCopy symbol];
+          v60[1] = symbol3;
+          v60[2] = yQLLanguageCode;
           v59[2] = @"lang";
           v59[3] = @"region";
-          v60[3] = v42;
+          v60[3] = yQLCountryCode;
           v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:4];
 
-          v45 = [v40 stocksYQLBaseURL];
-          v46 = [v45 URLByAppendingPathComponent:@"applewf/news"];
+          stocksYQLBaseURL = [v40 stocksYQLBaseURL];
+          v46 = [stocksYQLBaseURL URLByAppendingPathComponent:@"applewf/news"];
 
           v47 = [v40 signedRequestForURL:v46 parameters:v44];
           if ([v40 serviceDebugging])
           {
-            v51 = v42;
+            v51 = yQLCountryCode;
             v48 = [v47 URL];
             [v48 absoluteString];
-            v49 = v52 = v41;
+            v49 = v52 = yQLLanguageCode;
             [YQLRequest appendDebugString:v49];
 
             v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v44];
-            v41 = v52;
+            yQLLanguageCode = v52;
             [YQLRequest appendDebugString:v50];
 
-            v42 = v51;
+            yQLCountryCode = v51;
           }
 
           [(YQLRequest *)self loadRequest:v47];
@@ -256,9 +256,9 @@ LABEL_35:
       v26 = StocksLogForCategory(0);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(Stock *)self->_stock symbol];
+        symbol4 = [(Stock *)self->_stock symbol];
         *buf = 138412290;
-        v62 = v27;
+        v62 = symbol4;
         _os_log_impl(&dword_26BAAD000, v26, OS_LOG_TYPE_DEFAULT, "#NewsUpdater Skipping duplicate news update request for %@", buf, 0xCu);
       }
 
@@ -271,7 +271,7 @@ LABEL_35:
         v56[2] = __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke;
         v56[3] = &unk_279D15D48;
         v57 = v29;
-        v58 = v9;
+        v58 = completionCopy;
         stock = v29;
         v30 = MEMORY[0x26D68CA60](v56);
         v31 = self->_updateCompletionHandler;
@@ -280,7 +280,7 @@ LABEL_35:
 
       else
       {
-        v32 = [v9 copy];
+        v32 = [completionCopy copy];
         stock = self->_updateCompletionHandler;
         self->_updateCompletionHandler = v32;
       }
@@ -298,7 +298,7 @@ LABEL_35:
   {
     if (!self->_stock)
     {
-      objc_storeStrong(&self->_stock, a3);
+      objc_storeStrong(&self->_stock, stock);
     }
 
     stock = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.stocks" code:3 userInfo:0];
@@ -329,24 +329,24 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
 
 - (void)saveLastResponse
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setDouble:@"nidtk" forKey:self->_lastResponseTimestamp];
-  v3 = [(StockNewsItemCollection *)self->_lastNewsItemCollection archiveArray];
-  [v4 setObject:v3 forKey:@"nidak"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setDouble:@"nidtk" forKey:self->_lastResponseTimestamp];
+  archiveArray = [(StockNewsItemCollection *)self->_lastNewsItemCollection archiveArray];
+  [standardUserDefaults setObject:archiveArray forKey:@"nidak"];
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
   v91 = *MEMORY[0x277D85DE8];
   v82 = 0;
-  v67 = a3;
+  dataCopy = data;
   v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:? options:? error:?];
   v65 = 0;
   v66 = v3;
   v68 = [YahooResponseParser arrayWithDictionaryKeyPath:&unk_287C81810 inJSONObject:v3 wrapResultIfDictionary:1];
   if (!v68)
   {
-    [(YQLRequest *)self failToParseWithData:v67];
+    [(YQLRequest *)self failToParseWithData:dataCopy];
     goto LABEL_53;
   }
 
@@ -383,8 +383,8 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
             v10 = [YahooResponseParser objectOfClass:v8 withDictionaryKeyPath:v9 inJSONObject:v6];
             [(StockNewsItem *)v7 setHeadline:v10];
 
-            v11 = [(StockNewsItem *)v7 headline];
-            LOBYTE(v10) = [v11 length] == 0;
+            headline = [(StockNewsItem *)v7 headline];
+            LOBYTE(v10) = [headline length] == 0;
 
             if ((v10 & 1) == 0)
             {
@@ -397,18 +397,18 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
               v15 = StocksLogForCategory(0);
               if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
               {
-                v16 = [(StockNewsItem *)v7 headline];
+                headline2 = [(StockNewsItem *)v7 headline];
                 *buf = 138412290;
-                v87 = v16;
+                v87 = headline2;
                 _os_log_impl(&dword_26BAAD000, v15, OS_LOG_TYPE_INFO, "#NewsUpdater headline: %@", buf, 0xCu);
               }
 
               v17 = StocksLogForCategory(0);
               if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
               {
-                v18 = [(StockNewsItem *)v7 summary];
+                summary = [(StockNewsItem *)v7 summary];
                 *buf = 138412290;
-                v87 = v18;
+                v87 = summary;
                 _os_log_impl(&dword_26BAAD000, v17, OS_LOG_TYPE_INFO, "#NewsUpdater summary: %@", buf, 0xCu);
               }
 
@@ -424,9 +424,9 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
                 v23 = StocksLogForCategory(0);
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
                 {
-                  v24 = [(StockNewsItem *)v7 link];
+                  link = [(StockNewsItem *)v7 link];
                   *buf = 138412290;
-                  v87 = v24;
+                  v87 = link;
                   _os_log_impl(&dword_26BAAD000, v23, OS_LOG_TYPE_INFO, "#NewsUpdater URL: %@", buf, 0xCu);
                 }
 
@@ -463,17 +463,17 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
                   v37 = [v30 dateFromString:v29];
                   [(StockNewsItem *)v7 setDate:v37];
 
-                  v38 = [(StockNewsItem *)v7 date];
-                  LOBYTE(v37) = v38 == 0;
+                  date = [(StockNewsItem *)v7 date];
+                  LOBYTE(v37) = date == 0;
 
                   if ((v37 & 1) == 0)
                   {
                     v39 = StocksLogForCategory(0);
                     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
                     {
-                      v40 = [(StockNewsItem *)v7 date];
+                      date2 = [(StockNewsItem *)v7 date];
                       *buf = 138412290;
-                      v87 = v40;
+                      v87 = date2;
                       _os_log_impl(&dword_26BAAD000, v39, OS_LOG_TYPE_INFO, "#NewsUpdater date: %@", buf, 0xCu);
                     }
 
@@ -526,10 +526,10 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
         }
 
         v48 = *(*(&v74 + 1) + 8 * j);
-        v49 = [v48 headline];
+        headline3 = [v48 headline];
 
-        v44 = v49;
-        if ([v41 containsObject:v49])
+        v44 = headline3;
+        if ([v41 containsObject:headline3])
         {
           if (v45)
           {
@@ -544,7 +544,7 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
 
         else
         {
-          [v41 addObject:v49];
+          [v41 addObject:headline3];
         }
       }
 
@@ -566,15 +566,15 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
     v44 = 0;
   }
 
-  v50 = [(Stock *)self->_stock symbol];
+  symbol = [(Stock *)self->_stock symbol];
   v51 = +[NewsUpdater _newsItemCollectionCache];
-  v52 = [v51 objectForKey:v50];
+  v52 = [v51 objectForKey:symbol];
 
   Current = CFAbsoluteTimeGetCurrent();
   if (![v42 count])
   {
-    v58 = [v52 newsItems];
-    if ([v58 count])
+    newsItems = [v52 newsItems];
+    if ([newsItems count])
     {
       [v52 expirationTime];
       v60 = v59 + -60.0 > Current + -345600.0;
@@ -582,8 +582,8 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
       if (v60)
       {
         v61 = MEMORY[0x277CBEA60];
-        v62 = [v52 newsItems];
-        v63 = [v61 arrayWithArray:v62];
+        newsItems2 = [v52 newsItems];
+        v63 = [v61 arrayWithArray:newsItems2];
         [v52 setNewsItems:v63];
 
         objc_storeStrong(&self->_lastNewsItemCollection, v52);
@@ -606,10 +606,10 @@ uint64_t __48__NewsUpdater_fetchNewsForStock_withCompletion___block_invoke(uint6
   [(StockNewsItemCollection *)self->_lastNewsItemCollection setNewsItems:v42];
   [(StockNewsItemCollection *)self->_lastNewsItemCollection setExpirationTime:self->_lastResponseTimestamp + 60.0];
 LABEL_50:
-  if ([v50 length])
+  if ([symbol length])
   {
     v56 = +[NewsUpdater _newsItemCollectionCache];
-    [v56 setObject:self->_lastNewsItemCollection forKey:v50];
+    [v56 setObject:self->_lastNewsItemCollection forKey:symbol];
   }
 
   stock = self->_stock;
@@ -619,26 +619,26 @@ LABEL_50:
 LABEL_53:
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v21.receiver = self;
   v21.super_class = NewsUpdater;
-  [(YQLRequest *)&v21 failWithError:v4];
+  [(YQLRequest *)&v21 failWithError:errorCopy];
   updateCompletionHandler = self->_updateCompletionHandler;
   if (updateCompletionHandler)
   {
-    updateCompletionHandler[2](updateCompletionHandler, 0, v4);
+    updateCompletionHandler[2](updateCompletionHandler, 0, errorCopy);
     v6 = self->_updateCompletionHandler;
     self->_updateCompletionHandler = 0;
   }
 
-  v7 = [(Stock *)self->_stock symbol];
+  symbol = [(Stock *)self->_stock symbol];
   v8 = +[NewsUpdater _newsItemCollectionCache];
-  v9 = [v8 objectForKey:v7];
+  v9 = [v8 objectForKey:symbol];
 
-  v10 = [v9 newsItems];
-  if (![v10 count])
+  newsItems = [v9 newsItems];
+  if (![newsItems count])
   {
 
     goto LABEL_7;
@@ -652,21 +652,21 @@ LABEL_53:
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained newsUpdater:self didFailWithError:v4];
+    [WeakRetained newsUpdater:self didFailWithError:errorCopy];
     goto LABEL_8;
   }
 
   v14 = MEMORY[0x277CBEA60];
-  v15 = [v9 newsItems];
-  v16 = [v14 arrayWithArray:v15];
+  newsItems2 = [v9 newsItems];
+  v16 = [v14 arrayWithArray:newsItems2];
   [v9 setNewsItems:v16];
 
   objc_storeStrong(&self->_lastNewsItemCollection, v9);
   [(StockNewsItemCollection *)self->_lastNewsItemCollection expirationTime];
   self->_lastResponseTimestamp = v17 + -60.0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v19 = [(StockNewsItemCollection *)self->_lastNewsItemCollection newsItems];
-  [WeakRetained newsUpdater:self didReceiveNewsItems:v19];
+  newsItems3 = [(StockNewsItemCollection *)self->_lastNewsItemCollection newsItems];
+  [WeakRetained newsUpdater:self didReceiveNewsItems:newsItems3];
 
 LABEL_8:
   stock = self->_stock;
@@ -684,8 +684,8 @@ LABEL_8:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(StockNewsItemCollection *)self->_lastNewsItemCollection newsItems];
-  [WeakRetained newsUpdater:self didReceiveNewsItems:v5];
+  newsItems = [(StockNewsItemCollection *)self->_lastNewsItemCollection newsItems];
+  [WeakRetained newsUpdater:self didReceiveNewsItems:newsItems];
 }
 
 - (void)resetLocale
@@ -697,8 +697,8 @@ LABEL_8:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v2 = [_cache allValues];
-    v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allValues = [_cache allValues];
+    v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v3)
     {
       v4 = v3;
@@ -709,16 +709,16 @@ LABEL_8:
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allValues);
           }
 
           v7 = *(*(&v9 + 1) + 8 * i);
           [v7 setExpirationTime:0.0];
-          v8 = [v7 newsItems];
-          [v8 makeObjectsPerformSelector:sel_resetLocale];
+          newsItems = [v7 newsItems];
+          [newsItems makeObjectsPerformSelector:sel_resetLocale];
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v4);

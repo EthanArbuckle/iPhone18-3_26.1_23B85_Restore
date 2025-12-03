@@ -6,31 +6,31 @@
 - (NSDateComponents)significantEventOffset;
 - (NSString)significantEvent;
 - (NSTimeZone)timeZone;
-- (void)_setSignificantEventOffset:(id)a3;
-- (void)setFireDate:(id)a3;
-- (void)setRecurrence:(id)a3;
-- (void)setSignificantEvent:(id)a3;
-- (void)setSignificantEventOffset:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)updateFireDate:(id)a3 completionHandler:(id)a4;
-- (void)updateRecurrence:(id)a3 completionHandler:(id)a4;
-- (void)updateSignificantEvent:(id)a3 completionHandler:(id)a4;
-- (void)updateSignificantEventOffset:(id)a3 completionHandler:(id)a4;
-- (void)updateTimeZone:(id)a3 completionHandler:(id)a4;
+- (void)_setSignificantEventOffset:(id)offset;
+- (void)setFireDate:(id)date;
+- (void)setRecurrence:(id)recurrence;
+- (void)setSignificantEvent:(id)event;
+- (void)setSignificantEventOffset:(id)offset;
+- (void)setTimeZone:(id)zone;
+- (void)updateFireDate:(id)date completionHandler:(id)handler;
+- (void)updateRecurrence:(id)recurrence completionHandler:(id)handler;
+- (void)updateSignificantEvent:(id)event completionHandler:(id)handler;
+- (void)updateSignificantEventOffset:(id)offset completionHandler:(id)handler;
+- (void)updateTimeZone:(id)zone completionHandler:(id)handler;
 @end
 
 @implementation _HMTimerTriggerBuilder
 
-- (void)updateSignificantEventOffset:(id)a3 completionHandler:(id)a4
+- (void)updateSignificantEventOffset:(id)offset completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = a4;
-  if (!v6)
+  offsetCopy = offset;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTimerTriggerBuilder updateSignificantEventOffset:completionHandler:]", @"completion"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -47,8 +47,8 @@
     objc_exception_throw(v17);
   }
 
-  v7 = v6;
-  [(_HMTimerTriggerBuilder *)self _setSignificantEventOffset:v18];
+  v7 = handlerCopy;
+  [(_HMTimerTriggerBuilder *)self _setSignificantEventOffset:offsetCopy];
   if (self)
   {
     context = self->super.super.super._context;
@@ -60,29 +60,29 @@
   }
 
   v9 = context;
-  v10 = [(_HMContext *)v9 delegateCaller];
-  [v10 callCompletion:v7 error:0];
+  delegateCaller = [(_HMContext *)v9 delegateCaller];
+  [delegateCaller callCompletion:v7 error:0];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setSignificantEventOffset:(id)a3
+- (void)_setSignificantEventOffset:(id)offset
 {
-  v6 = a3;
+  offsetCopy = offset;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [offsetCopy copy];
   significantEventOffset = self->_significantEventOffset;
   self->_significantEventOffset = v4;
 
   os_unfair_lock_unlock(&self->super.super.super._lock);
 }
 
-- (void)setSignificantEventOffset:(id)a3
+- (void)setSignificantEventOffset:(id)offset
 {
-  v4 = a3;
-  v5 = v4;
-  v9 = v4;
-  if (v4 && (valid = HMIsValidSignificantEventOffset(v4), v5 = v9, !valid))
+  offsetCopy = offset;
+  v5 = offsetCopy;
+  v9 = offsetCopy;
+  if (offsetCopy && (valid = HMIsValidSignificantEventOffset(offsetCopy), v5 = v9, !valid))
   {
     v7 = _HMFPreconditionFailure();
     [(_HMTimerTriggerBuilder *)v7 significantEventOffset];
@@ -103,16 +103,16 @@
   return v3;
 }
 
-- (void)updateSignificantEvent:(id)a3 completionHandler:(id)a4
+- (void)updateSignificantEvent:(id)event completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v6 = a4;
-  if (!v6)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTimerTriggerBuilder updateSignificantEvent:completionHandler:]", @"completion"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -129,8 +129,8 @@
     objc_exception_throw(v19);
   }
 
-  v7 = v6;
-  if (v20)
+  v7 = handlerCopy;
+  if (eventCopy)
   {
     [(_HMTimerTriggerBuilder *)self setSignificantEvent:?];
     if (self)
@@ -144,8 +144,8 @@
     }
 
     v9 = context;
-    v10 = [(_HMContext *)v9 delegateCaller];
-    [v10 callCompletion:v7 error:0];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
+    [delegateCaller callCompletion:v7 error:0];
   }
 
   else
@@ -161,21 +161,21 @@
     }
 
     v9 = v11;
-    v10 = [(_HMContext *)v9 delegateCaller];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-    [v10 callCompletion:v7 error:v12];
+    [delegateCaller callCompletion:v7 error:v12];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSignificantEvent:(id)a3
+- (void)setSignificantEvent:(id)event
 {
-  v9 = a3;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
-  if (v9)
+  if (eventCopy)
   {
-    v4 = [v9 copy];
+    v4 = [eventCopy copy];
     v5 = &OBJC_IVAR____HMTimerTriggerBuilder__significantEvent;
   }
 
@@ -204,16 +204,16 @@
   return v3;
 }
 
-- (void)updateRecurrence:(id)a3 completionHandler:(id)a4
+- (void)updateRecurrence:(id)recurrence completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = a4;
-  if (!v6)
+  recurrenceCopy = recurrence;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTimerTriggerBuilder updateRecurrence:completionHandler:]", @"completion"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -230,8 +230,8 @@
     objc_exception_throw(v17);
   }
 
-  v7 = v6;
-  [(_HMTimerTriggerBuilder *)self setRecurrence:v18];
+  v7 = handlerCopy;
+  [(_HMTimerTriggerBuilder *)self setRecurrence:recurrenceCopy];
   if (self)
   {
     context = self->super.super.super._context;
@@ -243,17 +243,17 @@
   }
 
   v9 = context;
-  v10 = [(_HMContext *)v9 delegateCaller];
-  [v10 callCompletion:v7 error:0];
+  delegateCaller = [(_HMContext *)v9 delegateCaller];
+  [delegateCaller callCompletion:v7 error:0];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRecurrence:(id)a3
+- (void)setRecurrence:(id)recurrence
 {
-  v6 = a3;
+  recurrenceCopy = recurrence;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [recurrenceCopy copy];
   recurrence = self->_recurrence;
   self->_recurrence = v4;
 
@@ -269,16 +269,16 @@
   return v3;
 }
 
-- (void)updateTimeZone:(id)a3 completionHandler:(id)a4
+- (void)updateTimeZone:(id)zone completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = a4;
-  if (!v6)
+  zoneCopy = zone;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTimerTriggerBuilder updateTimeZone:completionHandler:]", @"completion"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -295,8 +295,8 @@
     objc_exception_throw(v17);
   }
 
-  v7 = v6;
-  [(_HMTimerTriggerBuilder *)self setTimeZone:v18];
+  v7 = handlerCopy;
+  [(_HMTimerTriggerBuilder *)self setTimeZone:zoneCopy];
   if (self)
   {
     context = self->super.super.super._context;
@@ -308,17 +308,17 @@
   }
 
   v9 = context;
-  v10 = [(_HMContext *)v9 delegateCaller];
-  [v10 callCompletion:v7 error:0];
+  delegateCaller = [(_HMContext *)v9 delegateCaller];
+  [delegateCaller callCompletion:v7 error:0];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [zoneCopy copy];
   timeZone = self->_timeZone;
   self->_timeZone = v4;
 
@@ -334,16 +334,16 @@
   return v3;
 }
 
-- (void)updateFireDate:(id)a3 completionHandler:(id)a4
+- (void)updateFireDate:(id)date completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v6 = a4;
-  if (!v6)
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTimerTriggerBuilder updateFireDate:completionHandler:]", @"completion"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -360,8 +360,8 @@
     objc_exception_throw(v19);
   }
 
-  v7 = v6;
-  if (v20)
+  v7 = handlerCopy;
+  if (dateCopy)
   {
     [(_HMTimerTriggerBuilder *)self setFireDate:?];
     if (self)
@@ -375,8 +375,8 @@
     }
 
     v9 = context;
-    v10 = [(_HMContext *)v9 delegateCaller];
-    [v10 callCompletion:v7 error:0];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
+    [delegateCaller callCompletion:v7 error:0];
   }
 
   else
@@ -392,21 +392,21 @@
     }
 
     v9 = v11;
-    v10 = [(_HMContext *)v9 delegateCaller];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-    [v10 callCompletion:v7 error:v12];
+    [delegateCaller callCompletion:v7 error:v12];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFireDate:(id)a3
+- (void)setFireDate:(id)date
 {
-  v10 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
-  if (v10)
+  if (dateCopy)
   {
-    v4 = [v10 copy];
+    v4 = [dateCopy copy];
     v5 = &OBJC_IVAR____HMTimerTriggerBuilder__fireDate;
   }
 
@@ -440,29 +440,29 @@
 
 - (NSDate)fireDate
 {
-  v2 = [(_HMTimerTriggerBuilder *)self fireDateIfSet];
-  v3 = v2;
-  if (v2)
+  fireDateIfSet = [(_HMTimerTriggerBuilder *)self fireDateIfSet];
+  v3 = fireDateIfSet;
+  if (fireDateIfSet)
   {
-    v4 = v2;
+    distantFuture = fireDateIfSet;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   }
 
-  v5 = v4;
+  v5 = distantFuture;
 
   return v5;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_opt_class();
-    [a1 adoptExternalCategoriesFromClasses:{v3, objc_opt_class(), 0}];
+    [self adoptExternalCategoriesFromClasses:{v3, objc_opt_class(), 0}];
   }
 }
 

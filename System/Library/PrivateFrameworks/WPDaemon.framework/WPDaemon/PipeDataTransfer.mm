@@ -1,5 +1,5 @@
 @interface PipeDataTransfer
-- (id)initPipeDataTransferForPeer:(id)a3;
+- (id)initPipeDataTransferForPeer:(id)peer;
 - (unsigned)generateSequenceNumber;
 - (void)generateSequenceNumber;
 - (void)resetAllTransfer;
@@ -9,23 +9,23 @@
 
 @implementation PipeDataTransfer
 
-- (id)initPipeDataTransferForPeer:(id)a3
+- (id)initPipeDataTransferForPeer:(id)peer
 {
-  v5 = a3;
+  peerCopy = peer;
   v13.receiver = self;
   v13.super_class = PipeDataTransfer;
   v6 = [(PipeDataTransfer *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peerUUID, a3);
-    v8 = [MEMORY[0x277CBEB28] data];
+    objc_storeStrong(&v6->_peerUUID, peer);
+    data = [MEMORY[0x277CBEB28] data];
     rxCurrentReceivedData = v7->_rxCurrentReceivedData;
-    v7->_rxCurrentReceivedData = v8;
+    v7->_rxCurrentReceivedData = data;
 
-    v10 = [MEMORY[0x277CBEB28] data];
+    data2 = [MEMORY[0x277CBEB28] data];
     rxTotalDataWithLen = v7->_rxTotalDataWithLen;
-    v7->_rxTotalDataWithLen = v10;
+    v7->_rxTotalDataWithLen = data2;
   }
 
   return v7;
@@ -59,11 +59,11 @@
   [(PipeDataTransfer *)self setRxTotalDataToReceive:0];
   [(PipeDataTransfer *)self setRxData:0];
   [(PipeDataTransfer *)self setRxCurrentDataSize:0];
-  v3 = [MEMORY[0x277CBEB28] data];
-  [(PipeDataTransfer *)self setRxCurrentReceivedData:v3];
+  data = [MEMORY[0x277CBEB28] data];
+  [(PipeDataTransfer *)self setRxCurrentReceivedData:data];
 
-  v4 = [MEMORY[0x277CBEB28] data];
-  [(PipeDataTransfer *)self setRxTotalDataWithLen:v4];
+  data2 = [MEMORY[0x277CBEB28] data];
+  [(PipeDataTransfer *)self setRxTotalDataWithLen:data2];
 
   [(PipeDataTransfer *)self setRxWaitForMoreData:0];
 }
@@ -84,17 +84,17 @@
       _os_log_impl(&dword_272965000, v5, OS_LOG_TYPE_DEFAULT, "WPPM: Reset sequence number", v8, 2u);
     }
 
-    v4 = self;
+    selfCopy2 = self;
     v3 = 1;
   }
 
   else
   {
     v3 = ([(PipeDataTransfer *)self txSeqNum]+ 1);
-    v4 = self;
+    selfCopy2 = self;
   }
 
-  [(PipeDataTransfer *)v4 setTxSeqNum:v3];
+  [(PipeDataTransfer *)selfCopy2 setTxSeqNum:v3];
   if (WPLogInitOnce != -1)
   {
     [PipeDataTransfer generateSequenceNumber];
@@ -112,7 +112,7 @@
 - (void)generateSequenceNumber
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = a1;
+  selfCopy = self;
   v4[0] = 67109120;
   v4[1] = [OUTLINED_FUNCTION_9() txSeqNum];
   _os_log_debug_impl(&dword_272965000, v1, OS_LOG_TYPE_DEBUG, "WPPM: tx Seq num %d", v4, 8u);

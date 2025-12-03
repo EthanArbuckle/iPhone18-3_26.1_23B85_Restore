@@ -1,20 +1,20 @@
 @interface TPSTravelESimEligibilityValidation
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSTravelESimEligibilityValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__TPSTravelESimEligibilityValidation_validateWithCompletion___block_invoke;
   v6[3] = &unk_2789AF8C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(TPSTravelESimEligibilityValidation *)self getCurrentStateWithCompletion:v6];
 }
 
@@ -32,16 +32,16 @@ void __61__TPSTravelESimEligibilityValidation_validateWithCompletion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getCurrentStateWithCompletion:(id)a3
+- (void)getCurrentStateWithCompletion:(id)completion
 {
   v3 = MEMORY[0x277CC37B0];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [v3 alloc];
   v6 = [v5 initWithQueue:MEMORY[0x277D85CD0]];
   v9 = 0;
   v7 = [v6 shouldShoweSIMTravelTip:&v9];
   v8 = v9;
-  v4[2](v4, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
 void __61__TPSTravelESimEligibilityValidation_validateWithCompletion___block_invoke_cold_1(id *a1, char a2, NSObject *a3)

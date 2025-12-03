@@ -7,13 +7,13 @@
 - (NSString)password;
 - (void)_readCachedCredentials;
 - (void)_saveCredentials;
-- (void)clearCredentialsSyncToKeychain:(BOOL)a3;
+- (void)clearCredentialsSyncToKeychain:(BOOL)keychain;
 - (void)dealloc;
-- (void)setAccountID:(id)a3;
-- (void)setAccountID:(id)a3 password:(id)a4 syncToKeychain:(BOOL)a5;
-- (void)setPassword:(id)a3;
-- (void)tokenWithError:(id)a3;
-- (void)validateWithCompletionHandler:(id)a3;
+- (void)setAccountID:(id)d;
+- (void)setAccountID:(id)d password:(id)password syncToKeychain:(BOOL)keychain;
+- (void)setPassword:(id)password;
+- (void)tokenWithError:(id)error;
+- (void)validateWithCompletionHandler:(id)handler;
 @end
 
 @implementation HPSAppleConnectController
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __43__HPSAppleConnectController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -70,11 +70,11 @@ uint64_t __43__HPSAppleConnectController_sharedInstance__block_invoke(uint64_t a
 
 - (BOOL)isEnabled
 {
-  v3 = [(HPSAppleConnectController *)self accountID];
-  if ([v3 length])
+  accountID = [(HPSAppleConnectController *)self accountID];
+  if ([accountID length])
   {
-    v4 = [(HPSAppleConnectController *)self password];
-    v5 = [v4 length] != 0;
+    password = [(HPSAppleConnectController *)self password];
+    v5 = [password length] != 0;
   }
 
   else
@@ -85,20 +85,20 @@ uint64_t __43__HPSAppleConnectController_sharedInstance__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)setAccountID:(id)a3 password:(id)a4 syncToKeychain:(BOOL)a5
+- (void)setAccountID:(id)d password:(id)password syncToKeychain:(BOOL)keychain
 {
-  v5 = a5;
-  v15 = a4;
+  keychainCopy = keychain;
+  passwordCopy = password;
   v8 = MEMORY[0x277CBEAF8];
-  v9 = a3;
-  v10 = [v8 currentLocale];
-  v11 = [v9 lowercaseStringWithLocale:v10];
+  dCopy = d;
+  currentLocale = [v8 currentLocale];
+  v11 = [dCopy lowercaseStringWithLocale:currentLocale];
 
-  v12 = [(HPSAppleConnectController *)self accountID];
-  if ([v11 isEqualToString:v12])
+  accountID = [(HPSAppleConnectController *)self accountID];
+  if ([v11 isEqualToString:accountID])
   {
-    v13 = [(HPSAppleConnectController *)self password];
-    v14 = [v15 isEqualToString:v13];
+    password = [(HPSAppleConnectController *)self password];
+    v14 = [passwordCopy isEqualToString:password];
 
     if (v14)
     {
@@ -111,8 +111,8 @@ uint64_t __43__HPSAppleConnectController_sharedInstance__block_invoke(uint64_t a
   }
 
   [(HPSAppleConnectController *)self setAccountID:v11];
-  [(HPSAppleConnectController *)self setPassword:v15];
-  if (v5)
+  [(HPSAppleConnectController *)self setPassword:passwordCopy];
+  if (keychainCopy)
   {
     [(HPSAppleConnectController *)self _saveCredentials];
   }
@@ -120,12 +120,12 @@ uint64_t __43__HPSAppleConnectController_sharedInstance__block_invoke(uint64_t a
 LABEL_7:
 }
 
-- (void)clearCredentialsSyncToKeychain:(BOOL)a3
+- (void)clearCredentialsSyncToKeychain:(BOOL)keychain
 {
-  v3 = a3;
+  keychainCopy = keychain;
   [(HPSAppleConnectController *)self setAccountID:0];
   [(HPSAppleConnectController *)self setPassword:0];
-  if (v3)
+  if (keychainCopy)
   {
 
     [(HPSAppleConnectController *)self _saveCredentials];
@@ -134,35 +134,35 @@ LABEL_7:
 
 - (BOOL)isCarryOrLiveOnUser
 {
-  v3 = [(HPSAppleConnectController *)self isEnabled];
-  v4 = [(HPSAppleConnectController *)self accountID];
-  v5 = [(HPSAppleConnectController *)self password];
-  if (v3)
+  isEnabled = [(HPSAppleConnectController *)self isEnabled];
+  accountID = [(HPSAppleConnectController *)self accountID];
+  password = [(HPSAppleConnectController *)self password];
+  if (isEnabled)
   {
-    if ([v4 length])
+    if ([accountID length])
     {
-      LOBYTE(v3) = [v5 length] != 0;
+      LOBYTE(isEnabled) = [password length] != 0;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isEnabled) = 0;
     }
   }
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)validateWithCompletionHandler:(id)a3
+- (void)validateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HPSAppleConnectController_validateWithCompletionHandler___block_invoke;
   v6[3] = &unk_279773F78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -207,16 +207,16 @@ LABEL_9:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tokenWithError:(id)a3
+- (void)tokenWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__HPSAppleConnectController_tokenWithError___block_invoke;
   v6[3] = &unk_279773F78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -277,44 +277,44 @@ void __44__HPSAppleConnectController_tokenWithError___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAccountID:(id)a3
+- (void)setAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   obj = self;
   objc_sync_enter(obj);
   accountID = obj->_accountID;
-  obj->_accountID = v4;
+  obj->_accountID = dCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   obj = self;
   objc_sync_enter(obj);
   password = obj->_password;
-  obj->_password = v4;
+  obj->_password = passwordCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSString)accountID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_accountID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_accountID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)password
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_password;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_password;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

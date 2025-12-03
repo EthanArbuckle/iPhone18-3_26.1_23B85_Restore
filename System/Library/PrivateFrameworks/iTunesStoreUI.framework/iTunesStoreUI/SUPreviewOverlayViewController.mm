@@ -1,24 +1,24 @@
 @interface SUPreviewOverlayViewController
 + (id)defaultRequestProperties;
-+ (void)_setContentInsetsForScrollView:(id)a3 viewController:(id)a4;
-+ (void)offsetScrollView:(id)a3 forViewController:(id)a4;
++ (void)_setContentInsetsForScrollView:(id)view viewController:(id)controller;
++ (void)offsetScrollView:(id)view forViewController:(id)controller;
 - (BOOL)isContentLoaded;
 - (CGSize)contentSize;
-- (id)_previewOverlayContainerForViewController:(id)a3;
-- (id)_scrollViewForViewController:(id)a3;
+- (id)_previewOverlayContainerForViewController:(id)controller;
+- (id)_scrollViewForViewController:(id)controller;
 - (id)_storePageViewController;
 - (void)dealloc;
-- (void)hideInNavigationController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)hideInViewController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)hideInNavigationController:(id)controller animated:(BOOL)animated completionBlock:(id)block;
+- (void)hideInViewController:(id)controller animated:(BOOL)animated completionBlock:(id)block;
 - (void)invalidateForMemoryPurge;
 - (void)loadView;
-- (void)loadWithCompletionBlock:(id)a3;
-- (void)loadWithRequestProperties:(id)a3 completionBlock:(id)a4;
-- (void)setContentSize:(CGSize)a3;
-- (void)setUserInfoString:(id)a3;
-- (void)showInNavigationController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)showInViewController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4;
+- (void)loadWithCompletionBlock:(id)block;
+- (void)loadWithRequestProperties:(id)properties completionBlock:(id)block;
+- (void)setContentSize:(CGSize)size;
+- (void)setUserInfoString:(id)string;
+- (void)showInNavigationController:(id)controller animated:(BOOL)animated completionBlock:(id)block;
+- (void)showInViewController:(id)controller animated:(BOOL)animated completionBlock:(id)block;
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success;
 @end
 
 @implementation SUPreviewOverlayViewController
@@ -49,32 +49,32 @@
   return v2;
 }
 
-+ (void)offsetScrollView:(id)a3 forViewController:(id)a4
++ (void)offsetScrollView:(id)view forViewController:(id)controller
 {
   if (![objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")])
   {
-    v6 = SUPreviewOverlayForViewController(a4);
+    v6 = SUPreviewOverlayForViewController(controller);
 
-    [SUPreviewOverlayViewController _setContentInsetsForScrollView:a3 viewController:v6];
+    [SUPreviewOverlayViewController _setContentInsetsForScrollView:view viewController:v6];
   }
 }
 
-- (void)hideInNavigationController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)hideInNavigationController:(id)controller animated:(BOOL)animated completionBlock:(id)block
 {
   self->_visible = 0;
-  if (a5)
+  if (block)
   {
-    (*(a5 + 2))(a5, a2, a3, a4);
+    (*(block + 2))(block, a2, controller, animated);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v6 postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
 }
 
-- (void)hideInViewController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)hideInViewController:(id)controller animated:(BOOL)animated completionBlock:(id)block
 {
-  if (a4)
+  if (animated)
   {
     v7 = MEMORY[0x1E69DD250];
     [objc_opt_class() defaultAnimationDuration];
@@ -88,7 +88,7 @@
     v9[2] = __80__SUPreviewOverlayViewController_hideInViewController_animated_completionBlock___block_invoke_2;
     v9[3] = &unk_1E81672D8;
     v9[4] = self;
-    v9[5] = a5;
+    v9[5] = block;
     [v7 animateWithDuration:v10 animations:v9 completion:?];
   }
 
@@ -101,14 +101,14 @@
 
     [(SUPreviewOverlayViewController *)self removeFromParentViewController];
     self->_visible = 0;
-    if (a5)
+    if (block)
     {
-      (*(a5 + 2))(a5);
+      (*(block + 2))(block);
     }
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v8 postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
   }
 }
 
@@ -153,45 +153,45 @@ uint64_t __80__SUPreviewOverlayViewController_hideInViewController_animated_comp
   }
 }
 
-- (void)loadWithCompletionBlock:(id)a3
+- (void)loadWithCompletionBlock:(id)block
 {
   storePageViewController = self->_storePageViewController;
   if (storePageViewController)
   {
-    v6 = [(SUStorePageViewController *)storePageViewController URLRequestProperties];
+    uRLRequestProperties = [(SUStorePageViewController *)storePageViewController URLRequestProperties];
   }
 
   else
   {
-    v6 = [objc_opt_class() defaultRequestProperties];
+    uRLRequestProperties = [objc_opt_class() defaultRequestProperties];
   }
 
-  [(SUPreviewOverlayViewController *)self loadWithRequestProperties:v6 completionBlock:a3];
+  [(SUPreviewOverlayViewController *)self loadWithRequestProperties:uRLRequestProperties completionBlock:block];
 }
 
-- (void)loadWithRequestProperties:(id)a3 completionBlock:(id)a4
+- (void)loadWithRequestProperties:(id)properties completionBlock:(id)block
 {
   loadBlock = self->_loadBlock;
   if (loadBlock)
   {
-    v8 = self;
+    selfCopy = self;
     (*(self->_loadBlock + 2))();
     loadBlock = self->_loadBlock;
   }
 
-  self->_loadBlock = [a4 copy];
+  self->_loadBlock = [block copy];
   [(SUPreviewOverlayViewController *)self view];
   self->_loaded = 0;
   [(SUViewController *)self setSkLoading:1];
-  v9 = [(SUPreviewOverlayViewController *)self _storePageViewController];
+  _storePageViewController = [(SUPreviewOverlayViewController *)self _storePageViewController];
 
-  [v9 reloadWithURLRequestProperties:a3];
+  [_storePageViewController reloadWithURLRequestProperties:properties];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(SUPreviewOverlayViewController *)self isViewLoaded])
   {
     [-[SUPreviewOverlayViewController view](self "view")];
@@ -202,30 +202,30 @@ uint64_t __80__SUPreviewOverlayViewController_hideInViewController_animated_comp
   self->_contentSize.height = height;
 }
 
-- (void)setUserInfoString:(id)a3
+- (void)setUserInfoString:(id)string
 {
   userInfoString = self->_userInfoString;
-  if (userInfoString != a3)
+  if (userInfoString != string)
   {
 
-    self->_userInfoString = [a3 copy];
-    [(SUStorePageViewController *)self->_storePageViewController setScriptUserInfo:a3];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    self->_userInfoString = [string copy];
+    [(SUStorePageViewController *)self->_storePageViewController setScriptUserInfo:string];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v6 postNotificationName:@"SUPreviewOverlayUserInfoDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"SUPreviewOverlayUserInfoDidChangeNotification" object:self];
   }
 }
 
-- (void)showInNavigationController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)showInNavigationController:(id)controller animated:(BOOL)animated completionBlock:(id)block
 {
-  v7 = [a3 navigationBar];
-  [v7 frame];
+  navigationBar = [controller navigationBar];
+  [navigationBar frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SUPreviewOverlayViewController *)self view];
-  [v16 frame];
+  view = [(SUPreviewOverlayViewController *)self view];
+  [view frame];
   v18 = v17;
   v20 = v19;
   v21 = (v17 - v13) * 0.5;
@@ -236,63 +236,63 @@ uint64_t __80__SUPreviewOverlayViewController_hideInViewController_animated_comp
   v27.size.height = v15;
   MaxY = CGRectGetMaxY(v27);
   v24 = MaxY - v20;
-  [v16 setFrame:{v22, MaxY - v20, v18, v20}];
-  [objc_msgSend(v7 "superview")];
-  [v16 setFrame:{v22, v20 + v24, v18, v20}];
+  [view setFrame:{v22, MaxY - v20, v18, v20}];
+  [objc_msgSend(navigationBar "superview")];
+  [view setFrame:{v22, v20 + v24, v18, v20}];
   self->_visible = 1;
-  if (a5)
+  if (block)
   {
-    (*(a5 + 2))(a5);
+    (*(block + 2))(block);
   }
 
-  v25 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v25 postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
 }
 
-- (void)showInViewController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)showInViewController:(id)controller animated:(BOOL)animated completionBlock:(id)block
 {
-  v9 = [a3 view];
-  [v9 bounds];
+  view = [controller view];
+  [view bounds];
   v11 = v10;
-  v12 = [(SUPreviewOverlayViewController *)self view];
-  [v12 setAutoresizingMask:33];
-  [v12 frame];
+  view2 = [(SUPreviewOverlayViewController *)self view];
+  [view2 setAutoresizingMask:33];
+  [view2 frame];
   v14 = v13;
   v16 = v15;
   v17 = v11 - v13;
   [(SUPreviewOverlayViewController *)self paddingRight];
   v19 = v17 - v18;
   [(SUPreviewOverlayViewController *)self paddingTop];
-  [v12 setFrame:{v19, v20, v14, v16}];
-  [v9 addSubview:v12];
-  [a3 addChildViewController:self];
-  if (a4)
+  [view2 setFrame:{v19, v20, v14, v16}];
+  [view addSubview:view2];
+  [controller addChildViewController:self];
+  if (animated)
   {
-    [v12 setAlpha:0.0];
+    [view2 setAlpha:0.0];
     v21 = MEMORY[0x1E69DD250];
     [objc_opt_class() defaultAnimationDuration];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __80__SUPreviewOverlayViewController_showInViewController_animated_completionBlock___block_invoke;
     v24[3] = &unk_1E8164348;
-    v24[4] = v12;
+    v24[4] = view2;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __80__SUPreviewOverlayViewController_showInViewController_animated_completionBlock___block_invoke_2;
     v23[3] = &unk_1E81672D8;
     v23[4] = self;
-    v23[5] = a5;
+    v23[5] = block;
     [v21 animateWithDuration:v24 animations:v23 completion:?];
   }
 
   else
   {
     self->_visible = 1;
-    [v12 setAlpha:1.0];
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
+    [view2 setAlpha:1.0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v22 postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"SUPreviewOverlayVisibilityDidChangeNotification" object:self];
   }
 }
 
@@ -323,13 +323,13 @@ uint64_t __80__SUPreviewOverlayViewController_showInViewController_animated_comp
   [(SUViewController *)&v3 invalidateForMemoryPurge];
 }
 
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success
 {
-  self->_loaded = a4;
+  self->_loaded = success;
   [(SUViewController *)self setSkLoading:0];
   if (self->_loadBlock)
   {
-    v5 = self;
+    selfCopy = self;
     (*(self->_loadBlock + 2))();
 
     self->_loadBlock = 0;
@@ -349,14 +349,14 @@ uint64_t __80__SUPreviewOverlayViewController_showInViewController_animated_comp
     height = 1.0;
   }
 
-  v5 = [(SUPreviewOverlayView *)v3 initWithFrame:0.0, 0.0, self->_contentSize.width, height];
-  -[SUPreviewOverlayView setStorePageView:](v5, "setStorePageView:", [-[SUPreviewOverlayViewController _storePageViewController](self "_storePageViewController")]);
-  [(SUPreviewOverlayViewController *)self setView:v5];
+  height = [(SUPreviewOverlayView *)v3 initWithFrame:0.0, 0.0, self->_contentSize.width, height];
+  -[SUPreviewOverlayView setStorePageView:](height, "setStorePageView:", [-[SUPreviewOverlayViewController _storePageViewController](self "_storePageViewController")]);
+  [(SUPreviewOverlayViewController *)self setView:height];
 }
 
-- (id)_previewOverlayContainerForViewController:(id)a3
+- (id)_previewOverlayContainerForViewController:(id)controller
 {
-  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a3, 0}];
+  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{controller, 0}];
   v4 = [v3 count];
   if (v4 < 1)
   {
@@ -376,10 +376,10 @@ LABEL_7:
         break;
       }
 
-      v8 = [v7 childViewControllers];
-      if ([v8 count])
+      childViewControllers = [v7 childViewControllers];
+      if ([childViewControllers count])
       {
-        [v3 addObjectsFromArray:v8];
+        [v3 addObjectsFromArray:childViewControllers];
         v5 = [v3 count];
       }
 
@@ -393,11 +393,11 @@ LABEL_7:
   return v7;
 }
 
-- (id)_scrollViewForViewController:(id)a3
+- (id)_scrollViewForViewController:(id)controller
 {
-  v3 = [a3 view];
+  view = [controller view];
 
-  return SUViewFirstUIScrollView(v3);
+  return SUViewFirstUIScrollView(view);
 }
 
 - (id)_storePageViewController
@@ -413,11 +413,11 @@ LABEL_7:
     [(SUStorePageViewController *)self->_storePageViewController setScriptUserInfo:self->_userInfoString];
     -[SUStorePageViewController setURLRequestProperties:](self->_storePageViewController, "setURLRequestProperties:", [objc_opt_class() defaultRequestProperties]);
     [(SUPreviewOverlayViewController *)self addChildViewController:self->_storePageViewController];
-    v5 = [(SUStorePageViewController *)self->_storePageViewController copyDefaultScriptProperties];
-    [v5 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
-    [v5 setScrollingDisabled:1];
-    [v5 setShouldLoadProgressively:0];
-    [(SUStorePageViewController *)self->_storePageViewController setScriptProperties:v5];
+    copyDefaultScriptProperties = [(SUStorePageViewController *)self->_storePageViewController copyDefaultScriptProperties];
+    [copyDefaultScriptProperties setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
+    [copyDefaultScriptProperties setScrollingDisabled:1];
+    [copyDefaultScriptProperties setShouldLoadProgressively:0];
+    [(SUStorePageViewController *)self->_storePageViewController setScriptProperties:copyDefaultScriptProperties];
 
     return self->_storePageViewController;
   }
@@ -425,25 +425,25 @@ LABEL_7:
   return result;
 }
 
-+ (void)_setContentInsetsForScrollView:(id)a3 viewController:(id)a4
++ (void)_setContentInsetsForScrollView:(id)view viewController:(id)controller
 {
-  if (a3)
+  if (view)
   {
-    v6 = SUPreviewOverlayScrollViewIsPreviewAdjusted(a3);
+    v6 = SUPreviewOverlayScrollViewIsPreviewAdjusted(view);
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [a3 contentInset];
+    [view contentInset];
     v34 = v6;
     v14 = v13 - v6;
     v16 = v15 - v10;
     v18 = v17 - v12;
     v20 = v19 - v8;
-    if (a4)
+    if (controller)
     {
-      if (*(a4 + 1200) == 1)
+      if (*(controller + 1200) == 1)
       {
-        [objc_msgSend(a4 "view")];
+        [objc_msgSend(controller "view")];
         v22 = v21;
       }
 
@@ -466,23 +466,23 @@ LABEL_7:
       v24 = *(MEMORY[0x1E69DDCE0] + 24);
     }
 
-    [a3 setContentInset:{v14, v20, v16, v18}];
-    [a3 setScrollIndicatorInsets:{v14, v20, v16, v18}];
-    SUPreviewOverlayScrollViewSetPreviewAdjusted(a3, v22, v23, v25, v24);
+    [view setContentInset:{v14, v20, v16, v18}];
+    [view setScrollIndicatorInsets:{v14, v20, v16, v18}];
+    SUPreviewOverlayScrollViewSetPreviewAdjusted(view, v22, v23, v25, v24);
     if (v22 != v34)
     {
-      [a3 contentOffset];
+      [view contentOffset];
       v27 = v26;
       v29 = v28 - (v22 - v34);
       if (v29 < 0.0 && v14 <= -v29)
       {
-        [a3 contentSize];
+        [view contentSize];
         v32 = v31;
-        [a3 frame];
+        [view frame];
         if (v32 >= v33)
         {
 
-          [a3 setContentOffset:{v27, v29}];
+          [view setContentOffset:{v27, v29}];
         }
       }
     }

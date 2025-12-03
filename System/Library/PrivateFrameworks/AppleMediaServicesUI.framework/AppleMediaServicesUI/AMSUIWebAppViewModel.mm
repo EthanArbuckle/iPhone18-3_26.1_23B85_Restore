@@ -1,24 +1,24 @@
 @interface AMSUIWebAppViewModel
-+ (BOOL)validateJSObject:(id)a3;
-- (AMSUIWebAppViewModel)initWithJSObject:(id)a3 context:(id)a4;
++ (BOOL)validateJSObject:(id)object;
+- (AMSUIWebAppViewModel)initWithJSObject:(id)object context:(id)context;
 - (NSString)description;
 - (id)_makeBarButtonItemView;
-- (id)iconWithSize:(CGSize)a3 scale:(double)a4;
+- (id)iconWithSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation AMSUIWebAppViewModel
 
-- (AMSUIWebAppViewModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebAppViewModel)initWithJSObject:(id)object context:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v33.receiver = self;
   v33.super_class = AMSUIWebAppViewModel;
   v8 = [(AMSUIWebAppViewModel *)&v33 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"accessibilityLabel"];
+    v9 = [objectCopy objectForKeyedSubscript:@"accessibilityLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
     accessibilityLabel = v8->_accessibilityLabel;
     v8->_accessibilityLabel = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
+    v12 = [objectCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"iconURL"];
+    v15 = [objectCopy objectForKeyedSubscript:@"iconURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       v8->_iconURL = v17;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"title"];
+    v19 = [objectCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,29 +90,29 @@
       v24 = v32;
       if (v23)
       {
-        v25 = [v23 localizedName];
-        v26 = v8->_title;
-        v8->_title = v25;
+        localizedName = [v23 localizedName];
+        mEMORY[0x1E698C968] = v8->_title;
+        v8->_title = localizedName;
       }
 
       else
       {
-        v26 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-        if (!v26)
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+        if (!mEMORY[0x1E698C968])
         {
-          v26 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v27 = [v26 OSLogObject];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v28 = objc_opt_class();
-          v29 = [v7 logKey];
+          logKey = [contextCopy logKey];
           *buf = 138543618;
           v35 = v28;
           v36 = 2114;
-          v37 = v29;
-          _os_log_impl(&dword_1BB036000, v27, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to get bundle record", buf, 0x16u);
+          v37 = logKey;
+          _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to get bundle record", buf, 0x16u);
         }
       }
     }
@@ -132,12 +132,12 @@
 
   v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [v4 heightAnchor];
-  v6 = [v5 constraintEqualToConstant:v3];
+  heightAnchor = [v4 heightAnchor];
+  v6 = [heightAnchor constraintEqualToConstant:v3];
   [v6 setActive:1];
 
-  v7 = [v4 widthAnchor];
-  v8 = [v7 constraintEqualToConstant:v3];
+  widthAnchor = [v4 widthAnchor];
+  v8 = [widthAnchor constraintEqualToConstant:v3];
   [v8 setActive:1];
 
   +[AMSUICommonScreen scale];
@@ -156,12 +156,12 @@
   v27[4] = self;
   [v10 addErrorBlock:v27];
   v12 = objc_alloc_init(AMSUICommonLabel);
-  v13 = [(AMSUIWebAppViewModel *)self title];
-  [(AMSUICommonLabel *)v12 setText:v13];
+  title = [(AMSUIWebAppViewModel *)self title];
+  [(AMSUICommonLabel *)v12 setText:title];
 
   [(AMSUICommonLabel *)v12 setTextAlignment:1];
-  v14 = [MEMORY[0x1E69DC888] ams_primaryText];
-  [(AMSUICommonLabel *)v12 setTextColor:v14];
+  ams_primaryText = [MEMORY[0x1E69DC888] ams_primaryText];
+  [(AMSUICommonLabel *)v12 setTextColor:ams_primaryText];
 
   v15 = objc_alloc_init(AMSUICommonStackView);
   v16 = _os_feature_enabled_impl();
@@ -183,8 +183,8 @@
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   [(AMSUICommonStackView *)v15 addArrangedSubviews:v19];
 
-  v20 = [MEMORY[0x1E69DC888] ams_appTint];
-  [v11 setTintColor:v20];
+  ams_appTint = [MEMORY[0x1E69DC888] ams_appTint];
+  [v11 setTintColor:ams_appTint];
 
   v21 = *MEMORY[0x1E69DDD80];
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
@@ -229,25 +229,25 @@ void __46__AMSUIWebAppViewModel__makeBarButtonItemView__block_invoke_2(uint64_t 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)iconWithSize:(CGSize)a3 scale:(double)a4
+- (id)iconWithSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(AMSUIWebAppViewModel *)self iconURL];
-  if (v8)
+  height = size.height;
+  width = size.width;
+  iconURL = [(AMSUIWebAppViewModel *)self iconURL];
+  if (iconURL)
   {
     v9 = +[AMSUIImageLoader defaultLoader];
-    v10 = [v9 fetchImageWithURL:v8];
+    v10 = [v9 fetchImageWithURL:iconURL];
   }
 
   else
   {
     v11 = objc_alloc_init(MEMORY[0x1E698CAD0]);
     v12 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v13 = [(AMSUIWebAppViewModel *)self bundleIdentifier];
-    v9 = [v12 initWithBundleIdentifier:v13];
+    bundleIdentifier = [(AMSUIWebAppViewModel *)self bundleIdentifier];
+    v9 = [v12 initWithBundleIdentifier:bundleIdentifier];
 
-    v14 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:width scale:{height, a4}];
+    v14 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:width scale:{height, scale}];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __43__AMSUIWebAppViewModel_iconWithSize_scale___block_invoke;
@@ -279,37 +279,37 @@ void __43__AMSUIWebAppViewModel_iconWithSize_scale___block_invoke(uint64_t a1, u
 - (NSString)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSUIWebAppViewModel *)self accessibilityLabel];
+  accessibilityLabel = [(AMSUIWebAppViewModel *)self accessibilityLabel];
 
-  if (v4)
+  if (accessibilityLabel)
   {
-    v5 = [(AMSUIWebAppViewModel *)self accessibilityLabel];
-    [v3 setObject:v5 forKey:@"accessibilityLabel"];
+    accessibilityLabel2 = [(AMSUIWebAppViewModel *)self accessibilityLabel];
+    [v3 setObject:accessibilityLabel2 forKey:@"accessibilityLabel"];
   }
 
-  v6 = [(AMSUIWebAppViewModel *)self bundleIdentifier];
+  bundleIdentifier = [(AMSUIWebAppViewModel *)self bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
-    v7 = [(AMSUIWebAppViewModel *)self bundleIdentifier];
-    [v3 setObject:v7 forKey:@"bundleIdentifier"];
+    bundleIdentifier2 = [(AMSUIWebAppViewModel *)self bundleIdentifier];
+    [v3 setObject:bundleIdentifier2 forKey:@"bundleIdentifier"];
   }
 
-  v8 = [(AMSUIWebAppViewModel *)self iconURL];
+  iconURL = [(AMSUIWebAppViewModel *)self iconURL];
 
-  if (v8)
+  if (iconURL)
   {
-    v9 = [(AMSUIWebAppViewModel *)self iconURL];
-    v10 = [v9 absoluteString];
-    [v3 setObject:v10 forKey:@"iconURL"];
+    iconURL2 = [(AMSUIWebAppViewModel *)self iconURL];
+    absoluteString = [iconURL2 absoluteString];
+    [v3 setObject:absoluteString forKey:@"iconURL"];
   }
 
-  v11 = [(AMSUIWebAppViewModel *)self title];
+  title = [(AMSUIWebAppViewModel *)self title];
 
-  if (v11)
+  if (title)
   {
-    v12 = [(AMSUIWebAppViewModel *)self title];
-    [v3 setObject:v12 forKey:@"title"];
+    title2 = [(AMSUIWebAppViewModel *)self title];
+    [v3 setObject:title2 forKey:@"title"];
   }
 
   v13 = [v3 description];
@@ -317,9 +317,9 @@ void __43__AMSUIWebAppViewModel_iconWithSize_scale___block_invoke(uint64_t a1, u
   return v13;
 }
 
-+ (BOOL)validateJSObject:(id)a3
++ (BOOL)validateJSObject:(id)object
 {
-  v3 = [a3 objectForKeyedSubscript:@"bundleIdentifier"];
+  v3 = [object objectForKeyedSubscript:@"bundleIdentifier"];
   v4 = v3 != 0;
 
   return v4;

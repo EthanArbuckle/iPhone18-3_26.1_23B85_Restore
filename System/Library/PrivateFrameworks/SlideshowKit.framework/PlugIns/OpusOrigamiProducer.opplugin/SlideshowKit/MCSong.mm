@@ -1,24 +1,24 @@
 @interface MCSong
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (MCAssetAudio)asset;
 - (MCSong)init;
-- (MCSong)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCSong)initWithImprint:(id)imprint andMontage:(id)montage;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
-- (void)setAsset:(id)a3;
+- (void)setAsset:(id)asset;
 @end
 
 @implementation MCSong
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"builtVolume"])
+  if ([key isEqualToString:@"builtVolume"])
   {
     return [NSSet setWithObjects:@"volume", @"fadeInDuration", @"fadeOutDuration", 0, v7];
   }
 
-  if ([a3 isEqualToString:@"builtAudio"])
+  if ([key isEqualToString:@"builtAudio"])
   {
     v6 = @"builtVolume";
     v7 = 0;
@@ -26,11 +26,11 @@
 
   else
   {
-    if (![a3 isEqualToString:@"audioNoVolume"])
+    if (![key isEqualToString:@"audioNoVolume"])
     {
-      v8.receiver = a1;
+      v8.receiver = self;
       v8.super_class = &OBJC_METACLASS___MCSong;
-      return objc_msgSendSuper2(&v8, "keyPathsForValuesAffectingValueForKey:", a3);
+      return objc_msgSendSuper2(&v8, "keyPathsForValuesAffectingValueForKey:", key);
     }
 
     v6 = 0;
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (MCSong)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCSong)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v23.receiver = self;
   v23.super_class = MCSong;
@@ -62,18 +62,18 @@
   {
     if ([(MCObject *)v6 isSnapshot])
     {
-      v8 = +[MCObject objectWithImprint:andMontage:](MCObject, "objectWithImprint:andMontage:", [a3 objectForKey:@"asset"], a4);
+      v8 = +[MCObject objectWithImprint:andMontage:](MCObject, "objectWithImprint:andMontage:", [imprint objectForKey:@"asset"], montage);
     }
 
     else
     {
-      v8 = -[MCMontage audioAssetForObjectID:](v7->super.mMontage, "audioAssetForObjectID:", [a3 objectForKey:@"assetID"]);
+      v8 = -[MCMontage audioAssetForObjectID:](v7->super.mMontage, "audioAssetForObjectID:", [imprint objectForKey:@"assetID"]);
     }
 
     v9 = v8;
     v7->mAsset = v9;
     [(MCObject *)v9 addSong:v7];
-    v10 = [a3 objectForKey:@"volume"];
+    v10 = [imprint objectForKey:@"volume"];
     if (v10)
     {
       [v10 floatValue];
@@ -85,7 +85,7 @@
     }
 
     v7->mVolume = v11;
-    v12 = [a3 objectForKey:@"fadeInDuration"];
+    v12 = [imprint objectForKey:@"fadeInDuration"];
     v13 = 0.0;
     v14 = 0.0;
     if (v12)
@@ -94,7 +94,7 @@
     }
 
     v7->mFadeInDuration = v14;
-    v15 = [a3 objectForKey:@"fadeOutDuration"];
+    v15 = [imprint objectForKey:@"fadeOutDuration"];
     if (v15)
     {
       [v15 doubleValue];
@@ -102,14 +102,14 @@
     }
 
     v7->mFadeOutDuration = v13;
-    v17 = [a3 objectForKey:@"index"];
-    if (v17)
+    unsignedIntegerValue = [imprint objectForKey:@"index"];
+    if (unsignedIntegerValue)
     {
-      v17 = [v17 unsignedIntegerValue];
+      unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
     }
 
-    v7->mIndex = v17;
-    v18 = [a3 objectForKey:@"startTime"];
+    v7->mIndex = unsignedIntegerValue;
+    v18 = [imprint objectForKey:@"startTime"];
     v7->mStartTimeIsDefined = v18 != 0;
     if (v18)
     {
@@ -117,7 +117,7 @@
       v7->mStartTime = v19;
     }
 
-    v20 = [a3 objectForKey:@"duration"];
+    v20 = [imprint objectForKey:@"duration"];
     v7->mDurationIsDefined = v20 != 0;
     if (v20)
     {
@@ -154,59 +154,59 @@
 {
   v11.receiver = self;
   v11.super_class = MCSong;
-  v3 = [(MCObject *)&v11 imprint];
+  imprint = [(MCObject *)&v11 imprint];
   mAsset = self->mAsset;
   if (mAsset)
   {
-    v5 = [(MCObject *)mAsset objectID];
+    objectID = [(MCObject *)mAsset objectID];
     v6 = self->mAsset;
-    if (v5)
+    if (objectID)
     {
-      v7 = [(MCAsset *)v6 imprint];
+      imprint2 = [(MCAsset *)v6 imprint];
       v8 = @"asset";
     }
 
     else
     {
-      v7 = [(MCObject *)v6 objectID];
+      imprint2 = [(MCObject *)v6 objectID];
       v8 = @"assetID";
     }
 
-    [v3 setObject:v7 forKey:v8];
+    [imprint setObject:imprint2 forKey:v8];
   }
 
   mVolume = self->mVolume;
   if (mVolume != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", mVolume), @"volume"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", mVolume), @"volume"}];
   }
 
   if (self->mFadeInDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeInDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeInDuration"}];
   }
 
   if (self->mFadeOutDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeOutDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeOutDuration"}];
   }
 
   if (self->mIndex)
   {
-    [v3 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:"), @"index"}];
+    [imprint setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:"), @"index"}];
   }
 
   if (self->mStartTimeIsDefined)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mStartTime), @"startTime"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mStartTime), @"startTime"}];
   }
 
   if (self->mDurationIsDefined)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mDuration), @"duration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mDuration), @"duration"}];
   }
 
-  return v3;
+  return imprint;
 }
 
 - (MCAssetAudio)asset
@@ -222,9 +222,9 @@
   return v3;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  if (self->mAsset != a3)
+  if (self->mAsset != asset)
   {
     objc_sync_enter(self);
     mAsset = self->mAsset;
@@ -233,29 +233,29 @@
       [(MCAssetAudio *)mAsset removeSong:self];
     }
 
-    if (a3)
+    if (asset)
     {
-      v6 = a3;
-      self->mAsset = v6;
-      [(MCAssetAudio *)v6 addSong:self];
+      assetCopy = asset;
+      self->mAsset = assetCopy;
+      [(MCAssetAudio *)assetCopy addSong:self];
     }
 
     objc_sync_exit(self);
   }
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   objc_sync_enter(self);
-  *(a3 + 4) = [(MCObject *)self->mAsset snapshot];
-  *(a3 + 7) = LODWORD(self->mVolume);
-  *(a3 + 5) = *&self->mFadeInDuration;
-  *(a3 + 6) = *&self->mFadeOutDuration;
-  *(a3 + 7) = self->mIndex;
-  *(a3 + 8) = *&self->mStartTime;
-  *(a3 + 24) = self->mStartTimeIsDefined;
-  *(a3 + 9) = *&self->mDuration;
-  *(a3 + 25) = self->mDurationIsDefined;
+  *(snapshot + 4) = [(MCObject *)self->mAsset snapshot];
+  *(snapshot + 7) = LODWORD(self->mVolume);
+  *(snapshot + 5) = *&self->mFadeInDuration;
+  *(snapshot + 6) = *&self->mFadeOutDuration;
+  *(snapshot + 7) = self->mIndex;
+  *(snapshot + 8) = *&self->mStartTime;
+  *(snapshot + 24) = self->mStartTimeIsDefined;
+  *(snapshot + 9) = *&self->mDuration;
+  *(snapshot + 25) = self->mDurationIsDefined;
 
   objc_sync_exit(self);
 }

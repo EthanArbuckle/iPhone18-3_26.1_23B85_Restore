@@ -1,5 +1,5 @@
 @interface LNDeallocationHandler
-- (LNDeallocationHandler)initWithObject:(id)a3 deallocationHandler:(id)a4;
+- (LNDeallocationHandler)initWithObject:(id)object deallocationHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -28,21 +28,21 @@
   [(LNDeallocationHandler *)&v7 dealloc];
 }
 
-- (LNDeallocationHandler)initWithObject:(id)a3 deallocationHandler:(id)a4
+- (LNDeallocationHandler)initWithObject:(id)object deallocationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = LNDeallocationHandler;
   v8 = [(LNDeallocationHandler *)&v12 init];
   if (v8)
   {
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(handlerCopy);
     deallocationHandler = v8->_deallocationHandler;
     v8->_deallocationHandler = v9;
 
-    objc_storeWeak(&v8->_object, v6);
-    objc_setAssociatedObject(v6, v8, v8, 1);
+    objc_storeWeak(&v8->_object, objectCopy);
+    objc_setAssociatedObject(objectCopy, v8, v8, 1);
   }
 
   return v8;

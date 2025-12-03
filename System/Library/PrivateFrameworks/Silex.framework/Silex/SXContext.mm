@@ -1,6 +1,6 @@
 @interface SXContext
 + (void)prewarm;
-- (SXContext)initWithIdentifier:(id)a3 shareURL:(id)a4 JSONData:(id)a5 resourceDataSource:(id)a6 host:(id)a7 error:(id *)a8;
+- (SXContext)initWithIdentifier:(id)identifier shareURL:(id)l JSONData:(id)data resourceDataSource:(id)source host:(id)host error:(id *)error;
 - (SXResourceDataSource)resourceDataSource;
 @end
 
@@ -11,20 +11,20 @@
   v2 = objc_alloc_init(SXJSONObject);
 }
 
-- (SXContext)initWithIdentifier:(id)a3 shareURL:(id)a4 JSONData:(id)a5 resourceDataSource:(id)a6 host:(id)a7 error:(id *)a8
+- (SXContext)initWithIdentifier:(id)identifier shareURL:(id)l JSONData:(id)data resourceDataSource:(id)source host:(id)host error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v34 = a4;
-  v15 = a5;
-  v16 = a6;
-  v33 = a7;
+  identifierCopy = identifier;
+  lCopy = l;
+  dataCopy = data;
+  sourceCopy = source;
+  hostCopy = host;
   v36.receiver = self;
   v36.super_class = SXContext;
   v17 = [(SXContext *)&v36 init];
   if (v17)
   {
-    if (!v15)
+    if (!dataCopy)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"SXContextErrorDomain" code:1 userInfo:0];
       objc_claimAutoreleasedReturnValue();
@@ -33,7 +33,7 @@
     }
 
     v35 = 0;
-    v18 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v15 options:0 error:&v35];
+    v18 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v35];
     v19 = v35;
     if (v19)
     {
@@ -50,7 +50,7 @@
 
     v20 = [SXDocument alloc];
     v21 = [v18 objectForKey:@"specVersion"];
-    v22 = [(SXDocument *)v20 initWithIdentifier:v14 JSONObject:v18 andVersion:v21];
+    v22 = [(SXDocument *)v20 initWithIdentifier:identifierCopy JSONObject:v18 andVersion:v21];
 
     if (!v22)
     {
@@ -58,7 +58,7 @@
       goto LABEL_10;
     }
 
-    v23 = [[SXDocumentController alloc] initWithDocument:v22 shareURL:v34];
+    v23 = [[SXDocumentController alloc] initWithDocument:v22 shareURL:lCopy];
     documentController = v17->_documentController;
     v17->_documentController = v23;
 
@@ -66,9 +66,9 @@
     textContentProvider = v17->_textContentProvider;
     v17->_textContentProvider = v25;
 
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeWeak(&v17->_resourceDataSource, v16);
-    objc_storeStrong(&v17->_host, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeWeak(&v17->_resourceDataSource, sourceCopy);
+    objc_storeStrong(&v17->_host, host);
   }
 
   v27 = v17;

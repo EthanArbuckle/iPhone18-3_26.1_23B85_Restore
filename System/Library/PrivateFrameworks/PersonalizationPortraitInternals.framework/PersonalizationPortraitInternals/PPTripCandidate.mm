@@ -1,11 +1,11 @@
 @interface PPTripCandidate
-- (BOOL)canBeMergedWithTripCandidate:(id)a3 supportsGroundTransportEvents:(BOOL)a4;
+- (BOOL)canBeMergedWithTripCandidate:(id)candidate supportsGroundTransportEvents:(BOOL)events;
 - (BOOL)shouldPromoteToTripEvent;
-- (PPTripCandidate)initWithTripCandidateA:(id)a3 andTripCandidateB:(id)a4;
+- (PPTripCandidate)initWithTripCandidateA:(id)a andTripCandidateB:(id)b;
 - (id)allEvents;
 - (id)eventsTimeRange;
-- (id)partFromEvents:(uint64_t)a3 tripMode:(void *)a4 takingLocationFromEvent:;
-- (id)reverseGeocodedLocation:(void *)a1;
+- (id)partFromEvents:(uint64_t)events tripMode:(void *)mode takingLocationFromEvent:;
+- (id)reverseGeocodedLocation:(void *)location;
 - (id)tripEventFromCandidate;
 @end
 
@@ -14,14 +14,14 @@
 - (id)tripEventFromCandidate
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [(PPTripCandidate *)self allEvents];
+  allEvents = [(PPTripCandidate *)self allEvents];
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v6 = v3;
+  v6 = allEvents;
   v7 = [v6 countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v7)
   {
@@ -41,12 +41,12 @@
         }
 
         v11 = *(*(&v55 + 1) + 8 * v10);
-        v12 = [v11 pp_suggestedCategory];
-        v13 = v12;
+        pp_suggestedCategory = [v11 pp_suggestedCategory];
+        v13 = pp_suggestedCategory;
         if (v9)
         {
           v14 = v9;
-          if (v9 == 1 && v12 == 1)
+          if (v9 == 1 && pp_suggestedCategory == 1)
           {
             v15 = [v6 indexOfObject:v11] - 1;
             if (v15 >= 0)
@@ -56,10 +56,10 @@
               if (self)
               {
                 v18 = v16;
-                v19 = [v11 startDate];
-                v20 = [v18 endDate];
+                startDate = [v11 startDate];
+                endDate = [v18 endDate];
 
-                [v19 timeIntervalSinceDate:v20];
+                [startDate timeIntervalSinceDate:endDate];
                 v22 = v21;
               }
 
@@ -81,16 +81,16 @@
 
                 v51 = v23;
                 [v23 addObject:v11];
-                v24 = [v17 endDate];
-                v25 = [v11 startDate];
+                endDate2 = [v17 endDate];
+                startDate2 = [v11 startDate];
                 v26 = v11;
-                v27 = v24;
-                v28 = v25;
+                v27 = endDate2;
+                v28 = startDate2;
                 if (self)
                 {
-                  v29 = [v26 structuredLocation];
-                  v30 = [v29 geoLocation];
-                  v31 = [PPTripCandidate reverseGeocodedLocation:v30];
+                  structuredLocation = [v26 structuredLocation];
+                  geoLocation = [structuredLocation geoLocation];
+                  v31 = [PPTripCandidate reverseGeocodedLocation:geoLocation];
 
                   v32 = objc_alloc(MEMORY[0x277D3A570]);
                   v33 = v32;
@@ -101,8 +101,8 @@
 
                   else
                   {
-                    v38 = [v26 pp_locationString];
-                    v34 = [v33 initWithStartDate:v27 endDate:v28 eventIdentifiers:MEMORY[0x277CBEBF8] mode:2 location:0 fallbackLocationString:v38];
+                    pp_locationString = [v26 pp_locationString];
+                    v34 = [v33 initWithStartDate:v27 endDate:v28 eventIdentifiers:MEMORY[0x277CBEBF8] mode:2 location:0 fallbackLocationString:pp_locationString];
                   }
                 }
 
@@ -125,8 +125,8 @@
 
           else
           {
-            v35 = [v4 lastObject];
-            v36 = [(PPTripCandidate *)self partFromEvents:v4 tripMode:v14 takingLocationFromEvent:v35];
+            lastObject = [v4 lastObject];
+            v36 = [(PPTripCandidate *)self partFromEvents:v4 tripMode:v14 takingLocationFromEvent:lastObject];
 
             [v5 addObject:v36];
             v37 = objc_opt_new();
@@ -149,9 +149,9 @@
 
         else
         {
-          if (self && (v12 - 1) <= 9)
+          if (self && (pp_suggestedCategory - 1) <= 9)
           {
-            v9 = byte_2324187DA[(v12 - 1)];
+            v9 = byte_2324187DA[(pp_suggestedCategory - 1)];
           }
 
           else
@@ -180,18 +180,18 @@
 
   if ([v4 count])
   {
-    v40 = [v4 lastObject];
-    v41 = [(PPTripCandidate *)self partFromEvents:v4 tripMode:v9 takingLocationFromEvent:v40];
+    lastObject2 = [v4 lastObject];
+    v41 = [(PPTripCandidate *)self partFromEvents:v4 tripMode:v9 takingLocationFromEvent:lastObject2];
 
     [v5 addObject:v41];
   }
 
   v42 = objc_alloc(MEMORY[0x277D3A560]);
-  v43 = [v6 firstObject];
-  v44 = [v43 startDate];
-  v45 = [v6 lastObject];
-  v46 = [v45 endDate];
-  v47 = [v42 initWithStartDate:v44 endDate:v46 tripParts:v5];
+  firstObject = [v6 firstObject];
+  startDate3 = [firstObject startDate];
+  lastObject3 = [v6 lastObject];
+  endDate3 = [lastObject3 endDate];
+  v47 = [v42 initWithStartDate:startDate3 endDate:endDate3 tripParts:v5];
 
   v48 = *MEMORY[0x277D85DE8];
 
@@ -200,55 +200,55 @@
 
 - (id)allEvents
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_opt_new();
-    v3 = [v1 flights];
-    [v2 addObjectsFromArray:v3];
+    flights = [selfCopy flights];
+    [v2 addObjectsFromArray:flights];
 
-    v4 = [v1 hotels];
-    [v2 addObjectsFromArray:v4];
+    hotels = [selfCopy hotels];
+    [v2 addObjectsFromArray:hotels];
 
-    v5 = [v1 others];
-    [v2 addObjectsFromArray:v5];
+    others = [selfCopy others];
+    [v2 addObjectsFromArray:others];
 
-    v6 = [v1 groundTransports];
-    [v2 addObjectsFromArray:v6];
+    groundTransports = [selfCopy groundTransports];
+    [v2 addObjectsFromArray:groundTransports];
 
-    v1 = [v2 sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
+    selfCopy = [v2 sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)partFromEvents:(uint64_t)a3 tripMode:(void *)a4 takingLocationFromEvent:
+- (id)partFromEvents:(uint64_t)events tripMode:(void *)mode takingLocationFromEvent:
 {
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  modeCopy = mode;
+  v9 = modeCopy;
+  if (self)
   {
-    v10 = [v8 structuredLocation];
-    v11 = [v10 geoLocation];
-    v12 = [PPTripCandidate reverseGeocodedLocation:v11];
+    structuredLocation = [modeCopy structuredLocation];
+    geoLocation = [structuredLocation geoLocation];
+    v12 = [PPTripCandidate reverseGeocodedLocation:geoLocation];
 
     v13 = objc_alloc(MEMORY[0x277D3A570]);
-    v14 = [v7 firstObject];
-    v15 = [v14 startDate];
-    v16 = [v7 lastObject];
-    v17 = [v16 endDate];
+    firstObject = [v7 firstObject];
+    startDate = [firstObject startDate];
+    lastObject = [v7 lastObject];
+    endDate = [lastObject endDate];
     v18 = [v7 valueForKey:@"eventIdentifier"];
     if (v12)
     {
-      v19 = [v13 initWithStartDate:v15 endDate:v17 eventIdentifiers:v18 mode:a3 location:v12 fallbackLocationString:0];
+      v19 = [v13 initWithStartDate:startDate endDate:endDate eventIdentifiers:v18 mode:events location:v12 fallbackLocationString:0];
     }
 
     else
     {
       [v9 pp_locationString];
       v20 = v22 = v9;
-      v19 = [v13 initWithStartDate:v15 endDate:v17 eventIdentifiers:v18 mode:a3 location:0 fallbackLocationString:v20];
+      v19 = [v13 initWithStartDate:startDate endDate:endDate eventIdentifiers:v18 mode:events location:0 fallbackLocationString:v20];
 
       v9 = v22;
     }
@@ -262,10 +262,10 @@
   return v19;
 }
 
-- (id)reverseGeocodedLocation:(void *)a1
+- (id)reverseGeocodedLocation:(void *)location
 {
-  v1 = a1;
-  if (v1)
+  locationCopy = location;
+  if (locationCopy)
   {
     v3 = objc_opt_new();
     v13 = 0;
@@ -282,7 +282,7 @@
     v12 = &v13;
     v5 = v4;
     v11 = v5;
-    [v3 reverseGeocodeLocation:v1 completionHandler:&v7];
+    [v3 reverseGeocodeLocation:locationCopy completionHandler:&v7];
     if ([MEMORY[0x277D425A0] waitForSemaphore:v5 timeoutSeconds:{1.0, v7, v8, v9, v10}] == 1)
     {
       v2 = 0;
@@ -318,34 +318,34 @@ intptr_t __43__PPTripCandidate_reverseGeocodedLocation___block_invoke(uint64_t a
 
 - (BOOL)shouldPromoteToTripEvent
 {
-  v3 = [(PPTripCandidate *)self flights];
-  if ([v3 count] != 1)
+  flights = [(PPTripCandidate *)self flights];
+  if ([flights count] != 1)
   {
 
     goto LABEL_7;
   }
 
-  v4 = [(PPTripCandidate *)self hotels];
-  v5 = [v4 count];
+  hotels = [(PPTripCandidate *)self hotels];
+  v5 = [hotels count];
 
   if (v5)
   {
 LABEL_7:
-    v8 = [(PPTripCandidate *)self flights];
-    v9 = [v8 firstObject];
-    v10 = [v9 pp_airports];
-    v6 = [v10 first];
+    flights2 = [(PPTripCandidate *)self flights];
+    firstObject = [flights2 firstObject];
+    pp_airports = [firstObject pp_airports];
+    first = [pp_airports first];
 
-    v11 = [(PPTripCandidate *)self flights];
-    v12 = [v11 lastObject];
-    v13 = [v12 pp_airports];
-    v14 = [v13 second];
+    flights3 = [(PPTripCandidate *)self flights];
+    lastObject = [flights3 lastObject];
+    pp_airports2 = [lastObject pp_airports];
+    second = [pp_airports2 second];
 
-    v15 = [(PPTripCandidate *)self flights];
-    if ([v15 count] >= 2 && v6 && v14 && !-[NSObject isEqualToPPFlightAirport:](v6, "isEqualToPPFlightAirport:", v14))
+    flights4 = [(PPTripCandidate *)self flights];
+    if ([flights4 count] >= 2 && first && second && !-[NSObject isEqualToPPFlightAirport:](first, "isEqualToPPFlightAirport:", second))
     {
-      v19 = [(PPTripCandidate *)self hotels];
-      v20 = [v19 count];
+      hotels2 = [(PPTripCandidate *)self hotels];
+      v20 = [hotels2 count];
 
       if (!v20)
       {
@@ -392,11 +392,11 @@ LABEL_22:
     goto LABEL_14;
   }
 
-  v6 = pp_events_log_handle();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  first = pp_events_log_handle();
+  if (os_log_type_enabled(first, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
-    _os_log_debug_impl(&dword_23224A000, v6, OS_LOG_TYPE_DEBUG, "[TripCandidate shouldPromoteToTripEvent] discarding candidate: Single flight with no hotel", buf, 2u);
+    _os_log_debug_impl(&dword_23224A000, first, OS_LOG_TYPE_DEBUG, "[TripCandidate shouldPromoteToTripEvent] discarding candidate: Single flight with no hotel", buf, 2u);
   }
 
   v7 = 0;
@@ -407,51 +407,51 @@ LABEL_17:
 
 - (id)eventsTimeRange
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(PPTripCandidate *)a1 allEvents];
-    v3 = [v2 firstObject];
-    v4 = [v3 startDate];
+    allEvents = [(PPTripCandidate *)self allEvents];
+    firstObject = [allEvents firstObject];
+    startDate = [firstObject startDate];
 
-    v5 = [(PPTripCandidate *)v1 allEvents];
-    v6 = [v5 lastObject];
-    v7 = [v6 endDate];
+    allEvents2 = [(PPTripCandidate *)selfCopy allEvents];
+    lastObject = [allEvents2 lastObject];
+    endDate = [lastObject endDate];
 
-    [v4 timeIntervalSinceReferenceDate];
-    v1 = v8;
-    [v7 timeIntervalSinceDate:v4];
+    [startDate timeIntervalSinceReferenceDate];
+    selfCopy = v8;
+    [endDate timeIntervalSinceDate:startDate];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (BOOL)canBeMergedWithTripCandidate:(id)a3 supportsGroundTransportEvents:(BOOL)a4
+- (BOOL)canBeMergedWithTripCandidate:(id)candidate supportsGroundTransportEvents:(BOOL)events
 {
-  v6 = a4;
+  eventsCopy = events;
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(PPTripCandidate *)self flights];
-  v10 = [v9 count];
+  candidateCopy = candidate;
+  flights = [(PPTripCandidate *)self flights];
+  v10 = [flights count];
   if (v10)
   {
-    v4 = [v8 hotels];
-    v11 = [v4 count];
+    hotels = [candidateCopy hotels];
+    v11 = [hotels count];
     v12 = v11 != 0;
-    if (v11 || !v6)
+    if (v11 || !eventsCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!v6)
+  else if (!eventsCopy)
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  v13 = [v8 hotels];
-  if (![v13 count])
+  hotels2 = [candidateCopy hotels];
+  if (![hotels2 count])
   {
 
     v12 = 0;
@@ -463,8 +463,8 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  v5 = [(PPTripCandidate *)self groundTransports];
-  v12 = [v5 count] != 0;
+  groundTransports = [(PPTripCandidate *)self groundTransports];
+  v12 = [groundTransports count] != 0;
 
   if (v10)
   {
@@ -473,46 +473,46 @@ LABEL_11:
 
 LABEL_12:
 
-  v14 = [(PPTripCandidate *)self flights];
-  v15 = [v14 count];
+  flights2 = [(PPTripCandidate *)self flights];
+  v15 = [flights2 count];
   if (!v15)
   {
     v52 = v12;
     goto LABEL_17;
   }
 
-  v4 = [v8 others];
-  if (![v4 count])
+  hotels = [candidateCopy others];
+  if (![hotels count])
   {
     v52 = v12;
 LABEL_17:
-    v16 = [(PPTripCandidate *)self hotels];
-    v17 = [v16 count];
+    hotels3 = [(PPTripCandidate *)self hotels];
+    v17 = [hotels3 count];
     if (v17)
     {
-      v5 = [v8 others];
-      v18 = [v5 count];
+      groundTransports = [candidateCopy others];
+      v18 = [groundTransports count];
       v19 = v18 != 0;
-      if (v18 || !v6)
+      if (v18 || !eventsCopy)
       {
         goto LABEL_27;
       }
     }
 
-    else if (!v6)
+    else if (!eventsCopy)
     {
       v19 = 0;
       goto LABEL_28;
     }
 
-    v20 = [v8 others];
-    if ([v20 count])
+    others = [candidateCopy others];
+    if ([others count])
     {
       [(PPTripCandidate *)self groundTransports];
-      v21 = v51 = v8;
+      v21 = v51 = candidateCopy;
       v19 = [v21 count] != 0;
 
-      v8 = v51;
+      candidateCopy = v51;
       if (!v17)
       {
 LABEL_28:
@@ -562,8 +562,8 @@ LABEL_30:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v22 = [v8 others];
-  v23 = [v22 countByEnumeratingWithState:&v53 objects:v58 count:16];
+  others2 = [candidateCopy others];
+  v23 = [others2 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v23)
   {
     v24 = v23;
@@ -575,17 +575,17 @@ LABEL_30:
       {
         if (*v54 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(others2);
         }
 
-        v28 = [*(*(&v53 + 1) + 8 * i) structuredLocation];
-        v29 = [v28 geoLocation];
-        v30 = v29 != 0;
+        structuredLocation = [*(*(&v53 + 1) + 8 * i) structuredLocation];
+        geoLocation = [structuredLocation geoLocation];
+        v30 = geoLocation != 0;
 
         v26 &= v30;
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v53 objects:v58 count:16];
+      v24 = [others2 countByEnumeratingWithState:&v53 objects:v58 count:16];
     }
 
     while (v24);
@@ -599,22 +599,22 @@ LABEL_30:
 LABEL_42:
   if ((v12 | v26))
   {
-    v31 = v8;
+    v31 = candidateCopy;
     if (self)
     {
-      v32 = [(PPTripCandidate *)self eventsTimeRange];
+      eventsTimeRange = [(PPTripCandidate *)self eventsTimeRange];
       v34 = v33;
       v61.location = [(PPTripCandidate *)v31 eventsTimeRange];
       v61.length = v35;
-      v60.location = v32;
+      v60.location = eventsTimeRange;
       v60.length = v34;
       if (NSIntersectionRange(v60, v61).length)
       {
-        v36 = pp_events_log_handle();
-        if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+        startDate = pp_events_log_handle();
+        if (os_log_type_enabled(startDate, OS_LOG_TYPE_DEBUG))
         {
           *buf = 0;
-          _os_log_debug_impl(&dword_23224A000, v36, OS_LOG_TYPE_DEBUG, "[TripCandidate canBeMergedWithTripCandidate] Found events that fits into other events", buf, 2u);
+          _os_log_debug_impl(&dword_23224A000, startDate, OS_LOG_TYPE_DEBUG, "[TripCandidate canBeMergedWithTripCandidate] Found events that fits into other events", buf, 2u);
         }
 
         v37 = 1;
@@ -622,25 +622,25 @@ LABEL_42:
 
       else
       {
-        v38 = [(PPTripCandidate *)self allEvents];
-        v39 = [v38 firstObject];
-        v36 = [v39 startDate];
+        allEvents = [(PPTripCandidate *)self allEvents];
+        firstObject = [allEvents firstObject];
+        startDate = [firstObject startDate];
 
-        v40 = [(PPTripCandidate *)self allEvents];
-        v41 = [v40 _pas_leftFoldWithInitialObject:0 accumulate:&__block_literal_global_9202];
+        allEvents2 = [(PPTripCandidate *)self allEvents];
+        v41 = [allEvents2 _pas_leftFoldWithInitialObject:0 accumulate:&__block_literal_global_9202];
 
-        v42 = [(PPTripCandidate *)v31 allEvents];
-        v43 = [v42 firstObject];
-        v44 = [v43 startDate];
+        allEvents3 = [(PPTripCandidate *)v31 allEvents];
+        firstObject2 = [allEvents3 firstObject];
+        startDate2 = [firstObject2 startDate];
 
-        v45 = [(PPTripCandidate *)v31 allEvents];
-        v46 = [v45 _pas_leftFoldWithInitialObject:0 accumulate:&__block_literal_global_9202];
+        allEvents4 = [(PPTripCandidate *)v31 allEvents];
+        v46 = [allEvents4 _pas_leftFoldWithInitialObject:0 accumulate:&__block_literal_global_9202];
 
-        [v41 timeIntervalSinceDate:v44];
+        [v41 timeIntervalSinceDate:startDate2];
         v37 = 1;
         if (fabs(v47) >= 28800.0)
         {
-          [v36 timeIntervalSinceDate:v46];
+          [startDate timeIntervalSinceDate:v46];
           if (fabs(v48) >= 28800.0)
           {
             v37 = 0;
@@ -684,84 +684,84 @@ id __37__PPTripCandidate_lastDateForEvents___block_invoke(uint64_t a1, void *a2,
   return v10;
 }
 
-- (PPTripCandidate)initWithTripCandidateA:(id)a3 andTripCandidateB:(id)a4
+- (PPTripCandidate)initWithTripCandidateA:(id)a andTripCandidateB:(id)b
 {
-  v6 = a3;
-  v7 = a4;
+  aCopy = a;
+  bCopy = b;
   v31.receiver = self;
   v31.super_class = PPTripCandidate;
   v8 = [(PPTripCandidate *)&v31 init];
   if (v8)
   {
     v9 = objc_opt_new();
-    v10 = [v6 flights];
+    flights = [aCopy flights];
 
-    if (v10)
+    if (flights)
     {
-      v11 = [v6 flights];
-      [v9 addObjectsFromArray:v11];
+      flights2 = [aCopy flights];
+      [v9 addObjectsFromArray:flights2];
     }
 
-    v12 = [v7 flights];
+    flights3 = [bCopy flights];
 
-    if (v12)
+    if (flights3)
     {
-      v13 = [v7 flights];
-      [v9 addObjectsFromArray:v13];
+      flights4 = [bCopy flights];
+      [v9 addObjectsFromArray:flights4];
     }
 
     objc_storeStrong(&v8->_flights, v9);
     v14 = objc_opt_new();
-    v15 = [v6 hotels];
+    hotels = [aCopy hotels];
 
-    if (v15)
+    if (hotels)
     {
-      v16 = [v6 hotels];
-      [v14 addObjectsFromArray:v16];
+      hotels2 = [aCopy hotels];
+      [v14 addObjectsFromArray:hotels2];
     }
 
-    v17 = [v7 hotels];
+    hotels3 = [bCopy hotels];
 
-    if (v17)
+    if (hotels3)
     {
-      v18 = [v7 hotels];
-      [v14 addObjectsFromArray:v18];
+      hotels4 = [bCopy hotels];
+      [v14 addObjectsFromArray:hotels4];
     }
 
     objc_storeStrong(&v8->_hotels, v14);
     v19 = objc_opt_new();
-    v20 = [v6 others];
+    others = [aCopy others];
 
-    if (v20)
+    if (others)
     {
-      v21 = [v6 others];
-      [v19 addObjectsFromArray:v21];
+      others2 = [aCopy others];
+      [v19 addObjectsFromArray:others2];
     }
 
-    v22 = [v7 others];
+    others3 = [bCopy others];
 
-    if (v22)
+    if (others3)
     {
-      v23 = [v7 others];
-      [v19 addObjectsFromArray:v23];
+      others4 = [bCopy others];
+      [v19 addObjectsFromArray:others4];
     }
 
     objc_storeStrong(&v8->_others, v19);
     v24 = objc_opt_new();
-    v25 = [v6 groundTransports];
+    groundTransports = [aCopy groundTransports];
 
-    if (v25)
+    if (groundTransports)
     {
-      v26 = [v6 groundTransports];
-      [(NSArray *)v24 addObjectsFromArray:v26];
+      groundTransports2 = [aCopy groundTransports];
+      [(NSArray *)v24 addObjectsFromArray:groundTransports2];
     }
 
-    v27 = [v7 groundTransports];
+    groundTransports3 = [bCopy groundTransports];
 
-    if (v27)
+    if (groundTransports3)
     {
-      v28 = [v7 groundTransports];
-      [(NSArray *)v24 addObjectsFromArray:v28];
+      groundTransports4 = [bCopy groundTransports];
+      [(NSArray *)v24 addObjectsFromArray:groundTransports4];
     }
 
     groundTransports = v8->_groundTransports;

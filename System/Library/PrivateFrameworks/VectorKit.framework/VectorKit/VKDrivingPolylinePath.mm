@@ -1,15 +1,15 @@
 @interface VKDrivingPolylinePath
-+ (void)updateDistances:(void *)a3 forPath:(id)a4 snap:(BOOL)a5;
-- (VKDrivingPolylinePath)initWithOverlay:(id)a3 section:(id)a4 routeStartIndex:(unsigned int)a5 routeEndIndex:(unsigned int)a6 matchedPathSegments:(id)a7 elevationSource:(void *)a8 elevationSourceContext:(void *)a9;
-- (const)gradientTrafficAtIndex:(unsigned int)a3;
-- (float)laneHalfWidthAtIndex:(unsigned int)a3;
++ (void)updateDistances:(void *)distances forPath:(id)path snap:(BOOL)snap;
+- (VKDrivingPolylinePath)initWithOverlay:(id)overlay section:(id)section routeStartIndex:(unsigned int)index routeEndIndex:(unsigned int)endIndex matchedPathSegments:(id)segments elevationSource:(void *)source elevationSourceContext:(void *)context;
+- (const)gradientTrafficAtIndex:(unsigned int)index;
+- (float)laneHalfWidthAtIndex:(unsigned int)index;
 - (id).cxx_construct;
 - (unint64_t)splitGradientTrafficSegmentationAndAddTo:with:shouldSnap:;
-- (void)assignPoints:(void *)a3 count:(unint64_t)a4;
-- (void)assignPoints:(void *)a3 laneHalfWidths:(float *)a4 gradientTraffics:(GradientTraffic *)a5 polylineCoordinates:(PolylineCoordinate *)a6 count:(unint64_t)a7;
-- (void)assignTo:(id)a3 withSegment:(const TrafficSegment *)a4;
-- (void)setTrafficSpeed:(unsigned __int8)a3;
-- (void)splitGradientTrafficSegmentationAndAddTo:(id)a3 with:(void *)a4 shouldSnap:(BOOL)a5;
+- (void)assignPoints:(void *)points count:(unint64_t)count;
+- (void)assignPoints:(void *)points laneHalfWidths:(float *)widths gradientTraffics:(GradientTraffic *)traffics polylineCoordinates:(PolylineCoordinate *)coordinates count:(unint64_t)count;
+- (void)assignTo:(id)to withSegment:(const TrafficSegment *)segment;
+- (void)setTrafficSpeed:(unsigned __int8)speed;
+- (void)splitGradientTrafficSegmentationAndAddTo:(id)to with:(void *)with shouldSnap:(BOOL)snap;
 @end
 
 @implementation VKDrivingPolylinePath
@@ -28,11 +28,11 @@
   return self;
 }
 
-- (void)splitGradientTrafficSegmentationAndAddTo:(id)a3 with:(void *)a4 shouldSnap:(BOOL)a5
+- (void)splitGradientTrafficSegmentationAndAddTo:(id)to with:(void *)with shouldSnap:(BOOL)snap
 {
-  v5 = self;
+  selfCopy = self;
   v180[0] = self;
-  v162 = a3;
+  toCopy = to;
   v6 = +[VKDebugSettings sharedSettings];
   [v6 routeTrafficTransitionDistance];
   v8 = v7 * 0.5;
@@ -49,8 +49,8 @@
   for (i = 0x1EB7F5000uLL; ; i = 0x1EB7F5000)
   {
     v16 = v11;
-    v17 = *a4;
-    v18 = (*(a4 + 1) - *a4) >> 3;
+    v17 = *with;
+    v18 = (*(with + 1) - *with) >> 3;
     v19 = v18 - 1;
     do
     {
@@ -77,23 +77,23 @@
       v23 = v22;
       v24 = fmin((v8 + v22), v22 + (*(v17 + 8 * v12) - v22) * v14);
       v25 = *(i + 3892);
-      v26 = *(&v5->super.super.isa + v25);
+      v26 = *(&selfCopy->super.super.isa + v25);
       v27 = *(v26 + 8 * v11);
     }
 
     while (v27 > v24);
     v170 = v17 + 8 * v20;
     v28 = fmax((v23 - v8), v21 + (v13 - v21) * v14);
-    v29 = (*(&v5->super._overlay + v25) - v26) >> 3;
+    v29 = (*(&selfCopy->super._overlay + v25) - v26) >> 3;
     if (v29 > v11 && v27 < v28)
     {
       while (1)
       {
-        begin = v5->_laneHalfWidths.__begin_;
-        v31 = begin == v5->_laneHalfWidths.__end_ ? 0 : LODWORD(begin[v16]);
-        v32 = v5->super._points.__begin_ + 12 * v16;
+        begin = selfCopy->_laneHalfWidths.__begin_;
+        v31 = begin == selfCopy->_laneHalfWidths.__end_ ? 0 : LODWORD(begin[v16]);
+        v32 = selfCopy->super._points.__begin_ + 12 * v16;
         v167 = *(v170 + 4);
-        v165 = v5->super._polylineCoordinates.__begin_;
+        v165 = selfCopy->super._polylineCoordinates.__begin_;
         v172 = v11;
         v33 = 0xAAAAAAAAAAAAAAABLL * ((v9 - __p) >> 2) + 1;
         if (v33 > 0x1555555555555555)
@@ -146,11 +146,11 @@
         if (__p)
         {
           operator delete(__p);
-          v5 = v180[0];
+          selfCopy = v180[0];
         }
 
         __p = v37;
-        if (v5->_laneHalfWidths.__begin_ != v5->_laneHalfWidths.__end_)
+        if (selfCopy->_laneHalfWidths.__begin_ != selfCopy->_laneHalfWidths.__end_)
         {
           v41 = v10;
           v42 = v10 >> 2;
@@ -204,7 +204,7 @@
         memcpy(0, 0, v46);
         v11 = v172 + 1;
         v16 = v172 + 1;
-        v5 = v180[0];
+        selfCopy = v180[0];
         v26 = *(v180[0] + v25);
         v29 = (*(v180[0] + v25 + 8) - v26) >> 3;
         if (v29 <= v16 || *(v26 + 8 * v11) >= v28)
@@ -230,12 +230,12 @@ LABEL_38:
       v48 = v11 - 1;
       v49 = v28;
       v50 = (v28 - *(v26 + 8 * v48)) / (*(v26 + 8 * v16) - *(v26 + 8 * v48));
-      v51 = v5->super._points.__begin_;
+      v51 = selfCopy->super._points.__begin_;
       v52 = gm::lerp<gm::Matrix<float,3,1>,float>(v51[3 * v48], v51[3 * v48 + 1], v51[3 * v48 + 2], v51[3 * v16], v51[3 * v16 + 1], v51[3 * v16 + 2], v50);
       v54 = v53;
       v56 = v55;
-      v57 = v5->_laneHalfWidths.__begin_;
-      if (v57 == v5->_laneHalfWidths.__end_)
+      v57 = selfCopy->_laneHalfWidths.__begin_;
+      if (v57 == selfCopy->_laneHalfWidths.__end_)
       {
         v58 = 0.0;
       }
@@ -246,7 +246,7 @@ LABEL_38:
       }
 
       v169 = v58;
-      v59 = [VKDrivingPolylinePath splitGradientTrafficSegmentationAndAddTo:with:shouldSnap:]::$_1::operator()(v180, &v5->super._polylineCoordinates.__begin_[v48], &v5->super._polylineCoordinates.__begin_[v16], v50);
+      v59 = [VKDrivingPolylinePath splitGradientTrafficSegmentationAndAddTo:with:shouldSnap:]::$_1::operator()(v180, &selfCopy->super._polylineCoordinates.__begin_[v48], &selfCopy->super._polylineCoordinates.__begin_[v16], v50);
       v60 = *(v170 + 4);
       v61 = *(v164 + 4);
       v28 = v49;
@@ -361,12 +361,12 @@ LABEL_165:
       v178 = 8 * v76 + 8;
       memcpy(0, 0, v75);
       v11 = v173;
-      v5 = v180[0];
+      selfCopy = v180[0];
     }
 
     v77 = v11;
-    v78 = *(&v5->super.super.isa + v25);
-    v79 = (*(&v5->super._overlay + v25) - v78) >> 3;
+    v78 = *(&selfCopy->super.super.isa + v25);
+    v79 = (*(&selfCopy->super._overlay + v25) - v78) >> 3;
     if (v79 > v11)
     {
       v80 = *(v78 + 8 * v11);
@@ -376,13 +376,13 @@ LABEL_165:
         v82 = 1.0 / v81;
         while (1)
         {
-          v83 = v5->_laneHalfWidths.__begin_;
+          v83 = selfCopy->_laneHalfWidths.__begin_;
           v174 = v11;
-          v84 = v83 == v5->_laneHalfWidths.__end_ ? 0 : LODWORD(v83[v77]);
-          v85 = v5->super._points.__begin_ + 12 * v77;
+          v84 = v83 == selfCopy->_laneHalfWidths.__end_ ? 0 : LODWORD(v83[v77]);
+          v85 = selfCopy->super._points.__begin_ + 12 * v77;
           v86 = *(v170 + 4);
           v168 = *(v164 + 4);
-          v166 = v5->super._polylineCoordinates.__begin_;
+          v166 = selfCopy->super._polylineCoordinates.__begin_;
           v87 = v9 - __p;
           v88 = 0xAAAAAAAAAAAAAAABLL * ((v9 - __p) >> 2) + 1;
           if (v88 > 0x1555555555555555)
@@ -435,11 +435,11 @@ LABEL_165:
           if (__p)
           {
             operator delete(__p);
-            v5 = v180[0];
+            selfCopy = v180[0];
           }
 
           __p = v92;
-          if (v5->_laneHalfWidths.__begin_ != v5->_laneHalfWidths.__end_)
+          if (selfCopy->_laneHalfWidths.__begin_ != selfCopy->_laneHalfWidths.__end_)
           {
             v96 = v10;
             v97 = v10 >> 2;
@@ -494,7 +494,7 @@ LABEL_165:
           memcpy(0, 0, v102);
           v77 = v174 + 1;
           v11 = v174 + 1;
-          v5 = v180[0];
+          selfCopy = v180[0];
           v78 = *(v180[0] + v25);
           v79 = (*(v180[0] + v25 + 8) - v78) >> 3;
           if (v79 > v77)
@@ -519,12 +519,12 @@ LABEL_165:
     v175 = v11;
     v104 = v11 - 1;
     v105 = (v24 - *(v78 + 8 * v104)) / (*(v78 + 8 * v77) - *(v78 + 8 * v104));
-    v106 = v5->super._points.__begin_;
+    v106 = selfCopy->super._points.__begin_;
     v107 = gm::lerp<gm::Matrix<float,3,1>,float>(v106[3 * v104], v106[3 * v104 + 1], v106[3 * v104 + 2], v106[3 * v77], v106[3 * v77 + 1], v106[3 * v77 + 2], v105);
     v109 = v108;
     v111 = v110;
-    v112 = v5->_laneHalfWidths.__begin_;
-    if (v112 == v5->_laneHalfWidths.__end_)
+    v112 = selfCopy->_laneHalfWidths.__begin_;
+    if (v112 == selfCopy->_laneHalfWidths.__end_)
     {
       v113 = 0.0;
     }
@@ -534,7 +534,7 @@ LABEL_165:
       v113 = *(4 * v104) + ((v112[v77] - *(4 * v104)) * v105);
     }
 
-    v114 = [VKDrivingPolylinePath splitGradientTrafficSegmentationAndAddTo:with:shouldSnap:]::$_1::operator()(v180, &v5->super._polylineCoordinates.__begin_[v104], &v5->super._polylineCoordinates.__begin_[v77], v105);
+    v114 = [VKDrivingPolylinePath splitGradientTrafficSegmentationAndAddTo:with:shouldSnap:]::$_1::operator()(v180, &selfCopy->super._polylineCoordinates.__begin_[v104], &selfCopy->super._polylineCoordinates.__begin_[v77], v105);
     v115 = *(v170 + 4);
     v116 = *(v164 + 4);
     v117 = v9 - __p;
@@ -646,11 +646,11 @@ LABEL_168:
     v178 = 8 * v131 + 8;
     memcpy(0, 0, v130);
     v11 = v175;
-    v5 = v180[0];
+    selfCopy = v180[0];
   }
 
-  v17 = *a4;
-  v18 = (*(a4 + 1) - *a4) >> 3;
+  v17 = *with;
+  v18 = (*(with + 1) - *with) >> 3;
   v19 = v18 - 1;
 LABEL_130:
   if (v18 <= v19)
@@ -660,19 +660,19 @@ LABEL_164:
   }
 
   v176 = v10;
-  v132 = v5->super._points.__begin_;
-  if (0xAAAAAAAAAAAAAAABLL * ((v5->super._points.__end_ - v132) >> 2) > v11)
+  v132 = selfCopy->super._points.__begin_;
+  if (0xAAAAAAAAAAAAAAABLL * ((selfCopy->super._points.__end_ - v132) >> 2) > v11)
   {
     v133 = v11;
     v171 = v17 + 8 * v19;
     do
     {
-      v134 = v5->_laneHalfWidths.__begin_;
+      v134 = selfCopy->_laneHalfWidths.__begin_;
       v135 = v11;
-      v136 = v134 == v5->_laneHalfWidths.__end_ ? 0 : LODWORD(v134[v133]);
+      v136 = v134 == selfCopy->_laneHalfWidths.__end_ ? 0 : LODWORD(v134[v133]);
       v137 = &v132[12 * v133];
       v138 = *(v171 + 4);
-      v139 = v5->super._polylineCoordinates.__begin_;
+      v139 = selfCopy->super._polylineCoordinates.__begin_;
       v140 = v9 - __p;
       v141 = 0xAAAAAAAAAAAAAAABLL * ((v9 - __p) >> 2) + 1;
       if (v141 > 0x1555555555555555)
@@ -725,11 +725,11 @@ LABEL_164:
       if (__p)
       {
         operator delete(__p);
-        v5 = v180[0];
+        selfCopy = v180[0];
       }
 
       __p = v145;
-      if (v5->_laneHalfWidths.__begin_ != v5->_laneHalfWidths.__end_)
+      if (selfCopy->_laneHalfWidths.__begin_ != selfCopy->_laneHalfWidths.__end_)
       {
         v149 = v176;
         v150 = v176 >> 2;
@@ -782,7 +782,7 @@ LABEL_164:
       v178 = 8 * v155 + 8;
       memcpy(0, 0, v154);
       v133 = v135 + 1;
-      v5 = v180[0];
+      selfCopy = v180[0];
       v132 = *(v180[0] + 32);
       v11 = v135 + 1;
     }
@@ -791,15 +791,15 @@ LABEL_164:
   }
 
   v156 = [VKDrivingPolylinePath alloc];
-  WeakRetained = objc_loadWeakRetained(&v5->super._overlay);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->super._overlay);
   v158 = v180[0];
   v159 = objc_loadWeakRetained((v180[0] + 16));
   v160 = [(VKPolylinePath *)v156 initWithOverlay:WeakRetained section:v159 matchedPathSegments:v158[3]];
 
   [(VKPolylinePath *)v160 setRouteStart:*(v158 + 84)];
   [(VKPolylinePath *)v160 setRouteEnd:*(v158 + 92)];
-  v161 = v162;
-  [VKDrivingPolylinePath assignPoints:v160 laneHalfWidths:"assignPoints:laneHalfWidths:gradientTraffics:polylineCoordinates:count:" gradientTraffics:v162 polylineCoordinates:? count:?];
+  v161 = toCopy;
+  [VKDrivingPolylinePath assignPoints:v160 laneHalfWidths:"assignPoints:laneHalfWidths:gradientTraffics:polylineCoordinates:count:" gradientTraffics:toCopy polylineCoordinates:? count:?];
   [v161 addObject:v160];
 
   if (__p)
@@ -813,9 +813,9 @@ LABEL_164:
   v7 = *a3;
   if (*a3 != *a2 || (v8 = *(a2 + 1), vabds_f32(*(a3 + 1), v8) >= 0.00000011921))
   {
-    WeakRetained = objc_loadWeakRetained((*a1 + 16));
-    v10 = [WeakRetained composedRouteSegment];
-    v11 = [v10 composedRoute];
+    WeakRetained = objc_loadWeakRetained((*self + 16));
+    composedRouteSegment = [WeakRetained composedRouteSegment];
+    composedRoute = [composedRouteSegment composedRoute];
 
     v12 = *a2;
     v13 = *(a2 + 1);
@@ -833,8 +833,8 @@ LABEL_164:
       v15 = v15 - floorf(v15);
     }
 
-    [v11 distanceBetweenRouteCoordinate:v12 | (LODWORD(v13) << 32) andRouteCoordinate:v14 | (LODWORD(v15) << 32)];
-    v17 = [v11 routeCoordinateForDistance:*a2 afterRouteCoordinate:v16 * a4];
+    [composedRoute distanceBetweenRouteCoordinate:v12 | (LODWORD(v13) << 32) andRouteCoordinate:v14 | (LODWORD(v15) << 32)];
+    v17 = [composedRoute routeCoordinateForDistance:*a2 afterRouteCoordinate:v16 * a4];
     v8 = *(&v17 + 1);
     v7 = v17;
     if (*(&v17 + 1) >= 1.0)
@@ -847,40 +847,40 @@ LABEL_164:
   return v7 | (LODWORD(v8) << 32);
 }
 
-- (void)assignPoints:(void *)a3 laneHalfWidths:(float *)a4 gradientTraffics:(GradientTraffic *)a5 polylineCoordinates:(PolylineCoordinate *)a6 count:(unint64_t)a7
+- (void)assignPoints:(void *)points laneHalfWidths:(float *)widths gradientTraffics:(GradientTraffic *)traffics polylineCoordinates:(PolylineCoordinate *)coordinates count:(unint64_t)count
 {
-  std::vector<gm::Matrix<float,3,1>>::resize(&self->super._points.__begin_, a7);
-  memcpy(self->super._points.__begin_, a3, 12 * a7);
-  if (a4)
+  std::vector<gm::Matrix<float,3,1>>::resize(&self->super._points.__begin_, count);
+  memcpy(self->super._points.__begin_, points, 12 * count);
+  if (widths)
   {
     begin = self->_laneHalfWidths.__begin_;
     end = self->_laneHalfWidths.__end_;
     v15 = end - begin;
-    if (a7 <= v15)
+    if (count <= v15)
     {
-      if (a7 >= v15)
+      if (count >= v15)
       {
 LABEL_15:
-        memcpy(begin, a4, 4 * a7);
+        memcpy(begin, widths, 4 * count);
         goto LABEL_16;
       }
 
-      v21 = &begin[a7];
+      v21 = &begin[count];
     }
 
     else
     {
-      v16 = a7 - v15;
+      v16 = count - v15;
       cap = self->_laneHalfWidths.__cap_;
       if (v16 > cap - end)
       {
-        if (!(a7 >> 62))
+        if (!(count >> 62))
         {
           v18 = cap - begin;
-          v19 = v18 >> 1;
-          if (v18 >> 1 <= a7)
+          countCopy = v18 >> 1;
+          if (v18 >> 1 <= count)
           {
-            v19 = a7;
+            countCopy = count;
           }
 
           if (v18 >= 0x7FFFFFFFFFFFFFFCLL)
@@ -890,7 +890,7 @@ LABEL_15:
 
           else
           {
-            v20 = v19;
+            v20 = countCopy;
           }
 
           std::__allocate_at_least[abi:nn200100]<std::allocator<unsigned int>>(v20);
@@ -911,29 +911,29 @@ LABEL_16:
   v22 = self->_gradientTraffics.__begin_;
   v23 = self->_gradientTraffics.__end_;
   v24 = v23 - v22;
-  if (a7 <= v24)
+  if (count <= v24)
   {
-    if (a7 >= v24)
+    if (count >= v24)
     {
       goto LABEL_29;
     }
 
-    v30 = &v22[a7];
+    v30 = &v22[count];
   }
 
   else
   {
-    v25 = a7 - v24;
+    v25 = count - v24;
     v26 = self->_gradientTraffics.__cap_;
     if (v25 > v26 - v23)
     {
-      if (!(a7 >> 61))
+      if (!(count >> 61))
       {
         v27 = v26 - v22;
-        v28 = v27 >> 2;
-        if (v27 >> 2 <= a7)
+        countCopy2 = v27 >> 2;
+        if (v27 >> 2 <= count)
         {
-          v28 = a7;
+          countCopy2 = count;
         }
 
         if (v27 >= 0x7FFFFFFFFFFFFFF8)
@@ -943,7 +943,7 @@ LABEL_16:
 
         else
         {
-          v29 = v28;
+          v29 = countCopy2;
         }
 
         std::__allocate_at_least[abi:nn200100]<std::allocator<std::pair<gss::StyleAttribute,unsigned short>>>(v29);
@@ -958,27 +958,27 @@ LABEL_16:
 
   self->_gradientTraffics.__end_ = v30;
 LABEL_29:
-  memcpy(self->_gradientTraffics.__begin_, a5, 8 * a7);
-  std::vector<geo::PolylineCoordinate>::resize(&self->super._polylineCoordinates, a7);
+  memcpy(self->_gradientTraffics.__begin_, traffics, 8 * count);
+  std::vector<geo::PolylineCoordinate>::resize(&self->super._polylineCoordinates, count);
   v31 = self->super._polylineCoordinates.__begin_;
 
-  memcpy(v31, a6, 8 * a7);
+  memcpy(v31, coordinates, 8 * count);
 }
 
-- (void)assignPoints:(void *)a3 count:(unint64_t)a4
+- (void)assignPoints:(void *)points count:(unint64_t)count
 {
-  std::vector<gm::Matrix<float,3,1>>::resize(&self->super._points.__begin_, a4);
+  std::vector<gm::Matrix<float,3,1>>::resize(&self->super._points.__begin_, count);
   begin = self->super._points.__begin_;
 
-  memcpy(begin, a3, 12 * a4);
+  memcpy(begin, points, 12 * count);
 }
 
-- (void)assignTo:(id)a3 withSegment:(const TrafficSegment *)a4
+- (void)assignTo:(id)to withSegment:(const TrafficSegment *)segment
 {
-  v6 = a3;
-  if (a4)
+  toCopy = to;
+  if (segment)
   {
-    var1 = a4->var1;
+    var1 = segment->var1;
   }
 
   else
@@ -986,34 +986,34 @@ LABEL_29:
     var1 = 4;
   }
 
-  v8 = v6;
+  v8 = toCopy;
   [(VKDrivingPolylinePath *)self setTrafficSpeed:var1];
   [v8 addObject:self];
 }
 
-- (const)gradientTrafficAtIndex:(unsigned int)a3
+- (const)gradientTrafficAtIndex:(unsigned int)index
 {
   begin = self->_gradientTraffics.__begin_;
-  if (a3 >= (self->_gradientTraffics.__end_ - begin))
+  if (index >= (self->_gradientTraffics.__end_ - begin))
   {
     return &self->_standardModeTraffic;
   }
 
   else
   {
-    return &begin[a3];
+    return &begin[index];
   }
 }
 
-- (void)setTrafficSpeed:(unsigned __int8)a3
+- (void)setTrafficSpeed:(unsigned __int8)speed
 {
-  self->super._trafficSpeed = a3;
+  self->super._trafficSpeed = speed;
   self->_standardModeTraffic.blend = 0.0;
-  self->_standardModeTraffic.start = a3;
+  self->_standardModeTraffic.start = speed;
   self->_standardModeTraffic.end = self->super._trafficSpeed;
 }
 
-- (float)laneHalfWidthAtIndex:(unsigned int)a3
+- (float)laneHalfWidthAtIndex:(unsigned int)index
 {
   begin = self->_laneHalfWidths.__begin_;
   if (begin == self->_laneHalfWidths.__end_)
@@ -1023,65 +1023,65 @@ LABEL_29:
 
   else
   {
-    return begin[a3];
+    return begin[index];
   }
 }
 
-- (VKDrivingPolylinePath)initWithOverlay:(id)a3 section:(id)a4 routeStartIndex:(unsigned int)a5 routeEndIndex:(unsigned int)a6 matchedPathSegments:(id)a7 elevationSource:(void *)a8 elevationSourceContext:(void *)a9
+- (VKDrivingPolylinePath)initWithOverlay:(id)overlay section:(id)section routeStartIndex:(unsigned int)index routeEndIndex:(unsigned int)endIndex matchedPathSegments:(id)segments elevationSource:(void *)source elevationSourceContext:(void *)context
 {
-  v11 = *&a6;
-  v12 = *&a5;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  v11 = *&endIndex;
+  v12 = *&index;
+  overlayCopy = overlay;
+  sectionCopy = section;
+  segmentsCopy = segments;
   v22.receiver = self;
   v22.super_class = VKDrivingPolylinePath;
-  v18 = [(VKPolylinePath *)&v22 initWithOverlay:v15 section:v16 routeStartIndex:v12 routeEndIndex:v11 matchedPathSegments:v17 elevationSource:a8 elevationSourceContext:a9];
+  v18 = [(VKPolylinePath *)&v22 initWithOverlay:overlayCopy section:sectionCopy routeStartIndex:v12 routeEndIndex:v11 matchedPathSegments:segmentsCopy elevationSource:source elevationSourceContext:context];
   v19 = v18;
   if (v18)
   {
     v18->super._trafficSpeed = 4;
-    [VKDrivingPolylinePath updateDistances:&v18->_distances forPath:v18 snap:v17 != 0];
+    [VKDrivingPolylinePath updateDistances:&v18->_distances forPath:v18 snap:segmentsCopy != 0];
     v20 = v19;
   }
 
   return v19;
 }
 
-+ (void)updateDistances:(void *)a3 forPath:(id)a4 snap:(BOOL)a5
++ (void)updateDistances:(void *)distances forPath:(id)path snap:(BOOL)snap
 {
-  v5 = a5;
-  v7 = a4;
-  v7[80] = v5;
-  v8 = *(v7 + 5) - *(v7 + 4);
+  snapCopy = snap;
+  pathCopy = path;
+  pathCopy[80] = snapCopy;
+  v8 = *(pathCopy + 5) - *(pathCopy + 4);
   if (v8)
   {
-    v42 = v7;
-    *(a3 + 1) = *a3;
-    std::vector<double>::reserve(a3, 0xAAAAAAAAAAAAAAABLL * (v8 >> 2));
+    v42 = pathCopy;
+    *(distances + 1) = *distances;
+    std::vector<double>::reserve(distances, 0xAAAAAAAAAAAAAAABLL * (v8 >> 2));
     v9 = v42;
-    v10 = [v9 section];
-    v11 = [v10 composedRouteSegment];
+    section = [v9 section];
+    composedRouteSegment = [section composedRouteSegment];
 
-    v12 = [v11 composedRoute];
+    composedRoute = [composedRouteSegment composedRoute];
     v13 = 0;
     while (1)
     {
-      if (v5)
+      if (snapCopy)
       {
-        v14 = [v9 matchedPathSegments];
-        v15 = [v14 count];
+        matchedPathSegments = [v9 matchedPathSegments];
+        v15 = [matchedPathSegments count];
 
         if (v15 <= v13 || ([v9 matchedPathSegments], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count") - 1, v16, v17 == v13) && (objc_msgSend(v9, "matchedPathSegments"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "objectAtIndexedSubscript:", v13), v19 = objc_claimAutoreleasedReturnValue(), v18, v20 = objc_msgSend(v19, "pointCount"), v19, v20 <= HIDWORD(v13)))
         {
 LABEL_30:
 
-          v7 = v42;
+          pathCopy = v42;
           break;
         }
 
-        v21 = [v9 matchedPathSegments];
-        v22 = [v21 objectAtIndexedSubscript:v13];
+        matchedPathSegments2 = [v9 matchedPathSegments];
+        v22 = [matchedPathSegments2 objectAtIndexedSubscript:v13];
 
         v23 = [v22 routeCoordinateAt:HIDWORD(v13)];
         v24 = v23;
@@ -1097,24 +1097,24 @@ LABEL_30:
           goto LABEL_30;
         }
 
-        v27 = [v9 routeStart];
-        v28 = [v9 routeStart];
-        v24 = v27 + HIDWORD(v13);
-        v26 = HIDWORD(v28);
-        if (*(&v28 + 1) >= 1.0)
+        routeStart = [v9 routeStart];
+        routeStart2 = [v9 routeStart];
+        v24 = routeStart + HIDWORD(v13);
+        v26 = HIDWORD(routeStart2);
+        if (*(&routeStart2 + 1) >= 1.0)
         {
-          v24 += vcvtms_u32_f32(*(&v28 + 1));
-          v26 = COERCE_UNSIGNED_INT(*(&v28 + 1) - floorf(*(&v28 + 1)));
+          v24 += vcvtms_u32_f32(*(&routeStart2 + 1));
+          v26 = COERCE_UNSIGNED_INT(*(&routeStart2 + 1) - floorf(*(&routeStart2 + 1)));
         }
       }
 
-      [v12 stepDistanceFromPoint:0 toPoint:v24 | (v26 << 32)];
-      v31 = *(a3 + 1);
-      v30 = *(a3 + 2);
+      [composedRoute stepDistanceFromPoint:0 toPoint:v24 | (v26 << 32)];
+      v31 = *(distances + 1);
+      v30 = *(distances + 2);
       if (v31 >= v30)
       {
-        v33 = *a3;
-        v34 = v31 - *a3;
+        v33 = *distances;
+        v34 = v31 - *distances;
         v35 = v34 >> 3;
         v36 = (v34 >> 3) + 1;
         if (v36 >> 61)
@@ -1146,10 +1146,10 @@ LABEL_30:
         *(8 * v35) = v29;
         v32 = 8 * v35 + 8;
         memcpy(0, v33, v34);
-        v39 = *a3;
-        *a3 = 0;
-        *(a3 + 1) = v32;
-        *(a3 + 2) = 0;
+        v39 = *distances;
+        *distances = 0;
+        *(distances + 1) = v32;
+        *(distances + 2) = 0;
         if (v39)
         {
           operator delete(v39);
@@ -1162,11 +1162,11 @@ LABEL_30:
         v32 = (v31 + 1);
       }
 
-      *(a3 + 1) = v32;
-      if (v5)
+      *(distances + 1) = v32;
+      if (snapCopy)
       {
-        v40 = [v9 matchedPathSegments];
-        v41 = [v40 objectAtIndexedSubscript:v13];
+        matchedPathSegments3 = [v9 matchedPathSegments];
+        v41 = [matchedPathSegments3 objectAtIndexedSubscript:v13];
 
         if ([v41 pointCount] <= 1 || (objc_msgSend(v41, "pointCount") - 1) <= HIDWORD(v13))
         {

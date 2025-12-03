@@ -1,57 +1,57 @@
 @interface EDSearchableIndexPendingItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresPreprocessing;
-- (EDSearchableIndexPendingItem)initWithItem:(id)a3;
-- (int64_t)compare:(id)a3;
+- (EDSearchableIndexPendingItem)initWithItem:(id)item;
+- (int64_t)compare:(id)compare;
 - (unint64_t)estimatedSizeInBytes;
 - (unint64_t)hash;
-- (void)addItem:(id)a3;
-- (void)addPendingItem:(id)a3;
+- (void)addItem:(id)item;
+- (void)addPendingItem:(id)item;
 @end
 
 @implementation EDSearchableIndexPendingItem
 
-- (EDSearchableIndexPendingItem)initWithItem:(id)a3
+- (EDSearchableIndexPendingItem)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = EDSearchableIndexPendingItem;
   v6 = [(EDSearchableIndexPendingItem *)&v13 init];
   if (v6)
   {
-    v7 = [v5 identifier];
-    v8 = [v7 copy];
+    identifier = [itemCopy identifier];
+    v8 = [identifier copy];
     identifier = v6->_identifier;
     v6->_identifier = v8;
 
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v5, 0}];
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{itemCopy, 0}];
     items = v6->_items;
     v6->_items = v10;
 
-    objc_storeStrong(&v6->_referenceItem, a3);
+    objc_storeStrong(&v6->_referenceItem, item);
   }
 
   return v6;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v12 = a3;
-  v5 = [v12 identifier];
-  v6 = [(EDSearchableIndexPendingItem *)self identifier];
-  v7 = [v5 isEqualToString:v6];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  identifier2 = [(EDSearchableIndexPendingItem *)self identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if ((v7 & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EDSearchableIndexPendingItem.m" lineNumber:30 description:@"Additional items added to a pending item must have the same identifier"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSearchableIndexPendingItem.m" lineNumber:30 description:@"Additional items added to a pending item must have the same identifier"];
   }
 
-  [(NSMutableArray *)self->_items ef_insertObject:v12 usingComparator:&__block_literal_global_79 allowDuplicates:0];
+  [(NSMutableArray *)self->_items ef_insertObject:itemCopy usingComparator:&__block_literal_global_79 allowDuplicates:0];
   v8 = [(NSMutableArray *)self->_items sortedArrayUsingComparator:&__block_literal_global_8];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   referenceItem = self->_referenceItem;
-  self->_referenceItem = v9;
+  self->_referenceItem = firstObject;
 }
 
 uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -101,15 +101,15 @@ uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, 
   return v8;
 }
 
-- (void)addPendingItem:(id)a3
+- (void)addPendingItem:(id)item
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 items];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [item items];
+  v5 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -120,14 +120,14 @@ uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, 
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         [(EDSearchableIndexPendingItem *)self addItem:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -136,12 +136,12 @@ uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(EDSearchableIndexPendingItem *)self referenceItem];
-  v6 = [v4 referenceItem];
-  v7 = EDIndexableItemCompare(v5, v6);
+  compareCopy = compare;
+  referenceItem = [(EDSearchableIndexPendingItem *)self referenceItem];
+  referenceItem2 = [compareCopy referenceItem];
+  v7 = EDIndexableItemCompare(referenceItem, referenceItem2);
 
   return v7;
 }
@@ -153,9 +153,9 @@ uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, 
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(EDSearchableIndexPendingItem *)self items];
+  items = [(EDSearchableIndexPendingItem *)self items];
   v3 = 0;
-  v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -166,14 +166,14 @@ uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, 
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
         v3 += [*(*(&v9 + 1) + 8 * v6++) estimatedSizeInBytes];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -185,22 +185,22 @@ uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, 
 
 - (BOOL)requiresPreprocessing
 {
-  v2 = [(EDSearchableIndexPendingItem *)self items];
-  v3 = [v2 ef_any:&__block_literal_global_11_0];
+  items = [(EDSearchableIndexPendingItem *)self items];
+  v3 = [items ef_any:&__block_literal_global_11_0];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(EDSearchableIndexPendingItem *)self identifier];
-    v7 = [v5 identifier];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    identifier = [(EDSearchableIndexPendingItem *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -213,8 +213,8 @@ uint64_t __40__EDSearchableIndexPendingItem_addItem___block_invoke(uint64_t a1, 
 
 - (unint64_t)hash
 {
-  v2 = [(EDSearchableIndexPendingItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(EDSearchableIndexPendingItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

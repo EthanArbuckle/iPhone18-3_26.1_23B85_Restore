@@ -1,35 +1,35 @@
 @interface WDDeviceSourcesListTableViewSection
-- (id)_sourceCellForRow:(unint64_t)a3 tableView:(id)a4;
-- (id)_uuidStringForDevice:(id)a3;
-- (id)cellForRow:(unint64_t)a3 table:(id)a4;
+- (id)_sourceCellForRow:(unint64_t)row tableView:(id)view;
+- (id)_uuidStringForDevice:(id)device;
+- (id)cellForRow:(unint64_t)row table:(id)table;
 - (id)noneString;
 - (id)titleForHeader;
 - (unint64_t)numberOfRows;
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7;
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error;
 - (void)applicationWillEnterForeground;
 - (void)dataSourceDidUpdate;
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5;
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion;
 - (void)reloadDevices;
-- (void)setSourceListDataSource:(id)a3;
-- (void)setSources:(id)a3 devices:(id)a4;
+- (void)setSourceListDataSource:(id)source;
+- (void)setSources:(id)sources devices:(id)devices;
 @end
 
 @implementation WDDeviceSourcesListTableViewSection
 
-- (void)setSourceListDataSource:(id)a3
+- (void)setSourceListDataSource:(id)source
 {
   v4.receiver = self;
   v4.super_class = WDDeviceSourcesListTableViewSection;
-  [(WDSourcesListTableViewSection *)&v4 setSourceListDataSource:a3];
+  [(WDSourcesListTableViewSection *)&v4 setSourceListDataSource:source];
   [(WDDeviceSourcesListTableViewSection *)self reloadDevices];
 }
 
 - (void)dataSourceDidUpdate
 {
-  v3 = [(WDSourcesListTableViewSection *)self dataSource];
-  v4 = [v3 sources];
-  v5 = [v4 orderedDeviceSources];
-  [(WDDeviceSourcesListTableViewSection *)self setSources:v5 devices:self->_devices];
+  dataSource = [(WDSourcesListTableViewSection *)self dataSource];
+  sources = [dataSource sources];
+  orderedDeviceSources = [sources orderedDeviceSources];
+  [(WDDeviceSourcesListTableViewSection *)self setSources:orderedDeviceSources devices:self->_devices];
 
   [(WDDeviceSourcesListTableViewSection *)self reloadDevices];
 }
@@ -43,18 +43,18 @@
   v12[4] = __Block_byref_object_dispose__3;
   v13 = [MEMORY[0x277CBEB58] set];
   objc_initWeak(&location, self);
-  v3 = [(WDSourcesListTableViewSection *)self dataSource];
-  v4 = [v3 healthStore];
+  dataSource = [(WDSourcesListTableViewSection *)self dataSource];
+  healthStore = [dataSource healthStore];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__WDDeviceSourcesListTableViewSection_reloadDevices__block_invoke;
   v6[3] = &unk_2796E8210;
   v9 = v12;
-  v5 = v4;
+  v5 = healthStore;
   v7 = v5;
   objc_copyWeak(&v10, &location);
-  v8 = self;
+  selfCopy = self;
   [v5 healthPeripheralsWithCustomProperties:&unk_28642E020 withCompletion:v6];
   objc_destroyWeak(&v10);
 
@@ -246,22 +246,22 @@ void __52__WDDeviceSourcesListTableViewSection_reloadDevices__block_invoke_2(uin
   [WeakRetained setSources:v3 devices:v4];
 }
 
-- (void)setSources:(id)a3 devices:(id)a4
+- (void)setSources:(id)sources devices:(id)devices
 {
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_sources, a3);
-  objc_storeStrong(&self->_devices, a4);
+  sourcesCopy = sources;
+  devicesCopy = devices;
+  objc_storeStrong(&self->_sources, sources);
+  objc_storeStrong(&self->_devices, devices);
   v9 = [MEMORY[0x277CBEB58] set];
   [(WDDeviceSourcesListTableViewSection *)self setIdentifiers:v9];
 
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count") + objc_msgSend(v7, "count")}];
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(devicesCopy, "count") + objc_msgSend(sourcesCopy, "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v11 = v7;
+  v11 = sourcesCopy;
   v12 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v12)
   {
@@ -277,18 +277,18 @@ void __52__WDDeviceSourcesListTableViewSection_reloadDevices__block_invoke_2(uin
         }
 
         v16 = *(*(&v42 + 1) + 8 * i);
-        v17 = [v16 source];
-        v18 = [v17 _isHiddenSource];
+        source = [v16 source];
+        _isHiddenSource = [source _isHiddenSource];
 
-        if ((v18 & 1) == 0)
+        if ((_isHiddenSource & 1) == 0)
         {
           v19 = [[WDSource alloc] initWithSource:v16 device:0];
           [(NSArray *)v10 addObject:v19];
 
           identifiers = self->_identifiers;
-          v21 = [v16 source];
-          v22 = [v21 bundleIdentifier];
-          [(NSMutableSet *)identifiers addObject:v22];
+          source2 = [v16 source];
+          bundleIdentifier = [source2 bundleIdentifier];
+          [(NSMutableSet *)identifiers addObject:bundleIdentifier];
         }
       }
 
@@ -304,7 +304,7 @@ void __52__WDDeviceSourcesListTableViewSection_reloadDevices__block_invoke_2(uin
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v23 = v8;
+  v23 = devicesCopy;
   v24 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v24)
   {
@@ -320,14 +320,14 @@ void __52__WDDeviceSourcesListTableViewSection_reloadDevices__block_invoke_2(uin
         }
 
         v28 = *(*(&v38 + 1) + 8 * j);
-        v29 = [MEMORY[0x277CCD2E8] localDevice];
-        v30 = [v28 isEqual:v29];
+        localDevice = [MEMORY[0x277CCD2E8] localDevice];
+        v30 = [v28 isEqual:localDevice];
 
         if ((v30 & 1) == 0 && (![v28 _isAppleManufacturer] || !objc_msgSend(v28, "_isAppleModel") || (objc_msgSend(v28, "_isAppleHardwareVersion") & 1) == 0))
         {
           v31 = self->_identifiers;
-          v32 = [v28 localIdentifier];
-          LOBYTE(v31) = [(NSMutableSet *)v31 containsObject:v32];
+          localIdentifier = [v28 localIdentifier];
+          LOBYTE(v31) = [(NSMutableSet *)v31 containsObject:localIdentifier];
 
           if ((v31 & 1) == 0)
           {
@@ -347,8 +347,8 @@ void __52__WDDeviceSourcesListTableViewSection_reloadDevices__block_invoke_2(uin
   list = self->_list;
   self->_list = v10;
 
-  v35 = [(WDTableViewSection *)self delegate];
-  [v35 reloadTable];
+  delegate = [(WDTableViewSection *)self delegate];
+  [delegate reloadTable];
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -398,21 +398,21 @@ uint64_t __58__WDDeviceSourcesListTableViewSection_setSources_devices___block_in
   return v3;
 }
 
-- (id)cellForRow:(unint64_t)a3 table:(id)a4
+- (id)cellForRow:(unint64_t)row table:(id)table
 {
-  v6 = a4;
-  v7 = [(WDDeviceSourcesListTableViewSection *)self identifiers];
+  tableCopy = table;
+  identifiers = [(WDDeviceSourcesListTableViewSection *)self identifiers];
 
-  if (v7)
+  if (identifiers)
   {
     if ([(NSArray *)self->_list count])
     {
-      [(WDDeviceSourcesListTableViewSection *)self _sourceCellForRow:a3 tableView:v6];
+      [(WDDeviceSourcesListTableViewSection *)self _sourceCellForRow:row tableView:tableCopy];
     }
 
     else
     {
-      [(WDSourcesListTableViewSection *)self noneCellForTableView:v6];
+      [(WDSourcesListTableViewSection *)self noneCellForTableView:tableCopy];
     }
     v9 = ;
   }
@@ -420,62 +420,62 @@ uint64_t __58__WDDeviceSourcesListTableViewSection_setSources_devices___block_in
   else
   {
     v8 = +[WDSpinnerTableViewCell defaultReuseIdentifier];
-    v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+    v9 = [tableCopy dequeueReusableCellWithIdentifier:v8];
   }
 
   return v9;
 }
 
-- (id)_sourceCellForRow:(unint64_t)a3 tableView:(id)a4
+- (id)_sourceCellForRow:(unint64_t)row tableView:(id)view
 {
-  v6 = a4;
-  v7 = [v6 dequeueReusableCellWithIdentifier:@"WDSourcesListTableViewSectionSource"];
+  viewCopy = view;
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:@"WDSourcesListTableViewSectionSource"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"WDSourcesListTableViewSectionSource"];
     [v7 setAccessoryType:1];
   }
 
-  v8 = [(WDDeviceSourcesListTableViewSection *)self _sourceForRow:a3];
-  v9 = [v8 name];
-  v10 = [v7 textLabel];
-  [v10 setText:v9];
+  v8 = [(WDDeviceSourcesListTableViewSection *)self _sourceForRow:row];
+  name = [v8 name];
+  textLabel = [v7 textLabel];
+  [textLabel setText:name];
 
   v11 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v12 = [v7 textLabel];
-  [v12 setFont:v11];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setFont:v11];
 
-  v13 = [v8 device];
+  device = [v8 device];
 
-  if (v13)
+  if (device)
   {
-    v14 = [MEMORY[0x277D127A8] sharedImageManager];
-    v15 = [v8 device];
-    v16 = [v14 iconForDevice:v15];
-    v17 = [v7 imageView];
-    [v17 setImage:v16];
+    mEMORY[0x277D127A8] = [MEMORY[0x277D127A8] sharedImageManager];
+    device2 = [v8 device];
+    v16 = [mEMORY[0x277D127A8] iconForDevice:device2];
+    imageView = [v7 imageView];
+    [imageView setImage:v16];
   }
 
   else
   {
-    v18 = [v8 sourceModel];
-    v19 = [v18 icon];
+    sourceModel = [v8 sourceModel];
+    icon = [sourceModel icon];
 
-    v20 = [v8 sourceModel];
-    v21 = v20;
-    if (v19)
+    sourceModel2 = [v8 sourceModel];
+    v21 = sourceModel2;
+    if (icon)
     {
-      v22 = [v20 icon];
-      v23 = [v7 imageView];
-      [v23 setImage:v22];
+      icon2 = [sourceModel2 icon];
+      imageView2 = [v7 imageView];
+      [imageView2 setImage:icon2];
     }
 
     else
     {
-      v24 = [v20 source];
+      source = [sourceModel2 source];
 
       objc_initWeak(&location, self);
-      v25 = [MEMORY[0x277D127A8] sharedImageManager];
+      mEMORY[0x277D127A8]2 = [MEMORY[0x277D127A8] sharedImageManager];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __67__WDDeviceSourcesListTableViewSection__sourceCellForRow_tableView___block_invoke;
@@ -487,11 +487,11 @@ uint64_t __58__WDDeviceSourcesListTableViewSection_setSources_devices___block_in
       v29[2] = __67__WDDeviceSourcesListTableViewSection__sourceCellForRow_tableView___block_invoke_2;
       v29[3] = &unk_2796E6CA0;
       objc_copyWeak(&v33, &location);
-      v27 = v24;
+      v27 = source;
       v30 = v27;
       v31 = v26;
-      v32 = v6;
-      [v25 loadIconForSource:v27 syncHandler:v34 asyncHandler:v29];
+      v32 = viewCopy;
+      [mEMORY[0x277D127A8]2 loadIconForSource:v27 syncHandler:v34 asyncHandler:v29];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(&location);
@@ -536,87 +536,87 @@ void __67__WDDeviceSourcesListTableViewSection__sourceCellForRow_tableView___blo
   [WeakRetained _handleReturnedImage:*(a1 + 32) forSource:*(a1 + 40) cell:*(a1 + 48) tableView:*(a1 + 56) fetchError:*(a1 + 64)];
 }
 
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error
 {
-  v19 = a3;
-  v12 = a5;
-  if (v19 && !a7)
+  imageCopy = image;
+  cellCopy = cell;
+  if (imageCopy && !error)
   {
-    v13 = a4;
-    v14 = [a6 indexPathForCell:v12];
+    sourceCopy = source;
+    v14 = [view indexPathForCell:cellCopy];
     v15 = -[WDDeviceSourcesListTableViewSection _sourceForRow:](self, "_sourceForRow:", [v14 row]);
-    v16 = [v15 sourceModel];
-    v17 = [v16 source];
+    sourceModel = [v15 sourceModel];
+    source = [sourceModel source];
 
-    LODWORD(v15) = [v17 isEqual:v13];
+    LODWORD(v15) = [source isEqual:sourceCopy];
     if (v15)
     {
-      v18 = [v12 imageView];
-      [v18 setImage:v19];
+      imageView = [cellCopy imageView];
+      [imageView setImage:imageCopy];
     }
   }
 }
 
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion
 {
-  v36 = a5;
-  v7 = [(WDDeviceSourcesListTableViewSection *)self list];
-  v8 = [v7 count];
+  completionCopy = completion;
+  list = [(WDDeviceSourcesListTableViewSection *)self list];
+  v8 = [list count];
 
-  if (v8 <= a3)
+  if (v8 <= row)
   {
-    v36[2](v36, 1, 1);
+    completionCopy[2](completionCopy, 1, 1);
     goto LABEL_28;
   }
 
-  v9 = [(WDDeviceSourcesListTableViewSection *)self _sourceForRow:a3];
-  v10 = [v9 sourceModel];
-  v11 = [v10 source];
+  v9 = [(WDDeviceSourcesListTableViewSection *)self _sourceForRow:row];
+  sourceModel = [v9 sourceModel];
+  source = [sourceModel source];
 
-  if (!v11)
+  if (!source)
   {
-    v13 = [v9 device];
-    v14 = v13;
-    if (v13 && [v13 _isConnectedGymDevice])
+    device = [v9 device];
+    v14 = device;
+    if (device && [device _isConnectedGymDevice])
     {
-      v15 = [(HKTableViewController *)[WDDeviceStoredDataViewController alloc] initWithUsingInsetStyling:1];
-      [(WDDeviceStoredDataViewController *)v15 setDevice:v14];
-      v16 = [v14 _connectedGymDeviceFullName];
-      [(WDDeviceStoredDataViewController *)v15 setDisplayName:v16];
+      delegate7 = [(HKTableViewController *)[WDDeviceStoredDataViewController alloc] initWithUsingInsetStyling:1];
+      [(WDDeviceStoredDataViewController *)delegate7 setDevice:v14];
+      _connectedGymDeviceFullName = [v14 _connectedGymDeviceFullName];
+      [(WDDeviceStoredDataViewController *)delegate7 setDisplayName:_connectedGymDeviceFullName];
 
-      v17 = [(WDTableViewSection *)self delegate];
-      v18 = [v17 profile];
-      [(WDStoredDataByCategoryViewController *)v15 setProfile:v18];
+      delegate = [(WDTableViewSection *)self delegate];
+      profile = [delegate profile];
+      [(WDStoredDataByCategoryViewController *)delegate7 setProfile:profile];
 
-      v19 = [(WDTableViewSection *)self delegate];
-      [v19 pushViewController:v15];
+      delegate2 = [(WDTableViewSection *)self delegate];
+      [delegate2 pushViewController:delegate7];
     }
 
     else
     {
-      v15 = [(HKTableViewController *)[WDDeviceStoredDataViewController alloc] initWithUsingInsetStyling:1];
-      [(WDDeviceStoredDataViewController *)v15 setDevice:v14];
-      v22 = [v14 name];
-      if (v22)
+      delegate7 = [(HKTableViewController *)[WDDeviceStoredDataViewController alloc] initWithUsingInsetStyling:1];
+      [(WDDeviceStoredDataViewController *)delegate7 setDevice:v14];
+      name = [v14 name];
+      if (name)
       {
-        [(WDDeviceStoredDataViewController *)v15 setDisplayName:v22];
+        [(WDDeviceStoredDataViewController *)delegate7 setDisplayName:name];
       }
 
       else
       {
-        v28 = [v14 model];
-        if (v28)
+        model = [v14 model];
+        if (model)
         {
-          [(WDDeviceStoredDataViewController *)v15 setDisplayName:v28];
+          [(WDDeviceStoredDataViewController *)delegate7 setDisplayName:model];
         }
 
         else
         {
-          v29 = [v14 manufacturer];
-          v30 = v29;
-          if (v29)
+          manufacturer = [v14 manufacturer];
+          v30 = manufacturer;
+          if (manufacturer)
           {
-            v31 = v29;
+            v31 = manufacturer;
           }
 
           else
@@ -624,46 +624,46 @@ void __67__WDDeviceSourcesListTableViewSection__sourceCellForRow_tableView___blo
             v31 = &stru_28641D9B8;
           }
 
-          [(WDDeviceStoredDataViewController *)v15 setDisplayName:v31];
+          [(WDDeviceStoredDataViewController *)delegate7 setDisplayName:v31];
         }
       }
 
-      v32 = [(WDTableViewSection *)self delegate];
-      v33 = [v32 profile];
-      [(WDStoredDataByCategoryViewController *)v15 setProfile:v33];
+      delegate3 = [(WDTableViewSection *)self delegate];
+      profile2 = [delegate3 profile];
+      [(WDStoredDataByCategoryViewController *)delegate7 setProfile:profile2];
 
-      v19 = [(WDDeviceSourcesListTableViewSection *)self _uuidStringForDevice:v14];
-      v34 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v19];
+      delegate2 = [(WDDeviceSourcesListTableViewSection *)self _uuidStringForDevice:v14];
+      v34 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:delegate2];
       if (v34)
       {
-        [(WDStoredDataByCategoryViewController *)v15 setIsBluetoothDevice:1];
+        [(WDStoredDataByCategoryViewController *)delegate7 setIsBluetoothDevice:1];
       }
 
-      [(WDStoredDataByCategoryViewController *)v15 setDeviceIdentifier:v34];
-      v35 = [(WDTableViewSection *)self delegate];
-      [v35 pushViewController:v15];
+      [(WDStoredDataByCategoryViewController *)delegate7 setDeviceIdentifier:v34];
+      delegate4 = [(WDTableViewSection *)self delegate];
+      [delegate4 pushViewController:delegate7];
     }
 
     goto LABEL_27;
   }
 
-  if ([v11 _isAppleWatch])
+  if ([source _isAppleWatch])
   {
     v12 = WDWatchStoredDataViewController;
   }
 
   else
   {
-    if (![v11 _hasFirstPartyBundleID])
+    if (![source _hasFirstPartyBundleID])
     {
       v23 = objc_alloc(MEMORY[0x277D12AC8]);
-      v20 = [(WDTableViewSection *)self delegate];
-      v21 = [v20 profile];
-      v24 = [v21 healthStore];
-      v25 = [(WDTableViewSection *)self delegate];
-      v26 = [v25 profile];
-      v27 = [v26 displayTypeController];
-      v14 = [v23 initWithHealthStore:v24 displayTypeController:v27 source:v11 useInsetStyling:1];
+      delegate5 = [(WDTableViewSection *)self delegate];
+      profile3 = [delegate5 profile];
+      healthStore = [profile3 healthStore];
+      delegate6 = [(WDTableViewSection *)self delegate];
+      profile4 = [delegate6 profile];
+      displayTypeController = [profile4 displayTypeController];
+      v14 = [v23 initWithHealthStore:healthStore displayTypeController:displayTypeController source:source useInsetStyling:1];
 
       goto LABEL_15;
     }
@@ -672,38 +672,38 @@ void __67__WDDeviceSourcesListTableViewSection__sourceCellForRow_tableView___blo
   }
 
   v14 = [[v12 alloc] initWithUsingInsetStyling:1];
-  [v14 setSource:v11];
-  v20 = [(WDTableViewSection *)self delegate];
-  v21 = [v20 profile];
-  [v14 setProfile:v21];
+  [v14 setSource:source];
+  delegate5 = [(WDTableViewSection *)self delegate];
+  profile3 = [delegate5 profile];
+  [v14 setProfile:profile3];
 LABEL_15:
 
-  v15 = [(WDTableViewSection *)self delegate];
-  [(WDDeviceStoredDataViewController *)v15 pushViewController:v14];
+  delegate7 = [(WDTableViewSection *)self delegate];
+  [(WDDeviceStoredDataViewController *)delegate7 pushViewController:v14];
 LABEL_27:
 
-  v36[2](v36, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 LABEL_28:
 }
 
-- (id)_uuidStringForDevice:(id)a3
+- (id)_uuidStringForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 bluetoothIdentifier];
+  deviceCopy = device;
+  bluetoothIdentifier = [deviceCopy bluetoothIdentifier];
 
-  if (v4)
+  if (bluetoothIdentifier)
   {
-    v5 = [v3 bluetoothIdentifier];
+    bluetoothIdentifier2 = [deviceCopy bluetoothIdentifier];
 LABEL_5:
-    v7 = v5;
+    v7 = bluetoothIdentifier2;
     goto LABEL_6;
   }
 
-  v6 = [v3 localIdentifier];
+  localIdentifier = [deviceCopy localIdentifier];
 
-  if (v6)
+  if (localIdentifier)
   {
-    v5 = [v3 localIdentifier];
+    bluetoothIdentifier2 = [deviceCopy localIdentifier];
     goto LABEL_5;
   }
 

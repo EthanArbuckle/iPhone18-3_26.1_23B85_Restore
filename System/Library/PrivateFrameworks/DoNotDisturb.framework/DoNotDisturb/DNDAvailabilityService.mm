@@ -1,14 +1,14 @@
 @interface DNDAvailabilityService
-+ (id)serviceForClientIdentifier:(id)a3;
-- (BOOL)isLocalUserAvailableReturningError:(id *)a3;
-- (id)_initWithClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
+- (BOOL)isLocalUserAvailableReturningError:(id *)error;
+- (id)_initWithClientIdentifier:(id)identifier;
 @end
 
 @implementation DNDAvailabilityService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_2 != -1)
   {
     +[DNDAvailabilityService serviceForClientIdentifier:];
@@ -25,10 +25,10 @@
   block[1] = 3221225472;
   block[2] = __53__DNDAvailabilityService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -73,7 +73,7 @@ void __53__DNDAvailabilityService_serviceForClientIdentifier___block_invoke_2(ui
   }
 }
 
-- (BOOL)isLocalUserAvailableReturningError:(id *)a3
+- (BOOL)isLocalUserAvailableReturningError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDAvailabilityService.getIsLocalUserAvailable", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -123,12 +123,12 @@ void __53__DNDAvailabilityService_serviceForClientIdentifier___block_invoke_2(ui
     }
   }
 
-  if (a3)
+  if (error)
   {
     v11 = *(v17[0] + 40);
     if (v11)
     {
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -151,15 +151,15 @@ void __61__DNDAvailabilityService_isLocalUserAvailableReturningError___block_inv
   *(v6 + 40) = v5;
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DNDAvailabilityService;
   v5 = [(DNDAvailabilityService *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
   }

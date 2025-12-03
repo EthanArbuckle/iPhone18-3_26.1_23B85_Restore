@@ -3,25 +3,25 @@
 - (BOOL)doesSupportGenmoji;
 - (BOOL)doesSupportImageGlyph;
 - (BOOL)doesSupportStickersApp;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInPopover;
 - (BOOL)isKeyboardMinorEdgeWidth;
 - (BOOL)isRunningInGenmoji;
-- (STKEmojiAndStickerCollectionViewConfiguration)initWithBSXPCCoder:(id)a3;
+- (STKEmojiAndStickerCollectionViewConfiguration)initWithBSXPCCoder:(id)coder;
 - (double)keyboardWidth;
 - (double)screenToNativeScaleRatio;
 - (int64_t)userInterfaceIdiom;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)setDidCreateSticker:(BOOL)a3;
-- (void)setDoesSupportGenmoji:(BOOL)a3;
-- (void)setDoesSupportImageGlyph:(BOOL)a3;
-- (void)setDoesSupportStickersApp:(BOOL)a3;
-- (void)setIsInPopover:(BOOL)a3;
-- (void)setIsKeyboardMinorEdgeWidth:(BOOL)a3;
-- (void)setIsRunningInGenmoji:(BOOL)a3;
-- (void)setKeyboardWidth:(double)a3;
-- (void)setScreenToNativeScaleRatio:(double)a3;
-- (void)setUserInterfaceIdiom:(int64_t)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)setDidCreateSticker:(BOOL)sticker;
+- (void)setDoesSupportGenmoji:(BOOL)genmoji;
+- (void)setDoesSupportImageGlyph:(BOOL)glyph;
+- (void)setDoesSupportStickersApp:(BOOL)app;
+- (void)setIsInPopover:(BOOL)popover;
+- (void)setIsKeyboardMinorEdgeWidth:(BOOL)width;
+- (void)setIsRunningInGenmoji:(BOOL)genmoji;
+- (void)setKeyboardWidth:(double)width;
+- (void)setScreenToNativeScaleRatio:(double)ratio;
+- (void)setUserInterfaceIdiom:(int64_t)idiom;
 @end
 
 @implementation STKEmojiAndStickerCollectionViewConfiguration
@@ -33,11 +33,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUserInterfaceIdiom:(int64_t)a3
+- (void)setUserInterfaceIdiom:(int64_t)idiom
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_userInterfaceIdiom;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = idiom;
 }
 
 - (double)keyboardWidth
@@ -47,11 +47,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setKeyboardWidth:(double)a3
+- (void)setKeyboardWidth:(double)width
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_keyboardWidth;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = width;
 }
 
 - (BOOL)isKeyboardMinorEdgeWidth
@@ -61,11 +61,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsKeyboardMinorEdgeWidth:(BOOL)a3
+- (void)setIsKeyboardMinorEdgeWidth:(BOOL)width
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_isKeyboardMinorEdgeWidth;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = width;
 }
 
 - (BOOL)isInPopover
@@ -75,11 +75,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsInPopover:(BOOL)a3
+- (void)setIsInPopover:(BOOL)popover
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_isInPopover;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = popover;
 }
 
 - (BOOL)doesSupportImageGlyph
@@ -89,11 +89,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDoesSupportImageGlyph:(BOOL)a3
+- (void)setDoesSupportImageGlyph:(BOOL)glyph
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_doesSupportImageGlyph;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = glyph;
 }
 
 - (BOOL)doesSupportGenmoji
@@ -103,11 +103,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDoesSupportGenmoji:(BOOL)a3
+- (void)setDoesSupportGenmoji:(BOOL)genmoji
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_doesSupportGenmoji;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = genmoji;
 }
 
 - (double)screenToNativeScaleRatio
@@ -117,11 +117,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setScreenToNativeScaleRatio:(double)a3
+- (void)setScreenToNativeScaleRatio:(double)ratio
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_screenToNativeScaleRatio;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = ratio;
 }
 
 - (BOOL)doesSupportStickersApp
@@ -131,11 +131,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDoesSupportStickersApp:(BOOL)a3
+- (void)setDoesSupportStickersApp:(BOOL)app
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_doesSupportStickersApp;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = app;
 }
 
 - (BOOL)isRunningInGenmoji
@@ -145,11 +145,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsRunningInGenmoji:(BOOL)a3
+- (void)setIsRunningInGenmoji:(BOOL)genmoji
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_isRunningInGenmoji;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = genmoji;
 }
 
 - (BOOL)didCreateSticker
@@ -159,34 +159,34 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDidCreateSticker:(BOOL)a3
+- (void)setDidCreateSticker:(BOOL)sticker
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewConfiguration_didCreateSticker;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = sticker;
 }
 
-- (STKEmojiAndStickerCollectionViewConfiguration)initWithBSXPCCoder:(id)a3
+- (STKEmojiAndStickerCollectionViewConfiguration)initWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v4 = sub_19A6D5F44(a3);
+  v4 = sub_19A6D5F44(coder);
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  EmojiAndStickerCollectionViewConfiguration.encode(withBSXPCCoder:)(a3);
+  selfCopy = self;
+  EmojiAndStickerCollectionViewConfiguration.encode(withBSXPCCoder:)(coder);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19A7ABB44();
     swift_unknownObjectRelease();
@@ -195,7 +195,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = EmojiAndStickerCollectionViewConfiguration.isEqual(_:)(v8);

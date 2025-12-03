@@ -1,21 +1,21 @@
 @interface _UILegibilityImageSet
-+ (id)imageFromImage:(id)a3 withShadowImage:(id)a4;
-- (_UILegibilityImageSet)imageSetWithOrientation:(int64_t)a3;
-- (_UILegibilityImageSet)initWithImage:(id)a3 shadowImage:(id)a4;
++ (id)imageFromImage:(id)image withShadowImage:(id)shadowImage;
+- (_UILegibilityImageSet)imageSetWithOrientation:(int64_t)orientation;
+- (_UILegibilityImageSet)initWithImage:(id)image shadowImage:(id)shadowImage;
 - (id)imageSetFlippedForRightToLeft;
 - (void)dealloc;
 @end
 
 @implementation _UILegibilityImageSet
 
-+ (id)imageFromImage:(id)a3 withShadowImage:(id)a4
++ (id)imageFromImage:(id)image withShadowImage:(id)shadowImage
 {
-  v4 = [[_UILegibilityImageSet alloc] initWithImage:a3 shadowImage:a4];
+  v4 = [[_UILegibilityImageSet alloc] initWithImage:image shadowImage:shadowImage];
 
   return v4;
 }
 
-- (_UILegibilityImageSet)initWithImage:(id)a3 shadowImage:(id)a4
+- (_UILegibilityImageSet)initWithImage:(id)image shadowImage:(id)shadowImage
 {
   v9.receiver = self;
   v9.super_class = _UILegibilityImageSet;
@@ -23,8 +23,8 @@
   v7 = v6;
   if (v6)
   {
-    [(_UILegibilityImageSet *)v6 setImage:a3];
-    [(_UILegibilityImageSet *)v7 setShadowImage:a4];
+    [(_UILegibilityImageSet *)v6 setImage:image];
+    [(_UILegibilityImageSet *)v7 setShadowImage:shadowImage];
   }
 
   return v7;
@@ -37,16 +37,16 @@
   return v2;
 }
 
-- (_UILegibilityImageSet)imageSetWithOrientation:(int64_t)a3
+- (_UILegibilityImageSet)imageSetWithOrientation:(int64_t)orientation
 {
-  v5 = [(_UILegibilityImageSet *)self image];
-  v6 = [(_UILegibilityImageSet *)self shadowImage];
-  v7 = [(UIImage *)v5 CGImage];
-  [(UIImage *)v5 scale];
-  v8 = [UIImage imageWithCGImage:v7 scale:a3 orientation:?];
-  v9 = [(UIImage *)v6 CGImage];
-  [(UIImage *)v6 scale];
-  v10 = [objc_alloc(objc_opt_class()) initWithImage:v8 shadowImage:{+[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", v9, a3)}];
+  image = [(_UILegibilityImageSet *)self image];
+  shadowImage = [(_UILegibilityImageSet *)self shadowImage];
+  cGImage = [(UIImage *)image CGImage];
+  [(UIImage *)image scale];
+  v8 = [UIImage imageWithCGImage:cGImage scale:orientation orientation:?];
+  cGImage2 = [(UIImage *)shadowImage CGImage];
+  [(UIImage *)shadowImage scale];
+  v10 = [objc_alloc(objc_opt_class()) initWithImage:v8 shadowImage:{+[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", cGImage2, orientation)}];
 
   return v10;
 }

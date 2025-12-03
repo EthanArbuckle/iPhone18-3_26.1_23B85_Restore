@@ -1,21 +1,21 @@
 @interface MIOSlimStreamOutputSettings
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
 @end
 
 @implementation MIOSlimStreamOutputSettings
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a6;
+  encoderConfigCopy = encoderConfig;
   v32[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  if (v7)
+  configCopy = config;
+  v10 = configCopy;
+  if (encoderConfigCopy)
   {
-    v11 = [v9 objectForKey:@"UseSlimXCompression"];
-    v12 = [v11 BOOLValue];
+    v11 = [configCopy objectForKey:@"UseSlimXCompression"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v31 = @"InternalCodecType";
       v32[0] = &unk_2868E39C0;
@@ -34,7 +34,7 @@
 
   else
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     v15 = *MEMORY[0x277CE62C8];
     v30[0] = @"slim";
     v16 = *MEMORY[0x277CE63C0];

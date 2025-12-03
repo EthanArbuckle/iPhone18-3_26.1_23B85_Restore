@@ -1,32 +1,32 @@
 @interface WFWorkflowQuery
-- (BOOL)isEqual:(id)a3;
-- (WFWorkflowQuery)initWithCoder:(id)a3;
-- (WFWorkflowQuery)initWithCollectionIdentifier:(id)a3;
-- (WFWorkflowQuery)initWithFolderIdentifier:(id)a3;
-- (WFWorkflowQuery)initWithLocation:(unint64_t)a3;
-- (WFWorkflowQuery)initWithWorkflowType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFWorkflowQuery)initWithCoder:(id)coder;
+- (WFWorkflowQuery)initWithCollectionIdentifier:(id)identifier;
+- (WFWorkflowQuery)initWithFolderIdentifier:(id)identifier;
+- (WFWorkflowQuery)initWithLocation:(unint64_t)location;
+- (WFWorkflowQuery)initWithWorkflowType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowQuery
 
 - (unint64_t)hash
 {
-  v3 = [(WFWorkflowQuery *)self location];
-  v4 = [(WFWorkflowQuery *)self workflowType];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(WFWorkflowQuery *)self folderIdentifier];
-  v7 = [v6 hash];
+  location = [(WFWorkflowQuery *)self location];
+  workflowType = [(WFWorkflowQuery *)self workflowType];
+  v5 = [workflowType hash] ^ location;
+  folderIdentifier = [(WFWorkflowQuery *)self folderIdentifier];
+  v7 = [folderIdentifier hash];
   v8 = v7 ^ [(WFWorkflowQuery *)self resultsLimit];
 
   return v5 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (!v4)
+  equalCopy = equal;
+  if (!equalCopy)
   {
     v8 = 0;
     v15 = 0;
@@ -41,17 +41,17 @@ LABEL_23:
   {
     v15 = 0;
     LOBYTE(v11) = 0;
-    v8 = v4;
+    v8 = equalCopy;
     goto LABEL_23;
   }
 
-  v5 = [(WFWorkflowQuery *)self location];
-  if (v5 == [v4 location])
+  location = [(WFWorkflowQuery *)self location];
+  if (location == [equalCopy location])
   {
-    v6 = [(WFWorkflowQuery *)self folderIdentifier];
-    v7 = [v4 folderIdentifier];
-    v8 = v6;
-    v9 = v7;
+    folderIdentifier = [(WFWorkflowQuery *)self folderIdentifier];
+    folderIdentifier2 = [equalCopy folderIdentifier];
+    v8 = folderIdentifier;
+    v9 = folderIdentifier2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -74,15 +74,15 @@ LABEL_23:
         LOBYTE(v11) = 0;
 LABEL_22:
 
-        v15 = v4;
+        v15 = equalCopy;
         goto LABEL_23;
       }
     }
 
-    v16 = [(WFWorkflowQuery *)self workflowType];
-    v17 = [v4 workflowType];
-    v13 = v16;
-    v18 = v17;
+    workflowType = [(WFWorkflowQuery *)self workflowType];
+    workflowType2 = [equalCopy workflowType];
+    v13 = workflowType;
+    v18 = workflowType2;
     v12 = v18;
     if (v13 == v18)
     {
@@ -105,64 +105,64 @@ LABEL_22:
       }
     }
 
-    v19 = [(WFWorkflowQuery *)self resultsLimit];
-    LOBYTE(v11) = v19 == [v4 resultsLimit];
+    resultsLimit = [(WFWorkflowQuery *)self resultsLimit];
+    LOBYTE(v11) = resultsLimit == [equalCopy resultsLimit];
 LABEL_21:
 
     goto LABEL_22;
   }
 
   LOBYTE(v11) = 0;
-  v15 = v4;
+  v15 = equalCopy;
 LABEL_24:
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:-[WFWorkflowQuery location](self forKey:{"location"), @"location"}];
-  v4 = [(WFWorkflowQuery *)self folderIdentifier];
-  [v6 encodeObject:v4 forKey:@"folderIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WFWorkflowQuery location](self forKey:{"location"), @"location"}];
+  folderIdentifier = [(WFWorkflowQuery *)self folderIdentifier];
+  [coderCopy encodeObject:folderIdentifier forKey:@"folderIdentifier"];
 
-  v5 = [(WFWorkflowQuery *)self workflowType];
-  [v6 encodeObject:v5 forKey:@"workflowType"];
+  workflowType = [(WFWorkflowQuery *)self workflowType];
+  [coderCopy encodeObject:workflowType forKey:@"workflowType"];
 
-  [v6 encodeInteger:-[WFWorkflowQuery resultsLimit](self forKey:{"resultsLimit"), @"resultsLimit"}];
+  [coderCopy encodeInteger:-[WFWorkflowQuery resultsLimit](self forKey:{"resultsLimit"), @"resultsLimit"}];
 }
 
-- (WFWorkflowQuery)initWithCoder:(id)a3
+- (WFWorkflowQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFWorkflowQuery;
   v5 = [(WFWorkflowQuery *)&v12 init];
   if (v5)
   {
-    v5->_location = [v4 decodeIntegerForKey:@"location"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"folderIdentifier"];
+    v5->_location = [coderCopy decodeIntegerForKey:@"location"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"folderIdentifier"];
     folderIdentifier = v5->_folderIdentifier;
     v5->_folderIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflowType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflowType"];
     workflowType = v5->_workflowType;
     v5->_workflowType = v8;
 
-    v5->_resultsLimit = [v4 decodeIntegerForKey:@"resultsLimit"];
+    v5->_resultsLimit = [coderCopy decodeIntegerForKey:@"resultsLimit"];
     v10 = v5;
   }
 
   return v5;
 }
 
-- (WFWorkflowQuery)initWithFolderIdentifier:(id)a3
+- (WFWorkflowQuery)initWithFolderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(WFWorkflowQuery *)self initWithLocation:3];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     folderIdentifier = v5->_folderIdentifier;
     v5->_folderIdentifier = v6;
 
@@ -172,9 +172,9 @@ LABEL_24:
   return v5;
 }
 
-- (WFWorkflowQuery)initWithCollectionIdentifier:(id)a3
+- (WFWorkflowQuery)initWithCollectionIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(WFWorkflowQuery *)self initWithFolderIdentifier:?];
   }
@@ -189,13 +189,13 @@ LABEL_24:
   return v4;
 }
 
-- (WFWorkflowQuery)initWithWorkflowType:(id)a3
+- (WFWorkflowQuery)initWithWorkflowType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(WFWorkflowQuery *)self initWithLocation:2];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typeCopy copy];
     workflowType = v5->_workflowType;
     v5->_workflowType = v6;
 
@@ -205,7 +205,7 @@ LABEL_24:
   return v5;
 }
 
-- (WFWorkflowQuery)initWithLocation:(unint64_t)a3
+- (WFWorkflowQuery)initWithLocation:(unint64_t)location
 {
   v8.receiver = self;
   v8.super_class = WFWorkflowQuery;
@@ -213,7 +213,7 @@ LABEL_24:
   v5 = v4;
   if (v4)
   {
-    v4->_location = a3;
+    v4->_location = location;
     v6 = v4;
   }
 

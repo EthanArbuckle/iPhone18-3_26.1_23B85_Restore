@@ -2,16 +2,16 @@
 + (id)sharedDatabase;
 - (AXSSDatabaseManager)init;
 - (BOOL)canSave;
-- (BOOL)saveIfPossible:(id *)a3;
+- (BOOL)saveIfPossible:(id *)possible;
 - (id)apsConnectionMachServiceName;
 - (id)cloudKitContainer;
-- (id)cloudObjectFromLocalObjects:(id)a3 withTable:(id)a4 andObjectID:(id)a5;
+- (id)cloudObjectFromLocalObjects:(id)objects withTable:(id)table andObjectID:(id)d;
 - (id)containerIdentifier;
 - (id)databaseFilePath;
 - (id)managedObjectModelName;
-- (void)_contentDidUpdate:(id)a3;
-- (void)_identityDidChange:(id)a3;
-- (void)_storesWillChange:(id)a3;
+- (void)_contentDidUpdate:(id)update;
+- (void)_identityDidChange:(id)change;
+- (void)_storesWillChange:(id)change;
 - (void)dealloc;
 - (void)setupDatabase;
 - (void)userAuthChanged;
@@ -23,8 +23,8 @@
 {
   if (self->_isScreenedLocked)
   {
-    v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v3 = [v2 isPasscodeSet] ^ 1;
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    v3 = [mEMORY[0x1E69ADFB8] isPasscodeSet] ^ 1;
   }
 
   else
@@ -98,11 +98,11 @@ uint64_t __27__AXSSDatabaseManager_init__block_invoke(uint64_t a1)
 - (id)databaseFilePath
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
-  v5 = [v4 stringByAppendingPathComponent:@"Accessibility"];
-  v6 = [(AXSSDatabaseManager *)self managedObjectModelName];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v5 = [lastObject stringByAppendingPathComponent:@"Accessibility"];
+  managedObjectModelName = [(AXSSDatabaseManager *)self managedObjectModelName];
+  v7 = [v5 stringByAppendingPathComponent:managedObjectModelName];
   v8 = [v7 stringByAppendingPathExtension:@"sqlite"];
 
   v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
@@ -114,7 +114,7 @@ uint64_t __27__AXSSDatabaseManager_init__block_invoke(uint64_t a1)
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_1C0E8A000, log, OS_LOG_TYPE_ERROR, "Could not make directory: %@. error: %@", &v4, 0x16u);
@@ -137,26 +137,26 @@ void __36__AXSSDatabaseManager_setupDatabase__block_invoke(uint64_t a1, uint64_t
 - (void)dealloc
 {
   notify_cancel(self->_lockNotificationToken);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXSSDatabaseManager;
   [(AXSSDatabaseManager *)&v4 dealloc];
 }
 
-- (id)cloudObjectFromLocalObjects:(id)a3 withTable:(id)a4 andObjectID:(id)a5
+- (id)cloudObjectFromLocalObjects:(id)objects withTable:(id)table andObjectID:(id)d
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  tableCopy = table;
+  dCopy = d;
   v11 = [MEMORY[0x1E695DFA8] set];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v8;
+  obj = objectsCopy;
   v32 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v32)
   {
@@ -173,19 +173,19 @@ void __36__AXSSDatabaseManager_setupDatabase__block_invoke(uint64_t a1, uint64_t
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
-        v15 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v9];
+        v15 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:tableCopy];
         v33 = v14;
-        v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ = %@", v10, v14];
+        v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ = %@", dCopy, v14];
         [v15 setPredicate:v16];
 
         [v15 setReturnsObjectsAsFaults:0];
-        v17 = [(AXSSDatabaseManager *)self managedObjectContext];
+        managedObjectContext = [(AXSSDatabaseManager *)self managedObjectContext];
         v34 = 0;
-        v18 = [v17 executeFetchRequest:v15 error:&v34];
+        v18 = [managedObjectContext executeFetchRequest:v15 error:&v34];
         v19 = v34;
 
-        v20 = [v18 lastObject];
-        if (v20)
+        lastObject = [v18 lastObject];
+        if (lastObject)
         {
           v21 = v19 == 0;
         }
@@ -199,19 +199,19 @@ void __36__AXSSDatabaseManager_setupDatabase__block_invoke(uint64_t a1, uint64_t
         {
           v22 = MEMORY[0x1E695D5B8];
           [(AXSSDatabaseManager *)self managedObjectContext];
-          v23 = v10;
+          v23 = dCopy;
           v25 = v24 = self;
-          v26 = [v22 insertNewObjectForEntityForName:v9 inManagedObjectContext:v25];
+          v26 = [v22 insertNewObjectForEntityForName:tableCopy inManagedObjectContext:v25];
 
           self = v24;
-          v10 = v23;
+          dCopy = v23;
           v12 = v29;
-          [v26 setValue:v33 forKey:v10];
-          v20 = v26;
+          [v26 setValue:v33 forKey:dCopy];
+          lastObject = v26;
           v11 = v30;
         }
 
-        [v11 addObject:v20];
+        [v11 addObject:lastObject];
       }
 
       v32 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -225,18 +225,18 @@ void __36__AXSSDatabaseManager_setupDatabase__block_invoke(uint64_t a1, uint64_t
   return v11;
 }
 
-- (void)_identityDidChange:(id)a3
+- (void)_identityDidChange:(id)change
 {
-  v4 = [(AXSSDatabaseManager *)self managedObjectContext];
-  v5 = [v4 persistentStoreCoordinator];
+  managedObjectContext = [(AXSSDatabaseManager *)self managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__AXSSDatabaseManager__identityDidChange___block_invoke;
   v7[3] = &unk_1E8134950;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = persistentStoreCoordinator;
+  selfCopy = self;
+  v6 = persistentStoreCoordinator;
   [v6 performBlock:v7];
 }
 
@@ -257,15 +257,15 @@ void __42__AXSSDatabaseManager__identityDidChange___block_invoke(uint64_t a1)
   [v6 afterDelay:v7 processBlock:0.25];
 }
 
-- (void)_storesWillChange:(id)a3
+- (void)_storesWillChange:(id)change
 {
-  v4 = [(AXSSDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(AXSSDatabaseManager *)self managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__AXSSDatabaseManager__storesWillChange___block_invoke;
   v5[3] = &unk_1E8134870;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [managedObjectContext performBlock:v5];
 }
 
 void __41__AXSSDatabaseManager__storesWillChange___block_invoke(uint64_t a1)
@@ -302,18 +302,18 @@ void __41__AXSSDatabaseManager__storesWillChange___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_contentDidUpdate:(id)a3
+- (void)_contentDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(AXSSDatabaseManager *)self managedObjectContext];
+  updateCopy = update;
+  managedObjectContext = [(AXSSDatabaseManager *)self managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__AXSSDatabaseManager__contentDidUpdate___block_invoke;
   v7[3] = &unk_1E8134950;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = updateCopy;
+  v6 = updateCopy;
+  [managedObjectContext performBlock:v7];
 }
 
 void __41__AXSSDatabaseManager__contentDidUpdate___block_invoke(uint64_t a1)
@@ -322,7 +322,7 @@ void __41__AXSSDatabaseManager__contentDidUpdate___block_invoke(uint64_t a1)
   [v2 mergeChangesFromContextDidSaveNotification:*(a1 + 40)];
 }
 
-- (BOOL)saveIfPossible:(id *)a3
+- (BOOL)saveIfPossible:(id *)possible
 {
   v15 = 0;
   v16 = &v15;
@@ -334,7 +334,7 @@ void __41__AXSSDatabaseManager__contentDidUpdate___block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy__8;
   v13 = __Block_byref_object_dispose__8;
   v14 = 0;
-  v5 = [(AXSSDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(AXSSDatabaseManager *)self managedObjectContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__AXSSDatabaseManager_saveIfPossible___block_invoke;
@@ -342,11 +342,11 @@ void __41__AXSSDatabaseManager__contentDidUpdate___block_invoke(uint64_t a1)
   v8[4] = self;
   v8[5] = &v9;
   v8[6] = &v15;
-  [v5 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
-  if (a3)
+  if (possible)
   {
-    *a3 = v10[5];
+    *possible = v10[5];
   }
 
   v6 = *(v16 + 24);

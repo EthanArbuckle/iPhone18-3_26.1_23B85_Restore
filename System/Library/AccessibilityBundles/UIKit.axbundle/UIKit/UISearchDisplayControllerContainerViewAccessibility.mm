@@ -1,17 +1,17 @@
 @interface UISearchDisplayControllerContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityObscuredScreenAllowsView:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityObscuredScreenAllowsView:(id)view;
 - (id)_accessibilityObscuredScreenAllowedViews;
 @end
 
 @implementation UISearchDisplayControllerContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
@@ -20,9 +20,9 @@
   v29 = *MEMORY[0x29EDCA608];
   v26[2] = self;
   v26[1] = a2;
-  v18 = [(UISearchDisplayControllerContainerViewAccessibility *)self superview];
-  v26[0] = [v18 subviews];
-  MEMORY[0x29EDC9740](v18);
+  superview = [(UISearchDisplayControllerContainerViewAccessibility *)self superview];
+  v26[0] = [superview subviews];
+  MEMORY[0x29EDC9740](superview);
   v25 = 0;
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x29EDC9748](v26[0]);
@@ -124,12 +124,12 @@
   return v7;
 }
 
-- (BOOL)_accessibilityObscuredScreenAllowsView:(id)a3
+- (BOOL)_accessibilityObscuredScreenAllowsView:(id)view
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v5 = [location[0] _accessibilityAncestorIsKindOf:objc_opt_class()];
   *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
   if (v5)
@@ -139,7 +139,7 @@
 
   else
   {
-    v6.receiver = v9;
+    v6.receiver = selfCopy;
     v6.super_class = UISearchDisplayControllerContainerViewAccessibility;
     v10 = [(UISearchDisplayControllerContainerViewAccessibility *)&v6 _accessibilityObscuredScreenAllowsView:location[0], v3];
   }

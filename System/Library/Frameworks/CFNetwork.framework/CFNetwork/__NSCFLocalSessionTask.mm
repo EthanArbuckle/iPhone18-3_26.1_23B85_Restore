@@ -12,10 +12,10 @@
 {
   if ([(__NSCFLocalSessionTask *)self cfConn])
   {
-    v3 = [(__NSCFLocalSessionTask *)self cfConn];
-    v4 = [(NSURLSessionTask *)self computeAdjustedPoolPriority];
+    cfConn = [(__NSCFLocalSessionTask *)self cfConn];
+    computeAdjustedPoolPriority = [(NSURLSessionTask *)self computeAdjustedPoolPriority];
 
-    [(__NSCFURLSessionConnection *)v3 setPoolPriority:v4];
+    [(__NSCFURLSessionConnection *)cfConn setPoolPriority:computeAdjustedPoolPriority];
   }
 }
 
@@ -54,9 +54,9 @@
 
       else if ([(__NSCFLocalSessionTask *)self cfConn])
       {
-        v5 = [(__NSCFLocalSessionTask *)self cfConn];
+        cfConn = [(__NSCFLocalSessionTask *)self cfConn];
 
-        [(__NSCFURLSessionConnection *)v5 resume];
+        [(__NSCFURLSessionConnection *)cfConn resume];
       }
     }
   }

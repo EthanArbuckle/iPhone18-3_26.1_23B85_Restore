@@ -1,16 +1,16 @@
 @interface BKPersonalizationEventProcessor
 - (BKPersonalizationEventProcessor)init;
-- (BKPersonalizationEventProcessor)initWithDonor:(id)a3;
+- (BKPersonalizationEventProcessor)initWithDonor:(id)donor;
 @end
 
 @implementation BKPersonalizationEventProcessor
 
-- (BKPersonalizationEventProcessor)initWithDonor:(id)a3
+- (BKPersonalizationEventProcessor)initWithDonor:(id)donor
 {
-  *(&self->super.isa + OBJC_IVAR___BKPersonalizationEventProcessor_donor) = a3;
+  *(&self->super.isa + OBJC_IVAR___BKPersonalizationEventProcessor_donor) = donor;
   v6.receiver = self;
   v6.super_class = type metadata accessor for PersonalizationEventProcessor();
-  v4 = a3;
+  donorCopy = donor;
   return [(BKPersonalizationEventProcessor *)&v6 init];
 }
 

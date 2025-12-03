@@ -1,39 +1,39 @@
 @interface _ATXHomeScreenPageState
 - (BOOL)containsSGWidget;
-- (BOOL)containsSuggestedWidgetForApp:(id)a3;
-- (BOOL)containsWidgetForIntent:(id)a3;
+- (BOOL)containsSuggestedWidgetForApp:(id)app;
+- (BOOL)containsWidgetForIntent:(id)intent;
 - (BOOL)isSeldomVisited;
-- (BOOL)suggestionsWidgetOnPageIsShowingDuplicatedContentForSuggestion:(id)a3;
-- (_ATXHomeScreenPageState)initWithHomeScreenState:(id)a3 pageConfig:(id)a4 stackStateTracker:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7;
+- (BOOL)suggestionsWidgetOnPageIsShowingDuplicatedContentForSuggestion:(id)suggestion;
+- (_ATXHomeScreenPageState)initWithHomeScreenState:(id)state pageConfig:(id)config stackStateTracker:(id)tracker suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters;
 - (_ATXHomeScreenState)homeScreen;
 @end
 
 @implementation _ATXHomeScreenPageState
 
-- (_ATXHomeScreenPageState)initWithHomeScreenState:(id)a3 pageConfig:(id)a4 stackStateTracker:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7
+- (_ATXHomeScreenPageState)initWithHomeScreenState:(id)state pageConfig:(id)config stackStateTracker:(id)tracker suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters
 {
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stateCopy = state;
+  configCopy = config;
+  trackerCopy = tracker;
+  deduplicatorCopy = deduplicator;
+  parametersCopy = parameters;
   v47.receiver = self;
   v47.super_class = _ATXHomeScreenPageState;
   v17 = [(_ATXHomeScreenPageState *)&v47 init];
   if (v17)
   {
-    v35 = a4;
-    v36 = a5;
-    obj = v12;
+    configCopy2 = config;
+    trackerCopy2 = tracker;
+    obj = stateCopy;
     v18 = objc_opt_new();
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v38 = v13;
-    v19 = [v13 stacks];
-    v20 = [v19 countByEnumeratingWithState:&v43 objects:v49 count:16];
+    v38 = configCopy;
+    stacks = [configCopy stacks];
+    v20 = [stacks countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v20)
     {
       v21 = v20;
@@ -45,17 +45,17 @@
         {
           if (*v44 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(stacks);
           }
 
-          v24 = [[_ATXHomeScreenStackState alloc] initWithPageState:v17 stackConfig:*(*(&v43 + 1) + 8 * v23) stackStateTracker:v14 suggestionDeduplicator:v15 hyperParameters:v16, v35, v36];
-          [(NSArray *)v18 addObject:v24];
+          trackerCopy2 = [[_ATXHomeScreenStackState alloc] initWithPageState:v17 stackConfig:*(*(&v43 + 1) + 8 * v23) stackStateTracker:trackerCopy suggestionDeduplicator:deduplicatorCopy hyperParameters:parametersCopy, configCopy2, trackerCopy2];
+          [(NSArray *)v18 addObject:trackerCopy2];
 
           ++v23;
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v21 = [stacks countByEnumeratingWithState:&v43 objects:v49 count:16];
       }
 
       while (v21);
@@ -65,8 +65,8 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v25 = [v38 panels];
-    v26 = [v25 countByEnumeratingWithState:&v39 objects:v48 count:16];
+    panels = [v38 panels];
+    v26 = [panels countByEnumeratingWithState:&v39 objects:v48 count:16];
     if (v26)
     {
       v27 = v26;
@@ -78,41 +78,41 @@
         {
           if (*v40 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(panels);
           }
 
-          v30 = [[_ATXHomeScreenStackState alloc] initWithPageState:v17 stackConfig:*(*(&v39 + 1) + 8 * v29) stackStateTracker:v14 suggestionDeduplicator:v15 hyperParameters:v16];
+          v30 = [[_ATXHomeScreenStackState alloc] initWithPageState:v17 stackConfig:*(*(&v39 + 1) + 8 * v29) stackStateTracker:trackerCopy suggestionDeduplicator:deduplicatorCopy hyperParameters:parametersCopy];
           [(NSArray *)v18 addObject:v30];
 
           ++v29;
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v39 objects:v48 count:16];
+        v27 = [panels countByEnumeratingWithState:&v39 objects:v48 count:16];
       }
 
       while (v27);
     }
 
-    v12 = obj;
+    stateCopy = obj;
     objc_storeWeak(&v17->_homeScreen, obj);
-    objc_storeStrong(&v17->_config, v35);
+    objc_storeStrong(&v17->_config, configCopy2);
     stacks = v17->_stacks;
     v17->_stacks = v18;
     v32 = v18;
 
-    objc_storeStrong(&v17->_stackStateTracker, v36);
-    v13 = v38;
+    objc_storeStrong(&v17->_stackStateTracker, trackerCopy2);
+    configCopy = v38;
   }
 
   v33 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (BOOL)containsWidgetForIntent:(id)a3
+- (BOOL)containsWidgetForIntent:(id)intent
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intentCopy = intent;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -131,7 +131,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) containsWidgetForIntent:{v4, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) containsWidgetForIntent:{intentCopy, v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -154,10 +154,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsSuggestedWidgetForApp:(id)a3
+- (BOOL)containsSuggestedWidgetForApp:(id)app
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appCopy = app;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -176,7 +176,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) containsSuggestedWidgetForApp:{v4, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) containsSuggestedWidgetForApp:{appCopy, v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -202,10 +202,10 @@ LABEL_11:
 - (BOOL)containsSGWidget
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(_ATXHomeScreenPageState *)self config];
-  v4 = [v3 containsSuggestionsWidget];
+  config = [(_ATXHomeScreenPageState *)self config];
+  containsSuggestionsWidget = [config containsSuggestionsWidget];
 
-  if (v4)
+  if (containsSuggestionsWidget)
   {
     v5 = 1;
   }
@@ -236,8 +236,8 @@ LABEL_11:
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v12 = [v11 suggestedWidgets];
-          v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          suggestedWidgets = [v11 suggestedWidgets];
+          v13 = [suggestedWidgets countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v13)
           {
             v14 = v13;
@@ -248,7 +248,7 @@ LABEL_11:
               {
                 if (*v21 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(suggestedWidgets);
                 }
 
                 v17 = *(*(&v20 + 1) + 8 * j);
@@ -261,7 +261,7 @@ LABEL_11:
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v14 = [suggestedWidgets countByEnumeratingWithState:&v20 objects:v28 count:16];
               if (v14)
               {
                 continue;
@@ -291,10 +291,10 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)suggestionsWidgetOnPageIsShowingDuplicatedContentForSuggestion:(id)a3
+- (BOOL)suggestionsWidgetOnPageIsShowingDuplicatedContentForSuggestion:(id)suggestion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -319,10 +319,10 @@ LABEL_22:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v11 = [v10 suggestionsWidgetSuggestionsByWidgetUniqueId];
-        v12 = [v11 allValues];
+        suggestionsWidgetSuggestionsByWidgetUniqueId = [v10 suggestionsWidgetSuggestionsByWidgetUniqueId];
+        allValues = [suggestionsWidgetSuggestionsByWidgetUniqueId allValues];
 
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -333,10 +333,10 @@ LABEL_22:
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allValues);
               }
 
-              if ([*(*(&v20 + 1) + 8 * j) containsIdenticalContentOfSuggestion:v4])
+              if ([*(*(&v20 + 1) + 8 * j) containsIdenticalContentOfSuggestion:suggestionCopy])
               {
 
                 v17 = 1;
@@ -344,7 +344,7 @@ LABEL_22:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [allValues countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v14)
             {
               continue;

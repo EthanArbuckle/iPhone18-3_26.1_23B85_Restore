@@ -1,25 +1,25 @@
 @interface NRDUpdateBrainClientImpl
 - (NRDUpdateBrainClientImpl)init;
-- (NRDUpdateBrainClientImpl)initWithDelegate:(id)a3;
-- (NRDUpdateBrainClientImpl)initWithEndpoint:(id)a3;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
+- (NRDUpdateBrainClientImpl)initWithDelegate:(id)delegate;
+- (NRDUpdateBrainClientImpl)initWithEndpoint:(id)endpoint;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
 - (void)_connectToServerIfNecessary_nolock;
 - (void)_invalidateConnection;
 - (void)_invalidateConnection_nolock;
-- (void)calculateCurrentRequiredSpace:(id)a3 callback:(id)a4;
+- (void)calculateCurrentRequiredSpace:(id)space callback:(id)callback;
 - (void)connectToServerIfNecessary;
 - (void)dealloc;
-- (void)downloadNeRDUpdate:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6;
-- (void)finishNeRDUpdate:(id)a3;
-- (void)getListenerEndpoint:(id)a3;
-- (void)handleConnectionError:(id)a3 method:(const char *)a4 handler:(id)a5;
-- (void)installNeRDUpdate:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6;
+- (void)downloadNeRDUpdate:(id)update options:(id)options progress:(id)progress completion:(id)completion;
+- (void)finishNeRDUpdate:(id)update;
+- (void)getListenerEndpoint:(id)endpoint;
+- (void)handleConnectionError:(id)error method:(const char *)method handler:(id)handler;
+- (void)installNeRDUpdate:(id)update options:(id)options progress:(id)progress completion:(id)completion;
 - (void)noteConnectionDropped;
-- (void)ping:(id)a3;
-- (void)ping:(id)a3 reply:(id)a4;
-- (void)purgeNeRDUpdate:(id)a3;
-- (void)queryNeRDUpdate:(id)a3 build:(id)a4 options:(id)a5 callback:(id)a6;
-- (void)run:(unint64_t)a3 options:(id)a4 callback:(id)a5;
+- (void)ping:(id)ping;
+- (void)ping:(id)ping reply:(id)reply;
+- (void)purgeNeRDUpdate:(id)update;
+- (void)queryNeRDUpdate:(id)update build:(id)build options:(id)options callback:(id)callback;
+- (void)run:(unint64_t)run options:(id)options callback:(id)callback;
 @end
 
 @implementation NRDUpdateBrainClientImpl
@@ -39,29 +39,29 @@
   return v3;
 }
 
-- (NRDUpdateBrainClientImpl)initWithDelegate:(id)a3
+- (NRDUpdateBrainClientImpl)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v6 = [(NRDUpdateBrainClientImpl *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
   }
 
   return v7;
 }
 
-- (NRDUpdateBrainClientImpl)initWithEndpoint:(id)a3
+- (NRDUpdateBrainClientImpl)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v6 = [(NRDUpdateBrainClientImpl *)self init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (endpointCopy)
     {
-      objc_storeStrong(&v6->_serverEndpoint, a3);
+      objc_storeStrong(&v6->_serverEndpoint, endpoint);
     }
 
     else
@@ -85,11 +85,11 @@
   [(NRDUpdateBrainClientImpl *)&v4 dealloc];
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(NRDUpdateBrainClientImpl *)self connectToServerIfNecessary];
-  v5 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v5;
 }
@@ -162,7 +162,7 @@
     v18[2] = 0x3032000000;
     v18[3] = __Block_byref_object_copy__7;
     v18[4] = __Block_byref_object_dispose__7;
-    v19 = self;
+    selfCopy = self;
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x3032000000;
@@ -257,19 +257,19 @@ uint64_t __62__NRDUpdateBrainClientImpl__connectToServerIfNecessary_nolock__bloc
   objc_sync_exit(obj);
 }
 
-- (void)handleConnectionError:(id)a3 method:(const char *)a4 handler:(id)a5
+- (void)handleConnectionError:(id)error method:(const char *)method handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     v10 = nrdSharedLogger();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-    if (a4)
+    if (method)
     {
       if (v11)
       {
-        [NRDUpdateDaemonClientImpl handleConnectionError:a4 method:v8 handler:v10];
+        [NRDUpdateDaemonClientImpl handleConnectionError:method method:errorCopy handler:v10];
       }
     }
 
@@ -279,13 +279,13 @@ uint64_t __62__NRDUpdateBrainClientImpl__connectToServerIfNecessary_nolock__bloc
     }
 
     [(NRDUpdateBrainClientImpl *)self _invalidateConnection];
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  v4 = a3;
+  pingCopy = ping;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -303,7 +303,7 @@ uint64_t __62__NRDUpdateBrainClientImpl__connectToServerIfNecessary_nolock__bloc
   v31[3] = &unk_10004A098;
   v31[4] = self;
   v34 = "[NRDUpdateBrainClientImpl ping:]";
-  v6 = v4;
+  v6 = pingCopy;
   v32 = v6;
   v33 = &v35;
   v7 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v31];
@@ -538,10 +538,10 @@ LABEL_8:
   [*(a1 + 48) _invalidateConnection];
 }
 
-- (void)ping:(id)a3 reply:(id)a4
+- (void)ping:(id)ping reply:(id)reply
 {
-  v26 = a3;
-  v6 = a4;
+  pingCopy = ping;
+  replyCopy = reply;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -559,7 +559,7 @@ LABEL_8:
   v34[3] = &unk_10004A098;
   v34[4] = self;
   v37 = "[NRDUpdateBrainClientImpl ping:reply:]";
-  v8 = v6;
+  v8 = replyCopy;
   v35 = v8;
   v36 = &v38;
   v9 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v34];
@@ -570,7 +570,7 @@ LABEL_8:
   v10 = v8;
   v32 = v10;
   v33 = &v38;
-  [v9 ping:v26 reply:v31];
+  [v9 ping:pingCopy reply:v31];
 
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
@@ -665,26 +665,26 @@ uint64_t __39__NRDUpdateBrainClientImpl_ping_reply___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)run:(unint64_t)a3 options:(id)a4 callback:(id)a5
+- (void)run:(unint64_t)run options:(id)options callback:(id)callback
 {
-  v8 = a4;
+  optionsCopy = options;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __49__NRDUpdateBrainClientImpl_run_options_callback___block_invoke;
   v11[3] = &unk_100049F88;
   v11[4] = self;
   v13 = "[NRDUpdateBrainClientImpl run:options:callback:]";
-  v9 = a5;
-  v12 = v9;
+  callbackCopy = callback;
+  v12 = callbackCopy;
   v10 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v11];
   if (protocol_isEqual(self->_brainProtocol, &OBJC_PROTOCOL___NRDUpdateBrainInterfacePrivate2))
   {
-    [v10 run:a3 options:v8 callback:v9];
+    [v10 run:run options:optionsCopy callback:callbackCopy];
   }
 
   else
   {
-    [v10 run:a3 callback:v9];
+    [v10 run:run callback:callbackCopy];
   }
 }
 
@@ -704,16 +704,16 @@ void __49__NRDUpdateBrainClientImpl_run_options_callback___block_invoke(uint64_t
   [v5 handleConnectionError:v7 method:v4 handler:v8];
 }
 
-- (void)getListenerEndpoint:(id)a3
+- (void)getListenerEndpoint:(id)endpoint
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __48__NRDUpdateBrainClientImpl_getListenerEndpoint___block_invoke;
   v6[3] = &unk_100049F88;
-  v7 = a3;
+  endpointCopy = endpoint;
   v8 = "[NRDUpdateBrainClientImpl getListenerEndpoint:]";
   v6[4] = self;
-  v4 = v7;
+  v4 = endpointCopy;
   v5 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v6];
   [v5 getListenerEndpoint:v4];
 }
@@ -734,21 +734,21 @@ void __48__NRDUpdateBrainClientImpl_getListenerEndpoint___block_invoke(uint64_t 
   [v5 handleConnectionError:v7 method:v4 handler:v8];
 }
 
-- (void)queryNeRDUpdate:(id)a3 build:(id)a4 options:(id)a5 callback:(id)a6
+- (void)queryNeRDUpdate:(id)update build:(id)build options:(id)options callback:(id)callback
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __67__NRDUpdateBrainClientImpl_queryNeRDUpdate_build_options_callback___block_invoke;
   v15[3] = &unk_100049F88;
-  v16 = a6;
+  callbackCopy = callback;
   v17 = "[NRDUpdateBrainClientImpl queryNeRDUpdate:build:options:callback:]";
   v15[4] = self;
-  v10 = v16;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  v10 = callbackCopy;
+  optionsCopy = options;
+  buildCopy = build;
+  updateCopy = update;
   v14 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v15];
-  [v14 queryNeRDUpdate:v13 build:v12 options:v11 callback:v10];
+  [v14 queryNeRDUpdate:updateCopy build:buildCopy options:optionsCopy callback:v10];
 }
 
 void __67__NRDUpdateBrainClientImpl_queryNeRDUpdate_build_options_callback___block_invoke(uint64_t a1, void *a2)
@@ -767,26 +767,26 @@ void __67__NRDUpdateBrainClientImpl_queryNeRDUpdate_build_options_callback___blo
   [v5 handleConnectionError:v7 method:v4 handler:v8];
 }
 
-- (void)downloadNeRDUpdate:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)downloadNeRDUpdate:(id)update options:(id)options progress:(id)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  updateCopy = update;
+  optionsCopy = options;
+  progressCopy = progress;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __75__NRDUpdateBrainClientImpl_downloadNeRDUpdate_options_progress_completion___block_invoke;
   v24[3] = &unk_100049F88;
   v24[4] = self;
   v26 = "[NRDUpdateBrainClientImpl downloadNeRDUpdate:options:progress:completion:]";
-  v13 = a6;
-  v25 = v13;
+  completionCopy = completion;
+  v25 = completionCopy;
   v14 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v24];
   v15 = [NRDRemoteableBlock alloc];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __75__NRDUpdateBrainClientImpl_downloadNeRDUpdate_options_progress_completion___block_invoke_3;
   v22[3] = &unk_10004A160;
-  v16 = v12;
+  v16 = progressCopy;
   v23 = v16;
   v17 = [(NRDRemoteableBlock *)v15 initWithProgressBlock:v22];
   if (v14)
@@ -795,8 +795,8 @@ void __67__NRDUpdateBrainClientImpl_queryNeRDUpdate_build_options_callback___blo
     v20[1] = 3221225472;
     v20[2] = __75__NRDUpdateBrainClientImpl_downloadNeRDUpdate_options_progress_completion___block_invoke_4;
     v20[3] = &unk_10004A000;
-    v21 = v13;
-    [v14 downloadNeRDUpdate:v10 options:v11 progress:v17 completion:v20];
+    v21 = completionCopy;
+    [v14 downloadNeRDUpdate:updateCopy options:optionsCopy progress:v17 completion:v20];
     v18 = v21;
   }
 
@@ -806,7 +806,7 @@ void __67__NRDUpdateBrainClientImpl_queryNeRDUpdate_build_options_callback___blo
     v28 = @"no remote object connection";
     v18 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v19 = [NSError errorWithDomain:@"NRDUpdateErrorDomain" code:105 userInfo:v18];
-    (*(v13 + 2))(v13, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
   }
 }
 
@@ -835,26 +835,26 @@ uint64_t __75__NRDUpdateBrainClientImpl_downloadNeRDUpdate_options_progress_comp
   return v4(v2, v3);
 }
 
-- (void)installNeRDUpdate:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)installNeRDUpdate:(id)update options:(id)options progress:(id)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  updateCopy = update;
+  optionsCopy = options;
+  progressCopy = progress;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __74__NRDUpdateBrainClientImpl_installNeRDUpdate_options_progress_completion___block_invoke;
   v24[3] = &unk_100049F88;
   v24[4] = self;
   v26 = "[NRDUpdateBrainClientImpl installNeRDUpdate:options:progress:completion:]";
-  v13 = a6;
-  v25 = v13;
+  completionCopy = completion;
+  v25 = completionCopy;
   v14 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v24];
   v15 = [NRDRemoteableBlock alloc];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __74__NRDUpdateBrainClientImpl_installNeRDUpdate_options_progress_completion___block_invoke_3;
   v22[3] = &unk_10004A160;
-  v16 = v12;
+  v16 = progressCopy;
   v23 = v16;
   v17 = [(NRDRemoteableBlock *)v15 initWithProgressBlock:v22];
   if (v14)
@@ -863,8 +863,8 @@ uint64_t __75__NRDUpdateBrainClientImpl_downloadNeRDUpdate_options_progress_comp
     v20[1] = 3221225472;
     v20[2] = __74__NRDUpdateBrainClientImpl_installNeRDUpdate_options_progress_completion___block_invoke_4;
     v20[3] = &unk_10004A000;
-    v21 = v13;
-    [v14 installNeRDUpdate:v10 options:v11 progress:v17 completion:v20];
+    v21 = completionCopy;
+    [v14 installNeRDUpdate:updateCopy options:optionsCopy progress:v17 completion:v20];
     v18 = v21;
   }
 
@@ -874,7 +874,7 @@ uint64_t __75__NRDUpdateBrainClientImpl_downloadNeRDUpdate_options_progress_comp
     v28 = @"no remote object connection";
     v18 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v19 = [NSError errorWithDomain:@"NRDUpdateErrorDomain" code:105 userInfo:v18];
-    (*(v13 + 2))(v13, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
   }
 }
 
@@ -903,16 +903,16 @@ uint64_t __74__NRDUpdateBrainClientImpl_installNeRDUpdate_options_progress_compl
   return v4(v2, v3);
 }
 
-- (void)purgeNeRDUpdate:(id)a3
+- (void)purgeNeRDUpdate:(id)update
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __44__NRDUpdateBrainClientImpl_purgeNeRDUpdate___block_invoke;
   v6[3] = &unk_100049F88;
-  v7 = a3;
+  updateCopy = update;
   v8 = "[NRDUpdateBrainClientImpl purgeNeRDUpdate:]";
   v6[4] = self;
-  v4 = v7;
+  v4 = updateCopy;
   v5 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v6];
   [v5 purgeNeRDUpdate:v4];
 }
@@ -933,23 +933,23 @@ void __44__NRDUpdateBrainClientImpl_purgeNeRDUpdate___block_invoke(uint64_t a1, 
   [v5 handleConnectionError:v7 method:v4 handler:v8];
 }
 
-- (void)finishNeRDUpdate:(id)a3
+- (void)finishNeRDUpdate:(id)update
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __45__NRDUpdateBrainClientImpl_finishNeRDUpdate___block_invoke;
   v8[3] = &unk_100049F88;
-  v9 = self;
+  selfCopy = self;
   v11 = "[NRDUpdateBrainClientImpl finishNeRDUpdate:]";
-  v3 = a3;
-  v10 = v3;
-  v4 = [(NRDUpdateBrainClientImpl *)v9 _remoteInterfaceWithErrorHandler:v8];
+  updateCopy = update;
+  v10 = updateCopy;
+  v4 = [(NRDUpdateBrainClientImpl *)selfCopy _remoteInterfaceWithErrorHandler:v8];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __45__NRDUpdateBrainClientImpl_finishNeRDUpdate___block_invoke_3;
   v6[3] = &unk_10004A1C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = updateCopy;
+  v5 = updateCopy;
   [v4 finishNeRDUpdate:v6];
 }
 
@@ -992,19 +992,19 @@ void __45__NRDUpdateBrainClientImpl_finishNeRDUpdate___block_invoke_5(id a1, int
   }
 }
 
-- (void)calculateCurrentRequiredSpace:(id)a3 callback:(id)a4
+- (void)calculateCurrentRequiredSpace:(id)space callback:(id)callback
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __67__NRDUpdateBrainClientImpl_calculateCurrentRequiredSpace_callback___block_invoke;
   v9[3] = &unk_100049F88;
-  v10 = a4;
+  callbackCopy = callback;
   v11 = "[NRDUpdateBrainClientImpl calculateCurrentRequiredSpace:callback:]";
   v9[4] = self;
-  v6 = v10;
-  v7 = a3;
+  v6 = callbackCopy;
+  spaceCopy = space;
   v8 = [(NRDUpdateBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v9];
-  [v8 calculateCurrentRequiredSpace:v7 callback:v6];
+  [v8 calculateCurrentRequiredSpace:spaceCopy callback:v6];
 }
 
 void __67__NRDUpdateBrainClientImpl_calculateCurrentRequiredSpace_callback___block_invoke(uint64_t a1, void *a2)

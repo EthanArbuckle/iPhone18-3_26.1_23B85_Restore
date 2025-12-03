@@ -1,20 +1,20 @@
 @interface NSCFError
-- (BOOL)isEqual:(id)a3;
-- (NSCFError)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSCFError)initWithCoder:(id)coder;
 - (id)_callStackReturnAddresses;
 - (id)userInfo;
 @end
 
 @implementation NSCFError
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -22,11 +22,11 @@
   return _CFNonObjCEqual() != 0;
 }
 
-- (NSCFError)initWithCoder:(id)a3
+- (NSCFError)initWithCoder:(id)coder
 {
   v4 = [NSError alloc];
 
-  return [(NSError *)v4 initWithCoder:a3];
+  return [(NSError *)v4 initWithCoder:coder];
 }
 
 - (id)userInfo

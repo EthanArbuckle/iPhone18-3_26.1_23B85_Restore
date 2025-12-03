@@ -1,6 +1,6 @@
 @interface MOEventBundleRankingInput
 - (id)dictionary;
-- (void)_saveToDictionary:(id)a3 object:(id)a4 forKey:(id)a5;
+- (void)_saveToDictionary:(id)dictionary object:(id)object forKey:(id)key;
 @end
 
 @implementation MOEventBundleRankingInput
@@ -8,13 +8,13 @@
 - (id)dictionary
 {
   v3 = objc_opt_new();
-  v4 = [(MOEventBundleRankingInput *)self bundleIdentifier];
-  v5 = [v4 UUIDString];
-  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:v5 forKey:@"bundleID"];
+  bundleIdentifier = [(MOEventBundleRankingInput *)self bundleIdentifier];
+  uUIDString = [bundleIdentifier UUIDString];
+  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:uUIDString forKey:@"bundleID"];
 
-  v6 = [(MOEventBundleRankingInput *)self suggestionIdentifier];
-  v7 = [v6 UUIDString];
-  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:v7 forKey:@"suggestionID"];
+  suggestionIdentifier = [(MOEventBundleRankingInput *)self suggestionIdentifier];
+  uUIDString2 = [suggestionIdentifier UUIDString];
+  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:uUIDString2 forKey:@"suggestionID"];
 
   [(MOEventBundleRankingInput *)self bundleRecencyDaysElapsed];
   v8 = [NSNumber numberWithFloat:?];
@@ -45,8 +45,8 @@
   v15 = [NSNumber numberWithUnsignedInteger:[(MOEventBundleRankingInput *)self bundleSuperType]];
   [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:v15 forKey:@"bundleSuperType"];
 
-  v16 = [(MOEventBundleRankingInput *)self bundleRichnessDict];
-  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:v16 forKey:@"bundleRichnessDict"];
+  bundleRichnessDict = [(MOEventBundleRankingInput *)self bundleRichnessDict];
+  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:bundleRichnessDict forKey:@"bundleRichnessDict"];
 
   [(MOEventBundleRankingInput *)self isBundleActionSpecific];
   v17 = [NSNumber numberWithFloat:?];
@@ -208,8 +208,8 @@
   v59 = [NSNumber numberWithFloat:?];
   [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:v59 forKey:@"timeAtHomeDuration"];
 
-  v60 = [(MOEventBundleRankingInput *)self evergreenType];
-  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:v60 forKey:@"evergreenType"];
+  evergreenType = [(MOEventBundleRankingInput *)self evergreenType];
+  [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:evergreenType forKey:@"evergreenType"];
 
   v61 = [NSNumber numberWithBool:[(MOEventBundleRankingInput *)self isBundleAggregated]];
   [(MOEventBundleRankingInput *)self _saveToDictionary:v3 object:v61 forKey:@"isBundleAggregated"];
@@ -229,13 +229,13 @@
   return v3;
 }
 
-- (void)_saveToDictionary:(id)a3 object:(id)a4 forKey:(id)a5
+- (void)_saveToDictionary:(id)dictionary object:(id)object forKey:(id)key
 {
-  if (a4)
+  if (object)
   {
-    if (a5)
+    if (key)
     {
-      [a3 setObject:a4 forKey:a5];
+      [dictionary setObject:object forKey:key];
     }
   }
 }

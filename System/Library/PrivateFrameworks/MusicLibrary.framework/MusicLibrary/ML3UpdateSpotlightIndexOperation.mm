@@ -1,30 +1,30 @@
 @interface ML3UpdateSpotlightIndexOperation
-- (BOOL)_verifyLibraryAndAttributesProperties:(id *)a3;
-- (id)_createSearchableItemsForAlbumsWithQuery:(id)a3 error:(id *)a4;
-- (id)_createSearchableItemsForArtistsWithQuery:(id)a3 error:(id *)a4;
-- (id)_createSearchableItemsForPlaylistsWithQuery:(id)a3 error:(id *)a4;
-- (id)_createSearchableItemsForTracksWithQuery:(id)a3 error:(id *)a4;
-- (id)_createSearchableItemsWithPersistentIDs:(id)a3 entityType:(int64_t)a4 error:(id *)a5;
-- (id)_queryForPlaylistsContainingMusicShowsMissedByQuery:(id)a3 inContainerPIDs:(id)a4;
-- (void)_batchIndexWithObject:(id)a3 completionBlock:(id)a4;
-- (void)_batchIndicesWithObjects:(id)a3 completionBlock:(id)a4;
-- (void)_deleteAllAndReindexWithCompletionBlock:(id)a3;
-- (void)_deleteAllIndexedItemsWithCompletionBlock:(id)a3;
-- (void)_deleteIndexedItemsWithEntityStringIDs:(id)a3 completionBlock:(id)a4;
-- (void)_enumerateSearchableItemsWithPersistentIDs:(id)a3 entityType:(int64_t)a4 completionBlock:(id)a5;
-- (void)_indexAlbumsWithPersistentIDs:(id)a3 completionBlock:(id)a4;
-- (void)_indexArtistsWithPersistentIDs:(id)a3 completionBlock:(id)a4;
-- (void)_indexItemsFromLibrarySinceRevision:(int64_t)a3 targetRevision:(int64_t)a4 completionBlock:(id)a5;
-- (void)_indexPlaylistsWithPersistentIDs:(id)a3 completionBlock:(id)a4;
-- (void)_indexTracksWithPersistentIDs:(id)a3 completionBlock:(id)a4;
-- (void)_indexTracksWithPersistentIDs:(id)a3 playlistsWithPersistentIDs:(id)a4 albumsWithPersistentIDs:(id)a5 artistsWithPersistentIDs:(id)a6 completionBlock:(id)a7;
-- (void)_updateIndexedItemsWithIdentifiers:(id)a3 completionBlock:(id)a4;
+- (BOOL)_verifyLibraryAndAttributesProperties:(id *)properties;
+- (id)_createSearchableItemsForAlbumsWithQuery:(id)query error:(id *)error;
+- (id)_createSearchableItemsForArtistsWithQuery:(id)query error:(id *)error;
+- (id)_createSearchableItemsForPlaylistsWithQuery:(id)query error:(id *)error;
+- (id)_createSearchableItemsForTracksWithQuery:(id)query error:(id *)error;
+- (id)_createSearchableItemsWithPersistentIDs:(id)ds entityType:(int64_t)type error:(id *)error;
+- (id)_queryForPlaylistsContainingMusicShowsMissedByQuery:(id)query inContainerPIDs:(id)ds;
+- (void)_batchIndexWithObject:(id)object completionBlock:(id)block;
+- (void)_batchIndicesWithObjects:(id)objects completionBlock:(id)block;
+- (void)_deleteAllAndReindexWithCompletionBlock:(id)block;
+- (void)_deleteAllIndexedItemsWithCompletionBlock:(id)block;
+- (void)_deleteIndexedItemsWithEntityStringIDs:(id)ds completionBlock:(id)block;
+- (void)_enumerateSearchableItemsWithPersistentIDs:(id)ds entityType:(int64_t)type completionBlock:(id)block;
+- (void)_indexAlbumsWithPersistentIDs:(id)ds completionBlock:(id)block;
+- (void)_indexArtistsWithPersistentIDs:(id)ds completionBlock:(id)block;
+- (void)_indexItemsFromLibrarySinceRevision:(int64_t)revision targetRevision:(int64_t)targetRevision completionBlock:(id)block;
+- (void)_indexPlaylistsWithPersistentIDs:(id)ds completionBlock:(id)block;
+- (void)_indexTracksWithPersistentIDs:(id)ds completionBlock:(id)block;
+- (void)_indexTracksWithPersistentIDs:(id)ds playlistsWithPersistentIDs:(id)iDs albumsWithPersistentIDs:(id)persistentIDs artistsWithPersistentIDs:(id)withPersistentIDs completionBlock:(id)block;
+- (void)_updateIndexedItemsWithIdentifiers:(id)identifiers completionBlock:(id)block;
 - (void)execute;
 @end
 
 @implementation ML3UpdateSpotlightIndexOperation
 
-- (BOOL)_verifyLibraryAndAttributesProperties:(id *)a3
+- (BOOL)_verifyLibraryAndAttributesProperties:(id *)properties
 {
   v10.receiver = self;
   v10.super_class = ML3UpdateSpotlightIndexOperation;
@@ -33,32 +33,32 @@
     return 0;
   }
 
-  v5 = [(ML3DatabaseOperation *)self attributes];
-  v6 = [v5 objectForKey:@"MLDatabaseOperationAttributeBundleIDKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v6 = [attributes objectForKey:@"MLDatabaseOperationAttributeBundleIDKey"];
 
   v7 = [v6 isEqualToString:@"com.apple.Music"];
   v8 = v7;
-  if (a3 && (v7 & 1) == 0)
+  if (properties && (v7 & 1) == 0)
   {
-    *a3 = [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"ML3UpdateSpotlightIndexOperation requires a bundleID attribute"];
+    *properties = [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"ML3UpdateSpotlightIndexOperation requires a bundleID attribute"];
   }
 
   return v8;
 }
 
-- (id)_queryForPlaylistsContainingMusicShowsMissedByQuery:(id)a3 inContainerPIDs:(id)a4
+- (id)_queryForPlaylistsContainingMusicShowsMissedByQuery:(id)query inContainerPIDs:(id)ds
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB58] setWithArray:a4];
+  queryCopy = query;
+  v6 = [MEMORY[0x277CBEB58] setWithArray:ds];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __104__ML3UpdateSpotlightIndexOperation__queryForPlaylistsContainingMusicShowsMissedByQuery_inContainerPIDs___block_invoke;
   v36[3] = &unk_278765BD8;
   v7 = v6;
   v37 = v7;
-  v28 = v5;
-  [v5 enumeratePersistentIDsUsingBlock:v36];
+  v28 = queryCopy;
+  [queryCopy enumeratePersistentIDsUsingBlock:v36];
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0u;
   v33 = 0u;
@@ -89,8 +89,8 @@
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:3];
         v17 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v16];
 
-        v18 = [(ML3DatabaseOperation *)self library];
-        v19 = [(ML3Entity *)ML3Track unrestrictedQueryWithLibrary:v18 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
+        library = [(ML3DatabaseOperation *)self library];
+        v19 = [(ML3Entity *)ML3Track unrestrictedQueryWithLibrary:library predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
 
         if ([v19 hasEntities])
         {
@@ -115,8 +115,8 @@
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
     v24 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v23];
 
-    v25 = [(ML3DatabaseOperation *)self library];
-    v26 = [(ML3Entity *)ML3Container unrestrictedQueryWithLibrary:v25 predicate:v24 orderingTerms:MEMORY[0x277CBEBF8]];
+    library2 = [(ML3DatabaseOperation *)self library];
+    v26 = [(ML3Entity *)ML3Container unrestrictedQueryWithLibrary:library2 predicate:v24 orderingTerms:MEMORY[0x277CBEBF8]];
   }
 
   else
@@ -134,16 +134,16 @@ void __104__ML3UpdateSpotlightIndexOperation__queryForPlaylistsContainingMusicSh
   [v2 removeObject:v3];
 }
 
-- (id)_createSearchableItemsForArtistsWithQuery:(id)a3 error:(id *)a4
+- (id)_createSearchableItemsForArtistsWithQuery:(id)query error:(id *)error
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v23[0] = @"album_artist";
   v23[1] = @"sync_id";
   v23[2] = @"store_id";
   v23[3] = @"cloud_universal_library_id";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -151,8 +151,8 @@ void __104__ML3UpdateSpotlightIndexOperation__queryForPlaylistsContainingMusicSh
     _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation]  ┃  Creating searchable items for artists", buf, 2u);
   }
 
-  v10 = [(ML3DatabaseOperation *)self attributes];
-  v11 = [v10 objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v11 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
 
   v12 = objc_autoreleasePoolPush();
   v17[0] = MEMORY[0x277D85DD0];
@@ -163,15 +163,15 @@ void __104__ML3UpdateSpotlightIndexOperation__queryForPlaylistsContainingMusicSh
   v18 = v13;
   v14 = v7;
   v19 = v14;
-  v20 = self;
-  v15 = v8;
+  selfCopy = self;
+  v15 = array;
   v21 = v15;
-  [v6 enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
+  [queryCopy enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
 
   objc_autoreleasePoolPop(v12);
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v15;
@@ -219,10 +219,10 @@ void __84__ML3UpdateSpotlightIndexOperation__createSearchableItemsForArtistsWith
   }
 }
 
-- (id)_createSearchableItemsForAlbumsWithQuery:(id)a3 error:(id *)a4
+- (id)_createSearchableItemsForAlbumsWithQuery:(id)query error:(id *)error
 {
   v30[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -236,7 +236,7 @@ void __84__ML3UpdateSpotlightIndexOperation__createSearchableItemsForArtistsWith
   v30[4] = @"cloud_library_id";
   v30[5] = @"sync_id";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:6];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -244,8 +244,8 @@ void __84__ML3UpdateSpotlightIndexOperation__createSearchableItemsForArtistsWith
     _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation]  ┃  Creating searchable items for playlists", buf, 2u);
   }
 
-  v10 = [(ML3DatabaseOperation *)self attributes];
-  v11 = [v10 objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v11 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
 
   v12 = objc_autoreleasePoolPush();
   v17[0] = MEMORY[0x277D85DD0];
@@ -257,10 +257,10 @@ void __84__ML3UpdateSpotlightIndexOperation__createSearchableItemsForArtistsWith
   v18 = v13;
   v14 = v7;
   v19 = v14;
-  v20 = self;
-  v15 = v8;
+  selfCopy = self;
+  v15 = array;
   v21 = v15;
-  [v6 enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
+  [queryCopy enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
 
   objc_autoreleasePoolPop(v12);
   if (v25[5])
@@ -269,9 +269,9 @@ void __84__ML3UpdateSpotlightIndexOperation__createSearchableItemsForArtistsWith
     v15 = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v25[5];
+    *error = v25[5];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -353,10 +353,10 @@ void __83__ML3UpdateSpotlightIndexOperation__createSearchableItemsForAlbumsWithQ
   }
 }
 
-- (id)_createSearchableItemsForPlaylistsWithQuery:(id)a3 error:(id *)a4
+- (id)_createSearchableItemsForPlaylistsWithQuery:(id)query error:(id *)error
 {
   v30[9] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -373,7 +373,7 @@ void __83__ML3UpdateSpotlightIndexOperation__createSearchableItemsForAlbumsWithQ
   v30[7] = @"cloud_universal_library_id";
   v30[8] = @"sync_id";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:9];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -381,8 +381,8 @@ void __83__ML3UpdateSpotlightIndexOperation__createSearchableItemsForAlbumsWithQ
     _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation]  ┃  Creating searchable items for playlists", buf, 2u);
   }
 
-  v10 = [(ML3DatabaseOperation *)self attributes];
-  v11 = [v10 objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v11 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
 
   v12 = objc_autoreleasePoolPush();
   v17[0] = MEMORY[0x277D85DD0];
@@ -394,10 +394,10 @@ void __83__ML3UpdateSpotlightIndexOperation__createSearchableItemsForAlbumsWithQ
   v18 = v13;
   v14 = v7;
   v19 = v14;
-  v20 = self;
-  v15 = v8;
+  selfCopy = self;
+  v15 = array;
   v21 = v15;
-  [v6 enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
+  [queryCopy enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
 
   objc_autoreleasePoolPop(v12);
   if (v25[5])
@@ -406,9 +406,9 @@ void __83__ML3UpdateSpotlightIndexOperation__createSearchableItemsForAlbumsWithQ
     v15 = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v25[5];
+    *error = v25[5];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -508,10 +508,10 @@ void __86__ML3UpdateSpotlightIndexOperation__createSearchableItemsForPlaylistsWi
   }
 }
 
-- (id)_createSearchableItemsForTracksWithQuery:(id)a3 error:(id *)a4
+- (id)_createSearchableItemsForTracksWithQuery:(id)query error:(id *)error
 {
   v30[29] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -548,7 +548,7 @@ void __86__ML3UpdateSpotlightIndexOperation__createSearchableItemsForPlaylistsWi
   v30[27] = @"item_store.reporting_store_item_id";
   v30[28] = @"item_store.asset_store_item_id";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:29];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -556,8 +556,8 @@ void __86__ML3UpdateSpotlightIndexOperation__createSearchableItemsForPlaylistsWi
     _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation]  ┃  Creating searchable items for tracks", buf, 2u);
   }
 
-  v10 = [(ML3DatabaseOperation *)self attributes];
-  v11 = [v10 objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v11 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributeSpotlightIndexAppEntityAssociatorKey"];
 
   v12 = objc_autoreleasePoolPush();
   v17[0] = MEMORY[0x277D85DD0];
@@ -569,10 +569,10 @@ void __86__ML3UpdateSpotlightIndexOperation__createSearchableItemsForPlaylistsWi
   v18 = v13;
   v14 = v7;
   v19 = v14;
-  v20 = self;
-  v15 = v8;
+  selfCopy = self;
+  v15 = array;
   v21 = v15;
-  [v6 enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
+  [queryCopy enumeratePersistentIDsAndProperties:v14 usingBlock:v17];
 
   objc_autoreleasePoolPop(v12);
   if (v25[5])
@@ -581,9 +581,9 @@ void __86__ML3UpdateSpotlightIndexOperation__createSearchableItemsForPlaylistsWi
     v15 = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v25[5];
+    *error = v25[5];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -873,35 +873,35 @@ LABEL_53:
   objc_autoreleasePoolPop(v8);
 }
 
-- (id)_createSearchableItemsWithPersistentIDs:(id)a3 entityType:(int64_t)a4 error:(id *)a5
+- (id)_createSearchableItemsWithPersistentIDs:(id)ds entityType:(int64_t)type error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4)
+  dsCopy = ds;
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v54 = [ML3ComparisonPredicate predicateWithProperty:@"smart_is_folder" equalToInteger:0];
       *&buf = v54;
       v9 = [ML3ComparisonPredicate predicateWithProperty:@"is_hidden" equalToInteger:0];
       *(&buf + 1) = v9;
       [ML3ComparisonPredicate predicateWithProperty:@"contained_media_type" equalToInteger:0];
-      v10 = v56 = a5;
+      v10 = v56 = error;
       v66 = v10;
       v11 = [ML3ComparisonPredicate predicateWithProperty:@"contained_media_type" value:&unk_2840CA460 comparison:10];
       v67 = v11;
-      v12 = self;
-      v13 = v8;
+      selfCopy = self;
+      v13 = dsCopy;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v66 count:2];
       v15 = [(ML3CompoundPredicate *)ML3AnyCompoundPredicate predicateMatchingPredicates:v14];
       v69 = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&buf count:3];
       v17 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v16];
 
-      v8 = v13;
-      self = v12;
+      dsCopy = v13;
+      self = selfCopy;
 
-      a5 = v56;
+      error = v56;
     }
 
     else
@@ -918,12 +918,12 @@ LABEL_53:
       *&buf = v18;
       v52 = [ML3PropertyPredicate predicateWithProperty:@"(item.base_location_id OR item.remote_location_id)"];
       *(&buf + 1) = v52;
-      v57 = a5;
+      errorCopy = error;
       v51 = [ML3ComparisonPredicate predicateWithProperty:@"media_type" value:&unk_2840CA460 comparison:10];
       v66 = v51;
       [ML3ComparisonPredicate predicateWithProperty:@"media_type" value:&unk_2840CA448 comparison:10];
-      v53 = self;
-      v19 = v55 = v8;
+      selfCopy2 = self;
+      v19 = v55 = dsCopy;
       v65[0] = v19;
       v20 = [ML3PropertyPredicate predicateWithProperty:@"item.is_music_show"];
       v65[1] = v20;
@@ -936,9 +936,9 @@ LABEL_53:
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&buf count:3];
       v17 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v25];
 
-      a5 = v57;
-      self = v53;
-      v8 = v55;
+      error = errorCopy;
+      self = selfCopy2;
+      dsCopy = v55;
     }
 
     else
@@ -954,10 +954,10 @@ LABEL_53:
     }
   }
 
-  if ([v8 count] && v17)
+  if ([dsCopy count] && v17)
   {
     v64[0] = v17;
-    v26 = [ML3PersistentIDsPredicate predicateWithPersistentIDs:v8 shouldContain:1];
+    v26 = [ML3PersistentIDsPredicate predicateWithPersistentIDs:dsCopy shouldContain:1];
     v64[1] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:2];
     v28 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v27];
@@ -965,11 +965,11 @@ LABEL_53:
     v17 = v28;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 0:
-      v42 = [(ML3DatabaseOperation *)self library];
-      v30 = [(ML3Entity *)ML3Track unrestrictedQueryWithLibrary:v42 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
+      library = [(ML3DatabaseOperation *)self library];
+      v30 = [(ML3Entity *)ML3Track unrestrictedQueryWithLibrary:library predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
 
       v63 = 0;
       v31 = [(ML3UpdateSpotlightIndexOperation *)self _createSearchableItemsForTracksWithQuery:v30 error:&v63];
@@ -978,16 +978,16 @@ LABEL_35:
       v32 = v43;
       goto LABEL_36;
     case 7:
-      v45 = [(ML3DatabaseOperation *)self library];
-      v30 = [(ML3Entity *)ML3AlbumArtist unrestrictedQueryWithLibrary:v45 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
+      library2 = [(ML3DatabaseOperation *)self library];
+      v30 = [(ML3Entity *)ML3AlbumArtist unrestrictedQueryWithLibrary:library2 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
 
       v59 = 0;
       v31 = [(ML3UpdateSpotlightIndexOperation *)self _createSearchableItemsForArtistsWithQuery:v30 error:&v59];
       v43 = v59;
       goto LABEL_35;
     case 4:
-      v44 = [(ML3DatabaseOperation *)self library];
-      v30 = [(ML3Entity *)ML3Album unrestrictedQueryWithLibrary:v44 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
+      library3 = [(ML3DatabaseOperation *)self library];
+      v30 = [(ML3Entity *)ML3Album unrestrictedQueryWithLibrary:library3 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
 
       v60 = 0;
       v31 = [(ML3UpdateSpotlightIndexOperation *)self _createSearchableItemsForAlbumsWithQuery:v30 error:&v60];
@@ -995,28 +995,28 @@ LABEL_35:
       goto LABEL_35;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     v31 = MEMORY[0x277CBEBF8];
     goto LABEL_43;
   }
 
-  v29 = [(ML3DatabaseOperation *)self library];
-  v30 = [(ML3Entity *)ML3Container unrestrictedQueryWithLibrary:v29 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
+  library4 = [(ML3DatabaseOperation *)self library];
+  v30 = [(ML3Entity *)ML3Container unrestrictedQueryWithLibrary:library4 predicate:v17 orderingTerms:MEMORY[0x277CBEBF8]];
 
   v62 = 0;
   v31 = [(ML3UpdateSpotlightIndexOperation *)self _createSearchableItemsForPlaylistsWithQuery:v30 error:&v62];
   v32 = v62;
   if (!v31)
   {
-    v49 = [MEMORY[0x277CCA890] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"ML3UpdateSpotlightIndexOperation.m" lineNumber:645 description:@"_createSearchableItemsForPlaylistsWithQuery must return an array of CSSearchableItems."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3UpdateSpotlightIndexOperation.m" lineNumber:645 description:@"_createSearchableItemsForPlaylistsWithQuery must return an array of CSSearchableItems."];
   }
 
   if ([(ML3UpdateSpotlightIndexOperation *)self bundle]== 1)
   {
     v33 = [v31 count];
-    if (v33 != [v8 count] && !v32)
+    if (v33 != [dsCopy count] && !v32)
     {
       v34 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -1025,16 +1025,16 @@ LABEL_35:
         _os_log_impl(&dword_22D2FA000, v34, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation]  ┃  Some playlists might contain Music Shows & Movies items only, investigating...", &buf, 2u);
       }
 
-      v35 = v8;
-      v36 = [(ML3UpdateSpotlightIndexOperation *)self _queryForPlaylistsContainingMusicShowsMissedByQuery:v30 inContainerPIDs:v8];
+      v35 = dsCopy;
+      v36 = [(ML3UpdateSpotlightIndexOperation *)self _queryForPlaylistsContainingMusicShowsMissedByQuery:v30 inContainerPIDs:dsCopy];
       v61 = 0;
       [(ML3UpdateSpotlightIndexOperation *)self _createSearchableItemsForPlaylistsWithQuery:v36 error:&v61];
       v38 = v37 = self;
       v32 = v61;
       if (!v38)
       {
-        v50 = [MEMORY[0x277CCA890] currentHandler];
-        [v50 handleFailureInMethod:a2 object:v37 file:@"ML3UpdateSpotlightIndexOperation.m" lineNumber:654 description:@"_createSearchableItemsForPlaylistsWithQuery must return an array of CSSearchableItems."];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:v37 file:@"ML3UpdateSpotlightIndexOperation.m" lineNumber:654 description:@"_createSearchableItemsForPlaylistsWithQuery must return an array of CSSearchableItems."];
       }
 
       if ([v38 count])
@@ -1053,7 +1053,7 @@ LABEL_35:
         v31 = v41;
       }
 
-      v8 = v35;
+      dsCopy = v35;
     }
   }
 
@@ -1061,7 +1061,7 @@ LABEL_36:
 
   if (v32)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -1078,11 +1078,11 @@ LABEL_43:
   }
 
   v32 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_38:
     v46 = v32;
-    *a5 = v32;
+    *error = v32;
   }
 
 LABEL_39:
@@ -1090,13 +1090,13 @@ LABEL_39:
   return v31;
 }
 
-- (void)_enumerateSearchableItemsWithPersistentIDs:(id)a3 entityType:(int64_t)a4 completionBlock:(id)a5
+- (void)_enumerateSearchableItemsWithPersistentIDs:(id)ds entityType:(int64_t)type completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
   v19 = 0;
-  v11 = [(ML3UpdateSpotlightIndexOperation *)self _createSearchableItemsWithPersistentIDs:v8 entityType:a4 error:&v19];
+  v11 = [(ML3UpdateSpotlightIndexOperation *)self _createSearchableItemsWithPersistentIDs:dsCopy entityType:type error:&v19];
   v12 = v19;
   v13 = os_log_create("com.apple.amp.medialibrary", "Default");
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -1120,15 +1120,15 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9[2](v9, v11, v12);
+  blockCopy[2](blockCopy, v11, v12);
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)_indexArtistsWithPersistentIDs:(id)a3 completionBlock:(id)a4
+- (void)_indexArtistsWithPersistentIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  blockCopy = block;
+  if ([dsCopy count])
   {
     v8 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1142,13 +1142,13 @@ LABEL_6:
     v9[2] = __83__ML3UpdateSpotlightIndexOperation__indexArtistsWithPersistentIDs_completionBlock___block_invoke;
     v9[3] = &unk_2787659B8;
     v9[4] = self;
-    v10 = v7;
-    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:v6 entityType:7 completionBlock:v9];
+    v10 = blockCopy;
+    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:dsCopy entityType:7 completionBlock:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -1206,11 +1206,11 @@ void __83__ML3UpdateSpotlightIndexOperation__indexArtistsWithPersistentIDs_compl
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_indexAlbumsWithPersistentIDs:(id)a3 completionBlock:(id)a4
+- (void)_indexAlbumsWithPersistentIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  blockCopy = block;
+  if ([dsCopy count])
   {
     v8 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1224,13 +1224,13 @@ void __83__ML3UpdateSpotlightIndexOperation__indexArtistsWithPersistentIDs_compl
     v9[2] = __82__ML3UpdateSpotlightIndexOperation__indexAlbumsWithPersistentIDs_completionBlock___block_invoke;
     v9[3] = &unk_2787659B8;
     v9[4] = self;
-    v10 = v7;
-    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:v6 entityType:4 completionBlock:v9];
+    v10 = blockCopy;
+    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:dsCopy entityType:4 completionBlock:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -1288,11 +1288,11 @@ void __82__ML3UpdateSpotlightIndexOperation__indexAlbumsWithPersistentIDs_comple
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_indexPlaylistsWithPersistentIDs:(id)a3 completionBlock:(id)a4
+- (void)_indexPlaylistsWithPersistentIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  blockCopy = block;
+  if ([dsCopy count])
   {
     v8 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1306,13 +1306,13 @@ void __82__ML3UpdateSpotlightIndexOperation__indexAlbumsWithPersistentIDs_comple
     v9[2] = __85__ML3UpdateSpotlightIndexOperation__indexPlaylistsWithPersistentIDs_completionBlock___block_invoke;
     v9[3] = &unk_2787659B8;
     v9[4] = self;
-    v10 = v7;
-    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:v6 entityType:1 completionBlock:v9];
+    v10 = blockCopy;
+    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:dsCopy entityType:1 completionBlock:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -1370,11 +1370,11 @@ void __85__ML3UpdateSpotlightIndexOperation__indexPlaylistsWithPersistentIDs_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_indexTracksWithPersistentIDs:(id)a3 completionBlock:(id)a4
+- (void)_indexTracksWithPersistentIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  blockCopy = block;
+  if ([dsCopy count])
   {
     v8 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1388,13 +1388,13 @@ void __85__ML3UpdateSpotlightIndexOperation__indexPlaylistsWithPersistentIDs_com
     v9[2] = __82__ML3UpdateSpotlightIndexOperation__indexTracksWithPersistentIDs_completionBlock___block_invoke;
     v9[3] = &unk_2787659B8;
     v9[4] = self;
-    v10 = v7;
-    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:v6 entityType:0 completionBlock:v9];
+    v10 = blockCopy;
+    [(ML3UpdateSpotlightIndexOperation *)self _enumerateSearchableItemsWithPersistentIDs:dsCopy entityType:0 completionBlock:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -1452,26 +1452,26 @@ void __82__ML3UpdateSpotlightIndexOperation__indexTracksWithPersistentIDs_comple
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_indexTracksWithPersistentIDs:(id)a3 playlistsWithPersistentIDs:(id)a4 albumsWithPersistentIDs:(id)a5 artistsWithPersistentIDs:(id)a6 completionBlock:(id)a7
+- (void)_indexTracksWithPersistentIDs:(id)ds playlistsWithPersistentIDs:(id)iDs albumsWithPersistentIDs:(id)persistentIDs artistsWithPersistentIDs:(id)withPersistentIDs completionBlock:(id)block
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  iDsCopy = iDs;
+  persistentIDsCopy = persistentIDs;
+  withPersistentIDsCopy = withPersistentIDs;
+  blockCopy = block;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __158__ML3UpdateSpotlightIndexOperation__indexTracksWithPersistentIDs_playlistsWithPersistentIDs_albumsWithPersistentIDs_artistsWithPersistentIDs_completionBlock___block_invoke;
   v20[3] = &unk_278765968;
-  v23 = v14;
-  v24 = v15;
+  v23 = withPersistentIDsCopy;
+  v24 = blockCopy;
   v20[4] = self;
-  v21 = v12;
-  v22 = v13;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  [(ML3UpdateSpotlightIndexOperation *)self _indexTracksWithPersistentIDs:a3 completionBlock:v20];
+  v21 = iDsCopy;
+  v22 = persistentIDsCopy;
+  v16 = withPersistentIDsCopy;
+  v17 = persistentIDsCopy;
+  v18 = iDsCopy;
+  v19 = blockCopy;
+  [(ML3UpdateSpotlightIndexOperation *)self _indexTracksWithPersistentIDs:ds completionBlock:v20];
 }
 
 void __158__ML3UpdateSpotlightIndexOperation__indexTracksWithPersistentIDs_playlistsWithPersistentIDs_albumsWithPersistentIDs_artistsWithPersistentIDs_completionBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -1551,39 +1551,39 @@ void __158__ML3UpdateSpotlightIndexOperation__indexTracksWithPersistentIDs_playl
   }
 }
 
-- (void)_batchIndexWithObject:(id)a3 completionBlock:(id)a4
+- (void)_batchIndexWithObject:(id)object completionBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  blockCopy = block;
   ++self->_batchCount;
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v20 = [(ML3UpdateSpotlightIndexOperation *)self batchCount];
+    batchCount = [(ML3UpdateSpotlightIndexOperation *)self batchCount];
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation]  ┏ Beginning Core Spotlight index batch %lu for operation %p", buf, 0x16u);
   }
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v10 = v9;
-  v11 = [(ML3UpdateSpotlightIndexOperation *)self index];
-  [v11 beginIndexBatch];
+  index = [(ML3UpdateSpotlightIndexOperation *)self index];
+  [index beginIndexBatch];
 
-  v12 = [v6 entityStringsToDelete];
+  entityStringsToDelete = [objectCopy entityStringsToDelete];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__ML3UpdateSpotlightIndexOperation__batchIndexWithObject_completionBlock___block_invoke;
   v15[3] = &unk_278765918;
   v15[4] = self;
-  v16 = v6;
+  v16 = objectCopy;
   v18 = v10;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
-  [(ML3UpdateSpotlightIndexOperation *)self _deleteIndexedItemsWithEntityStringIDs:v12 completionBlock:v15];
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = objectCopy;
+  [(ML3UpdateSpotlightIndexOperation *)self _deleteIndexedItemsWithEntityStringIDs:entityStringsToDelete completionBlock:v15];
 }
 
 void __74__ML3UpdateSpotlightIndexOperation__batchIndexWithObject_completionBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -1734,11 +1734,11 @@ LABEL_10:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_batchIndicesWithObjects:(id)a3 completionBlock:(id)a4
+- (void)_batchIndicesWithObjects:(id)objects completionBlock:(id)block
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  blockCopy = block;
   if ([(ML3AsyncDatabaseOperation *)self isCancelled])
   {
     v8 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -1754,24 +1754,24 @@ LABEL_10:
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v11 = [v9 errorWithDomain:@"MLDSpotlightIndexOperationErrorDomain" code:1004 userInfo:v10];
 
-    v7[2](v7, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
-  else if ([v6 count] && (objc_msgSend(v6, "firstObject"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "removeObjectAtIndex:", 0), v12))
+  else if ([objectsCopy count] && (objc_msgSend(objectsCopy, "firstObject"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(objectsCopy, "removeObjectAtIndex:", 0), v12))
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __77__ML3UpdateSpotlightIndexOperation__batchIndicesWithObjects_completionBlock___block_invoke;
     v13[3] = &unk_278765990;
-    v15 = v7;
+    v15 = blockCopy;
     v13[4] = self;
-    v14 = v6;
+    v14 = objectsCopy;
     [(ML3UpdateSpotlightIndexOperation *)self _batchIndexWithObject:v12 completionBlock:v13];
   }
 
   else
   {
-    v7[2](v7, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
@@ -1788,17 +1788,17 @@ uint64_t __77__ML3UpdateSpotlightIndexOperation__batchIndicesWithObjects_complet
   }
 }
 
-- (void)_indexItemsFromLibrarySinceRevision:(int64_t)a3 targetRevision:(int64_t)a4 completionBlock:(id)a5
+- (void)_indexItemsFromLibrarySinceRevision:(int64_t)revision targetRevision:(int64_t)targetRevision completionBlock:(id)block
 {
   v76 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   v9 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    *&buf[4] = a3;
+    *&buf[4] = revision;
     *&buf[12] = 2048;
-    *&buf[14] = a4;
+    *&buf[14] = targetRevision;
     _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation] Will index items with initial revision %lu target revision %lu", buf, 0x16u);
   }
 
@@ -1808,55 +1808,55 @@ uint64_t __77__ML3UpdateSpotlightIndexOperation__batchIndicesWithObjects_complet
   *&buf[16] = 0x3032000000;
   v73 = __Block_byref_object_copy__25535;
   v74 = __Block_byref_object_dispose__25536;
-  v75 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
   v67 = __Block_byref_object_copy__25535;
   v68 = __Block_byref_object_dispose__25536;
-  v69 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
   v61 = __Block_byref_object_copy__25535;
   v62 = __Block_byref_object_dispose__25536;
-  v63 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
   v55 = __Block_byref_object_copy__25535;
   v56 = __Block_byref_object_dispose__25536;
-  v57 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__25535;
   v50 = __Block_byref_object_dispose__25536;
-  v51 = [MEMORY[0x277CBEB18] array];
-  v11 = [(ML3DatabaseOperation *)self library];
-  v12 = [v11 currentRevision];
+  array5 = [MEMORY[0x277CBEB18] array];
+  library = [(ML3DatabaseOperation *)self library];
+  currentRevision = [library currentRevision];
 
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
-  v45 = v12;
+  v45 = currentRevision;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__25535;
   v40 = __Block_byref_object_dispose__25536;
   v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a4 | a3)
+  if (targetRevision | revision)
   {
-    v13 = a4;
+    targetRevisionCopy = targetRevision;
   }
 
   else
   {
-    v13 = v12;
+    targetRevisionCopy = currentRevision;
   }
 
-  v14 = [(ML3DatabaseOperation *)self library];
+  library2 = [(ML3DatabaseOperation *)self library];
   v15 = +[ML3Entity revisionTrackingCode];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -1868,19 +1868,19 @@ uint64_t __77__ML3UpdateSpotlightIndexOperation__batchIndicesWithObjects_complet
   v26[4] = self;
   v31 = &v52;
   v32 = &v46;
-  v35 = v13;
+  v35 = targetRevisionCopy;
   v33 = &v36;
-  v16 = v8;
+  v16 = blockCopy;
   v27 = v16;
   v34 = &v42;
-  [v14 enumeratePersistentIDsAfterRevision:a3 revisionTrackingCode:v15 maximumRevisionType:1 forMediaTypes:0 inUsersLibrary:1 usingBlock:v26];
+  [library2 enumeratePersistentIDsAfterRevision:revision revisionTrackingCode:v15 maximumRevisionType:1 forMediaTypes:0 inUsersLibrary:1 usingBlock:v26];
 
   if ([*(*&buf[8] + 40) count] || objc_msgSend(v65[5], "count") || objc_msgSend(v59[5], "count") || objc_msgSend(v53[5], "count") || objc_msgSend(v47[5], "count"))
   {
     v17 = v43[3];
-    if (v12 > v17)
+    if (currentRevision > v17)
     {
-      v17 = v12;
+      v17 = currentRevision;
     }
 
     v43[3] = v17;
@@ -2096,16 +2096,16 @@ void __103__ML3UpdateSpotlightIndexOperation__indexItemsFromLibrarySinceRevision
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_updateIndexedItemsWithIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)_updateIndexedItemsWithIdentifiers:(id)identifiers completionBlock:(id)block
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v26 = a4;
-  v30 = [MEMORY[0x277CBEB18] array];
-  v29 = [MEMORY[0x277CBEB18] array];
-  v28 = [MEMORY[0x277CBEB18] array];
-  v27 = [MEMORY[0x277CBEB18] array];
-  v31 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
   v7 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2117,7 +2117,7 @@ void __103__ML3UpdateSpotlightIndexOperation__indexItemsFromLibrarySinceRevision
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = v6;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v9)
   {
@@ -2135,12 +2135,12 @@ void __103__ML3UpdateSpotlightIndexOperation__indexItemsFromLibrarySinceRevision
 
         v13 = *(*(&v38 + 1) + 8 * v12);
         v14 = [MEMORY[0x277CBEBC0] URLWithString:v13];
-        v15 = [(ML3DatabaseOperation *)self library];
-        v16 = [ML3Entity entityFromURL:v14 inLibrary:v15 verifyExistence:1];
+        library = [(ML3DatabaseOperation *)self library];
+        v16 = [ML3Entity entityFromURL:v14 inLibrary:library verifyExistence:1];
 
         if (!v16)
         {
-          [v31 addObject:v13];
+          [array5 addObject:v13];
           goto LABEL_15;
         }
 
@@ -2148,7 +2148,7 @@ void __103__ML3UpdateSpotlightIndexOperation__indexItemsFromLibrarySinceRevision
         if (objc_opt_isKindOfClass())
         {
           v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "persistentID")}];
-          v18 = v30;
+          v18 = array;
 LABEL_14:
           [v18 addObject:v17];
 
@@ -2159,7 +2159,7 @@ LABEL_14:
         if (objc_opt_isKindOfClass())
         {
           v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "persistentID")}];
-          v18 = v29;
+          v18 = array2;
           goto LABEL_14;
         }
 
@@ -2167,7 +2167,7 @@ LABEL_14:
         if ((objc_opt_isKindOfClass() & 1) != 0 && _os_feature_enabled_impl())
         {
           v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "persistentID")}];
-          v18 = v28;
+          v18 = array3;
           goto LABEL_14;
         }
 
@@ -2175,7 +2175,7 @@ LABEL_14:
         if ((objc_opt_isKindOfClass() & 1) != 0 && _os_feature_enabled_impl())
         {
           v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "persistentID")}];
-          v18 = v27;
+          v18 = array4;
           goto LABEL_14;
         }
 
@@ -2199,17 +2199,17 @@ LABEL_15:
   v32[2] = __87__ML3UpdateSpotlightIndexOperation__updateIndexedItemsWithIdentifiers_completionBlock___block_invoke;
   v32[3] = &unk_2787658C8;
   v32[4] = self;
-  v33 = v30;
-  v34 = v29;
-  v35 = v28;
-  v36 = v27;
-  v37 = v26;
-  v21 = v26;
-  v22 = v27;
-  v23 = v28;
-  v24 = v29;
-  v25 = v30;
-  [(ML3UpdateSpotlightIndexOperation *)self _deleteIndexedItemsWithEntityStringIDs:v31 completionBlock:v32];
+  v33 = array;
+  v34 = array2;
+  v35 = array3;
+  v36 = array4;
+  v37 = blockCopy;
+  v21 = blockCopy;
+  v22 = array4;
+  v23 = array3;
+  v24 = array2;
+  v25 = array;
+  [(ML3UpdateSpotlightIndexOperation *)self _deleteIndexedItemsWithEntityStringIDs:array5 completionBlock:v32];
 }
 
 void __87__ML3UpdateSpotlightIndexOperation__updateIndexedItemsWithIdentifiers_completionBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -2239,11 +2239,11 @@ void __87__ML3UpdateSpotlightIndexOperation__updateIndexedItemsWithIdentifiers_c
   }
 }
 
-- (void)_deleteIndexedItemsWithEntityStringIDs:(id)a3 completionBlock:(id)a4
+- (void)_deleteIndexedItemsWithEntityStringIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  blockCopy = block;
+  if ([dsCopy count])
   {
     v8 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2252,19 +2252,19 @@ void __87__ML3UpdateSpotlightIndexOperation__updateIndexedItemsWithIdentifiers_c
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation]  ┃  Started to delete items", buf, 2u);
     }
 
-    v9 = [(ML3UpdateSpotlightIndexOperation *)self index];
+    index = [(ML3UpdateSpotlightIndexOperation *)self index];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __91__ML3UpdateSpotlightIndexOperation__deleteIndexedItemsWithEntityStringIDs_completionBlock___block_invoke;
     v10[3] = &unk_2787658A0;
-    v11 = v6;
-    v12 = v7;
-    [v9 deleteSearchableItemsWithIdentifiers:v11 completionHandler:v10];
+    v11 = dsCopy;
+    v12 = blockCopy;
+    [index deleteSearchableItemsWithIdentifiers:v11 completionHandler:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -2301,9 +2301,9 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), v4);
 }
 
-- (void)_deleteAllIndexedItemsWithCompletionBlock:(id)a3
+- (void)_deleteAllIndexedItemsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2311,15 +2311,15 @@ LABEL_6:
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation] Deleting all indexed items", buf, 2u);
   }
 
-  v6 = [(ML3UpdateSpotlightIndexOperation *)self index];
+  index = [(ML3UpdateSpotlightIndexOperation *)self index];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__ML3UpdateSpotlightIndexOperation__deleteAllIndexedItemsWithCompletionBlock___block_invoke;
   v8[3] = &unk_2787658A0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 deleteAllSearchableItemsWithCompletionHandler:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [index deleteAllSearchableItemsWithCompletionHandler:v8];
 }
 
 void __78__ML3UpdateSpotlightIndexOperation__deleteAllIndexedItemsWithCompletionBlock___block_invoke(uint64_t a1, void *a2)
@@ -2348,16 +2348,16 @@ void __78__ML3UpdateSpotlightIndexOperation__deleteAllIndexedItemsWithCompletion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_deleteAllAndReindexWithCompletionBlock:(id)a3
+- (void)_deleteAllAndReindexWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__ML3UpdateSpotlightIndexOperation__deleteAllAndReindexWithCompletionBlock___block_invoke;
   v6[3] = &unk_2787658A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(ML3UpdateSpotlightIndexOperation *)self _deleteAllIndexedItemsWithCompletionBlock:v6];
 }
 
@@ -2387,12 +2387,12 @@ void __76__ML3UpdateSpotlightIndexOperation__deleteAllAndReindexWithCompletionBl
 - (void)execute
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(ML3DatabaseOperation *)self attributes];
-  v4 = [v3 objectForKey:@"MLDatabaseOperationAttributeBundleIDKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v4 = [attributes objectForKey:@"MLDatabaseOperationAttributeBundleIDKey"];
   [(ML3UpdateSpotlightIndexOperation *)self setBundleIdentifier:v4];
 
-  v5 = [(ML3UpdateSpotlightIndexOperation *)self bundleIdentifier];
-  -[ML3UpdateSpotlightIndexOperation setBundle:](self, "setBundle:", [v5 isEqualToString:@"com.apple.Music"]);
+  bundleIdentifier = [(ML3UpdateSpotlightIndexOperation *)self bundleIdentifier];
+  -[ML3UpdateSpotlightIndexOperation setBundle:](self, "setBundle:", [bundleIdentifier isEqualToString:@"com.apple.Music"]);
 
   v6 = objc_alloc(MEMORY[0x277CC34A8]);
   if ([(ML3UpdateSpotlightIndexOperation *)self bundle]== 1)
@@ -2413,23 +2413,23 @@ void __76__ML3UpdateSpotlightIndexOperation__deleteAllAndReindexWithCompletionBl
   }
 
   v9 = *MEMORY[0x277CCA1A0];
-  v10 = [(ML3UpdateSpotlightIndexOperation *)self bundleIdentifier];
-  v11 = [v6 initWithName:v7 protectionClass:v9 bundleIdentifier:v10];
+  bundleIdentifier2 = [(ML3UpdateSpotlightIndexOperation *)self bundleIdentifier];
+  v11 = [v6 initWithName:v7 protectionClass:v9 bundleIdentifier:bundleIdentifier2];
   [(ML3UpdateSpotlightIndexOperation *)self setIndex:v11];
 
   v12 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(ML3UpdateSpotlightIndexOperation *)self bundleIdentifier];
+    bundleIdentifier3 = [(ML3UpdateSpotlightIndexOperation *)self bundleIdentifier];
     *buf = 134218242;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v13;
+    v24 = bundleIdentifier3;
     _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation] Operation 2.0 %p started for bundleID %{public}@", buf, 0x16u);
   }
 
-  v14 = [(ML3DatabaseOperation *)self attributes];
-  v15 = [v14 objectForKey:@"MLDatabaseOperationAttributeEntityURLsArrayKey"];
+  attributes2 = [(ML3DatabaseOperation *)self attributes];
+  v15 = [attributes2 objectForKey:@"MLDatabaseOperationAttributeEntityURLsArrayKey"];
 
   if ([v15 count])
   {
@@ -2438,7 +2438,7 @@ void __76__ML3UpdateSpotlightIndexOperation__deleteAllAndReindexWithCompletionBl
     {
       v17 = [v15 count];
       *buf = 134217984;
-      v22 = v17;
+      selfCopy = v17;
       _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_DEFAULT, "[ML3UpdateSpotlightIndexOperation] Index update operation will process %lu items for content updates and deletes", buf, 0xCu);
     }
 
@@ -2452,13 +2452,13 @@ void __76__ML3UpdateSpotlightIndexOperation__deleteAllAndReindexWithCompletionBl
 
   else
   {
-    v18 = [(ML3UpdateSpotlightIndexOperation *)self index];
+    index = [(ML3UpdateSpotlightIndexOperation *)self index];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __43__ML3UpdateSpotlightIndexOperation_execute__block_invoke_2;
     v19[3] = &unk_278765850;
     v19[4] = self;
-    [v18 fetchLastClientStateWithCompletionHandler:v19];
+    [index fetchLastClientStateWithCompletionHandler:v19];
   }
 }
 

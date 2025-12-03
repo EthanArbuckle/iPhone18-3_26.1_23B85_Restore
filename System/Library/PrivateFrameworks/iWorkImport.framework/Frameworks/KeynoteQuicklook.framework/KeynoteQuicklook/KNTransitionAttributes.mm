@@ -1,23 +1,23 @@
 @interface KNTransitionAttributes
-+ (BOOL)customAttributeKeyIsValid:(id)a3;
-+ (id)defaultAttributesForEffect:(id)a3;
-+ (id)p_readDeprecatedAttributesForArchive:(const void *)a3 intoDictionary:(id)a4;
++ (BOOL)customAttributeKeyIsValid:(id)valid;
++ (id)defaultAttributesForEffect:(id)effect;
++ (id)p_readDeprecatedAttributesForArchive:(const void *)archive intoDictionary:(id)dictionary;
 + (id)supportedCustomAttributes;
-+ (void)p_readSharedAttributesForArchive:(void *)a3 intoDictionary:(id)a4;
-+ (void)p_readTransitionAttributesForArchive:(const void *)a3 intoDictionary:(id)a4;
-- (id)initFromTransitionAttributesArchive:(const void *)a3;
-- (void)encodeToArchive:(void *)a3;
-- (void)p_writeSharedAttributesToArchive:(void *)a3;
-- (void)p_writeTransitionAttributesToArchive:(void *)a3;
++ (void)p_readSharedAttributesForArchive:(void *)archive intoDictionary:(id)dictionary;
++ (void)p_readTransitionAttributesForArchive:(const void *)archive intoDictionary:(id)dictionary;
+- (id)initFromTransitionAttributesArchive:(const void *)archive;
+- (void)encodeToArchive:(void *)archive;
+- (void)p_writeSharedAttributesToArchive:(void *)archive;
+- (void)p_writeTransitionAttributesToArchive:(void *)archive;
 @end
 
 @implementation KNTransitionAttributes
 
-+ (id)defaultAttributesForEffect:(id)a3
++ (id)defaultAttributesForEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v7 = objc_msgSend_instance(KNAnimationRegistry, v5, v6);
-  v9 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(v7, v8, v4, 3);
+  v9 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(v7, v8, effectCopy, 3);
 
   v12 = objc_msgSend_animationClass(v9, v10, v11);
   v15 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v13, v14);
@@ -67,7 +67,7 @@
     objc_msgSend_setObject_forKeyedSubscript_(v15, v38, v37, @"KNTransitionCustomAttributesRandomNumberSeed");
   }
 
-  v39 = objc_msgSend_attributesWithEffect_attributes_(a1, v32, v4, v15);
+  v39 = objc_msgSend_attributesWithEffect_attributes_(self, v32, effectCopy, v15);
 
   return v39;
 }
@@ -84,23 +84,23 @@
   return v3;
 }
 
-+ (BOOL)customAttributeKeyIsValid:(id)a3
++ (BOOL)customAttributeKeyIsValid:(id)valid
 {
-  v4 = a3;
-  v7 = objc_msgSend_supportedCustomAttributes(a1, v5, v6);
-  v9 = objc_msgSend_containsObject_(v7, v8, v4);
+  validCopy = valid;
+  v7 = objc_msgSend_supportedCustomAttributes(self, v5, v6);
+  v9 = objc_msgSend_containsObject_(v7, v8, validCopy);
 
   return v9;
 }
 
-- (id)initFromTransitionAttributesArchive:(const void *)a3
+- (id)initFromTransitionAttributesArchive:(const void *)archive
 {
-  v5 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3);
+  v5 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, archive);
   v6 = objc_opt_class();
   v8 = v6;
-  if ((*(a3 + 16) & 8) != 0)
+  if ((*(archive + 16) & 8) != 0)
   {
-    sub_275DE4790(v17, *(a3 + 6));
+    sub_275DE4790(v17, *(archive + 6));
     objc_msgSend_p_readSharedAttributesForArchive_intoDictionary_(v8, v11, v17, v5);
     if ((v17[16] & 2) != 0)
     {
@@ -118,89 +118,89 @@
 
   else
   {
-    v10 = objc_msgSend_p_readDeprecatedAttributesForArchive_intoDictionary_(v6, v7, a3, v5);
+    v10 = objc_msgSend_p_readDeprecatedAttributesForArchive_intoDictionary_(v6, v7, archive, v5);
   }
 
-  objc_msgSend_p_readTransitionAttributesForArchive_intoDictionary_(v8, v9, a3, v5);
+  objc_msgSend_p_readTransitionAttributesForArchive_intoDictionary_(v8, v9, archive, v5);
   v15 = objc_msgSend_initWithEffect_attributes_(self, v14, v10, v5);
 
   return v15;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
-  objc_msgSend_p_writeSharedAttributesToArchive_(self, a2, a3);
+  objc_msgSend_p_writeSharedAttributesToArchive_(self, a2, archive);
 
-  MEMORY[0x2821F9670](self, sel_p_writeTransitionAttributesToArchive_, a3);
+  MEMORY[0x2821F9670](self, sel_p_writeTransitionAttributesToArchive_, archive);
 }
 
-+ (void)p_readSharedAttributesForArchive:(void *)a3 intoDictionary:(id)a4
++ (void)p_readSharedAttributesForArchive:(void *)archive intoDictionary:(id)dictionary
 {
-  v53 = a4;
-  v7 = *(a3 + 4);
+  dictionaryCopy = dictionary;
+  v7 = *(archive + 4);
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
-    objc_msgSend_setObject_forKey_(v53, v11, v10, *MEMORY[0x277D80178]);
+    v10 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v11, v10, *MEMORY[0x277D80178]);
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x200) != 0)
   {
-    v12 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(a3 + 12));
-    objc_msgSend_setObject_forKey_(v53, v13, v12, @"KNTransitionAttributesDuration");
+    v12 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(archive + 12));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v13, v12, @"KNTransitionAttributesDuration");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x800) != 0)
   {
-    v14 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(a3 + 28));
-    objc_msgSend_setObject_forKey_(v53, v15, v14, @"KNTransitionAttributesDirection");
+    v14 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(archive + 28));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v15, v14, @"KNTransitionAttributesDirection");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x400) != 0)
   {
-    v16 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(a3 + 13));
-    objc_msgSend_setObject_forKey_(v53, v17, v16, @"KNTransitionAttributesDelay");
+    v16 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(archive + 13));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v17, v16, @"KNTransitionAttributesDelay");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x20) != 0)
   {
     v18 = TSPTSUColorCreateFromMessage();
-    objc_msgSend_setObject_forKey_(v53, v19, v18, @"KNTransitionAttributesColor");
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v19, v18, @"KNTransitionAttributesColor");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x4000) != 0)
   {
-    v20 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(a3 + 128));
-    objc_msgSend_setObject_forKeyedSubscript_(v53, v21, v20, @"KNTransitionAttributesIsAutomatic");
+    v20 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(archive + 128));
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryCopy, v21, v20, @"KNTransitionAttributesIsAutomatic");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x1000) != 0)
   {
-    v22 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(a3 + 29));
-    objc_msgSend_setObject_forKey_(v53, v23, v22, @"KNTransitionCustomAttributesRandomNumberSeed");
+    v22 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(archive + 29));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v23, v22, @"KNTransitionCustomAttributesRandomNumberSeed");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x40) != 0)
   {
     v24 = objc_alloc(MEMORY[0x277D801C8]);
-    if (*(a3 + 9))
+    if (*(archive + 9))
     {
-      v26 = objc_msgSend_initWithArchive_(v24, v25, *(a3 + 9));
+      v26 = objc_msgSend_initWithArchive_(v24, v25, *(archive + 9));
     }
 
     else
@@ -209,17 +209,17 @@
     }
 
     v28 = v26;
-    objc_msgSend_setObject_forKey_(v53, v27, v26, @"KNAnimationAttributesCustomEffectTimingCurve1");
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v27, v26, @"KNAnimationAttributesCustomEffectTimingCurve1");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x80) != 0)
   {
     v29 = objc_alloc(MEMORY[0x277D801C8]);
-    if (*(a3 + 10))
+    if (*(archive + 10))
     {
-      v31 = objc_msgSend_initWithArchive_(v29, v30, *(a3 + 10));
+      v31 = objc_msgSend_initWithArchive_(v29, v30, *(archive + 10));
     }
 
     else
@@ -228,17 +228,17 @@
     }
 
     v33 = v31;
-    objc_msgSend_setObject_forKey_(v53, v32, v31, @"KNAnimationAttributesCustomEffectTimingCurve2");
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v32, v31, @"KNAnimationAttributesCustomEffectTimingCurve2");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x100) != 0)
   {
     v34 = objc_alloc(MEMORY[0x277D801C8]);
-    if (*(a3 + 11))
+    if (*(archive + 11))
     {
-      v36 = objc_msgSend_initWithArchive_(v34, v35, *(a3 + 11));
+      v36 = objc_msgSend_initWithArchive_(v34, v35, *(archive + 11));
     }
 
     else
@@ -247,116 +247,116 @@
     }
 
     v38 = v36;
-    objc_msgSend_setObject_forKey_(v53, v37, v36, @"KNAnimationAttributesCustomEffectTimingCurve3");
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v37, v36, @"KNAnimationAttributesCustomEffectTimingCurve3");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 4) != 0)
   {
     v39 = objc_alloc(MEMORY[0x277CCACA8]);
-    v41 = objc_msgSend_tsp_initWithProtobufString_(v39, v40, *(a3 + 5) & 0xFFFFFFFFFFFFFFFELL);
-    objc_msgSend_setObject_forKeyedSubscript_(v53, v42, v41, @"KNAnimationAttributesCustomEffectTimingCurveThemeName1");
+    v41 = objc_msgSend_tsp_initWithProtobufString_(v39, v40, *(archive + 5) & 0xFFFFFFFFFFFFFFFELL);
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryCopy, v42, v41, @"KNAnimationAttributesCustomEffectTimingCurveThemeName1");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 8) != 0)
   {
     v43 = objc_alloc(MEMORY[0x277CCACA8]);
-    v45 = objc_msgSend_tsp_initWithProtobufString_(v43, v44, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
-    objc_msgSend_setObject_forKeyedSubscript_(v53, v46, v45, @"KNAnimationAttributesCustomEffectTimingCurveThemeName2");
+    v45 = objc_msgSend_tsp_initWithProtobufString_(v43, v44, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL);
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryCopy, v46, v45, @"KNAnimationAttributesCustomEffectTimingCurveThemeName2");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x10) != 0)
   {
     v47 = objc_alloc(MEMORY[0x277CCACA8]);
-    v49 = objc_msgSend_tsp_initWithProtobufString_(v47, v48, *(a3 + 7) & 0xFFFFFFFFFFFFFFFELL);
-    objc_msgSend_setObject_forKeyedSubscript_(v53, v50, v49, @"KNAnimationAttributesCustomEffectTimingCurveThemeName3");
+    v49 = objc_msgSend_tsp_initWithProtobufString_(v47, v48, *(archive + 7) & 0xFFFFFFFFFFFFFFFELL);
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryCopy, v50, v49, @"KNAnimationAttributesCustomEffectTimingCurveThemeName3");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x8000) != 0)
   {
-    v51 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(a3 + 129));
-    objc_msgSend_setObject_forKey_(v53, v52, v51, @"WritingDirectionIsRTL");
+    v51 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(archive + 129));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v52, v51, @"WritingDirectionIsRTL");
   }
 }
 
-+ (void)p_readTransitionAttributesForArchive:(const void *)a3 intoDictionary:(id)a4
++ (void)p_readTransitionAttributesForArchive:(const void *)archive intoDictionary:(id)dictionary
 {
-  v32 = a4;
-  v7 = *(a3 + 4);
+  dictionaryCopy = dictionary;
+  v7 = *(archive + 4);
   if ((v7 & 0x2000) != 0)
   {
-    v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(a3 + 87));
-    objc_msgSend_setObject_forKeyedSubscript_(v32, v9, v8, @"KNTransitionAttributesIsAutomatic");
+    v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(archive + 87));
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryCopy, v9, v8, @"KNTransitionAttributesIsAutomatic");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x80) != 0)
   {
-    v10 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(a3 + 18));
-    objc_msgSend_setObject_forKey_(v32, v11, v10, @"com.apple.iWork.Keynote.BUKTwist.twist");
+    v10 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(archive + 18));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v11, v10, @"com.apple.iWork.Keynote.BUKTwist.twist");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x100) != 0)
   {
-    v12 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(a3 + 19));
-    objc_msgSend_setObject_forKey_(v32, v13, v12, @"com.apple.iWork.Keynote.BLTMosaicFlip.numberOfParticles");
+    v12 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(archive + 19));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v13, v12, @"com.apple.iWork.Keynote.BLTMosaicFlip.numberOfParticles");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x200) != 0)
   {
-    v14 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(a3 + 20));
-    objc_msgSend_setObject_forKey_(v32, v15, v14, @"com.apple.iWork.Keynote.BLTMosaicFlip.type");
+    v14 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(archive + 20));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v15, v14, @"com.apple.iWork.Keynote.BLTMosaicFlip.type");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x400) != 0)
   {
-    v16 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(a3 + 84));
-    objc_msgSend_setObject_forKey_(v32, v17, v16, @"KNTransitionCustomAttributesBounce");
+    v16 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(archive + 84));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v17, v16, @"KNTransitionCustomAttributesBounce");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x1000) != 0)
   {
-    v18 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(a3 + 86));
-    objc_msgSend_setObject_forKey_(v32, v19, v18, @"KNTransitionCustomAttributesMotionBlur");
+    v18 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(archive + 86));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v19, v18, @"KNTransitionCustomAttributesMotionBlur");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x800) != 0)
   {
-    v20 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(a3 + 85));
-    objc_msgSend_setObject_forKey_(v32, v21, v20, @"KNTransitionCustomAttributesMagicMoveFadeUnmatchedObjects");
+    v20 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, *(archive + 85));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v21, v20, @"KNTransitionCustomAttributesMagicMoveFadeUnmatchedObjects");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x4000) != 0)
   {
-    v22 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(a3 + 22));
-    objc_msgSend_setObject_forKey_(v32, v23, v22, @"KNTransitionCustomAttributesTravelDistance");
+    v22 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(archive + 22));
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v23, v22, @"KNTransitionCustomAttributesTravelDistance");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x8000) != 0)
   {
-    v24 = *(a3 + 23);
+    v24 = *(archive + 23);
     if ((v24 - 1) >= 5)
     {
       if (*MEMORY[0x277D81408] != -1)
@@ -371,9 +371,9 @@
 
     objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v5, v24);
     v25 = LABEL_22:;
-    objc_msgSend_setObject_forKey_(v32, v26, v25, @"KNTransitionCustomAttributesTimingCurve");
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v26, v25, @"KNTransitionCustomAttributesTimingCurve");
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 0x10000) == 0)
@@ -381,7 +381,7 @@
     goto LABEL_29;
   }
 
-  v27 = *(a3 + 24);
+  v27 = *(archive + 24);
   if ((v27 - 1) >= 4)
   {
     if (*MEMORY[0x277D81408] != -1)
@@ -396,20 +396,20 @@
 
   objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v5, v27);
   v28 = LABEL_28:;
-  objc_msgSend_setObject_forKey_(v32, v29, v28, @"KNTransitionCustomAttributesTextDelivery");
+  objc_msgSend_setObject_forKey_(dictionaryCopy, v29, v28, @"KNTransitionCustomAttributesTextDelivery");
 
 LABEL_29:
 }
 
-+ (id)p_readDeprecatedAttributesForArchive:(const void *)a3 intoDictionary:(id)a4
++ (id)p_readDeprecatedAttributesForArchive:(const void *)archive intoDictionary:(id)dictionary
 {
-  v7 = a4;
-  v8 = *(a3 + 4);
+  dictionaryCopy = dictionary;
+  v8 = *(archive + 4);
   if ((v8 & 2) != 0)
   {
     v10 = objc_alloc(MEMORY[0x277CCACA8]);
-    v12 = objc_msgSend_tsp_initWithProtobufString_(v10, v11, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
-    v8 = *(a3 + 4);
+    v12 = objc_msgSend_tsp_initWithProtobufString_(v10, v11, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL);
+    v8 = *(archive + 4);
     v9 = v12;
     if ((v8 & 0x20) == 0)
     {
@@ -432,10 +432,10 @@ LABEL_3:
     }
   }
 
-  v13 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(a3 + 16));
-  objc_msgSend_setObject_forKey_(v7, v14, v13, @"KNTransitionAttributesDirection");
+  v13 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, *(archive + 16));
+  objc_msgSend_setObject_forKey_(dictionaryCopy, v14, v13, @"KNTransitionAttributesDirection");
 
-  v8 = *(a3 + 4);
+  v8 = *(archive + 4);
   if ((v8 & 0x10) == 0)
   {
 LABEL_4:
@@ -448,10 +448,10 @@ LABEL_4:
   }
 
 LABEL_10:
-  v15 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(a3 + 7));
-  objc_msgSend_setObject_forKey_(v7, v16, v15, @"KNTransitionAttributesDuration");
+  v15 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(archive + 7));
+  objc_msgSend_setObject_forKey_(dictionaryCopy, v16, v15, @"KNTransitionAttributesDuration");
 
-  v8 = *(a3 + 4);
+  v8 = *(archive + 4);
   if ((v8 & 0x40) == 0)
   {
 LABEL_5:
@@ -462,9 +462,9 @@ LABEL_5:
 
 LABEL_12:
     v19 = TSPTSUColorCreateFromMessage();
-    objc_msgSend_setObject_forKey_(v7, v20, v19, @"KNTransitionAttributesColor");
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v20, v19, @"KNTransitionAttributesColor");
 
-    if ((*(a3 + 4) & 1) == 0)
+    if ((*(archive + 4) & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -473,10 +473,10 @@ LABEL_12:
   }
 
 LABEL_11:
-  v17 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(a3 + 17));
-  objc_msgSend_setObject_forKey_(v7, v18, v17, @"KNTransitionAttributesDelay");
+  v17 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v5, v6, *(archive + 17));
+  objc_msgSend_setObject_forKey_(dictionaryCopy, v18, v17, @"KNTransitionAttributesDelay");
 
-  v8 = *(a3 + 4);
+  v8 = *(archive + 4);
   if ((v8 & 4) != 0)
   {
     goto LABEL_12;
@@ -487,8 +487,8 @@ LABEL_6:
   {
 LABEL_13:
     v21 = objc_alloc(MEMORY[0x277CCACA8]);
-    v23 = objc_msgSend_tsp_initWithProtobufString_(v21, v22, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
-    objc_msgSend_setObject_forKey_(v7, v24, v23, *MEMORY[0x277D80178]);
+    v23 = objc_msgSend_tsp_initWithProtobufString_(v21, v22, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v24, v23, *MEMORY[0x277D80178]);
   }
 
 LABEL_14:
@@ -496,23 +496,23 @@ LABEL_14:
   return v9;
 }
 
-- (void)p_writeSharedAttributesToArchive:(void *)a3
+- (void)p_writeSharedAttributesToArchive:(void *)archive
 {
-  *(a3 + 4) |= 8u;
-  v4 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v4 = *(archive + 6);
   if (!v4)
   {
-    v6 = *(a3 + 1);
+    v6 = *(archive + 1);
     if (v6)
     {
       v6 = *(v6 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v4 = sub_275E1F5E0(v6);
-    *(a3 + 6) = v4;
+    *(archive + 6) = v4;
   }
 
-  v7 = objc_msgSend_effect(self, a2, a3);
+  v7 = objc_msgSend_effect(self, a2, archive);
   v12 = objc_msgSend_attributes(self, v8, v9);
   if (v7)
   {
@@ -731,16 +731,16 @@ LABEL_14:
   }
 }
 
-- (void)p_writeTransitionAttributesToArchive:(void *)a3
+- (void)p_writeTransitionAttributesToArchive:(void *)archive
 {
-  v4 = objc_msgSend_attributes(self, a2, a3);
+  v4 = objc_msgSend_attributes(self, a2, archive);
   v6 = objc_msgSend_objectForKey_(v4, v5, @"com.apple.iWork.Keynote.BUKTwist.twist");
   v9 = v6;
   if (v6)
   {
     objc_msgSend_floatValue(v6, v7, v8);
-    *(a3 + 4) |= 0x80u;
-    *(a3 + 18) = v10;
+    *(archive + 4) |= 0x80u;
+    *(archive + 18) = v10;
   }
 
   v11 = objc_msgSend_objectForKey_(v4, v7, @"com.apple.iWork.Keynote.BLTMosaicFlip.numberOfParticles");
@@ -748,8 +748,8 @@ LABEL_14:
   if (v11)
   {
     v14 = objc_msgSend_unsignedIntValue(v11, v12, v13);
-    *(a3 + 4) |= 0x100u;
-    *(a3 + 19) = v14;
+    *(archive + 4) |= 0x100u;
+    *(archive + 19) = v14;
   }
 
   v15 = objc_msgSend_objectForKey_(v4, v12, @"com.apple.iWork.Keynote.BLTMosaicFlip.type");
@@ -757,8 +757,8 @@ LABEL_14:
   if (v15)
   {
     v18 = objc_msgSend_unsignedIntValue(v15, v16, v17);
-    *(a3 + 4) |= 0x200u;
-    *(a3 + 20) = v18;
+    *(archive + 4) |= 0x200u;
+    *(archive + 20) = v18;
   }
 
   v19 = objc_msgSend_objectForKey_(v4, v16, @"KNTransitionCustomAttributesMotionBlur");
@@ -766,8 +766,8 @@ LABEL_14:
   if (v19)
   {
     v22 = objc_msgSend_BOOLValue(v19, v20, v21);
-    *(a3 + 4) |= 0x1000u;
-    *(a3 + 86) = v22;
+    *(archive + 4) |= 0x1000u;
+    *(archive + 86) = v22;
   }
 
   v23 = objc_msgSend_objectForKey_(v4, v20, @"KNTransitionCustomAttributesBounce");
@@ -775,8 +775,8 @@ LABEL_14:
   if (v23)
   {
     v26 = objc_msgSend_BOOLValue(v23, v24, v25);
-    *(a3 + 4) |= 0x400u;
-    *(a3 + 84) = v26;
+    *(archive + 4) |= 0x400u;
+    *(archive + 84) = v26;
   }
 
   v27 = objc_msgSend_objectForKey_(v4, v24, @"KNTransitionCustomAttributesMagicMoveFadeUnmatchedObjects");
@@ -784,8 +784,8 @@ LABEL_14:
   if (v27)
   {
     v30 = objc_msgSend_BOOLValue(v27, v28, v29);
-    *(a3 + 4) |= 0x800u;
-    *(a3 + 85) = v30;
+    *(archive + 4) |= 0x800u;
+    *(archive + 85) = v30;
   }
 
   v31 = objc_msgSend_objectForKey_(v4, v28, @"KNTransitionCustomAttributesTravelDistance");
@@ -793,8 +793,8 @@ LABEL_14:
   if (v31)
   {
     objc_msgSend_floatValue(v31, v32, v33);
-    *(a3 + 4) |= 0x4000u;
-    *(a3 + 22) = v34;
+    *(archive + 4) |= 0x4000u;
+    *(archive + 22) = v34;
   }
 
   v35 = objc_msgSend_objectForKey_(v4, v32, @"KNTransitionCustomAttributesTimingCurve");
@@ -807,15 +807,15 @@ LABEL_14:
       switch(v38)
       {
         case 3:
-          *(a3 + 4) |= 0x8000u;
+          *(archive + 4) |= 0x8000u;
           v39 = 3;
           break;
         case 4:
-          *(a3 + 4) |= 0x8000u;
+          *(archive + 4) |= 0x8000u;
           v39 = 4;
           break;
         case 5:
-          *(a3 + 4) |= 0x8000u;
+          *(archive + 4) |= 0x8000u;
           v39 = 5;
           break;
         default:
@@ -829,7 +829,7 @@ LABEL_14:
     {
       if (v38 == 1)
       {
-        *(a3 + 4) |= 0x8000u;
+        *(archive + 4) |= 0x8000u;
         v39 = 1;
       }
 
@@ -840,12 +840,12 @@ LABEL_14:
           goto LABEL_31;
         }
 
-        *(a3 + 4) |= 0x8000u;
+        *(archive + 4) |= 0x8000u;
         v39 = 2;
       }
 
 LABEL_30:
-      *(a3 + 23) = v39;
+      *(archive + 23) = v39;
       goto LABEL_31;
     }
 
@@ -869,15 +869,15 @@ LABEL_31:
     switch(v42)
     {
       case 2:
-        *(a3 + 4) |= 0x10000u;
+        *(archive + 4) |= 0x10000u;
         v43 = 2;
         break;
       case 3:
-        *(a3 + 4) |= 0x10000u;
+        *(archive + 4) |= 0x10000u;
         v43 = 3;
         break;
       case 4:
-        *(a3 + 4) |= 0x10000u;
+        *(archive + 4) |= 0x10000u;
         v43 = 4;
         break;
       default:
@@ -885,7 +885,7 @@ LABEL_31:
     }
 
 LABEL_42:
-    *(a3 + 24) = v43;
+    *(archive + 24) = v43;
     goto LABEL_43;
   }
 
@@ -896,7 +896,7 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    *(a3 + 4) |= 0x10000u;
+    *(archive + 4) |= 0x10000u;
     v43 = 1;
     goto LABEL_42;
   }

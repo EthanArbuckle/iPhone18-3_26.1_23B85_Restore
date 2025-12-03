@@ -1,14 +1,14 @@
 @interface _UITableViewCellBadge
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UITableViewCellBadge)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UITableViewCellBadge)initWithFrame:(CGRect)frame;
 - (id)color;
 - (id)font;
 - (id)text;
 - (uint64_t)setAccessoryUsesMonochromaticTreatment:(uint64_t)result;
 - (uint64_t)setFont:(uint64_t)result;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColor:(uint64_t)a1;
+- (void)setBackgroundColor:(id)color;
+- (void)setColor:(uint64_t)color;
 @end
 
 @implementation _UITableViewCellBadge
@@ -43,11 +43,11 @@
   [(UIView *)v8 setCenter:v4 + v6 * 0.5, v5 + v7 * 0.5];
 }
 
-- (_UITableViewCellBadge)initWithFrame:(CGRect)a3
+- (_UITableViewCellBadge)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UITableViewCellBadge;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -62,11 +62,11 @@
   return v3;
 }
 
-- (void)setColor:(uint64_t)a1
+- (void)setColor:(uint64_t)color
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (color)
   {
     if (!v3)
     {
@@ -74,7 +74,7 @@
     }
 
     v5 = v4;
-    [*(a1 + 416) setTextColor:v4];
+    [*(color + 416) setTextColor:v4];
   }
 
   else
@@ -83,12 +83,12 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = _UITableViewCellBadge;
   [(UIView *)&v7 setBackgroundColor:?];
-  if (a3)
+  if (color)
   {
     v5 = *MEMORY[0x1E6979E40];
   }
@@ -98,31 +98,31 @@
     v5 = 0.0;
   }
 
-  v6 = [(UIView *)self layer];
-  [v6 setCornerRadius:v5];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:v5];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_badgeTextLabel;
   }
 
-  [(_UITableViewCellBadge *)self sizeThatFits:a3.width, a3.height];
+  [(_UITableViewCellBadge *)self sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIView *)v3 backgroundColor];
+  backgroundColor = [(UIView *)selfCopy backgroundColor];
 
   v9 = -6.0;
-  if (!v8)
+  if (!backgroundColor)
   {
     v9 = 0.0;
   }
 
   v10 = fmax(v7 - v9, 21.0);
-  if (v10 < v5 - v9 || v8 == 0)
+  if (v10 < v5 - v9 || backgroundColor == 0)
   {
     v12 = v5 - v9;
   }
@@ -153,13 +153,13 @@
 
 - (id)font
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[52] font];
+    self = [self[52] font];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)setAccessoryUsesMonochromaticTreatment:(uint64_t)result
@@ -188,24 +188,24 @@
 
 - (id)color
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[52] textColor];
+    self = [self[52] textColor];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)text
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[52] text];
+    self = [self[52] text];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

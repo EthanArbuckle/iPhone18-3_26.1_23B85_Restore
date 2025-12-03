@@ -1,12 +1,12 @@
 @interface BrickCollectionViewCell
-- (_TtC8AppStore23BrickCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore23BrickCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation BrickCollectionViewCell
 
-- (_TtC8AppStore23BrickCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore23BrickCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore23BrickCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F8C64();
 }
 

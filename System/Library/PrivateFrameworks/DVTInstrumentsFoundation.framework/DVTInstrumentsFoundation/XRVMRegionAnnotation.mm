@@ -1,16 +1,16 @@
 @interface XRVMRegionAnnotation
-- (XRVMRegionAnnotation)initWithCoder:(id)a3;
-- (id)initSamplingRegion:(id)a3 inTask:(unsigned int)a4;
-- (int)dispositionForPage:(unint64_t)a3;
+- (XRVMRegionAnnotation)initWithCoder:(id)coder;
+- (id)initSamplingRegion:(id)region inTask:(unsigned int)task;
+- (int)dispositionForPage:(unint64_t)page;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XRVMRegionAnnotation
 
-- (id)initSamplingRegion:(id)a3 inTask:(unsigned int)a4
+- (id)initSamplingRegion:(id)region inTask:(unsigned int)task
 {
-  v6 = a3;
+  regionCopy = region;
   v39.receiver = self;
   v39.super_class = XRVMRegionAnnotation;
   v7 = [(XRVMRegionAnnotation *)&v39 init];
@@ -39,7 +39,7 @@
       fprintf(v11, "Error setting sysctl %s: (%d) %s\n", "vm.self_region_page_size", v12, v14);
     }
 
-    v15 = [v6 location];
+    location = [regionCopy location];
     v16 = MEMORY[0x277D85F70];
     v17 = MEMORY[0x277D85F88];
     v18 = *MEMORY[0x277D85F70];
@@ -48,16 +48,16 @@
       v18 = *MEMORY[0x277D85F88];
     }
 
-    v19 = v15 & ~v18;
+    v19 = location & ~v18;
     v7->_baseAddress = v19;
-    v20 = [v6 virtualSize];
+    virtualSize = [regionCopy virtualSize];
     v21 = *v16;
     if (*v16 >= *v17)
     {
       v21 = *v17;
     }
 
-    v22 = (v19 + v20 + v21) & ~v21;
+    v22 = (v19 + virtualSize + v21) & ~v21;
     v23 = v22 - v7->_baseAddress;
     v24 = *v8;
     if (*v8 >= *v10)
@@ -67,10 +67,10 @@
 
     v25 = v23 / v24;
     dispositions_count = v23 / v24;
-    v7->_vpages = [v6 virtualPages];
+    v7->_vpages = [regionCopy virtualPages];
     v7->_pageMap = malloc_type_calloc(v25, 4uLL, 0x100004052888210uLL);
-    v7->_pageSize = [v6 pageSize];
-    if (!mach_vm_page_range_query(a4, v7->_baseAddress, v22 - v7->_baseAddress, v7->_pageMap, &dispositions_count))
+    v7->_pageSize = [regionCopy pageSize];
+    if (!mach_vm_page_range_query(task, v7->_baseAddress, v22 - v7->_baseAddress, v7->_pageMap, &dispositions_count))
     {
       v26 = dispositions_count;
       if (dispositions_count)
@@ -141,14 +141,14 @@
         v27 = 0;
       }
 
-      [v6 _setResident:v30 dirty:v29 swapped:v28 speculative:v27];
+      [regionCopy _setResident:v30 dirty:v29 swapped:v28 speculative:v27];
     }
   }
 
   return v7;
 }
 
-- (int)dispositionForPage:(unint64_t)a3
+- (int)dispositionForPage:(unint64_t)page
 {
   v3 = *MEMORY[0x277D85F70];
   if (*MEMORY[0x277D85F70] >= *MEMORY[0x277D85F88])
@@ -156,7 +156,7 @@
     v3 = *MEMORY[0x277D85F88];
   }
 
-  v4 = a3 & ~v3;
+  v4 = page & ~v3;
   baseAddress = self->_baseAddress;
   v6 = v4 >= baseAddress;
   v7 = v4 - baseAddress;
@@ -184,10 +184,10 @@
   [(XRVMRegionAnnotation *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     vpages = self->_vpages;
     baseAddress = self->_baseAddress;
@@ -230,14 +230,14 @@
     v16 = v9;
     DTXPrimitiveArrayAppendValues();
     v19 = 0;
-    [v4 encodeBytes:DTXPrimitiveArrayGetSerialized() length:0 forKey:{@"dataList", v16, 3, v18, 3, 0, 0}];
+    [coderCopy encodeBytes:DTXPrimitiveArrayGetSerialized() length:0 forKey:{@"dataList", v16, 3, v18, 3, 0, 0}];
     DTXPrimitiveArrayDestroy();
   }
 
   else
   {
-    [v4 encodeValueOfObjCType:"Q" at:&self->_baseAddress];
-    [v4 encodeValueOfObjCType:"I" at:&self->_vpages];
+    [coderCopy encodeValueOfObjCType:"Q" at:&self->_baseAddress];
+    [coderCopy encodeValueOfObjCType:"I" at:&self->_vpages];
     LODWORD(v20) = 1;
     v10 = self->_pageMap;
     v11 = *v10;
@@ -255,8 +255,8 @@
 
         else
         {
-          [v4 encodeValueOfObjCType:"I" at:&v20];
-          [v4 encodeValueOfObjCType:"I" at:&v19];
+          [coderCopy encodeValueOfObjCType:"I" at:&v20];
+          [coderCopy encodeValueOfObjCType:"I" at:&v19];
           v10 = self->_pageMap;
           v11 = v10[i];
           v19 = v11;
@@ -268,20 +268,20 @@
       }
     }
 
-    [v4 encodeValueOfObjCType:"I" at:&v20];
-    [v4 encodeValueOfObjCType:"I" at:&v19];
+    [coderCopy encodeValueOfObjCType:"I" at:&v20];
+    [coderCopy encodeValueOfObjCType:"I" at:&v19];
     v19 = 0;
-    [v4 encodeValueOfObjCType:"I" at:&v19];
+    [coderCopy encodeValueOfObjCType:"I" at:&v19];
   }
 }
 
-- (XRVMRegionAnnotation)initWithCoder:(id)a3
+- (XRVMRegionAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    if ([v4 allowsKeyedCoding])
+    if ([coderCopy allowsKeyedCoding])
     {
       v23 = 0;
       [v5 decodeBytesForKey:@"dataList" returnedLength:&v23];

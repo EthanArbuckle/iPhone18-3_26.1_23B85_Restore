@@ -1,21 +1,21 @@
 @interface SUFooterContainerView
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setFooterVisible:(BOOL)a3;
+- (void)setContentView:(id)view;
+- (void)setFooterView:(id)view;
+- (void)setFooterVisible:(BOOL)visible;
 @end
 
 @implementation SUFooterContainerView
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  v7 = v5;
-  if (contentView != v5)
+  v7 = viewCopy;
+  if (contentView != viewCopy)
   {
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     if (self->_contentView)
     {
       [(SUFooterContainerView *)self addSubview:?];
@@ -23,15 +23,15 @@
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  v7 = v5;
-  if (footerView != v5)
+  v7 = viewCopy;
+  if (footerView != viewCopy)
   {
     [(UIView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     if (self->_footerView)
     {
       [(SUFooterContainerView *)self addSubview:?];
@@ -39,11 +39,11 @@
   }
 }
 
-- (void)setFooterVisible:(BOOL)a3
+- (void)setFooterVisible:(BOOL)visible
 {
-  if (self->_footerVisible != a3)
+  if (self->_footerVisible != visible)
   {
-    self->_footerVisible = a3;
+    self->_footerVisible = visible;
     [(SUFooterContainerView *)self layoutSubviews];
   }
 }

@@ -1,18 +1,18 @@
 @interface DCCaptureControlsOverlayViewController
 - (BOOL)doneButtonShowing;
-- (DCCaptureControlsOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DCCaptureControlsOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP14DocumentCamera46DCCaptureControlsOverlayViewControllerDelegate_)delegate;
 - (void)autoButtonTapped;
 - (void)autoModeButtonTapped;
 - (void)captureButtonTapped;
 - (void)closeButtonTapped;
 - (void)manualModeButtonTapped;
-- (void)setCaptureButtonEnabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDoneButtonShowing:(BOOL)a3;
+- (void)setCaptureButtonEnabled:(BOOL)enabled;
+- (void)setDelegate:(id)delegate;
+- (void)setDoneButtonShowing:(BOOL)showing;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation DCCaptureControlsOverlayViewController
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___DCCaptureControlsOverlayViewController_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -41,37 +41,37 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setDoneButtonShowing:(BOOL)a3
+- (void)setDoneButtonShowing:(BOOL)showing
 {
-  v4 = self;
-  sub_2492E00C8(a3);
+  selfCopy = self;
+  sub_2492E00C8(showing);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2492E0474();
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = self;
+  selfCopy = self;
   sub_2492E033C(v9);
   v7 = v10;
   v8 = v11;
   __swift_project_boxed_opaque_existential_1(v9, v10);
-  (*(v8 + 32))(v6, a3, v7, v8, a4);
+  (*(v8 + 32))(selfCopy, orientation, v7, v8, duration);
 
   __swift_destroy_boxed_opaque_existential_1Tm(v9);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CaptureControlsOverlayViewController();
   v4 = v5.receiver;
-  [(DCCaptureControlsOverlayViewController *)&v5 viewWillAppear:v3];
+  [(DCCaptureControlsOverlayViewController *)&v5 viewWillAppear:appearCopy];
   [v4 setOverrideUserInterfaceStyle_];
 }
 
@@ -88,7 +88,7 @@
 
 - (void)captureButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2492E126C();
 }
 
@@ -104,7 +104,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   sub_2492E1720();
@@ -112,25 +112,25 @@
 
 - (void)autoModeButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2492E1608(1);
 }
 
 - (void)manualModeButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2492E1608(0);
 }
 
-- (void)setCaptureButtonEnabled:(BOOL)a3
+- (void)setCaptureButtonEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_2492E266C(a3);
+  selfCopy = self;
+  sub_2492E266C(enabled);
 }
 
-- (DCCaptureControlsOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DCCaptureControlsOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2492ECA24();
     v7 = v6;
@@ -142,8 +142,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return CaptureControlsOverlayViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return CaptureControlsOverlayViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

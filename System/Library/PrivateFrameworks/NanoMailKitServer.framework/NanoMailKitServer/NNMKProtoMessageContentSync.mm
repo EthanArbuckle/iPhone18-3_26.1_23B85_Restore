@@ -1,22 +1,22 @@
 @interface NNMKProtoMessageContentSync
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttachment:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMainAlternativeValid:(BOOL)a3;
-- (void)setHasPartiallyLoaded:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttachment:(id)attachment;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMainAlternativeValid:(BOOL)valid;
+- (void)setHasPartiallyLoaded:(BOOL)loaded;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoMessageContentSync
 
-- (void)setHasMainAlternativeValid:(BOOL)a3
+- (void)setHasMainAlternativeValid:(BOOL)valid
 {
-  if (a3)
+  if (valid)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPartiallyLoaded:(BOOL)a3
+- (void)setHasPartiallyLoaded:(BOOL)loaded
 {
-  if (a3)
+  if (loaded)
   {
     v3 = 4;
   }
@@ -44,22 +44,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addAttachment:(id)a3
+- (void)addAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   attachments = self->_attachments;
-  v8 = v4;
+  v8 = attachmentCopy;
   if (!attachments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_attachments;
     self->_attachments = v6;
 
-    v4 = v8;
+    attachmentCopy = v8;
     attachments = self->_attachments;
   }
 
-  [(NSMutableArray *)attachments addObject:v4];
+  [(NSMutableArray *)attachments addObject:attachmentCopy];
 }
 
 - (id)description
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoMessageContentSync;
   v4 = [(NNMKProtoMessageContentSync *)&v8 description];
-  v5 = [(NNMKProtoMessageContentSync *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoMessageContentSync *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,47 +77,47 @@
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_fullSyncVersion];
-    [v3 setObject:v4 forKey:@"fullSyncVersion"];
+    [dictionary setObject:v4 forKey:@"fullSyncVersion"];
   }
 
   dateSynced = self->_dateSynced;
   if (dateSynced)
   {
-    [v3 setObject:dateSynced forKey:@"dateSynced"];
+    [dictionary setObject:dateSynced forKey:@"dateSynced"];
   }
 
   messageId = self->_messageId;
   if (messageId)
   {
-    [v3 setObject:messageId forKey:@"messageId"];
+    [dictionary setObject:messageId forKey:@"messageId"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_mainAlternativeValid];
-    [v3 setObject:v7 forKey:@"mainAlternativeValid"];
+    [dictionary setObject:v7 forKey:@"mainAlternativeValid"];
   }
 
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
   preview = self->_preview;
   if (preview)
   {
-    [v3 setObject:preview forKey:@"preview"];
+    [dictionary setObject:preview forKey:@"preview"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_partiallyLoaded];
-    [v3 setObject:v10 forKey:@"partiallyLoaded"];
+    [dictionary setObject:v10 forKey:@"partiallyLoaded"];
   }
 
   if ([(NSMutableArray *)self->_attachments count])
@@ -142,8 +142,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -152,37 +152,37 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"attachment"];
+    [dictionary setObject:v11 forKey:@"attachment"];
   }
 
   notificationMessage = self->_notificationMessage;
   if (notificationMessage)
   {
-    v19 = [(NNMKProtoMessage *)notificationMessage dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"notificationMessage"];
+    dictionaryRepresentation2 = [(NNMKProtoMessage *)notificationMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"notificationMessage"];
   }
 
   htmlContentData = self->_htmlContentData;
   if (htmlContentData)
   {
-    [v3 setObject:htmlContentData forKey:@"htmlContentData"];
+    [dictionary setObject:htmlContentData forKey:@"htmlContentData"];
   }
 
   mailboxId = self->_mailboxId;
   if (mailboxId)
   {
-    [v3 setObject:mailboxId forKey:@"mailboxId"];
+    [dictionary setObject:mailboxId forKey:@"mailboxId"];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     fullSyncVersion = self->_fullSyncVersion;
@@ -271,59 +271,59 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_fullSyncVersion;
-    *(v4 + 84) |= 1u;
+    toCopy[6] = self->_fullSyncVersion;
+    *(toCopy + 84) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_dateSynced)
   {
-    [v4 setDateSynced:?];
-    v4 = v10;
+    [toCopy setDateSynced:?];
+    toCopy = v10;
   }
 
   if (self->_messageId)
   {
     [v10 setMessageId:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 80) = self->_mainAlternativeValid;
-    *(v4 + 84) |= 2u;
+    *(toCopy + 80) = self->_mainAlternativeValid;
+    *(toCopy + 84) |= 2u;
   }
 
   if (self->_text)
   {
     [v10 setText:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_preview)
   {
     [v10 setPreview:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 81) = self->_partiallyLoaded;
-    *(v4 + 84) |= 4u;
+    *(toCopy + 81) = self->_partiallyLoaded;
+    *(toCopy + 84) |= 4u;
   }
 
   if ([(NNMKProtoMessageContentSync *)self attachmentsCount])
   {
     [v10 clearAttachments];
-    v5 = [(NNMKProtoMessageContentSync *)self attachmentsCount];
-    if (v5)
+    attachmentsCount = [(NNMKProtoMessageContentSync *)self attachmentsCount];
+    if (attachmentsCount)
     {
-      v6 = v5;
+      v6 = attachmentsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NNMKProtoMessageContentSync *)self attachmentAtIndex:i];
@@ -351,10 +351,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -362,11 +362,11 @@
     *(v5 + 84) |= 1u;
   }
 
-  v7 = [(NSData *)self->_dateSynced copyWithZone:a3];
+  v7 = [(NSData *)self->_dateSynced copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
-  v9 = [(NSString *)self->_messageId copyWithZone:a3];
+  v9 = [(NSString *)self->_messageId copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
@@ -376,11 +376,11 @@
     *(v6 + 84) |= 2u;
   }
 
-  v11 = [(NSData *)self->_text copyWithZone:a3];
+  v11 = [(NSData *)self->_text copyWithZone:zone];
   v12 = *(v6 + 72);
   *(v6 + 72) = v11;
 
-  v13 = [(NSData *)self->_preview copyWithZone:a3];
+  v13 = [(NSData *)self->_preview copyWithZone:zone];
   v14 = *(v6 + 64);
   *(v6 + 64) = v13;
 
@@ -410,7 +410,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v29 + 1) + 8 * v19) copyWithZone:{a3, v29}];
+        v20 = [*(*(&v29 + 1) + 8 * v19) copyWithZone:{zone, v29}];
         [v6 addAttachment:v20];
 
         ++v19;
@@ -423,15 +423,15 @@
     while (v17);
   }
 
-  v21 = [(NNMKProtoMessage *)self->_notificationMessage copyWithZone:a3];
+  v21 = [(NNMKProtoMessage *)self->_notificationMessage copyWithZone:zone];
   v22 = *(v6 + 56);
   *(v6 + 56) = v21;
 
-  v23 = [(NSData *)self->_htmlContentData copyWithZone:a3];
+  v23 = [(NSData *)self->_htmlContentData copyWithZone:zone];
   v24 = *(v6 + 32);
   *(v6 + 32) = v23;
 
-  v25 = [(NSString *)self->_mailboxId copyWithZone:a3];
+  v25 = [(NSString *)self->_mailboxId copyWithZone:zone];
   v26 = *(v6 + 40);
   *(v6 + 40) = v25;
 
@@ -439,36 +439,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = *(v4 + 84);
+  v5 = *(equalCopy + 84);
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_fullSyncVersion != *(v4 + 6))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_fullSyncVersion != *(equalCopy + 6))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_28;
   }
 
   dateSynced = self->_dateSynced;
-  if (dateSynced | *(v4 + 2) && ![(NSData *)dateSynced isEqual:?])
+  if (dateSynced | *(equalCopy + 2) && ![(NSData *)dateSynced isEqual:?])
   {
     goto LABEL_28;
   }
 
   messageId = self->_messageId;
-  if (messageId | *(v4 + 6))
+  if (messageId | *(equalCopy + 6))
   {
     if (![(NSString *)messageId isEqual:?])
     {
@@ -476,42 +476,42 @@
     }
   }
 
-  v8 = *(v4 + 84);
+  v8 = *(equalCopy + 84);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 84) & 2) == 0)
+    if ((*(equalCopy + 84) & 2) == 0)
     {
       goto LABEL_28;
     }
 
-    v18 = *(v4 + 80);
+    v18 = *(equalCopy + 80);
     if (self->_mainAlternativeValid)
     {
-      if ((*(v4 + 80) & 1) == 0)
+      if ((*(equalCopy + 80) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 80))
+    else if (*(equalCopy + 80))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 84) & 2) != 0)
+  else if ((*(equalCopy + 84) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   text = self->_text;
-  if (text | *(v4 + 9) && ![(NSData *)text isEqual:?])
+  if (text | *(equalCopy + 9) && ![(NSData *)text isEqual:?])
   {
     goto LABEL_28;
   }
 
   preview = self->_preview;
-  if (preview | *(v4 + 8))
+  if (preview | *(equalCopy + 8))
   {
     if (![(NSData *)preview isEqual:?])
     {
@@ -519,10 +519,10 @@
     }
   }
 
-  v11 = *(v4 + 84);
+  v11 = *(equalCopy + 84);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 84) & 4) == 0)
+    if ((*(equalCopy + 84) & 4) == 0)
     {
       goto LABEL_19;
     }
@@ -532,34 +532,34 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((*(v4 + 84) & 4) == 0)
+  if ((*(equalCopy + 84) & 4) == 0)
   {
     goto LABEL_28;
   }
 
-  v19 = *(v4 + 81);
+  v19 = *(equalCopy + 81);
   if (self->_partiallyLoaded)
   {
-    if ((*(v4 + 81) & 1) == 0)
+    if ((*(equalCopy + 81) & 1) == 0)
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 81))
+  else if (*(equalCopy + 81))
   {
     goto LABEL_28;
   }
 
 LABEL_19:
   attachments = self->_attachments;
-  if (attachments | *(v4 + 1) && ![(NSMutableArray *)attachments isEqual:?])
+  if (attachments | *(equalCopy + 1) && ![(NSMutableArray *)attachments isEqual:?])
   {
     goto LABEL_28;
   }
 
   notificationMessage = self->_notificationMessage;
-  if (notificationMessage | *(v4 + 7))
+  if (notificationMessage | *(equalCopy + 7))
   {
     if (![(NNMKProtoMessage *)notificationMessage isEqual:?])
     {
@@ -568,7 +568,7 @@ LABEL_19:
   }
 
   htmlContentData = self->_htmlContentData;
-  if (htmlContentData | *(v4 + 4))
+  if (htmlContentData | *(equalCopy + 4))
   {
     if (![(NSData *)htmlContentData isEqual:?])
     {
@@ -577,7 +577,7 @@ LABEL_19:
   }
 
   mailboxId = self->_mailboxId;
-  if (mailboxId | *(v4 + 5))
+  if (mailboxId | *(equalCopy + 5))
   {
     v16 = [(NSString *)mailboxId isEqual:?];
   }
@@ -635,18 +635,18 @@ LABEL_29:
   return v10 ^ v13 ^ [(NSString *)self->_mailboxId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[21])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[21])
   {
-    self->_fullSyncVersion = v4[6];
+    self->_fullSyncVersion = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoMessageContentSync *)self setDateSynced:?];
   }

@@ -1,13 +1,13 @@
 @interface JSALocalStorage
 + (id)sharedInstance;
 - (JSALocalStorage)init;
-- (id)getItem:(id)a3;
+- (id)getItem:(id)item;
 - (unint64_t)length;
 - (void)clear;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeItem:(id)a3;
-- (void)setItem:(id)a3 value:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeItem:(id)item;
+- (void)setItem:(id)item value:(id)value;
 @end
 
 @implementation JSALocalStorage
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_C014;
   block[3] = &unk_B25E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_CC0C0 != -1)
   {
     dispatch_once(&qword_CC0C0, block);
@@ -38,8 +38,8 @@
   {
     v4 = [NSUserDefaults alloc];
     v5 = +[BUAppGroup books];
-    v6 = [v5 containerURL];
-    v7 = [v4 _initWithSuiteName:@"com.apple.iBooks.JSALocalStorage" container:v6];
+    containerURL = [v5 containerURL];
+    v7 = [v4 _initWithSuiteName:@"com.apple.iBooks.JSALocalStorage" container:containerURL];
     scriptingUserDefaults = v2->_scriptingUserDefaults;
     v2->_scriptingUserDefaults = v7;
 
@@ -97,13 +97,13 @@
   return v3;
 }
 
-- (id)getItem:(id)a3
+- (id)getItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
+    itemCopy = item;
     os_unfair_lock_lock(&self->_accessLock);
-    v5 = [(NSMutableDictionary *)self->_values objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_values objectForKeyedSubscript:itemCopy];
 
     os_unfair_lock_unlock(&self->_accessLock);
   }
@@ -116,14 +116,14 @@
   return v5;
 }
 
-- (void)setItem:(id)a3 value:(id)a4
+- (void)setItem:(id)item value:(id)value
 {
-  if (a3 && a4)
+  if (item && value)
   {
-    v7 = a4;
-    v8 = a3;
+    valueCopy = value;
+    itemCopy = item;
     os_unfair_lock_lock(&self->_accessLock);
-    [(NSMutableDictionary *)self->_values setObject:v7 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_values setObject:valueCopy forKeyedSubscript:itemCopy];
 
     os_unfair_lock_unlock(&self->_accessLock);
 
@@ -131,27 +131,27 @@
   }
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    sub_7FFD8(self, a3);
+    sub_7FFD8(self, item);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_C99F0 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_C99F0 == context)
   {
     objc_initWeak(&location, self);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_7FED8;
     v18[3] = &unk_B2780;
-    v19 = v12;
+    v19 = changeCopy;
     objc_copyWeak(&v20, &location);
     v13 = objc_retainBlock(v18);
     v14 = objc_retainBlock(v13);
@@ -181,7 +181,7 @@
   {
     v15.receiver = self;
     v15.super_class = JSALocalStorage;
-    [(JSALocalStorage *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(JSALocalStorage *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

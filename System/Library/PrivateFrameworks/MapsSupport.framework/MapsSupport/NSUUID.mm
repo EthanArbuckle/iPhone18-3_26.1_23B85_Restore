@@ -1,13 +1,13 @@
 @interface NSUUID
-+ (BOOL)isValidUUIDString:(id)a3;
++ (BOOL)isValidUUIDString:(id)string;
 @end
 
 @implementation NSUUID
 
-+ (BOOL)isValidUUIDString:(id)a3
++ (BOOL)isValidUUIDString:(id)string
 {
-  v3 = a3;
-  v4 = [[NSUUID alloc] initWithUUIDString:v3];
+  stringCopy = string;
+  v4 = [[NSUUID alloc] initWithUUIDString:stringCopy];
 
   return v4 != 0;
 }

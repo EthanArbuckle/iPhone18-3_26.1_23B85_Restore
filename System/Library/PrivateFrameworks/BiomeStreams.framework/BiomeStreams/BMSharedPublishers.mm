@@ -1,19 +1,19 @@
 @interface BMSharedPublishers
-- (BMSharedPublishers)initWithPublishers:(id)a3;
+- (BMSharedPublishers)initWithPublishers:(id)publishers;
 - (id)merge;
 @end
 
 @implementation BMSharedPublishers
 
-- (BMSharedPublishers)initWithPublishers:(id)a3
+- (BMSharedPublishers)initWithPublishers:(id)publishers
 {
-  v4 = a3;
+  publishersCopy = publishers;
   v9.receiver = self;
   v9.super_class = BMSharedPublishers;
   v5 = [(BMSharedPublishers *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [publishersCopy copy];
     publishers = v5->_publishers;
     v5->_publishers = v6;
   }
@@ -24,8 +24,8 @@
 - (id)merge
 {
   v3 = objc_alloc(MEMORY[0x1E698F0D0]);
-  v4 = [(BMSharedPublishers *)self publishers];
-  v5 = [v3 initWithPublishers:v4];
+  publishers = [(BMSharedPublishers *)self publishers];
+  v5 = [v3 initWithPublishers:publishers];
 
   return v5;
 }

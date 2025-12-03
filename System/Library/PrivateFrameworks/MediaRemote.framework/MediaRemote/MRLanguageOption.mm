@@ -1,47 +1,47 @@
 @interface MRLanguageOption
-- (BOOL)isAutomaticLanguageOptionWithType:(unsigned int)a3;
-- (BOOL)isEqual:(id)a3;
-- (MRLanguageOption)initWithCoder:(id)a3;
-- (MRLanguageOption)initWithData:(id)a3;
-- (MRLanguageOption)initWithProtobuf:(id)a3;
-- (MRLanguageOption)initWithType:(unsigned int)a3 languageTag:(id)a4 characteristics:(id)a5 displayName:(id)a6 identifier:(id)a7;
+- (BOOL)isAutomaticLanguageOptionWithType:(unsigned int)type;
+- (BOOL)isEqual:(id)equal;
+- (MRLanguageOption)initWithCoder:(id)coder;
+- (MRLanguageOption)initWithData:(id)data;
+- (MRLanguageOption)initWithProtobuf:(id)protobuf;
+- (MRLanguageOption)initWithType:(unsigned int)type languageTag:(id)tag characteristics:(id)characteristics displayName:(id)name identifier:(id)identifier;
 - (NSData)data;
 - (NSDictionary)dictionaryRepresentation;
 - (_MRLanguageOptionProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRLanguageOption
 
-- (MRLanguageOption)initWithType:(unsigned int)a3 languageTag:(id)a4 characteristics:(id)a5 displayName:(id)a6 identifier:(id)a7
+- (MRLanguageOption)initWithType:(unsigned int)type languageTag:(id)tag characteristics:(id)characteristics displayName:(id)name identifier:(id)identifier
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  tagCopy = tag;
+  characteristicsCopy = characteristics;
+  nameCopy = name;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = MRLanguageOption;
   v16 = [(MRLanguageOption *)&v27 init];
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
+    v16->_type = type;
     v16->_hasType = 1;
-    v18 = [v12 copy];
+    v18 = [tagCopy copy];
     languageTag = v17->_languageTag;
     v17->_languageTag = v18;
 
-    v20 = [v13 copy];
+    v20 = [characteristicsCopy copy];
     characteristics = v17->_characteristics;
     v17->_characteristics = v20;
 
-    v22 = [v14 copy];
+    v22 = [nameCopy copy];
     displayName = v17->_displayName;
     v17->_displayName = v22;
 
-    v24 = [v15 copy];
+    v24 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v24;
   }
@@ -49,68 +49,68 @@
   return v17;
 }
 
-- (MRLanguageOption)initWithProtobuf:(id)a3
+- (MRLanguageOption)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v20.receiver = self;
     v20.super_class = MRLanguageOption;
     v5 = [(MRLanguageOption *)&v20 init];
     if (v5)
     {
-      v5->_type = [v4 type];
-      v5->_hasType = [v4 hasType];
-      v6 = [v4 languageTag];
-      v7 = [v6 copy];
+      v5->_type = [protobufCopy type];
+      v5->_hasType = [protobufCopy hasType];
+      languageTag = [protobufCopy languageTag];
+      v7 = [languageTag copy];
       languageTag = v5->_languageTag;
       v5->_languageTag = v7;
 
-      v9 = [v4 characteristics];
-      v10 = [v9 copy];
+      characteristics = [protobufCopy characteristics];
+      v10 = [characteristics copy];
       characteristics = v5->_characteristics;
       v5->_characteristics = v10;
 
-      v12 = [v4 displayName];
-      v13 = [v12 copy];
+      displayName = [protobufCopy displayName];
+      v13 = [displayName copy];
       displayName = v5->_displayName;
       v5->_displayName = v13;
 
-      v15 = [v4 identifier];
-      v16 = [v15 copy];
+      identifier = [protobufCopy identifier];
+      v16 = [identifier copy];
       identifier = v5->_identifier;
       v5->_identifier = v16;
     }
 
     self = v5;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (MRLanguageOption)initWithData:(id)a3
+- (MRLanguageOption)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRLanguageOptionProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRLanguageOptionProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRLanguageOption *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (_MRLanguageOptionProtobuf)protobuf
@@ -118,28 +118,28 @@
   v3 = objc_alloc_init(_MRLanguageOptionProtobuf);
   v3->_type = [(MRLanguageOption *)self type];
   *&v3->_has = *&v3->_has & 0xFE | [(MRLanguageOption *)self hasType];
-  v4 = [(MRLanguageOption *)self languageTag];
-  [(_MRLanguageOptionProtobuf *)v3 setLanguageTag:v4];
+  languageTag = [(MRLanguageOption *)self languageTag];
+  [(_MRLanguageOptionProtobuf *)v3 setLanguageTag:languageTag];
 
-  v5 = [(MRLanguageOption *)self characteristics];
-  v6 = [v5 mutableCopy];
+  characteristics = [(MRLanguageOption *)self characteristics];
+  v6 = [characteristics mutableCopy];
   [(_MRLanguageOptionProtobuf *)v3 setCharacteristics:v6];
 
-  v7 = [(MRLanguageOption *)self displayName];
-  [(_MRLanguageOptionProtobuf *)v3 setDisplayName:v7];
+  displayName = [(MRLanguageOption *)self displayName];
+  [(_MRLanguageOptionProtobuf *)v3 setDisplayName:displayName];
 
-  v8 = [(MRLanguageOption *)self identifier];
-  [(_MRLanguageOptionProtobuf *)v3 setIdentifier:v8];
+  identifier = [(MRLanguageOption *)self identifier];
+  [(_MRLanguageOptionProtobuf *)v3 setIdentifier:identifier];
 
   return v3;
 }
 
 - (NSData)data
 {
-  v2 = [(MRLanguageOption *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRLanguageOption *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -151,25 +151,25 @@
     [v3 setObject:v4 forKeyedSubscript:@"type"];
   }
 
-  v5 = [(MRLanguageOption *)self languageTag];
-  [v3 setObject:v5 forKeyedSubscript:@"languageTag"];
+  languageTag = [(MRLanguageOption *)self languageTag];
+  [v3 setObject:languageTag forKeyedSubscript:@"languageTag"];
 
-  v6 = [(MRLanguageOption *)self characteristics];
-  [v3 setObject:v6 forKeyedSubscript:@"characteristics"];
+  characteristics = [(MRLanguageOption *)self characteristics];
+  [v3 setObject:characteristics forKeyedSubscript:@"characteristics"];
 
-  v7 = [(MRLanguageOption *)self displayName];
-  [v3 setObject:v7 forKeyedSubscript:@"displayName"];
+  displayName = [(MRLanguageOption *)self displayName];
+  [v3 setObject:displayName forKeyedSubscript:@"displayName"];
 
-  v8 = [(MRLanguageOption *)self identifier];
-  [v3 setObject:v8 forKeyedSubscript:@"identifier"];
+  identifier = [(MRLanguageOption *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"identifier"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -182,34 +182,34 @@
       goto LABEL_18;
     }
 
-    v5 = [(MRLanguageOption *)v4 hasType];
-    if (v5 != [(MRLanguageOption *)self hasType])
+    hasType = [(MRLanguageOption *)equalCopy hasType];
+    if (hasType != [(MRLanguageOption *)self hasType])
     {
       goto LABEL_18;
     }
 
-    if ([(MRLanguageOption *)v4 hasType])
+    if ([(MRLanguageOption *)equalCopy hasType])
     {
       if ([(MRLanguageOption *)self hasType])
       {
-        v6 = [(MRLanguageOption *)v4 type];
-        if (v6 != [(MRLanguageOption *)self type])
+        type = [(MRLanguageOption *)equalCopy type];
+        if (type != [(MRLanguageOption *)self type])
         {
           goto LABEL_18;
         }
       }
     }
 
-    v7 = [(MRLanguageOption *)v4 languageTag];
-    v8 = [(MRLanguageOption *)self languageTag];
-    v9 = v8;
-    if (v7 == v8)
+    languageTag = [(MRLanguageOption *)equalCopy languageTag];
+    languageTag2 = [(MRLanguageOption *)self languageTag];
+    v9 = languageTag2;
+    if (languageTag == languageTag2)
     {
     }
 
     else
     {
-      v10 = [v7 isEqual:v8];
+      v10 = [languageTag isEqual:languageTag2];
 
       if ((v10 & 1) == 0)
       {
@@ -217,16 +217,16 @@
       }
     }
 
-    v12 = [(MRLanguageOption *)v4 displayName];
-    v13 = [(MRLanguageOption *)self displayName];
-    v14 = v13;
-    if (v12 == v13)
+    displayName = [(MRLanguageOption *)equalCopy displayName];
+    displayName2 = [(MRLanguageOption *)self displayName];
+    v14 = displayName2;
+    if (displayName == displayName2)
     {
     }
 
     else
     {
-      v15 = [v12 isEqual:v13];
+      v15 = [displayName isEqual:displayName2];
 
       if ((v15 & 1) == 0)
       {
@@ -234,16 +234,16 @@
       }
     }
 
-    v16 = [(MRLanguageOption *)v4 identifier];
-    v17 = [(MRLanguageOption *)self identifier];
-    v18 = v17;
-    if (v16 == v17)
+    identifier = [(MRLanguageOption *)equalCopy identifier];
+    identifier2 = [(MRLanguageOption *)self identifier];
+    v18 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v19 = [v16 isEqual:v17];
+      v19 = [identifier isEqual:identifier2];
 
       if ((v19 & 1) == 0)
       {
@@ -253,16 +253,16 @@ LABEL_18:
       }
     }
 
-    v21 = [(MRLanguageOption *)v4 characteristics];
-    v22 = [(MRLanguageOption *)self characteristics];
-    if (v21 == v22)
+    characteristics = [(MRLanguageOption *)equalCopy characteristics];
+    characteristics2 = [(MRLanguageOption *)self characteristics];
+    if (characteristics == characteristics2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v21 isEqual:v22];
+      v11 = [characteristics isEqual:characteristics2];
     }
   }
 
@@ -275,59 +275,59 @@ LABEL_19:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRLanguageOption *)self dictionaryRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRLanguageOption *)self dictionaryRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(MRLanguageOption *)self hasType])
   {
     [v5 setType:{-[MRLanguageOption type](self, "type")}];
   }
 
-  v6 = [(MRLanguageOption *)self languageTag];
-  v7 = [v6 copyWithZone:a3];
+  languageTag = [(MRLanguageOption *)self languageTag];
+  v7 = [languageTag copyWithZone:zone];
   [v5 setLanguageTag:v7];
 
-  v8 = [(MRLanguageOption *)self characteristics];
-  v9 = [v8 copyWithZone:a3];
+  characteristics = [(MRLanguageOption *)self characteristics];
+  v9 = [characteristics copyWithZone:zone];
   [v5 setCharacteristics:v9];
 
-  v10 = [(MRLanguageOption *)self displayName];
-  v11 = [v10 copyWithZone:a3];
+  displayName = [(MRLanguageOption *)self displayName];
+  v11 = [displayName copyWithZone:zone];
   [v5 setDisplayName:v11];
 
-  v12 = [(MRLanguageOption *)self identifier];
-  v13 = [v12 copyWithZone:a3];
+  identifier = [(MRLanguageOption *)self identifier];
+  v13 = [identifier copyWithZone:zone];
   [v5 setIdentifier:v13];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  if ([v9 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v9 encodeInt32:-[MRLanguageOption type](self forKey:{"type"), @"kMRLanguageOptionType"}];
-    v4 = [(MRLanguageOption *)self languageTag];
-    [v9 encodeObject:v4 forKey:@"kMRLanguageOptionLanguageTag"];
+    [coderCopy encodeInt32:-[MRLanguageOption type](self forKey:{"type"), @"kMRLanguageOptionType"}];
+    languageTag = [(MRLanguageOption *)self languageTag];
+    [coderCopy encodeObject:languageTag forKey:@"kMRLanguageOptionLanguageTag"];
 
-    v5 = [(MRLanguageOption *)self characteristics];
-    [v9 encodeObject:v5 forKey:@"KMRLanguageOptionCharacteristics"];
+    characteristics = [(MRLanguageOption *)self characteristics];
+    [coderCopy encodeObject:characteristics forKey:@"KMRLanguageOptionCharacteristics"];
 
-    v6 = [(MRLanguageOption *)self displayName];
-    [v9 encodeObject:v6 forKey:@"kMRLanguageOptionDisplayName"];
+    displayName = [(MRLanguageOption *)self displayName];
+    [coderCopy encodeObject:displayName forKey:@"kMRLanguageOptionDisplayName"];
 
-    v7 = [(MRLanguageOption *)self identifier];
-    [v9 encodeObject:v7 forKey:@"kMRLanguageOptionIdentifier"];
+    identifier = [(MRLanguageOption *)self identifier];
+    [coderCopy encodeObject:identifier forKey:@"kMRLanguageOptionIdentifier"];
 
-    v8 = [(MRLanguageOption *)self protobuf];
-    [v9 encodeObject:v8 forKey:@"protobuf"];
+    protobuf = [(MRLanguageOption *)self protobuf];
+    [coderCopy encodeObject:protobuf forKey:@"protobuf"];
   }
 
   else
@@ -336,9 +336,9 @@ LABEL_19:
   }
 }
 
-- (MRLanguageOption)initWithCoder:(id)a3
+- (MRLanguageOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MRLanguageOption;
   v5 = [(MRLanguageOption *)&v15 init];
@@ -347,10 +347,10 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  if (![v4 allowsKeyedCoding])
+  if (![coderCopy allowsKeyedCoding])
   {
     v8 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:38];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
 LABEL_11:
 
 LABEL_12:
@@ -358,7 +358,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -374,18 +374,18 @@ LABEL_12:
   if (!v6)
   {
 LABEL_10:
-    -[MRLanguageOption setType:](v5, "setType:", [v4 decodeInt32ForKey:@"kMRLanguageOptionType"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionLanguageTag"];
+    -[MRLanguageOption setType:](v5, "setType:", [coderCopy decodeInt32ForKey:@"kMRLanguageOptionType"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionLanguageTag"];
     [(MRLanguageOption *)v5 setLanguageTag:v10];
 
     v11 = MSVPropertyListDataClasses();
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"KMRLanguageOptionCharacteristics"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"KMRLanguageOptionCharacteristics"];
     [(MRLanguageOption *)v5 setCharacteristics:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionDisplayName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionDisplayName"];
     [(MRLanguageOption *)v5 setDisplayName:v13];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionIdentifier"];
     [(MRLanguageOption *)v5 setIdentifier:v8];
     goto LABEL_11;
   }
@@ -396,39 +396,39 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)isAutomaticLanguageOptionWithType:(unsigned int)a3
+- (BOOL)isAutomaticLanguageOptionWithType:(unsigned int)type
 {
-  if ([(MRLanguageOption *)self type]!= a3)
+  if ([(MRLanguageOption *)self type]!= type)
   {
     return 0;
   }
 
-  v4 = [(MRLanguageOption *)self characteristics];
-  v5 = [v4 count];
+  characteristics = [(MRLanguageOption *)self characteristics];
+  v5 = [characteristics count];
 
   if (v5)
   {
     return 0;
   }
 
-  v6 = [(MRLanguageOption *)self displayName];
-  v7 = [v6 length];
+  displayName = [(MRLanguageOption *)self displayName];
+  v7 = [displayName length];
 
   if (v7)
   {
     return 0;
   }
 
-  v8 = [(MRLanguageOption *)self identifier];
-  v9 = [v8 length];
+  identifier = [(MRLanguageOption *)self identifier];
+  v9 = [identifier length];
 
   if (v9)
   {
     return 0;
   }
 
-  v11 = [(MRLanguageOption *)self languageTag];
-  v12 = [v11 isEqualToString:@"__AUTO__"];
+  languageTag = [(MRLanguageOption *)self languageTag];
+  v12 = [languageTag isEqualToString:@"__AUTO__"];
 
   return v12;
 }

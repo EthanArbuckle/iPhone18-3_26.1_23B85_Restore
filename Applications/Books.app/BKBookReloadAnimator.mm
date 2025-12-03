@@ -1,10 +1,10 @@
 @interface BKBookReloadAnimator
 - (double)aspectRatio;
-- (void)_loadStateFromContext:(id)a3;
+- (void)_loadStateFromContext:(id)context;
 - (void)_performCrossFade;
 - (void)_setupSpinner;
-- (void)_showSpinner:(BOOL)a3 completion:(id)a4;
-- (void)animateTransition:(id)a3;
+- (void)_showSpinner:(BOOL)spinner completion:(id)completion;
+- (void)animateTransition:(id)transition;
 - (void)bookContentDidLoad;
 @end
 
@@ -25,32 +25,32 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_loadStateFromContext:(id)a3
+- (void)_loadStateFromContext:(id)context
 {
-  v4 = a3;
-  [(BKBookReloadAnimator *)self setTransitionContext:v4];
-  v5 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
+  contextCopy = context;
+  [(BKBookReloadAnimator *)self setTransitionContext:contextCopy];
+  v5 = [contextCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
   [(BKBookReloadAnimator *)self setFromViewController:v5];
 
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [contextCopy viewControllerForKey:UITransitionContextToViewControllerKey];
   [(BKBookReloadAnimator *)self setToViewController:v6];
 
-  v7 = [v4 containerView];
+  containerView = [contextCopy containerView];
 
-  [(BKBookReloadAnimator *)self setContainerView:v7];
+  [(BKBookReloadAnimator *)self setContainerView:containerView];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  [(BKBookReloadAnimator *)self _loadStateFromContext:a3];
-  v4 = [(BKBookReloadAnimator *)self containerView];
-  v5 = [(BKBookReloadAnimator *)self toViewController];
-  v6 = [v5 view];
-  [v4 insertSubview:v6 atIndex:0];
+  [(BKBookReloadAnimator *)self _loadStateFromContext:transition];
+  containerView = [(BKBookReloadAnimator *)self containerView];
+  toViewController = [(BKBookReloadAnimator *)self toViewController];
+  view = [toViewController view];
+  [containerView insertSubview:view atIndex:0];
 
-  v7 = [(BKBookReloadAnimator *)self toViewController];
-  v8 = [v7 view];
-  [v8 layoutIfNeeded];
+  toViewController2 = [(BKBookReloadAnimator *)self toViewController];
+  view2 = [toViewController2 view];
+  [view2 layoutIfNeeded];
 
   [(BKBookReloadAnimator *)self _setupSpinner];
 
@@ -63,9 +63,9 @@
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_startSpinner" object:0];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"bookContentDidLoad" object:0];
-    v3 = [(BKBookReloadAnimator *)self fromViewController];
-    v4 = [v3 view];
-    [v4 setAlpha:1.0];
+    fromViewController = [(BKBookReloadAnimator *)self fromViewController];
+    view = [fromViewController view];
+    [view setAlpha:1.0];
 
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -86,8 +86,8 @@
 
 - (double)aspectRatio
 {
-  v2 = [(BKBookReloadAnimator *)self containerView];
-  [v2 bounds];
+  containerView = [(BKBookReloadAnimator *)self containerView];
+  [containerView bounds];
   v4 = v3;
   v6 = v5;
 
@@ -106,16 +106,16 @@
   spinnerView = self->_spinnerView;
   self->_spinnerView = v3;
 
-  v5 = [(BKBookReloadAnimator *)self containerView];
-  [v5 bounds];
+  containerView = [(BKBookReloadAnimator *)self containerView];
+  [containerView bounds];
   CGRectGetCenterNoRounding();
   [(UIView *)self->_spinnerView setCenter:?];
 
   [(UIView *)self->_spinnerView frame];
   v13 = CGRectIntegral(v12);
   [(UIView *)self->_spinnerView setFrame:v13.origin.x, v13.origin.y, v13.size.width, v13.size.height];
-  v6 = [(UIView *)self->_spinnerView layer];
-  [v6 setCornerRadius:8.0];
+  layer = [(UIView *)self->_spinnerView layer];
+  [layer setCornerRadius:8.0];
 
   v7 = [UIColor colorWithWhite:0.0 alpha:0.8];
   [(UIView *)self->_spinnerView setBackgroundColor:v7];
@@ -133,19 +133,19 @@
   [v10 startAnimating];
   [(UIView *)self->_spinnerView addSubview:v10];
   [(UIView *)self->_spinnerView setAlpha:0.0];
-  v9 = [(BKBookReloadAnimator *)self containerView];
-  [v9 addSubview:self->_spinnerView];
+  containerView2 = [(BKBookReloadAnimator *)self containerView];
+  [containerView2 addSubview:self->_spinnerView];
 }
 
-- (void)_showSpinner:(BOOL)a3 completion:(id)a4
+- (void)_showSpinner:(BOOL)spinner completion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001ADD80;
   v4[3] = &unk_100A044C8;
   v4[4] = self;
-  v5 = a3;
-  [UIView animateWithDuration:v4 animations:a4 completion:0.3];
+  spinnerCopy = spinner;
+  [UIView animateWithDuration:v4 animations:completion completion:0.3];
 }
 
 @end

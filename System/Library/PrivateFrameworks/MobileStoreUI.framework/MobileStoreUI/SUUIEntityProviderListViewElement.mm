@@ -1,15 +1,15 @@
 @interface SUUIEntityProviderListViewElement
-- (SUUIEntityProviderListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIEntityProviderListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIEntityProviderListViewElement
 
-- (SUUIEntityProviderListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIEntityProviderListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v23 = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = SUUIEntityProviderListViewElement;
-  v5 = [(SUUIViewElement *)&v21 initWithDOMElement:a3 parent:a4 elementFactory:a5];
+  v5 = [(SUUIViewElement *)&v21 initWithDOMElement:element parent:parent elementFactory:factory];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -17,8 +17,8 @@
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(SUUIEntityProviderListViewElement *)v5 children];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    children = [(SUUIEntityProviderListViewElement *)v5 children];
+    v8 = [children countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -29,18 +29,18 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(children);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 elementID];
-          if ([v13 length] && objc_msgSend(v12, "conformsToProtocol:", &unk_286C96960))
+          elementID = [v12 elementID];
+          if ([elementID length] && objc_msgSend(v12, "conformsToProtocol:", &unk_286C96960))
           {
-            [v6 setObject:v12 forKey:v13];
+            [v6 setObject:v12 forKey:elementID];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v9 = [children countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v9);

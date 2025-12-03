@@ -4,43 +4,43 @@
 - (CGRect)currentKeyboardOverlap;
 - (MFSearchSuggestionsTableViewModelReuseConfiguration)defaultReuseConfiguration;
 - (MFSearchSuggestionsTableViewModelReuseConfiguration)topHitsReuseConfiguration;
-- (MFSearchSuggestionsViewController)initWithCoder:(id)a3;
-- (MFSearchSuggestionsViewController)initWithMainScene:(id)a3 delegate:(id)a4;
-- (MFSearchSuggestionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MFSearchSuggestionsViewController)initWithCoder:(id)coder;
+- (MFSearchSuggestionsViewController)initWithMainScene:(id)scene delegate:(id)delegate;
+- (MFSearchSuggestionsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MFSearchSuggestionsViewControllerDelegate)delegate;
 - (MailMainScene)scene;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_defaultTableViewRowSelector;
 - (id)_newSearchSuggestionsTableViewModel;
 - (id)_topHitsTableViewCellPopulator;
 - (id)_topHitsTableViewRowHeightCalculator;
 - (id)_topHitsTableViewRowSelector;
-- (id)searchSuggestionsForCategory:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)updateSuggestionsWithResult:(id)a3;
-- (id)viewForKeyboardAvoidance:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)searchSuggestionsForCategory:(id)category;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)updateSuggestionsWithResult:(id)result;
+- (id)viewForKeyboardAvoidance:(id)avoidance;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)beginUpdatingSuggestions;
 - (void)clearSuggestions;
-- (void)configureReportedVisibleSuggestionsForTableView:(id)a3 alwaysReportItems:(BOOL)a4 keyboardVisibilityDidChange:(BOOL)a5;
+- (void)configureReportedVisibleSuggestionsForTableView:(id)view alwaysReportItems:(BOOL)items keyboardVisibilityDidChange:(BOOL)change;
 - (void)dealloc;
-- (void)didRemoveSearchSuggestion:(id)a3;
+- (void)didRemoveSearchSuggestion:(id)suggestion;
 - (void)endUpdatingSuggestions;
-- (void)keyboardAvoidance:(id)a3 adjustForFrameOverlap:(CGRect)a4;
-- (void)keyboardVisibilityDidChange:(id)a3;
+- (void)keyboardAvoidance:(id)avoidance adjustForFrameOverlap:(CGRect)overlap;
+- (void)keyboardVisibilityDidChange:(id)change;
 - (void)loadView;
 - (void)reportVisibleSuggestionResults;
-- (void)setTableViewModel:(id)a3;
-- (void)shouldReloadSearchSuggestion:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateLayoutMargins:(UIEdgeInsets)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setTableViewModel:(id)model;
+- (void)shouldReloadSearchSuggestion:(id)suggestion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateLayoutMargins:(UIEdgeInsets)margins;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MFSearchSuggestionsViewController
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = sub_100212400;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD638 != -1)
   {
     dispatch_once(&qword_1006DD638, block);
@@ -62,40 +62,40 @@
   return v2;
 }
 
-- (MFSearchSuggestionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MFSearchSuggestionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   [(MFSearchSuggestionsViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFSearchSuggestionsViewController initWithNibName:bundle:]", "MFSearchSuggestionsViewController.m", 128, "0");
 }
 
-- (MFSearchSuggestionsViewController)initWithCoder:(id)a3
+- (MFSearchSuggestionsViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(MFSearchSuggestionsViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFSearchSuggestionsViewController initWithCoder:]", "MFSearchSuggestionsViewController.m", 130, "0");
 }
 
-- (MFSearchSuggestionsViewController)initWithMainScene:(id)a3 delegate:(id)a4
+- (MFSearchSuggestionsViewController)initWithMainScene:(id)scene delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = MFSearchSuggestionsViewController;
   v8 = [(MFSearchSuggestionsViewController *)&v17 initWithStyle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_scene, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_scene, sceneCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10 = objc_alloc_init(NSMutableSet);
     touchedCategories = v9->_touchedCategories;
     v9->_touchedCategories = v10;
 
-    v12 = [(MFSearchSuggestionsViewController *)v9 _newSearchSuggestionsTableViewModel];
+    _newSearchSuggestionsTableViewModel = [(MFSearchSuggestionsViewController *)v9 _newSearchSuggestionsTableViewModel];
     tableViewModel = v9->_tableViewModel;
-    v9->_tableViewModel = v12;
+    v9->_tableViewModel = _newSearchSuggestionsTableViewModel;
 
     v14 = objc_alloc_init(MessageListCellLayoutValuesHelper);
     layoutValuesHelper = v9->_layoutValuesHelper;
@@ -123,63 +123,63 @@
   v9.receiver = self;
   v9.super_class = MFSearchSuggestionsViewController;
   [(MFSearchSuggestionsViewController *)&v9 loadView];
-  v3 = [(MFSearchSuggestionsViewController *)self tableView];
-  [v3 setKeyboardDismissMode:1];
-  [v3 setEstimatedRowHeight:44.0];
-  [v3 setRowHeight:UITableViewAutomaticDimension];
-  [v3 setInsetsLayoutMarginsFromSafeArea:0];
-  v4 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  tableView = [(MFSearchSuggestionsViewController *)self tableView];
+  [tableView setKeyboardDismissMode:1];
+  [tableView setEstimatedRowHeight:44.0];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
+  [tableView setInsetsLayoutMarginsFromSafeArea:0];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  [v3 _setHeaderAndFooterViewsFloat:!IsAccessibilityCategory];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"kMFSearchSuggestionsCellIdentifier"];
+  [tableView _setHeaderAndFooterViewsFloat:!IsAccessibilityCategory];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kMFSearchSuggestionsCellIdentifier"];
   v6 = objc_opt_class();
   v7 = +[MessageListTableViewCell reusableIdentifier];
-  [v3 registerClass:v6 forCellReuseIdentifier:v7];
+  [tableView registerClass:v6 forCellReuseIdentifier:v7];
 
-  [v3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMFSearchSectionHeaderCellIdentifier"];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMFSearchSectionHeaderCellIdentifier"];
   v8 = +[MFKeyboardAvoidance sharedController];
   [v8 registerKeyboardAvoidable:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MFSearchSuggestionsViewController;
-  [(MFSearchSuggestionsViewController *)&v6 viewWillAppear:a3];
-  v4 = [(MFSearchSuggestionsViewController *)self layoutValuesHelper];
-  v5 = [(MFSearchSuggestionsViewController *)self traitCollection];
-  [v4 setTraitCollection:v5];
+  [(MFSearchSuggestionsViewController *)&v6 viewWillAppear:appear];
+  layoutValuesHelper = [(MFSearchSuggestionsViewController *)self layoutValuesHelper];
+  traitCollection = [(MFSearchSuggestionsViewController *)self traitCollection];
+  [layoutValuesHelper setTraitCollection:traitCollection];
 
   [(MFSearchSuggestionsViewController *)self systemMinimumLayoutMargins];
-  [v4 setSystemLayoutMargins:?];
+  [layoutValuesHelper setSystemLayoutMargins:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = MFSearchSuggestionsViewController;
-  [(MFSearchSuggestionsViewController *)&v10 traitCollectionDidChange:v4];
-  v5 = [(MFSearchSuggestionsViewController *)self traitCollection];
-  if ([v5 mf_traitDifferenceAffectsTextLayout:v4])
+  [(MFSearchSuggestionsViewController *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MFSearchSuggestionsViewController *)self traitCollection];
+  if ([traitCollection mf_traitDifferenceAffectsTextLayout:changeCopy])
   {
-    v6 = [(MFSearchSuggestionsViewController *)self layoutValuesHelper];
-    [v6 setTraitCollection:v5];
+    layoutValuesHelper = [(MFSearchSuggestionsViewController *)self layoutValuesHelper];
+    [layoutValuesHelper setTraitCollection:traitCollection];
 
-    v7 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v9 = [(MFSearchSuggestionsViewController *)self tableView];
-    [v9 _setHeaderAndFooterViewsFloat:!IsAccessibilityCategory];
+    tableView = [(MFSearchSuggestionsViewController *)self tableView];
+    [tableView _setHeaderAndFooterViewsFloat:!IsAccessibilityCategory];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MFSearchSuggestionsViewController;
-  [(MFSearchSuggestionsViewController *)&v5 viewDidAppear:a3];
+  [(MFSearchSuggestionsViewController *)&v5 viewDidAppear:appear];
   v4 = +[MFKeyboardAvoidance sharedController];
   [v4 registerKeyboardAvoidable:self];
 }
@@ -194,14 +194,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MFSearchSuggestionsViewController *)self layoutValuesHelper];
-  [v11 setSystemLayoutMargins:{v4, v6, v8, v10}];
+  layoutValuesHelper = [(MFSearchSuggestionsViewController *)self layoutValuesHelper];
+  [layoutValuesHelper setSystemLayoutMargins:{v4, v6, v8, v10}];
 }
 
-- (void)keyboardVisibilityDidChange:(id)a3
+- (void)keyboardVisibilityDidChange:(id)change
 {
-  v19 = [a3 userInfo];
-  v4 = [v19 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
@@ -225,7 +225,7 @@
   if (v18 != Height)
   {
     [(MFSearchSuggestionsViewController *)self setCurrentKeyboardHeight:Height];
-    v21 = [(MFSearchSuggestionsViewController *)self tableView];
+    tableView = [(MFSearchSuggestionsViewController *)self tableView];
     [MFSearchSuggestionsViewController configureReportedVisibleSuggestionsForTableView:"configureReportedVisibleSuggestionsForTableView:alwaysReportItems:keyboardVisibilityDidChange:" alwaysReportItems:? keyboardVisibilityDidChange:?];
   }
 }
@@ -299,14 +299,14 @@
     v5 = self->_defaultReuseConfiguration;
     self->_defaultReuseConfiguration = v4;
 
-    v6 = [(MFSearchSuggestionsViewController *)self _defaultTableViewCellPopulator];
-    [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_defaultReuseConfiguration setCellPopulator:v6];
+    _defaultTableViewCellPopulator = [(MFSearchSuggestionsViewController *)self _defaultTableViewCellPopulator];
+    [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_defaultReuseConfiguration setCellPopulator:_defaultTableViewCellPopulator];
 
-    v7 = [(MFSearchSuggestionsViewController *)self _defaultTableViewRowHeightCalculator];
-    [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_defaultReuseConfiguration setRowHeightCalculator:v7];
+    _defaultTableViewRowHeightCalculator = [(MFSearchSuggestionsViewController *)self _defaultTableViewRowHeightCalculator];
+    [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_defaultReuseConfiguration setRowHeightCalculator:_defaultTableViewRowHeightCalculator];
 
-    v8 = [(MFSearchSuggestionsViewController *)self _defaultTableViewRowSelector];
-    [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_defaultReuseConfiguration setRowSelector:v8];
+    _defaultTableViewRowSelector = [(MFSearchSuggestionsViewController *)self _defaultTableViewRowSelector];
+    [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_defaultReuseConfiguration setRowSelector:_defaultTableViewRowSelector];
 
     defaultReuseConfiguration = self->_defaultReuseConfiguration;
   }
@@ -318,8 +318,8 @@
 {
   if (!self->_topHitsReuseConfiguration)
   {
-    v3 = [(MFSearchSuggestionsViewController *)self delegate];
-    v4 = [v3 canGenerateTopHitsForSearchSuggestionsViewController:self];
+    delegate = [(MFSearchSuggestionsViewController *)self delegate];
+    v4 = [delegate canGenerateTopHitsForSearchSuggestionsViewController:self];
 
     if (v4)
     {
@@ -329,14 +329,14 @@
       topHitsReuseConfiguration = self->_topHitsReuseConfiguration;
       self->_topHitsReuseConfiguration = v7;
 
-      v9 = [(MFSearchSuggestionsViewController *)self _topHitsTableViewCellPopulator];
-      [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_topHitsReuseConfiguration setCellPopulator:v9];
+      _topHitsTableViewCellPopulator = [(MFSearchSuggestionsViewController *)self _topHitsTableViewCellPopulator];
+      [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_topHitsReuseConfiguration setCellPopulator:_topHitsTableViewCellPopulator];
 
-      v10 = [(MFSearchSuggestionsViewController *)self _topHitsTableViewRowHeightCalculator];
-      [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_topHitsReuseConfiguration setRowHeightCalculator:v10];
+      _topHitsTableViewRowHeightCalculator = [(MFSearchSuggestionsViewController *)self _topHitsTableViewRowHeightCalculator];
+      [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_topHitsReuseConfiguration setRowHeightCalculator:_topHitsTableViewRowHeightCalculator];
 
-      v11 = [(MFSearchSuggestionsViewController *)self _topHitsTableViewRowSelector];
-      [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_topHitsReuseConfiguration setRowSelector:v11];
+      _topHitsTableViewRowSelector = [(MFSearchSuggestionsViewController *)self _topHitsTableViewRowSelector];
+      [(MFSearchSuggestionsTableViewModelReuseConfiguration *)self->_topHitsReuseConfiguration setRowSelector:_topHitsTableViewRowSelector];
     }
   }
 
@@ -348,34 +348,34 @@
 - (id)_newSearchSuggestionsTableViewModel
 {
   v3 = [MFSearchSuggestionsTableViewModel alloc];
-  v4 = [objc_opt_class() categoryComparator];
-  v5 = [(MFSearchSuggestionsViewController *)self defaultReuseConfiguration];
-  v6 = [(MFSearchSuggestionsTableViewModel *)v3 initWithSectionComparator:v4 defaultReuseConfiguration:v5];
+  categoryComparator = [objc_opt_class() categoryComparator];
+  defaultReuseConfiguration = [(MFSearchSuggestionsViewController *)self defaultReuseConfiguration];
+  v6 = [(MFSearchSuggestionsTableViewModel *)v3 initWithSectionComparator:categoryComparator defaultReuseConfiguration:defaultReuseConfiguration];
 
-  v7 = [(MFSearchSuggestionsViewController *)self delegate];
-  LODWORD(v5) = [v7 canGenerateTopHitsForSearchSuggestionsViewController:self];
+  delegate = [(MFSearchSuggestionsViewController *)self delegate];
+  LODWORD(defaultReuseConfiguration) = [delegate canGenerateTopHitsForSearchSuggestionsViewController:self];
 
-  if (v5)
+  if (defaultReuseConfiguration)
   {
     v8 = +[MUISearchSuggestionCategory topHitsCategory];
-    v9 = [(MFSearchSuggestionsViewController *)self topHitsReuseConfiguration];
-    [(MFSearchSuggestionsTableViewModel *)v6 registerCategory:v8 forReuseConfiguration:v9];
+    topHitsReuseConfiguration = [(MFSearchSuggestionsViewController *)self topHitsReuseConfiguration];
+    [(MFSearchSuggestionsTableViewModel *)v6 registerCategory:v8 forReuseConfiguration:topHitsReuseConfiguration];
   }
 
   return v6;
 }
 
-- (void)setTableViewModel:(id)a3
+- (void)setTableViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_tableViewModel != v5)
+  modelCopy = model;
+  if (self->_tableViewModel != modelCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_tableViewModel, a3);
-    v6 = [(MFSearchSuggestionsViewController *)self tableView];
-    [v6 reloadData];
+    v7 = modelCopy;
+    objc_storeStrong(&self->_tableViewModel, model);
+    tableView = [(MFSearchSuggestionsViewController *)self tableView];
+    [tableView reloadData];
 
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
@@ -383,7 +383,7 @@
 {
   [(NSMutableSet *)self->_touchedCategories removeAllObjects];
   [(MFSearchSuggestionsViewController *)self setSuggestionsUpdated:0];
-  v3 = [(MFSearchSuggestionsViewController *)self _newSearchSuggestionsTableViewModel];
+  _newSearchSuggestionsTableViewModel = [(MFSearchSuggestionsViewController *)self _newSearchSuggestionsTableViewModel];
   [(MFSearchSuggestionsViewController *)self setTableViewModel:?];
 }
 
@@ -396,32 +396,32 @@
 
 - (void)endUpdatingSuggestions
 {
-  v3 = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
   v5 = _NSConcreteStackBlock;
   v6 = 3221225472;
   v7 = sub_100213B14;
   v8 = &unk_1006559A8;
-  v9 = self;
-  v4 = [v3 copy];
+  selfCopy = self;
+  v4 = [tableViewModel copy];
   v10 = v4;
-  [v3 enumerateSections:&v5];
-  [(MFSearchSuggestionsViewController *)self setTableViewModel:v4, v5, v6, v7, v8, v9];
+  [tableViewModel enumerateSections:&v5];
+  [(MFSearchSuggestionsViewController *)self setTableViewModel:v4, v5, v6, v7, v8, selfCopy];
 }
 
-- (id)updateSuggestionsWithResult:(id)a3
+- (id)updateSuggestionsWithResult:(id)result
 {
-  v34 = a3;
+  resultCopy = result;
   [(MFSearchSuggestionsViewController *)self setSuggestionsUpdated:0];
-  v4 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v33 = [v4 copy];
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v33 = [tableViewModel copy];
 
   v5 = +[NSMutableArray array];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v6 = [v34 categories];
-  v7 = [v6 countByEnumeratingWithState:&v46 objects:v54 count:16];
+  categories = [resultCopy categories];
+  v7 = [categories countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v7)
   {
     v8 = *v47;
@@ -431,14 +431,14 @@
       {
         if (*v47 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(categories);
         }
 
-        v10 = [*(*(&v46 + 1) + 8 * i) groupingCategory];
-        [v5 addObject:v10];
+        groupingCategory = [*(*(&v46 + 1) + 8 * i) groupingCategory];
+        [v5 addObject:groupingCategory];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      v7 = [categories countByEnumeratingWithState:&v46 objects:v54 count:16];
     }
 
     while (v7);
@@ -479,8 +479,8 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = [v34 suggestions];
-  v18 = [v17 countByEnumeratingWithState:&v38 objects:v52 count:16];
+  suggestions = [resultCopy suggestions];
+  v18 = [suggestions countByEnumeratingWithState:&v38 objects:v52 count:16];
   if (v18)
   {
     v19 = *v39;
@@ -490,19 +490,19 @@
       {
         if (*v39 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(suggestions);
         }
 
         v21 = *(*(&v38 + 1) + 8 * k);
-        v22 = [v21 category];
-        v23 = [v22 groupingCategory];
+        category = [v21 category];
+        groupingCategory2 = [category groupingCategory];
 
         [v21 setDelegate:self];
-        v24 = [v11 objectForKeyedSubscript:v23];
+        v24 = [v11 objectForKeyedSubscript:groupingCategory2];
         [v24 addObject:v21];
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v38 objects:v52 count:16];
+      v18 = [suggestions countByEnumeratingWithState:&v38 objects:v52 count:16];
     }
 
     while (v18);
@@ -523,15 +523,15 @@
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Update search suggestions with suggestions: %@", buf, 0xCu);
   }
 
-  v27 = [v34 suggestions];
-  v28 = [v27 count];
+  suggestions2 = [resultCopy suggestions];
+  v28 = [suggestions2 count];
 
   if (v28)
   {
-    v29 = [(MFSearchSuggestionsViewController *)self delegate];
-    v30 = [v25 objectsByIdentifier];
-    v31 = [v30 copy];
-    [v29 reportSuggestionsFetched:v31];
+    delegate = [(MFSearchSuggestionsViewController *)self delegate];
+    objectsByIdentifier = [v25 objectsByIdentifier];
+    v31 = [objectsByIdentifier copy];
+    [delegate reportSuggestionsFetched:v31];
   }
 
   [(MFSearchSuggestionsViewController *)self setTableViewModel:v25, v33];
@@ -542,81 +542,81 @@
 
 - (BOOL)hasSuggestions
 {
-  v2 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v3 = [v2 numberOfSections] != 0;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v3 = [tableViewModel numberOfSections] != 0;
 
   return v3;
 }
 
-- (id)searchSuggestionsForCategory:(id)a3
+- (id)searchSuggestionsForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v6 = [v5 sectionForIdentifier:v4];
+  categoryCopy = category;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v6 = [tableViewModel sectionForIdentifier:categoryCopy];
 
   return v6;
 }
 
 - (void)reportVisibleSuggestionResults
 {
-  v3 = [(MFSearchSuggestionsViewController *)self tableView];
+  tableView = [(MFSearchSuggestionsViewController *)self tableView];
   [MFSearchSuggestionsViewController configureReportedVisibleSuggestionsForTableView:"configureReportedVisibleSuggestionsForTableView:alwaysReportItems:keyboardVisibilityDidChange:" alwaysReportItems:? keyboardVisibilityDidChange:?];
 }
 
-- (void)updateLayoutMargins:(UIEdgeInsets)a3
+- (void)updateLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(MFSearchSuggestionsViewController *)self tableView];
-  [v7 setLayoutMargins:{top, left, bottom, right}];
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  tableView = [(MFSearchSuggestionsViewController *)self tableView];
+  [tableView setLayoutMargins:{top, left, bottom, right}];
 }
 
-- (void)shouldReloadSearchSuggestion:(id)a3
+- (void)shouldReloadSearchSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v6 = [v5 indexPathForSuggestion:v4];
+  suggestionCopy = suggestion;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v6 = [tableViewModel indexPathForSuggestion:suggestionCopy];
 
   if ([v6 row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v6, "section") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = MFLogGeneral();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    tableView3 = MFLogGeneral();
+    if (os_log_type_enabled(tableView3, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-      sub_10048C114(v4, v8, &v12);
+      tableViewModel2 = [(MFSearchSuggestionsViewController *)self tableViewModel];
+      sub_10048C114(suggestionCopy, tableViewModel2, &v12);
     }
   }
 
   else
   {
-    v9 = [(MFSearchSuggestionsViewController *)self tableView];
-    [v9 beginUpdates];
+    tableView = [(MFSearchSuggestionsViewController *)self tableView];
+    [tableView beginUpdates];
 
-    v10 = [(MFSearchSuggestionsViewController *)self tableView];
+    tableView2 = [(MFSearchSuggestionsViewController *)self tableView];
     v13 = v6;
     v11 = [NSArray arrayWithObjects:&v13 count:1];
-    [v10 reloadRowsAtIndexPaths:v11 withRowAnimation:5];
+    [tableView2 reloadRowsAtIndexPaths:v11 withRowAnimation:5];
 
-    v7 = [(MFSearchSuggestionsViewController *)self tableView];
-    [v7 endUpdates];
+    tableView3 = [(MFSearchSuggestionsViewController *)self tableView];
+    [tableView3 endUpdates];
   }
 }
 
-- (void)didRemoveSearchSuggestion:(id)a3
+- (void)didRemoveSearchSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v6 = [v5 indexPathForSuggestion:v4];
+  suggestionCopy = suggestion;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v6 = [tableViewModel indexPathForSuggestion:suggestionCopy];
 
   if ([v6 row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v6, "section") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = MFLogGeneral();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-      sub_10048C16C(v4, v8, &v11);
+      tableViewModel2 = [(MFSearchSuggestionsViewController *)self tableViewModel];
+      sub_10048C16C(suggestionCopy, tableViewModel2, &v11);
     }
   }
 
@@ -631,30 +631,30 @@
   }
 }
 
-- (void)configureReportedVisibleSuggestionsForTableView:(id)a3 alwaysReportItems:(BOOL)a4 keyboardVisibilityDidChange:(BOOL)a5
+- (void)configureReportedVisibleSuggestionsForTableView:(id)view alwaysReportItems:(BOOL)items keyboardVisibilityDidChange:(BOOL)change
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if ([(MFSearchSuggestionsViewController *)self suggestionsUpdated]|| v5)
+  changeCopy = change;
+  itemsCopy = items;
+  viewCopy = view;
+  if ([(MFSearchSuggestionsViewController *)self suggestionsUpdated]|| changeCopy)
   {
-    v9 = [(MFSearchSuggestionsViewController *)self tableView];
-    v10 = [v9 indexPathsForVisibleRows];
+    tableView = [(MFSearchSuggestionsViewController *)self tableView];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100214930;
     v19[3] = &unk_1006559D0;
-    v20 = v8;
-    v21 = self;
-    v11 = [v10 ef_filter:v19];
+    v20 = viewCopy;
+    selfCopy = self;
+    v11 = [indexPathsForVisibleRows ef_filter:v19];
     v12 = [v11 sortedArrayUsingSelector:"compare:"];
 
     if ([v12 count])
     {
-      v13 = [(MFSearchSuggestionsViewController *)self lastVisibleIndexPaths];
-      v14 = [v13 isEqualToArray:v12];
+      lastVisibleIndexPaths = [(MFSearchSuggestionsViewController *)self lastVisibleIndexPaths];
+      v14 = [lastVisibleIndexPaths isEqualToArray:v12];
 
-      if (!v14 || v6)
+      if (!v14 || itemsCopy)
       {
         v15 = [v12 copy];
         [(MFSearchSuggestionsViewController *)self setLastVisibleIndexPaths:v15];
@@ -665,8 +665,8 @@
         v18[3] = &unk_100652218;
         v18[4] = self;
         v16 = [v12 ef_compactMap:v18];
-        v17 = [(MFSearchSuggestionsViewController *)self delegate];
-        [v17 reportSuggestionsVisible:v16];
+        delegate = [(MFSearchSuggestionsViewController *)self delegate];
+        [delegate reportSuggestionsVisible:v16];
       }
     }
   }
@@ -677,115 +677,115 @@
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  [v8 tableView:v6 heightForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  [tableViewModel tableView:viewCopy heightForRowAtIndexPath:pathCopy];
   v10 = v9;
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  [v7 tableView:v8 didSelectRowAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  [tableViewModel tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v6 = [v5 numberOfSectionsInTableView:v4];
+  viewCopy = view;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v6 = [tableViewModel numberOfSectionsInTableView:viewCopy];
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v8 = [v7 tableView:v6 numberOfRowsInSection:a4];
+  viewCopy = view;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v8 = [tableViewModel tableView:viewCopy numberOfRowsInSection:section];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v8 = [v7 tableView:v6 titleForHeaderInSection:a4];
+  viewCopy = view;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v8 = [tableViewModel tableView:viewCopy titleForHeaderInSection:section];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:@"kMFSearchSectionHeaderCellIdentifier"];
+  v6 = [view dequeueReusableHeaderFooterViewWithIdentifier:@"kMFSearchSectionHeaderCellIdentifier"];
   if (!v6)
   {
     v6 = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:@"kMFSearchSectionHeaderCellIdentifier"];
   }
 
-  v7 = [v6 contentConfiguration];
-  v8 = v7;
-  if (v7)
+  contentConfiguration = [v6 contentConfiguration];
+  v8 = contentConfiguration;
+  if (contentConfiguration)
   {
-    v9 = v7;
+    defaultContentConfiguration = contentConfiguration;
   }
 
   else
   {
-    v9 = [v6 defaultContentConfiguration];
+    defaultContentConfiguration = [v6 defaultContentConfiguration];
   }
 
-  v10 = v9;
+  v10 = defaultContentConfiguration;
 
-  v11 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v12 = [v11 identifierAtIndex:a4];
-  v13 = [v12 displayName];
-  [v10 setText:v13];
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v12 = [tableViewModel identifierAtIndex:section];
+  displayName = [v12 displayName];
+  [v10 setText:displayName];
 
-  v14 = [v10 textProperties];
-  [v14 setNumberOfLines:2];
+  textProperties = [v10 textProperties];
+  [textProperties setNumberOfLines:2];
 
-  v15 = [v10 textProperties];
-  [v15 setAdjustsFontSizeToFitWidth:1];
+  textProperties2 = [v10 textProperties];
+  [textProperties2 setAdjustsFontSizeToFitWidth:1];
 
   [v6 setContentConfiguration:v10];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFSearchSuggestionsViewController *)self tableViewModel];
-  v9 = [v8 tableView:v6 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  tableViewModel = [(MFSearchSuggestionsViewController *)self tableViewModel];
+  v9 = [tableViewModel tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setInsetsLayoutMarginsFromSafeArea:0];
 
   return v9;
 }
 
-- (id)viewForKeyboardAvoidance:(id)a3
+- (id)viewForKeyboardAvoidance:(id)avoidance
 {
-  v3 = [(MFSearchSuggestionsViewController *)self tableView];
+  tableView = [(MFSearchSuggestionsViewController *)self tableView];
 
-  return v3;
+  return tableView;
 }
 
-- (void)keyboardAvoidance:(id)a3 adjustForFrameOverlap:(CGRect)a4
+- (void)keyboardAvoidance:(id)avoidance adjustForFrameOverlap:(CGRect)overlap
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = overlap.size.height;
+  width = overlap.size.width;
+  y = overlap.origin.y;
+  x = overlap.origin.x;
   [(MFSearchSuggestionsViewController *)self currentKeyboardOverlap];
   v12.origin.x = x;
   v12.origin.y = y;
@@ -794,7 +794,7 @@
   if (!CGRectEqualToRect(v11, v12))
   {
     [(MFSearchSuggestionsViewController *)self setCurrentKeyboardOverlap:x, y, width, height];
-    v9 = [(MFSearchSuggestionsViewController *)self tableView];
+    tableView = [(MFSearchSuggestionsViewController *)self tableView];
     [MFSearchSuggestionsViewController configureReportedVisibleSuggestionsForTableView:"configureReportedVisibleSuggestionsForTableView:alwaysReportItems:keyboardVisibilityDidChange:" alwaysReportItems:? keyboardVisibilityDidChange:?];
   }
 }

@@ -1,25 +1,25 @@
 @interface DIMSchemaDIMSiriAccountInformation
-- (BOOL)isEqual:(id)a3;
-- (DIMSchemaDIMSiriAccountInformation)initWithDictionary:(id)a3;
-- (DIMSchemaDIMSiriAccountInformation)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DIMSchemaDIMSiriAccountInformation)initWithDictionary:(id)dictionary;
+- (DIMSchemaDIMSiriAccountInformation)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DIMSchemaDIMSiriAccountInformation
 
-- (DIMSchemaDIMSiriAccountInformation)initWithDictionary:(id)a3
+- (DIMSchemaDIMSiriAccountInformation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = DIMSchemaDIMSiriAccountInformation;
   v5 = [(DIMSchemaDIMSiriAccountInformation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriDeviceId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriDeviceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(DIMSchemaDIMSiriAccountInformation *)v5 setSiriDeviceId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriSpeechId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriSpeechId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(DIMSchemaDIMSiriAccountInformation *)v5 setSiriSpeechId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"siriUserId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"siriUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (DIMSchemaDIMSiriAccountInformation)initWithJSON:(id)a3
+- (DIMSchemaDIMSiriAccountInformation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DIMSchemaDIMSiriAccountInformation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DIMSchemaDIMSiriAccountInformation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DIMSchemaDIMSiriAccountInformation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,31 +85,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_siriDeviceId)
   {
-    v4 = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"siriDeviceId"];
+    siriDeviceId = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
+    v5 = [siriDeviceId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"siriDeviceId"];
   }
 
   if (self->_siriSpeechId)
   {
-    v6 = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"siriSpeechId"];
+    siriSpeechId = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
+    v7 = [siriSpeechId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"siriSpeechId"];
   }
 
   if (self->_siriUserId)
   {
-    v8 = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"siriUserId"];
+    siriUserId = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
+    v9 = [siriUserId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"siriUserId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -119,28 +119,28 @@
   return v4 ^ [(NSString *)self->_siriUserId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
-  v6 = [v4 siriDeviceId];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceId = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
+  siriDeviceId2 = [equalCopy siriDeviceId];
+  if ((siriDeviceId != 0) == (siriDeviceId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
-  if (v7)
+  siriDeviceId3 = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
+  if (siriDeviceId3)
   {
-    v8 = v7;
-    v9 = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
-    v10 = [v4 siriDeviceId];
-    v11 = [v9 isEqual:v10];
+    v8 = siriDeviceId3;
+    siriDeviceId4 = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
+    siriDeviceId5 = [equalCopy siriDeviceId];
+    v11 = [siriDeviceId4 isEqual:siriDeviceId5];
 
     if (!v11)
     {
@@ -152,20 +152,20 @@
   {
   }
 
-  v5 = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
-  v6 = [v4 siriSpeechId];
-  if ((v5 != 0) == (v6 == 0))
+  siriDeviceId = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
+  siriDeviceId2 = [equalCopy siriSpeechId];
+  if ((siriDeviceId != 0) == (siriDeviceId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
-  if (v12)
+  siriSpeechId = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
+  if (siriSpeechId)
   {
-    v13 = v12;
-    v14 = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
-    v15 = [v4 siriSpeechId];
-    v16 = [v14 isEqual:v15];
+    v13 = siriSpeechId;
+    siriSpeechId2 = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
+    siriSpeechId3 = [equalCopy siriSpeechId];
+    v16 = [siriSpeechId2 isEqual:siriSpeechId3];
 
     if (!v16)
     {
@@ -177,12 +177,12 @@
   {
   }
 
-  v5 = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
-  v6 = [v4 siriUserId];
-  if ((v5 != 0) != (v6 == 0))
+  siriDeviceId = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
+  siriDeviceId2 = [equalCopy siriUserId];
+  if ((siriDeviceId != 0) != (siriDeviceId2 == 0))
   {
-    v17 = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
-    if (!v17)
+    siriUserId = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
+    if (!siriUserId)
     {
 
 LABEL_20:
@@ -190,10 +190,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
-    v20 = [v4 siriUserId];
-    v21 = [v19 isEqual:v20];
+    v18 = siriUserId;
+    siriUserId2 = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
+    siriUserId3 = [equalCopy siriUserId];
+    v21 = [siriUserId2 isEqual:siriUserId3];
 
     if (v21)
     {
@@ -213,30 +213,30 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
+  toCopy = to;
+  siriDeviceId = [(DIMSchemaDIMSiriAccountInformation *)self siriDeviceId];
 
-  if (v4)
+  if (siriDeviceId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
+  siriSpeechId = [(DIMSchemaDIMSiriAccountInformation *)self siriSpeechId];
 
-  if (v5)
+  if (siriSpeechId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
+  siriUserId = [(DIMSchemaDIMSiriAccountInformation *)self siriUserId];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (siriUserId)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 

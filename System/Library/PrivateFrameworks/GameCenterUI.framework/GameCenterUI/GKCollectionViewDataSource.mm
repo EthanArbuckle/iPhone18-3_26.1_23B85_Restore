@@ -1,51 +1,51 @@
 @interface GKCollectionViewDataSource
 - (BOOL)isRootDataSource;
 - (BOOL)isSearchable;
-- (BOOL)item:(id)a3 matchesSearchTerms:(id)a4 inSection:(int64_t)a5;
+- (BOOL)item:(id)item matchesSearchTerms:(id)terms inSection:(int64_t)section;
 - (GKCollectionViewDataSource)init;
 - (GKCollectionViewDataSourceDelegate)delegate;
 - (GKGridLayoutMetrics)dataSourceMetrics;
 - (GKSectionMetrics)defaultSectionMetrics;
-- (id)_gkDescriptionWithChildren:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 defaultViewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 evaluateFactoryForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5 isRecursive:(BOOL)a6;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)createMetricsTreeWithGridLayout:(id)a3;
-- (id)indexPathsForItem:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
+- (id)_gkDescriptionWithChildren:(int64_t)children;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view defaultViewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)collectionView:(id)view evaluateFactoryForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path isRecursive:(BOOL)recursive;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)createMetricsTreeWithGridLayout:(id)layout;
+- (id)indexPathsForItem:(id)item;
+- (id)itemAtIndexPath:(id)path;
 - (id)localDescription;
-- (id)metricsForSection:(int64_t)a3;
-- (id)metricsForSectionInternal:(int64_t)a3;
-- (id)searchKeyForSection:(int64_t)a3;
-- (id)targetForAction:(SEL)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)metricsForSection:(int64_t)section;
+- (id)metricsForSectionInternal:(int64_t)internal;
+- (id)searchKeyForSection:(int64_t)section;
+- (id)targetForAction:(SEL)action;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)totalItemCount;
-- (void)configureCollectionView:(id)a3;
-- (void)enumerateItemsAndIndexPathsUsingBlock:(id)a3;
-- (void)loadDataWithCompletionHandlerAndError:(id)a3;
-- (void)notifyBatchUpdate:(id)a3;
-- (void)notifyBatchUpdate:(id)a3 complete:(id)a4;
+- (void)configureCollectionView:(id)view;
+- (void)enumerateItemsAndIndexPathsUsingBlock:(id)block;
+- (void)loadDataWithCompletionHandlerAndError:(id)error;
+- (void)notifyBatchUpdate:(id)update;
+- (void)notifyBatchUpdate:(id)update complete:(id)complete;
 - (void)notifyDidReloadData;
-- (void)notifyItemMovedFromIndexPath:(id)a3 toIndexPaths:(id)a4;
-- (void)notifyItemsInsertedAtIndexPaths:(id)a3;
-- (void)notifyItemsRefreshedAtIndexPaths:(id)a3;
-- (void)notifyItemsRemovedAtIndexPaths:(id)a3;
-- (void)notifyPlaceholderUpdated:(BOOL)a3;
-- (void)notifySectionMovedFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)notifySectionsInserted:(id)a3;
+- (void)notifyItemMovedFromIndexPath:(id)path toIndexPaths:(id)paths;
+- (void)notifyItemsInsertedAtIndexPaths:(id)paths;
+- (void)notifyItemsRefreshedAtIndexPaths:(id)paths;
+- (void)notifyItemsRemovedAtIndexPaths:(id)paths;
+- (void)notifyPlaceholderUpdated:(BOOL)updated;
+- (void)notifySectionMovedFrom:(int64_t)from to:(int64_t)to;
+- (void)notifySectionsInserted:(id)inserted;
 - (void)notifySectionsMovedWithItems;
-- (void)notifySectionsRefreshed:(id)a3;
-- (void)notifySectionsRemoved:(id)a3;
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4 updateNotifier:(id)a5;
-- (void)registerSupplementaryViewOfKind:(id)a3 withClass:(Class)a4 target:(id)a5 configurator:(SEL)a6;
-- (void)registerSupplementaryViewOfKind:(id)a3 withFactory:(id)a4;
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4;
-- (void)setDataSourceMetrics:(id)a3;
-- (void)setDefaultSectionMetrics:(id)a3;
-- (void)setMetrics:(id)a3 forSection:(int64_t)a4;
-- (void)setSearchKey:(id)a3 forSection:(int64_t)a4;
-- (void)updateSupplementaryMetricsForKey:(id)a3 usingBlock:(id)a4;
+- (void)notifySectionsRefreshed:(id)refreshed;
+- (void)notifySectionsRemoved:(id)removed;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info updateNotifier:(id)notifier;
+- (void)registerSupplementaryViewOfKind:(id)kind withClass:(Class)class target:(id)target configurator:(SEL)configurator;
+- (void)registerSupplementaryViewOfKind:(id)kind withFactory:(id)factory;
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler;
+- (void)setDataSourceMetrics:(id)metrics;
+- (void)setDefaultSectionMetrics:(id)metrics;
+- (void)setMetrics:(id)metrics forSection:(int64_t)section;
+- (void)setSearchKey:(id)key forSection:(int64_t)section;
+- (void)updateSupplementaryMetricsForKey:(id)key usingBlock:(id)block;
 @end
 
 @implementation GKCollectionViewDataSource
@@ -57,9 +57,9 @@
   v2 = [(GKCollectionViewDataSource *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     listeners = v2->_listeners;
-    v2->_listeners = v3;
+    v2->_listeners = weakObjectsHashTable;
   }
 
   return v2;
@@ -67,7 +67,7 @@
 
 - (id)localDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v19.receiver = self;
   v19.super_class = GKCollectionViewDataSource;
   v4 = [(GKCollectionViewDataSource *)&v19 description];
@@ -77,19 +77,19 @@
     v6 = MEMORY[0x277CCACA8];
     v7 = _gkBeautifyVariableName();
     v8 = [v6 stringWithFormat:@" %@: %@", v7, self->_defaultSearchKey];
-    [v3 appendFormat:@"%@%@", v5, v8];
+    [string appendFormat:@"%@%@", v5, v8];
   }
 
   else
   {
-    [v3 appendFormat:@"%@%@", v4, &stru_28612D290];
+    [string appendFormat:@"%@%@", v4, &stru_28612D290];
   }
 
   v9 = [(GKCollectionViewDataSource *)self numberOfSectionsInCollectionView:0];
   if (v9 == 1)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKCollectionViewDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", 0, 0)}];
-    [v3 appendFormat:@" %@ item(s)", v12];
+    [string appendFormat:@" %@ item(s)", v12];
   }
 
   else
@@ -98,7 +98,7 @@
     if (v9)
     {
       v13 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
-      [v3 appendFormat:@" %@ sections: <", v13];
+      [string appendFormat:@" %@ sections: <", v13];
 
       if (v10 >= 1)
       {
@@ -116,7 +116,7 @@
           }
 
           v17 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
-          [v3 appendFormat:@"%@%@", v16, v17];
+          [string appendFormat:@"%@%@", v16, v17];
         }
       }
 
@@ -128,17 +128,17 @@
       v11 = @" no sections";
     }
 
-    [v3 appendString:v11];
+    [string appendString:v11];
   }
 
-  return v3;
+  return string;
 }
 
-- (id)_gkDescriptionWithChildren:(int64_t)a3
+- (id)_gkDescriptionWithChildren:(int64_t)children
 {
   v70 = *MEMORY[0x277D85DE8];
   v4 = _gkTabStringForTabLevel();
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v67.receiver = self;
   v67.super_class = GKCollectionViewDataSource;
   v6 = [(GKCollectionViewDataSource *)&v67 description];
@@ -148,12 +148,12 @@
     v8 = MEMORY[0x277CCACA8];
     v9 = _gkBeautifyVariableName();
     v10 = [v8 stringWithFormat:@" %@: %@", v9, self->_defaultSearchKey];
-    [v5 appendFormat:@"%@%@%@", v4, v7, v10];
+    [string appendFormat:@"%@%@%@", v4, v7, v10];
   }
 
   else
   {
-    [v5 appendFormat:@"%@%@%@", v4, v6, &stru_28612D290];
+    [string appendFormat:@"%@%@%@", v4, v6, &stru_28612D290];
   }
 
   v11 = [(GKCollectionViewDataSource *)self numberOfSectionsInCollectionView:0];
@@ -161,7 +161,7 @@
   if (v11 == 1)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKCollectionViewDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", 0, 0)}];
-    [v5 appendFormat:@" %@ item(s)", v13];
+    [string appendFormat:@" %@ item(s)", v13];
   }
 
   else
@@ -170,7 +170,7 @@
     if (v11)
     {
       v14 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-      [v5 appendFormat:@" %@ sections: <", v14];
+      [string appendFormat:@" %@ sections: <", v14];
 
       if (v12 >= 1)
       {
@@ -188,33 +188,33 @@
           }
 
           v18 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
-          [v5 appendFormat:@"%@%@", v17, v18];
+          [string appendFormat:@"%@%@", v17, v18];
         }
       }
 
-      [v5 appendString:@">"];
+      [string appendString:@">"];
       v4 = v58;
     }
 
     else
     {
-      [v5 appendString:@" no sections"];
+      [string appendString:@" no sections"];
     }
   }
 
-  v19 = [(NSMutableDictionary *)self->_sectionsToSearchKeys allKeys];
+  allKeys = [(NSMutableDictionary *)self->_sectionsToSearchKeys allKeys];
   v20 = @" {\n";
-  v57 = self;
-  if ([v19 count])
+  selfCopy = self;
+  if ([allKeys count])
   {
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@    %@sectionSearchKeys:\n", @" {\n", v4];
-    [v5 appendString:v21];
+    [string appendString:v21];
 
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v22 = v19;
+    v22 = allKeys;
     v23 = [v22 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v23)
     {
@@ -233,9 +233,9 @@
           v28 = [(NSMutableDictionary *)self->_sectionsToSearchKeys objectForKeyedSubscript:v27];
           v52 = v27;
           v4 = v58;
-          [v5 appendFormat:@"    %@%@ - %@", v58, v52, v28];
+          [string appendFormat:@"    %@%@ - %@", v58, v52, v28];
 
-          self = v57;
+          self = selfCopy;
         }
 
         v24 = [v22 countByEnumeratingWithState:&v63 objects:v69 count:16];
@@ -251,11 +251,11 @@
   if (dataSourceMetricsInternal)
   {
     v30 = MEMORY[0x277CCACA8];
-    v31 = [(GKGridLayoutMetrics *)dataSourceMetricsInternal _gkDescriptionWithChildren:a3 + 2];
+    v31 = [(GKGridLayoutMetrics *)dataSourceMetricsInternal _gkDescriptionWithChildren:children + 2];
     v32 = [v30 stringWithFormat:@"%@    %@overallMetrics: {\n%@", v20, v4, v31];
-    [v5 appendString:v32];
+    [string appendString:v32];
 
-    [v5 appendFormat:@"%@    }\n", v4];
+    [string appendFormat:@"%@    }\n", v4];
     v20 = &stru_28612D290;
   }
 
@@ -263,27 +263,27 @@
   if (defaultSectionMetricsInternal)
   {
     v34 = MEMORY[0x277CCACA8];
-    v35 = [(GKGridLayoutMetrics *)defaultSectionMetricsInternal _gkDescriptionWithChildren:a3 + 2];
+    v35 = [(GKGridLayoutMetrics *)defaultSectionMetricsInternal _gkDescriptionWithChildren:children + 2];
     v36 = [v34 stringWithFormat:@"%@    %@defaultSectionMetrics: {\n%@", v20, v4, v35];
-    [v5 appendString:v36];
+    [string appendString:v36];
 
-    [v5 appendFormat:@"%@    }\n", v4];
+    [string appendFormat:@"%@    }\n", v4];
     v20 = &stru_28612D290;
   }
 
-  v37 = [(NSMutableDictionary *)self->_sectionsToMetrics allKeys];
+  allKeys2 = [(NSMutableDictionary *)self->_sectionsToMetrics allKeys];
 
-  if ([v37 count])
+  if ([allKeys2 count])
   {
     v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@    %@sectionMetrics: {\n", v20, v4];
-    [v5 appendString:v38];
+    [string appendString:v38];
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v54 = v37;
-    obj = v37;
+    v54 = allKeys2;
+    obj = allKeys2;
     v39 = [obj countByEnumeratingWithState:&v59 objects:v68 count:16];
     if (v39)
     {
@@ -293,7 +293,7 @@
       {
         for (k = 0; k != v40; ++k)
         {
-          v43 = v5;
+          v43 = string;
           if (*v60 != v41)
           {
             objc_enumerationMutation(obj);
@@ -301,16 +301,16 @@
 
           v44 = *(*(&v59 + 1) + 8 * k);
           v45 = [(NSMutableDictionary *)self->_sectionsToMetrics objectForKeyedSubscript:v44];
-          v46 = [v45 _gkDescriptionWithChildren:a3 + 2];
-          v47 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-          v48 = [v46 stringByTrimmingCharactersInSet:v47];
+          v46 = [v45 _gkDescriptionWithChildren:children + 2];
+          whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+          v48 = [v46 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           v53 = v44;
           v4 = v58;
-          v5 = v43;
+          string = v43;
           [v43 appendFormat:@"        %@%@ - %@", v58, v53, v48];
 
-          self = v57;
+          self = selfCopy;
         }
 
         v40 = [obj countByEnumeratingWithState:&v59 objects:v68 count:16];
@@ -319,122 +319,122 @@
       while (v40);
     }
 
-    [v5 appendFormat:@"%@    }\n", v4];
+    [string appendFormat:@"%@    }\n", v4];
     v20 = &stru_28612D290;
-    v37 = v54;
+    allKeys2 = v54;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v5 appendFormat:&stru_28612D290, v51];
+    [string appendFormat:&stru_28612D290, v51];
   }
 
   else if (![(__CFString *)v20 length])
   {
-    [v5 appendFormat:@"%@}\n", v4];
+    [string appendFormat:@"%@}\n", v4];
   }
 
   v49 = _gkUnicodifyDescription();
 
-  return v5;
+  return string;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", objc_opt_class()];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKCollectionViewDataSource itemAtIndexPath:]", objc_msgSend(v6, "UTF8String"), 310];
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKCollectionViewDataSource itemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 310];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v7}];
   return 0;
 }
 
-- (id)indexPathsForItem:(id)a3
+- (id)indexPathsForItem:(id)item
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", objc_opt_class()];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKCollectionViewDataSource indexPathsForItem:]", objc_msgSend(v6, "UTF8String"), 316];
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKCollectionViewDataSource indexPathsForItem:]", objc_msgSend(lastPathComponent, "UTF8String"), 316];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v7}];
   return 0;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", objc_opt_class()];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-  v7 = [v6 lastPathComponent];
-  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v5, "-[GKCollectionViewDataSource collectionView:numberOfItemsInSection:]", objc_msgSend(v7, "UTF8String"), 327];
+  lastPathComponent = [v6 lastPathComponent];
+  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v5, "-[GKCollectionViewDataSource collectionView:numberOfItemsInSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 327];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v8}];
   return 0;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", objc_opt_class()];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-  v7 = [v6 lastPathComponent];
-  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v5, "-[GKCollectionViewDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(v7, "UTF8String"), 333];
+  lastPathComponent = [v6 lastPathComponent];
+  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v5, "-[GKCollectionViewDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 333];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v8}];
   return 0;
 }
 
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", objc_opt_class()];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-  v7 = [v6 lastPathComponent];
-  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v5, "-[GKCollectionViewDataSource removeItemAtIndexPath:completionHandler:]", objc_msgSend(v7, "UTF8String"), 339];
+  lastPathComponent = [v6 lastPathComponent];
+  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v5, "-[GKCollectionViewDataSource removeItemAtIndexPath:completionHandler:]", objc_msgSend(lastPathComponent, "UTF8String"), 339];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v8}];
 }
 
-- (void)configureCollectionView:(id)a3
+- (void)configureCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(GKCollectionViewDataSource *)self isRootDataSource])
   {
-    [objc_opt_class() registerSupplementaryViewClassesForKind:@"IncrementalReveal" withCollectionView:v4];
-    [objc_opt_class() registerSupplementaryViewClassesForKind:@"SearchBar" withCollectionView:v4];
-    [v4 _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"ClipArea"];
-    [v4 _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"SearchPlaceholderMetricKey"];
+    [objc_opt_class() registerSupplementaryViewClassesForKind:@"IncrementalReveal" withCollectionView:viewCopy];
+    [objc_opt_class() registerSupplementaryViewClassesForKind:@"SearchBar" withCollectionView:viewCopy];
+    [viewCopy _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"ClipArea"];
+    [viewCopy _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"SearchPlaceholderMetricKey"];
   }
 }
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4 updateNotifier:(id)a5
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info updateNotifier:(id)notifier
 {
-  v6 = a5;
+  notifierCopy = notifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__GKCollectionViewDataSource_refreshContentsForDataType_userInfo_updateNotifier___block_invoke;
   v8[3] = &unk_279669D38;
-  v9 = v6;
-  v7 = v6;
+  v9 = notifierCopy;
+  v7 = notifierCopy;
   [(GKCollectionViewDataSource *)self loadDataWithCompletionHandlerAndError:v8];
 }
 
-- (void)loadDataWithCompletionHandlerAndError:(id)a3
+- (void)loadDataWithCompletionHandlerAndError:(id)error
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", objc_opt_class()];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKCollectionViewDataSource loadDataWithCompletionHandlerAndError:]", objc_msgSend(v6, "UTF8String"), 378];
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKCollectionViewDataSource loadDataWithCompletionHandlerAndError:]", objc_msgSend(lastPathComponent, "UTF8String"), 378];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v7}];
 }
 
-- (id)searchKeyForSection:(int64_t)a3
+- (id)searchKeyForSection:(int64_t)section
 {
   sectionsToSearchKeys = self->_sectionsToSearchKeys;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -450,7 +450,7 @@
 
     else
     {
-      v9 = [(GKCollectionViewDataSource *)self delegate];
+      delegate = [(GKCollectionViewDataSource *)self delegate];
       while (1)
       {
         objc_opt_class();
@@ -459,13 +459,13 @@
           break;
         }
 
-        v7 = [v9 searchKeyForSection:a3];
-        v10 = [v9 delegate];
+        v7 = [delegate searchKeyForSection:section];
+        v9Delegate = [delegate delegate];
 
-        v9 = v10;
+        delegate = v9Delegate;
         if (v7)
         {
-          v9 = v10;
+          delegate = v9Delegate;
           goto LABEL_9;
         }
       }
@@ -478,9 +478,9 @@ LABEL_9:
   return v7;
 }
 
-- (void)setSearchKey:(id)a3 forSection:(int64_t)a4
+- (void)setSearchKey:(id)key forSection:(int64_t)section
 {
-  v9 = a3;
+  keyCopy = key;
   sectionsToSearchKeys = self->_sectionsToSearchKeys;
   if (!sectionsToSearchKeys)
   {
@@ -490,24 +490,24 @@ LABEL_9:
     sectionsToSearchKeys = self->_sectionsToSearchKeys;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMutableDictionary *)sectionsToSearchKeys setObject:v9 forKeyedSubscript:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:section];
+  [(NSMutableDictionary *)sectionsToSearchKeys setObject:keyCopy forKeyedSubscript:v8];
 }
 
-- (BOOL)item:(id)a3 matchesSearchTerms:(id)a4 inSection:(int64_t)a5
+- (BOOL)item:(id)item matchesSearchTerms:(id)terms inSection:(int64_t)section
 {
   v33 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && [v8 count])
+  itemCopy = item;
+  termsCopy = terms;
+  v9 = termsCopy;
+  if (termsCopy && [termsCopy count])
   {
     v20 = v9;
-    v21 = [(GKCollectionViewDataSource *)self searchKeyForSection:a5];
+    v21 = [(GKCollectionViewDataSource *)self searchKeyForSection:section];
     v10 = v21;
     if ([v21 length])
     {
-      v11 = [v22 valueForKeyPath:v21];
+      v11 = [itemCopy valueForKeyPath:v21];
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -594,15 +594,15 @@ uint64_t __64__GKCollectionViewDataSource_item_matchesSearchTerms_inSection___bl
   return result;
 }
 
-- (void)enumerateItemsAndIndexPathsUsingBlock:(id)a3
+- (void)enumerateItemsAndIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v21 = [(GKCollectionViewDataSource *)self numberOfSectionsInCollectionView:0];
   if (v21 >= 1)
   {
     v5 = 0;
     v6 = 0x277CCA000uLL;
-    v22 = self;
+    selfCopy = self;
     while (1)
     {
       v7 = [(GKCollectionViewDataSource *)self collectionView:0 numberOfItemsInSection:v5];
@@ -631,22 +631,22 @@ LABEL_9:
         v12 = MEMORY[0x277CCACA8];
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
         [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-        v14 = v4;
+        v14 = blockCopy;
         v15 = v5;
         v17 = v16 = v6;
-        v18 = [v17 lastPathComponent];
-        v19 = [v12 stringWithFormat:@"%@ (item != ((void*)0))\n[%s (%s:%d)]", v13, "-[GKCollectionViewDataSource enumerateItemsAndIndexPathsUsingBlock:]", objc_msgSend(v18, "UTF8String"), 456];
+        lastPathComponent = [v17 lastPathComponent];
+        v19 = [v12 stringWithFormat:@"%@ (item != ((void*)0))\n[%s (%s:%d)]", v13, "-[GKCollectionViewDataSource enumerateItemsAndIndexPathsUsingBlock:]", objc_msgSend(lastPathComponent, "UTF8String"), 456];
 
         v6 = v16;
         v5 = v15;
-        v4 = v14;
+        blockCopy = v14;
         v8 = v23;
 
         [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v19}];
-        self = v22;
+        self = selfCopy;
       }
 
-      v4[2](v4, v11, v10, &v24);
+      blockCopy[2](blockCopy, v11, v10, &v24);
       v20 = v24;
 
       if (v20)
@@ -671,8 +671,8 @@ LABEL_10:
     return 1;
   }
 
-  v3 = [(NSMutableDictionary *)self->_sectionsToSearchKeys allValues];
-  v4 = [v3 count];
+  allValues = [(NSMutableDictionary *)self->_sectionsToSearchKeys allValues];
+  v4 = [allValues count];
 
   if (v4)
   {
@@ -722,21 +722,21 @@ LABEL_10:
   return dataSourceMetricsInternal;
 }
 
-- (void)setDataSourceMetrics:(id)a3
+- (void)setDataSourceMetrics:(id)metrics
 {
-  v4 = [a3 copy];
+  v4 = [metrics copy];
   [(GKCollectionViewDataSource *)self setDataSourceMetricsInternal:v4];
 }
 
-- (void)updateSupplementaryMetricsForKey:(id)a3 usingBlock:(id)a4
+- (void)updateSupplementaryMetricsForKey:(id)key usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(GKCollectionViewDataSource *)self dataSourceMetrics];
-  v8 = [v9 supplementaryMetricsForKey:v7];
-  v6[2](v6, v8);
+  blockCopy = block;
+  keyCopy = key;
+  dataSourceMetrics = [(GKCollectionViewDataSource *)self dataSourceMetrics];
+  v8 = [dataSourceMetrics supplementaryMetricsForKey:keyCopy];
+  blockCopy[2](blockCopy, v8);
 
-  [v9 replaceSupplementaryMetrics:v8 forKey:v7];
+  [dataSourceMetrics replaceSupplementaryMetrics:v8 forKey:keyCopy];
 }
 
 - (GKSectionMetrics)defaultSectionMetrics
@@ -753,65 +753,65 @@ LABEL_10:
   return defaultSectionMetricsInternal;
 }
 
-- (void)setDefaultSectionMetrics:(id)a3
+- (void)setDefaultSectionMetrics:(id)metrics
 {
-  v4 = [a3 copy];
+  v4 = [metrics copy];
   [(GKCollectionViewDataSource *)self setDefaultSectionMetricsInternal:v4];
 }
 
-- (id)metricsForSection:(int64_t)a3
+- (id)metricsForSection:(int64_t)section
 {
-  if (a3 < 0)
+  if (section < 0)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (section >= 0)\n[%s (%s:%d)]", v6, "-[GKCollectionViewDataSource metricsForSection:]", objc_msgSend(v8, "UTF8String"), 530];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (section >= 0)\n[%s (%s:%d)]", v6, "-[GKCollectionViewDataSource metricsForSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 530];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
   sectionsToMetrics = self->_sectionsToMetrics;
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v12 = [(NSMutableDictionary *)sectionsToMetrics objectForKeyedSubscript:v11];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:section];
+  defaultSectionMetrics = [(NSMutableDictionary *)sectionsToMetrics objectForKeyedSubscript:v11];
 
-  if (!v12)
+  if (!defaultSectionMetrics)
   {
-    v12 = [(GKCollectionViewDataSource *)self defaultSectionMetrics];
+    defaultSectionMetrics = [(GKCollectionViewDataSource *)self defaultSectionMetrics];
   }
 
-  return v12;
+  return defaultSectionMetrics;
 }
 
-- (id)metricsForSectionInternal:(int64_t)a3
+- (id)metricsForSectionInternal:(int64_t)internal
 {
-  if (a3 < 0)
+  if (internal < 0)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (section >= 0)\n[%s (%s:%d)]", v6, "-[GKCollectionViewDataSource metricsForSectionInternal:]", objc_msgSend(v8, "UTF8String"), 539];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (section >= 0)\n[%s (%s:%d)]", v6, "-[GKCollectionViewDataSource metricsForSectionInternal:]", objc_msgSend(lastPathComponent, "UTF8String"), 539];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
   sectionsToMetrics = self->_sectionsToMetrics;
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v12 = [(NSMutableDictionary *)sectionsToMetrics objectForKeyedSubscript:v11];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:internal];
+  defaultSectionMetricsInternal = [(NSMutableDictionary *)sectionsToMetrics objectForKeyedSubscript:v11];
 
-  if (!v12)
+  if (!defaultSectionMetricsInternal)
   {
-    v12 = [(GKCollectionViewDataSource *)self defaultSectionMetricsInternal];
+    defaultSectionMetricsInternal = [(GKCollectionViewDataSource *)self defaultSectionMetricsInternal];
   }
 
-  return v12;
+  return defaultSectionMetricsInternal;
 }
 
-- (void)setMetrics:(id)a3 forSection:(int64_t)a4
+- (void)setMetrics:(id)metrics forSection:(int64_t)section
 {
-  v10 = a3;
+  metricsCopy = metrics;
   sectionsToMetrics = self->_sectionsToMetrics;
   if (!sectionsToMetrics)
   {
@@ -822,28 +822,28 @@ LABEL_10:
     sectionsToMetrics = self->_sectionsToMetrics;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMutableDictionary *)sectionsToMetrics setObject:v10 forKeyedSubscript:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:section];
+  [(NSMutableDictionary *)sectionsToMetrics setObject:metricsCopy forKeyedSubscript:v9];
 }
 
-- (id)createMetricsTreeWithGridLayout:(id)a3
+- (id)createMetricsTreeWithGridLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(GKCollectionViewDataSource *)self delegate];
+  layoutCopy = layout;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(GKCollectionViewDataSource *)self delegate];
-    [v7 updateMetrics];
+    delegate2 = [(GKCollectionViewDataSource *)self delegate];
+    [delegate2 updateMetrics];
   }
 
   v8 = [GKDataSourceMetrics dataSourceMetricsWithMetrics:self->_dataSourceMetricsInternal dataSource:self];
-  v9 = [v4 collectionView];
-  [v8 configureCollectionView:v9];
+  collectionView = [layoutCopy collectionView];
+  [v8 configureCollectionView:collectionView];
 
-  v10 = [v4 collectionView];
-  v11 = [(GKCollectionViewDataSource *)self numberOfSectionsInCollectionView:v10];
+  collectionView2 = [layoutCopy collectionView];
+  v11 = [(GKCollectionViewDataSource *)self numberOfSectionsInCollectionView:collectionView2];
 
   if (v11 >= 1)
   {
@@ -853,8 +853,8 @@ LABEL_10:
       if (v13)
       {
         [v8 setMetrics:v13 forSection:i];
-        v14 = [v4 collectionView];
-        [v13 configureCollectionView:v14];
+        collectionView3 = [layoutCopy collectionView];
+        [v13 configureCollectionView:collectionView3];
       }
     }
   }
@@ -866,18 +866,18 @@ LABEL_10:
 
 - (BOOL)isRootDataSource
 {
-  v2 = [(GKCollectionViewDataSource *)self delegate];
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)collectionView:(id)a3 defaultViewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view defaultViewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   if (![(GKCollectionViewDataSource *)self isRootDataSource])
   {
 LABEL_16:
@@ -885,24 +885,24 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ([v9 isEqualToString:@"IncrementalReveal"])
+  if ([kindCopy isEqualToString:@"IncrementalReveal"])
   {
-    v11 = [v8 _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:v9 forIndexPath:v10];
+    v11 = [viewCopy _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:kindCopy forIndexPath:pathCopy];
     [v11 setShowMoreAction:sel_didTouchShowMore_];
     goto LABEL_17;
   }
 
-  if (![v9 isEqualToString:@"SearchBar"])
+  if (![kindCopy isEqualToString:@"SearchBar"])
   {
-    if ([v9 isEqualToString:@"ClipArea"])
+    if ([kindCopy isEqualToString:@"ClipArea"])
     {
-      v11 = [v8 _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:v9 forIndexPath:v10];
+      v11 = [viewCopy _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:kindCopy forIndexPath:pathCopy];
       goto LABEL_17;
     }
 
-    if ([v9 isEqualToString:@"SearchPlaceholderMetricKey"])
+    if ([kindCopy isEqualToString:@"SearchPlaceholderMetricKey"])
     {
-      v11 = [v8 _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:v9 forIndexPath:v10];
+      v11 = [viewCopy _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:kindCopy forIndexPath:pathCopy];
       [v11 setNoContentTitle:@" "];
       v30 = GKGameCenterUIFrameworkBundle();
       v31 = GKGetLocalizedStringFromTableInBundle();
@@ -916,7 +916,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v11 = [v8 _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:v9 forIndexPath:v10];
+  v11 = [viewCopy _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:kindCopy forIndexPath:pathCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = [WeakRetained conformsToProtocol:&unk_2861CFFF0];
 
@@ -926,8 +926,8 @@ LABEL_16:
     v15 = objc_loadWeakRetained(&self->_delegate);
     v16 = [v14 stringWithFormat:@"%@ doesn't conform to UISearchBarDelegate", v15];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewDataSource.m"];
-    v18 = [v17 lastPathComponent];
-    v19 = [v14 stringWithFormat:@"%@ ([_delegate conformsToProtocol:@protocol(UISearchBarDelegate)])\n[%s (%s:%d)]", v16, "-[GKCollectionViewDataSource collectionView:defaultViewForSupplementaryElementOfKind:atIndexPath:]", objc_msgSend(v18, "UTF8String"), 592];
+    lastPathComponent = [v17 lastPathComponent];
+    v19 = [v14 stringWithFormat:@"%@ ([_delegate conformsToProtocol:@protocol(UISearchBarDelegate)])\n[%s (%s:%d)]", v16, "-[GKCollectionViewDataSource collectionView:defaultViewForSupplementaryElementOfKind:atIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 592];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v19}];
   }
@@ -946,17 +946,17 @@ LABEL_16:
     [v24 resignFirstResponder];
     if (v24)
     {
-      v25 = [v24 text];
-      v26 = [v25 length];
+      text = [v24 text];
+      v26 = [text length];
 
       if (v26)
       {
-        v27 = [v24 text];
-        v28 = [v11 searchBar];
-        [v28 setText:v27];
+        text2 = [v24 text];
+        searchBar = [v11 searchBar];
+        [searchBar setText:text2];
 
-        v29 = [v11 searchBar];
-        [v29 becomeFirstResponder];
+        searchBar2 = [v11 searchBar];
+        [searchBar2 becomeFirstResponder];
       }
     }
   }
@@ -966,36 +966,36 @@ LABEL_17:
   return v11;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(GKCollectionViewDataSource *)self collectionView:v8 evaluateFactoryForSupplementaryElementOfKind:v9 atIndexPath:v10 isRecursive:0];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v11 = [(GKCollectionViewDataSource *)self collectionView:viewCopy evaluateFactoryForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy isRecursive:0];
   if (!v11)
   {
-    v11 = [(GKCollectionViewDataSource *)self collectionView:v8 defaultViewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+    v11 = [(GKCollectionViewDataSource *)self collectionView:viewCopy defaultViewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 evaluateFactoryForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5 isRecursive:(BOOL)a6
+- (id)collectionView:(id)view evaluateFactoryForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path isRecursive:(BOOL)recursive
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 collectionViewLayout];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  collectionViewLayout = [viewCopy collectionViewLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 attributesForSupplementaryIndexPath:v11];
-    v14 = [v13 supplementaryMetrics];
-    if ([v14 reusableViewClass])
+    v13 = [collectionViewLayout attributesForSupplementaryIndexPath:pathCopy];
+    supplementaryMetrics = [v13 supplementaryMetrics];
+    if ([supplementaryMetrics reusableViewClass])
     {
-      v15 = [v14 reusableViewClass];
-      v16 = [v14 kind];
-      v17 = [v9 _gkDequeueSupplementaryViewForClass:v15 ofKind:v16 forIndexPath:v11];
+      reusableViewClass = [supplementaryMetrics reusableViewClass];
+      kind = [supplementaryMetrics kind];
+      v17 = [viewCopy _gkDequeueSupplementaryViewForClass:reusableViewClass ofKind:kind forIndexPath:pathCopy];
 
       if (v17)
       {
@@ -1008,8 +1008,8 @@ LABEL_17:
     }
   }
 
-  v18 = [(GKCollectionViewDataSource *)self supplementaryViewFactoryForKind:v10];
-  v17 = [v18 collectionView:v9 viewForSupplementaryElementOfKind:v10 atIndexPath:v11];
+  v18 = [(GKCollectionViewDataSource *)self supplementaryViewFactoryForKind:kindCopy];
+  v17 = [v18 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
 
 LABEL_7:
 
@@ -1036,136 +1036,136 @@ LABEL_7:
   return v6;
 }
 
-- (void)notifyItemsInsertedAtIndexPaths:(id)a3
+- (void)notifyItemsInsertedAtIndexPaths:(id)paths
 {
-  v5 = a3;
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  pathsCopy = paths;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dataSource:self didInsertItemsAtIndexPaths:v5];
+    [delegate dataSource:self didInsertItemsAtIndexPaths:pathsCopy];
   }
 }
 
-- (void)notifyItemsRemovedAtIndexPaths:(id)a3
+- (void)notifyItemsRemovedAtIndexPaths:(id)paths
 {
-  v5 = a3;
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  pathsCopy = paths;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dataSource:self didRemoveItemsAtIndexPaths:v5];
+    [delegate dataSource:self didRemoveItemsAtIndexPaths:pathsCopy];
   }
 }
 
-- (void)notifyItemsRefreshedAtIndexPaths:(id)a3
+- (void)notifyItemsRefreshedAtIndexPaths:(id)paths
 {
-  v5 = a3;
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  pathsCopy = paths;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dataSource:self didRefreshItemsAtIndexPaths:v5];
+    [delegate dataSource:self didRefreshItemsAtIndexPaths:pathsCopy];
   }
 }
 
-- (void)notifyItemMovedFromIndexPath:(id)a3 toIndexPaths:(id)a4
+- (void)notifyItemMovedFromIndexPath:(id)path toIndexPaths:(id)paths
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(GKCollectionViewDataSource *)self delegate];
+  pathCopy = path;
+  pathsCopy = paths;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 dataSource:self didMoveItemAtIndexPath:v8 toIndexPath:v6];
+    [delegate dataSource:self didMoveItemAtIndexPath:pathCopy toIndexPath:pathsCopy];
   }
 }
 
-- (void)notifySectionsInserted:(id)a3
+- (void)notifySectionsInserted:(id)inserted
 {
-  v5 = a3;
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  insertedCopy = inserted;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dataSource:self didInsertSections:v5];
+    [delegate dataSource:self didInsertSections:insertedCopy];
   }
 }
 
-- (void)notifySectionsRemoved:(id)a3
+- (void)notifySectionsRemoved:(id)removed
 {
-  v5 = a3;
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  removedCopy = removed;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dataSource:self didRemoveSections:v5];
+    [delegate dataSource:self didRemoveSections:removedCopy];
   }
 }
 
-- (void)notifySectionsRefreshed:(id)a3
+- (void)notifySectionsRefreshed:(id)refreshed
 {
-  v5 = a3;
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  refreshedCopy = refreshed;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dataSource:self didRefreshSections:v5];
+    [delegate dataSource:self didRefreshSections:refreshedCopy];
   }
 }
 
-- (void)notifySectionMovedFrom:(int64_t)a3 to:(int64_t)a4
+- (void)notifySectionMovedFrom:(int64_t)from to:(int64_t)to
 {
-  v7 = [(GKCollectionViewDataSource *)self delegate];
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 dataSource:self didMoveSection:a3 toSection:a4];
+    [delegate dataSource:self didMoveSection:from toSection:to];
   }
 }
 
 - (void)notifySectionsMovedWithItems
 {
-  v3 = [(GKCollectionViewDataSource *)self delegate];
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 dataSourceDidMoveSectionsWithItems:self];
+    [delegate dataSourceDidMoveSectionsWithItems:self];
   }
 }
 
 - (void)notifyDidReloadData
 {
-  v3 = [(GKCollectionViewDataSource *)self delegate];
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 dataSourceDidReloadData:self];
+    [delegate dataSourceDidReloadData:self];
   }
 }
 
-- (void)notifyPlaceholderUpdated:(BOOL)a3
+- (void)notifyPlaceholderUpdated:(BOOL)updated
 {
-  v3 = a3;
-  v5 = [(GKCollectionViewDataSource *)self delegate];
+  updatedCopy = updated;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 dataSource:self didUpdatePlaceholderVisibility:v3];
+    [delegate dataSource:self didUpdatePlaceholderVisibility:updatedCopy];
   }
 }
 
-- (void)notifyBatchUpdate:(id)a3
+- (void)notifyBatchUpdate:(id)update
 {
-  v5 = a3;
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  updateCopy = update;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dataSource:self performBatchUpdate:v5 complete:0];
+    [delegate dataSource:self performBatchUpdate:updateCopy complete:0];
   }
 }
 
-- (void)notifyBatchUpdate:(id)a3 complete:(id)a4
+- (void)notifyBatchUpdate:(id)update complete:(id)complete
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKCollectionViewDataSource *)self delegate];
+  updateCopy = update;
+  completeCopy = complete;
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 dataSource:self performBatchUpdate:v6 complete:v7];
+    [delegate dataSource:self performBatchUpdate:updateCopy complete:completeCopy];
   }
 
-  else if (v7)
+  else if (completeCopy)
   {
     v9 = MEMORY[0x277D0C2A0];
     v10 = *MEMORY[0x277D0C2A0];
@@ -1178,22 +1178,22 @@ LABEL_7:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v8;
+      v15 = delegate;
       _os_log_impl(&dword_24DE53000, v10, OS_LOG_TYPE_INFO, "no delegate, completing immediately! (self:%@ delegate:%@)", &v12, 0x16u);
     }
 
-    v7[2](v7);
+    completeCopy[2](completeCopy);
   }
 }
 
-- (id)targetForAction:(SEL)a3
+- (id)targetForAction:(SEL)action
 {
-  v4 = [(GKCollectionViewDataSource *)self delegate];
+  delegate = [(GKCollectionViewDataSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = v4;
+    v5 = delegate;
 LABEL_5:
     v6 = v5;
     goto LABEL_7;
@@ -1202,7 +1202,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 targetForAction:a3];
+    v5 = [delegate targetForAction:action];
     goto LABEL_5;
   }
 
@@ -1219,10 +1219,10 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (void)registerSupplementaryViewOfKind:(id)a3 withFactory:(id)a4
+- (void)registerSupplementaryViewOfKind:(id)kind withFactory:(id)factory
 {
-  v10 = a3;
-  v6 = a4;
+  kindCopy = kind;
+  factoryCopy = factory;
   kindsToFactories = self->_kindsToFactories;
   if (!kindsToFactories)
   {
@@ -1233,14 +1233,14 @@ LABEL_7:
     kindsToFactories = self->_kindsToFactories;
   }
 
-  [(NSMutableDictionary *)kindsToFactories setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)kindsToFactories setObject:factoryCopy forKeyedSubscript:kindCopy];
 }
 
-- (void)registerSupplementaryViewOfKind:(id)a3 withClass:(Class)a4 target:(id)a5 configurator:(SEL)a6
+- (void)registerSupplementaryViewOfKind:(id)kind withClass:(Class)class target:(id)target configurator:(SEL)configurator
 {
-  v10 = a3;
-  v11 = [GKSupplementaryViewFactory factoryForClass:a4 target:a5 configurator:a6];
-  [(GKCollectionViewDataSource *)self registerSupplementaryViewOfKind:v10 withFactory:v11];
+  kindCopy = kind;
+  v11 = [GKSupplementaryViewFactory factoryForClass:class target:target configurator:configurator];
+  [(GKCollectionViewDataSource *)self registerSupplementaryViewOfKind:kindCopy withFactory:v11];
 }
 
 @end

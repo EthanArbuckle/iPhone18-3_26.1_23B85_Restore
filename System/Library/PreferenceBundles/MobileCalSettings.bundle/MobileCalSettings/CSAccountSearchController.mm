@@ -1,17 +1,17 @@
 @interface CSAccountSearchController
 - (CSAccountSearchController)init;
-- (id)_grantedDelegateFromAutocompleteResult:(id)a3;
+- (id)_grantedDelegateFromAutocompleteResult:(id)result;
 - (id)specifiers;
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidFinish:(id)a3;
-- (void)didDismissViewControllerSavingNewDelegate:(BOOL)a3;
-- (void)didModifyDelegate:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidFinish:(id)finish;
+- (void)didDismissViewControllerSavingNewDelegate:(BOOL)delegate;
+- (void)didModifyDelegate:(id)delegate;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 @end
 
 @implementation CSAccountSearchController
@@ -43,69 +43,69 @@
     [(UISearchController *)v2->_searchController setObscuresBackgroundDuringPresentation:0];
     [(UISearchController *)v2->_searchController setHidesNavigationBarDuringPresentation:1];
     v11 = v2->_searchController;
-    v12 = [(CSAccountSearchController *)v2 navigationItem];
-    [v12 setSearchController:v11];
+    navigationItem = [(CSAccountSearchController *)v2 navigationItem];
+    [navigationItem setSearchController:v11];
 
-    v13 = [(CSAccountSearchController *)v2 navigationItem];
-    [v13 setHidesSearchBarWhenScrolling:0];
+    navigationItem2 = [(CSAccountSearchController *)v2 navigationItem];
+    [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
-    v14 = [(UISearchController *)v2->_searchController searchBar];
-    [v14 setAutocapitalizationType:0];
-    [v14 setAutocorrectionType:1];
+    searchBar = [(UISearchController *)v2->_searchController searchBar];
+    [searchBar setAutocapitalizationType:0];
+    [searchBar setAutocorrectionType:1];
   }
 
   return v2;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = CSAccountSearchController;
-  v4 = a3;
-  [(CSAccountSearchController *)&v9 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"CSSourceKey", v9.receiver, v9.super_class}];
+  specifierCopy = specifier;
+  [(CSAccountSearchController *)&v9 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"CSSourceKey", v9.receiver, v9.super_class}];
   source = self->_source;
   self->_source = v5;
 
-  v7 = [v4 propertyForKey:@"CSParentControllerKey"];
+  v7 = [specifierCopy propertyForKey:@"CSParentControllerKey"];
 
   objc_storeWeak(&self->_accountController, v7);
-  v8 = [(EKSource *)self->_source sourceIdentifier];
-  [(CNAutocompleteFetchContext *)self->_fetchContext setSendingAddressAccountIdentifier:v8];
+  sourceIdentifier = [(EKSource *)self->_source sourceIdentifier];
+  [(CNAutocompleteFetchContext *)self->_fetchContext setSendingAddressAccountIdentifier:sourceIdentifier];
 }
 
-- (void)didDismissViewControllerSavingNewDelegate:(BOOL)a3
+- (void)didDismissViewControllerSavingNewDelegate:(BOOL)delegate
 {
-  if (a3)
+  if (delegate)
   {
     [(CSAccountSearchController *)self settingsNavigationProxy_pop];
   }
 }
 
-- (void)didModifyDelegate:(id)a3
+- (void)didModifyDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_accountController);
-  [WeakRetained didModifyDelegate:v4];
+  [WeakRetained didModifyDelegate:delegateCopy];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v9 = a3;
-  if (([v9 isActive] & 1) == 0)
+  controllerCopy = controller;
+  if (([controllerCopy isActive] & 1) == 0)
   {
     [(CNCancelable *)self->_currentFetchRequest cancel];
   }
 
-  v4 = [v9 searchBar];
-  v5 = [v4 text];
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
 
   [(CNCancelable *)self->_currentFetchRequest cancel];
   [(NSMutableArray *)self->_searchResults removeAllObjects];
   v6 = +[CNAutocompleteFetchRequest request];
   [v6 setFetchContext:self->_fetchContext];
   [v6 setSearchType:3];
-  [v6 setSearchString:v5];
+  [v6 setSearchString:text];
   [v6 setIncludeCalendarServers:1];
   [v6 setIncludeRecents:1];
   [v6 setIncludePredictions:1];
@@ -149,11 +149,11 @@
           v7 = *(*(&v22 + 1) + 8 * v6);
           v8 = [NSBundle bundleForClass:objc_opt_class()];
           v9 = [v8 localizedStringForKey:@"Format string for delegate search results" value:@"%@ (%@)" table:@"MobileCalSettings"];
-          v10 = [v7 displayName];
-          v11 = [v7 value];
-          v12 = [v11 address];
-          v13 = [v12 stringRemovingMailto];
-          v14 = [NSString localizedStringWithFormat:v9, v10, v13];
+          displayName = [v7 displayName];
+          value = [v7 value];
+          address = [value address];
+          stringRemovingMailto = [address stringRemovingMailto];
+          v14 = [NSString localizedStringWithFormat:v9, displayName, stringRemovingMailto];
 
           v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:3 edit:0];
           [v21 addObject:v15];
@@ -177,12 +177,12 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   searchResults = self->_searchResults;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v13 = [(NSMutableArray *)searchResults objectAtIndexedSubscript:v8];
   v9 = [(CSAccountSearchController *)self _grantedDelegateFromAutocompleteResult:v13];
@@ -196,20 +196,20 @@
   [(CSAccountSearchController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   v6 = kCSLogHandle;
   if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v7 = v6;
     *buf = 134217984;
-    v14 = [v5 count];
+    v14 = [resultsCopy count];
     _os_log_impl(&def_F7BC, v7, OS_LOG_TYPE_DEBUG, "autocompleteFetch received %lu results", buf, 0xCu);
   }
 
   v8 = [NSPredicate predicateWithBlock:&stru_20CE8];
-  v9 = [v5 filteredArrayUsingPredicate:v8];
+  v9 = [resultsCopy filteredArrayUsingPredicate:v8];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -221,19 +221,19 @@
   dispatch_async(&_dispatch_main_q, v11);
 }
 
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = kCSLogHandle;
   if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&def_F7BC, v5, OS_LOG_TYPE_DEBUG, "autocompleteFetch failed with error: %@", &v6, 0xCu);
   }
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
   v3 = kCSLogHandle;
   if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
@@ -243,7 +243,7 @@
   }
 }
 
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity
 {
   v3 = kCSLogHandle;
   if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
@@ -255,7 +255,7 @@
   dispatch_async(&_dispatch_main_q, &stru_20D28);
 }
 
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity
 {
   v3 = kCSLogHandle;
   if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEBUG))
@@ -267,15 +267,15 @@
   dispatch_async(&_dispatch_main_q, &stru_20D48);
 }
 
-- (id)_grantedDelegateFromAutocompleteResult:(id)a3
+- (id)_grantedDelegateFromAutocompleteResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_opt_new();
-  v5 = [v3 displayName];
-  [v4 setDisplayName:v5];
+  displayName = [resultCopy displayName];
+  [v4 setDisplayName:displayName];
 
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:EKDirectoryRecordPrincipalPathKey];
+  userInfo = [resultCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:EKDirectoryRecordPrincipalPathKey];
 
   if (v7)
   {
@@ -284,9 +284,9 @@
 
   else
   {
-    v8 = [v3 value];
-    v9 = [v8 address];
-    [v4 setUri:v9];
+    value = [resultCopy value];
+    address = [value address];
+    [v4 setUri:address];
   }
 
   [v4 setPermission:1];

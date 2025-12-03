@@ -1,7 +1,7 @@
 @interface CBRemoteSetupConfiguringViewController
 - (void)setupView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -15,25 +15,25 @@
   [(CBRemoteSetupConfiguringViewController *)self setupView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CBRemoteSetupConfiguringViewController;
-  [(CBRemoteSetupConfiguringViewController *)&v6 viewDidAppear:a3];
-  v4 = [(CBRemoteSetupConfiguringViewController *)self activityView];
+  [(CBRemoteSetupConfiguringViewController *)&v6 viewDidAppear:appear];
+  activityView = [(CBRemoteSetupConfiguringViewController *)self activityView];
 
-  if (v4)
+  if (activityView)
   {
-    v5 = [(CBRemoteSetupConfiguringViewController *)self activityView];
-    [v5 startAnimating];
+    activityView2 = [(CBRemoteSetupConfiguringViewController *)self activityView];
+    [activityView2 startAnimating];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CBRemoteSetupConfiguringViewController;
-  [(CBRemoteSetupConfiguringViewController *)&v5 viewDidDisappear:a3];
+  [(CBRemoteSetupConfiguringViewController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
@@ -41,72 +41,72 @@
 - (void)setupView
 {
   [(CBRemoteSetupConfiguringViewController *)self setModalInPresentation:1];
-  v3 = [(CBRemoteSetupConfiguringViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(CBRemoteSetupConfiguringViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(CBRemoteSetupConfiguringViewController *)self headerView];
-  [v4 setTitleHyphenationFactor:0.0];
+  headerView = [(CBRemoteSetupConfiguringViewController *)self headerView];
+  [headerView setTitleHyphenationFactor:0.0];
 
   v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   [(CBRemoteSetupConfiguringViewController *)self setActivityView:v5];
 
-  v6 = [(CBRemoteSetupConfiguringViewController *)self activityView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityView = [(CBRemoteSetupConfiguringViewController *)self activityView];
+  [activityView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v7 = objc_alloc_init(UIView);
   [(CBRemoteSetupConfiguringViewController *)self setContainerView:v7];
 
   objc_initWeak(&location, self);
-  v8 = [(CBRemoteSetupConfiguringViewController *)self containerView];
+  containerView = [(CBRemoteSetupConfiguringViewController *)self containerView];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10001C9A8;
   v36[3] = &unk_10007DDC8;
   objc_copyWeak(&v37, &location);
-  [(CBRemoteSetupConfiguringViewController *)self addContentSubView:v8 heightConstraintForLayout:v36];
+  [(CBRemoteSetupConfiguringViewController *)self addContentSubView:containerView heightConstraintForLayout:v36];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  v11 = [(CBRemoteSetupConfiguringViewController *)self containerView];
-  v12 = [(CBRemoteSetupConfiguringViewController *)self activityView];
-  [v11 addSubview:v12];
+  containerView2 = [(CBRemoteSetupConfiguringViewController *)self containerView];
+  activityView2 = [(CBRemoteSetupConfiguringViewController *)self activityView];
+  [containerView2 addSubview:activityView2];
 
-  v35 = [(CBRemoteSetupConfiguringViewController *)self activityView];
-  v33 = [v35 leadingAnchor];
-  v34 = [(CBRemoteSetupConfiguringViewController *)self containerView];
-  v32 = [v34 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  activityView3 = [(CBRemoteSetupConfiguringViewController *)self activityView];
+  leadingAnchor = [activityView3 leadingAnchor];
+  containerView3 = [(CBRemoteSetupConfiguringViewController *)self containerView];
+  leadingAnchor2 = [containerView3 leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[0] = v31;
-  v30 = [(CBRemoteSetupConfiguringViewController *)self activityView];
-  v28 = [v30 trailingAnchor];
-  v29 = [(CBRemoteSetupConfiguringViewController *)self containerView];
-  v27 = [v29 trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  activityView4 = [(CBRemoteSetupConfiguringViewController *)self activityView];
+  trailingAnchor = [activityView4 trailingAnchor];
+  containerView4 = [(CBRemoteSetupConfiguringViewController *)self containerView];
+  trailingAnchor2 = [containerView4 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[1] = v26;
-  v25 = [(CBRemoteSetupConfiguringViewController *)self activityView];
-  v24 = [v25 lastBaselineAnchor];
-  v13 = [(CBRemoteSetupConfiguringViewController *)self containerView];
-  v14 = [v13 topAnchor];
+  activityView5 = [(CBRemoteSetupConfiguringViewController *)self activityView];
+  lastBaselineAnchor = [activityView5 lastBaselineAnchor];
+  containerView5 = [(CBRemoteSetupConfiguringViewController *)self containerView];
+  topAnchor = [containerView5 topAnchor];
   v15 = 96.0;
-  if (v10 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v15 = 106.0;
   }
 
-  v16 = [v24 constraintEqualToAnchor:v14 constant:v15];
+  v16 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:v15];
   v39[2] = v16;
-  v17 = [(CBRemoteSetupConfiguringViewController *)self containerView];
-  v18 = [v17 bottomAnchor];
-  v19 = [(CBRemoteSetupConfiguringViewController *)self activityView];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintGreaterThanOrEqualToAnchor:v20];
+  containerView6 = [(CBRemoteSetupConfiguringViewController *)self containerView];
+  bottomAnchor = [containerView6 bottomAnchor];
+  activityView6 = [(CBRemoteSetupConfiguringViewController *)self activityView];
+  bottomAnchor2 = [activityView6 bottomAnchor];
+  v21 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v39[3] = v21;
   v22 = [NSArray arrayWithObjects:v39 count:4];
   [NSLayoutConstraint activateConstraints:v22];
 
-  v23 = [(CBRemoteSetupConfiguringViewController *)self view];
-  [v23 setNeedsLayout];
+  view2 = [(CBRemoteSetupConfiguringViewController *)self view];
+  [view2 setNeedsLayout];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);

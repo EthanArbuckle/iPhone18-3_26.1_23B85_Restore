@@ -1,12 +1,12 @@
 @interface PXStoryMiroAssetInfo
 + (id)infoForUsedPhoto;
-+ (id)infoWithData:(id)a3;
-- (PXStoryMiroAssetInfo)initWithData:(id)a3;
++ (id)infoWithData:(id)data;
+- (PXStoryMiroAssetInfo)initWithData:(id)data;
 @end
 
 @implementation PXStoryMiroAssetInfo
 
-- (PXStoryMiroAssetInfo)initWithData:(id)a3
+- (PXStoryMiroAssetInfo)initWithData:(id)data
 {
   v4.receiver = self;
   v4.super_class = PXStoryMiroAssetInfo;
@@ -21,17 +21,17 @@
   return v2;
 }
 
-+ (id)infoWithData:(id)a3
++ (id)infoWithData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   v5 = off_1E771FF90;
   if (v4 != 5)
   {
     v5 = off_1E771FF98;
   }
 
-  v6 = [objc_alloc(*v5) initWithData:v3];
+  v6 = [objc_alloc(*v5) initWithData:dataCopy];
 
   return v6;
 }

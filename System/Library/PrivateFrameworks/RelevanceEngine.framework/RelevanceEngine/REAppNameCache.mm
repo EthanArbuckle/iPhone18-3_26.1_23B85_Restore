@@ -1,6 +1,6 @@
 @interface REAppNameCache
 - (id)_init;
-- (id)localizedNameForApplicationWithIdentifier:(id)a3;
+- (id)localizedNameForApplicationWithIdentifier:(id)identifier;
 @end
 
 @implementation REAppNameCache
@@ -9,31 +9,31 @@
 {
   v8.receiver = self;
   v8.super_class = REAppNameCache;
-  v2 = [(RESingleton *)&v8 _init];
-  if (v2)
+  _init = [(RESingleton *)&v8 _init];
+  if (_init)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    v4 = v2[1];
-    v2[1] = v3;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v4 = _init[1];
+    _init[1] = dictionary;
 
     v5 = objc_opt_new();
-    v6 = v2[2];
-    v2[2] = v5;
+    v6 = _init[2];
+    _init[2] = v5;
   }
 
-  return v2;
+  return _init;
 }
 
-- (id)localizedNameForApplicationWithIdentifier:(id)a3
+- (id)localizedNameForApplicationWithIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  IsRemote = REApplicationIsRemote(v4);
-  v6 = [[_REAppKey alloc] initWithIdentifier:v4 remote:IsRemote];
+  identifierCopy = identifier;
+  IsRemote = REApplicationIsRemote(identifierCopy);
+  v6 = [[_REAppKey alloc] initWithIdentifier:identifierCopy remote:IsRemote];
   [(NSLock *)self->_lock lock];
-  v7 = [(NSMutableDictionary *)self->_nameCache objectForKeyedSubscript:v6];
+  localizedName = [(NSMutableDictionary *)self->_nameCache objectForKeyedSubscript:v6];
   [(NSLock *)self->_lock unlock];
-  if (!v7)
+  if (!localizedName)
   {
     if (IsRemote)
     {
@@ -79,23 +79,23 @@
       [v10 loadAppsWithCompletion:v18 completionQueue:v11];
       dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
       [(NSLock *)self->_lock lock];
-      v7 = [(NSMutableDictionary *)self->_nameCache objectForKeyedSubscript:v6];
+      localizedName = [(NSMutableDictionary *)self->_nameCache objectForKeyedSubscript:v6];
       [(NSLock *)self->_lock unlock];
     }
 
     else
     {
       v17 = 0;
-      v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v17];
+      v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v17];
       v11 = v17;
-      v7 = [v10 localizedName];
+      localizedName = [v10 localizedName];
       [(NSLock *)self->_lock lock];
-      [(NSMutableDictionary *)self->_nameCache setObject:v7 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_nameCache setObject:localizedName forKeyedSubscript:v6];
       [(NSLock *)self->_lock unlock];
     }
   }
 
-  v14 = v7;
+  v14 = localizedName;
 
   v15 = *MEMORY[0x277D85DE8];
 

@@ -20,7 +20,7 @@
       (*v8)(v7, AFSecurityDigestibleChunksProviderData, 4);
     }
 
-    v9 = [a1 dataUsingEncoding:4];
+    v9 = [self dataUsingEncoding:4];
     [v9 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
     if ((a3 & 1) == 0)
     {

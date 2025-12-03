@@ -1,20 +1,20 @@
 @interface PKBankConnectProvisioningFlowManager
 - (FKBankConnectProvisioningFlowDelegate)delegate;
-- (PKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)a3 institution:(id)a4;
+- (PKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)pass institution:(id)institution;
 @end
 
 @implementation PKBankConnectProvisioningFlowManager
 
-- (PKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)a3 institution:(id)a4
+- (PKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)pass institution:(id)institution
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  institutionCopy = institution;
   v12.receiver = self;
   v12.super_class = PKBankConnectProvisioningFlowManager;
   v8 = [(PKBankConnectProvisioningFlowManager *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(getFKBankConnectProvisioningFlowManagerClass[0]()) initWithPaymentPass:v6 institution:v7];
+    v9 = [objc_alloc(getFKBankConnectProvisioningFlowManagerClass[0]()) initWithPaymentPass:passCopy institution:institutionCopy];
     manager = v8->_manager;
     v8->_manager = v9;
   }

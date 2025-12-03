@@ -1,23 +1,23 @@
 @interface CUCaptureController
-- (BOOL)_canBeginCaptureCheckAvailability:(BOOL)a3 error:(id *)a4;
-- (BOOL)_internalCaptureStillImageWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)_internalStartCapturingVideoWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)_kvoDidEndForChange:(id)a3;
-- (BOOL)_kvoDidStartForChange:(id)a3;
+- (BOOL)_canBeginCaptureCheckAvailability:(BOOL)availability error:(id *)error;
+- (BOOL)_internalCaptureStillImageWithRequest:(id)request error:(id *)error;
+- (BOOL)_internalStartCapturingVideoWithRequest:(id)request error:(id *)error;
+- (BOOL)_kvoDidEndForChange:(id)change;
+- (BOOL)_kvoDidStartForChange:(id)change;
 - (BOOL)_shouldLockWhiteBalanceForActiveVideoRequest;
-- (BOOL)_shouldLockWhiteBalanceForCTMVideoRequest:(id)a3;
-- (BOOL)_shouldLockWhiteBalanceForVideoCaptureRequest:(id)a3;
+- (BOOL)_shouldLockWhiteBalanceForCTMVideoRequest:(id)request;
+- (BOOL)_shouldLockWhiteBalanceForVideoCaptureRequest:(id)request;
 - (BOOL)_shouldMonitorSystemPressureState;
 - (BOOL)_shouldPlaySystemSound;
 - (BOOL)_shouldResetFocusAndExposureAfterCapture;
-- (BOOL)_shouldTrackInflightCountForRequest:(id)a3;
-- (BOOL)_stopCapturingVideoAndDisableCaptureAvailabilityWhileStopping:(BOOL)a3;
-- (BOOL)_wantsImageAnalysisForGraphConfiguration:(id)a3;
-- (BOOL)_wantsMachineReadableCodesForGraphConfiguration:(id)a3;
-- (BOOL)captureStillImageWithRequest:(id)a3 error:(id *)a4;
+- (BOOL)_shouldTrackInflightCountForRequest:(id)request;
+- (BOOL)_stopCapturingVideoAndDisableCaptureAvailabilityWhileStopping:(BOOL)stopping;
+- (BOOL)_wantsImageAnalysisForGraphConfiguration:(id)configuration;
+- (BOOL)_wantsMachineReadableCodesForGraphConfiguration:(id)configuration;
+- (BOOL)captureStillImageWithRequest:(id)request error:(id *)error;
 - (BOOL)hasActiveCTMVideoCaptures;
-- (BOOL)initiateCTMCaptureWithSettings:(id)a3 error:(id *)a4;
-- (BOOL)intervalometer:(id)a3 didGenerateCaptureRequest:(id)a4;
+- (BOOL)initiateCTMCaptureWithSettings:(id)settings error:(id *)error;
+- (BOOL)intervalometer:(id)intervalometer didGenerateCaptureRequest:(id)request;
 - (BOOL)isCapturingBurst;
 - (BOOL)isCapturingCTMVideo;
 - (BOOL)isCapturingLivePhotoVideo;
@@ -30,10 +30,10 @@
 - (BOOL)pauseCapturingVideo;
 - (BOOL)resumeCaptureVideo;
 - (BOOL)shouldAllowUserToChangeFocusAndExposure;
-- (BOOL)startCapturingBurstWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)startCapturingPanoramaWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)startCapturingVideoWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)stopCapturingPanoramaInterrupted:(BOOL)a3;
+- (BOOL)startCapturingBurstWithRequest:(id)request error:(id *)error;
+- (BOOL)startCapturingPanoramaWithRequest:(id)request error:(id *)error;
+- (BOOL)startCapturingVideoWithRequest:(id)request error:(id *)error;
+- (BOOL)stopCapturingPanoramaInterrupted:(BOOL)interrupted;
 - (CAMAvailabilityDelegate)availabilityDelegate;
 - (CAMBurstDelegate)burstDelegate;
 - (CAMCaptureControllerAudioCuePlaybackDelegate)audioCuePlaybackDelegate;
@@ -64,71 +64,71 @@
 - (CAMTextRegionResultDelegate)textRegionResultDelegate;
 - (CAMThumbnailGenerator)_responseThumbnailGenerator;
 - (CAMZoomDelegate)zoomDelegate;
-- (CUCaptureController)initWithCaptureConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5 engineOptions:(int64_t)a6 locationController:(id)a7 motionController:(id)a8 burstController:(id)a9 protectionController:(id)a10 powerController:(id)a11 irisVideoController:(id)a12 remoteShutterController:(id)a13;
+- (CUCaptureController)initWithCaptureConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage engineOptions:(int64_t)options locationController:(id)controller motionController:(id)motionController burstController:(id)burstController protectionController:(id)self0 powerController:(id)self1 irisVideoController:(id)self2 remoteShutterController:(id)self3;
 - (id)_availabilityKeyPaths;
-- (id)_commandForChangeToGraphConfiguration:(id)a3 zoomFactor:(double)a4 minimumExecutionTime:(double)a5 outputToExternalStorage:(BOOL)a6 outRequestID:(int *)a7;
-- (id)_commandForConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5 outRequestID:(int *)a6;
-- (id)_commandForLockingExposureIncludingFocus:(BOOL)a3;
-- (id)_commandForResetFocus:(BOOL)a3 resetExposure:(BOOL)a4 resetExposureTargetBias:(BOOL)a5 resetSecondaryDevice:(BOOL)a6;
+- (id)_commandForChangeToGraphConfiguration:(id)configuration zoomFactor:(double)factor minimumExecutionTime:(double)time outputToExternalStorage:(BOOL)storage outRequestID:(int *)d;
+- (id)_commandForConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage outRequestID:(int *)d;
+- (id)_commandForLockingExposureIncludingFocus:(BOOL)focus;
+- (id)_commandForResetFocus:(BOOL)focus resetExposure:(BOOL)exposure resetExposureTargetBias:(BOOL)bias resetSecondaryDevice:(BOOL)device;
 - (id)_exposureKVOKeyPaths;
 - (id)_focusKVOKeyPaths;
 - (id)_lensPositionKVOKeyPaths;
-- (id)_realtimeMetadataCommandsForMode:(int64_t)a3 videoConfiguration:(int64_t)a4 capturing:(BOOL)a5 wantsMachineReadableCodes:(BOOL)a6 wantsImageAnalysis:(BOOL)a7;
-- (id)_sanitizePanoramaRequest:(id)a3;
-- (id)_sanitizeStillImageRequest:(id)a3;
-- (id)_sanitizeVideoRequest:(id)a3;
+- (id)_realtimeMetadataCommandsForMode:(int64_t)mode videoConfiguration:(int64_t)configuration capturing:(BOOL)capturing wantsMachineReadableCodes:(BOOL)codes wantsImageAnalysis:(BOOL)analysis;
+- (id)_sanitizePanoramaRequest:(id)request;
+- (id)_sanitizeStillImageRequest:(id)request;
+- (id)_sanitizeVideoRequest:(id)request;
 - (id)_suggestionKeyPaths;
 - (id)_systemPressureStateMonitoringKeyPaths;
-- (id)_textAnalysisImageFromStillImageResult:(id)a3 imageOrientation:(int64_t)a4;
-- (id)_thumbnailImageFromStillImageCaptureResult:(id)a3 imageOrientation:(int64_t)a4;
-- (id)_thumbnailImageFromVideoCaptureResult:(id)a3 previewOrientation:(int64_t)a4 previewImage:(id *)a5;
+- (id)_textAnalysisImageFromStillImageResult:(id)result imageOrientation:(int64_t)orientation;
+- (id)_thumbnailImageFromStillImageCaptureResult:(id)result imageOrientation:(int64_t)orientation;
+- (id)_thumbnailImageFromVideoCaptureResult:(id)result previewOrientation:(int64_t)orientation previewImage:(id *)image;
 - (id)_updateFocusAndExposureForStartBurstCapture;
 - (id)_updateFocusAndExposureForStartPanorama;
 - (id)_zoomMonitoringKeyPaths;
-- (int)applyCaptureConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5;
-- (int)changeToGraphConfiguration:(id)a3 zoomFactor:(double)a4 minimumExecutionTime:(double)a5 outputToExternalStorage:(BOOL)a6;
-- (int64_t)_cinematicMetadataObjectIDForMetadataObject:(id)a3;
-- (int64_t)_constituentDeviceTypeFromDevice:(id)a3;
-- (int64_t)_primaryConstituentDeviceTypeFromDevice:(id)a3;
+- (int)applyCaptureConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage;
+- (int)changeToGraphConfiguration:(id)configuration zoomFactor:(double)factor minimumExecutionTime:(double)time outputToExternalStorage:(BOOL)storage;
+- (int64_t)_cinematicMetadataObjectIDForMetadataObject:(id)object;
+- (int64_t)_constituentDeviceTypeFromDevice:(id)device;
+- (int64_t)_primaryConstituentDeviceTypeFromDevice:(id)device;
 - (unint64_t)_maximumNumberOfStillImageRequestsDuringBurst;
 - (unint64_t)currentBurstCount;
-- (void)_availabilityResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_beginTrackingCTMVideoRecordingForIdentifier:(id)a3;
-- (void)_beginTrackingLivePhotoVideoRecordingForIdentifier:(id)a3;
-- (void)_cameraLensSmudgeDetectionStatusChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_documentScanningChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_endCaptureSignpostIntervalForPersistenceUUID:(id)a3;
-- (void)_endTrackingCTMVideoRecordingForIdentifier:(id)a3;
-- (void)_endTrackingLivePhotoVideoRecordingForIdentifier:(id)a3;
-- (void)_exposureResultChangedForEngineKeyPath:(id)a3 withDevice:(id)a4 change:(id)a5;
-- (void)_exposureResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_focusResultChangedForEngineKeyPath:(id)a3 withDevice:(id)a4 change:(id)a5;
-- (void)_focusResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_handleCaptureEngineExecutionNotification:(id)a3;
-- (void)_handleShallowDepthOfFieldStatusChangedNotification:(id)a3;
-- (void)_handleSystemPressureState:(id)a3;
-- (void)_lensPositionChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_notifyDelegateOfCaptureAvailabilityChanged:(BOOL)a3;
-- (void)_notifyDelegateOfConfigurationAvailabilityChanged:(BOOL)a3;
-- (void)_overCapturePreviewStatusChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_processCapturedBurstRequest:(id)a3 withResult:(id)a4;
-- (void)_processPendingVideoCaptureRequest:(id)a3;
-- (void)_recommendedSmartFramingChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
+- (void)_availabilityResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_beginTrackingCTMVideoRecordingForIdentifier:(id)identifier;
+- (void)_beginTrackingLivePhotoVideoRecordingForIdentifier:(id)identifier;
+- (void)_cameraLensSmudgeDetectionStatusChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_documentScanningChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_endCaptureSignpostIntervalForPersistenceUUID:(id)d;
+- (void)_endTrackingCTMVideoRecordingForIdentifier:(id)identifier;
+- (void)_endTrackingLivePhotoVideoRecordingForIdentifier:(id)identifier;
+- (void)_exposureResultChangedForEngineKeyPath:(id)path withDevice:(id)device change:(id)change;
+- (void)_exposureResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_focusResultChangedForEngineKeyPath:(id)path withDevice:(id)device change:(id)change;
+- (void)_focusResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_handleCaptureEngineExecutionNotification:(id)notification;
+- (void)_handleShallowDepthOfFieldStatusChangedNotification:(id)notification;
+- (void)_handleSystemPressureState:(id)state;
+- (void)_lensPositionChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_notifyDelegateOfCaptureAvailabilityChanged:(BOOL)changed;
+- (void)_notifyDelegateOfConfigurationAvailabilityChanged:(BOOL)changed;
+- (void)_overCapturePreviewStatusChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_processCapturedBurstRequest:(id)request withResult:(id)result;
+- (void)_processPendingVideoCaptureRequest:(id)request;
+- (void)_recommendedSmartFramingChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
 - (void)_resetCapturingVideoState;
 - (void)_resetFocusAndExposureAfterCapture;
-- (void)_resetFocusAndExposureAfterCaptureForType:(int64_t)a3;
-- (void)_resetFocusAndExposureIfAppropriateForReason:(int64_t)a3;
-- (void)_scheduleFocusAndExposureResetAfterCaptureIfNecessaryForType:(int64_t)a3;
-- (void)_setCaptureAvailable:(BOOL)a3;
-- (void)_setCapturingCTMVideoRequest:(id)a3;
-- (void)_setCapturingVideoRequest:(id)a3;
-- (void)_setCurrentCameraSystemPressureState:(id)a3;
+- (void)_resetFocusAndExposureAfterCaptureForType:(int64_t)type;
+- (void)_resetFocusAndExposureIfAppropriateForReason:(int64_t)reason;
+- (void)_scheduleFocusAndExposureResetAfterCaptureIfNecessaryForType:(int64_t)type;
+- (void)_setCaptureAvailable:(BOOL)available;
+- (void)_setCapturingCTMVideoRequest:(id)request;
+- (void)_setCapturingVideoRequest:(id)request;
+- (void)_setCurrentCameraSystemPressureState:(id)state;
 - (void)_setupAvailabilityMonitoring;
 - (void)_setupDocumentScanningMonitoring;
 - (void)_setupExposureMonitoring;
 - (void)_setupFocusAndExposureMonitoring;
 - (void)_setupFocusMonitoring;
-- (void)_setupKVOMonitoringForKeyPaths:(id)a3 context:(void *)a4 options:(unint64_t)a5;
+- (void)_setupKVOMonitoringForKeyPaths:(id)paths context:(void *)context options:(unint64_t)options;
 - (void)_setupLensPositionMonitoring;
 - (void)_setupLensSmudgeDetectionMonitoring;
 - (void)_setupOverCapturePreviewMonitoring;
@@ -138,15 +138,15 @@
 - (void)_setupSystemPressureStateMonitoring;
 - (void)_setupZoomMonitoring;
 - (void)_setupZoomPIPMonitoring;
-- (void)_startCaptureSignpostIntervalForPersistenceUUID:(id)a3;
-- (void)_stereoCaptureStatusChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_suggestionResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_systemPressureStateMonitoringChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
+- (void)_startCaptureSignpostIntervalForPersistenceUUID:(id)d;
+- (void)_stereoCaptureStatusChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_suggestionResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_systemPressureStateMonitoringChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
 - (void)_tearDownDocumentScanningMonitoring;
 - (void)_tearDownOverCapturePreviewMonitoring;
 - (void)_teardownAvailabilityMonitoring;
 - (void)_teardownFocusAndExposureMonitoring;
-- (void)_teardownKVOMonitoringForKeyPaths:(id)a3 context:(void *)a4;
+- (void)_teardownKVOMonitoringForKeyPaths:(id)paths context:(void *)context;
 - (void)_teardownLensPositionMonitoring;
 - (void)_teardownLensSmudgeDetectionMonitoring;
 - (void)_teardownRecommendedSmartFramingMonitoring;
@@ -155,109 +155,109 @@
 - (void)_teardownSystemPressureStateMonitoring;
 - (void)_teardownZoomMonitoring;
 - (void)_teardownZoomPIPMonitoring;
-- (void)_updateAvailabilityAfterCapturedRequest:(id)a3;
-- (void)_updateAvailabilityAfterEnqueuedRequest:(id)a3;
-- (void)_updateAvailabilityAfterStopCapturingForRequest:(id)a3;
-- (void)_updateAvailabilityForRequestType:(int64_t)a3;
-- (void)_updateAvailabilityWhenPreparingToStopCapturingForRequest:(id)a3;
+- (void)_updateAvailabilityAfterCapturedRequest:(id)request;
+- (void)_updateAvailabilityAfterEnqueuedRequest:(id)request;
+- (void)_updateAvailabilityAfterStopCapturingForRequest:(id)request;
+- (void)_updateAvailabilityForRequestType:(int64_t)type;
+- (void)_updateAvailabilityWhenPreparingToStopCapturingForRequest:(id)request;
 - (void)_updateMaximumNumberOfStillImageRequestsAfterBurst;
-- (void)_updateMaximumNumberOfStillImageRequestsAfterCapturedRequestIfNecessary:(id)a3;
-- (void)_updateMaximumNumberOfStillImageRequestsAfterEnqueuingRequest:(id)a3;
-- (void)_zoomPIPChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
-- (void)_zoomResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5;
+- (void)_updateMaximumNumberOfStillImageRequestsAfterCapturedRequestIfNecessary:(id)necessary;
+- (void)_updateMaximumNumberOfStillImageRequestsAfterEnqueuingRequest:(id)request;
+- (void)_zoomPIPChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
+- (void)_zoomResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change;
 - (void)attemptToEndInterruptions;
-- (void)cancelAutoResumeAfterDate:(id)a3;
-- (void)cancelCTMCaptureForSettings:(id)a3;
+- (void)cancelAutoResumeAfterDate:(id)date;
+- (void)cancelCTMCaptureForSettings:(id)settings;
 - (void)cancelDelayedFocusAndExposureReset;
-- (void)changeExposureTargetBias:(float)a3;
-- (void)changeToAspectRatioCrop:(int64_t)a3;
-- (void)changeToFlashMode:(int64_t)a3;
+- (void)changeExposureTargetBias:(float)bias;
+- (void)changeToAspectRatioCrop:(int64_t)crop;
+- (void)changeToFlashMode:(int64_t)mode;
 - (void)changeToLockedExposure;
 - (void)changeToLockedFocusAndExposure;
-- (void)changeToNightMode:(int64_t)a3;
-- (void)changeToPanoramaDirection:(int64_t)a3;
-- (void)changeToPanoramaEncodingBehavior:(int64_t)a3;
-- (void)changeToPortraitAperture:(double)a3;
-- (void)changeToPortraitLightingEffectStrength:(double)a3;
-- (void)changeToPreviewConfiguration:(unint64_t)a3;
+- (void)changeToNightMode:(int64_t)mode;
+- (void)changeToPanoramaDirection:(int64_t)direction;
+- (void)changeToPanoramaEncodingBehavior:(int64_t)behavior;
+- (void)changeToPortraitAperture:(double)aperture;
+- (void)changeToPortraitLightingEffectStrength:(double)strength;
+- (void)changeToPreviewConfiguration:(unint64_t)configuration;
 - (void)changeToPreviewDisabled;
-- (void)changeToPreviewEnabledWithConfiguration:(unint64_t)a3;
-- (void)changeToPreviewFilters:(id)a3 captureMode:(int64_t)a4;
-- (void)changeToSmartFramingFieldOfView:(int64_t)a3 mode:(int64_t)a4 videoConfiguration:(int64_t)a5 devicePosition:(int64_t)a6;
-- (void)changeToSmartStyle:(id)a3;
-- (void)changeToTimelapseCaptureRate:(float)a3;
-- (void)changeToTorchLevel:(float)a3;
-- (void)changeToTorchMode:(int64_t)a3;
-- (void)changeToVideoHDRSuspended:(BOOL)a3;
-- (void)changeToVideoRecordingCaptureOrientation:(int64_t)a3;
-- (void)changeToVideoZoomFactor:(double)a3 graphConfiguration:(id)a4;
+- (void)changeToPreviewEnabledWithConfiguration:(unint64_t)configuration;
+- (void)changeToPreviewFilters:(id)filters captureMode:(int64_t)mode;
+- (void)changeToSmartFramingFieldOfView:(int64_t)view mode:(int64_t)mode videoConfiguration:(int64_t)configuration devicePosition:(int64_t)position;
+- (void)changeToSmartStyle:(id)style;
+- (void)changeToTimelapseCaptureRate:(float)rate;
+- (void)changeToTorchLevel:(float)level;
+- (void)changeToTorchMode:(int64_t)mode;
+- (void)changeToVideoHDRSuspended:(BOOL)suspended;
+- (void)changeToVideoRecordingCaptureOrientation:(int64_t)orientation;
+- (void)changeToVideoZoomFactor:(double)factor graphConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)endCTMVideoCapture;
-- (void)focusAndExposeAtPoint:(CGPoint)a3 lockFocus:(BOOL)a4 rectSize:(int64_t)a5 resetExposureTargetBias:(BOOL)a6;
+- (void)focusAndExposeAtPoint:(CGPoint)point lockFocus:(BOOL)focus rectSize:(int64_t)size resetExposureTargetBias:(BOOL)bias;
 - (void)focusAtCenterForVideoRecording;
-- (void)focusAtPoint:(CGPoint)a3 lockFocus:(BOOL)a4 rectSize:(int64_t)a5;
+- (void)focusAtPoint:(CGPoint)point lockFocus:(BOOL)focus rectSize:(int64_t)size;
 - (void)forceDisableSubjectAreaChangeMonitoring;
 - (void)handleSessionDidStopRunning;
-- (void)handleSessionInterruptionForReason:(int64_t)a3;
-- (void)intervalometer:(id)a3 didReachMaximumCountWithRequest:(id)a4;
+- (void)handleSessionInterruptionForReason:(int64_t)reason;
+- (void)intervalometer:(id)intervalometer didReachMaximumCountWithRequest:(id)request;
 - (void)invalidateController;
-- (void)lockFocusAtLensPosition:(float)a3 completionBlock:(id)a4;
+- (void)lockFocusAtLensPosition:(float)position completionBlock:(id)block;
 - (void)logCaptureAvailabilityDescription;
-- (void)metadataWasRecognized:(id)a3 forMetadataObjectTypes:(id)a4 deviceFormat:(id)a5;
+- (void)metadataWasRecognized:(id)recognized forMetadataObjectTypes:(id)types deviceFormat:(id)format;
 - (void)notifyTimelapseControllerFinishedUpdatingWithLocation;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)panoramaConfigurationDidChangeWithImageQueue:(_CAImageQueue *)a3 direction:(int64_t)a4;
-- (void)panoramaRequest:(id)a3 didCompleteCaptureWithResult:(id)a4;
-- (void)panoramaRequest:(id)a3 didReceiveNotification:(int64_t)a4;
-- (void)panoramaRequestDidStartCapturing:(id)a3;
-- (void)panoramaRequestDidStopCapturing:(id)a3 interrupted:(BOOL)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)panoramaConfigurationDidChangeWithImageQueue:(_CAImageQueue *)queue direction:(int64_t)direction;
+- (void)panoramaRequest:(id)request didCompleteCaptureWithResult:(id)result;
+- (void)panoramaRequest:(id)request didReceiveNotification:(int64_t)notification;
+- (void)panoramaRequestDidStartCapturing:(id)capturing;
+- (void)panoramaRequestDidStopCapturing:(id)capturing interrupted:(BOOL)interrupted;
 - (void)pauseCapturingStillImagePairedVideo;
-- (void)prepareDeferredProcessingWithStillImageRequest:(id)a3;
-- (void)preparePhotoOutputForExpectedPhotoResolution:(int64_t)a3;
-- (void)prepareToCaptureStillImageAtSystemTime:(int64_t)a3;
-- (void)queryTimelapseDimensionsWithCompletionBlock:(id)a3;
-- (void)queryVideoDimensionsWithCompletionBlock:(id)a3;
-- (void)registerCaptureService:(id)a3;
-- (void)registerEffectsPreviewSampleBufferDelegate:(id)a3;
-- (void)registerVideoThumbnailContentsDelegate:(id)a3;
+- (void)prepareDeferredProcessingWithStillImageRequest:(id)request;
+- (void)preparePhotoOutputForExpectedPhotoResolution:(int64_t)resolution;
+- (void)prepareToCaptureStillImageAtSystemTime:(int64_t)time;
+- (void)queryTimelapseDimensionsWithCompletionBlock:(id)block;
+- (void)queryVideoDimensionsWithCompletionBlock:(id)block;
+- (void)registerCaptureService:(id)service;
+- (void)registerEffectsPreviewSampleBufferDelegate:(id)delegate;
+- (void)registerVideoThumbnailContentsDelegate:(id)delegate;
 - (void)resetFocusAndExposure;
 - (void)resumeCapturingStillImagePairedVideo;
-- (void)setAutoSmartFramingEnabledFieldOfViews:(id)a3;
-- (void)setBurstDelegate:(id)a3;
-- (void)setCapturingTimelapse:(BOOL)a3 forDevicePosition:(int64_t)a4;
-- (void)setCinematicFocusForMetadataObject:(id)a3 atPoint:(CGPoint)a4 useFixedOpticalFocus:(BOOL)a5 useHardFocus:(BOOL)a6;
-- (void)setFallbackPrimaryConstituentDeviceSelection:(int64_t)a3;
-- (void)setMultiCamPictureInPictureMetrics:(id)a3;
-- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)a3 restrictedSwitchingConditions:(unint64_t)a4;
-- (void)setSmartFramingMonitorEnabled:(BOOL)a3;
-- (void)startCaptureSessionWithRetryCount:(unint64_t)a3 retryInterval:(double)a4 logReason:(id)a5 completion:(id)a6;
-- (void)startRampToVideoZoomFactor:(double)a3 withDuration:(double)a4 zoomRampTuning:(int64_t)a5 graphConfiguration:(id)a6;
-- (void)startRampToVideoZoomFactor:(double)a3 withRate:(float)a4 graphConfiguration:(id)a5;
-- (void)stillImageRequest:(id)a3 didCompleteStillImageCaptureWithResult:(id)a4;
-- (void)stillImageRequest:(id)a3 didCompleteVideoCaptureWithResult:(id)a4;
-- (void)stillImageRequest:(id)a3 didStopCapturingCTMVideoForCoordinationInfo:(id)a4;
-- (void)stillImageRequest:(id)a3 didStopCapturingLivePhotoVideoForCoordinationInfo:(id)a4;
-- (void)stillImageRequestDidBeginCaptureBeforeResolvingSettings:(id)a3;
-- (void)stillImageRequestDidCompleteCapture:(id)a3 error:(id)a4;
-- (void)stillImageRequestDidStartCapturing:(id)a3 resolvedSettings:(id)a4;
-- (void)stillImageRequestDidStopCapturingStillImage:(id)a3;
-- (void)stillImageRequestDidUnblockResponsiveCapture:(id)a3;
-- (void)stillImageRequestWillStartCapturingVideo:(id)a3;
-- (void)stopCaptureSessionWithCompletion:(id)a3;
+- (void)setAutoSmartFramingEnabledFieldOfViews:(id)views;
+- (void)setBurstDelegate:(id)delegate;
+- (void)setCapturingTimelapse:(BOOL)timelapse forDevicePosition:(int64_t)position;
+- (void)setCinematicFocusForMetadataObject:(id)object atPoint:(CGPoint)point useFixedOpticalFocus:(BOOL)focus useHardFocus:(BOOL)hardFocus;
+- (void)setFallbackPrimaryConstituentDeviceSelection:(int64_t)selection;
+- (void)setMultiCamPictureInPictureMetrics:(id)metrics;
+- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)behavior restrictedSwitchingConditions:(unint64_t)conditions;
+- (void)setSmartFramingMonitorEnabled:(BOOL)enabled;
+- (void)startCaptureSessionWithRetryCount:(unint64_t)count retryInterval:(double)interval logReason:(id)reason completion:(id)completion;
+- (void)startRampToVideoZoomFactor:(double)factor withDuration:(double)duration zoomRampTuning:(int64_t)tuning graphConfiguration:(id)configuration;
+- (void)startRampToVideoZoomFactor:(double)factor withRate:(float)rate graphConfiguration:(id)configuration;
+- (void)stillImageRequest:(id)request didCompleteStillImageCaptureWithResult:(id)result;
+- (void)stillImageRequest:(id)request didCompleteVideoCaptureWithResult:(id)result;
+- (void)stillImageRequest:(id)request didStopCapturingCTMVideoForCoordinationInfo:(id)info;
+- (void)stillImageRequest:(id)request didStopCapturingLivePhotoVideoForCoordinationInfo:(id)info;
+- (void)stillImageRequestDidBeginCaptureBeforeResolvingSettings:(id)settings;
+- (void)stillImageRequestDidCompleteCapture:(id)capture error:(id)error;
+- (void)stillImageRequestDidStartCapturing:(id)capturing resolvedSettings:(id)settings;
+- (void)stillImageRequestDidStopCapturingStillImage:(id)image;
+- (void)stillImageRequestDidUnblockResponsiveCapture:(id)capture;
+- (void)stillImageRequestWillStartCapturingVideo:(id)video;
+- (void)stopCaptureSessionWithCompletion:(id)completion;
 - (void)stopCapturingBurst;
 - (void)stopMonitoringForAccidentalLaunch;
 - (void)stopRampToVideoZoomFactor;
-- (void)unregisterCaptureService:(id)a3;
-- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)a3;
-- (void)unregisterVideoThumbnailContentsDelegate:(id)a3;
-- (void)updateCaptureButtonControlsForCaptureMode:(int64_t)a3 devicePosition:(int64_t)a4 isRecording:(BOOL)a5 depthSuggestionEnabled:(BOOL)a6;
-- (void)updateRealtimeMetadataConfigurationForGraphConfiguration:(id)a3 isCapturing:(BOOL)a4;
-- (void)videoRequest:(id)a3 didCompleteCaptureWithResult:(id)a4;
-- (void)videoRequestDidPauseCapturing:(id)a3;
-- (void)videoRequestDidResumeCapturing:(id)a3;
-- (void)videoRequestDidStartCapturing:(id)a3;
-- (void)videoRequestDidStopCapturing:(id)a3;
-- (void)willPerformRecoveryFromRuntimeError:(id)a3;
+- (void)unregisterCaptureService:(id)service;
+- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)delegate;
+- (void)unregisterVideoThumbnailContentsDelegate:(id)delegate;
+- (void)updateCaptureButtonControlsForCaptureMode:(int64_t)mode devicePosition:(int64_t)position isRecording:(BOOL)recording depthSuggestionEnabled:(BOOL)enabled;
+- (void)updateRealtimeMetadataConfigurationForGraphConfiguration:(id)configuration isCapturing:(BOOL)capturing;
+- (void)videoRequest:(id)request didCompleteCaptureWithResult:(id)result;
+- (void)videoRequestDidPauseCapturing:(id)capturing;
+- (void)videoRequestDidResumeCapturing:(id)capturing;
+- (void)videoRequestDidStartCapturing:(id)capturing;
+- (void)videoRequestDidStopCapturing:(id)capturing;
+- (void)willPerformRecoveryFromRuntimeError:(id)error;
 @end
 
 @implementation CUCaptureController
@@ -266,14 +266,14 @@
 {
   [(CUCaptureController *)self _setupFocusMonitoring];
   [(CUCaptureController *)self _setupExposureMonitoring];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__subjectAreaDidChange_ name:*MEMORY[0x1E69868F8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__subjectAreaDidChange_ name:*MEMORY[0x1E69868F8] object:0];
 }
 
 - (void)_setupFocusMonitoring
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   objc_initWeak(&location, self);
   v4 = [CAMKeyValueCoalescer alloc];
   v15[0] = MEMORY[0x1E69E9820];
@@ -304,7 +304,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [v3 addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10++) options:3 context:{CAMFocusResultContext, v11}];
+        [_captureEngine addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10++) options:3 context:{CAMFocusResultContext, v11}];
       }
 
       while (v8 != v10);
@@ -332,7 +332,7 @@
 - (void)_setupExposureMonitoring
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   objc_initWeak(&location, self);
   v4 = [CAMKeyValueCoalescer alloc];
   v15[0] = MEMORY[0x1E69E9820];
@@ -363,7 +363,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [v3 addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10++) options:3 context:{CAMExposureResultContext, v11}];
+        [_captureEngine addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10++) options:3 context:{CAMExposureResultContext, v11}];
       }
 
       while (v8 != v10);
@@ -392,13 +392,13 @@
 - (void)_setupSuggestionMonitoring
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  v4 = [(CUCaptureController *)self _suggestionKeyPaths];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _suggestionKeyPaths = [(CUCaptureController *)self _suggestionKeyPaths];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [_suggestionKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -410,14 +410,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_suggestionKeyPaths);
         }
 
-        [v3 addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:3 context:CAMSuggestionResultContext];
+        [_captureEngine addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:3 context:CAMSuggestionResultContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_suggestionKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -442,13 +442,13 @@
 - (void)_setupAvailabilityMonitoring
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  v4 = [(CUCaptureController *)self _availabilityKeyPaths];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _availabilityKeyPaths = [(CUCaptureController *)self _availabilityKeyPaths];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [_availabilityKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -460,14 +460,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_availabilityKeyPaths);
         }
 
-        [v3 addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:3 context:CAMAvailabilityResultContext];
+        [_captureEngine addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:3 context:CAMAvailabilityResultContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_availabilityKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -481,9 +481,9 @@
   v7[1] = @"currentCameraDevice.torchAvailable";
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isFlashMitigationSupported];
+  isFlashMitigationSupported = [v3 isFlashMitigationSupported];
 
-  if (v4)
+  if (isFlashMitigationSupported)
   {
     v5 = [v2 arrayByAddingObject:@"currentCameraDevice.degradedCaptureQualityFactors"];
 
@@ -496,13 +496,13 @@
 - (void)_setupZoomMonitoring
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  v4 = [(CUCaptureController *)self _zoomMonitoringKeyPaths];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _zoomMonitoringKeyPaths = [(CUCaptureController *)self _zoomMonitoringKeyPaths];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [_zoomMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -514,14 +514,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_zoomMonitoringKeyPaths);
         }
 
-        [v3 addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:1 context:CAMZoomResultContext];
+        [_captureEngine addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:1 context:CAMZoomResultContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_zoomMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -544,13 +544,13 @@
   v14 = *MEMORY[0x1E69E9840];
   if ([(CUCaptureController *)self _shouldMonitorSystemPressureState])
   {
-    v3 = [(CUCaptureController *)self _captureEngine];
-    v4 = [(CUCaptureController *)self _systemPressureStateMonitoringKeyPaths];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    _systemPressureStateMonitoringKeyPaths = [(CUCaptureController *)self _systemPressureStateMonitoringKeyPaths];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [_systemPressureStateMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -562,14 +562,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_systemPressureStateMonitoringKeyPaths);
           }
 
-          [v3 addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:5 context:CAMSystemPressureStateMonitoringContext];
+          [_captureEngine addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:5 context:CAMSystemPressureStateMonitoringContext];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [_systemPressureStateMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -582,15 +582,15 @@
   v2 = +[CAMCaptureCapabilities capabilities];
   if ([v2 isBackPortraitModeSupported])
   {
-    v3 = 1;
+    isFrontPortraitModeSupported = 1;
   }
 
   else
   {
-    v3 = [v2 isFrontPortraitModeSupported];
+    isFrontPortraitModeSupported = [v2 isFrontPortraitModeSupported];
   }
 
-  v4 = v3 | [v2 isFrontRearSimultaneousVideoSupported];
+  v4 = isFrontPortraitModeSupported | [v2 isFrontRearSimultaneousVideoSupported];
 
   return v4 & 1;
 }
@@ -607,20 +607,20 @@
 
 - (BOOL)isCapturingBurst
 {
-  v2 = [(CUCaptureController *)self currentBurstIntervalometer];
-  v3 = v2 != 0;
+  currentBurstIntervalometer = [(CUCaptureController *)self currentBurstIntervalometer];
+  v3 = currentBurstIntervalometer != 0;
 
   return v3;
 }
 
 - (void)pauseCapturingStillImagePairedVideo
 {
-  v3 = [(CUCaptureController *)self _needsInitialPairedVideoUpdate];
-  if (![(CUCaptureController *)self _isCapturingPairedVideoPaused]|| v3)
+  _needsInitialPairedVideoUpdate = [(CUCaptureController *)self _needsInitialPairedVideoUpdate];
+  if (![(CUCaptureController *)self _isCapturingPairedVideoPaused]|| _needsInitialPairedVideoUpdate)
   {
-    v4 = [(CUCaptureController *)self _captureEngine];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
     v5 = [[CAMPausePairedVideoRecordingCommand alloc] initWithRecordingPaused:1];
-    [v4 enqueueCommand:v5];
+    [_captureEngine enqueueCommand:v5];
     [(CUCaptureController *)self _setCapturingPairedVideoPaused:1];
     [(CUCaptureController *)self _setNeedsInitialPairedVideoUpdate:0];
     v6 = os_log_create("com.apple.camera", "Camera");
@@ -634,18 +634,18 @@
 
 - (BOOL)isCapturingPanorama
 {
-  v2 = [(CUCaptureController *)self _capturingPanoramaRequest];
-  v3 = v2 != 0;
+  _capturingPanoramaRequest = [(CUCaptureController *)self _capturingPanoramaRequest];
+  v3 = _capturingPanoramaRequest != 0;
 
   return v3;
 }
 
 - (BOOL)isInterrupted
 {
-  v2 = [(CUCaptureController *)self _captureEngine];
-  v3 = [v2 isInterrupted];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  isInterrupted = [_captureEngine isInterrupted];
 
-  return v3;
+  return isInterrupted;
 }
 
 void __47__CUCaptureController__setupExposureMonitoring__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -835,8 +835,8 @@ uint64_t __51__CUCaptureController_handleSessionDidStartRunning__block_invoke(ui
 
 - (BOOL)isCapturingStillImage
 {
-  v2 = [(CUCaptureController *)self _numberOfInflightRequestsByType];
-  v3 = [v2 countForObject:&unk_1F16C7F40] != 0;
+  _numberOfInflightRequestsByType = [(CUCaptureController *)self _numberOfInflightRequestsByType];
+  v3 = [_numberOfInflightRequestsByType countForObject:&unk_1F16C7F40] != 0;
 
   return v3;
 }
@@ -886,8 +886,8 @@ uint64_t __51__CUCaptureController_handleSessionDidStartRunning__block_invoke(ui
 
 - (void)handleSessionDidStopRunning
 {
-  v3 = [(CUCaptureController *)self _protectionController];
-  [v3 abortOutstandingNebulaDaemonWriteProtectionsForReason:@"Capture session stopped running"];
+  _protectionController = [(CUCaptureController *)self _protectionController];
+  [_protectionController abortOutstandingNebulaDaemonWriteProtectionsForReason:@"Capture session stopped running"];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -930,33 +930,33 @@ uint64_t __50__CUCaptureController_handleSessionDidStopRunning__block_invoke(uin
   return MEMORY[0x1EEE66C30]();
 }
 
-- (CUCaptureController)initWithCaptureConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5 engineOptions:(int64_t)a6 locationController:(id)a7 motionController:(id)a8 burstController:(id)a9 protectionController:(id)a10 powerController:(id)a11 irisVideoController:(id)a12 remoteShutterController:(id)a13
+- (CUCaptureController)initWithCaptureConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage engineOptions:(int64_t)options locationController:(id)controller motionController:(id)motionController burstController:(id)burstController protectionController:(id)self0 powerController:(id)self1 irisVideoController:(id)self2 remoteShutterController:(id)self3
 {
-  v41 = a6;
-  v42 = a5;
-  v18 = a3;
-  v48 = a7;
-  v47 = a8;
-  v46 = a9;
-  v45 = a10;
-  v19 = a11;
-  v44 = a12;
-  v43 = a13;
+  optionsCopy = options;
+  storageCopy = storage;
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  motionControllerCopy = motionController;
+  burstControllerCopy = burstController;
+  protectionControllerCopy = protectionController;
+  powerControllerCopy = powerController;
+  videoControllerCopy = videoController;
+  shutterControllerCopy = shutterController;
   v49.receiver = self;
   v49.super_class = CUCaptureController;
   v20 = [(CUCaptureController *)&v49 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->__locationController, a7);
-    objc_storeStrong(&v21->__motionController, a8);
-    objc_storeStrong(&v21->__burstController, a9);
-    objc_storeStrong(&v21->__protectionController, a10);
-    objc_storeStrong(&v21->__powerController, a11);
-    objc_storeStrong(&v21->__irisVideoController, a12);
-    objc_storeStrong(&v21->__remoteShutterController, a13);
-    v22 = v19;
-    v23 = [[CAMCaptureEngine alloc] initWithPowerController:v19 captureController:v21 options:v41];
+    objc_storeStrong(&v20->__locationController, controller);
+    objc_storeStrong(&v21->__motionController, motionController);
+    objc_storeStrong(&v21->__burstController, burstController);
+    objc_storeStrong(&v21->__protectionController, protectionController);
+    objc_storeStrong(&v21->__powerController, powerController);
+    objc_storeStrong(&v21->__irisVideoController, videoController);
+    objc_storeStrong(&v21->__remoteShutterController, shutterController);
+    v22 = powerControllerCopy;
+    v23 = [[CAMCaptureEngine alloc] initWithPowerController:powerControllerCopy captureController:v21 options:optionsCopy];
     captureEngine = v21->__captureEngine;
     v21->__captureEngine = v23;
 
@@ -973,16 +973,16 @@ uint64_t __50__CUCaptureController_handleSessionDidStopRunning__block_invoke(uin
     [(CUCaptureController *)v21 _setupStereoCaptureStatusMonitoring];
     [(CUCaptureController *)v21 _setupLensSmudgeDetectionMonitoring];
     [(CUCaptureController *)v21 _setupRecommendedSmartFramingMonitoring];
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v21 selector:sel__handleCaptureEngineExecutionNotification_ name:@"CAMCaptureEngineExecutedCommandWithContextNotification" object:v21->__captureEngine];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel__handleCaptureEngineExecutionNotification_ name:@"CAMCaptureEngineExecutedCommandWithContextNotification" object:v21->__captureEngine];
     v26 = +[CAMCaptureCapabilities capabilities];
     if (([v26 isBackPortraitModeSupported] & 1) != 0 || objc_msgSend(v26, "isFrontPortraitModeSupported"))
     {
-      [v25 addObserver:v21 selector:sel__handleShallowDepthOfFieldStatusChangedNotification_ name:@"AVCaptureDeviceShallowDepthOfFieldStatusChangedNotification" object:{0, v41}];
+      [defaultCenter addObserver:v21 selector:sel__handleShallowDepthOfFieldStatusChangedNotification_ name:@"AVCaptureDeviceShallowDepthOfFieldStatusChangedNotification" object:{0, optionsCopy}];
     }
 
-    v27 = [(CUCaptureController *)v21 _commandForConfiguration:v18 zoomFactor:v42 outputToExternalStorage:0 outRequestID:a4, v41];
-    [(CAMCaptureEngine *)v21->__captureEngine enqueueCommand:v27];
+    optionsCopy = [(CUCaptureController *)v21 _commandForConfiguration:configurationCopy zoomFactor:storageCopy outputToExternalStorage:0 outRequestID:factor, optionsCopy];
+    [(CAMCaptureEngine *)v21->__captureEngine enqueueCommand:optionsCopy];
     [(CAMCaptureEngine *)v21->__captureEngine startWithRetryCount:0 retryInterval:@"initial configuration" logReason:0 completion:0.0];
     v28 = dispatch_queue_attr_make_with_qos_class(MEMORY[0x1E69E96A8], QOS_CLASS_USER_INITIATED, 0);
     v29 = dispatch_queue_create("com.apple.camera.capture-controller.response-queue", v28);
@@ -1012,7 +1012,7 @@ uint64_t __50__CUCaptureController_handleSessionDidStopRunning__block_invoke(uin
     v21->__nextSignpostID = 1;
     v39 = v21;
 
-    v19 = v22;
+    powerControllerCopy = v22;
   }
 
   return v21;
@@ -1021,8 +1021,8 @@ uint64_t __50__CUCaptureController_handleSessionDidStopRunning__block_invoke(uin
 - (void)dealloc
 {
   [(CUCaptureController *)self invalidateController];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CUCaptureController;
@@ -1047,50 +1047,50 @@ uint64_t __50__CUCaptureController_handleSessionDidStopRunning__block_invoke(uin
   self->__captureEngine = 0;
 }
 
-- (int)applyCaptureConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5
+- (int)applyCaptureConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage
 {
-  v5 = self;
+  selfCopy = self;
   v8 = 0;
-  v6 = [(CUCaptureController *)self _commandForConfiguration:a3 zoomFactor:a5 outputToExternalStorage:&v8 outRequestID:a4];
-  [(CAMCaptureEngine *)v5->__captureEngine enqueueCommand:v6];
-  LODWORD(v5) = v8;
+  v6 = [(CUCaptureController *)self _commandForConfiguration:configuration zoomFactor:storage outputToExternalStorage:&v8 outRequestID:factor];
+  [(CAMCaptureEngine *)selfCopy->__captureEngine enqueueCommand:v6];
+  LODWORD(selfCopy) = v8;
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)_setupOverCapturePreviewMonitoring
 {
-  v4 = [(CUCaptureController *)self _captureEngine];
-  v3 = [v4 overCaptureVideoPreviewLayer];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  overCaptureVideoPreviewLayer = [_captureEngine overCaptureVideoPreviewLayer];
 
-  if (v3)
+  if (overCaptureVideoPreviewLayer)
   {
-    [v4 addObserver:self forKeyPath:@"overCaptureVideoPreviewLayer.overCaptureStatus" options:1 context:CAMOverCapturePreviewContext];
+    [_captureEngine addObserver:self forKeyPath:@"overCaptureVideoPreviewLayer.overCaptureStatus" options:1 context:CAMOverCapturePreviewContext];
   }
 }
 
 - (void)_tearDownOverCapturePreviewMonitoring
 {
-  v4 = [(CUCaptureController *)self _captureEngine];
-  v3 = [v4 overCaptureVideoPreviewLayer];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  overCaptureVideoPreviewLayer = [_captureEngine overCaptureVideoPreviewLayer];
 
-  if (v3)
+  if (overCaptureVideoPreviewLayer)
   {
-    [v4 removeObserver:self forKeyPath:@"overCaptureVideoPreviewLayer.overCaptureStatus" context:CAMOverCapturePreviewContext];
+    [_captureEngine removeObserver:self forKeyPath:@"overCaptureVideoPreviewLayer.overCaptureStatus" context:CAMOverCapturePreviewContext];
   }
 }
 
-- (void)_overCapturePreviewStatusChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_overCapturePreviewStatusChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 overCaptureVideoPreviewLayer];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  overCaptureVideoPreviewLayer = [objectCopy overCaptureVideoPreviewLayer];
+  v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
   if (v11)
   {
-    v12 = v10 == 0;
+    v12 = overCaptureVideoPreviewLayer == 0;
   }
 
   else
@@ -1098,7 +1098,7 @@ uint64_t __50__CUCaptureController_handleSessionDidStopRunning__block_invoke(uin
     v12 = 1;
   }
 
-  if (!v12 && [v7 isEqualToString:@"overCaptureVideoPreviewLayer.overCaptureStatus"])
+  if (!v12 && [pathCopy isEqualToString:@"overCaptureVideoPreviewLayer.overCaptureStatus"])
   {
     +[CAMCaptureConversions overCapturePreviewStatusForAVPreviewStatus:](CAMCaptureConversions, "overCapturePreviewStatusForAVPreviewStatus:", [v11 integerValue]);
     pl_dispatch_async();
@@ -1111,55 +1111,55 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
   [v2 captureController:*(a1 + 32) didOutputOverCapturePreviewStatus:*(a1 + 40)];
 }
 
-- (id)_thumbnailImageFromStillImageCaptureResult:(id)a3 imageOrientation:(int64_t)a4
+- (id)_thumbnailImageFromStillImageCaptureResult:(id)result imageOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [v6 stillImageFilteredPreviewSurface];
-  if (!v7)
+  resultCopy = result;
+  stillImageFilteredPreviewSurface = [resultCopy stillImageFilteredPreviewSurface];
+  if (!stillImageFilteredPreviewSurface)
   {
-    v7 = [v6 stillImageUnfilteredPreviewSurface];
+    stillImageFilteredPreviewSurface = [resultCopy stillImageUnfilteredPreviewSurface];
   }
 
-  v8 = [(CUCaptureController *)self _responseThumbnailGenerator];
-  v9 = [v8 newBGRAImageOfFormat:objc_msgSend(MEMORY[0x1E69BF160] inOrientation:"masterThumbnailFormat") usingSurface:a4, v7];
+  _responseThumbnailGenerator = [(CUCaptureController *)self _responseThumbnailGenerator];
+  v9 = [_responseThumbnailGenerator newBGRAImageOfFormat:objc_msgSend(MEMORY[0x1E69BF160] inOrientation:"masterThumbnailFormat") usingSurface:orientation, stillImageFilteredPreviewSurface];
   v10 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v9];
   CGImageRelease(v9);
 
   return v10;
 }
 
-- (id)_thumbnailImageFromVideoCaptureResult:(id)a3 previewOrientation:(int64_t)a4 previewImage:(id *)a5
+- (id)_thumbnailImageFromVideoCaptureResult:(id)result previewOrientation:(int64_t)orientation previewImage:(id *)image
 {
-  v8 = [a3 videoPreviewPixelBuffer];
-  v9 = [objc_alloc(MEMORY[0x1E69DCAB8]) _initWithIOSurface:CVPixelBufferGetIOSurface(v8) imageOrientation:a4];
-  v10 = [(CUCaptureController *)self _responseThumbnailGenerator];
-  v11 = [v10 newBGRAImageOfFormat:objc_msgSend(MEMORY[0x1E69BF160] inOrientation:"masterThumbnailFormat") usingPixelBuffer:a4, v8];
+  videoPreviewPixelBuffer = [result videoPreviewPixelBuffer];
+  v9 = [objc_alloc(MEMORY[0x1E69DCAB8]) _initWithIOSurface:CVPixelBufferGetIOSurface(videoPreviewPixelBuffer) imageOrientation:orientation];
+  _responseThumbnailGenerator = [(CUCaptureController *)self _responseThumbnailGenerator];
+  v11 = [_responseThumbnailGenerator newBGRAImageOfFormat:objc_msgSend(MEMORY[0x1E69BF160] inOrientation:"masterThumbnailFormat") usingPixelBuffer:orientation, videoPreviewPixelBuffer];
   v12 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v11];
   CGImageRelease(v11);
-  if (a5 && v9)
+  if (image && v9)
   {
     v13 = v9;
-    *a5 = v9;
+    *image = v9;
   }
 
   return v12;
 }
 
-- (id)_textAnalysisImageFromStillImageResult:(id)a3 imageOrientation:(int64_t)a4
+- (id)_textAnalysisImageFromStillImageResult:(id)result imageOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [v6 stillImageFilteredPreviewSurface];
-  if (!v7)
+  resultCopy = result;
+  stillImageFilteredPreviewSurface = [resultCopy stillImageFilteredPreviewSurface];
+  if (!stillImageFilteredPreviewSurface)
   {
-    v7 = [v6 stillImageUnfilteredPreviewSurface];
+    stillImageFilteredPreviewSurface = [resultCopy stillImageUnfilteredPreviewSurface];
   }
 
-  v8 = [(CUCaptureController *)self _responseThumbnailGenerator];
-  v9 = [v8 newBGRAImageInOrientation:a4 usingSurface:v7];
+  _responseThumbnailGenerator = [(CUCaptureController *)self _responseThumbnailGenerator];
+  v9 = [_responseThumbnailGenerator newBGRAImageInOrientation:orientation usingSurface:stillImageFilteredPreviewSurface];
 
   v10 = objc_alloc(MEMORY[0x1E69DCAB8]);
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v12 = [v10 initWithCGImage:v9 scale:0 orientation:?];
 
   CGImageRelease(v9);
@@ -1167,19 +1167,19 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
   return v12;
 }
 
-- (BOOL)initiateCTMCaptureWithSettings:(id)a3 error:(id *)a4
+- (BOOL)initiateCTMCaptureWithSettings:(id)settings error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CUCaptureController *)self _canBeginCaptureCheckAvailability:1 error:a4];
+  settingsCopy = settings;
+  v7 = [(CUCaptureController *)self _canBeginCaptureCheckAvailability:1 error:error];
   if (v7)
   {
-    v8 = [v6 persistenceUUID];
-    [(CUCaptureController *)self _startCaptureSignpostIntervalForPersistenceUUID:v8];
+    persistenceUUID = [settingsCopy persistenceUUID];
+    [(CUCaptureController *)self _startCaptureSignpostIntervalForPersistenceUUID:persistenceUUID];
 
-    v9 = [(CUCaptureController *)self _sanitizeStillImageRequest:v6];
+    v9 = [(CUCaptureController *)self _sanitizeStillImageRequest:settingsCopy];
     v10 = [[CAMCTMInitiateCaptureCommand alloc] initWithSettings:v9];
-    v11 = [(CUCaptureController *)self _captureEngine];
-    [v11 enqueueCommand:v10];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v10];
   }
 
   return v7;
@@ -1187,14 +1187,14 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
 
 - (void)endCTMVideoCapture
 {
-  v3 = [(CUCaptureController *)self _capturingCTMVideoRequest];
-  if (v3)
+  _capturingCTMVideoRequest = [(CUCaptureController *)self _capturingCTMVideoRequest];
+  if (_capturingCTMVideoRequest)
   {
     [(CUCaptureController *)self _setCapturingCTMVideoRequest:0];
-    v4 = [v3 persistenceUUID];
-    v5 = [[CAMCTMEndCaptureCommand alloc] initWithPersistenceUUID:v4];
-    v6 = [(CUCaptureController *)self _captureEngine];
-    [v6 enqueueCommand:v5];
+    persistenceUUID = [_capturingCTMVideoRequest persistenceUUID];
+    v5 = [[CAMCTMEndCaptureCommand alloc] initWithPersistenceUUID:persistenceUUID];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v5];
   }
 
   else
@@ -1208,14 +1208,14 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
   }
 }
 
-- (void)cancelCTMCaptureForSettings:(id)a3
+- (void)cancelCTMCaptureForSettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
-    v7 = [a3 persistenceUUID];
-    v4 = [[CAMCTMCancelMomentCaptureCommand alloc] initWithPersistenceUUID:v7];
-    v5 = [(CUCaptureController *)self _captureEngine];
-    [v5 enqueueCommand:v4];
+    persistenceUUID = [settings persistenceUUID];
+    v4 = [[CAMCTMCancelMomentCaptureCommand alloc] initWithPersistenceUUID:persistenceUUID];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v4];
   }
 
   else
@@ -1228,14 +1228,14 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
   }
 }
 
-- (id)_sanitizeStillImageRequest:(id)a3
+- (id)_sanitizeStillImageRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  requestCopy = request;
+  v5 = [requestCopy mutableCopy];
   if (!self->_capturingTimelapse)
   {
-    v6 = [(CUCaptureController *)self _motionController];
-    [v5 setCaptureOrientation:{objc_msgSend(v6, "captureOrientation")}];
+    _motionController = [(CUCaptureController *)self _motionController];
+    [v5 setCaptureOrientation:{objc_msgSend(_motionController, "captureOrientation")}];
   }
 
   if ([(CUCaptureController *)self isCapturingBurst])
@@ -1250,9 +1250,9 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
 
     if (v8)
     {
-      v9 = [(CUCaptureController *)self _burstController];
-      v10 = [v9 currentBurstIdentifier];
-      [v5 setBurstIdentifier:v10];
+      _burstController = [(CUCaptureController *)self _burstController];
+      currentBurstIdentifier = [_burstController currentBurstIdentifier];
+      [v5 setBurstIdentifier:currentBurstIdentifier];
 
       [v5 setDeferredPersistenceOptions:2];
     }
@@ -1267,28 +1267,28 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
     [v5 setPhotoEncodingBehavior:0];
   }
 
-  v11 = [(CUCaptureController *)self _irisVideoController];
-  v12 = [v11 shouldHandleLivePhotoRenderingForRequest:v5];
+  _irisVideoController = [(CUCaptureController *)self _irisVideoController];
+  v12 = [_irisVideoController shouldHandleLivePhotoRenderingForRequest:v5];
 
-  v36 = [v5 shouldPersistToIncomingDirectory];
+  shouldPersistToIncomingDirectory = [v5 shouldPersistToIncomingDirectory];
   Current = CFAbsoluteTimeGetCurrent();
-  v14 = [MEMORY[0x1E696AAE8] mainBundle];
-  v15 = [v14 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v16 = [v4 irisMode] - 3;
+  v16 = [requestCopy irisMode] - 3;
   v17 = [v5 irisVideoPersistenceUUIDForEV0:0];
-  v18 = [v4 irisLocalVideoDestinationURLForEV0:0];
+  v18 = [requestCopy irisLocalVideoDestinationURLForEV0:0];
   v19 = v18;
   if (v16 >= 0xFFFFFFFFFFFFFFFELL && !v18)
   {
     if (v12)
     {
-      [CAMIrisDiskUtilities videoDestinationPathForStillImageRequest:v5 captureTime:0 isEV0ForHDR:v15 bundleIdentifier:Current];
+      [CAMIrisDiskUtilities videoDestinationPathForStillImageRequest:v5 captureTime:0 isEV0ForHDR:bundleIdentifier bundleIdentifier:Current];
     }
 
     else
     {
-      [CAMPersistenceController uniquePathForAssetWithUUID:v17 captureTime:@"MOV" extension:v36 usingIncomingDirectory:Current];
+      [CAMPersistenceController uniquePathForAssetWithUUID:v17 captureTime:@"MOV" extension:shouldPersistToIncomingDirectory usingIncomingDirectory:Current];
     }
     v20 = ;
     v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v20];
@@ -1296,19 +1296,19 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
   }
 
   v21 = [v5 irisVideoPersistenceUUIDForEV0:1];
-  v22 = [v4 irisLocalVideoDestinationURLForEV0:1];
+  v22 = [requestCopy irisLocalVideoDestinationURLForEV0:1];
   v23 = v22;
   if (v16 >= 0xFFFFFFFFFFFFFFFELL && !v22)
   {
     v24 = v17;
     if (v12)
     {
-      [CAMIrisDiskUtilities videoDestinationPathForStillImageRequest:v5 captureTime:1 isEV0ForHDR:v15 bundleIdentifier:Current];
+      [CAMIrisDiskUtilities videoDestinationPathForStillImageRequest:v5 captureTime:1 isEV0ForHDR:bundleIdentifier bundleIdentifier:Current];
     }
 
     else
     {
-      [CAMPersistenceController uniquePathForAssetWithUUID:v21 captureTime:@"MOV" extension:v36 usingIncomingDirectory:Current];
+      [CAMPersistenceController uniquePathForAssetWithUUID:v21 captureTime:@"MOV" extension:shouldPersistToIncomingDirectory usingIncomingDirectory:Current];
     }
     v25 = ;
     v23 = [MEMORY[0x1E695DFF8] fileURLWithPath:v25];
@@ -1317,28 +1317,28 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
     v17 = v24;
   }
 
-  if ([v4 isCTMVideo])
+  if ([requestCopy isCTMVideo])
   {
-    v26 = [v4 localCTMVideoDestinationURL];
-    if (!v26)
+    localCTMVideoDestinationURL = [requestCopy localCTMVideoDestinationURL];
+    if (!localCTMVideoDestinationURL)
     {
       v34 = v17;
       v27 = CFAbsoluteTimeGetCurrent();
-      v28 = [v5 persistenceUUID];
+      persistenceUUID = [v5 persistenceUUID];
       if (v12)
       {
-        v29 = v28;
-        [CAMIrisDiskUtilities videoDestinationPathForStillImageRequest:v5 captureTime:0 isEV0ForHDR:v15 bundleIdentifier:v27];
+        v29 = persistenceUUID;
+        [CAMIrisDiskUtilities videoDestinationPathForStillImageRequest:v5 captureTime:0 isEV0ForHDR:bundleIdentifier bundleIdentifier:v27];
       }
 
       else
       {
-        v29 = v28;
-        [CAMPersistenceController uniquePathForAssetWithUUID:v28 captureTime:@"MOV" extension:v36 usingIncomingDirectory:v27];
+        v29 = persistenceUUID;
+        [CAMPersistenceController uniquePathForAssetWithUUID:persistenceUUID captureTime:@"MOV" extension:shouldPersistToIncomingDirectory usingIncomingDirectory:v27];
       }
       v30 = ;
-      v26 = [MEMORY[0x1E695DFF8] fileURLWithPath:{v30, v34}];
-      [v5 setLocalCTMVideoDestinationURL:v26];
+      localCTMVideoDestinationURL = [MEMORY[0x1E695DFF8] fileURLWithPath:{v30, v34}];
+      [v5 setLocalCTMVideoDestinationURL:localCTMVideoDestinationURL];
 
       v17 = v35;
     }
@@ -1346,8 +1346,8 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
 
   if (![v5 assertionIdentifier])
   {
-    v31 = [(CUCaptureController *)self _powerController];
-    [v5 setAssertionIdentifier:{objc_msgSend(v31, "generateAssertionIdentifier")}];
+    _powerController = [(CUCaptureController *)self _powerController];
+    [v5 setAssertionIdentifier:{objc_msgSend(_powerController, "generateAssertionIdentifier")}];
   }
 
   v32 = [v5 copy];
@@ -1355,38 +1355,38 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
   return v32;
 }
 
-- (BOOL)captureStillImageWithRequest:(id)a3 error:(id *)a4
+- (BOOL)captureStillImageWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v13 = 0;
-  v7 = [(CUCaptureController *)self _internalCaptureStillImageWithRequest:v6 error:&v13];
+  v7 = [(CUCaptureController *)self _internalCaptureStillImageWithRequest:requestCopy error:&v13];
   v8 = v13;
   if (!v7)
   {
-    v9 = [v6 persistenceUUID];
-    [(CUCaptureController *)self _endCaptureSignpostIntervalForPersistenceUUID:v9];
+    persistenceUUID = [requestCopy persistenceUUID];
+    [(CUCaptureController *)self _endCaptureSignpostIntervalForPersistenceUUID:persistenceUUID];
 
     v10 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [CUCaptureController captureStillImageWithRequest:v6 error:v8];
+      [CUCaptureController captureStillImageWithRequest:requestCopy error:v8];
     }
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (BOOL)_canBeginCaptureCheckAvailability:(BOOL)a3 error:(id *)a4
+- (BOOL)_canBeginCaptureCheckAvailability:(BOOL)availability error:(id *)error
 {
-  if (a3 && ![(CUCaptureController *)self isCaptureAvailable])
+  if (availability && ![(CUCaptureController *)self isCaptureAvailable])
   {
-    if (a4)
+    if (error)
     {
       v6 = -22100;
       goto LABEL_14;
@@ -1397,14 +1397,14 @@ void __82__CUCaptureController__overCapturePreviewStatusChangedForKeyPath_ofObje
 
   if ([(CUCaptureController *)self _isFailedConfigurationPreventingCapture])
   {
-    if (a4)
+    if (error)
     {
       v6 = -22102;
 LABEL_14:
       v7 = CAMCaptureControllerError(v6, 0);
       v8 = v7;
       result = 0;
-      *a4 = v7;
+      *error = v7;
       return result;
     }
 
@@ -1413,7 +1413,7 @@ LABEL_14:
 
   if (![(CUCaptureController *)self _didCompleteInitialConfiguration])
   {
-    if (a4)
+    if (error)
     {
       v6 = -22103;
       goto LABEL_14;
@@ -1424,7 +1424,7 @@ LABEL_14:
 
   if ([(CUCaptureController *)self isInterrupted])
   {
-    if (a4)
+    if (error)
     {
       v6 = -22101;
       goto LABEL_14;
@@ -1436,24 +1436,24 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)_internalCaptureStillImageWithRequest:(id)a3 error:(id *)a4
+- (BOOL)_internalCaptureStillImageWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CUCaptureController *)self _canBeginCaptureCheckAvailability:1 error:a4];
+  requestCopy = request;
+  v7 = [(CUCaptureController *)self _canBeginCaptureCheckAvailability:1 error:error];
   if (v7)
   {
-    v8 = [(CUCaptureController *)self _sanitizeStillImageRequest:v6];
+    v8 = [(CUCaptureController *)self _sanitizeStillImageRequest:requestCopy];
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([v8 isCTMVideo])
     {
       [(CUCaptureController *)self _setCapturingCTMVideoRequest:v8];
       v10 = [(CAMCaptureCommand *)[CAMUpdateFocusAndExposureForStartVideoRecordingCommand alloc] initWithSubcommands:0];
-      [v9 addObject:v10];
+      [array addObject:v10];
       if ([(CUCaptureController *)self _shouldLockWhiteBalanceForCTMVideoRequest:v8])
       {
         v11 = [[CAMWhiteBalanceCommand alloc] initWithWhiteBalanceMode:0];
-        [v9 addObject:v11];
+        [array addObject:v11];
       }
     }
 
@@ -1463,18 +1463,18 @@ LABEL_14:
     }
 
     v12 = [[CAMStillImageCaptureCommand alloc] initWithRequest:v8];
-    [v9 addObject:v12];
-    v13 = [[CAMCaptureCommand alloc] initWithSubcommands:v9];
-    v14 = [(CUCaptureController *)self _captureEngine];
-    [v14 enqueueCommand:v13];
-    v15 = [(CUCaptureController *)self _powerController];
-    [v15 addAssertionForIndentifier:objc_msgSend(v8 withReason:{"assertionIdentifier"), 1}];
-    v16 = [v8 burstIdentifier];
+    [array addObject:v12];
+    v13 = [[CAMCaptureCommand alloc] initWithSubcommands:array];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v13];
+    _powerController = [(CUCaptureController *)self _powerController];
+    [_powerController addAssertionForIndentifier:objc_msgSend(v8 withReason:{"assertionIdentifier"), 1}];
+    burstIdentifier = [v8 burstIdentifier];
 
-    if (v16)
+    if (burstIdentifier)
     {
-      v17 = [(CUCaptureController *)self _burstController];
-      [v17 processEnqueuedRequest:v8];
+      _burstController = [(CUCaptureController *)self _burstController];
+      [_burstController processEnqueuedRequest:v8];
     }
 
     [(CUCaptureController *)self _updateMaximumNumberOfStillImageRequestsAfterEnqueuingRequest:v8];
@@ -1483,7 +1483,7 @@ LABEL_14:
 
   else
   {
-    v8 = v6;
+    v8 = requestCopy;
   }
 
   return v7;
@@ -1491,12 +1491,12 @@ LABEL_14:
 
 - (void)resumeCapturingStillImagePairedVideo
 {
-  v3 = [(CUCaptureController *)self _needsInitialPairedVideoUpdate];
-  if ([(CUCaptureController *)self _isCapturingPairedVideoPaused]|| v3)
+  _needsInitialPairedVideoUpdate = [(CUCaptureController *)self _needsInitialPairedVideoUpdate];
+  if ([(CUCaptureController *)self _isCapturingPairedVideoPaused]|| _needsInitialPairedVideoUpdate)
   {
-    v4 = [(CUCaptureController *)self _captureEngine];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
     v5 = [[CAMPausePairedVideoRecordingCommand alloc] initWithRecordingPaused:0];
-    [v4 enqueueCommand:v5];
+    [_captureEngine enqueueCommand:v5];
     [(CUCaptureController *)self _setCapturingPairedVideoPaused:0];
     [(CUCaptureController *)self _setNeedsInitialPairedVideoUpdate:0];
     v6 = os_log_create("com.apple.camera", "Camera");
@@ -1508,75 +1508,75 @@ LABEL_14:
   }
 }
 
-- (void)prepareToCaptureStillImageAtSystemTime:(int64_t)a3
+- (void)prepareToCaptureStillImageAtSystemTime:(int64_t)time
 {
-  v5 = [[CAMPrepareStillImageCaptureCommand alloc] initWithSystemTime:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMPrepareStillImageCaptureCommand alloc] initWithSystemTime:time];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)prepareDeferredProcessingWithStillImageRequest:(id)a3
+- (void)prepareDeferredProcessingWithStillImageRequest:(id)request
 {
-  v4 = a3;
-  v7 = [(CUCaptureController *)self _deferredProcessingCoordinator];
-  if (!v7)
+  requestCopy = request;
+  _deferredProcessingCoordinator = [(CUCaptureController *)self _deferredProcessingCoordinator];
+  if (!_deferredProcessingCoordinator)
   {
-    v7 = objc_alloc_init(MEMORY[0x1E69BE2E8]);
+    _deferredProcessingCoordinator = objc_alloc_init(MEMORY[0x1E69BE2E8]);
     [(CUCaptureController *)self _setDeferredProcessingCoordinator:?];
   }
 
-  v5 = [[CAMPrepareDeferredProcessingCommand alloc] initWithRequest:v4 coordinator:v7];
+  v5 = [[CAMPrepareDeferredProcessingCommand alloc] initWithRequest:requestCopy coordinator:_deferredProcessingCoordinator];
 
-  v6 = [(CUCaptureController *)self _captureEngine];
-  [v6 enqueueCommand:v5];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)preparePhotoOutputForExpectedPhotoResolution:(int64_t)a3
+- (void)preparePhotoOutputForExpectedPhotoResolution:(int64_t)resolution
 {
   if (![(CUCaptureController *)self isCapturingBurst])
   {
-    v6 = [[CAMUltraHighResolutionZeroShutterLagEnabledCommand alloc] initWithEnabled:a3 == 3];
-    v5 = [(CUCaptureController *)self _captureEngine];
-    [v5 enqueueCommand:v6];
+    v6 = [[CAMUltraHighResolutionZeroShutterLagEnabledCommand alloc] initWithEnabled:resolution == 3];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v6];
   }
 }
 
-- (void)changeToSmartFramingFieldOfView:(int64_t)a3 mode:(int64_t)a4 videoConfiguration:(int64_t)a5 devicePosition:(int64_t)a6
+- (void)changeToSmartFramingFieldOfView:(int64_t)view mode:(int64_t)mode videoConfiguration:(int64_t)configuration devicePosition:(int64_t)position
 {
-  v8 = [[CAMDynamicAspectRatioCommand alloc] initWithSmartFramingFieldOfView:a3 videoDynamicAspectRatio:0 mode:a4 videoConfiguration:a5 devicePosition:a6];
-  v7 = [(CUCaptureController *)self _captureEngine];
-  [v7 enqueueCommand:v8];
+  v8 = [[CAMDynamicAspectRatioCommand alloc] initWithSmartFramingFieldOfView:view videoDynamicAspectRatio:0 mode:mode videoConfiguration:configuration devicePosition:position];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v8];
 }
 
-- (void)setAutoSmartFramingEnabledFieldOfViews:(id)a3
+- (void)setAutoSmartFramingEnabledFieldOfViews:(id)views
 {
-  v4 = a3;
-  v6 = [[CAMAutoSmartFramingEnabledFieldOfViewsCommand alloc] initWithSmartFramingEnabledFieldOfViews:v4];
+  viewsCopy = views;
+  v6 = [[CAMAutoSmartFramingEnabledFieldOfViewsCommand alloc] initWithSmartFramingEnabledFieldOfViews:viewsCopy];
 
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 enqueueCommand:v6];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v6];
 }
 
-- (void)setSmartFramingMonitorEnabled:(BOOL)a3
+- (void)setSmartFramingMonitorEnabled:(BOOL)enabled
 {
-  v5 = [[CAMAutoSmartFramingMonitorCommand alloc] initWithSmartFramingMonitorEnabled:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMAutoSmartFramingMonitorCommand alloc] initWithSmartFramingMonitorEnabled:enabled];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)stillImageRequestWillStartCapturingVideo:(id)a3
+- (void)stillImageRequestWillStartCapturingVideo:(id)video
 {
-  v4 = a3;
-  [v4 isCTMVideo];
-  v5 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:v4];
-  if ([v4 shouldProtectPersistenceForVideo])
+  videoCopy = video;
+  [videoCopy isCTMVideo];
+  v5 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:videoCopy];
+  if ([videoCopy shouldProtectPersistenceForVideo])
   {
-    v6 = [(CUCaptureController *)self _protectionController];
-    [v6 startProtectingPersistenceForRequest:v4];
+    _protectionController = [(CUCaptureController *)self _protectionController];
+    [_protectionController startProtectingPersistenceForRequest:videoCopy];
   }
 
-  v7 = [(CUCaptureController *)self _protectionController];
-  [v7 startProtectingNebulaDaemonWritesForIdentifier:v5];
+  _protectionController2 = [(CUCaptureController *)self _protectionController];
+  [_protectionController2 startProtectingNebulaDaemonWritesForIdentifier:v5];
 
   v8 = v5;
   pl_dispatch_async();
@@ -1598,10 +1598,10 @@ uint64_t __64__CUCaptureController_stillImageRequestWillStartCapturingVideo___bl
   }
 }
 
-- (void)stillImageRequestDidBeginCaptureBeforeResolvingSettings:(id)a3
+- (void)stillImageRequestDidBeginCaptureBeforeResolvingSettings:(id)settings
 {
-  v4 = a3;
-  v3 = v4;
+  settingsCopy = settings;
+  v3 = settingsCopy;
   pl_dispatch_async();
 }
 
@@ -1614,12 +1614,12 @@ void __79__CUCaptureController_stillImageRequestDidBeginCaptureBeforeResolvingSe
   }
 }
 
-- (void)stillImageRequestDidStartCapturing:(id)a3 resolvedSettings:(id)a4
+- (void)stillImageRequestDidStartCapturing:(id)capturing resolvedSettings:(id)settings
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  capturingCopy = capturing;
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  v6 = capturingCopy;
   pl_dispatch_async();
 }
 
@@ -1632,10 +1632,10 @@ void __75__CUCaptureController_stillImageRequestDidStartCapturing_resolvedSettin
   }
 }
 
-- (void)stillImageRequestDidStopCapturingStillImage:(id)a3
+- (void)stillImageRequestDidStopCapturingStillImage:(id)image
 {
-  v4 = a3;
-  v3 = v4;
+  imageCopy = image;
+  v3 = imageCopy;
   pl_dispatch_async();
 }
 
@@ -1649,10 +1649,10 @@ void __67__CUCaptureController_stillImageRequestDidStopCapturingStillImage___blo
   }
 }
 
-- (void)stillImageRequestDidUnblockResponsiveCapture:(id)a3
+- (void)stillImageRequestDidUnblockResponsiveCapture:(id)capture
 {
-  v4 = a3;
-  v3 = v4;
+  captureCopy = capture;
+  v3 = captureCopy;
   pl_dispatch_async();
 }
 
@@ -1665,36 +1665,36 @@ uint64_t __68__CUCaptureController_stillImageRequestDidUnblockResponsiveCapture_
   return [v2 _updateMaximumNumberOfStillImageRequestsAfterCapturedRequestIfNecessary:v3];
 }
 
-- (void)stillImageRequest:(id)a3 didCompleteStillImageCaptureWithResult:(id)a4
+- (void)stillImageRequest:(id)request didCompleteStillImageCaptureWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 burstIdentifier];
-  if (v8)
+  requestCopy = request;
+  resultCopy = result;
+  burstIdentifier = [requestCopy burstIdentifier];
+  if (burstIdentifier)
   {
-    [(CUCaptureController *)self _processCapturedBurstRequest:v6 withResult:v7];
+    [(CUCaptureController *)self _processCapturedBurstRequest:requestCopy withResult:resultCopy];
   }
 
-  v9 = [v7 error];
-  v10 = [(CUCaptureController *)self resultDelegate];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  error = [resultCopy error];
+  resultDelegate = [(CUCaptureController *)self resultDelegate];
+  if (resultDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 captureController:self didGenerateStillImageCaptureResult:v7 fromRequest:v6];
+    [resultDelegate captureController:self didGenerateStillImageCaptureResult:resultCopy fromRequest:requestCopy];
   }
 
-  v11 = [(CUCaptureController *)self _capturingNightModeStillImageRequest];
+  _capturingNightModeStillImageRequest = [(CUCaptureController *)self _capturingNightModeStillImageRequest];
 
-  if (v11 == v6)
+  if (_capturingNightModeStillImageRequest == requestCopy)
   {
     pl_dispatch_async();
   }
 
-  v12 = [(CUCaptureController *)self _responseQueue];
-  v16 = v6;
-  v17 = v7;
-  v13 = v9;
-  v14 = v7;
-  v15 = v6;
+  _responseQueue = [(CUCaptureController *)self _responseQueue];
+  v16 = requestCopy;
+  v17 = resultCopy;
+  v13 = error;
+  v14 = resultCopy;
+  v15 = requestCopy;
   pl_dispatch_async();
 }
 
@@ -1768,12 +1768,12 @@ uint64_t __80__CUCaptureController_stillImageRequest_didCompleteStillImageCaptur
   return result;
 }
 
-- (void)stillImageRequest:(id)a3 didStopCapturingLivePhotoVideoForCoordinationInfo:(id)a4
+- (void)stillImageRequest:(id)request didStopCapturingLivePhotoVideoForCoordinationInfo:(id)info
 {
-  v6 = a3;
-  if ([a4 isFinalExpectedVideoResult])
+  requestCopy = request;
+  if ([info isFinalExpectedVideoResult])
   {
-    v8 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:v6];
+    v8 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:requestCopy];
     v7 = v8;
     pl_dispatch_async();
   }
@@ -1787,13 +1787,13 @@ uint64_t __91__CUCaptureController_stillImageRequest_didStopCapturingLivePhotoVi
   return [v2 _resetFocusAndExposureAfterCaptureForType:1];
 }
 
-- (void)stillImageRequest:(id)a3 didStopCapturingCTMVideoForCoordinationInfo:(id)a4
+- (void)stillImageRequest:(id)request didStopCapturingCTMVideoForCoordinationInfo:(id)info
 {
-  v6 = a3;
-  if ([a4 isFinalExpectedVideoResult])
+  requestCopy = request;
+  if ([info isFinalExpectedVideoResult])
   {
-    v7 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:v6];
-    v9 = v6;
+    v7 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:requestCopy];
+    v9 = requestCopy;
     v8 = v7;
     pl_dispatch_async();
   }
@@ -1816,48 +1816,48 @@ void __85__CUCaptureController_stillImageRequest_didStopCapturingCTMVideoForCoor
   [*(a1 + 32) _resetFocusAndExposureAfterCaptureForType:3];
 }
 
-- (void)stillImageRequest:(id)a3 didCompleteVideoCaptureWithResult:(id)a4
+- (void)stillImageRequest:(id)request didCompleteVideoCaptureWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isCTMVideo];
-  v9 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:v6];
-  v10 = [v7 coordinationInfo];
-  if ([v10 isFinalExpectedVideoResult])
+  requestCopy = request;
+  resultCopy = result;
+  isCTMVideo = [requestCopy isCTMVideo];
+  v9 = [(CUCaptureController *)self _identifierForPendingVideoForStillImageRequest:requestCopy];
+  coordinationInfo = [resultCopy coordinationInfo];
+  if ([coordinationInfo isFinalExpectedVideoResult])
   {
-    v11 = [(CUCaptureController *)self _protectionController];
-    [v11 stopProtectingNebulaDaemonWritesForIdentifier:v9];
+    _protectionController = [(CUCaptureController *)self _protectionController];
+    [_protectionController stopProtectingNebulaDaemonWritesForIdentifier:v9];
   }
 
-  if (v8)
+  if (isCTMVideo)
   {
-    v21 = v6;
+    v21 = requestCopy;
     pl_dispatch_async();
   }
 
-  v12 = [v7 error];
+  error = [resultCopy error];
 
-  if (v12)
+  if (error)
   {
     v13 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [CUCaptureController stillImageRequest:v7 didCompleteVideoCaptureWithResult:?];
+      [CUCaptureController stillImageRequest:resultCopy didCompleteVideoCaptureWithResult:?];
     }
   }
 
-  v14 = [(CUCaptureController *)self resultDelegate];
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  resultDelegate = [(CUCaptureController *)self resultDelegate];
+  if (resultDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v14 captureController:self didGenerateVideoCaptureResult:v7 fromRequest:v6];
+    [resultDelegate captureController:self didGenerateVideoCaptureResult:resultCopy fromRequest:requestCopy];
   }
 
-  v15 = [(CUCaptureController *)self _responseQueue];
-  v19 = v7;
-  v20 = v6;
-  v16 = v10;
-  v17 = v6;
-  v18 = v7;
+  _responseQueue = [(CUCaptureController *)self _responseQueue];
+  v19 = resultCopy;
+  v20 = requestCopy;
+  v16 = coordinationInfo;
+  v17 = requestCopy;
+  v18 = resultCopy;
   pl_dispatch_async();
 }
 
@@ -1962,12 +1962,12 @@ uint64_t __75__CUCaptureController_stillImageRequest_didCompleteVideoCaptureWith
   return MEMORY[0x1EEE66C40]();
 }
 
-- (void)stillImageRequestDidCompleteCapture:(id)a3 error:(id)a4
+- (void)stillImageRequestDidCompleteCapture:(id)capture error:(id)error
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  captureCopy = capture;
+  errorCopy = error;
+  v6 = errorCopy;
+  v7 = captureCopy;
   pl_dispatch_async();
 }
 
@@ -1984,60 +1984,60 @@ void __65__CUCaptureController_stillImageRequestDidCompleteCapture_error___block
   [v3 removeAssertionForIdentifier:v2 withReason:1];
 }
 
-- (void)_beginTrackingLivePhotoVideoRecordingForIdentifier:(id)a3
+- (void)_beginTrackingLivePhotoVideoRecordingForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = [(CUCaptureController *)self _identifiersForActiveLivePhotoVideoCaptures];
-    v6 = [v5 count];
-    [v5 addObject:v4];
-    v7 = [v5 count];
+    _identifiersForActiveLivePhotoVideoCaptures = [(CUCaptureController *)self _identifiersForActiveLivePhotoVideoCaptures];
+    v6 = [_identifiersForActiveLivePhotoVideoCaptures count];
+    [_identifiersForActiveLivePhotoVideoCaptures addObject:identifierCopy];
+    v7 = [_identifiersForActiveLivePhotoVideoCaptures count];
     if (!v6 && v7)
     {
-      v8 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      stillImageCapturingVideoDelegate = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v8 stillImageRequestsWillStartCapturingLivePhotoVideo];
+        [stillImageCapturingVideoDelegate stillImageRequestsWillStartCapturingLivePhotoVideo];
       }
     }
   }
 
   else
   {
-    v5 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _identifiersForActiveLivePhotoVideoCaptures = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_identifiersForActiveLivePhotoVideoCaptures, OS_LOG_TYPE_ERROR))
     {
       [CUCaptureController _beginTrackingLivePhotoVideoRecordingForIdentifier:];
     }
   }
 }
 
-- (void)_endTrackingLivePhotoVideoRecordingForIdentifier:(id)a3
+- (void)_endTrackingLivePhotoVideoRecordingForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = [(CUCaptureController *)self _identifiersForActiveLivePhotoVideoCaptures];
-    v6 = [v5 count];
-    [v5 removeObject:v4];
-    v7 = [v5 count];
+    _identifiersForActiveLivePhotoVideoCaptures = [(CUCaptureController *)self _identifiersForActiveLivePhotoVideoCaptures];
+    v6 = [_identifiersForActiveLivePhotoVideoCaptures count];
+    [_identifiersForActiveLivePhotoVideoCaptures removeObject:identifierCopy];
+    v7 = [_identifiersForActiveLivePhotoVideoCaptures count];
     if (v6 && !v7)
     {
-      v8 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      stillImageCapturingVideoDelegate = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v8 stillImageRequestsDidCompleteCapturingLivePhotoVideo];
+        [stillImageCapturingVideoDelegate stillImageRequestsDidCompleteCapturingLivePhotoVideo];
       }
     }
   }
 
   else
   {
-    v5 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _identifiersForActiveLivePhotoVideoCaptures = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_identifiersForActiveLivePhotoVideoCaptures, OS_LOG_TYPE_ERROR))
     {
       [CUCaptureController _endTrackingLivePhotoVideoRecordingForIdentifier:];
     }
@@ -2046,65 +2046,65 @@ void __65__CUCaptureController_stillImageRequestDidCompleteCapture_error___block
 
 - (BOOL)isCapturingLivePhotoVideo
 {
-  v2 = [(CUCaptureController *)self _identifiersForActiveLivePhotoVideoCaptures];
-  v3 = [v2 count] != 0;
+  _identifiersForActiveLivePhotoVideoCaptures = [(CUCaptureController *)self _identifiersForActiveLivePhotoVideoCaptures];
+  v3 = [_identifiersForActiveLivePhotoVideoCaptures count] != 0;
 
   return v3;
 }
 
-- (void)_beginTrackingCTMVideoRecordingForIdentifier:(id)a3
+- (void)_beginTrackingCTMVideoRecordingForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = [(CUCaptureController *)self _identifiersForActiveCTMVideoCaptures];
-    v6 = [v5 count];
-    [v5 addObject:v4];
-    if ([v5 count])
+    _identifiersForActiveCTMVideoCaptures = [(CUCaptureController *)self _identifiersForActiveCTMVideoCaptures];
+    v6 = [_identifiersForActiveCTMVideoCaptures count];
+    [_identifiersForActiveCTMVideoCaptures addObject:identifierCopy];
+    if ([_identifiersForActiveCTMVideoCaptures count])
     {
-      v7 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      stillImageCapturingVideoDelegate = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v7 stillImageRequestWillStartCapturingCTMVideoWithCaptureInFlight:v6 != 0];
+        [stillImageCapturingVideoDelegate stillImageRequestWillStartCapturingCTMVideoWithCaptureInFlight:v6 != 0];
       }
     }
   }
 
   else
   {
-    v5 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _identifiersForActiveCTMVideoCaptures = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_identifiersForActiveCTMVideoCaptures, OS_LOG_TYPE_ERROR))
     {
       [CUCaptureController _beginTrackingCTMVideoRecordingForIdentifier:];
     }
   }
 }
 
-- (void)_endTrackingCTMVideoRecordingForIdentifier:(id)a3
+- (void)_endTrackingCTMVideoRecordingForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = [(CUCaptureController *)self _identifiersForActiveCTMVideoCaptures];
-    v6 = [v5 count];
-    [v5 removeObject:v4];
-    v7 = [v5 count];
+    _identifiersForActiveCTMVideoCaptures = [(CUCaptureController *)self _identifiersForActiveCTMVideoCaptures];
+    v6 = [_identifiersForActiveCTMVideoCaptures count];
+    [_identifiersForActiveCTMVideoCaptures removeObject:identifierCopy];
+    v7 = [_identifiersForActiveCTMVideoCaptures count];
     if (v6 && !v7)
     {
-      v8 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      stillImageCapturingVideoDelegate = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v8 stillImageRequestsDidStopCapturingCTMVideo];
+        [stillImageCapturingVideoDelegate stillImageRequestsDidStopCapturingCTMVideo];
       }
     }
   }
 
   else
   {
-    v5 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _identifiersForActiveCTMVideoCaptures = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_identifiersForActiveCTMVideoCaptures, OS_LOG_TYPE_ERROR))
     {
       [CUCaptureController _endTrackingCTMVideoRecordingForIdentifier:];
     }
@@ -2113,30 +2113,30 @@ void __65__CUCaptureController_stillImageRequestDidCompleteCapture_error___block
 
 - (BOOL)isCapturingCTMVideo
 {
-  v2 = [(CUCaptureController *)self _capturingCTMVideoRequest];
-  v3 = v2 != 0;
+  _capturingCTMVideoRequest = [(CUCaptureController *)self _capturingCTMVideoRequest];
+  v3 = _capturingCTMVideoRequest != 0;
 
   return v3;
 }
 
-- (void)_setCapturingCTMVideoRequest:(id)a3
+- (void)_setCapturingCTMVideoRequest:(id)request
 {
-  v5 = a3;
-  if (self->__capturingCTMVideoRequest != v5)
+  requestCopy = request;
+  if (self->__capturingCTMVideoRequest != requestCopy)
   {
-    v15 = v5;
-    v6 = [(CUCaptureController *)self isCapturingCTMVideo];
-    objc_storeStrong(&self->__capturingCTMVideoRequest, a3);
-    v7 = [(CUCaptureController *)self isCapturingCTMVideo];
-    v8 = v7;
-    if (!v7 || v6)
+    v15 = requestCopy;
+    isCapturingCTMVideo = [(CUCaptureController *)self isCapturingCTMVideo];
+    objc_storeStrong(&self->__capturingCTMVideoRequest, request);
+    isCapturingCTMVideo2 = [(CUCaptureController *)self isCapturingCTMVideo];
+    v8 = isCapturingCTMVideo2;
+    if (!isCapturingCTMVideo2 || isCapturingCTMVideo)
     {
-      if (v7 || !v6)
+      if (isCapturingCTMVideo2 || !isCapturingCTMVideo)
       {
         goto LABEL_10;
       }
 
-      v12 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      stillImageCapturingVideoDelegate = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
       v13 = objc_opt_respondsToSelector();
 
       if ((v13 & 1) == 0)
@@ -2144,27 +2144,27 @@ void __65__CUCaptureController_stillImageRequestDidCompleteCapture_error___block
         goto LABEL_10;
       }
 
-      v11 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
-      [v11 stillImageRequestsWillRequestCTMVideoCaptureEnd];
+      stillImageCapturingVideoDelegate2 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      [stillImageCapturingVideoDelegate2 stillImageRequestsWillRequestCTMVideoCaptureEnd];
     }
 
     else
     {
-      v9 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      stillImageCapturingVideoDelegate3 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
       v10 = objc_opt_respondsToSelector();
 
       if ((v10 & 1) == 0)
       {
 LABEL_10:
-        v14 = [(CUCaptureController *)self _remoteShutterController];
-        [v14 setCapturingVideo:v8];
+        _remoteShutterController = [(CUCaptureController *)self _remoteShutterController];
+        [_remoteShutterController setCapturingVideo:v8];
 
-        v5 = v15;
+        requestCopy = v15;
         goto LABEL_11;
       }
 
-      v11 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
-      [v11 stillImageRequestsWillRequestCTMVideoCaptureStart];
+      stillImageCapturingVideoDelegate2 = [(CUCaptureController *)self stillImageCapturingVideoDelegate];
+      [stillImageCapturingVideoDelegate2 stillImageRequestsWillRequestCTMVideoCaptureStart];
     }
 
     goto LABEL_10;
@@ -2175,49 +2175,49 @@ LABEL_11:
 
 - (BOOL)hasActiveCTMVideoCaptures
 {
-  v2 = [(CUCaptureController *)self _identifiersForActiveCTMVideoCaptures];
-  v3 = [v2 count] != 0;
+  _identifiersForActiveCTMVideoCaptures = [(CUCaptureController *)self _identifiersForActiveCTMVideoCaptures];
+  v3 = [_identifiersForActiveCTMVideoCaptures count] != 0;
 
   return v3;
 }
 
 - (BOOL)isCapturingNightModeImage
 {
-  v2 = [(CUCaptureController *)self _capturingNightModeStillImageRequest];
-  v3 = v2 != 0;
+  _capturingNightModeStillImageRequest = [(CUCaptureController *)self _capturingNightModeStillImageRequest];
+  v3 = _capturingNightModeStillImageRequest != 0;
 
   return v3;
 }
 
-- (void)changeToNightMode:(int64_t)a3
+- (void)changeToNightMode:(int64_t)mode
 {
-  v5 = [[CAMNightModeCommand alloc] initWithNightMode:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMNightModeCommand alloc] initWithNightMode:mode];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
 - (BOOL)isCapturingStandardVideo
 {
-  v2 = [(CUCaptureController *)self _capturingVideoRequest];
-  v3 = v2 != 0;
+  _capturingVideoRequest = [(CUCaptureController *)self _capturingVideoRequest];
+  v3 = _capturingVideoRequest != 0;
 
   return v3;
 }
 
-- (id)_sanitizeVideoRequest:(id)a3
+- (id)_sanitizeVideoRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [(CUCaptureController *)self _motionController];
-  [v5 setCaptureOrientation:{objc_msgSend(v6, "captureOrientation")}];
-  v7 = [v4 localDestinationURL];
-  if (!v7)
+  requestCopy = request;
+  v5 = [requestCopy mutableCopy];
+  _motionController = [(CUCaptureController *)self _motionController];
+  [v5 setCaptureOrientation:{objc_msgSend(_motionController, "captureOrientation")}];
+  localDestinationURL = [requestCopy localDestinationURL];
+  if (!localDestinationURL)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v9 = [v5 persistenceUUID];
-    v10 = +[CAMPersistenceController uniquePathForAssetWithUUID:captureTime:extension:usingIncomingDirectory:](CAMPersistenceController, "uniquePathForAssetWithUUID:captureTime:extension:usingIncomingDirectory:", v9, @"MOV", [v5 shouldPersistToIncomingDirectory], Current);
-    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
-    [v5 setLocalDestinationURL:v7];
+    persistenceUUID = [v5 persistenceUUID];
+    v10 = +[CAMPersistenceController uniquePathForAssetWithUUID:captureTime:extension:usingIncomingDirectory:](CAMPersistenceController, "uniquePathForAssetWithUUID:captureTime:extension:usingIncomingDirectory:", persistenceUUID, @"MOV", [v5 shouldPersistToIncomingDirectory], Current);
+    localDestinationURL = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
+    [v5 setLocalDestinationURL:localDestinationURL];
   }
 
   if ([MEMORY[0x1E69DC668] isRunningInStoreDemoMode])
@@ -2226,33 +2226,33 @@ LABEL_11:
   }
 
   v11 = +[CAMCaptureCapabilities capabilities];
-  v12 = [v11 maximumRecordedFileSize];
-  if (v12 >= 1)
+  maximumRecordedFileSize = [v11 maximumRecordedFileSize];
+  if (maximumRecordedFileSize >= 1)
   {
-    v13 = v12;
-    if (v12 < [v5 maximumRecordedFileSize])
+    v13 = maximumRecordedFileSize;
+    if (maximumRecordedFileSize < [v5 maximumRecordedFileSize])
     {
       [v5 setMaximumRecordedFileSize:v13];
     }
   }
 
-  v14 = [MEMORY[0x1E69BF208] freeDiskSpaceThreshold];
-  v15 = [v4 remainingDiskUsageThreshold];
-  if (v14 <= v15)
+  freeDiskSpaceThreshold = [MEMORY[0x1E69BF208] freeDiskSpaceThreshold];
+  remainingDiskUsageThreshold = [requestCopy remainingDiskUsageThreshold];
+  if (freeDiskSpaceThreshold <= remainingDiskUsageThreshold)
   {
-    v16 = v15;
+    v16 = remainingDiskUsageThreshold;
   }
 
   else
   {
-    v16 = v14;
+    v16 = freeDiskSpaceThreshold;
   }
 
   [v5 setRemainingDiskUsageThreshold:v16];
   if (![v5 assertionIdentifier])
   {
-    v17 = [(CUCaptureController *)self _powerController];
-    [v5 setAssertionIdentifier:{objc_msgSend(v17, "generateAssertionIdentifier")}];
+    _powerController = [(CUCaptureController *)self _powerController];
+    [v5 setAssertionIdentifier:{objc_msgSend(_powerController, "generateAssertionIdentifier")}];
   }
 
   v18 = [v5 copy];
@@ -2260,16 +2260,16 @@ LABEL_11:
   return v18;
 }
 
-- (void)_processPendingVideoCaptureRequest:(id)a3
+- (void)_processPendingVideoCaptureRequest:(id)request
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _locationController];
-  [v5 setEnabled:0];
-  v6 = -[CAMTorchCommand initWithTorchMode:]([CAMTorchCommand alloc], "initWithTorchMode:", [v4 torchMode]);
+  requestCopy = request;
+  _locationController = [(CUCaptureController *)self _locationController];
+  [_locationController setEnabled:0];
+  v6 = -[CAMTorchCommand initWithTorchMode:]([CAMTorchCommand alloc], "initWithTorchMode:", [requestCopy torchMode]);
   v7 = +[CAMUserPreferences preferences];
-  v8 = -[CAMVideoRecordingCameraSelectionBehaviorCommand initWithCameraSwitchingEnabled:]([CAMVideoRecordingCameraSelectionBehaviorCommand alloc], "initWithCameraSwitchingEnabled:", [v7 shouldDisableCameraSwitchingDuringVideoRecordingForMode:{objc_msgSend(v4, "captureMode")}] ^ 1);
-  v9 = [[CAMStartVideoRecordingCommand alloc] initWithRequest:v4];
+  v8 = -[CAMVideoRecordingCameraSelectionBehaviorCommand initWithCameraSwitchingEnabled:]([CAMVideoRecordingCameraSelectionBehaviorCommand alloc], "initWithCameraSwitchingEnabled:", [v7 shouldDisableCameraSwitchingDuringVideoRecordingForMode:{objc_msgSend(requestCopy, "captureMode")}] ^ 1);
+  v9 = [[CAMStartVideoRecordingCommand alloc] initWithRequest:requestCopy];
   v10 = objc_alloc(MEMORY[0x1E695DF70]);
   v18[0] = v6;
   v18[1] = v8;
@@ -2277,79 +2277,79 @@ LABEL_11:
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
   v12 = [v10 initWithArray:v11];
 
-  if (([v4 trueVideoEnabled] & 1) == 0)
+  if (([requestCopy trueVideoEnabled] & 1) == 0)
   {
-    v13 = -[CUCaptureController _realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:](self, "_realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:", [v4 captureMode], objc_msgSend(v4, "captureVideoConfiguration"), 1, 0, 0);
+    v13 = -[CUCaptureController _realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:](self, "_realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:", [requestCopy captureMode], objc_msgSend(requestCopy, "captureVideoConfiguration"), 1, 0, 0);
     [v12 insertObject:v13 atIndex:0];
   }
 
-  if (-[CUCaptureController _shouldManageFocusForMode:](self, "_shouldManageFocusForMode:", [v4 captureMode]))
+  if (-[CUCaptureController _shouldManageFocusForMode:](self, "_shouldManageFocusForMode:", [requestCopy captureMode]))
   {
     v14 = [(CAMCaptureCommand *)[CAMUpdateFocusAndExposureForStartVideoRecordingCommand alloc] initWithSubcommands:0];
     [v12 insertObject:v14 atIndex:0];
   }
 
-  if ([(CUCaptureController *)self _shouldLockWhiteBalanceForVideoCaptureRequest:v4])
+  if ([(CUCaptureController *)self _shouldLockWhiteBalanceForVideoCaptureRequest:requestCopy])
   {
     v15 = [[CAMWhiteBalanceCommand alloc] initWithWhiteBalanceMode:0];
     [v12 insertObject:v15 atIndex:0];
   }
 
   v16 = [[CAMCaptureCommand alloc] initWithSubcommands:v12];
-  v17 = [(CUCaptureController *)self _captureEngine];
-  [v17 enqueueCommand:v16];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v16];
   [(CUCaptureController *)self _setPendingVideoCaptureRequest:0];
 }
 
-- (BOOL)startCapturingVideoWithRequest:(id)a3 error:(id *)a4
+- (BOOL)startCapturingVideoWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v12 = 0;
-  v7 = [(CUCaptureController *)self _internalStartCapturingVideoWithRequest:v6 error:&v12];
+  v7 = [(CUCaptureController *)self _internalStartCapturingVideoWithRequest:requestCopy error:&v12];
   v8 = v12;
   if (!v7)
   {
     v9 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [CUCaptureController startCapturingVideoWithRequest:v6 error:v8];
+      [CUCaptureController startCapturingVideoWithRequest:requestCopy error:v8];
     }
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (BOOL)_internalStartCapturingVideoWithRequest:(id)a3 error:(id *)a4
+- (BOOL)_internalStartCapturingVideoWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  if ([(CUCaptureController *)self _canBeginCaptureCheckAvailability:0 error:a4])
+  requestCopy = request;
+  if ([(CUCaptureController *)self _canBeginCaptureCheckAvailability:0 error:error])
   {
-    v7 = [(CUCaptureController *)self isCapturingStandardVideo];
-    if (v7)
+    isCapturingStandardVideo = [(CUCaptureController *)self isCapturingStandardVideo];
+    if (isCapturingStandardVideo)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = CAMCaptureControllerError(-22100, 0);
+        *error = CAMCaptureControllerError(-22100, 0);
       }
 
-      v8 = v6;
+      v8 = requestCopy;
     }
 
     else
     {
-      v8 = [(CUCaptureController *)self _sanitizeVideoRequest:v6];
+      v8 = [(CUCaptureController *)self _sanitizeVideoRequest:requestCopy];
 
       [(CUCaptureController *)self _setPendingVideoCaptureRequest:v8];
       [(CUCaptureController *)self _setCapturingVideoRequest:v8];
       [(CUCaptureController *)self setWaitingForRecordingToStart:1];
-      v10 = [(CUCaptureController *)self _powerController];
-      [v10 addAssertionForIndentifier:objc_msgSend(v8 withReason:{"assertionIdentifier"), 2}];
+      _powerController = [(CUCaptureController *)self _powerController];
+      [_powerController addAssertionForIndentifier:objc_msgSend(v8 withReason:{"assertionIdentifier"), 2}];
 
       v11 = +[CAMCaptureCapabilities capabilities];
       if ((![v8 trueVideoEnabled] || objc_msgSend(v11, "isRegionalShutterSoundEnabled")) && -[CUCaptureController _shouldPlaySystemSound](self, "_shouldPlaySystemSound"))
@@ -2372,8 +2372,8 @@ LABEL_11:
       [(CUCaptureController *)self _updateAvailabilityAfterEnqueuedRequest:v8];
     }
 
-    v9 = !v7;
-    v6 = v8;
+    v9 = !isCapturingStandardVideo;
+    requestCopy = v8;
   }
 
   else
@@ -2402,33 +2402,33 @@ uint64_t __69__CUCaptureController__internalStartCapturingVideoWithRequest_error
   return [*(a1 + 32) _didPlayBeginVideoRecordingSound];
 }
 
-- (BOOL)_stopCapturingVideoAndDisableCaptureAvailabilityWhileStopping:(BOOL)a3
+- (BOOL)_stopCapturingVideoAndDisableCaptureAvailabilityWhileStopping:(BOOL)stopping
 {
-  v3 = a3;
+  stoppingCopy = stopping;
   v19 = *MEMORY[0x1E69E9840];
   if ([(CUCaptureController *)self isCapturingStandardVideo])
   {
-    v5 = [(CUCaptureController *)self _capturingVideoRequest];
-    if (v3)
+    _capturingVideoRequest = [(CUCaptureController *)self _capturingVideoRequest];
+    if (stoppingCopy)
     {
       [(CUCaptureController *)self _setVideoCaptureAvailable:0];
-      [(CUCaptureController *)self _updateAvailabilityWhenPreparingToStopCapturingForRequest:v5];
+      [(CUCaptureController *)self _updateAvailabilityWhenPreparingToStopCapturingForRequest:_capturingVideoRequest];
     }
 
-    v6 = [(CUCaptureController *)self _pendingVideoCaptureRequest];
+    _pendingVideoCaptureRequest = [(CUCaptureController *)self _pendingVideoCaptureRequest];
     [(CUCaptureController *)self _resetCapturingVideoState];
-    v7 = v6 == 0;
-    if (v6)
+    v7 = _pendingVideoCaptureRequest == 0;
+    if (_pendingVideoCaptureRequest)
     {
       v8 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *&buf[4] = v6;
+        *&buf[4] = _pendingVideoCaptureRequest;
         _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "Stopped capturing a video before the recording sound finished playing; pending request: %{public}@", buf, 0xCu);
       }
 
-      [(CUCaptureController *)self videoRequestDidStopCapturing:v6];
+      [(CUCaptureController *)self videoRequestDidStopCapturing:_pendingVideoCaptureRequest];
       v9 = CAMVideoCaptureRequestError(-28000, 0);
       v10 = [CAMVideoCaptureResult alloc];
       *buf = *MEMORY[0x1E6960C70];
@@ -2437,24 +2437,24 @@ uint64_t __69__CUCaptureController__internalStartCapturingVideoWithRequest_error
       v16 = v18;
       LOBYTE(v14) = 0;
       v11 = [(CAMVideoCaptureResult *)v10 initWithURL:0 filteredLocalDestinationURL:0 duration:buf stillDisplayTime:&v15 dimensions:0 metadata:0 videoZoomFactor:1.0 reason:0 videoPreviewPixelBuffer:0 coordinationInfo:0 error:v9 slowWriterFrameDrops:v14];
-      [(CUCaptureController *)self videoRequest:v6 didCompleteCaptureWithResult:v11];
+      [(CUCaptureController *)self videoRequest:_pendingVideoCaptureRequest didCompleteCaptureWithResult:v11];
     }
 
     else
     {
       v9 = objc_alloc_init(CAMStopVideoRecordingCommand);
-      v12 = [(CUCaptureController *)self _captureEngine];
-      [v12 enqueueCommand:v9];
+      _captureEngine = [(CUCaptureController *)self _captureEngine];
+      [_captureEngine enqueueCommand:v9];
     }
   }
 
   else
   {
-    v5 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    _capturingVideoRequest = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_capturingVideoRequest, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Ignoring request to stop capturing video, because we aren't recording.", buf, 2u);
+      _os_log_impl(&dword_1A3640000, _capturingVideoRequest, OS_LOG_TYPE_DEFAULT, "Ignoring request to stop capturing video, because we aren't recording.", buf, 2u);
     }
 
     v7 = 0;
@@ -2463,18 +2463,18 @@ uint64_t __69__CUCaptureController__internalStartCapturingVideoWithRequest_error
   return v7;
 }
 
-- (void)_setCapturingVideoRequest:(id)a3
+- (void)_setCapturingVideoRequest:(id)request
 {
-  v5 = a3;
-  if (self->__capturingVideoRequest != v5)
+  requestCopy = request;
+  if (self->__capturingVideoRequest != requestCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->__capturingVideoRequest, a3);
-    v6 = [(CUCaptureController *)self isCapturingVideo];
-    v7 = [(CUCaptureController *)self _remoteShutterController];
-    [v7 setCapturingVideo:v6];
+    v8 = requestCopy;
+    objc_storeStrong(&self->__capturingVideoRequest, request);
+    isCapturingVideo = [(CUCaptureController *)self isCapturingVideo];
+    _remoteShutterController = [(CUCaptureController *)self _remoteShutterController];
+    [_remoteShutterController setCapturingVideo:isCapturingVideo];
 
-    v5 = v8;
+    requestCopy = v8;
   }
 }
 
@@ -2488,7 +2488,7 @@ uint64_t __69__CUCaptureController__internalStartCapturingVideoWithRequest_error
   [(CUCaptureController *)self _setWaitingForVideoCapturePauseResume:0];
 }
 
-- (void)changeToVideoRecordingCaptureOrientation:(int64_t)a3
+- (void)changeToVideoRecordingCaptureOrientation:(int64_t)orientation
 {
   if (![(CUCaptureController *)self isCapturingVideo])
   {
@@ -2500,11 +2500,11 @@ uint64_t __69__CUCaptureController__internalStartCapturingVideoWithRequest_error
     }
   }
 
-  if (a3)
+  if (orientation)
   {
-    v6 = [[CAMSetVideoOrientationCommand alloc] initWithCaptureOrientation:a3];
-    v7 = [(CUCaptureController *)self _captureEngine];
-    [v7 enqueueCommand:v6];
+    v6 = [[CAMSetVideoOrientationCommand alloc] initWithCaptureOrientation:orientation];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v6];
   }
 }
 
@@ -2547,8 +2547,8 @@ LABEL_7:
         [(CUCaptureController *)self _setVideoCapturePaused:1];
         [(CUCaptureController *)self _setWaitingForVideoCapturePauseResume:1];
         v8 = objc_alloc_init(CAMPauseVideoRecordingCommand);
-        v9 = [(CUCaptureController *)self _captureEngine];
-        [v9 enqueueCommand:v8];
+        _captureEngine = [(CUCaptureController *)self _captureEngine];
+        [_captureEngine enqueueCommand:v8];
 
         return v6;
       }
@@ -2593,8 +2593,8 @@ LABEL_8:
         v6 = 1;
         [(CUCaptureController *)self _setWaitingForVideoCapturePauseResume:1];
         v8 = objc_alloc_init(CAMResumeVideoRecordingCommand);
-        v9 = [(CUCaptureController *)self _captureEngine];
-        [v9 enqueueCommand:v8];
+        _captureEngine = [(CUCaptureController *)self _captureEngine];
+        [_captureEngine enqueueCommand:v8];
 
         return v6;
       }
@@ -2652,18 +2652,18 @@ uint64_t __55__CUCaptureController__didPlayBeginVideoRecordingSound__block_invok
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (void)videoRequestDidStartCapturing:(id)a3
+- (void)videoRequestDidStartCapturing:(id)capturing
 {
-  v4 = a3;
-  if ([v4 shouldProtectPersistence])
+  capturingCopy = capturing;
+  if ([capturingCopy shouldProtectPersistence])
   {
-    v5 = [(CUCaptureController *)self _protectionController];
-    [v5 startProtectingPersistenceForRequest:v4];
-    v6 = [v4 persistenceUUID];
-    [v5 startProtectingNebulaDaemonWritesForIdentifier:v6];
+    _protectionController = [(CUCaptureController *)self _protectionController];
+    [_protectionController startProtectingPersistenceForRequest:capturingCopy];
+    persistenceUUID = [capturingCopy persistenceUUID];
+    [_protectionController startProtectingNebulaDaemonWritesForIdentifier:persistenceUUID];
   }
 
-  v7 = v4;
+  v7 = capturingCopy;
   pl_dispatch_async();
 }
 
@@ -2690,17 +2690,17 @@ uint64_t __53__CUCaptureController_videoRequestDidStartCapturing___block_invoke(
   return MEMORY[0x1EEE66C30]();
 }
 
-- (void)videoRequestDidStopCapturing:(id)a3
+- (void)videoRequestDidStopCapturing:(id)capturing
 {
-  v4 = a3;
-  if ([v4 shouldProtectPersistence])
+  capturingCopy = capturing;
+  if ([capturingCopy shouldProtectPersistence])
   {
-    v5 = [v4 persistenceUUID];
-    v6 = [(CUCaptureController *)self _protectionController];
-    [v6 stopProtectingNebulaDaemonWritesForIdentifier:v5];
+    persistenceUUID = [capturingCopy persistenceUUID];
+    _protectionController = [(CUCaptureController *)self _protectionController];
+    [_protectionController stopProtectingNebulaDaemonWritesForIdentifier:persistenceUUID];
   }
 
-  v7 = v4;
+  v7 = capturingCopy;
   pl_dispatch_async();
 }
 
@@ -2753,22 +2753,22 @@ void __52__CUCaptureController_videoRequestDidStopCapturing___block_invoke(uint6
   }
 }
 
-- (void)videoRequest:(id)a3 didCompleteCaptureWithResult:(id)a4
+- (void)videoRequest:(id)request didCompleteCaptureWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  requestCopy = request;
+  resultCopy = result;
+  v8 = requestCopy;
   pl_dispatch_async();
-  v9 = [(CUCaptureController *)self resultDelegate];
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  resultDelegate = [(CUCaptureController *)self resultDelegate];
+  if (resultDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v9 captureController:self didGenerateVideoCaptureResult:v7 fromRequest:v8];
+    [resultDelegate captureController:self didGenerateVideoCaptureResult:resultCopy fromRequest:v8];
   }
 
-  v10 = [(CUCaptureController *)self _responseQueue];
-  v13 = v7;
+  _responseQueue = [(CUCaptureController *)self _responseQueue];
+  v13 = resultCopy;
   v11 = v8;
-  v12 = v7;
+  v12 = resultCopy;
   pl_dispatch_async();
 }
 
@@ -2850,9 +2850,9 @@ void __65__CUCaptureController_videoRequest_didCompleteCaptureWithResult___block
   [v2 removeAssertionForIdentifier:objc_msgSend(*(a1 + 32) withReason:{"assertionIdentifier"), 2}];
 }
 
-- (void)videoRequestDidResumeCapturing:(id)a3
+- (void)videoRequestDidResumeCapturing:(id)capturing
 {
-  v3 = a3;
+  capturingCopy = capturing;
   v4 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2860,7 +2860,7 @@ void __65__CUCaptureController_videoRequest_didCompleteCaptureWithResult___block
     _os_log_impl(&dword_1A3640000, v4, OS_LOG_TYPE_DEFAULT, "CAMCaptureController videoRequestDidResumeCapturing:", buf, 2u);
   }
 
-  v5 = v3;
+  v5 = capturingCopy;
   pl_dispatch_async();
 }
 
@@ -2890,9 +2890,9 @@ uint64_t __54__CUCaptureController_videoRequestDidResumeCapturing___block_invoke
   return MEMORY[0x1EEE66C30]();
 }
 
-- (void)videoRequestDidPauseCapturing:(id)a3
+- (void)videoRequestDidPauseCapturing:(id)capturing
 {
-  v3 = a3;
+  capturingCopy = capturing;
   v4 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2900,7 +2900,7 @@ uint64_t __54__CUCaptureController_videoRequestDidResumeCapturing___block_invoke
     _os_log_impl(&dword_1A3640000, v4, OS_LOG_TYPE_DEFAULT, "CAMCaptureController videoRequestDidPauseCapturing:", buf, 2u);
   }
 
-  v5 = v3;
+  v5 = capturingCopy;
   pl_dispatch_async();
 }
 
@@ -2920,22 +2920,22 @@ void __53__CUCaptureController_videoRequestDidPauseCapturing___block_invoke(uint
   }
 }
 
-- (void)setMultiCamPictureInPictureMetrics:(id)a3
+- (void)setMultiCamPictureInPictureMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 setMultiCamPictureInPictureMetrics:v4];
+  metricsCopy = metrics;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine setMultiCamPictureInPictureMetrics:metricsCopy];
 }
 
-- (id)_sanitizePanoramaRequest:(id)a3
+- (id)_sanitizePanoramaRequest:(id)request
 {
-  v4 = [a3 mutableCopy];
-  v5 = [(CUCaptureController *)self _motionController];
-  [v4 setCaptureOrientation:{objc_msgSend(v5, "panoramaCaptureOrientation")}];
+  v4 = [request mutableCopy];
+  _motionController = [(CUCaptureController *)self _motionController];
+  [v4 setCaptureOrientation:{objc_msgSend(_motionController, "panoramaCaptureOrientation")}];
   if (![v4 assertionIdentifier])
   {
-    v6 = [(CUCaptureController *)self _powerController];
-    [v4 setAssertionIdentifier:{objc_msgSend(v6, "generateAssertionIdentifier")}];
+    _powerController = [(CUCaptureController *)self _powerController];
+    [v4 setAssertionIdentifier:{objc_msgSend(_powerController, "generateAssertionIdentifier")}];
   }
 
   v7 = [v4 copy];
@@ -2943,26 +2943,26 @@ void __53__CUCaptureController_videoRequestDidPauseCapturing___block_invoke(uint
   return v7;
 }
 
-- (BOOL)startCapturingPanoramaWithRequest:(id)a3 error:(id *)a4
+- (BOOL)startCapturingPanoramaWithRequest:(id)request error:(id *)error
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(CUCaptureController *)self _canBeginCaptureCheckAvailability:0 error:a4])
+  requestCopy = request;
+  if ([(CUCaptureController *)self _canBeginCaptureCheckAvailability:0 error:error])
   {
-    v7 = [(CUCaptureController *)self isCapturingPanorama];
-    if (v7)
+    isCapturingPanorama = [(CUCaptureController *)self isCapturingPanorama];
+    if (isCapturingPanorama)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = CAMCaptureControllerError(-22100, 0);
+        *error = CAMCaptureControllerError(-22100, 0);
       }
 
-      v8 = v6;
+      v8 = requestCopy;
     }
 
     else
     {
-      v8 = [(CUCaptureController *)self _sanitizePanoramaRequest:v6];
+      v8 = [(CUCaptureController *)self _sanitizePanoramaRequest:requestCopy];
 
       [(CUCaptureController *)self _setCapturingPanoramaRequest:v8];
       if ([(CUCaptureController *)self _shouldPlaySystemSound])
@@ -2975,23 +2975,23 @@ void __53__CUCaptureController_videoRequestDidPauseCapturing___block_invoke(uint
         AudioServicesPlaySystemSoundWithCompletion(0x45Du, v18);
       }
 
-      v10 = [(CUCaptureController *)self _updateFocusAndExposureForStartPanorama];
+      _updateFocusAndExposureForStartPanorama = [(CUCaptureController *)self _updateFocusAndExposureForStartPanorama];
       v11 = [[CAMStartPanoramaCommand alloc] initWithRequest:v8];
       v12 = [CAMCaptureCommand alloc];
-      v19[0] = v10;
+      v19[0] = _updateFocusAndExposureForStartPanorama;
       v19[1] = v11;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
       v14 = [(CAMCaptureCommand *)v12 initWithSubcommands:v13];
 
-      v15 = [(CUCaptureController *)self _captureEngine];
-      [v15 enqueueCommand:v14];
-      v16 = [(CUCaptureController *)self _powerController];
-      [v16 addAssertionForIndentifier:objc_msgSend(v8 withReason:{"assertionIdentifier"), 4}];
+      _captureEngine = [(CUCaptureController *)self _captureEngine];
+      [_captureEngine enqueueCommand:v14];
+      _powerController = [(CUCaptureController *)self _powerController];
+      [_powerController addAssertionForIndentifier:objc_msgSend(v8 withReason:{"assertionIdentifier"), 4}];
       [(CUCaptureController *)self _updateAvailabilityAfterEnqueuedRequest:v8];
     }
 
-    v9 = !v7;
-    v6 = v8;
+    v9 = !isCapturingPanorama;
+    requestCopy = v8;
   }
 
   else
@@ -3021,11 +3021,11 @@ void __53__CUCaptureController_videoRequestDidPauseCapturing___block_invoke(uint
   return v8;
 }
 
-- (BOOL)stopCapturingPanoramaInterrupted:(BOOL)a3
+- (BOOL)stopCapturingPanoramaInterrupted:(BOOL)interrupted
 {
-  v3 = a3;
-  v5 = [(CUCaptureController *)self isCapturingPanorama];
-  if (v5)
+  interruptedCopy = interrupted;
+  isCapturingPanorama = [(CUCaptureController *)self isCapturingPanorama];
+  if (isCapturingPanorama)
   {
     [(CUCaptureController *)self _setCapturingPanoramaRequest:0];
     if ([(CUCaptureController *)self _shouldPlaySystemSound])
@@ -3033,35 +3033,35 @@ void __53__CUCaptureController_videoRequestDidPauseCapturing___block_invoke(uint
       AudioServicesPlaySystemSound(0x45Eu);
     }
 
-    v6 = [(CUCaptureController *)self _captureEngine];
-    v7 = [[CAMStopPanoramaCommand alloc] initWithInterrupted:v3];
-    [v6 enqueueCommand:v7];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    v7 = [[CAMStopPanoramaCommand alloc] initWithInterrupted:interruptedCopy];
+    [_captureEngine enqueueCommand:v7];
   }
 
-  return v5;
+  return isCapturingPanorama;
 }
 
-- (void)changeToPanoramaDirection:(int64_t)a3
+- (void)changeToPanoramaDirection:(int64_t)direction
 {
-  v7 = [[CAMPanoramaDirectionCommand alloc] initWithDirection:a3];
-  v5 = [(CUCaptureController *)self _captureEngine];
-  v6 = [(CUCaptureController *)self _remoteShutterController];
-  [v6 setPanoramaDirection:a3];
+  v7 = [[CAMPanoramaDirectionCommand alloc] initWithDirection:direction];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _remoteShutterController = [(CUCaptureController *)self _remoteShutterController];
+  [_remoteShutterController setPanoramaDirection:direction];
 
-  [v5 enqueueCommand:v7];
+  [_captureEngine enqueueCommand:v7];
 }
 
-- (void)changeToPanoramaEncodingBehavior:(int64_t)a3
+- (void)changeToPanoramaEncodingBehavior:(int64_t)behavior
 {
-  v5 = [[CAMPanoramaEncodingCommand alloc] initWithPhotoEncodingBehavior:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMPanoramaEncodingCommand alloc] initWithPhotoEncodingBehavior:behavior];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)panoramaRequestDidStartCapturing:(id)a3
+- (void)panoramaRequestDidStartCapturing:(id)capturing
 {
-  v4 = a3;
-  v3 = v4;
+  capturingCopy = capturing;
+  v3 = capturingCopy;
   pl_dispatch_async();
 }
 
@@ -3080,10 +3080,10 @@ uint64_t __56__CUCaptureController_panoramaRequestDidStartCapturing___block_invo
   return MEMORY[0x1EEE66C30]();
 }
 
-- (void)panoramaRequestDidStopCapturing:(id)a3 interrupted:(BOOL)a4
+- (void)panoramaRequestDidStopCapturing:(id)capturing interrupted:(BOOL)interrupted
 {
-  v5 = a3;
-  v4 = v5;
+  capturingCopy = capturing;
+  v4 = capturingCopy;
   pl_dispatch_async();
 }
 
@@ -3107,16 +3107,16 @@ void __67__CUCaptureController_panoramaRequestDidStopCapturing_interrupted___blo
   }
 }
 
-- (void)panoramaRequest:(id)a3 didCompleteCaptureWithResult:(id)a4
+- (void)panoramaRequest:(id)request didCompleteCaptureWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = v6;
+  requestCopy = request;
+  resultCopy = result;
+  v12 = requestCopy;
   pl_dispatch_async();
-  v8 = [(CUCaptureController *)self _responseQueue];
-  v11 = v7;
+  _responseQueue = [(CUCaptureController *)self _responseQueue];
+  v11 = resultCopy;
   v9 = v12;
-  v10 = v7;
+  v10 = resultCopy;
   pl_dispatch_async();
 }
 
@@ -3159,13 +3159,13 @@ void __68__CUCaptureController_panoramaRequest_didCompleteCaptureWithResult___bl
   [v2 removeAssertionForIdentifier:*(a1 + 72) withReason:4];
 }
 
-- (void)panoramaRequest:(id)a3 didReceiveNotification:(int64_t)a4
+- (void)panoramaRequest:(id)request didReceiveNotification:(int64_t)notification
 {
-  v5 = a3;
-  v6 = v5;
-  if ((a4 + 6001) <= 1)
+  requestCopy = request;
+  v6 = requestCopy;
+  if ((notification + 6001) <= 1)
   {
-    v7 = v5;
+    v7 = requestCopy;
     pl_dispatch_async();
   }
 }
@@ -3181,11 +3181,11 @@ void __62__CUCaptureController_panoramaRequest_didReceiveNotification___block_in
   [*(a1 + 40) stopCapturingPanoramaInterrupted:1];
 }
 
-- (void)panoramaConfigurationDidChangeWithImageQueue:(_CAImageQueue *)a3 direction:(int64_t)a4
+- (void)panoramaConfigurationDidChangeWithImageQueue:(_CAImageQueue *)queue direction:(int64_t)direction
 {
-  if (a3)
+  if (queue)
   {
-    CFRetain(a3);
+    CFRetain(queue);
   }
 
   pl_dispatch_async();
@@ -3204,80 +3204,80 @@ void __78__CUCaptureController_panoramaConfigurationDidChangeWithImageQueue_dire
   }
 }
 
-- (void)setBurstDelegate:(id)a3
+- (void)setBurstDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_burstDelegate, v4);
-  v5 = [(CUCaptureController *)self _burstController];
-  [v5 setBurstDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_burstDelegate, delegateCopy);
+  _burstController = [(CUCaptureController *)self _burstController];
+  [_burstController setBurstDelegate:delegateCopy];
 }
 
 - (unint64_t)currentBurstCount
 {
-  v2 = [(CUCaptureController *)self _burstController];
-  v3 = [v2 currentBurstCount];
+  _burstController = [(CUCaptureController *)self _burstController];
+  currentBurstCount = [_burstController currentBurstCount];
 
-  return v3;
+  return currentBurstCount;
 }
 
-- (BOOL)startCapturingBurstWithRequest:(id)a3 error:(id *)a4
+- (BOOL)startCapturingBurstWithRequest:(id)request error:(id *)error
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CUCaptureController *)self _canBeginCaptureCheckAvailability:1 error:a4];
+  requestCopy = request;
+  v7 = [(CUCaptureController *)self _canBeginCaptureCheckAvailability:1 error:error];
   if (v7)
   {
-    v8 = [v6 captureRequest];
-    v9 = [v8 captureDevice];
-    v10 = [v8 captureMode];
+    captureRequest = [requestCopy captureRequest];
+    captureDevice = [captureRequest captureDevice];
+    captureMode = [captureRequest captureMode];
     v11 = +[CAMCaptureCapabilities capabilities];
-    v12 = [v11 isBurstSupportedForMode:v10 device:v9];
-    v13 = [(CUCaptureController *)self _updateFocusAndExposureForStartBurstCapture];
+    v12 = [v11 isBurstSupportedForMode:captureMode device:captureDevice];
+    _updateFocusAndExposureForStartBurstCapture = [(CUCaptureController *)self _updateFocusAndExposureForStartBurstCapture];
     v14 = [[CAMBlinkAndSmileDetectionCommand alloc] initWithBlinkDetection:1 smileDetection:1];
     v15 = [CAMCaptureCommand alloc];
-    v30 = v13;
+    v30 = _updateFocusAndExposureForStartBurstCapture;
     v32 = v14;
-    v33[0] = v13;
+    v33[0] = _updateFocusAndExposureForStartBurstCapture;
     v33[1] = v14;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     v17 = [(CAMCaptureCommand *)v15 initWithSubcommands:v16];
 
-    v18 = [(CUCaptureController *)self _captureEngine];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
     v31 = v17;
-    [v18 enqueueCommand:v17];
+    [_captureEngine enqueueCommand:v17];
     v19 = v12;
     if (v12)
     {
-      v20 = [(CUCaptureController *)self _burstController];
-      v21 = [v8 persistenceUUID];
-      v22 = [v20 startBurstCaptureWithPersistenceUUID:v21];
+      _burstController = [(CUCaptureController *)self _burstController];
+      persistenceUUID = [captureRequest persistenceUUID];
+      v22 = [_burstController startBurstCaptureWithPersistenceUUID:persistenceUUID];
 
-      v23 = [v11 maximumBurstLength];
-      v24 = [v6 maximumBurstLength];
-      if (v24 >= v23)
+      maximumBurstLength = [v11 maximumBurstLength];
+      maximumBurstLength2 = [requestCopy maximumBurstLength];
+      if (maximumBurstLength2 >= maximumBurstLength)
       {
-        v25 = v23;
+        v25 = maximumBurstLength;
       }
 
       else
       {
-        v25 = v24;
+        v25 = maximumBurstLength2;
       }
 
-      if (v24 > 0)
+      if (maximumBurstLength2 > 0)
       {
-        v23 = v25;
+        maximumBurstLength = v25;
       }
     }
 
     else
     {
-      v23 = [v6 maximumBurstLength];
+      maximumBurstLength = [requestCopy maximumBurstLength];
     }
 
-    [v11 captureIntervalForDevice:v9];
-    v27 = [[CAMCaptureRequestIntervalometer alloc] initWithDelegate:self interval:v23 delay:v26 maximumCount:v26];
-    [(CAMCaptureRequestIntervalometer *)v27 setPrototypeRequest:v8];
+    [v11 captureIntervalForDevice:captureDevice];
+    v27 = [[CAMCaptureRequestIntervalometer alloc] initWithDelegate:self interval:maximumBurstLength delay:v26 maximumCount:v26];
+    [(CAMCaptureRequestIntervalometer *)v27 setPrototypeRequest:captureRequest];
     [(CAMCaptureRequestIntervalometer *)v27 startGeneratingRequests];
     [(CUCaptureController *)self _setCurrentBurstIntervalometer:v27];
     if (v19)
@@ -3285,10 +3285,10 @@ void __78__CUCaptureController_panoramaConfigurationDidChangeWithImageQueue_dire
       AudioServicesStartSystemSound();
     }
 
-    v28 = [(CUCaptureController *)self burstDelegate];
-    if (v28 && (objc_opt_respondsToSelector() & 1) != 0)
+    burstDelegate = [(CUCaptureController *)self burstDelegate];
+    if (burstDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v28 captureControllerWillStartCapturingBurst:self];
+      [burstDelegate captureControllerWillStartCapturingBurst:self];
     }
 
     [(CAMCaptureRequestIntervalometer *)v27 manuallyGenerateRequest];
@@ -3302,9 +3302,9 @@ void __78__CUCaptureController_panoramaConfigurationDidChangeWithImageQueue_dire
   v10[2] = *MEMORY[0x1E69E9840];
   v2 = [[CAMSubjectAreaChangeMonitoringCommand alloc] initWithSubjectAreaChangeMonitoringEnabled:0];
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 captureOnTouchDown];
+  captureOnTouchDown = [v3 captureOnTouchDown];
 
-  v5 = [[CAMFocusCommand alloc] initWithFocusMode:v4];
+  v5 = [[CAMFocusCommand alloc] initWithFocusMode:captureOnTouchDown];
   v6 = [CAMCaptureCommand alloc];
   v10[0] = v2;
   v10[1] = v5;
@@ -3318,55 +3318,55 @@ void __78__CUCaptureController_panoramaConfigurationDidChangeWithImageQueue_dire
 {
   if ([(CUCaptureController *)self isCapturingBurst])
   {
-    v3 = [(CUCaptureController *)self currentBurstIntervalometer];
-    v4 = [v3 prototypeRequest];
-    v5 = [v4 captureDevice];
+    currentBurstIntervalometer = [(CUCaptureController *)self currentBurstIntervalometer];
+    prototypeRequest = [currentBurstIntervalometer prototypeRequest];
+    captureDevice = [prototypeRequest captureDevice];
     v6 = +[CAMCaptureCapabilities capabilities];
-    v7 = [v6 isBurstSupportedForMode:objc_msgSend(v4 device:{"captureMode"), v5}];
+    v7 = [v6 isBurstSupportedForMode:objc_msgSend(prototypeRequest device:{"captureMode"), captureDevice}];
 
     if (v7)
     {
-      v8 = [(CUCaptureController *)self _burstController];
-      [v8 finishBurstCaptureForDevice:v5];
+      _burstController = [(CUCaptureController *)self _burstController];
+      [_burstController finishBurstCaptureForDevice:captureDevice];
 
-      [v3 stopGeneratingRequests];
+      [currentBurstIntervalometer stopGeneratingRequests];
       [(CUCaptureController *)self _setCurrentBurstIntervalometer:0];
       AudioServicesStopSystemSound();
       if ([(CUCaptureController *)self _shouldPlaySystemSound])
       {
-        v9 = [(CUCaptureController *)self burstDelegate];
-        if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+        burstDelegate = [(CUCaptureController *)self burstDelegate];
+        if (burstDelegate && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v9 captureControllerWillStartPlayingBurstEndSound:self];
+          [burstDelegate captureControllerWillStartPlayingBurstEndSound:self];
         }
 
         v14 = MEMORY[0x1E69E9820];
         v15 = 3221225472;
         v16 = __41__CUCaptureController_stopCapturingBurst__block_invoke;
         v17 = &unk_1E76F7960;
-        v18 = v9;
-        v19 = self;
-        v10 = v9;
+        v18 = burstDelegate;
+        selfCopy = self;
+        v10 = burstDelegate;
         AudioServicesPlaySystemSoundWithCompletion(0x462u, &v14);
       }
     }
 
     else
     {
-      [v3 stopGeneratingRequests];
+      [currentBurstIntervalometer stopGeneratingRequests];
       [(CUCaptureController *)self _setCurrentBurstIntervalometer:0];
     }
 
     [(CUCaptureController *)self _resetFocusAndExposureAfterCaptureForType:2, v14, v15, v16, v17];
     v11 = [[CAMBlinkAndSmileDetectionCommand alloc] initWithBlinkDetection:0 smileDetection:0];
-    v12 = [(CUCaptureController *)self _captureEngine];
-    [v12 enqueueCommand:v11];
-    v13 = [(CUCaptureController *)self burstDelegate];
-    if (v13)
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v11];
+    burstDelegate2 = [(CUCaptureController *)self burstDelegate];
+    if (burstDelegate2)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v13 captureControllerDidStopCapturingBurst:self];
+        [burstDelegate2 captureControllerDidStopCapturingBurst:self];
       }
     }
   }
@@ -3403,64 +3403,64 @@ uint64_t __41__CUCaptureController_stopCapturingBurst__block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)_processCapturedBurstRequest:(id)a3 withResult:(id)a4
+- (void)_processCapturedBurstRequest:(id)request withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CUCaptureController *)self _burstController];
-  [v8 processCapturedRequest:v7 withResult:v6];
+  resultCopy = result;
+  requestCopy = request;
+  _burstController = [(CUCaptureController *)self _burstController];
+  [_burstController processCapturedRequest:requestCopy withResult:resultCopy];
 }
 
-- (BOOL)intervalometer:(id)a3 didGenerateCaptureRequest:(id)a4
+- (BOOL)intervalometer:(id)intervalometer didGenerateCaptureRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CUCaptureController *)self currentBurstIntervalometer];
+  requestCopy = request;
+  intervalometerCopy = intervalometer;
+  currentBurstIntervalometer = [(CUCaptureController *)self currentBurstIntervalometer];
 
-  v9 = v8 == v7 && ![v6 type] && -[CUCaptureController captureStillImageWithRequest:error:](self, "captureStillImageWithRequest:error:", v6, 0);
+  v9 = currentBurstIntervalometer == intervalometerCopy && ![requestCopy type] && -[CUCaptureController captureStillImageWithRequest:error:](self, "captureStillImageWithRequest:error:", requestCopy, 0);
   return v9;
 }
 
-- (void)intervalometer:(id)a3 didReachMaximumCountWithRequest:(id)a4
+- (void)intervalometer:(id)intervalometer didReachMaximumCountWithRequest:(id)request
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  intervalometerCopy = intervalometer;
   v6 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [v5 maximumCount];
+    maximumCount = [intervalometerCopy maximumCount];
     _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "Reached maximum burst count: %ld", &v8, 0xCu);
   }
 
   AudioServicesStopSystemSound();
-  v7 = [(CUCaptureController *)self burstDelegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  burstDelegate = [(CUCaptureController *)self burstDelegate];
+  if (burstDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 captureControllerDidReachMaximumBurstLength:self];
+    [burstDelegate captureControllerDidReachMaximumBurstLength:self];
   }
 }
 
-- (void)changeToSmartStyle:(id)a3
+- (void)changeToSmartStyle:(id)style
 {
-  v4 = a3;
-  v6 = [[CAMSessionSmartStyleCommand alloc] initWithSmartStyle:v4];
+  styleCopy = style;
+  v6 = [[CAMSessionSmartStyleCommand alloc] initWithSmartStyle:styleCopy];
 
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 enqueueCommand:v6];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v6];
 }
 
-- (void)setCapturingTimelapse:(BOOL)a3 forDevicePosition:(int64_t)a4
+- (void)setCapturingTimelapse:(BOOL)timelapse forDevicePosition:(int64_t)position
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  if (self->_capturingTimelapse != a3)
+  if (self->_capturingTimelapse != timelapse)
   {
-    v5 = a3;
-    self->_capturingTimelapse = a3;
-    v7 = [(CUCaptureController *)self _shouldPlaySystemSound];
-    if (v5)
+    timelapseCopy = timelapse;
+    self->_capturingTimelapse = timelapse;
+    _shouldPlaySystemSound = [(CUCaptureController *)self _shouldPlaySystemSound];
+    if (timelapseCopy)
     {
-      if (v7)
+      if (_shouldPlaySystemSound)
       {
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
@@ -3473,82 +3473,82 @@ uint64_t __41__CUCaptureController_stopCapturingBurst__block_invoke_2(uint64_t a
 
     else
     {
-      if (v7)
+      if (_shouldPlaySystemSound)
       {
         AudioServicesPlaySystemSound(0x45Eu);
       }
 
-      v8 = [(CUCaptureController *)self _locationController];
-      [v8 setEnabled:1];
+      _locationController = [(CUCaptureController *)self _locationController];
+      [_locationController setEnabled:1];
       [(CUCaptureController *)self _scheduleFocusAndExposureResetAfterCaptureIfNecessaryForType:3];
     }
 
-    v9 = [(CUCaptureController *)self _captureEngine];
-    v10 = [[CAMTimelapseCaptureRateCommand alloc] initWithDefaultTimelapseCaptureRate];
-    v11 = [[CAMImageControlModeCommand alloc] initWithCaptureMode:5 capturing:v5];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    initWithDefaultTimelapseCaptureRate = [[CAMTimelapseCaptureRateCommand alloc] initWithDefaultTimelapseCaptureRate];
+    v11 = [[CAMImageControlModeCommand alloc] initWithCaptureMode:5 capturing:timelapseCopy];
     v12 = [(CUCaptureController *)self _realtimeMetadataCommandsForMode:5 videoConfiguration:0 capturing:self->_capturingTimelapse wantsMachineReadableCodes:0 wantsImageAnalysis:0];
-    v13 = [[CAMUpdateCaptureButtonControlsCommand alloc] initWithRecording:v5 captureMode:5 devicePosition:a4 depthSuggestionEnabled:0];
-    v17[0] = v10;
+    v13 = [[CAMUpdateCaptureButtonControlsCommand alloc] initWithRecording:timelapseCopy captureMode:5 devicePosition:position depthSuggestionEnabled:0];
+    v17[0] = initWithDefaultTimelapseCaptureRate;
     v17[1] = v11;
     v17[2] = v12;
     v17[3] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
-    [v9 enqueueCommands:v14];
+    [_captureEngine enqueueCommands:v14];
 
-    v15 = [(CUCaptureController *)self _remoteShutterController];
-    [v15 setCapturingTimelapse:v5];
+    _remoteShutterController = [(CUCaptureController *)self _remoteShutterController];
+    [_remoteShutterController setCapturingTimelapse:timelapseCopy];
   }
 }
 
-- (void)changeToTimelapseCaptureRate:(float)a3
+- (void)changeToTimelapseCaptureRate:(float)rate
 {
   v5 = [CAMTimelapseCaptureRateCommand alloc];
-  *&v6 = a3;
+  *&v6 = rate;
   v8 = [(CAMTimelapseCaptureRateCommand *)v5 initWithTimelapseCaptureRate:v6];
-  v7 = [(CUCaptureController *)self _captureEngine];
-  [v7 enqueueCommand:v8];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v8];
 }
 
 - (void)notifyTimelapseControllerFinishedUpdatingWithLocation
 {
-  v2 = [(CUCaptureController *)self _locationController];
-  [v2 setEnabled:0];
+  _locationController = [(CUCaptureController *)self _locationController];
+  [_locationController setEnabled:0];
 }
 
-- (id)_commandForConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5 outRequestID:(int *)a6
+- (id)_commandForConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage outRequestID:(int *)d
 {
-  v7 = a5;
+  storageCopy = storage;
   v23[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(CUCaptureController *)self _motionController];
-  v12 = +[CAMCaptureConfiguration captureGraphConfigurationUsingConfiguration:outputToExternalStorage:captureOrientation:](CAMCaptureConfiguration, "captureGraphConfigurationUsingConfiguration:outputToExternalStorage:captureOrientation:", v10, v7, [v11 captureOrientation]);
+  configurationCopy = configuration;
+  _motionController = [(CUCaptureController *)self _motionController];
+  v12 = +[CAMCaptureConfiguration captureGraphConfigurationUsingConfiguration:outputToExternalStorage:captureOrientation:](CAMCaptureConfiguration, "captureGraphConfigurationUsingConfiguration:outputToExternalStorage:captureOrientation:", configurationCopy, storageCopy, [_motionController captureOrientation]);
 
-  v13 = [v12 mode];
-  v14 = 0;
-  if (v13 > 7)
+  mode = [v12 mode];
+  torchMode = 0;
+  if (mode > 7)
   {
-    v15 = 0;
+    flashMode = 0;
   }
 
-  else if (((1 << v13) & 0x51) != 0)
+  else if (((1 << mode) & 0x51) != 0)
   {
-    v15 = [v10 flashMode];
-    v14 = 0;
+    flashMode = [configurationCopy flashMode];
+    torchMode = 0;
   }
 
   else
   {
-    v15 = 0;
-    if (((1 << v13) & 0x86) != 0)
+    flashMode = 0;
+    if (((1 << mode) & 0x86) != 0)
     {
-      v14 = [v10 torchMode];
-      v15 = 0;
+      torchMode = [configurationCopy torchMode];
+      flashMode = 0;
     }
   }
 
-  v16 = [(CUCaptureController *)self _commandForChangeToGraphConfiguration:v12 zoomFactor:v7 minimumExecutionTime:a6 outputToExternalStorage:a4 outRequestID:0.0];
-  v17 = [[CAMFlashCommand alloc] initWithFlashMode:v15];
-  v18 = [[CAMTorchCommand alloc] initWithTorchMode:v14];
+  v16 = [(CUCaptureController *)self _commandForChangeToGraphConfiguration:v12 zoomFactor:storageCopy minimumExecutionTime:d outputToExternalStorage:factor outRequestID:0.0];
+  v17 = [[CAMFlashCommand alloc] initWithFlashMode:flashMode];
+  v18 = [[CAMTorchCommand alloc] initWithTorchMode:torchMode];
   v19 = [CAMCaptureCommand alloc];
   v23[0] = v16;
   v23[1] = v17;
@@ -3559,124 +3559,124 @@ uint64_t __41__CUCaptureController_stopCapturingBurst__block_invoke_2(uint64_t a
   return v21;
 }
 
-- (id)_commandForChangeToGraphConfiguration:(id)a3 zoomFactor:(double)a4 minimumExecutionTime:(double)a5 outputToExternalStorage:(BOOL)a6 outRequestID:(int *)a7
+- (id)_commandForChangeToGraphConfiguration:(id)configuration zoomFactor:(double)factor minimumExecutionTime:(double)time outputToExternalStorage:(BOOL)storage outRequestID:(int *)d
 {
-  v87 = a6;
-  v11 = a3;
+  storageCopy = storage;
+  configurationCopy = configuration;
   v12 = +[CAMCaptureCapabilities capabilities];
-  v13 = [(CUCaptureController *)self _uniqueRequestIDForChangeToModeAndDevice];
-  v14 = v13;
-  if (a7)
+  _uniqueRequestIDForChangeToModeAndDevice = [(CUCaptureController *)self _uniqueRequestIDForChangeToModeAndDevice];
+  v14 = _uniqueRequestIDForChangeToModeAndDevice;
+  if (d)
   {
-    *a7 = v13;
+    *d = _uniqueRequestIDForChangeToModeAndDevice;
   }
 
-  v89 = [v11 mode];
-  v88 = [v11 device];
+  mode = [configurationCopy mode];
+  device = [configurationCopy device];
   if ([(CUCaptureController *)self isPreviewDisabled])
   {
     v85 = [CAMCaptureGraphConfiguration alloc];
-    v83 = [v11 macroMode];
-    v82 = [v11 videoConfiguration];
-    v81 = [v11 audioConfiguration];
-    v80 = [v11 mixAudioWithOthers];
-    v79 = [v11 windNoiseRemovalEnabled];
-    v78 = [v11 previewSampleBufferVideoFormat];
-    v77 = [v11 previewFilters];
-    v76 = [v11 videoThumbnailOutputConfiguration];
-    v75 = [v11 photoEncodingBehavior];
-    v74 = [v11 videoEncodingBehavior];
-    v73 = [v11 enableAutoFPSVideo];
-    v72 = [v11 isVideoHDRSuspended];
-    v15 = [v11 aspectRatioCrop];
-    v71 = [v11 photoQualityPrioritization];
-    v70 = [v11 isCaptureMirrored];
-    v69 = [v11 enableRAWCaptureIfSupported];
-    v66 = [v11 semanticStyleSupport];
-    v68 = [v11 previewSemanticStyle];
-    v67 = [v11 smartStyles];
-    v65 = [v11 enableContentAwareDistortionCorrection];
-    v64 = [v11 enableResponsiveShutter];
-    v63 = [v11 suspendLivePhotoCapture];
-    v62 = [v11 videoStabilizationStrength];
-    v61 = [v11 maximumPhotoResolution];
-    v60 = [v11 colorSpace];
-    v59 = [v11 isVideoBinned];
-    v58 = [v11 enableDepthSuggestion];
-    v57 = [v11 enableZoomPIP];
-    v16 = [v11 customLensGroup];
-    v17 = [v11 trueVideoEnabled];
+    macroMode = [configurationCopy macroMode];
+    videoConfiguration = [configurationCopy videoConfiguration];
+    audioConfiguration = [configurationCopy audioConfiguration];
+    mixAudioWithOthers = [configurationCopy mixAudioWithOthers];
+    windNoiseRemovalEnabled = [configurationCopy windNoiseRemovalEnabled];
+    previewSampleBufferVideoFormat = [configurationCopy previewSampleBufferVideoFormat];
+    previewFilters = [configurationCopy previewFilters];
+    videoThumbnailOutputConfiguration = [configurationCopy videoThumbnailOutputConfiguration];
+    photoEncodingBehavior = [configurationCopy photoEncodingBehavior];
+    videoEncodingBehavior = [configurationCopy videoEncodingBehavior];
+    enableAutoFPSVideo = [configurationCopy enableAutoFPSVideo];
+    isVideoHDRSuspended = [configurationCopy isVideoHDRSuspended];
+    aspectRatioCrop = [configurationCopy aspectRatioCrop];
+    photoQualityPrioritization = [configurationCopy photoQualityPrioritization];
+    isCaptureMirrored = [configurationCopy isCaptureMirrored];
+    enableRAWCaptureIfSupported = [configurationCopy enableRAWCaptureIfSupported];
+    semanticStyleSupport = [configurationCopy semanticStyleSupport];
+    previewSemanticStyle = [configurationCopy previewSemanticStyle];
+    smartStyles = [configurationCopy smartStyles];
+    enableContentAwareDistortionCorrection = [configurationCopy enableContentAwareDistortionCorrection];
+    enableResponsiveShutter = [configurationCopy enableResponsiveShutter];
+    suspendLivePhotoCapture = [configurationCopy suspendLivePhotoCapture];
+    videoStabilizationStrength = [configurationCopy videoStabilizationStrength];
+    maximumPhotoResolution = [configurationCopy maximumPhotoResolution];
+    colorSpace = [configurationCopy colorSpace];
+    isVideoBinned = [configurationCopy isVideoBinned];
+    enableDepthSuggestion = [configurationCopy enableDepthSuggestion];
+    enableZoomPIP = [configurationCopy enableZoomPIP];
+    customLensGroup = [configurationCopy customLensGroup];
+    trueVideoEnabled = [configurationCopy trueVideoEnabled];
     v18 = v14;
     v19 = v12;
-    v20 = [v11 prefersHDR10BitVideo];
-    BYTE2(v56) = [v11 frontRearSimultaneousVideoEnabled];
-    BYTE1(v56) = v20;
+    prefersHDR10BitVideo = [configurationCopy prefersHDR10BitVideo];
+    BYTE2(v56) = [configurationCopy frontRearSimultaneousVideoEnabled];
+    BYTE1(v56) = prefersHDR10BitVideo;
     v12 = v19;
     v14 = v18;
-    LOBYTE(v56) = v17;
-    BYTE2(v55) = v57;
-    BYTE1(v55) = v58;
-    LOBYTE(v55) = v59;
-    BYTE2(v54) = v63;
-    BYTE1(v54) = v64;
-    LOBYTE(v54) = v65;
-    BYTE1(v53) = v69;
-    LOBYTE(v53) = v70;
-    BYTE1(v52) = v72;
-    LOBYTE(v52) = v73;
-    LOBYTE(v51) = v79;
-    v21 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:](v85, "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", v89, v88, v83, v82, v81, v80, v51, 0, v78, v77, v76, v75, v74, v52, v15, v71, v53, v66, v68, v67, v54, v62, v61, v60, v55, v16, v56, [v11 videoDynamicAspectRatio], objc_msgSend(v11, "smartFramingFieldOfView"));
+    LOBYTE(v56) = trueVideoEnabled;
+    BYTE2(v55) = enableZoomPIP;
+    BYTE1(v55) = enableDepthSuggestion;
+    LOBYTE(v55) = isVideoBinned;
+    BYTE2(v54) = suspendLivePhotoCapture;
+    BYTE1(v54) = enableResponsiveShutter;
+    LOBYTE(v54) = enableContentAwareDistortionCorrection;
+    BYTE1(v53) = enableRAWCaptureIfSupported;
+    LOBYTE(v53) = isCaptureMirrored;
+    BYTE1(v52) = isVideoHDRSuspended;
+    LOBYTE(v52) = enableAutoFPSVideo;
+    LOBYTE(v51) = windNoiseRemovalEnabled;
+    v21 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:](v85, "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", mode, device, macroMode, videoConfiguration, audioConfiguration, mixAudioWithOthers, v51, 0, previewSampleBufferVideoFormat, previewFilters, videoThumbnailOutputConfiguration, photoEncodingBehavior, videoEncodingBehavior, v52, aspectRatioCrop, photoQualityPrioritization, v53, semanticStyleSupport, previewSemanticStyle, smartStyles, v54, videoStabilizationStrength, maximumPhotoResolution, colorSpace, v55, customLensGroup, v56, [configurationCopy videoDynamicAspectRatio], objc_msgSend(configurationCopy, "smartFramingFieldOfView"));
 
-    v11 = v21;
+    configurationCopy = v21;
   }
 
-  v86 = [[CAMModeAndDeviceCommand alloc] initWithGraphConfiguration:v11 minimumExecutionTime:v14 requestID:v87 outputToExternalStorage:a5];
+  v86 = [[CAMModeAndDeviceCommand alloc] initWithGraphConfiguration:configurationCopy minimumExecutionTime:v14 requestID:storageCopy outputToExternalStorage:time];
   v22 = [MEMORY[0x1E695DF70] arrayWithObject:?];
-  v84 = [[CAMSetVideoZoomFactorCommand alloc] initWithVideoZoomFactor:v11 graphConfiguration:a4];
+  v84 = [[CAMSetVideoZoomFactorCommand alloc] initWithVideoZoomFactor:configurationCopy graphConfiguration:factor];
   [v22 addObject:?];
   if ([v12 dynamicAspectRatioSupported])
   {
-    v23 = [v11 mode];
-    v24 = [v11 device];
-    v25 = [v11 videoEncodingBehavior];
-    v26 = self;
-    v27 = [v11 videoConfiguration];
-    v28 = [v11 prefersHDR10BitVideo];
-    LOBYTE(v51) = [v11 frontRearSimultaneousVideoEnabled];
-    v29 = [v12 resolvedVideoConfigurationForMode:v23 device:v24 videoEncodingBehavior:v25 videoConfiguration:v27 outputToExternalStorage:v87 prefersHDR10BitVideo:v28 frontRearSimultaneousVideoEnabled:v51];
+    mode2 = [configurationCopy mode];
+    device2 = [configurationCopy device];
+    videoEncodingBehavior2 = [configurationCopy videoEncodingBehavior];
+    selfCopy = self;
+    videoConfiguration2 = [configurationCopy videoConfiguration];
+    prefersHDR10BitVideo2 = [configurationCopy prefersHDR10BitVideo];
+    LOBYTE(v51) = [configurationCopy frontRearSimultaneousVideoEnabled];
+    v29 = [v12 resolvedVideoConfigurationForMode:mode2 device:device2 videoEncodingBehavior:videoEncodingBehavior2 videoConfiguration:videoConfiguration2 outputToExternalStorage:storageCopy prefersHDR10BitVideo:prefersHDR10BitVideo2 frontRearSimultaneousVideoEnabled:v51];
     v30 = [CAMDynamicAspectRatioCommand alloc];
-    v31 = [v11 smartFramingFieldOfView];
-    v32 = [v11 videoDynamicAspectRatio];
-    v33 = [v11 mode];
-    v34 = [v11 devicePosition];
-    v35 = v32;
-    self = v26;
-    v36 = [(CAMDynamicAspectRatioCommand *)v30 initWithSmartFramingFieldOfView:v31 videoDynamicAspectRatio:v35 mode:v33 videoConfiguration:v29 devicePosition:v34];
+    smartFramingFieldOfView = [configurationCopy smartFramingFieldOfView];
+    videoDynamicAspectRatio = [configurationCopy videoDynamicAspectRatio];
+    mode3 = [configurationCopy mode];
+    devicePosition = [configurationCopy devicePosition];
+    v35 = videoDynamicAspectRatio;
+    self = selfCopy;
+    v36 = [(CAMDynamicAspectRatioCommand *)v30 initWithSmartFramingFieldOfView:smartFramingFieldOfView videoDynamicAspectRatio:v35 mode:mode3 videoConfiguration:v29 devicePosition:devicePosition];
     [v22 addObject:v36];
   }
 
   if ([v12 isNightModeSupported])
   {
-    v37 = -[CAMNightModeConfigurationCommand initWithNightModeEnabled:]([CAMNightModeConfigurationCommand alloc], "initWithNightModeEnabled:", [v12 isNightModeSupportedForMode:v89 device:v88 zoomFactor:a4]);
+    v37 = -[CAMNightModeConfigurationCommand initWithNightModeEnabled:]([CAMNightModeConfigurationCommand alloc], "initWithNightModeEnabled:", [v12 isNightModeSupportedForMode:mode device:device zoomFactor:factor]);
     [v22 addObject:v37];
     v38 = [[CAMNightModeCommand alloc] initWithNightMode:0];
     [v22 addObject:v38];
   }
 
-  v39 = -[CUCaptureController _realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:](self, "_realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:", v89, [v11 videoConfiguration], 0, -[CUCaptureController _wantsMachineReadableCodesForGraphConfiguration:](self, "_wantsMachineReadableCodesForGraphConfiguration:", v11), -[CUCaptureController _wantsImageAnalysisForGraphConfiguration:](self, "_wantsImageAnalysisForGraphConfiguration:", v11));
+  v39 = -[CUCaptureController _realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:](self, "_realtimeMetadataCommandsForMode:videoConfiguration:capturing:wantsMachineReadableCodes:wantsImageAnalysis:", mode, [configurationCopy videoConfiguration], 0, -[CUCaptureController _wantsMachineReadableCodesForGraphConfiguration:](self, "_wantsMachineReadableCodesForGraphConfiguration:", configurationCopy), -[CUCaptureController _wantsImageAnalysisForGraphConfiguration:](self, "_wantsImageAnalysisForGraphConfiguration:", configurationCopy));
   [v22 addObject:v39];
   if ([v12 focalLengthPickerSupported])
   {
     v40 = +[CAMUserPreferences preferences];
-    v41 = [v40 customLensGroup];
-    v42 = [v11 videoConfiguration];
-    v43 = [v11 videoStabilizationStrength];
+    customLensGroup2 = [v40 customLensGroup];
+    videoConfiguration3 = [configurationCopy videoConfiguration];
+    videoStabilizationStrength2 = [configurationCopy videoStabilizationStrength];
     v44 = v12;
-    v45 = [v11 trueVideoEnabled];
-    LOBYTE(v51) = [v11 frontRearSimultaneousVideoEnabled];
-    v46 = v45;
+    trueVideoEnabled2 = [configurationCopy trueVideoEnabled];
+    LOBYTE(v51) = [configurationCopy frontRearSimultaneousVideoEnabled];
+    v46 = trueVideoEnabled2;
     v12 = v44;
-    v47 = [CAMZoomControlUtilities exifFocalLengthsByZoomFactorForMode:v89 device:v88 videoConfiguration:v42 videoStabilizationStrength:v43 customLensGroup:v41 isTrueVideo:v46 frontRearSimultaneousVideoEnabled:v51];
+    v47 = [CAMZoomControlUtilities exifFocalLengthsByZoomFactorForMode:mode device:device videoConfiguration:videoConfiguration3 videoStabilizationStrength:videoStabilizationStrength2 customLensGroup:customLensGroup2 isTrueVideo:v46 frontRearSimultaneousVideoEnabled:v51];
     v48 = [[CAMSetExifFocalLengthsByZoomFactorCommand alloc] initWithExifFocalLengthsByZoomFactor:v47];
     [v22 addObject:v48];
   }
@@ -3686,43 +3686,43 @@ uint64_t __41__CUCaptureController_stopCapturingBurst__block_invoke_2(uint64_t a
   return v49;
 }
 
-- (void)updateRealtimeMetadataConfigurationForGraphConfiguration:(id)a3 isCapturing:(BOOL)a4
+- (void)updateRealtimeMetadataConfigurationForGraphConfiguration:(id)configuration isCapturing:(BOOL)capturing
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CUCaptureController *)self _wantsMachineReadableCodesForGraphConfiguration:v6];
-  v8 = [(CUCaptureController *)self _wantsImageAnalysisForGraphConfiguration:v6];
-  v9 = [v6 mode];
-  v10 = [v6 videoConfiguration];
+  capturingCopy = capturing;
+  configurationCopy = configuration;
+  v7 = [(CUCaptureController *)self _wantsMachineReadableCodesForGraphConfiguration:configurationCopy];
+  v8 = [(CUCaptureController *)self _wantsImageAnalysisForGraphConfiguration:configurationCopy];
+  mode = [configurationCopy mode];
+  videoConfiguration = [configurationCopy videoConfiguration];
 
-  v12 = [(CUCaptureController *)self _realtimeMetadataCommandsForMode:v9 videoConfiguration:v10 capturing:v4 wantsMachineReadableCodes:v7 wantsImageAnalysis:v8];
-  v11 = [(CUCaptureController *)self _captureEngine];
-  [v11 enqueueCommand:v12];
+  v12 = [(CUCaptureController *)self _realtimeMetadataCommandsForMode:mode videoConfiguration:videoConfiguration capturing:capturingCopy wantsMachineReadableCodes:v7 wantsImageAnalysis:v8];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v12];
 }
 
-- (id)_realtimeMetadataCommandsForMode:(int64_t)a3 videoConfiguration:(int64_t)a4 capturing:(BOOL)a5 wantsMachineReadableCodes:(BOOL)a6 wantsImageAnalysis:(BOOL)a7
+- (id)_realtimeMetadataCommandsForMode:(int64_t)mode videoConfiguration:(int64_t)configuration capturing:(BOOL)capturing wantsMachineReadableCodes:(BOOL)codes wantsImageAnalysis:(BOOL)analysis
 {
-  v7 = a7;
-  v8 = a6;
+  analysisCopy = analysis;
+  codesCopy = codes;
   v22[2] = *MEMORY[0x1E69E9840];
   v12 = +[CAMCaptureCapabilities capabilities];
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = v13;
   v15 = 1;
-  if (a3 <= 4)
+  if (mode <= 4)
   {
-    if (a3 > 2)
+    if (mode > 2)
     {
-      if (a3 != 3)
+      if (mode != 3)
       {
 LABEL_14:
-        if (v8)
+        if (codesCopy)
         {
           [v13 addObject:&unk_1F16C7F58];
           [v14 addObject:&unk_1F16C7F70];
         }
 
-        if (!v7)
+        if (!analysisCopy)
         {
           goto LABEL_24;
         }
@@ -3733,13 +3733,13 @@ LABEL_14:
 
       v15 = 0;
 LABEL_21:
-      v7 = 0;
+      analysisCopy = 0;
       goto LABEL_24;
     }
 
-    if ((a3 - 1) >= 2)
+    if ((mode - 1) >= 2)
     {
-      if (a3)
+      if (mode)
       {
         goto LABEL_28;
       }
@@ -3748,7 +3748,7 @@ LABEL_21:
     }
 
 LABEL_11:
-    if (a5)
+    if (capturing)
     {
       goto LABEL_28;
     }
@@ -3756,14 +3756,14 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  v7 = 0;
-  if (a3 > 6)
+  analysisCopy = 0;
+  if (mode > 6)
   {
-    if (a3 != 7)
+    if (mode != 7)
     {
-      if (a3 != 8)
+      if (mode != 8)
       {
-        if (a3 != 9)
+        if (mode != 9)
         {
           goto LABEL_28;
         }
@@ -3774,12 +3774,12 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v7 = 1;
+    analysisCopy = 1;
 LABEL_24:
     [v14 addObject:&unk_1F16C7F40];
     [v14 addObject:&unk_1F16C7FA0];
     [v14 addObject:&unk_1F16C7FB8];
-    if (v7)
+    if (analysisCopy)
     {
       [v14 addObject:&unk_1F16C7FD0];
       [v14 addObject:&unk_1F16C7FE8];
@@ -3791,14 +3791,14 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  if (a3 != 5)
+  if (mode != 5)
   {
     goto LABEL_24;
   }
 
   v15 = 0;
 LABEL_26:
-  if ([v12 isExposureClippingIndicatorSupportedForMode:a3 videoConfiguration:a4])
+  if ([v12 isExposureClippingIndicatorSupportedForMode:mode videoConfiguration:configuration])
   {
     [v14 addObject:&unk_1F16C8048];
   }
@@ -3815,34 +3815,34 @@ LABEL_28:
   return v20;
 }
 
-- (BOOL)_wantsMachineReadableCodesForGraphConfiguration:(id)a3
+- (BOOL)_wantsMachineReadableCodesForGraphConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[CAMUserPreferences preferences];
-  v5 = [v4 shouldShowQRBanners];
+  shouldShowQRBanners = [v4 shouldShowQRBanners];
 
-  v6 = [v3 device];
-  return v5 & ((v6 > 0xB) | (0xFDu >> v6));
+  device = [configurationCopy device];
+  return shouldShowQRBanners & ((device > 0xB) | (0xFDu >> device));
 }
 
-- (BOOL)_wantsImageAnalysisForGraphConfiguration:(id)a3
+- (BOOL)_wantsImageAnalysisForGraphConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[CAMUserPreferences preferences];
-  v5 = [v4 isImageAnalysisEnabled];
+  isImageAnalysisEnabled = [v4 isImageAnalysisEnabled];
 
   v6 = +[CAMCaptureCapabilities capabilities];
-  v7 = [v3 mode];
-  v8 = [v3 devicePosition];
+  mode = [configurationCopy mode];
+  devicePosition = [configurationCopy devicePosition];
 
-  LOBYTE(v3) = [v6 isImageAnalysisSupportedForMode:v7 devicePosition:v8];
-  return v5 & v3;
+  LOBYTE(configurationCopy) = [v6 isImageAnalysisSupportedForMode:mode devicePosition:devicePosition];
+  return isImageAnalysisEnabled & configurationCopy;
 }
 
-- (int)changeToGraphConfiguration:(id)a3 zoomFactor:(double)a4 minimumExecutionTime:(double)a5 outputToExternalStorage:(BOOL)a6
+- (int)changeToGraphConfiguration:(id)configuration zoomFactor:(double)factor minimumExecutionTime:(double)time outputToExternalStorage:(BOOL)storage
 {
-  v6 = a6;
-  v10 = a3;
+  storageCopy = storage;
+  configurationCopy = configuration;
   if ([(CUCaptureController *)self isCapturingStandardVideo])
   {
     v11 = os_log_create("com.apple.camera", "Camera");
@@ -3856,43 +3856,43 @@ LABEL_28:
   }
 
   v16 = 0;
-  v12 = [(CUCaptureController *)self _commandForChangeToGraphConfiguration:v10 zoomFactor:v6 minimumExecutionTime:&v16 outputToExternalStorage:a4 outRequestID:a5];
-  v13 = [(CUCaptureController *)self _captureEngine];
-  [v13 enqueueCommand:v12];
+  v12 = [(CUCaptureController *)self _commandForChangeToGraphConfiguration:configurationCopy zoomFactor:storageCopy minimumExecutionTime:&v16 outputToExternalStorage:factor outRequestID:time];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v12];
   v14 = v16;
 
   return v14;
 }
 
-- (void)changeToFlashMode:(int64_t)a3
+- (void)changeToFlashMode:(int64_t)mode
 {
-  v5 = [[CAMFlashCommand alloc] initWithFlashMode:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMFlashCommand alloc] initWithFlashMode:mode];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)changeToTorchMode:(int64_t)a3
+- (void)changeToTorchMode:(int64_t)mode
 {
-  v5 = [[CAMTorchCommand alloc] initWithTorchMode:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMTorchCommand alloc] initWithTorchMode:mode];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)changeToTorchLevel:(float)a3
+- (void)changeToTorchLevel:(float)level
 {
   v5 = [CAMTorchCommand alloc];
-  *&v6 = a3;
+  *&v6 = level;
   v8 = [(CAMTorchCommand *)v5 initWithTorchLevel:v6];
-  v7 = [(CUCaptureController *)self _captureEngine];
-  [v7 enqueueCommand:v8];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v8];
 }
 
-- (void)_handleCaptureEngineExecutionNotification:(id)a3
+- (void)_handleCaptureEngineExecutionNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
-  v6 = [v4 objectForKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
-  v7 = [v4 objectForKey:@"CAMModeAndDeviceCommandRequestID"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
+  v6 = [userInfo objectForKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
+  v7 = [userInfo objectForKey:@"CAMModeAndDeviceCommandRequestID"];
   v8 = v7;
   if (v5)
   {
@@ -3910,7 +3910,7 @@ LABEL_28:
   }
 
   [(CUCaptureController *)self _setDidCompleteInitialConfiguration:1];
-  v11 = [v4 objectForKey:@"CAMModeAndDeviceConfigurationError"];
+  v11 = [userInfo objectForKey:@"CAMModeAndDeviceConfigurationError"];
   if (v11)
   {
     v12 = os_log_create("com.apple.camera", "Camera");
@@ -3919,41 +3919,41 @@ LABEL_28:
       [CUCaptureController _handleCaptureEngineExecutionNotification:];
     }
 
-    v13 = [v11 domain];
-    v14 = [v13 isEqualToString:@"CAMModeAndDeviceCommandCannotCaptureErrorDomain"];
+    domain = [v11 domain];
+    v14 = [domain isEqualToString:@"CAMModeAndDeviceCommandCannotCaptureErrorDomain"];
 
     if (!v14)
     {
       goto LABEL_15;
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 1;
   }
 
   else
   {
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
   }
 
-  [(CUCaptureController *)v15 _setFailedConfigurationPreventingCapture:v16];
+  [(CUCaptureController *)selfCopy2 _setFailedConfigurationPreventingCapture:v16];
 LABEL_15:
   v17 = -[CUCaptureController _shouldManageFocusForMode:](self, "_shouldManageFocusForMode:", [v6 mode]);
   v18 = [(CUCaptureController *)self _commandForResetFocus:v17 resetExposure:1 resetExposureTargetBias:1 resetSecondaryDevice:0];
-  v19 = [(CUCaptureController *)self _captureEngine];
-  [v19 enqueueCommand:v18];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v18];
   if ([v6 frontRearSimultaneousVideoEnabled])
   {
     v20 = [(CUCaptureController *)self _commandForResetFocus:v17 resetExposure:1 resetExposureTargetBias:1 resetSecondaryDevice:1];
-    [v19 enqueueCommand:v20];
+    [_captureEngine enqueueCommand:v20];
   }
 
-  v21 = [v8 integerValue];
-  v22 = [(CUCaptureController *)self configurationDelegate];
+  integerValue = [v8 integerValue];
+  configurationDelegate = [(CUCaptureController *)self configurationDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v22 captureController:self didChangeToGraphConfiguration:v6 forDesiredConfiguration:v5 requestID:v21];
+    [configurationDelegate captureController:self didChangeToGraphConfiguration:v6 forDesiredConfiguration:v5 requestID:integerValue];
   }
 
 LABEL_20:
@@ -3965,45 +3965,45 @@ LABEL_20:
   {
     self->_previewDisabled = 1;
     v5 = [[CAMPreviewConfigurationCommand alloc] initWithPreviewConfiguration:0];
-    v4 = [(CUCaptureController *)self _captureEngine];
-    [v4 enqueueCommand:v5];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v5];
   }
 }
 
-- (void)changeToPreviewEnabledWithConfiguration:(unint64_t)a3
+- (void)changeToPreviewEnabledWithConfiguration:(unint64_t)configuration
 {
   if (self->_previewDisabled)
   {
     self->_previewDisabled = 0;
-    v6 = [[CAMPreviewConfigurationCommand alloc] initWithPreviewConfiguration:a3];
-    v5 = [(CUCaptureController *)self _captureEngine];
-    [v5 enqueueCommand:v6];
+    v6 = [[CAMPreviewConfigurationCommand alloc] initWithPreviewConfiguration:configuration];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v6];
   }
 }
 
-- (void)changeToPreviewConfiguration:(unint64_t)a3
+- (void)changeToPreviewConfiguration:(unint64_t)configuration
 {
   if (!self->_previewDisabled)
   {
-    v6 = [[CAMPreviewConfigurationCommand alloc] initWithPreviewConfiguration:a3];
-    v5 = [(CUCaptureController *)self _captureEngine];
-    [v5 enqueueCommand:v6];
+    v6 = [[CAMPreviewConfigurationCommand alloc] initWithPreviewConfiguration:configuration];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine enqueueCommand:v6];
   }
 }
 
-- (void)changeToPreviewFilters:(id)a3 captureMode:(int64_t)a4
+- (void)changeToPreviewFilters:(id)filters captureMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [[CAMPreviewFiltersCommand alloc] initWithFilters:v6 captureMode:a4];
+  filtersCopy = filters;
+  v7 = [[CAMPreviewFiltersCommand alloc] initWithFilters:filtersCopy captureMode:mode];
 
   [(CAMCaptureEngine *)self->__captureEngine enqueueCommand:v7];
 }
 
-- (void)changeToVideoHDRSuspended:(BOOL)a3
+- (void)changeToVideoHDRSuspended:(BOOL)suspended
 {
-  v5 = [[CAMVideoHDRSuspensionCommand alloc] initWithVideoHDRSuspended:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMVideoHDRSuspensionCommand alloc] initWithVideoHDRSuspended:suspended];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
 - (BOOL)shouldAllowUserToChangeFocusAndExposure
@@ -4021,43 +4021,43 @@ LABEL_20:
 
 - (BOOL)_shouldLockWhiteBalanceForActiveVideoRequest
 {
-  v3 = [(CUCaptureController *)self _capturingVideoRequest];
-  if ([(CUCaptureController *)self _shouldLockWhiteBalanceForVideoCaptureRequest:v3])
+  _capturingVideoRequest = [(CUCaptureController *)self _capturingVideoRequest];
+  if ([(CUCaptureController *)self _shouldLockWhiteBalanceForVideoCaptureRequest:_capturingVideoRequest])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CUCaptureController *)self _capturingCTMVideoRequest];
-    v4 = [(CUCaptureController *)self _shouldLockWhiteBalanceForCTMVideoRequest:v5];
+    _capturingCTMVideoRequest = [(CUCaptureController *)self _capturingCTMVideoRequest];
+    v4 = [(CUCaptureController *)self _shouldLockWhiteBalanceForCTMVideoRequest:_capturingCTMVideoRequest];
   }
 
   return v4;
 }
 
-- (BOOL)_shouldLockWhiteBalanceForCTMVideoRequest:(id)a3
+- (BOOL)_shouldLockWhiteBalanceForCTMVideoRequest:(id)request
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 isCTMVideo])
+  requestCopy = request;
+  v4 = requestCopy;
+  if (requestCopy && [requestCopy isCTMVideo])
   {
-    v5 = [v4 wantsWhiteBalanceLockedDuringVideoRecording];
+    wantsWhiteBalanceLockedDuringVideoRecording = [v4 wantsWhiteBalanceLockedDuringVideoRecording];
   }
 
   else
   {
-    v5 = 0;
+    wantsWhiteBalanceLockedDuringVideoRecording = 0;
   }
 
-  return v5;
+  return wantsWhiteBalanceLockedDuringVideoRecording;
 }
 
-- (BOOL)_shouldLockWhiteBalanceForVideoCaptureRequest:(id)a3
+- (BOOL)_shouldLockWhiteBalanceForVideoCaptureRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    return [a3 wantsWhiteBalanceLocked];
+    return [request wantsWhiteBalanceLocked];
   }
 
   else
@@ -4066,11 +4066,11 @@ LABEL_20:
   }
 }
 
-- (void)_resetFocusAndExposureIfAppropriateForReason:(int64_t)a3
+- (void)_resetFocusAndExposureIfAppropriateForReason:(int64_t)reason
 {
-  v5 = [(CUCaptureController *)self focusDelegate];
-  v13 = v5;
-  if (v5 && ![v5 captureController:self shouldResetFocusAndExposureForReason:a3])
+  focusDelegate = [(CUCaptureController *)self focusDelegate];
+  v13 = focusDelegate;
+  if (focusDelegate && ![focusDelegate captureController:self shouldResetFocusAndExposureForReason:reason])
   {
     v10 = 0;
     v6 = 0;
@@ -4093,8 +4093,8 @@ LABEL_20:
       v10 = 1;
 LABEL_11:
       v11 = [(CUCaptureController *)self _commandForResetFocus:v6 resetExposure:v10 resetExposureTargetBias:v10 resetSecondaryDevice:0];
-      v12 = [(CUCaptureController *)self _captureEngine];
-      [v12 enqueueCommand:v11];
+      _captureEngine = [(CUCaptureController *)self _captureEngine];
+      [_captureEngine enqueueCommand:v11];
 
       goto LABEL_14;
     }
@@ -4116,31 +4116,31 @@ LABEL_11:
 LABEL_14:
 }
 
-- (id)_commandForResetFocus:(BOOL)a3 resetExposure:(BOOL)a4 resetExposureTargetBias:(BOOL)a5 resetSecondaryDevice:(BOOL)a6
+- (id)_commandForResetFocus:(BOOL)focus resetExposure:(BOOL)exposure resetExposureTargetBias:(BOOL)bias resetSecondaryDevice:(BOOL)device
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  deviceCopy = device;
+  biasCopy = bias;
+  exposureCopy = exposure;
+  focusCopy = focus;
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
-  if (!v6)
+  if (!deviceCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_focusDelegate);
-    [WeakRetained captureController:self willResetFocus:v9 exposure:v8];
+    [WeakRetained captureController:self willResetFocus:focusCopy exposure:exposureCopy];
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13 = [[CAMSubjectAreaChangeMonitoringCommand alloc] initWithSubjectAreaChangeMonitoringEnabled:0 configureSecondaryDevice:v6];
+  v13 = [[CAMSubjectAreaChangeMonitoringCommand alloc] initWithSubjectAreaChangeMonitoringEnabled:0 configureSecondaryDevice:deviceCopy];
   [v12 addObject:v13];
-  if (v9)
+  if (focusCopy)
   {
-    v22 = [[CAMFocusCommand alloc] initWithFocusMode:3 atPointOfInterest:0 rectSize:[(CUCaptureController *)self _useSmoothFocus] smooth:v6 configureSecondaryDevice:0.5, 0.5];
+    v22 = [[CAMFocusCommand alloc] initWithFocusMode:3 atPointOfInterest:0 rectSize:[(CUCaptureController *)self _useSmoothFocus] smooth:deviceCopy configureSecondaryDevice:0.5, 0.5];
     [v12 addObject:v22];
 
-    if (!v8)
+    if (!exposureCopy)
     {
 LABEL_5:
-      if (!v7)
+      if (!biasCopy)
       {
         goto LABEL_9;
       }
@@ -4149,34 +4149,34 @@ LABEL_5:
     }
   }
 
-  else if (!v8)
+  else if (!exposureCopy)
   {
     goto LABEL_5;
   }
 
-  v23 = [[CAMExposureCommand alloc] initWithExposureMode:2 atPointOfInterest:v6 configureSecondaryDevice:0.5, 0.5];
+  v23 = [[CAMExposureCommand alloc] initWithExposureMode:2 atPointOfInterest:deviceCopy configureSecondaryDevice:0.5, 0.5];
   [v12 addObject:v23];
   if (![(CUCaptureController *)self _shouldLockWhiteBalanceForActiveVideoRequest])
   {
-    v24 = [[CAMWhiteBalanceCommand alloc] initWithWhiteBalanceMode:2 configureSecondaryDevice:v6];
+    v24 = [[CAMWhiteBalanceCommand alloc] initWithWhiteBalanceMode:2 configureSecondaryDevice:deviceCopy];
     [v12 addObject:v24];
   }
 
-  if (v7)
+  if (biasCopy)
   {
 LABEL_6:
-    v14 = [(CUCaptureController *)self exposureDelegate];
-    [v14 baselineExposureValueForCaptureController:self];
+    exposureDelegate = [(CUCaptureController *)self exposureDelegate];
+    [exposureDelegate baselineExposureValueForCaptureController:self];
     v16 = v15;
 
-    if (v6)
+    if (deviceCopy)
     {
       v16 = 0.0;
     }
 
     v17 = [CAMExposureTargetBiasCommand alloc];
     *&v18 = v16;
-    v19 = [(CAMExposureTargetBiasCommand *)v17 initWithExposureTargetBias:v6 configureSecondaryDevice:v18];
+    v19 = [(CAMExposureTargetBiasCommand *)v17 initWithExposureTargetBias:deviceCopy configureSecondaryDevice:v18];
     [v12 addObject:v19];
   }
 
@@ -4186,16 +4186,16 @@ LABEL_9:
   return v20;
 }
 
-- (void)focusAtPoint:(CGPoint)a3 lockFocus:(BOOL)a4 rectSize:(int64_t)a5
+- (void)focusAtPoint:(CGPoint)point lockFocus:(BOOL)focus rectSize:(int64_t)size
 {
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
+  focusCopy = focus;
+  y = point.y;
+  x = point.x;
   v18[2] = *MEMORY[0x1E69E9840];
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
-  v10 = [(CUCaptureController *)self _useSmoothFocus];
-  v11 = [(CUCaptureController *)self isCapturingVideo];
-  if (v6)
+  _useSmoothFocus = [(CUCaptureController *)self _useSmoothFocus];
+  isCapturingVideo = [(CUCaptureController *)self isCapturingVideo];
+  if (focusCopy)
   {
     v12 = 2;
   }
@@ -4205,26 +4205,26 @@ LABEL_9:
     v12 = 3;
   }
 
-  v13 = [[CAMFocusCommand alloc] initWithFocusMode:v12 atPointOfInterest:a5 rectSize:v10 smooth:x, y];
-  v14 = [[CAMSubjectAreaChangeMonitoringCommand alloc] initWithSubjectAreaChangeMonitoringEnabled:!v11];
+  v13 = [[CAMFocusCommand alloc] initWithFocusMode:v12 atPointOfInterest:size rectSize:_useSmoothFocus smooth:x, y];
+  v14 = [[CAMSubjectAreaChangeMonitoringCommand alloc] initWithSubjectAreaChangeMonitoringEnabled:!isCapturingVideo];
   v18[0] = v13;
   v18[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v16 = [[CAMCaptureCommand alloc] initWithSubcommands:v15];
-  v17 = [(CUCaptureController *)self _captureEngine];
-  [v17 enqueueCommand:v16];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v16];
 }
 
-- (void)focusAndExposeAtPoint:(CGPoint)a3 lockFocus:(BOOL)a4 rectSize:(int64_t)a5 resetExposureTargetBias:(BOOL)a6
+- (void)focusAndExposeAtPoint:(CGPoint)point lockFocus:(BOOL)focus rectSize:(int64_t)size resetExposureTargetBias:(BOOL)bias
 {
-  v6 = a6;
-  v8 = a4;
-  y = a3.y;
-  x = a3.x;
+  biasCopy = bias;
+  focusCopy = focus;
+  y = point.y;
+  x = point.x;
   v28[2] = *MEMORY[0x1E69E9840];
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
-  v12 = [(CUCaptureController *)self _useSmoothFocus];
-  if (v8)
+  _useSmoothFocus = [(CUCaptureController *)self _useSmoothFocus];
+  if (focusCopy)
   {
     v13 = 2;
   }
@@ -4234,7 +4234,7 @@ LABEL_9:
     v13 = 3;
   }
 
-  v14 = [[CAMFocusCommand alloc] initWithFocusMode:v13 atPointOfInterest:a5 rectSize:v12 smooth:x, y];
+  v14 = [[CAMFocusCommand alloc] initWithFocusMode:v13 atPointOfInterest:size rectSize:_useSmoothFocus smooth:x, y];
   v15 = [[CAMExposureCommand alloc] initWithExposureMode:2 atPointOfInterest:x, y];
   v28[0] = v14;
   v28[1] = v15;
@@ -4247,10 +4247,10 @@ LABEL_9:
     [v17 addObject:v18];
   }
 
-  if (v6)
+  if (biasCopy)
   {
-    v19 = [(CUCaptureController *)self exposureDelegate];
-    [v19 baselineExposureValueForCaptureController:self];
+    exposureDelegate = [(CUCaptureController *)self exposureDelegate];
+    [exposureDelegate baselineExposureValueForCaptureController:self];
     v21 = v20;
 
     v22 = [CAMExposureTargetBiasCommand alloc];
@@ -4263,13 +4263,13 @@ LABEL_9:
   [v17 addObject:v25];
 
   v26 = [[CAMCaptureCommand alloc] initWithSubcommands:v17];
-  v27 = [(CUCaptureController *)self _captureEngine];
-  [v27 enqueueCommand:v26];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v26];
 }
 
-- (id)_commandForLockingExposureIncludingFocus:(BOOL)a3
+- (id)_commandForLockingExposureIncludingFocus:(BOOL)focus
 {
-  v3 = a3;
+  focusCopy = focus;
   v15[1] = *MEMORY[0x1E69E9840];
   v5 = [[CAMExposureCommand alloc] initWithExposureMode:0];
   v15[0] = v5;
@@ -4278,9 +4278,9 @@ LABEL_9:
 
   if (![(CUCaptureController *)self _shouldLockWhiteBalanceForActiveVideoRequest])
   {
-    v8 = [(CUCaptureController *)self isFlashActive];
+    isFlashActive = [(CUCaptureController *)self isFlashActive];
     v9 = [CAMWhiteBalanceCommand alloc];
-    if (v8)
+    if (isFlashActive)
     {
       v10 = 2;
     }
@@ -4294,7 +4294,7 @@ LABEL_9:
     [v7 addObject:v11];
   }
 
-  if (v3)
+  if (focusCopy)
   {
     v12 = [[CAMFocusCommand alloc] initWithFocusMode:0];
     [v7 addObject:v12];
@@ -4309,16 +4309,16 @@ LABEL_9:
 {
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
   v4 = [(CUCaptureController *)self _commandForLockingExposureIncludingFocus:0];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  [v3 enqueueCommand:v4];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v4];
 }
 
 - (void)changeToLockedFocusAndExposure
 {
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
   v4 = [(CUCaptureController *)self _commandForLockingExposureIncludingFocus:1];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  [v3 enqueueCommand:v4];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v4];
 }
 
 - (void)resetFocusAndExposure
@@ -4332,13 +4332,13 @@ LABEL_9:
 {
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
   v4 = [[CAMSubjectAreaChangeMonitoringCommand alloc] initWithSubjectAreaChangeMonitoringEnabled:0];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  [v3 enqueueCommand:v4];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v4];
 }
 
-- (void)lockFocusAtLensPosition:(float)a3 completionBlock:(id)a4
+- (void)lockFocusAtLensPosition:(float)position completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
   [(CUCaptureController *)self set_pendingLockFocusOnLensPositionCount:[(CUCaptureController *)self _pendingLockFocusOnLensPositionCount]+ 1];
   v7 = [CAMFocusLockWithLensPositionCommand alloc];
@@ -4346,10 +4346,10 @@ LABEL_9:
   v13 = 3221225472;
   v14 = __63__CUCaptureController_lockFocusAtLensPosition_completionBlock___block_invoke;
   v15 = &unk_1E76FC248;
-  v16 = self;
-  v17 = v6;
-  v8 = v6;
-  *&v9 = a3;
+  selfCopy = self;
+  v17 = blockCopy;
+  v8 = blockCopy;
+  *&v9 = position;
   v10 = [(CAMFocusLockWithLensPositionCommand *)v7 initWithLensPosition:&v12 completionBlock:v9];
   v11 = [(CUCaptureController *)self _captureEngine:v12];
   [v11 enqueueCommand:v10];
@@ -4388,13 +4388,13 @@ uint64_t __63__CUCaptureController_lockFocusAtLensPosition_completionBlock___blo
 {
   if ([(CUCaptureController *)self isCapturingVideo])
   {
-    v3 = [(CUCaptureController *)self focusDelegate];
-    v8 = v3;
-    if (!v3 || (v4 = [v3 captureController:self shouldResetFocusAndExposureForReason:2], v5 = v8, v4))
+    focusDelegate = [(CUCaptureController *)self focusDelegate];
+    v8 = focusDelegate;
+    if (!focusDelegate || (v4 = [focusDelegate captureController:self shouldResetFocusAndExposureForReason:2], v5 = v8, v4))
     {
       v6 = objc_alloc_init(CAMFocusAtCenterForVideoRecordingCommand);
-      v7 = [(CUCaptureController *)self _captureEngine];
-      [v7 enqueueCommand:v6];
+      _captureEngine = [(CUCaptureController *)self _captureEngine];
+      [_captureEngine enqueueCommand:v6];
 
       v5 = v8;
     }
@@ -4403,30 +4403,30 @@ uint64_t __63__CUCaptureController_lockFocusAtLensPosition_completionBlock___blo
   }
 }
 
-- (void)setCinematicFocusForMetadataObject:(id)a3 atPoint:(CGPoint)a4 useFixedOpticalFocus:(BOOL)a5 useHardFocus:(BOOL)a6
+- (void)setCinematicFocusForMetadataObject:(id)object atPoint:(CGPoint)point useFixedOpticalFocus:(BOOL)focus useHardFocus:(BOOL)hardFocus
 {
-  v6 = a6;
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
+  hardFocusCopy = hardFocus;
+  focusCopy = focus;
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
   v12 = [CAMCinematicFocusCommand alloc];
-  v13 = [(CUCaptureController *)self _cinematicMetadataObjectIDForMetadataObject:v11];
+  v13 = [(CUCaptureController *)self _cinematicMetadataObjectIDForMetadataObject:objectCopy];
 
-  v15 = [(CAMCinematicFocusCommand *)v12 initWithMetadataObjectID:v13 atPointOfInterest:v7 useFixedOpticalFocus:v6 useHardFocus:x, y];
-  v14 = [(CUCaptureController *)self _captureEngine];
-  [v14 enqueueCommand:v15];
+  v15 = [(CAMCinematicFocusCommand *)v12 initWithMetadataObjectID:v13 atPointOfInterest:focusCopy useFixedOpticalFocus:hardFocusCopy useHardFocus:x, y];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v15];
 }
 
-- (int64_t)_cinematicMetadataObjectIDForMetadataObject:(id)a3
+- (int64_t)_cinematicMetadataObjectIDForMetadataObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v3 = [a3 underlyingMetadataObject];
+    underlyingMetadataObject = [object underlyingMetadataObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 faceID];
+      faceID = [underlyingMetadataObject faceID];
     }
 
     else
@@ -4434,7 +4434,7 @@ uint64_t __63__CUCaptureController_lockFocusAtLensPosition_completionBlock___blo
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [v3 bodyID];
+        faceID = [underlyingMetadataObject bodyID];
       }
 
       else
@@ -4453,11 +4453,11 @@ uint64_t __63__CUCaptureController_lockFocusAtLensPosition_completionBlock___blo
           goto LABEL_10;
         }
 
-        v4 = [v3 objectID];
+        faceID = [underlyingMetadataObject objectID];
       }
     }
 
-    v5 = v4;
+    v5 = faceID;
 LABEL_10:
 
     return v5;
@@ -4479,13 +4479,13 @@ LABEL_10:
   }
 }
 
-- (void)_scheduleFocusAndExposureResetAfterCaptureIfNecessaryForType:(int64_t)a3
+- (void)_scheduleFocusAndExposureResetAfterCaptureIfNecessaryForType:(int64_t)type
 {
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
-  v5 = [(CUCaptureController *)self focusDelegate];
-  LODWORD(a3) = [v5 captureController:self shouldResetFocusAndExposureAfterCaptureForType:a3];
+  focusDelegate = [(CUCaptureController *)self focusDelegate];
+  LODWORD(type) = [focusDelegate captureController:self shouldResetFocusAndExposureAfterCaptureForType:type];
 
-  if (a3)
+  if (type)
   {
     if ([(CUCaptureController *)self _shouldResetFocusAndExposureAfterCapture])
     {
@@ -4517,55 +4517,55 @@ LABEL_10:
   }
 }
 
-- (void)_resetFocusAndExposureAfterCaptureForType:(int64_t)a3
+- (void)_resetFocusAndExposureAfterCaptureForType:(int64_t)type
 {
-  v5 = [(CUCaptureController *)self focusDelegate];
-  LODWORD(a3) = [v5 captureController:self shouldResetFocusAndExposureAfterCaptureForType:a3];
+  focusDelegate = [(CUCaptureController *)self focusDelegate];
+  LODWORD(type) = [focusDelegate captureController:self shouldResetFocusAndExposureAfterCaptureForType:type];
 
-  if (a3)
+  if (type)
   {
 
     [(CUCaptureController *)self _resetFocusAndExposureAfterCapture];
   }
 }
 
-- (void)changeExposureTargetBias:(float)a3
+- (void)changeExposureTargetBias:(float)bias
 {
   [(CUCaptureController *)self cancelDelayedFocusAndExposureReset];
   v5 = [CAMExposureTargetBiasCommand alloc];
-  *&v6 = a3;
+  *&v6 = bias;
   v8 = [(CAMExposureTargetBiasCommand *)v5 initWithExposureTargetBias:v6];
-  v7 = [(CUCaptureController *)self _captureEngine];
-  [v7 enqueueCommand:v8];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v8];
 }
 
 - (void)_setupLensSmudgeDetectionMonitoring
 {
-  v3 = [(CUCaptureController *)self _captureEngine];
-  [v3 addObserver:self forKeyPath:@"currentCameraDevice.cameraLensSmudgeDetectionStatus" options:3 context:CAMSmudgeDetectionResultContext];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine addObserver:self forKeyPath:@"currentCameraDevice.cameraLensSmudgeDetectionStatus" options:3 context:CAMSmudgeDetectionResultContext];
 }
 
 - (void)_teardownLensSmudgeDetectionMonitoring
 {
-  v3 = [(CUCaptureController *)self _captureEngine];
-  [v3 removeObserver:self forKeyPath:@"currentCameraDevice.cameraLensSmudgeDetectionStatus" context:CAMSmudgeDetectionResultContext];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine removeObserver:self forKeyPath:@"currentCameraDevice.cameraLensSmudgeDetectionStatus" context:CAMSmudgeDetectionResultContext];
 }
 
-- (void)_cameraLensSmudgeDetectionStatusChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_cameraLensSmudgeDetectionStatusChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
   v5 = *MEMORY[0x1E696A4F0];
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:v5];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+  changeCopy = change;
+  v7 = [changeCopy objectForKeyedSubscript:v5];
+  v8 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
 
   if (v7)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v7 != v9)
+    if (v7 != null)
     {
-      v10 = [v7 integerValue];
-      if (!v8 || ([MEMORY[0x1E695DFB0] null], v11 = objc_claimAutoreleasedReturnValue(), v11, v8 == v11) || v10 != objc_msgSend(v8, "integerValue"))
+      integerValue = [v7 integerValue];
+      if (!v8 || ([MEMORY[0x1E695DFB0] null], v11 = objc_claimAutoreleasedReturnValue(), v11, v8 == v11) || integerValue != objc_msgSend(v8, "integerValue"))
       {
         pl_dispatch_async();
       }
@@ -4582,13 +4582,13 @@ void __89__CUCaptureController__cameraLensSmudgeDetectionStatusChangedForKeyPath
 - (void)_teardownFocusAndExposureMonitoring
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  v4 = [(CUCaptureController *)self _focusKVOKeyPaths];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _focusKVOKeyPaths = [(CUCaptureController *)self _focusKVOKeyPaths];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v5 = [_focusKVOKeyPaths countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4600,25 +4600,25 @@ void __89__CUCaptureController__cameraLensSmudgeDetectionStatusChangedForKeyPath
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_focusKVOKeyPaths);
         }
 
-        [v3 removeObserver:self forKeyPath:*(*(&v19 + 1) + 8 * v8++) context:CAMFocusResultContext];
+        [_captureEngine removeObserver:self forKeyPath:*(*(&v19 + 1) + 8 * v8++) context:CAMFocusResultContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [_focusKVOKeyPaths countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(CUCaptureController *)self _exposureKVOKeyPaths];
+  _exposureKVOKeyPaths = [(CUCaptureController *)self _exposureKVOKeyPaths];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  v10 = [_exposureKVOKeyPaths countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4630,67 +4630,67 @@ void __89__CUCaptureController__cameraLensSmudgeDetectionStatusChangedForKeyPath
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_exposureKVOKeyPaths);
         }
 
-        [v3 removeObserver:self forKeyPath:*(*(&v15 + 1) + 8 * v13++) context:CAMExposureResultContext];
+        [_captureEngine removeObserver:self forKeyPath:*(*(&v15 + 1) + 8 * v13++) context:CAMExposureResultContext];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v11 = [_exposureKVOKeyPaths countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 removeObserver:self name:*MEMORY[0x1E69868F8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69868F8] object:0];
 }
 
-- (void)_focusResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_focusResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CUCaptureController *)self _captureEngine];
+  pathCopy = path;
+  changeCopy = change;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__CUCaptureController__focusResultChangedForKeyPath_ofObject_change___block_invoke;
   v12[3] = &unk_1E76FC298;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 requestCurrentCameraDeviceWithHandler:v12];
+  v13 = pathCopy;
+  v14 = changeCopy;
+  v10 = changeCopy;
+  v11 = pathCopy;
+  [_captureEngine requestCurrentCameraDeviceWithHandler:v12];
 }
 
-- (void)_focusResultChangedForEngineKeyPath:(id)a3 withDevice:(id)a4 change:(id)a5
+- (void)_focusResultChangedForEngineKeyPath:(id)path withDevice:(id)device change:(id)change
 {
-  v26 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 focusMode];
-  [v9 focusPointOfInterest];
+  pathCopy = path;
+  changeCopy = change;
+  deviceCopy = device;
+  focusMode = [deviceCopy focusMode];
+  [deviceCopy focusPointOfInterest];
   v12 = v11;
   v14 = v13;
-  v15 = [v9 isAdjustingFocus];
-  v16 = [(CUCaptureController *)self _focusCoalescer];
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-  [v16 coalesceValue:v17 forKeyPath:@"currentCameraDevice.focusMode"];
+  isAdjustingFocus = [deviceCopy isAdjustingFocus];
+  _focusCoalescer = [(CUCaptureController *)self _focusCoalescer];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:focusMode];
+  [_focusCoalescer coalesceValue:v17 forKeyPath:@"currentCameraDevice.focusMode"];
 
   v18 = [MEMORY[0x1E696B098] valueWithCGPoint:{v12, v14}];
-  [v16 coalesceValue:v18 forKeyPath:@"currentCameraDevice.focusPointOfInterest"];
+  [_focusCoalescer coalesceValue:v18 forKeyPath:@"currentCameraDevice.focusPointOfInterest"];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:v15];
-  [v16 coalesceValue:v19 forKeyPath:@"currentCameraDevice.adjustingFocus"];
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:isAdjustingFocus];
+  [_focusCoalescer coalesceValue:v19 forKeyPath:@"currentCameraDevice.adjustingFocus"];
 
-  v20 = [v9 isFocusModeSupported:2];
+  v20 = [deviceCopy isFocusModeSupported:2];
   v21 = [MEMORY[0x1E696AD98] numberWithBool:v20];
-  [v16 coalesceValue:v21 forKeyPath:@"deviceSupportsFocusKeyPath"];
+  [_focusCoalescer coalesceValue:v21 forKeyPath:@"deviceSupportsFocusKeyPath"];
 
-  if ([v26 isEqual:@"currentCameraDevice.adjustingFocus"])
+  if ([pathCopy isEqual:@"currentCameraDevice.adjustingFocus"])
   {
-    v22 = [(CUCaptureController *)self _kvoDidStartForChange:v8];
+    v22 = [(CUCaptureController *)self _kvoDidStartForChange:changeCopy];
   }
 
   else
@@ -4698,9 +4698,9 @@ void __89__CUCaptureController__cameraLensSmudgeDetectionStatusChangedForKeyPath
     v22 = 0;
   }
 
-  if ([v26 isEqual:@"currentCameraDevice.adjustingFocus"])
+  if ([pathCopy isEqual:@"currentCameraDevice.adjustingFocus"])
   {
-    v23 = [(CUCaptureController *)self _kvoDidEndForChange:v8];
+    v23 = [(CUCaptureController *)self _kvoDidEndForChange:changeCopy];
   }
 
   else
@@ -4709,23 +4709,23 @@ void __89__CUCaptureController__cameraLensSmudgeDetectionStatusChangedForKeyPath
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:v22];
-  [v16 coalesceValue:v24 forKeyPath:@"contrastBasedFocusDidStartKeyPath"];
+  [_focusCoalescer coalesceValue:v24 forKeyPath:@"contrastBasedFocusDidStartKeyPath"];
 
   v25 = [MEMORY[0x1E696AD98] numberWithBool:v23];
-  [v16 coalesceValue:v25 forKeyPath:@"contrastBasedFocusDidEndKeyPath"];
+  [_focusCoalescer coalesceValue:v25 forKeyPath:@"contrastBasedFocusDidEndKeyPath"];
 
   if (v22 || v23)
   {
-    [v16 flush];
+    [_focusCoalescer flush];
   }
 }
 
-- (BOOL)_kvoDidStartForChange:(id)a3
+- (BOOL)_kvoDidStartForChange:(id)change
 {
   v3 = *MEMORY[0x1E696A500];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  changeCopy = change;
+  v5 = [changeCopy objectForKeyedSubscript:v3];
+  v6 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
   if (v5)
   {
@@ -4742,35 +4742,35 @@ void __89__CUCaptureController__cameraLensSmudgeDetectionStatusChangedForKeyPath
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x1E695DFB0] null];
-  v9 = v8;
-  if (v5 == v8)
+  null = [MEMORY[0x1E695DFB0] null];
+  v9 = null;
+  if (v5 == null)
   {
 
 LABEL_10:
-    v11 = 0;
+    bOOLValue = 0;
     goto LABEL_11;
   }
 
-  v10 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
-  if (v6 == v10 || ([v5 BOOLValue] & 1) != 0)
+  if (v6 == null2 || ([v5 BOOLValue] & 1) != 0)
   {
     goto LABEL_10;
   }
 
-  v11 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 LABEL_11:
 
-  return v11;
+  return bOOLValue;
 }
 
-- (BOOL)_kvoDidEndForChange:(id)a3
+- (BOOL)_kvoDidEndForChange:(id)change
 {
   v3 = *MEMORY[0x1E696A500];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  changeCopy = change;
+  v5 = [changeCopy objectForKeyedSubscript:v3];
+  v6 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
   if (v5)
   {
@@ -4787,9 +4787,9 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x1E695DFB0] null];
-  v9 = v8;
-  if (v5 == v8)
+  null = [MEMORY[0x1E695DFB0] null];
+  v9 = null;
+  if (v5 == null)
   {
 
 LABEL_10:
@@ -4797,9 +4797,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
-  if (v6 == v10 || ![v5 BOOLValue])
+  if (v6 == null2 || ![v5 BOOLValue])
   {
     goto LABEL_10;
   }
@@ -4810,56 +4810,56 @@ LABEL_11:
   return v11;
 }
 
-- (void)_exposureResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_exposureResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CUCaptureController *)self _captureEngine];
+  pathCopy = path;
+  changeCopy = change;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__CUCaptureController__exposureResultChangedForKeyPath_ofObject_change___block_invoke;
   v12[3] = &unk_1E76FC298;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 requestCurrentCameraDeviceWithHandler:v12];
+  v13 = pathCopy;
+  v14 = changeCopy;
+  v10 = changeCopy;
+  v11 = pathCopy;
+  [_captureEngine requestCurrentCameraDeviceWithHandler:v12];
 }
 
-- (void)_exposureResultChangedForEngineKeyPath:(id)a3 withDevice:(id)a4 change:(id)a5
+- (void)_exposureResultChangedForEngineKeyPath:(id)path withDevice:(id)device change:(id)change
 {
-  v30 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 exposureMode];
-  [v9 exposurePointOfInterest];
+  pathCopy = path;
+  changeCopy = change;
+  deviceCopy = device;
+  exposureMode = [deviceCopy exposureMode];
+  [deviceCopy exposurePointOfInterest];
   v12 = v11;
   v14 = v13;
-  v15 = [v9 isAdjustingExposure];
-  [v9 exposureTargetBias];
+  isAdjustingExposure = [deviceCopy isAdjustingExposure];
+  [deviceCopy exposureTargetBias];
   v17 = v16;
-  v18 = [(CUCaptureController *)self _exposureCoalescer];
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-  [v18 coalesceValue:v19 forKeyPath:@"currentCameraDevice.exposureMode"];
+  _exposureCoalescer = [(CUCaptureController *)self _exposureCoalescer];
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:exposureMode];
+  [_exposureCoalescer coalesceValue:v19 forKeyPath:@"currentCameraDevice.exposureMode"];
 
   v20 = [MEMORY[0x1E696B098] valueWithCGPoint:{v12, v14}];
-  [v18 coalesceValue:v20 forKeyPath:@"currentCameraDevice.exposurePointOfInterest"];
+  [_exposureCoalescer coalesceValue:v20 forKeyPath:@"currentCameraDevice.exposurePointOfInterest"];
 
   LODWORD(v21) = v17;
   v22 = [MEMORY[0x1E696AD98] numberWithFloat:v21];
-  [v18 coalesceValue:v22 forKeyPath:@"currentCameraDevice.exposureTargetBias"];
+  [_exposureCoalescer coalesceValue:v22 forKeyPath:@"currentCameraDevice.exposureTargetBias"];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithBool:v15];
-  [v18 coalesceValue:v23 forKeyPath:@"currentCameraDevice.adjustingExposure"];
+  v23 = [MEMORY[0x1E696AD98] numberWithBool:isAdjustingExposure];
+  [_exposureCoalescer coalesceValue:v23 forKeyPath:@"currentCameraDevice.adjustingExposure"];
 
-  v24 = [v9 isFocusModeSupported:2];
+  v24 = [deviceCopy isFocusModeSupported:2];
   v25 = [MEMORY[0x1E696AD98] numberWithBool:v24];
-  [v18 coalesceValue:v25 forKeyPath:@"deviceSupportsFocusKeyPath"];
+  [_exposureCoalescer coalesceValue:v25 forKeyPath:@"deviceSupportsFocusKeyPath"];
 
-  if ([v30 isEqual:@"currentCameraDevice.adjustingExposure"])
+  if ([pathCopy isEqual:@"currentCameraDevice.adjustingExposure"])
   {
-    v26 = [(CUCaptureController *)self _kvoDidStartForChange:v8];
+    v26 = [(CUCaptureController *)self _kvoDidStartForChange:changeCopy];
   }
 
   else
@@ -4867,9 +4867,9 @@ LABEL_11:
     v26 = 0;
   }
 
-  if ([v30 isEqual:@"currentCameraDevice.adjustingExposure"])
+  if ([pathCopy isEqual:@"currentCameraDevice.adjustingExposure"])
   {
-    v27 = [(CUCaptureController *)self _kvoDidEndForChange:v8];
+    v27 = [(CUCaptureController *)self _kvoDidEndForChange:changeCopy];
   }
 
   else
@@ -4878,14 +4878,14 @@ LABEL_11:
   }
 
   v28 = [MEMORY[0x1E696AD98] numberWithBool:v26];
-  [v18 coalesceValue:v28 forKeyPath:@"exposureDidStartKeyPath"];
+  [_exposureCoalescer coalesceValue:v28 forKeyPath:@"exposureDidStartKeyPath"];
 
   v29 = [MEMORY[0x1E696AD98] numberWithBool:v27];
-  [v18 coalesceValue:v29 forKeyPath:@"exposureDidEndKeyPath"];
+  [_exposureCoalescer coalesceValue:v29 forKeyPath:@"exposureDidEndKeyPath"];
 
   if (v26 || v27)
   {
-    [v18 flush];
+    [_exposureCoalescer flush];
   }
 }
 
@@ -4900,27 +4900,27 @@ LABEL_11:
 
 - (void)_setupLensPositionMonitoring
 {
-  v3 = [(CUCaptureController *)self _lensPositionKVOKeyPaths];
-  [(CUCaptureController *)self _setupKVOMonitoringForKeyPaths:v3 context:CAMLensPositionContext options:5];
+  _lensPositionKVOKeyPaths = [(CUCaptureController *)self _lensPositionKVOKeyPaths];
+  [(CUCaptureController *)self _setupKVOMonitoringForKeyPaths:_lensPositionKVOKeyPaths context:CAMLensPositionContext options:5];
 }
 
 - (void)_teardownLensPositionMonitoring
 {
-  v3 = [(CUCaptureController *)self _lensPositionKVOKeyPaths];
-  [(CUCaptureController *)self _teardownKVOMonitoringForKeyPaths:v3 context:CAMLensPositionContext];
+  _lensPositionKVOKeyPaths = [(CUCaptureController *)self _lensPositionKVOKeyPaths];
+  [(CUCaptureController *)self _teardownKVOMonitoringForKeyPaths:_lensPositionKVOKeyPaths context:CAMLensPositionContext];
 }
 
-- (void)_lensPositionChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_lensPositionChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v6 = a5;
-  if ([a3 isEqualToString:@"currentCameraDevice.lensPosition"])
+  changeCopy = change;
+  if ([path isEqualToString:@"currentCameraDevice.lensPosition"])
   {
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v7 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (v7)
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
 
-      if (v7 != v8)
+      if (v7 != null)
       {
         [v7 doubleValue];
         pl_dispatch_async();
@@ -4939,13 +4939,13 @@ void __70__CUCaptureController__lensPositionChangedForKeyPath_ofObject_change___
 - (void)_teardownSuggestionMonitoring
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  v4 = [(CUCaptureController *)self _suggestionKeyPaths];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _suggestionKeyPaths = [(CUCaptureController *)self _suggestionKeyPaths];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [_suggestionKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4957,14 +4957,14 @@ void __70__CUCaptureController__lensPositionChangedForKeyPath_ofObject_change___
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_suggestionKeyPaths);
         }
 
-        [v3 removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMSuggestionResultContext];
+        [_captureEngine removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMSuggestionResultContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_suggestionKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -4991,40 +4991,40 @@ void __74__CUCaptureController__updatePreferredPrimaryConstituentDeviceFromDevic
   }
 }
 
-- (int64_t)_primaryConstituentDeviceTypeFromDevice:(id)a3
+- (int64_t)_primaryConstituentDeviceTypeFromDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isVirtualDevice])
+  deviceCopy = device;
+  if ([deviceCopy isVirtualDevice])
   {
-    v5 = [v4 activePrimaryConstituentDevice];
+    activePrimaryConstituentDevice = [deviceCopy activePrimaryConstituentDevice];
   }
 
   else
   {
-    v5 = v4;
+    activePrimaryConstituentDevice = deviceCopy;
   }
 
-  v6 = v5;
-  v7 = [(CUCaptureController *)self _constituentDeviceTypeFromDevice:v5];
+  v6 = activePrimaryConstituentDevice;
+  v7 = [(CUCaptureController *)self _constituentDeviceTypeFromDevice:activePrimaryConstituentDevice];
 
   return v7;
 }
 
-- (int64_t)_constituentDeviceTypeFromDevice:(id)a3
+- (int64_t)_constituentDeviceTypeFromDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceType];
-  if ([v4 isEqualToString:*MEMORY[0x1E6986950]])
+  deviceCopy = device;
+  deviceType = [deviceCopy deviceType];
+  if ([deviceType isEqualToString:*MEMORY[0x1E6986950]])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E6986928]])
+  else if ([deviceType isEqualToString:*MEMORY[0x1E6986928]])
   {
     v5 = 3;
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E6986948]])
+  else if ([deviceType isEqualToString:*MEMORY[0x1E6986948]])
   {
     v5 = 1;
   }
@@ -5043,21 +5043,21 @@ void __74__CUCaptureController__updatePreferredPrimaryConstituentDeviceFromDevic
   return v5;
 }
 
-- (void)_suggestionResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_suggestionResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-  if ([v8 isEqualToString:@"currentCameraDevice.flashActive"] && (objc_opt_respondsToSelector() & 1) != 0)
+  pathCopy = path;
+  objectCopy = object;
+  v10 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  if ([pathCopy isEqualToString:@"currentCameraDevice.flashActive"] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v10 BOOLValue];
-    v18 = v9;
+    v18 = objectCopy;
     pl_dispatch_async();
 
     goto LABEL_30;
   }
 
-  if ([v8 isEqualToString:@"currentCameraDevice.torchActive"] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([pathCopy isEqualToString:@"currentCameraDevice.torchActive"] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v10 BOOLValue];
 LABEL_12:
@@ -5065,16 +5065,16 @@ LABEL_12:
     goto LABEL_30;
   }
 
-  if (![v8 isEqualToString:@"currentStillImageOutput.digitalFlashStatus"] || (objc_opt_respondsToSelector() & 1) == 0)
+  if (![pathCopy isEqualToString:@"currentStillImageOutput.digitalFlashStatus"] || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    if ([v8 isEqualToString:@"currentStillImageOutput.digitalFlashExposureTimes"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([pathCopy isEqualToString:@"currentStillImageOutput.digitalFlashExposureTimes"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v12 = v10;
       if (v12)
       {
-        v13 = [MEMORY[0x1E695DFB0] null];
-        v14 = v13;
-        if (v12 == v13)
+        null = [MEMORY[0x1E695DFB0] null];
+        v14 = null;
+        if (v12 == null)
         {
         }
 
@@ -5097,7 +5097,7 @@ LABEL_12:
 
     else
     {
-      if ([v8 isEqual:@"currentCameraDevice.activePrimaryConstituentDevice"])
+      if ([pathCopy isEqual:@"currentCameraDevice.activePrimaryConstituentDevice"])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -5107,7 +5107,7 @@ LABEL_12:
         }
       }
 
-      if ([v8 isEqual:@"currentCameraDevice.preferredPrimaryConstituentDevice"])
+      if ([pathCopy isEqual:@"currentCameraDevice.preferredPrimaryConstituentDevice"])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -5117,7 +5117,7 @@ LABEL_12:
         }
       }
 
-      if (![v8 isEqual:@"currentCameraDevice"])
+      if (![pathCopy isEqual:@"currentCameraDevice"])
       {
         goto LABEL_30;
       }
@@ -5138,9 +5138,9 @@ LABEL_12:
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (v10 != v11)
+    if (v10 != null2)
     {
       +[CAMCaptureConversions nightModeStatusForCaptureStatus:](CAMCaptureConversions, "nightModeStatusForCaptureStatus:", [v10 integerValue]);
       goto LABEL_12;
@@ -5197,13 +5197,13 @@ void __74__CUCaptureController__suggestionResultChangedForKeyPath_ofObject_chang
 - (void)_teardownAvailabilityMonitoring
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  v4 = [(CUCaptureController *)self _availabilityKeyPaths];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _availabilityKeyPaths = [(CUCaptureController *)self _availabilityKeyPaths];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [_availabilityKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5215,39 +5215,39 @@ void __74__CUCaptureController__suggestionResultChangedForKeyPath_ofObject_chang
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_availabilityKeyPaths);
         }
 
-        [v3 removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMAvailabilityResultContext];
+        [_captureEngine removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMAvailabilityResultContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_availabilityKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_availabilityResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_availabilityResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  pathCopy = path;
+  v7 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
   if (!v7)
   {
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v7 == v8)
+  if (v7 == null)
   {
     goto LABEL_12;
   }
 
   v9 = v7;
-  if ([v6 isEqualToString:@"currentCameraDevice.flashAvailable"] || objc_msgSend(v6, "isEqualToString:", @"currentCameraDevice.torchAvailable"))
+  if ([pathCopy isEqualToString:@"currentCameraDevice.flashAvailable"] || objc_msgSend(pathCopy, "isEqualToString:", @"currentCameraDevice.torchAvailable"))
   {
     [v9 BOOLValue];
 LABEL_8:
@@ -5255,7 +5255,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"currentCameraDevice.degradedCaptureQualityFactors"])
+  if ([pathCopy isEqualToString:@"currentCameraDevice.degradedCaptureQualityFactors"])
   {
     [v9 unsignedIntegerValue];
     goto LABEL_8;
@@ -5266,7 +5266,7 @@ LABEL_9:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = v6;
+    v12 = pathCopy;
     v13 = 2114;
     v14 = v9;
     _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "Observed availability key path %{public}@ change to %{public}@", buf, 0x16u);
@@ -5300,91 +5300,91 @@ void __76__CUCaptureController__availabilityResultChangedForKeyPath_ofObject_cha
   }
 }
 
-- (void)_updateMaximumNumberOfStillImageRequestsAfterEnqueuingRequest:(id)a3
+- (void)_updateMaximumNumberOfStillImageRequestsAfterEnqueuingRequest:(id)request
 {
-  v13 = a3;
+  requestCopy = request;
   v4 = +[CAMCaptureCapabilities capabilities];
-  v5 = [(CUCaptureController *)self _maximumNumberOfStillImageRequests];
-  if (!v5)
+  _maximumNumberOfStillImageRequests = [(CUCaptureController *)self _maximumNumberOfStillImageRequests];
+  if (!_maximumNumberOfStillImageRequests)
   {
-    v5 = [v4 maximumNumberOfInflightRequests];
+    _maximumNumberOfStillImageRequests = [v4 maximumNumberOfInflightRequests];
   }
 
-  if ([v13 ctmCaptureType] == 2)
+  if ([requestCopy ctmCaptureType] == 2)
   {
-    v6 = v13;
+    v6 = requestCopy;
   }
 
   else
   {
-    v7 = [v13 flashMode];
-    v8 = [(CUCaptureController *)self isFlashActive];
-    v6 = v13;
-    if (v7 == 1 || v7 == 2 && v8)
+    flashMode = [requestCopy flashMode];
+    isFlashActive = [(CUCaptureController *)self isFlashActive];
+    v6 = requestCopy;
+    if (flashMode == 1 || flashMode == 2 && isFlashActive)
     {
-      v5 = 1;
+      _maximumNumberOfStillImageRequests = 1;
     }
   }
 
-  v9 = [v6 burstIdentifier];
+  burstIdentifier = [v6 burstIdentifier];
 
-  if (v9)
+  if (burstIdentifier)
   {
-    v5 = [(CUCaptureController *)self _maximumNumberOfStillImageRequestsDuringBurst];
+    _maximumNumberOfStillImageRequests = [(CUCaptureController *)self _maximumNumberOfStillImageRequestsDuringBurst];
   }
 
   if ([v4 portraitModeOverlappingCapturesSupported])
   {
-    v10 = v13;
+    v10 = requestCopy;
   }
 
   else
   {
-    v11 = [v13 adjustmentFilters];
-    v12 = [CAMEffectFilterManager isDepthEffectInFilters:v11];
+    adjustmentFilters = [requestCopy adjustmentFilters];
+    v12 = [CAMEffectFilterManager isDepthEffectInFilters:adjustmentFilters];
 
-    v10 = v13;
+    v10 = requestCopy;
     if (v12)
     {
-      v5 = 1;
+      _maximumNumberOfStillImageRequests = 1;
     }
   }
 
   if ([v10 nightMode])
   {
-    v5 = 1;
+    _maximumNumberOfStillImageRequests = 1;
   }
 
-  if ([v13 maximumPhotoResolution] == 3 && !objc_msgSend(v4, "supportsOverlappingCapturesForResolution:", 3))
+  if ([requestCopy maximumPhotoResolution] == 3 && !objc_msgSend(v4, "supportsOverlappingCapturesForResolution:", 3))
   {
-    v5 = 1;
+    _maximumNumberOfStillImageRequests = 1;
   }
 
-  [(CUCaptureController *)self _setMaximumNumberOfStillImageRequests:v5];
+  [(CUCaptureController *)self _setMaximumNumberOfStillImageRequests:_maximumNumberOfStillImageRequests];
 }
 
-- (void)_updateMaximumNumberOfStillImageRequestsAfterCapturedRequestIfNecessary:(id)a3
+- (void)_updateMaximumNumberOfStillImageRequestsAfterCapturedRequestIfNecessary:(id)necessary
 {
-  v4 = [a3 captureRequest];
-  v5 = [v4 type];
+  captureRequest = [necessary captureRequest];
+  type = [captureRequest type];
 
-  v11 = [(CUCaptureController *)self _numberOfInflightRequestsByType];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-  v7 = [v11 countForObject:v6];
+  _numberOfInflightRequestsByType = [(CUCaptureController *)self _numberOfInflightRequestsByType];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v7 = [_numberOfInflightRequestsByType countForObject:v6];
 
-  v8 = v11;
+  v8 = _numberOfInflightRequestsByType;
   if (v7 <= 0)
   {
     v9 = +[CAMCaptureCapabilities capabilities];
-    v10 = [v9 maximumNumberOfInflightRequests];
+    maximumNumberOfInflightRequests = [v9 maximumNumberOfInflightRequests];
 
     if ([(CUCaptureController *)self isCapturingBurst])
     {
-      v10 = [(CUCaptureController *)self _maximumNumberOfStillImageRequestsDuringBurst];
+      maximumNumberOfInflightRequests = [(CUCaptureController *)self _maximumNumberOfStillImageRequestsDuringBurst];
     }
 
-    [(CUCaptureController *)self _setMaximumNumberOfStillImageRequests:v10];
-    v8 = v11;
+    [(CUCaptureController *)self _setMaximumNumberOfStillImageRequests:maximumNumberOfInflightRequests];
+    v8 = _numberOfInflightRequestsByType;
   }
 }
 
@@ -5399,28 +5399,28 @@ void __76__CUCaptureController__availabilityResultChangedForKeyPath_ofObject_cha
   v2 = +[CAMCaptureCapabilities capabilities];
   if ([v2 isPipelinedStillImageProcessingSupported])
   {
-    v3 = 3;
+    maximumNumberOfInflightRequests = 3;
   }
 
   else
   {
     v4 = +[CAMCaptureCapabilities capabilities];
-    v3 = [v4 maximumNumberOfInflightRequests];
+    maximumNumberOfInflightRequests = [v4 maximumNumberOfInflightRequests];
   }
 
-  return v3;
+  return maximumNumberOfInflightRequests;
 }
 
-- (void)_setCaptureAvailable:(BOOL)a3
+- (void)_setCaptureAvailable:(BOOL)available
 {
-  if (self->_captureAvailable != a3)
+  if (self->_captureAvailable != available)
   {
     v11 = v3;
     v12 = v4;
-    self->_captureAvailable = a3;
+    self->_captureAvailable = available;
     v6 = os_log_create("com.apple.camera", "Camera");
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (a3)
+    if (available)
     {
       if (v7)
       {
@@ -5458,8 +5458,8 @@ void __76__CUCaptureController__availabilityResultChangedForKeyPath_ofObject_cha
     }
   }
 
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 currentInflightCapturesStringWithCompletionHandler:&__block_literal_global_39];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine currentInflightCapturesStringWithCompletionHandler:&__block_literal_global_39];
 }
 
 void __56__CUCaptureController_logCaptureAvailabilityDescription__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -5475,140 +5475,140 @@ void __56__CUCaptureController_logCaptureAvailabilityDescription__block_invoke(u
   }
 }
 
-- (void)_updateAvailabilityForRequestType:(int64_t)a3
+- (void)_updateAvailabilityForRequestType:(int64_t)type
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (a3 == 1)
+  if (type == 1)
   {
-    v8 = [(CUCaptureController *)self _isVideoCaptureAvailable];
+    _isVideoCaptureAvailable = [(CUCaptureController *)self _isVideoCaptureAvailable];
   }
 
-  else if (a3)
+  else if (type)
   {
-    v8 = 1;
+    _isVideoCaptureAvailable = 1;
   }
 
   else
   {
-    v5 = [(CUCaptureController *)self _numberOfInflightRequestsByType];
+    _numberOfInflightRequestsByType = [(CUCaptureController *)self _numberOfInflightRequestsByType];
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:0];
-    v7 = [v5 countForObject:v6];
+    v7 = [_numberOfInflightRequestsByType countForObject:v6];
 
-    v8 = v7 < [(CUCaptureController *)self _maximumNumberOfStillImageRequests];
+    _isVideoCaptureAvailable = v7 < [(CUCaptureController *)self _maximumNumberOfStillImageRequests];
   }
 
-  v9 = [(CUCaptureController *)self isCaptureAvailable];
-  v10 = v8 ^ [(CUCaptureController *)self isConfigurationAvailable];
-  [(CUCaptureController *)self _setCaptureAvailable:v8];
-  [(CUCaptureController *)self _setConfigurationAvailable:v8];
-  if (v8 != v9)
+  isCaptureAvailable = [(CUCaptureController *)self isCaptureAvailable];
+  v10 = _isVideoCaptureAvailable ^ [(CUCaptureController *)self isConfigurationAvailable];
+  [(CUCaptureController *)self _setCaptureAvailable:_isVideoCaptureAvailable];
+  [(CUCaptureController *)self _setConfigurationAvailable:_isVideoCaptureAvailable];
+  if (_isVideoCaptureAvailable != isCaptureAvailable)
   {
-    [(CUCaptureController *)self _notifyDelegateOfCaptureAvailabilityChanged:v8];
+    [(CUCaptureController *)self _notifyDelegateOfCaptureAvailabilityChanged:_isVideoCaptureAvailable];
   }
 
   if (v10)
   {
 
-    [(CUCaptureController *)self _notifyDelegateOfConfigurationAvailabilityChanged:v8];
+    [(CUCaptureController *)self _notifyDelegateOfConfigurationAvailabilityChanged:_isVideoCaptureAvailable];
   }
 }
 
-- (BOOL)_shouldTrackInflightCountForRequest:(id)a3
+- (BOOL)_shouldTrackInflightCountForRequest:(id)request
 {
-  v3 = a3;
-  if ([v3 type])
+  requestCopy = request;
+  if ([requestCopy type])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 ctmCaptureType] != 2;
+    v4 = [requestCopy ctmCaptureType] != 2;
   }
 
   return v4;
 }
 
-- (void)_updateAvailabilityAfterEnqueuedRequest:(id)a3
+- (void)_updateAvailabilityAfterEnqueuedRequest:(id)request
 {
-  v8 = a3;
-  v4 = [v8 persistenceUUID];
-  [(CUCaptureController *)self _startCaptureSignpostIntervalForPersistenceUUID:v4];
+  requestCopy = request;
+  persistenceUUID = [requestCopy persistenceUUID];
+  [(CUCaptureController *)self _startCaptureSignpostIntervalForPersistenceUUID:persistenceUUID];
 
-  if ([(CUCaptureController *)self _shouldTrackInflightCountForRequest:v8])
+  if ([(CUCaptureController *)self _shouldTrackInflightCountForRequest:requestCopy])
   {
-    v5 = [v8 type];
-    v6 = [(CUCaptureController *)self _numberOfInflightRequestsByType];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-    [v6 addObject:v7];
+    type = [requestCopy type];
+    _numberOfInflightRequestsByType = [(CUCaptureController *)self _numberOfInflightRequestsByType];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    [_numberOfInflightRequestsByType addObject:v7];
 
-    [(CUCaptureController *)self _updateAvailabilityForRequestType:v5];
+    [(CUCaptureController *)self _updateAvailabilityForRequestType:type];
   }
 }
 
-- (void)_updateAvailabilityWhenPreparingToStopCapturingForRequest:(id)a3
+- (void)_updateAvailabilityWhenPreparingToStopCapturingForRequest:(id)request
 {
-  v4 = [a3 type];
+  type = [request type];
 
-  [(CUCaptureController *)self _updateAvailabilityForRequestType:v4];
+  [(CUCaptureController *)self _updateAvailabilityForRequestType:type];
 }
 
-- (void)_updateAvailabilityAfterStopCapturingForRequest:(id)a3
+- (void)_updateAvailabilityAfterStopCapturingForRequest:(id)request
 {
-  v4 = [a3 type];
+  type = [request type];
 
-  [(CUCaptureController *)self _updateAvailabilityForRequestType:v4];
+  [(CUCaptureController *)self _updateAvailabilityForRequestType:type];
 }
 
-- (void)_updateAvailabilityAfterCapturedRequest:(id)a3
+- (void)_updateAvailabilityAfterCapturedRequest:(id)request
 {
-  v8 = a3;
-  v4 = [v8 type];
-  if ([(CUCaptureController *)self _shouldTrackInflightCountForRequest:v8])
+  requestCopy = request;
+  type = [requestCopy type];
+  if ([(CUCaptureController *)self _shouldTrackInflightCountForRequest:requestCopy])
   {
-    v5 = [(CUCaptureController *)self _numberOfInflightRequestsByType];
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-    [v5 removeObject:v6];
+    _numberOfInflightRequestsByType = [(CUCaptureController *)self _numberOfInflightRequestsByType];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    [_numberOfInflightRequestsByType removeObject:v6];
 
-    if (v4 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v4 != 1)
+  else if (type != 1)
   {
     goto LABEL_7;
   }
 
   [(CUCaptureController *)self _setVideoCaptureAvailable:1];
 LABEL_6:
-  [(CUCaptureController *)self _updateAvailabilityForRequestType:v4];
+  [(CUCaptureController *)self _updateAvailabilityForRequestType:type];
 LABEL_7:
-  v7 = [v8 persistenceUUID];
-  [(CUCaptureController *)self _endCaptureSignpostIntervalForPersistenceUUID:v7];
+  persistenceUUID = [requestCopy persistenceUUID];
+  [(CUCaptureController *)self _endCaptureSignpostIntervalForPersistenceUUID:persistenceUUID];
 }
 
-- (void)_notifyDelegateOfCaptureAvailabilityChanged:(BOOL)a3
+- (void)_notifyDelegateOfCaptureAvailabilityChanged:(BOOL)changed
 {
-  v3 = a3;
-  v5 = [(CUCaptureController *)self availabilityDelegate];
-  [v5 captureController:self didOutputCaptureAvailability:v3];
+  changedCopy = changed;
+  availabilityDelegate = [(CUCaptureController *)self availabilityDelegate];
+  [availabilityDelegate captureController:self didOutputCaptureAvailability:changedCopy];
 }
 
-- (void)_notifyDelegateOfConfigurationAvailabilityChanged:(BOOL)a3
+- (void)_notifyDelegateOfConfigurationAvailabilityChanged:(BOOL)changed
 {
-  v3 = a3;
-  v5 = [(CUCaptureController *)self availabilityDelegate];
-  [v5 captureController:self didOutputConfigurationAvailability:v3];
+  changedCopy = changed;
+  availabilityDelegate = [(CUCaptureController *)self availabilityDelegate];
+  [availabilityDelegate captureController:self didOutputConfigurationAvailability:changedCopy];
 }
 
-- (void)metadataWasRecognized:(id)a3 forMetadataObjectTypes:(id)a4 deviceFormat:(id)a5
+- (void)metadataWasRecognized:(id)recognized forMetadataObjectTypes:(id)types deviceFormat:(id)format
 {
   v69 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v43 = a4;
-  v47 = a5;
+  recognizedCopy = recognized;
+  typesCopy = types;
+  formatCopy = format;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v51 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v53 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -5620,7 +5620,7 @@ LABEL_7:
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v10 = v7;
+  v10 = recognizedCopy;
   v11 = [v10 countByEnumeratingWithState:&v60 objects:v68 count:16];
   if (!v11)
   {
@@ -5688,8 +5688,8 @@ LABEL_10:
       {
         v18 = v16;
         v17 = [[CAMMachineReadableCodeResult alloc] initWithMachineReadableCodeObject:v18];
-        v21 = [(CAMMachineReadableCodeResult *)v17 mrcType];
-        if (v21 == 2)
+        mrcType = [(CAMMachineReadableCodeResult *)v17 mrcType];
+        if (mrcType == 2)
         {
           v28 = os_log_create("com.apple.camera", "Camera");
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -5704,14 +5704,14 @@ LABEL_10:
           goto LABEL_10;
         }
 
-        if (v21 == 1)
+        if (mrcType == 1)
         {
           v19 = v45;
         }
 
         else
         {
-          if (v21)
+          if (mrcType)
           {
             goto LABEL_10;
           }
@@ -5723,25 +5723,25 @@ LABEL_10:
         goto LABEL_9;
       }
 
-      v22 = [v16 type];
-      v23 = [v22 isEqualToString:v50];
+      type = [v16 type];
+      v23 = [type isEqualToString:v50];
 
       if (v23)
       {
-        v24 = v16;
-        v18 = [[CAMTextRegionResult alloc] initWithTextRegionObject:v24];
+        type3 = v16;
+        v18 = [[CAMTextRegionResult alloc] initWithTextRegionObject:type3];
         [v49 addObject:v18];
       }
 
       else
       {
-        v25 = [v16 type];
-        v26 = [v25 isEqualToString:v44];
+        type2 = [v16 type];
+        v26 = [type2 isEqualToString:v44];
 
         if (v26)
         {
           v18 = v16;
-          v27 = [[CAMHistogramResult alloc] initWithHistogramObject:v18 forDeviceFormat:v47];
+          v27 = [[CAMHistogramResult alloc] initWithHistogramObject:v18 forDeviceFormat:formatCopy];
 
           v48 = v27;
           goto LABEL_38;
@@ -5754,11 +5754,11 @@ LABEL_10:
         }
 
         v29 = objc_opt_class();
-        v24 = [v16 type];
+        type3 = [v16 type];
         *buf = 138543618;
         v65 = v29;
         v66 = 2114;
-        v67 = v24;
+        v67 = type3;
         _os_log_impl(&dword_1A3640000, &v18->super, OS_LOG_TYPE_DEFAULT, "Unhandled metadata object %{public}@/%{public}@", buf, 0x16u);
       }
 
@@ -5777,7 +5777,7 @@ LABEL_14:
   while (v30);
 LABEL_42:
 
-  [v43 count];
+  [typesCopy count];
   [(CUCaptureController *)self _burstController];
   v32 = v31 = v14;
   [v32 processFaceResults:v8];
@@ -5795,7 +5795,7 @@ LABEL_42:
   v37 = v45;
   v38 = v10;
   v39 = v46;
-  v40 = v43;
+  v40 = typesCopy;
   pl_dispatch_async();
 }
 
@@ -5910,19 +5910,19 @@ LABEL_21:
   }
 }
 
-- (void)queryVideoDimensionsWithCompletionBlock:(id)a3
+- (void)queryVideoDimensionsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
+  blockCopy = block;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   v6 = [CAMQueryVideoDimensionsCommand alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__CUCaptureController_queryVideoDimensionsWithCompletionBlock___block_invoke;
   v9[3] = &unk_1E76FC330;
-  v10 = v4;
-  v7 = v4;
+  v10 = blockCopy;
+  v7 = blockCopy;
   v8 = [(CAMQueryVideoDimensionsCommand *)v6 initWithCompletionBlock:v9];
-  [v5 enqueueCommand:v8];
+  [_captureEngine enqueueCommand:v8];
 }
 
 void __63__CUCaptureController_queryVideoDimensionsWithCompletionBlock___block_invoke(uint64_t a1)
@@ -5942,19 +5942,19 @@ uint64_t __63__CUCaptureController_queryVideoDimensionsWithCompletionBlock___blo
   return result;
 }
 
-- (void)queryTimelapseDimensionsWithCompletionBlock:(id)a3
+- (void)queryTimelapseDimensionsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
+  blockCopy = block;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   v6 = [CAMQueryTimelapseDimensionsCommand alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__CUCaptureController_queryTimelapseDimensionsWithCompletionBlock___block_invoke;
   v9[3] = &unk_1E76FC380;
-  v10 = v4;
-  v7 = v4;
+  v10 = blockCopy;
+  v7 = blockCopy;
   v8 = [(CAMQueryTimelapseDimensionsCommand *)v6 initWithCompletionBlock:v9];
-  [v5 enqueueCommand:v8];
+  [_captureEngine enqueueCommand:v8];
 }
 
 void __67__CUCaptureController_queryTimelapseDimensionsWithCompletionBlock___block_invoke(uint64_t a1)
@@ -5974,16 +5974,16 @@ uint64_t __67__CUCaptureController_queryTimelapseDimensionsWithCompletionBlock__
   return result;
 }
 
-- (void)willPerformRecoveryFromRuntimeError:(id)a3
+- (void)willPerformRecoveryFromRuntimeError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__CUCaptureController_willPerformRecoveryFromRuntimeError___block_invoke;
   v6[3] = &unk_1E76F7960;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   cam_perform_on_main_asap(v6);
 }
 
@@ -5993,38 +5993,38 @@ void __59__CUCaptureController_willPerformRecoveryFromRuntimeError___block_invok
   [v2 captureController:*(a1 + 32) willRecoverFromRuntimeError:*(a1 + 40)];
 }
 
-- (void)startCaptureSessionWithRetryCount:(unint64_t)a3 retryInterval:(double)a4 logReason:(id)a5 completion:(id)a6
+- (void)startCaptureSessionWithRetryCount:(unint64_t)count retryInterval:(double)interval logReason:(id)reason completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [(CUCaptureController *)self _captureEngine];
-  [v12 startWithRetryCount:a3 retryInterval:v11 logReason:v10 completion:a4];
+  completionCopy = completion;
+  reasonCopy = reason;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine startWithRetryCount:count retryInterval:reasonCopy logReason:completionCopy completion:interval];
 }
 
-- (void)stopCaptureSessionWithCompletion:(id)a3
+- (void)stopCaptureSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 stopWithCompletion:v4];
+  completionCopy = completion;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine stopWithCompletion:completionCopy];
 }
 
-- (void)cancelAutoResumeAfterDate:(id)a3
+- (void)cancelAutoResumeAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 cancelAutoResumeAfterDate:v4];
+  dateCopy = date;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine cancelAutoResumeAfterDate:dateCopy];
 }
 
 - (void)attemptToEndInterruptions
 {
   if ([(CUCaptureController *)self isInterrupted])
   {
-    v3 = [(CUCaptureController *)self _captureEngine];
-    [v3 startWithRetryCount:0 retryInterval:@"attemptToEndInterruptions" logReason:0 completion:0.0];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine startWithRetryCount:0 retryInterval:@"attemptToEndInterruptions" logReason:0 completion:0.0];
   }
 }
 
-- (void)handleSessionInterruptionForReason:(int64_t)a3
+- (void)handleSessionInterruptionForReason:(int64_t)reason
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -6064,70 +6064,70 @@ uint64_t __53__CUCaptureController_handleSessionInterruptionEnded__block_invoke(
   return MEMORY[0x1EEE66C30]();
 }
 
-- (void)registerCaptureService:(id)a3
+- (void)registerCaptureService:(id)service
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 registerCaptureService:v4];
+  serviceCopy = service;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine registerCaptureService:serviceCopy];
 }
 
-- (void)unregisterCaptureService:(id)a3
+- (void)unregisterCaptureService:(id)service
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 unregisterCaptureService:v4];
+  serviceCopy = service;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine unregisterCaptureService:serviceCopy];
 }
 
-- (void)registerEffectsPreviewSampleBufferDelegate:(id)a3
+- (void)registerEffectsPreviewSampleBufferDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 registerEffectsPreviewSampleBufferDelegate:v4];
+  delegateCopy = delegate;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine registerEffectsPreviewSampleBufferDelegate:delegateCopy];
 }
 
-- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)a3
+- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 unregisterEffectsPreviewSampleBufferDelegate:v4];
+  delegateCopy = delegate;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine unregisterEffectsPreviewSampleBufferDelegate:delegateCopy];
 }
 
-- (void)registerVideoThumbnailContentsDelegate:(id)a3
+- (void)registerVideoThumbnailContentsDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 registerVideoThumbnailContentsDelegate:v4];
+  delegateCopy = delegate;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine registerVideoThumbnailContentsDelegate:delegateCopy];
 }
 
-- (void)unregisterVideoThumbnailContentsDelegate:(id)a3
+- (void)unregisterVideoThumbnailContentsDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 unregisterVideoThumbnailContentsDelegate:v4];
+  delegateCopy = delegate;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine unregisterVideoThumbnailContentsDelegate:delegateCopy];
 }
 
-- (void)changeToVideoZoomFactor:(double)a3 graphConfiguration:(id)a4
+- (void)changeToVideoZoomFactor:(double)factor graphConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [[CAMSetVideoZoomFactorCommand alloc] initWithVideoZoomFactor:v6 graphConfiguration:a3];
+  configurationCopy = configuration;
+  v7 = [[CAMSetVideoZoomFactorCommand alloc] initWithVideoZoomFactor:configurationCopy graphConfiguration:factor];
 
   [(CAMCaptureEngine *)self->__captureEngine enqueueCommand:v7];
 }
 
-- (void)startRampToVideoZoomFactor:(double)a3 withRate:(float)a4 graphConfiguration:(id)a5
+- (void)startRampToVideoZoomFactor:(double)factor withRate:(float)rate graphConfiguration:(id)configuration
 {
-  v8 = a5;
+  configurationCopy = configuration;
   v9 = [CAMRampToVideoZoomFactorCommand alloc];
-  *&v10 = a4;
-  v11 = [(CAMRampToVideoZoomFactorCommand *)v9 initWithVideoZoomFactor:v8 rate:a3 graphConfiguration:v10];
+  *&v10 = rate;
+  v11 = [(CAMRampToVideoZoomFactorCommand *)v9 initWithVideoZoomFactor:configurationCopy rate:factor graphConfiguration:v10];
 
   [(CAMCaptureEngine *)self->__captureEngine enqueueCommand:v11];
 }
 
-- (void)startRampToVideoZoomFactor:(double)a3 withDuration:(double)a4 zoomRampTuning:(int64_t)a5 graphConfiguration:(id)a6
+- (void)startRampToVideoZoomFactor:(double)factor withDuration:(double)duration zoomRampTuning:(int64_t)tuning graphConfiguration:(id)configuration
 {
-  v10 = a6;
-  v11 = [[CAMRampToVideoZoomFactorCommand alloc] initWithVideoZoomFactor:a5 duration:v10 zoomRampTuning:a3 graphConfiguration:a4];
+  configurationCopy = configuration;
+  v11 = [[CAMRampToVideoZoomFactorCommand alloc] initWithVideoZoomFactor:tuning duration:configurationCopy zoomRampTuning:factor graphConfiguration:duration];
 
   [(CAMCaptureEngine *)self->__captureEngine enqueueCommand:v11];
 }
@@ -6141,13 +6141,13 @@ uint64_t __53__CUCaptureController_handleSessionInterruptionEnded__block_invoke(
 - (void)_teardownZoomMonitoring
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(CUCaptureController *)self _captureEngine];
-  v4 = [(CUCaptureController *)self _zoomMonitoringKeyPaths];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  _zoomMonitoringKeyPaths = [(CUCaptureController *)self _zoomMonitoringKeyPaths];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [_zoomMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6159,35 +6159,35 @@ uint64_t __53__CUCaptureController_handleSessionInterruptionEnded__block_invoke(
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_zoomMonitoringKeyPaths);
         }
 
-        [v3 removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMZoomResultContext];
+        [_captureEngine removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMZoomResultContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_zoomMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_zoomResultChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_zoomResultChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 isEqualToString:@"currentCameraDevice.videoZoomFactor"])
+  pathCopy = path;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"currentCameraDevice.videoZoomFactor"])
   {
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v9 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (!v9)
     {
       goto LABEL_14;
     }
 
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v9 == v10)
+    if (v9 == null)
     {
       goto LABEL_14;
     }
@@ -6195,17 +6195,17 @@ uint64_t __53__CUCaptureController_handleSessionInterruptionEnded__block_invoke(
     goto LABEL_4;
   }
 
-  if ([v7 isEqualToString:@"currentCameraDevice.minAvailableVideoZoomFactor"])
+  if ([pathCopy isEqualToString:@"currentCameraDevice.minAvailableVideoZoomFactor"])
   {
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v9 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (!v9)
     {
       goto LABEL_14;
     }
 
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (v9 == v11)
+    if (v9 == null2)
     {
       goto LABEL_14;
     }
@@ -6219,17 +6219,17 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:@"currentCameraDevice.rampingVideoZoom"])
+  if ([pathCopy isEqualToString:@"currentCameraDevice.rampingVideoZoom"])
   {
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v9 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (!v9)
     {
       goto LABEL_14;
     }
 
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
 
-    if (v9 == v12)
+    if (v9 == null3)
     {
       goto LABEL_14;
     }
@@ -6262,16 +6262,16 @@ void __68__CUCaptureController__zoomResultChangedForKeyPath_ofObject_change___bl
 - (void)_setupZoomPIPMonitoring
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isZoomPIPSupported];
+  isZoomPIPSupported = [v3 isZoomPIPSupported];
 
-  if (v4)
+  if (isZoomPIPSupported)
   {
-    v6 = [(CUCaptureController *)self _captureEngine];
-    v5 = [v6 videoPreviewLayer];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    videoPreviewLayer = [_captureEngine videoPreviewLayer];
 
-    if (v5)
+    if (videoPreviewLayer)
     {
-      [v6 addObserver:self forKeyPath:@"videoPreviewLayer.zoomPictureInPictureOverlayRect" options:1 context:CAMPreviewZoomPIPContext];
+      [_captureEngine addObserver:self forKeyPath:@"videoPreviewLayer.zoomPictureInPictureOverlayRect" options:1 context:CAMPreviewZoomPIPContext];
     }
   }
 }
@@ -6279,31 +6279,31 @@ void __68__CUCaptureController__zoomResultChangedForKeyPath_ofObject_change___bl
 - (void)_teardownZoomPIPMonitoring
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isZoomPIPSupported];
+  isZoomPIPSupported = [v3 isZoomPIPSupported];
 
-  if (v4)
+  if (isZoomPIPSupported)
   {
-    v6 = [(CUCaptureController *)self _captureEngine];
-    v5 = [v6 videoPreviewLayer];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    videoPreviewLayer = [_captureEngine videoPreviewLayer];
 
-    if (v5)
+    if (videoPreviewLayer)
     {
-      [v6 removeObserver:self forKeyPath:@"videoPreviewLayer.zoomPictureInPictureOverlayRect" context:CAMPreviewZoomPIPContext];
+      [_captureEngine removeObserver:self forKeyPath:@"videoPreviewLayer.zoomPictureInPictureOverlayRect" context:CAMPreviewZoomPIPContext];
     }
   }
 }
 
-- (void)_zoomPIPChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_zoomPIPChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 videoPreviewLayer];
-  v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  videoPreviewLayer = [objectCopy videoPreviewLayer];
+  v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
   if (v12)
   {
-    v13 = v11 == 0;
+    v13 = videoPreviewLayer == 0;
   }
 
   else
@@ -6313,7 +6313,7 @@ void __68__CUCaptureController__zoomResultChangedForKeyPath_ofObject_change___bl
 
   if (!v13)
   {
-    if ([v8 isEqualToString:@"videoPreviewLayer.zoomPictureInPictureOverlayRect"])
+    if ([pathCopy isEqualToString:@"videoPreviewLayer.zoomPictureInPictureOverlayRect"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -6340,19 +6340,19 @@ void __65__CUCaptureController__zoomPIPChangedForKeyPath_ofObject_change___block
   [v2 captureController:*(a1 + 32) didChangePreviewZoomPIPRect:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (void)changeToPortraitAperture:(double)a3
+- (void)changeToPortraitAperture:(double)aperture
 {
-  v5 = [[CAMPortraitApertureCommand alloc] initWithAperture:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMPortraitApertureCommand alloc] initWithAperture:aperture];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)_handleShallowDepthOfFieldStatusChangedNotification:(id)a3
+- (void)_handleShallowDepthOfFieldStatusChangedNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"AVCaptureDeviceShallowDepthOfFieldStatusChangedKeyEffectStatus"];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"AVCaptureDeviceShallowDepthOfFieldStatusChangedKeyEffectStatus"];
   +[CAMCaptureConversions shallowDepthOfFieldStatusForCaptureStatus:](CAMCaptureConversions, "shallowDepthOfFieldStatusForCaptureStatus:", [v4 integerValue]);
-  v5 = [v3 objectForKeyedSubscript:@"AVCaptureDeviceShallowDepthOfFieldStatusChangedKeyStagePreviewStatus"];
+  v5 = [userInfo objectForKeyedSubscript:@"AVCaptureDeviceShallowDepthOfFieldStatusChangedKeyStagePreviewStatus"];
   +[CAMCaptureConversions stagePreviewStatusForCaptureStatus:](CAMCaptureConversions, "stagePreviewStatusForCaptureStatus:", [v5 integerValue]);
   pl_dispatch_async();
 }
@@ -6363,11 +6363,11 @@ void __75__CUCaptureController__handleShallowDepthOfFieldStatusChangedNotificati
   [v2 captureController:*(a1 + 32) didOutputShallowDepthOfFieldStatus:*(a1 + 40) stagePreviewStatus:*(a1 + 48)];
 }
 
-- (void)changeToPortraitLightingEffectStrength:(double)a3
+- (void)changeToPortraitLightingEffectStrength:(double)strength
 {
-  v5 = [[CAMPortraitLightingEffectStrengthCommand alloc] initWithEffectStrength:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMPortraitLightingEffectStrengthCommand alloc] initWithEffectStrength:strength];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
 - (id)_systemPressureStateMonitoringKeyPaths
@@ -6384,13 +6384,13 @@ void __75__CUCaptureController__handleShallowDepthOfFieldStatusChangedNotificati
   v14 = *MEMORY[0x1E69E9840];
   if ([(CUCaptureController *)self _shouldMonitorSystemPressureState])
   {
-    v3 = [(CUCaptureController *)self _captureEngine];
-    v4 = [(CUCaptureController *)self _systemPressureStateMonitoringKeyPaths];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    _systemPressureStateMonitoringKeyPaths = [(CUCaptureController *)self _systemPressureStateMonitoringKeyPaths];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [_systemPressureStateMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -6402,14 +6402,14 @@ void __75__CUCaptureController__handleShallowDepthOfFieldStatusChangedNotificati
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_systemPressureStateMonitoringKeyPaths);
           }
 
-          [v3 removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMSystemPressureStateMonitoringContext];
+          [_captureEngine removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:CAMSystemPressureStateMonitoringContext];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [_systemPressureStateMonitoringKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -6417,17 +6417,17 @@ void __75__CUCaptureController__handleShallowDepthOfFieldStatusChangedNotificati
   }
 }
 
-- (void)_systemPressureStateMonitoringChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_systemPressureStateMonitoringChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  pathCopy = path;
+  v8 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v8 != v9)
+    if (v8 != null)
     {
-      if ([v7 isEqualToString:@"currentCameraDevice.systemPressureState"])
+      if ([pathCopy isEqualToString:@"currentCameraDevice.systemPressureState"])
       {
         v10 = v8;
         v11[0] = MEMORY[0x1E69E9820];
@@ -6435,7 +6435,7 @@ void __75__CUCaptureController__handleShallowDepthOfFieldStatusChangedNotificati
         v11[2] = __87__CUCaptureController__systemPressureStateMonitoringChangedForKeyPath_ofObject_change___block_invoke;
         v11[3] = &unk_1E76F7960;
         v12 = v10;
-        v13 = self;
+        selfCopy = self;
         cam_perform_on_main_asap(v11);
       }
     }
@@ -6448,80 +6448,80 @@ void __87__CUCaptureController__systemPressureStateMonitoringChangedForKeyPath_o
   [*(a1 + 40) _handleSystemPressureState:v2];
 }
 
-- (void)_handleSystemPressureState:(id)a3
+- (void)_handleSystemPressureState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   v4 = +[CAMCaptureCapabilities capabilities];
   v5 = objc_alloc_init(CAMSystemPressureMitigationCommand);
-  v6 = [(CUCaptureController *)self _captureEngine];
-  [v6 enqueueCommand:v5];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 
   if ([v4 isFrontRearSimultaneousVideoSupported])
   {
-    v7 = [v9 shouldDisablePIPMotionBlur];
-    v8 = [(CUCaptureController *)self _captureEngine];
-    [v8 setMultiCamPictureInPictureMotionBlurDisabled:v7];
+    shouldDisablePIPMotionBlur = [stateCopy shouldDisablePIPMotionBlur];
+    _captureEngine2 = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine2 setMultiCamPictureInPictureMotionBlurDisabled:shouldDisablePIPMotionBlur];
   }
 
-  [(CUCaptureController *)self _setCurrentCameraSystemPressureState:v9];
+  [(CUCaptureController *)self _setCurrentCameraSystemPressureState:stateCopy];
 }
 
-- (void)_setCurrentCameraSystemPressureState:(id)a3
+- (void)_setCurrentCameraSystemPressureState:(id)state
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentCameraSystemPressureState != v5)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (self->_currentCameraSystemPressureState != stateCopy)
   {
-    v8 = v5;
-    v5 = [(CAMSystemPressureState *)v5 isEqual:?];
+    v8 = stateCopy;
+    stateCopy = [(CAMSystemPressureState *)stateCopy isEqual:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((stateCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_currentCameraSystemPressureState, a3);
-      v7 = [(CUCaptureController *)self systemPressureStateDelegate];
-      [v7 captureController:self didChangeCameraSystemPressureState:v8];
+      objc_storeStrong(&self->_currentCameraSystemPressureState, state);
+      systemPressureStateDelegate = [(CUCaptureController *)self systemPressureStateDelegate];
+      [systemPressureStateDelegate captureController:self didChangeCameraSystemPressureState:v8];
 
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](stateCopy, v6);
 }
 
-- (void)changeToAspectRatioCrop:(int64_t)a3
+- (void)changeToAspectRatioCrop:(int64_t)crop
 {
-  v5 = [[CAMNonDestructiveCropAspectRatioCommand alloc] initWithAspectRatioCrop:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMNonDestructiveCropAspectRatioCommand alloc] initWithAspectRatioCrop:crop];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
-- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)a3 restrictedSwitchingConditions:(unint64_t)a4
+- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)behavior restrictedSwitchingConditions:(unint64_t)conditions
 {
-  v6 = [[CAMPrimaryConstituentDeviceSwitchingBehaviorCommand alloc] initWithBehavior:a3 restrictedSwitchingConditions:a4];
-  v5 = [(CUCaptureController *)self _captureEngine];
-  [v5 enqueueCommand:v6];
+  v6 = [[CAMPrimaryConstituentDeviceSwitchingBehaviorCommand alloc] initWithBehavior:behavior restrictedSwitchingConditions:conditions];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v6];
 }
 
-- (void)setFallbackPrimaryConstituentDeviceSelection:(int64_t)a3
+- (void)setFallbackPrimaryConstituentDeviceSelection:(int64_t)selection
 {
-  v5 = [[CAMFallbackPrimaryConstituentDeviceCommand alloc] initWithFallbackPrimaryConstituentDeviceSelection:a3];
-  v4 = [(CUCaptureController *)self _captureEngine];
-  [v4 enqueueCommand:v5];
+  v5 = [[CAMFallbackPrimaryConstituentDeviceCommand alloc] initWithFallbackPrimaryConstituentDeviceSelection:selection];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v5];
 }
 
 - (void)_setupStereoCaptureStatusMonitoring
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isSpatialModeSupported];
+  isSpatialModeSupported = [v3 isSpatialModeSupported];
 
-  if (v4)
+  if (isSpatialModeSupported)
   {
-    v6 = [(CUCaptureController *)self _captureEngine];
-    v5 = [v6 videoPreviewLayer];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    videoPreviewLayer = [_captureEngine videoPreviewLayer];
 
-    if (v5)
+    if (videoPreviewLayer)
     {
-      [v6 addObserver:self forKeyPath:@"currentCameraDevice.stereoCaptureStatus" options:5 context:CAMStereoCaptureStatusContext];
+      [_captureEngine addObserver:self forKeyPath:@"currentCameraDevice.stereoCaptureStatus" options:5 context:CAMStereoCaptureStatusContext];
     }
   }
 }
@@ -6529,25 +6529,25 @@ void __87__CUCaptureController__systemPressureStateMonitoringChangedForKeyPath_o
 - (void)_teardownStereoCaptureStatusMonitoring
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isSpatialModeSupported];
+  isSpatialModeSupported = [v3 isSpatialModeSupported];
 
-  if (v4)
+  if (isSpatialModeSupported)
   {
-    v6 = [(CUCaptureController *)self _captureEngine];
-    v5 = [v6 videoPreviewLayer];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    videoPreviewLayer = [_captureEngine videoPreviewLayer];
 
-    if (v5)
+    if (videoPreviewLayer)
     {
-      [v6 removeObserver:self forKeyPath:@"currentCameraDevice.stereoCaptureStatus" context:CAMStereoCaptureStatusContext];
+      [_captureEngine removeObserver:self forKeyPath:@"currentCameraDevice.stereoCaptureStatus" context:CAMStereoCaptureStatusContext];
     }
   }
 }
 
-- (void)_stereoCaptureStatusChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_stereoCaptureStatusChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v6 = a3;
-  v7 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && [v6 isEqualToString:@"currentCameraDevice.stereoCaptureStatus"])
+  pathCopy = path;
+  v7 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && [pathCopy isEqualToString:@"currentCameraDevice.stereoCaptureStatus"])
   {
     +[CAMCaptureConversions CAMStereoCaptureStatusForAVStereoCaptureStatus:](CAMCaptureConversions, "CAMStereoCaptureStatusForAVStereoCaptureStatus:", [v7 integerValue]);
     pl_dispatch_async();
@@ -6563,16 +6563,16 @@ void __77__CUCaptureController__stereoCaptureStatusChangedForKeyPath_ofObject_ch
 - (void)_setupRecommendedSmartFramingMonitoring
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isSmartFramingSupported];
+  isSmartFramingSupported = [v3 isSmartFramingSupported];
 
-  if (v4)
+  if (isSmartFramingSupported)
   {
-    v6 = [(CUCaptureController *)self _captureEngine];
-    v5 = [v6 videoPreviewLayer];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    videoPreviewLayer = [_captureEngine videoPreviewLayer];
 
-    if (v5)
+    if (videoPreviewLayer)
     {
-      [v6 addObserver:self forKeyPath:@"currentCameraDevice.smartFramingMonitor.recommendedFraming" options:5 context:CAMRecommendedFramingContext];
+      [_captureEngine addObserver:self forKeyPath:@"currentCameraDevice.smartFramingMonitor.recommendedFraming" options:5 context:CAMRecommendedFramingContext];
     }
   }
 }
@@ -6580,29 +6580,29 @@ void __77__CUCaptureController__stereoCaptureStatusChangedForKeyPath_ofObject_ch
 - (void)_teardownRecommendedSmartFramingMonitoring
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isSmartFramingSupported];
+  isSmartFramingSupported = [v3 isSmartFramingSupported];
 
-  if (v4)
+  if (isSmartFramingSupported)
   {
-    v6 = [(CUCaptureController *)self _captureEngine];
-    v5 = [v6 videoPreviewLayer];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    videoPreviewLayer = [_captureEngine videoPreviewLayer];
 
-    if (v5)
+    if (videoPreviewLayer)
     {
-      [v6 removeObserver:self forKeyPath:@"currentCameraDevice.smartFramingMonitor.recommendedFraming" context:CAMRecommendedFramingContext];
+      [_captureEngine removeObserver:self forKeyPath:@"currentCameraDevice.smartFramingMonitor.recommendedFraming" context:CAMRecommendedFramingContext];
     }
   }
 }
 
-- (void)_recommendedSmartFramingChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_recommendedSmartFramingChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  pathCopy = path;
+  v7 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
-    if (v7 == v8 || ([v6 isEqualToString:@"currentCameraDevice.smartFramingMonitor.recommendedFraming"] & 1) == 0)
+    null = [MEMORY[0x1E695DFB0] null];
+    if (v7 == null || ([pathCopy isEqualToString:@"currentCameraDevice.smartFramingMonitor.recommendedFraming"] & 1) == 0)
     {
 LABEL_8:
 
@@ -6614,16 +6614,16 @@ LABEL_8:
 
     if (isKindOfClass)
     {
-      v8 = v7;
+      null = v7;
       v10 = os_log_create("com.apple.camera", "SmartFraming");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v12 = v8;
+        v12 = null;
         _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "Received new smartFramingMonitor recommendation: %@", buf, 0xCu);
       }
 
-      [CAMCaptureConversions CAMCaptureSmartFramingFieldOfViewForAVCaptureFraming:v8];
+      [CAMCaptureConversions CAMCaptureSmartFramingFieldOfViewForAVCaptureFraming:null];
       pl_dispatch_async();
       goto LABEL_8;
     }
@@ -6638,16 +6638,16 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
   [v2 captureController:*(a1 + 32) didOutputRecommendedSmartFramingFieldOfView:*(a1 + 40)];
 }
 
-- (void)_setupKVOMonitoringForKeyPaths:(id)a3 context:(void *)a4 options:(unint64_t)a5
+- (void)_setupKVOMonitoringForKeyPaths:(id)paths context:(void *)context options:(unint64_t)options
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(CUCaptureController *)self _captureEngine];
+  pathsCopy = paths;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = v8;
+  v10 = pathsCopy;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
@@ -6663,7 +6663,7 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
           objc_enumerationMutation(v10);
         }
 
-        [v9 addObserver:self forKeyPath:*(*(&v15 + 1) + 8 * v14++) options:a5 context:{a4, v15}];
+        [_captureEngine addObserver:self forKeyPath:*(*(&v15 + 1) + 8 * v14++) options:options context:{context, v15}];
       }
 
       while (v12 != v14);
@@ -6674,16 +6674,16 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
   }
 }
 
-- (void)_teardownKVOMonitoringForKeyPaths:(id)a3 context:(void *)a4
+- (void)_teardownKVOMonitoringForKeyPaths:(id)paths context:(void *)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CUCaptureController *)self _captureEngine];
+  pathsCopy = paths;
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v6;
+  v8 = pathsCopy;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -6699,7 +6699,7 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
           objc_enumerationMutation(v8);
         }
 
-        [v7 removeObserver:self forKeyPath:*(*(&v13 + 1) + 8 * v12++) context:{a4, v13}];
+        [_captureEngine removeObserver:self forKeyPath:*(*(&v13 + 1) + 8 * v12++) context:{context, v13}];
       }
 
       while (v10 != v12);
@@ -6710,125 +6710,125 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (CAMFocusResultContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (CAMFocusResultContext == context)
   {
-    [(CUCaptureController *)self _focusResultChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _focusResultChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMExposureResultContext == a6)
+  else if (CAMExposureResultContext == context)
   {
-    [(CUCaptureController *)self _exposureResultChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _exposureResultChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMSuggestionResultContext == a6)
+  else if (CAMSuggestionResultContext == context)
   {
-    [(CUCaptureController *)self _suggestionResultChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _suggestionResultChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMAvailabilityResultContext == a6)
+  else if (CAMAvailabilityResultContext == context)
   {
-    [(CUCaptureController *)self _availabilityResultChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _availabilityResultChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMZoomResultContext == a6)
+  else if (CAMZoomResultContext == context)
   {
-    [(CUCaptureController *)self _zoomResultChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _zoomResultChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMSystemPressureStateMonitoringContext == a6)
+  else if (CAMSystemPressureStateMonitoringContext == context)
   {
-    [(CUCaptureController *)self _systemPressureStateMonitoringChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _systemPressureStateMonitoringChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMOverCapturePreviewContext == a6)
+  else if (CAMOverCapturePreviewContext == context)
   {
-    [(CUCaptureController *)self _overCapturePreviewStatusChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _overCapturePreviewStatusChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMPreviewZoomPIPContext == a6)
+  else if (CAMPreviewZoomPIPContext == context)
   {
-    [(CUCaptureController *)self _zoomPIPChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _zoomPIPChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMStereoCaptureStatusContext == a6)
+  else if (CAMStereoCaptureStatusContext == context)
   {
-    [(CUCaptureController *)self _stereoCaptureStatusChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _stereoCaptureStatusChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMDocumentScanningResultsContext == a6)
+  else if (CAMDocumentScanningResultsContext == context)
   {
-    [(CUCaptureController *)self _documentScanningChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _documentScanningChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMLensPositionContext == a6)
+  else if (CAMLensPositionContext == context)
   {
-    [(CUCaptureController *)self _lensPositionChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _lensPositionChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMSmudgeDetectionResultContext == a6)
+  else if (CAMSmudgeDetectionResultContext == context)
   {
-    [(CUCaptureController *)self _cameraLensSmudgeDetectionStatusChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _cameraLensSmudgeDetectionStatusChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
-  else if (CAMRecommendedFramingContext == a6)
+  else if (CAMRecommendedFramingContext == context)
   {
-    [(CUCaptureController *)self _recommendedSmartFramingChangedForKeyPath:v10 ofObject:v11 change:v12];
+    [(CUCaptureController *)self _recommendedSmartFramingChangedForKeyPath:pathCopy ofObject:objectCopy change:changeCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CUCaptureController;
-    [(CUCaptureController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CUCaptureController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_startCaptureSignpostIntervalForPersistenceUUID:(id)a3
+- (void)_startCaptureSignpostIntervalForPersistenceUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(CUCaptureController *)self _persistenceUUIDToSignpostID];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    _persistenceUUIDToSignpostID = [(CUCaptureController *)self _persistenceUUIDToSignpostID];
+    v6 = [_persistenceUUIDToSignpostID objectForKeyedSubscript:dCopy];
 
     if (!v6)
     {
-      v7 = [(CUCaptureController *)self _nextSignpostID];
-      [(CUCaptureController *)self _setNextSignpostID:v7 + 1];
-      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-      [v5 setObject:v8 forKeyedSubscript:v4];
+      _nextSignpostID = [(CUCaptureController *)self _nextSignpostID];
+      [(CUCaptureController *)self _setNextSignpostID:_nextSignpostID + 1];
+      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:_nextSignpostID];
+      [_persistenceUUIDToSignpostID setObject:v8 forKeyedSubscript:dCopy];
 
-      CAMSignpostWithIDAndArgs(66, v7, v7, 0, 0, 0);
+      CAMSignpostWithIDAndArgs(66, _nextSignpostID, _nextSignpostID, 0, 0, 0);
     }
   }
 
   else
   {
-    v5 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _persistenceUUIDToSignpostID = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_persistenceUUIDToSignpostID, OS_LOG_TYPE_ERROR))
     {
       [CUCaptureController _startCaptureSignpostIntervalForPersistenceUUID:];
     }
   }
 }
 
-- (void)_endCaptureSignpostIntervalForPersistenceUUID:(id)a3
+- (void)_endCaptureSignpostIntervalForPersistenceUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(CUCaptureController *)self _persistenceUUIDToSignpostID];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    _persistenceUUIDToSignpostID = [(CUCaptureController *)self _persistenceUUIDToSignpostID];
+    v6 = [_persistenceUUIDToSignpostID objectForKeyedSubscript:dCopy];
     if (v6)
     {
-      [v5 setObject:0 forKeyedSubscript:v4];
-      v7 = [v6 unsignedIntegerValue];
-      CAMSignpostWithIDAndArgs(67, v7, v7, 0, 0, 0);
+      [_persistenceUUIDToSignpostID setObject:0 forKeyedSubscript:dCopy];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
+      CAMSignpostWithIDAndArgs(67, unsignedIntegerValue, unsignedIntegerValue, 0, 0, 0);
     }
 
     else
@@ -6843,8 +6843,8 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
 
   else
   {
-    v5 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _persistenceUUIDToSignpostID = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_persistenceUUIDToSignpostID, OS_LOG_TYPE_ERROR))
     {
       [CUCaptureController _startCaptureSignpostIntervalForPersistenceUUID:];
     }
@@ -6856,8 +6856,8 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
   v4 = +[CAMCaptureCapabilities capabilities];
   if ([v4 isDocumentScanningSupported])
   {
-    v3 = [(CUCaptureController *)self _captureEngine];
-    [v3 addObserver:self forKeyPath:@"currentCameraDevice.documentSceneConfidence" options:3 context:CAMDocumentScanningResultsContext];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine addObserver:self forKeyPath:@"currentCameraDevice.documentSceneConfidence" options:3 context:CAMDocumentScanningResultsContext];
   }
 }
 
@@ -6866,14 +6866,14 @@ void __81__CUCaptureController__recommendedSmartFramingChangedForKeyPath_ofObjec
   v4 = +[CAMCaptureCapabilities capabilities];
   if ([v4 isDocumentScanningSupported])
   {
-    v3 = [(CUCaptureController *)self _captureEngine];
-    [v3 removeObserver:self forKeyPath:@"currentCameraDevice.documentSceneConfidence" context:CAMDocumentScanningResultsContext];
+    _captureEngine = [(CUCaptureController *)self _captureEngine];
+    [_captureEngine removeObserver:self forKeyPath:@"currentCameraDevice.documentSceneConfidence" context:CAMDocumentScanningResultsContext];
   }
 }
 
-- (void)_documentScanningChangedForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5
+- (void)_documentScanningChangedForKeyPath:(id)path ofObject:(id)object change:(id)change
 {
-  v6 = [a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], a4}];
+  v6 = [change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], object}];
   v7 = objc_opt_respondsToSelector();
   v8 = 0;
   if (v7)
@@ -6897,17 +6897,17 @@ void __74__CUCaptureController__documentScanningChangedForKeyPath_ofObject_chang
   [v3 captureController:*(a1 + 32) didChangeDocumentSceneConfidenceResults:v2];
 }
 
-- (void)updateCaptureButtonControlsForCaptureMode:(int64_t)a3 devicePosition:(int64_t)a4 isRecording:(BOOL)a5 depthSuggestionEnabled:(BOOL)a6
+- (void)updateCaptureButtonControlsForCaptureMode:(int64_t)mode devicePosition:(int64_t)position isRecording:(BOOL)recording depthSuggestionEnabled:(BOOL)enabled
 {
-  v8 = [[CAMUpdateCaptureButtonControlsCommand alloc] initWithRecording:a5 captureMode:a3 devicePosition:a4 depthSuggestionEnabled:a6];
-  v7 = [(CUCaptureController *)self _captureEngine];
-  [v7 enqueueCommand:v8];
+  v8 = [[CAMUpdateCaptureButtonControlsCommand alloc] initWithRecording:recording captureMode:mode devicePosition:position depthSuggestionEnabled:enabled];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine enqueueCommand:v8];
 }
 
 - (void)stopMonitoringForAccidentalLaunch
 {
-  v2 = [(CUCaptureController *)self _captureEngine];
-  [v2 stopMonitoringForAccidentalLaunch];
+  _captureEngine = [(CUCaptureController *)self _captureEngine];
+  [_captureEngine stopMonitoringForAccidentalLaunch];
 }
 
 - (BOOL)_shouldPlaySystemSound

@@ -1,25 +1,25 @@
 @interface ANRemotePlaybackSessionServiceClientInterfaceProxy
 - (ANRemotePlaybackSessionServiceClientInterface)delegate;
-- (void)didReceiveAnnouncement:(id)a3 forGroupID:(id)a4;
-- (void)didUpdateAnnouncements:(id)a3 forGroupID:(id)a4;
+- (void)didReceiveAnnouncement:(id)announcement forGroupID:(id)d;
+- (void)didUpdateAnnouncements:(id)announcements forGroupID:(id)d;
 @end
 
 @implementation ANRemotePlaybackSessionServiceClientInterfaceProxy
 
-- (void)didUpdateAnnouncements:(id)a3 forGroupID:(id)a4
+- (void)didUpdateAnnouncements:(id)announcements forGroupID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ANRemotePlaybackSessionServiceClientInterfaceProxy *)self delegate];
-  [v8 didUpdateAnnouncements:v7 forGroupID:v6];
+  dCopy = d;
+  announcementsCopy = announcements;
+  delegate = [(ANRemotePlaybackSessionServiceClientInterfaceProxy *)self delegate];
+  [delegate didUpdateAnnouncements:announcementsCopy forGroupID:dCopy];
 }
 
-- (void)didReceiveAnnouncement:(id)a3 forGroupID:(id)a4
+- (void)didReceiveAnnouncement:(id)announcement forGroupID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ANRemotePlaybackSessionServiceClientInterfaceProxy *)self delegate];
-  [v8 didReceiveAnnouncement:v7 forGroupID:v6];
+  dCopy = d;
+  announcementCopy = announcement;
+  delegate = [(ANRemotePlaybackSessionServiceClientInterfaceProxy *)self delegate];
+  [delegate didReceiveAnnouncement:announcementCopy forGroupID:dCopy];
 }
 
 - (ANRemotePlaybackSessionServiceClientInterface)delegate

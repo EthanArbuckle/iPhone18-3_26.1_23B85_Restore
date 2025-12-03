@@ -1,15 +1,15 @@
 @interface WebPageWebView
 - (BOOL)supportsTextReplacement;
 - (NSString)_nameForVisualIdentificationOverlay;
-- (_TtC6WebKit14WebPageWebView)initWithCoder:(id)a3;
-- (_TtC6WebKit14WebPageWebView)initWithFrame:(CGRect)a3 configuration:(id)a4;
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4;
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4;
+- (_TtC6WebKit14WebPageWebView)initWithCoder:(id)coder;
+- (_TtC6WebKit14WebPageWebView)initWithFrame:(CGRect)frame configuration:(id)configuration;
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session;
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session;
 @end
 
 @implementation WebPageWebView
 
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session
 {
   ObjectType = swift_getObjectType();
   sub_19E6CD5B8();
@@ -22,17 +22,17 @@
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  [(WKWebView *)&v14 findInteraction:v8 didBeginFindSession:v9];
-  v11 = v10 + OBJC_IVAR____TtC6WebKit14WebPageWebView_delegate;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  selfCopy = self;
+  [(WKWebView *)&v14 findInteraction:interactionCopy didBeginFindSession:sessionCopy];
+  v11 = selfCopy + OBJC_IVAR____TtC6WebKit14WebPageWebView_delegate;
   swift_beginAccess();
   if (swift_unknownObjectWeakLoadStrong())
   {
     v12 = *(v11 + 1);
     v13 = swift_getObjectType();
-    (*(v12 + 8))(v8, v9, v13, v12);
+    (*(v12 + 8))(interactionCopy, sessionCopy, v13, v12);
 
     swift_unknownObjectRelease();
   }
@@ -42,7 +42,7 @@
   }
 }
 
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session
 {
   ObjectType = swift_getObjectType();
   sub_19E6CD5B8();
@@ -55,17 +55,17 @@
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  [(WKWebView *)&v14 findInteraction:v8 didEndFindSession:v9];
-  v11 = v10 + OBJC_IVAR____TtC6WebKit14WebPageWebView_delegate;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  selfCopy = self;
+  [(WKWebView *)&v14 findInteraction:interactionCopy didEndFindSession:sessionCopy];
+  v11 = selfCopy + OBJC_IVAR____TtC6WebKit14WebPageWebView_delegate;
   swift_beginAccess();
   if (swift_unknownObjectWeakLoadStrong())
   {
     v12 = *(v11 + 1);
     v13 = swift_getObjectType();
-    (*(v12 + 16))(v8, v9, v13, v12);
+    (*(v12 + 16))(interactionCopy, sessionCopy, v13, v12);
 
     swift_unknownObjectRelease();
   }
@@ -93,11 +93,11 @@
     v5 = *(v4 + 1);
     v10.receiver = self;
     v10.super_class = ObjectType;
-    v6 = self;
+    selfCopy = self;
     if ([(WKWebView *)&v10 supportsTextReplacement])
     {
       v7 = swift_getObjectType();
-      v8 = (*(v5 + 24))(v7, v5);
+      supportsTextReplacement = (*(v5 + 24))(v7, v5);
 
       swift_unknownObjectRelease();
     }
@@ -107,7 +107,7 @@
 
       swift_unknownObjectRelease();
 
-      v8 = 0;
+      supportsTextReplacement = 0;
     }
   }
 
@@ -115,18 +115,18 @@
   {
     v11.receiver = self;
     v11.super_class = ObjectType;
-    v8 = [(WKWebView *)&v11 supportsTextReplacement];
+    supportsTextReplacement = [(WKWebView *)&v11 supportsTextReplacement];
   }
 
-  return v8 & 1;
+  return supportsTextReplacement & 1;
 }
 
-- (_TtC6WebKit14WebPageWebView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (_TtC6WebKit14WebPageWebView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -140,12 +140,12 @@
   swift_unknownObjectWeakInit();
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = [(WKWebView *)&v13 initWithFrame:a4 configuration:x, y, width, height];
+  height = [(WKWebView *)&v13 initWithFrame:configuration configuration:x, y, width, height];
 
-  return v11;
+  return height;
 }
 
-- (_TtC6WebKit14WebPageWebView)initWithCoder:(id)a3
+- (_TtC6WebKit14WebPageWebView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_19E6CD5B8();
@@ -160,8 +160,8 @@
   swift_unknownObjectWeakInit();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(WKWebView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(WKWebView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

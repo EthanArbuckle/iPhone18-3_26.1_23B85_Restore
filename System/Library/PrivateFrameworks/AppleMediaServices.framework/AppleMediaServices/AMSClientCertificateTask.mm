@@ -1,19 +1,19 @@
 @interface AMSClientCertificateTask
-- (AMSClientCertificateTask)initWithOptions:(id)a3;
-- (id)performClientCertChainRequestWithAccount:(id)a3;
+- (AMSClientCertificateTask)initWithOptions:(id)options;
+- (id)performClientCertChainRequestWithAccount:(id)account;
 @end
 
 @implementation AMSClientCertificateTask
 
-- (AMSClientCertificateTask)initWithOptions:(id)a3
+- (AMSClientCertificateTask)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = AMSClientCertificateTask;
   v5 = [(AMSTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
   }
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (id)performClientCertChainRequestWithAccount:(id)a3
+- (id)performClientCertChainRequestWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[AMSProcessInfo currentProcess];
-  v6 = [v5 isAMSAccountsDaemon];
+  isAMSAccountsDaemon = [v5 isAMSAccountsDaemon];
 
   v21 = 0;
   v22 = &v21;
@@ -33,7 +33,7 @@
   v24 = __Block_byref_object_copy__16;
   v25 = __Block_byref_object_dispose__16;
   v26 = 0;
-  if (!v6 || (v7 = NSClassFromString(&cfstr_Amsdsecurityse.isa)) == 0 || (v8 = objc_alloc_init(v7), [AMSPromise promiseWithResult:v8], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if (!isAMSAccountsDaemon || (v7 = NSClassFromString(&cfstr_Amsdsecurityse.isa)) == 0 || (v8 = objc_alloc_init(v7), [AMSPromise promiseWithResult:v8], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
     v10 = objc_alloc_init(AMSDaemonConnection);
     v11 = v22[5];
@@ -46,9 +46,9 @@
   v18[1] = 3221225472;
   v18[2] = __69__AMSClientCertificateTask_performClientCertChainRequestWithAccount___block_invoke;
   v18[3] = &unk_1E73B5E50;
-  v12 = v4;
+  v12 = accountCopy;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v13 = [v9 thenWithBlock:v18];
   v14 = v13;
   if (v22[5])

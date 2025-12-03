@@ -6,23 +6,23 @@
 
 - (void)commonInit
 {
-  v3 = [(ENUIRegionalDetailsHeaderCell *)self specifier];
-  v4 = [v3 userInfo];
+  specifier = [(ENUIRegionalDetailsHeaderCell *)self specifier];
+  userInfo = [specifier userInfo];
 
-  v5 = [v4 supportsFeatures:32];
+  v5 = [userInfo supportsFeatures:32];
   v6 = [_TtC28HealthExposureNotificationUI20OnboardingHeaderView alloc];
-  v7 = [v4 header];
-  v8 = [v6 initWithHeader:v7 insets:v5 proxyDisabled:0 corners:{16.0, 16.0, 16.0, 16.0}];
+  header = [userInfo header];
+  v8 = [v6 initWithHeader:header insets:v5 proxyDisabled:0 corners:{16.0, 16.0, 16.0, 16.0}];
   [(ENUIRegionalDetailsHeaderCell *)self setHeaderView:v8];
 
-  v9 = [v4 header];
-  v10 = [v9 backgroundColor];
+  header2 = [userInfo header];
+  backgroundColor = [header2 backgroundColor];
   v11 = +[UIColor systemBackgroundColor];
   v113 = 0.0;
   v114 = 0.0;
   v111 = 0.0;
   v112 = 0.0;
-  if (![v10 getRed:&v114 green:&v113 blue:&v112 alpha:&v111])
+  if (![backgroundColor getRed:&v114 green:&v113 blue:&v112 alpha:&v111])
   {
 
     v102 = 0;
@@ -43,12 +43,12 @@
     [v13 setBackgroundColor:v14];
 
     v15 = +[UIColor clearColor];
-    v16 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
-    [v16 setBackgroundColor:v15];
+    headerView = [(ENUIRegionalDetailsHeaderCell *)self headerView];
+    [headerView setBackgroundColor:v15];
 
-    v9 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+    header2 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
     v102 = v13;
-    [v9 addSubview:v13];
+    [header2 addSubview:v13];
 LABEL_10:
 
     goto LABEL_12;
@@ -66,39 +66,39 @@ LABEL_12:
 
   v99 = v20;
   v21 = [UIFont fontWithDescriptor:v20 size:0.0];
-  v22 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  [v22 setFont:v21];
+  subtitleText = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  [subtitleText setFont:v21];
 
-  v100 = v4;
-  v23 = [v4 introductoryText];
-  v24 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  [v24 setText:v23];
+  v100 = userInfo;
+  introductoryText = [userInfo introductoryText];
+  subtitleText2 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  [subtitleText2 setText:introductoryText];
 
-  v25 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  v26 = [v25 textContainer];
-  [v26 setLineFragmentPadding:0.0];
+  subtitleText3 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  textContainer = [subtitleText3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   v27 = +[UIColor clearColor];
-  v28 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  [v28 setBackgroundColor:v27];
+  subtitleText4 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  [subtitleText4 setBackgroundColor:v27];
 
-  v29 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  [v29 setEditable:0];
+  subtitleText5 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  [subtitleText5 setEditable:0];
 
-  v30 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  [v30 setScrollingEnabled:0];
+  subtitleText6 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  [subtitleText6 setScrollingEnabled:0];
 
-  v31 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  [v31 setDataDetectorTypes:3];
+  subtitleText7 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  [subtitleText7 setDataDetectorTypes:3];
 
   v105 = 0u;
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v32 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
-  v118[0] = v32;
-  v33 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  v118[1] = v33;
+  headerView2 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
+  v118[0] = headerView2;
+  subtitleText8 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  v118[1] = subtitleText8;
   v34 = [NSArray arrayWithObjects:v118 count:2];
 
   v35 = [v34 countByEnumeratingWithState:&v103 objects:v119 count:16];
@@ -117,8 +117,8 @@ LABEL_12:
 
         v39 = *(*(&v103 + 1) + 8 * i);
         [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v40 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-        [v40 addSubview:v39];
+        contentView = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+        [contentView addSubview:v39];
       }
 
       v36 = [v34 countByEnumeratingWithState:&v103 objects:v119 count:16];
@@ -128,83 +128,83 @@ LABEL_12:
   }
 
   v101 = +[NSMutableArray array];
-  v96 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
-  v90 = [v96 leadingAnchor];
-  v93 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-  v87 = [v93 leadingAnchor];
-  v84 = [v90 constraintEqualToAnchor:v87];
+  headerView3 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
+  leadingAnchor = [headerView3 leadingAnchor];
+  contentView2 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v84 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v117[0] = v84;
-  v81 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
-  v78 = [v81 trailingAnchor];
-  v41 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-  v42 = [v41 trailingAnchor];
-  v43 = [v78 constraintEqualToAnchor:v42];
+  headerView4 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
+  trailingAnchor = [headerView4 trailingAnchor];
+  contentView3 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v117[1] = v43;
-  v44 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
-  v45 = [v44 topAnchor];
-  v46 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-  v47 = [v46 topAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
+  headerView5 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
+  topAnchor = [headerView5 topAnchor];
+  contentView4 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v117[2] = v48;
   v49 = [NSArray arrayWithObjects:v117 count:3];
   [v101 addObjectsFromArray:v49];
 
-  v50 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
+  headerView6 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
   if (v102)
   {
     v51 = v102;
 
-    v94 = [v51 topAnchor];
-    v97 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
-    v91 = [v97 bottomAnchor];
-    v88 = [v94 constraintEqualToAnchor:v91 constant:4.0];
+    topAnchor3 = [v51 topAnchor];
+    headerView7 = [(ENUIRegionalDetailsHeaderCell *)self headerView];
+    bottomAnchor = [headerView7 bottomAnchor];
+    v88 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:4.0];
     v116[0] = v88;
-    v82 = [v51 heightAnchor];
+    heightAnchor = [v51 heightAnchor];
     v85 = +[UIScreen mainScreen];
     [v85 scale];
-    v79 = [v82 constraintEqualToConstant:1.0 / v52];
+    v79 = [heightAnchor constraintEqualToConstant:1.0 / v52];
     v116[1] = v79;
-    v76 = [v51 leadingAnchor];
-    v53 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-    v54 = [v53 leadingAnchor];
-    v55 = [v76 constraintEqualToAnchor:v54];
+    leadingAnchor3 = [v51 leadingAnchor];
+    contentView5 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+    leadingAnchor4 = [contentView5 leadingAnchor];
+    v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v116[2] = v55;
-    v56 = [v51 trailingAnchor];
-    v57 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-    v58 = [v57 trailingAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58];
+    trailingAnchor3 = [v51 trailingAnchor];
+    contentView6 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+    trailingAnchor4 = [contentView6 trailingAnchor];
+    v59 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v116[3] = v59;
     v60 = [NSArray arrayWithObjects:v116 count:4];
     [v101 addObjectsFromArray:v60];
 
-    v50 = v51;
+    headerView6 = v51;
   }
 
-  v75 = v50;
-  v98 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  v95 = [v98 topAnchor];
-  v92 = [v50 bottomAnchor];
-  v89 = [v95 constraintEqualToAnchor:v92 constant:16.0];
+  v75 = headerView6;
+  subtitleText9 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  topAnchor4 = [subtitleText9 topAnchor];
+  bottomAnchor2 = [headerView6 bottomAnchor];
+  v89 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:16.0];
   v115[0] = v89;
-  v86 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  v80 = [v86 leadingAnchor];
-  v83 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-  v77 = [v83 layoutMarginsGuide];
-  v74 = [v77 leadingAnchor];
-  v73 = [v80 constraintEqualToAnchor:v74];
+  subtitleText10 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  leadingAnchor5 = [subtitleText10 leadingAnchor];
+  contentView7 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+  layoutMarginsGuide = [contentView7 layoutMarginsGuide];
+  leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+  v73 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v115[1] = v73;
-  v72 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  v70 = [v72 trailingAnchor];
-  v71 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-  v61 = [v71 layoutMarginsGuide];
-  v62 = [v61 trailingAnchor];
-  v63 = [v70 constraintEqualToAnchor:v62];
+  subtitleText11 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  trailingAnchor5 = [subtitleText11 trailingAnchor];
+  contentView8 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+  layoutMarginsGuide2 = [contentView8 layoutMarginsGuide];
+  trailingAnchor6 = [layoutMarginsGuide2 trailingAnchor];
+  v63 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v115[2] = v63;
-  v64 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
-  v65 = [v64 bottomAnchor];
-  v66 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
-  v67 = [v66 bottomAnchor];
-  v68 = [v65 constraintEqualToAnchor:v67 constant:-16.0];
+  subtitleText12 = [(ENUIRegionalDetailsHeaderCell *)self subtitleText];
+  bottomAnchor3 = [subtitleText12 bottomAnchor];
+  contentView9 = [(ENUIRegionalDetailsHeaderCell *)self contentView];
+  bottomAnchor4 = [contentView9 bottomAnchor];
+  v68 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-16.0];
   v115[3] = v68;
   v69 = [NSArray arrayWithObjects:v115 count:4];
   [v101 addObjectsFromArray:v69];

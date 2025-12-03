@@ -1,14 +1,14 @@
 @interface MPSNDArrayStitchedReductionSoftmax
-- (MPSNDArrayStitchedReductionSoftmax)initWithDevice:(id)a3 axis:(unint64_t)a4;
+- (MPSNDArrayStitchedReductionSoftmax)initWithDevice:(id)device axis:(unint64_t)axis;
 @end
 
 @implementation MPSNDArrayStitchedReductionSoftmax
 
-- (MPSNDArrayStitchedReductionSoftmax)initWithDevice:(id)a3 axis:(unint64_t)a4
+- (MPSNDArrayStitchedReductionSoftmax)initWithDevice:(id)device axis:(unint64_t)axis
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayStitchedReductionSoftmax;
-  return [(MPSNDArrayStitchedReduction *)&v5 initWithDevice:a3 axis:a4 descriptor:[[MPSNDArrayStitchedReductionDescriptor alloc] initWithStateSize:8 invariantValueFn:&__block_literal_global_1 mapFn:&__block_literal_global_38 reduceFn:&__block_literal_global_40 writeFn:&__block_literal_global_43]];
+  return [(MPSNDArrayStitchedReduction *)&v5 initWithDevice:device axis:axis descriptor:[[MPSNDArrayStitchedReductionDescriptor alloc] initWithStateSize:8 invariantValueFn:&__block_literal_global_1 mapFn:&__block_literal_global_38 reduceFn:&__block_literal_global_40 writeFn:&__block_literal_global_43]];
 }
 
 uint64_t __58__MPSNDArrayStitchedReductionSoftmax_initWithDevice_axis___block_invoke(int a1, MPSKernelUserDAG *this)

@@ -1,18 +1,18 @@
 @interface RTMotionActivityManagerNotificationMotionSettledStateChange
-- (RTMotionActivityManagerNotificationMotionSettledStateChange)initWithSettledState:(unint64_t)a3;
+- (RTMotionActivityManagerNotificationMotionSettledStateChange)initWithSettledState:(unint64_t)state;
 - (id)description;
 @end
 
 @implementation RTMotionActivityManagerNotificationMotionSettledStateChange
 
-- (RTMotionActivityManagerNotificationMotionSettledStateChange)initWithSettledState:(unint64_t)a3
+- (RTMotionActivityManagerNotificationMotionSettledStateChange)initWithSettledState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = RTMotionActivityManagerNotificationMotionSettledStateChange;
   result = [(RTNotification *)&v5 init];
   if (result)
   {
-    result->_settledState = a3;
+    result->_settledState = state;
   }
 
   return result;

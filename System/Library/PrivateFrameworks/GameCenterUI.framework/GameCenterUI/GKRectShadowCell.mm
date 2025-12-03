@@ -1,7 +1,7 @@
 @interface GKRectShadowCell
 - (void)awakeFromNib;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation GKRectShadowCell
@@ -14,53 +14,53 @@
   [(GKRectShadowCell *)self setClipsToBounds:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = GKRectShadowCell;
   [(GKRectShadowCell *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
-    v5 = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
+    _gkSelectedCellBackgroundColor = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
 
   else
   {
-    v5 = 0;
+    _gkSelectedCellBackgroundColor = 0;
   }
 
-  v6 = [(GKRectShadowCell *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView = [(GKRectShadowCell *)self contentView];
+  [contentView setBackgroundColor:_gkSelectedCellBackgroundColor];
 
-  if (v3)
+  if (highlightedCopy)
   {
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = GKRectShadowCell;
   [(GKRectShadowCell *)&v8 setSelected:?];
-  v5 = [(GKRectShadowCell *)self layer];
-  [v5 setBackgroundColor:0];
+  layer = [(GKRectShadowCell *)self layer];
+  [layer setBackgroundColor:0];
 
-  if (v3)
+  if (selectedCopy)
   {
-    v6 = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
+    _gkSelectedCellBackgroundColor = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
 
   else
   {
-    v6 = 0;
+    _gkSelectedCellBackgroundColor = 0;
   }
 
-  v7 = [(GKRectShadowCell *)self contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [(GKRectShadowCell *)self contentView];
+  [contentView setBackgroundColor:_gkSelectedCellBackgroundColor];
 
-  if (v3)
+  if (selectedCopy)
   {
   }
 }

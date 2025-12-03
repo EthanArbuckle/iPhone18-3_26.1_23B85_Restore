@@ -1,62 +1,62 @@
 @interface MapViewRestoreProperties
-- (id)initFromMapView:(id)a3;
-- (void)applyToMapView:(id)a3 animated:(BOOL)a4;
+- (id)initFromMapView:(id)view;
+- (void)applyToMapView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation MapViewRestoreProperties
 
-- (void)applyToMapView:(id)a3 animated:(BOOL)a4
+- (void)applyToMapView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(MapViewRestoreProperties *)self preferredConfiguration];
-  [v9 setPreferredConfiguration:v6];
+  animatedCopy = animated;
+  viewCopy = view;
+  preferredConfiguration = [(MapViewRestoreProperties *)self preferredConfiguration];
+  [viewCopy setPreferredConfiguration:preferredConfiguration];
 
-  v7 = [(MapViewRestoreProperties *)self cameraZoomRange];
-  [v9 setCameraZoomRange:v7 animated:v4];
+  cameraZoomRange = [(MapViewRestoreProperties *)self cameraZoomRange];
+  [viewCopy setCameraZoomRange:cameraZoomRange animated:animatedCopy];
 
-  [v9 setZoomEnabled:{-[MapViewRestoreProperties isZoomEnabled](self, "isZoomEnabled")}];
-  [v9 setScrollEnabled:{-[MapViewRestoreProperties isScrollEnabled](self, "isScrollEnabled")}];
-  [v9 setRotateEnabled:{-[MapViewRestoreProperties isRotateEnabled](self, "isRotateEnabled")}];
-  [v9 setPitchEnabled:{-[MapViewRestoreProperties isPitchEnabled](self, "isPitchEnabled")}];
-  v8 = [(MapViewRestoreProperties *)self camera];
-  [v9 setCamera:v8 animated:v4];
+  [viewCopy setZoomEnabled:{-[MapViewRestoreProperties isZoomEnabled](self, "isZoomEnabled")}];
+  [viewCopy setScrollEnabled:{-[MapViewRestoreProperties isScrollEnabled](self, "isScrollEnabled")}];
+  [viewCopy setRotateEnabled:{-[MapViewRestoreProperties isRotateEnabled](self, "isRotateEnabled")}];
+  [viewCopy setPitchEnabled:{-[MapViewRestoreProperties isPitchEnabled](self, "isPitchEnabled")}];
+  camera = [(MapViewRestoreProperties *)self camera];
+  [viewCopy setCamera:camera animated:animatedCopy];
 
-  [v9 setUserTrackingMode:-[MapViewRestoreProperties userTrackingMode](self animated:{"userTrackingMode"), v4}];
-  [v9 _setOfflineRegionVisibility:{-[MapViewRestoreProperties offlineRegionVisibility](self, "offlineRegionVisibility")}];
-  [v9 _setApplicationState:self->_applicationState];
+  [viewCopy setUserTrackingMode:-[MapViewRestoreProperties userTrackingMode](self animated:{"userTrackingMode"), animatedCopy}];
+  [viewCopy _setOfflineRegionVisibility:{-[MapViewRestoreProperties offlineRegionVisibility](self, "offlineRegionVisibility")}];
+  [viewCopy _setApplicationState:self->_applicationState];
 }
 
-- (id)initFromMapView:(id)a3
+- (id)initFromMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = MapViewRestoreProperties;
   v5 = [(MapViewRestoreProperties *)&v16 init];
   if (v5)
   {
-    v6 = [v4 preferredConfiguration];
-    v7 = [v6 copy];
+    preferredConfiguration = [viewCopy preferredConfiguration];
+    v7 = [preferredConfiguration copy];
     preferredConfiguration = v5->_preferredConfiguration;
     v5->_preferredConfiguration = v7;
 
-    v9 = [v4 camera];
-    v10 = [v9 copy];
+    camera = [viewCopy camera];
+    v10 = [camera copy];
     camera = v5->_camera;
     v5->_camera = v10;
 
-    v12 = [v4 cameraZoomRange];
-    v13 = [v12 copy];
+    cameraZoomRange = [viewCopy cameraZoomRange];
+    v13 = [cameraZoomRange copy];
     cameraZoomRange = v5->_cameraZoomRange;
     v5->_cameraZoomRange = v13;
 
-    v5->_zoomEnabled = [v4 isZoomEnabled];
-    v5->_scrollEnabled = [v4 isScrollEnabled];
-    v5->_rotateEnabled = [v4 isRotateEnabled];
-    v5->_pitchEnabled = [v4 isPitchEnabled];
-    v5->_userTrackingMode = [v4 userTrackingMode];
-    v5->_offlineRegionVisibility = [v4 _offlineRegionVisibility];
-    v5->_applicationState = [v4 _applicationState];
+    v5->_zoomEnabled = [viewCopy isZoomEnabled];
+    v5->_scrollEnabled = [viewCopy isScrollEnabled];
+    v5->_rotateEnabled = [viewCopy isRotateEnabled];
+    v5->_pitchEnabled = [viewCopy isPitchEnabled];
+    v5->_userTrackingMode = [viewCopy userTrackingMode];
+    v5->_offlineRegionVisibility = [viewCopy _offlineRegionVisibility];
+    v5->_applicationState = [viewCopy _applicationState];
   }
 
   return v5;

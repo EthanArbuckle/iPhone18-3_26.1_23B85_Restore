@@ -7,24 +7,24 @@
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
   v4 = a3;
-  v5 = [HFStateDumpBuilder builderWithObject:a1 context:v4];
-  v6 = [a1 uniqueIdentifier];
-  [v5 appendObject:v6 withName:@"UUID" options:2];
+  v5 = [HFStateDumpBuilder builderWithObject:self context:v4];
+  uniqueIdentifier = [self uniqueIdentifier];
+  [v5 appendObject:uniqueIdentifier withName:@"UUID" options:2];
 
-  v7 = [a1 name];
-  [v5 setObject:v7 forKeyedSubscript:@"name"];
+  name = [self name];
+  [v5 setObject:name forKeyedSubscript:@"name"];
 
   if ([v4 detailLevel] == 2)
   {
-    v8 = [a1 services];
+    services = [self services];
     v9 = [v4 copyWithDetailLevel:0];
-    [v5 appendObject:v8 withName:@"services" context:v9 options:0];
+    [v5 appendObject:services withName:@"services" context:v9 options:0];
 
-    [v5 appendBool:objc_msgSend(a1 withName:{"hf_isOnForContextType:", 0), @"isLegacyFavorite"}];
-    [v5 appendBool:objc_msgSend(a1 withName:{"hf_shouldBeOnForContextType:", 0), @"showInLegacyFavorite"}];
-    [v5 appendBool:objc_msgSend(a1 withName:{"hf_isFavorite"), @"isFavorite"}];
-    [v5 appendBool:objc_msgSend(a1 withName:{"hf_effectiveIsFavorite"), @"effectiveIsFavorite"}];
-    [v5 appendBool:objc_msgSend(a1 withName:{"hf_effectiveShowInHomeDashboard"), @"effectiveShowInHomeDashboard"}];
+    [v5 appendBool:objc_msgSend(self withName:{"hf_isOnForContextType:", 0), @"isLegacyFavorite"}];
+    [v5 appendBool:objc_msgSend(self withName:{"hf_shouldBeOnForContextType:", 0), @"showInLegacyFavorite"}];
+    [v5 appendBool:objc_msgSend(self withName:{"hf_isFavorite"), @"isFavorite"}];
+    [v5 appendBool:objc_msgSend(self withName:{"hf_effectiveIsFavorite"), @"effectiveIsFavorite"}];
+    [v5 appendBool:objc_msgSend(self withName:{"hf_effectiveShowInHomeDashboard"), @"effectiveShowInHomeDashboard"}];
   }
 
   return v5;

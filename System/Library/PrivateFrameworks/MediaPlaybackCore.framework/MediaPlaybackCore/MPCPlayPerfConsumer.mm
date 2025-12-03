@@ -1,16 +1,16 @@
 @interface MPCPlayPerfConsumer
-+ (id)analyticsContentType:(int64_t)a3;
-+ (id)analyticsFormat:(id)a3;
-+ (id)coreAnalyticsEventNameWithEventType:(id)a3;
-- (MPCPlayPerfConsumer)initWithPlaybackEngine:(id)a3;
++ (id)analyticsContentType:(int64_t)type;
++ (id)analyticsFormat:(id)format;
++ (id)coreAnalyticsEventNameWithEventType:(id)type;
+- (MPCPlayPerfConsumer)initWithPlaybackEngine:(id)engine;
 - (MPCPlaybackEngine)playbackEngine;
-- (void)generatePlayPerfSignposts:(id)a3;
-- (void)handleMetrics:(id)a3;
-- (void)publishPlaybackMetrics:(id)a3;
-- (void)sendMetricsToCoreAnalytics:(id)a3;
-- (void)sendMetricsToSiriSelfLogger:(id)a3;
-- (void)setupErrorHandlerForEventType:(id)a3 errorKey:(id)a4 prefix:(id)a5;
-- (void)subscribeToEventStream:(id)a3;
+- (void)generatePlayPerfSignposts:(id)signposts;
+- (void)handleMetrics:(id)metrics;
+- (void)publishPlaybackMetrics:(id)metrics;
+- (void)sendMetricsToCoreAnalytics:(id)analytics;
+- (void)sendMetricsToSiriSelfLogger:(id)logger;
+- (void)setupErrorHandlerForEventType:(id)type errorKey:(id)key prefix:(id)prefix;
+- (void)subscribeToEventStream:(id)stream;
 @end
 
 @implementation MPCPlayPerfConsumer
@@ -22,27 +22,27 @@
   return WeakRetained;
 }
 
-- (void)sendMetricsToSiriSelfLogger:(id)a3
+- (void)sendMetricsToSiriSelfLogger:(id)logger
 {
-  v8 = a3;
-  v4 = [v8 siriRefId];
-  v5 = [v4 isEqualToString:self->_lastSiriReferenceIdentifier];
+  loggerCopy = logger;
+  siriRefId = [loggerCopy siriRefId];
+  v5 = [siriRefId isEqualToString:self->_lastSiriReferenceIdentifier];
 
   if ((v5 & 1) == 0)
   {
-    [MPCSiriSelfLogger sendMetrics:v8];
-    v6 = [v8 siriRefId];
+    [MPCSiriSelfLogger sendMetrics:loggerCopy];
+    siriRefId2 = [loggerCopy siriRefId];
     lastSiriReferenceIdentifier = self->_lastSiriReferenceIdentifier;
-    self->_lastSiriReferenceIdentifier = v6;
+    self->_lastSiriReferenceIdentifier = siriRefId2;
   }
 }
 
-- (void)sendMetricsToCoreAnalytics:(id)a3
+- (void)sendMetricsToCoreAnalytics:(id)analytics
 {
-  v3 = a3;
+  analyticsCopy = analytics;
   v4 = objc_opt_class();
-  v5 = [v3 eventType];
-  v6 = [v4 coreAnalyticsEventNameWithEventType:v5];
+  eventType = [analyticsCopy eventType];
+  v6 = [v4 coreAnalyticsEventNameWithEventType:eventType];
 
   if (v6)
   {
@@ -50,7 +50,7 @@
     v8[1] = 3221225472;
     v8[2] = __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke;
     v8[3] = &unk_1E8231D58;
-    v9 = v3;
+    v9 = analyticsCopy;
     v10 = v6;
     v7 = _Block_copy(v8);
     AnalyticsSendEventLazy();
@@ -432,45 +432,45 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)generatePlayPerfSignposts:(id)a3
+- (void)generatePlayPerfSignposts:(id)signposts
 {
   v102 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 eventType];
-  v5 = [v4 isEqualToString:@"FirstItem"];
+  signpostsCopy = signposts;
+  eventType = [signpostsCopy eventType];
+  v5 = [eventType isEqualToString:@"FirstItem"];
 
   if (v5)
   {
     v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
     v7 = os_signpost_id_generate(v6);
 
-    v8 = [v3 assetType];
-    v9 = +[MPCPlayPerfConsumer analyticsContentType:](MPCPlayPerfConsumer, "analyticsContentType:", [v8 integerValue]);
+    assetType = [signpostsCopy assetType];
+    v9 = +[MPCPlayPerfConsumer analyticsContentType:](MPCPlayPerfConsumer, "analyticsContentType:", [assetType integerValue]);
 
-    v10 = [v3 formatInfo];
-    v11 = [MPCPlayPerfConsumer analyticsFormat:v10];
+    formatInfo = [signpostsCopy formatInfo];
+    v11 = [MPCPlayPerfConsumer analyticsFormat:formatInfo];
 
     v12 = mach_continuous_time();
     v13 = v12 - mach_absolute_time();
-    v14 = [v3 checkpointMRSetQueueBegin];
-    if (v14)
+    checkpointMRSetQueueBegin = [signpostsCopy checkpointMRSetQueueBegin];
+    if (checkpointMRSetQueueBegin)
     {
-      v15 = v14;
-      v16 = [v3 checkpointSetQueueBegin];
+      v15 = checkpointMRSetQueueBegin;
+      checkpointSetQueueBegin = [signpostsCopy checkpointSetQueueBegin];
 
-      if (v16)
+      if (checkpointSetQueueBegin)
       {
         v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
         v18 = v17;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
         {
-          v19 = [v3 checkpointMRSetQueueBegin];
+          checkpointMRSetQueueBegin2 = [signpostsCopy checkpointMRSetQueueBegin];
           v96 = 134349570;
-          v97 = [v19 longLongValue] + v13;
+          v97 = [checkpointMRSetQueueBegin2 longLongValue] + v13;
           v98 = 2082;
-          v99 = [v9 UTF8String];
+          uTF8String = [v9 UTF8String];
           v100 = 2082;
-          v101 = [v11 UTF8String];
+          uTF8String2 = [v11 UTF8String];
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SendQueue", "%{public, signpost.description:begin_time}llu,contentType=%{public, signpost.telemetry:string1, name=contentType}s format=%{public, signpost.telemetry:string2, name=format}s", &v96, 0x20u);
         }
 
@@ -478,37 +478,37 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
         v21 = v20;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
         {
-          v22 = [v3 checkpointSetQueueBegin];
-          v23 = [v22 longLongValue];
+          checkpointSetQueueBegin2 = [signpostsCopy checkpointSetQueueBegin];
+          longLongValue = [checkpointSetQueueBegin2 longLongValue];
           v96 = 134349056;
-          v97 = v23 + v13;
+          v97 = longLongValue + v13;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v21, OS_SIGNPOST_INTERVAL_END, v7, "SendQueue", "%{public, signpost.description:end_time}llu,", &v96, 0xCu);
         }
       }
     }
 
-    v24 = [v3 checkpointSetQueueBegin];
-    if (v24)
+    checkpointSetQueueBegin3 = [signpostsCopy checkpointSetQueueBegin];
+    if (checkpointSetQueueBegin3)
     {
-      v25 = v24;
-      v26 = [v3 checkpointAssetLoadBegin];
+      v25 = checkpointSetQueueBegin3;
+      checkpointAssetLoadBegin = [signpostsCopy checkpointAssetLoadBegin];
 
-      if (v26)
+      if (checkpointAssetLoadBegin)
       {
         v27 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
         v28 = v27;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
         {
-          v29 = [v3 checkpointSetQueueBegin];
-          v30 = [v29 longLongValue] + v13;
-          v31 = [v9 UTF8String];
-          v32 = [v11 UTF8String];
+          checkpointSetQueueBegin4 = [signpostsCopy checkpointSetQueueBegin];
+          v30 = [checkpointSetQueueBegin4 longLongValue] + v13;
+          uTF8String3 = [v9 UTF8String];
+          uTF8String4 = [v11 UTF8String];
           v96 = 134349570;
           v97 = v30;
           v98 = 2082;
-          v99 = v31;
+          uTF8String = uTF8String3;
           v100 = 2082;
-          v101 = v32;
+          uTF8String2 = uTF8String4;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SetQueue", "%{public, signpost.description:begin_time}llu,contentType=%{public, signpost.telemetry:string1, name=contentType}s format=%{public, signpost.telemetry:string2, name=format}s", &v96, 0x20u);
         }
 
@@ -516,37 +516,37 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
         v34 = v33;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
         {
-          v35 = [v3 checkpointAssetLoadBegin];
-          v36 = [v35 longLongValue];
+          checkpointAssetLoadBegin2 = [signpostsCopy checkpointAssetLoadBegin];
+          longLongValue2 = [checkpointAssetLoadBegin2 longLongValue];
           v96 = 134349056;
-          v97 = v36 + v13;
+          v97 = longLongValue2 + v13;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v34, OS_SIGNPOST_INTERVAL_END, v7, "SetQueue", "%{public, signpost.description:end_time}llu,", &v96, 0xCu);
         }
       }
     }
 
-    v37 = [v3 checkpointAssetLoadEnd];
-    if (v37)
+    checkpointAssetLoadEnd = [signpostsCopy checkpointAssetLoadEnd];
+    if (checkpointAssetLoadEnd)
     {
-      v38 = v37;
-      v39 = [v3 checkpointLikelyToKeepUp];
+      v38 = checkpointAssetLoadEnd;
+      checkpointLikelyToKeepUp = [signpostsCopy checkpointLikelyToKeepUp];
 
-      if (v39)
+      if (checkpointLikelyToKeepUp)
       {
         v40 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
         v41 = v40;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
         {
-          v42 = [v3 checkpointAssetLoadEnd];
-          v43 = [v42 longLongValue] + v13;
-          v44 = [v9 UTF8String];
-          v45 = [v11 UTF8String];
+          checkpointAssetLoadEnd2 = [signpostsCopy checkpointAssetLoadEnd];
+          v43 = [checkpointAssetLoadEnd2 longLongValue] + v13;
+          uTF8String5 = [v9 UTF8String];
+          uTF8String6 = [v11 UTF8String];
           v96 = 134349570;
           v97 = v43;
           v98 = 2082;
-          v99 = v44;
+          uTF8String = uTF8String5;
           v100 = 2082;
-          v101 = v45;
+          uTF8String2 = uTF8String6;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v41, OS_SIGNPOST_INTERVAL_BEGIN, v7, "WaitForLikelyToKeepUp", "%{public, signpost.description:begin_time}llu,contentType=%{public, signpost.telemetry:string1, name=contentType}s format=%{public, signpost.telemetry:string2, name=format}s", &v96, 0x20u);
         }
 
@@ -554,37 +554,37 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
         v47 = v46;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v46))
         {
-          v48 = [v3 checkpointLikelyToKeepUp];
-          v49 = [v48 longLongValue];
+          checkpointLikelyToKeepUp2 = [signpostsCopy checkpointLikelyToKeepUp];
+          longLongValue3 = [checkpointLikelyToKeepUp2 longLongValue];
           v96 = 134349056;
-          v97 = v49 + v13;
+          v97 = longLongValue3 + v13;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v47, OS_SIGNPOST_INTERVAL_END, v7, "WaitForLikelyToKeepUp", "%{public, signpost.description:end_time}llu,", &v96, 0xCu);
         }
       }
     }
 
-    v50 = [v3 checkpointAssetLoadEnd];
-    if (v50)
+    checkpointAssetLoadEnd3 = [signpostsCopy checkpointAssetLoadEnd];
+    if (checkpointAssetLoadEnd3)
     {
-      v51 = v50;
-      v52 = [v3 checkpointReadyToPlay];
+      v51 = checkpointAssetLoadEnd3;
+      checkpointReadyToPlay = [signpostsCopy checkpointReadyToPlay];
 
-      if (v52)
+      if (checkpointReadyToPlay)
       {
         v53 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
         v54 = v53;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v53))
         {
-          v55 = [v3 checkpointAssetLoadEnd];
-          v56 = [v55 longLongValue] + v13;
-          v57 = [v9 UTF8String];
-          v58 = [v11 UTF8String];
+          checkpointAssetLoadEnd4 = [signpostsCopy checkpointAssetLoadEnd];
+          v56 = [checkpointAssetLoadEnd4 longLongValue] + v13;
+          uTF8String7 = [v9 UTF8String];
+          uTF8String8 = [v11 UTF8String];
           v96 = 134349570;
           v97 = v56;
           v98 = 2082;
-          v99 = v57;
+          uTF8String = uTF8String7;
           v100 = 2082;
-          v101 = v58;
+          uTF8String2 = uTF8String8;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v54, OS_SIGNPOST_INTERVAL_BEGIN, v7, "WaitForReadyToPlay", "%{public, signpost.description:begin_time}llu,contentType=%{public, signpost.telemetry:string1, name=contentType}s format=%{public, signpost.telemetry:string2, name=format}s", &v96, 0x20u);
         }
 
@@ -592,36 +592,36 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
         v60 = v59;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v59))
         {
-          v61 = [v3 checkpointReadyToPlay];
-          v62 = [v61 longLongValue];
+          checkpointReadyToPlay2 = [signpostsCopy checkpointReadyToPlay];
+          longLongValue4 = [checkpointReadyToPlay2 longLongValue];
           v96 = 134349056;
-          v97 = v62 + v13;
+          v97 = longLongValue4 + v13;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v60, OS_SIGNPOST_INTERVAL_END, v7, "WaitForReadyToPlay", "%{public, signpost.description:end_time}llu,", &v96, 0xCu);
         }
       }
     }
 
-    v63 = [v3 checkpointReadyToPlay];
-    if (v63)
+    checkpointReadyToPlay3 = [signpostsCopy checkpointReadyToPlay];
+    if (checkpointReadyToPlay3)
     {
-      v64 = v63;
-      v65 = [v3 checkpointRateOne];
+      v64 = checkpointReadyToPlay3;
+      checkpointRateOne = [signpostsCopy checkpointRateOne];
 
-      if (v65)
+      if (checkpointRateOne)
       {
-        v66 = [v3 checkpointReadyToPlay];
-        v67 = [v66 longLongValue];
+        checkpointReadyToPlay4 = [signpostsCopy checkpointReadyToPlay];
+        longLongValue5 = [checkpointReadyToPlay4 longLongValue];
 
-        v68 = [v3 checkpointPlay];
+        checkpointPlay = [signpostsCopy checkpointPlay];
 
-        if (v68)
+        if (checkpointPlay)
         {
-          v69 = [v3 checkpointPlay];
-          v70 = [v69 longLongValue];
+          checkpointPlay2 = [signpostsCopy checkpointPlay];
+          longLongValue6 = [checkpointPlay2 longLongValue];
 
-          if (v67 <= v70)
+          if (longLongValue5 <= longLongValue6)
           {
-            v67 = v70;
+            longLongValue5 = longLongValue6;
           }
         }
 
@@ -629,15 +629,15 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
         v72 = v71;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v71))
         {
-          v73 = v67 + v13;
-          v74 = [v9 UTF8String];
-          v75 = [v11 UTF8String];
+          v73 = longLongValue5 + v13;
+          uTF8String9 = [v9 UTF8String];
+          uTF8String10 = [v11 UTF8String];
           v96 = 134349570;
           v97 = v73;
           v98 = 2082;
-          v99 = v74;
+          uTF8String = uTF8String9;
           v100 = 2082;
-          v101 = v75;
+          uTF8String2 = uTF8String10;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v72, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PlayToSetRate", "%{public, signpost.description:begin_time}llu,contentType=%{public, signpost.telemetry:string1, name=contentType}s format=%{public, signpost.telemetry:string2, name=format}s", &v96, 0x20u);
         }
 
@@ -645,37 +645,37 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
         v77 = v76;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v76))
         {
-          v78 = [v3 checkpointRateOne];
-          v79 = [v78 longLongValue];
+          checkpointRateOne2 = [signpostsCopy checkpointRateOne];
+          longLongValue7 = [checkpointRateOne2 longLongValue];
           v96 = 134349056;
-          v97 = v79 + v13;
+          v97 = longLongValue7 + v13;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v77, OS_SIGNPOST_INTERVAL_END, v7, "PlayToSetRate", "%{public, signpost.description:end_time}llu,", &v96, 0xCu);
         }
       }
     }
 
-    v80 = [v3 checkpointRateOne];
-    if (v80)
+    checkpointRateOne3 = [signpostsCopy checkpointRateOne];
+    if (checkpointRateOne3)
     {
-      v81 = v80;
-      v82 = [v3 checkpointFirstAudioFrame];
+      v81 = checkpointRateOne3;
+      checkpointFirstAudioFrame = [signpostsCopy checkpointFirstAudioFrame];
 
-      if (v82)
+      if (checkpointFirstAudioFrame)
       {
         v83 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
         v84 = v83;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v83))
         {
-          v85 = [v3 checkpointRateOne];
-          v86 = [v85 longLongValue] + v13;
-          v87 = [v9 UTF8String];
-          v88 = [v11 UTF8String];
+          checkpointRateOne4 = [signpostsCopy checkpointRateOne];
+          v86 = [checkpointRateOne4 longLongValue] + v13;
+          uTF8String11 = [v9 UTF8String];
+          uTF8String12 = [v11 UTF8String];
           v96 = 134349570;
           v97 = v86;
           v98 = 2082;
-          v99 = v87;
+          uTF8String = uTF8String11;
           v100 = 2082;
-          v101 = v88;
+          uTF8String2 = uTF8String12;
           _os_signpost_emit_with_name_impl(&dword_1C5C61000, v84, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SetRateToEffectiveRate", "%{public, signpost.description:begin_time}llu,contentType=%{public, signpost.telemetry:string1, name=contentType}s format=%{public, signpost.telemetry:string2, name=format}s", &v96, 0x20u);
         }
 
@@ -683,20 +683,20 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
         v90 = v89;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v89))
         {
-          v91 = [v3 checkpointRateOne];
-          v92 = [v91 longLongValue];
+          checkpointRateOne5 = [signpostsCopy checkpointRateOne];
+          longLongValue8 = [checkpointRateOne5 longLongValue];
 
-          v93 = [v3 checkpointFirstAudioFrame];
-          v94 = [v93 longLongValue];
+          checkpointFirstAudioFrame2 = [signpostsCopy checkpointFirstAudioFrame];
+          longLongValue9 = [checkpointFirstAudioFrame2 longLongValue];
 
-          if (v92 + 1 > v94)
+          if (longLongValue8 + 1 > longLongValue9)
           {
-            v95 = v92 + 1;
+            v95 = longLongValue8 + 1;
           }
 
           else
           {
-            v95 = v94;
+            v95 = longLongValue9;
           }
 
           v96 = 134349056;
@@ -708,20 +708,20 @@ id __50__MPCPlayPerfConsumer_sendMetricsToCoreAnalytics___block_invoke(uint64_t 
   }
 }
 
-- (void)publishPlaybackMetrics:(id)a3
+- (void)publishPlaybackMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   WeakRetained = objc_loadWeakRetained(&self->_playbackEngine);
-  v6 = [WeakRetained mediaRemotePublisher];
-  objc_initWeak(&location, v6);
+  mediaRemotePublisher = [WeakRetained mediaRemotePublisher];
+  objc_initWeak(&location, mediaRemotePublisher);
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__MPCPlayPerfConsumer_publishPlaybackMetrics___block_invoke;
   block[3] = &unk_1E8235150;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = metricsCopy;
+  v7 = metricsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v10);
@@ -739,11 +739,11 @@ void __46__MPCPlayPerfConsumer_publishPlaybackMetrics___block_invoke(uint64_t a1
   }
 }
 
-- (void)handleMetrics:(id)a3
+- (void)handleMetrics:(id)metrics
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  metricsCopy = metrics;
+  if (!metricsCopy)
   {
     goto LABEL_18;
   }
@@ -753,36 +753,36 @@ void __46__MPCPlayPerfConsumer_publishPlaybackMetrics___block_invoke(uint64_t a1
     v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics_Oversize");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 description];
+      v6 = [metricsCopy description];
       *buf = 138543362;
       v24 = v6;
       _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "PlayPerfJSON: %{public}@", buf, 0xCu);
     }
   }
 
-  v7 = [(MPCPlayPerfConsumer *)self playbackEngine];
-  v8 = [v4 eventType];
-  if ([v8 isEqualToString:@"FirstItem"])
+  playbackEngine = [(MPCPlayPerfConsumer *)self playbackEngine];
+  eventType = [metricsCopy eventType];
+  if ([eventType isEqualToString:@"FirstItem"])
   {
 
 LABEL_10:
-    v11 = [v7 eventStream];
-    v12 = [v4 jsonObject];
-    v22[0] = v12;
+    eventStream = [playbackEngine eventStream];
+    jsonObject = [metricsCopy jsonObject];
+    v22[0] = jsonObject;
     v21[1] = @"queue-section-id";
-    v13 = [v4 sectionIdentifier];
-    v22[1] = v13;
+    sectionIdentifier = [metricsCopy sectionIdentifier];
+    v22[1] = sectionIdentifier;
     v21[2] = @"queue-item-id";
-    v14 = [v4 itemIdentifier];
-    v22[2] = v14;
+    itemIdentifier = [metricsCopy itemIdentifier];
+    v22[2] = itemIdentifier;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
-    [v11 emitEventType:@"perf-report" payload:v15];
+    [eventStream emitEventType:@"perf-report" payload:v15];
 
     goto LABEL_11;
   }
 
-  v9 = [v4 eventType];
-  v10 = [v9 isEqualToString:@"NextItem"];
+  eventType2 = [metricsCopy eventType];
+  v10 = [eventType2 isEqualToString:@"NextItem"];
 
   if (v10)
   {
@@ -790,16 +790,16 @@ LABEL_10:
   }
 
 LABEL_11:
-  [(MPCPlayPerfConsumer *)self generatePlayPerfSignposts:v4];
-  [(MPCPlayPerfConsumer *)self sendMetricsToCoreAnalytics:v4];
-  v16 = [v4 eventType];
-  if ([v16 isEqualToString:@"FirstItem"])
+  [(MPCPlayPerfConsumer *)self generatePlayPerfSignposts:metricsCopy];
+  [(MPCPlayPerfConsumer *)self sendMetricsToCoreAnalytics:metricsCopy];
+  eventType3 = [metricsCopy eventType];
+  if ([eventType3 isEqualToString:@"FirstItem"])
   {
-    v17 = [v4 siriRefId];
+    siriRefId = [metricsCopy siriRefId];
 
-    if (v17)
+    if (siriRefId)
     {
-      [(MPCPlayPerfConsumer *)self sendMetricsToSiriSelfLogger:v4];
+      [(MPCPlayPerfConsumer *)self sendMetricsToSiriSelfLogger:metricsCopy];
     }
   }
 
@@ -807,33 +807,33 @@ LABEL_11:
   {
   }
 
-  v18 = [v4 eventType];
-  v19 = [v18 isEqualToString:@"FirstItem"];
+  eventType4 = [metricsCopy eventType];
+  v19 = [eventType4 isEqualToString:@"FirstItem"];
 
   if (v19)
   {
-    v20 = [v7 player];
-    [v20 donateMetricsToPlayerItem:v4];
+    player = [playbackEngine player];
+    [player donateMetricsToPlayerItem:metricsCopy];
   }
 
 LABEL_18:
 }
 
-- (void)setupErrorHandlerForEventType:(id)a3 errorKey:(id)a4 prefix:(id)a5
+- (void)setupErrorHandlerForEventType:(id)type errorKey:(id)key prefix:(id)prefix
 {
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  prefixCopy = prefix;
   subscription = self->_subscription;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__MPCPlayPerfConsumer_setupErrorHandlerForEventType_errorKey_prefix___block_invoke;
   v13[3] = &unk_1E8231D30;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v11 = v9;
-  v12 = v8;
-  [(MPCPlaybackEngineEventStreamSubscription *)subscription subscribeToEventType:a3 handler:v13];
+  v14 = keyCopy;
+  v15 = prefixCopy;
+  selfCopy = self;
+  v11 = prefixCopy;
+  v12 = keyCopy;
+  [(MPCPlaybackEngineEventStreamSubscription *)subscription subscribeToEventType:type handler:v13];
 }
 
 uint64_t __69__MPCPlayPerfConsumer_setupErrorHandlerForEventType_errorKey_prefix___block_invoke(void *a1, void *a2, void *a3)
@@ -864,10 +864,10 @@ uint64_t __69__MPCPlayPerfConsumer_setupErrorHandlerForEventType_errorKey_prefix
   return 1;
 }
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
-  objc_storeStrong(&self->_subscription, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_subscription, stream);
+  streamCopy = stream;
   subscription = self->_subscription;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -1038,35 +1038,35 @@ uint64_t __46__MPCPlayPerfConsumer_subscribeToEventStream___block_invoke_7(uint6
   return 1;
 }
 
-- (MPCPlayPerfConsumer)initWithPlaybackEngine:(id)a3
+- (MPCPlayPerfConsumer)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v8.receiver = self;
   v8.super_class = MPCPlayPerfConsumer;
   v5 = [(MPCPlayPerfConsumer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
   }
 
   return v6;
 }
 
-+ (id)coreAnalyticsEventNameWithEventType:(id)a3
++ (id)coreAnalyticsEventNameWithEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FirstItem"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FirstItem"])
   {
     v4 = @"com.apple.amp.mediaplayer.playperf.FirstItem";
   }
 
-  else if ([v3 isEqualToString:@"NextItem"])
+  else if ([typeCopy isEqualToString:@"NextItem"])
   {
     v4 = @"com.apple.amp.mediaplayer.playperf.NextItem";
   }
 
-  else if ([v3 isEqualToString:@"PlayError"])
+  else if ([typeCopy isEqualToString:@"PlayError"])
   {
     v4 = @"com.apple.amp.mediaplayer.playperf.PlayError";
   }
@@ -1079,40 +1079,40 @@ uint64_t __46__MPCPlayPerfConsumer_subscribeToEventStream___block_invoke_7(uint6
   return v4;
 }
 
-+ (id)analyticsFormat:(id)a3
++ (id)analyticsFormat:(id)format
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"codec"];
-  v5 = [v4 integerValue];
+  formatCopy = format;
+  v4 = [formatCopy objectForKeyedSubscript:@"codec"];
+  integerValue = [v4 integerValue];
 
-  v21 = bswap32(v5);
+  v21 = bswap32(integerValue);
   v22 = 0;
   v6 = [MEMORY[0x1E696AEC0] stringWithCString:&v21 encoding:1];
-  v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v9 = [v3 objectForKeyedSubscript:@"bitrate"];
-  v10 = [v9 integerValue];
+  v9 = [formatCopy objectForKeyedSubscript:@"bitrate"];
+  integerValue2 = [v9 integerValue];
 
-  v11 = [v3 objectForKeyedSubscript:@"channelLayout"];
-  v12 = [v11 integerValue];
+  v11 = [formatCopy objectForKeyedSubscript:@"channelLayout"];
+  integerValue3 = [v11 integerValue];
 
-  v13 = [v3 objectForKeyedSubscript:@"sampleRate"];
-  v14 = [v13 integerValue];
+  v13 = [formatCopy objectForKeyedSubscript:@"sampleRate"];
+  integerValue4 = [v13 integerValue];
 
-  v15 = [v3 objectForKeyedSubscript:@"bitrate"];
+  v15 = [formatCopy objectForKeyedSubscript:@"bitrate"];
 
-  v16 = [v15 integerValue];
-  if (v10 >= 1)
+  integerValue5 = [v15 integerValue];
+  if (integerValue2 >= 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %ldkbps, %ld", v8, v10 / 0x3E8uLL, v12];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %ldkbps, %ld", v8, integerValue2 / 0x3E8uLL, integerValue3];
     v17 = LABEL_5:;
     goto LABEL_6;
   }
 
-  if (v14 >= 1)
+  if (integerValue4 >= 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %ldkhz, %ld", v8, v14 / 0x3E8uLL, v16];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %ldkhz, %ld", v8, integerValue4 / 0x3E8uLL, integerValue5];
     goto LABEL_5;
   }
 
@@ -1129,16 +1129,16 @@ LABEL_6:
   return v18;
 }
 
-+ (id)analyticsContentType:(int64_t)a3
++ (id)analyticsContentType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return &stru_1F454A698;
   }
 
   else
   {
-    return off_1E8231D78[a3 - 1];
+    return off_1E8231D78[type - 1];
   }
 }
 

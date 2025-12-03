@@ -1,40 +1,40 @@
 @interface SiriEyesFreePresentation
-- ($5B118637EA29FD52B6AA7C9036D3A2A1)keyboardInfoForSuggestionsController:(SEL)a3;
-- (CGRect)statusBarFrameForSuggestionsViewController:(id)a3;
-- (SiriEyesFreePresentation)initWithNibName:(id)a3 bundle:(id)a4 delegate:(id)a5 dataSource:(id)a6;
+- ($5B118637EA29FD52B6AA7C9036D3A2A1)keyboardInfoForSuggestionsController:(SEL)controller;
+- (CGRect)statusBarFrameForSuggestionsViewController:(id)controller;
+- (SiriEyesFreePresentation)initWithNibName:(id)name bundle:(id)bundle delegate:(id)delegate dataSource:(id)source;
 - (SiriUIPresentationDataSource)dataSource;
 - (SiriUIPresentationDelegate)delegate;
-- (double)contentWidthForSuggestionsViewController:(id)a3;
-- (double)statusViewHeightForSuggestionsViewController:(id)a3;
+- (double)contentWidthForSuggestionsViewController:(id)controller;
+- (double)statusViewHeightForSuggestionsViewController:(id)controller;
 - (void)_cancelTimeout;
-- (void)_didPresentItemsAtIndexPaths:(id)a3;
-- (void)_dismissFromTimeoutAfterDelay:(double)a3;
+- (void)_didPresentItemsAtIndexPaths:(id)paths;
+- (void)_dismissFromTimeoutAfterDelay:(double)delay;
 - (void)_dismissSiriPresentationFromTimeout;
-- (void)_synthesizeSpeechWithText:(id)a3;
-- (void)configureForRequestOptions:(id)a3;
-- (void)delayDismissalAfterIdleFires:(id)a3;
+- (void)_synthesizeSpeechWithText:(id)text;
+- (void)configureForRequestOptions:(id)options;
+- (void)delayDismissalAfterIdleFires:(id)fires;
 - (void)didReceiveReportBugAction;
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4;
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion;
 - (void)siriDidHidePasscodeUnlock;
-- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)a3 isAttending:(BOOL)a4;
-- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)a3;
+- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)change isAttending:(BOOL)attending;
+- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)request;
 - (void)viewDidLoad;
 @end
 
 @implementation SiriEyesFreePresentation
 
-- (SiriEyesFreePresentation)initWithNibName:(id)a3 bundle:(id)a4 delegate:(id)a5 dataSource:(id)a6
+- (SiriEyesFreePresentation)initWithNibName:(id)name bundle:(id)bundle delegate:(id)delegate dataSource:(id)source
 {
-  v10 = a5;
-  v11 = a6;
+  delegateCopy = delegate;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = SiriEyesFreePresentation;
-  v12 = [(SiriEyesFreePresentation *)&v17 initWithNibName:a3 bundle:a4];
+  v12 = [(SiriEyesFreePresentation *)&v17 initWithNibName:name bundle:bundle];
   v13 = v12;
   if (v12)
   {
-    [(SiriEyesFreePresentation *)v12 setDelegate:v10];
-    [(SiriEyesFreePresentation *)v13 setDataSource:v11];
+    [(SiriEyesFreePresentation *)v12 setDelegate:delegateCopy];
+    [(SiriEyesFreePresentation *)v13 setDataSource:sourceCopy];
     v13->_numberOfSpeechRequestsWaitingToFinishSynthesis = 0;
     v14 = objc_alloc_init(SRSuggestionsViewController);
     siriUnavailableViewController = v13->_siriUnavailableViewController;
@@ -46,7 +46,7 @@
   return v13;
 }
 
-- (void)configureForRequestOptions:(id)a3
+- (void)configureForRequestOptions:(id)options
 {
   v4 = +[AFUISiriSession availabilityState];
   if (!v4)
@@ -59,8 +59,8 @@
   if (v5 != 2)
   {
     v14 = v6;
-    v7 = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
-    [v7 showEmptyView];
+    _siriUnavailableViewController = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
+    [_siriUnavailableViewController showEmptyView];
 
     v8 = [v14 siriUILocalizedStringForKey:@"ASSISTANT_NOT_AVAILABLE_TITLE"];
     [(SiriEyesFreePresentation *)self _synthesizeSpeechWithText:v8];
@@ -68,9 +68,9 @@
     if (v5 == 3)
     {
       v11 = +[UIDevice currentDevice];
-      v12 = [v11 sf_isChinaRegionCellularDevice];
+      sf_isChinaRegionCellularDevice = [v11 sf_isChinaRegionCellularDevice];
 
-      if (v12)
+      if (sf_isChinaRegionCellularDevice)
       {
         v13 = @"ASSISTANT_NO_LOCAL_ASSETS_SUBTITLE_NOTIFICATION_CHINA";
       }
@@ -98,7 +98,7 @@ LABEL_11:
   }
 }
 
-- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)a3
+- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)request
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -126,39 +126,39 @@ LABEL_11:
   [(SiriEyesFreePresentation *)self _cancelTimeout];
 }
 
-- (void)_synthesizeSpeechWithText:(id)a3
+- (void)_synthesizeSpeechWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   ++self->_numberOfSpeechRequestsWaitingToFinishSynthesis;
   objc_initWeak(&location, self);
-  v5 = [(SiriEyesFreePresentation *)self delegate];
+  delegate = [(SiriEyesFreePresentation *)self delegate];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008C29C;
   v6[3] = &unk_1001676A0;
   objc_copyWeak(&v7, &location);
-  [v5 siriPresentation:self synthesizeSpeechWithText:v4 completion:v6];
+  [delegate siriPresentation:self synthesizeSpeechWithText:textCopy completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_didPresentItemsAtIndexPaths:(id)a3
+- (void)_didPresentItemsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(SiriEyesFreePresentation *)self dataSource];
-  v6 = [v5 conversationIdentifiersForSiriPresentation:self];
-  v7 = [v6 lastObject];
+  pathsCopy = paths;
+  dataSource = [(SiriEyesFreePresentation *)self dataSource];
+  v6 = [dataSource conversationIdentifiersForSiriPresentation:self];
+  lastObject = [v6 lastObject];
 
-  v8 = [(SiriEyesFreePresentation *)self dataSource];
-  v9 = [v8 siriPresentation:self conversationWithIdentifier:v7];
+  dataSource2 = [(SiriEyesFreePresentation *)self dataSource];
+  v9 = [dataSource2 siriPresentation:self conversationWithIdentifier:lastObject];
 
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [pathsCopy count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v4;
+  v11 = pathsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -175,8 +175,8 @@ LABEL_11:
         }
 
         v16 = [v9 itemAtIndexPath:{*(*(&v19 + 1) + 8 * v15), v19}];
-        v17 = [v16 identifier];
-        [v10 addObject:v17];
+        identifier = [v16 identifier];
+        [v10 addObject:identifier];
 
         v15 = v15 + 1;
       }
@@ -188,15 +188,15 @@ LABEL_11:
     while (v13);
   }
 
-  v18 = [(SiriEyesFreePresentation *)self delegate];
-  [v18 siriPresentation:self didPresentConversationItemsWithIdentifiers:v10];
+  delegate = [(SiriEyesFreePresentation *)self delegate];
+  [delegate siriPresentation:self didPresentConversationItemsWithIdentifiers:v10];
 }
 
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, a3, *&a3.y);
+    (*(completion + 2))(completion, 0, point, *&point.y);
   }
 }
 
@@ -213,8 +213,8 @@ LABEL_11:
   v5 = objc_alloc_init(SKIDirectInvocationContext);
   v6 = [SKIDirectInvocation runSiriKitExecutorCommandWithContext:v5 payload:v4];
   v7 = [SKIDirectInvocation wrapCommandInStartLocalRequest:v6];
-  v8 = [(SiriEyesFreePresentation *)self delegate];
-  [v8 siriPresentation:self handleStartLocalRequest:v7 turnIdentifier:0];
+  delegate = [(SiriEyesFreePresentation *)self delegate];
+  [delegate siriPresentation:self handleStartLocalRequest:v7 turnIdentifier:0];
 }
 
 - (void)viewDidLoad
@@ -222,19 +222,19 @@ LABEL_11:
   v12.receiver = self;
   v12.super_class = SiriEyesFreePresentation;
   [(SiriEyesFreePresentation *)&v12 viewDidLoad];
-  v3 = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
-  [(SiriEyesFreePresentation *)self addChildViewController:v3];
-  [v3 didMoveToParentViewController:self];
-  v4 = [(SiriEyesFreePresentation *)self view];
-  v5 = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  _siriUnavailableViewController = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
+  [(SiriEyesFreePresentation *)self addChildViewController:_siriUnavailableViewController];
+  [_siriUnavailableViewController didMoveToParentViewController:self];
+  view = [(SiriEyesFreePresentation *)self view];
+  _siriUnavailableViewController2 = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
+  view2 = [_siriUnavailableViewController2 view];
+  [view addSubview:view2];
 
-  v7 = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
-  v8 = [v7 view];
-  v9 = [(SiriEyesFreePresentation *)self view];
-  [v9 frame];
-  [v8 setFrame:?];
+  _siriUnavailableViewController3 = [(SiriEyesFreePresentation *)self _siriUnavailableViewController];
+  view3 = [_siriUnavailableViewController3 view];
+  view4 = [(SiriEyesFreePresentation *)self view];
+  [view4 frame];
+  [view3 setFrame:?];
 
   if (+[AFUISiriSession availabilityState]== 2)
   {
@@ -245,10 +245,10 @@ LABEL_11:
   }
 }
 
-- (CGRect)statusBarFrameForSuggestionsViewController:(id)a3
+- (CGRect)statusBarFrameForSuggestionsViewController:(id)controller
 {
-  v4 = [(SiriEyesFreePresentation *)self delegate];
-  [v4 statusBarFrameForSiriPresentation:self];
+  delegate = [(SiriEyesFreePresentation *)self delegate];
+  [delegate statusBarFrameForSiriPresentation:self];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -265,25 +265,25 @@ LABEL_11:
   return result;
 }
 
-- (double)statusViewHeightForSuggestionsViewController:(id)a3
+- (double)statusViewHeightForSuggestionsViewController:(id)controller
 {
-  v4 = [(SiriEyesFreePresentation *)self delegate];
-  [v4 statusViewHeightForSiriPresentation:self];
+  delegate = [(SiriEyesFreePresentation *)self delegate];
+  [delegate statusViewHeightForSiriPresentation:self];
   v6 = v5;
 
   return v6;
 }
 
-- (double)contentWidthForSuggestionsViewController:(id)a3
+- (double)contentWidthForSuggestionsViewController:(id)controller
 {
-  v4 = [(SiriEyesFreePresentation *)self delegate];
-  [v4 contentWidthForForSiriPresentation:self];
+  delegate = [(SiriEyesFreePresentation *)self delegate];
+  [delegate contentWidthForForSiriPresentation:self];
   v6 = v5;
 
   return v6;
 }
 
-- ($5B118637EA29FD52B6AA7C9036D3A2A1)keyboardInfoForSuggestionsController:(SEL)a3
+- ($5B118637EA29FD52B6AA7C9036D3A2A1)keyboardInfoForSuggestionsController:(SEL)controller
 {
   *&retstr->var0 = 0;
   retstr->var1 = 1;
@@ -294,10 +294,10 @@ LABEL_11:
   return self;
 }
 
-- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)a3 isAttending:(BOOL)a4
+- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)change isAttending:(BOOL)attending
 {
-  v4 = a3;
-  if (a3 && !self->_numberOfSpeechRequestsWaitingToFinishSynthesis)
+  changeCopy = change;
+  if (change && !self->_numberOfSpeechRequestsWaitingToFinishSynthesis)
   {
     delayDismissalMs = self->_delayDismissalMs;
     if (delayDismissalMs && [(NSNumber *)delayDismissalMs longValue]>= 1)
@@ -342,7 +342,7 @@ LABEL_11:
       v15 = 136315650;
       v16 = "[SiriEyesFreePresentation siriIsIdleAndQuietStatusDidChange:isAttending:]";
       v17 = 1024;
-      LODWORD(v18[0]) = v4;
+      LODWORD(v18[0]) = changeCopy;
       WORD2(v18[0]) = 2048;
       *(v18 + 6) = numberOfSpeechRequestsWaitingToFinishSynthesis;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s #autodismiss Not dismissing and cancelling any previous ones, because we have either siriIsIdleAndQuiet %d, or %ld presentation generated speech requests in progress.", &v15, 0x1Cu);
@@ -355,10 +355,10 @@ LABEL_11:
   self->_delayDismissalMs = 0;
 }
 
-- (void)delayDismissalAfterIdleFires:(id)a3
+- (void)delayDismissalAfterIdleFires:(id)fires
 {
-  v5 = a3;
-  if (v5)
+  firesCopy = fires;
+  if (firesCopy)
   {
     v6 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -367,25 +367,25 @@ LABEL_11:
       v8 = 136315394;
       v9 = "[SiriEyesFreePresentation delayDismissalAfterIdleFires:]";
       v10 = 2048;
-      v11 = [v5 longValue];
+      longValue = [firesCopy longValue];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s #autodismiss Setting delay dismissal for auto send by %ld milliseconds.", &v8, 0x16u);
     }
 
-    objc_storeStrong(&self->_delayDismissalMs, a3);
+    objc_storeStrong(&self->_delayDismissalMs, fires);
   }
 }
 
-- (void)_dismissFromTimeoutAfterDelay:(double)a3
+- (void)_dismissFromTimeoutAfterDelay:(double)delay
 {
   [(SiriEyesFreePresentation *)self _cancelTimeout];
 
-  [(SiriEyesFreePresentation *)self performSelector:"_dismissSiriPresentationFromTimeout" withObject:0 afterDelay:a3];
+  [(SiriEyesFreePresentation *)self performSelector:"_dismissSiriPresentationFromTimeout" withObject:0 afterDelay:delay];
 }
 
 - (void)_dismissSiriPresentationFromTimeout
 {
-  v3 = [(SiriEyesFreePresentation *)self delegate];
-  [v3 dismissSiriPresentation:self withReason:4];
+  delegate = [(SiriEyesFreePresentation *)self delegate];
+  [delegate dismissSiriPresentation:self withReason:4];
 }
 
 - (void)_cancelTimeout

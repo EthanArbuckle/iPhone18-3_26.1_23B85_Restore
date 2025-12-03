@@ -1,13 +1,13 @@
 @interface PHImageRequestBehaviorSpec
-+ (BOOL)_shouldLoadHDRGainMapBasedOnChoosingPolicy:(int64_t)a3 options:(id)a4;
-+ (id)contentEditingInputImageBehaviorSpecForBaseVersion:(int64_t)a3 isNetworkAccessAllowed:(BOOL)a4 downloadIntent:(int64_t)a5 shouldUseRAWAsUnadjustedBase:(BOOL)a6 asset:(id)a7;
-+ (id)imageRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)a3 options:(id)a4 asset:(id)a5;
-+ (id)imageRequestInitialBehaviorSpecWithImageRequestOptions:(id)a3 asset:(id)a4;
-+ (id)imageRequestIntermediateBehaviorSpecWithPreviousBehaviorSpec:(id)a3 options:(id)a4 asset:(id)a5;
-+ (id)livePhotoRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)a3 options:(id)a4;
-+ (id)livePhotoRequestInitialBehaviorSpecWithLivePhotoRequestOptions:(id)a3 asset:(id)a4;
-+ (unint64_t)loadingOptionsFromLoadingMode:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)_shouldLoadHDRGainMapBasedOnChoosingPolicy:(int64_t)policy options:(id)options;
++ (id)contentEditingInputImageBehaviorSpecForBaseVersion:(int64_t)version isNetworkAccessAllowed:(BOOL)allowed downloadIntent:(int64_t)intent shouldUseRAWAsUnadjustedBase:(BOOL)base asset:(id)asset;
++ (id)imageRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)spec options:(id)options asset:(id)asset;
++ (id)imageRequestInitialBehaviorSpecWithImageRequestOptions:(id)options asset:(id)asset;
++ (id)imageRequestIntermediateBehaviorSpecWithPreviousBehaviorSpec:(id)spec options:(id)options asset:(id)asset;
++ (id)livePhotoRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)spec options:(id)options;
++ (id)livePhotoRequestInitialBehaviorSpecWithLivePhotoRequestOptions:(id)options asset:(id)asset;
++ (unint64_t)loadingOptionsFromLoadingMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)shortDescription;
 @end
@@ -19,8 +19,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PHImageRequestBehaviorSpec *)self shortDescription];
-  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v5, self, v6];
+  shortDescription = [(PHImageRequestBehaviorSpec *)self shortDescription];
+  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v5, self, shortDescription];
 
   return v7;
 }
@@ -42,8 +42,8 @@
   networkAccessAllowed = self->_networkAccessAllowed;
   synchronous = self->_synchronous;
   loadingOptions = self->_loadingOptions;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = v9;
+  array = [MEMORY[0x1E695DF70] array];
+  v10 = array;
   if (loadingOptions)
   {
     v11 = @"img";
@@ -74,7 +74,7 @@
     v11 = @"hipri";
   }
 
-  [v9 addObject:v11];
+  [array addObject:v11];
 LABEL_15:
   v12 = [v10 componentsJoinedByString:@"|"];
 
@@ -167,7 +167,7 @@ LABEL_15:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(PHImageRequestBehaviorSpec);
   *(result + 3) = self->_choosingPolicy;
@@ -192,74 +192,74 @@ LABEL_15:
   return result;
 }
 
-+ (BOOL)_shouldLoadHDRGainMapBasedOnChoosingPolicy:(int64_t)a3 options:(id)a4
++ (BOOL)_shouldLoadHDRGainMapBasedOnChoosingPolicy:(int64_t)policy options:(id)options
 {
-  v5 = a4;
-  v6 = v5;
-  if ((a3 - 3) >= 2)
+  optionsCopy = options;
+  v6 = optionsCopy;
+  if ((policy - 3) >= 2)
   {
-    if (a3 != 2 || ![v5 includeHDRGainMap])
+    if (policy != 2 || ![optionsCopy includeHDRGainMap])
     {
       v8 = 0;
       goto LABEL_8;
     }
 
-    v7 = [v6 includeHDRGainMapInIntermediateImage];
+    includeHDRGainMapInIntermediateImage = [v6 includeHDRGainMapInIntermediateImage];
   }
 
   else
   {
-    v7 = [v5 includeHDRGainMap];
+    includeHDRGainMapInIntermediateImage = [optionsCopy includeHDRGainMap];
   }
 
-  v8 = v7;
+  v8 = includeHDRGainMapInIntermediateImage;
 LABEL_8:
 
   return v8;
 }
 
-+ (unint64_t)loadingOptionsFromLoadingMode:(int64_t)a3
++ (unint64_t)loadingOptionsFromLoadingMode:(int64_t)mode
 {
-  v3 = (a3 & 0xFC0000) != 0 || a3 == 0;
-  v4 = (a3 >> 15) & 0x1F8;
+  v3 = (mode & 0xFC0000) != 0 || mode == 0;
+  v4 = (mode >> 15) & 0x1F8;
   if (v3)
   {
-    return ((a3 >> 14) & 4 | (2 * (a3 & 1)) | v4) + 1;
+    return ((mode >> 14) & 4 | (2 * (mode & 1)) | v4) + 1;
   }
 
   else
   {
-    return (a3 >> 14) & 4 | (2 * (a3 & 1)) | v4;
+    return (mode >> 14) & 4 | (2 * (mode & 1)) | v4;
   }
 }
 
-+ (id)livePhotoRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)a3 options:(id)a4
++ (id)livePhotoRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)spec options:(id)options
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  optionsCopy = options;
+  v7 = [spec copy];
   [v7 setSynchronous:0];
   [v7 setChoosingPolicy:3];
-  v8 = [v6 preferHDR];
+  preferHDR = [optionsCopy preferHDR];
 
-  [v7 setDecodeAsHDR:{objc_msgSend(a1, "_shouldDecodeAsHDRBasedOnChoosingPolicy:optionsPreferHDR:", 3, v8)}];
+  [v7 setDecodeAsHDR:{objc_msgSend(self, "_shouldDecodeAsHDRBasedOnChoosingPolicy:optionsPreferHDR:", 3, preferHDR)}];
 
   return v7;
 }
 
-+ (id)livePhotoRequestInitialBehaviorSpecWithLivePhotoRequestOptions:(id)a3 asset:(id)a4
++ (id)livePhotoRequestInitialBehaviorSpecWithLivePhotoRequestOptions:(id)options asset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 deliveryMode];
+  optionsCopy = options;
+  deliveryMode = [optionsCopy deliveryMode];
   v7 = objc_alloc_init(PHImageRequestBehaviorSpec);
   [(PHImageRequestBehaviorSpec *)v7 setLoadingOptions:1];
-  v8 = v6 == 0;
+  v8 = deliveryMode == 0;
   v9 = 3;
-  if (!v6)
+  if (!deliveryMode)
   {
     v9 = 1;
   }
 
-  if (v6 == 2)
+  if (deliveryMode == 2)
   {
     v10 = 0;
   }
@@ -270,29 +270,29 @@ LABEL_8:
   }
 
   [(PHImageRequestBehaviorSpec *)v7 setChoosingPolicy:v10];
-  -[PHImageRequestBehaviorSpec setNetworkAccessAllowed:](v7, "setNetworkAccessAllowed:", [v5 isNetworkAccessAllowed]);
-  -[PHImageRequestBehaviorSpec setVersion:](v7, "setVersion:", [v5 version]);
-  -[PHImageRequestBehaviorSpec setDownloadIntent:](v7, "setDownloadIntent:", [v5 downloadIntent]);
-  -[PHImageRequestBehaviorSpec setDownloadPriority:](v7, "setDownloadPriority:", [v5 downloadPriority]);
-  v11 = [v5 preferHDR];
+  -[PHImageRequestBehaviorSpec setNetworkAccessAllowed:](v7, "setNetworkAccessAllowed:", [optionsCopy isNetworkAccessAllowed]);
+  -[PHImageRequestBehaviorSpec setVersion:](v7, "setVersion:", [optionsCopy version]);
+  -[PHImageRequestBehaviorSpec setDownloadIntent:](v7, "setDownloadIntent:", [optionsCopy downloadIntent]);
+  -[PHImageRequestBehaviorSpec setDownloadPriority:](v7, "setDownloadPriority:", [optionsCopy downloadPriority]);
+  preferHDR = [optionsCopy preferHDR];
 
-  -[PHImageRequestBehaviorSpec setDecodeAsHDR:](v7, "setDecodeAsHDR:", [a1 _shouldDecodeAsHDRBasedOnChoosingPolicy:v10 optionsPreferHDR:v11]);
+  -[PHImageRequestBehaviorSpec setDecodeAsHDR:](v7, "setDecodeAsHDR:", [self _shouldDecodeAsHDRBasedOnChoosingPolicy:v10 optionsPreferHDR:preferHDR]);
   [(PHImageRequestBehaviorSpec *)v7 setResizeMode:1];
   [(PHImageRequestBehaviorSpec *)v7 setSynchronous:v8];
 
   return v7;
 }
 
-+ (id)imageRequestIntermediateBehaviorSpecWithPreviousBehaviorSpec:(id)a3 options:(id)a4 asset:(id)a5
++ (id)imageRequestIntermediateBehaviorSpecWithPreviousBehaviorSpec:(id)spec options:(id)options asset:(id)asset
 {
-  v7 = a4;
-  v8 = [a3 copy];
+  optionsCopy = options;
+  v8 = [spec copy];
   [v8 setSynchronous:0];
   [v8 setNetworkAccessAllowed:0];
   [v8 setChoosingPolicy:2];
-  [v8 setIncludeHDRGainMap:{objc_msgSend(a1, "_shouldLoadHDRGainMapBasedOnChoosingPolicy:options:", 2, v7)}];
-  [v8 setDecodeAsHDR:{objc_msgSend(a1, "_shouldDecodeAsHDRBasedOnChoosingPolicy:optionsPreferHDR:", 2, objc_msgSend(v7, "preferHDR"))}];
-  [v7 targetHDRHeadroom];
+  [v8 setIncludeHDRGainMap:{objc_msgSend(self, "_shouldLoadHDRGainMapBasedOnChoosingPolicy:options:", 2, optionsCopy)}];
+  [v8 setDecodeAsHDR:{objc_msgSend(self, "_shouldDecodeAsHDRBasedOnChoosingPolicy:optionsPreferHDR:", 2, objc_msgSend(optionsCopy, "preferHDR"))}];
+  [optionsCopy targetHDRHeadroom];
   v10 = v9;
 
   [v8 setTargetHDRHeadroom:v10];
@@ -301,37 +301,37 @@ LABEL_8:
   return v8;
 }
 
-+ (id)imageRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)a3 options:(id)a4 asset:(id)a5
++ (id)imageRequestBestBehaviorSpecWithPreviousBehaviorSpec:(id)spec options:(id)options asset:(id)asset
 {
-  v7 = a4;
-  v8 = [a3 copy];
-  [v8 setSynchronous:{objc_msgSend(v7, "isSynchronous")}];
+  optionsCopy = options;
+  v8 = [spec copy];
+  [v8 setSynchronous:{objc_msgSend(optionsCopy, "isSynchronous")}];
   [v8 setChoosingPolicy:3];
-  [v8 setIncludeHDRGainMap:{objc_msgSend(a1, "_shouldLoadHDRGainMapBasedOnChoosingPolicy:options:", 3, v7)}];
-  [v8 setDecodeAsHDR:{objc_msgSend(a1, "_shouldDecodeAsHDRBasedOnChoosingPolicy:optionsPreferHDR:", 3, objc_msgSend(v7, "preferHDR"))}];
-  [v7 targetHDRHeadroom];
+  [v8 setIncludeHDRGainMap:{objc_msgSend(self, "_shouldLoadHDRGainMapBasedOnChoosingPolicy:options:", 3, optionsCopy)}];
+  [v8 setDecodeAsHDR:{objc_msgSend(self, "_shouldDecodeAsHDRBasedOnChoosingPolicy:optionsPreferHDR:", 3, objc_msgSend(optionsCopy, "preferHDR"))}];
+  [optionsCopy targetHDRHeadroom];
   [v8 setTargetHDRHeadroom:?];
-  v9 = [v7 isNetworkAccessAllowed];
+  isNetworkAccessAllowed = [optionsCopy isNetworkAccessAllowed];
 
-  [v8 setNetworkAccessAllowed:v9];
+  [v8 setNetworkAccessAllowed:isNetworkAccessAllowed];
 
   return v8;
 }
 
-+ (id)imageRequestInitialBehaviorSpecWithImageRequestOptions:(id)a3 asset:(id)a4
++ (id)imageRequestInitialBehaviorSpecWithImageRequestOptions:(id)options asset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 deliveryMode];
+  optionsCopy = options;
+  deliveryMode = [optionsCopy deliveryMode];
   v7 = 3;
-  if (v6 > 2)
+  if (deliveryMode > 2)
   {
-    if (v6 == 5)
+    if (deliveryMode == 5)
     {
       v7 = 2;
     }
 
-    v8 = v6 == 3 || v6 != 5;
-    if (v6 == 3)
+    v8 = deliveryMode == 3 || deliveryMode != 5;
+    if (deliveryMode == 3)
     {
       v9 = 4;
     }
@@ -342,10 +342,10 @@ LABEL_8:
     }
   }
 
-  else if (v6)
+  else if (deliveryMode)
   {
-    v8 = v6 != 2;
-    if (v6 == 2)
+    v8 = deliveryMode != 2;
+    if (deliveryMode == 2)
     {
       v9 = 0;
     }
@@ -356,7 +356,7 @@ LABEL_8:
     }
   }
 
-  else if ([v5 isSynchronous])
+  else if ([optionsCopy isSynchronous])
   {
     v8 = 1;
     v9 = 3;
@@ -365,7 +365,7 @@ LABEL_8:
   else
   {
     v8 = 0;
-    if ([v5 opportunisticDegradedImagesToReturn] == 2)
+    if ([optionsCopy opportunisticDegradedImagesToReturn] == 2)
     {
       v9 = 2;
     }
@@ -376,78 +376,78 @@ LABEL_8:
     }
   }
 
-  v10 = +[PHImageRequestBehaviorSpec loadingOptionsFromLoadingMode:](PHImageRequestBehaviorSpec, "loadingOptionsFromLoadingMode:", [v5 loadingMode]);
+  v10 = +[PHImageRequestBehaviorSpec loadingOptionsFromLoadingMode:](PHImageRequestBehaviorSpec, "loadingOptionsFromLoadingMode:", [optionsCopy loadingMode]);
   v11 = objc_alloc_init(PHImageRequestBehaviorSpec);
   [(PHImageRequestBehaviorSpec *)v11 setChoosingPolicy:v9];
   [(PHImageRequestBehaviorSpec *)v11 setLoadingOptions:v10];
-  -[PHImageRequestBehaviorSpec setAllowPlaceholder:](v11, "setAllowPlaceholder:", [v5 allowPlaceholder]);
+  -[PHImageRequestBehaviorSpec setAllowPlaceholder:](v11, "setAllowPlaceholder:", [optionsCopy allowPlaceholder]);
   if (v8)
   {
-    v12 = [v5 isNetworkAccessAllowed];
+    isNetworkAccessAllowed = [optionsCopy isNetworkAccessAllowed];
   }
 
   else
   {
-    v12 = 0;
+    isNetworkAccessAllowed = 0;
   }
 
-  [(PHImageRequestBehaviorSpec *)v11 setNetworkAccessAllowed:v12];
-  -[PHImageRequestBehaviorSpec setVersion:](v11, "setVersion:", [v5 version]);
-  -[PHImageRequestBehaviorSpec setResizeMode:](v11, "setResizeMode:", [v5 resizeMode]);
-  -[PHImageRequestBehaviorSpec setOnlyUseFetchedAssetPropertiesDuringChoosing:](v11, "setOnlyUseFetchedAssetPropertiesDuringChoosing:", [v5 onlyUseFetchedAssetPropertiesDuringChoosing]);
-  -[PHImageRequestBehaviorSpec setIncludeHDRGainMap:](v11, "setIncludeHDRGainMap:", [a1 _shouldLoadHDRGainMapBasedOnChoosingPolicy:v9 options:v5]);
-  -[PHImageRequestBehaviorSpec setDecodeAsHDR:](v11, "setDecodeAsHDR:", [a1 _shouldDecodeAsHDRBasedOnChoosingPolicy:v9 optionsPreferHDR:{objc_msgSend(v5, "preferHDR")}]);
+  [(PHImageRequestBehaviorSpec *)v11 setNetworkAccessAllowed:isNetworkAccessAllowed];
+  -[PHImageRequestBehaviorSpec setVersion:](v11, "setVersion:", [optionsCopy version]);
+  -[PHImageRequestBehaviorSpec setResizeMode:](v11, "setResizeMode:", [optionsCopy resizeMode]);
+  -[PHImageRequestBehaviorSpec setOnlyUseFetchedAssetPropertiesDuringChoosing:](v11, "setOnlyUseFetchedAssetPropertiesDuringChoosing:", [optionsCopy onlyUseFetchedAssetPropertiesDuringChoosing]);
+  -[PHImageRequestBehaviorSpec setIncludeHDRGainMap:](v11, "setIncludeHDRGainMap:", [self _shouldLoadHDRGainMapBasedOnChoosingPolicy:v9 options:optionsCopy]);
+  -[PHImageRequestBehaviorSpec setDecodeAsHDR:](v11, "setDecodeAsHDR:", [self _shouldDecodeAsHDRBasedOnChoosingPolicy:v9 optionsPreferHDR:{objc_msgSend(optionsCopy, "preferHDR")}]);
   [(PHImageRequestBehaviorSpec *)v11 setDisableImageIOForHDR:(v10 >> 8) & 1];
-  [v5 targetHDRHeadroom];
+  [optionsCopy targetHDRHeadroom];
   [(PHImageRequestBehaviorSpec *)v11 setTargetHDRHeadroom:?];
-  -[PHImageRequestBehaviorSpec setUseLowMemoryMode:](v11, "setUseLowMemoryMode:", [v5 useLowMemoryMode]);
-  -[PHImageRequestBehaviorSpec setUseLimitedLibraryMode:](v11, "setUseLimitedLibraryMode:", [v5 useLimitedLibraryMode]);
-  v13 = [v5 loadingMode];
+  -[PHImageRequestBehaviorSpec setUseLowMemoryMode:](v11, "setUseLowMemoryMode:", [optionsCopy useLowMemoryMode]);
+  -[PHImageRequestBehaviorSpec setUseLimitedLibraryMode:](v11, "setUseLimitedLibraryMode:", [optionsCopy useLimitedLibraryMode]);
+  loadingMode = [optionsCopy loadingMode];
   v14 = 100.0;
-  if ((v13 & 0x400000) == 0)
+  if ((loadingMode & 0x400000) == 0)
   {
     v14 = 0.0;
   }
 
   [(PHImageRequestBehaviorSpec *)v11 setMinimumTableThumbnailLongSide:v14];
-  if ([v5 deliveryMode])
+  if ([optionsCopy deliveryMode])
   {
-    v15 = [v5 isSynchronous];
+    isSynchronous = [optionsCopy isSynchronous];
   }
 
-  else if ([v5 opportunisticDegradedImagesToReturn])
+  else if ([optionsCopy opportunisticDegradedImagesToReturn])
   {
-    v15 = [v5 useAsyncForFastOpportunisticResult] ^ 1;
+    isSynchronous = [optionsCopy useAsyncForFastOpportunisticResult] ^ 1;
   }
 
   else
   {
-    v15 = 0;
+    isSynchronous = 0;
   }
 
-  [(PHImageRequestBehaviorSpec *)v11 setSynchronous:v15];
-  -[PHImageRequestBehaviorSpec setDownloadIntent:](v11, "setDownloadIntent:", [v5 downloadIntent]);
-  -[PHImageRequestBehaviorSpec setDownloadPriority:](v11, "setDownloadPriority:", [v5 downloadPriority]);
-  -[PHImageRequestBehaviorSpec setCannotReturnSmallerImage:](v11, "setCannotReturnSmallerImage:", [v5 cannotReturnSmallerImage]);
+  [(PHImageRequestBehaviorSpec *)v11 setSynchronous:isSynchronous];
+  -[PHImageRequestBehaviorSpec setDownloadIntent:](v11, "setDownloadIntent:", [optionsCopy downloadIntent]);
+  -[PHImageRequestBehaviorSpec setDownloadPriority:](v11, "setDownloadPriority:", [optionsCopy downloadPriority]);
+  -[PHImageRequestBehaviorSpec setCannotReturnSmallerImage:](v11, "setCannotReturnSmallerImage:", [optionsCopy cannotReturnSmallerImage]);
 
   return v11;
 }
 
-+ (id)contentEditingInputImageBehaviorSpecForBaseVersion:(int64_t)a3 isNetworkAccessAllowed:(BOOL)a4 downloadIntent:(int64_t)a5 shouldUseRAWAsUnadjustedBase:(BOOL)a6 asset:(id)a7
++ (id)contentEditingInputImageBehaviorSpecForBaseVersion:(int64_t)version isNetworkAccessAllowed:(BOOL)allowed downloadIntent:(int64_t)intent shouldUseRAWAsUnadjustedBase:(BOOL)base asset:(id)asset
 {
-  v9 = a4;
-  v11 = a7;
+  allowedCopy = allowed;
+  assetCopy = asset;
   v12 = objc_alloc_init(PHImageRequestBehaviorSpec);
   [(PHImageRequestBehaviorSpec *)v12 setChoosingPolicy:3];
   [(PHImageRequestBehaviorSpec *)v12 setLoadingOptions:4];
-  [(PHImageRequestBehaviorSpec *)v12 setNetworkAccessAllowed:v9];
-  [(PHImageRequestBehaviorSpec *)v12 setDownloadIntent:a5];
-  v13 = [v11 mediaSubtypes];
+  [(PHImageRequestBehaviorSpec *)v12 setNetworkAccessAllowed:allowedCopy];
+  [(PHImageRequestBehaviorSpec *)v12 setDownloadIntent:intent];
+  mediaSubtypes = [assetCopy mediaSubtypes];
 
-  [(PHImageRequestBehaviorSpec *)v12 setIncludeHDRGainMap:(v13 >> 9) & 1];
-  if (a3 || !a6)
+  [(PHImageRequestBehaviorSpec *)v12 setIncludeHDRGainMap:(mediaSubtypes >> 9) & 1];
+  if (version || !base)
   {
-    v14 = [PHAdjustmentData imageRequestVersionFromAdjustmentBaseVersion:a3];
+    v14 = [PHAdjustmentData imageRequestVersionFromAdjustmentBaseVersion:version];
   }
 
   else

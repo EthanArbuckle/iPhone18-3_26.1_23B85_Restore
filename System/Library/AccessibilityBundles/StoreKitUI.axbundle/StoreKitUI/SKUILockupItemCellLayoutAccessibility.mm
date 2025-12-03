@@ -1,26 +1,26 @@
 @interface SKUILockupItemCellLayoutAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SKUILockupItemCellLayoutAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUILockupItemCellLayout" hasInstanceMethod:@"numberOfUserRatings" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SKUILockupItemCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUILockupItemCellLayout" hasInstanceMethod:@"categoryString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUILockupMetadataView" hasInstanceVariable:@"_userRatingImageView" withType:"UIImageView"];
-  [v3 validateClass:@"SKUILockupItemCellLayout" hasInstanceVariable:@"_metadataView" withType:"SKUILockupMetadataView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUILockupItemCellLayout" hasInstanceMethod:@"numberOfUserRatings" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SKUILockupItemCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUILockupItemCellLayout" hasInstanceMethod:@"categoryString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUILockupMetadataView" hasInstanceVariable:@"_userRatingImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SKUILockupItemCellLayout" hasInstanceVariable:@"_metadataView" withType:"SKUILockupMetadataView"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SKUILockupItemCellLayoutAccessibility *)self safeValueForKey:@"numberOfUserRatings"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (v4 < 1)
+  if (integerValue < 1)
   {
     v7 = 0;
   }
@@ -29,14 +29,14 @@
   {
     v5 = MEMORY[0x29EDBA0F8];
     v6 = accessibilitySKUILocalizedString(@"USER_RATING_COUNT");
-    v7 = [v5 localizedStringWithFormat:v6, v4];
+    v7 = [v5 localizedStringWithFormat:v6, integerValue];
   }
 
   v8 = [(SKUILockupItemCellLayoutAccessibility *)self safeValueForKey:@"title"];
   v9 = [(SKUILockupItemCellLayoutAccessibility *)self safeValueForKey:@"categoryString"];
   v10 = [(SKUILockupItemCellLayoutAccessibility *)self safeValueForKey:@"_metadataView"];
   v11 = [v10 safeValueForKey:@"_userRatingImageView"];
-  v14 = [v11 accessibilityLabel];
+  accessibilityLabel = [v11 accessibilityLabel];
   v12 = __UIAXStringForVariables();
 
   return v12;

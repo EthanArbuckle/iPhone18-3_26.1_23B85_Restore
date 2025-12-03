@@ -1,13 +1,13 @@
 @interface HUIconListView
 - (HUIconListView)init;
-- (void)_addIconNamed:(id)a3;
-- (void)_addIconWithDescriptor:(id)a3;
+- (void)_addIconNamed:(id)named;
+- (void)_addIconWithDescriptor:(id)descriptor;
 - (void)_layoutLeftToRight;
 - (void)_layoutRightToLeft;
 - (void)_prepareIconArray;
 - (void)_setUpIcons;
 - (void)layoutSubviews;
-- (void)setIconDescriptors:(id)a3;
+- (void)setIconDescriptors:(id)descriptors;
 @end
 
 @implementation HUIconListView
@@ -19,20 +19,20 @@
   v2 = [(HUIconListView *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     iconDescriptors = v2->_iconDescriptors;
-    v2->_iconDescriptors = v3;
+    v2->_iconDescriptors = array;
   }
 
   return v2;
 }
 
-- (void)setIconDescriptors:(id)a3
+- (void)setIconDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   if (([(NSArray *)self->_iconDescriptors isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_iconDescriptors, a3);
+    objc_storeStrong(&self->_iconDescriptors, descriptors);
     [(HUIconListView *)self _setUpIcons];
   }
 }
@@ -45,8 +45,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(HUIconListView *)self iconDescriptors];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  iconDescriptors = [(HUIconListView *)self iconDescriptors];
+  v4 = [iconDescriptors countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -58,14 +58,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(iconDescriptors);
         }
 
         [(HUIconListView *)self _addIconWithDescriptor:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [iconDescriptors countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -100,8 +100,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(HUIconListView *)self iconViews];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  iconViews = [(HUIconListView *)self iconViews];
+  v6 = [iconViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -113,7 +113,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(iconViews);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -136,7 +136,7 @@
         v9 = v9 + v15 + 12.0;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [iconViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -153,8 +153,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(HUIconListView *)self iconViews];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  iconViews = [(HUIconListView *)self iconViews];
+  v8 = [iconViews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -165,7 +165,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(iconViews);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -188,30 +188,30 @@
         v4 = v4 - (v16 + 12.0);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [iconViews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_addIconNamed:(id)a3
+- (void)_addIconNamed:(id)named
 {
   v4 = MEMORY[0x277D14728];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithImageIdentifier:v5];
+  namedCopy = named;
+  v6 = [[v4 alloc] initWithImageIdentifier:namedCopy];
 
   [(HUIconListView *)self _addIconWithDescriptor:v6];
 }
 
-- (void)_addIconWithDescriptor:(id)a3
+- (void)_addIconWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v6 = [[HUTriggerIconView alloc] initWithIconDescriptor:v4];
+  descriptorCopy = descriptor;
+  v6 = [[HUTriggerIconView alloc] initWithIconDescriptor:descriptorCopy];
 
   [(HUTriggerIconView *)v6 setContentMode:1];
-  v5 = [(HUIconListView *)self iconViews];
-  [v5 addObject:v6];
+  iconViews = [(HUIconListView *)self iconViews];
+  [iconViews addObject:v6];
 
   [(HUIconListView *)self addSubview:v6];
 }
@@ -219,16 +219,16 @@
 - (void)_prepareIconArray
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HUIconListView *)self iconViews];
+  iconViews = [(HUIconListView *)self iconViews];
 
-  if (v3)
+  if (iconViews)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(HUIconListView *)self iconViews];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    iconViews2 = [(HUIconListView *)self iconViews];
+    v5 = [iconViews2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -239,25 +239,25 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(iconViews2);
           }
 
           [*(*(&v11 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [iconViews2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [(HUIconListView *)self iconViews];
-    [v9 removeAllObjects];
+    iconViews3 = [(HUIconListView *)self iconViews];
+    [iconViews3 removeAllObjects];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     [(HUIconListView *)self setIconViews:?];
   }
 }

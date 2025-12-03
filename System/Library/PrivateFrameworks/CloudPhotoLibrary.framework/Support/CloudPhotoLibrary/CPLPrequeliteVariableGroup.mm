@@ -1,33 +1,33 @@
 @interface CPLPrequeliteVariableGroup
-+ (CPLPrequeliteVariableGroup)variableGroupWithVariables:(id)a3;
-+ (CPLPrequeliteVariableGroup)variableGroupWithVariablesAndGroups:(id)a3;
-- (CPLPrequeliteVariableGroup)initWithVariables:(id)a3;
++ (CPLPrequeliteVariableGroup)variableGroupWithVariables:(id)variables;
++ (CPLPrequeliteVariableGroup)variableGroupWithVariablesAndGroups:(id)groups;
+- (CPLPrequeliteVariableGroup)initWithVariables:(id)variables;
 - (PQLInjecting)injectionForDefaultValues;
 - (PQLInjecting)injectionForDefaultValuesUpdate;
 - (id)_defaultValuesObject;
-- (id)injectionForUpdates:(id)a3;
-- (id)injectionForValues:(id)a3;
+- (id)injectionForUpdates:(id)updates;
+- (id)injectionForValues:(id)values;
 @end
 
 @implementation CPLPrequeliteVariableGroup
 
-+ (CPLPrequeliteVariableGroup)variableGroupWithVariables:(id)a3
++ (CPLPrequeliteVariableGroup)variableGroupWithVariables:(id)variables
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithVariables:v4];
+  variablesCopy = variables;
+  v5 = [[self alloc] initWithVariables:variablesCopy];
 
   return v5;
 }
 
-+ (CPLPrequeliteVariableGroup)variableGroupWithVariablesAndGroups:(id)a3
++ (CPLPrequeliteVariableGroup)variableGroupWithVariablesAndGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = objc_alloc_init(NSMutableArray);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = groupsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -51,8 +51,8 @@
 
         else
         {
-          v12 = [v11 variables];
-          [v5 addObjectsFromArray:v12];
+          variables = [v11 variables];
+          [v5 addObjectsFromArray:variables];
         }
       }
 
@@ -62,20 +62,20 @@
     while (v8);
   }
 
-  v13 = [a1 variableGroupWithVariables:v5];
+  v13 = [self variableGroupWithVariables:v5];
 
   return v13;
 }
 
-- (CPLPrequeliteVariableGroup)initWithVariables:(id)a3
+- (CPLPrequeliteVariableGroup)initWithVariables:(id)variables
 {
-  v4 = a3;
+  variablesCopy = variables;
   v41.receiver = self;
   v41.super_class = CPLPrequeliteVariableGroup;
   v5 = [(CPLPrequeliteVariableGroup *)&v41 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [variablesCopy copy];
     variables = v5->_variables;
     v34 = v5;
     v5->_variables = v6;
@@ -88,8 +88,8 @@
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v35 = v4;
-    obj = v4;
+    v35 = variablesCopy;
+    obj = variablesCopy;
     v12 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v12)
     {
@@ -132,8 +132,8 @@
           [(NSData *)v10 appendData:v22];
 
           [(NSData *)v10 appendBytes:" = ?" length:4];
-          v23 = [v17 columnDefinition];
-          v24 = [v23 sql];
+          columnDefinition = [v17 columnDefinition];
+          v24 = [columnDefinition sql];
           [(NSData *)v11 appendData:v24];
 
           v14 = 0;
@@ -165,7 +165,7 @@
     definitionInjection = v34->_definitionInjection;
     v34->_definitionInjection = v31;
 
-    v4 = v35;
+    variablesCopy = v35;
   }
 
   return v5;
@@ -203,16 +203,16 @@
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 defaultValue];
-          if (v12)
+          defaultValue = [v11 defaultValue];
+          if (defaultValue)
           {
             if (!v8)
             {
               v8 = objc_alloc_init(NSMutableDictionary);
             }
 
-            v13 = [v11 variableName];
-            [v8 setObject:v12 forKeyedSubscript:v13];
+            variableName = [v11 variableName];
+            [v8 setObject:defaultValue forKeyedSubscript:variableName];
           }
         }
 
@@ -244,34 +244,34 @@
   return v4;
 }
 
-- (id)injectionForValues:(id)a3
+- (id)injectionForValues:(id)values
 {
-  v4 = a3;
-  v5 = [[_CPLObjectInjection alloc] initWithVariables:self->_variables object:v4 sql:self->_sqlForValues];
+  valuesCopy = values;
+  v5 = [[_CPLObjectInjection alloc] initWithVariables:self->_variables object:valuesCopy sql:self->_sqlForValues];
 
   return v5;
 }
 
 - (PQLInjecting)injectionForDefaultValues
 {
-  v3 = [(CPLPrequeliteVariableGroup *)self _defaultValuesObject];
-  v4 = [(CPLPrequeliteVariableGroup *)self injectionForValues:v3];
+  _defaultValuesObject = [(CPLPrequeliteVariableGroup *)self _defaultValuesObject];
+  v4 = [(CPLPrequeliteVariableGroup *)self injectionForValues:_defaultValuesObject];
 
   return v4;
 }
 
-- (id)injectionForUpdates:(id)a3
+- (id)injectionForUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [[_CPLObjectInjection alloc] initWithVariables:self->_variables object:v4 sql:self->_sqlForUpdates];
+  updatesCopy = updates;
+  v5 = [[_CPLObjectInjection alloc] initWithVariables:self->_variables object:updatesCopy sql:self->_sqlForUpdates];
 
   return v5;
 }
 
 - (PQLInjecting)injectionForDefaultValuesUpdate
 {
-  v3 = [(CPLPrequeliteVariableGroup *)self _defaultValuesObject];
-  v4 = [(CPLPrequeliteVariableGroup *)self injectionForUpdates:v3];
+  _defaultValuesObject = [(CPLPrequeliteVariableGroup *)self _defaultValuesObject];
+  v4 = [(CPLPrequeliteVariableGroup *)self injectionForUpdates:_defaultValuesObject];
 
   return v4;
 }

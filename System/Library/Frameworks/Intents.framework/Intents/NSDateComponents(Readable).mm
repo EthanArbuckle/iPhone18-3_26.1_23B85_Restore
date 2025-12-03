@@ -10,8 +10,8 @@
   v6 = a3;
   v7 = a4;
   v8 = MEMORY[0x1E695DEE8];
-  v9 = [v6 languageCode];
-  v10 = [v8 if_currentCalendarWithLanguageCode:v9];
+  languageCode = [v6 languageCode];
+  v10 = [v8 if_currentCalendarWithLanguageCode:languageCode];
 
   v11 = v7;
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -21,29 +21,29 @@
       v12 = objc_alloc_init(MEMORY[0x1E696AB70]);
       [v12 setCalendar:v10];
       [v12 setUnitsStyle:2];
-      v13 = [v11 type];
-      if (v13 <= 2)
+      type = [v11 type];
+      if (type <= 2)
       {
-        [v12 setAllowedUnits:qword_18EE5E4F0[v13]];
+        [v12 setAllowedUnits:qword_18EE5E4F0[type]];
       }
 
-      v14 = [v12 stringFromDateComponents:a1];
+      v14 = [v12 stringFromDateComponents:self];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v12 = [v15 dateFromComponents:a1];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v12 = [currentCalendar dateFromComponents:self];
 
-      v16 = [a1 timeZone];
-      v14 = [v12 _intents_readableTitleWithLocalizer:v6 metadata:v11 timeZone:v16];
+      timeZone = [self timeZone];
+      v14 = [v12 _intents_readableTitleWithLocalizer:v6 metadata:v11 timeZone:timeZone];
     }
   }
 
   else
   {
 
-    v14 = [MEMORY[0x1E696AB70] localizedStringFromDateComponents:a1 unitsStyle:0];
+    v14 = [MEMORY[0x1E696AB70] localizedStringFromDateComponents:self unitsStyle:0];
   }
 
   v17 = *MEMORY[0x1E69E9840];

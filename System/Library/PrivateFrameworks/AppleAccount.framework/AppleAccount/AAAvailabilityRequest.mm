@@ -1,21 +1,21 @@
 @interface AAAvailabilityRequest
-- (AAAvailabilityRequest)initWithAccount:(id)a3;
+- (AAAvailabilityRequest)initWithAccount:(id)account;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AAAvailabilityRequest
 
-- (AAAvailabilityRequest)initWithAccount:(id)a3
+- (AAAvailabilityRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AAAvailabilityRequest;
   v6 = [(AAAvailabilityRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -23,19 +23,19 @@
 
 - (id)urlString
 {
-  v3 = [(ACAccount *)self->_account dataclassProperties];
-  v4 = [v3 objectForKey:*MEMORY[0x1E6959AD0]];
+  dataclassProperties = [(ACAccount *)self->_account dataclassProperties];
+  v4 = [dataclassProperties objectForKey:*MEMORY[0x1E6959AD0]];
   v5 = [v4 objectForKey:@"url"];
 
   if (v5)
   {
-    v6 = [(ACAccount *)self->_account aa_personID];
+    aa_personID = [(ACAccount *)self->_account aa_personID];
 
-    if (v6)
+    if (aa_personID)
     {
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [(ACAccount *)self->_account aa_personID];
-      v9 = [v7 stringWithFormat:@"%@/%@/sharedstreams/status?feature=photos", v5, v8];
+      aa_personID2 = [(ACAccount *)self->_account aa_personID];
+      v9 = [v7 stringWithFormat:@"%@/%@/sharedstreams/status?feature=photos", v5, aa_personID2];
 
       goto LABEL_8;
     }
@@ -62,13 +62,13 @@ LABEL_8:
   v14 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = AAAvailabilityRequest;
-  v3 = [(AARequest *)&v11 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v11 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
-  v5 = [(AAAvailabilityRequest *)self urlString];
-  if (v5)
+  urlString = [(AAAvailabilityRequest *)self urlString];
+  if (urlString)
   {
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+    v6 = [MEMORY[0x1E695DFF8] URLWithString:urlString];
     [v4 setURL:v6];
 
     [v4 setHTTPMethod:@"GET"];

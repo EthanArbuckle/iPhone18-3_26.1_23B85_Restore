@@ -1,17 +1,17 @@
 @interface BRCTermDumper
-+ (void)execPagerOnFileFd:(int)a3;
-+ (void)setupPagerForFd:(int)a3;
-- (BRCTermDumper)initWithFile:(__sFILE *)a3 forceColor:(BOOL)a4 darkMode:(BOOL)a5 closeOnDeinit:(BOOL)a6;
-- (int)_transformToDarkMode:(int)a3;
++ (void)execPagerOnFileFd:(int)fd;
++ (void)setupPagerForFd:(int)fd;
+- (BRCTermDumper)initWithFile:(__sFILE *)file forceColor:(BOOL)color darkMode:(BOOL)mode closeOnDeinit:(BOOL)deinit;
+- (int)_transformToDarkMode:(int)mode;
 - (unint64_t)remainingSpace;
-- (void)_putsAndCrop:(const char *)a3 len:(unint64_t)a4;
-- (void)cursorDown:(unsigned int)a3;
+- (void)_putsAndCrop:(const char *)crop len:(unint64_t)len;
+- (void)cursorDown:(unsigned int)down;
 - (void)cursorGotoLineStart;
-- (void)cursorLeft:(unsigned int)a3;
+- (void)cursorLeft:(unsigned int)left;
 - (void)cursorRestore;
-- (void)cursorRight:(unsigned int)a3;
+- (void)cursorRight:(unsigned int)right;
 - (void)cursorSave;
-- (void)cursorUp:(unsigned int)a3;
+- (void)cursorUp:(unsigned int)up;
 - (void)dealloc;
 - (void)endLine;
 - (void)eraseEndOfLine;
@@ -19,17 +19,17 @@
 - (void)eraseScreenDown;
 - (void)eraseScreenUp;
 - (void)eraseStartOfLine;
-- (void)put:(id)a3;
-- (void)puts:(const char *)a3;
-- (void)puts:(const char *)a3 len:(unint64_t)a4;
+- (void)put:(id)put;
+- (void)puts:(const char *)puts;
+- (void)puts:(const char *)puts len:(unint64_t)len;
 - (void)startNewLine;
 - (void)startPager;
-- (void)write:(const char *)a3;
+- (void)write:(const char *)write;
 @end
 
 @implementation BRCTermDumper
 
-- (BRCTermDumper)initWithFile:(__sFILE *)a3 forceColor:(BOOL)a4 darkMode:(BOOL)a5 closeOnDeinit:(BOOL)a6
+- (BRCTermDumper)initWithFile:(__sFILE *)file forceColor:(BOOL)color darkMode:(BOOL)mode closeOnDeinit:(BOOL)deinit
 {
   v18.receiver = self;
   v18.super_class = BRCTermDumper;
@@ -37,10 +37,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_file = a3;
-    v10->_fileNeedsClosing = a6;
-    setvbuf(a3, 0, 2, 0x400uLL);
-    v12 = fileno(a3);
+    v10->_file = file;
+    v10->_fileNeedsClosing = deinit;
+    setvbuf(file, 0, 2, 0x400uLL);
+    v12 = fileno(file);
     v13 = isatty(v12) != 0;
     v11->_isatty = v13;
     v14 = getenv("TERM");
@@ -55,24 +55,24 @@
     }
 
     v11->_supportsEscapeSequences = v15;
-    if (!a4 && v15)
+    if (!color && v15)
     {
       v16 = v14;
       if (strcasestr(v14, "ansi"))
       {
-        a4 = 1;
+        color = 1;
       }
 
       else
       {
-        a4 = strstr(v16, "color") != 0;
+        color = strstr(v16, "color") != 0;
       }
     }
 
-    v11->_useColor = a4;
+    v11->_useColor = color;
     v11->_curBg = 9;
     v11->_curFg = 9;
-    v11->_darkMode = a5;
+    v11->_darkMode = mode;
   }
 
   return v11;
@@ -95,23 +95,23 @@
   [(BRCTermDumper *)&v4 dealloc];
 }
 
-- (int)_transformToDarkMode:(int)a3
+- (int)_transformToDarkMode:(int)mode
 {
-  if (a3 == 0 && self->_darkMode)
+  if (mode == 0 && self->_darkMode)
   {
     return 7;
   }
 
   else
   {
-    return a3;
+    return mode;
   }
 }
 
-+ (void)setupPagerForFd:(int)a3
++ (void)setupPagerForFd:(int)fd
 {
   v3 = 0;
-  ioctl(a3, 0x40087468uLL, &v3);
+  ioctl(fd, 0x40087468uLL, &v3);
   if (!getenv("LESS"))
   {
     putenv("LESS=FRSX");
@@ -123,11 +123,11 @@
   }
 }
 
-+ (void)execPagerOnFileFd:(int)a3
++ (void)execPagerOnFileFd:(int)fd
 {
-  [a1 setupPagerForFd:?];
-  dup2(a3, 0);
-  lseek(a3, 0, 0);
+  [self setupPagerForFd:?];
+  dup2(fd, 0);
+  lseek(fd, 0, 0);
   if (execlp("less", "less", "-", 0) < 0)
   {
     perror("execvp");
@@ -251,35 +251,35 @@ void __27__BRCTermDumper_startPager__block_invoke(uint64_t a1)
   }
 }
 
-- (void)cursorUp:(unsigned int)a3
+- (void)cursorUp:(unsigned int)up
 {
   if (self->_supportsEscapeSequences)
   {
-    fprintf(self->_file, "\x1B[%d%c", a3, 65);
+    fprintf(self->_file, "\x1B[%d%c", up, 65);
   }
 }
 
-- (void)cursorDown:(unsigned int)a3
+- (void)cursorDown:(unsigned int)down
 {
   if (self->_supportsEscapeSequences)
   {
-    fprintf(self->_file, "\x1B[%d%c", a3, 66);
+    fprintf(self->_file, "\x1B[%d%c", down, 66);
   }
 }
 
-- (void)cursorRight:(unsigned int)a3
+- (void)cursorRight:(unsigned int)right
 {
   if (self->_supportsEscapeSequences)
   {
-    fprintf(self->_file, "\x1B[%d%c", a3, 67);
+    fprintf(self->_file, "\x1B[%d%c", right, 67);
   }
 }
 
-- (void)cursorLeft:(unsigned int)a3
+- (void)cursorLeft:(unsigned int)left
 {
   if (self->_supportsEscapeSequences)
   {
-    fprintf(self->_file, "\x1B[%d%c", a3, 68);
+    fprintf(self->_file, "\x1B[%d%c", left, 68);
   }
 }
 
@@ -321,57 +321,57 @@ void __27__BRCTermDumper_startPager__block_invoke(uint64_t a1)
   return v3 - self->_usedTermWidth;
 }
 
-- (void)_putsAndCrop:(const char *)a3 len:(unint64_t)a4
+- (void)_putsAndCrop:(const char *)crop len:(unint64_t)len
 {
   usedTermWidth = self->_usedTermWidth;
-  if (self->_termWidth - usedTermWidth >= a4)
+  if (self->_termWidth - usedTermWidth >= len)
   {
-    v6 = a4;
+    lenCopy = len;
   }
 
   else
   {
-    v6 = self->_termWidth - usedTermWidth;
+    lenCopy = self->_termWidth - usedTermWidth;
   }
 
-  self->_usedTermWidth = v6 + usedTermWidth;
-  fwrite(a3, 1uLL, v6, self->_file);
+  self->_usedTermWidth = lenCopy + usedTermWidth;
+  fwrite(crop, 1uLL, lenCopy, self->_file);
 }
 
-- (void)puts:(const char *)a3 len:(unint64_t)a4
+- (void)puts:(const char *)puts len:(unint64_t)len
 {
   if (self->_termWidth)
   {
-    [(BRCTermDumper *)self _putsAndCrop:a3 len:a4];
+    [(BRCTermDumper *)self _putsAndCrop:puts len:len];
   }
 
   else
   {
-    fwrite(a3, 1uLL, a4, self->_file);
+    fwrite(puts, 1uLL, len, self->_file);
   }
 }
 
-- (void)puts:(const char *)a3
+- (void)puts:(const char *)puts
 {
-  v5 = strlen(a3);
+  v5 = strlen(puts);
 
-  [(BRCTermDumper *)self puts:a3 len:v5];
+  [(BRCTermDumper *)self puts:puts len:v5];
 }
 
-- (void)put:(id)a3
+- (void)put:(id)put
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  putCopy = put;
+  uTF8String = [put UTF8String];
 
-  [(BRCTermDumper *)self puts:v6];
+  [(BRCTermDumper *)self puts:uTF8String];
 }
 
-- (void)write:(const char *)a3
+- (void)write:(const char *)write
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_termWidth)
   {
-    v4 = vsnprintf(__str, 0x800uLL, a3, &v9);
+    v4 = vsnprintf(__str, 0x800uLL, write, &v9);
     if (v4 >= 0x800)
     {
       v5 = 2048;
@@ -388,7 +388,7 @@ void __27__BRCTermDumper_startPager__block_invoke(uint64_t a1)
   else
   {
     *__str = &v9;
-    vfprintf(self->_file, a3, &v9);
+    vfprintf(self->_file, write, &v9);
   }
 
   v6 = *MEMORY[0x1E69E9840];

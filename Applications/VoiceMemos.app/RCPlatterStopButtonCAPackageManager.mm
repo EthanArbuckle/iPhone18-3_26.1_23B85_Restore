@@ -1,10 +1,10 @@
 @interface RCPlatterStopButtonCAPackageManager
 + (id)stopButtonPackageManager;
-- (RCPlatterStopButtonCAPackageManager)initWithPackageName:(id)a3 inBundle:(id)a4;
+- (RCPlatterStopButtonCAPackageManager)initWithPackageName:(id)name inBundle:(id)bundle;
 - (UIView)view;
-- (id)_stringForMicaState:(unint64_t)a3;
-- (void)_setMicaState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setMicaState:(unint64_t)a3;
+- (id)_stringForMicaState:(unint64_t)state;
+- (void)_setMicaState:(unint64_t)state animated:(BOOL)animated;
+- (void)setMicaState:(unint64_t)state;
 @end
 
 @implementation RCPlatterStopButtonCAPackageManager
@@ -18,42 +18,42 @@
   return v4;
 }
 
-- (RCPlatterStopButtonCAPackageManager)initWithPackageName:(id)a3 inBundle:(id)a4
+- (RCPlatterStopButtonCAPackageManager)initWithPackageName:(id)name inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v11.receiver = self;
   v11.super_class = RCPlatterStopButtonCAPackageManager;
   v8 = [(RCPlatterStopButtonCAPackageManager *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(RCPlatterStopButtonCAPackageManager *)v8 setPackageName:v6];
-    [(RCPlatterStopButtonCAPackageManager *)v9 setBundle:v7];
+    [(RCPlatterStopButtonCAPackageManager *)v8 setPackageName:nameCopy];
+    [(RCPlatterStopButtonCAPackageManager *)v9 setBundle:bundleCopy];
   }
 
   return v9;
 }
 
-- (void)setMicaState:(unint64_t)a3
+- (void)setMicaState:(unint64_t)state
 {
-  if (self->_micaState != a3)
+  if (self->_micaState != state)
   {
-    self->_micaState = a3;
+    self->_micaState = state;
     [RCPlatterStopButtonCAPackageManager _setMicaState:"_setMicaState:animated:" animated:?];
   }
 }
 
 - (UIView)view
 {
-  v3 = [(RCPlatterStopButtonCAPackageManager *)self packageView];
+  packageView = [(RCPlatterStopButtonCAPackageManager *)self packageView];
 
-  if (!v3)
+  if (!packageView)
   {
     v4 = [BSUICAPackageView alloc];
-    v5 = [(RCPlatterStopButtonCAPackageManager *)self packageName];
-    v6 = [(RCPlatterStopButtonCAPackageManager *)self bundle];
-    v7 = [v4 initWithPackageName:v5 inBundle:v6];
+    packageName = [(RCPlatterStopButtonCAPackageManager *)self packageName];
+    bundle = [(RCPlatterStopButtonCAPackageManager *)self bundle];
+    v7 = [v4 initWithPackageName:packageName inBundle:bundle];
     [(RCPlatterStopButtonCAPackageManager *)self setPackageView:v7];
 
     [(RCPlatterStopButtonCAPackageManager *)self _setMicaState:self->_micaState animated:1];
@@ -62,41 +62,41 @@
   return [(RCPlatterStopButtonCAPackageManager *)self packageView];
 }
 
-- (void)_setMicaState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_setMicaState:(unint64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a4;
-  v8 = [(RCPlatterStopButtonCAPackageManager *)self packageView];
-  v9 = [v8 layer];
-  *&v10 = v7;
-  [v9 setSpeed:v10];
+  animatedCopy = animated;
+  animatedCopy2 = animated;
+  packageView = [(RCPlatterStopButtonCAPackageManager *)self packageView];
+  layer = [packageView layer];
+  *&v10 = animatedCopy2;
+  [layer setSpeed:v10];
 
-  v17 = [(RCPlatterStopButtonCAPackageManager *)self _stringForMicaState:a3];
+  v17 = [(RCPlatterStopButtonCAPackageManager *)self _stringForMicaState:state];
   v11 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v11 platterStopButtonStateTransitionDuration];
   v13 = v12;
 
-  v14 = [(RCPlatterStopButtonCAPackageManager *)self packageView];
-  v15 = v14;
+  packageView2 = [(RCPlatterStopButtonCAPackageManager *)self packageView];
+  v15 = packageView2;
   v16 = 0.0;
-  if (v4)
+  if (animatedCopy)
   {
     v16 = v13;
   }
 
-  [v14 setState:v17 animated:v4 transitionSpeed:0 completion:v16];
+  [packageView2 setState:v17 animated:animatedCopy transitionSpeed:0 completion:v16];
 }
 
-- (id)_stringForMicaState:(unint64_t)a3
+- (id)_stringForMicaState:(unint64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_10028A4A8 + a3);
+    return *(&off_10028A4A8 + state);
   }
 }
 

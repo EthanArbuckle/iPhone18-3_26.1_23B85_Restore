@@ -1,21 +1,21 @@
 @interface SUScriptMediaLibrary
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (id)containsAdamID:(id)a3;
-- (id)containsAdamIDs:(id)a3;
-- (id)makeCollectionWithItems:(id)a3;
-- (id)makePickerWithMediaTypes:(id)a3;
-- (id)makeQueryWithPreset:(id)a3;
-- (id)musicPlayerForType:(id)a3;
-- (id)playSongsInCollectionWithAdamID:(id)a3 firstItemID:(id)a4;
-- (id)playSongsWithAdamIDs:(id)a3;
-- (id)playVideoWithAdamID:(id)a3;
+- (id)containsAdamID:(id)d;
+- (id)containsAdamIDs:(id)ds;
+- (id)makeCollectionWithItems:(id)items;
+- (id)makePickerWithMediaTypes:(id)types;
+- (id)makeQueryWithPreset:(id)preset;
+- (id)musicPlayerForType:(id)type;
+- (id)playSongsInCollectionWithAdamID:(id)d firstItemID:(id)iD;
+- (id)playSongsWithAdamIDs:(id)ds;
+- (id)playVideoWithAdamID:(id)d;
 - (id)scriptAttributeKeys;
 - (void)_launchMusicApp;
-- (void)_launchMusicAppAfterPlayback:(id)a3 firstItem:(id)a4;
+- (void)_launchMusicAppAfterPlayback:(id)playback firstItem:(id)item;
 - (void)dealloc;
-- (void)getProperties:(id)a3 ofAdamIDs:(id)a4 withCompletionFunction:(id)a5;
+- (void)getProperties:(id)properties ofAdamIDs:(id)ds withCompletionFunction:(id)function;
 @end
 
 @implementation SUScriptMediaLibrary
@@ -27,7 +27,7 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (id)containsAdamID:(id)a3
+- (id)containsAdamID:(id)d
 {
   if (SSGetUnsignedLongLongFromValue())
   {
@@ -82,19 +82,19 @@ void __39__SUScriptMediaLibrary_containsAdamID___block_invoke(uint64_t a1, char 
   dispatch_release(v4);
 }
 
-- (id)containsAdamIDs:(id)a3
+- (id)containsAdamIDs:(id)ds
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [(SUScriptObject *)self copyJavaScriptContext];
-  if (!v5)
+  copyJavaScriptContext = [(SUScriptObject *)self copyJavaScriptContext];
+  if (!copyJavaScriptContext)
   {
     return 0;
   }
 
-  v6 = v5;
-  v7 = JSObjectMake(v5, 0, 0);
+  v6 = copyJavaScriptContext;
+  v7 = JSObjectMake(copyJavaScriptContext, 0, 0);
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  [a3 webScriptValueAtIndex:0];
+  [ds webScriptValueAtIndex:0];
   v9 = SSGetUnsignedLongLongFromValue();
   if (v9)
   {
@@ -105,7 +105,7 @@ void __39__SUScriptMediaLibrary_containsAdamID___block_invoke(uint64_t a1, char 
       v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithItemIdentifier:v10];
       [v8 addObject:v12];
 
-      [a3 webScriptValueAtIndex:v11];
+      [ds webScriptValueAtIndex:v11];
       v10 = SSGetUnsignedLongLongFromValue();
       v11 = (v11 + 1);
     }
@@ -135,7 +135,7 @@ void __39__SUScriptMediaLibrary_containsAdamID___block_invoke(uint64_t a1, char 
   dispatch_semaphore_wait(v13, v15);
   dispatch_release(v13);
   [(SUScriptObject *)self lock];
-  v23 = a3;
+  dsCopy = ds;
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -167,7 +167,7 @@ void __39__SUScriptMediaLibrary_containsAdamID___block_invoke(uint64_t a1, char 
   v31[5] = 0;
   [(SUScriptObject *)self unlock];
 
-  v21 = [MEMORY[0x1E69E2F88] scriptObjectForJSObject:v7 originRootObject:objc_msgSend(v23 rootObject:{"_originRootObject"), objc_msgSend(v23, "_rootObject")}];
+  v21 = [MEMORY[0x1E69E2F88] scriptObjectForJSObject:v7 originRootObject:objc_msgSend(dsCopy rootObject:{"_originRootObject"), objc_msgSend(dsCopy, "_rootObject")}];
   JSGlobalContextRelease(v6);
   _Block_object_dispose(&v30, 8);
   return v21;
@@ -184,13 +184,13 @@ void __40__SUScriptMediaLibrary_containsAdamIDs___block_invoke(uint64_t a1, uint
   dispatch_release(v4);
 }
 
-- (void)getProperties:(id)a3 ofAdamIDs:(id)a4 withCompletionFunction:(id)a5
+- (void)getProperties:(id)properties ofAdamIDs:(id)ds withCompletionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v9 = [a4 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
-    v10 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    v9 = [ds copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    v10 = [properties copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
     if ([v9 count] && objc_msgSend(v10, "count"))
     {
       v11 = +[SUMediaLibraryAdamIDCache sharedCache];
@@ -198,7 +198,7 @@ void __40__SUScriptMediaLibrary_containsAdamIDs___block_invoke(uint64_t a1, uint
       v13[1] = 3221225472;
       v13[2] = __71__SUScriptMediaLibrary_getProperties_ofAdamIDs_withCompletionFunction___block_invoke;
       v13[3] = &unk_1E8165C78;
-      v13[4] = a5;
+      v13[4] = function;
       v13[5] = self;
       [v11 getProperties:v10 ofAdamIDs:v9 withCompletionBlock:v13];
     }
@@ -262,9 +262,9 @@ void __71__SUScriptMediaLibrary_getProperties_ofAdamIDs_withCompletionFunction__
   [(SUScriptFunction *)v4 setThisObject:0];
 }
 
-- (id)makeCollectionWithItems:(id)a3
+- (id)makeCollectionWithItems:(id)items
 {
-  if ([(SUScriptMediaLibrary *)self _isRestricted]|| (v5 = [[SUScriptMediaItemCollection alloc] initWithItems:a3]) == 0)
+  if ([(SUScriptMediaLibrary *)self _isRestricted]|| (v5 = [[SUScriptMediaItemCollection alloc] initWithItems:items]) == 0)
   {
     v8 = MEMORY[0x1E695DFB0];
 
@@ -280,9 +280,9 @@ void __71__SUScriptMediaLibrary_getProperties_ofAdamIDs_withCompletionFunction__
   }
 }
 
-- (id)makePickerWithMediaTypes:(id)a3
+- (id)makePickerWithMediaTypes:(id)types
 {
-  if ([(SUScriptMediaLibrary *)self _isRestricted]|| (v5 = [[SUScriptMediaPickerController alloc] initWithMediaTypes:a3]) == 0)
+  if ([(SUScriptMediaLibrary *)self _isRestricted]|| (v5 = [[SUScriptMediaPickerController alloc] initWithMediaTypes:types]) == 0)
   {
     v8 = MEMORY[0x1E695DFB0];
 
@@ -298,7 +298,7 @@ void __71__SUScriptMediaLibrary_getProperties_ofAdamIDs_withCompletionFunction__
   }
 }
 
-- (id)makeQueryWithPreset:(id)a3
+- (id)makeQueryWithPreset:(id)preset
 {
   v9 = 0;
   v10 = &v9;
@@ -309,7 +309,7 @@ void __71__SUScriptMediaLibrary_getProperties_ofAdamIDs_withCompletionFunction__
   if (![(SUScriptMediaLibrary *)self _isRestricted])
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (a3 == 0) | objc_opt_isKindOfClass() & 1) || (objc_opt_class(), (objc_opt_isKindOfClass()))
+    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (preset == 0) | objc_opt_isKindOfClass() & 1) || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
       WebThreadRunOnMainThread();
       [(SUScriptObject *)self checkInScriptObject:v10[5]];
@@ -324,15 +324,15 @@ void __71__SUScriptMediaLibrary_getProperties_ofAdamIDs_withCompletionFunction__
   v5 = v10[5];
   if (v5)
   {
-    v6 = v5;
+    null = v5;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v7 = v6;
+  v7 = null;
   _Block_object_dispose(&v9, 8);
   return v7;
 }
@@ -431,7 +431,7 @@ LABEL_29:
   return [v4 setNativeObject:v5];
 }
 
-- (id)musicPlayerForType:(id)a3
+- (id)musicPlayerForType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -486,7 +486,7 @@ LABEL_29:
   if (!v8 || ![(SUScriptObject *)self scriptObjectIsCheckedIn:v8])
   {
 LABEL_19:
-    v13 = [[SUScriptMusicPlayerController alloc] initWithPlayerType:a3];
+    v13 = [[SUScriptMusicPlayerController alloc] initWithPlayerType:type];
     if (v13)
     {
       v8 = v13;
@@ -511,7 +511,7 @@ LABEL_19:
   return v8;
 }
 
-- (id)playSongsInCollectionWithAdamID:(id)a3 firstItemID:(id)a4
+- (id)playSongsInCollectionWithAdamID:(id)d firstItemID:(id)iD
 {
   v8 = 0;
   v9 = &v8;
@@ -520,10 +520,10 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    iD = 0;
   }
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && (!a4 || (objc_opt_respondsToSelector()))
+  if (objc_opt_respondsToSelector() & 1) != 0 && (!iD || (objc_opt_respondsToSelector()))
   {
     WebThreadRunOnMainThread();
   }
@@ -683,7 +683,7 @@ LABEL_5:
   }
 }
 
-- (id)playSongsWithAdamIDs:(id)a3
+- (id)playSongsWithAdamIDs:(id)ds
 {
   v8 = 0;
   v9 = &v8;
@@ -692,7 +692,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [a3 copyArrayValueWithValidator:SURespondsValidator context:sel_longLongValue];
+    v4 = [ds copyArrayValueWithValidator:SURespondsValidator context:sel_longLongValue];
     WebThreadRunOnMainThread();
   }
 
@@ -853,7 +853,7 @@ void __45__SUScriptMediaLibrary_playSongsWithAdamIDs___block_invoke(uint64_t a1)
   }
 }
 
-- (id)playVideoWithAdamID:(id)a3
+- (id)playVideoWithAdamID:(id)d
 {
   v6 = 0;
   v7 = &v6;
@@ -984,34 +984,34 @@ uint64_t __44__SUScriptMediaLibrary__connectNativeObject__block_invoke(uint64_t 
 
 - (void)_launchMusicApp
 {
-  v2 = [MEMORY[0x1E6963608] defaultWorkspace];
-  if (([v2 openSensitiveURL:objc_msgSend(MEMORY[0x1E695DFF8] withOptions:{"URLWithString:", @"music://show-now-playing", 0}] & 1) == 0)
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  if (([defaultWorkspace openSensitiveURL:objc_msgSend(MEMORY[0x1E695DFF8] withOptions:{"URLWithString:", @"music://show-now-playing", 0}] & 1) == 0)
   {
 
     MEMORY[0x1EEE425E8](@"com.apple.Music", 0);
   }
 }
 
-- (void)_launchMusicAppAfterPlayback:(id)a3 firstItem:(id)a4
+- (void)_launchMusicAppAfterPlayback:(id)playback firstItem:(id)item
 {
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3052000000;
   v18 = __Block_byref_object_copy__20;
   v19 = __Block_byref_object_dispose__20;
   v20 = 0;
-  v8 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v9 = *MEMORY[0x1E6970268];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__SUScriptMediaLibrary__launchMusicAppAfterPlayback_firstItem___block_invoke;
   v14[3] = &unk_1E8165CF0;
-  v14[4] = a3;
+  v14[4] = playback;
   v14[5] = self;
-  v14[6] = v7;
+  v14[6] = defaultCenter;
   v14[7] = &v15;
-  v10 = [v7 addObserverForName:v9 object:a3 queue:v8 usingBlock:v14];
+  v10 = [defaultCenter addObserverForName:v9 object:playback queue:mainQueue usingBlock:v14];
   v16[5] = v10;
   v11 = v10;
   v12 = dispatch_time(0, 5000000000);
@@ -1020,17 +1020,17 @@ uint64_t __44__SUScriptMediaLibrary__connectNativeObject__block_invoke(uint64_t 
   v13[2] = __63__SUScriptMediaLibrary__launchMusicAppAfterPlayback_firstItem___block_invoke_92;
   v13[3] = &unk_1E8165D18;
   v13[4] = self;
-  v13[5] = v7;
-  v13[6] = a3;
+  v13[5] = defaultCenter;
+  v13[6] = playback;
   v13[7] = &v15;
   dispatch_after(v12, MEMORY[0x1E69E96A0], v13);
-  [a3 beginGeneratingPlaybackNotifications];
-  if (a4)
+  [playback beginGeneratingPlaybackNotifications];
+  if (item)
   {
-    [a3 setNowPlayingItem:a4];
+    [playback setNowPlayingItem:item];
   }
 
-  [a3 play];
+  [playback play];
   _Block_object_dispose(&v15, 8);
 }
 
@@ -1134,27 +1134,27 @@ uint64_t __63__SUScriptMediaLibrary__launchMusicAppAfterPlayback_firstItem___blo
   return result;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_34 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaLibrary;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_28, 10);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_28, 10);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaLibrary;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -1164,14 +1164,14 @@ uint64_t __63__SUScriptMediaLibrary__launchMusicAppAfterPlayback_firstItem___blo
 {
   v4.receiver = self;
   v4.super_class = SUScriptMediaLibrary;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_34 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_34 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_28 = sel_containsAdamID_;
     *algn_1EBF3AFA8 = @"containsAdamID";

@@ -1,15 +1,15 @@
 @interface WFOutputAction
-- (BOOL)getInputContentFromVariablesInParameterState:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (BOOL)getInputContentFromVariablesInParameterState:(id)state context:(id)context completionHandler:(id)handler;
 - (BOOL)hasOutputFallback;
 - (BOOL)outputSurfaceIsAvailable;
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (id)outputContentClasses;
 - (id)outputVariableString;
 - (id)runSource;
 - (id)runningContext;
 - (unint64_t)outputBehavior;
-- (void)finishRunningWithOutput:(id)a3 error:(id)a4;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)finishRunningWithOutput:(id)output error:(id)error;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFOutputAction
@@ -17,14 +17,14 @@
 - (id)outputContentClasses
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = [(WFOutputAction *)self outputVariableString];
-  v3 = v2;
-  if (v2)
+  outputVariableString = [(WFOutputAction *)self outputVariableString];
+  v3 = outputVariableString;
+  if (outputVariableString)
   {
-    v4 = [v2 variables];
-    v5 = [v4 count];
-    v6 = [v3 stringsAndVariables];
-    v7 = [v6 count];
+    variables = [outputVariableString variables];
+    v5 = [variables count];
+    stringsAndVariables = [v3 stringsAndVariables];
+    v7 = [stringsAndVariables count];
 
     if (v5 == v7)
     {
@@ -33,8 +33,8 @@
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = [v3 variables];
-      v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      variables2 = [v3 variables];
+      v10 = [variables2 countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v10)
       {
         v11 = v10;
@@ -45,45 +45,45 @@
           {
             if (*v19 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(variables2);
             }
 
-            v14 = [*(*(&v18 + 1) + 8 * i) possibleAggrandizedContentClasses];
-            [v8 unionOrderedSet:v14];
+            possibleAggrandizedContentClasses = [*(*(&v18 + 1) + 8 * i) possibleAggrandizedContentClasses];
+            [v8 unionOrderedSet:possibleAggrandizedContentClasses];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+          v11 = [variables2 countByEnumeratingWithState:&v18 objects:v23 count:16];
         }
 
         while (v11);
       }
 
-      v15 = [v8 array];
+      array = [v8 array];
     }
 
     else
     {
       v22 = objc_opt_class();
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
+      array = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     }
   }
 
   else
   {
-    v15 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return array;
 }
 
-- (BOOL)getInputContentFromVariablesInParameterState:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (BOOL)getInputContentFromVariablesInParameterState:(id)state context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (WFGetVariableInputContentForPreviewing(v8, v9, v10))
+  stateCopy = state;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (WFGetVariableInputContentForPreviewing(stateCopy, contextCopy, handlerCopy))
   {
     v11 = 1;
   }
@@ -92,7 +92,7 @@
   {
     v13.receiver = self;
     v13.super_class = WFOutputAction;
-    v11 = [(WFAction *)&v13 getInputContentFromVariablesInParameterState:v8 context:v9 completionHandler:v10];
+    v11 = [(WFAction *)&v13 getInputContentFromVariablesInParameterState:stateCopy context:contextCopy completionHandler:handlerCopy];
   }
 
   return v11;
@@ -122,9 +122,9 @@
 
   v4 = v3;
 
-  v5 = [v4 variableString];
+  variableString = [v4 variableString];
 
-  return v5;
+  return variableString;
 }
 
 - (BOOL)hasOutputFallback
@@ -151,21 +151,21 @@
 
   v4 = v3;
 
-  v5 = [v4 value];
+  value = [v4 value];
 
-  LOBYTE(v4) = [v5 isEqualToString:@"Do Nothing"];
+  LOBYTE(v4) = [value isEqualToString:@"Do Nothing"];
   return v4 ^ 1;
 }
 
 - (id)runningContext
 {
-  v3 = [(WFAction *)self runningDelegate];
+  runningDelegate = [(WFAction *)self runningDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFAction *)self runningDelegate];
-    v6 = [v5 currentRunningContextForAction:self];
+    runningDelegate2 = [(WFAction *)self runningDelegate];
+    v6 = [runningDelegate2 currentRunningContextForAction:self];
   }
 
   else
@@ -178,12 +178,12 @@
 
 - (id)runSource
 {
-  v2 = [(WFOutputAction *)self runningContext];
-  v3 = [v2 runSource];
-  v4 = v3;
-  if (v3)
+  runningContext = [(WFOutputAction *)self runningContext];
+  runSource = [runningContext runSource];
+  v4 = runSource;
+  if (runSource)
   {
-    v5 = v3;
+    v5 = runSource;
   }
 
   else
@@ -198,35 +198,35 @@
 
 - (unint64_t)outputBehavior
 {
-  v2 = [(WFOutputAction *)self runningContext];
-  v3 = v2;
-  if (v2)
+  runningContext = [(WFOutputAction *)self runningContext];
+  v3 = runningContext;
+  if (runningContext)
   {
-    v4 = [v2 outputBehavior];
+    outputBehavior = [runningContext outputBehavior];
   }
 
   else
   {
-    v4 = 0;
+    outputBehavior = 0;
   }
 
-  return v4;
+  return outputBehavior;
 }
 
 - (BOOL)outputSurfaceIsAvailable
 {
-  v3 = [(WFOutputAction *)self runSource];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69E13D8]];
+  runSource = [(WFOutputAction *)self runSource];
+  v4 = [runSource isEqualToString:*MEMORY[0x1E69E13D8]];
 
   return (v4 & 1) != 0 || [(WFOutputAction *)self outputBehavior]!= 1;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = WFOutputAction;
-  v7 = [(WFAction *)&v16 setParameterState:a3 forKey:v6];
+  v7 = [(WFAction *)&v16 setParameterState:state forKey:keyCopy];
   if (v7)
   {
     v8 = [(WFAction *)self parameterStateForKey:@"WFResponse"];
@@ -251,11 +251,11 @@
 
     v10 = v9;
 
-    v11 = [v6 isEqualToString:@"WFNoOutputSurfaceBehavior"];
-    v12 = [v10 variableString];
+    v11 = [keyCopy isEqualToString:@"WFNoOutputSurfaceBehavior"];
+    variableString = [v10 variableString];
 
-    v13 = [v12 isEmpty];
-    if (v11 && v13)
+    isEmpty = [variableString isEmpty];
+    if (v11 && isEmpty)
     {
       v14 = [(WFAction *)self parameterStateForKey:@"WFOutput"];
       [(WFOutputAction *)self setParameterState:v14 forKey:@"WFResponse"];
@@ -265,19 +265,19 @@
   return v7;
 }
 
-- (void)finishRunningWithOutput:(id)a3 error:(id)a4
+- (void)finishRunningWithOutput:(id)output error:(id)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
     v5 = *MEMORY[0x1E69E9840];
 
-    [(WFAction *)self finishRunningWithError:a4];
+    [(WFAction *)self finishRunningWithError:error];
   }
 
   else
   {
-    [(WFAction *)self setOutput:a3];
+    [(WFAction *)self setOutput:output];
     v6 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A588];
     v7 = WFLocalizedString(@"User requested shortcut exit.");
@@ -290,14 +290,14 @@
   }
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFAction *)self parameterValueForKey:@"WFNoOutputSurfaceBehavior" ofClass:objc_opt_class()];
-  if (-[WFOutputAction outputSurfaceIsAvailable](self, "outputSurfaceIsAvailable") || ![v4 numberOfItems])
+  if (-[WFOutputAction outputSurfaceIsAvailable](self, "outputSurfaceIsAvailable") || ![inputCopy numberOfItems])
   {
-    v8 = self;
-    v9 = v4;
+    selfCopy2 = self;
+    v9 = inputCopy;
   }
 
   else
@@ -311,13 +311,13 @@
         goto LABEL_13;
       }
 
-      v7 = [(WFAction *)self userInterface];
+      userInterface = [(WFAction *)self userInterface];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __45__WFOutputAction_runAsynchronouslyWithInput___block_invoke;
       v15[3] = &unk_1E837E5E0;
       v15[4] = self;
-      WFShowResult(v6, v7, 1, v15);
+      WFShowResult(v6, userInterface, 1, v15);
 LABEL_10:
 
 LABEL_13:
@@ -329,25 +329,25 @@ LABEL_13:
       v10 = +[WFActionRegistry sharedRegistry];
       v6 = [v10 createActionWithIdentifier:@"is.workflow.actions.setclipboard" serializedParameters:0];
 
-      v7 = [(WFAction *)self userInterface];
-      v11 = [(WFAction *)self runningDelegate];
-      v12 = [(WFAction *)self variableSource];
-      v13 = [(WFAction *)self workQueue];
+      userInterface = [(WFAction *)self userInterface];
+      runningDelegate = [(WFAction *)self runningDelegate];
+      variableSource = [(WFAction *)self variableSource];
+      workQueue = [(WFAction *)self workQueue];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __45__WFOutputAction_runAsynchronouslyWithInput___block_invoke_2;
       v14[3] = &unk_1E837E750;
       v14[4] = self;
-      [v6 runWithInput:v4 userInterface:v7 runningDelegate:v11 variableSource:v12 workQueue:v13 completionHandler:v14];
+      [v6 runWithInput:inputCopy userInterface:userInterface runningDelegate:runningDelegate variableSource:variableSource workQueue:workQueue completionHandler:v14];
 
       goto LABEL_10;
     }
 
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
   }
 
-  [(WFOutputAction *)v8 finishRunningWithOutput:v9 error:0];
+  [(WFOutputAction *)selfCopy2 finishRunningWithOutput:v9 error:0];
 LABEL_14:
 }
 

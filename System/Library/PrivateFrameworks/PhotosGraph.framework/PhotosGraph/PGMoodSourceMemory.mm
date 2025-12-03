@@ -1,84 +1,84 @@
 @interface PGMoodSourceMemory
 - (BOOL)_shouldProcessSource;
 - (double)weight;
-- (id)_plistMoodIdentifiersWithGraph:(id)a3;
+- (id)_plistMoodIdentifiersWithGraph:(id)graph;
 @end
 
 @implementation PGMoodSourceMemory
 
 - (BOOL)_shouldProcessSource
 {
-  v3 = [(PGMoodSource *)self enrichedMemory];
-  v4 = [v3 memoryCategory];
+  enrichedMemory = [(PGMoodSource *)self enrichedMemory];
+  memoryCategory = [enrichedMemory memoryCategory];
 
-  if (v4)
+  if (memoryCategory)
   {
     return 1;
   }
 
-  v6 = [(PGMoodSource *)self assetCollection];
-  if ([v6 assetCollectionType] == 4)
+  assetCollection = [(PGMoodSource *)self assetCollection];
+  if ([assetCollection assetCollectionType] == 4)
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [(PGMoodSource *)self options];
-    v5 = [v7 memoryCategory] != 0;
+    options = [(PGMoodSource *)self options];
+    v5 = [options memoryCategory] != 0;
   }
 
   return v5;
 }
 
-- (id)_plistMoodIdentifiersWithGraph:(id)a3
+- (id)_plistMoodIdentifiersWithGraph:(id)graph
 {
   v23[1] = *MEMORY[0x277D85DE8];
   if ([(PGMoodSourceMemory *)self _shouldProcessSource])
   {
-    v4 = [(PGMoodSource *)self enrichedMemory];
+    enrichedMemory = [(PGMoodSource *)self enrichedMemory];
 
-    if (v4)
+    if (enrichedMemory)
     {
       v5 = &unk_284485A78;
     }
 
     else
     {
-      v8 = [(PGMoodSource *)self assetCollection];
-      v9 = [v8 assetCollectionType];
+      assetCollection = [(PGMoodSource *)self assetCollection];
+      assetCollectionType = [assetCollection assetCollectionType];
 
-      if (v9 == 4)
+      if (assetCollectionType == 4)
       {
-        v10 = [(PGMoodSource *)self assetCollection];
-        v11 = [v10 category];
-        v12 = [v10 subcategory];
+        assetCollection2 = [(PGMoodSource *)self assetCollection];
+        category = [assetCollection2 category];
+        subcategory = [assetCollection2 subcategory];
       }
 
       else
       {
-        v13 = [(PGMoodSource *)self options];
-        v11 = [v13 memoryCategory];
+        options = [(PGMoodSource *)self options];
+        category = [options memoryCategory];
 
-        v10 = [(PGMoodSource *)self options];
-        v12 = [v10 memorySubcategory];
+        assetCollection2 = [(PGMoodSource *)self options];
+        subcategory = [assetCollection2 memorySubcategory];
       }
 
-      v14 = v12;
+      v14 = subcategory;
 
       v5 = &unk_284485A90;
-      if (v11 != 212 && v11 != 215)
+      if (category != 212 && category != 215)
       {
-        v15 = [MEMORY[0x277CD98D8] stringForCategory:v11];
-        v16 = [v15 capitalizedString];
-        v17 = [v16 stringByReplacingOccurrencesOfString:@" " withString:&stru_2843F5C58];
+        v15 = [MEMORY[0x277CD98D8] stringForCategory:category];
+        capitalizedString = [v15 capitalizedString];
+        v17 = [capitalizedString stringByReplacingOccurrencesOfString:@" " withString:&stru_2843F5C58];
 
         v18 = [MEMORY[0x277CD98D8] stringForSubcategory:v14];
-        v19 = [v18 capitalizedString];
-        v20 = [v19 stringByReplacingOccurrencesOfString:@" " withString:&stru_2843F5C58];
+        capitalizedString2 = [v18 capitalizedString];
+        v20 = [capitalizedString2 stringByReplacingOccurrencesOfString:@" " withString:&stru_2843F5C58];
 
         v21 = [v17 containsString:@"Holiday"];
-        if (v11 != 218 && (v21 & 1) != 0 || ([v20 containsString:@"Holiday"] & 1) != 0)
+        if (category != 218 && (v21 & 1) != 0 || ([v20 containsString:@"Holiday"] & 1) != 0)
         {
           v5 = &unk_284485AA8;
         }
@@ -105,9 +105,9 @@
 
 - (double)weight
 {
-  v2 = [(PGMoodSourceMemory *)self _shouldProcessSource];
+  _shouldProcessSource = [(PGMoodSourceMemory *)self _shouldProcessSource];
   result = 0.0;
-  if (v2)
+  if (_shouldProcessSource)
   {
     return 1.0;
   }

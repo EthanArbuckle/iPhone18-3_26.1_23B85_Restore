@@ -1,13 +1,13 @@
 @interface RoutePlanningPreferredNetworksRefinementModel
-- (RoutePlanningPreferredNetworksRefinementModel)initWithDelegate:(id)a3 value:(id)a4;
+- (RoutePlanningPreferredNetworksRefinementModel)initWithDelegate:(id)delegate value:(id)value;
 - (id)_titleForAllNetworks;
 - (id)_titleForPreferredNetworks;
 - (id)menuOptions;
 - (id)titleText;
 - (id)vehicle;
 - (void)_assertValidValue;
-- (void)setShouldUsePreferredNetworks:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)setShouldUsePreferredNetworks:(BOOL)networks;
+- (void)setValue:(id)value;
 @end
 
 @implementation RoutePlanningPreferredNetworksRefinementModel
@@ -19,15 +19,15 @@
   {
     v4 = objc_opt_new();
     v5 = [NSAttributedString alloc];
-    v6 = [(RoutePlanningPreferredNetworksRefinementModel *)self _titleForPreferredNetworks];
-    v7 = [v5 initWithString:v6];
+    _titleForPreferredNetworks = [(RoutePlanningPreferredNetworksRefinementModel *)self _titleForPreferredNetworks];
+    v7 = [v5 initWithString:_titleForPreferredNetworks];
 
     v8 = [[RoutePlanningMenuOptionModel alloc] initWithIdentifier:@"PreferredNetworks" title:v7 selected:self->_shouldUsePreferredNetworks];
     [(NSArray *)v4 addObject:v8];
 
     v9 = [NSAttributedString alloc];
-    v10 = [(RoutePlanningPreferredNetworksRefinementModel *)self _titleForAllNetworks];
-    v11 = [v9 initWithString:v10];
+    _titleForAllNetworks = [(RoutePlanningPreferredNetworksRefinementModel *)self _titleForAllNetworks];
+    v11 = [v9 initWithString:_titleForAllNetworks];
 
     v12 = [[RoutePlanningMenuOptionModel alloc] initWithIdentifier:@"AllNetworks" title:v11 selected:!self->_shouldUsePreferredNetworks];
     [(NSArray *)v4 addObject:v12];
@@ -41,13 +41,13 @@
   return menuOptions;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -57,14 +57,14 @@
 
   obj = v5;
   v6 = v5;
-  v7 = [(RoutePlanningPreferredNetworksRefinementModel *)self vehicle];
+  vehicle = [(RoutePlanningPreferredNetworksRefinementModel *)self vehicle];
   shouldUsePreferredNetworks = self->_shouldUsePreferredNetworks;
-  v9 = [v6 usesPreferredNetworksForRouting];
-  v10 = [v6 preferredChargingNetworks];
-  v11 = [v7 preferredChargingNetworks];
-  v12 = [v10 isEqualToSet:v11];
+  usesPreferredNetworksForRouting = [v6 usesPreferredNetworksForRouting];
+  preferredChargingNetworks = [v6 preferredChargingNetworks];
+  preferredChargingNetworks2 = [vehicle preferredChargingNetworks];
+  v12 = [preferredChargingNetworks isEqualToSet:preferredChargingNetworks2];
 
-  if (shouldUsePreferredNetworks != v9 || (v12 & 1) == 0)
+  if (shouldUsePreferredNetworks != usesPreferredNetworksForRouting || (v12 & 1) == 0)
   {
     v13 = sub_100798A3C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -79,18 +79,18 @@
     menuOptions = self->super._menuOptions;
     self->super._menuOptions = 0;
 
-    v15 = [(RoutePlanningRefinementModel *)self delegate];
-    [v15 updatedRefinementModel:self];
+    delegate = [(RoutePlanningRefinementModel *)self delegate];
+    [delegate updatedRefinementModel:self];
   }
 }
 
 - (id)vehicle
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
+  value = [(RoutePlanningRefinementModel *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = value;
   }
 
   else
@@ -103,12 +103,12 @@
   return v3;
 }
 
-- (void)setShouldUsePreferredNetworks:(BOOL)a3
+- (void)setShouldUsePreferredNetworks:(BOOL)networks
 {
-  if (self->_shouldUsePreferredNetworks != a3)
+  if (self->_shouldUsePreferredNetworks != networks)
   {
-    self->_shouldUsePreferredNetworks = a3;
-    if (a3)
+    self->_shouldUsePreferredNetworks = networks;
+    if (networks)
     {
       v4 = 450;
     }
@@ -138,18 +138,18 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[Options] shouldUsePreferredNetworks changed to: %@", &v9, 0xCu);
     }
 
-    v8 = [(RoutePlanningRefinementModel *)self delegate];
-    [v8 updatedRefinementModel:self];
+    delegate = [(RoutePlanningRefinementModel *)self delegate];
+    [delegate updatedRefinementModel:self];
   }
 }
 
 - (void)_assertValidValue
 {
-  v3 = [(RoutePlanningRefinementModel *)self value];
-  if (v3)
+  value = [(RoutePlanningRefinementModel *)self value];
+  if (value)
   {
-    v4 = v3;
-    v5 = [(RoutePlanningRefinementModel *)self value];
+    v4 = value;
+    value2 = [(RoutePlanningRefinementModel *)self value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -158,7 +158,7 @@
       v7 = sub_10006D178();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(RoutePlanningRefinementModel *)self value];
+        value3 = [(RoutePlanningRefinementModel *)self value];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
         v11 = [NSString stringWithFormat:@"Wrong type: %@", v10];
@@ -192,23 +192,23 @@
 
 - (id)_titleForPreferredNetworks
 {
-  v2 = [(RoutePlanningPreferredNetworksRefinementModel *)self vehicle];
-  v3 = [v2 preferredChargingNetworks];
+  vehicle = [(RoutePlanningPreferredNetworksRefinementModel *)self vehicle];
+  preferredChargingNetworks = [vehicle preferredChargingNetworks];
 
-  if ([v3 count])
+  if ([preferredChargingNetworks count])
   {
-    if ([v3 count] < 2)
+    if ([preferredChargingNetworks count] < 2)
     {
-      v4 = [v3 allObjects];
-      v5 = [v4 firstObject];
-      [v5 name];
+      allObjects = [preferredChargingNetworks allObjects];
+      firstObject = [allObjects firstObject];
+      [firstObject name];
     }
 
     else
     {
-      v4 = +[NSBundle mainBundle];
-      v5 = [v4 localizedStringForKey:@"[Preferred Networks Picker] %lu Networks" value:@"localized string not found" table:0];
-      +[NSString stringWithFormat:](NSString, "stringWithFormat:", v5, [v3 count]);
+      allObjects = +[NSBundle mainBundle];
+      firstObject = [allObjects localizedStringForKey:@"[Preferred Networks Picker] %lu Networks" value:@"localized string not found" table:0];
+      +[NSString stringWithFormat:](NSString, "stringWithFormat:", firstObject, [preferredChargingNetworks count]);
     }
     v10 = ;
   }
@@ -276,16 +276,16 @@
   return v2;
 }
 
-- (RoutePlanningPreferredNetworksRefinementModel)initWithDelegate:(id)a3 value:(id)a4
+- (RoutePlanningPreferredNetworksRefinementModel)initWithDelegate:(id)delegate value:(id)value
 {
   v8.receiver = self;
   v8.super_class = RoutePlanningPreferredNetworksRefinementModel;
-  v4 = [(RoutePlanningRefinementModel *)&v8 initWithDelegate:a3 value:a4];
+  v4 = [(RoutePlanningRefinementModel *)&v8 initWithDelegate:delegate value:value];
   v5 = v4;
   if (v4)
   {
-    v6 = [(RoutePlanningPreferredNetworksRefinementModel *)v4 vehicle];
-    v5->_shouldUsePreferredNetworks = [v6 usesPreferredNetworksForRouting];
+    vehicle = [(RoutePlanningPreferredNetworksRefinementModel *)v4 vehicle];
+    v5->_shouldUsePreferredNetworks = [vehicle usesPreferredNetworksForRouting];
   }
 
   return v5;

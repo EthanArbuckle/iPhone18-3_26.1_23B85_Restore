@@ -1,13 +1,13 @@
 @interface __NSSetI
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (double)clumpingFactor;
-- (id)member:(id)a3;
+- (id)member:(id)member;
 - (id)objectEnumerator;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)countForObject:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)countForObject:(id)object;
 - (void)dealloc;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 count:(unint64_t)a4;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation __NSSetI
@@ -56,7 +56,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   v26 = *MEMORY[0x1E69E9840];
   v20 = 0;
@@ -75,7 +75,7 @@
   {
     v5 = *(__NSSetSizes + ((2 * v3) & 0x1F8));
     v6 = self + 16;
-    v7 = [a3 hash] % v5;
+    v7 = [member hash] % v5;
     if (v5 <= 1)
     {
       v8 = 1;
@@ -89,8 +89,8 @@
     while (1)
     {
       v9 = *&v6[8 * v7];
-      v10 = !v9 || v9 == a3;
-      if (v10 || ([v9 isEqual:a3] & 1) != 0)
+      v10 = !v9 || v9 == member;
+      if (v10 || ([v9 isEqual:member] & 1) != 0)
       {
         break;
       }
@@ -207,10 +207,10 @@ LABEL_17:
   return v11;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (!a4 && a5)
+  if (!objects && count)
   {
     v13 = _os_log_pack_size();
     v14 = v20 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -218,12 +218,12 @@ LABEL_17:
     *v15 = 136315394;
     *(v15 + 4) = "[__NSSetI countByEnumeratingWithState:objects:count:]";
     *(v15 + 12) = 2048;
-    *(v15 + 14) = a5;
-    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSetI countByEnumeratingWithState:objects:count:]", a5);
+    *(v15 + 14) = count;
+    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSetI countByEnumeratingWithState:objects:count:]", count);
     goto LABEL_18;
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v13 = _os_log_pack_size();
     v14 = v20 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -231,36 +231,36 @@ LABEL_17:
     *v18 = 136315394;
     *(v18 + 4) = "[__NSSetI countByEnumeratingWithState:objects:count:]";
     *(v18 + 12) = 2048;
-    *(v18 + 14) = a5;
-    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSetI countByEnumeratingWithState:objects:count:]", a5);
+    *(v18 + 14) = count;
+    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSetI countByEnumeratingWithState:objects:count:]", count);
 LABEL_18:
     v19 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v16) osLogPack:0 size:v14, v13];
     objc_exception_throw(v19);
   }
 
   v6 = *(__NSSetSizes + ((2 * self->_used[7]) & 0x1F8));
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &countByEnumeratingWithState_objects_count__const_mu_3;
+    state->var2 = &countByEnumeratingWithState_objects_count__const_mu_3;
   }
 
-  if (v6 > var0 && (a3->var1 = a4, a5))
+  if (v6 > var0 && (state->var1 = objects, count))
   {
     result = 0;
     v9 = self + 16;
     do
     {
       v10 = *&v9[8 * var0++];
-      a3->var0 = var0;
+      state->var0 = var0;
       if (v10)
       {
-        a4[result++] = v10;
-        var0 = a3->var0;
+        objects[result++] = v10;
+        var0 = state->var0;
       }
     }
 
-    while (var0 < v6 && result < a5);
+    while (var0 < v6 && result < count);
   }
 
   else
@@ -272,7 +272,7 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
   v20 = 0;
@@ -289,7 +289,7 @@ LABEL_18:
   {
     v5 = *(__NSSetSizes + ((2 * v3) & 0x1F8));
     v6 = self + 16;
-    v7 = [a3 hash] % v5;
+    v7 = [object hash] % v5;
     if (v5 <= 1)
     {
       v8 = 1;
@@ -303,8 +303,8 @@ LABEL_18:
     while (1)
     {
       v9 = *&v6[8 * v7];
-      v10 = !v9 || v9 == a3;
-      if (v10 || ([v9 isEqual:a3] & 1) != 0)
+      v10 = !v9 || v9 == object;
+      if (v10 || ([v9 isEqual:object] & 1) != 0)
       {
         break;
       }
@@ -339,7 +339,7 @@ LABEL_17:
   return v12;
 }
 
-- (unint64_t)countForObject:(id)a3
+- (unint64_t)countForObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
   v20 = 0;
@@ -356,7 +356,7 @@ LABEL_17:
   {
     v5 = *(__NSSetSizes + ((2 * v3) & 0x1F8));
     v6 = self + 16;
-    v7 = [a3 hash] % v5;
+    v7 = [object hash] % v5;
     if (v5 <= 1)
     {
       v8 = 1;
@@ -370,8 +370,8 @@ LABEL_17:
     while (1)
     {
       v9 = *&v6[8 * v7];
-      v10 = !v9 || v9 == a3;
-      if (v10 || ([v9 isEqual:a3] & 1) != 0)
+      v10 = !v9 || v9 == object;
+      if (v10 || ([v9 isEqual:object] & 1) != 0)
       {
         break;
       }
@@ -406,10 +406,10 @@ LABEL_17:
   return v12;
 }
 
-- (void)getObjects:(id *)a3 count:(unint64_t)a4
+- (void)getObjects:(id *)objects count:(unint64_t)count
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a4)
+  if (!objects && count)
   {
     v11 = _os_log_pack_size();
     v12 = v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -417,12 +417,12 @@ LABEL_17:
     *v13 = 136315394;
     *(v13 + 4) = "[__NSSetI getObjects:count:]";
     *(v13 + 12) = 2048;
-    *(v13 + 14) = a4;
-    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSetI getObjects:count:]", a4);
+    *(v13 + 14) = count;
+    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSetI getObjects:count:]", count);
     goto LABEL_18;
   }
 
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v11 = _os_log_pack_size();
     v12 = v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -430,20 +430,20 @@ LABEL_17:
     *v16 = 136315394;
     *(v16 + 4) = "[__NSSetI getObjects:count:]";
     *(v16 + 12) = 2048;
-    *(v16 + 14) = a4;
-    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSetI getObjects:count:]", a4);
+    *(v16 + 14) = count;
+    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSetI getObjects:count:]", count);
 LABEL_18:
     v17 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v14) osLogPack:0 size:v12, v11];
     objc_exception_throw(v17);
   }
 
-  v4 = *self->_used & 0x3FFFFFFFFFFFFFFLL;
-  if (v4 >= a4)
+  countCopy = *self->_used & 0x3FFFFFFFFFFFFFFLL;
+  if (countCopy >= count)
   {
-    v4 = a4;
+    countCopy = count;
   }
 
-  if (self->_used[7] >= 4u && v4 != 0)
+  if (self->_used[7] >= 4u && countCopy != 0)
   {
     v6 = *(__NSSetSizes + ((2 * self->_used[7]) & 0x1F8));
     v7 = (self + 16);
@@ -452,8 +452,8 @@ LABEL_18:
     {
       if (*v7)
       {
-        *a3++ = *v7;
-        --v4;
+        *objects++ = *v7;
+        --countCopy;
       }
 
       if (v8 >= v6)
@@ -465,16 +465,16 @@ LABEL_18:
       ++v7;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!block)
   {
     v12 = _os_log_pack_size();
     v13 = _os_log_pack_fill();
@@ -485,15 +485,15 @@ LABEL_18:
     objc_exception_throw(v15);
   }
 
-  v5 = a3;
+  optionsCopy = options;
   v7 = self->_used[7];
   v8 = *(__NSSetSizes + ((2 * v7) & 0x1F8));
-  if ((a3 & 1) != 0 && __CFActiveProcessorCount() < 2)
+  if ((options & 1) != 0 && __CFActiveProcessorCount() < 2)
   {
-    v5 = 0;
+    optionsCopy = 0;
   }
 
-  if (v5)
+  if (optionsCopy)
   {
     v17[0] = 0;
     v17[1] = v17;
@@ -503,7 +503,7 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = __51____NSSetI_enumerateObjectsWithOptions_usingBlock___block_invoke;
     block[3] = &unk_1E6D82408;
-    block[5] = a4;
+    block[5] = block;
     block[6] = v17;
     block[4] = self;
     dispatch_apply(v8, 0, block);
@@ -521,7 +521,7 @@ LABEL_18:
         if (*&self->_used[8 * v9 + 8])
         {
           v10 = _CFAutoreleasePoolPush();
-          __NSSET_IS_CALLING_OUT_TO_A_BLOCK__(a4);
+          __NSSET_IS_CALLING_OUT_TO_A_BLOCK__(block);
           _CFAutoreleasePoolPop(v10);
         }
 

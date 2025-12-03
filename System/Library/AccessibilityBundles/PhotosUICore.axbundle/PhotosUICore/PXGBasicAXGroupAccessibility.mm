@@ -1,27 +1,27 @@
 @interface PXGBasicAXGroupAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)_axPXGScrollView;
 - (void)_updateLayoutIfNeeded;
-- (void)updateSubgroupsWithChangeDetails:(id)a3;
+- (void)updateSubgroupsWithChangeDetails:(id)details;
 @end
 
 @implementation PXGBasicAXGroupAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axScrollParent" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axParent" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axGroupSource" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXGAXGroupSource" hasMethod:@"axConvertRect:fromDescendantGroup:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axNextResponder" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXGAXResponder" hasMethod:@"axContainingScrollViewForAXGroup:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"_PXUIScrollView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"_updateLayoutIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"needsUpdate" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"updateSubgroupsWithChangeDetails:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axScrollParent" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axParent" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axGroupSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXGAXGroupSource" hasMethod:@"axConvertRect:fromDescendantGroup:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axNextResponder" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXGAXResponder" hasMethod:@"axContainingScrollViewForAXGroup:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"_PXUIScrollView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"_updateLayoutIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"needsUpdate" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"updateSubgroupsWithChangeDetails:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)_axPXGScrollView
@@ -38,7 +38,7 @@
   [(PXGBasicAXGroupAccessibility *)self safeCGRectForKey:@"axFrame"];
   v3 = [(PXGBasicAXGroupAccessibility *)self safeValueForKey:@"axScrollParent"];
   v4 = [(PXGBasicAXGroupAccessibility *)self safeValueForKey:@"axParent"];
-  v5 = [(PXGBasicAXGroupAccessibility *)self _axPXGScrollView];
+  _axPXGScrollView = [(PXGBasicAXGroupAccessibility *)self _axPXGScrollView];
   v18 = 0;
   v19 = &v18;
   v20 = 0x4010000000;
@@ -48,7 +48,7 @@
   v23 = v6;
   v15 = v4;
   v16 = v3;
-  v17 = v5;
+  v17 = _axPXGScrollView;
   AXPerformSafeBlock();
   v7 = v19[4];
   v8 = v19[5];
@@ -105,36 +105,36 @@ void __50__PXGBasicAXGroupAccessibility_accessibilityFrame__block_invoke(uint64_
   [(PXGBasicAXGroupAccessibility *)&v7 _updateLayoutIfNeeded];
   if (v3)
   {
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
     v8[0] = @"AXPhotosGridGroupKey";
     v8[1] = @"AXPhotosGridUpdateKey";
     v9[0] = self;
     v9[1] = &unk_2A2288EB8;
     v5 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
-    [v4 postNotificationName:@"AXPhotosGridGroupDataChanged" object:self userInfo:v5];
+    [defaultCenter postNotificationName:@"AXPhotosGridGroupDataChanged" object:self userInfo:v5];
   }
 
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (void)updateSubgroupsWithChangeDetails:(id)a3
+- (void)updateSubgroupsWithChangeDetails:(id)details
 {
   v11[2] = *MEMORY[0x29EDCA608];
   v9.receiver = self;
   v9.super_class = PXGBasicAXGroupAccessibility;
-  v4 = a3;
-  [(PXGBasicAXGroupAccessibility *)&v9 updateSubgroupsWithChangeDetails:v4];
-  v5 = [v4 hasAnyInsertionsRemovalsOrMoves];
+  detailsCopy = details;
+  [(PXGBasicAXGroupAccessibility *)&v9 updateSubgroupsWithChangeDetails:detailsCopy];
+  hasAnyInsertionsRemovalsOrMoves = [detailsCopy hasAnyInsertionsRemovalsOrMoves];
 
-  if (v5)
+  if (hasAnyInsertionsRemovalsOrMoves)
   {
-    v6 = [MEMORY[0x29EDBA068] defaultCenter];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
     v10[0] = @"AXPhotosGridGroupKey";
     v10[1] = @"AXPhotosGridUpdateKey";
     v11[0] = self;
     v11[1] = &unk_2A2288EB8;
     v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-    [v6 postNotificationName:@"AXPhotosGridGroupDataChanged" object:self userInfo:v7];
+    [defaultCenter postNotificationName:@"AXPhotosGridGroupDataChanged" object:self userInfo:v7];
   }
 
   v8 = *MEMORY[0x29EDCA608];

@@ -1,16 +1,16 @@
 @interface CTAppStoreSearch
 + (NSCache)resultByBundleID;
-- (CTAppStoreSearch)initWithCallingProcess:(id)a3;
-- (void)handleSearchResultsWithTaskData:(id)a3 platform:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)lookupAppWithBundleIDs:(id)a3 deviceFamily:(unint64_t)a4 completionHandler:(id)a5;
-- (void)performiTunesQueryWithURLComponents:(id)a3 queryItems:(id)a4 deviceFamily:(unint64_t)a5 completionHandler:(id)a6;
+- (CTAppStoreSearch)initWithCallingProcess:(id)process;
+- (void)handleSearchResultsWithTaskData:(id)data platform:(id)platform error:(id)error completionHandler:(id)handler;
+- (void)lookupAppWithBundleIDs:(id)ds deviceFamily:(unint64_t)family completionHandler:(id)handler;
+- (void)performiTunesQueryWithURLComponents:(id)components queryItems:(id)items deviceFamily:(unint64_t)family completionHandler:(id)handler;
 @end
 
 @implementation CTAppStoreSearch
 
-- (CTAppStoreSearch)initWithCallingProcess:(id)a3
+- (CTAppStoreSearch)initWithCallingProcess:(id)process
 {
-  v5 = a3;
+  processCopy = process;
   v10.receiver = self;
   v10.super_class = CTAppStoreSearch;
   v6 = [(CTAppStoreSearch *)&v10 init];
@@ -20,7 +20,7 @@
     log = v6->_log;
     v6->_log = v7;
 
-    objc_storeStrong(&v6->_callingProcessBundleID, a3);
+    objc_storeStrong(&v6->_callingProcessBundleID, process);
   }
 
   return v6;
@@ -38,18 +38,18 @@
   return v3;
 }
 
-- (void)lookupAppWithBundleIDs:(id)a3 deviceFamily:(unint64_t)a4 completionHandler:(id)a5
+- (void)lookupAppWithBundleIDs:(id)ds deviceFamily:(unint64_t)family completionHandler:(id)handler
 {
-  v7 = a3;
-  v37 = a5;
+  dsCopy = ds;
+  handlerCopy = handler;
   v39 = objc_opt_new();
   v8 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v38 = v7;
-  v9 = [v7 componentsSeparatedByString:{@", "}];
+  v38 = dsCopy;
+  v9 = [dsCopy componentsSeparatedByString:{@", "}];
   v10 = [v9 countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v10)
   {
@@ -65,13 +65,13 @@
         }
 
         v14 = *(*(&v45 + 1) + 8 * i);
-        v15 = [objc_opt_class() resultByBundleID];
-        v16 = [v15 objectForKey:v14];
+        resultByBundleID = [objc_opt_class() resultByBundleID];
+        v16 = [resultByBundleID objectForKey:v14];
 
         if (v16)
         {
-          v17 = [v16 platform];
-          v18 = [v8 objectForKeyedSubscript:v17];
+          platform = [v16 platform];
+          v18 = [v8 objectForKeyedSubscript:platform];
           v19 = v18;
           if (v18)
           {
@@ -86,7 +86,7 @@
           v21 = v20;
 
           [v21 addObject:v16];
-          [v8 setObject:v21 forKeyedSubscript:v17];
+          [v8 setObject:v21 forKeyedSubscript:platform];
         }
 
         else
@@ -122,8 +122,8 @@
 
     v29 = [NSURLQueryItem alloc];
     v30 = +[NSLocale currentLocale];
-    v31 = [v30 countryCode];
-    v32 = [v29 initWithName:@"country" value:v31];
+    countryCode = [v30 countryCode];
+    v32 = [v29 initWithName:@"country" value:countryCode];
 
     v49[0] = v28;
     v49[1] = v32;
@@ -134,10 +134,10 @@
     v40[3] = &unk_10000C638;
     v41 = v39;
     v42 = v8;
-    v43 = self;
-    v34 = v37;
-    v44 = v37;
-    [(CTAppStoreSearch *)self performiTunesQueryWithURLComponents:v25 queryItems:v33 deviceFamily:a4 completionHandler:v40];
+    selfCopy = self;
+    v34 = handlerCopy;
+    v44 = handlerCopy;
+    [(CTAppStoreSearch *)self performiTunesQueryWithURLComponents:v25 queryItems:v33 deviceFamily:family completionHandler:v40];
 
     v35 = v38;
   }
@@ -152,17 +152,17 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Not performing iTunes lookup for cached bundle IDs: %{public}@", buf, 0xCu);
     }
 
-    v34 = v37;
-    (*(v37 + 2))(v37, v8, 0);
+    v34 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, v8, 0);
   }
 }
 
-- (void)performiTunesQueryWithURLComponents:(id)a3 queryItems:(id)a4 deviceFamily:(unint64_t)a5 completionHandler:(id)a6
+- (void)performiTunesQueryWithURLComponents:(id)components queryItems:(id)items deviceFamily:(unint64_t)family completionHandler:(id)handler
 {
-  v7 = a5;
-  v37 = a3;
-  v33 = a4;
-  v32 = a6;
+  familyCopy = family;
+  componentsCopy = components;
+  itemsCopy = items;
+  handlerCopy = handler;
   v59[0] = 0;
   v59[1] = v59;
   v59[2] = 0x3032000000;
@@ -186,9 +186,9 @@
   v47[4] = sub_1000052E0;
   v48 = 0;
   context = objc_autoreleasePoolPush();
-  if ((v7 & 6) != 0)
+  if ((familyCopy & 6) != 0)
   {
-    if ((v7 & 6) == 6)
+    if ((familyCopy & 6) == 6)
     {
       v36 = [[NSString alloc] initWithFormat:@"%@, %@", @"software", @"iPadSoftware"];
     }
@@ -196,7 +196,7 @@
     else
     {
       v10 = @"software";
-      if ((v7 & 2) == 0)
+      if ((familyCopy & 2) == 0)
       {
         v10 = @"iPadSoftware";
       }
@@ -207,7 +207,7 @@
     v11 = &off_10000C588;
   }
 
-  else if (v7)
+  else if (familyCopy)
   {
     v36 = @"macSoftware";
     v11 = &off_10000C580;
@@ -215,7 +215,7 @@
 
   else
   {
-    if ((v7 & 8) == 0)
+    if ((familyCopy & 8) == 0)
     {
       v36 = 0;
       goto LABEL_14;
@@ -232,17 +232,17 @@ LABEL_14:
   v66[0] = v35;
   v66[1] = v34;
   v12 = [NSArray arrayWithObjects:v66 count:2];
-  v13 = [v33 arrayByAddingObjectsFromArray:v12];
-  [v37 setQueryItems:v13];
+  v13 = [itemsCopy arrayByAddingObjectsFromArray:v12];
+  [componentsCopy setQueryItems:v13];
 
-  v14 = [v37 URL];
+  v14 = [componentsCopy URL];
   v15 = [[NSMutableURLRequest alloc] initWithURL:v14];
   v16 = +[NSBundle mainBundle];
-  v17 = [v16 bundleIdentifier];
+  bundleIdentifier = [v16 bundleIdentifier];
 
   v18 = MGCopyAnswer();
   v19 = MGCopyAnswer();
-  v20 = [[NSString alloc] initWithFormat:@"%@/%@/%@/%@", v17, self->_callingProcessBundleID, v18, v19];
+  v20 = [[NSString alloc] initWithFormat:@"%@/%@/%@/%@", bundleIdentifier, self->_callingProcessBundleID, v18, v19];
   [v15 setValue:v20 forHTTPHeaderField:@"User-Agent"];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -257,18 +257,18 @@ LABEL_14:
   v62 = 0x3032000000;
   v63 = sub_1000052D0;
   v64 = sub_1000052E0;
-  v22 = self;
-  v65 = v22;
+  selfCopy = self;
+  v65 = selfCopy;
   v23 = +[NSURLSession sharedSession];
   callingProcessBundleID = self->_callingProcessBundleID;
-  v25 = [v23 configuration];
-  [v25 set_sourceApplicationBundleIdentifier:callingProcessBundleID];
+  configuration = [v23 configuration];
+  [configuration set_sourceApplicationBundleIdentifier:callingProcessBundleID];
 
-  v26 = [v23 configuration];
-  [v26 setTimeoutIntervalForResource:10.0];
+  configuration2 = [v23 configuration];
+  [configuration2 setTimeoutIntervalForResource:10.0];
 
-  v27 = [v23 configuration];
-  [v27 setTimeoutIntervalForRequest:10.0];
+  configuration3 = [v23 configuration];
+  [configuration3 setTimeoutIntervalForRequest:10.0];
 
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
@@ -280,9 +280,9 @@ LABEL_14:
   v44 = v47;
   v45 = &v55;
   v39 = v28;
-  v40 = v22;
+  v40 = selfCopy;
   v46 = &v49;
-  v29 = v32;
+  v29 = handlerCopy;
   v41 = v29;
   v30 = [v23 dataTaskWithRequest:v15 completionHandler:v38];
   ++v56[3];
@@ -301,18 +301,18 @@ LABEL_14:
   _Block_object_dispose(v59, 8);
 }
 
-- (void)handleSearchResultsWithTaskData:(id)a3 platform:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)handleSearchResultsWithTaskData:(id)data platform:(id)platform error:(id)error completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  platformCopy = platform;
+  errorCopy = error;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  if (!v10)
+  if (!dataCopy)
   {
-    if (v12)
+    if (errorCopy)
     {
-      v19 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v12, v11, 0}];
+      v19 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{errorCopy, platformCopy, 0}];
       v17 = 0;
     }
 
@@ -327,7 +327,7 @@ LABEL_14:
   }
 
   v21 = 0;
-  v15 = [CTAppStoreSearchResult appStoreSearchResultsWithResultData:v10 platform:v11 error:&v21];
+  v15 = [CTAppStoreSearchResult appStoreSearchResultsWithResultData:dataCopy platform:platformCopy error:&v21];
   v16 = v21;
   v17 = v16;
   if (!v15)
@@ -343,14 +343,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v15, v11, 0}];
+  v18 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v15, platformCopy, 0}];
   if (!v17)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  v19 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v17, v11, 0}];
+  v19 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v17, platformCopy, 0}];
 LABEL_9:
 
 LABEL_12:
@@ -365,7 +365,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "appsByPlatform: %@ errorByPlatform: %@", buf, 0x16u);
   }
 
-  v13[2](v13, v18, v19);
+  handlerCopy[2](handlerCopy, v18, v19);
 }
 
 @end

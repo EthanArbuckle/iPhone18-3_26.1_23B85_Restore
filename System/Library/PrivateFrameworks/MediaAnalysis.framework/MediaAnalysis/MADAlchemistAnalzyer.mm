@@ -1,25 +1,25 @@
 @interface MADAlchemistAnalzyer
 + (id)sharedProcessingQueue;
-- (MADAlchemistAnalzyer)initWithOptions:(id)a3;
-- (__CVBuffer)loadImageFromURL:(id)a3;
-- (float)getFocalLengthPX:(id)a3 width:(int)a4 height:(int)a5;
-- (id)convertHeadroom:(id)a3 forImage:(id)a4;
-- (int)performAlchemistForPixelBuffer:(__CVBuffer *)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6;
-- (int)performAlchemistForURL:(id)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6;
+- (MADAlchemistAnalzyer)initWithOptions:(id)options;
+- (__CVBuffer)loadImageFromURL:(id)l;
+- (float)getFocalLengthPX:(id)x width:(int)width height:(int)height;
+- (id)convertHeadroom:(id)headroom forImage:(id)image;
+- (int)performAlchemistForPixelBuffer:(__CVBuffer *)buffer options:(id)options results:(id *)results cancel:(id)cancel;
+- (int)performAlchemistForURL:(id)l options:(id)options results:(id *)results cancel:(id)cancel;
 @end
 
 @implementation MADAlchemistAnalzyer
 
-- (MADAlchemistAnalzyer)initWithOptions:(id)a3
+- (MADAlchemistAnalzyer)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = MADAlchemistAnalzyer;
   v6 = [(MADAlchemistAnalzyer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v8 = v7;
   }
 
@@ -46,27 +46,27 @@ void __45__MADAlchemistAnalzyer_sharedProcessingQueue__block_invoke()
   +[MADAlchemistAnalzyer sharedProcessingQueue]::processingQueue = v0;
 }
 
-- (int)performAlchemistForPixelBuffer:(__CVBuffer *)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6
+- (int)performAlchemistForPixelBuffer:(__CVBuffer *)buffer options:(id)options results:(id *)results cancel:(id)cancel
 {
   v73 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  v11 = v10;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v11 = cancelCopy;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
   v56 = __Block_byref_object_copy__7;
   v57 = __Block_byref_object_dispose__7;
   v58 = 0;
-  if (!v10 || ((*(v10 + 2))(v10) & 1) == 0)
+  if (!cancelCopy || ((*(cancelCopy + 2))(cancelCopy) & 1) == 0)
   {
-    v40 = a5;
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    if (([v13 fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"] & 1) == 0)
+    resultsCopy = results;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if (([defaultManager fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"] & 1) == 0)
     {
       v14 = (v54 + 5);
       obj = v54[5];
-      v15 = [v13 createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&obj];
+      v15 = [defaultManager createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&obj];
       objc_storeStrong(v14, obj);
       if ((v15 & 1) == 0)
       {
@@ -83,12 +83,12 @@ void __45__MADAlchemistAnalzyer_sharedProcessingQueue__block_invoke()
     }
 
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
-    v42 = [v16 stringWithFormat:@"%@al-%@.mxi", @"/tmp/com.apple.mediaanalysisd/", v18];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v42 = [v16 stringWithFormat:@"%@al-%@.mxi", @"/tmp/com.apple.mediaanalysisd/", uUIDString];
 
     v19 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v42];
-    v20 = [v9 objectForKeyedSubscript:@"AlchemistFocalLengthPX"];
+    v20 = [optionsCopy objectForKeyedSubscript:@"AlchemistFocalLengthPX"];
     v21 = v20;
     if (v20)
     {
@@ -98,7 +98,7 @@ void __45__MADAlchemistAnalzyer_sharedProcessingQueue__block_invoke()
 
     else
     {
-      Width = CVPixelBufferGetWidth(a3);
+      Width = CVPixelBufferGetWidth(buffer);
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -106,21 +106,21 @@ void __45__MADAlchemistAnalzyer_sharedProcessingQueue__block_invoke()
       }
     }
 
-    v39 = [v9 objectForKeyedSubscript:@"AlchemistPreset"];
-    v41 = [v9 objectForKeyedSubscript:@"AlchemistResolutionCustomSize"];
-    v24 = [v9 objectForKeyedSubscript:@"AlchemistClient"];
+    v39 = [optionsCopy objectForKeyedSubscript:@"AlchemistPreset"];
+    v41 = [optionsCopy objectForKeyedSubscript:@"AlchemistResolutionCustomSize"];
+    v24 = [optionsCopy objectForKeyedSubscript:@"AlchemistClient"];
     *buf = 0;
     v68 = buf;
     v69 = 0x3032000000;
     v70 = __Block_byref_object_copy__7;
     v71 = __Block_byref_object_dispose__7;
     v72 = 0;
-    v25 = [objc_opt_class() sharedProcessingQueue];
+    sharedProcessingQueue = [objc_opt_class() sharedProcessingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __78__MADAlchemistAnalzyer_performAlchemistForPixelBuffer_options_results_cancel___block_invoke;
     block[3] = &unk_1E834CEA0;
-    v50 = a3;
+    bufferCopy = buffer;
     v51 = Width;
     v26 = v39;
     v45 = v26;
@@ -130,7 +130,7 @@ void __45__MADAlchemistAnalzyer_sharedProcessingQueue__block_invoke()
     v47 = v28;
     v48 = &v53;
     v49 = buf;
-    dispatch_sync(v25, block);
+    dispatch_sync(sharedProcessingQueue, block);
 
     if (v54[5] || !*(v68 + 5))
     {
@@ -144,7 +144,7 @@ void __45__MADAlchemistAnalzyer_sharedProcessingQueue__block_invoke()
 
     else
     {
-      v29 = [v9 objectForKeyedSubscript:@"UserInitiated"];
+      v29 = [optionsCopy objectForKeyedSubscript:@"UserInitiated"];
       if (v29)
       {
 
@@ -155,14 +155,14 @@ LABEL_21:
         v64 = v32;
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
         v66 = v33;
-        *v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
+        *resultsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
 
 LABEL_22:
         v12 = 0;
         goto LABEL_23;
       }
 
-      v30 = [v9 objectForKeyedSubscript:@"InProcess"];
+      v30 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
       v31 = v30 == 0;
 
       if (!v31)
@@ -182,7 +182,7 @@ LABEL_22:
         v60 = v42;
         v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
         v62 = v37;
-        *v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
+        *resultsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
 
         goto LABEL_22;
       }
@@ -262,25 +262,25 @@ void __78__MADAlchemistAnalzyer_performAlchemistForPixelBuffer_options_results_c
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)performAlchemistForURL:(id)a3 options:(id)a4 results:(id *)a5 cancel:(id)a6
+- (int)performAlchemistForURL:(id)l options:(id)options results:(id *)results cancel:(id)cancel
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(MADAlchemistAnalzyer *)self loadImageFromURL:v10];
+  lCopy = l;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v13 = [(MADAlchemistAnalzyer *)self loadImageFromURL:lCopy];
   pixelBuffer = v13;
   if (v13)
   {
     Width = CVPixelBufferGetWidth(v13);
-    [(MADAlchemistAnalzyer *)self getFocalLengthPX:v10 width:Width height:CVPixelBufferGetHeight(pixelBuffer)];
+    [(MADAlchemistAnalzyer *)self getFocalLengthPX:lCopy width:Width height:CVPixelBufferGetHeight(pixelBuffer)];
     v16 = v15;
-    v17 = [v11 mutableCopy];
+    v17 = [optionsCopy mutableCopy];
     LODWORD(v18) = v16;
     v19 = [MEMORY[0x1E696AD98] numberWithFloat:v18];
     [v17 setObject:v19 forKeyedSubscript:@"AlchemistFocalLengthPX"];
 
     v20 = [v17 copy];
-    v21 = [(MADAlchemistAnalzyer *)self performAlchemistForPixelBuffer:pixelBuffer options:v20 results:a5 cancel:v12];
+    v21 = [(MADAlchemistAnalzyer *)self performAlchemistForPixelBuffer:pixelBuffer options:v20 results:results cancel:cancelCopy];
   }
 
   else
@@ -298,21 +298,21 @@ void __78__MADAlchemistAnalzyer_performAlchemistForPixelBuffer_options_results_c
   return v21;
 }
 
-- (__CVBuffer)loadImageFromURL:(id)a3
+- (__CVBuffer)loadImageFromURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[VCPImageManager sharedImageManager];
-  v5 = [v4 pixelBufferWithFormat:875704422 fromImageURL:v3 flushCache:0];
+  v5 = [v4 pixelBufferWithFormat:875704422 fromImageURL:lCopy flushCache:0];
 
   return v5;
 }
 
-- (float)getFocalLengthPX:(id)a3 width:(int)a4 height:(int)a5
+- (float)getFocalLengthPX:(id)x width:(int)width height:(int)height
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  isrc = CGImageSourceCreateWithURL(v7, 0);
+  xCopy = x;
+  widthCopy = width;
+  isrc = CGImageSourceCreateWithURL(xCopy, 0);
   if (isrc)
   {
     v23 = *MEMORY[0x1E696E0A8];
@@ -336,8 +336,8 @@ void __78__MADAlchemistAnalzyer_performAlchemistForPixelBuffer_options_results_c
           [v17 floatValue];
           v19 = v18;
 
-          v20 = sqrtf((a5 * a5) + (v8 * v8)) / 43.27;
-          v8 = v19 * v20;
+          v20 = sqrtf((height * height) + (widthCopy * widthCopy)) / 43.27;
+          widthCopy = v19 * v20;
         }
       }
     }
@@ -345,17 +345,17 @@ void __78__MADAlchemistAnalzyer_performAlchemistForPixelBuffer_options_results_c
 
   CF<__CVBuffer *>::~CF(&isrc);
 
-  return v8;
+  return widthCopy;
 }
 
-- (id)convertHeadroom:(id)a3 forImage:(id)a4
+- (id)convertHeadroom:(id)headroom forImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  headroomCopy = headroom;
+  imageCopy = image;
+  v7 = imageCopy;
+  if (headroomCopy)
   {
-    v8 = v5;
+    v8 = headroomCopy;
   }
 
   else
@@ -363,12 +363,12 @@ void __78__MADAlchemistAnalzyer_performAlchemistForPixelBuffer_options_results_c
     v8 = &unk_1F49BB558;
   }
 
-  [v6 contentHeadroom];
+  [imageCopy contentHeadroom];
   v10 = v9;
   [v8 floatValue];
   if (vabds_f32(v10, v11) <= 0.00000011921)
   {
-    v16 = v7;
+    outputImage = v7;
   }
 
   else
@@ -381,11 +381,11 @@ void __78__MADAlchemistAnalzyer_performAlchemistForPixelBuffer_options_results_c
     v15 = [v14 numberWithFloat:?];
     [v12 setValue:v15 forKey:@"inputTargetHeadroom"];
 
-    v16 = [v12 outputImage];
+    outputImage = [v12 outputImage];
     [v12 setValue:0 forKey:v13];
   }
 
-  return v16;
+  return outputImage;
 }
 
 - (void)performAlchemistForPixelBuffer:options:results:cancel:.cold.1()

@@ -1,14 +1,14 @@
 @interface AMSDeviceGeneratedIdentifierAnomalyDetector
-- (id)detectAnomalyFor:(id)a3;
+- (id)detectAnomalyFor:(id)for;
 @end
 
 @implementation AMSDeviceGeneratedIdentifierAnomalyDetector
 
-- (id)detectAnomalyFor:(id)a3
+- (id)detectAnomalyFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = DeviceGeneratedIdentifierAnomalyDetector.detectAnomaly(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = DeviceGeneratedIdentifierAnomalyDetector.detectAnomaly(for:)(forCopy);
 
   return v6;
 }

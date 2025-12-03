@@ -1,18 +1,18 @@
 @interface ATXHomeScreenEventMetadata
-- (ATXHomeScreenEventMetadata)initWithCoder:(id)a3;
-- (ATXHomeScreenEventMetadata)initWithPageIndex:(id)a3 suggestedPageType:(int64_t)a4 stacks:(id)a5 widgetsInStack:(id)a6 isSuggestionInAddWidgetSheet:(id)a7 isWidgetInTodayView:(id)a8 visibleRect:(id)a9 engagedUrl:(id)a10;
-- (ATXHomeScreenEventMetadata)initWithProto:(id)a3;
-- (ATXHomeScreenEventMetadata)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXHomeScreenEventMetadata:(id)a3;
+- (ATXHomeScreenEventMetadata)initWithCoder:(id)coder;
+- (ATXHomeScreenEventMetadata)initWithPageIndex:(id)index suggestedPageType:(int64_t)type stacks:(id)stacks widgetsInStack:(id)stack isSuggestionInAddWidgetSheet:(id)sheet isWidgetInTodayView:(id)view visibleRect:(id)rect engagedUrl:(id)self0;
+- (ATXHomeScreenEventMetadata)initWithProto:(id)proto;
+- (ATXHomeScreenEventMetadata)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXHomeScreenEventMetadata:(id)metadata;
 - (NSDictionary)stacks;
 - (id)dictionaryRepresentation;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setStacks:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setStacks:(id)stacks;
 @end
 
 @implementation ATXHomeScreenEventMetadata
@@ -39,12 +39,12 @@
   v9 = [v7 mutableCopy];
   [(ATXPBHomeScreenEventMetadata *)v3 setWidgetInStackIdentifiables:v9];
 
-  v10 = [(ATXHomeScreenEventMetadata *)self isSuggestionInAddWidgetSheet];
+  isSuggestionInAddWidgetSheet = [(ATXHomeScreenEventMetadata *)self isSuggestionInAddWidgetSheet];
 
-  if (v10)
+  if (isSuggestionInAddWidgetSheet)
   {
-    v11 = [(ATXHomeScreenEventMetadata *)self isSuggestionInAddWidgetSheet];
-    -[ATXPBHomeScreenEventMetadata setIsSuggestionInAddWidgetSheet:](v3, [v11 BOOLValue]);
+    isSuggestionInAddWidgetSheet2 = [(ATXHomeScreenEventMetadata *)self isSuggestionInAddWidgetSheet];
+    -[ATXPBHomeScreenEventMetadata setIsSuggestionInAddWidgetSheet:](v3, [isSuggestionInAddWidgetSheet2 BOOLValue]);
   }
 
   isWidgetInTodayView = self->_isWidgetInTodayView;
@@ -53,11 +53,11 @@
     [(ATXPBHomeScreenEventMetadata *)v3 setIsWidgetInTodayView:?];
   }
 
-  v13 = [(ATXCGRectWrapper *)self->_visibleRect proto];
-  [(ATXPBHomeScreenEventMetadata *)v3 setVisibleRect:v13];
+  proto = [(ATXCGRectWrapper *)self->_visibleRect proto];
+  [(ATXPBHomeScreenEventMetadata *)v3 setVisibleRect:proto];
 
-  v14 = [(NSURL *)self->_engagedUrl absoluteString];
-  [(ATXPBHomeScreenEventMetadata *)v3 setEngagedUrl:v14];
+  absoluteString = [(NSURL *)self->_engagedUrl absoluteString];
+  [(ATXPBHomeScreenEventMetadata *)v3 setEngagedUrl:absoluteString];
 
   isStalenessRotation = self->_isStalenessRotation;
   if (isStalenessRotation)
@@ -68,22 +68,22 @@
   return v3;
 }
 
-- (ATXHomeScreenEventMetadata)initWithPageIndex:(id)a3 suggestedPageType:(int64_t)a4 stacks:(id)a5 widgetsInStack:(id)a6 isSuggestionInAddWidgetSheet:(id)a7 isWidgetInTodayView:(id)a8 visibleRect:(id)a9 engagedUrl:(id)a10
+- (ATXHomeScreenEventMetadata)initWithPageIndex:(id)index suggestedPageType:(int64_t)type stacks:(id)stacks widgetsInStack:(id)stack isSuggestionInAddWidgetSheet:(id)sheet isWidgetInTodayView:(id)view visibleRect:(id)rect engagedUrl:(id)self0
 {
-  v34 = a3;
-  v16 = a5;
-  v17 = a6;
-  v33 = a7;
-  v32 = a8;
-  v18 = a9;
-  v19 = a10;
+  indexCopy = index;
+  stacksCopy = stacks;
+  stackCopy = stack;
+  sheetCopy = sheet;
+  viewCopy = view;
+  rectCopy = rect;
+  urlCopy = url;
   v35.receiver = self;
   v35.super_class = ATXHomeScreenEventMetadata;
   v20 = [(ATXHomeScreenEventMetadata *)&v35 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_pageIndex, a3);
+    objc_storeStrong(&v20->_pageIndex, index);
     v22 = objc_opt_new();
     stackIds = v21->_stackIds;
     v21->_stackIds = v22;
@@ -92,7 +92,7 @@
     widgets = v21->_widgets;
     v21->_widgets = v24;
 
-    v26 = [v17 copy];
+    v26 = [stackCopy copy];
     v27 = v26;
     if (v26)
     {
@@ -107,14 +107,14 @@
     widgetsInStack = v21->_widgetsInStack;
     v21->_widgetsInStack = v28;
 
-    objc_storeStrong(&v21->_isSuggestionInAddWidgetSheet, a7);
-    objc_storeStrong(&v21->_isWidgetInTodayView, a8);
-    objc_storeStrong(&v21->_visibleRect, a9);
-    objc_storeStrong(&v21->_engagedUrl, a10);
-    v21->_suggestedPageType = a4;
+    objc_storeStrong(&v21->_isSuggestionInAddWidgetSheet, sheet);
+    objc_storeStrong(&v21->_isWidgetInTodayView, view);
+    objc_storeStrong(&v21->_visibleRect, rect);
+    objc_storeStrong(&v21->_engagedUrl, url);
+    v21->_suggestedPageType = type;
   }
 
-  [(ATXHomeScreenEventMetadata *)v21 setStacks:v16, a4];
+  [(ATXHomeScreenEventMetadata *)v21 setStacks:stacksCopy, type];
 
   return v21;
 }
@@ -151,10 +151,10 @@ void __36__ATXHomeScreenEventMetadata_stacks__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setStacks:(id)a3
+- (void)setStacks:(id)stacks
 {
   stackIds = self->_stackIds;
-  v5 = a3;
+  stacksCopy = stacks;
   [(NSMutableArray *)stackIds removeAllObjects];
   [(NSMutableArray *)self->_widgets removeAllObjects];
   v6[0] = MEMORY[0x1E69E9820];
@@ -162,7 +162,7 @@ void __36__ATXHomeScreenEventMetadata_stacks__block_invoke(uint64_t a1, void *a2
   v6[2] = __40__ATXHomeScreenEventMetadata_setStacks___block_invoke;
   v6[3] = &unk_1E80C4BE0;
   v6[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v6];
+  [stacksCopy enumerateKeysAndObjectsUsingBlock:v6];
 }
 
 void __40__ATXHomeScreenEventMetadata_setStacks___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -173,39 +173,39 @@ void __40__ATXHomeScreenEventMetadata_setStacks___block_invoke(uint64_t a1, uint
   [*(*(a1 + 32) + 16) addObject:v6];
 }
 
-- (ATXHomeScreenEventMetadata)initWithProtoData:(id)a3
+- (ATXHomeScreenEventMetadata)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBHomeScreenEventMetadata alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBHomeScreenEventMetadata alloc] initWithData:dataCopy];
 
     self = [(ATXHomeScreenEventMetadata *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXHomeScreenEventMetadata)initWithProto:(id)a3
+- (ATXHomeScreenEventMetadata)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXPBHomeScreenEventMetadata *)v5 widgetIdentifiables];
-      v7 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_79];
+      v5 = protoCopy;
+      widgetIdentifiables = [(ATXPBHomeScreenEventMetadata *)v5 widgetIdentifiables];
+      v7 = [widgetIdentifiables _pas_mappedArrayWithTransform:&__block_literal_global_79];
 
-      v8 = [(ATXPBHomeScreenEventMetadata *)v5 widgetInStackIdentifiables];
-      v9 = [v8 _pas_mappedArrayWithTransform:&__block_literal_global_21_1];
+      widgetInStackIdentifiables = [(ATXPBHomeScreenEventMetadata *)v5 widgetInStackIdentifiables];
+      v9 = [widgetInStackIdentifiables _pas_mappedArrayWithTransform:&__block_literal_global_21_1];
 
       v43.receiver = self;
       v43.super_class = ATXHomeScreenEventMetadata;
@@ -219,17 +219,17 @@ void __40__ATXHomeScreenEventMetadata_setStacks___block_invoke(uint64_t a1, uint
           v10->_pageIndex = v11;
         }
 
-        v13 = [(ATXPBHomeScreenEventMetadata *)v5 bundleIds];
-        v14 = [v13 copy];
+        bundleIds = [(ATXPBHomeScreenEventMetadata *)v5 bundleIds];
+        v14 = [bundleIds copy];
         bundleIds = v10->_bundleIds;
         v10->_bundleIds = v14;
 
         v10->_suggestedPageType = [(ATXPBHomeScreenEventMetadata *)v5 suggestedPageType];
-        v16 = [(ATXPBHomeScreenEventMetadata *)v5 stackIds];
-        v17 = v16;
-        if (v16)
+        stackIds = [(ATXPBHomeScreenEventMetadata *)v5 stackIds];
+        v17 = stackIds;
+        if (stackIds)
         {
-          v18 = v16;
+          v18 = stackIds;
         }
 
         else
@@ -283,18 +283,18 @@ void __40__ATXHomeScreenEventMetadata_setStacks___block_invoke(uint64_t a1, uint
         }
 
         v31 = [ATXCGRectWrapper alloc];
-        v32 = [(ATXPBHomeScreenEventMetadata *)v5 visibleRect];
-        v33 = [(ATXCGRectWrapper *)v31 initWithProto:v32];
+        visibleRect = [(ATXPBHomeScreenEventMetadata *)v5 visibleRect];
+        v33 = [(ATXCGRectWrapper *)v31 initWithProto:visibleRect];
         visibleRect = v10->_visibleRect;
         v10->_visibleRect = v33;
 
-        v35 = [(ATXPBHomeScreenEventMetadata *)v5 engagedUrl];
+        engagedUrl = [(ATXPBHomeScreenEventMetadata *)v5 engagedUrl];
 
-        if (v35)
+        if (engagedUrl)
         {
           v36 = MEMORY[0x1E695DFF8];
-          v37 = [(ATXPBHomeScreenEventMetadata *)v5 engagedUrl];
-          v38 = [v36 URLWithString:v37];
+          engagedUrl2 = [(ATXPBHomeScreenEventMetadata *)v5 engagedUrl];
+          v38 = [v36 URLWithString:engagedUrl2];
           engagedUrl = v10->_engagedUrl;
           v10->_engagedUrl = v38;
         }
@@ -309,7 +309,7 @@ void __40__ATXHomeScreenEventMetadata_setStacks___block_invoke(uint64_t a1, uint
 
       self = v10;
 
-      v19 = self;
+      selfCopy = self;
     }
 
     else
@@ -320,16 +320,16 @@ void __40__ATXHomeScreenEventMetadata_setStacks___block_invoke(uint64_t a1, uint
         [(ATXHomeScreenEventMetadata *)self initWithProto:v5];
       }
 
-      v19 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 ATXHomeScreenWidgetIdentifiable *__44__ATXHomeScreenEventMetadata_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -350,39 +350,39 @@ ATXHomeScreenWidgetIdentifiable *__44__ATXHomeScreenEventMetadata_initWithProto_
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXHomeScreenEventMetadata *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXHomeScreenEventMetadata *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -393,45 +393,45 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXHomeScreenEventMetadata *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXHomeScreenEventMetadata *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXHomeScreenEventMetadata)initWithCoder:(id)a3
+- (ATXHomeScreenEventMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXHomeScreenEventMetadata *)self initWithProtoData:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenEventMetadata *)self isEqualToATXHomeScreenEventMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenEventMetadata *)self isEqualToATXHomeScreenEventMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXHomeScreenEventMetadata:(id)a3
+- (BOOL)isEqualToATXHomeScreenEventMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = self->_pageIndex;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == metadataCopy[3])
   {
   }
 
@@ -447,7 +447,7 @@ LABEL_7:
 
   v8 = self->_stackIds;
   v9 = v8;
-  if (v8 == v4[1])
+  if (v8 == metadataCopy[1])
   {
   }
 
@@ -463,7 +463,7 @@ LABEL_7:
 
   v11 = self->_widgets;
   v12 = v11;
-  if (v11 == v4[2])
+  if (v11 == metadataCopy[2])
   {
   }
 
@@ -479,7 +479,7 @@ LABEL_7:
 
   v14 = self->_widgetsInStack;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == metadataCopy[5])
   {
   }
 
@@ -495,7 +495,7 @@ LABEL_7:
 
   v17 = self->_isSuggestionInAddWidgetSheet;
   v18 = v17;
-  if (v17 == v4[7])
+  if (v17 == metadataCopy[7])
   {
   }
 
@@ -511,7 +511,7 @@ LABEL_7:
 
   v20 = self->_isWidgetInTodayView;
   v21 = v20;
-  if (v20 == v4[8])
+  if (v20 == metadataCopy[8])
   {
   }
 
@@ -527,7 +527,7 @@ LABEL_7:
 
   v23 = self->_visibleRect;
   v24 = v23;
-  if (v23 == v4[9])
+  if (v23 == metadataCopy[9])
   {
   }
 
@@ -545,7 +545,7 @@ LABEL_27:
 
   v28 = self->_engagedUrl;
   v29 = v28;
-  if (v28 == v4[10])
+  if (v28 == metadataCopy[10])
   {
     v26 = 1;
   }
@@ -575,13 +575,13 @@ LABEL_28:
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(ATXHomeScreenEventMetadata *)self stacks];
+  stacks = [(ATXHomeScreenEventMetadata *)self stacks];
   v5 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = v4;
+  v6 = stacks;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
@@ -598,8 +598,8 @@ LABEL_28:
 
         v11 = *(*(&v30 + 1) + 8 * i);
         v12 = [v6 objectForKeyedSubscript:v11];
-        v13 = [v12 dictionaryRepresentation];
-        [v5 setObject:v13 forKeyedSubscript:v11];
+        dictionaryRepresentation = [v12 dictionaryRepresentation];
+        [v5 setObject:dictionaryRepresentation forKeyedSubscript:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -608,8 +608,8 @@ LABEL_28:
     while (v8);
   }
 
-  v14 = [(ATXHomeScreenEventMetadata *)self widgetsInStack];
-  v15 = [v14 _pas_mappedArrayWithTransform:&__block_literal_global_38];
+  widgetsInStack = [(ATXHomeScreenEventMetadata *)self widgetsInStack];
+  v15 = [widgetsInStack _pas_mappedArrayWithTransform:&__block_literal_global_38];
 
   if (self->_pageIndex)
   {
@@ -672,11 +672,11 @@ LABEL_28:
 
   [v3 setObject:v22 forKeyedSubscript:@"visibleRect"];
 
-  v23 = [(NSURL *)self->_engagedUrl absoluteString];
-  v24 = v23;
-  if (v23)
+  absoluteString = [(NSURL *)self->_engagedUrl absoluteString];
+  v24 = absoluteString;
+  if (absoluteString)
   {
-    v25 = v23;
+    v25 = absoluteString;
   }
 
   else

@@ -1,15 +1,15 @@
 @interface NESMFlowDivertSession
-- (BOOL)handleUpdateConfiguration:(id)a3;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
 - (BOOL)resetPerAppPolicy;
-- (NESMFlowDivertSession)initWithConfiguration:(id)a3 andServer:(id)a4 andProtocol:(id)a5 andPluginType:(id)a6;
-- (id)pluginDidRequestFlowDivertControlSocket:(id)a3;
+- (NESMFlowDivertSession)initWithConfiguration:(id)configuration andServer:(id)server andProtocol:(id)protocol andPluginType:(id)type;
+- (id)pluginDidRequestFlowDivertControlSocket:(id)socket;
 - (void)dealloc;
 - (void)handleInstalledAppsChanged;
 - (void)handleUserLogin;
 - (void)install;
-- (void)plugin:(id)a3 didSetConfiguration:(id)a4 completionHandler:(id)a5;
+- (void)plugin:(id)plugin didSetConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)requestInstall;
-- (void)setConfigurationWithCompletionHandler:(id)a3;
+- (void)setConfigurationWithCompletionHandler:(id)handler;
 - (void)uninstall;
 @end
 
@@ -17,32 +17,32 @@
 
 - (void)handleUserLogin
 {
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F964;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)handleInstalledAppsChanged
 {
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000FA7C;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
-  v5 = [v4 appVPN];
+  v4 = [configuration copy];
+  appVPN = [v4 appVPN];
   v6 = [(NESMSession *)self uid];
-  [v5 updateAppRulesForUID:{objc_msgSend(v6, "unsignedIntValue")}];
+  [appVPN updateAppRulesForUID:{objc_msgSend(v6, "unsignedIntValue")}];
 
   v8.receiver = self;
   v8.super_class = NESMFlowDivertSession;
@@ -53,10 +53,10 @@
 
 - (BOOL)resetPerAppPolicy
 {
-  v3 = [(NESMSession *)self configuration];
-  v4 = [v3 appVPN];
-  v5 = [v4 appRules];
-  if ([v5 count] && -[NESMSession isActive](self, "isActive"))
+  configuration = [(NESMSession *)self configuration];
+  appVPN = [configuration appVPN];
+  appRules = [appVPN appRules];
+  if ([appRules count] && -[NESMSession isActive](self, "isActive"))
   {
     if (self)
     {
@@ -82,10 +82,10 @@
     }
 
     v9 = objc_alloc_init(NSMutableString);
-    v10 = [(NESMSession *)self configuration];
-    v11 = [v10 appVPN];
-    v12 = [v11 appRules];
-    [v9 appendPrettyObject:v12 withName:@"Current app rules" andIndent:0 options:0];
+    configuration2 = [(NESMSession *)self configuration];
+    appVPN2 = [configuration2 appVPN];
+    appRules2 = [appVPN2 appRules];
+    [v9 appendPrettyObject:appRules2 withName:@"Current app rules" andIndent:0 options:0];
 
     v13 = ne_log_large_obj();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -95,8 +95,8 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@", &buf, 0xCu);
     }
 
-    v14 = [(NESMSession *)self configuration];
-    v16 = [v14 appVPN];
+    configuration3 = [(NESMSession *)self configuration];
+    appVPN3 = [configuration3 appVPN];
     if (self)
     {
       v17 = objc_getProperty(self, v15, 688, 1);
@@ -107,24 +107,24 @@
       v17 = 0;
     }
 
-    v18 = [v17 handle];
-    v19 = [v16 installSigningIdentifiersWithFlowDivertControlSocket:{objc_msgSend(v18, "fileDescriptor")}];
+    handle = [v17 handle];
+    v19 = [appVPN3 installSigningIdentifiersWithFlowDivertControlSocket:{objc_msgSend(handle, "fileDescriptor")}];
 
     if (v19)
     {
       v56 = v9;
-      v20 = [(NESMSession *)self policySession];
-      v21 = [(NESMSession *)self configuration];
-      v22 = [v21 appVPN];
-      v23 = [v22 appRules];
+      policySession = [(NESMSession *)self policySession];
+      configuration4 = [(NESMSession *)self configuration];
+      appVPN4 = [configuration4 appVPN];
+      appRules3 = [appVPN4 appRules];
       v24 = [(NESMSession *)self uid];
       [v24 intValue];
-      sub_100040988(v20, v23);
+      sub_100040988(policySession, appRules3);
 
-      v25 = [(NESMSession *)self policySession];
-      v55 = [(NESMSession *)self configuration];
-      v54 = [v55 appVPN];
-      v27 = [v54 appRules];
+      policySession2 = [(NESMSession *)self policySession];
+      configuration5 = [(NESMSession *)self configuration];
+      appVPN5 = [configuration5 appVPN];
+      appRules4 = [appVPN5 appRules];
       if (self)
       {
         v28 = objc_getProperty(self, v26, 688, 1);
@@ -135,36 +135,36 @@
         v28 = 0;
       }
 
-      v53 = [v28 controlUnit];
-      v49 = [v53 unsignedIntValue];
-      v52 = [(NESMVPNSession *)self pluginConfigurationEntities];
-      v29 = [v52 DNSSettings];
-      v50 = [(NESMVPNSession *)self pluginConfigurationEntities];
-      v30 = [v50 proxySettings];
-      v31 = [v30 enabled];
-      v57 = v25;
-      if (v31)
+      controlUnit = [v28 controlUnit];
+      unsignedIntValue = [controlUnit unsignedIntValue];
+      pluginConfigurationEntities = [(NESMVPNSession *)self pluginConfigurationEntities];
+      dNSSettings = [pluginConfigurationEntities DNSSettings];
+      pluginConfigurationEntities2 = [(NESMVPNSession *)self pluginConfigurationEntities];
+      proxySettings = [pluginConfigurationEntities2 proxySettings];
+      enabled = [proxySettings enabled];
+      v57 = policySession2;
+      if (enabled)
       {
-        v48 = 1;
+        enabled2 = 1;
       }
 
       else
       {
-        v46 = [(NESMVPNSession *)self protocol];
-        v45 = [v46 proxySettings];
-        v48 = [v45 enabled];
+        protocol = [(NESMVPNSession *)self protocol];
+        proxySettings2 = [protocol proxySettings];
+        enabled2 = [proxySettings2 enabled];
       }
 
-      v51 = v29;
-      v47 = v29 != 0;
-      v35 = [(NESMVPNSession *)self primaryTunnelPlugin];
-      v37 = sub_100019748(v35, v36);
-      v38 = [(NESMSession *)self configuration];
-      v39 = [v38 appVPN];
-      v40 = [v39 excludedDomains];
-      v41 = v27;
+      v51 = dNSSettings;
+      v47 = dNSSettings != 0;
+      primaryTunnelPlugin = [(NESMVPNSession *)self primaryTunnelPlugin];
+      v37 = sub_100019748(primaryTunnelPlugin, v36);
+      configuration6 = [(NESMSession *)self configuration];
+      appVPN6 = [configuration6 appVPN];
+      excludedDomains = [appVPN6 excludedDomains];
+      v41 = appRules4;
       v42 = v37;
-      v43 = v40;
+      v43 = excludedDomains;
       v44 = v57;
       if (v57)
       {
@@ -175,8 +175,8 @@
           v59 = sub_100046D78;
           v60 = &unk_1000EA080;
           v61 = v57;
-          v65 = v49;
-          v66 = v48;
+          v65 = unsignedIntValue;
+          v66 = enabled2;
           v67 = v47;
           v62 = v41;
           v63 = v42;
@@ -190,7 +190,7 @@
         }
       }
 
-      if ((v31 & 1) == 0)
+      if ((enabled & 1) == 0)
       {
       }
 
@@ -234,18 +234,18 @@ LABEL_33:
   return 1;
 }
 
-- (void)plugin:(id)a3 didSetConfiguration:(id)a4 completionHandler:(id)a5
+- (void)plugin:(id)plugin didSetConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pluginCopy = plugin;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  [(NESMVPNSession *)self setPluginConfigurationEntities:v9];
+  [(NESMVPNSession *)self setPluginConfigurationEntities:configurationCopy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000102DC;
   v12[3] = &unk_1000E9888;
-  v11 = v10;
+  v11 = handlerCopy;
   v13 = v11;
   objc_copyWeak(&v14, &location);
   [(NESMFlowDivertSession *)self setConfigurationWithCompletionHandler:v12];
@@ -254,24 +254,24 @@ LABEL_33:
   objc_destroyWeak(&location);
 }
 
-- (id)pluginDidRequestFlowDivertControlSocket:(id)a3
+- (id)pluginDidRequestFlowDivertControlSocket:(id)socket
 {
-  v4 = [(NESMSession *)self configuration];
-  v5 = [v4 appVPN];
+  configuration = [(NESMSession *)self configuration];
+  appVPN = [configuration appVPN];
 
-  v6 = [(NESMVPNSession *)self protocol];
+  protocol = [(NESMVPNSession *)self protocol];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(NESMVPNSession *)self protocol];
-    v10 = [v9 order];
+    protocol2 = [(NESMVPNSession *)self protocol];
+    order = [protocol2 order];
   }
 
   else
   {
-    v10 = 0x7FFFFFFFLL;
+    order = 0x7FFFFFFFLL;
   }
 
   if (self)
@@ -287,40 +287,40 @@ LABEL_33:
   v12 = [NEFlowDivertFileHandle alloc];
   if (Property)
   {
-    v13 = [v12 initFlowDivertDataSocket];
+    initFlowDivertDataSocket = [v12 initFlowDivertDataSocket];
   }
 
   else
   {
-    v13 = [v12 initFlowDivertControlSocketWithParams:v5 == 0 order:v10];
+    initFlowDivertDataSocket = [v12 initFlowDivertControlSocketWithParams:appVPN == 0 order:order];
     if (self)
     {
-      objc_setProperty_atomic(self, v14, v13, 688);
+      objc_setProperty_atomic(self, v14, initFlowDivertDataSocket, 688);
     }
   }
 
-  v15 = [v13 handle];
+  handle = [initFlowDivertDataSocket handle];
 
-  return v15;
+  return handle;
 }
 
 - (void)uninstall
 {
-  v3 = [(NESMSession *)self policySession];
-  sub_100030D44(v3);
+  policySession = [(NESMSession *)self policySession];
+  sub_100030D44(policySession);
 
   sub_10008FD50(self);
   if (self)
   {
     if (self->_scstore)
     {
-      v5 = [(NESMSession *)self configuration];
-      v6 = [v5 identifier];
-      NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, [v6 UUIDString], kSCEntNetProxies);
+      configuration = [(NESMSession *)self configuration];
+      identifier = [configuration identifier];
+      NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, [identifier UUIDString], kSCEntNetProxies);
 
-      v8 = [(NESMSession *)self configuration];
-      v9 = [v8 identifier];
-      v10 = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, [v9 UUIDString], kSCEntNetDNS);
+      configuration2 = [(NESMSession *)self configuration];
+      identifier2 = [configuration2 identifier];
+      v10 = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, [identifier2 UUIDString], kSCEntNetDNS);
 
       v13[0] = NetworkServiceEntity;
       v13[1] = v10;
@@ -331,8 +331,8 @@ LABEL_33:
     objc_setProperty_atomic(self, v4, 0, 688);
   }
 
-  v12 = [(NESMVPNSession *)self stateHandler];
-  [v12 handleClearConfigurationResult:1];
+  stateHandler = [(NESMVPNSession *)self stateHandler];
+  [stateHandler handleClearConfigurationResult:1];
 }
 
 - (void)install
@@ -353,26 +353,26 @@ LABEL_33:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(NESMVPNSession *)self parentType]== 1)
   {
-    v4 = [(NESMVPNSession *)self parent];
-    v3 = [(NESMSession *)self server];
-    [v3 requestInstallForSession:self withParentSession:v4 exclusive:0];
+    parent = [(NESMVPNSession *)self parent];
+    server = [(NESMSession *)self server];
+    [server requestInstallForSession:self withParentSession:parent exclusive:0];
   }
 
   else
   {
-    v4 = [(NESMSession *)self server];
-    [v4 requestInstallForSession:self withParentSession:0 exclusive:0];
+    parent = [(NESMSession *)self server];
+    [parent requestInstallForSession:self withParentSession:0 exclusive:0];
   }
 }
 
-- (void)setConfigurationWithCompletionHandler:(id)a3
+- (void)setConfigurationWithCompletionHandler:(id)handler
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100010B54;
   v3[3] = &unk_1000E9838;
   v3[4] = self;
-  [(NESMVPNSession *)self queueChangesToTunnelConfiguration:v3 completionHandler:a3];
+  [(NESMVPNSession *)self queueChangesToTunnelConfiguration:v3 completionHandler:handler];
 }
 
 - (void)dealloc
@@ -391,19 +391,19 @@ LABEL_33:
   [(NESMVPNSession *)&v4 dealloc];
 }
 
-- (NESMFlowDivertSession)initWithConfiguration:(id)a3 andServer:(id)a4 andProtocol:(id)a5 andPluginType:(id)a6
+- (NESMFlowDivertSession)initWithConfiguration:(id)configuration andServer:(id)server andProtocol:(id)protocol andPluginType:(id)type
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 copy];
-  v14 = [v13 appVPN];
+  typeCopy = type;
+  protocolCopy = protocol;
+  serverCopy = server;
+  v13 = [configuration copy];
+  appVPN = [v13 appVPN];
   v15 = [(NESMSession *)self uid];
-  [v14 updateAppRulesForUID:{objc_msgSend(v15, "unsignedIntValue")}];
+  [appVPN updateAppRulesForUID:{objc_msgSend(v15, "unsignedIntValue")}];
 
   v18.receiver = self;
   v18.super_class = NESMFlowDivertSession;
-  v16 = [(NESMVPNSession *)&v18 initWithConfiguration:v13 andServer:v12 andProtocol:v11 andPluginType:v10 andSessionType:2];
+  v16 = [(NESMVPNSession *)&v18 initWithConfiguration:v13 andServer:serverCopy andProtocol:protocolCopy andPluginType:typeCopy andSessionType:2];
 
   return v16;
 }

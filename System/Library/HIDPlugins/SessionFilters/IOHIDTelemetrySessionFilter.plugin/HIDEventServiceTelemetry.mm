@@ -1,12 +1,12 @@
 @interface HIDEventServiceTelemetry
-- (HIDEventServiceTelemetry)initWithService:(id)a3;
+- (HIDEventServiceTelemetry)initWithService:(id)service;
 @end
 
 @implementation HIDEventServiceTelemetry
 
-- (HIDEventServiceTelemetry)initWithService:(id)a3
+- (HIDEventServiceTelemetry)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v24.receiver = self;
   v24.super_class = HIDEventServiceTelemetry;
   v5 = [(HIDEventServiceTelemetry *)&v24 init];
@@ -20,7 +20,7 @@
 
     v9 = IOHIDServiceGetRegistryID();
     [(NSMutableDictionary *)v6->_properties setObject:v9 forKeyedSubscript:@"serviceid"];
-    v10 = [v4 propertyForKey:@"DeviceUsagePairs"];
+    v10 = [serviceCopy propertyForKey:@"DeviceUsagePairs"];
 
     if (v10)
     {
@@ -33,7 +33,7 @@
     }
 
     [(NSMutableDictionary *)v6->_properties setObject:v11 forKeyedSubscript:@"usagepairs"];
-    v12 = [v4 propertyForKey:@"Transport"];
+    v12 = [serviceCopy propertyForKey:@"Transport"];
 
     if (v12)
     {
@@ -46,10 +46,10 @@
     }
 
     [(NSMutableDictionary *)v6->_properties setObject:v13 forKeyedSubscript:@"transport"];
-    v14 = [v4 propertyForKey:@"ProductID"];
+    v14 = [serviceCopy propertyForKey:@"ProductID"];
 
     [(NSMutableDictionary *)v6->_properties setObject:v14 forKeyedSubscript:@"productid"];
-    v15 = [v4 propertyForKey:@"Product"];
+    v15 = [serviceCopy propertyForKey:@"Product"];
 
     if (v15)
     {
@@ -62,10 +62,10 @@
     }
 
     [(NSMutableDictionary *)v6->_properties setObject:v16 forKeyedSubscript:@"productdescription"];
-    v17 = [v4 propertyForKey:@"VendorID"];
+    v17 = [serviceCopy propertyForKey:@"VendorID"];
 
     [(NSMutableDictionary *)v6->_properties setObject:v17 forKeyedSubscript:@"vendorid"];
-    v18 = [v4 propertyForKey:@"Manufacturer"];
+    v18 = [serviceCopy propertyForKey:@"Manufacturer"];
 
     if (v18)
     {
@@ -78,7 +78,7 @@
     }
 
     [(NSMutableDictionary *)v6->_properties setObject:v19 forKeyedSubscript:@"manufacturer"];
-    v20 = [v4 propertyForKey:@"Built-In"];
+    v20 = [serviceCopy propertyForKey:@"Built-In"];
 
     if ([v20 BOOLValue])
     {

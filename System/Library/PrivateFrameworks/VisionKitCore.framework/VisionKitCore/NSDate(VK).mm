@@ -10,13 +10,13 @@
 
 - (uint64_t)vk_isToday
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 components:28 fromDate:a1];
-  v4 = [v2 dateFromComponents:v3];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v2 components:28 fromDate:v5];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar components:28 fromDate:self];
+  v4 = [currentCalendar dateFromComponents:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [currentCalendar components:28 fromDate:date];
 
-  v7 = [v2 dateFromComponents:v6];
+  v7 = [currentCalendar dateFromComponents:v6];
   v8 = [v4 isEqualToDate:v7];
 
   return v8;
@@ -24,16 +24,16 @@
 
 - (uint64_t)vk_isYesterday
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 components:28 fromDate:a1];
-  v4 = [v2 dateFromComponents:v3];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar components:28 fromDate:self];
+  v4 = [currentCalendar dateFromComponents:v3];
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v5 setDay:-1];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v2 dateByAddingComponents:v5 toDate:v6 options:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar dateByAddingComponents:v5 toDate:date options:0];
 
-  v8 = [v2 components:28 fromDate:v7];
-  v9 = [v2 dateFromComponents:v8];
+  v8 = [currentCalendar components:28 fromDate:v7];
+  v9 = [currentCalendar dateFromComponents:v8];
 
   v10 = [v4 isEqualToDate:v9];
   return v10;
@@ -48,12 +48,12 @@
 
   v2 = vk_localDateWithSeconds_localFormatter;
 
-  return [v2 stringFromDate:a1];
+  return [v2 stringFromDate:self];
 }
 
 - (id)vk_shortFormattedDate
 {
-  if (([a1 vk_isToday] & 1) != 0 || objc_msgSend(a1, "vk_isYesterday"))
+  if (([self vk_isToday] & 1) != 0 || objc_msgSend(self, "vk_isYesterday"))
   {
     if (vk_shortFormattedDate_shortRelativeOnceToken != -1)
     {
@@ -73,44 +73,44 @@
     v2 = &vk_shortFormattedDate_shortStandardformatter;
   }
 
-  v3 = [*v2 stringFromDate:a1];
+  v3 = [*v2 stringFromDate:self];
 
   return v3;
 }
 
 - (id)vk_briefFormattedDate:()VK
 {
-  v4 = a1;
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [v4 isEqual:v5];
+  selfCopy = self;
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [selfCopy isEqual:distantFuture];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
 
-    v4 = v7;
+    selfCopy = date;
   }
 
-  if ([v4 vk_isToday])
+  if ([selfCopy vk_isToday])
   {
     if (vk_briefFormattedDate__briefTodayOnceToken != -1)
     {
       [NSDate(VK) vk_briefFormattedDate:];
     }
 
-    v8 = [vk_briefFormattedDate__briefTodayFormatter stringFromDate:v4];
+    v8 = [vk_briefFormattedDate__briefTodayFormatter stringFromDate:selfCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v10 = [MEMORY[0x1E695DF00] date];
-    v11 = [v9 components:28 fromDate:v10];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date2 = [MEMORY[0x1E695DF00] date];
+    v11 = [currentCalendar components:28 fromDate:date2];
 
-    v12 = [v9 dateFromComponents:v11];
-    v13 = [v9 dateByAddingUnit:16 value:-1 toDate:v12 options:0];
-    v14 = [v9 dateByAddingUnit:0x2000 value:-1 toDate:v12 options:0];
-    if ([v4 compare:v13] == 1 || objc_msgSend(v4, "compare:", v14) != 1)
+    v12 = [currentCalendar dateFromComponents:v11];
+    v13 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:v12 options:0];
+    v14 = [currentCalendar dateByAddingUnit:0x2000 value:-1 toDate:v12 options:0];
+    if ([selfCopy compare:v13] == 1 || objc_msgSend(selfCopy, "compare:", v14) != 1)
     {
       if (a3)
       {
@@ -143,7 +143,7 @@
       v15 = &vk_briefFormattedDate__templateFormatter;
     }
 
-    v8 = [*v15 stringFromDate:v4];
+    v8 = [*v15 stringFromDate:selfCopy];
   }
 
   return v8;

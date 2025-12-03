@@ -5,50 +5,50 @@
 - (AXPTranslationSystemAppDelegate)systemAppDelegate;
 - (AXPTranslationTokenDelegateHelper)bridgeTokenDelegate;
 - (AXPTranslator)init;
-- (BOOL)_treeDumpResponseIsApplicationOrientationData:(id)a3;
-- (id)_checkCacheForFrontmostAppResponseWithBridgeDelegateToken:(id)a3;
-- (id)_translationApplicationObjectForPidNumber:(id)a3;
+- (BOOL)_treeDumpResponseIsApplicationOrientationData:(id)data;
+- (id)_checkCacheForFrontmostAppResponseWithBridgeDelegateToken:(id)token;
+- (id)_translationApplicationObjectForPidNumber:(id)number;
 - (id)attributedStringConversionBlock;
-- (id)checkTreeDumpCacheForRequest:(id)a3;
-- (id)checkTreeDumpCacheResponses:(id)a3 forMatchingResponse:(id)a4 withBridgeTokenDelegate:(id)a5;
-- (id)iosPlatformElementFromTranslation:(id)a3;
-- (id)platformElementFromTranslation:(id)a3;
-- (id)processAXTreeElements:(id)a3;
-- (id)processActionRequest:(id)a3;
-- (id)processAttributeRequest:(id)a3;
-- (id)processCanSetAttribute:(id)a3;
-- (id)processFrontMostApp:(id)a3;
-- (id)processHitTest:(id)a3;
-- (id)processMultipleAttributeRequest:(id)a3;
-- (id)processSetAttribute:(id)a3;
-- (id)processSupportedActions:(id)a3;
-- (id)processSupportsAttributes:(id)a3;
-- (id)processTranslatorRequest:(id)a3;
-- (id)remoteTranslationDataWithTranslation:(id)a3 pid:(int)a4;
-- (id)sendTranslatorRequest:(id)a3;
-- (id)translationObjectFromData:(id)a3;
-- (id)treeDumpCacheResultDataForAttributeTypeRequest:(id)a3;
-- (id)treeDumpCacheResultDataForCanSetAttributeTypeRequest:(id)a3;
-- (id)treeDumpCacheResultDataForSupportedActionsTypeRequest:(id)a3;
-- (id)treeDumpCacheResultDataForSupportsAttributesTypeRequest:(id)a3;
-- (id)treeDumpResponseCacheForBridgeDelegateToken:(id)a3;
-- (int64_t)treeDumpApplicationOrientationForBridgeDelegateToken:(id)a3;
-- (void)_handleFocusedUIElementChangedForInitialDump:(id)a3;
-- (void)_resetBridgeTokensForResponse:(id)a3 bridgeDelegateToken:(id)a4;
+- (id)checkTreeDumpCacheForRequest:(id)request;
+- (id)checkTreeDumpCacheResponses:(id)responses forMatchingResponse:(id)response withBridgeTokenDelegate:(id)delegate;
+- (id)iosPlatformElementFromTranslation:(id)translation;
+- (id)platformElementFromTranslation:(id)translation;
+- (id)processAXTreeElements:(id)elements;
+- (id)processActionRequest:(id)request;
+- (id)processAttributeRequest:(id)request;
+- (id)processCanSetAttribute:(id)attribute;
+- (id)processFrontMostApp:(id)app;
+- (id)processHitTest:(id)test;
+- (id)processMultipleAttributeRequest:(id)request;
+- (id)processSetAttribute:(id)attribute;
+- (id)processSupportedActions:(id)actions;
+- (id)processSupportsAttributes:(id)attributes;
+- (id)processTranslatorRequest:(id)request;
+- (id)remoteTranslationDataWithTranslation:(id)translation pid:(int)pid;
+- (id)sendTranslatorRequest:(id)request;
+- (id)translationObjectFromData:(id)data;
+- (id)treeDumpCacheResultDataForAttributeTypeRequest:(id)request;
+- (id)treeDumpCacheResultDataForCanSetAttributeTypeRequest:(id)request;
+- (id)treeDumpCacheResultDataForSupportedActionsTypeRequest:(id)request;
+- (id)treeDumpCacheResultDataForSupportsAttributesTypeRequest:(id)request;
+- (id)treeDumpResponseCacheForBridgeDelegateToken:(id)token;
+- (int64_t)treeDumpApplicationOrientationForBridgeDelegateToken:(id)token;
+- (void)_handleFocusedUIElementChangedForInitialDump:(id)dump;
+- (void)_resetBridgeTokensForResponse:(id)response bridgeDelegateToken:(id)token;
 - (void)enableAccessibility;
-- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)a3 completionHandler:(id)a4;
-- (void)handleNotification:(unint64_t)a3 data:(id)a4 associatedObject:(id)a5;
-- (void)handleUpdatedAXTree:(id)a3;
+- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)thread completionHandler:(id)handler;
+- (void)handleNotification:(unint64_t)notification data:(id)data associatedObject:(id)object;
+- (void)handleUpdatedAXTree:(id)tree;
 - (void)initializeAXRuntimeForSystemAppServer;
-- (void)processPlatformAXTreeDump:(id)a3;
-- (void)processPlatformNotification:(unint64_t)a3 data:(id)a4;
-- (void)setBridgeDelegate:(id)a3;
-- (void)setBridgeTokenDelegate:(id)a3;
-- (void)setCachedTreeClientType:(unint64_t)a3;
-- (void)setRequestResolvingBehavior:(unint64_t)a3;
-- (void)setRuntimeDelegate:(id)a3;
-- (void)setSystemAppDelegate:(id)a3;
-- (void)updateTreeDumpCacheResponse:(id)a3 withAdditionalResponse:(id)a4;
+- (void)processPlatformAXTreeDump:(id)dump;
+- (void)processPlatformNotification:(unint64_t)notification data:(id)data;
+- (void)setBridgeDelegate:(id)delegate;
+- (void)setBridgeTokenDelegate:(id)delegate;
+- (void)setCachedTreeClientType:(unint64_t)type;
+- (void)setRequestResolvingBehavior:(unint64_t)behavior;
+- (void)setRuntimeDelegate:(id)delegate;
+- (void)setSystemAppDelegate:(id)delegate;
+- (void)updateTreeDumpCacheResponse:(id)response withAdditionalResponse:(id)additionalResponse;
 @end
 
 @implementation AXPTranslator
@@ -837,7 +837,7 @@ id __58__AXPTranslator_iOS_translationObjectFromPlatformElement___block_invoke_2
   block[1] = 3221225472;
   block[2] = __31__AXPTranslator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -869,39 +869,39 @@ uint64_t __31__AXPTranslator_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_translationApplicationObjectForPidNumber:(id)a3
+- (id)_translationApplicationObjectForPidNumber:(id)number
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v5 = [AXPTranslatorRequest requestWithTranslation:0];
   [v5 setRequestType:1];
-  if (v4)
+  if (numberCopy)
   {
     v11 = @"pid";
-    v12[0] = v4;
+    v12[0] = numberCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     [v5 setParameters:v6];
   }
 
   v7 = [(AXPTranslator *)self sendTranslatorRequest:v5];
-  v8 = [v7 translationResponse];
+  translationResponse = [v7 translationResponse];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return translationResponse;
 }
 
-- (id)_checkCacheForFrontmostAppResponseWithBridgeDelegateToken:(id)a3
+- (id)_checkCacheForFrontmostAppResponseWithBridgeDelegateToken:(id)token
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:v4];
-  v6 = [v5 treeDumpResponse];
+  tokenCopy = token;
+  v5 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:tokenCopy];
+  treeDumpResponse = [v5 treeDumpResponse];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [treeDumpResponse countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -913,7 +913,7 @@ uint64_t __31__AXPTranslator_sharedInstance__block_invoke(uint64_t a1)
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(treeDumpResponse);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -925,7 +925,7 @@ uint64_t __31__AXPTranslator_sharedInstance__block_invoke(uint64_t a1)
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [treeDumpResponse countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -942,31 +942,31 @@ uint64_t __31__AXPTranslator_sharedInstance__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)handleNotification:(unint64_t)a3 data:(id)a4 associatedObject:(id)a5
+- (void)handleNotification:(unint64_t)notification data:(id)data associatedObject:(id)object
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  objectCopy = object;
   v10 = AXPlatformTranslationLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [AXPTranslator handleNotification:a3 data:v8 associatedObject:v10];
+    [AXPTranslator handleNotification:notification data:dataCopy associatedObject:v10];
   }
 
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __58__AXPTranslator_handleNotification_data_associatedObject___block_invoke;
   v20 = &unk_278BE86A0;
-  v21 = self;
-  v24 = a3;
-  v11 = v8;
+  selfCopy = self;
+  notificationCopy = notification;
+  v11 = dataCopy;
   v22 = v11;
-  v12 = v9;
+  v12 = objectCopy;
   v23 = v12;
   dispatch_async(MEMORY[0x277D85CD0], &v17);
   if ([(AXPTranslator *)self requestResolvingBehavior:v17]!= 1)
   {
-    v13 = [(AXPTranslator *)self requestResolvingBehavior];
-    if (a3 == 2 && v13 != 2)
+    requestResolvingBehavior = [(AXPTranslator *)self requestResolvingBehavior];
+    if (notification == 2 && requestResolvingBehavior != 2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -977,9 +977,9 @@ uint64_t __31__AXPTranslator_sharedInstance__block_invoke(uint64_t a1)
           [AXPTranslator handleNotification:v12 data:self associatedObject:v14];
         }
 
-        v15 = [(AXPTranslator *)self fakeElementCache];
+        fakeElementCache = [(AXPTranslator *)self fakeElementCache];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v12, "objectID")}];
-        [v15 setObject:0 forKeyedSubscript:v16];
+        [fakeElementCache setObject:0 forKeyedSubscript:v16];
       }
     }
   }
@@ -991,27 +991,27 @@ void __58__AXPTranslator_handleNotification_data_associatedObject___block_invoke
   [v2 processPlatformNotification:*(a1 + 56) data:*(a1 + 40) associatedObject:*(a1 + 48)];
 }
 
-- (void)handleUpdatedAXTree:(id)a3
+- (void)handleUpdatedAXTree:(id)tree
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  treeCopy = tree;
   v5 = AXPlatformTranslationLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AXPTranslator handleUpdatedAXTree:v5];
   }
 
-  v6 = [v4 associatedTranslationObject];
-  v7 = [v6 bridgeDelegateToken];
+  associatedTranslationObject = [treeCopy associatedTranslationObject];
+  bridgeDelegateToken = [associatedTranslationObject bridgeDelegateToken];
 
-  if (v7)
+  if (bridgeDelegateToken)
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v8 = [v4 treeDumpResponse];
-    v9 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
+    treeDumpResponse = [treeCopy treeDumpResponse];
+    v9 = [treeDumpResponse countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1022,44 +1022,44 @@ void __58__AXPTranslator_handleNotification_data_associatedObject___block_invoke
         {
           if (*v47 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(treeDumpResponse);
           }
 
           v13 = *(*(&v46 + 1) + 8 * i);
-          v14 = [v13 resultData];
-          [(AXPTranslator *)self _resetBridgeTokensForResponse:v14 bridgeDelegateToken:v7];
+          resultData = [v13 resultData];
+          [(AXPTranslator *)self _resetBridgeTokensForResponse:resultData bridgeDelegateToken:bridgeDelegateToken];
 
-          v15 = [v13 associatedNotificationObject];
-          [v15 setBridgeDelegateToken:v7];
+          associatedNotificationObject = [v13 associatedNotificationObject];
+          [associatedNotificationObject setBridgeDelegateToken:bridgeDelegateToken];
 
-          v16 = [v13 associatedTranslationObject];
-          [v16 setBridgeDelegateToken:v7];
+          associatedTranslationObject2 = [v13 associatedTranslationObject];
+          [associatedTranslationObject2 setBridgeDelegateToken:bridgeDelegateToken];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
+        v10 = [treeDumpResponse countByEnumeratingWithState:&v46 objects:v51 count:16];
       }
 
       while (v10);
     }
 
-    v17 = [v4 treeDumpType];
-    v18 = [v17 isEqualToString:@"AXPTreeDumpTypeInitialDump"];
+    treeDumpType = [treeCopy treeDumpType];
+    v18 = [treeDumpType isEqualToString:@"AXPTreeDumpTypeInitialDump"];
 
     if (v18)
     {
-      v19 = [(AXPTranslator *)self bridgeDelegateTokenToTreeDumpLookup];
-      [v19 setObject:v4 forKeyedSubscript:v7];
+      bridgeDelegateTokenToTreeDumpLookup = [(AXPTranslator *)self bridgeDelegateTokenToTreeDumpLookup];
+      [bridgeDelegateTokenToTreeDumpLookup setObject:treeCopy forKeyedSubscript:bridgeDelegateToken];
     }
 
     else
     {
-      v21 = [v4 treeDumpType];
-      v22 = [v21 isEqualToString:@"AXPTreeDumpTypeAdditionalData"];
+      treeDumpType2 = [treeCopy treeDumpType];
+      v22 = [treeDumpType2 isEqualToString:@"AXPTreeDumpTypeAdditionalData"];
 
       if (!v22)
       {
-        v38 = [v4 treeDumpType];
-        v39 = [v38 isEqualToString:@"AXPTreeDumpTypeTreeDestroyed"];
+        treeDumpType3 = [treeCopy treeDumpType];
+        v39 = [treeDumpType3 isEqualToString:@"AXPTreeDumpTypeTreeDestroyed"];
 
         if (v39)
         {
@@ -1069,18 +1069,18 @@ void __58__AXPTranslator_handleNotification_data_associatedObject___block_invoke
         goto LABEL_29;
       }
 
-      v23 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:v7];
+      v23 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:bridgeDelegateToken];
       v24 = MEMORY[0x277CBEB18];
       v41 = v23;
-      v25 = [v23 treeDumpResponse];
-      v26 = [v24 arrayWithArray:v25];
+      treeDumpResponse2 = [v23 treeDumpResponse];
+      v26 = [v24 arrayWithArray:treeDumpResponse2];
 
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v27 = [v4 treeDumpResponse];
-      v28 = [v27 countByEnumeratingWithState:&v42 objects:v50 count:16];
+      treeDumpResponse3 = [treeCopy treeDumpResponse];
+      v28 = [treeDumpResponse3 countByEnumeratingWithState:&v42 objects:v50 count:16];
       if (v28)
       {
         v29 = v28;
@@ -1091,11 +1091,11 @@ void __58__AXPTranslator_handleNotification_data_associatedObject___block_invoke
           {
             if (*v43 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(treeDumpResponse3);
             }
 
             v32 = *(*(&v42 + 1) + 8 * j);
-            v33 = [(AXPTranslator *)self checkTreeDumpCacheResponses:v26 forMatchingResponse:v32 withBridgeTokenDelegate:v7];
+            v33 = [(AXPTranslator *)self checkTreeDumpCacheResponses:v26 forMatchingResponse:v32 withBridgeTokenDelegate:bridgeDelegateToken];
             if (v33)
             {
               [(AXPTranslator *)self updateTreeDumpCacheResponse:v33 withAdditionalResponse:v32];
@@ -1107,7 +1107,7 @@ void __58__AXPTranslator_handleNotification_data_associatedObject___block_invoke
             }
           }
 
-          v29 = [v27 countByEnumeratingWithState:&v42 objects:v50 count:16];
+          v29 = [treeDumpResponse3 countByEnumeratingWithState:&v42 objects:v50 count:16];
         }
 
         while (v29);
@@ -1115,20 +1115,20 @@ void __58__AXPTranslator_handleNotification_data_associatedObject___block_invoke
 
       v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v34 setObject:v26 forKeyedSubscript:@"treeDump"];
-      v19 = v41;
-      v35 = [v41 treeDumpType];
-      [v34 setObject:v35 forKeyedSubscript:@"treeDumpType"];
+      bridgeDelegateTokenToTreeDumpLookup = v41;
+      treeDumpType4 = [v41 treeDumpType];
+      [v34 setObject:treeDumpType4 forKeyedSubscript:@"treeDumpType"];
 
       [v41 setResultData:v34];
     }
 
 LABEL_29:
-    v36 = [v4 treeDumpType];
-    v37 = [v36 isEqualToString:@"AXPTreeDumpTypeInitialDump"];
+    treeDumpType5 = [treeCopy treeDumpType];
+    v37 = [treeDumpType5 isEqualToString:@"AXPTreeDumpTypeInitialDump"];
 
     if (v37)
     {
-      [(AXPTranslator *)self _handleFocusedUIElementChangedForInitialDump:v4];
+      [(AXPTranslator *)self _handleFocusedUIElementChangedForInitialDump:treeCopy];
     }
 
     goto LABEL_32;
@@ -1144,20 +1144,20 @@ LABEL_32:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)treeDumpApplicationOrientationForBridgeDelegateToken:(id)a3
+- (int64_t)treeDumpApplicationOrientationForBridgeDelegateToken:(id)token
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:a3];
-  v5 = [v4 treeDumpResponse];
+  v4 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:token];
+  treeDumpResponse = [v4 treeDumpResponse];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [treeDumpResponse countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    intValue = 0;
     v9 = *v16;
     do
     {
@@ -1165,18 +1165,18 @@ LABEL_32:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(treeDumpResponse);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([(AXPTranslator *)self _treeDumpResponseIsApplicationOrientationData:v11])
         {
-          v12 = [v11 resultData];
-          v8 = [v12 intValue];
+          resultData = [v11 resultData];
+          intValue = [resultData intValue];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [treeDumpResponse countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1184,22 +1184,22 @@ LABEL_32:
 
   else
   {
-    v8 = 0;
+    intValue = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v8;
+  return intValue;
 }
 
-- (BOOL)_treeDumpResponseIsApplicationOrientationData:(id)a3
+- (BOOL)_treeDumpResponseIsApplicationOrientationData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 associatedRequestType] == 2 && objc_msgSend(v3, "attribute") == 129;
+  dataCopy = data;
+  v4 = [dataCopy associatedRequestType] == 2 && objc_msgSend(dataCopy, "attribute") == 129;
 
   return v4;
 }
 
-- (void)_handleFocusedUIElementChangedForInitialDump:(id)a3
+- (void)_handleFocusedUIElementChangedForInitialDump:(id)dump
 {
   v32 = *MEMORY[0x277D85DE8];
   v25 = 0;
@@ -1218,9 +1218,9 @@ LABEL_32:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v13 = a3;
-  v3 = [v13 treeDumpResponse];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v31 count:16];
+  dumpCopy = dump;
+  treeDumpResponse = [dumpCopy treeDumpResponse];
+  v4 = [treeDumpResponse countByEnumeratingWithState:&v15 objects:v31 count:16];
   if (v4)
   {
     v5 = *v16;
@@ -1230,14 +1230,14 @@ LABEL_32:
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(treeDumpResponse);
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
         if ([v7 associatedRequestType] == 2)
         {
-          v8 = [v7 resultData];
-          v9 = v8 == 0;
+          resultData = [v7 resultData];
+          v9 = resultData == 0;
 
           if (!v9)
           {
@@ -1247,7 +1247,7 @@ LABEL_32:
 
         if ([v7 associatedRequestType] == 5)
         {
-          v10 = [v7 resultData];
+          resultData2 = [v7 resultData];
           v14[0] = MEMORY[0x277D85DD0];
           v14[1] = 3221225472;
           v14[2] = __62__AXPTranslator__handleFocusedUIElementChangedForInitialDump___block_invoke;
@@ -1255,11 +1255,11 @@ LABEL_32:
           v14[4] = v7;
           v14[5] = &v19;
           v14[6] = &v25;
-          [v10 enumerateKeysAndObjectsUsingBlock:v14];
+          [resultData2 enumerateKeysAndObjectsUsingBlock:v14];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v31 count:16];
+      v4 = [treeDumpResponse countByEnumeratingWithState:&v15 objects:v31 count:16];
     }
 
     while (v4);
@@ -1299,11 +1299,11 @@ void __62__AXPTranslator__handleFocusedUIElementChangedForInitialDump___block_in
   }
 }
 
-- (void)_resetBridgeTokensForResponse:(id)a3 bridgeDelegateToken:(id)a4
+- (void)_resetBridgeTokensForResponse:(id)response bridgeDelegateToken:(id)token
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  tokenCopy = token;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1314,7 +1314,7 @@ void __62__AXPTranslator__handleFocusedUIElementChangedForInitialDump___block_in
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v8 = v6;
+      v8 = responseCopy;
       v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v9)
       {
@@ -1329,7 +1329,7 @@ void __62__AXPTranslator__handleFocusedUIElementChangedForInitialDump___block_in
               objc_enumerationMutation(v8);
             }
 
-            [(AXPTranslator *)self _resetBridgeTokensForResponse:*(*(&v23 + 1) + 8 * i) bridgeDelegateToken:v7];
+            [(AXPTranslator *)self _resetBridgeTokensForResponse:*(*(&v23 + 1) + 8 * i) bridgeDelegateToken:tokenCopy];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -1351,7 +1351,7 @@ void __62__AXPTranslator__handleFocusedUIElementChangedForInitialDump___block_in
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v8 = v6;
+      v8 = responseCopy;
       v13 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v13)
       {
@@ -1367,7 +1367,7 @@ void __62__AXPTranslator__handleFocusedUIElementChangedForInitialDump___block_in
             }
 
             v17 = [v8 objectForKey:{*(*(&v19 + 1) + 8 * j), v19}];
-            [(AXPTranslator *)self _resetBridgeTokensForResponse:v17 bridgeDelegateToken:v7];
+            [(AXPTranslator *)self _resetBridgeTokensForResponse:v17 bridgeDelegateToken:tokenCopy];
           }
 
           v14 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -1380,25 +1380,25 @@ void __62__AXPTranslator__handleFocusedUIElementChangedForInitialDump___block_in
     goto LABEL_21;
   }
 
-  [v6 setBridgeDelegateToken:v7];
+  [responseCopy setBridgeDelegateToken:tokenCopy];
 LABEL_21:
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendTranslatorRequest:(id)a3
+- (id)sendTranslatorRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AXPTranslator *)self bridgeDelegate];
-  if (v5)
+  requestCopy = request;
+  bridgeDelegate = [(AXPTranslator *)self bridgeDelegate];
+  if (bridgeDelegate)
   {
   }
 
   else
   {
-    v6 = [(AXPTranslator *)self bridgeTokenDelegate];
+    bridgeTokenDelegate = [(AXPTranslator *)self bridgeTokenDelegate];
 
-    if (!v6)
+    if (!bridgeTokenDelegate)
     {
       v38 = AXPlatformTranslationLogCommon();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -1410,8 +1410,8 @@ LABEL_21:
     }
   }
 
-  v7 = [(AXPTranslator *)self requestResolvingBehavior];
-  v8 = [(AXPTranslator *)self requestResolvingBehavior];
+  requestResolvingBehavior = [(AXPTranslator *)self requestResolvingBehavior];
+  requestResolvingBehavior2 = [(AXPTranslator *)self requestResolvingBehavior];
   [(AXPTranslator *)self requestResolvingBehavior];
   if (!AXPClientIsEntitledForRemoteDeviceContent())
   {
@@ -1420,48 +1420,48 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v7 != 1 && v8 != 2 || !-[AXPTranslator shouldCheckTreeDumpCacheForRequestType:](self, "shouldCheckTreeDumpCacheForRequestType:", [v4 requestType]))
+  if (requestResolvingBehavior != 1 && requestResolvingBehavior2 != 2 || !-[AXPTranslator shouldCheckTreeDumpCacheForRequestType:](self, "shouldCheckTreeDumpCacheForRequestType:", [requestCopy requestType]))
   {
     v9 = 0;
     goto LABEL_14;
   }
 
-  v9 = [(AXPTranslator *)self checkTreeDumpCacheForRequest:v4];
-  if (v7 != 1)
+  v9 = [(AXPTranslator *)self checkTreeDumpCacheForRequest:requestCopy];
+  if (requestResolvingBehavior != 1)
   {
     goto LABEL_11;
   }
 
-  if ([v4 requestType] != 5)
+  if ([requestCopy requestType] != 5)
   {
     goto LABEL_11;
   }
 
-  v10 = [v9 resultData];
-  v11 = [v10 allKeys];
-  v12 = [v4 parameters];
-  v13 = [v12 objectForKeyedSubscript:@"attributes"];
-  v14 = [v11 isEqualToArray:v13];
+  resultData = [v9 resultData];
+  allKeys = [resultData allKeys];
+  parameters = [requestCopy parameters];
+  v13 = [parameters objectForKeyedSubscript:@"attributes"];
+  v14 = [allKeys isEqualToArray:v13];
 
   if (v14)
   {
 LABEL_11:
     if (v9)
     {
-      v15 = [v9 resultData];
-      v16 = [v4 translation];
-      v17 = [v16 bridgeDelegateToken];
-      [(AXPTranslator *)self _resetBridgeTokensForResponse:v15 bridgeDelegateToken:v17];
+      resultData2 = [v9 resultData];
+      translation = [requestCopy translation];
+      bridgeDelegateToken = [translation bridgeDelegateToken];
+      [(AXPTranslator *)self _resetBridgeTokensForResponse:resultData2 bridgeDelegateToken:bridgeDelegateToken];
 
-      v18 = [v4 translation];
-      v19 = [v18 bridgeDelegateToken];
-      v20 = [v9 associatedNotificationObject];
-      [v20 setBridgeDelegateToken:v19];
+      translation2 = [requestCopy translation];
+      bridgeDelegateToken2 = [translation2 bridgeDelegateToken];
+      associatedNotificationObject = [v9 associatedNotificationObject];
+      [associatedNotificationObject setBridgeDelegateToken:bridgeDelegateToken2];
 
-      v21 = [v4 translation];
-      v22 = [v21 bridgeDelegateToken];
-      v23 = [v9 associatedTranslationObject];
-      [v23 setBridgeDelegateToken:v22];
+      translation3 = [requestCopy translation];
+      bridgeDelegateToken3 = [translation3 bridgeDelegateToken];
+      associatedTranslationObject = [v9 associatedTranslationObject];
+      [associatedTranslationObject setBridgeDelegateToken:bridgeDelegateToken3];
 
       goto LABEL_22;
     }
@@ -1472,36 +1472,36 @@ LABEL_11:
 LABEL_14:
     if ([(AXPTranslator *)self supportsDelegateTokens])
     {
-      v24 = [(AXPTranslator *)self bridgeTokenDelegate];
-      v25 = [v4 translation];
-      v26 = [v25 bridgeDelegateToken];
-      v27 = [v24 accessibilityTranslationDelegateBridgeCallbackWithToken:v26];
-      v28 = (v27)[2](v27, v4);
+      bridgeTokenDelegate2 = [(AXPTranslator *)self bridgeTokenDelegate];
+      translation4 = [requestCopy translation];
+      bridgeDelegateToken4 = [translation4 bridgeDelegateToken];
+      v27 = [bridgeTokenDelegate2 accessibilityTranslationDelegateBridgeCallbackWithToken:bridgeDelegateToken4];
+      v28 = (v27)[2](v27, requestCopy);
 
-      v9 = v26;
+      v9 = bridgeDelegateToken4;
     }
 
     else
     {
-      v24 = [(AXPTranslator *)self bridgeDelegate];
-      v25 = [v24 accessibilityTranslationDelegateBridgeCallback];
-      v28 = (v25)[2](v25, v4);
+      bridgeTokenDelegate2 = [(AXPTranslator *)self bridgeDelegate];
+      translation4 = [bridgeTokenDelegate2 accessibilityTranslationDelegateBridgeCallback];
+      v28 = (translation4)[2](translation4, requestCopy);
     }
 
-    v29 = [v28 resultData];
-    v30 = [v4 translation];
-    v31 = [v30 bridgeDelegateToken];
-    [(AXPTranslator *)self _resetBridgeTokensForResponse:v29 bridgeDelegateToken:v31];
+    resultData3 = [v28 resultData];
+    translation5 = [requestCopy translation];
+    bridgeDelegateToken5 = [translation5 bridgeDelegateToken];
+    [(AXPTranslator *)self _resetBridgeTokensForResponse:resultData3 bridgeDelegateToken:bridgeDelegateToken5];
 
-    v32 = [v4 translation];
-    v33 = [v32 bridgeDelegateToken];
-    v34 = [v28 associatedNotificationObject];
-    [v34 setBridgeDelegateToken:v33];
+    translation6 = [requestCopy translation];
+    bridgeDelegateToken6 = [translation6 bridgeDelegateToken];
+    associatedNotificationObject2 = [v28 associatedNotificationObject];
+    [associatedNotificationObject2 setBridgeDelegateToken:bridgeDelegateToken6];
 
-    v35 = [v4 translation];
-    v36 = [v35 bridgeDelegateToken];
-    v37 = [v28 associatedTranslationObject];
-    [v37 setBridgeDelegateToken:v36];
+    translation7 = [requestCopy translation];
+    bridgeDelegateToken7 = [translation7 bridgeDelegateToken];
+    associatedTranslationObject2 = [v28 associatedTranslationObject];
+    [associatedTranslationObject2 setBridgeDelegateToken:bridgeDelegateToken7];
 
     v9 = v28;
     goto LABEL_22;
@@ -1515,13 +1515,13 @@ LABEL_22:
   return v9;
 }
 
-- (id)treeDumpResponseCacheForBridgeDelegateToken:(id)a3
+- (id)treeDumpResponseCacheForBridgeDelegateToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v4 = a3;
-    v5 = [(AXPTranslator *)self bridgeDelegateTokenToTreeDumpLookup];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    tokenCopy = token;
+    bridgeDelegateTokenToTreeDumpLookup = [(AXPTranslator *)self bridgeDelegateTokenToTreeDumpLookup];
+    v6 = [bridgeDelegateTokenToTreeDumpLookup objectForKeyedSubscript:tokenCopy];
   }
 
   else
@@ -1532,102 +1532,102 @@ LABEL_22:
   return v6;
 }
 
-- (void)updateTreeDumpCacheResponse:(id)a3 withAdditionalResponse:(id)a4
+- (void)updateTreeDumpCacheResponse:(id)response withAdditionalResponse:(id)additionalResponse
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 associatedRequestType];
-  v8 = [v5 associatedRequestType];
-  v9 = [v5 associatedRequestType];
-  v10 = [v5 associatedRequestType];
-  v11 = [v5 associatedRequestType];
-  if (v7 != 2)
+  responseCopy = response;
+  additionalResponseCopy = additionalResponse;
+  associatedRequestType = [responseCopy associatedRequestType];
+  associatedRequestType2 = [responseCopy associatedRequestType];
+  associatedRequestType3 = [responseCopy associatedRequestType];
+  associatedRequestType4 = [responseCopy associatedRequestType];
+  associatedRequestType5 = [responseCopy associatedRequestType];
+  if (associatedRequestType != 2)
   {
-    if (v8 == 5)
+    if (associatedRequestType2 == 5)
     {
       v12 = MEMORY[0x277CBEB38];
-      v13 = [v5 resultData];
-      v14 = [v12 dictionaryWithDictionary:v13];
+      resultData = [responseCopy resultData];
+      resultData6 = [v12 dictionaryWithDictionary:resultData];
 
-      if ([v6 associatedRequestType] == 2 && (objc_msgSend(v6, "resultData"), v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+      if ([additionalResponseCopy associatedRequestType] == 2 && (objc_msgSend(additionalResponseCopy, "resultData"), v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
       {
-        v16 = [v6 resultData];
-        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "attribute")}];
-        [v14 setObject:v16 forKey:v17];
+        resultData2 = [additionalResponseCopy resultData];
+        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(additionalResponseCopy, "attribute")}];
+        [resultData6 setObject:resultData2 forKey:v17];
       }
 
-      else if ([v6 associatedRequestType] == 5)
+      else if ([additionalResponseCopy associatedRequestType] == 5)
       {
-        v18 = [v6 resultData];
+        resultData3 = [additionalResponseCopy resultData];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __68__AXPTranslator_updateTreeDumpCacheResponse_withAdditionalResponse___block_invoke;
         v30[3] = &unk_278BE86F0;
-        v31 = v14;
-        [v18 enumerateKeysAndObjectsUsingBlock:v30];
+        v31 = resultData6;
+        [resultData3 enumerateKeysAndObjectsUsingBlock:v30];
       }
 
-      v19 = [v14 copy];
-      [v5 setResultData:v19];
+      v19 = [resultData6 copy];
+      [responseCopy setResultData:v19];
 
       goto LABEL_13;
     }
 
-    if (v9 != 3)
+    if (associatedRequestType3 != 3)
     {
-      if (v10 == 10)
+      if (associatedRequestType4 == 10)
       {
         v20 = MEMORY[0x277CBEB38];
-        v21 = [v5 resultData];
-        v22 = [v20 dictionaryWithDictionary:v21];
+        resultData4 = [responseCopy resultData];
+        v22 = [v20 dictionaryWithDictionary:resultData4];
 
-        v23 = [v6 resultData];
+        resultData5 = [additionalResponseCopy resultData];
         v25 = MEMORY[0x277D85DD0];
         v26 = 3221225472;
         v27 = __68__AXPTranslator_updateTreeDumpCacheResponse_withAdditionalResponse___block_invoke_2;
         v28 = &unk_278BE86F0;
         v29 = v22;
-        v14 = v22;
-        [v23 enumerateKeysAndObjectsUsingBlock:&v25];
+        resultData6 = v22;
+        [resultData5 enumerateKeysAndObjectsUsingBlock:&v25];
 
-        v24 = [v14 copy];
-        [v5 setResultData:v24];
+        v24 = [resultData6 copy];
+        [responseCopy setResultData:v24];
 
         goto LABEL_13;
       }
 
-      if (v11 != 9)
+      if (associatedRequestType5 != 9)
       {
         goto LABEL_14;
       }
     }
 
 LABEL_9:
-    v14 = [v6 resultData];
-    [v5 setResultData:v14];
+    resultData6 = [additionalResponseCopy resultData];
+    [responseCopy setResultData:resultData6];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  if ([v6 associatedRequestType] == 2)
+  if ([additionalResponseCopy associatedRequestType] == 2)
   {
     goto LABEL_9;
   }
 
-  [v6 associatedRequestType];
+  [additionalResponseCopy associatedRequestType];
 LABEL_14:
 }
 
-- (id)checkTreeDumpCacheResponses:(id)a3 forMatchingResponse:(id)a4 withBridgeTokenDelegate:(id)a5
+- (id)checkTreeDumpCacheResponses:(id)responses forMatchingResponse:(id)response withBridgeTokenDelegate:(id)delegate
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 associatedRequestType] == 4)
+  responsesCopy = responses;
+  responseCopy = response;
+  delegateCopy = delegate;
+  if ([responseCopy associatedRequestType] == 4)
   {
-    v11 = [(AXPTranslator *)self _checkCacheForFrontmostAppResponseWithBridgeDelegateToken:v10];
+    v11 = [(AXPTranslator *)self _checkCacheForFrontmostAppResponseWithBridgeDelegateToken:delegateCopy];
   }
 
   else
@@ -1636,11 +1636,11 @@ LABEL_14:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = v8;
+    v12 = responsesCopy;
     v11 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
-      v23 = v8;
+      v23 = responsesCopy;
       v13 = *v25;
       while (2)
       {
@@ -1652,16 +1652,16 @@ LABEL_14:
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 associatedRequestType];
-          if (v16 == [v9 associatedRequestType])
+          associatedRequestType = [v15 associatedRequestType];
+          if (associatedRequestType == [responseCopy associatedRequestType])
           {
-            v17 = [v15 associatedTranslationObject];
-            v18 = [v9 associatedTranslationObject];
-            v19 = [v17 isEqual:v18];
+            associatedTranslationObject = [v15 associatedTranslationObject];
+            associatedTranslationObject2 = [responseCopy associatedTranslationObject];
+            v19 = [associatedTranslationObject isEqual:associatedTranslationObject2];
 
             if (v19)
             {
-              if ([v15 associatedRequestType] != 3 || (v20 = objc_msgSend(v15, "attribute"), v20 == objc_msgSend(v9, "attribute")))
+              if ([v15 associatedRequestType] != 3 || (v20 = objc_msgSend(v15, "attribute"), v20 == objc_msgSend(responseCopy, "attribute")))
               {
                 v11 = v15;
                 goto LABEL_16;
@@ -1680,7 +1680,7 @@ LABEL_14:
       }
 
 LABEL_16:
-      v8 = v23;
+      responsesCopy = v23;
     }
   }
 
@@ -1689,21 +1689,21 @@ LABEL_16:
   return v11;
 }
 
-- (id)treeDumpCacheResultDataForAttributeTypeRequest:(id)a3
+- (id)treeDumpCacheResultDataForAttributeTypeRequest:(id)request
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 requestType];
-  v6 = [v4 requestType];
-  v7 = [v4 translation];
-  v8 = [v7 bridgeDelegateToken];
-  v9 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:v8];
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  requestType2 = [requestCopy requestType];
+  translation = [requestCopy translation];
+  bridgeDelegateToken = [translation bridgeDelegateToken];
+  v9 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:bridgeDelegateToken];
 
-  v40 = v5;
-  if (v5 == 2)
+  v40 = requestType;
+  if (requestType == 2)
   {
     v10 = MEMORY[0x277CBEA60];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "attributeType")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "attributeType")}];
     v12 = [v10 arrayWithObject:v11];
 
     if (!v9)
@@ -1714,14 +1714,14 @@ LABEL_16:
     goto LABEL_6;
   }
 
-  if (v6 != 5)
+  if (requestType2 != 5)
   {
     v12 = 0;
     goto LABEL_48;
   }
 
-  v13 = [v4 parameters];
-  v12 = [v13 objectForKeyedSubscript:@"attributes"];
+  parameters = [requestCopy parameters];
+  v12 = [parameters objectForKeyedSubscript:@"attributes"];
 
   if (!v9)
   {
@@ -1743,7 +1743,7 @@ LABEL_6:
     goto LABEL_50;
   }
 
-  v39 = v6;
+  v39 = requestType2;
   v43 = 0;
   v44 = *v53;
   v42 = v9;
@@ -1761,8 +1761,8 @@ LABEL_6:
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v15 = [v9 treeDumpResponse];
-      v16 = [v15 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      treeDumpResponse = [v9 treeDumpResponse];
+      v16 = [treeDumpResponse countByEnumeratingWithState:&v48 objects:v56 count:16];
       if (!v16)
       {
         goto LABEL_44;
@@ -1778,30 +1778,30 @@ LABEL_6:
         {
           if (*v49 != v19)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(treeDumpResponse);
           }
 
           v21 = *(*(&v48 + 1) + 8 * j);
-          v22 = [v21 associatedRequestType];
-          v23 = [v21 associatedRequestType];
-          if (v22 == 2 || v23 == 5)
+          associatedRequestType = [v21 associatedRequestType];
+          associatedRequestType2 = [v21 associatedRequestType];
+          if (associatedRequestType == 2 || associatedRequestType2 == 5)
           {
-            v25 = [v21 associatedTranslationObject];
-            v26 = [v4 translation];
-            v27 = [v25 isEqual:v26];
+            associatedTranslationObject = [v21 associatedTranslationObject];
+            translation2 = [requestCopy translation];
+            v27 = [associatedTranslationObject isEqual:translation2];
 
             if (v27)
             {
-              if ([v4 attributeType] && objc_msgSend(v21, "attribute") && (v28 = objc_msgSend(v21, "attribute"), v28 == objc_msgSend(v4, "attributeType")))
+              if ([requestCopy attributeType] && objc_msgSend(v21, "attribute") && (v28 = objc_msgSend(v21, "attribute"), v28 == objc_msgSend(requestCopy, "attributeType")))
               {
-                v29 = [v21 resultData];
+                resultData = [v21 resultData];
                 v18 = 1;
 LABEL_30:
-                if (v29)
+                if (resultData)
                 {
                   if (v40 == 2)
                   {
-                    v34 = v29;
+                    v34 = resultData;
 
                     v43 = v34;
                     v9 = v42;
@@ -1821,7 +1821,7 @@ LABEL_30:
                       }
 
                       v43 = v35;
-                      [v35 setObject:v29 forKey:v47];
+                      [v35 setObject:resultData forKey:v47];
                     }
                   }
 
@@ -1831,18 +1831,18 @@ LABEL_30:
 
               else
               {
-                v30 = [v21 resultData];
+                resultData2 = [v21 resultData];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v32 = [v21 resultData];
-                  v29 = [v32 objectForKey:v47];
+                  resultData3 = [v21 resultData];
+                  resultData = [resultData3 objectForKey:v47];
 
-                  if (v29)
+                  if (resultData)
                   {
-                    v33 = v29;
+                    v33 = resultData;
                     v18 = 1;
                   }
 
@@ -1854,7 +1854,7 @@ LABEL_30:
 
                 else
                 {
-                  v29 = 0;
+                  resultData = 0;
                 }
               }
 
@@ -1863,7 +1863,7 @@ LABEL_30:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v48 objects:v56 count:16];
+        v17 = [treeDumpResponse countByEnumeratingWithState:&v48 objects:v56 count:16];
         if (v17)
         {
           continue;
@@ -1892,24 +1892,24 @@ LABEL_51:
   return v36;
 }
 
-- (id)treeDumpCacheResultDataForCanSetAttributeTypeRequest:(id)a3
+- (id)treeDumpCacheResultDataForCanSetAttributeTypeRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 requestType];
-  v6 = [v4 translation];
-  v7 = [v6 bridgeDelegateToken];
-  v8 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:v7];
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  translation = [requestCopy translation];
+  bridgeDelegateToken = [translation bridgeDelegateToken];
+  v8 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:bridgeDelegateToken];
 
   v9 = 0;
-  if (v5 == 3 && v8)
+  if (requestType == 3 && v8)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [v8 treeDumpResponse];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    treeDumpResponse = [v8 treeDumpResponse];
+    v11 = [treeDumpResponse countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1920,29 +1920,29 @@ LABEL_51:
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(treeDumpResponse);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
           if ([v15 associatedRequestType] == 3)
           {
-            v16 = [v15 associatedTranslationObject];
-            v17 = [v4 translation];
-            v18 = [v16 isEqual:v17];
+            associatedTranslationObject = [v15 associatedTranslationObject];
+            translation2 = [requestCopy translation];
+            v18 = [associatedTranslationObject isEqual:translation2];
 
             if (v18)
             {
-              if ([v4 attributeType])
+              if ([requestCopy attributeType])
               {
                 if ([v15 attribute])
                 {
-                  v19 = [v15 attribute];
-                  if (v19 == [v4 attributeType])
+                  attribute = [v15 attribute];
+                  if (attribute == [requestCopy attributeType])
                   {
-                    v20 = [v15 resultData];
-                    if (v20)
+                    resultData = [v15 resultData];
+                    if (resultData)
                     {
-                      v9 = v20;
+                      v9 = resultData;
                       goto LABEL_18;
                     }
                   }
@@ -1952,7 +1952,7 @@ LABEL_51:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [treeDumpResponse countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v12)
         {
           continue;
@@ -1971,20 +1971,20 @@ LABEL_18:
   return v9;
 }
 
-- (id)treeDumpCacheResultDataForSupportedActionsTypeRequest:(id)a3
+- (id)treeDumpCacheResultDataForSupportedActionsTypeRequest:(id)request
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 requestType];
-  v6 = [v4 translation];
-  v7 = [v6 bridgeDelegateToken];
-  v8 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:v7];
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  translation = [requestCopy translation];
+  bridgeDelegateToken = [translation bridgeDelegateToken];
+  v8 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:bridgeDelegateToken];
 
   v9 = 0;
-  if (v5 == 9 && v8)
+  if (requestType == 9 && v8)
   {
-    v10 = [v4 parameters];
-    v11 = [v10 objectForKeyedSubscript:@"actions"];
+    parameters = [requestCopy parameters];
+    v11 = [parameters objectForKeyedSubscript:@"actions"];
 
     v44 = 0u;
     v45 = 0u;
@@ -2011,8 +2011,8 @@ LABEL_18:
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v14 = [v8 treeDumpResponse];
-          v15 = [v14 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          treeDumpResponse = [v8 treeDumpResponse];
+          v15 = [treeDumpResponse countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v15)
           {
             v16 = v15;
@@ -2024,26 +2024,26 @@ LABEL_18:
               {
                 if (*v39 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(treeDumpResponse);
                 }
 
                 v19 = *(*(&v38 + 1) + 8 * j);
                 if ([v19 associatedRequestType] == 9)
                 {
-                  v20 = [v19 associatedTranslationObject];
-                  v21 = [v4 translation];
-                  v22 = [v20 isEqual:v21];
+                  associatedTranslationObject = [v19 associatedTranslationObject];
+                  translation2 = [requestCopy translation];
+                  v22 = [associatedTranslationObject isEqual:translation2];
 
                   if (v22)
                   {
-                    v23 = [v19 resultData];
+                    resultData = [v19 resultData];
                     objc_opt_class();
                     isKindOfClass = objc_opt_isKindOfClass();
 
                     if (isKindOfClass)
                     {
-                      v25 = [v19 resultData];
-                      v26 = [v25 containsObject:v13];
+                      resultData2 = [v19 resultData];
+                      v26 = [resultData2 containsObject:v13];
 
                       if (v26)
                       {
@@ -2051,14 +2051,14 @@ LABEL_18:
                         if (v13)
                         {
                           v28 = v27;
-                          v29 = v34;
+                          array = v34;
                           if (!v34)
                           {
-                            v29 = [MEMORY[0x277CBEB18] array];
+                            array = [MEMORY[0x277CBEB18] array];
                           }
 
-                          v34 = v29;
-                          [v29 addObject:v28];
+                          v34 = array;
+                          [array addObject:v28];
 
                           goto LABEL_24;
                         }
@@ -2068,7 +2068,7 @@ LABEL_18:
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v38 objects:v46 count:16];
+              v16 = [treeDumpResponse countByEnumeratingWithState:&v38 objects:v46 count:16];
               if (v16)
               {
                 continue;
@@ -2102,20 +2102,20 @@ LABEL_24:
   return v9;
 }
 
-- (id)treeDumpCacheResultDataForSupportsAttributesTypeRequest:(id)a3
+- (id)treeDumpCacheResultDataForSupportsAttributesTypeRequest:(id)request
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 requestType];
-  v6 = [v4 translation];
-  v7 = [v6 bridgeDelegateToken];
-  v8 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:v7];
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  translation = [requestCopy translation];
+  bridgeDelegateToken = [translation bridgeDelegateToken];
+  v8 = [(AXPTranslator *)self treeDumpResponseCacheForBridgeDelegateToken:bridgeDelegateToken];
 
   v9 = 0;
-  if (v5 == 10 && v8)
+  if (requestType == 10 && v8)
   {
-    v10 = [v4 parameters];
-    v11 = [v10 objectForKeyedSubscript:@"attributes"];
+    parameters = [requestCopy parameters];
+    v11 = [parameters objectForKeyedSubscript:@"attributes"];
 
     v42 = 0u;
     v43 = 0u;
@@ -2142,8 +2142,8 @@ LABEL_24:
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v14 = [v8 treeDumpResponse];
-          v15 = [v14 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          treeDumpResponse = [v8 treeDumpResponse];
+          v15 = [treeDumpResponse countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v15)
           {
             v16 = v15;
@@ -2155,26 +2155,26 @@ LABEL_24:
               {
                 if (*v37 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(treeDumpResponse);
                 }
 
                 v19 = *(*(&v36 + 1) + 8 * j);
                 if ([v19 associatedRequestType] == 10)
                 {
-                  v20 = [v19 associatedTranslationObject];
-                  v21 = [v4 translation];
-                  v22 = [v20 isEqual:v21];
+                  associatedTranslationObject = [v19 associatedTranslationObject];
+                  translation2 = [requestCopy translation];
+                  v22 = [associatedTranslationObject isEqual:translation2];
 
                   if (v22)
                   {
-                    v23 = [v19 resultData];
+                    resultData = [v19 resultData];
                     objc_opt_class();
                     isKindOfClass = objc_opt_isKindOfClass();
 
                     if (isKindOfClass)
                     {
-                      v25 = [v19 resultData];
-                      v26 = [v25 objectForKey:v13];
+                      resultData2 = [v19 resultData];
+                      v26 = [resultData2 objectForKey:v13];
 
                       if (v26)
                       {
@@ -2194,7 +2194,7 @@ LABEL_24:
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v36 objects:v44 count:16];
+              v16 = [treeDumpResponse countByEnumeratingWithState:&v36 objects:v44 count:16];
               if (v16)
               {
                 continue;
@@ -2228,38 +2228,38 @@ LABEL_23:
   return v9;
 }
 
-- (id)checkTreeDumpCacheForRequest:(id)a3
+- (id)checkTreeDumpCacheForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_new();
-  v6 = [v4 requestType];
+  requestType = [requestCopy requestType];
   v7 = 0;
-  if (v6 > 4)
+  if (requestType > 4)
   {
-    if (v6 != 5)
+    if (requestType != 5)
     {
-      if (v6 == 9)
+      if (requestType == 9)
       {
-        v10 = [(AXPTranslator *)self treeDumpCacheResultDataForSupportedActionsTypeRequest:v4];
+        v10 = [(AXPTranslator *)self treeDumpCacheResultDataForSupportedActionsTypeRequest:requestCopy];
       }
 
       else
       {
-        if (v6 != 10)
+        if (requestType != 10)
         {
           goto LABEL_18;
         }
 
-        v10 = [(AXPTranslator *)self treeDumpCacheResultDataForSupportsAttributesTypeRequest:v4];
+        v10 = [(AXPTranslator *)self treeDumpCacheResultDataForSupportsAttributesTypeRequest:requestCopy];
       }
 
 LABEL_14:
       v11 = v10;
       [v5 setResultData:v10];
 
-      v12 = [v5 resultData];
+      resultData = [v5 resultData];
 
-      if (v12)
+      if (resultData)
       {
         v13 = v5;
       }
@@ -2274,23 +2274,23 @@ LABEL_14:
     }
 
 LABEL_11:
-    v10 = [(AXPTranslator *)self treeDumpCacheResultDataForAttributeTypeRequest:v4];
+    v10 = [(AXPTranslator *)self treeDumpCacheResultDataForAttributeTypeRequest:requestCopy];
     goto LABEL_14;
   }
 
-  switch(v6)
+  switch(requestType)
   {
     case 2:
-      [v5 setAttribute:{objc_msgSend(v4, "attributeType")}];
+      [v5 setAttribute:{objc_msgSend(requestCopy, "attributeType")}];
       goto LABEL_11;
     case 3:
-      [v5 setAttribute:{objc_msgSend(v4, "attributeType")}];
-      v10 = [(AXPTranslator *)self treeDumpCacheResultDataForCanSetAttributeTypeRequest:v4];
+      [v5 setAttribute:{objc_msgSend(requestCopy, "attributeType")}];
+      v10 = [(AXPTranslator *)self treeDumpCacheResultDataForCanSetAttributeTypeRequest:requestCopy];
       goto LABEL_14;
     case 4:
-      v8 = [v4 translation];
-      v9 = [v8 bridgeDelegateToken];
-      v7 = [(AXPTranslator *)self _checkCacheForFrontmostAppResponseWithBridgeDelegateToken:v9];
+      translation = [requestCopy translation];
+      bridgeDelegateToken = [translation bridgeDelegateToken];
+      v7 = [(AXPTranslator *)self _checkCacheForFrontmostAppResponseWithBridgeDelegateToken:bridgeDelegateToken];
 
       break;
   }
@@ -2300,32 +2300,32 @@ LABEL_18:
   return v7;
 }
 
-- (id)processTranslatorRequest:(id)a3
+- (id)processTranslatorRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AXPTranslator *)self platformTranslator];
-  [v5 enableAccessibility];
-  v6 = [v4 requestType];
-  if (v6 <= 5)
+  requestCopy = request;
+  platformTranslator = [(AXPTranslator *)self platformTranslator];
+  [platformTranslator enableAccessibility];
+  requestType = [requestCopy requestType];
+  if (requestType <= 5)
   {
-    if (v6 > 2)
+    if (requestType > 2)
     {
-      if (v6 != 3)
+      if (requestType != 3)
       {
-        if (v6 == 4)
+        if (requestType == 4)
         {
-          [v5 processFrontMostApp:v4];
+          [platformTranslator processFrontMostApp:requestCopy];
         }
 
         else
         {
-          [v5 processMultipleAttributeRequest:v4];
+          [platformTranslator processMultipleAttributeRequest:requestCopy];
         }
 
         goto LABEL_6;
       }
 
-      v7 = [v5 processCanSetAttribute:v4];
+      v7 = [platformTranslator processCanSetAttribute:requestCopy];
 LABEL_25:
       v8 = v7;
       if (v7)
@@ -2336,53 +2336,53 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (v6 == 1)
+    if (requestType == 1)
     {
-      v7 = [v5 processApplicationObject:v4];
+      v7 = [platformTranslator processApplicationObject:requestCopy];
       goto LABEL_25;
     }
 
-    if (v6 == 2)
+    if (requestType == 2)
     {
-      v7 = [v5 processAttributeRequest:v4];
+      v7 = [platformTranslator processAttributeRequest:requestCopy];
       goto LABEL_25;
     }
   }
 
   else
   {
-    if (v6 <= 8)
+    if (requestType <= 8)
     {
-      if (v6 != 6)
+      if (requestType != 6)
       {
-        if (v6 == 7)
+        if (requestType == 7)
         {
-          [v5 processActionRequest:v4];
+          [platformTranslator processActionRequest:requestCopy];
         }
 
         else
         {
-          [v5 processSetAttribute:v4];
+          [platformTranslator processSetAttribute:requestCopy];
         }
 
         v7 = LABEL_6:;
         goto LABEL_25;
       }
 
-      v7 = [v5 processHitTest:v4];
+      v7 = [platformTranslator processHitTest:requestCopy];
       goto LABEL_25;
     }
 
-    switch(v6)
+    switch(requestType)
     {
       case 9:
-        v7 = [v5 processSupportedActions:v4];
+        v7 = [platformTranslator processSupportedActions:requestCopy];
         goto LABEL_25;
       case 10:
-        v7 = [v5 processSupportsAttributes:v4];
+        v7 = [platformTranslator processSupportsAttributes:requestCopy];
         goto LABEL_25;
       case 11:
-        v7 = [v5 processAXTreeElements:v4];
+        v7 = [platformTranslator processAXTreeElements:requestCopy];
         goto LABEL_25;
     }
   }
@@ -2390,30 +2390,30 @@ LABEL_25:
 LABEL_26:
   v8 = +[AXPTranslatorResponse emptyResponse];
 LABEL_27:
-  [v8 setAssociatedRequestType:{objc_msgSend(v4, "requestType")}];
+  [v8 setAssociatedRequestType:{objc_msgSend(requestCopy, "requestType")}];
 
   return v8;
 }
 
-- (id)iosPlatformElementFromTranslation:(id)a3
+- (id)iosPlatformElementFromTranslation:(id)translation
 {
-  v4 = a3;
-  v5 = [(AXPTranslator *)self platformTranslator];
-  v6 = [v5 platformElementFromTranslation:v4];
+  translationCopy = translation;
+  platformTranslator = [(AXPTranslator *)self platformTranslator];
+  v6 = [platformTranslator platformElementFromTranslation:translationCopy];
 
   return v6;
 }
 
-- (void)setSystemAppDelegate:(id)a3
+- (void)setSystemAppDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_systemAppDelegate, v4);
-  v5 = [(AXPTranslator *)self platformTranslator];
-  v6 = v5;
-  if (v5 != self)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_systemAppDelegate, delegateCopy);
+  platformTranslator = [(AXPTranslator *)self platformTranslator];
+  v6 = platformTranslator;
+  if (platformTranslator != self)
   {
-    [(AXPTranslator *)v5 setSystemAppDelegate:v4];
-    if ([v4 requiresAXRuntimeInitialization])
+    [(AXPTranslator *)platformTranslator setSystemAppDelegate:delegateCopy];
+    if ([delegateCopy requiresAXRuntimeInitialization])
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -2425,52 +2425,52 @@ LABEL_27:
   }
 }
 
-- (void)setBridgeDelegate:(id)a3
+- (void)setBridgeDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_bridgeDelegate, v6);
-  v4 = [(AXPTranslator *)self platformTranslator];
-  v5 = v4;
-  if (v4 != self)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_bridgeDelegate, delegateCopy);
+  platformTranslator = [(AXPTranslator *)self platformTranslator];
+  v5 = platformTranslator;
+  if (platformTranslator != self)
   {
-    [(AXPTranslator *)v4 setBridgeDelegate:v6];
+    [(AXPTranslator *)platformTranslator setBridgeDelegate:delegateCopy];
   }
 }
 
-- (void)setBridgeTokenDelegate:(id)a3
+- (void)setBridgeTokenDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_bridgeTokenDelegate, v6);
-  [(AXPTranslator *)self setSupportsDelegateTokens:v6 != 0];
-  v4 = [(AXPTranslator *)self platformTranslator];
-  v5 = v4;
-  if (v4 != self)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_bridgeTokenDelegate, delegateCopy);
+  [(AXPTranslator *)self setSupportsDelegateTokens:delegateCopy != 0];
+  platformTranslator = [(AXPTranslator *)self platformTranslator];
+  v5 = platformTranslator;
+  if (platformTranslator != self)
   {
-    [(AXPTranslator *)v4 setBridgeTokenDelegate:v6];
+    [(AXPTranslator *)platformTranslator setBridgeTokenDelegate:delegateCopy];
     [(AXPTranslator *)v5 setSupportsDelegateTokens:[(AXPTranslator *)self supportsDelegateTokens]];
   }
 }
 
-- (void)setRuntimeDelegate:(id)a3
+- (void)setRuntimeDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_runtimeDelegate, v6);
-  v4 = [(AXPTranslator *)self platformTranslator];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_runtimeDelegate, delegateCopy);
+  platformTranslator = [(AXPTranslator *)self platformTranslator];
 
-  if (v4 != self)
+  if (platformTranslator != self)
   {
-    v5 = [(AXPTranslator *)self platformTranslator];
-    [v5 setRuntimeDelegate:v6];
+    platformTranslator2 = [(AXPTranslator *)self platformTranslator];
+    [platformTranslator2 setRuntimeDelegate:delegateCopy];
   }
 }
 
-- (void)setRequestResolvingBehavior:(unint64_t)a3
+- (void)setRequestResolvingBehavior:(unint64_t)behavior
 {
-  if (self->_requestResolvingBehavior != a3)
+  if (self->_requestResolvingBehavior != behavior)
   {
-    if (a3)
+    if (behavior)
     {
-      if (a3 <= 2)
+      if (behavior <= 2)
       {
         v5 = objc_opt_new();
         [(AXPTranslator *)self setBridgeDelegateTokenToTreeDumpLookup:v5];
@@ -2482,28 +2482,28 @@ LABEL_27:
       [(AXPTranslator *)self setBridgeDelegateTokenToTreeDumpLookup:0];
     }
 
-    self->_requestResolvingBehavior = a3;
-    v6 = [(AXPTranslator *)self platformTranslator];
+    self->_requestResolvingBehavior = behavior;
+    platformTranslator = [(AXPTranslator *)self platformTranslator];
 
-    if (v6 != self)
+    if (platformTranslator != self)
     {
-      v7 = [(AXPTranslator *)self platformTranslator];
-      [v7 setRequestResolvingBehavior:a3];
+      platformTranslator2 = [(AXPTranslator *)self platformTranslator];
+      [platformTranslator2 setRequestResolvingBehavior:behavior];
     }
   }
 }
 
-- (void)setCachedTreeClientType:(unint64_t)a3
+- (void)setCachedTreeClientType:(unint64_t)type
 {
-  if (self->_cachedTreeClientType != a3)
+  if (self->_cachedTreeClientType != type)
   {
-    self->_cachedTreeClientType = a3;
-    v5 = [(AXPTranslator *)self platformTranslator];
+    self->_cachedTreeClientType = type;
+    platformTranslator = [(AXPTranslator *)self platformTranslator];
 
-    if (v5 != self)
+    if (platformTranslator != self)
     {
-      v6 = [(AXPTranslator *)self platformTranslator];
-      [v6 setCachedTreeClientType:a3];
+      platformTranslator2 = [(AXPTranslator *)self platformTranslator];
+      [platformTranslator2 setCachedTreeClientType:type];
     }
   }
 }
@@ -2545,7 +2545,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)processMultipleAttributeRequest:(id)a3
+- (id)processMultipleAttributeRequest:(id)request
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2553,7 +2553,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processActionRequest:(id)a3
+- (id)processActionRequest:(id)request
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2561,7 +2561,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processSetAttribute:(id)a3
+- (id)processSetAttribute:(id)attribute
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2569,7 +2569,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processCanSetAttribute:(id)a3
+- (id)processCanSetAttribute:(id)attribute
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2577,7 +2577,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processAttributeRequest:(id)a3
+- (id)processAttributeRequest:(id)request
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2585,7 +2585,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processHitTest:(id)a3
+- (id)processHitTest:(id)test
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2593,7 +2593,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processFrontMostApp:(id)a3
+- (id)processFrontMostApp:(id)app
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2601,7 +2601,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processSupportedActions:(id)a3
+- (id)processSupportedActions:(id)actions
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2609,7 +2609,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processSupportsAttributes:(id)a3
+- (id)processSupportsAttributes:(id)attributes
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2617,7 +2617,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)processAXTreeElements:(id)a3
+- (id)processAXTreeElements:(id)elements
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2633,7 +2633,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (void)processPlatformNotification:(unint64_t)a3 data:(id)a4
+- (void)processPlatformNotification:(unint64_t)notification data:(id)data
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2641,7 +2641,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   NSRequestConcreteImplementation();
 }
 
-- (void)processPlatformAXTreeDump:(id)a3
+- (void)processPlatformAXTreeDump:(id)dump
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2665,7 +2665,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   NSRequestConcreteImplementation();
 }
 
-- (id)platformElementFromTranslation:(id)a3
+- (id)platformElementFromTranslation:(id)translation
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2673,7 +2673,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)translationObjectFromData:(id)a3
+- (id)translationObjectFromData:(id)data
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2681,7 +2681,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (id)remoteTranslationDataWithTranslation:(id)a3 pid:(int)a4
+- (id)remoteTranslationDataWithTranslation:(id)translation pid:(int)pid
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();
@@ -2689,7 +2689,7 @@ void __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_
   return 0;
 }
 
-- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)a3 completionHandler:(id)a4
+- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)thread completionHandler:(id)handler
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_1();

@@ -1,20 +1,20 @@
 @interface PublisherAPIController
-- (PublisherAPIController)initWithPublisherId:(id)a3 usingOnStateChangeHandler:(id)a4 usingTraits:(id)a5;
+- (PublisherAPIController)initWithPublisherId:(id)id usingOnStateChangeHandler:(id)handler usingTraits:(id)traits;
 - (id)placeCollectionsFromLastBatch;
 - (void)cancelFetchingPublisher;
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)fetchPublisherViewForKeywordFilter:(id)a3 addressFilter:(id)a4 onCompletion:(id)a5;
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)fetchPublisherViewForKeywordFilter:(id)filter addressFilter:(id)addressFilter onCompletion:(id)completion;
 @end
 
 @implementation PublisherAPIController
 
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = +[MKMapService sharedService];
-  v9 = [(PublisherAPIController *)self traits];
-  v10 = [v8 ticketForCuratedCollections:v6 isBatchLookup:1 traits:v9];
+  traits = [(PublisherAPIController *)self traits];
+  v10 = [v8 ticketForCuratedCollections:identifiersCopy isBatchLookup:1 traits:traits];
   [(PublisherAPIController *)self setBatchTicket:v10];
 
   objc_initWeak(&location, self);
@@ -29,16 +29,16 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "FetchingPublisherViewBatch", "", buf, 2u);
   }
 
-  v15 = [(PublisherAPIController *)self batchTicket];
+  batchTicket = [(PublisherAPIController *)self batchTicket];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100B9F9D4;
   v17[3] = &unk_10163C080;
   objc_copyWeak(v19, &location);
-  v16 = v7;
+  v16 = completionCopy;
   v18 = v16;
   v19[1] = v12;
-  [v15 submitWithHandler:v17 networkActivity:&stru_10163C0A0];
+  [batchTicket submitWithHandler:v17 networkActivity:&stru_10163C0A0];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -46,40 +46,40 @@
 
 - (id)placeCollectionsFromLastBatch
 {
-  v2 = [(PublisherAPIController *)self placeCollections];
-  v3 = [v2 copy];
+  placeCollections = [(PublisherAPIController *)self placeCollections];
+  v3 = [placeCollections copy];
 
   return v3;
 }
 
 - (void)cancelFetchingPublisher
 {
-  v3 = [(PublisherAPIController *)self ticket];
-  [v3 cancel];
+  ticket = [(PublisherAPIController *)self ticket];
+  [ticket cancel];
 
-  v4 = [(PublisherAPIController *)self batchTicket];
-  [v4 cancel];
+  batchTicket = [(PublisherAPIController *)self batchTicket];
+  [batchTicket cancel];
 }
 
-- (void)fetchPublisherViewForKeywordFilter:(id)a3 addressFilter:(id)a4 onCompletion:(id)a5
+- (void)fetchPublisherViewForKeywordFilter:(id)filter addressFilter:(id)addressFilter onCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PublisherAPIController *)self filters];
-  v12 = [v11 count];
+  filterCopy = filter;
+  addressFilterCopy = addressFilter;
+  completionCopy = completion;
+  filters = [(PublisherAPIController *)self filters];
+  v12 = [filters count];
 
-  if (!v12 || v8 | v9 || [(PublisherAPIController *)self state]== 3)
+  if (!v12 || filterCopy | addressFilterCopy || [(PublisherAPIController *)self state]== 3)
   {
-    v13 = [(PublisherAPIController *)self stateHandler];
-    v13[2](v13, [(PublisherAPIController *)self state], 1);
+    stateHandler = [(PublisherAPIController *)self stateHandler];
+    stateHandler[2](stateHandler, [(PublisherAPIController *)self state], 1);
 
     [(PublisherAPIController *)self setState:1];
     v14 = +[MKMapService sharedService];
-    v15 = [(PublisherAPIController *)self publisherId];
-    v16 = [(PublisherAPIController *)self batchSize];
-    v17 = [(PublisherAPIController *)self traits];
-    v18 = [v14 ticketForPublisherViewPublisherIdentifier:v15 keywordFilter:v8 addressFilter:v9 batchSize:v16 withTraits:v17];
+    publisherId = [(PublisherAPIController *)self publisherId];
+    batchSize = [(PublisherAPIController *)self batchSize];
+    traits = [(PublisherAPIController *)self traits];
+    v18 = [v14 ticketForPublisherViewPublisherIdentifier:publisherId keywordFilter:filterCopy addressFilter:addressFilterCopy batchSize:batchSize withTraits:traits];
     [(PublisherAPIController *)self setTicket:v18];
 
     objc_initWeak(&location, self);
@@ -94,38 +94,38 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "FetchingPublisherView", "", buf, 2u);
     }
 
-    v23 = [(PublisherAPIController *)self ticket];
+    ticket = [(PublisherAPIController *)self ticket];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100B9FF10;
     v24[3] = &unk_10163C038;
     objc_copyWeak(v26, &location);
     v26[1] = v20;
-    v25 = v10;
-    [v23 submitWithHandler:v24 networkActivity:&stru_10163C058];
+    v25 = completionCopy;
+    [ticket submitWithHandler:v24 networkActivity:&stru_10163C058];
 
     objc_destroyWeak(v26);
     objc_destroyWeak(&location);
   }
 }
 
-- (PublisherAPIController)initWithPublisherId:(id)a3 usingOnStateChangeHandler:(id)a4 usingTraits:(id)a5
+- (PublisherAPIController)initWithPublisherId:(id)id usingOnStateChangeHandler:(id)handler usingTraits:(id)traits
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  handlerCopy = handler;
+  traitsCopy = traits;
   v17.receiver = self;
   v17.super_class = PublisherAPIController;
   v12 = [(PublisherAPIController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_publisherId, a3);
-    v14 = objc_retainBlock(v10);
+    objc_storeStrong(&v12->_publisherId, id);
+    v14 = objc_retainBlock(handlerCopy);
     stateHandler = v13->_stateHandler;
     v13->_stateHandler = v14;
 
-    objc_storeStrong(&v13->_traits, a5);
+    objc_storeStrong(&v13->_traits, traits);
     v13->_state = 0;
   }
 

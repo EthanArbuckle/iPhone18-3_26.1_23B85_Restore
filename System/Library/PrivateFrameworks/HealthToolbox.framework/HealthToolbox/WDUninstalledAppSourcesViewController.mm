@@ -1,10 +1,10 @@
 @interface WDUninstalledAppSourcesViewController
 - (UIImage)uninistalledAppImage;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
-- (void)setDataSource:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDataSource:(id)source;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateUninstalledSources;
 @end
 
@@ -18,20 +18,20 @@
   [(WDUninstalledAppSourcesViewController *)&v3 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   dataSource = self->_dataSource;
-  if (dataSource != v5)
+  if (dataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     [(HKSourceListDataSource *)dataSource unregisterObserver:self];
-    objc_storeStrong(&self->_dataSource, a3);
+    objc_storeStrong(&self->_dataSource, source);
     dataSource = [(HKSourceListDataSource *)v7 registerObserver:self];
-    v5 = v7;
+    sourceCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](dataSource, v5);
+  MEMORY[0x2821F96F8](dataSource, sourceCopy);
 }
 
 - (UIImage)uninistalledAppImage
@@ -58,86 +58,86 @@ void __61__WDUninstalledAppSourcesViewController_uninistalledAppImage__block_inv
 
 - (void)updateUninstalledSources
 {
-  v3 = [(WDUninstalledAppSourcesViewController *)self dataSource];
-  v4 = [v3 sources];
+  dataSource = [(WDUninstalledAppSourcesViewController *)self dataSource];
+  sources = [dataSource sources];
 
-  if (v4)
+  if (sources)
   {
-    v5 = [(WDUninstalledAppSourcesViewController *)self dataSource];
-    v6 = [v5 sources];
-    v12 = [v6 orderedUninstalledAppSources];
+    dataSource2 = [(WDUninstalledAppSourcesViewController *)self dataSource];
+    sources2 = [dataSource2 sources];
+    orderedUninstalledAppSources = [sources2 orderedUninstalledAppSources];
 
-    v7 = [(WDUninstalledAppSourcesViewController *)self profile];
-    v8 = [v7 presentationContext];
+    profile = [(WDUninstalledAppSourcesViewController *)self profile];
+    presentationContext = [profile presentationContext];
 
-    if (v8 == @"SettingsPrivacy")
+    if (presentationContext == @"SettingsPrivacy")
     {
-      v9 = [(WDUninstalledAppSourcesViewController *)self dataSource];
-      v10 = [v9 fetchFilteredSourcesWithAuthorizationRecordsForSources:v12];
+      dataSource3 = [(WDUninstalledAppSourcesViewController *)self dataSource];
+      v10 = [dataSource3 fetchFilteredSourcesWithAuthorizationRecordsForSources:orderedUninstalledAppSources];
       [(WDUninstalledAppSourcesViewController *)self setUninstalledSources:v10];
     }
 
     else
     {
-      [(WDUninstalledAppSourcesViewController *)self setUninstalledSources:v12];
+      [(WDUninstalledAppSourcesViewController *)self setUninstalledSources:orderedUninstalledAppSources];
     }
 
-    v11 = [(WDUninstalledAppSourcesViewController *)self tableView];
-    [v11 reloadData];
+    tableView = [(WDUninstalledAppSourcesViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WDUninstalledAppSourcesViewController *)self uninstalledSources:a3];
+  v4 = [(WDUninstalledAppSourcesViewController *)self uninstalledSources:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WDUninstalledAppSourcesViewCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WDUninstalledAppSourcesViewCell"];
   if (!v7)
   {
     v7 = [[WDSourcesListTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"WDUninstalledAppSourcesViewCell"];
     [(WDSourcesListTableViewCell *)v7 setAccessoryType:1];
   }
 
-  v8 = [(WDUninstalledAppSourcesViewController *)self uninstalledSources];
-  v9 = [v6 row];
+  uninstalledSources = [(WDUninstalledAppSourcesViewController *)self uninstalledSources];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [uninstalledSources objectAtIndexedSubscript:v9];
   [(WDSourcesListTableViewCell *)v7 setSourceModel:v10];
 
   v11 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v12 = [(WDSourcesListTableViewCell *)v7 textLabel];
-  [v12 setFont:v11];
+  textLabel = [(WDSourcesListTableViewCell *)v7 textLabel];
+  [textLabel setFont:v11];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  v7 = [(WDUninstalledAppSourcesViewController *)self uninstalledSources];
-  v8 = [v7 count] - 1;
+  pathCopy = path;
+  v6 = [pathCopy row];
+  uninstalledSources = [(WDUninstalledAppSourcesViewController *)self uninstalledSources];
+  v8 = [uninstalledSources count] - 1;
 
   if (v6 <= v8)
   {
     v10 = objc_alloc_init(WDSourceStoredDataViewController);
-    v11 = [(WDUninstalledAppSourcesViewController *)self uninstalledSources];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
-    v13 = [v12 source];
-    [(WDSourceStoredDataViewController *)v10 setSource:v13];
+    uninstalledSources2 = [(WDUninstalledAppSourcesViewController *)self uninstalledSources];
+    v12 = [uninstalledSources2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    source = [v12 source];
+    [(WDSourceStoredDataViewController *)v10 setSource:source];
 
-    v14 = [(WDUninstalledAppSourcesViewController *)self profile];
-    [(WDStoredDataByCategoryViewController *)v10 setProfile:v14];
+    profile = [(WDUninstalledAppSourcesViewController *)self profile];
+    [(WDStoredDataByCategoryViewController *)v10 setProfile:profile];
 
-    v15 = [(WDUninstalledAppSourcesViewController *)self navigationController];
-    [v15 pushViewController:v10 animated:1];
+    navigationController = [(WDUninstalledAppSourcesViewController *)self navigationController];
+    [navigationController pushViewController:v10 animated:1];
   }
 
   else

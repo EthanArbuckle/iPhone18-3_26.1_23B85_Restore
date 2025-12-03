@@ -1,8 +1,8 @@
 @interface UserNotificationManager
 - (UserNotificationManager)init;
-- (void)_handleWatchAuthenticationMessage:(id)a3 fromDevice:(id)a4;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)_handleWatchAuthenticationMessage:(id)message fromDevice:(id)device;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation UserNotificationManager
@@ -35,39 +35,39 @@
   return v2;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
-  if ([AMSUserNotification shouldHandleNotificationResponse:v7])
+  handlerCopy = handler;
+  responseCopy = response;
+  if ([AMSUserNotification shouldHandleNotificationResponse:responseCopy])
   {
     v8 = +[BagService appstoredService];
-    v9 = [v8 amsBag];
-    v10 = [AMSUserNotification handleNotificationResponse:v7 bag:v9];
+    amsBag = [v8 amsBag];
+    v10 = [AMSUserNotification handleNotificationResponse:responseCopy bag:amsBag];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1003E95E4;
     v13[3] = &unk_10051D1B0;
-    v14 = v6;
+    v14 = handlerCopy;
     [v10 addFinishBlock:v13];
   }
 
   else
   {
-    v11 = [v7 notification];
-    v12 = [v11 request];
-    v10 = sub_100304114(Bulletin, v12);
+    notification = [responseCopy notification];
+    request = [notification request];
+    v10 = sub_100304114(Bulletin, request);
 
-    sub_100304498(v10, v7);
-    v6[2](v6);
+    sub_100304498(v10, responseCopy);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
-  v5 = a3;
-  v6 = a4;
+  centerCopy = center;
+  settingsCopy = settings;
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,18 +78,18 @@
   }
 
   v9 = +[BagService appstoredService];
-  v10 = [v9 amsBag];
-  v11 = [AMSUserNotification notificationCenter:v5 didChangeSettings:v6 bag:v10];
+  amsBag = [v9 amsBag];
+  v11 = [AMSUserNotification notificationCenter:centerCopy didChangeSettings:settingsCopy bag:amsBag];
 }
 
-- (void)_handleWatchAuthenticationMessage:(id)a3 fromDevice:(id)a4
+- (void)_handleWatchAuthenticationMessage:(id)message fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  deviceCopy = device;
   v9 = [XDCPingMessage alloc];
-  if (v6)
+  if (messageCopy)
   {
-    Property = objc_getProperty(v6, v8, 16, 1);
+    Property = objc_getProperty(messageCopy, v8, 16, 1);
   }
 
   else
@@ -121,7 +121,7 @@
     v34 = 2114;
     v35 = v17;
     v36 = 2114;
-    v37 = v7;
+    v37 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: [%{public}@] Received request to show auth notification from %{public}@", &v32, 0x20u);
   }
 
@@ -139,12 +139,12 @@
   v20 = v19;
   sub_100268B54(v18, v20);
 
-  v21 = sub_100342264(v6, v18, 7);
+  v21 = sub_100342264(messageCopy, v18, 7);
   v22 = sub_1002EB36C();
   v23 = v22;
   if (v22)
   {
-    sub_1002EB834(v22, v21, v7, 0, 0);
+    sub_1002EB834(v22, v21, deviceCopy, 0, 0);
   }
 
   v24 = ASDLocalizedString();

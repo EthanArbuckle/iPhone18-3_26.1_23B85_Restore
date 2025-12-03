@@ -1,35 +1,35 @@
 @interface KeychainWrapper
-+ (id)keychainPasswordForMACAddress:(id)a3;
-+ (id)keychainWrapperWithMACAddress:(id)a3;
-+ (void)removeKeychainPasswordForMACAddress:(id)a3;
-- (KeychainWrapper)initWithAccountName:(id)a3 serviceName:(id)a4;
++ (id)keychainPasswordForMACAddress:(id)address;
++ (id)keychainWrapperWithMACAddress:(id)address;
++ (void)removeKeychainPasswordForMACAddress:(id)address;
+- (KeychainWrapper)initWithAccountName:(id)name serviceName:(id)serviceName;
 - (id)genericPassword;
 - (id)genericPasswordQuery;
 - (id)getGenericPassword;
-- (id)getPasswordFromQuery:(id)a3;
-- (int)addGenericPassword:(id)a3 withLabel:(id)a4 andDescription:(id)a5;
+- (id)getPasswordFromQuery:(id)query;
+- (int)addGenericPassword:(id)password withLabel:(id)label andDescription:(id)description;
 - (void)dealloc;
 - (void)removeGenericPassword;
 @end
 
 @implementation KeychainWrapper
 
-+ (id)keychainWrapperWithMACAddress:(id)a3
++ (id)keychainWrapperWithMACAddress:(id)address
 {
-  if (!a3)
+  if (!address)
   {
     return 0;
   }
 
   v4 = [KeychainWrapper alloc];
-  v6 = sub_23EB6D320(a3, 0, v5);
+  v6 = sub_23EB6D320(address, 0, v5);
   v7 = sub_23EB6CD3C(@"keychainBaseStationType", @"AirPortSettings");
   v9 = objc_msgSend_initWithAccountName_serviceName_(v4, v8, v6, v7);
 
   return v9;
 }
 
-- (KeychainWrapper)initWithAccountName:(id)a3 serviceName:(id)a4
+- (KeychainWrapper)initWithAccountName:(id)name serviceName:(id)serviceName
 {
   v13.receiver = self;
   v13.super_class = KeychainWrapper;
@@ -37,8 +37,8 @@
   v8 = v6;
   if (v6)
   {
-    objc_msgSend_setAccountName_(v6, v7, a3);
-    objc_msgSend_setServiceName_(v8, v9, a4);
+    objc_msgSend_setAccountName_(v6, v7, name);
+    objc_msgSend_setServiceName_(v8, v9, serviceName);
     v10 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     objc_msgSend_setLock_(v8, v11, v10);
   }
@@ -56,14 +56,14 @@
   [(KeychainWrapper *)&v5 dealloc];
 }
 
-+ (id)keychainPasswordForMACAddress:(id)a3
++ (id)keychainPasswordForMACAddress:(id)address
 {
-  if (!objc_msgSend_length(a3, a2, a3))
+  if (!objc_msgSend_length(address, a2, address))
   {
     return 0;
   }
 
-  v5 = objc_msgSend_keychainWrapperWithMACAddress_(KeychainWrapper, v4, a3);
+  v5 = objc_msgSend_keychainWrapperWithMACAddress_(KeychainWrapper, v4, address);
   if (!v5)
   {
     return 0;
@@ -72,11 +72,11 @@
   return MEMORY[0x2821F9670](v5, sel_genericPassword, v6);
 }
 
-+ (void)removeKeychainPasswordForMACAddress:(id)a3
++ (void)removeKeychainPasswordForMACAddress:(id)address
 {
-  if (objc_msgSend_length(a3, a2, a3))
+  if (objc_msgSend_length(address, a2, address))
   {
-    v5 = objc_msgSend_keychainWrapperWithMACAddress_(KeychainWrapper, v4, a3);
+    v5 = objc_msgSend_keychainWrapperWithMACAddress_(KeychainWrapper, v4, address);
     if (v5)
     {
 
@@ -100,16 +100,16 @@
   return result;
 }
 
-- (id)getPasswordFromQuery:(id)a3
+- (id)getPasswordFromQuery:(id)query
 {
   result = 0;
-  if (!a3)
+  if (!query)
   {
     return 0;
   }
 
   v34 = 0;
-  v12 = sub_23EB6F348(*MEMORY[0x277CBECE8], &v34, "{%##O%kO=%O}", v3, v4, v5, v6, v7, a3);
+  v12 = sub_23EB6F348(*MEMORY[0x277CBECE8], &v34, "{%##O%kO=%O}", v3, v4, v5, v6, v7, query);
   v13 = v34;
   if (v12)
   {
@@ -195,10 +195,10 @@ LABEL_17:
   return GenericPassword;
 }
 
-- (int)addGenericPassword:(id)a3 withLabel:(id)a4 andDescription:(id)a5
+- (int)addGenericPassword:(id)password withLabel:(id)label andDescription:(id)description
 {
   cf = 0;
-  v10 = objc_msgSend_genericPasswordQuery(self, a2, a3);
+  v10 = objc_msgSend_genericPasswordQuery(self, a2, password);
   if (dword_27E383290 <= 800 && (dword_27E383290 != -1 || sub_23EB74AC8(&dword_27E383290, 0x320u)))
   {
     objc_msgSend_serviceName(self, v8, v9);
@@ -214,7 +214,7 @@ LABEL_17:
     if (objc_msgSend_length(v22, v23, v24) && v10)
     {
       query = 0;
-      v27 = objc_msgSend_dataUsingEncoding_(a3, v25, 4);
+      v27 = objc_msgSend_dataUsingEncoding_(password, v25, 4);
       if (v27)
       {
         v30 = v27;
@@ -269,7 +269,7 @@ LABEL_17:
             if (objc_msgSend_isEqual_(v65, v66, v30))
             {
               v73 = objc_msgSend_objectForKey_(cf, v67, *MEMORY[0x277CDC080]);
-              if (objc_msgSend_isEqual_(v73, v74, a4))
+              if (objc_msgSend_isEqual_(v73, v74, label))
               {
                 goto LABEL_15;
               }

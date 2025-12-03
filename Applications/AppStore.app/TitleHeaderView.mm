@@ -1,28 +1,28 @@
 @interface TitleHeaderView
 - (BOOL)isAccessibilityElement;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (id)_accessibilitySupplementaryFooterViews;
-- (void)didTapWithAccessoryView:(id)a3;
+- (void)didTapWithAccessoryView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setIsAccessibilityElement:(BOOL)element;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TitleHeaderView
 
-- (void)didTapWithAccessoryView:(id)a3
+- (void)didTapWithAccessoryView:(id)view
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore15TitleHeaderView_accessoryAction);
   if (v3)
   {
     v8[3] = sub_100005744(0, &unk_100984370);
-    v8[0] = a3;
-    v6 = a3;
-    v7 = self;
+    v8[0] = view;
+    viewCopy = view;
+    selfCopy = self;
     sub_1002BB3F4(v3);
     v3(v8);
     sub_10001F63C(v3);
@@ -30,11 +30,11 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1003F2A54(width, height);
   v8 = v7;
 
@@ -45,13 +45,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for TitleHeaderView(0);
-  v4 = a3;
+  changeCopy = change;
   v5 = v9.receiver;
-  [(TitleHeaderView *)&v9 traitCollectionDidChange:v4];
+  [(TitleHeaderView *)&v9 traitCollectionDidChange:changeCopy];
   v6 = *&v5[OBJC_IVAR____TtC8AppStore15TitleHeaderView_titleLabel];
   v7 = *&v5[OBJC_IVAR____TtC8AppStore15TitleHeaderView_titleLabelNumberOfLines];
 
@@ -63,19 +63,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003F2EDC();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003F62B8();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003F6698();
   v4 = v3;
 
@@ -92,18 +92,18 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -115,11 +115,11 @@
 - (BOOL)isAccessibilityElement
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore15TitleHeaderView_titleLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v6 = String.count.getter();
@@ -129,32 +129,32 @@
 
   else
   {
-    v9.receiver = v3;
+    v9.receiver = selfCopy;
     v9.super_class = type metadata accessor for TitleHeaderView(0);
-    v8 = [(TitleHeaderView *)&v9 isAccessibilityElement];
+    isAccessibilityElement = [(TitleHeaderView *)&v9 isAccessibilityElement];
 
-    return v8;
+    return isAccessibilityElement;
   }
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for TitleHeaderView(0);
-  [(TitleHeaderView *)&v4 setIsAccessibilityElement:v3];
+  [(TitleHeaderView *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TitleHeaderView(0);
-  [(TitleHeaderView *)&v4 setAccessibilityTraits:a3];
+  [(TitleHeaderView *)&v4 setAccessibilityTraits:traits];
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003F6B04();
 
   if (v3)

@@ -1,15 +1,15 @@
 @interface TRINamespaceResolver
 + (id)_namespacePathComponentsFromEntitlements;
-+ (id)preferredPathForFactorDataWithCandidatePaths:(id)a3;
-+ (id)promotionDirForNamespaceName:(id)a3 withPaths:(id)a4;
++ (id)preferredPathForFactorDataWithCandidatePaths:(id)paths;
++ (id)promotionDirForNamespaceName:(id)name withPaths:(id)paths;
 - (BOOL)_hasOverrideExperimentFactorsState;
-- (BOOL)_prepareFactorsState:(id)a3;
-- (BOOL)_prepareFactorsStateForCounterfactualsOrInvestigationsForFactorsState:(id)a3;
-- (TRINamespaceResolver)initWithPaths:(id)a3;
-- (TRINamespaceResolver)initWithPaths:(id)a3 activeFactorProvidersParser:(id)a4;
-- (TRINamespaceResolver)initWithPaths:(id)a3 factorsState:(id)a4 activeFactorProvidersParser:(id)a5;
-- (char)_realpathWithFileSystemRepresentation:(const char *)a3 buffer:(char *)a4;
-- (id)counterfactualFactorsStatesForNamespace:(id)a3;
+- (BOOL)_prepareFactorsState:(id)state;
+- (BOOL)_prepareFactorsStateForCounterfactualsOrInvestigationsForFactorsState:(id)state;
+- (TRINamespaceResolver)initWithPaths:(id)paths;
+- (TRINamespaceResolver)initWithPaths:(id)paths activeFactorProvidersParser:(id)parser;
+- (TRINamespaceResolver)initWithPaths:(id)paths factorsState:(id)state activeFactorProvidersParser:(id)parser;
+- (char)_realpathWithFileSystemRepresentation:(const char *)representation buffer:(char *)buffer;
+- (id)counterfactualFactorsStatesForNamespace:(id)namespace;
 - (void)dealloc;
 @end
 
@@ -25,11 +25,11 @@
 
 - (BOOL)_hasOverrideExperimentFactorsState
 {
-  v3 = [(TRINamespaceResolver *)self namespacesInFactorsState];
-  if (v3)
+  namespacesInFactorsState = [(TRINamespaceResolver *)self namespacesInFactorsState];
+  if (namespacesInFactorsState)
   {
-    v4 = [(TRINamespaceResolver *)self overrideExperimentFactorsState];
-    v5 = v4 != 0;
+    overrideExperimentFactorsState = [(TRINamespaceResolver *)self overrideExperimentFactorsState];
+    v5 = overrideExperimentFactorsState != 0;
   }
 
   else
@@ -40,47 +40,47 @@
   return v5;
 }
 
-- (TRINamespaceResolver)initWithPaths:(id)a3
+- (TRINamespaceResolver)initWithPaths:(id)paths
 {
-  v4 = [(TRINamespaceResolver *)self initWithPaths:a3 factorsState:0];
+  v4 = [(TRINamespaceResolver *)self initWithPaths:paths factorsState:0];
   if (!v4)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:0 file:@"TRINamespaceResolver.m" lineNumber:53 description:{@"Expression was unexpectedly nil/false: %@", @"[self initWithPaths:paths factorsState:nil]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:0 file:@"TRINamespaceResolver.m" lineNumber:53 description:{@"Expression was unexpectedly nil/false: %@", @"[self initWithPaths:paths factorsState:nil]"}];
   }
 
   return v4;
 }
 
-- (TRINamespaceResolver)initWithPaths:(id)a3 activeFactorProvidersParser:(id)a4
+- (TRINamespaceResolver)initWithPaths:(id)paths activeFactorProvidersParser:(id)parser
 {
-  v5 = [(TRINamespaceResolver *)self initWithPaths:a3 factorsState:0 activeFactorProvidersParser:a4];
+  v5 = [(TRINamespaceResolver *)self initWithPaths:paths factorsState:0 activeFactorProvidersParser:parser];
   if (!v5)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:0 file:@"TRINamespaceResolver.m" lineNumber:58 description:{@"Expression was unexpectedly nil/false: %@", @"[self initWithPaths:paths factorsState:nil activeFactorProvidersParser:activeFactorProvidersParser]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:0 file:@"TRINamespaceResolver.m" lineNumber:58 description:{@"Expression was unexpectedly nil/false: %@", @"[self initWithPaths:paths factorsState:nil activeFactorProvidersParser:activeFactorProvidersParser]"}];
   }
 
   return v5;
 }
 
-- (TRINamespaceResolver)initWithPaths:(id)a3 factorsState:(id)a4 activeFactorProvidersParser:(id)a5
+- (TRINamespaceResolver)initWithPaths:(id)paths factorsState:(id)state activeFactorProvidersParser:(id)parser
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathsCopy = paths;
+  stateCopy = state;
+  parserCopy = parser;
   v20.receiver = self;
   v20.super_class = TRINamespaceResolver;
   v12 = [(TRINamespaceResolver *)&v20 init];
   v13 = v12;
-  if (v12 && ((objc_storeStrong(&v12->_paths, a3), !v11) ? (v14 = [[TRIActiveFactorProvidersParser alloc] initWithPaths:v9]) : (v14 = v11), activeFactorProvidersParser = v13->_activeFactorProvidersParser, v13->_activeFactorProvidersParser = v14, activeFactorProvidersParser, ![(TRINamespaceResolver *)v13 _prepareFactorsState:v10]))
+  if (v12 && ((objc_storeStrong(&v12->_paths, paths), !parserCopy) ? (v14 = [[TRIActiveFactorProvidersParser alloc] initWithPaths:pathsCopy]) : (v14 = parserCopy), activeFactorProvidersParser = v13->_activeFactorProvidersParser, v13->_activeFactorProvidersParser = v14, activeFactorProvidersParser, ![(TRINamespaceResolver *)v13 _prepareFactorsState:stateCopy]))
   {
     v17 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v22 = v10;
+      v22 = stateCopy;
       _os_log_error_impl(&dword_22EA6B000, v17, OS_LOG_TYPE_ERROR, "Failed to prepare factorsState: %{public}@", buf, 0xCu);
     }
 
@@ -96,22 +96,22 @@
   return v16;
 }
 
-- (BOOL)_prepareFactorsState:(id)a3
+- (BOOL)_prepareFactorsState:(id)state
 {
-  v5 = a3;
-  if (v5)
+  stateCopy = state;
+  if (stateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(TRINamespaceResolver *)self _prepareFactorsStateForCounterfactualsOrInvestigationsForFactorsState:v5];
+      v6 = [(TRINamespaceResolver *)self _prepareFactorsStateForCounterfactualsOrInvestigationsForFactorsState:stateCopy];
     }
 
     else
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [objc_opt_class() description];
-      [v7 handleFailureInMethod:a2 object:self file:@"TRINamespaceResolver.m" lineNumber:99 description:{@"Unrecognized TRIFactorsState subclass: %@", v8}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceResolver.m" lineNumber:99 description:{@"Unrecognized TRIFactorsState subclass: %@", v8}];
 
       v6 = 0;
     }
@@ -125,20 +125,20 @@
   return v6;
 }
 
-- (BOOL)_prepareFactorsStateForCounterfactualsOrInvestigationsForFactorsState:(id)a3
+- (BOOL)_prepareFactorsStateForCounterfactualsOrInvestigationsForFactorsState:(id)state
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TRIActiveFactorProvidersParser *)self->_activeFactorProvidersParser resolveTargetedFactorPackSetForExperimentFactorsState:v4];
+  stateCopy = state;
+  v5 = [(TRIActiveFactorProvidersParser *)self->_activeFactorProvidersParser resolveTargetedFactorPackSetForExperimentFactorsState:stateCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 path];
-    v8 = [v7 stringByAppendingPathComponent:@"factorPacks"];
+    path = [v5 path];
+    v8 = [path stringByAppendingPathComponent:@"factorPacks"];
 
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v21 = 0;
-    v10 = [v9 contentsOfDirectoryAtPath:v8 error:&v21];
+    v10 = [defaultManager contentsOfDirectoryAtPath:v8 error:&v21];
     v11 = v21;
 
     v12 = v10 != 0;
@@ -157,7 +157,7 @@
         self->_namespacesInFactorsState = v16;
       }
 
-      v18 = v4;
+      v18 = stateCopy;
       p_super = &self->_overrideExperimentFactorsState->super.super;
       self->_overrideExperimentFactorsState = v18;
     }
@@ -180,7 +180,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v23 = v4;
+      v23 = stateCopy;
       _os_log_impl(&dword_22EA6B000, v8, OS_LOG_TYPE_INFO, "Failed to resolve targeted experiment factor pack set for factor state: %@", buf, 0xCu);
     }
 
@@ -191,31 +191,31 @@
   return v12;
 }
 
-- (char)_realpathWithFileSystemRepresentation:(const char *)a3 buffer:(char *)a4
+- (char)_realpathWithFileSystemRepresentation:(const char *)representation buffer:(char *)buffer
 {
   *__error() = 0;
 
-  return realpath_DARWIN_EXTSN(a3, a4);
+  return realpath_DARWIN_EXTSN(representation, buffer);
 }
 
-+ (id)promotionDirForNamespaceName:(id)a3 withPaths:(id)a4
++ (id)promotionDirForNamespaceName:(id)name withPaths:(id)paths
 {
-  v5 = a3;
-  v6 = [a4 namespaceDescriptorsDir];
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", @"v2/promotion", v5];
+  nameCopy = name;
+  namespaceDescriptorsDir = [paths namespaceDescriptorsDir];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", @"v2/promotion", nameCopy];
 
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  v8 = [namespaceDescriptorsDir stringByAppendingPathComponent:nameCopy];
 
   return v8;
 }
 
-- (id)counterfactualFactorsStatesForNamespace:(id)a3
+- (id)counterfactualFactorsStatesForNamespace:(id)namespace
 {
-  v5 = [(TRIActiveFactorProvidersParser *)self->_activeFactorProvidersParser counterfactualFactorsStatesForNamespace:a3];
+  v5 = [(TRIActiveFactorProvidersParser *)self->_activeFactorProvidersParser counterfactualFactorsStatesForNamespace:namespace];
   if (!v5)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRINamespaceResolver.m" lineNumber:165 description:{@"Expression was unexpectedly nil/false: %@", @"[_activeFactorProvidersParser counterfactualFactorsStatesForNamespace:namespaceName]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceResolver.m" lineNumber:165 description:{@"Expression was unexpectedly nil/false: %@", @"[_activeFactorProvidersParser counterfactualFactorsStatesForNamespace:namespaceName]"}];
   }
 
   return v5;
@@ -239,12 +239,12 @@ LABEL_13:
     v10 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v13 = [MEMORY[0x277CCAC38] processInfo];
-      v14 = [v13 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       *buf = 138412802;
-      v22 = v14;
+      v22 = processName;
       v23 = 2112;
       v24 = @"com.apple.trial.client";
       v25 = 2112;
@@ -301,21 +301,21 @@ LABEL_17:
   return v9;
 }
 
-+ (id)preferredPathForFactorDataWithCandidatePaths:(id)a3
++ (id)preferredPathForFactorDataWithCandidatePaths:(id)paths
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  pathsCopy = paths;
+  if (![pathsCopy count])
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"TRINamespaceResolver.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"candidatePaths.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceResolver.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"candidatePaths.count > 0"}];
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__TRINamespaceResolver_preferredPathForFactorDataWithCandidatePaths___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280ACADD8 != -1)
   {
     dispatch_once(&qword_280ACADD8, block);
@@ -326,7 +326,7 @@ LABEL_17:
   if (v6)
   {
     v8 = [v6 count];
-    if (([v5 count] * v8) > 0x64)
+    if (([pathsCopy count] * v8) > 0x64)
     {
       v9 = TRILogCategory_ClientFramework();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -344,8 +344,8 @@ LABEL_17:
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v37 = v5;
-      obj = v5;
+      v37 = pathsCopy;
+      obj = pathsCopy;
       v10 = [obj countByEnumeratingWithState:&v48 objects:v57 count:16];
       if (v10)
       {
@@ -362,7 +362,7 @@ LABEL_17:
 
             v13 = *(*(&v48 + 1) + 8 * i);
             v14 = objc_autoreleasePoolPush();
-            v15 = [v13 triStringByResolvingSymlinksInPath];
+            triStringByResolvingSymlinksInPath = [v13 triStringByResolvingSymlinksInPath];
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
@@ -383,7 +383,7 @@ LABEL_14:
                   objc_enumerationMutation(v17);
                 }
 
-                if ([v15 containsString:*(*(&v44 + 1) + 8 * v21)])
+                if ([triStringByResolvingSymlinksInPath containsString:*(*(&v44 + 1) + 8 * v21)])
                 {
                   break;
                 }
@@ -406,7 +406,7 @@ LABEL_14:
 
                 objc_autoreleasePoolPop(v14);
                 v7 = v36;
-                v5 = v37;
+                pathsCopy = v37;
                 goto LABEL_49;
               }
 
@@ -435,7 +435,7 @@ LABEL_26:
       }
 
       v7 = v36;
-      v5 = v37;
+      pathsCopy = v37;
     }
   }
 
@@ -450,7 +450,7 @@ LABEL_26:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v24 = v5;
+  v24 = pathsCopy;
   v25 = [v24 countByEnumeratingWithState:&v40 objects:v53 count:16];
   if (v25)
   {

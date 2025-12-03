@@ -1,28 +1,28 @@
 @interface VCTransportSessionNW
 - (BOOL)initializeIsIPv6;
 - (BOOL)initializeNetworkMTU;
-- (VCTransportSessionNW)initWithRTPNWConnectionID:(id)a3 RTCPNWConnectionID:(id)a4 handlerQueue:(id)a5 context:(void *)a6 notificationHandler:(void *)a7 eventHandler:(void *)a8 isConnectionStartDelayed:(BOOL)a9;
+- (VCTransportSessionNW)initWithRTPNWConnectionID:(id)d RTCPNWConnectionID:(id)iD handlerQueue:(id)queue context:(void *)context notificationHandler:(void *)handler eventHandler:(void *)eventHandler isConnectionStartDelayed:(BOOL)delayed;
 - (int)cancelConnections;
-- (int)configureConnectionToReceiveHoplimit:(id)a3;
-- (int)createAndSetupConnection:(id)a3;
+- (int)configureConnectionToReceiveHoplimit:(id)hoplimit;
+- (int)createAndSetupConnection:(id)connection;
 - (int)createConnections;
-- (int)createNWConnection:(id)a3;
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4;
-- (int)destroyNWConnection:(id *)a3;
+- (int)createNWConnection:(id)connection;
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type;
+- (int)destroyNWConnection:(id *)connection;
 - (int)dupRTCPNWConnectionBackingSocket;
 - (int)dupRTPNWConnectionBackingSocket;
-- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)a3;
-- (int)recreateConnectionsWithRTPConnectionInfo:(id)a3 rtcpConnectionInfo:(id)a4;
-- (int)setRTPNWConnectionID:(id)a3 rtcpNWConnectionID:(id)a4;
-- (int)setRemoteAddress:(id)a3 remoteRTCPPort:(int)a4;
-- (int)setStateChangeHandlerForConnection:(id)a3 result:(BOOL *)a4;
-- (int)setupNWConnection:(id)a3;
-- (int)startNWConnection:(id)a3;
+- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)connection;
+- (int)recreateConnectionsWithRTPConnectionInfo:(id)info rtcpConnectionInfo:(id)connectionInfo;
+- (int)setRTPNWConnectionID:(id)d rtcpNWConnectionID:(id)iD;
+- (int)setRemoteAddress:(id)address remoteRTCPPort:(int)port;
+- (int)setStateChangeHandlerForConnection:(id)connection result:(BOOL *)result;
+- (int)setupNWConnection:(id)connection;
+- (int)startNWConnection:(id)connection;
 - (tagVCNWConnectionMonitor)createNWMonitor;
 - (void)addNetworkAssertion;
 - (void)createConnections;
 - (void)dealloc;
-- (void)handleStateChanges:(int)a3 error:(id)a4 operationResult:(BOOL *)a5;
+- (void)handleStateChanges:(int)changes error:(id)error operationResult:(BOOL *)result;
 - (void)initializeInterfaceType;
 - (void)initializeIsIPv6;
 - (void)initializeNetworkMTU;
@@ -33,26 +33,26 @@
 
 @implementation VCTransportSessionNW
 
-- (VCTransportSessionNW)initWithRTPNWConnectionID:(id)a3 RTCPNWConnectionID:(id)a4 handlerQueue:(id)a5 context:(void *)a6 notificationHandler:(void *)a7 eventHandler:(void *)a8 isConnectionStartDelayed:(BOOL)a9
+- (VCTransportSessionNW)initWithRTPNWConnectionID:(id)d RTCPNWConnectionID:(id)iD handlerQueue:(id)queue context:(void *)context notificationHandler:(void *)handler eventHandler:(void *)eventHandler isConnectionStartDelayed:(BOOL)delayed
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     v15.receiver = self;
     v15.super_class = VCTransportSessionNW;
-    v11 = [(VCTransportSession *)&v15 initWithNotificationQueue:0 reportingAgent:0 notificationHandler:a7 eventHandler:a8 handlerQueue:a5 context:a6];
+    v11 = [(VCTransportSession *)&v15 initWithNotificationQueue:0 reportingAgent:0 notificationHandler:handler eventHandler:eventHandler handlerQueue:queue context:context];
     if (v11)
     {
       v11->_cancelWaitSemaphore = dispatch_semaphore_create(0);
-      v11->_isConnectionStartDelayed = a9;
+      v11->_isConnectionStartDelayed = delayed;
       v12 = objc_opt_new();
       v11->_rtpConnectionInfo = v12;
-      [(VCNWConnectionInfo *)v12 setConnectionID:a3];
-      if (a4)
+      [(VCNWConnectionInfo *)v12 setConnectionID:d];
+      if (iD)
       {
         v13 = objc_opt_new();
         v11->_rtcpConnectionInfo = v13;
-        [(VCNWConnectionInfo *)v13 setConnectionID:a4];
+        [(VCNWConnectionInfo *)v13 setConnectionID:iD];
       }
 
       if ([(VCTransportSessionNW *)v11 createConnections]< 0)
@@ -106,7 +106,7 @@ LABEL_6:
   return v5;
 }
 
-- (int)createAndSetupConnection:(id)a3
+- (int)createAndSetupConnection:(id)connection
 {
   if ([(VCTransportSessionNW *)self createNWConnection:?]< 0)
   {
@@ -114,7 +114,7 @@ LABEL_6:
     return v6;
   }
 
-  result = -[VCTransportSessionNW setupNWConnection:](self, "setupNWConnection:", [a3 connection]);
+  result = -[VCTransportSessionNW setupNWConnection:](self, "setupNWConnection:", [connection connection]);
   if (result < 0)
   {
     [VCTransportSessionNW createAndSetupConnection:];
@@ -123,7 +123,7 @@ LABEL_6:
 
   if (!self->_isConnectionStartDelayed)
   {
-    result = -[VCTransportSessionNW startNWConnection:](self, "startNWConnection:", [a3 connection]);
+    result = -[VCTransportSessionNW startNWConnection:](self, "startNWConnection:", [connection connection]);
     if (result < 0)
     {
       [VCTransportSessionNW createAndSetupConnection:];
@@ -134,10 +134,10 @@ LABEL_6:
   return result;
 }
 
-- (int)configureConnectionToReceiveHoplimit:(id)a3
+- (int)configureConnectionToReceiveHoplimit:(id)hoplimit
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!hoplimit)
   {
     [(VCTransportSessionNW *)&v10 configureConnectionToReceiveHoplimit:&v12];
 LABEL_11:
@@ -147,13 +147,13 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (![a3 parameters])
+  if (![hoplimit parameters])
   {
     [(VCTransportSessionNW *)&v10 configureConnectionToReceiveHoplimit:&v12];
     goto LABEL_11;
   }
 
-  v4 = nw_parameters_copy_default_protocol_stack([a3 parameters]);
+  v4 = nw_parameters_copy_default_protocol_stack([hoplimit parameters]);
   if (!v4)
   {
     [(VCTransportSessionNW *)&v10 configureConnectionToReceiveHoplimit:&v12];
@@ -177,33 +177,33 @@ LABEL_6:
   return v8;
 }
 
-- (int)createNWConnection:(id)a3
+- (int)createNWConnection:(id)connection
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!connection)
   {
     [VCTransportSessionNW createNWConnection:];
     goto LABEL_19;
   }
 
-  if (![a3 connectionID])
+  if (![connection connectionID])
   {
-    if (![a3 remoteAddress])
+    if (![connection remoteAddress])
     {
       [VCTransportSessionNW createNWConnection:];
       goto LABEL_19;
     }
 
-    if (![a3 parameters])
+    if (![connection parameters])
     {
       [VCTransportSessionNW createNWConnection:];
       goto LABEL_19;
     }
 
-    [objc_msgSend(objc_msgSend(a3 "remoteAddress")];
-    [objc_msgSend(a3 "remoteAddress")];
+    [objc_msgSend(objc_msgSend(connection "remoteAddress")];
+    [objc_msgSend(connection "remoteAddress")];
     host_with_numeric_port = nw_endpoint_create_host_with_numeric_port();
-    v7 = nw_connection_create(host_with_numeric_port, [a3 parameters]);
+    v7 = nw_connection_create(host_with_numeric_port, [connection parameters]);
     nw_release(host_with_numeric_port);
     if (v7)
     {
@@ -213,7 +213,7 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:{objc_msgSend(a3, "connectionID")}];
+  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:{objc_msgSend(connection, "connectionID")}];
   if (!v5)
   {
     [VCTransportSessionNW createNWConnection:];
@@ -238,8 +238,8 @@ LABEL_19:
   }
 
 LABEL_5:
-  [a3 setConnection:v7];
-  v8 = [(VCTransportSessionNW *)self configureConnectionToReceiveHoplimit:a3];
+  [connection setConnection:v7];
+  v8 = [(VCTransportSessionNW *)self configureConnectionToReceiveHoplimit:connection];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (v8 < 0)
   {
@@ -253,7 +253,7 @@ LABEL_5:
     v11 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [a3 remoteAddress];
+      remoteAddress = [connection remoteAddress];
       *buf = 136315906;
       *&buf[4] = v10;
       *&buf[12] = 2080;
@@ -261,7 +261,7 @@ LABEL_5:
       v17 = 1024;
       v18 = 144;
       v19 = 2112;
-      v20 = v12;
+      v20 = remoteAddress;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Successfully created NW Connection to endpoint with remoteAddress=%@", buf, 0x26u);
     }
   }
@@ -283,12 +283,12 @@ LABEL_9:
   return result;
 }
 
-- (int)setRTPNWConnectionID:(id)a3 rtcpNWConnectionID:(id)a4
+- (int)setRTPNWConnectionID:(id)d rtcpNWConnectionID:(id)iD
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!d)
   {
-    [(VCTransportSessionNW *)&v22 setRTPNWConnectionID:buf rtcpNWConnectionID:&v23, a4];
+    [(VCTransportSessionNW *)&v22 setRTPNWConnectionID:buf rtcpNWConnectionID:&v23, iD];
 LABEL_19:
     v11 = v22;
     v7 = *buf;
@@ -296,7 +296,7 @@ LABEL_19:
     goto LABEL_17;
   }
 
-  if (-[NSString isEqualToString:](-[VCNWConnectionInfo connectionID](self->_rtpConnectionInfo, "connectionID"), "isEqualToString:", [a3 UUIDString]))
+  if (-[NSString isEqualToString:](-[VCNWConnectionInfo connectionID](self->_rtpConnectionInfo, "connectionID"), "isEqualToString:", [d UUIDString]))
   {
     v7 = 0;
   }
@@ -309,7 +309,7 @@ LABEL_19:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(VCNWConnectionInfo *)self->_rtpConnectionInfo connectionID];
+        connectionID = [(VCNWConnectionInfo *)self->_rtpConnectionInfo connectionID];
         *buf = 136316162;
         *&buf[4] = v8;
         v25 = 2080;
@@ -317,25 +317,25 @@ LABEL_19:
         v27 = 1024;
         v28 = 224;
         v29 = 2112;
-        v30 = v10;
+        v30 = connectionID;
         v31 = 2112;
-        v32 = a3;
+        selfCopy = d;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Updating NW connections, oldRTPNWConnectionID=%@, newRTPNWConnectionID=%@", buf, 0x30u);
       }
     }
 
     v7 = objc_opt_new();
     [v7 setParameters:{-[VCNWConnectionInfo parameters](self->_rtpConnectionInfo, "parameters")}];
-    [v7 setConnectionID:{objc_msgSend(a3, "UUIDString")}];
+    [v7 setConnectionID:{objc_msgSend(d, "UUIDString")}];
   }
 
-  if (self->_isSharedConnection || -[NSString isEqualToString:](-[VCNWConnectionInfo connectionID](self->_rtcpConnectionInfo, "connectionID"), "isEqualToString:", [a4 UUIDString]))
+  if (self->_isSharedConnection || -[NSString isEqualToString:](-[VCNWConnectionInfo connectionID](self->_rtcpConnectionInfo, "connectionID"), "isEqualToString:", [iD UUIDString]))
   {
     v11 = 0;
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!iD)
   {
     [VCTransportSessionNW setRTPNWConnectionID:rtcpNWConnectionID:];
     goto LABEL_19;
@@ -343,7 +343,7 @@ LABEL_19:
 
   v11 = objc_opt_new();
   [v11 setParameters:{-[VCNWConnectionInfo parameters](self->_rtcpConnectionInfo, "parameters")}];
-  [v11 setConnectionID:{objc_msgSend(a4, "UUIDString")}];
+  [v11 setConnectionID:{objc_msgSend(iD, "UUIDString")}];
 LABEL_13:
   v12 = [(VCTransportSessionNW *)self recreateConnectionsWithRTPConnectionInfo:v7 rtcpConnectionInfo:v11];
   if (v12 < 0)
@@ -387,7 +387,7 @@ LABEL_13:
           v29 = 2112;
           v30 = v18;
           v31 = 2048;
-          v32 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed recreating the NW connections", buf, 0x30u);
         }
       }
@@ -400,8 +400,8 @@ LABEL_13:
     v14 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(VCNWConnectionInfo *)self->_rtpConnectionInfo connectionID];
-      v16 = [(VCNWConnectionInfo *)self->_rtcpConnectionInfo connectionID];
+      connectionID2 = [(VCNWConnectionInfo *)self->_rtpConnectionInfo connectionID];
+      connectionID3 = [(VCNWConnectionInfo *)self->_rtcpConnectionInfo connectionID];
       *buf = 136316162;
       *&buf[4] = v13;
       v25 = 2080;
@@ -409,9 +409,9 @@ LABEL_13:
       v27 = 1024;
       v28 = 243;
       v29 = 2112;
-      v30 = v15;
+      v30 = connectionID2;
       v31 = 2112;
-      v32 = v16;
+      selfCopy = connectionID3;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Successfully updated NW connections rtpNWConnectionID=%@, rtcpNWConnectionID=%@", buf, 0x30u);
     }
   }
@@ -441,10 +441,10 @@ LABEL_17:
   [(VCTransportSession *)&v3 dealloc];
 }
 
-- (void)handleStateChanges:(int)a3 error:(id)a4 operationResult:(BOOL *)a5
+- (void)handleStateChanges:(int)changes error:(id)error operationResult:(BOOL *)result
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a4 && VRTraceGetErrorLogLevelForModule() >= 3)
+  if (error && VRTraceGetErrorLogLevelForModule() >= 3)
   {
     v9 = VRTraceErrorLogLevelToCSTR();
     v10 = *MEMORY[0x1E6986650];
@@ -457,28 +457,28 @@ LABEL_17:
       v16 = 1024;
       v17 = 269;
       v18 = 2112;
-      v19 = a4;
+      errorCopy = error;
       v20 = 1024;
-      v21 = a3;
+      changesCopy = changes;
       _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d Get error %@ from nw connection with state: %d!", &v12, 0x2Cu);
     }
   }
 
-  if (a3 == 5)
+  if (changes == 5)
   {
     v11 = &OBJC_IVAR___VCTransportSessionNW__cancelWaitSemaphore;
   }
 
   else
   {
-    if (a3 != 4)
+    if (changes != 4)
     {
-      if (a3 != 3)
+      if (changes != 3)
       {
         return;
       }
 
-      *a5 = 1;
+      *result = 1;
     }
 
     v11 = &OBJC_IVAR___VCTransportSessionNW__startWaitSemaphore;
@@ -487,10 +487,10 @@ LABEL_17:
   dispatch_semaphore_signal(*(&self->super.super.isa + *v11));
 }
 
-- (int)setStateChangeHandlerForConnection:(id)a3 result:(BOOL *)a4
+- (int)setStateChangeHandlerForConnection:(id)connection result:(BOOL *)result
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (result)
   {
     v6 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
     v8[0] = MEMORY[0x1E69E9820];
@@ -498,8 +498,8 @@ LABEL_17:
     v8[2] = __66__VCTransportSessionNW_setStateChangeHandlerForConnection_result___block_invoke;
     v8[3] = &unk_1E85F4A48;
     v8[4] = v6;
-    v8[5] = a4;
-    nw_connection_set_state_changed_handler(a3, v8);
+    v8[5] = result;
+    nw_connection_set_state_changed_handler(connection, v8);
     return 0;
   }
 
@@ -540,11 +540,11 @@ void __66__VCTransportSessionNW_setStateChangeHandlerForConnection_result___bloc
   }
 }
 
-- (int)setupNWConnection:(id)a3
+- (int)setupNWConnection:(id)connection
 {
   self->_connectionStartDidSucceed = 0;
-  nw_connection_set_queue(a3, +[VCVTPWrapper targetQueue]);
-  v5 = [(VCTransportSessionNW *)self setStateChangeHandlerForConnection:a3 result:&self->_connectionStartDidSucceed];
+  nw_connection_set_queue(connection, +[VCVTPWrapper targetQueue]);
+  v5 = [(VCTransportSessionNW *)self setStateChangeHandlerForConnection:connection result:&self->_connectionStartDidSucceed];
   if (v5 < 0)
   {
     [VCTransportSessionNW setupNWConnection:];
@@ -553,7 +553,7 @@ void __66__VCTransportSessionNW_setStateChangeHandlerForConnection_result___bloc
   return v5;
 }
 
-- (int)startNWConnection:(id)a3
+- (int)startNWConnection:(id)connection
 {
   startWaitSemaphore = self->_startWaitSemaphore;
   if (startWaitSemaphore)
@@ -563,7 +563,7 @@ void __66__VCTransportSessionNW_setStateChangeHandlerForConnection_result___bloc
   }
 
   self->_startWaitSemaphore = dispatch_semaphore_create(0);
-  nw_connection_start(a3);
+  nw_connection_start(connection);
   v6 = self->_startWaitSemaphore;
   v7 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(v6, v7))
@@ -659,22 +659,22 @@ id __46__VCTransportSessionNW_removeNetworkAssertion__block_invoke(uint64_t a1)
 
 - (int)dupRTPNWConnectionBackingSocket
 {
-  v3 = [(VCNWConnectionInfo *)self->_rtpConnectionInfo connection];
+  connection = [(VCNWConnectionInfo *)self->_rtpConnectionInfo connection];
 
-  return [(VCTransportSessionNW *)self dupRTPNWConnectionBackingSocketForNWConnection:v3];
+  return [(VCTransportSessionNW *)self dupRTPNWConnectionBackingSocketForNWConnection:connection];
 }
 
 - (int)dupRTCPNWConnectionBackingSocket
 {
-  v3 = [(VCNWConnectionInfo *)self->_rtcpConnectionInfo connection];
+  connection = [(VCNWConnectionInfo *)self->_rtcpConnectionInfo connection];
 
-  return [(VCTransportSessionNW *)self dupRTPNWConnectionBackingSocketForNWConnection:v3];
+  return [(VCTransportSessionNW *)self dupRTPNWConnectionBackingSocketForNWConnection:connection];
 }
 
-- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)a3
+- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)connection
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!connection)
   {
     [VCTransportSessionNW dupRTPNWConnectionBackingSocketForNWConnection:?];
     return v13;
@@ -704,7 +704,7 @@ id __46__VCTransportSessionNW_removeNetworkAssertion__block_invoke(uint64_t a1)
         v17 = 1024;
         v18 = 450;
         v19 = 2048;
-        v20 = a3;
+        connectionCopy2 = connection;
         v21 = 1024;
         v22 = v5;
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d nw_connection %p is backed by socket %d. Failed to dup", &v13, 0x2Cu);
@@ -727,7 +727,7 @@ id __46__VCTransportSessionNW_removeNetworkAssertion__block_invoke(uint64_t a1)
       v17 = 1024;
       v18 = 448;
       v19 = 2048;
-      v20 = a3;
+      connectionCopy2 = connection;
       v21 = 1024;
       v22 = v5;
       v23 = 1024;
@@ -897,7 +897,7 @@ LABEL_19:
   return v6;
 }
 
-- (int)recreateConnectionsWithRTPConnectionInfo:(id)a3 rtcpConnectionInfo:(id)a4
+- (int)recreateConnectionsWithRTPConnectionInfo:(id)info rtcpConnectionInfo:(id)connectionInfo
 {
   if ([(VCTransportSessionNW *)self cancelConnections]< 0)
   {
@@ -905,8 +905,8 @@ LABEL_19:
     return v8;
   }
 
-  [(VCTransportSessionNW *)self setRtpConnectionInfo:a3];
-  [(VCTransportSessionNW *)self setRtcpConnectionInfo:a4];
+  [(VCTransportSessionNW *)self setRtpConnectionInfo:info];
+  [(VCTransportSessionNW *)self setRtcpConnectionInfo:connectionInfo];
   result = [(VCTransportSessionNW *)self createConnections];
   if (result < 0)
   {
@@ -917,14 +917,14 @@ LABEL_19:
   return result;
 }
 
-- (int)destroyNWConnection:(id *)a3
+- (int)destroyNWConnection:(id *)connection
 {
-  if (!a3 || !*a3 || ![*a3 connection])
+  if (!connection || !*connection || ![*connection connection])
   {
     return 0;
   }
 
-  nw_connection_cancel([*a3 connection]);
+  nw_connection_cancel([*connection connection]);
   cancelWaitSemaphore = self->_cancelWaitSemaphore;
   v6 = dispatch_time(0, 500000000);
   if (dispatch_semaphore_wait(cancelWaitSemaphore, v6))
@@ -945,19 +945,19 @@ LABEL_19:
 
   else
   {
-    nw_connection_set_state_changed_handler([*a3 connection], 0);
+    nw_connection_set_state_changed_handler([*connection connection], 0);
 
     v7 = 0;
-    *a3 = 0;
+    *connection = 0;
   }
 
   return v7;
 }
 
-- (int)setRemoteAddress:(id)a3 remoteRTCPPort:(int)a4
+- (int)setRemoteAddress:(id)address remoteRTCPPort:(int)port
 {
-  v4 = a4;
-  if (![a3 isValid])
+  portCopy = port;
+  if (![address isValid])
   {
 LABEL_17:
     v16 = 0;
@@ -966,7 +966,7 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v7 = [(VCNWConnectionInfo *)self->_rtpConnectionInfo isSameRemoteAddress:a3];
+  v7 = [(VCNWConnectionInfo *)self->_rtpConnectionInfo isSameRemoteAddress:address];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (v7)
   {
@@ -1004,7 +1004,7 @@ LABEL_17:
 
   v15 = objc_opt_new();
   [v15 setParameters:{-[VCNWConnectionInfo parameters](self->_rtpConnectionInfo, "parameters")}];
-  [v15 setRemoteAddress:a3];
+  [v15 setRemoteAddress:address];
   if (self->_isSharedConnection)
   {
     v16 = 0;
@@ -1014,7 +1014,7 @@ LABEL_17:
   {
     v16 = objc_opt_new();
     [v16 setParameters:{-[VCNWConnectionInfo parameters](self->_rtcpConnectionInfo, "parameters")}];
-    [v16 setRemoteAddress:a3];
+    [v16 setRemoteAddress:address];
     [objc_msgSend(v16 "remoteAddress")];
   }
 
@@ -1054,7 +1054,7 @@ LABEL_13:
   return v17;
 }
 
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type
 {
   OUTLINED_FUNCTION_37();
   if (!v5)
@@ -1602,7 +1602,7 @@ LABEL_22:
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)recreateConnectionsWithRTPConnectionInfo:rtcpConnectionInfo:.cold.1()

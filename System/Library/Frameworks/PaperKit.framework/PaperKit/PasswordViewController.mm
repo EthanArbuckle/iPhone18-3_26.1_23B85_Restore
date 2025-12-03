@@ -1,6 +1,6 @@
 @interface PasswordViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (_TtC8PaperKit22PasswordViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (_TtC8PaperKit22PasswordViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -8,22 +8,22 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   PasswordViewController.loadView()();
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = PasswordViewController.textFieldShouldReturn(_:)(v4);
+  returnCopy = return;
+  selfCopy = self;
+  LOBYTE(self) = PasswordViewController.textFieldShouldReturn(_:)(returnCopy);
 
   return self & 1;
 }
 
-- (_TtC8PaperKit22PasswordViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit22PasswordViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -35,8 +35,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return PasswordViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return PasswordViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

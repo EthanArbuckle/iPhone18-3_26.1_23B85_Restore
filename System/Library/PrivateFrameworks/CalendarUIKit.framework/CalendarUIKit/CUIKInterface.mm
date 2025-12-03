@@ -45,8 +45,8 @@ uint64_t __23__CUIKInterface_shared__block_invoke()
 
 - (BOOL)isCurrentProcessAnApplicationExtension
 {
-  v2 = [MEMORY[0x1E696ABD0] extensionInfoForCurrentProcess];
-  if (v2)
+  extensionInfoForCurrentProcess = [MEMORY[0x1E696ABD0] extensionInfoForCurrentProcess];
+  if (extensionInfoForCurrentProcess)
   {
     v3 = objc_opt_respondsToSelector();
   }
@@ -98,8 +98,8 @@ LABEL_6:
 
 - (BOOL)usesLargeTextLayout
 {
-  v2 = [(CUIKInterface *)self preferredContentSizeCategoryOrOverride];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategoryOrOverride = [(CUIKInterface *)self preferredContentSizeCategoryOrOverride];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategoryOrOverride);
 
   return IsAccessibilityCategory;
 }

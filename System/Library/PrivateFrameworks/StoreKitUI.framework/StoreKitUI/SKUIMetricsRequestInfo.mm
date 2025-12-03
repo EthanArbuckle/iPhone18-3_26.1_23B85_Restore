@@ -1,24 +1,24 @@
 @interface SKUIMetricsRequestInfo
 - (NSDictionary)dictionaryRepresentation;
-- (SKUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)payload;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKUIMetricsRequestInfo
 
-- (SKUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)a3
+- (SKUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMetricsRequestInfo initWithReportRequestTimesMessagePayload:];
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"requestStartTime"];
-  v6 = [v4 objectForKeyedSubscript:@"responseStartTime"];
-  v7 = [v4 objectForKeyedSubscript:@"responseEndTime"];
+  v5 = [payloadCopy objectForKeyedSubscript:@"requestStartTime"];
+  v6 = [payloadCopy objectForKeyedSubscript:@"responseStartTime"];
+  v7 = [payloadCopy objectForKeyedSubscript:@"responseEndTime"];
   v8 = v7;
-  v9 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7)
   {
     v10 = [(SKUIMetricsRequestInfo *)self init];
@@ -30,23 +30,23 @@
       [(SKUIMetricsRequestInfo *)v10 setResponseStartTime:?];
       [SKUIMetricsUtilities timeIntervalFromJSTime:v8];
       [(SKUIMetricsRequestInfo *)v10 setResponseEndTime:?];
-      v11 = [v4 objectForKeyedSubscript:@"responseWasCached"];
+      v11 = [payloadCopy objectForKeyedSubscript:@"responseWasCached"];
 
       if (v11)
       {
-        v12 = [v4 objectForKeyedSubscript:@"responseWasCached"];
+        v12 = [payloadCopy objectForKeyedSubscript:@"responseWasCached"];
         -[SKUIMetricsRequestInfo setResponseWasCached:](v10, "setResponseWasCached:", [v12 BOOLValue]);
       }
     }
 
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SKUIMetricsRequestInfo *)self requestStartTime];

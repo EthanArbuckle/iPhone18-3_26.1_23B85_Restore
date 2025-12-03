@@ -1,9 +1,9 @@
 @interface AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl
-- (AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl)initWithID:(id)a3 outputDevice:(id)a4 authorizationTokenType:(id)a5;
+- (AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl)initWithID:(id)d outputDevice:(id)device authorizationTokenType:(id)type;
 - (void)cancel;
 - (void)dealloc;
-- (void)enterTerminalStatus:(int64_t)a3 error:(id)a4;
-- (void)respondWithAuthorizationToken:(id)a3 completionHandler:(id)a4;
+- (void)enterTerminalStatus:(int64_t)status error:(id)error;
+- (void)respondWithAuthorizationToken:(id)token completionHandler:(id)handler;
 @end
 
 @implementation AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl
@@ -15,43 +15,43 @@
   [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)&v3 dealloc];
 }
 
-- (void)respondWithAuthorizationToken:(id)a3 completionHandler:(id)a4
+- (void)respondWithAuthorizationToken:(id)token completionHandler:(id)handler
 {
-  self->_completionHandler = [a4 copy];
-  v6 = [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)self parentAuthorizationSessionImpl];
+  self->_completionHandler = [handler copy];
+  parentAuthorizationSessionImpl = [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)self parentAuthorizationSessionImpl];
 
-  [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)v6 outputDeviceAuthorizationRequestImpl:self didRespondWithAuthorizationToken:a3];
+  [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)parentAuthorizationSessionImpl outputDeviceAuthorizationRequestImpl:self didRespondWithAuthorizationToken:token];
 }
 
 - (void)cancel
 {
   [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)self enterTerminalStatus:4 error:0];
-  v3 = [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)self parentAuthorizationSessionImpl];
+  parentAuthorizationSessionImpl = [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)self parentAuthorizationSessionImpl];
 
-  [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)v3 outputDeviceAuthorizationRequestImplDidCancel:self];
+  [(AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl *)parentAuthorizationSessionImpl outputDeviceAuthorizationRequestImplDidCancel:self];
 }
 
-- (void)enterTerminalStatus:(int64_t)a3 error:(id)a4
+- (void)enterTerminalStatus:(int64_t)status error:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3, a4);
+    completionHandler[2](completionHandler, status, error);
 
     self->_completionHandler = 0;
   }
 }
 
-- (AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl)initWithID:(id)a3 outputDevice:(id)a4 authorizationTokenType:(id)a5
+- (AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl)initWithID:(id)d outputDevice:(id)device authorizationTokenType:(id)type
 {
   v11.receiver = self;
   v11.super_class = AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl;
   v8 = [(AVFigEndpointUIAgentOutputDeviceAuthorizationRequestImpl *)&v11 init];
   if (v8)
   {
-    v8->_uniqueID = [a3 copy];
-    v8->_outputDevice = a4;
-    v8->_tokenType = a5;
+    v8->_uniqueID = [d copy];
+    v8->_outputDevice = device;
+    v8->_tokenType = type;
     v9 = v8;
   }
 

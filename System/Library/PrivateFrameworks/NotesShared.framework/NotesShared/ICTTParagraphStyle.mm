@@ -1,33 +1,33 @@
 @interface ICTTParagraphStyle
 + (id)defaultParagraphStyle;
-+ (id)paragraphStyleNamed:(unsigned int)a3;
-+ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)a3;
-+ (int64_t)textAlignmentForParagraphStyleAlignment:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToModelComparable:(id)a3;
-- (BOOL)isEqualToModelParagraphStyle:(id)a3;
-- (BOOL)isEqualToParagraphStyle:(id)a3;
++ (id)paragraphStyleNamed:(unsigned int)named;
++ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)alignment;
++ (int64_t)textAlignmentForParagraphStyleAlignment:(int)alignment;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToModelComparable:(id)comparable;
+- (BOOL)isEqualToModelParagraphStyle:(id)style;
+- (BOOL)isEqualToParagraphStyle:(id)style;
 - (BOOL)isHeader;
-- (BOOL)isHierarchicallyEqualToParagraphStyle:(id)a3;
+- (BOOL)isHierarchicallyEqualToParagraphStyle:(id)style;
 - (BOOL)isList;
 - (BOOL)preferSingleLine;
 - (BOOL)wantsFollowingNewLine;
 - (ICTTParagraphStyle)init;
-- (ICTTParagraphStyle)initWithArchive:(const void *)a3;
-- (ICTTParagraphStyle)initWithCoder:(id)a3;
-- (ICTTParagraphStyle)initWithData:(id)a3;
+- (ICTTParagraphStyle)initWithArchive:(const void *)archive;
+- (ICTTParagraphStyle)initWithCoder:(id)coder;
+- (ICTTParagraphStyle)initWithData:(id)data;
 - (NSString)description;
 - (NSUUID)todoTrackingUUID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)listBulletInAttributedString:(id)a3 atIndex:(unint64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)listBulletInAttributedString:(id)string atIndex:(unint64_t)index;
 - (id)mutableCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)serialize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)setIndent:(unint64_t)a3;
-- (void)setStyle:(unsigned int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)saveToArchive:(void *)archive;
+- (void)setIndent:(unint64_t)indent;
+- (void)setStyle:(unsigned int)style;
 @end
 
 @implementation ICTTParagraphStyle
@@ -45,9 +45,9 @@
     v2->_writingDirection = -1;
     if (ICInternalSettingsIsCollapsibleSectionsEnabled())
     {
-      v4 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       uuid = v3->_uuid;
-      v3->_uuid = v4;
+      v3->_uuid = uUID;
     }
   }
 
@@ -68,21 +68,21 @@
 
 - (NSUUID)todoTrackingUUID
 {
-  v2 = [(ICTTParagraphStyle *)self todo];
-  v3 = [v2 uuid];
+  todo = [(ICTTParagraphStyle *)self todo];
+  uuid = [todo uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (BOOL)isHeader
 {
-  v3 = [(ICTTParagraphStyle *)self style];
-  if (v3 != 1)
+  style = [(ICTTParagraphStyle *)self style];
+  if (style != 1)
   {
-    LOBYTE(v3) = [(ICTTParagraphStyle *)self style]== 2 || [(ICTTParagraphStyle *)self style]== 0;
+    LOBYTE(style) = [(ICTTParagraphStyle *)self style]== 2 || [(ICTTParagraphStyle *)self style]== 0;
   }
 
-  return v3;
+  return style;
 }
 
 - (BOOL)isList
@@ -100,42 +100,42 @@
   return [(ICTTParagraphStyle *)self style]== 102;
 }
 
-+ (int64_t)textAlignmentForParagraphStyleAlignment:(int)a3
++ (int64_t)textAlignmentForParagraphStyleAlignment:(int)alignment
 {
-  if (a3 >= 4)
+  if (alignment >= 4)
   {
     return 4;
   }
 
   else
   {
-    return a3;
+    return alignment;
   }
 }
 
-+ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)a3
++ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)alignment
 {
-  if (a3 >= 4)
+  if (alignment >= 4)
   {
     return 4;
   }
 
   else
   {
-    return a3;
+    return alignment;
   }
 }
 
-- (ICTTParagraphStyle)initWithData:(id)a3
+- (ICTTParagraphStyle)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   topotext::ParagraphStyle::ParagraphStyle(v10);
-  v5 = [v4 bytes];
-  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v4 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v10, v5, v6))
+  bytes = [dataCopy bytes];
+  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  if (google::protobuf::MessageLite::ParseFromArray(v10, bytes, v6))
   {
     self = [(ICTTParagraphStyle *)self initWithArchive:v10];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -146,23 +146,23 @@
       [ICTTParagraphStyle(ICTTParagraphStylePersistenceAdditions) initWithData:v8];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   topotext::ParagraphStyle::~ParagraphStyle(v10);
 
-  return v7;
+  return selfCopy;
 }
 
-- (ICTTParagraphStyle)initWithArchive:(const void *)a3
+- (ICTTParagraphStyle)initWithArchive:(const void *)archive
 {
   v4 = [(ICTTParagraphStyle *)self init];
   v5 = v4;
   if (v4)
   {
-    if (*(a3 + 8))
+    if (*(archive + 8))
     {
-      v6 = *(a3 + 10);
+      v6 = *(archive + 10);
     }
 
     else
@@ -171,9 +171,9 @@
     }
 
     [(ICTTParagraphStyle *)v4 setStyle:v6];
-    if ((*(a3 + 32) & 2) != 0)
+    if ((*(archive + 32) & 2) != 0)
     {
-      v7 = [ICTTParagraphStyle textAlignmentForParagraphStyleAlignment:*(a3 + 11)];
+      v7 = [ICTTParagraphStyle textAlignmentForParagraphStyleAlignment:*(archive + 11)];
     }
 
     else
@@ -182,9 +182,9 @@
     }
 
     [(ICTTParagraphStyle *)v5 setAlignment:v7];
-    if ((*(a3 + 32) & 4) != 0)
+    if ((*(archive + 32) & 4) != 0)
     {
-      v8 = [ICTTMergeableAttributedString writingDirectionForAttribute:*(a3 + 12)];
+      v8 = [ICTTMergeableAttributedString writingDirectionForAttribute:*(archive + 12)];
     }
 
     else
@@ -193,30 +193,30 @@
     }
 
     [(ICTTParagraphStyle *)v5 setWritingDirection:v8];
-    v9 = *(a3 + 8);
+    v9 = *(archive + 8);
     if ((v9 & 8) != 0)
     {
-      [(ICTTParagraphStyle *)v5 setIndent:*(a3 + 13)];
-      v9 = *(a3 + 8);
+      [(ICTTParagraphStyle *)v5 setIndent:*(archive + 13)];
+      v9 = *(archive + 8);
     }
 
     if ((v9 & 0x80) != 0)
     {
-      [(ICTTParagraphStyle *)v5 setBlockQuoteLevel:*(a3 + 20)];
-      v9 = *(a3 + 8);
+      [(ICTTParagraphStyle *)v5 setBlockQuoteLevel:*(archive + 20)];
+      v9 = *(archive + 8);
     }
 
     if ((v9 & 0x40) != 0)
     {
-      [(ICTTParagraphStyle *)v5 setStartingItemNumber:*(a3 + 17)];
-      v9 = *(a3 + 8);
+      [(ICTTParagraphStyle *)v5 setStartingItemNumber:*(archive + 17)];
+      v9 = *(archive + 8);
     }
 
     if ((v9 & 0x10) != 0)
     {
       v10 = [ICTTTodo alloc];
       v11 = v10;
-      v12 = *(a3 + 7);
+      v12 = *(archive + 7);
       if (!v12)
       {
         v12 = *(topotext::ParagraphStyle::default_instance(v10) + 56);
@@ -225,19 +225,19 @@
       v13 = [(ICTTTodo *)v11 initWithArchive:v12];
       [(ICTTParagraphStyle *)v5 setTodo:v13];
 
-      v9 = *(a3 + 8);
+      v9 = *(archive + 8);
     }
 
     if ((v9 & 0x20) != 0)
     {
-      [(ICTTParagraphStyle *)v5 setHints:*(a3 + 16)];
-      v9 = *(a3 + 8);
+      [(ICTTParagraphStyle *)v5 setHints:*(archive + 16)];
+      v9 = *(archive + 8);
     }
 
     if ((v9 & 0x100) != 0)
     {
       v14 = objc_alloc(MEMORY[0x277CCAD78]);
-      v15 = *(a3 + 9);
+      v15 = *(archive + 9);
       if (*(v15 + 23) < 0)
       {
         v15 = *v15;
@@ -251,18 +251,18 @@
   return v5;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v22 = *MEMORY[0x277D85DE8];
   if ([(ICTTParagraphStyle *)self style]!= 3)
   {
-    v5 = [(ICTTParagraphStyle *)self style];
-    *(a3 + 8) |= 1u;
-    *(a3 + 10) = v5;
+    style = [(ICTTParagraphStyle *)self style];
+    *(archive + 8) |= 1u;
+    *(archive + 10) = style;
   }
 
-  v6 = [(ICTTParagraphStyle *)self alignment];
-  if (v6 != ICTTParagraphStyleAlignmentDefault)
+  alignment = [(ICTTParagraphStyle *)self alignment];
+  if (alignment != ICTTParagraphStyleAlignmentDefault)
   {
     v7 = [ICTTParagraphStyle paragraphStyleAlignmentForTextAlignment:[(ICTTParagraphStyle *)self alignment]];
     v8 = v7;
@@ -271,8 +271,8 @@
       [ICTTParagraphStyle(ICTTParagraphStylePersistenceAdditions) saveToArchive:];
     }
 
-    *(a3 + 8) |= 2u;
-    *(a3 + 11) = v8;
+    *(archive + 8) |= 2u;
+    *(archive + 11) = v8;
   }
 
   if ([(ICTTParagraphStyle *)self writingDirection]!= -1)
@@ -284,68 +284,68 @@
       [ICTTParagraphStyle(ICTTParagraphStylePersistenceAdditions) saveToArchive:];
     }
 
-    *(a3 + 8) |= 4u;
-    *(a3 + 12) = v10;
+    *(archive + 8) |= 4u;
+    *(archive + 12) = v10;
   }
 
   if ([(ICTTParagraphStyle *)self indent])
   {
-    v11 = [(ICTTParagraphStyle *)self indent];
-    *(a3 + 8) |= 8u;
-    *(a3 + 13) = v11;
+    indent = [(ICTTParagraphStyle *)self indent];
+    *(archive + 8) |= 8u;
+    *(archive + 13) = indent;
   }
 
   if ([(ICTTParagraphStyle *)self blockQuoteLevel])
   {
-    v12 = [(ICTTParagraphStyle *)self blockQuoteLevel];
-    *(a3 + 8) |= 0x80u;
-    *(a3 + 20) = v12;
+    blockQuoteLevel = [(ICTTParagraphStyle *)self blockQuoteLevel];
+    *(archive + 8) |= 0x80u;
+    *(archive + 20) = blockQuoteLevel;
   }
 
   if ([(ICTTParagraphStyle *)self startingItemNumber])
   {
-    v13 = [(ICTTParagraphStyle *)self startingItemNumber];
-    *(a3 + 8) |= 0x40u;
-    *(a3 + 17) = v13;
+    startingItemNumber = [(ICTTParagraphStyle *)self startingItemNumber];
+    *(archive + 8) |= 0x40u;
+    *(archive + 17) = startingItemNumber;
   }
 
-  v14 = [(ICTTParagraphStyle *)self todo];
+  todo = [(ICTTParagraphStyle *)self todo];
 
-  if (v14)
+  if (todo)
   {
-    v15 = [(ICTTParagraphStyle *)self todo];
-    *(a3 + 8) |= 0x10u;
-    v16 = *(a3 + 7);
+    todo2 = [(ICTTParagraphStyle *)self todo];
+    *(archive + 8) |= 0x10u;
+    v16 = *(archive + 7);
     if (!v16)
     {
       operator new();
     }
 
-    [v15 saveToArchive:v16];
+    [todo2 saveToArchive:v16];
   }
 
   if ([(ICTTParagraphStyle *)self hints])
   {
-    v17 = [(ICTTParagraphStyle *)self hints];
-    *(a3 + 8) |= 0x20u;
-    *(a3 + 16) = v17;
+    hints = [(ICTTParagraphStyle *)self hints];
+    *(archive + 8) |= 0x20u;
+    *(archive + 16) = hints;
   }
 
-  v18 = [(ICTTParagraphStyle *)self uuid];
+  uuid = [(ICTTParagraphStyle *)self uuid];
 
-  if (v18)
+  if (uuid)
   {
     v21 = 0uLL;
-    v19 = [(ICTTParagraphStyle *)self uuid];
-    [v19 getUUIDBytes:&v21];
+    uuid2 = [(ICTTParagraphStyle *)self uuid];
+    [uuid2 getUUIDBytes:&v21];
 
-    *(a3 + 8) |= 0x100u;
+    *(archive + 8) |= 0x100u;
     if (!google::protobuf::internal::empty_string_)
     {
       versioned_document::Version::SharedCtor();
     }
 
-    v20 = *(a3 + 9);
+    v20 = *(archive + 9);
     if (v20 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -372,30 +372,30 @@
   topotext::ParagraphStyle::ParagraphStyle(v7);
   [(ICTTParagraphStyle *)self saveToArchive:v7];
   v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:topotext::ParagraphStyle::ByteSize(v7)];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   v5 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v3 length]);
-  google::protobuf::MessageLite::SerializeToArray(v7, v4, v5);
+  google::protobuf::MessageLite::SerializeToArray(v7, mutableBytes, v5);
   topotext::ParagraphStyle::~ParagraphStyle(v7);
 
   return v3;
 }
 
-- (ICTTParagraphStyle)initWithCoder:(id)a3
+- (ICTTParagraphStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufArchiveKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufArchiveKey"];
   v6 = [(ICTTParagraphStyle *)self initWithData:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ICTTParagraphStyle *)self serialize];
-  if (v4)
+  coderCopy = coder;
+  serialize = [(ICTTParagraphStyle *)self serialize];
+  if (serialize)
   {
-    [v5 encodeObject:v4 forKey:@"protobufArchiveKey"];
+    [coderCopy encodeObject:serialize forKey:@"protobufArchiveKey"];
   }
 }
 
@@ -418,20 +418,20 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   defaultParagraphStyle_defaultParagraphStyle = v0;
 }
 
-+ (id)paragraphStyleNamed:(unsigned int)a3
++ (id)paragraphStyleNamed:(unsigned int)named
 {
-  v3 = *&a3;
+  v3 = *&named;
   v4 = objc_alloc_init(ICTTParagraphStyle);
   [(ICTTParagraphStyle *)v4 setStyle:v3];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ICTTParagraphStyle allocWithZone:](ICTTParagraphStyle init];
-  v6 = [(ICTTParagraphStyle *)self todo];
-  v7 = [v6 copyWithZone:a3];
+  todo = [(ICTTParagraphStyle *)self todo];
+  v7 = [todo copyWithZone:zone];
   [(ICTTParagraphStyle *)v5 setTodo:v7];
 
   [(ICTTParagraphStyle *)v5 setStyle:[(ICTTParagraphStyle *)self style]];
@@ -443,18 +443,18 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   [(ICTTParagraphStyle *)v5 setHints:[(ICTTParagraphStyle *)self hints]];
   [(ICTTParagraphStyle *)v5 setNeedsParagraphCleanup:[(ICTTParagraphStyle *)self needsParagraphCleanup]];
   [(ICTTParagraphStyle *)v5 setNeedsListCleanup:[(ICTTParagraphStyle *)self needsListCleanup]];
-  v8 = [(ICTTParagraphStyle *)self uuid];
-  v9 = [v8 copyWithZone:a3];
+  uuid = [(ICTTParagraphStyle *)self uuid];
+  v9 = [uuid copyWithZone:zone];
   [(ICTTParagraphStyle *)v5 setUuid:v9];
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [(ICTTParagraphStyle *)+[ICTTMutableParagraphStyle allocWithZone:](ICTTMutableParagraphStyle init];
-  v6 = [(ICTTParagraphStyle *)self todo];
-  v7 = [v6 copyWithZone:a3];
+  todo = [(ICTTParagraphStyle *)self todo];
+  v7 = [todo copyWithZone:zone];
   [(ICTTParagraphStyle *)v5 setTodo:v7];
 
   [(ICTTParagraphStyle *)v5 setStyle:[(ICTTParagraphStyle *)self style]];
@@ -466,8 +466,8 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   [(ICTTParagraphStyle *)v5 setHints:[(ICTTParagraphStyle *)self hints]];
   [(ICTTParagraphStyle *)v5 setNeedsParagraphCleanup:[(ICTTParagraphStyle *)self needsParagraphCleanup]];
   [(ICTTParagraphStyle *)v5 setNeedsListCleanup:[(ICTTParagraphStyle *)self needsListCleanup]];
-  v8 = [(ICTTParagraphStyle *)self uuid];
-  v9 = [v8 copyWithZone:a3];
+  uuid = [(ICTTParagraphStyle *)self uuid];
+  v9 = [uuid copyWithZone:zone];
   [(ICTTParagraphStyle *)v5 setUuid:v9];
 
   return v5;
@@ -480,7 +480,7 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   return [(ICTTParagraphStyle *)&v3 mutableCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -488,17 +488,17 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
     return 0;
   }
 
-  return [(ICTTParagraphStyle *)self isEqualToParagraphStyle:a3];
+  return [(ICTTParagraphStyle *)self isEqualToParagraphStyle:equal];
 }
 
-- (BOOL)isEqualToParagraphStyle:(id)a3
+- (BOOL)isEqualToParagraphStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
     v5 = [(ICTTParagraphStyle *)self isEqualToModelParagraphStyle:?];
     if (v5)
     {
-      LOBYTE(v5) = self->_needsListCleanup == *(a3 + 9) && self->_needsParagraphCleanup == *(a3 + 8);
+      LOBYTE(v5) = self->_needsListCleanup == *(style + 9) && self->_needsParagraphCleanup == *(style + 8);
     }
   }
 
@@ -510,7 +510,7 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqualToModelComparable:(id)a3
+- (BOOL)isEqualToModelComparable:(id)comparable
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -518,18 +518,18 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
     return 0;
   }
 
-  return [(ICTTParagraphStyle *)self isEqualToModelParagraphStyle:a3];
+  return [(ICTTParagraphStyle *)self isEqualToModelParagraphStyle:comparable];
 }
 
-- (BOOL)isEqualToModelParagraphStyle:(id)a3
+- (BOOL)isEqualToModelParagraphStyle:(id)style
 {
-  if (!a3 || ![(ICTTParagraphStyle *)self isHierarchicallyEqualToParagraphStyle:?]|| self->_writingDirection != *(a3 + 4))
+  if (!style || ![(ICTTParagraphStyle *)self isHierarchicallyEqualToParagraphStyle:?]|| self->_writingDirection != *(style + 4))
   {
     return 0;
   }
 
   uuid = self->_uuid;
-  v6 = *(a3 + 9);
+  v6 = *(style + 9);
   v7 = *MEMORY[0x277CBEEE8];
   if (*MEMORY[0x277CBEEE8] == uuid)
   {
@@ -580,15 +580,15 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   return v14;
 }
 
-- (BOOL)isHierarchicallyEqualToParagraphStyle:(id)a3
+- (BOOL)isHierarchicallyEqualToParagraphStyle:(id)style
 {
-  if (!a3 || self->_style != *(a3 + 3) || self->_alignment != *(a3 + 3) || self->_indent != *(a3 + 5) || self->_blockQuoteLevel != *(a3 + 6) || self->_startingItemNumber != *(a3 + 7) || self->_hints != *(a3 + 4))
+  if (!style || self->_style != *(style + 3) || self->_alignment != *(style + 3) || self->_indent != *(style + 5) || self->_blockQuoteLevel != *(style + 6) || self->_startingItemNumber != *(style + 7) || self->_hints != *(style + 4))
   {
     return 0;
   }
 
   todo = self->_todo;
-  v4 = *(a3 + 8);
+  v4 = *(style + 8);
   v5 = *MEMORY[0x277CBEEE8];
   if (*MEMORY[0x277CBEEE8] == todo)
   {
@@ -639,11 +639,11 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   return v12;
 }
 
-- (void)setStyle:(unsigned int)a3
+- (void)setStyle:(unsigned int)style
 {
-  self->_style = a3;
+  self->_style = style;
   todo = self->_todo;
-  if (a3 == 103)
+  if (style == 103)
   {
     if (todo)
     {
@@ -662,15 +662,15 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   self->_todo = v5;
 }
 
-- (void)setIndent:(unint64_t)a3
+- (void)setIndent:(unint64_t)indent
 {
-  v3 = ICTTParagraphStyleMaximumIndent;
-  if (ICTTParagraphStyleMaximumIndent >= a3)
+  indentCopy = ICTTParagraphStyleMaximumIndent;
+  if (ICTTParagraphStyleMaximumIndent >= indent)
   {
-    v3 = a3;
+    indentCopy = indent;
   }
 
-  self->_indent = v3;
+  self->_indent = indentCopy;
 }
 
 - (BOOL)preferSingleLine
@@ -703,26 +703,26 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   return [(ICTTParagraphStyle *)self isBlockQuote];
 }
 
-- (id)listBulletInAttributedString:(id)a3 atIndex:(unint64_t)a4
+- (id)listBulletInAttributedString:(id)string atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICTTParagraphStyle *)self style];
-  if (v7 == 101)
+  stringCopy = string;
+  style = [(ICTTParagraphStyle *)self style];
+  if (style == 101)
   {
     v11 = @"–";
   }
 
-  else if (v7 == 102)
+  else if (style == 102)
   {
-    v8 = [v6 attribute:TTPresentationAttributeNameItemNumber atIndex:a4 effectiveRange:0];
+    v8 = [stringCopy attribute:TTPresentationAttributeNameItemNumber atIndex:index effectiveRange:0];
     v9 = v8;
-    if (a4 && !v8)
+    if (index && !v8)
     {
-      v9 = [v6 attribute:TTPresentationAttributeNameItemNumber atIndex:a4 - 1 effectiveRange:0];
+      v9 = [stringCopy attribute:TTPresentationAttributeNameItemNumber atIndex:index - 1 effectiveRange:0];
     }
 
-    v10 = [v9 unsignedIntegerValue];
-    v11 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%ld.", v10];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
+    v11 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%ld.", unsignedIntegerValue];
   }
 
   else
@@ -735,12 +735,12 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
 
 - (NSString)description
 {
-  v3 = [(ICTTParagraphStyle *)self todo];
-  if (v3)
+  todo = [(ICTTParagraphStyle *)self todo];
+  if (todo)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(ICTTParagraphStyle *)self todo];
-    v6 = [v5 description];
+    todo2 = [(ICTTParagraphStyle *)self todo];
+    v6 = [todo2 description];
     v25 = [v4 stringWithFormat:@" todo=%@", v6];
   }
 
@@ -751,9 +751,9 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
 
   if ([(ICTTParagraphStyle *)self writingDirection])
   {
-    v7 = [(ICTTParagraphStyle *)self writingDirection];
+    writingDirection = [(ICTTParagraphStyle *)self writingDirection];
     v8 = @"Natural";
-    if (v7 == 1)
+    if (writingDirection == 1)
     {
       v8 = @"RTL";
     }
@@ -765,9 +765,9 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   }
 
   v9 = v8;
-  v10 = [(ICTTParagraphStyle *)self needsParagraphCleanup];
+  needsParagraphCleanup = [(ICTTParagraphStyle *)self needsParagraphCleanup];
   v11 = @" needsParagraphCleanup";
-  if (!v10)
+  if (!needsParagraphCleanup)
   {
     v11 = &stru_2827172C0;
   }
@@ -776,19 +776,19 @@ void __43__ICTTParagraphStyle_defaultParagraphStyle__block_invoke()
   v12 = v11;
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [(ICTTParagraphStyle *)self style];
-  v16 = [(ICTTParagraphStyle *)self alignment];
-  v17 = [(ICTTParagraphStyle *)self indent];
-  v18 = [(ICTTParagraphStyle *)self blockQuoteLevel];
-  v19 = [(ICTTParagraphStyle *)self uuid];
-  v20 = [(ICTTParagraphStyle *)self needsListCleanup];
+  style = [(ICTTParagraphStyle *)self style];
+  alignment = [(ICTTParagraphStyle *)self alignment];
+  indent = [(ICTTParagraphStyle *)self indent];
+  blockQuoteLevel = [(ICTTParagraphStyle *)self blockQuoteLevel];
+  uuid = [(ICTTParagraphStyle *)self uuid];
+  needsListCleanup = [(ICTTParagraphStyle *)self needsListCleanup];
   v21 = @" needsListCleanup";
-  if (!v20)
+  if (!needsListCleanup)
   {
     v21 = &stru_2827172C0;
   }
 
-  v22 = [v24 stringWithFormat:@"<%@: %p style=%lu alignment=%lu indent=%ld blockQuoteLevel=%ld uuid=%@ %@%@%@%@>", v14, self, v15, v16, v17, v18, v19, v9, v25, v12, v21];
+  v22 = [v24 stringWithFormat:@"<%@: %p style=%lu alignment=%lu indent=%ld blockQuoteLevel=%ld uuid=%@ %@%@%@%@>", v14, self, style, alignment, indent, blockQuoteLevel, uuid, v9, v25, v12, v21];
 
   return v22;
 }

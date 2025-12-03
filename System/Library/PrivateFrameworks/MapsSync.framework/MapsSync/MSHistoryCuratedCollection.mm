@@ -1,11 +1,11 @@
 @interface MSHistoryCuratedCollection
 + (Class)managedClass;
-- (MSHistoryCuratedCollection)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
+- (MSHistoryCuratedCollection)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
 - (int)resultProviderIdentifier;
 - (unint64_t)curatedCollectionIdentifier;
-- (void)setCuratedCollectionIdentifier:(unint64_t)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setResultProviderIdentifier:(int)a3;
+- (void)setCuratedCollectionIdentifier:(unint64_t)identifier;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setResultProviderIdentifier:(int)identifier;
 @end
 
 @implementation MSHistoryCuratedCollection
@@ -17,57 +17,57 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a3;
-  v7 = self;
-  sub_1B62EB1A8(v6);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62EB1A8(objectCopy);
 }
 
 - (unint64_t)curatedCollectionIdentifier
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.super.isa + OBJC_IVAR___MSHistoryCuratedCollection__curatedCollectionIdentifier);
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___MSHistoryCuratedCollection__curatedCollectionIdentifier);
   [*(&self->super.super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setCuratedCollectionIdentifier:(unint64_t)a3
+- (void)setCuratedCollectionIdentifier:(unint64_t)identifier
 {
-  v4 = self;
-  sub_1B62EA878(a3);
+  selfCopy = self;
+  sub_1B62EA878(identifier);
 }
 
 - (int)resultProviderIdentifier
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  LODWORD(v4) = *(&v5->super.super.super.isa + OBJC_IVAR___MSHistoryCuratedCollection__resultProviderIdentifier);
+  LODWORD(v4) = *(&selfCopy->super.super.super.isa + OBJC_IVAR___MSHistoryCuratedCollection__resultProviderIdentifier);
   [*(&self->super.super.super.isa + v3) unlock];
 
   return v4;
 }
 
-- (void)setResultProviderIdentifier:(int)a3
+- (void)setResultProviderIdentifier:(int)identifier
 {
-  v4 = self;
-  sub_1B62EAC3C(a3);
+  selfCopy = self;
+  sub_1B62EAC3C(identifier);
 }
 
-- (MSHistoryCuratedCollection)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistoryCuratedCollection)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryCuratedCollection__curatedCollectionIdentifier) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryCuratedCollection__resultProviderIdentifier) = 0;
-  v10 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
 @end

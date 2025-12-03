@@ -1,22 +1,22 @@
 @interface CBAODState
 + (id)sharedInstance;
 - (BOOL)enableAODLiveON;
-- (BOOL)handleAODCurveUpdate:(id)a3;
-- (BOOL)handleAODDarkerCurveUpdate:(id)a3;
+- (BOOL)handleAODCurveUpdate:(id)update;
+- (BOOL)handleAODDarkerCurveUpdate:(id)update;
 - (BOOL)isAODActive;
 - (BOOL)isAODSupported;
 - (BOOL)isDCPBasedAODSupported;
 - (BOOL)isFlipbookSupported;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (CBAODState)init;
 - (char)AODStateString;
-- (id)copyNumberFromPrefsForKey:(id)a3;
+- (id)copyNumberFromPrefsForKey:(id)key;
 - (void)acquirePowerAssertion;
 - (void)checkBootArgsConfiguration;
 - (void)checkDefaultsConfiguration;
 - (void)dealloc;
-- (void)logAODCurve:(id *)a3 name:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)logAODCurve:(id *)curve name:(id)name;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)releasePowerAssertion;
 @end
 
@@ -24,15 +24,15 @@
 
 + (id)sharedInstance
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __28__CBAODState_sharedInstance__block_invoke;
   v8 = &unk_1E867B480;
-  v9 = v11;
+  v9 = selfCopy;
   v13 = &sharedInstance_onceToken_5;
   v12 = &v4;
   if (sharedInstance_onceToken_5 != -1)
@@ -40,7 +40,7 @@
     dispatch_once(v13, v12);
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return sharedInstance__sharedObject_4;
 }
 
@@ -65,14 +65,14 @@
 
 - (BOOL)isDCPBasedAODSupported
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v3 = MEMORY[0x1E69E9820];
   v4 = -1073741824;
   v5 = 0;
   v6 = __36__CBAODState_isDCPBasedAODSupported__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = self;
+  selfCopy2 = self;
   v12 = &isDCPBasedAODSupported_once;
   v11 = &v3;
   if (isDCPBasedAODSupported_once != -1)
@@ -80,7 +80,7 @@
     dispatch_once(v12, v11);
   }
 
-  return v10->_isDCPBasedAODSupported;
+  return selfCopy->_isDCPBasedAODSupported;
 }
 
 uint64_t __28__CBAODState_sharedInstance__block_invoke(uint64_t a1)
@@ -97,117 +97,117 @@ uint64_t __28__CBAODState_sharedInstance__block_invoke(uint64_t a1)
 - (CBAODState)init
 {
   v23 = *MEMORY[0x1E69E9840];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v12.receiver = self;
   v12.super_class = CBAODState;
-  v14 = [(CBAODState *)&v12 init];
-  if (v14)
+  selfCopy = [(CBAODState *)&v12 init];
+  if (selfCopy)
   {
     v2 = os_log_create("com.apple.CoreBrightness.AOD.CBAODState", "default");
-    v14->_logHandle = v2;
-    v14->_AODState = 0;
-    v14->_AODStateExternal = 0;
-    v14->_enableAODLiveON = 0;
-    v14->_AODTransitionProfile = 2;
-    v14->_AODTransitionProfileEaseInOut_K = 3.0;
-    v14->_AODTransitionProfileSpring_mass = 1.0;
-    v14->_AODTransitionProfileSpring_damping = 3.48;
-    v14->_AODTransitionProfileSpring_velocity = 2.0;
-    v14->_AODTransitionProfileSpring_stiffness = 6.0;
-    v14->_AODTransitionTargetAlgoOptimised_dimmingThreshold = 0.2;
+    selfCopy->_logHandle = v2;
+    selfCopy->_AODState = 0;
+    selfCopy->_AODStateExternal = 0;
+    selfCopy->_enableAODLiveON = 0;
+    selfCopy->_AODTransitionProfile = 2;
+    selfCopy->_AODTransitionProfileEaseInOut_K = 3.0;
+    selfCopy->_AODTransitionProfileSpring_mass = 1.0;
+    selfCopy->_AODTransitionProfileSpring_damping = 3.48;
+    selfCopy->_AODTransitionProfileSpring_velocity = 2.0;
+    selfCopy->_AODTransitionProfileSpring_stiffness = 6.0;
+    selfCopy->_AODTransitionTargetAlgoOptimised_dimmingThreshold = 0.2;
     v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.CoreBrightness"];
-    v14->_defaults = v3;
-    [NSUserDefaults addObserver:"addObserver:forKeyPath:options:context:" forKeyPath:v14 options:@"AODPullALSUpdatePeriod" context:?];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODWPTransitionLength" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODWPTransitionLengthLowLux" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODWPDeltaThreshold" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODTransitionProfileType" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODTransitionProfileEaseInOutK" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODTransitionProfileSpringMass" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODTransitionProfileSpringVelocity" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODTransitionProfileSpringStiffness" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODTransitionProfileSpringDamping" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODTRansitionTargetAlgoOptimisedDimThr" options:1 context:0];
-    v14->_whitepointDeltaThreshold = 0.009;
-    v14->_whitepointTransitionLength = 5.0;
-    v14->_whitepointTransitionLengthLowLux = 5.0;
-    v14->_whitepointTransitionLengthLuxThreshold = 35.0;
-    v14->_pullALSUpdatePeriod = 5.0;
+    selfCopy->_defaults = v3;
+    [NSUserDefaults addObserver:"addObserver:forKeyPath:options:context:" forKeyPath:selfCopy options:@"AODPullALSUpdatePeriod" context:?];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODWPTransitionLength" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODWPTransitionLengthLowLux" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODWPDeltaThreshold" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODTransitionProfileType" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODTransitionProfileEaseInOutK" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODTransitionProfileSpringMass" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODTransitionProfileSpringVelocity" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODTransitionProfileSpringStiffness" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODTransitionProfileSpringDamping" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODTRansitionTargetAlgoOptimisedDimThr" options:1 context:0];
+    selfCopy->_whitepointDeltaThreshold = 0.009;
+    selfCopy->_whitepointTransitionLength = 5.0;
+    selfCopy->_whitepointTransitionLengthLowLux = 5.0;
+    selfCopy->_whitepointTransitionLengthLuxThreshold = 35.0;
+    selfCopy->_pullALSUpdatePeriod = 5.0;
     v21 = xmmword_1DEAC8C94;
     v22 = 713503427;
     v19 = xmmword_1DEAC8CA8;
     v20 = -1632750650;
-    if ((MGIsDeviceOneOfType() & 1) != 0 && v14->_enableAODLiveON)
+    if ((MGIsDeviceOneOfType() & 1) != 0 && selfCopy->_enableAODLiveON)
     {
-      v14->_pullALSUpdatePeriod = 120.0;
+      selfCopy->_pullALSUpdatePeriod = 120.0;
     }
 
     context = objc_autoreleasePoolPush();
     v4 = [&unk_1F59C94E0 mutableCopy];
-    v14->_thresholdsLuxBuckets = v4;
+    selfCopy->_thresholdsLuxBuckets = v4;
     v5 = [&unk_1F59C94F8 mutableCopy];
-    v14->_thresholdsDeltaPBrightenBuckets = v5;
+    selfCopy->_thresholdsDeltaPBrightenBuckets = v5;
     v6 = [&unk_1F59C9510 mutableCopy];
-    v14->_thresholdsDeltaPDimBuckets = v6;
+    selfCopy->_thresholdsDeltaPDimBuckets = v6;
     v7 = [&unk_1F59C9528 mutableCopy];
-    v14->_thresholdsAPLuxBuckets = v7;
+    selfCopy->_thresholdsAPLuxBuckets = v7;
     v8 = [&unk_1F59C9540 mutableCopy];
-    v14->_thresholdsAPDeltaPBrightenBuckets = v8;
+    selfCopy->_thresholdsAPDeltaPBrightenBuckets = v8;
     v9 = [&unk_1F59C9558 mutableCopy];
-    v14->_thresholdsAPDeltaPDimBuckets = v9;
+    selfCopy->_thresholdsAPDeltaPDimBuckets = v9;
     objc_autoreleasePoolPop(context);
-    [NSUserDefaults addObserver:"addObserver:forKeyPath:options:context:" forKeyPath:v14 options:@"AODThresholdsLuxBuckets" context:?];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODThresholdsDeltaPBrightenBuckets" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODThresholdsDeltaPDimBuckets" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODAPThresholdsLuxBuckets" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODAPThresholdsDeltaPBrightenBuckets" options:1 context:0];
-    [(NSUserDefaults *)v14->_defaults addObserver:v14 forKeyPath:@"AODAPThresholdsDeltaPDimBuckets" options:1 context:0];
-    v14->_thresholdPCCLuxDelta = 30.0;
+    [NSUserDefaults addObserver:"addObserver:forKeyPath:options:context:" forKeyPath:selfCopy options:@"AODThresholdsLuxBuckets" context:?];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODThresholdsDeltaPBrightenBuckets" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODThresholdsDeltaPDimBuckets" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODAPThresholdsLuxBuckets" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODAPThresholdsDeltaPBrightenBuckets" options:1 context:0];
+    [(NSUserDefaults *)selfCopy->_defaults addObserver:selfCopy forKeyPath:@"AODAPThresholdsDeltaPDimBuckets" options:1 context:0];
+    selfCopy->_thresholdPCCLuxDelta = 30.0;
     v17 = xmmword_1DEAC8CBC;
     v18 = 1176256512;
     v15 = xmmword_1DEAC8CD0;
     v16 = 1140457472;
     __memcpy_chk();
     __memcpy_chk();
-    v14->_curve.size = 5;
+    selfCopy->_curve.size = 5;
     __memcpy_chk();
     __memcpy_chk();
-    v14->_darkerCurve.size = 5;
-    v14->_nitsCap = -1.0;
-    [(CBAODState *)v14 checkDefaultsConfiguration];
-    [(CBAODState *)v14 checkBootArgsConfiguration];
+    selfCopy->_darkerCurve.size = 5;
+    selfCopy->_nitsCap = -1.0;
+    [(CBAODState *)selfCopy checkDefaultsConfiguration];
+    [(CBAODState *)selfCopy checkBootArgsConfiguration];
   }
 
   *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_thresholdsLuxBuckets);
-  MEMORY[0x1E69E5920](v5->_thresholdsDeltaPBrightenBuckets);
-  MEMORY[0x1E69E5920](v5->_thresholdsDeltaPDimBuckets);
-  MEMORY[0x1E69E5920](v5->_thresholdsAPLuxBuckets);
-  MEMORY[0x1E69E5920](v5->_thresholdsAPDeltaPBrightenBuckets);
-  MEMORY[0x1E69E5920](v5->_thresholdsAPDeltaPDimBuckets);
-  if (v5->_logHandle)
+  MEMORY[0x1E69E5920](selfCopy->_thresholdsDeltaPBrightenBuckets);
+  MEMORY[0x1E69E5920](selfCopy->_thresholdsDeltaPDimBuckets);
+  MEMORY[0x1E69E5920](selfCopy->_thresholdsAPLuxBuckets);
+  MEMORY[0x1E69E5920](selfCopy->_thresholdsAPDeltaPBrightenBuckets);
+  MEMORY[0x1E69E5920](selfCopy->_thresholdsAPDeltaPDimBuckets);
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  v2 = MEMORY[0x1E69E5920](v5->_defaults).n128_u64[0];
-  if (v5->_systemActivityAssertion)
+  v2 = MEMORY[0x1E69E5920](selfCopy->_defaults).n128_u64[0];
+  if (selfCopy->_systemActivityAssertion)
   {
-    [(SWSystemActivityAssertion *)v5->_systemActivityAssertion invalidate];
-    v2 = MEMORY[0x1E69E5920](v5->_systemActivityAssertion).n128_u64[0];
-    v5->_systemActivityAssertion = 0;
+    [(SWSystemActivityAssertion *)selfCopy->_systemActivityAssertion invalidate];
+    v2 = MEMORY[0x1E69E5920](selfCopy->_systemActivityAssertion).n128_u64[0];
+    selfCopy->_systemActivityAssertion = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBAODState;
   [(CBAODState *)&v3 dealloc];
 }
@@ -845,14 +845,14 @@ uint64_t __28__CBAODState_sharedInstance__block_invoke(uint64_t a1)
 
 - (BOOL)enableAODLiveON
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v3 = MEMORY[0x1E69E9820];
   v4 = -1073741824;
   v5 = 0;
   v6 = __29__CBAODState_enableAODLiveON__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = self;
+  selfCopy2 = self;
   v12 = &enableAODLiveON_once;
   v11 = &v3;
   if (enableAODLiveON_once != -1)
@@ -860,7 +860,7 @@ uint64_t __28__CBAODState_sharedInstance__block_invoke(uint64_t a1)
     dispatch_once(v12, v11);
   }
 
-  return v10->_enableAODLiveON;
+  return selfCopy->_enableAODLiveON;
 }
 
 void __29__CBAODState_enableAODLiveON__block_invoke(uint64_t a1)
@@ -914,14 +914,14 @@ void __29__CBAODState_enableAODLiveON__block_invoke(uint64_t a1)
 
 - (BOOL)isAODSupported
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v3 = MEMORY[0x1E69E9820];
   v4 = -1073741824;
   v5 = 0;
   v6 = __28__CBAODState_isAODSupported__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = self;
+  selfCopy2 = self;
   v12 = &isAODSupported_once;
   v11 = &v3;
   if (isAODSupported_once != -1)
@@ -929,7 +929,7 @@ void __29__CBAODState_enableAODLiveON__block_invoke(uint64_t a1)
     dispatch_once(v12, v11);
   }
 
-  return v10->_isAODSupported;
+  return selfCopy->_isAODSupported;
 }
 
 uint64_t __28__CBAODState_isAODSupported__block_invoke(uint64_t a1)
@@ -952,14 +952,14 @@ uint64_t __28__CBAODState_isAODSupported__block_invoke(uint64_t a1)
 
 - (BOOL)isFlipbookSupported
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v3 = MEMORY[0x1E69E9820];
   v4 = -1073741824;
   v5 = 0;
   v6 = __33__CBAODState_isFlipbookSupported__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = self;
+  selfCopy2 = self;
   v12 = &isFlipbookSupported_once;
   v11 = &v3;
   if (isFlipbookSupported_once != -1)
@@ -967,7 +967,7 @@ uint64_t __28__CBAODState_isAODSupported__block_invoke(uint64_t a1)
     dispatch_once(v12, v11);
   }
 
-  return v10->_isFlipbookSupported;
+  return selfCopy->_isFlipbookSupported;
 }
 
 uint64_t __33__CBAODState_isFlipbookSupported__block_invoke(uint64_t a1)
@@ -985,13 +985,13 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)copyNumberFromPrefsForKey:(id)a3
+- (id)copyNumberFromPrefsForKey:(id)key
 {
   v5 = 0;
   if (self->_defaults)
   {
     [(NSUserDefaults *)self->_defaults synchronize];
-    v4 = [(NSUserDefaults *)self->_defaults objectForKey:a3];
+    v4 = [(NSUserDefaults *)self->_defaults objectForKey:key];
     if (v4)
     {
       objc_opt_class();
@@ -1005,7 +1005,7 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v12 = *MEMORY[0x1E69E9840];
   if (self->_logHandle)
@@ -1030,7 +1030,7 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v11, a3, a5);
+    __os_log_helper_16_2_2_8_64_8_64(v11, path, change);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Changed property %@ to value %@", v11, 0x16u);
   }
 
@@ -1041,7 +1041,7 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
 - (void)checkBootArgsConfiguration
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   bzero(__s1, 0x400uLL);
   v6[0] = 1024;
@@ -1051,11 +1051,11 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
     if (v5)
     {
       v2 = strtol(v5 + 21, 0, 0) != 0;
-      v7->_enableAODLiveON = v2;
+      selfCopy->_enableAODLiveON = v2;
       v4 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        if (v7->_enableAODLiveON)
+        if (selfCopy->_enableAODLiveON)
         {
           v3 = "Enable";
         }
@@ -1074,59 +1074,59 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  if ([a4 isEqualToString:@"AOTCurve"])
+  if ([key isEqualToString:@"AOTCurve"])
   {
-    v11 = [(CBAODState *)self handleAODCurveUpdate:a3];
+    v11 = [(CBAODState *)self handleAODCurveUpdate:property];
   }
 
-  else if ([a4 isEqualToString:@"AODDarkerCurve"])
+  else if ([key isEqualToString:@"AODDarkerCurve"])
   {
-    v11 = [(CBAODState *)self handleAODDarkerCurveUpdate:a3];
+    v11 = [(CBAODState *)self handleAODDarkerCurveUpdate:property];
   }
 
-  else if ([a4 isEqualToString:@"AODPullALSUpdatePeriod"])
+  else if ([key isEqualToString:@"AODPullALSUpdatePeriod"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_pullALSUpdatePeriod = v4;
       v11 = 1;
     }
   }
 
-  else if ([a4 isEqualToString:@"AODWPTransitionLength"])
+  else if ([key isEqualToString:@"AODWPTransitionLength"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_whitepointTransitionLength = v5;
       v11 = 1;
     }
   }
 
-  else if ([a4 isEqualToString:@"AODWPTransitionLengthLowLux"])
+  else if ([key isEqualToString:@"AODWPTransitionLengthLowLux"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_whitepointTransitionLengthLowLux = v6;
       v11 = 1;
     }
   }
 
-  else if ([a4 isEqualToString:@"AODWPDeltaThreshold"])
+  else if ([key isEqualToString:@"AODWPDeltaThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_whitepointDeltaThreshold = v7;
       v11 = 1;
     }
@@ -1156,7 +1156,7 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v15, a4, a3);
+      __os_log_helper_16_2_2_8_64_8_64(v15, key, property);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Set property %@ = %@", v15, 0x16u);
     }
   }
@@ -1165,16 +1165,16 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (BOOL)handleAODCurveUpdate:(id)a3
+- (BOOL)handleAODCurveUpdate:(id)update
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  updateCopy = update;
   v9 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v10 objectForKey:@"CurveLevelMed"];
+    v8 = [updateCopy objectForKey:@"CurveLevelMed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1184,12 +1184,12 @@ BOOL __36__CBAODState_isDCPBasedAODSupported__block_invoke(uint64_t a1)
       dword_1ECDDDF48 = v5;
       [v7 enumerateObjectsUsingBlock:&__block_literal_global_5];
       [v6 enumerateObjectsUsingBlock:&__block_literal_global_137];
-      memcpy(&v12->_curve, &handleAODCurveUpdate__newCurve, sizeof(v12->_curve));
+      memcpy(&selfCopy->_curve, &handleAODCurveUpdate__newCurve, sizeof(selfCopy->_curve));
       v9 = 1;
     }
 
-    memcpy(__dst, &v12->_curve, 0xA4uLL);
-    [(CBAODState *)v12 logAODCurve:__dst name:@"Curve"];
+    memcpy(__dst, &selfCopy->_curve, 0xA4uLL);
+    [(CBAODState *)selfCopy logAODCurve:__dst name:@"Curve"];
   }
 
   return v9 & 1;
@@ -1209,25 +1209,25 @@ uint64_t __35__CBAODState_handleAODCurveUpdate___block_invoke_2(uint64_t a1, voi
   return result;
 }
 
-- (BOOL)handleAODDarkerCurveUpdate:(id)a3
+- (BOOL)handleAODDarkerCurveUpdate:(id)update
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  updateCopy = update;
   v8 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v9 valueForKey:@"lux"];
-    v6 = [v9 valueForKey:@"nits"];
+    v7 = [updateCopy valueForKey:@"lux"];
+    v6 = [updateCopy valueForKey:@"nits"];
     v5 = [v7 count];
     dword_1ECDDDFEC = v5;
     [v7 enumerateObjectsUsingBlock:&__block_literal_global_142];
     [v6 enumerateObjectsUsingBlock:&__block_literal_global_144];
-    memcpy(&v11->_darkerCurve, &handleAODDarkerCurveUpdate__newCurve, sizeof(v11->_darkerCurve));
+    memcpy(&selfCopy->_darkerCurve, &handleAODDarkerCurveUpdate__newCurve, sizeof(selfCopy->_darkerCurve));
     v8 = 1;
-    memcpy(__dst, &v11->_darkerCurve, 0xA4uLL);
-    [(CBAODState *)v11 logAODCurve:__dst name:@"DarkerCurve"];
+    memcpy(__dst, &selfCopy->_darkerCurve, 0xA4uLL);
+    [(CBAODState *)selfCopy logAODCurve:__dst name:@"DarkerCurve"];
   }
 
   return v8 & 1;
@@ -1247,12 +1247,12 @@ uint64_t __41__CBAODState_handleAODDarkerCurveUpdate___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)logAODCurve:(id *)a3 name:(id)a4
+- (void)logAODCurve:(id *)curve name:(id)name
 {
   v14 = *MEMORY[0x1E69E9840];
-  for (i = 0; i < a3->var2; ++i)
+  for (i = 0; i < curve->var2; ++i)
   {
-    if (a4)
+    if (name)
     {
       if (self->_logHandle)
       {
@@ -1276,7 +1276,7 @@ uint64_t __41__CBAODState_handleAODDarkerCurveUpdate___block_invoke_2(uint64_t a
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_4_8_64_4_0_8_0_8_0(v13, a4, i, COERCE__INT64(a3->var0[i]), COERCE__INT64(a3->var1[i]));
+        __os_log_helper_16_2_4_8_64_4_0_8_0_8_0(v13, name, i, COERCE__INT64(curve->var0[i]), COERCE__INT64(curve->var1[i]));
         _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "%@[%d] = lux=%f ; nits=%f]", v13, 0x26u);
       }
     }
@@ -1305,7 +1305,7 @@ uint64_t __41__CBAODState_handleAODDarkerCurveUpdate___block_invoke_2(uint64_t a
 
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_0_3_4_0_8_0_8_0(v12, i, COERCE__INT64(a3->var0[i]), COERCE__INT64(a3->var1[i]));
+        __os_log_helper_16_0_3_4_0_8_0_8_0(v12, i, COERCE__INT64(curve->var0[i]), COERCE__INT64(curve->var1[i]));
         _os_log_impl(&dword_1DE8E5000, v5, OS_LOG_TYPE_DEFAULT, "Curve[%d] = lux=%f ; nits=%f]", v12, 0x1Cu);
       }
     }
@@ -1316,24 +1316,24 @@ uint64_t __41__CBAODState_handleAODDarkerCurveUpdate___block_invoke_2(uint64_t a
 
 - (void)acquirePowerAssertion
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   objc_sync_enter(self);
-  if (v11->_systemActivityAssertion)
+  if (selfCopy->_systemActivityAssertion)
   {
-    [(SWSystemActivityAssertion *)v11->_systemActivityAssertion invalidate];
-    MEMORY[0x1E69E5920](v11->_systemActivityAssertion);
-    v11->_systemActivityAssertion = 0;
+    [(SWSystemActivityAssertion *)selfCopy->_systemActivityAssertion invalidate];
+    MEMORY[0x1E69E5920](selfCopy->_systemActivityAssertion);
+    selfCopy->_systemActivityAssertion = 0;
   }
 
-  v11->_systemActivityAssertion = [objc_alloc(MEMORY[0x1E69D54B0]) initWithIdentifier:@"CoreBrightness AOD transitions in progress."];
-  systemActivityAssertion = v11->_systemActivityAssertion;
+  selfCopy->_systemActivityAssertion = [objc_alloc(MEMORY[0x1E69D54B0]) initWithIdentifier:@"CoreBrightness AOD transitions in progress."];
+  systemActivityAssertion = selfCopy->_systemActivityAssertion;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __35__CBAODState_acquirePowerAssertion__block_invoke;
   v8 = &unk_1E867BDD0;
-  v9 = v11;
+  v9 = selfCopy;
   [(SWSystemActivityAssertion *)systemActivityAssertion acquireWithTimeout:10.0 handler:?];
   objc_sync_exit(self);
 }

@@ -1,18 +1,18 @@
 @interface WBSFrequentlyVisitedSitesController
-+ (id)_median:(id)a3;
-+ (id)descriptionOfFrequentlyVisitedSiteWithVisitCount:(int)a3 visitCountScore:(int)a4 lastVisitedDate:(id)a5 score:(double)a6;
-+ (id)lowerBoundForExcludingOutliersFromSortedCandidateScores:(id)a3;
-+ (id)newRadarProblemURLWithInformationForProblematicFrequentlyVisitedSite:(id)a3 informationForOtherFrequentlyVisitedSites:(id)a4 inProfile:(id)a5;
++ (id)_median:(id)_median;
++ (id)descriptionOfFrequentlyVisitedSiteWithVisitCount:(int)count visitCountScore:(int)score lastVisitedDate:(id)date score:(double)a6;
++ (id)lowerBoundForExcludingOutliersFromSortedCandidateScores:(id)scores;
++ (id)newRadarProblemURLWithInformationForProblematicFrequentlyVisitedSite:(id)site informationForOtherFrequentlyVisitedSites:(id)sites inProfile:(id)profile;
 - (BOOL)recomputeFrequentlyVisitedSitesIfNecessary;
-- (WBSFrequentlyVisitedSitesController)initWithHistory:(id)a3 bannedURLStore:(id)a4 profileIdentifier:(id)a5;
+- (WBSFrequentlyVisitedSitesController)initWithHistory:(id)history bannedURLStore:(id)store profileIdentifier:(id)identifier;
 - (double)_minimumTimeIntervalBetweenFrequentlyVisitedSiteComputations;
-- (id)_excludeOutliersBasedOnScoreForFrequentlyVisited:(id)a3;
-- (id)_historyItemForFrequentlyVisitedItem:(id)a3;
+- (id)_excludeOutliersBasedOnScoreForFrequentlyVisited:(id)visited;
+- (id)_historyItemForFrequentlyVisitedItem:(id)item;
 - (void)_postFrequentlyVisitedSitesDidChangeNotification;
 - (void)_recomputeFrequentlyVisitedSitesNow;
-- (void)_recomputeFrequentlyVisitedSitesWithCompletionHandler:(id)a3;
-- (void)descriptionOfAllFrequentlyVisitedSitesForProblematicSiteURLString:(id)a3 completionHandler:(id)a4;
-- (void)sendAnalyticsIfNecessaryForURLNavigation:(id)a3;
+- (void)_recomputeFrequentlyVisitedSitesWithCompletionHandler:(id)handler;
+- (void)descriptionOfAllFrequentlyVisitedSitesForProblematicSiteURLString:(id)string completionHandler:(id)handler;
+- (void)sendAnalyticsIfNecessaryForURLNavigation:(id)navigation;
 @end
 
 @implementation WBSFrequentlyVisitedSitesController
@@ -38,8 +38,8 @@
     return 300.0;
   }
 
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 BOOLForKey:@"ShortenTimeToComputeFrequentlyVisitedSites"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults BOOLForKey:@"ShortenTimeToComputeFrequentlyVisitedSites"];
 
   result = 300.0;
   if (v3)
@@ -81,78 +81,78 @@ void __74__WBSFrequentlyVisitedSitesController__recomputeFrequentlyVisitedSitesN
   }
 }
 
-- (WBSFrequentlyVisitedSitesController)initWithHistory:(id)a3 bannedURLStore:(id)a4 profileIdentifier:(id)a5
+- (WBSFrequentlyVisitedSitesController)initWithHistory:(id)history bannedURLStore:(id)store profileIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  historyCopy = history;
+  storeCopy = store;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = WBSFrequentlyVisitedSitesController;
   v12 = [(WBSFrequentlyVisitedSitesController *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_history, a3);
-    objc_storeStrong(&v13->_bannedURLStore, a4);
-    objc_storeStrong(&v13->_profileIdentifier, a5);
+    objc_storeStrong(&v12->_history, history);
+    objc_storeStrong(&v13->_bannedURLStore, store);
+    objc_storeStrong(&v13->_profileIdentifier, identifier);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (void)sendAnalyticsIfNecessaryForURLNavigation:(id)a3
+- (void)sendAnalyticsIfNecessaryForURLNavigation:(id)navigation
 {
-  v16 = a3;
-  v4 = [(WBSFrequentlyVisitedSitesController *)self frequentlyVisitedSites];
-  for (i = 0; i < [v4 count]; ++i)
+  navigationCopy = navigation;
+  frequentlyVisitedSites = [(WBSFrequentlyVisitedSitesController *)self frequentlyVisitedSites];
+  for (i = 0; i < [frequentlyVisitedSites count]; ++i)
   {
-    v6 = [v4 objectAtIndexedSubscript:i];
-    v7 = [v6 address];
-    v8 = [v16 absoluteString];
-    v9 = [v7 isEqual:v8];
+    v6 = [frequentlyVisitedSites objectAtIndexedSubscript:i];
+    address = [v6 address];
+    absoluteString = [navigationCopy absoluteString];
+    v9 = [address isEqual:absoluteString];
 
     if (v9)
     {
       v10 = objc_alloc(MEMORY[0x1E69C8890]);
       v11 = [(WBSFrequentlyVisitedSitesController *)self _historyItemForFrequentlyVisitedItem:v6];
-      v12 = [v11 lastVisitedDate];
-      v13 = [v6 frequentlyVisitedSiteScore];
-      v14 = [v10 initWithItemPosition:i lastVisitedDate:v12 score:v13];
+      lastVisitedDate = [v11 lastVisitedDate];
+      frequentlyVisitedSiteScore = [v6 frequentlyVisitedSiteScore];
+      v14 = [v10 initWithItemPosition:i lastVisitedDate:lastVisitedDate score:frequentlyVisitedSiteScore];
 
-      v15 = [MEMORY[0x1E69C8810] sharedLogger];
-      [v15 didNavigateToFrequentlyVisitedSiteByAnyMeansWithAnalyticsPayload:v14];
+      mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+      [mEMORY[0x1E69C8810] didNavigateToFrequentlyVisitedSiteByAnyMeansWithAnalyticsPayload:v14];
 
       break;
     }
   }
 }
 
-- (id)_historyItemForFrequentlyVisitedItem:(id)a3
+- (id)_historyItemForFrequentlyVisitedItem:(id)item
 {
   history = self->_history;
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [a3 address];
-  v6 = [v4 URLWithString:v5];
+  address = [item address];
+  v6 = [v4 URLWithString:address];
   v7 = [(WBSHistory *)history itemForURL:v6];
 
   return v7;
 }
 
-- (void)descriptionOfAllFrequentlyVisitedSitesForProblematicSiteURLString:(id)a3 completionHandler:(id)a4
+- (void)descriptionOfAllFrequentlyVisitedSitesForProblematicSiteURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __123__WBSFrequentlyVisitedSitesController_descriptionOfAllFrequentlyVisitedSitesForProblematicSiteURLString_completionHandler___block_invoke;
   v10[3] = &unk_1E8282F20;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = stringCopy;
+  v12 = handlerCopy;
+  v8 = stringCopy;
+  v9 = handlerCopy;
   [(WBSFrequentlyVisitedSitesController *)self _recomputeFrequentlyVisitedSitesWithCompletionHandler:v10];
 
   objc_destroyWeak(&v13);
@@ -230,73 +230,73 @@ void __123__WBSFrequentlyVisitedSitesController_descriptionOfAllFrequentlyVisite
   }
 }
 
-+ (id)newRadarProblemURLWithInformationForProblematicFrequentlyVisitedSite:(id)a3 informationForOtherFrequentlyVisitedSites:(id)a4 inProfile:(id)a5
++ (id)newRadarProblemURLWithInformationForProblematicFrequentlyVisitedSite:(id)site informationForOtherFrequentlyVisitedSites:(id)sites inProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  siteCopy = site;
+  sitesCopy = sites;
+  profileCopy = profile;
   if (([MEMORY[0x1E69C8880] isInternalInstall] & 1) == 0)
   {
     +[WBSFrequentlyVisitedSitesController newRadarProblemURLWithInformationForProblematicFrequentlyVisitedSite:informationForOtherFrequentlyVisitedSites:inProfile:];
   }
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Frequently Visited Sites: <add description>"];
-  v11 = [MEMORY[0x1E69C8F68] safariStartPageIOS];
+  safariStartPageIOS = [MEMORY[0x1E69C8F68] safariStartPageIOS];
   v12 = [MEMORY[0x1E696AD60] stringWithString:@"* SUMMARY\nProvide a detailed explanation of the issue.\n\n"];
-  [v12 appendFormat:@"Profile identifier: %@\n", v9];
-  v13 = [MEMORY[0x1E696AE30] processInfo];
-  v14 = [v13 operatingSystemVersionString];
-  [v12 appendFormat:@"Operating system: %@\n\n", v14];
+  [v12 appendFormat:@"Profile identifier: %@\n", profileCopy];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
+  [v12 appendFormat:@"Operating system: %@\n\n", operatingSystemVersionString];
 
   [v12 appendString:@"* DIAGNOSTIC INFORMATION FOR PROBLEMATIC SITE\n"];
-  [v12 appendString:v7];
+  [v12 appendString:siteCopy];
   [v12 appendString:@"* DIAGNOSTIC INFORMATION FOR ALL SITES\n"];
-  [v12 appendString:v8];
-  v15 = [objc_alloc(MEMORY[0x1E69C8F60]) initWithComponent:v11 title:v10 descriptionTemplate:v12];
-  v16 = [v15 continueInTapToRadarURL];
+  [v12 appendString:sitesCopy];
+  v15 = [objc_alloc(MEMORY[0x1E69C8F60]) initWithComponent:safariStartPageIOS title:v10 descriptionTemplate:v12];
+  continueInTapToRadarURL = [v15 continueInTapToRadarURL];
 
-  return v16;
+  return continueInTapToRadarURL;
 }
 
-+ (id)descriptionOfFrequentlyVisitedSiteWithVisitCount:(int)a3 visitCountScore:(int)a4 lastVisitedDate:(id)a5 score:(double)a6
++ (id)descriptionOfFrequentlyVisitedSiteWithVisitCount:(int)count visitCountScore:(int)score lastVisitedDate:(id)date score:(double)a6
 {
-  v7 = *&a4;
-  v8 = *&a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AD60] string];
-  [v10 appendFormat:@"Total visits: %d\n", v8];
-  [v10 appendFormat:@"Visit count score: %d\n", v7];
-  [v10 appendFormat:@"Last visited: %@\n", v9];
+  v7 = *&score;
+  v8 = *&count;
+  dateCopy = date;
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"Total visits: %d\n", v8];
+  [string appendFormat:@"Visit count score: %d\n", v7];
+  [string appendFormat:@"Last visited: %@\n", dateCopy];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  [v10 appendFormat:@"Score time interval: %f\n", v11];
-  [v10 appendFormat:@"Score: %f\n\n", *&a6];
+  [string appendFormat:@"Score time interval: %f\n", v11];
+  [string appendFormat:@"Score: %f\n\n", *&a6];
 
-  return v10;
+  return string;
 }
 
-+ (id)lowerBoundForExcludingOutliersFromSortedCandidateScores:(id)a3
++ (id)lowerBoundForExcludingOutliersFromSortedCandidateScores:(id)scores
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69C90B0] shared];
-  v5 = [v4 isDropOutliersInFrequentlyVisitedEnabled];
+  scoresCopy = scores;
+  mEMORY[0x1E69C90B0] = [MEMORY[0x1E69C90B0] shared];
+  isDropOutliersInFrequentlyVisitedEnabled = [mEMORY[0x1E69C90B0] isDropOutliersInFrequentlyVisitedEnabled];
 
-  if ((v5 & 1) != 0 && [v3 count] >= 2)
+  if ((isDropOutliersInFrequentlyVisitedEnabled & 1) != 0 && [scoresCopy count] >= 2)
   {
-    v7 = [v3 count];
-    v8 = [v3 subarrayWithRange:{0, objc_msgSend(v3, "count") >> 1}];
+    v7 = [scoresCopy count];
+    v8 = [scoresCopy subarrayWithRange:{0, objc_msgSend(scoresCopy, "count") >> 1}];
     v9 = v7 >> 1;
-    if ([v3 count])
+    if ([scoresCopy count])
     {
-      v10 = [v3 count];
+      v10 = [scoresCopy count];
       ++v9;
     }
 
     else
     {
-      v10 = [v3 count];
+      v10 = [scoresCopy count];
     }
 
-    v11 = [v3 subarrayWithRange:{v9, v10 >> 1}];
+    v11 = [scoresCopy subarrayWithRange:{v9, v10 >> 1}];
     v12 = [objc_opt_class() _median:v11];
     v13 = [objc_opt_class() _median:v8];
     v14 = MEMORY[0x1E696AD98];
@@ -319,54 +319,54 @@ void __123__WBSFrequentlyVisitedSitesController_descriptionOfAllFrequentlyVisite
   return v6;
 }
 
-+ (id)_median:(id)a3
++ (id)_median:(id)_median
 {
-  v3 = a3;
-  if (![v3 count])
+  _medianCopy = _median;
+  if (![_medianCopy count])
   {
     v5 = 0;
     goto LABEL_9;
   }
 
-  if ([v3 count] == 1)
+  if ([_medianCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [_medianCopy firstObject];
   }
 
   else
   {
-    v6 = [v3 count];
+    v6 = [_medianCopy count];
     v7 = v6 >> 1;
-    if (([v3 count] & 1) == 0)
+    if (([_medianCopy count] & 1) == 0)
     {
       v8 = MEMORY[0x1E696AD98];
-      v9 = [v3 objectAtIndexedSubscript:v7 - 1];
+      v9 = [_medianCopy objectAtIndexedSubscript:v7 - 1];
       [v9 doubleValue];
       v11 = v10;
-      v12 = [v3 objectAtIndexedSubscript:v7];
+      v12 = [_medianCopy objectAtIndexedSubscript:v7];
       [v12 doubleValue];
       v5 = [v8 numberWithDouble:(v11 + v13) * 0.5];
 
       goto LABEL_9;
     }
 
-    v4 = [v3 objectAtIndexedSubscript:v6 >> 1];
+    firstObject = [_medianCopy objectAtIndexedSubscript:v6 >> 1];
   }
 
-  v5 = v4;
+  v5 = firstObject;
 LABEL_9:
 
   return v5;
 }
 
-- (void)_recomputeFrequentlyVisitedSitesWithCompletionHandler:(id)a3
+- (void)_recomputeFrequentlyVisitedSitesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSFrequentlyVisitedSitesController *)self _canonicalizedFavoritesURLStringSet];
-  v6 = [(WBSFrequentlyVisitedSitesBannedURLStore *)self->_bannedURLStore urlStrings];
-  v7 = [v5 setByAddingObjectsFromSet:v6];
+  handlerCopy = handler;
+  _canonicalizedFavoritesURLStringSet = [(WBSFrequentlyVisitedSitesController *)self _canonicalizedFavoritesURLStringSet];
+  urlStrings = [(WBSFrequentlyVisitedSitesBannedURLStore *)self->_bannedURLStore urlStrings];
+  v7 = [_canonicalizedFavoritesURLStringSet setByAddingObjectsFromSet:urlStrings];
 
-  v8 = [(WBSFrequentlyVisitedSitesController *)self _frequentlyVisitedSitesURLStringSet];
+  _frequentlyVisitedSitesURLStringSet = [(WBSFrequentlyVisitedSitesController *)self _frequentlyVisitedSitesURLStringSet];
   history = self->_history;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v11 = v10;
@@ -374,10 +374,10 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __93__WBSFrequentlyVisitedSitesController__recomputeFrequentlyVisitedSitesWithCompletionHandler___block_invoke;
   v13[3] = &unk_1E8282F48;
-  v12 = v4;
+  v12 = handlerCopy;
   v13[4] = self;
   v14 = v12;
-  [(WBSHistory *)history computeFrequentlyVisitedSites:12 minimalVisitCountScore:0 blockList:v7 allowList:v8 options:2 currentTime:v13 completionHandler:v11];
+  [(WBSHistory *)history computeFrequentlyVisitedSites:12 minimalVisitCountScore:0 blockList:v7 allowList:_frequentlyVisitedSitesURLStringSet options:2 currentTime:v13 completionHandler:v11];
 }
 
 void __93__WBSFrequentlyVisitedSitesController__recomputeFrequentlyVisitedSitesWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -388,12 +388,12 @@ void __93__WBSFrequentlyVisitedSitesController__recomputeFrequentlyVisitedSitesW
   (*(v5 + 16))(v5, v6, v7);
 }
 
-- (id)_excludeOutliersBasedOnScoreForFrequentlyVisited:(id)a3
+- (id)_excludeOutliersBasedOnScoreForFrequentlyVisited:(id)visited
 {
-  v3 = a3;
-  if ([v3 count])
+  visitedCopy = visited;
+  if ([visitedCopy count])
   {
-    v4 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_0];
+    v4 = [visitedCopy safari_mapObjectsUsingBlock:&__block_literal_global_0];
     v5 = [WBSFrequentlyVisitedSitesController lowerBoundForExcludingOutliersFromSortedCandidateScores:v4];
     v6 = v5;
     if (v5 && ([v5 doubleValue], v7 > 0.0))
@@ -403,10 +403,10 @@ void __93__WBSFrequentlyVisitedSitesController__recomputeFrequentlyVisitedSitesW
       v13[2] = __88__WBSFrequentlyVisitedSitesController__excludeOutliersBasedOnScoreForFrequentlyVisited___block_invoke_89;
       v13[3] = &unk_1E8282F90;
       v14 = v6;
-      v8 = [v3 safari_filterObjectsUsingBlock:v13];
+      v8 = [visitedCopy safari_filterObjectsUsingBlock:v13];
 
-      v9 = v3;
-      v3 = v8;
+      v9 = visitedCopy;
+      visitedCopy = v8;
     }
 
     else
@@ -421,9 +421,9 @@ void __93__WBSFrequentlyVisitedSitesController__recomputeFrequentlyVisitedSitesW
       v9 = 0;
     }
 
-    v11 = v3;
+    v11 = visitedCopy;
 
-    v3 = v9;
+    visitedCopy = v9;
   }
 
   else
@@ -491,8 +491,8 @@ uint64_t __74__WBSFrequentlyVisitedSitesController__recomputeFrequentlyVisitedSi
 
 - (void)_postFrequentlyVisitedSitesDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"FrequentlyVisitedSitesDidChange" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"FrequentlyVisitedSitesDidChange" object:self];
 }
 
 @end

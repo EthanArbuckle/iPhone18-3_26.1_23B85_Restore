@@ -1,5 +1,5 @@
 @interface THWKeynoteInfo
-- (THWKeynoteInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 showInfo:(id)a6 adornmentInfo:(id)a7 showTransportControls:(BOOL)a8 autoPlayConfig:(id)a9;
+- (THWKeynoteInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style showInfo:(id)info adornmentInfo:(id)adornmentInfo showTransportControls:(BOOL)controls autoPlayConfig:(id)config;
 - (id)childEnumerator;
 - (id)childInfos;
 - (void)dealloc;
@@ -7,20 +7,20 @@
 
 @implementation THWKeynoteInfo
 
-- (THWKeynoteInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 showInfo:(id)a6 adornmentInfo:(id)a7 showTransportControls:(BOOL)a8 autoPlayConfig:(id)a9
+- (THWKeynoteInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style showInfo:(id)info adornmentInfo:(id)adornmentInfo showTransportControls:(BOOL)controls autoPlayConfig:(id)config
 {
-  v9 = a8;
+  controlsCopy = controls;
   v15.receiver = self;
   v15.super_class = THWKeynoteInfo;
-  v12 = [(THWKeynoteInfo *)&v15 initWithContext:a3 geometry:a4, a5];
-  v13 = v12;
-  if (v12)
+  style = [(THWKeynoteInfo *)&v15 initWithContext:context geometry:geometry, style];
+  v13 = style;
+  if (style)
   {
-    [(THWKeynoteInfo *)v12 setShowInfo:a6];
-    [(THWKeynoteInfo *)v13 setAdornmentInfo:a7];
-    [(THWKeynoteInfo *)v13 setShowTransportControls:v9];
-    [(THWKeynoteInfo *)v13 setAutoplayConfig:a9];
-    [a7 updateParentInfo:v13];
+    [(THWKeynoteInfo *)style setShowInfo:info];
+    [(THWKeynoteInfo *)v13 setAdornmentInfo:adornmentInfo];
+    [(THWKeynoteInfo *)v13 setShowTransportControls:controlsCopy];
+    [(THWKeynoteInfo *)v13 setAutoplayConfig:config];
+    [adornmentInfo updateParentInfo:v13];
   }
 
   return v13;
@@ -47,9 +47,9 @@
 
 - (id)childEnumerator
 {
-  v2 = [(THWKeynoteInfo *)self childInfos];
+  childInfos = [(THWKeynoteInfo *)self childInfos];
 
-  return [v2 objectEnumerator];
+  return [childInfos objectEnumerator];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface MPVoicemailTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation MPVoicemailTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPVoicemailTableViewController" hasInstanceMethod:@"voicemailMessageViewModelForVoicemail:isExpanded:" withFullSignature:{"@", "@", "B", 0}];
-  [v3 validateClass:@"MPVoicemailTableViewController" hasInstanceMethod:@"voicemailController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPVoicemailController" hasInstanceMethod:@"callProviderManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MobilePhone.FTMessage" hasInstanceMethod:@"receiverDestinationID" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MobilePhone.FTMessage" hasInstanceMethod:@"receiverISOCountryCode" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPVoicemailTableViewController" hasInstanceMethod:@"voicemailMessageViewModelForVoicemail:isExpanded:" withFullSignature:{"@", "@", "B", 0}];
+  [validationsCopy validateClass:@"MPVoicemailTableViewController" hasInstanceMethod:@"voicemailController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPVoicemailController" hasInstanceMethod:@"callProviderManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MobilePhone.FTMessage" hasInstanceMethod:@"receiverDestinationID" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MobilePhone.FTMessage" hasInstanceMethod:@"receiverISOCountryCode" withFullSignature:{"@", 0}];
 }
 
 uint64_t __96__MPVoicemailTableViewControllerAccessibility_voicemailMessageViewModelForVoicemail_isExpanded___block_invoke(uint64_t a1)

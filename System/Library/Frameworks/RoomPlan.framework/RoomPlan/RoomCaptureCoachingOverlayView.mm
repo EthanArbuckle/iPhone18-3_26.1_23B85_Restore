@@ -1,34 +1,34 @@
 @interface RoomCaptureCoachingOverlayView
-- (void)didPanWithPanGesture:(id)a3;
-- (void)didPinchWithPinchGesture:(id)a3;
-- (void)didTouchDownWithLongPressGesture:(id)a3;
+- (void)didPanWithPanGesture:(id)gesture;
+- (void)didPinchWithPinchGesture:(id)gesture;
+- (void)didTouchDownWithLongPressGesture:(id)gesture;
 @end
 
 @implementation RoomCaptureCoachingOverlayView
 
-- (void)didPanWithPanGesture:(id)a3
+- (void)didPanWithPanGesture:(id)gesture
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC8RoomPlan30RoomCaptureCoachingOverlayView_arcBallCamera))
   {
-    v4 = a3;
-    v5 = self;
+    gestureCopy = gesture;
+    selfCopy = self;
 
-    sub_23A9E8A3C(v4);
+    sub_23A9E8A3C(gestureCopy);
   }
 }
 
-- (void)didPinchWithPinchGesture:(id)a3
+- (void)didPinchWithPinchGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_23A9C7C90(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_23A9C7C90(gestureCopy);
 }
 
-- (void)didTouchDownWithLongPressGesture:(id)a3
+- (void)didTouchDownWithLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_23A9C7DE0(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_23A9C7DE0(gestureCopy);
 }
 
 @end

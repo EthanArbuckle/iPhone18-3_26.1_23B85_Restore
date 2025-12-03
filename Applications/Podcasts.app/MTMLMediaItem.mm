@@ -1,34 +1,34 @@
 @interface MTMLMediaItem
-+ (BOOL)isMediaItemSyncedFromiTunes:(id)a3;
-+ (BOOL)isMissingAssetForItem:(id)a3;
-+ (BOOL)isMissingFilePathForItem:(id)a3;
-+ (id)itemWithMPMediaItem:(id)a3 isRestoreDownloadCandidate:(BOOL)a4;
++ (BOOL)isMediaItemSyncedFromiTunes:(id)tunes;
++ (BOOL)isMissingAssetForItem:(id)item;
++ (BOOL)isMissingFilePathForItem:(id)item;
++ (id)itemWithMPMediaItem:(id)item isRestoreDownloadCandidate:(BOOL)candidate;
 + (id)propertiesForMediaItem;
 - (id)description;
 @end
 
 @implementation MTMLMediaItem
 
-+ (id)itemWithMPMediaItem:(id)a3 isRestoreDownloadCandidate:(BOOL)a4
++ (id)itemWithMPMediaItem:(id)item isRestoreDownloadCandidate:(BOOL)candidate
 {
-  v6 = a3;
-  if (v6)
+  itemCopy = item;
+  if (itemCopy)
   {
     v7 = objc_opt_new();
-    v8 = [a1 propertiesForMediaItem];
-    v9 = [NSSet setWithArray:v8];
+    propertiesForMediaItem = [self propertiesForMediaItem];
+    v9 = [NSSet setWithArray:propertiesForMediaItem];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000D3D44;
     v16[3] = &unk_1004D9F90;
     v10 = v7;
     v17 = v10;
-    [v6 enumerateValuesForProperties:v9 usingBlock:v16];
+    [itemCopy enumerateValuesForProperties:v9 usingBlock:v16];
 
-    [v10 setIsFromITunesSync:{objc_msgSend(a1, "isMediaItemSyncedFromiTunes:", v6)}];
-    v11 = [MTMLMediaItem isMissingFilePathForItem:v6]|| [MTMLMediaItem isMissingAssetForItem:v6];
+    [v10 setIsFromITunesSync:{objc_msgSend(self, "isMediaItemSyncedFromiTunes:", itemCopy)}];
+    v11 = [MTMLMediaItem isMissingFilePathForItem:itemCopy]|| [MTMLMediaItem isMissingAssetForItem:itemCopy];
     [v10 setIsMissingAsset:v11];
-    if ([v10 isMissingAsset] && !a4)
+    if ([v10 isMissingAsset] && !candidate)
     {
       [v10 setAssetUrl:0];
       v12 = +[MTMediaLibraryTransactionManager sharedInstance];
@@ -36,7 +36,7 @@
       v14[1] = 3221225472;
       v14[2] = sub_1000D4170;
       v14[3] = &unk_1004DB5C8;
-      v15 = v6;
+      v15 = itemCopy;
       [v12 requestMediaLibraryWriteTransaction:v14];
     }
   }
@@ -49,17 +49,17 @@
   return v10;
 }
 
-+ (BOOL)isMissingFilePathForItem:(id)a3
++ (BOOL)isMissingFilePathForItem:(id)item
 {
-  v3 = [a3 valueForProperty:MPMediaItemPropertyFilePath];
+  v3 = [item valueForProperty:MPMediaItemPropertyFilePath];
   v4 = [v3 length] == 0;
 
   return v4;
 }
 
-+ (BOOL)isMissingAssetForItem:(id)a3
++ (BOOL)isMissingAssetForItem:(id)item
 {
-  v3 = [a3 valueForProperty:MPMediaItemPropertyFilePath];
+  v3 = [item valueForProperty:MPMediaItemPropertyFilePath];
   if ([v3 length])
   {
     v4 = +[NSFileManager defaultManager];
@@ -78,10 +78,10 @@
 
 - (id)description
 {
-  v3 = [(MTMLMediaItem *)self persistentId];
-  v4 = [(MTMLMediaItem *)self title];
-  v5 = [(MTMLMediaItem *)self guid];
-  v6 = [NSString stringWithFormat:@"[%@] %@ %@", v3, v4, v5];
+  persistentId = [(MTMLMediaItem *)self persistentId];
+  title = [(MTMLMediaItem *)self title];
+  guid = [(MTMLMediaItem *)self guid];
+  v6 = [NSString stringWithFormat:@"[%@] %@ %@", persistentId, title, guid];
 
   return v6;
 }
@@ -116,9 +116,9 @@
   return v2;
 }
 
-+ (BOOL)isMediaItemSyncedFromiTunes:(id)a3
++ (BOOL)isMediaItemSyncedFromiTunes:(id)tunes
 {
-  v3 = [a3 valueForProperty:MPMediaItemPropertyFilePath];
+  v3 = [tunes valueForProperty:MPMediaItemPropertyFilePath];
   v4 = [v3 containsStringInsensitive:@"/var/mobile/Media/iTunes_Control/"];
 
   return v4;

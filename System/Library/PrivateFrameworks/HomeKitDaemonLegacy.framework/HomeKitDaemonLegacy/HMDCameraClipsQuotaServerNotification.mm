@@ -1,6 +1,6 @@
 @interface HMDCameraClipsQuotaServerNotification
-- (HMDCameraClipsQuotaServerNotification)initWithContainerIdentifier:(id)a3 reason:(int64_t)a4 requestID:(id)a5 userDSID:(id)a6;
-- (HMDCameraClipsQuotaServerNotification)initWithDictionaryRepresentation:(id)a3;
+- (HMDCameraClipsQuotaServerNotification)initWithContainerIdentifier:(id)identifier reason:(int64_t)reason requestID:(id)d userDSID:(id)iD;
+- (HMDCameraClipsQuotaServerNotification)initWithDictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -21,16 +21,16 @@
 
   v13 = @"hk";
   v11[0] = @"c";
-  v4 = [(HMDCameraClipsQuotaServerNotification *)self containerIdentifier];
-  v12[0] = v4;
+  containerIdentifier = [(HMDCameraClipsQuotaServerNotification *)self containerIdentifier];
+  v12[0] = containerIdentifier;
   v12[1] = v3;
   v11[1] = @"f";
   v11[2] = @"r";
-  v5 = [(HMDCameraClipsQuotaServerNotification *)self requestID];
-  v12[2] = v5;
+  requestID = [(HMDCameraClipsQuotaServerNotification *)self requestID];
+  v12[2] = requestID;
   v11[3] = @"u";
-  v6 = [(HMDCameraClipsQuotaServerNotification *)self userDSID];
-  v12[3] = v6;
+  userDSID = [(HMDCameraClipsQuotaServerNotification *)self userDSID];
+  v12[3] = userDSID;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:4];
   v14[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
@@ -40,59 +40,59 @@
   return v8;
 }
 
-- (HMDCameraClipsQuotaServerNotification)initWithDictionaryRepresentation:(id)a3
+- (HMDCameraClipsQuotaServerNotification)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = [a3 objectForKeyedSubscript:@"hk"];
+  v4 = [representation objectForKeyedSubscript:@"hk"];
   v5 = [v4 objectForKeyedSubscript:@"c"];
   v6 = [v4 objectForKeyedSubscript:@"f"];
   v7 = [v4 objectForKeyedSubscript:@"r"];
   v8 = [v4 objectForKeyedSubscript:@"u"];
   v9 = v8;
-  v10 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7 && v8)
   {
     if ([v6 isEqualToString:@"allCamerasDisabled"])
     {
       self = [(HMDCameraClipsQuotaServerNotification *)self initWithContainerIdentifier:v5 reason:1 requestID:v7 userDSID:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (HMDCameraClipsQuotaServerNotification)initWithContainerIdentifier:(id)a3 reason:(int64_t)a4 requestID:(id)a5 userDSID:(id)a6
+- (HMDCameraClipsQuotaServerNotification)initWithContainerIdentifier:(id)identifier reason:(int64_t)reason requestID:(id)d userDSID:(id)iD
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!reason)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!dCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = iDCopy;
+  if (!iDCopy)
   {
 LABEL_11:
     v18 = _HMFPreconditionFailure();
@@ -105,10 +105,10 @@ LABEL_11:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_containerIdentifier, a3);
-    v16->_reason = a4;
-    objc_storeStrong(&v16->_requestID, a5);
-    objc_storeStrong(&v16->_userDSID, a6);
+    objc_storeStrong(&v15->_containerIdentifier, identifier);
+    v16->_reason = reason;
+    objc_storeStrong(&v16->_requestID, d);
+    objc_storeStrong(&v16->_userDSID, iD);
   }
 
   return v16;

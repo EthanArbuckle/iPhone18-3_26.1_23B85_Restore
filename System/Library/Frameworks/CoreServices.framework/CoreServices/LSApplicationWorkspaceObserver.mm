@@ -1,35 +1,35 @@
 @interface LSApplicationWorkspaceObserver
 + (BOOL)actuallyOverridesDMFObserverMethod;
 - (LSApplicationWorkspaceObserver)init;
-- (LSApplicationWorkspaceObserver)initWithCoder:(id)a3;
-- (void)applicationIconDidChange:(id)a3;
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4;
-- (void)applicationInstallsDidCancel:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
-- (void)applicationInstallsDidPause:(id)a3;
-- (void)applicationInstallsDidPrioritize:(id)a3;
-- (void)applicationInstallsDidResume:(id)a3;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationInstallsDidUpdateIcon:(id)a3;
-- (void)applicationStateDidChange:(id)a3;
-- (void)applicationsDidChangePersonas:(id)a3;
-- (void)applicationsDidFailToInstall:(id)a3;
-- (void)applicationsDidFailToUninstall:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
-- (void)deviceManagementPolicyDidChange:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LSApplicationWorkspaceObserver)initWithCoder:(id)coder;
+- (void)applicationIconDidChange:(id)change;
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused;
+- (void)applicationInstallsDidCancel:(id)cancel;
+- (void)applicationInstallsDidChange:(id)change;
+- (void)applicationInstallsDidPause:(id)pause;
+- (void)applicationInstallsDidPrioritize:(id)prioritize;
+- (void)applicationInstallsDidResume:(id)resume;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationInstallsDidUpdateIcon:(id)icon;
+- (void)applicationStateDidChange:(id)change;
+- (void)applicationsDidChangePersonas:(id)personas;
+- (void)applicationsDidFailToInstall:(id)install;
+- (void)applicationsDidFailToUninstall:(id)uninstall;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillInstall:(id)install;
+- (void)applicationsWillUninstall:(id)uninstall;
+- (void)deviceManagementPolicyDidChange:(id)change;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSApplicationWorkspaceObserver
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LSApplicationWorkspaceObserver *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(LSApplicationWorkspaceObserver *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 }
 
 - (LSApplicationWorkspaceObserver)init
@@ -47,15 +47,15 @@
   return v2;
 }
 
-- (LSApplicationWorkspaceObserver)initWithCoder:(id)a3
+- (LSApplicationWorkspaceObserver)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = LSApplicationWorkspaceObserver;
   v5 = [(LSApplicationWorkspaceObserver *)&v9 init];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -63,9 +63,9 @@
   return v5;
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
-  v3 = a3;
+  startCopy = start;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -73,9 +73,9 @@
   }
 }
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -83,9 +83,9 @@
   }
 }
 
-- (void)applicationInstallsDidUpdateIcon:(id)a3
+- (void)applicationInstallsDidUpdateIcon:(id)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v3 = a3;
+  installCopy = install;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -103,9 +103,9 @@
   }
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
-  v3 = a3;
+  installCopy = install;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -113,9 +113,9 @@
   }
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
-  v3 = a3;
+  uninstallCopy = uninstall;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -123,9 +123,9 @@
   }
 }
 
-- (void)applicationsDidFailToInstall:(id)a3
+- (void)applicationsDidFailToInstall:(id)install
 {
-  v3 = a3;
+  installCopy = install;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -133,9 +133,9 @@
   }
 }
 
-- (void)applicationsDidFailToUninstall:(id)a3
+- (void)applicationsDidFailToUninstall:(id)uninstall
 {
-  v3 = a3;
+  uninstallCopy = uninstall;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -143,9 +143,9 @@
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v3 = a3;
+  uninstallCopy = uninstall;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -153,26 +153,26 @@
   }
 }
 
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused
 {
-  v5 = a3;
-  v6 = a4;
+  prioritizedCopy = prioritized;
+  pausedCopy = paused;
   v7 = _LSInstallLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [LSApplicationWorkspaceObserver applicationInstallsArePrioritized:v5 arePaused:?];
+    [LSApplicationWorkspaceObserver applicationInstallsArePrioritized:prioritizedCopy arePaused:?];
   }
 
   v8 = _LSInstallLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [LSApplicationWorkspaceObserver applicationInstallsArePrioritized:v6 arePaused:?];
+    [LSApplicationWorkspaceObserver applicationInstallsArePrioritized:pausedCopy arePaused:?];
   }
 }
 
-- (void)applicationInstallsDidPause:(id)a3
+- (void)applicationInstallsDidPause:(id)pause
 {
-  v3 = a3;
+  pauseCopy = pause;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -180,9 +180,9 @@
   }
 }
 
-- (void)applicationInstallsDidResume:(id)a3
+- (void)applicationInstallsDidResume:(id)resume
 {
-  v3 = a3;
+  resumeCopy = resume;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -190,9 +190,9 @@
   }
 }
 
-- (void)applicationInstallsDidCancel:(id)a3
+- (void)applicationInstallsDidCancel:(id)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -200,9 +200,9 @@
   }
 }
 
-- (void)applicationInstallsDidPrioritize:(id)a3
+- (void)applicationInstallsDidPrioritize:(id)prioritize
 {
-  v3 = a3;
+  prioritizeCopy = prioritize;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -210,9 +210,9 @@
   }
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -220,9 +220,9 @@
   }
 }
 
-- (void)applicationIconDidChange:(id)a3
+- (void)applicationIconDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -230,9 +230,9 @@
   }
 }
 
-- (void)deviceManagementPolicyDidChange:(id)a3
+- (void)deviceManagementPolicyDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -242,19 +242,19 @@
 
 + (BOOL)actuallyOverridesDMFObserverMethod
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     return 0;
   }
 
   v3 = objc_opt_class();
   MethodImplementation = class_getMethodImplementation(v3, sel_deviceManagementPolicyDidChange_);
-  return MethodImplementation != class_getMethodImplementation(a1, sel_deviceManagementPolicyDidChange_);
+  return MethodImplementation != class_getMethodImplementation(self, sel_deviceManagementPolicyDidChange_);
 }
 
-- (void)applicationsDidChangePersonas:(id)a3
+- (void)applicationsDidChangePersonas:(id)personas
 {
-  v3 = a3;
+  personasCopy = personas;
   v4 = _LSInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {

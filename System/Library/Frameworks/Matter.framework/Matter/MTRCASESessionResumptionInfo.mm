@@ -1,14 +1,14 @@
 @interface MTRCASESessionResumptionInfo
-- (MTRCASESessionResumptionInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MTRCASESessionResumptionInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRCASESessionResumptionInfo
 
-- (MTRCASESessionResumptionInfo)initWithCoder:(id)a3
+- (MTRCASESessionResumptionInfo)initWithCoder:(id)coder
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = MTRCASESessionResumptionInfo;
   v5 = [(MTRCASESessionResumptionInfo *)&v41 init];
@@ -17,7 +17,7 @@
     goto LABEL_43;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nodeID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nodeID"];
   p_nodeID = &v5->_nodeID;
   nodeID = v5->_nodeID;
   v5->_nodeID = v6;
@@ -76,7 +76,7 @@ LABEL_43:
     goto LABEL_42;
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resumptionID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resumptionID"];
   p_nodeID = &v5->_resumptionID;
   resumptionID = v5->_resumptionID;
   v5->_resumptionID = v10;
@@ -104,7 +104,7 @@ LABEL_43:
     }
   }
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedSecret"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedSecret"];
   p_nodeID = &v5->_sharedSecret;
   sharedSecret = v5->_sharedSecret;
   v5->_sharedSecret = v12;
@@ -132,7 +132,7 @@ LABEL_43:
     }
   }
 
-  [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"CATs"];
+  [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"CATs"];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -172,10 +172,10 @@ LABEL_46:
           goto LABEL_51;
         }
 
-        v19 = [v18 unsignedLongLongValue];
-        if (v19)
+        unsignedLongLongValue = [v18 unsignedLongLongValue];
+        if (unsignedLongLongValue)
         {
-          v20 = HIDWORD(v19) == 0;
+          v20 = HIDWORD(unsignedLongLongValue) == 0;
         }
 
         else
@@ -213,21 +213,21 @@ LABEL_44:
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(MTRCASESessionResumptionInfo *)self nodeID];
-  [v9 encodeObject:v4 forKey:@"nodeID"];
+  coderCopy = coder;
+  nodeID = [(MTRCASESessionResumptionInfo *)self nodeID];
+  [coderCopy encodeObject:nodeID forKey:@"nodeID"];
 
-  v5 = [(MTRCASESessionResumptionInfo *)self resumptionID];
-  [v9 encodeObject:v5 forKey:@"resumptionID"];
+  resumptionID = [(MTRCASESessionResumptionInfo *)self resumptionID];
+  [coderCopy encodeObject:resumptionID forKey:@"resumptionID"];
 
-  v6 = [(MTRCASESessionResumptionInfo *)self sharedSecret];
-  [v9 encodeObject:v6 forKey:@"sharedSecret"];
+  sharedSecret = [(MTRCASESessionResumptionInfo *)self sharedSecret];
+  [coderCopy encodeObject:sharedSecret forKey:@"sharedSecret"];
 
-  v7 = [(MTRCASESessionResumptionInfo *)self caseAuthenticatedTags];
-  v8 = [v7 allObjects];
-  [v9 encodeObject:v8 forKey:@"CATs"];
+  caseAuthenticatedTags = [(MTRCASESessionResumptionInfo *)self caseAuthenticatedTags];
+  allObjects = [caseAuthenticatedTags allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"CATs"];
 }
 
 @end

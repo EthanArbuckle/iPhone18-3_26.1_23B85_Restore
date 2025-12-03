@@ -1,25 +1,25 @@
 @interface AOSContext
-+ (id)contextWithAccount:(AOSAccount *)a3 andTransaction:(AOSTransactionC *)a4;
++ (id)contextWithAccount:(AOSAccount *)account andTransaction:(AOSTransactionC *)transaction;
 - (AOSContext)init;
 - (BOOL)scheduleCallback;
 - (void)_performCallback;
 - (void)dealloc;
 - (void)finalize;
-- (void)setAccount:(AOSAccount *)a3;
-- (void)setInfo:(id)a3;
-- (void)setTransaction:(AOSTransactionC *)a3;
+- (void)setAccount:(AOSAccount *)account;
+- (void)setInfo:(id)info;
+- (void)setTransaction:(AOSTransactionC *)transaction;
 @end
 
 @implementation AOSContext
 
-+ (id)contextWithAccount:(AOSAccount *)a3 andTransaction:(AOSTransactionC *)a4
++ (id)contextWithAccount:(AOSAccount *)account andTransaction:(AOSTransactionC *)transaction
 {
   v6 = objc_alloc_init(AOSContext);
   v7 = v6;
   if (v6)
   {
-    [(AOSContext *)v6 setAccount:a3];
-    [(AOSContext *)v7 setTransaction:a4];
+    [(AOSContext *)v6 setAccount:account];
+    [(AOSContext *)v7 setTransaction:transaction];
   }
 
   return v7;
@@ -32,11 +32,11 @@
   v2 = [(AOSContext *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCACC8] currentThread];
-    v2->_callbackThread = v3;
-    if (v3)
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    v2->_callbackThread = currentThread;
+    if (currentThread)
     {
-      CFRetain(v3);
+      CFRetain(currentThread);
     }
   }
 
@@ -113,19 +113,19 @@
   [(AOSContext *)&v7 finalize];
 }
 
-- (void)setAccount:(AOSAccount *)a3
+- (void)setAccount:(AOSAccount *)account
 {
   account = self->_account;
-  if (account != a3)
+  if (account != account)
   {
     if (account)
     {
       CFRelease(account);
     }
 
-    if (a3)
+    if (account)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(account);
     }
 
     else
@@ -137,19 +137,19 @@
   }
 }
 
-- (void)setTransaction:(AOSTransactionC *)a3
+- (void)setTransaction:(AOSTransactionC *)transaction
 {
   transaction = self->_transaction;
-  if (transaction != a3)
+  if (transaction != transaction)
   {
     if (transaction)
     {
       CFRelease(transaction);
     }
 
-    if (a3)
+    if (transaction)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(transaction);
     }
 
     else
@@ -161,19 +161,19 @@
   }
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
   info = self->_info;
-  if (info != a3)
+  if (info != info)
   {
     if (info)
     {
       CFRelease(info);
     }
 
-    if (a3)
+    if (info)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(info);
     }
 
     else
@@ -193,16 +193,16 @@
     if (v2)
     {
       v3 = v2;
-      v4 = [v2 transaction];
-      v5 = v4;
-      if (!v4)
+      transaction = [v2 transaction];
+      v5 = transaction;
+      if (!transaction)
       {
 LABEL_16:
         CFRelease(v3);
         return v5;
       }
 
-      CallbackFunction = AOSTransactionGetCallbackFunction(v4);
+      CallbackFunction = AOSTransactionGetCallbackFunction(transaction);
       CallbackBlock = AOSTransactionGetCallbackBlock(v5);
       CallbackQueue = AOSTransactionGetCallbackQueue(v5);
       if (CallbackBlock && CallbackQueue)
@@ -235,10 +235,10 @@ LABEL_12:
           goto LABEL_11;
         }
 
-        v10 = [v3 _callbackThread];
-        if (v10)
+        _callbackThread = [v3 _callbackThread];
+        if (_callbackThread)
         {
-          [v3 performSelector:sel__performCallback onThread:v10 withObject:0 waitUntilDone:0];
+          [v3 performSelector:sel__performCallback onThread:_callbackThread withObject:0 waitUntilDone:0];
           goto LABEL_12;
         }
       }
@@ -254,11 +254,11 @@ LABEL_12:
 
 - (void)_performCallback
 {
-  v3 = [(AOSContext *)self transaction];
-  if (v3)
+  transaction = [(AOSContext *)self transaction];
+  if (transaction)
   {
-    v4 = v3;
-    CallbackFunction = AOSTransactionGetCallbackFunction(v3);
+    v4 = transaction;
+    CallbackFunction = AOSTransactionGetCallbackFunction(transaction);
     if (CallbackFunction)
     {
       CallbackFunction(v4);

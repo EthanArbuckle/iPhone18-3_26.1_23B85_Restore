@@ -2,7 +2,7 @@
 + (id)sharedCache;
 - (unint64_t)pendingInviteCount;
 - (void)_fetchPendingInviteCount;
-- (void)_setPendingInviteCount:(unint64_t)a3;
+- (void)_setPendingInviteCount:(unint64_t)count;
 - (void)invalidate;
 @end
 
@@ -73,16 +73,16 @@ void __34__FAFamilyDetailsCache_invalidate__block_invoke()
 
 - (unint64_t)pendingInviteCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_isValid && !v2->_isValidating)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_isValid && !selfCopy->_isValidating)
   {
-    v2->_isValidating = 1;
-    [(FAFamilyDetailsCache *)v2 _fetchPendingInviteCount];
+    selfCopy->_isValidating = 1;
+    [(FAFamilyDetailsCache *)selfCopy _fetchPendingInviteCount];
   }
 
-  pendingInviteCount = v2->_pendingInviteCount;
-  objc_sync_exit(v2);
+  pendingInviteCount = selfCopy->_pendingInviteCount;
+  objc_sync_exit(selfCopy);
 
   return pendingInviteCount;
 }
@@ -146,14 +146,14 @@ void __48__FAFamilyDetailsCache__fetchPendingInviteCount__block_invoke_2(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPendingInviteCount:(unint64_t)a3
+- (void)_setPendingInviteCount:(unint64_t)count
 {
   obj = self;
   objc_sync_enter(obj);
   pendingInviteCount = obj->_pendingInviteCount;
-  obj->_pendingInviteCount = a3;
+  obj->_pendingInviteCount = count;
   obj->_isValid = 1;
-  if (pendingInviteCount != a3)
+  if (pendingInviteCount != count)
   {
     dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_11);
   }

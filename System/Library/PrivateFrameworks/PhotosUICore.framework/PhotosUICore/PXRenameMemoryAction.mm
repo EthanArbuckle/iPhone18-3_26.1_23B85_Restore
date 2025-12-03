@@ -1,19 +1,19 @@
 @interface PXRenameMemoryAction
-- (PXRenameMemoryAction)initWithMemory:(id)a3 title:(id)a4 subtitle:(id)a5;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXRenameMemoryAction)initWithMemory:(id)memory title:(id)title subtitle:(id)subtitle;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXRenameMemoryAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __36__PXRenameMemoryAction_performUndo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:undo];
 }
 
 void __36__PXRenameMemoryAction_performUndo___block_invoke(uint64_t a1)
@@ -31,14 +31,14 @@ void __36__PXRenameMemoryAction_performUndo___block_invoke(uint64_t a1)
   [v6 setUserEdited:{objc_msgSend(*(a1 + 32), "undoUserEdited")}];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __38__PXRenameMemoryAction_performAction___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:action];
 }
 
 void __38__PXRenameMemoryAction_performAction___block_invoke(uint64_t a1)
@@ -56,20 +56,20 @@ void __38__PXRenameMemoryAction_performAction___block_invoke(uint64_t a1)
   [v6 setUserEdited:1];
 }
 
-- (PXRenameMemoryAction)initWithMemory:(id)a3 title:(id)a4 subtitle:(id)a5
+- (PXRenameMemoryAction)initWithMemory:(id)memory title:(id)title subtitle:(id)subtitle
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 canPerformEditOperation:7])
+  memoryCopy = memory;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  if ([memoryCopy canPerformEditOperation:7])
   {
-    v32 = v10;
-    v12 = [v10 copy];
-    v13 = [v9 localizedTitle];
-    v14 = v13;
-    if (v13)
+    v32 = titleCopy;
+    v12 = [titleCopy copy];
+    localizedTitle = [memoryCopy localizedTitle];
+    v14 = localizedTitle;
+    if (localizedTitle)
     {
-      v15 = v13;
+      v15 = localizedTitle;
     }
 
     else
@@ -80,12 +80,12 @@ void __38__PXRenameMemoryAction_performAction___block_invoke(uint64_t a1)
     v29 = v15;
     v16 = v15;
 
-    v17 = [v11 copy];
-    v18 = [v9 subtitle];
-    v19 = v18;
-    if (v18)
+    v17 = [subtitleCopy copy];
+    subtitle = [memoryCopy subtitle];
+    v19 = subtitle;
+    if (subtitle)
     {
-      v20 = v18;
+      v20 = subtitle;
     }
 
     else
@@ -100,42 +100,42 @@ void __38__PXRenameMemoryAction_performAction___block_invoke(uint64_t a1)
     v23 = v16;
     if ([v22 isEqualToString:v16] && (objc_msgSend(v17, "isEqualToString:", v21, v29) & 1) != 0)
     {
-      v24 = 0;
-      v10 = v32;
+      selfCopy = 0;
+      titleCopy = v32;
     }
 
     else
     {
       v31 = v21;
-      v25 = [v9 pendingState];
-      v26 = [v9 photoLibrary];
+      pendingState = [memoryCopy pendingState];
+      photoLibrary = [memoryCopy photoLibrary];
       v34.receiver = self;
       v34.super_class = PXRenameMemoryAction;
-      v27 = [(PXPhotosAction *)&v34 initWithPhotoLibrary:v26];
+      v27 = [(PXPhotosAction *)&v34 initWithPhotoLibrary:photoLibrary];
 
       if (v27)
       {
-        objc_storeStrong(&v27->_memory, a3);
+        objc_storeStrong(&v27->_memory, memory);
         objc_storeStrong(&v27->_redoTitle, obj);
         objc_storeStrong(&v27->_undoTitle, v30);
         objc_storeStrong(&v27->_redoSubtitle, v17);
         objc_storeStrong(&v27->_undoSubtitle, v20);
-        v27->_undoUserEdited = v25 == 3;
+        v27->_undoUserEdited = pendingState == 3;
       }
 
       self = v27;
-      v24 = self;
+      selfCopy = self;
       v21 = v31;
-      v10 = v32;
+      titleCopy = v32;
     }
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 @end

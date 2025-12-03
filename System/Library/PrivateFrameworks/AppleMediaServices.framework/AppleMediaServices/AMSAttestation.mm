@@ -1,37 +1,37 @@
 @interface AMSAttestation
-+ (id)_attestationPListWithStyle:(unint64_t)a3 primaryAttestation:(id)a4 extendedAttestation:(id)a5 error:(id *)a6;
-+ (id)_generateCertificateChainStringsForAccount:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)attestationHTTPBodyDataWithStyle:(unint64_t)a3 regenerateKeys:(BOOL)a4 error:(id *)a5;
-+ (id)attestationWithAccount:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)attestationWithOptions:(id)a3 error:(id *)a4;
++ (id)_attestationPListWithStyle:(unint64_t)style primaryAttestation:(id)attestation extendedAttestation:(id)extendedAttestation error:(id *)error;
++ (id)_generateCertificateChainStringsForAccount:(id)account options:(id)options error:(id *)error;
++ (id)attestationHTTPBodyDataWithStyle:(unint64_t)style regenerateKeys:(BOOL)keys error:(id *)error;
++ (id)attestationWithAccount:(id)account options:(id)options error:(id *)error;
++ (id)attestationWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation AMSAttestation
 
-+ (id)attestationWithAccount:(id)a3 options:(id)a4 error:(id *)a5
++ (id)attestationWithAccount:(id)account options:(id)options error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (![AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:v8])
+  accountCopy = account;
+  optionsCopy = options;
+  if (![AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:accountCopy])
   {
-    v11 = [a1 attestationWithOptions:v9 error:a5];
+    v11 = [self attestationWithOptions:optionsCopy error:error];
     goto LABEL_33;
   }
 
   v10 = AMSSetLogKeyIfNeeded();
-  if ([v9 regenerateKeys])
+  if ([optionsCopy regenerateKeys])
   {
-    +[AMSCertificateManager deleteCertificatesForAccount:forSignaturePurpose:](AMSCertificateManager, "deleteCertificatesForAccount:forSignaturePurpose:", v8, [v9 purpose]);
+    +[AMSCertificateManager deleteCertificatesForAccount:forSignaturePurpose:](AMSCertificateManager, "deleteCertificatesForAccount:forSignaturePurpose:", accountCopy, [optionsCopy purpose]);
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [v9 style];
-  if (v12 <= 5)
+  style = [optionsCopy style];
+  if (style <= 5)
   {
-    if (((1 << v12) & 0x39) != 0)
+    if (((1 << style) & 0x39) != 0)
     {
-      v13 = +[AMSCertificateManager certificatesForAccount:forSignaturePurpose:](AMSCertificateManager, "certificatesForAccount:forSignaturePurpose:", v8, [v9 purpose]);
+      v13 = +[AMSCertificateManager certificatesForAccount:forSignaturePurpose:](AMSCertificateManager, "certificatesForAccount:forSignaturePurpose:", accountCopy, [optionsCopy purpose]);
       v14 = v13;
       if (v13 && [v13 count] == 2)
       {
@@ -41,7 +41,7 @@
       else
       {
         v30 = 0;
-        v16 = [a1 _generateCertificateChainStringsForAccount:v8 options:v9 error:&v30];
+        v16 = [self _generateCertificateChainStringsForAccount:accountCopy options:optionsCopy error:&v30];
         v15 = v30;
 
         if (v15)
@@ -53,8 +53,8 @@
             v17 = +[AMSLogConfig sharedConfig];
           }
 
-          v18 = [v17 OSLogObject];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v17 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v19 = objc_opt_class();
             *buf = 138543874;
@@ -64,7 +64,7 @@
             v35 = 2114;
             v36 = v15;
             v27 = v19;
-            _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Certificate chain lookup and/or generation failed with error: %{public}@", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Certificate chain lookup and/or generation failed with error: %{public}@", buf, 0x20u);
           }
 
           v10 = v28;
@@ -75,10 +75,10 @@
           v14 = 0;
 LABEL_29:
 
-          if (a5 && v15)
+          if (error && v15)
           {
             v25 = v15;
-            *a5 = v15;
+            *error = v15;
           }
 
           goto LABEL_32;
@@ -98,8 +98,8 @@ LABEL_29:
             v20 = +[AMSLogConfig sharedConfig];
           }
 
-          v21 = [v20 OSLogObject];
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+          oSLogObject2 = [v20 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
           {
             v22 = objc_opt_class();
             *buf = 138543618;
@@ -107,7 +107,7 @@ LABEL_29:
             v33 = 2114;
             v34 = v29;
             v23 = v22;
-            _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attesting with expired certificates", buf, 0x16u);
+            _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attesting with expired certificates", buf, 0x16u);
           }
 
           v10 = v29;
@@ -119,7 +119,7 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v24 = +[AMSCertificateManager legacyAttestationWithAccount:style:forPurpose:](AMSCertificateManager, "legacyAttestationWithAccount:style:forPurpose:", v8, [v9 style], objc_msgSend(v9, "purpose"));
+    v24 = +[AMSCertificateManager legacyAttestationWithAccount:style:forPurpose:](AMSCertificateManager, "legacyAttestationWithAccount:style:forPurpose:", accountCopy, [optionsCopy style], objc_msgSend(optionsCopy, "purpose"));
     [v11 addObject:v24];
   }
 
@@ -131,10 +131,10 @@ LABEL_33:
   return v11;
 }
 
-+ (id)attestationWithOptions:(id)a3 error:(id *)a4
++ (id)attestationWithOptions:(id)options error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = AMSSetLogKeyIfNeeded();
   v9 = +[AMSLogConfig sharedAttestationConfig];
@@ -143,8 +143,8 @@ LABEL_33:
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v52 = v11;
@@ -153,29 +153,29 @@ LABEL_33:
     v65 = 2114;
     v66 = v8;
     v67 = 2050;
-    v68 = [v6 regenerateKeys];
+    regenerateKeys = [optionsCopy regenerateKeys];
     v69 = 2050;
-    v70 = [v6 style];
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Start retrieve certification from keychain, options.regenerateKeys: %{public}lu, options.style: %{public}lu", buf, 0x2Au);
+    style = [optionsCopy style];
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Start retrieve certification from keychain, options.regenerateKeys: %{public}lu, options.style: %{public}lu", buf, 0x2Au);
   }
 
-  if ([v6 regenerateKeys])
+  if ([optionsCopy regenerateKeys])
   {
-    v12 = [v6 style];
-    if (v12 <= 5)
+    style2 = [optionsCopy style];
+    if (style2 <= 5)
     {
-      if (((1 << v12) & 0x39) != 0)
+      if (((1 << style2) & 0x39) != 0)
       {
         v62 = 0;
         v13 = &v62;
-        [AMSKeychain deleteCertificateChainWithOptions:v6 error:&v62];
+        [AMSKeychain deleteCertificateChainWithOptions:optionsCopy error:&v62];
       }
 
       else
       {
         v61 = 0;
         v13 = &v61;
-        [AMSKeychain deleteKeyPairWithOptions:v6 error:&v61];
+        [AMSKeychain deleteKeyPairWithOptions:optionsCopy error:&v61];
       }
 
       v14 = *v13;
@@ -188,8 +188,8 @@ LABEL_33:
           v16 = +[AMSLogConfig sharedConfig];
         }
 
-        v17 = [v16 OSLogObject];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [v16 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v18 = objc_opt_class();
           *buf = 138543874;
@@ -197,24 +197,24 @@ LABEL_33:
           v65 = 2114;
           v66 = v8;
           v67 = 2114;
-          v68 = v15;
-          _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attestation did not delete keys: %{public}@", buf, 0x20u);
+          regenerateKeys = v15;
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attestation did not delete keys: %{public}@", buf, 0x20u);
         }
       }
     }
   }
 
-  v19 = [v6 style];
-  if (v19 > 5)
+  style3 = [optionsCopy style];
+  if (style3 > 5)
   {
     v22 = 0;
     goto LABEL_67;
   }
 
-  if (((1 << v19) & 0x31) != 0)
+  if (((1 << style3) & 0x31) != 0)
   {
     v60 = 0;
-    v20 = [AMSKeychain certificateChainStringsForOptions:v6 error:&v60];
+    v20 = [AMSKeychain certificateChainStringsForOptions:optionsCopy error:&v60];
     v21 = v60;
     if (v20 && [v20 count] == 2 && !v21)
     {
@@ -230,8 +230,8 @@ LABEL_33:
         v27 = +[AMSLogConfig sharedConfig];
       }
 
-      v28 = [v27 OSLogObject];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v27 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v29 = objc_opt_class();
         *buf = 138543874;
@@ -239,16 +239,16 @@ LABEL_33:
         v65 = 2114;
         v66 = v8;
         v67 = 2114;
-        v68 = v21;
-        v30 = a4;
+        regenerateKeys = v21;
+        errorCopy = error;
         v31 = v29;
-        _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did not find certificates in keychain, generating new certifcates: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did not find certificates in keychain, generating new certifcates: %{public}@", buf, 0x20u);
 
-        a4 = v30;
+        error = errorCopy;
       }
 
       v59 = v21;
-      v23 = [a1 _generateCertificateChainStringsForAccount:0 options:v6 error:&v59];
+      v23 = [self _generateCertificateChainStringsForAccount:0 options:optionsCopy error:&v59];
       v22 = v59;
 
       if (v22)
@@ -259,8 +259,8 @@ LABEL_33:
           v32 = +[AMSLogConfig sharedConfig];
         }
 
-        v33 = [v32 OSLogObject];
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+        oSLogObject4 = [v32 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
         {
           v34 = objc_opt_class();
           *buf = 138543874;
@@ -268,12 +268,12 @@ LABEL_33:
           v65 = 2114;
           v66 = v8;
           v67 = 2114;
-          v68 = v22;
-          v35 = a4;
+          regenerateKeys = v22;
+          errorCopy2 = error;
           v36 = v34;
-          _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Certificate chain lookup and/or generation failed with error: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Certificate chain lookup and/or generation failed with error: %{public}@", buf, 0x20u);
 
-          a4 = v35;
+          error = errorCopy2;
         }
       }
     }
@@ -286,8 +286,8 @@ LABEL_33:
         v37 = +[AMSLogConfig sharedConfig];
       }
 
-      v38 = [v37 OSLogObject];
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+      oSLogObject5 = [v37 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
       {
         v39 = objc_opt_class();
         *buf = 138543618;
@@ -295,7 +295,7 @@ LABEL_33:
         v65 = 2114;
         v66 = v8;
         v40 = v39;
-        _os_log_impl(&dword_192869000, v38, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attesting with expired certificates", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attesting with expired certificates", buf, 0x16u);
       }
     }
 
@@ -310,10 +310,10 @@ LABEL_33:
 
   else
   {
-    if (((1 << v19) & 6) != 0)
+    if (((1 << style3) & 6) != 0)
     {
       v53 = 0;
-      v23 = [AMSKeychain legacyAttestationForOptions:v6 error:&v53];
+      v23 = [AMSKeychain legacyAttestationForOptions:optionsCopy error:&v53];
       v22 = v53;
       if (v22)
       {
@@ -323,8 +323,8 @@ LABEL_33:
           v24 = +[AMSLogConfig sharedConfig];
         }
 
-        v25 = [v24 OSLogObject];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+        oSLogObject6 = [v24 OSLogObject];
+        if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
         {
           v26 = objc_opt_class();
           *buf = 138543874;
@@ -332,8 +332,8 @@ LABEL_33:
           v65 = 2114;
           v66 = v8;
           v67 = 2114;
-          v68 = v22;
-          _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Legacy attestation failed with error: %{public}@", buf, 0x20u);
+          regenerateKeys = v22;
+          _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Legacy attestation failed with error: %{public}@", buf, 0x20u);
         }
       }
 
@@ -346,7 +346,7 @@ LABEL_33:
     }
 
     v56 = 0;
-    v23 = [a1 _generateCertificateChainStringsForAccount:0 options:v6 error:&v56];
+    v23 = [self _generateCertificateChainStringsForAccount:0 options:optionsCopy error:&v56];
     v22 = v56;
     if (v22)
     {
@@ -356,8 +356,8 @@ LABEL_33:
         v42 = +[AMSLogConfig sharedConfig];
       }
 
-      v43 = [v42 OSLogObject];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+      oSLogObject7 = [v42 OSLogObject];
+      if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_ERROR))
       {
         v44 = objc_opt_class();
         *buf = 138543874;
@@ -365,8 +365,8 @@ LABEL_33:
         v65 = 2114;
         v66 = v8;
         v67 = 2114;
-        v68 = v22;
-        _os_log_impl(&dword_192869000, v43, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Certificate chain attestation failed with error: %{public}@", buf, 0x20u);
+        regenerateKeys = v22;
+        _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Certificate chain attestation failed with error: %{public}@", buf, 0x20u);
       }
     }
 
@@ -378,8 +378,8 @@ LABEL_33:
         v45 = +[AMSLogConfig sharedConfig];
       }
 
-      v46 = [v45 OSLogObject];
-      if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+      oSLogObject8 = [v45 OSLogObject];
+      if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
       {
         v47 = objc_opt_class();
         *buf = 138543618;
@@ -387,7 +387,7 @@ LABEL_33:
         v65 = 2114;
         v66 = v8;
         v48 = v47;
-        _os_log_impl(&dword_192869000, v46, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attesting with expired certificates", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attesting with expired certificates", buf, 0x16u);
       }
     }
 
@@ -403,10 +403,10 @@ LABEL_33:
 LABEL_62:
   if (v22)
   {
-    if (a4)
+    if (error)
     {
       v49 = v22;
-      *a4 = v22;
+      *error = v22;
     }
 
     [v7 removeAllObjects];
@@ -418,14 +418,14 @@ LABEL_67:
   return v50;
 }
 
-+ (id)attestationHTTPBodyDataWithStyle:(unint64_t)a3 regenerateKeys:(BOOL)a4 error:(id *)a5
++ (id)attestationHTTPBodyDataWithStyle:(unint64_t)style regenerateKeys:(BOOL)keys error:(id *)error
 {
-  v6 = a4;
+  keysCopy = keys;
   v43 = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(AMSKeychainOptions);
   [(AMSKeychainOptions *)v9 setPurpose:0];
-  [(AMSKeychainOptions *)v9 setRegenerateKeys:v6];
-  [(AMSKeychainOptions *)v9 setStyle:a3];
+  [(AMSKeychainOptions *)v9 setRegenerateKeys:keysCopy];
+  [(AMSKeychainOptions *)v9 setStyle:style];
   v10 = AMSSetLogKeyIfNeeded();
   v36 = 0;
   v32 = [AMSAttestation attestationWithOptions:v9 error:&v36];
@@ -438,8 +438,8 @@ LABEL_67:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       *buf = 138543874;
@@ -448,20 +448,20 @@ LABEL_67:
       v40 = v10;
       v41 = 2114;
       v42 = v11;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to generate primary attestation with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to generate primary attestation with error: %{public}@", buf, 0x20u);
     }
   }
 
   v15 = objc_alloc_init(AMSKeychainOptions);
   [(AMSKeychainOptions *)v15 setPurpose:1];
-  [(AMSKeychainOptions *)v15 setRegenerateKeys:v6];
-  [(AMSKeychainOptions *)v15 setStyle:a3];
+  [(AMSKeychainOptions *)v15 setRegenerateKeys:keysCopy];
+  [(AMSKeychainOptions *)v15 setStyle:style];
   v35 = v11;
   v16 = [AMSAttestation attestationWithOptions:v15 error:&v35];
   v17 = v35;
 
   v18 = v10;
-  v19 = a1;
+  selfCopy = self;
   if (v17)
   {
     v20 = +[AMSLogConfig sharedAttestationConfig];
@@ -470,8 +470,8 @@ LABEL_67:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       *buf = 138543874;
@@ -480,19 +480,19 @@ LABEL_67:
       v40 = v18;
       v41 = 2114;
       v42 = v17;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Extended attestation failed with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Extended attestation failed with error: %{public}@", buf, 0x20u);
     }
   }
 
   v34 = v17;
   v23 = v32;
-  v24 = [v19 _attestationPListWithStyle:a3 primaryAttestation:v32 extendedAttestation:v16 error:{&v34, v32}];
+  v24 = [selfCopy _attestationPListWithStyle:style primaryAttestation:v32 extendedAttestation:v16 error:{&v34, v32}];
   v25 = v34;
 
   if (v24)
   {
     v26 = [MEMORY[0x1E696AE40] dataWithPropertyList:v24 format:100 options:0 error:0];
-    if (!a5)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -506,24 +506,24 @@ LABEL_67:
     v29 = +[AMSLogConfig sharedConfig];
   }
 
-  v30 = [v29 OSLogObject];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [v29 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v31 = objc_opt_class();
     *buf = 138543618;
     v38 = v31;
     v39 = 2114;
     v40 = v18;
-    _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create attestation plist", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create attestation plist", buf, 0x16u);
   }
 
   v26 = 0;
   v23 = v33;
-  if (a5)
+  if (error)
   {
 LABEL_15:
     v27 = v25;
-    *a5 = v25;
+    *error = v25;
   }
 
 LABEL_16:
@@ -531,34 +531,34 @@ LABEL_16:
   return v26;
 }
 
-+ (id)_attestationPListWithStyle:(unint64_t)a3 primaryAttestation:(id)a4 extendedAttestation:(id)a5 error:(id *)a6
++ (id)_attestationPListWithStyle:(unint64_t)style primaryAttestation:(id)attestation extendedAttestation:(id)extendedAttestation error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  attestationCopy = attestation;
+  extendedAttestationCopy = extendedAttestation;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v12 = AMSSetLogKeyIfNeeded();
-  if (a3 > 5)
+  if (style > 5)
   {
 LABEL_16:
     v15 = 0;
     goto LABEL_41;
   }
 
-  if (((1 << a3) & 0x39) != 0)
+  if (((1 << style) & 0x39) != 0)
   {
-    if ([v9 count] == 2)
+    if ([attestationCopy count] == 2)
     {
-      if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 0 || [v10 count] == 2)
+      if ((style & 0xFFFFFFFFFFFFFFFBLL) != 0 || [extendedAttestationCopy count] == 2)
       {
-        if (v9)
+        if (attestationCopy)
         {
-          [v11 setObject:v9 forKeyedSubscript:@"primaryX509Chain"];
+          [v11 setObject:attestationCopy forKeyedSubscript:@"primaryX509Chain"];
         }
 
-        if (v10)
+        if (extendedAttestationCopy)
         {
-          [v11 setObject:v10 forKeyedSubscript:@"extendedX509Chain"];
+          [v11 setObject:extendedAttestationCopy forKeyedSubscript:@"extendedX509Chain"];
         }
 
         goto LABEL_16;
@@ -570,14 +570,14 @@ LABEL_16:
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v17 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v16 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_37;
       }
 
       v27 = objc_opt_class();
-      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(extendedAttestationCopy, "count")}];
       *buf = 138543874;
       v34 = v27;
       v35 = 2114;
@@ -594,18 +594,18 @@ LABEL_16:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
-      v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+      v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(attestationCopy, "count")}];
       *buf = 138543874;
       v34 = v18;
       v35 = 2114;
       v36 = v12;
       v37 = 2114;
       v38 = v19;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot create cert-based primary attestation with %{public}@ certs in chain.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot create cert-based primary attestation with %{public}@ certs in chain.", buf, 0x20u);
     }
 
     v20 = @"Incorrect number of attestation: %@";
@@ -613,19 +613,19 @@ LABEL_16:
 
   else
   {
-    if ([v9 count] == 1)
+    if ([attestationCopy count] == 1)
     {
-      if ([v10 count] == 1)
+      if ([extendedAttestationCopy count] == 1)
       {
-        if ([v9 count])
+        if ([attestationCopy count])
         {
-          v13 = [v9 objectAtIndexedSubscript:0];
+          v13 = [attestationCopy objectAtIndexedSubscript:0];
           [v11 setObject:v13 forKeyedSubscript:@"touchIdAttestation"];
         }
 
-        if ([v10 count])
+        if ([extendedAttestationCopy count])
         {
-          v14 = [v10 objectAtIndexedSubscript:0];
+          v14 = [extendedAttestationCopy objectAtIndexedSubscript:0];
           [v11 setObject:v14 forKeyedSubscript:@"extendedAttestation"];
         }
 
@@ -638,14 +638,14 @@ LABEL_16:
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v17 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v16 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_37;
       }
 
       v24 = objc_opt_class();
-      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(extendedAttestationCopy, "count")}];
       *buf = 138543874;
       v34 = v24;
       v35 = 2114;
@@ -654,11 +654,11 @@ LABEL_16:
       v38 = v25;
       v26 = "%{public}@: [%{public}@] Cannot create legacy-based extended attestation with %{public}@ elements in reponse.";
 LABEL_36:
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, v26, buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, v26, buf, 0x20u);
 
 LABEL_37:
       v20 = @"Incorrect number of attestations: %@";
-      v23 = v10;
+      v23 = extendedAttestationCopy;
       goto LABEL_38;
     }
 
@@ -668,24 +668,24 @@ LABEL_37:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
-      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(attestationCopy, "count")}];
       *buf = 138543874;
       v34 = v21;
       v35 = 2114;
       v36 = v12;
       v37 = 2114;
       v38 = v22;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot create legacy-based primary attestation with %{public}@ elements in reponse.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot create legacy-based primary attestation with %{public}@ elements in reponse.", buf, 0x20u);
     }
 
     v20 = @"Incorrect number of attestations: %@";
   }
 
-  v23 = v9;
+  v23 = attestationCopy;
 LABEL_38:
 
   v28 = MEMORY[0x1E696AEC0];
@@ -693,10 +693,10 @@ LABEL_38:
   v30 = [v28 stringWithFormat:v20, v29];
   v15 = AMSError(2, @"Attestation Error", v30, 0);
 
-  if (a6 && v15)
+  if (error && v15)
   {
     v31 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
 LABEL_41:
@@ -704,16 +704,16 @@ LABEL_41:
   return v11;
 }
 
-+ (id)_generateCertificateChainStringsForAccount:(id)a3 options:(id)a4 error:(id *)a5
++ (id)_generateCertificateChainStringsForAccount:(id)account options:(id)options error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DF70];
-  v8 = a4;
-  v9 = a3;
+  optionsCopy = options;
+  accountCopy = account;
   v10 = objc_alloc_init(v7);
-  v11 = [[AMSClientCertificateTask alloc] initWithOptions:v8];
+  v11 = [[AMSClientCertificateTask alloc] initWithOptions:optionsCopy];
 
-  v12 = [(AMSClientCertificateTask *)v11 performClientCertChainRequestWithAccount:v9];
+  v12 = [(AMSClientCertificateTask *)v11 performClientCertChainRequestWithAccount:accountCopy];
 
   v28 = 0;
   v13 = [v12 resultWithError:&v28];
@@ -726,8 +726,8 @@ LABEL_41:
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       v18 = AMSSetLogKeyIfNeeded();
@@ -737,7 +737,7 @@ LABEL_41:
       v32 = v18;
       v33 = 2114;
       v34 = v14;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Create cert chain failed with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Create cert chain failed with error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -748,10 +748,10 @@ LABEL_41:
   v19 = v10;
   v27 = v19;
   [v13 enumerateObjectsUsingBlock:&v23];
-  if (a5)
+  if (error)
   {
     v20 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v21 = [v19 copy];

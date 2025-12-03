@@ -1,34 +1,34 @@
 @interface NTKParmesanImageEditor
-- (BOOL)_writeItems:(id)a3 toResourceDirectory:(id)a4;
-- (BOOL)addImages:(id)a3;
-- (BOOL)savePreview:(id)a3 forPhotoAtIndex:(int64_t)a4;
-- (CGRect)_defaultCropForImage:(id)a3;
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3;
+- (BOOL)_writeItems:(id)items toResourceDirectory:(id)directory;
+- (BOOL)addImages:(id)images;
+- (BOOL)savePreview:(id)preview forPhotoAtIndex:(int64_t)index;
+- (CGRect)_defaultCropForImage:(id)image;
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index;
 - (NSArray)imageIdentifiers;
-- (id)_cropPreviewModelFromItem:(id)a3;
-- (id)_defaultLayoutFromImage:(id)a3;
-- (id)_encodeAndCopyImageItems:(id)a3 toResourceDirectory:(id)a4;
-- (id)_itemForIdentifier:(id)a3;
-- (id)_itemWithDefaultLayoutFromImage:(id)a3;
-- (id)_saveImage:(id)a3 withIdentifier:(id)a4 toDirectory:(id)a5;
-- (id)initForDevice:(id)a3;
-- (void)deletePhotoAtIndex:(int64_t)a3;
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
-- (void)previewOfLibraryPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)resetCropOfPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)setImageOrder:(id)a3;
-- (void)thumbnailInfoForPhotoAtIndex:(int64_t)a3 completion:(id)a4;
+- (id)_cropPreviewModelFromItem:(id)item;
+- (id)_defaultLayoutFromImage:(id)image;
+- (id)_encodeAndCopyImageItems:(id)items toResourceDirectory:(id)directory;
+- (id)_itemForIdentifier:(id)identifier;
+- (id)_itemWithDefaultLayoutFromImage:(id)image;
+- (id)_saveImage:(id)image withIdentifier:(id)identifier toDirectory:(id)directory;
+- (id)initForDevice:(id)device;
+- (void)deletePhotoAtIndex:(int64_t)index;
+- (void)finalizeWithProgress:(id)progress completion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (void)previewOfLibraryPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)resetCropOfPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)setImageOrder:(id)order;
+- (void)thumbnailInfoForPhotoAtIndex:(int64_t)index completion:(id)completion;
 @end
 
 @implementation NTKParmesanImageEditor
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = NTKParmesanImageEditor;
-  v3 = [(NTKCompanionResourceDirectoryEditor *)&v9 initWithResourceDirectory:0 forDevice:a3];
+  v3 = [(NTKCompanionResourceDirectoryEditor *)&v9 initWithResourceDirectory:0 forDevice:device];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -79,10 +79,10 @@
   return v10;
 }
 
-- (id)_itemForIdentifier:(id)a3
+- (id)_itemForIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -103,7 +103,7 @@
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = objc_msgSend_identifier(v13, v7, v8, v9, v19);
-        isEqualToString = objc_msgSend_isEqualToString_(v14, v15, v4, v16);
+        isEqualToString = objc_msgSend_isEqualToString_(v14, v15, identifierCopy, v16);
 
         if (isEqualToString)
         {
@@ -127,10 +127,10 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)addImages:(id)a3
+- (BOOL)addImages:(id)images
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imagesCopy = images;
   objc_msgSend_setState_(self, v5, 2, v6);
   v10 = objc_opt_new();
   if (self->_previewIsValid)
@@ -142,7 +142,7 @@ LABEL_11:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v4;
+  v11 = imagesCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v25, v29, 16);
   if (v13)
   {
@@ -175,20 +175,20 @@ LABEL_11:
   return 1;
 }
 
-- (void)deletePhotoAtIndex:(int64_t)a3
+- (void)deletePhotoAtIndex:(int64_t)index
 {
-  objc_msgSend_removeObjectAtIndex_(self->_items, a2, a3, v3);
+  objc_msgSend_removeObjectAtIndex_(self->_items, a2, index, v3);
   if (self->_previewIsValid)
   {
-    self->_previewIsValid = a3 != 0;
+    self->_previewIsValid = index != 0;
   }
 
   objc_msgSend_setState_(self, v6, 2, v7);
 }
 
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index
 {
-  v4 = objc_msgSend_objectAtIndexedSubscript_(self->_items, a2, a3, v3);
+  v4 = objc_msgSend_objectAtIndexedSubscript_(self->_items, a2, index, v3);
   v8 = objc_msgSend_image(v4, v5, v6, v7);
 
   objc_msgSend_size(v8, v9, v10, v11);
@@ -222,16 +222,16 @@ LABEL_11:
   return result;
 }
 
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
-  v14 = objc_msgSend_objectAtIndexedSubscript_(self->_items, a2, a3, a4);
-  objc_msgSend_removeObjectAtIndex_(self->_items, v7, a3, v8);
-  objc_msgSend_insertObject_atIndex_(self->_items, v9, v14, a4 - (a4 > a3));
+  v14 = objc_msgSend_objectAtIndexedSubscript_(self->_items, a2, index, toIndex);
+  objc_msgSend_removeObjectAtIndex_(self->_items, v7, index, v8);
+  objc_msgSend_insertObject_atIndex_(self->_items, v9, v14, toIndex - (toIndex > index));
   if (self->_previewIsValid)
   {
-    if (a3)
+    if (index)
     {
-      v12 = a4 == 0;
+      v12 = toIndex == 0;
     }
 
     else
@@ -246,18 +246,18 @@ LABEL_11:
   objc_msgSend_setState_(self, v10, 2, v11);
 }
 
-- (void)setImageOrder:(id)a3
+- (void)setImageOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   if (objc_msgSend_state(self, v5, v6, v7) && objc_msgSend_state(self, v8, v9, v10) <= 2)
   {
     v14 = objc_msgSend_count(self->_items, v11, v12, v13);
-    if (v14 == objc_msgSend_count(v4, v15, v16, v17))
+    if (v14 == objc_msgSend_count(orderCopy, v15, v16, v17))
     {
       v21 = objc_msgSend_firstObject(self->_items, v18, v19, v20);
       v25 = objc_msgSend_identifier(v21, v22, v23, v24);
 
-      v29 = objc_msgSend_firstObject(v4, v26, v27, v28);
+      v29 = objc_msgSend_firstObject(orderCopy, v26, v27, v28);
       v32 = v29;
       v33 = (v25 | v29) == 0;
       if (v25)
@@ -298,7 +298,7 @@ LABEL_11:
       v47 = &v48;
       v38 = v37;
       v46 = v38;
-      objc_msgSend_enumerateObjectsUsingBlock_(v4, v39, v45, v40);
+      objc_msgSend_enumerateObjectsUsingBlock_(orderCopy, v39, v45, v40);
       if (*(v49 + 24) == 1)
       {
         objc_msgSend_setState_(self, v41, 2, v42);
@@ -316,44 +316,44 @@ LABEL_11:
       v25 = objc_msgSend_logObject(NTKParmesanFaceBundle, v18, v19, v20);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        sub_23BFF6D64(v4, &self->_items, v25, v35);
+        sub_23BFF6D64(orderCopy, &self->_items, v25, v35);
       }
     }
   }
 }
 
-- (void)previewOfLibraryPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)previewOfLibraryPhotoAtIndex:(int64_t)index completion:(id)completion
 {
   items = self->_items;
-  v7 = a4;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(items, v8, a3, v9);
+  completionCopy = completion;
+  v13 = objc_msgSend_objectAtIndexedSubscript_(items, v8, index, v9);
   v12 = objc_msgSend__cropPreviewModelFromItem_(self, v10, v13, v11);
-  v7[2](v7, v12, 0);
+  completionCopy[2](completionCopy, v12, 0);
 }
 
-- (void)resetCropOfPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)resetCropOfPhotoAtIndex:(int64_t)index completion:(id)completion
 {
   items = self->_items;
-  v7 = a4;
-  v24 = objc_msgSend_objectAtIndexedSubscript_(items, v8, a3, v9);
+  completionCopy = completion;
+  v24 = objc_msgSend_objectAtIndexedSubscript_(items, v8, index, v9);
   v13 = objc_msgSend_image(v24, v10, v11, v12);
   v16 = objc_msgSend__defaultLayoutFromImage_(self, v14, v13, v15);
 
   objc_msgSend_setLayout_(v24, v17, v16, v18);
   objc_msgSend_setCanRevert_(v24, v19, 0, v20);
   v23 = objc_msgSend__cropPreviewModelFromItem_(self, v21, v24, v22);
-  v7[2](v7, v23, 0);
+  completionCopy[2](completionCopy, v23, 0);
 }
 
-- (BOOL)savePreview:(id)a3 forPhotoAtIndex:(int64_t)a4
+- (BOOL)savePreview:(id)preview forPhotoAtIndex:(int64_t)index
 {
   v136 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  previewCopy = preview;
   v10 = objc_msgSend_logObject(NTKParmesanFaceBundle, v7, v8, v9);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v135 = a4;
+    indexCopy = index;
     _os_log_impl(&dword_23BF0C000, v10, OS_LOG_TYPE_DEFAULT, "savePreview:%ld", buf, 0xCu);
   }
 
@@ -362,10 +362,10 @@ LABEL_11:
     v21 = objc_msgSend_logObject(NTKParmesanFaceBundle, v17, v18, v19);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      sub_23BFF6E88(v6, v21);
+      sub_23BFF6E88(previewCopy, v21);
     }
 
-    v24 = objc_msgSend_objectAtIndexedSubscript_(self->_items, v22, a4, v23);
+    v24 = objc_msgSend_objectAtIndexedSubscript_(self->_items, v22, index, v23);
     v28 = objc_msgSend_image(v24, v25, v26, v27);
     objc_msgSend__defaultCropForImage_(self, v29, v28, v30);
     v32 = v31;
@@ -374,7 +374,7 @@ LABEL_11:
     v38 = v37;
 
     v42 = objc_msgSend_default(NTKParmesanTimeLayout, v39, v40, v41);
-    v46 = objc_msgSend_crop(v6, v43, v44, v45);
+    v46 = objc_msgSend_crop(previewCopy, v43, v44, v45);
     objc_msgSend_cgRect(v46, v47, v48, v49);
     v139.origin.x = v32;
     v139.origin.y = v34;
@@ -382,7 +382,7 @@ LABEL_11:
     v139.size.height = v38;
     if (CGRectEqualToRect(v137, v139))
     {
-      v53 = objc_msgSend_timeLayout(v6, v50, v51, v52);
+      v53 = objc_msgSend_timeLayout(previewCopy, v50, v51, v52);
       isEqual = objc_msgSend_isEqual_(v53, v54, v42, v55);
 
       if (isEqual)
@@ -390,7 +390,7 @@ LABEL_11:
 LABEL_13:
         v60 = objc_msgSend_layout(v24, v57, v58, v59);
         v64 = objc_msgSend_timeLayout(v60, v61, v62, v63);
-        v68 = objc_msgSend_timeLayout(v6, v65, v66, v67);
+        v68 = objc_msgSend_timeLayout(previewCopy, v65, v66, v67);
         if (objc_msgSend_isEqual_(v64, v69, v68, v70))
         {
           objc_msgSend_layout(v24, v71, v72, v73);
@@ -400,7 +400,7 @@ LABEL_13:
           v81 = v80;
           v83 = v82;
           v85 = v84;
-          v89 = objc_msgSend_crop(v6, v86, v87, v88);
+          v89 = objc_msgSend_crop(previewCopy, v86, v87, v88);
           objc_msgSend_cgRect(v89, v90, v91, v92);
           v140.origin.x = v93;
           v140.origin.y = v94;
@@ -428,11 +428,11 @@ LABEL_20:
 
         if (self->_previewIsValid)
         {
-          self->_previewIsValid = a4 != 0;
+          self->_previewIsValid = index != 0;
         }
 
         objc_msgSend_setState_(self, v98, 2, v99);
-        v103 = objc_msgSend_crop(v6, v100, v101, v102);
+        v103 = objc_msgSend_crop(previewCopy, v100, v101, v102);
         objc_msgSend_cgRect(v103, v104, v105, v106);
         v108 = v107;
         v110 = v109;
@@ -441,7 +441,7 @@ LABEL_20:
         v118 = objc_msgSend_layout(v24, v115, v116, v117);
         objc_msgSend_setCrop_(v118, v119, v120, v121, v108, v110, v112, v114);
 
-        v125 = objc_msgSend_timeLayout(v6, v122, v123, v124);
+        v125 = objc_msgSend_timeLayout(previewCopy, v122, v123, v124);
         v129 = objc_msgSend_layout(v24, v126, v127, v128);
         objc_msgSend_setTimeLayout_(v129, v130, v125, v131);
 
@@ -463,32 +463,32 @@ LABEL_21:
   return v20;
 }
 
-- (void)thumbnailInfoForPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)thumbnailInfoForPhotoAtIndex:(int64_t)index completion:(id)completion
 {
   items = self->_items;
-  v6 = a4;
-  v28 = objc_msgSend_objectAtIndexedSubscript_(items, v7, a3, v8);
+  completionCopy = completion;
+  v28 = objc_msgSend_objectAtIndexedSubscript_(items, v7, index, v8);
   v12 = objc_msgSend_image(v28, v9, v10, v11);
   v16 = objc_msgSend_layout(v28, v13, v14, v15);
   v20 = objc_msgSend_timeLayout(v16, v17, v18, v19);
   v24 = objc_msgSend_layout(v28, v21, v22, v23);
   objc_msgSend_crop(v24, v25, v26, v27);
-  v6[2](v6, v12, v20);
+  completionCopy[2](completionCopy, v12, v20);
 }
 
-- (id)_itemWithDefaultLayoutFromImage:(id)a3
+- (id)_itemWithDefaultLayoutFromImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = [NTKParmesanImageEditorItem alloc];
-  v8 = objc_msgSend__defaultLayoutFromImage_(self, v6, v4, v7);
-  v10 = objc_msgSend_initWithImage_layout_(v5, v9, v4, v8);
+  v8 = objc_msgSend__defaultLayoutFromImage_(self, v6, imageCopy, v7);
+  v10 = objc_msgSend_initWithImage_layout_(v5, v9, imageCopy, v8);
 
   return v10;
 }
 
-- (id)_defaultLayoutFromImage:(id)a3
+- (id)_defaultLayoutFromImage:(id)image
 {
-  objc_msgSend__defaultCropForImage_(self, a2, a3, v3);
+  objc_msgSend__defaultCropForImage_(self, a2, image, v3);
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -503,13 +503,13 @@ LABEL_21:
   return v12;
 }
 
-- (CGRect)_defaultCropForImage:(id)a3
+- (CGRect)_defaultCropForImage:(id)image
 {
   v3 = *MEMORY[0x277D3B3C0] / *(MEMORY[0x277D3B3C0] + 8);
-  v4 = a3;
-  objc_msgSend_size(v4, v5, v6, v7);
+  imageCopy = image;
+  objc_msgSend_size(imageCopy, v5, v6, v7);
   v9 = v8;
-  objc_msgSend_size(v4, v10, v11, v12);
+  objc_msgSend_size(imageCopy, v10, v11, v12);
   v14 = v13;
 
   if (v3 * v14 >= v9)
@@ -537,19 +537,19 @@ LABEL_21:
   return result;
 }
 
-- (id)_cropPreviewModelFromItem:(id)a3
+- (id)_cropPreviewModelFromItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [NTKParmesanCrop alloc];
-  v8 = objc_msgSend_layout(v3, v5, v6, v7);
+  v8 = objc_msgSend_layout(itemCopy, v5, v6, v7);
   objc_msgSend_crop(v8, v9, v10, v11);
   v15 = objc_msgSend_initWithRect_(v4, v12, v13, v14);
 
   v16 = [NTKParmesanCropPreviewModel alloc];
-  v20 = objc_msgSend_image(v3, v17, v18, v19);
-  v24 = objc_msgSend_layout(v3, v21, v22, v23);
+  v20 = objc_msgSend_image(itemCopy, v17, v18, v19);
+  v24 = objc_msgSend_layout(itemCopy, v21, v22, v23);
   v28 = objc_msgSend_timeLayout(v24, v25, v26, v27);
-  canRevert = objc_msgSend_canRevert(v3, v29, v30, v31);
+  canRevert = objc_msgSend_canRevert(itemCopy, v29, v30, v31);
 
   v36 = canRevert;
   v34 = objc_msgSend_initWithPhoto_maskedPhoto_previewValidator_crop_timeLayout_useDepthEffect_revertable_(v16, v33, v20, 0, 0, v15, v28, 0, v36);
@@ -557,10 +557,10 @@ LABEL_21:
   return v34;
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v8 = objc_msgSend_logObject(NTKParmesanFaceBundle, v5, v6, v7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -586,7 +586,7 @@ LABEL_21:
   v37 = buf;
   v38 = v16;
   aBlock[4] = self;
-  v17 = v4;
+  v17 = completionCopy;
   v36 = v17;
   v18 = _Block_copy(aBlock);
   if (objc_msgSend_state(self, v19, v20, v21) >= 2 && objc_msgSend_state(self, v22, v23, v24) <= 2)
@@ -625,10 +625,10 @@ LABEL_7:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4
+- (void)finalizeWithProgress:(id)progress completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v9 = objc_msgSend_logObject(NTKParmesanFaceBundle, v6, v7, v8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -650,10 +650,10 @@ LABEL_7:
     v27[2] = sub_23BF18E04;
     v27[3] = &unk_278BA6BE0;
     v28 = v24;
-    v29 = v5;
+    v29 = completionCopy;
     v27[4] = self;
     v23 = v24;
-    v26 = v5;
+    v26 = completionCopy;
     dispatch_async(v25, v27);
   }
 
@@ -663,31 +663,31 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = sub_23BF18DF0;
     block[3] = &unk_278BA6B68;
-    v31 = v5;
-    v22 = v5;
+    v31 = completionCopy;
+    v22 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v23 = v31;
   }
 }
 
-- (BOOL)_writeItems:(id)a3 toResourceDirectory:(id)a4
+- (BOOL)_writeItems:(id)items toResourceDirectory:(id)directory
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  directoryCopy = directory;
   v11 = objc_msgSend_logObject(NTKParmesanFaceBundle, v8, v9, v10);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v33 = 134218242;
-    v34 = objc_msgSend_count(v6, v12, v13, v14);
+    v34 = objc_msgSend_count(itemsCopy, v12, v13, v14);
     v35 = 2114;
-    v36 = v7;
+    v36 = directoryCopy;
     _os_log_impl(&dword_23BF0C000, v11, OS_LOG_TYPE_INFO, "Writing %lu image items to %{public}@", &v33, 0x16u);
   }
 
-  v16 = objc_msgSend__encodeAndCopyImageItems_toResourceDirectory_(self, v15, v6, v7);
+  v16 = objc_msgSend__encodeAndCopyImageItems_toResourceDirectory_(self, v15, itemsCopy, directoryCopy);
   v20 = v16;
-  if (!v16 || (v21 = objc_msgSend_count(v16, v17, v18, v19), v21 != objc_msgSend_count(v6, v22, v23, v24)))
+  if (!v16 || (v21 = objc_msgSend_count(v16, v17, v18, v19), v21 != objc_msgSend_count(itemsCopy, v22, v23, v24)))
   {
     v30 = objc_msgSend_logObject(NTKParmesanFaceBundle, v17, v18, v19);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -725,24 +725,24 @@ LABEL_11:
   return v31;
 }
 
-- (id)_encodeAndCopyImageItems:(id)a3 toResourceDirectory:(id)a4
+- (id)_encodeAndCopyImageItems:(id)items toResourceDirectory:(id)directory
 {
   v122 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  directoryCopy = directory;
   v7 = objc_opt_new();
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v105 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v116, v121, 16);
   if (v105)
   {
     v104 = *v117;
     v9 = *MEMORY[0x277CBF3A8];
     v10 = *(MEMORY[0x277CBF3A8] + 8);
-    v111 = v6;
+    v111 = directoryCopy;
     v103 = v7;
     while (2)
     {
@@ -767,7 +767,7 @@ LABEL_11:
         v36 = objc_msgSend_UUIDString(v32, v33, v34, v35);
         v39 = objc_msgSend_stringWithFormat_(v28, v37, @"TransientImage-%@", v38, v36);
 
-        v41 = objc_msgSend__saveImage_withIdentifier_toDirectory_(self, v40, v27, v39, v6);
+        v41 = objc_msgSend__saveImage_withIdentifier_toDirectory_(self, v40, v27, v39, directoryCopy);
         if (!v41)
         {
 
@@ -829,7 +829,7 @@ LABEL_11:
         v7 = v103;
         objc_msgSend_addObject_(v103, v96, v95, v97);
 
-        v6 = v111;
+        directoryCopy = v111;
         v11 = v109 + 1;
       }
 
@@ -852,19 +852,19 @@ LABEL_18:
   return v100;
 }
 
-- (id)_saveImage:(id)a3 withIdentifier:(id)a4 toDirectory:(id)a5
+- (id)_saveImage:(id)image withIdentifier:(id)identifier toDirectory:(id)directory
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  directoryCopy = directory;
   v9 = MEMORY[0x277CCACA8];
-  v10 = a3;
-  v13 = objc_msgSend_stringWithFormat_(v9, v11, @"base_%@.heic", v12, v7);
-  v14 = UIImageHEICRepresentation(v10);
+  imageCopy = image;
+  v13 = objc_msgSend_stringWithFormat_(v9, v11, @"base_%@.heic", v12, identifierCopy);
+  v14 = UIImageHEICRepresentation(imageCopy);
 
   if (v14)
   {
-    v18 = objc_msgSend_stringByAppendingPathComponent_(v8, v15, v13, v17);
+    v18 = objc_msgSend_stringByAppendingPathComponent_(directoryCopy, v15, v13, v17);
     v22 = objc_msgSend_logObject(NTKParmesanFaceBundle, v19, v20, v21);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {

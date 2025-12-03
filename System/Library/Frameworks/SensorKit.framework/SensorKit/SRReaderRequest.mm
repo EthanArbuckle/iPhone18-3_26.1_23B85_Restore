@@ -1,8 +1,8 @@
 @interface SRReaderRequest
 - (NSString)description;
-- (SRReaderRequest)initWithCoder:(id)a3;
+- (SRReaderRequest)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRReaderRequest
@@ -14,23 +14,23 @@
   return [v3 stringWithFormat:@"%@ (%p): sensor: %@, bundleId: %@, deviceId: %@", NSStringFromClass(v4), self, self->_sensor, self->_bundleIdentifier, self->_deviceIdentifier];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:self->_bundleIdentifier forKey:@"BundleIdentifier"];
-  [a3 encodeObject:self->_sensor forKey:@"Sensor"];
+  [coder encodeObject:self->_bundleIdentifier forKey:@"BundleIdentifier"];
+  [coder encodeObject:self->_sensor forKey:@"Sensor"];
   deviceIdentifier = self->_deviceIdentifier;
 
-  [a3 encodeObject:deviceIdentifier forKey:@"DeviceIdentifier"];
+  [coder encodeObject:deviceIdentifier forKey:@"DeviceIdentifier"];
 }
 
-- (SRReaderRequest)initWithCoder:(id)a3
+- (SRReaderRequest)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -40,9 +40,9 @@
   v6 = [(SRReaderRequest *)&v8 init];
   if (v6)
   {
-    v6->_deviceIdentifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentifier"];
-    v6->_bundleIdentifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
-    v6->_sensor = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"Sensor"];
+    v6->_deviceIdentifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentifier"];
+    v6->_bundleIdentifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
+    v6->_sensor = [coder decodeObjectOfClass:objc_opt_class() forKey:@"Sensor"];
   }
 
   return v6;

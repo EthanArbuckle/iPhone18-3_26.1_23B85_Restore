@@ -1,13 +1,13 @@
 @interface MCMLibraryRepairForUser
 - (BOOL)_canRepairLocally;
-- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)a3 containerPath:(id)a4 containerIdentifier:(id)a5 error:(id *)a6 duringBlock:(id)a7;
-- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)a3 containerRootURL:(id)a4 error:(id *)a5 duringBlock:(id)a6;
-- (BOOL)performRepairForContainerPath:(id)a3 containerIdentifier:(id)a4 error:(id *)a5;
-- (MCMLibraryRepairForUser)initWithManagedUserPathRegistry:(id)a3 fileManager:(id)a4 classIterator:(id)a5;
+- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)l containerPath:(id)path containerIdentifier:(id)identifier error:(id *)error duringBlock:(id)block;
+- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)l containerRootURL:(id)rL error:(id *)error duringBlock:(id)block;
+- (BOOL)performRepairForContainerPath:(id)path containerIdentifier:(id)identifier error:(id *)error;
+- (MCMLibraryRepairForUser)initWithManagedUserPathRegistry:(id)registry fileManager:(id)manager classIterator:(id)iterator;
 - (MCMManagedUserPathRegistry)userRegistry;
-- (id)_managedPathFromContainerClassPath:(id)a3 registry:(id)a4;
+- (id)_managedPathFromContainerClassPath:(id)path registry:(id)registry;
 - (id)_managedPathsForGenericRepair;
-- (id)_setByAddingContainerClassPathsToSet:(id)a3 registry:(id)a4;
+- (id)_setByAddingContainerClassPathsToSet:(id)set registry:(id)registry;
 @end
 
 @implementation MCMLibraryRepairForUser
@@ -25,19 +25,19 @@
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = MCMLibraryRepairForUser;
-  v3 = [(MCMLibraryRepair *)&v12 _canRepairLocally];
+  _canRepairLocally = [(MCMLibraryRepair *)&v12 _canRepairLocally];
   getpid();
   v4 = MEMORY[0x1E69E9BD0];
-  v5 = [(MCMLibraryRepairForUser *)self userRegistry];
-  v6 = [v5 userIdentity];
-  v7 = [v6 homeDirectoryURL];
-  [v7 fileSystemRepresentation];
+  userRegistry = [(MCMLibraryRepairForUser *)self userRegistry];
+  userIdentity = [userRegistry userIdentity];
+  homeDirectoryURL = [userIdentity homeDirectoryURL];
+  [homeDirectoryURL fileSystemRepresentation];
   v11 = *v4;
   v8 = sandbox_check();
 
   if (v8)
   {
-    result = v3;
+    result = _canRepairLocally;
   }
 
   else
@@ -49,53 +49,53 @@
   return result;
 }
 
-- (id)_managedPathFromContainerClassPath:(id)a3 registry:(id)a4
+- (id)_managedPathFromContainerClassPath:(id)path registry:(id)registry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 userIdentity];
-  v8 = [v7 posixUser];
+  registryCopy = registry;
+  pathCopy = path;
+  userIdentity = [registryCopy userIdentity];
+  posixUser = [userIdentity posixUser];
 
-  v9 = [v6 baseURL];
-  v10 = [v5 managedPathForURL:v9];
+  baseURL = [pathCopy baseURL];
+  v10 = [registryCopy managedPathForURL:baseURL];
 
   v11 = [MCMManagedPath alloc];
-  v12 = [v6 categoryURL];
-  v13 = -[MCMManagedPath initWithURL:flags:ACLConfig:mode:dpClass:owner:parent:](v11, "initWithURL:flags:ACLConfig:mode:dpClass:owner:parent:", v12, 1, 1, [v6 posixMode], 0xFFFFFFFFLL, v8, v10);
+  categoryURL = [pathCopy categoryURL];
+  v13 = -[MCMManagedPath initWithURL:flags:ACLConfig:mode:dpClass:owner:parent:](v11, "initWithURL:flags:ACLConfig:mode:dpClass:owner:parent:", categoryURL, 1, 1, [pathCopy posixMode], 0xFFFFFFFFLL, posixUser, v10);
 
   v14 = [MCMManagedPath alloc];
-  v15 = [v6 classURL];
-  v16 = [v6 posixMode];
+  classURL = [pathCopy classURL];
+  posixMode = [pathCopy posixMode];
 
-  v17 = [(MCMManagedPath *)v14 initWithURL:v15 flags:1 ACLConfig:1 mode:v16 dpClass:0xFFFFFFFFLL owner:v8 parent:v13];
+  v17 = [(MCMManagedPath *)v14 initWithURL:classURL flags:1 ACLConfig:1 mode:posixMode dpClass:0xFFFFFFFFLL owner:posixUser parent:v13];
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)_setByAddingContainerClassPathsToSet:(id)a3 registry:(id)a4
+- (id)_setByAddingContainerClassPathsToSet:(id)set registry:(id)registry
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  v8 = [v6 userIdentity];
+  registryCopy = registry;
+  v7 = [set mutableCopy];
+  userIdentity = [registryCopy userIdentity];
   v9 = +[MCMContainerClassPath containerPathTypeClasses];
-  v10 = [(MCMLibraryRepair *)self classIterator];
+  classIterator = [(MCMLibraryRepair *)self classIterator];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __73__MCMLibraryRepairForUser__setByAddingContainerClassPathsToSet_registry___block_invoke;
   v21 = &unk_1E86B0CA0;
   v22 = v9;
-  v23 = v8;
-  v24 = self;
-  v25 = v6;
+  v23 = userIdentity;
+  selfCopy = self;
+  v25 = registryCopy;
   v26 = v7;
   v11 = v7;
-  v12 = v6;
-  v13 = v8;
+  v12 = registryCopy;
+  v13 = userIdentity;
   v14 = v9;
-  [v10 selectUserWithIterator:&v18];
+  [classIterator selectUserWithIterator:&v18];
 
   v15 = [v11 copy];
   v16 = *MEMORY[0x1E69E9840];
@@ -210,42 +210,42 @@ void __73__MCMLibraryRepairForUser__setByAddingContainerClassPathsToSet_registry
 - (id)_managedPathsForGenericRepair
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMLibraryRepairForUser *)self userRegistry];
-  v4 = [v3 paths];
-  v5 = [(MCMLibraryRepairForUser *)self _setByAddingContainerClassPathsToSet:v4 registry:v3];
+  userRegistry = [(MCMLibraryRepairForUser *)self userRegistry];
+  paths = [userRegistry paths];
+  v5 = [(MCMLibraryRepairForUser *)self _setByAddingContainerClassPathsToSet:paths registry:userRegistry];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (BOOL)performRepairForContainerPath:(id)a3 containerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)performRepairForContainerPath:(id)path containerIdentifier:(id)identifier error:(id *)error
 {
   v74 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  pathCopy = path;
   v8 = [MEMORY[0x1E695DFA8] set];
-  v9 = [(MCMLibraryRepairForUser *)self userRegistry];
-  v10 = [v9 userIdentity];
-  v11 = [v10 posixUser];
+  userRegistry = [(MCMLibraryRepairForUser *)self userRegistry];
+  userIdentity = [userRegistry userIdentity];
+  posixUser = [userIdentity posixUser];
 
-  v12 = [v7 containerClassPath];
-  v13 = [(MCMLibraryRepairForUser *)self _managedPathFromContainerClassPath:v12 registry:v9];
+  containerClassPath = [pathCopy containerClassPath];
+  v13 = [(MCMLibraryRepairForUser *)self _managedPathFromContainerClassPath:containerClassPath registry:userRegistry];
 
-  v14 = [v7 containerPathIdentifier];
+  containerPathIdentifier = [pathCopy containerPathIdentifier];
   v60 = v13;
-  v15 = [v13 managedPathByAppendingPathComponent:v14 flags:5 ACLConfig:1 mode:493 dpClass:0xFFFFFFFFLL owner:v11];
+  v15 = [v13 managedPathByAppendingPathComponent:containerPathIdentifier flags:5 ACLConfig:1 mode:493 dpClass:0xFFFFFFFFLL owner:posixUser];
 
   v59 = v15;
   [v8 addObject:v15];
-  v16 = [v9 userIdentity];
-  v17 = [v16 homeDirectoryURL];
-  v18 = [v17 path];
+  userIdentity2 = [userRegistry userIdentity];
+  homeDirectoryURL = [userIdentity2 homeDirectoryURL];
+  path = [homeDirectoryURL path];
 
-  if (!v18)
+  if (!path)
   {
-    v38 = [v9 userIdentity];
+    userIdentity3 = [userRegistry userIdentity];
 
-    if (!v38)
+    if (!userIdentity3)
     {
       v45 = container_log_handle_for_category();
       v41 = v60;
@@ -258,17 +258,17 @@ void __73__MCMLibraryRepairForUser__setByAddingContainerClassPathsToSet_registry
       goto LABEL_38;
     }
 
-    v39 = [v9 userIdentity];
-    v40 = [v39 homeDirectoryURL];
+    userIdentity4 = [userRegistry userIdentity];
+    homeDirectoryURL2 = [userIdentity4 homeDirectoryURL];
 
     v41 = v60;
-    if (v40)
+    if (homeDirectoryURL2)
     {
-      v42 = [v9 userIdentity];
-      v43 = [v42 homeDirectoryURL];
-      v44 = [v43 path];
+      userIdentity5 = [userRegistry userIdentity];
+      homeDirectoryURL3 = [userIdentity5 homeDirectoryURL];
+      path2 = [homeDirectoryURL3 path];
 
-      if (v44)
+      if (path2)
       {
 LABEL_39:
         v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MCMErrorDomain" code:75 userInfo:0];
@@ -279,10 +279,10 @@ LABEL_39:
       v45 = container_log_handle_for_category();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
       {
-        v46 = [v9 userIdentity];
-        v47 = [v46 homeDirectoryURL];
+        userIdentity6 = [userRegistry userIdentity];
+        homeDirectoryURL4 = [userIdentity6 homeDirectoryURL];
         *buf = 138412290;
-        v66 = v47;
+        v66 = homeDirectoryURL4;
         _os_log_fault_impl(&dword_1DF2C3000, v45, OS_LOG_TYPE_FAULT, "User identity has no home directory path cannot be computed (%@)", buf, 0xCu);
 
 LABEL_45:
@@ -294,9 +294,9 @@ LABEL_45:
       v45 = container_log_handle_for_category();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
       {
-        v46 = [v9 userIdentity];
+        userIdentity6 = [userRegistry userIdentity];
         *buf = 138412290;
-        v66 = v46;
+        v66 = userIdentity6;
         _os_log_fault_impl(&dword_1DF2C3000, v45, OS_LOG_TYPE_FAULT, "User identity has no home directory URL (%@)", buf, 0xCu);
         goto LABEL_45;
       }
@@ -312,7 +312,7 @@ LABEL_38:
   v20 = v64;
   if (v19)
   {
-    v21 = [v9 orderedPathsFromPaths:v8];
+    v21 = [userRegistry orderedPathsFromPaths:v8];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
@@ -322,11 +322,11 @@ LABEL_38:
     if (v22)
     {
       v23 = v22;
-      v54 = v11;
-      v55 = v9;
-      v56 = a5;
+      v54 = posixUser;
+      v55 = userRegistry;
+      errorCopy = error;
       v57 = v8;
-      v58 = v7;
+      v58 = pathCopy;
       v24 = *v71;
       v61 = *MEMORY[0x1E696A798];
       while (2)
@@ -349,18 +349,18 @@ LABEL_38:
             _os_log_debug_impl(&dword_1DF2C3000, v28, OS_LOG_TYPE_DEBUG, "Examining %@ for repair.", buf, 0xCu);
           }
 
-          v29 = [v27 owner];
-          v30 = [v29 UID];
-          v31 = [v27 owner];
-          v32 = [v31 primaryGID];
+          owner = [v27 owner];
+          v30 = [owner UID];
+          owner2 = [v27 owner];
+          primaryGID = [owner2 primaryGID];
           v63 = v26;
-          v33 = [(MCMLibraryRepair *)self fixPermissionsWithManagedPath:v27 uid:v30 gid:v32 error:&v63];
+          v33 = [(MCMLibraryRepair *)self fixPermissionsWithManagedPath:v27 uid:v30 gid:primaryGID error:&v63];
           v20 = v63;
 
           if (!v33)
           {
-            v34 = [v20 domain];
-            if (![v34 isEqualToString:v61])
+            domain = [v20 domain];
+            if (![domain isEqualToString:v61])
             {
 
 LABEL_32:
@@ -378,9 +378,9 @@ LABEL_32:
               goto LABEL_35;
             }
 
-            v35 = [v20 code];
+            code = [v20 code];
 
-            if (v35 != 2)
+            if (code != 2)
             {
               goto LABEL_32;
             }
@@ -411,10 +411,10 @@ LABEL_32:
       v37 = 1;
 LABEL_35:
       v8 = v57;
-      v7 = v58;
-      v9 = v55;
-      a5 = v56;
-      v11 = v54;
+      pathCopy = v58;
+      userRegistry = v55;
+      error = errorCopy;
+      posixUser = v54;
     }
 
     else
@@ -426,7 +426,7 @@ LABEL_35:
 
 LABEL_40:
     v49 = v59;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_43;
     }
@@ -445,13 +445,13 @@ LABEL_40:
 
   v37 = 0;
   v41 = v60;
-  if (a5)
+  if (error)
   {
 LABEL_41:
     if (!v37)
     {
       v51 = v20;
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -461,24 +461,24 @@ LABEL_43:
   return v37;
 }
 
-- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)a3 containerPath:(id)a4 containerIdentifier:(id)a5 error:(id *)a6 duringBlock:(id)a7
+- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)l containerPath:(id)path containerIdentifier:(id)identifier error:(id *)error duringBlock:(id)block
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = v14;
-  if (v14)
+  lCopy = l;
+  pathCopy = path;
+  identifierCopy = identifier;
+  blockCopy = block;
+  v15 = blockCopy;
+  if (blockCopy)
   {
     v19[0] = 0;
-    v16 = (*(v14 + 2))(v14, v11, v19);
-    v14 = v19[0];
-    if (a6 && (v16 & 1) == 0)
+    v16 = (*(blockCopy + 2))(blockCopy, lCopy, v19);
+    blockCopy = v19[0];
+    if (error && (v16 & 1) == 0)
     {
-      v14 = v14;
+      blockCopy = blockCopy;
       v16 = 0;
-      *a6 = v14;
+      *error = blockCopy;
     }
   }
 
@@ -491,23 +491,23 @@ LABEL_43:
   return v16;
 }
 
-- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)a3 containerRootURL:(id)a4 error:(id *)a5 duringBlock:(id)a6
+- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)l containerRootURL:(id)rL error:(id *)error duringBlock:(id)block
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  lCopy = l;
+  rLCopy = rL;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (blockCopy)
   {
     v16[0] = 0;
-    v13 = (*(v11 + 2))(v11, v9, v16);
-    v11 = v16[0];
-    if (a5 && (v13 & 1) == 0)
+    v13 = (*(blockCopy + 2))(blockCopy, lCopy, v16);
+    blockCopy = v16[0];
+    if (error && (v13 & 1) == 0)
     {
-      v11 = v11;
+      blockCopy = blockCopy;
       v13 = 0;
-      *a5 = v11;
+      *error = blockCopy;
     }
   }
 
@@ -520,17 +520,17 @@ LABEL_43:
   return v13;
 }
 
-- (MCMLibraryRepairForUser)initWithManagedUserPathRegistry:(id)a3 fileManager:(id)a4 classIterator:(id)a5
+- (MCMLibraryRepairForUser)initWithManagedUserPathRegistry:(id)registry fileManager:(id)manager classIterator:(id)iterator
 {
   v15 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  registryCopy = registry;
   v14.receiver = self;
   v14.super_class = MCMLibraryRepairForUser;
-  v10 = [(MCMLibraryRepair *)&v14 initWithManagedPathRegistry:v9 fileManager:a4 classIterator:a5];
+  v10 = [(MCMLibraryRepair *)&v14 initWithManagedPathRegistry:registryCopy fileManager:manager classIterator:iterator];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_userRegistry, a3);
+    objc_storeStrong(&v10->_userRegistry, registry);
   }
 
   v12 = *MEMORY[0x1E69E9840];

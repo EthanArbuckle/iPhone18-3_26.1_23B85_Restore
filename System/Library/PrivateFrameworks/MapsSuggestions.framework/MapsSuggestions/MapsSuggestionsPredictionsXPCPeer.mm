@@ -1,18 +1,18 @@
 @interface MapsSuggestionsPredictionsXPCPeer
 - (MapsSuggestionsDaemonMemory)memory;
-- (MapsSuggestionsPredictionsXPCPeer)initWithXPCConnection:(id)a3 memory:(id)a4;
+- (MapsSuggestionsPredictionsXPCPeer)initWithXPCConnection:(id)connection memory:(id)memory;
 - (NSString)description;
 - (void)dealloc;
-- (void)predictedTransportModeForDestinationEntryData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5;
-- (void)predictedTransportModeForDestinationMapItemData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5;
+- (void)predictedTransportModeForDestinationEntryData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler;
+- (void)predictedTransportModeForDestinationMapItemData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler;
 @end
 
 @implementation MapsSuggestionsPredictionsXPCPeer
 
-- (MapsSuggestionsPredictionsXPCPeer)initWithXPCConnection:(id)a3 memory:(id)a4
+- (MapsSuggestionsPredictionsXPCPeer)initWithXPCConnection:(id)connection memory:(id)memory
 {
-  v7 = a3;
-  objc_initWeak(&location, a4);
+  connectionCopy = connection;
+  objc_initWeak(&location, memory);
   v17.receiver = self;
   v17.super_class = MapsSuggestionsPredictionsXPCPeer;
   v8 = [(MapsSuggestionsPredictionsXPCPeer *)&v17 init];
@@ -23,7 +23,7 @@
     queue = v8->_queue;
     v8->_queue = v10;
 
-    objc_storeStrong(&v8->_connection, a3);
+    objc_storeStrong(&v8->_connection, connection);
     v12 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v8->_memory, v12);
 
@@ -32,7 +32,7 @@
     {
       connection = v8->_connection;
       *buf = 138412290;
-      v20 = connection;
+      connectionCopy2 = connection;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "PredictionsXPCPeer{%@} created.", buf, 0xCu);
     }
 
@@ -74,19 +74,19 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MapsSuggestionsPredictionsXPCPeer *)self connection];
-  v6 = [v5 debugDescription];
+  connection = [(MapsSuggestionsPredictionsXPCPeer *)self connection];
+  v6 = [connection debugDescription];
   v7 = [v3 initWithFormat:@"%@<%p> from %@", v4, self, v6];
 
   return v7;
 }
 
-- (void)predictedTransportModeForDestinationEntryData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5
+- (void)predictedTransportModeForDestinationEntryData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dataCopy = data;
+  coordinateDataCopy = coordinateData;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -95,9 +95,9 @@
     v13[2] = sub_10001AA7C;
     v13[3] = &unk_1000756D0;
     objc_copyWeak(&v17, location);
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    v14 = dataCopy;
+    v15 = coordinateDataCopy;
+    v16 = handlerCopy;
     dispatch_async(queue, v13);
 
     objc_destroyWeak(&v17);
@@ -122,12 +122,12 @@
   }
 }
 
-- (void)predictedTransportModeForDestinationMapItemData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5
+- (void)predictedTransportModeForDestinationMapItemData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dataCopy = data;
+  coordinateDataCopy = coordinateData;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -136,9 +136,9 @@
     v13[2] = sub_10001B2B4;
     v13[3] = &unk_1000756D0;
     objc_copyWeak(&v17, location);
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    v14 = dataCopy;
+    v15 = coordinateDataCopy;
+    v16 = handlerCopy;
     dispatch_async(queue, v13);
 
     objc_destroyWeak(&v17);

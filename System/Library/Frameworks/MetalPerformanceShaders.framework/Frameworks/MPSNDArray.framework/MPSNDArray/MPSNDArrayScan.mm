@@ -1,37 +1,37 @@
 @interface MPSNDArrayScan
-- (MPSNDArrayScan)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayScan)initWithDevice:(id)a3;
-- (MPSNDArrayScan)initWithDevice:(id)a3 axis:(unint64_t)a4 operation:(int)a5 exclusive:(BOOL)a6 reverse:(BOOL)a7;
+- (MPSNDArrayScan)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayScan)initWithDevice:(id)device;
+- (MPSNDArrayScan)initWithDevice:(id)device axis:(unint64_t)axis operation:(int)operation exclusive:(BOOL)exclusive reverse:(BOOL)reverse;
 @end
 
 @implementation MPSNDArrayScan
 
-- (MPSNDArrayScan)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayScan)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayScan;
-  return [(MPSNDArrayUnaryKernel *)&v5 initWithCoder:a3 device:a4];
+  return [(MPSNDArrayUnaryKernel *)&v5 initWithCoder:coder device:device];
 }
 
-- (MPSNDArrayScan)initWithDevice:(id)a3
+- (MPSNDArrayScan)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayScan;
-  return [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:a3];
+  return [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:device];
 }
 
-- (MPSNDArrayScan)initWithDevice:(id)a3 axis:(unint64_t)a4 operation:(int)a5 exclusive:(BOOL)a6 reverse:(BOOL)a7
+- (MPSNDArrayScan)initWithDevice:(id)device axis:(unint64_t)axis operation:(int)operation exclusive:(BOOL)exclusive reverse:(BOOL)reverse
 {
   v12.receiver = self;
   v12.super_class = MPSNDArrayScan;
-  result = [(MPSNDArrayUnaryKernel *)&v12 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryKernel *)&v12 initWithDevice:device];
   if (result)
   {
     result->super.super._encode = EncodeScan;
-    result->_operation = a5;
-    result->_axis = a4;
-    result->_exclusive = a6;
-    result->_reverse = a7;
+    result->_operation = operation;
+    result->_axis = axis;
+    result->_exclusive = exclusive;
+    result->_reverse = reverse;
   }
 
   return result;

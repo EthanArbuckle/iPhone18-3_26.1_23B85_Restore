@@ -1,15 +1,15 @@
 @interface LiquidLensLayer
 - (CGRect)bounds;
-- (_TtC8CameraUI15LiquidLensLayer)initWithLayer:(id)a3;
+- (_TtC8CameraUI15LiquidLensLayer)initWithLayer:(id)layer;
 - (double)cornerRadius;
 - (void)layoutSublayers;
-- (void)setBounds:(CGRect)a3;
-- (void)setCornerRadius:(double)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation LiquidLensLayer
 
-- (_TtC8CameraUI15LiquidLensLayer)initWithLayer:(id)a3
+- (_TtC8CameraUI15LiquidLensLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1A3A31E60();
@@ -25,15 +25,15 @@
   return result;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_1A39C9124(a3);
+  selfCopy = self;
+  sub_1A39C9124(radius);
 }
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A39CA1B8();
 }
 
@@ -49,12 +49,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for LiquidLensLayer();
   v7 = v9.receiver;

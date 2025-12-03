@@ -1,53 +1,53 @@
 @interface CNiOSABGroupsWithMembersPredicate
-- (CNiOSABGroupsWithMembersPredicate)initWithCoder:(id)a3;
-- (CNiOSABGroupsWithMembersPredicate)initWithContact:(id)a3 includeAllParentGroups:(BOOL)a4;
-- (CNiOSABGroupsWithMembersPredicate)initWithGroup:(id)a3 includeAllParentGroups:(BOOL)a4;
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CNiOSABGroupsWithMembersPredicate)initWithCoder:(id)coder;
+- (CNiOSABGroupsWithMembersPredicate)initWithContact:(id)contact includeAllParentGroups:(BOOL)groups;
+- (CNiOSABGroupsWithMembersPredicate)initWithGroup:(id)group includeAllParentGroups:(BOOL)groups;
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABGroupsWithMembersPredicate
 
-- (CNiOSABGroupsWithMembersPredicate)initWithGroup:(id)a3 includeAllParentGroups:(BOOL)a4
+- (CNiOSABGroupsWithMembersPredicate)initWithGroup:(id)group includeAllParentGroups:(BOOL)groups
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6 && (v13.receiver = self, v13.super_class = CNiOSABGroupsWithMembersPredicate, v7 = [(CNPredicate *)&v13 initWithPredicate:0], (self = v7) != 0))
+  groupCopy = group;
+  if (groupCopy && (v13.receiver = self, v13.super_class = CNiOSABGroupsWithMembersPredicate, v7 = [(CNPredicate *)&v13 initWithPredicate:0], (self = v7) != 0))
   {
     v7->_recordType = 1;
-    v8 = [v6 identifier];
-    v14[0] = v8;
+    identifier = [groupCopy identifier];
+    v14[0] = identifier;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     recordIdentifiers = self->_recordIdentifiers;
     self->_recordIdentifiers = v9;
 
-    self->_includeAllParentGroups = a4;
+    self->_includeAllParentGroups = groups;
     self = self;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (CNiOSABGroupsWithMembersPredicate)initWithContact:(id)a3 includeAllParentGroups:(BOOL)a4
+- (CNiOSABGroupsWithMembersPredicate)initWithContact:(id)contact includeAllParentGroups:(BOOL)groups
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6 && (v12.receiver = self, v12.super_class = CNiOSABGroupsWithMembersPredicate, (self = [(CNPredicate *)&v12 initWithPredicate:0]) != 0))
+  contactCopy = contact;
+  if (contactCopy && (v12.receiver = self, v12.super_class = CNiOSABGroupsWithMembersPredicate, (self = [(CNPredicate *)&v12 initWithPredicate:0]) != 0))
   {
-    if ([v6 isUnified])
+    if ([contactCopy isUnified])
     {
-      [v6 linkedContacts];
+      [contactCopy linkedContacts];
     }
 
     else
     {
-      v13[0] = v6;
+      v13[0] = contactCopy;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     }
     v8 = ;
@@ -56,29 +56,29 @@
     recordIdentifiers = self->_recordIdentifiers;
     self->_recordIdentifiers = v9;
 
-    self->_includeAllParentGroups = a4;
+    self->_includeAllParentGroups = groups;
     self = self;
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (CNiOSABGroupsWithMembersPredicate)initWithCoder:(id)a3
+- (CNiOSABGroupsWithMembersPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CNiOSABGroupsWithMembersPredicate;
-  v5 = [(CNPredicate *)&v15 initWithCoder:v4];
-  if (v5 && (v6 = MEMORY[0x1E695DFD8], v7 = objc_opt_class(), [v6 setWithObjects:{v7, objc_opt_class(), 0}], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "decodeObjectOfClasses:forKey:", v8, @"_recordIdentifiers"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "copy"), recordIdentifiers = v5->_recordIdentifiers, v5->_recordIdentifiers = v10, recordIdentifiers, v9, v8, v12 = objc_msgSend(v4, "decodeIntegerForKey:", @"_recordType"), v5->_recordType = v12, v12 <= 1))
+  v5 = [(CNPredicate *)&v15 initWithCoder:coderCopy];
+  if (v5 && (v6 = MEMORY[0x1E695DFD8], v7 = objc_opt_class(), [v6 setWithObjects:{v7, objc_opt_class(), 0}], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(coderCopy, "decodeObjectOfClasses:forKey:", v8, @"_recordIdentifiers"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "copy"), recordIdentifiers = v5->_recordIdentifiers, v5->_recordIdentifiers = v10, recordIdentifiers, v9, v8, v12 = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"_recordType"), v5->_recordType = v12, v12 <= 1))
   {
-    v5->_includeAllParentGroups = [v4 decodeBoolForKey:@"_includeAllParentGroups"];
+    v5->_includeAllParentGroups = [coderCopy decodeBoolForKey:@"_includeAllParentGroups"];
     v13 = v5;
   }
 
@@ -90,22 +90,22 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABGroupsWithMembersPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_recordIdentifiers forKey:{@"_recordIdentifiers", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_includeAllParentGroups forKey:@"_includeAllParentGroups"];
-  [v4 encodeInteger:self->_recordType forKey:@"_recordType"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_recordIdentifiers forKey:{@"_recordIdentifiers", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_includeAllParentGroups forKey:@"_includeAllParentGroups"];
+  [coderCopy encodeInteger:self->_recordType forKey:@"_recordType"];
 }
 
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error
 {
   [(CNiOSABGroupsWithMembersPredicate *)self recordType];
   [(CNiOSABGroupsWithMembersPredicate *)self includeAllParentGroups];
-  v5 = [(CNiOSABGroupsWithMembersPredicate *)self recordIdentifiers];
+  recordIdentifiers = [(CNiOSABGroupsWithMembersPredicate *)self recordIdentifiers];
   v6 = ABGroupCopyArrayOfAllGroupsWithMembersOfTypeWithUUIDs();
 
   return v6;

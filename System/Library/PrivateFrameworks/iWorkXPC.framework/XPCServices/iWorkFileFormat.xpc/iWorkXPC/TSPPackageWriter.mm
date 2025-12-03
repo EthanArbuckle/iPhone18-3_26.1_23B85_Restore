@@ -1,50 +1,50 @@
 @interface TSPPackageWriter
-+ (id)newPackageWriterWithPackageType:(int64_t)a3 URL:(id)a4 documentTargetURL:(id)a5 relativeURLForExternalData:(id)a6 packageIdentifier:(unsigned __int8)a7 documentProperties:(id)a8 documentMetadata:(id)a9 fileFormatVersion:(unint64_t)a10 updateType:(int64_t)a11 cloneMode:(BOOL)a12 documentSaveValidationPolicy:(id)a13 encryptionKey:(id)a14 originalDocumentPackage:(id)a15 originalSupportPackage:(id)a16 fileCoordinatorDelegate:(id)a17 progress:(id)a18 error:(id *)a19;
-- (BOOL)closeAndReturnError:(id *)a3;
-- (BOOL)flushPendingWritesReturningError:(id *)a3;
-- (BOOL)writeData:(id)a3 toRelativePath:(id)a4 allowEncryption:(BOOL)a5 error:(id *)a6;
-- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)a3;
++ (id)newPackageWriterWithPackageType:(int64_t)type URL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)self0 updateType:(int64_t)self1 cloneMode:(BOOL)self2 documentSaveValidationPolicy:(id)self3 encryptionKey:(id)self4 originalDocumentPackage:(id)self5 originalSupportPackage:(id)self6 fileCoordinatorDelegate:(id)self7 progress:(id)self8 error:(id *)self9;
+- (BOOL)closeAndReturnError:(id *)error;
+- (BOOL)flushPendingWritesReturningError:(id *)error;
+- (BOOL)writeData:(id)data toRelativePath:(id)path allowEncryption:(BOOL)encryption error:(id *)error;
+- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)path;
 - (TSPPackage)originalPackage;
 - (TSPPackageWriter)init;
-- (TSPPackageWriter)initWithURL:(id)a3 documentTargetURL:(id)a4 relativeURLForExternalData:(id)a5 packageIdentifier:(unsigned __int8)a6 documentProperties:(id)a7 documentMetadata:(id)a8 fileFormatVersion:(unint64_t)a9 updateType:(int64_t)a10 cloneMode:(BOOL)a11 documentSaveValidationPolicy:(id)a12 encryptionKey:(id)a13 originalDocumentPackage:(id)a14 originalSupportPackage:(id)a15 fileCoordinatorDelegate:(id)a16 progress:(id)a17 error:(id *)a18;
-- (id)copyData:(id)a3 withReadChannel:(id)a4 decryptionInfo:(id)a5 size:(unint64_t)a6 calculateCRC:(BOOL)a7 preferredFilename:(id)a8 error:(id *)a9;
-- (id)dataForZipEntry:(id)a3 inDataToWrite:(id)a4;
-- (id)filenameForData:(id)a3 preferredFilename:(id)a4;
-- (id)linkOrCopyData:(id)a3 fromURL:(id)a4 fromTemporaryLocation:(BOOL)a5 decryptionInfo:(id)a6 preferredFilename:(id)a7 error:(id *)a8;
-- (id)newCompressionComponentWriteChannelWithComponentWriteChannel:(id)a3 compressionAlgorithm:(int64_t)a4;
-- (id)newPackageWithPackageIdentifier:(unsigned __int8)a3 documentProperties:(id)a4 fileFormatVersion:(unint64_t)a5 decryptionKey:(id)a6 fileCoordinatorDelegate:(id)a7;
-- (id)newRawDataWriteChannelForRelativePath:(id)a3 originalLastModificationDate:(id)a4 originalSize:(unint64_t)a5 originalCRC:(unsigned int)a6 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a7;
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 packageURL:(id)a5;
-- (id)writtenPackageWithURL:(id)a3;
+- (TSPPackageWriter)initWithURL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)version updateType:(int64_t)self0 cloneMode:(BOOL)self1 documentSaveValidationPolicy:(id)self2 encryptionKey:(id)self3 originalDocumentPackage:(id)self4 originalSupportPackage:(id)self5 fileCoordinatorDelegate:(id)self6 progress:(id)self7 error:(id *)self8;
+- (id)copyData:(id)data withReadChannel:(id)channel decryptionInfo:(id)info size:(unint64_t)size calculateCRC:(BOOL)c preferredFilename:(id)filename error:(id *)error;
+- (id)dataForZipEntry:(id)entry inDataToWrite:(id)write;
+- (id)filenameForData:(id)data preferredFilename:(id)filename;
+- (id)linkOrCopyData:(id)data fromURL:(id)l fromTemporaryLocation:(BOOL)location decryptionInfo:(id)info preferredFilename:(id)filename error:(id *)error;
+- (id)newCompressionComponentWriteChannelWithComponentWriteChannel:(id)channel compressionAlgorithm:(int64_t)algorithm;
+- (id)newPackageWithPackageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties fileFormatVersion:(unint64_t)version decryptionKey:(id)key fileCoordinatorDelegate:(id)delegate;
+- (id)newRawDataWriteChannelForRelativePath:(id)path originalLastModificationDate:(id)date originalSize:(unint64_t)size originalCRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate;
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive packageURL:(id)l;
+- (id)writtenPackageWithURL:(id)l;
 - (void)closeCurrentChannel;
-- (void)closeWithQueue:(id)a3 completion:(id)a4;
+- (void)closeWithQueue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)a3;
-- (void)setError:(id)a3;
+- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)handler;
+- (void)setError:(id)error;
 @end
 
 @implementation TSPPackageWriter
 
-+ (id)newPackageWriterWithPackageType:(int64_t)a3 URL:(id)a4 documentTargetURL:(id)a5 relativeURLForExternalData:(id)a6 packageIdentifier:(unsigned __int8)a7 documentProperties:(id)a8 documentMetadata:(id)a9 fileFormatVersion:(unint64_t)a10 updateType:(int64_t)a11 cloneMode:(BOOL)a12 documentSaveValidationPolicy:(id)a13 encryptionKey:(id)a14 originalDocumentPackage:(id)a15 originalSupportPackage:(id)a16 fileCoordinatorDelegate:(id)a17 progress:(id)a18 error:(id *)a19
++ (id)newPackageWriterWithPackageType:(int64_t)type URL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)self0 updateType:(int64_t)self1 cloneMode:(BOOL)self2 documentSaveValidationPolicy:(id)self3 encryptionKey:(id)self4 originalDocumentPackage:(id)self5 originalSupportPackage:(id)self6 fileCoordinatorDelegate:(id)self7 progress:(id)self8 error:(id *)self9
 {
-  v37 = a7;
-  v38 = a4;
-  v43 = a5;
-  v42 = a6;
-  v41 = a8;
-  v40 = a9;
-  v23 = a3;
-  v39 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
-  v27 = a17;
-  v28 = a18;
-  if (a3 == 2)
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  typeCopy = type;
+  policyCopy = policy;
+  keyCopy = key;
+  packageCopy = package;
+  supportPackageCopy = supportPackage;
+  delegateCopy = delegate;
+  progressCopy = progress;
+  if (type == 2)
   {
-    v29 = v38;
+    v29 = lCopy;
     v33 = objc_opt_class();
-    v30 = a12;
+    modeCopy2 = mode;
 LABEL_11:
     if (v33)
     {
@@ -54,17 +54,17 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v29 = v38;
-  v30 = a12;
-  if (v23 == 1)
+  v29 = lCopy;
+  modeCopy2 = mode;
+  if (typeCopy == 1)
   {
 LABEL_9:
     v33 = objc_opt_class();
-    v30 = 0;
+    modeCopy2 = 0;
     goto LABEL_11;
   }
 
-  if (!v23)
+  if (!typeCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -98,8 +98,8 @@ LABEL_12:
 
   v33 = 0;
 LABEL_17:
-  LOBYTE(v36) = v30;
-  v34 = [[v33 alloc] initWithURL:v29 documentTargetURL:v43 relativeURLForExternalData:v42 packageIdentifier:v37 documentProperties:v41 documentMetadata:v40 fileFormatVersion:a10 updateType:a11 cloneMode:v36 documentSaveValidationPolicy:v39 encryptionKey:v24 originalDocumentPackage:v25 originalSupportPackage:v26 fileCoordinatorDelegate:v27 progress:v28 error:a19];
+  LOBYTE(v36) = modeCopy2;
+  v34 = [[v33 alloc] initWithURL:v29 documentTargetURL:rLCopy relativeURLForExternalData:dataCopy packageIdentifier:identifierCopy documentProperties:propertiesCopy documentMetadata:metadataCopy fileFormatVersion:version updateType:updateType cloneMode:v36 documentSaveValidationPolicy:policyCopy encryptionKey:keyCopy originalDocumentPackage:packageCopy originalSupportPackage:supportPackageCopy fileCoordinatorDelegate:delegateCopy progress:progressCopy error:error];
 
   return v34;
 }
@@ -138,24 +138,24 @@ LABEL_17:
   objc_exception_throw(v7);
 }
 
-- (TSPPackageWriter)initWithURL:(id)a3 documentTargetURL:(id)a4 relativeURLForExternalData:(id)a5 packageIdentifier:(unsigned __int8)a6 documentProperties:(id)a7 documentMetadata:(id)a8 fileFormatVersion:(unint64_t)a9 updateType:(int64_t)a10 cloneMode:(BOOL)a11 documentSaveValidationPolicy:(id)a12 encryptionKey:(id)a13 originalDocumentPackage:(id)a14 originalSupportPackage:(id)a15 fileCoordinatorDelegate:(id)a16 progress:(id)a17 error:(id *)a18
+- (TSPPackageWriter)initWithURL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)version updateType:(int64_t)self0 cloneMode:(BOOL)self1 documentSaveValidationPolicy:(id)self2 encryptionKey:(id)self3 originalDocumentPackage:(id)self4 originalSupportPackage:(id)self5 fileCoordinatorDelegate:(id)self6 progress:(id)self7 error:(id *)self8
 {
-  v73 = a6;
-  v22 = a3;
-  v83 = a4;
-  v84 = a5;
-  v23 = a7;
-  v24 = a8;
-  v82 = v23;
-  v74 = a8;
-  v75 = a12;
-  v85 = a13;
-  v76 = a14;
-  v77 = a15;
-  obj = a16;
-  v78 = a17;
-  v87 = v22;
-  if ([v22 isFileURL])
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  v82 = propertiesCopy;
+  metadataCopy2 = metadata;
+  policyCopy = policy;
+  keyCopy = key;
+  packageCopy = package;
+  supportPackageCopy = supportPackage;
+  obj = delegate;
+  progressCopy = progress;
+  v87 = lCopy;
+  if ([lCopy isFileURL])
   {
     v92.receiver = self;
     v92.super_class = TSPPackageWriter;
@@ -164,45 +164,45 @@ LABEL_17:
     {
       v47 = 0;
 LABEL_33:
-      if (a18 && !v25)
+      if (error && !v25)
       {
-        *a18 = [NSError tsp_ensureSaveErrorWithError:v47];
+        *error = [NSError tsp_ensureSaveErrorWithError:v47];
       }
 
-      v45 = v25;
+      selfCopy2 = v25;
 
-      v46 = v45;
+      v46 = selfCopy2;
       goto LABEL_37;
     }
 
-    v26 = [v22 copy];
+    v26 = [lCopy copy];
     URL = v25->_URL;
     v25->_URL = v26;
 
-    v28 = [v83 copy];
+    v28 = [rLCopy copy];
     documentTargetURL = v25->_documentTargetURL;
     v25->_documentTargetURL = v28;
 
-    v30 = [v84 copy];
+    v30 = [dataCopy copy];
     relativeURLForExternalData = v25->_relativeURLForExternalData;
     v25->_relativeURLForExternalData = v30;
 
-    objc_storeStrong(&v25->_documentMetadata, v24);
-    objc_storeStrong(&v25->_documentSaveValidationPolicy, a12);
-    objc_storeStrong(&v25->_encryptionKey, a13);
-    objc_storeStrong(&v25->_originalDocumentPackage, a14);
-    objc_storeStrong(&v25->_originalSupportPackage, a15);
+    objc_storeStrong(&v25->_documentMetadata, metadataCopy);
+    objc_storeStrong(&v25->_documentSaveValidationPolicy, policy);
+    objc_storeStrong(&v25->_encryptionKey, key);
+    objc_storeStrong(&v25->_originalDocumentPackage, package);
+    objc_storeStrong(&v25->_originalSupportPackage, supportPackage);
     objc_storeWeak(&v25->_fileCoordinatorDelegate, obj);
-    v32 = [(TSPPackageWriter *)v25 newPackageWithPackageIdentifier:v73 documentProperties:v82 fileFormatVersion:a9 decryptionKey:v85 fileCoordinatorDelegate:v25];
+    v32 = [(TSPPackageWriter *)v25 newPackageWithPackageIdentifier:identifierCopy documentProperties:v82 fileFormatVersion:version decryptionKey:keyCopy fileCoordinatorDelegate:v25];
     writtenPackage = v25->_writtenPackage;
     v25->_writtenPackage = v32;
 
-    v25->_updateType = a10;
-    objc_storeStrong(&v25->_progress, a17);
+    v25->_updateType = type;
+    objc_storeStrong(&v25->_progress, progress);
     v34 = v25->_writtenPackage;
-    v35 = [objc_opt_class() zipArchiveURLFromPackageURL:v22];
+    v35 = [objc_opt_class() zipArchiveURLFromPackageURL:lCopy];
     v36 = v35;
-    if (a11)
+    if (mode)
     {
       v91 = 0;
       v37 = [v35 checkResourceIsReachableAndReturnError:&v91];
@@ -256,15 +256,15 @@ LABEL_26:
             v80 = v36;
             v56 = objc_opt_class();
             v57 = NSStringFromClass(v56);
-            v58 = [v47 domain];
-            v59 = [v47 code];
-            v60 = [v47 tsp_isRecoverable];
-            v61 = [v47 tsp_hintsDescription];
-            v62 = v61;
+            domain = [v47 domain];
+            code = [v47 code];
+            tsp_isRecoverable = [v47 tsp_isRecoverable];
+            tsp_hintsDescription = [v47 tsp_hintsDescription];
+            v62 = tsp_hintsDescription;
             v63 = &stru_1001D3878;
             *buf = 138413826;
             v94 = v80;
-            v64 = v60 == 0;
+            v64 = tsp_isRecoverable == 0;
             v36 = v80;
             v95 = 2114;
             if (!v64)
@@ -274,13 +274,13 @@ LABEL_26:
 
             v96 = v57;
             v97 = 2114;
-            v98 = v58;
+            v98 = domain;
             v99 = 2048;
-            v100 = v59;
+            v100 = code;
             v101 = 2114;
             v102 = v63;
             v103 = 2114;
-            v104 = v61;
+            v104 = tsp_hintsDescription;
             v105 = 2112;
             v106 = v47;
             _os_log_error_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "Failed to create ZIP archive writer. zipArchiveURL=%@, error=errorClass=%{public}@, domain=%{public}@, code=%zd, %{public}@hints=%{public}@ (%@) ", buf, 0x48u);
@@ -307,15 +307,15 @@ LABEL_26:
           v81 = v36;
           v65 = objc_opt_class();
           v66 = NSStringFromClass(v65);
-          v67 = [v40 domain];
-          v68 = [v40 code];
-          v69 = [v40 tsp_isRecoverable];
-          v70 = [v40 tsp_hintsDescription];
-          v71 = v70;
+          domain2 = [v40 domain];
+          code2 = [v40 code];
+          tsp_isRecoverable2 = [v40 tsp_isRecoverable];
+          tsp_hintsDescription2 = [v40 tsp_hintsDescription];
+          v71 = tsp_hintsDescription2;
           v72 = &stru_1001D3878;
           *buf = 138413826;
           v94 = v81;
-          v64 = v69 == 0;
+          v64 = tsp_isRecoverable2 == 0;
           v36 = v81;
           v95 = 2114;
           if (!v64)
@@ -325,13 +325,13 @@ LABEL_26:
 
           v96 = v66;
           v97 = 2114;
-          v98 = v67;
+          v98 = domain2;
           v99 = 2048;
-          v100 = v68;
+          v100 = code2;
           v101 = 2114;
           v102 = v72;
           v103 = 2114;
-          v104 = v70;
+          v104 = tsp_hintsDescription2;
           v105 = 2112;
           v106 = v40;
           _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Error reading zip archive, zipArchiveURL=%@, errorClass=%{public}@, domain=%{public}@, code=%zd, %{public}@hints=%{public}@ (%@) ", buf, 0x48u);
@@ -372,17 +372,17 @@ LABEL_26:
   [TSUAssertionHandler handleFailureInFunction:v43 file:v44 lineNumber:156 isFatal:0 description:"Don't support writing to non-file URLs"];
 
   +[TSUAssertionHandler logBacktraceThrottled];
-  if (a18)
+  if (error)
   {
     [NSError tsp_saveDocumentErrorWithUserInfo:0];
-    v45 = self;
-    *a18 = v46 = 0;
+    selfCopy2 = self;
+    *error = v46 = 0;
   }
 
   else
   {
     v46 = 0;
-    v45 = self;
+    selfCopy2 = self;
   }
 
 LABEL_37:
@@ -421,14 +421,14 @@ LABEL_37:
 
 - (TSPPackage)originalPackage
 {
-  v3 = [(TSPPackage *)self->_writtenPackage packageIdentifier];
-  if (v3 == 1)
+  packageIdentifier = [(TSPPackage *)self->_writtenPackage packageIdentifier];
+  if (packageIdentifier == 1)
   {
     v4 = 16;
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (packageIdentifier == 2)
   {
     v4 = 24;
 LABEL_5:
@@ -442,11 +442,11 @@ LABEL_7:
   return v5;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
     errorQueue = self->_errorQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -454,17 +454,17 @@ LABEL_7:
     v7[2] = sub_100004104;
     v7[3] = &unk_1001C52C8;
     v7[4] = self;
-    v8 = v4;
+    v8 = errorCopy;
     dispatch_async(errorQueue, v7);
   }
 }
 
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 packageURL:(id)a5
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive packageURL:(id)l
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  archiveCopy = archive;
+  locatorCopy = locator;
+  lCopy = l;
+  if (!locatorCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -484,7 +484,7 @@ LABEL_7:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (v6)
+  if (archiveCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -504,16 +504,16 @@ LABEL_7:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v14 = [(TSPPackageWriter *)self componentZipArchiveWriter];
-  v15 = [TSPPackage objectArchiveEntryPathForPackageLocator:v8];
-  v16 = [v14 entryWithName:v15];
+  componentZipArchiveWriter = [(TSPPackageWriter *)self componentZipArchiveWriter];
+  v15 = [TSPPackage objectArchiveEntryPathForPackageLocator:locatorCopy];
+  v16 = [componentZipArchiveWriter entryWithName:v15];
 
   if (v16)
   {
     v17 = [TSPPackageEntryInfo alloc];
     v18 = [v16 size];
-    v19 = [v16 lastModificationDate];
-    v20 = -[TSPPackageEntryInfo initWithEncodedLength:lastModificationDate:CRC:](v17, "initWithEncodedLength:lastModificationDate:CRC:", v18, v19, [v16 CRC]);
+    lastModificationDate = [v16 lastModificationDate];
+    v20 = -[TSPPackageEntryInfo initWithEncodedLength:lastModificationDate:CRC:](v17, "initWithEncodedLength:lastModificationDate:CRC:", v18, lastModificationDate, [v16 CRC]);
   }
 
   else
@@ -531,18 +531,18 @@ LABEL_7:
   self->_componentWriteChannel = 0;
 }
 
-- (id)newCompressionComponentWriteChannelWithComponentWriteChannel:(id)a3 compressionAlgorithm:(int64_t)a4
+- (id)newCompressionComponentWriteChannelWithComponentWriteChannel:(id)channel compressionAlgorithm:(int64_t)algorithm
 {
-  v5 = a3;
-  v6 = v5;
+  channelCopy = channel;
+  v6 = channelCopy;
   v7 = 0;
-  if (a4 <= 2)
+  if (algorithm <= 2)
   {
-    if (a4)
+    if (algorithm)
     {
-      if (a4 != 1)
+      if (algorithm != 1)
       {
-        if (a4 == 2)
+        if (algorithm == 2)
         {
           v8 = [TSPCompressionComponentWriteChannel alloc];
           v9 = 256;
@@ -554,12 +554,12 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      v10 = v5;
+      v10 = channelCopy;
     }
 
     else
     {
-      v10 = [[TSPSnappyComponentWriteChannel alloc] initWithWriteChannel:v5];
+      v10 = [[TSPSnappyComponentWriteChannel alloc] initWithWriteChannel:channelCopy];
     }
 
 LABEL_15:
@@ -567,7 +567,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  switch(a4)
+  switch(algorithm)
   {
     case 3:
       v8 = [TSPCompressionComponentWriteChannel alloc];
@@ -588,7 +588,7 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)flushPendingWritesReturningError:(id *)a3
+- (BOOL)flushPendingWritesReturningError:(id *)error
 {
   [(TSPPackageWriter *)self closeCurrentChannel];
   v16 = 0;
@@ -598,7 +598,7 @@ LABEL_16:
   v20 = sub_100004C54;
   v21 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(TSPPackageWriter *)self componentZipArchiveWriter];
+  componentZipArchiveWriter = [(TSPPackageWriter *)self componentZipArchiveWriter];
   v7 = dispatch_get_global_queue(0, 0);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -607,16 +607,16 @@ LABEL_16:
   v15 = &v16;
   v8 = v5;
   v14 = v8;
-  [v6 flushCurrentEntryWithQueue:v7 completion:v13];
+  [componentZipArchiveWriter flushCurrentEntryWithQueue:v7 completion:v13];
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v17;
-  if (a3)
+  if (error)
   {
     v10 = v17[5];
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
       v9 = v17;
     }
   }
@@ -627,19 +627,19 @@ LABEL_16:
   return v11;
 }
 
-- (id)filenameForData:(id)a3 preferredFilename:(id)a4
+- (id)filenameForData:(id)data preferredFilename:(id)filename
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 stringByDeletingPathExtension];
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"-%llu", [v5 identifier]);
-  v9 = [v6 pathExtension];
-  v10 = [v9 length];
-  if ([(__CFString *)v7 hasPrefix:@"~"])
+  dataCopy = data;
+  filenameCopy = filename;
+  stringByDeletingPathExtension = [filenameCopy stringByDeletingPathExtension];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"-%llu", [dataCopy identifier]);
+  pathExtension = [filenameCopy pathExtension];
+  v10 = [pathExtension length];
+  if ([(__CFString *)stringByDeletingPathExtension hasPrefix:@"~"])
   {
-    v11 = [@"x" stringByAppendingString:v7];
+    v11 = [@"x" stringByAppendingString:stringByDeletingPathExtension];
 
-    v7 = v11;
+    stringByDeletingPathExtension = v11;
   }
 
   v12 = [v8 length];
@@ -653,21 +653,21 @@ LABEL_16:
     v13 = 248;
   }
 
-  v14 = [(__CFString *)v7 length];
+  v14 = [(__CFString *)stringByDeletingPathExtension length];
   v15 = @"data";
   if (v14)
   {
-    v15 = v7;
+    v15 = stringByDeletingPathExtension;
   }
 
   v16 = v15;
 
   v17 = v16;
-  v18 = [(__CFString *)v16 fileSystemRepresentation];
-  if (v18)
+  fileSystemRepresentation = [(__CFString *)v16 fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
     v19 = +[NSFileManager defaultManager];
-    v20 = [v19 stringWithFileSystemRepresentation:v18 length:strlen(v18)];
+    v20 = [v19 stringWithFileSystemRepresentation:fileSystemRepresentation length:strlen(fileSystemRepresentation)];
     v21 = [v20 tsu_substringWithComposedCharacterSequencesTruncatedToLength:v13 - v12];
 
     v17 = v21;
@@ -677,7 +677,7 @@ LABEL_16:
   v23 = v22;
   if (v10)
   {
-    v24 = [v22 stringByAppendingPathExtension:v9];
+    v24 = [v22 stringByAppendingPathExtension:pathExtension];
 
     v23 = v24;
   }
@@ -685,18 +685,18 @@ LABEL_16:
   return v23;
 }
 
-- (id)linkOrCopyData:(id)a3 fromURL:(id)a4 fromTemporaryLocation:(BOOL)a5 decryptionInfo:(id)a6 preferredFilename:(id)a7 error:(id *)a8
+- (id)linkOrCopyData:(id)data fromURL:(id)l fromTemporaryLocation:(BOOL)location decryptionInfo:(id)info preferredFilename:(id)filename error:(id *)error
 {
-  v28 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[TSUFileIOChannel alloc] initForReadingURL:v13 error:a8];
+  dataCopy = data;
+  lCopy = l;
+  infoCopy = info;
+  filenameCopy = filename;
+  v16 = [[TSUFileIOChannel alloc] initForReadingURL:lCopy error:error];
   if (v16)
   {
     v30 = 0;
     v29 = 0;
-    v17 = [v13 getResourceValue:&v30 forKey:NSURLFileSizeKey error:&v29];
+    v17 = [lCopy getResourceValue:&v30 forKey:NSURLFileSizeKey error:&v29];
     v18 = v30;
     v19 = v29;
     if ((v17 & 1) == 0)
@@ -710,19 +710,19 @@ LABEL_16:
       v20 = UnsafePointer;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v13 path];
+        path = [lCopy path];
         v24 = objc_opt_class();
         v27 = NSStringFromClass(v24);
-        v26 = [v19 domain];
-        v25 = [v19 code];
+        domain = [v19 domain];
+        code = [v19 code];
         *buf = 138413314;
-        v32 = v23;
+        v32 = path;
         v33 = 2114;
         v34 = v27;
         v35 = 2114;
-        v36 = v26;
+        v36 = domain;
         v37 = 2048;
-        v38 = v25;
+        v38 = code;
         v39 = 2112;
         v40 = v19;
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Failed to retrieve file size for path: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -731,7 +731,7 @@ LABEL_16:
       v18 = 0;
     }
 
-    v21 = -[TSPPackageWriter copyData:withReadChannel:decryptionInfo:size:calculateCRC:preferredFilename:error:](self, "copyData:withReadChannel:decryptionInfo:size:calculateCRC:preferredFilename:error:", v28, v16, v14, [v18 unsignedLongLongValue], 1, v15, a8);
+    v21 = -[TSPPackageWriter copyData:withReadChannel:decryptionInfo:size:calculateCRC:preferredFilename:error:](self, "copyData:withReadChannel:decryptionInfo:size:calculateCRC:preferredFilename:error:", dataCopy, v16, infoCopy, [v18 unsignedLongLongValue], 1, filenameCopy, error);
     [v16 close];
   }
 
@@ -743,31 +743,31 @@ LABEL_16:
   return v21;
 }
 
-- (id)copyData:(id)a3 withReadChannel:(id)a4 decryptionInfo:(id)a5 size:(unint64_t)a6 calculateCRC:(BOOL)a7 preferredFilename:(id)a8 error:(id *)a9
+- (id)copyData:(id)data withReadChannel:(id)channel decryptionInfo:(id)info size:(unint64_t)size calculateCRC:(BOOL)c preferredFilename:(id)filename error:(id *)error
 {
-  v10 = a7;
-  v15 = a3;
-  v42 = a4;
-  v16 = a5;
-  v39 = a8;
-  v40 = v16;
+  cCopy = c;
+  dataCopy = data;
+  channelCopy = channel;
+  infoCopy = info;
+  filenameCopy = filename;
+  v40 = infoCopy;
   [(TSPPackageWriter *)self closeCurrentChannel];
-  v41 = [(TSPPackageWriter *)self filenameForData:v15 preferredFilename:v39];
+  v41 = [(TSPPackageWriter *)self filenameForData:dataCopy preferredFilename:filenameCopy];
   v44 = [@"Data" stringByAppendingPathComponent:v41];
-  if (UnsafePointer(v16, self->_encryptionKey, 0x100000))
+  if (UnsafePointer(infoCopy, self->_encryptionKey, 0x100000))
   {
-    v43 = UnsafePointer(self->_encryptionKey, 0x100000);
+    mutableCryptoInfoCopy = UnsafePointer(self->_encryptionKey, 0x100000);
     v17 = 0;
-    v18 = 0;
+    sizeCopy = 0;
   }
 
   else
   {
-    v43 = [v16 mutableCryptoInfoCopy];
-    v19 = [v15 storage];
+    mutableCryptoInfoCopy = [infoCopy mutableCryptoInfoCopy];
+    storage = [dataCopy storage];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v19 CRC];
+      v17 = [storage CRC];
     }
 
     else
@@ -775,18 +775,18 @@ LABEL_16:
       v17 = 0;
     }
 
-    v18 = a6;
+    sizeCopy = size;
   }
 
-  v20 = [(TSPPackageWriter *)self zipArchiveWriter];
-  v21 = [v20 entryWithName:v44];
+  zipArchiveWriter = [(TSPPackageWriter *)self zipArchiveWriter];
+  v21 = [zipArchiveWriter entryWithName:v44];
 
   v45 = [v21 size];
-  v22 = [v15 packageLocator];
-  if (v22)
+  packageLocator = [dataCopy packageLocator];
+  if (packageLocator)
   {
-    v23 = [v15 packageLocator];
-    v24 = [v23 isEqualToString:v44];
+    packageLocator2 = [dataCopy packageLocator];
+    v24 = [packageLocator2 isEqualToString:v44];
     if (v21)
     {
       v25 = v24;
@@ -797,7 +797,7 @@ LABEL_16:
       v25 = 0;
     }
 
-    if (v25 == 1 && (v26 = [v15 encodedLength], v26 == objc_msgSend(v21, "size")))
+    if (v25 == 1 && (v26 = [dataCopy encodedLength], v26 == objc_msgSend(v21, "size")))
     {
       v27 = [v21 CRC];
 
@@ -811,8 +811,8 @@ LABEL_16:
         v28 = UnsafePointer;
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
-          v29 = [v15 packageLocator];
-          sub_10014FDA4(v29, buf, v28);
+          packageLocator3 = [dataCopy packageLocator];
+          sub_10014FDA4(packageLocator3, buf, v28);
         }
 
         goto LABEL_27;
@@ -824,8 +824,8 @@ LABEL_16:
     }
   }
 
-  v30 = [v15 lastModificationDate];
-  if (v10)
+  lastModificationDate = [dataCopy lastModificationDate];
+  if (cCopy)
   {
     v31 = 0;
   }
@@ -835,13 +835,13 @@ LABEL_16:
     v31 = v17;
   }
 
-  v32 = [(TSPPackageWriter *)self newRawDataWriteChannelForRelativePath:v44 originalLastModificationDate:v30 originalSize:v18 originalCRC:v31 forceCalculatingSizeAndCRCForPreservingLastModificationDate:0];
+  v32 = [(TSPPackageWriter *)self newRawDataWriteChannelForRelativePath:v44 originalLastModificationDate:lastModificationDate originalSize:sizeCopy originalCRC:v31 forceCalculatingSizeAndCRCForPreservingLastModificationDate:0];
 
-  v34 = v39;
+  v34 = filenameCopy;
   v33 = v40;
   if (v32)
   {
-    v35 = [TSPFileManager copyDataFromReadChannel:v42 decryptionInfo:v40 size:a6 toWriteChannel:v32 encryptionInfo:v43 encodedLength:&v45 error:a9];
+    v35 = [TSPFileManager copyDataFromReadChannel:channelCopy decryptionInfo:v40 size:size toWriteChannel:v32 encryptionInfo:mutableCryptoInfoCopy encodedLength:&v45 error:error];
   }
 
   else
@@ -859,25 +859,25 @@ LABEL_16:
 
 LABEL_27:
   v36 = [TSPPackageWriterCopyDataResult alloc];
-  v37 = [(TSPPackageWriterCopyDataResult *)v36 initWithFilename:v41 encryptionInfo:v43 encodedLength:v45];
-  v34 = v39;
+  v37 = [(TSPPackageWriterCopyDataResult *)v36 initWithFilename:v41 encryptionInfo:mutableCryptoInfoCopy encodedLength:v45];
+  v34 = filenameCopy;
   v33 = v40;
 LABEL_29:
 
   return v37;
 }
 
-- (id)dataForZipEntry:(id)a3 inDataToWrite:(id)a4
+- (id)dataForZipEntry:(id)entry inDataToWrite:(id)write
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 name];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  entryCopy = entry;
+  writeCopy = write;
+  name = [entryCopy name];
+  v8 = [writeCopy objectForKeyedSubscript:name];
 
-  v9 = [v8 storage];
+  storage = [v8 storage];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 CRC];
+    v10 = [storage CRC];
   }
 
   else
@@ -885,7 +885,7 @@ LABEL_29:
     v10 = 0;
   }
 
-  if ([v8 lengthIfLocal] && (v11 = objc_msgSend(v8, "encodedLength"), v11 == objc_msgSend(v5, "size")) && v10 == objc_msgSend(v5, "CRC"))
+  if ([v8 lengthIfLocal] && (v11 = objc_msgSend(v8, "encodedLength"), v11 == objc_msgSend(entryCopy, "size")) && v10 == objc_msgSend(entryCopy, "CRC"))
   {
     v12 = v8;
   }
@@ -900,22 +900,22 @@ LABEL_29:
   return v12;
 }
 
-- (BOOL)writeData:(id)a3 toRelativePath:(id)a4 allowEncryption:(BOOL)a5 error:(id *)a6
+- (BOOL)writeData:(id)data toRelativePath:(id)path allowEncryption:(BOOL)encryption error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  encryptionCopy = encryption;
+  dataCopy = data;
+  pathCopy = path;
   [(TSPPackageWriter *)self closeCurrentChannel];
-  if (v11)
+  if (pathCopy)
   {
-    if (v10)
+    if (dataCopy)
     {
-      v12 = [(TSPPackageWriter *)self originalPackage];
-      v13 = v12;
-      if (v7)
+      originalPackage = [(TSPPackageWriter *)self originalPackage];
+      v13 = originalPackage;
+      if (encryptionCopy)
       {
-        v14 = [v12 decryptionKey];
-        v15 = UnsafePointer(v14, self->_encryptionKey, 0x100000);
+        decryptionKey = [originalPackage decryptionKey];
+        v15 = UnsafePointer(decryptionKey, self->_encryptionKey, 0x100000);
       }
 
       else
@@ -927,7 +927,7 @@ LABEL_29:
       if (!v15 && v13)
       {
         v38 = 0;
-        v20 = [v13 packageEntryInfoAtRelativePath:v11 error:&v38];
+        v20 = [v13 packageEntryInfoAtRelativePath:pathCopy error:&v38];
         v21 = v38;
         v22 = v21;
         if (!v20 && ([v21 tsu_isNoSuchFileError] & 1) == 0)
@@ -942,31 +942,31 @@ LABEL_29:
           {
             v30 = objc_opt_class();
             v36 = NSStringFromClass(v30);
-            v37 = [v22 domain];
-            v34 = [v22 code];
-            v31 = [v22 tsp_isRecoverable];
-            v32 = [v22 tsp_hintsDescription];
+            domain = [v22 domain];
+            code = [v22 code];
+            tsp_isRecoverable = [v22 tsp_isRecoverable];
+            tsp_hintsDescription = [v22 tsp_hintsDescription];
             v33 = &stru_1001D3878;
             *buf = 138413826;
-            v40 = v11;
+            v40 = pathCopy;
             v41 = 2114;
-            if (v31)
+            if (tsp_isRecoverable)
             {
               v33 = @"recoverable=YES, ";
             }
 
             v42 = v36;
             v43 = 2114;
-            v44 = v37;
+            v44 = domain;
             v45 = 2048;
-            v46 = v34;
+            v46 = code;
             v47 = 2114;
             v48 = v33;
             v49 = 2114;
-            v50 = v32;
+            v50 = tsp_hintsDescription;
             v51 = 2112;
             v52 = v22;
-            v35 = v32;
+            v35 = tsp_hintsDescription;
             _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to retrieve encoded length and last modification date, path=%@, errorClass=%{public}@, domain=%{public}@, code=%zd, %{public}@hints=%{public}@ (%@) ", buf, 0x48u);
           }
         }
@@ -974,12 +974,12 @@ LABEL_29:
         v19 = v20;
       }
 
-      v24 = [[TSPMemoryReadChannel alloc] initWithNSData:v10];
-      v25 = [v19 lastModificationDate];
-      v26 = -[TSPPackageWriter newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:](self, "newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:", v11, v25, [v19 encodedLength], objc_msgSend(v19, "CRC"), 1);
+      v24 = [[TSPMemoryReadChannel alloc] initWithNSData:dataCopy];
+      lastModificationDate = [v19 lastModificationDate];
+      v26 = -[TSPPackageWriter newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:](self, "newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:", pathCopy, lastModificationDate, [v19 encodedLength], objc_msgSend(v19, "CRC"), 1);
 
-      v27 = [v10 length];
-      if (v7)
+      v27 = [dataCopy length];
+      if (encryptionCopy)
       {
         encryptionKey = self->_encryptionKey;
       }
@@ -989,7 +989,7 @@ LABEL_29:
         encryptionKey = 0;
       }
 
-      v18 = [TSPFileManager copyDataFromReadChannel:v24 decryptionInfo:0 size:v27 toWriteChannel:v26 encryptionInfo:encryptionKey encodedLength:0 error:a6];
+      v18 = [TSPFileManager copyDataFromReadChannel:v24 decryptionInfo:0 size:v27 toWriteChannel:v26 encryptionInfo:encryptionKey encodedLength:0 error:error];
       [v26 close];
       [(TSPMemoryReadChannel *)v24 close];
     }
@@ -1024,18 +1024,18 @@ LABEL_29:
   return v18;
 }
 
-- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)a3
+- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(TSPPackageWriter *)self closeCurrentChannel];
-  if (v4)
+  if (pathCopy)
   {
-    v5 = [(TSPPackageWriter *)self originalPackage];
-    v6 = v5;
-    if (v5)
+    originalPackage = [(TSPPackageWriter *)self originalPackage];
+    v6 = originalPackage;
+    if (originalPackage)
     {
       v25 = 0;
-      v7 = [v5 packageEntryInfoAtRelativePath:v4 error:&v25];
+      v7 = [originalPackage packageEntryInfoAtRelativePath:pathCopy error:&v25];
       v8 = v25;
       v9 = v8;
       if (!v7 && ([v8 tsu_isNoSuchFileError] & 1) == 0)
@@ -1050,29 +1050,29 @@ LABEL_29:
         {
           v17 = objc_opt_class();
           v24 = NSStringFromClass(v17);
-          v18 = [v9 domain];
-          v19 = [v9 code];
-          v20 = [v9 tsp_isRecoverable];
-          v21 = [v9 tsp_hintsDescription];
-          v22 = v21;
+          domain = [v9 domain];
+          code = [v9 code];
+          tsp_isRecoverable = [v9 tsp_isRecoverable];
+          tsp_hintsDescription = [v9 tsp_hintsDescription];
+          v22 = tsp_hintsDescription;
           v23 = &stru_1001D3878;
           *buf = 138413826;
-          v27 = v4;
+          v27 = pathCopy;
           v28 = 2114;
-          if (v20)
+          if (tsp_isRecoverable)
           {
             v23 = @"recoverable=YES, ";
           }
 
           v29 = v24;
           v30 = 2114;
-          v31 = v18;
+          v31 = domain;
           v32 = 2048;
-          v33 = v19;
+          v33 = code;
           v34 = 2114;
           v35 = v23;
           v36 = 2114;
-          v37 = v21;
+          v37 = tsp_hintsDescription;
           v38 = 2112;
           v39 = v9;
           _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to retrieve encoded length and last modification date, path=%@, errorClass=%{public}@, domain=%{public}@, code=%zd, %{public}@hints=%{public}@ (%@) ", buf, 0x48u);
@@ -1085,8 +1085,8 @@ LABEL_29:
       v7 = 0;
     }
 
-    v14 = [v7 lastModificationDate];
-    v15 = -[TSPPackageWriter newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:](self, "newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:", v4, v14, [v7 encodedLength], objc_msgSend(v7, "CRC"), 1);
+    lastModificationDate = [v7 lastModificationDate];
+    v15 = -[TSPPackageWriter newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:](self, "newRawDataWriteChannelForRelativePath:originalLastModificationDate:originalSize:originalCRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:", pathCopy, lastModificationDate, [v7 encodedLength], objc_msgSend(v7, "CRC"), 1);
 
     v13 = [TSPCGDataConsumer newCGDataConsumerForWriteChannel:v15];
   }
@@ -1115,22 +1115,22 @@ LABEL_29:
   return v13;
 }
 
-- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)a3
+- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  if (v3)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)closeWithQueue:(id)a3 completion:(id)a4
+- (void)closeWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   [(TSPPackageWriter *)self closeCurrentChannel];
-  v8 = objc_retainBlock(v7);
-  if (v7)
+  v8 = objc_retainBlock(completionCopy);
+  if (completionCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -1152,7 +1152,7 @@ LABEL_29:
       v13 = 3221225472;
       v14 = sub_100006434;
       v15 = &unk_1001C5480;
-      v16 = v7;
+      v16 = completionCopy;
       v17 = &v19;
       v10 = objc_retainBlock(&v12);
 
@@ -1163,12 +1163,12 @@ LABEL_29:
   }
 
   v11 = [(TSPPackageWriter *)self zipArchiveWriter:v12];
-  [v11 closeWithQueue:v6 completion:v8];
+  [v11 closeWithQueue:queueCopy completion:v8];
 
   self->_isOpened = 0;
 }
 
-- (BOOL)closeAndReturnError:(id *)a3
+- (BOOL)closeAndReturnError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1189,9 +1189,9 @@ LABEL_29:
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v15[5];
-  if (a3 && v8 && !*a3)
+  if (error && v8 && !*error)
   {
-    *a3 = v8;
+    *error = v8;
     v8 = v15[5];
   }
 
@@ -1201,16 +1201,16 @@ LABEL_29:
   return v9;
 }
 
-- (id)writtenPackageWithURL:(id)a3
+- (id)writtenPackageWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   writtenPackage = self->_writtenPackage;
   v6 = objc_opt_class();
   v7 = [TSUZipFileArchive alloc];
-  v8 = [(TSPPackageWriter *)self zipArchiveWriter];
-  v9 = [v6 zipArchiveURLFromPackageURL:v4];
+  zipArchiveWriter = [(TSPPackageWriter *)self zipArchiveWriter];
+  v9 = [v6 zipArchiveURLFromPackageURL:lCopy];
   v23 = 0;
-  v10 = -[TSUZipFileArchive initWithWriter:forReadingFromURL:options:error:](v7, "initWithWriter:forReadingFromURL:options:error:", v8, v9, [v6 zipArchiveOptions], &v23);
+  v10 = -[TSUZipFileArchive initWithWriter:forReadingFromURL:options:error:](v7, "initWithWriter:forReadingFromURL:options:error:", zipArchiveWriter, v9, [v6 zipArchiveOptions], &v23);
   v11 = v23;
 
   if (!v10)
@@ -1223,19 +1223,19 @@ LABEL_29:
     v12 = UnsafePointer;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v4 path];
+      path = [lCopy path];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [v11 domain];
-      v22 = [v11 code];
+      domain = [v11 domain];
+      code = [v11 code];
       *buf = 138413314;
-      v25 = v18;
+      v25 = path;
       v26 = 2114;
       v27 = v20;
       v28 = 2114;
-      v29 = v21;
+      v29 = domain;
       v30 = 2048;
-      v31 = v22;
+      v31 = code;
       v32 = 2112;
       v33 = v11;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to load written zip archive: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -1252,11 +1252,11 @@ LABEL_29:
   return v15;
 }
 
-- (id)newPackageWithPackageIdentifier:(unsigned __int8)a3 documentProperties:(id)a4 fileFormatVersion:(unint64_t)a5 decryptionKey:(id)a6 fileCoordinatorDelegate:(id)a7
+- (id)newPackageWithPackageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties fileFormatVersion:(unint64_t)version decryptionKey:(id)key fileCoordinatorDelegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a7;
+  propertiesCopy = properties;
+  keyCopy = key;
+  delegateCopy = delegate;
   v12 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -1297,10 +1297,10 @@ LABEL_29:
   objc_exception_throw(v22);
 }
 
-- (id)newRawDataWriteChannelForRelativePath:(id)a3 originalLastModificationDate:(id)a4 originalSize:(unint64_t)a5 originalCRC:(unsigned int)a6 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a7
+- (id)newRawDataWriteChannelForRelativePath:(id)path originalLastModificationDate:(id)date originalSize:(unint64_t)size originalCRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  dateCopy = date;
   v10 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {

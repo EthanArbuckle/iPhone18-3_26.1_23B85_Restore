@@ -1,38 +1,38 @@
 @interface ICSPIPButton
-+ (id)buttonWithType:(int64_t)a3 alignment:(int64_t)a4;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
++ (id)buttonWithType:(int64_t)type alignment:(int64_t)alignment;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
 @end
 
 @implementation ICSPIPButton
 
-+ (id)buttonWithType:(int64_t)a3 alignment:(int64_t)a4
++ (id)buttonWithType:(int64_t)type alignment:(int64_t)alignment
 {
-  v5 = [ICSPIPButton buttonWithType:a3];
-  [v5 setAlignment:a4];
+  v5 = [ICSPIPButton buttonWithType:type];
+  [v5 setAlignment:alignment];
 
   return v5;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  y = a3.origin.y;
+  height = rect.size.height;
+  y = rect.origin.y;
   v25.receiver = self;
   v25.super_class = ICSPIPButton;
-  [(ICSPIPButton *)&v25 imageRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width];
+  [(ICSPIPButton *)&v25 imageRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width];
   v7 = v6;
   v9 = v8;
   width = v10;
   v13 = v12;
-  v14 = [(ICSPIPButton *)self alignment];
+  alignment = [(ICSPIPButton *)self alignment];
   v15 = y + 5.0;
   v16 = height - (v13 + 5.0);
-  if (v14 != 1)
+  if (alignment != 1)
   {
     v16 = v9;
   }
 
-  if (v14 == 2)
+  if (alignment == 2)
   {
     v17 = y + 5.0;
   }
@@ -42,7 +42,7 @@
     v17 = v16;
   }
 
-  if (v14 == 2)
+  if (alignment == 2)
   {
     x = 5.0;
   }

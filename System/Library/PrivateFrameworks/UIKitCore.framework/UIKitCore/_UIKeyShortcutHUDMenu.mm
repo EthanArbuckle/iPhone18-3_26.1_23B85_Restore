@@ -1,26 +1,26 @@
 @interface _UIKeyShortcutHUDMenu
-+ (_UIKeyShortcutHUDMenu)menuWithUIMenu:(id)a3 children:(id)a4;
++ (_UIKeyShortcutHUDMenu)menuWithUIMenu:(id)menu children:(id)children;
 - (BOOL)isEmpty;
 - (_UIKeyShortcutHUDMenu)init;
-- (_UIKeyShortcutHUDMenu)initWithCoder:(id)a3;
-- (id)menuByReplacingChildren:(id)a3;
-- (void)_acceptMenuVisit:(id)a3 shortcutVisit:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_UIKeyShortcutHUDMenu)initWithCoder:(id)coder;
+- (id)menuByReplacingChildren:(id)children;
+- (void)_acceptMenuVisit:(id)visit shortcutVisit:(id)shortcutVisit;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIKeyShortcutHUDMenu
 
-+ (_UIKeyShortcutHUDMenu)menuWithUIMenu:(id)a3 children:(id)a4
++ (_UIKeyShortcutHUDMenu)menuWithUIMenu:(id)menu children:(id)children
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  menuCopy = menu;
+  childrenCopy = children;
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = childrenCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -35,8 +35,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) uiMenuElement];
-        [v8 addObject:v14];
+        uiMenuElement = [*(*(&v20 + 1) + 8 * i) uiMenuElement];
+        [array addObject:uiMenuElement];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -45,9 +45,9 @@
     while (v11);
   }
 
-  v15 = [v6 menuByReplacingChildren:v8];
+  v15 = [menuCopy menuByReplacingChildren:array];
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS____UIKeyShortcutHUDMenu;
   v16 = objc_msgSendSuper2(&v19, sel_elementWithUIMenuElement_, v15);
   v17 = v16[2];
@@ -73,52 +73,52 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(_UIKeyShortcutHUDMenu *)self children];
-  v3 = [v2 count] == 0;
+  children = [(_UIKeyShortcutHUDMenu *)self children];
+  v3 = [children count] == 0;
 
   return v3;
 }
 
-- (id)menuByReplacingChildren:(id)a3
+- (id)menuByReplacingChildren:(id)children
 {
-  v4 = a3;
-  v5 = [(_UIKeyShortcutHUDMenu *)self uiMenu];
-  v6 = [_UIKeyShortcutHUDMenu menuWithUIMenu:v5 children:v4];
+  childrenCopy = children;
+  uiMenu = [(_UIKeyShortcutHUDMenu *)self uiMenu];
+  v6 = [_UIKeyShortcutHUDMenu menuWithUIMenu:uiMenu children:childrenCopy];
 
   return v6;
 }
 
-- (void)_acceptMenuVisit:(id)a3 shortcutVisit:(id)a4
+- (void)_acceptMenuVisit:(id)visit shortcutVisit:(id)shortcutVisit
 {
-  if (a3)
+  if (visit)
   {
-    (*(a3 + 2))(a3, self);
+    (*(visit + 2))(visit, self);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIKeyShortcutHUDMenu;
-  v4 = a3;
-  [(_UIKeyShortcutHUDMenuElement *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(_UIKeyShortcutHUDMenuElement *)&v6 encodeWithCoder:coderCopy];
   v5 = [(_UIKeyShortcutHUDMenu *)self children:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"children"];
+  [coderCopy encodeObject:v5 forKey:@"children"];
 }
 
-- (_UIKeyShortcutHUDMenu)initWithCoder:(id)a3
+- (_UIKeyShortcutHUDMenu)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _UIKeyShortcutHUDMenu;
-  v5 = [(_UIKeyShortcutHUDMenuElement *)&v13 initWithCoder:v4];
+  v5 = [(_UIKeyShortcutHUDMenuElement *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_self();
     v8 = objc_opt_self();
     v9 = [v6 setWithObjects:{v7, v8, 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"children"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"children"];
     children = v5->_children;
     v5->_children = v10;
   }

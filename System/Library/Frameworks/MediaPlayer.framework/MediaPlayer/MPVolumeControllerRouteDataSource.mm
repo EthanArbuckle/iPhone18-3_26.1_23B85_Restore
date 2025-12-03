@@ -1,29 +1,29 @@
 @interface MPVolumeControllerRouteDataSource
 - (MPVolumeControllerDataSourceDelegate)delegate;
-- (MPVolumeControllerRouteDataSource)initWithGroupRoute:(id)a3 outputDeviceRoute:(id)a4;
+- (MPVolumeControllerRouteDataSource)initWithGroupRoute:(id)route outputDeviceRoute:(id)deviceRoute;
 - (NSString)description;
 - (NSString)volumeControlLabel;
 - (void)_initializeVolume;
-- (void)_routeVolumeControlCapabilitiesDidChangeNotification:(id)a3;
-- (void)_routeVolumeDidChangeNotification:(id)a3;
-- (void)_routeVolumeMutedDidChangeNotification:(id)a3;
-- (void)_routeWasAddedOrRemovedFromGroupRouteNotification:(id)a3;
-- (void)_sendVolumeButtonEventWithUsagePage:(unsigned int)a3 usage:(unsigned int)a4 down:(BOOL)a5;
+- (void)_routeVolumeControlCapabilitiesDidChangeNotification:(id)notification;
+- (void)_routeVolumeDidChangeNotification:(id)notification;
+- (void)_routeVolumeMutedDidChangeNotification:(id)notification;
+- (void)_routeWasAddedOrRemovedFromGroupRouteNotification:(id)notification;
+- (void)_sendVolumeButtonEventWithUsagePage:(unsigned int)page usage:(unsigned int)usage down:(BOOL)down;
 - (void)_setPendingVolumeIfNeeded;
-- (void)_updateMuted:(BOOL)a3;
-- (void)_updateVolume:(float)a3;
-- (void)_updateVolumeControlCapabilities:(unsigned int)a3;
-- (void)adjustVolumeValue:(float)a3;
+- (void)_updateMuted:(BOOL)muted;
+- (void)_updateVolume:(float)volume;
+- (void)_updateVolumeControlCapabilities:(unsigned int)capabilities;
+- (void)adjustVolumeValue:(float)value;
 - (void)beginDecreasingRelativeVolume;
 - (void)beginIncreasingRelativeVolume;
 - (void)dealloc;
 - (void)endDecreasingRelativeVolume;
 - (void)endIncreasingRelativeVolume;
-- (void)getVolumeValueWithCompletion:(id)a3;
+- (void)getVolumeValueWithCompletion:(id)completion;
 - (void)initializeVolume;
 - (void)reload;
-- (void)setMuted:(BOOL)a3;
-- (void)setVolume:(float)a3;
+- (void)setMuted:(BOOL)muted;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation MPVolumeControllerRouteDataSource
@@ -66,35 +66,35 @@
   v6 = self->_groupRoute;
   v7 = self->_outputDeviceRoute;
   v8 = dispatch_group_create();
-  v9 = [(MPAVRoute *)v6 endpointWrapper];
-  v10 = [v9 unwrappedValue];
+  endpointWrapper = [(MPAVRoute *)v6 endpointWrapper];
+  unwrappedValue = [endpointWrapper unwrappedValue];
 
   if (v7)
   {
-    if (v10)
+    if (unwrappedValue)
     {
       dispatch_group_enter(v8);
-      v11 = [(MPAVRoute *)v6 endpointWrapper];
-      [v11 unwrappedValue];
+      endpointWrapper2 = [(MPAVRoute *)v6 endpointWrapper];
+      [endpointWrapper2 unwrappedValue];
       [(MPAVRoute *)v7 logicalLeaderOutputDevice];
       v45 = MEMORY[0x1E69E9820];
       v46 = 3221225472;
       v47 = __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_4;
       v48 = &unk_1E7676EA0;
       v51 = v4;
-      v49 = self;
+      selfCopy = self;
       v50 = v8;
       MRAVEndpointGetOutputDeviceVolumeControlCapabilities();
     }
 
-    v12 = [(MPAVRoute *)v6 endpointWrapper];
-    v13 = [v12 unwrappedValue];
+    endpointWrapper3 = [(MPAVRoute *)v6 endpointWrapper];
+    unwrappedValue2 = [endpointWrapper3 unwrappedValue];
 
-    if (v13)
+    if (unwrappedValue2)
     {
       dispatch_group_enter(v8);
-      v14 = [(MPAVRoute *)v6 endpointWrapper];
-      [v14 unwrappedValue];
+      endpointWrapper4 = [(MPAVRoute *)v6 endpointWrapper];
+      [endpointWrapper4 unwrappedValue];
       [(MPAVRoute *)v7 logicalLeaderOutputDevice];
       v42[1] = MEMORY[0x1E69E9820];
       v42[2] = 3221225472;
@@ -108,14 +108,14 @@
 
     if ([(MPVolumeControllerRouteDataSource *)self _supportsNativeMute])
     {
-      v15 = [(MPAVRoute *)v6 endpointObject];
+      endpointObject = [(MPAVRoute *)v6 endpointObject];
 
-      if (v15)
+      if (endpointObject)
       {
         v26 = v3;
         dispatch_group_enter(v8);
-        v16 = [(MPAVRoute *)v6 endpointObject];
-        v17 = [(MPAVRoute *)v7 routeUID];
+        endpointObject2 = [(MPAVRoute *)v6 endpointObject];
+        routeUID = [(MPAVRoute *)v7 routeUID];
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_51;
@@ -126,7 +126,7 @@
         v40[4] = self;
         v20 = &v41;
         v41 = v8;
-        [v16 outputDeviceVolumeMuted:v17 queue:MEMORY[0x1E69E96A0] completion:v40];
+        [endpointObject2 outputDeviceVolumeMuted:routeUID queue:MEMORY[0x1E69E96A0] completion:v40];
 
 LABEL_16:
         v5 = v19;
@@ -137,29 +137,29 @@ LABEL_16:
 
   else
   {
-    if (v10)
+    if (unwrappedValue)
     {
       dispatch_group_enter(v8);
-      v21 = [(MPAVRoute *)v6 endpointWrapper];
-      [v21 unwrappedValue];
+      endpointWrapper5 = [(MPAVRoute *)v6 endpointWrapper];
+      [endpointWrapper5 unwrappedValue];
       v33 = MEMORY[0x1E69E9820];
       v34 = 3221225472;
       v35 = __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_53;
       v36 = &unk_1E7676EA0;
       v39 = v4;
-      v37 = self;
+      selfCopy2 = self;
       v38 = v8;
       MRAVEndpointGetVolumeControlCapabilities();
     }
 
-    v22 = [(MPAVRoute *)v6 endpointWrapper];
-    v23 = [v22 unwrappedValue];
+    endpointWrapper6 = [(MPAVRoute *)v6 endpointWrapper];
+    unwrappedValue3 = [endpointWrapper6 unwrappedValue];
 
-    if (v23)
+    if (unwrappedValue3)
     {
       dispatch_group_enter(v8);
-      v24 = [(MPAVRoute *)v6 endpointWrapper];
-      [v24 unwrappedValue];
+      endpointWrapper7 = [(MPAVRoute *)v6 endpointWrapper];
+      [endpointWrapper7 unwrappedValue];
       v30[1] = MEMORY[0x1E69E9820];
       v30[2] = 3221225472;
       v30[3] = __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_54;
@@ -172,13 +172,13 @@ LABEL_16:
 
     if ([(MPVolumeControllerRouteDataSource *)self _supportsNativeMute])
     {
-      v25 = [(MPAVRoute *)v6 endpointObject];
+      endpointObject3 = [(MPAVRoute *)v6 endpointObject];
 
-      if (v25)
+      if (endpointObject3)
       {
         v26 = v3;
         dispatch_group_enter(v8);
-        v16 = [(MPAVRoute *)v6 endpointObject];
+        endpointObject2 = [(MPAVRoute *)v6 endpointObject];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55;
@@ -189,7 +189,7 @@ LABEL_16:
         v28[4] = self;
         v20 = &v29;
         v29 = v8;
-        [v16 volumeMutedOnQueue:MEMORY[0x1E69E96A0] completion:v28];
+        [endpointObject2 volumeMutedOnQueue:MEMORY[0x1E69E96A0] completion:v28];
         goto LABEL_16;
       }
     }
@@ -207,17 +207,17 @@ LABEL_16:
 {
   v3 = MEMORY[0x1E696AEC0];
   outputDeviceRoute = self->_outputDeviceRoute;
-  v5 = [(MPAVRoute *)self->_groupRoute routeName];
-  v6 = v5;
+  routeName = [(MPAVRoute *)self->_groupRoute routeName];
+  v6 = routeName;
   if (outputDeviceRoute)
   {
-    v7 = [(MPAVRoute *)self->_outputDeviceRoute routeName];
-    v8 = [v3 stringWithFormat:@"Endpoint: %@ OutputDevice: %@", v6, v7];
+    routeName2 = [(MPAVRoute *)self->_outputDeviceRoute routeName];
+    v8 = [v3 stringWithFormat:@"Endpoint: %@ OutputDevice: %@", v6, routeName2];
   }
 
   else
   {
-    v8 = [v3 stringWithFormat:@"Endpoint: %@", v5];
+    v8 = [v3 stringWithFormat:@"Endpoint: %@", routeName];
   }
 
   v9 = MEMORY[0x1E696AEC0];
@@ -341,22 +341,22 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_54(
   return WeakRetained;
 }
 
-- (void)_routeWasAddedOrRemovedFromGroupRouteNotification:(id)a3
+- (void)_routeWasAddedOrRemovedFromGroupRouteNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
 
-  v9 = [(MPAVRoute *)self->_groupRoute endpointObject];
-  v10 = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
-  v11 = [v9 uniqueIdentifier];
-  v12 = [v11 isEqualToString:v6];
+  endpointObject = [(MPAVRoute *)self->_groupRoute endpointObject];
+  logicalLeaderOutputDevice = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
+  uniqueIdentifier = [endpointObject uniqueIdentifier];
+  v12 = [uniqueIdentifier isEqualToString:v6];
 
-  v13 = [v10 uid];
+  v13 = [logicalLeaderOutputDevice uid];
   v14 = [v13 isEqual:v8];
 
   if (v12)
@@ -380,36 +380,36 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_54(
   }
 }
 
-- (void)_routeVolumeMutedDidChangeNotification:(id)a3
+- (void)_routeVolumeMutedDidChangeNotification:(id)notification
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__MPVolumeControllerRouteDataSource__routeVolumeMutedDidChangeNotification___block_invoke;
   aBlock[3] = &unk_1E7679340;
   aBlock[4] = self;
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _Block_copy(aBlock);
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
+  userInfo2 = [notificationCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
 
-  v10 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69B08A0]];
-  v12 = [v11 BOOLValue];
+  v11 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69B08A0]];
+  bOOLValue = [v11 BOOLValue];
 
-  v13 = [(MPAVRoute *)self->_groupRoute routeUID];
-  v14 = [v13 isEqualToString:v7];
+  routeUID = [(MPAVRoute *)self->_groupRoute routeUID];
+  v14 = [routeUID isEqualToString:v7];
 
-  v15 = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
-  v16 = [v15 uid];
+  logicalLeaderOutputDevice = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
+  v16 = [logicalLeaderOutputDevice uid];
   v17 = [v16 isEqual:v9];
 
   if (((self->_outputDeviceRoute | v9) == 0) | v17 & 1 && v14)
   {
-    v5[2](v5, v12);
+    v5[2](v5, bOOLValue);
   }
 }
 
@@ -424,36 +424,36 @@ void __76__MPVolumeControllerRouteDataSource__routeVolumeMutedDidChangeNotificat
   dispatch_async(MEMORY[0x1E69E96A0], v2);
 }
 
-- (void)_routeVolumeControlCapabilitiesDidChangeNotification:(id)a3
+- (void)_routeVolumeControlCapabilitiesDidChangeNotification:(id)notification
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __90__MPVolumeControllerRouteDataSource__routeVolumeControlCapabilitiesDidChangeNotification___block_invoke;
   aBlock[3] = &unk_1E7676E78;
   aBlock[4] = self;
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _Block_copy(aBlock);
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
+  userInfo2 = [notificationCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
 
-  v10 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69B0B50]];
-  v12 = [v11 intValue];
+  v11 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69B0B50]];
+  intValue = [v11 intValue];
 
-  v13 = [(MPAVRoute *)self->_groupRoute routeUID];
-  v14 = [v13 isEqualToString:v7];
+  routeUID = [(MPAVRoute *)self->_groupRoute routeUID];
+  v14 = [routeUID isEqualToString:v7];
 
-  v15 = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
-  v16 = [v15 uid];
+  logicalLeaderOutputDevice = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
+  v16 = [logicalLeaderOutputDevice uid];
   v17 = [v16 isEqual:v9];
 
   if (((self->_outputDeviceRoute | v9) == 0) | v17 & 1 && v14)
   {
-    v5[2](v5, v12);
+    v5[2](v5, intValue);
   }
 }
 
@@ -468,32 +468,32 @@ void __90__MPVolumeControllerRouteDataSource__routeVolumeControlCapabilitiesDidC
   dispatch_async(MEMORY[0x1E69E96A0], v2);
 }
 
-- (void)_routeVolumeDidChangeNotification:(id)a3
+- (void)_routeVolumeDidChangeNotification:(id)notification
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__MPVolumeControllerRouteDataSource__routeVolumeDidChangeNotification___block_invoke;
   aBlock[3] = &unk_1E76792C8;
   aBlock[4] = self;
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _Block_copy(aBlock);
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B0B58]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B0B58]];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
+  userInfo2 = [notificationCopy userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B0B30]];
 
-  v12 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
+  v13 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69B0B38]];
 
-  v14 = [(MPAVRoute *)self->_groupRoute routeUID];
-  v15 = [v14 isEqualToString:v11];
+  routeUID = [(MPAVRoute *)self->_groupRoute routeUID];
+  v15 = [routeUID isEqualToString:v11];
 
-  v16 = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
-  v17 = [v16 uid];
+  logicalLeaderOutputDevice = [(MPAVRoute *)self->_outputDeviceRoute logicalLeaderOutputDevice];
+  v17 = [logicalLeaderOutputDevice uid];
   v18 = [v17 isEqual:v13];
 
   if ((((self->_outputDeviceRoute | v13) == 0) & v15) != 0 || v18)
@@ -513,15 +513,15 @@ void __71__MPVolumeControllerRouteDataSource__routeVolumeDidChangeNotification__
   dispatch_async(MEMORY[0x1E69E96A0], v2);
 }
 
-- (void)getVolumeValueWithCompletion:(id)a3
+- (void)getVolumeValueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   groupRoute = self->_groupRoute;
   outputDeviceRoute = self->_outputDeviceRoute;
   v7 = outputDeviceRoute;
   v8 = groupRoute;
-  v9 = [(MPAVRoute *)v8 endpointWrapper];
-  [v9 unwrappedValue];
+  endpointWrapper = [(MPAVRoute *)v8 endpointWrapper];
+  [endpointWrapper unwrappedValue];
   if (outputDeviceRoute)
   {
     [(MPAVRoute *)v7 logicalLeaderOutputDevice];
@@ -532,7 +532,7 @@ void __71__MPVolumeControllerRouteDataSource__routeVolumeDidChangeNotification__
     v12[4] = &unk_1E7676EF0;
     v12[5] = self;
     v11 = &v13;
-    v13 = v4;
+    v13 = completionCopy;
     MRAVEndpointGetOutputDeviceVolume();
   }
 
@@ -540,7 +540,7 @@ void __71__MPVolumeControllerRouteDataSource__routeVolumeDidChangeNotification__
   {
     v10 = dispatch_get_global_queue(21, 0);
     v11 = v12;
-    v12[0] = v4;
+    v12[0] = completionCopy;
     MRAVEndpointGetVolume();
   }
 }
@@ -585,66 +585,66 @@ uint64_t __66__MPVolumeControllerRouteDataSource_getVolumeValueWithCompletion___
   return (*(*(a1 + 40) + 16))(a3);
 }
 
-- (void)_updateMuted:(BOOL)a3
+- (void)_updateMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v12 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (!self->_mutedInitialized || self->_muted != v3)
+  if (!self->_mutedInitialized || self->_muted != mutedCopy)
   {
     self->_mutedInitialized = 1;
-    self->_muted = v3;
+    self->_muted = mutedCopy;
     v6 = os_log_create("com.apple.amp.mediaplayer", "Volume");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       muted = self->_muted;
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
-      v11 = muted;
+      mutedCopy2 = muted;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%@ MPLogVolume muted:%{BOOL}u", &v8, 0x12u);
     }
 
-    [WeakRetained volumeControllerDataSource:self didChangeMuted:v3];
+    [WeakRetained volumeControllerDataSource:self didChangeMuted:mutedCopy];
   }
 }
 
-- (void)_updateVolume:(float)a3
+- (void)_updateVolume:(float)volume
 {
   v13 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   self->_volumeInitialized = 1;
-  self->_volume = a3;
+  self->_volume = volume;
   v6 = os_log_create("com.apple.amp.mediaplayer", "Volume");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = a3;
+    volumeCopy = volume;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%@ MPLogVolume volume: %lf", &v9, 0x16u);
   }
 
   if (!self->_hasVolumeInFlight)
   {
-    *&v7 = a3;
+    *&v7 = volume;
     [WeakRetained volumeControllerDataSource:self didChangeVolume:v7];
   }
 
   if (![(MPVolumeControllerRouteDataSource *)self _supportsNativeMute])
   {
-    v8 = a3 == 0.0;
+    v8 = volume == 0.0;
     if (self->_muted != v8)
     {
       self->_muted = v8;
-      [WeakRetained volumeControllerDataSource:self didChangeMuted:a3 == 0.0];
+      [WeakRetained volumeControllerDataSource:self didChangeMuted:volume == 0.0];
     }
   }
 }
 
-- (void)_updateVolumeControlCapabilities:(unsigned int)a3
+- (void)_updateVolumeControlCapabilities:(unsigned int)capabilities
 {
-  v3 = *&a3;
+  v3 = *&capabilities;
   v13 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
@@ -657,7 +657,7 @@ uint64_t __66__MPVolumeControllerRouteDataSource_getVolumeValueWithCompletion___
     {
       v8 = MRMediaRemotePickedRouteVolumeControlCapabilitiesCopyDescription();
       v9 = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = v8;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "%@ MPLogVolume capabilities: %{public}@", &v9, 0x16u);
@@ -764,16 +764,16 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55(
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)adjustVolumeValue:(float)a3
+- (void)adjustVolumeValue:(float)value
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3 * 100000.0;
+  v4 = value * 100000.0;
   v5 = floorf(v4) * 0.00001;
   v6 = os_log_create("com.apple.amp.mediaplayer", "Volume");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = v5;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Adjusting endpoint volume by: %f", &v8, 0x16u);
@@ -784,17 +784,17 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55(
   [(MPVolumeControllerRouteDataSource *)self setVolume:v7];
 }
 
-- (void)_sendVolumeButtonEventWithUsagePage:(unsigned int)a3 usage:(unsigned int)a4 down:(BOOL)a5
+- (void)_sendVolumeButtonEventWithUsagePage:(unsigned int)page usage:(unsigned int)usage down:(BOOL)down
 {
   groupRoute = self->_groupRoute;
   if (groupRoute)
   {
-    v6 = a5;
-    v7 = *&a4;
+    downCopy = down;
+    v7 = *&usage;
     [(MPAVRoute *)groupRoute endpoint];
     ExternalDevice = MRAVEndpointGetExternalDevice();
 
-    MEMORY[0x1EEE1CE68](ExternalDevice, a3 | (v7 << 32), v6);
+    MEMORY[0x1EEE1CE68](ExternalDevice, page | (v7 << 32), downCopy);
   }
 }
 
@@ -806,10 +806,10 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55(
     groupRoute = self->_groupRoute;
     v5 = self->_outputDeviceRoute;
     v8 = groupRoute;
-    v6 = [(MPAVRoute *)v8 endpointObject];
-    v7 = [(MPAVRoute *)v5 routeUID];
+    endpointObject = [(MPAVRoute *)v8 endpointObject];
+    routeUID = [(MPAVRoute *)v5 routeUID];
 
-    [v6 adjustOutputDeviceVolume:2 outputDevice:v7 queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_44];
+    [endpointObject adjustOutputDeviceVolume:2 outputDevice:routeUID queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_44];
   }
 
   else if (volumeControlCapabilities)
@@ -835,10 +835,10 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55(
     groupRoute = self->_groupRoute;
     v5 = self->_outputDeviceRoute;
     v8 = groupRoute;
-    v6 = [(MPAVRoute *)v8 endpointObject];
-    v7 = [(MPAVRoute *)v5 routeUID];
+    endpointObject = [(MPAVRoute *)v8 endpointObject];
+    routeUID = [(MPAVRoute *)v5 routeUID];
 
-    [v6 adjustOutputDeviceVolume:5 outputDevice:v7 queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_8217];
+    [endpointObject adjustOutputDeviceVolume:5 outputDevice:routeUID queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_8217];
   }
 
   else if (volumeControlCapabilities)
@@ -856,14 +856,14 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55(
   }
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  if (self->_muted != a3)
+  if (self->_muted != muted)
   {
-    v3 = a3;
-    self->_muted = a3;
+    mutedCopy = muted;
+    self->_muted = muted;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained volumeControllerDataSource:self didChangeMuted:v3];
+    [WeakRetained volumeControllerDataSource:self didChangeMuted:mutedCopy];
 
     if ([(MPVolumeControllerRouteDataSource *)self _supportsNativeMute])
     {
@@ -871,17 +871,17 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55(
       outputDeviceRoute = self->_outputDeviceRoute;
       v8 = outputDeviceRoute;
       v9 = groupRoute;
-      v10 = [(MPAVRoute *)v9 endpointObject];
-      v11 = v10;
+      endpointObject = [(MPAVRoute *)v9 endpointObject];
+      v11 = endpointObject;
       if (outputDeviceRoute)
       {
-        v12 = [(MPAVRoute *)self->_outputDeviceRoute routeUID];
+        routeUID = [(MPAVRoute *)self->_outputDeviceRoute routeUID];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __46__MPVolumeControllerRouteDataSource_setMuted___block_invoke;
         v15[3] = &unk_1E767D2A0;
         v15[4] = self;
-        [v11 muteOutputDeviceVolume:v3 outputDevice:v12 queue:MEMORY[0x1E69E96A0] completion:v15];
+        [v11 muteOutputDeviceVolume:mutedCopy outputDevice:routeUID queue:MEMORY[0x1E69E96A0] completion:v15];
       }
 
       else
@@ -891,14 +891,14 @@ void __54__MPVolumeControllerRouteDataSource__initializeVolume__block_invoke_55(
         v14[2] = __46__MPVolumeControllerRouteDataSource_setMuted___block_invoke_42;
         v14[3] = &unk_1E767D2A0;
         v14[4] = self;
-        [v10 muteVolume:v3 queue:MEMORY[0x1E69E96A0] completion:v14];
+        [endpointObject muteVolume:mutedCopy queue:MEMORY[0x1E69E96A0] completion:v14];
       }
     }
 
     else
     {
       v13 = 0.0;
-      if (!v3)
+      if (!mutedCopy)
       {
         *&v13 = self->_volume;
       }
@@ -963,20 +963,20 @@ void __46__MPVolumeControllerRouteDataSource_setMuted___block_invoke_42(uint64_t
         [(MPAVRoute *)v4 logicalLeaderOutputDevice];
         v7 = MRAVOutputDeviceCopyUniqueIdentifier();
         *&v8 = self->_pendingVolume;
-        v9 = [(MPAVRoute *)v3 endpointWrapper];
+        endpointWrapper = [(MPAVRoute *)v3 endpointWrapper];
         *buf = 138413058;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
         v16 = *&v7;
         v17 = 2048;
-        v18 = v8;
+        unwrappedValue2 = v8;
         v19 = 2112;
-        v20 = [v9 unwrappedValue];
+        unwrappedValue = [endpointWrapper unwrappedValue];
         _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%@ setOutputDeviceVolume: %@ to: %f for endpoint: %@", buf, 0x2Au);
       }
 
-      v10 = [(MPAVRoute *)v3 endpointWrapper];
-      [v10 unwrappedValue];
+      endpointWrapper2 = [(MPAVRoute *)v3 endpointWrapper];
+      [endpointWrapper2 unwrappedValue];
       [(MPAVRoute *)v4 logicalLeaderOutputDevice];
       MRAVEndpointSetOutputDeviceVolume();
     }
@@ -986,18 +986,18 @@ void __46__MPVolumeControllerRouteDataSource_setMuted___block_invoke_42(uint64_t
       if (v6)
       {
         pendingVolume = self->_pendingVolume;
-        v12 = [(MPAVRoute *)v3 endpointWrapper];
+        endpointWrapper3 = [(MPAVRoute *)v3 endpointWrapper];
         *buf = 138412802;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2048;
         v16 = pendingVolume;
         v17 = 2112;
-        v18 = [v12 unwrappedValue];
+        unwrappedValue2 = [endpointWrapper3 unwrappedValue];
         _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%@ setVolume to: %f endpoint: %@", buf, 0x20u);
       }
 
-      v10 = [(MPAVRoute *)v3 endpointWrapper];
-      [v10 unwrappedValue];
+      endpointWrapper2 = [(MPAVRoute *)v3 endpointWrapper];
+      [endpointWrapper2 unwrappedValue];
       MRAVEndpointSetVolume();
     }
   }
@@ -1043,11 +1043,11 @@ void __62__MPVolumeControllerRouteDataSource__setPendingVolumeIfNeeded__block_in
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
+    self->_volume = volume;
     if (![(MPVolumeControllerRouteDataSource *)self _supportsNativeMute]&& self->_volume > 0.0 && self->_muted)
     {
       self->_muted = 0;
@@ -1055,7 +1055,7 @@ void __62__MPVolumeControllerRouteDataSource__setPendingVolumeIfNeeded__block_in
       [WeakRetained volumeControllerDataSource:self didChangeMuted:0];
     }
 
-    self->_pendingVolume = a3;
+    self->_pendingVolume = volume;
     self->_hasPendingVolume = 1;
 
     [(MPVolumeControllerRouteDataSource *)self _setPendingVolumeIfNeeded];
@@ -1064,9 +1064,9 @@ void __62__MPVolumeControllerRouteDataSource__setPendingVolumeIfNeeded__block_in
 
 - (NSString)volumeControlLabel
 {
-  v3 = [(MPVolumeControllerRouteDataSource *)self outputDeviceRoute];
+  outputDeviceRoute = [(MPVolumeControllerRouteDataSource *)self outputDeviceRoute];
 
-  if (v3)
+  if (outputDeviceRoute)
   {
     [(MPVolumeControllerRouteDataSource *)self outputDeviceRoute];
   }
@@ -1076,37 +1076,37 @@ void __62__MPVolumeControllerRouteDataSource__setPendingVolumeIfNeeded__block_in
     [(MPVolumeControllerRouteDataSource *)self groupRoute];
   }
   v4 = ;
-  v5 = [v4 routeName];
+  routeName = [v4 routeName];
 
-  return v5;
+  return routeName;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B0890] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B0890] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69B0888] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69B0888] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69B0898] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69B0898] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E69B0878] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x1E69B0878] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E69B0880] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 removeObserver:self name:*MEMORY[0x1E69B0880] object:0];
 
   v8.receiver = self;
   v8.super_class = MPVolumeControllerRouteDataSource;
   [(MPVolumeControllerRouteDataSource *)&v8 dealloc];
 }
 
-- (MPVolumeControllerRouteDataSource)initWithGroupRoute:(id)a3 outputDeviceRoute:(id)a4
+- (MPVolumeControllerRouteDataSource)initWithGroupRoute:(id)route outputDeviceRoute:(id)deviceRoute
 {
-  v8 = a3;
-  v9 = a4;
+  routeCopy = route;
+  deviceRouteCopy = deviceRoute;
   v19.receiver = self;
   v19.super_class = MPVolumeControllerRouteDataSource;
   v10 = [(MPVolumeControllerRouteDataSource *)&v19 init];
@@ -1115,47 +1115,47 @@ void __62__MPVolumeControllerRouteDataSource__setPendingVolumeIfNeeded__block_in
     goto LABEL_10;
   }
 
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (routeCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:v10 file:@"MPVolumeControllerRouteDataSource.m" lineNumber:57 description:@"Group route must be an endpoint route."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v10 file:@"MPVolumeControllerRouteDataSource.m" lineNumber:57 description:@"Group route must be an endpoint route."];
 
-    if (v9)
+    if (deviceRouteCopy)
     {
 LABEL_5:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:v10 file:@"MPVolumeControllerRouteDataSource.m" lineNumber:58 description:@"Output device route must be an output device."];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"MPVolumeControllerRouteDataSource.m" lineNumber:58 description:@"Output device route must be an output device."];
       }
     }
   }
 
-  else if (v9)
+  else if (deviceRouteCopy)
   {
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v10->_groupRoute, a3);
-  objc_storeStrong(&v10->_outputDeviceRoute, a4);
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:v10 selector:sel__routeVolumeDidChangeNotification_ name:*MEMORY[0x1E69B0890] object:0];
+  objc_storeStrong(&v10->_groupRoute, route);
+  objc_storeStrong(&v10->_outputDeviceRoute, deviceRoute);
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v10 selector:sel__routeVolumeDidChangeNotification_ name:*MEMORY[0x1E69B0890] object:0];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 addObserver:v10 selector:sel__routeVolumeControlCapabilitiesDidChangeNotification_ name:*MEMORY[0x1E69B0888] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v10 selector:sel__routeVolumeControlCapabilitiesDidChangeNotification_ name:*MEMORY[0x1E69B0888] object:0];
 
   if ([(MPVolumeControllerRouteDataSource *)v10 _supportsNativeMute])
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v10 selector:sel__routeVolumeMutedDidChangeNotification_ name:*MEMORY[0x1E69B0898] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v10 selector:sel__routeVolumeMutedDidChangeNotification_ name:*MEMORY[0x1E69B0898] object:0];
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 addObserver:v10 selector:sel__routeWasAddedOrRemovedFromGroupRouteNotification_ name:*MEMORY[0x1E69B0878] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:v10 selector:sel__routeWasAddedOrRemovedFromGroupRouteNotification_ name:*MEMORY[0x1E69B0878] object:0];
 
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 addObserver:v10 selector:sel__routeWasAddedOrRemovedFromGroupRouteNotification_ name:*MEMORY[0x1E69B0880] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:v10 selector:sel__routeWasAddedOrRemovedFromGroupRouteNotification_ name:*MEMORY[0x1E69B0880] object:0];
 
   [(MPVolumeControllerRouteDataSource *)v10 initializeVolume];
 LABEL_10:

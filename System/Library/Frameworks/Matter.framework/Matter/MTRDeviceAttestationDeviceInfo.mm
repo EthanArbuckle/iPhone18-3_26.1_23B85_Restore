@@ -1,58 +1,58 @@
 @interface MTRDeviceAttestationDeviceInfo
-- (MTRDeviceAttestationDeviceInfo)initWithAttestationChallenge:(id)a3 attestationNonce:(id)a4 elementsTLV:(id)a5 elementsSignature:(id)a6 dacCertificate:(id)a7 dacPAICertificate:(id)a8 certificationDeclaration:(id)a9 basicInformationVendorID:(id)a10 basicInformationProductID:(id)a11;
+- (MTRDeviceAttestationDeviceInfo)initWithAttestationChallenge:(id)challenge attestationNonce:(id)nonce elementsTLV:(id)v elementsSignature:(id)signature dacCertificate:(id)certificate dacPAICertificate:(id)iCertificate certificationDeclaration:(id)declaration basicInformationVendorID:(id)self0 basicInformationProductID:(id)self1;
 @end
 
 @implementation MTRDeviceAttestationDeviceInfo
 
-- (MTRDeviceAttestationDeviceInfo)initWithAttestationChallenge:(id)a3 attestationNonce:(id)a4 elementsTLV:(id)a5 elementsSignature:(id)a6 dacCertificate:(id)a7 dacPAICertificate:(id)a8 certificationDeclaration:(id)a9 basicInformationVendorID:(id)a10 basicInformationProductID:(id)a11
+- (MTRDeviceAttestationDeviceInfo)initWithAttestationChallenge:(id)challenge attestationNonce:(id)nonce elementsTLV:(id)v elementsSignature:(id)signature dacCertificate:(id)certificate dacPAICertificate:(id)iCertificate certificationDeclaration:(id)declaration basicInformationVendorID:(id)self0 basicInformationProductID:(id)self1
 {
-  v50 = a3;
-  v49 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  challengeCopy = challenge;
+  nonceCopy = nonce;
+  vCopy = v;
+  signatureCopy = signature;
+  certificateCopy = certificate;
+  iCertificateCopy = iCertificate;
+  declarationCopy = declaration;
+  dCopy = d;
+  iDCopy = iD;
   v56.receiver = self;
   v56.super_class = MTRDeviceAttestationDeviceInfo;
   v24 = [(MTRDeviceAttestationDeviceInfo *)&v56 init];
   if (v24)
   {
-    v25 = [v50 copy];
+    v25 = [challengeCopy copy];
     attestationChallenge = v24->_attestationChallenge;
     v24->_attestationChallenge = v25;
 
-    v27 = [v49 copy];
+    v27 = [nonceCopy copy];
     attestationNonce = v24->_attestationNonce;
     v24->_attestationNonce = v27;
 
-    v29 = [v17 copy];
+    v29 = [vCopy copy];
     elementsTLV = v24->_elementsTLV;
     v24->_elementsTLV = v29;
 
-    v31 = [v18 copy];
+    v31 = [signatureCopy copy];
     elementsSignature = v24->_elementsSignature;
     v24->_elementsSignature = v31;
 
-    v33 = [v19 copy];
+    v33 = [certificateCopy copy];
     dacCertificate = v24->_dacCertificate;
     v24->_dacCertificate = v33;
 
-    v35 = [v20 copy];
+    v35 = [iCertificateCopy copy];
     dacPAICertificate = v24->_dacPAICertificate;
     v24->_dacPAICertificate = v35;
 
-    v37 = [v21 copy];
+    v37 = [declarationCopy copy];
     certificationDeclaration = v24->_certificationDeclaration;
     v24->_certificationDeclaration = v37;
 
-    v39 = [v22 copy];
+    v39 = [dCopy copy];
     basicInformationVendorID = v24->_basicInformationVendorID;
     v24->_basicInformationVendorID = v39;
 
-    v41 = [v23 copy];
+    v41 = [iDCopy copy];
     basicInformationProductID = v24->_basicInformationProductID;
     v24->_basicInformationProductID = v41;
 

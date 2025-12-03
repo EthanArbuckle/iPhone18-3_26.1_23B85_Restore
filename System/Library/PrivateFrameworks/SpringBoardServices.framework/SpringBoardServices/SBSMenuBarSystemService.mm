@@ -7,16 +7,16 @@
 
 - (BOOL)isMenuBarSupported
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 isMenuBarSupported];
+  client = [(SBSAbstractSystemService *)self client];
+  isMenuBarSupported = [client isMenuBarSupported];
 
-  return v3;
+  return isMenuBarSupported;
 }
 
 - (void)toggleMenuBarVisibility
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  [v2 toggleMenuBarVisibility];
+  client = [(SBSAbstractSystemService *)self client];
+  [client toggleMenuBarVisibility];
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface PXStoryMovieHighlightsConcreteMutableCollection
-- (void)setMovieHighlightCuration:(id)a3 forDisplayAsset:(id)a4;
-- (void)setMovieHighlightCurations:(id)a3 forDisplayAssets:(id)a4;
+- (void)setMovieHighlightCuration:(id)curation forDisplayAsset:(id)asset;
+- (void)setMovieHighlightCurations:(id)curations forDisplayAssets:(id)assets;
 @end
 
 @implementation PXStoryMovieHighlightsConcreteMutableCollection
 
-- (void)setMovieHighlightCurations:(id)a3 forDisplayAssets:(id)a4
+- (void)setMovieHighlightCurations:(id)curations forDisplayAssets:(id)assets
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = [v13 count];
-  if (v8 != [v7 count])
+  curationsCopy = curations;
+  assetsCopy = assets;
+  v8 = [curationsCopy count];
+  if (v8 != [assetsCopy count])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlightsConcreteCollection.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"movieHighlightCurations.count == displayAssets.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlightsConcreteCollection.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"movieHighlightCurations.count == displayAssets.count"}];
   }
 
-  if ([v7 count])
+  if ([assetsCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v13 objectAtIndexedSubscript:v9];
-      v11 = [v7 objectAtIndexedSubscript:v9];
+      v10 = [curationsCopy objectAtIndexedSubscript:v9];
+      v11 = [assetsCopy objectAtIndexedSubscript:v9];
       [(PXStoryMovieHighlightsConcreteMutableCollection *)self setMovieHighlightCuration:v10 forDisplayAsset:v11];
 
       ++v9;
     }
 
-    while (v9 < [v7 count]);
+    while (v9 < [assetsCopy count]);
   }
 }
 
-- (void)setMovieHighlightCuration:(id)a3 forDisplayAsset:(id)a4
+- (void)setMovieHighlightCuration:(id)curation forDisplayAsset:(id)asset
 {
   highlightsByAssetId = self->super._highlightsByAssetId;
-  v6 = a3;
-  v7 = [a4 uuid];
-  [(NSMutableDictionary *)highlightsByAssetId setObject:v6 forKeyedSubscript:v7];
+  curationCopy = curation;
+  uuid = [asset uuid];
+  [(NSMutableDictionary *)highlightsByAssetId setObject:curationCopy forKeyedSubscript:uuid];
 }
 
 @end

@@ -42,9 +42,9 @@
 - (id)iTunesStoreAccountHash
 {
   v2 = +[SSAccountStore defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [DMDMDMUtilities iTunesAccountHashForUniqueIdentifier:v4];
+  activeAccount = [v2 activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  v5 = [DMDMDMUtilities iTunesAccountHashForUniqueIdentifier:uniqueIdentifier];
 
   return v5;
 }
@@ -52,8 +52,8 @@
 - (id)iTunesStoreAccountIsActive
 {
   v2 = +[SSAccountStore defaultStore];
-  v3 = [v2 activeAccount];
-  if (v3)
+  activeAccount = [v2 activeAccount];
+  if (activeAccount)
   {
     v4 = &__kCFBooleanTrue;
   }

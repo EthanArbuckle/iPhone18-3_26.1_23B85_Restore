@@ -1,20 +1,20 @@
 @interface SKUIProductPageFeatureView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setIcon:(id)icon;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIProductPageFeatureView
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   iconView = self->_iconView;
-  v11 = v4;
-  if (v4)
+  v11 = iconCopy;
+  if (iconCopy)
   {
     if (!iconView)
     {
@@ -23,15 +23,15 @@
       self->_iconView = v6;
 
       v8 = self->_iconView;
-      v9 = [(SKUIProductPageFeatureView *)self backgroundColor];
-      [(UIImageView *)v8 setBackgroundColor:v9];
+      backgroundColor = [(SKUIProductPageFeatureView *)self backgroundColor];
+      [(UIImageView *)v8 setBackgroundColor:backgroundColor];
 
       [(SKUIProductPageFeatureView *)self addSubview:self->_iconView];
-      v4 = v11;
+      iconCopy = v11;
       iconView = self->_iconView;
     }
 
-    [(UIImageView *)iconView setImage:v4];
+    [(UIImageView *)iconView setImage:iconCopy];
     [(UIImageView *)self->_iconView sizeToFit];
   }
 
@@ -45,15 +45,15 @@
   [(SKUIProductPageFeatureView *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIProductPageFeatureView *)self subtitle];
-  v6 = v5;
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  subtitleCopy = subtitle;
+  subtitle = [(SKUIProductPageFeatureView *)self subtitle];
+  v6 = subtitle;
+  if (subtitle != subtitleCopy && ([subtitle isEqualToString:subtitleCopy] & 1) == 0)
   {
-    v7 = [v4 length];
+    v7 = [subtitleCopy length];
     subtitleLabel = self->_subtitleLabel;
     if (v7)
     {
@@ -64,8 +64,8 @@
         self->_subtitleLabel = v9;
 
         v11 = self->_subtitleLabel;
-        v12 = [(SKUIProductPageFeatureView *)self backgroundColor];
-        [(UILabel *)v11 setBackgroundColor:v12];
+        backgroundColor = [(SKUIProductPageFeatureView *)self backgroundColor];
+        [(UILabel *)v11 setBackgroundColor:backgroundColor];
 
         v13 = self->_subtitleLabel;
         v14 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
@@ -73,10 +73,10 @@
 
         [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
         v15 = self->_subtitleLabel;
-        v16 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v16)
+        primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(UILabel *)v15 setTextColor:v16];
+          [(UILabel *)v15 setTextColor:primaryTextColor];
         }
 
         else
@@ -96,21 +96,21 @@
       v21 = *MEMORY[0x277D740C0];
       v27[0] = v20;
       v27[1] = v21;
-      v22 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-      v23 = v22;
-      if (!v22)
+      primaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+      v23 = primaryTextColor2;
+      if (!primaryTextColor2)
       {
         v23 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
       }
 
       v28[1] = v23;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
-      if (!v22)
+      if (!primaryTextColor2)
       {
       }
 
       v25 = self->_subtitleLabel;
-      v26 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v4 attributes:v24];
+      v26 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:subtitleCopy attributes:v24];
       [(UILabel *)v25 setAttributedText:v26];
     }
 
@@ -125,13 +125,13 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v18 = a3;
-  v4 = [(SKUIProductPageFeatureView *)self title];
-  if (v4 != v18 && ([v4 isEqualToString:v18] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIProductPageFeatureView *)self title];
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
-    v5 = [v18 length];
+    v5 = [titleCopy length];
     titleLabel = self->_titleLabel;
     if (v5)
     {
@@ -142,33 +142,33 @@
         self->_titleLabel = v7;
 
         v9 = self->_titleLabel;
-        v10 = [(SKUIProductPageFeatureView *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SKUIProductPageFeatureView *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_titleLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
         [(UILabel *)v11 setFont:v12];
 
         v13 = self->_titleLabel;
-        v14 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v14)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          v15 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-          v16 = SKUIColorWithAlpha(v15, 0.7);
+          secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+          v16 = SKUIColorWithAlpha(secondaryTextColor2, 0.7);
           [(UILabel *)v13 setTextColor:v16];
         }
 
         else
         {
-          v15 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v13 setTextColor:v15];
+          secondaryTextColor2 = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v13 setTextColor:secondaryTextColor2];
         }
 
         [(SKUIProductPageFeatureView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v18];
+      [(UILabel *)titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
     }
 
@@ -228,23 +228,23 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   iconView = self->_iconView;
-  v5 = a3;
-  [(UIImageView *)iconView setBackgroundColor:v5];
-  [(UILabel *)self->_subtitleLabel setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)iconView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_subtitleLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIProductPageFeatureView;
-  [(SKUIProductPageFeatureView *)&v6 setBackgroundColor:v5];
+  [(SKUIProductPageFeatureView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   iconView = self->_iconView;
-  v6 = a3.width;
+  v6 = fits.width;
   if (iconView)
   {
     [(UIImageView *)iconView frame];

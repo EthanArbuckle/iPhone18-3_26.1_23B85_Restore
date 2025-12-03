@@ -1,5 +1,5 @@
 @interface MOSuggestionCollectionViewCell
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)handleTraitChange;
 - (void)prepareForReuse;
 @end
@@ -9,26 +9,26 @@
 - (void)handleTraitChange
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService30MOSuggestionCollectionViewCell_gridContainerView);
-  v5 = self;
-  v3 = [(MOSuggestionCollectionViewCell *)v5 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  selfCopy = self;
+  traitCollection = [(MOSuggestionCollectionViewCell *)selfCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  specialized static MOSuggestionTheme.Styles.styleViewAsPlatter(view:traitCollection:)(v2, v4);
+  specialized static MOSuggestionTheme.Styles.styleViewAsPlatter(view:traitCollection:)(v2, userInterfaceStyle);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionCollectionViewCell.prepareForReuse()();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = MOSuggestionCollectionViewCell.hitTest(_:with:)(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = MOSuggestionCollectionViewCell.hitTest(_:with:)(event, x, y);
 
   return v10;
 }

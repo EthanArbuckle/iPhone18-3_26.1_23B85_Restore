@@ -1,17 +1,17 @@
 @interface TSPUnknownFieldDataReference
 - (id)debugDescription;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPUnknownFieldDataReference
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v26.receiver = self;
   v26.super_class = TSPUnknownFieldDataReference;
-  [(TSPUnknownField *)&v26 loadFromUnarchiver:v4];
+  [(TSPUnknownField *)&v26 loadFromUnarchiver:unarchiverCopy];
   v5 = *(self->super._fieldSet.__ptr_ + 1) - *self->super._fieldSet.__ptr_;
   if ((v5 >> 4) >= 1)
   {
@@ -27,7 +27,7 @@
       {
         TSP::DataReference::DataReference(v25, 0);
         google::protobuf::MessageLite::ParseFromString(v25, *(v11 + v10 + 8));
-        v15 = objc_msgSend_readDataReferenceMessage_(v4, v13, v25);
+        v15 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v13, v25);
         if (v15)
         {
           objc_msgSend_addObject_(v24, v14, v15);
@@ -56,16 +56,16 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v9.receiver = self;
   v9.super_class = TSPUnknownFieldDataReference;
-  [(TSPUnknownField *)&v9 saveToArchiver:v4];
+  [(TSPUnknownField *)&v9 saveToArchiver:archiverCopy];
   if (objc_msgSend_count(self->_datas, v5, v6))
   {
     memset(v8, 0, sizeof(v8));
-    objc_msgSend_setDataReferenceArray_message_(v4, v7, self->_datas, v8);
+    objc_msgSend_setDataReferenceArray_message_(archiverCopy, v7, self->_datas, v8);
     sub_276A08184(v8);
   }
 }

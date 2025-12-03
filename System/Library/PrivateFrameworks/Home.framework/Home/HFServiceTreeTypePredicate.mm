@@ -2,11 +2,11 @@
 + (NAIdentity)na_identity;
 + (id)anyServiceTypePredicate;
 + (id)anyServiceTypePredicateIncludingChildServices;
-- (BOOL)_matchesService:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HFServiceTreeTypePredicate)initWithServiceTypes:(id)a3 serviceSubtypes:(id)a4 includeChildServices:(BOOL)a5;
+- (BOOL)_matchesService:(id)service;
+- (BOOL)isEqual:(id)equal;
+- (HFServiceTreeTypePredicate)initWithServiceTypes:(id)types serviceSubtypes:(id)subtypes includeChildServices:(BOOL)services;
 - (NSString)description;
-- (id)matchingServicesForRootService:(id)a3;
+- (id)matchingServicesForRootService:(id)service;
 - (unint64_t)hash;
 @end
 
@@ -14,7 +14,7 @@
 
 + (id)anyServiceTypePredicate
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [MEMORY[0x277CBEB98] set];
   v4 = [MEMORY[0x277CBEB98] set];
   v5 = [v2 initWithServiceTypes:v3 serviceSubtypes:v4 includeChildServices:0];
@@ -24,7 +24,7 @@
 
 + (id)anyServiceTypePredicateIncludingChildServices
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [MEMORY[0x277CBEB98] set];
   v4 = [MEMORY[0x277CBEB98] set];
   v5 = [v2 initWithServiceTypes:v3 serviceSubtypes:v4 includeChildServices:1];
@@ -32,33 +32,33 @@
   return v5;
 }
 
-- (HFServiceTreeTypePredicate)initWithServiceTypes:(id)a3 serviceSubtypes:(id)a4 includeChildServices:(BOOL)a5
+- (HFServiceTreeTypePredicate)initWithServiceTypes:(id)types serviceSubtypes:(id)subtypes includeChildServices:(BOOL)services
 {
-  v9 = a3;
-  v10 = a4;
+  typesCopy = types;
+  subtypesCopy = subtypes;
   v14.receiver = self;
   v14.super_class = HFServiceTreeTypePredicate;
   v11 = [(HFServiceTreeTypePredicate *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_serviceTypes, a3);
-    objc_storeStrong(&v12->_serviceSubtypes, a4);
-    v12->_includeChildServices = a5;
+    objc_storeStrong(&v11->_serviceTypes, types);
+    objc_storeStrong(&v12->_serviceSubtypes, subtypes);
+    v12->_includeChildServices = services;
   }
 
   return v12;
 }
 
-- (BOOL)_matchesService:(id)a3
+- (BOOL)_matchesService:(id)service
 {
-  v4 = a3;
-  v5 = [(HFServiceTreeTypePredicate *)self serviceTypes];
-  if ([v5 count])
+  serviceCopy = service;
+  serviceTypes = [(HFServiceTreeTypePredicate *)self serviceTypes];
+  if ([serviceTypes count])
   {
-    v6 = [(HFServiceTreeTypePredicate *)self serviceTypes];
-    v7 = [v4 serviceType];
-    v8 = [v6 containsObject:v7];
+    serviceTypes2 = [(HFServiceTreeTypePredicate *)self serviceTypes];
+    serviceType = [serviceCopy serviceType];
+    v8 = [serviceTypes2 containsObject:serviceType];
 
     if (!v8)
     {
@@ -71,14 +71,14 @@
   {
   }
 
-  v10 = [(HFServiceTreeTypePredicate *)self serviceSubtypes];
-  v11 = [v10 count];
+  serviceSubtypes = [(HFServiceTreeTypePredicate *)self serviceSubtypes];
+  v11 = [serviceSubtypes count];
 
   if (v11)
   {
-    v12 = [(HFServiceTreeTypePredicate *)self serviceSubtypes];
-    v13 = [v4 serviceSubtype];
-    v9 = [v12 containsObject:v13];
+    serviceSubtypes2 = [(HFServiceTreeTypePredicate *)self serviceSubtypes];
+    serviceSubtype = [serviceCopy serviceSubtype];
+    v9 = [serviceSubtypes2 containsObject:serviceSubtype];
   }
 
   else
@@ -91,21 +91,21 @@ LABEL_8:
   return v9;
 }
 
-- (id)matchingServicesForRootService:(id)a3
+- (id)matchingServicesForRootService:(id)service
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(HFServiceTreeTypePredicate *)self _matchesService:v4])
+  serviceCopy = service;
+  if ([(HFServiceTreeTypePredicate *)self _matchesService:serviceCopy])
   {
-    v5 = [MEMORY[0x277CBEB58] setWithObject:v4];
+    v5 = [MEMORY[0x277CBEB58] setWithObject:serviceCopy];
     if ([(HFServiceTreeTypePredicate *)self includeChildServices])
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v6 = [v4 hf_childServices];
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      hf_childServices = [serviceCopy hf_childServices];
+      v7 = [hf_childServices countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         v8 = v7;
@@ -116,14 +116,14 @@ LABEL_8:
           {
             if (*v15 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(hf_childServices);
             }
 
             v11 = [(HFServiceTreeTypePredicate *)self matchingServicesForRootService:*(*(&v14 + 1) + 8 * i)];
             [v5 unionSet:v11];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v8 = [hf_childServices countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v8);
@@ -144,19 +144,19 @@ LABEL_8:
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFServiceTreeTypePredicate *)self serviceTypes];
-  v5 = [v4 allObjects];
-  v6 = [v5 na_map:&__block_literal_global_239];
+  serviceTypes = [(HFServiceTreeTypePredicate *)self serviceTypes];
+  allObjects = [serviceTypes allObjects];
+  v6 = [allObjects na_map:&__block_literal_global_239];
   [v3 appendArraySection:v6 withName:@"serviceTypes" skipIfEmpty:0];
 
-  v7 = [(HFServiceTreeTypePredicate *)self serviceSubtypes];
-  v8 = [v7 allObjects];
-  [v3 appendArraySection:v8 withName:@"serviceSubtypes" skipIfEmpty:1];
+  serviceSubtypes = [(HFServiceTreeTypePredicate *)self serviceSubtypes];
+  allObjects2 = [serviceSubtypes allObjects];
+  [v3 appendArraySection:allObjects2 withName:@"serviceSubtypes" skipIfEmpty:1];
 
   v9 = [v3 appendBool:-[HFServiceTreeTypePredicate includeChildServices](self withName:"includeChildServices") ifEqualTo:{@"includeChildServices", 1}];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 + (NAIdentity)na_identity
@@ -191,19 +191,19 @@ uint64_t __41__HFServiceTreeTypePredicate_na_identity__block_invoke_6(uint64_t a
   return [v2 numberWithBool:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

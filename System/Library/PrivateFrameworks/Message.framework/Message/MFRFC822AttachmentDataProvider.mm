@@ -1,21 +1,21 @@
 @interface MFRFC822AttachmentDataProvider
-- (MFRFC822AttachmentDataProvider)initWithMessage:(id)a3;
-- (MFRFC822AttachmentDataProvider)initWithMessageData:(id)a3 parentPart:(id)a4;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
+- (MFRFC822AttachmentDataProvider)initWithMessage:(id)message;
+- (MFRFC822AttachmentDataProvider)initWithMessageData:(id)data parentPart:(id)part;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MFRFC822AttachmentDataProvider
 
-- (MFRFC822AttachmentDataProvider)initWithMessageData:(id)a3 parentPart:(id)a4
+- (MFRFC822AttachmentDataProvider)initWithMessageData:(id)data parentPart:(id)part
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  partCopy = part;
   v9 = [(MFRFC822AttachmentDataProvider *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messageData, a3);
-    v11 = [(MFMessage *)MFMailMessage messageWithRFC822Data:v10->_messageData withParentPart:v8 generateMessageIDHash:1];
+    objc_storeStrong(&v9->_messageData, data);
+    v11 = [(MFMessage *)MFMailMessage messageWithRFC822Data:v10->_messageData withParentPart:partCopy generateMessageIDHash:1];
     message = v10->_message;
     v10->_message = v11;
   }
@@ -23,56 +23,56 @@
   return v10;
 }
 
-- (MFRFC822AttachmentDataProvider)initWithMessage:(id)a3
+- (MFRFC822AttachmentDataProvider)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [(MFRFC822AttachmentDataProvider *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attachmentCopy = attachment;
+  consumerCopy = consumer;
+  progressCopy = progress;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__MFRFC822AttachmentDataProvider_fetchDataForAttachment_consumer_progress_completion___block_invoke;
   aBlock[3] = &unk_1E7AA4D60;
-  v33 = v12;
+  v33 = progressCopy;
   v36 = v33;
   v34 = _Block_copy(aBlock);
-  v14 = [(MFMailMessage *)self->_message messageStore];
-  v15 = [v10 part];
-  v16 = [v15 mimeBody];
-  v17 = v16 == 0;
+  messageStore = [(MFMailMessage *)self->_message messageStore];
+  part = [attachmentCopy part];
+  mimeBody = [part mimeBody];
+  v17 = mimeBody == 0;
 
   if (v17)
   {
-    v18 = [v10 part];
-    v19 = [v14 bodyForMessage:self->_message fetchIfNotAvailable:0 updateFlags:0];
-    [v18 setMimeBody:v19];
+    part2 = [attachmentCopy part];
+    v19 = [messageStore bodyForMessage:self->_message fetchIfNotAvailable:0 updateFlags:0];
+    [part2 setMimeBody:v19];
   }
 
-  v20 = [v10 decodeFilterWithDataConsumer:v11];
+  v20 = [attachmentCopy decodeFilterWithDataConsumer:consumerCopy];
   v21 = objc_alloc(MEMORY[0x1E69AD750]);
   v39[0] = v20;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-  v23 = [v21 initWithConsumers:v22 expectedSize:{objc_msgSend(v10, "encodedFileSize")}];
+  v23 = [v21 initWithConsumers:v22 expectedSize:{objc_msgSend(attachmentCopy, "encodedFileSize")}];
 
   [v23 setProgressBlock:v34];
-  v24 = [v10 part];
-  v25 = [v10 part];
-  [v25 range];
-  v27 = [v14 dataForMimePart:v24 inRange:0 withConsumer:v26 downloadIfNecessary:{v23, 1}];
+  part3 = [attachmentCopy part];
+  part4 = [attachmentCopy part];
+  [part4 range];
+  v27 = [messageStore dataForMimePart:part3 inRange:0 withConsumer:v26 downloadIfNecessary:{v23, 1}];
 
   if (v27)
   {
@@ -82,12 +82,12 @@
   else
   {
     v29 = +[MFActivityMonitor currentMonitor];
-    v30 = [v29 error];
+    error = [v29 error];
 
-    if (v30)
+    if (error)
     {
       v37 = *MEMORY[0x1E696AA08];
-      v38 = v30;
+      v38 = error;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     }
 
@@ -100,8 +100,8 @@
   }
 
   [v23 done];
-  [v11 done];
-  v13[2](v13, v27, v28, 0);
+  [consumerCopy done];
+  completionCopy[2](completionCopy, v27, v28, 0);
 
   v32 = *MEMORY[0x1E69E9840];
 }

@@ -1,38 +1,38 @@
 @interface WRM_UCMInterface
-- (BOOL)checkConnection:(id)a3;
+- (BOOL)checkConnection:(id)connection;
 - (WRM_UCMInterface)init;
-- (id)getWirelessFrequencyBandUpdatesForMIC:(void *)a3;
-- (id)getWirelessULFrequencyBandUpdates:(id)a3;
-- (int64_t)getWirelessRadioManagerReportLoad:(int)a3 loadDuration:(double)a4 callback:(void *)a5;
+- (id)getWirelessFrequencyBandUpdatesForMIC:(void *)c;
+- (id)getWirelessULFrequencyBandUpdates:(id)updates;
+- (int64_t)getWirelessRadioManagerReportLoad:(int)load loadDuration:(double)duration callback:(void *)callback;
 - (unsigned)getInstantLoad;
-- (unsigned)startTimer:(double)a3;
+- (unsigned)startTimer:(double)timer;
 - (unsigned)stopTimer;
 - (void)dealloc;
-- (void)handleNotification:(id)a3 :(BOOL)a4;
-- (void)processBTConnectedLinksNotification:(id)a3;
+- (void)handleNotification:(id)notification :(BOOL)a4;
+- (void)processBTConnectedLinksNotification:(id)notification;
 - (void)reConnect;
-- (void)registerClient:(int)a3 queue:(id)a4;
-- (void)sendBtLoad:(id)a3;
-- (void)sendNRFrequencyUpdateForMic:(id)a3;
-- (void)sendULFrequencyUpdate:(id)a3;
-- (void)setAWDLEnabled:(BOOL)a3;
-- (void)setCriticalAirPlayEnabled:(BOOL)a3 estimatedDuration:(unsigned int)a4 criticalityPercentage:(unsigned __int16)a5;
-- (void)setNANEnabled:(BOOL)a3;
-- (void)setNANRealTimeEnabled:(BOOL)a3;
-- (void)subscribeBtConnectedLinksNotification:(id)a3;
+- (void)registerClient:(int)client queue:(id)queue;
+- (void)sendBtLoad:(id)load;
+- (void)sendNRFrequencyUpdateForMic:(id)mic;
+- (void)sendULFrequencyUpdate:(id)update;
+- (void)setAWDLEnabled:(BOOL)enabled;
+- (void)setCriticalAirPlayEnabled:(BOOL)enabled estimatedDuration:(unsigned int)duration criticalityPercentage:(unsigned __int16)percentage;
+- (void)setNANEnabled:(BOOL)enabled;
+- (void)setNANRealTimeEnabled:(BOOL)enabled;
+- (void)subscribeBtConnectedLinksNotification:(id)notification;
 - (void)unregisterClient;
 @end
 
 @implementation WRM_UCMInterface
 
-- (void)registerClient:(int)a3 queue:(id)a4
+- (void)registerClient:(int)client queue:(id)queue
 {
   keys[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  queueCopy = queue;
+  v7 = queueCopy;
+  if (queueCopy)
   {
-    v8 = v6;
+    v8 = queueCopy;
     p_mQueue = &self->mQueue;
     mQueue = self->mQueue;
     self->mQueue = v8;
@@ -47,7 +47,7 @@
     self->mQueue = v11;
   }
 
-  self->mProcessId = a3;
+  self->mProcessId = client;
   objc_initWeak(&location, self);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -82,7 +82,7 @@
       xpc_connection_set_event_handler(v19, handler);
       xpc_connection_resume(self->mConnection);
       keys[0] = "kWCMRegisterProcess_ProcessId";
-      v20 = xpc_uint64_create(a3);
+      v20 = xpc_uint64_create(client);
       values = v20;
       v21 = xpc_dictionary_create(keys, &values, 1uLL);
       *v33 = xmmword_279ED6208;
@@ -135,29 +135,29 @@
   }
 }
 
-- (void)subscribeBtConnectedLinksNotification:(id)a3
+- (void)subscribeBtConnectedLinksNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   mQueue = self->mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__WRM_UCMInterface_subscribeBtConnectedLinksNotification___block_invoke;
   v7[3] = &unk_279ED5DB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(mQueue, v7);
 }
 
-- (void)setCriticalAirPlayEnabled:(BOOL)a3 estimatedDuration:(unsigned int)a4 criticalityPercentage:(unsigned __int16)a5
+- (void)setCriticalAirPlayEnabled:(BOOL)enabled estimatedDuration:(unsigned int)duration criticalityPercentage:(unsigned __int16)percentage
 {
-  v5 = a5;
-  v7 = a3;
+  percentageCopy = percentage;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = "disable";
-    if (v7)
+    if (enabledCopy)
     {
       v9 = "enable";
     }
@@ -187,9 +187,9 @@
 
   v12 = xpc_uint64_create(0x76CuLL);
   v13 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_BOOL(v13, "kWCMAirplayCritical", v7);
-  xpc_dictionary_set_uint64(v13, "kWCMAirplayDuration", a4);
-  xpc_dictionary_set_uint64(v13, "kWCMAirplayCriticalityPercentage", v5);
+  xpc_dictionary_set_BOOL(v13, "kWCMAirplayCritical", enabledCopy);
+  xpc_dictionary_set_uint64(v13, "kWCMAirplayDuration", duration);
+  xpc_dictionary_set_uint64(v13, "kWCMAirplayCriticalityPercentage", percentageCopy);
   *buf = xmmword_279ED6208;
   v14 = v12;
   v19[0] = v14;
@@ -205,16 +205,16 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAWDLEnabled:(BOOL)a3
+- (void)setAWDLEnabled:(BOOL)enabled
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->mIsAwdlEnabled != a3)
+  if (self->mIsAwdlEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v5 = "disable";
-      if (v3)
+      if (enabledCopy)
       {
         v5 = "enable";
       }
@@ -244,7 +244,7 @@
 
     v8 = xpc_uint64_create(0xA8CuLL);
     v9 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_BOOL(v9, "kWCMP2PAWDLOn", v3);
+    xpc_dictionary_set_BOOL(v9, "kWCMP2PAWDLOn", enabledCopy);
     *buf = xmmword_279ED6208;
     v10 = v8;
     v15[0] = v10;
@@ -252,7 +252,7 @@
     v15[1] = v11;
     v12 = xpc_dictionary_create(buf, v15, 2uLL);
     xpc_connection_send_message(self->mConnection, v12);
-    self->mIsAwdlEnabled = v3;
+    self->mIsAwdlEnabled = enabledCopy;
 
     for (i = 1; i != -1; --i)
     {
@@ -262,16 +262,16 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNANEnabled:(BOOL)a3
+- (void)setNANEnabled:(BOOL)enabled
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->mIsNanEnabled != a3)
+  if (self->mIsNanEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v5 = "disable";
-      if (v3)
+      if (enabledCopy)
       {
         v5 = "enable";
       }
@@ -301,7 +301,7 @@
 
     v8 = xpc_uint64_create(0xA8DuLL);
     v9 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_BOOL(v9, "kWCMP2PNANOn", v3);
+    xpc_dictionary_set_BOOL(v9, "kWCMP2PNANOn", enabledCopy);
     *buf = xmmword_279ED6208;
     v10 = v8;
     v15[0] = v10;
@@ -309,8 +309,8 @@
     v15[1] = v11;
     v12 = xpc_dictionary_create(buf, v15, 2uLL);
     xpc_connection_send_message(self->mConnection, v12);
-    self->mIsNanEnabled = v3;
-    if (!v3)
+    self->mIsNanEnabled = enabledCopy;
+    if (!enabledCopy)
     {
       self->mIsNanRealTimeEnabled = 0;
     }
@@ -323,16 +323,16 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNANRealTimeEnabled:(BOOL)a3
+- (void)setNANRealTimeEnabled:(BOOL)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->mIsNanRealTimeEnabled != a3)
+  if (self->mIsNanRealTimeEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v5 = "disable";
-      if (v3)
+      if (enabledCopy)
       {
         v5 = "enable";
       }
@@ -362,7 +362,7 @@
 
     v8 = xpc_uint64_create(0xA8FuLL);
     v9 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_BOOL(v9, "kWCMP2PNANRealTimeOn", v3);
+    xpc_dictionary_set_BOOL(v9, "kWCMP2PNANRealTimeOn", enabledCopy);
     *buf = xmmword_279ED6208;
     v10 = v8;
     v16[0] = v10;
@@ -375,7 +375,7 @@
       xpc_connection_send_message(mConnection, v12);
     }
 
-    self->mIsNanRealTimeEnabled = v3;
+    self->mIsNanRealTimeEnabled = enabledCopy;
 
     for (i = 1; i != -1; --i)
     {
@@ -443,15 +443,15 @@
   }
 }
 
-- (void)handleNotification:(id)a3 :(BOOL)a4
+- (void)handleNotification:(id)notification :(BOOL)a4
 {
   v4 = a4;
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  notificationCopy = notification;
+  v7 = notificationCopy;
   if (!v4)
   {
-    uint64 = xpc_dictionary_get_uint64(v6, "kMessageId");
+    uint64 = xpc_dictionary_get_uint64(notificationCopy, "kMessageId");
     v9 = xpc_dictionary_get_value(v7, "kMessageArgs");
     if (uint64 > 2805)
     {
@@ -507,25 +507,25 @@ LABEL_17:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processBTConnectedLinksNotification:(id)a3
+- (void)processBTConnectedLinksNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   mQueue = self->mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__WRM_UCMInterface_processBTConnectedLinksNotification___block_invoke;
   v7[3] = &unk_279ED5D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(mQueue, v7);
 }
 
-- (BOOL)checkConnection:(id)a3
+- (BOOL)checkConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 == MEMORY[0x277D863F0])
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy == MEMORY[0x277D863F0])
   {
     v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v6)
@@ -536,7 +536,7 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if (v3 == MEMORY[0x277D863F8])
+  if (connectionCopy == MEMORY[0x277D863F8])
   {
     v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v14)
@@ -547,7 +547,7 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if (v3 == MEMORY[0x277D86420])
+  if (connectionCopy == MEMORY[0x277D86420])
   {
     v22 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v22)
@@ -566,17 +566,17 @@ LABEL_12:
   return v5;
 }
 
-- (void)sendBtLoad:(id)a3
+- (void)sendBtLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   mQueue = self->mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__WRM_UCMInterface_sendBtLoad___block_invoke;
   v7[3] = &unk_279ED5D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = loadCopy;
+  selfCopy = self;
+  v6 = loadCopy;
   dispatch_async(mQueue, v7);
 }
 
@@ -599,7 +599,7 @@ LABEL_12:
   v8[2] = __34__WRM_UCMInterface_getInstantLoad__block_invoke;
   v8[3] = &unk_279ED6170;
   v9 = v3;
-  v10 = self;
+  selfCopy = self;
   v11 = v13;
   v12 = &v15;
   v5 = v3;
@@ -632,7 +632,7 @@ LABEL_12:
   v8[2] = __29__WRM_UCMInterface_stopTimer__block_invoke;
   v8[3] = &unk_279ED6170;
   v9 = v3;
-  v10 = self;
+  selfCopy = self;
   v11 = v13;
   v12 = &v15;
   v5 = v3;
@@ -646,7 +646,7 @@ LABEL_12:
   return v3;
 }
 
-- (unsigned)startTimer:(double)a3
+- (unsigned)startTimer:(double)timer
 {
   v18 = 0;
   v19 = &v18;
@@ -664,9 +664,9 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __31__WRM_UCMInterface_startTimer___block_invoke;
   block[3] = &unk_279ED6198;
-  v15 = a3;
+  timerCopy = timer;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v13 = v16;
   v14 = &v18;
   v7 = v5;
@@ -680,7 +680,7 @@ LABEL_12:
   return v5;
 }
 
-- (int64_t)getWirelessRadioManagerReportLoad:(int)a3 loadDuration:(double)a4 callback:(void *)a5
+- (int64_t)getWirelessRadioManagerReportLoad:(int)load loadDuration:(double)duration callback:(void *)callback
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -688,15 +688,15 @@ LABEL_12:
     _os_log_impl(&dword_2742D6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Received getWirelessRadioManagerReportLoad", buf, 2u);
   }
 
-  switch(a3)
+  switch(load)
   {
     case 2:
       LODWORD(result) = [(WRM_UCMInterface *)self stopTimer];
       self->mHomeKitBTLoadFunctionPointer = 0;
       return result;
     case 1:
-      self->mHomeKitBTLoadFunctionPointer = a5;
-      if (a4 <= 0.0)
+      self->mHomeKitBTLoadFunctionPointer = callback;
+      if (duration <= 0.0)
       {
         v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
         LODWORD(result) = 0;
@@ -710,7 +710,7 @@ LABEL_12:
 
       else
       {
-        LODWORD(result) = [(WRM_UCMInterface *)self startTimer:a4];
+        LODWORD(result) = [(WRM_UCMInterface *)self startTimer:duration];
       }
 
       return result;
@@ -722,21 +722,21 @@ LABEL_12:
   return 0;
 }
 
-- (void)sendNRFrequencyUpdateForMic:(id)a3
+- (void)sendNRFrequencyUpdateForMic:(id)mic
 {
-  v4 = a3;
+  micCopy = mic;
   mQueue = self->mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__WRM_UCMInterface_sendNRFrequencyUpdateForMic___block_invoke;
   v7[3] = &unk_279ED5D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = micCopy;
+  selfCopy = self;
+  v6 = micCopy;
   dispatch_async(mQueue, v7);
 }
 
-- (id)getWirelessFrequencyBandUpdatesForMIC:(void *)a3
+- (id)getWirelessFrequencyBandUpdatesForMIC:(void *)c
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -744,13 +744,13 @@ LABEL_12:
     _os_log_impl(&dword_2742D6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Received getWirelessFrequencyBandUpdatesForMIC", buf, 2u);
   }
 
-  self->mNRFrequencyUpdateForMicFuncPtr = a3;
+  self->mNRFrequencyUpdateForMicFuncPtr = c;
   *buf = 0;
   v19 = buf;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
-  v23 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = dispatch_semaphore_create(0);
   v16[0] = 0;
   v16[1] = v16;
@@ -764,7 +764,7 @@ LABEL_12:
   v11[2] = __58__WRM_UCMInterface_getWirelessFrequencyBandUpdatesForMIC___block_invoke;
   v11[3] = &unk_279ED6170;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v15 = buf;
   v7 = v5;
@@ -779,30 +779,30 @@ LABEL_12:
   return v9;
 }
 
-- (void)sendULFrequencyUpdate:(id)a3
+- (void)sendULFrequencyUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   mQueue = self->mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__WRM_UCMInterface_sendULFrequencyUpdate___block_invoke;
   v7[3] = &unk_279ED5D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = updateCopy;
+  selfCopy = self;
+  v6 = updateCopy;
   dispatch_async(mQueue, v7);
 }
 
-- (id)getWirelessULFrequencyBandUpdates:(id)a3
+- (id)getWirelessULFrequencyBandUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_2742D6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Received getWirelessULFrequencyBandUpdates", buf, 2u);
   }
 
-  v5 = MEMORY[0x2743E9050](v4);
+  v5 = MEMORY[0x2743E9050](updatesCopy);
   mULFrequencyUpdatesObserver = self->mULFrequencyUpdatesObserver;
   self->mULFrequencyUpdatesObserver = v5;
 

@@ -1,12 +1,12 @@
 @interface _ICLLPlaybackSyncStateQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addParticipantStates:(uint64_t)a1;
-- (uint64_t)addTransportControlStates:(uint64_t)a1;
+- (uint64_t)addParticipantStates:(uint64_t)states;
+- (uint64_t)addTransportControlStates:(uint64_t)states;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLPlaybackSyncStateQuery
@@ -30,16 +30,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   participantStates = self->_participantStates;
-  if (participantStates | *(v4 + 3))
+  if (participantStates | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)participantStates isEqual:?])
     {
@@ -48,7 +48,7 @@
   }
 
   transportControlStates = self->_transportControlStates;
-  if (transportControlStates | *(v4 + 4))
+  if (transportControlStates | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)transportControlStates isEqual:?])
     {
@@ -57,7 +57,7 @@
   }
 
   currentItemId = self->_currentItemId;
-  if (currentItemId | *(v4 + 1))
+  if (currentItemId | *(equalCopy + 1))
   {
     if (![(NSString *)currentItemId isEqual:?])
     {
@@ -66,7 +66,7 @@
   }
 
   initialAVSyncStartItemId = self->_initialAVSyncStartItemId;
-  if (initialAVSyncStartItemId | *(v4 + 2))
+  if (initialAVSyncStartItemId | *(equalCopy + 2))
   {
     if (![(NSString *)initialAVSyncStartItemId isEqual:?])
     {
@@ -74,10 +74,10 @@
     }
   }
 
-  v9 = (*(v4 + 44) & 1) == 0;
+  v9 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
 LABEL_12:
       v9 = 0;
@@ -86,13 +86,13 @@ LABEL_12:
 
     if (self->_initialAVSyncInitiator)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_12;
     }
@@ -105,10 +105,10 @@ LABEL_13:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -129,7 +129,7 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v27 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v27 + 1) + 8 * v10) copyWithZone:zone];
         [(_ICLLPlaybackSyncStateQuery *)v5 addParticipantStates:v11];
 
         ++v10;
@@ -162,7 +162,7 @@ LABEL_13:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * v16) copyWithZone:{a3, v23}];
+        v17 = [*(*(&v23 + 1) + 8 * v16) copyWithZone:{zone, v23}];
         [(_ICLLPlaybackSyncStateQuery *)v5 addTransportControlStates:v17];
 
         ++v16;
@@ -175,11 +175,11 @@ LABEL_13:
     while (v14);
   }
 
-  v18 = [(NSString *)self->_currentItemId copyWithZone:a3];
+  v18 = [(NSString *)self->_currentItemId copyWithZone:zone];
   v19 = *(v5 + 8);
   *(v5 + 8) = v18;
 
-  v20 = [(NSString *)self->_initialAVSyncStartItemId copyWithZone:a3];
+  v20 = [(NSString *)self->_initialAVSyncStartItemId copyWithZone:zone];
   v21 = *(v5 + 16);
   *(v5 + 16) = v20;
 
@@ -192,21 +192,21 @@ LABEL_13:
   return v5;
 }
 
-- (uint64_t)addParticipantStates:(uint64_t)a1
+- (uint64_t)addParticipantStates:(uint64_t)states
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (states)
   {
-    v5 = *(a1 + 24);
+    v5 = *(states + 24);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v7 = *(states + 24);
+      *(states + 24) = v6;
 
-      v5 = *(a1 + 24);
+      v5 = *(states + 24);
     }
 
     v3 = [v5 addObject:v9];
@@ -216,21 +216,21 @@ LABEL_13:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (uint64_t)addTransportControlStates:(uint64_t)a1
+- (uint64_t)addTransportControlStates:(uint64_t)states
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (states)
   {
-    v5 = *(a1 + 32);
+    v5 = *(states + 32);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 32);
-      *(a1 + 32) = v6;
+      v7 = *(states + 32);
+      *(states + 32) = v6;
 
-      v5 = *(a1 + 32);
+      v5 = *(states + 32);
     }
 
     v3 = [v5 addObject:v9];
@@ -240,10 +240,10 @@ LABEL_13:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -324,12 +324,12 @@ LABEL_13:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   participantStates = self->_participantStates;
   if (participantStates)
   {
-    [v3 setObject:participantStates forKey:@"participantStates"];
+    [dictionary setObject:participantStates forKey:@"participantStates"];
   }
 
   transportControlStates = self->_transportControlStates;
@@ -365,8 +365,8 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = _ICLLPlaybackSyncStateQuery;
   v4 = [(_ICLLPlaybackSyncStateQuery *)&v8 description];
-  v5 = [(_ICLLPlaybackSyncStateQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLPlaybackSyncStateQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

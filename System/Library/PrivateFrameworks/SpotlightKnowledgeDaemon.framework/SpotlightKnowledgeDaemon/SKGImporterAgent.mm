@@ -1,11 +1,11 @@
 @interface SKGImporterAgent
 + (void)initialize;
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3;
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5;
-- (BOOL)handleProcessRecordMessage:(id)a3 connection:(id)a4;
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection;
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection;
+- (BOOL)handleProcessRecordMessage:(id)message connection:(id)connection;
 - (void)_setup;
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3;
-- (void)didReceiveSignal:(unint64_t)a3;
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification;
+- (void)didReceiveSignal:(unint64_t)signal;
 @end
 
 @implementation SKGImporterAgent
@@ -36,11 +36,11 @@
   [v2 setupHandlers];
 }
 
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  pid = xpc_connection_get_pid(v3);
+  connectionCopy = connection;
+  pid = xpc_connection_get_pid(connectionCopy);
   xpc_connection_get_audit_token();
 
   v5 = *MEMORY[0x277CBECE8];
@@ -50,9 +50,9 @@
   {
     v7 = v6;
     v8 = SecTaskCopyValueForEntitlement(v6, @"com.apple.private.corespotlight.sender.importer", 0);
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     CurrentLoggingLevel = SKGLogGetCurrentLoggingLevel();
-    if (v9)
+    if (bOOLValue)
     {
       if (CurrentLoggingLevel >= 5)
       {
@@ -84,38 +84,38 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  LOBYTE(v9) = 0;
+  LOBYTE(bOOLValue) = 0;
 LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue;
 }
 
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  connectionCopy = connection;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v10 = SKGLogAgentInit();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v19 = 136315394;
-      v20 = a3;
+      commandCopy = command;
       v21 = 2048;
-      v22 = v8;
+      v22 = infoCopy;
       _os_log_impl(&dword_231B25000, v10, OS_LOG_TYPE_INFO, "command %s info:%p", &v19, 0x16u);
     }
   }
 
-  if (!strcmp(a3, "test"))
+  if (!strcmp(command, "test"))
   {
     v12 = xpc_data_create("TEST", 5uLL);
 
     v11 = 0;
     v13 = 0;
     v14 = v12 == 0;
-    if (!v9)
+    if (!connectionCopy)
     {
       goto LABEL_18;
     }
@@ -123,10 +123,10 @@ LABEL_12:
 
   else
   {
-    v11 = !strcmp(a3, "processRecord") && [(SKGImporterAgent *)self handleProcessRecordMessage:v8 connection:v9];
+    v11 = !strcmp(command, "processRecord") && [(SKGImporterAgent *)self handleProcessRecordMessage:infoCopy connection:connectionCopy];
     v13 = -1;
     v14 = 1;
-    if (!v9)
+    if (!connectionCopy)
     {
       goto LABEL_18;
     }
@@ -134,7 +134,7 @@ LABEL_12:
 
   if (!v11)
   {
-    reply = xpc_dictionary_create_reply(v8);
+    reply = xpc_dictionary_create_reply(infoCopy);
     v16 = reply;
     v11 = reply != 0;
     if (reply)
@@ -145,7 +145,7 @@ LABEL_12:
         xpc_dictionary_set_data(v16, "data", "TEST", 5uLL);
       }
 
-      xpc_connection_send_message(v9, v16);
+      xpc_connection_send_message(connectionCopy, v16);
     }
   }
 
@@ -155,7 +155,7 @@ LABEL_18:
   return v11;
 }
 
-- (void)didReceiveSignal:(unint64_t)a3
+- (void)didReceiveSignal:(unint64_t)signal
 {
   v8 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -164,12 +164,12 @@ LABEL_18:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      signalCopy = signal;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_INFO, "didReceiveSignal %ld", &v6, 0xCu);
     }
   }
 
-  if (a3 == 15)
+  if (signal == 15)
   {
     exit(0);
   }
@@ -177,7 +177,7 @@ LABEL_18:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification
 {
   v8 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -186,7 +186,7 @@ LABEL_18:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_INFO, "didReceiveMemoryPressureNotification %llx", &v6, 0xCu);
     }
   }
@@ -194,10 +194,10 @@ LABEL_18:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleProcessRecordMessage:(id)a3 connection:(id)a4
+- (BOOL)handleProcessRecordMessage:(id)message connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v7 = SKGLogAgentInit();
@@ -208,65 +208,65 @@ LABEL_18:
     }
   }
 
-  if ([MEMORY[0x277CC3510] copyBoolForKey:"includeEmbeddings" fromXPCDictionary:v5])
+  if ([MEMORY[0x277CC3510] copyBoolForKey:"includeEmbeddings" fromXPCDictionary:messageCopy])
   {
-    v8 = [MEMORY[0x277D657A0] sharedContext];
-    v9 = [v8 enableEmbeddings];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    enableEmbeddings = [mEMORY[0x277D657A0] enableEmbeddings];
   }
 
   else
   {
-    v9 = 0;
+    enableEmbeddings = 0;
   }
 
-  if ([MEMORY[0x277CC3510] copyBoolForKey:"includeKeyphrases" fromXPCDictionary:v5])
+  if ([MEMORY[0x277CC3510] copyBoolForKey:"includeKeyphrases" fromXPCDictionary:messageCopy])
   {
-    v10 = [MEMORY[0x277D657A0] sharedContext];
-    v11 = [v10 enableKeyphrases];
+    mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+    enableKeyphrases = [mEMORY[0x277D657A0]2 enableKeyphrases];
   }
 
   else
   {
-    v11 = 0;
+    enableKeyphrases = 0;
   }
 
   *buf = 0;
   v33 = buf;
   v34 = 0x2020000000;
   v35 = -1;
-  if (v6)
+  if (connectionCopy)
   {
-    reply = xpc_dictionary_create_reply(v5);
+    reply = xpc_dictionary_create_reply(messageCopy);
     v13 = reply;
     if (reply)
     {
-      if (((v11 | v9) & 1) == 0)
+      if (((enableKeyphrases | enableEmbeddings) & 1) == 0)
       {
         *(v33 + 6) = 0;
         xpc_dictionary_set_int64(reply, "status", 0);
-        xpc_connection_send_message(v6, v13);
-        v18 = 0;
+        xpc_connection_send_message(connectionCopy, v13);
+        decode = 0;
         v14 = 0;
 LABEL_33:
         v27 = 1;
         goto LABEL_34;
       }
 
-      v14 = [MEMORY[0x277CC3510] copyNSStringForKey:"protectionClass" fromXPCDictionary:v5];
+      v14 = [MEMORY[0x277CC3510] copyNSStringForKey:"protectionClass" fromXPCDictionary:messageCopy];
       if (v14)
       {
         v15 = objc_alloc(MEMORY[0x277CC33C8]);
-        v16 = [MEMORY[0x277CC3510] copyNSDataForKey:"record" fromXPCDictionary:v5];
+        v16 = [MEMORY[0x277CC3510] copyNSDataForKey:"record" fromXPCDictionary:messageCopy];
         v17 = [v15 initWithData:v16];
-        v18 = [v17 decode];
+        decode = [v17 decode];
 
-        if (!v18)
+        if (!decode)
         {
           goto LABEL_19;
         }
 
-        v19 = [MEMORY[0x277D65798] sharedProcessor];
-        v20 = [v19 recordIsValid:v18];
+        mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+        v20 = [mEMORY[0x277D65798] recordIsValid:decode];
 
         if (v20)
         {
@@ -274,29 +274,29 @@ LABEL_33:
         }
       }
 
-      v18 = 0;
+      decode = 0;
 LABEL_19:
-      v21 = [MEMORY[0x277CC3510] copyNSStringForKey:"referenceIdentifier" fromXPCDictionary:v5];
-      if (v9)
+      v21 = [MEMORY[0x277CC3510] copyNSStringForKey:"referenceIdentifier" fromXPCDictionary:messageCopy];
+      if (enableEmbeddings)
       {
-        v22 = [MEMORY[0x277D65798] sharedProcessor];
-        [v22 loadEmbedder];
+        mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+        [mEMORY[0x277D65798]2 loadEmbedder];
       }
 
-      if (v11)
+      if (enableKeyphrases)
       {
-        v23 = [MEMORY[0x277D65798] sharedProcessor];
-        [v23 loadKeyphraser];
+        mEMORY[0x277D65798]3 = [MEMORY[0x277D65798] sharedProcessor];
+        [mEMORY[0x277D65798]3 loadKeyphraser];
       }
 
-      v24 = [MEMORY[0x277D65798] sharedProcessor];
+      mEMORY[0x277D65798]4 = [MEMORY[0x277D65798] sharedProcessor];
       v25 = 2;
-      if (!v9)
+      if (!enableEmbeddings)
       {
         v25 = 0;
       }
 
-      if (v11)
+      if (enableKeyphrases)
       {
         v26 = v25 | 4;
       }
@@ -313,10 +313,10 @@ LABEL_19:
       v13 = v13;
       v30 = v13;
       v31 = buf;
-      [v24 enumerateProcessedItemsFromRecord:v18 referenceIdentifier:v21 bundleIdentifier:0 protectionClass:v14 processorFlags:v26 processedItemBlock:v29 cancelBlock:&__block_literal_global_32];
+      [mEMORY[0x277D65798]4 enumerateProcessedItemsFromRecord:decode referenceIdentifier:v21 bundleIdentifier:0 protectionClass:v14 processorFlags:v26 processedItemBlock:v29 cancelBlock:&__block_literal_global_32];
 
       xpc_dictionary_set_int64(v13, "status", *(v33 + 6));
-      xpc_connection_send_message(v6, v13);
+      xpc_connection_send_message(connectionCopy, v13);
 
       goto LABEL_33;
     }
@@ -330,7 +330,7 @@ LABEL_19:
     v13 = 0;
   }
 
-  v18 = 0;
+  decode = 0;
   v14 = 0;
 LABEL_34:
 

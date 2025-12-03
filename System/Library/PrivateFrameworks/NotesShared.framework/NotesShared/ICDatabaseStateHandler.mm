@@ -2,8 +2,8 @@
 + (id)miscState;
 + (id)modernDatabaseState;
 + (id)stateDictionary;
-+ (id)stateDictionaryFromLoggables:(id)a3;
-+ (void)addLoggable:(id)a3 toDictionary:(id)a4;
++ (id)stateDictionaryFromLoggables:(id)loggables;
++ (void)addLoggable:(id)loggable toDictionary:(id)dictionary;
 + (void)registerStateHandler;
 @end
 
@@ -15,39 +15,39 @@
   v2[1] = 3221225472;
   v2[2] = __46__ICDatabaseStateHandler_registerStateHandler__block_invoke;
   v2[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v2[4] = a1;
+  v2[4] = self;
   [MEMORY[0x277D36270] addStateHandlerWithName:"Notes Database" stateBlock:v2];
 }
 
 + (id)stateDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = objc_autoreleasePoolPush();
-  v5 = [a1 modernDatabaseState];
-  [v3 setObject:v5 forKeyedSubscript:@"Modern"];
+  modernDatabaseState = [self modernDatabaseState];
+  [dictionary setObject:modernDatabaseState forKeyedSubscript:@"Modern"];
 
   objc_autoreleasePoolPop(v4);
   v6 = objc_autoreleasePoolPush();
-  v7 = [a1 miscState];
-  [v3 setObject:v7 forKeyedSubscript:@"Misc"];
+  miscState = [self miscState];
+  [dictionary setObject:miscState forKeyedSubscript:@"Misc"];
 
   objc_autoreleasePoolPop(v6);
 
-  return v3;
+  return dictionary;
 }
 
 + (id)miscState
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__ICDatabaseStateHandler_miscState__block_invoke;
   v7[3] = &unk_278194B00;
-  v5 = v2;
+  v5 = dictionary;
   v8 = v5;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   return v5;
 }
@@ -60,19 +60,19 @@ void __35__ICDatabaseStateHandler_miscState__block_invoke(uint64_t a1)
 
 + (id)modernDatabaseState
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 workerManagedObjectContext];
+  workerManagedObjectContext = [v4 workerManagedObjectContext];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__ICDatabaseStateHandler_modernDatabaseState__block_invoke;
   v11[3] = &unk_278194F70;
-  v12 = v5;
-  v14 = a1;
-  v6 = v3;
+  v12 = workerManagedObjectContext;
+  selfCopy = self;
+  v6 = dictionary;
   v13 = v6;
-  v7 = v5;
+  v7 = workerManagedObjectContext;
   [v7 performBlockAndWait:v11];
   v8 = v13;
   v9 = v6;
@@ -256,16 +256,16 @@ void __45__ICDatabaseStateHandler_modernDatabaseState__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)stateDictionaryFromLoggables:(id)a3
++ (id)stateDictionaryFromLoggables:(id)loggables
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  loggablesCopy = loggables;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = loggablesCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -280,7 +280,7 @@ void __45__ICDatabaseStateHandler_modernDatabaseState__block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        [a1 addLoggable:*(*(&v12 + 1) + 8 * i) toDictionary:{v5, v12}];
+        [self addLoggable:*(*(&v12 + 1) + 8 * i) toDictionary:{dictionary, v12}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -289,32 +289,32 @@ void __45__ICDatabaseStateHandler_modernDatabaseState__block_invoke(uint64_t a1)
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
-+ (void)addLoggable:(id)a3 toDictionary:(id)a4
++ (void)addLoggable:(id)loggable toDictionary:(id)dictionary
 {
-  v11 = a3;
-  v5 = a4;
+  loggableCopy = loggable;
+  dictionaryCopy = dictionary;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 objectForKeyedSubscript:v7];
-  if (!v8)
+  dictionary = [dictionaryCopy objectForKeyedSubscript:v7];
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [v5 setObject:v8 forKeyedSubscript:v7];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionaryCopy setObject:dictionary forKeyedSubscript:v7];
   }
 
-  v9 = [v11 ic_loggingIdentifier];
-  if (!v9)
+  ic_loggingIdentifier = [loggableCopy ic_loggingIdentifier];
+  if (!ic_loggingIdentifier)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", v11];
+    ic_loggingIdentifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", loggableCopy];
   }
 
-  v10 = [v11 ic_loggingValues];
-  if (v10)
+  ic_loggingValues = [loggableCopy ic_loggingValues];
+  if (ic_loggingValues)
   {
-    [v8 setObject:v10 forKeyedSubscript:v9];
+    [dictionary setObject:ic_loggingValues forKeyedSubscript:ic_loggingIdentifier];
   }
 }
 

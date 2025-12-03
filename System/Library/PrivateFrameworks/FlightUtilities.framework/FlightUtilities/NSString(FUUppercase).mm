@@ -8,27 +8,27 @@
 {
   if (a3)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 preferredLocalizations];
-    v6 = [v5 firstObject];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    preferredLocalizations = [mainBundle preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
 
-    v7 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v6];
+    v7 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:firstObject];
     if (v7)
     {
-      v8 = [a1 uppercaseStringWithLocale:v7];
+      v8 = [self uppercaseStringWithLocale:v7];
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEAF8] currentLocale];
-      v8 = [a1 uppercaseStringWithLocale:v9];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v8 = [self uppercaseStringWithLocale:currentLocale];
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US"];
-    v8 = [a1 uppercaseStringWithLocale:v6];
+    firstObject = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US"];
+    v8 = [self uppercaseStringWithLocale:firstObject];
   }
 
   return v8;

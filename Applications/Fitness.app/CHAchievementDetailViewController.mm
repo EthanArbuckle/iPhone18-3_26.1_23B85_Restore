@@ -1,25 +1,25 @@
 @interface CHAchievementDetailViewController
 + (id)resourceProvider;
 - (CGRect)badgeFrame;
-- (CHAchievementDetailViewController)initWithAchievement:(id)a3 locProvider:(id)a4 formatsForFriend:(BOOL)a5 forDayView:(BOOL)a6 forModalPresentation:(BOOL)a7 shouldShowCelebration:(BOOL)a8;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
+- (CHAchievementDetailViewController)initWithAchievement:(id)achievement locProvider:(id)provider formatsForFriend:(BOOL)friend forDayView:(BOOL)view forModalPresentation:(BOOL)presentation shouldShowCelebration:(BOOL)celebration;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
 - (void)_willEnterForeground;
 - (void)animateModalBadgeView;
 - (void)animateModalBadgeViewIfNeeded;
-- (void)appWillResignActive:(id)a3;
+- (void)appWillResignActive:(id)active;
 - (void)configureBadgeView;
 - (void)configurePlayer;
 - (void)placeBadgeViewInContainer;
-- (void)playerFinished:(id)a3;
+- (void)playerFinished:(id)finished;
 - (void)setupCelebrationVideoIfNeeded;
-- (void)shareTapped:(id)a3;
+- (void)shareTapped:(id)tapped;
 - (void)teardownPlayer;
-- (void)textSizeChanged:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)textSizeChanged:(id)changed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -37,28 +37,28 @@
   return v3;
 }
 
-- (CHAchievementDetailViewController)initWithAchievement:(id)a3 locProvider:(id)a4 formatsForFriend:(BOOL)a5 forDayView:(BOOL)a6 forModalPresentation:(BOOL)a7 shouldShowCelebration:(BOOL)a8
+- (CHAchievementDetailViewController)initWithAchievement:(id)achievement locProvider:(id)provider formatsForFriend:(BOOL)friend forDayView:(BOOL)view forModalPresentation:(BOOL)presentation shouldShowCelebration:(BOOL)celebration
 {
-  v11 = a5;
-  v15 = a3;
-  v16 = a4;
+  friendCopy = friend;
+  achievementCopy = achievement;
+  providerCopy = provider;
   v30.receiver = self;
   v30.super_class = CHAchievementDetailViewController;
   v17 = [(CHAchievementDetailViewController *)&v30 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_achievement, a3);
-    v18->_earned = [v15 unearned] ^ 1;
-    objc_storeStrong(&v18->_locProvider, a4);
-    v19 = [[AAUIAchievementFormatter alloc] initWithStyle:1 achievement:v15 achLocalizationProvider:v18->_locProvider];
+    objc_storeStrong(&v17->_achievement, achievement);
+    v18->_earned = [achievementCopy unearned] ^ 1;
+    objc_storeStrong(&v18->_locProvider, provider);
+    v19 = [[AAUIAchievementFormatter alloc] initWithStyle:1 achievement:achievementCopy achLocalizationProvider:v18->_locProvider];
     formatter = v18->_formatter;
     v18->_formatter = v19;
 
-    [(AAUIAchievementFormatter *)v18->_formatter setFormatsForFriend:v11];
-    v18->_forDayView = a6;
-    v18->_forModalPresentation = a7;
-    v18->_shouldShowCelebration = a8;
+    [(AAUIAchievementFormatter *)v18->_formatter setFormatsForFriend:friendCopy];
+    v18->_forDayView = view;
+    v18->_forModalPresentation = presentation;
+    v18->_shouldShowCelebration = celebration;
     v21 = [[AAUIBadgeView alloc] initUsingEarnedShader:v18->_earned];
     badgeView = v18->_badgeView;
     v18->_badgeView = v21;
@@ -69,11 +69,11 @@
     v23 = +[NSNotificationCenter defaultCenter];
     [v23 addObserver:v18 selector:"textSizeChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-    if (!v11)
+    if (!friendCopy)
     {
       v24 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:9 target:v18 action:"shareTapped:"];
-      v25 = [(CHAchievementDetailViewController *)v18 navigationItem];
-      [v25 setRightBarButtonItem:v24];
+      navigationItem = [(CHAchievementDetailViewController *)v18 navigationItem];
+      [navigationItem setRightBarButtonItem:v24];
     }
 
     v26 = +[NSNotificationCenter defaultCenter];
@@ -93,9 +93,9 @@
 {
   [(CHAchievementDetailViewController *)self setupCelebrationVideoIfNeeded];
   [(CHAchievementDetailViewController *)self setDidAppear:1];
-  v3 = [(CHAchievementDetailViewController *)self avPlayer];
+  avPlayer = [(CHAchievementDetailViewController *)self avPlayer];
 
-  if (v3)
+  if (avPlayer)
   {
     v4 = ACHLogDefault();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -104,8 +104,8 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Playing achievement celebration video", v6, 2u);
     }
 
-    v5 = [(CHAchievementDetailViewController *)self avPlayer];
-    [v5 play];
+    avPlayer2 = [(CHAchievementDetailViewController *)self avPlayer];
+    [avPlayer2 play];
   }
 
   else if ([(CHAchievementDetailViewController *)self forModalPresentation])
@@ -117,53 +117,53 @@
 
 - (void)configureBadgeView
 {
-  v3 = [objc_opt_class() resourceProvider];
-  v4 = [(CHAchievementDetailViewController *)self achievement];
-  v5 = [v3 badgeConfigurationForAchievement:v4];
+  resourceProvider = [objc_opt_class() resourceProvider];
+  achievement = [(CHAchievementDetailViewController *)self achievement];
+  v5 = [resourceProvider badgeConfigurationForAchievement:achievement];
 
-  v6 = [(CHAchievementDetailViewController *)self formatter];
-  v7 = [v6 localizedAttributedBacksideString];
+  formatter = [(CHAchievementDetailViewController *)self formatter];
+  localizedAttributedBacksideString = [formatter localizedAttributedBacksideString];
 
-  v8 = [(CHAchievementDetailViewController *)self formatter];
-  v9 = [v8 localizedAttributedShortenedBacksideString];
+  formatter2 = [(CHAchievementDetailViewController *)self formatter];
+  localizedAttributedShortenedBacksideString = [formatter2 localizedAttributedShortenedBacksideString];
 
-  v10 = [(CHAchievementDetailViewController *)self badgeView];
-  [v10 setConfiguration:v5];
+  badgeView = [(CHAchievementDetailViewController *)self badgeView];
+  [badgeView setConfiguration:v5];
 
-  v11 = [(CHAchievementDetailViewController *)self badgeView];
-  v12 = [(CHAchievementDetailViewController *)self achievement];
-  v13 = [v3 backSideIconImageForAchievement:v12];
-  [v11 setBadgeBacksideIcon:v13];
+  badgeView2 = [(CHAchievementDetailViewController *)self badgeView];
+  achievement2 = [(CHAchievementDetailViewController *)self achievement];
+  v13 = [resourceProvider backSideIconImageForAchievement:achievement2];
+  [badgeView2 setBadgeBacksideIcon:v13];
 
-  if ([v7 length])
+  if ([localizedAttributedBacksideString length])
   {
-    v14 = [(CHAchievementDetailViewController *)self badgeView];
-    [v14 setBadgeBacksideAttributedString:v7];
+    badgeView3 = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView3 setBadgeBacksideAttributedString:localizedAttributedBacksideString];
 
-    v15 = [(CHAchievementDetailViewController *)self badgeView];
+    badgeView4 = [(CHAchievementDetailViewController *)self badgeView];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000DEBA8;
     v16[3] = &unk_10083BA50;
-    v17 = v9;
-    [v15 setShortenedBadgeBacksideStringProvider:v16];
+    v17 = localizedAttributedShortenedBacksideString;
+    [badgeView4 setShortenedBadgeBacksideStringProvider:v16];
   }
 }
 
 - (void)placeBadgeViewInContainer
 {
-  v3 = [(CHAchievementDetailViewController *)self badgeContainer];
-  v4 = [(CHAchievementDetailViewController *)self badgeView];
-  [v3 addSubview:v4];
+  badgeContainer = [(CHAchievementDetailViewController *)self badgeContainer];
+  badgeView = [(CHAchievementDetailViewController *)self badgeView];
+  [badgeContainer addSubview:badgeView];
 
-  v9 = [(CHAchievementDetailViewController *)self badgeContainer];
-  [v9 bounds];
+  badgeContainer2 = [(CHAchievementDetailViewController *)self badgeContainer];
+  [badgeContainer2 bounds];
   MidX = CGRectGetMidX(v11);
-  v6 = [(CHAchievementDetailViewController *)self badgeContainer];
-  [v6 bounds];
+  badgeContainer3 = [(CHAchievementDetailViewController *)self badgeContainer];
+  [badgeContainer3 bounds];
   MidY = CGRectGetMidY(v12);
-  v8 = [(CHAchievementDetailViewController *)self badgeView];
-  [v8 setCenter:{MidX, MidY}];
+  badgeView2 = [(CHAchievementDetailViewController *)self badgeView];
+  [badgeView2 setCenter:{MidX, MidY}];
 }
 
 - (void)viewDidLoad
@@ -171,197 +171,197 @@
   v110.receiver = self;
   v110.super_class = CHAchievementDetailViewController;
   [(CHAchievementDetailViewController *)&v110 viewDidLoad];
-  v3 = [(CHAchievementDetailViewController *)self navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
+  navigationItem = [(CHAchievementDetailViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   v4 = +[UIColor systemBackgroundColor];
-  v5 = [(CHAchievementDetailViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(CHAchievementDetailViewController *)self view];
+  [view setBackgroundColor:v4];
 
   if ([(CHAchievementDetailViewController *)self forModalPresentation])
   {
     v6 = objc_alloc_init(UIView);
     [(CHAchievementDetailViewController *)self setCelebrationVideoContainer:v6];
 
-    v7 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    celebrationVideoContainer = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+    [celebrationVideoContainer setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(CHAchievementDetailViewController *)self view];
-    v9 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-    [v8 addSubview:v9];
+    view2 = [(CHAchievementDetailViewController *)self view];
+    celebrationVideoContainer2 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+    [view2 addSubview:celebrationVideoContainer2];
   }
 
   v10 = objc_alloc_init(UIView);
   [(CHAchievementDetailViewController *)self setBadgeContainer:v10];
 
-  v11 = [(CHAchievementDetailViewController *)self badgeContainer];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  badgeContainer = [(CHAchievementDetailViewController *)self badgeContainer];
+  [badgeContainer setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(CHAchievementDetailViewController *)self view];
-  v13 = [(CHAchievementDetailViewController *)self badgeContainer];
-  [v12 addSubview:v13];
+  view3 = [(CHAchievementDetailViewController *)self view];
+  badgeContainer2 = [(CHAchievementDetailViewController *)self badgeContainer];
+  [view3 addSubview:badgeContainer2];
 
   v14 = objc_alloc_init(UILabel);
   [(CHAchievementDetailViewController *)self setLabel:v14];
 
-  v15 = [(CHAchievementDetailViewController *)self label];
-  [v15 setNumberOfLines:0];
+  label = [(CHAchievementDetailViewController *)self label];
+  [label setNumberOfLines:0];
 
-  v16 = [(CHAchievementDetailViewController *)self label];
+  label2 = [(CHAchievementDetailViewController *)self label];
   LODWORD(v17) = 1148846080;
-  [v16 setContentCompressionResistancePriority:1 forAxis:v17];
+  [label2 setContentCompressionResistancePriority:1 forAxis:v17];
 
-  v18 = [(CHAchievementDetailViewController *)self label];
+  label3 = [(CHAchievementDetailViewController *)self label];
   LODWORD(v19) = 1148846080;
-  [v18 setContentHuggingPriority:1 forAxis:v19];
+  [label3 setContentHuggingPriority:1 forAxis:v19];
 
-  v20 = [(CHAchievementDetailViewController *)self label];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  label4 = [(CHAchievementDetailViewController *)self label];
+  [label4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v21 = [(CHAchievementDetailViewController *)self view];
-  v22 = [(CHAchievementDetailViewController *)self label];
-  [v21 addSubview:v22];
+  view4 = [(CHAchievementDetailViewController *)self view];
+  label5 = [(CHAchievementDetailViewController *)self label];
+  [view4 addSubview:label5];
 
-  LODWORD(v22) = [(CHAchievementDetailViewController *)self forDayView];
-  v23 = [(CHAchievementDetailViewController *)self formatter];
-  v24 = v23;
-  if (v22)
+  LODWORD(label5) = [(CHAchievementDetailViewController *)self forDayView];
+  formatter = [(CHAchievementDetailViewController *)self formatter];
+  v24 = formatter;
+  if (label5)
   {
-    [v23 localizedAttributedCombinedStringWithoutProgress];
+    [formatter localizedAttributedCombinedStringWithoutProgress];
   }
 
   else
   {
-    [v23 localizedAttributedCombinedString];
+    [formatter localizedAttributedCombinedString];
   }
   v25 = ;
-  v26 = [(CHAchievementDetailViewController *)self label];
-  [v26 setAttributedText:v25];
+  label6 = [(CHAchievementDetailViewController *)self label];
+  [label6 setAttributedText:v25];
 
-  v27 = [(CHAchievementDetailViewController *)self label];
-  v28 = [v27 leadingAnchor];
-  v29 = [(CHAchievementDetailViewController *)self view];
-  v30 = [v29 leadingAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:16.0];
+  label7 = [(CHAchievementDetailViewController *)self label];
+  leadingAnchor = [label7 leadingAnchor];
+  view5 = [(CHAchievementDetailViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v31 setActive:1];
 
-  v32 = [(CHAchievementDetailViewController *)self label];
-  v33 = [v32 trailingAnchor];
-  v34 = [(CHAchievementDetailViewController *)self view];
-  v35 = [v34 trailingAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35 constant:-16.0];
+  label8 = [(CHAchievementDetailViewController *)self label];
+  trailingAnchor = [label8 trailingAnchor];
+  view6 = [(CHAchievementDetailViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [v36 setActive:1];
 
-  v37 = [(CHAchievementDetailViewController *)self label];
-  v38 = [v37 lastBaselineAnchor];
-  v39 = [(CHAchievementDetailViewController *)self view];
-  v40 = [v39 safeAreaLayoutGuide];
-  v41 = [v40 bottomAnchor];
+  label9 = [(CHAchievementDetailViewController *)self label];
+  lastBaselineAnchor = [label9 lastBaselineAnchor];
+  view7 = [(CHAchievementDetailViewController *)self view];
+  safeAreaLayoutGuide = [view7 safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
   v42 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
   [v42 _scaledValueForValue:-12.0];
-  v43 = [v38 constraintEqualToAnchor:v41 constant:?];
+  v43 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [(CHAchievementDetailViewController *)self setTextBottomBaselineConstraint:v43];
 
-  v44 = [(CHAchievementDetailViewController *)self textBottomBaselineConstraint];
-  [v44 setActive:1];
+  textBottomBaselineConstraint = [(CHAchievementDetailViewController *)self textBottomBaselineConstraint];
+  [textBottomBaselineConstraint setActive:1];
 
   v45 = objc_alloc_init(UILayoutGuide);
-  v46 = [(CHAchievementDetailViewController *)self view];
-  [v46 addLayoutGuide:v45];
+  view8 = [(CHAchievementDetailViewController *)self view];
+  [view8 addLayoutGuide:v45];
 
-  v47 = [v45 leadingAnchor];
-  v48 = [(CHAchievementDetailViewController *)self view];
-  v49 = [v48 leadingAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:16.0];
+  leadingAnchor3 = [v45 leadingAnchor];
+  view9 = [(CHAchievementDetailViewController *)self view];
+  leadingAnchor4 = [view9 leadingAnchor];
+  v50 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   [v50 setActive:1];
 
-  v51 = [v45 trailingAnchor];
-  v52 = [(CHAchievementDetailViewController *)self view];
-  v53 = [v52 trailingAnchor];
-  v54 = [v51 constraintEqualToAnchor:v53 constant:-16.0];
+  trailingAnchor3 = [v45 trailingAnchor];
+  view10 = [(CHAchievementDetailViewController *)self view];
+  trailingAnchor4 = [view10 trailingAnchor];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   [v54 setActive:1];
 
-  v55 = [v45 topAnchor];
-  v56 = [(CHAchievementDetailViewController *)self view];
-  v57 = [v56 safeAreaLayoutGuide];
-  v58 = [v57 topAnchor];
-  v59 = [v55 constraintEqualToAnchor:v58 constant:24.0];
+  topAnchor = [v45 topAnchor];
+  view11 = [(CHAchievementDetailViewController *)self view];
+  safeAreaLayoutGuide2 = [view11 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+  v59 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:24.0];
   [v59 setActive:1];
 
-  v60 = [v45 bottomAnchor];
-  v61 = [(CHAchievementDetailViewController *)self label];
-  v62 = [v61 topAnchor];
-  v63 = [v60 constraintEqualToAnchor:v62 constant:-24.0];
+  bottomAnchor2 = [v45 bottomAnchor];
+  label10 = [(CHAchievementDetailViewController *)self label];
+  topAnchor3 = [label10 topAnchor];
+  v63 = [bottomAnchor2 constraintEqualToAnchor:topAnchor3 constant:-24.0];
   [v63 setActive:1];
 
-  v64 = [(CHAchievementDetailViewController *)self badgeContainer];
-  v65 = [v64 centerXAnchor];
-  v66 = [v45 centerXAnchor];
-  v67 = [v65 constraintEqualToAnchor:v66];
+  badgeContainer3 = [(CHAchievementDetailViewController *)self badgeContainer];
+  centerXAnchor = [badgeContainer3 centerXAnchor];
+  centerXAnchor2 = [v45 centerXAnchor];
+  v67 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v67 setActive:1];
 
-  v68 = [(CHAchievementDetailViewController *)self badgeContainer];
-  v69 = [v68 centerYAnchor];
-  v70 = [v45 centerYAnchor];
-  v71 = [v69 constraintEqualToAnchor:v70];
+  badgeContainer4 = [(CHAchievementDetailViewController *)self badgeContainer];
+  centerYAnchor = [badgeContainer4 centerYAnchor];
+  centerYAnchor2 = [v45 centerYAnchor];
+  v71 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v71 setActive:1];
 
-  v72 = [(CHAchievementDetailViewController *)self badgeContainer];
-  v73 = [v72 widthAnchor];
-  v74 = [v45 widthAnchor];
-  v75 = [v73 constraintEqualToAnchor:v74];
+  badgeContainer5 = [(CHAchievementDetailViewController *)self badgeContainer];
+  widthAnchor = [badgeContainer5 widthAnchor];
+  widthAnchor2 = [v45 widthAnchor];
+  v75 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
   LODWORD(v76) = 1144750080;
   [v75 setPriority:v76];
   [v75 setActive:1];
-  v77 = [(CHAchievementDetailViewController *)self badgeContainer];
-  v78 = [v77 heightAnchor];
-  v79 = [(CHAchievementDetailViewController *)self badgeContainer];
-  v80 = [v79 widthAnchor];
+  badgeContainer6 = [(CHAchievementDetailViewController *)self badgeContainer];
+  heightAnchor = [badgeContainer6 heightAnchor];
+  badgeContainer7 = [(CHAchievementDetailViewController *)self badgeContainer];
+  widthAnchor3 = [badgeContainer7 widthAnchor];
   +[AAUIBadgeView badgeAspectRatio];
-  v82 = [v78 constraintEqualToAnchor:v80 multiplier:1.0 / v81];
+  v82 = [heightAnchor constraintEqualToAnchor:widthAnchor3 multiplier:1.0 / v81];
   [v82 setActive:1];
 
-  v83 = [(CHAchievementDetailViewController *)self badgeContainer];
-  v84 = [v83 heightAnchor];
-  v85 = [v45 heightAnchor];
-  v86 = [v84 constraintLessThanOrEqualToAnchor:v85 multiplier:1.0];
+  badgeContainer8 = [(CHAchievementDetailViewController *)self badgeContainer];
+  heightAnchor2 = [badgeContainer8 heightAnchor];
+  heightAnchor3 = [v45 heightAnchor];
+  v86 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3 multiplier:1.0];
   [v86 setActive:1];
 
   if ([(CHAchievementDetailViewController *)self forModalPresentation])
   {
-    v87 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-    v88 = [v87 topAnchor];
-    v89 = [(CHAchievementDetailViewController *)self view];
-    v90 = [v89 topAnchor];
-    v91 = [v88 constraintEqualToAnchor:v90];
+    celebrationVideoContainer3 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+    topAnchor4 = [celebrationVideoContainer3 topAnchor];
+    view12 = [(CHAchievementDetailViewController *)self view];
+    topAnchor5 = [view12 topAnchor];
+    v91 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     [v91 setActive:1];
 
-    v92 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-    v93 = [v92 leadingAnchor];
-    v94 = [(CHAchievementDetailViewController *)self view];
-    v95 = [v94 leadingAnchor];
-    v96 = [v93 constraintEqualToAnchor:v95];
+    celebrationVideoContainer4 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+    leadingAnchor5 = [celebrationVideoContainer4 leadingAnchor];
+    view13 = [(CHAchievementDetailViewController *)self view];
+    leadingAnchor6 = [view13 leadingAnchor];
+    v96 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v96 setActive:1];
 
-    v97 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-    v98 = [v97 trailingAnchor];
-    v99 = [(CHAchievementDetailViewController *)self view];
-    v100 = [v99 trailingAnchor];
-    v101 = [v98 constraintEqualToAnchor:v100];
+    celebrationVideoContainer5 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+    trailingAnchor5 = [celebrationVideoContainer5 trailingAnchor];
+    view14 = [(CHAchievementDetailViewController *)self view];
+    trailingAnchor6 = [view14 trailingAnchor];
+    v101 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v101 setActive:1];
 
-    v102 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-    v103 = [v102 bottomAnchor];
-    v104 = [(CHAchievementDetailViewController *)self view];
-    v105 = [v104 safeAreaLayoutGuide];
-    v106 = [v105 bottomAnchor];
-    v107 = [v103 constraintEqualToAnchor:v106];
+    celebrationVideoContainer6 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+    bottomAnchor3 = [celebrationVideoContainer6 bottomAnchor];
+    view15 = [(CHAchievementDetailViewController *)self view];
+    safeAreaLayoutGuide3 = [view15 safeAreaLayoutGuide];
+    bottomAnchor4 = [safeAreaLayoutGuide3 bottomAnchor];
+    v107 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v107 setActive:1];
 
     v108 = +[UIColor systemBlackColor];
-    v109 = [(CHAchievementDetailViewController *)self view];
-    [v109 setBackgroundColor:v108];
+    view16 = [(CHAchievementDetailViewController *)self view];
+    [view16 setBackgroundColor:v108];
 
     [(CHAchievementDetailViewController *)self placeBadgeViewInContainer];
     [(CHAchievementDetailViewController *)self setupCelebrationVideoIfNeeded];
@@ -374,10 +374,10 @@
   {
     if ([(CHAchievementDetailViewController *)self shouldShowCelebration])
     {
-      v3 = [(CHAchievementDetailViewController *)self achievement];
-      v4 = [v3 unearned];
+      achievement = [(CHAchievementDetailViewController *)self achievement];
+      unearned = [achievement unearned];
 
-      if ((v4 & 1) == 0)
+      if ((unearned & 1) == 0)
       {
 
         [(CHAchievementDetailViewController *)self configurePlayer];
@@ -391,45 +391,45 @@
   v17.receiver = self;
   v17.super_class = CHAchievementDetailViewController;
   [(CHAchievementDetailViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(CHAchievementDetailViewController *)self badgeView];
-  v4 = [v3 superview];
-  v5 = [(CHAchievementDetailViewController *)self badgeContainer];
+  badgeView = [(CHAchievementDetailViewController *)self badgeView];
+  superview = [badgeView superview];
+  badgeContainer = [(CHAchievementDetailViewController *)self badgeContainer];
 
-  if (v4 == v5)
+  if (superview == badgeContainer)
   {
-    v6 = [(CHAchievementDetailViewController *)self badgeContainer];
-    [v6 bounds];
+    badgeContainer2 = [(CHAchievementDetailViewController *)self badgeContainer];
+    [badgeContainer2 bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(CHAchievementDetailViewController *)self badgeView];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    badgeView2 = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView2 setFrame:{v8, v10, v12, v14}];
 
     if ([(CHAchievementDetailViewController *)self forModalPresentation])
     {
       if (!self->_celebrationComplete)
       {
         self->_celebrationComplete = 1;
-        v16 = [(CHAchievementDetailViewController *)self badgeView];
-        [v16 setAlpha:0.0];
+        badgeView3 = [(CHAchievementDetailViewController *)self badgeView];
+        [badgeView3 setAlpha:0.0];
       }
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CHAchievementDetailViewController;
-  [(CHAchievementDetailViewController *)&v7 viewWillAppear:a3];
-  v4 = [(CHAchievementDetailViewController *)self navigationController];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
+  [(CHAchievementDetailViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(CHAchievementDetailViewController *)self navigationController];
+  v5 = [navigationController conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
 
   if (v5)
   {
-    v6 = [(CHAchievementDetailViewController *)self navigationController];
-    [v6 detachPalette];
+    navigationController2 = [(CHAchievementDetailViewController *)self navigationController];
+    [navigationController2 detachPalette];
   }
 }
 
@@ -438,49 +438,49 @@
   v34.receiver = self;
   v34.super_class = CHAchievementDetailViewController;
   [(CHAchievementDetailViewController *)&v34 viewDidLayoutSubviews];
-  v3 = [(CHAchievementDetailViewController *)self badgeView];
-  v4 = [v3 superview];
-  v5 = [(CHAchievementDetailViewController *)self badgeContainer];
+  badgeView = [(CHAchievementDetailViewController *)self badgeView];
+  superview = [badgeView superview];
+  badgeContainer = [(CHAchievementDetailViewController *)self badgeContainer];
 
-  if (v4 == v5)
+  if (superview == badgeContainer)
   {
-    v6 = [(CHAchievementDetailViewController *)self badgeContainer];
-    [v6 bounds];
+    badgeContainer2 = [(CHAchievementDetailViewController *)self badgeContainer];
+    [badgeContainer2 bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(CHAchievementDetailViewController *)self badgeView];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    badgeView2 = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView2 setFrame:{v8, v10, v12, v14}];
 
-    v16 = [(CHAchievementDetailViewController *)self badgeContainer];
-    [v16 bounds];
+    badgeContainer3 = [(CHAchievementDetailViewController *)self badgeContainer];
+    [badgeContainer3 bounds];
     MidX = CGRectGetMidX(v35);
-    v18 = [(CHAchievementDetailViewController *)self badgeContainer];
-    [v18 bounds];
+    badgeContainer4 = [(CHAchievementDetailViewController *)self badgeContainer];
+    [badgeContainer4 bounds];
     MidY = CGRectGetMidY(v36);
-    v20 = [(CHAchievementDetailViewController *)self badgeView];
-    [v20 setCenter:{MidX, MidY}];
+    badgeView3 = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView3 setCenter:{MidX, MidY}];
 
-    v21 = [(CHAchievementDetailViewController *)self badgeView];
-    [v21 resizeBadgeForCurrentViewSize];
+    badgeView4 = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView4 resizeBadgeForCurrentViewSize];
 
-    v22 = [(CHAchievementDetailViewController *)self badgeView];
-    [v22 setFixedBadgeAngle:0.0];
+    badgeView5 = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView5 setFixedBadgeAngle:0.0];
 
     [(CHAchievementDetailViewController *)self setDidSetupBadgeView:1];
-    v23 = [(CHAchievementDetailViewController *)self avPlayerLayer];
+    avPlayerLayer = [(CHAchievementDetailViewController *)self avPlayerLayer];
 
-    if (v23)
+    if (avPlayerLayer)
     {
-      v24 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-      [v24 bounds];
+      celebrationVideoContainer = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+      [celebrationVideoContainer bounds];
       v26 = v25;
       v28 = v27;
       v30 = v29;
       v32 = v31;
-      v33 = [(CHAchievementDetailViewController *)self avPlayerLayer];
-      [v33 setFrame:{v26, v28, v30, v32}];
+      avPlayerLayer2 = [(CHAchievementDetailViewController *)self avPlayerLayer];
+      [avPlayerLayer2 setFrame:{v26, v28, v30, v32}];
     }
 
     else if ([(CHAchievementDetailViewController *)self forModalPresentation])
@@ -490,16 +490,16 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CHAchievementDetailViewController;
-  [(CHAchievementDetailViewController *)&v8 viewDidAppear:a3];
+  [(CHAchievementDetailViewController *)&v8 viewDidAppear:appear];
   [(CHAchievementDetailViewController *)self setupCelebrationVideoIfNeeded];
   [(CHAchievementDetailViewController *)self setDidAppear:1];
-  v4 = [(CHAchievementDetailViewController *)self avPlayer];
+  avPlayer = [(CHAchievementDetailViewController *)self avPlayer];
 
-  if (v4)
+  if (avPlayer)
   {
     v5 = ACHLogDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -508,8 +508,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Playing achievement celebration video", v7, 2u);
     }
 
-    v6 = [(CHAchievementDetailViewController *)self avPlayer];
-    [v6 play];
+    avPlayer2 = [(CHAchievementDetailViewController *)self avPlayer];
+    [avPlayer2 play];
   }
 
   else if ([(CHAchievementDetailViewController *)self forModalPresentation])
@@ -518,61 +518,61 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CHAchievementDetailViewController;
-  [(CHAchievementDetailViewController *)&v4 viewDidDisappear:a3];
+  [(CHAchievementDetailViewController *)&v4 viewDidDisappear:disappear];
   [(CHAchievementDetailViewController *)self teardownPlayer];
 }
 
-- (void)textSizeChanged:(id)a3
+- (void)textSizeChanged:(id)changed
 {
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
   [v4 _scaledValueForValue:-12.0];
   v6 = v5;
-  v7 = [(CHAchievementDetailViewController *)self textBottomBaselineConstraint];
-  [v7 setConstant:v6];
+  textBottomBaselineConstraint = [(CHAchievementDetailViewController *)self textBottomBaselineConstraint];
+  [textBottomBaselineConstraint setConstant:v6];
 
-  LODWORD(v7) = [(CHAchievementDetailViewController *)self forDayView];
-  v8 = [(CHAchievementDetailViewController *)self formatter];
-  v9 = v8;
-  if (v7)
+  LODWORD(textBottomBaselineConstraint) = [(CHAchievementDetailViewController *)self forDayView];
+  formatter = [(CHAchievementDetailViewController *)self formatter];
+  v9 = formatter;
+  if (textBottomBaselineConstraint)
   {
-    [v8 localizedAttributedCombinedStringWithoutProgress];
+    [formatter localizedAttributedCombinedStringWithoutProgress];
   }
 
   else
   {
-    [v8 localizedAttributedCombinedString];
+    [formatter localizedAttributedCombinedString];
   }
   v10 = ;
-  v11 = [(CHAchievementDetailViewController *)self label];
-  [v11 setAttributedText:v10];
+  label = [(CHAchievementDetailViewController *)self label];
+  [label setAttributedText:v10];
 
-  v12 = [(CHAchievementDetailViewController *)self view];
-  [v12 setNeedsLayout];
+  view = [(CHAchievementDetailViewController *)self view];
+  [view setNeedsLayout];
 
-  v13 = [(CHAchievementDetailViewController *)self view];
-  [v13 layoutIfNeeded];
+  view2 = [(CHAchievementDetailViewController *)self view];
+  [view2 layoutIfNeeded];
 
-  v14 = [(CHAchievementDetailViewController *)self badgeContainer];
-  [v14 bounds];
+  badgeContainer = [(CHAchievementDetailViewController *)self badgeContainer];
+  [badgeContainer bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(CHAchievementDetailViewController *)self badgeView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  badgeView = [(CHAchievementDetailViewController *)self badgeView];
+  [badgeView setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(CHAchievementDetailViewController *)self badgeView];
-  [v24 resizeBadgeForCurrentViewSize];
+  badgeView2 = [(CHAchievementDetailViewController *)self badgeView];
+  [badgeView2 resizeBadgeForCurrentViewSize];
 }
 
 - (CGRect)badgeFrame
 {
-  v2 = [(CHAchievementDetailViewController *)self badgeContainer];
-  [v2 frame];
+  badgeContainer = [(CHAchievementDetailViewController *)self badgeContainer];
+  [badgeContainer frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -589,14 +589,14 @@
   return result;
 }
 
-- (void)shareTapped:(id)a3
+- (void)shareTapped:(id)tapped
 {
-  v4 = [(CHAchievementDetailViewController *)self achievement];
-  v5 = sub_1000F021C(v4);
+  achievement = [(CHAchievementDetailViewController *)self achievement];
+  v5 = sub_1000F021C(achievement);
 
-  v6 = [(CHAchievementDetailViewController *)self locProvider];
-  v7 = [(CHAchievementDetailViewController *)self achievement];
-  v8 = [v6 shareDescriptionForAchievement:v7];
+  locProvider = [(CHAchievementDetailViewController *)self locProvider];
+  achievement2 = [(CHAchievementDetailViewController *)self achievement];
+  v8 = [locProvider shareDescriptionForAchievement:achievement2];
 
   if (v5 && v8)
   {
@@ -612,9 +612,9 @@
     v12 = sub_1000B882C();
     [v11 setExcludedActivityTypes:v12];
 
-    v13 = [(CHAchievementDetailViewController *)self navigationController];
+    navigationController = [(CHAchievementDetailViewController *)self navigationController];
 
-    if (v13)
+    if (navigationController)
     {
       [(CHAchievementDetailViewController *)self presentViewController:v11 animated:1 completion:0];
     }
@@ -622,67 +622,67 @@
     else
     {
       v14 = +[UIApplication sharedApplication];
-      v15 = [v14 windows];
-      v16 = [v15 firstObject];
-      v17 = [v16 rootViewController];
+      windows = [v14 windows];
+      firstObject = [windows firstObject];
+      rootViewController = [firstObject rootViewController];
 
-      [v17 presentViewController:v11 animated:1 completion:0];
+      [rootViewController presentViewController:v11 animated:1 completion:0];
     }
   }
 }
 
-- (void)appWillResignActive:(id)a3
+- (void)appWillResignActive:(id)active
 {
-  v4 = [(CHAchievementDetailViewController *)self avPlayer];
-  [v4 pause];
+  avPlayer = [(CHAchievementDetailViewController *)self avPlayer];
+  [avPlayer pause];
 
-  v5 = [(CHAchievementDetailViewController *)self avPlayerLayer];
-  [v5 removeFromSuperlayer];
+  avPlayerLayer = [(CHAchievementDetailViewController *)self avPlayerLayer];
+  [avPlayerLayer removeFromSuperlayer];
 
   [(CHAchievementDetailViewController *)self setAvPlayer:0];
-  v6 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-  [v6 removeFromSuperview];
+  celebrationVideoContainer = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+  [celebrationVideoContainer removeFromSuperview];
 
-  v7 = [(CHAchievementDetailViewController *)self badgeView];
-  [v7 setAlpha:1.0];
+  badgeView = [(CHAchievementDetailViewController *)self badgeView];
+  [badgeView setAlpha:1.0];
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = [(CHAchievementDetailViewController *)self sharingImage];
-  if (v4)
+  sharingImage = [(CHAchievementDetailViewController *)self sharingImage];
+  if (sharingImage)
   {
-    v5 = [(CHAchievementDetailViewController *)self sharingText];
+    sharingText = [(CHAchievementDetailViewController *)self sharingText];
 
-    if (v5)
+    if (sharingText)
     {
-      v4 = objc_alloc_init(LPLinkMetadata);
-      v6 = [(CHAchievementDetailViewController *)self sharingText];
-      [v4 setSummary:v6];
+      sharingImage = objc_alloc_init(LPLinkMetadata);
+      sharingText2 = [(CHAchievementDetailViewController *)self sharingText];
+      [sharingImage setSummary:sharingText2];
 
       v7 = [LPImage alloc];
-      v8 = [(CHAchievementDetailViewController *)self sharingImage];
-      v9 = UIImagePNGRepresentation(v8);
+      sharingImage2 = [(CHAchievementDetailViewController *)self sharingImage];
+      v9 = UIImagePNGRepresentation(sharingImage2);
       v10 = [v7 initWithData:v9 MIMEType:@"image/png"];
-      [v4 setImage:v10];
+      [sharingImage setImage:v10];
     }
 
     else
     {
-      v4 = 0;
+      sharingImage = 0;
     }
   }
 
-  return v4;
+  return sharingImage;
 }
 
-- (void)playerFinished:(id)a3
+- (void)playerFinished:(id)finished
 {
-  v4 = [(CHAchievementDetailViewController *)self avPlayerLayer];
-  [v4 removeFromSuperlayer];
+  avPlayerLayer = [(CHAchievementDetailViewController *)self avPlayerLayer];
+  [avPlayerLayer removeFromSuperlayer];
 
-  v5 = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
-  [v5 setAlpha:0.0];
+  celebrationVideoContainer = [(CHAchievementDetailViewController *)self celebrationVideoContainer];
+  [celebrationVideoContainer setAlpha:0.0];
 
   [(CHAchievementDetailViewController *)self animateModalBadgeViewIfNeeded];
 }
@@ -706,10 +706,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Animating modal badge view", &buf, 2u);
   }
 
-  v4 = [(CHAchievementDetailViewController *)self achievement];
-  v5 = [v4 unearned];
+  achievement = [(CHAchievementDetailViewController *)self achievement];
+  unearned = [achievement unearned];
 
-  if (v5)
+  if (unearned)
   {
     v6 = 0.75;
     v7 = 0.5;
@@ -724,11 +724,11 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Flipping in badge animation", &buf, 2u);
     }
 
-    v9 = [(CHAchievementDetailViewController *)self badgeView];
-    [v9 setPaused:0];
+    badgeView = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView setPaused:0];
 
-    v10 = [(CHAchievementDetailViewController *)self badgeView];
-    [v10 playFlipInAnimation];
+    badgeView2 = [(CHAchievementDetailViewController *)self badgeView];
+    [badgeView2 playFlipInAnimation];
 
     v6 = 0.5;
     v7 = 1.0;
@@ -737,9 +737,9 @@
   memset(&buf, 0, sizeof(buf));
   CGAffineTransformMakeScale(&buf, v6, v6);
   v15 = buf;
-  v11 = [(CHAchievementDetailViewController *)self badgeView];
+  badgeView3 = [(CHAchievementDetailViewController *)self badgeView];
   v14 = v15;
-  [v11 setTransform:&v14];
+  [badgeView3 setTransform:&v14];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -758,10 +758,10 @@
 {
   if (!self->_avPlayer && !self->_avPlayerLayer)
   {
-    v3 = [(CHAchievementDetailViewController *)self achievement];
-    v4 = [v3 template];
-    v5 = [v4 uniqueName];
-    v6 = [FICelebrationAssetURLProvider celebrationMovieURLForAchievementIdentifer:v5];
+    achievement = [(CHAchievementDetailViewController *)self achievement];
+    template = [achievement template];
+    uniqueName = [template uniqueName];
+    v6 = [FICelebrationAssetURLProvider celebrationMovieURLForAchievementIdentifer:uniqueName];
 
     if (v6)
     {
@@ -779,13 +779,13 @@
       self->_avPlayerLayer = v11;
 
       [(AVPlayerLayer *)self->_avPlayerLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-      v13 = [(UIView *)self->_celebrationVideoContainer layer];
-      [v13 addSublayer:self->_avPlayerLayer];
+      layer = [(UIView *)self->_celebrationVideoContainer layer];
+      [layer addSublayer:self->_avPlayerLayer];
 
       v14 = +[NSNotificationCenter defaultCenter];
-      v15 = [(CHAchievementDetailViewController *)self avPlayer];
-      v16 = [v15 currentItem];
-      [v14 addObserver:self selector:"playerFinished:" name:AVPlayerItemDidPlayToEndTimeNotification object:v16];
+      avPlayer = [(CHAchievementDetailViewController *)self avPlayer];
+      currentItem = [avPlayer currentItem];
+      [v14 addObserver:self selector:"playerFinished:" name:AVPlayerItemDidPlayToEndTimeNotification object:currentItem];
     }
 
     else
@@ -793,11 +793,11 @@
       v7 = ACHLogDefault();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(CHAchievementDetailViewController *)self achievement];
-        v18 = [v17 template];
-        v19 = [v18 uniqueName];
+        achievement2 = [(CHAchievementDetailViewController *)self achievement];
+        template2 = [achievement2 template];
+        uniqueName2 = [template2 uniqueName];
         v20 = 138412290;
-        v21 = v19;
+        v21 = uniqueName2;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "No celebration asset for achievement: %@", &v20, 0xCu);
       }
     }

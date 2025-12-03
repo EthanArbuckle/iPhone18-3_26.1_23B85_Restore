@@ -1,8 +1,8 @@
 @interface HMDeviceManager
 + (id)sharedInstance;
-- (BOOL)_deviceUpdateRegionStatus:(id)a3;
+- (BOOL)_deviceUpdateRegionStatus:(id)status;
 - (HMDeviceManager)init;
-- (id)_constructPMEConfigDataBytesForDevice:(id)a3 fromConfig:(id)a4;
+- (id)_constructPMEConfigDataBytesForDevice:(id)device fromConfig:(id)config;
 - (id)availableDiagnosticRecords;
 - (id)availableRecords;
 - (void)_aaControllerEnsureStarted;
@@ -10,53 +10,53 @@
 - (void)_accessoryDiscoveryEnsureStarted;
 - (void)_accessoryDiscoveryEnsureStopped;
 - (void)_activate;
-- (void)_activateAHPSConnectionForDevice:(id)a3;
-- (void)_checkForOcclusionInDiagnosticRecord:(id)a3 forDevice:(id)a4;
+- (void)_activateAHPSConnectionForDevice:(id)device;
+- (void)_checkForOcclusionInDiagnosticRecord:(id)record forDevice:(id)device;
 - (void)_cloudServicesClientEnsureStarted;
 - (void)_cloudServicesClientEnsureStopped;
-- (void)_computeOcclusionResultFromFaultCountsInRecord:(id)a3 forDevice:(id)a4;
-- (void)_continueDeviceConfigurationFlow:(id)a3 identifier:(id)a4 reply:(id)a5;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
-- (void)_deviceRescindHearingAssist:(id)a3;
-- (void)_deviceRescindHearingProtectionPPE:(id)a3;
-- (void)_deviceSetOffListeningModeAllowedIfNeeded:(id)a3;
-- (void)_diagnosticDataReceived:(id)a3 identifier:(id)a4 isInternal:(BOOL)a5;
-- (void)_distributedNotificationReceived:(id)a3;
-- (void)_hearingAidConfigDataReceived:(id)a3 identifier:(id)a4;
+- (void)_computeOcclusionResultFromFaultCountsInRecord:(id)record forDevice:(id)device;
+- (void)_continueDeviceConfigurationFlow:(id)flow identifier:(id)identifier reply:(id)reply;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
+- (void)_deviceRescindHearingAssist:(id)assist;
+- (void)_deviceRescindHearingProtectionPPE:(id)e;
+- (void)_deviceSetOffListeningModeAllowedIfNeeded:(id)needed;
+- (void)_diagnosticDataReceived:(id)received identifier:(id)identifier isInternal:(BOOL)internal;
+- (void)_distributedNotificationReceived:(id)received;
+- (void)_hearingAidConfigDataReceived:(id)received identifier:(id)identifier;
 - (void)_invalidate;
-- (void)_invalidateAHPSConnectionForDevice:(id)a3;
-- (void)_loadCloudRecordForDevice:(id)a3;
-- (void)_modifyDeviceConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_multimodalContextMessageReceived:(id)a3 identifier:(id)a4;
-- (void)_performActionsOnRecordChange:(id)a3;
-- (void)_pmeConfigDataReceived:(id)a3 identifier:(id)a4;
-- (void)_populateV1Struct:(id)a3 identifier:(id)a4 deviceRecord:(id)a5 hmSettingsStruct:(id *)a6;
-- (void)_populateV2Struct:(id)a3 identifier:(id)a4 deviceRecord:(id)a5 hmSettingsStruct:(id *)a6;
+- (void)_invalidateAHPSConnectionForDevice:(id)device;
+- (void)_loadCloudRecordForDevice:(id)device;
+- (void)_modifyDeviceConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion;
+- (void)_multimodalContextMessageReceived:(id)received identifier:(id)identifier;
+- (void)_performActionsOnRecordChange:(id)change;
+- (void)_pmeConfigDataReceived:(id)received identifier:(id)identifier;
+- (void)_populateV1Struct:(id)struct identifier:(id)identifier deviceRecord:(id)record hmSettingsStruct:(id *)settingsStruct;
+- (void)_populateV2Struct:(id)struct identifier:(id)identifier deviceRecord:(id)record hmSettingsStruct:(id *)settingsStruct;
 - (void)_registerForHearingAccessibilitySettingsUpdate;
 - (void)_registerForInternalDistributedNotification;
 - (void)_registerForRegionStatusUpdates;
-- (void)_resetFaultCountForDevice:(id)a3;
-- (void)_retrieveHearingProtectionSettingsForDevice:(id)a3;
-- (void)_saveCloudRecordForDevice:(id)a3 withConfig:(id)a4;
-- (void)_sendConfigOverDeviceManager:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_sendHAv2RegionStatus:(id)a3;
-- (void)_sendHearingAidConfigOverAHPSConnection:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_sendPMEConfigOverAAController:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_setHearingProtectionEnabledForDevice:(id)a3 withConfig:(id)a4;
-- (void)_submitHearingFeaturesMetricFor:(id)a3;
-- (void)_throttleUpdatesForHearingAidConfig:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_triggerDiagnosticCheckForIdentifier:(id)a3 completion:(id)a4;
-- (void)_triggerHearingProtectionOcclusionNotificationIfNeeded:(id)a3;
+- (void)_resetFaultCountForDevice:(id)device;
+- (void)_retrieveHearingProtectionSettingsForDevice:(id)device;
+- (void)_saveCloudRecordForDevice:(id)device withConfig:(id)config;
+- (void)_sendConfigOverDeviceManager:(id)manager identifier:(id)identifier completion:(id)completion;
+- (void)_sendHAv2RegionStatus:(id)status;
+- (void)_sendHearingAidConfigOverAHPSConnection:(id)connection identifier:(id)identifier completion:(id)completion;
+- (void)_sendPMEConfigOverAAController:(id)controller identifier:(id)identifier completion:(id)completion;
+- (void)_setHearingProtectionEnabledForDevice:(id)device withConfig:(id)config;
+- (void)_submitHearingFeaturesMetricFor:(id)for;
+- (void)_throttleUpdatesForHearingAidConfig:(id)config identifier:(id)identifier completion:(id)completion;
+- (void)_triggerDiagnosticCheckForIdentifier:(id)identifier completion:(id)completion;
+- (void)_triggerHearingProtectionOcclusionNotificationIfNeeded:(id)needed;
 - (void)_unregisterFromHearingAccessibilitySettingsUpdate;
 - (void)_unregisterFromInternalDistributedNotification;
 - (void)_unregisterFromRegionStatusUpdates;
-- (void)_updateCloudRecords:(id)a3;
-- (void)_updatePersonalAudioConfigForIdentifier:(id)a3;
+- (void)_updateCloudRecords:(id)records;
+- (void)_updatePersonalAudioConfigForIdentifier:(id)identifier;
 - (void)activate;
-- (void)fetchOcclusionResultForDeviceIdentifier:(id)a3 featureID:(int)a4 completion:(id)a5;
+- (void)fetchOcclusionResultForDeviceIdentifier:(id)identifier featureID:(int)d completion:(id)completion;
 - (void)invalidate;
-- (void)occlusionIndicationShownForDeviceAddress:(id)a3 featureID:(int)a4 type:(int)a5 action:(int)a6;
+- (void)occlusionIndicationShownForDeviceAddress:(id)address featureID:(int)d type:(int)type action:(int)action;
 @end
 
 @implementation HMDeviceManager
@@ -75,10 +75,10 @@
 
 - (id)availableRecords
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_deviceRecordMap copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_deviceRecordMap copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -94,10 +94,10 @@ uint64_t __33__HMDeviceManager_sharedInstance__block_invoke()
 
 - (id)availableDiagnosticRecords
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_diagnosticRecordMap copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_diagnosticRecordMap copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -190,39 +190,39 @@ uint64_t __33__HMDeviceManager_sharedInstance__block_invoke()
   [(HMDeviceManager *)self _unregisterFromInternalDistributedNotification];
 }
 
-- (void)_modifyDeviceConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_modifyDeviceConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v9];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
   if (v11)
   {
-    [(HMDeviceManager *)self _saveCloudRecordForDevice:v11 withConfig:v8];
-    [v8 restoreConfigsFromCloudRecordIfNeeded:v11];
+    [(HMDeviceManager *)self _saveCloudRecordForDevice:v11 withConfig:configurationCopy];
+    [configurationCopy restoreConfigsFromCloudRecordIfNeeded:v11];
     v35[0] = 0;
     v35[1] = v35;
     v35[2] = 0x2020000000;
-    v36 = [v8 needsUpdateToPersonalAudioForDevice:v11];
+    v36 = [configurationCopy needsUpdateToPersonalAudioForDevice:v11];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __68__HMDeviceManager__modifyDeviceConfiguration_identifier_completion___block_invoke;
     v29[3] = &unk_2796F01F0;
     v34 = v35;
     v29[4] = self;
-    v12 = v9;
+    v12 = identifierCopy;
     v30 = v12;
-    v13 = v8;
+    v13 = configurationCopy;
     v31 = v13;
     v14 = v11;
     v32 = v14;
-    v33 = v10;
+    v33 = completionCopy;
     v15 = MEMORY[0x253095540](v29);
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __68__HMDeviceManager__modifyDeviceConfiguration_identifier_completion___block_invoke_2;
     v24 = &unk_2796F0218;
-    v25 = self;
+    selfCopy = self;
     v16 = v13;
     v26 = v16;
     v27 = v12;
@@ -244,9 +244,9 @@ uint64_t __33__HMDeviceManager_sharedInstance__block_invoke()
 
     v19 = *MEMORY[0x277CCA590];
     v20 = NSErrorF();
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, v20);
+      (*(completionCopy + 2))(completionCopy, v20);
     }
   }
 }
@@ -283,22 +283,22 @@ uint64_t __68__HMDeviceManager__modifyDeviceConfiguration_identifier_completion_
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)_continueDeviceConfigurationFlow:(id)a3 identifier:(id)a4 reply:(id)a5
+- (void)_continueDeviceConfigurationFlow:(id)flow identifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  flowCopy = flow;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__HMDeviceManager__continueDeviceConfigurationFlow_identifier_reply___block_invoke;
   v14[3] = &unk_2796F0268;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = flowCopy;
+  v16 = identifierCopy;
+  v17 = replyCopy;
+  v11 = identifierCopy;
+  v12 = flowCopy;
+  v13 = replyCopy;
   [(HMDeviceManager *)self _sendConfigOverDeviceManager:v12 identifier:v11 completion:v14];
 }
 
@@ -357,52 +357,52 @@ void __69__HMDeviceManager__continueDeviceConfigurationFlow_identifier_reply___b
   }
 }
 
-- (void)_triggerDiagnosticCheckForIdentifier:(id)a3 completion:(id)a4
+- (void)_triggerDiagnosticCheckForIdentifier:(id)identifier completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap objectForKeyedSubscript:v11];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap objectForKeyedSubscript:identifierCopy];
   if (!v7)
   {
     v8 = *MEMORY[0x277CCA590];
-    v10 = v11;
+    v10 = identifierCopy;
     v9 = NSErrorF();
     if (gLogCategory_HMDeviceManager <= 90 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _triggerDiagnosticCheckForIdentifier:completion:];
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v6)
+    else if (!completionCopy)
     {
 LABEL_7:
 
       goto LABEL_8;
     }
 
-    v6[2](v6, v9);
+    completionCopy[2](completionCopy, v9);
     goto LABEL_7;
   }
 
 LABEL_8:
-  [v7 triggerOnDemandDiagnosticCheckWithCompletionHandler:{v6, v10}];
+  [v7 triggerOnDemandDiagnosticCheckWithCompletionHandler:{completionCopy, v10}];
 }
 
-- (void)_submitHearingFeaturesMetricFor:(id)a3
+- (void)_submitHearingFeaturesMetricFor:(id)for
 {
   v35[16] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 hearingAssistCapability] == 1)
+  forCopy = for;
+  if ([forCopy hearingAssistCapability] == 1)
   {
     v34[0] = @"Amplification";
-    v4 = [v3 amplification];
-    v33 = v4;
-    if (v4)
+    amplification = [forCopy amplification];
+    v33 = amplification;
+    if (amplification)
     {
-      v5 = v4;
+      v5 = amplification;
     }
 
     else
@@ -412,11 +412,11 @@ LABEL_8:
 
     v35[0] = v5;
     v34[1] = @"Balance";
-    v6 = [v3 balance];
-    v32 = v6;
-    if (v6)
+    balance = [forCopy balance];
+    v32 = balance;
+    if (balance)
     {
-      v7 = v6;
+      v7 = balance;
     }
 
     else
@@ -426,11 +426,11 @@ LABEL_8:
 
     v35[1] = v7;
     v34[2] = @"ConversationBoost";
-    v8 = [v3 beamFormer];
-    v31 = v8;
-    if (v8)
+    beamFormer = [forCopy beamFormer];
+    v31 = beamFormer;
+    if (beamFormer)
     {
-      v9 = v8;
+      v9 = beamFormer;
     }
 
     else
@@ -440,38 +440,38 @@ LABEL_8:
 
     v35[2] = v9;
     v34[3] = @"HearingAidEnabled";
-    v30 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(v3, "hearingAidEnabled")}];
+    v30 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(forCopy, "hearingAidEnabled")}];
     v35[3] = v30;
     v34[4] = @"HearingAidEnrolled";
-    v29 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(v3, "hearingAssistEnrolled")}];
+    v29 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(forCopy, "hearingAssistEnrolled")}];
     v35[4] = v29;
     v34[5] = @"HearingAidRegionSupport";
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v3, "hearingAssistRegionStatus")}];
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(forCopy, "hearingAssistRegionStatus")}];
     v35[5] = v28;
     v34[6] = @"HearingAssistEnabled";
-    v27 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(v3, "hearingAssistEnabled")}];
+    v27 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(forCopy, "hearingAssistEnabled")}];
     v35[6] = v27;
     v34[7] = @"HearingProtectionLSR";
-    v26 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(v3, "hearingProtectionEnabled")}];
+    v26 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(forCopy, "hearingProtectionEnabled")}];
     v35[7] = v26;
     v34[8] = @"HearingProtectionRegionSupport";
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v3, "hearingProtectionRegionStatus")}];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(forCopy, "hearingProtectionRegionStatus")}];
     v35[8] = v25;
     v34[9] = @"HearingTestRegionSupport";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v3, "hearingTestRegionStatus")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(forCopy, "hearingTestRegionStatus")}];
     v35[9] = v10;
     v34[10] = @"MediaAssistEnabled";
-    v11 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(v3, "mediaAssistEnabled")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(forCopy, "mediaAssistEnabled")}];
     v35[10] = v11;
     v34[11] = @"OffListeningMode";
-    v12 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(v3, "listeningModeOffAllowed")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(forCopy, "listeningModeOffAllowed")}];
     v35[11] = v12;
     v34[12] = @"OwnVoiceSlider";
-    v13 = [v3 ownVoiceLevelGain];
-    v14 = v13;
-    if (v13)
+    ownVoiceLevelGain = [forCopy ownVoiceLevelGain];
+    v14 = ownVoiceLevelGain;
+    if (ownVoiceLevelGain)
     {
-      v15 = v13;
+      v15 = ownVoiceLevelGain;
     }
 
     else
@@ -482,18 +482,18 @@ LABEL_8:
     v35[12] = v15;
     v34[13] = @"PID";
     v16 = MEMORY[0x277CCABB0];
-    v17 = [v3 aaDevice];
-    v18 = [v16 numberWithUnsignedInt:{objc_msgSend(v17, "productID")}];
+    aaDevice = [forCopy aaDevice];
+    v18 = [v16 numberWithUnsignedInt:{objc_msgSend(aaDevice, "productID")}];
     v35[13] = v18;
     v34[14] = @"SwipeControl";
-    v19 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(v3, "swipeGainEnabled")}];
+    v19 = [MEMORY[0x277CCABB0] numberWithChar:{objc_msgSend(forCopy, "swipeGainEnabled")}];
     v35[14] = v19;
     v34[15] = @"Tone";
-    v20 = [v3 tone];
-    v21 = v20;
-    if (v20)
+    tone = [forCopy tone];
+    v21 = tone;
+    if (tone)
     {
-      v22 = v20;
+      v22 = tone;
     }
 
     else
@@ -507,13 +507,13 @@ LABEL_8:
 
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
-      [HMDeviceManager _submitHearingFeaturesMetricFor:v3];
+      [HMDeviceManager _submitHearingFeaturesMetricFor:forCopy];
     }
   }
 
   else if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
   {
-    [HMDeviceManager _submitHearingFeaturesMetricFor:v3];
+    [HMDeviceManager _submitHearingFeaturesMetricFor:forCopy];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -625,20 +625,20 @@ void __51__HMDeviceManager__accessoryDiscoveryEnsureStarted__block_invoke_5(uint
   }
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
-  v10 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v10 identifier];
-  if (v4)
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifier];
     if (v5)
     {
       v6 = v5;
-      if ([v5 updateWithAADevice:v10])
+      if ([v5 updateWithAADevice:foundCopy])
       {
-        [v6 getSafetyInformation:{objc_msgSend(v10, "productID")}];
+        [v6 getSafetyInformation:{objc_msgSend(foundCopy, "productID")}];
         [(HMDeviceManager *)self _performActionsOnRecordChange:v6];
       }
     }
@@ -656,11 +656,11 @@ void __51__HMDeviceManager__accessoryDiscoveryEnsureStarted__block_invoke_5(uint
         deviceRecordMap = self->_deviceRecordMap;
       }
 
-      [(NSMutableDictionary *)deviceRecordMap setObject:v6 forKeyedSubscript:v4];
-      [v6 updateWithAADevice:v10];
+      [(NSMutableDictionary *)deviceRecordMap setObject:v6 forKeyedSubscript:identifier];
+      [v6 updateWithAADevice:foundCopy];
       [(HMDeviceManager *)self _retrieveHearingProtectionSettingsForDevice:v6];
       [(HMDeviceManager *)self _loadCloudRecordForDevice:v6];
-      [v6 getSafetyInformation:{objc_msgSend(v10, "productID")}];
+      [v6 getSafetyInformation:{objc_msgSend(foundCopy, "productID")}];
       [(HMDeviceManager *)self _activateAHPSConnectionForDevice:v6];
       [(HMDeviceManager *)self _performActionsOnRecordChange:v6];
       if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -696,37 +696,37 @@ uint64_t __41__HMDeviceManager__sendHAv2RegionStatus___block_invoke(uint64_t a1,
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)_performActionsOnRecordChange:(id)a3
+- (void)_performActionsOnRecordChange:(id)change
 {
-  v6 = a3;
-  [(HMDeviceManager *)self _deviceUpdateRegionStatus:v6];
-  [(HMDeviceManager *)self _deviceSetOffListeningModeAllowedIfNeeded:v6];
-  if ([v6 hearingAssistEnabled] == 1)
+  changeCopy = change;
+  [(HMDeviceManager *)self _deviceUpdateRegionStatus:changeCopy];
+  [(HMDeviceManager *)self _deviceSetOffListeningModeAllowedIfNeeded:changeCopy];
+  if ([changeCopy hearingAssistEnabled] == 1)
   {
-    v4 = [v6 bluetoothUUID];
-    [(HMDeviceManager *)self _updatePersonalAudioConfigForIdentifier:v4];
+    bluetoothUUID = [changeCopy bluetoothUUID];
+    [(HMDeviceManager *)self _updatePersonalAudioConfigForIdentifier:bluetoothUUID];
   }
 
-  [(HMDeviceManager *)self _triggerHearingProtectionOcclusionNotificationIfNeeded:v6];
+  [(HMDeviceManager *)self _triggerHearingProtectionOcclusionNotificationIfNeeded:changeCopy];
   if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
   {
     [HMDeviceManager _performActionsOnRecordChange:];
   }
 
   v5 = +[HMServiceDaemon sharedHMServiceDaemon];
-  [v5 reportDeviceRecordChange:v6];
+  [v5 reportDeviceRecordChange:changeCopy];
 
-  [(HMDeviceManager *)self _sendHAv2RegionStatus:v6];
+  [(HMDeviceManager *)self _sendHAv2RegionStatus:changeCopy];
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
-  v9 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v9 identifier];
-  if (v4)
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifier];
     if (v5)
     {
       if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -735,14 +735,14 @@ uint64_t __41__HMDeviceManager__sendHAv2RegionStatus___block_invoke(uint64_t a1,
       }
 
       [(HMDeviceManager *)self _invalidateAHPSConnectionForDevice:v5];
-      [(NSMutableDictionary *)self->_deviceRecordMap setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_deviceRecordMap setObject:0 forKeyedSubscript:identifier];
       v6 = +[HMServiceDaemon sharedHMServiceDaemon];
       [v6 reportDeviceRecordLost:v5];
 
-      [(NSMutableDictionary *)self->_diagnosticRecordMap setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_diagnosticRecordMap setObject:0 forKeyedSubscript:identifier];
       v7 = *MEMORY[0x277CCA590];
       v8 = NSErrorF();
-      [v5 invokePendingOcclusionCompletionsWithError:{v8, v4}];
+      [v5 invokePendingOcclusionCompletionsWithError:{v8, identifier}];
       [(HMDeviceManager *)self _submitHearingFeaturesMetricFor:v5];
     }
   }
@@ -753,56 +753,56 @@ uint64_t __41__HMDeviceManager__sendHAv2RegionStatus___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_sendConfigOverDeviceManager:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_sendConfigOverDeviceManager:(id)manager identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (self->_deviceManager)
   {
-    v11 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v9];
+    v11 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
     if (v11)
     {
-      if (([v8 needsUpdateToDeviceManagerForDevice:v11] & 1) == 0)
+      if (([managerCopy needsUpdateToDeviceManagerForDevice:v11] & 1) == 0)
       {
         if (gLogCategory_HMDeviceManager <= 10 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
         {
           [HMDeviceManager _sendConfigOverDeviceManager:identifier:completion:];
-          if (!v10)
+          if (!completionCopy)
           {
             goto LABEL_28;
           }
         }
 
-        else if (!v10)
+        else if (!completionCopy)
         {
           goto LABEL_28;
         }
 
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_28;
       }
 
       v12 = objc_alloc_init(MEMORY[0x277CEF808]);
-      [v12 setEnableHearingAidGainSwipe:{objc_msgSend(v8, "enableSwipeGain")}];
-      [v12 setEnableHearingAssist:{objc_msgSend(v8, "enableHearingAssist")}];
-      [v12 setHearingAidToggle:{objc_msgSend(v8, "enableHearingAid")}];
-      [v12 setHearingAidEnrolled:{objc_msgSend(v8, "enrollHearingAssist")}];
+      [v12 setEnableHearingAidGainSwipe:{objc_msgSend(managerCopy, "enableSwipeGain")}];
+      [v12 setEnableHearingAssist:{objc_msgSend(managerCopy, "enableHearingAssist")}];
+      [v12 setHearingAidToggle:{objc_msgSend(managerCopy, "enableHearingAid")}];
+      [v12 setHearingAidEnrolled:{objc_msgSend(managerCopy, "enrollHearingAssist")}];
       if (_os_feature_enabled_impl())
       {
-        [v12 setEnableHearingProtectionPPE:{objc_msgSend(v8, "enableHearingProtectionPPE")}];
+        [v12 setEnableHearingProtectionPPE:{objc_msgSend(managerCopy, "enableHearingProtectionPPE")}];
       }
 
-      v13 = [v8 selectedAudiogram];
+      selectedAudiogram = [managerCopy selectedAudiogram];
 
-      if (v13)
+      if (selectedAudiogram)
       {
-        v14 = [v8 selectedAudiogram];
-        v15 = [v14 startDate];
-        [v12 setAudiogramEnrolledTimestamp:v15];
+        selectedAudiogram2 = [managerCopy selectedAudiogram];
+        startDate = [selectedAudiogram2 startDate];
+        [v12 setAudiogramEnrolledTimestamp:startDate];
       }
 
-      [v12 setListeningModeOffAllowed:{objc_msgSend(v8, "allowListeningModeOff")}];
+      [v12 setListeningModeOffAllowed:{objc_msgSend(managerCopy, "allowListeningModeOff")}];
       if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
       {
         [HMDeviceManager _sendConfigOverDeviceManager:identifier:completion:];
@@ -814,8 +814,8 @@ uint64_t __41__HMDeviceManager__sendHAv2RegionStatus___block_invoke(uint64_t a1,
       v21[2] = __70__HMDeviceManager__sendConfigOverDeviceManager_identifier_completion___block_invoke;
       v21[3] = &unk_2796F02E0;
       v22 = v12;
-      v23 = v9;
-      v24 = v10;
+      v23 = identifierCopy;
+      v24 = completionCopy;
       v17 = v12;
       [(AADeviceManager *)deviceManager sendDeviceConfig:v17 identifier:v23 completion:v21];
     }
@@ -829,9 +829,9 @@ uint64_t __41__HMDeviceManager__sendHAv2RegionStatus___block_invoke(uint64_t a1,
 
       v19 = *MEMORY[0x277CCA590];
       v20 = NSErrorF();
-      if (v10)
+      if (completionCopy)
       {
-        (v10)[2](v10, v20);
+        (completionCopy)[2](completionCopy, v20);
       }
     }
   }
@@ -845,9 +845,9 @@ uint64_t __41__HMDeviceManager__sendHAv2RegionStatus___block_invoke(uint64_t a1,
 
     v18 = *MEMORY[0x277CCA590];
     v11 = NSErrorF();
-    if (v10)
+    if (completionCopy)
     {
-      (v10)[2](v10, v11);
+      (completionCopy)[2](completionCopy, v11);
     }
   }
 
@@ -897,7 +897,7 @@ uint64_t __70__HMDeviceManager__sendConfigOverDeviceManager_identifier_completio
       v13[2] = __45__HMDeviceManager__aaControllerEnsureStarted__block_invoke_2;
       v13[3] = &unk_2796F0308;
       v14 = v5;
-      v15 = self;
+      selfCopy = self;
       [v14 setPmeConfigMessageHandler:v13];
     }
 
@@ -907,7 +907,7 @@ uint64_t __70__HMDeviceManager__sendConfigOverDeviceManager_identifier_completio
     v10[3] = &unk_2796F0308;
     v6 = v5;
     v11 = v6;
-    v12 = self;
+    selfCopy2 = self;
     [v6 setMultimodalContextMessageHandler:v10];
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -920,7 +920,7 @@ uint64_t __70__HMDeviceManager__sendConfigOverDeviceManager_identifier_completio
     v7[3] = &unk_2796F02B8;
     v4 = v6;
     v8 = v4;
-    v9 = self;
+    selfCopy3 = self;
     [(AAController *)v4 activateWithCompletion:v7];
   }
 }
@@ -1004,11 +1004,11 @@ LABEL_7:
   }
 }
 
-- (id)_constructPMEConfigDataBytesForDevice:(id)a3 fromConfig:(id)a4
+- (id)_constructPMEConfigDataBytesForDevice:(id)device fromConfig:(id)config
 {
-  v5 = a4;
-  v6 = [a3 configDataPME];
-  v7 = v6;
+  configCopy = config;
+  configDataPME = [device configDataPME];
+  v7 = configDataPME;
   LODWORD(v93) = 0;
   v91 = 0u;
   v92 = 0u;
@@ -1018,9 +1018,9 @@ LABEL_7:
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  if (v6)
+  if (configDataPME)
   {
-    [v6 getBytes:&v85 length:132];
+    [configDataPME getBytes:&v85 length:132];
   }
 
   else if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -1029,9 +1029,9 @@ LABEL_7:
   }
 
   LOBYTE(v85) = 2;
-  if ([v5 enablePMEMedia])
+  if ([configCopy enablePMEMedia])
   {
-    if ([v5 enablePMEMedia] == 1)
+    if ([configCopy enablePMEMedia] == 1)
     {
       v8 = 1;
     }
@@ -1044,9 +1044,9 @@ LABEL_7:
     BYTE3(v85) = v8;
   }
 
-  if ([v5 enablePMEVoice])
+  if ([configCopy enablePMEVoice])
   {
-    if ([v5 enablePMEVoice] == 1)
+    if ([configCopy enablePMEVoice] == 1)
     {
       v9 = 1;
     }
@@ -1059,9 +1059,9 @@ LABEL_7:
     BYTE2(v85) = v9;
   }
 
-  if ([v5 enrollPMEVoice])
+  if ([configCopy enrollPMEVoice])
   {
-    if ([v5 enrollPMEVoice] == 1)
+    if ([configCopy enrollPMEVoice] == 1)
     {
       v10 = 1;
     }
@@ -1074,154 +1074,154 @@ LABEL_7:
     BYTE1(v85) = v10;
   }
 
-  v11 = [v5 mediaLossArrayLeft];
+  mediaLossArrayLeft = [configCopy mediaLossArrayLeft];
 
-  if (v11)
+  if (mediaLossArrayLeft)
   {
-    v12 = [v5 mediaLossArrayLeft];
-    v13 = [v12 objectAtIndexedSubscript:0];
+    mediaLossArrayLeft2 = [configCopy mediaLossArrayLeft];
+    v13 = [mediaLossArrayLeft2 objectAtIndexedSubscript:0];
     [v13 floatValue];
     DWORD1(v87) = v14;
 
-    v15 = [v12 objectAtIndexedSubscript:1];
+    v15 = [mediaLossArrayLeft2 objectAtIndexedSubscript:1];
     [v15 floatValue];
     DWORD2(v87) = v16;
 
-    v17 = [v12 objectAtIndexedSubscript:2];
+    v17 = [mediaLossArrayLeft2 objectAtIndexedSubscript:2];
     [v17 floatValue];
     HIDWORD(v87) = v18;
 
-    v19 = [v12 objectAtIndexedSubscript:3];
+    v19 = [mediaLossArrayLeft2 objectAtIndexedSubscript:3];
     [v19 floatValue];
     LODWORD(v88) = v20;
 
-    v21 = [v12 objectAtIndexedSubscript:4];
+    v21 = [mediaLossArrayLeft2 objectAtIndexedSubscript:4];
     [v21 floatValue];
     DWORD1(v88) = v22;
 
-    v23 = [v12 objectAtIndexedSubscript:5];
+    v23 = [mediaLossArrayLeft2 objectAtIndexedSubscript:5];
     [v23 floatValue];
     DWORD2(v88) = v24;
 
-    v25 = [v12 objectAtIndexedSubscript:6];
+    v25 = [mediaLossArrayLeft2 objectAtIndexedSubscript:6];
     [v25 floatValue];
     HIDWORD(v88) = v26;
 
-    v27 = [v12 objectAtIndexedSubscript:7];
+    v27 = [mediaLossArrayLeft2 objectAtIndexedSubscript:7];
     [v27 floatValue];
     LODWORD(v89) = v28;
   }
 
-  v29 = [v5 mediaLossArrayRight];
+  mediaLossArrayRight = [configCopy mediaLossArrayRight];
 
-  if (v29)
+  if (mediaLossArrayRight)
   {
-    v30 = [v5 mediaLossArrayRight];
-    v31 = [v30 objectAtIndexedSubscript:0];
+    mediaLossArrayRight2 = [configCopy mediaLossArrayRight];
+    v31 = [mediaLossArrayRight2 objectAtIndexedSubscript:0];
     [v31 floatValue];
     DWORD1(v91) = v32;
 
-    v33 = [v30 objectAtIndexedSubscript:1];
+    v33 = [mediaLossArrayRight2 objectAtIndexedSubscript:1];
     [v33 floatValue];
     DWORD2(v91) = v34;
 
-    v35 = [v30 objectAtIndexedSubscript:2];
+    v35 = [mediaLossArrayRight2 objectAtIndexedSubscript:2];
     [v35 floatValue];
     HIDWORD(v91) = v36;
 
-    v37 = [v30 objectAtIndexedSubscript:3];
+    v37 = [mediaLossArrayRight2 objectAtIndexedSubscript:3];
     [v37 floatValue];
     LODWORD(v92) = v38;
 
-    v39 = [v30 objectAtIndexedSubscript:4];
+    v39 = [mediaLossArrayRight2 objectAtIndexedSubscript:4];
     [v39 floatValue];
     DWORD1(v92) = v40;
 
-    v41 = [v30 objectAtIndexedSubscript:5];
+    v41 = [mediaLossArrayRight2 objectAtIndexedSubscript:5];
     [v41 floatValue];
     DWORD2(v92) = v42;
 
-    v43 = [v30 objectAtIndexedSubscript:6];
+    v43 = [mediaLossArrayRight2 objectAtIndexedSubscript:6];
     [v43 floatValue];
     HIDWORD(v92) = v44;
 
-    v45 = [v30 objectAtIndexedSubscript:7];
+    v45 = [mediaLossArrayRight2 objectAtIndexedSubscript:7];
     [v45 floatValue];
     LODWORD(v93) = v46;
   }
 
-  v47 = [v5 voiceLossArrayLeft];
+  voiceLossArrayLeft = [configCopy voiceLossArrayLeft];
 
-  if (v47)
+  if (voiceLossArrayLeft)
   {
-    v48 = [v5 voiceLossArrayLeft];
-    v49 = [v48 objectAtIndexedSubscript:0];
+    voiceLossArrayLeft2 = [configCopy voiceLossArrayLeft];
+    v49 = [voiceLossArrayLeft2 objectAtIndexedSubscript:0];
     [v49 floatValue];
     DWORD1(v85) = v50;
 
-    v51 = [v48 objectAtIndexedSubscript:1];
+    v51 = [voiceLossArrayLeft2 objectAtIndexedSubscript:1];
     [v51 floatValue];
     DWORD2(v85) = v52;
 
-    v53 = [v48 objectAtIndexedSubscript:2];
+    v53 = [voiceLossArrayLeft2 objectAtIndexedSubscript:2];
     [v53 floatValue];
     HIDWORD(v85) = v54;
 
-    v55 = [v48 objectAtIndexedSubscript:3];
+    v55 = [voiceLossArrayLeft2 objectAtIndexedSubscript:3];
     [v55 floatValue];
     LODWORD(v86) = v56;
 
-    v57 = [v48 objectAtIndexedSubscript:4];
+    v57 = [voiceLossArrayLeft2 objectAtIndexedSubscript:4];
     [v57 floatValue];
     DWORD1(v86) = v58;
 
-    v59 = [v48 objectAtIndexedSubscript:5];
+    v59 = [voiceLossArrayLeft2 objectAtIndexedSubscript:5];
     [v59 floatValue];
     DWORD2(v86) = v60;
 
-    v61 = [v48 objectAtIndexedSubscript:6];
+    v61 = [voiceLossArrayLeft2 objectAtIndexedSubscript:6];
     [v61 floatValue];
     HIDWORD(v86) = v62;
 
-    v63 = [v48 objectAtIndexedSubscript:7];
+    v63 = [voiceLossArrayLeft2 objectAtIndexedSubscript:7];
     [v63 floatValue];
     LODWORD(v87) = v64;
   }
 
-  v65 = [v5 voiceLossArrayRight];
+  voiceLossArrayRight = [configCopy voiceLossArrayRight];
 
-  if (v65)
+  if (voiceLossArrayRight)
   {
-    v66 = [v5 voiceLossArrayRight];
-    v67 = [v66 objectAtIndexedSubscript:0];
+    voiceLossArrayRight2 = [configCopy voiceLossArrayRight];
+    v67 = [voiceLossArrayRight2 objectAtIndexedSubscript:0];
     [v67 floatValue];
     DWORD1(v89) = v68;
 
-    v69 = [v66 objectAtIndexedSubscript:1];
+    v69 = [voiceLossArrayRight2 objectAtIndexedSubscript:1];
     [v69 floatValue];
     DWORD2(v89) = v70;
 
-    v71 = [v66 objectAtIndexedSubscript:2];
+    v71 = [voiceLossArrayRight2 objectAtIndexedSubscript:2];
     [v71 floatValue];
     HIDWORD(v89) = v72;
 
-    v73 = [v66 objectAtIndexedSubscript:3];
+    v73 = [voiceLossArrayRight2 objectAtIndexedSubscript:3];
     [v73 floatValue];
     LODWORD(v90) = v74;
 
-    v75 = [v66 objectAtIndexedSubscript:4];
+    v75 = [voiceLossArrayRight2 objectAtIndexedSubscript:4];
     [v75 floatValue];
     DWORD1(v90) = v76;
 
-    v77 = [v66 objectAtIndexedSubscript:5];
+    v77 = [voiceLossArrayRight2 objectAtIndexedSubscript:5];
     [v77 floatValue];
     DWORD2(v90) = v78;
 
-    v79 = [v66 objectAtIndexedSubscript:6];
+    v79 = [voiceLossArrayRight2 objectAtIndexedSubscript:6];
     [v79 floatValue];
     HIDWORD(v90) = v80;
 
-    v81 = [v66 objectAtIndexedSubscript:7];
+    v81 = [voiceLossArrayRight2 objectAtIndexedSubscript:7];
     [v81 floatValue];
     LODWORD(v91) = v82;
   }
@@ -1231,16 +1231,16 @@ LABEL_7:
   return v83;
 }
 
-- (void)_pmeConfigDataReceived:(id)a3 identifier:(id)a4
+- (void)_pmeConfigDataReceived:(id)received identifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  receivedCopy = received;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    if ([v7 updateWithPMEConfigData:v10])
+    if ([v7 updateWithPMEConfigData:receivedCopy])
     {
       if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
       {
@@ -1258,14 +1258,14 @@ LABEL_7:
   }
 }
 
-- (void)_sendPMEConfigOverAAController:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_sendPMEConfigOverAAController:(id)controller identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
-    v11 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v9];
+    v11 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
     if (!v11)
     {
       if (gLogCategory_HMDeviceManager <= 90 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -1275,27 +1275,27 @@ LABEL_7:
 
       v16 = *MEMORY[0x277CCA590];
       v14 = NSErrorF();
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, v14);
+        completionCopy[2](completionCopy, v14);
       }
 
       goto LABEL_21;
     }
 
-    if ([v8 needsUpdateToPMEConfigurationForDevice:v11])
+    if ([controllerCopy needsUpdateToPMEConfigurationForDevice:v11])
     {
       [(HMDeviceManager *)self _aaControllerEnsureStarted];
-      v12 = [(HMDeviceManager *)self _constructPMEConfigDataBytesForDevice:v11 fromConfig:v8];
+      v12 = [(HMDeviceManager *)self _constructPMEConfigDataBytesForDevice:v11 fromConfig:controllerCopy];
       aaController = self->_aaController;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __72__HMDeviceManager__sendPMEConfigOverAAController_identifier_completion___block_invoke;
       v17[3] = &unk_2796F0330;
       v18 = v12;
-      v19 = v9;
-      v20 = self;
-      v21 = v10;
+      v19 = identifierCopy;
+      selfCopy = self;
+      v21 = completionCopy;
       v14 = v12;
       [(AAController *)aaController sendPMEConfigData:v14 destinationIdentifier:v19 completionHandler:v17];
 
@@ -1306,7 +1306,7 @@ LABEL_21:
     if (gLogCategory_HMDeviceManager <= 10 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _sendPMEConfigOverAAController:identifier:completion:];
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_22;
       }
@@ -1314,10 +1314,10 @@ LABEL_21:
       goto LABEL_17;
     }
 
-    if (v10)
+    if (completionCopy)
     {
 LABEL_17:
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -1330,9 +1330,9 @@ LABEL_17:
 
     v15 = *MEMORY[0x277CCA590];
     v11 = NSErrorF();
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 
@@ -1375,13 +1375,13 @@ LABEL_10:
   return MEMORY[0x2821F96F8](v6, v4);
 }
 
-- (void)_activateAHPSConnectionForDevice:(id)a3
+- (void)_activateAHPSConnectionForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 bluetoothUUID];
-  if (v5)
+  deviceCopy = device;
+  bluetoothUUID = [deviceCopy bluetoothUUID];
+  if (bluetoothUUID)
   {
-    v6 = [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap objectForKeyedSubscript:v5];
+    v6 = [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap objectForKeyedSubscript:bluetoothUUID];
     if (!v6)
     {
       v6 = [[HMDeviceAHPSConnectionManager alloc] initWithQueue:self->_dispatchQueue];
@@ -1413,8 +1413,8 @@ LABEL_10:
         deviceAHPSConnectionManagerMap = self->_deviceAHPSConnectionManagerMap;
       }
 
-      [(NSMutableDictionary *)deviceAHPSConnectionManagerMap setObject:v6 forKeyedSubscript:v5];
-      [(HMDeviceAHPSConnectionManager *)v6 activateWithBluetoothDeviceUUID:v5];
+      [(NSMutableDictionary *)deviceAHPSConnectionManagerMap setObject:v6 forKeyedSubscript:bluetoothUUID];
+      [(HMDeviceAHPSConnectionManager *)v6 activateWithBluetoothDeviceUUID:bluetoothUUID];
     }
   }
 
@@ -1437,26 +1437,26 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
   [*(a1 + 32) _updatePersonalAudioConfigForIdentifier:v6];
 }
 
-- (void)_invalidateAHPSConnectionForDevice:(id)a3
+- (void)_invalidateAHPSConnectionForDevice:(id)device
 {
-  v6 = [a3 bluetoothUUID];
+  bluetoothUUID = [device bluetoothUUID];
   v4 = [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap setObject:0 forKeyedSubscript:bluetoothUUID];
   }
 }
 
-- (void)_diagnosticDataReceived:(id)a3 identifier:(id)a4 isInternal:(BOOL)a5
+- (void)_diagnosticDataReceived:(id)received identifier:(id)identifier isInternal:(BOOL)internal
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v8];
+  receivedCopy = received;
+  identifierCopy = identifier;
+  v9 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
   if (v9)
   {
-    v10 = [(NSMutableDictionary *)self->_diagnosticRecordMap objectForKeyedSubscript:v8];
+    v10 = [(NSMutableDictionary *)self->_diagnosticRecordMap objectForKeyedSubscript:identifierCopy];
     if (!v10)
     {
       if (!self->_diagnosticRecordMap)
@@ -1467,10 +1467,10 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
       }
 
       v10 = [objc_alloc(MEMORY[0x277D12B80]) initWithHMDeviceRecord:v9 isNewPairing:0];
-      [(NSMutableDictionary *)self->_diagnosticRecordMap setObject:v10 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_diagnosticRecordMap setObject:v10 forKeyedSubscript:identifierCopy];
     }
 
-    [v10 updateWithDiagnosticData:v14];
+    [v10 updateWithDiagnosticData:receivedCopy];
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _diagnosticDataReceived:identifier:isInternal:];
@@ -1482,7 +1482,7 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
     if ([v9 cloudRecordLoaded])
     {
       [(HMDeviceManager *)self _checkForOcclusionInDiagnosticRecord:v10 forDevice:v9];
-      if (!a5)
+      if (!internal)
       {
         [v10 submitMetricsForOcclusionPolicy];
       }
@@ -1500,16 +1500,16 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
   }
 }
 
-- (void)_hearingAidConfigDataReceived:(id)a3 identifier:(id)a4
+- (void)_hearingAidConfigDataReceived:(id)received identifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  receivedCopy = received;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    if ([v7 updateWithHearingAidConfigData:v10])
+    if ([v7 updateWithHearingAidConfigData:receivedCopy])
     {
       if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
       {
@@ -1527,15 +1527,15 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
   }
 }
 
-- (void)_sendHearingAidConfigOverAHPSConnection:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_sendHearingAidConfigOverAHPSConnection:(id)connection identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap objectForKeyedSubscript:v9];
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = [(NSMutableDictionary *)self->_deviceAHPSConnectionManagerMap objectForKeyedSubscript:identifierCopy];
   if (v11)
   {
-    v12 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
     if (!v12)
     {
       if (gLogCategory_HMDeviceManager <= 90 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -1545,19 +1545,19 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
 
       v17 = *MEMORY[0x277CCA590];
       v16 = NSErrorF();
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, v16);
+        completionCopy[2](completionCopy, v16);
       }
 
       goto LABEL_27;
     }
 
-    if ([v8 needsUpdateToAHPSConnectionManagerForDevice:v12])
+    if ([connectionCopy needsUpdateToAHPSConnectionManagerForDevice:v12])
     {
       v24 = 0;
       memset(v23, 0, sizeof(v23));
-      [(HMDeviceManager *)self _populateV1Struct:v8 identifier:v9 deviceRecord:v12 hmSettingsStruct:v23];
+      [(HMDeviceManager *)self _populateV1Struct:connectionCopy identifier:identifierCopy deviceRecord:v12 hmSettingsStruct:v23];
       if (LOBYTE(v23[0]) < 2u)
       {
         v13 = 100;
@@ -1565,7 +1565,7 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
 
       else
       {
-        [(HMDeviceManager *)self _populateV2Struct:v8 identifier:v9 deviceRecord:v12 hmSettingsStruct:v23];
+        [(HMDeviceManager *)self _populateV2Struct:connectionCopy identifier:identifierCopy deviceRecord:v12 hmSettingsStruct:v23];
         if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
         {
           [HMDeviceManager _sendHearingAidConfigOverAHPSConnection:v23 identifier:? completion:?];
@@ -1579,10 +1579,10 @@ void __52__HMDeviceManager__activateAHPSConnectionForDevice___block_invoke(uint6
       v18[1] = 3221225472;
       v18[2] = __81__HMDeviceManager__sendHearingAidConfigOverAHPSConnection_identifier_completion___block_invoke;
       v18[3] = &unk_2796F0330;
-      v19 = v9;
-      v20 = self;
+      v19 = identifierCopy;
+      selfCopy = self;
       v21 = v15;
-      v22 = v10;
+      v22 = completionCopy;
       v16 = v15;
       [v11 writeHMSettingsConfigsData:v16 completion:v18];
 
@@ -1593,7 +1593,7 @@ LABEL_27:
     if (gLogCategory_HMDeviceManager <= 10 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _sendHearingAidConfigOverAHPSConnection:identifier:completion:];
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_28;
       }
@@ -1601,10 +1601,10 @@ LABEL_27:
       goto LABEL_21;
     }
 
-    if (v10)
+    if (completionCopy)
     {
 LABEL_21:
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -1617,9 +1617,9 @@ LABEL_21:
 
     v14 = *MEMORY[0x277CCA590];
     v12 = NSErrorF();
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, v12);
+      completionCopy[2](completionCopy, v12);
     }
   }
 
@@ -1651,50 +1651,50 @@ uint64_t __81__HMDeviceManager__sendHearingAidConfigOverAHPSConnection_identifie
   return MEMORY[0x2821F96F8](v4, v3);
 }
 
-- (void)_populateV2Struct:(id)a3 identifier:(id)a4 deviceRecord:(id)a5 hmSettingsStruct:(id *)a6
+- (void)_populateV2Struct:(id)struct identifier:(id)identifier deviceRecord:(id)record hmSettingsStruct:(id *)settingsStruct
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = [a5 ownVoiceLevelGain];
-  [v10 floatValue];
+  structCopy = struct;
+  identifierCopy = identifier;
+  ownVoiceLevelGain = [record ownVoiceLevelGain];
+  [ownVoiceLevelGain floatValue];
   v12 = v11;
 
-  v13 = [v16 ownVoiceLevelGain];
+  ownVoiceLevelGain2 = [structCopy ownVoiceLevelGain];
 
-  if (v13)
+  if (ownVoiceLevelGain2)
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _populateV2Struct:identifier:deviceRecord:hmSettingsStruct:];
     }
 
-    v14 = [v16 ownVoiceLevelGain];
-    [v14 floatValue];
+    ownVoiceLevelGain3 = [structCopy ownVoiceLevelGain];
+    [ownVoiceLevelGain3 floatValue];
     v12 = v15;
   }
 
-  a6->var1 = v12;
+  settingsStruct->var1 = v12;
 }
 
-- (void)_populateV1Struct:(id)a3 identifier:(id)a4 deviceRecord:(id)a5 hmSettingsStruct:(id *)a6
+- (void)_populateV1Struct:(id)struct identifier:(id)identifier deviceRecord:(id)record hmSettingsStruct:(id *)settingsStruct
 {
-  v64 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 configDataHearingAid];
-  v12 = v11;
-  if (v11)
+  structCopy = struct;
+  identifierCopy = identifier;
+  recordCopy = record;
+  configDataHearingAid = [recordCopy configDataHearingAid];
+  v12 = configDataHearingAid;
+  if (configDataHearingAid)
   {
-    [v11 getBytes:a6 length:100];
-    a6->var0 = [v10 version];
+    [configDataHearingAid getBytes:settingsStruct length:100];
+    settingsStruct->var0 = [recordCopy version];
 LABEL_3:
-    v13 = v64;
+    v13 = structCopy;
     goto LABEL_11;
   }
 
-  if ([v10 version])
+  if ([recordCopy version])
   {
-    var0 = [v10 version];
+    var0 = [recordCopy version];
   }
 
   else
@@ -1702,8 +1702,8 @@ LABEL_3:
     var0 = 1;
   }
 
-  v13 = v64;
-  a6->var0 = var0;
+  v13 = structCopy;
+  settingsStruct->var0 = var0;
   if (gLogCategory_HMDeviceManager <= 30)
   {
     if (gLogCategory_HMDeviceManager != -1)
@@ -1715,30 +1715,30 @@ LABEL_9:
     }
 
     v15 = _LogCategory_Initialize();
-    v13 = v64;
+    v13 = structCopy;
     if (v15)
     {
-      var0 = a6->var0;
+      var0 = settingsStruct->var0;
       goto LABEL_9;
     }
   }
 
 LABEL_11:
-  a6->var1 = 2;
-  a6->var2 = 100;
-  v16 = [v13 selectedAudiogram];
+  settingsStruct->var1 = 2;
+  settingsStruct->var2 = 100;
+  selectedAudiogram = [v13 selectedAudiogram];
 
-  if (v16)
+  if (selectedAudiogram)
   {
     v17 = +[HMHealthKitUtilities sharedInstance];
-    v18 = [v64 selectedAudiogram];
-    [v17 updateHMSettingsStruct:a6 fromAudiogram:v18];
+    selectedAudiogram2 = [structCopy selectedAudiogram];
+    [v17 updateHMSettingsStruct:settingsStruct fromAudiogram:selectedAudiogram2];
   }
 
   if (gLogCategory_HMDeviceManager <= 30)
   {
-    v19 = a6->var3.var0;
-    v20 = a6->var4.var0;
+    v19 = settingsStruct->var3.var0;
+    v20 = settingsStruct->var4.var0;
     if (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize())
     {
       [HMDeviceManager _populateV1Struct:identifier:deviceRecord:hmSettingsStruct:];
@@ -1750,93 +1750,93 @@ LABEL_11:
     }
   }
 
-  v21 = [v10 amplification];
-  [v21 floatValue];
+  amplification = [recordCopy amplification];
+  [amplification floatValue];
   v23 = v22;
 
-  v24 = [v64 amplification];
+  amplification2 = [structCopy amplification];
 
-  if (v24)
+  if (amplification2)
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _populateV1Struct:identifier:deviceRecord:hmSettingsStruct:];
     }
 
-    v25 = [v64 amplification];
-    [v25 floatValue];
+    amplification3 = [structCopy amplification];
+    [amplification3 floatValue];
     v23 = v26;
   }
 
-  v27 = [v10 balance];
-  [v27 floatValue];
+  balance = [recordCopy balance];
+  [balance floatValue];
   v29 = v28;
 
-  v30 = [v64 balance];
+  balance2 = [structCopy balance];
 
-  if (v30)
+  if (balance2)
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _populateV1Struct:identifier:deviceRecord:hmSettingsStruct:];
     }
 
-    v31 = [v64 balance];
-    [v31 floatValue];
+    balance3 = [structCopy balance];
+    [balance3 floatValue];
     v29 = v32;
   }
 
-  v33 = [v10 beamFormer];
-  [v33 floatValue];
+  beamFormer = [recordCopy beamFormer];
+  [beamFormer floatValue];
   v35 = v34;
 
-  v36 = [v64 beamFormer];
+  beamFormer2 = [structCopy beamFormer];
 
-  if (v36)
+  if (beamFormer2)
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _populateV1Struct:identifier:deviceRecord:hmSettingsStruct:];
     }
 
-    v37 = [v64 beamFormer];
-    [v37 floatValue];
+    beamFormer3 = [structCopy beamFormer];
+    [beamFormer3 floatValue];
     v35 = v38;
   }
 
-  v39 = [v10 noiseSuppression];
-  [v39 floatValue];
+  noiseSuppression = [recordCopy noiseSuppression];
+  [noiseSuppression floatValue];
   v41 = v40;
 
-  v42 = [v64 noiseSuppression];
+  noiseSuppression2 = [structCopy noiseSuppression];
 
-  if (v42)
+  if (noiseSuppression2)
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _populateV1Struct:identifier:deviceRecord:hmSettingsStruct:];
     }
 
-    v43 = [v64 noiseSuppression];
-    [v43 floatValue];
+    noiseSuppression3 = [structCopy noiseSuppression];
+    [noiseSuppression3 floatValue];
     v41 = v44;
   }
 
-  v45 = [v10 tone];
-  [v45 floatValue];
+  tone = [recordCopy tone];
+  [tone floatValue];
   v47 = v46;
 
-  v48 = [v64 tone];
+  tone2 = [structCopy tone];
 
-  if (v48)
+  if (tone2)
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _populateV1Struct:identifier:deviceRecord:hmSettingsStruct:];
     }
 
-    v49 = [v64 tone];
-    [v49 floatValue];
+    tone3 = [structCopy tone];
+    [tone3 floatValue];
     v47 = v50;
   }
 
@@ -1851,31 +1851,31 @@ LABEL_11:
   v54 = fmax(fmin((v52 - (v53 * 0.5)), 1.5), -1.5);
   v55 = fmax(fmin(((v53 * 0.5) + v52), 1.5), -1.5);
   v56 = fmaxf(fminf(v51, 1.0), -1.0);
-  a6->var3.var8 = v54;
-  a6->var3.var9 = v56;
-  a6->var4.var8 = v55;
-  a6->var4.var9 = v56;
-  a6->var3.var10 = v35;
-  a6->var3.var11 = v41;
-  a6->var4.var10 = v35;
-  a6->var4.var11 = v41;
+  settingsStruct->var3.var8 = v54;
+  settingsStruct->var3.var9 = v56;
+  settingsStruct->var4.var8 = v55;
+  settingsStruct->var4.var9 = v56;
+  settingsStruct->var3.var10 = v35;
+  settingsStruct->var3.var11 = v41;
+  settingsStruct->var4.var10 = v35;
+  settingsStruct->var4.var11 = v41;
   if (gLogCategory_HMDeviceManager <= 30)
   {
     if (gLogCategory_HMDeviceManager != -1)
     {
 LABEL_50:
-      v63 = a6->var0;
+      v63 = settingsStruct->var0;
       LogPrintF();
       goto LABEL_52;
     }
 
     if (_LogCategory_Initialize())
     {
-      var8 = a6->var4.var8;
-      v58 = a6->var3.var8;
-      var9 = a6->var3.var9;
-      var10 = a6->var3.var10;
-      var11 = a6->var3.var11;
+      var8 = settingsStruct->var4.var8;
+      v58 = settingsStruct->var3.var8;
+      var9 = settingsStruct->var3.var9;
+      var10 = settingsStruct->var3.var10;
+      var11 = settingsStruct->var3.var11;
       goto LABEL_50;
     }
   }
@@ -1883,11 +1883,11 @@ LABEL_50:
 LABEL_52:
 }
 
-- (void)_throttleUpdatesForHearingAidConfig:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_throttleUpdatesForHearingAidConfig:(id)config identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  identifierCopy = identifier;
+  completionCopy = completion;
   latestConfigsMap = self->_latestConfigsMap;
   if (!latestConfigsMap)
   {
@@ -1898,14 +1898,14 @@ LABEL_52:
     latestConfigsMap = self->_latestConfigsMap;
   }
 
-  [(NSMutableDictionary *)latestConfigsMap setObject:v8 forKeyedSubscript:v9];
-  v14 = [(NSMutableDictionary *)self->_throttleTimerMap objectForKeyedSubscript:v9];
+  [(NSMutableDictionary *)latestConfigsMap setObject:configCopy forKeyedSubscript:identifierCopy];
+  v14 = [(NSMutableDictionary *)self->_throttleTimerMap objectForKeyedSubscript:identifierCopy];
   if (v14)
   {
     v15 = v14;
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -1922,16 +1922,16 @@ LABEL_52:
       throttleTimerMap = self->_throttleTimerMap;
     }
 
-    [(NSMutableDictionary *)throttleTimerMap setObject:v16 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)throttleTimerMap setObject:v16 forKeyedSubscript:identifierCopy];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __77__HMDeviceManager__throttleUpdatesForHearingAidConfig_identifier_completion___block_invoke;
     handler[3] = &unk_2796F0218;
     v15 = v16;
     v21 = v15;
-    v22 = self;
-    v23 = v9;
-    v24 = v10;
+    selfCopy = self;
+    v23 = identifierCopy;
+    v24 = completionCopy;
     dispatch_source_set_event_handler(v15, handler);
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -1998,7 +1998,7 @@ void __77__HMDeviceManager__throttleUpdatesForHearingAidConfig_identifier_comple
     v6[3] = &unk_2796F02B8;
     v4 = v5;
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     [(AACloudServicesClient *)v4 activateWithCompletion:v6];
   }
 }
@@ -2074,16 +2074,16 @@ LABEL_7:
   }
 }
 
-- (void)_saveCloudRecordForDevice:(id)a3 withConfig:(id)a4
+- (void)_saveCloudRecordForDevice:(id)device withConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cloudRecord];
-  if (!v8)
+  deviceCopy = device;
+  configCopy = config;
+  cloudRecord = [deviceCopy cloudRecord];
+  if (!cloudRecord)
   {
     v9 = objc_alloc(MEMORY[0x277CEF830]);
-    v10 = [v6 bluetoothAddress];
-    v8 = [v9 initWithBluetoothAddress:v10];
+    bluetoothAddress = [deviceCopy bluetoothAddress];
+    cloudRecord = [v9 initWithBluetoothAddress:bluetoothAddress];
 
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -2091,47 +2091,47 @@ LABEL_7:
     }
   }
 
-  v11 = [v7 enableMediaAssist];
-  v12 = v11 != 0;
-  if (v11)
+  enableMediaAssist = [configCopy enableMediaAssist];
+  v12 = enableMediaAssist != 0;
+  if (enableMediaAssist)
   {
-    [v8 setMediaAssistEnabled:{objc_msgSend(v7, "enableMediaAssist")}];
-    if ([v7 enableMediaAssist] == 2)
+    [cloudRecord setMediaAssistEnabled:{objc_msgSend(configCopy, "enableMediaAssist")}];
+    if ([configCopy enableMediaAssist] == 2)
     {
-      [v8 setPmeMediaEnabled:{objc_msgSend(v6, "pmeMediaEnabled")}];
-      [v8 setPmeVoiceEnabled:{objc_msgSend(v6, "pmeVoiceEnabled")}];
+      [cloudRecord setPmeMediaEnabled:{objc_msgSend(deviceCopy, "pmeMediaEnabled")}];
+      [cloudRecord setPmeVoiceEnabled:{objc_msgSend(deviceCopy, "pmeVoiceEnabled")}];
     }
   }
 
-  if ([v7 enableHearingAid] == 2)
+  if ([configCopy enableHearingAid] == 2)
   {
-    [v8 setSwipeGainEnabled:{objc_msgSend(v6, "swipeGainEnabled")}];
+    [cloudRecord setSwipeGainEnabled:{objc_msgSend(deviceCopy, "swipeGainEnabled")}];
     v12 = 1;
   }
 
-  v13 = [v6 hearingAssistRegionStatus];
-  if (v13 != [v8 haRegionStatus])
+  hearingAssistRegionStatus = [deviceCopy hearingAssistRegionStatus];
+  if (hearingAssistRegionStatus != [cloudRecord haRegionStatus])
   {
-    [v8 setHaRegionStatus:{objc_msgSend(v6, "hearingAssistRegionStatus")}];
+    [cloudRecord setHaRegionStatus:{objc_msgSend(deviceCopy, "hearingAssistRegionStatus")}];
     v12 = 1;
   }
 
-  v14 = [v6 hearingAidV2RegionStatus];
-  if (v14 != [v8 haRegionStatusV2])
+  hearingAidV2RegionStatus = [deviceCopy hearingAidV2RegionStatus];
+  if (hearingAidV2RegionStatus != [cloudRecord haRegionStatusV2])
   {
-    [v8 setHaRegionStatusV2:{objc_msgSend(v6, "hearingAidV2RegionStatus")}];
+    [cloudRecord setHaRegionStatusV2:{objc_msgSend(deviceCopy, "hearingAidV2RegionStatus")}];
     v12 = 1;
   }
 
-  v15 = [v6 hearingProtectionPPERegionStatus];
-  if (v15 != [v8 hpPPERegionStatus])
+  hearingProtectionPPERegionStatus = [deviceCopy hearingProtectionPPERegionStatus];
+  if (hearingProtectionPPERegionStatus != [cloudRecord hpPPERegionStatus])
   {
-    [v8 setHpPPERegionStatus:{objc_msgSend(v6, "hearingProtectionPPERegionStatus")}];
+    [cloudRecord setHpPPERegionStatus:{objc_msgSend(deviceCopy, "hearingProtectionPPERegionStatus")}];
     v12 = 1;
   }
 
-  v16 = [v6 hearingProtectionRegionStatus];
-  if (v16 == [v8 hpRegionStatus])
+  hearingProtectionRegionStatus = [deviceCopy hearingProtectionRegionStatus];
+  if (hearingProtectionRegionStatus == [cloudRecord hpRegionStatus])
   {
     if (!v12)
     {
@@ -2141,10 +2141,10 @@ LABEL_7:
 
   else
   {
-    [v8 setHpRegionStatus:{objc_msgSend(v6, "hearingProtectionRegionStatus")}];
+    [cloudRecord setHpRegionStatus:{objc_msgSend(deviceCopy, "hearingProtectionRegionStatus")}];
   }
 
-  if ([v6 updateWithCloudRecordInfo:v8])
+  if ([deviceCopy updateWithCloudRecordInfo:cloudRecord])
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -2152,7 +2152,7 @@ LABEL_7:
     }
 
     v17 = +[HMServiceDaemon sharedHMServiceDaemon];
-    [v17 reportDeviceRecordChange:v6];
+    [v17 reportDeviceRecordChange:deviceCopy];
   }
 
   if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -2165,7 +2165,7 @@ LABEL_7:
   v19[1] = 3221225472;
   v19[2] = __56__HMDeviceManager__saveCloudRecordForDevice_withConfig___block_invoke;
   v19[3] = &unk_2796F03D0;
-  v20 = v8;
+  v20 = cloudRecord;
   [(AACloudServicesClient *)cloudServicesClient modifyHMDeviceCloudRecordInfo:v20 completion:v19];
 
 LABEL_29:
@@ -2189,24 +2189,24 @@ uint64_t __56__HMDeviceManager__saveCloudRecordForDevice_withConfig___block_invo
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)_loadCloudRecordForDevice:(id)a3
+- (void)_loadCloudRecordForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
   v13 = 0;
   cloudServicesClient = self->_cloudServicesClient;
-  v6 = [v4 bluetoothAddress];
+  bluetoothAddress = [deviceCopy bluetoothAddress];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HMDeviceManager__loadCloudRecordForDevice___block_invoke;
   v8[3] = &unk_2796F03F8;
-  v7 = v4;
-  v10 = self;
+  v7 = deviceCopy;
+  selfCopy = self;
   v11 = v12;
   v9 = v7;
-  [(AACloudServicesClient *)cloudServicesClient fetchHMDeviceCloudRecordInfoWithAddress:v6 completion:v8];
+  [(AACloudServicesClient *)cloudServicesClient fetchHMDeviceCloudRecordInfoWithAddress:bluetoothAddress completion:v8];
 
   _Block_object_dispose(v12, 8);
 }
@@ -2288,17 +2288,17 @@ void __45__HMDeviceManager__loadCloudRecordForDevice___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_updateCloudRecords:(id)a3
+- (void)_updateCloudRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   deviceRecordMap = self->_deviceRecordMap;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__HMDeviceManager__updateCloudRecords___block_invoke;
   v7[3] = &unk_2796F0420;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordsCopy;
+  v6 = recordsCopy;
   [(NSMutableDictionary *)deviceRecordMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -2385,13 +2385,13 @@ LABEL_18:
 
 - (void)_registerForHearingAccessibilitySettingsUpdate
 {
-  v3 = [MEMORY[0x277D12DF8] sharedInstance];
+  mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__HMDeviceManager__registerForHearingAccessibilitySettingsUpdate__block_invoke;
   v4[3] = &unk_2796EFEF0;
   v4[4] = self;
-  [v3 registerUpdateBlock:v4 forRetrieveSelector:sel_activeHearingProtectionEnabled withListener:self];
+  [mEMORY[0x277D12DF8] registerUpdateBlock:v4 forRetrieveSelector:sel_activeHearingProtectionEnabled withListener:self];
 }
 
 void __65__HMDeviceManager__registerForHearingAccessibilitySettingsUpdate__block_invoke(uint64_t a1)
@@ -2420,30 +2420,30 @@ uint64_t __65__HMDeviceManager__registerForHearingAccessibilitySettingsUpdate__b
 
 - (void)_unregisterFromHearingAccessibilitySettingsUpdate
 {
-  v3 = [MEMORY[0x277D12DF8] sharedInstance];
-  [v3 registerUpdateBlock:0 forRetrieveSelector:sel_activeHearingProtectionEnabled withListener:self];
+  mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+  [mEMORY[0x277D12DF8] registerUpdateBlock:0 forRetrieveSelector:sel_activeHearingProtectionEnabled withListener:self];
 }
 
-- (void)_retrieveHearingProtectionSettingsForDevice:(id)a3
+- (void)_retrieveHearingProtectionSettingsForDevice:(id)device
 {
-  v10 = a3;
-  v4 = [MEMORY[0x277D12DF8] sharedInstance];
-  v5 = [v10 bluetoothAddress];
-  v6 = [v4 activeHearingProtectionEnabledForAddress:v5];
+  deviceCopy = device;
+  mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  v6 = [mEMORY[0x277D12DF8] activeHearingProtectionEnabledForAddress:bluetoothAddress];
 
-  if ([v10 updateWithHearingProtectionValue:v6])
+  if ([deviceCopy updateWithHearingProtectionValue:v6])
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       v8 = v6;
-      v9 = v10;
+      v9 = deviceCopy;
       LogPrintF();
     }
 
     v7 = [HMServiceDaemon sharedHMServiceDaemon:v8];
-    [v7 reportDeviceRecordChange:v10];
+    [v7 reportDeviceRecordChange:deviceCopy];
 
-    [(HMDeviceManager *)self _deviceSetOffListeningModeAllowedIfNeeded:v10];
+    [(HMDeviceManager *)self _deviceSetOffListeningModeAllowedIfNeeded:deviceCopy];
   }
 }
 
@@ -2464,18 +2464,18 @@ uint64_t __66__HMDeviceManager__checkForOcclusionInDiagnosticRecord_forDevice___
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)_computeOcclusionResultFromFaultCountsInRecord:(id)a3 forDevice:(id)a4
+- (void)_computeOcclusionResultFromFaultCountsInRecord:(id)record forDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  deviceCopy = device;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __76__HMDeviceManager__computeOcclusionResultFromFaultCountsInRecord_forDevice___block_invoke;
   v16 = &unk_2796EFEF0;
-  v7 = v6;
+  v7 = deviceCopy;
   v17 = v7;
   v8 = MEMORY[0x253095540](&v13);
-  if (([v5 isOcclusionDetectionSupported] & 1) == 0)
+  if (([recordCopy isOcclusionDetectionSupported] & 1) == 0)
   {
     if (gLogCategory_HMDeviceManager > 90 || gLogCategory_HMDeviceManager == -1 && !_LogCategory_Initialize())
     {
@@ -2487,7 +2487,7 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  if (![v5 diagnosticMeasurementsCount])
+  if (![recordCopy diagnosticMeasurementsCount])
   {
     if (gLogCategory_HMDeviceManager > 90 || gLogCategory_HMDeviceManager == -1 && !_LogCategory_Initialize())
     {
@@ -2497,10 +2497,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9 = [v5 computeOcclusionResultForHearingProtection];
-  v10 = [v5 computeOcclusionResultForHearingTest];
-  LODWORD(v9) = [v7 setOcclusionResult:v9 forFeatureID:2];
-  if ((v9 | [v7 setOcclusionResult:v10 forFeatureID:3]))
+  computeOcclusionResultForHearingProtection = [recordCopy computeOcclusionResultForHearingProtection];
+  computeOcclusionResultForHearingTest = [recordCopy computeOcclusionResultForHearingTest];
+  LODWORD(computeOcclusionResultForHearingProtection) = [v7 setOcclusionResult:computeOcclusionResultForHearingProtection forFeatureID:2];
+  if ((computeOcclusionResultForHearingProtection | [v7 setOcclusionResult:computeOcclusionResultForHearingTest forFeatureID:3]))
   {
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -2524,38 +2524,38 @@ uint64_t __76__HMDeviceManager__computeOcclusionResultFromFaultCountsInRecord_fo
   return [v2 invokePendingOcclusionCompletionsWithError:0];
 }
 
-- (void)fetchOcclusionResultForDeviceIdentifier:(id)a3 featureID:(int)a4 completion:(id)a5
+- (void)fetchOcclusionResultForDeviceIdentifier:(id)identifier featureID:(int)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__HMDeviceManager_fetchOcclusionResultForDeviceIdentifier_featureID_completion___block_invoke;
   v13[3] = &unk_2796F0468;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  dCopy = d;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)occlusionIndicationShownForDeviceAddress:(id)a3 featureID:(int)a4 type:(int)a5 action:(int)a6
+- (void)occlusionIndicationShownForDeviceAddress:(id)address featureID:(int)d type:(int)type action:(int)action
 {
-  v10 = a3;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__HMDeviceManager_occlusionIndicationShownForDeviceAddress_featureID_type_action___block_invoke;
   v13[3] = &unk_2796F0490;
   v13[4] = self;
-  v14 = v10;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v12 = v10;
+  v14 = addressCopy;
+  dCopy = d;
+  typeCopy = type;
+  actionCopy = action;
+  v12 = addressCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -2592,40 +2592,40 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)_resetFaultCountForDevice:(id)a3
+- (void)_resetFaultCountForDevice:(id)device
 {
-  v9 = a3;
-  [v9 setOcclusionResult:0 forFeatureID:2];
-  [v9 setOcclusionResult:0 forFeatureID:3];
+  deviceCopy = device;
+  [deviceCopy setOcclusionResult:0 forFeatureID:2];
+  [deviceCopy setOcclusionResult:0 forFeatureID:3];
   diagnosticRecordMap = self->_diagnosticRecordMap;
-  v5 = [v9 bluetoothUUID];
-  v6 = [(NSMutableDictionary *)diagnosticRecordMap objectForKeyedSubscript:v5];
+  bluetoothUUID = [deviceCopy bluetoothUUID];
+  v6 = [(NSMutableDictionary *)diagnosticRecordMap objectForKeyedSubscript:bluetoothUUID];
 
   if (v6)
   {
     [v6 resetFaultCounts];
-    v7 = [v6 getCloudRecordForCurrentFaultCount];
+    getCloudRecordForCurrentFaultCount = [v6 getCloudRecordForCurrentFaultCount];
     if (gLogCategory_HMDeviceManager <= 10 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _resetFaultCountForDevice:];
     }
 
-    [v9 updateWithCloudRecordInfo:v7];
-    [(AACloudServicesClient *)self->_cloudServicesClient modifyHMDeviceCloudRecordInfo:v7 completion:&__block_literal_global_496];
+    [deviceCopy updateWithCloudRecordInfo:getCloudRecordForCurrentFaultCount];
+    [(AACloudServicesClient *)self->_cloudServicesClient modifyHMDeviceCloudRecordInfo:getCloudRecordForCurrentFaultCount completion:&__block_literal_global_496];
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceManager _resetFaultCountForDevice:];
     }
 
     v8 = +[HMServiceDaemon sharedHMServiceDaemon];
-    [v8 reportDeviceRecordChange:v9];
+    [v8 reportDeviceRecordChange:deviceCopy];
 
     goto LABEL_9;
   }
 
   if (gLogCategory_HMDeviceManager <= 10 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
   {
-    v7 = [v9 bluetoothUUID];
+    getCloudRecordForCurrentFaultCount = [deviceCopy bluetoothUUID];
     LogPrintF();
 LABEL_9:
   }
@@ -2668,17 +2668,17 @@ uint64_t __61__HMDeviceManager__deviceSetOffListeningModeAllowedIfNeeded___block
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)_updatePersonalAudioConfigForIdentifier:(id)a3
+- (void)_updatePersonalAudioConfigForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 bluetoothAddress];
-      if (v7)
+      bluetoothAddress = [v5 bluetoothAddress];
+      if (bluetoothAddress)
       {
         if ([v6 pmeMediaEnabled] && objc_msgSend(v6, "pmeVoiceEnabled"))
         {
@@ -2687,40 +2687,40 @@ uint64_t __61__HMDeviceManager__deviceSetOffListeningModeAllowedIfNeeded___block
           v37 = 0u;
           if ([v6 hearingAssistEnabled] == 1)
           {
-            v8 = [v6 earLossArrayLeft];
+            earLossArrayLeft = [v6 earLossArrayLeft];
             v9 = *(&v37 + 1);
-            *(&v37 + 1) = v8;
+            *(&v37 + 1) = earLossArrayLeft;
 
-            v10 = [v6 earLossArrayRight];
+            earLossArrayRight = [v6 earLossArrayRight];
             v11 = v38;
-            v38 = v10;
+            v38 = earLossArrayRight;
 
-            v12 = [v6 earLossArrayLeft];
+            earLossArrayLeft2 = [v6 earLossArrayLeft];
             v13 = *(&v36 + 1);
-            *(&v36 + 1) = v12;
+            *(&v36 + 1) = earLossArrayLeft2;
 
             [v6 earLossArrayRight];
-            *&v37 = v14 = v37;
+            *&v37 = pmeVoiceLossDataRight = v37;
           }
 
           else
           {
-            v15 = [v6 pmeMediaLossDataLeft];
+            pmeMediaLossDataLeft = [v6 pmeMediaLossDataLeft];
             v16 = HMEarLossDataToArray();
             v17 = *(&v37 + 1);
             *(&v37 + 1) = v16;
 
-            v18 = [v6 pmeMediaLossDataRight];
+            pmeMediaLossDataRight = [v6 pmeMediaLossDataRight];
             v19 = HMEarLossDataToArray();
             v20 = v38;
             v38 = v19;
 
-            v21 = [v6 pmeVoiceLossDataLeft];
+            pmeVoiceLossDataLeft = [v6 pmeVoiceLossDataLeft];
             v22 = HMEarLossDataToArray();
             v23 = *(&v36 + 1);
             *(&v36 + 1) = v22;
 
-            v14 = [v6 pmeVoiceLossDataRight];
+            pmeVoiceLossDataRight = [v6 pmeVoiceLossDataRight];
             v24 = HMEarLossDataToArray();
             v25 = v37;
             *&v37 = v24;
@@ -2742,22 +2742,22 @@ uint64_t __61__HMDeviceManager__deviceSetOffListeningModeAllowedIfNeeded___block
               LogPrintF();
             }
 
-            v27 = [MEMORY[0x277D3A1D0] sharedInstance];
-            [v27 setPersonalMediaEnabled:(BYTE1(v36) | v36) & 1 forRouteUID:v7];
+            mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+            [mEMORY[0x277D3A1D0] setPersonalMediaEnabled:(BYTE1(v36) | v36) & 1 forRouteUID:bluetoothAddress];
 
             if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
             {
-              v28 = [*(&v37 + 1) firstObject];
+              firstObject = [*(&v37 + 1) firstObject];
               [v38 firstObject];
-              v35 = v34 = v28;
+              v35 = v34 = firstObject;
               v32 = BYTE1(v36);
               v33 = v36;
-              v31 = v7;
+              v31 = bluetoothAddress;
               LogPrintF();
             }
 
-            v29 = [MEMORY[0x277D3A1D0] sharedInstance];
-            [v29 updateConfiguration:&v36 forRouteID:v7];
+            mEMORY[0x277D3A1D0]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+            [mEMORY[0x277D3A1D0]2 updateConfiguration:&v36 forRouteID:bluetoothAddress];
           }
 
           else if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -2792,34 +2792,34 @@ uint64_t __61__HMDeviceManager__deviceSetOffListeningModeAllowedIfNeeded___block
   }
 }
 
-- (void)_deviceRescindHearingAssist:(id)a3
+- (void)_deviceRescindHearingAssist:(id)assist
 {
-  v4 = a3;
-  if ([v4 hearingAssistEnrolled] == 1)
+  assistCopy = assist;
+  if ([assistCopy hearingAssistEnrolled] == 1)
   {
     v5 = objc_alloc_init(MEMORY[0x277D12B78]);
     [v5 setEnableHearingAssist:2];
     [v5 setEnableMediaAssist:2];
-    if ([v4 hearingAidEnabled])
+    if ([assistCopy hearingAidEnabled])
     {
       [v5 setEnableHearingAid:2];
       [v5 setEnableSwipeGain:2];
     }
 
-    if ([v4 mediaAssistEnabled] == 1)
+    if ([assistCopy mediaAssistEnabled] == 1)
     {
       [v5 setEnablePMEMedia:2];
       [v5 setEnablePMEVoice:2];
     }
 
-    v6 = [v4 bluetoothUUID];
+    bluetoothUUID = [assistCopy bluetoothUUID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__HMDeviceManager__deviceRescindHearingAssist___block_invoke;
     v8[3] = &unk_2796F03D0;
     v9 = v5;
     v7 = v5;
-    [(HMDeviceManager *)self _modifyDeviceConfiguration:v7 identifier:v6 completion:v8];
+    [(HMDeviceManager *)self _modifyDeviceConfiguration:v7 identifier:bluetoothUUID completion:v8];
   }
 
   else if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -2865,21 +2865,21 @@ LABEL_12:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)_deviceRescindHearingProtectionPPE:(id)a3
+- (void)_deviceRescindHearingProtectionPPE:(id)e
 {
-  v4 = a3;
-  if ([v4 hearingProtectionPPEEnabled] == 1)
+  eCopy = e;
+  if ([eCopy hearingProtectionPPEEnabled] == 1)
   {
     v5 = objc_alloc_init(MEMORY[0x277D12B78]);
     [v5 setEnableHearingProtectionPPE:2];
-    v6 = [v4 bluetoothUUID];
+    bluetoothUUID = [eCopy bluetoothUUID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __54__HMDeviceManager__deviceRescindHearingProtectionPPE___block_invoke;
     v8[3] = &unk_2796F03D0;
     v9 = v5;
     v7 = v5;
-    [(HMDeviceManager *)self _modifyDeviceConfiguration:v7 identifier:v6 completion:v8];
+    [(HMDeviceManager *)self _modifyDeviceConfiguration:v7 identifier:bluetoothUUID completion:v8];
   }
 
   else if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
@@ -2925,20 +2925,20 @@ LABEL_12:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (BOOL)_deviceUpdateRegionStatus:(id)a3
+- (BOOL)_deviceUpdateRegionStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if (gLogCategory_HMDeviceManager <= 10 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
   {
-    [HMDeviceManager _deviceUpdateRegionStatus:v4];
+    [HMDeviceManager _deviceUpdateRegionStatus:statusCopy];
   }
 
-  if (_os_feature_enabled_impl() && (v5 = [v4 hearingAssistRegionStatus], +[HMHealthKitUtilities sharedInstance](HMHealthKitUtilities, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "getRegionSupportStatusForFeatureID:", *MEMORY[0x277CCC038]), v6, v5 != v7))
+  if (_os_feature_enabled_impl() && (v5 = [statusCopy hearingAssistRegionStatus], +[HMHealthKitUtilities sharedInstance](HMHealthKitUtilities, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "getRegionSupportStatusForFeatureID:", *MEMORY[0x277CCC038]), v6, v5 != v7))
   {
-    [v4 setHearingAssistRegionStatus:v7];
+    [statusCopy setHearingAssistRegionStatus:v7];
     if (v7 == 3)
     {
-      [(HMDeviceManager *)self _deviceRescindHearingAssist:v4];
+      [(HMDeviceManager *)self _deviceRescindHearingAssist:statusCopy];
     }
 
     v8 = 1;
@@ -2951,55 +2951,55 @@ LABEL_12:
 
   if (_os_feature_enabled_impl())
   {
-    v9 = [v4 hearingProtectionRegionStatus];
+    hearingProtectionRegionStatus = [statusCopy hearingProtectionRegionStatus];
     v10 = +[HMHealthKitUtilities sharedInstance];
     v11 = [v10 getRegionSupportStatusForFeatureID:*MEMORY[0x277CCC048]];
 
-    if (v9 != v11)
+    if (hearingProtectionRegionStatus != v11)
     {
-      [v4 setHearingProtectionRegionStatus:v11];
+      [statusCopy setHearingProtectionRegionStatus:v11];
       v8 = 1;
     }
   }
 
   if (_os_feature_enabled_impl())
   {
-    v12 = [v4 hearingTestRegionStatus];
+    hearingTestRegionStatus = [statusCopy hearingTestRegionStatus];
     v13 = +[HMHealthKitUtilities sharedInstance];
     v14 = [v13 getRegionSupportStatusForFeatureID:*MEMORY[0x277CCC058]];
 
-    if (v12 != v14)
+    if (hearingTestRegionStatus != v14)
     {
-      [v4 setHearingTestRegionStatus:v14];
+      [statusCopy setHearingTestRegionStatus:v14];
       v8 = 1;
     }
   }
 
   if (_os_feature_enabled_impl())
   {
-    v15 = [v4 hearingAidV2RegionStatus];
+    hearingAidV2RegionStatus = [statusCopy hearingAidV2RegionStatus];
     v16 = +[HMHealthKitUtilities sharedInstance];
     v17 = [v16 getRegionSupportStatusForFeatureID:*MEMORY[0x277CCC040]];
 
-    if (v15 != v17)
+    if (hearingAidV2RegionStatus != v17)
     {
-      [v4 setHearingAidV2RegionStatus:v17];
+      [statusCopy setHearingAidV2RegionStatus:v17];
       v8 = 1;
     }
   }
 
   if (_os_feature_enabled_impl())
   {
-    v18 = [v4 hearingProtectionPPERegionStatus];
+    hearingProtectionPPERegionStatus = [statusCopy hearingProtectionPPERegionStatus];
     v19 = +[HMHealthKitUtilities sharedInstance];
     v20 = [v19 getRegionSupportStatusForFeatureID:*MEMORY[0x277CCC050]];
 
-    if (v18 != v20)
+    if (hearingProtectionPPERegionStatus != v20)
     {
-      [v4 setHearingProtectionPPERegionStatus:v20];
+      [statusCopy setHearingProtectionPPERegionStatus:v20];
       if (v20 == 3)
       {
-        [(HMDeviceManager *)self _deviceRescindHearingProtectionPPE:v4];
+        [(HMDeviceManager *)self _deviceRescindHearingProtectionPPE:statusCopy];
       }
 
       goto LABEL_25;
@@ -3009,7 +3009,7 @@ LABEL_12:
   if (v8)
   {
 LABEL_25:
-    [(HMDeviceManager *)self _saveCloudRecordForDevice:v4 withConfig:0];
+    [(HMDeviceManager *)self _saveCloudRecordForDevice:statusCopy withConfig:0];
     v21 = 1;
     goto LABEL_26;
   }
@@ -3059,17 +3059,17 @@ void __50__HMDeviceManager__registerForRegionStatusUpdates__block_invoke_2(uint6
   [v2 setFeatureStatusChangedHandler:0];
 }
 
-- (void)_distributedNotificationReceived:(id)a3
+- (void)_distributedNotificationReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HMDeviceManager__distributedNotificationReceived___block_invoke;
   v7[3] = &unk_2796EFEC8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = receivedCopy;
+  selfCopy = self;
+  v6 = receivedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -3280,8 +3280,8 @@ LABEL_8:
       [HMDeviceManager _registerForInternalDistributedNotification];
     }
 
-    v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v3 addObserver:self selector:sel__distributedNotificationReceived_ name:@"com.apple.HearingModeService" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__distributedNotificationReceived_ name:@"com.apple.HearingModeService" object:0];
     self->_distributedNotificationObserving = 1;
   }
 }
@@ -3295,24 +3295,24 @@ LABEL_8:
       [HMDeviceManager _unregisterFromInternalDistributedNotification];
     }
 
-    v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v4 removeObserver:self name:@"com.apple.HearingModeService" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter removeObserver:self name:@"com.apple.HearingModeService" object:0];
     self->_distributedNotificationObserving = 0;
   }
 }
 
-- (void)_sendHAv2RegionStatus:(id)a3
+- (void)_sendHAv2RegionStatus:(id)status
 {
-  v4 = a3;
-  if (([v4 sharedRegionStatus] & 1) == 0 && objc_msgSend(v4, "hearingAidV2Capability") && objc_msgSend(v4, "hearingAidV2RegionStatus"))
+  statusCopy = status;
+  if (([statusCopy sharedRegionStatus] & 1) == 0 && objc_msgSend(statusCopy, "hearingAidV2Capability") && objc_msgSend(statusCopy, "hearingAidV2RegionStatus"))
   {
-    [v4 setSharedRegionStatus:1];
+    [statusCopy setSharedRegionStatus:1];
     if (_os_feature_enabled_impl())
     {
-      if ([v4 hearingAidV2Capability] == 1)
+      if ([statusCopy hearingAidV2Capability] == 1)
       {
         v5 = objc_alloc_init(MEMORY[0x277CEF808]);
-        if ([v4 hearingAidV2RegionStatus] == 2)
+        if ([statusCopy hearingAidV2RegionStatus] == 2)
         {
           v6 = 1;
         }
@@ -3325,26 +3325,26 @@ LABEL_8:
         [v5 setHearingAidV2SourceRegionSupport:v6];
         if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
         {
-          [v4 bluetoothUUID];
+          [statusCopy bluetoothUUID];
           v12 = v10 = v5;
           LogPrintF();
         }
 
         deviceManager = self->_deviceManager;
-        v8 = [v4 bluetoothUUID];
+        bluetoothUUID = [statusCopy bluetoothUUID];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __41__HMDeviceManager__sendHAv2RegionStatus___block_invoke;
         v13[3] = &unk_2796F02B8;
         v14 = v5;
-        v15 = v4;
+        v15 = statusCopy;
         v9 = v5;
-        [(AADeviceManager *)deviceManager sendDeviceConfig:v9 identifier:v8 completion:v13];
+        [(AADeviceManager *)deviceManager sendDeviceConfig:v9 identifier:bluetoothUUID completion:v13];
       }
 
       else if (gLogCategory_HMDeviceManager <= 90 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
       {
-        v11 = [v4 bluetoothUUID];
+        bluetoothUUID2 = [statusCopy bluetoothUUID];
         LogPrintF();
       }
     }
@@ -3356,17 +3356,17 @@ LABEL_8:
   }
 }
 
-- (void)_multimodalContextMessageReceived:(id)a3 identifier:(id)a4
+- (void)_multimodalContextMessageReceived:(id)received identifier:(id)identifier
 {
-  v18 = a3;
-  v6 = a4;
+  receivedCopy = received;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([v18 length] >= 3)
+  if ([receivedCopy length] >= 3)
   {
-    v7 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_deviceRecordMap objectForKeyedSubscript:identifierCopy];
     if (v7)
     {
-      if (v18 && (v8 = v18, v9 = [v18 bytes], *v9 == 2))
+      if (receivedCopy && (v8 = receivedCopy, v9 = [receivedCopy bytes], *v9 == 2))
       {
         if (v9[1] == 1)
         {
@@ -3375,16 +3375,16 @@ LABEL_8:
           {
             if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
             {
-              v11 = [v7 bluetoothUUID];
-              v12 = [v7 currentNoiseLevel];
-              if (v12 > 2)
+              bluetoothUUID = [v7 bluetoothUUID];
+              currentNoiseLevel = [v7 currentNoiseLevel];
+              if (currentNoiseLevel > 2)
               {
                 v13 = "?";
               }
 
               else
               {
-                v13 = off_2796F04D8[v12];
+                v13 = off_2796F04D8[currentNoiseLevel];
               }
 
               if (v10 > 2)
@@ -3399,7 +3399,7 @@ LABEL_8:
 
               v16 = v13;
               v17 = v14;
-              v15 = v11;
+              v15 = bluetoothUUID;
               LogPrintF();
             }
 
@@ -3436,73 +3436,73 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)_setHearingProtectionEnabledForDevice:(id)a3 withConfig:(id)a4
+- (void)_setHearingProtectionEnabledForDevice:(id)device withConfig:(id)config
 {
-  v11 = a3;
-  v5 = a4;
-  if ([v5 enableHearingProtection])
+  deviceCopy = device;
+  configCopy = config;
+  if ([configCopy enableHearingProtection])
   {
-    v6 = [v5 enableHearingProtection];
+    enableHearingProtection = [configCopy enableHearingProtection];
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
-      v9 = [v11 bluetoothUUID];
-      v10 = v6 == 1;
+      bluetoothUUID = [deviceCopy bluetoothUUID];
+      v10 = enableHearingProtection == 1;
       LogPrintF();
     }
 
-    v7 = [MEMORY[0x277D12DF8] sharedInstance];
-    v8 = [v11 bluetoothAddress];
-    [v7 setActiveHearingProtectionEnabled:v6 == 1 forAddress:v8];
+    mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+    bluetoothAddress = [deviceCopy bluetoothAddress];
+    [mEMORY[0x277D12DF8] setActiveHearingProtectionEnabled:enableHearingProtection == 1 forAddress:bluetoothAddress];
   }
 }
 
-- (void)_checkForOcclusionInDiagnosticRecord:(id)a3 forDevice:(id)a4
+- (void)_checkForOcclusionInDiagnosticRecord:(id)record forDevice:(id)device
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v16 isOcclusionDetectionSupported])
+  recordCopy = record;
+  deviceCopy = device;
+  if ([recordCopy isOcclusionDetectionSupported])
   {
-    v7 = [v16 measurementInvalidReason];
-    if (v7)
+    measurementInvalidReason = [recordCopy measurementInvalidReason];
+    if (measurementInvalidReason)
     {
-      if ([v16 isDeviceUsedFor3MonthsOrLess])
+      if ([recordCopy isDeviceUsedFor3MonthsOrLess])
       {
-        [v6 setOcclusionResult:3 forFeatureID:2];
-        [v6 setOcclusionResult:3 forFeatureID:3];
+        [deviceCopy setOcclusionResult:3 forFeatureID:2];
+        [deviceCopy setOcclusionResult:3 forFeatureID:3];
         if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
         {
-          v14 = [v6 bluetoothUUID];
+          bluetoothUUID = [deviceCopy bluetoothUUID];
           LogPrintF();
         }
 
         v11 = +[HMServiceDaemon sharedHMServiceDaemon];
-        [v11 reportDeviceRecordChange:v6];
+        [v11 reportDeviceRecordChange:deviceCopy];
       }
 
-      v12 = v7;
+      getOnDemandRetestReason = measurementInvalidReason;
     }
 
     else
     {
-      v8 = [v6 cloudRecord];
-      v9 = [v16 updateFaultCountsFromCloudRecord:v8];
+      cloudRecord = [deviceCopy cloudRecord];
+      v9 = [recordCopy updateFaultCountsFromCloudRecord:cloudRecord];
 
       if (v9)
       {
-        v10 = [v16 getCloudRecordForCurrentFaultCount];
+        getCloudRecordForCurrentFaultCount = [recordCopy getCloudRecordForCurrentFaultCount];
         if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
         {
-          v14 = v10;
+          bluetoothUUID = getCloudRecordForCurrentFaultCount;
           LogPrintF();
         }
 
-        [v6 updateWithCloudRecordInfo:{v10, v14}];
-        [(AACloudServicesClient *)self->_cloudServicesClient modifyHMDeviceCloudRecordInfo:v10 completion:&__block_literal_global_479];
+        [deviceCopy updateWithCloudRecordInfo:{getCloudRecordForCurrentFaultCount, bluetoothUUID}];
+        [(AACloudServicesClient *)self->_cloudServicesClient modifyHMDeviceCloudRecordInfo:getCloudRecordForCurrentFaultCount completion:&__block_literal_global_479];
       }
 
-      [(HMDeviceManager *)self _computeOcclusionResultFromFaultCountsInRecord:v16 forDevice:v6];
-      v12 = [v16 getOnDemandRetestReason];
-      if (!v12)
+      [(HMDeviceManager *)self _computeOcclusionResultFromFaultCountsInRecord:recordCopy forDevice:deviceCopy];
+      getOnDemandRetestReason = [recordCopy getOnDemandRetestReason];
+      if (!getOnDemandRetestReason)
       {
         goto LABEL_22;
       }
@@ -3510,76 +3510,76 @@ LABEL_31:
 
     if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
     {
-      v14 = [v6 bluetoothUUID];
-      v15 = v12;
+      bluetoothUUID = [deviceCopy bluetoothUUID];
+      v15 = getOnDemandRetestReason;
       LogPrintF();
     }
 
-    v13 = [v6 bluetoothUUID];
-    [(HMDeviceManager *)self _triggerDiagnosticCheckForIdentifier:v13 completion:0];
+    bluetoothUUID2 = [deviceCopy bluetoothUUID];
+    [(HMDeviceManager *)self _triggerDiagnosticCheckForIdentifier:bluetoothUUID2 completion:0];
 
 LABEL_22:
   }
 }
 
-- (void)_triggerHearingProtectionOcclusionNotificationIfNeeded:(id)a3
+- (void)_triggerHearingProtectionOcclusionNotificationIfNeeded:(id)needed
 {
-  v26 = a3;
-  v4 = [v26 hearingProtectionOcclusionResult];
-  v5 = v26;
-  if (!v4)
+  neededCopy = needed;
+  hearingProtectionOcclusionResult = [neededCopy hearingProtectionOcclusionResult];
+  v5 = neededCopy;
+  if (!hearingProtectionOcclusionResult)
   {
     goto LABEL_28;
   }
 
-  v4 = [v26 hearingProtectionCapability];
-  v5 = v26;
-  if (v4 != 1)
+  hearingProtectionOcclusionResult = [neededCopy hearingProtectionCapability];
+  v5 = neededCopy;
+  if (hearingProtectionOcclusionResult != 1)
   {
     goto LABEL_28;
   }
 
-  v4 = [v26 hearingProtectionRegionStatus];
-  v5 = v26;
-  if (v4 != 2)
+  hearingProtectionOcclusionResult = [neededCopy hearingProtectionRegionStatus];
+  v5 = neededCopy;
+  if (hearingProtectionOcclusionResult != 2)
   {
     goto LABEL_28;
   }
 
-  v4 = [v26 currentNoiseLevel];
-  v5 = v26;
-  if (v4 != 2)
+  hearingProtectionOcclusionResult = [neededCopy currentNoiseLevel];
+  v5 = neededCopy;
+  if (hearingProtectionOcclusionResult != 2)
   {
     goto LABEL_28;
   }
 
-  v6 = [v26 aaDevice];
-  if ([v6 audioStreamState] == 1)
+  aaDevice = [neededCopy aaDevice];
+  if ([aaDevice audioStreamState] == 1)
   {
 
-    v5 = v26;
+    v5 = neededCopy;
   }
 
   else
   {
-    v7 = [v26 aaDevice];
-    v8 = [v7 audioStreamState];
+    aaDevice2 = [neededCopy aaDevice];
+    audioStreamState = [aaDevice2 audioStreamState];
 
-    v5 = v26;
-    if (v8)
+    v5 = neededCopy;
+    if (audioStreamState)
     {
       goto LABEL_28;
     }
   }
 
-  v9 = [v5 aaDevice];
-  if ([v9 primaryPlacement] == 1)
+  aaDevice3 = [v5 aaDevice];
+  if ([aaDevice3 primaryPlacement] == 1)
   {
-    v10 = [v26 aaDevice];
-    v11 = [v10 secondaryPlacement];
+    aaDevice4 = [neededCopy aaDevice];
+    secondaryPlacement = [aaDevice4 secondaryPlacement];
 
-    v5 = v26;
-    if (v11 == 1)
+    v5 = neededCopy;
+    if (secondaryPlacement == 1)
     {
       goto LABEL_13;
     }
@@ -3588,30 +3588,30 @@ LABEL_22:
   else
   {
 
-    v5 = v26;
+    v5 = neededCopy;
   }
 
-  v12 = [v5 aaDevice];
-  v13 = [v12 placementMode];
+  aaDevice5 = [v5 aaDevice];
+  placementMode = [aaDevice5 placementMode];
 
-  v5 = v26;
-  if (v13 == 1)
+  v5 = neededCopy;
+  if (placementMode == 1)
   {
     goto LABEL_28;
   }
 
 LABEL_13:
-  v14 = [v5 aaDevice];
-  if ([v14 listeningMode] != 4)
+  aaDevice6 = [v5 aaDevice];
+  if ([aaDevice6 listeningMode] != 4)
   {
-    v15 = [v26 aaDevice];
-    if ([v15 listeningMode] != 3)
+    aaDevice7 = [neededCopy aaDevice];
+    if ([aaDevice7 listeningMode] != 3)
     {
-      v16 = [v26 aaDevice];
-      v17 = [v16 listeningMode];
+      aaDevice8 = [neededCopy aaDevice];
+      listeningMode = [aaDevice8 listeningMode];
 
-      v5 = v26;
-      if (v17 != 2)
+      v5 = neededCopy;
+      if (listeningMode != 2)
       {
         goto LABEL_28;
       }
@@ -3620,19 +3620,19 @@ LABEL_13:
     }
   }
 
-  v5 = v26;
+  v5 = neededCopy;
 LABEL_18:
   if ([v5 hearingProtectionOcclusionResult] != 2)
   {
-    v4 = [v26 hearingProtectionOcclusionResult];
-    v5 = v26;
-    if (v4 != 3)
+    hearingProtectionOcclusionResult = [neededCopy hearingProtectionOcclusionResult];
+    v5 = neededCopy;
+    if (hearingProtectionOcclusionResult != 3)
     {
       goto LABEL_28;
     }
 
-    v20 = [v26 bluetoothAddress];
-    [(HMDeviceManager *)self _occlusionIndicationShownForDeviceAddress:v20 featureID:2 type:2 action:0];
+    bluetoothAddress = [neededCopy bluetoothAddress];
+    [(HMDeviceManager *)self _occlusionIndicationShownForDeviceAddress:bluetoothAddress featureID:2 type:2 action:0];
     goto LABEL_27;
   }
 
@@ -3642,48 +3642,48 @@ LABEL_18:
 
   if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
   {
-    v25 = [(HMOcclusionNotification *)self->_occlusionNotification shouldShowHearingProtectionOcclusionNotification];
+    shouldShowHearingProtectionOcclusionNotification = [(HMOcclusionNotification *)self->_occlusionNotification shouldShowHearingProtectionOcclusionNotification];
     LogPrintF();
   }
 
-  v4 = [(HMOcclusionNotification *)self->_occlusionNotification shouldShowHearingProtectionOcclusionNotification];
-  v5 = v26;
-  if (v4)
+  hearingProtectionOcclusionResult = [(HMOcclusionNotification *)self->_occlusionNotification shouldShowHearingProtectionOcclusionNotification];
+  v5 = neededCopy;
+  if (hearingProtectionOcclusionResult)
   {
-    v21 = [v26 aaDevice];
-    v22 = [v21 coreBluetoothDevice];
-    v23 = [v22 productID];
+    aaDevice9 = [neededCopy aaDevice];
+    coreBluetoothDevice = [aaDevice9 coreBluetoothDevice];
+    productID = [coreBluetoothDevice productID];
 
     v24 = self->_occlusionNotification;
-    v20 = [v26 bluetoothAddress];
-    [(HMOcclusionNotification *)v24 showHearingProtectionOcclusionNotification:v23 forAddress:v20];
+    bluetoothAddress = [neededCopy bluetoothAddress];
+    [(HMOcclusionNotification *)v24 showHearingProtectionOcclusionNotification:productID forAddress:bluetoothAddress];
 LABEL_27:
 
-    v5 = v26;
+    v5 = neededCopy;
   }
 
 LABEL_28:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](hearingProtectionOcclusionResult, v5);
 }
 
-- (void)_deviceSetOffListeningModeAllowedIfNeeded:(id)a3
+- (void)_deviceSetOffListeningModeAllowedIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    v5 = [v4 aaDevice];
-    if ([v5 hideOffListeningModeCapability] == 2 && objc_msgSend(v4, "hearingProtectionEnabled") && !objc_msgSend(v5, "listeningModeOffAllowed"))
+    aaDevice = [neededCopy aaDevice];
+    if ([aaDevice hideOffListeningModeCapability] == 2 && objc_msgSend(neededCopy, "hearingProtectionEnabled") && !objc_msgSend(aaDevice, "listeningModeOffAllowed"))
     {
-      if ([v4 hearingProtectionEnabled] == 2)
+      if ([neededCopy hearingProtectionEnabled] == 2)
       {
         v6 = 1;
       }
 
-      else if ([v4 hearingProtectionEnabled] == 1)
+      else if ([neededCopy hearingProtectionEnabled] == 1)
       {
-        v7 = [v5 listeningMode] == 1;
-        if (([v5 listeningModeConfigs] | v7))
+        v7 = [aaDevice listeningMode] == 1;
+        if (([aaDevice listeningModeConfigs] | v7))
         {
           v6 = 1;
         }
@@ -3701,15 +3701,15 @@ LABEL_28:
 
       if (gLogCategory_HMDeviceManager <= 30 && (gLogCategory_HMDeviceManager != -1 || _LogCategory_Initialize()))
       {
-        v8 = [v5 identifier];
+        identifier = [aaDevice identifier];
         v9 = off_2796F0550[v6];
-        v10 = [v5 listeningMode];
-        if (v10 <= 4)
+        listeningMode = [aaDevice listeningMode];
+        if (listeningMode <= 4)
         {
-          v11 = off_2796F0568[v10];
+          v11 = off_2796F0568[listeningMode];
         }
 
-        [v5 listeningModeConfigs];
+        [aaDevice listeningModeConfigs];
         v16 = CUPrintFlags32();
         LogPrintF();
       }
@@ -3717,15 +3717,15 @@ LABEL_28:
       v12 = objc_alloc_init(MEMORY[0x277CEF808]);
       [v12 setListeningModeOffAllowed:v6];
       deviceManager = self->_deviceManager;
-      v14 = [v5 identifier];
+      identifier2 = [aaDevice identifier];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __61__HMDeviceManager__deviceSetOffListeningModeAllowedIfNeeded___block_invoke;
       v17[3] = &unk_2796F02B8;
       v18 = v12;
-      v19 = v5;
+      v19 = aaDevice;
       v15 = v12;
-      [(AADeviceManager *)deviceManager sendDeviceConfig:v15 identifier:v14 completion:v17];
+      [(AADeviceManager *)deviceManager sendDeviceConfig:v15 identifier:identifier2 completion:v17];
     }
   }
 }

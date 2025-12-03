@@ -1,15 +1,15 @@
 @interface TVPOffSubtitleOption
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation TVPOffSubtitleOption
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -25,8 +25,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(TVPSubtitleOption *)self avMediaSelectionOption];
-  v4 = [v3 description];
+  avMediaSelectionOption = [(TVPSubtitleOption *)self avMediaSelectionOption];
+  v4 = [avMediaSelectionOption description];
   v5 = [v2 stringWithFormat:@"Off subtitle option with AVMediaSelectionOption: %@", v4];
 
   return v5;

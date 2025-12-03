@@ -1,30 +1,30 @@
 @interface JavaLangBoolean
-+ (BOOL)parseBooleanWithNSString:(id)a3;
-+ (id)valueOfWithBoolean:(BOOL)a3;
-+ (int)compareWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4;
++ (BOOL)parseBooleanWithNSString:(id)string;
++ (id)valueOfWithBoolean:(BOOL)boolean;
++ (int)compareWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (JavaLangBoolean)initWithNSString:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JavaLangBoolean)initWithNSString:(id)string;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 @end
 
 @implementation JavaLangBoolean
 
-- (JavaLangBoolean)initWithNSString:(id)a3
+- (JavaLangBoolean)initWithNSString:(id)string
 {
   if ((atomic_load_explicit(JavaLangBoolean__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100129828();
   }
 
-  self->value_ = [@"true" equalsIgnoreCase:a3];
+  self->value_ = [@"true" equalsIgnoreCase:string];
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -36,7 +36,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -46,13 +46,13 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 8) == self->value_;
+  return *(equal + 8) == self->value_;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -63,7 +63,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 8);
+  v6 = *(id + 8);
   if ((atomic_load_explicit(JavaLangBoolean__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100129828();
@@ -90,16 +90,16 @@
   }
 }
 
-+ (int)compareWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4
++ (int)compareWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean
 {
-  v4 = a4;
-  v5 = a3;
+  withBooleanCopy = withBoolean;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(JavaLangBoolean__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100129828();
   }
 
-  if (v5)
+  if (booleanCopy)
   {
     v6 = 1;
   }
@@ -109,7 +109,7 @@
     v6 = -1;
   }
 
-  if (v5 != v4)
+  if (booleanCopy != withBooleanCopy)
   {
     return v6;
   }
@@ -133,26 +133,26 @@
   }
 }
 
-+ (BOOL)parseBooleanWithNSString:(id)a3
++ (BOOL)parseBooleanWithNSString:(id)string
 {
   if ((atomic_load_explicit(JavaLangBoolean__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100129828();
   }
 
-  return [@"true" equalsIgnoreCase:a3];
+  return [@"true" equalsIgnoreCase:string];
 }
 
-+ (id)valueOfWithBoolean:(BOOL)a3
++ (id)valueOfWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(JavaLangBoolean__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100129828();
   }
 
   v4 = &JavaLangBoolean_TRUE__;
-  if (!v3)
+  if (!booleanCopy)
   {
     v4 = &JavaLangBoolean_FALSE__;
   }
@@ -162,7 +162,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSClass_arrayType(+[IOSClass BOOLeanClass](IOSClass "BOOLeanClass")];
     objc_opt_class();

@@ -1,14 +1,14 @@
 @interface _DASDataCollectionSUTask
-+ (id)taskWithName:(id)a3 intervalDuration:(double)a4 withLogger:(id)a5;
++ (id)taskWithName:(id)name intervalDuration:(double)duration withLogger:(id)logger;
 - (BOOL)isEligibleNow;
-- (_DASDataCollectionSUTask)initWithName:(id)a3 intervalDuration:(double)a4 withLogger:(id)a5;
-- (void)addExperimentInformationWithDictionary:(id)a3;
+- (_DASDataCollectionSUTask)initWithName:(id)name intervalDuration:(double)duration withLogger:(id)logger;
+- (void)addExperimentInformationWithDictionary:(id)dictionary;
 - (void)evaluateActivityOnTick;
 - (void)evaluatePolicies;
 - (void)handleTaskExpiration;
 - (void)handleTaskExpirationNeverEligible;
 - (void)markAsCompleted;
-- (void)reportBlockersOnEvaluation:(id)a3;
+- (void)reportBlockersOnEvaluation:(id)evaluation;
 - (void)reportBlockersStatisticsOnExpiration;
 - (void)reportSuccessOnEvaluation;
 - (void)reportTaskBecomingEligible;
@@ -20,10 +20,10 @@
 
 @implementation _DASDataCollectionSUTask
 
-- (_DASDataCollectionSUTask)initWithName:(id)a3 intervalDuration:(double)a4 withLogger:(id)a5
+- (_DASDataCollectionSUTask)initWithName:(id)name intervalDuration:(double)duration withLogger:(id)logger
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  loggerCopy = logger;
   v32.receiver = self;
   v32.super_class = _DASDataCollectionSUTask;
   v10 = [(_DASDataCollectionSUTask *)&v32 init];
@@ -34,13 +34,13 @@
     v13 = +[NSDate date];
     v14 = +[NSDate date];
     v15 = [v14 dateByAddingTimeInterval:86400.0];
-    v16 = [_DASActivity activityWithName:v8 priority:v11 duration:v12 startingAfter:v13 startingBefore:v15];
+    v16 = [_DASActivity activityWithName:nameCopy priority:v11 duration:v12 startingAfter:v13 startingBefore:v15];
     v17 = *(v10 + 3);
     *(v10 + 3) = v16;
 
     [*(v10 + 3) setTriggersRestart:1];
-    *(v10 + 2) = a4;
-    objc_storeStrong(v10 + 9, a5);
+    *(v10 + 2) = duration;
+    objc_storeStrong(v10 + 9, logger);
     *(v10 + 4) = 0;
     v18 = +[NSMutableSet set];
     v19 = *(v10 + 7);
@@ -51,8 +51,8 @@
     *(v10 + 8) = v20;
 
     v22 = +[_DASDaemon sharedInstance];
-    v23 = [v22 evaluationQueue];
-    v24 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v23);
+    evaluationQueue = [v22 evaluationQueue];
+    v24 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, evaluationQueue);
     v25 = *(v10 + 1);
     *(v10 + 1) = v24;
 
@@ -72,11 +72,11 @@
   return v10;
 }
 
-+ (id)taskWithName:(id)a3 intervalDuration:(double)a4 withLogger:(id)a5
++ (id)taskWithName:(id)name intervalDuration:(double)duration withLogger:(id)logger
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithName:v9 intervalDuration:v8 withLogger:a4];
+  loggerCopy = logger;
+  nameCopy = name;
+  v10 = [[self alloc] initWithName:nameCopy intervalDuration:loggerCopy withLogger:duration];
 
   return v10;
 }
@@ -86,14 +86,14 @@
   v3 = +[_DASDaemon sharedInstance];
   v4 = [_DASSmartPowerNapMonitor sharedMonitorWithDaemon:v3];
 
-  v5 = [v4 inSmartPowerNap];
+  inSmartPowerNap = [v4 inSmartPowerNap];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012865C(v5, logger);
+    sub_10012865C(inSmartPowerNap, logger);
   }
 
-  return v5;
+  return inSmartPowerNap;
 }
 
 - (void)evaluateActivityOnTick
@@ -113,24 +113,24 @@
     [(_DASDataCollectionSUTask *)self evaluatePolicies];
   }
 
-  v3 = [(_DASDataCollectionSUTask *)self isEligibleNow];
+  isEligibleNow = [(_DASDataCollectionSUTask *)self isEligibleNow];
   currentEligibilityState = self->_currentEligibilityState;
-  if (currentEligibilityState || !v3)
+  if (currentEligibilityState || !isEligibleNow)
   {
-    if ((currentEligibilityState != 1) | v3 & 1)
+    if ((currentEligibilityState != 1) | isEligibleNow & 1)
     {
-      if ((currentEligibilityState != 2) | v3 & 1)
+      if ((currentEligibilityState != 2) | isEligibleNow & 1)
       {
-        if ((currentEligibilityState != 0) | v3 & 1)
+        if ((currentEligibilityState != 0) | isEligibleNow & 1)
         {
           return;
         }
 
-        v5 = +[NSDate date];
-        v6 = [(_DASActivity *)self->_activity startBefore];
-        v7 = [v6 earlierDate:v5];
-        v8 = [(_DASActivity *)self->_activity startBefore];
-        v9 = [v7 isEqualToDate:v8];
+        startAfter2 = +[NSDate date];
+        startBefore = [(_DASActivity *)self->_activity startBefore];
+        v7 = [startBefore earlierDate:startAfter2];
+        startBefore2 = [(_DASActivity *)self->_activity startBefore];
+        v9 = [v7 isEqualToDate:startBefore2];
 
         if (!v9)
         {
@@ -146,8 +146,8 @@
         v10 = +[NSDate date];
         [(_DASActivity *)self->_activity setStartAfter:v10];
 
-        v11 = [(_DASActivity *)self->_activity startAfter];
-        v12 = [v11 dateByAddingTimeInterval:86400.0];
+        startAfter = [(_DASActivity *)self->_activity startAfter];
+        v12 = [startAfter dateByAddingTimeInterval:86400.0];
         [(_DASActivity *)self->_activity setStartBefore:v12];
 
 LABEL_26:
@@ -183,9 +183,9 @@ LABEL_27:
     v13 = +[NSDate date];
     [(_DASActivity *)self->_activity setStartAfter:v13];
 
-    v5 = [(_DASActivity *)self->_activity startAfter];
-    v11 = [v5 dateByAddingTimeInterval:86400.0];
-    [(_DASActivity *)self->_activity setStartBefore:v11];
+    startAfter2 = [(_DASActivity *)self->_activity startAfter];
+    startAfter = [startAfter2 dateByAddingTimeInterval:86400.0];
+    [(_DASActivity *)self->_activity setStartBefore:startAfter];
     goto LABEL_26;
   }
 
@@ -202,7 +202,7 @@ LABEL_27:
 
 - (void)evaluatePolicies
 {
-  v2 = self;
+  selfCopy = self;
   if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
   {
     sub_100128844();
@@ -235,22 +235,22 @@ LABEL_27:
 
         v9 = *(*(&v34 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
-        if ([v9 appliesToActivity:v2->_activity])
+        if ([v9 appliesToActivity:selfCopy->_activity])
         {
           v11 = objc_autoreleasePoolPush();
-          v12 = v2;
-          activity = v2->_activity;
+          v12 = selfCopy;
+          activity = selfCopy->_activity;
           +[_DASDaemon sharedInstance];
           v15 = v14 = v4;
-          v16 = [v15 context];
-          v17 = [v9 responseForActivity:activity withState:v16];
+          context = [v15 context];
+          v17 = [v9 responseForActivity:activity withState:context];
 
           v4 = v14;
           objc_autoreleasePoolPop(v11);
           if ([v17 policyDecision] == 33 || objc_msgSend(v17, "policyDecision") == 100)
           {
-            v18 = [v9 policyName];
-            [v14 addObject:v18];
+            policyName = [v9 policyName];
+            [v14 addObject:policyName];
 
             if (objc_opt_respondsToSelector())
             {
@@ -259,7 +259,7 @@ LABEL_27:
             }
           }
 
-          v2 = v12;
+          selfCopy = v12;
           v6 = v32;
         }
 
@@ -275,7 +275,7 @@ LABEL_27:
   }
 
   v20 = [v4 count];
-  logger = v2->_logger;
+  logger = selfCopy->_logger;
   v22 = os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT);
   if (v20)
   {
@@ -288,14 +288,14 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "SUTelemetryTask: found %lu blockers.", buf, 0xCu);
     }
 
-    [(_DASDataCollectionSUTask *)v2 reportBlockersOnEvaluation:v4];
-    blockReasonsSoFar = v2->_blockReasonsSoFar;
+    [(_DASDataCollectionSUTask *)selfCopy reportBlockersOnEvaluation:v4];
+    blockReasonsSoFar = selfCopy->_blockReasonsSoFar;
     [v4 allObjects];
     v27 = v26 = v4;
     [(NSMutableSet *)blockReasonsSoFar addObjectsFromArray:v27];
 
-    v28 = [(NSMutableSet *)v2->_persistentBlockers count];
-    persistentBlockers = v2->_persistentBlockers;
+    v28 = [(NSMutableSet *)selfCopy->_persistentBlockers count];
+    persistentBlockers = selfCopy->_persistentBlockers;
     if (v28)
     {
       [(NSMutableSet *)persistentBlockers intersectSet:v26];
@@ -317,8 +317,8 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "SUTelemetryTask: no blocking policies.", buf, 2u);
     }
 
-    [(_DASDataCollectionSUTask *)v2 markAsCompleted];
-    [(_DASDataCollectionSUTask *)v2 reportSuccessOnEvaluation];
+    [(_DASDataCollectionSUTask *)selfCopy markAsCompleted];
+    [(_DASDataCollectionSUTask *)selfCopy reportSuccessOnEvaluation];
   }
 
   objc_autoreleasePoolPop(context);
@@ -371,22 +371,22 @@ LABEL_27:
   self->_currentEligibilityWindowEnd = 0;
 }
 
-- (void)addExperimentInformationWithDictionary:(id)a3
+- (void)addExperimentInformationWithDictionary:(id)dictionary
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v3 = +[_DASTrialManager sharedInstance];
-  v4 = [v3 experimentID];
+  experimentID = [v3 experimentID];
 
-  if (v4)
+  if (experimentID)
   {
-    v5 = [v3 experimentID];
-    [v8 setObject:v5 forKeyedSubscript:@"ExperimentID"];
+    experimentID2 = [v3 experimentID];
+    [dictionaryCopy setObject:experimentID2 forKeyedSubscript:@"ExperimentID"];
 
-    v6 = [v3 treatmentID];
-    [v8 setObject:v6 forKeyedSubscript:@"TreatmentID"];
+    treatmentID = [v3 treatmentID];
+    [dictionaryCopy setObject:treatmentID forKeyedSubscript:@"TreatmentID"];
 
     v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 deploymentID]);
-    [v8 setObject:v7 forKeyedSubscript:@"DeploymentID"];
+    [dictionaryCopy setObject:v7 forKeyedSubscript:@"DeploymentID"];
   }
 }
 
@@ -409,20 +409,20 @@ LABEL_27:
   [(NSMutableSet *)self->_persistentBlockers removeAllObjects];
 }
 
-- (void)reportBlockersOnEvaluation:(id)a3
+- (void)reportBlockersOnEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001288AC(logger, v4);
+    sub_1001288AC(logger, evaluationCopy);
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  obj = v4;
+  obj = evaluationCopy;
   v6 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -549,9 +549,9 @@ LABEL_27:
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [(NSErrorUserInfoKey *)v5[121] dictionary];
-        [(_DASDataCollectionSUTask *)self addExperimentInformationWithDictionary:v11];
-        [v11 setObject:v10 forKeyedSubscript:@"BlockReason"];
+        dictionary = [(NSErrorUserInfoKey *)v5[121] dictionary];
+        [(_DASDataCollectionSUTask *)self addExperimentInformationWithDictionary:dictionary];
+        [dictionary setObject:v10 forKeyedSubscript:@"BlockReason"];
         if (self->_currentEligibilityWindowStart && self->_currentEligibilityWindowEnd)
         {
           [_CDDateRange periodWithStart:"periodWithStart:end:" end:?];
@@ -559,14 +559,14 @@ LABEL_27:
           v14 = v13 = v6;
           [v14 duration];
           v15 = [NSNumber numberWithDouble:?];
-          [v11 setObject:v15 forKeyedSubscript:@"WindowDuration"];
+          [dictionary setObject:v15 forKeyedSubscript:@"WindowDuration"];
 
           v6 = v13;
           v5 = v12;
         }
 
-        v23 = v11;
-        v16 = v11;
+        v23 = dictionary;
+        v16 = dictionary;
         AnalyticsSendEventLazy();
       }
 
@@ -581,21 +581,21 @@ LABEL_27:
     sub_100128A60();
   }
 
-  v17 = [(NSErrorUserInfoKey *)v5[121] dictionary];
-  [(_DASDataCollectionSUTask *)self addExperimentInformationWithDictionary:v17];
+  dictionary2 = [(NSErrorUserInfoKey *)v5[121] dictionary];
+  [(_DASDataCollectionSUTask *)self addExperimentInformationWithDictionary:dictionary2];
   v18 = [NSNumber numberWithUnsignedInteger:[(NSMutableSet *)self->_blockReasonsSoFar count]];
-  [v17 setObject:v18 forKeyedSubscript:@"NumberOfBlockers"];
+  [dictionary2 setObject:v18 forKeyedSubscript:@"NumberOfBlockers"];
 
-  [v17 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Expired"];
+  [dictionary2 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Expired"];
   if (self->_currentEligibilityWindowStart && self->_currentEligibilityWindowEnd)
   {
     v19 = [_CDDateRange periodWithStart:"periodWithStart:end:" end:?];
     [v19 duration];
     v20 = [NSNumber numberWithDouble:?];
-    [v17 setObject:v20 forKeyedSubscript:@"WindowDuration"];
+    [dictionary2 setObject:v20 forKeyedSubscript:@"WindowDuration"];
   }
 
-  v21 = v17;
+  v21 = dictionary2;
   AnalyticsSendEventLazy();
 }
 

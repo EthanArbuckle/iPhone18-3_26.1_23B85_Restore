@@ -1,26 +1,26 @@
 @interface HMDEventRouterSendRemoteEventLogEvent
-- (HMDEventRouterSendRemoteEventLogEvent)initWithTopic:(id)a3 sourceDeviceType:(unint64_t)a4 destinationDeviceType:(unint64_t)a5 isCachedEvent:(BOOL)a6 responseMessageType:(unint64_t)a7;
+- (HMDEventRouterSendRemoteEventLogEvent)initWithTopic:(id)topic sourceDeviceType:(unint64_t)type destinationDeviceType:(unint64_t)deviceType isCachedEvent:(BOOL)event responseMessageType:(unint64_t)messageType;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
 @implementation HMDEventRouterSendRemoteEventLogEvent
 
-- (HMDEventRouterSendRemoteEventLogEvent)initWithTopic:(id)a3 sourceDeviceType:(unint64_t)a4 destinationDeviceType:(unint64_t)a5 isCachedEvent:(BOOL)a6 responseMessageType:(unint64_t)a7
+- (HMDEventRouterSendRemoteEventLogEvent)initWithTopic:(id)topic sourceDeviceType:(unint64_t)type destinationDeviceType:(unint64_t)deviceType isCachedEvent:(BOOL)event responseMessageType:(unint64_t)messageType
 {
-  v12 = a3;
+  topicCopy = topic;
   v17.receiver = self;
   v17.super_class = HMDEventRouterSendRemoteEventLogEvent;
   v13 = [(HMMLogEvent *)&v17 init];
   if (v13)
   {
-    v14 = [HMDEventRouterLogEventUtilities sanitizedTopicFromTopic:v12];
+    v14 = [HMDEventRouterLogEventUtilities sanitizedTopicFromTopic:topicCopy];
     topic = v13->_topic;
     v13->_topic = v14;
 
-    v13->_sourceDeviceType = a4;
-    v13->_destinationDeviceType = a5;
-    v13->_isCachedEvent = a6;
-    v13->_responseMessageType = a7;
+    v13->_sourceDeviceType = type;
+    v13->_destinationDeviceType = deviceType;
+    v13->_isCachedEvent = event;
+    v13->_responseMessageType = messageType;
   }
 
   return v13;
@@ -30,8 +30,8 @@
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v11[0] = @"eventTopic";
-  v3 = [(HMDEventRouterSendRemoteEventLogEvent *)self topic];
-  v12[0] = v3;
+  topic = [(HMDEventRouterSendRemoteEventLogEvent *)self topic];
+  v12[0] = topic;
   v11[1] = @"sourceDeviceType";
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDEventRouterSendRemoteEventLogEvent sourceDeviceType](self, "sourceDeviceType")}];
   v12[1] = v4;

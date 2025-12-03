@@ -1,16 +1,16 @@
 @interface GEORefinementsFactory
-+ (id)allRefinementsSectionsWith:(id)a3;
-+ (id)barMultiSelectResultRefinementsWith:(id)a3;
-+ (id)barResultRefinementsWith:(id)a3;
-+ (id)updatedOpenOptionResultRefinementWith:(id)a3;
++ (id)allRefinementsSectionsWith:(id)with;
++ (id)barMultiSelectResultRefinementsWith:(id)with;
++ (id)barResultRefinementsWith:(id)with;
++ (id)updatedOpenOptionResultRefinementWith:(id)with;
 - (_TtC4Maps21GEORefinementsFactory)init;
 @end
 
 @implementation GEORefinementsFactory
 
-+ (id)barResultRefinementsWith:(id)a3
++ (id)barResultRefinementsWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   v4 = sub_10048148C();
 
   if (v4)
@@ -27,11 +27,11 @@
   return v5.super.isa;
 }
 
-+ (id)allRefinementsSectionsWith:(id)a3
++ (id)allRefinementsSectionsWith:(id)with
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_1004803C0(v4);
+  withCopy = with;
+  v5 = sub_1004803C0(withCopy);
 
   if (v5)
   {
@@ -47,18 +47,18 @@
   return v6.super.isa;
 }
 
-+ (id)barMultiSelectResultRefinementsWith:(id)a3
++ (id)barMultiSelectResultRefinementsWith:(id)with
 {
-  v3 = a3;
-  v4 = sub_100481BEC(v3);
+  withCopy = with;
+  v4 = sub_100481BEC(withCopy);
 
   return v4;
 }
 
-+ (id)updatedOpenOptionResultRefinementWith:(id)a3
++ (id)updatedOpenOptionResultRefinementWith:(id)with
 {
-  v3 = a3;
-  v4 = sub_1004816D0(v3);
+  withCopy = with;
+  v4 = sub_1004816D0(withCopy);
 
   return v4;
 }

@@ -1,15 +1,15 @@
 @interface SCPermissionsService
-- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)a3;
+- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)policy;
 - (SCPermissionsService)init;
-- (void)_stopSharingEachParticipant:(id)a3 fromSource:(id)a4 completion:(id)a5;
-- (void)_stopSharingParticipants:(id)a3 fromSource:(id)a4 completion:(id)a5;
-- (void)fetchCompletedForSource:(id)a3;
-- (void)fetchPermissionsFromSources:(id)a3 includingErrors:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)fetchSharedResourcesOnQueue:(id)a3 withCompletion:(id)a4;
-- (void)fetchStartedForSource:(id)a3;
-- (void)stopSharingParticipation:(id)a3 fromSource:(id)a4 completion:(id)a5;
-- (void)stopSharingWithParticipants:(id)a3 completion:(id)a4;
-- (void)verifyDataUsagePoliciesForSources:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)_stopSharingEachParticipant:(id)participant fromSource:(id)source completion:(id)completion;
+- (void)_stopSharingParticipants:(id)participants fromSource:(id)source completion:(id)completion;
+- (void)fetchCompletedForSource:(id)source;
+- (void)fetchPermissionsFromSources:(id)sources includingErrors:(id)errors queue:(id)queue completion:(id)completion;
+- (void)fetchSharedResourcesOnQueue:(id)queue withCompletion:(id)completion;
+- (void)fetchStartedForSource:(id)source;
+- (void)stopSharingParticipation:(id)participation fromSource:(id)source completion:(id)completion;
+- (void)stopSharingWithParticipants:(id)participants completion:(id)completion;
+- (void)verifyDataUsagePoliciesForSources:(id)sources queue:(id)queue completion:(id)completion;
 @end
 
 @implementation SCPermissionsService
@@ -47,12 +47,12 @@
   return v3;
 }
 
-- (void)fetchSharedResourcesOnQueue:(id)a3 withCompletion:(id)a4
+- (void)fetchSharedResourcesOnQueue:(id)queue withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = objc_alloc_init(DSSourceRepository);
-  v9 = [v8 sources];
+  sources = [v8 sources];
 
   if (MGGetBoolAnswer())
   {
@@ -62,9 +62,9 @@
     v10[2] = sub_100002DE8;
     v10[3] = &unk_1000104F8;
     objc_copyWeak(&v13, &location);
-    v11 = v6;
-    v12 = v7;
-    [(SCPermissionsService *)self verifyDataUsagePoliciesForSources:v9 queue:v11 completion:v10];
+    v11 = queueCopy;
+    v12 = completionCopy;
+    [(SCPermissionsService *)self verifyDataUsagePoliciesForSources:sources queue:v11 completion:v10];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -72,23 +72,23 @@
 
   else
   {
-    [(SCPermissionsService *)self fetchPermissionsFromSources:v9 includingErrors:&__NSArray0__struct queue:v6 completion:v7];
+    [(SCPermissionsService *)self fetchPermissionsFromSources:sources includingErrors:&__NSArray0__struct queue:queueCopy completion:completionCopy];
   }
 }
 
-- (void)verifyDataUsagePoliciesForSources:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)verifyDataUsagePoliciesForSources:(id)sources queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  queue = a4;
-  v34 = a5;
+  sourcesCopy = sources;
+  queue = queue;
+  completionCopy = completion;
   v38 = +[NSMutableArray array];
-  v39 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
-  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
+  v39 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [sourcesCopy count]);
+  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [sourcesCopy count]);
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v9 = v7;
+  v9 = sourcesCopy;
   v10 = [v9 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v10)
   {
@@ -104,18 +104,18 @@
         }
 
         v14 = *(*(&v55 + 1) + 8 * i);
-        v15 = [v14 name];
-        v16 = [DSSourceDescriptor sourceDescriptorForSource:v15];
+        name = [v14 name];
+        v16 = [DSSourceDescriptor sourceDescriptorForSource:name];
 
-        v17 = [v16 dataUsageBundleIdentifier];
-        if (v17 && [(SCPermissionsService *)self shouldAllowBundleIDWithNoPolicy:v17])
+        dataUsageBundleIdentifier = [v16 dataUsageBundleIdentifier];
+        if (dataUsageBundleIdentifier && [(SCPermissionsService *)self shouldAllowBundleIDWithNoPolicy:dataUsageBundleIdentifier])
         {
-          v18 = [v14 name];
-          [v39 setObject:v18 forKeyedSubscript:v17];
+          name2 = [v14 name];
+          [v39 setObject:name2 forKeyedSubscript:dataUsageBundleIdentifier];
         }
 
-        v19 = [v14 name];
-        [v8 setObject:v14 forKeyedSubscript:v19];
+        name3 = [v14 name];
+        [v8 setObject:v14 forKeyedSubscript:name3];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -174,12 +174,12 @@
     block[1] = 3221225472;
     block[2] = sub_1000036AC;
     block[3] = &unk_100010548;
-    v29 = v34;
-    v43 = v34;
+    v29 = completionCopy;
+    v43 = completionCopy;
     v41 = v8;
     v30 = v38;
     v42 = v38;
-    v31 = queue;
+    queueCopy2 = queue;
     dispatch_group_notify(v22, queue, block);
 
     v20 = v39;
@@ -189,7 +189,7 @@
   else
   {
     v32 = sub_100002AF4();
-    v29 = v34;
+    v29 = completionCopy;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
@@ -197,26 +197,26 @@
     }
 
     v30 = v38;
-    (*(v34 + 2))(v34, v9, v38);
-    v31 = queue;
+    (*(completionCopy + 2))(completionCopy, v9, v38);
+    queueCopy2 = queue;
   }
 }
 
-- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)a3
+- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = +[DSUtilities allApps];
-  v5 = ![v3 isEqualToString:@"com.apple.Health"] || objc_msgSend(v4, "containsObject:", v3);
+  v5 = ![policyCopy isEqualToString:@"com.apple.Health"] || objc_msgSend(v4, "containsObject:", policyCopy);
 
   return v5;
 }
 
-- (void)fetchPermissionsFromSources:(id)a3 includingErrors:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)fetchPermissionsFromSources:(id)sources includingErrors:(id)errors queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v36 = a4;
-  v35 = a5;
-  v11 = a6;
+  sourcesCopy = sources;
+  errorsCopy = errors;
+  queueCopy = queue;
+  completionCopy = completion;
   v12 = os_signpost_id_generate(qword_100015148);
   v13 = qword_100015148;
   v14 = v13;
@@ -229,18 +229,18 @@
   }
 
   v16 = +[NSMutableDictionary dictionary];
-  v17 = [NSMutableArray arrayWithArray:v36];
+  v17 = [NSMutableArray arrayWithArray:errorsCopy];
   v18 = dispatch_group_create();
   objc_initWeak(&location, self);
   v19 = qword_100015148;
   if (os_log_type_enabled(qword_100015148, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v45 = v10;
+    v45 = sourcesCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Fetching sharing permissions from sources: %{public}@", buf, 0xCu);
   }
 
-  v20 = [v10 count];
+  v20 = [sourcesCopy count];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -248,10 +248,10 @@
   block[3] = &unk_1000105E8;
   v22 = v18;
   v38 = v22;
-  v23 = v10;
+  v23 = sourcesCopy;
   v39 = v23;
   objc_copyWeak(&v42, &location);
-  v24 = v11;
+  v24 = completionCopy;
   v25 = v17;
   v40 = v25;
   v26 = v16;
@@ -297,39 +297,39 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchStartedForSource:(id)a3
+- (void)fetchStartedForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock(&self->_permissionsLock);
   v5 = [NSNumber numberWithUnsignedLongLong:clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW)];
-  v6 = [(SCPermissionsService *)self fetchStartTimesBySource];
-  [v6 setObject:v5 forKeyedSubscript:v4];
+  fetchStartTimesBySource = [(SCPermissionsService *)self fetchStartTimesBySource];
+  [fetchStartTimesBySource setObject:v5 forKeyedSubscript:sourceCopy];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)fetchCompletedForSource:(id)a3
+- (void)fetchCompletedForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(SCPermissionsService *)self fetchStartTimesBySource];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  fetchStartTimesBySource = [(SCPermissionsService *)self fetchStartTimesBySource];
+  [fetchStartTimesBySource setObject:0 forKeyedSubscript:sourceCopy];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)stopSharingWithParticipants:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipants:(id)participants completion:(id)completion
 {
-  v5 = a3;
-  v32 = a4;
-  v33 = v5;
-  v6 = [v5 allKeys];
+  participantsCopy = participants;
+  completionCopy = completion;
+  v33 = participantsCopy;
+  allKeys = [participantsCopy allKeys];
   v7 = qword_100015148;
   if (os_log_type_enabled(qword_100015148, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
     *buf = 134217984;
-    v55 = [v6 count];
+    v55 = [allKeys count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "StopSharingWithParticipants:completion: stopping sharing of %ld sources", buf, 0xCu);
   }
 
@@ -340,7 +340,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v6;
+  obj = allKeys;
   v12 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v12)
   {
@@ -418,9 +418,9 @@
   v38[3] = &unk_1000106B0;
   v39 = v25;
   v40 = v26;
-  v41 = v32;
+  v41 = completionCopy;
   v42 = v36;
-  v29 = v32;
+  v29 = completionCopy;
   v30 = v26;
   v31 = v25;
   dispatch_group_notify(v27, v28, v38);
@@ -429,42 +429,42 @@
   objc_destroyWeak(buf);
 }
 
-- (void)stopSharingParticipation:(id)a3 fromSource:(id)a4 completion:(id)a5
+- (void)stopSharingParticipation:(id)participation fromSource:(id)source completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  participationCopy = participation;
+  sourceCopy = source;
+  completionCopy = completion;
   v11 = qword_100015148;
   if (os_log_type_enabled(qword_100015148, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v9 name];
+    name = [sourceCopy name];
     v14 = 138412546;
-    v15 = v13;
+    v15 = name;
     v16 = 2112;
-    v17 = v8;
+    v17 = participationCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "stopSharingWithSource: %@ participants: %@", &v14, 0x16u);
   }
 
-  if ([v8 count] >= 2 && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([participationCopy count] >= 2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SCPermissionsService *)self _stopSharingParticipants:v8 fromSource:v9 completion:v10];
+    [(SCPermissionsService *)self _stopSharingParticipants:participationCopy fromSource:sourceCopy completion:completionCopy];
   }
 
   else
   {
-    [(SCPermissionsService *)self _stopSharingEachParticipant:v8 fromSource:v9 completion:v10];
+    [(SCPermissionsService *)self _stopSharingEachParticipant:participationCopy fromSource:sourceCopy completion:completionCopy];
   }
 }
 
-- (void)_stopSharingParticipants:(id)a3 fromSource:(id)a4 completion:(id)a5
+- (void)_stopSharingParticipants:(id)participants fromSource:(id)source completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  participantsCopy = participants;
+  sourceCopy = source;
+  completionCopy = completion;
   v10 = os_signpost_id_generate(qword_100015148);
-  v11 = [v8 name];
-  v12 = [v11 isEqualToString:DSSourceNameCalendars];
+  name = [sourceCopy name];
+  v12 = [name isEqualToString:DSSourceNameCalendars];
 
   if (v12)
   {
@@ -481,8 +481,8 @@ LABEL_55:
     goto LABEL_61;
   }
 
-  v15 = [v8 name];
-  v16 = [v15 isEqualToString:DSSourceNameFindMy];
+  name2 = [sourceCopy name];
+  v16 = [name2 isEqualToString:DSSourceNameFindMy];
 
   if (v16)
   {
@@ -497,8 +497,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v18 = [v8 name];
-  v19 = [v18 isEqualToString:DSSourceNamePhotos];
+  name3 = [sourceCopy name];
+  v19 = [name3 isEqualToString:DSSourceNamePhotos];
 
   if (v19)
   {
@@ -513,8 +513,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v21 = [v8 name];
-  v22 = [v21 isEqualToString:DSSourceNameHomeSharing];
+  name4 = [sourceCopy name];
+  v22 = [name4 isEqualToString:DSSourceNameHomeSharing];
 
   if (v22)
   {
@@ -529,8 +529,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v24 = [v8 name];
-  v25 = [v24 isEqualToString:DSSourceNameHealthSharing];
+  name5 = [sourceCopy name];
+  v25 = [name5 isEqualToString:DSSourceNameHealthSharing];
 
   if (v25)
   {
@@ -545,8 +545,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v27 = [v8 name];
-  v28 = [v27 isEqualToString:DSSourceNameNotes];
+  name6 = [sourceCopy name];
+  v28 = [name6 isEqualToString:DSSourceNameNotes];
 
   if (v28)
   {
@@ -561,8 +561,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v30 = [v8 name];
-  v31 = [v30 isEqualToString:DSSourceNameZelkova];
+  name7 = [sourceCopy name];
+  v31 = [name7 isEqualToString:DSSourceNameZelkova];
 
   if (v31)
   {
@@ -577,8 +577,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v33 = [v8 name];
-  v34 = [v33 isEqualToString:DSSourceNameActivity];
+  name8 = [sourceCopy name];
+  v34 = [name8 isEqualToString:DSSourceNameActivity];
 
   if (v34)
   {
@@ -593,8 +593,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v36 = [v8 name];
-  v37 = [v36 isEqualToString:DSSourceNamePassKeys];
+  name9 = [sourceCopy name];
+  v37 = [name9 isEqualToString:DSSourceNamePassKeys];
 
   if (v37)
   {
@@ -609,8 +609,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v39 = [v8 name];
-  v40 = [v39 isEqualToString:DSSourceNameItemSharing];
+  name10 = [sourceCopy name];
+  v40 = [name10 isEqualToString:DSSourceNameItemSharing];
 
   if (v40)
   {
@@ -625,8 +625,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v42 = [v8 name];
-  v43 = [v42 isEqualToString:DSSourceNameMaps];
+  name11 = [sourceCopy name];
+  v43 = [name11 isEqualToString:DSSourceNameMaps];
 
   v44 = qword_100015148;
   v14 = v44;
@@ -650,7 +650,7 @@ LABEL_55:
   v45 = qword_100015148;
   if (os_log_type_enabled(qword_100015148, OS_LOG_TYPE_FAULT))
   {
-    sub_1000099C0(v45, v8);
+    sub_1000099C0(v45, sourceCopy);
   }
 
 LABEL_61:
@@ -658,11 +658,11 @@ LABEL_61:
   if (os_log_type_enabled(qword_100015148, OS_LOG_TYPE_INFO))
   {
     v47 = v46;
-    v48 = [v8 name];
+    name12 = [sourceCopy name];
     *buf = 138478083;
-    v58 = v7;
+    v58 = participantsCopy;
     v59 = 2114;
-    v60 = v48;
+    v60 = name12;
     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "_stopSharingParticipants: %{private}@ from source %{public}@", buf, 0x16u);
   }
 
@@ -670,25 +670,25 @@ LABEL_61:
   v52[1] = 3221225472;
   v52[2] = sub_1000073C8;
   v52[3] = &unk_1000106D8;
-  v49 = v8;
+  v49 = sourceCopy;
   v53 = v49;
   v56 = v10;
-  v50 = v7;
+  v50 = participantsCopy;
   v54 = v50;
-  v51 = v9;
+  v51 = completionCopy;
   v55 = v51;
   [v49 stopSharingWithParticipants:v50 completion:v52];
 }
 
-- (void)_stopSharingEachParticipant:(id)a3 fromSource:(id)a4 completion:(id)a5
+- (void)_stopSharingEachParticipant:(id)participant fromSource:(id)source completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  participantCopy = participant;
+  sourceCopy = source;
+  completionCopy = completion;
   v11 = +[NSMutableArray array];
   v12 = os_signpost_id_generate(qword_100015148);
-  v13 = [v9 name];
-  v14 = [v13 isEqualToString:DSSourceNameCalendars];
+  name = [sourceCopy name];
+  v14 = [name isEqualToString:DSSourceNameCalendars];
 
   if (v14)
   {
@@ -708,8 +708,8 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v18 = [v9 name];
-  v19 = [v18 isEqualToString:DSSourceNameFindMy];
+  name2 = [sourceCopy name];
+  v19 = [name2 isEqualToString:DSSourceNameFindMy];
 
   if (v19)
   {
@@ -725,8 +725,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v21 = [v9 name];
-  v22 = [v21 isEqualToString:DSSourceNamePhotos];
+  name3 = [sourceCopy name];
+  v22 = [name3 isEqualToString:DSSourceNamePhotos];
 
   if (v22)
   {
@@ -742,8 +742,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v24 = [v9 name];
-  v25 = [v24 isEqualToString:DSSourceNameHomeSharing];
+  name4 = [sourceCopy name];
+  v25 = [name4 isEqualToString:DSSourceNameHomeSharing];
 
   if (v25)
   {
@@ -759,8 +759,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v27 = [v9 name];
-  v28 = [v27 isEqualToString:DSSourceNameHealthSharing];
+  name5 = [sourceCopy name];
+  v28 = [name5 isEqualToString:DSSourceNameHealthSharing];
 
   if (v28)
   {
@@ -776,8 +776,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v30 = [v9 name];
-  v31 = [v30 isEqualToString:DSSourceNameNotes];
+  name6 = [sourceCopy name];
+  v31 = [name6 isEqualToString:DSSourceNameNotes];
 
   if (v31)
   {
@@ -793,8 +793,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v33 = [v9 name];
-  v34 = [v33 isEqualToString:DSSourceNameZelkova];
+  name7 = [sourceCopy name];
+  v34 = [name7 isEqualToString:DSSourceNameZelkova];
 
   if (v34)
   {
@@ -810,8 +810,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v36 = [v9 name];
-  v37 = [v36 isEqualToString:DSSourceNameActivity];
+  name8 = [sourceCopy name];
+  v37 = [name8 isEqualToString:DSSourceNameActivity];
 
   if (v37)
   {
@@ -827,8 +827,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v39 = [v9 name];
-  v40 = [v39 isEqualToString:DSSourceNamePassKeys];
+  name9 = [sourceCopy name];
+  v40 = [name9 isEqualToString:DSSourceNamePassKeys];
 
   if (v40)
   {
@@ -844,8 +844,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v42 = [v9 name];
-  v43 = [v42 isEqualToString:DSSourceNameItemSharing];
+  name10 = [sourceCopy name];
+  v43 = [name10 isEqualToString:DSSourceNameItemSharing];
 
   if (v43)
   {
@@ -861,8 +861,8 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  v45 = [v9 name];
-  v46 = [v45 isEqualToString:DSSourceNameMaps];
+  name11 = [sourceCopy name];
+  v46 = [name11 isEqualToString:DSSourceNameMaps];
 
   v47 = qword_100015148;
   v16 = v47;
@@ -887,25 +887,25 @@ LABEL_46:
   v58 = qword_100015148;
   if (os_log_type_enabled(qword_100015148, OS_LOG_TYPE_FAULT))
   {
-    sub_100009B44(v58, v9);
+    sub_100009B44(v58, sourceCopy);
   }
 
 LABEL_47:
   v48 = dispatch_group_create();
   v49 = dispatch_queue_create("com.apple.safetycheckd.SCPermissionsService.stopSharingWorkQueue", self->_priorityAttribute);
-  v50 = [v8 count];
+  v50 = [participantCopy count];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000082C8;
   block[3] = &unk_100010728;
   v64 = v48;
-  v65 = v8;
-  v66 = v9;
+  v65 = participantCopy;
+  v66 = sourceCopy;
   v51 = v11;
   v67 = v51;
   v68 = v12;
-  v52 = v9;
-  v53 = v8;
+  v52 = sourceCopy;
+  v53 = participantCopy;
   v54 = v48;
   dispatch_apply(v50, v49, block);
   workQueue = self->_workQueue;
@@ -913,10 +913,10 @@ LABEL_47:
   v59[1] = 3221225472;
   v59[2] = sub_1000092F4;
   v59[3] = &unk_100010750;
-  v61 = v10;
+  v61 = completionCopy;
   v62 = v12;
   v60 = v51;
-  v56 = v10;
+  v56 = completionCopy;
   v57 = v51;
   dispatch_group_notify(v54, workQueue, v59);
 }

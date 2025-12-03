@@ -1,17 +1,17 @@
 @interface WDExertionDataFetcher
-- (WDExertionDataFetcher)initWithHealthStore:(id)a3 predicate:(id)a4 exertionTypeCode:(int64_t)a5 limit:(int64_t)a6 sortDescriptors:(id)a7 resultsHandler:(id)a8;
+- (WDExertionDataFetcher)initWithHealthStore:(id)store predicate:(id)predicate exertionTypeCode:(int64_t)code limit:(int64_t)limit sortDescriptors:(id)descriptors resultsHandler:(id)handler;
 - (void)start;
 @end
 
 @implementation WDExertionDataFetcher
 
-- (WDExertionDataFetcher)initWithHealthStore:(id)a3 predicate:(id)a4 exertionTypeCode:(int64_t)a5 limit:(int64_t)a6 sortDescriptors:(id)a7 resultsHandler:(id)a8
+- (WDExertionDataFetcher)initWithHealthStore:(id)store predicate:(id)predicate exertionTypeCode:(int64_t)code limit:(int64_t)limit sortDescriptors:(id)descriptors resultsHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  if (v16)
+  storeCopy = store;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
+  if (predicateCopy)
   {
     v25.receiver = self;
     v25.super_class = WDExertionDataFetcher;
@@ -19,32 +19,32 @@
     v20 = v19;
     if (v19)
     {
-      objc_storeStrong(&v19->_healthStore, a3);
-      objc_storeStrong(&v20->_predicate, a4);
-      v20->_exertionTypeCode = a5;
-      v20->_limit = a6;
-      objc_storeStrong(&v20->_sortDescriptors, a7);
-      v21 = MEMORY[0x253092270](v18);
+      objc_storeStrong(&v19->_healthStore, store);
+      objc_storeStrong(&v20->_predicate, predicate);
+      v20->_exertionTypeCode = code;
+      v20->_limit = limit;
+      objc_storeStrong(&v20->_sortDescriptors, descriptors);
+      v21 = MEMORY[0x253092270](handlerCopy);
       resultsHandler = v20->_resultsHandler;
       v20->_resultsHandler = v21;
     }
 
     self = v20;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)start
 {
   v3 = objc_alloc(MEMORY[0x277CCD8D0]);
-  v4 = [MEMORY[0x277CCDCD0] workoutType];
+  workoutType = [MEMORY[0x277CCDCD0] workoutType];
   predicate = self->_predicate;
   limit = self->_limit;
   sortDescriptors = self->_sortDescriptors;
@@ -53,7 +53,7 @@
   v9[2] = __30__WDExertionDataFetcher_start__block_invoke;
   v9[3] = &unk_2796E6FC8;
   v9[4] = self;
-  v8 = [v3 initWithSampleType:v4 predicate:predicate limit:limit sortDescriptors:sortDescriptors resultsHandler:v9];
+  v8 = [v3 initWithSampleType:workoutType predicate:predicate limit:limit sortDescriptors:sortDescriptors resultsHandler:v9];
 
   [(HKHealthStore *)self->_healthStore executeQuery:v8];
 }

@@ -1,34 +1,34 @@
 @interface ATXNotificationEventMetric
-+ (id)atxComputedModeStringForTimestamp:(id)a3;
-- (ATXNotificationEventMetric)initWithQueryResult:(id)a3;
-- (id)coreAnalyticsDictionaryFromQueryResult:(id)a3;
++ (id)atxComputedModeStringForTimestamp:(id)timestamp;
+- (ATXNotificationEventMetric)initWithQueryResult:(id)result;
+- (id)coreAnalyticsDictionaryFromQueryResult:(id)result;
 @end
 
 @implementation ATXNotificationEventMetric
 
-- (ATXNotificationEventMetric)initWithQueryResult:(id)a3
+- (ATXNotificationEventMetric)initWithQueryResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = ATXNotificationEventMetric;
   v6 = [(_ATXCoreAnalyticsMetric *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queryResult, a3);
+    objc_storeStrong(&v6->_queryResult, result);
   }
 
   return v7;
 }
 
-+ (id)atxComputedModeStringForTimestamp:(id)a3
++ (id)atxComputedModeStringForTimestamp:(id)timestamp
 {
-  v3 = [MEMORY[0x277D41C60] currrentModeEventAtGivenTime:a3];
+  v3 = [MEMORY[0x277D41C60] currrentModeEventAtGivenTime:timestamp];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 eventBody];
-    [v5 atx_dndModeSemanticType];
+    eventBody = [v3 eventBody];
+    [eventBody atx_dndModeSemanticType];
     ATXModeForDNDSemanticType();
     v6 = ATXModeToString();
   }
@@ -41,232 +41,232 @@
   return v6;
 }
 
-- (id)coreAnalyticsDictionaryFromQueryResult:(id)a3
+- (id)coreAnalyticsDictionaryFromQueryResult:(id)result
 {
   v98[31] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultCopy = result;
   v97[0] = @"bundleId";
-  v4 = [v3 bundleId];
-  v5 = v4;
-  if (!v4)
+  bundleId = [resultCopy bundleId];
+  v5 = bundleId;
+  if (!bundleId)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    bundleId = [MEMORY[0x277CBEB68] null];
   }
 
-  v55 = v4;
-  v98[0] = v4;
+  v55 = bundleId;
+  v98[0] = bundleId;
   v97[1] = @"destinationReason";
-  v6 = [v3 destinationReason];
-  v7 = v6;
-  if (!v6)
+  destinationReason = [resultCopy destinationReason];
+  v7 = destinationReason;
+  if (!destinationReason)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    destinationReason = [MEMORY[0x277CBEB68] null];
   }
 
   v93 = v5;
-  v54 = v6;
-  v98[1] = v6;
+  v54 = destinationReason;
+  v98[1] = destinationReason;
   v97[2] = @"handleDestination";
-  v8 = [v3 finalDestination];
-  v91 = v8;
-  if (!v8)
+  finalDestination = [resultCopy finalDestination];
+  v91 = finalDestination;
+  if (!finalDestination)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    finalDestination = [MEMORY[0x277CBEB68] null];
   }
 
   v92 = v7;
-  v53 = v8;
-  v98[2] = v8;
+  v53 = finalDestination;
+  v98[2] = finalDestination;
   v97[3] = @"handleMode";
-  v90 = [v3 resolution];
-  v89 = [v90 resolutionTimestamp];
-  v9 = [ATXNotificationEventMetric atxComputedModeStringForTimestamp:?];
-  v10 = v9;
-  if (!v9)
+  resolution = [resultCopy resolution];
+  resolutionTimestamp = [resolution resolutionTimestamp];
+  null = [ATXNotificationEventMetric atxComputedModeStringForTimestamp:?];
+  v10 = null;
+  if (!null)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v52 = v9;
-  v98[3] = v9;
+  v52 = null;
+  v98[3] = null;
   v97[4] = @"isMessage";
-  v87 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isMessage")}];
+  v87 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isMessage")}];
   v98[4] = v87;
   v97[5] = @"notificationUrgency";
-  [v3 urgency];
-  v11 = ATXUserNotificationDeliveryUrgencyToString();
-  v12 = v11;
-  if (!v11)
+  [resultCopy urgency];
+  null2 = ATXUserNotificationDeliveryUrgencyToString();
+  v12 = null2;
+  if (!null2)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v51 = v11;
-  v98[5] = v11;
+  v51 = null2;
+  v98[5] = null2;
   v97[6] = @"originalDestination";
-  v13 = [v3 originalDestination];
-  v14 = v13;
-  if (!v13)
+  originalDestination = [resultCopy originalDestination];
+  receiveTimestamp4 = originalDestination;
+  if (!originalDestination)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    originalDestination = [MEMORY[0x277CBEB68] null];
   }
 
-  v50 = v13;
-  v98[6] = v13;
+  v50 = originalDestination;
+  v98[6] = originalDestination;
   v97[7] = @"deliveryMethod";
-  [v3 deliveryMethod];
-  v15 = ATXUserNotificationDeliveryMethodToString();
-  v16 = v15;
-  if (!v15)
+  [resultCopy deliveryMethod];
+  null3 = ATXUserNotificationDeliveryMethodToString();
+  nextAppLaunchTimestamp2 = null3;
+  if (!null3)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v49 = v15;
-  v98[7] = v15;
+  v49 = null3;
+  v98[7] = null3;
   v97[8] = @"receiveDestination";
-  [v3 deliveryMethod];
-  v17 = ATXUserNotificationDeliveryMethodToString();
-  v18 = v17;
-  if (!v17)
+  [resultCopy deliveryMethod];
+  null4 = ATXUserNotificationDeliveryMethodToString();
+  v18 = null4;
+  if (!null4)
   {
-    v17 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v48 = v17;
-  v98[8] = v17;
+  v48 = null4;
+  v98[8] = null4;
   v97[9] = @"receiveMode";
-  v82 = [v3 receiveTimestamp];
-  v19 = [ATXNotificationEventMetric atxComputedModeStringForTimestamp:?];
-  v20 = v19;
-  if (!v19)
+  receiveTimestamp = [resultCopy receiveTimestamp];
+  null5 = [ATXNotificationEventMetric atxComputedModeStringForTimestamp:?];
+  v20 = null5;
+  if (!null5)
   {
-    v19 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
   }
 
-  v47 = v19;
-  v98[9] = v19;
+  v47 = null5;
+  v98[9] = null5;
   v97[10] = @"resolutionType";
-  v80 = [v3 resolution];
-  v21 = ATXUserNotificationResolutionTypeToString([v80 resolutionType]);
-  v96 = v21;
-  if (!v21)
+  resolution2 = [resultCopy resolution];
+  null6 = ATXUserNotificationResolutionTypeToString([resolution2 resolutionType]);
+  v96 = null6;
+  if (!null6)
   {
-    v21 = [MEMORY[0x277CBEB68] null];
+    null6 = [MEMORY[0x277CBEB68] null];
   }
 
-  v46 = v21;
-  v98[10] = v21;
+  v46 = null6;
+  v98[10] = null6;
   v97[11] = @"secureBundleId";
-  v79 = [v3 bundleId];
-  v22 = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
-  v95 = v22;
-  if (!v22)
+  bundleId2 = [resultCopy bundleId];
+  null7 = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
+  v95 = null7;
+  if (!null7)
   {
-    v22 = [MEMORY[0x277CBEB68] null];
+    null7 = [MEMORY[0x277CBEB68] null];
   }
 
-  v45 = v22;
-  v98[11] = v22;
+  v45 = null7;
+  v98[11] = null7;
   v97[12] = @"timeToResolution";
   v23 = MEMORY[0x277CCABB0];
-  v78 = [v3 resolution];
-  v24 = [v78 resolutionTimestamp];
-  v76 = [v3 receiveTimestamp];
-  v77 = v24;
-  [v24 timeIntervalSinceDate:?];
+  resolution3 = [resultCopy resolution];
+  resolutionTimestamp2 = [resolution3 resolutionTimestamp];
+  receiveTimestamp2 = [resultCopy receiveTimestamp];
+  v77 = resolutionTimestamp2;
+  [resolutionTimestamp2 timeIntervalSinceDate:?];
   v75 = [v23 numberWithDouble:?];
   v98[12] = v75;
   v97[13] = @"receiveInferredMode";
   v25 = MEMORY[0x277D41C68];
-  v74 = [v3 receiveTimestamp];
+  receiveTimestamp3 = [resultCopy receiveTimestamp];
   v73 = [v25 currentModeEventAtGivenTime:?];
-  v72 = [v73 eventBody];
-  [v72 modeType];
+  eventBody = [v73 eventBody];
+  [eventBody modeType];
   BMUserFocusInferredModeTypeToActivity();
   ATXModeFromActivityType();
-  v26 = ATXModeToString();
-  v94 = v26;
-  if (!v26)
+  null8 = ATXModeToString();
+  v94 = null8;
+  if (!null8)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
+    null8 = [MEMORY[0x277CBEB68] null];
   }
 
   v81 = v20;
   v83 = v18;
   v86 = v12;
-  v44 = v26;
-  v98[13] = v26;
+  v44 = null8;
+  v98[13] = null8;
   v97[14] = @"handleInferredMode";
   v27 = MEMORY[0x277D41C68];
-  v71 = [v3 resolution];
-  v70 = [v71 resolutionTimestamp];
+  resolution4 = [resultCopy resolution];
+  resolutionTimestamp3 = [resolution4 resolutionTimestamp];
   v69 = [v27 currentModeEventAtGivenTime:?];
-  v68 = [v69 eventBody];
-  [v68 modeType];
+  eventBody2 = [v69 eventBody];
+  [eventBody2 modeType];
   BMUserFocusInferredModeTypeToActivity();
   ATXModeFromActivityType();
-  v28 = ATXModeToString();
-  v67 = v28;
-  if (!v28)
+  null9 = ATXModeToString();
+  v67 = null9;
+  if (!null9)
   {
-    v28 = [MEMORY[0x277CBEB68] null];
+    null9 = [MEMORY[0x277CBEB68] null];
   }
 
-  v84 = v16;
-  v85 = v14;
+  v84 = nextAppLaunchTimestamp2;
+  v85 = receiveTimestamp4;
   v88 = v10;
-  v98[14] = v28;
+  v98[14] = null9;
   v97[15] = @"lengthOfNotificationBody";
-  v66 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "bodyLength", v28)}];
+  v66 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "bodyLength", null9)}];
   v98[15] = v66;
   v97[16] = @"bodyLength";
-  v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "bodyLength")}];
+  v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "bodyLength")}];
   v98[16] = v65;
   v97[17] = @"titleLength";
-  v64 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "titleLength")}];
+  v64 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "titleLength")}];
   v98[17] = v64;
   v97[18] = @"subtitleLength";
-  v63 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "subtitleLength")}];
+  v63 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "subtitleLength")}];
   v98[18] = v63;
   v97[19] = @"summaryTopLineLength";
-  v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "summaryLength")}];
+  v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "summaryLength")}];
   v98[19] = v62;
   v97[20] = @"deliveredInPrioritySection";
-  v61 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isDeliveredInPrioritySection")}];
+  v61 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isDeliveredInPrioritySection")}];
   v98[20] = v61;
   v97[21] = @"isSummarized";
-  v60 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isSummarized")}];
+  v60 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isSummarized")}];
   v98[21] = v60;
   v97[22] = @"isPartOfStack";
-  v59 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isPartOfStack")}];
+  v59 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isPartOfStack")}];
   v98[22] = v59;
   v97[23] = @"isStackSummary";
-  v58 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isStackSummary")}];
+  v58 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isStackSummary")}];
   v98[23] = v58;
   v97[24] = @"numberOfNotificationsInStack";
-  v57 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "numberOfNotificationsInStack")}];
+  v57 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "numberOfNotificationsInStack")}];
   v98[24] = v57;
   v97[25] = @"notificationPriorityStatus";
-  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "notificationPriorityStatus")}];
+  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "notificationPriorityStatus")}];
   v98[25] = v29;
   v97[26] = @"notificationSummaryStatus";
-  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "notificationSummaryStatus")}];
+  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resultCopy, "notificationSummaryStatus")}];
   v98[26] = v30;
   v97[27] = @"isPriorityNotificationEnabled";
-  v31 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isPriorityNotificationEnabled")}];
+  v31 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isPriorityNotificationEnabled")}];
   v98[27] = v31;
   v97[28] = @"isNotificationSummaryEnabled";
-  v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isNotificationSummaryEnabled")}];
+  v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isNotificationSummaryEnabled")}];
   v98[28] = v32;
   v97[29] = @"timeToNextAppLaunch";
-  v33 = [v3 nextAppLaunchTimestamp];
-  if (v33)
+  nextAppLaunchTimestamp = [resultCopy nextAppLaunchTimestamp];
+  if (nextAppLaunchTimestamp)
   {
     v34 = MEMORY[0x277CCABB0];
-    v16 = [v3 nextAppLaunchTimestamp];
-    v14 = [v3 receiveTimestamp];
-    [v16 timeIntervalSinceDate:v14];
+    nextAppLaunchTimestamp2 = [resultCopy nextAppLaunchTimestamp];
+    receiveTimestamp4 = [resultCopy receiveTimestamp];
+    [nextAppLaunchTimestamp2 timeIntervalSinceDate:receiveTimestamp4];
     [v34 numberWithDouble:?];
   }
 
@@ -278,15 +278,15 @@
   v98[29] = v35;
   v97[30] = @"queryTimeInterval";
   v36 = MEMORY[0x277CCABB0];
-  [v3 queryTimeInterval];
+  [resultCopy queryTimeInterval];
   v37 = [v36 numberWithDouble:?];
   v98[30] = v37;
   v56 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:31];
 
-  if (v33)
+  if (nextAppLaunchTimestamp)
   {
 
-    v35 = v16;
+    v35 = nextAppLaunchTimestamp2;
   }
 
   if (!v67)

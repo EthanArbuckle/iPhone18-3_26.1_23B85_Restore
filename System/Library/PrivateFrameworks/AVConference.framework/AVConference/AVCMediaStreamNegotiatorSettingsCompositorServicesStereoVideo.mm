@@ -1,5 +1,5 @@
 @interface AVCMediaStreamNegotiatorSettingsCompositorServicesStereoVideo
-- (AVCMediaStreamNegotiatorSettingsCompositorServicesStereoVideo)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsCompositorServicesStereoVideo)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 - (unint64_t)maxBandwidth;
 @end
 
@@ -18,7 +18,7 @@
   }
 }
 
-- (AVCMediaStreamNegotiatorSettingsCompositorServicesStereoVideo)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsCompositorServicesStereoVideo)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   newCollectionOut = 0;
@@ -34,7 +34,7 @@
     goto LABEL_19;
   }
 
-  if ((a4 - 3) < 0xFEu)
+  if ((role - 3) < 0xFEu)
   {
     Mutable = 0;
     v19 = @"Invalid device role";
@@ -104,7 +104,7 @@
 
   else
   {
-    v17 = [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:a3];
+    v17 = [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:options];
     if (!v17)
     {
       goto LABEL_17;
@@ -161,9 +161,9 @@ LABEL_21:
 
   if (v19)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v19;
+      *error = v19;
     }
 
     return 0;

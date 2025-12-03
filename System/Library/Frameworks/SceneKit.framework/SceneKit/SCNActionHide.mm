@@ -2,11 +2,11 @@
 + (id)hide;
 + (id)unhide;
 - (SCNActionHide)init;
-- (SCNActionHide)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionHide)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parameters;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionHide
@@ -23,7 +23,7 @@
   return 0;
 }
 
-- (SCNActionHide)initWithCoder:(id)a3
+- (SCNActionHide)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNActionHide;
@@ -35,12 +35,12 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionHide;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeBool:self->_mycaction->var19 forKey:@"_hide"];
+  [coder encodeBool:self->_mycaction->var19 forKey:@"_hide"];
 }
 
 + (id)hide
@@ -61,11 +61,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SCNActionHide;
-  v4 = [(SCNAction *)&v6 copyWithZone:a3];
+  v4 = [(SCNAction *)&v6 copyWithZone:zone];
   [(SCNAction *)self duration];
   [v4 setDuration:?];
   *(v4[2] + 144) = self->_mycaction->var19;

@@ -1,17 +1,17 @@
 @interface _EARTransformUtil
-+ (id)hatToQsrString:(id)a3;
-+ (id)hatToQsrStrings:(id)a3;
++ (id)hatToQsrString:(id)string;
++ (id)hatToQsrStrings:(id)strings;
 @end
 
 @implementation _EARTransformUtil
 
-+ (id)hatToQsrString:(id)a3
++ (id)hatToQsrString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v3 = [v3 ear_toString];
+    stringCopy = [stringCopy ear_toString];
   }
 
   else
@@ -24,7 +24,7 @@
   __p = 0;
   v10 = 0;
   v11 = 0;
-  v5 = quasar::QsrText::SingletonInstance(v3);
+  v5 = quasar::QsrText::SingletonInstance(stringCopy);
   if (quasar::QsrText::hatToQsrToken(v5, &v12, &__p))
   {
     if (v11 >= 0)
@@ -58,7 +58,7 @@
   return v7;
 }
 
-+ (id)hatToQsrStrings:(id)a3
++ (id)hatToQsrStrings:(id)strings
 {
   v34[16] = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -68,7 +68,7 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
+  obj = strings;
   v3 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v3)
   {

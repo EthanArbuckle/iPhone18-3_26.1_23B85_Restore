@@ -1,7 +1,7 @@
 @interface FBSSceneEvent
 - (FBSSceneEvent)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -16,25 +16,25 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSceneEvent *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSceneEvent *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSceneEvent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSceneEvent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSceneEvent *)self succinctDescriptionBuilder];
-  v6 = v5;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSceneEvent *)self succinctDescriptionBuilder];
+  v6 = succinctDescriptionBuilder;
   source = self->_source;
   if (source > 2)
   {
@@ -46,15 +46,15 @@
     v8 = off_1E76BED48[source];
   }
 
-  v9 = [v5 appendObject:v8 withName:@"source"];
+  v9 = [succinctDescriptionBuilder appendObject:v8 withName:@"source"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__FBSSceneEvent_descriptionBuilderWithMultilinePrefix___block_invoke;
   v13[3] = &unk_1E76BCD60;
   v10 = v6;
   v14 = v10;
-  v15 = self;
-  [v10 appendBodySectionWithName:0 multilinePrefix:v4 block:v13];
+  selfCopy = self;
+  [v10 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v13];
 
   v11 = v10;
   return v10;

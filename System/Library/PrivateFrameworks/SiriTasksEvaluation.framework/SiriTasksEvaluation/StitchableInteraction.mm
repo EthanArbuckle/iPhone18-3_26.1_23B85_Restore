@@ -1,25 +1,25 @@
 @interface StitchableInteraction
-- (StitchableInteraction)initWithType:(id)a3 identifier:(id)a4 startDate:(id)a5 duration:(double)a6 isDonatedBySiri:(BOOL)a7;
+- (StitchableInteraction)initWithType:(id)type identifier:(id)identifier startDate:(id)date duration:(double)duration isDonatedBySiri:(BOOL)siri;
 @end
 
 @implementation StitchableInteraction
 
-- (StitchableInteraction)initWithType:(id)a3 identifier:(id)a4 startDate:(id)a5 duration:(double)a6 isDonatedBySiri:(BOOL)a7
+- (StitchableInteraction)initWithType:(id)type identifier:(id)identifier startDate:(id)date duration:(double)duration isDonatedBySiri:(BOOL)siri
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = StitchableInteraction;
   v16 = [(StitchableInteraction *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_type, a3);
-    objc_storeStrong(&v17->_identifier, a4);
-    objc_storeStrong(&v17->_startDate, a5);
-    v17->_duration = a6;
-    v17->_isDonatedBySiri = a7;
+    objc_storeStrong(&v16->_type, type);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v17->_startDate, date);
+    v17->_duration = duration;
+    v17->_isDonatedBySiri = siri;
   }
 
   return v17;

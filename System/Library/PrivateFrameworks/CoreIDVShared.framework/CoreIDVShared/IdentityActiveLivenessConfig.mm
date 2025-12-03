@@ -1,30 +1,30 @@
 @interface IdentityActiveLivenessConfig
 - (NSString)debugDescription;
 - (_TtC13CoreIDVShared28IdentityActiveLivenessConfig)init;
-- (_TtC13CoreIDVShared28IdentityActiveLivenessConfig)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared28IdentityActiveLivenessConfig)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityActiveLivenessConfig
 
-- (_TtC13CoreIDVShared28IdentityActiveLivenessConfig)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared28IdentityActiveLivenessConfig)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B5E318(v3);
+  coderCopy = coder;
+  v4 = sub_225B5E318(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityActiveLivenessConfig.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityActiveLivenessConfig.encode(with:)(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   IdentityActiveLivenessConfig.debugDescription.getter();
 
   v3 = sub_225CCE444();

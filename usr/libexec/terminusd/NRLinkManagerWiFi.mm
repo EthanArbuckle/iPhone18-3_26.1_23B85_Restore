@@ -4,11 +4,11 @@
 - (void)dealloc;
 - (void)handleThermalStateUpdate;
 - (void)invalidateManager;
-- (void)linkDidReceiveData:(id)a3 data:(id)a4;
-- (void)linkIsAvailable:(id)a3;
-- (void)linkIsReady:(id)a3;
-- (void)linkIsSuspended:(id)a3;
-- (void)linkIsUnavailable:(id)a3;
+- (void)linkDidReceiveData:(id)data data:(id)a4;
+- (void)linkIsAvailable:(id)available;
+- (void)linkIsReady:(id)ready;
+- (void)linkIsSuspended:(id)suspended;
+- (void)linkIsUnavailable:(id)unavailable;
 @end
 
 @implementation NRLinkManagerWiFi
@@ -69,8 +69,8 @@
           v13 = *(*(&v16 + 1) + 8 * i);
           if ([v13 subtype] == 102)
           {
-            v14 = [v13 nrUUID];
-            v15 = sub_100163A30(NRDLocalDevice, v14);
+            nrUUID = [v13 nrUUID];
+            v15 = sub_100163A30(NRDLocalDevice, nrUUID);
 
             if ((sub_100172D94(v15) & 1) == 0)
             {
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)linkDidReceiveData:(id)a3 data:(id)a4
+- (void)linkDidReceiveData:(id)data data:(id)a4
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = a4;
   if (!self)
   {
@@ -119,7 +119,7 @@ LABEL_10:
     block[2] = sub_100176C74;
     block[3] = &unk_1001FD088;
     block[4] = self;
-    v12 = v6;
+    v12 = dataCopy;
     v13 = v7;
     dispatch_async(v10, block);
 
@@ -144,9 +144,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)linkIsUnavailable:(id)a3
+- (void)linkIsUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   if (self)
   {
     queue = self->super._queue;
@@ -160,7 +160,7 @@ LABEL_11:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (unavailableCopy)
   {
     [(NRLinkManager *)self reportEvent:2007];
     if (self)
@@ -185,13 +185,13 @@ LABEL_11:
         goto LABEL_14;
       }
 
-      [(NSMutableSet *)self->_links removeObject:v4];
+      [(NSMutableSet *)self->_links removeObject:unavailableCopy];
       v7 = self->super._queue;
     }
 
     else
     {
-      [0 removeObject:v4];
+      [0 removeObject:unavailableCopy];
       v7 = 0;
     }
 
@@ -201,7 +201,7 @@ LABEL_11:
     block[2] = sub_100176EC8;
     block[3] = &unk_1001FD060;
     block[4] = self;
-    v13 = v4;
+    v13 = unavailableCopy;
     dispatch_async(v8, block);
 
     goto LABEL_14;
@@ -219,9 +219,9 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)linkIsSuspended:(id)a3
+- (void)linkIsSuspended:(id)suspended
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   if (self)
   {
     queue = self->super._queue;
@@ -235,7 +235,7 @@ LABEL_14:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (suspendedCopy)
   {
     [(NRLinkManager *)self reportEvent:2006];
     if (self)
@@ -273,8 +273,8 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = sub_1001798F0;
     block[3] = &unk_1001FD060;
-    v13 = v4;
-    v14 = self;
+    v13 = suspendedCopy;
+    selfCopy = self;
     dispatch_async(v8, block);
 
     goto LABEL_14;
@@ -292,9 +292,9 @@ LABEL_14:
 LABEL_14:
 }
 
-- (void)linkIsReady:(id)a3
+- (void)linkIsReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   if (self)
   {
     queue = self->super._queue;
@@ -308,7 +308,7 @@ LABEL_14:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (readyCopy)
   {
     [(NRLinkManager *)self reportEvent:2005];
     if (self)
@@ -346,8 +346,8 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = sub_100179BE4;
     block[3] = &unk_1001FD060;
-    v13 = v4;
-    v14 = self;
+    v13 = readyCopy;
+    selfCopy = self;
     dispatch_async(v8, block);
 
     goto LABEL_14;
@@ -365,9 +365,9 @@ LABEL_14:
 LABEL_14:
 }
 
-- (void)linkIsAvailable:(id)a3
+- (void)linkIsAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (self)
   {
     queue = self->super._queue;
@@ -381,7 +381,7 @@ LABEL_14:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (v4)
+  if (availableCopy)
   {
     [(NRLinkManager *)self reportEvent:2004];
     if (self)
@@ -406,13 +406,13 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      [(NSMutableSet *)self->_links addObject:v4];
+      [(NSMutableSet *)self->_links addObject:availableCopy];
       v7 = self->super._queue;
     }
 
     else
     {
-      [0 addObject:v4];
+      [0 addObject:availableCopy];
       v7 = 0;
     }
 
@@ -421,8 +421,8 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = sub_100179EF8;
     block[3] = &unk_1001FD060;
-    v13 = v4;
-    v14 = self;
+    v13 = availableCopy;
+    selfCopy = self;
     dispatch_async(v8, block);
 
     goto LABEL_14;
@@ -456,8 +456,8 @@ LABEL_14:
   dispatch_assert_queue_V2(v4);
 
   v5 = objc_alloc_init(NSMutableString);
-  v6 = [(NRLinkManagerWiFi *)self copyName];
-  [v5 appendFormat:@"\nName: %@", v6];
+  copyName = [(NRLinkManagerWiFi *)self copyName];
+  [v5 appendFormat:@"\nName: %@", copyName];
 
   if (self)
   {
@@ -472,16 +472,16 @@ LABEL_14:
       switch(state)
       {
         case 0x3EA:
-          v11 = [v10 initWithUTF8String:"Start"];
+          state = [v10 initWithUTF8String:"Start"];
           goto LABEL_15;
         case 0x3EB:
-          v11 = [v10 initWithUTF8String:"Ready"];
+          state = [v10 initWithUTF8String:"Ready"];
           goto LABEL_15;
         case 0x3EC:
-          v11 = [v10 initWithUTF8String:"Cancelled"];
+          state = [v10 initWithUTF8String:"Cancelled"];
 LABEL_15:
-          v12 = v11;
-          [v5 appendFormat:@"\nState: %@", v11];
+          v12 = state;
+          [v5 appendFormat:@"\nState: %@", state];
 
           goto LABEL_16;
       }
@@ -493,12 +493,12 @@ LABEL_15:
     {
       if (state == 1001)
       {
-        v11 = [v10 initWithUTF8String:"Initial"];
+        state = [v10 initWithUTF8String:"Initial"];
         goto LABEL_15;
       }
 
 LABEL_14:
-      v11 = [v10 initWithFormat:@"Unknown(%u)", state];
+      state = [v10 initWithFormat:@"Unknown(%u)", state];
       goto LABEL_15;
     }
   }
@@ -630,7 +630,7 @@ LABEL_23:
 
     v3 = qword_1002294A0;
     v6 = 297;
-    v7 = [(NRLinkManagerWiFi *)self copyName];
+    copyName = [(NRLinkManagerWiFi *)self copyName];
     v4 = "";
     v5 = "[NRLinkManagerWiFi dealloc]";
     _NRLogWithArgs();

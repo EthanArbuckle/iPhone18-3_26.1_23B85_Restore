@@ -1,41 +1,41 @@
 @interface MTRCommandWithRequiredResponse
-- (BOOL)_isEqualToOther:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MTRCommandWithRequiredResponse)initWithCoder:(id)a3;
-- (MTRCommandWithRequiredResponse)initWithPath:(id)a3 commandFields:(id)a4 requiredResponse:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isEqualToOther:(id)other;
+- (BOOL)isEqual:(id)equal;
+- (MTRCommandWithRequiredResponse)initWithCoder:(id)coder;
+- (MTRCommandWithRequiredResponse)initWithPath:(id)path commandFields:(id)fields requiredResponse:(id)response;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRCommandWithRequiredResponse
 
-- (MTRCommandWithRequiredResponse)initWithPath:(id)a3 commandFields:(id)a4 requiredResponse:(id)a5
+- (MTRCommandWithRequiredResponse)initWithPath:(id)path commandFields:(id)fields requiredResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  fieldsCopy = fields;
+  responseCopy = response;
   v14.receiver = self;
   v14.super_class = MTRCommandWithRequiredResponse;
   v11 = [(MTRCommandWithRequiredResponse *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(MTRCommandWithRequiredResponse *)v11 setPath:v8];
-    [(MTRCommandWithRequiredResponse *)v12 setCommandFields:v9];
-    [(MTRCommandWithRequiredResponse *)v12 setRequiredResponse:v10];
+    [(MTRCommandWithRequiredResponse *)v11 setPath:pathCopy];
+    [(MTRCommandWithRequiredResponse *)v12 setCommandFields:fieldsCopy];
+    [(MTRCommandWithRequiredResponse *)v12 setRequiredResponse:responseCopy];
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTRCommandWithRequiredResponse alloc];
-  v5 = [(MTRCommandWithRequiredResponse *)self path];
-  v6 = [(MTRCommandWithRequiredResponse *)self commandFields];
-  v7 = [(MTRCommandWithRequiredResponse *)self requiredResponse];
-  v8 = [(MTRCommandWithRequiredResponse *)v4 initWithPath:v5 commandFields:v6 requiredResponse:v7];
+  path = [(MTRCommandWithRequiredResponse *)self path];
+  commandFields = [(MTRCommandWithRequiredResponse *)self commandFields];
+  requiredResponse = [(MTRCommandWithRequiredResponse *)self requiredResponse];
+  v8 = [(MTRCommandWithRequiredResponse *)v4 initWithPath:path commandFields:commandFields requiredResponse:requiredResponse];
 
   return v8;
 }
@@ -45,18 +45,18 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MTRCommandWithRequiredResponse *)self path];
-  v7 = [(MTRCommandWithRequiredResponse *)self commandFields];
-  v8 = [(MTRCommandWithRequiredResponse *)self requiredResponse];
-  v9 = [v3 stringWithFormat:@"<%@: %p, path: %@, fields: %@, requiredResponse: %@", v5, self, v6, v7, v8];
+  path = [(MTRCommandWithRequiredResponse *)self path];
+  commandFields = [(MTRCommandWithRequiredResponse *)self commandFields];
+  requiredResponse = [(MTRCommandWithRequiredResponse *)self requiredResponse];
+  v9 = [v3 stringWithFormat:@"<%@: %p, path: %@, fields: %@, requiredResponse: %@", v5, self, path, commandFields, requiredResponse];
 
   return v9;
 }
 
-- (MTRCommandWithRequiredResponse)initWithCoder:(id)a3
+- (MTRCommandWithRequiredResponse)initWithCoder:(id)coder
 {
   v51[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v45.receiver = self;
   v45.super_class = MTRCommandWithRequiredResponse;
   v5 = [(MTRCommandWithRequiredResponse *)&v45 init];
@@ -65,7 +65,7 @@
     goto LABEL_27;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pathKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pathKey"];
   p_path = &v5->_path;
   path = v5->_path;
   v5->_path = v6;
@@ -103,7 +103,7 @@
     __cxa_guard_release(&qword_27DF77650);
   }
 
-  v9 = [v4 decodeObjectOfClasses:qword_27DF77648 forKey:@"fieldsKey"];
+  v9 = [coderCopy decodeObjectOfClasses:qword_27DF77648 forKey:@"fieldsKey"];
   p_path = &v5->_commandFields;
   commandFields = v5->_commandFields;
   v5->_commandFields = v9;
@@ -165,7 +165,7 @@ LABEL_27:
   }
 
 LABEL_9:
-  v13 = [v4 decodeObjectOfClasses:qword_27DF77648 forKey:@"requiredResponseKey"];
+  v13 = [coderCopy decodeObjectOfClasses:qword_27DF77648 forKey:@"requiredResponseKey"];
   p_path = &v5->_requiredResponse;
   requiredResponse = v5->_requiredResponse;
   v5->_requiredResponse = v13;
@@ -296,48 +296,48 @@ LABEL_28:
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(MTRCommandWithRequiredResponse *)self path];
+  coderCopy = coder;
+  path = [(MTRCommandWithRequiredResponse *)self path];
 
-  if (v4)
+  if (path)
   {
-    v5 = [(MTRCommandWithRequiredResponse *)self path];
-    [v10 encodeObject:v5 forKey:@"pathKey"];
+    path2 = [(MTRCommandWithRequiredResponse *)self path];
+    [coderCopy encodeObject:path2 forKey:@"pathKey"];
   }
 
-  v6 = [(MTRCommandWithRequiredResponse *)self commandFields];
+  commandFields = [(MTRCommandWithRequiredResponse *)self commandFields];
 
-  if (v6)
+  if (commandFields)
   {
-    v7 = [(MTRCommandWithRequiredResponse *)self commandFields];
-    [v10 encodeObject:v7 forKey:@"fieldsKey"];
+    commandFields2 = [(MTRCommandWithRequiredResponse *)self commandFields];
+    [coderCopy encodeObject:commandFields2 forKey:@"fieldsKey"];
   }
 
-  v8 = [(MTRCommandWithRequiredResponse *)self requiredResponse];
+  requiredResponse = [(MTRCommandWithRequiredResponse *)self requiredResponse];
 
-  if (v8)
+  if (requiredResponse)
   {
-    v9 = [(MTRCommandWithRequiredResponse *)self requiredResponse];
-    [v10 encodeObject:v9 forKey:@"requiredResponseKey"];
+    requiredResponse2 = [(MTRCommandWithRequiredResponse *)self requiredResponse];
+    [coderCopy encodeObject:requiredResponse2 forKey:@"requiredResponseKey"];
   }
 }
 
-- (BOOL)_isEqualToOther:(id)a3
+- (BOOL)_isEqualToOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   path = self->_path;
-  v6 = [v4 path];
-  if (sub_238DB32F8(path, v6))
+  path = [otherCopy path];
+  if (sub_238DB32F8(path, path))
   {
     commandFields = self->_commandFields;
-    v8 = [v4 commandFields];
-    if (sub_238DB32F8(commandFields, v8))
+    commandFields = [otherCopy commandFields];
+    if (sub_238DB32F8(commandFields, commandFields))
     {
       requiredResponse = self->_requiredResponse;
-      v10 = [v4 requiredResponse];
-      v11 = sub_238DB32F8(requiredResponse, v10);
+      requiredResponse = [otherCopy requiredResponse];
+      v11 = sub_238DB32F8(requiredResponse, requiredResponse);
     }
 
     else
@@ -354,11 +354,11 @@ LABEL_28:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && [(MTRCommandWithRequiredResponse *)self _isEqualToOther:v4];
+  v6 = v5 == objc_opt_class() && [(MTRCommandWithRequiredResponse *)self _isEqualToOther:equalCopy];
 
   return v6;
 }

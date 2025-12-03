@@ -1,11 +1,11 @@
 @interface SBReachabilityBackgroundViewController
-- (SBReachabilityBackgroundViewController)initWithWallpaperVariant:(int64_t)a3;
+- (SBReachabilityBackgroundViewController)initWithWallpaperVariant:(int64_t)variant;
 - (id)view;
 @end
 
 @implementation SBReachabilityBackgroundViewController
 
-- (SBReachabilityBackgroundViewController)initWithWallpaperVariant:(int64_t)a3
+- (SBReachabilityBackgroundViewController)initWithWallpaperVariant:(int64_t)variant
 {
   v11.receiver = self;
   v11.super_class = SBReachabilityBackgroundViewController;
@@ -22,11 +22,11 @@
 
     else
     {
-      v3 = [MEMORY[0x277D759A0] mainScreen];
-      [v3 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
-    v9 = [(SBReachabilityBackgroundView *)v6 initWithFrame:a3 wallpaperVariant:?];
+    v9 = [(SBReachabilityBackgroundView *)v6 initWithFrame:variant wallpaperVariant:?];
     if ((v8 & 1) == 0)
     {
     }
@@ -41,9 +41,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBReachabilityBackgroundViewController;
-  v2 = [(SBReachabilityBackgroundViewController *)&v4 view];
+  view = [(SBReachabilityBackgroundViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
 @end

@@ -1,92 +1,92 @@
 @interface SMDaemonClient
 - (NSString)description;
-- (SMDaemonClient)initWithQueue:(id)a3 authorizationManager:(id)a4 defaultsManager:(id)a5 distanceCalculator:(id)a6 platform:(id)a7 initiatorService:(id)a8 messagingService:(id)a9 receiverService:(id)a10 sessionStore:(id)a11 suggestionsManager:(id)a12 suggestionsHelper:(id)a13 suggestionsStore:(id)a14 eligibilityChecker:(id)a15 deviceConfigurationChecker:(id)a16 appDeletionManager:(id)a17;
-- (void)_onLocalSessionStateChanged:(id)a3;
-- (void)_onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4;
-- (void)calculateDistanceToDestination:(id)a3 completionHandler:(id)a4;
-- (void)cancelMadridMessageSendForMessageGUID:(id)a3 toConversation:(id)a4 completion:(id)a5;
-- (void)checkConversationEligibility:(id)a3 handler:(id)a4;
-- (void)checkEligibilityOfDestination:(id)a3 completionHandler:(id)a4;
-- (void)checkHasSimWithHandler:(id)a3;
-- (void)checkIMessageAccountEnabledWithHandler:(id)a3;
-- (void)checkInitiatorEligibilityWithHandler:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)detailsViewOpenedForSessionID:(id)a3;
-- (void)estimateEtaToDestination:(id)a3 transportType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)fetchAllReceiverSessionStatusWithCompletion:(id)a3;
-- (void)fetchCurrentLocalSessionStateWithHandler:(id)a3;
-- (void)fetchCurrentSessionStateWithCompletion:(id)a3;
-- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)a3;
-- (void)fetchInitiatorSafetyCacheForSessionID:(id)a3 completion:(id)a4;
-- (void)fetchReceiverSafetyCacheForSessionID:(id)a3 completion:(id)a4;
-- (void)fetchReceiverSessionStatusForSessionID:(id)a3 completion:(id)a4;
-- (void)fetchSOSReceiversWithCompletion:(id)a3;
-- (void)iMessageConversationDeletedFor:(id)a3;
-- (void)iMessageDeletedFor:(id)a3;
-- (void)iMessageGroupDisplayNameChangedFor:(id)a3;
-- (void)iMessageGroupMembershipChangedFor:(id)a3;
-- (void)iMessageGroupPhotoChangedFor:(id)a3;
-- (void)iMessageReceived:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)iMessageScheduledSendCancelFor:(id)a3 successful:(BOOL)a4 withError:(id)a5;
-- (void)iMessageScheduledSendScheduledFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6;
-- (void)iMessageScheduledSendTriggeredFor:(id)a3;
-- (void)iMessageSendFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6;
-- (void)kickedFromIMessageGroupWith:(id)a3;
-- (void)onAuthorizationNotification:(id)a3;
-- (void)onInitiatorSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5 cacheExpiryDate:(id)a6 cacheReleaseDate:(id)a7;
-- (void)onLocalSessionStateChanged:(id)a3;
-- (void)onReceiverSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5;
-- (void)onReceiverSessionStatusChangeForSessionID:(id)a3 sessionStatus:(id)a4;
-- (void)onSessionResumedWithState:(id)a3 forActiveDevice:(BOOL)a4;
-- (void)onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4;
-- (void)respondedToCheckInRemindersTipWithResponse:(int64_t)a3;
-- (void)scheduleMadridMessageSendForMessage:(id)a3 messageGUID:(id)a4 associatedGUID:(id)a5 sendDate:(id)a6 toConversation:(id)a7 summaryText:(id)a8 completion:(id)a9;
-- (void)sendIDSMessage:(id)a3 toConversation:(id)a4 completion:(id)a5;
-- (void)sendIDSMessageToMyDevices:(id)a3 completion:(id)a4;
-- (void)sendIDSMessageToMyNearbyDevices:(id)a3 completion:(id)a4;
-- (void)sendIDSMessageToPairedDevice:(id)a3 completion:(id)a4;
-- (void)sendMadridMessage:(id)a3 associatedGUID:(id)a4 toConversation:(id)a5 summaryText:(id)a6 completion:(id)a7;
+- (SMDaemonClient)initWithQueue:(id)queue authorizationManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator platform:(id)platform initiatorService:(id)service messagingService:(id)messagingService receiverService:(id)self0 sessionStore:(id)self1 suggestionsManager:(id)self2 suggestionsHelper:(id)self3 suggestionsStore:(id)self4 eligibilityChecker:(id)self5 deviceConfigurationChecker:(id)self6 appDeletionManager:(id)self7;
+- (void)_onLocalSessionStateChanged:(id)changed;
+- (void)_onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device;
+- (void)calculateDistanceToDestination:(id)destination completionHandler:(id)handler;
+- (void)cancelMadridMessageSendForMessageGUID:(id)d toConversation:(id)conversation completion:(id)completion;
+- (void)checkConversationEligibility:(id)eligibility handler:(id)handler;
+- (void)checkEligibilityOfDestination:(id)destination completionHandler:(id)handler;
+- (void)checkHasSimWithHandler:(id)handler;
+- (void)checkIMessageAccountEnabledWithHandler:(id)handler;
+- (void)checkInitiatorEligibilityWithHandler:(id)handler;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)detailsViewOpenedForSessionID:(id)d;
+- (void)estimateEtaToDestination:(id)destination transportType:(unint64_t)type completionHandler:(id)handler;
+- (void)fetchAllReceiverSessionStatusWithCompletion:(id)completion;
+- (void)fetchCurrentLocalSessionStateWithHandler:(id)handler;
+- (void)fetchCurrentSessionStateWithCompletion:(id)completion;
+- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)handler;
+- (void)fetchInitiatorSafetyCacheForSessionID:(id)d completion:(id)completion;
+- (void)fetchReceiverSafetyCacheForSessionID:(id)d completion:(id)completion;
+- (void)fetchReceiverSessionStatusForSessionID:(id)d completion:(id)completion;
+- (void)fetchSOSReceiversWithCompletion:(id)completion;
+- (void)iMessageConversationDeletedFor:(id)for;
+- (void)iMessageDeletedFor:(id)for;
+- (void)iMessageGroupDisplayNameChangedFor:(id)for;
+- (void)iMessageGroupMembershipChangedFor:(id)for;
+- (void)iMessageGroupPhotoChangedFor:(id)for;
+- (void)iMessageReceived:(id)received fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)iMessageScheduledSendCancelFor:(id)for successful:(BOOL)successful withError:(id)error;
+- (void)iMessageScheduledSendScheduledFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error;
+- (void)iMessageScheduledSendTriggeredFor:(id)for;
+- (void)iMessageSendFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error;
+- (void)kickedFromIMessageGroupWith:(id)with;
+- (void)onAuthorizationNotification:(id)notification;
+- (void)onInitiatorSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache cacheExpiryDate:(id)date cacheReleaseDate:(id)releaseDate;
+- (void)onLocalSessionStateChanged:(id)changed;
+- (void)onReceiverSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache;
+- (void)onReceiverSessionStatusChangeForSessionID:(id)d sessionStatus:(id)status;
+- (void)onSessionResumedWithState:(id)state forActiveDevice:(BOOL)device;
+- (void)onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device;
+- (void)respondedToCheckInRemindersTipWithResponse:(int64_t)response;
+- (void)scheduleMadridMessageSendForMessage:(id)message messageGUID:(id)d associatedGUID:(id)iD sendDate:(id)date toConversation:(id)conversation summaryText:(id)text completion:(id)completion;
+- (void)sendIDSMessage:(id)message toConversation:(id)conversation completion:(id)completion;
+- (void)sendIDSMessageToMyDevices:(id)devices completion:(id)completion;
+- (void)sendIDSMessageToMyNearbyDevices:(id)devices completion:(id)completion;
+- (void)sendIDSMessageToPairedDevice:(id)device completion:(id)completion;
+- (void)sendMadridMessage:(id)message associatedGUID:(id)d toConversation:(id)conversation summaryText:(id)text completion:(id)completion;
 - (void)shutdown;
 - (void)startCheckInRemindersTipMetricsCollection;
-- (void)startMonitoringInitiatorSafetyCacheWithHandler:(id)a3;
-- (void)startMonitoringLocalSessionStateWithHandler:(id)a3;
-- (void)startMonitoringReceiverSafetyCacheWithHandler:(id)a3;
-- (void)startMonitoringReceiverSessionStatusWithHandler:(id)a3;
-- (void)startMonitoringSessionStateWithHandler:(id)a3;
-- (void)stopMonitoringInitiatorSafetyCacheWithCompletion:(id)a3;
-- (void)stopMonitoringLocalSessionStateWithHandler:(id)a3;
-- (void)stopMonitoringReceiverSafetyCacheWithCompletion:(id)a3;
-- (void)stopMonitoringReceiverSessionStatusWithCompletion:(id)a3;
-- (void)stopMonitoringSessionStateWithHandler:(id)a3;
-- (void)userRequestedCacheDownloadForSessionID:(id)a3 completion:(id)a4;
+- (void)startMonitoringInitiatorSafetyCacheWithHandler:(id)handler;
+- (void)startMonitoringLocalSessionStateWithHandler:(id)handler;
+- (void)startMonitoringReceiverSafetyCacheWithHandler:(id)handler;
+- (void)startMonitoringReceiverSessionStatusWithHandler:(id)handler;
+- (void)startMonitoringSessionStateWithHandler:(id)handler;
+- (void)stopMonitoringInitiatorSafetyCacheWithCompletion:(id)completion;
+- (void)stopMonitoringLocalSessionStateWithHandler:(id)handler;
+- (void)stopMonitoringReceiverSafetyCacheWithCompletion:(id)completion;
+- (void)stopMonitoringReceiverSessionStatusWithCompletion:(id)completion;
+- (void)stopMonitoringSessionStateWithHandler:(id)handler;
+- (void)userRequestedCacheDownloadForSessionID:(id)d completion:(id)completion;
 @end
 
 @implementation SMDaemonClient
 
-- (SMDaemonClient)initWithQueue:(id)a3 authorizationManager:(id)a4 defaultsManager:(id)a5 distanceCalculator:(id)a6 platform:(id)a7 initiatorService:(id)a8 messagingService:(id)a9 receiverService:(id)a10 sessionStore:(id)a11 suggestionsManager:(id)a12 suggestionsHelper:(id)a13 suggestionsStore:(id)a14 eligibilityChecker:(id)a15 deviceConfigurationChecker:(id)a16 appDeletionManager:(id)a17
+- (SMDaemonClient)initWithQueue:(id)queue authorizationManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator platform:(id)platform initiatorService:(id)service messagingService:(id)messagingService receiverService:(id)self0 sessionStore:(id)self1 suggestionsManager:(id)self2 suggestionsHelper:(id)self3 suggestionsStore:(id)self4 eligibilityChecker:(id)self5 deviceConfigurationChecker:(id)self6 appDeletionManager:(id)self7
 {
-  v64 = a3;
-  v47 = a4;
-  v22 = a4;
-  v53 = a5;
-  v48 = a6;
-  v63 = a6;
-  v62 = a7;
-  v49 = a8;
-  v61 = a8;
-  v52 = a9;
-  v60 = a10;
-  v59 = a11;
-  v58 = a12;
-  v57 = a13;
-  v56 = a14;
-  v55 = a15;
-  v54 = a16;
-  v23 = a17;
-  v51 = v23;
-  if (!v64)
+  queueCopy = queue;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  defaultsManagerCopy = defaultsManager;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  platformCopy = platform;
+  serviceCopy = service;
+  serviceCopy2 = service;
+  messagingServiceCopy = messagingService;
+  receiverServiceCopy = receiverService;
+  storeCopy = store;
+  suggestionsManagerCopy = suggestionsManager;
+  helperCopy = helper;
+  suggestionsStoreCopy = suggestionsStore;
+  checkerCopy = checker;
+  configurationCheckerCopy = configurationChecker;
+  deletionManagerCopy = deletionManager;
+  v51 = deletionManagerCopy;
+  if (!queueCopy)
   {
-    v24 = v22;
+    v24 = managerCopy2;
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
@@ -95,15 +95,15 @@
     }
 
     v41 = 0;
-    v25 = v53;
+    v25 = defaultsManagerCopy;
     goto LABEL_49;
   }
 
-  v24 = v22;
-  if (!v22)
+  v24 = managerCopy2;
+  if (!managerCopy2)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v25 = v53;
+    v25 = defaultsManagerCopy;
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_48;
@@ -116,8 +116,8 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  v25 = v53;
-  if (!v53)
+  v25 = defaultsManagerCopy;
+  if (!defaultsManagerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -130,7 +130,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v63)
+  if (!calculatorCopy2)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -143,7 +143,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v62)
+  if (!platformCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -156,7 +156,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v61)
+  if (!serviceCopy2)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -169,7 +169,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v60)
+  if (!receiverServiceCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -182,7 +182,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v59)
+  if (!storeCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -195,7 +195,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v58)
+  if (!suggestionsManagerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -208,7 +208,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v57)
+  if (!helperCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -221,7 +221,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v56)
+  if (!suggestionsStoreCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -234,7 +234,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v55)
+  if (!checkerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -247,7 +247,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v54)
+  if (!configurationCheckerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -260,7 +260,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (!v23)
+  if (!deletionManagerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -274,7 +274,7 @@ LABEL_48:
 
     v41 = 0;
 LABEL_49:
-    v40 = self;
+    selfCopy = self;
     goto LABEL_50;
   }
 
@@ -284,27 +284,27 @@ LABEL_49:
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_queue, a3);
-    objc_storeStrong(&v27->_authorizationManager, v47);
-    objc_storeStrong(&v27->_defaultsManager, a5);
-    objc_storeStrong(&v27->_distanceCalculator, v48);
-    objc_storeStrong(&v27->_platform, a7);
-    objc_storeStrong(&v27->_initiatorService, v49);
+    objc_storeStrong(&v26->_queue, queue);
+    objc_storeStrong(&v27->_authorizationManager, managerCopy);
+    objc_storeStrong(&v27->_defaultsManager, defaultsManager);
+    objc_storeStrong(&v27->_distanceCalculator, calculatorCopy);
+    objc_storeStrong(&v27->_platform, platform);
+    objc_storeStrong(&v27->_initiatorService, serviceCopy);
     [(SMInitiatorService *)v27->_initiatorService addObserverForSessionManager:v27];
-    objc_storeStrong(&v27->_sessionStore, a11);
-    objc_storeStrong(&v27->_suggestionsManager, a12);
-    objc_storeStrong(&v27->_suggestionsHelper, a13);
-    objc_storeStrong(&v27->_suggestionsStore, a14);
+    objc_storeStrong(&v27->_sessionStore, store);
+    objc_storeStrong(&v27->_suggestionsManager, suggestionsManager);
+    objc_storeStrong(&v27->_suggestionsHelper, helper);
+    objc_storeStrong(&v27->_suggestionsStore, suggestionsStore);
     v28 = +[RTEntitlementProvider safetyMonitorDaemonProtocolEntitlementProvider];
     entitlementProvider = v27->_entitlementProvider;
     v27->_entitlementProvider = v28;
 
-    objc_storeStrong(&v27->_messagingService, a9);
-    objc_storeStrong(&v27->_receiverService, a10);
+    objc_storeStrong(&v27->_messagingService, messagingService);
+    objc_storeStrong(&v27->_receiverService, receiverService);
     [(SMReceiverService *)v27->_receiverService addObserver:v27];
-    objc_storeStrong(&v27->_eligibilityChecker, a15);
-    objc_storeStrong(&v27->_deviceConfigurationChecker, a16);
-    objc_storeStrong(&v27->_appDeletionManager, a17);
+    objc_storeStrong(&v27->_eligibilityChecker, checker);
+    objc_storeStrong(&v27->_deviceConfigurationChecker, configurationChecker);
+    objc_storeStrong(&v27->_appDeletionManager, deletionManager);
     v30 = dispatch_group_create();
     dispatch_group_enter(v30);
     authorizationManager = v27->_authorizationManager;
@@ -332,19 +332,19 @@ LABEL_49:
     v69 = v33;
     v38 = v33;
     [(RTAuthorizationManager *)v36 fetchRoutineEnabledWithHandler:v67];
-    v39 = [(SMDaemonClient *)v37 queue];
+    queue = [(SMDaemonClient *)v37 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __279__SMDaemonClient_initWithQueue_authorizationManager_defaultsManager_distanceCalculator_platform_initiatorService_messagingService_receiverService_sessionStore_suggestionsManager_suggestionsHelper_suggestionsStore_eligibilityChecker_deviceConfigurationChecker_appDeletionManager___block_invoke_5;
     block[3] = &unk_2788C4EA0;
     v66 = v37;
-    dispatch_group_notify(v38, v39, block);
+    dispatch_group_notify(v38, queue, block);
 
-    v25 = v53;
+    v25 = defaultsManagerCopy;
   }
 
-  v40 = v27;
-  v41 = v40;
+  selfCopy = v27;
+  v41 = selfCopy;
 LABEL_50:
 
   return v41;
@@ -401,18 +401,18 @@ void __279__SMDaemonClient_initWithQueue_authorizationManager_defaultsManager_di
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SMDaemonClient *)self executablePath];
-  v5 = [v3 stringWithFormat:@"%@(%d)", v4, -[SMDaemonClient processIdentifier](self, "processIdentifier")];
+  executablePath = [(SMDaemonClient *)self executablePath];
+  v5 = [v3 stringWithFormat:@"%@(%d)", executablePath, -[SMDaemonClient processIdentifier](self, "processIdentifier")];
 
   return v5;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  [v10 retainArguments];
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -448,13 +448,13 @@ void __279__SMDaemonClient_initWithQueue_authorizationManager_defaultsManager_di
   block[1] = 3221225472;
   block[2] = __54__SMDaemonClient_connection_handleInvocation_isReply___block_invoke;
   block[3] = &unk_2788C5440;
-  v29 = a5;
-  v25 = v10;
-  v26 = self;
-  v27 = v9;
+  replyCopy = reply;
+  v25 = invocationCopy;
+  selfCopy = self;
+  v27 = connectionCopy;
   v28 = v30;
-  v19 = v9;
-  v20 = v10;
+  v19 = connectionCopy;
+  v20 = invocationCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v30, 8);
@@ -644,19 +644,19 @@ void __54__SMDaemonClient_connection_handleInvocation_isReply___block_invoke_37(
   [v3 invoke];
 }
 
-- (void)onAuthorizationNotification:(id)a3
+- (void)onAuthorizationNotification:(id)notification
 {
-  v5 = a3;
-  v6 = [(SMDaemonClient *)self queue];
+  notificationCopy = notification;
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SMDaemonClient_onAuthorizationNotification___block_invoke;
   block[3] = &unk_2788C5020;
-  v9 = v5;
-  v10 = self;
+  v9 = notificationCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = notificationCopy;
+  dispatch_async(queue, block);
 }
 
 void __46__SMDaemonClient_onAuthorizationNotification___block_invoke(uint64_t a1)
@@ -734,14 +734,14 @@ void __46__SMDaemonClient_onAuthorizationNotification___block_invoke(uint64_t a1
 
 - (void)shutdown
 {
-  v4 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __26__SMDaemonClient_shutdown__block_invoke;
   v5[3] = &unk_2788C52E8;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 void __26__SMDaemonClient_shutdown__block_invoke(uint64_t a1)
@@ -769,10 +769,10 @@ void __26__SMDaemonClient_shutdown__block_invoke(uint64_t a1)
   [v6 removeObserver:*(a1 + 32)];
 }
 
-- (void)fetchSOSReceiversWithCompletion:(id)a3
+- (void)fetchSOSReceiversWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -789,15 +789,15 @@ void __26__SMDaemonClient_shutdown__block_invoke(uint64_t a1)
     }
   }
 
-  v10 = [(SMDaemonClient *)self initiatorService];
-  [v10 fetchSOSReceiversWithCompletion:v5];
+  initiatorService = [(SMDaemonClient *)self initiatorService];
+  [initiatorService fetchSOSReceiversWithCompletion:completionCopy];
 }
 
-- (void)fetchInitiatorSafetyCacheForSessionID:(id)a3 completion:(id)a4
+- (void)fetchInitiatorSafetyCacheForSessionID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -807,7 +807,7 @@ void __26__SMDaemonClient_shutdown__block_invoke(uint64_t a1)
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
       v14 = 138412802;
-      v15 = v7;
+      v15 = dCopy;
       v16 = 2112;
       v17 = v11;
       v18 = 2112;
@@ -816,53 +816,53 @@ void __26__SMDaemonClient_shutdown__block_invoke(uint64_t a1)
     }
   }
 
-  v13 = [(SMDaemonClient *)self initiatorService];
-  [v13 fetchInitiatorSafetyCacheForSessionID:v7 completion:v8];
+  initiatorService = [(SMDaemonClient *)self initiatorService];
+  [initiatorService fetchInitiatorSafetyCacheForSessionID:dCopy completion:completionCopy];
 }
 
-- (void)fetchAllReceiverSessionStatusWithCompletion:(id)a3
+- (void)fetchAllReceiverSessionStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SMDaemonClient *)self receiverService];
-  [v5 fetchAllReceiverSessionStatusWithCompletion:v4];
+  completionCopy = completion;
+  receiverService = [(SMDaemonClient *)self receiverService];
+  [receiverService fetchAllReceiverSessionStatusWithCompletion:completionCopy];
 }
 
-- (void)fetchReceiverSessionStatusForSessionID:(id)a3 completion:(id)a4
+- (void)fetchReceiverSessionStatusForSessionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SMDaemonClient *)self receiverService];
-  [v8 fetchReceiverSessionStatusForSessionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  receiverService = [(SMDaemonClient *)self receiverService];
+  [receiverService fetchReceiverSessionStatusForSessionID:dCopy completion:completionCopy];
 }
 
-- (void)userRequestedCacheDownloadForSessionID:(id)a3 completion:(id)a4
+- (void)userRequestedCacheDownloadForSessionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SMDaemonClient *)self receiverService];
-  [v8 userRequestedCacheDownloadForSessionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  receiverService = [(SMDaemonClient *)self receiverService];
+  [receiverService userRequestedCacheDownloadForSessionID:dCopy completion:completionCopy];
 }
 
-- (void)fetchReceiverSafetyCacheForSessionID:(id)a3 completion:(id)a4
+- (void)fetchReceiverSafetyCacheForSessionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SMDaemonClient *)self receiverService];
-  [v8 fetchReceiverSafetyCacheForSessionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  receiverService = [(SMDaemonClient *)self receiverService];
+  [receiverService fetchReceiverSafetyCacheForSessionID:dCopy completion:completionCopy];
 }
 
-- (void)detailsViewOpenedForSessionID:(id)a3
+- (void)detailsViewOpenedForSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [(SMDaemonClient *)self receiverService];
-  [v5 detailsViewOpenedForSessionID:v4];
+  dCopy = d;
+  receiverService = [(SMDaemonClient *)self receiverService];
+  [receiverService detailsViewOpenedForSessionID:dCopy];
 }
 
-- (void)startMonitoringInitiatorSafetyCacheWithHandler:(id)a3
+- (void)startMonitoringInitiatorSafetyCacheWithHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -881,10 +881,10 @@ void __26__SMDaemonClient_shutdown__block_invoke(uint64_t a1)
     }
 
     [(SMDaemonClient *)self setMonitorInitiatorSafetyCache:1];
-    v10 = [(SMDaemonClient *)self initiatorService];
-    [v10 addObserver:self];
+    initiatorService = [(SMDaemonClient *)self initiatorService];
+    [initiatorService addObserver:self];
 
-    (*(v5 + 2))(v5, 0, 0, 0, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0, 0);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __65__SMDaemonClient_startMonitoringInitiatorSafetyCacheWithHandler___block_invoke;
@@ -959,11 +959,11 @@ void __65__SMDaemonClient_startMonitoringInitiatorSafetyCacheWithHandler___block
   [v16 onInitiatorSafetyCacheChangeForSessionID:v15 phoneCache:v14 watchCache:v13 cacheExpiryDate:v12 cacheReleaseDate:v11];
 }
 
-- (void)stopMonitoringInitiatorSafetyCacheWithCompletion:(id)a3
+- (void)stopMonitoringInitiatorSafetyCacheWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -982,10 +982,10 @@ void __65__SMDaemonClient_startMonitoringInitiatorSafetyCacheWithHandler___block
     }
 
     [(SMDaemonClient *)self setMonitorInitiatorSafetyCache:0];
-    v10 = [(SMDaemonClient *)self initiatorService];
-    [v10 removeObserver:self];
+    initiatorService = [(SMDaemonClient *)self initiatorService];
+    [initiatorService removeObserver:self];
 
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -999,11 +999,11 @@ void __65__SMDaemonClient_startMonitoringInitiatorSafetyCacheWithHandler___block
   }
 }
 
-- (void)startMonitoringReceiverSessionStatusWithHandler:(id)a3
+- (void)startMonitoringReceiverSessionStatusWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1022,7 +1022,7 @@ void __65__SMDaemonClient_startMonitoringInitiatorSafetyCacheWithHandler___block
     }
 
     [(SMDaemonClient *)self setMonitorReceiverSessionStatus:1];
-    (*(v5 + 2))(v5, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __66__SMDaemonClient_startMonitoringReceiverSessionStatusWithHandler___block_invoke;
@@ -1082,11 +1082,11 @@ void __66__SMDaemonClient_startMonitoringReceiverSessionStatusWithHandler___bloc
   }
 }
 
-- (void)stopMonitoringReceiverSessionStatusWithCompletion:(id)a3
+- (void)stopMonitoringReceiverSessionStatusWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1105,7 +1105,7 @@ void __66__SMDaemonClient_startMonitoringReceiverSessionStatusWithHandler___bloc
     }
 
     [(SMDaemonClient *)self setMonitorReceiverSessionStatus:0];
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -1119,11 +1119,11 @@ void __66__SMDaemonClient_startMonitoringReceiverSessionStatusWithHandler___bloc
   }
 }
 
-- (void)startMonitoringReceiverSafetyCacheWithHandler:(id)a3
+- (void)startMonitoringReceiverSafetyCacheWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1142,7 +1142,7 @@ void __66__SMDaemonClient_startMonitoringReceiverSessionStatusWithHandler___bloc
     }
 
     [(SMDaemonClient *)self setMonitorReceiverSafetyCache:1];
-    (*(v5 + 2))(v5, 0, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__SMDaemonClient_startMonitoringReceiverSafetyCacheWithHandler___block_invoke;
@@ -1214,11 +1214,11 @@ void __64__SMDaemonClient_startMonitoringReceiverSafetyCacheWithHandler___block_
   [v8 onReceiverSafetyCacheChangeForSessionID:v9 phoneCache:v7 watchCache:v6];
 }
 
-- (void)stopMonitoringReceiverSafetyCacheWithCompletion:(id)a3
+- (void)stopMonitoringReceiverSafetyCacheWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1237,7 +1237,7 @@ void __64__SMDaemonClient_startMonitoringReceiverSafetyCacheWithHandler___block_
     }
 
     [(SMDaemonClient *)self setMonitorReceiverSafetyCache:0];
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -1251,28 +1251,28 @@ void __64__SMDaemonClient_startMonitoringReceiverSafetyCacheWithHandler___block_
   }
 }
 
-- (void)onInitiatorSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5 cacheExpiryDate:(id)a6 cacheReleaseDate:(id)a7
+- (void)onInitiatorSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache cacheExpiryDate:(id)date cacheReleaseDate:(id)releaseDate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  dCopy = d;
+  cacheCopy = cache;
+  watchCacheCopy = watchCache;
+  dateCopy = date;
+  releaseDateCopy = releaseDate;
+  if (dCopy)
   {
-    v18 = [(SMDaemonClient *)self queue];
+    queue = [(SMDaemonClient *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __114__SMDaemonClient_onInitiatorSafetyCacheChangeForSessionID_phoneCache_watchCache_cacheExpiryDate_cacheReleaseDate___block_invoke;
     block[3] = &unk_2788C5F00;
     block[4] = self;
     v26 = a2;
-    v21 = v13;
-    v22 = v14;
-    v23 = v15;
-    v24 = v16;
-    v25 = v17;
-    dispatch_async(v18, block);
+    v21 = dCopy;
+    v22 = cacheCopy;
+    v23 = watchCacheCopy;
+    v24 = dateCopy;
+    v25 = releaseDateCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1502,12 +1502,12 @@ LABEL_34:
   }
 }
 
-- (void)onReceiverSessionStatusChangeForSessionID:(id)a3 sessionStatus:(id)a4
+- (void)onReceiverSessionStatusChangeForSessionID:(id)d sessionStatus:(id)status
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dCopy = d;
+  statusCopy = status;
+  v9 = statusCopy;
+  if (!dCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1524,7 +1524,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!statusCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1537,16 +1537,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__SMDaemonClient_onReceiverSessionStatusChangeForSessionID_sessionStatus___block_invoke;
   v13[3] = &unk_2788C4C70;
   v13[4] = self;
   v16 = a2;
-  v14 = v7;
+  v14 = dCopy;
   v15 = v9;
-  dispatch_async(v10, v13);
+  dispatch_async(queue, v13);
 
 LABEL_8:
 }
@@ -1608,24 +1608,24 @@ LABEL_8:
   }
 }
 
-- (void)onReceiverSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5
+- (void)onReceiverSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  dCopy = d;
+  cacheCopy = cache;
+  watchCacheCopy = watchCache;
+  if (dCopy)
   {
-    v12 = [(SMDaemonClient *)self queue];
+    queue = [(SMDaemonClient *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__SMDaemonClient_onReceiverSafetyCacheChangeForSessionID_phoneCache_watchCache___block_invoke;
     block[3] = &unk_2788C50E8;
     block[4] = self;
     v18 = a2;
-    v15 = v9;
-    v16 = v10;
-    v17 = v11;
-    dispatch_async(v12, block);
+    v15 = dCopy;
+    v16 = cacheCopy;
+    v17 = watchCacheCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1699,25 +1699,25 @@ LABEL_8:
   }
 }
 
-- (void)onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4
+- (void)onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device
 {
-  v6 = a3;
-  v7 = [(SMDaemonClient *)self queue];
+  changedCopy = changed;
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SMDaemonClient_onSessionStateChanged_forActiveDevice___block_invoke;
   block[3] = &unk_2788C53C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = changedCopy;
+  deviceCopy = device;
+  v8 = changedCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)onSessionResumedWithState:(id)a3 forActiveDevice:(BOOL)a4
+- (void)onSessionResumedWithState:(id)state forActiveDevice:(BOOL)device
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -1729,23 +1729,23 @@ LABEL_8:
     }
   }
 
-  v8 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SMDaemonClient_onSessionResumedWithState_forActiveDevice___block_invoke;
   block[3] = &unk_2788C53C8;
   block[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v11 = stateCopy;
+  deviceCopy = device;
+  v9 = stateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4
+- (void)_onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  changedCopy = changed;
   if ([(SMDaemonClient *)self monitorSessionState])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1754,37 +1754,37 @@ LABEL_8:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v10 = 138740227;
-        v11 = v6;
+        v11 = changedCopy;
         v12 = 2112;
-        v13 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "sending session state, %{sensitive}@, to client, %@", &v10, 0x16u);
       }
     }
 
-    v8 = [(SMDaemonClient *)self xpcConnection];
-    v9 = [v8 remoteObjectProxy];
-    [v9 onSessionStateChanged:v6 forActiveDevice:v4 withError:0];
+    xpcConnection = [(SMDaemonClient *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
+    [remoteObjectProxy onSessionStateChanged:changedCopy forActiveDevice:deviceCopy withError:0];
   }
 }
 
-- (void)onLocalSessionStateChanged:(id)a3
+- (void)onLocalSessionStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(SMDaemonClient *)self queue];
+  changedCopy = changed;
+  queue = [(SMDaemonClient *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__SMDaemonClient_onLocalSessionStateChanged___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onLocalSessionStateChanged:(id)a3
+- (void)_onLocalSessionStateChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if ([(SMDaemonClient *)self monitorLocalSessionState])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1793,25 +1793,25 @@ LABEL_8:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v8 = 138740227;
-        v9 = v4;
+        v9 = changedCopy;
         v10 = 2112;
-        v11 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "sending session state, %{sensitive}@, to client, %@", &v8, 0x16u);
       }
     }
 
-    v6 = [(SMDaemonClient *)self xpcConnection];
-    v7 = [v6 remoteObjectProxy];
-    [v7 onLocalSessionStateChanged:v4 withError:0];
+    xpcConnection = [(SMDaemonClient *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
+    [remoteObjectProxy onLocalSessionStateChanged:changedCopy withError:0];
   }
 }
 
-- (void)sendIDSMessage:(id)a3 toConversation:(id)a4 completion:(id)a5
+- (void)sendIDSMessage:(id)message toConversation:(id)conversation completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  conversationCopy = conversation;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -1825,27 +1825,27 @@ LABEL_8:
       v27 = 2112;
       v28 = v15;
       v29 = 2117;
-      v30 = v9;
+      v30 = messageCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = conversationCopy;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@,%@,message:%{sensitive}@,toConversation:%@", buf, 0x2Au);
     }
   }
 
-  v16 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__SMDaemonClient_sendIDSMessage_toConversation_completion___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v21 = v9;
-  v22 = v10;
-  v23 = v11;
+  v21 = messageCopy;
+  v22 = conversationCopy;
+  v23 = completionCopy;
   v24 = a2;
-  v17 = v11;
-  v18 = v10;
-  v19 = v9;
-  dispatch_async(v16, block);
+  v17 = completionCopy;
+  v18 = conversationCopy;
+  v19 = messageCopy;
+  dispatch_async(queue, block);
 }
 
 void __59__SMDaemonClient_sendIDSMessage_toConversation_completion___block_invoke(uint64_t a1)
@@ -1885,11 +1885,11 @@ void __59__SMDaemonClient_sendIDSMessage_toConversation_completion___block_invok
   }
 }
 
-- (void)sendIDSMessageToMyDevices:(id)a3 completion:(id)a4
+- (void)sendIDSMessageToMyDevices:(id)devices completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  devicesCopy = devices;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -1903,23 +1903,23 @@ void __59__SMDaemonClient_sendIDSMessage_toConversation_completion___block_invok
       v22 = 2112;
       v23 = v12;
       v24 = 2117;
-      v25 = v7;
+      v25 = devicesCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@,%@,message:%{sensitive}@", buf, 0x20u);
     }
   }
 
-  v13 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__SMDaemonClient_sendIDSMessageToMyDevices_completion___block_invoke;
   v16[3] = &unk_2788C4C20;
   v16[4] = self;
-  v17 = v7;
-  v18 = v8;
+  v17 = devicesCopy;
+  v18 = completionCopy;
   v19 = a2;
-  v14 = v8;
-  v15 = v7;
-  dispatch_async(v13, v16);
+  v14 = completionCopy;
+  v15 = devicesCopy;
+  dispatch_async(queue, v16);
 }
 
 void __55__SMDaemonClient_sendIDSMessageToMyDevices_completion___block_invoke(uint64_t a1)
@@ -1959,11 +1959,11 @@ void __55__SMDaemonClient_sendIDSMessageToMyDevices_completion___block_invoke(ui
   }
 }
 
-- (void)sendIDSMessageToPairedDevice:(id)a3 completion:(id)a4
+- (void)sendIDSMessageToPairedDevice:(id)device completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -1977,23 +1977,23 @@ void __55__SMDaemonClient_sendIDSMessageToMyDevices_completion___block_invoke(ui
       v22 = 2112;
       v23 = v12;
       v24 = 2117;
-      v25 = v7;
+      v25 = deviceCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@,%@,message:%{sensitive}@", buf, 0x20u);
     }
   }
 
-  v13 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__SMDaemonClient_sendIDSMessageToPairedDevice_completion___block_invoke;
   v16[3] = &unk_2788C4C20;
   v16[4] = self;
-  v17 = v7;
-  v18 = v8;
+  v17 = deviceCopy;
+  v18 = completionCopy;
   v19 = a2;
-  v14 = v8;
-  v15 = v7;
-  dispatch_async(v13, v16);
+  v14 = completionCopy;
+  v15 = deviceCopy;
+  dispatch_async(queue, v16);
 }
 
 void __58__SMDaemonClient_sendIDSMessageToPairedDevice_completion___block_invoke(uint64_t a1)
@@ -2033,11 +2033,11 @@ void __58__SMDaemonClient_sendIDSMessageToPairedDevice_completion___block_invoke
   }
 }
 
-- (void)sendIDSMessageToMyNearbyDevices:(id)a3 completion:(id)a4
+- (void)sendIDSMessageToMyNearbyDevices:(id)devices completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  devicesCopy = devices;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2051,23 +2051,23 @@ void __58__SMDaemonClient_sendIDSMessageToPairedDevice_completion___block_invoke
       v22 = 2112;
       v23 = v12;
       v24 = 2117;
-      v25 = v7;
+      v25 = devicesCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@,%@,message:%{sensitive}@", buf, 0x20u);
     }
   }
 
-  v13 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __61__SMDaemonClient_sendIDSMessageToMyNearbyDevices_completion___block_invoke;
   v16[3] = &unk_2788C4C20;
   v16[4] = self;
-  v17 = v7;
-  v18 = v8;
+  v17 = devicesCopy;
+  v18 = completionCopy;
   v19 = a2;
-  v14 = v8;
-  v15 = v7;
-  dispatch_async(v13, v16);
+  v14 = completionCopy;
+  v15 = devicesCopy;
+  dispatch_async(queue, v16);
 }
 
 void __61__SMDaemonClient_sendIDSMessageToMyNearbyDevices_completion___block_invoke(uint64_t a1)
@@ -2107,14 +2107,14 @@ void __61__SMDaemonClient_sendIDSMessageToMyNearbyDevices_completion___block_inv
   }
 }
 
-- (void)sendMadridMessage:(id)a3 associatedGUID:(id)a4 toConversation:(id)a5 summaryText:(id)a6 completion:(id)a7
+- (void)sendMadridMessage:(id)message associatedGUID:(id)d toConversation:(id)conversation summaryText:(id)text completion:(id)completion
 {
   v45 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  messageCopy = message;
+  dCopy = d;
+  conversationCopy = conversation;
+  textCopy = text;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2128,33 +2128,33 @@ void __61__SMDaemonClient_sendIDSMessageToMyNearbyDevices_completion___block_inv
       v37 = 2112;
       v38 = v21;
       v39 = 2117;
-      v40 = v13;
+      v40 = messageCopy;
       v41 = 2112;
-      v42 = v14;
+      v42 = dCopy;
       v43 = 2112;
-      v44 = v15;
+      v44 = conversationCopy;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "%@,%@,message:%{sensitive}@,associatedGUID:%@,toConversation:%@", buf, 0x34u);
     }
   }
 
-  v22 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__SMDaemonClient_sendMadridMessage_associatedGUID_toConversation_summaryText_completion___block_invoke;
   block[3] = &unk_2788CCA20;
   block[4] = self;
-  v29 = v13;
-  v30 = v14;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
+  v29 = messageCopy;
+  v30 = dCopy;
+  v31 = conversationCopy;
+  v32 = textCopy;
+  v33 = completionCopy;
   v34 = a2;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
-  v27 = v13;
-  dispatch_async(v22, block);
+  v23 = completionCopy;
+  v24 = textCopy;
+  v25 = conversationCopy;
+  v26 = dCopy;
+  v27 = messageCopy;
+  dispatch_async(queue, block);
 }
 
 void __89__SMDaemonClient_sendMadridMessage_associatedGUID_toConversation_summaryText_completion___block_invoke(uint64_t a1)
@@ -2194,16 +2194,16 @@ void __89__SMDaemonClient_sendMadridMessage_associatedGUID_toConversation_summar
   }
 }
 
-- (void)scheduleMadridMessageSendForMessage:(id)a3 messageGUID:(id)a4 associatedGUID:(id)a5 sendDate:(id)a6 toConversation:(id)a7 summaryText:(id)a8 completion:(id)a9
+- (void)scheduleMadridMessageSendForMessage:(id)message messageGUID:(id)d associatedGUID:(id)iD sendDate:(id)date toConversation:(id)conversation summaryText:(id)text completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  messageCopy = message;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  conversationCopy = conversation;
+  textCopy = text;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2212,8 +2212,8 @@ void __89__SMDaemonClient_sendMadridMessage_associatedGUID_toConversation_summar
       v23 = objc_opt_class();
       v34 = NSStringFromClass(v23);
       NSStringFromSelector(a2);
-      v24 = v35 = v15;
-      [v18 stringFromDate];
+      v24 = v35 = messageCopy;
+      [dateCopy stringFromDate];
       *buf = 138413827;
       v47 = v34;
       v48 = 2112;
@@ -2221,41 +2221,41 @@ void __89__SMDaemonClient_sendMadridMessage_associatedGUID_toConversation_summar
       v50 = 2117;
       v51 = v35;
       v52 = 2112;
-      v53 = v16;
+      v53 = dCopy;
       v54 = 2112;
-      v55 = v17;
+      v55 = iDCopy;
       v57 = v56 = 2112;
       v25 = v57;
       v58 = 2112;
-      v59 = v19;
+      v59 = conversationCopy;
       _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@,%@,message:%{sensitive}@,messageGUID:%@,associatedGUID:%@,sendDate:%@,toConversation:%@", buf, 0x48u);
 
-      v15 = v35;
+      messageCopy = v35;
     }
   }
 
-  v26 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __128__SMDaemonClient_scheduleMadridMessageSendForMessage_messageGUID_associatedGUID_sendDate_toConversation_summaryText_completion___block_invoke;
   block[3] = &unk_2788CCA48;
   block[4] = self;
-  v38 = v15;
-  v39 = v16;
-  v40 = v17;
-  v41 = v18;
-  v42 = v19;
-  v43 = v20;
-  v44 = v21;
+  v38 = messageCopy;
+  v39 = dCopy;
+  v40 = iDCopy;
+  v41 = dateCopy;
+  v42 = conversationCopy;
+  v43 = textCopy;
+  v44 = completionCopy;
   v45 = a2;
-  v27 = v21;
-  v28 = v20;
-  v29 = v19;
-  v30 = v18;
-  v31 = v17;
-  v32 = v16;
-  v33 = v15;
-  dispatch_async(v26, block);
+  v27 = completionCopy;
+  v28 = textCopy;
+  v29 = conversationCopy;
+  v30 = dateCopy;
+  v31 = iDCopy;
+  v32 = dCopy;
+  v33 = messageCopy;
+  dispatch_async(queue, block);
 }
 
 void __128__SMDaemonClient_scheduleMadridMessageSendForMessage_messageGUID_associatedGUID_sendDate_toConversation_summaryText_completion___block_invoke(uint64_t a1)
@@ -2295,12 +2295,12 @@ void __128__SMDaemonClient_scheduleMadridMessageSendForMessage_messageGUID_assoc
   }
 }
 
-- (void)cancelMadridMessageSendForMessageGUID:(id)a3 toConversation:(id)a4 completion:(id)a5
+- (void)cancelMadridMessageSendForMessageGUID:(id)d toConversation:(id)conversation completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  conversationCopy = conversation;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2314,27 +2314,27 @@ void __128__SMDaemonClient_scheduleMadridMessageSendForMessage_messageGUID_assoc
       v27 = 2112;
       v28 = v15;
       v29 = 2112;
-      v30 = v9;
+      v30 = dCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = conversationCopy;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@,%@,messageGUID:%@,toConversation:%@", buf, 0x2Au);
     }
   }
 
-  v16 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__SMDaemonClient_cancelMadridMessageSendForMessageGUID_toConversation_completion___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v21 = v9;
-  v22 = v10;
-  v23 = v11;
+  v21 = dCopy;
+  v22 = conversationCopy;
+  v23 = completionCopy;
   v24 = a2;
-  v17 = v11;
-  v18 = v10;
-  v19 = v9;
-  dispatch_async(v16, block);
+  v17 = completionCopy;
+  v18 = conversationCopy;
+  v19 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __82__SMDaemonClient_cancelMadridMessageSendForMessageGUID_toConversation_completion___block_invoke(uint64_t a1)
@@ -2374,13 +2374,13 @@ void __82__SMDaemonClient_cancelMadridMessageSendForMessageGUID_toConversation_c
   }
 }
 
-- (void)iMessageSendFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6
+- (void)iMessageSendFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v40 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  forCopy = for;
+  guidCopy = guid;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2394,32 +2394,32 @@ void __82__SMDaemonClient_cancelMadridMessageSendForMessageGUID_toConversation_c
       v30 = 2112;
       v31 = v17;
       v32 = 2112;
-      v33 = v11;
+      v33 = forCopy;
       v34 = 2112;
-      v35 = v12;
+      v35 = guidCopy;
       v36 = 1024;
-      v37 = v7;
+      v37 = successfulCopy;
       v38 = 2112;
-      v39 = v13;
+      v39 = errorCopy;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@,%@,messageURL:%@,messageGUID:%@,success:%d,error:%@", buf, 0x3Au);
     }
   }
 
-  v18 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __60__SMDaemonClient_iMessageSendFor_guid_successful_withError___block_invoke;
   v22[3] = &unk_2788CCA70;
   v22[4] = self;
-  v23 = v11;
-  v27 = v7;
-  v24 = v12;
-  v25 = v13;
+  v23 = forCopy;
+  v27 = successfulCopy;
+  v24 = guidCopy;
+  v25 = errorCopy;
   v26 = a2;
-  v19 = v13;
-  v20 = v12;
-  v21 = v11;
-  dispatch_async(v18, v22);
+  v19 = errorCopy;
+  v20 = guidCopy;
+  v21 = forCopy;
+  dispatch_async(queue, v22);
 }
 
 void __60__SMDaemonClient_iMessageSendFor_guid_successful_withError___block_invoke(uint64_t a1)
@@ -2450,13 +2450,13 @@ void __60__SMDaemonClient_iMessageSendFor_guid_successful_withError___block_invo
   }
 }
 
-- (void)iMessageScheduledSendScheduledFor:(id)a3 guid:(id)a4 successful:(BOOL)a5 withError:(id)a6
+- (void)iMessageScheduledSendScheduledFor:(id)for guid:(id)guid successful:(BOOL)successful withError:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v40 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  forCopy = for;
+  guidCopy = guid;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2470,32 +2470,32 @@ void __60__SMDaemonClient_iMessageSendFor_guid_successful_withError___block_invo
       v30 = 2112;
       v31 = v17;
       v32 = 2112;
-      v33 = v11;
+      v33 = forCopy;
       v34 = 2112;
-      v35 = v12;
+      v35 = guidCopy;
       v36 = 1024;
-      v37 = v7;
+      v37 = successfulCopy;
       v38 = 2112;
-      v39 = v13;
+      v39 = errorCopy;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@,%@,messageURL:%@,messageGUID:%@,success:%d,error:%@", buf, 0x3Au);
     }
   }
 
-  v18 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __78__SMDaemonClient_iMessageScheduledSendScheduledFor_guid_successful_withError___block_invoke;
   v22[3] = &unk_2788CCA70;
   v22[4] = self;
-  v23 = v11;
-  v27 = v7;
-  v24 = v12;
-  v25 = v13;
+  v23 = forCopy;
+  v27 = successfulCopy;
+  v24 = guidCopy;
+  v25 = errorCopy;
   v26 = a2;
-  v19 = v13;
-  v20 = v12;
-  v21 = v11;
-  dispatch_async(v18, v22);
+  v19 = errorCopy;
+  v20 = guidCopy;
+  v21 = forCopy;
+  dispatch_async(queue, v22);
 }
 
 void __78__SMDaemonClient_iMessageScheduledSendScheduledFor_guid_successful_withError___block_invoke(uint64_t a1)
@@ -2526,12 +2526,12 @@ void __78__SMDaemonClient_iMessageScheduledSendScheduledFor_guid_successful_with
   }
 }
 
-- (void)iMessageScheduledSendCancelFor:(id)a3 successful:(BOOL)a4 withError:(id)a5
+- (void)iMessageScheduledSendCancelFor:(id)for successful:(BOOL)successful withError:(id)error
 {
-  v6 = a4;
+  successfulCopy = successful;
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  forCopy = for;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2545,28 +2545,28 @@ void __78__SMDaemonClient_iMessageScheduledSendScheduledFor_guid_successful_with
       v25 = 2112;
       v26 = v14;
       v27 = 2112;
-      v28 = v9;
+      v28 = forCopy;
       v29 = 1024;
-      v30 = v6;
+      v30 = successfulCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = errorCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@,%@,messageGUID:%@,success:%d,error:%@", buf, 0x30u);
     }
   }
 
-  v15 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SMDaemonClient_iMessageScheduledSendCancelFor_successful_withError___block_invoke;
   block[3] = &unk_2788C50C0;
   block[4] = self;
-  v19 = v9;
-  v22 = v6;
-  v20 = v10;
+  v19 = forCopy;
+  v22 = successfulCopy;
+  v20 = errorCopy;
   v21 = a2;
-  v16 = v10;
-  v17 = v9;
-  dispatch_async(v15, block);
+  v16 = errorCopy;
+  v17 = forCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__SMDaemonClient_iMessageScheduledSendCancelFor_successful_withError___block_invoke(uint64_t a1)
@@ -2597,10 +2597,10 @@ void __70__SMDaemonClient_iMessageScheduledSendCancelFor_successful_withError___
   }
 }
 
-- (void)iMessageScheduledSendTriggeredFor:(id)a3
+- (void)iMessageScheduledSendTriggeredFor:(id)for
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  forCopy = for;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2614,21 +2614,21 @@ void __70__SMDaemonClient_iMessageScheduledSendCancelFor_successful_withError___
       v17 = 2112;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = forCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,messageGUID:%@", buf, 0x20u);
     }
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SMDaemonClient_iMessageScheduledSendTriggeredFor___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v13 = v5;
+  v13 = forCopy;
   v14 = a2;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = forCopy;
+  dispatch_async(queue, block);
 }
 
 void __52__SMDaemonClient_iMessageScheduledSendTriggeredFor___block_invoke(uint64_t a1)
@@ -2659,12 +2659,12 @@ void __52__SMDaemonClient_iMessageScheduledSendTriggeredFor___block_invoke(uint6
   }
 }
 
-- (void)iMessageReceived:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)iMessageReceived:(id)received fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  receivedCopy = received;
+  handleCopy = handle;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2678,28 +2678,28 @@ void __52__SMDaemonClient_iMessageScheduledSendTriggeredFor___block_invoke(uint6
       v25 = 2112;
       v26 = v14;
       v27 = 2112;
-      v28 = v9;
+      v28 = receivedCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = handleCopy;
       v31 = 1024;
-      v32 = v5;
+      v32 = meCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@,%@,messageUrl:%@,handle:%@,fromMe:%d", buf, 0x30u);
     }
   }
 
-  v15 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SMDaemonClient_iMessageReceived_fromHandle_fromMe___block_invoke;
   block[3] = &unk_2788C50C0;
   block[4] = self;
-  v19 = v9;
-  v22 = v5;
-  v20 = v10;
+  v19 = receivedCopy;
+  v22 = meCopy;
+  v20 = handleCopy;
   v21 = a2;
-  v16 = v10;
-  v17 = v9;
-  dispatch_async(v15, block);
+  v16 = handleCopy;
+  v17 = receivedCopy;
+  dispatch_async(queue, block);
 }
 
 void __53__SMDaemonClient_iMessageReceived_fromHandle_fromMe___block_invoke(uint64_t a1)
@@ -2730,10 +2730,10 @@ void __53__SMDaemonClient_iMessageReceived_fromHandle_fromMe___block_invoke(uint
   }
 }
 
-- (void)iMessageDeletedFor:(id)a3
+- (void)iMessageDeletedFor:(id)for
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  forCopy = for;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2747,21 +2747,21 @@ void __53__SMDaemonClient_iMessageReceived_fromHandle_fromMe___block_invoke(uint
       v17 = 2112;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = forCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,messageUrls:%@", buf, 0x20u);
     }
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__SMDaemonClient_iMessageDeletedFor___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v13 = v5;
+  v13 = forCopy;
   v14 = a2;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = forCopy;
+  dispatch_async(queue, block);
 }
 
 void __37__SMDaemonClient_iMessageDeletedFor___block_invoke(uint64_t a1)
@@ -2792,10 +2792,10 @@ void __37__SMDaemonClient_iMessageDeletedFor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)iMessageConversationDeletedFor:(id)a3
+- (void)iMessageConversationDeletedFor:(id)for
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  forCopy = for;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2809,21 +2809,21 @@ void __37__SMDaemonClient_iMessageDeletedFor___block_invoke(uint64_t a1)
       v17 = 2112;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = forCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,receiverHandles:%@", buf, 0x20u);
     }
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SMDaemonClient_iMessageConversationDeletedFor___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v13 = v5;
+  v13 = forCopy;
   v14 = a2;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = forCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__SMDaemonClient_iMessageConversationDeletedFor___block_invoke(uint64_t a1)
@@ -2853,10 +2853,10 @@ void __49__SMDaemonClient_iMessageConversationDeletedFor___block_invoke(uint64_t
   }
 }
 
-- (void)iMessageGroupMembershipChangedFor:(id)a3
+- (void)iMessageGroupMembershipChangedFor:(id)for
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  forCopy = for;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2870,21 +2870,21 @@ void __49__SMDaemonClient_iMessageConversationDeletedFor___block_invoke(uint64_t
       v17 = 2112;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = forCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,groupID:%@", buf, 0x20u);
     }
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SMDaemonClient_iMessageGroupMembershipChangedFor___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v13 = v5;
+  v13 = forCopy;
   v14 = a2;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = forCopy;
+  dispatch_async(queue, block);
 }
 
 void __52__SMDaemonClient_iMessageGroupMembershipChangedFor___block_invoke(uint64_t a1)
@@ -2915,10 +2915,10 @@ void __52__SMDaemonClient_iMessageGroupMembershipChangedFor___block_invoke(uint6
   }
 }
 
-- (void)iMessageGroupDisplayNameChangedFor:(id)a3
+- (void)iMessageGroupDisplayNameChangedFor:(id)for
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  forCopy = for;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2932,21 +2932,21 @@ void __52__SMDaemonClient_iMessageGroupMembershipChangedFor___block_invoke(uint6
       v17 = 2112;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = forCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,groupID:%@", buf, 0x20u);
     }
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SMDaemonClient_iMessageGroupDisplayNameChangedFor___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v13 = v5;
+  v13 = forCopy;
   v14 = a2;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = forCopy;
+  dispatch_async(queue, block);
 }
 
 void __53__SMDaemonClient_iMessageGroupDisplayNameChangedFor___block_invoke(uint64_t a1)
@@ -2977,10 +2977,10 @@ void __53__SMDaemonClient_iMessageGroupDisplayNameChangedFor___block_invoke(uint
   }
 }
 
-- (void)iMessageGroupPhotoChangedFor:(id)a3
+- (void)iMessageGroupPhotoChangedFor:(id)for
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  forCopy = for;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -2994,21 +2994,21 @@ void __53__SMDaemonClient_iMessageGroupDisplayNameChangedFor___block_invoke(uint
       v17 = 2112;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = forCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,groupID:%@", buf, 0x20u);
     }
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SMDaemonClient_iMessageGroupPhotoChangedFor___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v13 = v5;
+  v13 = forCopy;
   v14 = a2;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = forCopy;
+  dispatch_async(queue, block);
 }
 
 void __47__SMDaemonClient_iMessageGroupPhotoChangedFor___block_invoke(uint64_t a1)
@@ -3039,10 +3039,10 @@ void __47__SMDaemonClient_iMessageGroupPhotoChangedFor___block_invoke(uint64_t a
   }
 }
 
-- (void)kickedFromIMessageGroupWith:(id)a3
+- (void)kickedFromIMessageGroupWith:(id)with
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  withCopy = with;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorClient);
@@ -3056,21 +3056,21 @@ void __47__SMDaemonClient_iMessageGroupPhotoChangedFor___block_invoke(uint64_t a
       v17 = 2112;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = withCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,groupID:%@", buf, 0x20u);
     }
   }
 
-  v10 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SMDaemonClient_kickedFromIMessageGroupWith___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v13 = v5;
+  v13 = withCopy;
   v14 = a2;
-  v11 = v5;
-  dispatch_async(v10, block);
+  v11 = withCopy;
+  dispatch_async(queue, block);
 }
 
 void __46__SMDaemonClient_kickedFromIMessageGroupWith___block_invoke(uint64_t a1)
@@ -3101,11 +3101,11 @@ void __46__SMDaemonClient_kickedFromIMessageGroupWith___block_invoke(uint64_t a1
   }
 }
 
-- (void)startMonitoringSessionStateWithHandler:(id)a3
+- (void)startMonitoringSessionStateWithHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3113,13 +3113,13 @@ void __46__SMDaemonClient_kickedFromIMessageGroupWith___block_invoke(uint64_t a1
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "start monitoring session state for client, %@", &v7, 0xCu);
       }
     }
 
     [(SMDaemonClient *)self setMonitorSessionState:1];
-    [(SMDaemonClient *)self fetchCurrentSessionStateWithCompletion:v4];
+    [(SMDaemonClient *)self fetchCurrentSessionStateWithCompletion:handlerCopy];
   }
 
   else
@@ -3133,11 +3133,11 @@ void __46__SMDaemonClient_kickedFromIMessageGroupWith___block_invoke(uint64_t a1
   }
 }
 
-- (void)stopMonitoringSessionStateWithHandler:(id)a3
+- (void)stopMonitoringSessionStateWithHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3145,13 +3145,13 @@ void __46__SMDaemonClient_kickedFromIMessageGroupWith___block_invoke(uint64_t a1
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "stop monitoring session state for client, %@", &v7, 0xCu);
       }
     }
 
     [(SMDaemonClient *)self setMonitorSessionState:0];
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -3165,20 +3165,20 @@ void __46__SMDaemonClient_kickedFromIMessageGroupWith___block_invoke(uint64_t a1
   }
 }
 
-- (void)fetchCurrentSessionStateWithCompletion:(id)a3
+- (void)fetchCurrentSessionStateWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = [(SMDaemonClient *)self initiatorService];
+    initiatorService = [(SMDaemonClient *)self initiatorService];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__SMDaemonClient_fetchCurrentSessionStateWithCompletion___block_invoke;
     v8[3] = &unk_2788CCAC0;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 fetchCurrentSessionStateWithCompletion:v8];
+    v9 = completionCopy;
+    [initiatorService fetchCurrentSessionStateWithCompletion:v8];
   }
 
   else
@@ -3249,11 +3249,11 @@ uint64_t __57__SMDaemonClient_fetchCurrentSessionStateWithCompletion___block_inv
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)startMonitoringLocalSessionStateWithHandler:(id)a3
+- (void)startMonitoringLocalSessionStateWithHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3261,13 +3261,13 @@ uint64_t __57__SMDaemonClient_fetchCurrentSessionStateWithCompletion___block_inv
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "start monitoring local session state for client, %@", &v7, 0xCu);
       }
     }
 
     [(SMDaemonClient *)self setMonitorLocalSessionState:1];
-    [(SMDaemonClient *)self fetchCurrentLocalSessionStateWithHandler:v4];
+    [(SMDaemonClient *)self fetchCurrentLocalSessionStateWithHandler:handlerCopy];
   }
 
   else
@@ -3281,11 +3281,11 @@ uint64_t __57__SMDaemonClient_fetchCurrentSessionStateWithCompletion___block_inv
   }
 }
 
-- (void)stopMonitoringLocalSessionStateWithHandler:(id)a3
+- (void)stopMonitoringLocalSessionStateWithHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3293,13 +3293,13 @@ uint64_t __57__SMDaemonClient_fetchCurrentSessionStateWithCompletion___block_inv
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "stop monitoring local session state for client, %@", &v7, 0xCu);
       }
     }
 
     [(SMDaemonClient *)self setMonitorLocalSessionState:0];
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -3313,20 +3313,20 @@ uint64_t __57__SMDaemonClient_fetchCurrentSessionStateWithCompletion___block_inv
   }
 }
 
-- (void)fetchCurrentLocalSessionStateWithHandler:(id)a3
+- (void)fetchCurrentLocalSessionStateWithHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(SMDaemonClient *)self initiatorService];
+    initiatorService = [(SMDaemonClient *)self initiatorService];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __59__SMDaemonClient_fetchCurrentLocalSessionStateWithHandler___block_invoke;
     v8[3] = &unk_2788CCAE8;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 fetchCurrentLocalSessionStateWithHandler:v8];
+    v9 = handlerCopy;
+    [initiatorService fetchCurrentLocalSessionStateWithHandler:v8];
   }
 
   else
@@ -3387,25 +3387,25 @@ uint64_t __59__SMDaemonClient_fetchCurrentLocalSessionStateWithHandler___block_i
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)checkInitiatorEligibilityWithHandler:(id)a3
+- (void)checkInitiatorEligibilityWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SMDaemonClient *)self queue];
-  v6 = [(SMDaemonClient *)self authorizationManager];
-  v7 = [(SMDaemonClient *)self messagingService];
-  v8 = [v7 effectivePairedDevice];
-  v9 = [(SMDaemonClient *)self defaultsManager];
-  v10 = [(SMDaemonClient *)self platform];
-  v11 = [(SMDaemonClient *)self appDeletionManager];
+  handlerCopy = handler;
+  queue = [(SMDaemonClient *)self queue];
+  authorizationManager = [(SMDaemonClient *)self authorizationManager];
+  messagingService = [(SMDaemonClient *)self messagingService];
+  effectivePairedDevice = [messagingService effectivePairedDevice];
+  defaultsManager = [(SMDaemonClient *)self defaultsManager];
+  platform = [(SMDaemonClient *)self platform];
+  appDeletionManager = [(SMDaemonClient *)self appDeletionManager];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__SMDaemonClient_checkInitiatorEligibilityWithHandler___block_invoke;
   v14[3] = &unk_2788C5AE8;
-  v15 = v4;
+  v15 = handlerCopy;
   v16 = a2;
   v14[4] = self;
-  v12 = v4;
-  [SMInitiatorEligibility checkInitiatorEligibilityWithQueue:v5 authorizationManager:v6 effectivePairedDevice:v8 handoffType:0 defaultsManager:v9 platform:v10 appDeletionManager:v11 handler:v14];
+  v12 = handlerCopy;
+  [SMInitiatorEligibility checkInitiatorEligibilityWithQueue:queue authorizationManager:authorizationManager effectivePairedDevice:effectivePairedDevice handoffType:0 defaultsManager:defaultsManager platform:platform appDeletionManager:appDeletionManager handler:v14];
 }
 
 void __55__SMDaemonClient_checkInitiatorEligibilityWithHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3449,19 +3449,19 @@ uint64_t __55__SMDaemonClient_checkInitiatorEligibilityWithHandler___block_invok
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)checkIMessageAccountEnabledWithHandler:(id)a3
+- (void)checkIMessageAccountEnabledWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(SMDaemonClient *)self queue];
+  handlerCopy = handler;
+  queue = [(SMDaemonClient *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__SMDaemonClient_checkIMessageAccountEnabledWithHandler___block_invoke;
   v8[3] = &unk_2788C4E00;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   v8[4] = self;
-  v7 = v5;
-  [SMInitiatorEligibility checkIMessageAccountEnabledWithQueue:v6 handler:v8];
+  v7 = handlerCopy;
+  [SMInitiatorEligibility checkIMessageAccountEnabledWithQueue:queue handler:v8];
 }
 
 void __57__SMDaemonClient_checkIMessageAccountEnabledWithHandler___block_invoke(uint64_t a1, char a2, void *a3)
@@ -3512,15 +3512,15 @@ uint64_t __57__SMDaemonClient_checkIMessageAccountEnabledWithHandler___block_inv
   return (*(*(a1 + 40) + 16))(*(a1 + 40));
 }
 
-- (void)checkConversationEligibility:(id)a3 handler:(id)a4
+- (void)checkConversationEligibility:(id)eligibility handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  eligibilityCopy = eligibility;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (eligibilityCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -3562,7 +3562,7 @@ LABEL_10:
   v16 = a2;
   v14[4] = self;
   v13 = v9;
-  [(SMEligibilityChecker *)eligibilityChecker checkConversationEligibility:v7 handler:v14];
+  [(SMEligibilityChecker *)eligibilityChecker checkConversationEligibility:eligibilityCopy handler:v14];
 }
 
 void __55__SMDaemonClient_checkConversationEligibility_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3606,19 +3606,19 @@ uint64_t __55__SMDaemonClient_checkConversationEligibility_handler___block_invok
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)checkHasSimWithHandler:(id)a3
+- (void)checkHasSimWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(SMDaemonClient *)self queue];
+  handlerCopy = handler;
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SMDaemonClient_checkHasSimWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __41__SMDaemonClient_checkHasSimWithHandler___block_invoke(uint64_t a1)
@@ -3651,11 +3651,11 @@ uint64_t __41__SMDaemonClient_checkHasSimWithHandler___block_invoke(uint64_t a1)
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)a3
+- (void)fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -3673,10 +3673,10 @@ uint64_t __41__SMDaemonClient_checkHasSimWithHandler___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __78__SMDaemonClient_fetchDeviceConfigurationLowPowerModeWarningStateWithHandler___block_invoke;
   v9[3] = &unk_2788C5AE8;
-  v10 = v5;
+  v10 = handlerCopy;
   v11 = a2;
   v9[4] = self;
-  v8 = v5;
+  v8 = handlerCopy;
   [(SMDeviceConfigurationChecker *)deviceConfigurationChecker fetchDeviceConfigurationLowPowerModeWarningStateWithHandler:v9];
 }
 
@@ -3721,15 +3721,15 @@ uint64_t __78__SMDaemonClient_fetchDeviceConfigurationLowPowerModeWarningStateWi
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)checkEligibilityOfDestination:(id)a3 completionHandler:(id)a4
+- (void)checkEligibilityOfDestination:(id)destination completionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  destinationCopy = destination;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (destinationCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -3762,22 +3762,22 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(SMDaemonClient *)self initiatorService];
-  v12 = [v11 locationManager];
-  v13 = [(SMDaemonClient *)self distanceCalculator];
-  v14 = [(SMDaemonClient *)self queue];
-  [SMTriggerDestination checkEligibilityOfDestination:v6 locationManager:v12 distanceCalculator:v13 queue:v14 completionHandler:v8];
+  initiatorService = [(SMDaemonClient *)self initiatorService];
+  locationManager = [initiatorService locationManager];
+  distanceCalculator = [(SMDaemonClient *)self distanceCalculator];
+  queue = [(SMDaemonClient *)self queue];
+  [SMTriggerDestination checkEligibilityOfDestination:destinationCopy locationManager:locationManager distanceCalculator:distanceCalculator queue:queue completionHandler:v8];
 }
 
-- (void)calculateDistanceToDestination:(id)a3 completionHandler:(id)a4
+- (void)calculateDistanceToDestination:(id)destination completionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  destinationCopy = destination;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (destinationCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -3810,21 +3810,21 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(SMDaemonClient *)self initiatorService];
-  v12 = [v11 locationManager];
-  v13 = [(SMDaemonClient *)self distanceCalculator];
-  v14 = [(SMDaemonClient *)self queue];
-  [SMTriggerDestination calculateDistanceToDestination:v6 locationManager:v12 distanceCalculator:v13 queue:v14 handler:v8];
+  initiatorService = [(SMDaemonClient *)self initiatorService];
+  locationManager = [initiatorService locationManager];
+  distanceCalculator = [(SMDaemonClient *)self distanceCalculator];
+  queue = [(SMDaemonClient *)self queue];
+  [SMTriggerDestination calculateDistanceToDestination:destinationCopy locationManager:locationManager distanceCalculator:distanceCalculator queue:queue handler:v8];
 }
 
-- (void)estimateEtaToDestination:(id)a3 transportType:(unint64_t)a4 completionHandler:(id)a5
+- (void)estimateEtaToDestination:(id)destination transportType:(unint64_t)type completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  destinationCopy = destination;
+  handlerCopy = handler;
+  if (destinationCopy)
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -3842,10 +3842,10 @@ LABEL_10:
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinationLocation (in %s:%d)", buf, 0x12u);
     }
 
-    if (a4)
+    if (type)
     {
 LABEL_3:
-      if (v9)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -3864,7 +3864,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: transportType (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
 LABEL_11:
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -3879,12 +3879,12 @@ LABEL_11:
   }
 
 LABEL_14:
-  v13 = [(SMDaemonClient *)self initiatorService];
-  v14 = [v13 locationManager];
-  v15 = [(SMDaemonClient *)self defaultsManager];
-  v16 = [(SMDaemonClient *)self distanceCalculator];
-  v17 = [(SMDaemonClient *)self queue];
-  [SMTriggerDestination estimateEtaToDestination:v8 transportType:a4 locationManager:v14 defaultsManager:v15 distanceCalculator:v16 queue:v17 handler:v9];
+  initiatorService = [(SMDaemonClient *)self initiatorService];
+  locationManager = [initiatorService locationManager];
+  defaultsManager = [(SMDaemonClient *)self defaultsManager];
+  distanceCalculator = [(SMDaemonClient *)self distanceCalculator];
+  queue = [(SMDaemonClient *)self queue];
+  [SMTriggerDestination estimateEtaToDestination:destinationCopy transportType:type locationManager:locationManager defaultsManager:defaultsManager distanceCalculator:distanceCalculator queue:queue handler:handlerCopy];
 }
 
 - (void)startCheckInRemindersTipMetricsCollection
@@ -3902,8 +3902,8 @@ LABEL_14:
     }
   }
 
-  v6 = [(SMDaemonClient *)self queue];
-  dispatch_async(v6, &__block_literal_global_79);
+  queue = [(SMDaemonClient *)self queue];
+  dispatch_async(queue, &__block_literal_global_79);
 }
 
 void __59__SMDaemonClient_startCheckInRemindersTipMetricsCollection__block_invoke()
@@ -3912,7 +3912,7 @@ void __59__SMDaemonClient_startCheckInRemindersTipMetricsCollection__block_invok
   [(SMCheckInRemindersTipResponseMetricManager *)v0 startMetricsCollection];
 }
 
-- (void)respondedToCheckInRemindersTipWithResponse:(int64_t)a3
+- (void)respondedToCheckInRemindersTipWithResponse:(int64_t)response
 {
   v14 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3924,18 +3924,18 @@ void __59__SMDaemonClient_startCheckInRemindersTipMetricsCollection__block_invok
       *buf = 138412546;
       v11 = v7;
       v12 = 2048;
-      v13 = a3;
+      responseCopy = response;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, response, %lu", buf, 0x16u);
     }
   }
 
-  v8 = [(SMDaemonClient *)self queue];
+  queue = [(SMDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__SMDaemonClient_respondedToCheckInRemindersTipWithResponse___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
-  dispatch_async(v8, block);
+  block[4] = response;
+  dispatch_async(queue, block);
 }
 
 void __61__SMDaemonClient_respondedToCheckInRemindersTipWithResponse___block_invoke(uint64_t a1)

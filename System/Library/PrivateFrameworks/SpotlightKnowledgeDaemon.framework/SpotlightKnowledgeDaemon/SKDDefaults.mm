@@ -1,13 +1,13 @@
 @interface SKDDefaults
 + (id)sharedDefaults;
 - (BOOL)anyPipelineEnabled;
-- (BOOL)enabledForPipeline:(id)a3;
+- (BOOL)enabledForPipeline:(id)pipeline;
 - (BOOL)pipelineDebugEnabled;
 - (BOOL)pipelineEnabled;
 - (BOOL)pipelineKeyphrasesEnabled;
 - (SKDDefaultsProviding)defaultsProvider;
 - (SKDFeatureFlagsProviding)featureFlagsProvider;
-- (id)versionForPipeline:(id)a3;
+- (id)versionForPipeline:(id)pipeline;
 @end
 
 @implementation SKDDefaults
@@ -31,25 +31,25 @@ void __29__SKDDefaults_sharedDefaults__block_invoke()
   sharedDefaults_sSharedDefaults = v0;
 }
 
-- (BOOL)enabledForPipeline:(id)a3
+- (BOOL)enabledForPipeline:(id)pipeline
 {
-  v4 = [a3 isEqualToString:@"keyphrases"];
+  v4 = [pipeline isEqualToString:@"keyphrases"];
   if (v4)
   {
-    v5 = [(SKDDefaults *)self featureFlagsProvider];
-    v6 = [v5 isPipelineKeyphrasesEnabled];
+    featureFlagsProvider = [(SKDDefaults *)self featureFlagsProvider];
+    isPipelineKeyphrasesEnabled = [featureFlagsProvider isPipelineKeyphrasesEnabled];
 
-    LOBYTE(v4) = v6;
+    LOBYTE(v4) = isPipelineKeyphrasesEnabled;
   }
 
   return v4;
 }
 
-- (id)versionForPipeline:(id)a3
+- (id)versionForPipeline:(id)pipeline
 {
-  v4 = a3;
-  v5 = [(SKDDefaults *)self defaultsProvider];
-  v6 = [v5 versionForPipeline:v4];
+  pipelineCopy = pipeline;
+  defaultsProvider = [(SKDDefaults *)self defaultsProvider];
+  v6 = [defaultsProvider versionForPipeline:pipelineCopy];
 
   return v6;
 }
@@ -66,26 +66,26 @@ void __29__SKDDefaults_sharedDefaults__block_invoke()
 
 - (BOOL)pipelineEnabled
 {
-  v2 = [(SKDDefaults *)self featureFlagsProvider];
-  v3 = [v2 isPipelineEnabled];
+  featureFlagsProvider = [(SKDDefaults *)self featureFlagsProvider];
+  isPipelineEnabled = [featureFlagsProvider isPipelineEnabled];
 
-  return v3;
+  return isPipelineEnabled;
 }
 
 - (BOOL)pipelineDebugEnabled
 {
-  v2 = [(SKDDefaults *)self featureFlagsProvider];
-  v3 = [v2 isPipelineDebugEnabled];
+  featureFlagsProvider = [(SKDDefaults *)self featureFlagsProvider];
+  isPipelineDebugEnabled = [featureFlagsProvider isPipelineDebugEnabled];
 
-  return v3;
+  return isPipelineDebugEnabled;
 }
 
 - (BOOL)pipelineKeyphrasesEnabled
 {
-  v2 = [(SKDDefaults *)self featureFlagsProvider];
-  v3 = [v2 isPipelineKeyphrasesEnabled];
+  featureFlagsProvider = [(SKDDefaults *)self featureFlagsProvider];
+  isPipelineKeyphrasesEnabled = [featureFlagsProvider isPipelineKeyphrasesEnabled];
 
-  return v3;
+  return isPipelineKeyphrasesEnabled;
 }
 
 - (SKDDefaultsProviding)defaultsProvider

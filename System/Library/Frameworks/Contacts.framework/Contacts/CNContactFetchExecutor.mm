@@ -1,8 +1,8 @@
 @interface CNContactFetchExecutor
 + (id)os_log;
-- (CNContactFetchExecutor)initWithRequest:(id)a3 store:(id)a4;
+- (CNContactFetchExecutor)initWithRequest:(id)request store:(id)store;
 - (id)description;
-- (id)run:(id *)a3;
+- (id)run:(id *)run;
 @end
 
 @implementation CNContactFetchExecutor
@@ -28,18 +28,18 @@ uint64_t __32__CNContactFetchExecutor_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNContactFetchExecutor)initWithRequest:(id)a3 store:(id)a4
+- (CNContactFetchExecutor)initWithRequest:(id)request store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CNContactFetchExecutor;
   v9 = [(CNContactFetchExecutor *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_store, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_store, store);
     v11 = v10;
   }
 
@@ -49,29 +49,29 @@ uint64_t __32__CNContactFetchExecutor_os_log__block_invoke()
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNContactFetchExecutor *)self request];
-  v5 = [v3 appendName:@"request" object:v4];
+  request = [(CNContactFetchExecutor *)self request];
+  v5 = [v3 appendName:@"request" object:request];
 
-  v6 = [(CNContactFetchExecutor *)self store];
-  v7 = [v3 appendName:@"store" object:v6];
+  store = [(CNContactFetchExecutor *)self store];
+  v7 = [v3 appendName:@"store" object:store];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (id)run:(id *)a3
+- (id)run:(id *)run
 {
-  v5 = [(CNContactFetchExecutor *)self request];
-  v6 = [v5 shouldFailIfAccountNotYetSynced];
+  request = [(CNContactFetchExecutor *)self request];
+  shouldFailIfAccountNotYetSynced = [request shouldFailIfAccountNotYetSynced];
 
-  if (v6 && (-[CNContactFetchExecutor store](self, "store"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hasAccountFirstSyncCompleted], v7, (v8 & 1) == 0))
+  if (shouldFailIfAccountNotYetSynced && (-[CNContactFetchExecutor store](self, "store"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hasAccountFirstSyncCompleted], v7, (v8 & 1) == 0))
   {
     v35 = [CNErrorFactory errorWithCode:1007];
-    if (a3)
+    if (run)
     {
       v35 = v35;
-      *a3 = v35;
+      *run = v35;
     }
 
     v33 = 0;
@@ -79,31 +79,31 @@ uint64_t __32__CNContactFetchExecutor_os_log__block_invoke()
 
   else
   {
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    v11 = [(CNContactFetchExecutor *)self store];
-    v12 = [(CNContactFetchExecutor *)self request];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    store = [(CNContactFetchExecutor *)self store];
+    request2 = [(CNContactFetchExecutor *)self request];
     v44 = 0;
     v38 = MEMORY[0x1E69E9820];
     v39 = 3221225472;
     v40 = __30__CNContactFetchExecutor_run___block_invoke;
     v41 = &unk_1E7412CB8;
-    v13 = v9;
+    v13 = array;
     v42 = v13;
-    v14 = v10;
+    v14 = dictionary;
     v43 = v14;
-    v15 = [v11 enumerateContactsAndMatchInfoWithFetchRequest:v12 error:&v44 usingBlock:&v38];
+    v15 = [store enumerateContactsAndMatchInfoWithFetchRequest:request2 error:&v44 usingBlock:&v38];
     v16 = v44;
 
     if (v15)
     {
       v17 = v13;
-      v18 = [(CNContactFetchExecutor *)self request];
-      v19 = [v18 predicate];
-      v20 = v19;
-      if (v19)
+      request3 = [(CNContactFetchExecutor *)self request];
+      predicate = [request3 predicate];
+      v20 = predicate;
+      if (predicate)
       {
-        v21 = v19;
+        v21 = predicate;
       }
 
       v22 = [v20 cn_resultTransformWithMatchInfos:v14];
@@ -115,32 +115,32 @@ uint64_t __32__CNContactFetchExecutor_os_log__block_invoke()
         v17 = v24;
       }
 
-      v25 = [MEMORY[0x1E695DEF0] data];
-      v26 = [(CNContactFetchExecutor *)self store];
-      v27 = [v26 currentHistoryAnchor];
+      data = [MEMORY[0x1E695DEF0] data];
+      store2 = [(CNContactFetchExecutor *)self store];
+      currentHistoryAnchor = [store2 currentHistoryAnchor];
 
       v28 = +[CNContactsLoggerProvider defaultProvider];
-      v29 = [v28 apiTriageLogger];
-      v30 = [(CNContactFetchExecutor *)self request];
-      [v29 request:v30 willReturnAnchor:v27];
+      apiTriageLogger = [v28 apiTriageLogger];
+      request4 = [(CNContactFetchExecutor *)self request];
+      [apiTriageLogger request:request4 willReturnAnchor:currentHistoryAnchor];
 
-      if ([v27 isSuccess])
+      if ([currentHistoryAnchor isSuccess])
       {
-        v31 = [v27 value];
-        v32 = [v31 historyToken];
+        value = [currentHistoryAnchor value];
+        historyToken = [value historyToken];
 
-        v25 = v32;
+        data = historyToken;
       }
 
       v16 = v37;
-      v33 = [[CNFetchResult alloc] initWithValue:v17 currentHistoryToken:v25];
+      v33 = [[CNFetchResult alloc] initWithValue:v17 currentHistoryToken:data];
     }
 
-    else if (a3)
+    else if (run)
     {
       v34 = v16;
       v33 = 0;
-      *a3 = v16;
+      *run = v16;
     }
 
     else

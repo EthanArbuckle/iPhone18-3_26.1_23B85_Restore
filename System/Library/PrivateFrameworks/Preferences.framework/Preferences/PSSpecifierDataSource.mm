@@ -1,16 +1,16 @@
 @interface PSSpecifierDataSource
 + (PSSpecifierDataSource)sharedInstance;
-+ (id)loadSpecifiersFromPlist:(id)a3 inBundle:(id)a4 target:(id)a5 stringsTable:(id)a6;
++ (id)loadSpecifiersFromPlist:(id)plist inBundle:(id)bundle target:(id)target stringsTable:(id)table;
 - (PSSpecifierDataSource)init;
-- (id)observersOfClass:(Class)a3;
-- (id)specifiersForSpecifier:(id)a3 observer:(id)a4;
+- (id)observersOfClass:(Class)class;
+- (id)specifiersForSpecifier:(id)specifier observer:(id)observer;
 - (void)_invalidateSpecifiersForObservers;
-- (void)addObserver:(id)a3;
-- (void)enumerateObserversOfClass:(Class)a3 usingBlock:(id)a4;
-- (void)performUpdates:(id)a3;
-- (void)performUpdatesAnimated:(BOOL)a3 usingBlock:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)enumerateObserversOfClass:(Class)class usingBlock:(id)block;
+- (void)performUpdates:(id)updates;
+- (void)performUpdatesAnimated:(BOOL)animated usingBlock:(id)block;
 - (void)reloadSpecifiers;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PSSpecifierDataSource
@@ -22,25 +22,25 @@
     +[PSSpecifierDataSource sharedInstance];
   }
 
-  v3 = [MEMORY[0x1E696B098] valueWithPointer:a1];
+  v3 = [MEMORY[0x1E696B098] valueWithPointer:self];
   v4 = [sharedInstance_instanceCache objectForKeyedSubscript:v3];
-  v5 = [v4 object];
+  object = [v4 object];
 
-  if (v5)
+  if (object)
   {
-    v6 = [v4 object];
+    object2 = [v4 object];
   }
 
   else
   {
-    v6 = objc_opt_new();
-    v7 = [PSWeakReference weakReferenceWithObject:v6];
+    object2 = objc_opt_new();
+    v7 = [PSWeakReference weakReferenceWithObject:object2];
 
     [sharedInstance_instanceCache setObject:v7 forKeyedSubscript:v3];
     v4 = v7;
   }
 
-  return v6;
+  return object2;
 }
 
 void __39__PSSpecifierDataSource_sharedInstance__block_invoke()
@@ -69,9 +69,9 @@ void __39__PSSpecifierDataSource_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observerRefs = self->_observerRefs;
     v4 = [PSWeakReference weakReferenceWithObject:?];
@@ -79,15 +79,15 @@ void __39__PSSpecifierDataSource_sharedInstance__block_invoke()
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSMutableSet *)self->_observerRefs removeObject:?];
   }
 }
 
-- (id)observersOfClass:(Class)a3
+- (id)observersOfClass:(Class)class
 {
   v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{-[NSMutableSet count](self->_observerRefs, "count")}];
   observerRefs = self->_observerRefs;
@@ -95,7 +95,7 @@ void __39__PSSpecifierDataSource_sharedInstance__block_invoke()
   v9[1] = 3221225472;
   v9[2] = __42__PSSpecifierDataSource_observersOfClass___block_invoke;
   v9[3] = &unk_1E71DDC08;
-  v11 = a3;
+  classCopy = class;
   v7 = v5;
   v10 = v7;
   [(NSMutableSet *)observerRefs enumerateObjectsUsingBlock:v9];
@@ -118,17 +118,17 @@ uint64_t __42__PSSpecifierDataSource_observersOfClass___block_invoke(uint64_t a1
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)enumerateObserversOfClass:(Class)a3 usingBlock:(id)a4
+- (void)enumerateObserversOfClass:(Class)class usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   observerRefs = self->_observerRefs;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__PSSpecifierDataSource_enumerateObserversOfClass_usingBlock___block_invoke;
   v9[3] = &unk_1E71DDC30;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = blockCopy;
+  classCopy = class;
+  v8 = blockCopy;
   [(NSMutableSet *)observerRefs enumerateObjectsUsingBlock:v9];
 }
 
@@ -143,35 +143,35 @@ uint64_t __62__PSSpecifierDataSource_enumerateObserversOfClass_usingBlock___bloc
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)performUpdates:(id)a3
+- (void)performUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__PSSpecifierDataSource_performUpdates___block_invoke;
   v6[3] = &unk_1E71DDC58;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatesCopy;
+  v5 = updatesCopy;
   [(PSSpecifierDataSource *)self enumerateObserversUsingBlock:v6];
 }
 
-+ (id)loadSpecifiersFromPlist:(id)a3 inBundle:(id)a4 target:(id)a5 stringsTable:(id)a6
++ (id)loadSpecifiersFromPlist:(id)plist inBundle:(id)bundle target:(id)target stringsTable:(id)table
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  plistCopy = plist;
+  bundleCopy = bundle;
+  targetCopy = target;
+  tableCopy = table;
+  if (!bundleCopy)
   {
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleCopy = [MEMORY[0x1E696AAE8] mainBundle];
   }
 
-  v13 = [v10 pathForResource:v9 ofType:@"plist"];
+  v13 = [bundleCopy pathForResource:plistCopy ofType:@"plist"];
   if (v13)
   {
     v14 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v13];
-    v15 = SpecifiersFromPlist(v14, 0, v11, v12, v10, 0, 0, 0, 0);
+    v15 = SpecifiersFromPlist(v14, 0, targetCopy, tableCopy, bundleCopy, 0, 0, 0, 0);
   }
 
   else
@@ -192,9 +192,9 @@ uint64_t __62__PSSpecifierDataSource_enumerateObserversOfClass_usingBlock___bloc
   [(PSSpecifierDataSource *)self enumerateObserversUsingBlock:v2];
 }
 
-- (id)specifiersForSpecifier:(id)a3 observer:(id)a4
+- (id)specifiersForSpecifier:(id)specifier observer:(id)observer
 {
-  if (![(PSSpecifierDataSource *)self areSpecifiersLoaded:a3])
+  if (![(PSSpecifierDataSource *)self areSpecifiersLoaded:specifier])
   {
     [(PSSpecifierDataSource *)self loadSpecifiers];
     self->_specifiersLoaded = 1;
@@ -215,38 +215,38 @@ uint64_t __62__PSSpecifierDataSource_enumerateObserversOfClass_usingBlock___bloc
   [(PSSpecifierDataSource *)self _invalidateSpecifiersForObservers];
 }
 
-- (void)performUpdatesAnimated:(BOOL)a3 usingBlock:(id)a4
+- (void)performUpdatesAnimated:(BOOL)animated usingBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v7 sf_isInternalInstall])
+  animatedCopy = animated;
+  blockCopy = block;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isInternalInstall])
   {
-    v8 = [MEMORY[0x1E696AF00] isMainThread];
+    isMainThread = [MEMORY[0x1E696AF00] isMainThread];
 
-    if (v8)
+    if (isMainThread)
     {
       goto LABEL_6;
     }
 
-    v7 = _PSLoggingFacility();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    currentDevice = _PSLoggingFacility();
+    if (os_log_type_enabled(currentDevice, OS_LOG_TYPE_ERROR))
     {
-      [PSSpecifierDataSource performUpdatesAnimated:v7 usingBlock:?];
+      [PSSpecifierDataSource performUpdatesAnimated:currentDevice usingBlock:?];
     }
   }
 
 LABEL_6:
-  if (v6)
+  if (blockCopy)
   {
     v9 = [PSSpecifierUpdates updatesWithSpecifiers:self->_specifiers];
-    v10 = [v9 context];
-    [v10 setAnimated:v4];
+    context = [v9 context];
+    [context setAnimated:animatedCopy];
 
-    v6[2](v6, v9);
+    blockCopy[2](blockCopy, v9);
     v11 = objc_alloc(MEMORY[0x1E695DF70]);
-    v12 = [v9 currentSpecifiers];
-    v13 = [v11 initWithArray:v12];
+    currentSpecifiers = [v9 currentSpecifiers];
+    v13 = [v11 initWithArray:currentSpecifiers];
     specifiers = self->_specifiers;
     self->_specifiers = v13;
 

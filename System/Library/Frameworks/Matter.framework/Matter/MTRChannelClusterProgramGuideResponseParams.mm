@@ -1,9 +1,9 @@
 @interface MTRChannelClusterProgramGuideResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRChannelClusterProgramGuideResponseParams)init;
-- (MTRChannelClusterProgramGuideResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRChannelClusterProgramGuideResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRChannelClusterProgramGuideResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRChannelClusterProgramGuideResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,22 +20,22 @@
     paging = v2->_paging;
     v2->_paging = v3;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     programList = v2->_programList;
-    v2->_programList = v5;
+    v2->_programList = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterProgramGuideResponseParams);
-  v5 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-  [(MTRChannelClusterProgramGuideResponseParams *)v4 setPaging:v5];
+  paging = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+  [(MTRChannelClusterProgramGuideResponseParams *)v4 setPaging:paging];
 
-  v6 = [(MTRChannelClusterProgramGuideResponseParams *)self programList];
-  [(MTRChannelClusterProgramGuideResponseParams *)v4 setProgramList:v6];
+  programList = [(MTRChannelClusterProgramGuideResponseParams *)self programList];
+  [(MTRChannelClusterProgramGuideResponseParams *)v4 setProgramList:programList];
 
   return v4;
 }
@@ -50,9 +50,9 @@
   return v6;
 }
 
-- (MTRChannelClusterProgramGuideResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRChannelClusterProgramGuideResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MTRChannelClusterProgramGuideResponseParams;
   v7 = [(MTRChannelClusterProgramGuideResponseParams *)&v17 init];
@@ -62,7 +62,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1284 commandID:5 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1284 commandID:5 error:error];
   if (v16)
   {
     sub_2393C5AAC(v15);
@@ -86,7 +86,7 @@
       }
     }
 
-    sub_238DD3F98(v9, v10, a4);
+    sub_238DD3F98(v9, v10, error);
   }
 
   v11 = 0;
@@ -97,7 +97,7 @@ LABEL_10:
   return v11;
 }
 
-- (MTRChannelClusterProgramGuideResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRChannelClusterProgramGuideResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRChannelClusterProgramGuideResponseParams;
@@ -105,7 +105,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRChannelClusterProgramGuideResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRChannelClusterProgramGuideResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -121,25 +121,25 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   [(MTRChannelClusterProgramGuideResponseParams *)self setPaging:v5];
 
-  if (*a3 != 1 || (sub_238DE36B8(a3)[56] & 1) == 0)
+  if (*struct != 1 || (sub_238DE36B8(struct)[56] & 1) == 0)
   {
-    v14 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    [v14 setPreviousToken:0];
+    paging = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    [paging setPreviousToken:0];
 LABEL_22:
 
     goto LABEL_23;
   }
 
   v6 = objc_opt_new();
-  v7 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-  [v7 setPreviousToken:v6];
+  paging2 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+  [paging2 setPreviousToken:v6];
 
-  v8 = sub_238DE36B8(a3);
+  v8 = sub_238DE36B8(struct);
   if ((v8[56] & 1) == 0)
   {
     goto LABEL_189;
@@ -148,26 +148,26 @@ LABEL_22:
   if (*v8 == 1)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = sub_238DE36B8(a3);
+    v10 = sub_238DE36B8(struct);
     if ((v10[56] & 1) == 0)
     {
       goto LABEL_189;
     }
 
-    v11 = [v9 numberWithUnsignedShort:*sub_238E0A934(v10)];
-    v12 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v13 = [v12 previousToken];
-    [v13 setLimit:v11];
+    paging4 = [v9 numberWithUnsignedShort:*sub_238E0A934(v10)];
+    paging3 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    previousToken = [paging3 previousToken];
+    [previousToken setLimit:paging4];
   }
 
   else
   {
-    v11 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v12 = [v11 previousToken];
-    [v12 setLimit:0];
+    paging4 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    paging3 = [paging4 previousToken];
+    [paging3 setLimit:0];
   }
 
-  v15 = sub_238DE36B8(a3);
+  v15 = sub_238DE36B8(struct);
   if ((v15[56] & 1) == 0)
   {
     goto LABEL_189;
@@ -175,7 +175,7 @@ LABEL_22:
 
   if (v15[8] == 1)
   {
-    v16 = sub_238DE36B8(a3);
+    v16 = sub_238DE36B8(struct);
     if ((v16[56] & 1) == 0)
     {
       goto LABEL_189;
@@ -183,15 +183,15 @@ LABEL_22:
 
     v17 = sub_238DE36B8(v16 + 8);
     v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v17 length:v17[1] encoding:4];
-    v19 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v20 = [v19 previousToken];
-    [v20 setAfter:v18];
+    paging5 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    previousToken2 = [paging5 previousToken];
+    [previousToken2 setAfter:v18];
 
-    v21 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v22 = [v21 previousToken];
-    v23 = [v22 after];
+    paging6 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    previousToken3 = [paging6 previousToken];
+    after = [previousToken3 after];
 
-    if (!v23)
+    if (!after)
     {
       v24 = 0x6E9200000000;
 LABEL_43:
@@ -203,12 +203,12 @@ LABEL_43:
 
   else
   {
-    v25 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v26 = [v25 previousToken];
-    [v26 setAfter:0];
+    paging7 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    previousToken4 = [paging7 previousToken];
+    [previousToken4 setAfter:0];
   }
 
-  v27 = sub_238DE36B8(a3);
+  v27 = sub_238DE36B8(struct);
   if ((v27[56] & 1) == 0)
   {
     goto LABEL_189;
@@ -216,14 +216,14 @@ LABEL_43:
 
   if (v27[32] != 1)
   {
-    v14 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v36 = [v14 previousToken];
-    [v36 setBefore:0];
+    paging = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    previousToken5 = [paging previousToken];
+    [previousToken5 setBefore:0];
 
     goto LABEL_22;
   }
 
-  v28 = sub_238DE36B8(a3);
+  v28 = sub_238DE36B8(struct);
   if ((v28[56] & 1) == 0)
   {
     goto LABEL_189;
@@ -231,35 +231,35 @@ LABEL_43:
 
   v29 = sub_238DE36B8(v28 + 32);
   v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v29 length:v29[1] encoding:4];
-  v31 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-  v32 = [v31 previousToken];
-  [v32 setBefore:v30];
+  paging8 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+  previousToken6 = [paging8 previousToken];
+  [previousToken6 setBefore:v30];
 
-  v33 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-  v34 = [v33 previousToken];
-  v35 = [v34 before];
+  paging9 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+  previousToken7 = [paging9 previousToken];
+  before = [previousToken7 before];
 
-  if (!v35)
+  if (!before)
   {
     v24 = 0x6E9B00000000;
     goto LABEL_43;
   }
 
 LABEL_23:
-  if (*(a3 + 72) != 1 || (sub_238DE36B8(a3 + 72)[56] & 1) == 0)
+  if (*(struct + 72) != 1 || (sub_238DE36B8(struct + 72)[56] & 1) == 0)
   {
-    v45 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    [v45 setNextToken:0];
+    paging10 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    [paging10 setNextToken:0];
 LABEL_45:
 
     goto LABEL_46;
   }
 
   v37 = objc_opt_new();
-  v38 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-  [v38 setNextToken:v37];
+  paging11 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+  [paging11 setNextToken:v37];
 
-  v39 = sub_238DE36B8(a3 + 72);
+  v39 = sub_238DE36B8(struct + 72);
   if ((v39[56] & 1) == 0)
   {
     goto LABEL_189;
@@ -268,26 +268,26 @@ LABEL_45:
   if (*v39 == 1)
   {
     v40 = MEMORY[0x277CCABB0];
-    v41 = sub_238DE36B8(a3 + 72);
+    v41 = sub_238DE36B8(struct + 72);
     if ((v41[56] & 1) == 0)
     {
       goto LABEL_189;
     }
 
-    v42 = [v40 numberWithUnsignedShort:*sub_238E0A934(v41)];
-    v43 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v44 = [v43 nextToken];
-    [v44 setLimit:v42];
+    paging13 = [v40 numberWithUnsignedShort:*sub_238E0A934(v41)];
+    paging12 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    nextToken = [paging12 nextToken];
+    [nextToken setLimit:paging13];
   }
 
   else
   {
-    v42 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v43 = [v42 nextToken];
-    [v43 setLimit:0];
+    paging13 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    paging12 = [paging13 nextToken];
+    [paging12 setLimit:0];
   }
 
-  v46 = sub_238DE36B8(a3 + 72);
+  v46 = sub_238DE36B8(struct + 72);
   if ((v46[56] & 1) == 0)
   {
     goto LABEL_189;
@@ -295,7 +295,7 @@ LABEL_45:
 
   if (v46[8] == 1)
   {
-    v47 = sub_238DE36B8(a3 + 72);
+    v47 = sub_238DE36B8(struct + 72);
     if ((v47[56] & 1) == 0)
     {
       goto LABEL_189;
@@ -303,15 +303,15 @@ LABEL_45:
 
     v48 = sub_238DE36B8(v47 + 8);
     v49 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v48 length:v48[1] encoding:4];
-    v50 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v51 = [v50 nextToken];
-    [v51 setAfter:v49];
+    paging14 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    nextToken2 = [paging14 nextToken];
+    [nextToken2 setAfter:v49];
 
-    v52 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v53 = [v52 nextToken];
-    v54 = [v53 after];
+    paging15 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    nextToken3 = [paging15 nextToken];
+    after2 = [nextToken3 after];
 
-    if (!v54)
+    if (!after2)
     {
       v24 = 0x6EB200000000;
       goto LABEL_43;
@@ -320,12 +320,12 @@ LABEL_45:
 
   else
   {
-    v55 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v56 = [v55 nextToken];
-    [v56 setAfter:0];
+    paging16 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    nextToken4 = [paging16 nextToken];
+    [nextToken4 setAfter:0];
   }
 
-  v57 = sub_238DE36B8(a3 + 72);
+  v57 = sub_238DE36B8(struct + 72);
   if ((v57[56] & 1) == 0)
   {
 LABEL_189:
@@ -334,14 +334,14 @@ LABEL_189:
 
   if (v57[32] != 1)
   {
-    v45 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-    v68 = [v45 nextToken];
-    [v68 setBefore:0];
+    paging10 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+    nextToken5 = [paging10 nextToken];
+    [nextToken5 setBefore:0];
 
     goto LABEL_45;
   }
 
-  v58 = sub_238DE36B8(a3 + 72);
+  v58 = sub_238DE36B8(struct + 72);
   if ((v58[56] & 1) == 0)
   {
     goto LABEL_189;
@@ -349,15 +349,15 @@ LABEL_189:
 
   v59 = sub_238DE36B8(v58 + 32);
   v60 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v59 length:v59[1] encoding:4];
-  v61 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-  v62 = [v61 nextToken];
-  [v62 setBefore:v60];
+  paging17 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+  nextToken6 = [paging17 nextToken];
+  [nextToken6 setBefore:v60];
 
-  v63 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
-  v64 = [v63 nextToken];
-  v65 = [v64 before];
+  paging18 = [(MTRChannelClusterProgramGuideResponseParams *)self paging];
+  nextToken7 = [paging18 nextToken];
+  before2 = [nextToken7 before];
 
-  if (!v65)
+  if (!before2)
   {
     v24 = 0x6EBB00000000;
     goto LABEL_43;
@@ -365,7 +365,7 @@ LABEL_189:
 
 LABEL_46:
   v173 = objc_opt_new();
-  sub_238EA3774(v180, a3 + 144);
+  sub_238EA3774(v180, struct + 144);
   v69 = 0x278A6F000uLL;
   v174 = 47;
   v70 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
@@ -376,9 +376,9 @@ LABEL_46:
     v73 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v180[11] length:v180[12] encoding:4];
     [v72 setIdentifier:v73];
 
-    v74 = [v72 identifier];
+    identifier = [v72 identifier];
 
-    if (!v74)
+    if (!identifier)
     {
       v172 = 0x6ED000000000;
       goto LABEL_181;
@@ -388,24 +388,24 @@ LABEL_46:
     [v72 setChannel:v75];
 
     v76 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v181];
-    v77 = [v72 channel];
-    [v77 setMajorNumber:v76];
+    channel = [v72 channel];
+    [channel setMajorNumber:v76];
 
     v78 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v182];
-    v79 = [v72 channel];
-    [v79 setMinorNumber:v78];
+    channel2 = [v72 channel];
+    [channel2 setMinorNumber:v78];
 
     if (v183[0] == 1)
     {
       v80 = sub_238DE36B8(v183);
       v81 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v80 length:v80[1] encoding:4];
-      v82 = [v72 channel];
-      [v82 setName:v81];
+      channel3 = [v72 channel];
+      [channel3 setName:v81];
 
-      v83 = [v72 channel];
-      v84 = [v83 name];
+      channel4 = [v72 channel];
+      name = [channel4 name];
 
-      if (!v84)
+      if (!name)
       {
         v172 = 0x6ED900000000;
         goto LABEL_181;
@@ -414,21 +414,21 @@ LABEL_46:
 
     else
     {
-      v85 = [v72 channel];
-      [v85 setName:0];
+      channel5 = [v72 channel];
+      [channel5 setName:0];
     }
 
     if (v184[0] == 1)
     {
       v86 = sub_238DE36B8(v184);
       v87 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v86 length:v86[1] encoding:4];
-      v88 = [v72 channel];
-      [v88 setCallSign:v87];
+      channel6 = [v72 channel];
+      [channel6 setCallSign:v87];
 
-      v89 = [v72 channel];
-      v90 = [v89 callSign];
+      channel7 = [v72 channel];
+      callSign = [channel7 callSign];
 
-      if (!v90)
+      if (!callSign)
       {
         v172 = 0x6EE200000000;
         goto LABEL_181;
@@ -437,21 +437,21 @@ LABEL_46:
 
     else
     {
-      v91 = [v72 channel];
-      [v91 setCallSign:0];
+      channel8 = [v72 channel];
+      [channel8 setCallSign:0];
     }
 
     if (v185[0] == 1)
     {
       v92 = sub_238DE36B8(v185);
       v93 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v92 length:v92[1] encoding:4];
-      v94 = [v72 channel];
-      [v94 setAffiliateCallSign:v93];
+      channel9 = [v72 channel];
+      [channel9 setAffiliateCallSign:v93];
 
-      v95 = [v72 channel];
-      v96 = [v95 affiliateCallSign];
+      channel10 = [v72 channel];
+      affiliateCallSign = [channel10 affiliateCallSign];
 
-      if (!v96)
+      if (!affiliateCallSign)
       {
         v172 = 0x6EEB00000000;
         goto LABEL_181;
@@ -460,21 +460,21 @@ LABEL_46:
 
     else
     {
-      v97 = [v72 channel];
-      [v97 setAffiliateCallSign:0];
+      channel11 = [v72 channel];
+      [channel11 setAffiliateCallSign:0];
     }
 
     if (v186[0] == 1)
     {
       v98 = sub_238DE36B8(v186);
       v99 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v98 length:v98[1] encoding:4];
-      v100 = [v72 channel];
-      [v100 setIdentifier:v99];
+      channel12 = [v72 channel];
+      [channel12 setIdentifier:v99];
 
-      v101 = [v72 channel];
-      v102 = [v101 identifier];
+      channel13 = [v72 channel];
+      identifier2 = [channel13 identifier];
 
-      if (!v102)
+      if (!identifier2)
       {
         v172 = 0x6EF400000000;
         goto LABEL_181;
@@ -483,21 +483,21 @@ LABEL_46:
 
     else
     {
-      v103 = [v72 channel];
-      [v103 setIdentifier:0];
+      channel14 = [v72 channel];
+      [channel14 setIdentifier:0];
     }
 
     if (v187[0] == 1)
     {
-      v104 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v187)];
-      v105 = [v72 channel];
-      [v105 setType:v104];
+      channel16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v187)];
+      channel15 = [v72 channel];
+      [channel15 setType:channel16];
     }
 
     else
     {
-      v104 = [v72 channel];
-      [v104 setType:0];
+      channel16 = [v72 channel];
+      [channel16 setType:0];
     }
 
     v106 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v188];
@@ -509,9 +509,9 @@ LABEL_46:
     v108 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v190 length:v191 encoding:4];
     [v72 setTitle:v108];
 
-    v109 = [v72 title];
+    title = [v72 title];
 
-    if (!v109)
+    if (!title)
     {
       v172 = 0x6F0300000000;
       goto LABEL_181;
@@ -523,9 +523,9 @@ LABEL_46:
       v111 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v110 length:v110[1] encoding:4];
       [v72 setSubtitle:v111];
 
-      v112 = [v72 subtitle];
+      subtitle = [v72 subtitle];
 
-      if (!v112)
+      if (!subtitle)
       {
         v172 = 0x6F0900000000;
         goto LABEL_181;
@@ -543,9 +543,9 @@ LABEL_46:
       v114 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v113 length:v113[1] encoding:4];
       [v72 setDescriptionString:v114];
 
-      v115 = [v72 descriptionString];
+      descriptionString = [v72 descriptionString];
 
-      if (!v115)
+      if (!descriptionString)
       {
         v172 = 0x6F1200000000;
         goto LABEL_181;
@@ -644,9 +644,9 @@ LABEL_186:
       v122 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v121 length:v121[1] encoding:4];
       [v72 setThumbnailUrl:v122];
 
-      v123 = [v72 thumbnailUrl];
+      thumbnailUrl = [v72 thumbnailUrl];
 
-      if (!v123)
+      if (!thumbnailUrl)
       {
         v172 = 0x6F4900000000;
         goto LABEL_181;
@@ -664,9 +664,9 @@ LABEL_186:
       v125 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v124 length:v124[1] encoding:4];
       [v72 setPosterArtUrl:v125];
 
-      v126 = [v72 posterArtUrl];
+      posterArtUrl = [v72 posterArtUrl];
 
-      if (!v126)
+      if (!posterArtUrl)
       {
         v172 = 0x6F5200000000;
         goto LABEL_181;
@@ -684,9 +684,9 @@ LABEL_186:
       v128 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v127 length:v127[1] encoding:4];
       [v72 setDvbiUrl:v128];
 
-      v129 = [v72 dvbiUrl];
+      dvbiUrl = [v72 dvbiUrl];
 
-      if (!v129)
+      if (!dvbiUrl)
       {
         v172 = 0x6F5B00000000;
         goto LABEL_181;
@@ -704,9 +704,9 @@ LABEL_186:
       v131 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v130 length:v130[1] encoding:4];
       [v72 setReleaseDate:v131];
 
-      v132 = [v72 releaseDate];
+      releaseDate = [v72 releaseDate];
 
-      if (!v132)
+      if (!releaseDate)
       {
         v172 = 0x6F6400000000;
         goto LABEL_181;
@@ -724,9 +724,9 @@ LABEL_186:
       v134 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v133 length:v133[1] encoding:4];
       [v72 setParentalGuidanceText:v134];
 
-      v135 = [v72 parentalGuidanceText];
+      parentalGuidanceText = [v72 parentalGuidanceText];
 
-      if (!v135)
+      if (!parentalGuidanceText)
       {
         v172 = 0x6F6D00000000;
         goto LABEL_181;
@@ -761,13 +761,13 @@ LABEL_186:
       }
 
       v139 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v138 length:*(v138 + 1) encoding:4];
-      v140 = [v72 seriesInfo];
-      [v140 setSeason:v139];
+      seriesInfo = [v72 seriesInfo];
+      [seriesInfo setSeason:v139];
 
-      v141 = [v72 seriesInfo];
-      v142 = [v141 season];
+      seriesInfo2 = [v72 seriesInfo];
+      season = [seriesInfo2 season];
 
-      if (!v142)
+      if (!season)
       {
         v172 = 0x6F7F00000000;
         goto LABEL_181;
@@ -781,13 +781,13 @@ LABEL_190:
       }
 
       v144 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(v143 + 2) length:*(v143 + 3) encoding:4];
-      v145 = [v72 seriesInfo];
-      [v145 setEpisode:v144];
+      seriesInfo3 = [v72 seriesInfo];
+      [seriesInfo3 setEpisode:v144];
 
-      v146 = [v72 seriesInfo];
-      v147 = [v146 episode];
+      seriesInfo4 = [v72 seriesInfo];
+      episode = [seriesInfo4 episode];
 
-      if (!v147)
+      if (!episode)
       {
         v172 = 0x6F8400000000;
         goto LABEL_181;
@@ -837,9 +837,9 @@ LABEL_190:
         v153 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v178 length:*(&v178 + 1) encoding:4];
         [v152 setCategory:v153];
 
-        v154 = [v152 category];
+        category = [v152 category];
 
-        if (!v154)
+        if (!category)
         {
           v172 = 0x6F9500000000;
           goto LABEL_178;
@@ -851,9 +851,9 @@ LABEL_190:
           v156 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v155 length:v155[1] encoding:4];
           [v152 setSubCategory:v156];
 
-          v157 = [v152 subCategory];
+          subCategory = [v152 subCategory];
 
-          if (!v157)
+          if (!subCategory)
           {
             v172 = 0x6F9B00000000;
             goto LABEL_178;
@@ -901,9 +901,9 @@ LABEL_190:
         v160 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v178 length:*(&v178 + 1) encoding:4];
         [v159 setName:v160];
 
-        v161 = [v159 name];
+        name2 = [v159 name];
 
-        if (!v161)
+        if (!name2)
         {
           v172 = 0x6FB600000000;
 LABEL_173:
@@ -914,9 +914,9 @@ LABEL_173:
         v162 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v179 length:*(&v179 + 1) encoding:4];
         [v159 setRole:v162];
 
-        v163 = [v159 role];
+        role = [v159 role];
 
-        if (!v163)
+        if (!role)
         {
           v172 = 0x6FBB00000000;
           goto LABEL_173;
@@ -961,9 +961,9 @@ LABEL_187:
         v165 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v178 length:*(&v178 + 1) encoding:4];
         [v152 setName:v165];
 
-        v166 = [v152 name];
+        name3 = [v152 name];
 
-        if (!v166)
+        if (!name3)
         {
           v172 = 0x6FD300000000;
           goto LABEL_178;
@@ -972,9 +972,9 @@ LABEL_187:
         v167 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v179 length:*(&v179 + 1) encoding:4];
         [v152 setRole:v167];
 
-        v168 = [v152 role];
+        role2 = [v152 role];
 
-        if (!v168)
+        if (!role2)
         {
           v172 = 0x6FD800000000;
 LABEL_178:

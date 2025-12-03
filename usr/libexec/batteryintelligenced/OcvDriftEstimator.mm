@@ -2,8 +2,8 @@
 + (id)sharedPredictor;
 - (OcvDriftEstimator)init;
 - (id)_copyFeatures;
-- (id)getPayloadForPPSWithParams:(id)a3 andPredictionValue:(id)a4;
-- (void)predictAndRecordWithParams:(id)a3;
+- (id)getPayloadForPPSWithParams:(id)params andPredictionValue:(id)value;
+- (void)predictAndRecordWithParams:(id)params;
 @end
 
 @implementation OcvDriftEstimator
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001C8A4;
   block[3] = &unk_100048718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100057988 != -1)
   {
     dispatch_once(&qword_100057988, block);
@@ -41,8 +41,8 @@
     [(OcvDriftEstimator *)v4 setLogToPPS:1];
     [(OcvDriftEstimator *)v4 setName:@"ocv_drift_model"];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [(OcvDriftEstimator *)v4 name];
-    v9 = [v7 pathForResource:v8 ofType:@"mlmodelc"];
+    name = [(OcvDriftEstimator *)v4 name];
+    v9 = [v7 pathForResource:name ofType:@"mlmodelc"];
 
     if (v9)
     {
@@ -51,14 +51,14 @@
 
       if (v11)
       {
-        v12 = [v11 modelDescription];
-        v13 = [v12 metadata];
+        modelDescription = [v11 modelDescription];
+        metadata = [modelDescription metadata];
 
-        if (v13)
+        if (metadata)
         {
-          v14 = [v11 modelDescription];
-          v15 = [v14 metadata];
-          v16 = [v15 objectForKeyedSubscript:MLModelVersionStringKey];
+          modelDescription2 = [v11 modelDescription];
+          metadata2 = [modelDescription2 metadata];
+          v16 = [metadata2 objectForKeyedSubscript:MLModelVersionStringKey];
           [(OcvDriftEstimator *)v4 setVersion:v16];
         }
 
@@ -71,15 +71,15 @@
           }
         }
 
-        v21 = [v11 modelDescription];
-        v22 = [v21 predictedFeatureName];
+        modelDescription3 = [v11 modelDescription];
+        predictedFeatureName = [modelDescription3 predictedFeatureName];
 
-        if (v22)
+        if (predictedFeatureName)
         {
           v23 = [NSArray alloc];
-          v24 = [v11 modelDescription];
-          v25 = [v24 predictedFeatureName];
-          v26 = [v25 copy];
+          modelDescription4 = [v11 modelDescription];
+          predictedFeatureName2 = [modelDescription4 predictedFeatureName];
+          v26 = [predictedFeatureName2 copy];
           v27 = [v23 initWithObjects:{v26, 0}];
           [(OcvDriftEstimator *)v4 setPredictedFeatureNames:v27];
         }
@@ -194,12 +194,12 @@
   return v30;
 }
 
-- (void)predictAndRecordWithParams:(id)a3
+- (void)predictAndRecordWithParams:(id)params
 {
   v4 = os_transaction_create();
-  v5 = [(OcvDriftEstimator *)self _copyFeatures];
+  _copyFeatures = [(OcvDriftEstimator *)self _copyFeatures];
   logger = self->_logger;
-  if (v5)
+  if (_copyFeatures)
   {
     if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
     {
@@ -207,13 +207,13 @@
     }
 
     v20 = 0;
-    v7 = [[MLDictionaryFeatureProvider alloc] initWithDictionary:v5 error:&v20];
+    v7 = [[MLDictionaryFeatureProvider alloc] initWithDictionary:_copyFeatures error:&v20];
     v8 = v20;
     if (v7)
     {
       v9 = [NSBundle bundleForClass:objc_opt_class()];
-      v10 = [(OcvDriftEstimator *)self name];
-      v11 = [v9 pathForResource:v10 ofType:@"mlmodelc"];
+      name = [(OcvDriftEstimator *)self name];
+      v11 = [v9 pathForResource:name ofType:@"mlmodelc"];
 
       v12 = [NSURL fileURLWithPath:v11];
       v13 = [MLModel modelWithContentsOfURL:v12 error:0];
@@ -265,24 +265,24 @@
   }
 }
 
-- (id)getPayloadForPPSWithParams:(id)a3 andPredictionValue:(id)a4
+- (id)getPayloadForPPSWithParams:(id)params andPredictionValue:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [(OcvDriftEstimator *)self version];
-  [v6 setObject:v7 forKeyedSubscript:@"model_id"];
+  version = [(OcvDriftEstimator *)self version];
+  [v6 setObject:version forKeyedSubscript:@"model_id"];
 
-  v8 = [(OcvDriftEstimator *)self name];
-  [v6 setObject:v8 forKeyedSubscript:@"model_name"];
+  name = [(OcvDriftEstimator *)self name];
+  [v6 setObject:name forKeyedSubscript:@"model_name"];
 
-  v9 = [v5 multiArrayValue];
+  multiArrayValue = [valueCopy multiArrayValue];
   v10 = objc_alloc_init(NSMutableArray);
-  if ([v9 count])
+  if ([multiArrayValue count])
   {
     v11 = 0;
     do
     {
-      v12 = [v9 objectAtIndexedSubscript:v11];
+      v12 = [multiArrayValue objectAtIndexedSubscript:v11];
       [v12 floatValue];
       *&v14 = v13 * 10000.0;
       v15 = [NSNumber numberWithFloat:v14];
@@ -291,7 +291,7 @@
       ++v11;
     }
 
-    while (v11 < [v9 count]);
+    while (v11 < [multiArrayValue count]);
   }
 
   [v6 setObject:v10 forKeyedSubscript:@"model_prediction"];

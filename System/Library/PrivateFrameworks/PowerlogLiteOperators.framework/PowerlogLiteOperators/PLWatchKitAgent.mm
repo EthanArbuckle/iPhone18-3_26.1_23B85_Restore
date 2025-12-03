@@ -1,7 +1,7 @@
 @interface PLWatchKitAgent
 + (id)entryEventPointDefinitions;
 + (void)load;
-- (id)appNameForWatchAppExtension:(id)a3;
+- (id)appNameForWatchAppExtension:(id)extension;
 - (void)initOperatorDependancies;
 @end
 
@@ -29,21 +29,21 @@
   v22[0] = v16;
   v21[1] = *MEMORY[0x277D3F540];
   v17[0] = @"action";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_StringFormat];
-  v18[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v18[0] = commonTypeDict_StringFormat;
   v17[1] = @"bundleID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withBundleID];
-  v18[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v18[1] = commonTypeDict_StringFormat_withBundleID;
   v17[2] = @"length";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v18[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v18[2] = commonTypeDict_IntegerFormat;
   v17[3] = @"count";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v18[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v18[3] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
   v22[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -207,17 +207,17 @@ void __43__PLWatchKitAgent_initOperatorDependancies__block_invoke(uint64_t a1, u
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appNameForWatchAppExtension:(id)a3
+- (id)appNameForWatchAppExtension:(id)extension
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@".watchapp"])
+  extensionCopy = extension;
+  if ([extensionCopy hasSuffix:@".watchapp"])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@".watchapp" withString:&stru_282B650A0];
+    v4 = [extensionCopy stringByReplacingOccurrencesOfString:@".watchapp" withString:&stru_282B650A0];
   }
 
   else
   {
-    v4 = v3;
+    v4 = extensionCopy;
   }
 
   v5 = v4;

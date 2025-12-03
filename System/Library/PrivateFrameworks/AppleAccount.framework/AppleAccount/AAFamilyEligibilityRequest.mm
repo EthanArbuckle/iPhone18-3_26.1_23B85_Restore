@@ -8,17 +8,17 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 familyEligibilityURL];
+  familyEligibilityURL = [v2 familyEligibilityURL];
 
-  return v3;
+  return familyEligibilityURL;
 }
 
 - (id)urlRequest
 {
   v8.receiver = self;
   v8.super_class = AAFamilyEligibilityRequest;
-  v3 = [(AAFamilyRequest *)&v8 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAFamilyRequest *)&v8 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   if (!self->_iTunesAccount)
   {

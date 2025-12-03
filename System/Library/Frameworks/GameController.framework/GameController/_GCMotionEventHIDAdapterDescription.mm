@@ -1,43 +1,43 @@
 @interface _GCMotionEventHIDAdapterDescription
-- (_GCMotionEventHIDAdapterDescription)initWithCoder:(id)a3;
-- (_GCMotionEventHIDAdapterDescription)initWithSource:(id)a3 service:(id)a4;
-- (id)materializeWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_GCMotionEventHIDAdapterDescription)initWithCoder:(id)coder;
+- (_GCMotionEventHIDAdapterDescription)initWithSource:(id)source service:(id)service;
+- (id)materializeWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCMotionEventHIDAdapterDescription
 
-- (_GCMotionEventHIDAdapterDescription)initWithSource:(id)a3 service:(id)a4
+- (_GCMotionEventHIDAdapterDescription)initWithSource:(id)source service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = _GCMotionEventHIDAdapterDescription;
   v9 = [(_GCMotionEventHIDAdapterDescription *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceDescription, a3);
-    objc_storeStrong(&v10->_serviceDescription, a4);
+    objc_storeStrong(&v9->_sourceDescription, source);
+    objc_storeStrong(&v10->_serviceDescription, service);
   }
 
   return v10;
 }
 
-- (_GCMotionEventHIDAdapterDescription)initWithCoder:(id)a3
+- (_GCMotionEventHIDAdapterDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _GCMotionEventHIDAdapterDescription;
   v5 = [(_GCMotionEventHIDAdapterDescription *)&v12 init];
   if (v5)
   {
     v6 = _GCHIDEventSourceDescription_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"source"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"source"];
     sourceDescription = v5->_sourceDescription;
     v5->_sourceDescription = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"service"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"service"];
     serviceDescription = v5->_serviceDescription;
     v5->_serviceDescription = v9;
   }
@@ -45,28 +45,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceDescription = self->_serviceDescription;
-  v5 = a3;
-  [v5 encodeObject:serviceDescription forKey:@"service"];
-  [v5 encodeObject:self->_sourceDescription forKey:@"source"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serviceDescription forKey:@"service"];
+  [coderCopy encodeObject:self->_sourceDescription forKey:@"source"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   materializedObject = self->_materializedObject;
   if (materializedObject)
   {
     goto LABEL_2;
   }
 
-  v7 = [(_GCHIDEventSourceDescription *)self->_sourceDescription materializeWithContext:v4];
+  v7 = [(_GCHIDEventSourceDescription *)self->_sourceDescription materializeWithContext:contextCopy];
   if (v7)
   {
     v8 = v7;
-    v9 = [(_GCCControllerHIDServiceInfoDescription *)self->_serviceDescription materializeWithContext:v4];
+    v9 = [(_GCCControllerHIDServiceInfoDescription *)self->_serviceDescription materializeWithContext:contextCopy];
     v10 = v9;
     if (!self->_serviceDescription || v9)
     {

@@ -1,33 +1,33 @@
 @interface SISchemaUEIDictationDiscoveryToolTipShown
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIDictationDiscoveryToolTipShown)initWithDictionary:(id)a3;
-- (SISchemaUEIDictationDiscoveryToolTipShown)initWithJSON:(id)a3;
+- (SISchemaUEIDictationDiscoveryToolTipShown)initWithDictionary:(id)dictionary;
+- (SISchemaUEIDictationDiscoveryToolTipShown)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHasEmoji:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHasEmoji:(BOOL)emoji;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIDictationDiscoveryToolTipShown
 
-- (SISchemaUEIDictationDiscoveryToolTipShown)initWithDictionary:(id)a3
+- (SISchemaUEIDictationDiscoveryToolTipShown)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaUEIDictationDiscoveryToolTipShown;
   v5 = [(SISchemaUEIDictationDiscoveryToolTipShown *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"toolTipShown"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"toolTipShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationDiscoveryToolTipShown setToolTipShown:](v5, "setToolTipShown:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hasEmoji"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hasEmoji"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SISchemaUEIDictationDiscoveryToolTipShown)initWithJSON:(id)a3
+- (SISchemaUEIDictationDiscoveryToolTipShown)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIDictationDiscoveryToolTipShown *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIDictationDiscoveryToolTipShown *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIDictationDiscoveryToolTipShown *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_hasEmoji + 1);
   if ((v4 & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationDiscoveryToolTipShown hasEmoji](self, "hasEmoji")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasEmoji"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasEmoji"];
 
     v4 = *(&self->_hasEmoji + 1);
   }
@@ -99,12 +99,12 @@
       v7 = off_1E78E65D0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"toolTipShown"];
+    [dictionary setObject:v7 forKeyedSubscript:@"toolTipShown"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -133,16 +133,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   v5 = *(&self->_hasEmoji + 1);
-  v6 = v4[13];
+  v6 = equalCopy[13];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -151,7 +151,7 @@ LABEL_3:
   if (v5)
   {
     toolTipShown = self->_toolTipShown;
-    if (toolTipShown != [v4 toolTipShown])
+    if (toolTipShown != [equalCopy toolTipShown])
     {
 LABEL_10:
       v10 = 0;
@@ -159,7 +159,7 @@ LABEL_10:
     }
 
     v5 = *(&self->_hasEmoji + 1);
-    v6 = v4[13];
+    v6 = equalCopy[13];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -171,7 +171,7 @@ LABEL_10:
   if (v8)
   {
     hasEmoji = self->_hasEmoji;
-    if (hasEmoji != [v4 hasEmoji])
+    if (hasEmoji != [equalCopy hasEmoji])
     {
       goto LABEL_10;
     }
@@ -183,28 +183,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_hasEmoji + 1);
-  v6 = v4;
+  v6 = toCopy;
   if (v5)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     v5 = *(&self->_hasEmoji + 1);
   }
 
   if ((v5 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasHasEmoji:(BOOL)a3
+- (void)setHasHasEmoji:(BOOL)emoji
 {
-  if (a3)
+  if (emoji)
   {
     v3 = 2;
   }

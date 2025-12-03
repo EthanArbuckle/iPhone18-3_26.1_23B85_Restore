@@ -1,82 +1,82 @@
 @interface HDNotificationInstruction
-- (BOOL)isEqual:(id)a3;
-- (HDNotificationInstruction)initWithMessageIdentifier:(id)a3 creationDate:(id)a4 receivedDate:(id)a5 modificationDate:(id)a6 sendingDeviceName:(id)a7 sendingDeviceInfo:(id)a8 action:(int64_t)a9 clientIdentifier:(id)a10 categoryIdentifier:(id)a11 expirationDate:(id)a12 criteria:(id)a13 isInvalid:(BOOL)a14;
-- (HDNotificationInstruction)initWithMessageIdentifier:(id)a3 receivedDate:(id)a4 sendingDeviceName:(id)a5 message:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HDNotificationInstruction)initWithMessageIdentifier:(id)identifier creationDate:(id)date receivedDate:(id)receivedDate modificationDate:(id)modificationDate sendingDeviceName:(id)name sendingDeviceInfo:(id)info action:(int64_t)action clientIdentifier:(id)self0 categoryIdentifier:(id)self1 expirationDate:(id)self2 criteria:(id)self3 isInvalid:(BOOL)self4;
+- (HDNotificationInstruction)initWithMessageIdentifier:(id)identifier receivedDate:(id)date sendingDeviceName:(id)name message:(id)message;
 - (id)description;
-- (int64_t)isValidWithDatabaseTransaction:(id)a3 date:(id)a4 error:(id *)a5;
+- (int64_t)isValidWithDatabaseTransaction:(id)transaction date:(id)date error:(id *)error;
 - (unint64_t)hash;
 @end
 
 @implementation HDNotificationInstruction
 
-- (HDNotificationInstruction)initWithMessageIdentifier:(id)a3 creationDate:(id)a4 receivedDate:(id)a5 modificationDate:(id)a6 sendingDeviceName:(id)a7 sendingDeviceInfo:(id)a8 action:(int64_t)a9 clientIdentifier:(id)a10 categoryIdentifier:(id)a11 expirationDate:(id)a12 criteria:(id)a13 isInvalid:(BOOL)a14
+- (HDNotificationInstruction)initWithMessageIdentifier:(id)identifier creationDate:(id)date receivedDate:(id)receivedDate modificationDate:(id)modificationDate sendingDeviceName:(id)name sendingDeviceInfo:(id)info action:(int64_t)action clientIdentifier:(id)self0 categoryIdentifier:(id)self1 expirationDate:(id)self2 criteria:(id)self3 isInvalid:(BOOL)self4
 {
-  v51 = a3;
-  v50 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
+  identifierCopy = identifier;
+  dateCopy = date;
+  receivedDateCopy = receivedDate;
+  modificationDateCopy = modificationDate;
+  nameCopy = name;
+  infoCopy = info;
+  clientIdentifierCopy = clientIdentifier;
+  categoryIdentifierCopy = categoryIdentifier;
+  expirationDateCopy = expirationDate;
+  criteriaCopy = criteria;
   v52.receiver = self;
   v52.super_class = HDNotificationInstruction;
   v28 = [(HDNotificationInstruction *)&v52 init];
   if (v28)
   {
-    v29 = [v51 copy];
+    v29 = [identifierCopy copy];
     messageIdentifier = v28->_messageIdentifier;
     v28->_messageIdentifier = v29;
 
-    v31 = [v22 copy];
+    v31 = [nameCopy copy];
     sendingDeviceName = v28->_sendingDeviceName;
     v28->_sendingDeviceName = v31;
 
-    v33 = [v23 copy];
+    v33 = [infoCopy copy];
     sendingDeviceInfo = v28->_sendingDeviceInfo;
     v28->_sendingDeviceInfo = v33;
 
-    v28->_action = a9;
-    v35 = [v24 copy];
+    v28->_action = action;
+    v35 = [clientIdentifierCopy copy];
     clientIdentifier = v28->_clientIdentifier;
     v28->_clientIdentifier = v35;
 
-    v37 = [v25 copy];
+    v37 = [categoryIdentifierCopy copy];
     categoryIdentifier = v28->_categoryIdentifier;
     v28->_categoryIdentifier = v37;
 
-    v39 = [v50 copy];
+    v39 = [dateCopy copy];
     creationDate = v28->_creationDate;
     v28->_creationDate = v39;
 
-    v41 = [v20 copy];
+    v41 = [receivedDateCopy copy];
     receivedDate = v28->_receivedDate;
     v28->_receivedDate = v41;
 
-    v43 = [v26 copy];
+    v43 = [expirationDateCopy copy];
     expirationDate = v28->_expirationDate;
     v28->_expirationDate = v43;
 
-    v45 = [v21 copy];
+    v45 = [modificationDateCopy copy];
     modificationDate = v28->_modificationDate;
     v28->_modificationDate = v45;
 
-    v47 = [v27 copy];
+    v47 = [criteriaCopy copy];
     criteria = v28->_criteria;
     v28->_criteria = v47;
 
-    v28->_isInvalid = a14;
+    v28->_isInvalid = invalid;
   }
 
   return v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v26 = 1;
   }
@@ -86,7 +86,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_action != v5->_action)
       {
         goto LABEL_37;
@@ -195,51 +195,51 @@ LABEL_37:
   return v10;
 }
 
-- (HDNotificationInstruction)initWithMessageIdentifier:(id)a3 receivedDate:(id)a4 sendingDeviceName:(id)a5 message:(id)a6
+- (HDNotificationInstruction)initWithMessageIdentifier:(id)identifier receivedDate:(id)date sendingDeviceName:(id)name message:(id)message
 {
-  v7 = 0;
-  if (a3 && a6)
+  selfCopy = 0;
+  if (identifier && message)
   {
-    v11 = a6;
-    v25 = a5;
-    v12 = a4;
-    v13 = a3;
-    v24 = [v11 creationDate];
-    v23 = [v11 creationDate];
-    v14 = [v11 sendingDeviceInfo];
-    v15 = [v11 action];
-    v22 = [v11 clientIdentifier];
-    v16 = [v11 categoryIdentifier];
-    v17 = [v11 expirationDate];
-    v18 = [v11 criteria];
+    messageCopy = message;
+    nameCopy = name;
+    dateCopy = date;
+    identifierCopy = identifier;
+    creationDate = [messageCopy creationDate];
+    creationDate2 = [messageCopy creationDate];
+    sendingDeviceInfo = [messageCopy sendingDeviceInfo];
+    action = [messageCopy action];
+    clientIdentifier = [messageCopy clientIdentifier];
+    categoryIdentifier = [messageCopy categoryIdentifier];
+    expirationDate = [messageCopy expirationDate];
+    criteria = [messageCopy criteria];
 
     LOBYTE(v21) = 0;
-    v19 = [(HDNotificationInstruction *)self initWithMessageIdentifier:v13 creationDate:v24 receivedDate:v12 modificationDate:v23 sendingDeviceName:v25 sendingDeviceInfo:v14 action:v15 clientIdentifier:v22 categoryIdentifier:v16 expirationDate:v17 criteria:v18 isInvalid:v21];
+    v19 = [(HDNotificationInstruction *)self initWithMessageIdentifier:identifierCopy creationDate:creationDate receivedDate:dateCopy modificationDate:creationDate2 sendingDeviceName:nameCopy sendingDeviceInfo:sendingDeviceInfo action:action clientIdentifier:clientIdentifier categoryIdentifier:categoryIdentifier expirationDate:expirationDate criteria:criteria isInvalid:v21];
 
     self = v19;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (int64_t)isValidWithDatabaseTransaction:(id)a3 date:(id)a4 error:(id *)a5
+- (int64_t)isValidWithDatabaseTransaction:(id)transaction date:(id)date error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (-[HDNotificationInstruction isInvalid](self, "isInvalid") || (-[HDNotificationInstruction expirationDate](self, "expirationDate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 hk_isAfterDate:v10], v10, (v11 & 1) != 0))
+  transactionCopy = transaction;
+  dateCopy = date;
+  if (-[HDNotificationInstruction isInvalid](self, "isInvalid") || (-[HDNotificationInstruction expirationDate](self, "expirationDate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [dateCopy hk_isAfterDate:v10], v10, (v11 & 1) != 0))
   {
     v12 = 2;
   }
 
   else
   {
-    v14 = [(HDNotificationInstruction *)self criteria];
+    criteria = [(HDNotificationInstruction *)self criteria];
 
-    if (v14)
+    if (criteria)
     {
-      v15 = [(HDNotificationInstruction *)self criteria];
-      v12 = [v15 isValidWithDatabaseTransaction:v8 error:a5];
+      criteria2 = [(HDNotificationInstruction *)self criteria];
+      v12 = [criteria2 isValidWithDatabaseTransaction:transactionCopy error:error];
     }
 
     else

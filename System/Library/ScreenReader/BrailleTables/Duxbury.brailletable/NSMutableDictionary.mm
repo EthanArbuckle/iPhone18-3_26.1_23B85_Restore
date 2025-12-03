@@ -1,21 +1,21 @@
 @interface NSMutableDictionary
-- (void)setArrayObject:(id)a3 forKey:(id)a4;
+- (void)setArrayObject:(id)object forKey:(id)key;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)setArrayObject:(id)a3 forKey:(id)a4
+- (void)setArrayObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self objectForKeyedSubscript:v6];
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self objectForKeyedSubscript:keyCopy];
   if (!v7)
   {
     v7 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self setObject:v7 forKeyedSubscript:keyCopy];
   }
 
-  [v7 addObject:v8];
+  [v7 addObject:objectCopy];
 }
 
 @end

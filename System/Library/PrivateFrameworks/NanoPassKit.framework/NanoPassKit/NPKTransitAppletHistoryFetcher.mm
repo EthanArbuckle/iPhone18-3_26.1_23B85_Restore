@@ -1,24 +1,24 @@
 @interface NPKTransitAppletHistoryFetcher
-- (NPKTransitAppletHistoryFetcher)initWithCallbackQueue:(id)a3;
+- (NPKTransitAppletHistoryFetcher)initWithCallbackQueue:(id)queue;
 - (NPKTransitAppletHistoryFetcherDelegate)delegate;
-- (void)_handleActiveSecureElementManagerSession:(id)a3;
-- (void)_handleSecureElementSessionFailureWithError:(id)a3;
+- (void)_handleActiveSecureElementManagerSession:(id)session;
+- (void)_handleSecureElementSessionFailureWithError:(id)error;
 - (void)requestTransitHistoryFetch;
-- (void)setAIDToFetch:(id)a3;
+- (void)setAIDToFetch:(id)fetch;
 @end
 
 @implementation NPKTransitAppletHistoryFetcher
 
-- (NPKTransitAppletHistoryFetcher)initWithCallbackQueue:(id)a3
+- (NPKTransitAppletHistoryFetcher)initWithCallbackQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = NPKTransitAppletHistoryFetcher;
   v6 = [(NPKTransitAppletHistoryFetcher *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callbackQueue, a3);
+    objc_storeStrong(&v6->_callbackQueue, queue);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v9 = dispatch_queue_create("NPKTransitAppletHistoryFetcher", v8);
     internalQueue = v7->_internalQueue;
@@ -28,17 +28,17 @@
   return v7;
 }
 
-- (void)setAIDToFetch:(id)a3
+- (void)setAIDToFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__NPKTransitAppletHistoryFetcher_setAIDToFetch___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = fetchCopy;
+  v6 = fetchCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -79,13 +79,13 @@ void __48__NPKTransitAppletHistoryFetcher_setAIDToFetch___block_invoke(uint64_t 
     }
   }
 
-  v6 = [(NPKTransitAppletHistoryFetcher *)self internalQueue];
+  internalQueue = [(NPKTransitAppletHistoryFetcher *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__NPKTransitAppletHistoryFetcher_requestTransitHistoryFetch__block_invoke;
   block[3] = &unk_279944F98;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(internalQueue, block);
 }
 
 void __60__NPKTransitAppletHistoryFetcher_requestTransitHistoryFetch__block_invoke(uint64_t a1)
@@ -161,12 +161,12 @@ uint64_t __60__NPKTransitAppletHistoryFetcher_requestTransitHistoryFetch__block_
   return [v4 setPendingSessionHandle:0];
 }
 
-- (void)_handleActiveSecureElementManagerSession:(id)a3
+- (void)_handleActiveSecureElementManagerSession:(id)session
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKTransitAppletHistoryFetcher *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  sessionCopy = session;
+  internalQueue = [(NPKTransitAppletHistoryFetcher *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -180,13 +180,13 @@ uint64_t __60__NPKTransitAppletHistoryFetcher_requestTransitHistoryFetch__block_
       *buf = 138412546;
       v36 = aidToFetch;
       v37 = 2112;
-      v38 = v4;
+      v38 = sessionCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: History fetcher (AID %@) got secure element manager session: %@", buf, 0x16u);
     }
   }
 
   v10 = self->_aidToFetch;
-  v11 = [(NSString *)v4 appletWithIdentifier:v10];
+  v11 = [(NSString *)sessionCopy appletWithIdentifier:v10];
   v12 = v11;
   if (v11)
   {
@@ -194,7 +194,7 @@ uint64_t __60__NPKTransitAppletHistoryFetcher_requestTransitHistoryFetch__block_
     {
       v34 = 0;
       v13 = &v34;
-      v14 = [(NSString *)v4 felicaAppletState:v12 error:&v34];
+      v14 = [(NSString *)sessionCopy felicaAppletState:v12 error:&v34];
       v15 = 0x277D37ED8;
     }
 
@@ -202,7 +202,7 @@ uint64_t __60__NPKTransitAppletHistoryFetcher_requestTransitHistoryFetch__block_
     {
       v33 = 0;
       v13 = &v33;
-      v14 = [(NSString *)v4 transitAppletState:v12 error:&v33];
+      v14 = [(NSString *)sessionCopy transitAppletState:v12 error:&v33];
       v15 = 0x277D38300;
     }
 
@@ -246,7 +246,7 @@ LABEL_19:
       *buf = 138412546;
       v36 = v10;
       v37 = 2112;
-      v38 = v4;
+      v38 = sessionCopy;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Could not fetch Applet with ID:%@ from session:%@", buf, 0x16u);
     }
 
@@ -293,12 +293,12 @@ void __75__NPKTransitAppletHistoryFetcher__handleActiveSecureElementManagerSessi
   [v2 transitAppletHistoryFetcher:*(a1 + 32) gotTransitAppletHistory:*(a1 + 40) forAppletWithAID:*(a1 + 48)];
 }
 
-- (void)_handleSecureElementSessionFailureWithError:(id)a3
+- (void)_handleSecureElementSessionFailureWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKTransitAppletHistoryFetcher *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  internalQueue = [(NPKTransitAppletHistoryFetcher *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
@@ -309,7 +309,7 @@ void __75__NPKTransitAppletHistoryFetcher__handleActiveSecureElementManagerSessi
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = errorCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_ERROR, "Error: History fetcher failed to start secure element manager session: %@", &v10, 0xCu);
     }
   }

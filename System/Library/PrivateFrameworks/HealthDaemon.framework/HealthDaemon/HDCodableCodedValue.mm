@@ -1,33 +1,33 @@
 @interface HDCodableCodedValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addReferenceRanges:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addReferenceRanges:(id)ranges;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableCodedValue
 
-- (void)addReferenceRanges:(id)a3
+- (void)addReferenceRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   referenceRanges = self->_referenceRanges;
-  v8 = v4;
+  v8 = rangesCopy;
   if (!referenceRanges)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_referenceRanges;
     self->_referenceRanges = v6;
 
-    v4 = v8;
+    rangesCopy = v8;
     referenceRanges = self->_referenceRanges;
   }
 
-  [(NSMutableArray *)referenceRanges addObject:v4];
+  [(NSMutableArray *)referenceRanges addObject:rangesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableCodedValue;
   v4 = [(HDCodableCodedValue *)&v8 description];
-  v5 = [(HDCodableCodedValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableCodedValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,19 +45,19 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   codings = self->_codings;
   if (codings)
   {
-    v5 = [(HDCodableMedicalCodingList *)codings dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"codings"];
+    dictionaryRepresentation = [(HDCodableMedicalCodingList *)codings dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"codings"];
   }
 
   value = self->_value;
   if (value)
   {
-    v7 = [(HDCodableInspectableValue *)value dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"value"];
+    dictionaryRepresentation2 = [(HDCodableInspectableValue *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"value"];
   }
 
   if ([(NSMutableArray *)self->_referenceRanges count])
@@ -82,8 +82,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -92,18 +92,18 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"referenceRanges"];
+    [dictionary setObject:v8 forKey:@"referenceRanges"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_codings)
   {
     PBDataWriterWriteSubmessage();
@@ -149,44 +149,44 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_codings)
   {
-    [v8 setCodings:?];
+    [toCopy setCodings:?];
   }
 
   if (self->_value)
   {
-    [v8 setValue:?];
+    [toCopy setValue:?];
   }
 
   if ([(HDCodableCodedValue *)self referenceRangesCount])
   {
-    [v8 clearReferenceRanges];
-    v4 = [(HDCodableCodedValue *)self referenceRangesCount];
-    if (v4)
+    [toCopy clearReferenceRanges];
+    referenceRangesCount = [(HDCodableCodedValue *)self referenceRangesCount];
+    if (referenceRangesCount)
     {
-      v5 = v4;
+      v5 = referenceRangesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableCodedValue *)self referenceRangesAtIndex:i];
-        [v8 addReferenceRanges:v7];
+        [toCopy addReferenceRanges:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableMedicalCodingList *)self->_codings copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableMedicalCodingList *)self->_codings copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(HDCodableInspectableValue *)self->_value copyWithZone:a3];
+  v8 = [(HDCodableInspectableValue *)self->_value copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -210,7 +210,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addReferenceRanges:v15];
 
         ++v14;
@@ -227,13 +227,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((codings = self->_codings, !(codings | v4[1])) || -[HDCodableMedicalCodingList isEqual:](codings, "isEqual:")) && ((value = self->_value, !(value | v4[3])) || -[HDCodableInspectableValue isEqual:](value, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((codings = self->_codings, !(codings | equalCopy[1])) || -[HDCodableMedicalCodingList isEqual:](codings, "isEqual:")) && ((value = self->_value, !(value | equalCopy[3])) || -[HDCodableInspectableValue isEqual:](value, "isEqual:")))
   {
     referenceRanges = self->_referenceRanges;
-    if (referenceRanges | v4[2])
+    if (referenceRanges | equalCopy[2])
     {
       v8 = [(NSMutableArray *)referenceRanges isEqual:?];
     }
@@ -259,12 +259,12 @@
   return v4 ^ [(NSMutableArray *)self->_referenceRanges hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   codings = self->_codings;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (codings)
   {
     if (v6)
@@ -279,7 +279,7 @@
   }
 
   value = self->_value;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (value)
   {
     if (v8)
@@ -297,7 +297,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

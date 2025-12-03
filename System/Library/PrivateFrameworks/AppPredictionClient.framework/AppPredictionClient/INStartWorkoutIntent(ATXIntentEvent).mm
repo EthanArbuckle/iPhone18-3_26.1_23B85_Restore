@@ -7,20 +7,20 @@
 - (void)atx_getArgsInto:()ATXIntentEvent
 {
   v4 = a3;
-  v5 = [a1 workoutName];
-  v6 = [v5 spokenPhrase];
-  [v4 setArg1:v6];
+  workoutName = [self workoutName];
+  spokenPhrase = [workoutName spokenPhrase];
+  [v4 setArg1:spokenPhrase];
 
-  v7 = [a1 goalValue];
+  goalValue = [self goalValue];
 
-  if (v7)
+  if (goalValue)
   {
     v8 = MEMORY[0x1E696AB90];
-    v9 = [a1 goalValue];
-    v10 = v9;
-    if (v9)
+    goalValue2 = [self goalValue];
+    v10 = goalValue2;
+    if (goalValue2)
     {
-      [v9 decimalValue];
+      [goalValue2 decimalValue];
     }
 
     else

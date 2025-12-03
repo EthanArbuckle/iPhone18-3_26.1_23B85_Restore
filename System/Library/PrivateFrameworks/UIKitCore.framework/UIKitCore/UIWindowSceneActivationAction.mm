@@ -2,13 +2,13 @@
 + (UIWindowSceneActivationAction)actionWithHandler:(UIActionHandler)handler;
 + (UIWindowSceneActivationAction)actionWithIdentifier:(UIActionIdentifier)identifier alternateAction:(UIAction *)alternateAction configurationProvider:(UIWindowSceneActivationActionConfigurationProvider)configurationProvider;
 + (UIWindowSceneActivationAction)actionWithTitle:(NSString *)title image:(UIImage *)image identifier:(UIActionIdentifier)identifier handler:(UIActionHandler)handler;
-- (UIWindowSceneActivationAction)initWithCoder:(id)a3;
-- (UIWindowSceneActivationAction)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 discoverabilityTitle:(id)a6 attributes:(unint64_t)a7 alternateAction:(id)a8 configurationProvider:(id)a9;
-- (UIWindowSceneActivationAction)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 discoverabilityTitle:(id)a6 attributes:(unint64_t)a7 state:(int64_t)a8 handler:(id)a9;
+- (UIWindowSceneActivationAction)initWithCoder:(id)coder;
+- (UIWindowSceneActivationAction)initWithTitle:(id)title image:(id)image identifier:(id)identifier discoverabilityTitle:(id)discoverabilityTitle attributes:(unint64_t)attributes alternateAction:(id)action configurationProvider:(id)provider;
+- (UIWindowSceneActivationAction)initWithTitle:(id)title image:(id)image identifier:(id)identifier discoverabilityTitle:(id)discoverabilityTitle attributes:(unint64_t)attributes state:(int64_t)state handler:(id)handler;
 - (_UIWindowSceneActivator)_preferredActivator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_requestSceneActivation;
-- (void)_willBePreparedForInitialDisplay:(id)a3;
+- (void)_willBePreparedForInitialDisplay:(id)display;
 - (void)setTitle:(NSString *)title;
 @end
 
@@ -19,29 +19,29 @@
   v8 = configurationProvider;
   v9 = alternateAction;
   v10 = identifier;
-  v11 = [a1 alloc];
-  v12 = [a1 _defaultTitle];
-  v13 = [a1 _defaultImage];
-  v14 = [v11 initWithTitle:v12 image:v13 identifier:v10 discoverabilityTitle:0 attributes:0 alternateAction:v9 configurationProvider:v8];
+  v11 = [self alloc];
+  _defaultTitle = [self _defaultTitle];
+  _defaultImage = [self _defaultImage];
+  v14 = [v11 initWithTitle:_defaultTitle image:_defaultImage identifier:v10 discoverabilityTitle:0 attributes:0 alternateAction:v9 configurationProvider:v8];
 
   return v14;
 }
 
-- (UIWindowSceneActivationAction)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 discoverabilityTitle:(id)a6 attributes:(unint64_t)a7 alternateAction:(id)a8 configurationProvider:(id)a9
+- (UIWindowSceneActivationAction)initWithTitle:(id)title image:(id)image identifier:(id)identifier discoverabilityTitle:(id)discoverabilityTitle attributes:(unint64_t)attributes alternateAction:(id)action configurationProvider:(id)provider
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = [UIApp supportsMultipleScenes];
-  if (!v19 || (v21 & 1) != 0)
+  titleCopy = title;
+  imageCopy = image;
+  identifierCopy = identifier;
+  discoverabilityTitleCopy = discoverabilityTitle;
+  actionCopy = action;
+  providerCopy = provider;
+  supportsMultipleScenes = [UIApp supportsMultipleScenes];
+  if (!actionCopy || (supportsMultipleScenes & 1) != 0)
   {
-    v25 = 0;
-    if (!v21)
+    state = 0;
+    if (!supportsMultipleScenes)
     {
-      a7 |= 4uLL;
+      attributes |= 4uLL;
     }
 
     v26 = &__block_literal_global_262;
@@ -49,30 +49,30 @@
 
   else
   {
-    v22 = [v19 title];
+    title = [actionCopy title];
 
-    v23 = [v19 image];
+    image = [actionCopy image];
 
-    v24 = [v19 discoverabilityTitle];
+    discoverabilityTitle = [actionCopy discoverabilityTitle];
 
-    a7 = [v19 attributes];
-    v25 = [v19 state];
-    v18 = v24;
-    v16 = v23;
-    v15 = v22;
+    attributes = [actionCopy attributes];
+    state = [actionCopy state];
+    discoverabilityTitleCopy = discoverabilityTitle;
+    imageCopy = image;
+    titleCopy = title;
     v26 = &__block_literal_global_6_7;
   }
 
   v33.receiver = self;
   v33.super_class = UIWindowSceneActivationAction;
-  v27 = [(UIAction *)&v33 initWithTitle:v15 image:v16 identifier:v17 discoverabilityTitle:v18 attributes:a7 state:v25 handler:v26];
+  v27 = [(UIAction *)&v33 initWithTitle:titleCopy image:imageCopy identifier:identifierCopy discoverabilityTitle:discoverabilityTitleCopy attributes:attributes state:state handler:v26];
   if (v27)
   {
-    v28 = [v19 copy];
+    v28 = [actionCopy copy];
     alternateAction = v27->__alternateAction;
     v27->__alternateAction = v28;
 
-    v30 = [v20 copy];
+    v30 = [providerCopy copy];
     configurationProvider = v27->__configurationProvider;
     v27->__configurationProvider = v30;
   }
@@ -92,15 +92,15 @@ void __134__UIWindowSceneActivationAction_initWithTitle_image_identifier_discove
 - (void)setTitle:(NSString *)title
 {
   v4 = title;
-  v5 = v4;
+  _defaultTitle = v4;
   if (!v4)
   {
-    v5 = [objc_opt_class() _defaultTitle];
+    _defaultTitle = [objc_opt_class() _defaultTitle];
   }
 
   v6.receiver = self;
   v6.super_class = UIWindowSceneActivationAction;
-  [(UIAction *)&v6 setTitle:v5];
+  [(UIAction *)&v6 setTitle:_defaultTitle];
   if (!v4)
   {
   }
@@ -108,9 +108,9 @@ void __134__UIWindowSceneActivationAction_initWithTitle_image_identifier_discove
 
 - (void)_requestSceneActivation
 {
-  v3 = [(UIAction *)self sender];
-  v4 = [(UIWindowSceneActivationAction *)self _configurationProvider];
-  v5 = (v4)[2](v4, self);
+  sender = [(UIAction *)self sender];
+  _configurationProvider = [(UIWindowSceneActivationAction *)self _configurationProvider];
+  v5 = (_configurationProvider)[2](_configurationProvider, self);
 
   if (!v5)
   {
@@ -120,16 +120,16 @@ void __134__UIWindowSceneActivationAction_initWithTitle_image_identifier_discove
 
   v6 = [v5 copy];
 
-  v7 = [(UIWindowSceneActivationAction *)self _preferredActivator];
-  v8 = v3;
+  _preferredActivator = [(UIWindowSceneActivationAction *)self _preferredActivator];
+  v8 = sender;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [v9 window];
-    v11 = [v10 windowScene];
+    _viewForPresenting = v8;
+    window = [_viewForPresenting window];
+    windowScene = [window windowScene];
 
-    if (v11)
+    if (windowScene)
     {
       goto LABEL_7;
     }
@@ -138,47 +138,47 @@ void __134__UIWindowSceneActivationAction_initWithTitle_image_identifier_discove
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = 0;
+    windowScene3 = 0;
     goto LABEL_11;
   }
 
-  v9 = [v8 _viewForPresenting];
-  v12 = [v9 window];
-  v13 = [v12 windowScene];
+  _viewForPresenting = [v8 _viewForPresenting];
+  window2 = [_viewForPresenting window];
+  windowScene2 = [window2 windowScene];
 
-  if (!v13)
+  if (!windowScene2)
   {
-    v15 = 0;
+    windowScene3 = 0;
     goto LABEL_8;
   }
 
 LABEL_7:
-  v14 = [v9 window];
-  v15 = [v14 windowScene];
+  window3 = [_viewForPresenting window];
+  windowScene3 = [window3 windowScene];
 
 LABEL_8:
 LABEL_11:
 
-  _UIWindowSceneActivationPrepareConfiguration(v6, 0, v7, v15, &__block_literal_global_11_0);
+  _UIWindowSceneActivationPrepareConfiguration(v6, 0, _preferredActivator, windowScene3, &__block_literal_global_11_0);
 LABEL_12:
   [(UIWindowSceneActivationAction *)self set_preferredActivator:0];
-  v16 = [(UIWindowSceneActivationAction *)self _alternateAction];
-  v17 = [v6 userActivity];
+  _alternateAction = [(UIWindowSceneActivationAction *)self _alternateAction];
+  userActivity = [v6 userActivity];
 
-  if (v17)
+  if (userActivity)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __56__UIWindowSceneActivationAction__requestSceneActivation__block_invoke_2;
     v18[3] = &unk_1E7109F48;
-    v19 = v16;
-    v20 = v3;
+    v19 = _alternateAction;
+    v20 = sender;
     _UIWindowSceneActivateConfiguration(v6, v20, v18);
   }
 
-  else if (v16)
+  else if (_alternateAction)
   {
-    [v16 performWithSender:v3 target:0];
+    [_alternateAction performWithSender:sender target:0];
   }
 }
 
@@ -193,64 +193,64 @@ void *__56__UIWindowSceneActivationAction__requestSceneActivation__block_invoke_
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UIWindowSceneActivationAction alloc];
-  v5 = [(UIMenuElement *)self title];
-  v6 = [(UIMenuElement *)self image];
-  v7 = [(UIAction *)self identifier];
-  v8 = [(UIAction *)self discoverabilityTitle];
-  v9 = [(UIAction *)self attributes];
-  v10 = [(UIWindowSceneActivationAction *)self _alternateAction];
-  v11 = [(UIWindowSceneActivationAction *)self _configurationProvider];
-  v12 = [(UIWindowSceneActivationAction *)v4 initWithTitle:v5 image:v6 identifier:v7 discoverabilityTitle:v8 attributes:v9 alternateAction:v10 configurationProvider:v11];
+  title = [(UIMenuElement *)self title];
+  image = [(UIMenuElement *)self image];
+  identifier = [(UIAction *)self identifier];
+  discoverabilityTitle = [(UIAction *)self discoverabilityTitle];
+  attributes = [(UIAction *)self attributes];
+  _alternateAction = [(UIWindowSceneActivationAction *)self _alternateAction];
+  _configurationProvider = [(UIWindowSceneActivationAction *)self _configurationProvider];
+  v12 = [(UIWindowSceneActivationAction *)v4 initWithTitle:title image:image identifier:identifier discoverabilityTitle:discoverabilityTitle attributes:attributes alternateAction:_alternateAction configurationProvider:_configurationProvider];
 
-  v13 = [(UIWindowSceneActivationAction *)self _preferredActivator];
-  [(UIWindowSceneActivationAction *)v12 set_preferredActivator:v13];
+  _preferredActivator = [(UIWindowSceneActivationAction *)self _preferredActivator];
+  [(UIWindowSceneActivationAction *)v12 set_preferredActivator:_preferredActivator];
 
   return v12;
 }
 
-- (void)_willBePreparedForInitialDisplay:(id)a3
+- (void)_willBePreparedForInitialDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5.receiver = self;
   v5.super_class = UIWindowSceneActivationAction;
-  [(UIMenuElement *)&v5 _willBePreparedForInitialDisplay:v4];
-  if ([v4 conformsToProtocol:&unk_1EFFF5E68])
+  [(UIMenuElement *)&v5 _willBePreparedForInitialDisplay:displayCopy];
+  if ([displayCopy conformsToProtocol:&unk_1EFFF5E68])
   {
-    [(UIWindowSceneActivationAction *)self set_preferredActivator:v4];
+    [(UIWindowSceneActivationAction *)self set_preferredActivator:displayCopy];
   }
 }
 
-- (UIWindowSceneActivationAction)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 discoverabilityTitle:(id)a6 attributes:(unint64_t)a7 state:(int64_t)a8 handler:(id)a9
+- (UIWindowSceneActivationAction)initWithTitle:(id)title image:(id)image identifier:(id)identifier discoverabilityTitle:(id)discoverabilityTitle attributes:(unint64_t)attributes state:(int64_t)state handler:(id)handler
 {
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationAction.m" lineNumber:203 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationAction.m" lineNumber:203 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
 
   return 0;
 }
 
-- (UIWindowSceneActivationAction)initWithCoder:(id)a3
+- (UIWindowSceneActivationAction)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationAction.m" lineNumber:208 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationAction.m" lineNumber:208 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
 
   return 0;
 }
 
 + (UIWindowSceneActivationAction)actionWithHandler:(UIActionHandler)handler
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"UIWindowSceneActivationAction.m" lineNumber:213 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationAction.m" lineNumber:213 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
 
   return 0;
 }
 
 + (UIWindowSceneActivationAction)actionWithTitle:(NSString *)title image:(UIImage *)image identifier:(UIActionIdentifier)identifier handler:(UIActionHandler)handler
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:a1 file:@"UIWindowSceneActivationAction.m" lineNumber:221 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationAction.m" lineNumber:221 description:@"Initializer is unavailable. Please use init(title:image:identifier:discoverabilityTitle:attributes:alternate:_:)"];
 
   return 0;
 }

@@ -1,6 +1,6 @@
 @interface CKMaterialPlatterViewBackdropLayer
 - (_TtC7ChatKit34CKMaterialPlatterViewBackdropLayer)init;
-- (_TtC7ChatKit34CKMaterialPlatterViewBackdropLayer)initWithCoder:(id)a3;
+- (_TtC7ChatKit34CKMaterialPlatterViewBackdropLayer)initWithCoder:(id)coder;
 @end
 
 @implementation CKMaterialPlatterViewBackdropLayer
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (_TtC7ChatKit34CKMaterialPlatterViewBackdropLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit34CKMaterialPlatterViewBackdropLayer)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);

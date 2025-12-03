@@ -1,5 +1,5 @@
 @interface NIServerVisionInternalSessionRequest
-- (NIServerVisionInternalSessionRequest)initWithIdentifier:(id)a3 observer:(id)a4;
+- (NIServerVisionInternalSessionRequest)initWithIdentifier:(id)identifier observer:(id)observer;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,11 +7,11 @@
 
 @implementation NIServerVisionInternalSessionRequest
 
-- (NIServerVisionInternalSessionRequest)initWithIdentifier:(id)a3 observer:(id)a4
+- (NIServerVisionInternalSessionRequest)initWithIdentifier:(id)identifier observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  observerCopy = observer;
+  if (!identifierCopy)
   {
     __assert_rtn("[NIServerVisionInternalSessionRequest initWithIdentifier:observer:]", "NIServerVisionInternalSession.mm", 244, "identifier");
   }
@@ -22,8 +22,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeWeak(&v10->_observer, v8);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeWeak(&v10->_observer, observerCopy);
   }
 
   return v10;

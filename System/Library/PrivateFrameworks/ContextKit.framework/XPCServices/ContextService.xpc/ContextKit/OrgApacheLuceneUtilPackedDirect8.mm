@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneUtilPackedDirect8
-- (int)setWithInt:(int)a3 withLongArray:(id)a4 withInt:(int)a5 withInt:(int)a6;
+- (int)setWithInt:(int)int withLongArray:(id)array withInt:(int)withInt withInt:(int)a6;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
 @end
@@ -23,21 +23,21 @@
   return OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithByteArray_(self->values_) + v4;
 }
 
-- (int)setWithInt:(int)a3 withLongArray:(id)a4 withInt:(int)a5 withInt:(int)a6
+- (int)setWithInt:(int)int withLongArray:(id)array withInt:(int)withInt withInt:(int)a6
 {
-  LODWORD(v8) = a3;
-  v10 = JavaLangMath_minWithInt_withInt_((self->super.valueCount_ - a3), a6);
+  LODWORD(v8) = int;
+  v10 = JavaLangMath_minWithInt_withInt_((self->super.valueCount_ - int), a6);
   v11 = v10 + v8;
   if (v10 + v8 > v8)
   {
     v8 = v8;
     do
     {
-      v12 = a5;
-      v13 = *(a4 + 2);
-      if (a5 < 0 || a5 >= v13)
+      withIntCopy = withInt;
+      v13 = *(array + 2);
+      if (withInt < 0 || withInt >= v13)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v13, a5);
+        IOSArray_throwOutOfBoundsWithMsg(v13, withInt);
       }
 
       values = self->values_;
@@ -52,8 +52,8 @@
         IOSArray_throwOutOfBoundsWithMsg(size, v8);
       }
 
-      *(&values->super.size_ + v8++ + 4) = *(a4 + v12 + 2);
-      a5 = v12 + 1;
+      *(&values->super.size_ + v8++ + 4) = *(array + withIntCopy + 2);
+      withInt = withIntCopy + 1;
     }
 
     while (v11 != v8);

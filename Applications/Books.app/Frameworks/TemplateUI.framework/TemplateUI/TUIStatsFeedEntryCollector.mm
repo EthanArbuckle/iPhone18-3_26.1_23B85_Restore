@@ -1,21 +1,21 @@
 @interface TUIStatsFeedEntryCollector
-- (TUIStatsFeedEntryCollector)initWithMode:(unint64_t)a3 uid:(id)a4;
-- (void)updateWithPass:(id)a3;
+- (TUIStatsFeedEntryCollector)initWithMode:(unint64_t)mode uid:(id)uid;
+- (void)updateWithPass:(id)pass;
 @end
 
 @implementation TUIStatsFeedEntryCollector
 
-- (TUIStatsFeedEntryCollector)initWithMode:(unint64_t)a3 uid:(id)a4
+- (TUIStatsFeedEntryCollector)initWithMode:(unint64_t)mode uid:(id)uid
 {
-  v6 = a4;
+  uidCopy = uid;
   v14.receiver = self;
   v14.super_class = TUIStatsFeedEntryCollector;
   v7 = [(TUIStatsFeedEntryCollector *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_mode = a3;
-    v9 = [v6 copy];
+    v7->_mode = mode;
+    v9 = [uidCopy copy];
     uid = v8->_uid;
     v8->_uid = v9;
 
@@ -48,17 +48,17 @@
   return v8;
 }
 
-- (void)updateWithPass:(id)a3
+- (void)updateWithPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   mode = self->_mode;
-  v10 = v4;
+  v10 = passCopy;
   if ((mode & 4) != 0)
   {
     for (i = 0; i != 5; ++i)
     {
-      [v4 elapsedTimeForPhase:i];
-      v4 = v10;
+      [passCopy elapsedTimeForPhase:i];
+      passCopy = v10;
       self->_elapsedTime[i] = v7 + self->_elapsedTime[i];
     }
 
@@ -82,8 +82,8 @@ LABEL_3:
 
   for (j = 0; j != 29; ++j)
   {
-    v9 = [v4 countForEvent:j];
-    v4 = v10;
+    v9 = [passCopy countForEvent:j];
+    passCopy = v10;
     self->_eventCount[j] += v9;
   }
 
@@ -91,7 +91,7 @@ LABEL_3:
   {
 LABEL_4:
     [(NSMutableArray *)self->_passes addObject:v10];
-    v4 = v10;
+    passCopy = v10;
   }
 
 LABEL_5:

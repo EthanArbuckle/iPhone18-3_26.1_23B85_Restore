@@ -6,8 +6,8 @@
 
 - (BOOL)br_isDocumentsFolder
 {
-  v1 = [a1 providerItemIdentifier];
-  v2 = [BRFileObjectID fileObjectIDWithString:v1];
+  providerItemIdentifier = [self providerItemIdentifier];
+  v2 = [BRFileObjectID fileObjectIDWithString:providerItemIdentifier];
 
   if (v2)
   {

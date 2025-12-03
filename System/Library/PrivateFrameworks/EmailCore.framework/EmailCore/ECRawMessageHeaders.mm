@@ -1,28 +1,28 @@
 @interface ECRawMessageHeaders
-- (ECRawMessageHeaders)initWithHeaderString:(id)a3;
-- (id)firstHeaderForKey:(id)a3;
-- (id)headersForKey:(id)a3;
+- (ECRawMessageHeaders)initWithHeaderString:(id)string;
+- (id)firstHeaderForKey:(id)key;
+- (id)headersForKey:(id)key;
 @end
 
 @implementation ECRawMessageHeaders
 
-- (ECRawMessageHeaders)initWithHeaderString:(id)a3
+- (ECRawMessageHeaders)initWithHeaderString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v31.receiver = self;
   v31.super_class = ECRawMessageHeaders;
   v5 = [(ECRawMessageHeaders *)&v31 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
+    ef_rfc6376WhitespaceCharacterSet = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
     v7 = 0;
     v8 = 0;
 LABEL_3:
-    for (i = v7; i < [v4 length]; ++i)
+    for (i = v7; i < [stringCopy length]; ++i)
     {
-      if ([v4 characterAtIndex:i] == 13 && i + 1 < objc_msgSend(v4, "length") && objc_msgSend(v4, "characterAtIndex:", i + 1) == 10 && (i + 2 >= objc_msgSend(v4, "length") || (objc_msgSend(v6, "characterIsMember:", objc_msgSend(v4, "characterAtIndex:")) & 1) == 0))
+      if ([stringCopy characterAtIndex:i] == 13 && i + 1 < objc_msgSend(stringCopy, "length") && objc_msgSend(stringCopy, "characterAtIndex:", i + 1) == 10 && (i + 2 >= objc_msgSend(stringCopy, "length") || (objc_msgSend(ef_rfc6376WhitespaceCharacterSet, "characterIsMember:", objc_msgSend(stringCopy, "characterAtIndex:")) & 1) == 0))
       {
-        v10 = [v4 substringWithRange:{v8, i - v8 + 2}];
+        v10 = [stringCopy substringWithRange:{v8, i - v8 + 2}];
         v11 = 0;
         v7 = i + 1;
         v30 = i + 2;
@@ -59,23 +59,23 @@ LABEL_3:
             headers = v5->_headers;
           }
 
-          v18 = [(ECRawMessageHeader *)v28 name];
-          v19 = [(NSMutableDictionary *)headers objectForKeyedSubscript:v18];
+          name = [(ECRawMessageHeader *)v28 name];
+          v19 = [(NSMutableDictionary *)headers objectForKeyedSubscript:name];
 
           if (v19)
           {
             v20 = v5->_headers;
-            v21 = [v29 name];
-            v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:v21];
-            [v22 addObject:v29];
+            name2 = [v29 name];
+            name3 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:name2];
+            [name3 addObject:v29];
           }
 
           else
           {
-            v21 = [MEMORY[0x277CBEB18] arrayWithObject:v29];
+            name2 = [MEMORY[0x277CBEB18] arrayWithObject:v29];
             v23 = v5->_headers;
-            v22 = [v29 name];
-            [(NSMutableDictionary *)v23 setObject:v21 forKeyedSubscript:v22];
+            name3 = [v29 name];
+            [(NSMutableDictionary *)v23 setObject:name2 forKeyedSubscript:name3];
           }
 
           orderedHeaders = v5->_orderedHeaders;
@@ -102,19 +102,19 @@ LABEL_26:
   return v5;
 }
 
-- (id)headersForKey:(id)a3
+- (id)headersForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_headers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_headers objectForKeyedSubscript:key];
 
   return v3;
 }
 
-- (id)firstHeaderForKey:(id)a3
+- (id)firstHeaderForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_headers objectForKeyedSubscript:a3];
-  v4 = [v3 firstObject];
+  v3 = [(NSMutableDictionary *)self->_headers objectForKeyedSubscript:key];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

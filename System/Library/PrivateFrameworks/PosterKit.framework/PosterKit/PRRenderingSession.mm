@@ -1,19 +1,19 @@
 @interface PRRenderingSession
-- (PRRenderingSession)initWithReason:(id)a3 invalidationBlock:(id)a4;
+- (PRRenderingSession)initWithReason:(id)reason invalidationBlock:(id)block;
 @end
 
 @implementation PRRenderingSession
 
-- (PRRenderingSession)initWithReason:(id)a3 invalidationBlock:(id)a4
+- (PRRenderingSession)initWithReason:(id)reason invalidationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = PRRenderingSession;
   v8 = [(PRRenderingSession *)&v16 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E698E778]) initWithIdentifier:@"RenderExtension" forReason:v6 invalidationBlock:v7];
+    v9 = [objc_alloc(MEMORY[0x1E698E778]) initWithIdentifier:@"RenderExtension" forReason:reasonCopy invalidationBlock:blockCopy];
     objc_storeStrong(&v8->_assertion, v9);
     v8->_timeRemaining = 5.0;
     v10 = dispatch_time(0, 5000000000);
@@ -22,7 +22,7 @@
     v13[2] = __55__PRRenderingSession_initWithReason_invalidationBlock___block_invoke;
     v13[3] = &unk_1E7843070;
     v14 = v9;
-    v15 = v6;
+    v15 = reasonCopy;
     v11 = v9;
     dispatch_after(v10, MEMORY[0x1E69E96A0], v13);
   }

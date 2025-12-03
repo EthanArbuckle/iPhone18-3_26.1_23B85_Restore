@@ -1,9 +1,9 @@
 @interface THGlossaryiOSCanvasViewController
-- (THGlossaryiOSCanvasViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)hitRep:(CGPoint)a3 allowsAllReps:(BOOL)a4;
+- (THGlossaryiOSCanvasViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)hitRep:(CGPoint)rep allowsAllReps:(BOOL)reps;
 - (void)_applyCorrectAppearance;
 - (void)dealloc;
-- (void)setTheme:(id)a3;
+- (void)setTheme:(id)theme;
 - (void)setUpGestureRecognizers;
 @end
 
@@ -18,8 +18,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [-[THGlossaryiOSCanvasViewController view](self view];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  view = [-[THGlossaryiOSCanvasViewController view](self view];
+  v4 = [view countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -31,7 +31,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(view);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -44,18 +44,18 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [view countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (THGlossaryiOSCanvasViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THGlossaryiOSCanvasViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = THGlossaryiOSCanvasViewController;
-  v4 = [(THGlossaryiOSCanvasViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(THGlossaryiOSCanvasViewController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
     [(THGlossaryiOSCanvasViewController *)v4 registerForTraitChanges:+[UITraitCollection withAction:"bc_allAPITraits"], "_traitCollectionDidChange:previousTraitCollection:"];
@@ -80,18 +80,18 @@
 
     [v4 setBackgroundColor:v5];
     [objc_msgSend(v4 "enclosingScrollView")];
-    v6 = [v4 rootCanvasView];
-    [v6 setBackgroundColor:v5];
-    v7 = [v6 enclosingScrollView];
+    rootCanvasView = [v4 rootCanvasView];
+    [rootCanvasView setBackgroundColor:v5];
+    enclosingScrollView = [rootCanvasView enclosingScrollView];
 
-    [v7 setBackgroundColor:v5];
+    [enclosingScrollView setBackgroundColor:v5];
   }
 }
 
-- (id)hitRep:(CGPoint)a3 allowsAllReps:(BOOL)a4
+- (id)hitRep:(CGPoint)rep allowsAllReps:(BOOL)reps
 {
   v5 = [-[THGlossaryiOSCanvasViewController interactiveCanvasController](self "interactiveCanvasController")];
-  if (!a4)
+  if (!reps)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -103,13 +103,13 @@
   return v5;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   if (([(IMTheme *)self->_theme isEqual:?]& 1) == 0)
   {
-    v5 = a3;
+    themeCopy = theme;
 
-    self->_theme = a3;
+    self->_theme = theme;
 
     [(THGlossaryiOSCanvasViewController *)self _applyCorrectAppearance];
   }

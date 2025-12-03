@@ -1,29 +1,29 @@
 @interface AirDropNavigationController
-- (_TtC7AirDrop27AirDropNavigationController)initWithCoder:(id)a3;
-- (_TtC7AirDrop27AirDropNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC7AirDrop27AirDropNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7AirDrop27AirDropNavigationController)initWithRootViewController:(id)a3;
-- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)a3;
-- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)a3 completionHandler:(id)a4;
-- (void)airDropViewServiceWillStartTransferToRecipient:(id)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (_TtC7AirDrop27AirDropNavigationController)initWithCoder:(id)coder;
+- (_TtC7AirDrop27AirDropNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC7AirDrop27AirDropNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7AirDrop27AirDropNavigationController)initWithRootViewController:(id)controller;
+- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)handler;
+- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)request completionHandler:(id)handler;
+- (void)airDropViewServiceWillStartTransferToRecipient:(id)recipient;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation AirDropNavigationController
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  AirDropNavigationController.beginRequest(with:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  AirDropNavigationController.beginRequest(with:)(contextCopy);
 }
 
-- (_TtC7AirDrop27AirDropNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC7AirDrop27AirDropNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -34,7 +34,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }
@@ -44,7 +44,7 @@ LABEL_3:
   return AirDropNavigationController.init(navigationBarClass:toolbarClass:)(ObjCClassMetadata, v6);
 }
 
-- (_TtC7AirDrop27AirDropNavigationController)initWithRootViewController:(id)a3
+- (_TtC7AirDrop27AirDropNavigationController)initWithRootViewController:(id)controller
 {
   ObjectType = swift_getObjectType();
   v6 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7AirDrop27AirDropNavigationController_AirDropNoContentViewKey);
@@ -52,13 +52,13 @@ LABEL_3:
   v6[1] = 0x8000000100027AB0;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(AirDropNavigationController *)&v8 initWithRootViewController:a3];
+  return [(AirDropNavigationController *)&v8 initWithRootViewController:controller];
 }
 
-- (_TtC7AirDrop27AirDropNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7AirDrop27AirDropNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (!a3)
+  if (!name)
   {
     v12 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7AirDrop27AirDropNavigationController_AirDropNoContentViewKey);
     *v12 = 0xD000000000000011;
@@ -73,23 +73,23 @@ LABEL_3:
   if (!v9)
   {
 LABEL_5:
-    v13 = a4;
+    bundleCopy = bundle;
     v11 = 0;
     goto LABEL_6;
   }
 
-  v10 = a4;
+  bundleCopy2 = bundle;
   v11 = sub_10001E120();
 
 LABEL_6:
   v16.receiver = self;
   v16.super_class = ObjectType;
-  v14 = [(AirDropNavigationController *)&v16 initWithNibName:v11 bundle:a4];
+  v14 = [(AirDropNavigationController *)&v16 initWithNibName:v11 bundle:bundle];
 
   return v14;
 }
 
-- (_TtC7AirDrop27AirDropNavigationController)initWithCoder:(id)a3
+- (_TtC7AirDrop27AirDropNavigationController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7AirDrop27AirDropNavigationController_AirDropNoContentViewKey);
@@ -97,8 +97,8 @@ LABEL_6:
   v6[1] = 0x8000000100027AB0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(AirDropNavigationController *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(AirDropNavigationController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {
@@ -107,16 +107,16 @@ LABEL_6:
   return v8;
 }
 
-- (void)airDropViewServiceWillStartTransferToRecipient:(id)a3
+- (void)airDropViewServiceWillStartTransferToRecipient:(id)recipient
 {
-  v5 = a3;
-  v6 = self;
-  AirDropNavigationController.airDropViewServiceWillStartTransfer(to:)(a3);
+  recipientCopy = recipient;
+  selfCopy = self;
+  AirDropNavigationController.airDropViewServiceWillStartTransfer(to:)(recipient);
 }
 
-- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)a3 completionHandler:(id)a4
+- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -129,15 +129,15 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  AirDropNavigationController.airDropViewServiceRequestingSharedItems(with:completionHandler:)(a3, v6, v7);
+  requestCopy = request;
+  selfCopy = self;
+  AirDropNavigationController.airDropViewServiceRequestingSharedItems(with:completionHandler:)(request, v6, v7);
   sub_10001A67C(v6);
 }
 
-- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)a3
+- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -152,7 +152,7 @@ LABEL_6:
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   AirDropNavigationController.airDropViewServiceRequestingSendingAppBundleIdentifier(completionHandler:)(v7, v6);
   sub_10001A67C(v7);
 }

@@ -1,13 +1,13 @@
 @interface PHContentEditingInput
 - (AVAsset)audiovisualAsset;
-- (PHContentEditingInput)initWithAppropriateURL:(id)a3;
+- (PHContentEditingInput)initWithAppropriateURL:(id)l;
 - (UTType)contentType;
 - (id)description;
-- (void)consumeSandboxExtensionToken:(id)a3;
+- (void)consumeSandboxExtensionToken:(id)token;
 - (void)dealloc;
-- (void)loadFullSizeImageDataWithCompletionHandler:(id)a3;
-- (void)requestFullSizeImageURLWithCompletionHandler:(id)a3;
-- (void)setVideoURL:(id)a3;
+- (void)loadFullSizeImageDataWithCompletionHandler:(id)handler;
+- (void)requestFullSizeImageURLWithCompletionHandler:(id)handler;
+- (void)setVideoURL:(id)l;
 @end
 
 @implementation PHContentEditingInput
@@ -17,25 +17,25 @@
   v11.receiver = self;
   v11.super_class = PHContentEditingInput;
   v3 = [(PHContentEditingInput *)&v11 description];
-  v4 = [(PHContentEditingInput *)self mediaType];
-  v5 = [(PHContentEditingInput *)self mediaSubtypes];
-  v6 = [(PHContentEditingInput *)self creationDate];
-  v7 = [(PHContentEditingInput *)self location];
-  v8 = [(PHContentEditingInput *)self adjustmentData];
-  v9 = [v3 stringByAppendingFormat:@" mediaType=%ld/%ld, creationDate=%@, location=%d, adjustmentData=%@", v4, v5, v6, v7 != 0, v8];
+  mediaType = [(PHContentEditingInput *)self mediaType];
+  mediaSubtypes = [(PHContentEditingInput *)self mediaSubtypes];
+  creationDate = [(PHContentEditingInput *)self creationDate];
+  location = [(PHContentEditingInput *)self location];
+  adjustmentData = [(PHContentEditingInput *)self adjustmentData];
+  v9 = [v3 stringByAppendingFormat:@" mediaType=%ld/%ld, creationDate=%@, location=%d, adjustmentData=%@", mediaType, mediaSubtypes, creationDate, location != 0, adjustmentData];
 
   return v9;
 }
 
 - (UTType)contentType
 {
-  v3 = [(PHContentEditingInput *)self uniformTypeIdentifier];
+  uniformTypeIdentifier = [(PHContentEditingInput *)self uniformTypeIdentifier];
 
-  if (v3)
+  if (uniformTypeIdentifier)
   {
     v4 = MEMORY[0x1E69C08F0];
-    v5 = [(PHContentEditingInput *)self uniformTypeIdentifier];
-    v6 = [v4 typeWithIdentifier:v5];
+    uniformTypeIdentifier2 = [(PHContentEditingInput *)self uniformTypeIdentifier];
+    v6 = [v4 typeWithIdentifier:uniformTypeIdentifier2];
     v7 = v6;
     v8 = *MEMORY[0x1E6982D60];
     if (v6)
@@ -108,43 +108,43 @@ void __41__PHContentEditingInput_audiovisualAsset__block_invoke(uint64_t a1)
   objc_storeStrong(v9, v3);
 }
 
-- (void)setVideoURL:(id)a3
+- (void)setVideoURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_videoURL != v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (self->_videoURL != lCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = lCopy;
+    lCopy = [lCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((lCopy & 1) == 0)
     {
       v6 = [v8 copy];
       videoURL = self->_videoURL;
       self->_videoURL = v6;
 
-      v4 = [(PHContentEditingInput *)self _invalidateAVAsset];
+      lCopy = [(PHContentEditingInput *)self _invalidateAVAsset];
       v5 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](lCopy, v5);
 }
 
-- (void)consumeSandboxExtensionToken:(id)a3
+- (void)consumeSandboxExtensionToken:(id)token
 {
-  v4 = a3;
-  v9 = v4;
+  tokenCopy = token;
+  v9 = tokenCopy;
   if (!self->_sandboxExtensionHandles)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sandboxExtensionHandles = self->_sandboxExtensionHandles;
-    self->_sandboxExtensionHandles = v5;
+    self->_sandboxExtensionHandles = array;
 
-    v4 = v9;
+    tokenCopy = v9;
   }
 
-  if ([v4 length])
+  if ([tokenCopy length])
   {
     v7 = MEMORY[0x1E696AD98];
     [v9 UTF8String];
@@ -153,25 +153,25 @@ void __41__PHContentEditingInput_audiovisualAsset__block_invoke(uint64_t a1)
   }
 }
 
-- (void)requestFullSizeImageURLWithCompletionHandler:(id)a3
+- (void)requestFullSizeImageURLWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v5 = a3;
-    v6 = [(PHContentEditingInput *)self fullSizeImageURL];
-    (*(a3 + 2))(v5, v6, [(PHContentEditingInput *)self fullSizeImageOrientation]);
+    handlerCopy = handler;
+    fullSizeImageURL = [(PHContentEditingInput *)self fullSizeImageURL];
+    (*(handler + 2))(handlerCopy, fullSizeImageURL, [(PHContentEditingInput *)self fullSizeImageOrientation]);
   }
 }
 
-- (void)loadFullSizeImageDataWithCompletionHandler:(id)a3
+- (void)loadFullSizeImageDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__PHContentEditingInput_loadFullSizeImageDataWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E75A93B8;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(PHContentEditingInput *)self requestFullSizeImageURLWithCompletionHandler:v6];
 }
 
@@ -216,17 +216,17 @@ void __68__PHContentEditingInput_loadFullSizeImageDataWithCompletionHandler___bl
     while (v5);
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v9.receiver = self;
   v9.super_class = PHContentEditingInput;
   [(PHContentEditingInput *)&v9 dealloc];
 }
 
-- (PHContentEditingInput)initWithAppropriateURL:(id)a3
+- (PHContentEditingInput)initWithAppropriateURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = PHContentEditingInput;
   v6 = [(PHContentEditingInput *)&v10 init];
@@ -236,7 +236,7 @@ void __68__PHContentEditingInput_loadFullSizeImageDataWithCompletionHandler___bl
     avAssetIsolationQueue = v6->_avAssetIsolationQueue;
     v6->_avAssetIsolationQueue = v7;
 
-    objc_storeStrong(&v6->_appropriateURLForDerivingRenderedContentURLs, a3);
+    objc_storeStrong(&v6->_appropriateURLForDerivingRenderedContentURLs, l);
   }
 
   return v6;

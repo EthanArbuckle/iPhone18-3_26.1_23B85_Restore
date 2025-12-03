@@ -1,14 +1,14 @@
 @interface CDGetInfoRequest
-- (CDGetInfoRequest)initWithRapportDictionary:(id)a3;
+- (CDGetInfoRequest)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDGetInfoRequest
 
-- (CDGetInfoRequest)initWithRapportDictionary:(id)a3
+- (CDGetInfoRequest)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = CDGetInfoRequest;
   v5 = [(CDGetInfoRequest *)&v20 init];
@@ -81,9 +81,9 @@
   [v3 appendString:self->_deviceModel withName:@"deviceModel" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
   [v3 appendString:self->_deviceBuildVersion withName:@"deviceBuildVersion" skipIfEmpty:1];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

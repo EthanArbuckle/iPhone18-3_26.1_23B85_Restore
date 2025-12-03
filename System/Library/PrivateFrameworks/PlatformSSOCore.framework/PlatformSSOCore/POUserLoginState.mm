@@ -1,69 +1,69 @@
 @interface POUserLoginState
-- (POUserLoginState)initWithCoder:(id)a3;
-- (POUserLoginState)initWithData:(id)a3;
-- (POUserLoginState)initWithDictionary:(id)a3;
-- (POUserLoginState)initWithUniqueIdentifier:(id)a3;
+- (POUserLoginState)initWithCoder:(id)coder;
+- (POUserLoginState)initWithData:(id)data;
+- (POUserLoginState)initWithDictionary:(id)dictionary;
+- (POUserLoginState)initWithUniqueIdentifier:(id)identifier;
 - (id)description;
-- (id)dictionaryRepresentationForDisplay:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLoginType:(unint64_t)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setlastLogin:(id)a3;
+- (id)dictionaryRepresentationForDisplay:(BOOL)display;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLoginType:(unint64_t)type;
+- (void)setState:(unint64_t)state;
+- (void)setlastLogin:(id)login;
 @end
 
 @implementation POUserLoginState
 
-- (POUserLoginState)initWithUniqueIdentifier:(id)a3
+- (POUserLoginState)initWithUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = POUserLoginState;
   v6 = [(POUserLoginState *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uniqueIdentifier, a3);
+    objc_storeStrong(&v6->_uniqueIdentifier, identifier);
     v7->_state = 0;
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastUpdated = v7->_lastUpdated;
-    v7->_lastUpdated = v8;
+    v7->_lastUpdated = date;
   }
 
   return v7;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  self->_state = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
+  self->_state = state;
+  date = [MEMORY[0x277CBEAA8] date];
   lastUpdated = self->_lastUpdated;
-  self->_lastUpdated = v4;
+  self->_lastUpdated = date;
 
-  MEMORY[0x2821F96F8](v4, lastUpdated);
+  MEMORY[0x2821F96F8](date, lastUpdated);
 }
 
-- (void)setlastLogin:(id)a3
+- (void)setlastLogin:(id)login
 {
-  objc_storeStrong(&self->_lastLogin, a3);
-  v7 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  objc_storeStrong(&self->_lastLogin, login);
+  loginCopy = login;
+  date = [MEMORY[0x277CBEAA8] date];
   lastUpdated = self->_lastUpdated;
-  self->_lastUpdated = v5;
+  self->_lastUpdated = date;
 }
 
-- (void)setLoginType:(unint64_t)a3
+- (void)setLoginType:(unint64_t)type
 {
-  self->_loginType = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
+  self->_loginType = type;
+  date = [MEMORY[0x277CBEAA8] date];
   lastUpdated = self->_lastUpdated;
-  self->_lastUpdated = v4;
+  self->_lastUpdated = date;
 
-  MEMORY[0x2821F96F8](v4, lastUpdated);
+  MEMORY[0x2821F96F8](date, lastUpdated);
 }
 
-- (id)dictionaryRepresentationForDisplay:(BOOL)a3
+- (id)dictionaryRepresentationForDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v5 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v5 setFormatOptions:1907];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -72,7 +72,7 @@
   [v6 setObject:uniqueIdentifier forKeyedSubscript:v8];
 
   state = self->_state;
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForLoginPolicyState:state];
   }
@@ -104,7 +104,7 @@
   }
 
   loginType = self->_loginType;
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForLoginType:loginType];
   }
@@ -152,10 +152,10 @@ id __49__POUserLoginState_dataRepresentationForDisplay___block_invoke(uint64_t a
   return v1;
 }
 
-- (POUserLoginState)initWithData:(id)a3
+- (POUserLoginState)initWithData:(id)data
 {
   v12 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v12];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:16 error:&v12];
   v5 = v12;
   v6 = v5;
   if (v5)
@@ -167,16 +167,16 @@ id __49__POUserLoginState_dataRepresentationForDisplay___block_invoke(uint64_t a
     v11 = v5;
     v7 = __33__POUserLoginState_initWithData___block_invoke(v10);
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POUserLoginState *)self initWithDictionary:v4];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 id __33__POUserLoginState_initWithData___block_invoke(uint64_t a1)
@@ -191,30 +191,30 @@ id __33__POUserLoginState_initWithData___block_invoke(uint64_t a1)
   return v1;
 }
 
-- (POUserLoginState)initWithDictionary:(id)a3
+- (POUserLoginState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v5 setFormatOptions:1907];
   v6 = NSStringFromSelector(sel_uniqueIdentifier);
-  v7 = [v4 objectForKeyedSubscript:v6];
+  v7 = [dictionaryCopy objectForKeyedSubscript:v6];
 
   v8 = [(POUserLoginState *)self initWithUniqueIdentifier:v7];
   if (v8)
   {
     v9 = NSStringFromSelector(sel_state);
-    v10 = [v4 objectForKeyedSubscript:v9];
+    v10 = [dictionaryCopy objectForKeyedSubscript:v9];
 
     if (v10)
     {
       v11 = NSStringFromSelector(sel_state);
-      v12 = [v4 objectForKeyedSubscript:v11];
+      v12 = [dictionaryCopy objectForKeyedSubscript:v11];
 
       v8->_state = [v12 unsignedIntValue];
     }
 
     v13 = NSStringFromSelector(sel_lastLogin);
-    v14 = [v4 objectForKeyedSubscript:v13];
+    v14 = [dictionaryCopy objectForKeyedSubscript:v13];
 
     if (v14)
     {
@@ -224,11 +224,11 @@ id __33__POUserLoginState_initWithData___block_invoke(uint64_t a1)
     }
 
     v17 = NSStringFromSelector(sel_loginType);
-    v18 = [v4 objectForKeyedSubscript:v17];
+    v18 = [dictionaryCopy objectForKeyedSubscript:v17];
     v8->_loginType = [v18 intValue];
 
     v19 = NSStringFromSelector(sel_lastUpdated);
-    v20 = [v4 objectForKeyedSubscript:v19];
+    v20 = [dictionaryCopy objectForKeyedSubscript:v19];
 
     if (v20)
     {
@@ -250,23 +250,23 @@ id __33__POUserLoginState_initWithData___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (POUserLoginState)initWithCoder:(id)a3
+- (POUserLoginState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(POUserLoginState *)self initWithData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(POUserLoginState *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(POUserLoginState *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 @end

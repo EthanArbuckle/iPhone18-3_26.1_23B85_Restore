@@ -1,32 +1,32 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addVerificationChannels:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addVerificationChannels:(id)channels;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext
 
-- (void)addVerificationChannels:(id)a3
+- (void)addVerificationChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   verificationChannels = self->_verificationChannels;
-  v8 = v4;
+  v8 = channelsCopy;
   if (!verificationChannels)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_verificationChannels;
     self->_verificationChannels = v6;
 
-    v4 = v8;
+    channelsCopy = v8;
     verificationChannels = self->_verificationChannels;
   }
 
-  [(NSMutableArray *)verificationChannels addObject:v4];
+  [(NSMutableArray *)verificationChannels addObject:channelsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   paymentPass = self->_paymentPass;
   if (paymentPass)
   {
-    v5 = [(NPKProtoStandalonePaymentPass *)paymentPass dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"paymentPass"];
+    dictionaryRepresentation = [(NPKProtoStandalonePaymentPass *)paymentPass dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"paymentPass"];
   }
 
   if ([(NSMutableArray *)self->_verificationChannels count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -84,18 +84,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"verificationChannels"];
+    [dictionary setObject:v6 forKey:@"verificationChannels"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_paymentPass)
   {
     PBDataWriterWriteSubmessage();
@@ -136,35 +136,35 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_paymentPass)
   {
-    [v8 setPaymentPass:?];
+    [toCopy setPaymentPass:?];
   }
 
   if ([(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self verificationChannelsCount])
   {
-    [v8 clearVerificationChannels];
-    v4 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self verificationChannelsCount];
-    if (v4)
+    [toCopy clearVerificationChannels];
+    verificationChannelsCount = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self verificationChannelsCount];
+    if (verificationChannelsCount)
     {
-      v5 = v4;
+      v5 = verificationChannelsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self verificationChannelsAtIndex:i];
-        [v8 addVerificationChannels:v7];
+        [toCopy addVerificationChannels:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandalonePaymentPass *)self->_paymentPass copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandalonePaymentPass *)self->_paymentPass copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addVerificationChannels:v13];
 
         ++v12;
@@ -205,13 +205,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((paymentPass = self->_paymentPass, !(paymentPass | v4[1])) || -[NPKProtoStandalonePaymentPass isEqual:](paymentPass, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((paymentPass = self->_paymentPass, !(paymentPass | equalCopy[1])) || -[NPKProtoStandalonePaymentPass isEqual:](paymentPass, "isEqual:")))
   {
     verificationChannels = self->_verificationChannels;
-    if (verificationChannels | v4[2])
+    if (verificationChannels | equalCopy[2])
     {
       v7 = [(NSMutableArray *)verificationChannels isEqual:?];
     }
@@ -230,12 +230,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   paymentPass = self->_paymentPass;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (paymentPass)
   {
     if (v6)
@@ -253,7 +253,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

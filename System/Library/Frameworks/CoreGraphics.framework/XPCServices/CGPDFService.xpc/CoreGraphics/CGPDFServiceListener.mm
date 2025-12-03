@@ -1,6 +1,6 @@
 @interface CGPDFServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CGPDFServiceListener)initWithListener:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CGPDFServiceListener)initWithListener:(id)listener;
 - (id)initForLoopback;
 - (id)initForXPCService;
 - (void)run;
@@ -8,16 +8,16 @@
 
 @implementation CGPDFServiceListener
 
-- (CGPDFServiceListener)initWithListener:(id)a3
+- (CGPDFServiceListener)initWithListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v9.receiver = self;
   v9.super_class = CGPDFServiceListener;
   v6 = [(CGPDFServiceListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listener, a3);
+    objc_storeStrong(&v6->_listener, listener);
     [(NSXPCListener *)v7->_listener setDelegate:v7];
   }
 
@@ -42,22 +42,22 @@
 
 - (void)run
 {
-  v2 = [(CGPDFServiceListener *)self listener];
-  [v2 resume];
+  listener = [(CGPDFServiceListener *)self listener];
+  [listener resume];
 
   v3 = +[NSRunLoop currentRunLoop];
   [v3 run];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = +[CGRemotePDFServiceProxy interface];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = objc_opt_new();
-  [v4 setExportedObject:v6];
-  [v4 resume];
+  [connectionCopy setExportedObject:v6];
+  [connectionCopy resume];
 
   return 1;
 }

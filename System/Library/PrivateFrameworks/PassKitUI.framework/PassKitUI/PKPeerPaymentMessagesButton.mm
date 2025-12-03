@@ -2,12 +2,12 @@
 + (CGSize)referenceSize;
 - (CGSize)imageSize;
 - (PKPeerPaymentMessagesButton)init;
-- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)a3;
-- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)a3 usePlatterColor:(BOOL)a4;
+- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)frame;
+- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)frame usePlatterColor:(BOOL)color;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setShowsActivityIndicator:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageSize:(CGSize)size;
+- (void)setShowsActivityIndicator:(BOOL)indicator;
 @end
 
 @implementation PKPeerPaymentMessagesButton
@@ -30,7 +30,7 @@
   return [(PKPeerPaymentMessagesButton *)self initWithFrame:v3, v4, v5, v6];
 }
 
-- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)a3
+- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)frame
 {
   v4 = *MEMORY[0x1E695EFF8];
   v5 = *(MEMORY[0x1E695EFF8] + 8);
@@ -39,15 +39,15 @@
   return [(PKPeerPaymentMessagesButton *)self initWithFrame:1 usePlatterColor:v4, v5, v6, v7];
 }
 
-- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)a3 usePlatterColor:(BOOL)a4
+- (PKPeerPaymentMessagesButton)initWithFrame:(CGRect)frame usePlatterColor:(BOOL)color
 {
-  v4 = a4;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = PKPeerPaymentMessagesButton;
-  v5 = [(PKPeerPaymentMessagesButton *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PKPeerPaymentMessagesButton *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    if (v4)
+    if (colorCopy)
     {
       v6 = +[PKPeerPaymentTheme platterPressedColor];
       highlightedBackgroundColor = v5->_highlightedBackgroundColor;
@@ -58,9 +58,9 @@
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
       v10 = v5->_highlightedBackgroundColor;
-      v5->_highlightedBackgroundColor = v9;
+      v5->_highlightedBackgroundColor = clearColor;
 
       [MEMORY[0x1E69DC888] clearColor];
     }
@@ -69,21 +69,21 @@
     v5->_backgroundColor = v8;
 
     [(PKPeerPaymentMessagesButton *)v5 setHighlighted:0];
-    v12 = [(PKPeerPaymentMessagesButton *)v5 imageView];
-    [v12 setContentMode:1];
+    imageView = [(PKPeerPaymentMessagesButton *)v5 imageView];
+    [imageView setContentMode:1];
   }
 
   return v5;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = PKPeerPaymentMessagesButton;
   [(PKPeerPaymentMessagesButton *)&v6 setHighlighted:?];
   v5 = 1;
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0;
   }
@@ -91,20 +91,20 @@
   [(PKPeerPaymentMessagesButton *)self setBackgroundColor:*(&self->super.super.super.super.super.isa + OBJC_IVAR___PKPeerPaymentMessagesButton__highlightedBackgroundColor[v5])];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (self->_imageSize.width != a3.width || self->_imageSize.height != a3.height)
+  if (self->_imageSize.width != size.width || self->_imageSize.height != size.height)
   {
-    self->_imageSize = a3;
+    self->_imageSize = size;
     [(PKPeerPaymentMessagesButton *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsActivityIndicator:(BOOL)a3
+- (void)setShowsActivityIndicator:(BOOL)indicator
 {
-  self->_showsActivityIndicator = a3;
+  self->_showsActivityIndicator = indicator;
   spinner = self->_spinner;
-  if (a3)
+  if (indicator)
   {
     v5 = 0.0;
     if (!spinner)
@@ -114,8 +114,8 @@
       self->_spinner = v6;
 
       v8 = self->_spinner;
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIActivityIndicatorView *)v8 setColor:v9];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIActivityIndicatorView *)v8 setColor:whiteColor];
 
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
       [(PKPeerPaymentMessagesButton *)self addSubview:self->_spinner];
@@ -133,8 +133,8 @@
     }
   }
 
-  v11 = [(PKPeerPaymentMessagesButton *)self titleLabel];
-  [v11 setAlpha:v5];
+  titleLabel = [(PKPeerPaymentMessagesButton *)self titleLabel];
+  [titleLabel setAlpha:v5];
 
   [(PKPeerPaymentMessagesButton *)self setNeedsLayout];
 }
@@ -154,9 +154,9 @@
 
   if (self->_imageSize.width != *MEMORY[0x1E695F060] || self->_imageSize.height != *(MEMORY[0x1E695F060] + 8))
   {
-    v7 = [(PKPeerPaymentMessagesButton *)self imageView];
+    imageView = [(PKPeerPaymentMessagesButton *)self imageView];
     UIRectCenteredAboutPoint();
-    [v7 setFrame:?];
+    [imageView setFrame:?];
   }
 }
 

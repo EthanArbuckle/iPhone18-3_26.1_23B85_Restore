@@ -1,24 +1,24 @@
 @interface CDPUIInheritanceAppAccessDetails
-- (CDPUIInheritanceAppAccessDetails)initWithBundleID:(id)a3 accessString:(id)a4;
+- (CDPUIInheritanceAppAccessDetails)initWithBundleID:(id)d accessString:(id)string;
 - (void)_prepareIcon;
 @end
 
 @implementation CDPUIInheritanceAppAccessDetails
 
-- (CDPUIInheritanceAppAccessDetails)initWithBundleID:(id)a3 accessString:(id)a4
+- (CDPUIInheritanceAppAccessDetails)initWithBundleID:(id)d accessString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  stringCopy = string;
   v18.receiver = self;
   v18.super_class = CDPUIInheritanceAppAccessDetails;
   v8 = [(CDPUIInheritanceAppAccessDetails *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     bundleID = v8->_bundleID;
     v8->_bundleID = v9;
 
-    v11 = [v7 copy];
+    v11 = [stringCopy copy];
     accessString = v8->_accessString;
     v8->_accessString = v11;
 
@@ -26,9 +26,9 @@
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 localizedName];
+      localizedName = [v13 localizedName];
       appName = v8->_appName;
-      v8->_appName = v15;
+      v8->_appName = localizedName;
     }
 
     [(CDPUIInheritanceAppAccessDetails *)v8 _prepareIcon];
@@ -48,7 +48,7 @@
     v5[2] = __48__CDPUIInheritanceAppAccessDetails__prepareIcon__block_invoke;
     v5[3] = &unk_278E2B2D0;
     v6 = v3;
-    v7 = self;
+    selfCopy = self;
     dispatch_async(v4, v5);
   }
 }

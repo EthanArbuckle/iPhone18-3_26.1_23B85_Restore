@@ -1,37 +1,37 @@
 @interface NTKAppleEncryptedArchiveMemoryExtractor
-- (NTKAppleEncryptedArchiveMemoryExtractor)initWithArchiveURL:(id)a3 symmetricKey:(id)a4 extractingFileAtArchivedPath:(id)a5 completion:(id)a6;
+- (NTKAppleEncryptedArchiveMemoryExtractor)initWithArchiveURL:(id)l symmetricKey:(id)key extractingFileAtArchivedPath:(id)path completion:(id)completion;
 - (void)cancel;
 - (void)resume;
-- (void)setOutputData:(uint64_t)a1;
-- (void)setOutputError:(uint64_t)a1;
+- (void)setOutputData:(uint64_t)data;
+- (void)setOutputError:(uint64_t)error;
 @end
 
 @implementation NTKAppleEncryptedArchiveMemoryExtractor
 
-- (NTKAppleEncryptedArchiveMemoryExtractor)initWithArchiveURL:(id)a3 symmetricKey:(id)a4 extractingFileAtArchivedPath:(id)a5 completion:(id)a6
+- (NTKAppleEncryptedArchiveMemoryExtractor)initWithArchiveURL:(id)l symmetricKey:(id)key extractingFileAtArchivedPath:(id)path completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  keyCopy = key;
+  pathCopy = path;
+  completionCopy = completion;
   v26.receiver = self;
   v26.super_class = NTKAppleEncryptedArchiveMemoryExtractor;
   v14 = [(NTKAppleEncryptedArchiveMemoryExtractor *)&v26 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [lCopy copy];
     archiveURL = v14->_archiveURL;
     v14->_archiveURL = v15;
 
-    v17 = [v11 copy];
+    v17 = [keyCopy copy];
     symmetricKey = v14->_symmetricKey;
     v14->_symmetricKey = v17;
 
-    v19 = [v12 copy];
+    v19 = [pathCopy copy];
     targetArchivedPath = v14->_targetArchivedPath;
     v14->_targetArchivedPath = v19;
 
-    v21 = [v13 copy];
+    v21 = [completionCopy copy];
     completion = v14->_completion;
     v14->_completion = v21;
 
@@ -49,14 +49,14 @@
 
 - (void)resume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    v2->_state = 1;
-    objc_sync_exit(v2);
+    selfCopy->_state = 1;
+    objc_sync_exit(selfCopy);
 
-    extractionQueue = v2->_extractionQueue;
+    extractionQueue = selfCopy->_extractionQueue;
   }
 
   else
@@ -69,7 +69,7 @@
   block[1] = 3221225472;
   block[2] = __49__NTKAppleEncryptedArchiveMemoryExtractor_resume__block_invoke;
   block[3] = &unk_27877DB10;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(extractionQueue, block);
 }
 
@@ -414,19 +414,19 @@ void __49__NTKAppleEncryptedArchiveMemoryExtractor_resume__block_invoke_9(uint64
   objc_sync_exit(obj);
 }
 
-- (void)setOutputData:(uint64_t)a1
+- (void)setOutputData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 72), a2);
+    objc_storeStrong((data + 72), a2);
   }
 }
 
-- (void)setOutputError:(uint64_t)a1
+- (void)setOutputError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((error + 80), a2);
   }
 }
 

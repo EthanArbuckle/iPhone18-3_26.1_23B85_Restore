@@ -1,23 +1,23 @@
 @interface CLSerializableWalkingSpeedStrideCal
-- (CLSerializableWalkingSpeedStrideCal)initWithCoder:(id)a3;
-- (CLSerializableWalkingSpeedStrideCal)initWithWalkingSpeedStrideCal:(const WalkingSpeedStrideCal *)a3;
+- (CLSerializableWalkingSpeedStrideCal)initWithCoder:(id)coder;
+- (CLSerializableWalkingSpeedStrideCal)initWithWalkingSpeedStrideCal:(const WalkingSpeedStrideCal *)cal;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
-- (void)getWalkingSpeedStrideCal:(WalkingSpeedStrideCal *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getWalkingSpeedStrideCal:(WalkingSpeedStrideCal *)cal;
 @end
 
 @implementation CLSerializableWalkingSpeedStrideCal
 
-- (CLSerializableWalkingSpeedStrideCal)initWithWalkingSpeedStrideCal:(const WalkingSpeedStrideCal *)a3
+- (CLSerializableWalkingSpeedStrideCal)initWithWalkingSpeedStrideCal:(const WalkingSpeedStrideCal *)cal
 {
   v7.receiver = self;
   v7.super_class = CLSerializableWalkingSpeedStrideCal;
   result = [(CLSerializableWalkingSpeedStrideCal *)&v7 init];
   if (result)
   {
-    v5 = *&a3->startTime;
-    v6 = *&a3->cadenceWatch;
-    *&result->_strideCal.meanWalkingSpeed = *&a3->meanWalkingSpeed;
+    v5 = *&cal->startTime;
+    v6 = *&cal->cadenceWatch;
+    *&result->_strideCal.meanWalkingSpeed = *&cal->meanWalkingSpeed;
     *&result->_strideCal.cadenceWatch = v6;
     *&result->_strideCal.startTime = v5;
   }
@@ -25,45 +25,45 @@
   return result;
 }
 
-- (void)getWalkingSpeedStrideCal:(WalkingSpeedStrideCal *)a3
+- (void)getWalkingSpeedStrideCal:(WalkingSpeedStrideCal *)cal
 {
   v3 = *&self->_strideCal.startTime;
   v4 = *&self->_strideCal.meanWalkingSpeed;
-  *&a3->cadenceWatch = *&self->_strideCal.cadenceWatch;
-  *&a3->meanWalkingSpeed = v4;
-  *&a3->startTime = v3;
+  *&cal->cadenceWatch = *&self->_strideCal.cadenceWatch;
+  *&cal->meanWalkingSpeed = v4;
+  *&cal->startTime = v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"startTime" forKey:self->_strideCal.startTime];
-  [a3 encodeDouble:@"endTime" forKey:self->_strideCal.endTime];
-  [a3 encodeDouble:@"cadenceWatch" forKey:self->_strideCal.cadenceWatch];
-  [a3 encodeDouble:@"cadenceGaitCycle" forKey:self->_strideCal.cadenceGaitCycle];
-  [a3 encodeDouble:@"meanWalkingSpeed" forKey:self->_strideCal.meanWalkingSpeed];
+  [coder encodeDouble:@"startTime" forKey:self->_strideCal.startTime];
+  [coder encodeDouble:@"endTime" forKey:self->_strideCal.endTime];
+  [coder encodeDouble:@"cadenceWatch" forKey:self->_strideCal.cadenceWatch];
+  [coder encodeDouble:@"cadenceGaitCycle" forKey:self->_strideCal.cadenceGaitCycle];
+  [coder encodeDouble:@"meanWalkingSpeed" forKey:self->_strideCal.meanWalkingSpeed];
   gaitCycleYield = self->_strideCal.gaitCycleYield;
 
-  [a3 encodeDouble:@"gaitCycleYield" forKey:gaitCycleYield];
+  [coder encodeDouble:@"gaitCycleYield" forKey:gaitCycleYield];
 }
 
-- (CLSerializableWalkingSpeedStrideCal)initWithCoder:(id)a3
+- (CLSerializableWalkingSpeedStrideCal)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = CLSerializableWalkingSpeedStrideCal;
   v4 = [(CLSerializableWalkingSpeedStrideCal *)&v12 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"startTime"];
+    [coder decodeDoubleForKey:@"startTime"];
     v4->_strideCal.startTime = v5;
-    [a3 decodeDoubleForKey:@"endTime"];
+    [coder decodeDoubleForKey:@"endTime"];
     v4->_strideCal.endTime = v6;
-    [a3 decodeDoubleForKey:@"cadenceWatch"];
+    [coder decodeDoubleForKey:@"cadenceWatch"];
     v4->_strideCal.cadenceWatch = v7;
-    [a3 decodeDoubleForKey:@"cadenceGaitCycle"];
+    [coder decodeDoubleForKey:@"cadenceGaitCycle"];
     v4->_strideCal.cadenceGaitCycle = v8;
-    [a3 decodeDoubleForKey:@"meanWalkingSpeed"];
+    [coder decodeDoubleForKey:@"meanWalkingSpeed"];
     v4->_strideCal.meanWalkingSpeed = v9;
-    [a3 decodeDoubleForKey:@"gaitCycleYield"];
+    [coder decodeDoubleForKey:@"gaitCycleYield"];
     v4->_strideCal.gaitCycleYield = v10;
   }
 

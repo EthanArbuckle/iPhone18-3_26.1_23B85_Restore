@@ -1,33 +1,33 @@
 @interface SBIconPreviousLocationTracker
-- (void)captureLocationInfoForIcon:(id)a3 inModel:(id)a4;
+- (void)captureLocationInfoForIcon:(id)icon inModel:(id)model;
 @end
 
 @implementation SBIconPreviousLocationTracker
 
-- (void)captureLocationInfoForIcon:(id)a3 inModel:(id)a4
+- (void)captureLocationInfoForIcon:(id)icon inModel:(id)model
 {
-  v14 = a3;
-  v6 = [a4 rootFolder];
-  v7 = [v6 indexPathForIcon:v14];
+  iconCopy = icon;
+  rootFolder = [model rootFolder];
+  v7 = [rootFolder indexPathForIcon:iconCopy];
   if (v7)
   {
-    v8 = [v6 folderContainingIndexPath:v7 relativeIndexPath:0];
+    v8 = [rootFolder folderContainingIndexPath:v7 relativeIndexPath:0];
     v9 = v8;
-    if (v8 && v8 != v6)
+    if (v8 && v8 != rootFolder)
     {
       if (!self->_previousIconLocations)
       {
-        v10 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+        weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
         previousIconLocations = self->_previousIconLocations;
-        self->_previousIconLocations = v10;
+        self->_previousIconLocations = weakToStrongObjectsMapTable;
       }
 
       v12 = objc_alloc_init(SBIconPreviousLocationInfo);
       [(SBIconPreviousLocationInfo *)v12 setFolder:v9];
-      v13 = [v9 displayName];
-      [(SBIconPreviousLocationInfo *)v12 setFolderName:v13];
+      displayName = [v9 displayName];
+      [(SBIconPreviousLocationInfo *)v12 setFolderName:displayName];
 
-      [(NSMapTable *)self->_previousIconLocations setObject:v12 forKey:v14];
+      [(NSMapTable *)self->_previousIconLocations setObject:v12 forKey:iconCopy];
     }
   }
 

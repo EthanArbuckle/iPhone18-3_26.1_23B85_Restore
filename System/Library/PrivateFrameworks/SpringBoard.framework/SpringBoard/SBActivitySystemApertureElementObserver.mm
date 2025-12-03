@@ -1,59 +1,59 @@
 @interface SBActivitySystemApertureElementObserver
-- (BOOL)_activityAlertIsPendingForIdentifier:(id)a3;
-- (BOOL)_activityHasDifferentAlertSceneTarget:(id)a3;
-- (BOOL)_activityHasSwappedScene:(id)a3;
-- (BOOL)_activityIsPendingForIdentifier:(id)a3;
-- (BOOL)_canPresentAlert:(id)a3;
-- (BOOL)_canRegisterElementForActivityItem:(id)a3;
+- (BOOL)_activityAlertIsPendingForIdentifier:(id)identifier;
+- (BOOL)_activityHasDifferentAlertSceneTarget:(id)target;
+- (BOOL)_activityHasSwappedScene:(id)scene;
+- (BOOL)_activityIsPendingForIdentifier:(id)identifier;
+- (BOOL)_canPresentAlert:(id)alert;
+- (BOOL)_canRegisterElementForActivityItem:(id)item;
 - (BOOL)_hasValidAlertingAssertion;
-- (BOOL)_isActivityOngoing:(id)a3;
-- (BOOL)_isContentReadyForAlert:(id)a3;
-- (BOOL)_registeredElementExistsForBundleIdentifier:(id)a3;
-- (BOOL)_shouldSwapActivityItem:(id)a3 withOtherItem:(id)a4 itemAlerting:(BOOL)a5;
-- (BOOL)_systemApertureElementAssertionExistsForBundleIdentifier:(id)a3;
-- (BOOL)shouldHandleActivityItem:(id)a3;
+- (BOOL)_isActivityOngoing:(id)ongoing;
+- (BOOL)_isContentReadyForAlert:(id)alert;
+- (BOOL)_registeredElementExistsForBundleIdentifier:(id)identifier;
+- (BOOL)_shouldSwapActivityItem:(id)item withOtherItem:(id)otherItem itemAlerting:(BOOL)alerting;
+- (BOOL)_systemApertureElementAssertionExistsForBundleIdentifier:(id)identifier;
+- (BOOL)shouldHandleActivityItem:(id)item;
 - (SBActivitySystemApertureElementObserver)init;
-- (id)_activatedElementItemForBundleIdentifier:(id)a3;
-- (id)_createSceneHandle:(id)a3 forAlerting:(BOOL)a4;
-- (id)_createSystemApertureSceneHandleWithItem:(id)a3 forAlerting:(BOOL)a4;
-- (id)_pendingItemForAlert:(id)a3;
-- (void)_addPendingAlert:(id)a3;
-- (void)_addPendingItemIfNecessary:(id)a3;
-- (void)_checkForPossibleSwapsForActivatedItem:(id)a3;
-- (void)_cleanUpAlertPresentation:(id)a3 completion:(id)a4;
+- (id)_activatedElementItemForBundleIdentifier:(id)identifier;
+- (id)_createSceneHandle:(id)handle forAlerting:(BOOL)alerting;
+- (id)_createSystemApertureSceneHandleWithItem:(id)item forAlerting:(BOOL)alerting;
+- (id)_pendingItemForAlert:(id)alert;
+- (void)_addPendingAlert:(id)alert;
+- (void)_addPendingItemIfNecessary:(id)necessary;
+- (void)_checkForPossibleSwapsForActivatedItem:(id)item;
+- (void)_cleanUpAlertPresentation:(id)presentation completion:(id)completion;
 - (void)_cleanUpInvalidRegisteredElements;
-- (void)_createAndActivateElementForActivityItem:(id)a3 forAlerting:(BOOL)a4 completion:(id)a5;
-- (void)_createAndActivateSystemApertureElementWithScene:(id)a3 item:(id)a4 forAlerting:(BOOL)a5 completion:(id)a6;
-- (void)_invalidateSystemApertureElementForItem:(id)a3 completion:(id)a4;
-- (void)_prepareAndPresentActivityAlert:(id)a3;
-- (void)_prepareForAlertingActivityIfNecessary:(id)a3 completion:(id)a4;
-- (void)_presentAlert:(id)a3;
-- (void)_presentOrPendActivityAlert:(id)a3;
+- (void)_createAndActivateElementForActivityItem:(id)item forAlerting:(BOOL)alerting completion:(id)completion;
+- (void)_createAndActivateSystemApertureElementWithScene:(id)scene item:(id)item forAlerting:(BOOL)alerting completion:(id)completion;
+- (void)_invalidateSystemApertureElementForItem:(id)item completion:(id)completion;
+- (void)_prepareAndPresentActivityAlert:(id)alert;
+- (void)_prepareForAlertingActivityIfNecessary:(id)necessary completion:(id)completion;
+- (void)_presentAlert:(id)alert;
+- (void)_presentOrPendActivityAlert:(id)alert;
 - (void)_presentPendingAlertIfNecessary;
-- (void)_presentPendingAlertIfNecessaryForActivityIdentifier:(id)a3;
+- (void)_presentPendingAlertIfNecessaryForActivityIdentifier:(id)identifier;
 - (void)_registerSystemApertureElementForPendingActivityIfNecessary;
-- (void)_removePendingItem:(id)a3 withPendingAlerts:(BOOL)a4;
-- (void)_removeSystemApertureSceneHandleWithItem:(id)a3;
-- (void)_restoreOngoingActivityElementIfNecessaryForDismissingAlert:(id)a3;
-- (void)_stopAlertingForActivityIdentifier:(id)a3;
-- (void)_storeSceneHandle:(id)a3 item:(id)a4;
-- (void)_swapActivityItem:(id)a3 withItem:(id)a4;
-- (void)_swapItemWithRegisteredItemIfNecessary:(id)a3 itemAlerting:(BOOL)a4;
-- (void)_swapToAlertSceneForActivityItem:(id)a3 completion:(id)a4;
-- (void)_unlockAndLaunchAppIfPossible:(id)a3 withAction:(id)a4;
-- (void)_updatePendingItemWithItem:(id)a3;
-- (void)_updateSystemApertureElementProminence:(BOOL)a3 item:(id)a4;
-- (void)activityDidEnd:(id)a3;
-- (void)activityDidStart:(id)a3;
-- (void)activityDidUpdate:(id)a3;
-- (void)activityEnvironmentChanged:(int64_t)a3;
-- (void)activityProminenceChanged:(BOOL)a3 item:(id)a4;
-- (void)activityWasBlockedForItem:(id)a3;
-- (void)activityWasUnblockedForItem:(id)a3;
-- (void)dismissAlert:(id)a3;
-- (void)presentAlert:(id)a3;
-- (void)presentFallbackAlert:(id)a3;
-- (void)systemApertureSceneHandle:(id)a3 updatedContentPayloadID:(id)a4;
+- (void)_removePendingItem:(id)item withPendingAlerts:(BOOL)alerts;
+- (void)_removeSystemApertureSceneHandleWithItem:(id)item;
+- (void)_restoreOngoingActivityElementIfNecessaryForDismissingAlert:(id)alert;
+- (void)_stopAlertingForActivityIdentifier:(id)identifier;
+- (void)_storeSceneHandle:(id)handle item:(id)item;
+- (void)_swapActivityItem:(id)item withItem:(id)withItem;
+- (void)_swapItemWithRegisteredItemIfNecessary:(id)necessary itemAlerting:(BOOL)alerting;
+- (void)_swapToAlertSceneForActivityItem:(id)item completion:(id)completion;
+- (void)_unlockAndLaunchAppIfPossible:(id)possible withAction:(id)action;
+- (void)_updatePendingItemWithItem:(id)item;
+- (void)_updateSystemApertureElementProminence:(BOOL)prominence item:(id)item;
+- (void)activityDidEnd:(id)end;
+- (void)activityDidStart:(id)start;
+- (void)activityDidUpdate:(id)update;
+- (void)activityEnvironmentChanged:(int64_t)changed;
+- (void)activityProminenceChanged:(BOOL)changed item:(id)item;
+- (void)activityWasBlockedForItem:(id)item;
+- (void)activityWasUnblockedForItem:(id)item;
+- (void)dismissAlert:(id)alert;
+- (void)presentAlert:(id)alert;
+- (void)presentFallbackAlert:(id)alert;
+- (void)systemApertureSceneHandle:(id)handle updatedContentPayloadID:(id)d;
 @end
 
 @implementation SBActivitySystemApertureElementObserver
@@ -123,10 +123,10 @@
   return v2;
 }
 
-- (void)activityDidStart:(id)a3
+- (void)activityDidStart:(id)start
 {
-  v4 = a3;
-  v3 = v4;
+  startCopy = start;
+  v3 = startCopy;
   BSDispatchMain();
 }
 
@@ -165,30 +165,30 @@ void __60__SBActivitySystemApertureElementObserver_activityDidStart___block_invo
   }
 }
 
-- (void)activityDidUpdate:(id)a3
+- (void)activityDidUpdate:(id)update
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   [(SBActivitySystemApertureElementObserver *)self _cleanUpInvalidRegisteredElements];
-  v5 = [v4 identifier];
-  v6 = [v4 descriptor];
-  v7 = [v6 platterTargetBundleIdentifier];
+  identifier = [updateCopy identifier];
+  descriptor = [updateCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
   v8 = SBLogActivity();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 relevanceScore];
+    [updateCopy relevanceScore];
     *buf = 138543874;
-    v27 = v5;
+    v27 = identifier;
     v28 = 2114;
-    v29 = v7;
+    v29 = platterTargetBundleIdentifier;
     v30 = 2048;
     v31 = v9;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] updated with relevance score %f", buf, 0x20u);
   }
 
-  v10 = [(SBActivitySystemApertureElementObserver *)self _activatedElementItemForBundleIdentifier:v7];
-  v11 = [v10 identifier];
-  v12 = [v11 isEqualToString:v5];
+  v10 = [(SBActivitySystemApertureElementObserver *)self _activatedElementItemForBundleIdentifier:platterTargetBundleIdentifier];
+  identifier2 = [v10 identifier];
+  v12 = [identifier2 isEqualToString:identifier];
 
   v13 = SBLogActivity();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -197,13 +197,13 @@ void __60__SBActivitySystemApertureElementObserver_activityDidStart___block_invo
     if (v14)
     {
       *buf = 138543618;
-      v27 = v5;
+      v27 = identifier;
       v28 = 2114;
-      v29 = v7;
+      v29 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Update is on the registered element", buf, 0x16u);
     }
 
-    [(NSMutableDictionary *)self->_activeItemByActivityIdentifier setObject:v4 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_activeItemByActivityIdentifier setObject:updateCopy forKeyedSubscript:identifier];
     v15 = [(NSMutableArray *)self->_pendingItems copy];
     v21 = 0u;
     v22 = 0u;
@@ -241,21 +241,21 @@ void __60__SBActivitySystemApertureElementObserver_activityDidStart___block_invo
     if (v14)
     {
       *buf = 138543618;
-      v27 = v5;
+      v27 = identifier;
       v28 = 2114;
-      v29 = v7;
+      v29 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Update is on a pending element", buf, 0x16u);
     }
 
-    [(SBActivitySystemApertureElementObserver *)self _updatePendingItemWithItem:v4];
-    [(SBActivitySystemApertureElementObserver *)self _swapItemWithRegisteredItemIfNecessary:v4 itemAlerting:0];
+    [(SBActivitySystemApertureElementObserver *)self _updatePendingItemWithItem:updateCopy];
+    [(SBActivitySystemApertureElementObserver *)self _swapItemWithRegisteredItemIfNecessary:updateCopy itemAlerting:0];
   }
 }
 
-- (void)activityDidEnd:(id)a3
+- (void)activityDidEnd:(id)end
 {
-  v4 = a3;
-  v3 = v4;
+  endCopy = end;
+  v3 = endCopy;
   BSDispatchMain();
 }
 
@@ -322,67 +322,67 @@ void __58__SBActivitySystemApertureElementObserver_activityDidEnd___block_invoke
   }
 }
 
-- (BOOL)shouldHandleActivityItem:(id)a3
+- (BOOL)shouldHandleActivityItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
-  v3 = [a3 descriptor];
-  v4 = [v3 presentationOptions];
-  v5 = [v4 destinations];
-  v6 = [v5 bs_containsObjectPassingTest:&__block_literal_global_129];
+  descriptor = [item descriptor];
+  presentationOptions = [descriptor presentationOptions];
+  destinations = [presentationOptions destinations];
+  v6 = [destinations bs_containsObjectPassingTest:&__block_literal_global_129];
 
   v7 = +[SBLiveActivityDomain rootSettings];
-  v8 = [v7 hideActivitiesInDynamicIsland];
+  hideActivitiesInDynamicIsland = [v7 hideActivitiesInDynamicIsland];
 
-  v9 = (v8 ^ 1) & v6;
+  v9 = (hideActivitiesInDynamicIsland ^ 1) & v6;
   return v9;
 }
 
-- (void)activityWasBlockedForItem:(id)a3
+- (void)activityWasBlockedForItem:(id)item
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [itemCopy identifier];
     v7 = 138543362;
-    v8 = v6;
+    v8 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] was blocked", &v7, 0xCu);
   }
 
-  [(SBActivitySystemApertureElementObserver *)self activityDidEnd:v4];
+  [(SBActivitySystemApertureElementObserver *)self activityDidEnd:itemCopy];
 }
 
-- (void)activityWasUnblockedForItem:(id)a3
+- (void)activityWasUnblockedForItem:(id)item
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [itemCopy identifier];
     v7 = 138543362;
-    v8 = v6;
+    v8 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] was unblocked", &v7, 0xCu);
   }
 
-  [(SBActivitySystemApertureElementObserver *)self activityDidStart:v4];
+  [(SBActivitySystemApertureElementObserver *)self activityDidStart:itemCopy];
 }
 
-- (void)presentAlert:(id)a3
+- (void)presentAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SBActivitySystemApertureElementObserver_presentAlert___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = alertCopy;
+  selfCopy = self;
+  v5 = alertCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -418,16 +418,16 @@ void __56__SBActivitySystemApertureElementObserver_presentAlert___block_invoke(u
   }
 }
 
-- (void)dismissAlert:(id)a3
+- (void)dismissAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SBActivitySystemApertureElementObserver_dismissAlert___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = alertCopy;
+  selfCopy = self;
+  v5 = alertCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -459,34 +459,34 @@ void __56__SBActivitySystemApertureElementObserver_dismissAlert___block_invoke(u
   [v7 _stopAlertingForActivityIdentifier:v9];
 }
 
-- (void)activityProminenceChanged:(BOOL)a3 item:(id)a4
+- (void)activityProminenceChanged:(BOOL)changed item:(id)item
 {
-  v4 = a3;
-  v8 = a4;
+  changedCopy = changed;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v6 = [v8 identifier];
-  v7 = [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:v6];
+  identifier = [itemCopy identifier];
+  v7 = [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:identifier];
 
   if (v7)
   {
-    [(SBActivitySystemApertureElementObserver *)self _updateSystemApertureElementProminence:v4 item:v8];
+    [(SBActivitySystemApertureElementObserver *)self _updateSystemApertureElementProminence:changedCopy item:itemCopy];
   }
 }
 
-- (void)activityEnvironmentChanged:(int64_t)a3
+- (void)activityEnvironmentChanged:(int64_t)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_activityEnvironment != a3)
+  if (self->_activityEnvironment != changed)
   {
-    self->_activityEnvironment = a3;
-    if (a3 == 1)
+    self->_activityEnvironment = changed;
+    if (changed == 1)
     {
       v11 = 0u;
       v12 = 0u;
       v9 = 0u;
       v10 = 0u;
-      v4 = [(NSMutableDictionary *)self->_alertingAssertionsByActivityIdentifier allValues];
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      allValues = [(NSMutableDictionary *)self->_alertingAssertionsByActivityIdentifier allValues];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         v6 = v5;
@@ -498,14 +498,14 @@ void __56__SBActivitySystemApertureElementObserver_dismissAlert___block_invoke(u
           {
             if (*v10 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v9 + 1) + 8 * v8++) invalidateWithReason:@"SBActivitySystemApertureElementObserver's activityEnvironmentChanged"];
           }
 
           while (v6 != v8);
-          v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
         }
 
         while (v6);
@@ -516,28 +516,28 @@ void __56__SBActivitySystemApertureElementObserver_dismissAlert___block_invoke(u
   }
 }
 
-- (void)presentFallbackAlert:(id)a3
+- (void)presentFallbackAlert:(id)alert
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 item];
-    v7 = [v6 identifier];
+    item = [alertCopy item];
+    identifier = [item identifier];
     v8 = 138543362;
-    v9 = v7;
+    v9 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] posting fallback alert", &v8, 0xCu);
   }
 
-  [(SBActivitySystemApertureElementObserver *)self _presentOrPendActivityAlert:v4];
+  [(SBActivitySystemApertureElementObserver *)self _presentOrPendActivityAlert:alertCopy];
 }
 
-- (BOOL)_isActivityOngoing:(id)a3
+- (BOOL)_isActivityOngoing:(id)ongoing
 {
-  v4 = a3;
+  ongoingCopy = ongoing;
   BSDispatchQueueAssertMain();
-  LOBYTE(self) = [(NSMutableSet *)self->_ongoingActivities containsObject:v4];
+  LOBYTE(self) = [(NSMutableSet *)self->_ongoingActivities containsObject:ongoingCopy];
 
   return self;
 }
@@ -545,8 +545,8 @@ void __56__SBActivitySystemApertureElementObserver_dismissAlert___block_invoke(u
 - (void)_cleanUpInvalidRegisteredElements
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier allValues];
-  v4 = [v3 copy];
+  allValues = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier allValues];
+  v4 = [allValues copy];
 
   v23 = 0u;
   v24 = 0u;
@@ -570,22 +570,22 @@ void __56__SBActivitySystemApertureElementObserver_dismissAlert___block_invoke(u
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 scene];
-        v13 = [v12 isValid];
+        scene = [v11 scene];
+        isValid = [scene isValid];
 
-        if ((v13 & 1) == 0)
+        if ((isValid & 1) == 0)
         {
-          v14 = [v11 descriptor];
-          v15 = [v14 activityIdentifier];
+          descriptor = [v11 descriptor];
+          activityIdentifier = [descriptor activityIdentifier];
 
-          v16 = [(NSMutableDictionary *)self->_activeItemByActivityIdentifier objectForKeyedSubscript:v15];
+          v16 = [(NSMutableDictionary *)self->_activeItemByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
           if (v16)
           {
             v19[0] = MEMORY[0x277D85DD0];
             v19[1] = 3221225472;
             v19[2] = __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElements__block_invoke;
             v19[3] = &unk_2783B4738;
-            v20 = v15;
+            v20 = activityIdentifier;
             [(SBActivitySystemApertureElementObserver *)self _invalidateSystemApertureElementForItem:v16 completion:v19];
             v17 = v20;
           }
@@ -593,12 +593,12 @@ void __56__SBActivitySystemApertureElementObserver_dismissAlert___block_invoke(u
           else
           {
             [v11 invalidate];
-            [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier removeObjectForKey:v15];
+            [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier removeObjectForKey:activityIdentifier];
             v17 = SBLogActivity();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v18;
-              v26 = v15;
+              v26 = activityIdentifier;
               _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] scene handle removed.", buf, 0xCu);
             }
           }
@@ -625,15 +625,15 @@ void __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElem
   }
 }
 
-- (BOOL)_canRegisterElementForActivityItem:(id)a3
+- (BOOL)_canRegisterElementForActivityItem:(id)item
 {
-  v4 = [a3 descriptor];
-  v5 = [v4 contentType];
-  v6 = [v4 platterTargetBundleIdentifier];
-  v7 = [(SBActivitySystemApertureElementObserver *)self _registeredElementExistsForBundleIdentifier:v6];
-  v8 = [(SBActivitySystemApertureElementObserver *)self _systemApertureElementAssertionExistsForBundleIdentifier:v6];
+  descriptor = [item descriptor];
+  contentType = [descriptor contentType];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  v7 = [(SBActivitySystemApertureElementObserver *)self _registeredElementExistsForBundleIdentifier:platterTargetBundleIdentifier];
+  v8 = [(SBActivitySystemApertureElementObserver *)self _systemApertureElementAssertionExistsForBundleIdentifier:platterTargetBundleIdentifier];
   v9 = v8;
-  if (v5)
+  if (contentType)
   {
     v10 = !v7 && !v8;
   }
@@ -646,18 +646,18 @@ void __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElem
   return v10;
 }
 
-- (void)_createAndActivateElementForActivityItem:(id)a3 forAlerting:(BOOL)a4 completion:(id)a5
+- (void)_createAndActivateElementForActivityItem:(id)item forAlerting:(BOOL)alerting completion:(id)completion
 {
-  v6 = a4;
+  alertingCopy = alerting;
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v11 = [v9 descriptor];
-  v12 = [v11 activityIdentifier];
-  if ([(SBActivitySystemApertureElementObserver *)self shouldHandleActivityItem:v9]&& v12)
+  descriptor = [itemCopy descriptor];
+  activityIdentifier = [descriptor activityIdentifier];
+  if ([(SBActivitySystemApertureElementObserver *)self shouldHandleActivityItem:itemCopy]&& activityIdentifier)
   {
-    v13 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKeyedSubscript:v12];
+    v13 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
     v14 = SBLogActivity();
     v15 = v14;
     if (v13)
@@ -667,9 +667,9 @@ void __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElem
         [SBActivitySystemApertureElementObserver _createAndActivateElementForActivityItem:forAlerting:completion:];
       }
 
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
@@ -678,13 +678,13 @@ void __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElem
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v25 = v12;
+        v25 = activityIdentifier;
         _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] started, creating system aperture element", buf, 0xCu);
       }
 
-      v16 = [(SBActivitySystemApertureElementObserver *)self _createSystemApertureSceneHandleWithItem:v9 forAlerting:v6];
-      v17 = [v16 scene];
-      if (v17)
+      v16 = [(SBActivitySystemApertureElementObserver *)self _createSystemApertureSceneHandleWithItem:itemCopy forAlerting:alertingCopy];
+      scene = [v16 scene];
+      if (scene)
       {
         objc_initWeak(buf, self);
         v19[0] = MEMORY[0x277D85DD0];
@@ -692,10 +692,10 @@ void __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElem
         v19[2] = __107__SBActivitySystemApertureElementObserver__createAndActivateElementForActivityItem_forAlerting_completion___block_invoke;
         v19[3] = &unk_2783B4760;
         objc_copyWeak(&v23, buf);
-        v20 = v12;
-        v21 = v9;
-        v22 = v10;
-        [(SBActivitySystemApertureElementObserver *)self _createAndActivateSystemApertureElementWithScene:v17 item:v21 forAlerting:v6 completion:v19];
+        v20 = activityIdentifier;
+        v21 = itemCopy;
+        v22 = completionCopy;
+        [(SBActivitySystemApertureElementObserver *)self _createAndActivateSystemApertureElementWithScene:scene item:v21 forAlerting:alertingCopy completion:v19];
 
         objc_destroyWeak(&v23);
         objc_destroyWeak(buf);
@@ -709,9 +709,9 @@ void __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElem
           [SBActivitySystemApertureElementObserver _createAndActivateElementForActivityItem:forAlerting:completion:];
         }
 
-        if (v10)
+        if (completionCopy)
         {
-          v10[2](v10, 0);
+          completionCopy[2](completionCopy, 0);
         }
       }
     }
@@ -719,7 +719,7 @@ void __76__SBActivitySystemApertureElementObserver__cleanUpInvalidRegisteredElem
 
   else
   {
-    [SBActivitySystemApertureElementObserver _createAndActivateElementForActivityItem:a2 forAlerting:self completion:v10];
+    [SBActivitySystemApertureElementObserver _createAndActivateElementForActivityItem:a2 forAlerting:self completion:completionCopy];
   }
 }
 
@@ -772,33 +772,33 @@ LABEL_10:
 {
   v15 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
-  v3 = [(NSMutableArray *)self->_pendingItems firstObject];
+  firstObject = [(NSMutableArray *)self->_pendingItems firstObject];
   if ([(NSMutableSet *)self->_activeWidgetActivitiesWithSceneHandles count]<= 1)
   {
-    v4 = [v3 descriptor];
-    v5 = [v4 platterTargetBundleIdentifier];
-    v6 = [(SBActivitySystemApertureElementObserver *)self _registeredElementExistsForBundleIdentifier:v5];
+    descriptor = [firstObject descriptor];
+    platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+    v6 = [(SBActivitySystemApertureElementObserver *)self _registeredElementExistsForBundleIdentifier:platterTargetBundleIdentifier];
 
     if (!v6)
     {
-      if (v3)
+      if (firstObject)
       {
-        [(SBActivitySystemApertureElementObserver *)self _removePendingItem:v3 withPendingAlerts:0];
+        [(SBActivitySystemApertureElementObserver *)self _removePendingItem:firstObject withPendingAlerts:0];
         v7 = SBLogActivity();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v3 identifier];
+          identifier = [firstObject identifier];
           v13 = 138543362;
-          v14 = v8;
+          v14 = identifier;
           _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] starting new activity from pending activities", &v13, 0xCu);
         }
 
-        v9 = [v3 identifier];
-        v10 = [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:v9];
+        identifier2 = [firstObject identifier];
+        v10 = [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:identifier2];
 
         if (v10)
         {
-          [(SBActivitySystemApertureElementObserver *)self _createAndActivateElementForActivityItem:v3 forAlerting:0 completion:0];
+          [(SBActivitySystemApertureElementObserver *)self _createAndActivateElementForActivityItem:firstObject forAlerting:0 completion:0];
         }
 
         else
@@ -806,9 +806,9 @@ LABEL_10:
           v11 = SBLogActivity();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [v3 identifier];
+            identifier3 = [firstObject identifier];
             v13 = 138543362;
-            v14 = v12;
+            v14 = identifier3;
             _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] this activity has already ended, abort starting pending activity", &v13, 0xCu);
           }
         }
@@ -817,13 +817,13 @@ LABEL_10:
   }
 }
 
-- (void)_stopAlertingForActivityIdentifier:(id)a3
+- (void)_stopAlertingForActivityIdentifier:(id)identifier
 {
   activeAlert = self->_activeAlert;
-  v5 = a3;
-  v6 = [(SBActivityAlert *)activeAlert item];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:v5];
+  identifierCopy = identifier;
+  item = [(SBActivityAlert *)activeAlert item];
+  identifier = [item identifier];
+  v8 = [identifier isEqualToString:identifierCopy];
 
   if (v8)
   {
@@ -833,17 +833,17 @@ LABEL_10:
   }
 }
 
-- (void)_checkForPossibleSwapsForActivatedItem:(id)a3
+- (void)_checkForPossibleSwapsForActivatedItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
   v4 = SBLogActivity();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138543362;
-    v24 = v5;
+    v24 = identifier;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Element activated. Checking for any possible swaps with pending items", buf, 0xCu);
   }
 
@@ -867,15 +867,15 @@ LABEL_10:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 descriptor];
-        v12 = [v11 platterTargetBundleIdentifier];
-        v13 = [v3 descriptor];
-        v14 = [v13 platterTargetBundleIdentifier];
-        v15 = [v12 isEqualToString:v14];
+        descriptor = [v10 descriptor];
+        platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+        descriptor2 = [itemCopy descriptor];
+        platterTargetBundleIdentifier2 = [descriptor2 platterTargetBundleIdentifier];
+        v15 = [platterTargetBundleIdentifier isEqualToString:platterTargetBundleIdentifier2];
 
-        if (v15 && [(SBActivitySystemApertureElementObserver *)self _shouldSwapActivityItem:v10 withOtherItem:v3 itemAlerting:0])
+        if (v15 && [(SBActivitySystemApertureElementObserver *)self _shouldSwapActivityItem:v10 withOtherItem:itemCopy itemAlerting:0])
         {
-          [(SBActivitySystemApertureElementObserver *)self _swapActivityItem:v10 withItem:v3];
+          [(SBActivitySystemApertureElementObserver *)self _swapActivityItem:v10 withItem:itemCopy];
           [(SBActivitySystemApertureElementObserver *)self _removePendingItem:v10 withPendingAlerts:0];
         }
       }
@@ -887,31 +887,31 @@ LABEL_10:
   }
 }
 
-- (void)_prepareForAlertingActivityIfNecessary:(id)a3 completion:(id)a4
+- (void)_prepareForAlertingActivityIfNecessary:(id)necessary completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  necessaryCopy = necessary;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v8 = [v6 item];
-  v9 = [v8 identifier];
+  item = [necessaryCopy item];
+  identifier = [item identifier];
 
-  v10 = [v6 item];
-  v11 = [(SBActivitySystemApertureElementObserver *)self _activityHasDifferentAlertSceneTarget:v10];
-  if ([(SBActivitySystemApertureElementObserver *)self _activityIsPendingForIdentifier:v9])
+  item2 = [necessaryCopy item];
+  v11 = [(SBActivitySystemApertureElementObserver *)self _activityHasDifferentAlertSceneTarget:item2];
+  if ([(SBActivitySystemApertureElementObserver *)self _activityIsPendingForIdentifier:identifier])
   {
     v12 = SBLogActivity();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v9;
+      v16 = identifier;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] preparing element for alerting pending activity", &v15, 0xCu);
     }
 
-    if ([(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:v9])
+    if ([(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:identifier])
     {
-      v13 = [(SBActivitySystemApertureElementObserver *)self _pendingItemForAlert:v6];
-      [(SBActivitySystemApertureElementObserver *)self _createAndActivateElementForActivityItem:v13 forAlerting:v11 completion:v7];
+      v13 = [(SBActivitySystemApertureElementObserver *)self _pendingItemForAlert:necessaryCopy];
+      [(SBActivitySystemApertureElementObserver *)self _createAndActivateElementForActivityItem:v13 forAlerting:v11 completion:completionCopy];
     }
 
     else
@@ -920,43 +920,43 @@ LABEL_10:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543362;
-        v16 = v9;
+        v16 = identifier;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] this activity has already ended, no alert necessary", &v15, 0xCu);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
 
   else if (v11)
   {
-    [(SBActivitySystemApertureElementObserver *)self _swapToAlertSceneForActivityItem:v10 completion:v7];
+    [(SBActivitySystemApertureElementObserver *)self _swapToAlertSceneForActivityItem:item2 completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (v7)[2](v7, [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:v9]);
+    (completionCopy)[2](completionCopy, [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:identifier]);
   }
 }
 
 - (void)_presentPendingAlertIfNecessary
 {
-  v3 = [(NSMutableOrderedSet *)self->_pendingAlerts firstObject];
-  if (v3)
+  firstObject = [(NSMutableOrderedSet *)self->_pendingAlerts firstObject];
+  if (firstObject)
   {
-    v4 = v3;
-    [(SBActivitySystemApertureElementObserver *)self _presentOrPendActivityAlert:v3];
-    v3 = v4;
+    v4 = firstObject;
+    [(SBActivitySystemApertureElementObserver *)self _presentOrPendActivityAlert:firstObject];
+    firstObject = v4;
   }
 }
 
-- (void)_presentPendingAlertIfNecessaryForActivityIdentifier:(id)a3
+- (void)_presentPendingAlertIfNecessaryForActivityIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(NSMutableOrderedSet *)self->_pendingAlerts copy];
   v22 = 0u;
   v23 = 0u;
@@ -981,22 +981,22 @@ LABEL_10:
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 item];
-        v14 = [v13 identifier];
-        v15 = [v14 isEqualToString:v4];
+        item = [v12 item];
+        identifier = [item identifier];
+        v15 = [identifier isEqualToString:identifierCopy];
 
         if (v15 && [(SBActivitySystemApertureElementObserver *)self _canPresentAlert:v12]&& [(SBActivitySystemApertureElementObserver *)self _isContentReadyForAlert:v12])
         {
-          v16 = [(NSMutableDictionary *)self->_contentPayloadIDsByActivityIdentifier objectForKeyedSubscript:v4];
+          v16 = [(NSMutableDictionary *)self->_contentPayloadIDsByActivityIdentifier objectForKeyedSubscript:identifierCopy];
           v17 = SBLogActivity();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v12 payloadIdentifier];
+            payloadIdentifier = [v12 payloadIdentifier];
             v19 = [v16 description];
             *buf = v20;
-            v27 = v4;
+            v27 = identifierCopy;
             v28 = 2114;
-            v29 = v18;
+            v29 = payloadIdentifier;
             v30 = 2114;
             v31 = v19;
             _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Showing alert with payload ID: %{public}@, payload IDs received for the activity: %{public}@", buf, 0x20u);
@@ -1015,14 +1015,14 @@ LABEL_10:
   }
 }
 
-- (void)_presentOrPendActivityAlert:(id)a3
+- (void)_presentOrPendActivityAlert:(id)alert
 {
-  v4 = a3;
-  if ([(SBActivitySystemApertureElementObserver *)self _canPresentAlert:v4])
+  alertCopy = alert;
+  if ([(SBActivitySystemApertureElementObserver *)self _canPresentAlert:alertCopy])
   {
-    if ([(SBActivitySystemApertureElementObserver *)self _isContentReadyForAlert:v4])
+    if ([(SBActivitySystemApertureElementObserver *)self _isContentReadyForAlert:alertCopy])
     {
-      [(SBActivitySystemApertureElementObserver *)self _prepareAndPresentActivityAlert:v4];
+      [(SBActivitySystemApertureElementObserver *)self _prepareAndPresentActivityAlert:alertCopy];
     }
 
     else
@@ -1033,19 +1033,19 @@ LABEL_10:
       v10[2] = __71__SBActivitySystemApertureElementObserver__presentOrPendActivityAlert___block_invoke;
       v10[3] = &unk_2783A8BF0;
       v10[4] = self;
-      v11 = v4;
+      v11 = alertCopy;
       [(SBActivitySystemApertureElementObserver *)self _prepareForAlertingActivityIfNecessary:v11 completion:v10];
     }
   }
 
   else
   {
-    [(SBActivitySystemApertureElementObserver *)self _addPendingAlert:v4];
-    v5 = [v4 item];
-    v6 = [v5 identifier];
+    [(SBActivitySystemApertureElementObserver *)self _addPendingAlert:alertCopy];
+    item = [alertCopy item];
+    identifier = [item identifier];
 
-    v7 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:v6];
-    v8 = [(SBActivitySystemApertureElementObserver *)self _pendingItemForAlert:v4];
+    v7 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:identifier];
+    v8 = [(SBActivitySystemApertureElementObserver *)self _pendingItemForAlert:alertCopy];
     v9 = v8;
     if (!v7 && v8)
     {
@@ -1082,34 +1082,34 @@ uint64_t __71__SBActivitySystemApertureElementObserver__presentOrPendActivityAle
   return result;
 }
 
-- (void)_addPendingAlert:(id)a3
+- (void)_addPendingAlert:(id)alert
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v5 identifier];
+  alertCopy = alert;
+  item = [alertCopy item];
+  identifier = [item identifier];
 
   v7 = SBLogActivity();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] adding to pending alerts", &v8, 0xCu);
   }
 
-  [(NSMutableOrderedSet *)self->_pendingAlerts addObject:v4];
+  [(NSMutableOrderedSet *)self->_pendingAlerts addObject:alertCopy];
 }
 
-- (void)_prepareAndPresentActivityAlert:(id)a3
+- (void)_prepareAndPresentActivityAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__SBActivitySystemApertureElementObserver__prepareAndPresentActivityAlert___block_invoke;
   v6[3] = &unk_2783A8BF0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = alertCopy;
+  v5 = alertCopy;
   [(SBActivitySystemApertureElementObserver *)self _prepareForAlertingActivityIfNecessary:v5 completion:v6];
 }
 
@@ -1123,32 +1123,32 @@ uint64_t __75__SBActivitySystemApertureElementObserver__prepareAndPresentActivit
   return result;
 }
 
-- (void)_cleanUpAlertPresentation:(id)a3 completion:(id)a4
+- (void)_cleanUpAlertPresentation:(id)presentation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 item];
-  v9 = [v8 identifier];
-  if ([(SBActivitySystemApertureElementObserver *)self _activityIsPendingForIdentifier:v9]|| [(SBActivitySystemApertureElementObserver *)self _activityHasSwappedScene:v8])
+  presentationCopy = presentation;
+  completionCopy = completion;
+  item = [presentationCopy item];
+  identifier = [item identifier];
+  if ([(SBActivitySystemApertureElementObserver *)self _activityIsPendingForIdentifier:identifier]|| [(SBActivitySystemApertureElementObserver *)self _activityHasSwappedScene:item])
   {
     objc_initWeak(&location, self);
-    v10 = [v6 item];
+    item2 = [presentationCopy item];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __80__SBActivitySystemApertureElementObserver__cleanUpAlertPresentation_completion___block_invoke;
     v11[3] = &unk_2783B4788;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
-    v13 = v7;
-    [(SBActivitySystemApertureElementObserver *)self _invalidateSystemApertureElementForItem:v10 completion:v11];
+    v12 = presentationCopy;
+    v13 = completionCopy;
+    [(SBActivitySystemApertureElementObserver *)self _invalidateSystemApertureElementForItem:item2 completion:v11];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1189,24 +1189,24 @@ void __80__SBActivitySystemApertureElementObserver__cleanUpAlertPresentation_com
   }
 }
 
-- (void)_presentAlert:(id)a3
+- (void)_presentAlert:(id)alert
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![(SBActivitySystemApertureElementObserver *)self _canPresentAlert:v6])
+  alertCopy = alert;
+  if (![(SBActivitySystemApertureElementObserver *)self _canPresentAlert:alertCopy])
   {
     [(SBActivitySystemApertureElementObserver *)a2 _presentAlert:?];
   }
 
-  v7 = [v6 item];
-  v8 = [v7 identifier];
+  item = [alertCopy item];
+  identifier = [item identifier];
 
-  v9 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:v8];
-  v10 = [v9 descriptor];
+  v9 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:identifier];
+  descriptor = [v9 descriptor];
 
-  if ([(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:v8])
+  if ([(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:identifier])
   {
-    v11 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:identifier];
     if (objc_opt_respondsToSelector())
     {
       v12 = SBLogActivity();
@@ -1214,7 +1214,7 @@ void __80__SBActivitySystemApertureElementObserver__cleanUpAlertPresentation_com
       {
         v13 = [v11 description];
         *buf = 138543618;
-        v31 = v8;
+        v31 = identifier;
         v32 = 2112;
         v33 = v13;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] enables alerting for element %@", buf, 0x16u);
@@ -1224,18 +1224,18 @@ void __80__SBActivitySystemApertureElementObserver__cleanUpAlertPresentation_com
       v27[1] = 3221225472;
       v27[2] = __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke;
       v27[3] = &unk_2783B47B0;
-      v14 = v8;
+      v14 = identifier;
       v28 = v14;
-      v15 = v10;
+      v15 = descriptor;
       v29 = v15;
       [(SBActivitySystemApertureElementObserver *)self _sendAnalyticsEventWithPayloadBuilder:v27];
-      [(NSMutableOrderedSet *)self->_pendingAlerts removeObject:v6];
-      [v6 alertWithScreenOn:1 playSound:1];
-      objc_storeStrong(&self->_activeAlert, a3);
-      v16 = [v6 isProminent];
-      v17 = [v15 isMomentary];
-      v18 = v17;
-      v19 = [v11 requestAlertingAssertionImplicitlyDismissable:v16 & v17];
+      [(NSMutableOrderedSet *)self->_pendingAlerts removeObject:alertCopy];
+      [alertCopy alertWithScreenOn:1 playSound:1];
+      objc_storeStrong(&self->_activeAlert, alert);
+      isProminent = [alertCopy isProminent];
+      isMomentary = [v15 isMomentary];
+      v18 = isMomentary;
+      v19 = [v11 requestAlertingAssertionImplicitlyDismissable:isProminent & isMomentary];
       if (v19)
       {
         [(NSMutableDictionary *)self->_alertingAssertionsByActivityIdentifier setObject:v19 forKey:v14];
@@ -1247,7 +1247,7 @@ void __80__SBActivitySystemApertureElementObserver__cleanUpAlertPresentation_com
         v22[3] = &unk_2783B47D8;
         v23 = v14;
         objc_copyWeak(&v25, buf);
-        v24 = v6;
+        v24 = alertCopy;
         v26 = v18;
         [v19 addInvalidationBlock:v22];
 
@@ -1272,13 +1272,13 @@ void __80__SBActivitySystemApertureElementObserver__cleanUpAlertPresentation_com
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v31 = v8;
+      v31 = identifier;
       _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] activity has ended, not presenting an alert for it", buf, 0xCu);
     }
 
-    [(NSMutableOrderedSet *)self->_pendingAlerts removeObject:v6];
+    [(NSMutableOrderedSet *)self->_pendingAlerts removeObject:alertCopy];
     [(SBActivitySystemApertureElementObserver *)self _presentPendingAlertIfNecessary];
-    [(SBActivitySystemApertureElementObserver *)self _cleanUpAlertPresentation:v6 completion:0];
+    [(SBActivitySystemApertureElementObserver *)self _cleanUpAlertPresentation:alertCopy completion:0];
   }
 }
 
@@ -1334,13 +1334,13 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
   }
 }
 
-- (void)_restoreOngoingActivityElementIfNecessaryForDismissingAlert:(id)a3
+- (void)_restoreOngoingActivityElementIfNecessaryForDismissingAlert:(id)alert
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 item];
-  v5 = [v4 identifier];
-  v6 = [(SBActivitySystemApertureElementObserver *)self _activityHasSwappedScene:v4];
-  v7 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:v5];
+  item = [alert item];
+  identifier = [item identifier];
+  v6 = [(SBActivitySystemApertureElementObserver *)self _activityHasSwappedScene:item];
+  v7 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:identifier];
 
   if (v6 && !v7)
   {
@@ -1348,7 +1348,7 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = v5;
+      v12 = identifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] restoring system aperture element", buf, 0xCu);
     }
 
@@ -1357,18 +1357,18 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
     v9[2] = __103__SBActivitySystemApertureElementObserver__restoreOngoingActivityElementIfNecessaryForDismissingAlert___block_invoke;
     v9[3] = &unk_2783A8BF0;
     v9[4] = self;
-    v10 = v5;
-    [(SBActivitySystemApertureElementObserver *)self _createAndActivateElementForActivityItem:v4 forAlerting:0 completion:v9];
+    v10 = identifier;
+    [(SBActivitySystemApertureElementObserver *)self _createAndActivateElementForActivityItem:item forAlerting:0 completion:v9];
   }
 }
 
-- (BOOL)_canPresentAlert:(id)a3
+- (BOOL)_canPresentAlert:(id)alert
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 item];
-  v5 = [v4 identifier];
+  item = [alert item];
+  identifier = [item identifier];
 
-  v6 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:identifier];
   v7 = SBLogActivity();
   v8 = v7;
   if (v6)
@@ -1377,13 +1377,13 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
     {
       v9 = [v6 description];
       v12 = 138543618;
-      v13 = v5;
+      v13 = identifier;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Element for alerting: %@", &v12, 0x16u);
     }
 
-    v10 = [v6 isReadyForPresentation];
+    isReadyForPresentation = [v6 isReadyForPresentation];
   }
 
   else
@@ -1393,28 +1393,28 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
       [SBActivitySystemApertureElementObserver _canPresentAlert:];
     }
 
-    v10 = 0;
+    isReadyForPresentation = 0;
   }
 
-  return v10;
+  return isReadyForPresentation;
 }
 
-- (BOOL)_isContentReadyForAlert:(id)a3
+- (BOOL)_isContentReadyForAlert:(id)alert
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v5 identifier];
+  alertCopy = alert;
+  item = [alertCopy item];
+  identifier = [item identifier];
 
-  v7 = [v4 payloadIdentifier];
+  payloadIdentifier = [alertCopy payloadIdentifier];
 
-  if (v7)
+  if (payloadIdentifier)
   {
-    v8 = [(NSMutableDictionary *)self->_contentPayloadIDsByActivityIdentifier objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_contentPayloadIDsByActivityIdentifier objectForKeyedSubscript:identifier];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 containsObject:v7];
+      v10 = [v8 containsObject:payloadIdentifier];
     }
 
     else
@@ -1429,7 +1429,7 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v6;
+      v14 = identifier;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] No payload ID passed with the alert", &v13, 0xCu);
     }
 
@@ -1446,8 +1446,8 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_alertingAssertionsByActivityIdentifier allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_alertingAssertionsByActivityIdentifier allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1457,7 +1457,7 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isValid])
@@ -1467,7 +1467,7 @@ void __57__SBActivitySystemApertureElementObserver__presentAlert___block_invoke_
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1482,11 +1482,11 @@ LABEL_11:
   return v3;
 }
 
-- (id)_pendingItemForAlert:(id)a3
+- (id)_pendingItemForAlert:(id)alert
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 item];
-  v5 = [v4 identifier];
+  item = [alert item];
+  identifier = [item identifier];
 
   v16 = 0u;
   v17 = 0u;
@@ -1507,8 +1507,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v5];
+        identifier2 = [v10 identifier];
+        v12 = [identifier2 isEqualToString:identifier];
 
         if (v12)
         {
@@ -1532,16 +1532,16 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)_registeredElementExistsForBundleIdentifier:(id)a3
+- (BOOL)_registeredElementExistsForBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1551,12 +1551,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) descriptor];
-        v10 = [v9 platterTargetBundleIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        descriptor = [*(*(&v13 + 1) + 8 * i) descriptor];
+        platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+        v11 = [platterTargetBundleIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -1565,7 +1565,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1580,16 +1580,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_systemApertureElementAssertionExistsForBundleIdentifier:(id)a3
+- (BOOL)_systemApertureElementAssertionExistsForBundleIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(NSMutableDictionary *)self->_activeItemByActivityIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)self->_activeItemByActivityIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1600,26 +1600,26 @@ LABEL_11:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 descriptor];
-        v12 = [v11 platterTargetBundleIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        descriptor = [v10 descriptor];
+        platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+        v13 = [platterTargetBundleIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
           elementAssertionByActivityIdentifier = self->_elementAssertionByActivityIdentifier;
-          v16 = [v10 identifier];
-          v17 = [(NSMutableDictionary *)elementAssertionByActivityIdentifier objectForKey:v16];
+          identifier = [v10 identifier];
+          v17 = [(NSMutableDictionary *)elementAssertionByActivityIdentifier objectForKey:identifier];
           v14 = v17 != 0;
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         continue;
@@ -1635,16 +1635,16 @@ LABEL_11:
   return v14;
 }
 
-- (id)_activatedElementItemForBundleIdentifier:(id)a3
+- (id)_activatedElementItemForBundleIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allValues = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1655,31 +1655,31 @@ LABEL_11:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 descriptor];
-        v12 = [v11 platterTargetBundleIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        descriptor = [v10 descriptor];
+        platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+        v13 = [platterTargetBundleIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
-          v14 = [v10 descriptor];
-          v15 = [v14 activityIdentifier];
+          descriptor2 = [v10 descriptor];
+          activityIdentifier = [descriptor2 activityIdentifier];
 
-          v16 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:v15];
+          v16 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
           v17 = v16;
           if (v16 && ([v16 isActivated] & 1) != 0)
           {
-            v18 = [(NSMutableDictionary *)self->_activeItemByActivityIdentifier objectForKeyedSubscript:v15];
+            v18 = [(NSMutableDictionary *)self->_activeItemByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
 
             goto LABEL_14;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         continue;
@@ -1695,27 +1695,27 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)_shouldSwapActivityItem:(id)a3 withOtherItem:(id)a4 itemAlerting:(BOOL)a5
+- (BOOL)_shouldSwapActivityItem:(id)item withOtherItem:(id)otherItem itemAlerting:(BOOL)alerting
 {
-  v5 = a5;
+  alertingCopy = alerting;
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8 || !v9)
+  itemCopy = item;
+  otherItemCopy = otherItem;
+  v10 = otherItemCopy;
+  if (!itemCopy || !otherItemCopy)
   {
-    v16 = SBLogActivity();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    identifier3 = SBLogActivity();
+    if (os_log_type_enabled(identifier3, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 identifier];
-      v22 = [v10 identifier];
+      identifier = [itemCopy identifier];
+      identifier2 = [v10 identifier];
       v43 = 138543618;
-      v44 = v21;
+      v44 = identifier;
       v45 = 2114;
-      v46 = v22;
+      v46 = identifier2;
       v23 = "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Not swapping because items can't be found";
 LABEL_13:
-      _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, v23, &v43, 0x16u);
+      _os_log_impl(&dword_21ED4E000, identifier3, OS_LOG_TYPE_DEFAULT, v23, &v43, 0x16u);
     }
 
 LABEL_14:
@@ -1723,23 +1723,23 @@ LABEL_14:
     goto LABEL_28;
   }
 
-  v11 = [v8 descriptor];
-  v12 = [v11 platterTargetBundleIdentifier];
-  v13 = [v10 descriptor];
-  v14 = [v13 platterTargetBundleIdentifier];
-  v15 = [v12 isEqualToString:v14];
+  descriptor = [itemCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  descriptor2 = [v10 descriptor];
+  platterTargetBundleIdentifier2 = [descriptor2 platterTargetBundleIdentifier];
+  v15 = [platterTargetBundleIdentifier isEqualToString:platterTargetBundleIdentifier2];
 
   if ((v15 & 1) == 0)
   {
-    v16 = SBLogActivity();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    identifier3 = SBLogActivity();
+    if (os_log_type_enabled(identifier3, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 identifier];
-      v22 = [v10 identifier];
+      identifier = [itemCopy identifier];
+      identifier2 = [v10 identifier];
       v43 = 138543618;
-      v44 = v21;
+      v44 = identifier;
       v45 = 2114;
-      v46 = v22;
+      v46 = identifier2;
       v23 = "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Not swapping items because bundle identifiers doesn't match";
       goto LABEL_13;
     }
@@ -1747,19 +1747,19 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v16 = [v8 identifier];
-  if (v5 && [(SBActivitySystemApertureElementObserver *)self _activityAlertIsPendingForIdentifier:v16])
+  identifier3 = [itemCopy identifier];
+  if (alertingCopy && [(SBActivitySystemApertureElementObserver *)self _activityAlertIsPendingForIdentifier:identifier3])
   {
-    v17 = SBLogActivity();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    identifier9 = SBLogActivity();
+    if (os_log_type_enabled(identifier9, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 identifier];
-      v19 = [v10 identifier];
+      identifier4 = [itemCopy identifier];
+      identifier5 = [v10 identifier];
       v43 = 138543618;
-      v44 = v18;
+      v44 = identifier4;
       v45 = 2114;
-      v46 = v19;
-      _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Swapping items because alert is pending", &v43, 0x16u);
+      v46 = identifier5;
+      _os_log_impl(&dword_21ED4E000, identifier9, OS_LOG_TYPE_DEFAULT, "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Swapping items because alert is pending", &v43, 0x16u);
     }
 
     v20 = 1;
@@ -1768,21 +1768,21 @@ LABEL_14:
   else
   {
     alertingAssertionsByActivityIdentifier = self->_alertingAssertionsByActivityIdentifier;
-    v25 = [v10 identifier];
-    v26 = [(NSMutableDictionary *)alertingAssertionsByActivityIdentifier objectForKey:v25];
+    identifier6 = [v10 identifier];
+    v26 = [(NSMutableDictionary *)alertingAssertionsByActivityIdentifier objectForKey:identifier6];
 
     if (v26)
     {
-      v17 = SBLogActivity();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      identifier9 = SBLogActivity();
+      if (os_log_type_enabled(identifier9, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v8 identifier];
-        v28 = [v10 identifier];
+        identifier7 = [itemCopy identifier];
+        identifier8 = [v10 identifier];
         v43 = 138543618;
-        v44 = v27;
+        v44 = identifier7;
         v45 = 2114;
-        v46 = v28;
-        _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Not swapping items because swapped item is alerting", &v43, 0x16u);
+        v46 = identifier8;
+        _os_log_impl(&dword_21ED4E000, identifier9, OS_LOG_TYPE_DEFAULT, "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Not swapping items because swapped item is alerting", &v43, 0x16u);
       }
 
       v20 = 0;
@@ -1790,23 +1790,23 @@ LABEL_14:
 
     else
     {
-      v17 = [v10 identifier];
-      v29 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKeyedSubscript:v17];
+      identifier9 = [v10 identifier];
+      v29 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKeyedSubscript:identifier9];
       v30 = SBLogActivity();
       v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
       if (v29)
       {
         if (v31)
         {
-          v32 = [v8 identifier];
-          v33 = [v10 identifier];
-          [v8 relevanceScore];
+          identifier10 = [itemCopy identifier];
+          identifier11 = [v10 identifier];
+          [itemCopy relevanceScore];
           v35 = v34;
           [v10 relevanceScore];
           v43 = 138544130;
-          v44 = v32;
+          v44 = identifier10;
           v45 = 2114;
-          v46 = v33;
+          v46 = identifier11;
           v47 = 2048;
           v48 = v35;
           v49 = 2048;
@@ -1814,7 +1814,7 @@ LABEL_14:
           _os_log_impl(&dword_21ED4E000, v30, OS_LOG_TYPE_DEFAULT, "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Checking relevance scores for swapping decision: Swapping Activity Relevance Score: %f, Swapped Activity Relevance Score: %f", &v43, 0x2Au);
         }
 
-        [v8 relevanceScore];
+        [itemCopy relevanceScore];
         v38 = v37;
         [v10 relevanceScore];
         v20 = v38 > v39;
@@ -1824,12 +1824,12 @@ LABEL_14:
       {
         if (v31)
         {
-          v40 = [v8 identifier];
-          v41 = [v10 identifier];
+          identifier12 = [itemCopy identifier];
+          identifier13 = [v10 identifier];
           v43 = 138543618;
-          v44 = v40;
+          v44 = identifier12;
           v45 = 2114;
-          v46 = v41;
+          v46 = identifier13;
           _os_log_impl(&dword_21ED4E000, v30, OS_LOG_TYPE_DEFAULT, "[Swapping Activity: %{public}@, Swapped Activity: %{public}@] Not swapping items because no element found for registered item", &v43, 0x16u);
         }
 
@@ -1842,46 +1842,46 @@ LABEL_28:
   return v20;
 }
 
-- (void)_swapItemWithRegisteredItemIfNecessary:(id)a3 itemAlerting:(BOOL)a4
+- (void)_swapItemWithRegisteredItemIfNecessary:(id)necessary itemAlerting:(BOOL)alerting
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [v9 descriptor];
-  v7 = [v6 platterTargetBundleIdentifier];
+  alertingCopy = alerting;
+  necessaryCopy = necessary;
+  descriptor = [necessaryCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  v8 = [(SBActivitySystemApertureElementObserver *)self _activatedElementItemForBundleIdentifier:v7];
-  if ([(SBActivitySystemApertureElementObserver *)self _shouldSwapActivityItem:v9 withOtherItem:v8 itemAlerting:v4])
+  v8 = [(SBActivitySystemApertureElementObserver *)self _activatedElementItemForBundleIdentifier:platterTargetBundleIdentifier];
+  if ([(SBActivitySystemApertureElementObserver *)self _shouldSwapActivityItem:necessaryCopy withOtherItem:v8 itemAlerting:alertingCopy])
   {
-    [(SBActivitySystemApertureElementObserver *)self _swapActivityItem:v9 withItem:v8];
-    [(SBActivitySystemApertureElementObserver *)self _removePendingItem:v9 withPendingAlerts:0];
+    [(SBActivitySystemApertureElementObserver *)self _swapActivityItem:necessaryCopy withItem:v8];
+    [(SBActivitySystemApertureElementObserver *)self _removePendingItem:necessaryCopy withPendingAlerts:0];
   }
 }
 
-- (void)_swapActivityItem:(id)a3 withItem:(id)a4
+- (void)_swapActivityItem:(id)item withItem:(id)withItem
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  itemCopy = item;
+  withItemCopy = withItem;
+  v8 = withItemCopy;
+  if (itemCopy && withItemCopy)
   {
     v9 = SBLogActivity();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 identifier];
-      v11 = [v6 descriptor];
-      v12 = [v11 platterTargetBundleIdentifier];
-      v13 = [v8 identifier];
-      v14 = [v8 descriptor];
-      v15 = [v14 platterTargetBundleIdentifier];
+      identifier = [itemCopy identifier];
+      descriptor = [itemCopy descriptor];
+      platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+      identifier2 = [v8 identifier];
+      descriptor2 = [v8 descriptor];
+      platterTargetBundleIdentifier2 = [descriptor2 platterTargetBundleIdentifier];
       *buf = 138544130;
-      v21 = v10;
+      v21 = identifier;
       v22 = 2114;
-      v23 = v12;
+      v23 = platterTargetBundleIdentifier;
       v24 = 2114;
-      v25 = v13;
+      v25 = identifier2;
       v26 = 2114;
-      v27 = v15;
+      v27 = platterTargetBundleIdentifier2;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Swapping item [ActivityID: %{public}@, BundleID: %{public}@] with other item [ActivityID: %{public}@, BundleID: %{public}@]", buf, 0x2Au);
     }
 
@@ -1892,7 +1892,7 @@ LABEL_28:
     v16[3] = &unk_2783AFD20;
     objc_copyWeak(&v19, buf);
     v17 = v8;
-    v18 = v6;
+    v18 = itemCopy;
     [(SBActivitySystemApertureElementObserver *)self _invalidateSystemApertureElementForItem:v17 completion:v16];
 
     objc_destroyWeak(&v19);
@@ -1944,10 +1944,10 @@ void __70__SBActivitySystemApertureElementObserver__swapActivityItem_withItem___
   }
 }
 
-- (BOOL)_activityAlertIsPendingForIdentifier:(id)a3
+- (BOOL)_activityAlertIsPendingForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1966,9 +1966,9 @@ void __70__SBActivitySystemApertureElementObserver__swapActivityItem_withItem___
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) item];
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        item = [*(*(&v13 + 1) + 8 * i) item];
+        identifier = [item identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -1992,10 +1992,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_activityIsPendingForIdentifier:(id)a3
+- (BOOL)_activityIsPendingForIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -2014,8 +2014,8 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) identifier];
-        v10 = [v9 isEqualToString:v4];
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        v10 = [identifier isEqualToString:identifierCopy];
 
         if (v10)
         {
@@ -2039,28 +2039,28 @@ LABEL_11:
   return v6;
 }
 
-- (void)_addPendingItemIfNecessary:(id)a3
+- (void)_addPendingItemIfNecessary:(id)necessary
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([(NSMutableArray *)self->_pendingItems containsObject:v4]& 1) == 0 && ![(SBActivitySystemApertureElementObserver *)self _activityHasSwappedScene:v4])
+  necessaryCopy = necessary;
+  if (([(NSMutableArray *)self->_pendingItems containsObject:necessaryCopy]& 1) == 0 && ![(SBActivitySystemApertureElementObserver *)self _activityHasSwappedScene:necessaryCopy])
   {
     v5 = SBLogActivity();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 identifier];
+      identifier = [necessaryCopy identifier];
       v7 = 138543362;
-      v8 = v6;
+      v8 = identifier;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] added to pending activities", &v7, 0xCu);
     }
 
-    [(NSMutableArray *)self->_pendingItems addObject:v4];
+    [(NSMutableArray *)self->_pendingItems addObject:necessaryCopy];
   }
 }
 
-- (void)_updatePendingItemWithItem:(id)a3
+- (void)_updatePendingItemWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -2070,7 +2070,7 @@ LABEL_11:
   v9 = 3221225472;
   v10 = __70__SBActivitySystemApertureElementObserver__updatePendingItemWithItem___block_invoke;
   v11 = &unk_2783B4800;
-  v6 = v4;
+  v6 = itemCopy;
   v12 = v6;
   v13 = &v14;
   [(NSMutableArray *)pendingItems enumerateObjectsUsingBlock:&v8];
@@ -2101,22 +2101,22 @@ void __70__SBActivitySystemApertureElementObserver__updatePendingItemWithItem___
   }
 }
 
-- (void)_removePendingItem:(id)a3 withPendingAlerts:(BOOL)a4
+- (void)_removePendingItem:(id)item withPendingAlerts:(BOOL)alerts
 {
-  v4 = a4;
+  alertsCopy = alerts;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(NSMutableArray *)self->_pendingItems containsObject:v6])
+  itemCopy = item;
+  if ([(NSMutableArray *)self->_pendingItems containsObject:itemCopy])
   {
-    [(NSMutableArray *)self->_pendingItems removeObject:v6];
-    if (v4)
+    [(NSMutableArray *)self->_pendingItems removeObject:itemCopy];
+    if (alertsCopy)
     {
       pendingAlerts = self->_pendingAlerts;
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __80__SBActivitySystemApertureElementObserver__removePendingItem_withPendingAlerts___block_invoke;
       v14[3] = &unk_2783B4828;
-      v8 = v6;
+      v8 = itemCopy;
       v15 = v8;
       v9 = [(NSMutableOrderedSet *)pendingAlerts bs_firstObjectPassingTest:v14];
       if (v9)
@@ -2124,9 +2124,9 @@ void __70__SBActivitySystemApertureElementObserver__updatePendingItemWithItem___
         v10 = SBLogActivity();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v8 identifier];
+          identifier = [v8 identifier];
           *buf = 138543362;
-          v17 = v11;
+          v17 = identifier;
           _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] removed from pending alert for this item", buf, 0xCu);
         }
 
@@ -2137,9 +2137,9 @@ void __70__SBActivitySystemApertureElementObserver__updatePendingItemWithItem___
     v12 = SBLogActivity();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 identifier];
+      identifier2 = [itemCopy identifier];
       *buf = 138543362;
-      v17 = v13;
+      v17 = identifier2;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] removed from pending activities", buf, 0xCu);
     }
   }
@@ -2155,21 +2155,21 @@ BOOL __80__SBActivitySystemApertureElementObserver__removePendingItem_withPendin
   return v6;
 }
 
-- (BOOL)_activityHasDifferentAlertSceneTarget:(id)a3
+- (BOOL)_activityHasDifferentAlertSceneTarget:(id)target
 {
-  v3 = a3;
-  v4 = [v3 descriptor];
-  v5 = [v4 alertSceneTargetBundleIdentifiers];
+  targetCopy = target;
+  descriptor = [targetCopy descriptor];
+  alertSceneTargetBundleIdentifiers = [descriptor alertSceneTargetBundleIdentifiers];
 
   v6 = [objc_alloc(MEMORY[0x277CB98A8]) initWithDestination:2];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v3 descriptor];
+  v7 = [alertSceneTargetBundleIdentifiers objectForKey:v6];
+  descriptor2 = [targetCopy descriptor];
 
-  v9 = [v8 platterTargetBundleIdentifier];
+  platterTargetBundleIdentifier = [descriptor2 platterTargetBundleIdentifier];
 
   if (v7)
   {
-    v10 = [v9 isEqualToString:v7] ^ 1;
+    v10 = [platterTargetBundleIdentifier isEqualToString:v7] ^ 1;
   }
 
   else
@@ -2180,17 +2180,17 @@ BOOL __80__SBActivitySystemApertureElementObserver__removePendingItem_withPendin
   return v10;
 }
 
-- (void)_swapToAlertSceneForActivityItem:(id)a3 completion:(id)a4
+- (void)_swapToAlertSceneForActivityItem:(id)item completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v8 = SBLogActivity();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138543362;
-    v17 = v9;
+    v17 = identifier;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] swapping to alerting scene", buf, 0xCu);
   }
 
@@ -2200,9 +2200,9 @@ BOOL __80__SBActivitySystemApertureElementObserver__removePendingItem_withPendin
   v12[2] = __87__SBActivitySystemApertureElementObserver__swapToAlertSceneForActivityItem_completion___block_invoke;
   v12[3] = &unk_2783B4788;
   objc_copyWeak(&v15, buf);
-  v10 = v6;
+  v10 = itemCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
   [(SBActivitySystemApertureElementObserver *)self _invalidateSystemApertureElementForItem:v10 completion:v12];
 
@@ -2251,134 +2251,134 @@ uint64_t __87__SBActivitySystemApertureElementObserver__swapToAlertSceneForActiv
   return result;
 }
 
-- (BOOL)_activityHasSwappedScene:(id)a3
+- (BOOL)_activityHasSwappedScene:(id)scene
 {
-  v4 = [a3 identifier];
-  LOBYTE(self) = [(NSMutableSet *)self->_activitiesWithSwappedScenes containsObject:v4];
+  identifier = [scene identifier];
+  LOBYTE(self) = [(NSMutableSet *)self->_activitiesWithSwappedScenes containsObject:identifier];
 
   return self;
 }
 
-- (id)_createSystemApertureSceneHandleWithItem:(id)a3 forAlerting:(BOOL)a4
+- (id)_createSystemApertureSceneHandleWithItem:(id)item forAlerting:(BOOL)alerting
 {
-  v4 = a4;
-  v6 = a3;
+  alertingCopy = alerting;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v7 = [v6 descriptor];
-  v8 = [v7 activityIdentifier];
-  v9 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:v8];
+  descriptor = [itemCopy descriptor];
+  activityIdentifier = [descriptor activityIdentifier];
+  v9 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:activityIdentifier];
   if (v9)
   {
     v10 = v9;
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v6 identifier];
-    v13 = [v11 stringWithFormat:@"[ActivityID: %@] Active system aperture scene handle found while creating a new system aperture scene handle", v12];
+    identifier = [itemCopy identifier];
+    v13 = [v11 stringWithFormat:@"[ActivityID: %@] Active system aperture scene handle found while creating a new system aperture scene handle", identifier];
   }
 
   else
   {
-    v10 = [(SBActivitySystemApertureElementObserver *)self _createSceneHandle:v6 forAlerting:v4];
-    [(SBActivitySystemApertureElementObserver *)self _storeSceneHandle:v10 item:v6];
+    v10 = [(SBActivitySystemApertureElementObserver *)self _createSceneHandle:itemCopy forAlerting:alertingCopy];
+    [(SBActivitySystemApertureElementObserver *)self _storeSceneHandle:v10 item:itemCopy];
   }
 
   return v10;
 }
 
-- (id)_createSceneHandle:(id)a3 forAlerting:(BOOL)a4
+- (id)_createSceneHandle:(id)handle forAlerting:(BOOL)alerting
 {
-  v4 = a4;
+  alertingCopy = alerting;
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handleCopy = handle;
   v6 = SBLogActivity();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    identifier = [handleCopy identifier];
     v11 = 138543362;
-    v12 = v7;
+    v12 = identifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Creating a system aperture scene handle", &v11, 0xCu);
   }
 
-  v8 = [v5 descriptor];
-  v9 = [[SBActivitySystemApertureSceneHandle alloc] initWithDescriptor:v8 configuringForAlertTarget:v4];
+  descriptor = [handleCopy descriptor];
+  v9 = [[SBActivitySystemApertureSceneHandle alloc] initWithDescriptor:descriptor configuringForAlertTarget:alertingCopy];
 
   return v9;
 }
 
-- (void)_storeSceneHandle:(id)a3 item:(id)a4
+- (void)_storeSceneHandle:(id)handle item:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  itemCopy = item;
   v8 = SBLogActivity();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 identifier];
+    identifier = [itemCopy identifier];
     v18 = 138543362;
-    v19 = v9;
+    v19 = identifier;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Storing scene handle", &v18, 0xCu);
   }
 
-  if (v6)
+  if (handleCopy)
   {
-    v10 = [v7 descriptor];
-    v11 = [v10 activityIdentifier];
-    [v6 setDelegate:self];
-    v12 = [v6 isForAlertTarget];
+    descriptor = [itemCopy descriptor];
+    activityIdentifier = [descriptor activityIdentifier];
+    [handleCopy setDelegate:self];
+    isForAlertTarget = [handleCopy isForAlertTarget];
     v13 = 8;
-    if (v12)
+    if (isForAlertTarget)
     {
       v13 = 16;
     }
 
-    [*(&self->super.isa + v13) setObject:v6 forKey:v11];
-    [(NSMutableDictionary *)self->_activeItemByActivityIdentifier setObject:v7 forKeyedSubscript:v11];
-    if (![v10 contentType])
+    [*(&self->super.isa + v13) setObject:handleCopy forKey:activityIdentifier];
+    [(NSMutableDictionary *)self->_activeItemByActivityIdentifier setObject:itemCopy forKeyedSubscript:activityIdentifier];
+    if (![descriptor contentType])
     {
       activeWidgetActivitiesWithSceneHandles = self->_activeWidgetActivitiesWithSceneHandles;
-      v15 = [v10 activityIdentifier];
-      [(NSMutableSet *)activeWidgetActivitiesWithSceneHandles addObject:v15];
+      activityIdentifier2 = [descriptor activityIdentifier];
+      [(NSMutableSet *)activeWidgetActivitiesWithSceneHandles addObject:activityIdentifier2];
     }
 
     v16 = SBLogActivity();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v7 identifier];
+      identifier2 = [itemCopy identifier];
       v18 = 138543362;
-      v19 = v17;
+      v19 = identifier2;
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Scene handle stored successfully", &v18, 0xCu);
     }
   }
 }
 
-- (void)_removeSystemApertureSceneHandleWithItem:(id)a3
+- (void)_removeSystemApertureSceneHandleWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v5 = [v4 descriptor];
-  v6 = [v5 activityIdentifier];
-  v7 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:v6];
-  [(NSMutableDictionary *)self->_activeItemByActivityIdentifier removeObjectForKey:v6];
+  descriptor = [itemCopy descriptor];
+  activityIdentifier = [descriptor activityIdentifier];
+  v7 = [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier objectForKey:activityIdentifier];
+  [(NSMutableDictionary *)self->_activeItemByActivityIdentifier removeObjectForKey:activityIdentifier];
   if (v7)
   {
     [v7 invalidate];
-    [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_sceneHandleByActivityIdentifier removeObjectForKey:activityIdentifier];
   }
 
-  v8 = [(NSMutableDictionary *)self->_alertSceneHandlesByActivityIdentifier objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_alertSceneHandlesByActivityIdentifier objectForKey:activityIdentifier];
   [v8 invalidate];
-  [(NSMutableDictionary *)self->_alertSceneHandlesByActivityIdentifier removeObjectForKey:v6];
-  [(NSMutableDictionary *)self->_contentPayloadIDsByActivityIdentifier removeObjectForKey:v6];
-  v9 = [v4 identifier];
-  v10 = [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:v9];
+  [(NSMutableDictionary *)self->_alertSceneHandlesByActivityIdentifier removeObjectForKey:activityIdentifier];
+  [(NSMutableDictionary *)self->_contentPayloadIDsByActivityIdentifier removeObjectForKey:activityIdentifier];
+  identifier = [itemCopy identifier];
+  v10 = [(SBActivitySystemApertureElementObserver *)self _isActivityOngoing:identifier];
 
   if (v10)
   {
-    [(SBActivitySystemApertureElementObserver *)self _addPendingItemIfNecessary:v4];
+    [(SBActivitySystemApertureElementObserver *)self _addPendingItemIfNecessary:itemCopy];
   }
 
   else
   {
-    [(SBActivitySystemApertureElementObserver *)self _removePendingItem:v4 withPendingAlerts:1];
+    [(SBActivitySystemApertureElementObserver *)self _removePendingItem:itemCopy withPendingAlerts:1];
   }
 
   pendingAlerts = self->_pendingAlerts;
@@ -2386,7 +2386,7 @@ uint64_t __87__SBActivitySystemApertureElementObserver__swapToAlertSceneForActiv
   v19[1] = 3221225472;
   v19[2] = __84__SBActivitySystemApertureElementObserver__removeSystemApertureSceneHandleWithItem___block_invoke;
   v19[3] = &unk_2783B4850;
-  v12 = v6;
+  v12 = activityIdentifier;
   v20 = v12;
   v13 = [(NSMutableOrderedSet *)pendingAlerts indexOfObjectPassingTest:v19];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
@@ -2399,14 +2399,14 @@ uint64_t __87__SBActivitySystemApertureElementObserver__swapToAlertSceneForActiv
   }
 
   activeWidgetActivitiesWithSceneHandles = self->_activeWidgetActivitiesWithSceneHandles;
-  v16 = [v5 activityIdentifier];
-  LODWORD(activeWidgetActivitiesWithSceneHandles) = [(NSMutableSet *)activeWidgetActivitiesWithSceneHandles containsObject:v16];
+  activityIdentifier2 = [descriptor activityIdentifier];
+  LODWORD(activeWidgetActivitiesWithSceneHandles) = [(NSMutableSet *)activeWidgetActivitiesWithSceneHandles containsObject:activityIdentifier2];
 
   if (activeWidgetActivitiesWithSceneHandles)
   {
     v17 = self->_activeWidgetActivitiesWithSceneHandles;
-    v18 = [v5 activityIdentifier];
-    [(NSMutableSet *)v17 removeObject:v18];
+    activityIdentifier3 = [descriptor activityIdentifier];
+    [(NSMutableSet *)v17 removeObject:activityIdentifier3];
   }
 }
 
@@ -2427,35 +2427,35 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
   }
 }
 
-- (void)_updateSystemApertureElementProminence:(BOOL)a3 item:(id)a4
+- (void)_updateSystemApertureElementProminence:(BOOL)prominence item:(id)item
 {
-  v4 = a3;
+  prominenceCopy = prominence;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v7 = [v6 identifier];
-  if (v4 && self->_activityEnvironment == 1)
+  identifier = [itemCopy identifier];
+  if (prominenceCopy && self->_activityEnvironment == 1)
   {
     v8 = SBLogActivity();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = v7;
+      v18 = identifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Environment is ambient, system aperture element can't become prominent", &v17, 0xCu);
     }
   }
 
   else
   {
-    v8 = [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier objectForKeyedSubscript:v7];
-    v9 = [v8 BOOLValue];
+    v8 = [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier objectForKeyedSubscript:identifier];
+    bOOLValue = [v8 BOOLValue];
     v10 = SBLogActivity();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromBOOL();
       v12 = NSStringFromBOOL();
       v17 = 138543874;
-      v18 = v7;
+      v18 = identifier;
       v19 = 2112;
       v20 = v11;
       v21 = 2112;
@@ -2463,21 +2463,21 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Prominence state update: %@, current prominence state: %@", &v17, 0x20u);
     }
 
-    if (v9 != v4)
+    if (bOOLValue != prominenceCopy)
     {
-      v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:v4];
-      [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier setObject:v13 forKeyedSubscript:v7];
+      v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:prominenceCopy];
+      [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier setObject:v13 forKeyedSubscript:identifier];
 
-      v14 = [[SBActivityAlert alloc] initWithItem:v6 payloadIdentifier:0 options:0 title:0 body:0];
+      v14 = [[SBActivityAlert alloc] initWithItem:itemCopy payloadIdentifier:0 options:0 title:0 body:0];
       [(SBActivityAlert *)v14 setProminent:1];
       v15 = SBLogActivity();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-      if (v4)
+      if (prominenceCopy)
       {
         if (v16)
         {
           v17 = 138543362;
-          v18 = v7;
+          v18 = identifier;
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Presenting a prominent alert", &v17, 0xCu);
         }
 
@@ -2489,7 +2489,7 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
         if (v16)
         {
           v17 = 138543362;
-          v18 = v7;
+          v18 = identifier;
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Dismissing a prominent alert", &v17, 0xCu);
         }
 
@@ -2499,16 +2499,16 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
   }
 }
 
-- (void)_createAndActivateSystemApertureElementWithScene:(id)a3 item:(id)a4 forAlerting:(BOOL)a5 completion:(id)a6
+- (void)_createAndActivateSystemApertureElementWithScene:(id)scene item:(id)item forAlerting:(BOOL)alerting completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v9 = a4;
-  v10 = a6;
-  v36 = v9;
-  v11 = [v9 descriptor];
-  v12 = [v11 activityIdentifier];
-  v13 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:v12];
+  sceneCopy = scene;
+  itemCopy = item;
+  completionCopy = completion;
+  v36 = itemCopy;
+  descriptor = [itemCopy descriptor];
+  activityIdentifier = [descriptor activityIdentifier];
+  v13 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
   if (v13)
   {
     v14 = SBLogActivity();
@@ -2517,20 +2517,20 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
       [SBActivitySystemApertureElementObserver _createAndActivateSystemApertureElementWithScene:item:forAlerting:completion:];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v30 = [SBApp systemApertureControllerForMainDisplay];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __120__SBActivitySystemApertureElementObserver__createAndActivateSystemApertureElementWithScene_item_forAlerting_completion___block_invoke;
     v56[3] = &unk_2783AD528;
-    v32 = v37;
+    v32 = sceneCopy;
     v57 = v32;
     v35 = MEMORY[0x223D6F7F0](v56);
     v15 = [SBSystemApertureSceneElement activePlaceholderElementPassingTest:v35];
@@ -2538,22 +2538,22 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
     v53[1] = 3221225472;
     v53[2] = __120__SBActivitySystemApertureElementObserver__createAndActivateSystemApertureElementWithScene_item_forAlerting_completion___block_invoke_2;
     v53[3] = &unk_2783B4878;
-    v34 = v12;
+    v34 = activityIdentifier;
     v54 = v34;
-    v16 = v10;
+    v16 = completionCopy;
     v55 = v16;
     v33 = MEMORY[0x223D6F7F0](v53);
     if (!v15)
     {
-      v17 = self;
+      selfCopy = self;
       v18 = [SBSystemApertureSceneElement alloc];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
       v48[2] = __120__SBActivitySystemApertureElementObserver__createAndActivateSystemApertureElementWithScene_item_forAlerting_completion___block_invoke_3;
       v48[3] = &unk_2783B48C8;
-      v48[4] = v17;
+      v48[4] = selfCopy;
       v49 = v34;
-      v50 = v30;
+      v50 = systemApertureControllerForMainDisplay;
       v51 = v33;
       v52 = v16;
       v15 = [(SBSystemApertureSceneElement *)v18 initWithScene:v32 statusBarBackgroundActivitiesSuppresser:v50 readyForPresentationHandler:v48];
@@ -2561,22 +2561,22 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
 
     v19 = objc_alloc_init(SBSystemApertureSceneElementConfiguration);
     [(SBSystemApertureSceneElementConfiguration *)v19 setAllowsSceneReactivation:1];
-    if (![v11 contentType])
+    if (![descriptor contentType])
     {
-      v20 = [MEMORY[0x277D67D08] defaultMetrics];
-      v21 = [v20 systemApertureMetrics];
+      defaultMetrics = [MEMORY[0x277D67D08] defaultMetrics];
+      systemApertureMetrics = [defaultMetrics systemApertureMetrics];
 
-      v22 = [v21 expandedMetricsRequest];
-      v23 = [v22 heightRequest];
-      [v23 maximum];
+      expandedMetricsRequest = [systemApertureMetrics expandedMetricsRequest];
+      heightRequest = [expandedMetricsRequest heightRequest];
+      [heightRequest maximum];
       [(SBSystemApertureSceneElementConfiguration *)v19 setMaximumHeight:?];
     }
 
-    [(NSMutableDictionary *)self->_elementByActivityIdentifier setObject:v15 forKeyedSubscript:v34, v30];
-    v24 = [(SBSystemApertureSceneElement *)v15 isActivated];
+    [(NSMutableDictionary *)self->_elementByActivityIdentifier setObject:v15 forKeyedSubscript:v34, systemApertureControllerForMainDisplay];
+    isActivated = [(SBSystemApertureSceneElement *)v15 isActivated];
     v25 = SBLogActivity();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-    if (v24)
+    if (isActivated)
     {
       if (v26)
       {
@@ -2604,8 +2604,8 @@ uint64_t __84__SBActivitySystemApertureElementObserver__removeSystemApertureScen
       }
 
       [(SBSystemApertureSceneElement *)v15 setConfiguration:v19];
-      v27 = [v32 clientHandle];
-      v28 = v27 == 0;
+      clientHandle = [v32 clientHandle];
+      v28 = clientHandle == 0;
 
       if (v28)
       {
@@ -2777,38 +2777,38 @@ void __120__SBActivitySystemApertureElementObserver__createAndActivateSystemAper
   }
 }
 
-- (void)_invalidateSystemApertureElementForItem:(id)a3 completion:(id)a4
+- (void)_invalidateSystemApertureElementForItem:(id)item completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 descriptor];
-  v9 = [v8 activityIdentifier];
+  itemCopy = item;
+  completionCopy = completion;
+  descriptor = [itemCopy descriptor];
+  activityIdentifier = [descriptor activityIdentifier];
   v10 = SBLogActivity();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v35 = v9;
+    v35 = activityIdentifier;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Invalidating system aperture element", buf, 0xCu);
   }
 
-  v11 = [(NSMutableDictionary *)self->_elementAssertionByActivityIdentifier objectForKeyedSubscript:v9];
-  v12 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:v9];
+  v11 = [(NSMutableDictionary *)self->_elementAssertionByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
+  v12 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __94__SBActivitySystemApertureElementObserver__invalidateSystemApertureElementForItem_completion___block_invoke;
   v30[3] = &unk_2783A8ED8;
   v13 = v11;
   v31 = v13;
-  v14 = v9;
+  v14 = activityIdentifier;
   v32 = v14;
-  v33 = self;
+  selfCopy = self;
   v15 = MEMORY[0x223D6F7F0](v30);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __94__SBActivitySystemApertureElementObserver__invalidateSystemApertureElementForItem_completion___block_invoke_2;
   v28[3] = &unk_2783B4940;
-  v16 = v7;
+  v16 = completionCopy;
   v29 = v16;
   v17 = MEMORY[0x223D6F7F0](v28);
   if ([v12 isDeactivating])
@@ -2844,7 +2844,7 @@ void __120__SBActivitySystemApertureElementObserver__createAndActivateSystemAper
 
   else
   {
-    [(SBActivitySystemApertureElementObserver *)self _removeSystemApertureSceneHandleWithItem:v6];
+    [(SBActivitySystemApertureElementObserver *)self _removeSystemApertureSceneHandleWithItem:itemCopy];
     [(SBActivitySystemApertureElementObserver *)self _registerSystemApertureElementForPendingActivityIfNecessary];
     v15[2](v15);
     (v17)[2](v17, v12, 1);
@@ -2911,16 +2911,16 @@ uint64_t __94__SBActivitySystemApertureElementObserver__invalidateSystemAperture
   return (*(a1[7] + 16))();
 }
 
-- (void)_unlockAndLaunchAppIfPossible:(id)a3 withAction:(id)a4
+- (void)_unlockAndLaunchAppIfPossible:(id)possible withAction:(id)action
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 descriptor];
-  v8 = [v7 activityIdentifier];
-  v9 = [v7 platterTargetBundleIdentifier];
-  if (v9)
+  actionCopy = action;
+  descriptor = [possible descriptor];
+  activityIdentifier = [descriptor activityIdentifier];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  if (platterTargetBundleIdentifier)
   {
-    v10 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:v8];
+    v10 = [(NSMutableDictionary *)self->_elementByActivityIdentifier objectForKeyedSubscript:activityIdentifier];
     v11 = v10;
     if (v10 && ([v10 isActivated]& 1) != 0)
     {
@@ -2937,9 +2937,9 @@ uint64_t __94__SBActivitySystemApertureElementObserver__invalidateSystemAperture
       {
         v12 = MEMORY[0x277D0AD60];
         v26[0] = *MEMORY[0x277D0ABD0];
-        if (v6)
+        if (actionCopy)
         {
-          v25 = v6;
+          v25 = actionCopy;
           v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
         }
 
@@ -2959,7 +2959,7 @@ uint64_t __94__SBActivitySystemApertureElementObserver__invalidateSystemAperture
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:4];
         v14 = [v12 optionsWithDictionary:v16];
 
-        if (v6)
+        if (actionCopy)
         {
         }
 
@@ -2967,9 +2967,9 @@ uint64_t __94__SBActivitySystemApertureElementObserver__invalidateSystemAperture
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543619;
-          v22 = v8;
+          v22 = activityIdentifier;
           v23 = 2113;
-          v24 = v6;
+          v24 = actionCopy;
           _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Sending open application request for %{private}@", buf, 0x16u);
         }
 
@@ -2978,8 +2978,8 @@ uint64_t __94__SBActivitySystemApertureElementObserver__invalidateSystemAperture
         v19[1] = 3221225472;
         v19[2] = __84__SBActivitySystemApertureElementObserver__unlockAndLaunchAppIfPossible_withAction___block_invoke;
         v19[3] = &unk_2783B49B8;
-        v20 = v8;
-        [v18 openApplication:v9 withOptions:v14 completion:v19];
+        v20 = activityIdentifier;
+        [v18 openApplication:platterTargetBundleIdentifier withOptions:v14 completion:v19];
       }
     }
 
@@ -3026,19 +3026,19 @@ void __84__SBActivitySystemApertureElementObserver__unlockAndLaunchAppIfPossible
   }
 }
 
-- (void)systemApertureSceneHandle:(id)a3 updatedContentPayloadID:(id)a4
+- (void)systemApertureSceneHandle:(id)handle updatedContentPayloadID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  dCopy = d;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__SBActivitySystemApertureElementObserver_systemApertureSceneHandle_updatedContentPayloadID___block_invoke;
   block[3] = &unk_2783A8ED8;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = handleCopy;
+  v12 = dCopy;
+  selfCopy = self;
+  v8 = dCopy;
+  v9 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

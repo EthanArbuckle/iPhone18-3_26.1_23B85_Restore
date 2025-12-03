@@ -1,23 +1,23 @@
 @interface FilterQuery
-- (FilterQuery)initWithSubsystem:(id)a3 category:(id)a4 name:(id)a5;
+- (FilterQuery)initWithSubsystem:(id)subsystem category:(id)category name:(id)name;
 @end
 
 @implementation FilterQuery
 
-- (FilterQuery)initWithSubsystem:(id)a3 category:(id)a4 name:(id)a5
+- (FilterQuery)initWithSubsystem:(id)subsystem category:(id)category name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = FilterQuery;
   v12 = [(FilterQuery *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_subsystem, a3);
-    objc_storeStrong(&v13->_category, a4);
-    objc_storeStrong(&v13->_name, a5);
+    objc_storeStrong(&v12->_subsystem, subsystem);
+    objc_storeStrong(&v13->_category, category);
+    objc_storeStrong(&v13->_name, name);
   }
 
   return v13;

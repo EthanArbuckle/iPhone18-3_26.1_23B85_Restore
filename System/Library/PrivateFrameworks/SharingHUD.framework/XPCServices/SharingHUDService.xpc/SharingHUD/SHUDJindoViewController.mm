@@ -1,34 +1,34 @@
 @interface SHUDJindoViewController
-- (SHUDJindoViewController)initWithNeedsButton:(BOOL)a3;
+- (SHUDJindoViewController)initWithNeedsButton:(BOOL)button;
 - (id)buttonView;
-- (id)createSubtitleWidthConstraint:(id)a3;
-- (id)formattedSubtitle:(id)a3;
+- (id)createSubtitleWidthConstraint:(id)constraint;
+- (id)formattedSubtitle:(id)subtitle;
 - (id)iconView;
 - (id)trailingJindoButton;
 - (void)handleButtonTapped;
 - (void)updateUI;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SHUDJindoViewController
 
-- (SHUDJindoViewController)initWithNeedsButton:(BOOL)a3
+- (SHUDJindoViewController)initWithNeedsButton:(BOOL)button
 {
   v5.receiver = self;
   v5.super_class = SHUDJindoViewController;
   result = [(SHUDJindoViewController *)&v5 initWithNibName:0 bundle:0];
   if (result)
   {
-    result->_needsButton = a3;
+    result->_needsButton = button;
   }
 
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4 = sharingHUDLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -37,16 +37,16 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Banner did appear", v7, 2u);
   }
 
-  v5 = [(SHUDJindoViewController *)self viewDidAppearHandler];
+  viewDidAppearHandler = [(SHUDJindoViewController *)self viewDidAppearHandler];
 
-  if (v5)
+  if (viewDidAppearHandler)
   {
-    v6 = [(SHUDJindoViewController *)self viewDidAppearHandler];
-    v6[2]();
+    viewDidAppearHandler2 = [(SHUDJindoViewController *)self viewDidAppearHandler];
+    viewDidAppearHandler2[2]();
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4 = sharingHUDLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -55,12 +55,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Banner did disappear", v7, 2u);
   }
 
-  v5 = [(SHUDJindoViewController *)self viewDidDisappearHandler];
+  viewDidDisappearHandler = [(SHUDJindoViewController *)self viewDidDisappearHandler];
 
-  if (v5)
+  if (viewDidDisappearHandler)
   {
-    v6 = [(SHUDJindoViewController *)self viewDidDisappearHandler];
-    v6[2]();
+    viewDidDisappearHandler2 = [(SHUDJindoViewController *)self viewDidDisappearHandler];
+    viewDidDisappearHandler2[2]();
   }
 }
 
@@ -73,9 +73,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Banner button tapped", buf, 2u);
   }
 
-  v4 = [(SHUDJindoViewController *)self buttonTapped];
+  buttonTapped = [(SHUDJindoViewController *)self buttonTapped];
 
-  if (v4)
+  if (buttonTapped)
   {
     v5 = sharingHUDLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -84,22 +84,22 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "buttonTapped() called", v7, 2u);
     }
 
-    v6 = [(SHUDJindoViewController *)self buttonTapped];
-    v6[2]();
+    buttonTapped2 = [(SHUDJindoViewController *)self buttonTapped];
+    buttonTapped2[2]();
   }
 }
 
-- (id)formattedSubtitle:(id)a3
+- (id)formattedSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   v5 = objc_alloc_init(UILabel);
-  [v5 setText:v4];
+  [v5 setText:subtitleCopy];
 
   v6 = [UIFont sbui_systemAperturePreferredFontForTextStyle:0];
   [v5 setFont:v6];
 
-  v7 = [v5 font];
-  v8 = [v7 fontWithSize:13.0];
+  font = [v5 font];
+  v8 = [font fontWithSize:13.0];
   [v5 setFont:v8];
 
   v9 = +[UIColor systemWhiteColor];
@@ -119,32 +119,32 @@
 
 - (id)trailingJindoButton
 {
-  v2 = [(SHUDJindoViewController *)self trailingButton];
+  trailingButton = [(SHUDJindoViewController *)self trailingButton];
   LODWORD(v3) = 1148846080;
-  [v2 setContentCompressionResistancePriority:0 forAxis:v3];
+  [trailingButton setContentCompressionResistancePriority:0 forAxis:v3];
   LODWORD(v4) = 1148846080;
-  [v2 setContentHuggingPriority:0 forAxis:v4];
-  v5 = [v2 titleLabel];
-  [v5 setMinimumScaleFactor:0.5];
+  [trailingButton setContentHuggingPriority:0 forAxis:v4];
+  titleLabel = [trailingButton titleLabel];
+  [titleLabel setMinimumScaleFactor:0.5];
 
-  v6 = [v2 titleLabel];
-  [v6 setNumberOfLines:1];
+  titleLabel2 = [trailingButton titleLabel];
+  [titleLabel2 setNumberOfLines:1];
 
-  v7 = [v2 titleLabel];
-  [v7 setAdjustsFontSizeToFitWidth:1];
+  titleLabel3 = [trailingButton titleLabel];
+  [titleLabel3 setAdjustsFontSizeToFitWidth:1];
 
-  v8 = [v2 titleLabel];
-  [v8 setAdjustsFontForContentSizeCategory:1];
+  titleLabel4 = [trailingButton titleLabel];
+  [titleLabel4 setAdjustsFontForContentSizeCategory:1];
 
-  [v2 setContentEdgeInsets:{7.0, 12.0, 7.0, 12.0}];
-  [v2 _setCornerRadius:17.0];
+  [trailingButton setContentEdgeInsets:{7.0, 12.0, 7.0, 12.0}];
+  [trailingButton _setCornerRadius:17.0];
   v9 = +[UIColor systemRedColor];
   v10 = [v9 colorWithAlphaComponent:0.4];
-  [v2 setBackgroundColor:v10];
+  [trailingButton setBackgroundColor:v10];
 
-  [v2 setUserInteractionEnabled:1];
+  [trailingButton setUserInteractionEnabled:1];
 
-  return v2;
+  return trailingButton;
 }
 
 - (void)viewDidLoad
@@ -155,26 +155,26 @@
   self->_needsToLayoutSubviews = 1;
 }
 
-- (id)createSubtitleWidthConstraint:(id)a3
+- (id)createSubtitleWidthConstraint:(id)constraint
 {
-  v3 = a3;
-  v4 = [v3 text];
-  [v3 intrinsicContentSize];
+  constraintCopy = constraint;
+  text = [constraintCopy text];
+  [constraintCopy intrinsicContentSize];
   v6 = v5;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"UNLOCKED_JINDO" value:0 table:@"Localization-D73"];
 
-  [v3 setText:v8];
-  [v3 intrinsicContentSize];
+  [constraintCopy setText:v8];
+  [constraintCopy intrinsicContentSize];
   if (v6 <= v9)
   {
     v6 = v9;
   }
 
-  [v3 setText:v4];
-  v10 = [v3 widthAnchor];
+  [constraintCopy setText:text];
+  widthAnchor = [constraintCopy widthAnchor];
 
-  v11 = [v10 constraintGreaterThanOrEqualToConstant:v6];
+  v11 = [widthAnchor constraintGreaterThanOrEqualToConstant:v6];
 
   LODWORD(v12) = 1140129792;
   [v11 setPriority:v12];
@@ -182,36 +182,36 @@
   return v11;
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   if (self->_needsToLayoutSubviews)
   {
     self->_needsToLayoutSubviews = 0;
-    v4 = [(SHUDJindoViewController *)self view];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(SHUDJindoViewController *)self view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v5 = [(SHUDJindoViewController *)self buttonView];
+    buttonView = [(SHUDJindoViewController *)self buttonView];
     if (![(SHUDJindoViewController *)self needsButton])
     {
-      [v5 setHidden:1];
+      [buttonView setHidden:1];
     }
 
-    v6 = [(SHUDJindoViewController *)self iconView];
-    v7 = [(SHUDJindoViewController *)self view];
-    [v7 addSubview:v6];
+    iconView = [(SHUDJindoViewController *)self iconView];
+    view2 = [(SHUDJindoViewController *)self view];
+    [view2 addSubview:iconView];
 
-    v8 = [(SHUDJindoViewController *)self view];
-    [v8 addSubview:v5];
+    view3 = [(SHUDJindoViewController *)self view];
+    [view3 addSubview:buttonView];
 
-    v72 = [(SHUDJindoViewController *)self subtitle];
+    subtitle = [(SHUDJindoViewController *)self subtitle];
     v9 = [(SHUDJindoViewController *)self formattedSubtitle:?];
     p_centerContent = &self->_centerContent;
     objc_storeStrong(&self->_centerContent, v9);
-    v11 = [(SHUDJindoViewController *)self view];
-    [v11 addSubview:self->_centerContent];
+    view4 = [(SHUDJindoViewController *)self view];
+    [view4 addSubview:self->_centerContent];
 
-    v12 = [(SHUDJindoViewController *)self view];
-    v13 = [v12 SBUISA_systemApertureObstructedAreaLayoutGuide];
+    view5 = [(SHUDJindoViewController *)self view];
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [view5 SBUISA_systemApertureObstructedAreaLayoutGuide];
 
     centerContent = self->_centerContent;
     v15 = objc_opt_respondsToSelector();
@@ -219,92 +219,92 @@
     if (v15)
     {
       v17 = v16;
-      v18 = [(UILabel *)v17 _tightBoundingBoxLayoutGuide];
-      v19 = [v18 topAnchor];
-      [v13 bottomAnchor];
-      v20 = v13;
-      v21 = v5;
+      _tightBoundingBoxLayoutGuide = [(UILabel *)v17 _tightBoundingBoxLayoutGuide];
+      topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+      [sBUISA_systemApertureObstructedAreaLayoutGuide bottomAnchor];
+      v20 = sBUISA_systemApertureObstructedAreaLayoutGuide;
+      v21 = buttonView;
       v23 = v22 = v9;
-      v24 = [v19 constraintEqualToAnchor:v23];
+      v24 = [topAnchor constraintEqualToAnchor:v23];
 
       p_centerContent = &self->_centerContent;
       v9 = v22;
-      v5 = v21;
-      v13 = v20;
+      buttonView = v21;
+      sBUISA_systemApertureObstructedAreaLayoutGuide = v20;
     }
 
     else
     {
-      v18 = [(UILabel *)v16 topAnchor];
-      v19 = [v13 bottomAnchor];
-      v24 = [v18 constraintEqualToAnchor:v19];
+      _tightBoundingBoxLayoutGuide = [(UILabel *)v16 topAnchor];
+      topAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide bottomAnchor];
+      v24 = [_tightBoundingBoxLayoutGuide constraintEqualToAnchor:topAnchor];
     }
 
-    v68 = [(SHUDJindoViewController *)self view];
-    v67 = [v68 heightAnchor];
-    v66 = [v67 constraintEqualToConstant:66.67];
+    view6 = [(SHUDJindoViewController *)self view];
+    heightAnchor = [view6 heightAnchor];
+    v66 = [heightAnchor constraintEqualToConstant:66.67];
     v74[0] = v66;
-    v64 = [v6 centerYAnchor];
-    v65 = [(SHUDJindoViewController *)self view];
-    v63 = [v65 centerYAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63];
+    centerYAnchor = [iconView centerYAnchor];
+    view7 = [(SHUDJindoViewController *)self view];
+    centerYAnchor2 = [view7 centerYAnchor];
+    v62 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v74[1] = v62;
-    v60 = [v6 centerXAnchor];
-    v61 = [(SHUDJindoViewController *)self view];
-    v59 = [v61 leadingAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59 constant:30.0];
+    centerXAnchor = [iconView centerXAnchor];
+    view8 = [(SHUDJindoViewController *)self view];
+    leadingAnchor = [view8 leadingAnchor];
+    v58 = [centerXAnchor constraintEqualToAnchor:leadingAnchor constant:30.0];
     v74[2] = v58;
-    v57 = [v6 heightAnchor];
-    v56 = [v57 constraintEqualToConstant:55.33];
+    heightAnchor2 = [iconView heightAnchor];
+    v56 = [heightAnchor2 constraintEqualToConstant:55.33];
     v74[3] = v56;
-    v55 = [v6 widthAnchor];
-    v54 = [v55 constraintEqualToConstant:55.33];
+    widthAnchor = [iconView widthAnchor];
+    v54 = [widthAnchor constraintEqualToConstant:55.33];
     v74[4] = v54;
     v71 = v9;
     v53 = [(SHUDJindoViewController *)self createSubtitleWidthConstraint:v9];
     v74[5] = v53;
-    v51 = [(UILabel *)*p_centerContent leadingAnchor];
-    v50 = [v13 leadingAnchor];
-    v49 = [v51 constraintLessThanOrEqualToAnchor:v50];
+    leadingAnchor2 = [(UILabel *)*p_centerContent leadingAnchor];
+    leadingAnchor3 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+    v49 = [leadingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor3];
     v74[6] = v49;
-    v48 = [(UILabel *)*p_centerContent trailingAnchor];
-    v47 = [v13 trailingAnchor];
-    v46 = [v48 constraintGreaterThanOrEqualToAnchor:v47];
+    trailingAnchor = [(UILabel *)*p_centerContent trailingAnchor];
+    trailingAnchor2 = [sBUISA_systemApertureObstructedAreaLayoutGuide trailingAnchor];
+    v46 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
     v74[7] = v46;
     v74[8] = v24;
     v69 = v24;
-    v45 = [(UILabel *)*p_centerContent leadingAnchor];
-    v73 = v6;
-    v44 = [v6 centerXAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:25.33];
+    leadingAnchor4 = [(UILabel *)*p_centerContent leadingAnchor];
+    v73 = iconView;
+    centerXAnchor2 = [iconView centerXAnchor];
+    v43 = [leadingAnchor4 constraintEqualToAnchor:centerXAnchor2 constant:25.33];
     v74[9] = v43;
-    v41 = [v5 centerYAnchor];
-    v42 = [(SHUDJindoViewController *)self view];
-    v40 = [v42 centerYAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    centerYAnchor3 = [buttonView centerYAnchor];
+    view9 = [(SHUDJindoViewController *)self view];
+    centerYAnchor4 = [view9 centerYAnchor];
+    v39 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v74[10] = v39;
-    v37 = [v5 trailingAnchor];
-    v38 = [(SHUDJindoViewController *)self view];
-    v36 = [v38 trailingAnchor];
-    v25 = [v37 constraintEqualToAnchor:v36 constant:-15.0];
+    trailingAnchor3 = [buttonView trailingAnchor];
+    view10 = [(SHUDJindoViewController *)self view];
+    trailingAnchor4 = [view10 trailingAnchor];
+    v25 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-15.0];
     v74[11] = v25;
-    v26 = [v5 leadingAnchor];
-    v70 = v13;
-    v27 = [v13 trailingAnchor];
-    v28 = [v26 constraintGreaterThanOrEqualToAnchor:v27];
+    leadingAnchor5 = [buttonView leadingAnchor];
+    v70 = sBUISA_systemApertureObstructedAreaLayoutGuide;
+    trailingAnchor5 = [sBUISA_systemApertureObstructedAreaLayoutGuide trailingAnchor];
+    v28 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:trailingAnchor5];
     v74[12] = v28;
-    [v5 leadingAnchor];
-    v30 = v29 = v5;
-    v31 = [(UILabel *)*p_centerContent trailingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:8.0];
+    [buttonView leadingAnchor];
+    v30 = v29 = buttonView;
+    trailingAnchor6 = [(UILabel *)*p_centerContent trailingAnchor];
+    v32 = [v30 constraintEqualToAnchor:trailingAnchor6 constant:8.0];
     v74[13] = v32;
     v33 = [NSArray arrayWithObjects:v74 count:14];
     v52 = [NSMutableArray arrayWithArray:v33];
 
     if (![(SHUDJindoViewController *)self needsButton])
     {
-      v34 = [v29 widthAnchor];
-      v35 = [v34 constraintEqualToConstant:0.0];
+      widthAnchor2 = [v29 widthAnchor];
+      v35 = [widthAnchor2 constraintEqualToConstant:0.0];
       [v52 addObject:v35];
     }
 
@@ -318,26 +318,26 @@
   [(SHUDJindoAccessoryView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = [[UIImageView alloc] initWithFrame:{0.0, 0.0, 82.0, 30.0}];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(SHUDJindoViewController *)self leadingImage];
-  [v4 setImage:v5];
+  leadingImage = [(SHUDJindoViewController *)self leadingImage];
+  [v4 setImage:leadingImage];
 
   [v4 setContentMode:{-[SHUDJindoViewController imageContentMode](self, "imageContentMode")}];
   [(SHUDJindoAccessoryView *)v3 addSubview:v4];
-  v19 = [v4 leadingAnchor];
-  v18 = [(SHUDJindoAccessoryView *)v3 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [(SHUDJindoAccessoryView *)v3 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[0] = v17;
-  v16 = [v4 trailingAnchor];
-  v15 = [(SHUDJindoAccessoryView *)v3 trailingAnchor];
-  v6 = [v16 constraintEqualToAnchor:v15];
+  trailingAnchor = [v4 trailingAnchor];
+  trailingAnchor2 = [(SHUDJindoAccessoryView *)v3 trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v6;
-  v7 = [v4 bottomAnchor];
-  v8 = [(SHUDJindoAccessoryView *)v3 bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [(SHUDJindoAccessoryView *)v3 bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[2] = v9;
-  v10 = [v4 topAnchor];
-  v11 = [(SHUDJindoAccessoryView *)v3 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [(SHUDJindoAccessoryView *)v3 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[3] = v12;
   v13 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v13];
@@ -349,37 +349,37 @@
 {
   v3 = [[SHUDJindoAccessoryView alloc] initWithFrame:0.0, 0.0, 120.0, 60.0];
   [(SHUDJindoAccessoryView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(SHUDJindoViewController *)self trailingJindoButton];
-  [v4 addTarget:self action:"handleButtonTapped" forControlEvents:64];
-  [(SHUDJindoAccessoryView *)v3 addSubview:v4];
-  v18 = [v4 leadingAnchor];
-  v17 = [(SHUDJindoAccessoryView *)v3 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  trailingJindoButton = [(SHUDJindoViewController *)self trailingJindoButton];
+  [trailingJindoButton addTarget:self action:"handleButtonTapped" forControlEvents:64];
+  [(SHUDJindoAccessoryView *)v3 addSubview:trailingJindoButton];
+  leadingAnchor = [trailingJindoButton leadingAnchor];
+  leadingAnchor2 = [(SHUDJindoAccessoryView *)v3 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[0] = v16;
-  v15 = [v4 trailingAnchor];
-  v14 = [(SHUDJindoAccessoryView *)v3 trailingAnchor];
-  v5 = [v15 constraintEqualToAnchor:v14];
+  trailingAnchor = [trailingJindoButton trailingAnchor];
+  trailingAnchor2 = [(SHUDJindoAccessoryView *)v3 trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v5;
-  v6 = [v4 bottomAnchor];
-  v7 = [(SHUDJindoAccessoryView *)v3 bottomAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  bottomAnchor = [trailingJindoButton bottomAnchor];
+  bottomAnchor2 = [(SHUDJindoAccessoryView *)v3 bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[2] = v8;
-  v9 = [v4 topAnchor];
-  v10 = [(SHUDJindoAccessoryView *)v3 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [trailingJindoButton topAnchor];
+  topAnchor2 = [(SHUDJindoAccessoryView *)v3 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[3] = v11;
   v12 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v12];
 
-  [(SHUDJindoViewController *)self setBannerButton:v4];
+  [(SHUDJindoViewController *)self setBannerButton:trailingJindoButton];
 
   return v3;
 }
 
 - (void)updateUI
 {
-  v3 = [(SHUDJindoViewController *)self subtitle];
-  [(UILabel *)self->_centerContent setText:v3];
+  subtitle = [(SHUDJindoViewController *)self subtitle];
+  [(UILabel *)self->_centerContent setText:subtitle];
 }
 
 @end

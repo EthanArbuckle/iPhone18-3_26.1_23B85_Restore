@@ -1,15 +1,15 @@
 @interface RPNearFieldClient
 - (RPNearFieldClient)init;
-- (id)_XPCConnectionWithMachServiceName:(id)a3 options:(unint64_t)a4;
+- (id)_XPCConnectionWithMachServiceName:(id)name options:(unint64_t)options;
 - (id)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)didConnect;
-- (void)failDiscoveryWithError:(id)a3;
+- (void)failDiscoveryWithError:(id)error;
 - (void)invalidate;
-- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)a3;
-- (void)receivedTapEvent:(id)a3;
-- (void)stopWithCompletion:(id)a3;
+- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)role;
+- (void)receivedTapEvent:(id)event;
+- (void)stopWithCompletion:(id)completion;
 @end
 
 @implementation RPNearFieldClient
@@ -28,11 +28,11 @@
   return v3;
 }
 
-- (id)_XPCConnectionWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (id)_XPCConnectionWithMachServiceName:(id)name options:(unint64_t)options
 {
   v5 = MEMORY[0x1E696B0B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithMachServiceName:v6 options:a4];
+  nameCopy = name;
+  v7 = [[v5 alloc] initWithMachServiceName:nameCopy options:options];
 
   return v7;
 }
@@ -166,16 +166,16 @@ void __31__RPNearFieldClient_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPNearFieldClient *)self _ensureXPCStarted];
+  completionCopy = completion;
+  _ensureXPCStarted = [(RPNearFieldClient *)self _ensureXPCStarted];
   xpcCnx = self->_xpcCnx;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40__RPNearFieldClient_stopWithCompletion___block_invoke;
   v12[3] = &unk_1E7C92DA8;
-  v7 = v4;
+  v7 = completionCopy;
   v13 = v7;
   v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -227,29 +227,29 @@ void __40__RPNearFieldClient_stopWithCompletion___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (void)failDiscoveryWithError:(id)a3
+- (void)failDiscoveryWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   v4 = _Block_copy(self->_failedDiscovery);
   v5 = v4;
   if (v4)
   {
-    (*(v4 + 2))(v4, v6);
+    (*(v4 + 2))(v4, errorCopy);
   }
 }
 
-- (void)receivedTapEvent:(id)a3
+- (void)receivedTapEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   v4 = _Block_copy(self->_tapEventHandler);
   v5 = v4;
   if (v4)
   {
-    (*(v4 + 2))(v4, v6);
+    (*(v4 + 2))(v4, eventCopy);
   }
 }
 
-- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)a3
+- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)role
 {
   if (gLogCategory_RPNearFieldClient <= 90 && (gLogCategory_RPNearFieldClient != -1 || _LogCategory_Initialize()))
   {

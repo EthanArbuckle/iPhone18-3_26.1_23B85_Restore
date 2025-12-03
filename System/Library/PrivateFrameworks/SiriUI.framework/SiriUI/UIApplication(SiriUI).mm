@@ -6,17 +6,17 @@
 
 - (double)siriui_applicationFrame
 {
-  v0 = [MEMORY[0x277D75128] sharedApplication];
-  if ([v0 conformsToProtocol:&unk_287A681D0])
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if ([mEMORY[0x277D75128] conformsToProtocol:&unk_287A681D0])
   {
-    [v0 applicationFrame];
+    [mEMORY[0x277D75128] applicationFrame];
     v2 = v1;
   }
 
   else
   {
-    v3 = [*MEMORY[0x277D76620] keyWindow];
-    [v3 frame];
+    keyWindow = [*MEMORY[0x277D76620] keyWindow];
+    [keyWindow frame];
     v2 = v4;
   }
 

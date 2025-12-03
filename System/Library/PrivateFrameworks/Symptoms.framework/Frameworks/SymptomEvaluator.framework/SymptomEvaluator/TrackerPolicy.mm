@@ -1,12 +1,12 @@
 @interface TrackerPolicy
-+ (id)preferredInstance:(id)a3;
++ (id)preferredInstance:(id)instance;
 + (void)initialize;
 - (TrackerPolicy)init;
-- (id)flowClassificationFor:(id)a3;
-- (id)nonDefaultFlowClassificationFor:(id)a3;
-- (int)configureInstance:(id)a3;
-- (void)addClassification:(id)a3 forTrafficClass:(unsigned int)a4;
-- (void)addClassification:(id)a3 forTrafficMgmtFlags:(unsigned int)a4;
+- (id)flowClassificationFor:(id)for;
+- (id)nonDefaultFlowClassificationFor:(id)for;
+- (int)configureInstance:(id)instance;
+- (void)addClassification:(id)classification forTrafficClass:(unsigned int)class;
+- (void)addClassification:(id)classification forTrafficMgmtFlags:(unsigned int)flags;
 @end
 
 @implementation TrackerPolicy
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (id)nonDefaultFlowClassificationFor:(id)a3
+- (id)nonDefaultFlowClassificationFor:(id)for
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_numClassMaps && (v6 = [v4 trafficClassFlags], numClassMaps = self->_numClassMaps, numClassMaps))
+  forCopy = for;
+  v5 = forCopy;
+  if (self->_numClassMaps && (v6 = [forCopy trafficClassFlags], numClassMaps = self->_numClassMaps, numClassMaps))
   {
     p_flowClassification = &self->_classMap[0].flowClassification;
     while (*(p_flowClassification - 2) != v6)
@@ -70,9 +70,9 @@ LABEL_13:
   return v11;
 }
 
-- (id)flowClassificationFor:(id)a3
+- (id)flowClassificationFor:(id)for
 {
-  v4 = [(TrackerPolicy *)self nonDefaultFlowClassificationFor:a3];
+  v4 = [(TrackerPolicy *)self nonDefaultFlowClassificationFor:for];
   v5 = v4;
   if (v4)
   {
@@ -98,59 +98,59 @@ LABEL_13:
   return v8;
 }
 
-- (void)addClassification:(id)a3 forTrafficClass:(unsigned int)a4
+- (void)addClassification:(id)classification forTrafficClass:(unsigned int)class
 {
-  v7 = a3;
+  classificationCopy = classification;
   numClassMaps = self->_numClassMaps;
   if (!numClassMaps)
   {
     goto LABEL_5;
   }
 
-  if (self->_classMap[numClassMaps].trafficClass == a4)
+  if (self->_classMap[numClassMaps].trafficClass == class)
   {
-    v9 = v7;
-    objc_storeStrong(&self->_classMap[numClassMaps].flowClassification, a3);
-    v7 = v9;
+    v9 = classificationCopy;
+    objc_storeStrong(&self->_classMap[numClassMaps].flowClassification, classification);
+    classificationCopy = v9;
     goto LABEL_6;
   }
 
   if (numClassMaps <= 0xB)
   {
 LABEL_5:
-    self->_classMap[numClassMaps].trafficClass = a4;
-    v10 = v7;
-    objc_storeStrong(&self->_classMap[self->_numClassMaps].flowClassification, a3);
-    v7 = v10;
+    self->_classMap[numClassMaps].trafficClass = class;
+    v10 = classificationCopy;
+    objc_storeStrong(&self->_classMap[self->_numClassMaps].flowClassification, classification);
+    classificationCopy = v10;
     ++self->_numClassMaps;
   }
 
 LABEL_6:
 }
 
-- (void)addClassification:(id)a3 forTrafficMgmtFlags:(unsigned int)a4
+- (void)addClassification:(id)classification forTrafficMgmtFlags:(unsigned int)flags
 {
-  v7 = a3;
+  classificationCopy = classification;
   numMgmtFlagsMaps = self->_numMgmtFlagsMaps;
   if (numMgmtFlagsMaps <= 3)
   {
     v9 = self + 16 * numMgmtFlagsMaps;
-    *(v9 + 50) = a4;
-    v10 = v7;
-    objc_storeStrong(v9 + 26, a3);
-    v7 = v10;
+    *(v9 + 50) = flags;
+    v10 = classificationCopy;
+    objc_storeStrong(v9 + 26, classification);
+    classificationCopy = v10;
     ++self->_numMgmtFlagsMaps;
   }
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __35__TrackerPolicy_configureInstance___block_invoke;
   v4[3] = &unk_27898B7F0;
   v4[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v4];
+  [instance enumerateKeysAndObjectsUsingBlock:v4];
   return 0;
 }
 
@@ -314,13 +314,13 @@ LABEL_29:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)preferredInstance:(id)a3
++ (id)preferredInstance:(id)instance
 {
-  v3 = a3;
-  if (![v3 numClassMaps] && !objc_msgSend(v3, "numMgmtFlagsMaps"))
+  instanceCopy = instance;
+  if (![instanceCopy numClassMaps] && !objc_msgSend(instanceCopy, "numMgmtFlagsMaps"))
   {
-    v4 = [v3 defaultClassification];
-    v5 = [v4 description];
+    defaultClassification = [instanceCopy defaultClassification];
+    v5 = [defaultClassification description];
 
     if (v5)
     {
@@ -330,17 +330,17 @@ LABEL_29:
       {
         v8 = v6;
 
-        v3 = v8;
+        instanceCopy = v8;
       }
 
       else
       {
-        [gDeDupDictionary setObject:v3 forKeyedSubscript:v5];
+        [gDeDupDictionary setObject:instanceCopy forKeyedSubscript:v5];
       }
     }
   }
 
-  return v3;
+  return instanceCopy;
 }
 
 + (void)initialize
@@ -349,8 +349,8 @@ LABEL_29:
   v3 = gDeDupDictionary;
   gDeDupDictionary = v2;
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [v6 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:&__block_literal_global_24];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:&__block_literal_global_24];
   v5 = gRelayReadyObserver;
   gRelayReadyObserver = v4;
 }

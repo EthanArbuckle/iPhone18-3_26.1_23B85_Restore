@@ -1,14 +1,14 @@
 @interface EPScalablePipeManagerManager
-- (EPScalablePipeManagerManager)initWithName:(id)a3 type:(int64_t)a4 priority:(int64_t)a5;
-- (id)newResourceWithDelegate:(id)a3;
+- (EPScalablePipeManagerManager)initWithName:(id)name type:(int64_t)type priority:(int64_t)priority;
+- (id)newResourceWithDelegate:(id)delegate;
 - (void)createResource;
 - (void)destroyResource;
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5;
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)scalablePipeManagerDidUpdateState:(id)a3;
-- (void)setIsConnected:(BOOL)a3;
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error;
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)scalablePipeManagerDidUpdateState:(id)state;
+- (void)setIsConnected:(BOOL)connected;
 - (void)update;
 @end
 
@@ -20,8 +20,8 @@
   v7.super_class = EPScalablePipeManagerManager;
   [(EPResourceManager *)&v7 createResource];
   v3 = [CBScalablePipeManager alloc];
-  v4 = [(EPResourceManager *)self queue];
-  v5 = [v3 initWithDelegate:self queue:v4];
+  queue = [(EPResourceManager *)self queue];
+  v5 = [v3 initWithDelegate:self queue:queue];
   manager = self->_manager;
   self->_manager = v5;
 
@@ -58,25 +58,25 @@
   self->_manager = 0;
 }
 
-- (void)setIsConnected:(BOOL)a3
+- (void)setIsConnected:(BOOL)connected
 {
-  if (self->_isConnected != a3)
+  if (self->_isConnected != connected)
   {
     v7 = v3;
     v8 = v4;
-    self->_isConnected = a3;
+    self->_isConnected = connected;
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1000CB874;
     v5[3] = &unk_100179410;
-    v6 = a3;
+    connectedCopy = connected;
     [(EPResourceManager *)self enumerateResourcesWithBlock:v5];
   }
 }
 
-- (EPScalablePipeManagerManager)initWithName:(id)a3 type:(int64_t)a4 priority:(int64_t)a5
+- (EPScalablePipeManagerManager)initWithName:(id)name type:(int64_t)type priority:(int64_t)priority
 {
-  v9 = a3;
+  nameCopy = name;
   v10 = +[EPFactory queue];
   v13.receiver = self;
   v13.super_class = EPScalablePipeManagerManager;
@@ -84,19 +84,19 @@
 
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    v11->_type = a4;
-    v11->_priority = a5;
+    objc_storeStrong(&v11->_name, name);
+    v11->_type = type;
+    v11->_priority = priority;
   }
 
   return v11;
 }
 
-- (id)newResourceWithDelegate:(id)a3
+- (id)newResourceWithDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = EPScalablePipeManagerManager;
-  v4 = [(EPResourceManager *)&v6 newResourceWithDelegate:a3];
+  v4 = [(EPResourceManager *)&v6 newResourceWithDelegate:delegate];
   [v4 setIsConnected:{-[EPScalablePipeManagerManager isConnected](self, "isConnected")}];
 
   return v4;
@@ -133,11 +133,11 @@
     return;
   }
 
-  v3 = [(CBScalablePipeManager *)self->_manager state];
+  state = [(CBScalablePipeManager *)self->_manager state];
   v4 = 0;
-  if (v3 <= 3)
+  if (state <= 3)
   {
-    if (v3 == 2)
+    if (state == 2)
     {
       v19 = NSLocalizedDescriptionKey;
       v20 = @"Bluetooth is not supported";
@@ -148,7 +148,7 @@
     else
     {
       v6 = 0;
-      if (v3 != 3)
+      if (state != 3)
       {
 LABEL_29:
         self->_didRequestEndpoint = 0;
@@ -172,7 +172,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v3 == 4)
+  if (state == 4)
   {
     v21 = NSLocalizedDescriptionKey;
     v22 = @"Bluetooth is powered off";
@@ -181,7 +181,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v5 = v3 == 10 || v3 == 5;
+  v5 = state == 10 || state == 5;
   v6 = 0;
   if (!v5)
   {
@@ -210,29 +210,29 @@ LABEL_28:
   }
 }
 
-- (void)scalablePipeManagerDidUpdateState:(id)a3
+- (void)scalablePipeManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(EPScalablePipeManagerManager *)self update];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000CBDF0;
   v6[3] = &unk_1001785C0;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v6];
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_manager == v6)
+  managerCopy = manager;
+  connectCopy = connect;
+  v8 = connectCopy;
+  if (self->_manager == managerCopy)
   {
     name = self->_name;
-    v10 = [v7 name];
-    LODWORD(name) = [(NSString *)name isEqual:v10];
+    name = [connectCopy name];
+    LODWORD(name) = [(NSString *)name isEqual:name];
 
     if (name)
     {
@@ -244,18 +244,18 @@ LABEL_28:
   v13[1] = 3221225472;
   v13[2] = sub_1000CBF18;
   v13[3] = &unk_100175998;
-  v14 = v6;
+  v14 = managerCopy;
   v15 = v8;
   v11 = v8;
-  v12 = v6;
+  v12 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v13];
 }
 
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqual:self->_name])
+  managerCopy = manager;
+  endpointCopy = endpoint;
+  if ([endpointCopy isEqual:self->_name])
   {
     self->_didRequestEndpoint = 0;
     self->_endpointIsRegistered = 0;
@@ -267,23 +267,23 @@ LABEL_28:
   v10[1] = 3221225472;
   v10[2] = sub_1000CC028;
   v10[3] = &unk_100175998;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = managerCopy;
+  v12 = endpointCopy;
+  v8 = endpointCopy;
+  v9 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v10];
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_manager == v8)
+  managerCopy = manager;
+  disconnectCopy = disconnect;
+  errorCopy = error;
+  if (self->_manager == managerCopy)
   {
     name = self->_name;
-    v12 = [v9 name];
-    LODWORD(name) = [(NSString *)name isEqual:v12];
+    name = [disconnectCopy name];
+    LODWORD(name) = [(NSString *)name isEqual:name];
 
     if (name)
     {
@@ -295,23 +295,23 @@ LABEL_28:
   v16[1] = 3221225472;
   v16[2] = sub_1000CC174;
   v16[3] = &unk_1001759C0;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = managerCopy;
+  v18 = disconnectCopy;
+  v19 = errorCopy;
+  v13 = errorCopy;
+  v14 = disconnectCopy;
+  v15 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v16];
 }
 
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqual:self->_name])
+  managerCopy = manager;
+  endpointCopy = endpoint;
+  errorCopy = error;
+  if ([endpointCopy isEqual:self->_name])
   {
-    if (v10)
+    if (errorCopy)
     {
       v11 = sub_1000A98C0();
       v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
@@ -321,36 +321,36 @@ LABEL_28:
         v13 = sub_1000A98C0();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          sub_1001035F0(v9, v10, v13);
+          sub_1001035F0(endpointCopy, errorCopy, v13);
         }
       }
 
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2;
-      v16 = v10;
+      v16 = errorCopy;
     }
 
     else
     {
       self->_endpointIsRegistered = 1;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 1;
       v16 = 0;
     }
 
-    [(EPResourceManager *)v14 setAvailability:v15 withError:v16];
+    [(EPResourceManager *)selfCopy2 setAvailability:v15 withError:v16];
   }
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000CC30C;
   v20[3] = &unk_1001759C0;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
-  v17 = v10;
-  v18 = v9;
-  v19 = v8;
+  v21 = managerCopy;
+  v22 = endpointCopy;
+  v23 = errorCopy;
+  v17 = errorCopy;
+  v18 = endpointCopy;
+  v19 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v20];
 }
 

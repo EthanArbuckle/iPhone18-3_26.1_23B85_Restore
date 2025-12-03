@@ -1,30 +1,30 @@
 @interface CLSTaxonomyBasedSignalNode
-- (CLSTaxonomyBasedSignalNode)initWithTaxonomyNode:(id)a3;
+- (CLSTaxonomyBasedSignalNode)initWithTaxonomyNode:(id)node;
 @end
 
 @implementation CLSTaxonomyBasedSignalNode
 
-- (CLSTaxonomyBasedSignalNode)initWithTaxonomyNode:(id)a3
+- (CLSTaxonomyBasedSignalNode)initWithTaxonomyNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 extendedSceneClassId];
-  v6 = [v4 name];
-  [v4 f1Threshold];
+  nodeCopy = node;
+  extendedSceneClassId = [nodeCopy extendedSceneClassId];
+  name = [nodeCopy name];
+  [nodeCopy f1Threshold];
   v8 = v7;
-  [v4 f0point5Threshold];
+  [nodeCopy f0point5Threshold];
   v10 = v9;
-  [v4 f2Threshold];
+  [nodeCopy f2Threshold];
   v17.receiver = self;
   v17.super_class = CLSTaxonomyBasedSignalNode;
-  v12 = [(CLSSignalNode *)&v17 initWithIdentifier:v5 name:v6 operatingPoint:v8 highPrecisionOperatingPoint:v10 highRecallOperatingPoint:v11];
+  v12 = [(CLSSignalNode *)&v17 initWithIdentifier:extendedSceneClassId name:name operatingPoint:v8 highPrecisionOperatingPoint:v10 highRecallOperatingPoint:v11];
 
   if (v12)
   {
-    [v4 searchThreshold];
+    [nodeCopy searchThreshold];
     v12->_searchThreshold = v13;
-    [v4 graphHighPrecisionThreshold];
+    [nodeCopy graphHighPrecisionThreshold];
     v12->_graphHighPrecisionThreshold = v14;
-    [v4 graphHighRecallThreshold];
+    [nodeCopy graphHighRecallThreshold];
     v12->_graphHighRecallThreshold = v15;
   }
 

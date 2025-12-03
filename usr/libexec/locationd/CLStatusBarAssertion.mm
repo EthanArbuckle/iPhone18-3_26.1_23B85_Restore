@@ -1,14 +1,14 @@
 @interface CLStatusBarAssertion
-- (CLStatusBarAssertion)initWithPid:(int)a3 name:(id)a4 queue:(id)a5 backgrounded:(BOOL)a6 registration:(int)a7;
+- (CLStatusBarAssertion)initWithPid:(int)pid name:(id)name queue:(id)queue backgrounded:(BOOL)backgrounded registration:(int)registration;
 - (void)dealloc;
-- (void)invalidate:(int)a3;
-- (void)setBackgrounded:(BOOL)a3;
-- (void)setDesiredEnablementState:(BOOL)a3;
+- (void)invalidate:(int)invalidate;
+- (void)setBackgrounded:(BOOL)backgrounded;
+- (void)setDesiredEnablementState:(BOOL)state;
 @end
 
 @implementation CLStatusBarAssertion
 
-- (CLStatusBarAssertion)initWithPid:(int)a3 name:(id)a4 queue:(id)a5 backgrounded:(BOOL)a6 registration:(int)a7
+- (CLStatusBarAssertion)initWithPid:(int)pid name:(id)name queue:(id)queue backgrounded:(BOOL)backgrounded registration:(int)registration
 {
   if (+[CLStatusBarAssertion isStatusBarAssertionAvailable])
   {
@@ -19,13 +19,13 @@
     if (v13)
     {
       v13->_assertion = 0;
-      v13->_pid = a3;
-      v13->_name = [a4 copy];
-      v14->_queue = a5;
-      v14->_startedInBackground = a6;
-      v14->_everBackgrounded = a6;
-      v14->_backgrounded = a6;
-      v14->_registration = a7;
+      v13->_pid = pid;
+      v13->_name = [name copy];
+      v14->_queue = queue;
+      v14->_startedInBackground = backgrounded;
+      v14->_everBackgrounded = backgrounded;
+      v14->_backgrounded = backgrounded;
+      v14->_registration = registration;
     }
   }
 
@@ -50,7 +50,7 @@
   [(CLStatusBarAssertion *)&v3 dealloc];
 }
 
-- (void)invalidate:(int)a3
+- (void)invalidate:(int)invalidate
 {
   v4[1] = @"Pid";
   v5[0] = &__kCFBooleanFalse;
@@ -62,10 +62,10 @@
   self->_assertion = 0;
 }
 
-- (void)setDesiredEnablementState:(BOOL)a3
+- (void)setDesiredEnablementState:(BOOL)state
 {
   assertion = self->_assertion;
-  if (a3)
+  if (state)
   {
     if (!assertion)
     {
@@ -98,14 +98,14 @@
   }
 }
 
-- (void)setBackgrounded:(BOOL)a3
+- (void)setBackgrounded:(BOOL)backgrounded
 {
-  if (a3)
+  if (backgrounded)
   {
     self->_everBackgrounded = 1;
   }
 
-  self->_backgrounded = a3;
+  self->_backgrounded = backgrounded;
 }
 
 @end

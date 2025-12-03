@@ -1,10 +1,10 @@
 @interface SiriCoreSiriDaemonLaunchContext
-- (SiriCoreSiriDaemonLaunchContext)initWithLaunchArguments:(id)a3;
+- (SiriCoreSiriDaemonLaunchContext)initWithLaunchArguments:(id)arguments;
 @end
 
 @implementation SiriCoreSiriDaemonLaunchContext
 
-- (SiriCoreSiriDaemonLaunchContext)initWithLaunchArguments:(id)a3
+- (SiriCoreSiriDaemonLaunchContext)initWithLaunchArguments:(id)arguments
 {
   v6.receiver = self;
   v6.super_class = SiriCoreSiriDaemonLaunchContext;

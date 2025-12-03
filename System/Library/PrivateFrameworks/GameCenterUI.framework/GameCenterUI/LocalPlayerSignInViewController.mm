@@ -1,5 +1,5 @@
 @interface LocalPlayerSignInViewController
-- (_TtC12GameCenterUIP33_A62BD05DE70094D27EB878D79984A7D331LocalPlayerSignInViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12GameCenterUIP33_A62BD05DE70094D27EB878D79984A7D331LocalPlayerSignInViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelSignIn;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)cancelSignIn
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E003000();
 }
 
-- (_TtC12GameCenterUIP33_A62BD05DE70094D27EB878D79984A7D331LocalPlayerSignInViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUIP33_A62BD05DE70094D27EB878D79984A7D331LocalPlayerSignInViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_24E003144();
 }
 

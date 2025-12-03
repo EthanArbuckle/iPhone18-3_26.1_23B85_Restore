@@ -1,7 +1,7 @@
 @interface SCKPProvider
 - (SCKPProvider)init;
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
 @end
 
 @implementation SCKPProvider
@@ -19,16 +19,16 @@
   return v2;
 }
 
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__SCKPProvider_requestCardSectionViewProviderForCard_delegate_reply___block_invoke;
   v10[3] = &unk_279C60118;
-  v11 = v8;
-  v9 = v8;
-  [(SCKPProvider *)self requestIdentifiedCardSectionViewProviderForCard:a3 delegate:a4 reply:v10];
+  v11 = replyCopy;
+  v9 = replyCopy;
+  [(SCKPProvider *)self requestIdentifiedCardSectionViewProviderForCard:card delegate:delegate reply:v10];
 }
 
 uint64_t __69__SCKPProvider_requestCardSectionViewProviderForCard_delegate_reply___block_invoke(uint64_t a1)
@@ -42,15 +42,15 @@ uint64_t __69__SCKPProvider_requestCardSectionViewProviderForCard_delegate_reply
   return result;
 }
 
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  if (a5)
+  if (reply)
   {
-    v6 = a5;
-    v7 = a3;
-    v8 = [[SCKPCardSectionViewProvider alloc] initWithCard:v7];
+    replyCopy = reply;
+    cardCopy = card;
+    v8 = [[SCKPCardSectionViewProvider alloc] initWithCard:cardCopy];
 
-    v6[2](v6, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
   }
 }
 

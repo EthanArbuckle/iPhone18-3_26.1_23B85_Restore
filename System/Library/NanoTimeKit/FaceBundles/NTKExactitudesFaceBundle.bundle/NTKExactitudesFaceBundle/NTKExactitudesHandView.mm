@@ -1,12 +1,12 @@
 @interface NTKExactitudesHandView
 - (UIColor)inlayColor;
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithCoder:(id)a3;
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithConfiguration:(id)a3 forDevice:(id)a4 maskedShadow:(BOOL)a5;
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithFrame:(CGRect)a3;
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithImage:(id)a3 forDevice:(id)a4;
-- (void)_initWithImage:(id)a3 forDevice:(id)a4;
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithCoder:(id)coder;
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithConfiguration:(id)configuration forDevice:(id)device maskedShadow:(BOOL)shadow;
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithFrame:(CGRect)frame;
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithImage:(id)image forDevice:(id)device;
+- (void)_initWithImage:(id)image forDevice:(id)device;
 - (void)_layoutInlayLayer;
-- (void)setInlayColor:(id)a3;
+- (void)setInlayColor:(id)color;
 - (void)setNeedsLayout;
 @end
 
@@ -24,12 +24,12 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for NTKExactitudesHandView();
-  v3 = [(NTKExactitudesHandView *)&v5 inlayColor];
+  inlayColor = [(NTKExactitudesHandView *)&v5 inlayColor];
 
-  return v3;
+  return inlayColor;
 }
 
-- (void)setInlayColor:(id)a3
+- (void)setInlayColor:(id)color
 {
   sub_216EC();
   sub_216DC();
@@ -41,13 +41,13 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for NTKExactitudesHandView();
-  v5 = a3;
-  v6 = self;
-  [(NTKExactitudesHandView *)&v7 setInlayColor:v5];
-  [(NTKExactitudesHandView *)v6 _layoutInlayLayer:v7.receiver];
+  colorCopy = color;
+  selfCopy = self;
+  [(NTKExactitudesHandView *)&v7 setInlayColor:colorCopy];
+  [(NTKExactitudesHandView *)selfCopy _layoutInlayLayer:v7.receiver];
 }
 
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithConfiguration:(id)a3 forDevice:(id)a4 maskedShadow:(BOOL)a5
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithConfiguration:(id)configuration forDevice:(id)device maskedShadow:(BOOL)shadow
 {
   sub_216EC();
   sub_216DC();
@@ -57,17 +57,17 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = sub_1DAF8(a3, a4, a5);
+  v8 = sub_1DAF8(configuration, device, shadow);
 
   return v8;
 }
 
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithFrame:(CGRect)a3
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_216EC();
   sub_216DC();
   sub_216CC();
@@ -81,7 +81,7 @@
   return v7;
 }
 
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithCoder:(id)a3
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithCoder:(id)coder
 {
   sub_216EC();
   sub_216DC();
@@ -103,7 +103,7 @@
   return result;
 }
 
-- (void)_initWithImage:(id)a3 forDevice:(id)a4
+- (void)_initWithImage:(id)image forDevice:(id)device
 {
   sub_216EC();
   sub_216DC();
@@ -113,14 +113,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = [v7 imageWithRenderingMode:1];
-  v12.receiver = v9;
+  imageCopy = image;
+  deviceCopy = device;
+  selfCopy = self;
+  v10 = [imageCopy imageWithRenderingMode:1];
+  v12.receiver = selfCopy;
   v12.super_class = type metadata accessor for NTKExactitudesHandView();
   v11 = v10;
-  [(NTKExactitudesHandView *)&v12 _initWithImage:v11 forDevice:v8];
+  [(NTKExactitudesHandView *)&v12 _initWithImage:v11 forDevice:deviceCopy];
 }
 
 - (void)_layoutInlayLayer
@@ -133,7 +133,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1E56C();
 }
 
@@ -149,12 +149,12 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for NTKExactitudesHandView();
-  v3 = self;
+  selfCopy = self;
   [(NTKExactitudesHandView *)&v4 setNeedsLayout];
-  [(NTKExactitudesHandView *)v3 _layoutInlayLayer:v4.receiver];
+  [(NTKExactitudesHandView *)selfCopy _layoutInlayLayer:v4.receiver];
 }
 
-- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithImage:(id)a3 forDevice:(id)a4
+- (_TtC24NTKExactitudesFaceBundle22NTKExactitudesHandView)initWithImage:(id)image forDevice:(id)device
 {
   sub_216EC();
   sub_216DC();

@@ -1,18 +1,18 @@
 @interface OITSULinkedPointerSetReverseEnumerator
-- (OITSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)a3;
+- (OITSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)entry;
 - (id)nextObject;
 @end
 
 @implementation OITSULinkedPointerSetReverseEnumerator
 
-- (OITSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)a3
+- (OITSULinkedPointerSetReverseEnumerator)initWithLastEntry:(id)entry
 {
   v5.receiver = self;
   v5.super_class = OITSULinkedPointerSetReverseEnumerator;
   result = [(OITSULinkedPointerSetReverseEnumerator *)&v5 init];
   if (result)
   {
-    result->mTail = a3;
+    result->mTail = entry;
     result->mLastUsed = 0;
   }
 

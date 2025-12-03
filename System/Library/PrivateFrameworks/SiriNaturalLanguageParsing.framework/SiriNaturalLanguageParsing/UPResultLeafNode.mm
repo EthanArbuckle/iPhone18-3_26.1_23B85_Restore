@@ -1,5 +1,5 @@
 @interface UPResultLeafNode
-- (UPResultLeafNode)initWithLabel:(id)a3 andText:(id)a4 andSemanticValue:(id)a5;
+- (UPResultLeafNode)initWithLabel:(id)label andText:(id)text andSemanticValue:(id)value;
 - (id)_dictionaryRepresentation;
 @end
 
@@ -9,42 +9,42 @@
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v12[0] = @"label";
-  v3 = [(UPResultNode *)self label];
-  v4 = v3;
-  if (!v3)
+  label = [(UPResultNode *)self label];
+  null = label;
+  if (!label)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"text";
-  v5 = [(UPResultLeafNode *)self text];
-  v6 = v5;
-  if (!v5)
+  text = [(UPResultLeafNode *)self text];
+  null2 = text;
+  if (!text)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"semanticValue";
-  v7 = [(UPResultLeafNode *)self semanticValue];
-  v8 = v7;
-  if (!v7)
+  semanticValue = [(UPResultLeafNode *)self semanticValue];
+  null3 = semanticValue;
+  if (!semanticValue)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!semanticValue)
   {
   }
 
-  if (!v5)
+  if (!text)
   {
   }
 
-  if (!v3)
+  if (!label)
   {
   }
 
@@ -53,18 +53,18 @@
   return v9;
 }
 
-- (UPResultLeafNode)initWithLabel:(id)a3 andText:(id)a4 andSemanticValue:(id)a5
+- (UPResultLeafNode)initWithLabel:(id)label andText:(id)text andSemanticValue:(id)value
 {
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = UPResultLeafNode;
-  v11 = [(UPResultNode *)&v14 initWithLabel:a3];
+  v11 = [(UPResultNode *)&v14 initWithLabel:label];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_text, a4);
-    objc_storeStrong(&v12->_semanticValue, a5);
+    objc_storeStrong(&v11->_text, text);
+    objc_storeStrong(&v12->_semanticValue, value);
   }
 
   return v12;

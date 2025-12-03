@@ -1,28 +1,28 @@
 @interface MessageUpdate
 - (NSString)description;
-- (_TtC20FaceTimeMessageStore13MessageUpdate)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC20FaceTimeMessageStore13MessageUpdate)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MessageUpdate
 
-- (_TtC20FaceTimeMessageStore13MessageUpdate)initWithCoder:(id)a3
+- (_TtC20FaceTimeMessageStore13MessageUpdate)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   MessageUpdate.init(coder:)();
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MessageUpdate.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MessageUpdate.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MessageUpdate.description.getter();
 
   v3 = sub_1BC8F7BE4();

@@ -1,23 +1,23 @@
 @interface RecentlyDeletedEntriesViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)deleteEntry:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)deleteEntry:(id)entry;
 - (void)permanentlyDeleteEntries;
-- (void)recoverEntries:(id)a3;
-- (void)selectAll:(id)a3;
+- (void)recoverEntries:(id)entries;
+- (void)selectAll:(id)all;
 - (void)updateForSizeClass;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation RecentlyDeletedEntriesViewController
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  if (a3)
+  if (all)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -26,7 +26,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1003027EC();
@@ -34,11 +34,11 @@
   sub_100004F84(v6, &qword_100AD13D0);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -47,10 +47,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_10078F2AC(a3, v10);
+  v8 = sub_10078F2AC(action, v10);
 
   sub_100004F84(v10, &qword_100AD13D0);
   return v8 & 1;
@@ -58,20 +58,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10078F56C();
 }
 
 - (void)updateForSizeClass
 {
-  v2 = self;
+  selfCopy = self;
   sub_100790A80();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100790B84(a3);
+  selfCopy = self;
+  sub_100790B84(appear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -83,34 +83,34 @@
   sub_10023DCC0();
 }
 
-- (void)deleteEntry:(id)a3
+- (void)deleteEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007923C0(v4);
+  entryCopy = entry;
+  selfCopy = self;
+  sub_1007923C0(entryCopy);
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_100799D2C();
 
   swift_unknownObjectRelease();
 }
 
-- (void)recoverEntries:(id)a3
+- (void)recoverEntries:(id)entries
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1007961B4(a3);
+  selfCopy = self;
+  sub_1007961B4(entries);
   swift_unknownObjectRelease();
 }
 
 - (void)permanentlyDeleteEntries
 {
-  v2 = self;
+  selfCopy = self;
   sub_100796FC8();
 }
 

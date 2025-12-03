@@ -2,30 +2,30 @@
 - (PSPINEntryViewDelegate)delegate;
 - (UIButton)optionsButton;
 - (double)getCurrentTitleFontSize;
-- (void)_layoutBottomSubview:(id)a3 withMinY:(double)a4 withSize:(CGSize)a5;
+- (void)_layoutBottomSubview:(id)subview withMinY:(double)y withSize:(CGSize)size;
 - (void)hideError;
 - (void)hideFailedAttempts;
-- (void)layoutBottomSubview:(id)a3 withLabel:(id)a4 withMinY:(double)a5;
+- (void)layoutBottomSubview:(id)subview withLabel:(id)label withMinY:(double)y;
 - (void)layoutSubviews;
-- (void)layoutTopLabel:(id)a3 withMaxY:(double)a4;
+- (void)layoutTopLabel:(id)label withMaxY:(double)y;
 - (void)notifyDelegatePINChanged;
 - (void)notifyDelegatePINEntered;
 - (void)optionsButtonTapped;
-- (void)setOptionsButtonTitle:(id)a3;
-- (void)setPINPolicyString:(id)a3 visible:(BOOL)a4;
-- (void)setPasscodeOptionsHandler:(id)a3;
-- (void)setShowsOptionsButton:(BOOL)a3;
-- (void)setTitle:(id)a3 font:(id)a4;
-- (void)showError:(id)a3 animate:(BOOL)a4;
-- (void)showFailedAttempts:(int64_t)a3;
+- (void)setOptionsButtonTitle:(id)title;
+- (void)setPINPolicyString:(id)string visible:(BOOL)visible;
+- (void)setPasscodeOptionsHandler:(id)handler;
+- (void)setShowsOptionsButton:(BOOL)button;
+- (void)setTitle:(id)title font:(id)font;
+- (void)showError:(id)error animate:(BOOL)animate;
+- (void)showFailedAttempts:(int64_t)attempts;
 @end
 
 @implementation PINView
 
-- (void)showError:(id)a3 animate:(BOOL)a4
+- (void)showError:(id)error animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
+  animateCopy = animate;
+  errorCopy = error;
   errorTitleLabel = self->_errorTitleLabel;
   if (!errorTitleLabel)
   {
@@ -35,15 +35,15 @@
     self->_errorTitleLabel = v12;
 
     v14 = self->_errorTitleLabel;
-    v15 = [(UILabel *)self->_titleLabel font];
-    [(UILabel *)v14 setFont:v15];
+    font = [(UILabel *)self->_titleLabel font];
+    [(UILabel *)v14 setFont:font];
 
     [(UILabel *)self->_errorTitleLabel setOpaque:0];
     [(UILabel *)self->_errorTitleLabel setBackgroundColor:0];
     [(UILabel *)self->_errorTitleLabel setTextAlignment:1];
     v16 = self->_errorTitleLabel;
-    v17 = [(UILabel *)self->_titleLabel textColor];
-    [(UILabel *)v16 setTextColor:v17];
+    textColor = [(UILabel *)self->_titleLabel textColor];
+    [(UILabel *)v16 setTextColor:textColor];
 
     [(UILabel *)self->_errorTitleLabel accessibilitySetIdentification:@"errorTitleLabel"];
     [(UILabel *)self->_errorTitleLabel setNumberOfLines:0];
@@ -53,7 +53,7 @@
     errorTitleLabel = self->_errorTitleLabel;
   }
 
-  [(UILabel *)errorTitleLabel setText:v6];
+  [(UILabel *)errorTitleLabel setText:errorCopy];
   [(PINView *)self setStringValue:&stru_1EFE45030];
   if (!self->_error)
   {
@@ -66,7 +66,7 @@
     objc_copyWeak(&v24, &location);
     v18 = _Block_copy(&v20);
     v19 = v18;
-    if (v4)
+    if (animateCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v18 animations:{0.3, v20, v21, v22, v23}];
     }
@@ -100,20 +100,20 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTitle:(id)a3 font:(id)a4
+- (void)setTitle:(id)title font:(id)font
 {
   titleLabel = self->_titleLabel;
-  v7 = a4;
-  [(UILabel *)titleLabel setText:a3];
-  [(UILabel *)self->_titleLabel setFont:v7];
+  fontCopy = font;
+  [(UILabel *)titleLabel setText:title];
+  [(UILabel *)self->_titleLabel setFont:fontCopy];
 }
 
 - (double)getCurrentTitleFontSize
 {
   [(UILabel *)self->_titleLabel _actualScaleFactor];
   v4 = v3;
-  v5 = [(UILabel *)self->_titleLabel font];
-  [v5 pointSize];
+  font = [(UILabel *)self->_titleLabel font];
+  [font pointSize];
   v7 = v4 * v6;
 
   return v7;
@@ -131,8 +131,8 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
     if (v6)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      v7 = [(PINView *)self stringValue];
-      [v8 pinView:self pinValueChanged:v7];
+      stringValue = [(PINView *)self stringValue];
+      [v8 pinView:self pinValueChanged:stringValue];
     }
   }
 }
@@ -149,18 +149,18 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
     if (v6)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      v7 = [(PINView *)self stringValue];
-      [v8 pinView:self pinEntered:v7];
+      stringValue = [(PINView *)self stringValue];
+      [v8 pinView:self pinEntered:stringValue];
     }
   }
 }
 
-- (void)setPINPolicyString:(id)a3 visible:(BOOL)a4
+- (void)setPINPolicyString:(id)string visible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
+  visibleCopy = visible;
+  stringCopy = string;
   pinPolicyLabel = self->_pinPolicyLabel;
-  v16 = v6;
+  v16 = stringCopy;
   if (!pinPolicyLabel)
   {
     v8 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -177,18 +177,18 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
     [(UILabel *)self->_pinPolicyLabel setBackgroundColor:0];
     [(UILabel *)self->_pinPolicyLabel setTextAlignment:1];
     v13 = self->_pinPolicyLabel;
-    v14 = [(UILabel *)self->_titleLabel textColor];
-    [(UILabel *)v13 setTextColor:v14];
+    textColor = [(UILabel *)self->_titleLabel textColor];
+    [(UILabel *)v13 setTextColor:textColor];
 
     [(UILabel *)self->_pinPolicyLabel setAdjustsFontSizeToFitWidth:1];
     [(PINView *)self addSubview:self->_pinPolicyLabel];
-    v6 = v16;
+    stringCopy = v16;
     pinPolicyLabel = self->_pinPolicyLabel;
   }
 
-  [(UILabel *)pinPolicyLabel setText:v6];
+  [(UILabel *)pinPolicyLabel setText:stringCopy];
   v15 = 0.0;
-  if (v4)
+  if (visibleCopy)
   {
     v15 = 1.0;
   }
@@ -197,7 +197,7 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
   [(PINView *)self setNeedsLayout];
 }
 
-- (void)showFailedAttempts:(int64_t)a3
+- (void)showFailedAttempts:(int64_t)attempts
 {
   failureView = self->_failureView;
   if (!failureView)
@@ -212,7 +212,7 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
   }
 
   [(PINView *)self addSubview:failureView];
-  [(FailureBarView *)self->_failureView setFailureCount:a3];
+  [(FailureBarView *)self->_failureView setFailureCount:attempts];
   pinPolicyLabel = self->_pinPolicyLabel;
   if (pinPolicyLabel)
   {
@@ -239,27 +239,27 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
   v26.receiver = self;
   v26.super_class = PINView;
   [(PINView *)&v26 layoutSubviews];
-  v3 = [(PINView *)self passcodeOptionsHandler];
+  passcodeOptionsHandler = [(PINView *)self passcodeOptionsHandler];
 
-  if (v3)
+  if (passcodeOptionsHandler)
   {
     [(PINView *)self bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(PINView *)self optionsButton];
+    optionsButton = [(PINView *)self optionsButton];
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(UIButton *)self->_optionsButton titleLabel];
-    v15 = [v14 font];
-    v16 = [v15 fontDescriptor];
+    titleLabel = [(UIButton *)self->_optionsButton titleLabel];
+    font = [titleLabel font];
+    fontDescriptor = [font fontDescriptor];
     [(PINView *)self getCurrentTitleFontSize];
-    v17 = [v13 fontWithDescriptor:v16 size:?];
-    v18 = [v12 titleLabel];
-    [v18 setFont:v17];
+    v17 = [v13 fontWithDescriptor:fontDescriptor size:?];
+    titleLabel2 = [optionsButton titleLabel];
+    [titleLabel2 setFont:v17];
 
-    [v12 sizeToFit];
-    [v12 frame];
+    [optionsButton sizeToFit];
+    [optionsButton frame];
     v20 = v19;
     v22 = v21;
     [(PINView *)self bounds];
@@ -288,10 +288,10 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
     self->_optionsButton = &v4->super;
 
     v6 = self->_optionsButton;
-    v7 = [(PINView *)self optionsButtonTitle];
-    if (v7)
+    optionsButtonTitle = [(PINView *)self optionsButtonTitle];
+    if (optionsButtonTitle)
     {
-      [(UIButton *)v6 setTitle:v7 forState:0];
+      [(UIButton *)v6 setTitle:optionsButtonTitle forState:0];
     }
 
     else
@@ -309,14 +309,14 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
   return optionsButton;
 }
 
-- (void)setOptionsButtonTitle:(id)a3
+- (void)setOptionsButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_optionsButtonTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_optionsButtonTitle != titleCopy)
   {
-    v12 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v12 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v12;
     if (!v6)
     {
@@ -343,11 +343,11 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPasscodeOptionsHandler:(id)a3
+- (void)setPasscodeOptionsHandler:(id)handler
 {
-  if (self->_passcodeOptionsHandler != a3)
+  if (self->_passcodeOptionsHandler != handler)
   {
-    v4 = [a3 copy];
+    v4 = [handler copy];
     passcodeOptionsHandler = self->_passcodeOptionsHandler;
     self->_passcodeOptionsHandler = v4;
 
@@ -364,56 +364,56 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShowsOptionsButton:(BOOL)a3
+- (void)setShowsOptionsButton:(BOOL)button
 {
-  v3 = a3;
-  if (a3)
+  buttonCopy = button;
+  if (button)
   {
-    v4 = [(PINView *)self optionsButton];
+    optionsButton = [(PINView *)self optionsButton];
   }
 
   else
   {
-    v4 = self->_optionsButton;
+    optionsButton = self->_optionsButton;
   }
 
-  v5 = v4;
-  [(UIButton *)v4 setHidden:!v3];
+  v5 = optionsButton;
+  [(UIButton *)optionsButton setHidden:!buttonCopy];
 }
 
-- (void)layoutTopLabel:(id)a3 withMaxY:(double)a4
+- (void)layoutTopLabel:(id)label withMaxY:(double)y
 {
-  v18 = a3;
+  labelCopy = label;
   [(PINView *)self bounds];
-  v6 = a4 + -22.0;
-  [v18 sizeThatFits:{v7 + -30.0, a4 + -22.0}];
-  if (v8 <= a4 + -22.0)
+  v6 = y + -22.0;
+  [labelCopy sizeThatFits:{v7 + -30.0, y + -22.0}];
+  if (v8 <= y + -22.0)
   {
     v6 = v8;
   }
 
-  PSRoundToPixel(a4 - v6);
+  PSRoundToPixel(y - v6);
   UIRectCenteredXInRect();
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRectIntegralWithScale();
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  [v18 setFrame:{v11, v13, v15, v17}];
+  [labelCopy setFrame:{v11, v13, v15, v17}];
 }
 
-- (void)layoutBottomSubview:(id)a3 withLabel:(id)a4 withMinY:(double)a5
+- (void)layoutBottomSubview:(id)subview withLabel:(id)label withMinY:(double)y
 {
-  v37 = a3;
-  v8 = a4;
+  subviewCopy = subview;
+  labelCopy = label;
   v9 = MEMORY[0x1E69DB878];
-  v10 = [v8 font];
-  v11 = [v10 fontDescriptor];
-  v12 = [v8 font];
-  [v12 pointSize];
+  font = [labelCopy font];
+  fontDescriptor = [font fontDescriptor];
+  font2 = [labelCopy font];
+  [font2 pointSize];
   v14 = v13;
 
   [(PINView *)self getCurrentTitleFontSize];
@@ -422,13 +422,13 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
     v15 = v14;
   }
 
-  v16 = [v9 fontWithDescriptor:v11 size:v15];
-  [v8 setFont:v16];
+  v16 = [v9 fontWithDescriptor:fontDescriptor size:v15];
+  [labelCopy setFont:v16];
 
   [(PINView *)self bounds];
   v17 = v39.size.width + -30.0;
-  v18 = CGRectGetMaxY(v39) + -10.0 - a5;
-  [v37 sizeThatFits:{v17, v18}];
+  v18 = CGRectGetMaxY(v39) + -10.0 - y;
+  [subviewCopy sizeThatFits:{v17, v18}];
   if (v20 <= v18)
   {
     v21 = v20;
@@ -444,22 +444,22 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
     v17 = v19;
   }
 
-  [(PINView *)self _layoutBottomSubview:v37 withMinY:a5 withSize:v17, v21];
+  [(PINView *)self _layoutBottomSubview:subviewCopy withMinY:y withSize:v17, v21];
   optionsButton = self->_optionsButton;
   if (optionsButton)
   {
     if (([(UIButton *)optionsButton isHidden]& 1) == 0)
     {
-      [v37 frame];
+      [subviewCopy frame];
       MaxY = CGRectGetMaxY(v40);
       [(UIButton *)self->_optionsButton frame];
       if (MaxY > CGRectGetMinY(v41) + -10.0)
       {
-        v24 = [(UIButton *)self->_optionsButton titleLabel];
-        v25 = [v24 text];
-        v26 = [v25 length];
-        v27 = [v8 text];
-        v28 = v26 / [v27 length];
+        titleLabel = [(UIButton *)self->_optionsButton titleLabel];
+        text = [titleLabel text];
+        v26 = [text length];
+        text2 = [labelCopy text];
+        v28 = v26 / [text2 length];
 
         if (v28 > 0.0 && v28 < 1.0)
         {
@@ -475,28 +475,28 @@ void __29__PINView_showError_animate___block_invoke(uint64_t a1)
           v43.origin.y = v36;
           v43.size.width = v33;
           v43.size.height = v34;
-          [(PINView *)self _layoutBottomSubview:v37 withMinY:a5 withSize:v17, CGRectGetMinY(v43) + -10.0 - a5];
+          [(PINView *)self _layoutBottomSubview:subviewCopy withMinY:y withSize:v17, CGRectGetMinY(v43) + -10.0 - y];
         }
       }
     }
   }
 }
 
-- (void)_layoutBottomSubview:(id)a3 withMinY:(double)a4 withSize:(CGSize)a5
+- (void)_layoutBottomSubview:(id)subview withMinY:(double)y withSize:(CGSize)size
 {
-  v16 = a3;
+  subviewCopy = subview;
   [(PINView *)self bounds];
-  PSRoundToPixel(a4);
+  PSRoundToPixel(y);
   UIRectCenteredXInRect();
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRectIntegralWithScale();
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v16 setFrame:{v9, v11, v13, v15}];
+  [subviewCopy setFrame:{v9, v11, v13, v15}];
 }
 
 - (PSPINEntryViewDelegate)delegate

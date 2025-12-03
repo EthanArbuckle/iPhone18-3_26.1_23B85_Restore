@@ -6,7 +6,7 @@
 
 - (uint64_t)corerc_checkEntitlement:()CoreRC
 {
-  v1 = [a1 valueForEntitlement:?];
+  v1 = [self valueForEntitlement:?];
 
   return [v1 BOOLValue];
 }

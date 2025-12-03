@@ -1,13 +1,13 @@
 @interface ChunkedDigest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ChunkedDigest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ChunkedDigest allocWithZone:](ChunkedDigest init];
-  v6 = [(NSArray *)self->_chunkDigests copyWithZone:a3];
+  v6 = [(NSArray *)self->_chunkDigests copyWithZone:zone];
   chunkDigests = v5->_chunkDigests;
   v5->_chunkDigests = v6;
 

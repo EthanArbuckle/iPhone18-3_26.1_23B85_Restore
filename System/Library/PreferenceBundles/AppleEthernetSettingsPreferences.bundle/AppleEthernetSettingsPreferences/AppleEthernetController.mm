@@ -1,18 +1,18 @@
 @interface AppleEthernetController
-- (AppleEthernetController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)processInterfaces:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (AppleEthernetController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)processInterfaces:(id)interfaces;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)refresh;
-- (void)renameInterfaces:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)renameInterfaces:(id)interfaces;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation AppleEthernetController
 
-- (AppleEthernetController)initWithNibName:(id)a3 bundle:(id)a4
+- (AppleEthernetController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = AppleEthernetController;
@@ -22,8 +22,8 @@
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"ETHERNET" value:&stru_10828 table:@"Ethernet"];
     [(AppleEthernetController *)v4 setTitle:v6];
-    v7 = [(AppleEthernetController *)v4 navigationItem];
-    [v7 setLargeTitleDisplayMode:2];
+    navigationItem = [(AppleEthernetController *)v4 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
     v8 = +[PSSystemConfigurationDynamicStoreEthernetWatcher sharedManager];
     interfaceWatcher = v4->_interfaceWatcher;
@@ -41,14 +41,14 @@
   v12.receiver = self;
   v12.super_class = AppleEthernetController;
   [(AppleEthernetController *)&v12 viewDidLoad];
-  v3 = [(PSSystemConfigurationDynamicStoreEthernetWatcher *)self->_interfaceWatcher ethernetNetworkInterfaces];
-  v4 = [(AppleEthernetController *)self processInterfaces:v3];
+  ethernetNetworkInterfaces = [(PSSystemConfigurationDynamicStoreEthernetWatcher *)self->_interfaceWatcher ethernetNetworkInterfaces];
+  v4 = [(AppleEthernetController *)self processInterfaces:ethernetNetworkInterfaces];
   interfaces = self->_interfaces;
   self->_interfaces = v4;
 
   v6 = [UITableView alloc];
-  v7 = [(AppleEthernetController *)self view];
-  [v7 frame];
+  view = [(AppleEthernetController *)self view];
+  [view frame];
   v8 = [v6 initWithFrame:2 style:?];
   interfacesView = self->_interfacesView;
   self->_interfacesView = v8;
@@ -58,8 +58,8 @@
   [(UITableView *)self->_interfacesView setDataSource:self];
   [(UITableView *)self->_interfacesView setAutoresizingMask:18];
   [(UITableView *)self->_interfacesView setCellLayoutMarginsFollowReadableWidth:1];
-  v10 = [(AppleEthernetController *)self view];
-  [v10 addSubview:self->_interfacesView];
+  view2 = [(AppleEthernetController *)self view];
+  [view2 addSubview:self->_interfacesView];
 
   v11 = +[NSNotificationCenter defaultCenter];
   [v11 addObserver:self selector:"refresh" name:PSEthernetChangedNotification object:0];
@@ -67,8 +67,8 @@
 
 - (void)refresh
 {
-  v3 = [(PSSystemConfigurationDynamicStoreEthernetWatcher *)self->_interfaceWatcher ethernetNetworkInterfaces];
-  v4 = [(AppleEthernetController *)self processInterfaces:v3];
+  ethernetNetworkInterfaces = [(PSSystemConfigurationDynamicStoreEthernetWatcher *)self->_interfaceWatcher ethernetNetworkInterfaces];
+  v4 = [(AppleEthernetController *)self processInterfaces:ethernetNetworkInterfaces];
   interfaces = self->_interfaces;
   self->_interfaces = v4;
 
@@ -77,26 +77,26 @@
   [(UITableView *)interfacesView reloadData];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   interfaces = self->_interfaces;
-  v6 = a4;
-  v9 = -[NSArray objectAtIndex:](interfaces, "objectAtIndex:", [v6 row]);
+  pathCopy = path;
+  v9 = -[NSArray objectAtIndex:](interfaces, "objectAtIndex:", [pathCopy row]);
   v7 = [[AppleEthernetSettingsController alloc] initWithDefaultConfigForInterface:v9];
   settingsController = self->_settingsController;
   self->_settingsController = v7;
 
   [(AppleEthernetController *)self showController:self->_settingsController animate:1];
-  [(UITableView *)self->_interfacesView deselectRowAtIndexPath:v6 animated:1];
+  [(UITableView *)self->_interfacesView deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   interfacesView = self->_interfacesView;
-  v6 = a4;
+  pathCopy = path;
   v7 = [(UITableView *)interfacesView dequeueReusableCellWithIdentifier:@"InterfaceCell"];
   interfaces = self->_interfaces;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)interfaces objectAtIndex:v9];
   [v7 initializeWithInterface:v10];
@@ -104,9 +104,9 @@
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -117,9 +117,9 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v4 = 0;
   }
@@ -133,15 +133,15 @@
   return v4;
 }
 
-- (id)processInterfaces:(id)a3
+- (id)processInterfaces:(id)interfaces
 {
-  v4 = a3;
+  interfacesCopy = interfaces;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = interfacesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -178,14 +178,14 @@
   return v5;
 }
 
-- (void)renameInterfaces:(id)a3
+- (void)renameInterfaces:(id)interfaces
 {
-  v3 = a3;
+  interfacesCopy = interfaces;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v4 = [interfacesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -202,22 +202,22 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(interfacesCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v10);
         if (!v6 || (([*(*(&v19 + 1) + 8 * v10) displayName], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", v6), v13, v14) ? (v15 = v11 == v10) : (v15 = 1), v15))
         {
           [v12 displayName];
-          v16 = v6;
+          displayName = v6;
           v6 = LODWORD(v7) = 1;
         }
 
         else
         {
-          v16 = [v12 displayName];
+          displayName = [v12 displayName];
           v7 = (v7 + 1);
-          v17 = [NSString stringWithFormat:@"%@ %u", v16, v7];
+          v17 = [NSString stringWithFormat:@"%@ %u", displayName, v7];
           [v12 setDisplayName:v17];
         }
 
@@ -226,7 +226,7 @@
 
       while (v5 != v10);
       v8 = &v5[v18];
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [interfacesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);

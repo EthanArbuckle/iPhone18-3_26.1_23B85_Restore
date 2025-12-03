@@ -1,25 +1,25 @@
 @interface MathUtility
-+ (double)computeNewVarianceFromValue:(double)a3 currentMean:(double)a4 currentCount:(unint64_t)a5 currentVariance:(double)a6;
-+ (unsigned)getMegabytesSignificantFiguresHistogramBinIndexForBytes:(unint64_t)a3;
++ (double)computeNewVarianceFromValue:(double)value currentMean:(double)mean currentCount:(unint64_t)count currentVariance:(double)variance;
++ (unsigned)getMegabytesSignificantFiguresHistogramBinIndexForBytes:(unint64_t)bytes;
 @end
 
 @implementation MathUtility
 
-+ (double)computeNewVarianceFromValue:(double)a3 currentMean:(double)a4 currentCount:(unint64_t)a5 currentVariance:(double)a6
++ (double)computeNewVarianceFromValue:(double)value currentMean:(double)mean currentCount:(unint64_t)count currentVariance:(double)variance
 {
-  if (!a5)
+  if (!count)
   {
     return 0.0;
   }
 
   [MathUtility computeNewMeanFromValue:"computeNewMeanFromValue:currentMean:currentCount:" currentMean:? currentCount:?];
-  return ((a3 - a4) * (a3 - v10) + a6 * (a5 - 1)) / a5;
+  return ((value - mean) * (value - v10) + variance * (count - 1)) / count;
 }
 
-+ (unsigned)getMegabytesSignificantFiguresHistogramBinIndexForBytes:(unint64_t)a3
++ (unsigned)getMegabytesSignificantFiguresHistogramBinIndexForBytes:(unint64_t)bytes
 {
-  v3 = a3 >> 20;
-  if (a3 >= 0xA00000)
+  v3 = bytes >> 20;
+  if (bytes >= 0xA00000)
   {
     v4 = 0;
     LODWORD(v6) = 10;

@@ -6,24 +6,24 @@
 
 - (id)sessionIndependentPayloadDelegate
 {
-  v3 = [(IUIRTIInputSystemSourceSession *)self payloadDelegate];
+  payloadDelegate = [(IUIRTIInputSystemSourceSession *)self payloadDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(IUIRTIInputSystemSourceSession *)self payloadDelegate];
-    v6 = [v5 dataTransportDelegate];
+    payloadDelegate2 = [(IUIRTIInputSystemSourceSession *)self payloadDelegate];
+    dataTransportDelegate = [payloadDelegate2 dataTransportDelegate];
   }
 
   else
   {
-    v6 = 0;
+    dataTransportDelegate = 0;
   }
 
-  v7 = [v6 serviceSessionPayloadDelegate];
+  serviceSessionPayloadDelegate = [dataTransportDelegate serviceSessionPayloadDelegate];
 
-  return v7;
+  return serviceSessionPayloadDelegate;
 }
 
 @end

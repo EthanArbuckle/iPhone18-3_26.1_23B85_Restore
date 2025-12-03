@@ -14,10 +14,10 @@
 - (IFIconSpecification)init;
 - (NSArray)allImageSpecifications;
 - (NSArray)allVariants;
-- (id)_initWithName:(id)a3 imageSpecifiactions:(id)a4 variants:(id)a5;
-- (id)imageSpecificationForSize:(CGSize)a3 scale:(double)a4;
-- (id)imageSpecificationsMatchingPredicate:(id)a3;
-- (id)imageSpecificationsWithTags:(id)a3 withoutTags:(id)a4;
+- (id)_initWithName:(id)name imageSpecifiactions:(id)specifiactions variants:(id)variants;
+- (id)imageSpecificationForSize:(CGSize)size scale:(double)scale;
+- (id)imageSpecificationsMatchingPredicate:(id)predicate;
+- (id)imageSpecificationsWithTags:(id)tags withoutTags:(id)withoutTags;
 @end
 
 @implementation IFIconSpecification
@@ -262,22 +262,22 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
   return v3;
 }
 
-- (id)_initWithName:(id)a3 imageSpecifiactions:(id)a4 variants:(id)a5
+- (id)_initWithName:(id)name imageSpecifiactions:(id)specifiactions variants:(id)variants
 {
   v84 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  specifiactionsCopy = specifiactions;
+  variantsCopy = variants;
   v82.receiver = self;
   v82.super_class = IFIconSpecification;
   v11 = [(IFIconSpecification *)&v82 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 sortedArrayUsingComparator:&__block_literal_global_1];
+    v14 = [specifiactionsCopy sortedArrayUsingComparator:&__block_literal_global_1];
     imageSpecifications = v11->_imageSpecifications;
     v11->_imageSpecifications = v14;
 
@@ -324,8 +324,8 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
       while (v17 < [(NSArray *)v11->_imageSpecifications count]);
     }
 
-    v76 = v9;
-    v77 = v8;
+    v76 = specifiactionsCopy;
+    v77 = nameCopy;
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
@@ -346,18 +346,18 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
           }
 
           v32 = *(*(&v78 + 1) + 8 * i);
-          v33 = [v32 smallerSpecification];
-          v34 = [v32 largerSpecification];
+          smallerSpecification = [v32 smallerSpecification];
+          largerSpecification = [v32 largerSpecification];
           [v32 scale];
           v36 = v35;
-          [v33 scale];
+          [smallerSpecification scale];
           if (v36 != v37)
           {
-            if (v33)
+            if (smallerSpecification)
             {
               do
               {
-                [v33 scale];
+                [smallerSpecification scale];
                 v39 = v38;
                 [v32 scale];
                 if (v39 == v40)
@@ -365,9 +365,9 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
                   break;
                 }
 
-                [v33 dimension];
+                [smallerSpecification dimension];
                 v42 = v41;
-                [v33 scale];
+                [smallerSpecification scale];
                 v44 = v42 * v43;
                 [v32 dimension];
                 v46 = v45;
@@ -377,27 +377,27 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
                   break;
                 }
 
-                v48 = [v33 smallerSpecification];
+                v33SmallerSpecification = [smallerSpecification smallerSpecification];
 
-                v33 = v48;
+                smallerSpecification = v33SmallerSpecification;
               }
 
-              while (v48);
+              while (v33SmallerSpecification);
             }
 
-            [v32 setSmallerSpecification:v33];
+            [v32 setSmallerSpecification:smallerSpecification];
           }
 
           [v32 scale];
           v50 = v49;
-          [v34 scale];
+          [largerSpecification scale];
           if (v50 != v51)
           {
-            if (v34)
+            if (largerSpecification)
             {
               do
               {
-                [v34 scale];
+                [largerSpecification scale];
                 v53 = v52;
                 [v32 scale];
                 if (v53 == v54)
@@ -405,9 +405,9 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
                   break;
                 }
 
-                [v34 dimension];
+                [largerSpecification dimension];
                 v56 = v55;
-                [v34 scale];
+                [largerSpecification scale];
                 v58 = v56 * v57;
                 [v32 dimension];
                 v60 = v59;
@@ -417,15 +417,15 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
                   break;
                 }
 
-                v62 = [v34 largerSpecification];
+                v34LargerSpecification = [largerSpecification largerSpecification];
 
-                v34 = v62;
+                largerSpecification = v34LargerSpecification;
               }
 
-              while (v62);
+              while (v34LargerSpecification);
             }
 
-            [v32 setLargerSpecification:v34];
+            [v32 setLargerSpecification:largerSpecification];
           }
         }
 
@@ -435,30 +435,30 @@ void __60__IFIconSpecification_Constructors__iosAppIconSpecification__block_invo
       while (v29);
     }
 
-    v63 = [(NSArray *)v11->_imageSpecifications lastObject];
-    [v63 size];
+    lastObject = [(NSArray *)v11->_imageSpecifications lastObject];
+    [lastObject size];
     v11->_maxSize.width = v64;
     v11->_maxSize.height = v65;
 
-    v66 = [(NSArray *)v11->_imageSpecifications firstObject];
-    [v66 size];
+    firstObject = [(NSArray *)v11->_imageSpecifications firstObject];
+    [firstObject size];
     v11->_minSize.width = v67;
     v11->_minSize.height = v68;
 
-    v69 = [(NSArray *)v11->_imageSpecifications lastObject];
-    [v69 scale];
+    lastObject2 = [(NSArray *)v11->_imageSpecifications lastObject];
+    [lastObject2 scale];
     v11->_maxScale = v70;
 
-    v71 = [(NSArray *)v11->_imageSpecifications firstObject];
-    [v71 scale];
+    firstObject2 = [(NSArray *)v11->_imageSpecifications firstObject];
+    [firstObject2 scale];
     v11->_minScale = v72;
 
-    v73 = [v10 copy];
+    v73 = [variantsCopy copy];
     variants = v11->_variants;
     v11->_variants = v73;
 
-    v9 = v76;
-    v8 = v77;
+    specifiactionsCopy = v76;
+    nameCopy = v77;
   }
 
   return v11;
@@ -501,18 +501,18 @@ LABEL_7:
   return v9;
 }
 
-- (id)imageSpecificationForSize:(CGSize)a3 scale:(double)a4
+- (id)imageSpecificationForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = [(NSArray *)self->_imageSpecifications lastObject];
-  [v8 scale];
-  v10 = v9;
+  lastObject = [(NSArray *)self->_imageSpecifications lastObject];
+  [lastObject scale];
+  scaleCopy = v9;
 
-  if (v10 >= a4)
+  if (scaleCopy >= scale)
   {
-    v10 = a4;
+    scaleCopy = scale;
   }
 
   if (width >= height)
@@ -520,7 +520,7 @@ LABEL_7:
     height = width;
   }
 
-  v11 = [(NSArray *)self->_imageSpecifications firstObject];
+  firstObject = [(NSArray *)self->_imageSpecifications firstObject];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -542,7 +542,7 @@ LABEL_7:
 
       v17 = *(*(&v24 + 1) + 8 * v16);
       [v17 scale];
-      if (v18 >= v10)
+      if (v18 >= scaleCopy)
       {
         [v17 size];
         v20 = v19;
@@ -554,7 +554,7 @@ LABEL_7:
 
         v22 = v17;
 
-        v11 = v22;
+        firstObject = v22;
         if (v20 >= height)
         {
           break;
@@ -564,7 +564,7 @@ LABEL_7:
       if (v14 == ++v16)
       {
         v14 = [(NSArray *)v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
-        v22 = v11;
+        v22 = firstObject;
         if (v14)
         {
           goto LABEL_7;
@@ -577,7 +577,7 @@ LABEL_7:
 
   else
   {
-    v22 = v11;
+    v22 = firstObject;
   }
 
   return v22;
@@ -598,8 +598,8 @@ LABEL_7:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IFIconSpecification *)self variants];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  variants = [(IFIconSpecification *)self variants];
+  v5 = [variants countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -610,16 +610,16 @@ LABEL_7:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(variants);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         [v3 addObject:v9];
-        v10 = [v9 allVariants];
-        [v3 addObjectsFromArray:v10];
+        allVariants = [v9 allVariants];
+        [v3 addObjectsFromArray:allVariants];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [variants countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -630,26 +630,26 @@ LABEL_7:
   return v11;
 }
 
-- (id)imageSpecificationsMatchingPredicate:(id)a3
+- (id)imageSpecificationsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(IFIconSpecification *)self allImageSpecifications];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  predicateCopy = predicate;
+  allImageSpecifications = [(IFIconSpecification *)self allImageSpecifications];
+  v6 = [allImageSpecifications filteredArrayUsingPredicate:predicateCopy];
 
   return v6;
 }
 
-- (id)imageSpecificationsWithTags:(id)a3 withoutTags:(id)a4
+- (id)imageSpecificationsWithTags:(id)tags withoutTags:(id)withoutTags
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containsObject:@"IFImageSpecificationTagAll"];
-  v9 = [MEMORY[0x1E695DF70] arrayWithArray:v6];
+  withoutTagsCopy = withoutTags;
+  tagsCopy = tags;
+  v8 = [tagsCopy containsObject:@"IFImageSpecificationTagAll"];
+  v9 = [MEMORY[0x1E695DF70] arrayWithArray:withoutTagsCopy];
 
   [v9 addObject:@"IFImageSpecificationTagInternal"];
   if (v8)
   {
-    v10 = [v7 containsObject:@"IFImageSpecificationTagPrivate"];
+    v10 = [tagsCopy containsObject:@"IFImageSpecificationTagPrivate"];
 
     if ((v10 & 1) == 0)
     {
@@ -661,7 +661,7 @@ LABEL_7:
 
   else
   {
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(tags, $tag, $tag IN %@).@count > 0 && SUBQUERY(tags, $tag, $tag IN %@).@count == 0", v7, v9];
+    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(tags, $tag, $tag IN %@).@count > 0 && SUBQUERY(tags, $tag, $tag IN %@).@count == 0", tagsCopy, v9];
   }
 
   v12 = [(IFIconSpecification *)self imageSpecificationsMatchingPredicate:v11];

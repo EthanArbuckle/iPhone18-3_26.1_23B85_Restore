@@ -1,11 +1,11 @@
 @interface RTDarwinNotificationHelper
 - (RTDarwinNotificationHelper)init;
-- (unint64_t)stateForNotificationName:(id)a3;
-- (void)_handleDarwinNotificationCallback:(id)a3;
-- (void)addObserverForNotificationName:(id)a3 handler:(id)a4;
+- (unint64_t)stateForNotificationName:(id)name;
+- (void)_handleDarwinNotificationCallback:(id)callback;
+- (void)addObserverForNotificationName:(id)name handler:(id)handler;
 - (void)dealloc;
-- (void)postNotification:(id)a3;
-- (void)removeObserverForNotificationName:(id)a3;
+- (void)postNotification:(id)notification;
+- (void)removeObserverForNotificationName:(id)name;
 @end
 
 @implementation RTDarwinNotificationHelper
@@ -32,8 +32,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_registrations allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_registrations allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -45,17 +45,17 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) notificationName];
-        [(RTDarwinNotificationHelper *)self removeObserverForNotificationName:v8];
+        notificationName = [*(*(&v10 + 1) + 8 * v7) notificationName];
+        [(RTDarwinNotificationHelper *)self removeObserverForNotificationName:notificationName];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -66,14 +66,14 @@
   [(RTDarwinNotificationHelper *)&v9 dealloc];
 }
 
-- (void)addObserverForNotificationName:(id)a3 handler:(id)a4
+- (void)addObserverForNotificationName:(id)name handler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!v6)
+  nameCopy = name;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!nameCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -97,7 +97,7 @@
     goto LABEL_12;
   }
 
-  v9 = [(NSMutableDictionary *)v8->_registrations objectForKey:v6];
+  v9 = [(NSMutableDictionary *)selfCopy->_registrations objectForKey:nameCopy];
 
   if (v9)
   {
@@ -105,7 +105,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v33 = v6;
+      v33 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "registration already exists for notification name %@, returning", buf, 0xCu);
     }
 
@@ -114,19 +114,19 @@ LABEL_12:
     goto LABEL_24;
   }
 
-  objc_initWeak(&location, v8);
+  objc_initWeak(&location, selfCopy);
   out_token = -1;
-  v11 = v6;
-  v12 = [v6 UTF8String];
+  v11 = nameCopy;
+  uTF8String = [nameCopy UTF8String];
   v13 = MEMORY[0x277D85CD0];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __69__RTDarwinNotificationHelper_addObserverForNotificationName_handler___block_invoke;
   v27 = &unk_2788C5F98;
   objc_copyWeak(&v29, &location);
-  v14 = v6;
+  v14 = nameCopy;
   v28 = v14;
-  v15 = notify_register_dispatch(v12, &out_token, MEMORY[0x277D85CD0], &v24);
+  v15 = notify_register_dispatch(uTF8String, &out_token, MEMORY[0x277D85CD0], &v24);
 
   if (v15 || out_token == -1)
   {
@@ -147,7 +147,7 @@ LABEL_12:
   {
     v16 = [RTDarwinNotificationRecord alloc];
     v17 = [MEMORY[0x277CCABB0] numberWithInt:{out_token, v24, v25, v26, v27}];
-    v18 = [(RTDarwinNotificationRecord *)v16 initWithNotificationName:v14 registrationToken:v17 handler:v7];
+    v18 = [(RTDarwinNotificationRecord *)v16 initWithNotificationName:v14 registrationToken:v17 handler:handlerCopy];
 
     if (v18)
     {
@@ -156,28 +156,28 @@ LABEL_12:
         v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [v18 notificationName];
-          v21 = [v18 registrationToken];
-          v22 = [v18 registrationToken];
-          is_valid_token = notify_is_valid_token([v22 intValue]);
+          notificationName = [v18 notificationName];
+          registrationToken = [v18 registrationToken];
+          registrationToken2 = [v18 registrationToken];
+          is_valid_token = notify_is_valid_token([registrationToken2 intValue]);
           *buf = 138412802;
-          v33 = v20;
+          v33 = notificationName;
           v34 = 2112;
-          *v35 = v21;
+          *v35 = registrationToken;
           *&v35[8] = 1024;
           v36 = is_valid_token;
           _os_log_debug_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEBUG, "added registration for for notification name, %@, token, %@, valid, %d", buf, 0x1Cu);
         }
       }
 
-      [(NSMutableDictionary *)v8->_registrations setObject:v18 forKey:v14];
+      [(NSMutableDictionary *)selfCopy->_registrations setObject:v18 forKey:v14];
     }
   }
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
 LABEL_24:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 void __69__RTDarwinNotificationHelper_addObserverForNotificationName_handler___block_invoke(uint64_t a1)
@@ -191,15 +191,15 @@ void __69__RTDarwinNotificationHelper_addObserverForNotificationName_handler___b
   }
 }
 
-- (void)removeObserverForNotificationName:(id)a3
+- (void)removeObserverForNotificationName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (nameCopy)
   {
-    v6 = [(NSMutableDictionary *)v5->_registrations objectForKey:v4];
+    v6 = [(NSMutableDictionary *)selfCopy->_registrations objectForKey:nameCopy];
     v7 = v6;
     if (!v6)
     {
@@ -207,25 +207,25 @@ void __69__RTDarwinNotificationHelper_addObserverForNotificationName_handler___b
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = nameCopy;
         _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "registration doesn't exist for notification %@, returning", &v15, 0xCu);
       }
 
       goto LABEL_10;
     }
 
-    v8 = [v6 registrationToken];
-    v9 = [v8 intValue];
+    registrationToken = [v6 registrationToken];
+    intValue = [registrationToken intValue];
 
-    v10 = notify_cancel(v9);
+    v10 = notify_cancel(intValue);
     if (v10)
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v7 notificationName];
+        notificationName = [v7 notificationName];
         v15 = 138412546;
-        v16 = v12;
+        v16 = notificationName;
         v17 = 1024;
         v18 = v10;
         _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "failed to cancel registration for darwin notification, %@, status, %u", &v15, 0x12u);
@@ -241,14 +241,14 @@ LABEL_10:
       v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v7 notificationName];
+        notificationName2 = [v7 notificationName];
         v15 = 138412290;
-        v16 = v14;
+        v16 = notificationName2;
         _os_log_debug_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEBUG, "removing registration for for notification name, %@", &v15, 0xCu);
       }
     }
 
-    [(NSMutableDictionary *)v5->_registrations removeObjectForKey:v4];
+    [(NSMutableDictionary *)selfCopy->_registrations removeObjectForKey:nameCopy];
   }
 
   else
@@ -263,16 +263,16 @@ LABEL_10:
 
 LABEL_16:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
-    v3 = [a3 UTF8String];
+    uTF8String = [notification UTF8String];
 
-    notify_post(v3);
+    notify_post(uTF8String);
   }
 
   else
@@ -286,26 +286,26 @@ LABEL_16:
   }
 }
 
-- (unint64_t)stateForNotificationName:(id)a3
+- (unint64_t)stateForNotificationName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   state64 = 0;
-  v5 = [(NSMutableDictionary *)self->_registrations objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_registrations objectForKey:nameCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_registrations objectForKey:v4];
-    v7 = [v6 registrationToken];
-    v8 = [v7 intValue];
+    v6 = [(NSMutableDictionary *)self->_registrations objectForKey:nameCopy];
+    registrationToken = [v6 registrationToken];
+    intValue = [registrationToken intValue];
 
-    if (notify_get_state(v8, &state64))
+    if (notify_get_state(intValue, &state64))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v14 = v4;
+        v14 = nameCopy;
         _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Could not get state for %@", buf, 0xCu);
       }
     }
@@ -316,13 +316,13 @@ LABEL_16:
   return v10;
 }
 
-- (void)_handleDarwinNotificationCallback:(id)a3
+- (void)_handleDarwinNotificationCallback:(id)callback
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (callbackCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -330,20 +330,20 @@ LABEL_16:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = callbackCopy;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "darwin notification received, %@", &v11, 0xCu);
       }
     }
 
-    v7 = [(NSMutableDictionary *)v5->_registrations objectForKey:v4];
+    v7 = [(NSMutableDictionary *)selfCopy->_registrations objectForKey:callbackCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 handler];
-      v10 = v9;
-      if (v9)
+      handler = [v7 handler];
+      v10 = handler;
+      if (handler)
       {
-        (*(v9 + 16))(v9);
+        (*(handler + 16))(handler);
       }
     }
 
@@ -368,7 +368,7 @@ LABEL_16:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

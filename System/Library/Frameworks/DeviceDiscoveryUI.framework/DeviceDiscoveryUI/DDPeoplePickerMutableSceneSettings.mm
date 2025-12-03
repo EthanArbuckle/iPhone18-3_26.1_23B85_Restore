@@ -1,10 +1,10 @@
 @interface DDPeoplePickerMutableSceneSettings
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DDPeoplePickerMutableSceneSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DDPeoplePickerSceneSettings alloc];
 

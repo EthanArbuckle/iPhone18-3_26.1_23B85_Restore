@@ -1,19 +1,19 @@
 @interface UIKeyboardViewController
 - (UIKeyboardAutocorrectionController)autocorrectionController;
-- (UIKeyboardViewController)initWithServiceRole:(unint64_t)a3;
+- (UIKeyboardViewController)initWithServiceRole:(unint64_t)role;
 - (UIView)pathEffectView;
-- (void)didSelectPredictiveCandidate:(id)a3;
+- (void)didSelectPredictiveCandidate:(id)candidate;
 - (void)loadView;
-- (void)setShouldUpdateLayoutAutomatically:(BOOL)a3;
+- (void)setShouldUpdateLayoutAutomatically:(BOOL)automatically;
 - (void)shouldAcceptAutocorrection;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation UIKeyboardViewController
 
-- (UIKeyboardViewController)initWithServiceRole:(unint64_t)a3
+- (UIKeyboardViewController)initWithServiceRole:(unint64_t)role
 {
   [objc_opt_class() _verifyClient];
   v17.receiver = self;
@@ -22,14 +22,14 @@
   v6 = v5;
   if (v5)
   {
-    v5->_serviceRole = a3;
-    v7 = [[UIKeyboard alloc] initWithDefaultSize];
-    [(UIKeyboard *)v7 setShouldUpdateLayoutAutomatically:0];
-    [(UIKeyboard *)v7 setRequestedInteractionModel:1];
-    [(UIKeyboard *)v7 setOrientation:+[UIKeyboardSceneDelegate interfaceOrientation]];
+    v5->_serviceRole = role;
+    initWithDefaultSize = [[UIKeyboard alloc] initWithDefaultSize];
+    [(UIKeyboard *)initWithDefaultSize setShouldUpdateLayoutAutomatically:0];
+    [(UIKeyboard *)initWithDefaultSize setRequestedInteractionModel:1];
+    [(UIKeyboard *)initWithDefaultSize setOrientation:+[UIKeyboardSceneDelegate interfaceOrientation]];
     keyboard = v6->_keyboard;
-    v6->_keyboard = v7;
-    v9 = v7;
+    v6->_keyboard = initWithDefaultSize;
+    v9 = initWithDefaultSize;
 
     v10 = [UICompatibilityInputViewController inputViewControllerWithView:v9];
     inputViewController = v6->_inputViewController;
@@ -39,11 +39,11 @@
     systemInputAssistantViewController = v6->_systemInputAssistantViewController;
     v6->_systemInputAssistantViewController = v12;
 
-    v14 = [(UIViewController *)v6->_systemInputAssistantViewController view];
+    view = [(UIViewController *)v6->_systemInputAssistantViewController view];
 
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(UIKeyboardViewController *)v6 keyboard];
-    [v15 deactivate];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    keyboard = [(UIKeyboardViewController *)v6 keyboard];
+    [keyboard deactivate];
   }
 
   return v6;
@@ -62,53 +62,53 @@
   v27.receiver = self;
   v27.super_class = UIKeyboardViewController;
   [(UIViewController *)&v27 viewDidLoad];
-  v3 = [(UIKeyboardViewController *)self inputViewController];
-  [(UIViewController *)self addChildViewController:v3];
+  inputViewController = [(UIKeyboardViewController *)self inputViewController];
+  [(UIViewController *)self addChildViewController:inputViewController];
 
-  v4 = [(UIViewController *)self view];
-  v5 = [(UIKeyboardViewController *)self keyboard];
-  [v4 addSubview:v5];
+  view = [(UIViewController *)self view];
+  keyboard = [(UIKeyboardViewController *)self keyboard];
+  [view addSubview:keyboard];
 
-  v6 = [(UIKeyboardViewController *)self inputViewController];
-  v7 = [v6 view];
+  inputViewController2 = [(UIKeyboardViewController *)self inputViewController];
+  view2 = [inputViewController2 view];
 
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = +[UIColor clearColor];
-  [v7 setBackgroundColor:v8];
+  [view2 setBackgroundColor:v8];
 
   v19 = MEMORY[0x1E69977A0];
-  v25 = [v7 topAnchor];
-  v26 = [(UIViewController *)self view];
-  v24 = [v26 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [view2 topAnchor];
+  view3 = [(UIViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[0] = v23;
-  v21 = [v7 bottomAnchor];
-  v22 = [(UIViewController *)self view];
-  v20 = [v22 bottomAnchor];
-  v18 = [v21 constraintEqualToAnchor:v20];
+  bottomAnchor = [view2 bottomAnchor];
+  view4 = [(UIViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v28[1] = v18;
-  v9 = [v7 leadingAnchor];
-  v10 = [(UIViewController *)self view];
-  v11 = [v10 leadingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  leadingAnchor = [view2 leadingAnchor];
+  view5 = [(UIViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[2] = v12;
-  v13 = [v7 trailingAnchor];
-  v14 = [(UIViewController *)self view];
-  v15 = [v14 trailingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  trailingAnchor = [view2 trailingAnchor];
+  view6 = [(UIViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v28[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
   [v19 activateConstraints:v17];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = UIKeyboardViewController;
-  [(UIViewController *)&v14 viewWillAppear:a3];
-  v4 = [(UIKeyboardViewController *)self textInputView];
+  [(UIViewController *)&v14 viewWillAppear:appear];
+  textInputView = [(UIKeyboardViewController *)self textInputView];
 
-  if (!v4)
+  if (!textInputView)
   {
     v5 = objc_alloc_init(UITextView);
     [(UIKeyboardViewController *)self setTextInputView:v5];
@@ -116,58 +116,58 @@
 
   [UIKeyboard setServiceRole:[(UIKeyboardViewController *)self serviceRole]];
   v6 = +[UIKeyboardImpl activeInstance];
-  v7 = [(UIKeyboardViewController *)self textInputView];
-  [v6 setDelegate:v7];
+  textInputView2 = [(UIKeyboardViewController *)self textInputView];
+  [v6 setDelegate:textInputView2];
 
-  v8 = [(UIKeyboardViewController *)self keyboard];
-  [v8 activate];
+  keyboard = [(UIKeyboardViewController *)self keyboard];
+  [keyboard activate];
 
-  v9 = [(UIKeyboardViewController *)self keyboard];
-  v10 = [v9 createPathEffectViewIfNecessary];
-  objc_storeWeak(&self->_pathEffectView, v10);
+  keyboard2 = [(UIKeyboardViewController *)self keyboard];
+  createPathEffectViewIfNecessary = [keyboard2 createPathEffectViewIfNecessary];
+  objc_storeWeak(&self->_pathEffectView, createPathEffectViewIfNecessary);
 
   systemInputAssistantViewController = self->_systemInputAssistantViewController;
   v12 = +[UIKeyboardImpl activeInstance];
-  v13 = [v12 delegate];
-  [(UISystemInputAssistantViewController *)systemInputAssistantViewController automaticallySetCenterViewControllerBasedOnInputDelegate:v13];
+  delegate = [v12 delegate];
+  [(UISystemInputAssistantViewController *)systemInputAssistantViewController automaticallySetCenterViewControllerBasedOnInputDelegate:delegate];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardViewController;
-  [(UIViewController *)&v5 viewWillDisappear:a3];
+  [(UIViewController *)&v5 viewWillDisappear:disappear];
   if (_UIApplicationIsEmojiPoster())
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 _layout];
-    [v4 clearUnusedObjects:0];
+    _layout = [v3 _layout];
+    [_layout clearUnusedObjects:0];
   }
 
   +[UIKeyboard resetServiceRole];
 }
 
-- (void)setShouldUpdateLayoutAutomatically:(BOOL)a3
+- (void)setShouldUpdateLayoutAutomatically:(BOOL)automatically
 {
-  v3 = a3;
-  self->_shouldUpdateLayoutAutomatically = a3;
-  v4 = [(UIKeyboardViewController *)self keyboard];
-  [v4 setShouldUpdateLayoutAutomatically:v3];
+  automaticallyCopy = automatically;
+  self->_shouldUpdateLayoutAutomatically = automatically;
+  keyboard = [(UIKeyboardViewController *)self keyboard];
+  [keyboard setShouldUpdateLayoutAutomatically:automaticallyCopy];
 }
 
 - (UIKeyboardAutocorrectionController)autocorrectionController
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 autocorrectionController];
+  autocorrectionController = [v2 autocorrectionController];
 
-  return v3;
+  return autocorrectionController;
 }
 
-- (void)didSelectPredictiveCandidate:(id)a3
+- (void)didSelectPredictiveCandidate:(id)candidate
 {
-  v3 = a3;
+  candidateCopy = candidate;
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 acceptPredictiveInput:v3];
+  [v4 acceptPredictiveInput:candidateCopy];
 }
 
 - (void)shouldAcceptAutocorrection

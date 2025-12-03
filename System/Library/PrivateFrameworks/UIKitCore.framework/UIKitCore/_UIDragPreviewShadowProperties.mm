@@ -1,10 +1,10 @@
 @interface _UIDragPreviewShadowProperties
 - (CGAffineTransform)liftedTransform;
 - (_UIDragPreviewShadowProperties)init;
-- (_UIDragPreviewShadowProperties)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLiftedTransform:(CGAffineTransform *)a3;
+- (_UIDragPreviewShadowProperties)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLiftedTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UIDragPreviewShadowProperties
@@ -28,18 +28,18 @@
   return result;
 }
 
-- (_UIDragPreviewShadowProperties)initWithCoder:(id)a3
+- (_UIDragPreviewShadowProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _UIDragPreviewShadowProperties;
   v5 = [(_UIDragPreviewShadowProperties *)&v12 init];
   if (v5)
   {
-    v5->_shadowType = [v4 decodeIntegerForKey:@"shadowType"];
-    if (v4)
+    v5->_shadowType = [coderCopy decodeIntegerForKey:@"shadowType"];
+    if (coderCopy)
     {
-      [v4 decodeCGAffineTransformForKey:@"liftedTransform"];
+      [coderCopy decodeCGAffineTransformForKey:@"liftedTransform"];
     }
 
     else
@@ -52,30 +52,30 @@
     *&v5->_liftedTransform.a = v9;
     *&v5->_liftedTransform.c = v10;
     *&v5->_liftedTransform.tx = v11;
-    [v4 decodeDoubleForKey:{@"liftedAlpha", v9, v10, v11}];
+    [coderCopy decodeDoubleForKey:{@"liftedAlpha", v9, v10, v11}];
     v5->_liftedAlpha = v6;
-    [v4 decodeDoubleForKey:@"radiosityBlurRadius"];
+    [coderCopy decodeDoubleForKey:@"radiosityBlurRadius"];
     v5->_radiosityBlurRadius = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   shadowType = self->_shadowType;
-  v5 = a3;
-  [v5 encodeInteger:shadowType forKey:@"shadowType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:shadowType forKey:@"shadowType"];
   v6 = *&self->_liftedTransform.c;
   v7[0] = *&self->_liftedTransform.a;
   v7[1] = v6;
   v7[2] = *&self->_liftedTransform.tx;
-  [v5 encodeCGAffineTransform:v7 forKey:@"liftedTransform"];
-  [v5 encodeDouble:@"liftedAlpha" forKey:self->_liftedAlpha];
-  [v5 encodeDouble:@"radiosityBlurRadius" forKey:self->_radiosityBlurRadius];
+  [coderCopy encodeCGAffineTransform:v7 forKey:@"liftedTransform"];
+  [coderCopy encodeDouble:@"liftedAlpha" forKey:self->_liftedAlpha];
+  [coderCopy encodeDouble:@"radiosityBlurRadius" forKey:self->_radiosityBlurRadius];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_UIDragPreviewShadowProperties);
   [(_UIDragPreviewShadowProperties *)v4 setShadowType:[(_UIDragPreviewShadowProperties *)self shadowType]];
@@ -100,11 +100,11 @@
   return self;
 }
 
-- (void)setLiftedTransform:(CGAffineTransform *)a3
+- (void)setLiftedTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_liftedTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_liftedTransform.c = *&transform->c;
   *&self->_liftedTransform.tx = v4;
   *&self->_liftedTransform.a = v3;
 }

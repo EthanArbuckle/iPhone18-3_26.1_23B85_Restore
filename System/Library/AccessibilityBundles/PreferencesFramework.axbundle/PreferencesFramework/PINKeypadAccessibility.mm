@@ -49,7 +49,7 @@
         v22 = 3221225472;
         v23 = __56__PINKeypadAccessibility__accessibilityInternalChildren__block_invoke_329;
         v24 = &unk_29F2ED350;
-        v25 = self;
+        selfCopy = self;
         v26 = &from;
         v27 = v5;
         AXPerformSafeBlock();
@@ -58,12 +58,12 @@
 
         if (v10)
         {
-          v11 = [v10 accessibilityLabel];
-          if ([v11 length])
+          accessibilityLabel = [v10 accessibilityLabel];
+          if ([accessibilityLabel length])
           {
             v12 = v4;
             v13 = v6;
-            v14 = v11;
+            v14 = accessibilityLabel;
 
             v9 = v14;
             v6 = v13;

@@ -1,8 +1,8 @@
 @interface PXGFocusContainerGuideView
 - (CGRect)clippingRect;
-- (PXGFocusContainerGuideView)initWithFrame:(CGRect)a3;
+- (PXGFocusContainerGuideView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PXGFocusContainerGuideView
@@ -22,12 +22,12 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(PXGFocusContainerGuideView *)self superview];
+  superview = [(PXGFocusContainerGuideView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(PXGFocusContainerGuideView *)self superview];
-    [v4 addLayoutGuide:self->_focusGuide];
+    superview2 = [(PXGFocusContainerGuideView *)self superview];
+    [superview2 addLayoutGuide:self->_focusGuide];
 
     [MEMORY[0x1E696ACD8] activateConstraints:self->_constraints];
   }
@@ -37,22 +37,22 @@
   [(PXGFocusContainerGuideView *)&v5 didMoveToSuperview];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = PXGFocusContainerGuideView;
-  [(PXGFocusContainerGuideView *)&v5 willMoveToSuperview:a3];
+  [(PXGFocusContainerGuideView *)&v5 willMoveToSuperview:superview];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
-  v4 = [(PXGFocusContainerGuideView *)self superview];
-  [v4 removeLayoutGuide:self->_focusGuide];
+  superview = [(PXGFocusContainerGuideView *)self superview];
+  [superview removeLayoutGuide:self->_focusGuide];
 }
 
-- (PXGFocusContainerGuideView)initWithFrame:(CGRect)a3
+- (PXGFocusContainerGuideView)initWithFrame:(CGRect)frame
 {
   v24[4] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = PXGFocusContainerGuideView;
-  v3 = [(PXGFocusContainerGuideView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGFocusContainerGuideView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCA10]);
@@ -63,21 +63,21 @@
     v7 = NSStringFromClass(v6);
     [(UIFocusContainerGuide *)v3->_focusGuide setIdentifier:v7];
 
-    v22 = [(UIFocusContainerGuide *)v3->_focusGuide leadingAnchor];
-    v21 = [(PXGFocusContainerGuideView *)v3 leadingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UIFocusContainerGuide *)v3->_focusGuide leadingAnchor];
+    leadingAnchor2 = [(PXGFocusContainerGuideView *)v3 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v24[0] = v20;
-    v8 = [(UIFocusContainerGuide *)v3->_focusGuide widthAnchor];
-    v9 = [(PXGFocusContainerGuideView *)v3 widthAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    widthAnchor = [(UIFocusContainerGuide *)v3->_focusGuide widthAnchor];
+    widthAnchor2 = [(PXGFocusContainerGuideView *)v3 widthAnchor];
+    v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v24[1] = v10;
-    v11 = [(UIFocusContainerGuide *)v3->_focusGuide topAnchor];
-    v12 = [(PXGFocusContainerGuideView *)v3 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(UIFocusContainerGuide *)v3->_focusGuide topAnchor];
+    topAnchor2 = [(PXGFocusContainerGuideView *)v3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[2] = v13;
-    v14 = [(UIFocusContainerGuide *)v3->_focusGuide heightAnchor];
-    v15 = [(PXGFocusContainerGuideView *)v3 heightAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    heightAnchor = [(UIFocusContainerGuide *)v3->_focusGuide heightAnchor];
+    heightAnchor2 = [(PXGFocusContainerGuideView *)v3 heightAnchor];
+    v16 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v24[3] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
     constraints = v3->_constraints;

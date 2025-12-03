@@ -1,17 +1,17 @@
 @interface WFHarnessInteraction
-- (WFHarnessInteraction)initWithSelector:(id)a3 dialogRequestClass:(Class)a4 interaction:(id)a5;
+- (WFHarnessInteraction)initWithSelector:(id)selector dialogRequestClass:(Class)class interaction:(id)interaction;
 @end
 
 @implementation WFHarnessInteraction
 
-- (WFHarnessInteraction)initWithSelector:(id)a3 dialogRequestClass:(Class)a4 interaction:(id)a5
+- (WFHarnessInteraction)initWithSelector:(id)selector dialogRequestClass:(Class)class interaction:(id)interaction
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v11)
+  selectorCopy = selector;
+  interactionCopy = interaction;
+  if (!interactionCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFHarnessInteraction.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHarnessInteraction.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
   }
 
   v19.receiver = self;
@@ -20,9 +20,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_selector, a3);
-    objc_storeStrong(&v13->_dialogRequestClass, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_selector, selector);
+    objc_storeStrong(&v13->_dialogRequestClass, class);
+    v14 = [interactionCopy copy];
     interaction = v13->_interaction;
     v13->_interaction = v14;
 

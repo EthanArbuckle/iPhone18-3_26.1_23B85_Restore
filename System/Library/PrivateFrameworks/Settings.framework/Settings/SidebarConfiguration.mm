@@ -1,22 +1,22 @@
 @interface SidebarConfiguration
 - (_TtC8Settings20SidebarConfiguration)init;
-- (_TtC8Settings20SidebarConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC8Settings20SidebarConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SidebarConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_21CE331F4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_21CE331F4(coderCopy);
 }
 
-- (_TtC8Settings20SidebarConfiguration)initWithCoder:(id)a3
+- (_TtC8Settings20SidebarConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_21CE35B0C(v3);
+  coderCopy = coder;
+  v4 = sub_21CE35B0C(coderCopy);
 
   return v4;
 }

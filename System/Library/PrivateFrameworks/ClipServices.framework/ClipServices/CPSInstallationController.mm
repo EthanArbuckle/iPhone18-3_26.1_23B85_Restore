@@ -1,43 +1,43 @@
 @interface CPSInstallationController
 - (BOOL)stopStallingCurrentInstallation;
-- (CPSInstallationController)initWithAppInfoFetcher:(id)a3;
+- (CPSInstallationController)initWithAppInfoFetcher:(id)fetcher;
 - (CPSInstallationControllerDelegate)delegate;
-- (id)_asdClipRequestWithSession:(id)a3;
-- (id)_bundleIDFromSession:(id)a3;
-- (id)_placeholderArtworkForSession:(id)a3;
-- (void)_cancelClipSessionWithBundleID:(id)a3 completion:(id)a4;
-- (void)_continueInstallForBundleID:(id)a3 session:(id)a4 completion:(id)a5;
-- (void)_doneWithSession:(id)a3 error:(id)a4;
-- (void)_getClipSessionForBundleID:(id)a3 sourceBundleID:(id)a4 forInstall:(BOOL)a5 completion:(id)a6;
-- (void)_informDelegateDidInstallPlaceholder:(id)a3;
-- (void)_prewarmDemoIPAWithBundleID:(id)a3 session:(id)a4 completion:(id)a5;
-- (void)clipSession:(id)a3 didFailWithError:(id)a4;
-- (void)clipSession:(id)a3 didUpdateProgress:(double)a4;
-- (void)clipSessionDidCompleteSuccessfully:(id)a3;
-- (void)clipSessionDidInstallPlaceholder:(id)a3;
-- (void)installClipWithBundleID:(id)a3 session:(id)a4 completion:(id)a5;
-- (void)prewarmClipWithBundleID:(id)a3 session:(id)a4 completion:(id)a5;
+- (id)_asdClipRequestWithSession:(id)session;
+- (id)_bundleIDFromSession:(id)session;
+- (id)_placeholderArtworkForSession:(id)session;
+- (void)_cancelClipSessionWithBundleID:(id)d completion:(id)completion;
+- (void)_continueInstallForBundleID:(id)d session:(id)session completion:(id)completion;
+- (void)_doneWithSession:(id)session error:(id)error;
+- (void)_getClipSessionForBundleID:(id)d sourceBundleID:(id)iD forInstall:(BOOL)install completion:(id)completion;
+- (void)_informDelegateDidInstallPlaceholder:(id)placeholder;
+- (void)_prewarmDemoIPAWithBundleID:(id)d session:(id)session completion:(id)completion;
+- (void)clipSession:(id)session didFailWithError:(id)error;
+- (void)clipSession:(id)session didUpdateProgress:(double)progress;
+- (void)clipSessionDidCompleteSuccessfully:(id)successfully;
+- (void)clipSessionDidInstallPlaceholder:(id)placeholder;
+- (void)installClipWithBundleID:(id)d session:(id)session completion:(id)completion;
+- (void)prewarmClipWithBundleID:(id)d session:(id)session completion:(id)completion;
 @end
 
 @implementation CPSInstallationController
 
-- (CPSInstallationController)initWithAppInfoFetcher:(id)a3
+- (CPSInstallationController)initWithAppInfoFetcher:(id)fetcher
 {
-  v5 = a3;
+  fetcherCopy = fetcher;
   v17.receiver = self;
   v17.super_class = CPSInstallationController;
   v6 = [(CPSInstallationController *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appInfoFetcher, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_appInfoFetcher, fetcher);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessionsByBundleID = v7->_sessionsByBundleID;
-    v7->_sessionsByBundleID = v8;
+    v7->_sessionsByBundleID = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     installPromisesBySessionID = v7->_installPromisesBySessionID;
-    v7->_installPromisesBySessionID = v10;
+    v7->_installPromisesBySessionID = dictionary2;
 
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v13 = dispatch_queue_create("com.apple.ClipServices.clipserviced.CPSInstallationController", v12);
@@ -50,13 +50,13 @@
   return v7;
 }
 
-- (void)_prewarmDemoIPAWithBundleID:(id)a3 session:(id)a4 completion:(id)a5
+- (void)_prewarmDemoIPAWithBundleID:(id)d session:(id)session completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  sessionCopy = session;
+  completionCopy = completion;
+  dCopy = d;
   v11 = +[CPSSessionManager sharedManager];
-  v12 = [v11 legacyInstaller];
+  legacyInstaller = [v11 legacyInstaller];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained installationControllerWillStartInstall:self];
@@ -65,14 +65,14 @@
   v17[1] = 3221225472;
   v17[2] = __76__CPSInstallationController__prewarmDemoIPAWithBundleID_session_completion___block_invoke;
   v17[3] = &unk_278DCDFA8;
-  v18 = v12;
-  v19 = v8;
-  v20 = self;
-  v21 = v9;
-  v14 = v9;
-  v15 = v8;
-  v16 = v12;
-  [v16 downloadAppWithBundleID:v10 completionHandler:v17];
+  v18 = legacyInstaller;
+  v19 = sessionCopy;
+  selfCopy = self;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = sessionCopy;
+  v16 = legacyInstaller;
+  [v16 downloadAppWithBundleID:dCopy completionHandler:v17];
 }
 
 void __76__CPSInstallationController__prewarmDemoIPAWithBundleID_session_completion___block_invoke(void *a1, void *a2, void *a3)
@@ -128,16 +128,16 @@ void __76__CPSInstallationController__prewarmDemoIPAWithBundleID_session_complet
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_placeholderArtworkForSession:(id)a3
+- (id)_placeholderArtworkForSession:(id)session
 {
-  v3 = [a3 applicationIconFileURL];
-  if (!v3)
+  applicationIconFileURL = [session applicationIconFileURL];
+  if (!applicationIconFileURL)
   {
     goto LABEL_6;
   }
 
   v10 = 0;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v3 options:8 error:&v10];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:applicationIconFileURL options:8 error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -171,52 +171,52 @@ LABEL_7:
   return v4;
 }
 
-- (id)_asdClipRequestWithSession:(id)a3
+- (id)_asdClipRequestWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_alloc(MEMORY[0x277CEC380]);
-  v6 = [v4 metadata];
-  v7 = [v6 amsDictionary];
-  v8 = [v5 initWithDictionary:v7];
+  metadata = [sessionCopy metadata];
+  amsDictionary = [metadata amsDictionary];
+  v8 = [v5 initWithDictionary:amsDictionary];
 
-  v9 = [v4 configuration];
-  if ([v9 canPrefetchEncryptionKey])
+  configuration = [sessionCopy configuration];
+  if ([configuration canPrefetchEncryptionKey])
   {
     [v8 setPrefetchDecryption:1];
   }
 
-  v10 = [(CPSInstallationController *)self _placeholderArtworkForSession:v4];
+  v10 = [(CPSInstallationController *)self _placeholderArtworkForSession:sessionCopy];
   [v8 setPlaceholderArtwork:v10];
 
-  v11 = [v4 url];
+  v11 = [sessionCopy url];
   [v8 setSourceURL:v11];
 
-  v12 = [v9 analyticsReferrerBundleID];
-  [v8 setInstallSourceBundleID:v12];
+  analyticsReferrerBundleID = [configuration analyticsReferrerBundleID];
+  [v8 setInstallSourceBundleID:analyticsReferrerBundleID];
 
-  v13 = [v9 analyticsLaunchReason];
-  [v8 setReferrerType:v13];
+  analyticsLaunchReason = [configuration analyticsLaunchReason];
+  [v8 setReferrerType:analyticsLaunchReason];
 
   return v8;
 }
 
-- (void)prewarmClipWithBundleID:(id)a3 session:(id)a4 completion:(id)a5
+- (void)prewarmClipWithBundleID:(id)d session:(id)session completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  sessionCopy = session;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__CPSInstallationController_prewarmClipWithBundleID_session_completion___block_invoke;
   v15[3] = &unk_278DCDFF8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = sessionCopy;
+  v18 = completionCopy;
+  v12 = sessionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 
@@ -449,23 +449,23 @@ void __72__CPSInstallationController_prewarmClipWithBundleID_session_completion_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installClipWithBundleID:(id)a3 session:(id)a4 completion:(id)a5
+- (void)installClipWithBundleID:(id)d session:(id)session completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  sessionCopy = session;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__CPSInstallationController_installClipWithBundleID_session_completion___block_invoke;
   v15[3] = &unk_278DCE070;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = sessionCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = sessionCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 
@@ -707,11 +707,11 @@ void __72__CPSInstallationController_installClipWithBundleID_session_completion_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueInstallForBundleID:(id)a3 session:(id)a4 completion:(id)a5
+- (void)_continueInstallForBundleID:(id)d session:(id)session completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dCopy = d;
+  completionCopy = completion;
+  sessionCopy = session;
   v11 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_signpost_enabled(v11))
   {
@@ -724,11 +724,11 @@ void __72__CPSInstallationController_installClipWithBundleID_session_completion_
   v14[2] = __76__CPSInstallationController__continueInstallForBundleID_session_completion___block_invoke;
   v14[3] = &unk_278DCE098;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v10 continueInstallWithCompletionHandler:v14];
+  v15 = dCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = dCopy;
+  [sessionCopy continueInstallWithCompletionHandler:v14];
 }
 
 void __76__CPSInstallationController__continueInstallForBundleID_session_completion___block_invoke(uint64_t a1, void *a2)
@@ -779,19 +779,19 @@ uint64_t __76__CPSInstallationController__continueInstallForBundleID_session_com
   return result;
 }
 
-- (void)_getClipSessionForBundleID:(id)a3 sourceBundleID:(id)a4 forInstall:(BOOL)a5 completion:(id)a6
+- (void)_getClipSessionForBundleID:(id)d sourceBundleID:(id)iD forInstall:(BOOL)install completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   appInfoFetcher = self->_appInfoFetcher;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__CPSInstallationController__getClipSessionForBundleID_sourceBundleID_forInstall_completion___block_invoke;
   v13[3] = &unk_278DCE0C0;
-  v15 = a5;
+  installCopy = install;
   v13[4] = self;
-  v14 = v10;
-  v12 = v10;
-  [(CPSAppInfoFetching *)appInfoFetcher lookUpClipMetadataByBundleID:a3 sourceBundleID:a4 downloadIconIfNeeded:0 skipCaching:0 completionHandler:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(CPSAppInfoFetching *)appInfoFetcher lookUpClipMetadataByBundleID:d sourceBundleID:iD downloadIconIfNeeded:0 skipCaching:0 completionHandler:v13];
 }
 
 void __93__CPSInstallationController__getClipSessionForBundleID_sourceBundleID_forInstall_completion___block_invoke(uint64_t a1, void *a2)
@@ -829,20 +829,20 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)_cancelClipSessionWithBundleID:(id)a3 completion:(id)a4
+- (void)_cancelClipSessionWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__CPSInstallationController__cancelClipSessionWithBundleID_completion___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -967,9 +967,9 @@ void __71__CPSInstallationController__cancelClipSessionWithBundleID_completion__
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_bundleIDFromSession:(id)a3
+- (id)_bundleIDFromSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
   v12 = 0;
   v13 = &v12;
@@ -982,7 +982,7 @@ void __71__CPSInstallationController__cancelClipSessionWithBundleID_completion__
   v9[1] = 3221225472;
   v9[2] = __50__CPSInstallationController__bundleIDFromSession___block_invoke;
   v9[3] = &unk_278DCE138;
-  v6 = v4;
+  v6 = sessionCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)sessionsByBundleID enumerateKeysAndObjectsUsingBlock:v9];
@@ -1007,20 +1007,20 @@ void __50__CPSInstallationController__bundleIDFromSession___block_invoke(uint64_
   }
 }
 
-- (void)_doneWithSession:(id)a3 error:(id)a4
+- (void)_doneWithSession:(id)session error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__CPSInstallationController__doneWithSession_error___block_invoke;
   block[3] = &unk_278DCE110;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = errorCopy;
+  v9 = errorCopy;
+  v10 = sessionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1067,17 +1067,17 @@ void __52__CPSInstallationController__doneWithSession_error___block_invoke(uint6
   return 1;
 }
 
-- (void)clipSession:(id)a3 didFailWithError:(id)a4
+- (void)clipSession:(id)session didFailWithError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
-  if ([v8 isEqualToString:*MEMORY[0x277CEC2F8]])
+  sessionCopy = session;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CEC2F8]])
   {
-    v9 = [v7 code];
+    code = [errorCopy code];
 
-    if (v9 == 907)
+    if (code == 907)
     {
       v10 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1086,12 +1086,12 @@ void __52__CPSInstallationController__doneWithSession_error___block_invoke(uint6
         v18 = 138543618;
         v19 = objc_opt_class();
         v20 = 2048;
-        v21 = v6;
+        v21 = sessionCopy;
         _os_log_impl(&dword_2436ED000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Session (%p) User Canceled.", &v18, 0x16u);
       }
 
       v12 = [MEMORY[0x277CCA9B8] cps_errorWithCode:8];
-      [(CPSInstallationController *)self _doneWithSession:v6 error:v12];
+      [(CPSInstallationController *)self _doneWithSession:sessionCopy error:v12];
 
       goto LABEL_10;
     }
@@ -1106,26 +1106,26 @@ void __52__CPSInstallationController__doneWithSession_error___block_invoke(uint6
   {
     v15 = v13;
     v16 = objc_opt_class();
-    v17 = [v7 cps_privacyPreservingDescription];
+    cps_privacyPreservingDescription = [errorCopy cps_privacyPreservingDescription];
     v18 = 138543874;
     v19 = v16;
     v20 = 2048;
-    v21 = v6;
+    v21 = sessionCopy;
     v22 = 2114;
-    v23 = v17;
+    v23 = cps_privacyPreservingDescription;
     _os_log_error_impl(&dword_2436ED000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Session (%p) failed: %{public}@", &v18, 0x20u);
   }
 
-  [(CPSInstallationController *)self _doneWithSession:v6 error:v7];
+  [(CPSInstallationController *)self _doneWithSession:sessionCopy error:errorCopy];
 LABEL_10:
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clipSession:(id)a3 didUpdateProgress:(double)a4
+- (void)clipSession:(id)session didUpdateProgress:(double)progress
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   v7 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1133,22 +1133,22 @@ LABEL_10:
     v11 = 138543874;
     v12 = objc_opt_class();
     v13 = 2048;
-    v14 = v6;
+    v14 = sessionCopy;
     v15 = 2048;
-    v16 = a4;
+    progressCopy = progress;
     _os_log_impl(&dword_2436ED000, v8, OS_LOG_TYPE_INFO, "%{public}@: Updated progress for session (%p): %f", &v11, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained installationController:self didUpdateProgress:a4];
+  [WeakRetained installationController:self didUpdateProgress:progress];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clipSessionDidCompleteSuccessfully:(id)a3
+- (void)clipSessionDidCompleteSuccessfully:(id)successfully
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  successfullyCopy = successfully;
   v5 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1156,11 +1156,11 @@ LABEL_10:
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2048;
-    v12 = v4;
+    v12 = successfullyCopy;
     _os_log_impl(&dword_2436ED000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Successfully completed session (%p)", &v9, 0x16u);
   }
 
-  [(CPSInstallationController *)self _doneWithSession:v4 error:0];
+  [(CPSInstallationController *)self _doneWithSession:successfullyCopy error:0];
   v7 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_signpost_enabled(v7))
   {
@@ -1171,10 +1171,10 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clipSessionDidInstallPlaceholder:(id)a3
+- (void)clipSessionDidInstallPlaceholder:(id)placeholder
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placeholderCopy = placeholder;
   v5 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1182,11 +1182,11 @@ LABEL_10:
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2048;
-    v12 = v4;
+    v12 = placeholderCopy;
     _os_log_impl(&dword_2436ED000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Successfully installed placeholder (%p)", &v9, 0x16u);
   }
 
-  [(CPSInstallationController *)self _informDelegateDidInstallPlaceholder:v4];
+  [(CPSInstallationController *)self _informDelegateDidInstallPlaceholder:placeholderCopy];
   v7 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_signpost_enabled(v7))
   {
@@ -1197,7 +1197,7 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_informDelegateDidInstallPlaceholder:(id)a3
+- (void)_informDelegateDidInstallPlaceholder:(id)placeholder
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained installationControllerDidInstallPlaceholder:self];

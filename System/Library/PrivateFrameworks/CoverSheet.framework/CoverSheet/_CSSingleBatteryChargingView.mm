@@ -1,26 +1,26 @@
 @interface _CSSingleBatteryChargingView
 - (CGSize)batterySize;
-- (_CSSingleBatteryChargingView)initWithFrame:(CGRect)a3;
+- (_CSSingleBatteryChargingView)initWithFrame:(CGRect)frame;
 - (double)_batteryNoseOffset;
 - (id)_chargePercentFont;
 - (void)_layoutBattery;
 - (void)_layoutChargePercentLabel;
 - (void)layoutSubviews;
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4;
-- (void)setBatterySize:(CGSize)a3;
-- (void)setBatteryVisible:(BOOL)a3;
-- (void)setIncludesBoltImage:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setPrimaryBatteryText:(id)a3 forBattery:(id)a4;
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler;
+- (void)setBatterySize:(CGSize)size;
+- (void)setBatteryVisible:(BOOL)visible;
+- (void)setIncludesBoltImage:(BOOL)image;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setPrimaryBatteryText:(id)text forBattery:(id)battery;
 @end
 
 @implementation _CSSingleBatteryChargingView
 
-- (_CSSingleBatteryChargingView)initWithFrame:(CGRect)a3
+- (_CSSingleBatteryChargingView)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = _CSSingleBatteryChargingView;
-  v3 = [(CSBatteryChargingView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSBatteryChargingView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -47,8 +47,8 @@
 
     [(UIImageView *)v3->_boltImageView setPreferredSymbolConfiguration:v9];
     v16 = v3->_boltImageView;
-    v17 = [MEMORY[0x277D75348] blackColor];
-    [(UIImageView *)v16 setTintColor:v17];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIImageView *)v16 setTintColor:blackColor];
 
     [(CSBatteryChargingView *)v3 _imageViewScalingCorrectedBatterySize:v3->_batteryImageSize.width, v3->_batteryImageSize.height];
     v19 = v18;
@@ -60,8 +60,8 @@
 
     [(CSBatteryFillView *)v3->_batteryFillView setAutoresizingMask:18];
     v25 = v3->_batteryFillView;
-    v26 = [MEMORY[0x277D75348] clearColor];
-    [(CSBatteryFillView *)v25 setBackgroundColor:v26];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CSBatteryFillView *)v25 setBackgroundColor:clearColor];
 
     v27 = [MEMORY[0x277D75DF0] settingsForPrivateStyle:2020];
     [v27 setRenderingHint:1];
@@ -75,8 +75,8 @@
     v3->_batteryContainerView = v30;
 
     v32 = v3->_batteryContainerView;
-    v33 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v32 setBackgroundColor:v33];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v32 setBackgroundColor:clearColor2];
 
     [(UIView *)v3->_batteryContainerView setAutoresizingMask:18];
     [(UIView *)v3->_batteryContainerView setClipsToBounds:1];
@@ -88,14 +88,14 @@
     [v34 setFrame:{0.0, 0.0, v19, v21}];
     [v34 setContentMode:0];
     [(CSBatteryFillView *)v3->_batteryFillView setMaskView:v34];
-    v35 = [(_UIBackdropView *)v3->_batteryBlurView inputSettings];
-    [v35 setGrayscaleTintMaskImage:v3->_batteryImage];
+    inputSettings = [(_UIBackdropView *)v3->_batteryBlurView inputSettings];
+    [inputSettings setGrayscaleTintMaskImage:v3->_batteryImage];
 
-    v36 = [(_UIBackdropView *)v3->_batteryBlurView inputSettings];
-    [v36 setColorTintMaskImage:v3->_batteryImage];
+    inputSettings2 = [(_UIBackdropView *)v3->_batteryBlurView inputSettings];
+    [inputSettings2 setColorTintMaskImage:v3->_batteryImage];
 
-    v37 = [(_UIBackdropView *)v3->_batteryBlurView inputSettings];
-    [v37 setFilterMaskImage:v3->_batteryImage];
+    inputSettings3 = [(_UIBackdropView *)v3->_batteryBlurView inputSettings];
+    [inputSettings3 setFilterMaskImage:v3->_batteryImage];
 
     [(_CSSingleBatteryChargingView *)v3 addSubview:v3->_batteryContainerView];
   }
@@ -103,32 +103,32 @@
   return v3;
 }
 
-- (void)setBatterySize:(CGSize)a3
+- (void)setBatterySize:(CGSize)size
 {
-  if (self->_batteryImageSize.width != a3.width || self->_batteryImageSize.height != a3.height)
+  if (self->_batteryImageSize.width != size.width || self->_batteryImageSize.height != size.height)
   {
-    self->_batteryImageSize = a3;
+    self->_batteryImageSize = size;
     [(_CSSingleBatteryChargingView *)self setNeedsLayout];
 
     [(_CSSingleBatteryChargingView *)self layoutIfNeeded];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   v6.receiver = self;
   v6.super_class = _CSSingleBatteryChargingView;
-  [(CSBatteryChargingView *)&v6 setLegibilitySettings:a3];
+  [(CSBatteryChargingView *)&v6 setLegibilitySettings:settings];
   chargePercentLabel = self->_chargePercentLabel;
-  v5 = [(CSBatteryChargingView *)self legibilitySettings];
-  [(SBUILegibilityLabel *)chargePercentLabel setLegibilitySettings:v5];
+  legibilitySettings = [(CSBatteryChargingView *)self legibilitySettings];
+  [(SBUILegibilityLabel *)chargePercentLabel setLegibilitySettings:legibilitySettings];
 }
 
-- (void)setIncludesBoltImage:(BOOL)a3
+- (void)setIncludesBoltImage:(BOOL)image
 {
-  if (self->_includesBoltImage != a3)
+  if (self->_includesBoltImage != image)
   {
-    self->_includesBoltImage = a3;
+    self->_includesBoltImage = image;
     [(UIImageView *)self->_boltImageView removeFromSuperview];
     if (self->_includesBoltImage)
     {
@@ -139,29 +139,29 @@
   }
 }
 
-- (void)setPrimaryBatteryText:(id)a3 forBattery:(id)a4
+- (void)setPrimaryBatteryText:(id)text forBattery:(id)battery
 {
   chargePercentLabel = self->_chargePercentLabel;
-  v7 = a4;
-  v8 = [(CSBatteryChargingView *)self _updateChargeString:a3 oldLabel:chargePercentLabel];
+  batteryCopy = battery;
+  v8 = [(CSBatteryChargingView *)self _updateChargeString:text oldLabel:chargePercentLabel];
   v9 = self->_chargePercentLabel;
   self->_chargePercentLabel = v8;
 
   [(SBUILegibilityLabel *)self->_chargePercentLabel setAdjustsFontSizeToFitWidth:1];
-  -[CSBatteryFillView setChargePercentage:](self->_batteryFillView, "setChargePercentage:", [v7 percentCharge]);
+  -[CSBatteryFillView setChargePercentage:](self->_batteryFillView, "setChargePercentage:", [batteryCopy percentCharge]);
   batteryFillView = self->_batteryFillView;
-  v11 = [v7 isLowPowerModeActive];
+  isLowPowerModeActive = [batteryCopy isLowPowerModeActive];
 
-  [(CSBatteryFillView *)batteryFillView setBatterySaverModeActive:v11];
+  [(CSBatteryFillView *)batteryFillView setBatterySaverModeActive:isLowPowerModeActive];
 
   [(_CSSingleBatteryChargingView *)self setNeedsLayout];
 }
 
-- (void)setBatteryVisible:(BOOL)a3
+- (void)setBatteryVisible:(BOOL)visible
 {
   batteryContainerView = self->_batteryContainerView;
   v5 = 0.0;
-  if (a3)
+  if (visible)
   {
     v5 = 1.0;
   }
@@ -171,11 +171,11 @@
   [(_CSSingleBatteryChargingView *)self setNeedsLayout];
 }
 
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
@@ -290,9 +290,9 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
     v5 = 3.0;
-    if ([v2 userInterfaceIdiom] != 1)
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 LABEL_6:
 

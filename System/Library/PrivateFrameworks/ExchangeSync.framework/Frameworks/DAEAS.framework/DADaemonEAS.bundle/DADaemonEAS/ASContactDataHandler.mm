@@ -2,17 +2,17 @@
 - (BOOL)saveContainer;
 - (BOOL)wipeServerIds;
 - (id)copyOfAllLocalObjectsInContainer;
-- (void)copyLocalObjectFromId:(int)a3;
+- (void)copyLocalObjectFromId:(int)id;
 - (void)drainContainer;
 - (void)openDB;
 @end
 
 @implementation ASContactDataHandler
 
-- (void)copyLocalObjectFromId:(int)a3
+- (void)copyLocalObjectFromId:(int)id
 {
   v4 = +[ASLocalDBHelper sharedInstance];
-  PersonWithRecordID = ABAddressBookGetPersonWithRecordID([v4 abDB], a3);
+  PersonWithRecordID = ABAddressBookGetPersonWithRecordID([v4 abDB], id);
 
   if (PersonWithRecordID)
   {
@@ -25,31 +25,31 @@
 - (BOOL)saveContainer
 {
   v2 = +[ASLocalDBHelper sharedInstance];
-  v3 = [v2 abSaveDB];
+  abSaveDB = [v2 abSaveDB];
 
-  return v3;
+  return abSaveDB;
 }
 
 - (id)copyOfAllLocalObjectsInContainer
 {
   v3 = +[ASLocalDBHelper sharedInstance];
-  v4 = [v3 abDB];
-  v5 = ABAddressBookCopyArrayOfAllPeopleInSource(v4, *&self->super.ESDataHandler_opaque[OBJC_IVAR___ESDataHandler__container]);
+  abDB = [v3 abDB];
+  v5 = ABAddressBookCopyArrayOfAllPeopleInSource(abDB, *&self->super.ESDataHandler_opaque[OBJC_IVAR___ESDataHandler__container]);
 
   return v5;
 }
 
 - (BOOL)wipeServerIds
 {
-  v2 = [(ASContactDataHandler *)self copyOfAllLocalObjectsInContainer];
+  copyOfAllLocalObjectsInContainer = [(ASContactDataHandler *)self copyOfAllLocalObjectsInContainer];
   v3 = 0;
-  if ([v2 count])
+  if ([copyOfAllLocalObjectsInContainer count])
   {
     v4 = 0;
     v5 = kABPersonExternalIdentifierProperty;
     do
     {
-      v6 = [v2 objectAtIndexedSubscript:v4];
+      v6 = [copyOfAllLocalObjectsInContainer objectAtIndexedSubscript:v4];
 
       v7 = ABRecordCopyValue(v6, v5);
       if (v7)
@@ -61,7 +61,7 @@
       ++v4;
     }
 
-    while (v4 < [v2 count]);
+    while (v4 < [copyOfAllLocalObjectsInContainer count]);
   }
 
   return v3 & 1;
@@ -81,8 +81,8 @@
 - (void)openDB
 {
   v4 = +[ASLocalDBHelper sharedInstance];
-  v3 = [(ASContactDataHandler *)self changeTrackingID];
-  [v4 abOpenDBWithClientIdentifier:v3];
+  changeTrackingID = [(ASContactDataHandler *)self changeTrackingID];
+  [v4 abOpenDBWithClientIdentifier:changeTrackingID];
 }
 
 @end

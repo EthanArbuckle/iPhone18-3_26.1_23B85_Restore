@@ -4,26 +4,26 @@
 - (__n128)target;
 - (__n128)value;
 - (__n128)velocity;
-- (void)setDampingRatio:(double)a3;
+- (void)setDampingRatio:(double)ratio;
 - (void)setFloatValue:(ARCoachingSpringDouble3 *)self;
-- (void)setResponse:(double)a3;
+- (void)setResponse:(double)response;
 - (void)setTarget:(ARCoachingSpringDouble3 *)self;
 - (void)setValue:(ARCoachingSpringDouble3 *)self;
 - (void)setVelocity:(ARCoachingSpringDouble3 *)self;
-- (void)stepWithDeltaTime:(double)a3;
+- (void)stepWithDeltaTime:(double)time;
 @end
 
 @implementation ARCoachingSpringDouble3
 
 - (__n128)value
 {
-  v4 = [*(a1 + 8) objectAtIndexedSubscript:0];
+  v4 = [*(self + 8) objectAtIndexedSubscript:0];
   [v4 value];
   v13 = v5;
-  v6 = [*(a1 + 8) objectAtIndexedSubscript:1];
+  v6 = [*(self + 8) objectAtIndexedSubscript:1];
   [v6 value];
   v12 = v7;
-  v8 = [*(a1 + 8) objectAtIndexedSubscript:2];
+  v8 = [*(self + 8) objectAtIndexedSubscript:2];
   [v8 value];
   v11 = v9;
   v9.n128_u64[0] = v13;
@@ -52,15 +52,15 @@
 
 - (__n128)floatValue
 {
-  v2 = [*(a1 + 8) objectAtIndexedSubscript:0];
+  v2 = [*(self + 8) objectAtIndexedSubscript:0];
   [v2 value];
   v11 = v3;
-  v4 = [*(a1 + 8) objectAtIndexedSubscript:1];
+  v4 = [*(self + 8) objectAtIndexedSubscript:1];
   [v4 value];
   v5.f64[0] = v11;
   v5.f64[1] = v6;
   v12 = vcvt_f32_f64(v5);
-  v7 = [*(a1 + 8) objectAtIndexedSubscript:2];
+  v7 = [*(self + 8) objectAtIndexedSubscript:2];
   [v7 value];
   *&v8 = v8;
   v10 = LODWORD(v8);
@@ -86,13 +86,13 @@
 
 - (__n128)target
 {
-  v4 = [*(a1 + 8) objectAtIndexedSubscript:0];
+  v4 = [*(self + 8) objectAtIndexedSubscript:0];
   [v4 target];
   v13 = v5;
-  v6 = [*(a1 + 8) objectAtIndexedSubscript:1];
+  v6 = [*(self + 8) objectAtIndexedSubscript:1];
   [v6 target];
   v12 = v7;
-  v8 = [*(a1 + 8) objectAtIndexedSubscript:2];
+  v8 = [*(self + 8) objectAtIndexedSubscript:2];
   [v8 target];
   v11 = v9;
   v9.n128_u64[0] = v13;
@@ -121,13 +121,13 @@
 
 - (__n128)velocity
 {
-  v4 = [*(a1 + 8) objectAtIndexedSubscript:0];
+  v4 = [*(self + 8) objectAtIndexedSubscript:0];
   [v4 velocity];
   v13 = v5;
-  v6 = [*(a1 + 8) objectAtIndexedSubscript:1];
+  v6 = [*(self + 8) objectAtIndexedSubscript:1];
   [v6 velocity];
   v12 = v7;
-  v8 = [*(a1 + 8) objectAtIndexedSubscript:2];
+  v8 = [*(self + 8) objectAtIndexedSubscript:2];
   [v8 velocity];
   v11 = v9;
   v9.n128_u64[0] = v13;
@@ -154,7 +154,7 @@
   [v8 setVelocity:v4];
 }
 
-- (void)setResponse:(double)a3
+- (void)setResponse:(double)response
 {
   v5 = [(NSArray *)self->_springs objectAtIndexedSubscript:0];
   [v5 parameters];
@@ -163,7 +163,7 @@
   [v8 parameters];
   v10 = v9;
   v11 = [(NSArray *)self->_springs objectAtIndexedSubscript:0];
-  v12 = ARFLSpringParametersMake([v11 parameters], v7, v10, a3);
+  v12 = ARFLSpringParametersMake([v11 parameters], v7, v10, response);
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -177,7 +177,7 @@
   [v23 parameters];
   v25 = v24;
   v26 = [(NSArray *)self->_springs objectAtIndexedSubscript:1];
-  v27 = ARFLSpringParametersMake([v26 parameters], v22, v25, a3);
+  v27 = ARFLSpringParametersMake([v26 parameters], v22, v25, response);
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -191,7 +191,7 @@
   [v37 parameters];
   v39 = v38;
   v40 = [(NSArray *)self->_springs objectAtIndexedSubscript:2];
-  v41 = ARFLSpringParametersMake([v40 parameters], v36, v39, a3);
+  v41 = ARFLSpringParametersMake([v40 parameters], v36, v39, response);
   v43 = v42;
   v45 = v44;
   v47 = v46;
@@ -199,7 +199,7 @@
   [v48 setParameters:{v41, v43, v45, v47}];
 }
 
-- (void)setDampingRatio:(double)a3
+- (void)setDampingRatio:(double)ratio
 {
   v5 = [(NSArray *)self->_springs objectAtIndexedSubscript:0];
   [v5 parameters];
@@ -208,7 +208,7 @@
   [v8 parameters];
   v10 = v9;
   v11 = [(NSArray *)self->_springs objectAtIndexedSubscript:0];
-  v12 = ARFLSpringParametersMake([v11 parameters], a3, v7, v10);
+  v12 = ARFLSpringParametersMake([v11 parameters], ratio, v7, v10);
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -222,7 +222,7 @@
   [v23 parameters];
   v25 = v24;
   v26 = [(NSArray *)self->_springs objectAtIndexedSubscript:1];
-  v27 = ARFLSpringParametersMake([v26 parameters], a3, v22, v25);
+  v27 = ARFLSpringParametersMake([v26 parameters], ratio, v22, v25);
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -236,7 +236,7 @@
   [v37 parameters];
   v39 = v38;
   v40 = [(NSArray *)self->_springs objectAtIndexedSubscript:2];
-  v41 = ARFLSpringParametersMake([v40 parameters], a3, v36, v39);
+  v41 = ARFLSpringParametersMake([v40 parameters], ratio, v36, v39);
   v43 = v42;
   v45 = v44;
   v47 = v46;
@@ -288,7 +288,7 @@
   return v2;
 }
 
-- (void)stepWithDeltaTime:(double)a3
+- (void)stepWithDeltaTime:(double)time
 {
   if ([(NSArray *)self->_springs count])
   {
@@ -296,7 +296,7 @@
     do
     {
       v6 = [(NSArray *)self->_springs objectAtIndexedSubscript:v5];
-      [v6 step:a3];
+      [v6 step:time];
 
       ++v5;
     }

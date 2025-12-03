@@ -1,28 +1,28 @@
 @interface EMFQueryResultSorter
-+ (id)_sortResults_clusterGenderVariantsTogether:(id)a3 withLocaleData:(__EmojiLocaleDataWrapper *)a4;
-+ (id)sortResults:(id)a3 withLocaleData:(__EmojiLocaleDataWrapper *)a4 sortType:(unint64_t)a5;
++ (id)_sortResults_clusterGenderVariantsTogether:(id)together withLocaleData:(__EmojiLocaleDataWrapper *)data;
++ (id)sortResults:(id)results withLocaleData:(__EmojiLocaleDataWrapper *)data sortType:(unint64_t)type;
 @end
 
 @implementation EMFQueryResultSorter
 
-+ (id)sortResults:(id)a3 withLocaleData:(__EmojiLocaleDataWrapper *)a4 sortType:(unint64_t)a5
++ (id)sortResults:(id)results withLocaleData:(__EmojiLocaleDataWrapper *)data sortType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = v7;
-  if (a5 == 1)
+  resultsCopy = results;
+  v8 = resultsCopy;
+  if (type == 1)
   {
-    v10 = [objc_opt_class() _sortResults_clusterGenderVariantsTogether:v7 withLocaleData:a4];
+    v10 = [objc_opt_class() _sortResults_clusterGenderVariantsTogether:resultsCopy withLocaleData:data];
   }
 
   else
   {
-    v9 = v7;
-    if (a5)
+    v9 = resultsCopy;
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v10 = [objc_opt_class() _sortResults_default:v7 withLocaleData:a4];
+    v10 = [objc_opt_class() _sortResults_default:resultsCopy withLocaleData:data];
   }
 
   v9 = v10;
@@ -32,16 +32,16 @@ LABEL_6:
   return v9;
 }
 
-+ (id)_sortResults_clusterGenderVariantsTogether:(id)a3 withLocaleData:(__EmojiLocaleDataWrapper *)a4
++ (id)_sortResults_clusterGenderVariantsTogether:(id)together withLocaleData:(__EmojiLocaleDataWrapper *)data
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  togetherCopy = together;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(togetherCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = togetherCopy;
   v6 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v6)
   {
@@ -109,7 +109,7 @@ LABEL_6:
               }
             }
 
-            [v15 sortUsingFunction:_compareEmojiTokensUsingDefaultSortCollation context:a4];
+            [v15 sortUsingFunction:_compareEmojiTokensUsingDefaultSortCollation context:data];
             v38 = 0u;
             v39 = 0u;
             v36 = 0u;

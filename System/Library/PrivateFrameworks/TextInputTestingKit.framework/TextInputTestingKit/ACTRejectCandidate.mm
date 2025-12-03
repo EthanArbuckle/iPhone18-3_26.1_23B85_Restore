@@ -1,18 +1,18 @@
 @interface ACTRejectCandidate
-- (ACTRejectCandidate)initWithCandidate:(id)a3 timestamp:(double)a4;
+- (ACTRejectCandidate)initWithCandidate:(id)candidate timestamp:(double)timestamp;
 - (id)description;
-- (void)applyWithTyper:(id)a3 log:(id)a4;
+- (void)applyWithTyper:(id)typer log:(id)log;
 @end
 
 @implementation ACTRejectCandidate
 
-- (void)applyWithTyper:(id)a3 log:(id)a4
+- (void)applyWithTyper:(id)typer log:(id)log
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ACTRejectCandidate *)self candidate];
+  logCopy = log;
+  typerCopy = typer;
+  candidate = [(ACTRejectCandidate *)self candidate];
   [(ACTRejectCandidate *)self timestamp];
-  [v7 _performRejectCandidate:v8 timestamp:v6 typingLog:?];
+  [typerCopy _performRejectCandidate:candidate timestamp:logCopy typingLog:?];
 }
 
 - (id)description
@@ -20,24 +20,24 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACTRejectCandidate *)self candidate];
+  candidate = [(ACTRejectCandidate *)self candidate];
   [(ACTRejectCandidate *)self timestamp];
-  v8 = [v3 stringWithFormat:@"<%@: candidate=%@, t=%.2f>", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@: candidate=%@, t=%.2f>", v5, candidate, v7];
 
   return v8;
 }
 
-- (ACTRejectCandidate)initWithCandidate:(id)a3 timestamp:(double)a4
+- (ACTRejectCandidate)initWithCandidate:(id)candidate timestamp:(double)timestamp
 {
-  v7 = a3;
+  candidateCopy = candidate;
   v11.receiver = self;
   v11.super_class = ACTRejectCandidate;
   v8 = [(ACTRejectCandidate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_candidate, a3);
-    v9->_timestamp = a4;
+    objc_storeStrong(&v8->_candidate, candidate);
+    v9->_timestamp = timestamp;
   }
 
   return v9;

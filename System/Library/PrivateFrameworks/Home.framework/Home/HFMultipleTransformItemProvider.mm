@@ -1,43 +1,43 @@
 @interface HFMultipleTransformItemProvider
-- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)a3;
-- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)a3 multipleTransformationBlock:(id)a4;
-- (id)_subclass_transformItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)provider;
+- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)provider multipleTransformationBlock:(id)block;
+- (id)_subclass_transformItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFMultipleTransformItemProvider
 
-- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)a3
+- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = HFMultipleTransformItemProvider;
   v6 = [(HFItemProvider *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     transformedItems = v6->_transformedItems;
-    v6->_transformedItems = v7;
+    v6->_transformedItems = dictionary;
 
     v9 = [MEMORY[0x277CBEB58] set];
     allItems = v6->_allItems;
     v6->_allItems = v9;
 
-    objc_storeStrong(&v6->_sourceProvider, a3);
+    objc_storeStrong(&v6->_sourceProvider, provider);
   }
 
   return v6;
 }
 
-- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)a3 multipleTransformationBlock:(id)a4
+- (HFMultipleTransformItemProvider)initWithSourceProvider:(id)provider multipleTransformationBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(HFMultipleTransformItemProvider *)self initWithSourceProvider:a3];
+  blockCopy = block;
+  v7 = [(HFMultipleTransformItemProvider *)self initWithSourceProvider:provider];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(blockCopy);
     transformationBlock = v7->_transformationBlock;
     v7->_transformationBlock = v8;
   }
@@ -45,26 +45,26 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFMultipleTransformItemProvider *)self sourceProvider];
-  v6 = [(HFMultipleTransformItemProvider *)self transformationBlock];
-  v7 = [v4 initWithSourceProvider:v5 multipleTransformationBlock:v6];
+  sourceProvider = [(HFMultipleTransformItemProvider *)self sourceProvider];
+  transformationBlock = [(HFMultipleTransformItemProvider *)self transformationBlock];
+  v7 = [v4 initWithSourceProvider:sourceProvider multipleTransformationBlock:transformationBlock];
 
   return v7;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFMultipleTransformItemProvider *)self sourceProvider];
-  v4 = [v3 reloadItems];
+  sourceProvider = [(HFMultipleTransformItemProvider *)self sourceProvider];
+  reloadItems = [sourceProvider reloadItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HFMultipleTransformItemProvider_reloadItems__block_invoke;
   v7[3] = &unk_277DF6960;
   v7[4] = self;
-  v5 = [v4 flatMap:v7];
+  v5 = [reloadItems flatMap:v7];
 
   return v5;
 }
@@ -219,19 +219,19 @@ void __46__HFMultipleTransformItemProvider_reloadItems__block_invoke_4(uint64_t 
   [v6 removeObjectForKey:v7];
 }
 
-- (id)_subclass_transformItem:(id)a3
+- (id)_subclass_transformItem:(id)item
 {
-  v5 = a3;
-  v6 = [(HFMultipleTransformItemProvider *)self transformationBlock];
+  itemCopy = item;
+  transformationBlock = [(HFMultipleTransformItemProvider *)self transformationBlock];
 
-  if (!v6)
+  if (!transformationBlock)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFMultipleTransformItemProvider.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"self.transformationBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFMultipleTransformItemProvider.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"self.transformationBlock"}];
   }
 
-  v7 = [(HFMultipleTransformItemProvider *)self transformationBlock];
-  v8 = (v7)[2](v7, v5);
+  transformationBlock2 = [(HFMultipleTransformItemProvider *)self transformationBlock];
+  v8 = (transformationBlock2)[2](transformationBlock2, itemCopy);
 
   return v8;
 }
@@ -240,10 +240,10 @@ void __46__HFMultipleTransformItemProvider_reloadItems__block_invoke_4(uint64_t 
 {
   v8.receiver = self;
   v8.super_class = HFMultipleTransformItemProvider;
-  v3 = [(HFItemProvider *)&v8 invalidationReasons];
-  v4 = [(HFMultipleTransformItemProvider *)self sourceProvider];
-  v5 = [v4 invalidationReasons];
-  v6 = [v3 setByAddingObjectsFromSet:v5];
+  invalidationReasons = [(HFItemProvider *)&v8 invalidationReasons];
+  sourceProvider = [(HFMultipleTransformItemProvider *)self sourceProvider];
+  invalidationReasons2 = [sourceProvider invalidationReasons];
+  v6 = [invalidationReasons setByAddingObjectsFromSet:invalidationReasons2];
 
   return v6;
 }

@@ -1,23 +1,23 @@
 @interface ATXSuggestedPagesGenreAppDataSource
-- (BOOL)_appLaunchDataPassesThreshold:(id)a3 forPageType:(int64_t)a4 bundleId:(id)a5;
-- (BOOL)_pageType:(int64_t)a3 matchesGenreId:(unint64_t)a4 forBundleId:(id)a5;
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4;
+- (BOOL)_appLaunchDataPassesThreshold:(id)threshold forPageType:(int64_t)type bundleId:(id)id;
+- (BOOL)_pageType:(int64_t)type matchesGenreId:(unint64_t)id forBundleId:(id)bundleId;
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesGenreAppDataSource
 
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment
 {
   v42 = *MEMORY[0x277D85DE8];
-  v31 = a4;
+  environmentCopy = environment;
   v6 = +[_ATXAppIconState sharedInstance];
   v7 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = [v6 allAppsKnownToSpringBoard];
-  v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  allAppsKnownToSpringBoard = [v6 allAppsKnownToSpringBoard];
+  v9 = [allAppsKnownToSpringBoard countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -28,17 +28,17 @@
       {
         if (*v37 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allAppsKnownToSpringBoard);
         }
 
         v13 = *(*(&v36 + 1) + 8 * i);
-        if (-[ATXSuggestedPagesGenreAppDataSource _pageType:matchesGenreId:forBundleId:](self, "_pageType:matchesGenreId:forBundleId:", a3, [MEMORY[0x277CEB3B8] genreIdForBundle:v13], v13))
+        if (-[ATXSuggestedPagesGenreAppDataSource _pageType:matchesGenreId:forBundleId:](self, "_pageType:matchesGenreId:forBundleId:", type, [MEMORY[0x277CEB3B8] genreIdForBundle:v13], v13))
         {
           [v7 addObject:v13];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v10 = [allAppsKnownToSpringBoard countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v10);
@@ -73,10 +73,10 @@
           }
 
           v21 = *(*(&v32 + 1) + 8 * j);
-          v22 = [v31 appLaunchCounts];
-          v23 = [v22 objectForKeyedSubscript:v21];
+          appLaunchCounts = [environmentCopy appLaunchCounts];
+          v23 = [appLaunchCounts objectForKeyedSubscript:v21];
 
-          if ((v16 & 1) != 0 || [(ATXSuggestedPagesGenreAppDataSource *)self _appLaunchDataPassesThreshold:v23 forPageType:a3 bundleId:v21])
+          if ((v16 & 1) != 0 || [(ATXSuggestedPagesGenreAppDataSource *)self _appLaunchDataPassesThreshold:v23 forPageType:type bundleId:v21])
           {
             v24 = [objc_alloc(MEMORY[0x277CEB560]) initWithBundleId:v21 predictionSource:@"App Category" score:objc_msgSend(v23 uniqueDaysLaunched:"uniqueDaysLaunched") rawLaunchCount:{objc_msgSend(v23, "rawLaunchCount"), 0.0}];
             [v30 addObject:v24];
@@ -103,47 +103,47 @@
   return v30;
 }
 
-- (BOOL)_appLaunchDataPassesThreshold:(id)a3 forPageType:(int64_t)a4 bundleId:(id)a5
+- (BOOL)_appLaunchDataPassesThreshold:(id)threshold forPageType:(int64_t)type bundleId:(id)id
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4 <= 6)
+  thresholdCopy = threshold;
+  idCopy = id;
+  if (type <= 6)
   {
-    if (a4 == 5)
+    if (type == 5)
     {
       goto LABEL_9;
     }
 
-    if (a4 != 6)
+    if (type != 6)
     {
       v9 = 0;
       goto LABEL_14;
     }
 
-    if ([MEMORY[0x277CEB3B8] genreIdForBundle:v8] != 6011)
+    if ([MEMORY[0x277CEB3B8] genreIdForBundle:idCopy] != 6011)
     {
       goto LABEL_9;
     }
 
-    v10 = [v7 uniqueDaysLaunched] > 6;
+    v10 = [thresholdCopy uniqueDaysLaunched] > 6;
   }
 
   else
   {
-    if ((a4 - 7) >= 2)
+    if ((type - 7) >= 2)
     {
-      if (a4 != 9)
+      if (type != 9)
       {
-        v9 = a4 == 10;
+        v9 = type == 10;
         goto LABEL_14;
       }
 
 LABEL_9:
-      v9 = [v7 rawLaunchCount] != 0;
+      v9 = [thresholdCopy rawLaunchCount] != 0;
       goto LABEL_14;
     }
 
-    v10 = [v7 uniqueDaysLaunched] > 1;
+    v10 = [thresholdCopy uniqueDaysLaunched] > 1;
   }
 
   v9 = v10;
@@ -152,26 +152,26 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)_pageType:(int64_t)a3 matchesGenreId:(unint64_t)a4 forBundleId:(id)a5
+- (BOOL)_pageType:(int64_t)type matchesGenreId:(unint64_t)id forBundleId:(id)bundleId
 {
-  v7 = a5;
-  if (a3 <= 7)
+  bundleIdCopy = bundleId;
+  if (type <= 7)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       v14 = 6010;
     }
 
     else
     {
-      if (a3 != 6)
+      if (type != 6)
       {
-        v9 = a4 == 6000 || a4 == 6007;
-        v10 = a3 == 7 && v9;
+        v9 = id == 6000 || id == 6007;
+        v10 = type == 7 && v9;
         goto LABEL_30;
       }
 
-      if (a4 == 6011 && ([MEMORY[0x277CEB3B8] isBackgroundAudioSupportedForBundle:v7] & 1) != 0)
+      if (id == 6011 && ([MEMORY[0x277CEB3B8] isBackgroundAudioSupportedForBundle:bundleIdCopy] & 1) != 0)
       {
         v10 = 1;
         goto LABEL_30;
@@ -180,34 +180,34 @@ LABEL_14:
       v14 = 6013;
     }
 
-    v10 = a4 == v14;
+    v10 = id == v14;
     goto LABEL_30;
   }
 
-  v11 = 0x1091u >> (a4 - 116);
-  if (a4 - 6004 >= 0xD)
+  v11 = 0x1091u >> (id - 116);
+  if (id - 6004 >= 0xD)
   {
     LOBYTE(v11) = 0;
   }
 
-  v12 = 0x1201u >> (a4 - 121);
-  if (a4 - 6009 >= 0xD)
+  v12 = 0x1201u >> (id - 121);
+  if (id - 6009 >= 0xD)
   {
     LOBYTE(v12) = 0;
   }
 
-  v13 = a4 == 6014;
-  if (a3 != 10)
+  v13 = id == 6014;
+  if (type != 10)
   {
     v13 = 0;
   }
 
-  if (a3 != 9)
+  if (type != 9)
   {
     LOBYTE(v12) = v13;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v10 = v11;
   }

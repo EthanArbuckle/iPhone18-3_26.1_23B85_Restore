@@ -1,5 +1,5 @@
 @interface ICLinkSnapshotGenerator
-- (ICLinkSnapshotGenerator)initWithAttachment:(id)a3;
+- (ICLinkSnapshotGenerator)initWithAttachment:(id)attachment;
 - (LPLinkMetadata)metadata;
 - (LPLinkSnapshotConfiguration)configuration;
 - (id)snapshot;
@@ -8,9 +8,9 @@
 
 @implementation ICLinkSnapshotGenerator
 
-- (ICLinkSnapshotGenerator)initWithAttachment:(id)a3
+- (ICLinkSnapshotGenerator)initWithAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   v12.receiver = self;
   v12.super_class = ICLinkSnapshotGenerator;
   v6 = [(ICLinkSnapshotGenerator *)&v12 init];
@@ -21,7 +21,7 @@
     generator = v6->_generator;
     v6->_generator = v9;
 
-    objc_storeStrong(&v6->_attachment, a3);
+    objc_storeStrong(&v6->_attachment, attachment);
   }
 
   return v6;
@@ -31,22 +31,22 @@
 {
   if (!self->_metadata)
   {
-    v3 = [(ICLinkSnapshotGenerator *)self attachment];
-    v4 = [v3 hasSynapseLink];
+    attachment = [(ICLinkSnapshotGenerator *)self attachment];
+    hasSynapseLink = [attachment hasSynapseLink];
 
-    v5 = [(ICLinkSnapshotGenerator *)self attachment];
-    v6 = v5;
-    if (v4)
+    attachment2 = [(ICLinkSnapshotGenerator *)self attachment];
+    fallbackRemoteAttachmentMetadata = attachment2;
+    if (hasSynapseLink)
     {
-      v7 = [v5 synapseBasedMetadata];
-      if (!v7)
+      synapseBasedMetadata = [attachment2 synapseBasedMetadata];
+      if (!synapseBasedMetadata)
       {
-        v9 = [(ICLinkSnapshotGenerator *)self attachment];
-        v22 = [v9 plainURLMetadata];
-        v23 = v22;
-        if (v22)
+        attachment3 = [(ICLinkSnapshotGenerator *)self attachment];
+        plainURLMetadata = [attachment3 plainURLMetadata];
+        v23 = plainURLMetadata;
+        if (plainURLMetadata)
         {
-          v24 = v22;
+          v24 = plainURLMetadata;
           metadata = self->_metadata;
           self->_metadata = v24;
         }
@@ -54,9 +54,9 @@
         else
         {
           metadata = [(ICLinkSnapshotGenerator *)self attachment];
-          v35 = [metadata fileMetadata];
+          fileMetadata = [metadata fileMetadata];
           v36 = self->_metadata;
-          self->_metadata = v35;
+          self->_metadata = fileMetadata;
         }
 
         goto LABEL_24;
@@ -65,58 +65,58 @@
       goto LABEL_4;
     }
 
-    v10 = [v5 URL];
-    v11 = [v10 ic_isWebURL];
+    v10 = [attachment2 URL];
+    ic_isWebURL = [v10 ic_isWebURL];
 
-    v12 = [(ICLinkSnapshotGenerator *)self attachment];
-    v13 = v12;
-    if (v11)
+    attachment4 = [(ICLinkSnapshotGenerator *)self attachment];
+    v13 = attachment4;
+    if (ic_isWebURL)
     {
-      v14 = [v12 retrieveLinkMetadata];
-      v15 = v14;
-      if (v14)
+      retrieveLinkMetadata = [attachment4 retrieveLinkMetadata];
+      v15 = retrieveLinkMetadata;
+      if (retrieveLinkMetadata)
       {
-        v6 = v14;
+        fallbackRemoteAttachmentMetadata = retrieveLinkMetadata;
       }
 
       else
       {
-        v26 = [(ICLinkSnapshotGenerator *)self attachment];
-        v6 = [v26 fallbackRemoteAttachmentMetadata];
+        attachment5 = [(ICLinkSnapshotGenerator *)self attachment];
+        fallbackRemoteAttachmentMetadata = [attachment5 fallbackRemoteAttachmentMetadata];
       }
 
-      v27 = [(ICLinkSnapshotGenerator *)self attachment];
-      [v27 addPreviewImageToMetadata:v6];
+      attachment6 = [(ICLinkSnapshotGenerator *)self attachment];
+      [attachment6 addPreviewImageToMetadata:fallbackRemoteAttachmentMetadata];
 
-      if (!v6)
+      if (!fallbackRemoteAttachmentMetadata)
       {
-        v7 = [(ICLinkSnapshotGenerator *)self attachment];
-        v31 = [v7 fileMetadata];
+        synapseBasedMetadata = [(ICLinkSnapshotGenerator *)self attachment];
+        fileMetadata2 = [synapseBasedMetadata fileMetadata];
         v32 = self->_metadata;
-        self->_metadata = v31;
+        self->_metadata = fileMetadata2;
 
 LABEL_30:
         goto LABEL_31;
       }
 
-      v21 = v6;
-      v6 = v21;
+      plainURLMetadata2 = fallbackRemoteAttachmentMetadata;
+      fallbackRemoteAttachmentMetadata = plainURLMetadata2;
     }
 
     else
     {
-      v16 = [v12 URL];
+      v16 = [attachment4 URL];
       if (v16)
       {
         v17 = v16;
-        v18 = [(ICLinkSnapshotGenerator *)self attachment];
-        v19 = [v18 URL];
-        v20 = [v19 ic_isWebURL];
+        attachment7 = [(ICLinkSnapshotGenerator *)self attachment];
+        v19 = [attachment7 URL];
+        ic_isWebURL2 = [v19 ic_isWebURL];
 
-        if ((v20 & 1) == 0)
+        if ((ic_isWebURL2 & 1) == 0)
         {
-          v6 = [(ICLinkSnapshotGenerator *)self attachment];
-          v21 = [v6 plainURLMetadata];
+          fallbackRemoteAttachmentMetadata = [(ICLinkSnapshotGenerator *)self attachment];
+          plainURLMetadata2 = [fallbackRemoteAttachmentMetadata plainURLMetadata];
           goto LABEL_29;
         }
       }
@@ -125,63 +125,63 @@ LABEL_30:
       {
       }
 
-      v28 = [(ICLinkSnapshotGenerator *)self attachment];
-      v29 = [v28 isLoadingFromCloud];
+      attachment8 = [(ICLinkSnapshotGenerator *)self attachment];
+      isLoadingFromCloud = [attachment8 isLoadingFromCloud];
 
-      v30 = [(ICLinkSnapshotGenerator *)self attachment];
-      v6 = v30;
-      if (v29)
+      attachment9 = [(ICLinkSnapshotGenerator *)self attachment];
+      fallbackRemoteAttachmentMetadata = attachment9;
+      if (isLoadingFromCloud)
       {
-        v21 = [v30 loadingAttachmentsMetadata];
+        plainURLMetadata2 = [attachment9 loadingAttachmentsMetadata];
       }
 
       else
       {
-        v33 = [v30 attachmentType];
+        attachmentType = [attachment9 attachmentType];
 
-        v34 = [(ICLinkSnapshotGenerator *)self attachment];
-        v6 = v34;
-        if (v33 == 11)
+        attachment10 = [(ICLinkSnapshotGenerator *)self attachment];
+        fallbackRemoteAttachmentMetadata = attachment10;
+        if (attachmentType == 11)
         {
-          v21 = [v34 scannedDocumentsMetadata];
+          plainURLMetadata2 = [attachment10 scannedDocumentsMetadata];
         }
 
         else
         {
-          v37 = [v34 metadataExists];
+          metadataExists = [attachment10 metadataExists];
 
-          v38 = [(ICLinkSnapshotGenerator *)self attachment];
-          v6 = v38;
-          if (v37)
+          attachment11 = [(ICLinkSnapshotGenerator *)self attachment];
+          fallbackRemoteAttachmentMetadata = attachment11;
+          if (metadataExists)
           {
-            v7 = [v38 retrieveLinkMetadata];
-            if (!v7)
+            synapseBasedMetadata = [attachment11 retrieveLinkMetadata];
+            if (!synapseBasedMetadata)
             {
-              v9 = [(ICLinkSnapshotGenerator *)self attachment];
-              v39 = [v9 fileMetadata];
+              attachment3 = [(ICLinkSnapshotGenerator *)self attachment];
+              fileMetadata3 = [attachment3 fileMetadata];
               v40 = self->_metadata;
-              self->_metadata = v39;
+              self->_metadata = fileMetadata3;
 
               goto LABEL_24;
             }
 
 LABEL_4:
-            v8 = v7;
-            v9 = self->_metadata;
+            v8 = synapseBasedMetadata;
+            attachment3 = self->_metadata;
             self->_metadata = v8;
 LABEL_24:
 
             goto LABEL_30;
           }
 
-          v21 = [v38 fileMetadata];
+          plainURLMetadata2 = [attachment11 fileMetadata];
         }
       }
     }
 
 LABEL_29:
-    v7 = self->_metadata;
-    self->_metadata = v21;
+    synapseBasedMetadata = self->_metadata;
+    self->_metadata = plainURLMetadata2;
     goto LABEL_30;
   }
 
@@ -196,17 +196,17 @@ LABEL_31:
   configuration = self->_configuration;
   if (!configuration)
   {
-    v4 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
     if ([(ICLinkSnapshotGenerator *)self forcesLightMode])
     {
-      v5 = [v4 traitCollectionByModifyingTraits:&__block_literal_global];
+      v5 = [currentTraitCollection traitCollectionByModifyingTraits:&__block_literal_global];
 
-      v4 = v5;
+      currentTraitCollection = v5;
     }
 
-    v6 = [(ICLinkSnapshotGenerator *)self attachment];
-    v7 = [(ICLinkSnapshotGenerator *)self metadata];
-    v8 = [ICAttachmentBrickView usesSmallSizeForAttachment:v6 withMetadata:v7 type:2 insideSystemPaper:[(ICLinkSnapshotGenerator *)self isInsideSystemPaper]];
+    attachment = [(ICLinkSnapshotGenerator *)self attachment];
+    metadata = [(ICLinkSnapshotGenerator *)self metadata];
+    v8 = [ICAttachmentBrickView usesSmallSizeForAttachment:attachment withMetadata:metadata type:2 insideSystemPaper:[(ICLinkSnapshotGenerator *)self isInsideSystemPaper]];
 
     if ([(ICLinkSnapshotGenerator *)self forcesSmallSize]|| v8)
     {
@@ -220,9 +220,9 @@ LABEL_31:
 
     gotLoadHelper_x8__OBJC_CLASS___LPLinkSnapshotConfiguration(v9);
     v12 = objc_alloc(*(v11 + 3256));
-    v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v13 scale];
-    v15 = [v12 initWithTraitCollection:v4 preferredSizeClass:v10 maximumSize:327.0 scale:{800.0, v14}];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v15 = [v12 initWithTraitCollection:currentTraitCollection preferredSizeClass:v10 maximumSize:327.0 scale:{800.0, v14}];
     v16 = self->_configuration;
     self->_configuration = v15;
 
@@ -245,9 +245,9 @@ LABEL_31:
 {
   v23[1] = *MEMORY[0x1E69E9840];
   [(ICLinkSnapshotGenerator *)self invalidate];
-  v3 = [(ICLinkSnapshotGenerator *)self metadata];
+  metadata = [(ICLinkSnapshotGenerator *)self metadata];
 
-  if (v3)
+  if (metadata)
   {
     v17 = 0;
     v18 = &v17;
@@ -257,10 +257,10 @@ LABEL_31:
     v22 = 0;
     v4 = dispatch_semaphore_create(0);
     objc_initWeak(&location, self);
-    v5 = [(ICLinkSnapshotGenerator *)self generator];
-    v6 = [(ICLinkSnapshotGenerator *)self metadata];
-    v7 = [(ICLinkSnapshotGenerator *)self configuration];
-    v23[0] = v7;
+    generator = [(ICLinkSnapshotGenerator *)self generator];
+    metadata2 = [(ICLinkSnapshotGenerator *)self metadata];
+    configuration = [(ICLinkSnapshotGenerator *)self configuration];
+    v23[0] = configuration;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -270,11 +270,11 @@ LABEL_31:
     v14 = &v17;
     v9 = v4;
     v13 = v9;
-    [v5 snapshotForMetadata:v6 configurations:v8 completionHandler:v12];
+    [generator snapshotForMetadata:metadata2 configurations:v8 completionHandler:v12];
 
     v10 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v9, v10);
-    v3 = v18[5];
+    metadata = v18[5];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -282,7 +282,7 @@ LABEL_31:
     _Block_object_dispose(&v17, 8);
   }
 
-  return v3;
+  return metadata;
 }
 
 void __35__ICLinkSnapshotGenerator_snapshot__block_invoke(uint64_t a1, void *a2, void *a3)

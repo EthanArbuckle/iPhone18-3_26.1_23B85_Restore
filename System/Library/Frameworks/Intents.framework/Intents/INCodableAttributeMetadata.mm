@@ -1,8 +1,8 @@
 @interface INCodableAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
 - (INCodableAttribute)codableAttribute;
-- (INCodableAttributeMetadata)initWithCoder:(id)a3;
-- (INCodableAttributeMetadata)initWithName:(id)a3 codableAttribute:(id)a4;
+- (INCodableAttributeMetadata)initWithCoder:(id)coder;
+- (INCodableAttributeMetadata)initWithName:(id)name codableAttribute:(id)attribute;
 - (INCodableDescription)_codableDescription;
 - (INCodableLocalizationTable)_localizationTable;
 - (NSString)localizedPlaceholder;
@@ -12,31 +12,31 @@
 - (id)__INIntentResponseCodableDescriptionPlaceholderKey;
 - (id)__INTypeCodableDescriptionPlaceholderIDKey;
 - (id)__INTypeCodableDescriptionPlaceholderKey;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedPlaceholderWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedPlaceholderWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableAttributeMetadata
 
 - (id)__INCodableDescriptionPlaceholderKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataPlaceholderKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableAttributeMetadataPlaceholderKey = [objc_opt_class() __INCodableAttributeMetadataPlaceholderKey];
 
-  return v3;
+  return __INCodableAttributeMetadataPlaceholderKey;
 }
 
 - (INCodableDescription)_codableDescription
 {
-  v2 = [(INCodableAttributeMetadata *)self codableAttribute];
-  v3 = [v2 _codableDescription];
+  codableAttribute = [(INCodableAttributeMetadata *)self codableAttribute];
+  _codableDescription = [codableAttribute _codableDescription];
 
-  return v3;
+  return _codableDescription;
 }
 
 - (INCodableAttribute)codableAttribute
@@ -48,21 +48,21 @@
 
 - (id)__INCodableDescriptionPlaceholderIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataPlaceholderIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableAttributeMetadataPlaceholderIDKey = [objc_opt_class() __INCodableAttributeMetadataPlaceholderIDKey];
 
-  return v3;
+  return __INCodableAttributeMetadataPlaceholderIDKey;
 }
 
-- (INCodableAttributeMetadata)initWithCoder:(id)a3
+- (INCodableAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = INCodableAttributeMetadata;
   v5 = [(INCodableAttributeMetadata *)&v20 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if (v6)
     {
       objc_opt_class();
@@ -107,38 +107,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_placeholder forKey:@"placeholder"];
-  [v5 encodeObject:self->_placeholderID forKey:@"placeholderID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_placeholder forKey:@"placeholder"];
+  [coderCopy encodeObject:self->_placeholderID forKey:@"placeholderID"];
   WeakRetained = objc_loadWeakRetained(&self->_codableAttribute);
-  [v5 encodeConditionalObject:WeakRetained forKey:@"codableAttribute"];
+  [coderCopy encodeConditionalObject:WeakRetained forKey:@"codableAttribute"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  [v7 intents_setPlistSafeObject:self->_name forKey:@"name"];
-  v8 = [(NSString *)self->_placeholder intents_encodeForPlistRepresentationWithParameters:v6];
+  parametersCopy = parameters;
+  dictionary = [v5 dictionary];
+  [dictionary intents_setPlistSafeObject:self->_name forKey:@"name"];
+  v8 = [(NSString *)self->_placeholder intents_encodeForPlistRepresentationWithParameters:parametersCopy];
 
-  [v7 intents_setPlistSafeObject:v8 forKey:@"placeholder"];
-  [v7 intents_setPlistSafeObject:self->_placeholderID forKey:@"placeholderID"];
+  [dictionary intents_setPlistSafeObject:v8 forKey:@"placeholder"];
+  [dictionary intents_setPlistSafeObject:self->_placeholderID forKey:@"placeholderID"];
 
-  return v7;
+  return dictionary;
 }
 
-- (id)localizedPlaceholderWithLocalizer:(id)a3
+- (id)localizedPlaceholderWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableAttributeMetadata *)self placeholderID];
-  v6 = [(INCodableAttributeMetadata *)self placeholder];
-  v7 = [(INCodableAttributeMetadata *)self _localizationTable];
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+  localizerCopy = localizer;
+  placeholderID = [(INCodableAttributeMetadata *)self placeholderID];
+  placeholder = [(INCodableAttributeMetadata *)self placeholder];
+  _localizationTable = [(INCodableAttributeMetadata *)self _localizationTable];
+  v8 = INLocalizedStringFromCodable(placeholderID, placeholder, _localizationTable, localizerCopy, 0);
 
   return v8;
 }
@@ -153,66 +153,66 @@
 
 - (INCodableLocalizationTable)_localizationTable
 {
-  v2 = [(INCodableAttributeMetadata *)self codableAttribute];
-  v3 = [v2 _codableDescription];
+  codableAttribute = [(INCodableAttributeMetadata *)self codableAttribute];
+  _codableDescription = [codableAttribute _codableDescription];
 
-  v4 = [v3 _customLocalizationTable];
-  v5 = v4;
-  if (v4)
+  _customLocalizationTable = [_codableDescription _customLocalizationTable];
+  v5 = _customLocalizationTable;
+  if (_customLocalizationTable)
   {
-    v6 = v4;
+    _localizationTable = _customLocalizationTable;
   }
 
   else
   {
-    v6 = [v3 _localizationTable];
+    _localizationTable = [_codableDescription _localizationTable];
   }
 
-  v7 = v6;
+  v7 = _localizationTable;
 
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INCodableAttributeMetadata;
   v6 = [(INCodableAttributeMetadata *)&v11 description];
-  v7 = [(INCodableAttributeMetadata *)self dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  dictionaryRepresentation = [(INCodableAttributeMetadata *)self dictionaryRepresentation];
+  v8 = [dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderKey];
-  v15[0] = v5;
-  v6 = [(INCodableAttributeMetadata *)self localizedPlaceholderWithLocalizer:v4];
+  localizerCopy = localizer;
+  __INCodableDescriptionPlaceholderKey = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderKey];
+  v15[0] = __INCodableDescriptionPlaceholderKey;
+  v6 = [(INCodableAttributeMetadata *)self localizedPlaceholderWithLocalizer:localizerCopy];
 
-  v7 = v6;
+  null = v6;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v7;
-  v8 = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderIDKey];
-  v15[1] = v8;
-  v9 = [(INCodableAttributeMetadata *)self placeholderID];
-  v10 = v9;
-  if (!v9)
+  v16[0] = null;
+  __INCodableDescriptionPlaceholderIDKey = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderIDKey];
+  v15[1] = __INCodableDescriptionPlaceholderIDKey;
+  placeholderID = [(INCodableAttributeMetadata *)self placeholderID];
+  null2 = placeholderID;
+  if (!placeholderID)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v10;
+  v16[1] = null2;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
-  if (!v9)
+  if (!placeholderID)
   {
   }
 
@@ -220,11 +220,11 @@
   {
   }
 
-  v12 = [v11 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v11 if_dictionaryWithNonEmptyValues];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return if_dictionaryWithNonEmptyValues;
 }
 
 - (id)dictionaryRepresentation
@@ -235,11 +235,11 @@
   return v4;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v14 = a3;
-  v4 = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderKey];
-  v5 = [v14 objectForKeyedSubscript:v4];
+  dictionaryCopy = dictionary;
+  __INCodableDescriptionPlaceholderKey = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderKey];
+  v5 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionPlaceholderKey];
 
   if (v5)
   {
@@ -265,8 +265,8 @@
   placeholder = self->_placeholder;
   self->_placeholder = v7;
 
-  v9 = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderIDKey];
-  v10 = [v14 objectForKeyedSubscript:v9];
+  __INCodableDescriptionPlaceholderIDKey = [(INCodableAttributeMetadata *)self __INCodableDescriptionPlaceholderIDKey];
+  v10 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionPlaceholderIDKey];
 
   if (v10)
   {
@@ -293,38 +293,38 @@
   self->_placeholderID = v12;
 }
 
-- (INCodableAttributeMetadata)initWithName:(id)a3 codableAttribute:(id)a4
+- (INCodableAttributeMetadata)initWithName:(id)name codableAttribute:(id)attribute
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  attributeCopy = attribute;
   v12.receiver = self;
   v12.super_class = INCodableAttributeMetadata;
   v8 = [(INCodableAttributeMetadata *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeWeak(&v8->_codableAttribute, v7);
+    objc_storeWeak(&v8->_codableAttribute, attributeCopy);
   }
 
   return v8;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
-  v6 = objc_alloc_init(a1);
-  v7 = [v5 intents_stringForKey:@"name"];
+  representationCopy = representation;
+  v6 = objc_alloc_init(self);
+  v7 = [representationCopy intents_stringForKey:@"name"];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [v5 intents_stringForKey:@"placeholder"];
+  v9 = [representationCopy intents_stringForKey:@"placeholder"];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [v5 intents_stringForKey:@"placeholderID"];
+  v11 = [representationCopy intents_stringForKey:@"placeholderID"];
 
   v12 = v6[3];
   v6[3] = v11;
@@ -334,34 +334,34 @@
 
 - (id)__INTypeCodableDescriptionPlaceholderIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataPlaceholderIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableAttributeMetadataPlaceholderIDKey = [objc_opt_class() __INCodableAttributeMetadataPlaceholderIDKey];
 
-  return v3;
+  return __INCodableAttributeMetadataPlaceholderIDKey;
 }
 
 - (id)__INTypeCodableDescriptionPlaceholderKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataPlaceholderKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableAttributeMetadataPlaceholderKey = [objc_opt_class() __INCodableAttributeMetadataPlaceholderKey];
 
-  return v3;
+  return __INCodableAttributeMetadataPlaceholderKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionPlaceholderIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataPlaceholderIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableAttributeMetadataPlaceholderIDKey = [objc_opt_class() __INCodableAttributeMetadataPlaceholderIDKey];
 
-  return v3;
+  return __INCodableAttributeMetadataPlaceholderIDKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionPlaceholderKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataPlaceholderKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableAttributeMetadataPlaceholderKey = [objc_opt_class() __INCodableAttributeMetadataPlaceholderKey];
 
-  return v3;
+  return __INCodableAttributeMetadataPlaceholderKey;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface AUHighshelfViewController
 - (_TtC12CoreAudioKit25AUHighshelfViewController)init;
-- (_TtC12CoreAudioKit25AUHighshelfViewController)initWithCoder:(id)a3;
+- (_TtC12CoreAudioKit25AUHighshelfViewController)initWithCoder:(id)coder;
 @end
 
 @implementation AUHighshelfViewController
@@ -12,12 +12,12 @@
   return [(AUEQViewControllerBase *)&v3 init];
 }
 
-- (_TtC12CoreAudioKit25AUHighshelfViewController)initWithCoder:(id)a3
+- (_TtC12CoreAudioKit25AUHighshelfViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AUHighshelfViewController();
-  v4 = a3;
-  v5 = [(AUEQViewControllerBase *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AUEQViewControllerBase *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

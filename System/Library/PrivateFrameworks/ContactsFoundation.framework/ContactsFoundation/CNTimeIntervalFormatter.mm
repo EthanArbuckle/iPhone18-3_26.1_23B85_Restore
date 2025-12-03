@@ -1,12 +1,12 @@
 @interface CNTimeIntervalFormatter
 + (CNTimeIntervalFormatter)sharedFormatter;
-+ (id)multiplierForOrder:(int64_t)a3;
-+ (id)numberFormatterWithSignificantDigits:(unint64_t)a3;
-+ (id)stringForTimeInterval:(double)a3;
++ (id)multiplierForOrder:(int64_t)order;
++ (id)numberFormatterWithSignificantDigits:(unint64_t)digits;
++ (id)stringForTimeInterval:(double)interval;
 - (NSNumberFormatter)numberFormatterWith3SigFigs;
 - (NSNumberFormatter)numberFormatterWith4SigFigs;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringForTimeInterval:(double)a3;
+- (id)stringForObjectValue:(id)value;
+- (id)stringForTimeInterval:(double)interval;
 @end
 
 @implementation CNTimeIntervalFormatter
@@ -86,34 +86,34 @@ id __54__CNTimeIntervalFormatter_numberFormatterWith4SigFigs__block_invoke(uint6
   return v2;
 }
 
-+ (id)numberFormatterWithSignificantDigits:(unint64_t)a3
++ (id)numberFormatterWithSignificantDigits:(unint64_t)digits
 {
   v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v4 setUsesSignificantDigits:1];
-  [v4 setMaximumSignificantDigits:a3];
-  [v4 setMinimumSignificantDigits:a3];
+  [v4 setMaximumSignificantDigits:digits];
+  [v4 setMinimumSignificantDigits:digits];
 
   return v4;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
 
   return [(CNTimeIntervalFormatter *)self stringForTimeInterval:?];
 }
 
-+ (id)stringForTimeInterval:(double)a3
++ (id)stringForTimeInterval:(double)interval
 {
-  v4 = [objc_opt_class() sharedFormatter];
-  v5 = [v4 stringForTimeInterval:a3];
+  sharedFormatter = [objc_opt_class() sharedFormatter];
+  v5 = [sharedFormatter stringForTimeInterval:interval];
 
   return v5;
 }
 
-- (id)stringForTimeInterval:(double)a3
+- (id)stringForTimeInterval:(double)interval
 {
-  v5 = fabs(a3);
+  v5 = fabs(interval);
   if (v5 >= 2.0)
   {
     v7 = 0;
@@ -148,16 +148,16 @@ id __54__CNTimeIntervalFormatter_numberFormatterWith4SigFigs__block_invoke(uint6
   }
 
   v12 = [objc_opt_class() multiplierForOrder:v10];
-  v13 = [(CNTimeIntervalFormatter *)self numberFormatterWith3SigFigs];
+  numberFormatterWith3SigFigs = [(CNTimeIntervalFormatter *)self numberFormatterWith3SigFigs];
   if (v5 >= 1000.0)
   {
-    v14 = [(CNTimeIntervalFormatter *)self numberFormatterWith4SigFigs];
+    numberFormatterWith4SigFigs = [(CNTimeIntervalFormatter *)self numberFormatterWith4SigFigs];
 
-    v13 = v14;
+    numberFormatterWith3SigFigs = numberFormatterWith4SigFigs;
   }
 
   v15 = &stru_1EF441028;
-  if (a3 < 0.0)
+  if (interval < 0.0)
   {
     v15 = @"-";
   }
@@ -165,7 +165,7 @@ id __54__CNTimeIntervalFormatter_numberFormatterWith4SigFigs__block_invoke(uint6
   v16 = MEMORY[0x1E696AD98];
   v17 = v15;
   v18 = [v16 numberWithDouble:v5];
-  v19 = [v13 stringFromNumber:v18];
+  v19 = [numberFormatterWith3SigFigs stringFromNumber:v18];
 
   v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@s", v12];
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@ %@", v17, v19, v20];
@@ -173,16 +173,16 @@ id __54__CNTimeIntervalFormatter_numberFormatterWith4SigFigs__block_invoke(uint6
   return v21;
 }
 
-+ (id)multiplierForOrder:(int64_t)a3
++ (id)multiplierForOrder:(int64_t)order
 {
-  if (a3 > 8)
+  if (order > 8)
   {
     return @"Y";
   }
 
-  if (a3 >= -8)
+  if (order >= -8)
   {
-    return off_1E6ED8570[a3 + 8];
+    return off_1E6ED8570[order + 8];
   }
 
   return @"y";

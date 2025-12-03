@@ -1,30 +1,30 @@
 @interface CNVirtualSchedulerJob
-+ (id)jobWithTime:(unint64_t)a3 block:(id)a4;
-- (CNVirtualSchedulerJob)initWithTime:(unint64_t)a3 block:(id)a4;
++ (id)jobWithTime:(unint64_t)time block:(id)block;
+- (CNVirtualSchedulerJob)initWithTime:(unint64_t)time block:(id)block;
 - (id)description;
 @end
 
 @implementation CNVirtualSchedulerJob
 
-+ (id)jobWithTime:(unint64_t)a3 block:(id)a4
++ (id)jobWithTime:(unint64_t)time block:(id)block
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithTime:a3 block:v6];
+  blockCopy = block;
+  v7 = [[self alloc] initWithTime:time block:blockCopy];
 
   return v7;
 }
 
-- (CNVirtualSchedulerJob)initWithTime:(unint64_t)a3 block:(id)a4
+- (CNVirtualSchedulerJob)initWithTime:(unint64_t)time block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = CNVirtualSchedulerJob;
   v7 = [(CNVirtualSchedulerJob *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_time = a3;
-    v9 = [v6 copy];
+    v7->_time = time;
+    v9 = [blockCopy copy];
     block = v8->_block;
     v8->_block = v9;
 
@@ -39,10 +39,10 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CNVirtualSchedulerJob *)self time];
-  v7 = [(CNVirtualSchedulerJob *)self block];
-  v8 = _Block_copy(v7);
-  v9 = [v3 stringWithFormat:@"<%@: %p time=%lu block=%p", v5, self, v6, v8];
+  time = [(CNVirtualSchedulerJob *)self time];
+  block = [(CNVirtualSchedulerJob *)self block];
+  v8 = _Block_copy(block);
+  v9 = [v3 stringWithFormat:@"<%@: %p time=%lu block=%p", v5, self, time, v8];
 
   return v9;
 }

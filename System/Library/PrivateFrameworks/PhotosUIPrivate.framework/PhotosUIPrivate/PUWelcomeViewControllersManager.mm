@@ -1,10 +1,10 @@
 @interface PUWelcomeViewControllersManager
 + (PUWelcomeViewControllersManager)defaultManager;
-- (id)_initWithWelcomeViewControllerClasses:(id)a3;
+- (id)_initWithWelcomeViewControllerClasses:(id)classes;
 - (void)_handleWelcomeViewControllerCompletion;
 - (void)_reset;
 - (void)_update;
-- (void)presentWelcomeViewControllersIfNecessaryFromViewController:(id)a3 completion:(id)a4;
+- (void)presentWelcomeViewControllersIfNecessaryFromViewController:(id)controller completion:(id)completion;
 - (void)resetAllLastPresentationInfos;
 @end
 
@@ -12,9 +12,9 @@
 
 - (void)_handleWelcomeViewControllerCompletion
 {
-  v3 = [(PUWelcomeViewControllersManager *)self _presentedWelcomeViewControllerClass];
-  v4 = [(PUWelcomeViewControllersManager *)self _remainingWelcomeViewControllerClassesToPresent];
-  [v4 removeObject:v3];
+  _presentedWelcomeViewControllerClass = [(PUWelcomeViewControllersManager *)self _presentedWelcomeViewControllerClass];
+  _remainingWelcomeViewControllerClassesToPresent = [(PUWelcomeViewControllersManager *)self _remainingWelcomeViewControllerClassesToPresent];
+  [_remainingWelcomeViewControllerClassesToPresent removeObject:_presentedWelcomeViewControllerClass];
 
   [(PUWelcomeViewControllersManager *)self _setPresentedWelcomeViewControllerClass:0];
 
@@ -24,15 +24,15 @@
 - (void)_update
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWelcomeViewControllersManager *)self _presentingViewController];
-  if (v3 && ![(PUWelcomeViewControllersManager *)self _presentedWelcomeViewControllerClass])
+  _presentingViewController = [(PUWelcomeViewControllersManager *)self _presentingViewController];
+  if (_presentingViewController && ![(PUWelcomeViewControllersManager *)self _presentedWelcomeViewControllerClass])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(PUWelcomeViewControllersManager *)self _welcomeViewControllerClasses];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    _welcomeViewControllerClasses = [(PUWelcomeViewControllersManager *)self _welcomeViewControllerClasses];
+    v5 = [_welcomeViewControllerClasses countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
       v6 = *v18;
@@ -42,12 +42,12 @@ LABEL_6:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_welcomeViewControllerClasses);
         }
 
         v8 = *(*(&v17 + 1) + 8 * v7);
-        v9 = [(PUWelcomeViewControllersManager *)self _remainingWelcomeViewControllerClassesToPresent];
-        v10 = [v9 containsObject:v8];
+        _remainingWelcomeViewControllerClassesToPresent = [(PUWelcomeViewControllersManager *)self _remainingWelcomeViewControllerClassesToPresent];
+        v10 = [_remainingWelcomeViewControllerClassesToPresent containsObject:v8];
 
         if (v10)
         {
@@ -56,7 +56,7 @@ LABEL_6:
 
         if (v5 == ++v7)
         {
-          v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v5 = [_welcomeViewControllerClasses countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v5)
           {
             goto LABEL_6;
@@ -78,7 +78,7 @@ LABEL_6:
       v14[2] = __42__PUWelcomeViewControllersManager__update__block_invoke_2;
       v14[3] = &unk_1E7B80660;
       objc_copyWeak(&v15, &location);
-      [v8 presentIfNecessaryFromViewController:v3 presentationHandler:&__block_literal_global_7 completionHandler:v14];
+      [v8 presentIfNecessaryFromViewController:_presentingViewController presentationHandler:&__block_literal_global_7 completionHandler:v14];
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
     }
@@ -88,13 +88,13 @@ LABEL_6:
 LABEL_12:
 
 LABEL_15:
-      v11 = [(PUWelcomeViewControllersManager *)self completionHandler];
-      v12 = v11 == 0;
+      completionHandler = [(PUWelcomeViewControllersManager *)self completionHandler];
+      v12 = completionHandler == 0;
 
       if (!v12)
       {
-        v13 = [(PUWelcomeViewControllersManager *)self completionHandler];
-        v13[2]();
+        completionHandler2 = [(PUWelcomeViewControllersManager *)self completionHandler];
+        completionHandler2[2]();
 
         [(PUWelcomeViewControllersManager *)self setCompletionHandler:0];
       }
@@ -127,9 +127,9 @@ void __42__PUWelcomeViewControllersManager__update__block_invoke_3(uint64_t a1)
 
 - (void)_reset
 {
-  v4 = [(PUWelcomeViewControllersManager *)self _remainingWelcomeViewControllerClassesToPresent];
-  v3 = [(PUWelcomeViewControllersManager *)self _welcomeViewControllerClasses];
-  [v4 addObjectsFromArray:v3];
+  _remainingWelcomeViewControllerClassesToPresent = [(PUWelcomeViewControllersManager *)self _remainingWelcomeViewControllerClassesToPresent];
+  _welcomeViewControllerClasses = [(PUWelcomeViewControllersManager *)self _welcomeViewControllerClasses];
+  [_remainingWelcomeViewControllerClassesToPresent addObjectsFromArray:_welcomeViewControllerClasses];
 }
 
 - (void)resetAllLastPresentationInfos
@@ -139,8 +139,8 @@ void __42__PUWelcomeViewControllersManager__update__block_invoke_3(uint64_t a1)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(PUWelcomeViewControllersManager *)self _welcomeViewControllerClasses];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _welcomeViewControllerClasses = [(PUWelcomeViewControllersManager *)self _welcomeViewControllerClasses];
+  v3 = [_welcomeViewControllerClasses countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -152,43 +152,43 @@ void __42__PUWelcomeViewControllersManager__update__block_invoke_3(uint64_t a1)
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_welcomeViewControllerClasses);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) resetLastPresentationInfo];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [_welcomeViewControllerClasses countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v7 synchronize];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults synchronize];
 }
 
-- (void)presentWelcomeViewControllersIfNecessaryFromViewController:(id)a3 completion:(id)a4
+- (void)presentWelcomeViewControllersIfNecessaryFromViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  [(PUWelcomeViewControllersManager *)self setCompletionHandler:a4];
-  [(PUWelcomeViewControllersManager *)self _setPresentingViewController:v6];
+  controllerCopy = controller;
+  [(PUWelcomeViewControllersManager *)self setCompletionHandler:completion];
+  [(PUWelcomeViewControllersManager *)self _setPresentingViewController:controllerCopy];
 
   [(PUWelcomeViewControllersManager *)self _reset];
 
   [(PUWelcomeViewControllersManager *)self _update];
 }
 
-- (id)_initWithWelcomeViewControllerClasses:(id)a3
+- (id)_initWithWelcomeViewControllerClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v11.receiver = self;
   v11.super_class = PUWelcomeViewControllersManager;
   v5 = [(PUWelcomeViewControllersManager *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [classesCopy copy];
     welcomeViewControllerClasses = v5->__welcomeViewControllerClasses;
     v5->__welcomeViewControllerClasses = v6;
 

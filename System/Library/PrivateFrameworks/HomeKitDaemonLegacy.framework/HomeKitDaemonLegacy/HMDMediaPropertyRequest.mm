@@ -1,8 +1,8 @@
 @interface HMDMediaPropertyRequest
-+ (id)deserializeReadRequests:(id)a3 mediaProfile:(id)a4;
-+ (id)requestWithProperty:(id)a3 mediaProfile:(id)a4;
-+ (id)serializeReadRequests:(id)a3;
-- (HMDMediaPropertyRequest)initWithProperty:(id)a3 mediaProfile:(id)a4;
++ (id)deserializeReadRequests:(id)requests mediaProfile:(id)profile;
++ (id)requestWithProperty:(id)property mediaProfile:(id)profile;
++ (id)serializeReadRequests:(id)requests;
+- (HMDMediaPropertyRequest)initWithProperty:(id)property mediaProfile:(id)profile;
 - (id)description;
 @end
 
@@ -11,43 +11,43 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDMediaPropertyRequest *)self mediaProfile];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [(HMDMediaPropertyRequest *)self property];
-  v7 = [(HMDMediaPropertyRequest *)self previousValue];
-  v8 = [v3 stringWithFormat:@"<MPReq: %@/%@ (prevVal: %@)>", v5, v6, v7];
+  mediaProfile = [(HMDMediaPropertyRequest *)self mediaProfile];
+  uniqueIdentifier = [mediaProfile uniqueIdentifier];
+  property = [(HMDMediaPropertyRequest *)self property];
+  previousValue = [(HMDMediaPropertyRequest *)self previousValue];
+  v8 = [v3 stringWithFormat:@"<MPReq: %@/%@ (prevVal: %@)>", uniqueIdentifier, property, previousValue];
 
   return v8;
 }
 
-- (HMDMediaPropertyRequest)initWithProperty:(id)a3 mediaProfile:(id)a4
+- (HMDMediaPropertyRequest)initWithProperty:(id)property mediaProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HMDMediaPropertyRequest;
   v9 = [(HMDMediaPropertyRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_property, a3);
-    objc_storeStrong(&v10->_mediaProfile, a4);
+    objc_storeStrong(&v9->_property, property);
+    objc_storeStrong(&v10->_mediaProfile, profile);
   }
 
   return v10;
 }
 
-+ (id)deserializeReadRequests:(id)a3 mediaProfile:(id)a4
++ (id)deserializeReadRequests:(id)requests mediaProfile:(id)profile
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  requestsCopy = requests;
+  profileCopy = profile;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = requestsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -62,7 +62,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [HMDMediaPropertyRequest requestWithProperty:*(*(&v17 + 1) + 8 * i) mediaProfile:v6, v17];
+        v13 = [HMDMediaPropertyRequest requestWithProperty:*(*(&v17 + 1) + 8 * i) mediaProfile:profileCopy, v17];
         if (v13)
         {
           [v7 addObject:v13];
@@ -81,16 +81,16 @@
   return v14;
 }
 
-+ (id)serializeReadRequests:(id)a3
++ (id)serializeReadRequests:(id)requests
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  requestsCopy = requests;
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = requestsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -106,19 +106,19 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 mediaProfile];
-        v12 = [v11 uniqueIdentifier];
-        v13 = [v12 UUIDString];
+        mediaProfile = [v10 mediaProfile];
+        uniqueIdentifier = [mediaProfile uniqueIdentifier];
+        uUIDString = [uniqueIdentifier UUIDString];
 
-        v14 = [v4 objectForKeyedSubscript:v13];
+        v14 = [v4 objectForKeyedSubscript:uUIDString];
         if (!v14)
         {
           v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-          [v4 setObject:v14 forKeyedSubscript:v13];
+          [v4 setObject:v14 forKeyedSubscript:uUIDString];
         }
 
-        v15 = [v10 property];
-        [v14 addObject:v15];
+        property = [v10 property];
+        [v14 addObject:property];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -133,11 +133,11 @@
   return v16;
 }
 
-+ (id)requestWithProperty:(id)a3 mediaProfile:(id)a4
++ (id)requestWithProperty:(id)property mediaProfile:(id)profile
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithProperty:v7 mediaProfile:v6];
+  profileCopy = profile;
+  propertyCopy = property;
+  v8 = [[self alloc] initWithProperty:propertyCopy mediaProfile:profileCopy];
 
   return v8;
 }

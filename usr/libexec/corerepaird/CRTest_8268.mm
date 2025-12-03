@@ -1,7 +1,7 @@
 @interface CRTest_8268
-- (BOOL)shouldRun:(id)a3;
+- (BOOL)shouldRun:(id)run;
 - (CRTest_8268)init;
-- (void)run:(id)a3 withContext:(id)a4;
+- (void)run:(id)run withContext:(id)context;
 @end
 
 @implementation CRTest_8268
@@ -19,8 +19,8 @@
     if (os_variant_has_internal_content())
     {
       v4 = [[CRUserDefaults alloc] initWithSuiteName:@"com.apple.corerepaird.test"];
-      v5 = [(CRTest *)v3 name];
-      v6 = [v4 dictionaryForKey:v5];
+      name = [(CRTest *)v3 name];
+      v6 = [v4 dictionaryForKey:name];
       [(CRTest *)v3 setOverrides:v6];
     }
   }
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (BOOL)shouldRun:(id)a3
+- (BOOL)shouldRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v18.receiver = self;
   v18.super_class = CRTest_8268;
-  if (!-[CRTest shouldRun:](&v18, "shouldRun:", v4) || ([v4 partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (!-[CRTest shouldRun:](&v18, "shouldRun:", runCopy) || ([runCopy partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v16 = 0;
     goto LABEL_14;
@@ -42,26 +42,26 @@
   v6 = objc_opt_new();
   [(CRTest *)self setTestingRemovableSPC:v6];
 
-  v7 = [v4 partSPC];
-  v8 = [v7 containsObject:@"MPU"];
+  partSPC = [runCopy partSPC];
+  v8 = [partSPC containsObject:@"MPU"];
 
   if (v8)
   {
-    v9 = [(CRTest *)self testingRemovableSPC];
-    [v9 addObject:@"MPU"];
+    testingRemovableSPC = [(CRTest *)self testingRemovableSPC];
+    [testingRemovableSPC addObject:@"MPU"];
   }
 
-  v10 = [v4 partSPC];
-  v11 = [v10 containsObject:@"IPAD TOUCH ID"];
+  partSPC2 = [runCopy partSPC];
+  v11 = [partSPC2 containsObject:@"IPAD TOUCH ID"];
 
   if (v11)
   {
-    v12 = [(CRTest *)self testingRemovableSPC];
-    [v12 addObject:@"IPAD TOUCH ID"];
+    testingRemovableSPC2 = [(CRTest *)self testingRemovableSPC];
+    [testingRemovableSPC2 addObject:@"IPAD TOUCH ID"];
   }
 
-  v13 = [v4 partSPC];
-  if ([v13 containsObject:@"IPHONE COMP DISPLAY"])
+  partSPC3 = [runCopy partSPC];
+  if ([partSPC3 containsObject:@"IPHONE COMP DISPLAY"])
   {
     v14 = +[CRDeviceMap hasMesa];
 
@@ -70,44 +70,44 @@
       goto LABEL_12;
     }
 
-    v13 = [(CRTest *)self testingRemovableSPC];
-    [v13 addObject:@"IPHONE COMP DISPLAY"];
+    partSPC3 = [(CRTest *)self testingRemovableSPC];
+    [partSPC3 addObject:@"IPHONE COMP DISPLAY"];
   }
 
 LABEL_12:
-  v15 = [(CRTest *)self testingRemovableSPC];
-  v16 = [v15 count] != 0;
+  testingRemovableSPC3 = [(CRTest *)self testingRemovableSPC];
+  v16 = [testingRemovableSPC3 count] != 0;
 
 LABEL_14:
   return v16;
 }
 
-- (void)run:(id)a3 withContext:(id)a4
+- (void)run:(id)run withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  runCopy = run;
   v8 = objc_opt_new();
-  v9 = [v6 rik];
+  v9 = [contextCopy rik];
 
   if (v9)
   {
-    v10 = [v6 rik];
+    v10 = [contextCopy rik];
     [v8 setObject:v10 forKeyedSubscript:@"keyBlob"];
   }
 
-  v11 = [(CRTest *)self overrides];
+  overrides = [(CRTest *)self overrides];
 
-  if (v11)
+  if (overrides)
   {
-    v12 = [(CRTest *)self overrides];
-    [v8 addEntriesFromDictionary:v12];
+    overrides2 = [(CRTest *)self overrides];
+    [v8 addEntriesFromDictionary:overrides2];
   }
 
   v15 = @"parameters";
   v16 = v8;
   v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v14 = [(CRTest *)self testId];
-  [v7 startTest:v14 parameters:v13];
+  testId = [(CRTest *)self testId];
+  [runCopy startTest:testId parameters:v13];
 }
 
 @end

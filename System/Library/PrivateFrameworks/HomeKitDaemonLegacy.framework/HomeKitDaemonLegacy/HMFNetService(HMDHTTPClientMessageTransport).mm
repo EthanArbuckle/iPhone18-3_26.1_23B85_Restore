@@ -6,8 +6,8 @@
 
 - (id)hmd_sessionIdentifier
 {
-  v1 = [a1 TXTRecord];
-  v2 = [v1 objectForKeyedSubscript:@"si"];
+  tXTRecord = [self TXTRecord];
+  v2 = [tXTRecord objectForKeyedSubscript:@"si"];
 
   if (v2)
   {

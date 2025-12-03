@@ -1,14 +1,14 @@
 @interface AEPdfCache
 + (id)sharedInstance;
 - (AEPdfCache)init;
-- (BOOL)hasCachedObjectForURL:(id)a3;
-- (id)canonicalPathFromURL:(id)a3;
-- (id)copyCacheObjectForBook:(id)a3;
-- (id)copyCacheObjectForPdfPath:(id)a3;
-- (id)copyCacheObjectForURL:(id)a3;
+- (BOOL)hasCachedObjectForURL:(id)l;
+- (id)canonicalPathFromURL:(id)l;
+- (id)copyCacheObjectForBook:(id)book;
+- (id)copyCacheObjectForPdfPath:(id)path;
+- (id)copyCacheObjectForURL:(id)l;
 - (void)clearNativeObjectCache;
 - (void)dealloc;
-- (void)removeCacheObjectForURL:(id)a3;
+- (void)removeCacheObjectForURL:(id)l;
 @end
 
 @implementation AEPdfCache
@@ -65,49 +65,49 @@
 
 - (void)clearNativeObjectCache
 {
-  v3 = [(AEPdfCache *)self cacheQueue];
+  cacheQueue = [(AEPdfCache *)self cacheQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_9B380;
   block[3] = &unk_1E2BD0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(cacheQueue, block);
 }
 
-- (id)copyCacheObjectForBook:(id)a3
+- (id)copyCacheObjectForBook:(id)book
 {
-  v4 = a3;
-  v5 = [v4 url];
+  bookCopy = book;
+  v5 = [bookCopy url];
   v6 = [(AEPdfCache *)self copyCacheObjectForURL:v5];
 
-  v7 = [v4 password];
-  if (![v7 length])
+  password = [bookCopy password];
+  if (![password length])
   {
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v8 = [v4 isPasswordRequired];
-  v9 = [v8 BOOLValue];
+  isPasswordRequired = [bookCopy isPasswordRequired];
+  bOOLValue = [isPasswordRequired BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = [v4 url];
-    v7 = [v10 path];
+    v10 = [bookCopy url];
+    password = [v10 path];
 
-    v11 = [v6 document];
-    if (![v11 isLocked] || (objc_msgSend(v4, "password"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "unlockWithPassword:", v12), v12, v13))
+    document = [v6 document];
+    if (![document isLocked] || (objc_msgSend(bookCopy, "password"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(document, "unlockWithPassword:", v12), v12, v13))
     {
-      v14 = [(AEPdfCache *)self cacheQueue];
+      cacheQueue = [(AEPdfCache *)self cacheQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_9B560;
       block[3] = &unk_1E4240;
       block[4] = self;
-      v17 = v7;
-      v18 = v4;
-      dispatch_sync(v14, block);
+      v17 = password;
+      v18 = bookCopy;
+      dispatch_sync(cacheQueue, block);
     }
 
     goto LABEL_7;
@@ -118,27 +118,27 @@ LABEL_8:
   return v6;
 }
 
-- (id)copyCacheObjectForPdfPath:(id)a3
+- (id)copyCacheObjectForPdfPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = sub_9B958;
   v34 = sub_9B968;
   v35 = 0;
-  if ([v4 length])
+  if ([pathCopy length])
   {
-    v5 = [(AEPdfCache *)self cacheQueue];
+    cacheQueue = [(AEPdfCache *)self cacheQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_9B970;
     block[3] = &unk_1E4E80;
     v29 = &v30;
     block[4] = self;
-    v6 = v4;
+    v6 = pathCopy;
     v28 = v6;
-    dispatch_sync(v5, block);
+    dispatch_sync(cacheQueue, block);
 
     if (!v31[5])
     {
@@ -153,7 +153,7 @@ LABEL_8:
 
         if (v31[5])
         {
-          v11 = [(AEPdfCache *)self cacheQueue];
+          cacheQueue2 = [(AEPdfCache *)self cacheQueue];
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_9B9DC;
@@ -161,7 +161,7 @@ LABEL_8:
           v24[4] = self;
           v26 = &v30;
           v25 = v6;
-          dispatch_sync(v11, v24);
+          dispatch_sync(cacheQueue2, v24);
         }
 
         if ([v8 isLocked])
@@ -172,7 +172,7 @@ LABEL_8:
           v21 = sub_9B958;
           v22 = sub_9B968;
           v23 = 0;
-          v12 = [(AEPdfCache *)self cacheQueue];
+          cacheQueue3 = [(AEPdfCache *)self cacheQueue];
           v15[0] = _NSConcreteStackBlock;
           v15[1] = 3221225472;
           v15[2] = sub_9BA38;
@@ -180,7 +180,7 @@ LABEL_8:
           v17 = &v18;
           v15[4] = self;
           v16 = v6;
-          dispatch_sync(v12, v15);
+          dispatch_sync(cacheQueue3, v15);
 
           if (v19[5])
           {
@@ -199,36 +199,36 @@ LABEL_8:
   return v13;
 }
 
-- (id)canonicalPathFromURL:(id)a3
+- (id)canonicalPathFromURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 path];
+    path = [lCopy path];
 
-    v5 = [v4 stringByStandardizingPath];
+    stringByStandardizingPath = [path stringByStandardizingPath];
   }
 
   else
   {
-    v4 = [v3 absoluteURL];
+    path = [lCopy absoluteURL];
 
-    v6 = [v4 path];
-    v5 = [v6 stringByStandardizingPath];
+    v4Path = [path path];
+    stringByStandardizingPath = [v4Path stringByStandardizingPath];
   }
 
-  return v5;
+  return stringByStandardizingPath;
 }
 
-- (id)copyCacheObjectForURL:(id)a3
+- (id)copyCacheObjectForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AEPdfCache *)self canonicalPathFromURL:v4];
-  v6 = [v4 path];
+  lCopy = l;
+  v5 = [(AEPdfCache *)self canonicalPathFromURL:lCopy];
+  path = [lCopy path];
 
-  v7 = [v6 pathExtension];
+  pathExtension = [path pathExtension];
 
-  if ([v7 caseInsensitiveCompare:@"pdf"])
+  if ([pathExtension caseInsensitiveCompare:@"pdf"])
   {
     v8 = 0;
   }
@@ -241,17 +241,17 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)hasCachedObjectForURL:(id)a3
+- (BOOL)hasCachedObjectForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(AEPdfCache *)self canonicalPathFromURL:v4];
+  v5 = [(AEPdfCache *)self canonicalPathFromURL:lCopy];
   if ([v5 length])
   {
-    v6 = [(AEPdfCache *)self cacheQueue];
+    cacheQueue = [(AEPdfCache *)self cacheQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_9BD14;
@@ -259,7 +259,7 @@ LABEL_8:
     v11 = &v12;
     block[4] = self;
     v10 = v5;
-    dispatch_sync(v6, block);
+    dispatch_sync(cacheQueue, block);
   }
 
   v7 = *(v13 + 24);
@@ -268,19 +268,19 @@ LABEL_8:
   return v7;
 }
 
-- (void)removeCacheObjectForURL:(id)a3
+- (void)removeCacheObjectForURL:(id)l
 {
-  v4 = [(AEPdfCache *)self canonicalPathFromURL:a3];
+  v4 = [(AEPdfCache *)self canonicalPathFromURL:l];
   if ([v4 length])
   {
-    v5 = [(AEPdfCache *)self cacheQueue];
+    cacheQueue = [(AEPdfCache *)self cacheQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_9BE44;
     v6[3] = &unk_1E3F50;
     v6[4] = self;
     v7 = v4;
-    dispatch_sync(v5, v6);
+    dispatch_sync(cacheQueue, v6);
   }
 }
 

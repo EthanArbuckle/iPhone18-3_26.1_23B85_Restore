@@ -1,13 +1,13 @@
 @interface VNOpticalFlowGenerator
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedOutputPixelFormatsForOptions:(id)a3 error:(id *)a4;
-- (id)validatedImageBuffersFromOptions:(id)a3 error:(id *)a4;
++ (id)supportedOutputPixelFormatsForOptions:(id)options error:(id *)error;
+- (id)validatedImageBuffersFromOptions:(id)options error:(id *)error;
 @end
 
 @implementation VNOpticalFlowGenerator
 
-+ (id)supportedOutputPixelFormatsForOptions:(id)a3 error:(id *)a4
++ (id)supportedOutputPixelFormatsForOptions:(id)options error:(id *)error
 {
   if (+[VNOpticalFlowGenerator supportedOutputPixelFormatsForOptions:error:]::onceToken != -1)
   {
@@ -31,7 +31,7 @@ void __70__VNOpticalFlowGenerator_supportedOutputPixelFormatsForOptions_error___
   block[1] = 3221225472;
   block[2] = __63__VNOpticalFlowGenerator_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNOpticalFlowGenerator configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNOpticalFlowGenerator configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -55,10 +55,10 @@ void __63__VNOpticalFlowGenerator_configurationOptionKeysForDetectorKey__block_i
   +[VNOpticalFlowGenerator configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v6)
   {
     goto LABEL_11;
@@ -78,18 +78,18 @@ LABEL_8:
 
   if ([v6 specifiesRequestClass:objc_opt_class()])
   {
-    v7 = [v6 requestRevision];
-    if (v7 == 1 || v7 == 2)
+    requestRevision = [v6 requestRevision];
+    if (requestRevision == 1 || requestRevision == 2)
     {
       goto LABEL_8;
     }
   }
 
 LABEL_9:
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRequestSpecifier:v6];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
     goto LABEL_12;
   }
 
@@ -100,12 +100,12 @@ LABEL_12:
   return v8;
 }
 
-- (id)validatedImageBuffersFromOptions:(id)a3 error:(id *)a4
+- (id)validatedImageBuffersFromOptions:(id)options error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v20 = 0;
-  v7 = [VNValidationUtilities getArray:&v20 forKey:@"VNDetectorProcessOption_InputImageBuffers" inOptions:v6 withElementsOfClass:objc_opt_class() requiredMinimumCount:2 allowedMaximumCount:2 error:a4];
+  v7 = [VNValidationUtilities getArray:&v20 forKey:@"VNDetectorProcessOption_InputImageBuffers" inOptions:optionsCopy withElementsOfClass:objc_opt_class() requiredMinimumCount:2 allowedMaximumCount:2 error:error];
   v8 = v20;
   v9 = v8;
   if (v7)
@@ -128,7 +128,7 @@ LABEL_12:
             objc_enumerationMutation(v10);
           }
 
-          if (![(VNDetector *)self validateImageBuffer:*(*(&v16 + 1) + 8 * i) error:a4])
+          if (![(VNDetector *)self validateImageBuffer:*(*(&v16 + 1) + 8 * i) error:error])
           {
 
             goto LABEL_12;

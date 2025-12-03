@@ -6,9 +6,9 @@
 
 - (NSString)languageCodeAndCountryCode
 {
-  v3 = [(NSLocale *)self languageCode];
-  v4 = [(NSLocale *)self countryCode];
-  v5 = [NSString stringWithFormat:@"%@_%@", v3, v4];
+  languageCode = [(NSLocale *)self languageCode];
+  countryCode = [(NSLocale *)self countryCode];
+  v5 = [NSString stringWithFormat:@"%@_%@", languageCode, countryCode];
 
   return v5;
 }

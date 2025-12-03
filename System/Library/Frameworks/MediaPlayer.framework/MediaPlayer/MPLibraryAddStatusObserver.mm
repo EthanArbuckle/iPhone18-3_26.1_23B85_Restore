@@ -1,25 +1,25 @@
 @interface MPLibraryAddStatusObserver
 - (MPLibraryAddStatusObserver)init;
-- (MPLibraryAddStatusObserver)initWithUserIdentity:(id)a3;
+- (MPLibraryAddStatusObserver)initWithUserIdentity:(id)identity;
 - (int64_t)_calculateCurrentStatus;
-- (void)_allowsExplicitContentDidChangeNotification:(id)a3;
-- (void)_cloudLibraryEnabledDidChangeNotification:(id)a3;
-- (void)_subscriptionStatusDidChangeNotification:(id)a3;
-- (void)_transientStateDidChangeNotification:(id)a3;
+- (void)_allowsExplicitContentDidChangeNotification:(id)notification;
+- (void)_cloudLibraryEnabledDidChangeNotification:(id)notification;
+- (void)_subscriptionStatusDidChangeNotification:(id)notification;
+- (void)_transientStateDidChangeNotification:(id)notification;
 - (void)_updateCurrentStatus;
-- (void)_updateInProgressDidChangeNotification:(id)a3;
-- (void)configureWithModelObject:(id)a3;
+- (void)_updateInProgressDidChangeNotification:(id)notification;
+- (void)configureWithModelObject:(id)object;
 - (void)dealloc;
-- (void)setConfiguration:(MPLibraryAddStatusObserverConfiguration)a3 identifyingModelObject:(id)a4;
-- (void)setStatusBlock:(id)a3;
+- (void)setConfiguration:(MPLibraryAddStatusObserverConfiguration)configuration identifyingModelObject:(id)object;
+- (void)setStatusBlock:(id)block;
 @end
 
 @implementation MPLibraryAddStatusObserver
 
 - (MPLibraryAddStatusObserver)init
 {
-  v3 = [MEMORY[0x1E69E4680] activeAccount];
-  v4 = [(MPLibraryAddStatusObserver *)self initWithUserIdentity:v3];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v4 = [(MPLibraryAddStatusObserver *)self initWithUserIdentity:activeAccount];
 
   return v4;
 }
@@ -46,20 +46,20 @@ LABEL_6:
     }
 
     v5 = +[MPRestrictionsMonitor sharedRestrictionsMonitor];
-    v6 = [v5 allowsExplicitContent];
+    allowsExplicitContent = [v5 allowsExplicitContent];
 
-    if ((v6 & 1) == 0 && !self->_configuration.hasCleanContent && self->_configuration.hasExplicitContent)
+    if ((allowsExplicitContent & 1) == 0 && !self->_configuration.hasCleanContent && self->_configuration.hasExplicitContent)
     {
       return 4;
     }
 
     v7 = self->_cloudServiceStatusController;
-    v8 = [(MPCloudServiceStatusController *)v7 musicSubscriptionStatus];
-    v9 = [v8 capabilities];
+    musicSubscriptionStatus = [(MPCloudServiceStatusController *)v7 musicSubscriptionStatus];
+    capabilities = [musicSubscriptionStatus capabilities];
 
-    if ((v9 & 0x101) != 0)
+    if ((capabilities & 0x101) != 0)
     {
-      if ((v9 & 0x101) == 1)
+      if ((capabilities & 0x101) == 1)
       {
         v4 = 9;
 LABEL_30:
@@ -67,7 +67,7 @@ LABEL_30:
         return v4;
       }
 
-      if ((v9 & 0x200) != 0)
+      if ((capabilities & 0x200) != 0)
       {
         v10 = self->_cloudController;
         if ([(MPCloudController *)v10 isUpdateInProgress]&& [(MPCloudController *)v10 isInitialImport])
@@ -77,7 +77,7 @@ LABEL_30:
 
         else if ([(MPCloudServiceStatusController *)v7 isCloudLibraryEnabled])
         {
-          if ((v6 & 1) == 0 && self->_configuration.hasExplicitContent && self->_configuration.hasCleanContent)
+          if ((allowsExplicitContent & 1) == 0 && self->_configuration.hasExplicitContent && self->_configuration.hasCleanContent)
           {
             v4 = 3;
           }
@@ -119,10 +119,10 @@ LABEL_30:
 
 - (void)_updateCurrentStatus
 {
-  v3 = [(MPLibraryAddStatusObserver *)self _calculateCurrentStatus];
-  if (self->_currentStatus != v3)
+  _calculateCurrentStatus = [(MPLibraryAddStatusObserver *)self _calculateCurrentStatus];
+  if (self->_currentStatus != _calculateCurrentStatus)
   {
-    self->_currentStatus = v3;
+    self->_currentStatus = _calculateCurrentStatus;
     statusBlock = self->_statusBlock;
     if (statusBlock)
     {
@@ -133,7 +133,7 @@ LABEL_30:
   }
 }
 
-- (void)_updateInProgressDidChangeNotification:(id)a3
+- (void)_updateInProgressDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -143,7 +143,7 @@ LABEL_30:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_transientStateDidChangeNotification:(id)a3
+- (void)_transientStateDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -153,7 +153,7 @@ LABEL_30:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_subscriptionStatusDidChangeNotification:(id)a3
+- (void)_subscriptionStatusDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -163,7 +163,7 @@ LABEL_30:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_cloudLibraryEnabledDidChangeNotification:(id)a3
+- (void)_cloudLibraryEnabledDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -173,7 +173,7 @@ LABEL_30:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_allowsExplicitContentDidChangeNotification:(id)a3
+- (void)_allowsExplicitContentDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -183,11 +183,11 @@ LABEL_30:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setStatusBlock:(id)a3
+- (void)setStatusBlock:(id)block
 {
-  if (self->_statusBlock != a3)
+  if (self->_statusBlock != block)
   {
-    v4 = [a3 copy];
+    v4 = [block copy];
     statusBlock = self->_statusBlock;
     self->_statusBlock = v4;
 
@@ -195,10 +195,10 @@ LABEL_30:
   }
 }
 
-- (void)setConfiguration:(MPLibraryAddStatusObserverConfiguration)a3 identifyingModelObject:(id)a4
+- (void)setConfiguration:(MPLibraryAddStatusObserverConfiguration)configuration identifyingModelObject:(id)object
 {
-  v5 = *&a3.isValidContentType;
-  v7 = a4;
+  v5 = *&configuration.isValidContentType;
+  objectCopy = object;
   v8 = ((*&self->_configuration.isValidContentType | (self->_configuration.isLibraryAddEligible << 32)) ^ v5) & 0x101010101;
   if (v8)
   {
@@ -207,10 +207,10 @@ LABEL_30:
   }
 
   identifyingModelObject = self->_identifyingModelObject;
-  v11 = v7;
-  if (identifyingModelObject != v7 && ![(MPModelObject *)identifyingModelObject isEqual:v7])
+  v11 = objectCopy;
+  if (identifyingModelObject != objectCopy && ![(MPModelObject *)identifyingModelObject isEqual:objectCopy])
   {
-    objc_storeStrong(&self->_identifyingModelObject, a4);
+    objc_storeStrong(&self->_identifyingModelObject, object);
     p_needsStatusUpdate = &self->_needsStatusUpdate;
     if (!self->_needsStatusUpdate)
     {
@@ -235,10 +235,10 @@ LABEL_10:
   }
 }
 
-- (void)configureWithModelObject:(id)a3
+- (void)configureWithModelObject:(id)object
 {
-  v4 = a3;
-  -[MPLibraryAddStatusObserver setConfiguration:identifyingModelObject:](self, "setConfiguration:identifyingModelObject:", [v4 libraryAddStatusObserverConfiguration] & 0xFFFFFFFFFFLL, v4);
+  objectCopy = object;
+  -[MPLibraryAddStatusObserver setConfiguration:identifyingModelObject:](self, "setConfiguration:identifyingModelObject:", [objectCopy libraryAddStatusObserverConfiguration] & 0xFFFFFFFFFFLL, objectCopy);
 }
 
 - (void)dealloc
@@ -248,15 +248,15 @@ LABEL_10:
   [(MPLibraryAddStatusObserver *)&v2 dealloc];
 }
 
-- (MPLibraryAddStatusObserver)initWithUserIdentity:(id)a3
+- (MPLibraryAddStatusObserver)initWithUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v16.receiver = self;
   v16.super_class = MPLibraryAddStatusObserver;
   v5 = [(MPLibraryAddStatusObserver *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identityCopy copy];
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v6;
 
@@ -268,15 +268,15 @@ LABEL_10:
     cloudServiceStatusController = v5->_cloudServiceStatusController;
     v5->_cloudServiceStatusController = v10;
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = +[MPRestrictionsMonitor sharedRestrictionsMonitor];
-    [v12 addObserver:v5 selector:sel__allowsExplicitContentDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsExplicitContentDidChangeNotification" object:v13];
+    [defaultCenter addObserver:v5 selector:sel__allowsExplicitContentDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsExplicitContentDidChangeNotification" object:v13];
 
-    [v12 addObserver:v5 selector:sel__cloudLibraryEnabledDidChangeNotification_ name:@"MPCloudServiceStatusControllerCloudLibraryEnabledDidChangeNotification" object:v5->_cloudServiceStatusController];
-    [v12 addObserver:v5 selector:sel__subscriptionStatusDidChangeNotification_ name:@"MPCloudServiceStatusControllerSubscriptionStatusDidChangeNotification" object:v5->_cloudServiceStatusController];
-    [v12 addObserver:v5 selector:sel__updateInProgressDidChangeNotification_ name:@"MPCloudControllerIsUpdateInProgressDidChangeNotification" object:v5->_cloudController];
+    [defaultCenter addObserver:v5 selector:sel__cloudLibraryEnabledDidChangeNotification_ name:@"MPCloudServiceStatusControllerCloudLibraryEnabledDidChangeNotification" object:v5->_cloudServiceStatusController];
+    [defaultCenter addObserver:v5 selector:sel__subscriptionStatusDidChangeNotification_ name:@"MPCloudServiceStatusControllerSubscriptionStatusDidChangeNotification" object:v5->_cloudServiceStatusController];
+    [defaultCenter addObserver:v5 selector:sel__updateInProgressDidChangeNotification_ name:@"MPCloudControllerIsUpdateInProgressDidChangeNotification" object:v5->_cloudController];
     v14 = +[MPModelLibraryTransientStateController sharedDeviceLibraryController];
-    [v12 addObserver:v5 selector:sel__transientStateDidChangeNotification_ name:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:v14];
+    [defaultCenter addObserver:v5 selector:sel__transientStateDidChangeNotification_ name:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:v14];
   }
 
   return v5;

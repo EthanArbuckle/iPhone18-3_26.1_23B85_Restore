@@ -7,7 +7,7 @@
 + (void)initialize
 {
   v7[3] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7[0] = @"dsid";
     v7[1] = @"alt_dsid";
@@ -17,7 +17,7 @@
     ML3AccountAllProperties = v3;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [a1 predisambiguateProperties:ML3AccountAllProperties toDictionary:v5];
+    [self predisambiguateProperties:ML3AccountAllProperties toDictionary:v5];
     v6 = ML3AccountPredisambiguatedPropertyForProperties;
     ML3AccountPredisambiguatedPropertyForProperties = v5;
   }

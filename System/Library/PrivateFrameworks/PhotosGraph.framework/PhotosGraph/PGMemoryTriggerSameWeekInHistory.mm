@@ -1,16 +1,16 @@
 @interface PGMemoryTriggerSameWeekInHistory
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerSameWeekInHistory
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -26,35 +26,35 @@
 
   else
   {
-    v11 = [v7 localDate];
-    v12 = [MEMORY[0x277D27690] components:8196 fromDate:v11];
-    v13 = [v12 year];
+    localDate = [contextCopy localDate];
+    v12 = [MEMORY[0x277D27690] components:8196 fromDate:localDate];
+    year = [v12 year];
     v33 = v12;
-    v32 = +[PGGraphWeekOfYearNodeCollection weekOfYearNodesForWeekOfYear:inGraph:](PGGraphWeekOfYearNodeCollection, "weekOfYearNodesForWeekOfYear:inGraph:", [v12 weekOfYear], v8);
-    v14 = [v32 dateNodes];
-    v15 = [v14 monthDayNodes];
+    v32 = +[PGGraphWeekOfYearNodeCollection weekOfYearNodesForWeekOfYear:inGraph:](PGGraphWeekOfYearNodeCollection, "weekOfYearNodesForWeekOfYear:inGraph:", [v12 weekOfYear], graphCopy);
+    dateNodes = [v32 dateNodes];
+    monthDayNodes = [dateNodes monthDayNodes];
 
-    v31 = v15;
-    v16 = [v15 featureNodeCollection];
-    v17 = [v16 memoryNodes];
+    v31 = monthDayNodes;
+    featureNodeCollection = [monthDayNodes featureNodeCollection];
+    memoryNodes = [featureNodeCollection memoryNodes];
 
-    v30 = [PGGraphYearNodeCollection yearNodesForYear:v13 inGraph:v8];
-    v18 = [v30 dateNodes];
-    v19 = [v18 momentNodes];
-    v20 = [v19 memoryNodes];
+    v30 = [PGGraphYearNodeCollection yearNodesForYear:year inGraph:graphCopy];
+    dateNodes2 = [v30 dateNodes];
+    momentNodes = [dateNodes2 momentNodes];
+    memoryNodes2 = [momentNodes memoryNodes];
 
-    v21 = [v17 collectionBySubtracting:v20];
+    v21 = [memoryNodes collectionBySubtracting:memoryNodes2];
 
     if ([v21 count])
     {
-      v22 = [MEMORY[0x277D27690] endOfWeekForDate:v11];
-      v29 = v11;
-      v23 = [MEMORY[0x277D27690] startOfWeekForDate:v11];
+      v22 = [MEMORY[0x277D27690] endOfWeekForDate:localDate];
+      v29 = localDate;
+      v23 = [MEMORY[0x277D27690] startOfWeekForDate:localDate];
       v24 = objc_opt_class();
-      v25 = [v7 timeZone];
-      v26 = [v24 validityIntervalForLocalStartDate:v23 localEndDate:v22 timeZone:v25];
+      timeZone = [contextCopy timeZone];
+      v26 = [v24 validityIntervalForLocalStartDate:v23 localEndDate:v22 timeZone:timeZone];
 
-      if ([v9 isCancelledWithProgress:1.0])
+      if ([reporterCopy isCancelledWithProgress:1.0])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -73,12 +73,12 @@
         v10 = [objc_opt_class() memoryTriggerResultsForMemoryNodes:v21 withValidityInterval:v26];
       }
 
-      v11 = v29;
+      localDate = v29;
     }
 
     else
     {
-      if ([v9 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
         v35 = 50;

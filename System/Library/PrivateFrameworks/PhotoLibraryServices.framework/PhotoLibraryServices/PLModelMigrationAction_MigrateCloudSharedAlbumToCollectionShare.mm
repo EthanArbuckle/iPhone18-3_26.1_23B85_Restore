@@ -1,63 +1,63 @@
 @interface PLModelMigrationAction_MigrateCloudSharedAlbumToCollectionShare
-+ (void)insertParticipantForCloudSharedAlbumInvitationRecord:(id)a3 collectionShare:(id)a4 personInfoManager:(id)a5 moc:(id)a6;
-- (id)_insertCollectionShareForCloudSharedAlbum:(id)a3 moc:(id)a4;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
++ (void)insertParticipantForCloudSharedAlbumInvitationRecord:(id)record collectionShare:(id)share personInfoManager:(id)manager moc:(id)moc;
+- (id)_insertCollectionShareForCloudSharedAlbum:(id)album moc:(id)moc;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_MigrateCloudSharedAlbumToCollectionShare
 
-- (id)_insertCollectionShareForCloudSharedAlbum:(id)a3 moc:(id)a4
+- (id)_insertCollectionShareForCloudSharedAlbum:(id)album moc:(id)moc
 {
-  v5 = a3;
-  v6 = a4;
+  albumCopy = album;
+  mocCopy = moc;
   v7 = +[PLCollectionShare entityName];
-  v8 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v7, v6, 0);
+  v8 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v7, mocCopy, 0);
 
   [v8 setCollectionShareKind:2];
-  [v8 setCloudDeleteState:{objc_msgSend(v5, "cloudDeleteState")}];
-  v9 = [v5 cloudGUID];
-  [v8 setScopeIdentifier:v9];
+  [v8 setCloudDeleteState:{objc_msgSend(albumCopy, "cloudDeleteState")}];
+  cloudGUID = [albumCopy cloudGUID];
+  [v8 setScopeIdentifier:cloudGUID];
 
-  [v8 setCloudLocalState:{objc_msgSend(v5, "cloudLocalState")}];
-  v10 = [v5 title];
-  [v8 setTitle:v10];
+  [v8 setCloudLocalState:{objc_msgSend(albumCopy, "cloudLocalState")}];
+  title = [albumCopy title];
+  [v8 setTitle:title];
 
-  v11 = [v5 uuid];
-  [v8 setUuid:v11];
+  uuid = [albumCopy uuid];
+  [v8 setUuid:uuid];
 
-  if ([v5 customSortKey])
+  if ([albumCopy customSortKey])
   {
-    v12 = [v5 customSortKey];
+    customSortKey = [albumCopy customSortKey];
   }
 
   else
   {
-    v12 = 6;
+    customSortKey = 6;
   }
 
-  [v8 setCustomSortKey:v12];
-  [v8 setCustomSortAscending:{objc_msgSend(v5, "customSortAscending")}];
-  v13 = [v5 cloudCreationDate];
-  if (v13)
+  [v8 setCustomSortKey:customSortKey];
+  [v8 setCustomSortAscending:{objc_msgSend(albumCopy, "customSortAscending")}];
+  cloudCreationDate = [albumCopy cloudCreationDate];
+  if (cloudCreationDate)
   {
-    [v8 setCreationDate:v13];
+    [v8 setCreationDate:cloudCreationDate];
   }
 
   else
   {
-    v14 = [v5 creationDate];
-    [v8 setCreationDate:v14];
+    creationDate = [albumCopy creationDate];
+    [v8 setCreationDate:creationDate];
   }
 
-  v15 = [v5 cloudLastInterestingChangeDate];
-  [v8 setLastModifiedDate:v15];
+  cloudLastInterestingChangeDate = [albumCopy cloudLastInterestingChangeDate];
+  [v8 setLastModifiedDate:cloudLastInterestingChangeDate];
 
-  v16 = [v5 cloudMetadata];
-  v17 = [v16 objectForKey:*MEMORY[0x1E6997FE8]];
+  cloudMetadata = [albumCopy cloudMetadata];
+  v17 = [cloudMetadata objectForKey:*MEMORY[0x1E6997FE8]];
   [v8 setPhoneInvitationToken:v17];
 
-  v18 = [v5 cloudMultipleContributorsEnabled];
-  LODWORD(v17) = [v18 BOOLValue];
+  cloudMultipleContributorsEnabled = [albumCopy cloudMultipleContributorsEnabled];
+  LODWORD(v17) = [cloudMultipleContributorsEnabled BOOLValue];
 
   if (v17)
   {
@@ -70,7 +70,7 @@
   }
 
   [v8 setPublicPermission:v19];
-  if ([v5 cloudNotificationsEnabled])
+  if ([albumCopy cloudNotificationsEnabled])
   {
     v20 = 0x7FFFLL;
   }
@@ -81,13 +81,13 @@
   }
 
   [v8 setNotificationState:v20];
-  v21 = [v5 cloudPersonID];
-  [v8 setCloudPersonID:v21];
+  cloudPersonID = [albumCopy cloudPersonID];
+  [v8 setCloudPersonID:cloudPersonID];
 
-  v22 = [v5 cloudPublicURLEnabled];
-  v23 = [v22 BOOLValue];
+  cloudPublicURLEnabled = [albumCopy cloudPublicURLEnabled];
+  bOOLValue = [cloudPublicURLEnabled BOOLValue];
 
-  if (v23)
+  if (bOOLValue)
   {
     v24 = 2;
   }
@@ -99,20 +99,20 @@
 
   [v8 setPublicURLState:v24];
   v25 = MEMORY[0x1E695DFF8];
-  v26 = [v5 publicURL];
-  v27 = [v25 URLWithString:v26];
+  publicURL = [albumCopy publicURL];
+  v27 = [v25 URLWithString:publicURL];
   [v8 setShareURL:v27];
 
-  v28 = [v5 cloudRelationshipState];
+  cloudRelationshipState = [albumCopy cloudRelationshipState];
 
-  if (v28)
+  if (cloudRelationshipState)
   {
-    v29 = [v5 cloudRelationshipState];
-    v30 = [v29 intValue];
+    cloudRelationshipState2 = [albumCopy cloudRelationshipState];
+    intValue = [cloudRelationshipState2 intValue];
 
-    if (v30 < 3)
+    if (intValue < 3)
     {
-      v31 = v30 + 1;
+      v31 = intValue + 1;
     }
 
     else
@@ -123,13 +123,13 @@
     [v8 setStatus:v31];
   }
 
-  v32 = [v5 cloudSubscriptionDate];
-  [v8 setCloudSubscriptionDate:v32];
+  cloudSubscriptionDate = [albumCopy cloudSubscriptionDate];
+  [v8 setCloudSubscriptionDate:cloudSubscriptionDate];
 
-  v33 = [v5 hasUnseenContent];
-  v34 = [v33 BOOLValue];
+  hasUnseenContent = [albumCopy hasUnseenContent];
+  bOOLValue2 = [hasUnseenContent BOOLValue];
 
-  if (v34)
+  if (bOOLValue2)
   {
     v35 = 2;
   }
@@ -140,28 +140,28 @@
   }
 
   [v8 setUnseenContentState:v35];
-  v36 = [v5 unseenAssetsCount];
-  [v8 setUnseenAssetsCount:{objc_msgSend(v36, "intValue")}];
+  unseenAssetsCount = [albumCopy unseenAssetsCount];
+  [v8 setUnseenAssetsCount:{objc_msgSend(unseenAssetsCount, "intValue")}];
 
-  v37 = [v5 cloudAlbumSubtype];
-  if (v37 <= 1)
+  cloudAlbumSubtype = [albumCopy cloudAlbumSubtype];
+  if (cloudAlbumSubtype <= 1)
   {
-    [v8 setCreationType:v37];
+    [v8 setCreationType:cloudAlbumSubtype];
   }
 
   return v8;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v151 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLCloudSharedAlbum entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
 
   [v8 setFetchBatchSize:100];
-  v9 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
   v10 = objc_initWeak(location, self);
 
   v11 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -170,19 +170,19 @@
   v113[2] = __111__PLModelMigrationAction_MigrateCloudSharedAlbumToCollectionShare_performActionWithManagedObjectContext_error___block_invoke;
   v113[3] = &unk_1E7573318;
   objc_copyWeak(&v115, location);
-  v84 = v9;
+  v84 = systemLibraryURL;
   v114 = v84;
   v12 = [v11 initWithBlock:v113];
 
   objc_destroyWeak(&v115);
   objc_destroyWeak(location);
   v13 = [PLPersonInfoManager alloc];
-  v14 = [(PLModelMigrationActionCore *)self pathManager];
-  v15 = [(PLPersonInfoManager *)v13 initWithPathManager:v14 lazyAssetsdClient:v12];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v15 = [(PLPersonInfoManager *)v13 initWithPathManager:pathManager lazyAssetsdClient:v12];
 
   v16 = [PLEmailAddressManager alloc];
-  v17 = [(PLModelMigrationActionCore *)self pathManager];
-  v18 = [(PLEmailAddressManager *)v16 initWithPathManager:v17 lazyAssetsdClient:v12];
+  pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
+  v18 = [(PLEmailAddressManager *)v16 initWithPathManager:pathManager2 lazyAssetsdClient:v12];
 
   v107 = 0;
   v108 = &v107;
@@ -207,7 +207,7 @@
   v95[1] = 3221225472;
   v95[2] = __111__PLModelMigrationAction_MigrateCloudSharedAlbumToCollectionShare_performActionWithManagedObjectContext_error___block_invoke_130;
   v95[3] = &unk_1E7575B30;
-  v96 = v5;
+  v96 = contextCopy;
   v94[0] = MEMORY[0x1E69E9820];
   v94[1] = 3221225472;
   v94[2] = __111__PLModelMigrationAction_MigrateCloudSharedAlbumToCollectionShare_performActionWithManagedObjectContext_error___block_invoke_2;
@@ -249,8 +249,8 @@
         goto LABEL_24;
       }
 
-      v28 = [(PLModelMigrationActionCore *)self logger];
-      v29 = v28 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v29 = logger == 0;
 
       if (!v29)
       {
@@ -287,10 +287,10 @@
         memset(location, 0, sizeof(location));
         v30 = PLMigrationGetLog();
         os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-        v31 = [v98[5] completedUnitCount];
+        completedUnitCount = [v98[5] completedUnitCount];
         v32 = v108[5];
         v116 = 134218242;
-        v117 = v31;
+        v117 = completedUnitCount;
         v118 = 2112;
         v119 = v32;
         LODWORD(v81) = 22;
@@ -305,10 +305,10 @@
       v51 = PLMigrationGetLog();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v56 = [v98[5] completedUnitCount];
+        completedUnitCount2 = [v98[5] completedUnitCount];
         v57 = v108[5];
         LODWORD(location[0]) = 134218242;
-        *(location + 4) = v56;
+        *(location + 4) = completedUnitCount2;
         WORD2(location[1]) = 2112;
         *(&location[1] + 6) = v57;
         _os_log_impl(&dword_19BF1F000, v51, OS_LOG_TYPE_DEFAULT, "Cancelled operation after update of %lld objects. Error: %@", location, 0x16u);
@@ -327,17 +327,17 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v46 = [(PLModelMigrationActionCore *)self logger];
-    v47 = v46 == 0;
+    logger2 = [(PLModelMigrationActionCore *)self logger];
+    v47 = logger2 == 0;
 
     if (v47)
     {
       v51 = PLMigrationGetLog();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v55 = [v98[5] totalUnitCount];
+        totalUnitCount = [v98[5] totalUnitCount];
         LODWORD(location[0]) = 134217984;
-        *(location + 4) = v55;
+        *(location + 4) = totalUnitCount;
         _os_log_impl(&dword_19BF1F000, v51, OS_LOG_TYPE_DEFAULT, "Migrated %lld CloudSharedAlbums to CollectionShares.", location, 0xCu);
       }
 
@@ -377,9 +377,9 @@ LABEL_23:
     memset(location, 0, sizeof(location));
     v48 = PLMigrationGetLog();
     os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT);
-    v49 = [v98[5] totalUnitCount];
+    totalUnitCount2 = [v98[5] totalUnitCount];
     v116 = 134217984;
-    v117 = v49;
+    v117 = totalUnitCount2;
     LODWORD(v81) = 12;
     v33 = _os_log_send_and_compose_impl();
 
@@ -403,8 +403,8 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v37 = [(PLModelMigrationActionCore *)self logger];
-    v38 = v37 == 0;
+    logger3 = [(PLModelMigrationActionCore *)self logger];
+    v38 = logger3 == 0;
 
     if (v38)
     {
@@ -494,8 +494,8 @@ LABEL_24:
       goto LABEL_39;
     }
 
-    v64 = [(PLModelMigrationActionCore *)self logger];
-    v65 = v64 == 0;
+    logger4 = [(PLModelMigrationActionCore *)self logger];
+    v65 = logger4 == 0;
 
     if (!v65)
     {
@@ -562,8 +562,8 @@ LABEL_24:
       goto LABEL_39;
     }
 
-    v71 = [(PLModelMigrationActionCore *)self logger];
-    v72 = v71 == 0;
+    logger5 = [(PLModelMigrationActionCore *)self logger];
+    v72 = logger5 == 0;
 
     if (!v72)
     {
@@ -628,10 +628,10 @@ LABEL_39:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v77 = v104[3];
   v78 = v108[5];
-  if (v77 != 1 && a4)
+  if (v77 != 1 && error)
   {
     v78 = v78;
-    *a4 = v78;
+    *error = v78;
   }
 
   v79 = v104[3];
@@ -643,45 +643,45 @@ LABEL_39:
   return v79;
 }
 
-+ (void)insertParticipantForCloudSharedAlbumInvitationRecord:(id)a3 collectionShare:(id)a4 personInfoManager:(id)a5 moc:(id)a6
++ (void)insertParticipantForCloudSharedAlbumInvitationRecord:(id)record collectionShare:(id)share personInfoManager:(id)manager moc:(id)moc
 {
-  v47 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  recordCopy = record;
+  shareCopy = share;
+  managerCopy = manager;
+  mocCopy = moc;
   v12 = +[PLShareParticipant entityName];
-  v13 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v12, v11, 0);
+  v13 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v12, mocCopy, 0);
 
   [v13 setParticipantKind:1];
-  v14 = [v47 cloudGUID];
-  [v13 setParticipantID:v14];
+  cloudGUID = [recordCopy cloudGUID];
+  [v13 setParticipantID:cloudGUID];
 
-  v15 = [v47 uuid];
-  [v13 setUuid:v15];
+  uuid = [recordCopy uuid];
+  [v13 setUuid:uuid];
 
-  v16 = [v47 invitationState];
-  v17 = [v16 intValue];
+  invitationState = [recordCopy invitationState];
+  intValue = [invitationState intValue];
 
-  v18 = [v9 publicPermission];
+  publicPermission = [shareCopy publicPermission];
   v19 = 2;
   v20 = 4;
   v21 = 2;
   v22 = 5;
   v23 = 2;
   v24 = 3;
-  if (v17 != 5)
+  if (intValue != 5)
   {
     v24 = 0;
     v23 = 0;
   }
 
-  if (v17 != 4)
+  if (intValue != 4)
   {
     v22 = v24;
     v21 = v23;
   }
 
-  if (v17 != 3)
+  if (intValue != 3)
   {
     v20 = v22;
     v19 = v21;
@@ -693,26 +693,26 @@ LABEL_39:
   v28 = 2;
   v29 = 1;
   v30 = 2;
-  if (v17 != 2)
+  if (intValue != 2)
   {
     v30 = 0;
   }
 
-  if (v17 != 1)
+  if (intValue != 1)
   {
     v29 = v30;
     v28 = v30;
   }
 
-  if (v17)
+  if (intValue)
   {
     v27 = v29;
-    v26 = v18;
+    v26 = publicPermission;
     v25 = v28;
   }
 
-  v31 = v17 <= 2;
-  if (v17 <= 2)
+  v31 = intValue <= 2;
+  if (intValue <= 2)
   {
     v32 = v27;
   }
@@ -722,14 +722,14 @@ LABEL_39:
     v32 = v20;
   }
 
-  if (v17 <= 2)
+  if (intValue <= 2)
   {
     v33 = v26;
   }
 
   else
   {
-    v33 = v18;
+    v33 = publicPermission;
   }
 
   if (v31)
@@ -745,44 +745,44 @@ LABEL_39:
   [v13 setRole:v34];
   [v13 setPermission:v33];
   [v13 setAcceptanceStatus:v32];
-  v35 = [v47 inviteeHashedPersonID];
-  v36 = [v10 emailForPersonID:v35];
+  inviteeHashedPersonID = [recordCopy inviteeHashedPersonID];
+  firstObject = [managerCopy emailForPersonID:inviteeHashedPersonID];
 
-  if (!v36)
+  if (!firstObject)
   {
-    v37 = [v47 cloudGUID];
-    v38 = [v10 emailsForInvitationRecordGUID:v37];
-    v36 = [v38 firstObject];
+    cloudGUID2 = [recordCopy cloudGUID];
+    v38 = [managerCopy emailsForInvitationRecordGUID:cloudGUID2];
+    firstObject = [v38 firstObject];
   }
 
-  [v13 setEmailAddress:v36];
-  v39 = [v47 cloudGUID];
-  v40 = [v10 phonesForInvitationRecordGUID:v39];
-  v41 = [v40 firstObject];
-  [v13 setPhoneNumber:v41];
+  [v13 setEmailAddress:firstObject];
+  cloudGUID3 = [recordCopy cloudGUID];
+  v40 = [managerCopy phonesForInvitationRecordGUID:cloudGUID3];
+  firstObject2 = [v40 firstObject];
+  [v13 setPhoneNumber:firstObject2];
 
   v42 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v43 = [v47 inviteeFirstName];
-  if (v43)
+  inviteeFirstName = [recordCopy inviteeFirstName];
+  if (inviteeFirstName)
   {
-    [v42 setGivenName:v43];
+    [v42 setGivenName:inviteeFirstName];
   }
 
-  v44 = [v47 inviteeLastName];
-  if (v44)
+  inviteeLastName = [recordCopy inviteeLastName];
+  if (inviteeLastName)
   {
-    [v42 setFamilyName:v44];
+    [v42 setFamilyName:inviteeLastName];
   }
 
   [v13 setNameComponents:v42];
-  v45 = [v47 inviteeHashedPersonID];
-  [v13 setHashedPersonID:v45];
+  inviteeHashedPersonID2 = [recordCopy inviteeHashedPersonID];
+  [v13 setHashedPersonID:inviteeHashedPersonID2];
 
-  v46 = [v47 inviteeSubscriptionDate];
-  [v13 setSubscriptionDate:v46];
+  inviteeSubscriptionDate = [recordCopy inviteeSubscriptionDate];
+  [v13 setSubscriptionDate:inviteeSubscriptionDate];
 
-  [v13 setIsCurrentUser:{objc_msgSend(v47, "isMine")}];
-  [v13 setShare:v9];
+  [v13 setIsCurrentUser:{objc_msgSend(recordCopy, "isMine")}];
+  [v13 setShare:shareCopy];
 }
 
 @end

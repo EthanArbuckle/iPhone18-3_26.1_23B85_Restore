@@ -1,10 +1,10 @@
 @interface ARSIPersonDetectionTechnique
 - (ARSIPersonDetectionTechnique)init;
-- (BOOL)isLoadedModelVersionCorrect:(id)a3;
-- (id)createResultDataFromAlgorithmOutput:(id)a3 imageDataForNeuralNetwork:(id)a4 inputImageData:(id)a5 rotationNeeded:(int64_t)a6 regionOfInterest:(CGSize)a7;
+- (BOOL)isLoadedModelVersionCorrect:(id)correct;
+- (id)createResultDataFromAlgorithmOutput:(id)output imageDataForNeuralNetwork:(id)network inputImageData:(id)data rotationNeeded:(int64_t)needed regionOfInterest:(CGSize)interest;
 - (id)resultDataClasses;
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6;
-- (void)_prepareOnce:(BOOL)a3;
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor;
+- (void)_prepareOnce:(BOOL)once;
 - (void)dealloc;
 @end
 
@@ -42,7 +42,7 @@
   return v4;
 }
 
-- (void)_prepareOnce:(BOOL)a3
+- (void)_prepareOnce:(BOOL)once
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = [objc_alloc(MEMORY[0x1E69C9CD8]) initWithComputeEngine:1 andNetworkConfiguration:0];
@@ -68,7 +68,7 @@
         *buf = 138543618;
         v18 = v10;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: SIPersonDetectorAlgorithm could not be initialized!", buf, 0x16u);
       }
     }
@@ -80,7 +80,7 @@
       *buf = 138543618;
       v18 = v12;
       v19 = 2048;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: SIPersonDetectorAlgorithm could not be initialized!", buf, 0x16u);
     }
 
@@ -129,23 +129,23 @@
   return [v2 setWithObject:v3];
 }
 
-- (BOOL)isLoadedModelVersionCorrect:(id)a3
+- (BOOL)isLoadedModelVersionCorrect:(id)correct
 {
   v4.receiver = self;
   v4.super_class = ARSIPersonDetectionTechnique;
-  return [(ARMLImageProcessingTechnique *)&v4 ARMLVerifyLoadedModelVersion:a3 deviceName:@"D" major:2 minor:1];
+  return [(ARMLImageProcessingTechnique *)&v4 ARMLVerifyLoadedModelVersion:correct deviceName:@"D" major:2 minor:1];
 }
 
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor
 {
-  height = a5.height;
-  width = a5.width;
+  height = interest.height;
+  width = interest.width;
   v17[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
+  dataCopy = data;
+  v11 = dataCopy;
   if (self->_algorithm)
   {
-    v12 = v10 == 0;
+    v12 = dataCopy == 0;
   }
 
   else
@@ -160,34 +160,34 @@
 
   else
   {
-    [v10 timestamp];
+    [dataCopy timestamp];
     [(ARSIPersonDetectionTechnique *)self _startMLRunNetworkSignpostWithTimestamp:?];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     -[SIPersonDetectorAlgorithm runWithInput:output:](self->_algorithm, "runWithInput:output:", [v11 pixelBuffer], v13);
     [v11 timestamp];
     [(ARSIPersonDetectionTechnique *)self _endMLRunNetworkSignpostWithTimestamp:?];
-    v14 = [(ARSIPersonDetectionTechnique *)self createResultDataFromAlgorithmOutput:v13 imageDataForNeuralNetwork:v11 inputImageData:v11 rotationNeeded:a6 regionOfInterest:width, height];
-    v17[0] = v14;
+    height = [(ARSIPersonDetectionTechnique *)self createResultDataFromAlgorithmOutput:v13 imageDataForNeuralNetwork:v11 inputImageData:v11 rotationNeeded:tensor regionOfInterest:width, height];
+    v17[0] = height;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   }
 
   return v15;
 }
 
-- (id)createResultDataFromAlgorithmOutput:(id)a3 imageDataForNeuralNetwork:(id)a4 inputImageData:(id)a5 rotationNeeded:(int64_t)a6 regionOfInterest:(CGSize)a7
+- (id)createResultDataFromAlgorithmOutput:(id)output imageDataForNeuralNetwork:(id)network inputImageData:(id)data rotationNeeded:(int64_t)needed regionOfInterest:(CGSize)interest
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  outputCopy = output;
+  networkCopy = network;
   v12 = objc_opt_new();
-  v13 = [v10 count];
+  v13 = [outputCopy count];
   if (v13)
   {
     for (i = 0; i != v13; ++i)
     {
-      v15 = [v10 objectAtIndexedSubscript:i];
+      v15 = [outputCopy objectAtIndexedSubscript:i];
       [v15 boundingBox];
-      ARCGRectRotate(a6, v16, v17, v18, v19);
+      ARCGRectRotate(needed, v16, v17, v18, v19);
       v21 = v20;
       v23 = v22;
       v25 = v24;
@@ -200,7 +200,7 @@
 
   v29 = objc_opt_new();
   [v29 setDetectedObjects:v12];
-  [v11 timestamp];
+  [networkCopy timestamp];
   [v29 setTimestamp:?];
   if (self->_mergeLargelyOverlappingBoxes)
   {
@@ -212,13 +212,13 @@
     {
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
-      v35 = [v31 detectedObjects];
+      detectedObjects = [v31 detectedObjects];
       v37 = 138544130;
       v38 = v34;
       v39 = 2048;
-      v40 = self;
+      selfCopy = self;
       v41 = 1024;
-      v42 = [v35 count];
+      v42 = [detectedObjects count];
       v43 = 1024;
       v44 = [v12 count];
       _os_log_impl(&dword_1C241C000, v32, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Detections %d / %d.", &v37, 0x22u);

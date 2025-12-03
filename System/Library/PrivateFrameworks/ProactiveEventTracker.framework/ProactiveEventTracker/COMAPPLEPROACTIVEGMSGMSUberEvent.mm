@@ -1,32 +1,32 @@
 @interface COMAPPLEPROACTIVEGMSGMSUberEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation COMAPPLEPROACTIVEGMSGMSUberEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[36] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[36] & 4) != 0)
   {
-    self->_eventType = v4[18];
+    self->_eventType = fromCopy[18];
     *&self->_has |= 4u;
   }
 
-  v16 = v4;
-  if (*(v4 + 4))
+  v16 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(COMAPPLEPROACTIVEGMSGMSUberEvent *)self setBootSessionUUID:?];
     v5 = v16;
@@ -254,24 +254,24 @@ LABEL_49:
   return v12 ^ [(COMAPPLEPROACTIVEGMSGMSPrewarmEvent *)self->_prewarmEvent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
-  v5 = *(v4 + 144);
+  v5 = *(equalCopy + 144);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 144) & 4) == 0 || self->_eventType != *(v4 + 18))
+    if ((*(equalCopy + 144) & 4) == 0 || self->_eventType != *(equalCopy + 18))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 144) & 4) != 0)
+  else if ((*(equalCopy + 144) & 4) != 0)
   {
 LABEL_45:
     v22 = 0;
@@ -279,13 +279,13 @@ LABEL_45:
   }
 
   bootSessionUUID = self->_bootSessionUUID;
-  if (bootSessionUUID | *(v4 + 4) && ![(NSString *)bootSessionUUID isEqual:?])
+  if (bootSessionUUID | *(equalCopy + 4) && ![(NSString *)bootSessionUUID isEqual:?])
   {
     goto LABEL_45;
   }
 
   modelManagerRequestIdentifier = self->_modelManagerRequestIdentifier;
-  if (modelManagerRequestIdentifier | *(v4 + 13))
+  if (modelManagerRequestIdentifier | *(equalCopy + 13))
   {
     if (![(NSString *)modelManagerRequestIdentifier isEqual:?])
     {
@@ -294,7 +294,7 @@ LABEL_45:
   }
 
   modelManagerSessionIdentifier = self->_modelManagerSessionIdentifier;
-  if (modelManagerSessionIdentifier | *(v4 + 14))
+  if (modelManagerSessionIdentifier | *(equalCopy + 14))
   {
     if (![(NSString *)modelManagerSessionIdentifier isEqual:?])
     {
@@ -303,7 +303,7 @@ LABEL_45:
   }
 
   inferenceProviderIdentifier = self->_inferenceProviderIdentifier;
-  if (inferenceProviderIdentifier | *(v4 + 12))
+  if (inferenceProviderIdentifier | *(equalCopy + 12))
   {
     if (![(NSString *)inferenceProviderIdentifier isEqual:?])
     {
@@ -312,7 +312,7 @@ LABEL_45:
   }
 
   useCaseIdentifier = self->_useCaseIdentifier;
-  if (useCaseIdentifier | *(v4 + 17))
+  if (useCaseIdentifier | *(equalCopy + 17))
   {
     if (![(NSString *)useCaseIdentifier isEqual:?])
     {
@@ -321,7 +321,7 @@ LABEL_45:
   }
 
   catalogResourceIdentifier = self->_catalogResourceIdentifier;
-  if (catalogResourceIdentifier | *(v4 + 5))
+  if (catalogResourceIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)catalogResourceIdentifier isEqual:?])
     {
@@ -330,7 +330,7 @@ LABEL_45:
   }
 
   inferenceEvent = self->_inferenceEvent;
-  if (inferenceEvent | *(v4 + 11))
+  if (inferenceEvent | *(equalCopy + 11))
   {
     if (![(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)inferenceEvent isEqual:?])
     {
@@ -338,28 +338,28 @@ LABEL_45:
     }
   }
 
-  v13 = *(v4 + 144);
+  v13 = *(equalCopy + 144);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 144) & 2) == 0 || self->_version != *(v4 + 2))
+    if ((*(equalCopy + 144) & 2) == 0 || self->_version != *(equalCopy + 2))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 144) & 2) != 0)
+  else if ((*(equalCopy + 144) & 2) != 0)
   {
     goto LABEL_45;
   }
 
   testKey = self->_testKey;
-  if (testKey | *(v4 + 16) && ![(NSString *)testKey isEqual:?])
+  if (testKey | *(equalCopy + 16) && ![(NSString *)testKey isEqual:?])
   {
     goto LABEL_45;
   }
 
   assetEvent = self->_assetEvent;
-  if (assetEvent | *(v4 + 3))
+  if (assetEvent | *(equalCopy + 3))
   {
     if (![(COMAPPLEPROACTIVEGMSGMSAssetEvent *)assetEvent isEqual:?])
     {
@@ -368,7 +368,7 @@ LABEL_45:
   }
 
   generativeFunctionEvent = self->_generativeFunctionEvent;
-  if (generativeFunctionEvent | *(v4 + 10))
+  if (generativeFunctionEvent | *(equalCopy + 10))
   {
     if (![(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)generativeFunctionEvent isEqual:?])
     {
@@ -377,7 +377,7 @@ LABEL_45:
   }
 
   clientRequestIdentifier = self->_clientRequestIdentifier;
-  if (clientRequestIdentifier | *(v4 + 6))
+  if (clientRequestIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)clientRequestIdentifier isEqual:?])
     {
@@ -386,7 +386,7 @@ LABEL_45:
   }
 
   clientSessionIdentifier = self->_clientSessionIdentifier;
-  if (clientSessionIdentifier | *(v4 + 7))
+  if (clientSessionIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)clientSessionIdentifier isEqual:?])
     {
@@ -394,28 +394,28 @@ LABEL_45:
     }
   }
 
-  v19 = *(v4 + 144);
+  v19 = *(equalCopy + 144);
   if (*&self->_has)
   {
-    if ((*(v4 + 144) & 1) == 0 || self->_threadQualityOfService != *(v4 + 1))
+    if ((*(equalCopy + 144) & 1) == 0 || self->_threadQualityOfService != *(equalCopy + 1))
     {
       goto LABEL_45;
     }
   }
 
-  else if (*(v4 + 144))
+  else if (*(equalCopy + 144))
   {
     goto LABEL_45;
   }
 
   error = self->_error;
-  if (error | *(v4 + 8) && ![(COMAPPLEPROACTIVEGMSGMSError *)error isEqual:?])
+  if (error | *(equalCopy + 8) && ![(COMAPPLEPROACTIVEGMSGMSError *)error isEqual:?])
   {
     goto LABEL_45;
   }
 
   prewarmEvent = self->_prewarmEvent;
-  if (prewarmEvent | *(v4 + 15))
+  if (prewarmEvent | *(equalCopy + 15))
   {
     v22 = [(COMAPPLEPROACTIVEGMSGMSPrewarmEvent *)prewarmEvent isEqual:?];
   }
@@ -430,9 +430,9 @@ LABEL_46:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -440,31 +440,31 @@ LABEL_46:
     *(v5 + 144) |= 4u;
   }
 
-  v7 = [(NSString *)self->_bootSessionUUID copyWithZone:a3];
+  v7 = [(NSString *)self->_bootSessionUUID copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
-  v9 = [(NSString *)self->_modelManagerRequestIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_modelManagerRequestIdentifier copyWithZone:zone];
   v10 = *(v6 + 104);
   *(v6 + 104) = v9;
 
-  v11 = [(NSString *)self->_modelManagerSessionIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_modelManagerSessionIdentifier copyWithZone:zone];
   v12 = *(v6 + 112);
   *(v6 + 112) = v11;
 
-  v13 = [(NSString *)self->_inferenceProviderIdentifier copyWithZone:a3];
+  v13 = [(NSString *)self->_inferenceProviderIdentifier copyWithZone:zone];
   v14 = *(v6 + 96);
   *(v6 + 96) = v13;
 
-  v15 = [(NSString *)self->_useCaseIdentifier copyWithZone:a3];
+  v15 = [(NSString *)self->_useCaseIdentifier copyWithZone:zone];
   v16 = *(v6 + 136);
   *(v6 + 136) = v15;
 
-  v17 = [(NSString *)self->_catalogResourceIdentifier copyWithZone:a3];
+  v17 = [(NSString *)self->_catalogResourceIdentifier copyWithZone:zone];
   v18 = *(v6 + 40);
   *(v6 + 40) = v17;
 
-  v19 = [(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)self->_inferenceEvent copyWithZone:a3];
+  v19 = [(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)self->_inferenceEvent copyWithZone:zone];
   v20 = *(v6 + 88);
   *(v6 + 88) = v19;
 
@@ -474,23 +474,23 @@ LABEL_46:
     *(v6 + 144) |= 2u;
   }
 
-  v21 = [(NSString *)self->_testKey copyWithZone:a3];
+  v21 = [(NSString *)self->_testKey copyWithZone:zone];
   v22 = *(v6 + 128);
   *(v6 + 128) = v21;
 
-  v23 = [(COMAPPLEPROACTIVEGMSGMSAssetEvent *)self->_assetEvent copyWithZone:a3];
+  v23 = [(COMAPPLEPROACTIVEGMSGMSAssetEvent *)self->_assetEvent copyWithZone:zone];
   v24 = *(v6 + 24);
   *(v6 + 24) = v23;
 
-  v25 = [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)self->_generativeFunctionEvent copyWithZone:a3];
+  v25 = [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)self->_generativeFunctionEvent copyWithZone:zone];
   v26 = *(v6 + 80);
   *(v6 + 80) = v25;
 
-  v27 = [(NSString *)self->_clientRequestIdentifier copyWithZone:a3];
+  v27 = [(NSString *)self->_clientRequestIdentifier copyWithZone:zone];
   v28 = *(v6 + 48);
   *(v6 + 48) = v27;
 
-  v29 = [(NSString *)self->_clientSessionIdentifier copyWithZone:a3];
+  v29 = [(NSString *)self->_clientSessionIdentifier copyWithZone:zone];
   v30 = *(v6 + 56);
   *(v6 + 56) = v29;
 
@@ -500,302 +500,302 @@ LABEL_46:
     *(v6 + 144) |= 1u;
   }
 
-  v31 = [(COMAPPLEPROACTIVEGMSGMSError *)self->_error copyWithZone:a3];
+  v31 = [(COMAPPLEPROACTIVEGMSGMSError *)self->_error copyWithZone:zone];
   v32 = *(v6 + 64);
   *(v6 + 64) = v31;
 
-  v33 = [(COMAPPLEPROACTIVEGMSGMSPrewarmEvent *)self->_prewarmEvent copyWithZone:a3];
+  v33 = [(COMAPPLEPROACTIVEGMSGMSPrewarmEvent *)self->_prewarmEvent copyWithZone:zone];
   v34 = *(v6 + 120);
   *(v6 + 120) = v33;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[18] = self->_eventType;
-    *(v4 + 144) |= 4u;
+    toCopy[18] = self->_eventType;
+    *(toCopy + 144) |= 4u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_bootSessionUUID)
   {
-    [v4 setBootSessionUUID:?];
-    v4 = v5;
+    [toCopy setBootSessionUUID:?];
+    toCopy = v5;
   }
 
   if (self->_modelManagerRequestIdentifier)
   {
     [v5 setModelManagerRequestIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_modelManagerSessionIdentifier)
   {
     [v5 setModelManagerSessionIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_inferenceProviderIdentifier)
   {
     [v5 setInferenceProviderIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_useCaseIdentifier)
   {
     [v5 setUseCaseIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_catalogResourceIdentifier)
   {
     [v5 setCatalogResourceIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_inferenceEvent)
   {
     [v5 setInferenceEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_version;
-    *(v4 + 144) |= 2u;
+    *(toCopy + 2) = self->_version;
+    *(toCopy + 144) |= 2u;
   }
 
   if (self->_testKey)
   {
     [v5 setTestKey:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_assetEvent)
   {
     [v5 setAssetEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_generativeFunctionEvent)
   {
     [v5 setGenerativeFunctionEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientRequestIdentifier)
   {
     [v5 setClientRequestIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientSessionIdentifier)
   {
     [v5 setClientSessionIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_threadQualityOfService;
-    *(v4 + 144) |= 1u;
+    *(toCopy + 1) = self->_threadQualityOfService;
+    *(toCopy + 144) |= 1u;
   }
 
   if (self->_error)
   {
     [v5 setError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_prewarmEvent)
   {
     [v5 setPrewarmEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
     eventType = self->_eventType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_bootSessionUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_modelManagerRequestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_modelManagerSessionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_inferenceProviderIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_useCaseIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_catalogResourceIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_inferenceEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     version = self->_version;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_testKey)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_assetEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_generativeFunctionEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_clientRequestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_clientSessionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
     threadQualityOfService = self->_threadQualityOfService;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_error)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_prewarmEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_version];
-    [v3 setObject:v4 forKey:@"version"];
+    [dictionary setObject:v4 forKey:@"version"];
   }
 
   testKey = self->_testKey;
   if (testKey)
   {
-    [v3 setObject:testKey forKey:@"testKey"];
+    [dictionary setObject:testKey forKey:@"testKey"];
   }
 
   bootSessionUUID = self->_bootSessionUUID;
   if (bootSessionUUID)
   {
-    [v3 setObject:bootSessionUUID forKey:@"bootSessionUUID"];
+    [dictionary setObject:bootSessionUUID forKey:@"bootSessionUUID"];
   }
 
   modelManagerRequestIdentifier = self->_modelManagerRequestIdentifier;
   if (modelManagerRequestIdentifier)
   {
-    [v3 setObject:modelManagerRequestIdentifier forKey:@"modelManagerRequestIdentifier"];
+    [dictionary setObject:modelManagerRequestIdentifier forKey:@"modelManagerRequestIdentifier"];
   }
 
   modelManagerSessionIdentifier = self->_modelManagerSessionIdentifier;
   if (modelManagerSessionIdentifier)
   {
-    [v3 setObject:modelManagerSessionIdentifier forKey:@"modelManagerSessionIdentifier"];
+    [dictionary setObject:modelManagerSessionIdentifier forKey:@"modelManagerSessionIdentifier"];
   }
 
   inferenceProviderIdentifier = self->_inferenceProviderIdentifier;
   if (inferenceProviderIdentifier)
   {
-    [v3 setObject:inferenceProviderIdentifier forKey:@"inferenceProviderIdentifier"];
+    [dictionary setObject:inferenceProviderIdentifier forKey:@"inferenceProviderIdentifier"];
   }
 
   useCaseIdentifier = self->_useCaseIdentifier;
   if (useCaseIdentifier)
   {
-    [v3 setObject:useCaseIdentifier forKey:@"useCaseIdentifier"];
+    [dictionary setObject:useCaseIdentifier forKey:@"useCaseIdentifier"];
   }
 
   catalogResourceIdentifier = self->_catalogResourceIdentifier;
   if (catalogResourceIdentifier)
   {
-    [v3 setObject:catalogResourceIdentifier forKey:@"catalogResourceIdentifier"];
+    [dictionary setObject:catalogResourceIdentifier forKey:@"catalogResourceIdentifier"];
   }
 
   clientRequestIdentifier = self->_clientRequestIdentifier;
   if (clientRequestIdentifier)
   {
-    [v3 setObject:clientRequestIdentifier forKey:@"clientRequestIdentifier"];
+    [dictionary setObject:clientRequestIdentifier forKey:@"clientRequestIdentifier"];
   }
 
   clientSessionIdentifier = self->_clientSessionIdentifier;
   if (clientSessionIdentifier)
   {
-    [v3 setObject:clientSessionIdentifier forKey:@"clientSessionIdentifier"];
+    [dictionary setObject:clientSessionIdentifier forKey:@"clientSessionIdentifier"];
   }
 
   has = self->_has;
   if (has)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_threadQualityOfService];
-    [v3 setObject:v15 forKey:@"threadQualityOfService"];
+    [dictionary setObject:v15 forKey:@"threadQualityOfService"];
 
     has = self->_has;
   }
@@ -813,45 +813,45 @@ LABEL_46:
       v17 = off_1E86C2D90[eventType];
     }
 
-    [v3 setObject:v17 forKey:@"eventType"];
+    [dictionary setObject:v17 forKey:@"eventType"];
   }
 
   inferenceEvent = self->_inferenceEvent;
   if (inferenceEvent)
   {
-    v19 = [(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)inferenceEvent dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"inferenceEvent"];
+    dictionaryRepresentation = [(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)inferenceEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"inferenceEvent"];
   }
 
   assetEvent = self->_assetEvent;
   if (assetEvent)
   {
-    v21 = [(COMAPPLEPROACTIVEGMSGMSAssetEvent *)assetEvent dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"assetEvent"];
+    dictionaryRepresentation2 = [(COMAPPLEPROACTIVEGMSGMSAssetEvent *)assetEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"assetEvent"];
   }
 
   generativeFunctionEvent = self->_generativeFunctionEvent;
   if (generativeFunctionEvent)
   {
-    v23 = [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)generativeFunctionEvent dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"generativeFunctionEvent"];
+    dictionaryRepresentation3 = [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)generativeFunctionEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"generativeFunctionEvent"];
   }
 
   prewarmEvent = self->_prewarmEvent;
   if (prewarmEvent)
   {
-    v25 = [(COMAPPLEPROACTIVEGMSGMSPrewarmEvent *)prewarmEvent dictionaryRepresentation];
-    [v3 setObject:v25 forKey:@"prewarmEvent"];
+    dictionaryRepresentation4 = [(COMAPPLEPROACTIVEGMSGMSPrewarmEvent *)prewarmEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"prewarmEvent"];
   }
 
   error = self->_error;
   if (error)
   {
-    v27 = [(COMAPPLEPROACTIVEGMSGMSError *)error dictionaryRepresentation];
-    [v3 setObject:v27 forKey:@"error"];
+    dictionaryRepresentation5 = [(COMAPPLEPROACTIVEGMSGMSError *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"error"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -860,36 +860,36 @@ LABEL_46:
   v8.receiver = self;
   v8.super_class = COMAPPLEPROACTIVEGMSGMSUberEvent;
   v4 = [(COMAPPLEPROACTIVEGMSGMSUberEvent *)&v8 description];
-  v5 = [(COMAPPLEPROACTIVEGMSGMSUberEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(COMAPPLEPROACTIVEGMSGMSUberEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GMS_EVENT_TYPE_UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GMS_EVENT_TYPE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GMS_EVENT_TYPE_INFERENCE_EVENT"])
+  else if ([typeCopy isEqualToString:@"GMS_EVENT_TYPE_INFERENCE_EVENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GMS_EVENT_TYPE_ASSET_EVENT"])
+  else if ([typeCopy isEqualToString:@"GMS_EVENT_TYPE_ASSET_EVENT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GMS_EVENT_TYPE_GENERATIVE_FUNCTION_EVENT"])
+  else if ([typeCopy isEqualToString:@"GMS_EVENT_TYPE_GENERATIVE_FUNCTION_EVENT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GMS_EVENT_TYPE_PREWARM_EVENT"])
+  else if ([typeCopy isEqualToString:@"GMS_EVENT_TYPE_PREWARM_EVENT"])
   {
     v4 = 4;
   }
@@ -902,9 +902,9 @@ LABEL_46:
   return v4;
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -930,9 +930,9 @@ LABEL_46:
   }
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }

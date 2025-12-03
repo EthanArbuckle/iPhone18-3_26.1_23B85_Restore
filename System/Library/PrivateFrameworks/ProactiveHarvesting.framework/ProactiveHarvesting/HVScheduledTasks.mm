@@ -3,7 +3,7 @@
 + (void)delayedBudgetedContentAvailable;
 - (HVScheduledTasks)init;
 - (void)_delayedBudgetedContentAvailable;
-- (void)_registerHarvestTaskWithMinimumLevelOfService:(uint64_t)a1;
+- (void)_registerHarvestTaskWithMinimumLevelOfService:(uint64_t)service;
 @end
 
 @implementation HVScheduledTasks
@@ -34,7 +34,7 @@
 
 - (void)_delayedBudgetedContentAvailable
 {
-  if (a1)
+  if (self)
   {
     v2 = hv_default_log_handle();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -43,7 +43,7 @@
       _os_log_impl(&dword_2321EC000, v2, OS_LOG_TYPE_INFO, "HVScheduledTasks: periodicBudgetContentAvailable", buf, 2u);
     }
 
-    if ((atomic_exchange((a1 + 8), 1u) & 1) == 0)
+    if ((atomic_exchange((self + 8), 1u) & 1) == 0)
     {
       v3 = hv_default_log_handle();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -52,7 +52,7 @@
         _os_log_impl(&dword_2321EC000, v3, OS_LOG_TYPE_INFO, "HVScheduledTasks: periodicBudgetContentAvailable: Re-registering CTS job", v4, 2u);
       }
 
-      [(HVScheduledTasks *)a1 _registerHarvestTaskWithMinimumLevelOfService:?];
+      [(HVScheduledTasks *)self _registerHarvestTaskWithMinimumLevelOfService:?];
     }
   }
 }
@@ -88,7 +88,7 @@
   return v3;
 }
 
-- (void)_registerHarvestTaskWithMinimumLevelOfService:(uint64_t)a1
+- (void)_registerHarvestTaskWithMinimumLevelOfService:(uint64_t)service
 {
   v2 = a2;
   v17 = *MEMORY[0x277D85DE8];
@@ -114,16 +114,16 @@
   }
 
   v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", @"com.apple.proactive.ProactiveHarvesting", v5];
-  v7 = [v6 UTF8String];
+  uTF8String = [v6 UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __66__HVScheduledTasks__registerHarvestTaskWithMinimumLevelOfService___block_invoke;
   handler[3] = &unk_278969CE0;
   v14 = v2;
-  v12 = a1;
+  serviceCopy = service;
   v13 = sel__registerHarvestTaskWithMinimumLevelOfService_;
   v11 = v5;
-  xpc_activity_register(v7, v4, handler);
+  xpc_activity_register(uTF8String, v4, handler);
   v8 = hv_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {

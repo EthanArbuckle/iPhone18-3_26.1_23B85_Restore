@@ -1,36 +1,36 @@
 @interface VKAnalyticsInteractionEvent
-- (VKAnalyticsInteractionEvent)initWithEventType:(int64_t)a3 analysis:(id)a4 source:(int64_t)a5 interactionTypes:(unint64_t)a6 buttonActive:(BOOL)a7 customIdentifier:(id)a8;
+- (VKAnalyticsInteractionEvent)initWithEventType:(int64_t)type analysis:(id)analysis source:(int64_t)source interactionTypes:(unint64_t)types buttonActive:(BOOL)active customIdentifier:(id)identifier;
 - (id)coreAnalyticsDictionary;
 - (id)description;
 @end
 
 @implementation VKAnalyticsInteractionEvent
 
-- (VKAnalyticsInteractionEvent)initWithEventType:(int64_t)a3 analysis:(id)a4 source:(int64_t)a5 interactionTypes:(unint64_t)a6 buttonActive:(BOOL)a7 customIdentifier:(id)a8
+- (VKAnalyticsInteractionEvent)initWithEventType:(int64_t)type analysis:(id)analysis source:(int64_t)source interactionTypes:(unint64_t)types buttonActive:(BOOL)active customIdentifier:(id)identifier
 {
-  v14 = a4;
+  analysisCopy = analysis;
   v23.receiver = self;
   v23.super_class = VKAnalyticsInteractionEvent;
-  v15 = [(VKAnalyticsEvent *)&v23 initWithCustomIdentifier:a8];
+  v15 = [(VKAnalyticsEvent *)&v23 initWithCustomIdentifier:identifier];
   v16 = v15;
   if (v15)
   {
-    v15->_eventType = a3;
-    v15->_analysisButtonActive = a7;
-    v15->_source = a5;
-    v15->_activeInteractionTypes = a6;
-    v17 = [v14 text];
-    v16->_textLength = [v17 length];
+    v15->_eventType = type;
+    v15->_analysisButtonActive = active;
+    v15->_source = source;
+    v15->_activeInteractionTypes = types;
+    text = [analysisCopy text];
+    v16->_textLength = [text length];
 
-    v18 = [v14 textDataDetectorElements];
-    v16->_ddCount = [v18 count];
+    textDataDetectorElements = [analysisCopy textDataDetectorElements];
+    v16->_ddCount = [textDataDetectorElements count];
 
-    v19 = [v14 mrcDataDetectorElements];
-    v16->_mrcCount = [v19 count];
+    mrcDataDetectorElements = [analysisCopy mrcDataDetectorElements];
+    v16->_mrcCount = [mrcDataDetectorElements count];
 
-    v20 = [v14 visualSearchResult];
-    v21 = [v20 resultItems];
-    v16->_vsCount = [v21 count];
+    visualSearchResult = [analysisCopy visualSearchResult];
+    resultItems = [visualSearchResult resultItems];
+    v16->_vsCount = [resultItems count];
   }
 
   return v16;
@@ -67,8 +67,8 @@
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsEvent isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   v16[8] = v10;
   v15[9] = @"bundleIdentifier";
-  v11 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v16[9] = v11;
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v16[9] = bundleIdentifier;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:10];
 
   return v12;
@@ -89,8 +89,8 @@
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VKAnalyticsInteractionEvent mrcCount](self, "mrcCount")}];
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VKAnalyticsInteractionEvent vsCount](self, "vsCount")}];
   v10 = VKMUIStringForBool([(VKAnalyticsEvent *)self isPerformingAutomatedTest]);
-  v11 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v15 = [v14 stringWithFormat:@"%@ \n eventType: %@ \n activeInteractionTypes: %@ \n source: %@ \n analysisButtonActive: %@ \n textLength: %@ \n ddCount: %@ \n mrcCount: %@ \n vsCount: %@ \n automatedTest: %@ \n bundleIdentifier: %@", v16, v3, v4, v5, v13, v6, v7, v8, v9, v10, v11];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v15 = [v14 stringWithFormat:@"%@ \n eventType: %@ \n activeInteractionTypes: %@ \n source: %@ \n analysisButtonActive: %@ \n textLength: %@ \n ddCount: %@ \n mrcCount: %@ \n vsCount: %@ \n automatedTest: %@ \n bundleIdentifier: %@", v16, v3, v4, v5, v13, v6, v7, v8, v9, v10, bundleIdentifier];
 
   return v15;
 }

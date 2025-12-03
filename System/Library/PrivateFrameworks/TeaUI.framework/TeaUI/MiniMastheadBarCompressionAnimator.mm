@@ -1,37 +1,37 @@
 @interface MiniMastheadBarCompressionAnimator
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4;
-- (double)maximumBarHeightForTraitCollection:(id)a3;
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed;
+- (double)maximumBarHeightForTraitCollection:(id)collection;
 - (void)detached;
-- (void)updateWithPercentage:(double)a3;
+- (void)updateWithPercentage:(double)percentage;
 @end
 
 @implementation MiniMastheadBarCompressionAnimator
 
 - (void)detached
 {
-  v2 = self;
+  selfCopy = self;
   MiniMastheadBarCompressionAnimator.detached()();
 }
 
-- (void)updateWithPercentage:(double)a3
+- (void)updateWithPercentage:(double)percentage
 {
-  v4 = self;
-  MiniMastheadBarCompressionAnimator.update(withPercentage:)(a3);
+  selfCopy = self;
+  MiniMastheadBarCompressionAnimator.update(withPercentage:)(percentage);
 }
 
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed
 {
-  v6 = a3;
-  v7 = self;
-  v8 = MiniMastheadBarCompressionAnimator.animationShouldBegin(for:currentlyFullyCompressed:)(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = MiniMastheadBarCompressionAnimator.animationShouldBegin(for:currentlyFullyCompressed:)(viewCopy, compressed);
 
   return v8;
 }
 
-- (double)maximumBarHeightForTraitCollection:(id)a3
+- (double)maximumBarHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = MiniMastheadBarCompressionAnimator.maximumBarHeight(for:)();
 
   return v6;

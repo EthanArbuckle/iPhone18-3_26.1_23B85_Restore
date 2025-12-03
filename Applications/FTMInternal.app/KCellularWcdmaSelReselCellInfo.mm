@@ -1,32 +1,32 @@
 @interface KCellularWcdmaSelReselCellInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDuplexMode:(id)a3;
+- (int)StringAsDuplexMode:(id)mode;
 - (int)duplexMode;
 - (unint64_t)hash;
-- (unsigned)multiBandInfoAtIndex:(unint64_t)a3;
-- (void)addEutraPrioInfo:(id)a3;
-- (void)addGsmPrioInfo:(id)a3;
-- (void)addUtraPrioInfo:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)multiBandInfoAtIndex:(unint64_t)index;
+- (void)addEutraPrioInfo:(id)info;
+- (void)addGsmPrioInfo:(id)info;
+- (void)addUtraPrioInfo:(id)info;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellBarred:(BOOL)a3;
-- (void)setHasDuplexMode:(BOOL)a3;
-- (void)setHasEdchCapable:(BOOL)a3;
-- (void)setHasFachMeasOccInfoPresent:(BOOL)a3;
-- (void)setHasHsdpaCapable:(BOOL)a3;
-- (void)setHasImsEmergencySupport:(BOOL)a3;
-- (void)setHasSCellPrio:(BOOL)a3;
-- (void)setHasSIntersearch:(BOOL)a3;
-- (void)setHasSIntrasearch:(BOOL)a3;
-- (void)setHasSQual:(BOOL)a3;
-- (void)setHasSRxlev:(BOOL)a3;
-- (void)setHasSSearchRat:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellBarred:(BOOL)barred;
+- (void)setHasDuplexMode:(BOOL)mode;
+- (void)setHasEdchCapable:(BOOL)capable;
+- (void)setHasFachMeasOccInfoPresent:(BOOL)present;
+- (void)setHasHsdpaCapable:(BOOL)capable;
+- (void)setHasImsEmergencySupport:(BOOL)support;
+- (void)setHasSCellPrio:(BOOL)prio;
+- (void)setHasSIntersearch:(BOOL)intersearch;
+- (void)setHasSIntrasearch:(BOOL)intrasearch;
+- (void)setHasSQual:(BOOL)qual;
+- (void)setHasSRxlev:(BOOL)rxlev;
+- (void)setHasSSearchRat:(BOOL)rat;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularWcdmaSelReselCellInfo
@@ -39,9 +39,9 @@
   [(KCellularWcdmaSelReselCellInfo *)&v3 dealloc];
 }
 
-- (void)setHasHsdpaCapable:(BOOL)a3
+- (void)setHasHsdpaCapable:(BOOL)capable
 {
-  if (a3)
+  if (capable)
   {
     v3 = 32;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasEdchCapable:(BOOL)a3
+- (void)setHasEdchCapable:(BOOL)capable
 {
-  if (a3)
+  if (capable)
   {
     v3 = 8;
   }
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)setHasDuplexMode:(BOOL)a3
+- (void)setHasDuplexMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -97,39 +97,39 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsDuplexMode:(id)a3
+- (int)StringAsDuplexMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FDD"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"FDD"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"TDD"];
+    v4 = [modeCopy isEqualToString:@"TDD"];
   }
 
   return v4;
 }
 
-- (unsigned)multiBandInfoAtIndex:(unint64_t)a3
+- (unsigned)multiBandInfoAtIndex:(unint64_t)index
 {
   p_multiBandInfos = &self->_multiBandInfos;
   count = self->_multiBandInfos.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_multiBandInfos->list[a3];
+  return p_multiBandInfos->list[index];
 }
 
-- (void)setHasImsEmergencySupport:(BOOL)a3
+- (void)setHasImsEmergencySupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 64;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasCellBarred:(BOOL)a3
+- (void)setHasCellBarred:(BOOL)barred
 {
-  if (a3)
+  if (barred)
   {
     v3 = 2;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasFachMeasOccInfoPresent:(BOOL)a3
+- (void)setHasFachMeasOccInfoPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 16;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSRxlev:(BOOL)a3
+- (void)setHasSRxlev:(BOOL)rxlev
 {
-  if (a3)
+  if (rxlev)
   {
     v3 = 2048;
   }
@@ -187,9 +187,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasSQual:(BOOL)a3
+- (void)setHasSQual:(BOOL)qual
 {
-  if (a3)
+  if (qual)
   {
     v3 = 1024;
   }
@@ -202,9 +202,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSIntrasearch:(BOOL)a3
+- (void)setHasSIntrasearch:(BOOL)intrasearch
 {
-  if (a3)
+  if (intrasearch)
   {
     v3 = 512;
   }
@@ -217,9 +217,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasSIntersearch:(BOOL)a3
+- (void)setHasSIntersearch:(BOOL)intersearch
 {
-  if (a3)
+  if (intersearch)
   {
     v3 = 256;
   }
@@ -232,9 +232,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSSearchRat:(BOOL)a3
+- (void)setHasSSearchRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 4096;
   }
@@ -247,9 +247,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasSCellPrio:(BOOL)a3
+- (void)setHasSCellPrio:(BOOL)prio
 {
-  if (a3)
+  if (prio)
   {
     v3 = 128;
   }
@@ -262,63 +262,63 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)addEutraPrioInfo:(id)a3
+- (void)addEutraPrioInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   eutraPrioInfos = self->_eutraPrioInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!eutraPrioInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_eutraPrioInfos;
     self->_eutraPrioInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     eutraPrioInfos = self->_eutraPrioInfos;
   }
 
-  [(NSMutableArray *)eutraPrioInfos addObject:v4];
+  [(NSMutableArray *)eutraPrioInfos addObject:infoCopy];
 }
 
-- (void)addUtraPrioInfo:(id)a3
+- (void)addUtraPrioInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   utraPrioInfos = self->_utraPrioInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!utraPrioInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_utraPrioInfos;
     self->_utraPrioInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     utraPrioInfos = self->_utraPrioInfos;
   }
 
-  [(NSMutableArray *)utraPrioInfos addObject:v4];
+  [(NSMutableArray *)utraPrioInfos addObject:infoCopy];
 }
 
-- (void)addGsmPrioInfo:(id)a3
+- (void)addGsmPrioInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   gsmPrioInfos = self->_gsmPrioInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!gsmPrioInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_gsmPrioInfos;
     self->_gsmPrioInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     gsmPrioInfos = self->_gsmPrioInfos;
   }
 
-  [(NSMutableArray *)gsmPrioInfos addObject:v4];
+  [(NSMutableArray *)gsmPrioInfos addObject:infoCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x2000;
   }
@@ -336,8 +336,8 @@
   v7.receiver = self;
   v7.super_class = KCellularWcdmaSelReselCellInfo;
   v3 = [(KCellularWcdmaSelReselCellInfo *)&v7 description];
-  v4 = [(KCellularWcdmaSelReselCellInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularWcdmaSelReselCellInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -572,8 +572,8 @@ LABEL_25:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v52 objects:v58 count:16];
@@ -607,8 +607,8 @@ LABEL_25:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v48 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation2 = [*(*(&v48 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation2];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v48 objects:v57 count:16];
@@ -642,8 +642,8 @@ LABEL_25:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v44 + 1) + 8 * k) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation3 = [*(*(&v44 + 1) + 8 * k) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation3];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v44 objects:v56 count:16];
@@ -664,9 +664,9 @@ LABEL_25:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -952,14 +952,14 @@ LABEL_21:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_timestamp;
-    *(v4 + 64) |= 1u;
+    toCopy[4] = self->_timestamp;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -970,8 +970,8 @@ LABEL_3:
       }
 
 LABEL_39:
-      *(v4 + 12) = self->_edchCapable;
-      *(v4 + 64) |= 8u;
+      *(toCopy + 12) = self->_edchCapable;
+      *(toCopy + 64) |= 8u;
       if ((*&self->_has & 4) == 0)
       {
         goto LABEL_6;
@@ -986,8 +986,8 @@ LABEL_39:
     goto LABEL_3;
   }
 
-  *(v4 + 20) = self->_hsdpaCapable;
-  *(v4 + 64) |= 0x20u;
+  *(toCopy + 20) = self->_hsdpaCapable;
+  *(toCopy + 64) |= 0x20u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -998,19 +998,19 @@ LABEL_4:
   if ((has & 4) != 0)
   {
 LABEL_5:
-    *(v4 + 11) = self->_duplexMode;
-    *(v4 + 64) |= 4u;
+    *(toCopy + 11) = self->_duplexMode;
+    *(toCopy + 64) |= 4u;
   }
 
 LABEL_6:
-  v22 = v4;
+  v22 = toCopy;
   if ([(KCellularWcdmaSelReselCellInfo *)self multiBandInfosCount])
   {
     [v22 clearMultiBandInfos];
-    v6 = [(KCellularWcdmaSelReselCellInfo *)self multiBandInfosCount];
-    if (v6)
+    multiBandInfosCount = [(KCellularWcdmaSelReselCellInfo *)self multiBandInfosCount];
+    if (multiBandInfosCount)
     {
-      v7 = v6;
+      v7 = multiBandInfosCount;
       for (i = 0; i != v7; ++i)
       {
         [v22 addMultiBandInfo:{-[KCellularWcdmaSelReselCellInfo multiBandInfoAtIndex:](self, "multiBandInfoAtIndex:", i)}];
@@ -1144,10 +1144,10 @@ LABEL_20:
   if ([(KCellularWcdmaSelReselCellInfo *)self eutraPrioInfosCount])
   {
     [v22 clearEutraPrioInfos];
-    v10 = [(KCellularWcdmaSelReselCellInfo *)self eutraPrioInfosCount];
-    if (v10)
+    eutraPrioInfosCount = [(KCellularWcdmaSelReselCellInfo *)self eutraPrioInfosCount];
+    if (eutraPrioInfosCount)
     {
-      v11 = v10;
+      v11 = eutraPrioInfosCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(KCellularWcdmaSelReselCellInfo *)self eutraPrioInfoAtIndex:j];
@@ -1159,10 +1159,10 @@ LABEL_20:
   if ([(KCellularWcdmaSelReselCellInfo *)self utraPrioInfosCount])
   {
     [v22 clearUtraPrioInfos];
-    v14 = [(KCellularWcdmaSelReselCellInfo *)self utraPrioInfosCount];
-    if (v14)
+    utraPrioInfosCount = [(KCellularWcdmaSelReselCellInfo *)self utraPrioInfosCount];
+    if (utraPrioInfosCount)
     {
-      v15 = v14;
+      v15 = utraPrioInfosCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(KCellularWcdmaSelReselCellInfo *)self utraPrioInfoAtIndex:k];
@@ -1174,10 +1174,10 @@ LABEL_20:
   if ([(KCellularWcdmaSelReselCellInfo *)self gsmPrioInfosCount])
   {
     [v22 clearGsmPrioInfos];
-    v18 = [(KCellularWcdmaSelReselCellInfo *)self gsmPrioInfosCount];
-    if (v18)
+    gsmPrioInfosCount = [(KCellularWcdmaSelReselCellInfo *)self gsmPrioInfosCount];
+    if (gsmPrioInfosCount)
     {
-      v19 = v18;
+      v19 = gsmPrioInfosCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(KCellularWcdmaSelReselCellInfo *)self gsmPrioInfoAtIndex:m];
@@ -1193,9 +1193,9 @@ LABEL_20:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1388,7 +1388,7 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v36 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v36 + 1) + 8 * i) copyWithZone:zone];
         [v6 addEutraPrioInfo:v14];
       }
 
@@ -1417,7 +1417,7 @@ LABEL_16:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v32 + 1) + 8 * j) copyWithZone:a3];
+        v20 = [*(*(&v32 + 1) + 8 * j) copyWithZone:zone];
         [v6 addUtraPrioInfo:v20];
       }
 
@@ -1446,7 +1446,7 @@ LABEL_16:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v28 + 1) + 8 * k) copyWithZone:{a3, v28}];
+        v26 = [*(*(&v28 + 1) + 8 * k) copyWithZone:{zone, v28}];
         [v6 addGsmPrioInfo:v26];
       }
 
@@ -1465,19 +1465,19 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_79;
   }
 
   has = self->_has;
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_79;
     }
@@ -1490,7 +1490,7 @@ LABEL_16:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_hsdpaCapable != *(v4 + 20))
+    if ((v6 & 0x20) == 0 || self->_hsdpaCapable != *(equalCopy + 20))
     {
       goto LABEL_79;
     }
@@ -1503,7 +1503,7 @@ LABEL_16:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_edchCapable != *(v4 + 12))
+    if ((v6 & 8) == 0 || self->_edchCapable != *(equalCopy + 12))
     {
       goto LABEL_79;
     }
@@ -1516,7 +1516,7 @@ LABEL_16:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_duplexMode != *(v4 + 11))
+    if ((v6 & 4) == 0 || self->_duplexMode != *(equalCopy + 11))
     {
       goto LABEL_79;
     }
@@ -1535,10 +1535,10 @@ LABEL_79:
   }
 
   v7 = self->_has;
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if ((v7 & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_imsEmergencySupport != *(v4 + 21))
+    if ((v8 & 0x40) == 0 || self->_imsEmergencySupport != *(equalCopy + 21))
     {
       goto LABEL_79;
     }
@@ -1551,7 +1551,7 @@ LABEL_79:
 
   if ((v7 & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_cellBarred != *(v4 + 10))
+    if ((v8 & 2) == 0 || self->_cellBarred != *(equalCopy + 10))
     {
       goto LABEL_79;
     }
@@ -1564,7 +1564,7 @@ LABEL_79:
 
   if ((v7 & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_fachMeasOccInfoPresent != *(v4 + 16))
+    if ((v8 & 0x10) == 0 || self->_fachMeasOccInfoPresent != *(equalCopy + 16))
     {
       goto LABEL_79;
     }
@@ -1577,72 +1577,72 @@ LABEL_79:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 64) & 0x800) == 0 || self->_sRxlev != *(v4 + 26))
+    if ((*(equalCopy + 64) & 0x800) == 0 || self->_sRxlev != *(equalCopy + 26))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 64) & 0x800) != 0)
+  else if ((*(equalCopy + 64) & 0x800) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 64) & 0x400) == 0 || self->_sQual != *(v4 + 25))
+    if ((*(equalCopy + 64) & 0x400) == 0 || self->_sQual != *(equalCopy + 25))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 64) & 0x400) != 0)
+  else if ((*(equalCopy + 64) & 0x400) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 64) & 0x200) == 0 || self->_sIntrasearch != *(v4 + 24))
+    if ((*(equalCopy + 64) & 0x200) == 0 || self->_sIntrasearch != *(equalCopy + 24))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 64) & 0x200) != 0)
+  else if ((*(equalCopy + 64) & 0x200) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 64) & 0x100) == 0 || self->_sIntersearch != *(v4 + 23))
+    if ((*(equalCopy + 64) & 0x100) == 0 || self->_sIntersearch != *(equalCopy + 23))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 64) & 0x100) != 0)
+  else if ((*(equalCopy + 64) & 0x100) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 64) & 0x1000) == 0 || self->_sSearchRat != *(v4 + 27))
+    if ((*(equalCopy + 64) & 0x1000) == 0 || self->_sSearchRat != *(equalCopy + 27))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 64) & 0x1000) != 0)
+  else if ((*(equalCopy + 64) & 0x1000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((v7 & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_sCellPrio != *(v4 + 22))
+    if ((v8 & 0x80) == 0 || self->_sCellPrio != *(equalCopy + 22))
     {
       goto LABEL_79;
     }
@@ -1654,13 +1654,13 @@ LABEL_79:
   }
 
   eutraPrioInfos = self->_eutraPrioInfos;
-  if (eutraPrioInfos | *(v4 + 7) && ![(NSMutableArray *)eutraPrioInfos isEqual:?])
+  if (eutraPrioInfos | *(equalCopy + 7) && ![(NSMutableArray *)eutraPrioInfos isEqual:?])
   {
     goto LABEL_79;
   }
 
   utraPrioInfos = self->_utraPrioInfos;
-  if (utraPrioInfos | *(v4 + 15))
+  if (utraPrioInfos | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)utraPrioInfos isEqual:?])
     {
@@ -1669,7 +1669,7 @@ LABEL_79:
   }
 
   gsmPrioInfos = self->_gsmPrioInfos;
-  if (gsmPrioInfos | *(v4 + 9))
+  if (gsmPrioInfos | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)gsmPrioInfos isEqual:?])
     {
@@ -1679,7 +1679,7 @@ LABEL_79:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 64) & 0x2000) == 0 || self->_subsId != *(v4 + 28))
+    if ((*(equalCopy + 64) & 0x2000) == 0 || self->_subsId != *(equalCopy + 28))
     {
       goto LABEL_79;
     }
@@ -1689,7 +1689,7 @@ LABEL_79:
 
   else
   {
-    v12 = (*(v4 + 64) & 0x2000) == 0;
+    v12 = (*(equalCopy + 64) & 0x2000) == 0;
   }
 
 LABEL_80:
@@ -1888,16 +1888,16 @@ LABEL_29:
   return v22 ^ v23 ^ v21 ^ v20 ^ v18 ^ v17 ^ v16 ^ v15 ^ v5 ^ v19 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 64);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 64);
   if (v6)
   {
-    self->_timestamp = *(v4 + 4);
+    self->_timestamp = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v6 = *(v4 + 64);
+    v6 = *(fromCopy + 64);
     if ((v6 & 0x20) == 0)
     {
 LABEL_3:
@@ -1915,9 +1915,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_hsdpaCapable = *(v4 + 20);
+  self->_hsdpaCapable = *(fromCopy + 20);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 64);
+  v6 = *(fromCopy + 64);
   if ((v6 & 8) == 0)
   {
 LABEL_4:
@@ -1930,20 +1930,20 @@ LABEL_4:
   }
 
 LABEL_45:
-  self->_edchCapable = *(v4 + 12);
+  self->_edchCapable = *(fromCopy + 12);
   *&self->_has |= 8u;
-  if ((*(v4 + 64) & 4) != 0)
+  if ((*(fromCopy + 64) & 4) != 0)
   {
 LABEL_5:
-    self->_duplexMode = *(v4 + 11);
+    self->_duplexMode = *(fromCopy + 11);
     *&self->_has |= 4u;
   }
 
 LABEL_6:
-  v7 = [v4 multiBandInfosCount];
-  if (v7)
+  multiBandInfosCount = [fromCopy multiBandInfosCount];
+  if (multiBandInfosCount)
   {
-    v8 = v7;
+    v8 = multiBandInfosCount;
     for (i = 0; i != v8; ++i)
     {
       -[KCellularWcdmaSelReselCellInfo addMultiBandInfo:](self, "addMultiBandInfo:", [v5 multiBandInfoAtIndex:i]);

@@ -1,26 +1,26 @@
 @interface AXForceTouchController
 - (AXForceTouchController)init;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_previewForConfigurationWithIdentifier:(id)a3 inTableView:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_previewForConfigurationWithIdentifier:(id)identifier inTableView:(id)view;
 - (id)_specsForLongPressTiming;
 - (id)_specsForMainSwitch;
 - (id)_specsForSensitivity;
-- (id)_specsForTester:(BOOL)a3;
-- (id)forceTouchEnabled:(id)a3;
-- (id)forceTouchSensitivity:(id)a3;
-- (id)forceTouchTiming:(id)a3;
+- (id)_specsForTester:(BOOL)tester;
+- (id)forceTouchEnabled:(id)enabled;
+- (id)forceTouchSensitivity:(id)sensitivity;
+- (id)forceTouchTiming:(id)timing;
 - (id)specifiers;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)tableView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)tableView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)setForceTouchEnabled:(id)a3 specifier:(id)a4;
-- (void)setForceTouchSensitivity:(id)a3 specifier:(id)a4;
-- (void)setForceTouchSettingsEnabled:(BOOL)a3;
-- (void)setForceTouchTiming:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)setForceTouchEnabled:(id)enabled specifier:(id)specifier;
+- (void)setForceTouchSensitivity:(id)sensitivity specifier:(id)specifier;
+- (void)setForceTouchSettingsEnabled:(BOOL)enabled;
+- (void)setForceTouchTiming:(id)timing specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation AXForceTouchController
@@ -59,23 +59,23 @@
     self->_forceTouchSettingsEnabled = _AXSForceTouchEnabled() != 0;
     if ([(AXForceTouchController *)self _deviceHasForcePress3dTouch])
     {
-      v6 = [(AXForceTouchController *)self _specsForMainSwitch];
-      [v5 addObjectsFromArray:v6];
+      _specsForMainSwitch = [(AXForceTouchController *)self _specsForMainSwitch];
+      [v5 addObjectsFromArray:_specsForMainSwitch];
     }
 
     v7 = +[NSMutableArray array];
     if ([(AXForceTouchController *)self _deviceHasForcePress3dTouch])
     {
-      v8 = [(AXForceTouchController *)self _specsForSensitivity];
-      [v7 addObjectsFromArray:v8];
+      _specsForSensitivity = [(AXForceTouchController *)self _specsForSensitivity];
+      [v7 addObjectsFromArray:_specsForSensitivity];
       if (self->_forceTouchSettingsEnabled)
       {
-        [v5 addObjectsFromArray:v8];
+        [v5 addObjectsFromArray:_specsForSensitivity];
       }
     }
 
-    v9 = [(AXForceTouchController *)self _specsForLongPressTiming];
-    [v5 addObjectsFromArray:v9];
+    _specsForLongPressTiming = [(AXForceTouchController *)self _specsForLongPressTiming];
+    [v5 addObjectsFromArray:_specsForLongPressTiming];
 
     v10 = [(AXForceTouchController *)self _specsForTester:[(AXForceTouchController *)self _deviceHasForcePress3dTouch]];
     [v5 addObjectsFromArray:v10];
@@ -184,11 +184,11 @@
   return v3;
 }
 
-- (id)_specsForTester:(BOOL)a3
+- (id)_specsForTester:(BOOL)tester
 {
-  v3 = a3;
+  testerCopy = tester;
   v5 = +[NSMutableArray array];
-  if (v3)
+  if (testerCopy)
   {
     v6 = @"FORCE_TOUCH_SENSITIVITY_TEST";
   }
@@ -198,7 +198,7 @@
     v6 = @"HAPTIC_TOUCH_TIMING_TEST";
   }
 
-  if (v3)
+  if (testerCopy)
   {
     v7 = @"FORCE_TOUCH_SENSITIVITY_TEST_FOOTER_TEXT";
   }
@@ -223,77 +223,77 @@
   return v5;
 }
 
-- (id)forceTouchEnabled:(id)a3
+- (id)forceTouchEnabled:(id)enabled
 {
   v3 = _AXSForceTouchEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setForceTouchEnabled:(id)a3 specifier:(id)a4
+- (void)setForceTouchEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   [(AXForceTouchController *)self setShouldIgnoreNextEnabledChangedNotification:1];
-  [v5 BOOLValue];
+  [enabledCopy BOOLValue];
   _AXSSetForceTouchEnabled();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [(AXForceTouchController *)self setForceTouchSettingsEnabled:v6];
+  [(AXForceTouchController *)self setForceTouchSettingsEnabled:bOOLValue];
 }
 
-- (void)setForceTouchTiming:(id)a3 specifier:(id)a4
+- (void)setForceTouchTiming:(id)timing specifier:(id)specifier
 {
-  [a3 floatValue];
+  [timing floatValue];
 
   _AXSSetForceTouchTimeDuration();
 }
 
-- (id)forceTouchTiming:(id)a3
+- (id)forceTouchTiming:(id)timing
 {
   v3 = _AXSForceTouchTimeDuration();
 
   return [NSNumber numberWithUnsignedInt:v3];
 }
 
-- (void)setForceTouchSensitivity:(id)a3 specifier:(id)a4
+- (void)setForceTouchSensitivity:(id)sensitivity specifier:(id)specifier
 {
-  v4 = [a3 floatValue];
+  floatValue = [sensitivity floatValue];
 
-  __AXSSetForceTouchSensitivity(v4);
+  __AXSSetForceTouchSensitivity(floatValue);
 }
 
-- (id)forceTouchSensitivity:(id)a3
+- (id)forceTouchSensitivity:(id)sensitivity
 {
   _AXSForceTouchSensitivity();
 
   return [NSNumber numberWithFloat:?];
 }
 
-- (void)setForceTouchSettingsEnabled:(BOOL)a3
+- (void)setForceTouchSettingsEnabled:(BOOL)enabled
 {
-  if (self->_forceTouchSettingsEnabled != a3)
+  if (self->_forceTouchSettingsEnabled != enabled)
   {
-    v4 = a3;
-    self->_forceTouchSettingsEnabled = a3;
-    v6 = [(AXForceTouchController *)self forceTouchSettingItems];
-    v7 = v6;
-    if (v4)
+    enabledCopy = enabled;
+    self->_forceTouchSettingsEnabled = enabled;
+    forceTouchSettingItems = [(AXForceTouchController *)self forceTouchSettingItems];
+    v7 = forceTouchSettingItems;
+    if (enabledCopy)
     {
-      [(AXForceTouchController *)self insertContiguousSpecifiers:v6 afterSpecifierID:@"ForceTouchAccessibilityMainSwitch" animated:1];
+      [(AXForceTouchController *)self insertContiguousSpecifiers:forceTouchSettingItems afterSpecifierID:@"ForceTouchAccessibilityMainSwitch" animated:1];
     }
 
     else
     {
-      [(AXForceTouchController *)self removeContiguousSpecifiers:v6 animated:1];
+      [(AXForceTouchController *)self removeContiguousSpecifiers:forceTouchSettingItems animated:1];
     }
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXForceTouchController *)self specifierAtIndex:[(AXForceTouchController *)self indexForIndexPath:v7]];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXForceTouchController *)self specifierAtIndex:[(AXForceTouchController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:PSCellClassKey];
   v10 = objc_opt_class();
 
@@ -306,22 +306,22 @@
   {
     v14.receiver = self;
     v14.super_class = AXForceTouchController;
-    [(AXForceTouchController *)&v14 tableView:v6 heightForRowAtIndexPath:v7];
+    [(AXForceTouchController *)&v14 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v12 = v11;
   }
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = AXForceTouchController;
-  v6 = a4;
-  [(AXForceTouchController *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(AXForceTouchController *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(AXForceTouchController *)self specifierAtIndex:[(AXForceTouchController *)self indexOfGroup:v7]];
+  v8 = [(AXForceTouchController *)self specifierAtIndex:[(AXForceTouchController *)self indexOfGroup:section]];
   v9 = [v8 propertyForKey:PSIDKey];
   v10 = [v9 isEqualToString:@"timingGroup"];
 
@@ -335,11 +335,11 @@
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXForceTouchController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXForceTouchController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSIDKey];
   v10 = [v9 isEqualToString:@"AXForceTouchSensitivityTestCell"];
 
@@ -352,29 +352,29 @@
   {
     v13.receiver = self;
     v13.super_class = AXForceTouchController;
-    v11 = [(AXForceTouchController *)&v13 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v11 = [(AXForceTouchController *)&v13 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  v11 = [(AXForceTouchController *)self table];
-  v12 = [v11 cellForRowAtIndexPath:v10];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  pathCopy = path;
+  table = [(AXForceTouchController *)self table];
+  v12 = [table cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 flowersView];
-    [v9 convertPoint:v13 toView:{x, y}];
+    flowersView = [v12 flowersView];
+    [viewCopy convertPoint:flowersView toView:{x, y}];
     v15 = v14;
     v17 = v16;
-    [v13 bounds];
+    [flowersView bounds];
     v21.x = v15;
     v21.y = v17;
     if (CGRectContainsPoint(v22, v21))
@@ -403,35 +403,35 @@ AXForceTouchSensitivityTestViewController *__cdecl __84__AXForceTouchController_
   return v1;
 }
 
-- (id)tableView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)tableView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(AXForceTouchController *)self _previewForConfigurationWithIdentifier:v7 inTableView:v6];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  v8 = [(AXForceTouchController *)self _previewForConfigurationWithIdentifier:identifier inTableView:viewCopy];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(AXForceTouchController *)self _previewForConfigurationWithIdentifier:v7 inTableView:v6];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  v8 = [(AXForceTouchController *)self _previewForConfigurationWithIdentifier:identifier inTableView:viewCopy];
 
   return v8;
 }
 
-- (id)_previewForConfigurationWithIdentifier:(id)a3 inTableView:(id)a4
+- (id)_previewForConfigurationWithIdentifier:(id)identifier inTableView:(id)view
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"_TestContextMenuConfigurationIdentifier"])
+  viewCopy = view;
+  if ([identifier isEqualToString:@"_TestContextMenuConfigurationIdentifier"])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v5 visibleCells];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    visibleCells = [viewCopy visibleCells];
+    v7 = [visibleCells countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -441,7 +441,7 @@ AXForceTouchSensitivityTestViewController *__cdecl __84__AXForceTouchController_
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visibleCells);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
@@ -453,7 +453,7 @@ AXForceTouchSensitivityTestViewController *__cdecl __84__AXForceTouchController_
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [visibleCells countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -465,37 +465,37 @@ AXForceTouchSensitivityTestViewController *__cdecl __84__AXForceTouchController_
 
 LABEL_13:
 
-    v11 = [v7 window];
+    window = [v7 window];
 
-    if (v11)
+    if (window)
     {
-      v12 = [v7 flowersView];
-      v11 = [[UITargetedPreview alloc] initWithView:v12];
+      flowersView = [v7 flowersView];
+      window = [[UITargetedPreview alloc] initWithView:flowersView];
     }
   }
 
   else
   {
-    v11 = 0;
+    window = 0;
   }
 
-  return v11;
+  return window;
 }
 
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v7 = [v6 previewViewController];
-  v8 = v7;
-  if (v7)
+  animatorCopy = animator;
+  previewViewController = [animatorCopy previewViewController];
+  v8 = previewViewController;
+  if (previewViewController)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __94__AXForceTouchController_tableView_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
     v9[3] = &unk_255538;
     v9[4] = self;
-    v10 = v7;
-    [v6 addAnimations:v9];
+    v10 = previewViewController;
+    [animatorCopy addAnimations:v9];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface RBExtensionDataProvider
-- (BOOL)configureLaunchContext:(id)a3 error:(id *)a4;
+- (BOOL)configureLaunchContext:(id)context error:(id *)error;
 @end
 
 @implementation RBExtensionDataProvider
 
-- (BOOL)configureLaunchContext:(id)a3 error:(id *)a4
+- (BOOL)configureLaunchContext:(id)context error:(id *)error
 {
   if (MEMORY[0x28220A7A8])
   {

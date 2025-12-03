@@ -1,6 +1,6 @@
 @interface NTAggregationBudgetInfo
 - (NTAggregationBudgetInfo)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NTAggregationBudgetInfo
@@ -12,11 +12,11 @@
   return [(NTAggregationBudgetInfo *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(NTAggregationBudgetInfo *)self sectionSlotCostInfo];
-  [v4 setSectionSlotCostInfo:v5];
+  sectionSlotCostInfo = [(NTAggregationBudgetInfo *)self sectionSlotCostInfo];
+  [v4 setSectionSlotCostInfo:sectionSlotCostInfo];
 
   [v4 setRespectMinMaxLimit:{-[NTAggregationBudgetInfo respectMinMaxLimit](self, "respectMinMaxLimit")}];
   [(NTAggregationBudgetInfo *)self slotsLimit];

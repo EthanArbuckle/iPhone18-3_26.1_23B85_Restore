@@ -1,42 +1,42 @@
 @interface SBSystemApertureSecureElementRenderingOverlayViewController
 - (SBSystemApertureSecureElementRenderingOverlayDelegate)delegate;
-- (SBSystemApertureSecureElementRenderingOverlayViewController)initWithDelegate:(id)a3;
+- (SBSystemApertureSecureElementRenderingOverlayViewController)initWithDelegate:(id)delegate;
 - (id)_componentNamesToSecureStateMap;
-- (id)_compositeStateNameForComponentStateAndLayoutMode:(id)a3 layoutMode:(int64_t)a4;
+- (id)_compositeStateNameForComponentStateAndLayoutMode:(id)mode layoutMode:(int64_t)layoutMode;
 - (id)currentSecureFlipBookRenderingContext;
-- (void)_applyFlipBookComponentStatesForSecureElementPreferences:(id)a3;
+- (void)_applyFlipBookComponentStatesForSecureElementPreferences:(id)preferences;
 - (void)_decrementActiveTransitionCount;
-- (void)_ensureFlipBooksAreLoadedForSecureElementPreferences:(id)a3;
+- (void)_ensureFlipBooksAreLoadedForSecureElementPreferences:(id)preferences;
 - (void)_notifyRegisteredElementsOfActiveStatesAndConfigurations;
-- (void)_updateActiveComponent:(id)a3 withState:(id)a4;
-- (void)_updateAppliedComponent:(id)a3 withState:(id)a4;
-- (void)handleUpdatesForSecureElementPreferences:(id)a3;
+- (void)_updateActiveComponent:(id)component withState:(id)state;
+- (void)_updateAppliedComponent:(id)component withState:(id)state;
+- (void)handleUpdatesForSecureElementPreferences:(id)preferences;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBSystemApertureSecureElementRenderingOverlayViewController
 
-- (SBSystemApertureSecureElementRenderingOverlayViewController)initWithDelegate:(id)a3
+- (SBSystemApertureSecureElementRenderingOverlayViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SBSystemApertureSecureElementRenderingOverlayViewController;
   v5 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)handleUpdatesForSecureElementPreferences:(id)a3
+- (void)handleUpdatesForSecureElementPreferences:(id)preferences
 {
-  v4 = a3;
-  [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _ensureFlipBooksAreLoadedForSecureElementPreferences:v4];
-  [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _applyFlipBookComponentStatesForSecureElementPreferences:v4];
+  preferencesCopy = preferences;
+  [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _ensureFlipBooksAreLoadedForSecureElementPreferences:preferencesCopy];
+  [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _applyFlipBookComponentStatesForSecureElementPreferences:preferencesCopy];
 
   [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _notifyRegisteredElementsOfActiveStatesAndConfigurations];
 }
@@ -78,8 +78,8 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
   componentNameToFlipBookName = self->_componentNameToFlipBookName;
   self->_componentNameToFlipBookName = v5;
 
-  v7 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
-  [v7 setUserInteractionEnabled:0];
+  view = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -89,8 +89,8 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(NSMutableDictionary *)self->_installedFlipBooksByName allValues];
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  allValues = [(NSMutableDictionary *)self->_installedFlipBooksByName allValues];
+  v4 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -101,7 +101,7 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
@@ -110,8 +110,8 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
         v12 = v11;
         v14 = v13;
         v16 = v15;
-        v17 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
-        [v17 convertRect:0 fromView:{v10, v12, v14, v16}];
+        view = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
+        [view convertRect:0 fromView:{v10, v12, v14, v16}];
         v19 = v18;
         v21 = v20;
         v23 = v22;
@@ -120,21 +120,21 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
         [v8 setFrame:{v19, v21, v23, v25}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_ensureFlipBooksAreLoadedForSecureElementPreferences:(id)a3
+- (void)_ensureFlipBooksAreLoadedForSecureElementPreferences:(id)preferences
 {
   v74 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 activeSecureElementIdentity];
-  v7 = [v5 requestedConfigurationName];
-  v8 = [v5 layoutDirection];
-  v9 = [v5 orientation];
+  preferencesCopy = preferences;
+  activeSecureElementIdentity = [preferencesCopy activeSecureElementIdentity];
+  requestedConfigurationName = [preferencesCopy requestedConfigurationName];
+  layoutDirection = [preferencesCopy layoutDirection];
+  orientation = [preferencesCopy orientation];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = __116__SBSystemApertureSecureElementRenderingOverlayViewController__ensureFlipBooksAreLoadedForSecureElementPreferences___block_invoke;
@@ -142,16 +142,16 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
   v72[4] = self;
   v10 = MEMORY[0x223D6F7F0](v72);
   v11 = v10;
-  if (v6)
+  if (activeSecureElementIdentity)
   {
     v57 = v10;
     v12 = SBScreenMaximumFramesPerSecond();
-    v13 = [SBSystemApertureSecureElementUtilities flipBookNameAndFallbacksForElement:v6 configurationName:v7 componentIndex:0 layoutDirection:v8 orientation:v9 layoutMode:3 deviceMaxFPS:v12 artworkSubtype:SBFEffectiveArtworkSubtype()];
-    v14 = [v5 requestedComponentsToStates];
-    v60 = [v14 allKeys];
+    v13 = [SBSystemApertureSecureElementUtilities flipBookNameAndFallbacksForElement:activeSecureElementIdentity configurationName:requestedConfigurationName componentIndex:0 layoutDirection:layoutDirection orientation:orientation layoutMode:3 deviceMaxFPS:v12 artworkSubtype:SBFEffectiveArtworkSubtype()];
+    requestedComponentsToStates = [preferencesCopy requestedComponentsToStates];
+    allKeys = [requestedComponentsToStates allKeys];
 
-    v56 = [v13 firstObject];
-    v15 = [v56 isEqualToString:self->_loadedBaseFlipBookName];
+    firstObject = [v13 firstObject];
+    v15 = [firstObject isEqualToString:self->_loadedBaseFlipBookName];
     if (self->_loadedBaseFlipBookIsAFallback)
     {
       v16 = [v13 containsObject:self->_loadedBaseFlipBookName];
@@ -164,46 +164,46 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
 
     if (((v15 | v16) & 1) == 0)
     {
-      v59 = v7;
+      v59 = requestedConfigurationName;
       v57[2]();
       v55 = v13;
       v17 = [[SBSASecureFlipBookView alloc] initWithSecureFlipBookNameAndFallbacks:v13];
       if (v17)
       {
         v53 = a2;
-        v18 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
-        [v18 addSubview:v17];
+        view = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
+        [view addSubview:v17];
 
         installedFlipBooksByName = self->_installedFlipBooksByName;
-        v20 = [(SBSASecureFlipBookView *)v17 flipBookName];
-        [(NSMutableDictionary *)installedFlipBooksByName setObject:v17 forKey:v20];
+        flipBookName = [(SBSASecureFlipBookView *)v17 flipBookName];
+        [(NSMutableDictionary *)installedFlipBooksByName setObject:v17 forKey:flipBookName];
 
         v63 = v17;
-        v21 = [(SBSASecureFlipBookView *)v17 componentCount];
-        if (!v21)
+        componentCount = [(SBSASecureFlipBookView *)v17 componentCount];
+        if (!componentCount)
         {
-          v21 = [v60 count];
+          componentCount = [allKeys count];
         }
 
-        v54 = v5;
-        v58 = v6;
-        if (v21 >= 2)
+        v54 = preferencesCopy;
+        v58 = activeSecureElementIdentity;
+        if (componentCount >= 2)
         {
-          for (i = 1; i != v21; ++i)
+          for (i = 1; i != componentCount; ++i)
           {
             v23 = SBScreenMaximumFramesPerSecond();
-            v24 = [SBSystemApertureSecureElementUtilities flipBookNameAndFallbacksForElement:v6 configurationName:v59 componentIndex:i layoutDirection:v8 orientation:v9 layoutMode:3 deviceMaxFPS:v23 artworkSubtype:SBFEffectiveArtworkSubtype()];
+            v24 = [SBSystemApertureSecureElementUtilities flipBookNameAndFallbacksForElement:activeSecureElementIdentity configurationName:v59 componentIndex:i layoutDirection:layoutDirection orientation:orientation layoutMode:3 deviceMaxFPS:v23 artworkSubtype:SBFEffectiveArtworkSubtype()];
             v25 = [[SBSASecureFlipBookView alloc] initWithSecureFlipBookNameAndFallbacks:v24];
             if (v25)
             {
-              v26 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
-              [v26 addSubview:v25];
+              view2 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
+              [view2 addSubview:v25];
 
               v27 = self->_installedFlipBooksByName;
-              v28 = [(SBSASecureFlipBookView *)v25 flipBookName];
-              [(NSMutableDictionary *)v27 setObject:v25 forKey:v28];
+              flipBookName2 = [(SBSASecureFlipBookView *)v25 flipBookName];
+              [(NSMutableDictionary *)v27 setObject:v25 forKey:flipBookName2];
 
-              v6 = v58;
+              activeSecureElementIdentity = v58;
             }
           }
         }
@@ -229,43 +229,43 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
               }
 
               v32 = *(*(&v68 + 1) + 8 * j);
-              v33 = [v32 componentName];
-              if (!v33)
+              componentName = [v32 componentName];
+              if (!componentName)
               {
                 v67[0] = MEMORY[0x277D85DD0];
                 v67[1] = 3221225472;
                 v67[2] = __116__SBSystemApertureSecureElementRenderingOverlayViewController__ensureFlipBooksAreLoadedForSecureElementPreferences___block_invoke_9;
                 v67[3] = &unk_2783B5428;
                 v67[4] = self;
-                v33 = [v60 bs_firstObjectPassingTest:v67];
+                componentName = [allKeys bs_firstObjectPassingTest:v67];
               }
 
               [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _incrementActiveTransitionCount];
-              v34 = [v32 initialStateName];
-              v35 = [v34 componentsSeparatedByString:@"."];
+              initialStateName = [v32 initialStateName];
+              v35 = [initialStateName componentsSeparatedByString:@"."];
               v36 = [v35 mutableCopy];
 
               [v36 removeObjectAtIndex:0];
               v37 = [v36 componentsJoinedByString:@"."];
-              [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _updateAppliedComponent:v33 withState:v37];
+              [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _updateAppliedComponent:componentName withState:v37];
               v64[0] = MEMORY[0x277D85DD0];
               v64[1] = 3221225472;
               v64[2] = __116__SBSystemApertureSecureElementRenderingOverlayViewController__ensureFlipBooksAreLoadedForSecureElementPreferences___block_invoke_2;
               v64[3] = &unk_2783A9940;
               v64[4] = self;
-              v38 = v33;
+              v38 = componentName;
               v65 = v38;
               v39 = v37;
               v66 = v39;
-              [v32 transitionToState:v34 completion:v64];
+              [v32 transitionToState:initialStateName completion:v64];
               if (!v38)
               {
                 [(SBSystemApertureSecureElementRenderingOverlayViewController *)v53 _ensureFlipBooksAreLoadedForSecureElementPreferences:v58];
               }
 
               componentNameToFlipBookName = self->_componentNameToFlipBookName;
-              v41 = [v32 flipBookName];
-              [(NSMutableDictionary *)componentNameToFlipBookName setObject:v41 forKey:v38];
+              flipBookName3 = [v32 flipBookName];
+              [(NSMutableDictionary *)componentNameToFlipBookName setObject:flipBookName3 forKey:v38];
 
               v17 = v63;
             }
@@ -276,31 +276,31 @@ void __100__SBSystemApertureSecureElementRenderingOverlayViewController_currentS
           while (v30);
         }
 
-        v5 = v54;
-        v6 = v58;
+        preferencesCopy = v54;
+        activeSecureElementIdentity = v58;
       }
 
       v42 = [SBSAElementIdentification alloc];
-      v43 = [v6 clientIdentifier];
-      [v6 elementIdentifier];
+      clientIdentifier = [activeSecureElementIdentity clientIdentifier];
+      [activeSecureElementIdentity elementIdentifier];
       v45 = v44 = v17;
-      v46 = [(SBSAElementIdentification *)v42 initWithClientIdentifier:v43 elementIdentifier:v45];
+      v46 = [(SBSAElementIdentification *)v42 initWithClientIdentifier:clientIdentifier elementIdentifier:v45];
       displayedElement = self->_displayedElement;
       self->_displayedElement = v46;
 
-      v48 = [(SBSASecureFlipBookView *)v44 flipBookName];
+      flipBookName4 = [(SBSASecureFlipBookView *)v44 flipBookName];
       loadedBaseFlipBookName = self->_loadedBaseFlipBookName;
-      self->_loadedBaseFlipBookName = v48;
+      self->_loadedBaseFlipBookName = flipBookName4;
 
-      v50 = [v55 firstObject];
-      v51 = [(SBSASecureFlipBookView *)v44 flipBookName];
-      self->_loadedBaseFlipBookIsAFallback = [v50 isEqualToString:v51] ^ 1;
+      firstObject2 = [v55 firstObject];
+      flipBookName5 = [(SBSASecureFlipBookView *)v44 flipBookName];
+      self->_loadedBaseFlipBookIsAFallback = [firstObject2 isEqualToString:flipBookName5] ^ 1;
 
       v13 = v55;
-      v7 = v59;
+      requestedConfigurationName = v59;
       objc_storeStrong(&self->_installedFlipBookConfigurationName, v59);
-      v52 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
-      [v52 setNeedsLayout];
+      view3 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self view];
+      [view3 setNeedsLayout];
     }
 
     v11 = v57;
@@ -407,18 +407,18 @@ uint64_t __116__SBSystemApertureSecureElementRenderingOverlayViewController__ens
   return [v2 _updateActiveComponent:v3 withState:v4];
 }
 
-- (void)_applyFlipBookComponentStatesForSecureElementPreferences:(id)a3
+- (void)_applyFlipBookComponentStatesForSecureElementPreferences:(id)preferences
 {
   v32 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v4 = [v21 requestedComponentsToStates];
-  objc_storeStrong(&self->_lastRequestedComponentToStateNames, v4);
+  preferencesCopy = preferences;
+  requestedComponentsToStates = [preferencesCopy requestedComponentsToStates];
+  objc_storeStrong(&self->_lastRequestedComponentToStateNames, requestedComponentsToStates);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
   v27 = 0u;
-  v20 = v4;
-  obj = [v4 allKeys];
+  v20 = requestedComponentsToStates;
+  obj = [requestedComponentsToStates allKeys];
   v5 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
@@ -435,14 +435,14 @@ uint64_t __116__SBSystemApertureSecureElementRenderingOverlayViewController__ens
 
         v8 = *(*(&v27 + 1) + 8 * i);
         v9 = [v20 objectForKeyedSubscript:v8];
-        v10 = -[SBSystemApertureSecureElementRenderingOverlayViewController _compositeStateNameForComponentStateAndLayoutMode:layoutMode:](self, "_compositeStateNameForComponentStateAndLayoutMode:layoutMode:", v9, [v21 activeLayoutMode]);
+        v10 = -[SBSystemApertureSecureElementRenderingOverlayViewController _compositeStateNameForComponentStateAndLayoutMode:layoutMode:](self, "_compositeStateNameForComponentStateAndLayoutMode:layoutMode:", v9, [preferencesCopy activeLayoutMode]);
         v11 = [(NSMutableDictionary *)self->_componentNameToFlipBookName objectForKeyedSubscript:v8];
         v12 = [(NSMutableDictionary *)self->_installedFlipBooksByName objectForKeyedSubscript:v11];
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 state];
-          v15 = [v14 isEqual:v10];
+          state = [v12 state];
+          v15 = [state isEqual:v10];
 
           if (v15)
           {
@@ -522,50 +522,50 @@ uint64_t __120__SBSystemApertureSecureElementRenderingOverlayViewController__app
 - (void)_notifyRegisteredElementsOfActiveStatesAndConfigurations
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self currentSecureFlipBookRenderingContext];
-  [WeakRetained renderingOverlay:self updatedRenderedConfiguration:v3];
+  currentSecureFlipBookRenderingContext = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self currentSecureFlipBookRenderingContext];
+  [WeakRetained renderingOverlay:self updatedRenderedConfiguration:currentSecureFlipBookRenderingContext];
 }
 
-- (void)_updateAppliedComponent:(id)a3 withState:(id)a4
+- (void)_updateAppliedComponent:(id)component withState:(id)state
 {
-  v10 = a3;
-  v6 = a4;
+  componentCopy = component;
+  stateCopy = state;
   lastAppliedComponentToStateNames = self->_lastAppliedComponentToStateNames;
   if (!lastAppliedComponentToStateNames)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->_lastAppliedComponentToStateNames;
-    self->_lastAppliedComponentToStateNames = v8;
+    self->_lastAppliedComponentToStateNames = dictionary;
 
     lastAppliedComponentToStateNames = self->_lastAppliedComponentToStateNames;
   }
 
-  [(NSMutableDictionary *)lastAppliedComponentToStateNames setObject:v6 forKey:v10];
+  [(NSMutableDictionary *)lastAppliedComponentToStateNames setObject:stateCopy forKey:componentCopy];
   [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _notifyRegisteredElementsOfActiveStatesAndConfigurations];
 }
 
-- (void)_updateActiveComponent:(id)a3 withState:(id)a4
+- (void)_updateActiveComponent:(id)component withState:(id)state
 {
-  v10 = a3;
-  v6 = a4;
+  componentCopy = component;
+  stateCopy = state;
   lastActiveComponentToStateNames = self->_lastActiveComponentToStateNames;
   if (!lastActiveComponentToStateNames)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->_lastActiveComponentToStateNames;
-    self->_lastActiveComponentToStateNames = v8;
+    self->_lastActiveComponentToStateNames = dictionary;
 
     lastActiveComponentToStateNames = self->_lastActiveComponentToStateNames;
   }
 
-  [(NSMutableDictionary *)lastActiveComponentToStateNames setObject:v6 forKey:v10];
+  [(NSMutableDictionary *)lastActiveComponentToStateNames setObject:stateCopy forKey:componentCopy];
   [(SBSystemApertureSecureElementRenderingOverlayViewController *)self _notifyRegisteredElementsOfActiveStatesAndConfigurations];
 }
 
 - (id)_componentNamesToSecureStateMap
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -588,8 +588,8 @@ uint64_t __120__SBSystemApertureSecureElementRenderingOverlayViewController__app
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_componentNameToFlipBookName objectForKeyedSubscript:v8];
         v10 = [(NSMutableDictionary *)self->_installedFlipBooksByName objectForKeyedSubscript:v9];
-        v11 = [v10 secureSequenceMap];
-        [v3 setObject:v11 forKey:v8];
+        secureSequenceMap = [v10 secureSequenceMap];
+        [dictionary setObject:secureSequenceMap forKey:v8];
       }
 
       v5 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -598,24 +598,24 @@ uint64_t __120__SBSystemApertureSecureElementRenderingOverlayViewController__app
     while (v5);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)_compositeStateNameForComponentStateAndLayoutMode:(id)a3 layoutMode:(int64_t)a4
+- (id)_compositeStateNameForComponentStateAndLayoutMode:(id)mode layoutMode:(int64_t)layoutMode
 {
   v4 = @"presented";
-  if (a4 < 1)
+  if (layoutMode < 1)
   {
     v4 = @"hidden";
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v4, a3];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v4, mode];
 }
 
 - (void)_decrementActiveTransitionCount
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBSystemApertureSecureElementRenderingOverlayViewController.m" lineNumber:259 description:@"Trying to decrement active transition count when no transitions are active"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSystemApertureSecureElementRenderingOverlayViewController.m" lineNumber:259 description:@"Trying to decrement active transition count when no transitions are active"];
 
   *a4 = *a3;
 }

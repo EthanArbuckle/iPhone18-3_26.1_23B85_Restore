@@ -1,11 +1,11 @@
 @interface NTWidgetDebugInspection
 - (NTWidgetDebugInspection)init;
-- (NTWidgetDebugInspection)initWithSections:(id)a3 mutedTagIDs:(id)a4 previouslyReadArticleIDs:(id)a5 previouslySeenArticleIDs:(id)a6 rankedSubscribedTagIDs:(id)a7;
+- (NTWidgetDebugInspection)initWithSections:(id)sections mutedTagIDs:(id)ds previouslyReadArticleIDs:(id)iDs previouslySeenArticleIDs:(id)articleIDs rankedSubscribedTagIDs:(id)tagIDs;
 @end
 
 @implementation NTWidgetDebugInspection
 
-- (NTWidgetDebugInspection)initWithSections:(id)a3 mutedTagIDs:(id)a4 previouslyReadArticleIDs:(id)a5 previouslySeenArticleIDs:(id)a6 rankedSubscribedTagIDs:(id)a7
+- (NTWidgetDebugInspection)initWithSections:(id)sections mutedTagIDs:(id)ds previouslyReadArticleIDs:(id)iDs previouslySeenArticleIDs:(id)articleIDs rankedSubscribedTagIDs:(id)tagIDs
 {
   ObjectType = swift_getObjectType();
   type metadata accessor for WidgetDebugInspectionSection();

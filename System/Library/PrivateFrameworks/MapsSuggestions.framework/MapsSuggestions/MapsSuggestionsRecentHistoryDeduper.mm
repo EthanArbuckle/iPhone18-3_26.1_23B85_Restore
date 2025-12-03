@@ -1,16 +1,16 @@
 @interface MapsSuggestionsRecentHistoryDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsRecentHistoryDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -53,16 +53,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!MapsSuggestionsEntriesAreBothOfType(5, v6, v5))
+  if (!MapsSuggestionsEntriesAreBothOfType(5, withEntryCopy, entryCopy))
   {
 LABEL_13:
     v8 = 0;
     goto LABEL_14;
   }
 
-  if (([v7 expiresBeforeEntry:v5] & 1) == 0)
+  if (([v7 expiresBeforeEntry:entryCopy] & 1) == 0)
   {
-    [v5 replaceByEntry:v7];
+    [entryCopy replaceByEntry:v7];
   }
 
   v8 = 1;

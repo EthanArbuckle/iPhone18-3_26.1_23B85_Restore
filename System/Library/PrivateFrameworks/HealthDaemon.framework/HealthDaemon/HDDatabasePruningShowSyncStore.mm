@@ -1,6 +1,6 @@
 @interface HDDatabasePruningShowSyncStore
 - (HDDatabasePruningShowSyncStore)init;
-- (HDDatabasePruningShowSyncStore)initWithPersistentID:(int64_t)a3 identifier:(id)a4 type:(id)a5 creationDate:(id)a6 latestFrozenAnchorDate:(id)a7 frozenAnchorMap:(id)a8 syncIdentity:(id)a9 isSupportedShardType:(id)a10 activeEpoch:(id)a11 pendingEpoch:(id)a12 tombstoneEpoch:(id)a13;
+- (HDDatabasePruningShowSyncStore)initWithPersistentID:(int64_t)d identifier:(id)identifier type:(id)type creationDate:(id)date latestFrozenAnchorDate:(id)anchorDate frozenAnchorMap:(id)map syncIdentity:(id)identity isSupportedShardType:(id)self0 activeEpoch:(id)self1 pendingEpoch:(id)self2 tombstoneEpoch:(id)self3;
 @end
 
 @implementation HDDatabasePruningShowSyncStore
@@ -15,37 +15,37 @@
   return 0;
 }
 
-- (HDDatabasePruningShowSyncStore)initWithPersistentID:(int64_t)a3 identifier:(id)a4 type:(id)a5 creationDate:(id)a6 latestFrozenAnchorDate:(id)a7 frozenAnchorMap:(id)a8 syncIdentity:(id)a9 isSupportedShardType:(id)a10 activeEpoch:(id)a11 pendingEpoch:(id)a12 tombstoneEpoch:(id)a13
+- (HDDatabasePruningShowSyncStore)initWithPersistentID:(int64_t)d identifier:(id)identifier type:(id)type creationDate:(id)date latestFrozenAnchorDate:(id)anchorDate frozenAnchorMap:(id)map syncIdentity:(id)identity isSupportedShardType:(id)self0 activeEpoch:(id)self1 pendingEpoch:(id)self2 tombstoneEpoch:(id)self3
 {
-  v34 = a4;
-  obj = a5;
-  v33 = a5;
-  v27 = a6;
-  v32 = a6;
-  v31 = a7;
-  v30 = a8;
-  v29 = a9;
-  v18 = a10;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
+  identifierCopy = identifier;
+  obj = type;
+  typeCopy = type;
+  dateCopy = date;
+  dateCopy2 = date;
+  anchorDateCopy = anchorDate;
+  mapCopy = map;
+  identityCopy = identity;
+  shardTypeCopy = shardType;
+  epochCopy = epoch;
+  pendingEpochCopy = pendingEpoch;
+  tombstoneEpochCopy = tombstoneEpoch;
   v35.receiver = self;
   v35.super_class = HDDatabasePruningShowSyncStore;
   v22 = [(HDDatabasePruningShowSyncStore *)&v35 init];
   v23 = v22;
   if (v22)
   {
-    v22->_persitentID = a3;
-    objc_storeStrong(&v22->_identifier, a4);
+    v22->_persitentID = d;
+    objc_storeStrong(&v22->_identifier, identifier);
     objc_storeStrong(&v23->_type, obj);
-    objc_storeStrong(&v23->_creationDate, v27);
-    objc_storeStrong(&v23->_latestFrozenAnchorDate, a7);
-    objc_storeStrong(&v23->_frozenAnchorMap, a8);
-    objc_storeStrong(&v23->_syncIdentity, a9);
-    objc_storeStrong(&v23->_isSupportedShardType, a10);
-    objc_storeStrong(&v23->_activeEpoch, a11);
-    objc_storeStrong(&v23->_pendingEpoch, a12);
-    objc_storeStrong(&v23->_tombstoneEpoch, a13);
+    objc_storeStrong(&v23->_creationDate, dateCopy);
+    objc_storeStrong(&v23->_latestFrozenAnchorDate, anchorDate);
+    objc_storeStrong(&v23->_frozenAnchorMap, map);
+    objc_storeStrong(&v23->_syncIdentity, identity);
+    objc_storeStrong(&v23->_isSupportedShardType, shardType);
+    objc_storeStrong(&v23->_activeEpoch, epoch);
+    objc_storeStrong(&v23->_pendingEpoch, pendingEpoch);
+    objc_storeStrong(&v23->_tombstoneEpoch, tombstoneEpoch);
   }
 
   return v23;

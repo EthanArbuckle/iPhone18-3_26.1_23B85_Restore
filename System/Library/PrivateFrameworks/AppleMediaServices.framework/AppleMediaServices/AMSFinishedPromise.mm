@@ -1,30 +1,30 @@
 @interface AMSFinishedPromise
-+ (BOOL)_errorIsCanceledError:(id)a3;
-+ (BOOL)_errorIsTimeOutError:(id)a3;
-+ (id)promiseWithError:(id)a3;
-+ (id)promiseWithPromiseResult:(id)a3;
-+ (id)promiseWithResult:(id)a3;
-+ (void)logUnavailableInitWithSelector:(SEL)a3;
++ (BOOL)_errorIsCanceledError:(id)error;
++ (BOOL)_errorIsTimeOutError:(id)error;
++ (id)promiseWithError:(id)error;
++ (id)promiseWithPromiseResult:(id)result;
++ (id)promiseWithResult:(id)result;
++ (void)logUnavailableInitWithSelector:(SEL)selector;
 - (AMSFinishedPromise)init;
-- (AMSFinishedPromise)initWithTimeout:(double)a3;
+- (AMSFinishedPromise)initWithTimeout:(double)timeout;
 - (BOOL)isCancelled;
 - (id)BOOLCompletionHandlerAdapter;
-- (id)binaryPromiseAdapterForClass:(Class)a3;
+- (id)binaryPromiseAdapterForClass:(Class)class;
 - (id)completionHandlerAdapter;
-- (id)continueWithBlock:(id)a3;
+- (id)continueWithBlock:(id)block;
 - (id)nilValueCompletionHandlerAdapter;
-- (id)resultWithError:(id *)a3;
-- (id)valueFromAddingBlock:(id)a3 orCallWithResult:(id)a4;
-- (void)addBlock:(id)a3 orCallWithResult:(id)a4;
-- (void)addErrorBlock:(id)a3;
-- (void)addFinishBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)resultWithCompletion:(id)a3;
+- (id)resultWithError:(id *)error;
+- (id)valueFromAddingBlock:(id)block orCallWithResult:(id)result;
+- (void)addBlock:(id)block orCallWithResult:(id)result;
+- (void)addErrorBlock:(id)block;
+- (void)addFinishBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)resultWithCompletion:(id)completion;
 @end
 
 @implementation AMSFinishedPromise
 
-+ (void)logUnavailableInitWithSelector:(SEL)a3
++ (void)logUnavailableInitWithSelector:(SEL)selector
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = +[AMSLogConfig sharedConfig];
@@ -33,8 +33,8 @@
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = AMSLogKey();
     v8 = MEMORY[0x1E696AEC0];
@@ -42,25 +42,25 @@
     v10 = v9;
     if (v7)
     {
-      a1 = AMSLogKey();
-      [v8 stringWithFormat:@"%@: [%@] ", v10, a1];
+      self = AMSLogKey();
+      [v8 stringWithFormat:@"%@: [%@] ", v10, self];
     }
 
     else
     {
       [v8 stringWithFormat:@"%@: ", v9];
     }
-    v11 = ;
-    v12 = NSStringFromSelector(a3);
+    selfCopy = ;
+    v12 = NSStringFromSelector(selector);
     *buf = 138543618;
-    v14 = v11;
+    v14 = selfCopy;
     v15 = 2112;
     v16 = v12;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEBUG, "%{public}@Attempt to initialize AMSFinishedPromise using %@. A mutable promise will be returned instead.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Attempt to initialize AMSFinishedPromise using %@. A mutable promise will be returned instead.", buf, 0x16u);
     if (v7)
     {
 
-      v11 = a1;
+      selfCopy = self;
     }
   }
 }
@@ -73,29 +73,29 @@
   return v3;
 }
 
-- (AMSFinishedPromise)initWithTimeout:(double)a3
+- (AMSFinishedPromise)initWithTimeout:(double)timeout
 {
   [AMSFinishedPromise logUnavailableInitWithSelector:a2];
-  v5 = [[AMSMutablePromise alloc] initWithTimeout:a3];
+  v5 = [[AMSMutablePromise alloc] initWithTimeout:timeout];
 
   return v5;
 }
 
-+ (id)promiseWithError:(id)a3
++ (id)promiseWithError:(id)error
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [[AMSPromiseResult alloc] initWithResult:0 error:v4];
+  errorCopy = error;
+  v5 = [self alloc];
+  v6 = [[AMSPromiseResult alloc] initWithResult:0 error:errorCopy];
 
   v7 = [v5 initWithPromiseResult:v6];
 
   return v7;
 }
 
-+ (id)promiseWithResult:(id)a3
++ (id)promiseWithResult:(id)result
 {
-  v4 = a3;
-  if (*MEMORY[0x1E695E4D0] == v4 && objc_opt_class() == a1)
+  resultCopy = result;
+  if (*MEMORY[0x1E695E4D0] == resultCopy && objc_opt_class() == self)
   {
     if (_MergedGlobals_113 != -1)
     {
@@ -107,8 +107,8 @@
 
   else
   {
-    v5 = [a1 alloc];
-    v6 = [[AMSPromiseResult alloc] initWithResult:v4 error:0];
+    v5 = [self alloc];
+    v6 = [[AMSPromiseResult alloc] initWithResult:resultCopy error:0];
     v7 = [v5 initWithPromiseResult:v6];
   }
 
@@ -125,134 +125,134 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
   qword_1ED6E2A00 = v2;
 }
 
-+ (id)promiseWithPromiseResult:(id)a3
++ (id)promiseWithPromiseResult:(id)result
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPromiseResult:v4];
+  resultCopy = result;
+  v5 = [[self alloc] initWithPromiseResult:resultCopy];
 
   return v5;
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v6 = a3;
-  v4 = [(AMSPromise *)self promiseResult];
-  v5 = [v4 error];
+  blockCopy = block;
+  promiseResult = [(AMSPromise *)self promiseResult];
+  error = [promiseResult error];
 
-  if (v5)
+  if (error)
   {
-    v6[2](v6, v5);
+    blockCopy[2](blockCopy, error);
   }
 }
 
-- (void)addFinishBlock:(id)a3
+- (void)addFinishBlock:(id)block
 {
-  v4 = a3;
-  v7 = [(AMSPromise *)self promiseResult];
-  v5 = [v7 result];
-  v6 = [v7 error];
-  v4[2](v4, v5, v6);
+  blockCopy = block;
+  promiseResult = [(AMSPromise *)self promiseResult];
+  result = [promiseResult result];
+  error = [promiseResult error];
+  blockCopy[2](blockCopy, result, error);
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v6 = a3;
-  v4 = [(AMSPromise *)self promiseResult];
-  v5 = [v4 result];
+  blockCopy = block;
+  promiseResult = [(AMSPromise *)self promiseResult];
+  result = [promiseResult result];
 
-  if (v5)
+  if (result)
   {
-    v6[2](v6, v5);
+    blockCopy[2](blockCopy, result);
   }
 }
 
-- (id)resultWithError:(id *)a3
+- (id)resultWithError:(id *)error
 {
-  v4 = [(AMSPromise *)self promiseResult];
-  v5 = [v4 error];
+  promiseResult = [(AMSPromise *)self promiseResult];
+  error = [promiseResult error];
 
-  if (a3 && v5)
+  if (error && error)
   {
-    *a3 = [v4 error];
+    *error = [promiseResult error];
   }
 
-  v6 = [v4 result];
+  result = [promiseResult result];
 
-  return v6;
+  return result;
 }
 
-- (void)resultWithCompletion:(id)a3
+- (void)resultWithCompletion:(id)completion
 {
-  v4 = a3;
-  v7 = [(AMSPromise *)self promiseResult];
-  v5 = [v7 result];
-  v6 = [v7 error];
-  v4[2](v4, v5, v6);
+  completionCopy = completion;
+  promiseResult = [(AMSPromise *)self promiseResult];
+  result = [promiseResult result];
+  error = [promiseResult error];
+  completionCopy[2](completionCopy, result, error);
 }
 
-- (id)continueWithBlock:(id)a3
+- (id)continueWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSPromise *)self promiseResult];
-  v6 = [v5 result];
-  v7 = [v5 error];
-  v8 = v4[2](v4, v6, v7);
+  blockCopy = block;
+  promiseResult = [(AMSPromise *)self promiseResult];
+  result = [promiseResult result];
+  error = [promiseResult error];
+  v8 = blockCopy[2](blockCopy, result, error);
 
   return v8;
 }
 
-- (void)addBlock:(id)a3 orCallWithResult:(id)a4
+- (void)addBlock:(id)block orCallWithResult:(id)result
 {
-  v6 = a4;
-  v7 = [(AMSPromise *)self promiseResult];
-  (*(a4 + 2))(v6, v7);
+  resultCopy = result;
+  promiseResult = [(AMSPromise *)self promiseResult];
+  (*(result + 2))(resultCopy, promiseResult);
 }
 
-- (id)valueFromAddingBlock:(id)a3 orCallWithResult:(id)a4
+- (id)valueFromAddingBlock:(id)block orCallWithResult:(id)result
 {
-  v6 = a4;
-  v7 = [(AMSPromise *)self promiseResult];
-  v8 = (*(a4 + 2))(v6, v7);
+  resultCopy = result;
+  promiseResult = [(AMSPromise *)self promiseResult];
+  v8 = (*(result + 2))(resultCopy, promiseResult);
 
   return v8;
 }
 
-- (id)binaryPromiseAdapterForClass:(Class)a3
+- (id)binaryPromiseAdapterForClass:(Class)class
 {
-  v4 = [(AMSPromise *)self promiseResult];
-  v5 = [v4 result];
+  promiseResult = [(AMSPromise *)self promiseResult];
+  result = [promiseResult result];
 
-  if (v5)
+  if (result)
   {
-    v6 = [(objc_class *)a3 promiseWithSuccess];
+    promiseWithSuccess = [(objc_class *)class promiseWithSuccess];
   }
 
   else
   {
-    v7 = [v4 error];
-    v6 = [(objc_class *)a3 promiseWithError:v7];
+    error = [promiseResult error];
+    promiseWithSuccess = [(objc_class *)class promiseWithError:error];
   }
 
-  return v6;
+  return promiseWithSuccess;
 }
 
 - (BOOL)isCancelled
 {
   v3 = objc_opt_class();
-  v4 = [(AMSPromise *)self promiseResult];
-  v5 = [v4 error];
-  LOBYTE(v3) = [v3 _errorIsCanceledError:v5];
+  promiseResult = [(AMSPromise *)self promiseResult];
+  error = [promiseResult error];
+  LOBYTE(v3) = [v3 _errorIsCanceledError:error];
 
   return v3;
 }
 
-+ (BOOL)_errorIsCanceledError:(id)a3
++ (BOOL)_errorIsCanceledError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E696A250]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v5 = [v3 code] == 3072;
+    v5 = [errorCopy code] == 3072;
   }
 
   else
@@ -263,13 +263,13 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
   return v5;
 }
 
-+ (BOOL)_errorIsTimeOutError:(id)a3
++ (BOOL)_errorIsTimeOutError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"AMSErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"AMSErrorDomain"])
   {
-    v5 = [v3 code] == 1;
+    v5 = [errorCopy code] == 1;
   }
 
   else
@@ -289,8 +289,8 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 = AMSLogKey();
     v6 = MEMORY[0x1E696AEC0];
@@ -306,14 +306,14 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
     {
       [v6 stringWithFormat:@"%@: ", v7];
     }
-    v9 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v12 = v9;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_ERROR, "%{public}@Attempted to get a completion handler for an already-finished promise, which will have no effect when called.", buf, 0xCu);
+    v12 = selfCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Attempted to get a completion handler for an already-finished promise, which will have no effect when called.", buf, 0xCu);
     if (v5)
     {
 
-      v9 = self;
+      selfCopy = self;
     }
   }
 
@@ -329,8 +329,8 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 = AMSLogKey();
     v6 = MEMORY[0x1E696AEC0];
@@ -346,14 +346,14 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
     {
       [v6 stringWithFormat:@"%@: ", v7];
     }
-    v9 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v12 = v9;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_ERROR, "%{public}@Attempted to get a completion handler for an already-finished promise, which will have no effect when called.", buf, 0xCu);
+    v12 = selfCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Attempted to get a completion handler for an already-finished promise, which will have no effect when called.", buf, 0xCu);
     if (v5)
     {
 
-      v9 = self;
+      selfCopy = self;
     }
   }
 
@@ -369,8 +369,8 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 = AMSLogKey();
     v6 = MEMORY[0x1E696AEC0];
@@ -386,14 +386,14 @@ void __40__AMSFinishedPromise_promiseWithResult___block_invoke()
     {
       [v6 stringWithFormat:@"%@: ", v7];
     }
-    v9 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v12 = v9;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_ERROR, "%{public}@Attempted to get a completion handler for an already-finished promise, which will have no effect when called.", buf, 0xCu);
+    v12 = selfCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Attempted to get a completion handler for an already-finished promise, which will have no effect when called.", buf, 0xCu);
     if (v5)
     {
 
-      v9 = self;
+      selfCopy = self;
     }
   }
 

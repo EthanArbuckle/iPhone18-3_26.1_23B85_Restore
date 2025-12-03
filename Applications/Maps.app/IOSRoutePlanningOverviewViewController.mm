@@ -1,9 +1,9 @@
 @interface IOSRoutePlanningOverviewViewController
 - (BOOL)_shouldShowPedestrianARTeachableMomentCard;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (BOOL)shouldIgnoreTapOnView:(id)a3 headerView:(id)a4;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (BOOL)shouldIgnoreTapOnView:(id)view headerView:(id)headerView;
 - (CGRect)_loadingAndErrorViewFrame;
-- (IOSRoutePlanningOverviewViewController)initWithDataCoordinator:(id)a3;
+- (IOSRoutePlanningOverviewViewController)initWithDataCoordinator:(id)coordinator;
 - (PedestrianARSessionStateManager)pedestrianARSessionStateManager;
 - (RoutePlanningEbikeRefinementModel)ebikeRefinement;
 - (RoutePlanningPreferenceRefinementModel)preferenceRefinement;
@@ -13,21 +13,21 @@
 - (double)_cardHeightMinusTableViewHeight;
 - (double)_extraBottomPadding;
 - (double)_percentCollapsedFullToMedium;
-- (double)heightForLayout:(unint64_t)a3;
-- (double)widthForCell:(id)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (double)widthForCell:(id)cell;
 - (id)_initialConstraints;
-- (id)currentRefinementsForFieldsView:(id)a3;
-- (id)waypointsForFieldsView:(id)a3;
+- (id)currentRefinementsForFieldsView:(id)view;
+- (id)waypointsForFieldsView:(id)view;
 - (int64_t)observedRoutePlanningData;
-- (int64_t)transportTypeForFieldsView:(id)a3;
-- (void)_captureFamiliarRoutesIfAvailable:(id)a3 routeCollection:(id)a4;
+- (int64_t)transportTypeForFieldsView:(id)view;
+- (void)_captureFamiliarRoutesIfAvailable:(id)available routeCollection:(id)collection;
 - (void)_createStyleSpecificConstraintsIfNeeded;
-- (void)_didSelectWaypoint:(id)a3 atIndex:(unint64_t)a4;
+- (void)_didSelectWaypoint:(id)waypoint atIndex:(unint64_t)index;
 - (void)_didTapHeaderView;
 - (void)_forceChangeOrigin;
 - (void)_refreshContentInset;
-- (void)_refreshRouteForChangeInWaypointListView:(id)a3;
-- (void)_refreshRouteForWaypoints:(id)a3;
+- (void)_refreshRouteForChangeInWaypointListView:(id)view;
+- (void)_refreshRouteForWaypoints:(id)waypoints;
 - (void)_refreshSelectedVehicleDisplay;
 - (void)_refreshTimingDisplay;
 - (void)_setupSubviews;
@@ -35,42 +35,42 @@
 - (void)_showPedestrianARRaiseToEnterTeachableMomentCardIfNecessary;
 - (void)_updateFieldsViewSuperviewIfNeeded;
 - (void)_updateTransitionScrollPosition;
-- (void)_updateWaypointsAndRoutesListForCurrentContaineeLayout:(unint64_t)a3;
+- (void)_updateWaypointsAndRoutesListForCurrentContaineeLayout:(unint64_t)layout;
 - (void)dealloc;
-- (void)didChangeContainerStyle:(unint64_t)a3;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeContainerStyle:(unint64_t)style;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didResignCurrent;
-- (void)didTapAdvisoriesOnCell:(id)a3 atIndex:(int64_t)a4;
-- (void)didTapOnCell:(id)a3;
-- (void)didTapPreviewOnCell:(id)a3;
-- (void)didTapPrimaryActionOnCell:(id)a3;
-- (void)didTapTimingInFieldsView:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)didTapAdvisoriesOnCell:(id)cell atIndex:(int64_t)index;
+- (void)didTapOnCell:(id)cell;
+- (void)didTapPreviewOnCell:(id)cell;
+- (void)didTapPrimaryActionOnCell:(id)cell;
+- (void)didTapTimingInFieldsView:(id)view;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)replaceOriginWithCurrentLocation;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateCyclePreferences:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateDrivePreferences:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateOriginName:(id)a4 destinationName:(id)a5;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateRequestState:(int64_t)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateResolvedWaypointSet:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateRouteCollection:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateTransitPreferences:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateTransportType:(int64_t)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateVirtualGarage:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateWalkPreferences:(id)a4;
-- (void)selectedRefinementModel:(id)a3 identifier:(id)a4 subIdentifier:(id)a5;
-- (void)updatedRefinementModel:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateCyclePreferences:(id)preferences;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateDrivePreferences:(id)preferences;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateOriginName:(id)name destinationName:(id)destinationName;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateRequestState:(int64_t)state;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateResolvedWaypointSet:(id)set;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateRouteCollection:(id)collection;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateTransitPreferences:(id)preferences;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateTransportType:(int64_t)type;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateVirtualGarage:(id)garage;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateWalkPreferences:(id)preferences;
+- (void)selectedRefinementModel:(id)model identifier:(id)identifier subIdentifier:(id)subIdentifier;
+- (void)updatedRefinementModel:(id)model;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)waypointListView:(id)a3 didDeleteWaypointAtIndex:(unint64_t)a4;
-- (void)waypointListView:(id)a3 didMoveWaypoint:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6;
-- (void)waypointListView:(id)a3 didSelectCollapsedWaypoints:(id)a4;
-- (void)waypointListView:(id)a3 didSelectWaypoint:(id)a4 atIndex:(unint64_t)a5;
-- (void)waypointListViewDidSelectAddStop:(id)a3;
-- (void)willChangeContainerStyle:(unint64_t)a3;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)waypointListView:(id)view didDeleteWaypointAtIndex:(unint64_t)index;
+- (void)waypointListView:(id)view didMoveWaypoint:(id)waypoint fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)waypointListView:(id)view didSelectCollapsedWaypoints:(id)waypoints;
+- (void)waypointListView:(id)view didSelectWaypoint:(id)waypoint atIndex:(unint64_t)index;
+- (void)waypointListViewDidSelectAddStop:(id)stop;
+- (void)willChangeContainerStyle:(unint64_t)style;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation IOSRoutePlanningOverviewViewController
@@ -81,31 +81,31 @@
   {
     if (+[PedestrianARRaiseToEnterTeachableMomentContaineeViewController hasShownTeachableMoment])
     {
-      v3 = sub_100798A3C();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+      delegate = sub_100798A3C();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
       {
         v19 = 0;
         v4 = "Not showing Pedestrian AR raise to enter teachable moment card because it has already been shown before";
         v5 = &v19;
 LABEL_7:
-        _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, v4, v5, 2u);
+        _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_INFO, v4, v5, 2u);
       }
     }
 
     else
     {
       v6 = +[PedestrianARSessionUsageTracker sharedInstance];
-      v7 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-      v8 = [v7 routeCollection];
-      v9 = [v8 currentRoute];
-      v10 = [v9 uniqueRouteID];
-      v11 = [v10 UUIDString];
-      v12 = [v6 hasAREverLocalizedForRoute:v11];
+      dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+      routeCollection = [dataCoordinator routeCollection];
+      currentRoute = [routeCollection currentRoute];
+      uniqueRouteID = [currentRoute uniqueRouteID];
+      uUIDString = [uniqueRouteID UUIDString];
+      v12 = [v6 hasAREverLocalizedForRoute:uUIDString];
 
       if ((v12 & 1) == 0)
       {
-        v3 = sub_100798A3C();
-        if (!os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+        delegate = sub_100798A3C();
+        if (!os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
         {
           goto LABEL_8;
         }
@@ -117,11 +117,11 @@ LABEL_7:
       }
 
       v13 = +[PedestrianARSessionUsageTracker sharedInstance];
-      v14 = [v13 hasARElementRendered];
+      hasARElementRendered = [v13 hasARElementRendered];
 
-      v3 = sub_100798A3C();
-      v15 = os_log_type_enabled(v3, OS_LOG_TYPE_INFO);
-      if ((v14 & 1) == 0)
+      delegate = sub_100798A3C();
+      v15 = os_log_type_enabled(delegate, OS_LOG_TYPE_INFO);
+      if ((hasARElementRendered & 1) == 0)
       {
         if (!v15)
         {
@@ -137,18 +137,18 @@ LABEL_7:
       if (v15)
       {
         *v16 = 0;
-        _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Showing the Pedestrian AR raise to enter teachable moment card", v16, 2u);
+        _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_INFO, "Showing the Pedestrian AR raise to enter teachable moment card", v16, 2u);
       }
 
-      v3 = [(ControlContaineeViewController *)self delegate];
-      [v3 showPedestrianARRaiseToEnterTeachableMomentCard];
+      delegate = [(ControlContaineeViewController *)self delegate];
+      [delegate showPedestrianARRaiseToEnterTeachableMomentCard];
     }
   }
 
   else
   {
-    v3 = sub_100798A3C();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    delegate = sub_100798A3C();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
       v4 = "Not showing Pedestrian AR raise to enter teachable moment card because we should not show any teachable moment cards right now";
@@ -186,9 +186,9 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v3 = [(IOSRoutePlanningOverviewViewController *)self pedestrianARFeatureIntroTeachableMomentTimer];
+  pedestrianARFeatureIntroTeachableMomentTimer = [(IOSRoutePlanningOverviewViewController *)self pedestrianARFeatureIntroTeachableMomentTimer];
 
-  if (v3)
+  if (pedestrianARFeatureIntroTeachableMomentTimer)
   {
     v4 = sub_100798A3C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -228,26 +228,26 @@ LABEL_12:
 
 - (BOOL)_shouldShowPedestrianARTeachableMomentCard
 {
-  v3 = [(IOSRoutePlanningOverviewViewController *)self pedestrianARSessionStateManager];
+  pedestrianARSessionStateManager = [(IOSRoutePlanningOverviewViewController *)self pedestrianARSessionStateManager];
 
-  if (v3)
+  if (pedestrianARSessionStateManager)
   {
     v4 = +[UIApplication sharedMapsDelegate];
-    v5 = [v4 currentInterruptionKind];
+    currentInterruptionKind = [v4 currentInterruptionKind];
 
-    if (v5)
+    if (currentInterruptionKind)
     {
       v6 = sub_100798A3C();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        if ((v5 - 2) > 0x15)
+        if ((currentInterruptionKind - 2) > 0x15)
         {
           v7 = @"kMapsInterruptionDirectionsSafetyWarning";
         }
 
         else
         {
-          v7 = *(&off_10162B9F0 + (v5 - 2));
+          v7 = *(&off_10162B9F0 + (currentInterruptionKind - 2));
         }
 
         v26 = 138412290;
@@ -261,14 +261,14 @@ LABEL_12:
       goto LABEL_18;
     }
 
-    v11 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v12 = [v11 platformController];
-    v13 = [v12 currentSession];
+    dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    platformController = [dataCoordinator platformController];
+    currentSession = [platformController currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = currentSession;
     }
 
     else
@@ -280,10 +280,10 @@ LABEL_12:
 
     if (v6)
     {
-      v15 = [v6 configuration];
-      v16 = [v15 shouldAutoLaunchNavigation];
+      configuration = [v6 configuration];
+      shouldAutoLaunchNavigation = [configuration shouldAutoLaunchNavigation];
 
-      if (v16)
+      if (shouldAutoLaunchNavigation)
       {
         v17 = sub_100798A3C();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -297,10 +297,10 @@ LABEL_29:
 
       else
       {
-        v20 = [(ContaineeViewController *)self cardPresentationController];
-        v21 = [v20 containerStyle];
+        cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+        containerStyle = [cardPresentationController containerStyle];
 
-        if ((v21 & 0xFFFFFFFFFFFFFFFDLL) == 4)
+        if ((containerStyle & 0xFFFFFFFFFFFFFFFDLL) == 4)
         {
           v17 = sub_100798A3C();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -313,12 +313,12 @@ LABEL_29:
 
         else
         {
-          v22 = [(IOSRoutePlanningOverviewViewController *)self pedestrianARSessionStateManager];
-          v23 = [v22 shouldShowPedestrianAR];
+          pedestrianARSessionStateManager2 = [(IOSRoutePlanningOverviewViewController *)self pedestrianARSessionStateManager];
+          shouldShowPedestrianAR = [pedestrianARSessionStateManager2 shouldShowPedestrianAR];
 
           v17 = sub_100798A3C();
           v24 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-          if (v23)
+          if (shouldShowPedestrianAR)
           {
             if (v24)
             {
@@ -382,24 +382,24 @@ LABEL_32:
 
 - (PedestrianARSessionStateManager)pedestrianARSessionStateManager
 {
-  v2 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v3 = [v2 platformController];
-  v4 = [v3 pedestrianARSessionStateManager];
+  dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  platformController = [dataCoordinator platformController];
+  pedestrianARSessionStateManager = [platformController pedestrianARSessionStateManager];
 
-  return v4;
+  return pedestrianARSessionStateManager;
 }
 
 - (void)_refreshSelectedVehicleDisplay
 {
-  v3 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  v2 = [v3 refinementBarView];
-  [v2 reloadRefinementBar];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  refinementBarView = [fieldsView refinementBarView];
+  [refinementBarView reloadRefinementBar];
 }
 
 - (double)_extraBottomPadding
 {
-  v2 = [(IOSRoutePlanningOverviewViewController *)self view];
-  [v2 safeAreaInsets];
+  view = [(IOSRoutePlanningOverviewViewController *)self view];
+  [view safeAreaInsets];
   if (v3 <= 0.0)
   {
     v4 = 16.0;
@@ -415,22 +415,22 @@ LABEL_32:
 
 - (void)_refreshContentInset
 {
-  v3 = [(RoutePlanningOverviewViewController *)self collectionView];
-  [v3 contentInset];
+  collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+  [collectionView contentInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
   [(IOSRoutePlanningOverviewViewController *)self _extraBottomPadding];
   v11 = v10;
-  v12 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  if ([v12 transportType] == 4)
+  dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  if ([dataCoordinator transportType] == 4)
   {
     v11 = 0.0;
   }
 
-  v13 = [(RoutePlanningOverviewViewController *)self collectionView];
-  [v13 setContentInset:{v5, v7, v11, v9}];
+  collectionView2 = [(RoutePlanningOverviewViewController *)self collectionView];
+  [collectionView2 setContentInset:{v5, v7, v11, v9}];
 }
 
 - (void)_refreshTimingDisplay
@@ -445,14 +445,14 @@ LABEL_32:
     [NSSet setWithObjects:&off_1016E7298, 0, v14];
   }
   v3 = ;
-  v4 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 transportType]);
+  dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [dataCoordinator transportType]);
   if ([v3 containsObject:v5])
   {
 
 LABEL_10:
-    v10 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v11 = [v10 timing];
+    dataCoordinator2 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    timing = [dataCoordinator2 timing];
 
     goto LABEL_12;
   }
@@ -467,8 +467,8 @@ LABEL_10:
     [NSSet setWithObjects:&off_1016E7298, 0, v15];
   }
   v6 = ;
-  v7 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 desiredTransportType]);
+  dataCoordinator3 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [dataCoordinator3 desiredTransportType]);
   v9 = [v6 containsObject:v8];
 
   if (v9)
@@ -476,25 +476,25 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = 0;
+  timing = 0;
 LABEL_12:
-  v12 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v12 setNeedsUpdateRefinements];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView setNeedsUpdateRefinements];
 
   v13 = sub_100798A3C();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v11;
+    v17 = timing;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Updating timing to: %@", buf, 0xCu);
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateCyclePreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateCyclePreferences:(id)preferences
 {
-  v5 = a4;
-  v6 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-  v7 = [v6 value];
+  preferencesCopy = preferences;
+  preferenceRefinement = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+  value = [preferenceRefinement value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -508,20 +508,20 @@ LABEL_12:
       v13 = 138412546;
       v14 = v11;
       v15 = 2112;
-      v16 = v5;
+      v16 = preferencesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Redrawing refinements for updated %@: %@", &v13, 0x16u);
     }
 
-    v12 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v12 setNeedsUpdateRefinements];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView setNeedsUpdateRefinements];
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateTransitPreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateTransitPreferences:(id)preferences
 {
-  v5 = a4;
-  v6 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-  v7 = [v6 value];
+  preferencesCopy = preferences;
+  preferenceRefinement = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+  value = [preferenceRefinement value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -535,20 +535,20 @@ LABEL_12:
       v13 = 138412546;
       v14 = v11;
       v15 = 2112;
-      v16 = v5;
+      v16 = preferencesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Redrawing refinements for updated %@: %@", &v13, 0x16u);
     }
 
-    v12 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v12 setNeedsUpdateRefinements];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView setNeedsUpdateRefinements];
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateWalkPreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateWalkPreferences:(id)preferences
 {
-  v5 = a4;
-  v6 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-  v7 = [v6 value];
+  preferencesCopy = preferences;
+  preferenceRefinement = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+  value = [preferenceRefinement value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -562,20 +562,20 @@ LABEL_12:
       v13 = 138412546;
       v14 = v11;
       v15 = 2112;
-      v16 = v5;
+      v16 = preferencesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Redrawing refinements for updated %@: %@", &v13, 0x16u);
     }
 
-    v12 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v12 setNeedsUpdateRefinements];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView setNeedsUpdateRefinements];
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateDrivePreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateDrivePreferences:(id)preferences
 {
-  v5 = a4;
-  v6 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-  v7 = [v6 value];
+  preferencesCopy = preferences;
+  preferenceRefinement = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+  value = [preferenceRefinement value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -589,18 +589,18 @@ LABEL_12:
       v13 = 138412546;
       v14 = v11;
       v15 = 2112;
-      v16 = v5;
+      v16 = preferencesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Redrawing refinements for updated %@: %@", &v13, 0x16u);
     }
 
-    v12 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v12 setNeedsUpdateRefinements];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView setNeedsUpdateRefinements];
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateVirtualGarage:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateVirtualGarage:(id)garage
 {
-  if ([(RoutePlanningOverviewViewController *)self shouldRefreshRoutePlanningWithCurrentGarage:a4 previousGarage:self->super._virtualGarageAtLastRouteRequest])
+  if ([(RoutePlanningOverviewViewController *)self shouldRefreshRoutePlanningWithCurrentGarage:garage previousGarage:self->super._virtualGarageAtLastRouteRequest])
   {
     v5 = sub_100798A3C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -609,28 +609,28 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Redrawing refinements for updated virtual garage", v8, 2u);
     }
 
-    v6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v6 setNeedsUpdateRefinements];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView setNeedsUpdateRefinements];
 
-    v7 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v7 setNeedsUpdateWaypointsList];
+    fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView2 setNeedsUpdateWaypointsList];
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateRouteCollection:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateRouteCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  [(IOSRoutePlanningOverviewViewController *)self _captureFamiliarRoutesIfAvailable:v7 routeCollection:v6];
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  [(IOSRoutePlanningOverviewViewController *)self _captureFamiliarRoutesIfAvailable:coordinatorCopy routeCollection:collectionCopy];
   v13.receiver = self;
   v13.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v13 routePlanningDataCoordinator:v7 didUpdateRouteCollection:v6];
+  [(RoutePlanningOverviewViewController *)&v13 routePlanningDataCoordinator:coordinatorCopy didUpdateRouteCollection:collectionCopy];
 
-  v8 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v8 setNeedsUpdateWaypointsList];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView setNeedsUpdateWaypointsList];
 
-  v9 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v9 setNeedsUpdateRefinements];
+  fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView2 setNeedsUpdateRefinements];
 
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -643,16 +643,16 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateTransportType:(int64_t)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateTransportType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v10 routePlanningDataCoordinator:a3 didUpdateTransportType:a4];
-  v5 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v5 updateRefinements];
+  [(RoutePlanningOverviewViewController *)&v10 routePlanningDataCoordinator:coordinator didUpdateTransportType:type];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView updateRefinements];
 
-  v6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v6 updateWaypointsList];
+  fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView2 updateWaypointsList];
 
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
@@ -665,44 +665,44 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateOriginName:(id)a4 destinationName:(id)a5
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateOriginName:(id)name destinationName:(id)destinationName
 {
   v7.receiver = self;
   v7.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v7 routePlanningDataCoordinator:a3 didUpdateOriginName:a4 destinationName:a5];
-  v6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v6 setNeedsUpdateWaypointsList];
+  [(RoutePlanningOverviewViewController *)&v7 routePlanningDataCoordinator:coordinator didUpdateOriginName:name destinationName:destinationName];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView setNeedsUpdateWaypointsList];
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateResolvedWaypointSet:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateResolvedWaypointSet:(id)set
 {
   v9.receiver = self;
   v9.super_class = IOSRoutePlanningOverviewViewController;
-  v6 = a4;
-  [(RoutePlanningOverviewViewController *)&v9 routePlanningDataCoordinator:a3 didUpdateResolvedWaypointSet:v6];
+  setCopy = set;
+  [(RoutePlanningOverviewViewController *)&v9 routePlanningDataCoordinator:coordinator didUpdateResolvedWaypointSet:setCopy];
   v7 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate:v9.receiver];
-  [v7 routePlanningUpdatedWaypoints:v6];
+  [v7 routePlanningUpdatedWaypoints:setCopy];
 
-  v8 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v8 setNeedsUpdateRefinements];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView setNeedsUpdateRefinements];
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateRequestState:(int64_t)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateRequestState:(int64_t)state
 {
   v6.receiver = self;
   v6.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v6 routePlanningDataCoordinator:a3 didUpdateRequestState:a4];
-  v5 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v5 setNeedsUpdateRefinements];
+  [(RoutePlanningOverviewViewController *)&v6 routePlanningDataCoordinator:coordinator didUpdateRequestState:state];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView setNeedsUpdateRefinements];
 }
 
-- (void)updatedRefinementModel:(id)a3
+- (void)updatedRefinementModel:(id)model
 {
-  v12 = a3;
-  v4 = [v12 lastUpdateUsageAction];
-  if (v4)
+  modelCopy = model;
+  lastUpdateUsageAction = [modelCopy lastUpdateUsageAction];
+  if (lastUpdateUsageAction)
   {
-    v5 = v4;
+    v5 = lastUpdateUsageAction;
     v6 = +[MKMapService sharedService];
     [v6 captureUserAction:v5 onTarget:-[RoutePlanningOverviewViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
   }
@@ -711,49 +711,49 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v12 selectedVehicle];
+    selectedVehicle = [modelCopy selectedVehicle];
     v8 = +[VGVirtualGarageService sharedService];
-    [v8 virtualGarageSelectVehicle:v7];
+    [v8 virtualGarageSelectVehicle:selectedVehicle];
 
-    v9 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v9 setNeedsUpdateRefinements];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView setNeedsUpdateRefinements];
   }
 
   else
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v11 = v12;
+    v11 = modelCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v7 = [v12 value];
-    v9 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    [v9 updateTransitPreferences:v7];
+    selectedVehicle = [modelCopy value];
+    fieldsView = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    [fieldsView updateTransitPreferences:selectedVehicle];
   }
 
-  v11 = v12;
+  v11 = modelCopy;
 LABEL_8:
 }
 
-- (void)selectedRefinementModel:(id)a3 identifier:(id)a4 subIdentifier:(id)a5
+- (void)selectedRefinementModel:(id)model identifier:(id)identifier subIdentifier:(id)subIdentifier
 {
-  v26 = a3;
-  v7 = a5;
-  v8 = [v26 menuPressUsageAction];
-  if (v8)
+  modelCopy = model;
+  subIdentifierCopy = subIdentifier;
+  menuPressUsageAction = [modelCopy menuPressUsageAction];
+  if (menuPressUsageAction)
   {
-    v9 = v8;
+    v9 = menuPressUsageAction;
     v10 = +[MKMapService sharedService];
     [v10 captureUserAction:v9 onTarget:-[RoutePlanningOverviewViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
   }
 
-  v11 = [v26 buttonPressUsageAction];
-  if (v11)
+  buttonPressUsageAction = [modelCopy buttonPressUsageAction];
+  if (buttonPressUsageAction)
   {
-    v12 = v11;
+    v12 = buttonPressUsageAction;
     v13 = +[MKMapService sharedService];
     [v13 captureUserAction:v12 onTarget:-[RoutePlanningOverviewViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
   }
@@ -762,8 +762,8 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [(IOSRoutePlanningOverviewViewController *)self didTapTimingInFieldsView:v14];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [(IOSRoutePlanningOverviewViewController *)self didTapTimingInFieldsView:fieldsView];
 LABEL_7:
 
     goto LABEL_14;
@@ -786,39 +786,39 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v26 selectVehicleWithIdentifier:v7];
+    [modelCopy selectVehicleWithIdentifier:subIdentifierCopy];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v26;
-    v15 = [v14 refinementField];
-    if (v15 == 2)
+    fieldsView = modelCopy;
+    refinementField = [fieldsView refinementField];
+    if (refinementField == 2)
     {
-      v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 intValue]);
-      v25 = [v14 preferences];
-      [v25 setSurchargeOption:v24];
+      preferences2 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [subIdentifierCopy intValue]);
+      preferences = [fieldsView preferences];
+      [preferences setSurchargeOption:preferences2];
     }
 
-    else if (v15 == 1)
+    else if (refinementField == 1)
     {
-      v23 = [v7 isEqual:@"EnableIC"];
-      v24 = [v14 preferences];
-      [v24 setShowICFares:v23];
+      v23 = [subIdentifierCopy isEqual:@"EnableIC"];
+      preferences2 = [fieldsView preferences];
+      [preferences2 setShowICFares:v23];
     }
 
     else
     {
-      if (v15)
+      if (refinementField)
       {
 LABEL_36:
-        [(IOSRoutePlanningOverviewViewController *)self updatedRefinementModel:v14];
+        [(IOSRoutePlanningOverviewViewController *)self updatedRefinementModel:fieldsView];
         goto LABEL_7;
       }
 
-      v16 = v7;
+      v16 = subIdentifierCopy;
       if ([v16 isEqualToString:@"TRANSIT_PRIORITIZE_DEFAULT"])
       {
         v17 = 0;
@@ -844,8 +844,8 @@ LABEL_36:
         v17 = 0;
       }
 
-      v24 = [v14 preferences];
-      [v24 setSortOption:v17];
+      preferences2 = [fieldsView preferences];
+      [preferences2 setSortOption:v17];
     }
 
     goto LABEL_36;
@@ -854,46 +854,46 @@ LABEL_36:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v7 isEqualToString:@"PreferredNetworks"];
+    v18 = [subIdentifierCopy isEqualToString:@"PreferredNetworks"];
     v19 = +[VGVirtualGarageService sharedService];
-    v20 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v21 = [v20 virtualGarage];
-    v22 = [v21 selectedVehicle];
-    [v19 virtualGarageSetShouldUsePreferredNetworks:v18 forVehicle:v22];
+    dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    virtualGarage = [dataCoordinator virtualGarage];
+    selectedVehicle = [virtualGarage selectedVehicle];
+    [v19 virtualGarageSetShouldUsePreferredNetworks:v18 forVehicle:selectedVehicle];
   }
 
 LABEL_14:
 }
 
-- (double)widthForCell:(id)a3
+- (double)widthForCell:(id)cell
 {
-  v3 = [(RoutePlanningOverviewViewController *)self collectionView];
-  [v3 frame];
+  collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+  [collectionView frame];
   Width = CGRectGetWidth(v6);
 
   return Width;
 }
 
-- (void)didTapAdvisoriesOnCell:(id)a3 atIndex:(int64_t)a4
+- (void)didTapAdvisoriesOnCell:(id)cell atIndex:(int64_t)index
 {
-  v6 = a3;
+  cellCopy = cell;
   v7 = sub_100798A3C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 route];
-    v9 = [v8 uniqueRouteID];
+    route = [cellCopy route];
+    uniqueRouteID = [route uniqueRouteID];
     *buf = 138412802;
-    v30 = v6;
+    v30 = cellCopy;
     v31 = 2112;
-    v32 = v9;
+    v32 = uniqueRouteID;
     v33 = 2048;
-    v34 = a4;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "didTapAdvisoriesOnCell: %@ with route: %@, index: %ld", buf, 0x20u);
   }
 
-  v10 = [v6 route];
-  v11 = v10;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  route2 = [cellCopy route];
+  v11 = route2;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = sub_100798A3C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -908,90 +908,90 @@ LABEL_14:
 
   else
   {
-    v12 = [v10 advisoriesForAutoSharingContacts:&__NSArray0__struct scale:0.0];
-    if ([v12 count]<= a4)
+    v12 = [route2 advisoriesForAutoSharingContacts:&__NSArray0__struct scale:0.0];
+    if ([v12 count]<= index)
     {
-      [(RoutePlanningOverviewViewController *)self didTapAutomaticSharingButtonForRouteOverviewCell:v6];
+      [(RoutePlanningOverviewViewController *)self didTapAutomaticSharingButtonForRouteOverviewCell:cellCopy];
     }
 
     else
     {
-      v13 = [v12 objectAtIndexedSubscript:a4];
-      v14 = [v13 advisory];
+      v13 = [v12 objectAtIndexedSubscript:index];
+      advisory = [v13 advisory];
 
-      v15 = [(IOSRoutePlanningOverviewViewController *)self _maps_mapsSceneDelegate];
-      v16 = [v15 appCoordinator];
-      v17 = [v16 baseActionCoordinator];
+      _maps_mapsSceneDelegate = [(IOSRoutePlanningOverviewViewController *)self _maps_mapsSceneDelegate];
+      appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+      baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
-      if (sub_100E186CC(v14))
+      if (sub_100E186CC(advisory))
       {
-        v18 = [v14 advisoryItems];
-        v19 = [v18 firstObject];
-        v20 = [v19 cardAction];
-        v21 = [v20 location];
+        advisoryItems = [advisory advisoryItems];
+        firstObject = [advisoryItems firstObject];
+        cardAction = [firstObject cardAction];
+        location = [cardAction location];
 
         v22 = [GEOMapRegion alloc];
-        [v21 lat];
+        [location lat];
         v24 = v23;
-        [v21 lng];
+        [location lng];
         v26 = [v22 initWithLatitude:v24 longitude:v25];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_10083B950;
         v27[3] = &unk_10162B940;
-        v28 = v17;
+        v28 = baseActionCoordinator;
         [v28 viewController:0 showOfflineMapRegionSelectorForRegion:v26 name:0 dismissalBlock:v27];
       }
 
       else
       {
-        [v17 setRoutePlanningAdvisory:v14];
-        [v17 presentRoutePlanningViewType:5];
+        [baseActionCoordinator setRoutePlanningAdvisory:advisory];
+        [baseActionCoordinator presentRoutePlanningViewType:5];
       }
     }
   }
 }
 
-- (void)didTapPreviewOnCell:(id)a3
+- (void)didTapPreviewOnCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = sub_100798A3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 route];
-    v7 = [v6 uniqueRouteID];
+    route = [cellCopy route];
+    uniqueRouteID = [route uniqueRouteID];
     v8 = 138412546;
-    v9 = v4;
+    v9 = cellCopy;
     v10 = 2112;
-    v11 = v7;
+    v11 = uniqueRouteID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "didTapPreviewOnCell: %@ with route: %@", &v8, 0x16u);
   }
 
-  [(RoutePlanningOverviewViewController *)self didTapDetailsButtonForRouteOverviewCell:v4];
+  [(RoutePlanningOverviewViewController *)self didTapDetailsButtonForRouteOverviewCell:cellCopy];
 }
 
-- (void)didTapPrimaryActionOnCell:(id)a3
+- (void)didTapPrimaryActionOnCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 route];
+  cellCopy = cell;
+  route = [cellCopy route];
   v6 = sub_100798A3C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 uniqueRouteID];
+    uniqueRouteID = [route uniqueRouteID];
     v11 = 138543618;
-    v12 = v4;
+    v12 = cellCopy;
     v13 = 2114;
-    v14 = v7;
+    v14 = uniqueRouteID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "didTapPrimaryActionOnCell: %{public}@ with route: %{public}@", &v11, 0x16u);
   }
 
   if (sub_10000FA08(self) == 5)
   {
-    v8 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    [v8 updateCurrentRoute:v5];
+    dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    [dataCoordinator updateCurrentRoute:route];
 
-    v9 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
-    [v9 presentRoutePlanningViewType:2];
+    routePlanningDelegate = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
+    [routePlanningDelegate presentRoutePlanningViewType:2];
 
     v10 = +[MKMapService sharedService];
     [v10 captureUserAction:3004 onTarget:-[RoutePlanningOverviewViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
@@ -999,48 +999,48 @@ LABEL_14:
 
   else
   {
-    [(RoutePlanningOverviewViewController *)self didTapGoOnRoute:v5];
+    [(RoutePlanningOverviewViewController *)self didTapGoOnRoute:route];
   }
 }
 
-- (void)didTapOnCell:(id)a3
+- (void)didTapOnCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = sub_100798A3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 route];
-    v7 = [v6 uniqueRouteID];
+    route = [cellCopy route];
+    uniqueRouteID = [route uniqueRouteID];
     v10 = 138412546;
-    v11 = v4;
+    v11 = cellCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = uniqueRouteID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "didTapOnCell: %@ with route: %@", &v10, 0x16u);
   }
 
-  v8 = [(RoutePlanningOverviewViewController *)self rootController];
-  v9 = [v4 route];
-  [(RoutePlanningOverviewViewController *)self dataSource:v8 didSelectRowForRoute:v9];
+  rootController = [(RoutePlanningOverviewViewController *)self rootController];
+  route2 = [cellCopy route];
+  [(RoutePlanningOverviewViewController *)self dataSource:rootController didSelectRowForRoute:route2];
 }
 
-- (int64_t)transportTypeForFieldsView:(id)a3
+- (int64_t)transportTypeForFieldsView:(id)view
 {
-  v3 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v4 = [v3 transportType];
+  dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  transportType = [dataCoordinator transportType];
 
-  return v4;
+  return transportType;
 }
 
-- (id)currentRefinementsForFieldsView:(id)a3
+- (id)currentRefinementsForFieldsView:(id)view
 {
-  v4 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v5 = [v4 platformController];
-  v6 = [v5 currentSession];
+  dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  platformController = [dataCoordinator platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = currentSession;
   }
 
   else
@@ -1052,24 +1052,24 @@ LABEL_14:
 
   if (v8)
   {
-    v9 = [v8 currentTransportType];
+    currentTransportType = [v8 currentTransportType];
     v10 = [v8 navigationType] == 2;
   }
 
   else
   {
-    v11 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v9 = [v11 transportType];
+    dataCoordinator2 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    currentTransportType = [dataCoordinator2 transportType];
 
-    v12 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v13 = [v12 currentRoute];
-    v14 = [v13 origin];
-    if (v14)
+    dataCoordinator3 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    currentRoute = [dataCoordinator3 currentRoute];
+    origin = [currentRoute origin];
+    if (origin)
     {
-      v15 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-      v16 = [v15 currentRoute];
-      v17 = [v16 origin];
-      v10 = [v17 isCurrentLocation] ^ 1;
+      dataCoordinator4 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+      currentRoute2 = [dataCoordinator4 currentRoute];
+      origin2 = [currentRoute2 origin];
+      v10 = [origin2 isCurrentLocation] ^ 1;
     }
 
     else
@@ -1078,10 +1078,10 @@ LABEL_14:
     }
   }
 
-  if (sub_10000FA08(self) == 5 && !v9)
+  if (sub_10000FA08(self) == 5 && !currentTransportType)
   {
-    v18 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v9 = [v18 desiredTransportType];
+    dataCoordinator5 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    currentTransportType = [dataCoordinator5 desiredTransportType];
   }
 
   BOOL = GEOConfigGetBOOL();
@@ -1097,10 +1097,10 @@ LABEL_14:
   }
 
   v22 = objc_opt_new();
-  v23 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v24 = [v23 timing];
-  v25 = [(IOSRoutePlanningOverviewViewController *)self timingRefinement];
-  [v25 setValue:v24];
+  dataCoordinator6 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  timing = [dataCoordinator6 timing];
+  timingRefinement = [(IOSRoutePlanningOverviewViewController *)self timingRefinement];
+  [timingRefinement setValue:timing];
 
   if (MapsFeature_IsEnabled_Maps357RoutePlanning())
   {
@@ -1112,79 +1112,79 @@ LABEL_14:
     [NSSet setWithObjects:&off_1016E7298, 0, v76];
   }
   v26 = ;
-  v27 = [NSNumber numberWithInteger:v9];
+  v27 = [NSNumber numberWithInteger:currentTransportType];
   v28 = [v26 containsObject:v27];
 
   if (v28)
   {
-    v29 = [(IOSRoutePlanningOverviewViewController *)self timingRefinement];
-    [v22 addObject:v29];
+    timingRefinement2 = [(IOSRoutePlanningOverviewViewController *)self timingRefinement];
+    [v22 addObject:timingRefinement2];
   }
 
-  if (v9 <= 2)
+  if (currentTransportType <= 2)
   {
-    if (v9)
+    if (currentTransportType)
     {
-      if (v9 != 1)
+      if (currentTransportType != 1)
       {
-        if (v9 != 2)
+        if (currentTransportType != 2)
         {
           goto LABEL_44;
         }
 
-        v30 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-        v31 = [v30 walkPreferences];
-        v32 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-        [v32 setValue:v31];
+        dataCoordinator7 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+        walkPreferences = [dataCoordinator7 walkPreferences];
+        preferenceRefinement = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+        [preferenceRefinement setValue:walkPreferences];
 
-        v33 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+        preferenceRefinement2 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
         goto LABEL_42;
       }
 
-      v51 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-      v52 = [v51 drivePreferences];
-      v53 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-      [v53 setValue:v52];
+      dataCoordinator8 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+      drivePreferences = [dataCoordinator8 drivePreferences];
+      preferenceRefinement3 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+      [preferenceRefinement3 setValue:drivePreferences];
 
-      v54 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-      [v22 addObject:v54];
+      preferenceRefinement4 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+      [v22 addObject:preferenceRefinement4];
 
-      v55 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-      v56 = [v55 virtualGarage];
-      v57 = [v56 vehicles];
+      dataCoordinator9 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+      virtualGarage = [dataCoordinator9 virtualGarage];
+      vehicles = [virtualGarage vehicles];
       v77 = v21;
-      v58 = ([v57 count] != 0) & v21;
+      v58 = ([vehicles count] != 0) & v21;
 
       if (v58 == 1)
       {
-        v59 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-        v60 = [v59 virtualGarage];
-        v61 = [(IOSRoutePlanningOverviewViewController *)self vehicleRefinement];
-        [v61 setValue:v60];
+        dataCoordinator10 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+        virtualGarage2 = [dataCoordinator10 virtualGarage];
+        vehicleRefinement = [(IOSRoutePlanningOverviewViewController *)self vehicleRefinement];
+        [vehicleRefinement setValue:virtualGarage2];
 
-        v62 = [(IOSRoutePlanningOverviewViewController *)self vehicleRefinement];
-        [v22 addObject:v62];
+        vehicleRefinement2 = [(IOSRoutePlanningOverviewViewController *)self vehicleRefinement];
+        [v22 addObject:vehicleRefinement2];
       }
 
       IsEnabled_EVRoutingEnhancements = MapsFeature_IsEnabled_EVRoutingEnhancements();
-      v64 = [(IOSRoutePlanningOverviewViewController *)self vehicleRefinement];
-      v65 = [v64 isOverridingToNoSelection];
+      vehicleRefinement3 = [(IOSRoutePlanningOverviewViewController *)self vehicleRefinement];
+      isOverridingToNoSelection = [vehicleRefinement3 isOverridingToNoSelection];
 
-      v66 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-      v67 = [v66 virtualGarage];
-      v68 = [v67 selectedVehicle];
-      v69 = [v68 preferredChargingNetworks];
-      v70 = [v69 count];
+      dataCoordinator11 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+      virtualGarage3 = [dataCoordinator11 virtualGarage];
+      selectedVehicle = [virtualGarage3 selectedVehicle];
+      preferredChargingNetworks = [selectedVehicle preferredChargingNetworks];
+      v70 = [preferredChargingNetworks count];
 
-      if (IsEnabled_EVRoutingEnhancements && (v65 & 1) == 0 && v70 && ((v77 ^ 1) & 1) == 0)
+      if (IsEnabled_EVRoutingEnhancements && (isOverridingToNoSelection & 1) == 0 && v70 && ((v77 ^ 1) & 1) == 0)
       {
-        v71 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-        v72 = [v71 virtualGarage];
-        v73 = [v72 selectedVehicle];
-        v74 = [(IOSRoutePlanningOverviewViewController *)self preferredNetworksRefinement];
-        [v74 setValue:v73];
+        dataCoordinator12 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+        virtualGarage4 = [dataCoordinator12 virtualGarage];
+        selectedVehicle2 = [virtualGarage4 selectedVehicle];
+        preferredNetworksRefinement = [(IOSRoutePlanningOverviewViewController *)self preferredNetworksRefinement];
+        [preferredNetworksRefinement setValue:selectedVehicle2];
 
-        v33 = [(IOSRoutePlanningOverviewViewController *)self preferredNetworksRefinement];
+        preferenceRefinement2 = [(IOSRoutePlanningOverviewViewController *)self preferredNetworksRefinement];
         goto LABEL_42;
       }
 
@@ -1192,39 +1192,39 @@ LABEL_14:
     }
 
 LABEL_33:
-    v41 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-    [v41 setValue:0];
+    preferenceRefinement5 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+    [preferenceRefinement5 setValue:0];
 LABEL_43:
 
     goto LABEL_44;
   }
 
-  switch(v9)
+  switch(currentTransportType)
   {
     case 3:
-      v42 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-      v43 = [v42 transitPreferences];
+      dataCoordinator13 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+      transitPreferences = [dataCoordinator13 transitPreferences];
 
-      v44 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-      [v44 setValue:v43];
+      preferenceRefinement6 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+      [preferenceRefinement6 setValue:transitPreferences];
 
-      v45 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-      [v22 addObject:v45];
+      preferenceRefinement7 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+      [v22 addObject:preferenceRefinement7];
 
-      v46 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-      v47 = [v46 displayHints];
+      dataCoordinator14 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+      displayHints = [dataCoordinator14 displayHints];
 
-      v48 = [RoutePlanningDisplayHintsRefinementModel requirementFieldsForDisplayHints:v47];
+      v48 = [RoutePlanningDisplayHintsRefinementModel requirementFieldsForDisplayHints:displayHints];
       v78[0] = _NSConcreteStackBlock;
       v78[1] = 3221225472;
       v78[2] = sub_10083C488;
       v78[3] = &unk_10162B918;
       v79 = v22;
-      v80 = self;
-      v81 = v43;
-      v82 = v47;
-      v49 = v47;
-      v50 = v43;
+      selfCopy = self;
+      v81 = transitPreferences;
+      v82 = displayHints;
+      v49 = displayHints;
+      v50 = transitPreferences;
       [v48 enumerateIndexesUsingBlock:v78];
 
       break;
@@ -1233,26 +1233,26 @@ LABEL_43:
     case 5:
       if (sub_10072B16C())
       {
-        v34 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-        v35 = [v34 cyclePreferences];
-        v36 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-        [v36 setValue:v35];
+        dataCoordinator15 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+        cyclePreferences = [dataCoordinator15 cyclePreferences];
+        preferenceRefinement8 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+        [preferenceRefinement8 setValue:cyclePreferences];
 
-        v37 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
-        [v22 addObject:v37];
+        preferenceRefinement9 = [(IOSRoutePlanningOverviewViewController *)self preferenceRefinement];
+        [v22 addObject:preferenceRefinement9];
       }
 
       if (sub_10072B0F0())
       {
-        v38 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-        v39 = [v38 cyclePreferences];
-        v40 = [(IOSRoutePlanningOverviewViewController *)self ebikeRefinement];
-        [v40 setValue:v39];
+        dataCoordinator16 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+        cyclePreferences2 = [dataCoordinator16 cyclePreferences];
+        ebikeRefinement = [(IOSRoutePlanningOverviewViewController *)self ebikeRefinement];
+        [ebikeRefinement setValue:cyclePreferences2];
 
-        v33 = [(IOSRoutePlanningOverviewViewController *)self ebikeRefinement];
+        preferenceRefinement2 = [(IOSRoutePlanningOverviewViewController *)self ebikeRefinement];
 LABEL_42:
-        v41 = v33;
-        [v22 addObject:v33];
+        preferenceRefinement5 = preferenceRefinement2;
+        [v22 addObject:preferenceRefinement2];
         goto LABEL_43;
       }
 
@@ -1270,9 +1270,9 @@ LABEL_44:
   if (!ebikeRefinement)
   {
     v4 = [RoutePlanningEbikeRefinementModel alloc];
-    v5 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v6 = [v5 cyclePreferences];
-    v7 = [(RoutePlanningRefinementModel *)v4 initWithDelegate:self value:v6];
+    dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    cyclePreferences = [dataCoordinator cyclePreferences];
+    v7 = [(RoutePlanningRefinementModel *)v4 initWithDelegate:self value:cyclePreferences];
     v8 = self->_ebikeRefinement;
     self->_ebikeRefinement = v7;
 
@@ -1288,10 +1288,10 @@ LABEL_44:
   if (!preferredNetworksRefinement)
   {
     v4 = [RoutePlanningPreferredNetworksRefinementModel alloc];
-    v5 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v6 = [v5 virtualGarage];
-    v7 = [v6 selectedVehicle];
-    v8 = [(RoutePlanningPreferredNetworksRefinementModel *)v4 initWithDelegate:self value:v7];
+    dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    virtualGarage = [dataCoordinator virtualGarage];
+    selectedVehicle = [virtualGarage selectedVehicle];
+    v8 = [(RoutePlanningPreferredNetworksRefinementModel *)v4 initWithDelegate:self value:selectedVehicle];
     v9 = self->_preferredNetworksRefinement;
     self->_preferredNetworksRefinement = v8;
 
@@ -1307,9 +1307,9 @@ LABEL_44:
   if (!vehicleRefinement)
   {
     v4 = [RoutePlanningVehicleRefinementModel alloc];
-    v5 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v6 = [v5 virtualGarage];
-    v7 = [(RoutePlanningVehicleRefinementModel *)v4 initWithDelegate:self value:v6];
+    dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    virtualGarage = [dataCoordinator virtualGarage];
+    v7 = [(RoutePlanningVehicleRefinementModel *)v4 initWithDelegate:self value:virtualGarage];
     v8 = self->_vehicleRefinement;
     self->_vehicleRefinement = v7;
 
@@ -1325,9 +1325,9 @@ LABEL_44:
   if (!timingRefinement)
   {
     v4 = [RoutePlanningTimingRefinementModel alloc];
-    v5 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-    v6 = [v5 timing];
-    v7 = [(RoutePlanningRefinementModel *)v4 initWithDelegate:self value:v6];
+    dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+    timing = [dataCoordinator timing];
+    v7 = [(RoutePlanningRefinementModel *)v4 initWithDelegate:self value:timing];
     v8 = self->_timingRefinement;
     self->_timingRefinement = v7;
 
@@ -1352,71 +1352,71 @@ LABEL_44:
   return preferenceRefinement;
 }
 
-- (id)waypointsForFieldsView:(id)a3
+- (id)waypointsForFieldsView:(id)view
 {
-  v4 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v5 = [v4 directionItemForCurrentSession];
+  dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  directionItemForCurrentSession = [dataCoordinator directionItemForCurrentSession];
 
-  if (_UISolariumEnabled() && sub_10000FA08(self) == 5 && ([v5 items], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, !v7))
+  if (_UISolariumEnabled() && sub_10000FA08(self) == 5 && ([directionItemForCurrentSession items], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, !v7))
   {
     v10 = objc_opt_new();
     v12[0] = v10;
     v11 = objc_opt_new();
     v12[1] = v11;
-    v8 = [NSArray arrayWithObjects:v12 count:2];
+    items = [NSArray arrayWithObjects:v12 count:2];
   }
 
   else
   {
-    v8 = [v5 items];
+    items = [directionItemForCurrentSession items];
   }
 
-  return v8;
+  return items;
 }
 
-- (void)_refreshRouteForWaypoints:(id)a3
+- (void)_refreshRouteForWaypoints:(id)waypoints
 {
-  v4 = a3;
-  v5 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v6 = [v5 desiredTransportType];
+  waypointsCopy = waypoints;
+  dataCoordinator = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  desiredTransportType = [dataCoordinator desiredTransportType];
 
-  if (!v6)
+  if (!desiredTransportType)
   {
-    v7 = [(ControlContaineeViewController *)self delegate];
-    v8 = [v7 currentDirectionItem];
-    v9 = [v8 editRequired:0];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    currentDirectionItem = [delegate currentDirectionItem];
+    v9 = [currentDirectionItem editRequired:0];
 
     if (v9)
     {
-      v10 = [(ControlContaineeViewController *)self delegate];
-      v11 = [v10 currentDirectionItem];
-      v6 = [v11 transportType];
+      delegate2 = [(ControlContaineeViewController *)self delegate];
+      currentDirectionItem2 = [delegate2 currentDirectionItem];
+      desiredTransportType = [currentDirectionItem2 transportType];
     }
 
     else
     {
-      v6 = 0;
+      desiredTransportType = 0;
     }
   }
 
   v12 = +[MKLocationManager sharedLocationManager];
-  v13 = -[DirectionItem initWithItems:ignoreMapType:transportType:]([DirectionItem alloc], "initWithItems:ignoreMapType:transportType:", v4, [v12 isLocationServicesApproved] & objc_msgSend(v12, "isAuthorizedForPreciseLocation"), v6);
+  v13 = -[DirectionItem initWithItems:ignoreMapType:transportType:]([DirectionItem alloc], "initWithItems:ignoreMapType:transportType:", waypointsCopy, [v12 isLocationServicesApproved] & objc_msgSend(v12, "isAuthorizedForPreciseLocation"), desiredTransportType);
 
-  v14 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v15 = [v14 drivePreferences];
-  [(DirectionItem *)v13 setDrivePreferences:v15];
+  dataCoordinator2 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  drivePreferences = [dataCoordinator2 drivePreferences];
+  [(DirectionItem *)v13 setDrivePreferences:drivePreferences];
 
-  v16 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v17 = [v16 transitPreferences];
-  [(DirectionItem *)v13 setTransitPreferences:v17];
+  dataCoordinator3 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  transitPreferences = [dataCoordinator3 transitPreferences];
+  [(DirectionItem *)v13 setTransitPreferences:transitPreferences];
 
-  v18 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v19 = [v18 cyclePreferences];
-  [(DirectionItem *)v13 setCyclePreferences:v19];
+  dataCoordinator4 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  cyclePreferences = [dataCoordinator4 cyclePreferences];
+  [(DirectionItem *)v13 setCyclePreferences:cyclePreferences];
 
-  v20 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v21 = [v20 timing];
-  [(DirectionItem *)v13 setTiming:v21];
+  dataCoordinator5 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  timing = [dataCoordinator5 timing];
+  [(DirectionItem *)v13 setTiming:timing];
 
   v22 = [NSMutableDictionary alloc];
   v31 = @"DirectionsSessionInitiatorKey";
@@ -1424,37 +1424,37 @@ LABEL_44:
   v23 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
   v24 = [v22 initWithDictionary:v23];
 
-  v25 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v26 = [v25 originalHistoryEntryIdentifier];
-  [v24 setObject:v26 forKeyedSubscript:@"DirectionsRouteUUIDKey"];
+  dataCoordinator6 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  originalHistoryEntryIdentifier = [dataCoordinator6 originalHistoryEntryIdentifier];
+  [v24 setObject:originalHistoryEntryIdentifier forKeyedSubscript:@"DirectionsRouteUUIDKey"];
 
-  v27 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
-  v28 = [v27 automaticSharingContacts];
-  [v24 setObject:v28 forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
+  dataCoordinator7 = [(RoutePlanningOverviewViewController *)self dataCoordinator];
+  automaticSharingContacts = [dataCoordinator7 automaticSharingContacts];
+  [v24 setObject:automaticSharingContacts forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
 
-  v29 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
+  routePlanningDelegate = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
   v30 = [v24 copy];
-  [v29 refreshRoutePlanningWithDirectionItem:v13 userInfo:v30];
+  [routePlanningDelegate refreshRoutePlanningWithDirectionItem:v13 userInfo:v30];
 }
 
-- (void)_refreshRouteForChangeInWaypointListView:(id)a3
+- (void)_refreshRouteForChangeInWaypointListView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:6003 onTarget:-[RoutePlanningOverviewViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-  v7 = [v4 waypoints];
+  waypoints = [viewCopy waypoints];
 
-  v6 = [v7 copy];
+  v6 = [waypoints copy];
   [(IOSRoutePlanningOverviewViewController *)self _refreshRouteForWaypoints:v6];
 }
 
 - (void)replaceOriginWithCurrentLocation
 {
-  v3 = [(ControlContaineeViewController *)self delegate];
-  v4 = [v3 currentDirectionItem];
-  v5 = [v4 items];
-  v6 = [v5 mutableCopy];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  currentDirectionItem = [delegate currentDirectionItem];
+  items = [currentDirectionItem items];
+  v6 = [items mutableCopy];
 
   if ([v6 count])
   {
@@ -1476,112 +1476,112 @@ LABEL_44:
   }
 }
 
-- (void)didTapTimingInFieldsView:(id)a3
+- (void)didTapTimingInFieldsView:(id)view
 {
   [(RoutePlanningOverviewViewController *)self _cancelAutoLaunch];
-  v4 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
-  [v4 presentRoutePlanningViewType:3];
+  routePlanningDelegate = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
+  [routePlanningDelegate presentRoutePlanningViewType:3];
 
-  v5 = [(IOSRoutePlanningOverviewViewController *)self pedestrianARFeatureIntroTeachableMomentTimer];
-  [v5 invalidate];
+  pedestrianARFeatureIntroTeachableMomentTimer = [(IOSRoutePlanningOverviewViewController *)self pedestrianARFeatureIntroTeachableMomentTimer];
+  [pedestrianARFeatureIntroTeachableMomentTimer invalidate];
 }
 
-- (void)_didSelectWaypoint:(id)a3 atIndex:(unint64_t)a4
+- (void)_didSelectWaypoint:(id)waypoint atIndex:(unint64_t)index
 {
   [(RoutePlanningOverviewViewController *)self _cancelAutoLaunch];
-  v6 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
-  [v6 presentRoutePlanningViewType:1];
+  routePlanningDelegate = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
+  [routePlanningDelegate presentRoutePlanningViewType:1];
 
-  v7 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
-  [v7 selectWaypointSearchFieldIndex:a4 exitPlanningIfCancelTapped:0 beginEditing:0];
+  routePlanningDelegate2 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
+  [routePlanningDelegate2 selectWaypointSearchFieldIndex:index exitPlanningIfCancelTapped:0 beginEditing:0];
 
-  v8 = [(IOSRoutePlanningOverviewViewController *)self pedestrianARFeatureIntroTeachableMomentTimer];
-  [v8 invalidate];
+  pedestrianARFeatureIntroTeachableMomentTimer = [(IOSRoutePlanningOverviewViewController *)self pedestrianARFeatureIntroTeachableMomentTimer];
+  [pedestrianARFeatureIntroTeachableMomentTimer invalidate];
 }
 
-- (void)waypointListView:(id)a3 didDeleteWaypointAtIndex:(unint64_t)a4
+- (void)waypointListView:(id)view didDeleteWaypointAtIndex:(unint64_t)index
 {
-  v10 = a3;
+  viewCopy = view;
   v6 = +[MKMapService sharedService];
-  v7 = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
-  v8 = [NSNumber numberWithUnsignedInteger:a4];
-  v9 = [v8 stringValue];
-  [v6 captureUserAction:280 onTarget:v7 eventValue:v9];
+  currentUITargetForAnalytics = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
+  v8 = [NSNumber numberWithUnsignedInteger:index];
+  stringValue = [v8 stringValue];
+  [v6 captureUserAction:280 onTarget:currentUITargetForAnalytics eventValue:stringValue];
 
-  [(IOSRoutePlanningOverviewViewController *)self _refreshRouteForChangeInWaypointListView:v10];
+  [(IOSRoutePlanningOverviewViewController *)self _refreshRouteForChangeInWaypointListView:viewCopy];
 }
 
-- (void)waypointListView:(id)a3 didMoveWaypoint:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6
+- (void)waypointListView:(id)view didMoveWaypoint:(id)waypoint fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v12 = a3;
+  viewCopy = view;
   v8 = +[MKMapService sharedService];
-  v9 = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
-  v10 = [NSNumber numberWithUnsignedInteger:a5];
-  v11 = [v10 stringValue];
-  [v8 captureUserAction:279 onTarget:v9 eventValue:v11];
+  currentUITargetForAnalytics = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
+  v10 = [NSNumber numberWithUnsignedInteger:index];
+  stringValue = [v10 stringValue];
+  [v8 captureUserAction:279 onTarget:currentUITargetForAnalytics eventValue:stringValue];
 
-  [(IOSRoutePlanningOverviewViewController *)self _refreshRouteForChangeInWaypointListView:v12];
+  [(IOSRoutePlanningOverviewViewController *)self _refreshRouteForChangeInWaypointListView:viewCopy];
 }
 
-- (void)waypointListView:(id)a3 didSelectCollapsedWaypoints:(id)a4
+- (void)waypointListView:(id)view didSelectCollapsedWaypoints:(id)waypoints
 {
-  v5 = a4;
-  v6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v6 expandWaypointsIfNeeded];
+  waypointsCopy = waypoints;
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView expandWaypointsIfNeeded];
 
-  v7 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  v8 = [v7 superview];
-  v9 = [(ContaineeViewController *)self contentView];
+  fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  superview = [fieldsView2 superview];
+  contentView = [(ContaineeViewController *)self contentView];
 
-  if (v8 != v9)
+  if (superview != contentView)
   {
-    v10 = [(RoutePlanningOverviewViewController *)self collectionView];
-    v11 = [v10 collectionViewLayout];
-    [v11 invalidateLayout];
+    collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 
-  v12 = [(ContaineeViewController *)self cardPresentationController];
-  [v12 wantsLayout:3];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsLayout:3];
 
   [(IOSRoutePlanningOverviewViewController *)self _updateFieldsViewSuperviewIfNeeded];
   v17 = +[MKMapService sharedService];
-  v13 = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
-  v14 = [v5 count];
+  currentUITargetForAnalytics = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
+  v14 = [waypointsCopy count];
 
   v15 = [NSNumber numberWithUnsignedInteger:v14];
-  v16 = [v15 stringValue];
-  [v17 captureUserAction:31 onTarget:v13 eventValue:v16];
+  stringValue = [v15 stringValue];
+  [v17 captureUserAction:31 onTarget:currentUITargetForAnalytics eventValue:stringValue];
 }
 
-- (void)waypointListViewDidSelectAddStop:(id)a3
+- (void)waypointListViewDidSelectAddStop:(id)stop
 {
   [(IOSRoutePlanningOverviewViewController *)self _didSelectWaypoint:0 atIndex:-1];
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:6097 onTarget:-[RoutePlanningOverviewViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 }
 
-- (void)waypointListView:(id)a3 didSelectWaypoint:(id)a4 atIndex:(unint64_t)a5
+- (void)waypointListView:(id)view didSelectWaypoint:(id)waypoint atIndex:(unint64_t)index
 {
-  [(IOSRoutePlanningOverviewViewController *)self _didSelectWaypoint:a4 atIndex:a5];
+  [(IOSRoutePlanningOverviewViewController *)self _didSelectWaypoint:waypoint atIndex:index];
   v10 = +[MKMapService sharedService];
-  v7 = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
-  v8 = [NSNumber numberWithUnsignedInteger:a5];
-  v9 = [v8 stringValue];
-  [v10 captureUserAction:277 onTarget:v7 eventValue:v9];
+  currentUITargetForAnalytics = [(RoutePlanningOverviewViewController *)self currentUITargetForAnalytics];
+  v8 = [NSNumber numberWithUnsignedInteger:index];
+  stringValue = [v8 stringValue];
+  [v10 captureUserAction:277 onTarget:currentUITargetForAnalytics eventValue:stringValue];
 }
 
 - (void)_forceChangeOrigin
 {
-  v3 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
-  [v3 presentRoutePlanningViewType:1];
+  routePlanningDelegate = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
+  [routePlanningDelegate presentRoutePlanningViewType:1];
 
-  v4 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
-  [v4 selectWaypointSearchFieldIndex:0 exitPlanningIfCancelTapped:1 beginEditing:0];
+  routePlanningDelegate2 = [(RoutePlanningOverviewViewController *)self routePlanningDelegate];
+  [routePlanningDelegate2 selectWaypointSearchFieldIndex:0 exitPlanningIfCancelTapped:1 beginEditing:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &unk_10195D9D0)
+  if (context == &unk_10195D9D0)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -1598,30 +1598,30 @@ LABEL_44:
   {
     v6.receiver = self;
     v6.super_class = IOSRoutePlanningOverviewViewController;
-    [(IOSRoutePlanningOverviewViewController *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(IOSRoutePlanningOverviewViewController *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)_didTapHeaderView
 {
-  v3 = [(RoutePlanningOverviewViewController *)self collectionView];
-  [v3 stopScrollingAndZooming];
+  collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+  [collectionView stopScrollingAndZooming];
 
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v5 <= 1)
+  if (containeeLayout <= 1)
   {
-    if (v5)
+    if (containeeLayout)
     {
-      if (v5 != 1)
+      if (containeeLayout != 1)
       {
         goto LABEL_11;
       }
 
 LABEL_8:
-      v6 = [(ContaineeViewController *)self cardPresentationController];
-      v7 = v6;
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      v7 = cardPresentationController2;
       v8 = 2;
       goto LABEL_9;
     }
@@ -1656,18 +1656,18 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  switch(v5)
+  switch(containeeLayout)
   {
     case 5:
       goto LABEL_12;
     case 3:
       goto LABEL_8;
     case 2:
-      v6 = [(ContaineeViewController *)self cardPresentationController];
-      v7 = v6;
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      v7 = cardPresentationController2;
       v8 = 3;
 LABEL_9:
-      [v6 wantsLayout:v8];
+      [cardPresentationController2 wantsLayout:v8];
 LABEL_10:
 
       break;
@@ -1678,32 +1678,32 @@ LABEL_11:
   [v9 captureUserAction:3 onTarget:-[RoutePlanningOverviewViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 }
 
-- (BOOL)shouldIgnoreTapOnView:(id)a3 headerView:(id)a4
+- (BOOL)shouldIgnoreTapOnView:(id)view headerView:(id)headerView
 {
-  v5 = a3;
-  v6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  v7 = [v6 waypointListView];
-  v8 = [v5 isDescendantOfView:v7];
+  viewCopy = view;
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  waypointListView = [fieldsView waypointListView];
+  v8 = [viewCopy isDescendantOfView:waypointListView];
 
   return v8;
 }
 
-- (void)_updateWaypointsAndRoutesListForCurrentContaineeLayout:(unint64_t)a3
+- (void)_updateWaypointsAndRoutesListForCurrentContaineeLayout:(unint64_t)layout
 {
-  if (a3 != 3)
+  if (layout != 3)
   {
-    v5 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v5 collapseWaypointsIfNeeded];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView collapseWaypointsIfNeeded];
 
-    v6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    v7 = [v6 superview];
-    v8 = [(ContaineeViewController *)self contentView];
+    fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    superview = [fieldsView2 superview];
+    contentView = [(ContaineeViewController *)self contentView];
 
-    if (v7 != v8)
+    if (superview != contentView)
     {
-      v9 = [(RoutePlanningOverviewViewController *)self collectionView];
-      v10 = [v9 collectionViewLayout];
-      [v10 invalidateLayout];
+      collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
   }
 
@@ -1716,52 +1716,52 @@ LABEL_11:
 
   if (byte_10195DF08 == 1)
   {
-    v11 = [(RoutePlanningOverviewViewController *)self collectionView];
-    [v11 setScrollEnabled:a3 == 3];
+    collectionView2 = [(RoutePlanningOverviewViewController *)self collectionView];
+    [collectionView2 setScrollEnabled:layout == 3];
   }
 }
 
-- (void)didChangeContainerStyle:(unint64_t)a3
+- (void)didChangeContainerStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v5 didChangeContainerStyle:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  -[IOSRoutePlanningOverviewViewController _updateWaypointsAndRoutesListForCurrentContaineeLayout:](self, "_updateWaypointsAndRoutesListForCurrentContaineeLayout:", [v4 containeeLayout]);
+  [(RoutePlanningOverviewViewController *)&v5 didChangeContainerStyle:style];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[IOSRoutePlanningOverviewViewController _updateWaypointsAndRoutesListForCurrentContaineeLayout:](self, "_updateWaypointsAndRoutesListForCurrentContaineeLayout:", [cardPresentationController containeeLayout]);
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v9.receiver = self;
   v9.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v9 willChangeContainerStyle:a3];
-  v4 = [(RoutePlanningOverviewViewController *)self collectionView];
-  [v4 stopScrollingAndZooming];
+  [(RoutePlanningOverviewViewController *)&v9 willChangeContainerStyle:style];
+  collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+  [collectionView stopScrollingAndZooming];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 bottomSafeOffset];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController bottomSafeOffset];
   v7 = v6;
-  v8 = [(RoutePlanningOverviewViewController *)self rootController];
-  [v8 setBottomSafeOffset:v7];
+  rootController = [(RoutePlanningOverviewViewController *)self rootController];
+  [rootController setBottomSafeOffset:v7];
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = IOSRoutePlanningOverviewViewController;
   [(ContaineeViewController *)&v5 didChangeLayout:?];
-  [(IOSRoutePlanningOverviewViewController *)self _updateWaypointsAndRoutesListForCurrentContaineeLayout:a3];
+  [(IOSRoutePlanningOverviewViewController *)self _updateWaypointsAndRoutesListForCurrentContaineeLayout:layout];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v10.receiver = self;
   v10.super_class = IOSRoutePlanningOverviewViewController;
   [(RoutePlanningOverviewViewController *)&v10 willChangeLayout:?];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v6 && v6 < a3)
+  if (containeeLayout && containeeLayout < layout)
   {
     v7 = 1;
 LABEL_7:
@@ -1771,10 +1771,10 @@ LABEL_7:
     return;
   }
 
-  if (a3 && v6 > a3)
+  if (layout && containeeLayout > layout)
   {
-    v8 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    [v8 collapseWaypointsIfNeeded];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    [fieldsView collapseWaypointsIfNeeded];
 
     [(IOSRoutePlanningOverviewViewController *)self _updateFieldsViewSuperviewIfNeeded];
     v7 = 2;
@@ -1782,14 +1782,14 @@ LABEL_7:
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v4 = -1.0;
-  if (a3 > 2)
+  if (layout > 2)
   {
-    if (a3 - 3 >= 2)
+    if (layout - 3 >= 2)
     {
-      if (a3 == 5)
+      if (layout == 5)
       {
         v14 = sub_10006D178();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1821,21 +1821,21 @@ LABEL_7:
 
     else
     {
-      v9 = [(ContaineeViewController *)self cardPresentationController];
-      [v9 availableHeight];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController availableHeight];
       v4 = v10;
     }
 
     return v4;
   }
 
-  if (a3 < 2)
+  if (layout < 2)
   {
 LABEL_3:
     if (sub_10000FA08(self) != 5)
     {
-      v5 = [(ContaineeViewController *)self cardPresentationController];
-      [v5 bottomSafeOffset];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 bottomSafeOffset];
       v7 = v6;
       [(ContaineeViewController *)self headerHeight];
       v4 = v8 + v7;
@@ -1844,15 +1844,15 @@ LABEL_3:
     return v4;
   }
 
-  if (a3 != 2)
+  if (layout != 2)
   {
     return v4;
   }
 
-  v12 = [(IOSRoutePlanningOverviewViewController *)self traitCollection];
-  v13 = [v12 verticalSizeClass];
+  traitCollection = [(IOSRoutePlanningOverviewViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v13 == 1 || sub_10000FA08(self) == 5)
+  if (verticalSizeClass == 1 || sub_10000FA08(self) == 5)
   {
     return v4;
   }
@@ -1863,11 +1863,11 @@ LABEL_3:
 
 - (void)_updateTransitionScrollPosition
 {
-  v3 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  v4 = [(RoutePlanningOverviewViewController *)self rootController];
-  v5 = [v4 headerView];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  rootController = [(RoutePlanningOverviewViewController *)self rootController];
+  headerView = [rootController headerView];
 
-  if (v3 == v5)
+  if (fieldsView == headerView)
   {
     self->super._previousStyleForTransition = 0;
     self->super._previousLayoutForTransition = 0;
@@ -1875,29 +1875,29 @@ LABEL_3:
 
   else
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    v82 = [v6 containeeLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    containeeLayout = [cardPresentationController containeeLayout];
 
     previousLayoutForTransition = self->super._previousLayoutForTransition;
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    v81 = [v8 containerStyle];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController2 containerStyle];
 
     previousStyleForTransition = self->super._previousStyleForTransition;
     [(IOSRoutePlanningOverviewViewController *)self _percentCollapsedFullToMedium];
     v11 = v10;
-    v12 = [(RoutePlanningOverviewViewController *)self collectionView];
-    v13 = [(IOSRoutePlanningOverviewViewController *)self sheetPresentationController];
-    v14 = [v13 _isDragging];
-    if (v14 != [(IOSRoutePlanningOverviewViewController *)self wasSheetDragging]|| previousLayoutForTransition != v82 || previousStyleForTransition != v81)
+    collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+    sheetPresentationController = [(IOSRoutePlanningOverviewViewController *)self sheetPresentationController];
+    _isDragging = [sheetPresentationController _isDragging];
+    if (_isDragging != [(IOSRoutePlanningOverviewViewController *)self wasSheetDragging]|| previousLayoutForTransition != containeeLayout || previousStyleForTransition != containerStyle)
     {
-      [(IOSRoutePlanningOverviewViewController *)self setWasSheetDragging:v14];
-      v15 = previousLayoutForTransition == v82 ? v14 : 1;
-      if ((v15 & 1) != 0 || previousStyleForTransition != v81)
+      [(IOSRoutePlanningOverviewViewController *)self setWasSheetDragging:_isDragging];
+      v15 = previousLayoutForTransition == containeeLayout ? _isDragging : 1;
+      if ((v15 & 1) != 0 || previousStyleForTransition != containerStyle)
       {
-        [v12 contentOffset];
+        [collectionView contentOffset];
         [(IOSRoutePlanningOverviewViewController *)self setContentOffsetWhenDraggingBegan:v16];
-        v17 = [v13 selectedDetentIdentifier];
-        -[IOSRoutePlanningOverviewViewController setSheetExpandingFromMedium:](self, "setSheetExpandingFromMedium:", [v17 isEqualToString:UISheetPresentationControllerDetentIdentifierLarge] ^ 1);
+        selectedDetentIdentifier = [sheetPresentationController selectedDetentIdentifier];
+        -[IOSRoutePlanningOverviewViewController setSheetExpandingFromMedium:](self, "setSheetExpandingFromMedium:", [selectedDetentIdentifier isEqualToString:UISheetPresentationControllerDetentIdentifierLarge] ^ 1);
 
         v18 = sub_1008319B0();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1915,7 +1915,7 @@ LABEL_3:
           }
 
           *&v76 = COERCE_DOUBLE(v21);
-          if (v14)
+          if (_isDragging)
           {
             v22 = @"YES";
           }
@@ -1925,9 +1925,9 @@ LABEL_3:
             v22 = @"NO";
           }
 
-          v78 = v13;
+          v78 = sheetPresentationController;
           v23 = COERCE_DOUBLE(v22);
-          if (previousLayoutForTransition == v82)
+          if (previousLayoutForTransition == containeeLayout)
           {
             v24 = @"NO";
           }
@@ -1938,7 +1938,7 @@ LABEL_3:
           }
 
           v25 = v24;
-          if (previousStyleForTransition == v81)
+          if (previousStyleForTransition == containerStyle)
           {
             v26 = @"NO";
           }
@@ -1950,7 +1950,7 @@ LABEL_3:
 
           v27 = v26;
           *buf = 134350338;
-          v84 = self;
+          selfCopy4 = self;
           v85 = 2048;
           v86 = v20;
           v87 = 2112;
@@ -1963,26 +1963,26 @@ LABEL_3:
           v94 = v27;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[%{public}p] [Transition] Recording initial offset %#.1lf, expanding: %@ (dragging: %@, layoutChanged: %@, styleChanged: %@)", buf, 0x3Eu);
 
-          v13 = v78;
+          sheetPresentationController = v78;
         }
       }
     }
 
-    if (([v12 isDragging] & 1) == 0)
+    if (([collectionView isDragging] & 1) == 0)
     {
       [(RoutePlanningOverviewViewController *)self _rectOfRowToKeepVisible];
       MinY = CGRectGetMinY(v97);
       v29 = v11;
       v30 = -(v11 * MinY);
-      [v12 contentInset];
+      [collectionView contentInset];
       v32 = v31;
       v77 = v34;
       v79 = v33;
       v36 = v35;
-      v37 = v12;
+      v37 = collectionView;
       v38 = vabdd_f64(v30, v32);
-      v39 = [v37 traitCollection];
-      [v39 displayScale];
+      traitCollection = [v37 traitCollection];
+      [traitCollection displayScale];
       v40 = 1.0;
       if (v41 >= 1.0)
       {
@@ -2002,7 +2002,7 @@ LABEL_3:
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134349824;
-          v84 = self;
+          selfCopy4 = self;
           v85 = 2048;
           v86 = v32;
           v87 = 2048;
@@ -2015,16 +2015,16 @@ LABEL_3:
         [v37 setContentInset:{v30, v79, v77, v36}];
       }
 
-      v47 = [v13 _isGeneratingAnimations];
-      v48 = v47;
-      if (((v14 | v47) & 1) != 0 || previousLayoutForTransition != v82 || previousStyleForTransition != v81)
+      _isGeneratingAnimations = [sheetPresentationController _isGeneratingAnimations];
+      v48 = _isGeneratingAnimations;
+      if (((_isDragging | _isGeneratingAnimations) & 1) != 0 || previousLayoutForTransition != containeeLayout || previousStyleForTransition != containerStyle)
       {
         v80 = previousLayoutForTransition;
         [v37 adjustedContentInset];
         v50 = v30 - v49;
-        v51 = [(IOSRoutePlanningOverviewViewController *)self sheetExpandingFromMedium];
+        sheetExpandingFromMedium = [(IOSRoutePlanningOverviewViewController *)self sheetExpandingFromMedium];
         v52 = v50;
-        if ((v51 & 1) == 0)
+        if ((sheetExpandingFromMedium & 1) == 0)
         {
           [(IOSRoutePlanningOverviewViewController *)self contentOffsetWhenDraggingBegan];
         }
@@ -2034,8 +2034,8 @@ LABEL_3:
         v55 = v54;
         v56 = v37;
         v57 = vabdd_f64(v53, v55);
-        v58 = [v56 traitCollection];
-        [v58 displayScale];
+        traitCollection2 = [v56 traitCollection];
+        [traitCollection2 displayScale];
         v59 = 1.0;
         if (v60 >= 1.0)
         {
@@ -2055,7 +2055,7 @@ LABEL_3:
           {
             [v56 contentOffset];
             v66 = v65;
-            if (v14)
+            if (_isDragging)
             {
               v67 = @"YES";
             }
@@ -2077,7 +2077,7 @@ LABEL_3:
             }
 
             v70 = v69;
-            if (v80 == v82)
+            if (v80 == containeeLayout)
             {
               v71 = @"NO";
             }
@@ -2088,7 +2088,7 @@ LABEL_3:
             }
 
             v72 = v71;
-            if (previousStyleForTransition == v81)
+            if (previousStyleForTransition == containerStyle)
             {
               v73 = @"NO";
             }
@@ -2100,7 +2100,7 @@ LABEL_3:
 
             v74 = v73;
             *buf = 134350594;
-            v84 = self;
+            selfCopy4 = self;
             v85 = 2048;
             v86 = v66;
             v87 = 2048;
@@ -2121,18 +2121,18 @@ LABEL_3:
         }
       }
 
-      if (previousLayoutForTransition != v82 || previousStyleForTransition != v81)
+      if (previousLayoutForTransition != containeeLayout || previousStyleForTransition != containerStyle)
       {
         v75 = sub_1008319B0();
         if (os_log_type_enabled(v75, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134349056;
-          v84 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEBUG, "[%{public}p] [Transition] Storing layout/style for next transition", buf, 0xCu);
         }
 
-        self->super._previousLayoutForTransition = v82;
-        self->super._previousStyleForTransition = v81;
+        self->super._previousLayoutForTransition = containeeLayout;
+        self->super._previousStyleForTransition = containerStyle;
       }
     }
   }
@@ -2140,21 +2140,21 @@ LABEL_3:
 
 - (double)_percentCollapsedFullToMedium
 {
-  v2 = [(IOSRoutePlanningOverviewViewController *)self sheetPresentationController];
-  v3 = [v2 _maps_effectiveDetentValues];
-  [v2 _currentPresentedViewFrame];
+  sheetPresentationController = [(IOSRoutePlanningOverviewViewController *)self sheetPresentationController];
+  _maps_effectiveDetentValues = [sheetPresentationController _maps_effectiveDetentValues];
+  [sheetPresentationController _currentPresentedViewFrame];
   Height = CGRectGetHeight(v15);
-  v5 = [v2 containerView];
-  [v5 safeAreaInsets];
+  containerView = [sheetPresentationController containerView];
+  [containerView safeAreaInsets];
   v7 = v6;
 
   v8 = 0.0;
-  if ([v3 count] >= 3)
+  if ([_maps_effectiveDetentValues count] >= 3)
   {
-    v9 = [v3 objectAtIndexedSubscript:2];
+    v9 = [_maps_effectiveDetentValues objectAtIndexedSubscript:2];
     [v9 doubleValue];
     v11 = v10;
-    v12 = [v3 objectAtIndexedSubscript:1];
+    v12 = [_maps_effectiveDetentValues objectAtIndexedSubscript:1];
     [v12 doubleValue];
     v8 = fmax(fmin((Height - (v7 + v11)) / (v13 - v11), 1.0), 0.0);
   }
@@ -2162,21 +2162,21 @@ LABEL_3:
   return v8;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = IOSRoutePlanningOverviewViewController;
-  v7 = a4;
-  [(ContaineeViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(IOSRoutePlanningOverviewViewController *)self view];
+  coordinatorCopy = coordinator;
+  [(ContaineeViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  view = [(IOSRoutePlanningOverviewViewController *)self view];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10083E5C8;
   v9[3] = &unk_101661710;
   v9[4] = self;
-  [v7 animateAlongsideTransitionInView:v8 animation:&stru_10162B8F0 completion:v9];
+  [coordinatorCopy animateAlongsideTransitionInView:view animation:&stru_10162B8F0 completion:v9];
 }
 
 - (void)viewWillLayoutSubviews
@@ -2186,12 +2186,12 @@ LABEL_3:
   [(IOSRoutePlanningOverviewViewController *)&v9 viewWillLayoutSubviews];
   if (!self->super._previousLayoutForTransition)
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
 
-    if (v5)
+    if (cardPresentationController)
     {
-      v6 = [(ContaineeViewController *)self cardPresentationController];
-      self->super._previousLayoutForTransition = [v6 containeeLayout];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      self->super._previousLayoutForTransition = [cardPresentationController2 containeeLayout];
 
       if (qword_10195DF00 != -1)
       {
@@ -2201,20 +2201,20 @@ LABEL_3:
       if (byte_10195DF08 == 1)
       {
         v7 = self->super._previousLayoutForTransition == 3;
-        v8 = [(RoutePlanningOverviewViewController *)self collectionView];
-        [v8 setScrollEnabled:v7];
+        collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+        [collectionView setScrollEnabled:v7];
       }
     }
   }
 
   if (!self->super._previousStyleForTransition)
   {
-    v3 = [(ContaineeViewController *)self cardPresentationController];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
 
-    if (v3)
+    if (cardPresentationController3)
     {
-      v4 = [(ContaineeViewController *)self cardPresentationController];
-      self->super._previousStyleForTransition = [v4 containerStyle];
+      cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+      self->super._previousStyleForTransition = [cardPresentationController4 containerStyle];
     }
   }
 }
@@ -2227,35 +2227,35 @@ LABEL_3:
   [(IOSRoutePlanningOverviewViewController *)self _refreshContentInset];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v4 viewDidDisappear:a3];
+  [(RoutePlanningOverviewViewController *)&v4 viewDidDisappear:disappear];
   self->super._previousLayoutForTransition = 0;
   self->super._previousStyleForTransition = 0;
   [(RouteOverviewFieldsView *)self->_fieldsView reset];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = IOSRoutePlanningOverviewViewController;
-  [(RoutePlanningOverviewViewController *)&v6 viewWillAppear:a3];
-  v4 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v4 setNeedsUpdateRefinements];
+  [(RoutePlanningOverviewViewController *)&v6 viewWillAppear:appear];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView setNeedsUpdateRefinements];
 
-  v5 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v5 setNeedsUpdateWaypointsList];
+  fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView2 setNeedsUpdateWaypointsList];
 
   [(IOSRoutePlanningOverviewViewController *)self _updateFieldsViewSuperviewIfNeeded];
   [(IOSRoutePlanningOverviewViewController *)self _refreshContentInset];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v5 = [(RoutePlanningOverviewViewController *)self isDisplayingSingleTrip];
-  if (a3 == 4 && (v5 & 1) != 0 || (v6 = [(RoutePlanningOverviewViewController *)self isDisplayingSingleTrip], result = 0, a3 == 3) && (v6 & 1) == 0)
+  isDisplayingSingleTrip = [(RoutePlanningOverviewViewController *)self isDisplayingSingleTrip];
+  if (scroll == 4 && (isDisplayingSingleTrip & 1) != 0 || (v6 = [(RoutePlanningOverviewViewController *)self isDisplayingSingleTrip], result = 0, scroll == 3) && (v6 & 1) == 0)
   {
     [(IOSRoutePlanningOverviewViewController *)self _didTapHeaderView];
     return 1;
@@ -2264,14 +2264,14 @@ LABEL_3:
   return result;
 }
 
-- (void)_captureFamiliarRoutesIfAvailable:(id)a3 routeCollection:(id)a4
+- (void)_captureFamiliarRoutesIfAvailable:(id)available routeCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 transportType] == 1)
+  availableCopy = available;
+  collectionCopy = collection;
+  if ([availableCopy transportType] == 1)
   {
-    v7 = [v6 routes];
-    v8 = [v7 count];
+    routes = [collectionCopy routes];
+    v8 = [routes count];
 
     if (v8)
     {
@@ -2279,13 +2279,13 @@ LABEL_3:
       v13 = &v12;
       v14 = 0x2020000000;
       v15 = 0;
-      v9 = [v6 routes];
+      routes2 = [collectionCopy routes];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_10083E9F8;
       v11[3] = &unk_1016311B8;
       v11[4] = &v12;
-      [v9 enumerateObjectsUsingBlock:v11];
+      [routes2 enumerateObjectsUsingBlock:v11];
 
       if (*(v13 + 24) == 1)
       {
@@ -2300,28 +2300,28 @@ LABEL_3:
 
 - (CGRect)_loadingAndErrorViewFrame
 {
-  v3 = [(ContaineeViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ContaineeViewController *)self contentView];
-  v11 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v11 frame];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  v21 = [v20 superview];
-  [v10 convertRect:v21 fromView:{v13, v15, v17, v19}];
+  fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  superview = [fieldsView2 superview];
+  [contentView2 convertRect:superview fromView:{v13, v15, v17, v19}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v28 estimatedHeight];
+  fieldsView3 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView3 estimatedHeight];
   v30 = v29;
 
   v43.origin.x = v23;
@@ -2340,9 +2340,9 @@ LABEL_3:
   v45.size.height = v9;
   v33 = Height - CGRectGetMinY(v45);
   p_errorModeView = &self->super._errorModeView;
-  v35 = [(ErrorModeView *)self->super._errorModeView superview];
+  superview2 = [(ErrorModeView *)self->super._errorModeView superview];
 
-  if (v35 || (p_errorModeView = &self->super._loadingModeView, [(LoadingModeView *)self->super._loadingModeView superview], v36 = objc_claimAutoreleasedReturnValue(), v36, v36))
+  if (superview2 || (p_errorModeView = &self->super._loadingModeView, [(LoadingModeView *)self->super._loadingModeView superview], v36 = objc_claimAutoreleasedReturnValue(), v36, v36))
   {
     [*p_errorModeView fittingHeight];
     v38 = v37;
@@ -2383,8 +2383,8 @@ LABEL_3:
   v9.super_class = IOSRoutePlanningOverviewViewController;
   [(RoutePlanningOverviewViewController *)&v9 _cardHeightMinusTableViewHeight];
   v4 = v3;
-  v5 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v5 estimatedHeight];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView estimatedHeight];
   v7 = v6 + v4;
 
   return v7;
@@ -2392,32 +2392,32 @@ LABEL_3:
 
 - (void)_createStyleSpecificConstraintsIfNeeded
 {
-  v3 = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToFieldsViewConstraint];
-  if (!v3 || (v4 = v3, [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToContentViewConstraint], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  collectionViewTopToFieldsViewConstraint = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToFieldsViewConstraint];
+  if (!collectionViewTopToFieldsViewConstraint || (v4 = collectionViewTopToFieldsViewConstraint, [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToContentViewConstraint], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
-    v6 = [(RoutePlanningOverviewViewController *)self collectionView];
-    v7 = [v6 topAnchor];
-    v8 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    v9 = [v8 bottomAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9 constant:16.0];
+    collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+    topAnchor = [collectionView topAnchor];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    bottomAnchor = [fieldsView bottomAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:16.0];
     [(IOSRoutePlanningOverviewViewController *)self setCollectionViewTopToFieldsViewConstraint:v10];
 
-    v11 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-    v12 = [v11 bottomAnchor];
-    v13 = v12;
-    if (v12)
+    transportTypePicker = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+    bottomAnchor2 = [transportTypePicker bottomAnchor];
+    v13 = bottomAnchor2;
+    if (bottomAnchor2)
     {
-      v20 = v12;
+      topAnchor2 = bottomAnchor2;
     }
 
     else
     {
-      v14 = [(ContaineeViewController *)self contentView];
-      v20 = [v14 topAnchor];
+      contentView = [(ContaineeViewController *)self contentView];
+      topAnchor2 = [contentView topAnchor];
     }
 
-    v15 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-    if (v15)
+    transportTypePicker2 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+    if (transportTypePicker2)
     {
       v16 = 8.0;
     }
@@ -2427,100 +2427,100 @@ LABEL_3:
       v16 = 0.0;
     }
 
-    v17 = [(RoutePlanningOverviewViewController *)self collectionView];
-    v18 = [v17 topAnchor];
-    v19 = [v18 constraintEqualToAnchor:v20 constant:v16];
+    collectionView2 = [(RoutePlanningOverviewViewController *)self collectionView];
+    topAnchor3 = [collectionView2 topAnchor];
+    v19 = [topAnchor3 constraintEqualToAnchor:topAnchor2 constant:v16];
     [(IOSRoutePlanningOverviewViewController *)self setCollectionViewTopToContentViewConstraint:v19];
   }
 }
 
 - (void)_updateFieldsViewSuperviewIfNeeded
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containerStyle];
-  if (v4 > 7 || ((1 << v4) & 0xA3) == 0)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  if (containerStyle > 7 || ((1 << containerStyle) & 0xA3) == 0)
   {
-    v7 = 1;
+    hasExpandedWaypoints = 1;
   }
 
   else
   {
-    v6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-    v7 = [v6 hasExpandedWaypoints];
+    fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+    hasExpandedWaypoints = [fieldsView hasExpandedWaypoints];
   }
 
-  v8 = [(RoutePlanningOverviewViewController *)self collectionView];
-  v9 = [v8 dataSource];
+  collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+  dataSource = [collectionView dataSource];
 
-  v10 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  v11 = v10;
-  if (v7)
+  fieldsView2 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  v11 = fieldsView2;
+  if (hasExpandedWaypoints)
   {
-    v12 = [v9 headerView];
+    headerView = [dataSource headerView];
 
-    if (v11 != v12)
+    if (v11 != headerView)
     {
       [(IOSRoutePlanningOverviewViewController *)self _createStyleSpecificConstraintsIfNeeded];
-      v13 = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToFieldsViewConstraint];
-      [v13 setActive:0];
+      collectionViewTopToFieldsViewConstraint = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToFieldsViewConstraint];
+      [collectionViewTopToFieldsViewConstraint setActive:0];
 
-      v14 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-      [v9 setHeaderView:v14];
+      fieldsView3 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+      [dataSource setHeaderView:fieldsView3];
 
       [(RoutePlanningOverviewViewController *)self _setupAdvisoryFooterView];
-      v15 = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToContentViewConstraint];
-      [v15 setActive:1];
+      collectionViewTopToContentViewConstraint = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToContentViewConstraint];
+      [collectionViewTopToContentViewConstraint setActive:1];
 
-      v16 = [(RoutePlanningOverviewViewController *)self collectionView];
-      [v16 contentInset];
+      collectionView2 = [(RoutePlanningOverviewViewController *)self collectionView];
+      [collectionView2 contentInset];
       v18 = v17;
       v20 = v19;
       v22 = v21;
 
-      v23 = [(RoutePlanningOverviewViewController *)self collectionView];
-      [v23 setContentInset:{0.0, v18, v20, v22}];
+      collectionView3 = [(RoutePlanningOverviewViewController *)self collectionView];
+      [collectionView3 setContentInset:{0.0, v18, v20, v22}];
 
-      v24 = [(IOSRoutePlanningOverviewViewController *)self view];
-      [v24 setNeedsLayout];
+      view = [(IOSRoutePlanningOverviewViewController *)self view];
+      [view setNeedsLayout];
     }
   }
 
   else
   {
-    v25 = [v10 superview];
-    v26 = [(ContaineeViewController *)self contentView];
+    superview = [fieldsView2 superview];
+    contentView = [(ContaineeViewController *)self contentView];
 
-    if (v25 != v26)
+    if (superview != contentView)
     {
       [(IOSRoutePlanningOverviewViewController *)self _createStyleSpecificConstraintsIfNeeded];
-      v27 = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToContentViewConstraint];
-      [v27 setActive:0];
+      collectionViewTopToContentViewConstraint2 = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToContentViewConstraint];
+      [collectionViewTopToContentViewConstraint2 setActive:0];
 
-      [v9 setHeaderView:0];
+      [dataSource setHeaderView:0];
       [(RoutePlanningOverviewViewController *)self _setupAdvisoryFooterView];
-      v28 = [(ContaineeViewController *)self contentView];
-      v29 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-      [v28 addSubview:v29];
+      contentView2 = [(ContaineeViewController *)self contentView];
+      fieldsView4 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+      [contentView2 addSubview:fieldsView4];
 
-      v30 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-      v31 = [v30 bottomAnchor];
-      v32 = v31;
-      v54 = v9;
-      if (v31)
+      transportTypePicker = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+      bottomAnchor = [transportTypePicker bottomAnchor];
+      v32 = bottomAnchor;
+      v54 = dataSource;
+      if (bottomAnchor)
       {
-        v33 = v31;
+        topAnchor = bottomAnchor;
       }
 
       else
       {
-        v34 = [(ContaineeViewController *)self contentView];
-        v33 = [v34 topAnchor];
+        contentView3 = [(ContaineeViewController *)self contentView];
+        topAnchor = [contentView3 topAnchor];
       }
 
-      v50 = v33;
+      v50 = topAnchor;
 
-      v35 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-      if (v35)
+      transportTypePicker2 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+      if (transportTypePicker2)
       {
         v36 = 8.0;
       }
@@ -2530,32 +2530,32 @@ LABEL_3:
         v36 = 0.0;
       }
 
-      v53 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-      v52 = [v53 topAnchor];
-      v51 = [v52 constraintEqualToAnchor:v33 constant:v36];
+      fieldsView5 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+      topAnchor2 = [fieldsView5 topAnchor];
+      v51 = [topAnchor2 constraintEqualToAnchor:topAnchor constant:v36];
       v55[0] = v51;
-      v49 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-      v48 = [v49 leadingAnchor];
-      v37 = [(ContaineeViewController *)self contentView];
-      v38 = [v37 leadingAnchor];
-      v39 = [v48 constraintEqualToAnchor:v38];
+      fieldsView6 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+      leadingAnchor = [fieldsView6 leadingAnchor];
+      contentView4 = [(ContaineeViewController *)self contentView];
+      leadingAnchor2 = [contentView4 leadingAnchor];
+      v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v55[1] = v39;
-      v40 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-      v41 = [v40 trailingAnchor];
-      v42 = [(ContaineeViewController *)self contentView];
-      v43 = [v42 trailingAnchor];
-      v44 = [v41 constraintEqualToAnchor:v43];
+      fieldsView7 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+      trailingAnchor = [fieldsView7 trailingAnchor];
+      contentView5 = [(ContaineeViewController *)self contentView];
+      trailingAnchor2 = [contentView5 trailingAnchor];
+      v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v55[2] = v44;
       v45 = [NSArray arrayWithObjects:v55 count:3];
       [NSLayoutConstraint activateConstraints:v45];
 
-      v46 = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToFieldsViewConstraint];
-      [v46 setActive:1];
+      collectionViewTopToFieldsViewConstraint2 = [(IOSRoutePlanningOverviewViewController *)self collectionViewTopToFieldsViewConstraint];
+      [collectionViewTopToFieldsViewConstraint2 setActive:1];
 
-      v47 = [(IOSRoutePlanningOverviewViewController *)self view];
-      [v47 setNeedsLayout];
+      view2 = [(IOSRoutePlanningOverviewViewController *)self view];
+      [view2 setNeedsLayout];
 
-      v9 = v54;
+      dataSource = v54;
     }
   }
 }
@@ -2564,66 +2564,66 @@ LABEL_3:
 {
   v46.receiver = self;
   v46.super_class = IOSRoutePlanningOverviewViewController;
-  v45 = [(RoutePlanningOverviewViewController *)&v46 _initialConstraints];
-  v3 = [(ContaineeViewController *)self contentView];
-  v4 = [v3 topAnchor];
-  v5 = [(RoutePlanningOverviewViewController *)self containerHeaderView];
-  v6 = [v5 bottomAnchor];
-  v7 = [v4 constraintGreaterThanOrEqualToAnchor:v6 constant:8.0];
-  [v45 addObject:v7];
+  _initialConstraints = [(RoutePlanningOverviewViewController *)&v46 _initialConstraints];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor = [contentView topAnchor];
+  containerHeaderView = [(RoutePlanningOverviewViewController *)self containerHeaderView];
+  bottomAnchor = [containerHeaderView bottomAnchor];
+  v7 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:8.0];
+  [_initialConstraints addObject:v7];
 
-  v43 = [(RoutePlanningOverviewViewController *)self collectionView];
-  v39 = [v43 leadingAnchor];
-  v41 = [(ContaineeViewController *)self contentView];
-  v8 = [v41 leadingAnchor];
-  v9 = [v39 constraintEqualToAnchor:v8];
+  collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+  leadingAnchor = [collectionView leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v48[0] = v9;
-  v10 = [(RoutePlanningOverviewViewController *)self collectionView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(ContaineeViewController *)self contentView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  collectionView2 = [(RoutePlanningOverviewViewController *)self collectionView];
+  trailingAnchor = [collectionView2 trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v48[1] = v14;
-  v15 = [(RoutePlanningOverviewViewController *)self collectionViewToBottomConstraint];
-  v48[2] = v15;
+  collectionViewToBottomConstraint = [(RoutePlanningOverviewViewController *)self collectionViewToBottomConstraint];
+  v48[2] = collectionViewToBottomConstraint;
   v16 = [NSArray arrayWithObjects:v48 count:3];
-  [v45 addObjectsFromArray:v16];
+  [_initialConstraints addObjectsFromArray:v16];
 
-  v17 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+  transportTypePicker = [(RoutePlanningOverviewViewController *)self transportTypePicker];
 
-  if (v17)
+  if (transportTypePicker)
   {
     [(RoutePlanningOverviewViewController *)self transportTypePickerHeight];
     v19 = v18;
     +[_TtC4Maps23MapsDesignConstantsShim contentHorizontalPadding];
     v21 = v20;
-    v44 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-    v42 = [v44 heightAnchor];
-    v40 = [v42 constraintEqualToConstant:v19];
+    transportTypePicker2 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+    heightAnchor = [transportTypePicker2 heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:v19];
     v47[0] = v40;
-    v38 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-    v36 = [v38 topAnchor];
-    v37 = [(ContaineeViewController *)self contentView];
-    v35 = [v37 topAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    transportTypePicker3 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+    topAnchor2 = [transportTypePicker3 topAnchor];
+    contentView4 = [(ContaineeViewController *)self contentView];
+    topAnchor3 = [contentView4 topAnchor];
+    v34 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v47[1] = v34;
-    v33 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-    v22 = [v33 leadingAnchor];
-    v23 = [(ContaineeViewController *)self contentView];
-    v24 = [v23 leadingAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:v21];
+    transportTypePicker4 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+    leadingAnchor3 = [transportTypePicker4 leadingAnchor];
+    contentView5 = [(ContaineeViewController *)self contentView];
+    leadingAnchor4 = [contentView5 leadingAnchor];
+    v25 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v21];
     v47[2] = v25;
-    v26 = [(ContaineeViewController *)self contentView];
-    v27 = [v26 trailingAnchor];
-    v28 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-    v29 = [v28 trailingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:v21];
+    contentView6 = [(ContaineeViewController *)self contentView];
+    trailingAnchor3 = [contentView6 trailingAnchor];
+    transportTypePicker5 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+    trailingAnchor4 = [transportTypePicker5 trailingAnchor];
+    v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v21];
     v47[3] = v30;
     v31 = [NSArray arrayWithObjects:v47 count:4];
-    [v45 addObjectsFromArray:v31];
+    [_initialConstraints addObjectsFromArray:v31];
   }
 
-  return v45;
+  return _initialConstraints;
 }
 
 - (void)_setupSubviews
@@ -2631,35 +2631,35 @@ LABEL_3:
   v17.receiver = self;
   v17.super_class = IOSRoutePlanningOverviewViewController;
   [(RoutePlanningOverviewViewController *)&v17 _setupSubviews];
-  v3 = [(RoutePlanningOverviewViewController *)self collectionView];
-  [v3 setSelectionFollowsFocus:1];
+  collectionView = [(RoutePlanningOverviewViewController *)self collectionView];
+  [collectionView setSelectionFollowsFocus:1];
 
-  v4 = [(RoutePlanningOverviewViewController *)self collectionView];
+  collectionView2 = [(RoutePlanningOverviewViewController *)self collectionView];
   objc_initWeak(&location, self);
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10083F940;
   v14 = &unk_101661B98;
   objc_copyWeak(&v15, &location);
-  [v4 setLayoutHandler:&v11];
+  [collectionView2 setLayoutHandler:&v11];
   [(IOSRoutePlanningOverviewViewController *)self _refreshContentInset:v11];
-  v5 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+  transportTypePicker = [(RoutePlanningOverviewViewController *)self transportTypePicker];
 
-  if (v5)
+  if (transportTypePicker)
   {
-    v6 = [(ContaineeViewController *)self contentView];
-    v7 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
-    [v6 addSubview:v7];
+    contentView = [(ContaineeViewController *)self contentView];
+    transportTypePicker2 = [(RoutePlanningOverviewViewController *)self transportTypePicker];
+    [contentView addSubview:transportTypePicker2];
   }
 
   v8 = [[RouteOverviewFieldsView alloc] initWithDelegate:self waypointInfoProvider:self];
   [(IOSRoutePlanningOverviewViewController *)self setFieldsView:v8];
 
-  v9 = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  fieldsView = [(IOSRoutePlanningOverviewViewController *)self fieldsView];
+  [fieldsView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(RoutePlanningOverviewViewController *)self containerHeaderView];
-  [v10 setAccessoryView:0];
+  containerHeaderView = [(RoutePlanningOverviewViewController *)self containerHeaderView];
+  [containerHeaderView setAccessoryView:0];
 
   [(IOSRoutePlanningOverviewViewController *)self _updateFieldsViewSuperviewIfNeeded];
   objc_destroyWeak(&v15);
@@ -2693,11 +2693,11 @@ LABEL_3:
   [(RoutePlanningOverviewViewController *)&v5 dealloc];
 }
 
-- (IOSRoutePlanningOverviewViewController)initWithDataCoordinator:(id)a3
+- (IOSRoutePlanningOverviewViewController)initWithDataCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = IOSRoutePlanningOverviewViewController;
-  v3 = [(RoutePlanningOverviewViewController *)&v7 initWithDataCoordinator:a3];
+  v3 = [(RoutePlanningOverviewViewController *)&v7 initWithDataCoordinator:coordinator];
   if (v3)
   {
     v4 = +[UIApplication sharedMapsDelegate];

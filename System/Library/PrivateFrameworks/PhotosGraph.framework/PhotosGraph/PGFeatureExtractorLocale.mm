@@ -1,18 +1,18 @@
 @interface PGFeatureExtractorLocale
 - (PGFeatureExtractorLocale)init;
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorLocale
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorLocale featureLength](self, "featureLength", a3, a4)}];
-  v6 = [(PGFeatureExtractorLocale *)self featureNames];
-  v7 = [(PGFeatureExtractorLocale *)self currentLocale];
-  v8 = [v7 localeIdentifier];
-  v9 = [v6 indexOfObject:v8];
+  v5 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorLocale featureLength](self, "featureLength", entity, error)}];
+  featureNames = [(PGFeatureExtractorLocale *)self featureNames];
+  currentLocale = [(PGFeatureExtractorLocale *)self currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v9 = [featureNames indexOfObject:localeIdentifier];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -67,9 +67,9 @@
   v2 = [(PGFeatureExtractorLocale *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     currentLocale = v2->_currentLocale;
-    v2->_currentLocale = v3;
+    v2->_currentLocale = currentLocale;
   }
 
   return v2;

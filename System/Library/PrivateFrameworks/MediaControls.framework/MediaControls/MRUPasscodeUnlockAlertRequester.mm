@@ -1,13 +1,13 @@
 @interface MRUPasscodeUnlockAlertRequester
-+ (void)requestWithCompletion:(id)a3;
++ (void)requestWithCompletion:(id)completion;
 @end
 
 @implementation MRUPasscodeUnlockAlertRequester
 
-+ (void)requestWithCompletion:(id)a3
++ (void)requestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v3 = v4;
+  completionCopy = completion;
+  v3 = completionCopy;
   SBSRequestPasscodeUnlockAlertUI();
 }
 

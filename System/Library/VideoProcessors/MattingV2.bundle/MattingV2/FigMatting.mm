@@ -1,30 +1,30 @@
 @interface FigMatting
 - ($55C9923F75B8441B2F861846195B697A)config;
 - (CGRect)syntheticFocusRectangle;
-- (FigMatting)initWithCommandQueue:(id)a3;
-- (id)_createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4;
+- (FigMatting)initWithCommandQueue:(id)queue;
+- (id)_createTextureOfSize:(CGSize)size withFormat:(unint64_t)format;
 - (id)enabledOutputArray;
 - (int)_allocateResources;
 - (int)_compileShaders;
 - (int)_prewarmMPSKernels;
-- (int)prewarmWithTuningParameters:(id)a3;
+- (int)prewarmWithTuningParameters:(id)parameters;
 - (int)process;
 - (int)purgeResources;
 - (int)resetState;
 - (int)validateAndBindInputsAndOutputs;
 - (void)dealloc;
-- (void)encodeAddTexturesToCommandBuffer:(id)a3 sourceTextureA:(id)a4 sourceTextureB:(id)a5 destinationTexture:(id)a6 thresholdBeginValue:(float)a7 thresholdEndValue:(float)a8;
-- (void)encodeComposeRGBAGuideToCommandBuffer:(id)a3 rgbTexture:(id)a4 alphaTexture:(id)a5 destinationTexture:(id)a6 rgbWeight:(float)a7;
-- (void)encodePreprocessSkinToCommandBuffer:(id)a3 inputSkinTexture:(id)a4 faceNonSkinTextures:(id)a5 outputSkinTexture:(id)a6;
-- (void)setConfig:(id *)a3;
-- (void)setOptions:(id)a3;
+- (void)encodeAddTexturesToCommandBuffer:(id)buffer sourceTextureA:(id)a sourceTextureB:(id)b destinationTexture:(id)texture thresholdBeginValue:(float)value thresholdEndValue:(float)endValue;
+- (void)encodeComposeRGBAGuideToCommandBuffer:(id)buffer rgbTexture:(id)texture alphaTexture:(id)alphaTexture destinationTexture:(id)destinationTexture rgbWeight:(float)weight;
+- (void)encodePreprocessSkinToCommandBuffer:(id)buffer inputSkinTexture:(id)texture faceNonSkinTextures:(id)textures outputSkinTexture:(id)skinTexture;
+- (void)setConfig:(id *)config;
+- (void)setOptions:(id)options;
 @end
 
 @implementation FigMatting
 
-- (FigMatting)initWithCommandQueue:(id)a3
+- (FigMatting)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = FigMatting;
   v5 = [(FigMatting *)&v18 init];
@@ -37,7 +37,7 @@
     v7 = objc_opt_class();
     v9 = objc_msgSend_bundleForClass_(v6, v8, v7);
     v10 = objc_alloc(MEMORY[0x29EDC0A40]);
-    inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v10, v11, v9, v4);
+    inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v10, v11, v9, queueCopy);
     metalContext = v5->_metalContext;
     v5->_metalContext = inited;
 
@@ -57,14 +57,14 @@ LABEL_5:
   return v16;
 }
 
-- (int)prewarmWithTuningParameters:(id)a3
+- (int)prewarmWithTuningParameters:(id)parameters
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  parametersCopy = parameters;
+  v6 = parametersCopy;
+  if (parametersCopy)
   {
     v26 = *MEMORY[0x29EDC0298];
-    v27 = v4;
+    v27 = parametersCopy;
     v7 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v5, &v27, &v26, 1);
     objc_msgSend_setOptions_(self, v8, v7);
   }
@@ -216,7 +216,7 @@ LABEL_21:
 
     if (v55)
     {
-      v57 = self;
+      selfCopy = self;
       v75 = v30;
       v76 = v4;
       v78 = v55;
@@ -230,7 +230,7 @@ LABEL_21:
         v62 = v60;
         v63 = dword_2957E76B8[v59];
         v64 = objc_alloc(MEMORY[0x29EDBB7E8]);
-        v67 = objc_msgSend_device(v57->_metalContext, v65, v66);
+        v67 = objc_msgSend_device(selfCopy->_metalContext, v65, v66);
         v60 = objc_msgSend_initWithDevice_kernelWidth_kernelHeight_kernelDepth_(v64, v68, v67, (2 * v63) | 1u, (2 * v63) | 1u, 1);
 
         if (!v60)
@@ -842,23 +842,23 @@ LABEL_72:
   return v91;
 }
 
-- (void)encodeAddTexturesToCommandBuffer:(id)a3 sourceTextureA:(id)a4 sourceTextureB:(id)a5 destinationTexture:(id)a6 thresholdBeginValue:(float)a7 thresholdEndValue:(float)a8
+- (void)encodeAddTexturesToCommandBuffer:(id)buffer sourceTextureA:(id)a sourceTextureB:(id)b destinationTexture:(id)texture thresholdBeginValue:(float)value thresholdEndValue:(float)endValue
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v17 = objc_msgSend_computeCommandEncoder(a3, v15, v16);
+  textureCopy = texture;
+  bCopy = b;
+  aCopy = a;
+  v17 = objc_msgSend_computeCommandEncoder(buffer, v15, v16);
   objc_msgSend_setComputePipelineState_(v17, v18, self->_addTexturesKernel);
-  objc_msgSend_setTexture_atIndex_(v17, v19, v14, 0);
+  objc_msgSend_setTexture_atIndex_(v17, v19, aCopy, 0);
 
-  objc_msgSend_setTexture_atIndex_(v17, v20, v13, 1);
-  objc_msgSend_setTexture_atIndex_(v17, v21, v12, 2);
-  v42 = __PAIR64__(LODWORD(a8), LODWORD(a7));
+  objc_msgSend_setTexture_atIndex_(v17, v20, bCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v17, v21, textureCopy, 2);
+  v42 = __PAIR64__(LODWORD(endValue), LODWORD(value));
   objc_msgSend_setBytes_length_atIndex_(v17, v22, &v42, 8, 0);
   v25 = objc_msgSend_threadExecutionWidth(self->_addTexturesKernel, v23, v24);
   v28 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_addTexturesKernel, v26, v27) / v25;
-  v31 = objc_msgSend_width(v12, v29, v30);
-  v34 = objc_msgSend_height(v12, v32, v33);
+  v31 = objc_msgSend_width(textureCopy, v29, v30);
+  v34 = objc_msgSend_height(textureCopy, v32, v33);
 
   v41[0] = v31;
   v41[1] = v34;
@@ -870,23 +870,23 @@ LABEL_72:
   objc_msgSend_endEncoding(v17, v36, v37);
 }
 
-- (void)encodePreprocessSkinToCommandBuffer:(id)a3 inputSkinTexture:(id)a4 faceNonSkinTextures:(id)a5 outputSkinTexture:(id)a6
+- (void)encodePreprocessSkinToCommandBuffer:(id)buffer inputSkinTexture:(id)texture faceNonSkinTextures:(id)textures outputSkinTexture:(id)skinTexture
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v107 = v10;
-  v16 = objc_msgSend_computeCommandEncoder(v10, v14, v15);
+  bufferCopy = buffer;
+  textureCopy = texture;
+  texturesCopy = textures;
+  skinTextureCopy = skinTexture;
+  v107 = bufferCopy;
+  v16 = objc_msgSend_computeCommandEncoder(bufferCopy, v14, v15);
   objc_msgSend_setComputePipelineState_(v16, v17, self->_bilinearScaleKernel);
-  v104 = v11;
-  objc_msgSend_setTexture_atIndex_(v16, v18, v11, 0);
-  objc_msgSend_setTexture_atIndex_(v16, v19, v13, 1);
+  v104 = textureCopy;
+  objc_msgSend_setTexture_atIndex_(v16, v18, textureCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v16, v19, skinTextureCopy, 1);
   v22 = objc_msgSend_threadExecutionWidth(self->_bilinearScaleKernel, v20, v21);
   v25 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_bilinearScaleKernel, v23, v24) / v22;
-  *&t2.a = objc_msgSend_width(v13, v26, v27);
+  *&t2.a = objc_msgSend_width(skinTextureCopy, v26, v27);
   v30 = v16;
-  *&t2.b = objc_msgSend_height(v13, v28, v29);
+  *&t2.b = objc_msgSend_height(skinTextureCopy, v28, v29);
   *&t2.c = 1;
   *&t1.a = v22;
   *&t1.b = v25;
@@ -897,12 +897,12 @@ LABEL_72:
   v120 = 0u;
   v117 = 0u;
   v118 = 0u;
-  obj = objc_msgSend_allKeys(v12, v34, v35);
+  obj = objc_msgSend_allKeys(texturesCopy, v34, v35);
   v112 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v36, &v117, v116, 16);
   if (v112)
   {
     v111 = *v118;
-    v106 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v112; ++i)
@@ -913,7 +913,7 @@ LABEL_72:
         }
 
         v39 = *(*(&v117 + 1) + 8 * i);
-        v40 = objc_msgSend_objectForKeyedSubscript_(v12, v37, v39);
+        v40 = objc_msgSend_objectForKeyedSubscript_(texturesCopy, v37, v39);
         v43 = objc_msgSend_texture(v40, v41, v42);
 
         v46 = objc_msgSend_faceSegments(v39, v44, v45);
@@ -921,8 +921,8 @@ LABEL_72:
         if (v46)
         {
           v114 = v30;
-          v49 = objc_msgSend_width(v13, v47, v48);
-          v52 = objc_msgSend_height(v13, v50, v51);
+          v49 = objc_msgSend_width(skinTextureCopy, v47, v48);
+          v52 = objc_msgSend_height(skinTextureCopy, v50, v51);
           v55 = objc_msgSend_width(v43, v53, v54);
           v58 = objc_msgSend_height(v43, v56, v57);
           memset(&v115, 0, sizeof(v115));
@@ -1062,16 +1062,16 @@ LABEL_72:
           *&t2.tx = vcvt_f32_f64(*&v115.tx);
           v83 = objc_msgSend_computeCommandEncoder(v107, v81, v82);
 
-          self = v106;
-          objc_msgSend_setComputePipelineState_(v83, v84, v106->_excludeNonSkinKernel);
-          objc_msgSend_setTexture_atIndex_(v83, v85, v13, 0);
+          self = selfCopy;
+          objc_msgSend_setComputePipelineState_(v83, v84, selfCopy->_excludeNonSkinKernel);
+          objc_msgSend_setTexture_atIndex_(v83, v85, skinTextureCopy, 0);
           objc_msgSend_setTexture_atIndex_(v83, v86, v43, 1);
-          objc_msgSend_setTexture_atIndex_(v83, v87, v13, 2);
+          objc_msgSend_setTexture_atIndex_(v83, v87, skinTextureCopy, 2);
           objc_msgSend_setBytes_length_atIndex_(v83, v88, &t2, 48, 0);
-          v91 = objc_msgSend_threadExecutionWidth(v106->_excludeNonSkinKernel, v89, v90);
-          v94 = objc_msgSend_maxTotalThreadsPerThreadgroup(v106->_excludeNonSkinKernel, v92, v93) / v91;
-          v97 = objc_msgSend_width(v13, v95, v96);
-          v100 = objc_msgSend_height(v13, v98, v99);
+          v91 = objc_msgSend_threadExecutionWidth(selfCopy->_excludeNonSkinKernel, v89, v90);
+          v94 = objc_msgSend_maxTotalThreadsPerThreadgroup(selfCopy->_excludeNonSkinKernel, v92, v93) / v91;
+          v97 = objc_msgSend_width(skinTextureCopy, v95, v96);
+          v100 = objc_msgSend_height(skinTextureCopy, v98, v99);
           *&t1.a = v97;
           *&t1.b = v100;
           *&t1.c = 1;
@@ -1091,23 +1091,23 @@ LABEL_72:
   }
 }
 
-- (void)encodeComposeRGBAGuideToCommandBuffer:(id)a3 rgbTexture:(id)a4 alphaTexture:(id)a5 destinationTexture:(id)a6 rgbWeight:(float)a7
+- (void)encodeComposeRGBAGuideToCommandBuffer:(id)buffer rgbTexture:(id)texture alphaTexture:(id)alphaTexture destinationTexture:(id)destinationTexture rgbWeight:(float)weight
 {
-  v39 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v16 = objc_msgSend_computeCommandEncoder(a3, v14, v15);
+  weightCopy = weight;
+  destinationTextureCopy = destinationTexture;
+  alphaTextureCopy = alphaTexture;
+  textureCopy = texture;
+  v16 = objc_msgSend_computeCommandEncoder(buffer, v14, v15);
   objc_msgSend_setComputePipelineState_(v16, v17, self->_composeRGBAGuideKernel);
-  objc_msgSend_setTexture_atIndex_(v16, v18, v13, 0);
+  objc_msgSend_setTexture_atIndex_(v16, v18, textureCopy, 0);
 
-  objc_msgSend_setTexture_atIndex_(v16, v19, v12, 1);
-  objc_msgSend_setTexture_atIndex_(v16, v20, v11, 2);
-  objc_msgSend_setBytes_length_atIndex_(v16, v21, &v39, 4, 0);
+  objc_msgSend_setTexture_atIndex_(v16, v19, alphaTextureCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v16, v20, destinationTextureCopy, 2);
+  objc_msgSend_setBytes_length_atIndex_(v16, v21, &weightCopy, 4, 0);
   v24 = objc_msgSend_threadExecutionWidth(self->_composeRGBAGuideKernel, v22, v23);
   v27 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_composeRGBAGuideKernel, v25, v26) / v24;
-  v30 = objc_msgSend_width(v11, v28, v29);
-  v33 = objc_msgSend_height(v11, v31, v32);
+  v30 = objc_msgSend_width(destinationTextureCopy, v28, v29);
+  v33 = objc_msgSend_height(destinationTextureCopy, v31, v32);
 
   v38[0] = v30;
   v38[1] = v33;
@@ -1121,9 +1121,9 @@ LABEL_72:
 
 - (int)process
 {
-  v2 = self;
+  selfCopy = self;
   v307 = objc_msgSend_FigMattingOutputToShortString_(FigMatting, a2, self->_config.enabledOutputs);
-  v5 = objc_msgSend_validateAndBindInputsAndOutputs(v2, v3, v4);
+  v5 = objc_msgSend_validateAndBindInputsAndOutputs(selfCopy, v3, v4);
   if (v5)
   {
     v223 = v5;
@@ -1133,34 +1133,34 @@ LABEL_94:
     goto LABEL_95;
   }
 
-  v8 = objc_msgSend_commandQueue(v2->_metalContext, v6, v7);
+  v8 = objc_msgSend_commandQueue(selfCopy->_metalContext, v6, v7);
   v11 = objc_msgSend_commandBuffer(v8, v9, v10);
 
   if (v11)
   {
-    p_rgbdGuide = &v2->_rgbdGuide;
-    if (v2->_rgbdGuide)
+    p_rgbdGuide = &selfCopy->_rgbdGuide;
+    if (selfCopy->_rgbdGuide)
     {
-      v14 = objc_msgSend_texture(v2->_image, v12, v13);
-      v17 = objc_msgSend_texture(v2->_inputDepth, v15, v16);
-      v20 = objc_msgSend_texture(v2->_rgbdGuide, v18, v19);
-      objc_msgSend_encodeComposeRGBAGuideToCommandBuffer_rgbTexture_alphaTexture_destinationTexture_(v2, v21, v11, v14, v17, v20);
+      v14 = objc_msgSend_texture(selfCopy->_image, v12, v13);
+      v17 = objc_msgSend_texture(selfCopy->_inputDepth, v15, v16);
+      v20 = objc_msgSend_texture(selfCopy->_rgbdGuide, v18, v19);
+      objc_msgSend_encodeComposeRGBAGuideToCommandBuffer_rgbTexture_alphaTexture_destinationTexture_(selfCopy, v21, v11, v14, v17, v20);
     }
 
-    objc_msgSend_removeAllObjects(v2->_faceNonSkinTextures, v12, v13);
-    v335 = v2;
-    if (objc_msgSend_outputEnabled_(v2, v22, 8))
+    objc_msgSend_removeAllObjects(selfCopy->_faceNonSkinTextures, v12, v13);
+    v335 = selfCopy;
+    if (objc_msgSend_outputEnabled_(selfCopy, v22, 8))
     {
-      faceSegments = v2->_faceSegments;
+      faceSegments = selfCopy->_faceSegments;
       if (faceSegments)
       {
-        if (objc_msgSend_count(faceSegments, v23, v24) && objc_msgSend_count(v2->_faceSegments, v26, v27) <= v2->_maximumNumberOfFacesToConsider)
+        if (objc_msgSend_count(faceSegments, v23, v24) && objc_msgSend_count(selfCopy->_faceSegments, v26, v27) <= selfCopy->_maximumNumberOfFacesToConsider)
         {
-          v28 = v2->_faceSegments;
+          v28 = selfCopy->_faceSegments;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v29 = v2->_faceSegments;
+            v29 = selfCopy->_faceSegments;
           }
 
           else
@@ -1248,36 +1248,36 @@ LABEL_94:
 
                       Width = CVPixelBufferGetWidth(v57);
                       Height = CVPixelBufferGetHeight(v57);
-                      if (objc_msgSend_count(v2->_preallocatedFaceNonSkinTextures, v60, v61) <= v320)
+                      if (objc_msgSend_count(selfCopy->_preallocatedFaceNonSkinTextures, v60, v61) <= v320)
                       {
                         goto LABEL_32;
                       }
 
-                      inited = objc_msgSend_objectAtIndexedSubscript_(v2->_preallocatedFaceNonSkinTextures, v62, v320);
+                      inited = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_preallocatedFaceNonSkinTextures, v62, v320);
                       v65 = objc_msgSend_texture(inited, v63, v64);
                       if (objc_msgSend_width(v65, v66, v67) == Width)
                       {
                         v70 = objc_msgSend_texture(inited, v68, v69);
                         v73 = objc_msgSend_height(v70, v71, v72);
 
-                        v2 = v335;
+                        selfCopy = v335;
                         if (v73 == Height)
                         {
                           if (!inited)
                           {
 LABEL_32:
                             v74 = [Texture2DWrapper alloc];
-                            inited = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v74, v75, v2->_metalContext, 25, 23, Width, Height);
+                            inited = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v74, v75, selfCopy->_metalContext, 25, 23, Width, Height);
                           }
 
 LABEL_33:
                           v76 = [Texture2DWrapper alloc];
-                          v80 = objc_msgSend_initWithFigMetalContext_pixelBuffer_usage_textureArray_(v76, v77, v2->_metalContext, v57, 23, 0);
+                          v80 = objc_msgSend_initWithFigMetalContext_pixelBuffer_usage_textureArray_(v76, v77, selfCopy->_metalContext, v57, 23, 0);
                           v81 = v80;
                           if (!v80)
                           {
                             v82 = [Texture2DWrapper alloc];
-                            v81 = objc_msgSend_initWithFigMetalContext_copyingPixelBuffer_usage_(v82, v83, v2->_metalContext, v57, 23);
+                            v81 = objc_msgSend_initWithFigMetalContext_copyingPixelBuffer_usage_(v82, v83, selfCopy->_metalContext, v57, 23);
                             CFRelease(v57);
                           }
 
@@ -1315,7 +1315,7 @@ LABEL_33:
                             objc_msgSend_addCompletedHandler_(v329, v94, v352);
                           }
 
-                          v2 = v335;
+                          selfCopy = v335;
                           goto LABEL_43;
                         }
                       }
@@ -1340,7 +1340,7 @@ LABEL_43:
                 while (v331);
                 if (inited)
                 {
-                  objc_msgSend_setObject_forKeyedSubscript_(v2->_faceNonSkinTextures, v39, inited, v327);
+                  objc_msgSend_setObject_forKeyedSubscript_(selfCopy->_faceNonSkinTextures, v39, inited, v327);
                 }
 
                 v35 = v317;
@@ -1361,14 +1361,14 @@ LABEL_50:
             while (v34);
           }
 
-          v95 = objc_msgSend_objectForKeyedSubscript_(v2->_sourceTextures, v32, &unk_2A1CA7F70);
+          v95 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_sourceTextures, v32, &unk_2A1CA7F70);
           v98 = objc_msgSend_texture(v95, v96, v97);
-          faceNonSkinTextures = v2->_faceNonSkinTextures;
-          v102 = objc_msgSend_texture(v2->_preprocessedSkin, v100, v101);
-          objc_msgSend_encodePreprocessSkinToCommandBuffer_inputSkinTexture_faceNonSkinTextures_outputSkinTexture_(v2, v103, v329, v98, faceNonSkinTextures, v102);
+          faceNonSkinTextures = selfCopy->_faceNonSkinTextures;
+          v102 = objc_msgSend_texture(selfCopy->_preprocessedSkin, v100, v101);
+          objc_msgSend_encodePreprocessSkinToCommandBuffer_inputSkinTexture_faceNonSkinTextures_outputSkinTexture_(selfCopy, v103, v329, v98, faceNonSkinTextures, v102);
 
           v11 = v329;
-          objc_msgSend_setObject_forKeyedSubscript_(v2->_sourceTextures, v104, v2->_preprocessedSkin, &unk_2A1CA7F70);
+          objc_msgSend_setObject_forKeyedSubscript_(selfCopy->_sourceTextures, v104, selfCopy->_preprocessedSkin, &unk_2A1CA7F70);
         }
       }
     }
@@ -1380,15 +1380,15 @@ LABEL_50:
     v349 = 0u;
     v350 = 0u;
     v351 = 0u;
-    v318 = v2->_semanticOutputCollections;
+    v318 = selfCopy->_semanticOutputCollections;
     v316 = objc_msgSend_countByEnumeratingWithState_objects_count_(v318, v108, &v348, v347, 16);
     if (v316)
     {
       v319 = *v349;
-      p_image = &v2->_image;
+      p_image = &selfCopy->_image;
       v330 = v11;
       v324 = v106;
-      v312 = &v2->_image;
+      v312 = &selfCopy->_image;
       while (2)
       {
         v112 = v11;
@@ -1448,16 +1448,16 @@ LABEL_85:
                 }
 
                 v134 = *(*(&v343 + 1) + 8 * i);
-                v135 = objc_msgSend_objectForKeyedSubscript_(v2->_sourceTextures, v130, v134);
+                v135 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_sourceTextures, v130, v134);
                 v138 = objc_msgSend_texture(v135, v136, v137);
                 objc_msgSend_addObject_(v105, v139, v138);
 
-                v141 = objc_msgSend_objectForKeyedSubscript_(v2->_semanticConfigurations, v140, v134);
+                v141 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_semanticConfigurations, v140, v134);
                 LODWORD(v138) = objc_msgSend_constraintsEnabled(v141, v142, v143);
 
                 if (v138)
                 {
-                  v146 = objc_msgSend_objectForKeyedSubscript_(v2->_constraintsTextures, v144, v134);
+                  v146 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_constraintsTextures, v144, v134);
                   v149 = objc_msgSend_texture(v146, v147, v148);
 
                   v332 = objc_msgSend_width(v149, v150, v151);
@@ -1477,7 +1477,7 @@ LABEL_85:
                   v176 = objc_msgSend_objectForKeyedSubscript_(v335->_sourceTextures, v175, v134);
                   v179 = objc_msgSend_texture(v176, v177, v178);
                   v339.i64[0] = __PAIR64__(v154, v332);
-                  v2 = v335;
+                  selfCopy = v335;
                   v339.i64[1] = __PAIR64__(v166, v160);
                   LODWORD(v340) = v173;
                   v107 = v172;
@@ -1502,7 +1502,7 @@ LABEL_85:
                   objc_msgSend_addObject_(v106, v192, v149);
                 }
 
-                v194 = objc_msgSend_objectForKeyedSubscript_(v2->_destinationTextures, v193, v134);
+                v194 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_destinationTextures, v193, v134);
                 v197 = objc_msgSend_texture(v194, v195, v196);
 
                 if (!v197)
@@ -1513,7 +1513,7 @@ LABEL_85:
                   goto LABEL_85;
                 }
 
-                v199 = objc_msgSend_objectForKeyedSubscript_(v2->_destinationTextures, v198, v134);
+                v199 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_destinationTextures, v198, v134);
                 v202 = objc_msgSend_texture(v199, v200, v201);
                 objc_msgSend_addObject_(v107, v203, v202);
               }
@@ -1567,14 +1567,14 @@ LABEL_85:
       }
     }
 
-    if (!objc_msgSend_outputEnabled_(v2, v215, 1) || !v2->_refinedDisparityFilter || !v2->_preprocessedDisparity)
+    if (!objc_msgSend_outputEnabled_(selfCopy, v215, 1) || !selfCopy->_refinedDisparityFilter || !selfCopy->_preprocessedDisparity)
     {
       goto LABEL_91;
     }
 
     v336 = v107;
-    IsNull = CGRectIsNull(v2->_syntheticFocusRectangle);
-    focalPlane = v2->_focalPlane;
+    IsNull = CGRectIsNull(selfCopy->_syntheticFocusRectangle);
+    focalPlane = selfCopy->_focalPlane;
     v310 = v105;
     v221 = v106;
     v222 = v11;
@@ -1586,47 +1586,47 @@ LABEL_85:
 
     else
     {
-      v339 = vcvt_hight_f32_f64(vcvt_f32_f64(v2->_syntheticFocusRectangle.origin), v2->_syntheticFocusRectangle.size);
+      v339 = vcvt_hight_f32_f64(vcvt_f32_f64(selfCopy->_syntheticFocusRectangle.origin), selfCopy->_syntheticFocusRectangle.size);
       LODWORD(v340) = 0;
     }
 
     objc_msgSend_setConfig_(focalPlane, v218, &v339);
-    v225 = v2->_focalPlane;
-    v227 = objc_msgSend_objectForKeyedSubscript_(v2->_destinationTextures, v226, &unk_2A1CA7F40);
+    v225 = selfCopy->_focalPlane;
+    v227 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_destinationTextures, v226, &unk_2A1CA7F40);
     v230 = objc_msgSend_texture(v227, v228, v229);
-    v232 = objc_msgSend_objectForKeyedSubscript_(v2->_sourceTextures, v231, &unk_2A1CA7F28);
+    v232 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_sourceTextures, v231, &unk_2A1CA7F28);
     v235 = objc_msgSend_texture(v232, v233, v234);
-    v238 = objc_msgSend_texture(v2->_preprocessedDisparity, v236, v237);
-    v239 = *&v2->_disparityRefinementConfig.preprocessingGamma;
-    v339 = *&v2->_disparityRefinementConfig.zeroShiftPercentile;
+    v238 = objc_msgSend_texture(selfCopy->_preprocessedDisparity, v236, v237);
+    v239 = *&selfCopy->_disparityRefinementConfig.preprocessingGamma;
+    v339 = *&selfCopy->_disparityRefinementConfig.zeroShiftPercentile;
     v340 = v239;
-    v341 = *&v2->_disparityRefinementConfig.subsampling;
+    v341 = *&selfCopy->_disparityRefinementConfig.subsampling;
     LODWORD(v225) = objc_msgSend_encodeDisparityRefinementPreprocessingOn_alphaTexture_inputDisparityTexture_outputDisparityTexture_configuration_(v225, v240, v222, v230, v235, v238, &v339);
 
     if (!v225)
     {
-      if (!v2->_refinedDisparityGuide)
+      if (!selfCopy->_refinedDisparityGuide)
       {
         v243 = [Texture2DWrapper alloc];
-        metalContext = v2->_metalContext;
-        v246 = objc_msgSend_objectForKeyedSubscript_(v2->_destinationTextures, v245, &unk_2A1CA7F28);
+        metalContext = selfCopy->_metalContext;
+        v246 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_destinationTextures, v245, &unk_2A1CA7F28);
         v249 = objc_msgSend_texture(v246, v247, v248);
         v252 = objc_msgSend_width(v249, v250, v251);
-        v254 = objc_msgSend_objectForKeyedSubscript_(v2->_destinationTextures, v253, &unk_2A1CA7F28);
+        v254 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_destinationTextures, v253, &unk_2A1CA7F28);
         v257 = objc_msgSend_texture(v254, v255, v256);
         v260 = objc_msgSend_height(v257, v258, v259);
         v262 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v243, v261, metalContext, 115, 23, v252, v260);
-        refinedDisparityGuide = v2->_refinedDisparityGuide;
-        v2->_refinedDisparityGuide = v262;
+        refinedDisparityGuide = selfCopy->_refinedDisparityGuide;
+        selfCopy->_refinedDisparityGuide = v262;
       }
 
-      v264 = objc_msgSend_texture(v2->_image, v241, v242);
-      v266 = objc_msgSend_objectForKeyedSubscript_(v2->_destinationTextures, v265, &unk_2A1CA7F40);
+      v264 = objc_msgSend_texture(selfCopy->_image, v241, v242);
+      v266 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_destinationTextures, v265, &unk_2A1CA7F40);
       v269 = objc_msgSend_texture(v266, v267, v268);
-      v272 = objc_msgSend_texture(v2->_refinedDisparityGuide, v270, v271);
-      *&v273 = v2->_disparityRefinementConfig.rgbWeight;
-      v274 = v2;
-      v275 = v2;
+      v272 = objc_msgSend_texture(selfCopy->_refinedDisparityGuide, v270, v271);
+      *&v273 = selfCopy->_disparityRefinementConfig.rgbWeight;
+      v274 = selfCopy;
+      v275 = selfCopy;
       v276 = v222;
       objc_msgSend_encodeComposeRGBAGuideToCommandBuffer_rgbTexture_alphaTexture_destinationTexture_rgbWeight_(v274, v277, v222, v264, v269, v272, v273);
 
@@ -1689,31 +1689,31 @@ LABEL_95:
 
 - (int)_allocateResources
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_enabledOutputArray(self, a2, v2);
-  v6 = objc_msgSend_FigMattingOutputToShortString_(FigMatting, v5, v3->_config.enabledOutputs);
+  v6 = objc_msgSend_FigMattingOutputToShortString_(FigMatting, v5, selfCopy->_config.enabledOutputs);
   v8 = v6;
-  if (!v3->_config.enabledOutputs)
+  if (!selfCopy->_config.enabledOutputs)
   {
     sub_2957E35F4();
 LABEL_62:
-    objc_msgSend_purgeResources(v3, v178, v179);
+    objc_msgSend_purgeResources(selfCopy, v178, v179);
     v177 = -12786;
     goto LABEL_63;
   }
 
   v181 = v6;
-  disparityTuningParameters = v3->_disparityTuningParameters;
-  v10 = *&v3->_config.segmentationWidth;
-  v205 = *&v3->_config.inputImageWidth;
+  disparityTuningParameters = selfCopy->_disparityTuningParameters;
+  v10 = *&selfCopy->_config.segmentationWidth;
+  v205 = *&selfCopy->_config.inputImageWidth;
   v206 = v10;
   v11 = objc_msgSend_getSemanticConfigurationsFor_mattingConfiguration_(disparityTuningParameters, v7, v4, &v205);
-  semanticConfigurations = v3->_semanticConfigurations;
-  v3->_semanticConfigurations = v11;
+  semanticConfigurations = selfCopy->_semanticConfigurations;
+  selfCopy->_semanticConfigurations = v11;
 
   v13 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  semanticOutputCollections = v3->_semanticOutputCollections;
-  v3->_semanticOutputCollections = v13;
+  semanticOutputCollections = selfCopy->_semanticOutputCollections;
+  selfCopy->_semanticOutputCollections = v13;
 
   v203 = 0u;
   v204 = 0u;
@@ -1740,13 +1740,13 @@ LABEL_62:
         v21 = *(*(&v201 + 1) + 8 * v20);
         if ((objc_msgSend_isEqualToNumber_(v21, v17, &unk_2A1CA7F28) & 1) == 0)
         {
-          v22 = objc_msgSend_objectForKeyedSubscript_(v3->_semanticConfigurations, v17, v21);
+          v22 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_semanticConfigurations, v17, v21);
           v196 = 0u;
           v197 = 0u;
           v198 = 0u;
           v199 = 0u;
-          v23 = v3;
-          v24 = v3->_semanticOutputCollections;
+          v23 = selfCopy;
+          v24 = selfCopy->_semanticOutputCollections;
           v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, &v196, v195, 16);
           if (v26)
           {
@@ -1763,7 +1763,7 @@ LABEL_62:
 
                 if (objc_msgSend_add_with_(*(*(&v196 + 1) + 8 * i), v27, v21, v22))
                 {
-                  v3 = v23;
+                  selfCopy = v23;
                   goto LABEL_18;
                 }
               }
@@ -1780,7 +1780,7 @@ LABEL_62:
 
           v24 = objc_alloc_init(SemanticOutputCollection);
           objc_msgSend_add_with_(v24, v31, v21, v22);
-          v3 = v23;
+          selfCopy = v23;
           objc_msgSend_addObject_(v23->_semanticOutputCollections, v32, v24);
 LABEL_18:
 
@@ -1801,7 +1801,7 @@ LABEL_18:
   v194 = 0u;
   v191 = 0u;
   v192 = 0u;
-  v33 = v3->_semanticOutputCollections;
+  v33 = selfCopy->_semanticOutputCollections;
   v35 = objc_msgSend_countByEnumeratingWithState_objects_count_(v33, v34, &v191, v190, 16);
   if (v35)
   {
@@ -1819,7 +1819,7 @@ LABEL_18:
 
         v42 = *(*(&v191 + 1) + 8 * j);
         v43 = objc_msgSend_useDepthFilter(v42, v36, v37);
-        Resources = objc_msgSend_allocateResources_(v42, v44, v3->_metalContext);
+        Resources = objc_msgSend_allocateResources_(v42, v44, selfCopy->_metalContext);
         if (Resources)
         {
           sub_2957E34B0(Resources, v33);
@@ -1844,13 +1844,13 @@ LABEL_18:
     if (v39)
     {
       v52 = [Texture2DWrapper alloc];
-      LODWORD(v53) = v3->_config.inputImageWidth;
-      LODWORD(v54) = v3->_config.inputImageHeight;
-      inited = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v52, v55, v3->_metalContext, 115, 23, v53, v54);
-      rgbdGuide = v3->_rgbdGuide;
-      v3->_rgbdGuide = inited;
+      LODWORD(v53) = selfCopy->_config.inputImageWidth;
+      LODWORD(v54) = selfCopy->_config.inputImageHeight;
+      inited = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v52, v55, selfCopy->_metalContext, 115, 23, v53, v54);
+      rgbdGuide = selfCopy->_rgbdGuide;
+      selfCopy->_rgbdGuide = inited;
 
-      v33 = objc_msgSend_texture(v3->_rgbdGuide, v58, v59);
+      v33 = objc_msgSend_texture(selfCopy->_rgbdGuide, v58, v59);
       objc_msgSend_allocatedSize(v33, v60, v61);
       goto LABEL_31;
     }
@@ -1861,25 +1861,25 @@ LABEL_18:
 LABEL_31:
   }
 
-  if (objc_msgSend_outputEnabled_(v3, v51, 1))
+  if (objc_msgSend_outputEnabled_(selfCopy, v51, 1))
   {
-    disparityRefinementVersion = v3->_disparityRefinementVersion;
+    disparityRefinementVersion = selfCopy->_disparityRefinementVersion;
     if (disparityRefinementVersion >= 5)
     {
       disparityRefinementVersion = 0;
-      v3->_disparityRefinementVersion = 0;
+      selfCopy->_disparityRefinementVersion = 0;
     }
 
     v63 = (&unk_2957E76D8 + 48 * disparityRefinementVersion);
-    *&v3->_disparityRefinementConfig.zeroShiftPercentile = *v63;
-    *&v3->_disparityRefinementConfig.preprocessingGamma = v63[1];
-    *&v3->_disparityRefinementConfig.subsampling = v63[2];
+    *&selfCopy->_disparityRefinementConfig.zeroShiftPercentile = *v63;
+    *&selfCopy->_disparityRefinementConfig.preprocessingGamma = v63[1];
+    *&selfCopy->_disparityRefinementConfig.subsampling = v63[2];
     v64 = [FocalPlaneV2 alloc];
-    v66 = objc_msgSend_initWithMetalContext_(v64, v65, v3->_metalContext);
-    focalPlane = v3->_focalPlane;
-    v3->_focalPlane = v66;
+    v66 = objc_msgSend_initWithMetalContext_(v64, v65, selfCopy->_metalContext);
+    focalPlane = selfCopy->_focalPlane;
+    selfCopy->_focalPlane = v66;
 
-    v70 = v3->_focalPlane;
+    v70 = selfCopy->_focalPlane;
     if (!v70)
     {
       sub_2957E3590();
@@ -1891,17 +1891,17 @@ LABEL_31:
 
     objc_msgSend_allocateResources(v70, v68, v69);
     v71 = [Texture2DWrapper alloc];
-    LODWORD(v72) = v3->_config.inputDisparityWidth;
-    LODWORD(v73) = v3->_config.inputDisparityHeight;
-    v75 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v71, v74, v3->_metalContext, 25, 23, v72, v73);
-    preprocessedDisparity = v3->_preprocessedDisparity;
-    v3->_preprocessedDisparity = v75;
+    LODWORD(v72) = selfCopy->_config.inputDisparityWidth;
+    LODWORD(v73) = selfCopy->_config.inputDisparityHeight;
+    v75 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v71, v74, selfCopy->_metalContext, 25, 23, v72, v73);
+    preprocessedDisparity = selfCopy->_preprocessedDisparity;
+    selfCopy->_preprocessedDisparity = v75;
 
-    v79 = objc_msgSend_texture(v3->_preprocessedDisparity, v77, v78);
+    v79 = objc_msgSend_texture(selfCopy->_preprocessedDisparity, v77, v78);
     objc_msgSend_allocatedSize(v79, v80, v81);
 
-    subsampling = v3->_disparityRefinementConfig.subsampling;
-    v85 = v3->_config.inputDisparityWidth / subsampling;
+    subsampling = selfCopy->_disparityRefinementConfig.subsampling;
+    v85 = selfCopy->_config.inputDisparityWidth / subsampling;
     if (v85 <= 1)
     {
       v86 = 1;
@@ -1912,7 +1912,7 @@ LABEL_31:
       v86 = v85;
     }
 
-    v87 = v3->_config.inputDisparityHeight / subsampling;
+    v87 = selfCopy->_config.inputDisparityHeight / subsampling;
     if (v87 <= 1)
     {
       v88 = 1;
@@ -1923,33 +1923,33 @@ LABEL_31:
       v88 = v87;
     }
 
-    *&v83 = v3->_disparityRefinementConfig.epsilon;
-    v89 = objc_msgSend_filterDescriptorWithWidth_height_arrayLength_kernelSpatialDiameter_kernelTemporalDiameter_epsilon_sourceChannels_guideChannels_preallocateIntermediates_(MEMORY[0x29EDBB800], v82, v86, v88, 1, (2 * v3->_disparityRefinementConfig.radius) | 1, 1, 1, v83, 4, 1);
+    *&v83 = selfCopy->_disparityRefinementConfig.epsilon;
+    v89 = objc_msgSend_filterDescriptorWithWidth_height_arrayLength_kernelSpatialDiameter_kernelTemporalDiameter_epsilon_sourceChannels_guideChannels_preallocateIntermediates_(MEMORY[0x29EDBB800], v82, v86, v88, 1, (2 * selfCopy->_disparityRefinementConfig.radius) | 1, 1, 1, v83, 4, 1);
     v90 = objc_alloc(MEMORY[0x29EDBB7F8]);
-    v93 = objc_msgSend_device(v3->_metalContext, v91, v92);
+    v93 = objc_msgSend_device(selfCopy->_metalContext, v91, v92);
     v95 = objc_msgSend_initWithDevice_filterDescriptor_(v90, v94, v93, v89);
-    refinedDisparityFilter = v3->_refinedDisparityFilter;
-    v3->_refinedDisparityFilter = v95;
+    refinedDisparityFilter = selfCopy->_refinedDisparityFilter;
+    selfCopy->_refinedDisparityFilter = v95;
 
-    v97 = v3->_refinedDisparityFilter;
+    v97 = selfCopy->_refinedDisparityFilter;
     v100 = objc_msgSend_options(v97, v98, v99);
     objc_msgSend_setOptions_(v97, v101, v100 | 1);
-    objc_msgSend_preallocatedSize(v3->_refinedDisparityFilter, v102, v103);
+    objc_msgSend_preallocatedSize(selfCopy->_refinedDisparityFilter, v102, v103);
   }
 
   v104 = [ConstraintsGenerator alloc];
-  v106 = objc_msgSend_initWithMetalContext_(v104, v105, v3->_metalContext);
-  constraintsGenerator = v3->_constraintsGenerator;
-  v3->_constraintsGenerator = v106;
+  v106 = objc_msgSend_initWithMetalContext_(v104, v105, selfCopy->_metalContext);
+  constraintsGenerator = selfCopy->_constraintsGenerator;
+  selfCopy->_constraintsGenerator = v106;
 
-  v108 = v3->_constraintsGenerator;
-  *&v205 = *&v3->_config.segmentationWidth;
+  v108 = selfCopy->_constraintsGenerator;
+  *&v205 = *&selfCopy->_config.segmentationWidth;
   *(&v205 + 1) = 0x3DCCCCCD3F666666;
   LODWORD(v206) = 1;
   objc_msgSend_prepareForConfiguration_(v108, v109, &v205);
-  objc_msgSend_preallocatedSize(v3->_constraintsGenerator, v110, v111);
-  segmentationWidth = v3->_config.segmentationWidth;
-  segmentationHeight = v3->_config.segmentationHeight;
+  objc_msgSend_preallocatedSize(selfCopy->_constraintsGenerator, v110, v111);
+  segmentationWidth = selfCopy->_config.segmentationWidth;
+  segmentationHeight = selfCopy->_config.segmentationHeight;
   v186 = 0u;
   v187 = 0u;
   v188 = 0u;
@@ -1971,7 +1971,7 @@ LABEL_31:
         }
 
         v122 = *(*(&v186 + 1) + 8 * k);
-        v123 = objc_msgSend_objectForKeyedSubscript_(v3->_semanticConfigurations, v117, v122);
+        v123 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_semanticConfigurations, v117, v122);
         v126 = objc_msgSend_constraintsEnabled(v123, v124, v125);
 
         if (v126)
@@ -1979,10 +1979,10 @@ LABEL_31:
           v128 = objc_msgSend_unsignedIntegerValue(v122, v117, v127);
           v130 = objc_msgSend_FigMattingOutputToShortString_(FigMatting, v129, v128);
           v131 = [Texture2DWrapper alloc];
-          v133 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v131, v132, v3->_metalContext, 10, 23, v119, segmentationHeight);
-          objc_msgSend_setObject_forKeyedSubscript_(v3->_constraintsTextures, v134, v133, v122);
+          v133 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v131, v132, selfCopy->_metalContext, 10, 23, v119, segmentationHeight);
+          objc_msgSend_setObject_forKeyedSubscript_(selfCopy->_constraintsTextures, v134, v133, v122);
 
-          v136 = objc_msgSend_objectForKeyedSubscript_(v3->_constraintsTextures, v135, v122);
+          v136 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_constraintsTextures, v135, v122);
           v139 = objc_msgSend_texture(v136, v137, v138);
           objc_msgSend_allocatedSize(v139, v140, v141);
         }
@@ -1994,22 +1994,22 @@ LABEL_31:
     while (v118);
   }
 
-  if (objc_msgSend_outputEnabled_(v3, v142, 8))
+  if (objc_msgSend_outputEnabled_(selfCopy, v142, 8))
   {
     v145 = 3;
-    v3->_maximumNumberOfFacesToConsider = 3;
+    selfCopy->_maximumNumberOfFacesToConsider = 3;
     v146 = objc_alloc(MEMORY[0x29EDB8DE8]);
     v148 = objc_msgSend_initWithCapacity_(v146, v147, 3);
-    preallocatedFaceNonSkinTextures = v3->_preallocatedFaceNonSkinTextures;
-    v3->_preallocatedFaceNonSkinTextures = v148;
+    preallocatedFaceNonSkinTextures = selfCopy->_preallocatedFaceNonSkinTextures;
+    selfCopy->_preallocatedFaceNonSkinTextures = v148;
 
     do
     {
       v150 = [Texture2DWrapper alloc];
-      v153 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_textureArray_(v150, v151, v3->_metalContext, 25, 23, 0, 256.0, 256.0);
+      v153 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_textureArray_(v150, v151, selfCopy->_metalContext, 25, 23, 0, 256.0, 256.0);
       if (v153)
       {
-        objc_msgSend_addObject_(v3->_preallocatedFaceNonSkinTextures, v152, v153);
+        objc_msgSend_addObject_(selfCopy->_preallocatedFaceNonSkinTextures, v152, v153);
         v156 = objc_msgSend_texture(v153, v154, v155);
         objc_msgSend_allocatedSize(v156, v157, v158);
       }
@@ -2018,23 +2018,23 @@ LABEL_31:
     }
 
     while (v145);
-    v160 = objc_msgSend_objectForKeyedSubscript_(v3->_semanticConfigurations, v159, &unk_2A1CA7F70);
+    v160 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_semanticConfigurations, v159, &unk_2A1CA7F70);
     v163 = objc_msgSend_width(v160, v161, v162);
 
-    v165 = objc_msgSend_objectForKeyedSubscript_(v3->_semanticConfigurations, v164, &unk_2A1CA7F70);
+    v165 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_semanticConfigurations, v164, &unk_2A1CA7F70);
     LODWORD(v160) = objc_msgSend_height(v165, v166, v167);
 
     v168 = [Texture2DWrapper alloc];
-    v170 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v168, v169, v3->_metalContext, 25, 23, v163, v160);
-    preprocessedSkin = v3->_preprocessedSkin;
-    v3->_preprocessedSkin = v170;
+    v170 = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_(v168, v169, selfCopy->_metalContext, 25, 23, v163, v160);
+    preprocessedSkin = selfCopy->_preprocessedSkin;
+    selfCopy->_preprocessedSkin = v170;
 
-    v174 = objc_msgSend_texture(v3->_preprocessedSkin, v172, v173);
+    v174 = objc_msgSend_texture(selfCopy->_preprocessedSkin, v172, v173);
     objc_msgSend_allocatedSize(v174, v175, v176);
   }
 
   v4 = v182;
-  if (objc_msgSend__compileShaders(v3, v143, v144))
+  if (objc_msgSend__compileShaders(selfCopy, v143, v144))
   {
     sub_2957E3528();
 LABEL_61:
@@ -2049,11 +2049,11 @@ LABEL_63:
   return v177;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v4 = *MEMORY[0x29EDC0298];
-  v5 = a3;
-  v20 = objc_msgSend_objectForKeyedSubscript_(v5, v6, v4);
+  optionsCopy = options;
+  v20 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v6, v4);
   v7 = [MattingV2TuningParameters alloc];
   if (v20)
   {
@@ -2068,7 +2068,7 @@ LABEL_63:
   disparityTuningParameters = self->_disparityTuningParameters;
   self->_disparityTuningParameters = v9;
 
-  v12 = objc_msgSend_objectForKeyedSubscript_(v5, v11, @"SDOFRenderingParameters");
+  v12 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v11, @"SDOFRenderingParameters");
 
   if (v12)
   {
@@ -2158,9 +2158,9 @@ LABEL_63:
   return -12786;
 }
 
-- (id)_createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4
+- (id)_createTextureOfSize:(CGSize)size withFormat:(unint64_t)format
 {
-  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, a4, a3.width, a3.height, 0);
+  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, format, size.width, size.height, 0);
   objc_msgSend_setUsage_(v5, v6, 3);
   v9 = objc_msgSend_device(self->_metalContext, v7, v8);
   v11 = objc_msgSend_newTextureWithDescriptor_(v9, v10, v5);
@@ -2176,10 +2176,10 @@ LABEL_63:
   return self;
 }
 
-- (void)setConfig:(id *)a3
+- (void)setConfig:(id *)config
 {
-  v3 = *&a3->var4;
-  *&self->_config.inputImageWidth = *&a3->var0;
+  v3 = *&config->var4;
+  *&self->_config.inputImageWidth = *&config->var0;
   *&self->_config.segmentationWidth = v3;
 }
 

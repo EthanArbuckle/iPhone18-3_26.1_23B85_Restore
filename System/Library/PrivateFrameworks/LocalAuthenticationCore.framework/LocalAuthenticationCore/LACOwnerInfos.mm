@@ -1,9 +1,9 @@
 @interface LACOwnerInfos
 - (LACContextExternalizing)context;
-- (LACOwnerInfos)initWithInfo:(id)a3 context:(id)a4;
+- (LACOwnerInfos)initWithInfo:(id)info context:(id)context;
 - (NSArray)allInfos;
 - (id)description;
-- (unint64_t)numberOfOwnersOtherThanPid:(int)a3;
+- (unint64_t)numberOfOwnersOtherThanPid:(int)pid;
 - (void)cleanup;
 @end
 
@@ -24,20 +24,20 @@ BOOL __24__LACOwnerInfos_cleanup__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (LACOwnerInfos)initWithInfo:(id)a3 context:(id)a4
+- (LACOwnerInfos)initWithInfo:(id)info context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = LACOwnerInfos;
   v8 = [(LACOwnerInfos *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v6, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{infoCopy, 0}];
     allInfos = v8->_allInfos;
     v8->_allInfos = v9;
 
-    objc_storeWeak(&v8->_context, v7);
+    objc_storeWeak(&v8->_context, contextCopy);
   }
 
   return v8;
@@ -51,8 +51,8 @@ BOOL __24__LACOwnerInfos_cleanup__block_invoke(uint64_t a1, void *a2)
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(LACOwnerInfos *)self allInfos];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allInfos = [(LACOwnerInfos *)self allInfos];
+  v5 = [allInfos countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -63,44 +63,44 @@ BOOL __24__LACOwnerInfos_cleanup__block_invoke(uint64_t a1, void *a2)
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allInfos);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 proxy];
+        proxy = [v9 proxy];
 
-        if (v10)
+        if (proxy)
         {
-          v11 = [v9 proxy];
-          [v3 addObject:v11];
+          proxy2 = [v9 proxy];
+          [v3 addObject:proxy2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [allInfos countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(LACOwnerInfos *)self context];
-  v14 = [v12 stringWithFormat:@"<%@ : %@>", v13, v3];
+  context = [(LACOwnerInfos *)self context];
+  v14 = [v12 stringWithFormat:@"<%@ : %@>", context, v3];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-- (unint64_t)numberOfOwnersOtherThanPid:(int)a3
+- (unint64_t)numberOfOwnersOtherThanPid:(int)pid
 {
-  v4 = [(LACOwnerInfos *)self allInfos];
+  allInfos = [(LACOwnerInfos *)self allInfos];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__LACOwnerInfos_numberOfOwnersOtherThanPid___block_invoke;
   v9[3] = &__block_descriptor_36_e39_B24__0__LACOwnerInfo_8__NSDictionary_16l;
-  v10 = a3;
+  pidCopy = pid;
   v5 = [MEMORY[0x1E696AE18] predicateWithBlock:v9];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [allInfos filteredArrayUsingPredicate:v5];
   v7 = [v6 count];
 
   return v7;

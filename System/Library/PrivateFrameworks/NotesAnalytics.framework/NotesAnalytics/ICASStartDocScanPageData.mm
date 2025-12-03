@@ -1,20 +1,20 @@
 @interface ICASStartDocScanPageData
-- (ICASStartDocScanPageData)initWithStartPageCount:(id)a3;
+- (ICASStartDocScanPageData)initWithStartPageCount:(id)count;
 - (id)toDict;
 @end
 
 @implementation ICASStartDocScanPageData
 
-- (ICASStartDocScanPageData)initWithStartPageCount:(id)a3
+- (ICASStartDocScanPageData)initWithStartPageCount:(id)count
 {
-  v5 = a3;
+  countCopy = count;
   v9.receiver = self;
   v9.super_class = ICASStartDocScanPageData;
   v6 = [(ICASStartDocScanPageData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_startPageCount, a3);
+    objc_storeStrong(&v6->_startPageCount, count);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"startPageCount";
-  v3 = [(ICASStartDocScanPageData *)self startPageCount];
-  if (v3)
+  startPageCount = [(ICASStartDocScanPageData *)self startPageCount];
+  if (startPageCount)
   {
-    v4 = [(ICASStartDocScanPageData *)self startPageCount];
+    startPageCount2 = [(ICASStartDocScanPageData *)self startPageCount];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    startPageCount2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = startPageCount2;
+  v10[0] = startPageCount2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

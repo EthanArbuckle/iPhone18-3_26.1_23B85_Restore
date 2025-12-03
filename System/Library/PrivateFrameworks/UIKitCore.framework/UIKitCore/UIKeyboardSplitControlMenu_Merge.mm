@@ -1,14 +1,14 @@
 @interface UIKeyboardSplitControlMenu_Merge
-- (void)actionForMenu:(id)a3;
+- (void)actionForMenu:(id)menu;
 @end
 
 @implementation UIKeyboardSplitControlMenu_Merge
 
-- (void)actionForMenu:(id)a3
+- (void)actionForMenu:(id)menu
 {
-  v3 = a3;
+  menuCopy = menu;
   UIKeyboardSetSplit(0);
-  [v3 setFinishSplitTransitionBlock:0];
+  [menuCopy setFinishSplitTransitionBlock:0];
 
   v4 = +[UIKeyboardImpl activeInstance];
   [v4 setRivenSplitLock:1];

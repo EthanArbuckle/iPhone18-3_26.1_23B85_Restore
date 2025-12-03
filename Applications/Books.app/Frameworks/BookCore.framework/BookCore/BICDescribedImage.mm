@@ -1,54 +1,54 @@
 @interface BICDescribedImage
-+ (BICDescribedImage)describedImageWithIdentifier:(id)a3 size:(CGSize)a4 processingOptions:(unsigned __int16)a5;
-+ (BICDescribedImage)describedImageWithPriority:(unint64_t)a3;
-+ (id)describedImageFromEntryLocation:(id)a3;
-+ (id)describedImageFromImageEntry:(id)a3;
-+ (id)describedImagesToDictionaryOfSets:(id)a3;
-+ (id)entryLocationWithIdentifier:(id)a3 level:(signed __int16)a4 size:(CGSize)a5 options:(unsigned __int16)a6 quality:(unsigned __int16)a7;
-+ (id)groupDescribedImagesByIdentifier:(id)a3;
-+ (id)identifierFromEntryLocation:(id)a3;
-+ (id)stringForImageQuality:(unsigned __int16)a3;
-+ (unsigned)transformedQualityFrom:(unsigned __int16)a3;
-- (BICDescribedImage)initWithIdentifier:(id)a3;
++ (BICDescribedImage)describedImageWithIdentifier:(id)identifier size:(CGSize)size processingOptions:(unsigned __int16)options;
++ (BICDescribedImage)describedImageWithPriority:(unint64_t)priority;
++ (id)describedImageFromEntryLocation:(id)location;
++ (id)describedImageFromImageEntry:(id)entry;
++ (id)describedImagesToDictionaryOfSets:(id)sets;
++ (id)entryLocationWithIdentifier:(id)identifier level:(signed __int16)level size:(CGSize)size options:(unsigned __int16)options quality:(unsigned __int16)quality;
++ (id)groupDescribedImagesByIdentifier:(id)identifier;
++ (id)identifierFromEntryLocation:(id)location;
++ (id)stringForImageQuality:(unsigned __int16)quality;
++ (unsigned)transformedQualityFrom:(unsigned __int16)from;
+- (BICDescribedImage)initWithIdentifier:(id)identifier;
 - (BICDescribedImage)primaryRequest;
 - (BICDescribedImage)stackRequest;
 - (BOOL)isAlternateGeneric;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDescribedImage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDescribedImage:(id)image;
 - (BOOL)isExpired;
 - (BOOL)isGenericSeriesStack;
 - (BOOL)isSeriesStackWithGenerics;
 - (BOOL)requiresNetwork;
 - (CGRect)nonShadowArea;
 - (CGSize)imageSize;
-- (id)_computeDescriptionIsFull:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)entryLocationForLevelID:(signed __int16)a3;
+- (id)_computeDescriptionIsFull:(BOOL)full;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)entryLocationForLevelID:(signed __int16)d;
 - (id)shortDescriptionOfProcessingOptions;
-- (int64_t)costFor:(signed __int16)a3;
+- (int64_t)costFor:(signed __int16)for;
 - (void)dealloc;
-- (void)setAlternateRequest:(id)a3;
-- (void)setStackOutline:(CGPath *)a3;
+- (void)setAlternateRequest:(id)request;
+- (void)setStackOutline:(CGPath *)outline;
 @end
 
 @implementation BICDescribedImage
 
-+ (id)groupDescribedImagesByIdentifier:(id)a3
++ (id)groupDescribedImagesByIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 count];
+  identifierCopy = identifier;
+  v4 = [identifierCopy count];
   v5 = v4;
   if (v4 < 2)
   {
     if (v4 == &dword_0 + 1)
     {
-      v22 = v3;
-      v15 = [NSArray arrayWithObjects:&v22 count:1];
+      v22 = identifierCopy;
+      allValues = [NSArray arrayWithObjects:&v22 count:1];
     }
 
     else
     {
-      v15 = &__NSArray0__struct;
+      allValues = &__NSArray0__struct;
     }
   }
 
@@ -59,8 +59,8 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v3;
-    v7 = v3;
+    v17 = identifierCopy;
+    v7 = identifierCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {
@@ -76,12 +76,12 @@
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v6 objectForKeyedSubscript:v13];
+          identifier = [v12 identifier];
+          v14 = [v6 objectForKeyedSubscript:identifier];
           if (!v14)
           {
             v14 = [[NSMutableArray alloc] initWithCapacity:v5];
-            [v6 setObject:v14 forKeyedSubscript:v13];
+            [v6 setObject:v14 forKeyedSubscript:identifier];
           }
 
           [v14 addObject:v12];
@@ -93,47 +93,47 @@
       while (v9);
     }
 
-    v15 = [v6 allValues];
+    allValues = [v6 allValues];
 
-    v3 = v17;
+    identifierCopy = v17;
   }
 
-  return v15;
+  return allValues;
 }
 
-+ (BICDescribedImage)describedImageWithIdentifier:(id)a3 size:(CGSize)a4 processingOptions:(unsigned __int16)a5
++ (BICDescribedImage)describedImageWithIdentifier:(id)identifier size:(CGSize)size processingOptions:(unsigned __int16)options
 {
-  v5 = a5;
-  v13 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  sizeCopy = size;
+  identifierCopy = identifier;
   v12 = 0;
-  v7 = ClampImageSize(&v13, 1, &v12);
+  v7 = ClampImageSize(&sizeCopy, 1, &v12);
   v8 = v12;
   if (v7)
   {
     v9 = BCImageCacheLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_1ED0A0(v6, v8, v9);
+      sub_1ED0A0(identifierCopy, v8, v9);
     }
   }
 
-  v10 = [[BICDescribedImage alloc] initWithIdentifier:v6];
-  [(BICDescribedImage *)v10 setImageSize:v13.width, v13.height];
-  [(BICDescribedImage *)v10 setProcessingOptions:v5];
+  v10 = [[BICDescribedImage alloc] initWithIdentifier:identifierCopy];
+  [(BICDescribedImage *)v10 setImageSize:sizeCopy.width, sizeCopy.height];
+  [(BICDescribedImage *)v10 setProcessingOptions:optionsCopy];
 
   return v10;
 }
 
-+ (id)describedImagesToDictionaryOfSets:(id)a3
++ (id)describedImagesToDictionaryOfSets:(id)sets
 {
-  v3 = a3;
+  setsCopy = sets;
   v4 = +[NSMutableDictionary dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = setsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -149,12 +149,12 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        identifier = [v10 identifier];
+        v12 = [v4 objectForKeyedSubscript:identifier];
         if (!v12)
         {
           v12 = +[NSMutableArray array];
-          [v4 setObject:v12 forKeyedSubscript:v11];
+          [v4 setObject:v12 forKeyedSubscript:identifier];
         }
 
         [v12 addObject:v10];
@@ -169,45 +169,45 @@
   return v4;
 }
 
-+ (id)describedImageFromImageEntry:(id)a3
++ (id)describedImageFromImageEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = [BICDescribedImage alloc];
-  v5 = [v3 imageSet];
-  v6 = [v5 identifier];
-  v7 = [(BICDescribedImage *)v4 initWithIdentifier:v6];
+  imageSet = [entryCopy imageSet];
+  identifier = [imageSet identifier];
+  v7 = [(BICDescribedImage *)v4 initWithIdentifier:identifier];
 
-  [v3 imageSize];
+  [entryCopy imageSize];
   [(BICDescribedImage *)v7 setImageSize:?];
-  -[BICDescribedImage setProcessingOptions:](v7, "setProcessingOptions:", [v3 processingOptions]);
-  -[BICDescribedImage setQuality:](v7, "setQuality:", [v3 quality]);
-  v8 = [v3 lastUsed];
-  [(BICDescribedImage *)v7 setLastUsed:v8];
+  -[BICDescribedImage setProcessingOptions:](v7, "setProcessingOptions:", [entryCopy processingOptions]);
+  -[BICDescribedImage setQuality:](v7, "setQuality:", [entryCopy quality]);
+  lastUsed = [entryCopy lastUsed];
+  [(BICDescribedImage *)v7 setLastUsed:lastUsed];
 
-  v9 = [v3 expiry];
-  [(BICDescribedImage *)v7 setExpiry:v9];
+  expiry = [entryCopy expiry];
+  [(BICDescribedImage *)v7 setExpiry:expiry];
 
-  v10 = [v3 shadowLeft];
-  v11 = [v3 shadowTop];
-  v12 = [v3 shadowWidth];
-  LODWORD(v9) = [v3 shadowHeight];
+  shadowLeft = [entryCopy shadowLeft];
+  shadowTop = [entryCopy shadowTop];
+  shadowWidth = [entryCopy shadowWidth];
+  LODWORD(expiry) = [entryCopy shadowHeight];
 
-  [(BICDescribedImage *)v7 setNonShadowArea:v10, v11, v12, v9];
+  [(BICDescribedImage *)v7 setNonShadowArea:shadowLeft, shadowTop, shadowWidth, expiry];
 
   return v7;
 }
 
-+ (id)describedImageFromEntryLocation:(id)a3
++ (id)describedImageFromEntryLocation:(id)location
 {
-  v3 = [a3 componentsSeparatedByString:@"|"];
+  v3 = [location componentsSeparatedByString:@"|"];
   v4 = [BICDescribedImage alloc];
   v5 = [v3 objectAtIndexedSubscript:0];
   v6 = [(BICDescribedImage *)v4 initWithIdentifier:v5];
 
   v7 = [v3 objectAtIndexedSubscript:2];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
   v9 = [v3 objectAtIndexedSubscript:3];
-  -[BICDescribedImage setImageSize:](v6, "setImageSize:", v8, [v9 integerValue]);
+  -[BICDescribedImage setImageSize:](v6, "setImageSize:", integerValue, [v9 integerValue]);
 
   v10 = [v3 objectAtIndexedSubscript:4];
   -[BICDescribedImage setProcessingOptions:](v6, "setProcessingOptions:", [v10 integerValue]);
@@ -221,51 +221,51 @@
   return v6;
 }
 
-+ (BICDescribedImage)describedImageWithPriority:(unint64_t)a3
++ (BICDescribedImage)describedImageWithPriority:(unint64_t)priority
 {
   v4 = [[BICDescribedImage alloc] initWithIdentifier:@"Prioritizer"];
-  [(BICDescribedImage *)v4 setPriority:a3];
+  [(BICDescribedImage *)v4 setPriority:priority];
 
   return v4;
 }
 
-+ (id)stringForImageQuality:(unsigned __int16)a3
++ (id)stringForImageQuality:(unsigned __int16)quality
 {
-  if (a3 > 106)
+  if (quality > 106)
   {
-    if (a3 <= 202)
+    if (quality <= 202)
     {
       v3 = @"not transformed";
       v17 = @"download";
       v18 = @"cloud";
-      if (a3 != 202)
+      if (quality != 202)
       {
         v18 = 0;
       }
 
-      if (a3 != 201)
+      if (quality != 201)
       {
         v17 = v18;
       }
 
-      if (a3 != 200)
+      if (quality != 200)
       {
         v3 = v17;
       }
 
       v6 = @"transformed book sample stashed";
       v19 = @"transformed user";
-      if (a3 != 108)
+      if (quality != 108)
       {
         v19 = 0;
       }
 
-      if (a3 != 107)
+      if (quality != 107)
       {
         v6 = v19;
       }
 
-      v9 = a3 <= 199;
+      v9 = quality <= 199;
     }
 
     else
@@ -273,17 +273,17 @@
       v3 = @"book";
       v10 = @"user";
       v11 = @"max";
-      if (a3 != 208)
+      if (quality != 208)
       {
         v11 = 0;
       }
 
-      if (a3 != 207)
+      if (quality != 207)
       {
         v10 = v11;
       }
 
-      if (a3 != 206)
+      if (quality != 206)
       {
         v3 = v10;
       }
@@ -291,58 +291,58 @@
       v6 = @"profile";
       v12 = @"book sample";
       v13 = @"book sample stashed";
-      if (a3 != 205)
+      if (quality != 205)
       {
         v13 = 0;
       }
 
-      if (a3 != 204)
+      if (quality != 204)
       {
         v12 = v13;
       }
 
-      if (a3 != 203)
+      if (quality != 203)
       {
         v6 = v12;
       }
 
-      v9 = a3 <= 205;
+      v9 = quality <= 205;
     }
   }
 
-  else if (a3 <= 100)
+  else if (quality <= 100)
   {
     v3 = @"generic";
     v14 = @"old";
     v15 = @"transformed";
-    if (a3 != 100)
+    if (quality != 100)
     {
       v15 = 0;
     }
 
-    if (a3 != 3)
+    if (quality != 3)
     {
       v14 = v15;
     }
 
-    if (a3 != 2)
+    if (quality != 2)
     {
       v3 = v14;
     }
 
     v6 = @"unknown";
     v16 = @"blank";
-    if (a3 != 1)
+    if (quality != 1)
     {
       v16 = 0;
     }
 
-    if (a3)
+    if (quality)
     {
       v6 = v16;
     }
 
-    v9 = a3 <= 1;
+    v9 = quality <= 1;
   }
 
   else
@@ -350,17 +350,17 @@
     v3 = @"transformed profile";
     v4 = @"transformed book";
     v5 = @"transformed book sample";
-    if (a3 != 106)
+    if (quality != 106)
     {
       v5 = 0;
     }
 
-    if (a3 != 105)
+    if (quality != 105)
     {
       v4 = v5;
     }
 
-    if (a3 != 104)
+    if (quality != 104)
     {
       v3 = v4;
     }
@@ -368,22 +368,22 @@
     v6 = @"transformed smaller";
     v7 = @"transformed downloading";
     v8 = @"transformed cloud";
-    if (a3 != 103)
+    if (quality != 103)
     {
       v8 = 0;
     }
 
-    if (a3 != 102)
+    if (quality != 102)
     {
       v7 = v8;
     }
 
-    if (a3 != 101)
+    if (quality != 101)
     {
       v6 = v7;
     }
 
-    v9 = a3 <= 103;
+    v9 = quality <= 103;
   }
 
   if (v9)
@@ -397,22 +397,22 @@
   }
 }
 
-+ (unsigned)transformedQualityFrom:(unsigned __int16)a3
++ (unsigned)transformedQualityFrom:(unsigned __int16)from
 {
   result = 0;
-  if (a3 <= 199)
+  if (from <= 199)
   {
-    if ((a3 - 100) >= 9 && a3 >= 4u)
+    if ((from - 100) >= 9 && from >= 4u)
     {
       return result;
     }
 
-    return a3;
+    return from;
   }
 
-  if (a3 <= 203)
+  if (from <= 203)
   {
-    if (a3 == 203)
+    if (from == 203)
     {
       v4 = 104;
     }
@@ -422,7 +422,7 @@
       v4 = 0;
     }
 
-    if (a3 == 202)
+    if (from == 202)
     {
       v5 = 103;
     }
@@ -432,7 +432,7 @@
       v5 = v4;
     }
 
-    if (a3 == 201)
+    if (from == 201)
     {
       v6 = 102;
     }
@@ -442,12 +442,12 @@
       v6 = 0;
     }
 
-    if (a3 == 200)
+    if (from == 200)
     {
       v6 = 200;
     }
 
-    if (a3 <= 201)
+    if (from <= 201)
     {
       return v6;
     }
@@ -458,9 +458,9 @@
     }
   }
 
-  else if (a3 <= 205)
+  else if (from <= 205)
   {
-    if (a3 == 205)
+    if (from == 205)
     {
       v7 = 107;
     }
@@ -470,7 +470,7 @@
       v7 = 0;
     }
 
-    if (a3 == 204)
+    if (from == 204)
     {
       return 106;
     }
@@ -483,23 +483,23 @@
 
   else
   {
-    switch(a3)
+    switch(from)
     {
       case 0xCEu:
         return 105;
       case 0xCFu:
         return 108;
       case 0xD0u:
-        return a3;
+        return from;
     }
   }
 
   return result;
 }
 
-- (BICDescribedImage)initWithIdentifier:(id)a3
+- (BICDescribedImage)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BICDescribedImage;
   v5 = [(BICDescribedImage *)&v9 init];
@@ -512,29 +512,29 @@
     [(BICDescribedImage *)v6 setOperationsLog:v7];
   }
 
-  [(BICDescribedImage *)v6 setIdentifier:v4];
+  [(BICDescribedImage *)v6 setIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BICDescribedImage alloc];
-  v5 = [(BICDescribedImage *)self identifier];
-  v6 = [(BICDescribedImage *)v4 initWithIdentifier:v5];
+  identifier = [(BICDescribedImage *)self identifier];
+  v6 = [(BICDescribedImage *)v4 initWithIdentifier:identifier];
 
   [(BICDescribedImage *)v6 setPriority:[(BICDescribedImage *)self priority]];
-  v7 = [(BICDescribedImage *)self filePath];
-  [(BICDescribedImage *)v6 setFilePath:v7];
+  filePath = [(BICDescribedImage *)self filePath];
+  [(BICDescribedImage *)v6 setFilePath:filePath];
 
-  v8 = [(BICDescribedImage *)self urlString];
-  [(BICDescribedImage *)v6 setUrlString:v8];
+  urlString = [(BICDescribedImage *)self urlString];
+  [(BICDescribedImage *)v6 setUrlString:urlString];
 
-  v9 = [(BICDescribedImage *)self adamID];
-  [(BICDescribedImage *)v6 setAdamID:v9];
+  adamID = [(BICDescribedImage *)self adamID];
+  [(BICDescribedImage *)v6 setAdamID:adamID];
 
-  v10 = [(BICDescribedImage *)self image];
-  [(BICDescribedImage *)v6 setImage:v10];
+  image = [(BICDescribedImage *)self image];
+  [(BICDescribedImage *)v6 setImage:image];
 
   [(BICDescribedImage *)v6 setProcessingOptions:[(BICDescribedImage *)self processingOptions]];
   [(BICDescribedImage *)v6 setRequestOptions:[(BICDescribedImage *)self requestOptions]];
@@ -542,20 +542,20 @@
   [(BICDescribedImage *)self imageSize];
   [(BICDescribedImage *)v6 setImageSize:?];
   [(BICDescribedImage *)v6 setMatchScore:[(BICDescribedImage *)self matchScore]];
-  v11 = [(BICDescribedImage *)self title];
-  [(BICDescribedImage *)v6 setTitle:v11];
+  title = [(BICDescribedImage *)self title];
+  [(BICDescribedImage *)v6 setTitle:title];
 
-  v12 = [(BICDescribedImage *)self author];
-  [(BICDescribedImage *)v6 setAuthor:v12];
+  author = [(BICDescribedImage *)self author];
+  [(BICDescribedImage *)v6 setAuthor:author];
 
   [(BICDescribedImage *)self nonShadowArea];
   [(BICDescribedImage *)v6 setNonShadowArea:?];
   [(BICDescribedImage *)v6 setStackOutline:[(BICDescribedImage *)self stackOutline]];
-  v13 = [(BICDescribedImage *)self lastUsed];
-  [(BICDescribedImage *)v6 setLastUsed:v13];
+  lastUsed = [(BICDescribedImage *)self lastUsed];
+  [(BICDescribedImage *)v6 setLastUsed:lastUsed];
 
-  v14 = [(BICDescribedImage *)self expiry];
-  [(BICDescribedImage *)v6 setExpiry:v14];
+  expiry = [(BICDescribedImage *)self expiry];
+  [(BICDescribedImage *)v6 setExpiry:expiry];
 
   [(BICDescribedImage *)v6 setUnknownAspectRatio:[(BICDescribedImage *)self unknownAspectRatio]];
   v15 = +[NSMutableString string];
@@ -572,10 +572,10 @@
   [(BICDescribedImage *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -585,7 +585,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BICDescribedImage *)self isEqualToDescribedImage:v4];
+      v5 = [(BICDescribedImage *)self isEqualToDescribedImage:equalCopy];
     }
 
     else
@@ -597,19 +597,19 @@
   return v5;
 }
 
-- (BOOL)isEqualToDescribedImage:(id)a3
+- (BOOL)isEqualToDescribedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(BICDescribedImage *)self imageSize];
   v6 = v5;
   v8 = v7;
-  [v4 imageSize];
+  [imageCopy imageSize];
   v11 = v6 == v10 && v8 == v9;
-  if (v11 && (v12 = [v4 processingOptions], v12 == -[BICDescribedImage processingOptions](self, "processingOptions")) && (v13 = objc_msgSend(v4, "quality"), v13 == -[BICDescribedImage quality](self, "quality")))
+  if (v11 && (v12 = [imageCopy processingOptions], v12 == -[BICDescribedImage processingOptions](self, "processingOptions")) && (v13 = objc_msgSend(imageCopy, "quality"), v13 == -[BICDescribedImage quality](self, "quality")))
   {
-    v14 = [v4 identifier];
-    v15 = [(BICDescribedImage *)self identifier];
-    v16 = [v14 isEqualToString:v15];
+    identifier = [imageCopy identifier];
+    identifier2 = [(BICDescribedImage *)self identifier];
+    v16 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -620,7 +620,7 @@
   return v16;
 }
 
-- (void)setStackOutline:(CGPath *)a3
+- (void)setStackOutline:(CGPath *)outline
 {
   stackOutline = self->_stackOutline;
   if (stackOutline)
@@ -629,60 +629,60 @@
     self->_stackOutline = 0;
   }
 
-  if (a3)
+  if (outline)
   {
-    self->_stackOutline = CGPathCreateCopy(a3);
+    self->_stackOutline = CGPathCreateCopy(outline);
   }
 }
 
-- (void)setAlternateRequest:(id)a3
+- (void)setAlternateRequest:(id)request
 {
-  objc_storeStrong(&self->_alternateRequest, a3);
-  v5 = a3;
-  [v5 setPrimaryRequest:self];
+  objc_storeStrong(&self->_alternateRequest, request);
+  requestCopy = request;
+  [requestCopy setPrimaryRequest:self];
 }
 
-+ (id)identifierFromEntryLocation:(id)a3
++ (id)identifierFromEntryLocation:(id)location
 {
-  v3 = [a3 componentsSeparatedByString:@"|"];
-  v4 = [v3 firstObject];
+  v3 = [location componentsSeparatedByString:@"|"];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)entryLocationWithIdentifier:(id)a3 level:(signed __int16)a4 size:(CGSize)a5 options:(unsigned __int16)a6 quality:(unsigned __int16)a7
++ (id)entryLocationWithIdentifier:(id)identifier level:(signed __int16)level size:(CGSize)size options:(unsigned __int16)options quality:(unsigned __int16)quality
 {
-  if (CGSizeZero.width == a5.width && CGSizeZero.height == a5.height)
+  if (CGSizeZero.width == size.width && CGSizeZero.height == size.height)
   {
-    [NSString stringWithFormat:@"%@|%d|%d|%d|%hd|%d", a4, a6, a7, a3, a4, a5.width, a5.height, a6, a7];
+    [NSString stringWithFormat:@"%@|%d|%d|%d|%hd|%d", level, options, quality, identifier, level, size.width, size.height, options, quality];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%@|%d|%d|%d|%hd", a4, a6, a7, a3, a4, a5.width, a5.height, a6, v10];
+    [NSString stringWithFormat:@"%@|%d|%d|%d|%hd", level, options, quality, identifier, level, size.width, size.height, options, v10];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)entryLocationForLevelID:(signed __int16)a3
+- (id)entryLocationForLevelID:(signed __int16)d
 {
-  v3 = a3;
-  v5 = [(BICDescribedImage *)self identifier];
+  dCopy = d;
+  identifier = [(BICDescribedImage *)self identifier];
   [(BICDescribedImage *)self imageSize];
-  v8 = [BICDescribedImage entryLocationWithIdentifier:v5 level:v3 size:[(BICDescribedImage *)self processingOptions] options:[(BICDescribedImage *)self quality] quality:v6, v7];
+  v8 = [BICDescribedImage entryLocationWithIdentifier:identifier level:dCopy size:[(BICDescribedImage *)self processingOptions] options:[(BICDescribedImage *)self quality] quality:v6, v7];
 
   return v8;
 }
 
-- (id)_computeDescriptionIsFull:(BOOL)a3
+- (id)_computeDescriptionIsFull:(BOOL)full
 {
-  v3 = a3;
+  fullCopy = full;
   v5 = objc_opt_new();
   [v5 addObject:@"<image:"];
-  v6 = [(BICDescribedImage *)self identifier];
-  [v5 addObject:v6];
+  identifier = [(BICDescribedImage *)self identifier];
+  [v5 addObject:identifier];
 
   [(BICDescribedImage *)self imageSize];
   if (v8 != CGSizeZero.width || v7 != CGSizeZero.height)
@@ -696,8 +696,8 @@
 
   if ([(BICDescribedImage *)self processingOptions])
   {
-    v14 = [(BICDescribedImage *)self shortDescriptionOfProcessingOptions];
-    v15 = [NSString stringWithFormat:@", o:%@", v14];
+    shortDescriptionOfProcessingOptions = [(BICDescribedImage *)self shortDescriptionOfProcessingOptions];
+    v15 = [NSString stringWithFormat:@", o:%@", shortDescriptionOfProcessingOptions];
     [v5 addObject:v15];
   }
 
@@ -708,31 +708,31 @@
     [v5 addObject:v17];
   }
 
-  if (v3)
+  if (fullCopy)
   {
-    v18 = [(BICDescribedImage *)self urlString];
+    urlString = [(BICDescribedImage *)self urlString];
 
-    if (v18)
+    if (urlString)
     {
       v19 = @",url";
     }
 
     else
     {
-      v20 = [(BICDescribedImage *)self adamID];
+      adamID = [(BICDescribedImage *)self adamID];
 
-      if (v20)
+      if (adamID)
       {
-        v21 = [(BICDescribedImage *)self adamID];
-        v22 = [NSString stringWithFormat:@", adamID:%@", v21];
+        adamID2 = [(BICDescribedImage *)self adamID];
+        v22 = [NSString stringWithFormat:@", adamID:%@", adamID2];
         [v5 addObject:v22];
 
         goto LABEL_16;
       }
 
-      v30 = [(BICDescribedImage *)self image];
+      image = [(BICDescribedImage *)self image];
 
-      if (!v30)
+      if (!image)
       {
         goto LABEL_16;
       }
@@ -748,13 +748,13 @@ LABEL_16:
       [v5 addObject:v23];
     }
 
-    v24 = [(BICDescribedImage *)self operationsLog];
-    v25 = [v24 length];
+    operationsLog = [(BICDescribedImage *)self operationsLog];
+    v25 = [operationsLog length];
 
     if (v25)
     {
-      v26 = [(BICDescribedImage *)self operationsLog];
-      v27 = [NSString stringWithFormat:@", ops:%@", v26];
+      operationsLog2 = [(BICDescribedImage *)self operationsLog];
+      v27 = [NSString stringWithFormat:@", ops:%@", operationsLog2];
       [v5 addObject:v27];
     }
   }
@@ -846,11 +846,11 @@ LABEL_27:
 
 - (BOOL)isExpired
 {
-  v3 = [(BICDescribedImage *)self expiry];
-  if (v3)
+  expiry = [(BICDescribedImage *)self expiry];
+  if (expiry)
   {
-    v4 = [(BICDescribedImage *)self expiry];
-    [v4 timeIntervalSinceNow];
+    expiry2 = [(BICDescribedImage *)self expiry];
+    [expiry2 timeIntervalSinceNow];
     v6 = v5 < 0.0;
   }
 
@@ -864,61 +864,61 @@ LABEL_27:
 
 - (BOOL)isAlternateGeneric
 {
-  v3 = [(BICDescribedImage *)self alternateRequest];
-  if (v3)
+  alternateRequest = [(BICDescribedImage *)self alternateRequest];
+  if (alternateRequest)
   {
-    v4 = [(BICDescribedImage *)self alternateRequest];
-    v5 = [v4 isGeneric];
+    alternateRequest2 = [(BICDescribedImage *)self alternateRequest];
+    isGeneric = [alternateRequest2 isGeneric];
   }
 
   else
   {
-    v5 = 0;
+    isGeneric = 0;
   }
 
-  return v5;
+  return isGeneric;
 }
 
 - (BOOL)isGenericSeriesStack
 {
-  v3 = [(BICDescribedImage *)self seriesStack];
-  if (v3)
+  seriesStack = [(BICDescribedImage *)self seriesStack];
+  if (seriesStack)
   {
-    LOBYTE(v3) = ([(BICDescribedImage *)self processingOptions]& 0x200) != 0 && [(BICDescribedImage *)self quality]== 2;
+    LOBYTE(seriesStack) = ([(BICDescribedImage *)self processingOptions]& 0x200) != 0 && [(BICDescribedImage *)self quality]== 2;
   }
 
-  return v3;
+  return seriesStack;
 }
 
 - (BOOL)isSeriesStackWithGenerics
 {
-  v3 = [(BICDescribedImage *)self seriesStack];
-  if (v3)
+  seriesStack = [(BICDescribedImage *)self seriesStack];
+  if (seriesStack)
   {
-    LOBYTE(v3) = ([(BICDescribedImage *)self processingOptions]& 0x200) == 0 && [(BICDescribedImage *)self quality]== 2;
+    LOBYTE(seriesStack) = ([(BICDescribedImage *)self processingOptions]& 0x200) == 0 && [(BICDescribedImage *)self quality]== 2;
   }
 
-  return v3;
+  return seriesStack;
 }
 
-- (int64_t)costFor:(signed __int16)a3
+- (int64_t)costFor:(signed __int16)for
 {
-  if (a3)
+  if (for)
   {
     return 0;
   }
 
-  v4 = [(BICDescribedImage *)self image];
-  v5 = [v4 CGImage];
+  image = [(BICDescribedImage *)self image];
+  cGImage = [image CGImage];
 
-  if (!v5)
+  if (!cGImage)
   {
     return 0;
   }
 
-  BytesPerRow = CGImageGetBytesPerRow(v5);
-  CGImageGetWidth(v5);
-  return (BytesPerRow * CGImageGetHeight(v5));
+  BytesPerRow = CGImageGetBytesPerRow(cGImage);
+  CGImageGetWidth(cGImage);
+  return (BytesPerRow * CGImageGetHeight(cGImage));
 }
 
 - (BOOL)requiresNetwork
@@ -927,8 +927,8 @@ LABEL_27:
   v6 = CGSizeZero.width == v4 && CGSizeZero.height == v3 && [(BICDescribedImage *)self quality]== 203;
   if ([(BICDescribedImage *)self quality]== 203)
   {
-    v7 = [(BICDescribedImage *)self urlString];
-    v8 = v7 != 0;
+    urlString = [(BICDescribedImage *)self urlString];
+    v8 = urlString != 0;
   }
 
   else

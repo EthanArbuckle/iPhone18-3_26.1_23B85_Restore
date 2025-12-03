@@ -1,12 +1,12 @@
 @interface GeoServicesHandler
-- (BOOL)startMonitoring:(id)a3;
+- (BOOL)startMonitoring:(id)monitoring;
 - (void)regulatoryAreaGeoChanged;
 - (void)stopMonitoring;
 @end
 
 @implementation GeoServicesHandler
 
-- (BOOL)startMonitoring:(id)a3
+- (BOOL)startMonitoring:(id)monitoring
 {
   v4 = log_get_logging_obg("com.apple.threadradiod", "default");
   if (v4)
@@ -74,19 +74,19 @@
   }
 
   v5 = +[GEOCountryConfiguration sharedConfiguration];
-  v6 = [v5 countryCode];
+  countryCode = [v5 countryCode];
 
-  if (v6)
+  if (countryCode)
   {
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v8 = log_get_logging_obg("com.apple.threadradiod", "default");
     if (v8)
     {
       if (syslog_is_the_mask_enabled(6) && os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v12 = v6;
+        v12 = countryCode;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[PowerTable] regulatory,geo,geosvc,regulatory area GEO changed: %@", buf, 0xCu);
       }
     }
@@ -96,9 +96,9 @@
       CoreAnalyticsHistogramMetricsHelper::ProcessGetRouteCostMetricsHistograms();
     }
 
-    objc_storeStrong(&v7->_lastCountryCode, v6);
-    v9 = v6;
-    std::string::assign(country, [v6 cStringUsingEncoding:4]);
+    objc_storeStrong(&selfCopy->_lastCountryCode, countryCode);
+    v9 = countryCode;
+    std::string::assign(country, [countryCode cStringUsingEncoding:4]);
     if (country[23] < 0)
     {
       std::string::__init_copy_ctor_external(&__p, *country, *&country[8]);

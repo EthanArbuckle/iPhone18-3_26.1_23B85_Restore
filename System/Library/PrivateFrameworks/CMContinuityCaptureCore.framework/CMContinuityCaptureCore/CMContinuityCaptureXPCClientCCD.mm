@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (CMContinuityCaptureXPCClientCCD)init;
 - (id)_service;
-- (void)connectToContinuityCaptureServerWithDelegate:(id)a3;
+- (void)connectToContinuityCaptureServerWithDelegate:(id)delegate;
 - (void)disconnectSession;
-- (void)pauseSessionForEvent:(int64_t)a3;
-- (void)prepareForPullConversation:(id)a3;
-- (void)presentError:(int64_t)a3 userInfo:(id)a4;
+- (void)pauseSessionForEvent:(int64_t)event;
+- (void)prepareForPullConversation:(id)conversation;
+- (void)presentError:(int64_t)error userInfo:(id)info;
 - (void)refreshPrivacyAcknowledgement;
-- (void)requestContinuityCaptureUIConfiguration:(id)a3;
-- (void)resumeStreamingForEvent:(int64_t)a3;
+- (void)requestContinuityCaptureUIConfiguration:(id)configuration;
+- (void)resumeStreamingForEvent:(int64_t)event;
 - (void)serverXPCConnectionInterrupted;
-- (void)sessionDidUpdateWithConfiguration:(id)a3;
-- (void)setupSingSessionFromURL:(id)a3 remoteDisplayIdentifier:(id)a4;
-- (void)setupSingSessionWithMediaRouteIdentifier:(id)a3 remoteDisplayIdentifier:(id)a4;
+- (void)sessionDidUpdateWithConfiguration:(id)configuration;
+- (void)setupSingSessionFromURL:(id)l remoteDisplayIdentifier:(id)identifier;
+- (void)setupSingSessionWithMediaRouteIdentifier:(id)identifier remoteDisplayIdentifier:(id)displayIdentifier;
 - (void)skipPlacementStep;
 - (void)tearDownShield;
 @end
@@ -64,9 +64,9 @@ uint64_t __49__CMContinuityCaptureXPCClientCCD_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)sessionDidUpdateWithConfiguration:(id)a3
+- (void)sessionDidUpdateWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (dword_27ECB4DA0)
   {
     v5 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -78,7 +78,7 @@ uint64_t __49__CMContinuityCaptureXPCClientCCD_sharedInstance__block_invoke()
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained sessionDidUpdateWithConfiguration:v4];
+    [WeakRetained sessionDidUpdateWithConfiguration:configurationCopy];
   }
 }
 
@@ -116,9 +116,9 @@ uint64_t __49__CMContinuityCaptureXPCClientCCD_sharedInstance__block_invoke()
   }
 }
 
-- (void)presentError:(int64_t)a3 userInfo:(id)a4
+- (void)presentError:(int64_t)error userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (dword_27ECB4DA0)
   {
     v7 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -130,76 +130,76 @@ uint64_t __49__CMContinuityCaptureXPCClientCCD_sharedInstance__block_invoke()
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained presentError:a3 userInfo:v6];
+    [WeakRetained presentError:error userInfo:infoCopy];
   }
 }
 
-- (void)requestContinuityCaptureUIConfiguration:(id)a3
+- (void)requestContinuityCaptureUIConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v5 requestContinuityCaptureUIConfiguration:v4];
+  configurationCopy = configuration;
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service requestContinuityCaptureUIConfiguration:configurationCopy];
 }
 
-- (void)resumeStreamingForEvent:(int64_t)a3
+- (void)resumeStreamingForEvent:(int64_t)event
 {
-  v4 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v4 resumeStreamingForEvent:a3];
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service resumeStreamingForEvent:event];
 }
 
-- (void)pauseSessionForEvent:(int64_t)a3
+- (void)pauseSessionForEvent:(int64_t)event
 {
-  v4 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v4 pauseSessionForEvent:a3];
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service pauseSessionForEvent:event];
 }
 
 - (void)disconnectSession
 {
-  v2 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v2 disconnectSession];
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service disconnectSession];
 }
 
 - (void)skipPlacementStep
 {
-  v2 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v2 skipPlacementStep];
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service skipPlacementStep];
 }
 
-- (void)prepareForPullConversation:(id)a3
+- (void)prepareForPullConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v5 prepareForPullConversation:v4];
+  conversationCopy = conversation;
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service prepareForPullConversation:conversationCopy];
 }
 
-- (void)setupSingSessionFromURL:(id)a3 remoteDisplayIdentifier:(id)a4
+- (void)setupSingSessionFromURL:(id)l remoteDisplayIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v8 setupSingSessionFromURL:v7 remoteDisplayIdentifier:v6];
+  identifierCopy = identifier;
+  lCopy = l;
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service setupSingSessionFromURL:lCopy remoteDisplayIdentifier:identifierCopy];
 }
 
-- (void)setupSingSessionWithMediaRouteIdentifier:(id)a3 remoteDisplayIdentifier:(id)a4
+- (void)setupSingSessionWithMediaRouteIdentifier:(id)identifier remoteDisplayIdentifier:(id)displayIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v8 setupSingSessionWithMediaRouteIdentifier:v7 remoteDisplayIdentifier:v6];
+  displayIdentifierCopy = displayIdentifier;
+  identifierCopy = identifier;
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service setupSingSessionWithMediaRouteIdentifier:identifierCopy remoteDisplayIdentifier:displayIdentifierCopy];
 }
 
 - (void)refreshPrivacyAcknowledgement
 {
-  v2 = [(CMContinuityCaptureXPCClientCCD *)self _service];
-  [v2 refreshPrivacyAcknowledgement];
+  _service = [(CMContinuityCaptureXPCClientCCD *)self _service];
+  [_service refreshPrivacyAcknowledgement];
 }
 
-- (void)connectToContinuityCaptureServerWithDelegate:(id)a3
+- (void)connectToContinuityCaptureServerWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   v5 = dispatch_semaphore_create(0);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   dispatch_assert_queue_not_V2(self->_connectionQueue);
   connectionQueue = self->_connectionQueue;
   v9[0] = MEMORY[0x277D85DD0];

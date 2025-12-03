@@ -7,16 +7,16 @@
 
 - (BOOL)isPresent
 {
-  v3 = [(ComponentMotionCoprocessor *)self motionCoprocessorServiceName];
-  if ([v3 isEqualToString:@"aop"])
+  motionCoprocessorServiceName = [(ComponentMotionCoprocessor *)self motionCoprocessorServiceName];
+  if ([motionCoprocessorServiceName isEqualToString:@"aop"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(ComponentMotionCoprocessor *)self motionCoprocessorServiceName];
-    v4 = [v5 isEqualToString:@"SPUApp"];
+    motionCoprocessorServiceName2 = [(ComponentMotionCoprocessor *)self motionCoprocessorServiceName];
+    v4 = [motionCoprocessorServiceName2 isEqualToString:@"SPUApp"];
   }
 
   return v4;

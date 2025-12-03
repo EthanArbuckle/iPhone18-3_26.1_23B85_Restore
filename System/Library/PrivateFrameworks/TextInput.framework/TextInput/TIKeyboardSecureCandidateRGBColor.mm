@@ -4,36 +4,36 @@
 + (id)lightGrayColor;
 + (id)lightSecondaryLabelColor;
 + (id)whiteColor;
-- (BOOL)isEqual:(id)a3;
-- (TIKeyboardSecureCandidateRGBColor)initWithCoder:(id)a3;
-- (TIKeyboardSecureCandidateRGBColor)initWithR:(double)a3 G:(double)a4 B:(double)a5 A:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TIKeyboardSecureCandidateRGBColor)initWithCoder:(id)coder;
+- (TIKeyboardSecureCandidateRGBColor)initWithR:(double)r G:(double)g B:(double)b A:(double)a;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIKeyboardSecureCandidateRGBColor
 
 + (id)whiteColor
 {
-  v2 = [[a1 alloc] initWithR:1.0 G:1.0 B:1.0 A:1.0];
+  v2 = [[self alloc] initWithR:1.0 G:1.0 B:1.0 A:1.0];
 
   return v2;
 }
 
 + (id)blackColor
 {
-  v2 = [[a1 alloc] initWithR:0.0 G:0.0 B:0.0 A:1.0];
+  v2 = [[self alloc] initWithR:0.0 G:0.0 B:0.0 A:1.0];
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(TIKeyboardSecureCandidateRGBColor *)self colorR];
     v7 = v6;
     [v5 colorR];
@@ -75,61 +75,61 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   colorR = self->_colorR;
-  v9 = a3;
+  coderCopy = coder;
   *&v5 = colorR;
-  [v9 encodeFloat:@"colorR" forKey:v5];
+  [coderCopy encodeFloat:@"colorR" forKey:v5];
   colorG = self->_colorG;
   *&colorG = colorG;
-  [v9 encodeFloat:@"colorG" forKey:colorG];
+  [coderCopy encodeFloat:@"colorG" forKey:colorG];
   colorB = self->_colorB;
   *&colorB = colorB;
-  [v9 encodeFloat:@"colorB" forKey:colorB];
+  [coderCopy encodeFloat:@"colorB" forKey:colorB];
   colorA = self->_colorA;
   *&colorA = colorA;
-  [v9 encodeFloat:@"colorA" forKey:colorA];
+  [coderCopy encodeFloat:@"colorA" forKey:colorA];
 }
 
-- (TIKeyboardSecureCandidateRGBColor)initWithCoder:(id)a3
+- (TIKeyboardSecureCandidateRGBColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TIKeyboardSecureCandidateRGBColor;
   v5 = [(TIKeyboardSecureCandidateRGBColor *)&v11 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"colorR"];
+    [coderCopy decodeFloatForKey:@"colorR"];
     v5->_colorR = v6;
-    [v4 decodeFloatForKey:@"colorG"];
+    [coderCopy decodeFloatForKey:@"colorG"];
     v5->_colorG = v7;
-    [v4 decodeFloatForKey:@"colorB"];
+    [coderCopy decodeFloatForKey:@"colorB"];
     v5->_colorB = v8;
-    [v4 decodeFloatForKey:@"colorA"];
+    [coderCopy decodeFloatForKey:@"colorA"];
     v5->_colorA = v9;
   }
 
   return v5;
 }
 
-- (TIKeyboardSecureCandidateRGBColor)initWithR:(double)a3 G:(double)a4 B:(double)a5 A:(double)a6
+- (TIKeyboardSecureCandidateRGBColor)initWithR:(double)r G:(double)g B:(double)b A:(double)a
 {
   v11.receiver = self;
   v11.super_class = TIKeyboardSecureCandidateRGBColor;
   result = [(TIKeyboardSecureCandidateRGBColor *)&v11 init];
   if (result)
   {
-    result->_colorR = a3;
-    result->_colorG = a4;
-    result->_colorB = a5;
-    result->_colorA = a6;
+    result->_colorR = r;
+    result->_colorG = g;
+    result->_colorB = b;
+    result->_colorA = a;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(TIKeyboardSecureCandidateRGBColor);
   if (result)
@@ -145,21 +145,21 @@
 
 + (id)lightSecondaryLabelColor
 {
-  v2 = [[a1 alloc] initWithR:0.921568627 G:0.921568627 B:0.960784314 A:0.6];
+  v2 = [[self alloc] initWithR:0.921568627 G:0.921568627 B:0.960784314 A:0.6];
 
   return v2;
 }
 
 + (id)darkSecondaryLabelColor
 {
-  v2 = [[a1 alloc] initWithR:0.235294118 G:0.235294118 B:0.262745098 A:0.6];
+  v2 = [[self alloc] initWithR:0.235294118 G:0.235294118 B:0.262745098 A:0.6];
 
   return v2;
 }
 
 + (id)lightGrayColor
 {
-  v2 = [[a1 alloc] initWithR:0.898039216 G:0.909803922 B:0.917647059 A:1.0];
+  v2 = [[self alloc] initWithR:0.898039216 G:0.909803922 B:0.917647059 A:1.0];
 
   return v2;
 }

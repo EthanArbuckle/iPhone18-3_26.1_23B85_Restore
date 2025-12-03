@@ -1,23 +1,23 @@
 @interface DABabysitter
 + (id)sharedBabysitter;
-- (BOOL)accountShouldContinue:(id)a3;
-- (BOOL)accountWithIDShouldContinue:(id)a3;
-- (BOOL)registerAccount:(id)a3 forOperationWithName:(id)a4;
+- (BOOL)accountShouldContinue:(id)continue;
+- (BOOL)accountWithIDShouldContinue:(id)continue;
+- (BOOL)registerAccount:(id)account forOperationWithName:(id)name;
 - (DABabysitter)init;
 - (id)_init;
-- (id)_populatedStringDictionaryWithWaitersDictionary:(id)a3;
-- (id)tokenByRegisteringAccount:(id)a3 forOperationWithName:(id)a4;
-- (void)_incrementRefreshCountForWaiterID:(id)a3 operationName:(id)a4;
-- (void)_l_decrementRefreshCountForWaiter:(id)a3 forOperationWithName:(id)a4;
-- (void)_l_decrementRefreshCountForWaiterID:(id)a3 operationName:(id)a4;
-- (void)_l_giveAccountWithIDAnotherChance:(id)a3;
-- (void)_l_incrementRefreshCountForWaiterID:(id)a3 operationName:(id)a4;
-- (void)_l_reloadBabysitterWaitersWithRefreshingWaitersPrefs:(id)a3 failedWaitersPrefs:(id)a4 restrictedWaitersPrefs:(id)a5;
+- (id)_populatedStringDictionaryWithWaitersDictionary:(id)dictionary;
+- (id)tokenByRegisteringAccount:(id)account forOperationWithName:(id)name;
+- (void)_incrementRefreshCountForWaiterID:(id)d operationName:(id)name;
+- (void)_l_decrementRefreshCountForWaiter:(id)waiter forOperationWithName:(id)name;
+- (void)_l_decrementRefreshCountForWaiterID:(id)d operationName:(id)name;
+- (void)_l_giveAccountWithIDAnotherChance:(id)chance;
+- (void)_l_incrementRefreshCountForWaiterID:(id)d operationName:(id)name;
+- (void)_l_reloadBabysitterWaitersWithRefreshingWaitersPrefs:(id)prefs failedWaitersPrefs:(id)waitersPrefs restrictedWaitersPrefs:(id)restrictedWaitersPrefs;
 - (void)_reloadBabysitterProperties;
 - (void)dealloc;
-- (void)giveAccountWithIDAnotherChance:(id)a3;
-- (void)statusReportWithCompletionBlock:(id)a3;
-- (void)unregisterAccount:(id)a3 forOperationWithName:(id)a4;
+- (void)giveAccountWithIDAnotherChance:(id)chance;
+- (void)statusReportWithCompletionBlock:(id)block;
+- (void)unregisterAccount:(id)account forOperationWithName:(id)name;
 @end
 
 @implementation DABabysitter
@@ -41,19 +41,19 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_l_reloadBabysitterWaitersWithRefreshingWaitersPrefs:(id)a3 failedWaitersPrefs:(id)a4 restrictedWaitersPrefs:(id)a5
+- (void)_l_reloadBabysitterWaitersWithRefreshingWaitersPrefs:(id)prefs failedWaitersPrefs:(id)waitersPrefs restrictedWaitersPrefs:(id)restrictedWaitersPrefs
 {
   v155 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v95 = a5;
+  prefsCopy = prefs;
+  waitersPrefsCopy = waitersPrefs;
+  restrictedWaitersPrefsCopy = restrictedWaitersPrefs;
   v10 = objc_opt_new();
   l_refreshingWaiters = self->_l_refreshingWaiters;
-  v106 = self;
+  selfCopy = self;
   self->_l_refreshingWaiters = v10;
 
-  v96 = v9;
-  if (v8)
+  v96 = waitersPrefsCopy;
+  if (prefsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -62,8 +62,8 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
       v139 = 0u;
       v136 = 0u;
       v137 = 0u;
-      v12 = [v8 allKeys];
-      v13 = [v12 countByEnumeratingWithState:&v136 objects:v154 count:16];
+      allKeys = [prefsCopy allKeys];
+      v13 = [allKeys countByEnumeratingWithState:&v136 objects:v154 count:16];
       if (v13)
       {
         v14 = v13;
@@ -74,41 +74,41 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
           {
             if (*v137 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(allKeys);
             }
 
             v17 = *(*(&v136 + 1) + 8 * i);
-            v18 = [v8 objectForKeyedSubscript:v17];
+            v18 = [prefsCopy objectForKeyedSubscript:v17];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v19 = [v18 mutableCopy];
-              [(NSMutableDictionary *)v106->_l_refreshingWaiters setObject:v19 forKeyedSubscript:v17];
+              [(NSMutableDictionary *)selfCopy->_l_refreshingWaiters setObject:v19 forKeyedSubscript:v17];
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v136 objects:v154 count:16];
+          v14 = [allKeys countByEnumeratingWithState:&v136 objects:v154 count:16];
         }
 
         while (v14);
       }
 
-      v9 = v96;
+      waitersPrefsCopy = v96;
     }
   }
 
-  if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (waitersPrefsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v20 = objc_opt_new();
-    l_failedWaiters = v106->_l_failedWaiters;
-    v106->_l_failedWaiters = v20;
+    l_failedWaiters = selfCopy->_l_failedWaiters;
+    selfCopy->_l_failedWaiters = v20;
 
     v134 = 0u;
     v135 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v22 = [v9 allKeys];
-    v23 = [v22 countByEnumeratingWithState:&v132 objects:v153 count:16];
+    allKeys2 = [waitersPrefsCopy allKeys];
+    v23 = [allKeys2 countByEnumeratingWithState:&v132 objects:v153 count:16];
     if (v23)
     {
       v24 = v23;
@@ -119,22 +119,22 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
         {
           if (*v133 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allKeys2);
           }
 
           v27 = *(*(&v132 + 1) + 8 * j);
-          v28 = [v9 objectForKeyedSubscript:v27];
+          v28 = [waitersPrefsCopy objectForKeyedSubscript:v27];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v29 = [v28 mutableCopy];
-            [(NSMutableDictionary *)v106->_l_failedWaiters setObject:v29 forKeyedSubscript:v27];
+            [(NSMutableDictionary *)selfCopy->_l_failedWaiters setObject:v29 forKeyedSubscript:v27];
           }
 
-          v9 = v96;
+          waitersPrefsCopy = v96;
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v132 objects:v153 count:16];
+        v24 = [allKeys2 countByEnumeratingWithState:&v132 objects:v153 count:16];
       }
 
       while (v24);
@@ -144,13 +144,13 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   else
   {
     v30 = objc_opt_new();
-    v22 = v106->_l_failedWaiters;
-    v106->_l_failedWaiters = v30;
+    allKeys2 = selfCopy->_l_failedWaiters;
+    selfCopy->_l_failedWaiters = v30;
   }
 
-  if (v95 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (restrictedWaitersPrefsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v31 = [v95 mutableCopy];
+    v31 = [restrictedWaitersPrefsCopy mutableCopy];
   }
 
   else
@@ -158,15 +158,15 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
     v31 = objc_opt_new();
   }
 
-  v94 = v8;
-  l_restrictedWaiters = v106->_l_restrictedWaiters;
-  v106->_l_restrictedWaiters = v31;
+  v94 = prefsCopy;
+  l_restrictedWaiters = selfCopy->_l_restrictedWaiters;
+  selfCopy->_l_restrictedWaiters = v31;
 
   v130 = 0u;
   v131 = 0u;
   v128 = 0u;
   v129 = 0u;
-  obj = [(NSMutableDictionary *)v106->_l_refreshingWaiters allKeys];
+  obj = [(NSMutableDictionary *)selfCopy->_l_refreshingWaiters allKeys];
   v102 = [obj countByEnumeratingWithState:&v128 objects:v152 count:16];
   if (v102)
   {
@@ -184,13 +184,13 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
 
         v104 = v34;
         v35 = *(*(&v128 + 1) + 8 * v34);
-        v36 = [(NSMutableDictionary *)v106->_l_refreshingWaiters objectForKeyedSubscript:v35];
+        v36 = [(NSMutableDictionary *)selfCopy->_l_refreshingWaiters objectForKeyedSubscript:v35];
         *type = v35;
-        v37 = [(NSMutableDictionary *)v106->_l_failedWaiters objectForKeyedSubscript:v35];
-        if (!v37)
+        dictionary = [(NSMutableDictionary *)selfCopy->_l_failedWaiters objectForKeyedSubscript:v35];
+        if (!dictionary)
         {
-          v37 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)v106->_l_failedWaiters setObject:v37 forKeyedSubscript:*type];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)selfCopy->_l_failedWaiters setObject:dictionary forKeyedSubscript:*type];
         }
 
         v126 = 0u;
@@ -213,17 +213,17 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
               }
 
               v43 = *(*(&v124 + 1) + 8 * k);
-              v44 = [v37 objectForKeyedSubscript:v43];
+              v44 = [dictionary objectForKeyedSubscript:v43];
               v45 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v44, "intValue") + 1}];
-              [v37 setObject:v45 forKeyedSubscript:v43];
+              [dictionary setObject:v45 forKeyedSubscript:v43];
               v46 = DALoggingwithCategory();
               if (os_log_type_enabled(v46, v33))
               {
-                v47 = [v45 intValue];
+                intValue = [v45 intValue];
                 *buf = 138543874;
                 v146 = *type;
                 v147 = 1024;
-                v148 = v47;
+                v148 = intValue;
                 v149 = 2114;
                 v150 = v43;
                 _os_log_impl(&dword_24244C000, v46, v33, "Babysitter: Noting that waiter %{public}@ failed %d times for operation %{public}@", buf, 0x1Cu);
@@ -250,8 +250,8 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v101 = [(NSMutableDictionary *)v106->_l_failedWaiters allKeys];
-  v48 = [v101 countByEnumeratingWithState:&v120 objects:v144 count:16];
+  allKeys3 = [(NSMutableDictionary *)selfCopy->_l_failedWaiters allKeys];
+  v48 = [allKeys3 countByEnumeratingWithState:&v120 objects:v144 count:16];
   v49 = 0x277CBE000uLL;
   if (v48)
   {
@@ -266,11 +266,11 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
       {
         if (*v121 != v51)
         {
-          objc_enumerationMutation(v101);
+          objc_enumerationMutation(allKeys3);
         }
 
         *typea = *(*(&v120 + 1) + 8 * v52);
-        v53 = [(NSMutableDictionary *)v106->_l_failedWaiters objectForKeyedSubscript:?];
+        v53 = [(NSMutableDictionary *)selfCopy->_l_failedWaiters objectForKeyedSubscript:?];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -279,21 +279,21 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
           v119 = 0u;
           v116 = 0u;
           v117 = 0u;
-          v54 = [v53 allKeys];
-          v55 = [v54 countByEnumeratingWithState:&v116 objects:v143 count:16];
+          allKeys4 = [v53 allKeys];
+          v55 = [allKeys4 countByEnumeratingWithState:&v116 objects:v143 count:16];
           if (v55)
           {
             v56 = v55;
             v57 = *v117;
             v107 = v53;
-            v105 = v54;
+            v105 = allKeys4;
             do
             {
               for (m = 0; m != v56; ++m)
               {
                 if (*v117 != v57)
                 {
-                  objc_enumerationMutation(v54);
+                  objc_enumerationMutation(allKeys4);
                 }
 
                 v59 = *(*(&v116 + 1) + 8 * m);
@@ -301,11 +301,11 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v61 = [v60 intValue];
-                  if (v61 >= 5)
+                  intValue2 = [v60 intValue];
+                  if (intValue2 >= 5)
                   {
-                    v62 = v61;
-                    v63 = [(NSMutableDictionary *)v106->_l_restrictedWaiters objectForKeyedSubscript:*typea];
+                    v62 = intValue2;
+                    v63 = [(NSMutableDictionary *)selfCopy->_l_restrictedWaiters objectForKeyedSubscript:*typea];
 
                     if (!v63)
                     {
@@ -314,9 +314,9 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
                       v64 = [*(v49 + 2728) dateWithTimeIntervalSinceNow:{fmin((3600 * v62 - 14400), 86400.0) + (arc4random() % 0x384)}];
                       if (([MEMORY[0x277CF3AC8] babysitterEnabled] & 1) == 0)
                       {
-                        v65 = [*(v49 + 2728) distantPast];
+                        distantPast = [*(v49 + 2728) distantPast];
 
-                        v64 = v65;
+                        v64 = distantPast;
                       }
 
                       v66 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -334,16 +334,16 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
                       v142[2] = v70;
                       v71 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v142 forKeys:v141 count:3];
 
-                      [(NSMutableDictionary *)v106->_l_restrictedWaiters setValue:v71 forKey:*typea];
+                      [(NSMutableDictionary *)selfCopy->_l_restrictedWaiters setValue:v71 forKey:*typea];
                       v49 = 0x277CBE000;
                       v53 = v107;
-                      v54 = v105;
+                      allKeys4 = v105;
                     }
                   }
                 }
               }
 
-              v56 = [v54 countByEnumeratingWithState:&v116 objects:v143 count:16];
+              v56 = [allKeys4 countByEnumeratingWithState:&v116 objects:v143 count:16];
             }
 
             while (v56);
@@ -358,7 +358,7 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
       }
 
       while (v52 != v50);
-      v50 = [v101 countByEnumeratingWithState:&v120 objects:v144 count:16];
+      v50 = [allKeys3 countByEnumeratingWithState:&v120 objects:v144 count:16];
     }
 
     while (v50);
@@ -368,7 +368,7 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v72 = v106->_l_restrictedWaiters;
+  v72 = selfCopy->_l_restrictedWaiters;
   v73 = [(NSMutableDictionary *)v72 countByEnumeratingWithState:&v112 objects:v140 count:16];
   if (v73)
   {
@@ -386,7 +386,7 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
         }
 
         v77 = *(*(&v112 + 1) + 8 * n);
-        v78 = [(NSMutableDictionary *)v106->_l_restrictedWaiters objectForKeyedSubscript:v77];
+        v78 = [(NSMutableDictionary *)selfCopy->_l_restrictedWaiters objectForKeyedSubscript:v77];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -402,21 +402,21 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
               v80 = 0;
             }
 
-            v81 = [MEMORY[0x277CF3AC8] babysitterEnabled];
+            babysitterEnabled = [MEMORY[0x277CF3AC8] babysitterEnabled];
             v82 = DALoggingwithCategory();
             v83 = os_log_type_enabled(v82, typeb);
-            if (v81)
+            if (babysitterEnabled)
             {
               if (v83)
               {
-                v84 = [v79 intValue];
+                intValue3 = [v79 intValue];
                 v85 = MEMORY[0x277CBEAA8];
                 [v80 doubleValue];
                 v86 = [v85 dateWithTimeIntervalSinceReferenceDate:?];
                 *buf = 138543874;
                 v146 = v77;
                 v147 = 1024;
-                v148 = v84;
+                v148 = intValue3;
                 v149 = 2114;
                 v150 = v86;
                 _os_log_impl(&dword_24244C000, v82, typeb, "===================\n\n\n\nBabysitter: Account with ID %{public}@ had previously failed %d times and is from now restricted until it stops crashing. Please file a bug for any remindd crashes you find. (Timeout: %{public}@)\n\n\n===================\n", buf, 0x1Cu);
@@ -424,21 +424,21 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
                 v72 = v108;
               }
 
-              -[DABabysitter _diagnosticReportWithWaiterID:failureCount:](v106, "_diagnosticReportWithWaiterID:failureCount:", v77, [v79 intValue]);
+              -[DABabysitter _diagnosticReportWithWaiterID:failureCount:](selfCopy, "_diagnosticReportWithWaiterID:failureCount:", v77, [v79 intValue]);
             }
 
             else
             {
               if (v83)
               {
-                v87 = [v79 intValue];
+                intValue4 = [v79 intValue];
                 v88 = MEMORY[0x277CBEAA8];
                 [v80 doubleValue];
                 v89 = [v88 dateWithTimeIntervalSinceReferenceDate:?];
                 *buf = 138543874;
                 v146 = v77;
                 v147 = 1024;
-                v148 = v87;
+                v148 = intValue4;
                 v149 = 2114;
                 v150 = v89;
                 _os_log_impl(&dword_24244C000, v82, typeb, "===================\n\n\n\nBabysitter: Waiter with ID %{public}@ had crashed %d times. Since you have the babysitter disabled, we're going to assume you know what you're doing and not disable the waiter. Consider yourself warned. (Timeout: %{public}@)\n\n\n===================\n", buf, 0x1Cu);
@@ -456,14 +456,14 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
     while (v74);
   }
 
-  [(NSMutableDictionary *)v106->_l_refreshingWaiters removeAllObjects];
-  if ([(NSMutableDictionary *)v106->_l_restrictedWaiters count])
+  [(NSMutableDictionary *)selfCopy->_l_refreshingWaiters removeAllObjects];
+  if ([(NSMutableDictionary *)selfCopy->_l_restrictedWaiters count])
   {
     v90 = DALoggingwithCategory();
     v91 = *(MEMORY[0x277CF3AF0] + 5);
     if (os_log_type_enabled(v90, v91))
     {
-      v92 = v106->_l_restrictedWaiters;
+      v92 = selfCopy->_l_restrictedWaiters;
       *buf = 138543362;
       v146 = v92;
       _os_log_impl(&dword_24244C000, v90, v91, "Babysitter: Restricted accounts are: %{public}@", buf, 0xCu);
@@ -537,8 +537,8 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
 
 - (DABabysitter)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"DABabysitter.m" lineNumber:242 description:{@"Use the shared babysitter, jerk."}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DABabysitter.m" lineNumber:242 description:{@"Use the shared babysitter, jerk."}];
 
   return 0;
 }
@@ -552,45 +552,45 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   [(DABabysitter *)&v4 dealloc];
 }
 
-- (void)_l_incrementRefreshCountForWaiterID:(id)a3 operationName:(id)a4
+- (void)_l_incrementRefreshCountForWaiterID:(id)d operationName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_l_refreshingWaiters objectForKeyedSubscript:v6];
-  if (!v8)
+  dCopy = d;
+  nameCopy = name;
+  dictionary = [(NSMutableDictionary *)self->_l_refreshingWaiters objectForKeyedSubscript:dCopy];
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(NSMutableDictionary *)self->_l_refreshingWaiters setObject:v8 forKeyedSubscript:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(NSMutableDictionary *)self->_l_refreshingWaiters setObject:dictionary forKeyedSubscript:dCopy];
   }
 
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [dictionary objectForKeyedSubscript:nameCopy];
   v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "intValue") + 1}];
   v11 = DALoggingwithCategory();
   v12 = *(MEMORY[0x277CF3AF0] + 7);
   if (os_log_type_enabled(v11, v12))
   {
     v14 = 138412802;
-    v15 = v6;
+    v15 = dCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = nameCopy;
     v18 = 1024;
-    v19 = [v10 intValue];
+    intValue = [v10 intValue];
     _os_log_impl(&dword_24244C000, v11, v12, "Babysitter: Marking waiter %@ as performing operation %@ (attempt #%d)", &v14, 0x1Cu);
   }
 
-  [v8 setObject:v10 forKeyedSubscript:v7];
+  [dictionary setObject:v10 forKeyedSubscript:nameCopy];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_incrementRefreshCountForWaiterID:(id)a3 operationName:(id)a4
+- (void)_incrementRefreshCountForWaiterID:(id)d operationName:(id)name
 {
-  if (a3)
+  if (d)
   {
-    v6 = a4;
-    v7 = a3;
+    nameCopy = name;
+    dCopy = d;
     os_unfair_lock_lock(&self->_lock);
-    [(DABabysitter *)self _l_incrementRefreshCountForWaiterID:v7 operationName:v6];
+    [(DABabysitter *)self _l_incrementRefreshCountForWaiterID:dCopy operationName:nameCopy];
 
     value = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:self->_l_refreshingWaiters copyItems:1];
     os_unfair_lock_unlock(&self->_lock);
@@ -599,63 +599,63 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   }
 }
 
-- (void)_l_decrementRefreshCountForWaiter:(id)a3 forOperationWithName:(id)a4
+- (void)_l_decrementRefreshCountForWaiter:(id)waiter forOperationWithName:(id)name
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_l_refreshingWaiters objectForKeyedSubscript:v13];
+  waiterCopy = waiter;
+  nameCopy = name;
+  v7 = [(NSMutableDictionary *)self->_l_refreshingWaiters objectForKeyedSubscript:waiterCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
+    v9 = [v7 objectForKeyedSubscript:nameCopy];
     if ([v9 intValue] < 2)
     {
-      [v8 removeObjectForKey:v6];
-      v10 = [(NSMutableDictionary *)self->_l_failedWaiters objectForKeyedSubscript:v13];
-      v11 = [v10 objectForKeyedSubscript:v6];
+      [v8 removeObjectForKey:nameCopy];
+      v10 = [(NSMutableDictionary *)self->_l_failedWaiters objectForKeyedSubscript:waiterCopy];
+      v11 = [v10 objectForKeyedSubscript:nameCopy];
       if ([v11 intValue] < 2)
       {
-        [v10 removeObjectForKey:v6];
+        [v10 removeObjectForKey:nameCopy];
       }
 
       else
       {
         v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v11, "intValue") - 1}];
-        [v10 setObject:v12 forKeyedSubscript:v6];
+        [v10 setObject:v12 forKeyedSubscript:nameCopy];
       }
     }
 
     else
     {
       v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "intValue") - 1}];
-      [v8 setObject:v10 forKeyedSubscript:v6];
+      [v8 setObject:v10 forKeyedSubscript:nameCopy];
     }
   }
 }
 
-- (void)_l_decrementRefreshCountForWaiterID:(id)a3 operationName:(id)a4
+- (void)_l_decrementRefreshCountForWaiterID:(id)d operationName:(id)name
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  nameCopy = name;
+  if (dCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_l_refreshingWaiters objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_l_refreshingWaiters objectForKeyedSubscript:dCopy];
     v9 = DALoggingwithCategory();
     v10 = *(MEMORY[0x277CF3AF0] + 7);
     v11 = os_log_type_enabled(v9, v10);
-    if (v7)
+    if (nameCopy)
     {
       if (v11)
       {
         *buf = 138412546;
-        v25 = v7;
+        v25 = nameCopy;
         v26 = 2112;
-        v27 = v6;
+        v27 = dCopy;
         _os_log_impl(&dword_24244C000, v9, v10, "Babysitter: Decrementing refresh count for operation %@ on account %@", buf, 0x16u);
       }
 
-      [(DABabysitter *)self _l_decrementRefreshCountForWaiter:v6 forOperationWithName:v7];
+      [(DABabysitter *)self _l_decrementRefreshCountForWaiter:dCopy forOperationWithName:nameCopy];
     }
 
     else
@@ -663,7 +663,7 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
       if (v11)
       {
         *buf = 138412290;
-        v25 = v6;
+        v25 = dCopy;
         _os_log_impl(&dword_24244C000, v9, v10, "Babysitter: Decrementing refresh count for all operations on account %@", buf, 0xCu);
       }
 
@@ -671,8 +671,8 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v12 = [v8 allKeys];
-      v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      allKeys = [v8 allKeys];
+      v13 = [allKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v13)
       {
         v14 = v13;
@@ -683,13 +683,13 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(allKeys);
             }
 
-            [(DABabysitter *)self _l_decrementRefreshCountForWaiter:v6 forOperationWithName:*(*(&v20 + 1) + 8 * i)];
+            [(DABabysitter *)self _l_decrementRefreshCountForWaiter:dCopy forOperationWithName:*(*(&v20 + 1) + 8 * i)];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v14 = [allKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
         }
 
         while (v14);
@@ -698,40 +698,40 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
 
     if (![v8 count])
     {
-      [(NSMutableDictionary *)self->_l_refreshingWaiters removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_l_refreshingWaiters removeObjectForKey:dCopy];
     }
 
-    v17 = [(NSMutableDictionary *)self->_l_failedWaiters objectForKeyedSubscript:v6];
+    v17 = [(NSMutableDictionary *)self->_l_failedWaiters objectForKeyedSubscript:dCopy];
     v18 = [v17 count];
 
     if (!v18)
     {
-      [(NSMutableDictionary *)self->_l_failedWaiters removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_l_failedWaiters removeObjectForKey:dCopy];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerAccount:(id)a3 forOperationWithName:(id)a4
+- (BOOL)registerAccount:(id)account forOperationWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DABabysitter *)self accountShouldContinue:v6];
+  accountCopy = account;
+  nameCopy = name;
+  v8 = [(DABabysitter *)self accountShouldContinue:accountCopy];
   if (v8)
   {
-    v9 = [v6 waiterID];
-    [(DABabysitter *)self _incrementRefreshCountForWaiterID:v9 operationName:v7];
+    waiterID = [accountCopy waiterID];
+    [(DABabysitter *)self _incrementRefreshCountForWaiterID:waiterID operationName:nameCopy];
   }
 
   return v8;
 }
 
-- (id)tokenByRegisteringAccount:(id)a3 forOperationWithName:(id)a4
+- (id)tokenByRegisteringAccount:(id)account forOperationWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(DABabysitter *)self registerAccount:v6 forOperationWithName:v7])
+  accountCopy = account;
+  nameCopy = name;
+  if ([(DABabysitter *)self registerAccount:accountCopy forOperationWithName:nameCopy])
   {
     v8 = [DABabysitterRegistrationToken alloc];
     v11[0] = MEMORY[0x277D85DD0];
@@ -739,8 +739,8 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
     v11[2] = __63__DABabysitter_tokenByRegisteringAccount_forOperationWithName___block_invoke;
     v11[3] = &unk_278D4C390;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = accountCopy;
+    v13 = nameCopy;
     v9 = [(DABabysitterRegistrationToken *)v8 initWithBlock:v11];
   }
 
@@ -752,15 +752,15 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   return v9;
 }
 
-- (void)unregisterAccount:(id)a3 forOperationWithName:(id)a4
+- (void)unregisterAccount:(id)account forOperationWithName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
-  if ([(DABabysitter *)self accountShouldContinue:v10])
+  accountCopy = account;
+  nameCopy = name;
+  if ([(DABabysitter *)self accountShouldContinue:accountCopy])
   {
     os_unfair_lock_lock(&self->_lock);
-    v7 = [v10 waiterID];
-    [(DABabysitter *)self _l_decrementRefreshCountForWaiterID:v7 operationName:v6];
+    waiterID = [accountCopy waiterID];
+    [(DABabysitter *)self _l_decrementRefreshCountForWaiterID:waiterID operationName:nameCopy];
 
     v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:self->_l_refreshingWaiters copyItems:1];
     v9 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:self->_l_failedWaiters copyItems:1];
@@ -771,14 +771,14 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   }
 }
 
-- (BOOL)accountWithIDShouldContinue:(id)a3
+- (BOOL)accountWithIDShouldContinue:(id)continue
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  continueCopy = continue;
+  if (continueCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_l_restrictedWaiters objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_l_restrictedWaiters objectForKeyedSubscript:continueCopy];
     v6 = v5;
     if (v5)
     {
@@ -787,8 +787,8 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
       v9 = v8;
 
       v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v9];
-      v11 = [MEMORY[0x277CBEAA8] date];
-      [v11 timeIntervalSinceDate:v10];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:v10];
       v13 = v12;
 
       v14 = v13 >= 0.0;
@@ -799,12 +799,12 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
         if (os_log_type_enabled(v15, v16))
         {
           v19 = 138543362;
-          v20 = v4;
+          v20 = continueCopy;
           _os_log_impl(&dword_24244C000, v15, v16, "Babysitter: It's been long enough, we're going to give account %{public}@ another try. Let's hope it doesn't crash this time.", &v19, 0xCu);
         }
 
-        [(NSMutableDictionary *)self->_l_refreshingWaiters removeObjectForKey:v4];
-        [(NSMutableDictionary *)self->_l_restrictedWaiters removeObjectForKey:v4];
+        [(NSMutableDictionary *)self->_l_refreshingWaiters removeObjectForKey:continueCopy];
+        [(NSMutableDictionary *)self->_l_restrictedWaiters removeObjectForKey:continueCopy];
         CFPreferencesSetAppValue(@"RefreshingWaiters", self->_l_refreshingWaiters, @"com.apple.remindd.babysitter");
         CFPreferencesSetAppValue(@"RestrictedWaiters", self->_l_restrictedWaiters, @"com.apple.remindd.babysitter");
         CFPreferencesAppSynchronize(@"com.apple.remindd.babysitter");
@@ -828,13 +828,13 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   return v14;
 }
 
-- (BOOL)accountShouldContinue:(id)a3
+- (BOOL)accountShouldContinue:(id)continue
 {
-  v4 = a3;
+  continueCopy = continue;
   if ([MEMORY[0x277CF3AC8] babysitterEnabled])
   {
-    v5 = [v4 waiterID];
-    v6 = [(DABabysitter *)self accountWithIDShouldContinue:v5];
+    waiterID = [continueCopy waiterID];
+    v6 = [(DABabysitter *)self accountWithIDShouldContinue:waiterID];
   }
 
   else
@@ -845,26 +845,26 @@ uint64_t __32__DABabysitter_sharedBabysitter__block_invoke()
   return v6;
 }
 
-- (void)_l_giveAccountWithIDAnotherChance:(id)a3
+- (void)_l_giveAccountWithIDAnotherChance:(id)chance
 {
-  v4 = a3;
+  chanceCopy = chance;
   if ([MEMORY[0x277CF3AC8] babysitterEnabled])
   {
-    [(NSMutableDictionary *)self->_l_refreshingWaiters removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_l_restrictedWaiters removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_l_refreshingWaiters removeObjectForKey:chanceCopy];
+    [(NSMutableDictionary *)self->_l_restrictedWaiters removeObjectForKey:chanceCopy];
     CFPreferencesSetAppValue(@"RefreshingWaiters", self->_l_refreshingWaiters, @"com.apple.remindd.babysitter");
-    [(NSMutableDictionary *)self->_l_failedWaiters removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_l_failedWaiters removeObjectForKey:chanceCopy];
     CFPreferencesSetAppValue(@"FailedWaiters", self->_l_failedWaiters, @"com.apple.remindd.babysitter");
     CFPreferencesSetAppValue(@"RestrictedWaiters", self->_l_restrictedWaiters, @"com.apple.remindd.babysitter");
     CFPreferencesAppSynchronize(@"com.apple.remindd.babysitter");
   }
 }
 
-- (void)giveAccountWithIDAnotherChance:(id)a3
+- (void)giveAccountWithIDAnotherChance:(id)chance
 {
-  v4 = a3;
+  chanceCopy = chance;
   os_unfair_lock_lock(&self->_lock);
-  [(DABabysitter *)self _l_giveAccountWithIDAnotherChance:v4];
+  [(DABabysitter *)self _l_giveAccountWithIDAnotherChance:chanceCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -885,32 +885,32 @@ void __59__DABabysitter__diagnosticReportWithWaiterID_failureCount___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)statusReportWithCompletionBlock:(id)a3
+- (void)statusReportWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = [(DABabysitter *)self _populatedStringDictionaryWithWaitersDictionary:self->_l_refreshingWaiters];
   v6 = [(DABabysitter *)self _populatedStringDictionaryWithWaitersDictionary:self->_l_failedWaiters];
   v7 = [(DABabysitter *)self _populatedStringDictionaryWithWaitersDictionary:self->_l_restrictedWaiters];
-  [v8 setValue:v5 forKey:@"refreshingWaiters"];
-  [v8 setValue:v6 forKey:@"failedWaiters"];
-  [v8 setValue:v7 forKey:@"restrictedWaiters"];
+  [dictionary setValue:v5 forKey:@"refreshingWaiters"];
+  [dictionary setValue:v6 forKey:@"failedWaiters"];
+  [dictionary setValue:v7 forKey:@"restrictedWaiters"];
   os_unfair_lock_unlock(&self->_lock);
-  v4[2](v4, v8);
+  blockCopy[2](blockCopy, dictionary);
 }
 
-- (id)_populatedStringDictionaryWithWaitersDictionary:(id)a3
+- (id)_populatedStringDictionaryWithWaitersDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v18 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -921,12 +921,12 @@ void __59__DABabysitter__diagnosticReportWithWaiterID_failureCount___block_invok
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
         v10 = MEMORY[0x277CCAAA0];
-        v11 = [v3 objectForKeyedSubscript:v9];
+        v11 = [dictionaryCopy objectForKeyedSubscript:v9];
         v19 = 0;
         v12 = [v10 dataWithJSONObject:v11 options:8 error:&v19];
         v13 = v19;
@@ -946,12 +946,12 @@ void __59__DABabysitter__diagnosticReportWithWaiterID_failureCount___block_invok
           v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v12 encoding:4];
           if (v15)
           {
-            [v18 setValue:v15 forKey:v9];
+            [dictionary setValue:v15 forKey:v9];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -959,7 +959,7 @@ void __59__DABabysitter__diagnosticReportWithWaiterID_failureCount___block_invok
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return dictionary;
 }
 
 @end

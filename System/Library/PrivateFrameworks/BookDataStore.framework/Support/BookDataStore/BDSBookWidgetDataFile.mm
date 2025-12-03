@@ -3,7 +3,7 @@
 + (id)sharedInstance;
 - (BDSBookWidgetDataFile)init;
 - (id)load;
-- (void)save:(id)a3;
+- (void)save:(id)save;
 @end
 
 @implementation BDSBookWidgetDataFile
@@ -38,9 +38,9 @@
 
 - (id)load
 {
-  v2 = [(BDSBookWidgetDataFile *)self dataFile];
+  dataFile = [(BDSBookWidgetDataFile *)self dataFile];
   v11 = 0;
-  v3 = [v2 load:&v11];
+  v3 = [dataFile load:&v11];
   v4 = v11;
 
   if (v4)
@@ -99,17 +99,17 @@ LABEL_5:
   return v6;
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   [v5 setOutputFormat:200];
-  [v5 encodeObject:v4 forKey:NSKeyedArchiveRootObjectKey];
+  [v5 encodeObject:saveCopy forKey:NSKeyedArchiveRootObjectKey];
 
-  v6 = [v5 encodedData];
-  v7 = [(BDSBookWidgetDataFile *)self dataFile];
+  encodedData = [v5 encodedData];
+  dataFile = [(BDSBookWidgetDataFile *)self dataFile];
   v17 = 0;
-  v8 = [v7 save:v6 error:&v17];
+  v8 = [dataFile save:encodedData error:&v17];
   v9 = v17;
 
   v10 = sub_10000DE28();
@@ -133,9 +133,9 @@ LABEL_10:
     sub_1001BD914();
   }
 
-  v12 = [(BDSBookWidgetDataFile *)self dataFile];
+  dataFile2 = [(BDSBookWidgetDataFile *)self dataFile];
   v15 = v9;
-  v13 = [v12 remove:&v15];
+  v13 = [dataFile2 remove:&v15];
   v14 = v15;
 
   if ((v13 & 1) == 0)

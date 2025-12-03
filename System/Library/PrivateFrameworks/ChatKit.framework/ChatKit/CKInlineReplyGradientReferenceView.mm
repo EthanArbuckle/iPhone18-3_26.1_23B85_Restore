@@ -16,8 +16,8 @@
   [(CKInlineReplyGradientReferenceView *)self safeAreaInsets];
   v10 = v9;
   v11 = v8 - v9;
-  v12 = [(CKInlineReplyGradientReferenceView *)self collectionView];
-  [v12 setFrame:{v4, v10, v6, v11}];
+  collectionView = [(CKInlineReplyGradientReferenceView *)self collectionView];
+  [collectionView setFrame:{v4, v10, v6, v11}];
 }
 
 @end

@@ -36,12 +36,12 @@ void __48__GKGameSummaryInternal_secureCodedPropertyKeys__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKGameSummaryInternal *)self adamID];
-  v5 = [(GKGameSummaryInternal *)self bundleID];
-  v6 = [(GKGameSummaryInternal *)self playedAt];
+  adamID = [(GKGameSummaryInternal *)self adamID];
+  bundleID = [(GKGameSummaryInternal *)self bundleID];
+  playedAt = [(GKGameSummaryInternal *)self playedAt];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[GKGameSummaryInternal isArcade](self, "isArcade")}];
-  v8 = [(GKGameSummaryInternal *)self compatiblePlatforms];
-  v9 = [v3 stringWithFormat:@"adamID: %@ bundleID: %@ playedAt: %@ isArcade: %@ compatiblePlatforms: %@", v4, v5, v6, v7, v8];
+  compatiblePlatforms = [(GKGameSummaryInternal *)self compatiblePlatforms];
+  v9 = [v3 stringWithFormat:@"adamID: %@ bundleID: %@ playedAt: %@ isArcade: %@ compatiblePlatforms: %@", adamID, bundleID, playedAt, v7, compatiblePlatforms];
 
   return v9;
 }

@@ -1,27 +1,27 @@
 @interface SXTextStyle
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4;
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
-- (int)verticalAlignmentWithValue:(id)a3 withType:(int)a4;
-- (int64_t)fontSizeWithValue:(id)a3 withType:(int)a4;
-- (int64_t)textTransformWithValue:(id)a3 withType:(int)a4;
++ (Class)classForProtocolProperty:(id)property withValue:(id)value;
++ (id)valueClassBlockForPropertyWithName:(id)name;
+- (int)verticalAlignmentWithValue:(id)value withType:(int)type;
+- (int64_t)fontSizeWithValue:(id)value withType:(int)type;
+- (int64_t)textTransformWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXTextStyle
 
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4
++ (Class)classForProtocolProperty:(id)property withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"fontAttributes"])
+  propertyCopy = property;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:@"fontAttributes"])
   {
     v8 = objc_opt_class();
   }
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___SXTextStyle;
-    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, v6, v7);
+    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, propertyCopy, valueCopy);
   }
 
   v9 = v8;
@@ -29,36 +29,36 @@
   return v9;
 }
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"listStyle"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"listStyle"])
   {
     v5 = &__block_literal_global_86;
   }
 
-  else if ([v4 isEqualToString:@"conditional"])
+  else if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_10_0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXTextStyle;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;
 }
 
-- (int64_t)textTransformWithValue:(id)a3 withType:(int)a4
+- (int64_t)textTransformWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    if ([v4 isEqualToString:@"uppercase"])
+    if ([valueCopy isEqualToString:@"uppercase"])
     {
       v6 = 1;
     }
@@ -92,13 +92,13 @@
   return v6;
 }
 
-- (int)verticalAlignmentWithValue:(id)a3 withType:(int)a4
+- (int)verticalAlignmentWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    if ([v4 isEqualToString:@"baseline"])
+    if ([valueCopy isEqualToString:@"baseline"])
     {
       v6 = 1;
     }
@@ -127,11 +127,11 @@
   return v6;
 }
 
-- (int64_t)fontSizeWithValue:(id)a3 withType:(int)a4
+- (int64_t)fontSizeWithValue:(id)value withType:(int)type
 {
-  if (a3)
+  if (value)
   {
-    return [a3 integerValue];
+    return [value integerValue];
   }
 
   else

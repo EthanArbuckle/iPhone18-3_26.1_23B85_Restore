@@ -1,11 +1,11 @@
 @interface NTKRelevanceEngineCache
-+ (id)_dataSourceLoaderForRelevanceEngineDataSourcesForKey:(id)a3;
++ (id)_dataSourceLoaderForRelevanceEngineDataSourcesForKey:(id)key;
 + (id)_globallyCachedCanonicalRelevanceEngine;
 + (id)sampleConfiguration;
 + (id)sharedCache;
 - (id)canonicalRelevanceEngine;
 - (id)canonicalRelevanceEngineIgnoringAppInstallations;
-- (void)relevanceEngine:(id)a3 performBatchUpdateBlock:(id)a4 completion:(id)a5;
+- (void)relevanceEngine:(id)engine performBatchUpdateBlock:(id)block completion:(id)completion;
 @end
 
 @implementation NTKRelevanceEngineCache
@@ -29,10 +29,10 @@ void __38__NTKRelevanceEngineCache_sharedCache__block_invoke()
   sharedCache_cache = v0;
 }
 
-+ (id)_dataSourceLoaderForRelevanceEngineDataSourcesForKey:(id)a3
++ (id)_dataSourceLoaderForRelevanceEngineDataSourcesForKey:(id)key
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = MEMORY[0x2318D9710]();
   v5 = [v4 stringByAppendingPathComponent:@"System"];
   v6 = [v5 stringByAppendingPathComponent:@"Library"];
@@ -59,7 +59,7 @@ void __38__NTKRelevanceEngineCache_sharedCache__block_invoke()
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
   }
 
-  v19 = [MEMORY[0x277D443E8] dataSourceLoaderWithDirectories:v18 dataSourceKey:v3];
+  v19 = [MEMORY[0x277D443E8] dataSourceLoaderWithDirectories:v18 dataSourceKey:keyCopy];
 
   return v19;
 }
@@ -70,7 +70,7 @@ void __38__NTKRelevanceEngineCache_sharedCache__block_invoke()
   block[1] = 3221225472;
   block[2] = __46__NTKRelevanceEngineCache_sampleConfiguration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sampleConfiguration_onceToken != -1)
   {
     dispatch_once(&sampleConfiguration_onceToken, block);
@@ -127,7 +127,7 @@ id __46__NTKRelevanceEngineCache_sampleConfiguration__block_invoke_2()
   aBlock[1] = 3221225472;
   aBlock[2] = __66__NTKRelevanceEngineCache__globallyCachedCanonicalRelevanceEngine__block_invoke;
   aBlock[3] = &__block_descriptor_40_e24___RERelevanceEngine_8__0l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
   WeakRetained = objc_loadWeakRetained(&OnDemandEngine);
   if (!WeakRetained)
@@ -165,8 +165,8 @@ id __66__NTKRelevanceEngineCache__globallyCachedCanonicalRelevanceEngine__block_
 
   else
   {
-    v6 = [objc_opt_class() sampleConfiguration];
-    v7 = [v6 mutableCopy];
+    sampleConfiguration = [objc_opt_class() sampleConfiguration];
+    v7 = [sampleConfiguration mutableCopy];
 
     if (objc_opt_respondsToSelector())
     {
@@ -180,12 +180,12 @@ id __66__NTKRelevanceEngineCache__globallyCachedCanonicalRelevanceEngine__block_
   return v5;
 }
 
-- (void)relevanceEngine:(id)a3 performBatchUpdateBlock:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine performBatchUpdateBlock:(id)block completion:(id)completion
 {
-  v6 = *(a4 + 2);
-  v7 = a5;
-  v6(a4);
-  v7[2]();
+  v6 = *(block + 2);
+  completionCopy = completion;
+  v6(block);
+  completionCopy[2]();
 }
 
 @end

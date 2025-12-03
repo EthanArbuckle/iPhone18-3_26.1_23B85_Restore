@@ -1,20 +1,20 @@
 @interface LNTranscriptActionRecord
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BOOL)isEqual:(id)equal;
 - (LNAction)action;
 - (LNAction)resolvedAction;
 - (LNActionOutput)actionOutput;
-- (LNTranscriptActionRecord)initWithAction:(id)a3 resolvedAction:(id)a4 bundleIdentifier:(id)a5 actionOutput:(id)a6 executionUUID:(id)a7 source:(unsigned __int16)a8 executionDate:(id)a9 clientLabel:(id)a10 predictions:(id)a11;
-- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)a3 source:(unsigned __int16)a4 clientLabel:(id)a5 executionUUID:(id)a6 executionDate:(id)a7 action:(id)a8 resolvedAction:(id)a9 actionOutput:(id)a10 predictions:(id)a11;
-- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)a3 source:(unsigned __int16)a4 clientLabel:(id)a5 executionUUID:(id)a6 executionDate:(id)a7 actionData:(id)a8 resolvedActionData:(id)a9 actionOutputData:(id)a10 predictionsData:(id)a11 hasNextAction:(BOOL)a12;
-- (LNTranscriptActionRecord)initWithCoder:(id)a3;
+- (LNTranscriptActionRecord)initWithAction:(id)action resolvedAction:(id)resolvedAction bundleIdentifier:(id)identifier actionOutput:(id)output executionUUID:(id)d source:(unsigned __int16)source executionDate:(id)date clientLabel:(id)self0 predictions:(id)self1;
+- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)identifier source:(unsigned __int16)source clientLabel:(id)label executionUUID:(id)d executionDate:(id)date action:(id)action resolvedAction:(id)resolvedAction actionOutput:(id)self0 predictions:(id)self1;
+- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)identifier source:(unsigned __int16)source clientLabel:(id)label executionUUID:(id)d executionDate:(id)date actionData:(id)data resolvedActionData:(id)actionData actionOutputData:(id)self0 predictionsData:(id)self1 hasNextAction:(BOOL)self2;
+- (LNTranscriptActionRecord)initWithCoder:(id)coder;
 - (NSArray)predictions;
 - (NSString)description;
 - (id)serialize;
 - (id)verboseDescription;
 - (unint64_t)hash;
-- (void)asBMAppIntentInvocationWithCompletionHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)asBMAppIntentInvocationWithCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNTranscriptActionRecord
@@ -30,9 +30,9 @@
     v6 = objc_opt_class();
     v7 = [v4 setWithObjects:{v5, v6, objc_opt_class(), 0}];
     v8 = MEMORY[0x1E696ACD0];
-    v9 = [(LNTranscriptActionRecord *)self predictionsData];
+    predictionsData = [(LNTranscriptActionRecord *)self predictionsData];
     v17 = 0;
-    v10 = [v8 unarchivedObjectOfClasses:v7 fromData:v9 error:&v17];
+    v10 = [v8 unarchivedObjectOfClasses:v7 fromData:predictionsData error:&v17];
     v11 = v17;
 
     if (v11 || !v10)
@@ -40,11 +40,11 @@
       v12 = getLNLogCategoryGeneral();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(LNTranscriptActionRecord *)self predictionsData];
+        predictionsData2 = [(LNTranscriptActionRecord *)self predictionsData];
         *buf = 138412802;
         v19 = v7;
         v20 = 2112;
-        v21 = v13;
+        v21 = predictionsData2;
         v22 = 2112;
         v23 = v11;
         _os_log_impl(&dword_19763D000, v12, OS_LOG_TYPE_ERROR, "Object archival failed for %@ with %@: %@", buf, 0x20u);
@@ -70,9 +70,9 @@
   {
     v4 = MEMORY[0x1E696ACD0];
     v5 = objc_opt_class();
-    v6 = [(LNTranscriptActionRecord *)self actionData];
+    actionData = [(LNTranscriptActionRecord *)self actionData];
     v15 = 0;
-    v7 = [v4 unarchivedObjectOfClass:v5 fromData:v6 error:&v15];
+    v7 = [v4 unarchivedObjectOfClass:v5 fromData:actionData error:&v15];
     v8 = v15;
 
     if (v8 || !v7)
@@ -81,11 +81,11 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = objc_opt_class();
-        v11 = [(LNTranscriptActionRecord *)self actionData];
+        actionData2 = [(LNTranscriptActionRecord *)self actionData];
         *buf = 138412802;
         v17 = v10;
         v18 = 2112;
-        v19 = v11;
+        v19 = actionData2;
         v20 = 2112;
         v21 = v8;
         _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_ERROR, "Object archival failed for %@ with %@: %@", buf, 0x20u);
@@ -111,9 +111,9 @@
   {
     v4 = MEMORY[0x1E696ACD0];
     v5 = objc_opt_class();
-    v6 = [(LNTranscriptActionRecord *)self resolvedActionData];
+    resolvedActionData = [(LNTranscriptActionRecord *)self resolvedActionData];
     v15 = 0;
-    v7 = [v4 unarchivedObjectOfClass:v5 fromData:v6 error:&v15];
+    v7 = [v4 unarchivedObjectOfClass:v5 fromData:resolvedActionData error:&v15];
     v8 = v15;
 
     if (v8 || !v7)
@@ -122,11 +122,11 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = objc_opt_class();
-        v11 = [(LNTranscriptActionRecord *)self resolvedActionData];
+        resolvedActionData2 = [(LNTranscriptActionRecord *)self resolvedActionData];
         *buf = 138412802;
         v17 = v10;
         v18 = 2112;
-        v19 = v11;
+        v19 = resolvedActionData2;
         v20 = 2112;
         v21 = v8;
         _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_ERROR, "Object archival failed for %@ with %@: %@", buf, 0x20u);
@@ -144,13 +144,13 @@
   return resolvedAction;
 }
 
-- (void)asBMAppIntentInvocationWithCompletionHandler:(id)a3
+- (void)asBMAppIntentInvocationWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_197693D14();
 }
@@ -190,13 +190,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -205,10 +205,10 @@ LABEL_71:
       goto LABEL_72;
     }
 
-    v7 = [(LNTranscriptActionRecord *)self bundleIdentifier];
-    v8 = [(LNTranscriptActionRecord *)v6 bundleIdentifier];
-    v9 = v7;
-    v10 = v8;
+    bundleIdentifier = [(LNTranscriptActionRecord *)self bundleIdentifier];
+    bundleIdentifier2 = [(LNTranscriptActionRecord *)v6 bundleIdentifier];
+    v9 = bundleIdentifier;
+    v10 = bundleIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -232,8 +232,8 @@ LABEL_71:
       }
     }
 
-    v16 = [(LNTranscriptActionRecord *)self source];
-    if (v16 != [(LNTranscriptActionRecord *)v6 source])
+    source = [(LNTranscriptActionRecord *)self source];
+    if (source != [(LNTranscriptActionRecord *)v6 source])
     {
 LABEL_18:
       LOBYTE(v12) = 0;
@@ -242,10 +242,10 @@ LABEL_70:
       goto LABEL_71;
     }
 
-    v17 = [(LNTranscriptActionRecord *)self clientLabel];
-    v18 = [(LNTranscriptActionRecord *)v6 clientLabel];
-    v14 = v17;
-    v19 = v18;
+    clientLabel = [(LNTranscriptActionRecord *)self clientLabel];
+    clientLabel2 = [(LNTranscriptActionRecord *)v6 clientLabel];
+    v14 = clientLabel;
+    v19 = clientLabel2;
     v13 = v19;
     if (v14 == v19)
     {
@@ -272,10 +272,10 @@ LABEL_69:
       }
     }
 
-    v23 = [(LNTranscriptActionRecord *)self executionUUID];
-    v24 = [(LNTranscriptActionRecord *)v6 executionUUID];
-    v21 = v23;
-    v25 = v24;
+    executionUUID = [(LNTranscriptActionRecord *)self executionUUID];
+    executionUUID2 = [(LNTranscriptActionRecord *)v6 executionUUID];
+    v21 = executionUUID;
+    v25 = executionUUID2;
     v20 = v25;
     v66 = v21;
     if (v21 == v25)
@@ -300,10 +300,10 @@ LABEL_69:
     }
 
     v65 = v20;
-    v27 = [(LNTranscriptActionRecord *)self executionDate];
-    v28 = [(LNTranscriptActionRecord *)v6 executionDate];
-    v29 = v27;
-    v30 = v28;
+    executionDate = [(LNTranscriptActionRecord *)self executionDate];
+    executionDate2 = [(LNTranscriptActionRecord *)v6 executionDate];
+    v29 = executionDate;
+    v30 = executionDate2;
     v63 = v30;
     v64 = v29;
     if (v29 == v30)
@@ -347,10 +347,10 @@ LABEL_68:
       }
     }
 
-    v33 = [(LNTranscriptActionRecord *)self actionData];
-    v34 = [(LNTranscriptActionRecord *)v6 actionData];
-    v29 = v33;
-    v35 = v34;
+    actionData = [(LNTranscriptActionRecord *)self actionData];
+    actionData2 = [(LNTranscriptActionRecord *)v6 actionData];
+    v29 = actionData;
+    v35 = actionData2;
     v61 = v29;
     v62 = v35;
     if (v29 != v35)
@@ -373,10 +373,10 @@ LABEL_68:
           }
 
 LABEL_38:
-          v38 = [(LNTranscriptActionRecord *)self resolvedActionData];
-          v39 = [(LNTranscriptActionRecord *)v6 resolvedActionData];
-          v40 = v38;
-          v41 = v39;
+          resolvedActionData = [(LNTranscriptActionRecord *)self resolvedActionData];
+          resolvedActionData2 = [(LNTranscriptActionRecord *)v6 resolvedActionData];
+          v40 = resolvedActionData;
+          v41 = resolvedActionData2;
           v59 = v41;
           v60 = v40;
           if (v40 == v41)
@@ -415,10 +415,10 @@ LABEL_63:
             }
           }
 
-          v44 = [(LNTranscriptActionRecord *)self actionOutputData];
-          v45 = [(LNTranscriptActionRecord *)v6 actionOutputData];
-          v40 = v44;
-          v46 = v45;
+          actionOutputData = [(LNTranscriptActionRecord *)self actionOutputData];
+          actionOutputData2 = [(LNTranscriptActionRecord *)v6 actionOutputData];
+          v40 = actionOutputData;
+          v46 = actionOutputData2;
           v57 = v40;
           v58 = v46;
           if (v40 == v46)
@@ -457,10 +457,10 @@ LABEL_61:
             }
           }
 
-          v49 = [(LNTranscriptActionRecord *)self predictionsData];
-          v50 = [(LNTranscriptActionRecord *)v6 predictionsData];
-          v51 = v49;
-          v52 = v50;
+          predictionsData = [(LNTranscriptActionRecord *)self predictionsData];
+          predictionsData2 = [(LNTranscriptActionRecord *)v6 predictionsData];
+          v51 = predictionsData;
+          v52 = predictionsData2;
           v53 = v51;
           v54 = v51 == v52;
           v55 = v52;
@@ -517,23 +517,23 @@ LABEL_72:
 
 - (unint64_t)hash
 {
-  v3 = [(LNTranscriptActionRecord *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNTranscriptActionRecord *)self source];
-  v6 = [(LNTranscriptActionRecord *)self clientLabel];
-  v7 = v4 ^ [v6 hash] ^ v5;
-  v8 = [(LNTranscriptActionRecord *)self executionUUID];
-  v9 = [v8 hash];
-  v10 = [(LNTranscriptActionRecord *)self executionDate];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(LNTranscriptActionRecord *)self actionData];
-  v13 = v7 ^ v11 ^ [v12 hash];
-  v14 = [(LNTranscriptActionRecord *)self resolvedActionData];
-  v15 = [v14 hash];
-  v16 = [(LNTranscriptActionRecord *)self actionOutputData];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(LNTranscriptActionRecord *)self predictionsData];
-  v19 = v17 ^ [v18 hash];
+  bundleIdentifier = [(LNTranscriptActionRecord *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  source = [(LNTranscriptActionRecord *)self source];
+  clientLabel = [(LNTranscriptActionRecord *)self clientLabel];
+  v7 = v4 ^ [clientLabel hash] ^ source;
+  executionUUID = [(LNTranscriptActionRecord *)self executionUUID];
+  v9 = [executionUUID hash];
+  executionDate = [(LNTranscriptActionRecord *)self executionDate];
+  v11 = v9 ^ [executionDate hash];
+  actionData = [(LNTranscriptActionRecord *)self actionData];
+  v13 = v7 ^ v11 ^ [actionData hash];
+  resolvedActionData = [(LNTranscriptActionRecord *)self resolvedActionData];
+  v15 = [resolvedActionData hash];
+  actionOutputData = [(LNTranscriptActionRecord *)self actionOutputData];
+  v17 = v15 ^ [actionOutputData hash];
+  predictionsData = [(LNTranscriptActionRecord *)self predictionsData];
+  v19 = v17 ^ [predictionsData hash];
 
   return v13 ^ v19;
 }
@@ -543,27 +543,27 @@ LABEL_72:
   v17 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v18 = NSStringFromClass(v3);
-  v4 = [(LNTranscriptActionRecord *)self bundleIdentifier];
-  v5 = [(LNTranscriptActionRecord *)self source];
-  if (v5 > 0xA)
+  bundleIdentifier = [(LNTranscriptActionRecord *)self bundleIdentifier];
+  source = [(LNTranscriptActionRecord *)self source];
+  if (source > 0xA)
   {
     v6 = @"app";
   }
 
   else
   {
-    v6 = off_1E74B0848[v5];
+    v6 = off_1E74B0848[source];
   }
 
   v16 = v6;
-  v7 = [(LNTranscriptActionRecord *)self clientLabel];
-  v8 = [(LNTranscriptActionRecord *)self executionUUID];
-  v9 = [(LNTranscriptActionRecord *)self executionDate];
-  v10 = [(LNTranscriptActionRecord *)self action];
-  v11 = [(LNTranscriptActionRecord *)self resolvedAction];
-  v12 = [(LNTranscriptActionRecord *)self actionOutput];
-  v13 = [(LNTranscriptActionRecord *)self predictions];
-  v14 = [v17 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, source: %@, clientLabel: %@, executionUUID: %@, executionDate: %@, action: %@, resolvedAction: %@, actionOutput: %@, predictions %@>", v18, self, v4, v16, v7, v8, v9, v10, v11, v12, v13];
+  clientLabel = [(LNTranscriptActionRecord *)self clientLabel];
+  executionUUID = [(LNTranscriptActionRecord *)self executionUUID];
+  executionDate = [(LNTranscriptActionRecord *)self executionDate];
+  action = [(LNTranscriptActionRecord *)self action];
+  resolvedAction = [(LNTranscriptActionRecord *)self resolvedAction];
+  actionOutput = [(LNTranscriptActionRecord *)self actionOutput];
+  predictions = [(LNTranscriptActionRecord *)self predictions];
+  v14 = [v17 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, source: %@, clientLabel: %@, executionUUID: %@, executionDate: %@, action: %@, resolvedAction: %@, actionOutput: %@, predictions %@>", v18, self, bundleIdentifier, v16, clientLabel, executionUUID, executionDate, action, resolvedAction, actionOutput, predictions];
 
   return v14;
 }
@@ -573,35 +573,35 @@ LABEL_72:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNTranscriptActionRecord *)self bundleIdentifier];
-  v7 = [(LNTranscriptActionRecord *)self executionUUID];
-  v8 = [(LNTranscriptActionRecord *)self executionDate];
-  v9 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, executionUUID: %@, executionDate: %@>", v5, self, v6, v7, v8];
+  bundleIdentifier = [(LNTranscriptActionRecord *)self bundleIdentifier];
+  executionUUID = [(LNTranscriptActionRecord *)self executionUUID];
+  executionDate = [(LNTranscriptActionRecord *)self executionDate];
+  v9 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, executionUUID: %@, executionDate: %@>", v5, self, bundleIdentifier, executionUUID, executionDate];
 
   return v9;
 }
 
-- (LNTranscriptActionRecord)initWithCoder:(id)a3
+- (LNTranscriptActionRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"source"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientLabel"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"executionUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"source"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientLabel"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"executionUUID"];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    uUID = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  v42 = v10;
+  v42 = uUID;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"executionDate"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"executionDate"];
   v12 = v11;
   if (v11)
   {
@@ -615,18 +615,18 @@ LABEL_72:
 
   v14 = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionData"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolvedActionData"];
-  v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionOutputData"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionsData"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionData"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolvedActionData"];
+  v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionOutputData"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionsData"];
   v18 = v17;
   if (v15 && v16)
   {
-    LOBYTE(v34) = [v4 decodeBoolForKey:@"hasNextAction"];
+    LOBYTE(v34) = [coderCopy decodeBoolForKey:@"hasNextAction"];
     v19 = v41;
-    v20 = self;
+    selfCopy = self;
     v21 = v42;
-    v22 = [(LNTranscriptActionRecord *)v20 initWithBundleIdentifier:v5 source:v6 clientLabel:v7 executionUUID:v42 executionDate:v14 actionData:v15 resolvedActionData:v16 actionOutputData:v41 predictionsData:v18 hasNextAction:v34];
+    v22 = [(LNTranscriptActionRecord *)selfCopy initWithBundleIdentifier:v5 source:v6 clientLabel:v7 executionUUID:v42 executionDate:v14 actionData:v15 resolvedActionData:v16 actionOutputData:v41 predictionsData:v18 hasNextAction:v34];
     v23 = v18;
     v24 = v22;
     v25 = v22;
@@ -639,24 +639,24 @@ LABEL_72:
     v37 = v14;
     v38 = v7;
     v39 = v5;
-    v40 = self;
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolvedAction"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionOutput"];
+    selfCopy2 = self;
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolvedAction"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionOutput"];
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"predictions"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"predictions"];
 
     v25 = 0;
     if (v26 && v27)
     {
-      v25 = [(LNTranscriptActionRecord *)v40 initWithBundleIdentifier:v39 source:v35 clientLabel:v38 executionUUID:v42 executionDate:v37 action:v26 resolvedAction:v27 actionOutput:v28 predictions:v32];
-      v40 = v25;
+      v25 = [(LNTranscriptActionRecord *)selfCopy2 initWithBundleIdentifier:v39 source:v35 clientLabel:v38 executionUUID:v42 executionDate:v37 action:v26 resolvedAction:v27 actionOutput:v28 predictions:v32];
+      selfCopy2 = v25;
     }
 
     v5 = v39;
-    v24 = v40;
+    v24 = selfCopy2;
     v14 = v37;
     v7 = v38;
     v19 = v41;
@@ -667,35 +667,35 @@ LABEL_72:
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(LNTranscriptActionRecord *)self bundleIdentifier];
-  [v12 encodeObject:v4 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(LNTranscriptActionRecord *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  [v12 encodeInteger:-[LNTranscriptActionRecord source](self forKey:{"source"), @"source"}];
-  v5 = [(LNTranscriptActionRecord *)self clientLabel];
-  [v12 encodeObject:v5 forKey:@"clientLabel"];
+  [coderCopy encodeInteger:-[LNTranscriptActionRecord source](self forKey:{"source"), @"source"}];
+  clientLabel = [(LNTranscriptActionRecord *)self clientLabel];
+  [coderCopy encodeObject:clientLabel forKey:@"clientLabel"];
 
-  v6 = [(LNTranscriptActionRecord *)self executionUUID];
-  [v12 encodeObject:v6 forKey:@"executionUUID"];
+  executionUUID = [(LNTranscriptActionRecord *)self executionUUID];
+  [coderCopy encodeObject:executionUUID forKey:@"executionUUID"];
 
-  v7 = [(LNTranscriptActionRecord *)self executionDate];
-  [v12 encodeObject:v7 forKey:@"executionDate"];
+  executionDate = [(LNTranscriptActionRecord *)self executionDate];
+  [coderCopy encodeObject:executionDate forKey:@"executionDate"];
 
-  v8 = [(LNTranscriptActionRecord *)self actionData];
-  [v12 encodeObject:v8 forKey:@"actionData"];
+  actionData = [(LNTranscriptActionRecord *)self actionData];
+  [coderCopy encodeObject:actionData forKey:@"actionData"];
 
-  v9 = [(LNTranscriptActionRecord *)self resolvedActionData];
-  [v12 encodeObject:v9 forKey:@"resolvedActionData"];
+  resolvedActionData = [(LNTranscriptActionRecord *)self resolvedActionData];
+  [coderCopy encodeObject:resolvedActionData forKey:@"resolvedActionData"];
 
-  v10 = [(LNTranscriptActionRecord *)self actionOutputData];
-  [v12 encodeObject:v10 forKey:@"actionOutputData"];
+  actionOutputData = [(LNTranscriptActionRecord *)self actionOutputData];
+  [coderCopy encodeObject:actionOutputData forKey:@"actionOutputData"];
 
-  v11 = [(LNTranscriptActionRecord *)self predictionsData];
-  [v12 encodeObject:v11 forKey:@"predictionsData"];
+  predictionsData = [(LNTranscriptActionRecord *)self predictionsData];
+  [coderCopy encodeObject:predictionsData forKey:@"predictionsData"];
 
-  [v12 encodeBool:-[LNTranscriptActionRecord hasNextAction](self forKey:{"hasNextAction"), @"hasNextAction"}];
+  [coderCopy encodeBool:-[LNTranscriptActionRecord hasNextAction](self forKey:{"hasNextAction"), @"hasNextAction"}];
 }
 
 - (LNActionOutput)actionOutput
@@ -703,15 +703,15 @@ LABEL_72:
   v23 = *MEMORY[0x1E69E9840];
   if (!self->_actionOutput)
   {
-    v3 = [(LNTranscriptActionRecord *)self actionOutputData];
+    actionOutputData = [(LNTranscriptActionRecord *)self actionOutputData];
 
-    if (v3)
+    if (actionOutputData)
     {
       v4 = MEMORY[0x1E696ACD0];
       v5 = objc_opt_class();
-      v6 = [(LNTranscriptActionRecord *)self actionOutputData];
+      actionOutputData2 = [(LNTranscriptActionRecord *)self actionOutputData];
       v16 = 0;
-      v7 = [v4 unarchivedObjectOfClass:v5 fromData:v6 error:&v16];
+      v7 = [v4 unarchivedObjectOfClass:v5 fromData:actionOutputData2 error:&v16];
       v8 = v16;
 
       if (v8 || !v7)
@@ -720,11 +720,11 @@ LABEL_72:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v10 = objc_opt_class();
-          v11 = [(LNTranscriptActionRecord *)self actionOutputData];
+          actionOutputData3 = [(LNTranscriptActionRecord *)self actionOutputData];
           *buf = 138412802;
           v18 = v10;
           v19 = 2112;
-          v20 = v11;
+          v20 = actionOutputData3;
           v21 = 2112;
           v22 = v8;
           _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_ERROR, "Object archival failed for %@ with %@: %@", buf, 0x20u);
@@ -742,28 +742,28 @@ LABEL_72:
   return v13;
 }
 
-- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)a3 source:(unsigned __int16)a4 clientLabel:(id)a5 executionUUID:(id)a6 executionDate:(id)a7 actionData:(id)a8 resolvedActionData:(id)a9 actionOutputData:(id)a10 predictionsData:(id)a11 hasNextAction:(BOOL)a12
+- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)identifier source:(unsigned __int16)source clientLabel:(id)label executionUUID:(id)d executionDate:(id)date actionData:(id)data resolvedActionData:(id)actionData actionOutputData:(id)self0 predictionsData:(id)self1 hasNextAction:(BOOL)self2
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  if (v22)
+  identifierCopy = identifier;
+  labelCopy = label;
+  dCopy = d;
+  dateCopy = date;
+  dataCopy = data;
+  actionDataCopy = actionData;
+  outputDataCopy = outputData;
+  predictionsDataCopy = predictionsData;
+  if (dataCopy)
   {
-    if (v23)
+    if (actionDataCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v46 handleFailureInMethod:a2 object:self file:@"LNTranscriptActionRecord.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"resolvedActionData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNTranscriptActionRecord.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"resolvedActionData"}];
 
-    if (v25)
+    if (predictionsDataCopy)
     {
       goto LABEL_4;
     }
@@ -771,23 +771,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v45 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v45 handleFailureInMethod:a2 object:self file:@"LNTranscriptActionRecord.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"actionData"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNTranscriptActionRecord.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"actionData"}];
 
-  if (!v23)
+  if (!actionDataCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v25)
+  if (predictionsDataCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v47 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v47 handleFailureInMethod:a2 object:self file:@"LNTranscriptActionRecord.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"predictionsData"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNTranscriptActionRecord.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"predictionsData"}];
 
 LABEL_4:
   v49.receiver = self;
@@ -795,62 +795,62 @@ LABEL_4:
   v26 = [(LNTranscriptActionRecord *)&v49 init];
   if (v26)
   {
-    v27 = [v18 copy];
+    v27 = [identifierCopy copy];
     bundleIdentifier = v26->_bundleIdentifier;
     v26->_bundleIdentifier = v27;
 
-    v26->_source = a4;
-    v29 = [v19 copy];
+    v26->_source = source;
+    v29 = [labelCopy copy];
     clientLabel = v26->_clientLabel;
     v26->_clientLabel = v29;
 
-    v31 = [v20 copy];
+    v31 = [dCopy copy];
     executionUUID = v26->_executionUUID;
     v26->_executionUUID = v31;
 
-    v33 = [v21 copy];
+    v33 = [dateCopy copy];
     executionDate = v26->_executionDate;
     v26->_executionDate = v33;
 
-    v35 = [v22 copy];
+    v35 = [dataCopy copy];
     actionData = v26->_actionData;
     v26->_actionData = v35;
 
-    v37 = [v23 copy];
+    v37 = [actionDataCopy copy];
     resolvedActionData = v26->_resolvedActionData;
     v26->_resolvedActionData = v37;
 
-    v39 = [v24 copy];
+    v39 = [outputDataCopy copy];
     actionOutputData = v26->_actionOutputData;
     v26->_actionOutputData = v39;
 
-    v41 = [v25 copy];
+    v41 = [predictionsDataCopy copy];
     predictionsData = v26->_predictionsData;
     v26->_predictionsData = v41;
 
-    v26->_hasNextAction = a12;
+    v26->_hasNextAction = action;
     v43 = v26;
   }
 
   return v26;
 }
 
-- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)a3 source:(unsigned __int16)a4 clientLabel:(id)a5 executionUUID:(id)a6 executionDate:(id)a7 action:(id)a8 resolvedAction:(id)a9 actionOutput:(id)a10 predictions:(id)a11
+- (LNTranscriptActionRecord)initWithBundleIdentifier:(id)identifier source:(unsigned __int16)source clientLabel:(id)label executionUUID:(id)d executionDate:(id)date action:(id)action resolvedAction:(id)resolvedAction actionOutput:(id)self0 predictions:(id)self1
 {
-  v43 = a4;
+  sourceCopy = source;
   v53 = *MEMORY[0x1E69E9840];
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
-  v18 = a11;
+  actionCopy = action;
+  resolvedActionCopy = resolvedAction;
+  outputCopy = output;
+  predictionsCopy = predictions;
   v19 = MEMORY[0x1E696ACC8];
   v48 = 0;
-  v40 = a7;
-  v39 = a6;
-  v38 = a5;
-  v20 = a3;
-  v44 = v15;
-  v21 = [v19 archivedDataWithRootObject:v15 requiringSecureCoding:1 error:&v48];
+  dateCopy = date;
+  dCopy = d;
+  labelCopy = label;
+  identifierCopy = identifier;
+  v44 = actionCopy;
+  v21 = [v19 archivedDataWithRootObject:actionCopy requiringSecureCoding:1 error:&v48];
   v22 = v48;
   if (v22 || !v21)
   {
@@ -858,7 +858,7 @@ LABEL_4:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v50 = v15;
+      v50 = actionCopy;
       v51 = 2112;
       v52 = v22;
       _os_log_impl(&dword_19763D000, v23, OS_LOG_TYPE_ERROR, "Object archival failed for %@: %@", buf, 0x16u);
@@ -866,16 +866,16 @@ LABEL_4:
   }
 
   v47 = 0;
-  v24 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v16 requiringSecureCoding:1 error:&v47];
+  v24 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:resolvedActionCopy requiringSecureCoding:1 error:&v47];
   v25 = v47;
-  v26 = v18;
+  v26 = predictionsCopy;
   if (v25 || !v24)
   {
     v27 = getLNLogCategoryGeneral();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v50 = v16;
+      v50 = resolvedActionCopy;
       v51 = 2112;
       v52 = v25;
       _os_log_impl(&dword_19763D000, v27, OS_LOG_TYPE_ERROR, "Object archival failed for %@: %@", buf, 0x16u);
@@ -883,7 +883,7 @@ LABEL_4:
   }
 
   v46 = 0;
-  v28 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v17 requiringSecureCoding:1 error:&v46];
+  v28 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:outputCopy requiringSecureCoding:1 error:&v46];
   v29 = v46;
   if (v29 || !v28)
   {
@@ -891,7 +891,7 @@ LABEL_4:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v50 = v17;
+      v50 = outputCopy;
       v51 = 2112;
       v52 = v29;
       _os_log_impl(&dword_19763D000, v30, OS_LOG_TYPE_ERROR, "Object archival failed for %@: %@", buf, 0x16u);
@@ -899,7 +899,7 @@ LABEL_4:
   }
 
   v45 = 0;
-  v31 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:&v45];
+  v31 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:predictionsCopy requiringSecureCoding:1 error:&v45];
   v32 = v45;
   if (v32 || !v31)
   {
@@ -914,20 +914,20 @@ LABEL_4:
     }
   }
 
-  v34 = [v17 nextAction];
-  LOBYTE(v37) = v34 != 0;
-  v42 = [(LNTranscriptActionRecord *)self initWithBundleIdentifier:v20 source:v43 clientLabel:v38 executionUUID:v39 executionDate:v40 actionData:v21 resolvedActionData:v24 actionOutputData:v28 predictionsData:v31 hasNextAction:v37];
+  nextAction = [outputCopy nextAction];
+  LOBYTE(v37) = nextAction != 0;
+  v42 = [(LNTranscriptActionRecord *)self initWithBundleIdentifier:identifierCopy source:sourceCopy clientLabel:labelCopy executionUUID:dCopy executionDate:dateCopy actionData:v21 resolvedActionData:v24 actionOutputData:v28 predictionsData:v31 hasNextAction:v37];
 
   v35 = *MEMORY[0x1E69E9840];
   return v42;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
-  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v12];
+  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v12];
   v6 = v12;
   v7 = v6;
   if (v5)
@@ -958,18 +958,18 @@ LABEL_4:
   return v5;
 }
 
-- (LNTranscriptActionRecord)initWithAction:(id)a3 resolvedAction:(id)a4 bundleIdentifier:(id)a5 actionOutput:(id)a6 executionUUID:(id)a7 source:(unsigned __int16)a8 executionDate:(id)a9 clientLabel:(id)a10 predictions:(id)a11
+- (LNTranscriptActionRecord)initWithAction:(id)action resolvedAction:(id)resolvedAction bundleIdentifier:(id)identifier actionOutput:(id)output executionUUID:(id)d source:(unsigned __int16)source executionDate:(id)date clientLabel:(id)self0 predictions:(id)self1
 {
-  v28 = a8;
-  v29 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  if (!v17)
+  sourceCopy = source;
+  actionCopy = action;
+  resolvedActionCopy = resolvedAction;
+  identifierCopy = identifier;
+  outputCopy = output;
+  dCopy = d;
+  dateCopy = date;
+  labelCopy = label;
+  predictionsCopy = predictions;
+  if (!identifierCopy)
   {
     v23 = getLNLogCategoryGeneral();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -978,22 +978,22 @@ LABEL_4:
       _os_log_impl(&dword_19763D000, v23, OS_LOG_TYPE_ERROR, "Bundle identifier not provided for action transcript record.", buf, 2u);
     }
 
-    v17 = @"com.apple.example";
+    identifierCopy = @"com.apple.example";
   }
 
-  v24 = v19;
-  if (v19)
+  uUID = dCopy;
+  if (dCopy)
   {
-    if (v20)
+    if (dateCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_11:
     v27 = [MEMORY[0x1E695DF00] now];
-    v25 = [(LNTranscriptActionRecord *)self initWithBundleIdentifier:v17 source:v28 clientLabel:v21 executionUUID:v24 executionDate:v27 action:v29 resolvedAction:v16 actionOutput:v18 predictions:v22];
+    v25 = [(LNTranscriptActionRecord *)self initWithBundleIdentifier:identifierCopy source:sourceCopy clientLabel:labelCopy executionUUID:uUID executionDate:v27 action:actionCopy resolvedAction:resolvedActionCopy actionOutput:outputCopy predictions:predictionsCopy];
 
-    if (v19)
+    if (dCopy)
     {
       goto LABEL_9;
     }
@@ -1001,15 +1001,15 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v24 = [MEMORY[0x1E696AFB0] UUID];
-  if (!v20)
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  if (!dateCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_7:
-  v25 = [(LNTranscriptActionRecord *)self initWithBundleIdentifier:v17 source:v28 clientLabel:v21 executionUUID:v24 executionDate:v20 action:v29 resolvedAction:v16 actionOutput:v18 predictions:v22];
-  if (!v19)
+  v25 = [(LNTranscriptActionRecord *)self initWithBundleIdentifier:identifierCopy source:sourceCopy clientLabel:labelCopy executionUUID:uUID executionDate:dateCopy action:actionCopy resolvedAction:resolvedActionCopy actionOutput:outputCopy predictions:predictionsCopy];
+  if (!dCopy)
   {
 LABEL_8:
   }

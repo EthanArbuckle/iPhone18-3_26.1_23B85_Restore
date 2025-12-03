@@ -1,166 +1,166 @@
 @interface NPKPaymentProvisioningFlowController
 + (BOOL)_isHSA2Enabled;
-+ (BOOL)_localCredentials:(id)a3 containProduct:(id)a4;
-+ (BOOL)_readerModeEntryAllowedForProduct:(id)a3;
++ (BOOL)_localCredentials:(id)credentials containProduct:(id)product;
++ (BOOL)_readerModeEntryAllowedForProduct:(id)product;
 + (id)_authContext;
-+ (id)_displayableCouldNotAddCardErrorWithUnderlyingError:(id)a3;
-+ (id)_displayableErrorWithIneligibilityReason:(int64_t)a3 learnMoreURL:(id)a4;
-+ (id)_displayableErrorWithUnderlyingVerificationError:(id)a3;
-+ (id)_filterAssociatedCredentials:(id)a3 forProduct:(id)a4;
-+ (id)_filteredPaymentSetupProducts:(id)a3 localCredentials:(id)a4 setupContext:(int64_t)a5 webService:(id)a6 mobileCarrierRegion:(id)a7 readerModeSupported:(BOOL)a8 digitalIssuanceSupported:(BOOL)a9;
-+ (id)_physicalCardURLFromMetadata:(id)a3 forScale:(double)a4;
-+ (id)_productsArrayFromPickerSection:(id)a3;
++ (id)_displayableCouldNotAddCardErrorWithUnderlyingError:(id)error;
++ (id)_displayableErrorWithIneligibilityReason:(int64_t)reason learnMoreURL:(id)l;
++ (id)_displayableErrorWithUnderlyingVerificationError:(id)error;
++ (id)_filterAssociatedCredentials:(id)credentials forProduct:(id)product;
++ (id)_filteredPaymentSetupProducts:(id)products localCredentials:(id)credentials setupContext:(int64_t)context webService:(id)service mobileCarrierRegion:(id)region readerModeSupported:(BOOL)supported digitalIssuanceSupported:(BOOL)issuanceSupported;
++ (id)_physicalCardURLFromMetadata:(id)metadata forScale:(double)scale;
++ (id)_productsArrayFromPickerSection:(id)section;
 + (id)_readerModeResources;
-+ (void)_addAppleBalanceToSections:(id)a3 fromModel:(id)a4;
-+ (void)_addCreditDebitItemToSection:(id)a3 webService:(id)a4;
-+ (void)_addGroupedItemsToSections:(id)a3 fromModel:(id)a4 webService:(id)a5 paymentSection:(id)a6;
-- (BOOL)_fieldRequiresLocalEntry:(id)a3;
-- (BOOL)_fieldsModelCompleteExceptForLocalFields:(id)a3;
-- (BOOL)hasCredentialsAssociatedWithProduct:(id)a3;
++ (void)_addAppleBalanceToSections:(id)sections fromModel:(id)model;
++ (void)_addCreditDebitItemToSection:(id)section webService:(id)service;
++ (void)_addGroupedItemsToSections:(id)sections fromModel:(id)model webService:(id)service paymentSection:(id)section;
+- (BOOL)_fieldRequiresLocalEntry:(id)entry;
+- (BOOL)_fieldsModelCompleteExceptForLocalFields:(id)fields;
+- (BOOL)hasCredentialsAssociatedWithProduct:(id)product;
 - (NPKFidoAuthCoordinator)fidoAuthCoordinator;
-- (NPKPaymentProvisioningFlowController)initWithProvisioningController:(id)a3 setupContext:(int64_t)a4;
+- (NPKPaymentProvisioningFlowController)initWithProvisioningController:(id)controller setupContext:(int64_t)context;
 - (NPKPaymentProvisioningFlowControllerDelegate)delegate;
-- (id)_addCardErrorForPaymentRequest:(id)a3;
+- (id)_addCardErrorForPaymentRequest:(id)request;
 - (id)_credentialReadonlyFieldIdentifiers;
 - (id)_curatedDefaultPaymentSetupProvisioningFields;
-- (id)_filteredPaymentSetupFields:(id)a3 forLocalDeviceEntry:(BOOL)a4;
+- (id)_filteredPaymentSetupFields:(id)fields forLocalDeviceEntry:(BOOL)entry;
 - (id)_localRequiredFieldsFromRequirementsResponse;
 - (id)_newPaymentEligibilityRequest;
 - (id)_newPaymentProvisioningRequest;
 - (id)_newPaymentRequirementsRequest;
-- (id)_paymentRequestForAmount:(id)a3 serviceProviderProduct:(id)a4 productItem:(id)a5;
+- (id)_paymentRequestForAmount:(id)amount serviceProviderProduct:(id)product productItem:(id)item;
 - (id)_requiredFieldsFromRequirementsResponse;
 - (id)_requiredFieldsFromRequirementsResponseExcludingLocalFields;
-- (id)_secondaryFilteredFields:(id)a3 forCredential:(id)a4;
-- (id)_subtitleForState:(unint64_t)a3;
-- (id)_titleForState:(unint64_t)a3;
-- (void)_canMakeDigitalIssuancePaymentsForTransitProducts:(id)a3 withCompletion:(id)a4;
-- (void)_canMakeDigitalIssuancePaymentsForTransitProductsWithCompletion:(id)a3;
-- (void)_cardsOnFileForProduct:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5;
-- (void)_checkSpaceAvailableForAppletTypes:(id)a3 triedCleanup:(BOOL)a4 completion:(id)a5;
-- (void)_configureWebServiceIfNecessary:(id)a3 completion:(id)a4;
-- (void)_downloadAndAddUpdatedPassForPaymentPass:(id)a3 completion:(id)a4;
-- (void)_downloadRemoteAssetsAndAddPaymentPass:(id)a3 completion:(id)a4;
-- (void)_endProvisioningFlowWithError:(id)a3 requestContext:(id)a4;
-- (void)_endProvisioningFlowWithSuccessForPass:(id)a3 requestContext:(id)a4;
-- (void)_ensureMetadataForCredentials:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5;
-- (void)_fetchAddRequestWithCertificatesResponse:(id)a3 requestContext:(id)a4;
-- (void)_fetchInAppProvisioningCertificates:(id)a3;
-- (void)_handleAppleBalanceAccountDetailsAcknowledgedWithProduct:(id)a3 requestContext:(id)a4;
-- (void)_handleAppleBalanceProductChosen:(id)a3 requestContext:(id)a4;
-- (void)_handleDigitalIssuanceTermsAccepted:(id)a3;
-- (void)_handleEligibiltySuccessWithContext:(id)a3;
-- (void)_handleEndOfProvisioningFlowForCurrentPass:(id)a3 requestContext:(id)a4;
-- (void)_handleFinished:(id)a3;
-- (void)_handlePreconditionsVerified:(id)a3;
-- (void)_handleProceedWithCredentials:(id)a3 chosenByUser:(BOOL)a4 requestContext:(id)a5;
-- (void)_handleProductChosen:(id)a3 includeCardsOnFile:(BOOL)a4 requestContext:(id)a5;
-- (void)_handleProvisioningFlowStarted:(id)a3;
-- (void)_handleReaderModeTermsAccepted:(id)a3;
-- (void)_handleVerificationCode:(id)a3 forPass:(id)a4 context:(id)a5;
-- (void)_handleVerificationFieldsForPass:(id)a3 context:(id)a4;
-- (void)_handleVerificationResponseForPass:(id)a3 context:(id)a4;
+- (id)_secondaryFilteredFields:(id)fields forCredential:(id)credential;
+- (id)_subtitleForState:(unint64_t)state;
+- (id)_titleForState:(unint64_t)state;
+- (void)_canMakeDigitalIssuancePaymentsForTransitProducts:(id)products withCompletion:(id)completion;
+- (void)_canMakeDigitalIssuancePaymentsForTransitProductsWithCompletion:(id)completion;
+- (void)_cardsOnFileForProduct:(id)product updateHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_checkSpaceAvailableForAppletTypes:(id)types triedCleanup:(BOOL)cleanup completion:(id)completion;
+- (void)_configureWebServiceIfNecessary:(id)necessary completion:(id)completion;
+- (void)_downloadAndAddUpdatedPassForPaymentPass:(id)pass completion:(id)completion;
+- (void)_downloadRemoteAssetsAndAddPaymentPass:(id)pass completion:(id)completion;
+- (void)_endProvisioningFlowWithError:(id)error requestContext:(id)context;
+- (void)_endProvisioningFlowWithSuccessForPass:(id)pass requestContext:(id)context;
+- (void)_ensureMetadataForCredentials:(id)credentials updateHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_fetchAddRequestWithCertificatesResponse:(id)response requestContext:(id)context;
+- (void)_fetchInAppProvisioningCertificates:(id)certificates;
+- (void)_handleAppleBalanceAccountDetailsAcknowledgedWithProduct:(id)product requestContext:(id)context;
+- (void)_handleAppleBalanceProductChosen:(id)chosen requestContext:(id)context;
+- (void)_handleDigitalIssuanceTermsAccepted:(id)accepted;
+- (void)_handleEligibiltySuccessWithContext:(id)context;
+- (void)_handleEndOfProvisioningFlowForCurrentPass:(id)pass requestContext:(id)context;
+- (void)_handleFinished:(id)finished;
+- (void)_handlePreconditionsVerified:(id)verified;
+- (void)_handleProceedWithCredentials:(id)credentials chosenByUser:(BOOL)user requestContext:(id)context;
+- (void)_handleProductChosen:(id)chosen includeCardsOnFile:(BOOL)file requestContext:(id)context;
+- (void)_handleProvisioningFlowStarted:(id)started;
+- (void)_handleReaderModeTermsAccepted:(id)accepted;
+- (void)_handleVerificationCode:(id)code forPass:(id)pass context:(id)context;
+- (void)_handleVerificationFieldsForPass:(id)pass context:(id)context;
+- (void)_handleVerificationResponseForPass:(id)pass context:(id)context;
 - (void)_invalidateCardNotFoundTimer;
-- (void)_noteProvisioningStateChangeForReaderMode:(int64_t)a3;
-- (void)_performEligibility:(id)a3;
-- (void)_performNextActionForProvisioningState:(id)a3;
-- (void)_performNextStepForProvisionedPass:(id)a3 moreInfoAcknowledged:(BOOL)a4 requestContext:(id)a5;
-- (void)_performPasscodeUpgrade:(id)a3;
-- (void)_performProvision:(id)a3;
-- (void)_performProvisionWithRequest:(id)a3 requestContext:(id)a4 assertion:(id)a5;
-- (void)_performProvisioningEligibility:(id)a3;
-- (void)_performRequirementsOrEligibilityForInAppProvisioning:(id)a3;
-- (void)_performResolveLocalEligibilityARequirements:(id)a3 completion:(id)a4;
-- (void)_performSEStorageCheck:(id)a3;
-- (void)_performTerms:(id)a3;
-- (void)_performTransitionToStep:(int)a3 withContext:(id)a4;
-- (void)_performValidateSecurityRequirements:(id)a3 completion:(id)a4;
-- (void)_provisioningLocalizedProgressDescriptionDidChange:(id)a3;
+- (void)_noteProvisioningStateChangeForReaderMode:(int64_t)mode;
+- (void)_performEligibility:(id)eligibility;
+- (void)_performNextActionForProvisioningState:(id)state;
+- (void)_performNextStepForProvisionedPass:(id)pass moreInfoAcknowledged:(BOOL)acknowledged requestContext:(id)context;
+- (void)_performPasscodeUpgrade:(id)upgrade;
+- (void)_performProvision:(id)provision;
+- (void)_performProvisionWithRequest:(id)request requestContext:(id)context assertion:(id)assertion;
+- (void)_performProvisioningEligibility:(id)eligibility;
+- (void)_performRequirementsOrEligibilityForInAppProvisioning:(id)provisioning;
+- (void)_performResolveLocalEligibilityARequirements:(id)requirements completion:(id)completion;
+- (void)_performSEStorageCheck:(id)check;
+- (void)_performTerms:(id)terms;
+- (void)_performTransitionToStep:(int)step withContext:(id)context;
+- (void)_performValidateSecurityRequirements:(id)requirements completion:(id)completion;
+- (void)_provisioningLocalizedProgressDescriptionDidChange:(id)change;
 - (void)_removePassIfNecessary;
-- (void)_requestPassDetailsForAccountCredential:(id)a3 withCompletionHandler:(id)a4;
-- (void)_requestRequirements:(id)a3;
-- (void)_requestVerificationOptionsForPass:(id)a3 context:(id)a4;
+- (void)_requestPassDetailsForAccountCredential:(id)credential withCompletionHandler:(id)handler;
+- (void)_requestRequirements:(id)requirements;
+- (void)_requestVerificationOptionsForPass:(id)pass context:(id)context;
 - (void)_resetReaderModeProvisioningState;
-- (void)_sendDidEncounterError:(id)a3 requestContext:(id)a4;
+- (void)_sendDidEncounterError:(id)error requestContext:(id)context;
 - (void)_setupCardIngester;
 - (void)_startCardNotFoundTimer;
-- (void)_startDigitalIssuancePaymentWithAmount:(id)a3 requestContext:(id)a4 serviceProviderProduct:(id)a5 productItem:(id)a6;
+- (void)_startDigitalIssuancePaymentWithAmount:(id)amount requestContext:(id)context serviceProviderProduct:(id)product productItem:(id)item;
 - (void)_startIngestion;
-- (void)_startProvisioningForCredential:(id)a3 requestContext:(id)a4;
-- (void)_startReaderModeIngestion:(id)a3;
+- (void)_startProvisioningForCredential:(id)credential requestContext:(id)context;
+- (void)_startReaderModeIngestion:(id)ingestion;
 - (void)_startReadingCard;
 - (void)_startTransferringCard;
 - (void)_tearDownCardIngester;
-- (void)_transitionBasedOnCredentials:(id)a3 product:(id)a4 requestContext:(id)a5;
-- (void)_transitionBasedOnTermsForReason:(unint64_t)a3 URL:(id)a4 requestContext:(id)a5;
-- (void)_transitionToAppleBalanceAccountDetailsWithProduct:(id)a3 requestContext:(id)a4;
-- (void)_transitionToChooseCredentials:(id)a3 product:(id)a4 requestContext:(id)a5;
-- (void)_transitionToChooseFlowWithSections:(id)a3 requestContext:(id)a4;
-- (void)_transitionToChooseProductWithProducts:(id)a3 requestContext:(id)a4;
-- (void)_transitionToDigitalIssuanceForProduct:(id)a3 requestContext:(id)a4;
-- (void)_transitionToFlowIngestionState:(unint64_t)a3;
-- (void)_transitionToFlowIngestionState:(unint64_t)a3 progress:(double)a4;
-- (void)_transitionToIngestionProgress:(double)a3;
-- (void)_transitionToManualEntry:(id)a3;
-- (void)_transitionToMoreInformationWithItems:(id)a3 pass:(id)a4 requestContext:(id)a5;
-- (void)_transitionToProductDisambiguationWithProducts:(id)a3 requestContext:(id)a4;
-- (void)_transitionToProvisioningForCredential:(id)a3 product:(id)a4 requestContext:(id)a5;
-- (void)_transitionToProvisioningProgressWithRequestContext:(id)a3;
-- (void)_transitionToReaderModeForProduct:(id)a3 requestContext:(id)a4;
-- (void)_transitionToSecondaryManualEntryWithFields:(id)a3 credential:(id)a4 requestContext:(id)a5;
-- (void)_transitionToVerificationChannelsWithPaymentPass:(id)a3 channels:(id)a4 requestContext:(id)a5;
-- (void)_transitionToVerificationCodeWithPaymentPass:(id)a3 channel:(id)a4 requestContext:(id)a5;
-- (void)_transitionToVerificationFieldsWithPaymentPass:(id)a3 fields:(id)a4 requestContext:(id)a5;
-- (void)_updateVerificationForPass:(id)a3 channel:(id)a4 context:(id)a5;
-- (void)_verifyPasscodeStateIfNecessaryWithCompletion:(id)a3;
-- (void)acceptTerms:(id)a3;
-- (void)acknowledgeAppleBalanceAccountDetailsWithProduct:(id)a3 requestContext:(id)a4;
-- (void)acknowledgeMoreInformation:(id)a3;
-- (void)acknowledgeWelcome:(id)a3;
-- (void)chooseCardsOnFileFlowForProduct:(id)a3 requestContext:(id)a4 preloadMetadata:(BOOL)a5;
-- (void)chooseCredentials:(id)a3 requestContext:(id)a4;
-- (void)chooseFlowForPickerItem:(id)a3 requestContext:(id)a4;
-- (void)chooseManualEntry:(id)a3;
-- (void)chooseReaderMode:(id)a3;
-- (void)contactlessCardIngester:(id)a3 didFailToIngestCardWithError:(id)a4 resetProvisioning:(BOOL)a5 isRecoverable:(BOOL)a6;
-- (void)contactlessCardIngester:(id)a3 didUpdateCardIngestionStatus:(unint64_t)a4;
+- (void)_transitionBasedOnCredentials:(id)credentials product:(id)product requestContext:(id)context;
+- (void)_transitionBasedOnTermsForReason:(unint64_t)reason URL:(id)l requestContext:(id)context;
+- (void)_transitionToAppleBalanceAccountDetailsWithProduct:(id)product requestContext:(id)context;
+- (void)_transitionToChooseCredentials:(id)credentials product:(id)product requestContext:(id)context;
+- (void)_transitionToChooseFlowWithSections:(id)sections requestContext:(id)context;
+- (void)_transitionToChooseProductWithProducts:(id)products requestContext:(id)context;
+- (void)_transitionToDigitalIssuanceForProduct:(id)product requestContext:(id)context;
+- (void)_transitionToFlowIngestionState:(unint64_t)state;
+- (void)_transitionToFlowIngestionState:(unint64_t)state progress:(double)progress;
+- (void)_transitionToIngestionProgress:(double)progress;
+- (void)_transitionToManualEntry:(id)entry;
+- (void)_transitionToMoreInformationWithItems:(id)items pass:(id)pass requestContext:(id)context;
+- (void)_transitionToProductDisambiguationWithProducts:(id)products requestContext:(id)context;
+- (void)_transitionToProvisioningForCredential:(id)credential product:(id)product requestContext:(id)context;
+- (void)_transitionToProvisioningProgressWithRequestContext:(id)context;
+- (void)_transitionToReaderModeForProduct:(id)product requestContext:(id)context;
+- (void)_transitionToSecondaryManualEntryWithFields:(id)fields credential:(id)credential requestContext:(id)context;
+- (void)_transitionToVerificationChannelsWithPaymentPass:(id)pass channels:(id)channels requestContext:(id)context;
+- (void)_transitionToVerificationCodeWithPaymentPass:(id)pass channel:(id)channel requestContext:(id)context;
+- (void)_transitionToVerificationFieldsWithPaymentPass:(id)pass fields:(id)fields requestContext:(id)context;
+- (void)_updateVerificationForPass:(id)pass channel:(id)channel context:(id)context;
+- (void)_verifyPasscodeStateIfNecessaryWithCompletion:(id)completion;
+- (void)acceptTerms:(id)terms;
+- (void)acknowledgeAppleBalanceAccountDetailsWithProduct:(id)product requestContext:(id)context;
+- (void)acknowledgeMoreInformation:(id)information;
+- (void)acknowledgeWelcome:(id)welcome;
+- (void)chooseCardsOnFileFlowForProduct:(id)product requestContext:(id)context preloadMetadata:(BOOL)metadata;
+- (void)chooseCredentials:(id)credentials requestContext:(id)context;
+- (void)chooseFlowForPickerItem:(id)item requestContext:(id)context;
+- (void)chooseManualEntry:(id)entry;
+- (void)chooseReaderMode:(id)mode;
+- (void)contactlessCardIngester:(id)ingester didFailToIngestCardWithError:(id)error resetProvisioning:(BOOL)provisioning isRecoverable:(BOOL)recoverable;
+- (void)contactlessCardIngester:(id)ingester didUpdateCardIngestionStatus:(unint64_t)status;
 - (void)dealloc;
-- (void)ensureMetadataForCredentials:(id)a3 requestContext:(id)a4 updateHandler:(id)a5 completionHandler:(id)a6;
-- (void)handleDigitalIssuanceAmount:(id)a3 requestContext:(id)a4;
-- (void)handleDigitalIssuanceAmount:(id)a3 serviceProviderProduct:(id)a4 item:(id)a5 requestContext:(id)a6;
-- (void)handleIssuerApplicationAddRequest:(id)a3 requestContext:(id)a4;
-- (void)handleIssuerVerificationChannel:(id)a3 requestContext:(id)a4;
-- (void)handleIssuerVerificationCode:(id)a3 requestContext:(id)a4;
-- (void)handleIssuerVerificationFields:(id)a3 requestContext:(id)a4;
-- (void)handleManualEntryFields:(id)a3 credential:(id)a4 requestContext:(id)a5;
-- (void)handleProductSelection:(id)a3 requestContext:(id)a4;
-- (void)handleReaderModeFields:(id)a3 requestContext:(id)a4;
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5;
-- (void)paymentAuthorizationControllerDidFinish:(id)a3;
-- (void)prefetchCredentialsForProduct:(id)a3 requestContext:(id)a4 completionHandler:(id)a5;
+- (void)ensureMetadataForCredentials:(id)credentials requestContext:(id)context updateHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)handleDigitalIssuanceAmount:(id)amount requestContext:(id)context;
+- (void)handleDigitalIssuanceAmount:(id)amount serviceProviderProduct:(id)product item:(id)item requestContext:(id)context;
+- (void)handleIssuerApplicationAddRequest:(id)request requestContext:(id)context;
+- (void)handleIssuerVerificationChannel:(id)channel requestContext:(id)context;
+- (void)handleIssuerVerificationCode:(id)code requestContext:(id)context;
+- (void)handleIssuerVerificationFields:(id)fields requestContext:(id)context;
+- (void)handleManualEntryFields:(id)fields credential:(id)credential requestContext:(id)context;
+- (void)handleProductSelection:(id)selection requestContext:(id)context;
+- (void)handleReaderModeFields:(id)fields requestContext:(id)context;
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationController:(id)controller didAuthorizePurchase:(id)purchase completion:(id)completion;
+- (void)paymentAuthorizationControllerDidFinish:(id)finish;
+- (void)prefetchCredentialsForProduct:(id)product requestContext:(id)context completionHandler:(id)handler;
 - (void)reset;
-- (void)skipIssuerVerification:(id)a3;
-- (void)skipProvisioning:(id)a3;
-- (void)startInAppProvisioningFlowWithConfiguration:(id)a3 requestContext:(id)a4;
-- (void)startIssuerVerificationFlowForPaymentPass:(id)a3 requestContext:(id)a4;
-- (void)startProvisioningFlow:(id)a3;
+- (void)skipIssuerVerification:(id)verification;
+- (void)skipProvisioning:(id)provisioning;
+- (void)startInAppProvisioningFlowWithConfiguration:(id)configuration requestContext:(id)context;
+- (void)startIssuerVerificationFlowForPaymentPass:(id)pass requestContext:(id)context;
+- (void)startProvisioningFlow:(id)flow;
 @end
 
 @implementation NPKPaymentProvisioningFlowController
 
-- (NPKPaymentProvisioningFlowController)initWithProvisioningController:(id)a3 setupContext:(int64_t)a4
+- (NPKPaymentProvisioningFlowController)initWithProvisioningController:(id)controller setupContext:(int64_t)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  controllerCopy = controller;
   v31.receiver = self;
   v31.super_class = NPKPaymentProvisioningFlowController;
   v8 = [(NPKPaymentProvisioningFlowController *)&v31 init];
   if (v8)
   {
-    v9 = [v7 webService];
+    webService = [controllerCopy webService];
     webService = v8->_webService;
-    v8->_webService = v9;
+    v8->_webService = webService;
 
     v11 = pk_Payment_log();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -172,16 +172,16 @@
       {
         v14 = [(PKPaymentWebService *)v8->_webService debugDescription];
         v15 = v14;
-        v16 = [v14 UTF8String];
+        uTF8String = [v14 UTF8String];
         *buf = 136315138;
-        v33 = v16;
+        v33 = uTF8String;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: checking webService %s: ", buf, 0xCu);
       }
     }
 
     v8->_currentStep = 100;
-    objc_storeStrong(&v8->_provisioningController, a3);
-    v8->_setupContext = a4;
+    objc_storeStrong(&v8->_provisioningController, controller);
+    v8->_setupContext = context;
     v17 = pk_Payment_log();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
 
@@ -192,22 +192,22 @@
       {
         v20 = [(PKPaymentProvisioningController *)v8->_provisioningController debugDescription];
         v21 = v20;
-        v22 = [v20 UTF8String];
+        uTF8String2 = [v20 UTF8String];
         *buf = 136315138;
-        v33 = v22;
+        v33 = uTF8String2;
         _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: checking controller initialization %s: ", buf, 0xCu);
       }
     }
 
     objc_initWeak(buf, v8);
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     provisioningController = v8->_provisioningController;
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_setupContext___block_invoke;
     v29[3] = &unk_279946020;
     objc_copyWeak(&v30, buf);
-    v25 = [v23 addObserverForName:*MEMORY[0x277D388C8] object:provisioningController queue:0 usingBlock:v29];
+    v25 = [defaultCenter addObserverForName:*MEMORY[0x277D388C8] object:provisioningController queue:0 usingBlock:v29];
     progressNotificationToken = v8->_progressNotificationToken;
     v8->_progressNotificationToken = v25;
 
@@ -235,8 +235,8 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
 {
   if (self->_progressNotificationToken)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_progressNotificationToken];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_progressNotificationToken];
   }
 
   [MEMORY[0x277D37D28] endSubjectReporting:@"provisioning"];
@@ -262,7 +262,7 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
     {
       v8 = [(PKPaymentWebService *)self->_webService debugDescription];
       v15 = 136315138;
-      v16 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: checking webService %s: ", &v15, 0xCu);
     }
   }
@@ -288,9 +288,9 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startProvisioningFlow:(id)a3
+- (void)startProvisioningFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v5 = MEMORY[0x277D37D28];
   v6 = NPKAnalyticsEventForProvisioningFlowClientInput(@"startProvisioningFlow", 0);
   [v5 subject:@"provisioning" sendEvent:v6];
@@ -312,7 +312,7 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
       }
     }
 
-    [(NPKPaymentProvisioningFlowController *)self _handleProvisioningFlowStarted:v4];
+    [(NPKPaymentProvisioningFlowController *)self _handleProvisioningFlowStarted:flowCopy];
   }
 
   else
@@ -331,24 +331,24 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
   }
 }
 
-- (void)acknowledgeWelcome:(id)a3
+- (void)acknowledgeWelcome:(id)welcome
 {
-  v4 = a3;
+  welcomeCopy = welcome;
   v5 = MEMORY[0x277D37D28];
   v6 = NPKAnalyticsEventForProvisioningFlowClientInput(@"acknowledgeWelcome", 0);
   [v5 subject:@"provisioning" sendEvent:v6];
 
   if (self->_inAppProvisioningRequestConfiguration)
   {
-    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:v4];
+    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:welcomeCopy];
   }
 
   else
   {
     v7 = [objc_opt_class() _flowPickerSectionsWithContext:self->_setupContext provisioningController:self->_provisioningController readerModeSupported:self->_readerModeProvisioningSupported digitalIssuanceSupported:self->_digitalIssuanceSupported];
-    v8 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
-    v9 = [v8 webService];
-    v10 = [v9 paymentSetupSupportedInRegion];
+    provisioningController = [(NPKPaymentProvisioningFlowController *)self provisioningController];
+    webService = [provisioningController webService];
+    paymentSetupSupportedInRegion = [webService paymentSetupSupportedInRegion];
 
     IsTinker = NPKPairedOrPairingDeviceIsTinker();
     if (IsTinker)
@@ -361,7 +361,7 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
       v12 = 0;
     }
 
-    if (v10 == 1)
+    if (paymentSetupSupportedInRegion == 1)
     {
       v13 = IsTinker;
     }
@@ -371,7 +371,7 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
       v13 = 1;
     }
 
-    v14 = v10 == 1 && !v12;
+    v14 = paymentSetupSupportedInRegion == 1 && !v12;
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__NPKPaymentProvisioningFlowController_acknowledgeWelcome___block_invoke;
@@ -390,14 +390,14 @@ void __84__NPKPaymentProvisioningFlowController_initWithProvisioningController_s
       v22 = v16;
       v20 = v15;
       v23 = v13;
-      v21 = v4;
+      v21 = welcomeCopy;
       [(NPKPaymentProvisioningFlowController *)self _canMakeDigitalIssuancePaymentsForTransitProductsWithCompletion:v19];
     }
 
     else
     {
       v18 = (*(v16 + 2))(v16, v15, v13 ^ 1u, v14 & 1);
-      [(NPKPaymentProvisioningFlowController *)self _transitionToChooseFlowWithSections:v18 requestContext:v4];
+      [(NPKPaymentProvisioningFlowController *)self _transitionToChooseFlowWithSections:v18 requestContext:welcomeCopy];
     }
   }
 }
@@ -458,69 +458,69 @@ void __59__NPKPaymentProvisioningFlowController_acknowledgeWelcome___block_invok
   [v3 _transitionToChooseFlowWithSections:v5 requestContext:*(a1 + 48)];
 }
 
-- (void)chooseFlowForPickerItem:(id)a3 requestContext:(id)a4
+- (void)chooseFlowForPickerItem:(id)item requestContext:(id)context
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  itemCopy = item;
+  contextCopy = context;
+  identifier = [itemCopy identifier];
 
-  if (v8)
+  if (identifier)
   {
     v15 = @"flowItem";
-    v9 = [v6 identifier];
-    v16[0] = v9;
-    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
+    identifier2 = [itemCopy identifier];
+    v16[0] = identifier2;
+    identifier = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   }
 
   v10 = MEMORY[0x277D37D28];
-  v11 = NPKAnalyticsEventForProvisioningFlowClientInput(@"chooseFlow", v8);
+  v11 = NPKAnalyticsEventForProvisioningFlowClientInput(@"chooseFlow", identifier);
   [v10 subject:@"provisioning" sendEvent:v11];
 
-  v12 = [v6 products];
-  if ([v12 count] < 2)
+  products = [itemCopy products];
+  if ([products count] < 2)
   {
-    v13 = [v12 firstObject];
-    [(NPKPaymentProvisioningFlowController *)self _handleProductChosen:v13 includeCardsOnFile:1 requestContext:v7];
+    firstObject = [products firstObject];
+    [(NPKPaymentProvisioningFlowController *)self _handleProductChosen:firstObject includeCardsOnFile:1 requestContext:contextCopy];
   }
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _transitionToChooseProductWithProducts:v12 requestContext:v7];
+    [(NPKPaymentProvisioningFlowController *)self _transitionToChooseProductWithProducts:products requestContext:contextCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_filterAssociatedCredentials:(id)a3 forProduct:(id)a4
++ (id)_filterAssociatedCredentials:(id)credentials forProduct:(id)product
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 paymentOptions];
-  v8 = [v7 firstObject];
+  credentialsCopy = credentials;
+  productCopy = product;
+  paymentOptions = [productCopy paymentOptions];
+  firstObject = [paymentOptions firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = [v8 cardType];
+    cardType = [firstObject cardType];
   }
 
   else
   {
-    v9 = 0;
+    cardType = 0;
   }
 
-  v10 = [v6 productIdentifier];
-  v11 = v10;
-  if (v9 && v10 && [v10 length])
+  productIdentifier = [productCopy productIdentifier];
+  v11 = productIdentifier;
+  if (cardType && productIdentifier && [productIdentifier length])
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __80__NPKPaymentProvisioningFlowController__filterAssociatedCredentials_forProduct___block_invoke;
     v19[3] = &unk_2799460B8;
-    v21 = v9;
+    v21 = cardType;
     v20 = v11;
-    v12 = [v5 pk_objectsPassingTest:v19];
+    v12 = [credentialsCopy pk_objectsPassingTest:v19];
     v13 = v20;
 LABEL_12:
 
@@ -535,11 +535,11 @@ LABEL_12:
     v13 = pk_General_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v6 displayName];
+      displayName = [productCopy displayName];
       *buf = 138412802;
-      v23 = v16;
+      v23 = displayName;
       v24 = 1024;
-      v25 = v9;
+      v25 = cardType;
       v26 = 2112;
       v27 = v11;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_ERROR, "Error: Failed collecting associated credentials for product = '%@', cardType = %u, productIdentifier = %@", buf, 0x1Cu);
@@ -574,23 +574,23 @@ uint64_t __80__NPKPaymentProvisioningFlowController__filterAssociatedCredentials
   return v5;
 }
 
-- (BOOL)hasCredentialsAssociatedWithProduct:(id)a3
+- (BOOL)hasCredentialsAssociatedWithProduct:(id)product
 {
   provisioningController = self->_provisioningController;
-  v4 = a3;
-  v5 = [(PKPaymentProvisioningController *)provisioningController associatedCredentials];
-  v6 = [objc_opt_class() _filterAssociatedCredentials:v5 forProduct:v4];
+  productCopy = product;
+  associatedCredentials = [(PKPaymentProvisioningController *)provisioningController associatedCredentials];
+  v6 = [objc_opt_class() _filterAssociatedCredentials:associatedCredentials forProduct:productCopy];
 
-  LOBYTE(v4) = [v6 count] != 0;
-  return v4;
+  LOBYTE(productCopy) = [v6 count] != 0;
+  return productCopy;
 }
 
-- (void)_ensureMetadataForCredentials:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5
+- (void)_ensureMetadataForCredentials:(id)credentials updateHandler:(id)handler completionHandler:(id)completionHandler
 {
   v70 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v42 = a4;
-  v37 = a5;
+  credentialsCopy = credentials;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v66[0] = 0;
   v66[1] = v66;
   v66[2] = 0x2020000000;
@@ -608,7 +608,7 @@ uint64_t __80__NPKPaymentProvisioningFlowController__filterAssociatedCredentials
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v8;
+  obj = credentialsCopy;
   v10 = [obj countByEnumeratingWithState:&v60 objects:v69 count:16];
   if (v10)
   {
@@ -624,8 +624,8 @@ uint64_t __80__NPKPaymentProvisioningFlowController__filterAssociatedCredentials
         }
 
         v13 = *(*(&v60 + 1) + 8 * v12);
-        v14 = [v13 credentialType];
-        if (!v14)
+        credentialType = [v13 credentialType];
+        if (!credentialType)
         {
           goto LABEL_12;
         }
@@ -645,15 +645,15 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        v16 = [v15 productIdentifier];
-        if (v16)
+        productIdentifier = [v15 productIdentifier];
+        if (productIdentifier)
         {
-          [MEMORY[0x277CCACA8] stringWithFormat:@"%u, %@", v14, v16];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"%u, %@", credentialType, productIdentifier];
         }
 
         else
         {
-          [MEMORY[0x277CCACA8] stringWithFormat:@"%u", v14];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"%u", credentialType];
         }
         v17 = ;
         v18 = [v38 objectForKey:v17];
@@ -684,9 +684,9 @@ LABEL_13:
 
   if ([v38 count])
   {
-    if (v42 && [v9 count])
+    if (handlerCopy && [v9 count])
     {
-      v42[2](v42, 1, 0, v9);
+      handlerCopy[2](handlerCopy, 1, 0, v9);
     }
 
     v22 = [v38 keysSortedByValueUsingComparator:&__block_literal_global_5];
@@ -714,7 +714,7 @@ LABEL_13:
           v29 = v28;
           if (v28 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v30 = [v27 integerValue];
+            integerValue = [v27 integerValue];
             v31 = 0;
           }
 
@@ -722,21 +722,21 @@ LABEL_13:
           {
             v31 = [v27 substringFromIndex:v28 + 1];
             v32 = [v27 substringToIndex:v29];
-            v30 = [v32 integerValue];
+            integerValue = [v32 integerValue];
           }
 
           v48[0] = MEMORY[0x277D85DD0];
           v48[1] = 3221225472;
           v48[2] = __102__NPKPaymentProvisioningFlowController__ensureMetadataForCredentials_updateHandler_completionHandler___block_invoke_2;
           v48[3] = &unk_279946128;
-          v55 = v30;
+          v55 = integerValue;
           v33 = v31;
           v49 = v33;
           v50 = v41;
           v53 = v64;
           v51 = v9;
           v54 = v66;
-          v52 = v42;
+          v52 = handlerCopy;
           [v23 addOperation:v48];
         }
 
@@ -746,21 +746,21 @@ LABEL_13:
       while (v24);
     }
 
-    v34 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __102__NPKPaymentProvisioningFlowController__ensureMetadataForCredentials_updateHandler_completionHandler___block_invoke_85;
     v43[3] = &unk_279946150;
-    v45 = v37;
+    v45 = completionHandlerCopy;
     v46 = v66;
     v47 = v64;
     v44 = v9;
-    v35 = [v23 evaluateWithInput:v34 completion:v43];
+    v35 = [v23 evaluateWithInput:null completion:v43];
   }
 
   else
   {
-    (*(v37 + 2))(v37, 1, 0, v9);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 1, 0, v9);
   }
 
   _Block_object_dispose(v64, 8);
@@ -902,52 +902,52 @@ uint64_t __102__NPKPaymentProvisioningFlowController__ensureMetadataForCredentia
   return v5();
 }
 
-- (void)_cardsOnFileForProduct:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5
+- (void)_cardsOnFileForProduct:(id)product updateHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v16 = a3;
-  if (v16)
+  productCopy = product;
+  if (productCopy)
   {
-    v8 = a5;
-    v9 = a4;
+    completionHandlerCopy = completionHandler;
+    handlerCopy = handler;
     v10 = objc_opt_class();
-    v11 = [(PKPaymentProvisioningController *)self->_provisioningController associatedCredentials];
-    v12 = [v10 _filterAssociatedCredentials:v11 forProduct:v16];
+    associatedCredentials = [(PKPaymentProvisioningController *)self->_provisioningController associatedCredentials];
+    associatedCredentials2 = [v10 _filterAssociatedCredentials:associatedCredentials forProduct:productCopy];
   }
 
   else
   {
     provisioningController = self->_provisioningController;
-    v14 = a5;
-    v15 = a4;
-    v12 = [(PKPaymentProvisioningController *)provisioningController associatedCredentials];
+    completionHandlerCopy2 = completionHandler;
+    handlerCopy2 = handler;
+    associatedCredentials2 = [(PKPaymentProvisioningController *)provisioningController associatedCredentials];
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _ensureMetadataForCredentials:v12 updateHandler:a4 completionHandler:a5];
+  [(NPKPaymentProvisioningFlowController *)self _ensureMetadataForCredentials:associatedCredentials2 updateHandler:handler completionHandler:completionHandler];
 }
 
-- (void)ensureMetadataForCredentials:(id)a3 requestContext:(id)a4 updateHandler:(id)a5 completionHandler:(id)a6
+- (void)ensureMetadataForCredentials:(id)credentials requestContext:(id)context updateHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __116__NPKPaymentProvisioningFlowController_ensureMetadataForCredentials_requestContext_updateHandler_completionHandler___block_invoke;
   v19[3] = &unk_279946178;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
+  v20 = contextCopy;
+  v21 = handlerCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __116__NPKPaymentProvisioningFlowController_ensureMetadataForCredentials_requestContext_updateHandler_completionHandler___block_invoke_87;
   v16[3] = &unk_279946178;
   v16[4] = self;
   v17 = v20;
-  v18 = v12;
-  v13 = v12;
+  v18 = completionHandlerCopy;
+  v13 = completionHandlerCopy;
   v14 = v20;
-  v15 = v11;
-  [(NPKPaymentProvisioningFlowController *)self _ensureMetadataForCredentials:a3 updateHandler:v19 completionHandler:v16];
+  v15 = handlerCopy;
+  [(NPKPaymentProvisioningFlowController *)self _ensureMetadataForCredentials:credentials updateHandler:v19 completionHandler:v16];
 }
 
 void __116__NPKPaymentProvisioningFlowController_ensureMetadataForCredentials_requestContext_updateHandler_completionHandler___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -1008,29 +1008,29 @@ void __116__NPKPaymentProvisioningFlowController_ensureMetadataForCredentials_re
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)chooseCardsOnFileFlowForProduct:(id)a3 requestContext:(id)a4 preloadMetadata:(BOOL)a5
+- (void)chooseCardsOnFileFlowForProduct:(id)product requestContext:(id)context preloadMetadata:(BOOL)metadata
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  if (v5)
+  metadataCopy = metadata;
+  productCopy = product;
+  contextCopy = context;
+  if (metadataCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __103__NPKPaymentProvisioningFlowController_chooseCardsOnFileFlowForProduct_requestContext_preloadMetadata___block_invoke;
     v13[3] = &unk_2799461A0;
     v13[4] = self;
-    v14 = v9;
-    v15 = v10;
+    v14 = productCopy;
+    v15 = contextCopy;
     [(NPKPaymentProvisioningFlowController *)self _cardsOnFileForProduct:v14 updateHandler:0 completionHandler:v13];
   }
 
   else
   {
     v11 = self->_provisioningController;
-    v12 = [(PKPaymentProvisioningController *)v11 associatedCredentials];
-    objc_storeStrong(&self->_currentProduct, a3);
-    [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnCredentials:v12 product:v9 requestContext:v10];
+    associatedCredentials = [(PKPaymentProvisioningController *)v11 associatedCredentials];
+    objc_storeStrong(&self->_currentProduct, product);
+    [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnCredentials:associatedCredentials product:productCopy requestContext:contextCopy];
   }
 }
 
@@ -1067,17 +1067,17 @@ void __103__NPKPaymentProvisioningFlowController_chooseCardsOnFileFlowForProduct
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_productsArrayFromPickerSection:(id)a3
++ (id)_productsArrayFromPickerSection:(id)section
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sectionCopy = section;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 items];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [sectionCopy items];
+  v6 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1088,14 +1088,14 @@ void __103__NPKPaymentProvisioningFlowController_chooseCardsOnFileFlowForProduct
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) products];
-        [v4 addObjectsFromArray:v10];
+        products = [*(*(&v14 + 1) + 8 * i) products];
+        [v4 addObjectsFromArray:products];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -1107,24 +1107,24 @@ void __103__NPKPaymentProvisioningFlowController_chooseCardsOnFileFlowForProduct
   return v11;
 }
 
-- (void)prefetchCredentialsForProduct:(id)a3 requestContext:(id)a4 completionHandler:(id)a5
+- (void)prefetchCredentialsForProduct:(id)product requestContext:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  productCopy = product;
+  contextCopy = context;
+  handlerCopy = handler;
   IsSetupAssistant = NPKPaymentProvisioningSetupContextIsSetupAssistant(self->_setupContext);
   provisioningController = self->_provisioningController;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __103__NPKPaymentProvisioningFlowController_prefetchCredentialsForProduct_requestContext_completionHandler___block_invoke;
   v16[3] = &unk_2799461C8;
-  v17 = v8;
-  v18 = self;
-  v19 = v9;
-  v20 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = productCopy;
+  selfCopy = self;
+  v19 = contextCopy;
+  v20 = handlerCopy;
+  v13 = contextCopy;
+  v14 = productCopy;
+  v15 = handlerCopy;
   [(PKPaymentProvisioningController *)provisioningController setupProductForProvisioning:v14 includePurchases:!IsSetupAssistant withCompletionHandler:v16];
 }
 
@@ -1162,76 +1162,76 @@ void __103__NPKPaymentProvisioningFlowController_prefetchCredentialsForProduct_r
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDigitalIssuanceAmount:(id)a3 requestContext:(id)a4
+- (void)handleDigitalIssuanceAmount:(id)amount requestContext:(id)context
 {
-  v6 = a3;
+  amountCopy = amount;
   v7 = MEMORY[0x277D37D28];
-  v11 = a4;
+  contextCopy = context;
   v8 = NPKAnalyticsEventForProvisioningFlowClientInput(@"digitalIssuanceAmount", 0);
   [v7 subject:@"provisioning" sendEvent:v8];
 
   digitalIssuanceAmount = self->_digitalIssuanceAmount;
-  self->_digitalIssuanceAmount = v6;
-  v10 = v6;
+  self->_digitalIssuanceAmount = amountCopy;
+  v10 = amountCopy;
 
-  [(NPKPaymentProvisioningFlowController *)self _startDigitalIssuancePaymentWithAmount:v10 requestContext:v11];
+  [(NPKPaymentProvisioningFlowController *)self _startDigitalIssuancePaymentWithAmount:v10 requestContext:contextCopy];
 }
 
-- (void)handleDigitalIssuanceAmount:(id)a3 serviceProviderProduct:(id)a4 item:(id)a5 requestContext:(id)a6
+- (void)handleDigitalIssuanceAmount:(id)amount serviceProviderProduct:(id)product item:(id)item requestContext:(id)context
 {
-  v10 = a3;
+  amountCopy = amount;
   v11 = MEMORY[0x277D37D28];
-  v12 = a6;
-  v13 = a5;
-  v17 = a4;
+  contextCopy = context;
+  itemCopy = item;
+  productCopy = product;
   v14 = NPKAnalyticsEventForProvisioningFlowClientInput(@"digitalIssuanceAmount", 0);
   [v11 subject:@"provisioning" sendEvent:v14];
 
   digitalIssuanceAmount = self->_digitalIssuanceAmount;
-  self->_digitalIssuanceAmount = v10;
-  v16 = v10;
+  self->_digitalIssuanceAmount = amountCopy;
+  v16 = amountCopy;
 
-  [(NPKPaymentProvisioningFlowController *)self _startDigitalIssuancePaymentWithAmount:v16 requestContext:v12 serviceProviderProduct:v17 productItem:v13];
+  [(NPKPaymentProvisioningFlowController *)self _startDigitalIssuancePaymentWithAmount:v16 requestContext:contextCopy serviceProviderProduct:productCopy productItem:itemCopy];
 }
 
-- (void)chooseReaderMode:(id)a3
+- (void)chooseReaderMode:(id)mode
 {
   v4 = MEMORY[0x277D37D28];
-  v6 = a3;
+  modeCopy = mode;
   v5 = NPKAnalyticsEventForProvisioningFlowClientInput(@"chooseReaderMode", 0);
   [v4 subject:@"provisioning" sendEvent:v5];
 
-  [(NPKPaymentProvisioningFlowController *)self _transitionToReaderModeForProduct:self->_currentProduct requestContext:v6];
+  [(NPKPaymentProvisioningFlowController *)self _transitionToReaderModeForProduct:self->_currentProduct requestContext:modeCopy];
 }
 
-- (void)handleReaderModeFields:(id)a3 requestContext:(id)a4
+- (void)handleReaderModeFields:(id)fields requestContext:(id)context
 {
-  v6 = a4;
-  v10 = NPKAnalyticsEventEntriesForPaymentSetupFields(a3);
+  contextCopy = context;
+  v10 = NPKAnalyticsEventEntriesForPaymentSetupFields(fields);
   v7 = MEMORY[0x277D37D28];
   v8 = NPKAnalyticsEventForProvisioningFlowClientInput(@"readerModeFields", v10);
   [v7 subject:@"provisioning" sendEvent:v8];
 
-  v9 = [(PKPaymentSetupProduct *)self->_currentProduct termsURL];
-  [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnTermsForReason:2 URL:v9 requestContext:v6];
+  termsURL = [(PKPaymentSetupProduct *)self->_currentProduct termsURL];
+  [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnTermsForReason:2 URL:termsURL requestContext:contextCopy];
 }
 
-- (void)chooseCredentials:(id)a3 requestContext:(id)a4
+- (void)chooseCredentials:(id)credentials requestContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = NPKAnalyticsEventEntriesForCredentials(v6);
+  credentialsCopy = credentials;
+  contextCopy = context;
+  v8 = NPKAnalyticsEventEntriesForCredentials(credentialsCopy);
   v9 = MEMORY[0x277D37D28];
   v10 = NPKAnalyticsEventForProvisioningFlowClientInput(@"chooseCredentials", v8);
   [v9 subject:@"provisioning" sendEvent:v10];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_92];
-  v12 = [v6 filteredArrayUsingPredicate:v11];
+  v12 = [credentialsCopy filteredArrayUsingPredicate:v11];
 
   if ([v12 count])
   {
-    [(NPKPaymentProvisioningFlowController *)self _handleProceedWithCredentials:v12 chosenByUser:1 requestContext:v7];
+    [(NPKPaymentProvisioningFlowController *)self _handleProceedWithCredentials:v12 chosenByUser:1 requestContext:contextCopy];
   }
 
   else
@@ -1245,7 +1245,7 @@ void __103__NPKPaymentProvisioningFlowController_prefetchCredentialsForProduct_r
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v17 = 138412290;
-        v18 = v6;
+        v18 = credentialsCopy;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_ERROR, "Error: Error: No valid provisioning methods exist for credentials [%@]", &v17, 0xCu);
       }
     }
@@ -1271,23 +1271,23 @@ BOOL __73__NPKPaymentProvisioningFlowController_chooseCredentials_requestContext
   return v4;
 }
 
-- (void)chooseManualEntry:(id)a3
+- (void)chooseManualEntry:(id)entry
 {
   v4 = MEMORY[0x277D37D28];
-  v6 = a3;
+  entryCopy = entry;
   v5 = NPKAnalyticsEventForProvisioningFlowClientInput(@"chooseManualEntry", 0);
   [v4 subject:@"provisioning" sendEvent:v5];
 
-  [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnCredentials:0 product:self->_currentProduct requestContext:v6];
+  [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnCredentials:0 product:self->_currentProduct requestContext:entryCopy];
 }
 
-- (void)handleManualEntryFields:(id)a3 credential:(id)a4 requestContext:(id)a5
+- (void)handleManualEntryFields:(id)fields credential:(id)credential requestContext:(id)context
 {
   v86 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = NPKAnalyticsEventEntriesForPaymentSetupFields(v8);
+  fieldsCopy = fields;
+  credentialCopy = credential;
+  contextCopy = context;
+  v11 = NPKAnalyticsEventEntriesForPaymentSetupFields(fieldsCopy);
   v12 = MEMORY[0x277D37D28];
   v64 = v11;
   v13 = NPKAnalyticsEventForProvisioningFlowClientInput(@"manualEntryFields", v11);
@@ -1300,14 +1300,14 @@ BOOL __73__NPKPaymentProvisioningFlowController_chooseCredentials_requestContext
 
   if (self->_currentStep == 192)
   {
-    v14 = [[NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryProgressStepContext alloc] initWithRequestContext:v10];
+    v14 = [[NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryProgressStepContext alloc] initWithRequestContext:contextCopy];
     [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:193 withContext:v14];
   }
 
-  v65 = v10;
+  v65 = contextCopy;
   if ([(PKPaymentProvisioningController *)self->_provisioningController state]== 1)
   {
-    if (v9)
+    if (credentialCopy)
     {
       currentCredential = self->_currentCredential;
       if (PKEqualObjects())
@@ -1325,25 +1325,25 @@ BOOL __73__NPKPaymentProvisioningFlowController_chooseCredentials_requestContext
         {
           v19 = self->_currentCredential;
           *buf = 138412546;
-          v83 = v9;
+          v83 = credentialCopy;
           v84 = 2112;
           v85 = v19;
           _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: Provided credential %@ does not match current credential %@; going back to requirements", buf, 0x16u);
         }
       }
 
-      v20 = [v9 requirementsResponse];
-      v21 = [v20 requiredPaymentSetupFields];
+      requirementsResponse = [credentialCopy requirementsResponse];
+      requiredPaymentSetupFields = [requirementsResponse requiredPaymentSetupFields];
     }
 
     else
     {
-      v20 = [MEMORY[0x277CBEB58] set];
+      requirementsResponse = [MEMORY[0x277CBEB58] set];
       v75 = 0u;
       v76 = 0u;
       v77 = 0u;
       v78 = 0u;
-      v22 = v8;
+      v22 = fieldsCopy;
       v23 = [v22 countByEnumeratingWithState:&v75 objects:v81 count:16];
       if (v23)
       {
@@ -1358,8 +1358,8 @@ BOOL __73__NPKPaymentProvisioningFlowController_chooseCredentials_requestContext
               objc_enumerationMutation(v22);
             }
 
-            v27 = [*(*(&v75 + 1) + 8 * i) identifier];
-            [v20 addObject:v27];
+            identifier = [*(*(&v75 + 1) + 8 * i) identifier];
+            [requirementsResponse addObject:identifier];
           }
 
           v24 = [v22 countByEnumeratingWithState:&v75 objects:v81 count:16];
@@ -1397,8 +1397,8 @@ BOOL __73__NPKPaymentProvisioningFlowController_chooseCredentials_requestContext
               objc_enumerationMutation(v29);
             }
 
-            v34 = [*(*(&v71 + 1) + 8 * j) identifier];
-            [fieldsModel addObject:v34];
+            identifier2 = [*(*(&v71 + 1) + 8 * j) identifier];
+            [fieldsModel addObject:identifier2];
           }
 
           v31 = [v29 countByEnumeratingWithState:&v71 objects:v80 count:16];
@@ -1407,7 +1407,7 @@ BOOL __73__NPKPaymentProvisioningFlowController_chooseCredentials_requestContext
         while (v31);
       }
 
-      if ([fieldsModel isSubsetOfSet:v20])
+      if ([fieldsModel isSubsetOfSet:requirementsResponse])
       {
 
 LABEL_38:
@@ -1423,24 +1423,24 @@ LABEL_38:
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v83 = v20;
+          v83 = requirementsResponse;
           v84 = 2112;
           v85 = fieldsModel;
           _os_log_impl(&dword_25B300000, v37, OS_LOG_TYPE_DEFAULT, "Notice: Manual entry fields %@ do not contain all required fields %@; going back to requirements", buf, 0x16u);
         }
       }
 
-      v21 = [(NPKPaymentProvisioningFlowController *)self _curatedDefaultPaymentSetupProvisioningFields];
+      requiredPaymentSetupFields = [(NPKPaymentProvisioningFlowController *)self _curatedDefaultPaymentSetupProvisioningFields];
     }
 
     [(PKPaymentProvisioningController *)self->_provisioningController resetForNewProvisioning];
-    v38 = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
-    [v38 setCurrentCredential:v9];
+    credentialProvisioningQueue = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
+    [credentialProvisioningQueue setCurrentCredential:credentialCopy];
 
-    v39 = [objc_alloc(MEMORY[0x277D38110]) initWithPaymentSetupFields:v21];
+    v39 = [objc_alloc(MEMORY[0x277D38110]) initWithPaymentSetupFields:requiredPaymentSetupFields];
     fieldsModel = self->_fieldsModel;
     self->_fieldsModel = v39;
-    v20 = v21;
+    requirementsResponse = requiredPaymentSetupFields;
     goto LABEL_38;
   }
 
@@ -1453,21 +1453,21 @@ LABEL_39:
     v42 = pk_Payment_log();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
+      paymentSetupFields = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
       *buf = 138412546;
-      v83 = v8;
+      v83 = fieldsCopy;
       v84 = 2112;
-      v85 = v43;
+      v85 = paymentSetupFields;
       _os_log_impl(&dword_25B300000, v42, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Handling manual entry fields: %@ with fields model fields: %@", buf, 0x16u);
     }
   }
 
-  v66 = v9;
+  v66 = credentialCopy;
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v44 = v8;
+  v44 = fieldsCopy;
   v45 = [v44 countByEnumeratingWithState:&v67 objects:v79 count:16];
   if (v45)
   {
@@ -1484,8 +1484,8 @@ LABEL_39:
 
         v49 = *(*(&v67 + 1) + 8 * k);
         v50 = self->_fieldsModel;
-        v51 = [v49 identifier];
-        v52 = [(PKPaymentSetupFieldsModel *)v50 paymentSetupFieldWithIdentifier:v51];
+        identifier3 = [v49 identifier];
+        v52 = [(PKPaymentSetupFieldsModel *)v50 paymentSetupFieldWithIdentifier:identifier3];
 
         v53 = pk_Payment_log();
         v54 = os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT);
@@ -1516,16 +1516,16 @@ LABEL_39:
           v55 = pk_Payment_log();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
           {
-            v56 = [v49 identifier];
+            identifier4 = [v49 identifier];
             *buf = 138412290;
-            v83 = v56;
+            v83 = identifier4;
             _os_log_impl(&dword_25B300000, v55, OS_LOG_TYPE_DEFAULT, "Warning: Standalone: no model field with identifier %@ to update!", buf, 0xCu);
           }
         }
 
 LABEL_56:
-        v57 = [v49 currentValue];
-        [v52 setCurrentValue:v57];
+        currentValue = [v49 currentValue];
+        [v52 setCurrentValue:currentValue];
 
         [v52 setSource:{objc_msgSend(v49, "source") == 1}];
       }
@@ -1538,30 +1538,30 @@ LABEL_56:
 
   if ([(NPKPaymentProvisioningFlowController *)self _fieldsModelCompleteExceptForLocalFields:self->_fieldsModel])
   {
-    v58 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
-    v59 = self;
+    paymentSetupFields2 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
+    selfCopy = self;
     v61 = v65;
     v60 = v66;
-    [(NPKPaymentProvisioningFlowController *)v59 _transitionToSecondaryManualEntryWithFields:v58 credential:v66 requestContext:v65];
+    [(NPKPaymentProvisioningFlowController *)selfCopy _transitionToSecondaryManualEntryWithFields:paymentSetupFields2 credential:v66 requestContext:v65];
   }
 
   else
   {
-    v62 = self;
+    selfCopy2 = self;
     v61 = v65;
-    [(NPKPaymentProvisioningFlowController *)v62 _performNextActionForProvisioningState:v65];
+    [(NPKPaymentProvisioningFlowController *)selfCopy2 _performNextActionForProvisioningState:v65];
     v60 = v66;
   }
 
   v63 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleProductSelection:(id)a3 requestContext:(id)a4
+- (void)handleProductSelection:(id)selection requestContext:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = NPKAnalyticsEventEntriesForProduct(v6);
+  selectionCopy = selection;
+  contextCopy = context;
+  v8 = NPKAnalyticsEventEntriesForProduct(selectionCopy);
   v9 = MEMORY[0x277D37D28];
   v10 = NPKAnalyticsEventForProvisioningFlowClientInput(@"productSelection", v8);
   [v9 subject:@"provisioning" sendEvent:v10];
@@ -1574,18 +1574,18 @@ LABEL_56:
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 rawDictionary];
+      rawDictionary = [selectionCopy rawDictionary];
       v32 = 138412546;
-      v33 = v6;
+      v33 = selectionCopy;
       v34 = 2112;
-      v35 = v14;
+      v35 = rawDictionary;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Handling product selection: %@ (%@)", &v32, 0x16u);
     }
   }
 
   if (self->_currentStep == 195)
   {
-    if (v6)
+    if (selectionCopy)
     {
       v15 = pk_Payment_log();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -1595,26 +1595,26 @@ LABEL_56:
         v17 = pk_Payment_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v6 productIdentifier];
-          v19 = [(PKPaymentProvisioningController *)self->_provisioningController state];
-          v20 = [(PKPaymentProvisioningController *)self->_provisioningController requirementsResponse];
-          v21 = [v20 status];
+          productIdentifier = [selectionCopy productIdentifier];
+          state = [(PKPaymentProvisioningController *)self->_provisioningController state];
+          requirementsResponse = [(PKPaymentProvisioningController *)self->_provisioningController requirementsResponse];
+          status = [requirementsResponse status];
           v32 = 138412802;
-          v33 = v18;
+          v33 = productIdentifier;
           v34 = 2048;
-          v35 = v19;
+          v35 = state;
           v36 = 2048;
-          v37 = v21;
+          v37 = status;
           _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: id %@ state %lu response status %lu", &v32, 0x20u);
         }
       }
 
       provisioningController = self->_provisioningController;
-      v23 = [v6 productIdentifier];
-      [(PKPaymentProvisioningController *)provisioningController resolveAmbiguousRequirementsWithProductIdentifier:v23];
+      productIdentifier2 = [selectionCopy productIdentifier];
+      [(PKPaymentProvisioningController *)provisioningController resolveAmbiguousRequirementsWithProductIdentifier:productIdentifier2];
     }
 
-    v24 = [(NPKPaymentProvisioningFlowController *)self _requiredFieldsFromRequirementsResponseExcludingLocalFields];
+    _requiredFieldsFromRequirementsResponseExcludingLocalFields = [(NPKPaymentProvisioningFlowController *)self _requiredFieldsFromRequirementsResponseExcludingLocalFields];
     v25 = pk_Payment_log();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
 
@@ -1623,14 +1623,14 @@ LABEL_56:
       v27 = pk_Payment_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v24 count];
+        v28 = [_requiredFieldsFromRequirementsResponseExcludingLocalFields count];
         v32 = 134217984;
         v33 = v28;
         _os_log_impl(&dword_25B300000, v27, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Start secondary manual entry with %lu fields following product disambiguation.", &v32, 0xCu);
       }
     }
 
-    [(NPKPaymentProvisioningFlowController *)self _transitionToSecondaryManualEntryWithFields:v24 credential:0 requestContext:v7];
+    [(NPKPaymentProvisioningFlowController *)self _transitionToSecondaryManualEntryWithFields:_requiredFieldsFromRequirementsResponseExcludingLocalFields credential:0 requestContext:contextCopy];
   }
 
   else
@@ -1643,11 +1643,11 @@ LABEL_56:
       goto LABEL_21;
     }
 
-    v24 = pk_Payment_log();
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    _requiredFieldsFromRequirementsResponseExcludingLocalFields = pk_Payment_log();
+    if (os_log_type_enabled(_requiredFieldsFromRequirementsResponseExcludingLocalFields, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v32) = 0;
-      _os_log_impl(&dword_25B300000, v24, OS_LOG_TYPE_ERROR, "Error: Not on product disambiguation step; cannot choose product!", &v32, 2u);
+      _os_log_impl(&dword_25B300000, _requiredFieldsFromRequirementsResponseExcludingLocalFields, OS_LOG_TYPE_ERROR, "Error: Not on product disambiguation step; cannot choose product!", &v32, 2u);
     }
   }
 
@@ -1655,11 +1655,11 @@ LABEL_21:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acknowledgeAppleBalanceAccountDetailsWithProduct:(id)a3 requestContext:(id)a4
+- (void)acknowledgeAppleBalanceAccountDetailsWithProduct:(id)product requestContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  productCopy = product;
+  contextCopy = context;
   v8 = MEMORY[0x277D37D28];
   v9 = NPKAnalyticsEventForProvisioningFlowClientInput(@"acknowledgeAppleBalanceAccountDetails", 0);
   [v8 subject:@"provisioning" sendEvent:v9];
@@ -1673,19 +1673,19 @@ LABEL_21:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = productCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Handling Apple Balance Account Details Acknowledged with product: %@", &v14, 0xCu);
     }
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _handleAppleBalanceAccountDetailsAcknowledgedWithProduct:v6 requestContext:v7];
+  [(NPKPaymentProvisioningFlowController *)self _handleAppleBalanceAccountDetailsAcknowledgedWithProduct:productCopy requestContext:contextCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptTerms:(id)a3
+- (void)acceptTerms:(id)terms
 {
-  v8 = a3;
+  termsCopy = terms;
   v4 = MEMORY[0x277D37D28];
   v5 = NPKAnalyticsEventForProvisioningFlowClientInput(@"acceptTerms", 0);
   [v4 subject:@"provisioning" sendEvent:v5];
@@ -1693,47 +1693,47 @@ LABEL_21:
   termsReason = self->_termsReason;
   if (termsReason == 2)
   {
-    [(NPKPaymentProvisioningFlowController *)self _handleReaderModeTermsAccepted:v8];
+    [(NPKPaymentProvisioningFlowController *)self _handleReaderModeTermsAccepted:termsCopy];
   }
 
   else if (termsReason == 1)
   {
-    [(NPKPaymentProvisioningFlowController *)self _handleDigitalIssuanceTermsAccepted:v8];
+    [(NPKPaymentProvisioningFlowController *)self _handleDigitalIssuanceTermsAccepted:termsCopy];
   }
 
   else
   {
-    v7 = v8;
+    v7 = termsCopy;
     if (termsReason)
     {
       goto LABEL_8;
     }
 
     [(PKPaymentProvisioningController *)self->_provisioningController acceptTerms];
-    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:v8];
+    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:termsCopy];
   }
 
-  v7 = v8;
+  v7 = termsCopy;
 LABEL_8:
 }
 
-- (void)skipProvisioning:(id)a3
+- (void)skipProvisioning:(id)provisioning
 {
-  v7 = a3;
+  provisioningCopy = provisioning;
   v4 = MEMORY[0x277D37D28];
   v5 = NPKAnalyticsEventForProvisioningFlowClientInput(@"skipProvisioning", 0);
   [v4 subject:@"provisioning" sendEvent:v5];
 
   if ((self->_currentStep - 180) <= 0x14 && ((1 << (LOBYTE(self->_currentStep) + 76)) & 0x103401) != 0)
   {
-    [(NPKPaymentProvisioningFlowController *)self _handleEndOfProvisioningFlowForCurrentPass:0 requestContext:v7];
+    [(NPKPaymentProvisioningFlowController *)self _handleEndOfProvisioningFlowForCurrentPass:0 requestContext:provisioningCopy];
   }
 }
 
-- (void)acknowledgeMoreInformation:(id)a3
+- (void)acknowledgeMoreInformation:(id)information
 {
   v4 = MEMORY[0x277D37D28];
-  v5 = a3;
+  informationCopy = information;
   v6 = NPKAnalyticsEventForProvisioningFlowClientInput(@"acknowledgeMoreInformation", 0);
   [v4 subject:@"provisioning" sendEvent:v6];
 
@@ -1750,15 +1750,15 @@ LABEL_8:
     }
   }
 
-  v10 = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPass];
-  [(NPKPaymentProvisioningFlowController *)self _performNextStepForProvisionedPass:v10 moreInfoAcknowledged:1 requestContext:v5];
+  provisionedPass = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPass];
+  [(NPKPaymentProvisioningFlowController *)self _performNextStepForProvisionedPass:provisionedPass moreInfoAcknowledged:1 requestContext:informationCopy];
 }
 
-- (void)startIssuerVerificationFlowForPaymentPass:(id)a3 requestContext:(id)a4
+- (void)startIssuerVerificationFlowForPaymentPass:(id)pass requestContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  contextCopy = context;
   v9 = MEMORY[0x277D37D28];
   v10 = NPKAnalyticsEventForProvisioningFlowClientInput(@"startIssuerVerificationFlow", 0);
   [v9 subject:@"provisioning" sendEvent:v10];
@@ -1775,15 +1775,15 @@ LABEL_8:
       v15 = pk_Payment_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v7 uniqueID];
+        uniqueID = [passCopy uniqueID];
         v20 = 138412290;
-        v21 = v16;
+        v21 = uniqueID;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: starting issuer verification flow for pass %@", &v20, 0xCu);
       }
     }
 
-    objc_storeStrong(&self->_issuerVerificationPass, a3);
-    [(NPKPaymentProvisioningFlowController *)self _requestVerificationOptionsForPass:v7 context:v8];
+    objc_storeStrong(&self->_issuerVerificationPass, pass);
+    [(NPKPaymentProvisioningFlowController *)self _requestVerificationOptionsForPass:passCopy context:contextCopy];
   }
 
   else
@@ -1804,23 +1804,23 @@ LABEL_8:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIssuerVerificationChannel:(id)a3 requestContext:(id)a4
+- (void)handleIssuerVerificationChannel:(id)channel requestContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = NPKAnalyticsEventEntriesForVerificationChannel(v7);
+  contextCopy = context;
+  channelCopy = channel;
+  v10 = NPKAnalyticsEventEntriesForVerificationChannel(channelCopy);
   v8 = MEMORY[0x277D37D28];
   v9 = NPKAnalyticsEventForProvisioningFlowClientInput(@"chooseIssuerVerificationChannel", v10);
   [v8 subject:@"provisioning" sendEvent:v9];
 
-  [(NPKPaymentProvisioningFlowController *)self _updateVerificationForPass:self->_issuerVerificationPass channel:v7 context:v6];
+  [(NPKPaymentProvisioningFlowController *)self _updateVerificationForPass:self->_issuerVerificationPass channel:channelCopy context:contextCopy];
 }
 
-- (void)handleIssuerVerificationFields:(id)a3 requestContext:(id)a4
+- (void)handleIssuerVerificationFields:(id)fields requestContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  fieldsCopy = fields;
+  contextCopy = context;
   v8 = MEMORY[0x277D37D28];
   v9 = NPKAnalyticsEventForProvisioningFlowClientInput(@"issuerVerificationFields", 0);
   [v8 subject:@"provisioning" sendEvent:v9];
@@ -1833,11 +1833,11 @@ LABEL_8:
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
+      paymentSetupFields = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
       *buf = 138412546;
-      v31 = v6;
+      v31 = fieldsCopy;
       v32 = 2112;
-      v33 = v13;
+      v33 = paymentSetupFields;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Handling issuer verification fields: %@ with fields model fields: %@", buf, 0x16u);
     }
   }
@@ -1846,7 +1846,7 @@ LABEL_8:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v6;
+  v14 = fieldsCopy;
   v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v15)
   {
@@ -1863,11 +1863,11 @@ LABEL_8:
 
         v19 = *(*(&v25 + 1) + 8 * i);
         fieldsModel = self->_fieldsModel;
-        v21 = [v19 identifier];
-        v22 = [(PKPaymentSetupFieldsModel *)fieldsModel paymentSetupFieldWithIdentifier:v21];
+        identifier = [v19 identifier];
+        v22 = [(PKPaymentSetupFieldsModel *)fieldsModel paymentSetupFieldWithIdentifier:identifier];
 
-        v23 = [v19 currentValue];
-        [v22 setCurrentValue:v23];
+        currentValue = [v19 currentValue];
+        [v22 setCurrentValue:currentValue];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -1876,15 +1876,15 @@ LABEL_8:
     while (v16);
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _handleVerificationFieldsForPass:self->_issuerVerificationPass context:v7];
+  [(NPKPaymentProvisioningFlowController *)self _handleVerificationFieldsForPass:self->_issuerVerificationPass context:contextCopy];
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIssuerVerificationCode:(id)a3 requestContext:(id)a4
+- (void)handleIssuerVerificationCode:(id)code requestContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  contextCopy = context;
   v8 = MEMORY[0x277D37D28];
   v9 = NPKAnalyticsEventForProvisioningFlowClientInput(@"issuerVerificationCode", 0);
   [v8 subject:@"provisioning" sendEvent:v9];
@@ -1898,19 +1898,19 @@ LABEL_8:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134217984;
-      v15 = [v6 length];
+      v15 = [codeCopy length];
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Handling issuer verification code of length %lu", &v14, 0xCu);
     }
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _handleVerificationCode:v6 forPass:self->_issuerVerificationPass context:v7];
+  [(NPKPaymentProvisioningFlowController *)self _handleVerificationCode:codeCopy forPass:self->_issuerVerificationPass context:contextCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)skipIssuerVerification:(id)a3
+- (void)skipIssuerVerification:(id)verification
 {
-  v4 = a3;
+  verificationCopy = verification;
   v5 = MEMORY[0x277D37D28];
   v6 = NPKAnalyticsEventForProvisioningFlowClientInput(@"skipIssuerVerification", 0);
   [v5 subject:@"provisioning" sendEvent:v6];
@@ -1933,15 +1933,15 @@ LABEL_8:
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _handleEndOfProvisioningFlowForCurrentPass:self->_issuerVerificationPass requestContext:v4];
+    [(NPKPaymentProvisioningFlowController *)self _handleEndOfProvisioningFlowForCurrentPass:self->_issuerVerificationPass requestContext:verificationCopy];
   }
 }
 
-- (void)startInAppProvisioningFlowWithConfiguration:(id)a3 requestContext:(id)a4
+- (void)startInAppProvisioningFlowWithConfiguration:(id)configuration requestContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  contextCopy = context;
   v9 = MEMORY[0x277D37D28];
   v10 = NPKAnalyticsEventForProvisioningFlowClientInput(@"startInAppProvisioningFlow", 0);
   [v9 subject:@"provisioning" sendEvent:v10];
@@ -1959,13 +1959,13 @@ LABEL_8:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138412290;
-        v20 = v7;
+        v20 = configurationCopy;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: starting in-app provisioning flow with configuration %@", &v19, 0xCu);
       }
     }
 
-    objc_storeStrong(&self->_inAppProvisioningRequestConfiguration, a3);
-    [(NPKPaymentProvisioningFlowController *)self _handleProvisioningFlowStarted:v8];
+    objc_storeStrong(&self->_inAppProvisioningRequestConfiguration, configuration);
+    [(NPKPaymentProvisioningFlowController *)self _handleProvisioningFlowStarted:contextCopy];
   }
 
   else
@@ -1986,11 +1986,11 @@ LABEL_8:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIssuerApplicationAddRequest:(id)a3 requestContext:(id)a4
+- (void)handleIssuerApplicationAddRequest:(id)request requestContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v9 = MEMORY[0x277D37D28];
   v10 = NPKAnalyticsEventForProvisioningFlowClientInput(@"issuerApplicationAddRequest", 0);
   [v9 subject:@"provisioning" sendEvent:v10];
@@ -2004,14 +2004,14 @@ LABEL_8:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v7;
+      v22 = requestCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Handling issuer add request %@", &v21, 0xCu);
     }
   }
 
   if (self->_currentStep == 300)
   {
-    if (v7)
+    if (requestCopy)
     {
       inAppProvisioningGetRequestTimer = self->_inAppProvisioningGetRequestTimer;
       if (inAppProvisioningGetRequestTimer)
@@ -2021,16 +2021,16 @@ LABEL_8:
         self->_inAppProvisioningGetRequestTimer = 0;
       }
 
-      objc_storeStrong(&self->_inAppProvisioningRequest, a3);
-      [v7 setPublicKeyHash:self->_inAppProvisioningPublicKeyHash];
-      [v7 setNonce:self->_inAppProvisioningNonce];
-      [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:v8];
+      objc_storeStrong(&self->_inAppProvisioningRequest, request);
+      [requestCopy setPublicKeyHash:self->_inAppProvisioningPublicKeyHash];
+      [requestCopy setNonce:self->_inAppProvisioningNonce];
+      [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:contextCopy];
     }
 
     else
     {
       v19 = PKDisplayableErrorForCommonType();
-      [(NPKPaymentProvisioningFlowController *)self _endProvisioningFlowWithError:v19 requestContext:v8];
+      [(NPKPaymentProvisioningFlowController *)self _endProvisioningFlowWithError:v19 requestContext:contextCopy];
     }
   }
 
@@ -2053,25 +2053,25 @@ LABEL_8:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performRequirementsOrEligibilityForInAppProvisioning:(id)a3
+- (void)_performRequirementsOrEligibilityForInAppProvisioning:(id)provisioning
 {
   if (self->_inAppProvisioningRequest)
   {
-    [(NPKPaymentProvisioningFlowController *)self _performEligibility:a3];
+    [(NPKPaymentProvisioningFlowController *)self _performEligibility:provisioning];
   }
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _fetchInAppProvisioningCertificates:a3];
+    [(NPKPaymentProvisioningFlowController *)self _fetchInAppProvisioningCertificates:provisioning];
   }
 }
 
-- (void)_fetchInAppProvisioningCertificates:(id)a3
+- (void)_fetchInAppProvisioningCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   v5 = objc_alloc(MEMORY[0x277D38070]);
-  v6 = [(PKAddPaymentPassRequestConfiguration *)self->_inAppProvisioningRequestConfiguration encryptionScheme];
-  v7 = [v5 initWithEncryptionScheme:v6];
+  encryptionScheme = [(PKAddPaymentPassRequestConfiguration *)self->_inAppProvisioningRequestConfiguration encryptionScheme];
+  v7 = [v5 initWithEncryptionScheme:encryptionScheme];
 
   webService = self->_webService;
   v10[0] = MEMORY[0x277D85DD0];
@@ -2079,8 +2079,8 @@ LABEL_8:
   v10[2] = __76__NPKPaymentProvisioningFlowController__fetchInAppProvisioningCertificates___block_invoke;
   v10[3] = &unk_279946288;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = certificatesCopy;
+  v9 = certificatesCopy;
   [(PKPaymentWebService *)webService issuerProvisioningCertificatesForRequest:v7 withCompletion:v10];
 }
 
@@ -2237,10 +2237,10 @@ void __76__NPKPaymentProvisioningFlowController__fetchInAppProvisioningCertifica
   }
 }
 
-- (void)_fetchAddRequestWithCertificatesResponse:(id)a3 requestContext:(id)a4
+- (void)_fetchAddRequestWithCertificatesResponse:(id)response requestContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  contextCopy = context;
   inAppProvisioningGetRequestTimer = self->_inAppProvisioningGetRequestTimer;
   if (inAppProvisioningGetRequestTimer)
   {
@@ -2261,28 +2261,28 @@ void __76__NPKPaymentProvisioningFlowController__fetchInAppProvisioningCertifica
   v25 = 3221225472;
   v26 = __96__NPKPaymentProvisioningFlowController__fetchAddRequestWithCertificatesResponse_requestContext___block_invoke;
   v27 = &unk_2799454E0;
-  v28 = self;
-  v29 = v7;
-  v15 = v7;
+  selfCopy = self;
+  v29 = contextCopy;
+  v15 = contextCopy;
   dispatch_source_set_event_handler(v14, &v24);
   dispatch_resume(self->_inAppProvisioningGetRequestTimer);
-  v16 = [v6 publicKeyHash];
+  publicKeyHash = [responseCopy publicKeyHash];
   inAppProvisioningPublicKeyHash = self->_inAppProvisioningPublicKeyHash;
-  self->_inAppProvisioningPublicKeyHash = v16;
+  self->_inAppProvisioningPublicKeyHash = publicKeyHash;
 
-  v18 = [v6 nonce];
+  nonce = [responseCopy nonce];
   inAppProvisioningNonce = self->_inAppProvisioningNonce;
-  self->_inAppProvisioningNonce = v18;
+  self->_inAppProvisioningNonce = nonce;
 
   v20 = [[NPKPaymentProvisioningFlowControllerGetIssuerApplicationAddRequestStepContext alloc] initWithRequestContext:v15];
-  v21 = [v6 certificates];
-  [(NPKPaymentProvisioningFlowControllerGetIssuerApplicationAddRequestStepContext *)v20 setCertificates:v21];
+  certificates = [responseCopy certificates];
+  [(NPKPaymentProvisioningFlowControllerGetIssuerApplicationAddRequestStepContext *)v20 setCertificates:certificates];
 
-  v22 = [v6 nonce];
-  [(NPKPaymentProvisioningFlowControllerGetIssuerApplicationAddRequestStepContext *)v20 setNonce:v22];
+  nonce2 = [responseCopy nonce];
+  [(NPKPaymentProvisioningFlowControllerGetIssuerApplicationAddRequestStepContext *)v20 setNonce:nonce2];
 
-  v23 = [v6 nonceSignature];
-  [(NPKPaymentProvisioningFlowControllerGetIssuerApplicationAddRequestStepContext *)v20 setNonceSignature:v23];
+  nonceSignature = [responseCopy nonceSignature];
+  [(NPKPaymentProvisioningFlowControllerGetIssuerApplicationAddRequestStepContext *)v20 setNonceSignature:nonceSignature];
 
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:300 withContext:v20];
 }
@@ -2309,10 +2309,10 @@ uint64_t __96__NPKPaymentProvisioningFlowController__fetchAddRequestWithCertific
   return [*(a1 + 32) reset];
 }
 
-- (void)_handleProvisioningFlowStarted:(id)a3
+- (void)_handleProvisioningFlowStarted:(id)started
 {
-  v4 = a3;
-  v5 = [[NPKPaymentProvisioningFlowControllerPreconditionsStepContext alloc] initWithRequestContext:v4];
+  startedCopy = started;
+  v5 = [[NPKPaymentProvisioningFlowControllerPreconditionsStepContext alloc] initWithRequestContext:startedCopy];
   objc_storeStrong(&self->_preconditionsRequestContext, v5);
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:110 withContext:v5];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
@@ -2322,11 +2322,11 @@ uint64_t __96__NPKPaymentProvisioningFlowController__fetchAddRequestWithCertific
   v10[2] = __71__NPKPaymentProvisioningFlowController__handleProvisioningFlowStarted___block_invoke;
   v10[3] = &unk_279946350;
   v10[4] = self;
-  v11 = v4;
+  v11 = startedCopy;
   v12 = v5;
   v13 = v7;
   v8 = v5;
-  v9 = v4;
+  v9 = startedCopy;
   [(NPKPaymentProvisioningFlowController *)self _configureWebServiceIfNecessary:webService completion:v10];
 }
 
@@ -2539,19 +2539,19 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePreconditionsVerified:(id)a3
+- (void)_handlePreconditionsVerified:(id)verified
 {
-  v4 = a3;
-  v5 = [[NPKPaymentProvisioningFlowControllerWelcomeStepContext alloc] initWithRequestContext:v4];
+  verifiedCopy = verified;
+  v5 = [[NPKPaymentProvisioningFlowControllerWelcomeStepContext alloc] initWithRequestContext:verifiedCopy];
 
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:120 withContext:v5];
 }
 
-- (void)_handleProductChosen:(id)a3 includeCardsOnFile:(BOOL)a4 requestContext:(id)a5
+- (void)_handleProductChosen:(id)chosen includeCardsOnFile:(BOOL)file requestContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  chosenCopy = chosen;
+  contextCopy = context;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -2561,7 +2561,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v8;
+      v23 = chosenCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Product chosen: %@", buf, 0xCu);
     }
   }
@@ -2573,11 +2573,11 @@ LABEL_12:
   v18[2] = __95__NPKPaymentProvisioningFlowController__handleProductChosen_includeCardsOnFile_requestContext___block_invoke;
   v18[3] = &unk_279946378;
   v18[4] = self;
-  v19 = v8;
-  v21 = a4;
-  v20 = v9;
-  v15 = v9;
-  v16 = v8;
+  v19 = chosenCopy;
+  fileCopy = file;
+  v20 = contextCopy;
+  v15 = contextCopy;
+  v16 = chosenCopy;
   [(PKPaymentProvisioningController *)provisioningController setupProductForProvisioning:v16 includePurchases:!IsSetupAssistant withCompletionHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -2626,11 +2626,11 @@ void __95__NPKPaymentProvisioningFlowController__handleProductChosen_includeCard
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAppleBalanceProductChosen:(id)a3 requestContext:(id)a4
+- (void)_handleAppleBalanceProductChosen:(id)chosen requestContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  chosenCopy = chosen;
+  contextCopy = context;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -2640,27 +2640,27 @@ void __95__NPKPaymentProvisioningFlowController__handleProductChosen_includeCard
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v7;
+      v22 = chosenCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Apple Balance product chosen. Requesting resolve local eligibility with product: %@", buf, 0xCu);
     }
   }
 
-  v12 = [objc_alloc(MEMORY[0x277D37D40]) initWithProduct:v7 eligibilitySource:1];
+  v12 = [objc_alloc(MEMORY[0x277D37D40]) initWithProduct:chosenCopy eligibilitySource:1];
   [(NPKPaymentProvisioningFlowController *)self setCurrentAppleBalanceCredential:v12];
 
-  objc_storeStrong(&self->_currentProduct, a3);
-  v13 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
-  v14 = [(NPKPaymentProvisioningFlowController *)self currentAppleBalanceCredential];
+  objc_storeStrong(&self->_currentProduct, chosen);
+  provisioningController = [(NPKPaymentProvisioningFlowController *)self provisioningController];
+  currentAppleBalanceCredential = [(NPKPaymentProvisioningFlowController *)self currentAppleBalanceCredential];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__NPKPaymentProvisioningFlowController__handleAppleBalanceProductChosen_requestContext___block_invoke;
   v18[3] = &unk_2799463A0;
   v18[4] = self;
-  v19 = v8;
-  v20 = v7;
-  v15 = v7;
-  v16 = v8;
-  [v13 resolveLocalEligibilityRequirementsForAppleBalanceCredential:v14 withCompletion:v18];
+  v19 = contextCopy;
+  v20 = chosenCopy;
+  v15 = chosenCopy;
+  v16 = contextCopy;
+  [provisioningController resolveLocalEligibilityRequirementsForAppleBalanceCredential:currentAppleBalanceCredential withCompletion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -2837,11 +2837,11 @@ void __88__NPKPaymentProvisioningFlowController__handleAppleBalanceProductChosen
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAppleBalanceAccountDetailsAcknowledgedWithProduct:(id)a3 requestContext:(id)a4
+- (void)_handleAppleBalanceAccountDetailsAcknowledgedWithProduct:(id)product requestContext:(id)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  productCopy = product;
+  contextCopy = context;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -2851,22 +2851,22 @@ void __88__NPKPaymentProvisioningFlowController__handleAppleBalanceProductChosen
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = productCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Apple Balance. Acknowledged account details with product: %@", &v12, 0xCu);
     }
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:v7];
+  [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:contextCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleProceedWithCredentials:(id)a3 chosenByUser:(BOOL)a4 requestContext:(id)a5
+- (void)_handleProceedWithCredentials:(id)credentials chosenByUser:(BOOL)user requestContext:(id)context
 {
-  v6 = a4;
+  userCopy = user;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  credentialsCopy = credentials;
+  contextCopy = context;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -2876,21 +2876,21 @@ void __88__NPKPaymentProvisioningFlowController__handleAppleBalanceProductChosen
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v8;
+      v20 = credentialsCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Credentials chosen: %@", &v19, 0xCu);
     }
   }
 
-  if (v6)
+  if (userCopy)
   {
-    v13 = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
-    [v13 setCredentialsToProvision:v8];
-    v14 = [v13 nextCredentialToProvision];
+    credentialProvisioningQueue = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
+    [credentialProvisioningQueue setCredentialsToProvision:credentialsCopy];
+    nextCredentialToProvision = [credentialProvisioningQueue nextCredentialToProvision];
   }
 
   else
   {
-    if ([v8 count] >= 2)
+    if ([credentialsCopy count] >= 2)
     {
       v15 = pk_Payment_log();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
@@ -2906,41 +2906,41 @@ void __88__NPKPaymentProvisioningFlowController__handleAppleBalanceProductChosen
       }
     }
 
-    v14 = [v8 firstObject];
+    nextCredentialToProvision = [credentialsCopy firstObject];
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _startProvisioningForCredential:v14 requestContext:v9];
+  [(NPKPaymentProvisioningFlowController *)self _startProvisioningForCredential:nextCredentialToProvision requestContext:contextCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startProvisioningForCredential:(id)a3 requestContext:(id)a4
+- (void)_startProvisioningForCredential:(id)credential requestContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_currentCredential, a3);
+  credentialCopy = credential;
+  contextCopy = context;
+  objc_storeStrong(&self->_currentCredential, credential);
   v9 = objc_alloc(MEMORY[0x277D38110]);
   v10 = [v9 initWithPaymentSetupFields:MEMORY[0x277CBEBF8]];
   fieldsModel = self->_fieldsModel;
   self->_fieldsModel = v10;
 
-  if ([v7 isAccountCredential])
+  if ([credentialCopy isAccountCredential])
   {
-    v12 = [v7 accountCredential];
+    accountCredential = [credentialCopy accountCredential];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __87__NPKPaymentProvisioningFlowController__startProvisioningForCredential_requestContext___block_invoke;
     v14[3] = &unk_2799463F0;
-    v15 = v12;
-    v16 = self;
-    v17 = v8;
-    v13 = v12;
+    v15 = accountCredential;
+    selfCopy = self;
+    v17 = contextCopy;
+    v13 = accountCredential;
     [(NPKPaymentProvisioningFlowController *)self _requestPassDetailsForAccountCredential:v13 withCompletionHandler:v14];
   }
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _requestRequirements:v8];
+    [(NPKPaymentProvisioningFlowController *)self _requestRequirements:contextCopy];
   }
 }
 
@@ -2981,11 +2981,11 @@ void __87__NPKPaymentProvisioningFlowController__startProvisioningForCredential_
   }
 }
 
-- (void)_performNextActionForProvisioningState:(id)a3
+- (void)_performNextActionForProvisioningState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PKPaymentProvisioningController *)self->_provisioningController state];
+  stateCopy = state;
+  state = [(PKPaymentProvisioningController *)self->_provisioningController state];
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -2995,46 +2995,46 @@ void __87__NPKPaymentProvisioningFlowController__startProvisioningForCredential_
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134217984;
-      v20 = v5;
+      v20 = state;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: current State is %ld", &v19, 0xCu);
     }
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _noteProvisioningStateChangeForReaderMode:v5];
-  if (v5 > 2)
+  [(NPKPaymentProvisioningFlowController *)self _noteProvisioningStateChangeForReaderMode:state];
+  if (state > 2)
   {
-    switch(v5)
+    switch(state)
     {
       case 3:
-        [(NPKPaymentProvisioningFlowController *)self _performTerms:v4];
+        [(NPKPaymentProvisioningFlowController *)self _performTerms:stateCopy];
         goto LABEL_31;
       case 4:
-        [(NPKPaymentProvisioningFlowController *)self _performProvision:v4];
+        [(NPKPaymentProvisioningFlowController *)self _performProvision:stateCopy];
         goto LABEL_31;
       case 5:
-        [(NPKPaymentProvisioningFlowController *)self _handleFinished:v4];
+        [(NPKPaymentProvisioningFlowController *)self _handleFinished:stateCopy];
         goto LABEL_31;
     }
 
     goto LABEL_18;
   }
 
-  switch(v5)
+  switch(state)
   {
     case 0:
       if (!self->_inAppProvisioningRequestConfiguration)
       {
-        [(NPKPaymentProvisioningFlowController *)self _requestRequirements:v4];
+        [(NPKPaymentProvisioningFlowController *)self _requestRequirements:stateCopy];
         goto LABEL_31;
       }
 
 LABEL_23:
-      [(NPKPaymentProvisioningFlowController *)self _performRequirementsOrEligibilityForInAppProvisioning:v4];
+      [(NPKPaymentProvisioningFlowController *)self _performRequirementsOrEligibilityForInAppProvisioning:stateCopy];
       goto LABEL_31;
     case 1:
       if (!self->_inAppProvisioningRequestConfiguration)
       {
-        [(NPKPaymentProvisioningFlowController *)self _performEligibility:v4];
+        [(NPKPaymentProvisioningFlowController *)self _performEligibility:stateCopy];
         goto LABEL_31;
       }
 
@@ -3042,7 +3042,7 @@ LABEL_23:
     case 2:
       if ([(NPKPaymentProvisioningFlowController *)self _isPasscodeUpgradeRequired])
       {
-        [(NPKPaymentProvisioningFlowController *)self _performPasscodeUpgrade:v4];
+        [(NPKPaymentProvisioningFlowController *)self _performPasscodeUpgrade:stateCopy];
       }
 
       else
@@ -3060,7 +3060,7 @@ LABEL_23:
           }
         }
 
-        [(NPKPaymentProvisioningFlowController *)self _handlePasscodeUpgradeCompleteWithSuccess:1 error:0 requestContext:v4];
+        [(NPKPaymentProvisioningFlowController *)self _handlePasscodeUpgradeCompleteWithSuccess:1 error:0 requestContext:stateCopy];
       }
 
       goto LABEL_31;
@@ -3153,10 +3153,10 @@ LABEL_13:
 
   v18 = objc_alloc(MEMORY[0x277D380E8]);
   v19 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*MEMORY[0x277D38930]];
-  v20 = [v19 submissionString];
+  submissionString = [v19 submissionString];
   v21 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*MEMORY[0x277D38938]];
-  v22 = [v21 submissionString];
-  v14 = [v18 initWithCardholderName:v20 primaryAccountNumber:v22];
+  submissionString2 = [v21 submissionString];
+  v14 = [v18 initWithCardholderName:submissionString primaryAccountNumber:submissionString2];
 
 LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
@@ -3184,36 +3184,36 @@ LABEL_14:
     }
 
     v7 = [objc_alloc(MEMORY[0x277D38058]) initWithSource:2];
-    v8 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest encryptionVersion];
-    [v7 setEncryptionVersion:v8];
+    encryptionVersion = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest encryptionVersion];
+    [v7 setEncryptionVersion:encryptionVersion];
 
-    v9 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest encryptedPassData];
-    [v7 setEncryptedCardData:v9];
+    encryptedPassData = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest encryptedPassData];
+    [v7 setEncryptedCardData:encryptedPassData];
 
-    v10 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest publicKeyHash];
-    [v7 setPublicKeyHash:v10];
+    publicKeyHash = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest publicKeyHash];
+    [v7 setPublicKeyHash:publicKeyHash];
 
-    v11 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest ephemeralPublicKey];
-    [v7 setEphemeralPublicKey:v11];
+    ephemeralPublicKey = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest ephemeralPublicKey];
+    [v7 setEphemeralPublicKey:ephemeralPublicKey];
 
-    v12 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest wrappedKey];
-    [v7 setWrappedKey:v12];
+    wrappedKey = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest wrappedKey];
+    [v7 setWrappedKey:wrappedKey];
 
-    v13 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest issuerIdentifier];
-    [v7 setIssuerIdentifier:v13];
+    issuerIdentifier = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest issuerIdentifier];
+    [v7 setIssuerIdentifier:issuerIdentifier];
 
-    v14 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest hostApplicationIdentifier];
-    [v7 setHostApplicationIdentifier:v14];
+    hostApplicationIdentifier = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest hostApplicationIdentifier];
+    [v7 setHostApplicationIdentifier:hostApplicationIdentifier];
 
-    v15 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest hostApplicationVersion];
-    [v7 setHostApplicationVersion:v15];
+    hostApplicationVersion = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest hostApplicationVersion];
+    [v7 setHostApplicationVersion:hostApplicationVersion];
 
-    v16 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest FPInfo];
-    [v7 setFPInfo:v16];
+    fPInfo = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest FPInfo];
+    [v7 setFPInfo:fPInfo];
 
-    v17 = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest nonce];
-    v18 = [v17 hexEncoding];
-    [v7 setNonce:v18];
+    nonce = [(PKAddPaymentPassRequest *)self->_inAppProvisioningRequest nonce];
+    hexEncoding = [nonce hexEncoding];
+    [v7 setNonce:hexEncoding];
 
     goto LABEL_20;
   }
@@ -3277,8 +3277,8 @@ LABEL_19:
 
   v7 = [objc_alloc(MEMORY[0x277D38058]) initWithSource:1];
   v33 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*MEMORY[0x277D38930]];
-  v34 = [v33 submissionString];
-  [v7 setCardholderName:v34];
+  submissionString = [v33 submissionString];
+  [v7 setCardholderName:submissionString];
 
   if ([v33 source] == 1)
   {
@@ -3292,8 +3292,8 @@ LABEL_19:
 
   [v7 setCardholderNameInputMethod:v35];
   v36 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*MEMORY[0x277D38938]];
-  v37 = [v36 submissionString];
-  [v7 setPrimaryAccountNumber:v37];
+  submissionString2 = [v36 submissionString];
+  [v7 setPrimaryAccountNumber:submissionString2];
 
   if ([v36 source] == 1)
   {
@@ -3307,8 +3307,8 @@ LABEL_19:
 
   [v7 setPrimaryAccountNumberInputMethod:v38];
   v39 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*MEMORY[0x277D38918]];
-  v40 = [v39 submissionString];
-  [v7 setExpiration:v40];
+  submissionString3 = [v39 submissionString];
+  [v7 setExpiration:submissionString3];
 
   if ([v39 source] == 1)
   {
@@ -3321,16 +3321,16 @@ LABEL_19:
   }
 
   [v7 setExpirationInputMethod:v41];
-  v42 = [(PKPaymentProvisioningController *)self->_provisioningController productIdentifier];
-  [v7 setProductIdentifier:v42];
+  productIdentifier = [(PKPaymentProvisioningController *)self->_provisioningController productIdentifier];
+  [v7 setProductIdentifier:productIdentifier];
 
-  v43 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
+  fieldsModel = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
   v44 = *MEMORY[0x277D38948];
-  v45 = [v43 submissionValuesForDestination:*MEMORY[0x277D38948]];
+  v45 = [fieldsModel submissionValuesForDestination:*MEMORY[0x277D38948]];
 
   [v7 setOverlayParameters:v45];
-  v46 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
-  v47 = [v46 secureSubmissionValuesForDestination:v44];
+  fieldsModel2 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
+  v47 = [fieldsModel2 secureSubmissionValuesForDestination:v44];
 
   [v7 setSecureOverlayParameters:v47];
 LABEL_20:
@@ -3341,14 +3341,14 @@ LABEL_20:
 - (id)_newPaymentProvisioningRequest
 {
   v3 = objc_alloc(MEMORY[0x277D38090]);
-  v4 = [(PKPaymentProvisioningController *)self->_provisioningController eligibilityResponse];
-  v5 = [v3 initWithEligibilityResponse:v4];
+  eligibilityResponse = [(PKPaymentProvisioningController *)self->_provisioningController eligibilityResponse];
+  v5 = [v3 initWithEligibilityResponse:eligibilityResponse];
 
   inAppProvisioningRequest = self->_inAppProvisioningRequest;
   if (inAppProvisioningRequest)
   {
-    v7 = [(PKAddPaymentPassRequest *)inAppProvisioningRequest activationData];
-    [v5 setActivationData:v7];
+    activationData = [(PKAddPaymentPassRequest *)inAppProvisioningRequest activationData];
+    [v5 setActivationData:activationData];
 
     if ([(PKAddPaymentPassRequestConfiguration *)self->_inAppProvisioningRequestConfiguration style]== PKAddPaymentPassStyleAccess)
     {
@@ -3358,25 +3358,25 @@ LABEL_20:
 
   else
   {
-    v8 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
-    v9 = [v8 eligibilityResponse];
-    [v5 setEligibilityResponse:v9];
+    provisioningController = [(NPKPaymentProvisioningFlowController *)self provisioningController];
+    eligibilityResponse2 = [provisioningController eligibilityResponse];
+    [v5 setEligibilityResponse:eligibilityResponse2];
 
     v10 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*MEMORY[0x277D38928]];
-    v11 = [v10 submissionString];
-    [v5 setCardSecurityCode:v11];
+    submissionString = [v10 submissionString];
+    [v5 setCardSecurityCode:submissionString];
 
     v12 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*MEMORY[0x277D38930]];
-    v13 = [v12 submissionString];
-    [v5 setCardholderName:v13];
+    submissionString2 = [v12 submissionString];
+    [v5 setCardholderName:submissionString2];
 
-    v14 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
+    fieldsModel = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
     v15 = *MEMORY[0x277D38950];
-    v16 = [v14 submissionValuesForDestination:*MEMORY[0x277D38950]];
+    v16 = [fieldsModel submissionValuesForDestination:*MEMORY[0x277D38950]];
 
     [v5 setOverlayParameters:v16];
-    v17 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
-    v18 = [v17 secureSubmissionValuesForDestination:v15];
+    fieldsModel2 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
+    v18 = [fieldsModel2 secureSubmissionValuesForDestination:v15];
 
     [v5 setSecureOverlayParameters:v18];
   }
@@ -3384,10 +3384,10 @@ LABEL_20:
   return v5;
 }
 
-- (void)_requestRequirements:(id)a3
+- (void)_requestRequirements:(id)requirements
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requirementsCopy = requirements;
   [(PKPaymentProvisioningController *)self->_provisioningController resetForNewProvisioning];
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -3405,14 +3405,14 @@ LABEL_20:
   currentCredential = self->_currentCredential;
   if (currentCredential && [(PKPaymentCredential *)currentCredential isPurchasedProductCredential])
   {
-    v9 = [(PKPaymentCredential *)self->_currentCredential purchasedProductCredential];
+    purchasedProductCredential = [(PKPaymentCredential *)self->_currentCredential purchasedProductCredential];
     v10 = self->_provisioningController;
-    v11 = [v9 product];
-    v12 = [v11 provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
+    product = [purchasedProductCredential product];
+    v12 = [product provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
     [(PKPaymentProvisioningController *)v10 resolveRequirementsUsingProvisioningMethodMetadata:v12];
 
-    v13 = [(PKPaymentProvisioningController *)v10 requirementsResponse];
-    [v9 setRequirementsResponse:v13];
+    requirementsResponse = [(PKPaymentProvisioningController *)v10 requirementsResponse];
+    [purchasedProductCredential setRequirementsResponse:requirementsResponse];
 
     [(NPKPaymentProvisioningFlowController *)self setTermsAcceptedOutOfBand:1];
     v14 = pk_Payment_log();
@@ -3423,31 +3423,31 @@ LABEL_20:
       v15 = pk_Payment_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v9 product];
-        v17 = [v16 displayName];
-        v18 = [v9 summaryMetadataDescription];
+        product2 = [purchasedProductCredential product];
+        displayName = [product2 displayName];
+        summaryMetadataDescription = [purchasedProductCredential summaryMetadataDescription];
         *buf = 138412546;
-        v24 = v17;
+        v24 = displayName;
         v25 = 2112;
-        v26 = v18;
+        v26 = summaryMetadataDescription;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Moving directly to next provisioning step for purchased product %@ (%@).", buf, 0x16u);
       }
     }
 
-    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:v4];
+    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:requirementsCopy];
   }
 
   else
   {
-    v9 = [(NPKPaymentProvisioningFlowController *)self _newPaymentRequirementsRequest];
+    purchasedProductCredential = [(NPKPaymentProvisioningFlowController *)self _newPaymentRequirementsRequest];
     provisioningController = self->_provisioningController;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __61__NPKPaymentProvisioningFlowController__requestRequirements___block_invoke;
     v21[3] = &unk_279946418;
     v21[4] = self;
-    v22 = v4;
-    [(PKPaymentProvisioningController *)provisioningController requestRequirements:v9 withCompletionHandler:v21];
+    v22 = requirementsCopy;
+    [(PKPaymentProvisioningController *)provisioningController requestRequirements:purchasedProductCredential withCompletionHandler:v21];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -3603,9 +3603,9 @@ LABEL_29:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performEligibility:(id)a3
+- (void)_performEligibility:(id)eligibility
 {
-  v4 = a3;
+  eligibilityCopy = eligibility;
   if ([(NPKPaymentProvisioningFlowController *)self _isResolveLocalEligibilityRequired])
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -3613,13 +3613,13 @@ LABEL_29:
     v5[2] = __60__NPKPaymentProvisioningFlowController__performEligibility___block_invoke;
     v5[3] = &unk_279946440;
     v5[4] = self;
-    v6 = v4;
+    v6 = eligibilityCopy;
     [(NPKPaymentProvisioningFlowController *)self _performResolveLocalEligibilityARequirements:v6 completion:v5];
   }
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _performProvisioningEligibility:v4];
+    [(NPKPaymentProvisioningFlowController *)self _performProvisioningEligibility:eligibilityCopy];
   }
 }
 
@@ -3654,9 +3654,9 @@ uint64_t __60__NPKPaymentProvisioningFlowController__performEligibility___block_
   }
 }
 
-- (void)_performProvisioningEligibility:(id)a3
+- (void)_performProvisioningEligibility:(id)eligibility
 {
-  v4 = a3;
+  eligibilityCopy = eligibility;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -3670,16 +3670,16 @@ uint64_t __60__NPKPaymentProvisioningFlowController__performEligibility___block_
     }
   }
 
-  v8 = [(NPKPaymentProvisioningFlowController *)self _newPaymentEligibilityRequest];
+  _newPaymentEligibilityRequest = [(NPKPaymentProvisioningFlowController *)self _newPaymentEligibilityRequest];
   provisioningController = self->_provisioningController;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__NPKPaymentProvisioningFlowController__performProvisioningEligibility___block_invoke;
   v11[3] = &unk_279946468;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [(PKPaymentProvisioningController *)provisioningController requestEligibility:v8 withCompletionHandler:v11];
+  v12 = eligibilityCopy;
+  v10 = eligibilityCopy;
+  [(PKPaymentProvisioningController *)provisioningController requestEligibility:_newPaymentEligibilityRequest withCompletionHandler:v11];
 }
 
 void __72__NPKPaymentProvisioningFlowController__performProvisioningEligibility___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3824,9 +3824,9 @@ uint64_t __72__NPKPaymentProvisioningFlowController__performProvisioningEligibil
   }
 }
 
-- (void)_handleEligibiltySuccessWithContext:(id)a3
+- (void)_handleEligibiltySuccessWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (PKEnableDynamicSEAllocation())
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -3834,13 +3834,13 @@ uint64_t __72__NPKPaymentProvisioningFlowController__performProvisioningEligibil
     v5[2] = __76__NPKPaymentProvisioningFlowController__handleEligibiltySuccessWithContext___block_invoke;
     v5[3] = &unk_2799464B8;
     v5[4] = self;
-    v6 = v4;
+    v6 = contextCopy;
     [(NPKPaymentProvisioningFlowController *)self _performSEStorageCheck:v5];
   }
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:v4];
+    [(NPKPaymentProvisioningFlowController *)self _performNextActionForProvisioningState:contextCopy];
   }
 }
 
@@ -3874,9 +3874,9 @@ void __76__NPKPaymentProvisioningFlowController__handleEligibiltySuccessWithCont
   }
 }
 
-- (void)_performResolveLocalEligibilityARequirements:(id)a3 completion:(id)a4
+- (void)_performResolveLocalEligibilityARequirements:(id)requirements completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -3901,8 +3901,8 @@ void __76__NPKPaymentProvisioningFlowController__handleEligibiltySuccessWithCont
   v13[1] = 3221225472;
   v13[2] = __96__NPKPaymentProvisioningFlowController__performResolveLocalEligibilityARequirements_completion___block_invoke;
   v13[3] = &unk_279945218;
-  v14 = v5;
-  v11 = v5;
+  v14 = completionCopy;
+  v11 = completionCopy;
   v12 = currentCredential;
   [(PKPaymentProvisioningController *)provisioningController resolveLocalEligibilityRequirementsForAppleBalanceCredential:v12 withCompletion:v13];
 }
@@ -3934,17 +3934,17 @@ void __96__NPKPaymentProvisioningFlowController__performResolveLocalEligibilityA
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performValidateSecurityRequirements:(id)a3 completion:(id)a4
+- (void)_performValidateSecurityRequirements:(id)requirements completion:(id)completion
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277D37CD0] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277D37CD0] = [MEMORY[0x277D37CD0] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __88__NPKPaymentProvisioningFlowController__performValidateSecurityRequirements_completion___block_invoke;
   v7[3] = &unk_279944F48;
-  v8 = v4;
-  v6 = v4;
-  [v5 validateAppleBalanceSecurityRequirementsWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [mEMORY[0x277D37CD0] validateAppleBalanceSecurityRequirementsWithCompletion:v7];
 }
 
 void __88__NPKPaymentProvisioningFlowController__performValidateSecurityRequirements_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -3986,10 +3986,10 @@ void __88__NPKPaymentProvisioningFlowController__performValidateSecurityRequirem
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performSEStorageCheck:(id)a3
+- (void)_performSEStorageCheck:(id)check
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  checkCopy = check;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -4008,10 +4008,10 @@ void __88__NPKPaymentProvisioningFlowController__performValidateSecurityRequirem
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(PKPaymentProvisioningController *)self->_provisioningController eligibilityResponse];
-  v10 = [v9 paymentApplications];
+  eligibilityResponse = [(PKPaymentProvisioningController *)self->_provisioningController eligibilityResponse];
+  paymentApplications = [eligibilityResponse paymentApplications];
 
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v11 = [paymentApplications countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -4023,41 +4023,41 @@ void __88__NPKPaymentProvisioningFlowController__performValidateSecurityRequirem
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(paymentApplications);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * v14) appletTypeIdentifier];
-        [v8 npkSafelyAddObject:v15];
+        appletTypeIdentifier = [*(*(&v17 + 1) + 8 * v14) appletTypeIdentifier];
+        [v8 npkSafelyAddObject:appletTypeIdentifier];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v12 = [paymentApplications countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v12);
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _checkSpaceAvailableForAppletTypes:v8 triedCleanup:0 completion:v4];
+  [(NPKPaymentProvisioningFlowController *)self _checkSpaceAvailableForAppletTypes:v8 triedCleanup:0 completion:checkCopy];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkSpaceAvailableForAppletTypes:(id)a3 triedCleanup:(BOOL)a4 completion:(id)a5
+- (void)_checkSpaceAvailableForAppletTypes:(id)types triedCleanup:(BOOL)cleanup completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  typesCopy = types;
+  completionCopy = completion;
   v10 = MEMORY[0x277D38230];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __99__NPKPaymentProvisioningFlowController__checkSpaceAvailableForAppletTypes_triedCleanup_completion___block_invoke;
   v13[3] = &unk_2799464E0;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  cleanupCopy = cleanup;
+  v14 = typesCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = typesCopy;
   [v10 getCurrentSnapshot:v13];
 }
 
@@ -4132,17 +4132,17 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performPasscodeUpgrade:(id)a3
+- (void)_performPasscodeUpgrade:(id)upgrade
 {
-  v4 = a3;
+  upgradeCopy = upgrade;
   provisioningController = self->_provisioningController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__NPKPaymentProvisioningFlowController__performPasscodeUpgrade___block_invoke;
   v7[3] = &unk_279946530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = upgradeCopy;
+  v6 = upgradeCopy;
   [(PKPaymentProvisioningController *)provisioningController preflightPasscodeUpgradeWithCompletion:v7];
 }
 
@@ -4213,20 +4213,20 @@ void __64__NPKPaymentProvisioningFlowController__performPasscodeUpgrade___block_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performTerms:(id)a3
+- (void)_performTerms:(id)terms
 {
   provisioningController = self->_provisioningController;
-  v5 = a3;
-  v7 = [(PKPaymentProvisioningController *)provisioningController eligibilityResponse];
-  v6 = [v7 termsURL];
-  [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnTermsForReason:0 URL:v6 requestContext:v5];
+  termsCopy = terms;
+  eligibilityResponse = [(PKPaymentProvisioningController *)provisioningController eligibilityResponse];
+  termsURL = [eligibilityResponse termsURL];
+  [(NPKPaymentProvisioningFlowController *)self _transitionBasedOnTermsForReason:0 URL:termsURL requestContext:termsCopy];
 }
 
-- (void)_performProvision:(id)a3
+- (void)_performProvision:(id)provision
 {
-  v4 = a3;
-  [(NPKPaymentProvisioningFlowController *)self _transitionToProvisioningProgressWithRequestContext:v4];
-  v5 = [(NPKPaymentProvisioningFlowController *)self _newPaymentProvisioningRequest];
+  provisionCopy = provision;
+  [(NPKPaymentProvisioningFlowController *)self _transitionToProvisioningProgressWithRequestContext:provisionCopy];
+  _newPaymentProvisioningRequest = [(NPKPaymentProvisioningFlowController *)self _newPaymentProvisioningRequest];
   v6 = MEMORY[0x277CBFBF8];
   v7 = PKPassKitCoreBundle();
   v8 = [v6 newAssertionForBundle:v7 withReason:@"User-requested Wallet pass provisioning"];
@@ -4244,19 +4244,19 @@ void __64__NPKPaymentProvisioningFlowController__performPasscodeUpgrade___block_
     }
   }
 
-  v12 = [(NPKPaymentProvisioningFlowController *)self fidoAuthCoordinator];
+  fidoAuthCoordinator = [(NPKPaymentProvisioningFlowController *)self fidoAuthCoordinator];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__NPKPaymentProvisioningFlowController__performProvision___block_invoke;
   v16[3] = &unk_279946580;
   v16[4] = self;
-  v17 = v5;
-  v18 = v4;
+  v17 = _newPaymentProvisioningRequest;
+  v18 = provisionCopy;
   v19 = v8;
   v13 = v8;
-  v14 = v4;
-  v15 = v5;
-  [v12 requestAuthorizationWithCompletion:v16];
+  v14 = provisionCopy;
+  v15 = _newPaymentProvisioningRequest;
+  [fidoAuthCoordinator requestAuthorizationWithCompletion:v16];
 }
 
 void __58__NPKPaymentProvisioningFlowController__performProvision___block_invoke(uint64_t a1, char a2, uint64_t a3, void *a4, void *a5)
@@ -4350,21 +4350,21 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performProvisionWithRequest:(id)a3 requestContext:(id)a4 assertion:(id)a5
+- (void)_performProvisionWithRequest:(id)request requestContext:(id)context assertion:(id)assertion
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  assertionCopy = assertion;
   provisioningController = self->_provisioningController;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __94__NPKPaymentProvisioningFlowController__performProvisionWithRequest_requestContext_assertion___block_invoke;
   v13[3] = &unk_2799465A8;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  [(PKPaymentProvisioningController *)provisioningController requestProvisioning:a3 withCompletion:v13];
+  v14 = assertionCopy;
+  selfCopy = self;
+  v16 = contextCopy;
+  v11 = contextCopy;
+  v12 = assertionCopy;
+  [(PKPaymentProvisioningController *)provisioningController requestProvisioning:request withCompletion:v13];
 }
 
 void __94__NPKPaymentProvisioningFlowController__performProvisionWithRequest_requestContext_assertion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -4433,10 +4433,10 @@ void __94__NPKPaymentProvisioningFlowController__performProvisionWithRequest_req
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFinished:(id)a3
+- (void)_handleFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPass];
+  finishedCopy = finished;
+  provisionedPass = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPass];
   if ([(NPKPaymentProvisioningFlowController *)self internalIngestionState]== 7)
   {
     v6 = pk_Payment_log();
@@ -4455,29 +4455,29 @@ void __94__NPKPaymentProvisioningFlowController__performProvisionWithRequest_req
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _performNextStepForProvisionedPass:v5 requestContext:v4];
+    [(NPKPaymentProvisioningFlowController *)self _performNextStepForProvisionedPass:provisionedPass requestContext:finishedCopy];
   }
 }
 
-- (void)_performNextStepForProvisionedPass:(id)a3 moreInfoAcknowledged:(BOOL)a4 requestContext:(id)a5
+- (void)_performNextStepForProvisionedPass:(id)pass moreInfoAcknowledged:(BOOL)acknowledged requestContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-  v12 = [v11 targetDevice];
-  v13 = [v12 secureElementIdentifiers];
-  [v9 updateDevicePaymentApplicationsWithSecureElementIdentifiers:v13];
+  passCopy = pass;
+  contextCopy = context;
+  webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+  targetDevice = [webService targetDevice];
+  secureElementIdentifiers = [targetDevice secureElementIdentifiers];
+  [passCopy updateDevicePaymentApplicationsWithSecureElementIdentifiers:secureElementIdentifiers];
 
-  v14 = [v9 devicePrimaryPaymentApplication];
-  v15 = [v14 state];
+  devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
+  state = [devicePrimaryPaymentApplication state];
 
-  v16 = [(PKPaymentProvisioningController *)self->_provisioningController moreInfoItems];
-  v17 = v16;
-  if (a4 || ![v16 count])
+  moreInfoItems = [(PKPaymentProvisioningController *)self->_provisioningController moreInfoItems];
+  v17 = moreInfoItems;
+  if (acknowledged || ![moreInfoItems count])
   {
-    if ((v15 - 3) > 1)
+    if ((state - 3) > 1)
     {
-      [(NPKPaymentProvisioningFlowController *)self _handleEndOfProvisioningFlowForCurrentPass:v9 requestContext:v10];
+      [(NPKPaymentProvisioningFlowController *)self _handleEndOfProvisioningFlowForCurrentPass:passCopy requestContext:contextCopy];
     }
 
     else
@@ -4495,31 +4495,31 @@ void __94__NPKPaymentProvisioningFlowController__performProvisionWithRequest_req
         }
       }
 
-      objc_storeStrong(&self->_issuerVerificationPass, a3);
-      [(NPKPaymentProvisioningFlowController *)self _requestVerificationOptionsForPass:v9 context:v10];
+      objc_storeStrong(&self->_issuerVerificationPass, pass);
+      [(NPKPaymentProvisioningFlowController *)self _requestVerificationOptionsForPass:passCopy context:contextCopy];
     }
   }
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _transitionToMoreInformationWithItems:v17 pass:v9 requestContext:v10];
+    [(NPKPaymentProvisioningFlowController *)self _transitionToMoreInformationWithItems:v17 pass:passCopy requestContext:contextCopy];
   }
 }
 
-- (void)_handleVerificationResponseForPass:(id)a3 context:(id)a4
+- (void)_handleVerificationResponseForPass:(id)pass context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentWebService *)self->_webService verificationRecordForPass:v6];
-  v9 = [v8 verificationStatus];
-  switch(v9)
+  passCopy = pass;
+  contextCopy = context;
+  v8 = [(PKPaymentWebService *)self->_webService verificationRecordForPass:passCopy];
+  verificationStatus = [v8 verificationStatus];
+  switch(verificationStatus)
   {
     case 3:
-      v15 = [v8 channel];
-      v14 = v15;
-      if (v15 && ([v15 type] == 2 || objc_msgSend(v14, "type") == 1))
+      channel = [v8 channel];
+      allChannels = channel;
+      if (channel && ([channel type] == 2 || objc_msgSend(allChannels, "type") == 1))
       {
-        [(NPKPaymentProvisioningFlowController *)self _transitionToVerificationCodeWithPaymentPass:v6 channel:v14 requestContext:v7];
+        [(NPKPaymentProvisioningFlowController *)self _transitionToVerificationCodeWithPaymentPass:passCopy channel:allChannels requestContext:contextCopy];
       }
 
       else
@@ -4529,24 +4529,24 @@ void __94__NPKPaymentProvisioningFlowController__performProvisionWithRequest_req
         v20[2] = __83__NPKPaymentProvisioningFlowController__handleVerificationResponseForPass_context___block_invoke;
         v20[3] = &unk_2799465D0;
         v20[4] = self;
-        v21 = v7;
-        [(NPKPaymentProvisioningFlowController *)self _downloadAndAddUpdatedPassForPaymentPass:v6 completion:v20];
+        v21 = contextCopy;
+        [(NPKPaymentProvisioningFlowController *)self _downloadAndAddUpdatedPassForPaymentPass:passCopy completion:v20];
       }
 
       break;
     case 2:
-      v14 = [v8 allChannels];
-      [(NPKPaymentProvisioningFlowController *)self _transitionToVerificationChannelsWithPaymentPass:v6 channels:v14 requestContext:v7];
+      allChannels = [v8 allChannels];
+      [(NPKPaymentProvisioningFlowController *)self _transitionToVerificationChannelsWithPaymentPass:passCopy channels:allChannels requestContext:contextCopy];
       break;
     case 1:
       v10 = objc_alloc(MEMORY[0x277D38110]);
-      v11 = [v8 requiredVerificationFields];
-      v12 = [v10 initWithPaymentSetupFields:v11];
+      requiredVerificationFields = [v8 requiredVerificationFields];
+      v12 = [v10 initWithPaymentSetupFields:requiredVerificationFields];
       fieldsModel = self->_fieldsModel;
       self->_fieldsModel = v12;
 
-      v14 = [v8 requiredVerificationFields];
-      [(NPKPaymentProvisioningFlowController *)self _transitionToVerificationFieldsWithPaymentPass:v6 fields:v14 requestContext:v7];
+      allChannels = [v8 requiredVerificationFields];
+      [(NPKPaymentProvisioningFlowController *)self _transitionToVerificationFieldsWithPaymentPass:passCopy fields:allChannels requestContext:contextCopy];
       break;
     default:
       v16 = pk_Payment_log();
@@ -4562,27 +4562,27 @@ void __94__NPKPaymentProvisioningFlowController__performProvisionWithRequest_req
         }
       }
 
-      v14 = PKDisplayableErrorForCommonType();
-      [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:v14 requestContext:v7];
+      allChannels = PKDisplayableErrorForCommonType();
+      [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:allChannels requestContext:contextCopy];
       break;
   }
 }
 
-- (void)_requestVerificationOptionsForPass:(id)a3 context:(id)a4
+- (void)_requestVerificationOptionsForPass:(id)pass context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D38160] requestWithPass:v6];
+  passCopy = pass;
+  contextCopy = context;
+  v8 = [MEMORY[0x277D38160] requestWithPass:passCopy];
   webService = self->_webService;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__NPKPaymentProvisioningFlowController__requestVerificationOptionsForPass_context___block_invoke;
   v12[3] = &unk_2799465F8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = passCopy;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = passCopy;
   [(PKPaymentWebService *)webService verificationOptionsForRequest:v8 completion:v12];
 }
 
@@ -4645,19 +4645,19 @@ void __83__NPKPaymentProvisioningFlowController__requestVerificationOptionsForPa
   }
 }
 
-- (void)_updateVerificationForPass:(id)a3 channel:(id)a4 context:(id)a5
+- (void)_updateVerificationForPass:(id)pass channel:(id)channel context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  passCopy = pass;
+  contextCopy = context;
   webService = self->_webService;
-  v11 = a4;
-  v12 = [(PKPaymentWebService *)webService verificationRecordForPass:v8];
+  channelCopy = channel;
+  v12 = [(PKPaymentWebService *)webService verificationRecordForPass:passCopy];
   v13 = objc_alloc_init(MEMORY[0x277D38168]);
-  v14 = [v12 currentStepIdentifier];
-  [v13 setStepIdentifier:v14];
+  currentStepIdentifier = [v12 currentStepIdentifier];
+  [v13 setStepIdentifier:currentStepIdentifier];
 
-  [v13 setPass:v8];
-  [v13 setChannel:v11];
+  [v13 setPass:passCopy];
+  [v13 setChannel:channelCopy];
 
   v15 = self->_webService;
   v18[0] = MEMORY[0x277D85DD0];
@@ -4665,10 +4665,10 @@ void __83__NPKPaymentProvisioningFlowController__requestVerificationOptionsForPa
   v18[2] = __83__NPKPaymentProvisioningFlowController__updateVerificationForPass_channel_context___block_invoke;
   v18[3] = &unk_2799465F8;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v16 = v9;
-  v17 = v8;
+  v19 = passCopy;
+  v20 = contextCopy;
+  v16 = contextCopy;
+  v17 = passCopy;
   [(PKPaymentWebService *)v15 updateVerification:v13 completion:v18];
 }
 
@@ -4731,26 +4731,26 @@ void __83__NPKPaymentProvisioningFlowController__updateVerificationForPass_chann
   }
 }
 
-- (void)_handleVerificationFieldsForPass:(id)a3 context:(id)a4
+- (void)_handleVerificationFieldsForPass:(id)pass context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentWebService *)self->_webService verificationRecordForPass:v6];
+  passCopy = pass;
+  contextCopy = context;
+  v8 = [(PKPaymentWebService *)self->_webService verificationRecordForPass:passCopy];
   v9 = objc_alloc_init(MEMORY[0x277D38168]);
-  v10 = [v8 currentStepIdentifier];
-  [v9 setStepIdentifier:v10];
+  currentStepIdentifier = [v8 currentStepIdentifier];
+  [v9 setStepIdentifier:currentStepIdentifier];
 
-  [v9 setPass:v6];
-  v11 = [v8 channel];
-  [v9 setChannel:v11];
+  [v9 setPass:passCopy];
+  channel = [v8 channel];
+  [v9 setChannel:channel];
 
-  v12 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
+  fieldsModel = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
   v13 = *MEMORY[0x277D38940];
-  v14 = [v12 submissionValuesForDestination:*MEMORY[0x277D38940]];
+  v14 = [fieldsModel submissionValuesForDestination:*MEMORY[0x277D38940]];
 
   [v9 setOverlayParameters:v14];
-  v15 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
-  v16 = [v15 secureSubmissionValuesForDestination:v13];
+  fieldsModel2 = [(NPKPaymentProvisioningFlowController *)self fieldsModel];
+  v16 = [fieldsModel2 secureSubmissionValuesForDestination:v13];
 
   [v9 setSecureOverlayParameters:v16];
   webService = self->_webService;
@@ -4759,10 +4759,10 @@ void __83__NPKPaymentProvisioningFlowController__updateVerificationForPass_chann
   v20[2] = __81__NPKPaymentProvisioningFlowController__handleVerificationFieldsForPass_context___block_invoke;
   v20[3] = &unk_2799465F8;
   v20[4] = self;
-  v21 = v6;
-  v22 = v7;
-  v18 = v7;
-  v19 = v6;
+  v21 = passCopy;
+  v22 = contextCopy;
+  v18 = contextCopy;
+  v19 = passCopy;
   [(PKPaymentWebService *)webService updateVerification:v9 completion:v20];
 }
 
@@ -4825,18 +4825,18 @@ void __81__NPKPaymentProvisioningFlowController__handleVerificationFieldsForPass
   }
 }
 
-- (void)_handleVerificationCode:(id)a3 forPass:(id)a4 context:(id)a5
+- (void)_handleVerificationCode:(id)code forPass:(id)pass context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   webService = self->_webService;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__NPKPaymentProvisioningFlowController__handleVerificationCode_forPass_context___block_invoke;
   v11[3] = &unk_279946620;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [(PKPaymentWebService *)webService submitVerificationCode:a3 verificationData:0 forPass:a4 completion:v11];
+  v12 = contextCopy;
+  v10 = contextCopy;
+  [(PKPaymentWebService *)webService submitVerificationCode:code verificationData:0 forPass:pass completion:v11];
 }
 
 void __80__NPKPaymentProvisioningFlowController__handleVerificationCode_forPass_context___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -4902,40 +4902,40 @@ void __80__NPKPaymentProvisioningFlowController__handleVerificationCode_forPass_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadAndAddUpdatedPassForPaymentPass:(id)a3 completion:(id)a4
+- (void)_downloadAndAddUpdatedPassForPaymentPass:(id)pass completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  completionCopy = completion;
   webService = self->_webService;
-  v9 = [v6 passTypeIdentifier];
-  v10 = [v6 serialNumber];
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  serialNumber = [passCopy serialNumber];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __92__NPKPaymentProvisioningFlowController__downloadAndAddUpdatedPassForPaymentPass_completion___block_invoke;
   v13[3] = &unk_279946648;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  [(PKPaymentWebService *)webService passWithPassTypeIdentifier:v9 serialNumber:v10 completion:v13];
+  v14 = passCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = passCopy;
+  [(PKPaymentWebService *)webService passWithPassTypeIdentifier:passTypeIdentifier serialNumber:serialNumber completion:v13];
 }
 
-- (void)_downloadRemoteAssetsAndAddPaymentPass:(id)a3 completion:(id)a4
+- (void)_downloadRemoteAssetsAndAddPaymentPass:(id)pass completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dataAccessor];
+  passCopy = pass;
+  completionCopy = completion;
+  dataAccessor = [passCopy dataAccessor];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddPaymentPass_completion___block_invoke;
   v11[3] = &unk_279946698;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:0 completion:v11];
+  v12 = passCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = passCopy;
+  [dataAccessor downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:0 completion:v11];
 }
 
 void __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddPaymentPass_completion___block_invoke(uint64_t a1, int a2)
@@ -4966,57 +4966,57 @@ uint64_t __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddP
   return result;
 }
 
-- (void)_provisioningLocalizedProgressDescriptionDidChange:(id)a3
+- (void)_provisioningLocalizedProgressDescriptionDidChange:(id)change
 {
   if (self->_currentStep == 210)
   {
     v7 = [[NPKPaymentProvisioningFlowControllerProvisioningProgressStepContext alloc] initWithRequestContext:self->_provisioningProgressRequestContext];
-    v5 = [(PKPaymentProvisioningController *)self->_provisioningController localizedProgressDescription];
-    [(NPKPaymentProvisioningFlowControllerProvisioningProgressStepContext *)v7 setLocalizedProgressDescription:v5];
+    localizedProgressDescription = [(PKPaymentProvisioningController *)self->_provisioningController localizedProgressDescription];
+    [(NPKPaymentProvisioningFlowControllerProvisioningProgressStepContext *)v7 setLocalizedProgressDescription:localizedProgressDescription];
 
-    v6 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-    [(NPKPaymentProvisioningFlowControllerProvisioningProgressStepContext *)v7 setProduct:v6];
+    currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+    [(NPKPaymentProvisioningFlowControllerProvisioningProgressStepContext *)v7 setProduct:currentProduct];
 
     [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:210 withContext:v7];
   }
 }
 
-- (void)_transitionToChooseFlowWithSections:(id)a3 requestContext:(id)a4
+- (void)_transitionToChooseFlowWithSections:(id)sections requestContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NPKPaymentProvisioningFlowControllerChooseFlowStepContext alloc] initWithRequestContext:v6];
+  contextCopy = context;
+  sectionsCopy = sections;
+  v8 = [[NPKPaymentProvisioningFlowControllerChooseFlowStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerChooseFlowStepContext *)v8 setSections:v7];
+  [(NPKPaymentProvisioningFlowControllerChooseFlowStepContext *)v8 setSections:sectionsCopy];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:130 withContext:v8];
 }
 
-- (void)_transitionToChooseProductWithProducts:(id)a3 requestContext:(id)a4
+- (void)_transitionToChooseProductWithProducts:(id)products requestContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NPKPaymentProvisioningFlowControllerChooseProductStepContext alloc] initWithRequestContext:v6];
+  contextCopy = context;
+  productsCopy = products;
+  v8 = [[NPKPaymentProvisioningFlowControllerChooseProductStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerChooseProductStepContext *)v8 setProducts:v7];
+  [(NPKPaymentProvisioningFlowControllerChooseProductStepContext *)v8 setProducts:productsCopy];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:135 withContext:v8];
 }
 
-- (void)_transitionBasedOnTermsForReason:(unint64_t)a3 URL:(id)a4 requestContext:(id)a5
+- (void)_transitionBasedOnTermsForReason:(unint64_t)reason URL:(id)l requestContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  self->_termsReason = a3;
-  v9 = a5;
-  v10 = [[NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext alloc] initWithRequestContext:v9];
+  lCopy = l;
+  self->_termsReason = reason;
+  contextCopy = context;
+  v10 = [[NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext alloc] initWithRequestContext:contextCopy];
 
-  v11 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-  [(NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext *)v10 setProduct:v11];
+  currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+  [(NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext *)v10 setProduct:currentProduct];
 
-  [(NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext *)v10 setTermsURL:v8];
-  v12 = [(PKPaymentWebService *)self->_webService context];
-  -[NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext setAllowNonSecureHTTP:](v10, "setAllowNonSecureHTTP:", [v12 devSigned]);
+  [(NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext *)v10 setTermsURL:lCopy];
+  context = [(PKPaymentWebService *)self->_webService context];
+  -[NPKPaymentProvisioningFlowControllerTermsAndConditionsStepContext setAllowNonSecureHTTP:](v10, "setAllowNonSecureHTTP:", [context devSigned]);
 
-  if (v8 && !self->_termsAcceptedOutOfBand)
+  if (lCopy && !self->_termsAcceptedOutOfBand)
   {
     [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:200 withContext:v10];
   }
@@ -5033,7 +5033,7 @@ uint64_t __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddP
       {
         termsAcceptedOutOfBand = self->_termsAcceptedOutOfBand;
         v19 = 138412546;
-        v20 = v8;
+        v20 = lCopy;
         v21 = 1024;
         v22 = termsAcceptedOutOfBand;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Not showing terms (termsURL %@, accepted out of band %d)", &v19, 0x12u);
@@ -5041,17 +5041,17 @@ uint64_t __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddP
     }
 
     self->_termsAcceptedOutOfBand = 0;
-    v17 = [(NPKPaymentProvisioningFlowStepContext *)v10 requestContext];
-    [(NPKPaymentProvisioningFlowController *)self acceptTerms:v17];
+    requestContext = [(NPKPaymentProvisioningFlowStepContext *)v10 requestContext];
+    [(NPKPaymentProvisioningFlowController *)self acceptTerms:requestContext];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToProvisioningProgressWithRequestContext:(id)a3
+- (void)_transitionToProvisioningProgressWithRequestContext:(id)context
 {
-  v7 = a3;
-  objc_storeStrong(&self->_provisioningProgressRequestContext, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_provisioningProgressRequestContext, context);
   currentStep = self->_currentStep;
   if (currentStep != 165 && currentStep != 210)
   {
@@ -5060,13 +5060,13 @@ uint64_t __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddP
   }
 }
 
-- (void)_transitionToProvisioningForCredential:(id)a3 product:(id)a4 requestContext:(id)a5
+- (void)_transitionToProvisioningForCredential:(id)credential product:(id)product requestContext:(id)context
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isRemoteCredential] && (objc_msgSend(v8, "remoteCredential"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "status"), v11, v12 != 1))
+  credentialCopy = credential;
+  productCopy = product;
+  contextCopy = context;
+  if ([credentialCopy isRemoteCredential] && (objc_msgSend(credentialCopy, "remoteCredential"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "status"), v11, v12 != 1))
   {
     v18 = pk_General_log();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_ERROR);
@@ -5079,12 +5079,12 @@ uint64_t __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddP
     v16 = pk_General_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v9 displayName];
-      v21 = [v8 longDescription];
+      displayName = [productCopy displayName];
+      longDescription = [credentialCopy longDescription];
       v22 = 138412546;
-      v23 = v20;
+      v23 = displayName;
       v24 = 2112;
-      v25 = v21;
+      v25 = longDescription;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_ERROR, "Error: Error: No valid provisioning methods exist for product[%@] credential [%@]", &v22, 0x16u);
     }
   }
@@ -5104,59 +5104,59 @@ uint64_t __90__NPKPaymentProvisioningFlowController__downloadRemoteAssetsAndAddP
       }
     }
 
-    v26[0] = v8;
+    v26[0] = credentialCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-    [(NPKPaymentProvisioningFlowController *)self _handleProceedWithCredentials:v16 chosenByUser:0 requestContext:v10];
+    [(NPKPaymentProvisioningFlowController *)self _handleProceedWithCredentials:v16 chosenByUser:0 requestContext:contextCopy];
   }
 
 LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionBasedOnCredentials:(id)a3 product:(id)a4 requestContext:(id)a5
+- (void)_transitionBasedOnCredentials:(id)credentials product:(id)product requestContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 count])
+  credentialsCopy = credentials;
+  productCopy = product;
+  contextCopy = context;
+  if (![credentialsCopy count])
   {
     v14 = pk_Payment_log();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
-    if (v9)
+    if (productCopy)
     {
       if (v15)
       {
         v16 = pk_Payment_log();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v9 productIdentifier];
-          v18 = [v9 provisioningMethodTypes];
+          productIdentifier = [productCopy productIdentifier];
+          provisioningMethodTypes = [productCopy provisioningMethodTypes];
           v27 = 138412546;
-          v28 = v17;
+          v28 = productIdentifier;
           v29 = 2112;
-          v30 = v18;
+          v30 = provisioningMethodTypes;
           _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Have product with identifier %@ provisioning method types %@", &v27, 0x16u);
         }
       }
 
       if (!NPKPaymentProvisioningSetupContextIsSetupAssistant(self->_setupContext))
       {
-        v19 = [v9 provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
+        v19 = [productCopy provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
 
         if (v19)
         {
-          [(NPKPaymentProvisioningFlowController *)self _transitionToDigitalIssuanceForProduct:v9 requestContext:v10];
+          [(NPKPaymentProvisioningFlowController *)self _transitionToDigitalIssuanceForProduct:productCopy requestContext:contextCopy];
           goto LABEL_27;
         }
       }
 
-      v20 = [v9 provisioningMethodMetadataForType:*MEMORY[0x277D388E8]];
+      v20 = [productCopy provisioningMethodMetadataForType:*MEMORY[0x277D388E8]];
 
       if (v20)
       {
-        [(NPKPaymentProvisioningFlowController *)self _transitionToReaderModeForProduct:v9 requestContext:v10];
+        [(NPKPaymentProvisioningFlowController *)self _transitionToReaderModeForProduct:productCopy requestContext:contextCopy];
         goto LABEL_27;
       }
 
@@ -5187,7 +5187,7 @@ LABEL_9:
       }
     }
 
-    [(NPKPaymentProvisioningFlowController *)self _transitionToManualEntry:v10];
+    [(NPKPaymentProvisioningFlowController *)self _transitionToManualEntry:contextCopy];
     goto LABEL_27;
   }
 
@@ -5204,26 +5204,26 @@ LABEL_9:
     }
   }
 
-  [(NPKPaymentProvisioningFlowController *)self _transitionToChooseCredentials:v8 product:v9 requestContext:v10];
+  [(NPKPaymentProvisioningFlowController *)self _transitionToChooseCredentials:credentialsCopy product:productCopy requestContext:contextCopy];
 LABEL_27:
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToChooseCredentials:(id)a3 product:(id)a4 requestContext:(id)a5
+- (void)_transitionToChooseCredentials:(id)credentials product:(id)product requestContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v24 = a4;
-  v23 = a5;
-  v21 = [[NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext alloc] initWithRequestContext:v23];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [MEMORY[0x277CBEB18] array];
+  credentialsCopy = credentials;
+  productCopy = product;
+  contextCopy = context;
+  v21 = [[NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext alloc] initWithRequestContext:contextCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v7;
+  obj = credentialsCopy;
   v10 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -5239,22 +5239,22 @@ LABEL_27:
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 remoteCredential];
-        v16 = [v15 identifier];
-        v17 = v16;
-        if (v16)
+        remoteCredential = [v14 remoteCredential];
+        identifier = [remoteCredential identifier];
+        v17 = identifier;
+        if (identifier)
         {
-          v18 = v16;
+          uUIDString = identifier;
         }
 
         else
         {
-          v19 = [MEMORY[0x277CCAD78] UUID];
-          v18 = [v19 UUIDString];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
         }
 
-        [v9 addObject:v18];
-        [v8 setObject:v14 forKey:v18];
+        [array addObject:uUIDString];
+        [dictionary setObject:v14 forKey:uUIDString];
       }
 
       v11 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -5263,37 +5263,37 @@ LABEL_27:
     while (v11);
   }
 
-  [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setFlowIdentifiers:v9];
-  [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setFlowIdentifierToCredential:v8];
+  [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setFlowIdentifiers:array];
+  [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setFlowIdentifierToCredential:dictionary];
   [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setAllowsManualEntry:1];
-  [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setProduct:v24];
+  [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setProduct:productCopy];
   [(NPKPaymentProvisioningFlowControllerChooseCredentialsStepContext *)v21 setCredentials:obj];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:140 withContext:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToAppleBalanceAccountDetailsWithProduct:(id)a3 requestContext:(id)a4
+- (void)_transitionToAppleBalanceAccountDetailsWithProduct:(id)product requestContext:(id)context
 {
-  v5 = a4;
-  v20 = [[NPKPaymentProvisioningFlowControllerAppleBalanceAccountDetailsStepContext alloc] initWithRequestContext:v5];
+  contextCopy = context;
+  v20 = [[NPKPaymentProvisioningFlowControllerAppleBalanceAccountDetailsStepContext alloc] initWithRequestContext:contextCopy];
 
-  v6 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
-  v7 = [v6 webService];
-  v8 = [v7 targetDevice];
-  v9 = [v8 appleAccountInformation];
-  v10 = [v9 appleID];
+  provisioningController = [(NPKPaymentProvisioningFlowController *)self provisioningController];
+  webService = [provisioningController webService];
+  targetDevice = [webService targetDevice];
+  appleAccountInformation = [targetDevice appleAccountInformation];
+  appleID = [appleAccountInformation appleID];
 
-  [(NPKPaymentProvisioningFlowControllerAppleBalanceAccountDetailsStepContext *)v20 setAppleID:v10];
-  v11 = [(NPKPaymentProvisioningFlowController *)self currentAppleBalanceCredential];
-  v12 = [v11 eligibilityResponse];
-  v13 = [v12 supplementaryData];
-  v14 = [v13 lightweightAccount];
+  [(NPKPaymentProvisioningFlowControllerAppleBalanceAccountDetailsStepContext *)v20 setAppleID:appleID];
+  currentAppleBalanceCredential = [(NPKPaymentProvisioningFlowController *)self currentAppleBalanceCredential];
+  eligibilityResponse = [currentAppleBalanceCredential eligibilityResponse];
+  supplementaryData = [eligibilityResponse supplementaryData];
+  lightweightAccount = [supplementaryData lightweightAccount];
 
-  v15 = [v14 appleBalanceDetails];
-  v16 = [v15 accountSummary];
-  v17 = [v16 currentBalance];
-  v18 = [v15 currencyCode];
+  appleBalanceDetails = [lightweightAccount appleBalanceDetails];
+  accountSummary = [appleBalanceDetails accountSummary];
+  currentBalance = [accountSummary currentBalance];
+  currencyCode = [appleBalanceDetails currencyCode];
   v19 = PKCurrencyAmountMake();
   [(NPKPaymentProvisioningFlowControllerAppleBalanceAccountDetailsStepContext *)v20 setBalance:v19];
 
@@ -5302,15 +5302,15 @@ LABEL_27:
 
 - (id)_curatedDefaultPaymentSetupProvisioningFields
 {
-  v3 = [MEMORY[0x277D38110] defaultPaymentSetupProvisioningFields];
+  defaultPaymentSetupProvisioningFields = [MEMORY[0x277D38110] defaultPaymentSetupProvisioningFields];
   if ([(PKPaymentProvisioningController *)self->_provisioningController suppressDefaultCardholderNameField])
   {
-    v4 = [v3 pk_objectsPassingTest:&__block_literal_global_151];
+    v4 = [defaultPaymentSetupProvisioningFields pk_objectsPassingTest:&__block_literal_global_151];
 
-    v3 = v4;
+    defaultPaymentSetupProvisioningFields = v4;
   }
 
-  return v3;
+  return defaultPaymentSetupProvisioningFields;
 }
 
 uint64_t __85__NPKPaymentProvisioningFlowController__curatedDefaultPaymentSetupProvisioningFields__block_invoke(uint64_t a1, void *a2)
@@ -5321,33 +5321,33 @@ uint64_t __85__NPKPaymentProvisioningFlowController__curatedDefaultPaymentSetupP
   return v3 ^ 1u;
 }
 
-- (void)_transitionToManualEntry:(id)a3
+- (void)_transitionToManualEntry:(id)entry
 {
   v39 = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  entryCopy = entry;
   currentCredential = self->_currentCredential;
   self->_currentCredential = 0;
 
   v5 = objc_alloc(MEMORY[0x277D38110]);
-  v6 = [(NPKPaymentProvisioningFlowController *)self _curatedDefaultPaymentSetupProvisioningFields];
-  v7 = [v5 initWithPaymentSetupFields:v6];
+  _curatedDefaultPaymentSetupProvisioningFields = [(NPKPaymentProvisioningFlowController *)self _curatedDefaultPaymentSetupProvisioningFields];
+  v7 = [v5 initWithPaymentSetupFields:_curatedDefaultPaymentSetupProvisioningFields];
   fieldsModel = self->_fieldsModel;
   self->_fieldsModel = v7;
 
   [(PKPaymentProvisioningController *)self->_provisioningController resetForNewProvisioning];
-  v9 = [(PKPaymentWebService *)self->_webService context];
-  v10 = [v9 configuration];
+  context = [(PKPaymentWebService *)self->_webService context];
+  configuration = [context configuration];
 
-  v11 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v12 = [v11 deviceRegion];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
-  v30 = [v10 cameraFirstProvisioningEnabledForRegion:v12];
-  v13 = [(NPKPaymentProvisioningFlowController *)self _curatedDefaultPaymentSetupProvisioningFields];
+  v30 = [configuration cameraFirstProvisioningEnabledForRegion:deviceRegion];
+  _curatedDefaultPaymentSetupProvisioningFields2 = [(NPKPaymentProvisioningFlowController *)self _curatedDefaultPaymentSetupProvisioningFields];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v14 = [_curatedDefaultPaymentSetupProvisioningFields2 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v14)
   {
     v15 = v14;
@@ -5358,33 +5358,33 @@ uint64_t __85__NPKPaymentProvisioningFlowController__curatedDefaultPaymentSetupP
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(_curatedDefaultPaymentSetupProvisioningFields2);
         }
 
         v18 = *(*(&v32 + 1) + 8 * i);
-        v19 = [v18 defaultValue];
+        defaultValue = [v18 defaultValue];
 
-        if (!v19)
+        if (!defaultValue)
         {
           v20 = self->_fieldsModel;
-          v21 = [v18 identifier];
-          v22 = [(PKPaymentSetupFieldsModel *)v20 paymentSetupFieldWithIdentifier:v21];
+          identifier = [v18 identifier];
+          v22 = [(PKPaymentSetupFieldsModel *)v20 paymentSetupFieldWithIdentifier:identifier];
 
           if (v22)
           {
-            v23 = [v22 defaultValue];
-            [v18 setDefaultValue:v23];
+            defaultValue2 = [v22 defaultValue];
+            [v18 setDefaultValue:defaultValue2];
           }
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v15 = [_curatedDefaultPaymentSetupProvisioningFields2 countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v15);
   }
 
-  v24 = [v13 count];
+  v24 = [_curatedDefaultPaymentSetupProvisioningFields2 count];
   v25 = pk_Payment_log();
   v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
 
@@ -5399,9 +5399,9 @@ uint64_t __85__NPKPaymentProvisioningFlowController__curatedDefaultPaymentSetupP
     }
   }
 
-  v28 = [[NPKPaymentProvisioningFlowControllerManualEntryStepContext alloc] initWithRequestContext:v31];
+  v28 = [[NPKPaymentProvisioningFlowControllerManualEntryStepContext alloc] initWithRequestContext:entryCopy];
   [(NPKPaymentProvisioningFlowControllerManualEntryStepContext *)v28 setCameraFirstProvisioningEnabled:v30];
-  [(NPKPaymentProvisioningFlowControllerManualEntryStepContext *)v28 setSetupFields:v13];
+  [(NPKPaymentProvisioningFlowControllerManualEntryStepContext *)v28 setSetupFields:_curatedDefaultPaymentSetupProvisioningFields2];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:180 withContext:v28];
 
   v29 = *MEMORY[0x277D85DE8];
@@ -5417,23 +5417,23 @@ uint64_t __85__NPKPaymentProvisioningFlowController__curatedDefaultPaymentSetupP
   return v2;
 }
 
-- (id)_secondaryFilteredFields:(id)a3 forCredential:(id)a4
+- (id)_secondaryFilteredFields:(id)fields forCredential:(id)credential
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  fieldsCopy = fields;
+  v7 = fieldsCopy;
+  if (credential)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __79__NPKPaymentProvisioningFlowController__secondaryFilteredFields_forCredential___block_invoke;
     v11[3] = &unk_2799466E0;
     v11[4] = self;
-    v8 = [v6 pk_objectsPassingTest:v11];
+    v8 = [fieldsCopy pk_objectsPassingTest:v11];
   }
 
   else
   {
-    v8 = v6;
+    v8 = fieldsCopy;
   }
 
   v9 = v8;
@@ -5450,17 +5450,17 @@ uint64_t __79__NPKPaymentProvisioningFlowController__secondaryFilteredFields_for
   return v5 ^ 1u;
 }
 
-- (void)_transitionToSecondaryManualEntryWithFields:(id)a3 credential:(id)a4 requestContext:(id)a5
+- (void)_transitionToSecondaryManualEntryWithFields:(id)fields credential:(id)credential requestContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  credentialCopy = credential;
   fieldsModel = self->_fieldsModel;
-  v10 = a5;
-  [(PKPaymentSetupFieldsModel *)fieldsModel updateWithPaymentSetupFields:a3];
+  contextCopy = context;
+  [(PKPaymentSetupFieldsModel *)fieldsModel updateWithPaymentSetupFields:fields];
   v11 = [(NPKPaymentProvisioningFlowController *)self _fieldsModelCompleteExceptForLocalFields:self->_fieldsModel];
   if (v11)
   {
-    v12 = [[NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext alloc] initWithRequestContext:v10];
+    v12 = [[NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext alloc] initWithRequestContext:contextCopy];
 
     v13 = pk_Payment_log();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -5470,11 +5470,11 @@ uint64_t __79__NPKPaymentProvisioningFlowController__secondaryFilteredFields_for
       v15 = pk_Payment_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel incompletePaymentSetupFields];
+        incompletePaymentSetupFields = [(PKPaymentSetupFieldsModel *)self->_fieldsModel incompletePaymentSetupFields];
         v28 = 138412546;
-        v29 = v8;
+        v29 = credentialCopy;
         v30 = 2048;
-        v31 = [v16 count];
+        v31 = [incompletePaymentSetupFields count];
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Entered Local Device Manual Entry for credential %@. There are %lu incomplete fields.", &v28, 0x16u);
       }
 
@@ -5489,7 +5489,7 @@ LABEL_10:
 
   else
   {
-    v12 = [[NPKPaymentProvisioningFlowControllerSecondaryManualEntryStepContext alloc] initWithRequestContext:v10];
+    v12 = [[NPKPaymentProvisioningFlowControllerSecondaryManualEntryStepContext alloc] initWithRequestContext:contextCopy];
 
     v18 = pk_Payment_log();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -5499,11 +5499,11 @@ LABEL_10:
       v15 = pk_Payment_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel incompletePaymentSetupFields];
+        incompletePaymentSetupFields2 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel incompletePaymentSetupFields];
         v28 = 138412546;
-        v29 = v8;
+        v29 = credentialCopy;
         v30 = 2048;
-        v31 = [v20 count];
+        v31 = [incompletePaymentSetupFields2 count];
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Entered Secondary Manual Entry for credential %@. There are %lu incomplete fields.", &v28, 0x16u);
       }
 
@@ -5515,14 +5515,14 @@ LABEL_10:
   }
 
 LABEL_13:
-  v21 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
-  v22 = [(NPKPaymentProvisioningFlowController *)self _filteredPaymentSetupFields:v21 forLocalDeviceEntry:v11];
+  paymentSetupFields = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFields];
+  v22 = [(NPKPaymentProvisioningFlowController *)self _filteredPaymentSetupFields:paymentSetupFields forLocalDeviceEntry:v11];
 
-  v23 = [(NPKPaymentProvisioningFlowController *)self _secondaryFilteredFields:v22 forCredential:v8];
+  v23 = [(NPKPaymentProvisioningFlowController *)self _secondaryFilteredFields:v22 forCredential:credentialCopy];
   [(NPKPaymentProvisioningFlowControllerManualEntryStepContext *)v12 setSetupFields:v23];
-  [(NPKPaymentProvisioningFlowControllerSecondaryManualEntryStepContext *)v12 setCredential:v8];
-  v24 = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
-  v25 = [v24 count];
+  [(NPKPaymentProvisioningFlowControllerSecondaryManualEntryStepContext *)v12 setCredential:credentialCopy];
+  credentialProvisioningQueue = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
+  v25 = [credentialProvisioningQueue count];
 
   if (v25)
   {
@@ -5531,7 +5531,7 @@ LABEL_13:
 
   else
   {
-    v26 = v8 != 0;
+    v26 = credentialCopy != 0;
   }
 
   [(NPKPaymentProvisioningFlowStepContext *)v12 setAllowsAddLater:v25 != 0];
@@ -5541,22 +5541,22 @@ LABEL_13:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToProductDisambiguationWithProducts:(id)a3 requestContext:(id)a4
+- (void)_transitionToProductDisambiguationWithProducts:(id)products requestContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NPKPaymentProvisioningFlowControllerProductDisambiguationStepContext alloc] initWithRequestContext:v6];
+  contextCopy = context;
+  productsCopy = products;
+  v8 = [[NPKPaymentProvisioningFlowControllerProductDisambiguationStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerProductDisambiguationStepContext *)v8 setProducts:v7];
+  [(NPKPaymentProvisioningFlowControllerProductDisambiguationStepContext *)v8 setProducts:productsCopy];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:195 withContext:v8];
 }
 
-- (void)_transitionToMoreInformationWithItems:(id)a3 pass:(id)a4 requestContext:(id)a5
+- (void)_transitionToMoreInformationWithItems:(id)items pass:(id)pass requestContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  itemsCopy = items;
+  contextCopy = context;
+  passCopy = pass;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -5566,26 +5566,26 @@ LABEL_13:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134217984;
-      v17 = [v8 count];
+      v17 = [itemsCopy count];
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Entered more information step. There are %lu more info items", &v16, 0xCu);
     }
   }
 
-  v14 = [[NPKPaymentProvisioningFlowControllerMoreInformationStepContext alloc] initWithRequestContext:v9];
+  v14 = [[NPKPaymentProvisioningFlowControllerMoreInformationStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerMoreInformationStepContext *)v14 setPaymentPass:v10];
-  [(NPKPaymentProvisioningFlowControllerMoreInformationStepContext *)v14 setMoreInfoItems:v8];
+  [(NPKPaymentProvisioningFlowControllerMoreInformationStepContext *)v14 setPaymentPass:passCopy];
+  [(NPKPaymentProvisioningFlowControllerMoreInformationStepContext *)v14 setMoreInfoItems:itemsCopy];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:157 withContext:v14];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToVerificationChannelsWithPaymentPass:(id)a3 channels:(id)a4 requestContext:(id)a5
+- (void)_transitionToVerificationChannelsWithPaymentPass:(id)pass channels:(id)channels requestContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  channelsCopy = channels;
+  contextCopy = context;
+  passCopy = pass;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -5595,27 +5595,27 @@ LABEL_13:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134217984;
-      v17 = [v8 count];
+      v17 = [channelsCopy count];
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Entered verification options step. There are %lu channels", &v16, 0xCu);
     }
   }
 
-  v14 = [[NPKPaymentProvisioningFlowControllerIssuerVerificationChannelsStepContext alloc] initWithRequestContext:v9];
+  v14 = [[NPKPaymentProvisioningFlowControllerIssuerVerificationChannelsStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerIssuerVerificationChannelsStepContext *)v14 setPaymentPass:v10];
-  [(NPKPaymentProvisioningFlowControllerIssuerVerificationChannelsStepContext *)v14 setVerificationChannels:v8];
+  [(NPKPaymentProvisioningFlowControllerIssuerVerificationChannelsStepContext *)v14 setPaymentPass:passCopy];
+  [(NPKPaymentProvisioningFlowControllerIssuerVerificationChannelsStepContext *)v14 setVerificationChannels:channelsCopy];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:230 withContext:v14];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToVerificationFieldsWithPaymentPass:(id)a3 fields:(id)a4 requestContext:(id)a5
+- (void)_transitionToVerificationFieldsWithPaymentPass:(id)pass fields:(id)fields requestContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 count];
+  contextCopy = context;
+  fieldsCopy = fields;
+  passCopy = pass;
+  v11 = [fieldsCopy count];
   v12 = pk_Payment_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -5630,21 +5630,21 @@ LABEL_13:
     }
   }
 
-  v15 = [[NPKPaymentProvisioningFlowControllerIssuerVerificationFieldsStepContext alloc] initWithRequestContext:v8];
+  v15 = [[NPKPaymentProvisioningFlowControllerIssuerVerificationFieldsStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerIssuerVerificationFieldsStepContext *)v15 setPaymentPass:v10];
-  [(NPKPaymentProvisioningFlowControllerIssuerVerificationFieldsStepContext *)v15 setVerificationFields:v9];
+  [(NPKPaymentProvisioningFlowControllerIssuerVerificationFieldsStepContext *)v15 setPaymentPass:passCopy];
+  [(NPKPaymentProvisioningFlowControllerIssuerVerificationFieldsStepContext *)v15 setVerificationFields:fieldsCopy];
 
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:240 withContext:v15];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToVerificationCodeWithPaymentPass:(id)a3 channel:(id)a4 requestContext:(id)a5
+- (void)_transitionToVerificationCodeWithPaymentPass:(id)pass channel:(id)channel requestContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  channelCopy = channel;
+  contextCopy = context;
+  passCopy = pass;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -5653,27 +5653,27 @@ LABEL_13:
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 description];
+      v14 = [channelCopy description];
       v17 = 136315138;
-      v18 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Standalone: Entered verification code step with channel %s", &v17, 0xCu);
     }
   }
 
-  v15 = [[NPKPaymentProvisioningFlowControllerIssuerVerificationCodeStepContext alloc] initWithRequestContext:v9];
+  v15 = [[NPKPaymentProvisioningFlowControllerIssuerVerificationCodeStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerIssuerVerificationCodeStepContext *)v15 setPaymentPass:v10];
-  [(NPKPaymentProvisioningFlowControllerIssuerVerificationCodeStepContext *)v15 setVerificationChannel:v8];
+  [(NPKPaymentProvisioningFlowControllerIssuerVerificationCodeStepContext *)v15 setPaymentPass:passCopy];
+  [(NPKPaymentProvisioningFlowControllerIssuerVerificationCodeStepContext *)v15 setVerificationChannel:channelCopy];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:250 withContext:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleEndOfProvisioningFlowForCurrentPass:(id)a3 requestContext:(id)a4
+- (void)_handleEndOfProvisioningFlowForCurrentPass:(id)pass requestContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  contextCopy = context;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -5688,10 +5688,10 @@ LABEL_13:
   }
 
   self->_termsAcceptedOutOfBand = 0;
-  v11 = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
-  v12 = [v11 remaining];
-  v13 = [v11 nextCredentialToProvision];
-  if (v13)
+  credentialProvisioningQueue = [(PKPaymentProvisioningController *)self->_provisioningController credentialProvisioningQueue];
+  remaining = [credentialProvisioningQueue remaining];
+  nextCredentialToProvision = [credentialProvisioningQueue nextCredentialToProvision];
+  if (nextCredentialToProvision)
   {
     v14 = pk_Payment_log();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -5702,102 +5702,102 @@ LABEL_13:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18[0] = 67109378;
-        v18[1] = v12;
+        v18[1] = remaining;
         v19 = 2112;
-        v20 = v13;
+        v20 = nextCredentialToProvision;
         _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: %d credentials remaining; moving to credential: %@", v18, 0x12u);
       }
     }
 
-    [(NPKPaymentProvisioningFlowController *)self _startProvisioningForCredential:v13 requestContext:v7];
+    [(NPKPaymentProvisioningFlowController *)self _startProvisioningForCredential:nextCredentialToProvision requestContext:contextCopy];
   }
 
   else
   {
-    [(NPKPaymentProvisioningFlowController *)self _endProvisioningFlowWithSuccessForPass:v6 requestContext:v7];
+    [(NPKPaymentProvisioningFlowController *)self _endProvisioningFlowWithSuccessForPass:passCopy requestContext:contextCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_endProvisioningFlowWithSuccessForPass:(id)a3 requestContext:(id)a4
+- (void)_endProvisioningFlowWithSuccessForPass:(id)pass requestContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NPKPaymentProvisioningFlowControllerProvisioningResultStepContext alloc] initWithRequestContext:v6];
+  contextCopy = context;
+  passCopy = pass;
+  v8 = [[NPKPaymentProvisioningFlowControllerProvisioningResultStepContext alloc] initWithRequestContext:contextCopy];
 
   [(NPKPaymentProvisioningFlowControllerProvisioningResultStepContext *)v8 setCardAdded:1];
-  [(NPKPaymentProvisioningFlowControllerProvisioningResultStepContext *)v8 setProvisionedPass:v7];
+  [(NPKPaymentProvisioningFlowControllerProvisioningResultStepContext *)v8 setProvisionedPass:passCopy];
 
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:220 withContext:v8];
 }
 
-- (void)_endProvisioningFlowWithError:(id)a3 requestContext:(id)a4
+- (void)_endProvisioningFlowWithError:(id)error requestContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NPKPaymentProvisioningFlowControllerProvisioningResultStepContext alloc] initWithRequestContext:v6];
+  contextCopy = context;
+  errorCopy = error;
+  v8 = [[NPKPaymentProvisioningFlowControllerProvisioningResultStepContext alloc] initWithRequestContext:contextCopy];
 
   [(NPKPaymentProvisioningFlowControllerProvisioningResultStepContext *)v8 setCardAdded:0];
-  [(NPKPaymentProvisioningFlowControllerProvisioningResultStepContext *)v8 setError:v7];
+  [(NPKPaymentProvisioningFlowControllerProvisioningResultStepContext *)v8 setError:errorCopy];
 
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:220 withContext:v8];
 }
 
-- (void)_performTransitionToStep:(int)a3 withContext:(id)a4
+- (void)_performTransitionToStep:(int)step withContext:(id)context
 {
-  v21 = a4;
-  if (([v21 allowsAddLater] & 1) == 0 && NPKPaymentProvisioningSetupContextIsSetupAssistant(self->_setupContext))
+  contextCopy = context;
+  if (([contextCopy allowsAddLater] & 1) == 0 && NPKPaymentProvisioningSetupContextIsSetupAssistant(self->_setupContext))
   {
-    [v21 setAllowsAddLater:1];
+    [contextCopy setAllowsAddLater:1];
   }
 
-  if (((a3 - 100) > 0x39 || ((1 << (a3 - 100)) & 0x200000000100401) == 0) && a3 != 220)
+  if (((step - 100) > 0x39 || ((1 << (step - 100)) & 0x200000000100401) == 0) && step != 220)
   {
-    if (a3 == 210 && (chooseCredentialsStepIdentifier = self->_immediatelyBeforeTermsStepIdentifier) != 0)
+    if (step == 210 && (chooseCredentialsStepIdentifier = self->_immediatelyBeforeTermsStepIdentifier) != 0)
     {
-      v7 = v21;
+      v7 = contextCopy;
     }
 
     else
     {
-      v8 = v21;
-      if (a3 != 190 || !self->_chooseCredentialsStepIdentifier)
+      v8 = contextCopy;
+      if (step != 190 || !self->_chooseCredentialsStepIdentifier)
       {
-        if (a3 != 150 || (digitalIssuanceAmountRequestContext = self->_digitalIssuanceAmountRequestContext) == 0)
+        if (step != 150 || (digitalIssuanceAmountRequestContext = self->_digitalIssuanceAmountRequestContext) == 0)
         {
 LABEL_16:
-          v11 = [v8 backStepIdentifier];
+          backStepIdentifier = [v8 backStepIdentifier];
 
-          if (!v11)
+          if (!backStepIdentifier)
           {
-            v12 = [v21 requestContext];
-            v13 = [v12 currentStepIdentifier];
-            [v21 setBackStepIdentifier:v13];
+            requestContext = [contextCopy requestContext];
+            currentStepIdentifier = [requestContext currentStepIdentifier];
+            [contextCopy setBackStepIdentifier:currentStepIdentifier];
           }
 
           goto LABEL_18;
         }
 
-        v20 = [(NPKPaymentProvisioningFlowControllerRequestContext *)digitalIssuanceAmountRequestContext currentStepIdentifier];
-        [v21 setBackStepIdentifier:v20];
+        currentStepIdentifier2 = [(NPKPaymentProvisioningFlowControllerRequestContext *)digitalIssuanceAmountRequestContext currentStepIdentifier];
+        [contextCopy setBackStepIdentifier:currentStepIdentifier2];
 
 LABEL_15:
-        v8 = v21;
+        v8 = contextCopy;
         goto LABEL_16;
       }
 
-      v9 = [v21 secondaryManualEntryStepContext];
-      v10 = [v9 credential];
+      secondaryManualEntryStepContext = [contextCopy secondaryManualEntryStepContext];
+      credential = [secondaryManualEntryStepContext credential];
 
-      v8 = v21;
-      if (!v10)
+      v8 = contextCopy;
+      if (!credential)
       {
         goto LABEL_16;
       }
 
       chooseCredentialsStepIdentifier = self->_chooseCredentialsStepIdentifier;
-      v7 = v21;
+      v7 = contextCopy;
     }
 
     [v7 setBackStepIdentifier:chooseCredentialsStepIdentifier];
@@ -5806,36 +5806,36 @@ LABEL_15:
 
 LABEL_18:
   currentStep = self->_currentStep;
-  self->_currentStep = a3;
-  if (a3 == 200)
+  self->_currentStep = step;
+  if (step == 200)
   {
-    v16 = [v21 requestContext];
-    v17 = [v16 currentStepIdentifier];
+    requestContext2 = [contextCopy requestContext];
+    currentStepIdentifier3 = [requestContext2 currentStepIdentifier];
     immediatelyBeforeTermsStepIdentifier = self->_immediatelyBeforeTermsStepIdentifier;
-    self->_immediatelyBeforeTermsStepIdentifier = v17;
+    self->_immediatelyBeforeTermsStepIdentifier = currentStepIdentifier3;
   }
 
   else
   {
-    if (a3 != 140)
+    if (step != 140)
     {
       goto LABEL_23;
     }
 
-    v15 = [v21 stepIdentifier];
-    v16 = self->_chooseCredentialsStepIdentifier;
-    self->_chooseCredentialsStepIdentifier = v15;
+    stepIdentifier = [contextCopy stepIdentifier];
+    requestContext2 = self->_chooseCredentialsStepIdentifier;
+    self->_chooseCredentialsStepIdentifier = stepIdentifier;
   }
 
 LABEL_23:
-  [(NPKPaymentProvisioningFlowController *)self _sendDidTransitionFromStep:currentStep toStep:self->_currentStep withContext:v21];
+  [(NPKPaymentProvisioningFlowController *)self _sendDidTransitionFromStep:currentStep toStep:self->_currentStep withContext:contextCopy];
 }
 
-- (void)_sendDidEncounterError:(id)a3 requestContext:(id)a4
+- (void)_sendDidEncounterError:(id)error requestContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  contextCopy = context;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -5845,28 +5845,28 @@ LABEL_23:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = errorCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Flow controller encountered error: %@", &v15, 0xCu);
     }
   }
 
-  if (v6)
+  if (errorCopy)
   {
     v11 = MEMORY[0x277D37D28];
-    v12 = NPKAnalyticsEventForError(@"nonFatalError", v6);
+    v12 = NPKAnalyticsEventForError(@"nonFatalError", errorCopy);
     [v11 subject:@"provisioning" sendEvent:v12];
   }
 
-  v13 = [(NPKPaymentProvisioningFlowController *)self delegate];
-  [v13 paymentProvisioningFlowController:self didEncounterError:v6 requestContext:v7];
+  delegate = [(NPKPaymentProvisioningFlowController *)self delegate];
+  [delegate paymentProvisioningFlowController:self didEncounterError:errorCopy requestContext:contextCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_requiredFieldsFromRequirementsResponseExcludingLocalFields
 {
-  v3 = [(NPKPaymentProvisioningFlowController *)self _requiredFieldsFromRequirementsResponse];
-  v4 = v3;
+  _requiredFieldsFromRequirementsResponse = [(NPKPaymentProvisioningFlowController *)self _requiredFieldsFromRequirementsResponse];
+  v4 = _requiredFieldsFromRequirementsResponse;
   if (self->_separateLocalDeviceEntryRequired)
   {
     v11[0] = MEMORY[0x277D85DD0];
@@ -5874,7 +5874,7 @@ LABEL_23:
     v11[2] = __99__NPKPaymentProvisioningFlowController__requiredFieldsFromRequirementsResponseExcludingLocalFields__block_invoke;
     v11[3] = &unk_2799466E0;
     v11[4] = self;
-    v5 = [v3 pk_objectsPassingTest:v11];
+    v5 = [_requiredFieldsFromRequirementsResponse pk_objectsPassingTest:v11];
     if ((PKEqualObjects() & 1) == 0)
     {
       v6 = pk_Payment_log();
@@ -5901,13 +5901,13 @@ LABEL_23:
 {
   if (self->_separateLocalDeviceEntryRequired)
   {
-    v3 = [(NPKPaymentProvisioningFlowController *)self _requiredFieldsFromRequirementsResponse];
+    _requiredFieldsFromRequirementsResponse = [(NPKPaymentProvisioningFlowController *)self _requiredFieldsFromRequirementsResponse];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __84__NPKPaymentProvisioningFlowController__localRequiredFieldsFromRequirementsResponse__block_invoke;
     v6[3] = &unk_2799466E0;
     v6[4] = self;
-    v4 = [v3 pk_objectsPassingTest:v6];
+    v4 = [_requiredFieldsFromRequirementsResponse pk_objectsPassingTest:v6];
   }
 
   else
@@ -5918,7 +5918,7 @@ LABEL_23:
   return v4;
 }
 
-- (BOOL)_fieldsModelCompleteExceptForLocalFields:(id)a3
+- (BOOL)_fieldsModelCompleteExceptForLocalFields:(id)fields
 {
   v34 = *MEMORY[0x277D85DE8];
   if (self->_separateLocalDeviceEntryRequired)
@@ -5927,8 +5927,8 @@ LABEL_23:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v4 = [a3 paymentSetupFields];
-    v5 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+    paymentSetupFields = [fields paymentSetupFields];
+    v5 = [paymentSetupFields countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v5)
     {
       v7 = v5;
@@ -5943,7 +5943,7 @@ LABEL_23:
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(paymentSetupFields);
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
@@ -5957,10 +5957,10 @@ LABEL_23:
               v15 = pk_Payment_log();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
               {
-                v16 = [v12 identifier];
+                identifier = [v12 identifier];
                 v17 = [(NPKPaymentProvisioningFlowController *)self _fieldRequiresLocalEntry:v12];
                 *buf = v25;
-                *v31 = v16;
+                *v31 = identifier;
                 *&v31[8] = 1024;
                 v32[0] = v17;
                 _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Field %@ is incomplete requires local entry %d", buf, 0x12u);
@@ -5973,7 +5973,7 @@ LABEL_23:
           }
         }
 
-        v7 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+        v7 = [paymentSetupFields countByEnumeratingWithState:&v26 objects:v33 count:16];
       }
 
       while (v7);
@@ -6014,18 +6014,18 @@ LABEL_23:
   return v19 & 1;
 }
 
-- (BOOL)_fieldRequiresLocalEntry:(id)a3
+- (BOOL)_fieldRequiresLocalEntry:(id)entry
 {
-  v3 = [a3 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D38928]];
+  identifier = [entry identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x277D38928]];
 
   return v4;
 }
 
-- (id)_filteredPaymentSetupFields:(id)a3 forLocalDeviceEntry:(BOOL)a4
+- (id)_filteredPaymentSetupFields:(id)fields forLocalDeviceEntry:(BOOL)entry
 {
-  v6 = a3;
-  v7 = v6;
+  fieldsCopy = fields;
+  v7 = fieldsCopy;
   if (self->_separateLocalDeviceEntryRequired)
   {
     v11[0] = MEMORY[0x277D85DD0];
@@ -6033,13 +6033,13 @@ LABEL_23:
     v11[2] = __88__NPKPaymentProvisioningFlowController__filteredPaymentSetupFields_forLocalDeviceEntry___block_invoke;
     v11[3] = &unk_279946708;
     v11[4] = self;
-    v12 = a4;
-    v8 = [v6 pk_objectsPassingTest:v11];
+    entryCopy = entry;
+    v8 = [fieldsCopy pk_objectsPassingTest:v11];
   }
 
   else
   {
-    v8 = v6;
+    v8 = fieldsCopy;
   }
 
   v9 = v8;
@@ -6050,7 +6050,7 @@ LABEL_23:
 - (id)_requiredFieldsFromRequirementsResponse
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(PKPaymentProvisioningController *)self->_provisioningController requirementsResponse];
+  requirementsResponse = [(PKPaymentProvisioningController *)self->_provisioningController requirementsResponse];
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -6059,29 +6059,29 @@ LABEL_23:
     v6 = pk_Payment_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 status];
-      v8 = [(PKPaymentProvisioningController *)self->_provisioningController productIdentifier];
+      status = [requirementsResponse status];
+      productIdentifier = [(PKPaymentProvisioningController *)self->_provisioningController productIdentifier];
       *buf = 134218242;
-      v27 = v7;
+      v27 = status;
       v28 = 2112;
-      v29 = v8;
+      v29 = productIdentifier;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: Determining required fields for response status %ld and product identifier %@", buf, 0x16u);
     }
   }
 
-  if ([v3 status] == 1)
+  if ([requirementsResponse status] == 1)
   {
-    v9 = [v3 requiredPaymentSetupFields];
+    requiredPaymentSetupFields = [requirementsResponse requiredPaymentSetupFields];
   }
 
-  else if ([v3 status] == 2 && (-[PKPaymentProvisioningController productIdentifier](self->_provisioningController, "productIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  else if ([requirementsResponse status] == 2 && (-[PKPaymentProvisioningController productIdentifier](self->_provisioningController, "productIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [v3 possibleProducts];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    possibleProducts = [requirementsResponse possibleProducts];
+    v12 = [possibleProducts countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = *v22;
@@ -6091,13 +6091,13 @@ LABEL_23:
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(possibleProducts);
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v15 productIdentifier];
-          v17 = [(PKPaymentProvisioningController *)self->_provisioningController productIdentifier];
-          v18 = [v16 isEqualToString:v17];
+          productIdentifier2 = [v15 productIdentifier];
+          productIdentifier3 = [(PKPaymentProvisioningController *)self->_provisioningController productIdentifier];
+          v18 = [productIdentifier2 isEqualToString:productIdentifier3];
 
           if (v18)
           {
@@ -6106,7 +6106,7 @@ LABEL_23:
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [possibleProducts countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v12)
         {
           continue;
@@ -6118,33 +6118,33 @@ LABEL_23:
 
 LABEL_20:
 
-    v9 = [v12 requiredFields];
+    requiredPaymentSetupFields = [v12 requiredFields];
   }
 
   else
   {
-    v9 = MEMORY[0x277CBEBF8];
+    requiredPaymentSetupFields = MEMORY[0x277CBEBF8];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return requiredPaymentSetupFields;
 }
 
-- (void)_configureWebServiceIfNecessary:(id)a3 completion:(id)a4
+- (void)_configureWebServiceIfNecessary:(id)necessary completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 needsConfiguration])
+  necessaryCopy = necessary;
+  completionCopy = completion;
+  if ([necessaryCopy needsConfiguration])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __83__NPKPaymentProvisioningFlowController__configureWebServiceIfNecessary_completion___block_invoke;
     v12[3] = &unk_279946758;
     v7 = &v13;
-    v13 = v6;
-    v8 = v6;
-    [v5 configurePaymentServiceWithCompletion:v12];
+    v13 = completionCopy;
+    v8 = completionCopy;
+    [necessaryCopy configurePaymentServiceWithCompletion:v12];
   }
 
   else
@@ -6154,8 +6154,8 @@ LABEL_20:
     v10[2] = __83__NPKPaymentProvisioningFlowController__configureWebServiceIfNecessary_completion___block_invoke_3;
     v10[3] = &unk_279945198;
     v7 = &v11;
-    v11 = v6;
-    v9 = v6;
+    v11 = completionCopy;
+    v9 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v10);
   }
 }
@@ -6174,26 +6174,26 @@ void __83__NPKPaymentProvisioningFlowController__configureWebServiceIfNecessary_
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_verifyPasscodeStateIfNecessaryWithCompletion:(id)a3
+- (void)_verifyPasscodeStateIfNecessaryWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1, 0);
+    (*(completion + 2))(completion, 1, 0);
   }
 }
 
-- (void)_requestPassDetailsForAccountCredential:(id)a3 withCompletionHandler:(id)a4
+- (void)_requestPassDetailsForAccountCredential:(id)credential withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 passDetailsResponse];
+  credentialCopy = credential;
+  handlerCopy = handler;
+  passDetailsResponse = [credentialCopy passDetailsResponse];
 
-  if (v8)
+  if (passDetailsResponse)
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v9 = [v6 passDetailsResponse];
-      v7[2](v7, v9, 0);
+      passDetailsResponse2 = [credentialCopy passDetailsResponse];
+      handlerCopy[2](handlerCopy, passDetailsResponse2, 0);
     }
   }
 
@@ -6204,8 +6204,8 @@ void __83__NPKPaymentProvisioningFlowController__configureWebServiceIfNecessary_
     v11[1] = 3221225472;
     v11[2] = __102__NPKPaymentProvisioningFlowController__requestPassDetailsForAccountCredential_withCompletionHandler___block_invoke;
     v11[3] = &unk_2799467A8;
-    v13 = v7;
-    v12 = v6;
+    v13 = handlerCopy;
+    v12 = credentialCopy;
     [(PKPaymentProvisioningController *)provisioningController setupAccountCredentialForProvisioning:v12 completion:v11];
   }
 }
@@ -6286,25 +6286,25 @@ id __154__NPKPaymentProvisioningFlowController_FlowSelection___flowPickerSection
   return v2;
 }
 
-+ (id)_filteredPaymentSetupProducts:(id)a3 localCredentials:(id)a4 setupContext:(int64_t)a5 webService:(id)a6 mobileCarrierRegion:(id)a7 readerModeSupported:(BOOL)a8 digitalIssuanceSupported:(BOOL)a9
++ (id)_filteredPaymentSetupProducts:(id)products localCredentials:(id)credentials setupContext:(int64_t)context webService:(id)service mobileCarrierRegion:(id)region readerModeSupported:(BOOL)supported digitalIssuanceSupported:(BOOL)issuanceSupported
 {
-  v9 = a8;
+  supportedCopy = supported;
   v92 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v62 = a4;
-  v15 = a6;
-  v68 = a7;
-  v67 = [MEMORY[0x277CBEB18] array];
+  productsCopy = products;
+  credentialsCopy = credentials;
+  serviceCopy = service;
+  regionCopy = region;
+  array = [MEMORY[0x277CBEB18] array];
   v75 = PKOSVersion();
   v74 = PKDeviceClass();
-  v61 = v15;
-  v16 = [v15 targetDevice];
-  v17 = [v16 deviceRegion];
-  v73 = [v16 deviceVersion];
-  v18 = v9;
-  if (a9 && !NPKPaymentProvisioningSetupContextIsSetupAssistant(a5))
+  v61 = serviceCopy;
+  targetDevice = [serviceCopy targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
+  deviceVersion = [targetDevice deviceVersion];
+  v18 = supportedCopy;
+  if (issuanceSupported && !NPKPaymentProvisioningSetupContextIsSetupAssistant(context))
   {
-    v18 = v9 | 2;
+    v18 = supportedCopy | 2;
   }
 
   v72 = v18;
@@ -6312,10 +6312,10 @@ id __154__NPKPaymentProvisioningFlowController_FlowSelection___flowPickerSection
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v63 = v14;
-  obj = [v14 allSetupProducts];
+  v63 = productsCopy;
+  obj = [productsCopy allSetupProducts];
   v19 = [obj countByEnumeratingWithState:&v80 objects:v91 count:16];
-  v20 = v68;
+  v20 = regionCopy;
   if (v19)
   {
     v21 = v19;
@@ -6331,15 +6331,15 @@ id __154__NPKPaymentProvisioningFlowController_FlowSelection___flowPickerSection
         }
 
         v23 = *(*(&v80 + 1) + 8 * v22);
-        if (([v23 updateSupportWithOSVersion:v75 deviceClass:v74 deviceRegion:v17 deviceVersion:v73] & 1) == 0)
+        if (([v23 updateSupportWithOSVersion:v75 deviceClass:v74 deviceRegion:deviceRegion deviceVersion:deviceVersion] & 1) == 0)
         {
-          v27 = PKLogFacilityTypeGetObject();
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+          regions = PKLogFacilityTypeGetObject();
+          if (os_log_type_enabled(regions, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [v23 displayName];
+            displayName = [v23 displayName];
             *buf = 138412290;
-            v86 = v28;
-            v29 = v27;
+            v86 = displayName;
+            v29 = regions;
             v30 = "Product: %@ is not supported due to device OS version";
             v31 = 12;
             goto LABEL_14;
@@ -6352,37 +6352,37 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v24 = [v23 configuration];
-        v25 = [v24 type];
+        configuration = [v23 configuration];
+        type = [configuration type];
 
-        if (v25 != 3)
+        if (type != 3)
         {
-          if (v17)
+          if (deviceRegion)
           {
-            v27 = [v23 regions];
-            if (([v27 containsObject:v17]& 1) != 0)
+            regions = [v23 regions];
+            if (([regions containsObject:deviceRegion]& 1) != 0)
             {
               v26 = 1;
-              v69 = v27;
+              v69 = regions;
               goto LABEL_16;
             }
 
             if (!v20)
             {
 
-              v69 = v27;
+              v69 = regions;
 LABEL_70:
-              v27 = PKLogFacilityTypeGetObject();
-              if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+              regions = PKLogFacilityTypeGetObject();
+              if (os_log_type_enabled(regions, OS_LOG_TYPE_DEFAULT))
               {
-                v28 = [v23 displayName];
+                displayName = [v23 displayName];
                 *buf = 138412802;
-                v86 = v28;
+                v86 = displayName;
                 v87 = 2112;
-                v88 = v17;
+                v88 = deviceRegion;
                 v89 = 2112;
                 v90 = v20;
-                v29 = v27;
+                v29 = regions;
                 v30 = "Product: %@ is not supported in neither this device region: %@, nor mobile carrier region: %@";
                 v31 = 32;
 LABEL_14:
@@ -6392,7 +6392,7 @@ LABEL_14:
               goto LABEL_15;
             }
 
-            v69 = v27;
+            v69 = regions;
           }
 
           else if (!v20)
@@ -6400,10 +6400,10 @@ LABEL_14:
             goto LABEL_70;
           }
 
-          v47 = [v23 regions];
-          v48 = [v47 containsObject:v20];
+          regions2 = [v23 regions];
+          v48 = [regions2 containsObject:v20];
 
-          if (v17)
+          if (deviceRegion)
           {
           }
 
@@ -6415,8 +6415,8 @@ LABEL_14:
 
         v26 = 1;
 LABEL_17:
-        v32 = [v23 supportedProvisioningMethods];
-        if (v26 && (v32 & v72) == 0)
+        supportedProvisioningMethods = [v23 supportedProvisioningMethods];
+        if (v26 && (supportedProvisioningMethods & v72) == 0)
         {
           v33 = PKLogFacilityTypeGetObject();
           if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -6424,14 +6424,14 @@ LABEL_17:
             goto LABEL_58;
           }
 
-          v34 = [v23 displayName];
-          v35 = [v23 supportedProvisioningMethods];
+          displayName2 = [v23 displayName];
+          supportedProvisioningMethods2 = [v23 supportedProvisioningMethods];
           *buf = 138412802;
-          v86 = v34;
+          v86 = displayName2;
           v87 = 2048;
           v88 = v72;
           v89 = 2048;
-          v90 = v35;
+          v90 = supportedProvisioningMethods2;
           v36 = v33;
           v37 = "Product: %@ is not supported due to no matching provisioning methods (local supported methods %lu, product supported methods %lu)";
           v38 = 32;
@@ -6456,9 +6456,9 @@ LABEL_17:
               goto LABEL_58;
             }
 
-            v34 = [v23 displayName];
+            displayName2 = [v23 displayName];
             *buf = 138412290;
-            v86 = v34;
+            v86 = displayName2;
             v36 = v33;
             v37 = "Product: %@ is not supported due to lack of Type F support";
             goto LABEL_56;
@@ -6466,9 +6466,9 @@ LABEL_17:
 
           if (v40)
           {
-            v41 = [v23 displayName];
+            displayName3 = [v23 displayName];
             *buf = 138412290;
-            v86 = v41;
+            v86 = displayName3;
             _os_log_impl(&dword_25B300000, v33, OS_LOG_TYPE_DEFAULT, "Product: %@ is supported due to available Type F support", buf, 0xCu);
           }
         }
@@ -6481,9 +6481,9 @@ LABEL_17:
             goto LABEL_58;
           }
 
-          v34 = [v23 displayName];
+          displayName2 = [v23 displayName];
           *buf = 138412290;
-          v86 = v34;
+          v86 = displayName2;
           v36 = v33;
           v37 = "Product: %@ is not supported due to lack of SE";
 LABEL_56:
@@ -6503,20 +6503,20 @@ LABEL_57:
         v79 = 0u;
         v76 = 0u;
         v77 = 0u;
-        v42 = [v23 paymentOptions];
-        v43 = [v42 countByEnumeratingWithState:&v76 objects:v84 count:16];
+        paymentOptions = [v23 paymentOptions];
+        v43 = [paymentOptions countByEnumeratingWithState:&v76 objects:v84 count:16];
         if (!v43)
         {
 LABEL_37:
 
-          v20 = v68;
+          v20 = regionCopy;
 LABEL_38:
           v33 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v23 displayName];
+            displayName2 = [v23 displayName];
             *buf = 138412290;
-            v86 = v34;
+            v86 = displayName2;
             v36 = v33;
             v37 = "Product: %@ is not supported on device";
             goto LABEL_56;
@@ -6527,9 +6527,9 @@ LABEL_58:
 LABEL_59:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v49 = [v23 displayName];
+            displayName4 = [v23 displayName];
             *buf = 138412290;
-            v86 = v49;
+            v86 = displayName4;
             _os_log_impl(&dword_25B300000, v33, OS_LOG_TYPE_DEFAULT, "Product: %@ is unsupported and will not be shown in the flow picker", buf, 0xCu);
           }
 
@@ -6544,17 +6544,17 @@ LABEL_31:
         {
           if (*v77 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(paymentOptions);
           }
 
-          if ([v16 supportsCredentialType:{objc_msgSend(*(*(&v76 + 1) + 8 * v46), "cardType")}])
+          if ([targetDevice supportsCredentialType:{objc_msgSend(*(*(&v76 + 1) + 8 * v46), "cardType")}])
           {
             break;
           }
 
           if (v44 == ++v46)
           {
-            v44 = [v42 countByEnumeratingWithState:&v76 objects:v84 count:16];
+            v44 = [paymentOptions countByEnumeratingWithState:&v76 objects:v84 count:16];
             if (v44)
             {
               goto LABEL_31;
@@ -6564,38 +6564,38 @@ LABEL_31:
           }
         }
 
-        if (a5 == 1 && [v23 hsa2Requirement] == 2 && (objc_msgSend(a1, "_isHSA2Enabled") & 1) == 0)
+        if (context == 1 && [v23 hsa2Requirement] == 2 && (objc_msgSend(self, "_isHSA2Enabled") & 1) == 0)
         {
           v33 = PKLogFacilityTypeGetObject();
-          v20 = v68;
+          v20 = regionCopy;
           if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_58;
           }
 
-          v34 = [v23 displayName];
+          displayName2 = [v23 displayName];
           *buf = 138412290;
-          v86 = v34;
+          v86 = displayName2;
           v36 = v33;
           v37 = "Product: %@ is not supported in setup context due to HSA requirement";
           goto LABEL_56;
         }
 
-        v50 = [v23 configuration];
-        v51 = [v50 state];
+        configuration2 = [v23 configuration];
+        state = [configuration2 state];
 
-        v20 = v68;
-        if (v51 == 2)
+        v20 = regionCopy;
+        if (state == 2)
         {
           v33 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v52 = [v23 displayName];
-            v65 = [v23 configuration];
-            [v65 state];
+            displayName5 = [v23 displayName];
+            configuration3 = [v23 configuration];
+            [configuration3 state];
             v53 = PKPaymentSetupProductStateToString();
             *buf = 138412546;
-            v86 = v52;
+            v86 = displayName5;
             v87 = 2112;
             v88 = v53;
             _os_log_impl(&dword_25B300000, v33, OS_LOG_TYPE_DEFAULT, "Product: %@ not supported. Product state is: %@. Previously provisioned to device?", buf, 0x16u);
@@ -6608,19 +6608,19 @@ LABEL_31:
         v54 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
-          v66 = [v33 displayName];
-          v55 = [v33 productIdentifier];
-          v56 = [v33 provisioningMethodTypes];
+          displayName6 = [v33 displayName];
+          productIdentifier = [v33 productIdentifier];
+          provisioningMethodTypes = [v33 provisioningMethodTypes];
           *buf = 138412802;
-          v86 = v66;
+          v86 = displayName6;
           v87 = 2112;
-          v88 = v55;
+          v88 = productIdentifier;
           v89 = 2112;
-          v90 = v56;
+          v90 = provisioningMethodTypes;
           _os_log_impl(&dword_25B300000, v54, OS_LOG_TYPE_DEFAULT, "Product: %@ (%@) is supported with provisioning types %@", buf, 0x20u);
         }
 
-        [v67 addObject:v33];
+        [array addObject:v33];
 LABEL_61:
 
         ++v22;
@@ -6635,20 +6635,20 @@ LABEL_61:
   }
 
   v58 = objc_alloc_init(MEMORY[0x277D38120]);
-  [v58 setPaymentSetupProducts:v67];
+  [v58 setPaymentSetupProducts:array];
 
   v59 = *MEMORY[0x277D85DE8];
 
   return v58;
 }
 
-+ (void)_addGroupedItemsToSections:(id)a3 fromModel:(id)a4 webService:(id)a5 paymentSection:(id)a6
++ (void)_addGroupedItemsToSections:(id)sections fromModel:(id)model webService:(id)service paymentSection:(id)section
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  sectionsCopy = sections;
+  modelCopy = model;
+  serviceCopy = service;
+  sectionCopy = section;
   v38[0] = &unk_286CE76C0;
   v13 = PKLocalizedPaymentString(&cfstr_CardTypeTransi.isa);
   v39[0] = v13;
@@ -6665,25 +6665,25 @@ LABEL_61:
   v37[1] = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
-  v19 = [v11 targetDevice];
-  v20 = [v19 deviceRegion];
+  targetDevice = [serviceCopy targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __118__NPKPaymentProvisioningFlowController_FlowSelection___addGroupedItemsToSections_fromModel_webService_paymentSection___block_invoke;
   v28[3] = &unk_279946C60;
-  v29 = v10;
+  v29 = modelCopy;
   v30 = v18;
-  v31 = v11;
-  v32 = v20;
+  v31 = serviceCopy;
+  v32 = deviceRegion;
   v33 = &unk_286CE76C0;
-  v34 = v9;
-  v35 = v12;
-  v21 = v12;
-  v22 = v9;
-  v23 = v20;
-  v24 = v11;
+  v34 = sectionsCopy;
+  v35 = sectionCopy;
+  v21 = sectionCopy;
+  v22 = sectionsCopy;
+  v23 = deviceRegion;
+  v24 = serviceCopy;
   v25 = v18;
-  v26 = v10;
+  v26 = modelCopy;
   [v15 enumerateKeysAndObjectsUsingBlock:v28];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -6840,19 +6840,19 @@ LABEL_29:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_addAppleBalanceToSections:(id)a3 fromModel:(id)a4
++ (void)_addAppleBalanceToSections:(id)sections fromModel:(id)model
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 productsForFeatureIdentifier:4];
+  sectionsCopy = sections;
+  v6 = [model productsForFeatureIdentifier:4];
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 displayName];
-    v9 = v8;
-    if (v8)
+    firstObject = [v6 firstObject];
+    displayName = [firstObject displayName];
+    v9 = displayName;
+    if (displayName)
     {
-      v10 = v8;
+      v10 = displayName;
     }
 
     else
@@ -6862,24 +6862,24 @@ LABEL_29:
 
     v11 = v10;
 
-    v12 = [v7 productIdentifier];
-    v19[0] = v7;
+    productIdentifier = [firstObject productIdentifier];
+    v19[0] = firstObject;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v14 = [NPKPaymentProvisioningFlowPickerItem itemWithIdentifier:v12 products:v13];
+    v14 = [NPKPaymentProvisioningFlowPickerItem itemWithIdentifier:productIdentifier products:v13];
 
     v18 = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
     v16 = [NPKPaymentProvisioningFlowPickerSection sectionWithTitle:v11 productType:&unk_286CE76F0 items:v15];
 
-    [v5 addObject:v16];
+    [sectionsCopy addObject:v16];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_addCreditDebitItemToSection:(id)a3 webService:(id)a4
++ (void)_addCreditDebitItemToSection:(id)section webService:(id)service
 {
-  v4 = a3;
+  sectionCopy = section;
   if (PKDeviceSupportsFelicaDebitWithWebService())
   {
     v5 = @"CARD_TYPE_CREDIT_DEBIT";
@@ -6892,18 +6892,18 @@ LABEL_29:
 
   v9 = PKLocalizedPaymentString(&v5->isa);
   v6 = [NPKPaymentProvisioningFlowPickerItem itemWithIdentifier:@"regularPaymentCardProvisioning" title:v9 products:0];
-  v7 = v4[2](v4);
+  v7 = sectionCopy[2](sectionCopy);
 
-  v8 = [v7 items];
-  [v8 insertObject:v6 atIndex:0];
+  items = [v7 items];
+  [items insertObject:v6 atIndex:0];
 }
 
 + (id)_authContext
 {
   v2 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [MEMORY[0x277CF0130] sharedInstance];
-  v5 = [v4 altDSIDForAccount:v3];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  v5 = [mEMORY[0x277CF0130] altDSIDForAccount:aa_primaryAppleAccount];
 
   v6 = objc_alloc_init(MEMORY[0x277CF0170]);
   [v6 setAltDSID:v5];
@@ -6914,60 +6914,60 @@ LABEL_29:
 
 + (BOOL)_isHSA2Enabled
 {
-  v3 = [MEMORY[0x277CF0130] sharedInstance];
-  v4 = [a1 _authContext];
-  v5 = [v4 altDSID];
-  v6 = [v3 authKitAccountWithAltDSID:v5];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  _authContext = [self _authContext];
+  altDSID = [_authContext altDSID];
+  v6 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:altDSID];
 
-  LOBYTE(v4) = [v3 securityLevelForAccount:v6] > 3;
-  return v4;
+  LOBYTE(_authContext) = [mEMORY[0x277CF0130] securityLevelForAccount:v6] > 3;
+  return _authContext;
 }
 
-+ (BOOL)_localCredentials:(id)a3 containProduct:(id)a4
++ (BOOL)_localCredentials:(id)credentials containProduct:(id)product
 {
-  v5 = a3;
-  v6 = [a4 paymentOptions];
-  v7 = [v6 firstObject];
+  credentialsCopy = credentials;
+  paymentOptions = [product paymentOptions];
+  firstObject = [paymentOptions firstObject];
 
-  v8 = [v7 cardType];
+  cardType = [firstObject cardType];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__NPKPaymentProvisioningFlowController_FlowSelection___localCredentials_containProduct___block_invoke;
   v10[3] = &__block_descriptor_40_e29_B16__0__PKPaymentCredential_8l;
-  v10[4] = v8;
-  LOBYTE(v6) = [v5 pk_containsObjectPassingTest:v10];
+  v10[4] = cardType;
+  LOBYTE(paymentOptions) = [credentialsCopy pk_containsObjectPassingTest:v10];
 
-  return v6;
+  return paymentOptions;
 }
 
-- (void)_transitionToDigitalIssuanceForProduct:(id)a3 requestContext:(id)a4
+- (void)_transitionToDigitalIssuanceForProduct:(id)product requestContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [(NPKPaymentProvisioningFlowController *)self setDigitalIssuanceAmountRequestContext:v6];
-  v15 = [[NPKPaymentProvisioningFlowControllerDigitalIssuanceAmountStepContext alloc] initWithRequestContext:v6];
+  contextCopy = context;
+  productCopy = product;
+  [(NPKPaymentProvisioningFlowController *)self setDigitalIssuanceAmountRequestContext:contextCopy];
+  v15 = [[NPKPaymentProvisioningFlowControllerDigitalIssuanceAmountStepContext alloc] initWithRequestContext:contextCopy];
 
-  [(NPKPaymentProvisioningFlowControllerDigitalIssuanceAmountStepContext *)v15 setProduct:v7];
-  -[NPKPaymentProvisioningFlowControllerDigitalIssuanceAmountStepContext setAllowsReaderModeEntry:](v15, "setAllowsReaderModeEntry:", [objc_opt_class() _readerModeEntryAllowedForProduct:v7]);
-  v8 = [v7 provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
+  [(NPKPaymentProvisioningFlowControllerDigitalIssuanceAmountStepContext *)v15 setProduct:productCopy];
+  -[NPKPaymentProvisioningFlowControllerDigitalIssuanceAmountStepContext setAllowsReaderModeEntry:](v15, "setAllowsReaderModeEntry:", [objc_opt_class() _readerModeEntryAllowedForProduct:productCopy]);
+  v8 = [productCopy provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
 
-  v9 = [v8 digitalIssuanceMetadata];
-  v10 = [v9 serviceProviderProducts];
-  v11 = v10;
-  if (!v10 || ![v10 count])
+  digitalIssuanceMetadata = [v8 digitalIssuanceMetadata];
+  serviceProviderProducts = [digitalIssuanceMetadata serviceProviderProducts];
+  v11 = serviceProviderProducts;
+  if (!serviceProviderProducts || ![serviceProviderProducts count])
   {
 LABEL_6:
     v14 = 150;
     goto LABEL_7;
   }
 
-  v12 = [v9 balanceIdentifier];
+  balanceIdentifier = [digitalIssuanceMetadata balanceIdentifier];
 
-  if (v12)
+  if (balanceIdentifier)
   {
-    v13 = [v9 balanceIdentifier];
+    balanceIdentifier2 = [digitalIssuanceMetadata balanceIdentifier];
 
-    if (v13)
+    if (balanceIdentifier2)
     {
       v14 = 144;
       goto LABEL_7;
@@ -6981,9 +6981,9 @@ LABEL_7:
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:v14 withContext:v15];
 }
 
-- (void)_handleDigitalIssuanceTermsAccepted:(id)a3
+- (void)_handleDigitalIssuanceTermsAccepted:(id)accepted
 {
-  v4 = a3;
+  acceptedCopy = accepted;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -6997,13 +6997,13 @@ LABEL_7:
     }
   }
 
-  [(NPKPaymentProvisioningFlowController *)self setDigitalIssuancePaymentRequestContext:v4];
+  [(NPKPaymentProvisioningFlowController *)self setDigitalIssuancePaymentRequestContext:acceptedCopy];
   [(NPKPaymentProvisioningFlowController *)self setTermsAcceptedOutOfBand:1];
-  v8 = [(NPKPaymentProvisioningFlowController *)self unitTestingAuthorizationController];
-  v9 = v8;
-  if (v8)
+  unitTestingAuthorizationController = [(NPKPaymentProvisioningFlowController *)self unitTestingAuthorizationController];
+  v9 = unitTestingAuthorizationController;
+  if (unitTestingAuthorizationController)
   {
-    v10 = v8;
+    v10 = unitTestingAuthorizationController;
   }
 
   else
@@ -7027,8 +7027,8 @@ LABEL_7:
     v12 = v11;
     _Block_object_dispose(&v24, 8);
     v13 = [v11 alloc];
-    v14 = [(NPKPaymentProvisioningFlowController *)self digitalIssuancePaymentRequest];
-    v10 = [v13 initWithPaymentRequest:v14];
+    digitalIssuancePaymentRequest = [(NPKPaymentProvisioningFlowController *)self digitalIssuancePaymentRequest];
+    v10 = [v13 initWithPaymentRequest:digitalIssuancePaymentRequest];
   }
 
   [(NPKPaymentProvisioningFlowController *)self setAuthorizationController:v10];
@@ -7038,9 +7038,9 @@ LABEL_7:
   v16[1] = 3221225472;
   v16[2] = __93__NPKPaymentProvisioningFlowController_DigitalIssuance___handleDigitalIssuanceTermsAccepted___block_invoke;
   v16[3] = &unk_2799464B8;
-  v17 = v4;
-  v18 = self;
-  v15 = v4;
+  v17 = acceptedCopy;
+  selfCopy = self;
+  v15 = acceptedCopy;
   [v10 presentWithCompletion:v16];
 }
 
@@ -7079,19 +7079,19 @@ void __93__NPKPaymentProvisioningFlowController_DigitalIssuance___handleDigitalI
   }
 }
 
-- (void)_canMakeDigitalIssuancePaymentsForTransitProducts:(id)a3 withCompletion:(id)a4
+- (void)_canMakeDigitalIssuancePaymentsForTransitProducts:(id)products withCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v19 = a4;
+  productsCopy = products;
+  completionCopy = completion;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v7 = v6;
-  v22 = [(NPKPaymentProvisioningFlowController *)self webService];
-  v8 = [v22 targetDevice];
-  v21 = [v8 deviceRegion];
+  webService = [(NPKPaymentProvisioningFlowController *)self webService];
+  targetDevice = [webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
-  v9 = [v20 sortedArrayUsingFunction:_compareProductByRegionCodes context:v21];
-  v24 = [MEMORY[0x277D37FC0] sharedInstance];
+  v9 = [productsCopy sortedArrayUsingFunction:_compareProductByRegionCodes context:deviceRegion];
+  mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
   v10 = objc_alloc_init(MEMORY[0x277D37DB0]);
   v40[0] = 0;
   v40[1] = v40;
@@ -7127,7 +7127,7 @@ void __93__NPKPaymentProvisioningFlowController_DigitalIssuance___handleDigitalI
         v30[3] = &unk_279947478;
         v30[4] = self;
         v30[5] = v14;
-        v31 = v24;
+        v31 = mEMORY[0x277D37FC0];
         v32 = v40;
         v33 = v38;
         [v10 addOperation:v30];
@@ -7142,7 +7142,7 @@ void __93__NPKPaymentProvisioningFlowController_DigitalIssuance___handleDigitalI
     while (v11);
   }
 
-  v15 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __122__NPKPaymentProvisioningFlowController_DigitalIssuance___canMakeDigitalIssuancePaymentsForTransitProducts_withCompletion___block_invoke_3;
@@ -7150,9 +7150,9 @@ void __93__NPKPaymentProvisioningFlowController_DigitalIssuance___handleDigitalI
   v29 = v7;
   v27 = v38;
   v28 = v40;
-  v16 = v19;
+  v16 = completionCopy;
   v26 = v16;
-  v17 = [v10 evaluateWithInput:v15 completion:v25];
+  v17 = [v10 evaluateWithInput:null completion:v25];
 
   _Block_object_dispose(v38, 8);
   _Block_object_dispose(v40, 8);
@@ -7249,32 +7249,32 @@ uint64_t __122__NPKPaymentProvisioningFlowController_DigitalIssuance___canMakeDi
   return result;
 }
 
-- (void)_canMakeDigitalIssuancePaymentsForTransitProductsWithCompletion:(id)a3
+- (void)_canMakeDigitalIssuancePaymentsForTransitProductsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v7 = PKInAppSupportedPaymentNetworks();
-  v4 = [MEMORY[0x277D37FC0] sharedInstance];
+  mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
   v5 = [MEMORY[0x277CBEB98] setWithArray:v7];
-  v6 = [v4 hasPassesWithSupportedNetworks:v5 merchantCapabilities:159 issuerCountryCodes:0 webDomain:0];
+  v6 = [mEMORY[0x277D37FC0] hasPassesWithSupportedNetworks:v5 merchantCapabilities:159 issuerCountryCodes:0 webDomain:0];
 
-  v3[2](v3, v6, 0);
+  completionCopy[2](completionCopy, v6, 0);
 }
 
-- (void)_startDigitalIssuancePaymentWithAmount:(id)a3 requestContext:(id)a4 serviceProviderProduct:(id)a5 productItem:(id)a6
+- (void)_startDigitalIssuancePaymentWithAmount:(id)amount requestContext:(id)context serviceProviderProduct:(id)product productItem:(id)item
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-  v15 = [v14 provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
-  v16 = [v15 minLoadedBalance];
-  v17 = [v15 maxLoadedBalance];
-  v31 = v12;
-  if (v16 && [v10 compare:{v16, v12}] == -1)
+  amountCopy = amount;
+  contextCopy = context;
+  productCopy = product;
+  itemCopy = item;
+  currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+  v15 = [currentProduct provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
+  minLoadedBalance = [v15 minLoadedBalance];
+  maxLoadedBalance = [v15 maxLoadedBalance];
+  v31 = productCopy;
+  if (minLoadedBalance && [amountCopy compare:{minLoadedBalance, productCopy}] == -1)
   {
-    v18 = v13;
+    v18 = itemCopy;
     v28 = pk_Payment_log();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
 
@@ -7284,9 +7284,9 @@ uint64_t __122__NPKPaymentProvisioningFlowController_DigitalIssuance___canMakeDi
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v36 = v10;
+        v36 = amountCopy;
         v37 = 2112;
-        v38 = v16;
+        v38 = minLoadedBalance;
         v22 = "Warning: Provided digital issuance amount %@ which is less than the minimum %@";
         goto LABEL_16;
       }
@@ -7295,14 +7295,14 @@ LABEL_17:
     }
 
 LABEL_18:
-    v26 = PKDisplayableErrorForCommonType();
-    [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:v26 requestContext:v11];
+    mEMORY[0x277D37FC0] = PKDisplayableErrorForCommonType();
+    [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:mEMORY[0x277D37FC0] requestContext:contextCopy];
     goto LABEL_19;
   }
 
-  if (v17 && [v10 compare:v17] == 1)
+  if (maxLoadedBalance && [amountCopy compare:maxLoadedBalance] == 1)
   {
-    v18 = v13;
+    v18 = itemCopy;
     v19 = pk_Payment_log();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
 
@@ -7312,9 +7312,9 @@ LABEL_18:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v36 = v10;
+        v36 = amountCopy;
         v37 = 2112;
-        v38 = v17;
+        v38 = maxLoadedBalance;
         v22 = "Warning: Provided digital issuance amount %@ which is more than the maximum %@";
 LABEL_16:
         _os_log_impl(&dword_25B300000, v21, OS_LOG_TYPE_DEFAULT, v22, buf, 0x16u);
@@ -7327,31 +7327,31 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (v12 && v13)
+  if (productCopy && itemCopy)
   {
-    v23 = v12;
-    v18 = v13;
-    v24 = [(NPKPaymentProvisioningFlowController *)self _paymentRequestForAmount:v10 serviceProviderProduct:v23 productItem:v13];
+    v23 = productCopy;
+    v18 = itemCopy;
+    v24 = [(NPKPaymentProvisioningFlowController *)self _paymentRequestForAmount:amountCopy serviceProviderProduct:v23 productItem:itemCopy];
   }
 
   else
   {
-    v18 = v13;
-    v24 = [(NPKPaymentProvisioningFlowController *)self _paymentRequestForAmount:v10, v31];
+    v18 = itemCopy;
+    v24 = [(NPKPaymentProvisioningFlowController *)self _paymentRequestForAmount:amountCopy, v31];
   }
 
   v25 = v24;
   [(NPKPaymentProvisioningFlowController *)self setDigitalIssuancePaymentRequest:v24, v31];
-  v26 = [MEMORY[0x277D37FC0] sharedInstance];
+  mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __146__NPKPaymentProvisioningFlowController_DigitalIssuance___startDigitalIssuancePaymentWithAmount_requestContext_serviceProviderProduct_productItem___block_invoke;
   v32[3] = &unk_2799474C8;
   v32[4] = self;
   v33 = v25;
-  v34 = v11;
+  v34 = contextCopy;
   v27 = v25;
-  [v26 canPresentPaymentRequest:v27 completion:v32];
+  [mEMORY[0x277D37FC0] canPresentPaymentRequest:v27 completion:v32];
 
 LABEL_19:
   v30 = *MEMORY[0x277D85DE8];
@@ -7394,17 +7394,17 @@ void __146__NPKPaymentProvisioningFlowController_DigitalIssuance___startDigitalI
   }
 }
 
-- (id)_paymentRequestForAmount:(id)a3 serviceProviderProduct:(id)a4 productItem:(id)a5
+- (id)_paymentRequestForAmount:(id)amount serviceProviderProduct:(id)product productItem:(id)item
 {
   v71[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v67 = v9;
-  v68 = v10;
-  if (v9)
+  amountCopy = amount;
+  productCopy = product;
+  itemCopy = item;
+  v67 = productCopy;
+  v68 = itemCopy;
+  if (productCopy)
   {
-    v11 = v10 == 0;
+    v11 = itemCopy == 0;
   }
 
   else
@@ -7413,33 +7413,33 @@ void __146__NPKPaymentProvisioningFlowController_DigitalIssuance___startDigitalI
   }
 
   v12 = !v11;
-  v13 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-  v14 = [v13 provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
-  v15 = v8;
-  v16 = [v14 depositAmount];
+  currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+  v14 = [currentProduct provisioningMethodMetadataForType:*MEMORY[0x277D388D0]];
+  v15 = amountCopy;
+  depositAmount = [v14 depositAmount];
   v17 = v15;
-  if (v16)
+  if (depositAmount)
   {
-    v18 = [MEMORY[0x277CCA980] zero];
-    v19 = [v18 compare:v16];
+    zero = [MEMORY[0x277CCA980] zero];
+    v19 = [zero compare:depositAmount];
 
     v17 = v15;
     if (v19 == -1)
     {
-      v17 = [v15 decimalNumberByAdding:v16];
+      v17 = [v15 decimalNumberByAdding:depositAmount];
     }
   }
 
-  v62 = v13;
-  v20 = [v14 digitalIssuanceMetadata];
+  v62 = currentProduct;
+  digitalIssuanceMetadata = [v14 digitalIssuanceMetadata];
   v21 = objc_alloc_init(MEMORY[0x277D37F90]);
-  [v20 action];
+  [digitalIssuanceMetadata action];
   v23 = v22 = v17;
   [v21 setItemDescription:v23];
 
   v24 = objc_alloc(MEMORY[0x277CBEB38]);
-  v25 = [v20 serviceProviderDict];
-  v26 = [v24 initWithDictionary:v25];
+  serviceProviderDict = [digitalIssuanceMetadata serviceProviderDict];
+  v26 = [v24 initWithDictionary:serviceProviderDict];
 
   v63 = v22;
   [v26 setObject:v22 forKey:*MEMORY[0x277D38990]];
@@ -7447,9 +7447,9 @@ void __146__NPKPaymentProvisioningFlowController_DigitalIssuance___startDigitalI
   if (v12)
   {
     v70[0] = @"identifier";
-    v27 = [v68 identifier];
+    identifier = [v68 identifier];
     v70[1] = @"amount";
-    v71[0] = v27;
+    v71[0] = identifier;
     v71[1] = v15;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v71 forKeys:v70 count:2];
 
@@ -7462,56 +7462,56 @@ void __146__NPKPaymentProvisioningFlowController_DigitalIssuance___startDigitalI
 
   v66 = v15;
   [v21 setServiceProviderData:v26];
-  v30 = [v20 serviceProviderIdentifier];
-  [v21 setServiceProviderIdentifier:v30];
+  serviceProviderIdentifier = [digitalIssuanceMetadata serviceProviderIdentifier];
+  [v21 setServiceProviderIdentifier:serviceProviderIdentifier];
 
   v31 = [objc_alloc(MEMORY[0x277D38278]) initWithServiceProviderOrder:v21];
-  v32 = [v20 serviceProviderAcceptedNetworks];
-  [v31 setSupportedNetworks:v32];
+  serviceProviderAcceptedNetworks = [digitalIssuanceMetadata serviceProviderAcceptedNetworks];
+  [v31 setSupportedNetworks:serviceProviderAcceptedNetworks];
 
-  v33 = [v20 serviceProviderSupportedCountries];
-  [v31 setSupportedCountries:v33];
+  serviceProviderSupportedCountries = [digitalIssuanceMetadata serviceProviderSupportedCountries];
+  [v31 setSupportedCountries:serviceProviderSupportedCountries];
 
-  v34 = [v20 serviceProviderCapabilities];
+  serviceProviderCapabilities = [digitalIssuanceMetadata serviceProviderCapabilities];
   [v31 setMerchantCapabilities:PKMerchantCapabilityFromStrings()];
 
-  v35 = [v20 serviceProviderCountryCode];
-  [v31 setCountryCode:v35];
+  serviceProviderCountryCode = [digitalIssuanceMetadata serviceProviderCountryCode];
+  [v31 setCountryCode:serviceProviderCountryCode];
 
   v64 = v14;
-  v36 = [v14 currency];
-  [v31 setCurrencyCode:v36];
+  currency = [v14 currency];
+  [v31 setCurrencyCode:currency];
 
   v37 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
   if (v12)
   {
     v38 = objc_alloc_init(MEMORY[0x277CCACA8]);
-    v39 = [v67 localizedDisplayName];
-    if (v39 && (v40 = v39, [v68 localizedDisplayName], v41 = objc_claimAutoreleasedReturnValue(), v41, v40, v41))
+    localizedDisplayName = [v67 localizedDisplayName];
+    if (localizedDisplayName && (v40 = localizedDisplayName, [v68 localizedDisplayName], v41 = objc_claimAutoreleasedReturnValue(), v41, v40, v41))
     {
       v42 = MEMORY[0x277CCACA8];
-      v43 = [v67 localizedDisplayName];
-      v44 = [v68 localizedDisplayName];
-      v45 = [v42 stringWithFormat:@"%@ - %@", v43, v44];
+      localizedDisplayName2 = [v67 localizedDisplayName];
+      localizedDisplayName3 = [v68 localizedDisplayName];
+      localizedDisplayName5 = [v42 stringWithFormat:@"%@ - %@", localizedDisplayName2, localizedDisplayName3];
 
-      v38 = v43;
+      v38 = localizedDisplayName2;
     }
 
     else
     {
-      v48 = [v67 localizedDisplayName];
+      localizedDisplayName4 = [v67 localizedDisplayName];
 
-      if (!v48)
+      if (!localizedDisplayName4)
       {
 LABEL_20:
         v47 = MEMORY[0x277D38138];
         goto LABEL_21;
       }
 
-      v45 = [v67 localizedDisplayName];
+      localizedDisplayName5 = [v67 localizedDisplayName];
     }
 
-    v38 = v45;
+    v38 = localizedDisplayName5;
     goto LABEL_20;
   }
 
@@ -7522,44 +7522,44 @@ LABEL_21:
   v49 = [v47 summaryItemWithLabel:v38 amount:v66];
 
   [v37 addObject:v49];
-  if (v16)
+  if (depositAmount)
   {
-    v50 = [MEMORY[0x277CCA980] zero];
-    v51 = [v50 compare:v16];
+    zero2 = [MEMORY[0x277CCA980] zero];
+    v51 = [zero2 compare:depositAmount];
 
     if (v51 == -1)
     {
-      v52 = [v64 depositType];
-      if (v52 > 2)
+      depositType = [v64 depositType];
+      if (depositType > 2)
       {
         v53 = 0;
       }
 
       else
       {
-        v53 = PKLocalizedPaymentString(&off_279947500[v52]->isa);
+        v53 = PKLocalizedPaymentString(&off_279947500[depositType]->isa);
       }
 
-      v54 = [MEMORY[0x277D38138] summaryItemWithLabel:v53 amount:v16];
+      v54 = [MEMORY[0x277D38138] summaryItemWithLabel:v53 amount:depositAmount];
       [v37 addObject:v54];
     }
   }
 
-  v55 = [v20 serviceProviderLocalizedDisplayName];
-  v56 = v55;
-  if (v55)
+  serviceProviderLocalizedDisplayName = [digitalIssuanceMetadata serviceProviderLocalizedDisplayName];
+  v56 = serviceProviderLocalizedDisplayName;
+  if (serviceProviderLocalizedDisplayName)
   {
-    v57 = v55;
+    displayName = serviceProviderLocalizedDisplayName;
     v58 = v62;
   }
 
   else
   {
     v58 = v62;
-    v57 = [v62 displayName];
+    displayName = [v62 displayName];
   }
 
-  v59 = [MEMORY[0x277D38138] summaryItemWithLabel:v57 amount:v63];
+  v59 = [MEMORY[0x277D38138] summaryItemWithLabel:displayName amount:v63];
   [v37 addObject:v59];
   [v31 setPaymentSummaryItems:v37];
 
@@ -7568,22 +7568,22 @@ LABEL_21:
   return v31;
 }
 
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler
 {
   v5 = MEMORY[0x277D37FF0];
-  v6 = a5;
+  handlerCopy = handler;
   v7 = [[v5 alloc] initWithStatus:0 errors:0];
-  v6[2](v6, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)paymentAuthorizationControllerDidFinish:(id)a3
+- (void)paymentAuthorizationControllerDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __97__NPKPaymentProvisioningFlowController_DigitalIssuance__paymentAuthorizationControllerDidFinish___block_invoke;
   v3[3] = &unk_279944F98;
   v3[4] = self;
-  [a3 dismissWithCompletion:v3];
+  [finish dismissWithCompletion:v3];
 }
 
 void __97__NPKPaymentProvisioningFlowController_DigitalIssuance__paymentAuthorizationControllerDidFinish___block_invoke(uint64_t a1)
@@ -7649,19 +7649,19 @@ void __97__NPKPaymentProvisioningFlowController_DigitalIssuance__paymentAuthoriz
   }
 }
 
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5
+- (void)paymentAuthorizationController:(id)controller didAuthorizePurchase:(id)purchase completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  purchaseCopy = purchase;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __120__NPKPaymentProvisioningFlowController_DigitalIssuance__paymentAuthorizationController_didAuthorizePurchase_completion___block_invoke;
   block[3] = &unk_279945A48;
-  v12 = v7;
-  v13 = self;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = purchaseCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = purchaseCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -7677,18 +7677,18 @@ uint64_t __120__NPKPaymentProvisioningFlowController_DigitalIssuance__paymentAut
   return v2();
 }
 
-- (id)_addCardErrorForPaymentRequest:(id)a3
+- (id)_addCardErrorForPaymentRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 supportedNetworks];
-  v5 = [v3 merchantCapabilities];
+  requestCopy = request;
+  supportedNetworks = [requestCopy supportedNetworks];
+  merchantCapabilities = [requestCopy merchantCapabilities];
 
-  v6 = [v4 count];
-  v7 = v5 & 0xC;
+  v6 = [supportedNetworks count];
+  v7 = merchantCapabilities & 0xC;
   v8 = PKLocalizedPaymentString(&cfstr_SetupPurchaseP.isa);
   if (v6 == 1)
   {
-    v9 = [v4 objectAtIndexedSubscript:0];
+    v9 = [supportedNetworks objectAtIndexedSubscript:0];
     PKPaymentCredentialTypeForPaymentNetworkName();
 
     v10 = PKDisplayablePaymentNetworkNameForPaymentCredentialType();
@@ -7759,16 +7759,16 @@ uint64_t __120__NPKPaymentProvisioningFlowController_DigitalIssuance__paymentAut
   return v19;
 }
 
-+ (id)_displayableErrorWithIneligibilityReason:(int64_t)a3 learnMoreURL:(id)a4
++ (id)_displayableErrorWithIneligibilityReason:(int64_t)reason learnMoreURL:(id)l
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  v8 = a3 == 5 || v5 == 0;
-  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PKPaymentCardEligibilityErrorDomain" code:a3 userInfo:0];
-  if (a3 <= 3)
+  lCopy = l;
+  v6 = lCopy;
+  v8 = reason == 5 || lCopy == 0;
+  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PKPaymentCardEligibilityErrorDomain" code:reason userInfo:0];
+  if (reason <= 3)
   {
-    switch(a3)
+    switch(reason)
     {
       case 1:
         v10 = PKLocalizedPaymentString(&cfstr_EligibilityUnk.isa);
@@ -7829,16 +7829,16 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a3 > 5)
+  if (reason > 5)
   {
-    if (a3 == 6)
+    if (reason == 6)
     {
       v10 = PKLocalizedPaymentString(&cfstr_EligibilityHar.isa);
       v17 = @"ELIGIBILITY_HARDWARE_NOT_SUPPORTED_ERROR_MESSAGE_WATCH";
       goto LABEL_24;
     }
 
-    if (a3 == 7)
+    if (reason == 7)
     {
       v10 = PKLocalizedAppleBalanceString(&cfstr_EligibilityErr.isa);
       v18 = PKLocalizedAppleBalanceString(&cfstr_EligibilityErr_0.isa);
@@ -7848,7 +7848,7 @@ LABEL_34:
     goto LABEL_20;
   }
 
-  if (a3 == 4)
+  if (reason == 4)
   {
     NPKTrackPaymentProvisioningWebServicesCheck();
     v10 = PKLocalizedPaymentString(&cfstr_EligibilityAlr.isa);
@@ -7887,42 +7887,42 @@ LABEL_36:
   return v22;
 }
 
-+ (id)_displayableErrorWithUnderlyingVerificationError:(id)a3
++ (id)_displayableErrorWithUnderlyingVerificationError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = PKLocalizedPaymentString(&cfstr_ActivationNotA.isa);
   v5 = PKLocalizedPaymentString(&cfstr_ActivationNotA_0.isa);
-  v6 = [v3 domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CCA738]];
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:*MEMORY[0x277CCA738]];
 
   if (v7)
   {
-    v8 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
+    localizedFailureReason3 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
 
-    v9 = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
+    localizedRecoverySuggestion = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
 LABEL_10:
-    v13 = v5;
-    v4 = v8;
-    v5 = v9;
+    domain3 = v5;
+    v4 = localizedFailureReason3;
+    v5 = localizedRecoverySuggestion;
     goto LABEL_11;
   }
 
-  v10 = [v3 domain];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D38AF8]];
+  domain2 = [errorCopy domain];
+  v11 = [domain2 isEqualToString:*MEMORY[0x277D38AF8]];
 
   if (!v11)
   {
-    v13 = [v3 domain];
-    if (![v13 isEqualToString:*MEMORY[0x277D38958]])
+    domain3 = [errorCopy domain];
+    if (![domain3 isEqualToString:*MEMORY[0x277D38958]])
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v14 = [v3 localizedFailureReason];
+    localizedFailureReason = [errorCopy localizedFailureReason];
 
-    if (!v14)
+    if (!localizedFailureReason)
     {
       goto LABEL_12;
     }
@@ -7930,16 +7930,16 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if ([v3 code] <= 5)
+  if ([errorCopy code] <= 5)
   {
-    v12 = [v3 localizedFailureReason];
+    localizedFailureReason2 = [errorCopy localizedFailureReason];
 
-    if (v12)
+    if (localizedFailureReason2)
     {
 LABEL_9:
-      v8 = [v3 localizedFailureReason];
+      localizedFailureReason3 = [errorCopy localizedFailureReason];
 
-      v9 = [v3 localizedRecoverySuggestion];
+      localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
       goto LABEL_10;
     }
   }
@@ -7950,9 +7950,9 @@ LABEL_12:
   return v15;
 }
 
-+ (id)_displayableCouldNotAddCardErrorWithUnderlyingError:(id)a3
++ (id)_displayableCouldNotAddCardErrorWithUnderlyingError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = PKLocalizedPaymentString(&cfstr_CouldNotAddCar.isa);
   v5 = PKLocalizedPaymentString(&cfstr_CouldNotAddCar_0.isa);
   v6 = PKDisplayableErrorCustom();
@@ -7960,17 +7960,17 @@ LABEL_12:
   return v6;
 }
 
-+ (BOOL)_readerModeEntryAllowedForProduct:(id)a3
++ (BOOL)_readerModeEntryAllowedForProduct:(id)product
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  productCopy = product;
+  v4 = productCopy;
+  if (!productCopy)
   {
     goto LABEL_20;
   }
 
-  v5 = [v3 supportedProvisioningMethods];
-  if ((v5 & 1) == 0)
+  supportedProvisioningMethods = [productCopy supportedProvisioningMethods];
+  if ((supportedProvisioningMethods & 1) == 0)
   {
     v6 = pk_Payment_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -7986,7 +7986,7 @@ LABEL_12:
     }
   }
 
-  if ((v5 & 1) == 0)
+  if ((supportedProvisioningMethods & 1) == 0)
   {
     goto LABEL_20;
   }
@@ -8045,20 +8045,20 @@ LABEL_21:
   return v9;
 }
 
-- (void)_transitionToReaderModeForProduct:(id)a3 requestContext:(id)a4
+- (void)_transitionToReaderModeForProduct:(id)product requestContext:(id)context
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
-  [v7 resolveRequirementsUsingProduct:v17];
+  productCopy = product;
+  contextCopy = context;
+  provisioningController = [(NPKPaymentProvisioningFlowController *)self provisioningController];
+  [provisioningController resolveRequirementsUsingProduct:productCopy];
 
-  v8 = [v17 provisioningMethodMetadataForType:*MEMORY[0x277D388E8]];
+  v8 = [productCopy provisioningMethodMetadataForType:*MEMORY[0x277D388E8]];
   [(NPKPaymentProvisioningFlowController *)self setIngestionMethodMetadata:v8];
   if (v8)
   {
-    v9 = [v8 requiredFields];
-    v10 = [v8 readerModeResources];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D388F8]];
+    requiredFields = [v8 requiredFields];
+    readerModeResources = [v8 readerModeResources];
+    v11 = [readerModeResources objectForKeyedSubscript:*MEMORY[0x277D388F8]];
     v12 = [v11 objectForKeyedSubscript:@"welcome"];
 
     v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D388E0]];
@@ -8067,25 +8067,25 @@ LABEL_21:
 
   else
   {
-    v9 = [v17 requiredFields];
+    requiredFields = [productCopy requiredFields];
     v14 = 0;
     v13 = 0;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D38110]) initWithPaymentSetupFields:v9];
+  v15 = [objc_alloc(MEMORY[0x277D38110]) initWithPaymentSetupFields:requiredFields];
   [(NPKPaymentProvisioningFlowController *)self setFieldsModel:v15];
 
-  v16 = [[NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext alloc] initWithRequestContext:v6];
-  [(NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext *)v16 setProduct:v17];
+  v16 = [[NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext alloc] initWithRequestContext:contextCopy];
+  [(NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext *)v16 setProduct:productCopy];
   [(NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext *)v16 setTitle:v13];
   [(NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext *)v16 setSubtitle:v14];
-  [(NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext *)v16 setSetupFields:v9];
+  [(NPKPaymentProvisioningFlowControllerReaderModeEntryStepContext *)v16 setSetupFields:requiredFields];
   [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:160 withContext:v16];
 }
 
-- (void)_handleReaderModeTermsAccepted:(id)a3
+- (void)_handleReaderModeTermsAccepted:(id)accepted
 {
-  v4 = a3;
+  acceptedCopy = accepted;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -8100,22 +8100,22 @@ LABEL_21:
   }
 
   [(NPKPaymentProvisioningFlowController *)self setTermsAcceptedOutOfBand:1];
-  [(NPKPaymentProvisioningFlowController *)self _startReaderModeIngestion:v4];
+  [(NPKPaymentProvisioningFlowController *)self _startReaderModeIngestion:acceptedCopy];
 }
 
-- (void)_startReaderModeIngestion:(id)a3
+- (void)_startReaderModeIngestion:(id)ingestion
 {
-  [(NPKPaymentProvisioningFlowController *)self setReaderModeRequestContext:a3];
+  [(NPKPaymentProvisioningFlowController *)self setReaderModeRequestContext:ingestion];
   [(NPKPaymentProvisioningFlowController *)self setInternalIngestionState:0];
   [(NPKPaymentProvisioningFlowController *)self setFlowIngestionState:0];
 
   [(NPKPaymentProvisioningFlowController *)self _startIngestion];
 }
 
-- (void)_noteProvisioningStateChangeForReaderMode:(int64_t)a3
+- (void)_noteProvisioningStateChangeForReaderMode:(int64_t)mode
 {
-  v5 = [(NPKPaymentProvisioningFlowController *)self internalIngestionState];
-  if (a3 == 1 && v5 == 3)
+  internalIngestionState = [(NPKPaymentProvisioningFlowController *)self internalIngestionState];
+  if (mode == 1 && internalIngestionState == 3)
   {
     [(NPKPaymentProvisioningFlowController *)self setInternalIngestionState:4];
     v6 = 0.537313433;
@@ -8125,16 +8125,16 @@ LABEL_7:
     return;
   }
 
-  v7 = [(NPKPaymentProvisioningFlowController *)self internalIngestionState];
-  if (a3 == 4 && v7 == 4)
+  internalIngestionState2 = [(NPKPaymentProvisioningFlowController *)self internalIngestionState];
+  if (mode == 4 && internalIngestionState2 == 4)
   {
     [(NPKPaymentProvisioningFlowController *)self setInternalIngestionState:5];
     v6 = 0.776119403;
     goto LABEL_7;
   }
 
-  v8 = [(NPKPaymentProvisioningFlowController *)self internalIngestionState];
-  if (a3 == 5 && v8 == 5)
+  internalIngestionState3 = [(NPKPaymentProvisioningFlowController *)self internalIngestionState];
+  if (mode == 5 && internalIngestionState3 == 5)
   {
     [(NPKPaymentProvisioningFlowController *)self setInternalIngestionState:6];
     [(NPKPaymentProvisioningFlowController *)self _transitionToIngestionProgress:0.98];
@@ -8145,22 +8145,22 @@ LABEL_7:
 
 - (void)_setupCardIngester
 {
-  v3 = [(NPKPaymentProvisioningFlowController *)self cardIngester];
+  cardIngester = [(NPKPaymentProvisioningFlowController *)self cardIngester];
 
-  if (!v3)
+  if (!cardIngester)
   {
-    v4 = [(NPKPaymentProvisioningFlowController *)self unitTestingCardIngester];
-    v5 = v4;
-    if (v4)
+    unitTestingCardIngester = [(NPKPaymentProvisioningFlowController *)self unitTestingCardIngester];
+    v5 = unitTestingCardIngester;
+    if (unitTestingCardIngester)
     {
-      v8 = v4;
+      v8 = unitTestingCardIngester;
     }
 
     else
     {
       v6 = objc_alloc(MEMORY[0x277D37E30]);
-      v7 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-      v8 = [v6 initWithPaymentSetupProduct:v7 delegate:self];
+      currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+      v8 = [v6 initWithPaymentSetupProduct:currentProduct delegate:self];
     }
 
     [(NPKPaymentProvisioningFlowController *)self setCardIngester:v8];
@@ -8169,8 +8169,8 @@ LABEL_7:
 
 - (void)_tearDownCardIngester
 {
-  v3 = [(NPKPaymentProvisioningFlowController *)self cardIngester];
-  [v3 invalidate];
+  cardIngester = [(NPKPaymentProvisioningFlowController *)self cardIngester];
+  [cardIngester invalidate];
 
   [(NPKPaymentProvisioningFlowController *)self setCardIngester:0];
   [(NPKPaymentProvisioningFlowController *)self setIngestionCardSessionToken:0];
@@ -8178,14 +8178,14 @@ LABEL_7:
   [(NPKPaymentProvisioningFlowController *)self _invalidateCardNotFoundTimer];
 }
 
-- (void)contactlessCardIngester:(id)a3 didUpdateCardIngestionStatus:(unint64_t)a4
+- (void)contactlessCardIngester:(id)ingester didUpdateCardIngestionStatus:(unint64_t)status
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __105__NPKPaymentProvisioningFlowController_ReaderMode__contactlessCardIngester_didUpdateCardIngestionStatus___block_invoke;
   v5[3] = &unk_279945830;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = status;
   v4 = v5;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -8265,52 +8265,52 @@ unint64_t __105__NPKPaymentProvisioningFlowController_ReaderMode__contactlessCar
   return result;
 }
 
-- (void)_transitionToFlowIngestionState:(unint64_t)a3 progress:(double)a4
+- (void)_transitionToFlowIngestionState:(unint64_t)state progress:(double)progress
 {
-  if ([(NPKPaymentProvisioningFlowController *)self flowIngestionState]!= a3 || ([(NPKPaymentProvisioningFlowController *)self ingestionProgress], v7 != a4))
+  if ([(NPKPaymentProvisioningFlowController *)self flowIngestionState]!= state || ([(NPKPaymentProvisioningFlowController *)self ingestionProgress], v7 != progress))
   {
-    [(NPKPaymentProvisioningFlowController *)self setFlowIngestionState:a3];
-    [(NPKPaymentProvisioningFlowController *)self setIngestionProgress:a4];
+    [(NPKPaymentProvisioningFlowController *)self setFlowIngestionState:state];
+    [(NPKPaymentProvisioningFlowController *)self setIngestionProgress:progress];
     v8 = [NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext alloc];
-    v9 = [(NPKPaymentProvisioningFlowController *)self readerModeRequestContext];
-    v15 = [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v8 initWithRequestContext:v9];
+    readerModeRequestContext = [(NPKPaymentProvisioningFlowController *)self readerModeRequestContext];
+    v15 = [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v8 initWithRequestContext:readerModeRequestContext];
 
-    [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v15 setIngestionState:a3];
-    [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v15 setIngestionProgress:a4];
-    v10 = [(NPKPaymentProvisioningFlowController *)self _titleForState:a3];
+    [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v15 setIngestionState:state];
+    [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v15 setIngestionProgress:progress];
+    v10 = [(NPKPaymentProvisioningFlowController *)self _titleForState:state];
     [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v15 setTitle:v10];
 
-    v11 = [(NPKPaymentProvisioningFlowController *)self _subtitleForState:a3];
+    v11 = [(NPKPaymentProvisioningFlowController *)self _subtitleForState:state];
     [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v15 setSubtitle:v11];
 
     v12 = objc_opt_class();
-    v13 = [(NPKPaymentProvisioningFlowController *)self ingestionMethodMetadata];
+    ingestionMethodMetadata = [(NPKPaymentProvisioningFlowController *)self ingestionMethodMetadata];
     PKScreenScale();
-    v14 = [v12 _physicalCardURLFromMetadata:v13 forScale:?];
+    v14 = [v12 _physicalCardURLFromMetadata:ingestionMethodMetadata forScale:?];
     [(NPKPaymentProvisioningFlowControllerReaderModeIngestionStepContext *)v15 setPhysicalCardImageURL:v14];
 
     [(NPKPaymentProvisioningFlowController *)self _performTransitionToStep:165 withContext:v15];
   }
 }
 
-- (void)contactlessCardIngester:(id)a3 didFailToIngestCardWithError:(id)a4 resetProvisioning:(BOOL)a5 isRecoverable:(BOOL)a6
+- (void)contactlessCardIngester:(id)ingester didFailToIngestCardWithError:(id)error resetProvisioning:(BOOL)provisioning isRecoverable:(BOOL)recoverable
 {
-  v9 = a4;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __137__NPKPaymentProvisioningFlowController_ReaderMode__contactlessCardIngester_didFailToIngestCardWithError_resetProvisioning_isRecoverable___block_invoke;
   v12[3] = &unk_279949070;
-  v14 = a5;
+  provisioningCopy = provisioning;
   v12[4] = self;
-  v13 = v9;
-  v15 = a6;
+  v13 = errorCopy;
+  recoverableCopy = recoverable;
   v10 = v12;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke;
   block[3] = &unk_279945198;
   v17 = v10;
-  v11 = v9;
+  v11 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -8418,21 +8418,21 @@ void __137__NPKPaymentProvisioningFlowController_ReaderMode__contactlessCardInge
       }
     }
 
-    v6 = [objc_opt_class() _displayableCouldNotAddCardErrorWithUnderlyingError:0];
-    v7 = [(NPKPaymentProvisioningFlowController *)self readerModeRequestContext];
-    [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:v6 requestContext:v7];
+    cardIngester = [objc_opt_class() _displayableCouldNotAddCardErrorWithUnderlyingError:0];
+    readerModeRequestContext = [(NPKPaymentProvisioningFlowController *)self readerModeRequestContext];
+    [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:cardIngester requestContext:readerModeRequestContext];
   }
 
   else
   {
     [(NPKPaymentProvisioningFlowController *)self setInternalIngestionState:2];
-    v6 = [(NPKPaymentProvisioningFlowController *)self cardIngester];
+    cardIngester = [(NPKPaymentProvisioningFlowController *)self cardIngester];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__NPKPaymentProvisioningFlowController_ReaderMode___startReadingCard__block_invoke;
     v9[3] = &unk_279949098;
     v9[4] = self;
-    [v6 ingestCardWithSuccessHandler:v9];
+    [cardIngester ingestCardWithSuccessHandler:v9];
   }
 }
 
@@ -8469,14 +8469,14 @@ void __69__NPKPaymentProvisioningFlowController_ReaderMode___startReadingCard__b
   if ([(NPKPaymentProvisioningFlowController *)self internalIngestionState]== 6)
   {
     [(NPKPaymentProvisioningFlowController *)self setInternalIngestionState:7];
-    v3 = [(NPKPaymentProvisioningFlowController *)self cardIngester];
-    v4 = [(NPKPaymentProvisioningFlowController *)self ingestionCardSessionToken];
+    cardIngester = [(NPKPaymentProvisioningFlowController *)self cardIngester];
+    ingestionCardSessionToken = [(NPKPaymentProvisioningFlowController *)self ingestionCardSessionToken];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __74__NPKPaymentProvisioningFlowController_ReaderMode___startTransferringCard__block_invoke;
     v9[3] = &unk_279944F98;
     v9[4] = self;
-    [v3 ingestCardWithCardSessionToken:v4 successHandler:v9];
+    [cardIngester ingestCardWithCardSessionToken:ingestionCardSessionToken successHandler:v9];
   }
 
   else
@@ -8494,9 +8494,9 @@ void __69__NPKPaymentProvisioningFlowController_ReaderMode___startReadingCard__b
       }
     }
 
-    v3 = [objc_opt_class() _displayableCouldNotAddCardErrorWithUnderlyingError:0];
-    v4 = [(NPKPaymentProvisioningFlowController *)self readerModeRequestContext];
-    [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:v3 requestContext:v4];
+    cardIngester = [objc_opt_class() _displayableCouldNotAddCardErrorWithUnderlyingError:0];
+    ingestionCardSessionToken = [(NPKPaymentProvisioningFlowController *)self readerModeRequestContext];
+    [(NPKPaymentProvisioningFlowController *)self _sendDidEncounterError:cardIngester requestContext:ingestionCardSessionToken];
   }
 }
 
@@ -8576,29 +8576,29 @@ uint64_t __85__NPKPaymentProvisioningFlowController_ReaderMode___resetReaderMode
 {
   if ([(NPKPaymentProvisioningFlowController *)self internalIngestionState]!= 8)
   {
-    v3 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
-    v4 = [v3 hasPaymentPass];
+    provisioningController = [(NPKPaymentProvisioningFlowController *)self provisioningController];
+    hasPaymentPass = [provisioningController hasPaymentPass];
 
-    if (v4)
+    if (hasPaymentPass)
     {
-      v5 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
-      [v5 removeProvisionedPass];
+      provisioningController2 = [(NPKPaymentProvisioningFlowController *)self provisioningController];
+      [provisioningController2 removeProvisionedPass];
     }
   }
 }
 
-- (void)_transitionToFlowIngestionState:(unint64_t)a3
+- (void)_transitionToFlowIngestionState:(unint64_t)state
 {
   [(NPKPaymentProvisioningFlowController *)self ingestionProgress];
 
-  [(NPKPaymentProvisioningFlowController *)self _transitionToFlowIngestionState:a3 progress:?];
+  [(NPKPaymentProvisioningFlowController *)self _transitionToFlowIngestionState:state progress:?];
 }
 
-- (void)_transitionToIngestionProgress:(double)a3
+- (void)_transitionToIngestionProgress:(double)progress
 {
-  v5 = [(NPKPaymentProvisioningFlowController *)self flowIngestionState];
+  flowIngestionState = [(NPKPaymentProvisioningFlowController *)self flowIngestionState];
 
-  [(NPKPaymentProvisioningFlowController *)self _transitionToFlowIngestionState:v5 progress:a3];
+  [(NPKPaymentProvisioningFlowController *)self _transitionToFlowIngestionState:flowIngestionState progress:progress];
 }
 
 - (void)_startCardNotFoundTimer
@@ -8608,20 +8608,20 @@ uint64_t __85__NPKPaymentProvisioningFlowController_ReaderMode___resetReaderMode
   [(NPKPaymentProvisioningFlowController *)self setIngestionCardNotFoundTimer:v3];
 
   objc_initWeak(&location, self);
-  v4 = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
+  ingestionCardNotFoundTimer = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __75__NPKPaymentProvisioningFlowController_ReaderMode___startCardNotFoundTimer__block_invoke;
   v11 = &unk_279945030;
   objc_copyWeak(&v12, &location);
-  dispatch_source_set_event_handler(v4, &v8);
+  dispatch_source_set_event_handler(ingestionCardNotFoundTimer, &v8);
 
   v5 = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer:v8];
   v6 = dispatch_time(0, 15000000000);
   dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-  v7 = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
-  dispatch_resume(v7);
+  ingestionCardNotFoundTimer2 = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
+  dispatch_resume(ingestionCardNotFoundTimer2);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -8635,12 +8635,12 @@ void __75__NPKPaymentProvisioningFlowController_ReaderMode___startCardNotFoundTi
 
 - (void)_invalidateCardNotFoundTimer
 {
-  v3 = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
+  ingestionCardNotFoundTimer = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
 
-  if (v3)
+  if (ingestionCardNotFoundTimer)
   {
-    v4 = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
-    dispatch_source_cancel(v4);
+    ingestionCardNotFoundTimer2 = [(NPKPaymentProvisioningFlowController *)self ingestionCardNotFoundTimer];
+    dispatch_source_cancel(ingestionCardNotFoundTimer2);
 
     [(NPKPaymentProvisioningFlowController *)self setIngestionCardNotFoundTimer:0];
   }
@@ -8674,17 +8674,17 @@ void __72__NPKPaymentProvisioningFlowController_ReaderMode___readerModeResources
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_physicalCardURLFromMetadata:(id)a3 forScale:(double)a4
++ (id)_physicalCardURLFromMetadata:(id)metadata forScale:(double)scale
 {
   v5 = @"2x";
-  if (a4 > 2.0)
+  if (scale > 2.0)
   {
     v5 = @"3x";
   }
 
   v6 = v5;
-  v7 = [a3 readerModeResources];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D388F0]];
+  readerModeResources = [metadata readerModeResources];
+  v8 = [readerModeResources objectForKeyedSubscript:*MEMORY[0x277D388F0]];
   v9 = [v8 objectForKeyedSubscript:@"plasticCardImages"];
 
   if (v9 && [v9 count])
@@ -8716,67 +8716,67 @@ void __72__NPKPaymentProvisioningFlowController_ReaderMode___readerModeResources
   return v13;
 }
 
-- (id)_titleForState:(unint64_t)a3
+- (id)_titleForState:(unint64_t)state
 {
-  v5 = [objc_opt_class() _readerModeResources];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  _readerModeResources = [objc_opt_class() _readerModeResources];
+  v6 = [_readerModeResources objectAtIndexedSubscript:state];
 
-  v7 = [(NPKPaymentProvisioningFlowController *)self ingestionMethodMetadata];
-  v8 = [v7 readerModeResources];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D388F8]];
+  ingestionMethodMetadata = [(NPKPaymentProvisioningFlowController *)self ingestionMethodMetadata];
+  readerModeResources = [ingestionMethodMetadata readerModeResources];
+  v9 = [readerModeResources objectForKeyedSubscript:*MEMORY[0x277D388F8]];
   v10 = [v9 objectForKeyedSubscript:v6];
   v11 = [v10 objectForKeyedSubscript:@"localizedTitle"];
 
   if (!v11)
   {
-    if (a3 > 5)
+    if (state > 5)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = PKLocalizedPaymentString(&off_2799490B8[a3]->isa);
+      v11 = PKLocalizedPaymentString(&off_2799490B8[state]->isa);
     }
   }
 
   return v11;
 }
 
-- (id)_subtitleForState:(unint64_t)a3
+- (id)_subtitleForState:(unint64_t)state
 {
-  v5 = [objc_opt_class() _readerModeResources];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  _readerModeResources = [objc_opt_class() _readerModeResources];
+  v6 = [_readerModeResources objectAtIndexedSubscript:state];
 
-  v7 = [(NPKPaymentProvisioningFlowController *)self ingestionMethodMetadata];
-  v8 = [v7 readerModeResources];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D388F8]];
+  ingestionMethodMetadata = [(NPKPaymentProvisioningFlowController *)self ingestionMethodMetadata];
+  readerModeResources = [ingestionMethodMetadata readerModeResources];
+  v9 = [readerModeResources objectForKeyedSubscript:*MEMORY[0x277D388F8]];
   v10 = [v9 objectForKeyedSubscript:v6];
   v11 = [v10 objectForKeyedSubscript:@"localizedDescription"];
 
   if (!v11)
   {
-    if (a3 > 2)
+    if (state > 2)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
-        if (a3 == 4)
+        if (state == 4)
         {
-          v12 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-          v13 = [v12 displayName];
-          PKLocalizedPaymentString(&cfstr_ReaderModeProv_6.isa, &stru_286C96FD8.isa, v13);
+          currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+          displayName = [currentProduct displayName];
+          PKLocalizedPaymentString(&cfstr_ReaderModeProv_6.isa, &stru_286C96FD8.isa, displayName);
         }
 
         else
         {
-          if (a3 != 5)
+          if (state != 5)
           {
             goto LABEL_16;
           }
 
-          v12 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-          v13 = [v12 displayName];
-          PKLocalizedPaymentString(&cfstr_ReaderModeProv_7.isa, &stru_286C96FD8.isa, v13);
+          currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+          displayName = [currentProduct displayName];
+          PKLocalizedPaymentString(&cfstr_ReaderModeProv_7.isa, &stru_286C96FD8.isa, displayName);
         }
 
         goto LABEL_15;
@@ -8787,20 +8787,20 @@ void __72__NPKPaymentProvisioningFlowController_ReaderMode___readerModeResources
 
     else
     {
-      if (!a3)
+      if (!state)
       {
 LABEL_6:
-        v12 = [(NPKPaymentProvisioningFlowController *)self currentProduct];
-        v13 = [v12 displayName];
-        PKLocalizedPaymentString(&cfstr_ReaderModeProv_3.isa, &stru_286C96FD8.isa, v13);
+        currentProduct = [(NPKPaymentProvisioningFlowController *)self currentProduct];
+        displayName = [currentProduct displayName];
+        PKLocalizedPaymentString(&cfstr_ReaderModeProv_3.isa, &stru_286C96FD8.isa, displayName);
         v11 = LABEL_15:;
 
         goto LABEL_16;
       }
 
-      if (a3 != 1)
+      if (state != 1)
       {
-        if (a3 != 2)
+        if (state != 2)
         {
           goto LABEL_16;
         }

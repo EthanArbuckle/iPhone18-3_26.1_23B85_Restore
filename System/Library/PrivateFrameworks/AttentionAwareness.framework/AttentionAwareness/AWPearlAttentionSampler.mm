@@ -1,19 +1,19 @@
 @interface AWPearlAttentionSampler
-- (AWPearlAttentionSampler)initWithOptions:(id)a3;
+- (AWPearlAttentionSampler)initWithOptions:(id)options;
 - (id)createNewSamplingOperation;
-- (id)initForUnitTest:(BOOL)a3 useAVFoundation:(BOOL)a4;
+- (id)initForUnitTest:(BOOL)test useAVFoundation:(BOOL)foundation;
 - (int)currentState;
 - (unint64_t)minimumAttentionSamplerErrorRetryTime;
-- (unint64_t)nextSampleTimeForSamplingInterval:(unint64_t)a3 ignoreDisplayState:(BOOL)a4;
-- (void)cameraActivityNotification:(int)a3 data:(id *)a4 forOperation:(id)a5;
-- (void)cancelFaceDetect:(id)a3;
+- (unint64_t)nextSampleTimeForSamplingInterval:(unint64_t)interval ignoreDisplayState:(BOOL)state;
+- (void)cameraActivityNotification:(int)notification data:(id *)data forOperation:(id)operation;
+- (void)cancelFaceDetect:(id)detect;
 - (void)cancelStalledTimer;
-- (void)faceDetectStalled:(id)a3;
-- (void)finishingFaceDetect:(id)a3;
+- (void)faceDetectStalled:(id)stalled;
+- (void)finishingFaceDetect:(id)detect;
 - (void)pearlAttentionSamplerErrorOccurred;
-- (void)startStalledTimerForOperation:(id)a3;
-- (void)updateSamplingDeadline:(unint64_t)a3 forClient:(id)a4;
-- (void)updateSuppressedMaskWithDisplayState:(BOOL)a3 smartCoverClosed:(BOOL)a4 carPlayConnected:(BOOL)a5;
+- (void)startStalledTimerForOperation:(id)operation;
+- (void)updateSamplingDeadline:(unint64_t)deadline forClient:(id)client;
+- (void)updateSuppressedMaskWithDisplayState:(BOOL)state smartCoverClosed:(BOOL)closed carPlayConnected:(BOOL)connected;
 @end
 
 @implementation AWPearlAttentionSampler
@@ -82,10 +82,10 @@
   return v4;
 }
 
-- (void)cameraActivityNotification:(int)a3 data:(id *)a4 forOperation:(id)a5
+- (void)cameraActivityNotification:(int)notification data:(id *)data forOperation:(id)operation
 {
   v88 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  operationCopy = operation;
   if (currentLogLevel == 5)
   {
     v9 = _AALog();
@@ -105,7 +105,7 @@
       *buf = 134218240;
       v83 = v11;
       v84 = 1024;
-      *v85 = a3;
+      *v85 = notification;
       v16 = "%13.5f: cameraActivityNotification %u received";
       v17 = v9;
       v18 = 18;
@@ -152,7 +152,7 @@ LABEL_19:
           *&v85[4] = 2048;
           *&v85[6] = v15;
           *&v85[14] = 1024;
-          *&v85[16] = a3;
+          *&v85[16] = notification;
           v16 = "%30s:%-4d: %13.5f: cameraActivityNotification %u received";
           v17 = v9;
           v18 = 34;
@@ -163,11 +163,11 @@ LABEL_19:
   }
 
 LABEL_21:
-  if (a3 > 2)
+  if (notification > 2)
   {
-    if (a3 != 3)
+    if (notification != 3)
     {
-      if (a3 != 4)
+      if (notification != 4)
       {
         goto LABEL_136;
       }
@@ -188,7 +188,7 @@ LABEL_21:
             v24 = v23 / 1000000000.0;
           }
 
-          var1 = a4->var1;
+          var1 = data->var1;
           *buf = 134218240;
           v83 = v24;
           v84 = 1024;
@@ -232,7 +232,7 @@ LABEL_114:
                 v38 = v37 / 1000000000.0;
               }
 
-              v71 = a4->var1;
+              v71 = data->var1;
               *buf = 136315906;
               v83 = *&v31;
               v84 = 1024;
@@ -251,7 +251,7 @@ LABEL_114:
       }
 
 LABEL_116:
-      if (a4->var1 == 5)
+      if (data->var1 == 5)
       {
         [(AWPearlAttentionSampler *)self pearlAttentionSamplerErrorOccurred];
       }
@@ -275,7 +275,7 @@ LABEL_116:
           v28 = v27 / 1000000000.0;
         }
 
-        v49 = a4->var1;
+        v49 = data->var1;
         *buf = 134218240;
         v83 = v28;
         v84 = 1024;
@@ -319,7 +319,7 @@ LABEL_120:
               v40 = v39 / 1000000000.0;
             }
 
-            v72 = a4->var1;
+            v72 = data->var1;
             *buf = 136315906;
             v83 = *&v33;
             v84 = 1024;
@@ -338,16 +338,16 @@ LABEL_120:
     }
 
 LABEL_122:
-    v73 = a4->var1;
-    if (a4->var1 == 4)
+    v73 = data->var1;
+    if (data->var1 == 4)
     {
-      v74 = self;
+      selfCopy3 = self;
       v75 = 4;
     }
 
     else if (v73 == 3)
     {
-      v74 = self;
+      selfCopy3 = self;
       v75 = 5;
     }
 
@@ -358,17 +358,17 @@ LABEL_122:
         goto LABEL_136;
       }
 
-      v74 = self;
+      selfCopy3 = self;
       v75 = 3;
     }
 
-    [(AWPearlAttentionSampler *)v74 updateFaceState:v75];
+    [(AWPearlAttentionSampler *)selfCopy3 updateFaceState:v75];
     goto LABEL_136;
   }
 
-  if (a3 == 1)
+  if (notification == 1)
   {
-    if (a4->var0.var0)
+    if (data->var0.var0)
     {
       v25 = 5;
     }
@@ -378,10 +378,10 @@ LABEL_122:
       v25 = 4;
     }
 
-    [(AWPearlAttentionSampler *)self updateFaceState:v25 withFaceMetadata:a4];
+    [(AWPearlAttentionSampler *)self updateFaceState:v25 withFaceMetadata:data];
   }
 
-  else if (a3 == 2)
+  else if (notification == 2)
   {
     if (currentLogLevel == 5)
     {
@@ -399,7 +399,7 @@ LABEL_122:
           v21 = v20 / 1000000000.0;
         }
 
-        v41 = a4->var1;
+        v41 = data->var1;
         *buf = 134218240;
         v83 = v21;
         v84 = 1024;
@@ -443,7 +443,7 @@ LABEL_80:
               v36 = v35 / 1000000000.0;
             }
 
-            v53 = a4->var1;
+            v53 = data->var1;
             *buf = 136315906;
             v83 = *&v29;
             v84 = 1024;
@@ -462,18 +462,18 @@ LABEL_80:
     }
 
 LABEL_82:
-    if (self->_currentOperation == v8)
+    if (self->_currentOperation == operationCopy)
     {
-      v54 = a4->var1;
-      if (a4->var1 == 4)
+      v54 = data->var1;
+      if (data->var1 == 4)
       {
-        [(SamplingOperation *)v8 Timeout];
+        [(SamplingOperation *)operationCopy Timeout];
         if (v55 != 0.0)
         {
           [(AWAttentionSampler *)self setLastPollTimeoutTime:absTimeNS()];
         }
 
-        v54 = a4->var1;
+        v54 = data->var1;
       }
 
       if (v54 == 1)
@@ -492,7 +492,7 @@ LABEL_82:
         [(AWPearlAttentionSampler *)self pearlAttentionSamplerErrorOccurred];
       }
 
-      if (self->_useAVFoundation && a4->var1 == 3)
+      if (self->_useAVFoundation && data->var1 == 3)
       {
         v56 = [(SamplingOperation *)self->_currentOperation cancelActiveOperation:@"Interruption cancellation"];
       }
@@ -504,13 +504,13 @@ LABEL_82:
       v58 = MEMORY[0x1E696AEC0];
       v59 = self->_currentOperation;
       [(SamplingOperation *)v59 Timeout];
-      v61 = [v58 stringWithFormat:@"operation %p currentOperation %p (timeout %13.5f)", v8, v59, v60];
-      v62 = [(AWAttentionSampler *)self stateChangedCallback];
-      (v62)[2](v62, v61);
+      v61 = [v58 stringWithFormat:@"operation %p currentOperation %p (timeout %13.5f)", operationCopy, v59, v60];
+      stateChangedCallback = [(AWAttentionSampler *)self stateChangedCallback];
+      (stateChangedCallback)[2](stateChangedCallback, v61);
     }
 
     finishingOperation = self->_finishingOperation;
-    if (!finishingOperation || finishingOperation == v8)
+    if (!finishingOperation || finishingOperation == operationCopy)
     {
       goto LABEL_135;
     }
@@ -537,7 +537,7 @@ LABEL_82:
         v84 = 2112;
         *v85 = self;
         *&v85[8] = 2048;
-        *&v85[10] = v8;
+        *&v85[10] = operationCopy;
         *&v85[18] = 2048;
         *&v85[20] = v76;
         v77 = "%13.5f: %@ unexpected finish for operation %p, expecting operation %p";
@@ -592,7 +592,7 @@ LABEL_135:
             *&v85[14] = 2112;
             *&v85[16] = self;
             *&v85[24] = 2048;
-            *&v85[26] = v8;
+            *&v85[26] = operationCopy;
             v86 = 2048;
             v87 = v80;
             v77 = "%30s:%-4d: %13.5f: %@ unexpected finish for operation %p, expecting operation %p";
@@ -613,12 +613,12 @@ LABEL_136:
   v81 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSamplingDeadline:(unint64_t)a3 forClient:(id)a4
+- (void)updateSamplingDeadline:(unint64_t)deadline forClient:(id)client
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->super._queue);
-  if (!self->_displayState && ([v6 activateMotionDetect] & 1) == 0)
+  if (!self->_displayState && ([clientCopy activateMotionDetect] & 1) == 0)
   {
     if (currentLogLevel == 5)
     {
@@ -636,17 +636,17 @@ LABEL_136:
           v10 = v9 / 1000000000.0;
         }
 
-        if (a3 == -1)
+        if (deadline == -1)
         {
           v15 = INFINITY;
         }
 
         else
         {
-          v15 = a3 / 1000000000.0;
+          v15 = deadline / 1000000000.0;
         }
 
-        v16 = [v6 identifier];
+        identifier = [clientCopy identifier];
         *buf = 134218754;
         v23 = v10;
         v24 = 2112;
@@ -654,7 +654,7 @@ LABEL_136:
         *&v25[8] = 2048;
         *&v25[10] = v15;
         *&v25[18] = 2112;
-        *&v25[20] = v16;
+        *&v25[20] = identifier;
         v17 = "%13.5f: %@ ignoring sample with deadline %13.5f for client %@ since sampling is disabled";
         v18 = v8;
         v19 = 42;
@@ -694,17 +694,17 @@ LABEL_29:
               v14 = v13 / 1000000000.0;
             }
 
-            if (a3 == -1)
+            if (deadline == -1)
             {
               v20 = INFINITY;
             }
 
             else
             {
-              v20 = a3 / 1000000000.0;
+              v20 = deadline / 1000000000.0;
             }
 
-            v16 = [v6 identifier];
+            identifier = [clientCopy identifier];
             *buf = 136316418;
             v23 = *&v11;
             v24 = 1024;
@@ -716,7 +716,7 @@ LABEL_29:
             *&v25[24] = 2048;
             *&v25[26] = v20;
             v26 = 2112;
-            v27 = v16;
+            v27 = identifier;
             v17 = "%30s:%-4d: %13.5f: %@ ignoring sample with deadline %13.5f for client %@ since sampling is disabled";
             v18 = v8;
             v19 = 58;
@@ -731,21 +731,21 @@ LABEL_29:
 
   v21.receiver = self;
   v21.super_class = AWPearlAttentionSampler;
-  [(AWAttentionSampler *)&v21 updateSamplingDeadline:a3 forClient:v6];
+  [(AWAttentionSampler *)&v21 updateSamplingDeadline:deadline forClient:clientCopy];
 LABEL_4:
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSuppressedMaskWithDisplayState:(BOOL)a3 smartCoverClosed:(BOOL)a4 carPlayConnected:(BOOL)a5
+- (void)updateSuppressedMaskWithDisplayState:(BOOL)state smartCoverClosed:(BOOL)closed carPlayConnected:(BOOL)connected
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  connectedCopy = connected;
+  closedCopy = closed;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->super._queue);
   v9 = [(AWAttentionSampler *)self samplingSuppressedMask]& 0xFFFFFFFFFFFFFFFBLL;
   v10 = 4;
-  if (!v5)
+  if (!connectedCopy)
   {
     v10 = 0;
   }
@@ -753,20 +753,20 @@ LABEL_4:
   [(AWAttentionSampler *)self setSamplingSuppressedMask:v9 | v10];
   v11 = [(AWAttentionSampler *)self samplingSuppressedMask]& 0xFFFFFFFFFFFFFFFDLL;
   v12 = 2;
-  if (!v6)
+  if (!closedCopy)
   {
     v12 = 0;
   }
 
   [(AWAttentionSampler *)self setSamplingSuppressedMask:v11 | v12];
-  v13 = [(AWAttentionSampler *)self samplingSuppressedMask]& 0xFFFFFFFFFFFFFFFELL | !v7;
+  v13 = [(AWAttentionSampler *)self samplingSuppressedMask]& 0xFFFFFFFFFFFFFFFELL | !stateCopy;
 
   [(AWAttentionSampler *)self setSamplingSuppressedMask:v13];
 }
 
-- (void)startStalledTimerForOperation:(id)a3
+- (void)startStalledTimerForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_V2(self->super._queue);
   if (!self->_operationStalledTimer)
   {
@@ -783,42 +783,42 @@ LABEL_4:
     v10[2] = __57__AWPearlAttentionSampler_startStalledTimerForOperation___block_invoke;
     v10[3] = &unk_1E7F38060;
     v10[4] = self;
-    v11 = v4;
+    v11 = operationCopy;
     dispatch_source_set_event_handler(v9, v10);
     dispatch_resume(self->_operationStalledTimer);
   }
 }
 
-- (unint64_t)nextSampleTimeForSamplingInterval:(unint64_t)a3 ignoreDisplayState:(BOOL)a4
+- (unint64_t)nextSampleTimeForSamplingInterval:(unint64_t)interval ignoreDisplayState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v36 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._queue);
-  if (([(AWAttentionSampler *)self samplingSuppressedMask]& 1) != 0 && !v4)
+  if (([(AWAttentionSampler *)self samplingSuppressedMask]& 1) != 0 && !stateCopy)
   {
     result = -1;
     goto LABEL_34;
   }
 
-  v8 = [(AWAttentionSampler *)self lastTriggerTime];
-  v9 = [(AWAttentionSampler *)self lastPollTimeoutTime];
-  if (v8 <= v9)
+  lastTriggerTime = [(AWAttentionSampler *)self lastTriggerTime];
+  lastPollTimeoutTime = [(AWAttentionSampler *)self lastPollTimeoutTime];
+  if (lastTriggerTime <= lastPollTimeoutTime)
   {
-    v10 = v9;
+    v10 = lastPollTimeoutTime;
   }
 
   else
   {
-    v10 = v8;
+    v10 = lastTriggerTime;
   }
 
-  v11 = v10 + a3;
-  if (v10 + a3 >= 0xFFFFFFFFFFFFFFFELL)
+  v11 = v10 + interval;
+  if (v10 + interval >= 0xFFFFFFFFFFFFFFFELL)
   {
     v11 = -2;
   }
 
-  if (__CFADD__(v10, a3))
+  if (__CFADD__(v10, interval))
   {
     v12 = -2;
   }
@@ -828,7 +828,7 @@ LABEL_4:
     v12 = v11;
   }
 
-  v13 = [(AWPearlAttentionSampler *)self minimumAttentionSamplerErrorRetryTime];
+  minimumAttentionSamplerErrorRetryTime = [(AWPearlAttentionSampler *)self minimumAttentionSamplerErrorRetryTime];
   if (currentLogLevel < 7)
   {
     goto LABEL_31;
@@ -874,14 +874,14 @@ LABEL_19:
     v19 = v10 / 1000000000.0;
   }
 
-  if (v13 == -1)
+  if (minimumAttentionSamplerErrorRetryTime == -1)
   {
     v20 = INFINITY;
   }
 
   else
   {
-    v20 = v13 / 1000000000.0;
+    v20 = minimumAttentionSamplerErrorRetryTime / 1000000000.0;
   }
 
   v22 = 136316674;
@@ -891,7 +891,7 @@ LABEL_19:
   v26 = 2048;
   v27 = v18;
   v28 = 2112;
-  v29 = self;
+  selfCopy = self;
   v30 = 2048;
   v31 = v19;
   v32 = 2048;
@@ -902,9 +902,9 @@ LABEL_19:
 LABEL_30:
 
 LABEL_31:
-  if (v12 <= v13)
+  if (v12 <= minimumAttentionSamplerErrorRetryTime)
   {
-    result = v13;
+    result = minimumAttentionSamplerErrorRetryTime;
   }
 
   else
@@ -1011,14 +1011,14 @@ LABEL_21:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelFaceDetect:(id)a3
+- (void)cancelFaceDetect:(id)detect
 {
-  v7 = a3;
+  detectCopy = detect;
   dispatch_assert_queue_V2(self->super._queue);
   currentOperation = self->_currentOperation;
   if (currentOperation)
   {
-    v5 = [(SamplingOperation *)currentOperation cancelActiveOperation:v7];
+    v5 = [(SamplingOperation *)currentOperation cancelActiveOperation:detectCopy];
     v6 = self->_currentOperation;
     self->_currentOperation = 0;
 
@@ -1027,10 +1027,10 @@ LABEL_21:
   }
 }
 
-- (void)finishingFaceDetect:(id)a3
+- (void)finishingFaceDetect:(id)detect
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  detectCopy = detect;
   dispatch_assert_queue_V2(self->super._queue);
   currentOperation = self->_currentOperation;
   if (!currentOperation)
@@ -1062,7 +1062,7 @@ LABEL_21:
       *&v24[8] = 2048;
       *&v24[10] = v13;
       *&v24[18] = 2112;
-      *&v24[20] = v4;
+      *&v24[20] = detectCopy;
       v14 = "%13.5f: %@ finishing presence operation %p (%@)";
       v15 = v6;
       v16 = 42;
@@ -1114,7 +1114,7 @@ LABEL_20:
           *&v24[24] = 2048;
           *&v24[26] = v17;
           v25 = 2112;
-          v26 = v4;
+          v26 = detectCopy;
           v14 = "%30s:%-4d: %13.5f: %@ finishing presence operation %p (%@)";
           v15 = v6;
           v16 = 58;
@@ -1140,12 +1140,12 @@ LABEL_24:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)faceDetectStalled:(id)a3
+- (void)faceDetectStalled:(id)stalled
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stalledCopy = stalled;
   dispatch_assert_queue_V2(self->super._queue);
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"operation %p currentOperation %p faceDetectStalled", v4, self->_currentOperation];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"operation %p currentOperation %p faceDetectStalled", stalledCopy, self->_currentOperation];
   if (currentLogLevel == 5)
   {
     v6 = _AALog();
@@ -1227,12 +1227,12 @@ LABEL_19:
   }
 
 LABEL_21:
-  if (self->_currentOperation == v4)
+  if (self->_currentOperation == stalledCopy)
   {
     [(AWPearlAttentionSampler *)self updateFaceState:4];
     [(AWPearlAttentionSampler *)self cancelFaceDetect:v5];
-    v17 = [(AWAttentionSampler *)self stateChangedCallback];
-    (v17)[2](v17, v5);
+    stateChangedCallback = [(AWAttentionSampler *)self stateChangedCallback];
+    (stateChangedCallback)[2](stateChangedCallback, v5);
   }
 
   else
@@ -1242,12 +1242,12 @@ LABEL_21:
     block[1] = 3221225472;
     block[2] = __45__AWPearlAttentionSampler_faceDetectStalled___block_invoke;
     block[3] = &unk_1E7F37C10;
-    v20 = v4;
+    v20 = stalledCopy;
     v21 = v5;
-    v22 = self;
+    selfCopy = self;
     dispatch_async(queue, block);
 
-    v17 = v20;
+    stateChangedCallback = v20;
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -1375,17 +1375,17 @@ uint64_t __65__AWPearlAttentionSampler_triggerFaceDetectWithDeadline_options___b
   return result;
 }
 
-- (id)initForUnitTest:(BOOL)a3 useAVFoundation:(BOOL)a4
+- (id)initForUnitTest:(BOOL)test useAVFoundation:(BOOL)foundation
 {
-  v5 = a3;
+  testCopy = test;
   v34.receiver = self;
   v34.super_class = AWPearlAttentionSampler;
   v6 = [(AWAttentionSampler *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    v6->_useAVFoundation = a4;
-    v6->_unitTest = v5;
+    v6->_useAVFoundation = foundation;
+    v6->_unitTest = testCopy;
     currentOperation = v6->_currentOperation;
     v6->_currentOperation = 0;
 
@@ -1397,15 +1397,15 @@ uint64_t __65__AWPearlAttentionSampler_triggerFaceDetectWithDeadline_options___b
 
     v7->_signpostLogged = 0;
     v7->_enrollOrMatchOperationUnderway = 0;
-    if (v5)
+    if (testCopy)
     {
-      v11 = [(AWPearlAttentionSampler *)v7 createNewSamplingOperation];
+      createNewSamplingOperation = [(AWPearlAttentionSampler *)v7 createNewSamplingOperation];
       v12 = v7->_unitTestOperation;
-      v7->_unitTestOperation = v11;
+      v7->_unitTestOperation = createNewSamplingOperation;
 
       v7->_displayState = 1;
       [(AWAttentionSampler *)v7 setUnitTestMode];
-      v13 = [(AWPearlAttentionSampler *)v7 unitTestSampler];
+      unitTestSampler = [(AWPearlAttentionSampler *)v7 unitTestSampler];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __59__AWPearlAttentionSampler_initForUnitTest_useAVFoundation___block_invoke;
@@ -1413,9 +1413,9 @@ uint64_t __65__AWPearlAttentionSampler_triggerFaceDetectWithDeadline_options___b
       v14 = &v33;
       v15 = v7;
       v33 = v15;
-      [v13 setDisplayCallback:v32];
+      [unitTestSampler setDisplayCallback:v32];
 
-      v16 = [(AWPearlAttentionSampler *)v15 unitTestSampler];
+      unitTestSampler2 = [(AWPearlAttentionSampler *)v15 unitTestSampler];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __59__AWPearlAttentionSampler_initForUnitTest_useAVFoundation___block_invoke_3;
@@ -1423,15 +1423,15 @@ uint64_t __65__AWPearlAttentionSampler_triggerFaceDetectWithDeadline_options___b
       v17 = &v31;
       v18 = v15;
       v31 = v18;
-      [v16 setSmartCoverCallback:v30];
+      [unitTestSampler2 setSmartCoverCallback:v30];
 
-      v19 = [(AWPearlAttentionSampler *)v18 unitTestSampler];
+      unitTestSampler3 = [(AWPearlAttentionSampler *)v18 unitTestSampler];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __59__AWPearlAttentionSampler_initForUnitTest_useAVFoundation___block_invoke_5;
       v28[3] = &unk_1E7F37B98;
       v29 = v18;
-      [v19 setCarplayStateChangedCallback:v28];
+      [unitTestSampler3 setCarplayStateChangedCallback:v28];
     }
 
     else
@@ -1531,38 +1531,38 @@ uint64_t __59__AWPearlAttentionSampler_initForUnitTest_useAVFoundation___block_i
   return result;
 }
 
-- (AWPearlAttentionSampler)initWithOptions:(id)a3
+- (AWPearlAttentionSampler)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (optionsCopy)
   {
-    v6 = [v4 valueForKey:@"useAVFoundation"];
+    selfCopy = [optionsCopy valueForKey:@"useAVFoundation"];
 
-    if (v6)
+    if (selfCopy)
     {
-      v6 = [v5 valueForKey:@"unitTest"];
+      selfCopy = [v5 valueForKey:@"unitTest"];
 
-      if (v6)
+      if (selfCopy)
       {
         v7 = [v5 valueForKey:@"unitTest"];
-        v8 = [v7 BOOLValue];
+        bOOLValue = [v7 BOOLValue];
 
         v9 = [v5 valueForKey:@"useAVFoundation"];
-        v10 = [v9 BOOLValue];
+        bOOLValue2 = [v9 BOOLValue];
 
-        self = [(AWPearlAttentionSampler *)self initForUnitTest:v8 useAVFoundation:v10];
-        v6 = self;
+        self = [(AWPearlAttentionSampler *)self initForUnitTest:bOOLValue useAVFoundation:bOOLValue2];
+        selfCopy = self;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

@@ -8,15 +8,15 @@
 - (id)safari_userVisibleName
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AF20]);
-  v3 = [a1 protocol];
-  [v2 setScheme:v3];
+  protocol = [self protocol];
+  [v2 setScheme:protocol];
 
-  v4 = [a1 safari_hostName];
-  [v2 setHost:v4];
+  safari_hostName = [self safari_hostName];
+  [v2 setHost:safari_hostName];
 
-  if ([a1 port])
+  if ([self port])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "port")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "port")}];
     [v2 setPort:v5];
   }
 
@@ -25,17 +25,17 @@
     [v2 setPort:0];
   }
 
-  v6 = [v2 string];
+  string = [v2 string];
 
-  return v6;
+  return string;
 }
 
 - (id)safari_hostName
 {
-  v1 = [a1 host];
-  v2 = [v1 _webkit_decodeHostName];
+  host = [self host];
+  _webkit_decodeHostName = [host _webkit_decodeHostName];
 
-  return v2;
+  return _webkit_decodeHostName;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface PKDashboardMessageActionView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardMessageActionView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardMessageActionView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_configureView;
 - (void)_updateFonts;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessory:(unint64_t)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTitleTextColor:(id)a3;
-- (void)updateWithMessage:(id)a3;
+- (void)setAccessory:(unint64_t)accessory;
+- (void)setTitleFont:(id)font;
+- (void)setTitleText:(id)text;
+- (void)setTitleTextColor:(id)color;
+- (void)updateWithMessage:(id)message;
 @end
 
 @implementation PKDashboardMessageActionView
 
-- (PKDashboardMessageActionView)initWithFrame:(CGRect)a3
+- (PKDashboardMessageActionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKDashboardMessageActionView;
-  v3 = [(PKDashboardMessageActionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardMessageActionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,8 +47,8 @@
   self->_disclosureView = v7;
 
   v9 = self->_disclosureView;
-  v10 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIImageView *)v9 setTintColor:v10];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIImageView *)v9 setTintColor:tertiaryLabelColor];
 
   [(UIImageView *)self->_disclosureView setHidden:1];
   [(PKDashboardMessageActionView *)self addSubview:self->_disclosureView];
@@ -57,11 +57,11 @@
   [(PKDashboardMessageActionView *)self setAccessibilityIdentifier:v11];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   titleText = self->_titleText;
-  v9 = v5;
+  v9 = textCopy;
   v7 = titleText;
   if (v7 == v9)
   {
@@ -80,39 +80,39 @@
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     [(PKDashboardMessageActionView *)self _configureView];
   }
 
 LABEL_9:
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleFont, a3);
+    objc_storeStrong(&self->_titleFont, font);
     [(PKDashboardMessageActionView *)self _configureView];
   }
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleTextColor, a3);
+    objc_storeStrong(&self->_titleTextColor, color);
     [(PKDashboardMessageActionView *)self _configureView];
   }
 }
 
-- (void)setAccessory:(unint64_t)a3
+- (void)setAccessory:(unint64_t)accessory
 {
-  if (self->_accessory != a3)
+  if (self->_accessory != accessory)
   {
-    self->_accessory = a3;
-    if (a3 == 2)
+    self->_accessory = accessory;
+    if (accessory == 2)
     {
       [(UIImageView *)self->_disclosureView setHidden:1];
       [(UIActivityIndicatorView *)self->_spinnerView setHidden:0];
@@ -123,7 +123,7 @@ LABEL_9:
 
     else
     {
-      if (a3 == 1)
+      if (accessory == 1)
       {
         disclosureView = self->_disclosureView;
         v5 = 0;
@@ -131,7 +131,7 @@ LABEL_9:
 
       else
       {
-        if (a3)
+        if (accessory)
         {
           return;
         }
@@ -148,13 +148,13 @@ LABEL_9:
   }
 }
 
-- (void)updateWithMessage:(id)a3
+- (void)updateWithMessage:(id)message
 {
-  v7 = a3;
-  v4 = [v7 buttonTitle];
-  [(PKDashboardMessageActionView *)self setTitleText:v4];
+  messageCopy = message;
+  buttonTitle = [messageCopy buttonTitle];
+  [(PKDashboardMessageActionView *)self setTitleText:buttonTitle];
 
-  if ([v7 isDestructiveAction])
+  if ([messageCopy isDestructiveAction])
   {
     [MEMORY[0x1E69DC888] systemRedColor];
   }
@@ -166,17 +166,17 @@ LABEL_9:
   v5 = ;
   [(PKDashboardMessageActionView *)self setTitleTextColor:v5];
 
-  if ([v7 showSpinner])
+  if ([messageCopy showSpinner])
   {
-    v6 = 2;
+    showDisclosure = 2;
   }
 
   else
   {
-    v6 = [v7 showDisclosure];
+    showDisclosure = [messageCopy showDisclosure];
   }
 
-  [(PKDashboardMessageActionView *)self setAccessory:v6];
+  [(PKDashboardMessageActionView *)self setAccessory:showDisclosure];
   [(PKDashboardMessageActionView *)self _updateFonts];
   [(PKDashboardMessageActionView *)self setNeedsLayout];
   [(PKDashboardMessageActionView *)self setAccessibilityIdentifier:*MEMORY[0x1E69B9B58]];
@@ -207,28 +207,28 @@ LABEL_9:
   [(PKDashboardMessageActionView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDashboardMessageActionView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDashboardMessageActionView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  v6 = a3.origin.x + 16.0;
-  v7 = a3.origin.y + 16.0;
+  v6 = bounds.origin.x + 16.0;
+  v7 = bounds.origin.y + 16.0;
   memset(&v59, 0, sizeof(v59));
-  width = a3.size.width;
-  v8 = a3.size.width + -32.0;
-  remainder.origin.x = a3.origin.x + 16.0;
-  remainder.origin.y = a3.origin.y + 16.0;
-  v9 = a3.size.height + -32.0;
-  remainder.size.width = a3.size.width + -32.0;
-  remainder.size.height = a3.size.height + -32.0;
-  v10 = [(PKDashboardMessageActionView *)self _shouldReverseLayoutDirection];
-  if (v10)
+  width = bounds.size.width;
+  v8 = bounds.size.width + -32.0;
+  remainder.origin.x = bounds.origin.x + 16.0;
+  remainder.origin.y = bounds.origin.y + 16.0;
+  v9 = bounds.size.height + -32.0;
+  remainder.size.width = bounds.size.width + -32.0;
+  remainder.size.height = bounds.size.height + -32.0;
+  _shouldReverseLayoutDirection = [(PKDashboardMessageActionView *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v11 = CGRectMaxXEdge;
   }
@@ -260,7 +260,7 @@ LABEL_9:
 
   else
   {
-    if (v10)
+    if (_shouldReverseLayoutDirection)
     {
       v22 = CGRectMinXEdge;
     }
@@ -315,7 +315,7 @@ LABEL_9:
     slice.size.height = v47;
   }
 
-  if (!a4)
+  if (!layout)
   {
     [(UILabel *)self->_titleLabel setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
     [(UIActivityIndicatorView *)self->_spinnerView setFrame:v56, v21, v39, v41];

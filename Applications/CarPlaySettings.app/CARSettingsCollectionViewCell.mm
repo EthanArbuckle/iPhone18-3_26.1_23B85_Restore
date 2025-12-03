@@ -1,21 +1,21 @@
 @interface CARSettingsCollectionViewCell
 - (BOOL)canBecomeFocused;
 - (CARSettingsCellViewSpecifier)cellViewSpecifier;
-- (CARSettingsCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (CARSettingsCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSpecifier:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation CARSettingsCollectionViewCell
 
-- (CARSettingsCollectionViewCell)initWithFrame:(CGRect)a3
+- (CARSettingsCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CARSettingsCollectionViewCell;
-  return [(CARSettingsCollectionViewCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(CARSettingsCollectionViewCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (void)prepareForReuse
@@ -28,10 +28,10 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(CARSettingsCollectionViewCell *)self contentView];
-  v4 = [v3 subviews];
+  contentView = [(CARSettingsCollectionViewCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,7 +43,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v9 + 1) + 8 * v8) removeFromSuperview];
@@ -51,56 +51,56 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  objc_storeStrong(&self->_specifier, a3);
+  specifierCopy = specifier;
+  objc_storeStrong(&self->_specifier, specifier);
   objc_opt_class();
-  v26 = v5;
+  v26 = specifierCopy;
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 view];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [specifierCopy view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
   {
-    v6 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v6 setContentMode:1];
-    v7 = [v5 image];
-    [v6 setImage:v7];
+    view = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view setContentMode:1];
+    image = [specifierCopy image];
+    [view setImage:image];
   }
 
-  v8 = [(CARSettingsCollectionViewCell *)self contentView];
-  [v8 addSubview:v6];
+  contentView = [(CARSettingsCollectionViewCell *)self contentView];
+  [contentView addSubview:view];
 
-  v24 = [v6 topAnchor];
-  v25 = [(CARSettingsCollectionViewCell *)self contentView];
-  v23 = [v25 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  topAnchor = [view topAnchor];
+  contentView2 = [(CARSettingsCollectionViewCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[0] = v22;
-  v20 = [v6 leftAnchor];
-  v21 = [(CARSettingsCollectionViewCell *)self contentView];
-  v19 = [v21 leftAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  leftAnchor = [view leftAnchor];
+  contentView3 = [(CARSettingsCollectionViewCell *)self contentView];
+  leftAnchor2 = [contentView3 leftAnchor];
+  v18 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v27[1] = v18;
-  v9 = [v6 rightAnchor];
-  v10 = [(CARSettingsCollectionViewCell *)self contentView];
-  v11 = [v10 rightAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  rightAnchor = [view rightAnchor];
+  contentView4 = [(CARSettingsCollectionViewCell *)self contentView];
+  rightAnchor2 = [contentView4 rightAnchor];
+  v12 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v27[2] = v12;
-  v13 = [v6 bottomAnchor];
-  v14 = [(CARSettingsCollectionViewCell *)self contentView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomAnchor = [view bottomAnchor];
+  contentView5 = [(CARSettingsCollectionViewCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[3] = v16;
   v17 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -109,10 +109,10 @@
 - (CARSettingsCellViewSpecifier)cellViewSpecifier
 {
   objc_opt_class();
-  v3 = [(CARSettingsCollectionViewCell *)self specifier];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  specifier = [(CARSettingsCollectionViewCell *)self specifier];
+  if (specifier && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = specifier;
   }
 
   else
@@ -125,14 +125,14 @@
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
+  cellViewSpecifier = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
 
-  if (v3)
+  if (cellViewSpecifier)
   {
-    v4 = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
-    v5 = [v4 canBecomeFocused];
+    cellViewSpecifier2 = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
+    canBecomeFocused = [cellViewSpecifier2 canBecomeFocused];
 
-    return v5;
+    return canBecomeFocused;
   }
 
   else
@@ -143,37 +143,37 @@
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v10.receiver = self;
   v10.super_class = CARSettingsCollectionViewCell;
-  v6 = a3;
-  [(CARSettingsCollectionViewCell *)&v10 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  contextCopy = context;
+  [(CARSettingsCollectionViewCell *)&v10 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  v8 = v7 == self;
-  v9 = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
-  [v9 setFocused:v8];
+  v8 = nextFocusedItem == self;
+  cellViewSpecifier = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
+  [cellViewSpecifier setFocused:v8];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = CARSettingsCollectionViewCell;
   [(CARSettingsCollectionViewCell *)&v6 setHighlighted:?];
-  v5 = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
-  [v5 setHighlighted:v3];
+  cellViewSpecifier = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
+  [cellViewSpecifier setHighlighted:highlightedCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = CARSettingsCollectionViewCell;
   [(CARSettingsCollectionViewCell *)&v6 setSelected:?];
-  v5 = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
-  [v5 setSelected:v3];
+  cellViewSpecifier = [(CARSettingsCollectionViewCell *)self cellViewSpecifier];
+  [cellViewSpecifier setSelected:selectedCopy];
 }
 
 @end

@@ -53,14 +53,14 @@
     v11 = v6;
   }
 
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  [v12 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A578]];
   if ((v10 & 1) == 0)
   {
-    [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696A598]];
+    [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E696A598]];
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLCaptureError" code:a3 userInfo:v12];
+  v13 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLCaptureError" code:a3 userInfo:dictionary];
   objc_autoreleasePoolPop(v4);
 
   return v13;

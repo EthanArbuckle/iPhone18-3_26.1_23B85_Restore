@@ -1,22 +1,22 @@
 @interface NTKCharacterFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
 + (id)additionalPigmentFaceDomains;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (NTKPigmentEditOptionProvider)currentProvider;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
 - (id)_faceDescriptionKey;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)faceSharingName;
 - (id)pigmentOptionProvider;
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (unint64_t)_selectedCharacter;
-- (void)_noteLegacyOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6;
-- (void)_noteOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6;
+- (void)_noteLegacyOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_noteOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKCharacterFace
@@ -45,9 +45,9 @@
 - (id)faceSharingName
 {
   v2 = [(NTKCharacterFace *)self nameOfSelectedOptionForCustomEditMode:12];
-  v3 = [v2 localizedCapitalizedString];
+  localizedCapitalizedString = [v2 localizedCapitalizedString];
 
-  return v3;
+  return localizedCapitalizedString;
 }
 
 + (id)_orderedComplicationSlots
@@ -86,48 +86,48 @@
   return v6;
 }
 
-- (void)_noteOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6
+- (void)_noteOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  fromCopy = from;
+  toCopy = to;
+  slotCopy = slot;
   v14.receiver = self;
   v14.super_class = NTKCharacterFace;
-  [(NTKCharacterFace *)&v14 _noteOptionChangedFrom:v10 to:v11 forCustomEditMode:a5 slot:v12];
+  [(NTKCharacterFace *)&v14 _noteOptionChangedFrom:fromCopy to:toCopy forCustomEditMode:mode slot:slotCopy];
   if ([(NTKCharacterFace *)self deviceSupportsPigmentEditOption])
   {
-    if (a5 == 10)
+    if (mode == 10)
     {
-      v13 = [v11 pigmentEditOption];
-      if (v13)
+      pigmentEditOption = [toCopy pigmentEditOption];
+      if (pigmentEditOption)
       {
-        sub_F8FC(self, v13);
+        sub_F8FC(self, pigmentEditOption);
       }
     }
 
-    else if (a5 == 12)
+    else if (mode == 12)
     {
-      sub_F834(v11, self);
+      sub_F834(toCopy, self);
     }
   }
 
   else
   {
-    [(NTKCharacterFace *)self _noteLegacyOptionChangedFrom:v10 to:v11 forCustomEditMode:a5 slot:v12];
+    [(NTKCharacterFace *)self _noteLegacyOptionChangedFrom:fromCopy to:toCopy forCustomEditMode:mode slot:slotCopy];
   }
 }
 
-- (void)_noteLegacyOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6
+- (void)_noteLegacyOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5 != 10)
+  fromCopy = from;
+  toCopy = to;
+  slotCopy = slot;
+  if (mode != 10)
   {
     goto LABEL_6;
   }
 
-  if (v10)
+  if (fromCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -135,14 +135,14 @@
       v32 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        sub_F970(v10, v32);
+        sub_F970(fromCopy, v32);
       }
 
       goto LABEL_24;
     }
   }
 
-  if (v11)
+  if (toCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -150,7 +150,7 @@
       v32 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        sub_F9E8(v11, v32);
+        sub_F9E8(toCopy, v32);
       }
 
 LABEL_24:
@@ -166,48 +166,48 @@ LABEL_6:
     previousCharacterColors = self->_previousCharacterColors;
     self->_previousCharacterColors = v13;
 
-    v15 = [(NTKCharacterFace *)self _selectedCharacter];
+    _selectedCharacter = [(NTKCharacterFace *)self _selectedCharacter];
     v16 = [(NTKCharacterFace *)self selectedOptionForCustomEditMode:10 slot:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v10 character];
+      _selectedCharacter = [fromCopy character];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v10;
+      v17 = fromCopy;
 
       v16 = v17;
     }
 
     v18 = self->_previousCharacterColors;
-    v19 = [NSNumber numberWithUnsignedInteger:v15];
+    v19 = [NSNumber numberWithUnsignedInteger:_selectedCharacter];
     [(NSMutableDictionary *)v18 setObject:v16 forKeyedSubscript:v19];
   }
 
-  if (a5 == 12)
+  if (mode == 12)
   {
     v20 = [(NTKCharacterFace *)self selectedOptionForCustomEditMode:10 slot:0];
     if (v20)
     {
-      v21 = [v11 character];
+      character = [toCopy character];
       v22 = self->_previousCharacterColors;
-      v23 = [NSNumber numberWithUnsignedInteger:v21];
+      v23 = [NSNumber numberWithUnsignedInteger:character];
       v24 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:v23];
 
       if (v24)
       {
         v25 = self->_previousCharacterColors;
-        v26 = [NSNumber numberWithUnsignedInteger:v21];
-        [(NSMutableDictionary *)v25 objectForKeyedSubscript:v26];
+        device = [NSNumber numberWithUnsignedInteger:character];
+        [(NSMutableDictionary *)v25 objectForKeyedSubscript:device];
       }
 
       else
       {
-        v26 = [(NTKCharacterFace *)self device];
-        [NTKCharacterColorEditOption optionWithOption:v20 forCharacter:v21 forDevice:v26];
+        device = [(NTKCharacterFace *)self device];
+        [NTKCharacterColorEditOption optionWithOption:v20 forCharacter:character forDevice:device];
       }
       v33 = ;
 
@@ -220,14 +220,14 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a5 == 10)
+  if (mode == 10)
   {
-    v27 = [(NTKCharacterFace *)self _selectedCharacter];
-    if (v27 != 0xFFFFFFFF)
+    _selectedCharacter2 = [(NTKCharacterFace *)self _selectedCharacter];
+    if (_selectedCharacter2 != 0xFFFFFFFF)
     {
-      v28 = v27;
-      v29 = [(NTKCharacterFace *)self device];
-      v20 = [NTKCharacterColorEditOption optionWithOption:v11 forCharacter:v28 forDevice:v29];
+      v28 = _selectedCharacter2;
+      device2 = [(NTKCharacterFace *)self device];
+      v20 = [NTKCharacterColorEditOption optionWithOption:toCopy forCharacter:v28 forDevice:device2];
 
       [(NTKCharacterFace *)self selectOption:v20 forCustomEditMode:10 slot:0];
       v30 = self->_previousCharacterColors;
@@ -246,20 +246,20 @@ LABEL_28:
 LABEL_29:
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 10)
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v7 = [(NTKCharacterFace *)self device];
-    v8 = [NTKCharacterColorEditOption optionWithFaceColor:6 forDevice:v7];
+    device = [(NTKCharacterFace *)self device];
+    v8 = [NTKCharacterColorEditOption optionWithFaceColor:6 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v7 = [(NTKCharacterFace *)self device];
-    v8 = [NTKCharacterEditOption optionWithCharacter:0 forDevice:v7];
+    device = [(NTKCharacterFace *)self device];
+    v8 = [NTKCharacterEditOption optionWithCharacter:0 forDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -272,43 +272,43 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = [NTKCharacterFaceBundle localizedStringForKey:@"EDIT_MODE_LABEL_CHARACTER_COMPANION" comment:@"Character"];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___NTKCharacterFace;
-    v4 = objc_msgSendSuper2(&v6, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, a4);
+    v4 = objc_msgSendSuper2(&v6, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, device);
   }
 
   return v4;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 10)
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v9 = [(NTKCharacterFace *)self _selectedCharacter];
-    v7 = [(NTKCharacterFace *)self device];
-    v8 = [NTKCharacterColorEditOption numberOfOptionsForCharacter:v9 forDevice:v7];
+    _selectedCharacter = [(NTKCharacterFace *)self _selectedCharacter];
+    device = [(NTKCharacterFace *)self device];
+    v8 = [NTKCharacterColorEditOption numberOfOptionsForCharacter:_selectedCharacter forDevice:device];
   }
 
   else
   {
-    if (a3 != 12)
+    if (mode != 12)
     {
       v10 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(NTKCharacterFace *)self device];
-    v8 = [NTKCharacterEditOption numberOfOptionsForDevice:v7];
+    device = [(NTKCharacterFace *)self device];
+    v8 = [NTKCharacterEditOption numberOfOptionsForDevice:device];
   }
 
   v10 = v8;
@@ -317,21 +317,21 @@ LABEL_7:
   return v10;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a5;
-  if (a4 == 10)
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v11 = [(NTKCharacterFace *)self _selectedCharacter];
-    v9 = [(NTKCharacterFace *)self device];
-    v10 = [NTKCharacterColorEditOption optionAtIndex:a3 forCharacter:v11 forDevice:v9];
+    _selectedCharacter = [(NTKCharacterFace *)self _selectedCharacter];
+    device = [(NTKCharacterFace *)self device];
+    v10 = [NTKCharacterColorEditOption optionAtIndex:index forCharacter:_selectedCharacter forDevice:device];
     goto LABEL_5;
   }
 
-  if (a4 == 12)
+  if (mode == 12)
   {
-    v9 = [(NTKCharacterFace *)self device];
-    v10 = [NTKCharacterEditOption optionAtIndex:a3 forDevice:v9];
+    device = [(NTKCharacterFace *)self device];
+    v10 = [NTKCharacterEditOption optionAtIndex:index forDevice:device];
 LABEL_5:
     v12 = v10;
 
@@ -344,27 +344,27 @@ LABEL_7:
   return v12;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v12 = [(NTKCharacterFace *)self _selectedCharacter];
-    v10 = [(NTKCharacterFace *)self device];
-    v11 = [NTKCharacterColorEditOption indexOfOption:v8 forCharacter:v12 forDevice:v10];
+    _selectedCharacter = [(NTKCharacterFace *)self _selectedCharacter];
+    device = [(NTKCharacterFace *)self device];
+    v11 = [NTKCharacterColorEditOption indexOfOption:optionCopy forCharacter:_selectedCharacter forDevice:device];
   }
 
   else
   {
-    if (a4 != 12)
+    if (mode != 12)
     {
       v13 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_7;
     }
 
-    v10 = [(NTKCharacterFace *)self device];
-    v11 = [NTKCharacterEditOption indexOfOption:v8 forDevice:v10];
+    device = [(NTKCharacterFace *)self device];
+    v11 = [NTKCharacterEditOption indexOfOption:optionCopy forDevice:device];
   }
 
   v13 = v11;
@@ -373,9 +373,9 @@ LABEL_7:
   return v13;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = off_1C300;
 LABEL_5:
@@ -385,7 +385,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = off_1C2F8;
     goto LABEL_5;
@@ -402,15 +402,15 @@ LABEL_5:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 character];
+    character = [v2 character];
   }
 
   else
   {
-    v4 = 0xFFFFFFFFLL;
+    character = 0xFFFFFFFFLL;
   }
 
-  return v4;
+  return character;
 }
 
 - (id)_faceDescriptionKey
@@ -424,8 +424,8 @@ LABEL_5:
 
 - (id)_faceDescription
 {
-  v2 = [(NTKCharacterFace *)self _faceDescriptionKey];
-  v3 = [NTKCharacterFaceBundle localizedStringForKey:v2 comment:v2];
+  _faceDescriptionKey = [(NTKCharacterFace *)self _faceDescriptionKey];
+  v3 = [NTKCharacterFaceBundle localizedStringForKey:_faceDescriptionKey comment:_faceDescriptionKey];
 
   return v3;
 }
@@ -445,15 +445,15 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index
 {
   v3 = 10;
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }

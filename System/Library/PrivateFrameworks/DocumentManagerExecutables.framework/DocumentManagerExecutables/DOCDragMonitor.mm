@@ -1,7 +1,7 @@
 @interface DOCDragMonitor
 - (BOOL)isItemCollectionDragActive;
 - (_TtC26DocumentManagerExecutables14DOCDragMonitor)init;
-- (void)setIsItemCollectionDragActive:(BOOL)a3;
+- (void)setIsItemCollectionDragActive:(BOOL)active;
 @end
 
 @implementation DOCDragMonitor
@@ -13,11 +13,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsItemCollectionDragActive:(BOOL)a3
+- (void)setIsItemCollectionDragActive:(BOOL)active
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables14DOCDragMonitor_isItemCollectionDragActive;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = active;
 }
 
 - (_TtC26DocumentManagerExecutables14DOCDragMonitor)init

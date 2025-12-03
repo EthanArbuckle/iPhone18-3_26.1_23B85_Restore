@@ -1,14 +1,14 @@
 @interface VCPMotionFlowRequest
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4;
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error;
+- (BOOL)updateWithOptions:(id)options error:(id *)error;
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error;
 - (VCPMotionFlowRequest)init;
-- (VCPMotionFlowRequest)initWithOptions:(id)a3;
-- (VCPMotionFlowRequest)initWithOptions:(id)a3 cancel:(id)a4;
-- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)a3 andSecondImage:(__CVBuffer *)a4 error:(id *)a5;
-- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)a3 andSecondImage:(__CVBuffer *)a4 withUpsample:(BOOL)a5 withGuidedImage:(__CVBuffer *)a6 error:(id *)a7;
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 withPixelFormat:(int)a5;
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6;
+- (VCPMotionFlowRequest)initWithOptions:(id)options;
+- (VCPMotionFlowRequest)initWithOptions:(id)options cancel:(id)cancel;
+- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)image andSecondImage:(__CVBuffer *)secondImage error:(id *)error;
+- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)image andSecondImage:(__CVBuffer *)secondImage withUpsample:(BOOL)upsample withGuidedImage:(__CVBuffer *)guidedImage error:(id *)error;
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer withPixelFormat:(int)format;
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 @end
 
@@ -25,12 +25,12 @@
   return 0;
 }
 
-- (VCPMotionFlowRequest)initWithOptions:(id)a3
+- (VCPMotionFlowRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = VCPMotionFlowRequest;
-  v5 = [(VCPRequest *)&v16 initWithOptions:v4];
+  v5 = [(VCPRequest *)&v16 initWithOptions:optionsCopy];
   v7 = v5;
   if (v5)
   {
@@ -67,13 +67,13 @@
   return v14;
 }
 
-- (VCPMotionFlowRequest)initWithOptions:(id)a3 cancel:(id)a4
+- (VCPMotionFlowRequest)initWithOptions:(id)options cancel:(id)cancel
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  cancelCopy = cancel;
   v19.receiver = self;
   v19.super_class = VCPMotionFlowRequest;
-  v8 = [(VCPRequest *)&v19 initWithOptions:v6];
+  v8 = [(VCPRequest *)&v19 initWithOptions:optionsCopy];
   v10 = v8;
   if (v8)
   {
@@ -90,7 +90,7 @@
       v13 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
     }
 
-    v14 = [VCPImageMotionFlowAnalyzer analyzeWithLightweightOption:0 aspectRatio:v13 computationAccuracy:v10->super._motionFlowComputationAccuracy forceCPU:v10->super._useCPUOnly sharedModel:0 flushModel:0 cancel:v7];
+    v14 = [VCPImageMotionFlowAnalyzer analyzeWithLightweightOption:0 aspectRatio:v13 computationAccuracy:v10->super._motionFlowComputationAccuracy forceCPU:v10->super._useCPUOnly sharedModel:0 flushModel:0 cancel:cancelCopy];
     motionFlowAnalyzer = v10->_motionFlowAnalyzer;
     v10->_motionFlowAnalyzer = v14;
   }
@@ -110,46 +110,46 @@
   return v17;
 }
 
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = *MEMORY[0x1E69660D8];
   v14[0] = MEMORY[0x1E695E0F8];
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v11 = CVPixelBufferCreate(0, a3, a4, a5, v10, a6);
-  if (v11 && *a6)
+  v11 = CVPixelBufferCreate(0, width, height, format, v10, buffer);
+  if (v11 && *buffer)
   {
-    CFRelease(*a6);
-    *a6 = 0;
+    CFRelease(*buffer);
+    *buffer = 0;
   }
 
   return v11;
 }
 
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 withPixelFormat:(int)a5
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer withPixelFormat:(int)format
 {
-  v5 = *&a5;
+  v5 = *&format;
   if (self->_transferSession || (result = VTPixelTransferSessionCreate(0, &self->_transferSession)) == 0)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    result = [(VCPMotionFlowRequest *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(a3) pixelFormat:v5 pixelBuffer:a4];
+    Width = CVPixelBufferGetWidth(buffer);
+    result = [(VCPMotionFlowRequest *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(buffer) pixelFormat:v5 pixelBuffer:pixelBuffer];
     if (!result)
     {
       transferSession = self->_transferSession;
-      v12 = *a4;
+      v12 = *pixelBuffer;
 
-      return VTPixelTransferSessionTransferImage(transferSession, a3, v12);
+      return VTPixelTransferSessionTransferImage(transferSession, buffer, v12);
     }
   }
 
   return result;
 }
 
-- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)a3 andSecondImage:(__CVBuffer *)a4 error:(id *)a5
+- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)image andSecondImage:(__CVBuffer *)secondImage error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   v11 = objc_alloc_init(VCPMotionFlowObservation);
   v12 = v11;
   if (v11)
@@ -161,7 +161,7 @@
       Width = self->super._width;
     }
 
-    v13 = [(VCPImageMotionFlowAnalyzer *)self->_motionFlowAnalyzer analyzeImages:a3 secondImage:a4 cancel:&__block_literal_global_30];
+    v13 = [(VCPImageMotionFlowAnalyzer *)self->_motionFlowAnalyzer analyzeImages:image secondImage:secondImage cancel:&__block_literal_global_30];
     if (v13)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -197,7 +197,7 @@
         v13 = v20;
         if (!v20)
         {
-          a5 = v12;
+          error = v12;
           goto LABEL_12;
         }
       }
@@ -214,31 +214,31 @@
     v13 = -50;
   }
 
-  if (a5)
+  if (error)
   {
     v14 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E696A578];
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: failed to analyze motion flow"];
     v23[0] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    *a5 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:v13 userInfo:v16];
+    *error = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:v13 userInfo:v16];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_12:
 
-  return a5;
+  return error;
 }
 
-- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)a3 andSecondImage:(__CVBuffer *)a4 withUpsample:(BOOL)a5 withGuidedImage:(__CVBuffer *)a6 error:(id *)a7
+- (id)estimateMotionBetweenFirstImage:(__CVBuffer *)image andSecondImage:(__CVBuffer *)secondImage withUpsample:(BOOL)upsample withGuidedImage:(__CVBuffer *)guidedImage error:(id *)error
 {
-  v9 = a5;
+  upsampleCopy = upsample;
   v30[1] = *MEMORY[0x1E69E9840];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a6);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(guidedImage);
   cf = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   v15 = objc_alloc_init(VCPMotionFlowObservation);
   v16 = v15;
   if (!v15)
@@ -254,7 +254,7 @@ LABEL_12:
     Width = self->super._width;
   }
 
-  v17 = [(VCPImageMotionFlowAnalyzer *)self->_motionFlowAnalyzer analyzeImages:a3 secondImage:a4 cancel:&__block_literal_global_37];
+  v17 = [(VCPImageMotionFlowAnalyzer *)self->_motionFlowAnalyzer analyzeImages:image secondImage:secondImage cancel:&__block_literal_global_37];
   if (v17)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -266,7 +266,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v22 = !v9;
+  v22 = !upsampleCopy;
   if ((v22 & 1) != 0 || self->super._useCPUOnly)
   {
     Height = [(VCPImageMotionFlowAnalyzer *)self->_motionFlowAnalyzer cnnOutputHeight];
@@ -286,7 +286,7 @@ LABEL_12:
     goto LABEL_26;
   }
 
-  if (!a6)
+  if (!guidedImage)
   {
     v23 = [(VCPImageMotionFlowAnalyzer *)self->_motionFlowAnalyzer scaleFlowTo:[(VCPMotionFlowObservation *)v16 pixelBuffer]];
 LABEL_26:
@@ -294,7 +294,7 @@ LABEL_26:
     if (!v23)
     {
 LABEL_32:
-      a7 = v16;
+      error = v16;
       goto LABEL_12;
     }
 
@@ -303,17 +303,17 @@ LABEL_32:
 
   if (PixelFormatType == 1111970369)
   {
-    cf = a6;
+    cf = guidedImage;
   }
 
   else
   {
-    [(VCPMotionFlowRequest *)self convertPixelBuffer:a6 toPixelBuffer:&cf withPixelFormat:1111970369];
+    [(VCPMotionFlowRequest *)self convertPixelBuffer:guidedImage toPixelBuffer:&cf withPixelFormat:1111970369];
   }
 
   motionFlowAnalyzer = self->_motionFlowAnalyzer;
-  v25 = [(VCPMotionFlowObservation *)v16 pixelBuffer];
-  v17 = [(VCPImageMotionFlowAnalyzer *)motionFlowAnalyzer guidedUpsampling:v25 inBGRA:cf];
+  pixelBuffer = [(VCPMotionFlowObservation *)v16 pixelBuffer];
+  v17 = [(VCPImageMotionFlowAnalyzer *)motionFlowAnalyzer guidedUpsampling:pixelBuffer inBGRA:cf];
   if (!v17)
   {
     if (cf)
@@ -325,31 +325,31 @@ LABEL_32:
   }
 
 LABEL_10:
-  if (a7)
+  if (error)
   {
     v18 = MEMORY[0x1E696ABC0];
     v29 = *MEMORY[0x1E696A578];
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: failed to analyze motion flow"];
     v30[0] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    *a7 = [v18 errorWithDomain:*MEMORY[0x1E696A768] code:v17 userInfo:v20];
+    *error = [v18 errorWithDomain:*MEMORY[0x1E696A768] code:v17 userInfo:v20];
 
-    a7 = 0;
+    error = 0;
   }
 
 LABEL_12:
 
-  return a7;
+  return error;
 }
 
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4
+- (BOOL)updateWithOptions:(id)options error:(id *)error
 {
   width = self->super._width;
   height = self->super._height;
   motionFlowComputationAccuracy = self->super._motionFlowComputationAccuracy;
   v15.receiver = self;
   v15.super_class = VCPMotionFlowRequest;
-  [(VCPRequest *)&v15 updateWithOptions:a3 error:a4];
+  [(VCPRequest *)&v15 updateWithOptions:options error:error];
   v9 = self->super._width;
   if (__PAIR64__(height, width) == *&self->super._width)
   {
@@ -382,7 +382,7 @@ LABEL_12:
   return 1;
 }
 
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error
 {
   motionFlowAnalyzer = self->_motionFlowAnalyzer;
   if (motionFlowAnalyzer)
@@ -397,7 +397,7 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error
 {
   motionFlowAnalyzer = self->_motionFlowAnalyzer;
   self->_motionFlowAnalyzer = 0;

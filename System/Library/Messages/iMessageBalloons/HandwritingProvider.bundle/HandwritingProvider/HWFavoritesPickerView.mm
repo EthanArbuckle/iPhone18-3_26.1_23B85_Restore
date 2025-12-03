@@ -1,43 +1,43 @@
 @interface HWFavoritesPickerView
 - (BOOL)shouldShowShadows;
 - (CGSize)cellSize;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (HWFavoritesPickerDelegate)delegate;
-- (HWFavoritesPickerView)initWithCoder:(id)a3;
-- (HWFavoritesPickerView)initWithFrame:(CGRect)a3;
-- (id)_cellViewForUUID:(id)a3;
-- (id)cachedThumbnailForItem:(id)a3 inCell:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_adjustLayoutForLandscapeEditingMode:(BOOL)a3 animate:(BOOL)a4;
-- (void)_cellButtonDown:(id)a3;
-- (void)_cellButtonUp:(id)a3;
+- (HWFavoritesPickerView)initWithCoder:(id)coder;
+- (HWFavoritesPickerView)initWithFrame:(CGRect)frame;
+- (id)_cellViewForUUID:(id)d;
+- (id)cachedThumbnailForItem:(id)item inCell:(id)cell;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_adjustLayoutForLandscapeEditingMode:(BOOL)mode animate:(BOOL)animate;
+- (void)_cellButtonDown:(id)down;
+- (void)_cellButtonUp:(id)up;
 - (void)_commonInit;
-- (void)_deleteItem:(id)a3;
-- (void)_longPress:(id)a3;
+- (void)_deleteItem:(id)item;
+- (void)_longPress:(id)press;
 - (void)clearThumbnailCache;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reloadData;
 - (void)resetScrollPosition;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setItems:(id)a3;
-- (void)setLayoutMode:(unint64_t)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setItems:(id)items;
+- (void)setLayoutMode:(unint64_t)mode;
 - (void)showShadows;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateShadowVisiblity;
 @end
 
 @implementation HWFavoritesPickerView
 
-- (HWFavoritesPickerView)initWithFrame:(CGRect)a3
+- (HWFavoritesPickerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HWFavoritesPickerView;
-  v3 = [(HWFavoritesPickerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HWFavoritesPickerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,11 +47,11 @@
   return v4;
 }
 
-- (HWFavoritesPickerView)initWithCoder:(id)a3
+- (HWFavoritesPickerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HWFavoritesPickerView;
-  v3 = [(HWFavoritesPickerView *)&v6 initWithCoder:a3];
+  v3 = [(HWFavoritesPickerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -184,23 +184,23 @@
 
 - (void)reloadData
 {
-  v3 = [(HWFavoritesPickerView *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(HWFavoritesPickerView *)self collectionView];
+  [collectionView reloadData];
 
   [(HWFavoritesPickerView *)self updateShadowVisiblity];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = HWFavoritesPickerView;
-  v4 = a3;
-  [(HWFavoritesPickerView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HWFavoritesPickerView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(HWFavoritesPickerView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(HWFavoritesPickerView *)self clearThumbnailCache];
   }
@@ -226,16 +226,16 @@
   }
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   empty = self->_empty;
   if (empty)
   {
-    self->_empty = [v6 count] == 0;
+    self->_empty = [itemsCopy count] == 0;
   }
 
-  objc_storeStrong(&self->_items, a3);
+  objc_storeStrong(&self->_items, items);
   [(UICollectionView *)self->_collectionView reloadData];
   if (empty && [(NSArray *)self->_items count]&& [(HWFavoritesPickerView *)self effectiveUserInterfaceLayoutDirection]== &dword_0 + 1)
   {
@@ -243,25 +243,25 @@
   }
 }
 
-- (void)_longPress:(id)a3
+- (void)_longPress:(id)press
 {
-  if ([a3 state] == &dword_0 + 1)
+  if ([press state] == &dword_0 + 1)
   {
 
     [(HWFavoritesPickerView *)self setEditing:1 animated:1];
   }
 }
 
-- (void)setLayoutMode:(unint64_t)a3
+- (void)setLayoutMode:(unint64_t)mode
 {
-  if (self->_layoutMode == a3)
+  if (self->_layoutMode == mode)
   {
     return;
   }
 
-  self->_layoutMode = a3;
-  v26 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  if (a3 == 1)
+  self->_layoutMode = mode;
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  if (mode == 1)
   {
     v6 = qword_323B0;
     v7 = qword_32398;
@@ -274,7 +274,7 @@
     {
       v22 = *&xmmword_32360;
 LABEL_13:
-      [v26 setMinimumInteritemSpacing:v22];
+      [collectionViewLayout setMinimumInteritemSpacing:v22];
       goto LABEL_14;
     }
 
@@ -284,7 +284,7 @@ LABEL_13:
 
   else
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
       v6 = qword_32390;
       v7 = qword_32378;
@@ -336,70 +336,70 @@ LABEL_14:
   [(NSLayoutConstraint *)self->_emptyLabelLeft setConstant:v8];
   [(NSLayoutConstraint *)self->_emptyLabelVerticalBaseline setConstant:*&v7];
   [(UICollectionView *)self->_collectionView setContentInset:top, left, bottom, right];
-  v23 = a3 == 2;
-  v24 = a3 == 2;
+  v23 = mode == 2;
+  v24 = mode == 2;
   v25 = !v23;
   [(NSLayoutConstraint *)self->_emptyLabelVerticalCenter setActive:v25];
   [(NSLayoutConstraint *)self->_emptyLabelVerticalBaseline setActive:v24];
   [(HWFavoritesPickerView *)self layoutIfNeeded];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   editing = self->_editing;
   [(HWFavoritesPickerView *)self setEditing:?];
-  if (v5)
+  if (editingCopy)
   {
     if (HWDeviceIsiPhone())
     {
       v8 = +[UIApplication sharedApplication];
-      v9 = [v8 keyWindow];
+      keyWindow = [v8 keyWindow];
     }
 
     else
     {
-      v9 = 0;
+      keyWindow = 0;
     }
 
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 keyWindow];
-    v13 = [v12 firstResponder];
+    keyWindow2 = [v11 keyWindow];
+    firstResponder = [keyWindow2 firstResponder];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = firstResponder;
 
-      v9 = v14;
+      keyWindow = v14;
     }
 
-    if (!v9)
+    if (!keyWindow)
     {
-      v15 = [(HWFavoritesPickerView *)self window];
+      window = [(HWFavoritesPickerView *)self window];
 
-      if (v15)
+      if (window)
       {
-        v9 = [(HWFavoritesPickerView *)self window];
+        keyWindow = [(HWFavoritesPickerView *)self window];
       }
 
       else
       {
         v16 = +[UIApplication sharedApplication];
-        v9 = [v16 keyWindow];
+        keyWindow = [v16 keyWindow];
       }
     }
 
     SBSSetInterceptsMenuButton();
-    if (!self->_homeButtonGestureRecognizer || ([v9 gestureRecognizers], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", self->_homeButtonGestureRecognizer), v17, (v18 & 1) == 0))
+    if (!self->_homeButtonGestureRecognizer || ([keyWindow gestureRecognizers], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", self->_homeButtonGestureRecognizer), v17, (v18 & 1) == 0))
     {
       v19 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_homeButtonClicked:"];
       homeButtonGestureRecognizer = self->_homeButtonGestureRecognizer;
       self->_homeButtonGestureRecognizer = v19;
 
       [(UITapGestureRecognizer *)self->_homeButtonGestureRecognizer setAllowedPressTypes:&off_29BE8];
-      [v9 addGestureRecognizer:self->_homeButtonGestureRecognizer];
+      [keyWindow addGestureRecognizer:self->_homeButtonGestureRecognizer];
     }
   }
 
@@ -411,8 +411,8 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    v9 = [(UITapGestureRecognizer *)v10 view];
-    [v9 removeGestureRecognizer:self->_homeButtonGestureRecognizer];
+    keyWindow = [(UITapGestureRecognizer *)v10 view];
+    [keyWindow removeGestureRecognizer:self->_homeButtonGestureRecognizer];
     SBSSetInterceptsMenuButton();
   }
 
@@ -421,8 +421,8 @@ LABEL_18:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v21 = [(UICollectionView *)self->_collectionView visibleCells];
-  v22 = [v21 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+  v22 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v22)
   {
     v23 = v22;
@@ -434,38 +434,38 @@ LABEL_18:
       {
         if (*v27 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(visibleCells);
         }
 
-        [*(*(&v26 + 1) + 8 * v25) setEditing:v5 animated:v4];
+        [*(*(&v26 + 1) + 8 * v25) setEditing:editingCopy animated:animatedCopy];
         v25 = v25 + 1;
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v23 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v23);
   }
 
-  if (editing != v5 && self->_layoutMode == 1 && HWDeviceIsiPhone())
+  if (editing != editingCopy && self->_layoutMode == 1 && HWDeviceIsiPhone())
   {
-    [(HWFavoritesPickerView *)self _adjustLayoutForLandscapeEditingMode:v5 animate:v4];
+    [(HWFavoritesPickerView *)self _adjustLayoutForLandscapeEditingMode:editingCopy animate:animatedCopy];
   }
 
   [(HWFavoritesPickerView *)self updateShadowVisiblity];
 }
 
-- (void)_deleteItem:(id)a3
+- (void)_deleteItem:(id)item
 {
-  v4 = [a3 tag];
-  v5 = [(HWFavoritesPickerView *)self items];
-  v6 = [v5 count];
+  v4 = [item tag];
+  items = [(HWFavoritesPickerView *)self items];
+  v6 = [items count];
 
   if (v4 < v6)
   {
-    v7 = [(HWFavoritesPickerView *)self items];
-    v8 = [v7 objectAtIndex:v4];
+    items2 = [(HWFavoritesPickerView *)self items];
+    v8 = [items2 objectAtIndex:v4];
 
     v9 = self->_collectionView;
     v13[0] = _NSConcreteStackBlock;
@@ -473,7 +473,7 @@ LABEL_18:
     v13[2] = sub_B170;
     v13[3] = &unk_287D0;
     v14 = v8;
-    v15 = self;
+    selfCopy = self;
     v16 = v9;
     v17 = v4;
     v12[0] = _NSConcreteStackBlock;
@@ -487,11 +487,11 @@ LABEL_18:
   }
 }
 
-- (void)_cellButtonDown:(id)a3
+- (void)_cellButtonDown:(id)down
 {
-  v4 = [a3 tag];
-  v5 = [(HWFavoritesPickerView *)self items];
-  v6 = [v5 count];
+  v4 = [down tag];
+  items = [(HWFavoritesPickerView *)self items];
+  v6 = [items count];
 
   if (v4 < v6)
   {
@@ -502,11 +502,11 @@ LABEL_18:
   }
 }
 
-- (void)_cellButtonUp:(id)a3
+- (void)_cellButtonUp:(id)up
 {
-  v4 = [a3 tag];
-  v5 = [(HWFavoritesPickerView *)self items];
-  v6 = [v5 count];
+  v4 = [up tag];
+  items = [(HWFavoritesPickerView *)self items];
+  v6 = [items count];
 
   if (v4 < v6)
   {
@@ -526,9 +526,9 @@ LABEL_18:
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"contentSize", a4, a5, a6}])
+  if ([path isEqualToString:{@"contentSize", object, change, context}])
   {
 
     [(HWFavoritesPickerView *)self updateShadowVisiblity];
@@ -539,8 +539,8 @@ LABEL_18:
 {
   if (HWDeviceIsiPhone() && self->_layoutMode == 1)
   {
-    v3 = [(HWFavoritesPickerView *)self items];
-    if ([v3 count])
+    items = [(HWFavoritesPickerView *)self items];
+    if ([items count])
     {
       v4 = ![(HWFavoritesPickerView *)self isEditing];
     }
@@ -567,9 +567,9 @@ LABEL_18:
     v26 = [v3 resizableImageWithCapInsets:0 resizingMode:{1.0, 0.0, 0.0, 0.0}];
 
     v4 = [UIImage hw_pluginImageNamed:@"shadow"];
-    v25 = [v4 hw_flippedImage];
+    hw_flippedImage = [v4 hw_flippedImage];
 
-    v5 = [[UIImageView alloc] initWithImage:v25];
+    v5 = [[UIImageView alloc] initWithImage:hw_flippedImage];
     leftShadow = self->_leftShadow;
     self->_leftShadow = v5;
 
@@ -583,28 +583,28 @@ LABEL_18:
     [(UIImageView *)self->_rightShadow setContentMode:0];
     [(HWFavoritesPickerView *)self insertSubview:self->_rightShadow above:self->_collectionView];
     [(HWFavoritesPickerView *)self insertSubview:self->_leftShadow above:self->_collectionView];
-    v9 = [(UIImageView *)self->_rightShadow image];
-    [v9 size];
+    image = [(UIImageView *)self->_rightShadow image];
+    [image size];
     v10 = [NSNumber numberWithDouble:?];
 
     v11 = _NSDictionaryOfVariableBindings(@"_rightShadow, _leftShadow", self->_rightShadow, self->_leftShadow, 0);
     v12 = _NSDictionaryOfVariableBindings(@"width", v10, 0);
-    v13 = [(UIImageView *)self->_leftShadow heightAnchor];
-    v14 = [v13 constraintEqualToConstant:*(&_PlatformSpec + 1)];
+    heightAnchor = [(UIImageView *)self->_leftShadow heightAnchor];
+    v14 = [heightAnchor constraintEqualToConstant:*(&_PlatformSpec + 1)];
     [v14 setActive:1];
 
-    v15 = [(UIImageView *)self->_leftShadow centerYAnchor];
-    v16 = [(UICollectionView *)self->_collectionView centerYAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    centerYAnchor = [(UIImageView *)self->_leftShadow centerYAnchor];
+    centerYAnchor2 = [(UICollectionView *)self->_collectionView centerYAnchor];
+    v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v17 setActive:1];
 
-    v18 = [(UIImageView *)self->_rightShadow heightAnchor];
-    v19 = [v18 constraintEqualToConstant:*(&_PlatformSpec + 1)];
+    heightAnchor2 = [(UIImageView *)self->_rightShadow heightAnchor];
+    v19 = [heightAnchor2 constraintEqualToConstant:*(&_PlatformSpec + 1)];
     [v19 setActive:1];
 
-    v20 = [(UIImageView *)self->_rightShadow centerYAnchor];
-    v21 = [(UICollectionView *)self->_collectionView centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    centerYAnchor3 = [(UIImageView *)self->_rightShadow centerYAnchor];
+    centerYAnchor4 = [(UICollectionView *)self->_collectionView centerYAnchor];
+    v22 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v22 setActive:1];
 
     v23 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[_rightShadow(width)]|" options:0x10000 metrics:v12 views:v11];
@@ -619,7 +619,7 @@ LABEL_18:
 {
   if (self->_leftShadow && self->_rightShadow)
   {
-    v3 = [(HWFavoritesPickerView *)self shouldShowShadows];
+    shouldShowShadows = [(HWFavoritesPickerView *)self shouldShowShadows];
     [(UICollectionView *)self->_collectionView contentOffset];
     v5 = v4;
     [(UICollectionView *)self->_collectionView contentSize];
@@ -627,7 +627,7 @@ LABEL_18:
     [(UICollectionView *)self->_collectionView frame];
     if (v7 > v8 && v5 + 1.0 + v8 <= v7)
     {
-      v9 = v3;
+      v9 = shouldShowShadows;
     }
 
     else
@@ -640,18 +640,18 @@ LABEL_18:
     v10[2] = sub_B9C8;
     v10[3] = &unk_28820;
     v10[4] = self;
-    v11 = (v5 > 0.0) & v3;
+    v11 = (v5 > 0.0) & shouldShowShadows;
     v12 = v9;
     [UIView animateWithDuration:v10 animations:0.18];
   }
 }
 
-- (void)_adjustLayoutForLandscapeEditingMode:(BOOL)a3 animate:(BOOL)a4
+- (void)_adjustLayoutForLandscapeEditingMode:(BOOL)mode animate:(BOOL)animate
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(HWFavoritesPickerView *)self delegate];
-  [v7 pickerOffsetForEditMode:self];
+  animateCopy = animate;
+  modeCopy = mode;
+  delegate = [(HWFavoritesPickerView *)self delegate];
+  [delegate pickerOffsetForEditMode:self];
   v9 = v8;
   [(UICollectionView *)self->_collectionView contentInset];
   v11 = v10;
@@ -664,7 +664,7 @@ LABEL_18:
   v20 = v17 - v9;
   v21 = v13 - v9;
   v22 = v9 + v17;
-  if (v5)
+  if (modeCopy)
   {
     v23 = v17 - v9;
   }
@@ -674,7 +674,7 @@ LABEL_18:
     v23 = v9 + v17;
   }
 
-  if (v5)
+  if (modeCopy)
   {
     v24 = v19;
   }
@@ -684,38 +684,38 @@ LABEL_18:
     v24 = v21;
   }
 
-  if (!v4)
+  if (!animateCopy)
   {
-    if (v5)
+    if (modeCopy)
     {
-      [v7 pickerDidEnterEditMode:self];
+      [delegate pickerDidEnterEditMode:self];
     }
 
     else
     {
-      [v7 pickerDidExitEditMode:self];
+      [delegate pickerDidExitEditMode:self];
     }
 
-    v29 = [(HWFavoritesPickerView *)self collectionView];
-    [v29 setContentInset:{v11, v24, v15, v30}];
+    collectionView = [(HWFavoritesPickerView *)self collectionView];
+    [collectionView setContentInset:{v11, v24, v15, v30}];
 
-    v26 = [(HWFavoritesPickerView *)self collectionView];
-    v27 = v26;
+    collectionView2 = [(HWFavoritesPickerView *)self collectionView];
+    v27 = collectionView2;
     v28 = v23;
     goto LABEL_15;
   }
 
-  if (v5)
+  if (modeCopy)
   {
-    [v7 pickerDidEnterEditMode:self];
-    v25 = [(HWFavoritesPickerView *)self collectionView];
-    [v25 setContentInset:{v11, v19, v15, v30}];
+    [delegate pickerDidEnterEditMode:self];
+    collectionView3 = [(HWFavoritesPickerView *)self collectionView];
+    [collectionView3 setContentInset:{v11, v19, v15, v30}];
 
-    v26 = [(HWFavoritesPickerView *)self collectionView];
-    v27 = v26;
+    collectionView2 = [(HWFavoritesPickerView *)self collectionView];
+    v27 = collectionView2;
     v28 = v20;
 LABEL_15:
-    [v26 setContentOffset:{v28, v31}];
+    [collectionView2 setContentOffset:{v28, v31}];
 
     goto LABEL_16;
   }
@@ -724,8 +724,8 @@ LABEL_15:
   v32[1] = 3221225472;
   v32[2] = sub_BC4C;
   v32[3] = &unk_28848;
-  v33 = v7;
-  v34 = self;
+  v33 = delegate;
+  selfCopy = self;
   v35 = v11;
   v36 = v21;
   v37 = v15;
@@ -737,10 +737,10 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(HWFavoritesPickerView *)self isEditing])
   {
     [(HWFavoritesPickerView *)self setEditing:0 animated:1];
@@ -748,19 +748,19 @@ LABEL_16:
 
   else
   {
-    v8 = [(HWFavoritesPickerView *)self selectionHandler];
+    selectionHandler = [(HWFavoritesPickerView *)self selectionHandler];
 
-    if (v8)
+    if (selectionHandler)
     {
-      v9 = [(HWFavoritesPickerView *)self items];
+      items = [(HWFavoritesPickerView *)self items];
 
-      if (v9)
+      if (items)
       {
-        v10 = [(HWFavoritesPickerView *)self items];
-        v11 = [v10 objectAtIndex:{objc_msgSend(v7, "row")}];
+        items2 = [(HWFavoritesPickerView *)self items];
+        v11 = [items2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v12 = [(HWFavoritesPickerView *)self selectionHandler];
-        (v12)[2](v12, v11);
+        selectionHandler2 = [(HWFavoritesPickerView *)self selectionHandler];
+        (selectionHandler2)[2](selectionHandler2, v11);
       }
     }
   }
@@ -770,14 +770,14 @@ LABEL_16:
   v16[1] = 3221225472;
   v16[2] = sub_BE84;
   v16[3] = &unk_28870;
-  v17 = v6;
-  v18 = v7;
-  v14 = v7;
-  v15 = v6;
+  v17 = viewCopy;
+  v18 = pathCopy;
+  v14 = pathCopy;
+  v15 = viewCopy;
   dispatch_after(v13, &_dispatch_main_q, v16);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v6 = *(&_PlatformSpec + 1);
   v5 = *&_PlatformSpec;
@@ -786,45 +786,45 @@ LABEL_16:
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(HWFavoritesPickerView *)self items:a3];
+  v4 = [(HWFavoritesPickerView *)self items:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"reuseIdentifier" forIndexPath:v6];
-  v8 = [(HWFavoritesPickerView *)self items];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"reuseIdentifier" forIndexPath:pathCopy];
+  items = [(HWFavoritesPickerView *)self items];
 
-  if (v8)
+  if (items)
   {
-    v9 = [(HWFavoritesPickerView *)self _indexForIndexPath:v6];
-    v10 = [(HWFavoritesPickerView *)self items];
-    v11 = [v10 objectAtIndex:v9];
+    v9 = [(HWFavoritesPickerView *)self _indexForIndexPath:pathCopy];
+    items2 = [(HWFavoritesPickerView *)self items];
+    v11 = [items2 objectAtIndex:v9];
 
-    v12 = [v11 uuid];
-    v13 = [v12 UUIDString];
-    [v7 setUuidString:v13];
+    uuid = [v11 uuid];
+    uUIDString = [uuid UUIDString];
+    [v7 setUuidString:uUIDString];
 
     v14 = [(HWFavoritesPickerView *)self cachedThumbnailForItem:v11 inCell:v7];
-    v15 = [v7 imageView];
-    [v15 setImage:v14];
+    imageView = [v7 imageView];
+    [imageView setImage:v14];
 
-    v16 = [v7 deleteButton];
-    [v16 setTag:v9];
+    deleteButton = [v7 deleteButton];
+    [deleteButton setTag:v9];
 
-    v17 = [v7 deleteButton];
-    [v17 addTarget:self action:"_cellButtonDown:" forControlEvents:1];
+    deleteButton2 = [v7 deleteButton];
+    [deleteButton2 addTarget:self action:"_cellButtonDown:" forControlEvents:1];
 
-    v18 = [v7 deleteButton];
-    [v18 addTarget:self action:"_cellButtonUp:" forControlEvents:192];
+    deleteButton3 = [v7 deleteButton];
+    [deleteButton3 addTarget:self action:"_cellButtonUp:" forControlEvents:192];
 
-    v19 = [v7 deleteButton];
-    [v19 addTarget:self action:"_deleteItem:" forControlEvents:64];
+    deleteButton4 = [v7 deleteButton];
+    [deleteButton4 addTarget:self action:"_deleteItem:" forControlEvents:64];
 
     [v7 setEditing:{-[HWFavoritesPickerView isEditing](self, "isEditing")}];
   }
@@ -832,26 +832,26 @@ LABEL_16:
   return v7;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [v6 setEditing:{-[HWFavoritesPickerView isEditing](self, "isEditing")}];
+  cellCopy = cell;
+  [cellCopy setEditing:{-[HWFavoritesPickerView isEditing](self, "isEditing")}];
 }
 
-- (id)cachedThumbnailForItem:(id)a3 inCell:(id)a4
+- (id)cachedThumbnailForItem:(id)item inCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [v8 UUIDString];
+  itemCopy = item;
+  cellCopy = cell;
+  uuid = [itemCopy uuid];
+  uUIDString = [uuid UUIDString];
 
-  if (!v9)
+  if (!uUIDString)
   {
     v12 = 0;
     goto LABEL_9;
   }
 
-  v10 = [(NSMutableDictionary *)self->_itemCache objectForKey:v9];
+  v10 = [(NSMutableDictionary *)self->_itemCache objectForKey:uUIDString];
   v11 = +[NSNull null];
 
   if (v10 == v11)
@@ -863,24 +863,24 @@ LABEL_16:
   {
     itemCache = self->_itemCache;
     v14 = +[NSNull null];
-    [(NSMutableDictionary *)itemCache setObject:v14 forKey:v9];
+    [(NSMutableDictionary *)itemCache setObject:v14 forKey:uUIDString];
 
     objc_initWeak(&location, self);
     objc_initWeak(&from, self->_itemCache);
-    objc_initWeak(&v25, v7);
-    v15 = [(HWFavoritesPickerView *)self traitCollection];
-    v16 = [v15 userInterfaceStyle];
+    objc_initWeak(&v25, cellCopy);
+    traitCollection = [(HWFavoritesPickerView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     thumbnailQueue = self->_thumbnailQueue;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_C3CC;
     v19[3] = &unk_288C0;
-    v20 = v6;
-    v24[1] = v16;
+    v20 = itemCopy;
+    v24[1] = userInterfaceStyle;
     objc_copyWeak(&v22, &from);
     objc_copyWeak(&v23, &v25);
-    v21 = v9;
+    v21 = uUIDString;
     objc_copyWeak(v24, &location);
     [(NSOperationQueue *)thumbnailQueue addOperationWithBlock:v19];
     objc_destroyWeak(v24);
@@ -904,17 +904,17 @@ LABEL_9:
   return v12;
 }
 
-- (id)_cellViewForUUID:(id)a3
+- (id)_cellViewForUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(UICollectionView *)self->_collectionView visibleCells];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+    v6 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -924,12 +924,12 @@ LABEL_9:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(visibleCells);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 uuidString];
-          v11 = [v10 isEqualToString:v4];
+          uuidString = [v9 uuidString];
+          v11 = [uuidString isEqualToString:dCopy];
 
           if (v11)
           {
@@ -938,7 +938,7 @@ LABEL_9:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;

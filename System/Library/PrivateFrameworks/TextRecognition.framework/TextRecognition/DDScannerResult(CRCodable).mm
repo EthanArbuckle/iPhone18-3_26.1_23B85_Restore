@@ -8,7 +8,7 @@
 - (id)crCodableDataRepresentation
 {
   v3 = 0;
-  v1 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a1 requiringSecureCoding:1 error:&v3];
+  v1 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v3];
 
   return v1;
 }

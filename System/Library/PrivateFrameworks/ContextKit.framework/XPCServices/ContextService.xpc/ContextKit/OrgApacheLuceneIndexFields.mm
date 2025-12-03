@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray newArrayWithLength:0 type:OrgApacheLuceneIndexFields_class_()];
     JreStrongAssignAndConsume(&OrgApacheLuceneIndexFields_EMPTY_ARRAY_, v2);

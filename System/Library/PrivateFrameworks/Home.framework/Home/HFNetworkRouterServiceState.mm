@@ -1,7 +1,7 @@
 @interface HFNetworkRouterServiceState
 + (id)optionalCharacteristicTypes;
-+ (unint64_t)_typeForStatus:(unint64_t)a3;
-- (HFNetworkRouterServiceState)initWithBatchReadResponse:(id)a3;
++ (unint64_t)_typeForStatus:(unint64_t)status;
+- (HFNetworkRouterServiceState)initWithBatchReadResponse:(id)response;
 - (id)stateTypeIdentifier;
 - (int64_t)primaryState;
 - (int64_t)priority;
@@ -37,27 +37,27 @@ void __58__HFNetworkRouterServiceState_optionalCharacteristicTypes__block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)_typeForStatus:(unint64_t)a3
++ (unint64_t)_typeForStatus:(unint64_t)status
 {
   v3 = 1;
   v4 = 3;
-  if ((a3 & 0x20000000) == 0)
+  if ((status & 0x20000000) == 0)
   {
     v4 = 4;
   }
 
   v5 = 2;
-  if ((a3 & 0x40000002) == 0)
+  if ((status & 0x40000002) == 0)
   {
     v5 = v4;
   }
 
-  if ((a3 & 1) == 0)
+  if ((status & 1) == 0)
   {
     v3 = v5;
   }
 
-  if (a3)
+  if (status)
   {
     return v3;
   }
@@ -68,24 +68,24 @@ void __58__HFNetworkRouterServiceState_optionalCharacteristicTypes__block_invoke
   }
 }
 
-- (HFNetworkRouterServiceState)initWithBatchReadResponse:(id)a3
+- (HFNetworkRouterServiceState)initWithBatchReadResponse:(id)response
 {
   v4 = *MEMORY[0x277CCFA28];
   v5 = MEMORY[0x277CBEB98];
   v6 = *MEMORY[0x277CD0F48];
-  v7 = a3;
+  responseCopy = response;
   v8 = [v5 setWithObject:v6];
-  v9 = [v7 responseForCharacteristicType:v4 inServicesOfTypes:v8];
+  v9 = [responseCopy responseForCharacteristicType:v4 inServicesOfTypes:v8];
   v10 = [v9 valueWithExpectedClass:objc_opt_class()];
 
   v11 = *MEMORY[0x277CCFBC8];
   v12 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277CD0F50]];
-  v13 = [v7 responseForCharacteristicType:v11 inServicesOfTypes:v12];
+  v13 = [responseCopy responseForCharacteristicType:v11 inServicesOfTypes:v12];
   v14 = [v13 valueWithExpectedClass:objc_opt_class()];
 
   v15 = *MEMORY[0x277CCFBB8];
   v16 = [MEMORY[0x277CBEB98] setWithObject:v6];
-  v17 = [v7 responseForCharacteristicType:v15 inServicesOfTypes:v16];
+  v17 = [responseCopy responseForCharacteristicType:v15 inServicesOfTypes:v16];
 
   v18 = [v17 valueWithExpectedClass:objc_opt_class()];
 
@@ -102,21 +102,21 @@ void __58__HFNetworkRouterServiceState_optionalCharacteristicTypes__block_invoke
   v20 = v19;
   if (v20 == 1 && v14 == 0)
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     if (v20)
     {
-      v22 = [v14 integerValue];
-      v23 = [MEMORY[0x277CD1650] networkRouterStatusFromWiFiSatelliteStatus:v22];
+      integerValue = [v14 integerValue];
+      v23 = [MEMORY[0x277CD1650] networkRouterStatusFromWiFiSatelliteStatus:integerValue];
     }
 
     else
     {
-      v25 = [v10 integerValue];
-      v23 = [MEMORY[0x277CD1650] networkRouterStatusFromRouterStatus:v25 wanStatusListData:v18];
+      integerValue2 = [v10 integerValue];
+      v23 = [MEMORY[0x277CD1650] networkRouterStatusFromRouterStatus:integerValue2 wanStatusListData:v18];
     }
 
     v26 = v23;
@@ -131,24 +131,24 @@ void __58__HFNetworkRouterServiceState_optionalCharacteristicTypes__block_invoke
     }
 
     self = v28;
-    v24 = self;
+    selfCopy = self;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 - (id)stateTypeIdentifier
 {
-  v2 = [(HFNetworkRouterServiceState *)self type];
+  type = [(HFNetworkRouterServiceState *)self type];
   v3 = @"Connected";
-  if (v2 > 2)
+  if (type > 2)
   {
-    if (v2 == 3)
+    if (type == 3)
     {
       v3 = @"NotReady";
     }
 
-    else if (v2 == 4)
+    else if (type == 4)
     {
       v3 = +[HFNetworkRouterServiceState combinedStateTypeIdentifier];
     }
@@ -157,12 +157,12 @@ void __58__HFNetworkRouterServiceState_optionalCharacteristicTypes__block_invoke
   else
   {
     v4 = @"NotConnected";
-    if (v2 != 2)
+    if (type != 2)
     {
       v4 = @"Connected";
     }
 
-    if (v2 == 1)
+    if (type == 1)
     {
       v3 = @"Unknown";
     }

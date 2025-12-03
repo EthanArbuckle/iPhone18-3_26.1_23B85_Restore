@@ -1,20 +1,20 @@
 @interface TSCEFunction_DATEVALUE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_DATEVALUE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v84 = 0;
-  v9 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v84);
+  v9 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v84);
   v14 = v84;
   if (!v14)
   {
     if (v7)
     {
-      objc_msgSend_formatWithContext_(v7, v10, a3, v12, v13);
+      objc_msgSend_formatWithContext_(v7, v10, context, v12, v13);
     }
 
     else
@@ -49,7 +49,7 @@
     }
 
 LABEL_12:
-    v51 = objc_msgSend_locale(a3, v27, v28, v29, v30);
+    v51 = objc_msgSend_locale(context, v27, v28, v29, v30);
     v52 = TSUCreateDateFromStringWithPreferredFormat();
 
     if (v52)
@@ -57,7 +57,7 @@ LABEL_12:
       v57 = objc_msgSend_gregorianCalendar(TSCECalendar, v53, v54, v55, v56);
       v61 = objc_msgSend_clearOffTime_(v57, v58, v52, v59, v60);
       v62 = MEMORY[0x277D80658];
-      v67 = objc_msgSend_locale(a3, v63, v64, v65, v66);
+      v67 = objc_msgSend_locale(context, v63, v64, v65, v66);
       v71 = objc_msgSend_defaultDateOnlyShortFormatForLocale_(v62, v68, v67, v69, v70);
 
       TSCEFormat::TSCEFormat(&v82, v71, 0);
@@ -66,9 +66,9 @@ LABEL_12:
 
     else
     {
-      v61 = objc_msgSend_functionName(a4, v53, v54, v55, v56);
+      v61 = objc_msgSend_functionName(spec, v53, v54, v55, v56);
       v71 = objc_msgSend_stringDoesNotRepresentDateErrorForFunctionName_string_(TSCEError, v75, v61, v16, v76);
-      v74 = objc_msgSend_raiseErrorOrConvert_(a3, v77, v71, v78, v79);
+      v74 = objc_msgSend_raiseErrorOrConvert_(context, v77, v71, v78, v79);
     }
 
     v15 = v74;
@@ -76,7 +76,7 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v15 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v14, v12, v13);
+  v15 = objc_msgSend_raiseErrorOrConvert_(context, v10, v14, v12, v13);
   v16 = v9;
 LABEL_16:
 

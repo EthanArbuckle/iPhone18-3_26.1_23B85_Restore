@@ -1,13 +1,13 @@
 @interface _BSSqliteDeferredPreparedSimpleStatement
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5;
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
 @end
 
 @implementation _BSSqliteDeferredPreparedSimpleStatement
 
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  bindingsCopy = bindings;
+  handlerCopy = handler;
   if (self->_deferredSql)
   {
     v18 = 0;
@@ -20,7 +20,7 @@
     {
       v13 = 21;
       *(v19 + 6) = 21;
-      if (!a5)
+      if (!error)
       {
 LABEL_8:
 
@@ -31,7 +31,7 @@ LABEL_12:
       }
 
 LABEL_7:
-      *a5 = [(_BSSqlitePreparedSimpleStatement *)self _sqliteError:v13];
+      *error = [(_BSSqlitePreparedSimpleStatement *)self _sqliteError:v13];
       goto LABEL_8;
     }
 
@@ -46,7 +46,7 @@ LABEL_7:
     v13 = *(v19 + 6);
     if (v13)
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -64,7 +64,7 @@ LABEL_7:
 
   v16.receiver = self;
   v16.super_class = _BSSqliteDeferredPreparedSimpleStatement;
-  v14 = [(_BSSqlitePreparedSimpleStatement *)&v16 executeWithBindings:v9 resultRowHandler:v10 error:a5];
+  v14 = [(_BSSqlitePreparedSimpleStatement *)&v16 executeWithBindings:bindingsCopy resultRowHandler:handlerCopy error:error];
 LABEL_13:
 
   return v14;

@@ -1,14 +1,14 @@
 @interface SUICUtilities
-+ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)a3;
++ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)valid;
 + (id)_emojisToNotInclude;
-+ (id)substringRangesContainingEmojiInString:(id)a3;
++ (id)substringRangesContainingEmojiInString:(id)string;
 @end
 
 @implementation SUICUtilities
 
-+ (id)substringRangesContainingEmojiInString:(id)a3
++ (id)substringRangesContainingEmojiInString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (CEMStringContainsEmoji())
   {
     v6 = 0;
@@ -16,8 +16,8 @@
     v8 = 0x3032000000;
     v9 = __Block_byref_object_copy__1;
     v10 = __Block_byref_object_dispose__1;
-    v11 = [MEMORY[0x1E695DF70] array];
-    [v3 length];
+    array = [MEMORY[0x1E695DF70] array];
+    [stringCopy length];
     CEMEnumerateEmojiTokensInStringWithBlock();
     v4 = v7[5];
     _Block_object_dispose(&v6, 8);
@@ -42,11 +42,11 @@ void __56__SUICUtilities_substringRangesContainingEmojiInString___block_invoke(u
   }
 }
 
-+ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)a3
++ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)valid
 {
   v4 = CEMEmojiTokenGetString();
-  v5 = [a1 _emojisToNotInclude];
-  v6 = [v5 containsObject:v4];
+  _emojisToNotInclude = [self _emojisToNotInclude];
+  v6 = [_emojisToNotInclude containsObject:v4];
 
   return v6 ^ 1;
 }

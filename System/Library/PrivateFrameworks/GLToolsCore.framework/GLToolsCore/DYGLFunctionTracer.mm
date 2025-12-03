@@ -1,21 +1,21 @@
 @interface DYGLFunctionTracer
-- (BOOL)_skipFirstArgumentForFunction:(const Function *)a3;
+- (BOOL)_skipFirstArgumentForFunction:(const Function *)function;
 - (DYGLFunctionTracer)init;
 - (id).cxx_construct;
-- (id)_stringForScalar1DArrayArgument:(const Argument *)a3 usingBlock:(id)a4;
-- (id)_stringWithNumber:(id)a3 argument:(const Argument *)a4;
-- (id)typeStringForArgument:(const Argument *)a3;
-- (id)variableForGLSyncID:(unint64_t)a3;
-- (id)variableForGLSyncIDNumber:(id)a3;
-- (id)variableForPBufferID:(unint64_t)a3;
-- (id)variableForPBufferIDNumber:(id)a3;
-- (id)variableForPixelFormatID:(unint64_t)a3;
-- (id)variableForPixelFormatIDNumber:(id)a3;
-- (id)variableForReceiverID:(unint64_t)a3;
-- (id)variableForReceiverIDNumber:(id)a3;
-- (void)_appendTraceLine:(id)a3 withFunction:(const Function *)a4 iterArgument:(array_iterator<const GPUTools:(id)a6 :(id)a7 FD::Argument>)a5 argumentStrings:returnVariable:;
-- (void)_emitErrors:(id)a3 function:(const Function *)a4;
-- (void)_prependReceiver:(id)a3 function:(const Function *)a4;
+- (id)_stringForScalar1DArrayArgument:(const Argument *)argument usingBlock:(id)block;
+- (id)_stringWithNumber:(id)number argument:(const Argument *)argument;
+- (id)typeStringForArgument:(const Argument *)argument;
+- (id)variableForGLSyncID:(unint64_t)d;
+- (id)variableForGLSyncIDNumber:(id)number;
+- (id)variableForPBufferID:(unint64_t)d;
+- (id)variableForPBufferIDNumber:(id)number;
+- (id)variableForPixelFormatID:(unint64_t)d;
+- (id)variableForPixelFormatIDNumber:(id)number;
+- (id)variableForReceiverID:(unint64_t)d;
+- (id)variableForReceiverIDNumber:(id)number;
+- (void)_appendTraceLine:(id)line withFunction:(const Function *)function iterArgument:(array_iterator<const GPUTools:(id)argument :(id)a7 FD::Argument>)a5 argumentStrings:returnVariable:;
+- (void)_emitErrors:(id)errors function:(const Function *)function;
+- (void)_prependReceiver:(id)receiver function:(const Function *)function;
 @end
 
 @implementation DYGLFunctionTracer
@@ -33,21 +33,21 @@
   return result;
 }
 
-- (id)_stringWithNumber:(id)a3 argument:(const Argument *)a4
+- (id)_stringWithNumber:(id)number argument:(const Argument *)argument
 {
-  switch(a4->var2)
+  switch(argument->var2)
   {
     case 0xFu:
-      v21 = [a3 unsignedLongLongValue];
-      if (!v21)
+      unsignedLongLongValue = [number unsignedLongLongValue];
+      if (!unsignedLongLongValue)
       {
         goto LABEL_47;
       }
 
-      return [(DYFunctionTracer *)self rewriteReceiver:v21];
+      return [(DYFunctionTracer *)self rewriteReceiver:unsignedLongLongValue];
     case 0x11u:
       v16 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
-      v17 = [a3 unsignedIntValue];
+      unsignedIntValue = [number unsignedIntValue];
       if (v16 == 1)
       {
         v18 = @"True";
@@ -60,7 +60,7 @@
         v19 = @"GL_FALSE";
       }
 
-      if (v17)
+      if (unsignedIntValue)
       {
         return v18;
       }
@@ -72,38 +72,38 @@
 
     case 0x12u:
     case 0x1Fu:
-      v7 = [a3 unsignedIntValue];
+      unsignedIntValue2 = [number unsignedIntValue];
       v8 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
       goto LABEL_27;
     case 0x14u:
-      v13 = [a3 unsignedIntValue];
-      v14 = dy_string_from_attachment_mask(v13, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
+      unsignedIntValue3 = [number unsignedIntValue];
+      v14 = dy_string_from_attachment_mask(unsignedIntValue3, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
       goto LABEL_34;
     case 0x15u:
-      v15 = [a3 unsignedIntValue];
-      v14 = dy_string_from_attrib_mask(v15, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
+      unsignedIntValue4 = [number unsignedIntValue];
+      v14 = dy_string_from_attrib_mask(unsignedIntValue4, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
       goto LABEL_34;
     case 0x16u:
-      v20 = [a3 unsignedIntValue];
-      v14 = dy_string_from_client_attrib_mask(v20, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
+      unsignedIntValue5 = [number unsignedIntValue];
+      v14 = dy_string_from_client_attrib_mask(unsignedIntValue5, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
       goto LABEL_34;
     case 0x17u:
-      v22 = [a3 unsignedIntValue];
-      v14 = dy_string_from_map_buffer_range_access(v22, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
+      unsignedIntValue6 = [number unsignedIntValue];
+      v14 = dy_string_from_map_buffer_range_access(unsignedIntValue6, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
       goto LABEL_34;
     case 0x18u:
-      v28 = [a3 unsignedIntValue];
-      v14 = dy_string_from_pipeline_stages(v28, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
+      unsignedIntValue7 = [number unsignedIntValue];
+      v14 = dy_string_from_pipeline_stages(unsignedIntValue7, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
       goto LABEL_34;
     case 0x19u:
-      v27 = [a3 unsignedIntValue];
-      v14 = dy_string_from_sync_flags(v27, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
+      unsignedIntValue8 = [number unsignedIntValue];
+      v14 = dy_string_from_sync_flags(unsignedIntValue8, *(&self->super.super.isa + *MEMORY[0x277D0AFE8]), 0, 0);
 LABEL_34:
       v29 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytesNoCopy:v14 length:strlen(v14) encoding:1 freeWhenDone:1];
 
       return v29;
     case 0x1Au:
-      if ([a3 unsignedLongLongValue] == -1)
+      if ([number unsignedLongLongValue] == -1)
       {
         v24 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
         v25 = @"GL_TIMEOUT_IGNORED";
@@ -111,13 +111,13 @@ LABEL_34:
         goto LABEL_61;
       }
 
-      var1 = a4->var1;
+      var1 = argument->var1;
 
-      return [(DYFunctionTracer *)self _stringWithIntegerNumber:a3 coreType:var1];
+      return [(DYFunctionTracer *)self _stringWithIntegerNumber:number coreType:var1];
     case 0x1Bu:
-      v7 = [a3 unsignedIntValue];
+      unsignedIntValue2 = [number unsignedIntValue];
       v8 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
-      if (v7 == 1)
+      if (unsignedIntValue2 == 1)
       {
         v9 = @"GL_LINES";
         v10 = @"Lines";
@@ -125,7 +125,7 @@ LABEL_34:
 
       else
       {
-        if (v7)
+        if (unsignedIntValue2)
         {
           goto LABEL_27;
         }
@@ -136,9 +136,9 @@ LABEL_34:
 
       goto LABEL_67;
     case 0x1Cu:
-      v7 = [a3 unsignedIntValue];
+      unsignedIntValue2 = [number unsignedIntValue];
       v8 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
-      if (v7 == 1)
+      if (unsignedIntValue2 == 1)
       {
         v9 = @"GL_ONE";
         v10 = @"One";
@@ -154,7 +154,7 @@ LABEL_67:
         }
       }
 
-      if (!v7)
+      if (!unsignedIntValue2)
       {
         v9 = @"GL_ZERO";
         v10 = @"Zero";
@@ -163,11 +163,11 @@ LABEL_67:
 
 LABEL_27:
 
-      return dy_nsstring_from_enum_ex(v7, v8);
+      return dy_nsstring_from_enum_ex(unsignedIntValue2, v8);
     case 0x1Du:
-      v7 = [a3 unsignedIntValue];
+      unsignedIntValue2 = [number unsignedIntValue];
       v8 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
-      if (v7)
+      if (unsignedIntValue2)
       {
         goto LABEL_27;
       }
@@ -176,9 +176,9 @@ LABEL_27:
       v10 = @"None";
       goto LABEL_67;
     case 0x1Eu:
-      v7 = [a3 unsignedIntValue];
+      unsignedIntValue2 = [number unsignedIntValue];
       v8 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
-      if (v7)
+      if (unsignedIntValue2)
       {
         goto LABEL_27;
       }
@@ -187,8 +187,8 @@ LABEL_27:
       v10 = @"NoError";
       goto LABEL_67;
     case 0x20u:
-      v23 = [a3 unsignedIntValue];
-      if (v23 == 33984)
+      unsignedIntValue9 = [number unsignedIntValue];
+      if (unsignedIntValue9 == 33984)
       {
         v24 = *(&self->super.super.isa + *MEMORY[0x277D0AFE8]);
         v25 = @"GL_TEXTURE0";
@@ -217,32 +217,32 @@ LABEL_61:
           v33 = @"GL_TEXTURE0+%d";
         }
 
-        return [MEMORY[0x277CCACA8] stringWithFormat:v33, (v23 - 33984)];
+        return [MEMORY[0x277CCACA8] stringWithFormat:v33, (unsignedIntValue9 - 33984)];
       }
 
     case 0x21u:
-      v32 = [a3 unsignedLongLongValue];
-      if (!v32)
+      unsignedLongLongValue2 = [number unsignedLongLongValue];
+      if (!unsignedLongLongValue2)
       {
         goto LABEL_47;
       }
 
-      v31 = v32;
+      v31 = unsignedLongLongValue2;
       if (*(&self->super.super.isa + *MEMORY[0x277D0AFF0]) != 1)
       {
         return [MEMORY[0x277CCACA8] stringWithFormat:@"0x%016llx", v31];
       }
 
-      return [(DYGLFunctionTracer *)self variableForGLSyncID:v32];
+      return [(DYGLFunctionTracer *)self variableForGLSyncID:unsignedLongLongValue2];
     case 0x2Fu:
-      v30 = [a3 unsignedLongLongValue];
-      if (v30)
+      unsignedLongLongValue3 = [number unsignedLongLongValue];
+      if (unsignedLongLongValue3)
       {
-        v31 = v30;
+        v31 = unsignedLongLongValue3;
         if (*(&self->super.super.isa + *MEMORY[0x277D0AFF0]) == 1)
         {
 
-          return [(DYGLFunctionTracer *)self variableForPixelFormatID:v30];
+          return [(DYGLFunctionTracer *)self variableForPixelFormatID:unsignedLongLongValue3];
         }
 
         else
@@ -261,15 +261,15 @@ LABEL_47:
     default:
       v34.receiver = self;
       v34.super_class = DYGLFunctionTracer;
-      return [(DYFunctionTracer *)&v34 _stringWithNumber:a3 argument:a4];
+      return [(DYFunctionTracer *)&v34 _stringWithNumber:number argument:argument];
   }
 }
 
-- (id)_stringForScalar1DArrayArgument:(const Argument *)a3 usingBlock:(id)a4
+- (id)_stringForScalar1DArrayArgument:(const Argument *)argument usingBlock:(id)block
 {
-  if (a3->var0)
+  if (argument->var0)
   {
-    if (a3->var4)
+    if (argument->var4)
     {
       v6.receiver = self;
       v6.super_class = DYGLFunctionTracer;
@@ -289,9 +289,9 @@ LABEL_47:
   }
 }
 
-- (id)typeStringForArgument:(const Argument *)a3
+- (id)typeStringForArgument:(const Argument *)argument
 {
-  var2 = a3->var2;
+  var2 = argument->var2;
   if (var2 > 32)
   {
     if (var2 != 33)
@@ -328,18 +328,18 @@ LABEL_8:
   }
 }
 
-- (void)_prependReceiver:(id)a3 function:(const Function *)a4
+- (void)_prependReceiver:(id)receiver function:(const Function *)function
 {
-  v5[0] = a4 + 16;
+  v5[0] = function + 16;
   v5[1] = 0xF00000008;
   v5[2] = 0x100000008;
-  [a3 appendString:{-[DYFunctionTracer valueStringForArgument:](self, "valueStringForArgument:", v5)}];
-  [a3 appendString:@" "];
+  [receiver appendString:{-[DYFunctionTracer valueStringForArgument:](self, "valueStringForArgument:", v5)}];
+  [receiver appendString:@" "];
 }
 
-- (BOOL)_skipFirstArgumentForFunction:(const Function *)a3
+- (BOOL)_skipFirstArgumentForFunction:(const Function *)function
 {
-  if (*a3 < 0x418u)
+  if (*function < 0x418u)
   {
     return 1;
   }
@@ -351,10 +351,10 @@ LABEL_8:
   return [(DYFunctionTracer *)&v6 _skipFirstArgumentForFunction:?];
 }
 
-- (void)_appendTraceLine:(id)a3 withFunction:(const Function *)a4 iterArgument:(array_iterator<const GPUTools:(id)a6 :(id)a7 FD::Argument>)a5 argumentStrings:returnVariable:
+- (void)_appendTraceLine:(id)line withFunction:(const Function *)function iterArgument:(array_iterator<const GPUTools:(id)argument :(id)a7 FD::Argument>)a5 argumentStrings:returnVariable:
 {
-  v13 = *a4;
-  if (*a4 == 888)
+  v13 = *function;
+  if (*function == 888)
   {
     goto LABEL_4;
   }
@@ -369,12 +369,12 @@ LABEL_5:
     }
 
 LABEL_4:
-    LODWORD(v22) = GPUTools::FD::Argument::ViewAsGLObjectName((a4 + 24));
+    LODWORD(v22) = GPUTools::FD::Argument::ViewAsGLObjectName((function + 24));
     std::__hash_table<unsigned int,std::hash<unsigned int>,std::equal_to<unsigned int>,std::allocator<unsigned int>>::__emplace_unique_key_args<unsigned int,unsigned int const&>(&self->_programNames.__table_.__bucket_list_.__ptr_, &v22);
     goto LABEL_5;
   }
 
-  LODWORD(v22) = GPUTools::FD::Argument::ViewAsGLObjectName((a4 + 72));
+  LODWORD(v22) = GPUTools::FD::Argument::ViewAsGLObjectName((function + 72));
   v15 = std::__hash_table<unsigned int,std::hash<unsigned int>,std::equal_to<unsigned int>,std::allocator<unsigned int>>::find<unsigned int>(&self->_programNames.__table_.__bucket_list_.__ptr_, &v22);
   v14 = v15 != 0;
   if (v15)
@@ -395,17 +395,17 @@ LABEL_6:
     {
       if (v13 == -8184)
       {
-        [a3 appendFormat:@"[EAGLContext setCurrentContext:%@]", objc_msgSend(a6, "objectAtIndex:", 0), v17, v18, v19];
+        [line appendFormat:@"[EAGLContext setCurrentContext:%@]", objc_msgSend(argument, "objectAtIndex:", 0), v17, v18, v19];
       }
 
       else if (v13 == -8183)
       {
-        [a3 appendFormat:@"[%@ setTransform:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), v18, v19];
+        [line appendFormat:@"[%@ setTransform:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), v18, v19];
       }
 
       else
       {
-        [a3 appendFormat:@"[%@ setPosition:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), v18, v19];
+        [line appendFormat:@"[%@ setPosition:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), v18, v19];
       }
 
       return;
@@ -414,13 +414,13 @@ LABEL_6:
     switch(v13)
     {
       case -8181:
-        [a3 appendFormat:@"[%@ setAnchorPoint:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), v18, v19];
+        [line appendFormat:@"[%@ setAnchorPoint:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), v18, v19];
         return;
       case -8179:
-        [a3 appendFormat:@"[%@ presentRenderbuffer:%@ atTime:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), objc_msgSend(a6, "objectAtIndex:", 2), v19];
+        [line appendFormat:@"[%@ presentRenderbuffer:%@ atTime:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), objc_msgSend(argument, "objectAtIndex:", 2), v19];
         return;
       case -8178:
-        [a3 appendFormat:@"[%@ presentRenderbuffer:%@ afterMinimumDuration:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), objc_msgSend(a6, "objectAtIndex:", 2), v19];
+        [line appendFormat:@"[%@ presentRenderbuffer:%@ afterMinimumDuration:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), objc_msgSend(argument, "objectAtIndex:", 2), v19];
         return;
     }
   }
@@ -430,13 +430,13 @@ LABEL_6:
     switch(v13)
     {
       case -8189:
-        [a3 appendFormat:@"[%@ renderbufferStorage:%@ fromDrawable:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), objc_msgSend(a6, "objectAtIndex:", 2), v19];
+        [line appendFormat:@"[%@ renderbufferStorage:%@ fromDrawable:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), objc_msgSend(argument, "objectAtIndex:", 2), v19];
         return;
       case -8188:
-        [a3 appendFormat:@"[%@ initWithAPI:%@ properties:%@ /* sharegroup:%@ */]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), objc_msgSend(a6, "objectAtIndex:", 2), objc_msgSend(a6, "objectAtIndex:", 3)];
+        [line appendFormat:@"[%@ initWithAPI:%@ properties:%@ /* sharegroup:%@ */]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), objc_msgSend(argument, "objectAtIndex:", 2), objc_msgSend(argument, "objectAtIndex:", 3)];
         return;
       case -8185:
-        [a3 appendFormat:@"[%@ dealloc]", objc_msgSend(a6, "objectAtIndex:", 0), v17, v18, v19];
+        [line appendFormat:@"[%@ dealloc]", objc_msgSend(argument, "objectAtIndex:", 0), v17, v18, v19];
         return;
     }
   }
@@ -446,13 +446,13 @@ LABEL_6:
     switch(v13)
     {
       case -8192:
-        [a3 appendFormat:@"[%@ initWithAPI:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), v18, v19];
+        [line appendFormat:@"[%@ initWithAPI:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), v18, v19];
         return;
       case -8191:
-        [a3 appendFormat:@"[%@ initWithAPI:%@ sharegroup:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), objc_msgSend(a6, "objectAtIndex:", 2), v19];
+        [line appendFormat:@"[%@ initWithAPI:%@ sharegroup:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), objc_msgSend(argument, "objectAtIndex:", 2), v19];
         return;
       case -8190:
-        [a3 appendFormat:@"[%@ presentRenderbuffer:%@]", objc_msgSend(a6, "objectAtIndex:", 0), objc_msgSend(a6, "objectAtIndex:", 1), v18, v19];
+        [line appendFormat:@"[%@ presentRenderbuffer:%@]", objc_msgSend(argument, "objectAtIndex:", 0), objc_msgSend(argument, "objectAtIndex:", 1), v18, v19];
         return;
     }
   }
@@ -467,85 +467,85 @@ LABEL_6:
   v20.receiver = self;
   v20.super_class = DYGLFunctionTracer;
   v21 = var0;
-  [(DYFunctionTracer *)&v20 _appendTraceLine:a3 withFunction:a4 iterArgument:&v21 argumentStrings:a6 returnVariable:a7];
+  [(DYFunctionTracer *)&v20 _appendTraceLine:line withFunction:function iterArgument:&v21 argumentStrings:argument returnVariable:a7];
 }
 
-- (void)_emitErrors:(id)a3 function:(const Function *)a4
+- (void)_emitErrors:(id)errors function:(const Function *)function
 {
-  if (*(a4 + 241))
+  if (*(function + 241))
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"    ERROR: %@ (0x%04x)", objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", dy_string_from_enum(*(a4 + 241))), *(a4 + 241)];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"    ERROR: %@ (0x%04x)", objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", dy_string_from_enum(*(function + 241))), *(function + 241)];
 
-    [a3 addObject:v5];
+    [errors addObject:v5];
   }
 }
 
-- (id)variableForReceiverID:(unint64_t)a3
+- (id)variableForReceiverID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"ctx_%llx", a3];
-  }
-
-  return [(DYFunctionTracer *)self nilString];
-}
-
-- (id)variableForReceiverIDNumber:(id)a3
-{
-  v4 = [a3 unsignedLongLongValue];
-
-  return [(DYGLFunctionTracer *)self variableForReceiverID:v4];
-}
-
-- (id)variableForGLSyncID:(unint64_t)a3
-{
-  if (a3)
-  {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"sync_%llx", a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"ctx_%llx", d];
   }
 
   return [(DYFunctionTracer *)self nilString];
 }
 
-- (id)variableForGLSyncIDNumber:(id)a3
+- (id)variableForReceiverIDNumber:(id)number
 {
-  v4 = [a3 unsignedLongLongValue];
+  unsignedLongLongValue = [number unsignedLongLongValue];
 
-  return [(DYGLFunctionTracer *)self variableForGLSyncID:v4];
+  return [(DYGLFunctionTracer *)self variableForReceiverID:unsignedLongLongValue];
 }
 
-- (id)variableForPBufferID:(unint64_t)a3
+- (id)variableForGLSyncID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"pbuffer_%llx", a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"sync_%llx", d];
   }
 
   return [(DYFunctionTracer *)self nilString];
 }
 
-- (id)variableForPBufferIDNumber:(id)a3
+- (id)variableForGLSyncIDNumber:(id)number
 {
-  v4 = [a3 unsignedLongLongValue];
+  unsignedLongLongValue = [number unsignedLongLongValue];
 
-  return [(DYGLFunctionTracer *)self variableForPBufferID:v4];
+  return [(DYGLFunctionTracer *)self variableForGLSyncID:unsignedLongLongValue];
 }
 
-- (id)variableForPixelFormatID:(unint64_t)a3
+- (id)variableForPBufferID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"pf_%llx", a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"pbuffer_%llx", d];
   }
 
   return [(DYFunctionTracer *)self nilString];
 }
 
-- (id)variableForPixelFormatIDNumber:(id)a3
+- (id)variableForPBufferIDNumber:(id)number
 {
-  v4 = [a3 unsignedLongLongValue];
+  unsignedLongLongValue = [number unsignedLongLongValue];
 
-  return [(DYGLFunctionTracer *)self variableForPixelFormatID:v4];
+  return [(DYGLFunctionTracer *)self variableForPBufferID:unsignedLongLongValue];
+}
+
+- (id)variableForPixelFormatID:(unint64_t)d
+{
+  if (d)
+  {
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"pf_%llx", d];
+  }
+
+  return [(DYFunctionTracer *)self nilString];
+}
+
+- (id)variableForPixelFormatIDNumber:(id)number
+{
+  unsignedLongLongValue = [number unsignedLongLongValue];
+
+  return [(DYGLFunctionTracer *)self variableForPixelFormatID:unsignedLongLongValue];
 }
 
 - (id).cxx_construct

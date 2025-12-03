@@ -1,36 +1,36 @@
 @interface BPSCombineLatest
 - (BOOL)completed;
-- (BPSCombineLatest)initWithA:(id)a3 b:(id)a4;
+- (BPSCombineLatest)initWithA:(id)a b:(id)b;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSCombineLatest
 
-- (BPSCombineLatest)initWithA:(id)a3 b:(id)a4
+- (BPSCombineLatest)initWithA:(id)a b:(id)b
 {
-  v7 = a3;
-  v8 = a4;
+  aCopy = a;
+  bCopy = b;
   v12.receiver = self;
   v12.super_class = BPSCombineLatest;
   v9 = [(BPSCombineLatest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_a, a3);
-    objc_storeStrong(&v10->_b, a4);
+    objc_storeStrong(&v9->_a, a);
+    objc_storeStrong(&v10->_b, b);
     v10->_nextIsB = 0;
   }
 
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v9 = [(_BPSAbstractCombineLatest *)[_BPSCombineLatest2Inner alloc] initWithDownstream:v4 upstreamCount:2];
+  subscribeCopy = subscribe;
+  v9 = [(_BPSAbstractCombineLatest *)[_BPSCombineLatest2Inner alloc] initWithDownstream:subscribeCopy upstreamCount:2];
   v5 = [[_BPSAbstractCombineLatestSide alloc] initWithIndex:0 combiner:v9];
   v6 = [[_BPSAbstractCombineLatestSide alloc] initWithIndex:1 combiner:v9];
   v7 = [(BPSCombineLatest *)self a];
@@ -39,7 +39,7 @@
   v8 = [(BPSCombineLatest *)self b];
   [v8 subscribe:v6];
 
-  [v4 receiveSubscription:v9];
+  [subscribeCopy receiveSubscription:v9];
 }
 
 - (id)upstreamPublishers
@@ -58,9 +58,9 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSCombineLatest *)self nextIsB];
+  nextIsB = [(BPSCombineLatest *)self nextIsB];
   [(BPSCombineLatest *)self setNextIsB:[(BPSCombineLatest *)self nextIsB]^ 1];
-  if (v3)
+  if (nextIsB)
   {
     [(BPSCombineLatest *)self b];
   }
@@ -70,43 +70,43 @@
     [(BPSCombineLatest *)self a];
   }
   v4 = ;
-  v5 = [v4 nextEvent];
-  if (v5)
+  nextEvent = [v4 nextEvent];
+  if (nextEvent)
   {
-    if (v3)
+    if (nextIsB)
     {
-      [(BPSCombineLatest *)self setLatestB:v5];
+      [(BPSCombineLatest *)self setLatestB:nextEvent];
     }
 
     else
     {
-      [(BPSCombineLatest *)self setLatestA:v5];
+      [(BPSCombineLatest *)self setLatestA:nextEvent];
     }
 
-    v6 = [(BPSCombineLatest *)self latestA];
-    if (v6)
+    latestA = [(BPSCombineLatest *)self latestA];
+    if (latestA)
     {
-      v7 = v6;
-      v8 = [(BPSCombineLatest *)self latestB];
+      v7 = latestA;
+      latestB = [(BPSCombineLatest *)self latestB];
 
-      if (v8)
+      if (latestB)
       {
         v9 = v4;
-        v10 = v5;
+        nextEvent2 = nextEvent;
 LABEL_20:
         v15 = [BPSTuple alloc];
-        v16 = [(BPSCombineLatest *)self latestA];
-        v17 = [(BPSCombineLatest *)self latestB];
-        v18 = [(BPSTuple *)v15 initWithFirst:v16 second:v17];
+        latestA2 = [(BPSCombineLatest *)self latestA];
+        latestB2 = [(BPSCombineLatest *)self latestB];
+        v18 = [(BPSTuple *)v15 initWithFirst:latestA2 second:latestB2];
 
         goto LABEL_22;
       }
     }
   }
 
-  v11 = [(BPSCombineLatest *)self nextIsB];
+  nextIsB2 = [(BPSCombineLatest *)self nextIsB];
   [(BPSCombineLatest *)self setNextIsB:[(BPSCombineLatest *)self nextIsB]^ 1];
-  if (v11)
+  if (nextIsB2)
   {
     [(BPSCombineLatest *)self b];
   }
@@ -117,27 +117,27 @@ LABEL_20:
   }
   v9 = ;
 
-  v10 = [v9 nextEvent];
+  nextEvent2 = [v9 nextEvent];
 
-  if (v10)
+  if (nextEvent2)
   {
-    if (v11)
+    if (nextIsB2)
     {
-      [(BPSCombineLatest *)self setLatestB:v10];
+      [(BPSCombineLatest *)self setLatestB:nextEvent2];
     }
 
     else
     {
-      [(BPSCombineLatest *)self setLatestA:v10];
+      [(BPSCombineLatest *)self setLatestA:nextEvent2];
     }
 
-    v12 = [(BPSCombineLatest *)self latestA];
-    if (v12)
+    latestA3 = [(BPSCombineLatest *)self latestA];
+    if (latestA3)
     {
-      v13 = v12;
-      v14 = [(BPSCombineLatest *)self latestB];
+      v13 = latestA3;
+      latestB3 = [(BPSCombineLatest *)self latestB];
 
-      if (v14)
+      if (latestB3)
       {
         goto LABEL_20;
       }
@@ -165,17 +165,17 @@ LABEL_5:
     else
     {
       v2 = [(BPSCombineLatest *)self b];
-      v8 = [v2 completed];
+      completed = [v2 completed];
 
-      if (!v8)
+      if (!completed)
       {
         return 0;
       }
     }
 
     v9 = [(BPSCombineLatest *)self a];
-    v10 = [v9 completed];
-    if (v10 && ([(BPSCombineLatest *)self latestA], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+    completed2 = [v9 completed];
+    if (completed2 && ([(BPSCombineLatest *)self latestA], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v6 = 1;
     }
@@ -185,8 +185,8 @@ LABEL_5:
       v11 = [(BPSCombineLatest *)self b];
       if ([v11 completed])
       {
-        v12 = [(BPSCombineLatest *)self latestB];
-        v6 = v12 == 0;
+        latestB = [(BPSCombineLatest *)self latestB];
+        v6 = latestB == 0;
       }
 
       else
@@ -194,7 +194,7 @@ LABEL_5:
         v6 = 0;
       }
 
-      if (!v10)
+      if (!completed2)
       {
         goto LABEL_18;
       }
@@ -205,9 +205,9 @@ LABEL_18:
   }
 
   v2 = [(BPSCombineLatest *)self b];
-  v5 = [v2 completed];
+  completed3 = [v2 completed];
 
-  if ((v5 & 1) == 0)
+  if ((completed3 & 1) == 0)
   {
     goto LABEL_5;
   }

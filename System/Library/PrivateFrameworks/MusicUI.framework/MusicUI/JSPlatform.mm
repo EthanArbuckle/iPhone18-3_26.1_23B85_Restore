@@ -7,7 +7,7 @@
 
 - (JSValue)isDebugOrInternalBuild
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216AEFB58();
 
   return v3;
@@ -15,7 +15,7 @@
 
 - (JSValue)is24HourClockEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216AEFB58();
 
   return v3;

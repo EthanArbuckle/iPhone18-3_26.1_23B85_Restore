@@ -1,24 +1,24 @@
 @interface RPCaptureSession
 - (id)dispatchCaptureQueue;
-- (void)captureDidFailWithError:(id)a3;
+- (void)captureDidFailWithError:(id)error;
 - (void)handleClientApplicationDidEnterBackground;
 - (void)handleClientApplicationDidEnterForeground;
 - (void)handleDeviceLockedWarning;
 - (void)handleDeviceRestrictionWarning;
 - (void)handleDisplayWarning;
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3;
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler;
 - (void)handleResumeContextIDFailure;
-- (void)packageAudioSampleBufferForCapture:(opaqueCMSampleBuffer *)a3 withType:(int64_t)a4;
+- (void)packageAudioSampleBufferForCapture:(opaqueCMSampleBuffer *)capture withType:(int64_t)type;
 - (void)pauseSession;
-- (void)processVideoSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)stopCaptureWithHandler:(id)a3;
+- (void)processVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)stopCaptureWithHandler:(id)handler;
 @end
 
 @implementation RPCaptureSession
 
-- (void)stopCaptureWithHandler:(id)a3
+- (void)stopCaptureWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446978;
@@ -26,9 +26,9 @@
     v9 = 1024;
     v10 = 108;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
-    v14 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p stopping in session state %d", &v7, 0x22u);
   }
 
@@ -36,9 +36,9 @@
   {
     v5 = [NSError _rpUserErrorForCode:-5829 userInfo:0];
     [(RPSession *)self reportSessionEndReason:v5];
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, v5);
+      handlerCopy[2](handlerCopy, v5);
     }
   }
 
@@ -50,9 +50,9 @@
 
     [(RPSession *)self setSessionState:3];
     [(RPSession *)self reportSummaryEvent:0 recordedFileSize:0];
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
@@ -66,9 +66,9 @@
     v7 = 1024;
     v8 = 136;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p pausing in session state %d", buf, 0x22u);
   }
 
@@ -96,19 +96,19 @@
   return v3;
 }
 
-- (void)captureDidFailWithError:(id)a3
+- (void)captureDidFailWithError:(id)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100055F6C;
   v5[3] = &unk_1000A1348;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  errorCopy = error;
+  selfCopy = self;
+  v4 = errorCopy;
   [(RPCaptureSession *)self stopCaptureWithHandler:v5];
 }
 
-- (void)processVideoSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)processVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if ([(RPSession *)self sessionState]== 4)
   {
@@ -121,23 +121,23 @@
 
   else
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     CFRetain(ImageBuffer);
     IOSurface = CVPixelBufferGetIOSurface(ImageBuffer);
     v7 = objc_alloc_init(RPIOSurfaceObject);
     [(RPIOSurfaceObject *)v7 setIOSurface:IOSurface];
     memset(&v9, 0, sizeof(v9));
-    CMSampleBufferGetSampleTimingInfo(a3, 0, &v9);
+    CMSampleBufferGetSampleTimingInfo(buffer, 0, &v9);
     v8 = [NSData dataWithBytes:&v9 length:72];
     [(RPClientProtocol *)self->super._clientProxy captureHandlerWithSample:v7 timingData:v8];
     CFRelease(ImageBuffer);
   }
 }
 
-- (void)packageAudioSampleBufferForCapture:(opaqueCMSampleBuffer *)a3 withType:(int64_t)a4
+- (void)packageAudioSampleBufferForCapture:(opaqueCMSampleBuffer *)capture withType:(int64_t)type
 {
-  v6 = sub_1000575D0(a3, a4);
-  [(RPClientProtocol *)self->super._clientProxy captureHandlerWithAudioSample:v6 bufferType:a4];
+  v6 = sub_1000575D0(capture, type);
+  [(RPClientProtocol *)self->super._clientProxy captureHandlerWithAudioSample:v6 bufferType:type];
 }
 
 - (void)handleDisplayWarning
@@ -149,7 +149,7 @@
     v6 = 1024;
     v7 = 246;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -173,7 +173,7 @@
     v5 = 1024;
     v6 = 257;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 }
@@ -187,7 +187,7 @@
     v6 = 1024;
     v7 = 275;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -211,7 +211,7 @@
     v6 = 1024;
     v7 = 287;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -226,9 +226,9 @@
   }
 }
 
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -236,29 +236,29 @@
     v19 = 1024;
     v20 = 297;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 1024;
-    v24 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p resuming in session state %d", buf, 0x22u);
   }
 
   self->super._sessionIsResuming = 1;
   v5 = +[RPCaptureManager sharedInstance];
   callingPID = self->super._callingPID;
-  v7 = [(RPSession *)self microphoneEnabled];
+  microphoneEnabled = [(RPSession *)self microphoneEnabled];
   [(RPSession *)self windowSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(RPSession *)self contextID];
-  v13 = [NSArray arrayWithObject:v12];
+  contextID = [(RPSession *)self contextID];
+  v13 = [NSArray arrayWithObject:contextID];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100056AF4;
   v15[3] = &unk_1000A1840;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
-  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:v7 windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:microphoneEnabled windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
 }
 
 - (void)handleClientApplicationDidEnterBackground
@@ -270,7 +270,7 @@
     v5 = 1024;
     v6 = 318;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 
@@ -286,7 +286,7 @@
     v5 = 1024;
     v6 = 325;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 

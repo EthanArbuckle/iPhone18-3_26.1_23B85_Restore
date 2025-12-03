@@ -1,7 +1,7 @@
 @interface HMDHAPMetadataModel
 + (id)allowedTypes;
 + (id)metadataModelObjectUUID;
-+ (id)modelWithDictionary:(id)a3;
++ (id)modelWithDictionary:(id)dictionary;
 + (id)properties;
 - (id)metadataDictionary;
 @end
@@ -12,20 +12,20 @@
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v11[0] = *MEMORY[0x277CFEDF0];
-  v3 = [(HMDHAPMetadataModel *)self metadataVersion];
-  v12[0] = v3;
+  metadataVersion = [(HMDHAPMetadataModel *)self metadataVersion];
+  v12[0] = metadataVersion;
   v11[1] = *MEMORY[0x277CFEDC0];
-  v4 = [(HMDHAPMetadataModel *)self schemaVersion];
-  v12[1] = v4;
+  schemaVersion = [(HMDHAPMetadataModel *)self schemaVersion];
+  v12[1] = schemaVersion;
   v11[2] = *MEMORY[0x277CFEDA0];
-  v5 = [(HMDHAPMetadataModel *)self rawPlist];
-  v12[2] = v5;
+  rawPlist = [(HMDHAPMetadataModel *)self rawPlist];
+  v12[2] = rawPlist;
   v11[3] = *MEMORY[0x277CFED80];
-  v6 = [(HMDHAPMetadataModel *)self legacyIDSData];
-  v12[3] = v6;
+  legacyIDSData = [(HMDHAPMetadataModel *)self legacyIDSData];
+  v12[3] = legacyIDSData;
   v11[4] = *MEMORY[0x277CFED78];
-  v7 = [(HMDHAPMetadataModel *)self legacyCloudData];
-  v12[4] = v7;
+  legacyCloudData = [(HMDHAPMetadataModel *)self legacyCloudData];
+  v12[4] = legacyCloudData;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:5];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -62,15 +62,15 @@ void __35__HMDHAPMetadataModel_allowedTypes__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)modelWithDictionary:(id)a3
++ (id)modelWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = *MEMORY[0x277CFEDF0];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CFEDF0]];
+  v5 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CFEDF0]];
   if (v5)
   {
     v6 = *MEMORY[0x277CFEDC0];
-    v7 = [v3 objectForKeyedSubscript:*MEMORY[0x277CFEDC0]];
+    v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CFEDC0]];
 
     if (v7)
     {
@@ -80,19 +80,19 @@ void __35__HMDHAPMetadataModel_allowedTypes__block_invoke()
       v11 = [v10 initWithUUIDString:*MEMORY[0x277CD23C8]];
       v5 = [(HMDBackingStoreModelObject *)v8 initWithObjectChangeType:1 uuid:v9 parentUUID:v11];
 
-      v12 = [v3 objectForKeyedSubscript:v4];
+      v12 = [dictionaryCopy objectForKeyedSubscript:v4];
       [(HMDHAPMetadataModel *)v5 setMetadataVersion:v12];
 
-      v13 = [v3 objectForKeyedSubscript:v6];
+      v13 = [dictionaryCopy objectForKeyedSubscript:v6];
       [(HMDHAPMetadataModel *)v5 setSchemaVersion:v13];
 
-      v14 = [v3 objectForKeyedSubscript:*MEMORY[0x277CFEDA0]];
+      v14 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CFEDA0]];
       [(HMDHAPMetadataModel *)v5 setRawPlist:v14];
 
-      v15 = [v3 objectForKeyedSubscript:*MEMORY[0x277CFED80]];
+      v15 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CFED80]];
       [(HMDHAPMetadataModel *)v5 setLegacyIDSData:v15];
 
-      v16 = [v3 objectForKeyedSubscript:*MEMORY[0x277CFED78]];
+      v16 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CFED78]];
       [(HMDHAPMetadataModel *)v5 setLegacyCloudData:v16];
     }
 

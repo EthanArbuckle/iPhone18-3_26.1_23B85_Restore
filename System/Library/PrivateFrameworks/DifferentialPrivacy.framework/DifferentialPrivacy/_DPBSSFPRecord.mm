@@ -1,18 +1,18 @@
 @interface _DPBSSFPRecord
-+ (id)createRecordFromManagedObject:(id)a3;
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBSSFPRecord:(id)a3;
++ (id)createRecordFromManagedObject:(id)object;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBSSFPRecord:(id)record;
 - (_DPBSSFPRecord)init;
-- (_DPBSSFPRecord)initWithCoder:(id)a3;
-- (_DPBSSFPRecord)initWithKey:(id)a3 privateValue:(id)a4 tableVersion:(id)a5 segmentIndex:(int64_t)a6 verificationMode:(BOOL)a7 creationDate:(double)a8 submitted:(BOOL)a9 objectId:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DPBSSFPRecord)initWithCoder:(id)coder;
+- (_DPBSSFPRecord)initWithKey:(id)key privateValue:(id)value tableVersion:(id)version segmentIndex:(int64_t)index verificationMode:(BOOL)mode creationDate:(double)date submitted:(BOOL)submitted objectId:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)entityName;
 - (id)jsonString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DPBSSFPRecord
@@ -26,33 +26,33 @@
   return [(_DPBSSFPRecord *)self initWithKey:@"com.apple._DPBSSFPRecord" privateValue:&stru_2839671C8 tableVersion:&stru_2839671C8 segmentIndex:0 verificationMode:0 creationDate:0 submitted:v5 objectId:0];
 }
 
-- (_DPBSSFPRecord)initWithKey:(id)a3 privateValue:(id)a4 tableVersion:(id)a5 segmentIndex:(int64_t)a6 verificationMode:(BOOL)a7 creationDate:(double)a8 submitted:(BOOL)a9 objectId:(id)a10
+- (_DPBSSFPRecord)initWithKey:(id)key privateValue:(id)value tableVersion:(id)version segmentIndex:(int64_t)index verificationMode:(BOOL)mode creationDate:(double)date submitted:(BOOL)submitted objectId:(id)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a10;
+  keyCopy = key;
+  valueCopy = value;
+  versionCopy = version;
+  idCopy = id;
   v29.receiver = self;
   v29.super_class = _DPBSSFPRecord;
   v22 = [(_DPBSSFPRecord *)&v29 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_key, a3);
-    v24 = [v19 copy];
+    objc_storeStrong(&v22->_key, key);
+    v24 = [valueCopy copy];
     privateValue = v23->_privateValue;
     v23->_privateValue = v24;
 
-    v26 = [v20 copy];
+    v26 = [versionCopy copy];
     tableVersion = v23->_tableVersion;
     v23->_tableVersion = v26;
 
-    v23->_segmentIndex = a6;
-    v23->_verificationMode = a7;
-    v23->_creationDate = a8;
-    v23->_submitted = a9;
+    v23->_segmentIndex = index;
+    v23->_verificationMode = mode;
+    v23->_creationDate = date;
+    v23->_submitted = submitted;
     v23->_reportVersion = +[_DPJSONOutputHelper currentVersion];
-    objc_storeStrong(&v23->_objectId, a10);
+    objc_storeStrong(&v23->_objectId, id);
   }
 
   return v23;
@@ -61,64 +61,64 @@
 - (id)jsonString
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_DPBSSFPRecord *)self tableVersion];
-  v5 = [(_DPBSSFPRecord *)self verificationMode];
-  v6 = [(_DPBSSFPRecord *)self segmentIndex];
-  v7 = [(_DPBSSFPRecord *)self privateValue];
-  v8 = [v3 stringWithFormat:@"%@%d;%lld;%@", v4, v5, v6, v7];;
+  tableVersion = [(_DPBSSFPRecord *)self tableVersion];
+  verificationMode = [(_DPBSSFPRecord *)self verificationMode];
+  segmentIndex = [(_DPBSSFPRecord *)self segmentIndex];
+  privateValue = [(_DPBSSFPRecord *)self privateValue];
+  v8 = [v3 stringWithFormat:@"%@%d;%lld;%@", tableVersion, verificationMode, segmentIndex, privateValue];;
 
   return v8;
 }
 
-- (_DPBSSFPRecord)initWithCoder:(id)a3
+- (_DPBSSFPRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privateValue"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tableVersion"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"segmentIndex"];
-  v9 = [v8 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateValue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tableVersion"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"segmentIndex"];
+  integerValue = [v8 integerValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verificationMode"];
-  v11 = [v10 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verificationMode"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"submitted"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"submitted"];
 
-  v16 = [v15 BOOLValue];
-  v17 = [(_DPBSSFPRecord *)self initWithKey:v5 privateValue:v6 tableVersion:v7 segmentIndex:v9 verificationMode:v11 creationDate:v16 submitted:v14 objectId:0];
+  bOOLValue2 = [v15 BOOLValue];
+  v17 = [(_DPBSSFPRecord *)self initWithKey:v5 privateValue:v6 tableVersion:v7 segmentIndex:integerValue verificationMode:bOOLValue creationDate:bOOLValue2 submitted:v14 objectId:0];
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  [v10 encodeObject:self->_key forKey:@"key"];
-  [v10 encodeObject:self->_privateValue forKey:@"privateValue"];
-  [v10 encodeObject:self->_tableVersion forKey:@"tableVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_key forKey:@"key"];
+  [coderCopy encodeObject:self->_privateValue forKey:@"privateValue"];
+  [coderCopy encodeObject:self->_tableVersion forKey:@"tableVersion"];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:self->_segmentIndex];
-  [v10 encodeObject:v4 forKey:@"segmentIndex"];
+  [coderCopy encodeObject:v4 forKey:@"segmentIndex"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_verificationMode];
-  [v10 encodeObject:v5 forKey:@"verificationMode"];
+  [coderCopy encodeObject:v5 forKey:@"verificationMode"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_creationDate];
-  [v10 encodeObject:v6 forKey:@"creationDate"];
+  [coderCopy encodeObject:v6 forKey:@"creationDate"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_submitted];
-  [v10 encodeObject:v7 forKey:@"submitted"];
+  [coderCopy encodeObject:v7 forKey:@"submitted"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_reportVersion];
-  [v10 encodeObject:v8 forKey:@"reportVersion"];
+  [coderCopy encodeObject:v8 forKey:@"reportVersion"];
 
   objectId = self->_objectId;
   if (objectId)
   {
-    [v10 encodeObject:objectId forKey:@"objectId"];
+    [coderCopy encodeObject:objectId forKey:@"objectId"];
   }
 }
 
@@ -164,89 +164,89 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(_DPBSSFPRecord *)self key];
-  v6 = [(_DPBSSFPRecord *)self privateValue];
-  v7 = [(_DPBSSFPRecord *)self tableVersion];
-  v8 = [(_DPBSSFPRecord *)self segmentIndex];
-  v9 = [(_DPBSSFPRecord *)self verificationMode];
+  privateValue = [(_DPBSSFPRecord *)self privateValue];
+  tableVersion = [(_DPBSSFPRecord *)self tableVersion];
+  segmentIndex = [(_DPBSSFPRecord *)self segmentIndex];
+  verificationMode = [(_DPBSSFPRecord *)self verificationMode];
   [(_DPBSSFPRecord *)self creationDate];
   v11 = v10;
-  v12 = [(_DPBSSFPRecord *)self submitted];
-  v13 = [(_DPBSSFPRecord *)self objectId];
-  v14 = [v4 initWithKey:v5 privateValue:v6 tableVersion:v7 segmentIndex:v8 verificationMode:v9 creationDate:v12 submitted:v11 objectId:v13];
+  submitted = [(_DPBSSFPRecord *)self submitted];
+  objectId = [(_DPBSSFPRecord *)self objectId];
+  v14 = [v4 initWithKey:v5 privateValue:privateValue tableVersion:tableVersion segmentIndex:segmentIndex verificationMode:verificationMode creationDate:submitted submitted:v11 objectId:objectId];
 
   return v14;
 }
 
-- (BOOL)isEqualToBSSFPRecord:(id)a3
+- (BOOL)isEqualToBSSFPRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_6;
   }
 
   v5 = [(_DPBSSFPRecord *)self key];
-  v6 = [v4 key];
+  v6 = [recordCopy key];
   v37 = [v5 isEqualToString:v6];
 
-  v13 = [(_DPBSSFPRecord *)self privateValue];
-  v7 = [v4 privateValue];
-  v8 = [v13 isEqualToString:v7];
+  privateValue = [(_DPBSSFPRecord *)self privateValue];
+  privateValue2 = [recordCopy privateValue];
+  v8 = [privateValue isEqualToString:privateValue2];
 
-  v9 = [(_DPBSSFPRecord *)self tableVersion];
-  v10 = [v4 tableVersion];
-  v36 = [v9 isEqualToString:v10];
+  tableVersion = [(_DPBSSFPRecord *)self tableVersion];
+  tableVersion2 = [recordCopy tableVersion];
+  v36 = [tableVersion isEqualToString:tableVersion2];
 
-  v11 = [(_DPBSSFPRecord *)self segmentIndex];
-  v35 = [v4 segmentIndex];
-  v12 = [(_DPBSSFPRecord *)self verificationMode];
-  LODWORD(v13) = v12 ^ [v4 verificationMode];
+  segmentIndex = [(_DPBSSFPRecord *)self segmentIndex];
+  segmentIndex2 = [recordCopy segmentIndex];
+  verificationMode = [(_DPBSSFPRecord *)self verificationMode];
+  LODWORD(privateValue) = verificationMode ^ [recordCopy verificationMode];
   [(_DPBSSFPRecord *)self creationDate];
   v15 = v14;
-  [v4 creationDate];
+  [recordCopy creationDate];
   v17 = areEqualTimeIntervals(v15, v16);
-  v18 = [(_DPBSSFPRecord *)self submitted];
-  v19 = v18 ^ [v4 submitted];
-  v20 = [(_DPBSSFPRecord *)self reportVersion];
-  v21 = [v4 reportVersion];
-  v22 = [(_DPBSSFPRecord *)self objectId];
+  submitted = [(_DPBSSFPRecord *)self submitted];
+  v19 = submitted ^ [recordCopy submitted];
+  reportVersion = [(_DPBSSFPRecord *)self reportVersion];
+  reportVersion2 = [recordCopy reportVersion];
+  objectId = [(_DPBSSFPRecord *)self objectId];
 
-  if (v22)
+  if (objectId)
   {
-    v23 = [(_DPBSSFPRecord *)self objectId];
-    [v4 objectId];
+    objectId2 = [(_DPBSSFPRecord *)self objectId];
+    [recordCopy objectId];
     v24 = v19;
     v25 = v17;
-    v26 = v21;
-    v27 = v13;
-    v13 = v20;
-    v28 = v11;
+    v26 = reportVersion2;
+    v27 = privateValue;
+    privateValue = reportVersion;
+    v28 = segmentIndex;
     v30 = v29 = v8;
-    v34 = [v23 isEqual:v30];
+    v34 = [objectId2 isEqual:v30];
 
     v8 = v29;
-    v11 = v28;
-    v20 = v13;
-    LOBYTE(v13) = v27;
-    v21 = v26;
+    segmentIndex = v28;
+    reportVersion = privateValue;
+    LOBYTE(privateValue) = v27;
+    reportVersion2 = v26;
     v17 = v25;
     LOBYTE(v19) = v24;
   }
 
   else
   {
-    v31 = [v4 objectId];
+    objectId3 = [recordCopy objectId];
 
-    v34 = v31 == 0;
+    v34 = objectId3 == 0;
   }
 
-  if (!((v11 != v35 || (v37 & v8 & v36 & 1) == 0) | v13 & 1 | !v17 | v19 & 1))
+  if (!((segmentIndex != segmentIndex2 || (v37 & v8 & v36 & 1) == 0) | privateValue & 1 | !v17 | v19 & 1))
   {
-    v32 = (v20 == v21) & v34;
+    v32 = (reportVersion == reportVersion2) & v34;
   }
 
   else
@@ -258,18 +258,18 @@ LABEL_6:
   return v32;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPBSSFPRecord *)self isEqualToBSSFPRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPBSSFPRecord *)self isEqualToBSSFPRecord:v5];
   }
 
   return v6;
@@ -279,27 +279,27 @@ LABEL_6:
 {
   v3 = [(_DPBSSFPRecord *)self key];
   v4 = [v3 hash];
-  v5 = [(_DPBSSFPRecord *)self privateValue];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(_DPBSSFPRecord *)self tableVersion];
-  v8 = [v7 hash];
+  privateValue = [(_DPBSSFPRecord *)self privateValue];
+  v6 = [privateValue hash] ^ v4;
+  tableVersion = [(_DPBSSFPRecord *)self tableVersion];
+  v8 = [tableVersion hash];
   v9 = v6 ^ v8 ^ [(_DPBSSFPRecord *)self segmentIndex];
   v10 = v9 ^ [(_DPBSSFPRecord *)self verificationMode];
   [(_DPBSSFPRecord *)self creationDate];
   v12 = v11;
   v13 = v10 ^ [(_DPBSSFPRecord *)self submitted];
   v14 = v13 ^ [(_DPBSSFPRecord *)self reportVersion];
-  v15 = [(_DPBSSFPRecord *)self objectId];
-  v16 = v14 ^ [v15 hash];
+  objectId = [(_DPBSSFPRecord *)self objectId];
+  v16 = v14 ^ [objectId hash];
 
   return v16 ^ v12;
 }
 
-+ (id)createRecordFromManagedObject:(id)a3
++ (id)createRecordFromManagedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
-  v5 = [v4 copyFromManagedObject:v3];
+  v5 = [v4 copyFromManagedObject:objectCopy];
 
   if (v5)
   {
@@ -321,22 +321,22 @@ LABEL_6:
   return [v2 entityName];
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [(_DPBSSFPRecord *)self key];
     [v6 setKey:v7];
 
-    v8 = [(_DPBSSFPRecord *)self privateValue];
-    [v6 setPrivateValue:v8];
+    privateValue = [(_DPBSSFPRecord *)self privateValue];
+    [v6 setPrivateValue:privateValue];
 
-    v9 = [(_DPBSSFPRecord *)self tableVersion];
-    [v6 setTableVersion:v9];
+    tableVersion = [(_DPBSSFPRecord *)self tableVersion];
+    [v6 setTableVersion:tableVersion];
 
     [v6 setSegmentIndex:{-[_DPBSSFPRecord segmentIndex](self, "segmentIndex")}];
     [v6 setVerificationMode:{-[_DPBSSFPRecord verificationMode](self, "verificationMode")}];
@@ -344,35 +344,35 @@ LABEL_6:
     [v6 setCreationDate:?];
     [v6 setSubmitted:{-[_DPBSSFPRecord submitted](self, "submitted")}];
     [v6 setReportVersion:{-[_DPBSSFPRecord reportVersion](self, "reportVersion")}];
-    v10 = [(_DPBSSFPRecord *)self objectId];
-    v11 = [v6 objectID];
+    objectId = [(_DPBSSFPRecord *)self objectId];
+    objectID = [v6 objectID];
 
-    if (v10 != v11)
+    if (objectId != objectID)
     {
-      v12 = [v6 objectID];
-      [(_DPBSSFPRecord *)self setObjectId:v12];
+      objectID2 = [v6 objectID];
+      [(_DPBSSFPRecord *)self setObjectId:objectID2];
     }
   }
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [v6 key];
     [(_DPBSSFPRecord *)self setKey:v7];
 
-    v8 = [v6 privateValue];
-    [(_DPBSSFPRecord *)self setPrivateValue:v8];
+    privateValue = [v6 privateValue];
+    [(_DPBSSFPRecord *)self setPrivateValue:privateValue];
 
-    v9 = [v6 tableVersion];
-    [(_DPBSSFPRecord *)self setTableVersion:v9];
+    tableVersion = [v6 tableVersion];
+    [(_DPBSSFPRecord *)self setTableVersion:tableVersion];
 
     -[_DPBSSFPRecord setSegmentIndex:](self, "setSegmentIndex:", [v6 segmentIndex]);
     -[_DPBSSFPRecord setVerificationMode:](self, "setVerificationMode:", [v6 verificationMode]);
@@ -380,9 +380,9 @@ LABEL_6:
     [(_DPBSSFPRecord *)self setCreationDate:?];
     -[_DPBSSFPRecord setSubmitted:](self, "setSubmitted:", [v6 submitted]);
     -[_DPBSSFPRecord setReportVersion:](self, "setReportVersion:", [v6 reportVersion]);
-    v10 = [v6 objectID];
+    objectID = [v6 objectID];
 
-    [(_DPBSSFPRecord *)self setObjectId:v10];
+    [(_DPBSSFPRecord *)self setObjectId:objectID];
   }
 
   return isKindOfClass & 1;

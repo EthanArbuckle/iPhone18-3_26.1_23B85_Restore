@@ -1,6 +1,6 @@
 @interface NWConcrete_nw_context
 - (NSString)description;
-- (uint64_t)initWithIdentifier:(void *)a1;
+- (uint64_t)initWithIdentifier:(void *)identifier;
 - (void)dealloc;
 @end
 
@@ -39,10 +39,10 @@
   return v5;
 }
 
-- (uint64_t)initWithIdentifier:(void *)a1
+- (uint64_t)initWithIdentifier:(void *)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!identifier)
   {
     return 0;
   }
@@ -121,7 +121,7 @@ LABEL_38:
     return 0;
   }
 
-  v25.receiver = a1;
+  v25.receiver = identifier;
   v25.super_class = NWConcrete_nw_context;
   v3 = objc_msgSendSuper2(&v25, sel_init);
   if (!v3)

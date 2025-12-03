@@ -1,12 +1,12 @@
 @interface BKGenreRecommendationProvider
 - (BKGenreRecommendationProvider)init;
-- (void)recommendedGenreCollectionsFor:(id)a3 :(id)a4;
-- (void)recommendedGenresWith:(id)a3;
+- (void)recommendedGenreCollectionsFor:(id)for :(id)a4;
+- (void)recommendedGenresWith:(id)with;
 @end
 
 @implementation BKGenreRecommendationProvider
 
-- (void)recommendedGenresWith:(id)a3
+- (void)recommendedGenresWith:(id)with
 {
   ObjectType = swift_getObjectType();
   v6 = sub_1001F1160(&qword_100AD67D0);
@@ -18,14 +18,14 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = with;
   v10[6] = ObjectType;
-  v11 = a3;
-  v12 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_1003457A0(0, 0, v8, &unk_100822EB8, v10);
 }
 
-- (void)recommendedGenreCollectionsFor:(id)a3 :(id)a4
+- (void)recommendedGenreCollectionsFor:(id)for :(id)a4
 {
   ObjectType = swift_getObjectType();
   v8 = sub_1001F1160(&qword_100AD67D0);
@@ -36,13 +36,13 @@
   v12 = swift_allocObject();
   v12[2] = 0;
   v12[3] = 0;
-  v12[4] = a3;
+  v12[4] = for;
   v12[5] = a4;
   v12[6] = self;
   v12[7] = ObjectType;
-  v13 = a3;
+  forCopy = for;
   v14 = a4;
-  v15 = self;
+  selfCopy = self;
   sub_1003457A0(0, 0, v10, &unk_100822E90, v12);
 }
 

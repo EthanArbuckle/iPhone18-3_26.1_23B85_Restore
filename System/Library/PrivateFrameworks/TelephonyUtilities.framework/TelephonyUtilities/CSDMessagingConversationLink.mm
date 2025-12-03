@@ -1,23 +1,23 @@
 @interface CSDMessagingConversationLink
-+ (id)linkWithTUConversationLink:(id)a3 includeGroupUUID:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)linkWithTUConversationLink:(id)link includeGroupUUID:(BOOL)d;
+- (BOOL)isEqual:(id)equal;
 - (NSUUID)groupUUID;
 - (TUConversationLink)tuConversationLink;
 - (TUConversationLinkDescriptor)tuConversationLinkDescriptor;
 - (TUHandle)originatorTUHandle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLinkLifetimeScope:(id)a3;
+- (int)StringAsLinkLifetimeScope:(id)scope;
 - (int)linkLifetimeScope;
 - (unint64_t)hash;
-- (void)addInvitedHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsActivated:(BOOL)a3;
-- (void)setHasLinkLifetimeScope:(BOOL)a3;
-- (void)setHasPseudonymExpirationDateEpochTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInvitedHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsActivated:(BOOL)activated;
+- (void)setHasLinkLifetimeScope:(BOOL)scope;
+- (void)setHasPseudonymExpirationDateEpochTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationLink
@@ -51,8 +51,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(CSDMessagingConversationLink *)self invitedHandles];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  invitedHandles = [(CSDMessagingConversationLink *)self invitedHandles];
+  v7 = [invitedHandles countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -63,27 +63,27 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(invitedHandles);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * i) tuHandle];
-        [v5 addObject:v11];
+        tuHandle = [*(*(&v21 + 1) + 8 * i) tuHandle];
+        [v5 addObject:tuHandle];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [invitedHandles countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
   }
 
   v12 = [TUConversationLink alloc];
-  v13 = [(CSDMessagingConversationLink *)self pseudonym];
-  v14 = [(CSDMessagingConversationLink *)self publicKey];
-  v15 = [(CSDMessagingConversationLink *)self groupUUID];
-  v16 = [(CSDMessagingConversationLink *)self originatorTUHandle];
-  v17 = [(CSDMessagingConversationLink *)self linkName];
+  pseudonym = [(CSDMessagingConversationLink *)self pseudonym];
+  publicKey = [(CSDMessagingConversationLink *)self publicKey];
+  groupUUID = [(CSDMessagingConversationLink *)self groupUUID];
+  originatorTUHandle = [(CSDMessagingConversationLink *)self originatorTUHandle];
+  linkName = [(CSDMessagingConversationLink *)self linkName];
   LOBYTE(v20) = 0;
-  v18 = [v12 initWithPseudonym:v13 publicKey:v14 groupUUID:v15 originatorHandle:v16 creationDate:v3 deletionDate:0 expirationDate:v4 invitedMemberHandles:v5 locallyCreated:v20 linkName:v17 linkLifetimeScope:-[CSDMessagingConversationLink linkLifetimeScope](self deleteReason:{"linkLifetimeScope"), 0}];
+  v18 = [v12 initWithPseudonym:pseudonym publicKey:publicKey groupUUID:groupUUID originatorHandle:originatorTUHandle creationDate:v3 deletionDate:0 expirationDate:v4 invitedMemberHandles:v5 locallyCreated:v20 linkName:linkName linkLifetimeScope:-[CSDMessagingConversationLink linkLifetimeScope](self deleteReason:{"linkLifetimeScope"), 0}];
 
   return v18;
 }
@@ -95,23 +95,23 @@
     goto LABEL_9;
   }
 
-  v3 = [(CSDMessagingConversationLink *)self generatorDescriptor];
-  if (([v3 hasGeneratorID] & 1) == 0)
+  generatorDescriptor = [(CSDMessagingConversationLink *)self generatorDescriptor];
+  if (([generatorDescriptor hasGeneratorID] & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v4 = [(CSDMessagingConversationLink *)self generatorDescriptor];
-  if (([v4 hasGeneratorVersion] & 1) == 0)
+  generatorDescriptor2 = [(CSDMessagingConversationLink *)self generatorDescriptor];
+  if (([generatorDescriptor2 hasGeneratorVersion] & 1) == 0)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [(CSDMessagingConversationLink *)self originatorTUHandle];
+  originatorTUHandle = [(CSDMessagingConversationLink *)self originatorTUHandle];
 
-  if (!v5)
+  if (!originatorTUHandle)
   {
 LABEL_9:
     v19 = 0;
@@ -119,30 +119,30 @@ LABEL_9:
   }
 
   v6 = [TUConversationLinkOriginator alloc];
-  v7 = [(CSDMessagingConversationLink *)self generatorDescriptor];
-  v8 = [v7 generatorID];
-  v9 = [(CSDMessagingConversationLink *)self generatorDescriptor];
-  v10 = [v9 generatorVersion];
-  v11 = [(CSDMessagingConversationLink *)self originatorTUHandle];
-  v12 = [v6 initWithIdentifier:v8 revision:v10 handle:v11];
+  generatorDescriptor3 = [(CSDMessagingConversationLink *)self generatorDescriptor];
+  generatorID = [generatorDescriptor3 generatorID];
+  generatorDescriptor4 = [(CSDMessagingConversationLink *)self generatorDescriptor];
+  generatorVersion = [generatorDescriptor4 generatorVersion];
+  originatorTUHandle2 = [(CSDMessagingConversationLink *)self originatorTUHandle];
+  v12 = [v6 initWithIdentifier:generatorID revision:generatorVersion handle:originatorTUHandle2];
 
   v13 = [TUMutableConversationLinkDescriptor alloc];
-  v14 = [(CSDMessagingConversationLink *)self groupUUID];
-  v15 = [(CSDMessagingConversationLink *)self pseudonym];
-  v16 = [(CSDMessagingConversationLink *)self publicKey];
-  v17 = [v13 initWithGroupUUID:v14 originator:v12 pseudonym:v15 publicKey:v16];
+  groupUUID = [(CSDMessagingConversationLink *)self groupUUID];
+  pseudonym = [(CSDMessagingConversationLink *)self pseudonym];
+  publicKey = [(CSDMessagingConversationLink *)self publicKey];
+  v17 = [v13 initWithGroupUUID:groupUUID originator:v12 pseudonym:pseudonym publicKey:publicKey];
 
   if ([(CSDMessagingConversationLink *)self hasIsActivated])
   {
-    v18 = [(CSDMessagingConversationLink *)self isActivated];
+    isActivated = [(CSDMessagingConversationLink *)self isActivated];
   }
 
   else
   {
-    v18 = 1;
+    isActivated = 1;
   }
 
-  [v17 setActivated:v18];
+  [v17 setActivated:isActivated];
   [v17 setLinkLifetimeScope:{-[CSDMessagingConversationLink linkLifetimeScope](self, "linkLifetimeScope")}];
   if ([(CSDMessagingConversationLink *)self hasCreationDateEpochTime])
   {
@@ -163,8 +163,8 @@ LABEL_9:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v24 = [(CSDMessagingConversationLink *)self invitedHandles];
-  v25 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  invitedHandles = [(CSDMessagingConversationLink *)self invitedHandles];
+  v25 = [invitedHandles countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v25)
   {
     v26 = v25;
@@ -175,14 +175,14 @@ LABEL_9:
       {
         if (*v33 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(invitedHandles);
         }
 
-        v29 = [*(*(&v32 + 1) + 8 * i) tuHandle];
-        [v23 addObject:v29];
+        tuHandle = [*(*(&v32 + 1) + 8 * i) tuHandle];
+        [v23 addObject:tuHandle];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v26 = [invitedHandles countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v26);
@@ -191,14 +191,14 @@ LABEL_9:
   [v17 setInvitedHandles:v23];
   if ([(CSDMessagingConversationLink *)self hasPrivateKey])
   {
-    v30 = [(CSDMessagingConversationLink *)self privateKey];
-    [v17 setPrivateKey:v30];
+    privateKey = [(CSDMessagingConversationLink *)self privateKey];
+    [v17 setPrivateKey:privateKey];
   }
 
   if ([(CSDMessagingConversationLink *)self hasLinkName])
   {
-    v31 = [(CSDMessagingConversationLink *)self linkName];
-    [v17 setName:v31];
+    linkName = [(CSDMessagingConversationLink *)self linkName];
+    [v17 setName:linkName];
   }
 
   v19 = [v17 copy];
@@ -213,8 +213,8 @@ LABEL_10:
   if ([(CSDMessagingConversationLink *)self hasGroupUUIDString])
   {
     v3 = [NSUUID alloc];
-    v4 = [(CSDMessagingConversationLink *)self groupUUIDString];
-    v5 = [v3 initWithUUIDString:v4];
+    groupUUIDString = [(CSDMessagingConversationLink *)self groupUUIDString];
+    v5 = [v3 initWithUUIDString:groupUUIDString];
   }
 
   else
@@ -229,56 +229,56 @@ LABEL_10:
 {
   if ([(CSDMessagingConversationLink *)self hasOriginatorHandle])
   {
-    v3 = [(CSDMessagingConversationLink *)self originatorHandle];
-    v4 = [v3 tuHandle];
+    originatorHandle = [(CSDMessagingConversationLink *)self originatorHandle];
+    tuHandle = [originatorHandle tuHandle];
   }
 
   else
   {
-    v4 = 0;
+    tuHandle = 0;
   }
 
-  return v4;
+  return tuHandle;
 }
 
-+ (id)linkWithTUConversationLink:(id)a3 includeGroupUUID:(BOOL)a4
++ (id)linkWithTUConversationLink:(id)link includeGroupUUID:(BOOL)d
 {
-  v4 = a4;
-  v5 = a3;
+  dCopy = d;
+  linkCopy = link;
   v6 = objc_alloc_init(CSDMessagingConversationLink);
-  v7 = [v5 pseudonym];
-  [(CSDMessagingConversationLink *)v6 setPseudonym:v7];
+  pseudonym = [linkCopy pseudonym];
+  [(CSDMessagingConversationLink *)v6 setPseudonym:pseudonym];
 
-  v8 = [v5 publicKey];
-  [(CSDMessagingConversationLink *)v6 setPublicKey:v8];
+  publicKey = [linkCopy publicKey];
+  [(CSDMessagingConversationLink *)v6 setPublicKey:publicKey];
 
-  v9 = [v5 linkName];
-  [(CSDMessagingConversationLink *)v6 setLinkName:v9];
+  linkName = [linkCopy linkName];
+  [(CSDMessagingConversationLink *)v6 setLinkName:linkName];
 
-  -[CSDMessagingConversationLink setLinkLifetimeScope:](v6, "setLinkLifetimeScope:", [v5 linkLifetimeScope]);
-  if (v4)
+  -[CSDMessagingConversationLink setLinkLifetimeScope:](v6, "setLinkLifetimeScope:", [linkCopy linkLifetimeScope]);
+  if (dCopy)
   {
-    v10 = [v5 groupUUID];
+    groupUUID = [linkCopy groupUUID];
 
-    if (v10)
+    if (groupUUID)
     {
-      v11 = [v5 groupUUID];
-      v12 = [v11 UUIDString];
-      [(CSDMessagingConversationLink *)v6 setGroupUUIDString:v12];
+      groupUUID2 = [linkCopy groupUUID];
+      uUIDString = [groupUUID2 UUIDString];
+      [(CSDMessagingConversationLink *)v6 setGroupUUIDString:uUIDString];
 
-      v13 = [v5 originatorHandle];
-      v14 = [CSDMessagingHandle handleWithTUHandle:v13];
+      originatorHandle = [linkCopy originatorHandle];
+      v14 = [CSDMessagingHandle handleWithTUHandle:originatorHandle];
       [(CSDMessagingConversationLink *)v6 setOriginatorHandle:v14];
 
-      v15 = [v5 invitedMemberHandles];
-      v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
+      invitedMemberHandles = [linkCopy invitedMemberHandles];
+      v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [invitedMemberHandles count]);
 
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v17 = [v5 invitedMemberHandles];
-      v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      invitedMemberHandles2 = [linkCopy invitedMemberHandles];
+      v18 = [invitedMemberHandles2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v18)
       {
         v19 = v18;
@@ -289,14 +289,14 @@ LABEL_10:
           {
             if (*v25 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(invitedMemberHandles2);
             }
 
             v22 = [CSDMessagingHandle handleWithTUHandle:*(*(&v24 + 1) + 8 * i)];
             [v16 addObject:v22];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v19 = [invitedMemberHandles2 countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v19);
@@ -314,34 +314,34 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = CSDMessagingConversationLink;
   v3 = [(CSDMessagingConversationLink *)&v8 description];
-  v4 = [(CSDMessagingConversationLink *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(CSDMessagingConversationLink *)self dictionaryRepresentation];
   v5 = TULoggableStringForObject();
   v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
 
   return v6;
 }
 
-- (void)addInvitedHandles:(id)a3
+- (void)addInvitedHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   invitedHandles = self->_invitedHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!invitedHandles)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_invitedHandles;
     self->_invitedHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     invitedHandles = self->_invitedHandles;
   }
 
-  [(NSMutableArray *)invitedHandles addObject:v4];
+  [(NSMutableArray *)invitedHandles addObject:handlesCopy];
 }
 
-- (void)setHasPseudonymExpirationDateEpochTime:(BOOL)a3
+- (void)setHasPseudonymExpirationDateEpochTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -354,9 +354,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsActivated:(BOOL)a3
+- (void)setHasIsActivated:(BOOL)activated
 {
-  if (a3)
+  if (activated)
   {
     v3 = 8;
   }
@@ -382,9 +382,9 @@ LABEL_10:
   }
 }
 
-- (void)setHasLinkLifetimeScope:(BOOL)a3
+- (void)setHasLinkLifetimeScope:(BOOL)scope
 {
-  if (a3)
+  if (scope)
   {
     v3 = 4;
   }
@@ -397,17 +397,17 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsLinkLifetimeScope:(id)a3
+- (int)StringAsLinkLifetimeScope:(id)scope
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Indefinite"])
+  scopeCopy = scope;
+  if ([scopeCopy isEqualToString:@"Indefinite"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"CallDuration"];
+    v4 = [scopeCopy isEqualToString:@"CallDuration"];
   }
 
   return v4;
@@ -457,8 +457,8 @@ LABEL_10:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -485,8 +485,8 @@ LABEL_10:
   originatorHandle = self->_originatorHandle;
   if (originatorHandle)
   {
-    v18 = [(CSDMessagingHandle *)originatorHandle dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"originatorHandle"];
+    dictionaryRepresentation2 = [(CSDMessagingHandle *)originatorHandle dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"originatorHandle"];
   }
 
   has = self->_has;
@@ -507,8 +507,8 @@ LABEL_10:
   generatorDescriptor = self->_generatorDescriptor;
   if (generatorDescriptor)
   {
-    v23 = [(CSDMessagingConversationLinkGeneratorDescriptor *)generatorDescriptor dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"generatorDescriptor"];
+    dictionaryRepresentation3 = [(CSDMessagingConversationLinkGeneratorDescriptor *)generatorDescriptor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"generatorDescriptor"];
   }
 
   linkName = self->_linkName;
@@ -544,9 +544,9 @@ LABEL_10:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_pseudonym)
   {
     PBDataWriterWriteStringField();
@@ -638,56 +638,56 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_pseudonym)
   {
-    [v10 setPseudonym:?];
+    [toCopy setPseudonym:?];
   }
 
   if (self->_publicKey)
   {
-    [v10 setPublicKey:?];
+    [toCopy setPublicKey:?];
   }
 
   if (self->_privateKey)
   {
-    [v10 setPrivateKey:?];
+    [toCopy setPrivateKey:?];
   }
 
   if ([(CSDMessagingConversationLink *)self invitedHandlesCount])
   {
-    [v10 clearInvitedHandles];
-    v4 = [(CSDMessagingConversationLink *)self invitedHandlesCount];
-    if (v4)
+    [toCopy clearInvitedHandles];
+    invitedHandlesCount = [(CSDMessagingConversationLink *)self invitedHandlesCount];
+    if (invitedHandlesCount)
     {
-      v5 = v4;
+      v5 = invitedHandlesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CSDMessagingConversationLink *)self invitedHandlesAtIndex:i];
-        [v10 addInvitedHandles:v7];
+        [toCopy addInvitedHandles:v7];
       }
     }
   }
 
-  v8 = v10;
+  v8 = toCopy;
   if (*&self->_has)
   {
-    *(v10 + 1) = *&self->_creationDateEpochTime;
-    *(v10 + 100) |= 1u;
+    *(toCopy + 1) = *&self->_creationDateEpochTime;
+    *(toCopy + 100) |= 1u;
   }
 
   if (self->_groupUUIDString)
   {
-    [v10 setGroupUUIDString:?];
-    v8 = v10;
+    [toCopy setGroupUUIDString:?];
+    v8 = toCopy;
   }
 
   if (self->_originatorHandle)
   {
-    [v10 setOriginatorHandle:?];
-    v8 = v10;
+    [toCopy setOriginatorHandle:?];
+    v8 = toCopy;
   }
 
   has = self->_has;
@@ -706,14 +706,14 @@ LABEL_10:
 
   if (self->_generatorDescriptor)
   {
-    [v10 setGeneratorDescriptor:?];
-    v8 = v10;
+    [toCopy setGeneratorDescriptor:?];
+    v8 = toCopy;
   }
 
   if (self->_linkName)
   {
-    [v10 setLinkName:?];
-    v8 = v10;
+    [toCopy setLinkName:?];
+    v8 = toCopy;
   }
 
   if ((*&self->_has & 4) != 0)
@@ -723,18 +723,18 @@ LABEL_10:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_pseudonym copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_pseudonym copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(NSData *)self->_publicKey copyWithZone:a3];
+  v8 = [(NSData *)self->_publicKey copyWithZone:zone];
   v9 = v5[11];
   v5[11] = v8;
 
-  v10 = [(NSData *)self->_privateKey copyWithZone:a3];
+  v10 = [(NSData *)self->_privateKey copyWithZone:zone];
   v11 = v5[9];
   v5[9] = v10;
 
@@ -757,7 +757,7 @@ LABEL_10:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{a3, v28}];
+        v17 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{zone, v28}];
         [v5 addInvitedHandles:v17];
       }
 
@@ -773,11 +773,11 @@ LABEL_10:
     *(v5 + 100) |= 1u;
   }
 
-  v18 = [(NSString *)self->_groupUUIDString copyWithZone:a3, v28];
+  v18 = [(NSString *)self->_groupUUIDString copyWithZone:zone, v28];
   v19 = v5[4];
   v5[4] = v18;
 
-  v20 = [(CSDMessagingHandle *)self->_originatorHandle copyWithZone:a3];
+  v20 = [(CSDMessagingHandle *)self->_originatorHandle copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
@@ -795,11 +795,11 @@ LABEL_10:
     *(v5 + 100) |= 8u;
   }
 
-  v23 = [(CSDMessagingConversationLinkGeneratorDescriptor *)self->_generatorDescriptor copyWithZone:a3];
+  v23 = [(CSDMessagingConversationLinkGeneratorDescriptor *)self->_generatorDescriptor copyWithZone:zone];
   v24 = v5[3];
   v5[3] = v23;
 
-  v25 = [(NSString *)self->_linkName copyWithZone:a3];
+  v25 = [(NSString *)self->_linkName copyWithZone:zone];
   v26 = v5[7];
   v5[7] = v25;
 
@@ -812,16 +812,16 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   pseudonym = self->_pseudonym;
-  if (pseudonym | *(v4 + 10))
+  if (pseudonym | *(equalCopy + 10))
   {
     if (![(NSString *)pseudonym isEqual:?])
     {
@@ -830,7 +830,7 @@ LABEL_10:
   }
 
   publicKey = self->_publicKey;
-  if (publicKey | *(v4 + 11))
+  if (publicKey | *(equalCopy + 11))
   {
     if (![(NSData *)publicKey isEqual:?])
     {
@@ -839,7 +839,7 @@ LABEL_10:
   }
 
   privateKey = self->_privateKey;
-  if (privateKey | *(v4 + 9))
+  if (privateKey | *(equalCopy + 9))
   {
     if (![(NSData *)privateKey isEqual:?])
     {
@@ -848,7 +848,7 @@ LABEL_10:
   }
 
   invitedHandles = self->_invitedHandles;
-  if (invitedHandles | *(v4 + 5))
+  if (invitedHandles | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)invitedHandles isEqual:?])
     {
@@ -856,28 +856,28 @@ LABEL_10:
     }
   }
 
-  v9 = *(v4 + 100);
+  v9 = *(equalCopy + 100);
   if (*&self->_has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_creationDateEpochTime != *(v4 + 1))
+    if ((*(equalCopy + 100) & 1) == 0 || self->_creationDateEpochTime != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_35;
   }
 
   groupUUIDString = self->_groupUUIDString;
-  if (groupUUIDString | *(v4 + 4) && ![(NSString *)groupUUIDString isEqual:?])
+  if (groupUUIDString | *(equalCopy + 4) && ![(NSString *)groupUUIDString isEqual:?])
   {
     goto LABEL_35;
   }
 
   originatorHandle = self->_originatorHandle;
-  if (originatorHandle | *(v4 + 8))
+  if (originatorHandle | *(equalCopy + 8))
   {
     if (![(CSDMessagingHandle *)originatorHandle isEqual:?])
     {
@@ -885,23 +885,23 @@ LABEL_10:
     }
   }
 
-  v12 = *(v4 + 100);
+  v12 = *(equalCopy + 100);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_pseudonymExpirationDateEpochTime != *(v4 + 2))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_pseudonymExpirationDateEpochTime != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 100) & 8) == 0)
+    if ((*(equalCopy + 100) & 8) == 0)
     {
       goto LABEL_26;
     }
@@ -911,34 +911,34 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if ((*(v4 + 100) & 8) == 0)
+  if ((*(equalCopy + 100) & 8) == 0)
   {
     goto LABEL_35;
   }
 
-  v17 = *(v4 + 96);
+  v17 = *(equalCopy + 96);
   if (self->_isActivated)
   {
-    if ((*(v4 + 96) & 1) == 0)
+    if ((*(equalCopy + 96) & 1) == 0)
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_35;
   }
 
 LABEL_26:
   generatorDescriptor = self->_generatorDescriptor;
-  if (generatorDescriptor | *(v4 + 3) && ![(CSDMessagingConversationLinkGeneratorDescriptor *)generatorDescriptor isEqual:?])
+  if (generatorDescriptor | *(equalCopy + 3) && ![(CSDMessagingConversationLinkGeneratorDescriptor *)generatorDescriptor isEqual:?])
   {
     goto LABEL_35;
   }
 
   linkName = self->_linkName;
-  if (linkName | *(v4 + 7))
+  if (linkName | *(equalCopy + 7))
   {
     if (![(NSString *)linkName isEqual:?])
     {
@@ -946,10 +946,10 @@ LABEL_26:
     }
   }
 
-  v15 = (*(v4 + 100) & 4) == 0;
+  v15 = (*(equalCopy + 100) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_linkLifetimeScope != *(v4 + 12))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_linkLifetimeScope != *(equalCopy + 12))
     {
       goto LABEL_35;
     }
@@ -1061,20 +1061,20 @@ LABEL_36:
   return v24 ^ v25 ^ v23 ^ v3 ^ v6 ^ v10 ^ v11 ^ v14 ^ v18 ^ v19 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(CSDMessagingConversationLink *)self setPseudonym:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(CSDMessagingConversationLink *)self setPublicKey:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(CSDMessagingConversationLink *)self setPrivateKey:?];
   }
@@ -1083,7 +1083,7 @@ LABEL_36:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1107,19 +1107,19 @@ LABEL_36:
     while (v7);
   }
 
-  if (*(v4 + 100))
+  if (*(fromCopy + 100))
   {
-    self->_creationDateEpochTime = *(v4 + 1);
+    self->_creationDateEpochTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(CSDMessagingConversationLink *)self setGroupUUIDString:?];
   }
 
   originatorHandle = self->_originatorHandle;
-  v11 = *(v4 + 8);
+  v11 = *(fromCopy + 8);
   if (originatorHandle)
   {
     if (v11)
@@ -1133,22 +1133,22 @@ LABEL_36:
     [(CSDMessagingConversationLink *)self setOriginatorHandle:?];
   }
 
-  v12 = *(v4 + 100);
+  v12 = *(fromCopy + 100);
   if ((v12 & 2) != 0)
   {
-    self->_pseudonymExpirationDateEpochTime = *(v4 + 2);
+    self->_pseudonymExpirationDateEpochTime = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v12 = *(v4 + 100);
+    v12 = *(fromCopy + 100);
   }
 
   if ((v12 & 8) != 0)
   {
-    self->_isActivated = *(v4 + 96);
+    self->_isActivated = *(fromCopy + 96);
     *&self->_has |= 8u;
   }
 
   generatorDescriptor = self->_generatorDescriptor;
-  v14 = *(v4 + 3);
+  v14 = *(fromCopy + 3);
   if (generatorDescriptor)
   {
     if (v14)
@@ -1162,14 +1162,14 @@ LABEL_36:
     [(CSDMessagingConversationLink *)self setGeneratorDescriptor:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(CSDMessagingConversationLink *)self setLinkName:?];
   }
 
-  if ((*(v4 + 100) & 4) != 0)
+  if ((*(fromCopy + 100) & 4) != 0)
   {
-    self->_linkLifetimeScope = *(v4 + 12);
+    self->_linkLifetimeScope = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 }

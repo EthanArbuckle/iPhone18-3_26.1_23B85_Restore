@@ -1,12 +1,12 @@
 @interface AXDefaultsObserverPostDarwinNotificationAction
-- (void)performForChangedDefault:(id)a3;
+- (void)performForChangedDefault:(id)default;
 @end
 
 @implementation AXDefaultsObserverPostDarwinNotificationAction
 
-- (void)performForChangedDefault:(id)a3
+- (void)performForChangedDefault:(id)default
 {
-  v4 = a3;
+  defaultCopy = default;
   v5 = AXLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -24,11 +24,11 @@
   }
 
   v7 = DarwinNotifyCenter;
-  v8 = [(AXDefaultsObserverPostDarwinNotificationAction *)self note];
-  CFNotificationCenterPostNotification(v7, v8, 0, 0, 1u);
+  note = [(AXDefaultsObserverPostDarwinNotificationAction *)self note];
+  CFNotificationCenterPostNotification(v7, note, 0, 0, 1u);
 
   v9 = _AXSPreferencesParticipatingInGuestPass();
-  if ([v9 containsObject:v4])
+  if ([v9 containsObject:defaultCopy])
   {
 
 LABEL_12:
@@ -57,7 +57,7 @@ LABEL_12:
   }
 
   v12 = v10();
-  v13 = [v12 containsObject:v4];
+  v13 = [v12 containsObject:defaultCopy];
 
   if (v13)
   {

@@ -1,14 +1,14 @@
 @interface TUIElementGlobalsUse
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementGlobalsUse
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a6;
-  [v8 useGlobalsWithName:{objc_msgSend(a5, "globalsNameForAttribute:node:", 137, var0)}];
+  var0 = node.var0;
+  contextCopy = context;
+  [contextCopy useGlobalsWithName:{objc_msgSend(attributes, "globalsNameForAttribute:node:", 137, var0)}];
 }
 
 @end

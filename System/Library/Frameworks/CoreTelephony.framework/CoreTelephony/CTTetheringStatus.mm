@@ -1,8 +1,8 @@
 @interface CTTetheringStatus
-- (CTTetheringStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTTetheringStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTTetheringStatus
@@ -10,138 +10,138 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTTetheringStatus *)self carrierEnabled];
-  [v3 appendFormat:@", carrierEnabled=%@", v4];
+  carrierEnabled = [(CTTetheringStatus *)self carrierEnabled];
+  [v3 appendFormat:@", carrierEnabled=%@", carrierEnabled];
 
-  v5 = [(CTTetheringStatus *)self userAuthenticated];
-  [v3 appendFormat:@", userAuthenticated=%@", v5];
+  userAuthenticated = [(CTTetheringStatus *)self userAuthenticated];
+  [v3 appendFormat:@", userAuthenticated=%@", userAuthenticated];
 
-  v6 = [(CTTetheringStatus *)self asserted];
-  [v3 appendFormat:@", asserted=%@", v6];
+  asserted = [(CTTetheringStatus *)self asserted];
+  [v3 appendFormat:@", asserted=%@", asserted];
 
-  v7 = [(CTTetheringStatus *)self activationFailure];
-  [v3 appendFormat:@", activationFailure=%@", v7];
+  activationFailure = [(CTTetheringStatus *)self activationFailure];
+  [v3 appendFormat:@", activationFailure=%@", activationFailure];
 
-  v8 = [(CTTetheringStatus *)self misPdpMaxHosts];
-  [v3 appendFormat:@", misPdpMaxHosts=%@", v8];
+  misPdpMaxHosts = [(CTTetheringStatus *)self misPdpMaxHosts];
+  [v3 appendFormat:@", misPdpMaxHosts=%@", misPdpMaxHosts];
 
-  v9 = [(CTTetheringStatus *)self connectionAvailabilityStatus];
-  [v3 appendFormat:@", connectionAvailabilityStatus=%@", v9];
+  connectionAvailabilityStatus = [(CTTetheringStatus *)self connectionAvailabilityStatus];
+  [v3 appendFormat:@", connectionAvailabilityStatus=%@", connectionAvailabilityStatus];
 
-  v10 = [(CTTetheringStatus *)self connectionStatus];
-  [v3 appendFormat:@", connectionStatus=%@", v10];
+  connectionStatus = [(CTTetheringStatus *)self connectionStatus];
+  [v3 appendFormat:@", connectionStatus=%@", connectionStatus];
 
-  v11 = [(CTTetheringStatus *)self context];
-  [v3 appendFormat:@", context=%@", v11];
+  context = [(CTTetheringStatus *)self context];
+  [v3 appendFormat:@", context=%@", context];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTTetheringStatus *)self carrierEnabled];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  carrierEnabled = [(CTTetheringStatus *)self carrierEnabled];
+  v6 = [carrierEnabled copy];
   [v4 setCarrierEnabled:v6];
 
-  v7 = [(CTTetheringStatus *)self userAuthenticated];
-  v8 = [v7 copy];
+  userAuthenticated = [(CTTetheringStatus *)self userAuthenticated];
+  v8 = [userAuthenticated copy];
   [v4 setUserAuthenticated:v8];
 
-  v9 = [(CTTetheringStatus *)self asserted];
-  v10 = [v9 copy];
+  asserted = [(CTTetheringStatus *)self asserted];
+  v10 = [asserted copy];
   [v4 setAsserted:v10];
 
-  v11 = [(CTTetheringStatus *)self activationFailure];
-  v12 = [v11 copy];
+  activationFailure = [(CTTetheringStatus *)self activationFailure];
+  v12 = [activationFailure copy];
   [v4 setActivationFailure:v12];
 
-  v13 = [(CTTetheringStatus *)self misPdpMaxHosts];
-  v14 = [v13 copy];
+  misPdpMaxHosts = [(CTTetheringStatus *)self misPdpMaxHosts];
+  v14 = [misPdpMaxHosts copy];
   [v4 setMisPdpMaxHosts:v14];
 
-  v15 = [(CTTetheringStatus *)self connectionAvailabilityStatus];
-  v16 = [v15 copy];
+  connectionAvailabilityStatus = [(CTTetheringStatus *)self connectionAvailabilityStatus];
+  v16 = [connectionAvailabilityStatus copy];
   [v4 setConnectionAvailabilityStatus:v16];
 
-  v17 = [(CTTetheringStatus *)self connectionStatus];
-  v18 = [v17 copy];
+  connectionStatus = [(CTTetheringStatus *)self connectionStatus];
+  v18 = [connectionStatus copy];
   [v4 setConnectionStatus:v18];
 
-  v19 = [(CTTetheringStatus *)self context];
-  v20 = [v19 copy];
+  context = [(CTTetheringStatus *)self context];
+  v20 = [context copy];
   [v4 setContext:v20];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTTetheringStatus *)self carrierEnabled];
-  [v4 encodeObject:v5 forKey:@"carrierEnabled"];
+  coderCopy = coder;
+  carrierEnabled = [(CTTetheringStatus *)self carrierEnabled];
+  [coderCopy encodeObject:carrierEnabled forKey:@"carrierEnabled"];
 
-  v6 = [(CTTetheringStatus *)self userAuthenticated];
-  [v4 encodeObject:v6 forKey:@"userAuthenticated"];
+  userAuthenticated = [(CTTetheringStatus *)self userAuthenticated];
+  [coderCopy encodeObject:userAuthenticated forKey:@"userAuthenticated"];
 
-  v7 = [(CTTetheringStatus *)self asserted];
-  [v4 encodeObject:v7 forKey:@"asserted"];
+  asserted = [(CTTetheringStatus *)self asserted];
+  [coderCopy encodeObject:asserted forKey:@"asserted"];
 
-  v8 = [(CTTetheringStatus *)self activationFailure];
-  [v4 encodeObject:v8 forKey:@"activationFailure"];
+  activationFailure = [(CTTetheringStatus *)self activationFailure];
+  [coderCopy encodeObject:activationFailure forKey:@"activationFailure"];
 
-  v9 = [(CTTetheringStatus *)self misPdpMaxHosts];
-  [v4 encodeObject:v9 forKey:@"misPdpMaxHosts"];
+  misPdpMaxHosts = [(CTTetheringStatus *)self misPdpMaxHosts];
+  [coderCopy encodeObject:misPdpMaxHosts forKey:@"misPdpMaxHosts"];
 
-  v10 = [(CTTetheringStatus *)self connectionAvailabilityStatus];
-  [v4 encodeObject:v10 forKey:@"connectionAvailabilityStatus"];
+  connectionAvailabilityStatus = [(CTTetheringStatus *)self connectionAvailabilityStatus];
+  [coderCopy encodeObject:connectionAvailabilityStatus forKey:@"connectionAvailabilityStatus"];
 
-  v11 = [(CTTetheringStatus *)self connectionStatus];
-  [v4 encodeObject:v11 forKey:@"connectionStatus"];
+  connectionStatus = [(CTTetheringStatus *)self connectionStatus];
+  [coderCopy encodeObject:connectionStatus forKey:@"connectionStatus"];
 
-  v12 = [(CTTetheringStatus *)self context];
-  [v4 encodeObject:v12 forKey:@"context"];
+  context = [(CTTetheringStatus *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 }
 
-- (CTTetheringStatus)initWithCoder:(id)a3
+- (CTTetheringStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CTTetheringStatus;
   v5 = [(CTTetheringStatus *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carrierEnabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carrierEnabled"];
     carrierEnabled = v5->_carrierEnabled;
     v5->_carrierEnabled = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userAuthenticated"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userAuthenticated"];
     userAuthenticated = v5->_userAuthenticated;
     v5->_userAuthenticated = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asserted"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asserted"];
     asserted = v5->_asserted;
     v5->_asserted = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationFailure"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationFailure"];
     activationFailure = v5->_activationFailure;
     v5->_activationFailure = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"misPdpMaxHosts"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"misPdpMaxHosts"];
     misPdpMaxHosts = v5->_misPdpMaxHosts;
     v5->_misPdpMaxHosts = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"connectionAvailabilityStatus"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"connectionAvailabilityStatus"];
     connectionAvailabilityStatus = v5->_connectionAvailabilityStatus;
     v5->_connectionAvailabilityStatus = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"connectionStatus"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"connectionStatus"];
     connectionStatus = v5->_connectionStatus;
     v5->_connectionStatus = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     context = v5->_context;
     v5->_context = v20;
   }

@@ -1,16 +1,16 @@
 @interface SNResultsCollector
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (void)clearCompleteCount;
 - (void)clearErrors;
 - (void)clearResults;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
-- (void)requestDidComplete:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
+- (void)requestDidComplete:(id)complete;
 @end
 
 @implementation SNResultsCollector
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
   v3 = sub_1C9A924A8();
   v5 = v4;
@@ -20,48 +20,48 @@
   return v6 & 1;
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  SNResultsCollector.request(_:didProduce:)(v6, a4);
+  selfCopy = self;
+  SNResultsCollector.request(_:didProduce:)(selfCopy, result);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v6 = self;
-  SNResultsCollector.request(_:didFailWithError:)(v6, v7);
+  errorCopy = error;
+  selfCopy = self;
+  SNResultsCollector.request(_:didFailWithError:)(selfCopy, errorCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)requestDidComplete:(id)a3
+- (void)requestDidComplete:(id)complete
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   SNResultsCollector.requestDidComplete(_:)();
   swift_unknownObjectRelease();
 }
 
 - (void)clearResults
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C98CF0FC(0x73746C75736572, 0xE700000000000000, &OBJC_IVAR___SNResultsCollector_results);
 }
 
 - (void)clearErrors
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C98CF0FC(0x73726F727265, 0xE600000000000000, &OBJC_IVAR___SNResultsCollector_errors);
 }
 
 - (void)clearCompleteCount
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C98CF214();
 }
 

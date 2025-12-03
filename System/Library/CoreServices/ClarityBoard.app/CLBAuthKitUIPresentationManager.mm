@@ -1,5 +1,5 @@
 @interface CLBAuthKitUIPresentationManager
-- (CLBAuthKitUIPresentationManager)initWithDelegate:(id)a3;
+- (CLBAuthKitUIPresentationManager)initWithDelegate:(id)delegate;
 - (NSString)identifier;
 @end
 
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (CLBAuthKitUIPresentationManager)initWithDelegate:(id)a3
+- (CLBAuthKitUIPresentationManager)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for AuthKitUIPresentationManager();
-  return [(CLBScenePresentationManager *)&v5 initWithDelegate:a3];
+  return [(CLBScenePresentationManager *)&v5 initWithDelegate:delegate];
 }
 
 @end

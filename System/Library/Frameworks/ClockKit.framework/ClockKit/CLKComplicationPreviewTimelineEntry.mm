@@ -1,9 +1,9 @@
 @interface CLKComplicationPreviewTimelineEntry
 - (CLKComplicationPreviewTimelineEntry)init;
-- (CLKComplicationPreviewTimelineEntry)initWithCoder:(id)a3;
+- (CLKComplicationPreviewTimelineEntry)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)finalize;
 @end
 
@@ -31,35 +31,35 @@
   v4.receiver = self;
   v4.super_class = CLKComplicationPreviewTimelineEntry;
   [(CLKComplicationTimelineEntry *)&v4 finalize];
-  v3 = [(CLKComplicationTimelineEntry *)self complicationTemplate];
-  [v3 setRenderForPreviews:1];
+  complicationTemplate = [(CLKComplicationTimelineEntry *)self complicationTemplate];
+  [complicationTemplate setRenderForPreviews:1];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKComplicationPreviewTimelineEntry;
-  v4 = a3;
-  [(CLKComplicationTimelineEntry *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_previewFaceColor forKey:{@"previewFaceColor", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_errors forKey:@"errors"];
-  [v4 encodeObject:self->_selectableRegions forKey:@"selectableRegions"];
+  coderCopy = coder;
+  [(CLKComplicationTimelineEntry *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_previewFaceColor forKey:{@"previewFaceColor", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_errors forKey:@"errors"];
+  [coderCopy encodeObject:self->_selectableRegions forKey:@"selectableRegions"];
 }
 
-- (CLKComplicationPreviewTimelineEntry)initWithCoder:(id)a3
+- (CLKComplicationPreviewTimelineEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLKComplicationPreviewTimelineEntry;
-  v5 = [(CLKComplicationTimelineEntry *)&v11 initWithCoder:v4];
+  v5 = [(CLKComplicationTimelineEntry *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_previewFaceColor = [v4 decodeIntegerForKey:@"previewFaceColor"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"errors"];
+    v5->_previewFaceColor = [coderCopy decodeIntegerForKey:@"previewFaceColor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"errors"];
     errors = v5->_errors;
     v5->_errors = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectableRegions"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectableRegions"];
     selectableRegions = v5->_selectableRegions;
     v5->_selectableRegions = v8;
   }
@@ -78,7 +78,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(CLKComplicationTimelineEntry *)self finalized])
   {
@@ -90,7 +90,7 @@
   {
     v7.receiver = self;
     v7.super_class = CLKComplicationPreviewTimelineEntry;
-    v5 = [(CLKComplicationTimelineEntry *)&v7 copyWithZone:a3];
+    v5 = [(CLKComplicationTimelineEntry *)&v7 copyWithZone:zone];
     [v5 setPreviewFaceColor:self->_previewFaceColor];
     [v5 setErrors:self->_errors];
     [v5 setSelectableRegions:self->_selectableRegions];

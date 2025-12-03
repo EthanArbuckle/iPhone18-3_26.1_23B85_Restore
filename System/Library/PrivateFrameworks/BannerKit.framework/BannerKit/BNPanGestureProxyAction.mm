@@ -1,23 +1,23 @@
 @interface BNPanGestureProxyAction
-+ (id)_infoFromPanGestureProxy:(id)a3 window:(id)a4;
-- (BNPanGestureProxyAction)initWithPanGestureProxy:(id)a3 hostSideWindow:(id)a4;
++ (id)_infoFromPanGestureProxy:(id)proxy window:(id)window;
+- (BNPanGestureProxyAction)initWithPanGestureProxy:(id)proxy hostSideWindow:(id)window;
 - (BOOL)didCrossDefaultThreshold;
-- (CGPoint)_convertPointInSceneReferenceSpace:(CGPoint)a3 toCoordinateSpace:(id)a4;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
-- (CGPoint)translationInCoordinateSpace:(id)a3;
-- (CGPoint)velocityInCoordinateSpace:(id)a3;
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3;
+- (CGPoint)_convertPointInSceneReferenceSpace:(CGPoint)space toCoordinateSpace:(id)coordinateSpace;
+- (CGPoint)locationInCoordinateSpace:(id)space;
+- (CGPoint)translationInCoordinateSpace:(id)space;
+- (CGPoint)velocityInCoordinateSpace:(id)space;
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space;
 - (UIWindow)serviceSideWindow;
 - (int64_t)state;
 @end
 
 @implementation BNPanGestureProxyAction
 
-- (BNPanGestureProxyAction)initWithPanGestureProxy:(id)a3 hostSideWindow:(id)a4
+- (BNPanGestureProxyAction)initWithPanGestureProxy:(id)proxy hostSideWindow:(id)window
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _infoFromPanGestureProxy:v7 window:v6];
+  windowCopy = window;
+  proxyCopy = proxy;
+  v8 = [objc_opt_class() _infoFromPanGestureProxy:proxyCopy window:windowCopy];
 
   v11.receiver = self;
   v11.super_class = BNPanGestureProxyAction;
@@ -28,28 +28,28 @@
 
 - (int64_t)state
 {
-  v2 = [(BNPanGestureProxyAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(BNPanGestureProxyAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)didCrossDefaultThreshold
 {
-  v2 = [(BNPanGestureProxyAction *)self info];
-  v3 = [v2 BOOLForSetting:2];
+  info = [(BNPanGestureProxyAction *)self info];
+  v3 = [info BOOLForSetting:2];
 
   return v3;
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(BNPanGestureProxyAction *)self info];
-  v6 = [v5 objectForSetting:3];
+  spaceCopy = space;
+  info = [(BNPanGestureProxyAction *)self info];
+  v6 = [info objectForSetting:3];
   [v6 CGPointValue];
-  [(BNPanGestureProxyAction *)self _convertPointInSceneReferenceSpace:v4 toCoordinateSpace:?];
+  [(BNPanGestureProxyAction *)self _convertPointInSceneReferenceSpace:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
 
@@ -60,13 +60,13 @@
   return result;
 }
 
-- (CGPoint)translationInCoordinateSpace:(id)a3
+- (CGPoint)translationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(BNPanGestureProxyAction *)self info];
-  v6 = [v5 objectForSetting:4];
+  spaceCopy = space;
+  info = [(BNPanGestureProxyAction *)self info];
+  v6 = [info objectForSetting:4];
   [v6 CGPointValue];
-  [(BNPanGestureProxyAction *)self _convertPointInSceneReferenceSpace:v4 toCoordinateSpace:?];
+  [(BNPanGestureProxyAction *)self _convertPointInSceneReferenceSpace:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
 
@@ -77,13 +77,13 @@
   return result;
 }
 
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(BNPanGestureProxyAction *)self info];
-  v6 = [v5 objectForSetting:5];
+  spaceCopy = space;
+  info = [(BNPanGestureProxyAction *)self info];
+  v6 = [info objectForSetting:5];
   [v6 CGPointValue];
-  [(BNPanGestureProxyAction *)self _convertPointInSceneReferenceSpace:v4 toCoordinateSpace:?];
+  [(BNPanGestureProxyAction *)self _convertPointInSceneReferenceSpace:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
 
@@ -94,10 +94,10 @@
   return result;
 }
 
-- (CGPoint)velocityInCoordinateSpace:(id)a3
+- (CGPoint)velocityInCoordinateSpace:(id)space
 {
-  v3 = [(BNPanGestureProxyAction *)self info];
-  v4 = [v3 objectForSetting:6];
+  info = [(BNPanGestureProxyAction *)self info];
+  v4 = [info objectForSetting:6];
   [v4 CGPointValue];
   v6 = v5;
   v8 = v7;
@@ -109,42 +109,42 @@
   return result;
 }
 
-+ (id)_infoFromPanGestureProxy:(id)a3 window:(id)a4
++ (id)_infoFromPanGestureProxy:(id)proxy window:(id)window
 {
   v5 = MEMORY[0x1E698E700];
-  v6 = a4;
-  v7 = a3;
+  windowCopy = window;
+  proxyCopy = proxy;
   v8 = objc_alloc_init(v5);
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "state")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(proxyCopy, "state")}];
   [v8 setObject:v9 forSetting:1];
 
-  [v8 setFlag:objc_msgSend(v7 forSetting:{"didCrossDefaultThreshold"), 2}];
+  [v8 setFlag:objc_msgSend(proxyCopy forSetting:{"didCrossDefaultThreshold"), 2}];
   v10 = MEMORY[0x1E696B098];
-  [v7 locationInCoordinateSpace:v6];
-  [v6 _convertPointToSceneReferenceSpace:?];
+  [proxyCopy locationInCoordinateSpace:windowCopy];
+  [windowCopy _convertPointToSceneReferenceSpace:?];
   v32[0] = v11;
   v32[1] = v12;
   v13 = [v10 valueWithBytes:v32 objCType:"{CGPoint=dd}"];
   [v8 setObject:v13 forSetting:3];
 
   v14 = MEMORY[0x1E696B098];
-  [v7 translationInCoordinateSpace:v6];
-  [v6 _convertPointToSceneReferenceSpace:?];
+  [proxyCopy translationInCoordinateSpace:windowCopy];
+  [windowCopy _convertPointToSceneReferenceSpace:?];
   v31[0] = v15;
   v31[1] = v16;
   v17 = [v14 valueWithBytes:v31 objCType:"{CGPoint=dd}"];
   [v8 setObject:v17 forSetting:4];
 
   v18 = MEMORY[0x1E696B098];
-  [v7 visualTranslationInCoordinateSpace:v6];
-  [v6 _convertPointToSceneReferenceSpace:?];
+  [proxyCopy visualTranslationInCoordinateSpace:windowCopy];
+  [windowCopy _convertPointToSceneReferenceSpace:?];
   v30[0] = v19;
   v30[1] = v20;
   v21 = [v18 valueWithBytes:v30 objCType:"{CGPoint=dd}"];
   [v8 setObject:v21 forSetting:5];
 
   v22 = MEMORY[0x1E696B098];
-  [v7 velocityInCoordinateSpace:v6];
+  [proxyCopy velocityInCoordinateSpace:windowCopy];
   v24 = v23;
   v26 = v25;
 
@@ -156,11 +156,11 @@
   return v8;
 }
 
-- (CGPoint)_convertPointInSceneReferenceSpace:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)_convertPointInSceneReferenceSpace:(CGPoint)space toCoordinateSpace:(id)coordinateSpace
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = space.y;
+  x = space.x;
+  coordinateSpaceCopy = coordinateSpace;
   WeakRetained = objc_loadWeakRetained(&self->_serviceSideWindow);
 
   if (!WeakRetained)
@@ -174,7 +174,7 @@
   v14 = v13;
 
   v15 = objc_loadWeakRetained(&self->_serviceSideWindow);
-  [v15 convertPoint:v8 toCoordinateSpace:{v12, v14}];
+  [v15 convertPoint:coordinateSpaceCopy toCoordinateSpace:{v12, v14}];
   v17 = v16;
   v19 = v18;
 

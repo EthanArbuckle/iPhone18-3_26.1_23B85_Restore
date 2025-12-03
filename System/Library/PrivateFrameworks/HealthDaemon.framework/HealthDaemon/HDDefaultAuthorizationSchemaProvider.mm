@@ -1,28 +1,28 @@
 @interface HDDefaultAuthorizationSchemaProvider
-- (id)filteredAuthorizedObjectsForClient:(id)a3 anchor:(id)a4 bundleIdentifier:(id)a5 clientEntitlements:(id)a6 profile:(id)a7 error:(id *)a8;
-- (int64_t)isClientAuthorizedToReadObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)isClientAuthorizedToReadType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)isClientAuthorizedToWriteObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)isClientAuthorizedToWriteType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)setAuthorizationStatuses:(id)a3 authorizationModes:(id)a4 bundleIdentifier:(id)a5 options:(unint64_t)a6 profile:(id)a7 error:(id *)a8;
+- (id)filteredAuthorizedObjectsForClient:(id)client anchor:(id)anchor bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToReadObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToReadType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToWriteObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToWriteType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)setAuthorizationStatuses:(id)statuses authorizationModes:(id)modes bundleIdentifier:(id)identifier options:(unint64_t)options profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDDefaultAuthorizationSchemaProvider
 
-- (int64_t)isClientAuthorizedToReadObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToReadObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v45 = a5;
-  v15 = a6;
+  objectCopy = object;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
   v16 = MEMORY[0x277CCD8A8];
-  v53[0] = v13;
+  v53[0] = objectCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
   v18 = [v16 hd_sampleTypesForObjects:v17];
 
   v51 = 0;
-  v19 = [HDAuthorizationStatus authorizationStatusForTypes:v18 bundleIdentifier:v14 profile:v15 error:&v51];
+  v19 = [HDAuthorizationStatus authorizationStatusForTypes:v18 bundleIdentifier:identifierCopy profile:profileCopy error:&v51];
   v20 = v51;
   v21 = v20;
   if (!v19)
@@ -36,20 +36,20 @@
     goto LABEL_18;
   }
 
-  v43 = self;
+  selfCopy = self;
   v22 = [MEMORY[0x277CCD720] _typesIncludingParentTypes:v18];
   v23 = [v19 count];
   v38 = v22;
   if (v23 != [v22 count])
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:v43 file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
   }
 
-  v40 = v15;
-  v41 = a7;
-  v42 = v14;
-  v44 = v13;
+  v40 = profileCopy;
+  errorCopy = error;
+  v42 = identifierCopy;
+  v44 = objectCopy;
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
@@ -76,7 +76,7 @@
         v31 = *(*(&v47 + 1) + 8 * v29);
         v32 = [v19 objectForKeyedSubscript:v31];
         v46 = v30;
-        v33 = [HDAuthorizationStatus isAuthorizedForObjectType:v31 authorizationStatus:v32 clientEntitlements:v45 sharing:0 error:&v46];
+        v33 = [HDAuthorizationStatus isAuthorizedForObjectType:v31 authorizationStatus:v32 clientEntitlements:entitlementsCopy sharing:0 error:&v46];
         v21 = v46;
 
         if (v33)
@@ -100,18 +100,18 @@
     v28 = 2;
   }
 
-  v14 = v42;
-  v13 = v44;
-  v15 = v40;
-  a7 = v41;
+  identifierCopy = v42;
+  objectCopy = v44;
+  profileCopy = v40;
+  error = errorCopy;
   v18 = v39;
   if (v21)
   {
 LABEL_18:
-    if (a7)
+    if (error)
     {
       v34 = v21;
-      *a7 = v21;
+      *error = v21;
     }
 
     else
@@ -126,15 +126,15 @@ LABEL_21:
   return v28;
 }
 
-- (int64_t)isClientAuthorizedToReadType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToReadType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v40 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  v15 = [MEMORY[0x277CBEB98] setWithObject:type];
   v46 = 0;
-  v16 = [HDAuthorizationStatus authorizationStatusForTypes:v15 bundleIdentifier:v13 profile:v14 error:&v46];
+  v16 = [HDAuthorizationStatus authorizationStatusForTypes:v15 bundleIdentifier:identifierCopy profile:profileCopy error:&v46];
   v17 = v46;
   v18 = v17;
   if (!v16)
@@ -153,13 +153,13 @@ LABEL_21:
   v35 = v19;
   if (v20 != [v19 count])
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
   }
 
-  v37 = v14;
-  v38 = a7;
-  v39 = v13;
+  v37 = profileCopy;
+  errorCopy = error;
+  v39 = identifierCopy;
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -186,7 +186,7 @@ LABEL_21:
         v28 = *(*(&v42 + 1) + 8 * v26);
         v29 = [v16 objectForKeyedSubscript:v28];
         v41 = v27;
-        v30 = [HDAuthorizationStatus isAuthorizedForObjectType:v28 authorizationStatus:v29 clientEntitlements:v40 sharing:0 error:&v41];
+        v30 = [HDAuthorizationStatus isAuthorizedForObjectType:v28 authorizationStatus:v29 clientEntitlements:entitlementsCopy sharing:0 error:&v41];
         v18 = v41;
 
         if (v30)
@@ -210,17 +210,17 @@ LABEL_21:
     v25 = 2;
   }
 
-  a7 = v38;
-  v13 = v39;
+  error = errorCopy;
+  identifierCopy = v39;
   v15 = v36;
-  v14 = v37;
+  profileCopy = v37;
   if (v18)
   {
 LABEL_18:
-    if (a7)
+    if (error)
     {
       v31 = v18;
-      *a7 = v18;
+      *error = v18;
     }
 
     else
@@ -235,15 +235,15 @@ LABEL_21:
   return v25;
 }
 
-- (int64_t)isClientAuthorizedToWriteType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToWriteType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v40 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  v15 = [MEMORY[0x277CBEB98] setWithObject:type];
   v46 = 0;
-  v16 = [HDAuthorizationStatus authorizationStatusForTypes:v15 bundleIdentifier:v13 profile:v14 error:&v46];
+  v16 = [HDAuthorizationStatus authorizationStatusForTypes:v15 bundleIdentifier:identifierCopy profile:profileCopy error:&v46];
   v17 = v46;
   v18 = v17;
   if (!v16)
@@ -262,13 +262,13 @@ LABEL_21:
   v35 = v19;
   if (v20 != [v19 count])
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
   }
 
-  v37 = v14;
-  v38 = a7;
-  v39 = v13;
+  v37 = profileCopy;
+  errorCopy = error;
+  v39 = identifierCopy;
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -295,7 +295,7 @@ LABEL_21:
         v28 = *(*(&v42 + 1) + 8 * v26);
         v29 = [v16 objectForKeyedSubscript:v28];
         v41 = v27;
-        v30 = [HDAuthorizationStatus isAuthorizedForObjectType:v28 authorizationStatus:v29 clientEntitlements:v40 sharing:1 error:&v41];
+        v30 = [HDAuthorizationStatus isAuthorizedForObjectType:v28 authorizationStatus:v29 clientEntitlements:entitlementsCopy sharing:1 error:&v41];
         v18 = v41;
 
         if (v30)
@@ -319,17 +319,17 @@ LABEL_21:
     v25 = 2;
   }
 
-  a7 = v38;
-  v13 = v39;
+  error = errorCopy;
+  identifierCopy = v39;
   v15 = v36;
-  v14 = v37;
+  profileCopy = v37;
   if (v18)
   {
 LABEL_18:
-    if (a7)
+    if (error)
     {
       v31 = v18;
-      *a7 = v18;
+      *error = v18;
     }
 
     else
@@ -344,20 +344,20 @@ LABEL_21:
   return v25;
 }
 
-- (int64_t)isClientAuthorizedToWriteObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToWriteObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v45 = a5;
-  v15 = a6;
+  objectCopy = object;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
   v16 = MEMORY[0x277CCD8A8];
-  v53[0] = v13;
+  v53[0] = objectCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
   v18 = [v16 hd_sampleTypesForObjects:v17];
 
   v51 = 0;
-  v19 = [HDAuthorizationStatus authorizationStatusForTypes:v18 bundleIdentifier:v14 profile:v15 error:&v51];
+  v19 = [HDAuthorizationStatus authorizationStatusForTypes:v18 bundleIdentifier:identifierCopy profile:profileCopy error:&v51];
   v20 = v51;
   v21 = v20;
   if (!v19)
@@ -371,20 +371,20 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v43 = self;
+  selfCopy = self;
   v22 = [MEMORY[0x277CCD720] _typesIncludingParentTypes:v18];
   v23 = [v19 count];
   v38 = v22;
   if (v23 != [v22 count])
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:v43 file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"HDDefaultAuthorizationSchemaProvider.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"[authorizationStatuses count] == [typesIncludingParentTypes count]"}];
   }
 
-  v40 = v15;
-  v41 = a7;
-  v42 = v14;
-  v44 = v13;
+  v40 = profileCopy;
+  errorCopy = error;
+  v42 = identifierCopy;
+  v44 = objectCopy;
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
@@ -411,7 +411,7 @@ LABEL_21:
         v31 = *(*(&v47 + 1) + 8 * v29);
         v32 = [v19 objectForKeyedSubscript:v31];
         v46 = v30;
-        v33 = [HDAuthorizationStatus isAuthorizedForObjectType:v31 authorizationStatus:v32 clientEntitlements:v45 sharing:1 error:&v46];
+        v33 = [HDAuthorizationStatus isAuthorizedForObjectType:v31 authorizationStatus:v32 clientEntitlements:entitlementsCopy sharing:1 error:&v46];
         v21 = v46;
 
         if (v33)
@@ -435,18 +435,18 @@ LABEL_21:
     v28 = 2;
   }
 
-  v14 = v42;
-  v13 = v44;
-  v15 = v40;
-  a7 = v41;
+  identifierCopy = v42;
+  objectCopy = v44;
+  profileCopy = v40;
+  error = errorCopy;
   v18 = v39;
   if (v21)
   {
 LABEL_18:
-    if (a7)
+    if (error)
     {
       v34 = v21;
-      *a7 = v21;
+      *error = v21;
     }
 
     else
@@ -461,38 +461,38 @@ LABEL_21:
   return v28;
 }
 
-- (int64_t)setAuthorizationStatuses:(id)a3 authorizationModes:(id)a4 bundleIdentifier:(id)a5 options:(unint64_t)a6 profile:(id)a7 error:(id *)a8
+- (int64_t)setAuthorizationStatuses:(id)statuses authorizationModes:(id)modes bundleIdentifier:(id)identifier options:(unint64_t)options profile:(id)profile error:(id *)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  statusesCopy = statuses;
+  modesCopy = modes;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v18 = MEMORY[0x277CBEB98];
-  v19 = [v14 allKeys];
-  v20 = [v18 setWithArray:v19];
+  allKeys = [statusesCopy allKeys];
+  v20 = [v18 setWithArray:allKeys];
 
-  v21 = [v17 database];
+  database = [profileCopy database];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __123__HDDefaultAuthorizationSchemaProvider_setAuthorizationStatuses_authorizationModes_bundleIdentifier_options_profile_error___block_invoke;
   v49[3] = &unk_278614530;
-  v48 = v17;
+  v48 = profileCopy;
   v50 = v48;
-  v22 = v16;
+  v22 = identifierCopy;
   v51 = v22;
-  v52 = self;
+  selfCopy = self;
   v56 = a2;
   v53 = v20;
-  v23 = v14;
+  v23 = statusesCopy;
   v54 = v23;
-  v55 = v15;
-  v57 = a6;
-  v24 = v15;
+  v55 = modesCopy;
+  optionsCopy = options;
+  v24 = modesCopy;
   v25 = v20;
-  v26 = [(HDHealthEntity *)HDAuthorizationEntity performWriteTransactionWithHealthDatabase:v21 error:a8 block:v49];
+  v26 = [(HDHealthEntity *)HDAuthorizationEntity performWriteTransactionWithHealthDatabase:database error:error block:v49];
 
-  if ((a6 & 2) == 0 || !v26)
+  if ((options & 2) == 0 || !v26)
   {
     goto LABEL_19;
   }
@@ -503,9 +503,9 @@ LABEL_21:
   {
     v47 = v25;
     v29 = v22;
-    v30 = [v28 sourceManager];
+    sourceManager = [v28 sourceManager];
     v59 = 0;
-    v31 = [v30 clientSourceForBundleIdentifier:v29 error:&v59];
+    v31 = [sourceManager clientSourceForBundleIdentifier:v29 error:&v59];
 
     v32 = v59;
     v45 = v27;
@@ -514,17 +514,17 @@ LABEL_21:
       if ([v31 _requiresAuthorization])
       {
         v33 = [v27 hk_filterKeysWithBlock:&__block_literal_global_24];
-        v34 = [v33 allObjects];
+        allObjects = [v33 allObjects];
       }
 
       else
       {
-        v34 = [v27 allKeys];
+        allObjects = [v27 allKeys];
       }
 
-      v36 = [v28 sourceOrderManager];
+      sourceOrderManager = [v28 sourceOrderManager];
       v58 = v32;
-      v37 = [v36 addOrderedSource:v31 objectTypes:v34 error:&v58];
+      v37 = [sourceOrderManager addOrderedSource:v31 objectTypes:allObjects error:&v58];
       v35 = v58;
 
       if ((v37 & 1) == 0)
@@ -534,9 +534,9 @@ LABEL_21:
         v25 = v47;
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
-          v43 = [v31 bundleIdentifier];
+          bundleIdentifier = [v31 bundleIdentifier];
           *buf = 138543618;
-          v61 = v43;
+          v61 = bundleIdentifier;
           v62 = 2114;
           v63 = v35;
           _os_log_error_impl(&dword_228986000, v38, OS_LOG_TYPE_ERROR, "Failed to update source order while changing authorization status for %{public}@: %{public}@", buf, 0x16u);
@@ -554,15 +554,15 @@ LABEL_21:
     else
     {
       _HKInitializeLogging();
-      v34 = HKLogAuthorization();
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      allObjects = HKLogAuthorization();
+      if (os_log_type_enabled(allObjects, OS_LOG_TYPE_ERROR))
       {
-        v42 = [0 bundleIdentifier];
+        bundleIdentifier2 = [0 bundleIdentifier];
         *buf = 138543618;
-        v61 = v42;
+        v61 = bundleIdentifier2;
         v62 = 2114;
         v63 = v32;
-        _os_log_error_impl(&dword_228986000, v34, OS_LOG_TYPE_ERROR, "Failed to find source %{public}@ to update source order after authorization update: %{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_228986000, allObjects, OS_LOG_TYPE_ERROR, "Failed to find source %{public}@ to update source order after authorization update: %{public}@", buf, 0x16u);
       }
 
       v35 = v32;
@@ -763,22 +763,22 @@ uint64_t __112__HDDefaultAuthorizationSchemaProvider__updateSourceOrderWithAutho
   return HKAuthorizationStatusAllowsSharing();
 }
 
-- (id)filteredAuthorizedObjectsForClient:(id)a3 anchor:(id)a4 bundleIdentifier:(id)a5 clientEntitlements:(id)a6 profile:(id)a7 error:(id *)a8
+- (id)filteredAuthorizedObjectsForClient:(id)client anchor:(id)anchor bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v39 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  clientCopy = client;
+  anchorCopy = anchor;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
   v17 = MEMORY[0x277CCD8A8];
-  v40 = v13;
-  v18 = [v13 array];
-  v19 = [v17 hd_sampleTypesForObjects:v18];
+  v40 = clientCopy;
+  array = [clientCopy array];
+  v19 = [v17 hd_sampleTypesForObjects:array];
 
-  v37 = v16;
-  v38 = v14;
-  v20 = [HDAuthorizationEntity readAuthorizationStatusesByTypeForBundleIdentifier:v14 types:v19 profile:v16 error:a8];
+  v37 = profileCopy;
+  v38 = identifierCopy;
+  v20 = [HDAuthorizationEntity readAuthorizationStatusesByTypeForBundleIdentifier:identifierCopy types:v19 profile:profileCopy error:error];
   v21 = [v20 mutableCopy];
 
   v48 = 0u;
@@ -802,7 +802,7 @@ uint64_t __112__HDDefaultAuthorizationSchemaProvider__updateSourceOrderWithAutho
 
         v27 = *(*(&v46 + 1) + 8 * i);
         v28 = [v21 objectForKeyedSubscript:v27];
-        v29 = [HDAuthorizationStatus authorizationStatusForRecordForObjectType:v27 authorizationStatusRecord:v28 clientEntitlements:v15];
+        v29 = [HDAuthorizationStatus authorizationStatusForRecordForObjectType:v27 authorizationStatusRecord:v28 clientEntitlements:entitlementsCopy];
         [v21 setObject:v29 forKeyedSubscript:v27];
       }
 
@@ -815,23 +815,23 @@ uint64_t __112__HDDefaultAuthorizationSchemaProvider__updateSourceOrderWithAutho
   if ([v21 count])
   {
     v30 = v40;
-    v31 = [v40 array];
+    array2 = [v40 array];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __132__HDDefaultAuthorizationSchemaProvider_filteredAuthorizedObjectsForClient_anchor_bundleIdentifier_clientEntitlements_profile_error___block_invoke;
     v41[3] = &unk_2786162D8;
     v42 = v21;
-    v43 = self;
-    v32 = v39;
-    v44 = v39;
-    v45 = v15;
-    v33 = [v31 hk_filter:v41];
+    selfCopy = self;
+    v32 = anchorCopy;
+    v44 = anchorCopy;
+    v45 = entitlementsCopy;
+    v33 = [array2 hk_filter:v41];
   }
 
   else
   {
     v33 = MEMORY[0x277CBEBF8];
-    v32 = v39;
+    v32 = anchorCopy;
     v30 = v40;
   }
 

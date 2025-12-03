@@ -112,7 +112,7 @@
 
           v39 = vminnm_f32(vadd_f32(*&v23.f64[0], _D1), 0);
           v30 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_blurredroundedrect];
-          v31 = [CIVector vectorWithX:x Y:y Z:x + width W:y + height];
+          height = [CIVector vectorWithX:x Y:y Z:x + width W:y + height];
           v50.origin.x = x;
           v50.origin.y = y;
           v50.size.width = width;
@@ -122,7 +122,7 @@
           v33 = v51.origin.y;
           v34 = v51.size.width;
           v35 = v51.size.height;
-          v42[0] = v31;
+          v42[0] = height;
           *&v51.origin.x = v11;
           v42[1] = [MEMORY[0x1E696AD98] numberWithFloat:v51.origin.x];
           v42[2] = [CIVector vectorWithX:v39.f32[0] Y:v39.f32[1]];

@@ -1,15 +1,15 @@
 @interface AGXGPURawCounterSourceGroup
-- (id)subDivideCounterList:(id)a3 withOptions:(id)a4;
+- (id)subDivideCounterList:(id)list withOptions:(id)options;
 - (void)dealloc;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation AGXGPURawCounterSourceGroup
 
-- (id)subDivideCounterList:(id)a3 withOptions:(id)a4
+- (id)subDivideCounterList:(id)list withOptions:(id)options
 {
   v52[2] = *MEMORY[0x29EDCA608];
-  result = [a3 count];
+  result = [list count];
   if (!result)
   {
     goto LABEL_59;
@@ -21,27 +21,27 @@
     goto LABEL_59;
   }
 
-  v44 = [MEMORY[0x29EDB8E00] dictionary];
-  v7 = [MEMORY[0x29EDB8DE8] array];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  array = [MEMORY[0x29EDB8DE8] array];
   context = objc_autoreleasePoolPush();
   v46 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:16];
-  v8 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v8 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(list, "count")}];
   v52[0] = v8;
-  v48 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v48 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(list, "count")}];
   v52[1] = v48;
-  v9 = [MEMORY[0x29EDB8DE8] array];
-  if ([a3 count])
+  array2 = [MEMORY[0x29EDB8DE8] array];
+  if ([list count])
   {
     v10 = 0;
     v11 = 1;
     do
     {
-      v12 = v9;
-      if (([objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v10), "name"), "hasPrefix:", @"GBL_USC_PROFILE_DATA_"}] & 1) == 0)
+      v12 = array2;
+      if (([objc_msgSend(objc_msgSend(list objectAtIndexedSubscript:{v10), "name"), "hasPrefix:", @"GBL_USC_PROFILE_DATA_"}] & 1) == 0)
       {
-        if ([objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v10), "name"), "hasPrefix:", @"GRC_SHADER_PROFILER_DATA_"}])
+        if ([objc_msgSend(objc_msgSend(list objectAtIndexedSubscript:{v10), "name"), "hasPrefix:", @"GRC_SHADER_PROFILER_DATA_"}])
         {
-          v12 = v9;
+          v12 = array2;
         }
 
         else
@@ -50,11 +50,11 @@
         }
       }
 
-      [v12 addObject:{objc_msgSend(a3, "objectAtIndexedSubscript:", v10)}];
+      [v12 addObject:{objc_msgSend(list, "objectAtIndexedSubscript:", v10)}];
       v10 = v11++;
     }
 
-    while ([a3 count] > v10);
+    while ([list count] > v10);
   }
 
   v13 = v46;
@@ -84,7 +84,7 @@
   }
 
   v41 = [v8 count];
-  v43 = v9;
+  v43 = array2;
   if (v41)
   {
     v19 = *MEMORY[0x29EDC1210];
@@ -92,7 +92,7 @@
     v50 = [*(&self->super.super.isa + v19) count];
     v20 = 0x29EDB8000uLL;
     v21 = v48;
-    v45 = v7;
+    v45 = array;
     while (1)
     {
       v51 = [*(v20 + 3560) arrayWithCapacity:{objc_msgSend(*(&self->super.super.isa + v19), "count", v41)}];
@@ -108,15 +108,15 @@
           v26 = *(v20 + 3560);
           if (v25)
           {
-            v24 = [v26 arrayWithArray:v13];
+            array3 = [v26 arrayWithArray:v13];
           }
 
           else
           {
-            v24 = [v26 array];
+            array3 = [v26 array];
           }
 
-          [v51 addObject:v24];
+          [v51 addObject:array3];
           v22 = v23++;
         }
 
@@ -199,7 +199,7 @@ LABEL_35:
         while ([*(&self->super.super.isa + v19) count] > v35);
       }
 
-      v7 = v45;
+      array = v45;
       [v45 addObject:v51];
       v20 = 0x29EDB8000;
       if (![v49 count])
@@ -212,54 +212,54 @@ LABEL_35:
     }
 
     [v43 addObjectsFromArray:v8];
-    v7 = v45;
+    array = v45;
   }
 
   else
   {
     v37 = *MEMORY[0x29EDC1210];
-    [v7 addObject:{objc_msgSend(MEMORY[0x29EDB8DE8], "arrayWithCapacity:", objc_msgSend(*(&self->super.super.isa + v37), "count"))}];
+    [array addObject:{objc_msgSend(MEMORY[0x29EDB8DE8], "arrayWithCapacity:", objc_msgSend(*(&self->super.super.isa + v37), "count"))}];
     if ([*(&self->super.super.isa + v37) count])
     {
       v38 = 1;
       do
       {
-        [objc_msgSend(v7 objectAtIndexedSubscript:{0, v41), "addObject:", v46}];
+        [objc_msgSend(array objectAtIndexedSubscript:{0, v41), "addObject:", v46}];
       }
 
       while ([*(&self->super.super.isa + v37) count] > v38++);
     }
 
-    [v44 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInt:", 1, v41), @"passNum"}];
-    [v44 setObject:v7 forKeyedSubscript:@"passList"];
-    if (![v9 count])
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInt:", 1, v41), @"passNum"}];
+    [dictionary setObject:array forKeyedSubscript:@"passList"];
+    if (![array2 count])
     {
       goto LABEL_55;
     }
   }
 
-  [v44 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(v43, "count")), @"invalidNum"}];
-  [v44 setObject:v43 forKeyedSubscript:@"invalidList"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(v43, "count")), @"invalidNum"}];
+  [dictionary setObject:v43 forKeyedSubscript:@"invalidList"];
 LABEL_55:
   objc_autoreleasePoolPop(context);
   if (v41)
   {
     (*(self->_impl->var0 + 11))(self->_impl);
-    [v44 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(v7, "count")), @"passNum"}];
-    [v44 setObject:v7 forKeyedSubscript:@"passList"];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(array, "count")), @"passNum"}];
+    [dictionary setObject:array forKeyedSubscript:@"passList"];
   }
 
-  result = v44;
+  result = dictionary;
 LABEL_59:
   v40 = *MEMORY[0x29EDCA608];
   return result;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v4.receiver = self;
   v4.super_class = AGXGPURawCounterSourceGroup;
-  [(_GPURawCounterSourceGroup *)&v4 setOptions:a3];
+  [(_GPURawCounterSourceGroup *)&v4 setOptions:options];
   (*(self->_impl->var0 + 4))(self->_impl, *(&self->super.super.isa + *MEMORY[0x29EDC1208]));
 }
 

@@ -1,13 +1,13 @@
 @interface PNFreeformStoryDiagnosticsUtils
-+ (id)diagnosticFilesFor:(id)a3 error:(id *)a4;
++ (id)diagnosticFilesFor:(id)for error:(id *)error;
 @end
 
 @implementation PNFreeformStoryDiagnosticsUtils
 
-+ (id)diagnosticFilesFor:(id)a3 error:(id *)a4
++ (id)diagnosticFilesFor:(id)for error:(id *)error
 {
   swift_getObjCClassMetadata();
-  v5 = a3;
+  forCopy = for;
   static FreeformStoryDiagnosticsUtils.diagnosticFiles(for:)();
 
   sub_1C754DD2C();

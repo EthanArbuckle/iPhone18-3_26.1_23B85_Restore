@@ -1,57 +1,57 @@
 @interface PPSocialHighlightStorage
-+ (id)appLinksForResourceURL:(id)a3 resolvedURL:(id)a4;
++ (id)appLinksForResourceURL:(id)l resolvedURL:(id)rL;
 + (id)feedbackPruningPolicy;
-+ (int)attributionFeedbackTypeForAttributionFeedbackType:(unint64_t)a3;
-+ (int)unifiedFeedbackTypeForHighlightFeedbackType:(unint64_t)a3;
-+ (unint64_t)entitlementStatusForClient:(id)a3 applicationIdentifiers:(id)a4;
-- (BOOL)_isCollaborationEntitlementPresentForApplicationIdentifiers:(id)a3;
-- (BOOL)isClientEntitledForItem:(id)a3 client:(id)a4 applicationIdentifiers:(id)a5 blockedHosts:(id)a6;
-- (BOOL)isClientEntitledForItem:(id)a3 client:(id)a4 applicationIdentifiers:(id)a5 blockedHosts:(id)a6 iTunesOverrideChecker:(id)a7;
-- (BOOL)isValidHighlight:(id)a3 applicationIdentifiers:(id)a4;
++ (int)attributionFeedbackTypeForAttributionFeedbackType:(unint64_t)type;
++ (int)unifiedFeedbackTypeForHighlightFeedbackType:(unint64_t)type;
++ (unint64_t)entitlementStatusForClient:(id)client applicationIdentifiers:(id)identifiers;
+- (BOOL)_isCollaborationEntitlementPresentForApplicationIdentifiers:(id)identifiers;
+- (BOOL)isClientEntitledForItem:(id)item client:(id)client applicationIdentifiers:(id)identifiers blockedHosts:(id)hosts;
+- (BOOL)isClientEntitledForItem:(id)item client:(id)client applicationIdentifiers:(id)identifiers blockedHosts:(id)hosts iTunesOverrideChecker:(id)checker;
+- (BOOL)isValidHighlight:(id)highlight applicationIdentifiers:(id)identifiers;
 - (BOOL)rerankingEnabled;
-- (BOOL)saveAttributionFeedbackForAttributionIdentifier:(id)a3 feedbackType:(unint64_t)a4 client:(id)a5 variant:(id)a6;
-- (BOOL)saveFeedbackForHighlightIdentifier:(id)a3 feedbackType:(unint64_t)a4 client:(id)a5 variant:(id)a6;
+- (BOOL)saveAttributionFeedbackForAttributionIdentifier:(id)identifier feedbackType:(unint64_t)type client:(id)client variant:(id)variant;
+- (BOOL)saveFeedbackForHighlightIdentifier:(id)identifier feedbackType:(unint64_t)type client:(id)client variant:(id)variant;
 - (PPSocialHighlightStorage)init;
-- (PPSocialHighlightStorage)initWithFeedbackStream:(id)a3 rankedStream:(id)a4 database:(id)a5;
+- (PPSocialHighlightStorage)initWithFeedbackStream:(id)stream rankedStream:(id)rankedStream database:(id)database;
 - (double)_sessionLoggingRate;
-- (id)_mostRecentRankedHighlightsMatchingTest:(id)a3 client:(id)a4;
-- (id)_rankableItemsForClient:(id)a3 variant:(id)a4 applicationIdentifiers:(id)a5 autoDonatingChatIdentifiers:(id)a6 limit:(unint64_t)a7 error:(id *)a8;
-- (id)_rankableItemsForClient:(id)a3 variant:(id)a4 applicationIdentifiers:(id)a5 limit:(unint64_t)a6 error:(id *)a7;
+- (id)_mostRecentRankedHighlightsMatchingTest:(id)test client:(id)client;
+- (id)_rankableItemsForClient:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers autoDonatingChatIdentifiers:(id)chatIdentifiers limit:(unint64_t)limit error:(id *)error;
+- (id)_rankableItemsForClient:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers limit:(unint64_t)limit error:(id *)error;
 - (id)_screenTimeConversation;
-- (id)_socialAttributionFromAttributeValues:(id)a3 fetchAttributes:(id)a4;
+- (id)_socialAttributionFromAttributeValues:(id)values fetchAttributes:(id)attributes;
 - (id)_socialLayerDefaults;
-- (id)allSupportedHighlightsForAutoDonatingChats:(id)a3 error:(id *)a4;
-- (id)applicationIdentifiersForResourceURL:(id)a3 resolvedURL:(id)a4;
-- (id)attributionForIdentifier:(id)a3 error:(id *)a4;
-- (id)attributionsForIdentifiers:(id)a3 error:(id *)a4;
-- (id)autoDonatingChatsWithShouldContinueBlock:(id)a3 error:(id *)a4;
-- (id)cachedRankedHighlightsForClient:(id)a3 variant:(id)a4 queriedHighlights:(id)a5;
-- (id)deduplicateAndSortRankedHighlights:(id)a3 attributionLookup:(id)a4 limit:(unint64_t)a5 client:(id)a6;
-- (id)featurizeRankedHighlights:(id)a3;
+- (id)allSupportedHighlightsForAutoDonatingChats:(id)chats error:(id *)error;
+- (id)applicationIdentifiersForResourceURL:(id)l resolvedURL:(id)rL;
+- (id)attributionForIdentifier:(id)identifier error:(id *)error;
+- (id)attributionsForIdentifiers:(id)identifiers error:(id *)error;
+- (id)autoDonatingChatsWithShouldContinueBlock:(id)block error:(id *)error;
+- (id)cachedRankedHighlightsForClient:(id)client variant:(id)variant queriedHighlights:(id)highlights;
+- (id)deduplicateAndSortRankedHighlights:(id)highlights attributionLookup:(id)lookup limit:(unint64_t)limit client:(id)client;
+- (id)featurizeRankedHighlights:(id)highlights;
 - (id)feedbackItems;
-- (id)feedbackPublisherWithInterval:(double)a3 includingRemote:(BOOL)a4;
-- (id)highlightFromRankableHighlight:(id)a3 attributionIdentifiers:(id)a4 earliestAttributionIdentifiers:(id)a5;
-- (id)rankedHighlightsForSyncedItems:(id)a3 client:(id)a4 variant:(id)a5 applicationIdentifiers:(id)a6 error:(id *)a7;
-- (id)rankedHighlightsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 applicationIdentifiers:(id)a6 error:(id *)a7;
+- (id)feedbackPublisherWithInterval:(double)interval includingRemote:(BOOL)remote;
+- (id)highlightFromRankableHighlight:(id)highlight attributionIdentifiers:(id)identifiers earliestAttributionIdentifiers:(id)attributionIdentifiers;
+- (id)rankedHighlightsForSyncedItems:(id)items client:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers error:(id *)error;
+- (id)rankedHighlightsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers error:(id *)error;
 - (id)rankedItems;
-- (id)sharedContentForClient:(id)a3 variant:(id)a4 applicationIdentifiers:(id)a5 limit:(unint64_t)a6 autoDonatingChatIdentifiers:(id)a7 error:(id *)a8;
-- (id)sharedContentFromChats:(id)a3 dateRange:(double)a4 applicationIdentifiers:(id)a5 error:(id *)a6;
-- (unint64_t)countDistinctRankedItemsMatchingBatchIdentifier:(id)a3;
+- (id)sharedContentForClient:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers limit:(unint64_t)limit autoDonatingChatIdentifiers:(id)chatIdentifiers error:(id *)error;
+- (id)sharedContentFromChats:(id)chats dateRange:(double)range applicationIdentifiers:(id)identifiers error:(id *)error;
+- (unint64_t)countDistinctRankedItemsMatchingBatchIdentifier:(id)identifier;
 - (unsigned)automaticSharingEnabled;
-- (unsigned)automaticSharingEnabledForClient:(id)a3 error:(id *)a4;
-- (void)_performFeedbackSessionLoggingForEnrichedFeedback:(id)a3 client:(id)a4;
-- (void)cleanUpFeedbackWithShouldContinueBlock:(id)a3 ttl:(double)a4 onDeleteBlock:(id)a5;
+- (unsigned)automaticSharingEnabledForClient:(id)client error:(id *)error;
+- (void)_performFeedbackSessionLoggingForEnrichedFeedback:(id)feedback client:(id)client;
+- (void)cleanUpFeedbackWithShouldContinueBlock:(id)block ttl:(double)ttl onDeleteBlock:(id)deleteBlock;
 - (void)clearFeedbackStream;
 - (void)clearRankedStream;
 - (void)clearStreams;
-- (void)deleteAllRecordsFromBundleId:(id)a3;
-- (void)deleteAllRecordsFromBundleId:(id)a3 matchingAttributionIdentifiers:(id)a4;
-- (void)deleteAllRecordsFromBundleId:(id)a3 matchingDomainSelection:(id)a4;
-- (void)deleteDataDerivedFromContentMatchingRequest:(id)a3;
-- (void)deleteFeedbackMatchingPredicate:(id)a3;
+- (void)deleteAllRecordsFromBundleId:(id)id;
+- (void)deleteAllRecordsFromBundleId:(id)id matchingAttributionIdentifiers:(id)identifiers;
+- (void)deleteAllRecordsFromBundleId:(id)id matchingDomainSelection:(id)selection;
+- (void)deleteDataDerivedFromContentMatchingRequest:(id)request;
+- (void)deleteFeedbackMatchingPredicate:(id)predicate;
 - (void)freezeAppLinksCache;
-- (void)handleAppLinkChangeNotification:(id)a3;
-- (void)saveFeedbackItems:(id)a3;
+- (void)handleAppLinkChangeNotification:(id)notification;
+- (void)saveFeedbackItems:(id)items;
 - (void)syncFeedback;
 @end
 
@@ -145,8 +145,8 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
 - (BOOL)rerankingEnabled
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(PPSocialHighlightStorage *)self _socialLayerDefaults];
-  v3 = [v2 BOOLForKey:@"ProactiveRerankingDisabled"];
+  _socialLayerDefaults = [(PPSocialHighlightStorage *)self _socialLayerDefaults];
+  v3 = [_socialLayerDefaults BOOLForKey:@"ProactiveRerankingDisabled"];
 
   v4 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -178,13 +178,13 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
   return v3;
 }
 
-- (BOOL)_isCollaborationEntitlementPresentForApplicationIdentifiers:(id)a3
+- (BOOL)_isCollaborationEntitlementPresentForApplicationIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifiersCopy = identifiers;
+  v4 = identifiersCopy;
+  if (identifiersCopy)
   {
-    if (([v3 containsObject:@"*"] & 1) != 0 || (objc_msgSend(v4, "containsObject:", @"collaborations") & 1) == 0)
+    if (([identifiersCopy containsObject:@"*"] & 1) != 0 || (objc_msgSend(v4, "containsObject:", @"collaborations") & 1) == 0)
     {
       v5 = [v4 containsObject:@"portraitCollaborations"];
     }
@@ -203,12 +203,12 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
   return v5;
 }
 
-- (id)_mostRecentRankedHighlightsMatchingTest:(id)a3 client:(id)a4
+- (id)_mostRecentRankedHighlightsMatchingTest:(id)test client:(id)client
 {
   v36 = *MEMORY[0x277D85DE8];
   cache = self->_cache;
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  clientCopy = client;
   if (cache)
   {
     v8 = objc_opt_new();
@@ -237,8 +237,8 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
     *(&v24 + 1) = 3221225472;
     v25 = __72__PPSocialHighlightCache_mostRecentRankedHighlightsMatchingTest_client___block_invoke_40;
     v26 = &unk_278971960;
-    v27 = v7;
-    v29 = v6;
+    v27 = clientCopy;
+    v29 = testCopy;
     v30 = v22;
     v12 = v8;
     v28 = v12;
@@ -278,15 +278,15 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
   return v16;
 }
 
-- (unint64_t)countDistinctRankedItemsMatchingBatchIdentifier:(id)a3
+- (unint64_t)countDistinctRankedItemsMatchingBatchIdentifier:(id)identifier
 {
   cache = self->_cache;
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   if (cache)
   {
     v6 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v4)
+    if (identifierCopy)
     {
       v12 = 0;
       v13 = &v12;
@@ -297,7 +297,7 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
       v9[1] = 3221225472;
       v9[2] = __74__PPSocialHighlightCache_countDistinctRankedItemsMatchingBatchIdentifier___block_invoke;
       v9[3] = &unk_2789770D0;
-      v10 = v4;
+      v10 = identifierCopy;
       v11 = &v12;
       [(_PASLock *)lock runWithLockAcquired:v9];
       v6 = v13[3];
@@ -314,12 +314,12 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
   return v6;
 }
 
-- (id)cachedRankedHighlightsForClient:(id)a3 variant:(id)a4 queriedHighlights:(id)a5
+- (id)cachedRankedHighlightsForClient:(id)client variant:(id)variant queriedHighlights:(id)highlights
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  variantCopy = variant;
+  highlightsCopy = highlights;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -335,16 +335,16 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
   v25 = &v26;
   v13 = v11;
   v24 = v13;
-  [PPSocialHighlightCache cachedRankedHighlightsForClient:v8 variant:&v20 completion:?];
+  [PPSocialHighlightCache cachedRankedHighlightsForClient:clientCopy variant:&v20 completion:?];
   dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
-  if (v10 && ([(PPSocialHighlightCache *)self->_cache cachedHighlightsArrayIsValid:v10 queryResults:?]& 1) == 0)
+  if (highlightsCopy && ([(PPSocialHighlightCache *)self->_cache cachedHighlightsArrayIsValid:highlightsCopy queryResults:?]& 1) == 0)
   {
-    [(PPSocialHighlightStorage *)self invalidateCacheForClient:v8, v20, v21, v22, v23];
+    [(PPSocialHighlightStorage *)self invalidateCacheForClient:clientCopy, v20, v21, v22, v23];
     v17 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v8;
+      v33 = clientCopy;
       _os_log_impl(&dword_23224A000, v17, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: cache for client '%@' is invalid, re-ranking.", buf, 0xCu);
     }
 
@@ -360,7 +360,7 @@ void __47__PPSocialHighlightStorage_freezeAppLinksCache__block_invoke(uint64_t a
       *buf = 134218242;
       v33 = v15;
       v34 = 2112;
-      v35 = v8;
+      v35 = clientCopy;
       _os_log_impl(&dword_23224A000, v14, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: returning cached %tu items for client '%@'", buf, 0x16u);
     }
 
@@ -432,28 +432,28 @@ void __86__PPSocialHighlightStorage_cachedRankedHighlightsForClient_variant_quer
   return v6;
 }
 
-- (BOOL)saveAttributionFeedbackForAttributionIdentifier:(id)a3 feedbackType:(unint64_t)a4 client:(id)a5 variant:(id)a6
+- (BOOL)saveAttributionFeedbackForAttributionIdentifier:(id)identifier feedbackType:(unint64_t)type client:(id)client variant:(id)variant
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  clientCopy = client;
   if ([(PPSocialHighlightStorage *)self rerankingEnabled])
   {
-    [(PPSocialHighlightStorage *)self _writeEnrichedFeedbackForAttributionIdentifier:v9 client:v10 feedbackType:[PPSocialHighlightStorage attributionFeedbackTypeForAttributionFeedbackType:a4]];
+    [(PPSocialHighlightStorage *)self _writeEnrichedFeedbackForAttributionIdentifier:identifierCopy client:clientCopy feedbackType:[PPSocialHighlightStorage attributionFeedbackTypeForAttributionFeedbackType:type]];
   }
 
   return 1;
 }
 
-- (BOOL)saveFeedbackForHighlightIdentifier:(id)a3 feedbackType:(unint64_t)a4 client:(id)a5 variant:(id)a6
+- (BOOL)saveFeedbackForHighlightIdentifier:(id)identifier feedbackType:(unint64_t)type client:(id)client variant:(id)variant
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  clientCopy = client;
   if ([(PPSocialHighlightStorage *)self rerankingEnabled])
   {
-    v11 = [PPSocialHighlightStorage unifiedFeedbackTypeForHighlightFeedbackType:a4];
-    [(PPSocialHighlightStorage *)self _writeEnrichedFeedbackForHighlightIdentifier:v9 client:v10 feedbackType:v11];
-    if (a4 == 2)
+    v11 = [PPSocialHighlightStorage unifiedFeedbackTypeForHighlightFeedbackType:type];
+    [(PPSocialHighlightStorage *)self _writeEnrichedFeedbackForHighlightIdentifier:identifierCopy client:clientCopy feedbackType:v11];
+    if (type == 2)
     {
       v12 = pp_social_highlights_log_handle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -479,11 +479,11 @@ void __86__PPSocialHighlightStorage_cachedRankedHighlightsForClient_variant_quer
         *buf = 138412546;
         v18 = v14;
         v19 = 2112;
-        v20 = v10;
+        v20 = clientCopy;
         _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: invalidating cache due to feedback of type %@ from client '%@'", buf, 0x16u);
       }
 
-      [(PPSocialHighlightCache *)self->_cache invalidateCacheForClient:v10];
+      [(PPSocialHighlightCache *)self->_cache invalidateCacheForClient:clientCopy];
     }
   }
 
@@ -617,19 +617,19 @@ void __95__PPSocialHighlightStorage__writeEnrichedFeedbackForAttributionIdentifi
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performFeedbackSessionLoggingForEnrichedFeedback:(id)a3 client:(id)a4
+- (void)_performFeedbackSessionLoggingForEnrichedFeedback:(id)feedback client:(id)client
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  clientCopy = client;
   [(PPSocialHighlightStorage *)self _sessionLoggingRate];
   if ([MEMORY[0x277D3A578] yesWithProbability:?])
   {
     v8 = objc_autoreleasePoolPush();
-    v46 = v6;
-    v9 = [v6 highlight];
-    v10 = [v9 features];
-    v11 = [v10 mutableCopy];
+    v46 = feedbackCopy;
+    highlight = [feedbackCopy highlight];
+    features = [highlight features];
+    v11 = [features mutableCopy];
     v12 = v11;
     v45 = v8;
     if (v11)
@@ -673,13 +673,13 @@ void __95__PPSocialHighlightStorage__writeEnrichedFeedbackForAttributionIdentifi
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v27 = [v26 _pas_stringBackedByUTF8CString];
+            _pas_stringBackedByUTF8CString = [v26 _pas_stringBackedByUTF8CString];
 
-            v26 = v27;
+            v26 = _pas_stringBackedByUTF8CString;
           }
 
-          v28 = [v25 _pas_stringBackedByUTF8CString];
-          [v16 setObject:v26 forKeyedSubscript:v28];
+          _pas_stringBackedByUTF8CString2 = [v25 _pas_stringBackedByUTF8CString];
+          [v16 setObject:v26 forKeyedSubscript:_pas_stringBackedByUTF8CString2];
 
           objc_autoreleasePoolPop(v23);
         }
@@ -690,40 +690,40 @@ void __95__PPSocialHighlightStorage__writeEnrichedFeedbackForAttributionIdentifi
       while (v19);
     }
 
-    v29 = [v7 _pas_stringBackedByUTF8CString];
-    [v16 setObject:v29 forKeyedSubscript:@"clientId"];
+    _pas_stringBackedByUTF8CString3 = [clientCopy _pas_stringBackedByUTF8CString];
+    [v16 setObject:_pas_stringBackedByUTF8CString3 forKeyedSubscript:@"clientId"];
 
-    v6 = v46;
-    v30 = [v46 feedbackType];
-    if (v30 >= 0xC)
+    feedbackCopy = v46;
+    feedbackType = [v46 feedbackType];
+    if (feedbackType >= 0xC)
     {
-      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v30];
+      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", feedbackType];
     }
 
     else
     {
-      v31 = off_2789784B0[v30];
+      v31 = off_2789784B0[feedbackType];
     }
 
-    v32 = [(__CFString *)v31 _pas_stringBackedByUTF8CString];
-    [v16 setObject:v32 forKeyedSubscript:@"feedbackType"];
+    _pas_stringBackedByUTF8CString4 = [(__CFString *)v31 _pas_stringBackedByUTF8CString];
+    [v16 setObject:_pas_stringBackedByUTF8CString4 forKeyedSubscript:@"feedbackType"];
 
     v33 = MEMORY[0x277CCABB0];
-    v34 = [v46 highlight];
-    v35 = [v33 numberWithBool:{objc_msgSend(v34, "isPrimary")}];
+    highlight2 = [v46 highlight];
+    v35 = [v33 numberWithBool:{objc_msgSend(highlight2, "isPrimary")}];
     [v16 setObject:v35 forKeyedSubscript:@"isPrimary"];
 
     v36 = MEMORY[0x277CCABB0];
-    v37 = [v46 highlight];
-    v38 = [v36 numberWithBool:{objc_msgSend(v37, "isProxy")}];
+    highlight3 = [v46 highlight];
+    v38 = [v36 numberWithBool:{objc_msgSend(highlight3, "isProxy")}];
     [v16 setObject:v38 forKeyedSubscript:@"isProxy"];
 
     v39 = objc_opt_new();
-    v40 = [v39 UUIDString];
+    uUIDString = [v39 UUIDString];
 
-    v41 = [v40 substringToIndex:{objc_msgSend(v40, "length") >> 2}];
-    v42 = [v41 _pas_stringBackedByUTF8CString];
-    [v16 setObject:v42 forKeyedSubscript:@"uuid"];
+    v41 = [uUIDString substringToIndex:{objc_msgSend(uUIDString, "length") >> 2}];
+    _pas_stringBackedByUTF8CString5 = [v41 _pas_stringBackedByUTF8CString];
+    [v16 setObject:_pas_stringBackedByUTF8CString5 forKeyedSubscript:@"uuid"];
 
     v43 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -751,13 +751,13 @@ void __95__PPSocialHighlightStorage__writeEnrichedFeedbackForAttributionIdentifi
 
 - (double)_sessionLoggingRate
 {
-  v2 = [MEMORY[0x277D42590] isInternalBuild];
+  isInternalBuild = [MEMORY[0x277D42590] isInternalBuild];
   result = 1.0;
-  if ((v2 & 1) == 0)
+  if ((isInternalBuild & 1) == 0)
   {
-    v4 = [MEMORY[0x277D42590] isBetaBuild];
+    isBetaBuild = [MEMORY[0x277D42590] isBetaBuild];
     result = 0.01;
-    if (!v4)
+    if (!isBetaBuild)
     {
       return 0.0;
     }
@@ -766,18 +766,18 @@ void __95__PPSocialHighlightStorage__writeEnrichedFeedbackForAttributionIdentifi
   return result;
 }
 
-- (void)deleteAllRecordsFromBundleId:(id)a3 matchingAttributionIdentifiers:(id)a4
+- (void)deleteAllRecordsFromBundleId:(id)id matchingAttributionIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v7];
+  idCopy = id;
+  identifiersCopy = identifiers;
+  v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:identifiersCopy];
   v9 = objc_autoreleasePoolPush();
   v10 = MEMORY[0x277CCAC30];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __88__PPSocialHighlightStorage_deleteAllRecordsFromBundleId_matchingAttributionIdentifiers___block_invoke;
   v24[3] = &unk_278978400;
-  v11 = v6;
+  v11 = idCopy;
   v25 = v11;
   v12 = v8;
   v26 = v12;
@@ -885,19 +885,19 @@ uint64_t __88__PPSocialHighlightStorage_deleteAllRecordsFromBundleId_matchingAtt
   return v15;
 }
 
-- (void)deleteAllRecordsFromBundleId:(id)a3 matchingDomainSelection:(id)a4
+- (void)deleteAllRecordsFromBundleId:(id)id matchingDomainSelection:(id)selection
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  selectionCopy = selection;
   v8 = objc_autoreleasePoolPush();
   v9 = MEMORY[0x277CCAC30];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __81__PPSocialHighlightStorage_deleteAllRecordsFromBundleId_matchingDomainSelection___block_invoke;
   v23[3] = &unk_278978400;
-  v10 = v6;
+  v10 = idCopy;
   v24 = v10;
-  v11 = v7;
+  v11 = selectionCopy;
   v25 = v11;
   v12 = [v9 predicateWithBlock:v23];
   [(PPSocialHighlightStorage *)self deleteFeedbackMatchingPredicate:v12];
@@ -1003,16 +1003,16 @@ uint64_t __81__PPSocialHighlightStorage_deleteAllRecordsFromBundleId_matchingDom
   return v15;
 }
 
-- (void)deleteAllRecordsFromBundleId:(id)a3
+- (void)deleteAllRecordsFromBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x277CCAC30];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __57__PPSocialHighlightStorage_deleteAllRecordsFromBundleId___block_invoke;
   v16[3] = &unk_2789783D8;
-  v7 = v4;
+  v7 = idCopy;
   v17 = v7;
   v8 = [v6 predicateWithBlock:v16];
   [(PPSocialHighlightStorage *)self deleteFeedbackMatchingPredicate:v8];
@@ -1077,9 +1077,9 @@ uint64_t __57__PPSocialHighlightStorage_deleteAllRecordsFromBundleId___block_inv
   return v7;
 }
 
-- (void)deleteDataDerivedFromContentMatchingRequest:(id)a3
+- (void)deleteDataDerivedFromContentMatchingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1090,7 +1090,7 @@ uint64_t __57__PPSocialHighlightStorage_deleteAllRecordsFromBundleId___block_inv
   v12[2] = __72__PPSocialHighlightStorage_deleteDataDerivedFromContentMatchingRequest___block_invoke;
   v12[3] = &unk_278978338;
   v14 = &v15;
-  v6 = v4;
+  v6 = requestCopy;
   v13 = v6;
   [(_PASLock *)lock runWithLockAcquired:v12];
   if (*(v16 + 24) == 1)
@@ -1154,10 +1154,10 @@ void __72__PPSocialHighlightStorage_deleteDataDerivedFromContentMatchingRequest_
   [v4 deleteAllRecordsFromBundleId:v5 matchingAttributionIdentifiers:v6];
 }
 
-- (void)deleteFeedbackMatchingPredicate:(id)a3
+- (void)deleteFeedbackMatchingPredicate:(id)predicate
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v24 = 0;
@@ -1173,7 +1173,7 @@ void __72__PPSocialHighlightStorage_deleteDataDerivedFromContentMatchingRequest_
   v20 = v8;
   v9 = v5;
   v21 = v9;
-  v10 = v4;
+  v10 = predicateCopy;
   v22 = v10;
   v23 = &v24;
   [(_PASLock *)lock runWithLockAcquired:&v16];
@@ -1373,12 +1373,12 @@ LABEL_12:
   return v17;
 }
 
-- (void)cleanUpFeedbackWithShouldContinueBlock:(id)a3 ttl:(double)a4 onDeleteBlock:(id)a5
+- (void)cleanUpFeedbackWithShouldContinueBlock:(id)block ttl:(double)ttl onDeleteBlock:(id)deleteBlock
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-a4];
+  blockCopy = block;
+  deleteBlockCopy = deleteBlock;
+  v10 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-ttl];
   v11 = objc_alloc(MEMORY[0x277CBEAA8]);
   v12 = +[PPConfiguration sharedInstance];
   [v12 socialHighlightDecayInterval];
@@ -1395,7 +1395,7 @@ LABEL_12:
   v31[1] = 3221225472;
   v31[2] = __85__PPSocialHighlightStorage_cleanUpFeedbackWithShouldContinueBlock_ttl_onDeleteBlock___block_invoke;
   v31[3] = &unk_2789782C0;
-  v18 = v8;
+  v18 = blockCopy;
   v36 = v18;
   v19 = v14;
   v32 = v19;
@@ -1406,7 +1406,7 @@ LABEL_12:
   v22 = v10;
   v35 = v22;
   v38 = v39;
-  v23 = v9;
+  v23 = deleteBlockCopy;
   v37 = v23;
   if (v18)
   {
@@ -1686,7 +1686,7 @@ BOOL __68__PPSocialHighlightStorage_feedbackItemsInInterval_includingRemote___bl
   return v4 != 0;
 }
 
-- (id)feedbackPublisherWithInterval:(double)a3 includingRemote:(BOOL)a4
+- (id)feedbackPublisherWithInterval:(double)interval includingRemote:(BOOL)remote
 {
   v17 = 0;
   v18 = &v17;
@@ -1696,14 +1696,14 @@ BOOL __68__PPSocialHighlightStorage_feedbackItemsInInterval_includingRemote___bl
   v22 = 0;
   v7 = objc_opt_new();
   [v7 timeIntervalSinceReferenceDate];
-  v9 = v8 - a3;
+  v9 = v8 - interval;
 
   lock = self->_lock;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__PPSocialHighlightStorage_feedbackPublisherWithInterval_includingRemote___block_invoke;
   v15[3] = &unk_2789781E0;
-  v16 = a4;
+  remoteCopy = remote;
   v15[4] = &v17;
   *&v15[5] = v9;
   [(_PASLock *)lock runWithLockAcquired:v15];
@@ -1763,9 +1763,9 @@ BOOL __74__PPSocialHighlightStorage_feedbackPublisherWithInterval_includingRemot
   return v4 != 0;
 }
 
-- (void)saveFeedbackItems:(id)a3
+- (void)saveFeedbackItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([(PPSocialHighlightStorage *)self rerankingEnabled])
   {
     lock = self->_lock;
@@ -1773,7 +1773,7 @@ BOOL __74__PPSocialHighlightStorage_feedbackPublisherWithInterval_includingRemot
     v6[1] = 3221225472;
     v6[2] = __46__PPSocialHighlightStorage_saveFeedbackItems___block_invoke;
     v6[3] = &unk_278978198;
-    v7 = v4;
+    v7 = itemsCopy;
     [(_PASLock *)lock runWithLockAcquired:v6];
   }
 }
@@ -1832,29 +1832,29 @@ void __46__PPSocialHighlightStorage_saveFeedbackItems___block_invoke(uint64_t a1
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_socialAttributionFromAttributeValues:(id)a3 fetchAttributes:(id)a4
+- (id)_socialAttributionFromAttributeValues:(id)values fetchAttributes:(id)attributes
 {
   v75 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  valuesCopy = values;
+  attributesCopy = attributes;
   v7 = objc_opt_new();
-  v8 = [v5 count];
-  if (v8 == [v6 count])
+  v8 = [valuesCopy count];
+  if (v8 == [attributesCopy count])
   {
-    v46 = v6;
-    v9 = [v5 objectAtIndexedSubscript:0];
-    v10 = [v5 objectAtIndexedSubscript:1];
-    v11 = [v5 objectAtIndexedSubscript:2];
-    v12 = [v5 objectAtIndexedSubscript:3];
-    v63 = [v5 objectAtIndexedSubscript:4];
-    v13 = [v5 objectAtIndexedSubscript:5];
-    v62 = [v5 objectAtIndexedSubscript:6];
-    v14 = [v5 objectAtIndexedSubscript:7];
-    v15 = [v5 objectAtIndexedSubscript:8];
-    v16 = [v5 objectAtIndexedSubscript:9];
-    v59 = [v5 objectAtIndexedSubscript:10];
-    v58 = [v5 objectAtIndexedSubscript:11];
-    v54 = [v5 objectAtIndexedSubscript:12];
+    v46 = attributesCopy;
+    v9 = [valuesCopy objectAtIndexedSubscript:0];
+    v10 = [valuesCopy objectAtIndexedSubscript:1];
+    v11 = [valuesCopy objectAtIndexedSubscript:2];
+    v12 = [valuesCopy objectAtIndexedSubscript:3];
+    v63 = [valuesCopy objectAtIndexedSubscript:4];
+    v13 = [valuesCopy objectAtIndexedSubscript:5];
+    v62 = [valuesCopy objectAtIndexedSubscript:6];
+    v14 = [valuesCopy objectAtIndexedSubscript:7];
+    v15 = [valuesCopy objectAtIndexedSubscript:8];
+    v16 = [valuesCopy objectAtIndexedSubscript:9];
+    v59 = [valuesCopy objectAtIndexedSubscript:10];
+    v58 = [valuesCopy objectAtIndexedSubscript:11];
+    v54 = [valuesCopy objectAtIndexedSubscript:12];
     v49 = v9;
     if (v9)
     {
@@ -1889,8 +1889,8 @@ LABEL_18:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v11 stringByStandardizingPath];
-            v53 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v18 isDirectory:0];
+            stringByStandardizingPath = [v11 stringByStandardizingPath];
+            v53 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:stringByStandardizingPath isDirectory:0];
           }
 
           else
@@ -1990,9 +1990,9 @@ LABEL_37:
                 v32 = v59;
                 if (objc_opt_isKindOfClass())
                 {
-                  v33 = [v15 firstObject];
+                  firstObject = [v15 firstObject];
 
-                  v15 = v33;
+                  v15 = firstObject;
                 }
 
                 objc_opt_class();
@@ -2040,12 +2040,12 @@ LABEL_64:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v34 = [v32 BOOLValue];
+                bOOLValue = [v32 BOOLValue];
                 goto LABEL_67;
               }
 
 LABEL_66:
-              v34 = 0;
+              bOOLValue = 0;
 LABEL_67:
               if (v58 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -2070,7 +2070,7 @@ LABEL_67:
                 HIDWORD(v45) = v16;
                 v36 = v15;
                 v37 = v14;
-                v6 = v46;
+                attributesCopy = v46;
                 if (v54)
                 {
                   v38 = v7;
@@ -2094,7 +2094,7 @@ LABEL_67:
                   v39 = v58;
                 }
 
-                BYTE1(v45) = v34;
+                BYTE1(v45) = bOOLValue;
                 LOBYTE(v45) = BYTE4(v45);
                 v17 = [objc_alloc(MEMORY[0x277D3A4B0]) initWithIdentifier:log sourceAppDisplayName:@"Messages" conversationIdentifier:v60 groupPhotoPath:v53 groupDisplayName:v52 groupId:v40 relatedPeople:v38 sender:v61 timestamp:v57 collaborationMetadata:v51 starred:v45 fromMe:?];
               }
@@ -2111,7 +2111,7 @@ LABEL_67:
                 }
 
                 v37 = v14;
-                v6 = v46;
+                attributesCopy = v46;
 
                 v42 = pp_social_highlights_log_handle();
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -2144,16 +2144,16 @@ LABEL_67:
             if (objc_opt_isKindOfClass())
             {
               v19 = v7;
-              v20 = [v63 firstObject];
-              v21 = [v13 firstObject];
-              if (!v20)
+              firstObject2 = [v63 firstObject];
+              firstObject3 = [v13 firstObject];
+              if (!firstObject2)
               {
                 goto LABEL_35;
               }
 
               objc_opt_class();
               v61 = 0;
-              if ((objc_opt_isKindOfClass() & 1) == 0 || !v21)
+              if ((objc_opt_isKindOfClass() & 1) == 0 || !firstObject3)
               {
                 goto LABEL_36;
               }
@@ -2161,7 +2161,7 @@ LABEL_67:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v61 = [objc_alloc(MEMORY[0x277D3A4D0]) initWithHandle:v21 displayName:v20];
+                v61 = [objc_alloc(MEMORY[0x277D3A4D0]) initWithHandle:firstObject3 displayName:firstObject2];
                 [v19 addObject:?];
               }
 
@@ -2227,11 +2227,11 @@ LABEL_90:
   return v17;
 }
 
-- (id)attributionsForIdentifiers:(id)a3 error:(id *)a4
+- (id)attributionsForIdentifiers:(id)identifiers error:(id *)error
 {
   v59[13] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v36 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+  identifiersCopy = identifiers;
+  defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
   v7 = *MEMORY[0x277CC2770];
   v59[0] = *MEMORY[0x277CC3208];
   v59[1] = v7;
@@ -2264,12 +2264,12 @@ LABEL_90:
   v42[1] = 3221225472;
   v42[2] = __61__PPSocialHighlightStorage_attributionsForIdentifiers_error___block_invoke;
   v42[3] = &unk_278978170;
-  v43 = v6;
+  v43 = identifiersCopy;
   v45 = &v46;
   v34 = v43;
   dsema = v13;
   v44 = dsema;
-  [v36 slowFetchAttributes:v12 protectionClass:v14 bundleID:v15 identifiers:v43 completionHandler:v42];
+  [defaultSearchableIndex slowFetchAttributes:v12 protectionClass:v14 bundleID:v15 identifiers:v43 completionHandler:v42];
   dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
   if (v47[5])
   {
@@ -2304,13 +2304,13 @@ LABEL_90:
               v24 = v23;
               if (v23)
               {
-                v25 = [v23 identifier];
-                v26 = v25 == 0;
+                identifier = [v23 identifier];
+                v26 = identifier == 0;
 
                 if (!v26)
                 {
-                  v27 = [v24 identifier];
-                  [v37 setObject:v24 forKeyedSubscript:v27];
+                  identifier2 = [v24 identifier];
+                  [v37 setObject:v24 forKeyedSubscript:identifier2];
                 }
               }
             }
@@ -2348,13 +2348,13 @@ LABEL_90:
     _os_log_error_impl(&dword_23224A000, v28, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: CoreSpotlight attribution query for identifiers: %tu returned invalid number of results: %tu", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v29 = MEMORY[0x277CCA9B8];
     v53 = *MEMORY[0x277D3A588];
     v54 = @"CoreSpotlight attribution query returned invalid results.";
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-    *a4 = [v29 errorWithDomain:*MEMORY[0x277D3A580] code:24 userInfo:v17];
+    *error = [v29 errorWithDomain:*MEMORY[0x277D3A580] code:24 userInfo:v17];
     v37 = MEMORY[0x277CBEC10];
 LABEL_22:
 
@@ -2401,32 +2401,32 @@ void __61__PPSocialHighlightStorage_attributionsForIdentifiers_error___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)attributionForIdentifier:(id)a3 error:(id *)a4
+- (id)attributionForIdentifier:(id)identifier error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  identifierCopy = identifier;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v13 count:1];
-  v9 = [(PPSocialHighlightStorage *)self attributionsForIdentifiers:v8 error:a4, v13, v14];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  identifierCopy2 = identifier;
+  v8 = [v6 arrayWithObjects:&identifierCopy count:1];
+  v9 = [(PPSocialHighlightStorage *)self attributionsForIdentifiers:v8 error:error, identifierCopy, v14];
+  v10 = [v9 objectForKeyedSubscript:identifierCopy2];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)rankedHighlightsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 applicationIdentifiers:(id)a6 error:(id *)a7
+- (id)rankedHighlightsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers error:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v58 = a5;
-  v63 = a6;
+  clientCopy = client;
+  variantCopy = variant;
+  identifiersCopy = identifiers;
   v81[0] = @"client";
   v81[1] = @"limit";
-  v82[0] = v11;
-  v57 = a3;
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v82[0] = clientCopy;
+  limitCopy = limit;
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
   v82[1] = v12;
   v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:v81 count:2];
 
@@ -2435,24 +2435,24 @@ void __61__PPSocialHighlightStorage_attributionsForIdentifiers_error___block_inv
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *&buf[4] = v11;
+    *&buf[4] = clientCopy;
     _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_INFO, "PPSocialHighlightStorage: fetching rankedHighlights for client %@", buf, 0xCu);
   }
 
   v65 = objc_opt_new();
-  if ([(PPSocialHighlightStorage *)self _isCollaborationEntitlementPresentForApplicationIdentifiers:v63])
+  if ([(PPSocialHighlightStorage *)self _isCollaborationEntitlementPresentForApplicationIdentifiers:identifiersCopy])
   {
     v14 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = clientCopy;
       *&buf[12] = 2112;
       *&buf[14] = @"collaborations";
       _os_log_impl(&dword_23224A000, v14, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: Overwriting client identifier %@ to %@", buf, 0x16u);
     }
 
-    v11 = @"collaborations";
+    clientCopy = @"collaborations";
   }
 
   v74 = 0;
@@ -2470,25 +2470,25 @@ void __61__PPSocialHighlightStorage_attributionsForIdentifiers_error___block_inv
   v73 = &v74;
   dsema = v15;
   v72 = dsema;
-  [PPSocialHighlightCache cachedRankedHighlightsForClient:v11 variant:v71 completion:?];
+  [PPSocialHighlightCache cachedRankedHighlightsForClient:clientCopy variant:v71 completion:?];
   v70 = 0;
-  v61 = [(PPSocialHighlightStorage *)self _rankableItemsForClient:v11 variant:v58 applicationIdentifiers:v63 limit:a3 error:&v70];
-  if (a7)
+  v61 = [(PPSocialHighlightStorage *)self _rankableItemsForClient:clientCopy variant:variantCopy applicationIdentifiers:identifiersCopy limit:limit error:&v70];
+  if (error)
   {
-    *a7 = v70;
+    *error = v70;
   }
 
-  v17 = [v61 first];
-  v62 = [v61 second];
-  v60 = v11;
-  if (v61 && v17 && v62)
+  first = [v61 first];
+  second = [v61 second];
+  v60 = clientCopy;
+  if (v61 && first && second)
   {
-    v55 = v17;
+    v55 = first;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v18 = v62;
+    v18 = second;
     v19 = [v18 countByEnumeratingWithState:&v66 objects:v80 count:16];
     if (v19)
     {
@@ -2505,8 +2505,8 @@ void __61__PPSocialHighlightStorage_attributionsForIdentifiers_error___block_inv
           v22 = *(*(&v66 + 1) + 8 * i);
           v23 = objc_autoreleasePoolPush();
           v24 = [v18 objectForKeyedSubscript:v22];
-          v25 = [v24 allValues];
-          v26 = [v25 sortedArrayUsingComparator:&__block_literal_global_388];
+          allValues = [v24 allValues];
+          v26 = [allValues sortedArrayUsingComparator:&__block_literal_global_388];
           v27 = [v26 _pas_mappedArrayWithTransform:&__block_literal_global_391];
 
           v28 = pp_social_highlights_log_handle();
@@ -2533,8 +2533,8 @@ void __61__PPSocialHighlightStorage_attributionsForIdentifiers_error___block_inv
     v30 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
-      v31 = [v61 first];
-      v32 = [v31 count];
+      first2 = [v61 first];
+      v32 = [first2 count];
       *buf = 134217984;
       *&buf[4] = v32;
       _os_log_impl(&dword_23224A000, v30, OS_LOG_TYPE_INFO, "PPSocialHighlightStorage: Social rankable highlights count: %tu", buf, 0xCu);
@@ -2621,8 +2621,8 @@ void __61__PPSocialHighlightStorage_attributionsForIdentifiers_error___block_inv
       v41 = v39;
     }
 
-    v43 = [(PPSocialHighlightStorage *)self deduplicateAndSortRankedHighlights:v41 attributionLookup:v65 limit:v57 client:v60, v55];
-    v17 = v41;
+    v43 = [(PPSocialHighlightStorage *)self deduplicateAndSortRankedHighlights:v41 attributionLookup:v65 limit:limitCopy client:v60, v55];
+    first = v41;
   }
 
   else
@@ -2660,12 +2660,12 @@ uint64_t __98__PPSocialHighlightStorage_rankedHighlightsWithLimit_client_variant
   return v7;
 }
 
-- (id)featurizeRankedHighlights:(id)a3
+- (id)featurizeRankedHighlights:(id)highlights
 {
-  v4 = a3;
+  highlightsCopy = highlights;
   v5 = MEMORY[0x277CFE0C0];
-  v6 = [MEMORY[0x277CFE0C0] defaultDatabaseDirectory];
-  v7 = [v5 storeWithDirectory:v6 readOnly:1];
+  defaultDatabaseDirectory = [MEMORY[0x277CFE0C0] defaultDatabaseDirectory];
+  v7 = [v5 storeWithDirectory:defaultDatabaseDirectory readOnly:1];
 
   v8 = +[PPLocalTopicStore defaultStore];
   v9 = +[PPLocalContactStore defaultStore];
@@ -2687,30 +2687,30 @@ uint64_t __98__PPSocialHighlightStorage_rankedHighlightsWithLimit_client_variant
   }
 
   v14 = [PPSocialHighlightFeaturizer alloc];
-  v15 = [v9 cachedSignificantContactHandles];
-  if (v15)
+  cachedSignificantContactHandles = [v9 cachedSignificantContactHandles];
+  if (cachedSignificantContactHandles)
   {
-    v16 = [(PPSocialHighlightFeaturizer *)v14 initWithFeedbackPublisher:v11 topicStore:v8 interactionStore:v7 significantContactHandles:v15 features:v12 highlights:v4];
+    v16 = [(PPSocialHighlightFeaturizer *)v14 initWithFeedbackPublisher:v11 topicStore:v8 interactionStore:v7 significantContactHandles:cachedSignificantContactHandles features:v12 highlights:highlightsCopy];
   }
 
   else
   {
     v17 = objc_opt_new();
-    v16 = [(PPSocialHighlightFeaturizer *)v14 initWithFeedbackPublisher:v11 topicStore:v8 interactionStore:v7 significantContactHandles:v17 features:v12 highlights:v4];
+    v16 = [(PPSocialHighlightFeaturizer *)v14 initWithFeedbackPublisher:v11 topicStore:v8 interactionStore:v7 significantContactHandles:v17 features:v12 highlights:highlightsCopy];
   }
 
-  v18 = [(PPSocialHighlightFeaturizer *)v16 featurizeHighlights:v4];
+  v18 = [(PPSocialHighlightFeaturizer *)v16 featurizeHighlights:highlightsCopy];
 
   return v18;
 }
 
-- (id)sharedContentForClient:(id)a3 variant:(id)a4 applicationIdentifiers:(id)a5 limit:(unint64_t)a6 autoDonatingChatIdentifiers:(id)a7 error:(id *)a8
+- (id)sharedContentForClient:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers limit:(unint64_t)limit autoDonatingChatIdentifiers:(id)chatIdentifiers error:(id *)error
 {
   v60[4] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  clientCopy = client;
+  variantCopy = variant;
+  identifiersCopy = identifiers;
+  chatIdentifiersCopy = chatIdentifiers;
   v18 = pp_social_highlights_signpost_handle();
   v19 = os_signpost_id_generate(v18);
 
@@ -2724,7 +2724,7 @@ uint64_t __98__PPSocialHighlightStorage_rankedHighlightsWithLimit_client_variant
 
   v22 = +[PPConfiguration sharedInstance];
   [v22 socialHighlightDecayInterval];
-  v47 = [(PPSocialHighlightStorage *)self sharedContentFromChats:v17 dateRange:v16 applicationIdentifiers:a8 error:?];
+  v47 = [(PPSocialHighlightStorage *)self sharedContentFromChats:chatIdentifiersCopy dateRange:identifiersCopy applicationIdentifiers:error error:?];
 
   v23 = pp_social_highlights_signpost_handle();
   v24 = v23;
@@ -2734,10 +2734,10 @@ uint64_t __98__PPSocialHighlightStorage_rankedHighlightsWithLimit_client_variant
     _os_signpost_emit_with_name_impl(&dword_23224A000, v24, OS_SIGNPOST_INTERVAL_END, v19, "Storage.sharedContentFromChats", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v60[0] = v14;
+  v60[0] = clientCopy;
   v59[0] = @"client";
   v59[1] = @"limit";
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
   v60[1] = v25;
   v60[2] = &unk_284784EF0;
   v59[2] = @"maximumResultCount";
@@ -2764,8 +2764,8 @@ uint64_t __98__PPSocialHighlightStorage_rankedHighlightsWithLimit_client_variant
     v32 = MEMORY[0x277CBEBF8];
   }
 
-  v33 = [v16 containsObject:@"*"];
-  v34 = [v16 containsObject:@"collaborations"];
+  v33 = [identifiersCopy containsObject:@"*"];
+  v34 = [identifiersCopy containsObject:@"collaborations"];
   v35 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
   {
@@ -2776,7 +2776,7 @@ uint64_t __98__PPSocialHighlightStorage_rankedHighlightsWithLimit_client_variant
     _os_log_impl(&dword_23224A000, v35, OS_LOG_TYPE_INFO, "PPSocialHighlightStorage: kPPAccessWildCard: %u, kPPAllCollaborations: %u entitlements detected", buf, 0xEu);
   }
 
-  v36 = [(PPSocialHighlightStorage *)self _screenTimeConversation];
+  _screenTimeConversation = [(PPSocialHighlightStorage *)self _screenTimeConversation];
   v37 = objc_opt_new();
   [(PPSocialHighlightStorageUtilities *)self->_socialHighlightStorageUtils clearCache];
   v48[0] = MEMORY[0x277D85DD0];
@@ -2784,18 +2784,18 @@ uint64_t __98__PPSocialHighlightStorage_rankedHighlightsWithLimit_client_variant
   v48[2] = __122__PPSocialHighlightStorage_sharedContentForClient_variant_applicationIdentifiers_limit_autoDonatingChatIdentifiers_error___block_invoke;
   v48[3] = &unk_2789780E0;
   v48[4] = self;
-  v49 = v16;
-  v50 = v14;
+  v49 = identifiersCopy;
+  v50 = clientCopy;
   v51 = v32;
   v52 = v37;
-  v53 = v15;
-  v54 = v36;
-  v38 = v36;
-  v39 = v15;
+  v53 = variantCopy;
+  v54 = _screenTimeConversation;
+  v38 = _screenTimeConversation;
+  v39 = variantCopy;
   v40 = v37;
   v41 = v32;
-  v42 = v14;
-  v43 = v16;
+  v42 = clientCopy;
+  v43 = identifiersCopy;
   v44 = [v47 _pas_filteredArrayWithTest:v48];
   [(PPSocialHighlightStorage *)self freezeAppLinksCache];
 
@@ -2903,13 +2903,13 @@ LABEL_9:
   return v4;
 }
 
-- (id)_rankableItemsForClient:(id)a3 variant:(id)a4 applicationIdentifiers:(id)a5 limit:(unint64_t)a6 error:(id *)a7
+- (id)_rankableItemsForClient:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers limit:(unint64_t)limit error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if ([(PPSocialHighlightStorage *)self _isCollaborationEntitlementPresentForApplicationIdentifiers:v14])
+  clientCopy = client;
+  variantCopy = variant;
+  identifiersCopy = identifiers;
+  if ([(PPSocialHighlightStorage *)self _isCollaborationEntitlementPresentForApplicationIdentifiers:identifiersCopy])
   {
     v15 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2925,7 +2925,7 @@ LABEL_9:
   else
   {
     v25 = 0;
-    v17 = [(PPSocialHighlightStorage *)self automaticSharingEnabledForClient:v12 error:&v25];
+    v17 = [(PPSocialHighlightStorage *)self automaticSharingEnabledForClient:clientCopy error:&v25];
     v16 = v25;
     if (v17 != 2)
     {
@@ -2947,14 +2947,14 @@ LABEL_9:
   if (v18)
   {
 LABEL_7:
-    v20 = [(PPSocialHighlightStorage *)self _rankableItemsForClient:v12 variant:v13 applicationIdentifiers:v14 autoDonatingChatIdentifiers:v18 limit:a6 error:a7];
+    v20 = [(PPSocialHighlightStorage *)self _rankableItemsForClient:clientCopy variant:variantCopy applicationIdentifiers:identifiersCopy autoDonatingChatIdentifiers:v18 limit:limit error:error];
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (a7)
+  if (error)
   {
-    objc_storeStrong(a7, v16);
+    objc_storeStrong(error, v16);
   }
 
   v21 = pp_social_highlights_log_handle();
@@ -2973,14 +2973,14 @@ LABEL_14:
   return v20;
 }
 
-- (id)_rankableItemsForClient:(id)a3 variant:(id)a4 applicationIdentifiers:(id)a5 autoDonatingChatIdentifiers:(id)a6 limit:(unint64_t)a7 error:(id *)a8
+- (id)_rankableItemsForClient:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers autoDonatingChatIdentifiers:(id)chatIdentifiers limit:(unint64_t)limit error:(id *)error
 {
   v99 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v85 = a6;
-  v17 = [PPSocialHighlightStorage sharedContentForClient:"sharedContentForClient:variant:applicationIdentifiers:limit:autoDonatingChatIdentifiers:error:" variant:v14 applicationIdentifiers:v15 limit:v16 autoDonatingChatIdentifiers:a7 error:?];
+  clientCopy = client;
+  variantCopy = variant;
+  identifiersCopy = identifiers;
+  chatIdentifiersCopy = chatIdentifiers;
+  v17 = [PPSocialHighlightStorage sharedContentForClient:"sharedContentForClient:variant:applicationIdentifiers:limit:autoDonatingChatIdentifiers:error:" variant:clientCopy applicationIdentifiers:variantCopy limit:identifiersCopy autoDonatingChatIdentifiers:limit error:?];
   v18 = [v17 sortedArrayUsingComparator:&__block_literal_global_357];
   v19 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -3026,10 +3026,10 @@ LABEL_14:
     {
       v27 = *v90;
       v77 = *MEMORY[0x277CC24C0];
-      v79 = v15;
-      v80 = v14;
+      v79 = variantCopy;
+      v80 = clientCopy;
       v82 = v25;
-      v78 = v16;
+      v78 = identifiersCopy;
       v84 = *v90;
       do
       {
@@ -3042,16 +3042,16 @@ LABEL_14:
 
           v29 = *(*(&v89 + 1) + 8 * i);
           v30 = objc_autoreleasePoolPush();
-          v31 = [v29 attributeSet];
-          v32 = [v31 URL];
+          attributeSet = [v29 attributeSet];
+          v32 = [attributeSet URL];
 
           if (v32)
           {
             v88 = v30;
-            v33 = [v29 uniqueIdentifier];
-            v34 = [v25 objectForKeyedSubscript:v33];
+            uniqueIdentifier = [v29 uniqueIdentifier];
+            v34 = [v25 objectForKeyedSubscript:uniqueIdentifier];
             v35 = v34;
-            if (v33)
+            if (uniqueIdentifier)
             {
               v36 = v34 == 0;
             }
@@ -3067,14 +3067,14 @@ LABEL_14:
               if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v95 = v33;
+                v95 = uniqueIdentifier;
                 _os_log_impl(&dword_23224A000, v37, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: Failed to fetch attribution for identifier: %@", buf, 0xCu);
               }
             }
 
             else
             {
-              v38 = [PPRankableSocialHighlightUtils rankableHighlightFromSearchableItem:v29 attribution:v34 autoDonatingChats:v85 applicationIdentifiers:v16 clientIdentifier:v14 variant:v15];
+              v38 = [PPRankableSocialHighlightUtils rankableHighlightFromSearchableItem:v29 attribution:v34 autoDonatingChats:chatIdentifiersCopy applicationIdentifiers:identifiersCopy clientIdentifier:clientCopy variant:variantCopy];
               v37 = v38;
               if (v38 && ([v38 highlightIdentifier], v39 = objc_claimAutoreleasedReturnValue(), v39, v39))
               {
@@ -3082,68 +3082,68 @@ LABEL_14:
                 v40 = pp_social_highlights_log_handle();
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
                 {
-                  v41 = [v37 highlightIdentifier];
+                  highlightIdentifier = [v37 highlightIdentifier];
                   *buf = 138412290;
-                  v95 = v41;
+                  v95 = highlightIdentifier;
                   _os_log_impl(&dword_23224A000, v40, OS_LOG_TYPE_INFO, "PPSocialHighlightStorage: CoreSpotlight fetched highlight with identifier: %@", buf, 0xCu);
                 }
 
-                v42 = [v37 highlightIdentifier];
-                v43 = [v83 objectForKeyedSubscript:v42];
+                highlightIdentifier2 = [v37 highlightIdentifier];
+                v43 = [v83 objectForKeyedSubscript:highlightIdentifier2];
 
                 if (!v43)
                 {
                   v44 = objc_opt_new();
-                  v45 = [v37 highlightIdentifier];
-                  [v83 setObject:v44 forKeyedSubscript:v45];
+                  highlightIdentifier3 = [v37 highlightIdentifier];
+                  [v83 setObject:v44 forKeyedSubscript:highlightIdentifier3];
                 }
 
-                v46 = [v29 attributeSet];
-                v47 = [v46 attributeForKey:v77];
+                attributeSet2 = [v29 attributeSet];
+                v47 = [attributeSet2 attributeForKey:v77];
 
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v48 = [v47 firstObject];
+                  firstObject = [v47 firstObject];
                 }
 
                 else
                 {
-                  v48 = 0;
+                  firstObject = 0;
                 }
 
                 v51 = objc_alloc(MEMORY[0x277CCACA8]);
-                v52 = [v35 conversationIdentifier];
-                v53 = v52;
-                if (v48)
+                conversationIdentifier = [v35 conversationIdentifier];
+                v53 = conversationIdentifier;
+                if (firstObject)
                 {
-                  v54 = [v51 initWithFormat:@"%@_%@", v52, v48, spid];
+                  spid = [v51 initWithFormat:@"%@_%@", conversationIdentifier, firstObject, spid];
                 }
 
                 else
                 {
-                  v55 = [v35 sender];
-                  v56 = [v55 handle];
-                  v54 = [v51 initWithFormat:@"%@_%@", v53, v56];
+                  sender = [v35 sender];
+                  handle = [sender handle];
+                  spid = [v51 initWithFormat:@"%@_%@", v53, handle];
                 }
 
-                if (v54)
+                if (spid)
                 {
-                  v57 = [v37 highlightIdentifier];
-                  v58 = [v83 objectForKeyedSubscript:v57];
-                  v59 = [v58 objectForKeyedSubscript:v54];
+                  highlightIdentifier4 = [v37 highlightIdentifier];
+                  v58 = [v83 objectForKeyedSubscript:highlightIdentifier4];
+                  v59 = [v58 objectForKeyedSubscript:spid];
 
                   if (!v59)
                   {
-                    v60 = [v37 highlightIdentifier];
-                    v61 = [v83 objectForKeyedSubscript:v60];
-                    [v61 setObject:v35 forKeyedSubscript:v54];
+                    highlightIdentifier5 = [v37 highlightIdentifier];
+                    v61 = [v83 objectForKeyedSubscript:highlightIdentifier5];
+                    [v61 setObject:v35 forKeyedSubscript:spid];
                   }
                 }
 
-                v15 = v79;
-                v14 = v80;
-                v16 = v78;
+                variantCopy = v79;
+                clientCopy = v80;
+                identifiersCopy = v78;
                 v25 = v82;
               }
 
@@ -3152,12 +3152,12 @@ LABEL_14:
                 v47 = pp_social_highlights_log_handle();
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
                 {
-                  v49 = [v29 uniqueIdentifier];
-                  v50 = [v37 highlightIdentifier];
+                  uniqueIdentifier2 = [v29 uniqueIdentifier];
+                  highlightIdentifier6 = [v37 highlightIdentifier];
                   *buf = 138412546;
-                  v95 = v49;
+                  v95 = uniqueIdentifier2;
                   v96 = 2112;
-                  v97 = v50;
+                  v97 = highlightIdentifier6;
                   _os_log_impl(&dword_23224A000, v47, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: item %@ did not produce a correct rankable highlight identifier: %@", buf, 0x16u);
 
                   v25 = v82;
@@ -3172,11 +3172,11 @@ LABEL_14:
 
           else
           {
-            v33 = pp_social_highlights_log_handle();
-            if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+            uniqueIdentifier = pp_social_highlights_log_handle();
+            if (os_log_type_enabled(uniqueIdentifier, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&dword_23224A000, v33, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: CoreSpotlight fetched highlight with missing URL.", buf, 2u);
+              _os_log_impl(&dword_23224A000, uniqueIdentifier, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: CoreSpotlight fetched highlight with missing URL.", buf, 2u);
             }
           }
 
@@ -3215,12 +3215,12 @@ LABEL_14:
     _os_log_error_impl(&dword_23224A000, v68, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: Failed to fetch attributions for identifiers: %@", buf, 0xCu);
   }
 
-  if (a8)
+  if (error)
   {
     v69 = v26;
     v65 = 0;
-    v70 = *a8;
-    *a8 = v69;
+    v70 = *error;
+    *error = v69;
     v64 = v70;
 LABEL_49:
 
@@ -3248,23 +3248,23 @@ uint64_t __123__PPSocialHighlightStorage__rankableItemsForClient_variant_applica
   return v9;
 }
 
-- (BOOL)isClientEntitledForItem:(id)a3 client:(id)a4 applicationIdentifiers:(id)a5 blockedHosts:(id)a6 iTunesOverrideChecker:(id)a7
+- (BOOL)isClientEntitledForItem:(id)item client:(id)client applicationIdentifiers:(id)identifiers blockedHosts:(id)hosts iTunesOverrideChecker:(id)checker
 {
   v139 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v110 = a6;
-  v14 = a7;
-  v15 = [v13 containsObject:@"portraitCollaborations"];
-  LODWORD(a7) = [v13 containsObject:@"*"];
-  v16 = [v13 containsObject:@"collaborations"];
-  v17 = (a7 & v16 & v15 ^ 1) & a7;
-  if (v17 != 1 || [v12 length])
+  itemCopy = item;
+  clientCopy = client;
+  identifiersCopy = identifiers;
+  hostsCopy = hosts;
+  checkerCopy = checker;
+  v15 = [identifiersCopy containsObject:@"portraitCollaborations"];
+  LODWORD(checker) = [identifiersCopy containsObject:@"*"];
+  v16 = [identifiersCopy containsObject:@"collaborations"];
+  v17 = (checker & v16 & v15 ^ 1) & checker;
+  if (v17 != 1 || [clientCopy length])
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = [v11 attributeSet];
-    v20 = [v19 URL];
+    attributeSet = [itemCopy attributeSet];
+    v20 = [attributeSet URL];
 
     v111 = v20;
     if (!v20)
@@ -3272,11 +3272,11 @@ uint64_t __123__PPSocialHighlightStorage__rankableItemsForClient_variant_applica
       v59 = pp_social_highlights_log_handle();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
       {
-        v66 = [v11 uniqueIdentifier];
+        uniqueIdentifier = [itemCopy uniqueIdentifier];
         *buf = 138412546;
-        v136 = v12;
+        v136 = clientCopy;
         v137 = 2112;
-        v138 = v66;
+        v138 = uniqueIdentifier;
         _os_log_error_impl(&dword_23224A000, v59, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: Encountered CSSearchableItem with nil resourceURL when querying for client: %@, item: %@", buf, 0x16u);
       }
 
@@ -3284,8 +3284,8 @@ uint64_t __123__PPSocialHighlightStorage__rankableItemsForClient_variant_applica
       goto LABEL_111;
     }
 
-    v21 = [v11 attributeSet];
-    v22 = [v21 attributeForKey:@"com_apple_mobilesms_resolvedURL"];
+    attributeSet2 = [itemCopy attributeSet];
+    v22 = [attributeSet2 attributeForKey:@"com_apple_mobilesms_resolvedURL"];
 
     if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -3301,8 +3301,8 @@ uint64_t __123__PPSocialHighlightStorage__rankableItemsForClient_variant_applica
     v104 = [(PPSocialHighlightStorage *)self applicationIdentifiersForResourceURL:v111 resolvedURL:v23];
     if (v104)
     {
-      v91 = [PPRankableSocialHighlightUtils isSearchableItemCollaboration:v11];
-      if ((v16 & v91 & 1) != 0 && (v15 & 1) == [v13 containsObject:@"*"])
+      v91 = [PPRankableSocialHighlightUtils isSearchableItemCollaboration:itemCopy];
+      if ((v16 & v91 & 1) != 0 && (v15 & 1) == [identifiersCopy containsObject:@"*"])
       {
         v62 = 1;
         v59 = v111;
@@ -3313,7 +3313,7 @@ LABEL_111:
         goto LABEL_112;
       }
 
-      v101 = v14;
+      v101 = checkerCopy;
       v129 = 0u;
       v130 = 0u;
       v127 = 0u;
@@ -3326,7 +3326,7 @@ LABEL_111:
       {
         v106 = *v128;
         v96 = *MEMORY[0x277D3A5B8];
-        v92 = v11;
+        v92 = itemCopy;
         v95 = *MEMORY[0x277D3A5D8];
         v102 = v24;
         v87 = v22;
@@ -3342,22 +3342,22 @@ LABEL_111:
 
             v27 = *(*(&v127 + 1) + 8 * i);
             v112 = objc_autoreleasePoolPush();
-            v28 = [v27 first];
-            v29 = [v27 second];
-            v30 = [v29 BOOLValue];
+            first = [v27 first];
+            second = [v27 second];
+            bOOLValue = [second BOOLValue];
 
-            if (v30)
+            if (bOOLValue)
             {
-              if ([v28 isEqualToString:v96] && ((-[NSObject nr_isWebURL](v111, "nr_isWebURL") & 1) != 0 || (objc_msgSend(v103, "nr_isWebURL") & 1) != 0))
+              if ([first isEqualToString:v96] && ((-[NSObject nr_isWebURL](v111, "nr_isWebURL") & 1) != 0 || (objc_msgSend(v103, "nr_isWebURL") & 1) != 0))
               {
                 v98 = 0;
               }
 
-              else if ([v28 isEqualToString:v95])
+              else if ([first isEqualToString:v95])
               {
                 context = objc_autoreleasePoolPush();
-                v31 = [v11 attributeSet];
-                v32 = [v31 attributeForKey:@"com_apple_mobilesms_ckBundleIDs"];
+                attributeSet3 = [itemCopy attributeSet];
+                v32 = [attributeSet3 attributeForKey:@"com_apple_mobilesms_ckBundleIDs"];
 
                 objc_opt_class();
                 v89 = v32;
@@ -3366,10 +3366,10 @@ LABEL_111:
                   v37 = pp_social_highlights_log_handle();
                   if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
                   {
-                    v11 = v92;
-                    v86 = [v92 uniqueIdentifier];
+                    itemCopy = v92;
+                    uniqueIdentifier2 = [v92 uniqueIdentifier];
                     *buf = 138412290;
-                    v136 = v86;
+                    v136 = uniqueIdentifier2;
                     _os_log_error_impl(&dword_23224A000, v37, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: could not find any CKBundleIDs to check for %@", buf, 0xCu);
 
                     v62 = 0;
@@ -3379,10 +3379,10 @@ LABEL_111:
                   {
                     v62 = 0;
 LABEL_79:
-                    v11 = v92;
+                    itemCopy = v92;
                   }
 
-                  v14 = v101;
+                  checkerCopy = v101;
                   v18 = v97;
                   v59 = v111;
 
@@ -3421,7 +3421,7 @@ LABEL_79:
                       }
 
                       v42 = *(*(&v123 + 1) + 8 * j);
-                      if (v17 | [v13 containsObject:v42]) == 1 && (!-[NSObject length](v12, "length") || (-[NSObject isEqualToString:](v12, "isEqualToString:", v42)))
+                      if (v17 | [identifiersCopy containsObject:v42]) == 1 && (!-[NSObject length](clientCopy, "length") || (-[NSObject isEqualToString:](clientCopy, "isEqualToString:", v42)))
                       {
 
                         v62 = 1;
@@ -3440,7 +3440,7 @@ LABEL_79:
                 }
 
                 objc_autoreleasePoolPop(context);
-                v11 = v92;
+                itemCopy = v92;
                 v22 = v87;
                 v24 = v102;
               }
@@ -3452,10 +3452,10 @@ LABEL_79:
             }
 
             v43 = v112;
-            if (v17 | [v13 containsObject:v28]) == 1 && (!-[NSObject length](v12, "length") || (-[NSObject isEqualToString:](v12, "isEqualToString:", v28)))
+            if (v17 | [identifiersCopy containsObject:first]) == 1 && (!-[NSObject length](clientCopy, "length") || (-[NSObject isEqualToString:](clientCopy, "isEqualToString:", first)))
             {
               v62 = 1;
-              v14 = v101;
+              checkerCopy = v101;
               v18 = v97;
               v59 = v111;
 LABEL_83:
@@ -3479,14 +3479,14 @@ LABEL_83:
         }
       }
 
-      v14 = v101;
+      checkerCopy = v101;
       if (((v25 | v91) & 1) == 0)
       {
         v44 = [v101 overrideForURL:v111];
         v45 = v44;
         if (v44 && ([v44 isEqual:v111]& 1) == 0)
         {
-          v67 = [MEMORY[0x277CC1E80] defaultWorkspace];
+          defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
           v68 = pp_social_highlights_log_handle();
           if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
           {
@@ -3496,12 +3496,12 @@ LABEL_83:
           }
 
           v88 = v22;
-          v25 = v12;
-          v94 = v11;
+          v25 = clientCopy;
+          v94 = itemCopy;
 
-          v114 = v67;
+          v114 = defaultWorkspace;
           v102 = v45;
-          v69 = [v67 applicationsAvailableForOpeningURL:v45];
+          v69 = [defaultWorkspace applicationsAvailableForOpeningURL:v45];
           v70 = pp_social_highlights_log_handle();
           if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
           {
@@ -3530,27 +3530,27 @@ LABEL_83:
                   objc_enumerationMutation(v71);
                 }
 
-                v76 = [*(*(&v119 + 1) + 8 * k) correspondingApplicationRecord];
-                v77 = [v76 applicationIdentifier];
-                v78 = v17 | [v13 containsObject:v77];
+                correspondingApplicationRecord = [*(*(&v119 + 1) + 8 * k) correspondingApplicationRecord];
+                applicationIdentifier = [correspondingApplicationRecord applicationIdentifier];
+                v78 = v17 | [identifiersCopy containsObject:applicationIdentifier];
 
                 if (v78 == 1)
                 {
-                  if (!-[NSObject length](v25, "length") || ([v76 applicationIdentifier], v79 = objc_claimAutoreleasedReturnValue(), v80 = -[NSObject isEqualToString:](v25, "isEqualToString:", v79), v79, v80))
+                  if (!-[NSObject length](v25, "length") || ([correspondingApplicationRecord applicationIdentifier], v79 = objc_claimAutoreleasedReturnValue(), v80 = -[NSObject isEqualToString:](v25, "isEqualToString:", v79), v79, v80))
                   {
                     v82 = pp_social_highlights_log_handle();
                     if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
                     {
-                      v83 = [v76 applicationIdentifier];
+                      applicationIdentifier2 = [correspondingApplicationRecord applicationIdentifier];
                       *buf = 138412290;
-                      v136 = v83;
+                      v136 = applicationIdentifier2;
                       _os_log_impl(&dword_23224A000, v82, OS_LOG_TYPE_DEFAULT, "Found app supporting URL override but not Universal Links: %@", buf, 0xCu);
                     }
 
                     v62 = 1;
-                    v11 = v94;
-                    v12 = v25;
-                    v14 = v101;
+                    itemCopy = v94;
+                    clientCopy = v25;
+                    checkerCopy = v101;
                     v18 = v97;
                     v59 = v111;
                     v22 = v88;
@@ -3569,9 +3569,9 @@ LABEL_83:
             }
           }
 
-          v11 = v94;
-          v12 = v25;
-          v14 = v101;
+          itemCopy = v94;
+          clientCopy = v25;
+          checkerCopy = v101;
           v45 = v102;
           v18 = v97;
           v22 = v88;
@@ -3584,23 +3584,23 @@ LABEL_83:
         }
       }
 
-      v46 = [v11 attributeSet];
-      v47 = [v46 syndicationStatus];
+      attributeSet4 = [itemCopy attributeSet];
+      syndicationStatus = [attributeSet4 syndicationStatus];
 
       objc_opt_class();
-      v102 = v47;
-      if ((objc_opt_isKindOfClass() & 1) == 0 || [v47 unsignedIntegerValue]!= 2)
+      v102 = syndicationStatus;
+      if ((objc_opt_isKindOfClass() & 1) == 0 || [syndicationStatus unsignedIntegerValue]!= 2)
       {
-        v113 = [v111 host];
-        if (v113)
+        host = [v111 host];
+        if (host)
         {
-          v107 = v12;
-          v93 = v11;
+          v107 = clientCopy;
+          v93 = itemCopy;
           v117 = 0u;
           v118 = 0u;
           v115 = 0u;
           v116 = 0u;
-          obja = v110;
+          obja = hostsCopy;
           v48 = [obja countByEnumeratingWithState:&v115 objects:v131 count:16];
           if (v48)
           {
@@ -3610,7 +3610,7 @@ LABEL_83:
             while (2)
             {
               v51 = 0;
-              v52 = v110;
+              v52 = hostsCopy;
               do
               {
                 v53 = v22;
@@ -3634,21 +3634,21 @@ LABEL_83:
 
                 v58 = v57;
                 objc_autoreleasePoolPop(v56);
-                if (([v113 isEqual:v55] & 1) != 0 || objc_msgSend(v113, "hasSuffix:", v58))
+                if (([host isEqual:v55] & 1) != 0 || objc_msgSend(host, "hasSuffix:", v58))
                 {
                   v64 = pp_social_highlights_log_handle();
-                  v11 = v93;
+                  itemCopy = v93;
                   v22 = v53;
                   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                   {
-                    v65 = [v93 uniqueIdentifier];
+                    uniqueIdentifier3 = [v93 uniqueIdentifier];
                     *buf = 138412290;
-                    v136 = v65;
+                    v136 = uniqueIdentifier3;
                     _os_log_impl(&dword_23224A000, v64, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: Suppressing URL with blocked host, item: %@", buf, 0xCu);
                   }
 
-                  v12 = v107;
-                  v14 = v101;
+                  clientCopy = v107;
+                  checkerCopy = v101;
                   v18 = v97;
                   v59 = v111;
                   goto LABEL_87;
@@ -3656,7 +3656,7 @@ LABEL_83:
 
                 ++v51;
                 v52 = v54;
-                v14 = v101;
+                checkerCopy = v101;
                 v18 = v97;
                 v22 = v53;
               }
@@ -3673,23 +3673,23 @@ LABEL_83:
             }
           }
 
-          v11 = v93;
-          v12 = v107;
+          itemCopy = v93;
+          clientCopy = v107;
         }
       }
 
       if (!(v25 & 1 | ((v17 & 1) == 0)))
       {
         v59 = v111;
-        if ([v13 containsObject:@"internal"] && !-[NSObject isEqualToString:](v12, "isEqualToString:", *MEMORY[0x277D3A5D0]) || -[NSObject isEqualToString:](v12, "isEqualToString:", *MEMORY[0x277D3A5E0]))
+        if ([identifiersCopy containsObject:@"internal"] && !-[NSObject isEqualToString:](clientCopy, "isEqualToString:", *MEMORY[0x277D3A5D0]) || -[NSObject isEqualToString:](clientCopy, "isEqualToString:", *MEMORY[0x277D3A5E0]))
         {
           v60 = pp_social_highlights_log_handle();
-          v113 = v60;
+          host = v60;
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
-            v61 = [v11 uniqueIdentifier];
+            uniqueIdentifier4 = [itemCopy uniqueIdentifier];
             *buf = 138412290;
-            v136 = v61;
+            v136 = uniqueIdentifier4;
             _os_log_impl(&dword_23224A000, v60, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: Suppressing link that is not supported by installed app, wildcard entitlement is present and client is not Safari or TV: %@", buf, 0xCu);
           }
 
@@ -3713,11 +3713,11 @@ LABEL_87:
       v102 = v63;
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
-        v81 = [v11 uniqueIdentifier];
+        uniqueIdentifier5 = [itemCopy uniqueIdentifier];
         *buf = 138412546;
-        v136 = v12;
+        v136 = clientCopy;
         v137 = 2112;
-        v138 = v81;
+        v138 = uniqueIdentifier5;
         _os_log_error_impl(&dword_23224A000, v63, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: App Links could not be fetched for client: %@, item: %@", buf, 0x16u);
       }
     }
@@ -3736,30 +3736,30 @@ LABEL_112:
   return v62;
 }
 
-- (BOOL)isClientEntitledForItem:(id)a3 client:(id)a4 applicationIdentifiers:(id)a5 blockedHosts:(id)a6
+- (BOOL)isClientEntitledForItem:(id)item client:(id)client applicationIdentifiers:(id)identifiers blockedHosts:(id)hosts
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  hostsCopy = hosts;
+  identifiersCopy = identifiers;
+  clientCopy = client;
+  itemCopy = item;
   v14 = objc_opt_new();
-  LOBYTE(self) = [(PPSocialHighlightStorage *)self isClientEntitledForItem:v13 client:v12 applicationIdentifiers:v11 blockedHosts:v10 iTunesOverrideChecker:v14];
+  LOBYTE(self) = [(PPSocialHighlightStorage *)self isClientEntitledForItem:itemCopy client:clientCopy applicationIdentifiers:identifiersCopy blockedHosts:hostsCopy iTunesOverrideChecker:v14];
 
   return self;
 }
 
-- (BOOL)isValidHighlight:(id)a3 applicationIdentifiers:(id)a4
+- (BOOL)isValidHighlight:(id)highlight applicationIdentifiers:(id)identifiers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 attributeSet];
-  v8 = [v7 syndicationStatus];
+  highlightCopy = highlight;
+  identifiersCopy = identifiers;
+  attributeSet = [highlightCopy attributeSet];
+  syndicationStatus = [attributeSet syndicationStatus];
 
   objc_opt_class();
-  v9 = (objc_opt_isKindOfClass() & 1) != 0 && [v8 unsignedIntegerValue] == 2;
-  v10 = [v5 attributeSet];
-  v11 = [v10 attributeForKey:@"com_apple_mobilesms_fromMe"];
+  v9 = (objc_opt_isKindOfClass() & 1) != 0 && [syndicationStatus unsignedIntegerValue] == 2;
+  attributeSet2 = [highlightCopy attributeSet];
+  v11 = [attributeSet2 attributeForKey:@"com_apple_mobilesms_fromMe"];
 
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -3771,8 +3771,8 @@ LABEL_112:
     LOBYTE(v12) = 1;
   }
 
-  v13 = [PPRankableSocialHighlightUtils isSearchableItemCollaboration:v5];
-  v14 = [v6 containsObject:@"fromMe"];
+  v13 = [PPRankableSocialHighlightUtils isSearchableItemCollaboration:highlightCopy];
+  v14 = [identifiersCopy containsObject:@"fromMe"];
 
   v15 = v12 | v14 | v13;
   if ((v15 & 1) == 0)
@@ -3780,9 +3780,9 @@ LABEL_112:
     v16 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v5 uniqueIdentifier];
+      uniqueIdentifier = [highlightCopy uniqueIdentifier];
       v21 = 138412290;
-      v22 = v17;
+      v22 = uniqueIdentifier;
       v18 = "PPSocialHighlightStorage: Suppressing outgoing item since it is not pinned: %@";
       goto LABEL_14;
     }
@@ -3797,9 +3797,9 @@ LABEL_15:
     v16 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v5 uniqueIdentifier];
+      uniqueIdentifier = [highlightCopy uniqueIdentifier];
       v21 = 138412290;
-      v22 = v17;
+      v22 = uniqueIdentifier;
       v18 = "PPSocialHighlightStorage: Including outgoing item since fromMe entitlement is present: %@";
 LABEL_14:
       _os_log_impl(&dword_23224A000, v16, OS_LOG_TYPE_DEFAULT, v18, &v21, 0xCu);
@@ -3816,25 +3816,25 @@ LABEL_16:
   return v15 & 1;
 }
 
-- (id)applicationIdentifiersForResourceURL:(id)a3 resolvedURL:(id)a4
+- (id)applicationIdentifiersForResourceURL:(id)l resolvedURL:(id)rL
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = objc_opt_new();
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 0;
-  v25 = self;
+  selfCopy = self;
   lsAppLinkCache = self->_lsAppLinkCache;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __77__PPSocialHighlightStorage_applicationIdentifiersForResourceURL_resolvedURL___block_invoke;
   v39[3] = &unk_278978070;
-  v27 = v6;
+  v27 = lCopy;
   v40 = v27;
-  v28 = v7;
+  v28 = rLCopy;
   v41 = v28;
   v43 = &v44;
   v30 = v8;
@@ -3865,12 +3865,12 @@ LABEL_16:
             }
 
             v14 = *(*(&v35 + 1) + 8 * i);
-            v15 = [v14 targetApplicationRecord];
-            v16 = [v15 applicationIdentifier];
+            targetApplicationRecord = [v14 targetApplicationRecord];
+            applicationIdentifier = [targetApplicationRecord applicationIdentifier];
 
             v17 = objc_alloc(MEMORY[0x277D42648]);
             v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "isEnabled")}];
-            v19 = [v17 initWithFirst:v16 second:v18];
+            v19 = [v17 initWithFirst:applicationIdentifier second:v18];
 
             [v10 addObject:v19];
             [v30 addObject:v19];
@@ -3883,12 +3883,12 @@ LABEL_16:
       }
     }
 
-    v20 = v25->_lsAppLinkCache;
+    v20 = selfCopy->_lsAppLinkCache;
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __77__PPSocialHighlightStorage_applicationIdentifiersForResourceURL_resolvedURL___block_invoke_2;
     v31[3] = &unk_278978098;
-    v31[4] = v25;
+    v31[4] = selfCopy;
     v32 = v27;
     v33 = v28;
     v21 = v10;
@@ -3896,12 +3896,12 @@ LABEL_16:
     [(_PASLock *)v20 runWithLockAcquired:v31];
   }
 
-  v22 = [v30 allObjects];
+  allObjects = [v30 allObjects];
 
   _Block_object_dispose(&v44, 8);
   v23 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return allObjects;
 }
 
 void __77__PPSocialHighlightStorage_applicationIdentifiersForResourceURL_resolvedURL___block_invoke(uint64_t a1, void *a2)
@@ -4197,7 +4197,7 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
   v3[1] = v5;
 }
 
-- (void)handleAppLinkChangeNotification:(id)a3
+- (void)handleAppLinkChangeNotification:(id)notification
 {
   v4 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4209,10 +4209,10 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
   [(PPSocialHighlightStorage *)self resetLSAppLinkCache];
 }
 
-- (id)allSupportedHighlightsForAutoDonatingChats:(id)a3 error:(id *)a4
+- (id)allSupportedHighlightsForAutoDonatingChats:(id)chats error:(id *)error
 {
   v40[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  chatsCopy = chats;
   v7 = *MEMORY[0x277D3A740];
   v8 = *MEMORY[0x277D3A5E0];
   v40[0] = *MEMORY[0x277D3A5B8];
@@ -4221,21 +4221,21 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
   v40[2] = *MEMORY[0x277D3A5B0];
   v40[3] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:4];
-  v11 = -[PPSocialHighlightStorage _rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:](self, "_rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:", &stru_284759D38, v7, v10, v6, [&unk_284784EF0 unsignedIntegerValue], a4);
-  v12 = [v11 first];
+  v11 = -[PPSocialHighlightStorage _rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:](self, "_rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:", &stru_284759D38, v7, v10, chatsCopy, [&unk_284784EF0 unsignedIntegerValue], error);
+  first = [v11 first];
 
-  if (v12)
+  if (first)
   {
     v13 = *MEMORY[0x277D3A5D0];
     v39[0] = @"*";
     v39[1] = @"internal";
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
-    v15 = -[PPSocialHighlightStorage _rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:](self, "_rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:", v13, v7, v14, v6, [&unk_284784EF0 unsignedIntegerValue], a4);
-    v16 = [v15 first];
+    v15 = -[PPSocialHighlightStorage _rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:](self, "_rankableItemsForClient:variant:applicationIdentifiers:autoDonatingChatIdentifiers:limit:error:", v13, v7, v14, chatsCopy, [&unk_284784EF0 unsignedIntegerValue], error);
+    first2 = [v15 first];
 
-    if (v16)
+    if (first2)
     {
-      v33 = v6;
+      v33 = chatsCopy;
       v17 = objc_opt_new();
       v18 = objc_opt_new();
       v34 = 0u;
@@ -4243,8 +4243,8 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
       v36 = 0u;
       v37 = 0u;
       v19 = objc_autoreleasePoolPush();
-      v32 = v16;
-      v20 = [v12 arrayByAddingObjectsFromArray:v16];
+      v32 = first2;
+      v20 = [first arrayByAddingObjectsFromArray:first2];
       objc_autoreleasePoolPop(v19);
       v21 = [v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v21)
@@ -4261,14 +4261,14 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
             }
 
             v25 = *(*(&v34 + 1) + 8 * i);
-            v26 = [v25 highlightIdentifier];
-            v27 = [v18 containsObject:v26];
+            highlightIdentifier = [v25 highlightIdentifier];
+            v27 = [v18 containsObject:highlightIdentifier];
 
             if ((v27 & 1) == 0)
             {
               [v17 addObject:v25];
-              v28 = [v25 highlightIdentifier];
-              [v18 addObject:v28];
+              highlightIdentifier2 = [v25 highlightIdentifier];
+              [v18 addObject:highlightIdentifier2];
             }
           }
 
@@ -4279,8 +4279,8 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
       }
 
       v29 = [v17 copy];
-      v16 = v32;
-      v6 = v33;
+      first2 = v32;
+      chatsCopy = v33;
     }
 
     else
@@ -4299,15 +4299,15 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
   return v29;
 }
 
-- (unsigned)automaticSharingEnabledForClient:(id)a3 error:(id *)a4
+- (unsigned)automaticSharingEnabledForClient:(id)client error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PPSocialHighlightStorage *)self automaticSharingEnabled];
-  if (v7 > 1)
+  clientCopy = client;
+  automaticSharingEnabled = [(PPSocialHighlightStorage *)self automaticSharingEnabled];
+  if (automaticSharingEnabled > 1)
   {
-    v10 = [(PPSocialHighlightStorage *)self _socialLayerDefaults];
-    v9 = [v10 dictionaryForKey:@"SharedWithYouApps"];
+    _socialLayerDefaults = [(PPSocialHighlightStorage *)self _socialLayerDefaults];
+    v9 = [_socialLayerDefaults dictionaryForKey:@"SharedWithYouApps"];
 
     if (!v9)
     {
@@ -4322,22 +4322,22 @@ void __47__PPSocialHighlightStorage_resetLSAppLinkCache__block_invoke(uint64_t a
       goto LABEL_22;
     }
 
-    if (![v6 length])
+    if (![clientCopy length])
     {
       LOBYTE(v8) = 2;
       goto LABEL_23;
     }
 
     v22 = 0;
-    v11 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:v6 error:&v22];
+    v11 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:clientCopy error:&v22];
     v12 = v22;
     if (v11)
     {
-      v13 = [v11 bundleIdentifier];
-      v14 = [v9 objectForKeyedSubscript:v13];
-      v15 = [v14 BOOLValue];
+      bundleIdentifier = [v11 bundleIdentifier];
+      v14 = [v9 objectForKeyedSubscript:bundleIdentifier];
+      bOOLValue = [v14 BOOLValue];
 
-      if (v15)
+      if (bOOLValue)
       {
 
         LOBYTE(v8) = 2;
@@ -4349,9 +4349,9 @@ LABEL_22:
       v18 = pp_social_highlights_log_handle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v11 bundleIdentifier];
+        bundleIdentifier2 = [v11 bundleIdentifier];
         *buf = 138412290;
-        v24 = v19;
+        v24 = bundleIdentifier2;
         _os_log_impl(&dword_23224A000, v18, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: Automatic Sharing is disabled for %@", buf, 0xCu);
       }
 
@@ -4368,11 +4368,11 @@ LABEL_22:
         _os_log_error_impl(&dword_23224A000, v16, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: LSBundleRecord query error: %@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v17 = v12;
         LOBYTE(v8) = 0;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -4384,7 +4384,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v8 = v7;
+  v8 = automaticSharingEnabled;
   v9 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -4422,15 +4422,15 @@ void __51__PPSocialHighlightStorage__screenTimeConversation__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)deduplicateAndSortRankedHighlights:(id)a3 attributionLookup:(id)a4 limit:(unint64_t)a5 client:(id)a6
+- (id)deduplicateAndSortRankedHighlights:(id)highlights attributionLookup:(id)lookup limit:(unint64_t)limit client:(id)client
 {
   v94 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v65 = a4;
-  v70 = a6;
+  highlightsCopy = highlights;
+  lookupCopy = lookup;
+  clientCopy = client;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
-  v11 = [v8 _pas_mappedArrayWithTransform:&__block_literal_global_292];
+  v11 = [highlightsCopy _pas_mappedArrayWithTransform:&__block_literal_global_292];
   v12 = objc_alloc(MEMORY[0x277CBEAC0]);
   v13 = [v11 _pas_mappedArrayWithTransform:&__block_literal_global_295];
   v74 = [v12 initWithObjects:v13 forKeys:v11];
@@ -4444,7 +4444,7 @@ void __51__PPSocialHighlightStorage__screenTimeConversation__block_invoke()
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v16 = v8;
+  v16 = highlightsCopy;
   v17 = [v16 countByEnumeratingWithState:&v81 objects:v93 count:16];
   v71 = v10;
   v72 = v16;
@@ -4462,15 +4462,15 @@ void __51__PPSocialHighlightStorage__screenTimeConversation__block_invoke()
         }
 
         v21 = *(*(&v81 + 1) + 8 * i);
-        v22 = [v21 highlightIdentifier];
+        highlightIdentifier = [v21 highlightIdentifier];
 
-        if (!v22)
+        if (!highlightIdentifier)
         {
-          v35 = pp_default_log_handle();
-          if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
+          highlightIdentifier9 = pp_default_log_handle();
+          if (os_log_type_enabled(highlightIdentifier9, OS_LOG_TYPE_FAULT))
           {
             *buf = 0;
-            _os_log_fault_impl(&dword_23224A000, v35, OS_LOG_TYPE_FAULT, "PPSocialHighlightStorage: highlight did not have a highlight identifier when queried.", buf, 2u);
+            _os_log_fault_impl(&dword_23224A000, highlightIdentifier9, OS_LOG_TYPE_FAULT, "PPSocialHighlightStorage: highlight did not have a highlight identifier when queried.", buf, 2u);
           }
 
           goto LABEL_25;
@@ -4478,27 +4478,27 @@ void __51__PPSocialHighlightStorage__screenTimeConversation__block_invoke()
 
         if ([v21 isCollaboration] && objc_msgSend(v21, "hasDomainIdentifier"))
         {
-          v23 = [v21 highlightIdentifier];
-          v24 = [v74 objectForKeyedSubscript:v23];
-          v25 = [v21 domainIdentifier];
-          v26 = [v24 objectForKeyedSubscript:v25];
+          highlightIdentifier2 = [v21 highlightIdentifier];
+          v24 = [v74 objectForKeyedSubscript:highlightIdentifier2];
+          domainIdentifier = [v21 domainIdentifier];
+          v26 = [v24 objectForKeyedSubscript:domainIdentifier];
 
-          v27 = [v21 highlightIdentifier];
-          v28 = [v74 objectForKeyedSubscript:v27];
-          v29 = [v21 domainIdentifier];
+          highlightIdentifier3 = [v21 highlightIdentifier];
+          highlightIdentifier4 = [v74 objectForKeyedSubscript:highlightIdentifier3];
+          domainIdentifier2 = [v21 domainIdentifier];
           if (v26)
           {
-            v30 = [v28 objectForKeyedSubscript:v29];
+            v30 = [highlightIdentifier4 objectForKeyedSubscript:domainIdentifier2];
 
             [v30 syndicationSecondsSinceReferenceDate];
             v32 = v31;
             [v21 syndicationSecondsSinceReferenceDate];
             if (v32 > v33)
             {
-              v28 = [v21 highlightIdentifier];
-              v29 = [v74 objectForKeyedSubscript:v28];
-              v34 = [v21 domainIdentifier];
-              [v29 setObject:v21 forKeyedSubscript:v34];
+              highlightIdentifier4 = [v21 highlightIdentifier];
+              domainIdentifier2 = [v74 objectForKeyedSubscript:highlightIdentifier4];
+              domainIdentifier3 = [v21 domainIdentifier];
+              [domainIdentifier2 setObject:v21 forKeyedSubscript:domainIdentifier3];
 
               goto LABEL_15;
             }
@@ -4506,32 +4506,32 @@ void __51__PPSocialHighlightStorage__screenTimeConversation__block_invoke()
 
           else
           {
-            [v28 setObject:v21 forKeyedSubscript:v29];
-            v30 = v27;
+            [highlightIdentifier4 setObject:v21 forKeyedSubscript:domainIdentifier2];
+            v30 = highlightIdentifier3;
 LABEL_15:
           }
 
-          v36 = [v21 highlightIdentifier];
-          v37 = [v73 objectForKeyedSubscript:v36];
-          v38 = [v21 domainIdentifier];
-          v39 = [v37 objectForKeyedSubscript:v38];
+          highlightIdentifier5 = [v21 highlightIdentifier];
+          v37 = [v73 objectForKeyedSubscript:highlightIdentifier5];
+          domainIdentifier4 = [v21 domainIdentifier];
+          v39 = [v37 objectForKeyedSubscript:domainIdentifier4];
 
-          v40 = [v21 highlightIdentifier];
-          v41 = [v73 objectForKeyedSubscript:v40];
-          v42 = [v21 domainIdentifier];
+          highlightIdentifier6 = [v21 highlightIdentifier];
+          highlightIdentifier7 = [v73 objectForKeyedSubscript:highlightIdentifier6];
+          domainIdentifier5 = [v21 domainIdentifier];
           if (v39)
           {
-            v43 = [v41 objectForKeyedSubscript:v42];
+            v43 = [highlightIdentifier7 objectForKeyedSubscript:domainIdentifier5];
 
             [v43 syndicationSecondsSinceReferenceDate];
             v45 = v44;
             [v21 syndicationSecondsSinceReferenceDate];
             if (v45 < v46)
             {
-              v41 = [v21 highlightIdentifier];
-              v42 = [v73 objectForKeyedSubscript:v41];
-              v47 = [v21 domainIdentifier];
-              [v42 setObject:v21 forKeyedSubscript:v47];
+              highlightIdentifier7 = [v21 highlightIdentifier];
+              domainIdentifier5 = [v73 objectForKeyedSubscript:highlightIdentifier7];
+              domainIdentifier6 = [v21 domainIdentifier];
+              [domainIdentifier5 setObject:v21 forKeyedSubscript:domainIdentifier6];
 
               goto LABEL_20;
             }
@@ -4541,8 +4541,8 @@ LABEL_15:
 
           else
           {
-            [v41 setObject:v21 forKeyedSubscript:v42];
-            v43 = v40;
+            [highlightIdentifier7 setObject:v21 forKeyedSubscript:domainIdentifier5];
+            v43 = highlightIdentifier6;
 LABEL_20:
             v10 = v71;
           }
@@ -4550,8 +4550,8 @@ LABEL_20:
           v16 = v72;
         }
 
-        v48 = [v21 highlightIdentifier];
-        v49 = [v9 containsObject:v48];
+        highlightIdentifier8 = [v21 highlightIdentifier];
+        v49 = [v9 containsObject:highlightIdentifier8];
 
         if (v49)
         {
@@ -4559,8 +4559,8 @@ LABEL_20:
         }
 
         [v10 addObject:v21];
-        v35 = [v21 highlightIdentifier];
-        [v9 addObject:v35];
+        highlightIdentifier9 = [v21 highlightIdentifier];
+        [v9 addObject:highlightIdentifier9];
 LABEL_25:
       }
 
@@ -4574,40 +4574,40 @@ LABEL_25:
   v76[1] = 3221225472;
   v76[2] = __94__PPSocialHighlightStorage_deduplicateAndSortRankedHighlights_attributionLookup_limit_client___block_invoke_298;
   v76[3] = &unk_278978000;
-  v66 = v65;
+  v66 = lookupCopy;
   v77 = v66;
   v75 = v74;
   v78 = v75;
   v50 = v73;
   v79 = v50;
-  v80 = self;
+  selfCopy = self;
   v51 = [v10 _pas_mappedArrayWithTransform:v76];
   v52 = +[PPConfiguration sharedInstance];
-  v53 = [v52 socialHighlightMaxNumHighlights];
+  socialHighlightMaxNumHighlights = [v52 socialHighlightMaxNumHighlights];
 
   v54 = v51;
-  if ([v51 count] > v53)
+  if ([v51 count] > socialHighlightMaxNumHighlights)
   {
-    v54 = [v51 subarrayWithRange:{0, v53, v66}];
+    v54 = [v51 subarrayWithRange:{0, socialHighlightMaxNumHighlights, v66}];
   }
 
-  v92[0] = v70;
+  v92[0] = clientCopy;
   v91[0] = @"client";
   v91[1] = @"limit";
-  v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v53, v66}];
+  v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{socialHighlightMaxNumHighlights, v66}];
   v92[1] = v55;
   v91[2] = @"portraitResultCount";
   v56 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v54, "count")}];
   v92[2] = v56;
   v91[3] = @"portraitCacheDate";
-  v57 = [(PPSocialHighlightStorage *)self lastCacheInvalidationDateForClient:v70];
-  v58 = v57;
+  v57 = [(PPSocialHighlightStorage *)self lastCacheInvalidationDateForClient:clientCopy];
+  null = v57;
   if (!v57)
   {
-    v58 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v92[3] = v58;
+  v92[3] = null;
   v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v92 forKeys:v91 count:4];
   if (!v57)
   {
@@ -4624,7 +4624,7 @@ LABEL_25:
     v87 = 2048;
     v88 = v62;
     v89 = 2112;
-    v90 = v70;
+    v90 = clientCopy;
     _os_log_impl(&dword_23224A000, v60, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: reduced %tu highlights into %tu deduplicated highlights for %@", buf, 0x20u);
   }
 
@@ -4734,22 +4734,22 @@ id __94__PPSocialHighlightStorage_deduplicateAndSortRankedHighlights_attribution
   return v3;
 }
 
-- (id)highlightFromRankableHighlight:(id)a3 attributionIdentifiers:(id)a4 earliestAttributionIdentifiers:(id)a5
+- (id)highlightFromRankableHighlight:(id)highlight attributionIdentifiers:(id)identifiers earliestAttributionIdentifiers:(id)attributionIdentifiers
 {
   v68 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  [v9 score];
+  highlightCopy = highlight;
+  identifiersCopy = identifiers;
+  attributionIdentifiersCopy = attributionIdentifiers;
+  [highlightCopy score];
   if (v12 < 0.0)
   {
     v13 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v47 = [v9 highlightIdentifier];
-      [v9 score];
+      highlightIdentifier = [highlightCopy highlightIdentifier];
+      [highlightCopy score];
       *buf = 138412546;
-      v65 = v47;
+      v65 = highlightIdentifier;
       v66 = 2048;
       v67 = v48;
       _os_log_debug_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEBUG, "PPSocialHighlightStorage: Suppressing highlight %@ due to negative score: %g", buf, 0x16u);
@@ -4759,11 +4759,11 @@ id __94__PPSocialHighlightStorage_deduplicateAndSortRankedHighlights_attribution
     goto LABEL_28;
   }
 
-  v15 = [v9 isTopKResult];
-  [v9 score];
+  isTopKResult = [highlightCopy isTopKResult];
+  [highlightCopy score];
   v17 = v16 * 0.2 + 0.8;
   v18 = v16 * 0.8;
-  if (v15)
+  if (isTopKResult)
   {
     v19 = v17;
   }
@@ -4773,15 +4773,15 @@ id __94__PPSocialHighlightStorage_deduplicateAndSortRankedHighlights_attribution
     v19 = v18;
   }
 
-  if (![v9 hasResolvedUrl] || (objc_msgSend(v9, "resolvedUrl"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "length"), v20, !v21))
+  if (![highlightCopy hasResolvedUrl] || (objc_msgSend(highlightCopy, "resolvedUrl"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "length"), v20, !v21))
   {
     v24 = 0;
     goto LABEL_13;
   }
 
   v22 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v23 = [v9 resolvedUrl];
-  v24 = [v22 initWithString:v23];
+  resolvedUrl = [highlightCopy resolvedUrl];
+  v24 = [v22 initWithString:resolvedUrl];
 
   if (!v24)
   {
@@ -4797,73 +4797,73 @@ LABEL_14:
   v25 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
-    v26 = [v9 highlightIdentifier];
+    highlightIdentifier2 = [highlightCopy highlightIdentifier];
     *buf = 138412546;
-    v65 = v26;
+    v65 = highlightIdentifier2;
     v66 = 2112;
-    v67 = v10;
+    v67 = identifiersCopy;
     _os_log_impl(&dword_23224A000, v25, OS_LOG_TYPE_INFO, "PPSocialHighlightStorage: Constructed social highlight with identifier: %@, attributionIdentifiers: %@", buf, 0x16u);
   }
 
   v27 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v28 = [v9 resourceUrl];
-  v29 = [v27 initWithString:v28];
+  resourceUrl = [highlightCopy resourceUrl];
+  v29 = [v27 initWithString:resourceUrl];
 
   v59 = v29;
   if (!v29)
   {
-    v49 = [MEMORY[0x277CCA890] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"PPSocialHighlightStorage.m" lineNumber:589 description:@"All social highlights must have a resource URL"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSocialHighlightStorage.m" lineNumber:589 description:@"All social highlights must have a resource URL"];
   }
 
   v30 = objc_alloc(MEMORY[0x277CBEAA8]);
-  [v9 syndicationSecondsSinceReferenceDate];
+  [highlightCopy syndicationSecondsSinceReferenceDate];
   v31 = [v30 initWithTimeIntervalSinceReferenceDate:?];
   v61 = v24;
-  if ([v9 isCollaboration])
+  if ([highlightCopy isCollaboration])
   {
-    v32 = [v9 applicationIdentifiers];
-    v33 = [v32 containsObject:@"com.apple.private.sociallayer.highlights"];
+    applicationIdentifiers = [highlightCopy applicationIdentifiers];
+    v33 = [applicationIdentifiers containsObject:@"com.apple.private.sociallayer.highlights"];
 
-    v57 = v11;
+    v57 = attributionIdentifiersCopy;
     if (v33)
     {
-      v34 = [v9 handleToIdentityMap];
+      handleToIdentityMap = [highlightCopy handleToIdentityMap];
     }
 
     else
     {
-      v34 = 0;
+      handleToIdentityMap = 0;
     }
 
     v56 = objc_alloc(MEMORY[0x277D3A4B8]);
-    v58 = [v9 highlightIdentifier];
-    v54 = [v9 collaborationIdentifier];
-    v55 = [v9 contentDisplayName];
+    highlightIdentifier3 = [highlightCopy highlightIdentifier];
+    collaborationIdentifier = [highlightCopy collaborationIdentifier];
+    contentDisplayName = [highlightCopy contentDisplayName];
     v42 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v9 contentCreationSecondsSinceReferenceDate];
+    [highlightCopy contentCreationSecondsSinceReferenceDate];
     v53 = [v42 initWithTimeIntervalSinceReferenceDate:?];
-    v52 = [v9 contentType];
-    v51 = [v9 fileProviderId];
-    v50 = [v9 localIdentity];
-    v43 = [v9 localIdentityProof];
+    contentType = [highlightCopy contentType];
+    fileProviderId = [highlightCopy fileProviderId];
+    localIdentity = [highlightCopy localIdentity];
+    localIdentityProof = [highlightCopy localIdentityProof];
     v44 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
     v41 = v59;
     v40 = v60;
-    v14 = [v56 initWithIdentifier:v58 resourceURL:v59 timestamp:v31 attributionIdentifiers:v10 supplementaryData:v60 collaborationIdentifier:v54 contentDisplayName:v55 contentCreationDate:v53 contentUTIType:v52 fileProviderId:v51 earliestAttributionIdentifiers:v57 localIdentity:v50 localIdentityProof:v43 handleToIdentityMap:v34 score:v44];
+    v14 = [v56 initWithIdentifier:highlightIdentifier3 resourceURL:v59 timestamp:v31 attributionIdentifiers:identifiersCopy supplementaryData:v60 collaborationIdentifier:collaborationIdentifier contentDisplayName:contentDisplayName contentCreationDate:v53 contentUTIType:contentType fileProviderId:fileProviderId earliestAttributionIdentifiers:v57 localIdentity:localIdentity localIdentityProof:localIdentityProof handleToIdentityMap:handleToIdentityMap score:v44];
 
-    v36 = v34;
-    v11 = v57;
-    v38 = v58;
+    highlightIdentifier4 = handleToIdentityMap;
+    attributionIdentifiersCopy = v57;
+    v38 = highlightIdentifier3;
   }
 
   else
   {
     v35 = objc_alloc(MEMORY[0x277D3A4C0]);
-    v36 = [v9 highlightIdentifier];
-    if (v10)
+    highlightIdentifier4 = [highlightCopy highlightIdentifier];
+    if (identifiersCopy)
     {
-      v37 = v10;
+      v37 = identifiersCopy;
     }
 
     else
@@ -4875,7 +4875,7 @@ LABEL_14:
     v39 = v35;
     v41 = v59;
     v40 = v60;
-    v14 = [v39 initWithIdentifier:v36 resourceURL:v59 timestamp:v31 attributionIdentifiers:v37 supplementaryData:v60 score:v38];
+    v14 = [v39 initWithIdentifier:highlightIdentifier4 resourceURL:v59 timestamp:v31 attributionIdentifiers:v37 supplementaryData:v60 score:v38];
   }
 
   v13 = v61;
@@ -4886,11 +4886,11 @@ LABEL_28:
   return v14;
 }
 
-- (id)sharedContentFromChats:(id)a3 dateRange:(double)a4 applicationIdentifiers:(id)a5 error:(id *)a6
+- (id)sharedContentFromChats:(id)chats dateRange:(double)range applicationIdentifiers:(id)identifiers error:(id *)error
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v54 = a5;
+  chatsCopy = chats;
+  identifiersCopy = identifiers;
   v77[0] = *MEMORY[0x277D3A658];
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:1];
   v10 = [PPSocialHighlightStorageUtilities filteredAllowedChatBundleIds:v9];
@@ -4900,8 +4900,8 @@ LABEL_28:
     v11 = objc_opt_new();
     [v11 setReason:@"SHContent"];
     [v11 setDisableBlockingOnIndex:1];
-    v12 = [&unk_284784EF0 integerValue];
-    [v11 setMaximumBatchSize:2 * v12];
+    integerValue = [&unk_284784EF0 integerValue];
+    [v11 setMaximumBatchSize:2 * integerValue];
     [v11 setReason:@"reason:PPSocialHighlightStore-2; code:1"];
     v76 = *MEMORY[0x277CCA1A0];
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v76 count:1];
@@ -4946,7 +4946,7 @@ LABEL_28:
     [v11 setLowPriority:qos_class_self() < QOS_CLASS_USER_INITIATED];
     v23 = objc_alloc(MEMORY[0x277CCACA8]);
     v51 = [v23 initWithFormat:@"%@=%@", *MEMORY[0x277CC2DB8], @"lnk"];
-    v24 = [(PPSocialHighlightStorage *)self _isCollaborationEntitlementPresentForApplicationIdentifiers:v54];
+    v24 = [(PPSocialHighlightStorage *)self _isCollaborationEntitlementPresentForApplicationIdentifiers:identifiersCopy];
     v25 = objc_alloc(MEMORY[0x277CCACA8]);
     if (v24)
     {
@@ -4961,8 +4961,8 @@ LABEL_28:
     v50 = [v25 initWithFormat:v26, @"com_apple_mobilesms_syndicationContentType"];
     v52 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ != 0 && (InRange(com_apple_mobilesms_isHighlightedContent, 1, 2) || com_apple_mobilesms_isHighlightedContent=8)", v18];
     v49 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(%@ || %@)", @"InRange(com_apple_mobilesms_isHighlightedContent, 1, 2)", v52];
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"kMDItemContentCreationDate>=$time.now(-%.f)", *&a4];
-    v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v12];
+    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"kMDItemContentCreationDate>=$time.now(-%.f)", *&range];
+    v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:integerValue];
     v64 = 0;
     v65 = &v64;
     v66 = 0x2020000000;
@@ -4979,9 +4979,9 @@ LABEL_28:
     v32 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v11 lowPriority];
+      lowPriority = [v11 lowPriority];
       v34 = @"high";
-      if (v33)
+      if (lowPriority)
       {
         v34 = @"low";
       }
@@ -5002,7 +5002,7 @@ LABEL_28:
     v62 = &v64;
     v36 = v28;
     v61 = v36;
-    v63 = v12;
+    v63 = integerValue;
     [v35 setFoundItemsHandler:v60];
     v37 = dispatch_semaphore_create(0);
     *buf = 0;
@@ -5037,9 +5037,9 @@ LABEL_28:
         _os_log_error_impl(&dword_23224A000, v41, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: CoreSpotlight highlight query error: %@", v68, 0xCu);
       }
 
-      if (a6)
+      if (error)
       {
-        objc_storeStrong(a6, *(*&buf[8] + 40));
+        objc_storeStrong(error, *(*&buf[8] + 40));
       }
 
       objc_autoreleasePoolPop(objc_autoreleasePoolPush());
@@ -5054,7 +5054,7 @@ LABEL_28:
       v55[1] = 3221225472;
       v55[2] = __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applicationIdentifiers_error___block_invoke_276;
       v55[3] = &unk_278977F98;
-      v56 = v53;
+      v56 = chatsCopy;
       v40 = [v36 _pas_filteredArrayWithTest:v55];
       v42 = pp_social_highlights_log_handle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -5063,7 +5063,7 @@ LABEL_28:
         *buf = 134218240;
         *&buf[4] = v43;
         *&buf[12] = 2048;
-        *&buf[14] = v12;
+        *&buf[14] = integerValue;
         _os_log_impl(&dword_23224A000, v42, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: CoreSpotlight query result count: %tu returning top %tu", buf, 0x16u);
       }
 
@@ -5225,18 +5225,18 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
   return v15;
 }
 
-- (id)rankedHighlightsForSyncedItems:(id)a3 client:(id)a4 variant:(id)a5 applicationIdentifiers:(id)a6 error:(id *)a7
+- (id)rankedHighlightsForSyncedItems:(id)items client:(id)client variant:(id)variant applicationIdentifiers:(id)identifiers error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v46 = a4;
-  v45 = a6;
+  itemsCopy = items;
+  clientCopy = client;
+  identifiersCopy = identifiers;
   v10 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v11 = v9;
+  v11 = itemsCopy;
   v12 = [v11 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v12)
   {
@@ -5252,24 +5252,24 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
         }
 
         v16 = *(*(&v55 + 1) + 8 * i);
-        v17 = [v16 highlight];
-        v18 = [v17 identifier];
-        v19 = [v10 objectForKeyedSubscript:v18];
+        highlight = [v16 highlight];
+        identifier = [highlight identifier];
+        v19 = [v10 objectForKeyedSubscript:identifier];
 
         if (!v19)
         {
           v20 = objc_opt_new();
-          v21 = [v16 highlight];
-          v22 = [v21 identifier];
-          [v10 setObject:v20 forKeyedSubscript:v22];
+          highlight2 = [v16 highlight];
+          identifier2 = [highlight2 identifier];
+          [v10 setObject:v20 forKeyedSubscript:identifier2];
         }
 
-        v23 = [v16 highlight];
-        v24 = [v23 identifier];
-        v25 = [v10 objectForKeyedSubscript:v24];
-        v26 = [v16 highlight];
-        v27 = [v26 attributionIdentifiers];
-        [v25 addObjectsFromArray:v27];
+        highlight3 = [v16 highlight];
+        identifier3 = [highlight3 identifier];
+        v25 = [v10 objectForKeyedSubscript:identifier3];
+        highlight4 = [v16 highlight];
+        attributionIdentifiers = [highlight4 attributionIdentifiers];
+        [v25 addObjectsFromArray:attributionIdentifiers];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -5283,8 +5283,8 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v29 = [v10 allKeys];
-  v30 = [v29 countByEnumeratingWithState:&v51 objects:v59 count:16];
+  allKeys = [v10 allKeys];
+  v30 = [allKeys countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v30)
   {
     v31 = v30;
@@ -5295,16 +5295,16 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
       {
         if (*v52 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(allKeys);
         }
 
         v34 = *(*(&v51 + 1) + 8 * j);
         v35 = [v10 objectForKeyedSubscript:v34];
-        v36 = [v35 allObjects];
-        [v28 setObject:v36 forKeyedSubscript:v34];
+        allObjects = [v35 allObjects];
+        [v28 setObject:allObjects forKeyedSubscript:v34];
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v51 objects:v59 count:16];
+      v31 = [allKeys countByEnumeratingWithState:&v51 objects:v59 count:16];
     }
 
     while (v31);
@@ -5314,10 +5314,10 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
   v48[1] = 3221225472;
   v48[2] = __103__PPSocialHighlightStorage_rankedHighlightsForSyncedItems_client_variant_applicationIdentifiers_error___block_invoke;
   v48[3] = &unk_278977F28;
-  v49 = v45;
-  v50 = v46;
-  v37 = v46;
-  v38 = v45;
+  v49 = identifiersCopy;
+  v50 = clientCopy;
+  v37 = clientCopy;
+  v38 = identifiersCopy;
   v39 = [v11 _pas_mappedArrayWithTransform:v48];
   v40 = objc_opt_new();
   v41 = [v40 rankSocialHighlights:v39 client:v37 performRerank:0];
@@ -5329,10 +5329,10 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
   return v42;
 }
 
-- (id)autoDonatingChatsWithShouldContinueBlock:(id)a3 error:(id *)a4
+- (id)autoDonatingChatsWithShouldContinueBlock:(id)block error:(id *)error
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  blockCopy = block;
   if ([MEMORY[0x277D42598] isClassCLocked])
   {
     v6 = pp_social_highlights_log_handle();
@@ -5342,10 +5342,10 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
       _os_log_impl(&dword_23224A000, v6, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightStorage: Device is Class C locked, cannot query Spotlight.", &buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D3A580] code:27 userInfo:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -5415,11 +5415,11 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
       v34 = v22;
       [v19 setCompletionHandler:v33];
       [v19 start];
-      if (v5)
+      if (blockCopy)
       {
         while ([MEMORY[0x277D425A0] waitForSemaphore:v22 timeoutSeconds:1.0] == 1)
         {
-          if ((v5[2](v5) & 1) == 0)
+          if ((blockCopy[2](blockCopy) & 1) == 0)
           {
             v23 = pp_social_highlights_log_handle();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -5472,10 +5472,10 @@ uint64_t __90__PPSocialHighlightStorage_sharedContentFromChats_dateRange_applica
           _os_log_error_impl(&dword_23224A000, v30, OS_LOG_TYPE_ERROR, "PPSocialHighlightStorage: CoreSpotlight automatic donation query error: %@", v38, 0xCu);
         }
 
-        if (a4)
+        if (error)
         {
           v7 = 0;
-          *a4 = *(*(&buf + 1) + 40);
+          *error = *(*(&buf + 1) + 40);
         }
 
         else
@@ -5605,21 +5605,21 @@ void __75__PPSocialHighlightStorage_autoDonatingChatsWithShouldContinueBlock_err
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (PPSocialHighlightStorage)initWithFeedbackStream:(id)a3 rankedStream:(id)a4 database:(id)a5
+- (PPSocialHighlightStorage)initWithFeedbackStream:(id)stream rankedStream:(id)rankedStream database:(id)database
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  streamCopy = stream;
+  rankedStreamCopy = rankedStream;
+  databaseCopy = database;
   v19.receiver = self;
   v19.super_class = PPSocialHighlightStorage;
   v12 = [(PPSocialHighlightStorage *)&v19 init];
   if (v12)
   {
     v13 = objc_opt_new();
-    objc_storeStrong(v13 + 1, a3);
-    if (v10)
+    objc_storeStrong(v13 + 1, stream);
+    if (rankedStreamCopy)
     {
-      v14 = [[PPSocialHighlightCache alloc] initWithStream:v10 database:v11];
+      v14 = [[PPSocialHighlightCache alloc] initWithStream:rankedStreamCopy database:databaseCopy];
       cache = v12->_cache;
       v12->_cache = v14;
     }
@@ -5648,7 +5648,7 @@ void __75__PPSocialHighlightStorage_autoDonatingChatsWithShouldContinueBlock_err
 
   [v8 setPruningPolicy:v11];
   v12 = [objc_alloc(MEMORY[0x277CF1B30]) initWithPrivateStreamIdentifier:@"rankedSocialHighlights" storeConfig:v8];
-  v13 = [(PPSocialHighlightStorage *)self _screenTimeConversation];
+  _screenTimeConversation = [(PPSocialHighlightStorage *)self _screenTimeConversation];
   v14 = objc_opt_new();
   socialHighlightStorageUtils = self->_socialHighlightStorageUtils;
   self->_socialHighlightStorageUtils = v14;
@@ -5659,14 +5659,14 @@ void __75__PPSocialHighlightStorage_autoDonatingChatsWithShouldContinueBlock_err
   self->_lsAppLinkCache = v17;
 
   [(PPSocialHighlightStorage *)self resetLSAppLinkCache];
-  v19 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v19 addObserver:self selector:sel_handleAppLinkChangeNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleAppLinkChangeNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v20 addObserver:self selector:sel_handleAppLinkChangeNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handleAppLinkChangeNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
 
-  v21 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v21 addObserver:self selector:sel_handleAppLinkChangeNotification_ name:@"com.apple.swc.internalUseOnly.serviceSettingsDidChangeNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_handleAppLinkChangeNotification_ name:@"com.apple.swc.internalUseOnly.serviceSettingsDidChangeNotification" object:0];
 
   v22 = +[PPSQLDatabase sharedInstance];
   v23 = [(PPSocialHighlightStorage *)self initWithFeedbackStream:v5 rankedStream:v12 database:v22];
@@ -5674,9 +5674,9 @@ void __75__PPSocialHighlightStorage_autoDonatingChatsWithShouldContinueBlock_err
   return v23;
 }
 
-+ (int)attributionFeedbackTypeForAttributionFeedbackType:(unint64_t)a3
++ (int)attributionFeedbackTypeForAttributionFeedbackType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 4;
   }
@@ -5686,7 +5686,7 @@ void __75__PPSocialHighlightStorage_autoDonatingChatsWithShouldContinueBlock_err
     v3 = 3;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 9;
   }
@@ -5697,26 +5697,26 @@ void __75__PPSocialHighlightStorage_autoDonatingChatsWithShouldContinueBlock_err
   }
 }
 
-+ (int)unifiedFeedbackTypeForHighlightFeedbackType:(unint64_t)a3
++ (int)unifiedFeedbackTypeForHighlightFeedbackType:(unint64_t)type
 {
-  if (a3 >= 0xC)
+  if (type >= 0xC)
   {
     return 2;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (id)appLinksForResourceURL:(id)a3 resolvedURL:(id)a4
++ (id)appLinksForResourceURL:(id)l resolvedURL:(id)rL
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v20 = 0;
-  v7 = [MEMORY[0x277CC1E48] appLinksWithURL:v5 limit:1 includeLinksForCurrentApplication:1 error:&v20];
+  v7 = [MEMORY[0x277CC1E48] appLinksWithURL:lCopy limit:1 includeLinksForCurrentApplication:1 error:&v20];
   v8 = v20;
   v9 = pp_social_highlights_log_handle();
   v10 = v9;
@@ -5742,11 +5742,11 @@ void __75__PPSocialHighlightStorage_autoDonatingChatsWithShouldContinueBlock_err
     _os_log_debug_impl(&dword_23224A000, v10, OS_LOG_TYPE_DEBUG, "PPSocialHighlightStorage: LSAppLink for URL count: %tu", buf, 0xCu);
   }
 
-  if (v6 && ([v6 isEqual:v5] & 1) == 0)
+  if (rLCopy && ([rLCopy isEqual:lCopy] & 1) == 0)
   {
 
     v19 = 0;
-    v11 = [MEMORY[0x277CC1E48] appLinksWithURL:v6 limit:1 includeLinksForCurrentApplication:1 error:&v19];
+    v11 = [MEMORY[0x277CC1E48] appLinksWithURL:rLCopy limit:1 includeLinksForCurrentApplication:1 error:&v19];
     v8 = v19;
     v12 = pp_social_highlights_log_handle();
     v13 = v12;
@@ -5787,14 +5787,14 @@ LABEL_13:
   return v7;
 }
 
-+ (unint64_t)entitlementStatusForClient:(id)a3 applicationIdentifiers:(id)a4
++ (unint64_t)entitlementStatusForClient:(id)client applicationIdentifiers:(id)identifiers
 {
-  if (!a3)
+  if (!client)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:a3 error:0];
+  v4 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:client error:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

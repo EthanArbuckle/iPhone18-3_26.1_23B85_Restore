@@ -1,6 +1,6 @@
 @interface TIAccessibilityServer
 + (id)sharedAccessibilityServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TIAccessibilityServer)init;
 - (void)dealloc;
 @end
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100007410;
   block[3] = &unk_10001C810;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000265B8 != -1)
   {
     dispatch_once(&qword_1000265B8, block);
@@ -58,10 +58,10 @@
   [(TIAccessibilityServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.accessibility.api"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.accessibility.api"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 BOOLValue])
   {
@@ -70,20 +70,20 @@
       v7 = TIOSLogFacility();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        sub_10000D9A4(v5);
+        sub_10000D9A4(connectionCopy);
       }
     }
 
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TIAccessibilityInterface];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = objc_alloc_init(TIAccessibilityHandler);
-    [v5 setExportedObject:v9];
+    [connectionCopy setExportedObject:v9];
 
-    v10 = [(TIAccessibilityServer *)self dispatchQueue];
-    [v5 _setQueue:v10];
+    dispatchQueue = [(TIAccessibilityServer *)self dispatchQueue];
+    [connectionCopy _setQueue:dispatchQueue];
 
-    [v5 resume];
+    [connectionCopy resume];
     v11 = 1;
   }
 
@@ -95,7 +95,7 @@
       v12 = TIOSLogFacility();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        sub_10000D8F8(v5);
+        sub_10000D8F8(connectionCopy);
       }
 
       v11 = 0;

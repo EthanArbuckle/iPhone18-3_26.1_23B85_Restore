@@ -2,9 +2,9 @@
 + (id)defaultConfiguration;
 - (AVPlayerViewControllerConfiguration)init;
 - (BOOL)_isMediaPresentationSettingsAudioGroupTitleSupported;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setExcludedControls:(unint64_t)a3;
-- (void)setMediaPresentationSettingsAudioGroupTitle:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setExcludedControls:(unint64_t)controls;
+- (void)setMediaPresentationSettingsAudioGroupTitle:(id)title;
 @end
 
 @implementation AVPlayerViewControllerConfiguration
@@ -14,26 +14,26 @@
   v2 = +[AVKitGlobalSettings shared];
   if ([v2 isTVApp] & 1) != 0 || (objc_msgSend(v2, "isFitnessApp"))
   {
-    v3 = 1;
+    isAVKitTester = 1;
   }
 
   else
   {
-    v3 = [v2 isAVKitTester];
+    isAVKitTester = [v2 isAVKitTester];
   }
 
-  return v3;
+  return isAVKitTester;
 }
 
-- (void)setMediaPresentationSettingsAudioGroupTitle:(id)a3
+- (void)setMediaPresentationSettingsAudioGroupTitle:(id)title
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  titleCopy = title;
   if ([(AVPlayerViewControllerConfiguration *)self _isMediaPresentationSettingsAudioGroupTitleSupported])
   {
-    if (self->_mediaPresentationSettingsAudioGroupTitle != v4)
+    if (self->_mediaPresentationSettingsAudioGroupTitle != titleCopy)
     {
-      v5 = [(NSString *)v4 copy];
+      v5 = [(NSString *)titleCopy copy];
       mediaPresentationSettingsAudioGroupTitle = self->_mediaPresentationSettingsAudioGroupTitle;
       self->_mediaPresentationSettingsAudioGroupTitle = v5;
     }
@@ -51,24 +51,24 @@
   }
 }
 
-- (void)setExcludedControls:(unint64_t)a3
+- (void)setExcludedControls:(unint64_t)controls
 {
-  if (self->_excludedControls != a3)
+  if (self->_excludedControls != controls)
   {
-    self->_excludedControls = a3;
+    self->_excludedControls = controls;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AVPlayerViewControllerConfiguration allocWithZone:?]];
   [(AVPlayerViewControllerConfiguration *)v4 setExcludedControls:[(AVPlayerViewControllerConfiguration *)self excludedControls]];
   [(AVPlayerViewControllerConfiguration *)v4 setPrefersFullScreenStyleForEmbeddedMode:[(AVPlayerViewControllerConfiguration *)self prefersFullScreenStyleForEmbeddedMode]];
-  v5 = [(AVPlayerViewControllerConfiguration *)self tips];
-  [(AVPlayerViewControllerConfiguration *)v4 setTips:v5];
+  tips = [(AVPlayerViewControllerConfiguration *)self tips];
+  [(AVPlayerViewControllerConfiguration *)v4 setTips:tips];
 
-  v6 = [(AVPlayerViewControllerConfiguration *)self mediaPresentationSettingsAudioGroupTitle];
-  [(AVPlayerViewControllerConfiguration *)v4 setMediaPresentationSettingsAudioGroupTitle:v6];
+  mediaPresentationSettingsAudioGroupTitle = [(AVPlayerViewControllerConfiguration *)self mediaPresentationSettingsAudioGroupTitle];
+  [(AVPlayerViewControllerConfiguration *)v4 setMediaPresentationSettingsAudioGroupTitle:mediaPresentationSettingsAudioGroupTitle];
 
   return v4;
 }

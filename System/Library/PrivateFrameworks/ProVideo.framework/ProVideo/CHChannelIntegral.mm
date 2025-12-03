@@ -1,28 +1,28 @@
 @interface CHChannelIntegral
-- (BOOL)getFirstKeyframeTime:(id *)a3 curveIntValue:(int *)a4;
-- (BOOL)getKeyframeAfterTime:(id *)a3 time:(id *)a4 curveIntValue:(int *)a5;
-- (BOOL)getKeyframeBeforeTime:(id *)a3 time:(id *)a4 curveIntValue:(int *)a5;
-- (BOOL)getLastKeyframeTime:(id *)a3 curveIntValue:(int *)a4;
-- (int)_curveIntValueAtTime:(id *)a3;
+- (BOOL)getFirstKeyframeTime:(id *)time curveIntValue:(int *)value;
+- (BOOL)getKeyframeAfterTime:(id *)time time:(id *)a4 curveIntValue:(int *)value;
+- (BOOL)getKeyframeBeforeTime:(id *)time time:(id *)a4 curveIntValue:(int *)value;
+- (BOOL)getLastKeyframeTime:(id *)time curveIntValue:(int *)value;
+- (int)_curveIntValueAtTime:(id *)time;
 - (int)_defaultCurveIntValue;
-- (int)_intValueAtTime:(id *)a3;
+- (int)_intValueAtTime:(id *)time;
 - (int)_maxCurveIntValue;
 - (int)_maxUIIntValue;
 - (int)_minCurveIntValue;
-- (void)_getExtremaBetweenStart:(id *)a3 end:(id *)a4 minIntValue:(int *)a5 maxIntValue:(int *)a6;
-- (void)_setCoarseDeltaIntValue:(int)a3;
-- (void)_setCurveIntValue:(int)a3 atTime:(id *)a4 options:(unsigned int)a5;
-- (void)_setDefaultCurveIntValue:(int)a3;
-- (void)_setFineDeltaIntValue:(int)a3;
-- (void)_setMaxCurveIntValue:(int)a3;
-- (void)_setMaxUIIntValue:(int)a3;
-- (void)_setMinCurveIntValue:(int)a3;
-- (void)_setMinUIIntValue:(int)a3;
+- (void)_getExtremaBetweenStart:(id *)start end:(id *)end minIntValue:(int *)value maxIntValue:(int *)intValue;
+- (void)_setCoarseDeltaIntValue:(int)value;
+- (void)_setCurveIntValue:(int)value atTime:(id *)time options:(unsigned int)options;
+- (void)_setDefaultCurveIntValue:(int)value;
+- (void)_setFineDeltaIntValue:(int)value;
+- (void)_setMaxCurveIntValue:(int)value;
+- (void)_setMaxUIIntValue:(int)value;
+- (void)_setMinCurveIntValue:(int)value;
+- (void)_setMinUIIntValue:(int)value;
 @end
 
 @implementation CHChannelIntegral
 
-- (int)_intValueAtTime:(id *)a3
+- (int)_intValueAtTime:(id *)time
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -34,21 +34,21 @@
     v5 = 0;
   }
 
-  (*(v5->var0 + 42))(&v7, v5, a3);
+  (*(v5->var0 + 42))(&v7, v5, time);
   return OZChannel::getValueAsInt(v5, &v7, 0.0);
 }
 
-- (int)_curveIntValueAtTime:(id *)a3
+- (int)_curveIntValueAtTime:(id *)time
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  return OZChannel::getCurveValue(pOZChannel, a3, 0);
+  return OZChannel::getCurveValue(pOZChannel, time, 0);
 }
 
-- (void)_getExtremaBetweenStart:(id *)a3 end:(id *)a4 minIntValue:(int *)a5 maxIntValue:(int *)a6
+- (void)_getExtremaBetweenStart:(id *)start end:(id *)end minIntValue:(int *)value maxIntValue:(int *)intValue
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -57,61 +57,61 @@
 
   v11 = 0.0;
   v12 = 0.0;
-  (*(*pOZChannel + 824))(pOZChannel, a3, a4, &v12, &v11);
-  if (a5)
+  (*(*pOZChannel + 824))(pOZChannel, start, end, &v12, &v11);
+  if (value)
   {
-    *a5 = v12;
+    *value = v12;
   }
 
-  if (a6)
+  if (intValue)
   {
-    *a6 = v11;
+    *intValue = v11;
   }
 }
 
-- (void)_setCurveIntValue:(int)a3 atTime:(id *)a4 options:(unsigned int)a5
+- (void)_setCurveIntValue:(int)value atTime:(id *)time options:(unsigned int)options
 {
-  if ((~a4->var2 & 0x11) == 0)
+  if ((~time->var2 & 0x11) == 0)
   {
     v9 = *MEMORY[0x277CC08F0];
-    a4->var3 = *(MEMORY[0x277CC08F0] + 16);
-    *&a4->var0 = v9;
+    time->var3 = *(MEMORY[0x277CC08F0] + 16);
+    *&time->var0 = v9;
   }
 
   Instance = OZCoreGlobals::getInstance(self);
   v11 = *(Instance + 8);
-  *(OZCoreGlobals::getInstance(Instance) + 8) = a5 & 1;
+  *(OZCoreGlobals::getInstance(Instance) + 8) = options & 1;
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
-    if (a5)
+    if (options)
     {
       goto LABEL_5;
     }
 
 LABEL_8:
-    (*(v13->var0 + 42))(v17, v13, a4);
-    v16.n128_f64[0] = a3;
+    (*(v13->var0 + 42))(v17, v13, time);
+    v16.n128_f64[0] = value;
     v15 = (*(v13->var0 + 89))(v13, v17, 0, v16);
     goto LABEL_10;
   }
 
   v13 = 0;
-  if (!a5)
+  if (!options)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
-  v14 = a3;
-  if (a5 == 2)
+  valueCopy = value;
+  if (options == 2)
   {
-    v15 = OZChannel::setCurveSegmentValue(v13, a4, v14, 1);
+    v15 = OZChannel::setCurveSegmentValue(v13, time, valueCopy, 1);
   }
 
   else
   {
-    v15 = OZChannel::setKeyframe(v13, a4, v14, 1);
+    v15 = OZChannel::setKeyframe(v13, time, valueCopy, 1);
   }
 
 LABEL_10:
@@ -128,7 +128,7 @@ LABEL_10:
   return OZChannel::getDefaultValue(pOZChannel);
 }
 
-- (void)_setDefaultCurveIntValue:(int)a3
+- (void)_setDefaultCurveIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -145,7 +145,7 @@ LABEL_10:
   if (v6)
   {
     v8 = (var0[104])(v5);
-    OZChannel::setDefaultValue(v5, a3);
+    OZChannel::setDefaultValue(v5, value);
     if (v8)
     {
       return;
@@ -155,7 +155,7 @@ LABEL_10:
   else
   {
     v9 = (var0[62])(v5, 1);
-    OZChannel::setDefaultValue(v5, a3);
+    OZChannel::setDefaultValue(v5, value);
     if (v9)
     {
       return;
@@ -173,14 +173,14 @@ LABEL_10:
   return 0.0;
 }
 
-- (void)_setMinCurveIntValue:(int)a3
+- (void)_setMinCurveIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setMin(pOZChannel, a3);
+  OZChannel::setMin(pOZChannel, value);
 }
 
 - (int)_maxCurveIntValue
@@ -189,24 +189,24 @@ LABEL_10:
   return 0.0;
 }
 
-- (void)_setMaxCurveIntValue:(int)a3
+- (void)_setMaxCurveIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setMax(pOZChannel, a3);
+  OZChannel::setMax(pOZChannel, value);
 }
 
-- (void)_setMinUIIntValue:(int)a3
+- (void)_setMinUIIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setSliderMin(pOZChannel, a3);
+  OZChannel::setSliderMin(pOZChannel, value);
 }
 
 - (int)_maxUIIntValue
@@ -219,37 +219,37 @@ LABEL_10:
   return (*(*pOZChannel + 808))(pOZChannel, a2);
 }
 
-- (void)_setMaxUIIntValue:(int)a3
+- (void)_setMaxUIIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setSliderMax(pOZChannel, a3);
+  OZChannel::setSliderMax(pOZChannel, value);
 }
 
-- (void)_setCoarseDeltaIntValue:(int)a3
+- (void)_setCoarseDeltaIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setCoarseDelta(pOZChannel, a3);
+  OZChannel::setCoarseDelta(pOZChannel, value);
 }
 
-- (void)_setFineDeltaIntValue:(int)a3
+- (void)_setFineDeltaIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setFineDelta(pOZChannel, a3);
+  OZChannel::setFineDelta(pOZChannel, value);
 }
 
-- (BOOL)getFirstKeyframeTime:(id *)a3 curveIntValue:(int *)a4
+- (BOOL)getFirstKeyframeTime:(id *)time curveIntValue:(int *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -257,16 +257,16 @@ LABEL_10:
   }
 
   v9 = 0.0;
-  FirstKeyframe = OZChannel::getFirstKeyframe(pOZChannel, a3, &v9);
-  if (a4 && FirstKeyframe)
+  FirstKeyframe = OZChannel::getFirstKeyframe(pOZChannel, time, &v9);
+  if (value && FirstKeyframe)
   {
-    *a4 = v9;
+    *value = v9;
   }
 
   return FirstKeyframe;
 }
 
-- (BOOL)getLastKeyframeTime:(id *)a3 curveIntValue:(int *)a4
+- (BOOL)getLastKeyframeTime:(id *)time curveIntValue:(int *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -274,16 +274,16 @@ LABEL_10:
   }
 
   v9 = 0.0;
-  LastKeyframe = OZChannel::getLastKeyframe(pOZChannel, a3, &v9);
-  if (a4 && LastKeyframe)
+  LastKeyframe = OZChannel::getLastKeyframe(pOZChannel, time, &v9);
+  if (value && LastKeyframe)
   {
-    *a4 = v9;
+    *value = v9;
   }
 
   return LastKeyframe;
 }
 
-- (BOOL)getKeyframeAfterTime:(id *)a3 time:(id *)a4 curveIntValue:(int *)a5
+- (BOOL)getKeyframeAfterTime:(id *)time time:(id *)a4 curveIntValue:(int *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -291,16 +291,16 @@ LABEL_10:
   }
 
   v11 = 0.0;
-  NextKeyframe = OZChannel::getNextKeyframe(pOZChannel, a3, a4, &v11);
-  if (a5 && NextKeyframe)
+  NextKeyframe = OZChannel::getNextKeyframe(pOZChannel, time, a4, &v11);
+  if (value && NextKeyframe)
   {
-    *a5 = v11;
+    *value = v11;
   }
 
   return NextKeyframe;
 }
 
-- (BOOL)getKeyframeBeforeTime:(id *)a3 time:(id *)a4 curveIntValue:(int *)a5
+- (BOOL)getKeyframeBeforeTime:(id *)time time:(id *)a4 curveIntValue:(int *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -308,10 +308,10 @@ LABEL_10:
   }
 
   v11 = 0.0;
-  PreviousKeyframe = OZChannel::getPreviousKeyframe(pOZChannel, a3, a4, &v11);
-  if (a5 && PreviousKeyframe)
+  PreviousKeyframe = OZChannel::getPreviousKeyframe(pOZChannel, time, a4, &v11);
+  if (value && PreviousKeyframe)
   {
-    *a5 = v11;
+    *value = v11;
   }
 
   return PreviousKeyframe;

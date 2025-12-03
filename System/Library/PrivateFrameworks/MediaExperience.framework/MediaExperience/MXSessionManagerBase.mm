@@ -1,29 +1,29 @@
 @interface MXSessionManagerBase
 + (id)copyAllMXCoreSessionList;
-+ (id)copySessionWithAudioObjectID:(unsigned int)a3;
-+ (id)copySessionWithMXCoreSessionID:(unint64_t)a3;
-+ (id)copySessionsShadowingAudioSessionID:(unsigned int)a3 withShadowingOptions:(unsigned int)a4 fromSessionList:(id)a5;
++ (id)copySessionWithAudioObjectID:(unsigned int)d;
++ (id)copySessionWithMXCoreSessionID:(unint64_t)d;
++ (id)copySessionsShadowingAudioSessionID:(unsigned int)d withShadowingOptions:(unsigned int)options fromSessionList:(id)list;
 + (void)dumpDebugInfo;
-+ (void)setGreenTeaLoggerRecordingState:(id)a3 state:(BOOL)a4;
++ (void)setGreenTeaLoggerRecordingState:(id)state state:(BOOL)a4;
 @end
 
 @implementation MXSessionManagerBase
 
 + (id)copyAllMXCoreSessionList
 {
-  v2 = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
-  v3 = [+[MXSessionManagerSecure sharedInstance](MXSessionManagerSecure copyMXCoreSessionSecureList];
-  v4 = [+[MXSessionManagerIndependentAudioResource sharedInstance](MXSessionManagerIndependentAudioResource copyMXCoreSessionIndependentInputAudioResourceList];
+  copyMXCoreSessionList = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
+  copyMXCoreSessionSecureList = [+[MXSessionManagerSecure sharedInstance](MXSessionManagerSecure copyMXCoreSessionSecureList];
+  copyMXCoreSessionIndependentInputAudioResourceList = [+[MXSessionManagerIndependentAudioResource sharedInstance](MXSessionManagerIndependentAudioResource copyMXCoreSessionIndependentInputAudioResourceList];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v5 addObjectsFromArray:v2];
+  [v5 addObjectsFromArray:copyMXCoreSessionList];
 
-  [v5 addObjectsFromArray:v3];
-  [v5 addObjectsFromArray:v4];
+  [v5 addObjectsFromArray:copyMXCoreSessionSecureList];
+  [v5 addObjectsFromArray:copyMXCoreSessionIndependentInputAudioResourceList];
 
   return v5;
 }
 
-+ (id)copySessionWithMXCoreSessionID:(unint64_t)a3
++ (id)copySessionWithMXCoreSessionID:(unint64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[MXSessionManagerBase copyAllMXCoreSessionList];
@@ -46,7 +46,7 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([objc_msgSend(v9 "ID")] == a3)
+        if ([objc_msgSend(v9 "ID")] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -70,7 +70,7 @@ LABEL_11:
   return v9;
 }
 
-+ (id)copySessionWithAudioObjectID:(unsigned int)a3
++ (id)copySessionWithAudioObjectID:(unsigned int)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[MXSessionManagerBase copyAllMXCoreSessionList];
@@ -93,7 +93,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 audioObjectID] == a3)
+        if ([v9 audioObjectID] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -117,18 +117,18 @@ LABEL_11:
   return v9;
 }
 
-+ (id)copySessionsShadowingAudioSessionID:(unsigned int)a3 withShadowingOptions:(unsigned int)a4 fromSessionList:(id)a5
++ (id)copySessionsShadowingAudioSessionID:(unsigned int)d withShadowingOptions:(unsigned int)options fromSessionList:(id)list
 {
   v5 = 0;
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (d && options)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [a5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v9 = [list countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -139,17 +139,17 @@ LABEL_11:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(list);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          if ([v13 shadowingAudioSessionID] == a3 && (objc_msgSend(v13, "shadowingAudioSessionOptions") & a4) != 0)
+          if ([v13 shadowingAudioSessionID] == d && (objc_msgSend(v13, "shadowingAudioSessionOptions") & options) != 0)
           {
             [v5 addObject:v13];
           }
         }
 
-        v10 = [a5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [list countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -166,7 +166,7 @@ LABEL_11:
   return v5;
 }
 
-+ (void)setGreenTeaLoggerRecordingState:(id)a3 state:(BOOL)a4
++ (void)setGreenTeaLoggerRecordingState:(id)state state:(BOOL)a4
 {
   v4 = a4;
   v14 = *MEMORY[0x1E69E9840];
@@ -190,7 +190,7 @@ LABEL_11:
         }
 
         v10 = 138412546;
-        v11 = a3;
+        stateCopy = state;
         v12 = 2080;
         v13 = v8;
         _os_log_impl(&dword_1B17A2000, v7, OS_LOG_TYPE_INFO, "Client %@ has %s recording", &v10, 0x16u);

@@ -1,28 +1,28 @@
 @interface CRKPointerSet
-+ (CRKPointerSet)setWithArray:(id)a3;
-+ (CRKPointerSet)setWithSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CRKPointerSet)setWithArray:(id)array;
++ (CRKPointerSet)setWithSet:(id)set;
+- (BOOL)isEqual:(id)equal;
 - (CRKPointerSet)init;
-- (id)setByIntersectingSet:(id)a3;
-- (id)setBySubtractingSet:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (id)setByIntersectingSet:(id)set;
+- (id)setBySubtractingSet:(id)set;
+- (void)addObjectsFromArray:(id)array;
 @end
 
 @implementation CRKPointerSet
 
-+ (CRKPointerSet)setWithArray:(id)a3
++ (CRKPointerSet)setWithArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
-  [v4 addObjectsFromArray:v3];
+  [v4 addObjectsFromArray:arrayCopy];
 
   return v4;
 }
 
-+ (CRKPointerSet)setWithSet:(id)a3
++ (CRKPointerSet)setWithSet:(id)set
 {
-  v4 = [a3 allObjects];
-  v5 = [a1 setWithArray:v4];
+  allObjects = [set allObjects];
+  v5 = [self setWithArray:allObjects];
 
   return v5;
 }
@@ -42,13 +42,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -70,15 +70,15 @@
   return v7;
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -90,24 +90,24 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         [(CRKPointerSet *)self addObject:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)setBySubtractingSet:(id)a3
+- (id)setBySubtractingSet:(id)set
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v5 = objc_opt_new();
   v6 = [(NSHashTable *)self->mBackingStore copy];
   v7 = v5[1];
@@ -117,7 +117,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v4;
+  v8 = setCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -144,16 +144,16 @@
   return v5;
 }
 
-- (id)setByIntersectingSet:(id)a3
+- (id)setByIntersectingSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = objc_opt_new();
   v6 = [(NSHashTable *)self->mBackingStore copy];
   v7 = v5[1];
   v5[1] = v6;
 
   v8 = v5[1];
-  v9 = v4[1];
+  v9 = setCopy[1];
 
   [v8 intersectHashTable:v9];
 

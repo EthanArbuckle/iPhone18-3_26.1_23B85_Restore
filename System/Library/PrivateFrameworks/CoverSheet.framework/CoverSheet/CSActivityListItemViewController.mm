@@ -1,52 +1,52 @@
 @interface CSActivityListItemViewController
-- (CSActivityListItemViewController)initWithDescriptor:(id)a3;
+- (CSActivityListItemViewController)initWithDescriptor:(id)descriptor;
 - (void)_invalidateRestrictsTouchesAssertion;
-- (void)notificationListSupplementaryViewPresentableContentWillBecomeVisible:(BOOL)a3;
-- (void)setListAppeared:(BOOL)a3;
-- (void)setRestrictsTouchesOnHostedScene:(BOOL)a3;
-- (void)setScreenOn:(BOOL)a3;
+- (void)notificationListSupplementaryViewPresentableContentWillBecomeVisible:(BOOL)visible;
+- (void)setListAppeared:(BOOL)appeared;
+- (void)setRestrictsTouchesOnHostedScene:(BOOL)scene;
+- (void)setScreenOn:(BOOL)on;
 @end
 
 @implementation CSActivityListItemViewController
 
-- (CSActivityListItemViewController)initWithDescriptor:(id)a3
+- (CSActivityListItemViewController)initWithDescriptor:(id)descriptor
 {
   v4.receiver = self;
   v4.super_class = CSActivityListItemViewController;
-  return [(CSActivityViewController *)&v4 initWithDescriptor:a3 sceneType:0];
+  return [(CSActivityViewController *)&v4 initWithDescriptor:descriptor sceneType:0];
 }
 
-- (void)setScreenOn:(BOOL)a3
+- (void)setScreenOn:(BOOL)on
 {
-  if (self->_screenOn != a3)
+  if (self->_screenOn != on)
   {
-    self->_screenOn = a3;
+    self->_screenOn = on;
     v5 = NSStringFromSelector(a2);
     [(CSActivityViewController *)self reevaluatePresentationModeForReason:v5];
   }
 }
 
-- (void)setListAppeared:(BOOL)a3
+- (void)setListAppeared:(BOOL)appeared
 {
-  if (self->_listAppeared != a3)
+  if (self->_listAppeared != appeared)
   {
-    self->_listAppeared = a3;
+    self->_listAppeared = appeared;
     v5 = NSStringFromSelector(a2);
     [(CSActivityViewController *)self reevaluatePresentationModeForReason:v5];
     [(CSActivityViewController *)self reevaluateAudioCategoriesDisablingVolumeHUDForReason:v5];
   }
 }
 
-- (void)setRestrictsTouchesOnHostedScene:(BOOL)a3
+- (void)setRestrictsTouchesOnHostedScene:(BOOL)scene
 {
-  if (a3)
+  if (scene)
   {
     if (!self->_restrictsTouchesAssertion)
     {
-      v6 = [(CSActivityViewController *)self hostViewController];
-      v4 = [v6 cancelTouchesForCurrentEventInHostedContent];
+      hostViewController = [(CSActivityViewController *)self hostViewController];
+      cancelTouchesForCurrentEventInHostedContent = [hostViewController cancelTouchesForCurrentEventInHostedContent];
       restrictsTouchesAssertion = self->_restrictsTouchesAssertion;
-      self->_restrictsTouchesAssertion = v4;
+      self->_restrictsTouchesAssertion = cancelTouchesForCurrentEventInHostedContent;
     }
   }
 
@@ -57,12 +57,12 @@
   }
 }
 
-- (void)notificationListSupplementaryViewPresentableContentWillBecomeVisible:(BOOL)a3
+- (void)notificationListSupplementaryViewPresentableContentWillBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_isContentVisible = a3;
-  v6 = [(CSActivityViewController *)self hostViewController];
-  [v6 setVisibility:v3];
+  visibleCopy = visible;
+  self->_isContentVisible = visible;
+  hostViewController = [(CSActivityViewController *)self hostViewController];
+  [hostViewController setVisibility:visibleCopy];
 
   v7 = NSStringFromSelector(a2);
   [(CSActivityViewController *)self reevaluatePresentationModeForReason:v7];

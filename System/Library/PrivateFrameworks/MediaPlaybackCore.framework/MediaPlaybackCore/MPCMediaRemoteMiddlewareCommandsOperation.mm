@@ -1,5 +1,5 @@
 @interface MPCMediaRemoteMiddlewareCommandsOperation
-- (MPCMediaRemoteMiddlewareCommandsOperation)initWithMiddleware:(id)a3;
+- (MPCMediaRemoteMiddlewareCommandsOperation)initWithMiddleware:(id)middleware;
 - (id)timeoutDescription;
 - (void)execute;
 @end
@@ -9,32 +9,32 @@
 - (void)execute
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self middleware];
-  v4 = [v3 controller];
+  middleware = [(MPCMediaRemoteMiddlewareCommandsOperation *)self middleware];
+  controller = [middleware controller];
 
-  if (v4)
+  if (controller)
   {
     v5 = _Block_copy(self->_invalidationHandler);
-    v6 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self middleware];
-    v7 = [v6 controller];
-    v8 = [v7 supportedCommands];
-    [(MPCMediaRemoteMiddlewareCommandsOperation *)self setSupportedCommandsFuture:v8];
+    middleware2 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self middleware];
+    controller2 = [middleware2 controller];
+    supportedCommands = [controller2 supportedCommands];
+    [(MPCMediaRemoteMiddlewareCommandsOperation *)self setSupportedCommandsFuture:supportedCommands];
 
-    v9 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self supportedCommandsFuture];
+    supportedCommandsFuture = [(MPCMediaRemoteMiddlewareCommandsOperation *)self supportedCommandsFuture];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __52__MPCMediaRemoteMiddlewareCommandsOperation_execute__block_invoke;
     v23[3] = &unk_1E8239528;
     v10 = v5;
     v24 = v10;
-    v11 = [v9 onInvalid:v23];
+    v11 = [supportedCommandsFuture onInvalid:v23];
 
     v25[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     invalidationObservers = self->_invalidationObservers;
     self->_invalidationObservers = v12;
 
-    v14 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self supportedCommandsFuture];
+    supportedCommandsFuture2 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self supportedCommandsFuture];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__MPCMediaRemoteMiddlewareCommandsOperation_execute__block_invoke_2;
@@ -44,7 +44,7 @@
     v20[4] = self;
     v15 = v11;
     v16 = v10;
-    v17 = [v14 onSuccess:v20];
+    v17 = [supportedCommandsFuture2 onSuccess:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __52__MPCMediaRemoteMiddlewareCommandsOperation_execute__block_invoke_6;
@@ -140,9 +140,9 @@ void __52__MPCMediaRemoteMiddlewareCommandsOperation_execute__block_invoke_2(uin
 - (id)timeoutDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self supportedCommandsFuture];
-  v5 = [(MPCMediaRemoteMiddlewareCommandsOperation *)self lastSectionContentItemFuture];
-  v6 = [v3 stringWithFormat:@"supportedCommandsFuture=%@ lastSectionContentItemFuture=%@", v4, v5];
+  supportedCommandsFuture = [(MPCMediaRemoteMiddlewareCommandsOperation *)self supportedCommandsFuture];
+  lastSectionContentItemFuture = [(MPCMediaRemoteMiddlewareCommandsOperation *)self lastSectionContentItemFuture];
+  v6 = [v3 stringWithFormat:@"supportedCommandsFuture=%@ lastSectionContentItemFuture=%@", supportedCommandsFuture, lastSectionContentItemFuture];
 
   return v6;
 }
@@ -171,16 +171,16 @@ void __52__MPCMediaRemoteMiddlewareCommandsOperation_execute__block_invoke_5(uin
   [*(a1 + 40) finishWithError:v3];
 }
 
-- (MPCMediaRemoteMiddlewareCommandsOperation)initWithMiddleware:(id)a3
+- (MPCMediaRemoteMiddlewareCommandsOperation)initWithMiddleware:(id)middleware
 {
-  v5 = a3;
+  middlewareCopy = middleware;
   v9.receiver = self;
   v9.super_class = MPCMediaRemoteMiddlewareCommandsOperation;
   v6 = [(MPAsyncOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_middleware, a3);
+    objc_storeStrong(&v6->_middleware, middleware);
   }
 
   return v7;

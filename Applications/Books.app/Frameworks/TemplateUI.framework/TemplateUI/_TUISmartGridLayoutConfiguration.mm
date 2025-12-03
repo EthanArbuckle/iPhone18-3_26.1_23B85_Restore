@@ -2,25 +2,25 @@
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)gradientFraction;
 - (UIEdgeInsets)gradientInsets;
-- (_TUISmartGridLayoutConfiguration)initWithWidth:(double)a3 height:(double)a4 box:(id)a5;
+- (_TUISmartGridLayoutConfiguration)initWithWidth:(double)width height:(double)height box:(id)box;
 - (unint64_t)columns;
-- (unint64_t)unsignedIntegerWithSpec:(id)a3;
+- (unint64_t)unsignedIntegerWithSpec:(id)spec;
 @end
 
 @implementation _TUISmartGridLayoutConfiguration
 
-- (_TUISmartGridLayoutConfiguration)initWithWidth:(double)a3 height:(double)a4 box:(id)a5
+- (_TUISmartGridLayoutConfiguration)initWithWidth:(double)width height:(double)height box:(id)box
 {
-  v9 = a5;
+  boxCopy = box;
   v13.receiver = self;
   v13.super_class = _TUISmartGridLayoutConfiguration;
   v10 = [(_TUISmartGridLayoutConfiguration *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_width = a3;
-    v10->_height = a4;
-    objc_storeStrong(&v10->_box, a5);
+    v10->_width = width;
+    v10->_height = height;
+    objc_storeStrong(&v10->_box, box);
   }
 
   return v11;
@@ -58,8 +58,8 @@
 
 - (unint64_t)columns
 {
-  v3 = [(TUISmartGridBox *)self->_box columns];
-  v4 = [(_TUISmartGridLayoutConfiguration *)self unsignedIntegerWithSpec:v3];
+  columns = [(TUISmartGridBox *)self->_box columns];
+  v4 = [(_TUISmartGridLayoutConfiguration *)self unsignedIntegerWithSpec:columns];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -72,41 +72,41 @@
   }
 }
 
-- (unint64_t)unsignedIntegerWithSpec:(id)a3
+- (unint64_t)unsignedIntegerWithSpec:(id)spec
 {
-  v4 = a3;
-  if (!v4)
+  specCopy = spec;
+  if (!specCopy)
   {
     goto LABEL_9;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 integerValue];
+    integerValue = [specCopy integerValue];
     goto LABEL_10;
   }
 
-  v6 = [(TUISmartGridBox *)self->_box widthSnap];
-  if (!v6 || (v7 = v6, v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) == 0))
+  widthSnap = [(TUISmartGridBox *)self->_box widthSnap];
+  if (!widthSnap || (v7 = widthSnap, v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) == 0))
   {
 LABEL_9:
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_10;
   }
 
-  v9 = [(TUISmartGridBox *)self->_box widthSnap];
-  v10 = [v9 identifierForValue:self->_width];
+  widthSnap2 = [(TUISmartGridBox *)self->_box widthSnap];
+  v10 = [widthSnap2 identifierForValue:self->_width];
 
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = [v4 objectForKeyedSubscript:v10];
+    v12 = [specCopy objectForKeyedSubscript:v10];
     v13 = TUIDynamicCast(v11, v12);
 
     if (!v13)
     {
       v14 = objc_opt_class();
-      v15 = [v4 objectForKeyedSubscript:@"*"];
+      v15 = [specCopy objectForKeyedSubscript:@"*"];
       v13 = TUIDynamicCast(v14, v15);
     }
   }
@@ -116,10 +116,10 @@ LABEL_9:
     v13 = 0;
   }
 
-  v5 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
 LABEL_10:
-  return v5;
+  return integerValue;
 }
 
 @end

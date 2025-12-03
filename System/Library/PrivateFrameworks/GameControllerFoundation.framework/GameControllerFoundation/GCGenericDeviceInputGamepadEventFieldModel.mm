@@ -1,12 +1,12 @@
 @interface GCGenericDeviceInputGamepadEventFieldModel
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceInputGamepadEventFieldModel)init;
-- (GCGenericDeviceInputGamepadEventFieldModel)initWithCoder:(id)a3;
+- (GCGenericDeviceInputGamepadEventFieldModel)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceInputGamepadEventFieldModel
@@ -18,14 +18,14 @@
   return 0;
 }
 
-- (GCGenericDeviceInputGamepadEventFieldModel)initWithCoder:(id)a3
+- (GCGenericDeviceInputGamepadEventFieldModel)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = GCGenericDeviceInputGamepadEventFieldModel;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCGenericDeviceInputGamepadEventFieldModel *)&v8 init];
-  v4->_extendedIndex = [v3 decodeIntegerForKey:{@"extendedIndex", v8.receiver, v8.super_class}];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceExpression"];
+  v4->_extendedIndex = [coderCopy decodeIntegerForKey:{@"extendedIndex", v8.receiver, v8.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceExpression"];
 
   sourceExpression = v4->_sourceExpression;
   v4->_sourceExpression = v5;
@@ -33,12 +33,12 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[GCGenericDeviceInputGamepadEventFieldModel extendedIndex](self forKey:{"extendedIndex"), @"extendedIndex"}];
-  v5 = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
-  [v4 encodeObject:v5 forKey:@"sourceExpression"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[GCGenericDeviceInputGamepadEventFieldModel extendedIndex](self forKey:{"extendedIndex"), @"extendedIndex"}];
+  sourceExpression = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
+  [coderCopy encodeObject:sourceExpression forKey:@"sourceExpression"];
 }
 
 - (unint64_t)hash
@@ -48,9 +48,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -69,17 +69,17 @@
     }
   }
 
-  v5 = [(GCGenericDeviceInputGamepadEventFieldModel *)self extendedIndex];
-  if (v5 != [v4 extendedIndex])
+  extendedIndex = [(GCGenericDeviceInputGamepadEventFieldModel *)self extendedIndex];
+  if (extendedIndex != [equalCopy extendedIndex])
   {
 LABEL_8:
     v8 = 0;
     goto LABEL_9;
   }
 
-  v6 = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
-  v7 = [v4 sourceExpression];
-  v8 = [v6 isEqual:v7];
+  sourceExpression = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
+  sourceExpression2 = [equalCopy sourceExpression];
+  v8 = [sourceExpression isEqual:sourceExpression2];
 
 LABEL_9:
   return v8;
@@ -88,9 +88,9 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCGenericDeviceInputGamepadEventFieldModel *)self extendedIndex];
-  v5 = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
-  v6 = [v3 stringWithFormat:@"[%zd] <- %@", v4, v5];
+  extendedIndex = [(GCGenericDeviceInputGamepadEventFieldModel *)self extendedIndex];
+  sourceExpression = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
+  v6 = [v3 stringWithFormat:@"[%zd] <- %@", extendedIndex, sourceExpression];
 
   return v6;
 }
@@ -100,19 +100,19 @@ LABEL_9:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCGenericDeviceInputGamepadEventFieldModel *)self extendedIndex];
-  v7 = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
-  v8 = [v3 stringWithFormat:@"<%@ %p> {\n\t extendedIndex = %zd\n\t sourceExpression = %@\n}", v5, self, v6, v7];
+  extendedIndex = [(GCGenericDeviceInputGamepadEventFieldModel *)self extendedIndex];
+  sourceExpression = [(GCGenericDeviceInputGamepadEventFieldModel *)self sourceExpression];
+  v8 = [v3 stringWithFormat:@"<%@ %p> {\n\t extendedIndex = %zd\n\t sourceExpression = %@\n}", v5, self, extendedIndex, sourceExpression];
 
   return v8;
 }
 
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v47[2] = *MEMORY[0x1E69E9840];
   v7 = objc_opt_new();
   v41[0] = 0;
-  v8 = [a3 gc_objectForKey:@"ExtendedIndex" ofClass:objc_opt_class() error:v41];
+  v8 = [representation gc_objectForKey:@"ExtendedIndex" ofClass:objc_opt_class() error:v41];
   v9 = v41[0];
   v10 = v9;
   if (v8)
@@ -127,17 +127,17 @@ LABEL_9:
 
   if (!v11)
   {
-    if (a4)
+    if (error)
     {
       v20 = MEMORY[0x1E696ABC0];
       v46[0] = *MEMORY[0x1E696A578];
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v47[0] = v21;
       v46[1] = *MEMORY[0x1E696A588];
-      v22 = [v10 localizedFailureReason];
-      v47[1] = v22;
+      localizedFailureReason = [v10 localizedFailureReason];
+      v47[1] = localizedFailureReason;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
-      *a4 = [(NSError *)v20 gc_modelError:v23 userInfo:?];
+      *error = [(NSError *)v20 gc_modelError:v23 userInfo:?];
     }
 
     goto LABEL_41;
@@ -149,12 +149,12 @@ LABEL_9:
   }
 
   v40 = 0;
-  v12 = [a3 gc_objectForKey:@"SourceExpression" ofClass:objc_opt_class() error:&v40];
+  v12 = [representation gc_objectForKey:@"SourceExpression" ofClass:objc_opt_class() error:&v40];
   v13 = v40;
   v14 = v13;
   if (!v12 && v13)
   {
-    if (!a4)
+    if (!error)
     {
       v16 = v13;
       goto LABEL_40;
@@ -162,13 +162,13 @@ LABEL_9:
 
     v24 = MEMORY[0x1E696ABC0];
     v44[0] = *MEMORY[0x1E696A578];
-    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
     v45[0] = v25;
     v44[1] = *MEMORY[0x1E696A588];
-    v38 = [v14 localizedFailureReason];
-    v45[1] = v38;
+    localizedFailureReason2 = [v14 localizedFailureReason];
+    v45[1] = localizedFailureReason2;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
-    *a4 = [(NSError *)v24 gc_modelError:v26 userInfo:?];
+    *error = [(NSError *)v24 gc_modelError:v26 userInfo:?];
 
     v16 = v14;
 LABEL_23:
@@ -192,54 +192,54 @@ LABEL_38:
     [v7 setSourceExpression:v15];
 
 LABEL_14:
-    v17 = [v7 build];
+    build = [v7 build];
     goto LABEL_15;
   }
 
-  if (a4)
+  if (error)
   {
     v37 = MEMORY[0x1E696ABC0];
     v42[0] = *MEMORY[0x1E696A578];
-    v27 = [v16 localizedDescription];
-    v25 = v27;
-    if (!v27)
+    localizedDescription = [v16 localizedDescription];
+    v25 = localizedDescription;
+    if (!localizedDescription)
     {
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      localizedDescription = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
     }
 
-    v38 = v27;
-    v43[0] = v27;
+    localizedFailureReason2 = localizedDescription;
+    v43[0] = localizedDescription;
     v42[1] = *MEMORY[0x1E696A588];
-    v28 = [v16 localizedFailureReason];
-    v29 = v28;
-    if (!v28)
+    localizedFailureReason3 = [v16 localizedFailureReason];
+    v29 = localizedFailureReason3;
+    if (!localizedFailureReason3)
     {
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error instantiating '%@' model for key '%@'.", objc_opt_class(), @"SourceExpression"];
+      localizedFailureReason3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error instantiating '%@' model for key '%@'.", objc_opt_class(), @"SourceExpression"];
     }
 
-    v36 = v28;
-    v43[1] = v28;
+    v36 = localizedFailureReason3;
+    v43[1] = localizedFailureReason3;
     v42[2] = *MEMORY[0x1E696AA08];
-    v30 = v16;
+    null = v16;
     if (!v16)
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v35 = v30;
-    v43[2] = v30;
+    v35 = null;
+    v43[2] = null;
     v42[3] = @"GCFailingKeyPathErrorKey";
-    v31 = [v16 gc_failingKeyPath];
-    v32 = v31;
-    if (!v31)
+    gc_failingKeyPath = [v16 gc_failingKeyPath];
+    v32 = gc_failingKeyPath;
+    if (!gc_failingKeyPath)
     {
-      v31 = MEMORY[0x1E695E0F0];
+      gc_failingKeyPath = MEMORY[0x1E695E0F0];
     }
 
-    v33 = [v31 arrayByAddingObject:@"SourceExpression"];
+    v33 = [gc_failingKeyPath arrayByAddingObject:@"SourceExpression"];
     v43[3] = v33;
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:4];
-    *a4 = [(NSError *)v37 gc_modelError:v34 userInfo:?];
+    *error = [(NSError *)v37 gc_modelError:v34 userInfo:?];
 
     if (!v16)
     {
@@ -260,12 +260,12 @@ LABEL_14:
 LABEL_40:
 
 LABEL_41:
-  v17 = 0;
+  build = 0;
 LABEL_15:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return build;
 }
 
 @end

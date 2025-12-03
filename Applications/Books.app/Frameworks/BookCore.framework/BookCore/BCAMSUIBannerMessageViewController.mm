@@ -1,56 +1,56 @@
 @interface BCAMSUIBannerMessageViewController
-- (BCAMSUIBannerMessageViewController)initWithRequest:(id)a3 placement:(id)a4;
+- (BCAMSUIBannerMessageViewController)initWithRequest:(id)request placement:(id)placement;
 - (id)messageId;
 - (id)messagePlacement;
 - (void)bc_analyticsVisibilityDidAppear;
 - (void)bc_analyticsVisibilityDidDisappear;
 - (void)bc_startImpressionEventTracking;
 - (void)bc_submitImpressionEvent;
-- (void)reportActionTriggered:(id)a3;
-- (void)setIsOnScreen:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)reportActionTriggered:(id)triggered;
+- (void)setIsOnScreen:(BOOL)screen;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BCAMSUIBannerMessageViewController
 
-- (BCAMSUIBannerMessageViewController)initWithRequest:(id)a3 placement:(id)a4
+- (BCAMSUIBannerMessageViewController)initWithRequest:(id)request placement:(id)placement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCAMSUIBannerMessageViewController *)self initWithRequest:v6];
+  requestCopy = request;
+  placementCopy = placement;
+  v8 = [(BCAMSUIBannerMessageViewController *)self initWithRequest:requestCopy];
   v9 = v8;
   if (v8)
   {
-    [(BCAMSUIBannerMessageViewController *)v8 setPlacement:v7];
-    [(BCAMSUIBannerMessageViewController *)v9 setBc_request:v6];
+    [(BCAMSUIBannerMessageViewController *)v8 setPlacement:placementCopy];
+    [(BCAMSUIBannerMessageViewController *)v9 setBc_request:requestCopy];
     v9->_isOnScreen = 1;
   }
 
   return v9;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BCAMSUIBannerMessageViewController;
-  [(BCAMSUIBannerMessageViewController *)&v4 viewDidAppear:a3];
+  [(BCAMSUIBannerMessageViewController *)&v4 viewDidAppear:appear];
   [(BCAMSUIBannerMessageViewController *)self bc_analyticsVisibilityUpdateSubtree];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BCAMSUIBannerMessageViewController;
-  [(BCAMSUIBannerMessageViewController *)&v4 viewWillDisappear:a3];
+  [(BCAMSUIBannerMessageViewController *)&v4 viewWillDisappear:disappear];
   [(BCAMSUIBannerMessageViewController *)self bc_analyticsVisibilityUpdateSubtree];
 }
 
-- (void)setIsOnScreen:(BOOL)a3
+- (void)setIsOnScreen:(BOOL)screen
 {
-  if ([(BCAMSUIBannerMessageViewController *)self isOnScreen]!= a3)
+  if ([(BCAMSUIBannerMessageViewController *)self isOnScreen]!= screen)
   {
-    self->_isOnScreen = a3;
+    self->_isOnScreen = screen;
     if ([(BCAMSUIBannerMessageViewController *)self bc_analyticsVisibility])
     {
       if (!self->_isOnScreen || ([(BCAMSUIBannerMessageViewController *)self bc_startImpressionEventTracking], !self->_isOnScreen))
@@ -62,20 +62,20 @@
   }
 }
 
-- (void)reportActionTriggered:(id)a3
+- (void)reportActionTriggered:(id)triggered
 {
-  v15 = a3;
-  v4 = [(BCAMSUIBannerMessageViewController *)self ba_effectiveAnalyticsTracker];
-  if (v4)
+  triggeredCopy = triggered;
+  ba_effectiveAnalyticsTracker = [(BCAMSUIBannerMessageViewController *)self ba_effectiveAnalyticsTracker];
+  if (ba_effectiveAnalyticsTracker)
   {
-    v5 = [(BCAMSUIBannerMessageViewController *)self bc_request];
-    v6 = sub_B4B00(v5);
+    bc_request = [(BCAMSUIBannerMessageViewController *)self bc_request];
+    v6 = sub_B4B00(bc_request);
 
     v7 = +[BAEventReporter sharedReporter];
-    v8 = [v15 deepLink];
-    v9 = [v8 absoluteString];
-    v10 = [(BCAMSUIBannerMessageViewController *)self presentingViewController];
-    if (v10)
+    deepLink = [triggeredCopy deepLink];
+    absoluteString = [deepLink absoluteString];
+    presentingViewController = [(BCAMSUIBannerMessageViewController *)self presentingViewController];
+    if (presentingViewController)
     {
       v11 = 2;
     }
@@ -85,10 +85,10 @@
       v11 = 3;
     }
 
-    v12 = [(BCAMSUIBannerMessageViewController *)self messageId];
+    messageId = [(BCAMSUIBannerMessageViewController *)self messageId];
     v13 = [v6 count] != 0;
-    v14 = [(BCAMSUIBannerMessageViewController *)self placement];
-    [v7 emitUnifiedMessageActionEventWithTracker:v4 startDate:v9 messageType:v11 messageIdentifier:v12 hasActionable:v13 actionIdentifier:v6 placementName:v14];
+    placement = [(BCAMSUIBannerMessageViewController *)self placement];
+    [v7 emitUnifiedMessageActionEventWithTracker:ba_effectiveAnalyticsTracker startDate:absoluteString messageType:v11 messageIdentifier:messageId hasActionable:v13 actionIdentifier:v6 placementName:placement];
   }
 }
 
@@ -122,20 +122,20 @@
 
 - (void)bc_submitImpressionEvent
 {
-  v13 = [(BCAMSUIBannerMessageViewController *)self ba_effectiveAnalyticsTracker];
-  if (v13)
+  ba_effectiveAnalyticsTracker = [(BCAMSUIBannerMessageViewController *)self ba_effectiveAnalyticsTracker];
+  if (ba_effectiveAnalyticsTracker)
   {
-    v3 = [(BCAMSUIBannerMessageViewController *)self impressionStartTime];
+    impressionStartTime = [(BCAMSUIBannerMessageViewController *)self impressionStartTime];
 
-    if (v3)
+    if (impressionStartTime)
     {
-      v4 = [(BCAMSUIBannerMessageViewController *)self bc_request];
-      v5 = sub_B4B00(v4);
+      bc_request = [(BCAMSUIBannerMessageViewController *)self bc_request];
+      v5 = sub_B4B00(bc_request);
 
       v6 = +[BAEventReporter sharedReporter];
-      v7 = [(BCAMSUIBannerMessageViewController *)self impressionStartTime];
-      v8 = [(BCAMSUIBannerMessageViewController *)self presentingViewController];
-      if (v8)
+      impressionStartTime2 = [(BCAMSUIBannerMessageViewController *)self impressionStartTime];
+      presentingViewController = [(BCAMSUIBannerMessageViewController *)self presentingViewController];
+      if (presentingViewController)
       {
         v9 = 2;
       }
@@ -145,10 +145,10 @@
         v9 = 3;
       }
 
-      v10 = [(BCAMSUIBannerMessageViewController *)self messageId];
+      messageId = [(BCAMSUIBannerMessageViewController *)self messageId];
       v11 = [v5 count] != 0;
-      v12 = [(BCAMSUIBannerMessageViewController *)self placement];
-      [v6 emitUnifiedMessageExposureEventWithTracker:v13 startDate:v7 messageType:v9 messageIdentifier:v10 hasActionable:v11 actionIdentifier:v5 placementName:v12];
+      placement = [(BCAMSUIBannerMessageViewController *)self placement];
+      [v6 emitUnifiedMessageExposureEventWithTracker:ba_effectiveAnalyticsTracker startDate:impressionStartTime2 messageType:v9 messageIdentifier:messageId hasActionable:v11 actionIdentifier:v5 placementName:placement];
     }
   }
 
@@ -157,20 +157,20 @@
 
 - (id)messageId
 {
-  v2 = [(BCAMSUIBannerMessageViewController *)self bc_request];
-  v3 = [v2 metricsEvent];
-  v4 = [v3 underlyingDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"messageId"];
+  bc_request = [(BCAMSUIBannerMessageViewController *)self bc_request];
+  metricsEvent = [bc_request metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
+  v5 = [underlyingDictionary objectForKeyedSubscript:@"messageId"];
 
   return v5;
 }
 
 - (id)messagePlacement
 {
-  v2 = [(BCAMSUIBannerMessageViewController *)self bc_request];
-  v3 = [v2 metricsEvent];
-  v4 = [v3 underlyingDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"placement"];
+  bc_request = [(BCAMSUIBannerMessageViewController *)self bc_request];
+  metricsEvent = [bc_request metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
+  v5 = [underlyingDictionary objectForKeyedSubscript:@"placement"];
 
   return v5;
 }

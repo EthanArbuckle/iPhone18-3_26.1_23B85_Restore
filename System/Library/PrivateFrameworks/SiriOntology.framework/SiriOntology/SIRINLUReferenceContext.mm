@@ -1,43 +1,43 @@
 @interface SIRINLUReferenceContext
-- (SIRINLUReferenceContext)initWithCoder:(id)a3;
-- (SIRINLUReferenceContext)initWithContextualReference:(BOOL)a3 DisambiguationNeeded:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SIRINLUReferenceContext)initWithCoder:(id)coder;
+- (SIRINLUReferenceContext)initWithContextualReference:(BOOL)reference DisambiguationNeeded:(BOOL)needed;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUReferenceContext
 
-- (SIRINLUReferenceContext)initWithCoder:(id)a3
+- (SIRINLUReferenceContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SIRINLUReferenceContext;
   v5 = [(SIRINLUReferenceContext *)&v7 init];
   if (v5)
   {
-    v5->_contextualReference = [v4 decodeBoolForKey:@"contextualReference"];
-    v5->_disambiguationNeeded = [v4 decodeBoolForKey:@"disambiguationNeeded"];
+    v5->_contextualReference = [coderCopy decodeBoolForKey:@"contextualReference"];
+    v5->_disambiguationNeeded = [coderCopy decodeBoolForKey:@"disambiguationNeeded"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contextualReference = self->_contextualReference;
-  v5 = a3;
-  [v5 encodeBool:contextualReference forKey:@"contextualReference"];
-  [v5 encodeBool:self->_disambiguationNeeded forKey:@"disambiguationNeeded"];
+  coderCopy = coder;
+  [coderCopy encodeBool:contextualReference forKey:@"contextualReference"];
+  [coderCopy encodeBool:self->_disambiguationNeeded forKey:@"disambiguationNeeded"];
 }
 
-- (SIRINLUReferenceContext)initWithContextualReference:(BOOL)a3 DisambiguationNeeded:(BOOL)a4
+- (SIRINLUReferenceContext)initWithContextualReference:(BOOL)reference DisambiguationNeeded:(BOOL)needed
 {
   v7.receiver = self;
   v7.super_class = SIRINLUReferenceContext;
   result = [(SIRINLUReferenceContext *)&v7 init];
   if (result)
   {
-    result->_contextualReference = a3;
-    result->_disambiguationNeeded = a4;
+    result->_contextualReference = reference;
+    result->_disambiguationNeeded = needed;
   }
 
   return result;

@@ -1,32 +1,32 @@
 @interface PDUAppDisclosureStyle
-+ (id)styleWithApplication:(id)a3;
-+ (id)styleWithBundle:(id)a3;
-- (PDUAppDisclosureStyle)initWithBundle:(id)a3;
-- (int64_t)_styleFromString:(id)a3;
-- (void)_fetchStyleWithBundle:(id)a3;
++ (id)styleWithApplication:(id)application;
++ (id)styleWithBundle:(id)bundle;
+- (PDUAppDisclosureStyle)initWithBundle:(id)bundle;
+- (int64_t)_styleFromString:(id)string;
+- (void)_fetchStyleWithBundle:(id)bundle;
 @end
 
 @implementation PDUAppDisclosureStyle
 
-- (PDUAppDisclosureStyle)initWithBundle:(id)a3
+- (PDUAppDisclosureStyle)initWithBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = PDUAppDisclosureStyle;
   v5 = [(PDUAppDisclosureStyle *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(PDUAppDisclosureStyle *)v5 _fetchStyleWithBundle:v4];
+    [(PDUAppDisclosureStyle *)v5 _fetchStyleWithBundle:bundleCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-+ (id)styleWithBundle:(id)a3
++ (id)styleWithBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = styleWithBundle__styleCache;
   if (!styleWithBundle__styleCache)
   {
@@ -38,54 +38,54 @@
     v4 = styleWithBundle__styleCache;
   }
 
-  v7 = [v3 bundleIdentifier];
-  v8 = [v4 objectForKey:v7];
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  v8 = [v4 objectForKey:bundleIdentifier];
 
   if (!v8)
   {
-    v8 = [[PDUAppDisclosureStyle alloc] initWithBundle:v3];
+    v8 = [[PDUAppDisclosureStyle alloc] initWithBundle:bundleCopy];
     v9 = styleWithBundle__styleCache;
-    v10 = [v3 bundleIdentifier];
-    [v9 setObject:v8 forKey:v10];
+    bundleIdentifier2 = [bundleCopy bundleIdentifier];
+    [v9 setObject:v8 forKey:bundleIdentifier2];
   }
 
   return v8;
 }
 
-+ (id)styleWithApplication:(id)a3
++ (id)styleWithApplication:(id)application
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = [a3 URL];
+  v5 = [application URL];
   v6 = [v4 bundleWithURL:v5];
 
-  v7 = [a1 styleWithBundle:v6];
+  v7 = [self styleWithBundle:v6];
 
   return v7;
 }
 
-- (int64_t)_styleFromString:(id)a3
+- (int64_t)_styleFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"dark"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"dark"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"light"];
+    v4 = [lowercaseString isEqualToString:@"light"];
   }
 
   return v4;
 }
 
-- (void)_fetchStyleWithBundle:(id)a3
+- (void)_fetchStyleWithBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_alloc(MEMORY[0x277D75DE0]);
-  v6 = [v4 bundleURL];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v5 initWithURL:v6 idiom:objc_msgSend(v7 error:{"userInterfaceIdiom"), 0}];
+  bundleURL = [bundleCopy bundleURL];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v8 = [v5 initWithURL:bundleURL idiom:objc_msgSend(currentDevice error:{"userInterfaceIdiom"), 0}];
 
   v9 = [v8 colorNamed:@"PrivacyDisclosureTintColor" withTraitCollection:0];
   tintColor = self->_tintColor;
@@ -99,8 +99,8 @@
 
     if (!self->_tintColor)
     {
-      v13 = [v4 infoDictionary];
-      v14 = [v13 objectForKeyedSubscript:@"NSAccentColorName"];
+      infoDictionary = [bundleCopy infoDictionary];
+      v14 = [infoDictionary objectForKeyedSubscript:@"NSAccentColorName"];
 
       if (v14)
       {
@@ -111,14 +111,14 @@
     }
   }
 
-  v17 = [v4 infoDictionary];
-  v18 = [v17 objectForKeyedSubscript:@"UIUserInterfaceStyle"];
+  infoDictionary2 = [bundleCopy infoDictionary];
+  v18 = [infoDictionary2 objectForKeyedSubscript:@"UIUserInterfaceStyle"];
 
   v19 = [(PDUAppDisclosureStyle *)self _styleFromString:v18];
   self->_interfaceStyle = v19;
   if (!self->_tintColor || !v19)
   {
-    v20 = [v4 bundleIdentifier];
+    bundleIdentifier = [bundleCopy bundleIdentifier];
     v21 = PDUGetBundle();
     v22 = v21;
     if (v21)
@@ -139,7 +139,7 @@
           if (v27 && !v28)
           {
             v38 = v27;
-            v29 = [v27 objectForKeyedSubscript:v20];
+            v29 = [v27 objectForKeyedSubscript:bundleIdentifier];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {

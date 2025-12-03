@@ -1,20 +1,20 @@
 @interface VOTBrailleGestureSpellingSuggestionHandler
-- (id)_generateSpellingSuggestionsForResponder:(id)a3 languageCode:(id)a4;
-- (id)_spellingSuggestionsForWord:(id)a3 languageCode:(id)a4;
-- (id)_updateRangeToReplaceInContext:(id)a3 selectedRange:(_NSRange)a4;
-- (id)applySpellingSuggestionForResponder:(id)a3 languageCode:(id)a4;
+- (id)_generateSpellingSuggestionsForResponder:(id)responder languageCode:(id)code;
+- (id)_spellingSuggestionsForWord:(id)word languageCode:(id)code;
+- (id)_updateRangeToReplaceInContext:(id)context selectedRange:(_NSRange)range;
+- (id)applySpellingSuggestionForResponder:(id)responder languageCode:(id)code;
 - (id)currentSpellingSuggestion;
 - (void)clearSpellingSuggestions;
-- (void)selectNextSpellingSuggestionInDirection:(int64_t)a3 responder:(id)a4 languageCode:(id)a5;
+- (void)selectNextSpellingSuggestionInDirection:(int64_t)direction responder:(id)responder languageCode:(id)code;
 @end
 
 @implementation VOTBrailleGestureSpellingSuggestionHandler
 
-- (id)_updateRangeToReplaceInContext:(id)a3 selectedRange:(_NSRange)a4
+- (id)_updateRangeToReplaceInContext:(id)context selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -29,18 +29,18 @@
   v10[7] = length;
   v10[4] = self;
   v10[5] = &v11;
-  [v7 enumerateSubstringsInRange:0 options:objc_msgSend(v7 usingBlock:{"length"), 1027, v10}];
+  [contextCopy enumerateSubstringsInRange:0 options:objc_msgSend(contextCopy usingBlock:{"length"), 1027, v10}];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
   return v8;
 }
 
-- (id)_spellingSuggestionsForWord:(id)a3 languageCode:(id)a4
+- (id)_spellingSuggestionsForWord:(id)word languageCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  wordCopy = word;
+  codeCopy = code;
+  if (wordCopy)
   {
     textChecker = self->_textChecker;
     if (!textChecker)
@@ -70,7 +70,7 @@
       textChecker = self->_textChecker;
     }
 
-    v13 = -[UITextChecker guessesForWordRange:inString:language:](textChecker, "guessesForWordRange:inString:language:", 0, [v6 length], v6, v7);
+    v13 = -[UITextChecker guessesForWordRange:inString:language:](textChecker, "guessesForWordRange:inString:language:", 0, [wordCopy length], wordCopy, codeCopy);
   }
 
   else
@@ -81,22 +81,22 @@
   return v13;
 }
 
-- (id)_generateSpellingSuggestionsForResponder:(id)a3 languageCode:(id)a4
+- (id)_generateSpellingSuggestionsForResponder:(id)responder languageCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 value];
+  responderCopy = responder;
+  codeCopy = code;
+  value = [responderCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 string];
+    string = [value string];
 
-    v8 = v9;
+    value = string;
   }
 
-  v10 = [v6 selectedTextRange];
-  v12 = [(VOTBrailleGestureSpellingSuggestionHandler *)self _updateRangeToReplaceInContext:v8 selectedRange:v10, v11];
-  v13 = [(VOTBrailleGestureSpellingSuggestionHandler *)self _spellingSuggestionsForWord:v12 languageCode:v7];
+  selectedTextRange = [responderCopy selectedTextRange];
+  v12 = [(VOTBrailleGestureSpellingSuggestionHandler *)self _updateRangeToReplaceInContext:value selectedRange:selectedTextRange, v11];
+  v13 = [(VOTBrailleGestureSpellingSuggestionHandler *)self _spellingSuggestionsForWord:v12 languageCode:codeCopy];
 
   if (v12)
   {
@@ -123,14 +123,14 @@
   return v15;
 }
 
-- (void)selectNextSpellingSuggestionInDirection:(int64_t)a3 responder:(id)a4 languageCode:(id)a5
+- (void)selectNextSpellingSuggestionInDirection:(int64_t)direction responder:(id)responder languageCode:(id)code
 {
-  v16 = a4;
-  v8 = a5;
+  responderCopy = responder;
+  codeCopy = code;
   spellingSuggestions = self->_spellingSuggestions;
   if (!spellingSuggestions)
   {
-    v10 = [(VOTBrailleGestureSpellingSuggestionHandler *)self _generateSpellingSuggestionsForResponder:v16 languageCode:v8];
+    v10 = [(VOTBrailleGestureSpellingSuggestionHandler *)self _generateSpellingSuggestionsForResponder:responderCopy languageCode:codeCopy];
     v11 = self->_spellingSuggestions;
     self->_spellingSuggestions = v10;
 
@@ -140,7 +140,7 @@
 
   if ([(NSArray *)spellingSuggestions count])
   {
-    if (a3 == 1)
+    if (direction == 1)
     {
       v12 = 1;
     }
@@ -190,14 +190,14 @@ LABEL_12:
   return v4;
 }
 
-- (id)applySpellingSuggestionForResponder:(id)a3 languageCode:(id)a4
+- (id)applySpellingSuggestionForResponder:(id)responder languageCode:(id)code
 {
-  v5 = a3;
-  v6 = [(VOTBrailleGestureSpellingSuggestionHandler *)self currentSpellingSuggestion];
-  if (v6)
+  responderCopy = responder;
+  currentSpellingSuggestion = [(VOTBrailleGestureSpellingSuggestionHandler *)self currentSpellingSuggestion];
+  if (currentSpellingSuggestion)
   {
-    [v5 setSelectedTextRange:self->_rangeToReplace.location refreshBraille:{self->_rangeToReplace.length, 1}];
-    [v5 performTextOperation:kAXTextOperationActionDelete];
+    [responderCopy setSelectedTextRange:self->_rangeToReplace.location refreshBraille:{self->_rangeToReplace.length, 1}];
+    [responderCopy performTextOperation:kAXTextOperationActionDelete];
     v7 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -205,18 +205,18 @@ LABEL_12:
       v12 = 138478083;
       v13 = v11;
       v14 = 2113;
-      v15 = v6;
+      v15 = currentSpellingSuggestion;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Replaced word at range %{private}@ with %{private}@", &v12, 0x16u);
     }
 
-    [v5 insertText:v6 source:3];
+    [responderCopy insertText:currentSpellingSuggestion source:3];
     v8 = [(NSArray *)self->_spellingSuggestions objectAtIndexedSubscript:self->_spellingSuggestionIndex];
     self->_rangeToReplace.length = [v8 length];
 
-    v9 = v6;
+    v9 = currentSpellingSuggestion;
   }
 
-  return v6;
+  return currentSpellingSuggestion;
 }
 
 - (void)clearSpellingSuggestions

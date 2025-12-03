@@ -1,34 +1,34 @@
 @interface PXSearchResultsDataUtility
-+ (void)suggestionsDisplayDataFromSuggestion:(id)a3 searchText:(id)a4 matchedColor:(id)a5 remainingColor:(id)a6 isTextCompletion:(BOOL)a7 completion:(id)a8;
++ (void)suggestionsDisplayDataFromSuggestion:(id)suggestion searchText:(id)text matchedColor:(id)color remainingColor:(id)remainingColor isTextCompletion:(BOOL)completion completion:(id)a8;
 @end
 
 @implementation PXSearchResultsDataUtility
 
-+ (void)suggestionsDisplayDataFromSuggestion:(id)a3 searchText:(id)a4 matchedColor:(id)a5 remainingColor:(id)a6 isTextCompletion:(BOOL)a7 completion:(id)a8
++ (void)suggestionsDisplayDataFromSuggestion:(id)suggestion searchText:(id)text matchedColor:(id)color remainingColor:(id)remainingColor isTextCompletion:(BOOL)completion completion:(id)a8
 {
-  v9 = a7;
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  completionCopy = completion;
+  suggestionCopy = suggestion;
+  textCopy = text;
+  colorCopy = color;
+  remainingColorCopy = remainingColor;
   v16 = a8;
-  v17 = [v22 px_symbolName];
-  if ([PXImageUtilities symbolIsEmbeddedGlyph:v17])
+  px_symbolName = [suggestionCopy px_symbolName];
+  if ([PXImageUtilities symbolIsEmbeddedGlyph:px_symbolName])
   {
-    [MEMORY[0x1E69DCAB8] imageNamed:v17];
+    [MEMORY[0x1E69DCAB8] imageNamed:px_symbolName];
   }
 
   else
   {
-    [MEMORY[0x1E69DCAB8] _systemImageNamed:v17];
+    [MEMORY[0x1E69DCAB8] _systemImageNamed:px_symbolName];
   }
   v18 = ;
-  if (v9)
+  if (completionCopy)
   {
-    v19 = [v22 text];
-    if (v13)
+    text = [suggestionCopy text];
+    if (textCopy)
     {
-      v20 = v13;
+      v20 = textCopy;
     }
 
     else
@@ -36,15 +36,15 @@
       v20 = &stru_1F1741150;
     }
 
-    v21 = [PXSearchDisplayUtility highlightedAttributedStringForString:v19 highlightedSubstring:v20 matchedColor:v14 remainingColor:v15];
+    text2 = [PXSearchDisplayUtility highlightedAttributedStringForString:text highlightedSubstring:v20 matchedColor:colorCopy remainingColor:remainingColorCopy];
 
-    (*(v16 + 2))(v16, 0, v21, 0, v18);
+    (*(v16 + 2))(v16, 0, text2, 0, v18);
   }
 
   else
   {
-    v21 = [v22 text];
-    (*(v16 + 2))(v16, v21, 0, 0, v18);
+    text2 = [suggestionCopy text];
+    (*(v16 + 2))(v16, text2, 0, 0, v18);
   }
 }
 

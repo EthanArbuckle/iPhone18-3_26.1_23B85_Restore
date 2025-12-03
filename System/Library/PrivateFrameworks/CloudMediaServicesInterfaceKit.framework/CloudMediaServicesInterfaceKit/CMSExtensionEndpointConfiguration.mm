@@ -1,6 +1,6 @@
 @interface CMSExtensionEndpointConfiguration
 - (CMSExtensionEndpointConfiguration)init;
-- (CMSExtensionEndpointConfiguration)initWithDictionary:(id)a3 endpoint:(id)a4 baseURL:(id)a5 groupHeaders:(id)a6;
+- (CMSExtensionEndpointConfiguration)initWithDictionary:(id)dictionary endpoint:(id)endpoint baseURL:(id)l groupHeaders:(id)headers;
 @end
 
 @implementation CMSExtensionEndpointConfiguration
@@ -13,18 +13,18 @@
   return v4;
 }
 
-- (CMSExtensionEndpointConfiguration)initWithDictionary:(id)a3 endpoint:(id)a4 baseURL:(id)a5 groupHeaders:(id)a6
+- (CMSExtensionEndpointConfiguration)initWithDictionary:(id)dictionary endpoint:(id)endpoint baseURL:(id)l groupHeaders:(id)headers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  endpointCopy = endpoint;
+  lCopy = l;
+  headersCopy = headers;
   v28.receiver = self;
   v28.super_class = CMSExtensionEndpointConfiguration;
   v14 = [(CMSExtensionEndpointConfiguration *)&v28 init];
   if (v14)
   {
-    v15 = [v10 cmsOptionalStringForKey:@"url"];
+    v15 = [dictionaryCopy cmsOptionalStringForKey:@"url"];
     v16 = v15;
     if (v15)
     {
@@ -43,9 +43,9 @@
         goto LABEL_9;
       }
 
-      v20 = [(NSURL *)v19 baseURL];
+      baseURL = [(NSURL *)v19 baseURL];
 
-      if (v20)
+      if (baseURL)
       {
         goto LABEL_9;
       }
@@ -57,16 +57,16 @@
     else
     {
       v21 = MEMORY[0x277CBEBC0];
-      v22 = v11;
+      v22 = endpointCopy;
     }
 
-    v23 = [v21 URLWithString:v22 relativeToURL:v12];
+    v23 = [v21 URLWithString:v22 relativeToURL:lCopy];
     v24 = v14->_endpointURL;
     v14->_endpointURL = v23;
 
 LABEL_9:
-    objc_storeStrong(&v14->_groupHeaders, a6);
-    v25 = [v10 cmsOptionalDictionaryForKey:@"hdr"];
+    objc_storeStrong(&v14->_groupHeaders, headers);
+    v25 = [dictionaryCopy cmsOptionalDictionaryForKey:@"hdr"];
     headers = v14->_headers;
     v14->_headers = v25;
   }

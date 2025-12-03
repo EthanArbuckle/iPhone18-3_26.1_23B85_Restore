@@ -1,38 +1,38 @@
 @interface NTKKaleidoscopeFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_wantsStatusBarIconShadow;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (NTKKaleidoscopeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_handAlphaForEditMode:(int64_t)a3;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (NTKKaleidoscopeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_handAlphaForEditMode:(int64_t)mode;
 - (double)_verticalPaddingForStatusBar;
-- (float)_crownTurnsForStyle:(unint64_t)a3;
-- (id)_imageForAsset:(unint64_t)a3;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_newComplicationFactoryForDevice:(id)a3;
-- (id)_pathfinderForAsset:(unint64_t)a3;
-- (id)_quadWithStyle:(unint64_t)a3 asset:(unint64_t)a4;
-- (id)_snapshotWithAsset:(unint64_t)a3 style:(unint64_t)a4 size:(CGSize)a5;
-- (id)_swatchForAsset:(unint64_t)a3;
+- (float)_crownTurnsForStyle:(unint64_t)style;
+- (id)_imageForAsset:(unint64_t)asset;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_newComplicationFactoryForDevice:(id)device;
+- (id)_pathfinderForAsset:(unint64_t)asset;
+- (id)_quadWithStyle:(unint64_t)style asset:(unint64_t)asset;
+- (id)_snapshotWithAsset:(unint64_t)asset style:(unint64_t)style size:(CGSize)size;
+- (id)_swatchForAsset:(unint64_t)asset;
 - (id)_swatchFromUserImage;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (id)_textureChromaForAsset:(unint64_t)a3;
-- (id)_textureLumaForAsset:(unint64_t)a3;
-- (id)_updatePathForQuadView:(id)a3 time:(double)a4 crownOffset:(double)a5;
-- (id)provideAtlasBacking:(id)a3;
-- (unint64_t)_layoutStyleForSlot:(id)a3;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (id)_textureChromaForAsset:(unint64_t)asset;
+- (id)_textureLumaForAsset:(unint64_t)asset;
+- (id)_updatePathForQuadView:(id)view time:(double)time crownOffset:(double)offset;
+- (id)provideAtlasBacking:(id)backing;
+- (unint64_t)_layoutStyleForSlot:(id)slot;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
 - (void)_cleanupAfterZoom;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot;
 - (void)_disableCrown;
 - (void)_enableCrown;
 - (void)_loadCurrentQuad;
@@ -42,36 +42,36 @@
 - (void)_unloadSnapshotContentViews;
 - (void)_updateComplicationColors;
 - (void)_updateDayDuration;
-- (void)_updateForResourceDirectoryChange:(id)a3;
+- (void)_updateForResourceDirectoryChange:(id)change;
 - (void)_updateFramerate;
-- (void)_updatePathForTime:(double)a3;
-- (void)_updateRotationForQuadView:(id)a3 time:(double)a4 crownOffset:(double)a5;
+- (void)_updatePathForTime:(double)time;
+- (void)_updateRotationForQuadView:(id)view time:(double)time crownOffset:(double)offset;
 - (void)_updateUserContent;
-- (void)_updateWithAsset:(unint64_t)a3;
+- (void)_updateWithAsset:(unint64_t)asset;
 - (void)dealloc;
-- (void)quadViewWillDisplay:(id)a3 forTime:(double)a4;
-- (void)setCurrentAsset:(unint64_t)a3;
-- (void)setCurrentStyle:(unint64_t)a3;
+- (void)quadViewWillDisplay:(id)display forTime:(double)time;
+- (void)setCurrentAsset:(unint64_t)asset;
+- (void)setCurrentStyle:(unint64_t)style;
 @end
 
 @implementation NTKKaleidoscopeFaceView
 
-- (id)_newComplicationFactoryForDevice:(id)a3
+- (id)_newComplicationFactoryForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[NTKColorCircularUtilitarianFaceViewComplicationFactory alloc] initForDevice:v4];
+  deviceCopy = device;
+  v5 = [[NTKColorCircularUtilitarianFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
 
   [v5 setFaceView:self];
   return v5;
 }
 
-- (NTKKaleidoscopeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKKaleidoscopeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v38.receiver = self;
   v38.super_class = NTKKaleidoscopeFaceView;
-  v10 = [(NTKKaleidoscopeFaceView *)&v38 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:v9];
+  v10 = [(NTKKaleidoscopeFaceView *)&v38 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifierCopy];
   if (v10)
   {
     v11 = objc_opt_new();
@@ -87,7 +87,7 @@
     resourceProviderKey = v10->_resourceProviderKey;
     v10->_resourceProviderKey = v15;
 
-    v17 = [(NTKKaleidoscopeFaceView *)v10 _newComplicationFactoryForDevice:v8];
+    v17 = [(NTKKaleidoscopeFaceView *)v10 _newComplicationFactoryForDevice:deviceCopy];
     faceViewComplicationFactory = v10->_faceViewComplicationFactory;
     v10->_faceViewComplicationFactory = v17;
 
@@ -113,7 +113,7 @@
     v21 = +[UIColor whiteColor];
     [(NTKKaleidoscopeFaceView *)v10 setComplicationColor:v21];
 
-    v22 = [(NTKKaleidoscopeFaceView *)v10 complicationColor];
+    complicationColor = [(NTKKaleidoscopeFaceView *)v10 complicationColor];
     v23 = NTKColorByPremultiplyingAlpha();
     complicationPlatterColor = v10->_complicationPlatterColor;
     v10->_complicationPlatterColor = v23;
@@ -161,20 +161,20 @@
   [(NTKKaleidoscopeFaceView *)&v6 dealloc];
 }
 
-- (void)setCurrentAsset:(unint64_t)a3
+- (void)setCurrentAsset:(unint64_t)asset
 {
-  if (self->_currentAsset != a3)
+  if (self->_currentAsset != asset)
   {
-    self->_currentAsset = a3;
+    self->_currentAsset = asset;
     [(NTKKaleidoscopeFaceView *)self _updateWithAsset:?];
   }
 }
 
-- (void)setCurrentStyle:(unint64_t)a3
+- (void)setCurrentStyle:(unint64_t)style
 {
-  if (self->_currentStyle != a3)
+  if (self->_currentStyle != style)
   {
-    self->_currentStyle = a3;
+    self->_currentStyle = style;
     [(NTKKaleidoscopeFaceView *)self _crownTurnsForStyle:?];
     self->_crownTurnsPerRotation = v5;
 
@@ -196,9 +196,9 @@
   }
 }
 
-- (void)_updateWithAsset:(unint64_t)a3
+- (void)_updateWithAsset:(unint64_t)asset
 {
-  if (a3 == 1000 && (!self->_userTextureLuma || !self->_userTextureChroma))
+  if (asset == 1000 && (!self->_userTextureLuma || !self->_userTextureChroma))
   {
     [(NTKKaleidoscopeFaceView *)self _updateUserContent];
   }
@@ -221,14 +221,14 @@
   v6 = +[UIColor blackColor];
   [(CLKUIQuadView *)v5 setBackgroundColor:v6];
 
-  v7 = [(NTKKaleidoscopeFaceView *)self contentView];
-  [v7 addSubview:self->_quadView];
+  contentView = [(NTKKaleidoscopeFaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(NTKKaleidoscopeFaceView *)self _updateWithAsset:self->_currentAsset];
-  v8 = [(NTKKaleidoscopeFaceView *)self device];
-  v9 = [v8 deviceCategory];
+  device = [(NTKKaleidoscopeFaceView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v9 != &dword_0 + 1)
+  if (deviceCategory != &dword_0 + 1)
   {
     v10 = [NTKRoundedCornerOverlayView alloc];
     [(NTKKaleidoscopeFaceView *)self bounds];
@@ -236,13 +236,13 @@
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(NTKKaleidoscopeFaceView *)self device];
-    v20 = [v10 initWithFrame:v19 forDeviceCornerRadius:{v12, v14, v16, v18}];
+    device2 = [(NTKKaleidoscopeFaceView *)self device];
+    v20 = [v10 initWithFrame:device2 forDeviceCornerRadius:{v12, v14, v16, v18}];
     cornerView = self->_cornerView;
     self->_cornerView = v20;
 
-    v22 = [(NTKKaleidoscopeFaceView *)self contentView];
-    [v22 insertSubview:self->_cornerView aboveSubview:self->_quadView];
+    contentView2 = [(NTKKaleidoscopeFaceView *)self contentView];
+    [contentView2 insertSubview:self->_cornerView aboveSubview:self->_quadView];
   }
 }
 
@@ -295,10 +295,10 @@
   [(NTKKaleidoscopeFaceView *)&v2 _disableCrown];
 }
 
-- (void)quadViewWillDisplay:(id)a3 forTime:(double)a4
+- (void)quadViewWillDisplay:(id)display forTime:(double)time
 {
   ++self->_frameCounter;
-  [(NTKKaleidoscopeFaceView *)self _kaleidoscopeTime:a3];
+  [(NTKKaleidoscopeFaceView *)self _kaleidoscopeTime:display];
   v6 = v5;
   [(NTKKaleidoscopeFaceView *)self _updatePathForTime:?];
   [(NTKKaleidoscopeFaceView *)self _updateRotationForQuadView:self->_quadView time:v6 crownOffset:self->_crownOffset];
@@ -310,27 +310,27 @@
   }
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v5.receiver = self;
   v5.super_class = NTKKaleidoscopeFaceView;
-  v3 = a3;
-  [(NTKKaleidoscopeFaceView *)&v5 _configureTimeView:v3];
-  v4 = [v3 secondHandView];
+  viewCopy = view;
+  [(NTKKaleidoscopeFaceView *)&v5 _configureTimeView:viewCopy];
+  secondHandView = [viewCopy secondHandView];
 
   if (qword_2CF80 != -1)
   {
     sub_150F0();
   }
 
-  [v4 setColor:qword_2CF78];
+  [secondHandView setColor:qword_2CF78];
 }
 
-- (unint64_t)_layoutStyleForSlot:(id)a3
+- (unint64_t)_layoutStyleForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKKaleidoscopeFaceView *)self device];
-  if ([v5 deviceCategory] == &dword_0 + 1)
+  slotCopy = slot;
+  device = [(NTKKaleidoscopeFaceView *)self device];
+  if ([device deviceCategory] == &dword_0 + 1)
   {
 
 LABEL_5:
@@ -338,7 +338,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [v4 isEqualToString:NTKComplicationSlotBottomCenter];
+  v6 = [slotCopy isEqualToString:NTKComplicationSlotBottomCenter];
 
   if ((v6 & 1) == 0)
   {
@@ -351,19 +351,19 @@ LABEL_6:
   return v7;
 }
 
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot
 {
-  v14 = a8;
+  slotCopy = slot;
   if ([(NTKKaleidoscopeFaceView *)self _layoutStyleForSlot:?]== &dword_0 + 1)
   {
-    [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory curvedCircleRadius:a3 centerAngle:a4 maxAngularWidth:a5 circleCenter:a6 interior:a7 forSlot:v14];
+    [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory curvedCircleRadius:radius centerAngle:angle maxAngularWidth:width circleCenter:center interior:interior forSlot:slotCopy];
   }
 }
 
 - (double)_verticalPaddingForStatusBar
 {
-  v2 = [(NTKKaleidoscopeFaceView *)self device];
-  sub_11B74(v2, v2);
+  device = [(NTKKaleidoscopeFaceView *)self device];
+  sub_11B74(device, device);
   v3 = *&qword_2CF40;
 
   return v3;
@@ -394,52 +394,52 @@ LABEL_6:
   [v2 purgeAllUnused];
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotBottomCenter, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotBottomCenter, complication}])
   {
-    v5 = [(NTKKaleidoscopeFaceView *)self delegate];
-    [v5 faceViewWantsCustomKeylineFramesReloadedForEditMode:12];
+    delegate = [(NTKKaleidoscopeFaceView *)self delegate];
+    [delegate faceViewWantsCustomKeylineFramesReloadedForEditMode:12];
 
-    v6 = [(NTKKaleidoscopeFaceView *)self delegate];
-    [v6 faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
+    delegate2 = [(NTKKaleidoscopeFaceView *)self delegate];
+    [delegate2 faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v10 = a3;
-  v8 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 15)
   {
-    -[NTKKaleidoscopeFaceView setCurrentStyle:](self, "setCurrentStyle:", [v10 style]);
-    v9 = [(NTKKaleidoscopeFaceView *)self delegate];
-    [v9 faceViewDidChangeWantsStatusBarIconShadow];
+    -[NTKKaleidoscopeFaceView setCurrentStyle:](self, "setCurrentStyle:", [optionCopy style]);
+    delegate = [(NTKKaleidoscopeFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 
-  else if (a4 == 12)
+  else if (mode == 12)
   {
-    -[NTKKaleidoscopeFaceView setCurrentAsset:](self, "setCurrentAsset:", [v10 asset]);
+    -[NTKKaleidoscopeFaceView setCurrentAsset:](self, "setCurrentAsset:", [optionCopy asset]);
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v24 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (a6 == 15)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 15)
   {
     p_quadView = &self->_quadView;
     [(CLKUIQuadView *)self->_quadView removeAllQuads];
     [(NSMapTable *)self->_quadPathfinderMapTable removeAllObjects];
-    v17 = -[NTKKaleidoscopeFaceView _quadWithStyle:asset:](self, "_quadWithStyle:asset:", [v24 style], self->_currentAsset);
-    v20 = -[NTKKaleidoscopeFaceView _quadWithStyle:asset:](self, "_quadWithStyle:asset:", [v12 style], self->_currentAsset);
-    v21 = [(NTKKaleidoscopeFaceView *)self _isEditOptionFullscreen:v24];
-    v22 = 1.0 - a3;
+    v17 = -[NTKKaleidoscopeFaceView _quadWithStyle:asset:](self, "_quadWithStyle:asset:", [optionCopy style], self->_currentAsset);
+    v20 = -[NTKKaleidoscopeFaceView _quadWithStyle:asset:](self, "_quadWithStyle:asset:", [toOptionCopy style], self->_currentAsset);
+    v21 = [(NTKKaleidoscopeFaceView *)self _isEditOptionFullscreen:optionCopy];
+    v22 = 1.0 - fraction;
     if (v21)
     {
-      a3 = 1.0 - a3;
+      fraction = 1.0 - fraction;
       v18 = v17;
     }
 
@@ -458,30 +458,30 @@ LABEL_6:
       v23 = v17;
     }
 
-    *&v22 = a3;
+    *&v22 = fraction;
     [v18 setAlpha:v22];
-    [v18 setOpaque:a3 >= 1.0];
+    [v18 setOpaque:fraction >= 1.0];
     [v23 setOpaque:1];
     [(CLKUIQuadView *)*p_quadView addQuad:v23];
   }
 
   else
   {
-    if (a6 != 12)
+    if (mode != 12)
     {
       goto LABEL_12;
     }
 
-    v14 = [v24 asset];
-    v15 = [v12 asset];
+    asset = [optionCopy asset];
+    asset2 = [toOptionCopy asset];
     p_quadView = &self->_quadView;
     [(CLKUIQuadView *)self->_quadView removeAllQuads];
     [(NSMapTable *)self->_quadPathfinderMapTable removeAllObjects];
-    v17 = [(NTKKaleidoscopeFaceView *)self _quadWithStyle:self->_currentStyle asset:v14];
+    v17 = [(NTKKaleidoscopeFaceView *)self _quadWithStyle:self->_currentStyle asset:asset];
     [v17 setOpaque:1];
     [(CLKUIQuadView *)self->_quadView addQuad:v17];
-    v18 = [(NTKKaleidoscopeFaceView *)self _quadWithStyle:self->_currentStyle asset:v15];
-    *&v19 = a3;
+    v18 = [(NTKKaleidoscopeFaceView *)self _quadWithStyle:self->_currentStyle asset:asset2];
+    *&v19 = fraction;
     [v18 setAlpha:v19];
     v20 = v18;
   }
@@ -491,59 +491,59 @@ LABEL_6:
 LABEL_12:
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = [(NTKKaleidoscopeFaceView *)self timeView];
-  [(NTKKaleidoscopeFaceView *)self _handAlphaForEditMode:a4];
-  [(NTKKaleidoscopeFaceView *)self _handAlphaForEditMode:a5];
+  timeView = [(NTKKaleidoscopeFaceView *)self timeView];
+  [(NTKKaleidoscopeFaceView *)self _handAlphaForEditMode:mode];
+  [(NTKKaleidoscopeFaceView *)self _handAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [timeView setAlpha:?];
 
-  v9 = [(NTKKaleidoscopeFaceView *)self contentView];
-  [(NTKKaleidoscopeFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKKaleidoscopeFaceView *)self _contentAlphaForEditMode:a5];
+  contentView = [(NTKKaleidoscopeFaceView *)self contentView];
+  [(NTKKaleidoscopeFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKKaleidoscopeFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v9 setAlpha:?];
+  [contentView setAlpha:?];
 
-  v10 = [(NTKKaleidoscopeFaceView *)self contentView];
+  contentView2 = [(NTKKaleidoscopeFaceView *)self contentView];
   v11 = *&CGAffineTransformIdentity.c;
   v13[0] = *&CGAffineTransformIdentity.a;
   v13[1] = v11;
   v13[2] = *&CGAffineTransformIdentity.tx;
-  [v10 setTransform:v13];
+  [contentView2 setTransform:v13];
 
-  v12 = [(NTKKaleidoscopeFaceView *)self foregroundContainerView];
-  [(NTKKaleidoscopeFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKKaleidoscopeFaceView *)self _complicationAlphaForEditMode:a5];
+  foregroundContainerView = [(NTKKaleidoscopeFaceView *)self foregroundContainerView];
+  [(NTKKaleidoscopeFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKKaleidoscopeFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v12 setAlpha:?];
+  [foregroundContainerView setAlpha:?];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v10.receiver = self;
   v10.super_class = NTKKaleidoscopeFaceView;
-  [(NTKKaleidoscopeFaceView *)&v10 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 15 || a4 == 12)
+  [(NTKKaleidoscopeFaceView *)&v10 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 15 || mode == 12)
   {
-    v7 = [(NTKKaleidoscopeFaceView *)self contentView];
+    contentView = [(NTKKaleidoscopeFaceView *)self contentView];
     NTKAlphaForRubberBandingFraction();
-    [v7 setAlpha:?];
+    [contentView setAlpha:?];
     NTKScaleForRubberBandingFraction();
     CGAffineTransformMakeScale(&v9, v8, v8);
-    [v7 setTransform:&v9];
+    [contentView setTransform:&v9];
   }
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 15 || a3 == 12)
+  slotCopy = slot;
+  if (mode == 15 || mode == 12)
   {
-    v7 = [(NTKKaleidoscopeFaceView *)self device];
-    if ([v7 deviceCategory] == &dword_0 + 1)
+    device = [(NTKKaleidoscopeFaceView *)self device];
+    if ([device deviceCategory] == &dword_0 + 1)
     {
-      sub_11B74([(NTKKaleidoscopeFaceView *)self _faceEditingScaleForEditMode:a3 slot:v6], v7);
+      sub_11B74([(NTKKaleidoscopeFaceView *)self _faceEditingScaleForEditMode:mode slot:slotCopy], device);
       v8 = NTKKeylineViewWithCircle();
     }
 
@@ -551,7 +551,7 @@ LABEL_12:
     {
       v11.receiver = self;
       v11.super_class = NTKKaleidoscopeFaceView;
-      v8 = [(NTKKaleidoscopeFaceView *)&v11 _keylineViewForCustomEditMode:a3 slot:v6];
+      v8 = [(NTKKaleidoscopeFaceView *)&v11 _keylineViewForCustomEditMode:mode slot:slotCopy];
     }
 
     v9 = v8;
@@ -565,20 +565,20 @@ LABEL_12:
   return v9;
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  v7 = [(NTKKaleidoscopeFaceView *)self device];
-  v8 = [v7 deviceCategory];
+  slotCopy = slot;
+  device = [(NTKKaleidoscopeFaceView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v8 == &dword_0 + 1 && (a3 == 15 || a3 == 12))
+  if (deviceCategory == &dword_0 + 1 && (mode == 15 || mode == 12))
   {
-    v9 = [(NTKKaleidoscopeFaceView *)self device];
-    sub_11B74(v9, v9);
+    device2 = [(NTKKaleidoscopeFaceView *)self device];
+    sub_11B74(device2, device2);
 
-    v10 = [(NTKKaleidoscopeFaceView *)self timeView];
-    [v10 center];
-    v11 = [(NTKKaleidoscopeFaceView *)self device];
+    timeView = [(NTKKaleidoscopeFaceView *)self timeView];
+    [timeView center];
+    device3 = [(NTKKaleidoscopeFaceView *)self device];
     CLKRectCenteredAboutPointForDevice();
     v13 = v12;
     v15 = v14;
@@ -590,7 +590,7 @@ LABEL_12:
   {
     v28.receiver = self;
     v28.super_class = NTKKaleidoscopeFaceView;
-    [(NTKKaleidoscopeFaceView *)&v28 _relativeKeylineFrameForCustomEditMode:a3 slot:v6];
+    [(NTKKaleidoscopeFaceView *)&v28 _relativeKeylineFrameForCustomEditMode:mode slot:slotCopy];
     v13 = v20;
     v15 = v21;
     v17 = v22;
@@ -608,24 +608,24 @@ LABEL_12:
   return result;
 }
 
-- (void)_updateForResourceDirectoryChange:(id)a3
+- (void)_updateForResourceDirectoryChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = NTKKaleidoscopeFaceView;
-  [(NTKKaleidoscopeFaceView *)&v4 _updateForResourceDirectoryChange:a3];
+  [(NTKKaleidoscopeFaceView *)&v4 _updateForResourceDirectoryChange:change];
   [(NTKKaleidoscopeFaceView *)self _updateUserContent];
   [(NTKKaleidoscopeFaceView *)self reloadSnapshotContentViews];
 }
 
-- (id)provideAtlasBacking:(id)a3
+- (id)provideAtlasBacking:(id)backing
 {
-  v4 = a3;
+  backingCopy = backing;
   v25 = [NSBundle bundleForClass:objc_opt_class()];
-  if (![v4 isEqualToString:@"Kaleidoscope-RosetteMask"])
+  if (![backingCopy isEqualToString:@"Kaleidoscope-RosetteMask"])
   {
     if (self->_userUuidLuma && self->_userUuidChroma)
     {
-      if ([v4 isEqualToString:?])
+      if ([backingCopy isEqualToString:?])
       {
         v16 = +[NTKKaleidoscopeCoordinatorCache sharedCache];
         v17 = v16;
@@ -639,7 +639,7 @@ LABEL_20:
         goto LABEL_27;
       }
 
-      if ([v4 isEqualToString:self->_userUuidChroma])
+      if ([backingCopy isEqualToString:self->_userUuidChroma])
       {
         v16 = +[NTKKaleidoscopeCoordinatorCache sharedCache];
         v17 = v16;
@@ -651,26 +651,26 @@ LABEL_20:
       }
     }
 
-    v6 = [v25 pathForResource:v4 ofType:@"art"];
+    v6 = [v25 pathForResource:backingCopy ofType:@"art"];
     if (v6)
     {
       v22 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v31 = v4;
+        v31 = backingCopy;
         v32 = 2112;
         v33 = v6;
         _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "[kaleidoscope] using artwork for %@ at %@", buf, 0x16u);
       }
 
-      v15 = [CLKUIAtlasBacking atlasBackingWithArt:v6 uuid:v4];
+      v15 = [CLKUIAtlasBacking atlasBackingWithArt:v6 uuid:backingCopy];
     }
 
     else
     {
       v23 = NTKImageNamed();
-      v15 = [CLKUIAtlasBacking atlasBackingWithImage:v23 uuid:v4];
+      v15 = [CLKUIAtlasBacking atlasBackingWithImage:v23 uuid:backingCopy];
     }
 
 LABEL_26:
@@ -682,7 +682,7 @@ LABEL_26:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(NTKKaleidoscopeFaceView *)self device];
+  device = [(NTKKaleidoscopeFaceView *)self device];
   v6 = CLKUIOrderedSuffixesForDevice();
 
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -699,20 +699,20 @@ LABEL_26:
           objc_enumerationMutation(v6);
         }
 
-        v11 = v4;
-        v12 = [NSString stringWithFormat:@"%@%@@2x", v4, *(*(&v26 + 1) + 8 * i)];
+        v11 = backingCopy;
+        v12 = [NSString stringWithFormat:@"%@%@@2x", backingCopy, *(*(&v26 + 1) + 8 * i)];
         v13 = [v25 pathForResource:v12 ofType:@"art"];
 
         if (v13)
         {
-          v4 = v11;
+          backingCopy = v11;
           v15 = [CLKUIAtlasBacking atlasBackingWithArt:v13 uuid:v11];
 
           goto LABEL_26;
         }
 
         v14 = _NTKLoggingObjectForDomain();
-        v4 = v11;
+        backingCopy = v11;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
@@ -747,10 +747,10 @@ LABEL_27:
   self->_dayDuration = v5;
 }
 
-- (double)_handAlphaForEditMode:(int64_t)a3
+- (double)_handAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -758,10 +758,10 @@ LABEL_27:
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -769,10 +769,10 @@ LABEL_27:
   return result;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }
@@ -780,9 +780,9 @@ LABEL_27:
   return result;
 }
 
-- (float)_crownTurnsForStyle:(unint64_t)a3
+- (float)_crownTurnsForStyle:(unint64_t)style
 {
-  v3 = a3 == 3 || a3 == 0;
+  v3 = style == 3 || style == 0;
   result = 5.0;
   if (v3)
   {
@@ -796,8 +796,8 @@ LABEL_27:
 {
   if (self->_userImage)
   {
-    v3 = [(NTKKaleidoscopeFaceView *)self device];
-    v4 = [(NTKKaleidoscopeAssetOption *)NTKKaleidoscopeCustomAssetOption optionWithAsset:1000 forDevice:v3];
+    device = [(NTKKaleidoscopeFaceView *)self device];
+    v4 = [(NTKKaleidoscopeAssetOption *)NTKKaleidoscopeCustomAssetOption optionWithAsset:1000 forDevice:device];
 
     +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [v4 swatchStyle]);
     userImage = self->_userImage;
@@ -814,15 +814,15 @@ LABEL_27:
 
 - (void)_updateUserContent
 {
-  v3 = [(NTKKaleidoscopeFaceView *)self resourceDirectory];
-  if (v3)
+  resourceDirectory = [(NTKKaleidoscopeFaceView *)self resourceDirectory];
+  if (resourceDirectory)
   {
-    v4 = [NTKPhotosReader readerForResourceDirectory:v3];
-    v5 = [v4 firstObject];
-    if (v5)
+    v4 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory];
+    firstObject = [v4 firstObject];
+    if (firstObject)
     {
-      v6 = v5;
-      if (([(NTKPhoto *)self->_userPhoto isEqualToPhoto:v5]& 1) != 0)
+      v6 = firstObject;
+      if (([(NTKPhoto *)self->_userPhoto isEqualToPhoto:firstObject]& 1) != 0)
       {
 LABEL_16:
 
@@ -832,16 +832,16 @@ LABEL_16:
       v7 = [[NTKCachedPhoto alloc] initWithPhoto:v6];
       [v7 load];
       objc_storeStrong(&self->_userPhoto, v6);
-      v8 = [v7 image];
+      image = [v7 image];
       userImage = self->_userImage;
-      self->_userImage = v8;
+      self->_userImage = image;
 
-      v10 = [(NTKPhoto *)self->_userPhoto uuidFromLocalIdentifierAndModificationDate];
-      v11 = [v10 stringByAppendingString:@"-l"];
+      uuidFromLocalIdentifierAndModificationDate = [(NTKPhoto *)self->_userPhoto uuidFromLocalIdentifierAndModificationDate];
+      v11 = [uuidFromLocalIdentifierAndModificationDate stringByAppendingString:@"-l"];
       userUuidLuma = self->_userUuidLuma;
       self->_userUuidLuma = v11;
 
-      v13 = [v10 stringByAppendingString:@"-c"];
+      v13 = [uuidFromLocalIdentifierAndModificationDate stringByAppendingString:@"-c"];
       userUuidChroma = self->_userUuidChroma;
       self->_userUuidChroma = v13;
 
@@ -856,16 +856,16 @@ LABEL_16:
       userTextureChroma = self->_userTextureChroma;
       self->_userTextureChroma = v19;
 
-      v21 = [NTKKaleidoscopePathfinder pathfinderFromDirectory:v3];
+      v21 = [NTKKaleidoscopePathfinder pathfinderFromDirectory:resourceDirectory];
       userPathfinder = self->_userPathfinder;
       self->_userPathfinder = v21;
 
       if (self->_userPathfinder)
       {
 LABEL_15:
-        v41 = [(NTKKaleidoscopeFaceView *)self _swatchFromUserImage];
+        _swatchFromUserImage = [(NTKKaleidoscopeFaceView *)self _swatchFromUserImage];
         userSwatch = self->_userSwatch;
-        self->_userSwatch = v41;
+        self->_userSwatch = _swatchFromUserImage;
 
         goto LABEL_16;
       }
@@ -874,7 +874,7 @@ LABEL_15:
       v23 = NTKNewUniqueTeporaryResourceDirectory();
       v24 = +[NSFileManager defaultManager];
       v46 = 0;
-      v25 = [v24 copyItemAtPath:v3 toPath:v23 error:&v46];
+      v25 = [v24 copyItemAtPath:resourceDirectory toPath:v23 error:&v46];
       v43 = v46;
 
       if (v25)
@@ -894,17 +894,17 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v29 = [(NTKKaleidoscopeFaceView *)self delegate];
-        [v29 faceViewUpdatedResourceDirectory:v23 wantsToTransferOwnership:1];
+        delegate = [(NTKKaleidoscopeFaceView *)self delegate];
+        [delegate faceViewUpdatedResourceDirectory:v23 wantsToTransferOwnership:1];
       }
 
       else
       {
-        v29 = _NTKLoggingObjectForDomain();
+        delegate = _NTKLoggingObjectForDomain();
         v28 = v43;
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
         {
-          sub_15118(v43, v29);
+          sub_15118(v43, delegate);
         }
       }
 
@@ -972,8 +972,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v6 = [(NTKKaleidoscopeFaceView *)self device];
-  sub_11B74(v6, v6);
+  device = [(NTKKaleidoscopeFaceView *)self device];
+  sub_11B74(device, device);
   v5 = qword_2CF50;
 
 LABEL_12:
@@ -982,15 +982,15 @@ LABEL_12:
   [(CLKUIQuadView *)v7 setPreferredFramesPerSecond:v5];
 }
 
-- (void)_updateRotationForQuadView:(id)a3 time:(double)a4 crownOffset:(double)a5
+- (void)_updateRotationForQuadView:(id)view time:(double)time crownOffset:(double)offset
 {
-  v7 = fmod(a5 * 60.0 / self->_crownTurnsPerRotation + a4, 120.0);
+  v7 = fmod(offset * 60.0 / self->_crownTurnsPerRotation + time, 120.0);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [a3 quads];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  quads = [view quads];
+  v9 = [quads countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1001,7 +1001,7 @@ LABEL_12:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(quads);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -1015,22 +1015,22 @@ LABEL_12:
         [v14 setRotation:{*vbslq_s8(v19, v18, v17).i64}];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [quads countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
   }
 }
 
-- (id)_updatePathForQuadView:(id)a3 time:(double)a4 crownOffset:(double)a5
+- (id)_updatePathForQuadView:(id)view time:(double)time crownOffset:(double)offset
 {
-  v8 = a3;
+  viewCopy = view;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [v8 quads];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  quads = [viewCopy quads];
+  v10 = [quads countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v10)
   {
 
@@ -1046,17 +1046,17 @@ LABEL_13:
   }
 
   v11 = v10;
-  v23 = v8;
+  v23 = viewCopy;
   v12 = 0;
   v13 = *v26;
-  v14 = (a4 + a5 * 1800.0 + floor((a4 + a5 * 1800.0) / 43200.0) * -43200.0) / 43200.0;
+  v14 = (time + offset * 1800.0 + floor((time + offset * 1800.0) / 43200.0) * -43200.0) / 43200.0;
   do
   {
     for (i = 0; i != v11; i = i + 1)
     {
       if (*v26 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(quads);
       }
 
       v16 = *(*(&v25 + 1) + 8 * i);
@@ -1076,12 +1076,12 @@ LABEL_13:
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v11 = [quads countByEnumeratingWithState:&v25 objects:v29 count:16];
   }
 
   while (v11);
 
-  v8 = v23;
+  viewCopy = v23;
   if (!v12)
   {
     goto LABEL_13;
@@ -1092,9 +1092,9 @@ LABEL_16:
   return v12;
 }
 
-- (void)_updatePathForTime:(double)a3
+- (void)_updatePathForTime:(double)time
 {
-  v6 = [(NTKKaleidoscopeFaceView *)self _updatePathForQuadView:self->_quadView time:a3 crownOffset:self->_crownOffset];
+  v6 = [(NTKKaleidoscopeFaceView *)self _updatePathForQuadView:self->_quadView time:time crownOffset:self->_crownOffset];
   [(NTKKaleidoscopeFaceView *)self setComplicationColor:v6];
   v4 = NTKColorByPremultiplyingAlpha();
   complicationPlatterColor = self->_complicationPlatterColor;
@@ -1111,28 +1111,28 @@ LABEL_16:
   [(NTKKaleidoscopeFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v2];
 }
 
-- (id)_imageForAsset:(unint64_t)a3
+- (id)_imageForAsset:(unint64_t)asset
 {
-  if (a3 == 1000)
+  if (asset == 1000)
   {
     v3 = self->_userImage;
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d", (a3 + 1)];
+    v4 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d", (asset + 1)];
     v3 = NTKImageNamed();
   }
 
   return v3;
 }
 
-- (id)_pathfinderForAsset:(unint64_t)a3
+- (id)_pathfinderForAsset:(unint64_t)asset
 {
-  if (a3 != 1000)
+  if (asset != 1000)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v7 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d", (a3 + 1)];
+    v7 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d", (asset + 1)];
     v8 = [v6 pathForResource:v7 ofType:@"pathfinder"];
     if (!v8)
     {
@@ -1155,11 +1155,11 @@ LABEL_38:
 
     v9 = [NTKKaleidoscopePathfinder pathfinderFromFile:v8];
     v5 = v9;
-    if (a3 > 13)
+    if (asset > 13)
     {
-      if (a3 > 23)
+      if (asset > 23)
       {
-        switch(a3)
+        switch(asset)
         {
           case 0x18uLL:
             LODWORD(v10) = 1013008293;
@@ -1175,7 +1175,7 @@ LABEL_38:
         goto LABEL_43;
       }
 
-      switch(a3)
+      switch(asset)
       {
         case 0xEuLL:
           LODWORD(v10) = 1072344365;
@@ -1189,7 +1189,7 @@ LABEL_38:
         default:
 LABEL_43:
           [(NTKKaleidoscopePathfinder *)v9 adjustRotationStart:0.0];
-          if (a3 - 27 < 6)
+          if (asset - 27 < 6)
           {
             LODWORD(v12) = *"ff&?";
             goto LABEL_37;
@@ -1201,9 +1201,9 @@ LABEL_43:
 
     else
     {
-      if (a3 <= 10)
+      if (asset <= 10)
       {
-        switch(a3)
+        switch(asset)
         {
           case 8uLL:
             LODWORD(v10) = 1062269566;
@@ -1223,13 +1223,13 @@ LABEL_36:
         goto LABEL_43;
       }
 
-      if (a3 == 11)
+      if (asset == 11)
       {
         LODWORD(v10) = 1057069931;
         goto LABEL_35;
       }
 
-      if (a3 == 12)
+      if (asset == 12)
       {
         LODWORD(v10) = 1048576045;
       }
@@ -1254,7 +1254,7 @@ LABEL_37:
   }
 
 LABEL_39:
-  v13 = [(NTKKaleidoscopeFaceView *)self _imageForAsset:a3];
+  v13 = [(NTKKaleidoscopeFaceView *)self _imageForAsset:asset];
   v5 = [NTKKaleidoscopePathfinder pathfinderWithImage:v13];
 
 LABEL_40:
@@ -1262,65 +1262,65 @@ LABEL_40:
   return v5;
 }
 
-- (id)_textureLumaForAsset:(unint64_t)a3
+- (id)_textureLumaForAsset:(unint64_t)asset
 {
-  if (a3 == 1000)
+  if (asset == 1000)
   {
     v4 = self->_userTextureLuma;
   }
 
   else
   {
-    v6 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d-l", (a3 + 1)];
+    v6 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d-l", (asset + 1)];
     v7.i64[0] = 8;
-    v8.i64[0] = a3 & 0xFFFFFFFFFFFFFFFCLL;
+    v8.i64[0] = asset & 0xFFFFFFFFFFFFFFFCLL;
     v4 = [CLKUITexture textureWithProviderDelegate:self uuid:v6 rect:*vbslq_s8(vdupq_lane_s64(vceqq_s64(v8, v7).i64[0], 0), xmmword_1B5B0, xmmword_1B5A0).i64];
   }
 
   return v4;
 }
 
-- (id)_textureChromaForAsset:(unint64_t)a3
+- (id)_textureChromaForAsset:(unint64_t)asset
 {
-  if (a3 == 1000)
+  if (asset == 1000)
   {
     v4 = self->_userTextureChroma;
   }
 
   else
   {
-    v6 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d-c", (a3 + 1)];
+    v6 = [NSString stringWithFormat:@"Kaleidoscope-Asset%02d-c", (asset + 1)];
     v7.i64[0] = 8;
-    v8.i64[0] = a3 & 0xFFFFFFFFFFFFFFFCLL;
+    v8.i64[0] = asset & 0xFFFFFFFFFFFFFFFCLL;
     v4 = [CLKUITexture textureWithProviderDelegate:self uuid:v6 rect:*vbslq_s8(vdupq_lane_s64(vceqq_s64(v8, v7).i64[0], 0), xmmword_1B5B0, xmmword_1B5A0).i64];
   }
 
   return v4;
 }
 
-- (id)_quadWithStyle:(unint64_t)a3 asset:(unint64_t)a4
+- (id)_quadWithStyle:(unint64_t)style asset:(unint64_t)asset
 {
-  v7 = [NSNumber numberWithInteger:a4];
+  v7 = [NSNumber numberWithInteger:asset];
   [(NSMutableSet *)self->_loadedAssets addObject:v7];
-  v8 = [NTKKaleidoscopeQuad quadWithShaderType:qword_1B5C0[a3]];
-  v9 = [(NTKKaleidoscopeFaceView *)self _textureLumaForAsset:a4];
+  v8 = [NTKKaleidoscopeQuad quadWithShaderType:qword_1B5C0[style]];
+  v9 = [(NTKKaleidoscopeFaceView *)self _textureLumaForAsset:asset];
   [v8 setPrimaryLumaTexture:v9];
 
-  v10 = [(NTKKaleidoscopeFaceView *)self _textureChromaForAsset:a4];
+  v10 = [(NTKKaleidoscopeFaceView *)self _textureChromaForAsset:asset];
   [v8 setPrimaryChromaTexture:v10];
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v11 = [CLKUITexture textureWithProviderDelegate:self uuid:@"Kaleidoscope-RosetteMask"];
     [v8 setSecondaryTexture:v11];
   }
 
-  v12 = [(NTKKaleidoscopeFaceView *)self device];
-  sub_11B74(v12, v12);
+  device = [(NTKKaleidoscopeFaceView *)self device];
+  sub_11B74(device, device);
   LODWORD(v13) = dword_2CF48;
   [v8 setDialRadius:v13];
 
-  v14 = [(NTKKaleidoscopeFaceView *)self _pathfinderForAsset:a4];
+  v14 = [(NTKKaleidoscopeFaceView *)self _pathfinderForAsset:asset];
   [(NSMapTable *)self->_quadPathfinderMapTable setObject:v14 forKey:v8];
 
   return v8;
@@ -1342,27 +1342,27 @@ LABEL_40:
   [(NTKKaleidoscopeFaceView *)self _updateFramerate];
 }
 
-- (id)_swatchForAsset:(unint64_t)a3
+- (id)_swatchForAsset:(unint64_t)asset
 {
-  if (a3 == 1000)
+  if (asset == 1000)
   {
     v3 = self->_userSwatch;
   }
 
   else
   {
-    v4 = a3;
+    assetCopy = asset;
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [NSString stringWithFormat:@"Swatch-Kaleidoscope-Asset%02d", (v4 + 1)];
+    v6 = [NSString stringWithFormat:@"Swatch-Kaleidoscope-Asset%02d", (assetCopy + 1)];
     v3 = NTKImageNamedFromBundle();
   }
 
   return v3;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_26760;
   }
@@ -1373,40 +1373,40 @@ LABEL_40:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   v10 = +[NTKKaleidoscopeSwatchMappedImageCache sharedCache];
-  if (a4 == 15)
+  if (mode == 15)
   {
-    v12 = v8;
-    v13 = [v9 objectForKeyedSubscript:&off_26218];
-    v14 = [(NTKKaleidoscopeFaceView *)self resourceDirectory];
-    v15 = [NTKKaleidoscopeSwatchMappedImageCache keyForAsset:v13 style:v12 resourceDirectory:v14];
+    v12 = optionCopy;
+    v13 = [optionsCopy objectForKeyedSubscript:&off_26218];
+    resourceDirectory = [(NTKKaleidoscopeFaceView *)self resourceDirectory];
+    v15 = [NTKKaleidoscopeSwatchMappedImageCache keyForAsset:v13 style:v12 resourceDirectory:resourceDirectory];
     v16 = [v10 imageForKey:v15];
     if (!v16)
     {
-      v19 = [v13 asset];
-      v17 = [v12 style];
+      asset = [v13 asset];
+      style = [v12 style];
       +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [v12 swatchStyle]);
-      v16 = [(NTKKaleidoscopeFaceView *)self _snapshotWithAsset:v19 style:v17 size:?];
+      v16 = [(NTKKaleidoscopeFaceView *)self _snapshotWithAsset:asset style:style size:?];
       [v10 setImage:v16 forKey:v15];
     }
   }
 
   else
   {
-    if (a4 == 12)
+    if (mode == 12)
     {
-      v11 = -[NTKKaleidoscopeFaceView _swatchForAsset:](self, "_swatchForAsset:", [v8 asset]);
+      v11 = -[NTKKaleidoscopeFaceView _swatchForAsset:](self, "_swatchForAsset:", [optionCopy asset]);
     }
 
     else
     {
       v20.receiver = self;
       v20.super_class = NTKKaleidoscopeFaceView;
-      v11 = [(NTKKaleidoscopeFaceView *)&v20 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+      v11 = [(NTKKaleidoscopeFaceView *)&v20 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
     }
 
     v16 = v11;
@@ -1415,18 +1415,18 @@ LABEL_40:
   return v16;
 }
 
-- (id)_snapshotWithAsset:(unint64_t)a3 style:(unint64_t)a4 size:(CGSize)a5
+- (id)_snapshotWithAsset:(unint64_t)asset style:(unint64_t)style size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   y = CGPointZero.y;
-  v11 = [CLKUIQuadView quadViewWithFrame:@"Klei" identifier:CGPointZero.x, y, a5.width, a5.height];
-  v12 = [(NTKKaleidoscopeFaceView *)self _quadWithStyle:a4 asset:a3];
+  v11 = [CLKUIQuadView quadViewWithFrame:@"Klei" identifier:CGPointZero.x, y, size.width, size.height];
+  v12 = [(NTKKaleidoscopeFaceView *)self _quadWithStyle:style asset:asset];
   [v12 setOpaque:1];
   [v11 addQuad:v12];
   [(NTKKaleidoscopeFaceView *)self _kaleidoscopeTime];
   v14 = v13;
-  [(NTKKaleidoscopeFaceView *)self _updateWithAsset:a3];
+  [(NTKKaleidoscopeFaceView *)self _updateWithAsset:asset];
   v15 = [(NTKKaleidoscopeFaceView *)self _updatePathForQuadView:v11 time:v14 crownOffset:0.0];
   [(NTKKaleidoscopeFaceView *)self _updateRotationForQuadView:v11 time:v14 crownOffset:0.0];
   v16 = +[UIScreen mainScreen];

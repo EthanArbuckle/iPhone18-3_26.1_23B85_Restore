@@ -1,15 +1,15 @@
 @interface NEIKEv2IKESAConfiguration
 - (NEIKEv2IKESAConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setProposals:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setProposals:(id)proposals;
 @end
 
 @implementation NEIKEv2IKESAConfiguration
 
-- (void)setProposals:(id)a3
+- (void)setProposals:(id)proposals
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [proposals copy];
   proposals = self->_proposals;
   self->_proposals = v4;
 
@@ -50,19 +50,19 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NEIKEv2IKESAConfiguration *)self localEndpoint];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  localEndpoint = [(NEIKEv2IKESAConfiguration *)self localEndpoint];
+  v6 = [localEndpoint copy];
   [v4 setLocalEndpoint:v6];
 
-  v7 = [(NEIKEv2IKESAConfiguration *)self remoteEndpoint];
-  v8 = [v7 copy];
+  remoteEndpoint = [(NEIKEv2IKESAConfiguration *)self remoteEndpoint];
+  v8 = [remoteEndpoint copy];
   [v4 setRemoteEndpoint:v8];
 
-  v9 = [(NEIKEv2IKESAConfiguration *)self outgoingInterfaceName];
-  v10 = [v9 copy];
+  outgoingInterfaceName = [(NEIKEv2IKESAConfiguration *)self outgoingInterfaceName];
+  v10 = [outgoingInterfaceName copy];
   [v4 setOutgoingInterfaceName:v10];
 
   [v4 setRandomizeLocalPort:{-[NEIKEv2IKESAConfiguration randomizeLocalPort](self, "randomizeLocalPort")}];
@@ -76,37 +76,37 @@
   [v4 setTcpEncapsulationPort:{-[NEIKEv2IKESAConfiguration tcpEncapsulationPort](self, "tcpEncapsulationPort")}];
   [v4 setNonceSize:{-[NEIKEv2IKESAConfiguration nonceSize](self, "nonceSize")}];
   [v4 setStrictNonceSizeChecks:{-[NEIKEv2IKESAConfiguration strictNonceSizeChecks](self, "strictNonceSizeChecks")}];
-  v11 = [(NEIKEv2IKESAConfiguration *)self redirectedFromServer];
-  v12 = [v11 copy];
+  redirectedFromServer = [(NEIKEv2IKESAConfiguration *)self redirectedFromServer];
+  v12 = [redirectedFromServer copy];
   [v4 setRedirectedFromServer:v12];
 
-  v13 = [(NEIKEv2IKESAConfiguration *)self proposals];
+  proposals = [(NEIKEv2IKESAConfiguration *)self proposals];
 
-  if (v13)
+  if (proposals)
   {
     v14 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v15 = [(NEIKEv2IKESAConfiguration *)self proposals];
-    v16 = [v14 initWithArray:v15 copyItems:1];
+    proposals2 = [(NEIKEv2IKESAConfiguration *)self proposals];
+    v16 = [v14 initWithArray:proposals2 copyItems:1];
     [v4 setProposals:v16];
   }
 
-  v17 = [(NEIKEv2IKESAConfiguration *)self customIKESAInitPayloads];
+  customIKESAInitPayloads = [(NEIKEv2IKESAConfiguration *)self customIKESAInitPayloads];
 
-  if (v17)
+  if (customIKESAInitPayloads)
   {
     v18 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v19 = [(NEIKEv2IKESAConfiguration *)self customIKESAInitPayloads];
-    v20 = [v18 initWithArray:v19 copyItems:1];
+    customIKESAInitPayloads2 = [(NEIKEv2IKESAConfiguration *)self customIKESAInitPayloads];
+    v20 = [v18 initWithArray:customIKESAInitPayloads2 copyItems:1];
     [v4 setCustomIKESAInitPayloads:v20];
   }
 
-  v21 = [(NEIKEv2IKESAConfiguration *)self customIKESAInitVendorPayloads];
+  customIKESAInitVendorPayloads = [(NEIKEv2IKESAConfiguration *)self customIKESAInitVendorPayloads];
 
-  if (v21)
+  if (customIKESAInitVendorPayloads)
   {
     v22 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v23 = [(NEIKEv2IKESAConfiguration *)self customIKESAInitVendorPayloads];
-    v24 = [v22 initWithArray:v23 copyItems:1];
+    customIKESAInitVendorPayloads2 = [(NEIKEv2IKESAConfiguration *)self customIKESAInitVendorPayloads];
+    v24 = [v22 initWithArray:customIKESAInitVendorPayloads2 copyItems:1];
     [v4 setCustomIKESAInitVendorPayloads:v24];
   }
 
@@ -114,23 +114,23 @@
   [v4 setHeaderOverhead:{-[NEIKEv2IKESAConfiguration headerOverhead](self, "headerOverhead")}];
   [v4 setRequestChildlessSA:{-[NEIKEv2IKESAConfiguration requestChildlessSA](self, "requestChildlessSA")}];
   [v4 setRequestPPK:{-[NEIKEv2IKESAConfiguration requestPPK](self, "requestPPK")}];
-  v25 = [(NEIKEv2IKESAConfiguration *)self extraSupportedSignatureHashes];
+  extraSupportedSignatureHashes = [(NEIKEv2IKESAConfiguration *)self extraSupportedSignatureHashes];
 
-  if (v25)
+  if (extraSupportedSignatureHashes)
   {
     v26 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v27 = [(NEIKEv2IKESAConfiguration *)self extraSupportedSignatureHashes];
-    v28 = [v26 initWithSet:v27 copyItems:1];
+    extraSupportedSignatureHashes2 = [(NEIKEv2IKESAConfiguration *)self extraSupportedSignatureHashes];
+    v28 = [v26 initWithSet:extraSupportedSignatureHashes2 copyItems:1];
     [v4 setExtraSupportedSignatureHashes:v28];
   }
 
-  v29 = [(NEIKEv2IKESAConfiguration *)self supportedSecurePasswordMethods];
+  supportedSecurePasswordMethods = [(NEIKEv2IKESAConfiguration *)self supportedSecurePasswordMethods];
 
-  if (v29)
+  if (supportedSecurePasswordMethods)
   {
     v30 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v31 = [(NEIKEv2IKESAConfiguration *)self supportedSecurePasswordMethods];
-    v32 = [v30 initWithSet:v31 copyItems:1];
+    supportedSecurePasswordMethods2 = [(NEIKEv2IKESAConfiguration *)self supportedSecurePasswordMethods];
+    v32 = [v30 initWithSet:supportedSecurePasswordMethods2 copyItems:1];
     [v4 setSupportedSecurePasswordMethods:v32];
   }
 

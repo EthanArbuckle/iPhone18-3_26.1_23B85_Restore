@@ -1,28 +1,28 @@
 @interface IDSSocketPairEncryptedMessage
-- (IDSSocketPairEncryptedMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4;
-- (IDSSocketPairEncryptedMessage)initWithData:(id)a3;
+- (IDSSocketPairEncryptedMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data;
+- (IDSSocketPairEncryptedMessage)initWithData:(id)data;
 - (NSData)data;
 @end
 
 @implementation IDSSocketPairEncryptedMessage
 
-- (IDSSocketPairEncryptedMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4
+- (IDSSocketPairEncryptedMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data
 {
   v5.receiver = self;
   v5.super_class = IDSSocketPairEncryptedMessage;
-  return [(IDSSocketPairMessage *)&v5 initWithCommand:a3 underlyingData:a4];
+  return [(IDSSocketPairMessage *)&v5 initWithCommand:command underlyingData:data];
 }
 
-- (IDSSocketPairEncryptedMessage)initWithData:(id)a3
+- (IDSSocketPairEncryptedMessage)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = IDSSocketPairEncryptedMessage;
   v6 = [(IDSSocketPairEncryptedMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
@@ -33,15 +33,15 @@
   data = self->_data;
   if (data)
   {
-    v3 = data;
+    _existingUnderlyingData = data;
   }
 
   else
   {
-    v3 = [(IDSSocketPairMessage *)self _existingUnderlyingData];
+    _existingUnderlyingData = [(IDSSocketPairMessage *)self _existingUnderlyingData];
   }
 
-  return v3;
+  return _existingUnderlyingData;
 }
 
 @end

@@ -2,7 +2,7 @@
 - (JSAPendingExecutionRecordQueue)init;
 - (NSMutableArray)records;
 - (id)dequeueAllRecords;
-- (void)enqueueRecord:(id)a3;
+- (void)enqueueRecord:(id)record;
 @end
 
 @implementation JSAPendingExecutionRecordQueue
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)enqueueRecord:(id)a3
+- (void)enqueueRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_7A98;
   v7[3] = &unk_B2128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordCopy;
+  v6 = recordCopy;
   dispatch_sync(accessQueue, v7);
 }
 

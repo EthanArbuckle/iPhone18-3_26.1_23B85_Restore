@@ -1,41 +1,41 @@
 @interface TSTravelBuddyViewController
-- (BOOL)_isPlanRegisteredForIMessage:(id)a3;
+- (BOOL)_isPlanRegisteredForIMessage:(id)message;
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSTravelBuddyViewController)initWithIccids:(id)a3 homeIccid:(id)a4 voiceIccid:(id)a5 postArrivalInstallation:(BOOL)a6;
-- (TSTravelBuddyViewController)initWithPlans:(id)a3 homeIccid:(id)a4;
+- (TSTravelBuddyViewController)initWithIccids:(id)iccids homeIccid:(id)iccid voiceIccid:(id)voiceIccid postArrivalInstallation:(BOOL)installation;
+- (TSTravelBuddyViewController)initWithPlans:(id)plans homeIccid:(id)iccid;
 - (double)_heightAnchorConstant;
-- (id)_getDetailsTextWithIccid:(id)a3;
-- (id)_getPlanItemsToLimitService:(id)a3;
-- (id)_getSubTextForSection:(int64_t)a3;
-- (id)_getSubTextToDisplay:(id)a3 carrierName:(id)a4;
-- (id)_maybeUpdateHomeIccid:(id)a3 homeIccid:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)_continueButtonTapped:(id)a3;
+- (id)_getDetailsTextWithIccid:(id)iccid;
+- (id)_getPlanItemsToLimitService:(id)service;
+- (id)_getSubTextForSection:(int64_t)section;
+- (id)_getSubTextToDisplay:(id)display carrierName:(id)name;
+- (id)_maybeUpdateHomeIccid:(id)iccid homeIccid:(id)homeIccid;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)_continueButtonTapped:(id)tapped;
 - (void)_dismissViewController;
-- (void)_getTraveleSIMStateWithCompletion:(id)a3;
-- (void)_isSubscriptionReadyForTravel4FF:(id)a3;
-- (void)_laterButtonTapped:(id)a3;
+- (void)_getTraveleSIMStateWithCompletion:(id)completion;
+- (void)_isSubscriptionReadyForTravel4FF:(id)f;
+- (void)_laterButtonTapped:(id)tapped;
 - (void)_refreshTableView;
-- (void)_setTravelIccidInfo:(id)a3;
+- (void)_setTravelIccidInfo:(id)info;
 - (void)backToCurrentTopPane;
-- (void)prepare:(id)a3;
+- (void)prepare:(id)prepare;
 - (void)subscriptionInfoDidChange;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation TSTravelBuddyViewController
 
-- (TSTravelBuddyViewController)initWithPlans:(id)a3 homeIccid:(id)a4
+- (TSTravelBuddyViewController)initWithPlans:(id)plans homeIccid:(id)iccid
 {
-  v5 = a3;
+  plansCopy = plans;
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CF96D8] sharedManager];
-  v10 = [v9 planItemsShouldUpdate:0];
+  plansCopy2 = plans;
+  iccidCopy = iccid;
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v10 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
   planItems = self->_planItems;
   self->_planItems = v10;
 
@@ -44,30 +44,30 @@
   client = self->_client;
   self->_client = v13;
 
-  v15 = [(TSTravelBuddyViewController *)self _maybeUpdateHomeIccid:v7 homeIccid:v8];
+  v15 = [(TSTravelBuddyViewController *)self _maybeUpdateHomeIccid:plansCopy2 homeIccid:iccidCopy];
   homeIccid = self->_homeIccid;
   self->_homeIccid = v15;
 
   v17 = 0x27FF49000;
-  if ([v7 count] == 1)
+  if ([plansCopy2 count] == 1)
   {
-    v18 = [v7 objectAtIndexedSubscript:0];
+    v18 = [plansCopy2 objectAtIndexedSubscript:0];
     [v18 targetIccid];
-    v20 = v19 = v5;
+    v20 = v19 = plansCopy;
     self->_isTravelSIMOnPhySlot = [TSUtilities isIccidForPhySlot:v20];
 
-    v5 = v19;
-    v21 = [v7 objectAtIndexedSubscript:0];
-    v22 = [v21 targetIccid];
-    [(TSTravelBuddyViewController *)self _setTravelIccidInfo:v22];
+    plansCopy = v19;
+    v21 = [plansCopy2 objectAtIndexedSubscript:0];
+    targetIccid = [v21 targetIccid];
+    [(TSTravelBuddyViewController *)self _setTravelIccidInfo:targetIccid];
 
-    v23 = [v7 objectAtIndexedSubscript:0];
+    v23 = [plansCopy2 objectAtIndexedSubscript:0];
     self->_isTravelSIMDataOnly = [v23 isDataOnly];
 
     v17 = 0x27FF49000uLL;
   }
 
-  self->_isHomeSIMOnPhySlot = [TSUtilities isIccidForPhySlot:v8];
+  self->_isHomeSIMOnPhySlot = [TSUtilities isIccidForPhySlot:iccidCopy];
   v24 = *(&self->super.super.super.super.super.super.super.isa + *(v17 + 1592));
   v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v26 = v25;
@@ -90,10 +90,10 @@
   v31 = v30;
   if (v30)
   {
-    objc_storeStrong(&v30->_plans, v5);
-    if ([v7 count] == 1)
+    objc_storeStrong(&v30->_plans, plansCopy);
+    if ([plansCopy2 count] == 1)
     {
-      v32 = [v7 objectAtIndexedSubscript:0];
+      v32 = [plansCopy2 objectAtIndexedSubscript:0];
       if ([v32 activatingState] != 3)
       {
         v31->_postArrivalInstallation = 1;
@@ -130,14 +130,14 @@
   return v31;
 }
 
-- (TSTravelBuddyViewController)initWithIccids:(id)a3 homeIccid:(id)a4 voiceIccid:(id)a5 postArrivalInstallation:(BOOL)a6
+- (TSTravelBuddyViewController)initWithIccids:(id)iccids homeIccid:(id)iccid voiceIccid:(id)voiceIccid postArrivalInstallation:(BOOL)installation
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CF96D8] sharedManager];
-  v14 = [v13 planItemsShouldUpdate:0];
+  iccidsCopy = iccids;
+  iccidCopy = iccid;
+  voiceIccidCopy = voiceIccid;
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v14 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
   planItems = self->_planItems;
   self->_planItems = v14;
 
@@ -146,11 +146,11 @@
   client = self->_client;
   self->_client = v17;
 
-  self->_isTravelSIMOnPhySlot = [TSUtilities isIccidForPhySlot:v10];
-  self->_isHomeSIMOnPhySlot = [TSUtilities isIccidForPhySlot:v11];
-  [(TSTravelBuddyViewController *)self _setTravelIccidInfo:v10];
-  v34 = v12;
-  self->_isTravelSIMDataOnly = [v10 isEqualToString:v12] ^ 1;
+  self->_isTravelSIMOnPhySlot = [TSUtilities isIccidForPhySlot:iccidsCopy];
+  self->_isHomeSIMOnPhySlot = [TSUtilities isIccidForPhySlot:iccidCopy];
+  [(TSTravelBuddyViewController *)self _setTravelIccidInfo:iccidsCopy];
+  v34 = voiceIccidCopy;
+  self->_isTravelSIMDataOnly = [iccidsCopy isEqualToString:voiceIccidCopy] ^ 1;
   isTravelSIMOnPhySlot = self->_isTravelSIMOnPhySlot;
   v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v21 = v20;
@@ -166,17 +166,17 @@
 
   v23 = [v20 localizedStringForKey:v22 value:&stru_28753DF48 table:@"Localizable"];
 
-  v24 = [(TSTravelBuddyViewController *)self _getDetailsTextWithIccid:v11];
+  v24 = [(TSTravelBuddyViewController *)self _getDetailsTextWithIccid:iccidCopy];
   v35.receiver = self;
   v35.super_class = TSTravelBuddyViewController;
   v25 = [(OBTableWelcomeController *)&v35 initWithTitle:v23 detailText:v24 symbolName:@"antenna.radiowaves.left.and.right" adoptTableViewScrollView:1];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_travelIccid, a3);
-    objc_storeStrong(&v26->_homeIccid, a4);
-    objc_storeStrong(&v26->_voiceIccid, a5);
-    v26->_postArrivalInstallation = a6;
+    objc_storeStrong(&v25->_travelIccid, iccids);
+    objc_storeStrong(&v26->_homeIccid, iccid);
+    objc_storeStrong(&v26->_voiceIccid, voiceIccid);
+    v26->_postArrivalInstallation = installation;
     v27 = _TSLogDomain();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
@@ -188,7 +188,7 @@
       v38 = 2112;
       v39 = homeIccid;
       v40 = 2112;
-      v41 = voiceIccid;
+      voiceIccidCopy2 = voiceIccid;
       v42 = 2080;
       v43 = "[TSTravelBuddyViewController initWithIccids:homeIccid:voiceIccid:postArrivalInstallation:]";
       _os_log_impl(&dword_262AA8000, v27, OS_LOG_TYPE_DEFAULT, "travel eSIM iccid (%@) home eSIM iccid (%@) default voice iccid (%@) @%s", buf, 0x2Au);
@@ -201,10 +201,10 @@
   return v26;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prepareCopy = prepare;
   if (_os_feature_enabled_impl())
   {
     if (self->_postArrivalInstallation || ![(NSString *)self->_travelIccid length])
@@ -215,7 +215,7 @@
       v7[2] = __39__TSTravelBuddyViewController_prepare___block_invoke;
       v7[3] = &unk_279B44CD0;
       objc_copyWeak(&v9, buf);
-      v8 = v4;
+      v8 = prepareCopy;
       [(TSTravelBuddyViewController *)self _getTraveleSIMStateWithCompletion:v7];
 
       objc_destroyWeak(&v9);
@@ -232,13 +232,13 @@
         _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "Showing travel buddy pane from post arrival notification @%s", buf, 0xCu);
       }
 
-      (*(v4 + 2))(v4, 1);
+      (*(prepareCopy + 2))(prepareCopy, 1);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(prepareCopy + 2))(prepareCopy, 0);
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -294,9 +294,9 @@ LABEL_9:
     _os_log_impl(&dword_262AA8000, v3, OS_LOG_TYPE_DEFAULT, "Resetting didUserClickContinue @%s", &v6, 0xCu);
   }
 
-  v4 = [(CoreTelephonyClient *)self->_client delegate];
+  delegate = [(CoreTelephonyClient *)self->_client delegate];
 
-  if (!v4)
+  if (!delegate)
   {
     [(CoreTelephonyClient *)self->_client setDelegate:self];
   }
@@ -325,14 +325,14 @@ LABEL_9:
   v7 = [v6 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
   [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
-  v8 = [(TSTravelBuddyViewController *)self buttonTray];
-  [v8 addButton:self->_continueButton];
+  buttonTray = [(TSTravelBuddyViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   if (!self->_postArrivalInstallation)
   {
-    v9 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     laterButton = self->_laterButton;
-    self->_laterButton = v9;
+    self->_laterButton = linkButton;
 
     v11 = self->_laterButton;
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -340,40 +340,40 @@ LABEL_9:
     [(OBLinkTrayButton *)v11 setTitle:v13 forState:0];
 
     [(OBLinkTrayButton *)self->_laterButton addTarget:self action:sel__laterButtonTapped_ forControlEvents:64];
-    v14 = [(TSTravelBuddyViewController *)self buttonTray];
-    [v14 addButton:self->_laterButton];
+    buttonTray2 = [(TSTravelBuddyViewController *)self buttonTray];
+    [buttonTray2 addButton:self->_laterButton];
   }
 
-  v15 = [(OBBaseWelcomeController *)self navigationItem];
-  [v15 setHidesBackButton:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:0];
 
   v16 = objc_alloc(MEMORY[0x277D75B40]);
   v17 = [v16 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v17];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 setAllowsMultipleSelection:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setAllowsMultipleSelection:0];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 setScrollEnabled:1];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setScrollEnabled:1];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  v22 = [MEMORY[0x277D75348] clearColor];
-  [v21 setBackgroundColor:v22];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView4 setBackgroundColor:clearColor];
 
-  v23 = [(OBTableWelcomeController *)self tableView];
-  [v23 setDataSource:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDataSource:self];
 
-  v24 = [(OBTableWelcomeController *)self tableView];
-  [v24 reloadData];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 reloadData];
 
-  v25 = [(OBTableWelcomeController *)self tableView];
-  v26 = [v25 heightAnchor];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  heightAnchor = [tableView7 heightAnchor];
   [(TSTravelBuddyViewController *)self _heightAnchorConstant];
-  v27 = [v26 constraintEqualToConstant:?];
+  v27 = [heightAnchor constraintEqualToConstant:?];
   tableHeightAnchor = self->_tableHeightAnchor;
   self->_tableHeightAnchor = v27;
 
@@ -381,7 +381,7 @@ LABEL_9:
   self->_isShown = 1;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_isTravelSIMDataOnly)
   {
@@ -394,71 +394,71 @@ LABEL_9:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a3;
-  v9 = [v7 stringWithFormat:@"options%ld", objc_msgSend(v6, "section")];
-  v10 = [v8 dequeueReusableCellWithIdentifier:v9];
+  viewCopy = view;
+  v9 = [v7 stringWithFormat:@"options%ld", objc_msgSend(pathCopy, "section")];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:v9];
   }
 
-  v11 = [v10 contentView];
-  [v11 setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
+  contentView = [v10 contentView];
+  [contentView setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
 
   [v10 setSelectionStyle:0];
-  v12 = [v10 textLabel];
-  [v12 setLineBreakMode:0];
+  textLabel = [v10 textLabel];
+  [textLabel setLineBreakMode:0];
 
-  v13 = [v10 textLabel];
-  [v13 setNumberOfLines:0];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v14 = [v10 textLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel3 = [v10 textLabel];
+  [textLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v16 = [v10 textLabel];
-  [v16 setFont:v15];
+  textLabel4 = [v10 textLabel];
+  [textLabel4 setFont:v15];
 
-  v17 = [v10 detailTextLabel];
-  [v17 setLineBreakMode:0];
+  detailTextLabel = [v10 detailTextLabel];
+  [detailTextLabel setLineBreakMode:0];
 
-  v18 = [v10 detailTextLabel];
-  [v18 setNumberOfLines:0];
+  detailTextLabel2 = [v10 detailTextLabel];
+  [detailTextLabel2 setNumberOfLines:0];
 
-  v19 = [v10 detailTextLabel];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailTextLabel3 = [v10 detailTextLabel];
+  [detailTextLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  v21 = [v10 detailTextLabel];
-  [v21 setFont:v20];
+  detailTextLabel4 = [v10 detailTextLabel];
+  [detailTextLabel4 setFont:v20];
 
-  if ([v6 section] == 2)
+  if ([pathCopy section] == 2)
   {
-    v22 = [MEMORY[0x277D751C0] listCellConfiguration];
-    v23 = [MEMORY[0x277D75348] whiteColor];
-    [v22 setBackgroundColor:v23];
+    listCellConfiguration = [MEMORY[0x277D751C0] listCellConfiguration];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [listCellConfiguration setBackgroundColor:whiteColor];
 
-    [v22 setBackgroundColorTransformer:&__block_literal_global_5];
-    [v10 setBackgroundConfiguration:v22];
+    [listCellConfiguration setBackgroundColorTransformer:&__block_literal_global_5];
+    [v10 setBackgroundConfiguration:listCellConfiguration];
   }
 
   else
   {
-    v24 = [v10 layer];
-    [v24 setBorderWidth:1.0];
+    layer = [v10 layer];
+    [layer setBorderWidth:1.0];
 
-    v22 = [MEMORY[0x277D75348] systemGray6Color];
-    v25 = [v22 CGColor];
-    v26 = [v10 layer];
-    [v26 setBorderColor:v25];
+    listCellConfiguration = [MEMORY[0x277D75348] systemGray6Color];
+    cGColor = [listCellConfiguration CGColor];
+    layer2 = [v10 layer];
+    [layer2 setBorderColor:cGColor];
   }
 
-  if (![v6 section])
+  if (![pathCopy section])
   {
     isTravelSIMOnPhySlot = self->_isTravelSIMOnPhySlot;
     v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -476,13 +476,13 @@ LABEL_9:
 LABEL_18:
     v36 = [v30 localizedStringForKey:v34 value:&stru_28753DF48 table:@"Localizable"];
 
-    v37 = -[TSTravelBuddyViewController _getSubTextForSection:](self, "_getSubTextForSection:", [v6 section]);
+    v37 = -[TSTravelBuddyViewController _getSubTextForSection:](self, "_getSubTextForSection:", [pathCopy section]);
     goto LABEL_23;
   }
 
-  v27 = [v6 section];
+  section = [pathCopy section];
   v28 = self->_isTravelSIMOnPhySlot;
-  if (v27 == 1)
+  if (section == 1)
   {
     isHomeSIMOnPhySlot = self->_isHomeSIMOnPhySlot;
     v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -528,18 +528,18 @@ LABEL_18:
 
   v36 = 0;
 LABEL_23:
-  v41 = [v10 textLabel];
-  [v41 setText:v36];
+  textLabel5 = [v10 textLabel];
+  [textLabel5 setText:v36];
 
-  v42 = [v10 detailTextLabel];
-  [v42 setText:v37];
+  detailTextLabel5 = [v10 detailTextLabel];
+  [detailTextLabel5 setText:v37];
 
-  if ([v6 section] != 2)
+  if ([pathCopy section] != 2)
   {
     v43 = [MEMORY[0x277D755B8] systemImageNamed:@"circle"];
     v44 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v43];
-    v45 = [MEMORY[0x277D75348] systemGrayColor];
-    [v44 setTintColor:v45];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [v44 setTintColor:systemGrayColor];
 
     [v10 setAccessoryView:v44];
   }
@@ -547,17 +547,17 @@ LABEL_23:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 section] == 2)
+  pathCopy = path;
+  if ([pathCopy section] == 2)
   {
     self->_isSubTextSelected = 1;
     goto LABEL_10;
   }
 
-  if ([v5 section])
+  if ([pathCopy section])
   {
     self->_travelOnlySelected = 0;
     self->_isSubTextSelected = 0;
@@ -598,7 +598,7 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v4 = objc_alloc(MEMORY[0x277D75D18]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -619,8 +619,8 @@ LABEL_10:
 
   if (self->_didUserClickContinue)
   {
-    v4 = [MEMORY[0x277CF96D8] sharedManager];
-    v5 = [v4 planItemsShouldUpdate:0];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+    v5 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
     planItems = self->_planItems;
     self->_planItems = v5;
 
@@ -648,8 +648,8 @@ LABEL_10:
           v13 = *(*(&v27 + 1) + 8 * i);
           if ([v13 isSelected])
           {
-            v14 = [v13 iccid];
-            v15 = [v14 isEqualToString:self->_travelIccid];
+            iccid = [v13 iccid];
+            v15 = [iccid isEqualToString:self->_travelIccid];
 
             if (v15)
             {
@@ -796,14 +796,14 @@ LABEL_16:
 - (void)_dismissViewController
 {
   [(CoreTelephonyClient *)self->_client setDelegate:0];
-  v3 = [(TSTravelBuddyViewController *)self delegate];
-  [v3 viewControllerDidComplete:self];
+  delegate = [(TSTravelBuddyViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 }
 
 - (double)_heightAnchorConstant
 {
-  v2 = [(TSTravelBuddyViewController *)self view];
-  [v2 bounds];
+  view = [(TSTravelBuddyViewController *)self view];
+  [view bounds];
   v4 = v3 * 0.2;
 
   return v4;
@@ -811,18 +811,18 @@ LABEL_16:
 
 - (void)_refreshTableView
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 numberOfSections];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v4)
+  if (numberOfSections)
   {
     v5 = 0;
     v6 = 0x277CCA000uLL;
     while (1)
     {
       v23 = [*(v6 + 2672) indexPathForRow:0 inSection:v5];
-      v7 = [(OBTableWelcomeController *)self tableView];
-      v8 = [v7 cellForRowAtIndexPath:v23];
+      tableView2 = [(OBTableWelcomeController *)self tableView];
+      v8 = [tableView2 cellForRowAtIndexPath:v23];
 
       if ([v23 section] == 2)
       {
@@ -831,48 +831,48 @@ LABEL_16:
 
       if (!self->_isSubTextSelected)
       {
-        v9 = [(OBTableWelcomeController *)self tableView];
-        v10 = [v9 indexPathsForSelectedRows];
-        v11 = [v10 containsObject:v23];
+        tableView3 = [(OBTableWelcomeController *)self tableView];
+        indexPathsForSelectedRows = [tableView3 indexPathsForSelectedRows];
+        v11 = [indexPathsForSelectedRows containsObject:v23];
 
         if (v11)
         {
           v12 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle.fill"];
           v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
-          v14 = [MEMORY[0x277D75348] systemBlueColor];
-          [v13 setTintColor:v14];
+          systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+          [v13 setTintColor:systemBlueColor];
 
           [v8 setAccessoryView:v13];
-          v15 = [MEMORY[0x277D75348] systemBlueColor];
-          v16 = [v15 CGColor];
-          v17 = [v8 layer];
-          [v17 setBorderColor:v16];
+          systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+          cGColor = [systemBlueColor2 CGColor];
+          layer = [v8 layer];
+          [layer setBorderColor:cGColor];
         }
 
         else
         {
           v12 = [MEMORY[0x277D755B8] systemImageNamed:@"circle"];
           v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
-          v18 = [MEMORY[0x277D75348] systemGrayColor];
-          [v13 setTintColor:v18];
+          systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+          [v13 setTintColor:systemGrayColor];
 
           [v8 setAccessoryView:v13];
-          v15 = [MEMORY[0x277D75348] systemGray6Color];
-          v19 = [v15 CGColor];
-          v17 = [v8 layer];
-          [v17 setBorderColor:v19];
-          v20 = [v8 layer];
-          [v20 setBorderColor:v19];
+          systemBlueColor2 = [MEMORY[0x277D75348] systemGray6Color];
+          cGColor2 = [systemBlueColor2 CGColor];
+          layer = [v8 layer];
+          [layer setBorderColor:cGColor2];
+          layer2 = [v8 layer];
+          [layer2 setBorderColor:cGColor2];
         }
 
         v6 = 0x277CCA000;
       }
 
       ++v5;
-      v21 = [(OBTableWelcomeController *)self tableView];
-      v22 = [v21 numberOfSections];
+      tableView4 = [(OBTableWelcomeController *)self tableView];
+      numberOfSections2 = [tableView4 numberOfSections];
 
-      if (v5 >= v22)
+      if (v5 >= numberOfSections2)
       {
         return;
       }
@@ -880,10 +880,10 @@ LABEL_16:
   }
 }
 
-- (void)_continueButtonTapped:(id)a3
+- (void)_continueButtonTapped:(id)tapped
 {
   v53 = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  tappedCopy = tapped;
   self->_didUserClickContinue = 1;
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(NSString *)self->_travelIccid isEqualToString:self->_voiceIccid];
@@ -909,8 +909,8 @@ LABEL_16:
         }
 
         v7 = *(*(&v44 + 1) + 8 * i);
-        v8 = [v7 iccid];
-        v9 = [v8 isEqualToString:self->_voiceIccid];
+        iccid = [v7 iccid];
+        v9 = [iccid isEqualToString:self->_voiceIccid];
 
         if (v9)
         {
@@ -919,8 +919,8 @@ LABEL_16:
           v38 = v10;
         }
 
-        v11 = [v7 iccid];
-        v12 = [v11 isEqualToString:self->_travelIccid];
+        iccid2 = [v7 iccid];
+        v12 = [iccid2 isEqualToString:self->_travelIccid];
 
         if (v12)
         {
@@ -929,8 +929,8 @@ LABEL_16:
           v40 = v13;
         }
 
-        v14 = [v7 iccid];
-        v15 = [v14 isEqualToString:self->_homeIccid];
+        iccid3 = [v7 iccid];
+        v15 = [iccid3 isEqualToString:self->_homeIccid];
 
         if (v15)
         {
@@ -978,15 +978,15 @@ LABEL_16:
       _os_log_impl(&dword_262AA8000, v18, OS_LOG_TYPE_DEFAULT, "selectedItems %@ @%s", buf, 0x16u);
     }
 
-    v19 = [MEMORY[0x277CF96D8] sharedManager];
-    v20 = [v19 didEnablePlanItemsForTravel:v17];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+    delegate2 = [mEMORY[0x277CF96D8] didEnablePlanItemsForTravel:v17];
 
-    if (v20)
+    if (delegate2)
     {
       v21 = _TSLogDomain();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [(TSTravelBuddyViewController *)v17 _continueButtonTapped:v20, v21];
+        [(TSTravelBuddyViewController *)v17 _continueButtonTapped:delegate2, v21];
       }
     }
 
@@ -1003,8 +1003,8 @@ LABEL_16:
         _os_log_impl(&dword_262AA8000, v23, OS_LOG_TYPE_DEFAULT, "Same selection after tapping back from low data mode pane. @%s", buf, 0xCu);
       }
 
-      v24 = [(TSTravelBuddyViewController *)self delegate];
-      [v24 viewControllerDidComplete:self];
+      delegate = [(TSTravelBuddyViewController *)self delegate];
+      [delegate viewControllerDidComplete:self];
     }
 
     else
@@ -1039,8 +1039,8 @@ LABEL_16:
       [(TSTravelBuddyViewController *)v25 _continueButtonTapped:v26, v27, v28, v29, v30, v31, v32];
     }
 
-    v20 = [(TSTravelBuddyViewController *)self delegate];
-    [v20 viewControllerDidComplete:self];
+    delegate2 = [(TSTravelBuddyViewController *)self delegate];
+    [delegate2 viewControllerDidComplete:self];
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -1089,17 +1089,17 @@ uint64_t __53__TSTravelBuddyViewController__continueButtonTapped___block_invoke_
   return result;
 }
 
-- (id)_getPlanItemsToLimitService:(id)a3
+- (id)_getPlanItemsToLimitService:(id)service
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  serviceCopy = service;
+  v5 = serviceCopy;
   if (self->_travelOnlySelected)
   {
-    v6 = v4;
+    v6 = serviceCopy;
   }
 
-  else if ([v4 count] == 2)
+  else if ([serviceCopy count] == 2)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = 0u;
@@ -1123,8 +1123,8 @@ uint64_t __53__TSTravelBuddyViewController__continueButtonTapped___block_invoke_
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 iccid];
-          v15 = [v14 isEqualToString:self->_homeIccid];
+          iccid = [v13 iccid];
+          v15 = [iccid isEqualToString:self->_homeIccid];
 
           if (v15)
           {
@@ -1166,31 +1166,31 @@ LABEL_16:
   return v6;
 }
 
-- (void)_laterButtonTapped:(id)a3
+- (void)_laterButtonTapped:(id)tapped
 {
-  v3 = [(TSTravelBuddyViewController *)self delegate];
-  [v3 userDidTapCancel];
+  delegate = [(TSTravelBuddyViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
-- (void)_getTraveleSIMStateWithCompletion:(id)a3
+- (void)_getTraveleSIMStateWithCompletion:(id)completion
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(NSArray *)self->_plans count]== 1)
   {
     v5 = [(NSArray *)self->_plans objectAtIndexedSubscript:0];
     objc_initWeak(location, self);
     client = self->_client;
-    v7 = [v5 targetIccid];
+    targetIccid = [v5 targetIccid];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __65__TSTravelBuddyViewController__getTraveleSIMStateWithCompletion___block_invoke;
     v11[3] = &unk_279B44D68;
     objc_copyWeak(&v14, location);
-    v13 = v4;
+    v13 = completionCopy;
     v8 = v5;
     v12 = v8;
-    [(CoreTelephonyClient *)client getTravelInfoForIccid:v7 completion:v11];
+    [(CoreTelephonyClient *)client getTravelInfoForIccid:targetIccid completion:v11];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(location);
@@ -1206,7 +1206,7 @@ LABEL_16:
       _os_log_impl(&dword_262AA8000, v9, OS_LOG_TYPE_DEFAULT, "Not a single SIM installation. @%s", location, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1329,10 +1329,10 @@ LABEL_20:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isPlanRegisteredForIMessage:(id)a3
+- (BOOL)_isPlanRegisteredForIMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = [objc_alloc(MEMORY[0x277D18778]) initWithService:@"com.apple.madrid"];
   v5 = v4;
   if (v4)
@@ -1341,8 +1341,8 @@ LABEL_20:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [v4 accounts];
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    accounts = [v4 accounts];
+    v7 = [accounts countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v7)
     {
       v8 = *v25;
@@ -1352,17 +1352,17 @@ LABEL_20:
         {
           if (*v25 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(accounts);
           }
 
-          v10 = [*(*(&v24 + 1) + 8 * i) matchingSim];
-          v11 = [v10 SIMIdentifier];
+          matchingSim = [*(*(&v24 + 1) + 8 * i) matchingSim];
+          sIMIdentifier = [matchingSim SIMIdentifier];
 
-          if (v11)
+          if (sIMIdentifier)
           {
-            v12 = [v3 userLabel];
-            v13 = [v12 labelId];
-            v14 = [v11 isEqualToString:v13];
+            userLabel = [messageCopy userLabel];
+            labelId = [userLabel labelId];
+            v14 = [sIMIdentifier isEqualToString:labelId];
 
             if (v14)
             {
@@ -1370,7 +1370,7 @@ LABEL_20:
               if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v29 = v3;
+                v29 = messageCopy;
                 v30 = 2080;
                 v31 = "[TSTravelBuddyViewController _isPlanRegisteredForIMessage:]";
                 _os_log_impl(&dword_262AA8000, v7, OS_LOG_TYPE_DEFAULT, "Cellular plan item %@ is currently registered for iMessage @%s", buf, 0x16u);
@@ -1382,7 +1382,7 @@ LABEL_20:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v7 = [accounts countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v7)
         {
           continue;
@@ -1395,10 +1395,10 @@ LABEL_20:
 
   else
   {
-    v6 = _TSLogDomain();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    accounts = _TSLogDomain();
+    if (os_log_type_enabled(accounts, OS_LOG_TYPE_ERROR))
     {
-      [(TSTravelBuddyViewController *)v6 _isPlanRegisteredForIMessage:v15, v16, v17, v18, v19, v20, v21];
+      [(TSTravelBuddyViewController *)accounts _isPlanRegisteredForIMessage:v15, v16, v17, v18, v19, v20, v21];
     }
 
     LOBYTE(v7) = 0;
@@ -1410,21 +1410,21 @@ LABEL_18:
   return v7;
 }
 
-- (id)_getDetailsTextWithIccid:(id)a3
+- (id)_getDetailsTextWithIccid:(id)iccid
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [TSUtilities getCellularPlanItem:self->_planItems withIccid:v4];
+  iccidCopy = iccid;
+  v5 = [TSUtilities getCellularPlanItem:self->_planItems withIccid:iccidCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 phoneNumber];
+    phoneNumber = [v5 phoneNumber];
     homeIccidPhoneNumber = self->_homeIccidPhoneNumber;
-    self->_homeIccidPhoneNumber = v7;
+    self->_homeIccidPhoneNumber = phoneNumber;
 
-    v9 = [v6 name];
+    name = [v6 name];
     homeIccidCarrierName = self->_homeIccidCarrierName;
-    self->_homeIccidCarrierName = v9;
+    self->_homeIccidCarrierName = name;
 
     v43 = v6;
     objc_storeStrong(&self->_homeIccidPlanItem, v6);
@@ -1451,13 +1451,13 @@ LABEL_18:
         }
 
         v16 = *(*(&v44 + 1) + 8 * i);
-        v17 = [v16 iccid];
-        v18 = [v17 isEqualToString:v4];
+        iccid = [v16 iccid];
+        v18 = [iccid isEqualToString:iccidCopy];
 
         if ((v18 & 1) == 0)
         {
-          v19 = [v16 iccid];
-          v20 = [v19 isEqualToString:self->_travelIccid];
+          iccid2 = [v16 iccid];
+          v20 = [iccid2 isEqualToString:self->_travelIccid];
 
           if (v20)
           {
@@ -1482,13 +1482,13 @@ LABEL_12:
           if ([v16 isSelected])
           {
             self->_isDualSIMConfig = 1;
-            v24 = [v16 phoneNumber];
+            phoneNumber2 = [v16 phoneNumber];
             secondHomeIccidPhoneNumber = self->_secondHomeIccidPhoneNumber;
-            self->_secondHomeIccidPhoneNumber = v24;
+            self->_secondHomeIccidPhoneNumber = phoneNumber2;
 
-            v26 = [v16 name];
+            name2 = [v16 name];
             secondHomeIccidCarrierName = self->_secondHomeIccidCarrierName;
-            self->_secondHomeIccidCarrierName = v26;
+            self->_secondHomeIccidCarrierName = name2;
 
             objc_storeStrong(&self->_secondHomeIccidPlanItem, v16);
             travelIccidPlanItem = _TSLogDomain();
@@ -1544,10 +1544,10 @@ LABEL_25:
   return v40;
 }
 
-- (void)_setTravelIccidInfo:(id)a3
+- (void)_setTravelIccidInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1568,8 +1568,8 @@ LABEL_25:
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 iccid];
-        v12 = [v11 isEqualToString:v4];
+        iccid = [v10 iccid];
+        v12 = [iccid isEqualToString:infoCopy];
 
         if (v12)
         {
@@ -1577,14 +1577,14 @@ LABEL_25:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v24 = v4;
+            v24 = infoCopy;
             v25 = 2080;
             v26 = "[TSTravelBuddyViewController _setTravelIccidInfo:]";
             _os_log_impl(&dword_262AA8000, v13, OS_LOG_TYPE_DEFAULT, "Setting travel iccid info for %@ @%s", buf, 0x16u);
           }
 
-          v14 = [v10 phoneNumber];
-          if ([v14 length])
+          phoneNumber = [v10 phoneNumber];
+          if ([phoneNumber length])
           {
             [v10 phoneNumber];
           }
@@ -1596,9 +1596,9 @@ LABEL_25:
           v15 = ;
           objc_storeStrong(&self->_travelIccidInfo, v15);
 
-          v16 = [v10 iccid];
+          iccid2 = [v10 iccid];
           travelIccid = self->_travelIccid;
-          self->_travelIccid = v16;
+          self->_travelIccid = iccid2;
 
           goto LABEL_16;
         }
@@ -1619,20 +1619,20 @@ LABEL_16:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_maybeUpdateHomeIccid:(id)a3 homeIccid:(id)a4
+- (id)_maybeUpdateHomeIccid:(id)iccid homeIccid:(id)homeIccid
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] == 1)
+  iccidCopy = iccid;
+  homeIccidCopy = homeIccid;
+  if ([iccidCopy count] == 1)
   {
-    v8 = [v6 objectAtIndexedSubscript:0];
-    v9 = [v8 targetIccid];
-    v10 = [v9 isEqualToString:v7];
+    v8 = [iccidCopy objectAtIndexedSubscript:0];
+    targetIccid = [v8 targetIccid];
+    v10 = [targetIccid isEqualToString:homeIccidCopy];
 
     if (v10)
     {
-      v25 = v7;
+      v25 = homeIccidCopy;
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
@@ -1655,24 +1655,24 @@ LABEL_16:
             v16 = *(*(&v26 + 1) + 8 * i);
             if ([v16 isSelected])
             {
-              v17 = [v16 iccid];
-              v18 = [v8 targetIccid];
-              v19 = [v17 isEqualToString:v18];
+              iccid = [v16 iccid];
+              targetIccid2 = [v8 targetIccid];
+              v19 = [iccid isEqualToString:targetIccid2];
 
               if ((v19 & 1) == 0)
               {
                 v21 = _TSLogDomain();
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                 {
-                  v22 = [v16 iccid];
+                  iccid2 = [v16 iccid];
                   *buf = 138412546;
-                  v31 = v22;
+                  v31 = iccid2;
                   v32 = 2080;
                   v33 = "[TSTravelBuddyViewController _maybeUpdateHomeIccid:homeIccid:]";
                   _os_log_impl(&dword_262AA8000, v21, OS_LOG_TYPE_DEFAULT, "Home ICCID needs to be updated to %@ @%s", buf, 0x16u);
                 }
 
-                v20 = [v16 iccid];
+                iccid3 = [v16 iccid];
 
                 goto LABEL_18;
               }
@@ -1689,51 +1689,51 @@ LABEL_16:
         }
       }
 
-      v20 = &stru_28753DF48;
+      iccid3 = &stru_28753DF48;
 LABEL_18:
-      v7 = v25;
+      homeIccidCopy = v25;
     }
 
     else
     {
-      v20 = v7;
+      iccid3 = homeIccidCopy;
     }
   }
 
   else
   {
-    v20 = v7;
+    iccid3 = homeIccidCopy;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return iccid3;
 }
 
-- (id)_getSubTextToDisplay:(id)a3 carrierName:(id)a4
+- (id)_getSubTextToDisplay:(id)display carrierName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 length])
+  displayCopy = display;
+  nameCopy = name;
+  if (displayCopy && [displayCopy length])
   {
-    v7 = [v5 formattedPhoneNumber];
+    formattedPhoneNumber = [displayCopy formattedPhoneNumber];
   }
 
   else
   {
-    v7 = v6;
+    formattedPhoneNumber = nameCopy;
   }
 
-  v8 = v7;
+  v8 = formattedPhoneNumber;
 
   return v8;
 }
 
-- (id)_getSubTextForSection:(int64_t)a3
+- (id)_getSubTextForSection:(int64_t)section
 {
   v5 = [(TSTravelBuddyViewController *)self _getSubTextToDisplay:self->_homeIccidPhoneNumber carrierName:self->_homeIccidCarrierName];
   v6 = [(TSTravelBuddyViewController *)self _getSubTextToDisplay:self->_secondHomeIccidPhoneNumber carrierName:self->_secondHomeIccidCarrierName];
-  if (a3 == 1)
+  if (section == 1)
   {
     if (self->_isDualSIMConfig)
     {
@@ -1828,7 +1828,7 @@ LABEL_41:
 
   else
   {
-    if (a3)
+    if (section)
     {
       v18 = &stru_28753DF48;
       goto LABEL_45;
@@ -1899,10 +1899,10 @@ LABEL_45:
   return v18;
 }
 
-- (void)_isSubscriptionReadyForTravel4FF:(id)a3
+- (void)_isSubscriptionReadyForTravel4FF:(id)f
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fCopy = f;
   if (self->_travelIccidPlanItem)
   {
     v5 = +[TSCellularPlanManagerCache sharedInstance];
@@ -1917,7 +1917,7 @@ LABEL_45:
       v18[2] = __64__TSTravelBuddyViewController__isSubscriptionReadyForTravel4FF___block_invoke;
       v18[3] = &unk_279B444E0;
       objc_copyWeak(&v21, location);
-      v20 = v4;
+      v20 = fCopy;
       v19 = v6;
       [v7 getSubscriptionInfo:v18];
 
@@ -1935,7 +1935,7 @@ LABEL_45:
         _os_log_impl(&dword_262AA8000, v16, OS_LOG_TYPE_DEFAULT, "Subscription context UUID is not ready for travel plan item @%s", location, 0xCu);
       }
 
-      (*(v4 + 2))(v4, 0);
+      (*(fCopy + 2))(fCopy, 0);
     }
   }
 
@@ -1947,7 +1947,7 @@ LABEL_45:
       [(TSTravelBuddyViewController *)v8 _isSubscriptionReadyForTravel4FF:v9, v10, v11, v12, v13, v14, v15];
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(fCopy + 2))(fCopy, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];

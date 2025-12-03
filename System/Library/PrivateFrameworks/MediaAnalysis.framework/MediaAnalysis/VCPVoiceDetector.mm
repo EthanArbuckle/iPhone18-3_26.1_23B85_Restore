@@ -2,8 +2,8 @@
 + (id)detector;
 - (VCPVoiceDetector)init;
 - (id)audioFormatRequirements;
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andSampleBatchSize:(int)a4;
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 result:(id)a5;
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andSampleBatchSize:(int)size;
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime result:(id)result;
 @end
 
 @implementation VCPVoiceDetector
@@ -25,17 +25,17 @@
   {
     *(v2 + 40) = xmmword_1C9F605D0;
     *(v2 + 24) = xmmword_1C9F605E0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     epoch = v3->_voiceStart.epoch;
-    v3->_voiceStart.epoch = v4;
+    v3->_voiceStart.epoch = array;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     voiceDetections = v3->_voiceDetections;
-    v3->_voiceDetections = v6;
+    v3->_voiceDetections = array2;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     utteranceDetections = v3->_utteranceDetections;
-    v3->_utteranceDetections = v8;
+    v3->_utteranceDetections = array3;
 
     v3->_sampleBatchSize = 320;
   }
@@ -68,20 +68,20 @@
   return v5;
 }
 
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 result:(id)a5
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime result:(id)result
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (v8)
+  resultCopy = result;
+  if (resultCopy)
   {
     memset(&v16, 0, sizeof(v16));
     *&v13.start.value = *(&self->_sampleBatchSize + 1);
     v13.start.epoch = *&self->_trackStart.flags;
-    rhs = *a3;
+    rhs = *time;
     CMTimeAdd(&start, &v13.start, &rhs);
     *&v13.start.value = *(&self->_sampleBatchSize + 1);
     v13.start.epoch = *&self->_trackStart.flags;
-    rhs = *a4;
+    rhs = *toTime;
     CMTimeAdd(&end, &v13.start, &rhs);
     CMTimeRangeFromTimeToTime(&v16, &start, &end);
     if ((v16.start.flags & 1) != 0 && (v16.duration.flags & 1) != 0 && !v16.duration.epoch && (v16.duration.value & 0x8000000000000000) == 0)
@@ -95,23 +95,23 @@
       v11 = [(__CFDictionary *)v9 objectForKey:?];
       v19[1] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
-      [v8 addObject:v12];
+      [resultCopy addObject:v12];
     }
   }
 }
 
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andSampleBatchSize:(int)a4
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andSampleBatchSize:(int)size
 {
-  self->_sampleBatchSize = a4;
+  self->_sampleBatchSize = size;
   result = [(VCPVoiceDetector *)self loadModel];
   if (!result)
   {
-    FormatDescription = CMSampleBufferGetFormatDescription(a3);
+    FormatDescription = CMSampleBufferGetFormatDescription(sample);
     StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription);
     if (StreamBasicDescription)
     {
       p_mSampleRate = &StreamBasicDescription->mSampleRate;
-      CMSampleBufferGetPresentationTimeStamp(&v10, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v10, sample);
       *(&self->_sampleBatchSize + 1) = v10;
       self->_audioStream.mSampleRate = *p_mSampleRate;
       result = [(VCPVoiceDetector *)self setupWithAudioStream:p_mSampleRate];

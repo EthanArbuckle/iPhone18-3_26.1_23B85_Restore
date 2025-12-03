@@ -1,27 +1,27 @@
 @interface GATSchemaGATRequestStarted
-- (BOOL)isEqual:(id)a3;
-- (GATSchemaGATRequestStarted)initWithDictionary:(id)a3;
-- (GATSchemaGATRequestStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GATSchemaGATRequestStarted)initWithDictionary:(id)dictionary;
+- (GATSchemaGATRequestStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsConfirmationPromptSettingEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsConfirmationPromptSettingEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GATSchemaGATRequestStarted
 
-- (GATSchemaGATRequestStarted)initWithDictionary:(id)a3
+- (GATSchemaGATRequestStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = GATSchemaGATRequestStarted;
   v5 = [(GATSchemaGATRequestStarted *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clientTraceId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clientTraceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(GATSchemaGATRequestStarted *)v5 setClientTraceId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appIntentName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appIntentName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATRequestStarted setAppIntentName:](v5, "setAppIntentName:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isConfirmationPromptSettingEnabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isConfirmationPromptSettingEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (GATSchemaGATRequestStarted)initWithJSON:(id)a3
+- (GATSchemaGATRequestStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GATSchemaGATRequestStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GATSchemaGATRequestStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GATSchemaGATRequestStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,7 +85,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(&self->_isConfirmationPromptSettingEnabled + 1))
   {
     v4 = [(GATSchemaGATRequestStarted *)self appIntentName]- 1;
@@ -99,34 +99,34 @@
       v5 = off_1E78D7330[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"appIntentName"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appIntentName"];
   }
 
   if (self->_clientTraceId)
   {
-    v6 = [(GATSchemaGATRequestStarted *)self clientTraceId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    clientTraceId = [(GATSchemaGATRequestStarted *)self clientTraceId];
+    dictionaryRepresentation = [clientTraceId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"clientTraceId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clientTraceId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"clientTraceId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clientTraceId"];
     }
   }
 
   if ((*(&self->_isConfirmationPromptSettingEnabled + 1) & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[GATSchemaGATRequestStarted isConfirmationPromptSettingEnabled](self, "isConfirmationPromptSettingEnabled")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isConfirmationPromptSettingEnabled"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isConfirmationPromptSettingEnabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,30 +156,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(GATSchemaGATRequestStarted *)self clientTraceId];
-  v6 = [v4 clientTraceId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  clientTraceId = [(GATSchemaGATRequestStarted *)self clientTraceId];
+  clientTraceId2 = [equalCopy clientTraceId];
+  v7 = clientTraceId2;
+  if ((clientTraceId != 0) == (clientTraceId2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(GATSchemaGATRequestStarted *)self clientTraceId];
-  if (v8)
+  clientTraceId3 = [(GATSchemaGATRequestStarted *)self clientTraceId];
+  if (clientTraceId3)
   {
-    v9 = v8;
-    v10 = [(GATSchemaGATRequestStarted *)self clientTraceId];
-    v11 = [v4 clientTraceId];
-    v12 = [v10 isEqual:v11];
+    v9 = clientTraceId3;
+    clientTraceId4 = [(GATSchemaGATRequestStarted *)self clientTraceId];
+    clientTraceId5 = [equalCopy clientTraceId];
+    v12 = [clientTraceId4 isEqual:clientTraceId5];
 
     if (!v12)
     {
@@ -192,7 +192,7 @@ LABEL_3:
   }
 
   v13 = *(&self->_isConfirmationPromptSettingEnabled + 1);
-  v14 = v4[21];
+  v14 = equalCopy[21];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -203,10 +203,10 @@ LABEL_16:
   if (v13)
   {
     appIntentName = self->_appIntentName;
-    if (appIntentName == [v4 appIntentName])
+    if (appIntentName == [equalCopy appIntentName])
     {
       v13 = *(&self->_isConfirmationPromptSettingEnabled + 1);
-      v14 = v4[21];
+      v14 = equalCopy[21];
       goto LABEL_12;
     }
 
@@ -223,7 +223,7 @@ LABEL_12:
   if (v16)
   {
     isConfirmationPromptSettingEnabled = self->_isConfirmationPromptSettingEnabled;
-    if (isConfirmationPromptSettingEnabled != [v4 isConfirmationPromptSettingEnabled])
+    if (isConfirmationPromptSettingEnabled != [equalCopy isConfirmationPromptSettingEnabled])
     {
       goto LABEL_16;
     }
@@ -235,14 +235,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(GATSchemaGATRequestStarted *)self clientTraceId];
+  toCopy = to;
+  clientTraceId = [(GATSchemaGATRequestStarted *)self clientTraceId];
 
-  if (v4)
+  if (clientTraceId)
   {
-    v5 = [(GATSchemaGATRequestStarted *)self clientTraceId];
+    clientTraceId2 = [(GATSchemaGATRequestStarted *)self clientTraceId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -253,17 +253,17 @@ LABEL_17:
     v6 = *(&self->_isConfirmationPromptSettingEnabled + 1);
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((v6 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasIsConfirmationPromptSettingEnabled:(BOOL)a3
+- (void)setHasIsConfirmationPromptSettingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -276,17 +276,17 @@ LABEL_17:
   *(&self->_isConfirmationPromptSettingEnabled + 1) = *(&self->_isConfirmationPromptSettingEnabled + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GATSchemaGATRequestStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GATSchemaGATRequestStarted *)self clientTraceId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(GATSchemaGATRequestStarted *)self deleteClientTraceId];
   }

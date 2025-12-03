@@ -1,14 +1,14 @@
 @interface EFormula
 + (id)singletonEFormula;
-+ (id)stringToFormula:(id)a3 formulaHelper:(id)a4 formulaClass:(Class)a5;
-- (id)resolveTable:(const char *)a3 sheetIndex:(unint64_t *)a4;
-- (id)stringToTokens:(id)a3;
-- (unint64_t)resolveName:(const char *)a3;
-- (unint64_t)resolveSheet:(const char *)a3 isCurrentSheet:(BOOL *)a4;
++ (id)stringToFormula:(id)formula formulaHelper:(id)helper formulaClass:(Class)class;
+- (id)resolveTable:(const char *)table sheetIndex:(unint64_t *)index;
+- (id)stringToTokens:(id)tokens;
+- (unint64_t)resolveName:(const char *)name;
+- (unint64_t)resolveSheet:(const char *)sheet isCurrentSheet:(BOOL *)currentSheet;
 - (void)dealloc;
-- (void)setFormula:(id)a3;
-- (void)setFormulaHelper:(id)a3;
-- (void)setTableData:(id)a3;
+- (void)setFormula:(id)formula;
+- (void)setFormulaHelper:(id)helper;
+- (void)setTableData:(id)data;
 @end
 
 @implementation EFormula
@@ -38,23 +38,23 @@
   [(EFormula *)&v4 dealloc];
 }
 
-- (void)setFormulaHelper:(id)a3
+- (void)setFormulaHelper:(id)helper
 {
-  v5 = a3;
+  helperCopy = helper;
 
-  self->mHelper = a3;
+  self->mHelper = helper;
 }
 
-- (void)setFormula:(id)a3
+- (void)setFormula:(id)formula
 {
-  v5 = a3;
+  formulaCopy = formula;
 
-  self->mFormula = a3;
+  self->mFormula = formula;
 }
 
-- (id)stringToTokens:(id)a3
+- (id)stringToTokens:(id)tokens
 {
-  if ([a3 UTF8String])
+  if ([tokens UTF8String])
   {
     operator new();
   }
@@ -63,27 +63,27 @@
   return 0;
 }
 
-+ (id)stringToFormula:(id)a3 formulaHelper:(id)a4 formulaClass:(Class)a5
++ (id)stringToFormula:(id)formula formulaHelper:(id)helper formulaClass:(Class)class
 {
-  v8 = [a1 singletonEFormula];
-  [v8 setFormulaClass:a5];
-  [v8 setFormulaHelper:a4];
-  v9 = [v8 stringToTokens:a3];
-  [v8 setFormulaHelper:0];
+  singletonEFormula = [self singletonEFormula];
+  [singletonEFormula setFormulaClass:class];
+  [singletonEFormula setFormulaHelper:helper];
+  v9 = [singletonEFormula stringToTokens:formula];
+  [singletonEFormula setFormulaHelper:0];
   return v9;
 }
 
-- (unint64_t)resolveName:(const char *)a3
+- (unint64_t)resolveName:(const char *)name
 {
   mHelper = self->mHelper;
-  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:name];
 
   return [(EFHelper *)mHelper resolveName:v4];
 }
 
-- (unint64_t)resolveSheet:(const char *)a3 isCurrentSheet:(BOOL *)a4
+- (unint64_t)resolveSheet:(const char *)sheet isCurrentSheet:(BOOL *)currentSheet
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:sheet];
   v7 = [(EFHelper *)self->mHelper resolveSheet:v6];
   if (v7 == -1)
   {
@@ -95,13 +95,13 @@
     v8 = [(EFHelper *)self->mHelper isCurrentSheet:v6];
   }
 
-  *a4 = v8;
+  *currentSheet = v8;
   return v7;
 }
 
-- (id)resolveTable:(const char *)a3 sheetIndex:(unint64_t *)a4
+- (id)resolveTable:(const char *)table sheetIndex:(unint64_t *)index
 {
-  if (!a3)
+  if (!table)
   {
     return 0;
   }
@@ -110,17 +110,17 @@
   v7 = [(EFHelper *)self->mHelper resolveTable:v6];
   if (v7)
   {
-    *a4 = [(EFHelper *)self->mHelper resolveTableToSheetId:v6];
+    *index = [(EFHelper *)self->mHelper resolveTableToSheetId:v6];
   }
 
   return v7;
 }
 
-- (void)setTableData:(id)a3
+- (void)setTableData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
 
-  self->mTableData = a3;
+  self->mTableData = data;
 }
 
 @end

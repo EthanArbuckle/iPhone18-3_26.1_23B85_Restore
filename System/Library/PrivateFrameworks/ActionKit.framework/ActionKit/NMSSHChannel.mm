@@ -1,20 +1,20 @@
 @interface NMSSHChannel
-- (BOOL)downloadFile:(id)a3 to:(id)a4 progress:(id)a5;
-- (BOOL)openChannel:(id *)a3;
-- (BOOL)requestSizeWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (BOOL)downloadFile:(id)file to:(id)to progress:(id)progress;
+- (BOOL)openChannel:(id *)channel;
+- (BOOL)requestSizeWidth:(unint64_t)width height:(unint64_t)height;
 - (BOOL)sendEOF;
-- (BOOL)startShell:(id *)a3;
-- (BOOL)uploadFile:(id)a3 to:(id)a4 progress:(id)a5;
-- (BOOL)write:(id)a3 error:(id *)a4 timeout:(id)a5;
-- (BOOL)writeData:(id)a3 error:(id *)a4 timeout:(id)a5;
-- (NMSSHChannel)initWithSession:(id)a3;
+- (BOOL)startShell:(id *)shell;
+- (BOOL)uploadFile:(id)file to:(id)to progress:(id)progress;
+- (BOOL)write:(id)write error:(id *)error timeout:(id)timeout;
+- (BOOL)writeData:(id)data error:(id *)error timeout:(id)timeout;
+- (NMSSHChannel)initWithSession:(id)session;
 - (NMSSHChannelDelegate)delegate;
 - (const)ptyTerminalName;
-- (id)execute:(id)a3 error:(id *)a4 timeout:(id)a5;
-- (id)readResponseWithError:(id *)a3 timeout:(id)a4 userInfo:(id)a5;
+- (id)execute:(id)execute error:(id *)error timeout:(id)timeout;
+- (id)readResponseWithError:(id *)error timeout:(id)timeout userInfo:(id)info;
 - (void)closeChannel;
 - (void)closeShell;
-- (void)executeCommandAsynchronously:(id)a3;
+- (void)executeCommandAsynchronously:(id)asynchronously;
 - (void)waitEOF;
 @end
 
@@ -27,12 +27,12 @@
   return WeakRetained;
 }
 
-- (BOOL)downloadFile:(id)a3 to:(id)a4 progress:(id)a5
+- (BOOL)downloadFile:(id)file to:(id)to progress:(id)progress
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  toCopy = to;
+  progressCopy = progress;
   if ([(NMSSHChannel *)self channel])
   {
     v11 = +[NMSSHLogger sharedLogger];
@@ -50,26 +50,26 @@
     }
   }
 
-  v13 = [v9 stringByExpandingTildeInPath];
+  stringByExpandingTildeInPath = [toCopy stringByExpandingTildeInPath];
 
-  if ([v13 hasSuffix:@"/"])
+  if ([stringByExpandingTildeInPath hasSuffix:@"/"])
   {
-    v14 = [v8 componentsSeparatedByString:@"/"];
-    v15 = [v14 lastObject];
-    v16 = [v13 stringByAppendingString:v15];
+    v14 = [fileCopy componentsSeparatedByString:@"/"];
+    lastObject = [v14 lastObject];
+    v16 = [stringByExpandingTildeInPath stringByAppendingString:lastObject];
 
-    v13 = v16;
+    stringByExpandingTildeInPath = v16;
   }
 
-  v17 = [(NMSSHChannel *)self session];
-  libssh2_session_set_blocking([v17 rawSession], 1);
+  session = [(NMSSHChannel *)self session];
+  libssh2_session_set_blocking([session rawSession], 1);
 
   v46 = 0u;
   v47 = 0u;
   v45 = 0u;
   memset(v44, 0, sizeof(v44));
-  v18 = [(NMSSHChannel *)self session];
-  libssh2_scp_recv([v18 rawSession], objc_msgSend(v8, "UTF8String"), v44);
+  session2 = [(NMSSHChannel *)self session];
+  libssh2_scp_recv([session2 rawSession], objc_msgSend(fileCopy, "UTF8String"), v44);
   v20 = v19;
 
   if (!v20)
@@ -82,23 +82,23 @@
     goto LABEL_29;
   }
 
-  v43 = v8;
+  v43 = fileCopy;
   [(NMSSHChannel *)self setChannel:v20];
   [(NMSSHChannel *)self setType:3];
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v22 = [v21 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v22 = [defaultManager fileExistsAtPath:stringByExpandingTildeInPath];
 
   if (v22)
   {
     v23 = +[NMSSHLogger sharedLogger];
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"A file already exists at %@, it will be overwritten", v13];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"A file already exists at %@, it will be overwritten", stringByExpandingTildeInPath];
     [v23 logInfo:v24];
 
-    v25 = [MEMORY[0x277CCAA00] defaultManager];
-    [v25 removeItemAtPath:v13 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 removeItemAtPath:stringByExpandingTildeInPath error:0];
   }
 
-  v26 = open([v13 UTF8String], 513, 420);
+  v26 = open([stringByExpandingTildeInPath UTF8String], 513, 420);
   if (v45 < 1)
   {
 LABEL_22:
@@ -111,10 +111,10 @@ LABEL_22:
   v27 = 0;
   while (1)
   {
-    v28 = [(NMSSHChannel *)self bufferSize];
-    v29 = v28;
-    v30 = &v42 - ((v28 + 15) & 0xFFFFFFFFFFFFFFF0);
-    v31 = v45 - v27 >= v28 ? v28 : v45 - v27;
+    bufferSize = [(NMSSHChannel *)self bufferSize];
+    v29 = bufferSize;
+    v30 = &v42 - ((bufferSize + 15) & 0xFFFFFFFFFFFFFFF0);
+    v31 = v45 - v27 >= bufferSize ? bufferSize : v45 - v27;
     v32 = libssh2_channel_read_ex([(NMSSHChannel *)self channel], 0, v30, v31);
     v33 = v32;
     if (v32 < 1)
@@ -129,7 +129,7 @@ LABEL_22:
     }
 
     v27 += v33;
-    if (v10 && (v10[2](v10, v27, v45) & 1) == 0)
+    if (progressCopy && (progressCopy[2](progressCopy, v27, v45) & 1) == 0)
     {
       goto LABEL_27;
     }
@@ -158,19 +158,19 @@ LABEL_27:
   [(NMSSHChannel *)self closeChannel];
   v34 = 0;
 LABEL_28:
-  v8 = v43;
+  fileCopy = v43;
 LABEL_29:
 
   v40 = *MEMORY[0x277D85DE8];
   return v34;
 }
 
-- (BOOL)uploadFile:(id)a3 to:(id)a4 progress:(id)a5
+- (BOOL)uploadFile:(id)file to:(id)to progress:(id)progress
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  toCopy = to;
+  progressCopy = progress;
   if ([(NMSSHChannel *)self channel])
   {
     v11 = +[NMSSHLogger sharedLogger];
@@ -188,42 +188,42 @@ LABEL_29:
     }
   }
 
-  v13 = [v8 stringByExpandingTildeInPath];
+  stringByExpandingTildeInPath = [fileCopy stringByExpandingTildeInPath];
 
-  if ([v9 hasSuffix:@"/"])
+  if ([toCopy hasSuffix:@"/"])
   {
-    v14 = [v13 componentsSeparatedByString:@"/"];
-    v15 = [v14 lastObject];
-    v16 = [v9 stringByAppendingString:v15];
+    v14 = [stringByExpandingTildeInPath componentsSeparatedByString:@"/"];
+    lastObject = [v14 lastObject];
+    v16 = [toCopy stringByAppendingString:lastObject];
 
-    v9 = v16;
+    toCopy = v16;
   }
 
-  v17 = fopen([v13 UTF8String], "rb");
+  v17 = fopen([stringByExpandingTildeInPath UTF8String], "rb");
   if (v17)
   {
-    v18 = [(NMSSHChannel *)self session];
-    libssh2_session_set_blocking([v18 rawSession], 1);
+    session = [(NMSSHChannel *)self session];
+    libssh2_session_set_blocking([session rawSession], 1);
 
     memset(&v42, 0, sizeof(v42));
-    stat([v13 UTF8String], &v42);
-    v19 = [(NMSSHChannel *)self session];
-    v20 = [v19 rawSession];
-    v21 = [v9 UTF8String];
-    v22 = libssh2_scp_send64(v20, v21, v42.st_mode & 0x1A4, v42.st_size, 0, 0);
+    stat([stringByExpandingTildeInPath UTF8String], &v42);
+    session2 = [(NMSSHChannel *)self session];
+    rawSession = [session2 rawSession];
+    uTF8String = [toCopy UTF8String];
+    v22 = libssh2_scp_send64(rawSession, uTF8String, v42.st_mode & 0x1A4, v42.st_size, 0, 0);
 
     if (v22)
     {
       v41 = v17;
-      v39 = v9;
+      v39 = toCopy;
       [(NMSSHChannel *)self setChannel:v22];
       [(NMSSHChannel *)self setType:3];
       v38 = &v38;
-      v40 = [(NMSSHChannel *)self bufferSize];
-      v23 = &v38 - ((v40 + 15) & 0xFFFFFFFFFFFFFFF0);
+      bufferSize = [(NMSSHChannel *)self bufferSize];
+      v23 = &v38 - ((bufferSize + 15) & 0xFFFFFFFFFFFFFFF0);
       v24 = 0;
 LABEL_10:
-      v25 = fread(v23, 1uLL, v40, v41);
+      v25 = fread(v23, 1uLL, bufferSize, v41);
       LOBYTE(v17) = v25 == 0;
       if (v25)
       {
@@ -239,7 +239,7 @@ LABEL_10:
 
           v29 = v28;
           v24 += v28;
-          if (v10 && !v10[2](v10, v24))
+          if (progressCopy && !progressCopy[2](progressCopy, v24))
           {
             goto LABEL_20;
           }
@@ -269,7 +269,7 @@ LABEL_20:
         }
       }
 
-      v9 = v39;
+      toCopy = v39;
       [(NMSSHChannel *)self closeChannel];
     }
 
@@ -295,9 +295,9 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)requestSizeWidth:(unint64_t)a3 height:(unint64_t)a4
+- (BOOL)requestSizeWidth:(unint64_t)width height:(unint64_t)height
 {
-  v4 = libssh2_channel_request_pty_size_ex([(NMSSHChannel *)self channel], a3, a4, 0, 0);
+  v4 = libssh2_channel_request_pty_size_ex([(NMSSHChannel *)self channel], width, height, 0, 0);
   if (v4)
   {
     v5 = +[NMSSHLogger sharedLogger];
@@ -308,14 +308,14 @@ LABEL_20:
   return v4 == 0;
 }
 
-- (BOOL)writeData:(id)a3 error:(id *)a4 timeout:(id)a5
+- (BOOL)writeData:(id)data error:(id *)error timeout:(id)timeout
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(NMSSHChannel *)self openChannel:a4])
+  dataCopy = data;
+  timeoutCopy = timeout;
+  if ([(NMSSHChannel *)self openChannel:error])
   {
     v10 = +[NMSSHLogger sharedLogger];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Writing %lu bytes", objc_msgSend(v8, "length")];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Writing %lu bytes", objc_msgSend(dataCopy, "length")];
     [v10 logVerbose:v11];
 
     v21 = 0;
@@ -325,21 +325,21 @@ LABEL_20:
     v25 = __Block_byref_object_dispose__16467;
     v26 = 0;
     Current = CFAbsoluteTimeGetCurrent();
-    [v9 doubleValue];
+    [timeoutCopy doubleValue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __40__NMSSHChannel_writeData_error_timeout___block_invoke;
     v17[3] = &unk_278C1B5A8;
     v17[4] = self;
     v20 = Current + v13;
-    v18 = v9;
+    v18 = timeoutCopy;
     v19 = &v21;
-    [v8 enumerateByteRangesUsingBlock:v17];
+    [dataCopy enumerateByteRangesUsingBlock:v17];
     v14 = v22[5];
     v15 = v14 == 0;
-    if (a4 && v14)
+    if (error && v14)
     {
-      *a4 = v14;
+      *error = v14;
     }
 
     _Block_object_dispose(&v21, 8);
@@ -439,29 +439,29 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)write:(id)a3 error:(id *)a4 timeout:(id)a5
+- (BOOL)write:(id)write error:(id *)error timeout:(id)timeout
 {
-  v8 = a5;
-  v9 = [a3 dataUsingEncoding:4];
-  LOBYTE(a4) = [(NMSSHChannel *)self writeData:v9 error:a4 timeout:v8];
+  timeoutCopy = timeout;
+  v9 = [write dataUsingEncoding:4];
+  LOBYTE(error) = [(NMSSHChannel *)self writeData:v9 error:error timeout:timeoutCopy];
 
-  return a4;
+  return error;
 }
 
 - (void)closeShell
 {
-  v3 = [(NMSSHChannel *)self source];
+  source = [(NMSSHChannel *)self source];
 
-  if (v3)
+  if (source)
   {
-    v4 = [(NMSSHChannel *)self source];
-    dispatch_source_cancel(v4);
+    source2 = [(NMSSHChannel *)self source];
+    dispatch_source_cancel(source2);
   }
 
   if ([(NMSSHChannel *)self type]== 2)
   {
-    v5 = [(NMSSHChannel *)self session];
-    libssh2_session_set_blocking([v5 rawSession], 1);
+    session = [(NMSSHChannel *)self session];
+    libssh2_session_set_blocking([session rawSession], 1);
 
     [(NMSSHChannel *)self sendEOF];
   }
@@ -469,43 +469,43 @@ LABEL_12:
   [(NMSSHChannel *)self closeChannel];
 }
 
-- (BOOL)startShell:(id *)a3
+- (BOOL)startShell:(id *)shell
 {
   v33[1] = *MEMORY[0x277D85DE8];
   v5 = +[NMSSHLogger sharedLogger];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting shell"];
   [v5 logInfo:v6];
 
-  if ([(NMSSHChannel *)self openChannel:a3])
+  if ([(NMSSHChannel *)self openChannel:shell])
   {
-    v7 = [(NMSSHChannel *)self session];
-    libssh2_session_set_blocking([v7 rawSession], 0);
+    session = [(NMSSHChannel *)self session];
+    libssh2_session_set_blocking([session rawSession], 0);
 
     [(NMSSHChannel *)self setLastResponse:0];
-    v8 = [(NMSSHChannel *)self session];
-    Native = CFSocketGetNative([v8 socket]);
+    session2 = [(NMSSHChannel *)self session];
+    Native = CFSocketGetNative([session2 socket]);
     v10 = dispatch_get_global_queue(2, 0);
     v11 = dispatch_source_create(MEMORY[0x277D85D28], Native, 0, v10);
     [(NMSSHChannel *)self setSource:v11];
 
-    v12 = [(NMSSHChannel *)self source];
+    source = [(NMSSHChannel *)self source];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __27__NMSSHChannel_startShell___block_invoke;
     handler[3] = &unk_278C224A0;
     handler[4] = self;
-    dispatch_source_set_event_handler(v12, handler);
+    dispatch_source_set_event_handler(source, handler);
 
-    v13 = [(NMSSHChannel *)self source];
+    source2 = [(NMSSHChannel *)self source];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __27__NMSSHChannel_startShell___block_invoke_2;
     v30[3] = &unk_278C224A0;
     v30[4] = self;
-    dispatch_source_set_cancel_handler(v13, v30);
+    dispatch_source_set_cancel_handler(source2, v30);
 
-    v14 = [(NMSSHChannel *)self source];
-    dispatch_resume(v14);
+    source3 = [(NMSSHChannel *)self source];
+    dispatch_resume(source3);
     while (1)
     {
 
@@ -515,10 +515,10 @@ LABEL_12:
         break;
       }
 
-      v14 = [(NMSSHChannel *)self session];
-      v16 = CFSocketGetNative([v14 socket]);
-      v17 = [(NMSSHChannel *)self session];
-      waitsocket(v16, [v17 rawSession]);
+      source3 = [(NMSSHChannel *)self session];
+      v16 = CFSocketGetNative([source3 socket]);
+      session3 = [(NMSSHChannel *)self session];
+      waitsocket(v16, [session3 rawSession]);
     }
 
     v18 = v15;
@@ -529,16 +529,16 @@ LABEL_12:
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Shell request error"];
       [v20 logError:v21];
 
-      if (a3)
+      if (shell)
       {
         v22 = MEMORY[0x277CCA9B8];
         v32 = *MEMORY[0x277CCA450];
-        v23 = [(NMSSHChannel *)self session];
-        v24 = [v23 lastError];
-        v25 = [v24 localizedDescription];
-        v33[0] = v25;
+        session4 = [(NMSSHChannel *)self session];
+        lastError = [session4 lastError];
+        localizedDescription = [lastError localizedDescription];
+        v33[0] = localizedDescription;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-        *a3 = [v22 errorWithDomain:@"NMSSH" code:5 userInfo:v26];
+        *shell = [v22 errorWithDomain:@"NMSSH" code:5 userInfo:v26];
       }
 
       [(NMSSHChannel *)self closeShell];
@@ -728,51 +728,51 @@ void __27__NMSSHChannel_startShell___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)executeCommandAsynchronously:(id)a3
+- (void)executeCommandAsynchronously:(id)asynchronously
 {
-  v11 = a3;
+  asynchronouslyCopy = asynchronously;
   v4 = +[NMSSHLogger sharedLogger];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Exec command %@", v11];
-  [v4 logInfo:v5];
+  asynchronouslyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Exec command %@", asynchronouslyCopy];
+  [v4 logInfo:asynchronouslyCopy];
 
   if ([(NMSSHChannel *)self openChannel:0])
   {
     libssh2_channel_set_blocking([(NMSSHChannel *)self channel], 0);
-    v6 = [(NMSSHChannel *)self channel];
-    v7 = v11;
-    v8 = [v11 UTF8String];
-    v9 = v11;
-    v10 = strlen([v11 UTF8String]);
-    libssh2_channel_process_startup(v6, "exec", 4u, v8, v10);
+    channel = [(NMSSHChannel *)self channel];
+    v7 = asynchronouslyCopy;
+    uTF8String = [asynchronouslyCopy UTF8String];
+    v9 = asynchronouslyCopy;
+    v10 = strlen([asynchronouslyCopy UTF8String]);
+    libssh2_channel_process_startup(channel, "exec", 4u, uTF8String, v10);
     libssh2_channel_set_blocking([(NMSSHChannel *)self channel], 1);
   }
 }
 
-- (id)readResponseWithError:(id *)a3 timeout:(id)a4 userInfo:(id)a5
+- (id)readResponseWithError:(id *)error timeout:(id)timeout userInfo:(id)info
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 mutableCopy];
+  timeoutCopy = timeout;
+  infoCopy = info;
+  v10 = [infoCopy mutableCopy];
   v11 = v10;
-  v52 = v9;
+  v52 = infoCopy;
   if (v10)
   {
-    v12 = v10;
+    dictionary = v10;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v59 = v12;
+  v59 = dictionary;
 
-  v13 = [(NMSSHChannel *)self session];
-  libssh2_session_set_blocking([v13 rawSession], 0);
+  session = [(NMSSHChannel *)self session];
+  libssh2_session_set_blocking([session rawSession], 0);
 
   Current = CFAbsoluteTimeGetCurrent();
-  [v8 doubleValue];
+  [timeoutCopy doubleValue];
   v16 = Current + v15;
   v17 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v56 = *MEMORY[0x277CCA450];
@@ -780,27 +780,27 @@ void __27__NMSSHChannel_startShell___block_invoke_2(uint64_t a1)
   v55 = v17;
   while (2)
   {
-    v18 = [(NMSSHChannel *)self bufferSize];
+    bufferSize = [(NMSSHChannel *)self bufferSize];
     v53 = &v51;
-    v19 = &v51 - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
-    v20 = [(NMSSHChannel *)self bufferSize];
-    v57 = &v51 - ((v20 + 15) & 0xFFFFFFFFFFFFFFF0);
-    v58 = v20;
+    v19 = &v51 - ((bufferSize + 15) & 0xFFFFFFFFFFFFFFF0);
+    bufferSize2 = [(NMSSHChannel *)self bufferSize];
+    v57 = &v51 - ((bufferSize2 + 15) & 0xFFFFFFFFFFFFFFF0);
+    v58 = bufferSize2;
     do
     {
-      v21 = libssh2_channel_read_ex([(NMSSHChannel *)self channel], 0, v19, v18);
+      v21 = libssh2_channel_read_ex([(NMSSHChannel *)self channel], 0, v19, bufferSize);
       if (v21 >= 1)
       {
         [v17 appendBytes:v19 length:v21];
       }
 
       exit_status = libssh2_channel_get_exit_status([(NMSSHChannel *)self channel]);
-      if (a3 && exit_status)
+      if (error && exit_status)
       {
-        v23 = [(NMSSHChannel *)self channel];
+        channel = [(NMSSHChannel *)self channel];
         v24 = v57;
-        v25 = v8;
-        v26 = libssh2_channel_read_ex(v23, 1, v57, v58);
+        v25 = timeoutCopy;
+        v26 = libssh2_channel_read_ex(channel, 1, v57, v58);
         v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v24 length:v26 encoding:4];
         if (v27)
         {
@@ -812,17 +812,17 @@ void __27__NMSSHChannel_startShell___block_invoke_2(uint64_t a1)
           v28 = @"An unspecified error occurred";
         }
 
-        v29 = a3;
+        errorCopy = error;
         v30 = v59;
         [v59 setObject:v28 forKey:v56];
         v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%zi", v26];
         [v30 setObject:v31 forKey:v54];
 
-        v8 = v25;
+        timeoutCopy = v25;
         v32 = v30;
-        a3 = v29;
+        error = errorCopy;
         v17 = v55;
-        *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:0 userInfo:v32];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:0 userInfo:v32];
       }
 
       v33 = libssh2_channel_eof([(NMSSHChannel *)self channel]);
@@ -830,7 +830,7 @@ void __27__NMSSHChannel_startShell___block_invoke_2(uint64_t a1)
       {
         while (1)
         {
-          v37 = libssh2_channel_read_ex([(NMSSHChannel *)self channel], 0, v19, v18);
+          v37 = libssh2_channel_read_ex([(NMSSHChannel *)self channel], 0, v19, bufferSize);
           if (v37 < 1)
           {
             break;
@@ -844,22 +844,22 @@ LABEL_28:
         [(NMSSHChannel *)self setLastResponse:v40];
 
         [(NMSSHChannel *)self closeChannel];
-        v41 = [(NMSSHChannel *)self lastResponse];
+        lastResponse = [(NMSSHChannel *)self lastResponse];
         goto LABEL_29;
       }
 
-      if ([v8 longValue] >= 1 && v16 < CFAbsoluteTimeGetCurrent())
+      if ([timeoutCopy longValue] >= 1 && v16 < CFAbsoluteTimeGetCurrent())
       {
-        if (a3)
+        if (error)
         {
           v38 = v59;
           [v59 setObject:@"Connection timed out" forKey:v56];
-          *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:3 userInfo:v38];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:3 userInfo:v38];
         }
 
         while (1)
         {
-          v39 = libssh2_channel_read_ex([(NMSSHChannel *)self channel], 0, v19, v18);
+          v39 = libssh2_channel_read_ex([(NMSSHChannel *)self channel], 0, v19, bufferSize);
           if (v39 < 1)
           {
             break;
@@ -875,10 +875,10 @@ LABEL_28:
     while (v21 > 0);
     if (v21 == -37)
     {
-      v34 = [(NMSSHChannel *)self session];
-      Native = CFSocketGetNative([v34 socket]);
-      v36 = [(NMSSHChannel *)self session];
-      waitsocket(Native, [v36 rawSession]);
+      session2 = [(NMSSHChannel *)self session];
+      Native = CFSocketGetNative([session2 socket]);
+      session3 = [(NMSSHChannel *)self session];
+      waitsocket(Native, [session3 rawSession]);
 
       continue;
     }
@@ -886,16 +886,16 @@ LABEL_28:
     break;
   }
 
-  if (a3)
+  if (error)
   {
-    v44 = [(NMSSHChannel *)self session];
-    v45 = [v44 lastError];
-    v46 = [v45 localizedDescription];
-    v47 = a3;
+    session4 = [(NMSSHChannel *)self session];
+    lastError = [session4 lastError];
+    localizedDescription = [lastError localizedDescription];
+    errorCopy2 = error;
     v48 = v59;
-    [v59 setObject:v46 forKey:v56];
+    [v59 setObject:localizedDescription forKey:v56];
 
-    *v47 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:1 userInfo:v48];
+    *errorCopy2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:1 userInfo:v48];
     v17 = v55;
   }
 
@@ -904,34 +904,34 @@ LABEL_28:
   [v49 logError:v50];
 
   [(NMSSHChannel *)self closeChannel];
-  v41 = 0;
+  lastResponse = 0;
 LABEL_29:
 
   v42 = *MEMORY[0x277D85DE8];
 
-  return v41;
+  return lastResponse;
 }
 
-- (id)execute:(id)a3 error:(id *)a4 timeout:(id)a5
+- (id)execute:(id)execute error:(id *)error timeout:(id)timeout
 {
-  v8 = a3;
-  v9 = a5;
+  executeCopy = execute;
+  timeoutCopy = timeout;
   v10 = +[NMSSHLogger sharedLogger];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Exec command %@", v8];
-  [v10 logInfo:v11];
+  executeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Exec command %@", executeCopy];
+  [v10 logInfo:executeCopy];
 
-  v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:v8 forKey:@"command"];
-  if ([(NMSSHChannel *)self openChannel:a4])
+  v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:executeCopy forKey:@"command"];
+  if ([(NMSSHChannel *)self openChannel:error])
   {
     [(NMSSHChannel *)self setLastResponse:0];
     [(NMSSHChannel *)self setType:1];
-    v13 = [(NMSSHChannel *)self channel];
-    v14 = [v8 UTF8String];
-    v15 = strlen([v8 UTF8String]);
-    v16 = libssh2_channel_process_startup(v13, "exec", 4u, v14, v15);
+    channel = [(NMSSHChannel *)self channel];
+    uTF8String = [executeCopy UTF8String];
+    v15 = strlen([executeCopy UTF8String]);
+    v16 = libssh2_channel_process_startup(channel, "exec", 4u, uTF8String, v15);
     if (!v16)
     {
-      v26 = [(NMSSHChannel *)self readResponseWithError:a4 timeout:v9 userInfo:v12];
+      v26 = [(NMSSHChannel *)self readResponseWithError:error timeout:timeoutCopy userInfo:v12];
       if (v26)
       {
         v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v26 encoding:4];
@@ -945,18 +945,18 @@ LABEL_29:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v16;
-      v18 = [(NMSSHChannel *)self session];
-      v19 = [v18 lastError];
-      v20 = [v19 localizedDescription];
-      [v12 setObject:v20 forKey:*MEMORY[0x277CCA450]];
+      session = [(NMSSHChannel *)self session];
+      lastError = [session lastError];
+      localizedDescription = [lastError localizedDescription];
+      [v12 setObject:localizedDescription forKey:*MEMORY[0x277CCA450]];
 
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", v17];
       [v12 setObject:v21 forKey:*MEMORY[0x277CCA470]];
 
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:0 userInfo:v12];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:0 userInfo:v12];
     }
 
     v22 = +[NMSSHLogger sharedLogger];
@@ -974,15 +974,15 @@ LABEL_7:
 
 - (const)ptyTerminalName
 {
-  v2 = [(NMSSHChannel *)self ptyTerminalType];
-  if ((v2 - 1) > 4)
+  ptyTerminalType = [(NMSSHChannel *)self ptyTerminalType];
+  if ((ptyTerminalType - 1) > 4)
   {
     return "vanilla";
   }
 
   else
   {
-    return off_278C1B5C8[v2 - 1];
+    return off_278C1B5C8[ptyTerminalType - 1];
   }
 }
 
@@ -1009,8 +1009,8 @@ LABEL_7:
 
 - (void)closeChannel
 {
-  v3 = [(NMSSHChannel *)self session];
-  libssh2_session_set_blocking([v3 rawSession], 1);
+  session = [(NMSSHChannel *)self session];
+  libssh2_session_set_blocking([session rawSession], 1);
 
   if ([(NMSSHChannel *)self channel])
   {
@@ -1026,46 +1026,46 @@ LABEL_7:
   }
 }
 
-- (BOOL)openChannel:(id *)a3
+- (BOOL)openChannel:(id *)channel
 {
-  v4 = self;
+  selfCopy = self;
   v65[1] = *MEMORY[0x277D85DE8];
   if (![(NMSSHChannel *)self channel])
   {
-    v6 = [(NMSSHChannel *)v4 session];
-    libssh2_session_set_blocking([v6 rawSession], 1);
+    session = [(NMSSHChannel *)selfCopy session];
+    libssh2_session_set_blocking([session rawSession], 1);
 
-    v7 = [(NMSSHChannel *)v4 session];
-    v8 = libssh2_channel_open_ex([v7 rawSession], "session", 7u, 0x200000u, 0x8000u, 0, 0);
+    session2 = [(NMSSHChannel *)selfCopy session];
+    v8 = libssh2_channel_open_ex([session2 rawSession], "session", 7u, 0x200000u, 0x8000u, 0, 0);
 
     if (v8)
     {
-      [(NMSSHChannel *)v4 setChannel:v8];
-      v9 = [(NMSSHChannel *)v4 environmentVariables];
+      [(NMSSHChannel *)selfCopy setChannel:v8];
+      environmentVariables = [(NMSSHChannel *)selfCopy environmentVariables];
 
-      if (v9)
+      if (environmentVariables)
       {
-        v53 = a3;
+        channelCopy = channel;
         v59 = 0u;
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v10 = [(NMSSHChannel *)v4 environmentVariables];
-        v11 = [v10 countByEnumeratingWithState:&v57 objects:v63 count:16];
-        v12 = v4;
+        environmentVariables2 = [(NMSSHChannel *)selfCopy environmentVariables];
+        v11 = [environmentVariables2 countByEnumeratingWithState:&v57 objects:v63 count:16];
+        v12 = selfCopy;
         if (v11)
         {
           v13 = v11;
           v14 = *v58;
           v15 = 0x277CCA000uLL;
-          v54 = v10;
+          v54 = environmentVariables2;
           do
           {
             for (i = 0; i != v13; ++i)
             {
               if (*v58 != v14)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(environmentVariables2);
               }
 
               v17 = *(*(&v57 + 1) + 8 * i);
@@ -1073,76 +1073,76 @@ LABEL_7:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v19 = [(NMSSHChannel *)v12 environmentVariables];
-                v20 = [v19 objectForKey:v17];
+                environmentVariables3 = [(NMSSHChannel *)v12 environmentVariables];
+                v20 = [environmentVariables3 objectForKey:v17];
                 v21 = *(v15 + 3240);
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v56 = [(NMSSHChannel *)v12 channel];
-                  v55 = [v17 UTF8String];
+                  channel = [(NMSSHChannel *)v12 channel];
+                  uTF8String = [v17 UTF8String];
                   v23 = v13;
                   v24 = strlen([v17 UTF8String]);
-                  v25 = [(NMSSHChannel *)v12 environmentVariables];
-                  v26 = [v25 objectForKey:v17];
+                  environmentVariables4 = [(NMSSHChannel *)v12 environmentVariables];
+                  v26 = [environmentVariables4 objectForKey:v17];
                   v27 = v14;
-                  v28 = [v26 UTF8String];
+                  uTF8String2 = [v26 UTF8String];
                   [(NMSSHChannel *)v12 environmentVariables];
                   v30 = v29 = v12;
                   v31 = [v30 objectForKey:v17];
                   v32 = strlen([v31 UTF8String]);
                   v33 = v24;
                   v13 = v23;
-                  v34 = v28;
+                  v34 = uTF8String2;
                   v14 = v27;
-                  libssh2_channel_setenv_ex(v56, v55, v33, v34, v32);
+                  libssh2_channel_setenv_ex(channel, uTF8String, v33, v34, v32);
 
                   v12 = v29;
-                  v10 = v54;
+                  environmentVariables2 = v54;
                   v15 = 0x277CCA000;
                 }
               }
             }
 
-            v13 = [v10 countByEnumeratingWithState:&v57 objects:v63 count:16];
+            v13 = [environmentVariables2 countByEnumeratingWithState:&v57 objects:v63 count:16];
           }
 
           while (v13);
         }
 
-        a3 = v53;
-        v4 = v12;
+        channel = channelCopy;
+        selfCopy = v12;
       }
 
-      if (![(NMSSHChannel *)v4 requestPty])
+      if (![(NMSSHChannel *)selfCopy requestPty])
       {
         goto LABEL_2;
       }
 
-      v35 = v4;
-      v36 = [(NMSSHChannel *)v4 channel];
-      v37 = [(NMSSHChannel *)v35 ptyTerminalName];
+      v35 = selfCopy;
+      channel2 = [(NMSSHChannel *)selfCopy channel];
+      ptyTerminalName = [(NMSSHChannel *)v35 ptyTerminalName];
       v38 = strlen([(NMSSHChannel *)v35 ptyTerminalName]);
-      if (!libssh2_channel_request_pty_ex(v36, v37, v38, 0, 0, 80, 24, 0, 0))
+      if (!libssh2_channel_request_pty_ex(channel2, ptyTerminalName, v38, 0, 0, 80, 24, 0, 0))
       {
         goto LABEL_2;
       }
 
-      if (a3)
+      if (channel)
       {
         v61 = *MEMORY[0x277CCA450];
         v39 = MEMORY[0x277CCACA8];
-        v40 = [(NMSSHChannel *)v35 ptyTerminalName];
-        v41 = [(NMSSHChannel *)v35 session];
-        v42 = [v41 lastError];
-        v43 = [v42 localizedDescription];
-        v44 = [v39 stringWithFormat:@"Error requesting %s pty: %@", v40, v43];
+        ptyTerminalName2 = [(NMSSHChannel *)v35 ptyTerminalName];
+        session3 = [(NMSSHChannel *)v35 session];
+        lastError = [session3 lastError];
+        localizedDescription = [lastError localizedDescription];
+        v44 = [v39 stringWithFormat:@"Error requesting %s pty: %@", ptyTerminalName2, localizedDescription];
         v62 = v44;
         v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
 
-        *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:2 userInfo:v45];
+        *channel = [MEMORY[0x277CCA9B8] errorWithDomain:@"NMSSH" code:2 userInfo:v45];
       }
 
       v46 = +[NMSSHLogger sharedLogger];
@@ -1158,13 +1158,13 @@ LABEL_7:
       v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to open a session"];
       [v48 logError:v49];
 
-      if (a3)
+      if (channel)
       {
         v50 = MEMORY[0x277CCA9B8];
         v64 = *MEMORY[0x277CCA450];
         v65[0] = @"Channel allocation error";
         v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:&v64 count:1];
-        *a3 = [v50 errorWithDomain:@"NMSSH" code:4 userInfo:v51];
+        *channel = [v50 errorWithDomain:@"NMSSH" code:4 userInfo:v51];
       }
     }
 
@@ -1179,21 +1179,21 @@ LABEL_24:
   return result;
 }
 
-- (NMSSHChannel)initWithSession:(id)a3
+- (NMSSHChannel)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v10.receiver = self;
   v10.super_class = NMSSHChannel;
   v5 = [(NMSSHChannel *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(NMSSHChannel *)v5 setSession:v4];
+    [(NMSSHChannel *)v5 setSession:sessionCopy];
     [(NMSSHChannel *)v6 setBufferSize:0x4000];
     [(NMSSHChannel *)v6 setRequestPty:0];
     [(NMSSHChannel *)v6 setPtyTerminalType:0];
     [(NMSSHChannel *)v6 setType:0];
-    v7 = [(NMSSHChannel *)v6 session];
+    session = [(NMSSHChannel *)v6 session];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 

@@ -1,9 +1,9 @@
 @interface BRCUTITypeCache
 + (id)defaultCache;
-- (id)UTIForExtension:(id)a3;
+- (id)UTIForExtension:(id)extension;
 - (id)_getLaunchServicesDatabaseGeneration;
 - (id)_init;
-- (id)_utiForExtension:(id)a3;
+- (id)_utiForExtension:(id)extension;
 - (void)_invalidateCahceIfNeeded;
 @end
 
@@ -48,18 +48,18 @@ uint64_t __31__BRCUTITypeCache_defaultCache__block_invoke()
   return v2;
 }
 
-- (id)_utiForExtension:(id)a3
+- (id)_utiForExtension:(id)extension
 {
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], a3, 0);
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], extension, 0);
 
   return PreferredIdentifierForTag;
 }
 
 - (id)_getLaunchServicesDatabaseGeneration
 {
-  v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v6 = 0;
-  [v2 getKnowledgeUUID:0 andSequenceNumber:&v6];
+  [defaultWorkspace getKnowledgeUUID:0 andSequenceNumber:&v6];
   v3 = v6;
   v4 = v6;
 
@@ -70,23 +70,23 @@ uint64_t __31__BRCUTITypeCache_defaultCache__block_invoke()
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_223E7A000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] Invalidating UTI cache%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)UTIForExtension:(id)a3
+- (id)UTIForExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   [(BRCUTITypeCache *)self _invalidateCahceIfNeeded];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSCache *)v5->_utiCache objectForKey:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSCache *)selfCopy->_utiCache objectForKey:extensionCopy];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v6 == v7)
+    if (v6 == null)
     {
       v8 = 0;
     }
@@ -96,26 +96,26 @@ uint64_t __31__BRCUTITypeCache_defaultCache__block_invoke()
       v8 = v6;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v9 = [(BRCUTITypeCache *)v5 _utiForExtension:v4];
-    v10 = v5;
+    v9 = [(BRCUTITypeCache *)selfCopy _utiForExtension:extensionCopy];
+    v10 = selfCopy;
     objc_sync_enter(v10);
-    utiCache = v5->_utiCache;
+    utiCache = selfCopy->_utiCache;
     if (v9)
     {
-      [(NSCache *)v5->_utiCache setObject:v9 forKey:v4];
+      [(NSCache *)selfCopy->_utiCache setObject:v9 forKey:extensionCopy];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB68] null];
-      [(NSCache *)utiCache setObject:v12 forKey:v4];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [(NSCache *)utiCache setObject:null2 forKey:extensionCopy];
     }
 
     objc_sync_exit(v10);

@@ -4,22 +4,22 @@
 - (NSDictionary)depthInfo;
 - (NSDictionary)focusRect;
 - (NSNumber)glassesMatteAllowed;
-- (PIDepthAdjustmentController)initWithAdjustment:(id)a3;
+- (PIDepthAdjustmentController)initWithAdjustment:(id)adjustment;
 - (double)aperture;
 - (double)maximumAperture;
 - (double)minimumAperture;
 - (id)capturedAperture;
 - (id)capturedFocusRect;
-- (id)pasteKeysForMediaType:(int64_t)a3;
-- (void)setAperture:(double)a3;
-- (void)setDepthInfo:(id)a3;
-- (void)setFocusRect:(id)a3;
-- (void)setGlassesMatteAllowed:(id)a3;
+- (id)pasteKeysForMediaType:(int64_t)type;
+- (void)setAperture:(double)aperture;
+- (void)setDepthInfo:(id)info;
+- (void)setFocusRect:(id)rect;
+- (void)setGlassesMatteAllowed:(id)allowed;
 @end
 
 @implementation PIDepthAdjustmentController
 
-- (id)pasteKeysForMediaType:(int64_t)a3
+- (id)pasteKeysForMediaType:(int64_t)type
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v3 = +[PIAdjustmentController enabledKey];
@@ -33,12 +33,12 @@
 
 - (NSNumber)glassesMatteAllowed
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIDepthAdjustmentController glassesMatteAllowedKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  v4 = [adjustment objectForKeyedSubscript:v3];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     return MEMORY[0x1E695E118];
   }
@@ -49,20 +49,20 @@
   }
 }
 
-- (void)setGlassesMatteAllowed:(id)a3
+- (void)setGlassesMatteAllowed:(id)allowed
 {
-  v4 = [a3 BOOLValue];
-  v8 = [(PIAdjustmentController *)self adjustment];
+  bOOLValue = [allowed BOOLValue];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIDepthAdjustmentController glassesMatteAllowedKey];
-  if (v4)
+  if (bOOLValue)
   {
     v6 = MEMORY[0x1E695E118];
-    v7 = v8;
+    v7 = adjustment;
   }
 
   else
   {
-    v7 = v8;
+    v7 = adjustment;
     v6 = 0;
   }
 
@@ -71,9 +71,9 @@
 
 - (id)capturedFocusRect
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIDepthAdjustmentController depthInfoKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   v5 = [v4 objectForKeyedSubscript:@"focusRect"];
 
   return v5;
@@ -81,26 +81,26 @@
 
 - (NSDictionary)focusRect
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIDepthAdjustmentController focusRectKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-- (void)setFocusRect:(id)a3
+- (void)setFocusRect:(id)rect
 {
-  v4 = a3;
-  v6 = [(PIAdjustmentController *)self adjustment];
+  rectCopy = rect;
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIDepthAdjustmentController focusRectKey];
-  [v6 setObject:v4 forKeyedSubscript:v5];
+  [adjustment setObject:rectCopy forKeyedSubscript:v5];
 }
 
 - (id)capturedAperture
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIDepthAdjustmentController depthInfoKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   v5 = [v4 objectForKeyedSubscript:@"capturedAperture"];
 
   return v5;
@@ -108,44 +108,44 @@
 
 - (double)aperture
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIDepthAdjustmentController apertureKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 floatValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setAperture:(double)a3
+- (void)setAperture:(double)aperture
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:aperture];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIDepthAdjustmentController apertureKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (NSDictionary)depthInfo
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIDepthAdjustmentController depthInfoKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-- (void)setDepthInfo:(id)a3
+- (void)setDepthInfo:(id)info
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [info copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIDepthAdjustmentController depthInfoKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (double)maximumAperture
 {
-  v2 = [(PIDepthAdjustmentController *)self depthInfo];
-  v3 = [v2 objectForKeyedSubscript:@"maximumAperture"];
+  depthInfo = [(PIDepthAdjustmentController *)self depthInfo];
+  v3 = [depthInfo objectForKeyedSubscript:@"maximumAperture"];
   [v3 floatValue];
   v5 = v4;
 
@@ -154,8 +154,8 @@
 
 - (double)minimumAperture
 {
-  v2 = [(PIDepthAdjustmentController *)self depthInfo];
-  v3 = [v2 objectForKeyedSubscript:@"minimumAperture"];
+  depthInfo = [(PIDepthAdjustmentController *)self depthInfo];
+  v3 = [depthInfo objectForKeyedSubscript:@"minimumAperture"];
   [v3 floatValue];
   v5 = v4;
 
@@ -176,17 +176,17 @@
 
 - (BOOL)canRenderDepth
 {
-  v2 = [(PIDepthAdjustmentController *)self depthInfo];
-  v3 = [v2 count] != 0;
+  depthInfo = [(PIDepthAdjustmentController *)self depthInfo];
+  v3 = [depthInfo count] != 0;
 
   return v3;
 }
 
-- (PIDepthAdjustmentController)initWithAdjustment:(id)a3
+- (PIDepthAdjustmentController)initWithAdjustment:(id)adjustment
 {
   v4.receiver = self;
   v4.super_class = PIDepthAdjustmentController;
-  return [(PIAdjustmentController *)&v4 initWithAdjustment:a3];
+  return [(PIAdjustmentController *)&v4 initWithAdjustment:adjustment];
 }
 
 @end

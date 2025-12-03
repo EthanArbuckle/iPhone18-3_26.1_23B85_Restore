@@ -1,35 +1,35 @@
 @interface MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithDictionary:(id)a3;
-- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithDictionary:(id)dictionary;
+- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsReplayModeEnabled:(BOOL)a3;
-- (void)setHasProcessedAudioDurationInMs:(BOOL)a3;
-- (void)setHasSpeakingProbability:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsReplayModeEnabled:(BOOL)enabled;
+- (void)setHasProcessedAudioDurationInMs:(BOOL)ms;
+- (void)setHasSpeakingProbability:(BOOL)probability;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade
 
-- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithDictionary:(id)a3
+- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade;
   v5 = [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isSecondPassTriggered"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isSecondPassTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade setIsSecondPassTriggered:](v5, "setIsSecondPassTriggered:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"speakingProbability"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"speakingProbability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)v5 setSpeakingProbability:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"processedAudioDurationInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"processedAudioDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)v5 setProcessedAudioDurationInMs:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isReplayModeEnabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isReplayModeEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithJSON:(id)a3
+- (MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,12 +94,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isReplayModeEnabled + 1);
   if ((v4 & 8) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade isReplayModeEnabled](self, "isReplayModeEnabled")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isReplayModeEnabled"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isReplayModeEnabled"];
 
     v4 = *(&self->_isReplayModeEnabled + 1);
     if ((v4 & 1) == 0)
@@ -120,7 +120,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade isSecondPassTriggered](self, "isSecondPassTriggered")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isSecondPassTriggered"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isSecondPassTriggered"];
 
   v4 = *(&self->_isReplayModeEnabled + 1);
   if ((v4 & 4) == 0)
@@ -138,7 +138,7 @@ LABEL_11:
   v10 = MEMORY[0x1E696AD98];
   [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)self processedAudioDurationInMs];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"processedAudioDurationInMs"];
+  [dictionary setObject:v11 forKeyedSubscript:@"processedAudioDurationInMs"];
 
   if ((*(&self->_isReplayModeEnabled + 1) & 2) != 0)
   {
@@ -146,13 +146,13 @@ LABEL_5:
     v5 = MEMORY[0x1E696AD98];
     [(MHSchemaMHRaiseToSpeakSecondPassPolicyDecisionMade *)self speakingProbability];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"speakingProbability"];
+    [dictionary setObject:v6 forKeyedSubscript:@"speakingProbability"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -250,16 +250,16 @@ LABEL_9:
   return v8 ^ v4 ^ v9 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   v5 = *(&self->_isReplayModeEnabled + 1);
-  v6 = v4[33];
+  v6 = equalCopy[33];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -268,13 +268,13 @@ LABEL_9:
   if (v5)
   {
     isSecondPassTriggered = self->_isSecondPassTriggered;
-    if (isSecondPassTriggered != [v4 isSecondPassTriggered])
+    if (isSecondPassTriggered != [equalCopy isSecondPassTriggered])
     {
       goto LABEL_18;
     }
 
     v5 = *(&self->_isReplayModeEnabled + 1);
-    v6 = v4[33];
+    v6 = equalCopy[33];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -286,14 +286,14 @@ LABEL_9:
   if (v8)
   {
     speakingProbability = self->_speakingProbability;
-    [v4 speakingProbability];
+    [equalCopy speakingProbability];
     if (speakingProbability != v10)
     {
       goto LABEL_18;
     }
 
     v5 = *(&self->_isReplayModeEnabled + 1);
-    v6 = v4[33];
+    v6 = equalCopy[33];
   }
 
   v11 = (v5 >> 2) & 1;
@@ -305,11 +305,11 @@ LABEL_9:
   if (v11)
   {
     processedAudioDurationInMs = self->_processedAudioDurationInMs;
-    [v4 processedAudioDurationInMs];
+    [equalCopy processedAudioDurationInMs];
     if (processedAudioDurationInMs == v13)
     {
       v5 = *(&self->_isReplayModeEnabled + 1);
-      v6 = v4[33];
+      v6 = equalCopy[33];
       goto LABEL_14;
     }
 
@@ -328,7 +328,7 @@ LABEL_14:
   if (v14)
   {
     isReplayModeEnabled = self->_isReplayModeEnabled;
-    if (isReplayModeEnabled != [v4 isReplayModeEnabled])
+    if (isReplayModeEnabled != [equalCopy isReplayModeEnabled])
     {
       goto LABEL_18;
     }
@@ -340,9 +340,9 @@ LABEL_19:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isReplayModeEnabled + 1);
   if (v4)
   {
@@ -389,9 +389,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasIsReplayModeEnabled:(BOOL)a3
+- (void)setHasIsReplayModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -404,9 +404,9 @@ LABEL_6:
   *(&self->_isReplayModeEnabled + 1) = *(&self->_isReplayModeEnabled + 1) & 0xF7 | v3;
 }
 
-- (void)setHasProcessedAudioDurationInMs:(BOOL)a3
+- (void)setHasProcessedAudioDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -419,9 +419,9 @@ LABEL_6:
   *(&self->_isReplayModeEnabled + 1) = *(&self->_isReplayModeEnabled + 1) & 0xFB | v3;
 }
 
-- (void)setHasSpeakingProbability:(BOOL)a3
+- (void)setHasSpeakingProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2;
   }

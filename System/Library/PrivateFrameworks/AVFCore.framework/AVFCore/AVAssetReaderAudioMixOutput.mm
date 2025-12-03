@@ -1,18 +1,18 @@
 @interface AVAssetReaderAudioMixOutput
 + (AVAssetReaderAudioMixOutput)assetReaderAudioMixOutputWithAudioTracks:(NSArray *)audioTracks audioSettings:(NSDictionary *)audioSettings;
 - (AVAssetReaderAudioMixOutput)initWithAudioTracks:(NSArray *)audioTracks audioSettings:(NSDictionary *)audioSettings;
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3;
+- (BOOL)_enableTrackExtractionReturningError:(id *)error;
 - (id)_asset;
-- (id)_audioCurvesForTrack:(id)a3;
-- (id)_audioEffectsParametersForTrack:(id)a3;
-- (id)_audioTimePitchAlgorithmForTrack:(id)a3;
+- (id)_audioCurvesForTrack:(id)track;
+- (id)_audioEffectsParametersForTrack:(id)track;
+- (id)_audioTimePitchAlgorithmForTrack:(id)track;
 - (id)description;
 - (id)mediaType;
-- (opaqueMTAudioProcessingTap)_audioTapProcessorForTrack:(id)a3;
-- (void)_setAudioCurves:(id)a3 forTrack:(id)a4;
-- (void)_setAudioEffectsParameters:(id)a3 forTrack:(id)a4;
-- (void)_setAudioTapProcessor:(opaqueMTAudioProcessingTap *)a3 forTrack:(id)a4;
-- (void)_setAudioTimePitchAlgorithm:(id)a3 forTrack:(id)a4;
+- (opaqueMTAudioProcessingTap)_audioTapProcessorForTrack:(id)track;
+- (void)_setAudioCurves:(id)curves forTrack:(id)track;
+- (void)_setAudioEffectsParameters:(id)parameters forTrack:(id)track;
+- (void)_setAudioTapProcessor:(opaqueMTAudioProcessingTap *)processor forTrack:(id)track;
+- (void)_setAudioTimePitchAlgorithm:(id)algorithm forTrack:(id)track;
 - (void)dealloc;
 - (void)setAudioMix:(AVAudioMix *)audioMix;
 - (void)setAudioTimePitchAlgorithm:(AVAudioTimePitchAlgorithm)audioTimePitchAlgorithm;
@@ -86,10 +86,10 @@ LABEL_29:
         goto LABEL_25;
       }
 
-      v15 = [v14 asset];
+      asset = [v14 asset];
       if (v11)
       {
-        if (v15 != v11)
+        if (asset != v11)
         {
           v21 = v8;
           v27 = MEMORY[0x1E695DF30];
@@ -101,7 +101,7 @@ LABEL_29:
 
       else
       {
-        v11 = v15;
+        v11 = asset;
       }
     }
 
@@ -193,9 +193,9 @@ LABEL_26:
   return [v3 stringWithFormat:@"<%@: %p, audioTracks = %@, audioSettings = %@>", NSStringFromClass(v4), self, -[AVAssetReaderAudioMixOutput audioTracks](self, "audioTracks"), -[AVAssetReaderAudioMixOutput audioSettings](self, "audioSettings")];
 }
 
-- (id)_audioCurvesForTrack:(id)a3
+- (id)_audioCurvesForTrack:(id)track
 {
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a3])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"track must be one of the tracks used to create the receiver", v6, v7, v8, v9, v10, v14), 0}];
     objc_exception_throw(v13);
@@ -203,10 +203,10 @@ LABEL_26:
 
   audioCurvesForTracks = self->_audioMixOutputInternal->audioCurvesForTracks;
 
-  return [(NSMutableDictionary *)audioCurvesForTracks objectForKey:a3];
+  return [(NSMutableDictionary *)audioCurvesForTracks objectForKey:track];
 }
 
-- (void)_setAudioCurves:(id)a3 forTrack:(id)a4
+- (void)_setAudioCurves:(id)curves forTrack:(id)track
 {
   if ([(AVAssetReaderOutput *)self _status]>= 1)
   {
@@ -216,7 +216,7 @@ LABEL_26:
     goto LABEL_12;
   }
 
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a4])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
@@ -227,22 +227,22 @@ LABEL_12:
   }
 
   audioCurvesForTracks = self->_audioMixOutputInternal->audioCurvesForTracks;
-  if (a3)
+  if (curves)
   {
 
-    [(NSMutableDictionary *)audioCurvesForTracks setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)audioCurvesForTracks setObject:curves forKey:track];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)audioCurvesForTracks removeObjectForKey:a4];
+    [(NSMutableDictionary *)audioCurvesForTracks removeObjectForKey:track];
   }
 }
 
-- (id)_audioEffectsParametersForTrack:(id)a3
+- (id)_audioEffectsParametersForTrack:(id)track
 {
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a3])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"track must be one of the tracks used to create the receiver", v6, v7, v8, v9, v10, v14), 0}];
     objc_exception_throw(v13);
@@ -250,10 +250,10 @@ LABEL_12:
 
   audioEffectsParametersForTracks = self->_audioMixOutputInternal->audioEffectsParametersForTracks;
 
-  return [(NSMutableDictionary *)audioEffectsParametersForTracks objectForKey:a3];
+  return [(NSMutableDictionary *)audioEffectsParametersForTracks objectForKey:track];
 }
 
-- (void)_setAudioEffectsParameters:(id)a3 forTrack:(id)a4
+- (void)_setAudioEffectsParameters:(id)parameters forTrack:(id)track
 {
   if ([(AVAssetReaderOutput *)self _status]>= 1)
   {
@@ -263,7 +263,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a4])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
@@ -274,22 +274,22 @@ LABEL_12:
   }
 
   audioEffectsParametersForTracks = self->_audioMixOutputInternal->audioEffectsParametersForTracks;
-  if (a3)
+  if (parameters)
   {
 
-    [(NSMutableDictionary *)audioEffectsParametersForTracks setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)audioEffectsParametersForTracks setObject:parameters forKey:track];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)audioEffectsParametersForTracks removeObjectForKey:a4];
+    [(NSMutableDictionary *)audioEffectsParametersForTracks removeObjectForKey:track];
   }
 }
 
-- (id)_audioTimePitchAlgorithmForTrack:(id)a3
+- (id)_audioTimePitchAlgorithmForTrack:(id)track
 {
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a3])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"track must be one of the tracks used to create the receiver", v6, v7, v8, v9, v10, v14), 0}];
     objc_exception_throw(v13);
@@ -297,10 +297,10 @@ LABEL_12:
 
   audioTimePitchAlgorithmsForTracks = self->_audioMixOutputInternal->audioTimePitchAlgorithmsForTracks;
 
-  return [(NSMutableDictionary *)audioTimePitchAlgorithmsForTracks objectForKey:a3];
+  return [(NSMutableDictionary *)audioTimePitchAlgorithmsForTracks objectForKey:track];
 }
 
-- (void)_setAudioTimePitchAlgorithm:(id)a3 forTrack:(id)a4
+- (void)_setAudioTimePitchAlgorithm:(id)algorithm forTrack:(id)track
 {
   if ([(AVAssetReaderOutput *)self _status]>= 1)
   {
@@ -310,7 +310,7 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a4])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
@@ -320,13 +320,13 @@ LABEL_12:
 
   audioMixOutputInternal = self->_audioMixOutputInternal;
   audioTimePitchAlgorithmsForTracks = audioMixOutputInternal->audioTimePitchAlgorithmsForTracks;
-  if (a3)
+  if (algorithm)
   {
     valid = AVGetValidAudioTimePitchAlgorithms();
-    if ([valid containsObject:a3])
+    if ([valid containsObject:algorithm])
     {
 
-      [(NSMutableDictionary *)audioTimePitchAlgorithmsForTracks setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)audioTimePitchAlgorithmsForTracks setObject:algorithm forKey:track];
       return;
     }
 
@@ -341,12 +341,12 @@ LABEL_14:
 
   v16 = audioMixOutputInternal->audioTimePitchAlgorithmsForTracks;
 
-  [(NSMutableDictionary *)v16 removeObjectForKey:a4];
+  [(NSMutableDictionary *)v16 removeObjectForKey:track];
 }
 
-- (opaqueMTAudioProcessingTap)_audioTapProcessorForTrack:(id)a3
+- (opaqueMTAudioProcessingTap)_audioTapProcessorForTrack:(id)track
 {
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a3])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"track must be one of the tracks used to create the receiver", v6, v7, v8, v9, v10, v14), 0}];
     objc_exception_throw(v13);
@@ -354,10 +354,10 @@ LABEL_14:
 
   audioTapProcessorsForTracks = self->_audioMixOutputInternal->audioTapProcessorsForTracks;
 
-  return [(NSMutableDictionary *)audioTapProcessorsForTracks objectForKey:a3];
+  return [(NSMutableDictionary *)audioTapProcessorsForTracks objectForKey:track];
 }
 
-- (void)_setAudioTapProcessor:(opaqueMTAudioProcessingTap *)a3 forTrack:(id)a4
+- (void)_setAudioTapProcessor:(opaqueMTAudioProcessingTap *)processor forTrack:(id)track
 {
   if ([(AVAssetReaderOutput *)self _status]>= 1)
   {
@@ -367,7 +367,7 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:a4])
+  if (![(NSArray *)[(AVAssetReaderAudioMixOutput *)self audioTracks] containsObject:track])
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
@@ -378,16 +378,16 @@ LABEL_12:
   }
 
   audioTapProcessorsForTracks = self->_audioMixOutputInternal->audioTapProcessorsForTracks;
-  if (a3)
+  if (processor)
   {
 
-    [(NSMutableDictionary *)audioTapProcessorsForTracks setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)audioTapProcessorsForTracks setObject:processor forKey:track];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)audioTapProcessorsForTracks removeObjectForKey:a4];
+    [(NSMutableDictionary *)audioTapProcessorsForTracks removeObjectForKey:track];
   }
 }
 
@@ -409,8 +409,8 @@ LABEL_12:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [(AVAssetReaderAudioMixOutput *)self audioTracks];
-    v13 = [(NSArray *)v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    audioTracks = [(AVAssetReaderAudioMixOutput *)self audioTracks];
+    v13 = [(NSArray *)audioTracks countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -421,19 +421,19 @@ LABEL_12:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(audioTracks);
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
           v18 = -[AVAudioMix audioMixInputParametersForTrackID:](self->_audioMixOutputInternal->audioMix, "audioMixInputParametersForTrackID:", [v17 trackID]);
-          v19 = [v18 audioTapProcessor];
+          audioTapProcessor = [v18 audioTapProcessor];
           -[AVAssetReaderAudioMixOutput _setAudioCurves:forTrack:](self, "_setAudioCurves:forTrack:", [v18 _figAudioCurves], v17);
           -[AVAssetReaderAudioMixOutput _setAudioTimePitchAlgorithm:forTrack:](self, "_setAudioTimePitchAlgorithm:forTrack:", [v18 audioTimePitchAlgorithm], v17);
-          [(AVAssetReaderAudioMixOutput *)self _setAudioTapProcessor:v19 forTrack:v17];
+          [(AVAssetReaderAudioMixOutput *)self _setAudioTapProcessor:audioTapProcessor forTrack:v17];
           -[AVAssetReaderAudioMixOutput _setAudioEffectsParameters:forTrack:](self, "_setAudioEffectsParameters:forTrack:", [v18 effects], v17);
         }
 
-        v14 = [(NSArray *)v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [(NSArray *)audioTracks countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
@@ -488,24 +488,24 @@ LABEL_8:
   return [v2 asset];
 }
 
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3
+- (BOOL)_enableTrackExtractionReturningError:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
   v57 = -1;
-  v4 = [(AVAssetReaderAudioMixOutput *)self audioTracks];
-  v43 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v4, "count")}];
+  audioTracks = [(AVAssetReaderAudioMixOutput *)self audioTracks];
+  v43 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](audioTracks, "count")}];
   v56 = 0;
   v54 = 0u;
   v55 = 0u;
   v53 = 0;
   v39 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{AVAssetReaderGetFigAssetReaderAudioTimePitchAlgorithmForAudioTimePitchAlgorithm(self->_audioMixOutputInternal->audioTimePitchAlgorithm), *MEMORY[0x1E6971320], 0}];
-  v38 = [(AVAssetReaderOutput *)self _figAssetReaderExtractionOptions];
+  _figAssetReaderExtractionOptions = [(AVAssetReaderOutput *)self _figAssetReaderExtractionOptions];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v4;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v49 objects:v59 count:16];
+  obj = audioTracks;
+  v5 = [(NSArray *)audioTracks countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v5)
   {
     v6 = v5;
@@ -569,8 +569,8 @@ LABEL_8:
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v22 = [(AVAssetReaderAudioMixOutput *)self audioTracks];
-  v23 = [(NSArray *)v22 countByEnumeratingWithState:&v45 objects:v58 count:16];
+  audioTracks2 = [(AVAssetReaderAudioMixOutput *)self audioTracks];
+  v23 = [(NSArray *)audioTracks2 countByEnumeratingWithState:&v45 objects:v58 count:16];
   if (v23)
   {
     v24 = v23;
@@ -581,13 +581,13 @@ LABEL_8:
       {
         if (*v46 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(audioTracks2);
         }
 
         [v21 addObjectsFromArray:{objc_msgSend(*(*(&v45 + 1) + 8 * j), "formatDescriptions")}];
       }
 
-      v24 = [(NSArray *)v22 countByEnumeratingWithState:&v45 objects:v58 count:16];
+      v24 = [(NSArray *)audioTracks2 countByEnumeratingWithState:&v45 objects:v58 count:16];
     }
 
     while (v24);
@@ -623,7 +623,7 @@ LABEL_33:
     v29 = AVCopyBestAudioChannelLayoutFromFormatDescription(formatDescriptionOut, &v53);
   }
 
-  v33 = [(AVAssetReaderOutput *)self _figAssetReader];
+  _figAssetReader = [(AVAssetReaderOutput *)self _figAssetReader];
   v34 = v53;
   v35 = *(*(CMBaseObjectGetVTable() + 16) + 88);
   if (!v35)
@@ -632,7 +632,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v27 = v35(v33, v43, &v54, v34, v29, audioOutputSettings, v39, v38, &v57);
+  v27 = v35(_figAssetReader, v43, &v54, v34, v29, audioOutputSettings, v39, _figAssetReaderExtractionOptions, &v57);
   free(v29);
   if (!v27)
   {
@@ -641,14 +641,14 @@ LABEL_33:
   }
 
 LABEL_34:
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
   v37 = [AVAssetReader _errorForOSStatus:v27];
   result = 0;
-  *a3 = v37;
+  *error = v37;
   return result;
 }
 

@@ -1,21 +1,21 @@
 @interface SearchUIMusicDisclosureCheckCache
-- (void)computeObjectForKey:(id)a3 completionHandler:(id)a4;
+- (void)computeObjectForKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation SearchUIMusicDisclosureCheckCache
 
-- (void)computeObjectForKey:(id)a3 completionHandler:(id)a4
+- (void)computeObjectForKey:(id)key completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  handlerCopy = handler;
   v5 = [SearchUIUtilities bundleIdentifierForApp:11];
   v6 = [SearchUIUtilities isAppInstalledWithBundleId:v5];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E69E4528] sharedPrivacyInfo];
-    v8 = [v7 preflightDisclosureRequiredForMusic];
-    v9 = v8 | [v7 privacyAcknowledgementRequiredForMusic];
+    mEMORY[0x1E69E4528] = [MEMORY[0x1E69E4528] sharedPrivacyInfo];
+    preflightDisclosureRequiredForMusic = [mEMORY[0x1E69E4528] preflightDisclosureRequiredForMusic];
+    v9 = preflightDisclosureRequiredForMusic | [mEMORY[0x1E69E4528] privacyAcknowledgementRequiredForMusic];
     v10 = v9 ^ 1u;
     v11 = SearchUIGeneralLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -38,7 +38,7 @@
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:v10];
-  v4[2](v4, v13);
+  handlerCopy[2](handlerCopy, v13);
 }
 
 @end

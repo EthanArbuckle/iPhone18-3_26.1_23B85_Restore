@@ -1,6 +1,6 @@
 @interface SBSHomeScreenServiceInstalledWebClipsObservationAssertion
 - (SBSHomeScreenService)service;
-- (SBSHomeScreenServiceInstalledWebClipsObservationAssertion)initWithObserver:(id)a3 service:(id)a4;
+- (SBSHomeScreenServiceInstalledWebClipsObservationAssertion)initWithObserver:(id)observer service:(id)service;
 - (SBSHomeScreenServiceInstalledWebClipsObserver)observer;
 - (void)dealloc;
 - (void)invalidate;
@@ -8,18 +8,18 @@
 
 @implementation SBSHomeScreenServiceInstalledWebClipsObservationAssertion
 
-- (SBSHomeScreenServiceInstalledWebClipsObservationAssertion)initWithObserver:(id)a3 service:(id)a4
+- (SBSHomeScreenServiceInstalledWebClipsObservationAssertion)initWithObserver:(id)observer service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = SBSHomeScreenServiceInstalledWebClipsObservationAssertion;
   v8 = [(SBSHomeScreenServiceInstalledWebClipsObservationAssertion *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_observer, v6);
-    objc_storeWeak(&v9->_service, v7);
+    objc_storeWeak(&v8->_observer, observerCopy);
+    objc_storeWeak(&v9->_service, serviceCopy);
   }
 
   return v9;
@@ -48,8 +48,8 @@
 {
   if (![(SBSHomeScreenServiceInstalledWebClipsObservationAssertion *)self isInvalidated])
   {
-    v3 = [(SBSHomeScreenServiceInstalledWebClipsObservationAssertion *)self service];
-    [v3 removeInstalledWebClipsObservationAssertion:self];
+    service = [(SBSHomeScreenServiceInstalledWebClipsObservationAssertion *)self service];
+    [service removeInstalledWebClipsObservationAssertion:self];
     [(SBSHomeScreenServiceInstalledWebClipsObservationAssertion *)self setService:0];
     [(SBSHomeScreenServiceInstalledWebClipsObservationAssertion *)self setInvalidated:1];
   }

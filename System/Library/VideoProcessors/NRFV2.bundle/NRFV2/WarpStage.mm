@@ -1,22 +1,22 @@
 @interface WarpStage
-+ (int)prewarmShaders:(id)a3;
-- (id)initWarpStage:(id)a3;
-- (uint64_t)runWarpUsingTransform:(__n128)a3 inputLumaTex:(__n128)a4 inputChromaTex:(uint64_t)a5 outputLumaTex:(void *)a6 outputChromaTex:(void *)a7;
-- (uint64_t)runWarpUsingTransform:(__n128)a3 inputYCbCrTex:(__n128)a4 inputCscParams:(uint64_t)a5 outputLinearLumaTex:(void *)a6 outputLinearChromaTex:(uint64_t)a7;
++ (int)prewarmShaders:(id)shaders;
+- (id)initWarpStage:(id)stage;
+- (uint64_t)runWarpUsingTransform:(__n128)transform inputLumaTex:(__n128)tex inputChromaTex:(uint64_t)chromaTex outputLumaTex:(void *)lumaTex outputChromaTex:(void *)outputChromaTex;
+- (uint64_t)runWarpUsingTransform:(__n128)transform inputYCbCrTex:(__n128)tex inputCscParams:(uint64_t)params outputLinearLumaTex:(void *)lumaTex outputLinearChromaTex:(uint64_t)chromaTex;
 @end
 
 @implementation WarpStage
 
-- (id)initWarpStage:(id)a3
+- (id)initWarpStage:(id)stage
 {
-  v5 = a3;
+  stageCopy = stage;
   v18.receiver = self;
   v18.super_class = WarpStage;
   v6 = [(WarpStage *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metal, a3);
+    objc_storeStrong(&v6->_metal, stage);
     v11 = objc_msgSend_sharedInstance(WarpStageShared, v8, v9, v10);
     v14 = objc_msgSend_getShaders_(v11, v12, v7[1], v13);
 
@@ -40,11 +40,11 @@
   return v16;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [WarpShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -60,17 +60,17 @@
   return v8;
 }
 
-- (uint64_t)runWarpUsingTransform:(__n128)a3 inputLumaTex:(__n128)a4 inputChromaTex:(uint64_t)a5 outputLumaTex:(void *)a6 outputChromaTex:(void *)a7
+- (uint64_t)runWarpUsingTransform:(__n128)transform inputLumaTex:(__n128)tex inputChromaTex:(uint64_t)chromaTex outputLumaTex:(void *)lumaTex outputChromaTex:(void *)outputChromaTex
 {
   v74[0] = a2;
-  v74[1] = a3;
-  v74[2] = a4;
-  v13 = a6;
-  v14 = a7;
+  v74[1] = transform;
+  v74[2] = tex;
+  lumaTexCopy = lumaTex;
+  outputChromaTexCopy = outputChromaTex;
   v15 = a8;
   v16 = a9;
   v20 = objc_msgSend_sharedInstance(WarpStageShared, v17, v18, v19);
-  v23 = objc_msgSend_getShaders_(v20, v21, *(a1 + 8), v22);
+  v23 = objc_msgSend_getShaders_(v20, v21, *(self + 8), v22);
 
   if (!v23)
   {
@@ -80,7 +80,7 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v27 = objc_msgSend_commandQueue(*(a1 + 8), v24, v25, v26);
+  v27 = objc_msgSend_commandQueue(*(self + 8), v24, v25, v26);
   v31 = objc_msgSend_commandBuffer(v27, v28, v29, v30);
 
   if (!v31)
@@ -93,7 +93,7 @@ LABEL_7:
   objc_msgSend_setImageblockWidth_height_(v35, v36, 32, 32);
   objc_msgSend_setComputePipelineState_(v35, v37, v23[1], v38);
   objc_msgSend_setBytes_length_atIndex_(v35, v39, v74, 48, 0);
-  objc_msgSend_setTexture_atIndex_(v35, v40, v13, 0);
+  objc_msgSend_setTexture_atIndex_(v35, v40, lumaTexCopy, 0);
   objc_msgSend_setTexture_atIndex_(v35, v41, v15, 1);
   v71 = objc_msgSend_width(v15, v42, v43, v44);
   v72 = objc_msgSend_height(v15, v45, v46, v47);
@@ -102,10 +102,10 @@ LABEL_7:
   v69 = v68;
   v70 = 1;
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v35, v48, &v71, &v69);
-  objc_msgSend_setTexture_atIndex_(v35, v49, v14, 0);
+  objc_msgSend_setTexture_atIndex_(v35, v49, outputChromaTexCopy, 0);
   objc_msgSend_setTexture_atIndex_(v35, v50, v16, 1);
-  v54 = objc_msgSend_width(v14, v51, v52, v53);
-  v58 = objc_msgSend_height(v14, v55, v56, v57);
+  v54 = objc_msgSend_width(outputChromaTexCopy, v51, v52, v53);
+  v58 = objc_msgSend_height(outputChromaTexCopy, v55, v56, v57);
   v71 = v54;
   v72 = v58;
   v73 = 1;
@@ -121,12 +121,12 @@ LABEL_4:
   return v66;
 }
 
-- (uint64_t)runWarpUsingTransform:(__n128)a3 inputYCbCrTex:(__n128)a4 inputCscParams:(uint64_t)a5 outputLinearLumaTex:(void *)a6 outputLinearChromaTex:(uint64_t)a7
+- (uint64_t)runWarpUsingTransform:(__n128)transform inputYCbCrTex:(__n128)tex inputCscParams:(uint64_t)params outputLinearLumaTex:(void *)lumaTex outputLinearChromaTex:(uint64_t)chromaTex
 {
   v67[0] = a2;
-  v67[1] = a3;
-  v67[2] = a4;
-  v13 = a6;
+  v67[1] = transform;
+  v67[2] = tex;
+  lumaTexCopy = lumaTex;
   v14 = a8;
   v15 = a9;
   if (objc_msgSend_pixelFormat(v14, v16, v17, v18) != 25)
@@ -144,7 +144,7 @@ LABEL_10:
   }
 
   v25 = objc_msgSend_sharedInstance(WarpStageShared, v22, v23, v24);
-  v28 = objc_msgSend_getShaders_(v25, v26, *(a1 + 8), v27);
+  v28 = objc_msgSend_getShaders_(v25, v26, *(self + 8), v27);
 
   if (!v28)
   {
@@ -154,13 +154,13 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  if (!a7)
+  if (!chromaTex)
   {
     sub_2958B12C0(v28, v66);
     goto LABEL_14;
   }
 
-  v32 = objc_msgSend_commandQueue(*(a1 + 8), v29, v30, v31);
+  v32 = objc_msgSend_commandQueue(*(self + 8), v29, v30, v31);
   v36 = objc_msgSend_commandBuffer(v32, v33, v34, v35);
 
   if (!v36)
@@ -173,8 +173,8 @@ LABEL_14:
   objc_msgSend_setComputePipelineState_(v40, v41, v28[2], v42);
   objc_msgSend_setImageblockWidth_height_(v40, v43, 32, 32);
   objc_msgSend_setBytes_length_atIndex_(v40, v44, v67, 48, 0);
-  objc_msgSend_setBytes_length_atIndex_(v40, v45, a7, 208, 1);
-  objc_msgSend_setTexture_atIndex_(v40, v46, v13, 0);
+  objc_msgSend_setBytes_length_atIndex_(v40, v45, chromaTex, 208, 1);
+  objc_msgSend_setTexture_atIndex_(v40, v46, lumaTexCopy, 0);
   objc_msgSend_setTexture_atIndex_(v40, v47, v14, 1);
   objc_msgSend_setTexture_atIndex_(v40, v48, v15, 2);
   v66[0] = objc_msgSend_width(v15, v49, v50, v51);

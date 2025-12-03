@@ -1,70 +1,70 @@
 @interface PDFHostViewController
-+ (id)loadExtension:(id)a3;
-+ (void)createHostView:(id)a3 forExtensionIdentifier:(id)a4;
-- (BOOL)_isTouchingLollipopAtLocationOfFirstTouch:(CGPoint)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)userDidEnterPassword:(id)a3 forPasswordViewController:(id)a4;
++ (id)loadExtension:(id)extension;
++ (void)createHostView:(id)view forExtensionIdentifier:(id)identifier;
+- (BOOL)_isTouchingLollipopAtLocationOfFirstTouch:(CGPoint)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)userDidEnterPassword:(id)password forPasswordViewController:(id)controller;
 - (CGRect)_insetBoundsInDocument;
 - (CGSize)_documentViewSize;
 - (UIEdgeInsets)_pdfViewInsets;
 - (UIEdgeInsets)_pdfViewSafeAreaInsets;
 - (double)_hostScrollViewZoomScale;
 - (id)pageNumberIndicator;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (unint64_t)_typeForGestureRecognizer:(id)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (unint64_t)_typeForGestureRecognizer:(id)recognizer;
 - (void)_appendPasswordUI;
-- (void)_endPDFViewRotationAnimated:(BOOL)a3 withUpdate:(BOOL)a4;
+- (void)_endPDFViewRotationAnimated:(BOOL)animated withUpdate:(BOOL)update;
 - (void)_gestureInit;
-- (void)_pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5 completion:(id)a6;
+- (void)_pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region completion:(id)completion;
 - (void)_resetPDFHostViewControllerViews;
-- (void)_setMaximumZoomScale:(double)a3;
-- (void)_setMinimumZoomScale:(double)a3;
+- (void)_setMaximumZoomScale:(double)scale;
+- (void)_setMinimumZoomScale:(double)scale;
 - (void)_setupExtensionInterruptionBlock;
 - (void)beginPDFViewRotation;
-- (void)cancelFindStringWithHighlightsCleared:(BOOL)a3;
-- (void)completePointerInteractionRegionForRequest:(id)a3;
+- (void)cancelFindStringWithHighlightsCleared:(BOOL)cleared;
+- (void)completePointerInteractionRegionForRequest:(id)request;
 - (void)dealloc;
-- (void)didCopy:(id)a3;
-- (void)didLongPressPageIndex:(int64_t)a3 atLocation:(CGPoint)a4 withAnnotationRect:(CGRect)a5;
-- (void)didLongPressURL:(id)a3 atLocation:(CGPoint)a4 withAnnotationRect:(CGRect)a5;
-- (void)documentIsLocked:(BOOL)a3;
-- (void)endPDFViewRotationWithContentInset:(UIEdgeInsets)a3;
-- (void)findString:(id)a3 withOptions:(unint64_t)a4;
-- (void)findStringUpdate:(unint64_t)a3 done:(BOOL)a4;
-- (void)focusOnSearchResultAtIndex:(unint64_t)a3;
-- (void)goToDestination:(int64_t)a3 point:(CGPoint)a4;
-- (void)goToPageIndex:(int64_t)a3;
-- (void)goToPageIndex:(int64_t)a3 pageFrame:(CGRect)a4;
-- (void)goToPageIndex:(int64_t)a3 withViewFrustum:(CGRect)a4;
-- (void)goToURL:(id)a3 atLocation:(CGPoint)a4;
-- (void)handleGesture:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)recievedSnapshotViewRect:(id)a3;
-- (void)setDocumentData:(id)a3 withScrollView:(id)a4;
+- (void)didCopy:(id)copy;
+- (void)didLongPressPageIndex:(int64_t)index atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect;
+- (void)didLongPressURL:(id)l atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect;
+- (void)documentIsLocked:(BOOL)locked;
+- (void)endPDFViewRotationWithContentInset:(UIEdgeInsets)inset;
+- (void)findString:(id)string withOptions:(unint64_t)options;
+- (void)findStringUpdate:(unint64_t)update done:(BOOL)done;
+- (void)focusOnSearchResultAtIndex:(unint64_t)index;
+- (void)goToDestination:(int64_t)destination point:(CGPoint)point;
+- (void)goToPageIndex:(int64_t)index;
+- (void)goToPageIndex:(int64_t)index pageFrame:(CGRect)frame;
+- (void)goToPageIndex:(int64_t)index withViewFrustum:(CGRect)frustum;
+- (void)goToURL:(id)l atLocation:(CGPoint)location;
+- (void)handleGesture:(id)gesture;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)recievedSnapshotViewRect:(id)rect;
+- (void)setDocumentData:(id)data withScrollView:(id)view;
 - (void)setup;
-- (void)setupDocumentViewSize:(CGSize)a3;
-- (void)showSelectionRect:(CGRect)a3;
-- (void)showTextSelectionMenu:(BOOL)a3 selectionRect:(CGRect)a4;
-- (void)snapshotViewRect:(CGRect)a3 snapshotWidth:(id)a4 afterScreenUpdates:(BOOL)a5 withResult:(id)a6;
+- (void)setupDocumentViewSize:(CGSize)size;
+- (void)showSelectionRect:(CGRect)rect;
+- (void)showTextSelectionMenu:(BOOL)menu selectionRect:(CGRect)rect;
+- (void)snapshotViewRect:(CGRect)rect snapshotWidth:(id)width afterScreenUpdates:(BOOL)updates withResult:(id)result;
 - (void)updateAutoScaleFactor;
-- (void)updateCurrentPageIndex:(int64_t)a3;
-- (void)updateDocumentIsLocked:(BOOL)a3;
+- (void)updateCurrentPageIndex:(int64_t)index;
+- (void)updateDocumentIsLocked:(BOOL)locked;
 - (void)updateDocumentViewSize;
 - (void)updatePDFViewLayout;
-- (void)updatePageCount:(int64_t)a3;
+- (void)updatePageCount:(int64_t)count;
 - (void)viewDidLayoutSubviews;
-- (void)zoomToRect:(CGRect)a3;
+- (void)zoomToRect:(CGRect)rect;
 @end
 
 @implementation PDFHostViewController
 
-+ (void)createHostView:(id)a3 forExtensionIdentifier:(id)a4
++ (void)createHostView:(id)view forExtensionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  viewCopy = view;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = v6;
+    v7 = identifierCopy;
   }
 
   else
@@ -78,8 +78,8 @@
   v11[2] = __63__PDFHostViewController_createHostView_forExtensionIdentifier___block_invoke;
   v11[3] = &unk_1E81514D0;
   v12 = v8;
-  v13 = v5;
-  v9 = v5;
+  v13 = viewCopy;
+  v9 = viewCopy;
   v10 = v8;
   [v10 instantiateViewControllerWithInputItems:0 connectionHandler:v11];
 }
@@ -138,19 +138,19 @@ void __63__PDFHostViewController_createHostView_forExtensionIdentifier___block_i
 - (void)setup
 {
   v3 = [PDFExtensionTopView alloc];
-  v4 = [(PDFHostViewController *)self view];
-  [v4 frame];
+  view = [(PDFHostViewController *)self view];
+  [view frame];
   v5 = [(PDFExtensionTopView *)v3 initWithFrame:?];
   v6 = self->_private;
   topView = v6->topView;
   v6->topView = v5;
 
   [(PDFExtensionTopView *)self->_private->topView setAutoresizingMask:18];
-  v8 = [(PDFHostViewController *)self view];
-  [v8 addSubview:self->_private->topView];
+  view2 = [(PDFHostViewController *)self view];
+  [view2 addSubview:self->_private->topView];
 
-  v9 = [(PDFHostViewController *)self view];
-  [v9 bringSubviewToFront:self->_private->topView];
+  view3 = [(PDFHostViewController *)self view];
+  [view3 bringSubviewToFront:self->_private->topView];
 
   v10 = self->_private->topView;
   v11 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.001];
@@ -264,32 +264,32 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   }
 }
 
-- (void)setDocumentData:(id)a3 withScrollView:(id)a4
+- (void)setDocumentData:(id)data withScrollView:(id)view
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  viewCopy = view;
+  if (dataCopy)
   {
     extensionProxy = self->_private->extensionProxy;
     v24[0] = @"function";
     v24[1] = @"data";
     v25[0] = @"setDocumentData";
-    v25[1] = v6;
+    v25[1] = dataCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
     [(PDFExtensionProtocol *)extensionProxy hostToExtension:v9];
 
     WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
-    if (WeakRetained != v7)
+    if (WeakRetained != viewCopy)
     {
-      objc_storeWeak(&self->_private->hostScrollView, v7);
+      objc_storeWeak(&self->_private->hostScrollView, viewCopy);
       v11 = objc_loadWeakRetained(&self->_private->hostScrollView);
 
-      v12 = [v7 panGestureRecognizer];
-      [v12 requireGestureRecognizerToFail:self->_private->longPressGestureRecognizer];
+      panGestureRecognizer = [viewCopy panGestureRecognizer];
+      [panGestureRecognizer requireGestureRecognizerToFail:self->_private->longPressGestureRecognizer];
 
-      v13 = [v7 panGestureRecognizer];
-      [v13 requireGestureRecognizerToFail:self->_private->panGestureRecognizer];
+      panGestureRecognizer2 = [viewCopy panGestureRecognizer];
+      [panGestureRecognizer2 requireGestureRecognizerToFail:self->_private->panGestureRecognizer];
 
       [v11 addObserver:self forKeyPath:@"contentInset" options:1 context:@"PDFHostViewController.contentInsetPropertyObservationContext"];
       self->_private->hostScrollViewObserverIsActive = 1;
@@ -298,13 +298,13 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
 
     [(PDFHostViewController *)self _resetPDFHostViewControllerViews];
     v14 = self->_private;
-    [v7 frame];
+    [viewCopy frame];
     v14->scrollViewFrame.origin.x = v15;
     v14->scrollViewFrame.origin.y = v16;
     v14->scrollViewFrame.size.width = v17;
     v14->scrollViewFrame.size.height = v18;
     v19 = self->_private;
-    [v7 contentInset];
+    [viewCopy contentInset];
     v19->contentInset.top = v20;
     v19->contentInset.left = v21;
     v19->contentInset.bottom = v22;
@@ -321,28 +321,28 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   [WeakRetained setZoomScale:1.0];
   [WeakRetained frame];
   [WeakRetained setContentSize:{v3, v4}];
-  v5 = [(PDFHostViewController *)self view];
+  view = [(PDFHostViewController *)self view];
   [WeakRetained frame];
-  [v5 setFrame:?];
+  [view setFrame:?];
 
   passwordViewController = self->_private->passwordViewController;
   if (passwordViewController)
   {
     v7 = passwordViewController;
     [(PDFPasswordViewController *)v7 clearPasswordField];
-    v8 = [(PDFPasswordViewController *)self->_private->passwordViewController viewIfLoaded];
+    viewIfLoaded = [(PDFPasswordViewController *)self->_private->passwordViewController viewIfLoaded];
 
-    [v8 removeFromSuperview];
+    [viewIfLoaded removeFromSuperview];
   }
 }
 
-- (void)findString:(id)a3 withOptions:(unint64_t)a4
+- (void)findString:(id)string withOptions:(unint64_t)options
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v7 = v6;
+    v7 = stringCopy;
   }
 
   else
@@ -356,7 +356,7 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v12[0] = @"findString";
   v12[1] = v7;
   v11[2] = @"options";
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   v12[2] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v10];
@@ -367,33 +367,33 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   }
 }
 
-- (void)cancelFindStringWithHighlightsCleared:(BOOL)a3
+- (void)cancelFindStringWithHighlightsCleared:(BOOL)cleared
 {
   v7[2] = *MEMORY[0x1E69E9840];
   extensionProxy = self->_private->extensionProxy;
   v6[0] = @"function";
   v6[1] = @"clearHighlights";
   v7[0] = @"cancelFindStringWithHighlightsCleared";
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:cleared];
   v7[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v5];
 }
 
-- (void)focusOnSearchResultAtIndex:(unint64_t)a3
+- (void)focusOnSearchResultAtIndex:(unint64_t)index
 {
   v7[2] = *MEMORY[0x1E69E9840];
   extensionProxy = self->_private->extensionProxy;
   v6[0] = @"function";
   v6[1] = @"searchIndex";
   v7[0] = @"focusOnSearchResultAtIndex";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v7[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v5];
 }
 
-- (void)goToPageIndex:(int64_t)a3
+- (void)goToPageIndex:(int64_t)index
 {
   v9[2] = *MEMORY[0x1E69E9840];
   extensionProxy = self->_private->extensionProxy;
@@ -405,18 +405,18 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v7];
 
-  [(PDFPageLabelView *)self->_private->pageLabelView setCurrentPageNumber:a3 + 1 forPageCount:self->_private->pageCount];
+  [(PDFPageLabelView *)self->_private->pageLabelView setCurrentPageNumber:index + 1 forPageCount:self->_private->pageCount];
 }
 
-- (void)goToPageIndex:(int64_t)a3 withViewFrustum:(CGRect)a4
+- (void)goToPageIndex:(int64_t)index withViewFrustum:(CGRect)frustum
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frustum.size.height;
+  width = frustum.size.width;
+  y = frustum.origin.y;
+  x = frustum.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
-  v10 = [(PDFHostViewController *)self view];
-  [v10 convertRect:WeakRetained toView:{x, y, width, height}];
+  view = [(PDFHostViewController *)self view];
+  [view convertRect:WeakRetained toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -426,10 +426,10 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v19 = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (v19 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v19 pdfHostViewController:self goToPageIndex:a3 withViewFrustum:{x, y, width, height}];
+    [v19 pdfHostViewController:self goToPageIndex:index withViewFrustum:{x, y, width, height}];
   }
 
-  [(PDFPageLabelView *)self->_private->pageLabelView setCurrentPageNumber:a3 + 1 forPageCount:self->_private->pageCount];
+  [(PDFPageLabelView *)self->_private->pageLabelView setCurrentPageNumber:index + 1 forPageCount:self->_private->pageCount];
 }
 
 - (void)viewDidLayoutSubviews
@@ -570,8 +570,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v10 = v9 + top;
   v12 = v11 - (left + v4->contentInset.right);
   v14 = v13 - (top + v4->contentInset.bottom);
-  v15 = [(PDFHostViewController *)self view];
-  [WeakRetained convertRect:v15 toView:{v8, v10, v12, v14}];
+  view = [(PDFHostViewController *)self view];
+  [WeakRetained convertRect:view toView:{v8, v10, v12, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -631,8 +631,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      v25 = [(PDFHostViewController *)self view];
-      [WeakRetained convertRect:v25 toView:{v18, v20, v22, v24}];
+      view = [(PDFHostViewController *)self view];
+      [WeakRetained convertRect:view toView:{v18, v20, v22, v24}];
       v27 = v26;
       v29 = v28;
       v31 = v30;
@@ -706,9 +706,9 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   [(PDFPageLabelView *)v9->pageLabelView updateEffect];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"PDFHostViewController.contentInsetPropertyObservationContext")
+  if (context == @"PDFHostViewController.contentInsetPropertyObservationContext")
   {
     v7 = self->_private;
     WeakRetained = objc_loadWeakRetained(&v7->hostScrollView);
@@ -731,7 +731,7 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   {
     v14.receiver = self;
     v14.super_class = PDFHostViewController;
-    [(PDFHostViewController *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PDFHostViewController *)&v14 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -751,16 +751,16 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   return pageLabelView;
 }
 
-- (void)snapshotViewRect:(CGRect)a3 snapshotWidth:(id)a4 afterScreenUpdates:(BOOL)a5 withResult:(id)a6
+- (void)snapshotViewRect:(CGRect)rect snapshotWidth:(id)width afterScreenUpdates:(BOOL)updates withResult:(id)result
 {
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  updatesCopy = updates;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v27[4] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = _Block_copy(a6);
+  widthCopy = width;
+  v14 = _Block_copy(result);
   v15 = self->_private;
   snapshotCompletion = v15->snapshotCompletion;
   v15->snapshotCompletion = v14;
@@ -780,56 +780,56 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v25[1] = @"rect";
   v26[0] = @"snapshotViewRect";
   v26[1] = v21;
-  v26[2] = v13;
+  v26[2] = widthCopy;
   v25[2] = @"width";
   v25[3] = @"afterScreenUpdates";
-  v23 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v23 = [MEMORY[0x1E696AD98] numberWithBool:updatesCopy];
   v26[3] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:4];
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v24];
 }
 
-- (void)recievedSnapshotViewRect:(id)a3
+- (void)recievedSnapshotViewRect:(id)rect
 {
-  if (a3)
+  if (rect)
   {
     snapshotCompletion = self->_private->snapshotCompletion;
     if (snapshotCompletion)
     {
-      snapshotCompletion[2](snapshotCompletion, a3);
+      snapshotCompletion[2](snapshotCompletion, rect);
     }
   }
 }
 
-- (void)_setMinimumZoomScale:(double)a3
+- (void)_setMinimumZoomScale:(double)scale
 {
   v7[2] = *MEMORY[0x1E69E9840];
   extensionProxy = self->_private->extensionProxy;
   v6[0] = @"function";
   v6[1] = @"minimumZoomScale";
   v7[0] = @"setMinimumZoomScale";
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v7[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v5];
 }
 
-- (void)_setMaximumZoomScale:(double)a3
+- (void)_setMaximumZoomScale:(double)scale
 {
   v7[2] = *MEMORY[0x1E69E9840];
   extensionProxy = self->_private->extensionProxy;
   v6[0] = @"function";
   v6[1] = @"maximumZoomScale";
   v7[0] = @"setMaximumZoomScale";
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v7[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v5];
 }
 
-- (void)setupDocumentViewSize:(CGSize)a3
+- (void)setupDocumentViewSize:(CGSize)size
 {
-  self->_private->documentViewSize = a3;
+  self->_private->documentViewSize = size;
   [(PDFHostViewController *)self updateDocumentViewSize];
   [(PDFHostViewController *)self updateAutoScaleFactor];
   WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
@@ -845,8 +845,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   [(PDFHostViewController *)self _documentViewSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(PDFHostViewController *)self _pdfViewSafeAreaInsets];
-  v14 = PDFSizeMake(v9, v11 + v10 + v6 * v4, v13 + v12 + v8 * v4);
+  _pdfViewSafeAreaInsets = [(PDFHostViewController *)self _pdfViewSafeAreaInsets];
+  v14 = PDFSizeMake(_pdfViewSafeAreaInsets, v11 + v10 + v6 * v4, v13 + v12 + v8 * v4);
   v16 = v15;
   v17.n128_u64[0] = 0;
   v18.n128_u64[0] = 0;
@@ -854,8 +854,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(PDFHostViewController *)self view];
-  [v26 frame];
+  view = [(PDFHostViewController *)self view];
+  [view frame];
   v46.origin.x = v27;
   v46.origin.y = v28;
   v46.size.width = v29;
@@ -868,8 +868,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
 
   if (!v31)
   {
-    v32 = [(PDFHostViewController *)self view];
-    [v32 setFrame:{v19, v21, v23, v25}];
+    view2 = [(PDFHostViewController *)self view];
+    [view2 setFrame:{v19, v21, v23, v25}];
   }
 
   [WeakRetained contentSize];
@@ -909,64 +909,64 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   [(PDFHostViewController *)self _setMaximumZoomScale:self->_private->maxScaleFactor];
 }
 
-- (void)documentIsLocked:(BOOL)a3
+- (void)documentIsLocked:(BOOL)locked
 {
-  self->_private->isUnlocked = !a3;
-  if (a3)
+  self->_private->isUnlocked = !locked;
+  if (locked)
   {
     [(PDFHostViewController *)self _appendPasswordUI];
   }
 }
 
-- (void)updateCurrentPageIndex:(int64_t)a3
+- (void)updateCurrentPageIndex:(int64_t)index
 {
-  self->_private->currentPageIndex = a3;
+  self->_private->currentPageIndex = index;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained pdfHostViewController:self updateCurrentPageIndex:a3];
+    [WeakRetained pdfHostViewController:self updateCurrentPageIndex:index];
   }
 
   [(PDFPageLabelView *)self->_private->pageLabelView setCurrentPageNumber:self->_private->currentPageIndex + 1 forPageCount:self->_private->pageCount];
 }
 
-- (void)updatePageCount:(int64_t)a3
+- (void)updatePageCount:(int64_t)count
 {
-  self->_private->pageCount = a3;
+  self->_private->pageCount = count;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained pdfHostViewController:self updatePageCount:a3];
+    [WeakRetained pdfHostViewController:self updatePageCount:count];
   }
 
   [(PDFPageLabelView *)self->_private->pageLabelView setCurrentPageNumber:self->_private->currentPageIndex + 1 forPageCount:self->_private->pageCount];
 }
 
-- (void)findStringUpdate:(unint64_t)a3 done:(BOOL)a4
+- (void)findStringUpdate:(unint64_t)update done:(BOOL)done
 {
-  v4 = a4;
+  doneCopy = done;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (WeakRetained)
   {
     v8 = WeakRetained;
     if (objc_opt_respondsToSelector())
     {
-      [v8 pdfHostViewController:self findStringUpdate:a3 done:v4];
+      [v8 pdfHostViewController:self findStringUpdate:update done:doneCopy];
     }
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)showSelectionRect:(CGRect)a3
+- (void)showSelectionRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
-  v8 = [(PDFHostViewController *)self view];
-  [WeakRetained convertRect:v8 fromView:{x, y, width, height}];
+  view = [(PDFHostViewController *)self view];
+  [WeakRetained convertRect:view fromView:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1020,33 +1020,33 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   }
 }
 
-- (void)showTextSelectionMenu:(BOOL)a3 selectionRect:(CGRect)a4
+- (void)showTextSelectionMenu:(BOOL)menu selectionRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  v10 = [MEMORY[0x1E69DCC68] sharedMenuController];
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  menuCopy = menu;
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+  if (menuCopy)
   {
     [(PDFExtensionTopView *)self->_private->topView becomeFirstResponder];
-    [v10 showMenuFromView:self->_private->topView rect:{x, y, width, height}];
+    [mEMORY[0x1E69DCC68] showMenuFromView:self->_private->topView rect:{x, y, width, height}];
   }
 
   else
   {
-    [v10 hideMenu];
+    [mEMORY[0x1E69DCC68] hideMenu];
   }
 }
 
-- (void)zoomToRect:(CGRect)a3
+- (void)zoomToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!PDFRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!PDFRectIsEmpty(rect))
   {
     WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
     [WeakRetained frame];
@@ -1056,32 +1056,32 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   }
 }
 
-- (void)goToURL:(id)a3 atLocation:(CGPoint)a4
+- (void)goToURL:(id)l atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = location.y;
+  x = location.x;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (WeakRetained)
   {
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained pdfHostViewController:self goToURL:v8 atLocation:{x, y}];
+      [WeakRetained pdfHostViewController:self goToURL:lCopy atLocation:{x, y}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained pdfHostViewController:self goToURL:v8];
+      [WeakRetained pdfHostViewController:self goToURL:lCopy];
     }
   }
 }
 
-- (void)goToPageIndex:(int64_t)a3 pageFrame:(CGRect)a4
+- (void)goToPageIndex:(int64_t)index pageFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
   [(PDFHostViewController *)self _hostScrollViewZoomScale];
   if (v10 > self->_private->minScaleFactor)
@@ -1089,8 +1089,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
     [WeakRetained setZoomScale:0 animated:?];
   }
 
-  v11 = [(PDFHostViewController *)self view];
-  [v11 convertRect:WeakRetained toView:{x, y, width, height}];
+  view = [(PDFHostViewController *)self view];
+  [view convertRect:WeakRetained toView:{x, y, width, height}];
   v13 = v12;
 
   [WeakRetained contentOffset];
@@ -1098,8 +1098,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   [(PDFHostViewController *)self _pdfViewInsets];
   v17 = v13 - v16;
   v18 = -self->_private->contentInset.top;
-  v19 = [(PDFHostViewController *)self view];
-  [v19 frame];
+  view2 = [(PDFHostViewController *)self view];
+  [view2 frame];
   v21 = v20;
   [WeakRetained bounds];
   v23 = CGFloatClamp(v17, v18, v21 - v22);
@@ -1108,17 +1108,17 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v24 = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (v24 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v24 pdfHostViewController:self goToPageIndex:a3];
+    [v24 pdfHostViewController:self goToPageIndex:index];
   }
 }
 
-- (void)goToDestination:(int64_t)a3 point:(CGPoint)a4
+- (void)goToDestination:(int64_t)destination point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
-  v8 = [(PDFHostViewController *)self view];
-  [v8 convertPoint:WeakRetained toView:{x, y}];
+  view = [(PDFHostViewController *)self view];
+  [view convertPoint:WeakRetained toView:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -1126,16 +1126,16 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v14 = v13;
   v16 = v10 - v15;
   v17 = -self->_private->contentInset.left;
-  v18 = [(PDFHostViewController *)self view];
-  [v18 frame];
+  view2 = [(PDFHostViewController *)self view];
+  [view2 frame];
   v20 = v19;
   [WeakRetained bounds];
   v22 = CGFloatClamp(v16, v17, v20 - v21);
 
   v23 = v12 - v14;
   v24 = -self->_private->contentInset.top;
-  v25 = [(PDFHostViewController *)self view];
-  [v25 frame];
+  view3 = [(PDFHostViewController *)self view];
+  [view3 frame];
   v27 = v26;
   [WeakRetained bounds];
   v29 = CGFloatClamp(v23, v24, v27 - v28);
@@ -1149,23 +1149,23 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [(PDFHostViewController *)self view];
-    [WeakRetained convertRect:v39 toView:{v32, v34, v36, v38}];
+    view4 = [(PDFHostViewController *)self view];
+    [WeakRetained convertRect:view4 toView:{v32, v34, v36, v38}];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
 
-    [v30 pdfHostViewController:self goToPageIndex:a3 withViewFrustum:{v41, v43, v45, v47}];
+    [v30 pdfHostViewController:self goToPageIndex:destination withViewFrustum:{v41, v43, v45, v47}];
   }
 }
 
-- (void)didCopy:(id)a3
+- (void)didCopy:(id)copy
 {
   v3 = MEMORY[0x1E69DCD50];
-  v4 = a3;
-  v5 = [v3 generalPasteboard];
-  [v5 setItems:v4];
+  copyCopy = copy;
+  generalPasteboard = [v3 generalPasteboard];
+  [generalPasteboard setItems:copyCopy];
 }
 
 - (void)_appendPasswordUI
@@ -1181,14 +1181,14 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
     passwordViewController = self->_private->passwordViewController;
   }
 
-  v10 = [(PDFPasswordViewController *)passwordViewController view];
-  v7 = [(PDFHostViewController *)self view];
-  [v7 addSubview:v10];
+  view = [(PDFPasswordViewController *)passwordViewController view];
+  view2 = [(PDFHostViewController *)self view];
+  [view2 addSubview:view];
 
-  [v10 setAutoresizingMask:18];
-  v8 = [(PDFHostViewController *)self view];
-  [v8 bounds];
-  [v10 setFrame:?];
+  [view setAutoresizingMask:18];
+  view3 = [(PDFHostViewController *)self view];
+  [view3 bounds];
+  [view setFrame:?];
 
   [(PDFPasswordViewController *)self->_private->passwordViewController clearPasswordField];
   WeakRetained = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
@@ -1198,14 +1198,14 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   }
 }
 
-- (BOOL)userDidEnterPassword:(id)a3 forPasswordViewController:(id)a4
+- (BOOL)userDidEnterPassword:(id)password forPasswordViewController:(id)controller
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && !self->_private->isUnlocked && [v6 length])
+  passwordCopy = password;
+  v7 = passwordCopy;
+  if (passwordCopy && !self->_private->isUnlocked && [passwordCopy length])
   {
-    objc_storeStrong(&self->_private->password, a3);
+    objc_storeStrong(&self->_private->password, password);
     extensionProxy = self->_private->extensionProxy;
     v11[0] = @"function";
     v11[1] = @"password";
@@ -1218,17 +1218,17 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   return 1;
 }
 
-- (void)updateDocumentIsLocked:(BOOL)a3
+- (void)updateDocumentIsLocked:(BOOL)locked
 {
-  self->_private->isUnlocked = !a3;
+  self->_private->isUnlocked = !locked;
   v4 = self->_private;
   passwordViewController = v4->passwordViewController;
-  if (!a3)
+  if (!locked)
   {
     if (passwordViewController)
     {
-      v6 = [(PDFPasswordViewController *)passwordViewController view];
-      [v6 removeFromSuperview];
+      view = [(PDFPasswordViewController *)passwordViewController view];
+      [view removeFromSuperview];
 
       v4 = self->_private;
     }
@@ -1253,61 +1253,61 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   }
 }
 
-- (void)didLongPressURL:(id)a3 atLocation:(CGPoint)a4 withAnnotationRect:(CGRect)a5
+- (void)didLongPressURL:(id)l atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v19 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = location.y;
+  v10 = location.x;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (WeakRetained)
   {
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained pdfHostViewController:self didLongPressURL:v19 atLocation:v10 withAnnotationRect:{v9, x, y, width, height}];
+      [WeakRetained pdfHostViewController:self didLongPressURL:lCopy atLocation:v10 withAnnotationRect:{v9, x, y, width, height}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(PDFHostViewController *)self view];
+      view = [(PDFHostViewController *)self view];
       v14 = objc_loadWeakRetained(&self->_private->hostScrollView);
-      [v13 convertPoint:v14 toView:{v10, v9}];
+      [view convertPoint:v14 toView:{v10, v9}];
       v16 = v15;
       v18 = v17;
 
-      [WeakRetained pdfHostViewController:self didLongPressURL:v19 atLocation:{v16, v18}];
+      [WeakRetained pdfHostViewController:self didLongPressURL:lCopy atLocation:{v16, v18}];
     }
   }
 }
 
-- (void)didLongPressPageIndex:(int64_t)a3 atLocation:(CGPoint)a4 withAnnotationRect:(CGRect)a5
+- (void)didLongPressPageIndex:(int64_t)index atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = location.y;
+  v10 = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_private->hostViewControllerDelegate);
   if (WeakRetained)
   {
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained pdfHostViewController:self didLongPressPageIndex:a3 atLocation:v10 withAnnotationRect:{v9, x, y, width, height}];
+      [WeakRetained pdfHostViewController:self didLongPressPageIndex:index atLocation:v10 withAnnotationRect:{v9, x, y, width, height}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(PDFHostViewController *)self view];
+      view = [(PDFHostViewController *)self view];
       v14 = objc_loadWeakRetained(&self->_private->hostScrollView);
-      [v13 convertPoint:v14 toView:{v10, v9}];
+      [view convertPoint:v14 toView:{v10, v9}];
       v16 = v15;
       v18 = v17;
 
-      [WeakRetained pdfHostViewController:self didLongPressPageIndex:a3 atLocation:{v16, v18}];
+      [WeakRetained pdfHostViewController:self didLongPressPageIndex:index atLocation:{v16, v18}];
     }
   }
 }
@@ -1320,8 +1320,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   v4->longPressGestureRecognizer = v3;
 
   [(UILongPressGestureRecognizer *)self->_private->longPressGestureRecognizer setDelegate:self];
-  v6 = [(PDFHostViewController *)self view];
-  [v6 addGestureRecognizer:self->_private->longPressGestureRecognizer];
+  view = [(PDFHostViewController *)self view];
+  [view addGestureRecognizer:self->_private->longPressGestureRecognizer];
 
   v7 = [[PDFPanGestureRecognizer alloc] initWithTarget:self action:sel_handleGesture_];
   v8 = self->_private;
@@ -1330,8 +1330,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
 
   [(PDFPanGestureRecognizer *)self->_private->panGestureRecognizer setDelegate:self];
   [(PDFPanGestureRecognizer *)self->_private->panGestureRecognizer _setHysteresis:8.0];
-  v10 = [(PDFHostViewController *)self view];
-  [v10 addGestureRecognizer:self->_private->panGestureRecognizer];
+  view2 = [(PDFHostViewController *)self view];
+  [view2 addGestureRecognizer:self->_private->panGestureRecognizer];
 
   v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleGesture_];
   v12 = self->_private;
@@ -1340,8 +1340,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
 
   [(UITapGestureRecognizer *)self->_private->tapGestureRecognizer setNumberOfTapsRequired:1];
   [(UITapGestureRecognizer *)self->_private->tapGestureRecognizer setDelegate:self];
-  v14 = [(PDFHostViewController *)self view];
-  [v14 addGestureRecognizer:self->_private->tapGestureRecognizer];
+  view3 = [(PDFHostViewController *)self view];
+  [view3 addGestureRecognizer:self->_private->tapGestureRecognizer];
 
   v15 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleGesture_];
   v16 = self->_private;
@@ -1350,8 +1350,8 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
 
   [(UITapGestureRecognizer *)self->_private->doubleTapGestureRecognizer setNumberOfTapsRequired:2];
   [(UITapGestureRecognizer *)self->_private->doubleTapGestureRecognizer setDelegate:self];
-  v18 = [(PDFHostViewController *)self view];
-  [v18 addGestureRecognizer:self->_private->doubleTapGestureRecognizer];
+  view4 = [(PDFHostViewController *)self view];
+  [view4 addGestureRecognizer:self->_private->doubleTapGestureRecognizer];
 
   [(UITapGestureRecognizer *)self->_private->tapGestureRecognizer requireGestureRecognizerToFail:self->_private->longPressGestureRecognizer];
   [(PDFPanGestureRecognizer *)self->_private->panGestureRecognizer requireGestureRecognizerToFail:self->_private->longPressGestureRecognizer];
@@ -1362,30 +1362,30 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
   pointerInteraction = v20->pointerInteraction;
   v20->pointerInteraction = v19;
 
-  v22 = [(PDFHostViewController *)self view];
-  [v22 addInteraction:self->_private->pointerInteraction];
+  view5 = [(PDFHostViewController *)self view];
+  [view5 addInteraction:self->_private->pointerInteraction];
 
   v23 = self->_private;
   pdfPointerCompletionHandler = v23->pdfPointerCompletionHandler;
   v23->pdfPointerCompletionHandler = 0;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
+  beginCopy = begin;
+  v5 = beginCopy;
   v6 = self->_private;
-  if (v6->tapGestureRecognizer == v4)
+  if (v6->tapGestureRecognizer == beginCopy)
   {
     if (v6->hasSelection)
     {
       goto LABEL_18;
     }
 
-    [(PDFHostViewController *)self handleGesture:v4];
+    [(PDFHostViewController *)self handleGesture:beginCopy];
   }
 
-  else if (v6->doubleTapGestureRecognizer == v4)
+  else if (v6->doubleTapGestureRecognizer == beginCopy)
   {
     WeakRetained = objc_loadWeakRetained(&v6->hostScrollView);
     [(PDFHostViewController *)self _hostScrollViewZoomScale];
@@ -1400,12 +1400,12 @@ void __57__PDFHostViewController__setupExtensionInterruptionBlock__block_invoke_
 
   else
   {
-    if (v6->longPressGestureRecognizer != v4)
+    if (v6->longPressGestureRecognizer != beginCopy)
     {
-      if (v6->panGestureRecognizer == v4)
+      if (v6->panGestureRecognizer == beginCopy)
       {
-        v7 = [(PDFHostViewController *)self view];
-        [v5 locationOfFirstTouchInView:v7];
+        view = [(PDFHostViewController *)self view];
+        [v5 locationOfFirstTouchInView:view];
         v9 = v8;
         v11 = v10;
 
@@ -1445,13 +1445,13 @@ LABEL_19:
   return v16;
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PDFHostViewController *)self _typeForGestureRecognizer:v4];
-  v6 = [(PDFHostViewController *)self view];
-  [v4 locationInView:v6];
+  gestureCopy = gesture;
+  v5 = [(PDFHostViewController *)self _typeForGestureRecognizer:gestureCopy];
+  view = [(PDFHostViewController *)self view];
+  [gestureCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
@@ -1462,8 +1462,8 @@ LABEL_19:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
 
   panGestureRecognizer = self->_private->panGestureRecognizer;
-  v15 = [(PDFHostViewController *)self view];
-  [(PDFPanGestureRecognizer *)panGestureRecognizer locationOfFirstTouchInView:v15];
+  view2 = [(PDFHostViewController *)self view];
+  [(PDFPanGestureRecognizer *)panGestureRecognizer locationOfFirstTouchInView:view2];
   v17 = v16;
   v19 = v18;
 
@@ -1479,9 +1479,9 @@ LABEL_19:
   v31[1] = v24;
   v30[2] = @"state";
   v25 = MEMORY[0x1E696AD98];
-  v26 = [v4 state];
+  state = [gestureCopy state];
 
-  v27 = [v25 numberWithInteger:v26];
+  v27 = [v25 numberWithInteger:state];
   v31[2] = v27;
   v31[3] = v13;
   v30[3] = @"location";
@@ -1494,26 +1494,26 @@ LABEL_19:
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v29];
 }
 
-- (unint64_t)_typeForGestureRecognizer:(id)a3
+- (unint64_t)_typeForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v5 = self->_private;
-  if (v5->tapGestureRecognizer == v4)
+  if (v5->tapGestureRecognizer == recognizerCopy)
   {
     v6 = 0;
   }
 
-  else if (v5->doubleTapGestureRecognizer == v4)
+  else if (v5->doubleTapGestureRecognizer == recognizerCopy)
   {
     v6 = 1;
   }
 
-  else if (v5->longPressGestureRecognizer == v4)
+  else if (v5->longPressGestureRecognizer == recognizerCopy)
   {
     v6 = 2;
   }
 
-  else if (v5->panGestureRecognizer == v4)
+  else if (v5->panGestureRecognizer == recognizerCopy)
   {
     v6 = 3;
   }
@@ -1526,7 +1526,7 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)_isTouchingLollipopAtLocationOfFirstTouch:(CGPoint)a3
+- (BOOL)_isTouchingLollipopAtLocationOfFirstTouch:(CGPoint)touch
 {
   v3 = self->_private;
   if (!v3->hasSelection)
@@ -1534,11 +1534,11 @@ LABEL_19:
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = touch.y;
+  x = touch.x;
   WeakRetained = objc_loadWeakRetained(&v3->hostScrollView);
-  v8 = [(PDFHostViewController *)self view];
-  [v8 convertPoint:WeakRetained toView:{x, y}];
+  view = [(PDFHostViewController *)self view];
+  [view convertPoint:WeakRetained toView:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -1569,8 +1569,8 @@ LABEL_19:
 
     v18 = *(&v15->super.isa + v17);
     v19 = *(&v15->super.isa + v16);
-    v20 = [(PDFHostViewController *)self view];
-    [v20 convertPoint:WeakRetained toView:{v19, v18}];
+    view2 = [(PDFHostViewController *)self view];
+    [view2 convertPoint:WeakRetained toView:{v19, v18}];
     v22 = v21;
     v24 = v23;
 
@@ -1589,19 +1589,19 @@ LABEL_19:
   return v26;
 }
 
-- (void)_pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5 completion:(id)a6
+- (void)_pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region completion:(id)completion
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (self->_private->pdfPointerCompletionHandler != a6)
+  requestCopy = request;
+  if (self->_private->pdfPointerCompletionHandler != completion)
   {
-    v9 = _Block_copy(a6);
+    v9 = _Block_copy(completion);
     v10 = self->_private;
     pdfPointerCompletionHandler = v10->pdfPointerCompletionHandler;
     v10->pdfPointerCompletionHandler = v9;
   }
 
-  [v8 location];
+  [requestCopy location];
   v13 = v12;
   extensionProxy = self->_private->extensionProxy;
   v20[0] = @"function";
@@ -1617,14 +1617,14 @@ LABEL_19:
   [(PDFExtensionProtocol *)extensionProxy hostToExtension:v18];
 }
 
-- (void)completePointerInteractionRegionForRequest:(id)a3
+- (void)completePointerInteractionRegionForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (self->_private->pdfPointerCompletionHandler)
   {
-    v18 = v4;
-    v5 = [v4 identifier];
-    v6 = [v5 isEqualToString:@"PDFPointerRegionText"];
+    v18 = requestCopy;
+    identifier = [requestCopy identifier];
+    v6 = [identifier isEqualToString:@"PDFPointerRegionText"];
 
     if (v6)
     {
@@ -1634,8 +1634,8 @@ LABEL_19:
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [v18 identifier];
-      v17 = [v7 regionWithRect:v16 identifier:{v9, v11, v13, v15}];
+      identifier2 = [v18 identifier];
+      v17 = [v7 regionWithRect:identifier2 identifier:{v9, v11, v13, v15}];
     }
 
     else
@@ -1645,22 +1645,22 @@ LABEL_19:
 
     (*(self->_private->pdfPointerCompletionHandler + 2))();
 
-    v4 = v18;
+    requestCopy = v18;
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [(PDFHostViewController *)self view];
-  [v5 rect];
-  [v6 convertRect:0 toView:?];
+  regionCopy = region;
+  view = [(PDFHostViewController *)self view];
+  [regionCopy rect];
+  [view convertRect:0 toView:?];
   v8 = v7;
 
-  v9 = [v5 identifier];
-  v10 = [v9 isEqualToString:@"PDFPointerRegionLink"];
+  identifier = [regionCopy identifier];
+  v10 = [identifier isEqualToString:@"PDFPointerRegionLink"];
 
-  if ((v10 & 1) != 0 || ([v5 identifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"PDFPointerRegionText"), v11, !v12))
+  if ((v10 & 1) != 0 || ([regionCopy identifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"PDFPointerRegionText"), v11, !v12))
   {
     v13 = 0;
   }
@@ -1692,9 +1692,9 @@ LABEL_19:
   self->_private->horizontalScaleFactor = v6 * v10 / (self->_private->scrollViewFrame.size.width - v8 - v9);
 }
 
-- (void)_endPDFViewRotationAnimated:(BOOL)a3 withUpdate:(BOOL)a4
+- (void)_endPDFViewRotationAnimated:(BOOL)animated withUpdate:(BOOL)update
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(PDFHostViewController *)self updateDocumentViewSize];
   [(PDFHostViewController *)self updateAutoScaleFactor];
   WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
@@ -1706,7 +1706,7 @@ LABEL_19:
   horizontalScaleFactor = self->_private->horizontalScaleFactor;
   [WeakRetained bounds];
   v16 = CGFloatClamp(horizontalScaleFactor * (v15 - v13) / v8, self->_private->minScaleFactor, self->_private->maxScaleFactor);
-  [WeakRetained setZoomScale:v5 animated:?];
+  [WeakRetained setZoomScale:animatedCopy animated:?];
   [(PDFHostViewController *)self _insetBoundsInDocument];
   v18 = v17;
   v20 = v19;
@@ -1715,7 +1715,7 @@ LABEL_19:
   v27 = v26;
   v30 = CGFloatClamp(self->_private->documentViewCenter.x - v18 * 0.5 - v28, -v28, v8 - v18 - v28 - v29);
   v31 = CGFloatClamp(self->_private->documentViewCenter.y - v20 * 0.5 - v25, -v25, v10 - v20 - v25 - v27);
-  [WeakRetained setContentOffset:v5 animated:{PDFPointMake(v16 * v30, v16 * v31)}];
+  [WeakRetained setContentOffset:animatedCopy animated:{PDFPointMake(v16 * v30, v16 * v31)}];
   v32 = self->_private;
   [WeakRetained frame];
   v32->scrollViewFrame.origin.x = v33;
@@ -1723,13 +1723,13 @@ LABEL_19:
   v32->scrollViewFrame.size.width = v35;
   v32->scrollViewFrame.size.height = v36;
   self->_private->pdfViewIsRotating = 0;
-  self->_private->pdfViewNeedsUpdate = a4;
+  self->_private->pdfViewNeedsUpdate = update;
   [(PDFHostViewController *)self updatePDFViewLayout];
 }
 
-- (void)endPDFViewRotationWithContentInset:(UIEdgeInsets)a3
+- (void)endPDFViewRotationWithContentInset:(UIEdgeInsets)inset
 {
-  self->_private->contentInset = a3;
+  self->_private->contentInset = inset;
   [(PDFHostViewController *)self updateDocumentViewSize];
   [(PDFHostViewController *)self updateAutoScaleFactor];
   WeakRetained = objc_loadWeakRetained(&self->_private->hostScrollView);
@@ -1760,16 +1760,16 @@ LABEL_19:
   [(PDFHostViewController *)self updatePDFViewLayout];
 }
 
-+ (id)loadExtension:(id)a3
++ (id)loadExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__PDFHostViewController_loadExtension___block_invoke;
   block[3] = &unk_1E8150990;
-  v10 = v3;
+  v10 = extensionCopy;
   v4 = loadExtension__onceToken;
-  v5 = v3;
+  v5 = extensionCopy;
   if (v4 != -1)
   {
     dispatch_once(&loadExtension__onceToken, block);

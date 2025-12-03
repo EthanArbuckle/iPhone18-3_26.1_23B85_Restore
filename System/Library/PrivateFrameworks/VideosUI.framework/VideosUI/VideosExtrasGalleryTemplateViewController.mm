@@ -8,10 +8,10 @@
 
 - (id)templateElement
 {
-  v2 = [(VideosExtrasTemplateViewController *)self document];
-  v3 = [v2 templateElement];
+  document = [(VideosExtrasTemplateViewController *)self document];
+  templateElement = [document templateElement];
 
-  return v3;
+  return templateElement;
 }
 
 - (void)viewDidLoad
@@ -19,25 +19,25 @@
   v34.receiver = self;
   v34.super_class = VideosExtrasGalleryTemplateViewController;
   [(VideosExtrasTemplateViewController *)&v34 viewDidLoad];
-  v3 = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
-  v4 = [v3 background];
+  templateElement = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
+  background = [templateElement background];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = v5;
-  if (v4)
+  if (background)
   {
-    [v5 addObject:v4];
+    [v5 addObject:background];
   }
 
   [(VideosExtrasTemplateViewController *)self configureBackgroundWithElements:v6];
-  v7 = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
-  v8 = [v7 documentBanner];
-  [(VideosExtrasElementViewController *)self _configureBannerWithElement:v8];
+  templateElement2 = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
+  documentBanner = [templateElement2 documentBanner];
+  [(VideosExtrasElementViewController *)self _configureBannerWithElement:documentBanner];
 
   v9 = [VideosExtrasGridElementViewController alloc];
-  v10 = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
-  v11 = [v10 grid];
-  v12 = [(VideosExtrasGridElementViewController *)v9 initWithViewElement:v11];
+  templateElement3 = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
+  grid = [templateElement3 grid];
+  v12 = [(VideosExtrasGridElementViewController *)v9 initWithViewElement:grid];
   gridViewController = self->_gridViewController;
   self->_gridViewController = v12;
 
@@ -57,31 +57,31 @@
   [(VideosExtrasGridElementViewController *)self->_gridViewController setWideStyle:v18];
 
   [(VideosExtrasGalleryTemplateViewController *)self addChildViewController:self->_gridViewController];
-  v19 = [(VideosExtrasGalleryTemplateViewController *)self view];
-  v20 = [(VideosExtrasGridElementViewController *)self->_gridViewController view];
-  [v19 addSubview:v20];
+  view = [(VideosExtrasGalleryTemplateViewController *)self view];
+  view2 = [(VideosExtrasGridElementViewController *)self->_gridViewController view];
+  [view addSubview:view2];
 
   v21 = MEMORY[0x1E696ACD8];
-  v22 = [(VideosExtrasGridElementViewController *)self->_gridViewController view];
-  v23 = [(VideosExtrasGalleryTemplateViewController *)self view];
-  v24 = [v21 constraintsByAttachingView:v22 toView:v23 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  view3 = [(VideosExtrasGridElementViewController *)self->_gridViewController view];
+  view4 = [(VideosExtrasGalleryTemplateViewController *)self view];
+  v24 = [v21 constraintsByAttachingView:view3 toView:view4 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
-  v25 = [(VideosExtrasGalleryTemplateViewController *)self view];
-  [v25 addConstraints:v24];
+  view5 = [(VideosExtrasGalleryTemplateViewController *)self view];
+  [view5 addConstraints:v24];
 
   [(VideosExtrasGridElementViewController *)self->_gridViewController didMoveToParentViewController:self];
   v26 = [VideosExtrasBannerController alloc];
-  v27 = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
-  v28 = [v27 documentBanner];
-  v29 = [(VideosExtrasBannerController *)v26 initWithBannerElement:v28];
+  templateElement4 = [(VideosExtrasGalleryTemplateViewController *)self templateElement];
+  documentBanner2 = [templateElement4 documentBanner];
+  v29 = [(VideosExtrasBannerController *)v26 initWithBannerElement:documentBanner2];
   bannerController = self->_bannerController;
   self->_bannerController = v29;
 
   [(VideosExtrasBannerController *)self->_bannerController setVignetteType:4];
   v31 = self->_bannerController;
-  v32 = [(VideosExtrasGridElementViewController *)self->_gridViewController view];
-  v33 = [(VideosExtrasGridElementViewController *)self->_gridViewController contentScrollView];
-  [(VideosExtrasBannerController *)v31 installBannerOnView:v32 anchoredToScrollView:v33];
+  view6 = [(VideosExtrasGridElementViewController *)self->_gridViewController view];
+  contentScrollView = [(VideosExtrasGridElementViewController *)self->_gridViewController contentScrollView];
+  [(VideosExtrasBannerController *)v31 installBannerOnView:view6 anchoredToScrollView:contentScrollView];
 }
 
 - (void)_prepareLayout

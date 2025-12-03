@@ -1,10 +1,10 @@
 @interface PDPendingSyncItem
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 + (NSString)entityName;
 - (NSDictionary)statusReport;
-- (PDPendingSyncItem)initWithDatabaseRow:(id)a3;
-- (PDPendingSyncItem)initWithObject:(id)a3 state:(int64_t)a4;
-- (void)bindTo:(id)a3;
+- (PDPendingSyncItem)initWithDatabaseRow:(id)row;
+- (PDPendingSyncItem)initWithObject:(id)object state:(int64_t)state;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDPendingSyncItem
@@ -48,20 +48,20 @@
   return v8;
 }
 
-- (PDPendingSyncItem)initWithObject:(id)a3 state:(int64_t)a4
+- (PDPendingSyncItem)initWithObject:(id)object state:(int64_t)state
 {
-  v6 = a3;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = PDPendingSyncItem;
   v7 = [(PDPendingSyncItem *)&v16 init];
   if (v7)
   {
     v8 = +[NSUUID UUID];
-    v9 = [v8 UUIDString];
+    uUIDString = [v8 UUIDString];
     identityValue = v7->_identityValue;
-    v7->_identityValue = v9;
+    v7->_identityValue = uUIDString;
 
-    if (!v6)
+    if (!objectCopy)
     {
       __assert_rtn("[PDPendingSyncItem initWithObject:state:]", "PDPendingSyncItem.m", 59, "object != nil");
     }
@@ -70,38 +70,38 @@
     entity = v7->_entity;
     v7->_entity = v11;
 
-    v13 = [v6 identityValue];
+    identityValue = [objectCopy identityValue];
     entityIdentity = v7->_entityIdentity;
-    v7->_entityIdentity = v13;
+    v7->_entityIdentity = identityValue;
 
-    v7->_state = a4;
+    v7->_state = state;
     if (objc_opt_respondsToSelector())
     {
-      v7->_syncOrder = [v6 syncOrder];
+      v7->_syncOrder = [objectCopy syncOrder];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v7->_syncableItemType = [v6 syncableItemType];
+      v7->_syncableItemType = [objectCopy syncableItemType];
     }
   }
 
   return v7;
 }
 
-- (PDPendingSyncItem)initWithDatabaseRow:(id)a3
+- (PDPendingSyncItem)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v18.receiver = self;
   v18.super_class = PDPendingSyncItem;
   v5 = [(PDPendingSyncItem *)&v18 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"identityValue");
+    v6 = sub_10016D778(rowCopy, @"identityValue");
     identityValue = v5->_identityValue;
     v5->_identityValue = v6;
 
-    v8 = sub_10016D778(v4, @"entity");
+    v8 = sub_10016D778(rowCopy, @"entity");
     v9 = [PDDatabase entityNamed:v8];
     entity = v5->_entity;
     v5->_entity = v9;
@@ -111,35 +111,35 @@
       __assert_rtn("[PDPendingSyncItem initWithDatabaseRow:]", "PDPendingSyncItem.m", 84, "_entity != nil");
     }
 
-    v11 = sub_10016D778(v4, @"entityIdentity");
+    v11 = sub_10016D778(rowCopy, @"entityIdentity");
     entityIdentity = v5->_entityIdentity;
     v5->_entityIdentity = v11;
 
-    v13 = sub_10016D778(v4, @"syncOrder");
+    v13 = sub_10016D778(rowCopy, @"syncOrder");
     v5->_syncOrder = [v13 intValue];
 
-    v14 = sub_10016D778(v4, @"state");
+    v14 = sub_10016D778(rowCopy, @"state");
     v5->_state = [v14 intValue];
 
-    v15 = sub_10016D778(v4, @"position");
+    v15 = sub_10016D778(rowCopy, @"position");
     v5->_position = [v15 integerValue];
 
-    v16 = sub_10016D778(v4, @"syncableItemType");
+    v16 = sub_10016D778(rowCopy, @"syncableItemType");
     v5->_syncableItemType = [v16 integerValue];
   }
 
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_entity)
   {
     __assert_rtn("[PDPendingSyncItem bindTo:]", "PDPendingSyncItem.m", 101, "_entity != nil");
   }
 
-  v11 = v4;
+  v11 = toCopy;
   v5 = [PDDatabase nameOfEntity:?];
   if (!v5)
   {
@@ -163,12 +163,12 @@
   sub_1000982FC(v11, v10, @"syncableItemType");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a1 entityName];
-  v10 = v9;
-  if (a3 == 1)
+  databaseCopy = database;
+  entityName = [self entityName];
+  v10 = entityName;
+  if (version == 1)
   {
 LABEL_6:
     if (v10 && [v10 isEqualToString:@"PDPendingCKSyncItem"])
@@ -182,20 +182,20 @@ LABEL_6:
       v42 = 0;
       v43 = &v42;
       v44 = 0x2020000000;
-      v45 = sub_1000B9298(v8, *(v47 + 5), 0, 0, 0);
+      v45 = sub_1000B9298(databaseCopy, *(v47 + 5), 0, 0, 0);
       if (v43[3])
       {
         v16 = *(v47 + 5);
         *(v47 + 5) = @"delete from PDPendingCKSyncItem where state = 3 and entity = 'CLSAsset'";
 
-        v17 = sub_1000B9298(v8, *(v47 + 5), 0, 0, 0);
+        v17 = sub_1000B9298(databaseCopy, *(v47 + 5), 0, 0, 0);
         *(v43 + 24) = v17;
         if (v17)
         {
           v18 = *(v47 + 5);
           *(v47 + 5) = @"insert into PDPendingCKSyncItemCopy (identityValue, entity, entityIdentity, state, syncOrder, position) select identityValue, entity, entityIdentity, state, syncOrder, position from PDPendingCKSyncItem";
 
-          v19 = sub_1000B9298(v8, *(v47 + 5), 0, 0, 0);
+          v19 = sub_1000B9298(databaseCopy, *(v47 + 5), 0, 0, 0);
           *(v43 + 24) = v19;
           if (v19)
           {
@@ -204,7 +204,7 @@ LABEL_6:
             v37[1] = 3221225472;
             v37[2] = sub_1000FAB44;
             v37[3] = &unk_100205250;
-            v21 = v8;
+            v21 = databaseCopy;
             v38 = v21;
             v39 = buf;
             v40 = &v42;
@@ -247,7 +247,7 @@ LABEL_6:
                     _Block_object_dispose(buf, 8);
 
 LABEL_18:
-                    a3 = 2;
+                    version = 2;
                     goto LABEL_19;
                   }
 
@@ -339,7 +339,7 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if (sub_1000B9298(v8, @"alter table PDPendingCLSSyncItem add column syncableItemType integer", 0, 0, 0))
+    if (sub_1000B9298(databaseCopy, @"alter table PDPendingCLSSyncItem add column syncableItemType integer", 0, 0, 0))
     {
       goto LABEL_18;
     }
@@ -357,10 +357,10 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!a3)
+  if (!version)
   {
     v52[0] = @"create table ";
-    v52[1] = v9;
+    v52[1] = entityName;
     v52[2] = CFSTR(" (");
     v52[3] = @"    identityValue text not null,";
     v52[4] = @"    entity text not null,";
@@ -372,15 +372,15 @@ LABEL_28:
     v11 = [NSArray arrayWithObjects:v52 count:10];
     v12 = [v11 componentsJoinedByString:@"\n"];
 
-    if (sub_1000B9298(v8, v12, 0, 0, 0))
+    if (sub_1000B9298(databaseCopy, v12, 0, 0, 0))
     {
       v13 = [[NSString alloc] initWithFormat:@"create unique index %@_identityValue on %@ (identityValue)", v10, v10];
 
-      if (sub_1000B9298(v8, v13, 0, 0, 0))
+      if (sub_1000B9298(databaseCopy, v13, 0, 0, 0))
       {
         v14 = [[NSString alloc] initWithFormat:@"create index %@_entityIdentity on %@ (entityIdentity)", v10, v10];
 
-        v15 = sub_1000B9298(v8, v14, 0, 0, 0);
+        v15 = sub_1000B9298(databaseCopy, v14, 0, 0, 0);
         if (!v15)
         {
           goto LABEL_28;
@@ -396,7 +396,7 @@ LABEL_28:
   }
 
 LABEL_19:
-  *a4 = a3;
+  *finalVersion = version;
   v30 = 1;
 LABEL_29:
 

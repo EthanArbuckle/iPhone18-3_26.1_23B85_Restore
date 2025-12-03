@@ -1,36 +1,36 @@
 @interface HDMHMostPrevalentDomainsBuilder
 - (id).cxx_construct;
-- (id)_winningSummaryForPleasant:(BOOL)a3;
-- (void)_addStateOfMind:(id)a3 toMap:(void *)a4;
-- (void)addStateOfMind:(id)a3;
+- (id)_winningSummaryForPleasant:(BOOL)pleasant;
+- (void)_addStateOfMind:(id)mind toMap:(void *)map;
+- (void)addStateOfMind:(id)mind;
 @end
 
 @implementation HDMHMostPrevalentDomainsBuilder
 
-- (void)addStateOfMind:(id)a3
+- (void)addStateOfMind:(id)mind
 {
-  v7 = a3;
-  v4 = [v7 valenceClassification] - 1;
+  mindCopy = mind;
+  v4 = [mindCopy valenceClassification] - 1;
   if (v4 < 7 && ((0x77u >> v4) & 1) != 0)
   {
     v5 = qword_2589943E8[v4];
     v6 = qword_258994420[v4];
     ++*(&self->super.isa + v5);
-    [(HDMHMostPrevalentDomainsBuilder *)self _addStateOfMind:v7 toMap:self + v6];
+    [(HDMHMostPrevalentDomainsBuilder *)self _addStateOfMind:mindCopy toMap:self + v6];
   }
 }
 
-- (void)_addStateOfMind:(id)a3 toMap:(void *)a4
+- (void)_addStateOfMind:(id)mind toMap:(void *)map
 {
   v25 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = [v16 endDate];
+  mindCopy = mind;
+  endDate = [mindCopy endDate];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v16 domains];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  domains = [mindCopy domains];
+  v6 = [domains countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = *v20;
@@ -40,36 +40,36 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(domains);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
         [v9 integerValue];
         if (HKStateOfMindDomainIsKnown())
         {
-          v18 = [v9 integerValue];
-          v23 = &v18;
-          v10 = std::__hash_table<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long &&>,std::tuple<>>(a4, &v18)[3];
+          integerValue = [v9 integerValue];
+          v23 = &integerValue;
+          v10 = std::__hash_table<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long &&>,std::tuple<>>(map, &integerValue)[3];
           v11 = v10;
           if (v10)
           {
             [v10 setCount:{objc_msgSend(v10, "count") + 1}];
-            [v11 setMostRecentDate:v17];
+            [v11 setMostRecentDate:endDate];
           }
 
           else
           {
-            v12 = [[_HDMHDomainCount alloc] initWithCount:1 mostRecentDate:v17];
-            v18 = [v9 integerValue];
-            v23 = &v18;
-            v13 = std::__hash_table<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long &&>,std::tuple<>>(a4, &v18);
+            v12 = [[_HDMHDomainCount alloc] initWithCount:1 mostRecentDate:endDate];
+            integerValue = [v9 integerValue];
+            v23 = &integerValue;
+            v13 = std::__hash_table<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,_HDMHDomainCount * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,_HDMHDomainCount * {__strong}>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long &&>,std::tuple<>>(map, &integerValue);
             v14 = v13[3];
             v13[3] = v12;
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [domains countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
@@ -78,11 +78,11 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_winningSummaryForPleasant:(BOOL)a3
+- (id)_winningSummaryForPleasant:(BOOL)pleasant
 {
-  v3 = a3;
+  pleasantCopy = pleasant;
   v5 = 48;
-  if (a3)
+  if (pleasant)
   {
     v5 = 8;
   }
@@ -90,7 +90,7 @@
   std::unordered_map<long,_HDMHDomainCount * {__strong}>::unordered_map(v40, self + v5);
   if (v42)
   {
-    v23 = self;
+    selfCopy = self;
     v36 = 0;
     v37 = &v36;
     v38 = 0x2020000000;
@@ -124,8 +124,8 @@
         v14 = [v10 count];
         if (v14 <= v37[3])
         {
-          v15 = [v10 mostRecentDate];
-          v16 = [v15 compare:v31[5]];
+          mostRecentDate = [v10 mostRecentDate];
+          v16 = [mostRecentDate compare:v31[5]];
 
           if (v16 == -1)
           {
@@ -148,12 +148,12 @@ LABEL_11:
     }
 
     v18 = 96;
-    if (v3)
+    if (pleasantCopy)
     {
       v18 = 88;
     }
 
-    v19 = *(&v23->super.isa + v18);
+    v19 = *(&selfCopy->super.isa + v18);
     v20 = objc_alloc(MEMORY[0x277D28080]);
     v21 = [v20 initWithDomains:v6 count:v37[3] totalSampleCount:v19];
 

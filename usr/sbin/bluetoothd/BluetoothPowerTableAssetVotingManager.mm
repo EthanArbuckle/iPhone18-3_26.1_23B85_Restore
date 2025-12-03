@@ -1,43 +1,43 @@
 @interface BluetoothPowerTableAssetVotingManager
-+ (id)powerTableEvaluationStateIdToString:(int64_t)a3;
-- (BOOL)getPoweraTableEvaluationSessionId:(void *)a3;
++ (id)powerTableEvaluationStateIdToString:(int64_t)string;
+- (BOOL)getPoweraTableEvaluationSessionId:(void *)id;
 - (BOOL)isPowerTableEvaluationSessionInProgress;
-- (BluetoothPowerTableAssetVotingManager)initWithName:(id)a3;
+- (BluetoothPowerTableAssetVotingManager)initWithName:(id)name;
 - (int64_t)getPowerTableEvaluationSessionState;
-- (void)bluetoothRestarted:(id)a3;
-- (void)handlePowerTableEvalationNotification:(id)a3;
-- (void)processPowerTableEvaluationNotification:(id)a3;
-- (void)reportPowerTableEvaluationVoteForBluetooth:(BOOL)a3 sessionID:(id)a4;
+- (void)bluetoothRestarted:(id)restarted;
+- (void)handlePowerTableEvalationNotification:(id)notification;
+- (void)processPowerTableEvaluationNotification:(id)notification;
+- (void)reportPowerTableEvaluationVoteForBluetooth:(BOOL)bluetooth sessionID:(id)d;
 - (void)resetPowerTableEvaluationTableSessionInProgress;
-- (void)updateCurrentPowerTableVersion:(id)a3;
-- (void)updatePowerTableEvaluationSessionInformation:(int64_t)a3 SessionIdentifier:(id)a4;
+- (void)updateCurrentPowerTableVersion:(id)version;
+- (void)updatePowerTableEvaluationSessionInformation:(int64_t)information SessionIdentifier:(id)identifier;
 @end
 
 @implementation BluetoothPowerTableAssetVotingManager
 
-- (BluetoothPowerTableAssetVotingManager)initWithName:(id)a3
+- (BluetoothPowerTableAssetVotingManager)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = BluetoothPowerTableAssetVotingManager;
   v5 = [(BluetoothPowerTableAssetVotingManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BluetoothPowerTableAssetVotingManager *)v5 setName:v4];
+    [(BluetoothPowerTableAssetVotingManager *)v5 setName:nameCopy];
   }
 
   return v6;
 }
 
-- (void)processPowerTableEvaluationNotification:(id)a3
+- (void)processPowerTableEvaluationNotification:(id)notification
 {
-  v31 = a3;
-  v4 = [v31 userInfo];
-  v33 = [v4 objectForKey:CENPowerTableEvaluationSessionIdentifier];
-  v32 = [v4 objectForKey:CENPowerTableEvaluationPreviousAssetVersions];
-  v5 = [v4 objectForKey:CENPowerTableEvaluationNewAssetVersions];
-  v6 = [v4 objectForKey:CENPowerTableEvaluationSessionState];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v33 = [userInfo objectForKey:CENPowerTableEvaluationSessionIdentifier];
+  v32 = [userInfo objectForKey:CENPowerTableEvaluationPreviousAssetVersions];
+  v5 = [userInfo objectForKey:CENPowerTableEvaluationNewAssetVersions];
+  v6 = [userInfo objectForKey:CENPowerTableEvaluationSessionState];
   v7 = +[BluetoothPowerTableAssetVotingManager powerTableEvaluationStateIdToString:](BluetoothPowerTableAssetVotingManager, "powerTableEvaluationStateIdToString:", [v6 intValue]);
   v8 = qword_100BCE8D8;
   if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_DEFAULT))
@@ -68,10 +68,10 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "MAFetch: SessionID %@", buf, 0xCu);
   }
 
-  v11 = [v6 intValue];
-  if (v11 <= 2)
+  intValue = [v6 intValue];
+  if (intValue <= 2)
   {
-    switch(v11)
+    switch(intValue)
     {
       case 0:
         v15 = qword_100BCE8D8;
@@ -169,9 +169,9 @@ LABEL_24:
     goto LABEL_30;
   }
 
-  if (v11 > 4)
+  if (intValue > 4)
   {
-    if (v11 == 5)
+    if (intValue == 5)
     {
       v18 = qword_100BCE8D8;
       if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_DEFAULT))
@@ -188,7 +188,7 @@ LABEL_24:
       goto LABEL_30;
     }
 
-    if (v11 == 6)
+    if (intValue == 6)
     {
       if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_ERROR))
       {
@@ -205,7 +205,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (v11 != 3)
+  if (intValue != 3)
   {
     if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_ERROR))
     {
@@ -221,15 +221,15 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v17 = [(BluetoothPowerTableAssetVotingManager *)self getPowerTableEvaluationSessionState];
-  if (v17 == 2)
+  getPowerTableEvaluationSessionState = [(BluetoothPowerTableAssetVotingManager *)self getPowerTableEvaluationSessionState];
+  if (getPowerTableEvaluationSessionState == 2)
   {
     goto LABEL_27;
   }
 
   if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_ERROR))
   {
-    [BluetoothPowerTableAssetVotingManager powerTableEvaluationStateIdToString:v17];
+    [BluetoothPowerTableAssetVotingManager powerTableEvaluationStateIdToString:getPowerTableEvaluationSessionState];
     objc_claimAutoreleasedReturnValue();
     sub_100819BF4();
   }
@@ -238,23 +238,23 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)handlePowerTableEvalationNotification:(id)a3
+- (void)handlePowerTableEvalationNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = *(sub_1005710D8() + 8);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10032DC54;
   v7[3] = &unk_100AE0B60;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)reportPowerTableEvaluationVoteForBluetooth:(BOOL)a3 sessionID:(id)a4
+- (void)reportPowerTableEvaluationVoteForBluetooth:(BOOL)bluetooth sessionID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v23 = 0;
   v6 = sub_10000E92C();
   sub_100007E30(buf, "MobileAsset");
@@ -320,7 +320,7 @@ LABEL_10:
 
       if (v15)
       {
-        a3 = v19;
+        bluetooth = v19;
       }
     }
 
@@ -330,7 +330,7 @@ LABEL_23:
     if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_DEFAULT))
     {
       v18 = "Rejected";
-      if (a3)
+      if (bluetooth)
       {
         v18 = "Accepted";
       }
@@ -367,11 +367,11 @@ LABEL_27:
 LABEL_28:
 }
 
-+ (id)powerTableEvaluationStateIdToString:(int64_t)a3
++ (id)powerTableEvaluationStateIdToString:(int64_t)string
 {
-  if (a3 < 7)
+  if (string < 7)
   {
-    return off_100AEBC48[a3];
+    return off_100AEBC48[string];
   }
 
   v4 = qword_100BCE8D8;
@@ -455,13 +455,13 @@ LABEL_8:
   return v8;
 }
 
-- (void)updatePowerTableEvaluationSessionInformation:(int64_t)a3 SessionIdentifier:(id)a4
+- (void)updatePowerTableEvaluationSessionInformation:(int64_t)information SessionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = sub_10000E92C();
   sub_100007E30(v13, "BTOtaPowerTableUpdateCache");
   sub_100007E30(__p, "CurrentPowerTableEvaluationState");
-  (*(*v6 + 96))(v6, v13, __p, a3);
+  (*(*v6 + 96))(v6, v13, __p, information);
   if (v12 < 0)
   {
     operator delete(__p[0]);
@@ -475,7 +475,7 @@ LABEL_8:
   v7 = sub_10000E92C();
   sub_100007E30(v13, "BTOtaPowerTableUpdateCache");
   sub_100007E30(__p, "SessionID");
-  sub_100007E30(v9, [v5 UTF8String]);
+  sub_100007E30(v9, [identifierCopy UTF8String]);
   (*(*v7 + 64))(v7, v13, __p, v9);
   if (v10 < 0)
   {
@@ -507,14 +507,14 @@ LABEL_8:
   }
 }
 
-- (BOOL)getPoweraTableEvaluationSessionId:(void *)a3
+- (BOOL)getPoweraTableEvaluationSessionId:(void *)id
 {
   if ([(BluetoothPowerTableAssetVotingManager *)self isPowerTableEvaluationSessionInProgress])
   {
     v4 = sub_10000E92C();
     sub_100007E30(v9, "BTOtaPowerTableUpdateCache");
     sub_100007E30(__p, "SessionID");
-    v5 = (*(*v4 + 56))(v4, v9, __p, a3);
+    v5 = (*(*v4 + 56))(v4, v9, __p, id);
     if (v8 < 0)
     {
       operator delete(__p[0]);
@@ -569,9 +569,9 @@ LABEL_8:
   }
 }
 
-- (void)updateCurrentPowerTableVersion:(id)a3
+- (void)updateCurrentPowerTableVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   if ([(BluetoothPowerTableAssetVotingManager *)self getPowerTableEvaluationSessionState])
   {
     __p[0] = 0;
@@ -581,7 +581,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = versionCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MAFetch: current loaded power table version %@", buf, 0xCu);
     }
 
@@ -608,10 +608,10 @@ LABEL_8:
   }
 }
 
-- (void)bluetoothRestarted:(id)a3
+- (void)bluetoothRestarted:(id)restarted
 {
-  v4 = a3;
-  if (-[BluetoothPowerTableAssetVotingManager getPowerTableEvaluationSessionState](self, "getPowerTableEvaluationSessionState") && ([v4 isEqualToString:@"centauri controller: dext terminated"] & 1) == 0)
+  restartedCopy = restarted;
+  if (-[BluetoothPowerTableAssetVotingManager getPowerTableEvaluationSessionState](self, "getPowerTableEvaluationSessionState") && ([restartedCopy isEqualToString:@"centauri controller: dext terminated"] & 1) == 0)
   {
     __p[0] = 0;
     __p[1] = 0;

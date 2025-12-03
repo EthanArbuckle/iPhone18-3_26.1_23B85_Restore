@@ -1,21 +1,21 @@
 @interface PageLoad
 - (CGSize)contentSizeAtPageLoad;
-- (PageLoad)initWithURL:(id)a3 withProcessSwap:(BOOL)a4;
+- (PageLoad)initWithURL:(id)l withProcessSwap:(BOOL)swap;
 - (double)framesPerSecond;
 - (double)renderDuration;
 - (id)description;
 - (id)statusString;
 - (void)dealloc;
-- (void)setTimer:(id)a3;
-- (void)startRenderFps:(id)a3;
-- (void)startRenderTime:(id)a3;
+- (void)setTimer:(id)timer;
+- (void)startRenderFps:(id)fps;
+- (void)startRenderTime:(id)time;
 @end
 
 @implementation PageLoad
 
-- (PageLoad)initWithURL:(id)a3 withProcessSwap:(BOOL)a4
+- (PageLoad)initWithURL:(id)l withProcessSwap:(BOOL)swap
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = PageLoad;
   v8 = [(PageLoad *)&v11 init];
@@ -23,8 +23,8 @@
   if (v8)
   {
     v8->_status = 0;
-    v8->_swapProcess = a4;
-    objc_storeStrong(&v8->_URL, a3);
+    v8->_swapProcess = swap;
+    objc_storeStrong(&v8->_URL, l);
   }
 
   return v9;
@@ -41,8 +41,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(PageLoad *)self statusString];
-  v5 = [v3 stringWithFormat:@"%-7@ |", v4];
+  statusString = [(PageLoad *)self statusString];
+  v5 = [v3 stringWithFormat:@"%-7@ |", statusString];
 
   if (self->_uiProcessStartDate)
   {
@@ -82,16 +82,16 @@
     [v5 appendFormat:@" fps:%7.3f", *&v17];
   }
 
-  v18 = [(PageLoad *)self memoryBeforeWarning];
-  if (v18)
+  memoryBeforeWarning = [(PageLoad *)self memoryBeforeWarning];
+  if (memoryBeforeWarning)
   {
-    [v5 appendFormat:@" memory_before_warning:%llu", v18];
+    [v5 appendFormat:@" memory_before_warning:%llu", memoryBeforeWarning];
   }
 
-  v19 = [(PageLoad *)self memoryAfterWarning];
-  if (v19)
+  memoryAfterWarning = [(PageLoad *)self memoryAfterWarning];
+  if (memoryAfterWarning)
   {
-    [v5 appendFormat:@" memory_after_warning:%llu", v19];
+    [v5 appendFormat:@" memory_after_warning:%llu", memoryAfterWarning];
   }
 
   [v5 appendFormat:@" | %@", self->_URL];
@@ -103,9 +103,9 @@
   error = self->_error;
   if (error)
   {
-    v21 = [(NSError *)error code];
-    v22 = [(NSError *)self->_error localizedDescription];
-    [v5 appendFormat:@" | error %ld: %@", v21, v22];
+    code = [(NSError *)error code];
+    localizedDescription = [(NSError *)self->_error localizedDescription];
+    [v5 appendFormat:@" | error %ld: %@", code, localizedDescription];
   }
 
   return v5;
@@ -125,9 +125,9 @@
   }
 }
 
-- (void)setTimer:(id)a3
+- (void)setTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   timer = self->_timer;
   if (timer)
   {
@@ -135,23 +135,23 @@
   }
 
   v6 = self->_timer;
-  self->_timer = v4;
+  self->_timer = timerCopy;
 }
 
-- (void)startRenderFps:(id)a3
+- (void)startRenderFps:(id)fps
 {
-  objc_storeStrong(&self->_startRenderFrameCountDate, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_startRenderFrameCountDate, fps);
+  fpsCopy = fps;
   FrameCounter = CARenderServerGetFrameCounter();
   endRenderFrameCountDate = self->_endRenderFrameCountDate;
   self->_endRenderFrameCountDate = 0;
   self->_startRenderFrameCount = FrameCounter;
 }
 
-- (void)startRenderTime:(id)a3
+- (void)startRenderTime:(id)time
 {
-  objc_storeStrong(&self->_startRenderDate, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_startRenderDate, time);
+  timeCopy = time;
   endRenderDate = self->_endRenderDate;
   self->_endRenderDate = 0;
 }

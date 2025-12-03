@@ -1,30 +1,30 @@
 @interface PKMentionView
-- (PKMentionView)initWithMentionItem:(id)a3 possibleParticipants:(id)a4 inDrawing:(id)a5;
+- (PKMentionView)initWithMentionItem:(id)item possibleParticipants:(id)participants inDrawing:(id)drawing;
 - (PKMentionViewDelegate)delegate;
 - (id)_underlineColor;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)setMentionColor:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)setMentionColor:(id)color;
 - (void)updateActivationState;
 @end
 
 @implementation PKMentionView
 
-- (PKMentionView)initWithMentionItem:(id)a3 possibleParticipants:(id)a4 inDrawing:(id)a5
+- (PKMentionView)initWithMentionItem:(id)item possibleParticipants:(id)participants inDrawing:(id)drawing
 {
-  v8 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = PKMentionView;
-  v9 = a5;
-  v10 = a4;
+  drawingCopy = drawing;
+  participantsCopy = participants;
   v11 = [(PKDetectionView *)&v17 init];
   mentionItem = v11->_mentionItem;
-  v11->_mentionItem = v8;
-  v13 = v8;
+  v11->_mentionItem = itemCopy;
+  v13 = itemCopy;
 
-  [(PKDetectionItem *)v11->_mentionItem setDrawing:v9, v17.receiver, v17.super_class];
-  v14 = [v10 copy];
+  [(PKDetectionItem *)v11->_mentionItem setDrawing:drawingCopy, v17.receiver, v17.super_class];
+  v14 = [participantsCopy copy];
 
   possibleParticipants = v11->_possibleParticipants;
   v11->_possibleParticipants = v14;
@@ -32,12 +32,12 @@
   return v11;
 }
 
-- (void)setMentionColor:(id)a3
+- (void)setMentionColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_mentionColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_mentionColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_mentionColor, a3);
+    objc_storeStrong(&self->_mentionColor, color);
     [(PKMentionView *)self setNeedsDisplay];
   }
 }
@@ -46,47 +46,47 @@
 {
   if ([(PKMentionItem *)self->_mentionItem active]&& (mentionColor = self->_mentionColor) != 0)
   {
-    v4 = mentionColor;
+    separatorColor = mentionColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] separatorColor];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
   }
 
-  return v4;
+  return separatorColor;
 }
 
 - (void)updateActivationState
 {
-  v3 = [(PKMentionView *)self mentionItem];
-  v9 = [v3 mentionUUID];
+  mentionItem = [(PKMentionView *)self mentionItem];
+  mentionUUID = [mentionItem mentionUUID];
 
-  v4 = [(PKMentionView *)self mentionItem];
-  [v4 invalidateUUID];
+  mentionItem2 = [(PKMentionView *)self mentionItem];
+  [mentionItem2 invalidateUUID];
 
-  v5 = [(PKMentionView *)self mentionItem];
-  v6 = [v5 mentionUUID];
+  mentionItem3 = [(PKMentionView *)self mentionItem];
+  mentionUUID2 = [mentionItem3 mentionUUID];
 
-  if (v9 != v6 && ([v9 isEqual:v6] & 1) == 0)
+  if (mentionUUID != mentionUUID2 && ([mentionUUID isEqual:mentionUUID2] & 1) == 0)
   {
-    v7 = [(PKMentionView *)self delegate];
-    v8 = v7;
-    if (v6)
+    delegate = [(PKMentionView *)self delegate];
+    v8 = delegate;
+    if (mentionUUID2)
     {
-      [v7 mentionViewDidActivateMention:self withParticpant:0];
+      [delegate mentionViewDidActivateMention:self withParticpant:0];
     }
 
     else
     {
-      [v7 mentionViewWillDeactivateMention:self];
+      [delegate mentionViewWillDeactivateMention:self];
     }
 
     [(PKMentionView *)self setNeedsDisplay];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -236,14 +236,14 @@ void __71__PKMentionView_contextMenuInteraction_configurationForMenuAtLocation__
   [*(a1 + 32) setNeedsDisplay];
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v6 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  v8 = [MEMORY[0x1E69DC728] bezierPath];
-  [v6 setShadowPath:v8];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [v6 setShadowPath:bezierPath];
 
   v9 = objc_alloc(MEMORY[0x1E69DD250]);
   [(PKMentionView *)self frame];
@@ -261,28 +261,28 @@ void __71__PKMentionView_contextMenuInteraction_configurationForMenuAtLocation__
   v20 = [v9 initWithFrame:{v30.origin.x, v30.origin.y, v30.size.width, v30.size.height}];
   [(PKMentionView *)self setBlankPreviewView:v20];
 
-  v21 = [(PKMentionView *)self blankPreviewView];
-  [v21 setOpaque:0];
+  blankPreviewView = [(PKMentionView *)self blankPreviewView];
+  [blankPreviewView setOpaque:0];
 
-  v22 = [(PKMentionView *)self superview];
-  v23 = [(PKMentionView *)self blankPreviewView];
-  [v22 addSubview:v23];
+  superview = [(PKMentionView *)self superview];
+  blankPreviewView2 = [(PKMentionView *)self blankPreviewView];
+  [superview addSubview:blankPreviewView2];
 
   v24 = objc_alloc(MEMORY[0x1E69DD070]);
-  v25 = [(PKMentionView *)self blankPreviewView];
-  v26 = [v24 initWithView:v25 parameters:v6];
+  blankPreviewView3 = [(PKMentionView *)self blankPreviewView];
+  v26 = [v24 initWithView:blankPreviewView3 parameters:v6];
 
   return v26;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __73__PKMentionView_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
   v5[3] = &unk_1E82D7148;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, configuration}];
 }
 
 uint64_t __73__PKMentionView_contextMenuInteraction_willEndForConfiguration_animator___block_invoke(uint64_t a1)

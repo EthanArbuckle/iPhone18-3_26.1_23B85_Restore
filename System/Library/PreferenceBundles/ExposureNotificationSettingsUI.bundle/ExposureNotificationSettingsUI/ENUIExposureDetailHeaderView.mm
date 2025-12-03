@@ -1,17 +1,17 @@
 @interface ENUIExposureDetailHeaderView
-- (ENUIExposureDetailHeaderView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (ENUIExposureDetailHeaderView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)setUp;
-- (void)tappedContinueButton:(id)a3;
+- (void)tappedContinueButton:(id)button;
 @end
 
 @implementation ENUIExposureDetailHeaderView
 
-- (ENUIExposureDetailHeaderView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ENUIExposureDetailHeaderView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = ENUIExposureDetailHeaderView;
-  v4 = [(ENUIExposureDetailHeaderView *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(ENUIExposureDetailHeaderView *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -27,191 +27,191 @@
   v3 = objc_opt_new();
   [(ENUIExposureDetailHeaderView *)self setAgencyNameLabel:v3];
 
-  v4 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
-  [v4 setNumberOfLines:0];
+  agencyNameLabel = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
+  [agencyNameLabel setNumberOfLines:0];
 
   v5 = [UIFont _preferredFontForTextStyle:UIFontTextStyleSubheadline variant:1024];
-  v6 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
-  [v6 setFont:v5];
+  agencyNameLabel2 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
+  [agencyNameLabel2 setFont:v5];
 
   v7 = +[UIColor secondaryLabelColor];
-  v8 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
-  [v8 setTextColor:v7];
+  agencyNameLabel3 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
+  [agencyNameLabel3 setTextColor:v7];
 
   v9 = objc_opt_new();
   [(ENUIExposureDetailHeaderView *)self setTitleLabel:v9];
 
-  v10 = [(ENUIExposureDetailHeaderView *)self titleLabel];
-  [v10 setNumberOfLines:0];
+  titleLabel = [(ENUIExposureDetailHeaderView *)self titleLabel];
+  [titleLabel setNumberOfLines:0];
 
   v11 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle1 variant:1024];
-  v12 = [(ENUIExposureDetailHeaderView *)self titleLabel];
-  [v12 setFont:v11];
+  titleLabel2 = [(ENUIExposureDetailHeaderView *)self titleLabel];
+  [titleLabel2 setFont:v11];
 
   v13 = +[UIColor labelColor];
-  v14 = [(ENUIExposureDetailHeaderView *)self titleLabel];
-  [v14 setTextColor:v13];
+  titleLabel3 = [(ENUIExposureDetailHeaderView *)self titleLabel];
+  [titleLabel3 setTextColor:v13];
 
   v15 = objc_opt_new();
   [(ENUIExposureDetailHeaderView *)self setMessageTextView:v15];
 
-  v16 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v16 textContainerInset];
+  messageTextView = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView textContainerInset];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v21 setTextContainerInset:{v18, 0.0, v20, 0.0}];
+  messageTextView2 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView2 setTextContainerInset:{v18, 0.0, v20, 0.0}];
 
-  v22 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  v23 = [v22 textContainer];
-  [v23 setLineFragmentPadding:0.0];
+  messageTextView3 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  textContainer = [messageTextView3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
-  v24 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v24 setScrollingEnabled:0];
+  messageTextView4 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView4 setScrollingEnabled:0];
 
-  v25 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v25 setEditable:0];
+  messageTextView5 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView5 setEditable:0];
 
-  v26 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v26 setDataDetectorTypes:3];
+  messageTextView6 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView6 setDataDetectorTypes:3];
 
   v27 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v28 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v28 setFont:v27];
+  messageTextView7 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView7 setFont:v27];
 
   v29 = +[UIColor labelColor];
-  v30 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v30 setTextColor:v29];
+  messageTextView8 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView8 setTextColor:v29];
 
   v31 = +[UIColor clearColor];
-  v32 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v32 setBackgroundColor:v31];
+  messageTextView9 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView9 setBackgroundColor:v31];
 
   v33 = +[OBBoldTrayButton boldButton];
   [(ENUIExposureDetailHeaderView *)self setContinueButton:v33];
 
-  v34 = [(ENUIExposureDetailHeaderView *)self continueButton];
-  [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+  continueButton = [(ENUIExposureDetailHeaderView *)self continueButton];
+  [continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v35 = [(ENUIExposureDetailHeaderView *)self continueButton];
+  continueButton2 = [(ENUIExposureDetailHeaderView *)self continueButton];
   v36 = ENUILocalizedString();
-  [v35 setTitle:v36 forState:0];
+  [continueButton2 setTitle:v36 forState:0];
 
-  v37 = [(ENUIExposureDetailHeaderView *)self continueButton];
-  [v37 addTarget:self action:"tappedContinueButton:" forEvents:64];
+  continueButton3 = [(ENUIExposureDetailHeaderView *)self continueButton];
+  [continueButton3 addTarget:self action:"tappedContinueButton:" forEvents:64];
 
   v38 = [UIStackView alloc];
-  v39 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
-  v70[0] = v39;
-  v40 = [(ENUIExposureDetailHeaderView *)self titleLabel];
-  v70[1] = v40;
-  v41 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  v70[2] = v41;
+  agencyNameLabel4 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
+  v70[0] = agencyNameLabel4;
+  titleLabel4 = [(ENUIExposureDetailHeaderView *)self titleLabel];
+  v70[1] = titleLabel4;
+  messageTextView10 = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  v70[2] = messageTextView10;
   v42 = [NSArray arrayWithObjects:v70 count:3];
   v43 = [v38 initWithArrangedSubviews:v42];
   [(ENUIExposureDetailHeaderView *)self setHeaderStack:v43];
 
-  v44 = [(ENUIExposureDetailHeaderView *)self headerStack];
-  [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerStack = [(ENUIExposureDetailHeaderView *)self headerStack];
+  [headerStack setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v45 = [(ENUIExposureDetailHeaderView *)self headerStack];
-  [v45 setAxis:1];
+  headerStack2 = [(ENUIExposureDetailHeaderView *)self headerStack];
+  [headerStack2 setAxis:1];
 
-  v46 = [(ENUIExposureDetailHeaderView *)self contentView];
-  v47 = [(ENUIExposureDetailHeaderView *)self headerStack];
-  [v46 addSubview:v47];
+  contentView = [(ENUIExposureDetailHeaderView *)self contentView];
+  headerStack3 = [(ENUIExposureDetailHeaderView *)self headerStack];
+  [contentView addSubview:headerStack3];
 
-  v68 = [(ENUIExposureDetailHeaderView *)self headerStack];
-  v66 = [v68 topAnchor];
-  v67 = [(ENUIExposureDetailHeaderView *)self contentView];
-  v65 = [v67 topAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65 constant:16.0];
+  headerStack4 = [(ENUIExposureDetailHeaderView *)self headerStack];
+  topAnchor = [headerStack4 topAnchor];
+  contentView2 = [(ENUIExposureDetailHeaderView *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v64 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v69[0] = v64;
-  v63 = [(ENUIExposureDetailHeaderView *)self headerStack];
-  v61 = [v63 leadingAnchor];
-  v62 = [(ENUIExposureDetailHeaderView *)self contentView];
-  v60 = [v62 leadingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60 constant:16.0];
+  headerStack5 = [(ENUIExposureDetailHeaderView *)self headerStack];
+  leadingAnchor = [headerStack5 leadingAnchor];
+  contentView3 = [(ENUIExposureDetailHeaderView *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v59 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v69[1] = v59;
-  v58 = [(ENUIExposureDetailHeaderView *)self headerStack];
-  v48 = [v58 trailingAnchor];
-  v49 = [(ENUIExposureDetailHeaderView *)self contentView];
-  v50 = [v49 trailingAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50 constant:-16.0];
+  headerStack6 = [(ENUIExposureDetailHeaderView *)self headerStack];
+  trailingAnchor = [headerStack6 trailingAnchor];
+  contentView4 = [(ENUIExposureDetailHeaderView *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v51 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v69[2] = v51;
-  v52 = [(ENUIExposureDetailHeaderView *)self headerStack];
-  v53 = [v52 bottomAnchor];
-  v54 = [(ENUIExposureDetailHeaderView *)self contentView];
-  v55 = [v54 bottomAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55 constant:-16.0];
+  headerStack7 = [(ENUIExposureDetailHeaderView *)self headerStack];
+  bottomAnchor = [headerStack7 bottomAnchor];
+  contentView5 = [(ENUIExposureDetailHeaderView *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v56 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   v69[3] = v56;
   v57 = [NSArray arrayWithObjects:v69 count:4];
   [NSLayoutConstraint activateConstraints:v57];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = [(ENUIExposureDetailHeaderView *)self specifier];
-  v19 = [v4 userInfo];
+  specifier = [(ENUIExposureDetailHeaderView *)self specifier];
+  userInfo = [specifier userInfo];
 
-  v5 = [v19 name];
-  v6 = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
-  [v6 setText:v5];
+  name = [userInfo name];
+  agencyNameLabel = [(ENUIExposureDetailHeaderView *)self agencyNameLabel];
+  [agencyNameLabel setText:name];
 
-  v7 = [v19 title];
-  v8 = [(ENUIExposureDetailHeaderView *)self titleLabel];
-  [v8 setText:v7];
+  title = [userInfo title];
+  titleLabel = [(ENUIExposureDetailHeaderView *)self titleLabel];
+  [titleLabel setText:title];
 
-  v9 = [v19 message];
-  v10 = [(ENUIExposureDetailHeaderView *)self messageTextView];
-  [v10 setText:v9];
+  message = [userInfo message];
+  messageTextView = [(ENUIExposureDetailHeaderView *)self messageTextView];
+  [messageTextView setText:message];
 
-  v11 = [v19 learnMoreURL];
-  [(ENUIExposureDetailHeaderView *)self setLearnMoreURL:v11];
+  learnMoreURL = [userInfo learnMoreURL];
+  [(ENUIExposureDetailHeaderView *)self setLearnMoreURL:learnMoreURL];
 
-  v12 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
-  if (!v12)
+  learnMoreURL2 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
+  if (!learnMoreURL2)
   {
     goto LABEL_4;
   }
 
-  v13 = v12;
+  v13 = learnMoreURL2;
   v14 = +[UIApplication sharedApplication];
-  v15 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
-  v16 = [v14 canOpenURL:v15];
+  learnMoreURL3 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
+  v16 = [v14 canOpenURL:learnMoreURL3];
 
   if (v16)
   {
-    v17 = [(ENUIExposureDetailHeaderView *)self headerStack];
-    v18 = [(ENUIExposureDetailHeaderView *)self continueButton];
-    [v17 addArrangedSubview:v18];
+    headerStack = [(ENUIExposureDetailHeaderView *)self headerStack];
+    continueButton = [(ENUIExposureDetailHeaderView *)self continueButton];
+    [headerStack addArrangedSubview:continueButton];
   }
 
   else
   {
 LABEL_4:
-    v17 = [(ENUIExposureDetailHeaderView *)self headerStack];
-    v18 = [(ENUIExposureDetailHeaderView *)self continueButton];
-    [v17 removeArrangedSubview:v18];
+    headerStack = [(ENUIExposureDetailHeaderView *)self headerStack];
+    continueButton = [(ENUIExposureDetailHeaderView *)self continueButton];
+    [headerStack removeArrangedSubview:continueButton];
   }
 }
 
-- (void)tappedContinueButton:(id)a3
+- (void)tappedContinueButton:(id)button
 {
-  v4 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
-  if (v4)
+  learnMoreURL = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
+  if (learnMoreURL)
   {
-    v5 = v4;
+    v5 = learnMoreURL;
     v6 = +[UIApplication sharedApplication];
-    v7 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
-    v8 = [v6 canOpenURL:v7];
+    learnMoreURL2 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
+    v8 = [v6 canOpenURL:learnMoreURL2];
 
     if (v8)
     {
       v10 = +[UIApplication sharedApplication];
-      v9 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
-      [v10 openURL:v9 options:&__NSDictionary0__struct completionHandler:0];
+      learnMoreURL3 = [(ENUIExposureDetailHeaderView *)self learnMoreURL];
+      [v10 openURL:learnMoreURL3 options:&__NSDictionary0__struct completionHandler:0];
     }
   }
 }

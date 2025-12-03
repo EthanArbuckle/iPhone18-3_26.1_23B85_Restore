@@ -1,23 +1,23 @@
 @interface PUAssetExplorerReviewScreenDisableLivePhotoActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 @end
 
 @implementation PUAssetExplorerReviewScreenDisableLivePhotoActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F2BDF7B0])
+  assetCopy = asset;
+  if ([assetCopy conformsToProtocol:&unk_1F2BDF7B0])
   {
-    v5 = [v4 isLivePhoto];
+    isLivePhoto = [assetCopy isLivePhoto];
   }
 
   else
   {
-    v5 = [v4 playbackStyle] == 3;
+    isLivePhoto = [assetCopy playbackStyle] == 3;
   }
 
-  return v5;
+  return isLivePhoto;
 }
 
 @end

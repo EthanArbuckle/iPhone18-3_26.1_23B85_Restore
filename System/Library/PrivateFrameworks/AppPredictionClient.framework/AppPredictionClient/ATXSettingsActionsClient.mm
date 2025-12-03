@@ -1,7 +1,7 @@
 @interface ATXSettingsActionsClient
 - (ATXSettingsActionsClient)init;
-- (void)recentActionsWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)suggestedActionsWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)recentActionsWithRequest:(id)request completionHandler:(id)handler;
+- (void)suggestedActionsWithRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation ATXSettingsActionsClient
@@ -47,34 +47,34 @@ void __32__ATXSettingsActionsClient_init__block_invoke_11()
   }
 }
 
-- (void)suggestedActionsWithRequest:(id)a3 completionHandler:(id)a4
+- (void)suggestedActionsWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__ATXSettingsActionsClient_suggestedActionsWithRequest_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  requestCopy = request;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v11];
-  [v10 suggestedActionsWithRequest:v9 completionHandler:v8];
+  [v10 suggestedActionsWithRequest:requestCopy completionHandler:v8];
 }
 
-- (void)recentActionsWithRequest:(id)a3 completionHandler:(id)a4
+- (void)recentActionsWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__ATXSettingsActionsClient_recentActionsWithRequest_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  requestCopy = request;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v11];
-  [v10 recentActionsWithRequest:v9 completionHandler:v8];
+  [v10 recentActionsWithRequest:requestCopy completionHandler:v8];
 }
 
 void __32__ATXSettingsActionsClient_init__block_invoke_cold_1(os_log_t log)

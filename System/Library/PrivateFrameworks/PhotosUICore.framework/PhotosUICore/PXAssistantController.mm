@@ -1,33 +1,33 @@
 @interface PXAssistantController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (BOOL)shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (BOOL)shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:(id)identifier;
 - (CGSize)preferredContentSize;
 - (PXAssistantController)init;
-- (PXAssistantController)initWithCoder:(id)a3;
-- (PXAssistantController)initWithContext:(id)a3;
-- (PXAssistantController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PXAssistantController)initWithCoder:(id)coder;
+- (PXAssistantController)initWithContext:(id)context;
+- (PXAssistantController)initWithNibName:(id)name bundle:(id)bundle;
 - (PXAssistantControllerDelegate)delegate;
-- (id)_nextViewControllerFromViewController:(id)a3;
+- (id)_nextViewControllerFromViewController:(id)controller;
 - (id)initialStepContexts;
-- (id)nextStepContextForStepContextIdentifier:(id)a3;
-- (void)_completeAssistantWithError:(id)a3;
+- (id)nextStepContextForStepContextIdentifier:(id)identifier;
+- (void)_completeAssistantWithError:(id)error;
 - (void)_confirmCancellationOfAssistantWithDestruction;
 - (void)_presentInitialViewControllers;
-- (void)_setStepContext:(id)a3;
-- (void)_setUseTransparentBarAppearance:(BOOL)a3;
-- (void)_stepForwardInAssistantAnimated:(BOOL)a3 currentViewController:(id)a4;
+- (void)_setStepContext:(id)context;
+- (void)_setUseTransparentBarAppearance:(BOOL)appearance;
+- (void)_stepForwardInAssistantAnimated:(BOOL)animated currentViewController:(id)controller;
 - (void)_updateBarAppearance;
-- (void)_updateNextStepContext:(id)a3;
-- (void)_updateViewController:(id)a3 forChangesWithDescriptor:(unint64_t)a4;
-- (void)assistantViewController:(id)a3 presentAlertWithConfiguration:(id)a4 animated:(BOOL)a5;
-- (void)assistantViewController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5;
-- (void)assistantViewController:(id)a3 pushViewController:(id)a4 animated:(BOOL)a5;
-- (void)cancelAssistantWithDestruction:(BOOL)a3;
-- (void)completeAssistantWithError:(id)a3;
+- (void)_updateNextStepContext:(id)context;
+- (void)_updateViewController:(id)controller forChangesWithDescriptor:(unint64_t)descriptor;
+- (void)assistantViewController:(id)controller presentAlertWithConfiguration:(id)configuration animated:(BOOL)animated;
+- (void)assistantViewController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated;
+- (void)assistantViewController:(id)controller pushViewController:(id)viewController animated:(BOOL)animated;
+- (void)cancelAssistantWithDestruction:(BOOL)destruction;
+- (void)completeAssistantWithError:(id)error;
 - (void)loadView;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)stepContextWithIdentifier:(id)a3 confirmCancellationWithAlertProperties:(id)a4;
-- (void)stepForwardInAssistantForAssistantViewControllerAsCurrentViewController:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)stepContextWithIdentifier:(id)identifier confirmCancellationWithAlertProperties:(id)properties;
+- (void)stepForwardInAssistantForAssistantViewControllerAsCurrentViewController:(id)controller;
 @end
 
 @implementation PXAssistantController
@@ -39,7 +39,7 @@
   return WeakRetained;
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -47,61 +47,61 @@
   }
 
   context = self->_context;
-  v5 = [(PXAssistantStepContext *)self->_stepContext identifier];
-  LOBYTE(context) = [(PXAssistantContext *)context shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:v5];
+  identifier = [(PXAssistantStepContext *)self->_stepContext identifier];
+  LOBYTE(context) = [(PXAssistantContext *)context shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:identifier];
 
   return context ^ 1;
 }
 
-- (void)assistantViewController:(id)a3 presentAlertWithConfiguration:(id)a4 animated:(BOOL)a5
+- (void)assistantViewController:(id)controller presentAlertWithConfiguration:(id)configuration animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v10 = [[off_1E7721438 alloc] initWithConfiguration:v7];
+  animatedCopy = animated;
+  configurationCopy = configuration;
+  v10 = [[off_1E7721438 alloc] initWithConfiguration:configurationCopy];
 
   navigationController = self->_navigationController;
-  v9 = [v10 alertController];
-  [(UINavigationController *)navigationController presentViewController:v9 animated:v5 completion:0];
+  alertController = [v10 alertController];
+  [(UINavigationController *)navigationController presentViewController:alertController animated:animatedCopy completion:0];
 }
 
-- (void)assistantViewController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5
+- (void)assistantViewController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v10 = v8;
-  if (!v8)
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  v10 = viewControllerCopy;
+  if (!viewControllerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
 
-    v8 = 0;
+    viewControllerCopy = 0;
   }
 
-  [(UINavigationController *)self->_navigationController presentViewController:v8 animated:v5 completion:0];
+  [(UINavigationController *)self->_navigationController presentViewController:viewControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)assistantViewController:(id)a3 pushViewController:(id)a4 animated:(BOOL)a5
+- (void)assistantViewController:(id)controller pushViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v10 = v8;
-  if (!v8)
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  v10 = viewControllerCopy;
+  if (!viewControllerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
 
-    v8 = 0;
+    viewControllerCopy = 0;
   }
 
-  [(UINavigationController *)self->_navigationController pushViewController:v8 animated:v5];
+  [(UINavigationController *)self->_navigationController pushViewController:viewControllerCopy animated:animatedCopy];
 }
 
-- (void)stepForwardInAssistantForAssistantViewControllerAsCurrentViewController:(id)a3
+- (void)stepForwardInAssistantForAssistantViewControllerAsCurrentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v5;
+    v4 = controllerCopy;
   }
 
   else
@@ -112,42 +112,42 @@
   [(PXAssistantController *)self _stepForwardInAssistantAnimated:1 currentViewController:v4];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXAssistantStepContextObservationContext == a5)
+  if (PXAssistantStepContextObservationContext == context)
   {
-    v8 = [(UINavigationController *)self->_navigationController viewControllers];
-    v9 = [v8 lastObject];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+    lastObject = [viewControllers lastObject];
 
-    [(PXAssistantController *)self _updateViewController:v9 forChangesWithDescriptor:a4];
+    [(PXAssistantController *)self _updateViewController:lastObject forChangesWithDescriptor:change];
   }
 }
 
 - (void)_updateBarAppearance
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
-  v3 = [v5 shadowColor];
+  shadowColor = [v5 shadowColor];
   [v5 configureWithTransparentBackground];
   if (![(PXAssistantStepContext *)self->_stepContext useTransparentBarAppearance])
   {
-    [v5 setShadowColor:v3];
+    [v5 setShadowColor:shadowColor];
   }
 
-  v4 = [(UINavigationController *)self->_navigationController navigationBar];
-  [v4 setStandardAppearance:v5];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
+  [navigationBar setStandardAppearance:v5];
 }
 
 - (void)_confirmCancellationOfAssistantWithDestruction
 {
-  v3 = [(PXAssistantStepContext *)self->_stepContext identifier];
-  if ([(PXAssistantController *)self shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:v3])
+  identifier = [(PXAssistantStepContext *)self->_stepContext identifier];
+  if ([(PXAssistantController *)self shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:identifier])
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __71__PXAssistantController__confirmCancellationOfAssistantWithDestruction__block_invoke;
     v4[3] = &unk_1E772E4C8;
     v4[4] = self;
-    [(PXAssistantController *)self stepContextWithIdentifier:v3 confirmCancellationWithAlertProperties:v4];
+    [(PXAssistantController *)self stepContextWithIdentifier:identifier confirmCancellationWithAlertProperties:v4];
   }
 
   else
@@ -258,49 +258,49 @@ uint64_t __71__PXAssistantController__confirmCancellationOfAssistantWithDestruct
   }
 }
 
-- (void)_setUseTransparentBarAppearance:(BOOL)a3
+- (void)_setUseTransparentBarAppearance:(BOOL)appearance
 {
-  if (self->_useTransparentBarAppearance != a3)
+  if (self->_useTransparentBarAppearance != appearance)
   {
-    self->_useTransparentBarAppearance = a3;
+    self->_useTransparentBarAppearance = appearance;
     [(PXAssistantController *)self _updateBarAppearance];
   }
 }
 
-- (void)_stepForwardInAssistantAnimated:(BOOL)a3 currentViewController:(id)a4
+- (void)_stepForwardInAssistantAnimated:(BOOL)animated currentViewController:(id)controller
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v6)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v7 = [(UINavigationController *)self->_navigationController viewControllers];
-    v9 = [v7 lastObject];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+    lastObject = [viewControllers lastObject];
 
-    v6 = v9;
+    controllerCopy = lastObject;
   }
 
-  v10 = v6;
-  v8 = [(PXAssistantController *)self _nextViewControllerFromViewController:v6];
-  [(UINavigationController *)self->_navigationController pushViewController:v8 animated:v4];
+  v10 = controllerCopy;
+  v8 = [(PXAssistantController *)self _nextViewControllerFromViewController:controllerCopy];
+  [(UINavigationController *)self->_navigationController pushViewController:v8 animated:animatedCopy];
   if ([v8 conformsToProtocol:&unk_1F1967078])
   {
     [v8 setAssistantViewControllerDelegate:self];
   }
 }
 
-- (void)_updateViewController:(id)a3 forChangesWithDescriptor:(unint64_t)a4
+- (void)_updateViewController:(id)controller forChangesWithDescriptor:(unint64_t)descriptor
 {
-  v4 = a4;
-  v23 = a3;
-  if ((v4 & 5) != 0)
+  descriptorCopy = descriptor;
+  controllerCopy = controller;
+  if ((descriptorCopy & 5) != 0)
   {
-    v6 = [(PXAssistantStepContext *)self->_stepContext firstButtonType];
+    firstButtonType = [(PXAssistantStepContext *)self->_stepContext firstButtonType];
     v7 = 0;
-    if (v6 > 1)
+    if (firstButtonType > 1)
     {
-      if (v6 != 2)
+      if (firstButtonType != 2)
       {
-        if (v6 == 4)
+        if (firstButtonType == 4)
         {
           v8 = objc_alloc(MEMORY[0x1E69DC708]);
           v9 = sel__cancelBarButtonItemDestructiveAction_;
@@ -309,22 +309,22 @@ uint64_t __71__PXAssistantController__confirmCancellationOfAssistantWithDestruct
         }
 
 LABEL_13:
-        v14 = [v23 navigationItem];
-        [v14 setRightBarButtonItem:v7];
+        navigationItem = [controllerCopy navigationItem];
+        [navigationItem setRightBarButtonItem:v7];
 
         goto LABEL_14;
       }
 
-      v11 = [(PXAssistantStepContext *)self->_stepContext firstButtonTitle];
+      firstButtonTitle = [(PXAssistantStepContext *)self->_stepContext firstButtonTitle];
       v12 = objc_alloc(MEMORY[0x1E69DC708]);
       v13 = sel__completeBarButtonItemAction_;
     }
 
     else
     {
-      if (v6)
+      if (firstButtonType)
       {
-        if (v6 == 1)
+        if (firstButtonType == 1)
         {
           v8 = objc_alloc(MEMORY[0x1E69DC708]);
           v9 = sel__completeBarButtonItemAction_;
@@ -337,28 +337,28 @@ LABEL_9:
         goto LABEL_13;
       }
 
-      v11 = PXLocalizedStringFromTable(@"PXAssistant_ButtonTitle_Next", @"PhotosUICore");
+      firstButtonTitle = PXLocalizedStringFromTable(@"PXAssistant_ButtonTitle_Next", @"PhotosUICore");
       v12 = objc_alloc(MEMORY[0x1E69DC708]);
       v13 = sel__stepForwardBarButtonItemAction_;
     }
 
-    v7 = [v12 initWithTitle:v11 style:0 target:self action:v13];
+    v7 = [v12 initWithTitle:firstButtonTitle style:0 target:self action:v13];
 
     goto LABEL_13;
   }
 
 LABEL_14:
-  if ((v4 & 4) != 0)
+  if ((descriptorCopy & 4) != 0)
   {
-    v15 = [(PXAssistantStepContext *)self->_stepContext firstButtonEnabled];
-    v16 = [v23 navigationItem];
-    v17 = [v16 rightBarButtonItem];
+    firstButtonEnabled = [(PXAssistantStepContext *)self->_stepContext firstButtonEnabled];
+    navigationItem2 = [controllerCopy navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
 
-    [v17 setEnabled:v15];
-    if ((v4 & 0x200) == 0)
+    [rightBarButtonItem setEnabled:firstButtonEnabled];
+    if ((descriptorCopy & 0x200) == 0)
     {
 LABEL_16:
-      if ((v4 & 8) == 0)
+      if ((descriptorCopy & 8) == 0)
       {
         goto LABEL_25;
       }
@@ -367,56 +367,56 @@ LABEL_16:
     }
   }
 
-  else if ((v4 & 0x200) == 0)
+  else if ((descriptorCopy & 0x200) == 0)
   {
     goto LABEL_16;
   }
 
   [(PXAssistantController *)self _setUseTransparentBarAppearance:[(PXAssistantStepContext *)self->_stepContext useTransparentBarAppearance]];
-  if ((v4 & 8) == 0)
+  if ((descriptorCopy & 8) == 0)
   {
     goto LABEL_25;
   }
 
 LABEL_20:
-  v18 = [v23 navigationItem];
+  navigationItem3 = [controllerCopy navigationItem];
   if ([(PXAssistantStepContext *)self->_stepContext secondButtonType]== 2)
   {
-    [v18 setLeftBarButtonItem:0];
-    [v18 setHidesBackButton:1];
+    [navigationItem3 setLeftBarButtonItem:0];
+    [navigationItem3 setHidesBackButton:1];
   }
 
   else
   {
     v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:&stru_1F1741150 style:0 target:0 action:0];
-    [v18 setBackBarButtonItem:v19];
+    [navigationItem3 setBackBarButtonItem:v19];
 
-    v20 = [(UINavigationController *)self->_navigationController viewControllers];
-    v21 = [v20 count];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+    v21 = [viewControllers count];
 
     if (!v21)
     {
       v22 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelBarButtonItemAction_];
-      [v18 setLeftBarButtonItem:v22];
+      [navigationItem3 setLeftBarButtonItem:v22];
     }
   }
 
-  [v18 setBackButtonTitle:&stru_1F1741150];
+  [navigationItem3 setBackButtonTitle:&stru_1F1741150];
 
 LABEL_25:
 }
 
-- (void)_setStepContext:(id)a3
+- (void)_setStepContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"stepContext"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"stepContext"}];
   }
 
   stepContext = self->_stepContext;
-  v8 = v6;
+  v8 = contextCopy;
   v11 = v8;
   if (stepContext == v8)
   {
@@ -429,7 +429,7 @@ LABEL_25:
     if ((v9 & 1) == 0)
     {
       [(PXAssistantStepContext *)self->_stepContext unregisterChangeObserver:self context:PXAssistantStepContextObservationContext];
-      objc_storeStrong(&self->_stepContext, a3);
+      objc_storeStrong(&self->_stepContext, context);
       [(PXAssistantStepContext *)self->_stepContext registerChangeObserver:self context:PXAssistantStepContextObservationContext];
       [(PXAssistantController *)self _setUseTransparentBarAppearance:[(PXAssistantStepContext *)v11 useTransparentBarAppearance]];
     }
@@ -439,12 +439,12 @@ LABEL_25:
 - (void)_presentInitialViewControllers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssistantController *)self initialStepContexts];
+  initialStepContexts = [(PXAssistantController *)self initialStepContexts];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [initialStepContexts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -455,48 +455,48 @@ LABEL_25:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(initialStepContexts);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [(PXAssistantController *)self _updateNextStepContext:v8];
-        v9 = [v8 viewController];
+        viewController = [v8 viewController];
         navigationController = self->_navigationController;
-        v11 = [v8 viewController];
-        [(UINavigationController *)navigationController pushViewController:v11 animated:0];
+        viewController2 = [v8 viewController];
+        [(UINavigationController *)navigationController pushViewController:viewController2 animated:0];
 
-        if ([v9 conformsToProtocol:&unk_1F1967078])
+        if ([viewController conformsToProtocol:&unk_1F1967078])
         {
-          [v9 setAssistantViewControllerDelegate:self];
+          [viewController setAssistantViewControllerDelegate:self];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [initialStepContexts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_nextViewControllerFromViewController:(id)a3
+- (id)_nextViewControllerFromViewController:(id)controller
 {
-  v4 = [(NSMapTable *)self->_viewControllerToStepContext objectForKey:a3];
-  v5 = [v4 identifier];
-  v6 = [(PXAssistantController *)self nextStepContextForStepContextIdentifier:v5];
+  v4 = [(NSMapTable *)self->_viewControllerToStepContext objectForKey:controller];
+  identifier = [v4 identifier];
+  v6 = [(PXAssistantController *)self nextStepContextForStepContextIdentifier:identifier];
   [(PXAssistantController *)self _updateNextStepContext:v6];
-  v7 = [v6 viewController];
+  viewController = [v6 viewController];
 
-  return v7;
+  return viewController;
 }
 
-- (void)_updateNextStepContext:(id)a3
+- (void)_updateNextStepContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 viewController];
-  [(NSMapTable *)self->_viewControllerToStepContext setObject:v4 forKey:v5];
-  [(PXAssistantController *)self _setStepContext:v4];
+  contextCopy = context;
+  viewController = [contextCopy viewController];
+  [(NSMapTable *)self->_viewControllerToStepContext setObject:contextCopy forKey:viewController];
+  [(PXAssistantController *)self _setStepContext:contextCopy];
 
-  [(PXAssistantController *)self _updateViewController:v5 forChangesWithDescriptor:13];
+  [(PXAssistantController *)self _updateViewController:viewController forChangesWithDescriptor:13];
 }
 
 - (CGSize)preferredContentSize
@@ -529,39 +529,39 @@ LABEL_25:
   navigationController = self->_navigationController;
   self->_navigationController = v4;
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(UINavigationController *)self->_navigationController setModalPresentationStyle:2];
   }
 
   [(PXAssistantController *)self _updateBarAppearance];
   [(PXAssistantController *)self addChildViewController:self->_navigationController];
-  v8 = [(UINavigationController *)self->_navigationController view];
-  v9 = [(UINavigationController *)self->_navigationController view];
-  [v3 addSubview:v9];
+  view = [(UINavigationController *)self->_navigationController view];
+  view2 = [(UINavigationController *)self->_navigationController view];
+  [v3 addSubview:view2];
 
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v22 = MEMORY[0x1E696ACD8];
-  v27 = [v8 topAnchor];
-  v26 = [v3 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v25;
-  v24 = [v8 leadingAnchor];
-  v23 = [v3 leadingAnchor];
-  v10 = [v24 constraintEqualToAnchor:v23];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[1] = v10;
-  v11 = [v8 bottomAnchor];
-  v12 = [v3 bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[2] = v13;
-  v28 = v8;
-  v14 = [v8 trailingAnchor];
+  v28 = view;
+  trailingAnchor = [view trailingAnchor];
   [v3 trailingAnchor];
   v16 = v15 = v3;
-  v17 = [v14 constraintEqualToAnchor:v16];
+  v17 = [trailingAnchor constraintEqualToAnchor:v16];
   v29[3] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   [v22 activateConstraints:v18];
@@ -574,17 +574,17 @@ LABEL_25:
   }
 
   [(PXAssistantController *)self _presentInitialViewControllers];
-  v21 = [(PXAssistantController *)self presentationController];
-  [v21 setDelegate:self];
+  presentationController = [(PXAssistantController *)self presentationController];
+  [presentationController setDelegate:self];
 }
 
-- (PXAssistantController)initWithContext:(id)a3
+- (PXAssistantController)initWithContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v15.receiver = self;
@@ -593,16 +593,16 @@ LABEL_25:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_context, a3);
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v7->_context, context);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     viewControllerToStepContext = v8->_viewControllerToStepContext;
-    v8->_viewControllerToStepContext = v9;
+    v8->_viewControllerToStepContext = strongToStrongObjectsMapTable;
 
     v8->_useTransparentBarAppearance = 1;
-    v11 = [MEMORY[0x1E69DC938] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v12 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(PXAssistantController *)v8 setModalPresentationStyle:2];
     }
@@ -611,40 +611,40 @@ LABEL_25:
   return v8;
 }
 
-- (PXAssistantController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXAssistantController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXAssistantController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXAssistantController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-- (PXAssistantController)initWithCoder:(id)a3
+- (PXAssistantController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXAssistantController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXAssistantController initWithCoder:]"}];
 
   abort();
 }
 
 - (PXAssistantController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXAssistantController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController+iOS.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXAssistantController init]"}];
 
   abort();
 }
 
-- (void)stepContextWithIdentifier:(id)a3 confirmCancellationWithAlertProperties:(id)a4
+- (void)stepContextWithIdentifier:(id)identifier confirmCancellationWithAlertProperties:(id)properties
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11)
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  if (identifierCopy)
   {
-    if (v7)
+    if (propertiesCopy)
     {
       goto LABEL_3;
     }
@@ -652,36 +652,36 @@ LABEL_25:
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-    if (v7)
+    if (propertiesCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"alertProperties"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"alertProperties"}];
 
 LABEL_3:
-  v8 = [(PXAssistantController *)self context];
-  [v8 stepContextWithIdentifier:v11 confirmCancellationWithAlertProperties:v7];
+  context = [(PXAssistantController *)self context];
+  [context stepContextWithIdentifier:identifierCopy confirmCancellationWithAlertProperties:propertiesCopy];
 }
 
-- (BOOL)shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:(id)a3
+- (BOOL)shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v6 = [(PXAssistantController *)self context];
+  context = [(PXAssistantController *)self context];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:v5];
+    v7 = [context shouldConfirmCancellationOfAssistantForStepContextWithIdentifier:identifierCopy];
   }
 
   else
@@ -692,13 +692,13 @@ LABEL_3:
   return v7;
 }
 
-- (id)nextStepContextForStepContextIdentifier:(id)a3
+- (id)nextStepContextForStepContextIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PXAssistantController *)self context];
-  v6 = [v5 nextStepContextIdentifierFromStepContextIdentifier:v4];
+  identifierCopy = identifier;
+  context = [(PXAssistantController *)self context];
+  v6 = [context nextStepContextIdentifierFromStepContextIdentifier:identifierCopy];
 
-  v7 = [v5 stepContextForStepContextIdentifier:v6];
+  v7 = [context stepContextForStepContextIdentifier:v6];
 
   return v7;
 }
@@ -706,14 +706,14 @@ LABEL_3:
 - (id)initialStepContexts
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(PXAssistantController *)self context];
-  v3 = [v2 initialStepContextIdentifiers];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  context = [(PXAssistantController *)self context];
+  initialStepContextIdentifiers = [context initialStepContextIdentifiers];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(initialStepContextIdentifiers, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = initialStepContextIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -728,7 +728,7 @@ LABEL_3:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [v2 stepContextForStepContextIdentifier:{*(*(&v12 + 1) + 8 * i), v12}];
+        v10 = [context stepContextForStepContextIdentifier:{*(*(&v12 + 1) + 8 * i), v12}];
         [v4 addObject:v10];
       }
 
@@ -741,19 +741,19 @@ LABEL_3:
   return v4;
 }
 
-- (void)completeAssistantWithError:(id)a3
+- (void)completeAssistantWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if ([(PXAssistantController *)self completed])
   {
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy3 = self;
       v10 = 2112;
-      v11 = v4;
+      v11 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "Ignoring attempt to complete already completed assistant controller: %@, error: %@", &v8, 0x16u);
     }
   }
@@ -762,18 +762,18 @@ LABEL_3:
   {
     v6 = PLUIGetLog();
     v7 = v6;
-    if (v4)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v8 = 138412546;
-        v9 = self;
+        selfCopy3 = self;
         v10 = 2112;
-        v11 = v4;
+        v11 = errorCopy;
         _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "Assistant controller: %@, failed with error: %@", &v8, 0x16u);
       }
 
-      v5 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXAssistantErrorDomain" code:-1000 underlyingError:v4 debugDescription:@"Assistant failed with an error"];
+      v5 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXAssistantErrorDomain" code:-1000 underlyingError:errorCopy debugDescription:@"Assistant failed with an error"];
     }
 
     else
@@ -781,7 +781,7 @@ LABEL_3:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Assistant completed successfully: %@", &v8, 0xCu);
       }
 
@@ -792,9 +792,9 @@ LABEL_3:
   }
 }
 
-- (void)cancelAssistantWithDestruction:(BOOL)a3
+- (void)cancelAssistantWithDestruction:(BOOL)destruction
 {
-  v3 = a3;
+  destructionCopy = destruction;
   v14 = *MEMORY[0x1E69E9840];
   if ([(PXAssistantController *)self completed])
   {
@@ -802,30 +802,30 @@ LABEL_3:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "Ignoring attempt to cancel already completed assistant controller: %@", &v12, 0xCu);
     }
   }
 
   else
   {
-    v6 = [(PXAssistantController *)self context];
+    context = [(PXAssistantController *)self context];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PXAssistantController *)self context];
-      [v8 willCancelAssistant];
+      context2 = [(PXAssistantController *)self context];
+      [context2 willCancelAssistant];
     }
 
     v9 = PLUIGetLog();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (destructionCopy)
     {
       if (v10)
       {
         v12 = 138412290;
-        v13 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Assistant cancelled with destruction by the user: %@", &v12, 0xCu);
       }
 
@@ -837,7 +837,7 @@ LABEL_3:
       if (v10)
       {
         v12 = 138412290;
-        v13 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Assistant cancelled by the user: %@", &v12, 0xCu);
       }
 
@@ -849,22 +849,22 @@ LABEL_3:
   }
 }
 
-- (void)_completeAssistantWithError:(id)a3
+- (void)_completeAssistantWithError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   if ([(PXAssistantController *)self completed])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"!self.completed"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantController_Internal.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"!self.completed"}];
   }
 
   [(PXAssistantController *)self setCompleted:1];
-  v6 = [(PXAssistantController *)self delegate];
-  v7 = v6;
-  if (v6)
+  delegate = [(PXAssistantController *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    [v6 assistantController:self completedWithError:v5];
+    [delegate assistantController:self completedWithError:errorCopy];
   }
 
   else
@@ -873,9 +873,9 @@ LABEL_3:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v5;
+      v13 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_ERROR, "No PXAssistantControllerDelegate available to handle assistantController: %@ completedWithError: %@", buf, 0x16u);
     }
   }

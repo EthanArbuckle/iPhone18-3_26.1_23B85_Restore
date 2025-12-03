@@ -1,5 +1,5 @@
 @interface EventKitTCCUIFactory
-- (EventKitTCCUIFactory)initWithBundleIdentifier:(id)a3;
+- (EventKitTCCUIFactory)initWithBundleIdentifier:(id)identifier;
 - (id)previewTableView;
 - (id)settingsViewSubtitle;
 - (int)countEventsInTheNextYear;
@@ -7,9 +7,9 @@
 
 @implementation EventKitTCCUIFactory
 
-- (EventKitTCCUIFactory)initWithBundleIdentifier:(id)a3
+- (EventKitTCCUIFactory)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = EventKitTCCUIFactory;
   v5 = [(EventKitTCCUIFactory *)&v18 init];
@@ -17,9 +17,9 @@
   eventStore = v5->_eventStore;
   v5->_eventStore = v6;
 
-  if (v4)
+  if (identifierCopy)
   {
-    [(EKEventStore *)v5->_eventStore setSourceAccountManagement:0 withBundleID:v4];
+    [(EKEventStore *)v5->_eventStore setSourceAccountManagement:0 withBundleID:identifierCopy];
   }
 
   v8 = [(EKEventStore *)v5->_eventStore calendarsForEntityType:0];
@@ -27,9 +27,9 @@
   v5->_allCalendars = v8;
 
   v10 = [(EKEventStore *)v5->_eventStore nextEventsWithCalendars:0 limit:1 exclusionOptions:13];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  if (!v11)
+  if (!firstObject)
   {
     v12 = logHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -38,9 +38,9 @@
     }
 
     v13 = [(EKEventStore *)v5->_eventStore nextEventsWithCalendars:0 limit:1 exclusionOptions:12];
-    v11 = [v13 firstObject];
+    firstObject = [v13 firstObject];
 
-    if (!v11)
+    if (!firstObject)
     {
       v14 = logHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -48,11 +48,11 @@
         [EventKitTCCUIFactory initWithBundleIdentifier:v14];
       }
 
-      v11 = 0;
+      firstObject = 0;
     }
   }
 
-  v15 = [[_TtC13EventKitTCCUI19EventPreviewWrapper alloc] initWithEvent:v11];
+  v15 = [[_TtC13EventKitTCCUI19EventPreviewWrapper alloc] initWithEvent:firstObject];
   previewWrapper = v5->_previewWrapper;
   v5->_previewWrapper = v15;
 
@@ -61,11 +61,11 @@
 
 - (int)countEventsInTheNextYear
 {
-  v3 = [MEMORY[0x277CBEAA8] CalDateForBeginningOfToday];
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v3 dateByAddingYears:1 inCalendar:v4];
+  calDateForBeginningOfToday = [MEMORY[0x277CBEAA8] CalDateForBeginningOfToday];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [calDateForBeginningOfToday dateByAddingYears:1 inCalendar:currentCalendar];
 
-  LODWORD(self) = [(EKEventStore *)self->_eventStore countOfEventsFromStartDate:v3 toEndDate:v5];
+  LODWORD(self) = [(EKEventStore *)self->_eventStore countOfEventsFromStartDate:calDateForBeginningOfToday toEndDate:v5];
   return self;
 }
 
@@ -81,10 +81,10 @@
 
 - (id)previewTableView
 {
-  v2 = [(EventKitTCCUIFactory *)self settingsPreviewViewController];
-  v3 = [v2 view];
+  settingsPreviewViewController = [(EventKitTCCUIFactory *)self settingsPreviewViewController];
+  view = [settingsPreviewViewController view];
 
-  return v3;
+  return view;
 }
 
 @end

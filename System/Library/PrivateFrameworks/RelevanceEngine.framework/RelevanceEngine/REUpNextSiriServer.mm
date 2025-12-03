@@ -1,13 +1,13 @@
 @interface REUpNextSiriServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (REUpNextSiriServer)init;
-- (void)_accessObservers:(id)a3;
-- (void)_accessRemoteClients:(id)a3;
-- (void)_removeConnection:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)completedRequestWithDomain:(id)a3;
+- (void)_accessObservers:(id)observers;
+- (void)_accessRemoteClients:(id)clients;
+- (void)_removeConnection:(id)connection;
+- (void)addObserver:(id)observer;
+- (void)completedRequestWithDomain:(id)domain;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation REUpNextSiriServer
@@ -23,9 +23,9 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     v7 = [MEMORY[0x277CBEB58] set];
     connections = v2->_connections;
@@ -54,55 +54,55 @@
   [(REUpNextSiriServer *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__REUpNextSiriServer_addObserver___block_invoke;
   v6[3] = &unk_2785F9AE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(REUpNextSiriServer *)self _onqueue_async:v6];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__REUpNextSiriServer_removeObserver___block_invoke;
   v6[3] = &unk_2785F9AE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(REUpNextSiriServer *)self _onqueue_async:v6];
 }
 
-- (void)completedRequestWithDomain:(id)a3
+- (void)completedRequestWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__REUpNextSiriServer_completedRequestWithDomain___block_invoke;
   v6[3] = &unk_2785FA758;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = domainCopy;
+  v5 = domainCopy;
   [(REUpNextSiriServer *)self _accessObservers:v6];
 }
 
-- (void)_accessObservers:(id)a3
+- (void)_accessObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__REUpNextSiriServer__accessObservers___block_invoke;
   v6[3] = &unk_2785F9A40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observersCopy;
+  v5 = observersCopy;
   [(REUpNextSiriServer *)self _onqueue_async:v6];
 }
 
@@ -144,31 +144,31 @@ void __39__REUpNextSiriServer__accessObservers___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = REUpNextSiriClientInterface();
-  [v7 setRemoteObjectInterface:v8];
+  [connectionCopy setRemoteObjectInterface:v8];
 
   v9 = REUpNextSiriServerInterface();
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v7 setExportedObject:self];
-  objc_initWeak(&location, v7);
+  [connectionCopy setExportedObject:self];
+  objc_initWeak(&location, connectionCopy);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__REUpNextSiriServer_listener_shouldAcceptNewConnection___block_invoke;
   v14[3] = &unk_2785FA2E0;
   v14[4] = self;
   objc_copyWeak(&v15, &location);
-  [v7 setInvalidationHandler:v14];
+  [connectionCopy setInvalidationHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__REUpNextSiriServer_listener_shouldAcceptNewConnection___block_invoke_2;
   v12[3] = &unk_2785F9AE0;
   v12[4] = self;
-  v10 = v7;
+  v10 = connectionCopy;
   v13 = v10;
   [(REUpNextSiriServer *)self _onqueue_async:v12];
   [v10 resume];
@@ -186,32 +186,32 @@ void __57__REUpNextSiriServer_listener_shouldAcceptNewConnection___block_invoke(
   [v1 _removeConnection:WeakRetained];
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (connectionCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __40__REUpNextSiriServer__removeConnection___block_invoke;
     v6[3] = &unk_2785F9AE0;
     v6[4] = self;
-    v7 = v4;
+    v7 = connectionCopy;
     [(REUpNextSiriServer *)self _onqueue_async:v6];
   }
 }
 
-- (void)_accessRemoteClients:(id)a3
+- (void)_accessRemoteClients:(id)clients
 {
-  v4 = a3;
+  clientsCopy = clients;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__REUpNextSiriServer__accessRemoteClients___block_invoke;
   v6[3] = &unk_2785F9A40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = clientsCopy;
+  v5 = clientsCopy;
   [(REUpNextSiriServer *)self _onqueue_async:v6];
 }
 

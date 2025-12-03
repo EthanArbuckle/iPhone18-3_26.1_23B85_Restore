@@ -1,19 +1,19 @@
 @interface RERelevanceProviderManagerUpdate
 + (id)immediateUpdateForAllProviders;
-+ (id)immediateUpdateForProvider:(id)a3;
-+ (id)scheduledUpdateForAllProvidersAtDate:(id)a3;
-+ (id)scheduledUpdateForProvider:(id)a3 atDate:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RERelevanceProviderManagerUpdate)initWithProvider:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)immediateUpdateForProvider:(id)provider;
++ (id)scheduledUpdateForAllProvidersAtDate:(id)date;
++ (id)scheduledUpdateForProvider:(id)provider atDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (RERelevanceProviderManagerUpdate)initWithProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RERelevanceProviderManagerUpdate
 
-+ (id)immediateUpdateForProvider:(id)a3
++ (id)immediateUpdateForProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [(RERelevanceProviderManagerUpdate *)[RERelevanceProviderManagerImmediateUpdate alloc] initWithProvider:v3];
+  providerCopy = provider;
+  v4 = [(RERelevanceProviderManagerUpdate *)[RERelevanceProviderManagerImmediateUpdate alloc] initWithProvider:providerCopy];
 
   return v4;
 }
@@ -25,13 +25,13 @@
   return v2;
 }
 
-+ (id)scheduledUpdateForProvider:(id)a3 atDate:(id)a4
++ (id)scheduledUpdateForProvider:(id)provider atDate:(id)date
 {
-  if (a4)
+  if (date)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [[RERelevanceProviderManagerScheduledUpdate alloc] initWithProvider:v6 updateDate:v5];
+    dateCopy = date;
+    providerCopy = provider;
+    v7 = [[RERelevanceProviderManagerScheduledUpdate alloc] initWithProvider:providerCopy updateDate:dateCopy];
   }
 
   else
@@ -42,12 +42,12 @@
   return v7;
 }
 
-+ (id)scheduledUpdateForAllProvidersAtDate:(id)a3
++ (id)scheduledUpdateForAllProvidersAtDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = a3;
-    v4 = [[RERelevanceProviderManagerScheduledUpdate alloc] initWithProvider:0 updateDate:v3];
+    dateCopy = date;
+    v4 = [[RERelevanceProviderManagerScheduledUpdate alloc] initWithProvider:0 updateDate:dateCopy];
   }
 
   else
@@ -58,32 +58,32 @@
   return v4;
 }
 
-- (RERelevanceProviderManagerUpdate)initWithProvider:(id)a3
+- (RERelevanceProviderManagerUpdate)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = RERelevanceProviderManagerUpdate;
   v6 = [(RERelevanceProviderManagerUpdate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_provider);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -94,7 +94,7 @@
     if (objc_opt_isKindOfClass())
     {
       provider = self->_provider;
-      v6 = v4->_provider;
+      v6 = equalCopy->_provider;
       v7 = provider;
       v8 = v7;
       if (v7 == v6)

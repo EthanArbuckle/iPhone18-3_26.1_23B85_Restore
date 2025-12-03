@@ -1,60 +1,60 @@
 @interface WLMessagesMigrator
-+ (id)_attachmentPersistentPathForGuid:(id)a3 fileName:(id)a4 mimeType:(id)a5 uti:(id)a6;
-- (BOOL)_insertChatHandleJoinRowWithChatID:(int64_t)a3 handleID:(int64_t)a4 duplicateMightExist:(BOOL)a5;
-- (BOOL)_insertChatMessageJoinRowWithChatID:(int64_t)a3 messageID:(int64_t)a4 date:(int64_t)a5;
-- (BOOL)_insertMessage:(id)a3;
-- (BOOL)_insertMessageAttachmentJoinRowWithMessageID:(int64_t)a3 attachmentID:(int64_t)a4;
++ (id)_attachmentPersistentPathForGuid:(id)guid fileName:(id)name mimeType:(id)type uti:(id)uti;
+- (BOOL)_insertChatHandleJoinRowWithChatID:(int64_t)d handleID:(int64_t)iD duplicateMightExist:(BOOL)exist;
+- (BOOL)_insertChatMessageJoinRowWithChatID:(int64_t)d messageID:(int64_t)iD date:(int64_t)date;
+- (BOOL)_insertMessage:(id)message;
+- (BOOL)_insertMessageAttachmentJoinRowWithMessageID:(int64_t)d attachmentID:(int64_t)iD;
 - (BOOL)_openDatabase;
-- (BOOL)_performSimpleQuery:(id)a3;
-- (BOOL)isValidTableName:(id)a3;
+- (BOOL)_performSimpleQuery:(id)query;
+- (BOOL)isValidTableName:(id)name;
 - (WLFeaturePayload)featurePayload;
-- (WLMessagesMigrator)initWithSQLController:(id)a3;
-- (id)_chatAccountLoginWithMessage:(id)a3;
-- (id)_chatGUIDWithNonGroupMessage:(id)a3;
+- (WLMessagesMigrator)initWithSQLController:(id)controller;
+- (id)_chatAccountLoginWithMessage:(id)message;
+- (id)_chatGUIDWithNonGroupMessage:(id)message;
 - (id)_databaseFilename;
-- (id)_handleIDsForMessage:(id)a3;
-- (id)_messageAccountWithMessage:(id)a3;
-- (id)_messageAttributedBodyDataWithMessage:(id)a3;
-- (id)_otherPartyAddressWithNonGroupMessage:(id)a3;
-- (id)_ourAddressWithMessage:(id)a3;
-- (id)_uniqueHandleStringsWithMessage:(id)a3;
+- (id)_handleIDsForMessage:(id)message;
+- (id)_messageAccountWithMessage:(id)message;
+- (id)_messageAttributedBodyDataWithMessage:(id)message;
+- (id)_otherPartyAddressWithNonGroupMessage:(id)message;
+- (id)_ourAddressWithMessage:(id)message;
+- (id)_uniqueHandleStringsWithMessage:(id)message;
 - (id)importDidEnd;
 - (id)importWillBegin;
-- (int64_t)_attachmentDateWithMessage:(id)a3;
-- (int64_t)_chatIDForHandleIDs:(id)a3 groupRoomName:(id)a4 groupID:(id)a5 message:(id)a6;
-- (int64_t)_chatStyleWithMessage:(id)a3;
-- (int64_t)_handleIDFromNonGroupMessageHandleIDs:(id)a3;
-- (int64_t)_insertMessageRowWithMessage:(id)a3 handleIDs:(id)a4 groupRoomName:(id)a5;
-- (int64_t)_insertRowWithAttachment:(id)a3 filePath:(id)a4 forMessage:(id)a5;
-- (int64_t)_messageDateDeliveredWithMessage:(id)a3;
-- (int64_t)_messageDateReadWithMessage:(id)a3;
-- (int64_t)_messageDateWithMessage:(id)a3;
-- (int64_t)_senderHandleIDFromReceivedGroupMessageHandleIDs:(id)a3;
+- (int64_t)_attachmentDateWithMessage:(id)message;
+- (int64_t)_chatIDForHandleIDs:(id)ds groupRoomName:(id)name groupID:(id)d message:(id)message;
+- (int64_t)_chatStyleWithMessage:(id)message;
+- (int64_t)_handleIDFromNonGroupMessageHandleIDs:(id)ds;
+- (int64_t)_insertMessageRowWithMessage:(id)message handleIDs:(id)ds groupRoomName:(id)name;
+- (int64_t)_insertRowWithAttachment:(id)attachment filePath:(id)path forMessage:(id)message;
+- (int64_t)_messageDateDeliveredWithMessage:(id)message;
+- (int64_t)_messageDateReadWithMessage:(id)message;
+- (int64_t)_messageDateWithMessage:(id)message;
+- (int64_t)_senderHandleIDFromReceivedGroupMessageHandleIDs:(id)ds;
 - (void)_closeDatabase;
 - (void)_updateClient;
-- (void)addWorkingTime:(unint64_t)a3;
+- (void)addWorkingTime:(unint64_t)time;
 - (void)deleteData;
-- (void)deleteFromTable:(id)a3;
+- (void)deleteFromTable:(id)table;
 - (void)enable;
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4;
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6;
-- (void)performPreImportPhaseForSummary:(id)a3 data:(id)a4;
-- (void)setEstimatedDataSize:(unint64_t)a3;
-- (void)setState:(id)a3;
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account;
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion;
+- (void)performPreImportPhaseForSummary:(id)summary data:(id)data;
+- (void)setEstimatedDataSize:(unint64_t)size;
+- (void)setState:(id)state;
 @end
 
 @implementation WLMessagesMigrator
 
-- (WLMessagesMigrator)initWithSQLController:(id)a3
+- (WLMessagesMigrator)initWithSQLController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = WLMessagesMigrator;
   v5 = [(WLMessagesMigrator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(WLMessagesMigrator *)v5 setSqlController:v4];
+    [(WLMessagesMigrator *)v5 setSqlController:controllerCopy];
   }
 
   return v6;
@@ -69,56 +69,56 @@
   [v4 setState:@"enabled"];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setState:v4];
+  [WeakRetained setState:stateCopy];
 }
 
-- (void)setEstimatedDataSize:(unint64_t)a3
+- (void)setEstimatedDataSize:(unint64_t)size
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setSize:a3];
+  [WeakRetained setSize:size];
 }
 
-- (void)addWorkingTime:(unint64_t)a3
+- (void)addWorkingTime:(unint64_t)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + a3}];
+  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + time}];
 }
 
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account
 {
-  v4 = a3;
-  if (![v4 itemSize])
+  summaryCopy = summary;
+  if (![summaryCopy itemSize])
   {
-    [v4 setItemSize:20480];
+    [summaryCopy setItemSize:20480];
   }
 }
 
-- (void)performPreImportPhaseForSummary:(id)a3 data:(id)a4
+- (void)performPreImportPhaseForSummary:(id)summary data:(id)data
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  summaryCopy = summary;
+  dataCopy = data;
   _WLLog();
   v8 = [(WLMessagesMigrator *)self sqlController:self];
-  v39 = v7;
-  v9 = [WLMessage mimeHeadersFromMimeData:v7 sqlController:v8];
+  v39 = dataCopy;
+  v9 = [WLMessage mimeHeadersFromMimeData:dataCopy sqlController:v8];
 
   _WLLog();
   v37 = [WLMessage dateFromMimeHeaders:v9, self, v9];
-  [v6 setModifiedDate:?];
-  v10 = [(WLMessagesMigrator *)self sqlController];
-  v40 = v6;
-  [v10 updateModifiedDateForSummary:v6];
+  [summaryCopy setModifiedDate:?];
+  sqlController = [(WLMessagesMigrator *)self sqlController];
+  v40 = summaryCopy;
+  [sqlController updateModifiedDateForSummary:summaryCopy];
 
   v11 = [WLMessage senderFromMimeHeaders:v9];
   _WLLog();
   v38 = v9;
   v12 = [WLMessage recipientsFromMimeHeaders:v9, self, v11];
-  v31 = self;
+  selfCopy3 = self;
   v32 = v12;
   _WLLog();
   v13 = MEMORY[0x277CBEBF8];
@@ -158,9 +158,9 @@
         }
 
         v22 = *(*(&v41 + 1) + 8 * i);
-        v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v22, "isPhoneNumber", v31, v32)}];
+        v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v22, "isPhoneNumber", selfCopy3, v32)}];
         v34 = [v22 icc];
-        v31 = self;
+        selfCopy3 = self;
         v32 = v22;
         _WLLog();
 
@@ -174,13 +174,13 @@
             v26 = [v22 icc];
             [v22 ccAcNumber];
             v33 = v32 = v26;
-            v31 = self;
+            selfCopy3 = self;
             _WLLog();
 
-            v27 = [(WLMessagesMigrator *)self sqlController];
+            sqlController2 = [(WLMessagesMigrator *)self sqlController];
             v28 = [v22 icc];
-            v29 = [v22 ccAcNumber];
-            [v27 insertMessagePhoneNumberWithIcc:v28 ccAcNumber:v29];
+            ccAcNumber = [v22 ccAcNumber];
+            [sqlController2 insertMessagePhoneNumberWithIcc:v28 ccAcNumber:ccAcNumber];
           }
         }
       }
@@ -201,22 +201,22 @@
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
   [WeakRetained setSize:0];
 
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   accountGuid = self->_accountGuid;
-  self->_accountGuid = v5;
+  self->_accountGuid = uUIDString;
 
   v7 = 0;
   if (![(WLMessagesMigrator *)self _openDatabase])
   {
     self->_database = 0;
-    v13 = self;
+    selfCopy = self;
     _WLLog();
     v8 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277D7B8F8];
     v14 = *MEMORY[0x277CCA450];
     v15[0] = @"Messages migrator couldn't open messages database";
-    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:{1, v13}];
+    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:{1, selfCopy}];
     v7 = [v8 errorWithDomain:v9 code:1 userInfo:v10];
   }
 
@@ -229,11 +229,11 @@
 {
   [(WLMessagesMigrator *)self _updateClient];
   [(WLMessagesMigrator *)self _closeDatabase];
-  v3 = [(WLMessagesMigrator *)self sqlController];
-  [v3 deleteGroupMessageInfoForAllDevices];
+  sqlController = [(WLMessagesMigrator *)self sqlController];
+  [sqlController deleteGroupMessageInfoForAllDevices];
 
-  v4 = [(WLMessagesMigrator *)self sqlController];
-  [v4 deleteMessagePhoneNumbersForAllDevices];
+  sqlController2 = [(WLMessagesMigrator *)self sqlController];
+  [sqlController2 deleteMessagePhoneNumbersForAllDevices];
 
   _WLLog();
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -241,25 +241,25 @@
   return 0;
 }
 
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  summaryCopy = summary;
+  accountCopy = account;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
   [WeakRetained setCount:{objc_msgSend(WeakRetained, "count") + 1}];
 
   v15 = objc_loadWeakRetained(&self->_featurePayload);
-  [v15 setSize:{objc_msgSend(v15, "size") + objc_msgSend(v10, "length")}];
+  [v15 setSize:{objc_msgSend(v15, "size") + objc_msgSend(dataCopy, "length")}];
 
   v16 = objc_alloc_init(WLMessage);
-  [(WLMessage *)v16 setSummary:v11];
-  if (!v10)
+  [(WLMessage *)v16 setSummary:summaryCopy];
+  if (!dataCopy)
   {
     _WLLog();
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -268,12 +268,12 @@
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = [(WLMessagesMigrator *)self sqlController];
-  [(WLMessage *)v16 parseMIMEData:v10 sqlController:v18];
+  sqlController = [(WLMessagesMigrator *)self sqlController];
+  [(WLMessage *)v16 parseMIMEData:dataCopy sqlController:sqlController];
 
   v19 = [(WLMessagesMigrator *)self _insertMessage:v16];
   objc_autoreleasePoolPop(v17);
-  if (v13)
+  if (completionCopy)
   {
     if (!v19)
     {
@@ -283,13 +283,13 @@
       v26[0] = @"Message import failed";
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v23 = [v20 errorWithDomain:v21 code:1 userInfo:v22];
-      v13[2](v13, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
 
       goto LABEL_8;
     }
 
 LABEL_4:
-    v13[2](v13, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
 LABEL_8:
@@ -307,8 +307,8 @@ LABEL_8:
 
 - (BOOL)_openDatabase
 {
-  v3 = [(WLMessagesMigrator *)self _databaseFilename];
-  v4 = sqlite3_open([v3 UTF8String], &self->_database);
+  _databaseFilename = [(WLMessagesMigrator *)self _databaseFilename];
+  v4 = sqlite3_open([_databaseFilename UTF8String], &self->_database);
   if (v4)
   {
     _WLLog();
@@ -327,11 +327,11 @@ LABEL_8:
   }
 }
 
-- (BOOL)_performSimpleQuery:(id)a3
+- (BOOL)_performSimpleQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   ppStmt = 0;
-  if (sqlite3_prepare_v2(self->_database, [v4 UTF8String], -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(self->_database, [queryCopy UTF8String], -1, &ppStmt, 0))
   {
     sqlite3_errcode(self->_database);
     sqlite3_errmsg(self->_database);
@@ -356,17 +356,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)_ourAddressWithMessage:(id)a3
+- (id)_ourAddressWithMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageDirection];
-  if (!v4)
+  messageCopy = message;
+  messageDirection = [messageCopy messageDirection];
+  if (!messageDirection)
   {
-    v5 = [v3 sender];
-    v7 = [v5 address];
+    sender = [messageCopy sender];
+    address = [sender address];
 LABEL_6:
 
-    if (v7)
+    if (address)
     {
       goto LABEL_8;
     }
@@ -374,58 +374,58 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v4 == 1 && ([v3 isGroupMessage] & 1) == 0)
+  if (messageDirection == 1 && ([messageCopy isGroupMessage] & 1) == 0)
   {
-    v5 = [v3 recipients];
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 address];
+    sender = [messageCopy recipients];
+    v6 = [sender objectAtIndexedSubscript:0];
+    address = [v6 address];
 
     goto LABEL_6;
   }
 
 LABEL_7:
-  v7 = &stru_2882CBB40;
+  address = &stru_2882CBB40;
 LABEL_8:
 
-  return v7;
+  return address;
 }
 
-- (id)_otherPartyAddressWithNonGroupMessage:(id)a3
+- (id)_otherPartyAddressWithNonGroupMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageDirection];
-  if (!v4)
+  messageCopy = message;
+  messageDirection = [messageCopy messageDirection];
+  if (!messageDirection)
   {
-    v5 = [v3 recipients];
-    v7 = [v5 objectAtIndexedSubscript:0];
-    v6 = [v7 address];
+    recipients = [messageCopy recipients];
+    v7 = [recipients objectAtIndexedSubscript:0];
+    address = [v7 address];
 
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (messageDirection == 1)
   {
-    v5 = [v3 sender];
-    v6 = [v5 address];
+    recipients = [messageCopy sender];
+    address = [recipients address];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v6 = 0;
+  address = 0;
 LABEL_7:
 
-  return v6;
+  return address;
 }
 
-- (BOOL)_insertMessage:(id)a3
+- (BOOL)_insertMessage:(id)message
 {
   v101 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WLMessagesMigrator *)self _beginTransaction];
-  if (v5)
+  messageCopy = message;
+  _beginTransaction = [(WLMessagesMigrator *)self _beginTransaction];
+  if (_beginTransaction)
   {
-    v6 = [(WLMessagesMigrator *)self _handleIDsForMessage:v4];
+    v6 = [(WLMessagesMigrator *)self _handleIDsForMessage:messageCopy];
     if ([v6 count])
     {
       v7 = 0;
@@ -439,15 +439,15 @@ LABEL_7:
     v6 = 0;
   }
 
-  v63 = self;
-  v65 = v4;
+  selfCopy = self;
+  v65 = messageCopy;
   _WLLog();
   v8 = 0;
-  v7 = v5;
+  v7 = _beginTransaction;
 LABEL_6:
-  if ([v4 isGroupMessage])
+  if ([messageCopy isGroupMessage])
   {
-    v9 = [v4 messageDirection] == 1;
+    v9 = [messageCopy messageDirection] == 1;
     if (!v8)
     {
 LABEL_8:
@@ -467,78 +467,78 @@ LABEL_8:
     }
   }
 
-  v89 = self;
+  selfCopy2 = self;
   v82 = v7;
-  v80 = v5;
+  v80 = _beginTransaction;
   v75 = v9;
-  if ([v4 isGroupMessage])
+  if ([messageCopy isGroupMessage])
   {
     v13 = [(WLMessagesMigrator *)self _sortedHandleIDs:v6];
     v98 = 0;
-    v14 = [v4 threadID];
-    v15 = [v14 length];
+    threadID = [messageCopy threadID];
+    v15 = [threadID length];
 
-    v16 = [(WLMessagesMigrator *)self sqlController];
-    v17 = v16;
+    sqlController = [(WLMessagesMigrator *)self sqlController];
+    v17 = sqlController;
     if (v15)
     {
-      v18 = [v4 threadID];
-      v19 = [v17 groupMessageInfoMatchingSourceThreadID:v18];
+      threadID2 = [messageCopy threadID];
+      v19 = [v17 groupMessageInfoMatchingSourceThreadID:threadID2];
 
       v98 = v19 != 0;
     }
 
     else
     {
-      v19 = [v16 groupMessageInfoMatchingSortedHandleIDs:v13 handleIDsAreComplete:v9 didMatchExactly:&v98];
+      v19 = [sqlController groupMessageInfoMatchingSortedHandleIDs:v13 handleIDsAreComplete:v9 didMatchExactly:&v98];
     }
 
     v81 = v13;
     if (v19)
     {
-      v20 = [v19 roomName];
-      v21 = [v19 groupID];
+      roomName = [v19 roomName];
+      groupID = [v19 groupID];
       v87 = v98;
-      obja = [v4 threadID];
+      obja = [messageCopy threadID];
       v77 = v6;
       v22 = [v13 componentsJoinedByString:{@", "}];
       v23 = [MEMORY[0x277CCABB0] numberWithBool:v9];
-      v24 = [v19 sortedHandleIDs];
-      v25 = [v24 componentsJoinedByString:{@", "}];
+      sortedHandleIDs = [v19 sortedHandleIDs];
+      v25 = [sortedHandleIDs componentsJoinedByString:{@", "}];
       v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v19, "handleIDsAreComplete")}];
       [MEMORY[0x277CCABB0] numberWithBool:v98];
       v74 = v73 = v26;
-      v71 = v21;
+      v71 = groupID;
       v72 = v25;
-      v79 = v21;
-      v83 = v20;
+      v79 = groupID;
+      v83 = roomName;
       v69 = v23;
-      v70 = v20;
+      v70 = roomName;
       v66 = obja;
       v67 = v22;
-      v64 = v89;
+      selfCopy3 = selfCopy2;
       _WLLog();
 
       v6 = v77;
-      self = v89;
+      self = selfCopy2;
 
       v27 = !v87;
     }
 
     else
     {
-      v28 = [MEMORY[0x277CCACA8] generatedRoomNameForGroupChat];
-      v29 = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
-      v30 = [v4 threadID];
+      generatedRoomNameForGroupChat = [MEMORY[0x277CCACA8] generatedRoomNameForGroupChat];
+      wl_uniqueIdentifier = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
+      threadID3 = [messageCopy threadID];
       v31 = [v13 componentsJoinedByString:{@", "}];
       [MEMORY[0x277CCABB0] numberWithBool:v9];
-      v79 = v29;
-      v70 = v28;
-      v71 = v29;
-      v83 = v28;
+      v79 = wl_uniqueIdentifier;
+      v70 = generatedRoomNameForGroupChat;
+      v71 = wl_uniqueIdentifier;
+      v83 = generatedRoomNameForGroupChat;
       v69 = v67 = v31;
-      v64 = self;
-      v66 = v30;
+      selfCopy3 = self;
+      v66 = threadID3;
       _WLLog();
 
       v27 = 1;
@@ -559,8 +559,8 @@ LABEL_8:
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v32 = [v4 attachments];
-  v33 = [v32 countByEnumeratingWithState:&v94 objects:v100 count:16];
+  attachments = [messageCopy attachments];
+  v33 = [attachments countByEnumeratingWithState:&v94 objects:v100 count:16];
   if (v33)
   {
     v34 = v33;
@@ -571,33 +571,33 @@ LABEL_8:
       {
         if (*v95 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(attachments);
         }
 
         v37 = *(*(&v94 + 1) + 8 * i);
-        v38 = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
-        [v37 setGuid:v38];
+        wl_uniqueIdentifier2 = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
+        [v37 setGuid:wl_uniqueIdentifier2];
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v94 objects:v100 count:16];
+      v34 = [attachments countByEnumeratingWithState:&v94 objects:v100 count:16];
     }
 
     while (v34);
   }
 
-  v39 = [v4 subject];
-  [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isGroupMessage")}];
+  subject = [messageCopy subject];
+  [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(messageCopy, "isGroupMessage")}];
   v68 = v10 = v83;
   _WLLog();
 
-  v88 = [(WLMessagesMigrator *)self _insertMessageRowWithMessage:v4 handleIDs:v6 groupRoomName:v83, self, v39, v68, v83];
+  v88 = [(WLMessagesMigrator *)self _insertMessageRowWithMessage:messageCopy handleIDs:v6 groupRoomName:v83, self, subject, v68, v83];
   if (v88 < 0)
   {
     _WLLog();
 LABEL_54:
     v7 = v82;
     v12 = v81;
-    v5 = v80;
+    _beginTransaction = v80;
     v11 = v79;
   }
 
@@ -607,7 +607,7 @@ LABEL_54:
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    obj = [v4 attachments];
+    obj = [messageCopy attachments];
     v40 = [obj countByEnumeratingWithState:&v90 objects:v99 count:16];
     if (v40)
     {
@@ -624,15 +624,15 @@ LABEL_54:
           }
 
           v43 = *(*(&v90 + 1) + 8 * j);
-          v44 = [v43 guid];
-          v45 = [v43 fileName];
-          v46 = [v43 mimeType];
+          guid = [v43 guid];
+          fileName = [v43 fileName];
+          mimeType = [v43 mimeType];
           v47 = [v43 uti];
-          v48 = [WLMessagesMigrator _attachmentPersistentPathForGuid:v44 fileName:v45 mimeType:v46 uti:v47];
+          v48 = [WLMessagesMigrator _attachmentPersistentPathForGuid:guid fileName:fileName mimeType:mimeType uti:v47];
 
           if (!v48)
           {
-            self = v89;
+            self = selfCopy2;
             _WLLog();
 LABEL_53:
 
@@ -642,9 +642,9 @@ LABEL_53:
           }
 
           v49 = objc_alloc_init(MEMORY[0x277CCAA00]);
-          v50 = [v48 stringByDeletingLastPathComponent];
-          self = v89;
-          if (([v49 makeDirectoriesInPath:v50 mode:448] & 1) == 0 || (objc_msgSend(v43, "data"), v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v51, "writeToFile:atomically:", v48, 1), v51, (v52 & 1) == 0) || (v53 = -[WLMessagesMigrator _insertRowWithAttachment:filePath:forMessage:](v89, "_insertRowWithAttachment:filePath:forMessage:", v43, v48, v4), v53 < 0) || !-[WLMessagesMigrator _insertMessageAttachmentJoinRowWithMessageID:attachmentID:](v89, "_insertMessageAttachmentJoinRowWithMessageID:attachmentID:", v88, v53))
+          stringByDeletingLastPathComponent = [v48 stringByDeletingLastPathComponent];
+          self = selfCopy2;
+          if (([v49 makeDirectoriesInPath:stringByDeletingLastPathComponent mode:448] & 1) == 0 || (objc_msgSend(v43, "data"), v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v51, "writeToFile:atomically:", v48, 1), v51, (v52 & 1) == 0) || (v53 = -[WLMessagesMigrator _insertRowWithAttachment:filePath:forMessage:](selfCopy2, "_insertRowWithAttachment:filePath:forMessage:", v43, v48, messageCopy), v53 < 0) || !-[WLMessagesMigrator _insertMessageAttachmentJoinRowWithMessageID:attachmentID:](selfCopy2, "_insertMessageAttachmentJoinRowWithMessageID:attachmentID:", v88, v53))
           {
             _WLLog();
 
@@ -665,40 +665,40 @@ LABEL_53:
     }
 
     v11 = v79;
-    v54 = [(WLMessagesMigrator *)self _chatIDForHandleIDs:v6 groupRoomName:v10 groupID:v79 message:v4];
+    v54 = [(WLMessagesMigrator *)self _chatIDForHandleIDs:v6 groupRoomName:v10 groupID:v79 message:messageCopy];
     if (v54 < 0)
     {
       _WLLog();
       v7 = v82;
       v12 = v81;
-      v5 = v80;
+      _beginTransaction = v80;
     }
 
     else
     {
       v7 = v82;
       v12 = v81;
-      v5 = v80;
-      if ([(WLMessagesMigrator *)self _insertChatMessageJoinRowWithChatID:v54 messageID:v88 date:[(WLMessagesMigrator *)self _messageDateWithMessage:v4]])
+      _beginTransaction = v80;
+      if ([(WLMessagesMigrator *)self _insertChatMessageJoinRowWithChatID:v54 messageID:v88 date:[(WLMessagesMigrator *)self _messageDateWithMessage:messageCopy]])
       {
         if ([(WLMessagesMigrator *)self _commitTransaction])
         {
           if (v76)
           {
-            v55 = [v4 threadID];
-            v56 = [v55 length];
+            threadID4 = [messageCopy threadID];
+            v56 = [threadID4 length];
 
-            v57 = [(WLMessagesMigrator *)self sqlController];
-            v58 = v57;
+            sqlController2 = [(WLMessagesMigrator *)self sqlController];
+            v58 = sqlController2;
             if (v56)
             {
-              v59 = [v4 threadID];
-              [v58 insertGroupMessageInfoWithSourceThreadID:v59 roomName:v10 groupID:v79];
+              threadID5 = [messageCopy threadID];
+              [v58 insertGroupMessageInfoWithSourceThreadID:threadID5 roomName:v10 groupID:v79];
             }
 
             else
             {
-              [v57 insertGroupMessageInfoWithSortedHandleIDs:v81 handleIDsAreComplete:v75 roomName:v10 groupID:v79];
+              [sqlController2 insertGroupMessageInfoWithSortedHandleIDs:v81 handleIDsAreComplete:v75 roomName:v10 groupID:v79];
             }
           }
         }
@@ -722,7 +722,7 @@ LABEL_53:
   }
 
 LABEL_55:
-  if (v5 && ![(WLMessagesMigrator *)self _rollbackTransaction])
+  if (_beginTransaction && ![(WLMessagesMigrator *)self _rollbackTransaction])
   {
     _WLLog();
   }
@@ -741,58 +741,58 @@ LABEL_60:
   return v60;
 }
 
-+ (id)_attachmentPersistentPathForGuid:(id)a3 fileName:(id)a4 mimeType:(id)a5 uti:(id)a6
++ (id)_attachmentPersistentPathForGuid:(id)guid fileName:(id)name mimeType:(id)type uti:(id)uti
 {
-  v10 = a3;
-  v11 = a4;
-  v34 = a5;
-  v12 = a6;
-  v13 = [v11 pathExtension];
-  v14 = [v10 hash];
-  if (![v13 length])
+  guidCopy = guid;
+  nameCopy = name;
+  typeCopy = type;
+  utiCopy = uti;
+  pathExtension = [nameCopy pathExtension];
+  v14 = [guidCopy hash];
+  if (![pathExtension length])
   {
-    v15 = [MEMORY[0x277D19250] defaultHFSFileManager];
-    v16 = [v15 pathExtensionForUTIType:v12];
+    defaultHFSFileManager = [MEMORY[0x277D19250] defaultHFSFileManager];
+    v16 = [defaultHFSFileManager pathExtensionForUTIType:utiCopy];
 
-    v13 = v16;
+    pathExtension = v16;
     if (![v16 length])
     {
-      v17 = [MEMORY[0x277D19250] defaultHFSFileManager];
-      v18 = [v17 pathExtensionForMIMEType:v34];
+      defaultHFSFileManager2 = [MEMORY[0x277D19250] defaultHFSFileManager];
+      v18 = [defaultHFSFileManager2 pathExtensionForMIMEType:typeCopy];
 
-      v13 = v18;
+      pathExtension = v18;
     }
 
-    if ([v13 length])
+    if ([pathExtension length])
     {
-      [v11 stringByAppendingPathExtension:v13];
-      v20 = v19 = v13;
+      [nameCopy stringByAppendingPathExtension:pathExtension];
+      v20 = v19 = pathExtension;
 
-      v11 = v20;
-      v13 = v19;
+      nameCopy = v20;
+      pathExtension = v19;
     }
   }
 
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02x", v14];
   v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02d", v14 & 0xF];
   _WLLog();
-  if ([v11 length] && objc_msgSend(v10, "length"))
+  if ([nameCopy length] && objc_msgSend(guidCopy, "length"))
   {
-    v23 = [@"/var/mobile/Library/SMS/Attachments" stringByResolvingAndStandardizingPath];
-    v24 = [v23 stringByAppendingPathComponent:v21];
+    stringByResolvingAndStandardizingPath = [@"/var/mobile/Library/SMS/Attachments" stringByResolvingAndStandardizingPath];
+    v24 = [stringByResolvingAndStandardizingPath stringByAppendingPathComponent:v21];
     [v24 stringByAppendingPathComponent:v22];
-    v33 = v11;
+    v33 = nameCopy;
     v25 = v22;
     v26 = v21;
-    v27 = v13;
-    v29 = v28 = v12;
-    v30 = [v29 stringByAppendingPathComponent:v10];
+    v27 = pathExtension;
+    v29 = v28 = utiCopy;
+    v30 = [v29 stringByAppendingPathComponent:guidCopy];
 
-    v12 = v28;
-    v13 = v27;
+    utiCopy = v28;
+    pathExtension = v27;
     v21 = v26;
     v22 = v25;
-    v11 = v33;
+    nameCopy = v33;
 
     v31 = [v30 stringByAppendingPathComponent:v33];
   }
@@ -807,11 +807,11 @@ LABEL_60:
   return v31;
 }
 
-- (int64_t)_insertRowWithAttachment:(id)a3 filePath:(id)a4 forMessage:(id)a5
+- (int64_t)_insertRowWithAttachment:(id)attachment filePath:(id)path forMessage:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attachmentCopy = attachment;
+  pathCopy = path;
+  messageCopy = message;
   ppStmt = 0;
   if (sqlite3_prepare(self->_database, "INSERT INTO attachment (guid, created_date, start_date, filename, uti, mime_type, transfer_state, is_outgoing, user_info, transfer_name, total_bytes, original_guid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", -1, &ppStmt, 0))
   {
@@ -824,18 +824,18 @@ LABEL_60:
   else
   {
     v12 = ppStmt;
-    v13 = [v8 guid];
-    sqlite3_bind_text(v12, 1, [v13 UTF8String], -1, 0);
+    guid = [attachmentCopy guid];
+    sqlite3_bind_text(v12, 1, [guid UTF8String], -1, 0);
 
-    sqlite3_bind_int64(ppStmt, 2, [(WLMessagesMigrator *)self _attachmentDateWithMessage:v10]);
-    sqlite3_bind_int64(ppStmt, 3, [(WLMessagesMigrator *)self _attachmentDateWithMessage:v10]);
-    sqlite3_bind_text(ppStmt, 4, [v9 UTF8String], -1, 0);
-    v14 = [v8 uti];
+    sqlite3_bind_int64(ppStmt, 2, [(WLMessagesMigrator *)self _attachmentDateWithMessage:messageCopy]);
+    sqlite3_bind_int64(ppStmt, 3, [(WLMessagesMigrator *)self _attachmentDateWithMessage:messageCopy]);
+    sqlite3_bind_text(ppStmt, 4, [pathCopy UTF8String], -1, 0);
+    v14 = [attachmentCopy uti];
 
     v15 = ppStmt;
     if (v14)
     {
-      v16 = [v8 uti];
+      v16 = [attachmentCopy uti];
       sqlite3_bind_text(v15, 5, [v16 UTF8String], -1, 0);
     }
 
@@ -845,23 +845,23 @@ LABEL_60:
     }
 
     v17 = ppStmt;
-    v18 = [v8 mimeType];
-    sqlite3_bind_text(v17, 6, [v18 UTF8String], -1, 0);
+    mimeType = [attachmentCopy mimeType];
+    sqlite3_bind_text(v17, 6, [mimeType UTF8String], -1, 0);
 
     sqlite3_bind_int(ppStmt, 7, 5);
-    sqlite3_bind_int(ppStmt, 8, [(WLMessagesMigrator *)self _messageIsFromMeWithMessage:v10]);
+    sqlite3_bind_int(ppStmt, 8, [(WLMessagesMigrator *)self _messageIsFromMeWithMessage:messageCopy]);
     sqlite3_bind_null(ppStmt, 9);
     v19 = ppStmt;
-    v20 = [v9 lastPathComponent];
-    sqlite3_bind_text(v19, 10, [v20 UTF8String], -1, 0);
+    lastPathComponent = [pathCopy lastPathComponent];
+    sqlite3_bind_text(v19, 10, [lastPathComponent UTF8String], -1, 0);
 
     v21 = ppStmt;
-    v22 = [v8 data];
-    sqlite3_bind_int(v21, 11, [v22 length]);
+    data = [attachmentCopy data];
+    sqlite3_bind_int(v21, 11, [data length]);
 
     v23 = ppStmt;
-    v24 = [v8 guid];
-    sqlite3_bind_text(v23, 12, [v24 UTF8String], -1, 0);
+    guid2 = [attachmentCopy guid];
+    sqlite3_bind_text(v23, 12, [guid2 UTF8String], -1, 0);
 
     if (sqlite3_step(ppStmt) == 101)
     {
@@ -882,7 +882,7 @@ LABEL_60:
   return insert_rowid;
 }
 
-- (BOOL)_insertMessageAttachmentJoinRowWithMessageID:(int64_t)a3 attachmentID:(int64_t)a4
+- (BOOL)_insertMessageAttachmentJoinRowWithMessageID:(int64_t)d attachmentID:(int64_t)iD
 {
   ppStmt = 0;
   if (sqlite3_prepare(self->_database, "INSERT INTO message_attachment_join (message_id, attachment_id) VALUES (?, ?)", -1, &ppStmt, 0))
@@ -895,8 +895,8 @@ LABEL_60:
 
   else
   {
-    sqlite3_bind_int64(ppStmt, 1, a3);
-    sqlite3_bind_int64(ppStmt, 2, a4);
+    sqlite3_bind_int64(ppStmt, 1, d);
+    sqlite3_bind_int64(ppStmt, 2, iD);
     v8 = sqlite3_step(ppStmt);
     v7 = v8 == 101;
     if (v8 != 101)
@@ -912,11 +912,11 @@ LABEL_60:
   return v7;
 }
 
-- (id)_handleIDsForMessage:(id)a3
+- (id)_handleIDsForMessage:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WLMessagesMigrator *)self _uniqueHandleStringsWithMessage:v4];
+  messageCopy = message;
+  v5 = [(WLMessagesMigrator *)self _uniqueHandleStringsWithMessage:messageCopy];
   if (![v5 count])
   {
     v17 = 0;
@@ -974,7 +974,7 @@ LABEL_60:
       {
         v22 = sqlite3_errcode(self->_database);
         v23 = sqlite3_errmsg(self->_database);
-        v20 = self;
+        selfCopy = self;
         v21 = "SELECT ROWID FROM handle WHERE id=? LIMIT 1";
         _WLLog();
       }
@@ -996,11 +996,11 @@ LABEL_8:
           sqlite3_bind_text(pStmt, 1, [v10 UTF8String], -1, 0);
           sqlite3_bind_null(pStmt, 2);
           v11 = pStmt;
-          v12 = [(WLMessagesMigrator *)self _serviceStringWithMessage:v4];
+          v12 = [(WLMessagesMigrator *)self _serviceStringWithMessage:messageCopy];
           sqlite3_bind_text(v11, 3, [v12 UTF8String], -1, 0);
 
           v13 = pStmt;
-          v14 = [(WLMessagesMigrator *)self _uncanonicalizedIDWithMessage:v4];
+          v14 = [(WLMessagesMigrator *)self _uncanonicalizedIDWithMessage:messageCopy];
           sqlite3_bind_text(v13, 4, [v14 UTF8String], -1, 0);
 
           if (sqlite3_step(pStmt) == 101)
@@ -1021,7 +1021,7 @@ LABEL_8:
       }
 
 LABEL_19:
-      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{insert_rowid, v20, v21, v22, v23}];
+      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{insert_rowid, selfCopy, v21, v22, v23}];
       [v6 addObject:v16];
     }
 
@@ -1047,22 +1047,22 @@ LABEL_28:
   return v17;
 }
 
-- (id)_uniqueHandleStringsWithMessage:(id)a3
+- (id)_uniqueHandleStringsWithMessage:(id)message
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  if ([v4 isGroupMessage])
+  if ([messageCopy isGroupMessage])
   {
-    if ([v4 messageDirection] == 1)
+    if ([messageCopy messageDirection] == 1)
     {
-      v6 = [v4 sender];
+      sender = [messageCopy sender];
 
-      if (v6)
+      if (sender)
       {
-        v7 = [v4 sender];
-        v8 = [v7 address];
-        v9 = [v8 length];
+        sender2 = [messageCopy sender];
+        address = [sender2 address];
+        v9 = [address length];
 
         if (!v9)
         {
@@ -1070,9 +1070,9 @@ LABEL_28:
           goto LABEL_19;
         }
 
-        v10 = [v4 sender];
-        v11 = [v10 address];
-        [v5 addObject:v11];
+        sender3 = [messageCopy sender];
+        address2 = [sender3 address];
+        [v5 addObject:address2];
       }
     }
 
@@ -1080,8 +1080,8 @@ LABEL_28:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = [v4 recipients];
-    v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    recipients = [messageCopy recipients];
+    v13 = [recipients countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1092,24 +1092,24 @@ LABEL_8:
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(recipients);
         }
 
         v17 = *(*(&v24 + 1) + 8 * v16);
-        v18 = [v17 address];
-        v19 = [v18 length];
+        address3 = [v17 address];
+        v19 = [address3 length];
 
         if (!v19)
         {
           goto LABEL_18;
         }
 
-        v20 = [v17 address];
-        [v5 addObject:v20];
+        address4 = [v17 address];
+        [v5 addObject:address4];
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v14 = [recipients countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v14)
           {
             goto LABEL_8;
@@ -1122,14 +1122,14 @@ LABEL_8:
 
 LABEL_17:
 
-    v21 = [v5 array];
+    array = [v5 array];
     goto LABEL_20;
   }
 
-  v12 = [(WLMessagesMigrator *)self _otherPartyAddressWithNonGroupMessage:v4];
-  if ([v12 length])
+  recipients = [(WLMessagesMigrator *)self _otherPartyAddressWithNonGroupMessage:messageCopy];
+  if ([recipients length])
   {
-    [v5 addObject:v12];
+    [v5 addObject:recipients];
     goto LABEL_17;
   }
 
@@ -1137,38 +1137,38 @@ LABEL_18:
   _WLLog();
 
 LABEL_19:
-  v21 = 0;
+  array = 0;
 LABEL_20:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return array;
 }
 
-- (int64_t)_senderHandleIDFromReceivedGroupMessageHandleIDs:(id)a3
+- (int64_t)_senderHandleIDFromReceivedGroupMessageHandleIDs:(id)ds
 {
-  v3 = [a3 objectAtIndexedSubscript:0];
-  v4 = [v3 longLongValue];
+  v3 = [ds objectAtIndexedSubscript:0];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (int64_t)_handleIDFromNonGroupMessageHandleIDs:(id)a3
+- (int64_t)_handleIDFromNonGroupMessageHandleIDs:(id)ds
 {
-  v3 = [a3 objectAtIndexedSubscript:0];
-  v4 = [v3 longLongValue];
+  v3 = [ds objectAtIndexedSubscript:0];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (int64_t)_chatIDForHandleIDs:(id)a3 groupRoomName:(id)a4 groupID:(id)a5 message:(id)a6
+- (int64_t)_chatIDForHandleIDs:(id)ds groupRoomName:(id)name groupID:(id)d message:(id)message
 {
   v77 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v13 isGroupMessage])
+  dsCopy = ds;
+  nameCopy = name;
+  dCopy = d;
+  messageCopy = message;
+  if ([messageCopy isGroupMessage])
   {
     v14 = "SELECT rowid FROM chat WHERE room_name=?";
   }
@@ -1184,16 +1184,16 @@ LABEL_20:
     goto LABEL_5;
   }
 
-  v16 = [v13 isGroupMessage];
+  isGroupMessage = [messageCopy isGroupMessage];
   v17 = ppStmt;
-  if (v16)
+  if (isGroupMessage)
   {
-    sqlite3_bind_text(ppStmt, 1, [v11 UTF8String], -1, 0);
+    sqlite3_bind_text(ppStmt, 1, [nameCopy UTF8String], -1, 0);
   }
 
   else
   {
-    v18 = [(WLMessagesMigrator *)self _chatIdentifierWithNonGroupMessage:v13];
+    v18 = [(WLMessagesMigrator *)self _chatIdentifierWithNonGroupMessage:messageCopy];
     sqlite3_bind_text(v17, 1, [v18 UTF8String], -1, 0);
   }
 
@@ -1216,7 +1216,7 @@ LABEL_20:
   {
     v57 = sqlite3_errcode(self->_database);
     v59 = sqlite3_errmsg(self->_database);
-    v53 = self;
+    selfCopy = self;
     v55 = v14;
     _WLLog();
   }
@@ -1236,45 +1236,45 @@ LABEL_5:
 
     else
     {
-      if ([v13 isGroupMessage])
+      if ([messageCopy isGroupMessage])
       {
-        [(WLMessagesMigrator *)self _chatGUIDWithGroupRoomName:v11];
+        [(WLMessagesMigrator *)self _chatGUIDWithGroupRoomName:nameCopy];
       }
 
       else
       {
-        [(WLMessagesMigrator *)self _chatGUIDWithNonGroupMessage:v13];
+        [(WLMessagesMigrator *)self _chatGUIDWithNonGroupMessage:messageCopy];
       }
       v26 = ;
       sqlite3_bind_text(pStmt, 1, [v26 UTF8String], -1, 0);
-      sqlite3_bind_int(pStmt, 2, [(WLMessagesMigrator *)self _chatStyleWithMessage:v13]);
-      sqlite3_bind_int(pStmt, 3, [(WLMessagesMigrator *)self _chatStateWithMessage:v13]);
+      sqlite3_bind_int(pStmt, 2, [(WLMessagesMigrator *)self _chatStyleWithMessage:messageCopy]);
+      sqlite3_bind_int(pStmt, 3, [(WLMessagesMigrator *)self _chatStateWithMessage:messageCopy]);
       v27 = pStmt;
-      v28 = [(WLMessagesMigrator *)self _chatAccountIDWithMessage:v13];
+      v28 = [(WLMessagesMigrator *)self _chatAccountIDWithMessage:messageCopy];
       sqlite3_bind_text(v27, 4, [v28 UTF8String], -1, 0);
 
-      v64 = [(WLMessagesMigrator *)self _chatPropertiesDataWithMessage:v13];
+      v64 = [(WLMessagesMigrator *)self _chatPropertiesDataWithMessage:messageCopy];
       sqlite3_bind_blob(pStmt, 5, [v64 bytes], objc_msgSend(v64, "length"), 0);
-      v29 = [v13 isGroupMessage];
+      isGroupMessage2 = [messageCopy isGroupMessage];
       v30 = pStmt;
-      if (v29)
+      if (isGroupMessage2)
       {
-        sqlite3_bind_text(pStmt, 6, [v11 UTF8String], -1, 0);
+        sqlite3_bind_text(pStmt, 6, [nameCopy UTF8String], -1, 0);
       }
 
       else
       {
-        v31 = [(WLMessagesMigrator *)self _chatIdentifierWithNonGroupMessage:v13];
+        v31 = [(WLMessagesMigrator *)self _chatIdentifierWithNonGroupMessage:messageCopy];
         sqlite3_bind_text(v30, 6, [v31 UTF8String], -1, 0);
       }
 
       v32 = pStmt;
-      v33 = [(WLMessagesMigrator *)self _chatServiceWithMessage:v13, v53, v55, v57, v59];
+      v33 = [(WLMessagesMigrator *)self _chatServiceWithMessage:messageCopy, selfCopy, v55, v57, v59];
       sqlite3_bind_text(v32, 7, [v33 UTF8String], -1, 0);
 
-      if ([v13 isGroupMessage])
+      if ([messageCopy isGroupMessage])
       {
-        sqlite3_bind_text(pStmt, 8, [v11 UTF8String], -1, 0);
+        sqlite3_bind_text(pStmt, 8, [nameCopy UTF8String], -1, 0);
       }
 
       else
@@ -1283,27 +1283,27 @@ LABEL_5:
       }
 
       v34 = pStmt;
-      v35 = [(WLMessagesMigrator *)self _chatAccountLoginWithMessage:v13];
+      v35 = [(WLMessagesMigrator *)self _chatAccountLoginWithMessage:messageCopy];
       sqlite3_bind_text(v34, 9, [v35 UTF8String], -1, 0);
 
       v36 = pStmt;
-      v37 = [(WLMessagesMigrator *)self _chatLastAddressedHandleWithMessage:v13];
+      v37 = [(WLMessagesMigrator *)self _chatLastAddressedHandleWithMessage:messageCopy];
       sqlite3_bind_text(v36, 10, [v37 UTF8String], -1, 0);
 
       v38 = pStmt;
-      v39 = [(WLMessagesMigrator *)self _chatDisplayNameWithMessage:v13];
+      v39 = [(WLMessagesMigrator *)self _chatDisplayNameWithMessage:messageCopy];
       sqlite3_bind_text(v38, 11, [v39 UTF8String], -1, 0);
 
-      v40 = [v13 isGroupMessage];
+      isGroupMessage3 = [messageCopy isGroupMessage];
       v41 = pStmt;
-      if (v40)
+      if (isGroupMessage3)
       {
-        sqlite3_bind_text(pStmt, 12, [v12 UTF8String], -1, 0);
+        sqlite3_bind_text(pStmt, 12, [dCopy UTF8String], -1, 0);
       }
 
       else
       {
-        v42 = [(WLMessagesMigrator *)self _chatGroupIDWithNonGroupMessage:v13];
+        v42 = [(WLMessagesMigrator *)self _chatGroupIDWithNonGroupMessage:messageCopy];
         sqlite3_bind_text(v41, 12, [v42 UTF8String], -1, 0);
       }
 
@@ -1316,7 +1316,7 @@ LABEL_5:
       {
         v56 = sqlite3_errcode(self->_database);
         v58 = sqlite3_errmsg(self->_database);
-        v54 = self;
+        selfCopy2 = self;
         _WLLog();
         insert_rowid = -1;
       }
@@ -1326,15 +1326,15 @@ LABEL_5:
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v43 = v10;
+      v43 = dsCopy;
       v44 = [v43 countByEnumeratingWithState:&v69 objects:v76 count:16];
       if (v44)
       {
         v45 = v44;
         v60 = v26;
-        v62 = v11;
-        v46 = v12;
-        v47 = v10;
+        v62 = nameCopy;
+        v46 = dCopy;
+        v47 = dsCopy;
         v48 = *v70;
         while (2)
         {
@@ -1365,28 +1365,28 @@ LABEL_5:
         }
 
 LABEL_53:
-        v10 = v47;
-        v12 = v46;
-        v11 = v62;
+        dsCopy = v47;
+        dCopy = v46;
+        nameCopy = v62;
         v26 = v60;
       }
     }
   }
 
-  else if ([v13 isGroupMessage])
+  else if ([messageCopy isGroupMessage])
   {
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v19 = v10;
+    v19 = dsCopy;
     v20 = [v19 countByEnumeratingWithState:&v65 objects:v75 count:16];
     if (v20)
     {
       v21 = v20;
-      v61 = v11;
-      v63 = v12;
-      v22 = v10;
+      v61 = nameCopy;
+      v63 = dCopy;
+      v22 = dsCopy;
       v23 = *v66;
       while (2)
       {
@@ -1417,9 +1417,9 @@ LABEL_53:
       }
 
 LABEL_56:
-      v10 = v22;
-      v11 = v61;
-      v12 = v63;
+      dsCopy = v22;
+      nameCopy = v61;
+      dCopy = v63;
     }
   }
 
@@ -1427,17 +1427,17 @@ LABEL_56:
   return insert_rowid;
 }
 
-- (id)_chatGUIDWithNonGroupMessage:(id)a3
+- (id)_chatGUIDWithNonGroupMessage:(id)message
 {
-  v3 = [(WLMessagesMigrator *)self _otherPartyAddressWithNonGroupMessage:a3];
+  v3 = [(WLMessagesMigrator *)self _otherPartyAddressWithNonGroupMessage:message];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SMS-;%@", v3];;
 
   return v4;
 }
 
-- (int64_t)_chatStyleWithMessage:(id)a3
+- (int64_t)_chatStyleWithMessage:(id)message
 {
-  if ([a3 isGroupMessage])
+  if ([message isGroupMessage])
   {
     return 43;
   }
@@ -1448,19 +1448,19 @@ LABEL_56:
   }
 }
 
-- (id)_chatAccountLoginWithMessage:(id)a3
+- (id)_chatAccountLoginWithMessage:(id)message
 {
-  v3 = [(WLMessagesMigrator *)self _ourAddressWithMessage:a3];
+  v3 = [(WLMessagesMigrator *)self _ourAddressWithMessage:message];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"P:%@", v3];
 
   return v4;
 }
 
-- (int64_t)_insertMessageRowWithMessage:(id)a3 handleIDs:(id)a4 groupRoomName:(id)a5
+- (int64_t)_insertMessageRowWithMessage:(id)message handleIDs:(id)ds groupRoomName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dsCopy = ds;
+  nameCopy = name;
   ppStmt = 0;
   if (sqlite3_prepare(self->_database, "INSERT INTO message (guid, text, service_center, handle_id, subject, country, attributedBody, version, service, account, account_guid, error, date, date_read, date_delivered, is_finished, is_from_me, cache_roomnames, was_data_detected, date_played, group_title, is_read, is_sent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", -1, &ppStmt, 0))
   {
@@ -1471,64 +1471,64 @@ LABEL_56:
     goto LABEL_15;
   }
 
-  v12 = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
-  sqlite3_bind_text(ppStmt, 1, [v12 UTF8String], -1, 0);
+  wl_uniqueIdentifier = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
+  sqlite3_bind_text(ppStmt, 1, [wl_uniqueIdentifier UTF8String], -1, 0);
   v13 = ppStmt;
-  v14 = [v8 messageText];
-  sqlite3_bind_text(v13, 2, [v14 UTF8String], -1, 0);
+  messageText = [messageCopy messageText];
+  sqlite3_bind_text(v13, 2, [messageText UTF8String], -1, 0);
 
   v15 = ppStmt;
-  v16 = [(WLMessagesMigrator *)self _messageServiceCenterWithMessage:v8];
+  v16 = [(WLMessagesMigrator *)self _messageServiceCenterWithMessage:messageCopy];
   sqlite3_bind_text(v15, 3, [v16 UTF8String], -1, 0);
 
-  if ([v8 isGroupMessage])
+  if ([messageCopy isGroupMessage])
   {
-    if (![v8 messageDirection])
+    if (![messageCopy messageDirection])
     {
       v18 = 0;
       goto LABEL_8;
     }
 
-    v17 = [(WLMessagesMigrator *)self _senderHandleIDFromReceivedGroupMessageHandleIDs:v9];
+    v17 = [(WLMessagesMigrator *)self _senderHandleIDFromReceivedGroupMessageHandleIDs:dsCopy];
   }
 
   else
   {
-    v17 = [(WLMessagesMigrator *)self _handleIDFromNonGroupMessageHandleIDs:v9];
+    v17 = [(WLMessagesMigrator *)self _handleIDFromNonGroupMessageHandleIDs:dsCopy];
   }
 
   v18 = v17;
 LABEL_8:
   sqlite3_bind_int64(ppStmt, 4, v18);
   v19 = ppStmt;
-  v20 = [(WLMessagesMigrator *)self _messageSubjectWithMessage:v8];
+  v20 = [(WLMessagesMigrator *)self _messageSubjectWithMessage:messageCopy];
   sqlite3_bind_text(v19, 5, [v20 UTF8String], -1, 0);
 
   sqlite3_bind_null(ppStmt, 6);
-  v21 = [(WLMessagesMigrator *)self _messageAttributedBodyDataWithMessage:v8];
+  v21 = [(WLMessagesMigrator *)self _messageAttributedBodyDataWithMessage:messageCopy];
   sqlite3_bind_blob(ppStmt, 7, [v21 bytes], objc_msgSend(v21, "length"), 0);
-  sqlite3_bind_int(ppStmt, 8, [(WLMessagesMigrator *)self _messageVersionWithMessage:v8]);
+  sqlite3_bind_int(ppStmt, 8, [(WLMessagesMigrator *)self _messageVersionWithMessage:messageCopy]);
   v22 = ppStmt;
-  v23 = [(WLMessagesMigrator *)self _messageServiceWithMessage:v8];
+  v23 = [(WLMessagesMigrator *)self _messageServiceWithMessage:messageCopy];
   sqlite3_bind_text(v22, 9, [v23 UTF8String], -1, 0);
 
   v24 = ppStmt;
-  v25 = [(WLMessagesMigrator *)self _messageAccountWithMessage:v8];
+  v25 = [(WLMessagesMigrator *)self _messageAccountWithMessage:messageCopy];
   sqlite3_bind_text(v24, 10, [v25 UTF8String], -1, 0);
 
   v26 = ppStmt;
-  v27 = [(WLMessagesMigrator *)self _messageAccountGUIDWithMessage:v8];
+  v27 = [(WLMessagesMigrator *)self _messageAccountGUIDWithMessage:messageCopy];
   sqlite3_bind_text(v26, 11, [v27 UTF8String], -1, 0);
 
-  sqlite3_bind_int(ppStmt, 12, [(WLMessagesMigrator *)self _messageErrorWithMessage:v8]);
-  sqlite3_bind_int64(ppStmt, 13, [(WLMessagesMigrator *)self _messageDateWithMessage:v8]);
-  sqlite3_bind_int64(ppStmt, 14, [(WLMessagesMigrator *)self _messageDateReadWithMessage:v8]);
-  sqlite3_bind_int64(ppStmt, 15, [(WLMessagesMigrator *)self _messageDateDeliveredWithMessage:v8]);
+  sqlite3_bind_int(ppStmt, 12, [(WLMessagesMigrator *)self _messageErrorWithMessage:messageCopy]);
+  sqlite3_bind_int64(ppStmt, 13, [(WLMessagesMigrator *)self _messageDateWithMessage:messageCopy]);
+  sqlite3_bind_int64(ppStmt, 14, [(WLMessagesMigrator *)self _messageDateReadWithMessage:messageCopy]);
+  sqlite3_bind_int64(ppStmt, 15, [(WLMessagesMigrator *)self _messageDateDeliveredWithMessage:messageCopy]);
   sqlite3_bind_int(ppStmt, 16, 1);
-  sqlite3_bind_int(ppStmt, 17, [(WLMessagesMigrator *)self _messageIsFromMeWithMessage:v8]);
-  if ([v8 isGroupMessage])
+  sqlite3_bind_int(ppStmt, 17, [(WLMessagesMigrator *)self _messageIsFromMeWithMessage:messageCopy]);
+  if ([messageCopy isGroupMessage])
   {
-    sqlite3_bind_text(ppStmt, 18, [v10 UTF8String], -1, 0);
+    sqlite3_bind_text(ppStmt, 18, [nameCopy UTF8String], -1, 0);
   }
 
   else
@@ -1539,7 +1539,7 @@ LABEL_8:
   sqlite3_bind_int(ppStmt, 19, 1);
   sqlite3_bind_int(ppStmt, 20, 0);
   v28 = ppStmt;
-  v29 = [(WLMessagesMigrator *)self _messageGroupTitleWithMessage:v8];
+  v29 = [(WLMessagesMigrator *)self _messageGroupTitleWithMessage:messageCopy];
   sqlite3_bind_text(v28, 21, [v29 UTF8String], -1, 0);
 
   sqlite3_bind_int(ppStmt, 22, 1);
@@ -1563,29 +1563,29 @@ LABEL_15:
   return insert_rowid;
 }
 
-- (id)_messageAttributedBodyDataWithMessage:(id)a3
+- (id)_messageAttributedBodyDataWithMessage:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc(MEMORY[0x277CCA898]);
-  v5 = [v3 messageText];
-  v6 = [v4 initWithString:v5];
+  messageText = [messageCopy messageText];
+  v6 = [v4 initWithString:messageText];
 
-  v7 = [v3 attachments];
-  v8 = [v7 count];
+  attachments = [messageCopy attachments];
+  v8 = [attachments count];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CBEB18]);
-    v10 = [v3 attachments];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+    attachments2 = [messageCopy attachments];
+    v11 = [v9 initWithCapacity:{objc_msgSend(attachments2, "count")}];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v3 attachments];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    attachments3 = [messageCopy attachments];
+    v13 = [attachments3 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1596,14 +1596,14 @@ LABEL_15:
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(attachments3);
           }
 
-          v17 = [*(*(&v23 + 1) + 8 * i) guid];
-          [v11 addObject:v17];
+          guid = [*(*(&v23 + 1) + 8 * i) guid];
+          [v11 addObject:guid];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v14 = [attachments3 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v14);
@@ -1622,51 +1622,51 @@ LABEL_15:
   return v19;
 }
 
-- (id)_messageAccountWithMessage:(id)a3
+- (id)_messageAccountWithMessage:(id)message
 {
-  v3 = [(WLMessagesMigrator *)self _ourAddressWithMessage:a3];
+  v3 = [(WLMessagesMigrator *)self _ourAddressWithMessage:message];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"p:%@", v3];
 
   return v4;
 }
 
-- (int64_t)_messageDateWithMessage:(id)a3
+- (int64_t)_messageDateWithMessage:(id)message
 {
-  v3 = [a3 date];
-  [v3 timeIntervalSinceReferenceDate];
+  date = [message date];
+  [date timeIntervalSinceReferenceDate];
   v5 = (v4 * 1000000000.0);
 
   return v5;
 }
 
-- (int64_t)_messageDateReadWithMessage:(id)a3
+- (int64_t)_messageDateReadWithMessage:(id)message
 {
-  v3 = [a3 date];
-  [v3 timeIntervalSinceReferenceDate];
+  date = [message date];
+  [date timeIntervalSinceReferenceDate];
   v5 = (v4 * 1000000000.0);
 
   return v5;
 }
 
-- (int64_t)_messageDateDeliveredWithMessage:(id)a3
+- (int64_t)_messageDateDeliveredWithMessage:(id)message
 {
-  v3 = [a3 date];
-  [v3 timeIntervalSinceReferenceDate];
+  date = [message date];
+  [date timeIntervalSinceReferenceDate];
   v5 = (v4 * 1000000000.0);
 
   return v5;
 }
 
-- (int64_t)_attachmentDateWithMessage:(id)a3
+- (int64_t)_attachmentDateWithMessage:(id)message
 {
-  v3 = [a3 date];
-  [v3 timeIntervalSinceReferenceDate];
+  date = [message date];
+  [date timeIntervalSinceReferenceDate];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)_insertChatMessageJoinRowWithChatID:(int64_t)a3 messageID:(int64_t)a4 date:(int64_t)a5
+- (BOOL)_insertChatMessageJoinRowWithChatID:(int64_t)d messageID:(int64_t)iD date:(int64_t)date
 {
   ppStmt = 0;
   if (sqlite3_prepare(self->_database, "INSERT INTO chat_message_join (chat_id, message_id, message_date) VALUES (?, ?, ?)", -1, &ppStmt, 0))
@@ -1679,9 +1679,9 @@ LABEL_15:
 
   else
   {
-    sqlite3_bind_int64(ppStmt, 1, a3);
-    sqlite3_bind_int64(ppStmt, 2, a4);
-    sqlite3_bind_int64(ppStmt, 3, a5);
+    sqlite3_bind_int64(ppStmt, 1, d);
+    sqlite3_bind_int64(ppStmt, 2, iD);
+    sqlite3_bind_int64(ppStmt, 3, date);
     v10 = sqlite3_step(ppStmt);
     v9 = v10 == 101;
     if (v10 != 101)
@@ -1697,9 +1697,9 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)_insertChatHandleJoinRowWithChatID:(int64_t)a3 handleID:(int64_t)a4 duplicateMightExist:(BOOL)a5
+- (BOOL)_insertChatHandleJoinRowWithChatID:(int64_t)d handleID:(int64_t)iD duplicateMightExist:(BOOL)exist
 {
-  if (a5)
+  if (exist)
   {
     v8 = "INSERT OR IGNORE INTO chat_handle_join (chat_id, handle_id) VALUES (?, ?)";
   }
@@ -1720,8 +1720,8 @@ LABEL_15:
 
   else
   {
-    sqlite3_bind_int64(ppStmt, 1, a3);
-    sqlite3_bind_int64(ppStmt, 2, a4);
+    sqlite3_bind_int64(ppStmt, 1, d);
+    sqlite3_bind_int64(ppStmt, 2, iD);
     v10 = sqlite3_step(ppStmt);
     v9 = v10 == 101;
     if (v10 != 101)
@@ -1763,11 +1763,11 @@ LABEL_15:
   }
 }
 
-- (BOOL)isValidTableName:(id)a3
+- (BOOL)isValidTableName:(id)name
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"_" withString:&stru_2882CBB40];
-  v4 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  v3 = [name stringByReplacingOccurrencesOfString:@"_" withString:&stru_2882CBB40];
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:alphanumericCharacterSet];
 
   if ([v3 length])
   {
@@ -1783,19 +1783,19 @@ LABEL_15:
   return v7;
 }
 
-- (void)deleteFromTable:(id)a3
+- (void)deleteFromTable:(id)table
 {
-  v4 = a3;
-  if (![(WLMessagesMigrator *)self isValidTableName:v4])
+  tableCopy = table;
+  if (![(WLMessagesMigrator *)self isValidTableName:tableCopy])
   {
     goto LABEL_4;
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM %@", v4];
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM %@", tableCopy];
 
   ppStmt = 0;
-  v4 = v5;
-  if (sqlite3_prepare(self->_database, [v5 UTF8String], -1, &ppStmt, 0))
+  tableCopy = tableCopy;
+  if (sqlite3_prepare(self->_database, [tableCopy UTF8String], -1, &ppStmt, 0))
   {
     sqlite3_errcode(self->_database);
     sqlite3_errmsg(self->_database);

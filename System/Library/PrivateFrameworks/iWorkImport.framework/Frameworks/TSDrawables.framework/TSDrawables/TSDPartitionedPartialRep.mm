@@ -3,20 +3,20 @@
 - (CGRect)clipRect;
 - (CGRect)layerFrameInScaledCanvas;
 - (CGRect)p_clipRect;
-- (CGRect)p_convertBaseToPartitioningNaturalRect:(CGRect)a3;
-- (TSDPartitionedPartialRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CGRect)p_convertBaseToPartitioningNaturalRect:(CGRect)rect;
+- (TSDPartitionedPartialRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (UIEdgeInsets)p_edgeInsetsForClipping;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)willBeRemoved;
 @end
 
 @implementation TSDPartitionedPartialRep
 
-- (TSDPartitionedPartialRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDPartitionedPartialRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  if (!layoutCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSDPartitionedPartialRep initWithLayout:canvas:]");
@@ -28,10 +28,10 @@
 
   v24.receiver = self;
   v24.super_class = TSDPartitionedPartialRep;
-  v16 = [(TSDRep *)&v24 initWithLayout:v6 canvas:v8];
+  v16 = [(TSDRep *)&v24 initWithLayout:layoutCopy canvas:canvasCopy];
   if (v16)
   {
-    v17 = v6;
+    v17 = layoutCopy;
     objc_opt_class();
     v20 = objc_msgSend_partitioner(v17, v18, v19);
     v21 = TSUDynamicCast();
@@ -112,9 +112,9 @@
   [(TSDRep *)&v10 willBeRemoved];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = objc_msgSend_layout(self, a2, a3);
+  v5 = objc_msgSend_layout(self, a2, context);
   v8 = objc_msgSend_partitioner(v5, v6, v7);
   v11 = objc_msgSend_canvas(self, v9, v10);
   objc_msgSend_i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas_(v8, v12, v11);
@@ -122,7 +122,7 @@
   v15 = objc_msgSend_i_layout(v8, v13, v14);
   objc_msgSend_frameForPartitioning(v15, v16, v17);
   v19 = v18;
-  CGContextTranslateCTM(a3, -v20, -v21);
+  CGContextTranslateCTM(context, -v20, -v21);
   objc_msgSend_bounds(v5, v22, v23);
   v25 = v24;
   v27 = v26;
@@ -140,11 +140,11 @@
   memset(&v41, 0, sizeof(v41));
   CGAffineTransformMakeTranslation(&v41, -v25, -v27);
   v40 = v41;
-  CGContextConcatCTM(a3, &v40);
+  CGContextConcatCTM(context, &v40);
   v36 = objc_msgSend_canvas(self, v34, v35);
   v38 = objc_msgSend_i_repForCanvas_(v8, v37, v36);
 
-  objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(v38, v39, a3, 0);
+  objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(v38, v39, context, 0);
 }
 
 - (UIEdgeInsets)p_edgeInsetsForClipping
@@ -419,12 +419,12 @@ LABEL_24:
   return Image;
 }
 
-- (CGRect)p_convertBaseToPartitioningNaturalRect:(CGRect)a3
+- (CGRect)p_convertBaseToPartitioningNaturalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = objc_msgSend_layout(self, a2, v3);
   v12 = objc_msgSend_partitioner(v9, v10, v11);
   v15 = objc_msgSend_canvas(self, v13, v14);

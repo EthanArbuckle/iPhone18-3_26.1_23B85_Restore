@@ -1,7 +1,7 @@
 @interface SRAssetBundleCacheEntry
-- (BOOL)makeResultWithBundleVersion:(id)a3 path:(id)a4 loaded:(BOOL)a5;
+- (BOOL)makeResultWithBundleVersion:(id)version path:(id)path loaded:(BOOL)loaded;
 - (BOOL)onDevice;
-- (SRAssetBundleCacheEntry)initWithAssetType:(int64_t)a3 language:(id)a4 deliveryType:(int64_t)a5;
+- (SRAssetBundleCacheEntry)initWithAssetType:(int64_t)type language:(id)language deliveryType:(int64_t)deliveryType;
 - (void)makeResultNone;
 - (void)onDevice;
 @end
@@ -11,29 +11,29 @@
 - (void)makeResultNone
 {
   v11 = *MEMORY[0x1E69E9840];
-  [a1 assetTypeString];
+  [self assetTypeString];
   objc_claimAutoreleasedReturnValue();
-  v2 = [OUTLINED_FUNCTION_5() deliveryTypeString];
+  deliveryTypeString = [OUTLINED_FUNCTION_5() deliveryTypeString];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_6(&dword_1AE58E000, v3, v4, "No assets for (%@, %@, %@)", v5, v6, v7, v8, v10);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (SRAssetBundleCacheEntry)initWithAssetType:(int64_t)a3 language:(id)a4 deliveryType:(int64_t)a5
+- (SRAssetBundleCacheEntry)initWithAssetType:(int64_t)type language:(id)language deliveryType:(int64_t)deliveryType
 {
-  v9 = a4;
+  languageCopy = language;
   v15.receiver = self;
   v15.super_class = SRAssetBundleCacheEntry;
   v10 = [(SRAssetBundleCacheEntry *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_assetType = a3;
-    objc_storeStrong(&v10->_language, a4);
+    v10->_assetType = type;
+    objc_storeStrong(&v10->_language, language);
     v11->_isResult = 0;
     bundleVersion = v11->_bundleVersion;
-    v11->_deliveryType = a5;
+    v11->_deliveryType = deliveryType;
     v11->_bundleVersion = 0;
 
     path = v11->_path;
@@ -45,14 +45,14 @@
   return v11;
 }
 
-- (BOOL)makeResultWithBundleVersion:(id)a3 path:(id)a4 loaded:(BOOL)a5
+- (BOOL)makeResultWithBundleVersion:(id)version path:(id)path loaded:(BOOL)loaded
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  versionCopy = version;
+  pathCopy = path;
+  v11 = pathCopy;
   self->_isResult = 1;
-  if (!v9)
+  if (!versionCopy)
   {
     v14 = SRLogCategoryAssets();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@
     goto LABEL_10;
   }
 
-  if (!v10)
+  if (!pathCopy)
   {
     v14 = SRLogCategoryAssets();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -84,30 +84,30 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&self->_bundleVersion, a3);
-  objc_storeStrong(&self->_path, a4);
-  self->_loaded = a5;
+  objc_storeStrong(&self->_bundleVersion, version);
+  objc_storeStrong(&self->_path, path);
+  self->_loaded = loaded;
   v12 = SRLogCategoryAssets();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [(SRAssetBundleVersion *)self->_bundleVersion version];
+    version = [(SRAssetBundleVersion *)self->_bundleVersion version];
     v20 = self->_path;
     loaded = self->_loaded;
-    v22 = [(SRAssetBundleCacheEntry *)self assetTypeString];
+    assetTypeString = [(SRAssetBundleCacheEntry *)self assetTypeString];
     language = self->_language;
-    v24 = [(SRAssetBundleCacheEntry *)self deliveryTypeString];
+    deliveryTypeString = [(SRAssetBundleCacheEntry *)self deliveryTypeString];
     v25 = 138413570;
-    v26 = v19;
+    v26 = version;
     v27 = 2112;
     v28 = v20;
     v29 = 1024;
-    v30 = loaded;
+    loadedCopy = loaded;
     v31 = 2112;
-    v32 = v22;
+    v32 = assetTypeString;
     v33 = 2112;
     v34 = language;
     v35 = 2112;
-    v36 = v24;
+    v36 = deliveryTypeString;
     _os_log_debug_impl(&dword_1AE58E000, v12, OS_LOG_TYPE_DEBUG, "(%@, %@, %d) for asset (%@, %@, %@)", &v25, 0x3Au);
   }
 
@@ -121,8 +121,8 @@ LABEL_11:
 - (BOOL)onDevice
 {
   v9 = 0;
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:self->_path isDirectory:&v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:self->_path isDirectory:&v9];
 
   if ((v4 & 1) == 0)
   {
@@ -181,9 +181,9 @@ LABEL_11:
 - (void)onDevice
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a1 assetTypeString];
-  v5 = a1[3];
-  v6 = [a1 deliveryTypeString];
+  assetTypeString = [self assetTypeString];
+  v5 = self[3];
+  deliveryTypeString = [self deliveryTypeString];
   v7 = *a2;
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_3();

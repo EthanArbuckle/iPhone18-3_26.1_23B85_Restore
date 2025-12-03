@@ -34,12 +34,12 @@
 {
   if (+[NPHSharedUtilities isActiveDeviceTinker])
   {
-    [a1 nph_localProviderManager];
+    [self nph_localProviderManager];
   }
 
   else
   {
-    [a1 nph_pairedHostDeviceProviderManager];
+    [self nph_pairedHostDeviceProviderManager];
   }
   v2 = ;
 

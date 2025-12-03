@@ -1,29 +1,29 @@
 @interface CCSignificantLocationContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCSignificantLocationAddress)address;
-- (CCSignificantLocationContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCSignificantLocationContent)initWithPreferredName:(id)a3 mapItemName:(id)a4 address:(id)a5 error:(id *)a6;
+- (CCSignificantLocationContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCSignificantLocationContent)initWithPreferredName:(id)name mapItemName:(id)itemName address:(id)address error:(id *)error;
 - (NSString)mapItemName;
 - (NSString)preferredName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCSignificantLocationContent
 
-- (CCSignificantLocationContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCSignificantLocationContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v18[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"preferredName"];
-    v10 = [v6 objectForKeyedSubscript:@"mapItemName"];
-    v11 = [v6 objectForKeyedSubscript:@"address"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"preferredName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mapItemName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"address"];
     if (v11)
     {
       v12 = v11;
@@ -45,7 +45,7 @@
       v13 = 0;
     }
 
-    v16 = [[CCSignificantLocationContent alloc] initWithPreferredName:v9 mapItemName:v10 address:v13 error:a4];
+    v16 = [[CCSignificantLocationContent alloc] initWithPreferredName:v9 mapItemName:v10 address:v13 error:error];
     v12 = v13;
 LABEL_10:
 
@@ -64,21 +64,21 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_preferredName)
   {
-    v4 = [(CCSignificantLocationContent *)self preferredName];
-    [v3 setObject:v4 forKeyedSubscript:@"preferredName"];
+    preferredName = [(CCSignificantLocationContent *)self preferredName];
+    [v3 setObject:preferredName forKeyedSubscript:@"preferredName"];
   }
 
   if (self->_mapItemName)
   {
-    v5 = [(CCSignificantLocationContent *)self mapItemName];
-    [v3 setObject:v5 forKeyedSubscript:@"mapItemName"];
+    mapItemName = [(CCSignificantLocationContent *)self mapItemName];
+    [v3 setObject:mapItemName forKeyedSubscript:@"mapItemName"];
   }
 
   if (self->_address)
   {
-    v6 = [(CCSignificantLocationContent *)self address];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"address"];
+    address = [(CCSignificantLocationContent *)self address];
+    jsonDictionary = [address jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"address"];
   }
 
   v8 = [v3 copy];
@@ -86,28 +86,28 @@ LABEL_11:
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_preferredName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15768 stringValue:self->_preferredName];
-    v9[2](v9, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_mapItemName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15769 stringValue:self->_mapItemName];
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
-  v7 = v9;
+  v7 = blockCopy;
   if (self->_address)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15763 subMessageValue:self->_address];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
 
-    v7 = v9;
+    v7 = blockCopy;
   }
 }
 
@@ -132,10 +132,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -300,13 +300,13 @@ LABEL_39:
   return v35;
 }
 
-- (CCSignificantLocationContent)initWithPreferredName:(id)a3 mapItemName:(id)a4 address:(id)a5 error:(id *)a6
+- (CCSignificantLocationContent)initWithPreferredName:(id)name mapItemName:(id)itemName address:(id)address error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  itemNameCopy = itemName;
+  addressCopy = address;
   v13 = objc_opt_new();
-  if (v10)
+  if (nameCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -317,11 +317,11 @@ LABEL_39:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!itemNameCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (addressCopy)
       {
         goto LABEL_5;
       }
@@ -335,7 +335,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!itemNameCopy)
     {
       goto LABEL_4;
     }
@@ -348,13 +348,13 @@ LABEL_11:
   if (!v20)
   {
     CCSetError();
-    v19 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!addressCopy)
   {
     goto LABEL_11;
   }
@@ -366,35 +366,35 @@ LABEL_5:
 
   if (v17)
   {
-    v18 = [v12 data];
+    data = [addressCopy data];
     CCPBDataWriterWriteDataField();
 
 LABEL_12:
-    v21 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v21 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v19 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v19 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v19;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 15757) > 0x20)
+  if ((identifier - 15757) > 0x20)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E73E79E0 + (a3 - 15757));
+    return *(&off_1E73E79E0 + (identifier - 15757));
   }
 }
 

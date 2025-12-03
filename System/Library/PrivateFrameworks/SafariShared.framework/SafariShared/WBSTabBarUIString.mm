@@ -1,33 +1,33 @@
 @interface WBSTabBarUIString
-+ (id)accessibilityLabelForNumberOfTabs:(unint64_t)a3 andNumberOfPinnedTabs:(unint64_t)a4;
++ (id)accessibilityLabelForNumberOfTabs:(unint64_t)tabs andNumberOfPinnedTabs:(unint64_t)pinnedTabs;
 @end
 
 @implementation WBSTabBarUIString
 
-+ (id)accessibilityLabelForNumberOfTabs:(unint64_t)a3 andNumberOfPinnedTabs:(unint64_t)a4
++ (id)accessibilityLabelForNumberOfTabs:(unint64_t)tabs andNumberOfPinnedTabs:(unint64_t)pinnedTabs
 {
-  if (a3)
+  if (tabs)
   {
     v6 = MEMORY[0x1E696AEC0];
-    if (a4)
+    if (pinnedTabs)
     {
       v7 = _WBSLocalizedString();
-      v8 = [v6 localizedStringWithFormat:v7, a3, a4];
+      pinnedTabs = [v6 localizedStringWithFormat:v7, tabs, pinnedTabs];
     }
 
     else
     {
       v9 = _WBSLocalizedString();
-      v8 = [v6 localizedStringWithFormat:v9, a3];
+      pinnedTabs = [v6 localizedStringWithFormat:v9, tabs];
     }
   }
 
   else
   {
-    v8 = _WBSLocalizedString();
+    pinnedTabs = _WBSLocalizedString();
   }
 
-  return v8;
+  return pinnedTabs;
 }
 
 @end

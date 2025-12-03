@@ -1,5 +1,5 @@
 @interface YearViewYearHeaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateYearNumber;
 - (void)_reloadYearNumberLabel;
@@ -7,18 +7,18 @@
 
 @implementation YearViewYearHeaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"YearViewYearHeader" hasInstanceVariable:@"_yearNumber" withType:"UILabel"];
-  [v3 validateClass:@"YearViewYearHeader" hasInstanceMethod:@"_reloadYearNumberLabel" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"YearViewYearHeader" hasInstanceVariable:@"_yearNumber" withType:"UILabel"];
+  [validationsCopy validateClass:@"YearViewYearHeader" hasInstanceMethod:@"_reloadYearNumberLabel" withFullSignature:{"v", 0}];
 }
 
 - (void)_axAnnotateYearNumber
 {
   v3 = [(YearViewYearHeaderAccessibility *)self safeValueForKey:@"_yearNumber"];
-  v2 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v2];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
   [v3 _accessibilitySetIsSpeakThisElement:0];
 }
 

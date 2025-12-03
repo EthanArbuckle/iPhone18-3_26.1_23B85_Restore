@@ -1,8 +1,8 @@
 @interface DashboardSidebarPresenter
 - (GKDashboardRequest)request;
 - (NSString)title;
-- (_TtC12GameCenterUI25DashboardSidebarPresenter)initWithPlayerId:(id)a3;
-- (void)fetchGameRecordAfterAuthenticationFor:(id)a3;
+- (_TtC12GameCenterUI25DashboardSidebarPresenter)initWithPlayerId:(id)id;
+- (void)fetchGameRecordAfterAuthenticationFor:(id)for;
 - (void)handleViewDidLoad;
 @end
 
@@ -17,7 +17,7 @@
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E03C064();
   v4 = v3;
 
@@ -36,21 +36,21 @@
 
 - (void)handleViewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E03C090();
 }
 
-- (void)fetchGameRecordAfterAuthenticationFor:(id)a3
+- (void)fetchGameRecordAfterAuthenticationFor:(id)for
 {
   v4 = sub_24E347CF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_24E0412E8(v4, v6);
 }
 
-- (_TtC12GameCenterUI25DashboardSidebarPresenter)initWithPlayerId:(id)a3
+- (_TtC12GameCenterUI25DashboardSidebarPresenter)initWithPlayerId:(id)id
 {
-  if (a3)
+  if (id)
   {
     sub_24E347CF8();
   }

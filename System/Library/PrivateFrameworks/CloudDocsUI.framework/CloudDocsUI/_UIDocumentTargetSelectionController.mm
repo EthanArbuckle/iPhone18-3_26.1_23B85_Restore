@@ -1,48 +1,48 @@
 @interface _UIDocumentTargetSelectionController
-+ (id)_loadThumbnailForURL:(id)a3 size:(CGSize)a4 scale:(double)a5 wantsBorder:(BOOL *)a6 generatedThumbnail:(BOOL *)a7;
-- (_UIDocumentTargetSelectionController)initWithItemsToMove:(id)a3;
++ (id)_loadThumbnailForURL:(id)l size:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border generatedThumbnail:(BOOL *)thumbnail;
+- (_UIDocumentTargetSelectionController)initWithItemsToMove:(id)move;
 - (_UIDocumentTargetSelectionControllerDelegate)delegate;
-- (id)initForCopyWithItems:(id)a3;
-- (id)initForCrossContainerMoveWithItemsToMove:(id)a3;
+- (id)initForCopyWithItems:(id)items;
+- (id)initForCrossContainerMoveWithItemsToMove:(id)move;
 - (id)navControllerForPalette;
 - (id)pickableTypes;
-- (void)_commonInitItems:(id)a3 crossContainer:(BOOL)a4 sourceContainer:(id)a5;
-- (void)_setContainerViewController:(id)a3;
-- (void)_setIconViewImage:(id)a3 border:(BOOL)a4;
+- (void)_commonInitItems:(id)items crossContainer:(BOOL)container sourceContainer:(id)sourceContainer;
+- (void)_setContainerViewController:(id)controller;
+- (void)_setIconViewImage:(id)image border:(BOOL)border;
 - (void)_setupNavigationItem;
 - (void)_setupPalette;
 - (void)_updatePalette;
-- (void)didSelectItem:(id)a3;
-- (void)dismiss:(id)a3;
-- (void)setItemsToMove:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)didSelectItem:(id)item;
+- (void)dismiss:(id)dismiss;
+- (void)setItemsToMove:(id)move;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _UIDocumentTargetSelectionController
 
-- (void)_commonInitItems:(id)a3 crossContainer:(BOOL)a4 sourceContainer:(id)a5
+- (void)_commonInitItems:(id)items crossContainer:(BOOL)container sourceContainer:(id)sourceContainer
 {
-  v6 = a4;
+  containerCopy = container;
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  itemsCopy = items;
+  sourceContainerCopy = sourceContainer;
   [(_UIDocumentTargetSelectionController *)self setEdgesForExtendedLayout:0];
-  if (v6)
+  if (containerCopy)
   {
-    v42 = v9;
-    v43 = v8;
+    v42 = sourceContainerCopy;
+    v43 = itemsCopy;
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v10 = v8;
+    v10 = itemsCopy;
     v11 = [v10 countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v11)
     {
       v12 = v11;
-      v13 = 0;
+      br_containerID = 0;
       v14 = *v54;
       v15 = *MEMORY[0x277CBE918];
       v16 = *MEMORY[0x277CC20C0];
@@ -60,9 +60,9 @@
           [v18 getPromisedItemResourceValue:&v52 forKey:v15 error:{0, v42, v43}];
           v19 = v52;
           v20 = v19;
-          if (v13)
+          if (br_containerID)
           {
-            v21 = v13;
+            v21 = br_containerID;
           }
 
           else
@@ -74,12 +74,12 @@
 
           if ([v20 isEqual:v22])
           {
-            v13 = v22;
+            br_containerID = v22;
           }
 
           else
           {
-            v13 = v16;
+            br_containerID = v16;
           }
         }
 
@@ -91,11 +91,11 @@
 
     else
     {
-      v13 = 0;
+      br_containerID = 0;
     }
 
-    v9 = v42;
-    v8 = v43;
+    sourceContainerCopy = v42;
+    itemsCopy = v43;
     if (v42)
     {
       v50 = 0u;
@@ -128,9 +128,9 @@
     }
 
     v33 = [_UIDocumentPickerAllContainersModel alloc];
-    v59 = v13;
+    v59 = br_containerID;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
-    v35 = [(_UIDocumentPickerAllContainersModel *)v33 initWithFoldersForPickableTypes:v34 mode:3 sourceContainer:v9];
+    v35 = [(_UIDocumentPickerAllContainersModel *)v33 initWithFoldersForPickableTypes:v34 mode:3 sourceContainer:sourceContainerCopy];
   }
 
   else
@@ -139,12 +139,12 @@
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v23 = v8;
+    v23 = itemsCopy;
     v24 = [v23 countByEnumeratingWithState:&v44 objects:v58 count:16];
     if (v24)
     {
       v25 = v24;
-      v13 = 0;
+      br_containerID = 0;
       v26 = *v45;
       do
       {
@@ -155,9 +155,9 @@
             objc_enumerationMutation(v23);
           }
 
-          if (!v13)
+          if (!br_containerID)
           {
-            v13 = [*(*(&v44 + 1) + 8 * k) br_containerID];
+            br_containerID = [*(*(&v44 + 1) + 8 * k) br_containerID];
           }
         }
 
@@ -169,49 +169,49 @@
 
     else
     {
-      v13 = 0;
+      br_containerID = 0;
     }
 
-    v36 = [MEMORY[0x277CFAE20] allContainersByContainerID];
-    v34 = [v36 objectForKey:v13];
+    allContainersByContainerID = [MEMORY[0x277CFAE20] allContainersByContainerID];
+    v34 = [allContainersByContainerID objectForKey:br_containerID];
 
-    v37 = [v34 localizedName];
+    localizedName = [v34 localizedName];
     containerName = self->_containerName;
-    self->_containerName = v37;
+    self->_containerName = localizedName;
 
     v39 = [_UIDocumentPickerSubfoldersContainerModel alloc];
     v57 = *MEMORY[0x277CC2078];
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-    v35 = [(_UIDocumentPickerSubfoldersContainerModel *)v39 initWithPickableTypes:v40 container:v13];
+    v35 = [(_UIDocumentPickerSubfoldersContainerModel *)v39 initWithPickableTypes:v40 container:br_containerID];
   }
 
   [(_UIDocumentPickerAllContainersModel *)v35 startMonitoringChanges];
   v41 = [[_UIDocumentPickerContainerViewController alloc] initWithModel:v35];
   [(_UIDocumentPickerContainerViewController *)v41 setExplicitDisplayMode:3];
   [(_UIDocumentTargetSelectionController *)self _setContainerViewController:v41];
-  [(_UIDocumentTargetSelectionController *)self setItemsToMove:v8];
+  [(_UIDocumentTargetSelectionController *)self setItemsToMove:itemsCopy];
 }
 
-- (_UIDocumentTargetSelectionController)initWithItemsToMove:(id)a3
+- (_UIDocumentTargetSelectionController)initWithItemsToMove:(id)move
 {
-  v4 = a3;
+  moveCopy = move;
   v8.receiver = self;
   v8.super_class = _UIDocumentTargetSelectionController;
   v5 = [(_UIDocumentTargetSelectionController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(_UIDocumentTargetSelectionController *)v5 _commonInitItems:v4 crossContainer:0 sourceContainer:0];
+    [(_UIDocumentTargetSelectionController *)v5 _commonInitItems:moveCopy crossContainer:0 sourceContainer:0];
     v6->_targetSelectionType = 1;
   }
 
   return v6;
 }
 
-- (id)initForCrossContainerMoveWithItemsToMove:(id)a3
+- (id)initForCrossContainerMoveWithItemsToMove:(id)move
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  moveCopy = move;
   v25.receiver = self;
   v25.super_class = _UIDocumentTargetSelectionController;
   v5 = [(_UIDocumentTargetSelectionController *)&v25 initWithNibName:0 bundle:0];
@@ -221,7 +221,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = moveCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v7)
     {
@@ -247,8 +247,8 @@
           if (v14 && ([v15 isEqualToString:v11] & 1) == 0)
           {
 
-            v18 = [v6 firstObject];
-            v17 = [v18 br_cloudDocsContainer];
+            firstObject = [v6 firstObject];
+            br_cloudDocsContainer = [firstObject br_cloudDocsContainer];
             goto LABEL_13;
           }
 
@@ -266,27 +266,27 @@
       }
     }
 
-    v17 = 0;
-    v18 = v6;
+    br_cloudDocsContainer = 0;
+    firstObject = v6;
 LABEL_13:
 
-    [(_UIDocumentTargetSelectionController *)v5 _commonInitItems:v6 crossContainer:1 sourceContainer:v17];
+    [(_UIDocumentTargetSelectionController *)v5 _commonInitItems:v6 crossContainer:1 sourceContainer:br_cloudDocsContainer];
     v5->_targetSelectionType = 1;
   }
 
   return v5;
 }
 
-- (id)initForCopyWithItems:(id)a3
+- (id)initForCopyWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v8.receiver = self;
   v8.super_class = _UIDocumentTargetSelectionController;
   v5 = [(_UIDocumentTargetSelectionController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(_UIDocumentTargetSelectionController *)v5 _commonInitItems:v4 crossContainer:1 sourceContainer:0];
+    [(_UIDocumentTargetSelectionController *)v5 _commonInitItems:itemsCopy crossContainer:1 sourceContainer:0];
     v6->_targetSelectionType = 2;
   }
 
@@ -298,51 +298,51 @@ LABEL_13:
   containedNavigationController = self->_containedNavigationController;
   if (containedNavigationController)
   {
-    v3 = containedNavigationController;
+    navigationController = containedNavigationController;
   }
 
   else
   {
-    v3 = [(_UIDocumentTargetSelectionController *)self navigationController];
+    navigationController = [(_UIDocumentTargetSelectionController *)self navigationController];
   }
 
-  return v3;
+  return navigationController;
 }
 
 - (void)_setupNavigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v19[1] = *MEMORY[0x277D85DE8];
   if (self->_containedNavigationController)
   {
     self = self->_containerViewController;
   }
 
-  v3 = [(_UIDocumentTargetSelectionController *)self navigationItem];
-  v4 = [v3 rightBarButtonItems];
-  v5 = [v4 count];
+  navigationItem = [(_UIDocumentTargetSelectionController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  v5 = [rightBarButtonItems count];
 
   if (!v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v2 action:sel_dismiss_];
+    v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:selfCopy action:sel_dismiss_];
     v19[0] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    [v3 setRightBarButtonItems:v7];
+    [navigationItem setRightBarButtonItems:v7];
   }
 
-  if (v2->_containerName)
+  if (selfCopy->_containerName)
   {
-    [v3 setTitle:?];
+    [navigationItem setTitle:?];
   }
 
   else
   {
     v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v9 = [v8 localizedStringForKey:@"iCloud Drive" value:@"iCloud Drive" table:@"Localizable"];
-    [v3 setTitle:v9];
+    [navigationItem setTitle:v9];
   }
 
-  targetSelectionType = v2->_targetSelectionType;
+  targetSelectionType = selfCopy->_targetSelectionType;
   switch(targetSelectionType)
   {
     case 2uLL:
@@ -352,30 +352,30 @@ LABEL_12:
       v11 = MEMORY[0x277CCACA8];
       v12 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v13 = [v12 localizedStringForKey:@"Choose a new location to move these items." value:@"Choose a new location to move these items." table:@"Localizable"];
-      v14 = [v11 localizedStringWithFormat:v13, -[NSArray count](v2->_itemsToMove, "count")];
-      [v3 setPrompt:v14];
+      v14 = [v11 localizedStringWithFormat:v13, -[NSArray count](selfCopy->_itemsToMove, "count")];
+      [navigationItem setPrompt:v14];
 
 LABEL_13:
       v15 = MEMORY[0x277CCACA8];
       v16 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v17 = [v16 localizedStringForKey:@"Choose a location to add these items." value:@"Choose a location to add these items." table:@"Localizable"];
-      v18 = [v15 localizedStringWithFormat:v17, -[NSArray count](v2->_itemsToMove, "count")];
-      [v3 setPrompt:v18];
+      v18 = [v15 localizedStringWithFormat:v17, -[NSArray count](selfCopy->_itemsToMove, "count")];
+      [navigationItem setPrompt:v18];
 
       break;
     case 0uLL:
-      [v3 setPrompt:0];
+      [navigationItem setPrompt:0];
       goto LABEL_12;
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   self->_completedInitialDisplay = 1;
   v18.receiver = self;
   v18.super_class = _UIDocumentTargetSelectionController;
-  [(_UIDocumentTargetSelectionController *)&v18 viewWillAppear:a3];
-  v4 = [(_UIDocumentTargetSelectionController *)self parentViewController];
+  [(_UIDocumentTargetSelectionController *)&v18 viewWillAppear:appear];
+  parentViewController = [(_UIDocumentTargetSelectionController *)self parentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -400,19 +400,19 @@ LABEL_13:
     p_containedNavigationController = &self->_containedNavigationController;
   }
 
-  v12 = [*p_containerViewController view];
-  v13 = [(_UIDocumentTargetSelectionController *)self view];
-  [v13 bounds];
-  [v12 setFrame:?];
+  view = [*p_containerViewController view];
+  view2 = [(_UIDocumentTargetSelectionController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
   [(_UIDocumentTargetSelectionController *)self addChildViewController:*p_containerViewController];
-  v14 = [*p_containerViewController view];
-  [v14 setAutoresizingMask:18];
+  view3 = [*p_containerViewController view];
+  [view3 setAutoresizingMask:18];
 
   [(_UIDocumentPickerContainerViewController *)*v9 setServiceViewController:self];
-  v15 = [(_UIDocumentTargetSelectionController *)self view];
-  v16 = [*p_containerViewController view];
-  [v15 addSubview:v16];
+  view4 = [(_UIDocumentTargetSelectionController *)self view];
+  view5 = [*p_containerViewController view];
+  [view4 addSubview:view5];
 
   [(UINavigationController *)*p_containedNavigationController didMoveToParentViewController:self];
   v17[0] = MEMORY[0x277D85DD0];
@@ -423,13 +423,13 @@ LABEL_13:
   [MEMORY[0x277D75D18] performWithoutAnimation:v17];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = _UIDocumentTargetSelectionController;
-  [(_UIDocumentTargetSelectionController *)&v6 viewDidDisappear:a3];
-  v4 = [(_UINavigationControllerPalette *)self->_palette navController];
-  [v4 detachPalette:self->_palette];
+  [(_UIDocumentTargetSelectionController *)&v6 viewDidDisappear:disappear];
+  navController = [(_UINavigationControllerPalette *)self->_palette navController];
+  [navController detachPalette:self->_palette];
 
   palette = self->_palette;
   self->_palette = 0;
@@ -441,31 +441,31 @@ LABEL_13:
   palette = self->_palette;
   if (palette)
   {
-    v4 = [(_UINavigationControllerPalette *)palette navController];
-    [v4 detachPalette:self->_palette];
+    navController = [(_UINavigationControllerPalette *)palette navController];
+    [navController detachPalette:self->_palette];
 
     v5 = self->_palette;
     self->_palette = 0;
   }
 
-  v6 = [(_UIDocumentTargetSelectionController *)self navControllerForPalette];
-  v7 = [v6 view];
-  [v7 bounds];
-  v42 = v6;
-  v9 = [v6 paletteForEdge:2 size:{v8, 72.0}];
+  navControllerForPalette = [(_UIDocumentTargetSelectionController *)self navControllerForPalette];
+  view = [navControllerForPalette view];
+  [view bounds];
+  v42 = navControllerForPalette;
+  v9 = [navControllerForPalette paletteForEdge:2 size:{v8, 72.0}];
   v10 = self->_palette;
   self->_palette = v9;
 
   [(_UINavigationControllerPalette *)self->_palette setPinningBarShadowIsHidden:1];
-  [v6 attachPalette:self->_palette isPinned:1];
+  [navControllerForPalette attachPalette:self->_palette isPinned:1];
   v11 = objc_alloc_init(MEMORY[0x277D755E8]);
   iconView = self->_iconView;
   self->_iconView = v11;
 
-  v13 = [(NSArray *)self->_itemsToMove firstObject];
-  v41 = [v13 ui_resolveOnDiskBookmarkAndPromise];
+  firstObject = [(NSArray *)self->_itemsToMove firstObject];
+  ui_resolveOnDiskBookmarkAndPromise = [firstObject ui_resolveOnDiskBookmarkAndPromise];
 
-  v14 = [objc_opt_class() _loadDocumentIconForURL:v41 size:{44.0, 44.0}];
+  v14 = [objc_opt_class() _loadDocumentIconForURL:ui_resolveOnDiskBookmarkAndPromise size:{44.0, 44.0}];
   [(_UIDocumentTargetSelectionController *)self _setIconViewImage:v14 border:0];
 
   v15 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -476,54 +476,54 @@ LABEL_13:
   [(UILabel *)self->_filesLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_UINavigationControllerPalette *)self->_palette addSubview:self->_iconView];
   [(_UINavigationControllerPalette *)self->_palette addSubview:self->_filesLabel];
-  v17 = [(UIImageView *)self->_iconView widthAnchor];
-  v18 = [v17 constraintEqualToConstant:0.0];
+  widthAnchor = [(UIImageView *)self->_iconView widthAnchor];
+  v18 = [widthAnchor constraintEqualToConstant:0.0];
 
   LODWORD(v19) = 1111752704;
   v40 = v18;
   [v18 setPriority:v19];
-  v20 = [(UIImageView *)self->_iconView widthAnchor];
-  v32 = [v20 constraintEqualToConstant:0.0];
+  widthAnchor2 = [(UIImageView *)self->_iconView widthAnchor];
+  v32 = [widthAnchor2 constraintEqualToConstant:0.0];
 
   LODWORD(v21) = 1113325568;
   [v32 setPriority:v21];
   v33 = MEMORY[0x277CCAAD0];
   v43[0] = v18;
-  v39 = [(UIImageView *)self->_iconView leadingAnchor];
-  v38 = [(_UINavigationControllerPalette *)self->_palette leadingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 constant:17.0];
+  leadingAnchor = [(UIImageView *)self->_iconView leadingAnchor];
+  leadingAnchor2 = [(_UINavigationControllerPalette *)self->_palette leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:17.0];
   v43[1] = v37;
-  v36 = [(UILabel *)self->_filesLabel leadingAnchor];
-  v35 = [(UIImageView *)self->_iconView trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35 constant:12.0];
+  leadingAnchor3 = [(UILabel *)self->_filesLabel leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_iconView trailingAnchor];
+  v34 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
   v43[2] = v34;
-  v31 = [(_UINavigationControllerPalette *)self->_palette trailingAnchor];
-  v22 = [(UILabel *)self->_filesLabel trailingAnchor];
-  v23 = [v31 constraintGreaterThanOrEqualToAnchor:v22 constant:17.0];
+  trailingAnchor2 = [(_UINavigationControllerPalette *)self->_palette trailingAnchor];
+  trailingAnchor3 = [(UILabel *)self->_filesLabel trailingAnchor];
+  v23 = [trailingAnchor2 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:17.0];
   v43[3] = v23;
-  v24 = [(UIImageView *)self->_iconView centerYAnchor];
-  v25 = [(_UINavigationControllerPalette *)self->_palette centerYAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  centerYAnchor = [(UIImageView *)self->_iconView centerYAnchor];
+  centerYAnchor2 = [(_UINavigationControllerPalette *)self->_palette centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v43[4] = v26;
-  v27 = [(UILabel *)self->_filesLabel centerYAnchor];
-  v28 = [(_UINavigationControllerPalette *)self->_palette centerYAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  centerYAnchor3 = [(UILabel *)self->_filesLabel centerYAnchor];
+  centerYAnchor4 = [(_UINavigationControllerPalette *)self->_palette centerYAnchor];
+  v29 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v43[5] = v29;
   v43[6] = v32;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:7];
   [v33 activateConstraints:v30];
 }
 
-- (void)_setContainerViewController:(id)a3
+- (void)_setContainerViewController:(id)controller
 {
-  objc_storeStrong(&self->_containerViewController, a3);
-  v5 = a3;
-  v9 = [(_UIDocumentTargetSelectionController *)self navigationController];
-  v6 = [v9 view];
-  v7 = [v6 semanticContentAttribute];
-  v8 = [(_UIDocumentPickerContainerViewController *)self->_containerViewController view];
+  objc_storeStrong(&self->_containerViewController, controller);
+  controllerCopy = controller;
+  navigationController = [(_UIDocumentTargetSelectionController *)self navigationController];
+  view = [navigationController view];
+  semanticContentAttribute = [view semanticContentAttribute];
+  view2 = [(_UIDocumentPickerContainerViewController *)self->_containerViewController view];
 
-  [v8 setSemanticContentAttribute:v7];
+  [view2 setSemanticContentAttribute:semanticContentAttribute];
 }
 
 - (id)pickableTypes
@@ -535,32 +535,32 @@ LABEL_13:
   return v2;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v6 = a3;
-  if ([v6 type] == 1 || objc_msgSend(v6, "type") == 2)
+  itemCopy = item;
+  if ([itemCopy type] == 1 || objc_msgSend(itemCopy, "type") == 2)
   {
-    v4 = [(_UIDocumentTargetSelectionController *)self delegate];
-    v5 = [v6 url];
-    [v4 documentTargetSelectionController:self didSelectItemAtURL:v5];
+    delegate = [(_UIDocumentTargetSelectionController *)self delegate];
+    v5 = [itemCopy url];
+    [delegate documentTargetSelectionController:self didSelectItemAtURL:v5];
   }
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [(_UIDocumentTargetSelectionController *)self presentingViewController];
+  presentingViewController = [(_UIDocumentTargetSelectionController *)self presentingViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48___UIDocumentTargetSelectionController_dismiss___block_invoke;
   v5[3] = &unk_278DD61B0;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
 - (void)_updatePalette
 {
-  v3 = [(_UIDocumentTargetSelectionController *)self view];
-  [v3 bounds];
+  view = [(_UIDocumentTargetSelectionController *)self view];
+  [view bounds];
   v5 = v4 + -44.0 + -34.0 + -12.0;
 
   v47[0] = MEMORY[0x277D85DD0];
@@ -574,8 +574,8 @@ LABEL_13:
   if ([(NSArray *)self->_itemsToMove count]< 2)
   {
     [(UILabel *)self->_filesLabel setLineBreakMode:5];
-    v19 = [(NSArray *)self->_itemsToMove firstObject];
-    v20 = __54___UIDocumentTargetSelectionController__updatePalette__block_invoke(v19, v19);
+    firstObject = [(NSArray *)self->_itemsToMove firstObject];
+    v20 = __54___UIDocumentTargetSelectionController__updatePalette__block_invoke(firstObject, firstObject);
     [(UILabel *)self->_filesLabel setText:v20];
     goto LABEL_5;
   }
@@ -599,8 +599,8 @@ LABEL_13:
   if ([(NSArray *)self->_itemsToMove count]== 2)
   {
     v18 = MEMORY[0x277CCACA8];
-    v19 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-    v20 = [v19 localizedStringForKey:@"%@ value:%@" table:{@"%@, %@", @"Localizable"}];
+    firstObject = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
+    v20 = [firstObject localizedStringForKey:@"%@ value:%@" table:{@"%@, %@", @"Localizable"}];
     v38 = [(NSArray *)self->_itemsToMove objectAtIndex:0];
     v21 = __54___UIDocumentTargetSelectionController__updatePalette__block_invoke(v38, v38);
     v22 = [(NSArray *)self->_itemsToMove objectAtIndex:1];
@@ -618,8 +618,8 @@ LABEL_5:
   if ([(NSArray *)self->_itemsToMove count]>= 3)
   {
     v33 = MEMORY[0x277CCACA8];
-    v19 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-    v20 = [v19 localizedStringForKey:@"%@ value:%@ & %lu more…" table:{@"%@, %@ & %lu more…", @"Localizable"}];
+    firstObject = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
+    v20 = [firstObject localizedStringForKey:@"%@ value:%@ & %lu more…" table:{@"%@, %@ & %lu more…", @"Localizable"}];
     v39 = [(NSArray *)self->_itemsToMove objectAtIndex:0];
     v34 = __54___UIDocumentTargetSelectionController__updatePalette__block_invoke(v39, v39);
     v35 = [(NSArray *)self->_itemsToMove objectAtIndex:1];
@@ -633,21 +633,21 @@ LABEL_5:
 
 LABEL_6:
   objc_initWeak(&location, self);
-  v25 = [(NSArray *)self->_itemsToMove firstObject];
-  v26 = [v25 ui_resolveOnDiskBookmarkAndPromise];
+  firstObject2 = [(NSArray *)self->_itemsToMove firstObject];
+  ui_resolveOnDiskBookmarkAndPromise = [firstObject2 ui_resolveOnDiskBookmarkAndPromise];
 
-  v27 = [(_UIDocumentTargetSelectionController *)self traitCollection];
-  [v27 displayScale];
+  traitCollection = [(_UIDocumentTargetSelectionController *)self traitCollection];
+  [traitCollection displayScale];
   v29 = v28;
 
   if (!self->_firstFileThumbnailObservation)
   {
-    v30 = [BRObservableFile observerForKey:0 onFileURL:v26];
+    v30 = [BRObservableFile observerForKey:0 onFileURL:ui_resolveOnDiskBookmarkAndPromise];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __54___UIDocumentTargetSelectionController__updatePalette__block_invoke_3;
     v41[3] = &unk_278DD6780;
-    v42 = v26;
+    v42 = ui_resolveOnDiskBookmarkAndPromise;
     v44 = vdupq_n_s64(0x4046000000000000uLL);
     v45 = v29;
     objc_copyWeak(&v43, &location);
@@ -661,43 +661,43 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-+ (id)_loadThumbnailForURL:(id)a3 size:(CGSize)a4 scale:(double)a5 wantsBorder:(BOOL *)a6 generatedThumbnail:(BOOL *)a7
++ (id)_loadThumbnailForURL:(id)l size:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border generatedThumbnail:(BOOL *)thumbnail
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v18 = 0;
   v12 = *MEMORY[0x277CBE918];
-  v13 = a3;
-  [v13 getPromisedItemResourceValue:&v18 forKey:v12 error:0];
+  lCopy = l;
+  [lCopy getPromisedItemResourceValue:&v18 forKey:v12 error:0];
   v14 = v18;
   v15 = [MEMORY[0x277CC1EB8] documentProxyForName:0 type:v14 MIMEType:0];
-  v16 = [_UIDocumentPickerContainerItem _blockingThumbnailForItem:v13 documentProxy:v15 withSize:a6 scale:a7 wantsBorder:width generatedThumbnail:height, a5];
+  scale = [_UIDocumentPickerContainerItem _blockingThumbnailForItem:lCopy documentProxy:v15 withSize:border scale:thumbnail wantsBorder:width generatedThumbnail:height, scale];
 
-  return v16;
+  return scale;
 }
 
-- (void)_setIconViewImage:(id)a3 border:(BOOL)a4
+- (void)_setIconViewImage:(id)image border:(BOOL)border
 {
-  v4 = a4;
-  [(UIImageView *)self->_iconView setImage:a3];
-  if (v4)
+  borderCopy = border;
+  [(UIImageView *)self->_iconView setImage:image];
+  if (borderCopy)
   {
-    v6 = [MEMORY[0x277D75348] separatorColor];
-    v7 = [v6 CGColor];
-    v8 = [(UIImageView *)self->_iconView layer];
-    [v8 setBorderColor:v7];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    cGColor = [separatorColor CGColor];
+    layer = [(UIImageView *)self->_iconView layer];
+    [layer setBorderColor:cGColor];
 
-    v12 = [(_UIDocumentTargetSelectionController *)self traitCollection];
-    [v12 displayScale];
+    traitCollection = [(_UIDocumentTargetSelectionController *)self traitCollection];
+    [traitCollection displayScale];
     v10 = 1.0 / v9;
-    v11 = [(UIImageView *)self->_iconView layer];
-    [v11 setBorderWidth:v10];
+    layer2 = [(UIImageView *)self->_iconView layer];
+    [layer2 setBorderWidth:v10];
   }
 
   else
   {
-    v12 = [(UIImageView *)self->_iconView layer];
-    [v12 setBorderWidth:0.0];
+    traitCollection = [(UIImageView *)self->_iconView layer];
+    [traitCollection setBorderWidth:0.0];
   }
 }
 
@@ -715,21 +715,21 @@ LABEL_6:
   }
 }
 
-- (void)setItemsToMove:(id)a3
+- (void)setItemsToMove:(id)move
 {
-  v4 = a3;
-  if (self->_itemsToMove != v4)
+  moveCopy = move;
+  if (self->_itemsToMove != moveCopy)
   {
-    v7 = v4;
-    v5 = [(NSArray *)v4 copy];
+    v7 = moveCopy;
+    v5 = [(NSArray *)moveCopy copy];
     itemsToMove = self->_itemsToMove;
     self->_itemsToMove = v5;
 
-    v4 = v7;
+    moveCopy = v7;
     if (self->_completedInitialDisplay)
     {
       [(_UIDocumentTargetSelectionController *)self _setupNavigationItem];
-      v4 = v7;
+      moveCopy = v7;
     }
   }
 }

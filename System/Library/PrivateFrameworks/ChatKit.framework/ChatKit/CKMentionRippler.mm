@@ -1,11 +1,11 @@
 @interface CKMentionRippler
-- (BOOL)finishedForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (CGSize)currentOffsetForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
+- (BOOL)finishedForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (CGSize)currentOffsetForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
 - (CKMentionRippler)init;
-- (double)currentScaleForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (id)currentColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (id)currentShadowColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (unint64_t)currentIndexForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5 isFinished:(BOOL *)a6;
+- (double)currentScaleForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (id)currentColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (id)currentShadowColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (unint64_t)currentIndexForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex isFinished:(BOOL *)finished;
 - (void)generateValues;
 @end
 
@@ -14,10 +14,10 @@
 - (void)generateValues
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v47 = [MEMORY[0x1E695DF70] array];
-  v48 = [MEMORY[0x1E695DF70] array];
-  v50 = [MEMORY[0x1E695DF70] array];
-  v51 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   v3 = self->_animateFrames + self->_preFrames + self->_postFrames;
   v4 = (&v45 - ((8 * v3 + 15) & 0xFFFFFFFFFFFFFFF0));
   bzero(v4, 8 * v3);
@@ -28,14 +28,14 @@
   v7 = v4;
   bzero(v4, 8 * v3);
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 theme];
-  v10 = [v9 entryFieldConfirmedMentionColor];
+  theme = [v8 theme];
+  entryFieldConfirmedMentionColor = [theme entryFieldConfirmedMentionColor];
 
   v53 = 0.0;
   v54[0] = 0.0;
   v52 = 0.0;
-  v46 = v10;
-  [v10 getRed:v54 green:&v53 blue:&v52 alpha:0];
+  v46 = entryFieldConfirmedMentionColor;
+  [entryFieldConfirmedMentionColor getRed:v54 green:&v53 blue:&v52 alpha:0];
   if (v3)
   {
     bzero(v4, 8 * v3);
@@ -46,7 +46,7 @@
 
   preFrames = self->_preFrames;
   animateFrames = self->_animateFrames;
-  v49 = self;
+  selfCopy = self;
   v45 = animateFrames + preFrames;
   if (preFrames < animateFrames + preFrames)
   {
@@ -67,7 +67,7 @@
     while (animateFrames != v13);
   }
 
-  postFrames = v49->_postFrames;
+  postFrames = selfCopy->_postFrames;
   v20 = v45;
   if (v20 < postFrames + v20)
   {
@@ -78,8 +78,8 @@
     memset_pattern16(&v4[v20], &unk_190DD07A0, v21);
   }
 
-  v22 = v47;
-  for (i = v48; v3; --v3)
+  v22 = array;
+  for (i = array2; v3; --v3)
   {
     v24 = *v4++;
     v25 = v24 * v54[0];
@@ -94,16 +94,16 @@
 
     v31 = *v5++;
     v32 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
-    [(NSArray *)v50 addObject:v32];
+    [(NSArray *)array3 addObject:v32];
 
     v33 = *v6++;
     v34 = [MEMORY[0x1E696AD98] numberWithDouble:v33];
-    [(NSArray *)v51 addObject:v34];
+    [(NSArray *)array4 addObject:v34];
   }
 
-  v35 = v49;
-  colors = v49->_colors;
-  v49->_colors = v22;
+  v35 = selfCopy;
+  colors = selfCopy->_colors;
+  selfCopy->_colors = v22;
   v37 = v22;
 
   shadowColors = v35->_shadowColors;
@@ -112,12 +112,12 @@
 
   v40 = v35;
   scales = v35->_scales;
-  v42 = v50;
-  v40->_scales = v50;
+  v42 = array3;
+  v40->_scales = array3;
   v43 = v42;
 
   offsets = v40->_offsets;
-  v40->_offsets = v51;
+  v40->_offsets = array4;
 }
 
 - (CKMentionRippler)init
@@ -137,17 +137,17 @@
   return v3;
 }
 
-- (unint64_t)currentIndexForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5 isFinished:(BOOL *)a6
+- (unint64_t)currentIndexForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex isFinished:(BOOL *)finished
 {
   delayFrames = self->_delayFrames;
   v7 = self->_animateFrames + self->_preFrames + self->_postFrames;
-  v8 = a5 % (2 * (v7 + delayFrames * a4));
-  v9 = delayFrames + delayFrames * a3;
+  v8 = timeIndex % (2 * (v7 + delayFrames * glyphs));
+  v9 = delayFrames + delayFrames * index;
   v10 = v9 + v7;
-  if (a6)
+  if (finished)
   {
     v12 = v8 >= v10 && v8 >= v9;
-    *a6 = v12;
+    *finished = v12;
   }
 
   v13 = v7 - 1;
@@ -167,37 +167,37 @@
   }
 }
 
-- (id)currentColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (id)currentColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   colors = self->_colors;
-  v6 = [(CKMentionRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:0];
+  v6 = [(CKMentionRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:0];
 
   return [(NSArray *)colors objectAtIndex:v6];
 }
 
-- (id)currentShadowColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (id)currentShadowColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   shadowColors = self->_shadowColors;
-  v6 = [(CKMentionRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:0];
+  v6 = [(CKMentionRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:0];
 
   return [(NSArray *)shadowColors objectAtIndex:v6];
 }
 
-- (double)currentScaleForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (double)currentScaleForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   if (self->_reduceMotion)
   {
     return 1.0;
   }
 
-  v6 = [(NSArray *)self->_scales objectAtIndex:[(CKMentionRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:0]];
+  v6 = [(NSArray *)self->_scales objectAtIndex:[(CKMentionRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:0]];
   [v6 doubleValue];
   v8 = v7;
 
   return v8;
 }
 
-- (CGSize)currentOffsetForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (CGSize)currentOffsetForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   if (self->_reduceMotion)
   {
@@ -206,7 +206,7 @@
 
   else
   {
-    v6 = [(NSArray *)self->_offsets objectAtIndex:[(CKMentionRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:0]];
+    v6 = [(NSArray *)self->_offsets objectAtIndex:[(CKMentionRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:0]];
     [v6 doubleValue];
     v5 = v7;
   }
@@ -218,10 +218,10 @@
   return result;
 }
 
-- (BOOL)finishedForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (BOOL)finishedForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   v6 = 0;
-  [(CKMentionRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:&v6];
+  [(CKMentionRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:&v6];
   return v6;
 }
 

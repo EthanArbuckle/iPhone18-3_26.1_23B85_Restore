@@ -1,43 +1,43 @@
 @interface HFCharacteristicWriteActionBuilder
-+ (id)asCharacteristicWriteAction:(id)a3;
-- (BOOL)canUpdateWithActionBuilder:(id)a3;
-- (BOOL)hasSameTargetAsAction:(id)a3;
++ (id)asCharacteristicWriteAction:(id)action;
+- (BOOL)canUpdateWithActionBuilder:(id)builder;
+- (BOOL)hasSameTargetAsAction:(id)action;
 - (BOOL)requiresDeviceUnlock;
-- (BOOL)updateWithActionBuilder:(id)a3;
-- (HFCharacteristicWriteActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (BOOL)updateWithActionBuilder:(id)builder;
+- (HFCharacteristicWriteActionBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (id)commitItem;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)containedAccessoryRepresentables;
 - (id)copyForCreatingNewAction;
 - (id)createNewAction;
 - (id)description;
 - (unint64_t)hash;
-- (void)_logInvalidNumberTargetValue:(void *)a3 foundClosestValidValue:(void *)a4 metadata:;
-- (void)_logInvalidNumericTargetValue:(void *)a3 clamped:(int)a4 valid:(void *)a5 metadata:;
-- (void)_validateAndSetTargetValue:(id *)a1;
-- (void)setCharacteristic:(id)a3;
-- (void)setTargetValue:(id)a3;
+- (void)_logInvalidNumberTargetValue:(void *)value foundClosestValidValue:(void *)validValue metadata:;
+- (void)_logInvalidNumericTargetValue:(void *)value clamped:(int)clamped valid:(void *)valid metadata:;
+- (void)_validateAndSetTargetValue:(id *)value;
+- (void)setCharacteristic:(id)characteristic;
+- (void)setTargetValue:(id)value;
 @end
 
 @implementation HFCharacteristicWriteActionBuilder
 
-- (HFCharacteristicWriteActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFCharacteristicWriteActionBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
   v13.receiver = self;
   v13.super_class = HFCharacteristicWriteActionBuilder;
-  v4 = [(HFItemBuilder *)&v13 initWithExistingObject:a3 inHome:a4];
+  v4 = [(HFItemBuilder *)&v13 initWithExistingObject:object inHome:home];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HFActionBuilder *)v4 action];
-    v7 = [v6 characteristic];
+    action = [(HFActionBuilder *)v4 action];
+    characteristic = [action characteristic];
     characteristic = v5->_characteristic;
-    v5->_characteristic = v7;
+    v5->_characteristic = characteristic;
 
-    v9 = [(HFActionBuilder *)v5 action];
-    v10 = [v9 targetValue];
+    action2 = [(HFActionBuilder *)v5 action];
+    targetValue = [action2 targetValue];
     targetValue = v5->_targetValue;
-    v5->_targetValue = v10;
+    v5->_targetValue = targetValue;
   }
 
   return v5;
@@ -46,75 +46,75 @@
 - (id)copyForCreatingNewAction
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HFItemBuilder *)self home];
+  v5 = [v3 initWithHome:home];
 
-  v6 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  [v5 setCharacteristic:v6];
+  characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  [v5 setCharacteristic:characteristic];
 
-  v7 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
-  [v5 setTargetValue:v7];
+  targetValue = [(HFCharacteristicWriteActionBuilder *)self targetValue];
+  [v5 setTargetValue:targetValue];
 
   return v5;
 }
 
-- (void)setCharacteristic:(id)a3
+- (void)setCharacteristic:(id)characteristic
 {
-  v5 = a3;
-  v6 = [(HFActionBuilder *)self action];
+  characteristicCopy = characteristic;
+  action = [(HFActionBuilder *)self action];
 
-  if (v6)
+  if (action)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HFActionBuilder.m" lineNumber:211 description:@"Cannot change the characteristic for an existing action!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFActionBuilder.m" lineNumber:211 description:@"Cannot change the characteristic for an existing action!"];
   }
 
   characteristic = self->_characteristic;
-  self->_characteristic = v5;
+  self->_characteristic = characteristicCopy;
 
-  v9 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
-  [(HFCharacteristicWriteActionBuilder *)&self->super.super.super.isa _validateAndSetTargetValue:v9];
+  targetValue = [(HFCharacteristicWriteActionBuilder *)self targetValue];
+  [(HFCharacteristicWriteActionBuilder *)&self->super.super.super.isa _validateAndSetTargetValue:targetValue];
 }
 
-- (void)_validateAndSetTargetValue:(id *)a1
+- (void)_validateAndSetTargetValue:(id *)value
 {
   v86 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (value)
   {
-    v5 = [a1 characteristic];
+    characteristic = [value characteristic];
 
-    if (v5)
+    if (characteristic)
     {
       if (v4)
       {
-        v6 = [a1 characteristic];
-        v7 = [v6 metadata];
+        characteristic2 = [value characteristic];
+        metadata = [characteristic2 metadata];
 
-        if (!v7)
+        if (!metadata)
         {
-          objc_storeStrong(a1 + 4, a2);
+          objc_storeStrong(value + 4, a2);
           v9 = HFLogForCategory(0x2BuLL);
           if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
           {
             v66 = objc_opt_class();
             v67 = NSStringFromClass(v66);
-            v68 = [a1 characteristic];
+            characteristic3 = [value characteristic];
             *buf = 138543874;
             v79 = v67;
             v80 = 2112;
             v81 = v4;
             v82 = 2112;
-            v83 = v68;
+            v83 = characteristic3;
             _os_log_fault_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_FAULT, "%{public}@ tried to validate target value %@ but missing metadata on characteristic %@", buf, 0x20u);
           }
 
           goto LABEL_54;
         }
 
-        if ([v7 hf_isValidValue:v4])
+        if ([metadata hf_isValidValue:v4])
         {
-          objc_storeStrong(a1 + 4, a2);
+          objc_storeStrong(value + 4, a2);
 LABEL_54:
 
           goto LABEL_55;
@@ -133,16 +133,16 @@ LABEL_54:
 
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
-          v16 = [a1 characteristic];
-          v17 = [MEMORY[0x277CCACC8] callStackSymbols];
+          characteristic4 = [value characteristic];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           *buf = 138413058;
           v79 = v15;
           v80 = 2112;
           v81 = v10;
           v82 = 2112;
-          v83 = v16;
+          v83 = characteristic4;
           v84 = 2112;
-          v85 = v17;
+          v85 = callStackSymbols;
           _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, "%@ received invalid target value %@ for characteristic %@. Stack: %@", buf, 0x2Au);
         }
 
@@ -176,44 +176,44 @@ LABEL_16:
 
         v21 = v20;
 
-        v22 = [v7 format];
-        v23 = [v22 isEqualToString:*MEMORY[0x277CCF6B0]];
+        format = [metadata format];
+        v23 = [format isEqualToString:*MEMORY[0x277CCF6B0]];
 
         if (v23 && (isKindOfClass & 1) != 0)
         {
           v24 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v21, "integerValue") > 0}];
-          v25 = a1[4];
-          a1[4] = v24;
+          v25 = value[4];
+          value[4] = v24;
 LABEL_22:
 
 LABEL_53:
           goto LABEL_54;
         }
 
-        if ([v7 hf_isNumeric])
+        if ([metadata hf_isNumeric])
         {
-          v26 = [v7 minimumValue];
-          if (v26)
+          minimumValue = [metadata minimumValue];
+          if (minimumValue)
           {
-            v27 = v26;
-            v28 = [v7 maximumValue];
+            v27 = minimumValue;
+            maximumValue = [metadata maximumValue];
             v29 = v18;
-            v30 = v7;
-            v31 = (v28 != 0) & isKindOfClass;
+            v30 = metadata;
+            v31 = (maximumValue != 0) & isKindOfClass;
 
             v32 = v31 == 1;
-            v7 = v30;
+            metadata = v30;
             v18 = v29;
             if (v32)
             {
-              v33 = [v7 minimumValue];
-              [v33 doubleValue];
+              minimumValue2 = [metadata minimumValue];
+              [minimumValue2 doubleValue];
               v35 = v34;
 
               [v21 doubleValue];
               v37 = v36;
-              v38 = [v7 maximumValue];
-              [v38 doubleValue];
+              maximumValue2 = [metadata maximumValue];
+              [maximumValue2 doubleValue];
               v40 = v39;
 
               if (v37 >= v40)
@@ -232,8 +232,8 @@ LABEL_53:
               }
 
               v42 = [MEMORY[0x277CCABB0] numberWithDouble:v41];
-              v43 = [v7 hf_isValidValue:v42];
-              [(HFCharacteristicWriteActionBuilder *)a1 _logInvalidNumericTargetValue:v21 clamped:v42 valid:v43 metadata:v7];
+              v43 = [metadata hf_isValidValue:v42];
+              [(HFCharacteristicWriteActionBuilder *)value _logInvalidNumericTargetValue:v21 clamped:v42 valid:v43 metadata:metadata];
               if (v43)
               {
                 goto LABEL_60;
@@ -242,20 +242,20 @@ LABEL_53:
           }
         }
 
-        v44 = [v7 validValues];
-        if (v44 && [v7 hf_isNumeric])
+        validValues = [metadata validValues];
+        if (validValues && [metadata hf_isNumeric])
         {
 
           if (isKindOfClass)
           {
             v71 = v18;
-            v72 = v7;
+            v72 = metadata;
             v75 = 0u;
             v76 = 0u;
             v73 = 0u;
             v74 = 0u;
-            v45 = [v7 validValues];
-            v46 = [v45 countByEnumeratingWithState:&v73 objects:v77 count:16];
+            validValues2 = [metadata validValues];
+            v46 = [validValues2 countByEnumeratingWithState:&v73 objects:v77 count:16];
             if (v46)
             {
               v47 = v46;
@@ -268,7 +268,7 @@ LABEL_53:
                 {
                   if (*v74 != v48)
                   {
-                    objc_enumerationMutation(v45);
+                    objc_enumerationMutation(validValues2);
                   }
 
                   v51 = *(*(&v73 + 1) + 8 * i);
@@ -285,7 +285,7 @@ LABEL_53:
                   }
                 }
 
-                v47 = [v45 countByEnumeratingWithState:&v73 objects:v77 count:16];
+                v47 = [validValues2 countByEnumeratingWithState:&v73 objects:v77 count:16];
               }
 
               while (v47);
@@ -296,14 +296,14 @@ LABEL_53:
               v42 = 0;
             }
 
-            v7 = v72;
-            [(HFCharacteristicWriteActionBuilder *)a1 _logInvalidNumberTargetValue:v21 foundClosestValidValue:v42 metadata:v72];
+            metadata = v72;
+            [(HFCharacteristicWriteActionBuilder *)value _logInvalidNumberTargetValue:v21 foundClosestValidValue:v42 metadata:v72];
             v18 = v71;
             if (v42)
             {
 LABEL_60:
-              v25 = a1[4];
-              a1[4] = v42;
+              v25 = value[4];
+              value[4] = v42;
               goto LABEL_22;
             }
           }
@@ -323,16 +323,16 @@ LABEL_60:
           {
             v61 = objc_opt_class();
             v62 = NSStringFromClass(v61);
-            v63 = [a1 characteristic];
-            v64 = [MEMORY[0x277CCACC8] callStackSymbols];
+            characteristic5 = [value characteristic];
+            callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
             *buf = 138413058;
             v79 = v62;
             v80 = 2112;
-            v81 = v63;
+            v81 = characteristic5;
             v82 = 2112;
             v83 = v57;
             v84 = 2112;
-            v85 = v64;
+            v85 = callStackSymbols2;
             _os_log_fault_impl(&dword_20D9BF000, v59, OS_LOG_TYPE_FAULT, "%@ for %@: Failed to automatically find a valid value similar to %@. Keeping it. Stack: %@", buf, 0x2Au);
 
 LABEL_62:
@@ -349,17 +349,17 @@ LABEL_62:
           goto LABEL_62;
         }
 
-        objc_storeStrong(a1 + 4, a2);
+        objc_storeStrong(value + 4, a2);
         goto LABEL_53;
       }
 
-      v8 = a1[4];
-      a1[4] = 0;
+      v8 = value[4];
+      value[4] = 0;
     }
 
     else
     {
-      objc_storeStrong(a1 + 4, a2);
+      objc_storeStrong(value + 4, a2);
     }
   }
 
@@ -368,21 +368,21 @@ LABEL_55:
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTargetValue:(id)a3
+- (void)setTargetValue:(id)value
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_targetValue != v5)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (self->_targetValue != valueCopy)
   {
-    v9 = v5;
-    if (!v5)
+    v9 = valueCopy;
+    if (!valueCopy)
     {
-      v7 = [(HFActionBuilder *)self action];
+      action = [(HFActionBuilder *)self action];
 
-      if (v7)
+      if (action)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"HFActionBuilder.m" lineNumber:219 description:@"Cannot set target value to nil for an existing action!"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HFActionBuilder.m" lineNumber:219 description:@"Cannot set target value to nil for an existing action!"];
       }
     }
 
@@ -391,19 +391,19 @@ LABEL_55:
   }
 }
 
-- (void)_logInvalidNumericTargetValue:(void *)a3 clamped:(int)a4 valid:(void *)a5 metadata:
+- (void)_logInvalidNumericTargetValue:(void *)value clamped:(int)clamped valid:(void *)valid metadata:
 {
   v37 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
+  valueCopy = value;
+  validCopy = valid;
   v12 = +[HFUtilities hasInternalDiagnostics];
   v13 = HFLogForCategory(0x2BuLL);
   v14 = v13;
   if (!v12)
   {
     v20 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (a4)
+    if (clamped)
     {
       if (!v20)
       {
@@ -436,7 +436,7 @@ LABEL_55:
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!clamped)
   {
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -445,19 +445,19 @@ LABEL_55:
 
     v24 = objc_opt_class();
     v16 = NSStringFromClass(v24);
-    v17 = [a1 characteristic];
-    v18 = [v11 minimumValue];
-    v19 = [v11 maximumValue];
+    characteristic = [self characteristic];
+    minimumValue = [validCopy minimumValue];
+    maximumValue = [validCopy maximumValue];
     v27 = 138544386;
     v28 = v16;
     v29 = 2112;
-    v30 = v17;
+    v30 = characteristic;
     v31 = 2112;
-    v32 = v18;
+    v32 = minimumValue;
     v33 = 2112;
-    v34 = v19;
+    v34 = maximumValue;
     v35 = 2112;
-    v36 = v10;
+    v36 = valueCopy;
     _os_log_error_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_ERROR, "%{public}@ for %@: Failed to clamp to (%@, %@) as it produced an invalid value %@", &v27, 0x34u);
     goto LABEL_5;
   }
@@ -466,19 +466,19 @@ LABEL_55:
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [a1 characteristic];
-    v18 = [v11 minimumValue];
-    v19 = [v11 maximumValue];
+    characteristic = [self characteristic];
+    minimumValue = [validCopy minimumValue];
+    maximumValue = [validCopy maximumValue];
     v27 = 138413314;
     v28 = v16;
     v29 = 2112;
-    v30 = v17;
+    v30 = characteristic;
     v31 = 2112;
-    v32 = v18;
+    v32 = minimumValue;
     v33 = 2112;
-    v34 = v19;
+    v34 = maximumValue;
     v35 = 2112;
-    v36 = v10;
+    v36 = valueCopy;
     _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "%@ for %@: Clamping to (%@, %@) resulting in %@", &v27, 0x34u);
 LABEL_5:
   }
@@ -488,12 +488,12 @@ LABEL_14:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logInvalidNumberTargetValue:(void *)a3 foundClosestValidValue:(void *)a4 metadata:
+- (void)_logInvalidNumberTargetValue:(void *)value foundClosestValidValue:(void *)validValue metadata:
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  validValueCopy = validValue;
   v10 = +[HFUtilities hasInternalDiagnostics];
   v11 = HFLogForCategory(0x2BuLL);
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -503,13 +503,13 @@ LABEL_14:
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [a1 characteristic];
+      characteristic = [self characteristic];
       v19 = 138544130;
       v20 = v14;
       v21 = 2112;
-      v22 = v15;
+      v22 = characteristic;
       v23 = 2112;
-      v24 = v8;
+      v24 = valueCopy;
       v25 = 2112;
       v26 = v7;
       _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ for %@: Found closest valid value %@ for requested target value %@", &v19, 0x2Au);
@@ -530,46 +530,46 @@ LABEL_14:
 
 - (id)description
 {
-  v3 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  v4 = [v3 characteristicType];
+  characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  characteristicType = [characteristic characteristicType];
 
   if (+[HFUtilities hasInternalDiagnostics])
   {
-    v5 = [MEMORY[0x277CD1970] localizedDescriptionForCharacteristicType:v4];
-    v6 = [v5 lowercaseString];
+    v5 = [MEMORY[0x277CD1970] localizedDescriptionForCharacteristicType:characteristicType];
+    lowercaseString = [v5 lowercaseString];
   }
 
   else
   {
-    v6 = @"<redacted>";
+    lowercaseString = @"<redacted>";
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
-  v9 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  v10 = [v9 service];
-  v11 = [v10 name];
-  v12 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  v13 = [v12 service];
-  v14 = [v13 uniqueIdentifier];
-  v15 = [v7 stringWithFormat:@"<characteristic %@ set to targetValue: %@ in service: '%@' (%@)>", v6, v8, v11, v14];
+  targetValue = [(HFCharacteristicWriteActionBuilder *)self targetValue];
+  characteristic2 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  service = [characteristic2 service];
+  name = [service name];
+  characteristic3 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  service2 = [characteristic3 service];
+  uniqueIdentifier = [service2 uniqueIdentifier];
+  v15 = [v7 stringWithFormat:@"<characteristic %@ set to targetValue: %@ in service: '%@' (%@)>", lowercaseString, targetValue, name, uniqueIdentifier];
 
   return v15;
 }
 
-- (BOOL)canUpdateWithActionBuilder:(id)a3
+- (BOOL)canUpdateWithActionBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 characteristic];
-    v7 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-    if ([v6 isEqual:v7])
+    v5 = builderCopy;
+    characteristic = [v5 characteristic];
+    characteristic2 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+    if ([characteristic isEqual:characteristic2])
     {
-      v8 = [v5 targetValue];
-      v9 = v8 != 0;
+      targetValue = [v5 targetValue];
+      v9 = targetValue != 0;
     }
 
     else
@@ -586,21 +586,21 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)updateWithActionBuilder:(id)a3
+- (BOOL)updateWithActionBuilder:(id)builder
 {
-  v4 = a3;
-  if ([(HFCharacteristicWriteActionBuilder *)self canUpdateWithActionBuilder:v4])
+  builderCopy = builder;
+  if ([(HFCharacteristicWriteActionBuilder *)self canUpdateWithActionBuilder:builderCopy])
   {
-    v5 = v4;
-    v6 = [v5 targetValue];
-    v7 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
+    v5 = builderCopy;
+    targetValue = [v5 targetValue];
+    targetValue2 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
 
-    v8 = v6 == v7;
-    v9 = v6 != v7;
+    v8 = targetValue == targetValue2;
+    v9 = targetValue != targetValue2;
     if (!v8)
     {
-      v10 = [v5 targetValue];
-      [(HFCharacteristicWriteActionBuilder *)self setTargetValue:v10];
+      targetValue3 = [v5 targetValue];
+      [(HFCharacteristicWriteActionBuilder *)self setTargetValue:targetValue3];
     }
   }
 
@@ -614,39 +614,39 @@ LABEL_14:
 
 - (BOOL)requiresDeviceUnlock
 {
-  v2 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  v3 = [v2 requiresDeviceUnlock];
+  characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  requiresDeviceUnlock = [characteristic requiresDeviceUnlock];
 
-  return v3;
+  return requiresDeviceUnlock;
 }
 
 - (id)createNewAction
 {
-  v3 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  if (v3 && (v4 = v3, [(HFCharacteristicWriteActionBuilder *)self targetValue], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  if (characteristic && (v4 = characteristic, [(HFCharacteristicWriteActionBuilder *)self targetValue], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = objc_alloc(MEMORY[0x277CD19A8]);
-    v7 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-    v8 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
-    v9 = [v6 initWithCharacteristic:v7 targetValue:v8];
+    characteristic2 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+    targetValue = [(HFCharacteristicWriteActionBuilder *)self targetValue];
+    v9 = [v6 initWithCharacteristic:characteristic2 targetValue:targetValue];
   }
 
   else
   {
-    v7 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-    v8 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
-    NSLog(&cfstr_Hfcharacterist_13.isa, self, v7, v8);
+    characteristic2 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+    targetValue = [(HFCharacteristicWriteActionBuilder *)self targetValue];
+    NSLog(&cfstr_Hfcharacterist_13.isa, self, characteristic2, targetValue);
     v9 = 0;
   }
 
   return v9;
 }
 
-- (BOOL)hasSameTargetAsAction:(id)a3
+- (BOOL)hasSameTargetAsAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v5 = v4;
+  v5 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -661,9 +661,9 @@ LABEL_14:
 
   if (v7)
   {
-    v8 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-    v9 = [v7 characteristic];
-    v10 = [v8 isEqual:v9];
+    characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+    characteristic2 = [v7 characteristic];
+    v10 = [characteristic isEqual:characteristic2];
   }
 
   else
@@ -677,22 +677,22 @@ LABEL_14:
 - (id)containedAccessoryRepresentables
 {
   v2 = MEMORY[0x277CBEA60];
-  v3 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  v4 = [v3 service];
-  v5 = [v2 na_arrayWithSafeObject:v4];
+  characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  service = [characteristic service];
+  v5 = [v2 na_arrayWithSafeObject:service];
 
   return v5;
 }
 
 - (id)commitItem
 {
-  v3 = [(HFCharacteristicWriteActionBuilder *)self performValidation];
+  performValidation = [(HFCharacteristicWriteActionBuilder *)self performValidation];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HFCharacteristicWriteActionBuilder_commitItem__block_invoke;
   v7[3] = &unk_277DF2CE0;
   v7[4] = self;
-  v4 = [v3 flatMap:v7];
+  v4 = [performValidation flatMap:v7];
   v5 = [v4 recover:&__block_literal_global_96];
 
   return v5;
@@ -758,11 +758,11 @@ id __48__HFCharacteristicWriteActionBuilder_commitItem__block_invoke_4(uint64_t 
   return v4;
 }
 
-+ (id)asCharacteristicWriteAction:(id)a3
++ (id)asCharacteristicWriteAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v4 = v3;
+  v4 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -778,24 +778,24 @@ id __48__HFCharacteristicWriteActionBuilder_commitItem__block_invoke_4(uint64_t 
   return v5;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = HFCharacteristicWriteActionBuilder;
-  v5 = [(HFActionBuilder *)&v15 compareToObject:v4];
+  v5 = [(HFActionBuilder *)&v15 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
-    v6 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-    v7 = [v6 uniqueIdentifier];
-    v8 = [v4 characteristic];
-    v9 = [v8 uniqueIdentifier];
-    v10 = [HFPropertyDifference compareObjectA:v7 toObjectB:v9 key:@"characteristic.uniqueIdentifier" priority:3];
+    characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+    uniqueIdentifier = [characteristic uniqueIdentifier];
+    characteristic2 = [objectCopy characteristic];
+    uniqueIdentifier2 = [characteristic2 uniqueIdentifier];
+    v10 = [HFPropertyDifference compareObjectA:uniqueIdentifier toObjectB:uniqueIdentifier2 key:@"characteristic.uniqueIdentifier" priority:3];
     [v5 add:v10];
 
-    v11 = [(HFCharacteristicWriteActionBuilder *)self targetValue];
-    v12 = [v4 targetValue];
-    v13 = [HFPropertyDifference compareObjectA:v11 toObjectB:v12 key:@"targetValue" priority:3];
+    targetValue = [(HFCharacteristicWriteActionBuilder *)self targetValue];
+    targetValue2 = [objectCopy targetValue];
+    v13 = [HFPropertyDifference compareObjectA:targetValue toObjectB:targetValue2 key:@"targetValue" priority:3];
     [v5 add:v13];
   }
 
@@ -805,9 +805,9 @@ id __48__HFCharacteristicWriteActionBuilder_commitItem__block_invoke_4(uint64_t 
 - (unint64_t)hash
 {
   v3 = [objc_opt_class() hash];
-  v4 = [(HFCharacteristicWriteActionBuilder *)self characteristic];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 hash];
+  characteristic = [(HFCharacteristicWriteActionBuilder *)self characteristic];
+  uniqueIdentifier = [characteristic uniqueIdentifier];
+  v6 = [uniqueIdentifier hash];
 
   return v6 ^ v3;
 }

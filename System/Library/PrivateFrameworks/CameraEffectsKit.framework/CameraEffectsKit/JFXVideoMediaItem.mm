@@ -1,38 +1,38 @@
 @interface JFXVideoMediaItem
-+ (void)videoMediaItemWithLocalURL:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
++ (void)videoMediaItemWithLocalURL:(id)l delegate:(id)delegate completionHandler:(id)handler;
 - (BOOL)hasAudibleCharacteristic;
 - (BOOL)hasAudioTracks;
 - (BOOL)hasVideoTracks;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUnsupportedAudio;
 - (BOOL)needsDerivativeMedia;
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transform:(SEL)a3 fillDest:(CGSize)a4;
+- (CGAffineTransform)transform:(SEL)transform fillDest:(CGSize)dest;
 - (CGSize)naturalSize;
 - (CGSize)naturalSizeWithTransform;
 - (float)frameRate;
 - (id)assetURL;
 - (id)colorSpace;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)info;
 - (int)durationAt30fps;
 - (unint64_t)hash;
 - (void)cacheAssetInformation;
 - (void)commonInit;
 - (void)dealloc;
-- (void)loadAVAssetWithCompletionHandler:(id)a3;
+- (void)loadAVAssetWithCompletionHandler:(id)handler;
 - (void)mediaserverdCrashed;
 - (void)reloadAVAsset;
-- (void)setAssetIs4kHEVC:(BOOL)a3;
+- (void)setAssetIs4kHEVC:(BOOL)c;
 @end
 
 @implementation JFXVideoMediaItem
 
-- (void)loadAVAssetWithCompletionHandler:(id)a3
+- (void)loadAVAssetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(JFXMediaItem *)self delegate];
-  [v5 mediaItemWillLoad:self];
+  handlerCopy = handler;
+  delegate = [(JFXMediaItem *)self delegate];
+  [delegate mediaItemWillLoad:self];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -40,11 +40,11 @@
   v23[3] = &unk_278D7D0E8;
   v23[4] = self;
   v6 = MEMORY[0x245D22230](v23);
-  v7 = [(JTAssetMediaItem *)self asset];
+  asset = [(JTAssetMediaItem *)self asset];
 
-  if (v7)
+  if (asset)
   {
-    if (v4)
+    if (handlerCopy)
     {
       v8 = 0;
     }
@@ -54,9 +54,9 @@
       v8 = dispatch_semaphore_create(0);
     }
 
-    v12 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-    v13 = [(JTAssetMediaItem *)self asset];
-    v14 = [(JFXVideoMediaItem *)self needsDerivativeMedia];
+    videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+    asset2 = [(JTAssetMediaItem *)self asset];
+    needsDerivativeMedia = [(JFXVideoMediaItem *)self needsDerivativeMedia];
     [(JFXVideoMediaItem *)self frameRate];
     v16 = v15;
     v19[0] = MEMORY[0x277D85DD0];
@@ -64,11 +64,11 @@
     v19[2] = __54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invoke_2;
     v19[3] = &unk_278D7D110;
     v21 = v6;
-    v22 = v4;
+    v22 = handlerCopy;
     v11 = v8;
     v20 = v11;
     LODWORD(v17) = v16;
-    [v12 requestAVAssetAsyncWithAsset:v13 needsDerivativeMedia:v14 frameRate:v19 completion:v17];
+    [videoMediaItemUtils requestAVAssetAsyncWithAsset:asset2 needsDerivativeMedia:needsDerivativeMedia frameRate:v19 completion:v17];
 
     if (v11)
     {
@@ -80,13 +80,13 @@
   else
   {
     v9 = MEMORY[0x277CE63D8];
-    v10 = [(JTLocalAssetMediaItem *)self localFileURL];
-    v11 = [v9 assetWithURL:v10];
+    localFileURL = [(JTLocalAssetMediaItem *)self localFileURL];
+    v11 = [v9 assetWithURL:localFileURL];
 
     (v6)[2](v6, v11);
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -133,25 +133,25 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
   return result;
 }
 
-+ (void)videoMediaItemWithLocalURL:(id)a3 delegate:(id)a4 completionHandler:(id)a5
++ (void)videoMediaItemWithLocalURL:(id)l delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v13.receiver = a1;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___JFXVideoMediaItem;
-  v10 = a3;
+  lCopy = l;
   v11 = objc_msgSendSuper2(&v13, sel_alloc);
-  v12 = [v11 initWithURL:{v10, v13.receiver, v13.super_class}];
+  v12 = [v11 initWithURL:{lCopy, v13.receiver, v13.super_class}];
 
   if (v12)
   {
-    [v12 setDelegate:v8];
+    [v12 setDelegate:delegateCopy];
     [v12 commonInit];
     [v12 setMediaState:0];
     [v12 setMediaLoadState:0];
     [v12 checkIfAssetIsMissing];
     [v12 loadAVAssetWithCompletionHandler:0];
-    v9[2](v9, v12, 0);
+    handlerCopy[2](handlerCopy, v12, 0);
   }
 }
 
@@ -162,14 +162,14 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
   v3 = objc_alloc_init(JTVideoMediaUtils);
   [(JFXVideoMediaItem *)self setVideoMediaItemUtils:v3];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_mediaserverdCrashed name:@"mediaserverdCrashed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_mediaserverdCrashed name:@"mediaserverdCrashed" object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"mediaserverdCrashed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"mediaserverdCrashed" object:0];
 
   v4.receiver = self;
   v4.super_class = JFXVideoMediaItem;
@@ -178,8 +178,8 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (void)reloadAVAsset
 {
-  v3 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  [v3 invalidateCachedAssetInformation];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  [videoMediaItemUtils invalidateCachedAssetInformation];
 
   [(JFXVideoMediaItem *)self loadAVAssetWithCompletionHandler:0];
 }
@@ -194,9 +194,9 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (id)assetURL
 {
-  v3 = [(JTAssetMediaItem *)self assetIdentifier];
+  assetIdentifier = [(JTAssetMediaItem *)self assetIdentifier];
 
-  if (v3)
+  if (assetIdentifier)
   {
     [(JTAssetMediaItem *)self assetLocalURL];
   }
@@ -210,11 +210,11 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = JFXVideoMediaItem;
-  v4 = [(JTAssetMediaItem *)&v9 copyWithZone:a3];
+  v4 = [(JTAssetMediaItem *)&v9 copyWithZone:zone];
   objc_storeStrong(v4 + 15, self->_avAsset);
   *(v4 + 113) = self->_capturedByInAppCamera;
   v5 = objc_alloc_init(JTVideoMediaUtils);
@@ -223,17 +223,17 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
   *(v4 + 114) = self->_originalIsHEVC4k;
   [v4 cacheAssetInformation];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:v4 selector:sel_mediaserverdCrashed name:@"mediaserverdCrashed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v4 selector:sel_mediaserverdCrashed name:@"mediaserverdCrashed" object:0];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = JFXVideoMediaItem;
-  return [(JTAssetMediaItem *)&v4 isEqual:a3];
+  return [(JTAssetMediaItem *)&v4 isEqual:equal];
 }
 
 - (unint64_t)hash
@@ -245,16 +245,16 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (void)cacheAssetInformation
 {
-  v4 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  v3 = [(JFXVideoMediaItem *)self avAsset];
-  [v4 cacheTrackInformationWithAVAsset:v3];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  avAsset = [(JFXVideoMediaItem *)self avAsset];
+  [videoMediaItemUtils cacheTrackInformationWithAVAsset:avAsset];
 }
 
 - (BOOL)hasAudibleCharacteristic
 {
   v3 = [(JFXMediaItem *)self mediaState]== 2;
-  v4 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  LOBYTE(v3) = [v4 hasAudibleCharacteristicWithIsMissing:v3];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  LOBYTE(v3) = [videoMediaItemUtils hasAudibleCharacteristicWithIsMissing:v3];
 
   return v3;
 }
@@ -262,9 +262,9 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 - (CGSize)naturalSize
 {
   v3 = [(JFXMediaItem *)self mediaState]== 2;
-  v4 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  v5 = [(JTAssetMediaItem *)self asset];
-  [v4 naturalSizeWithIsMissing:v3 asset:v5];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  asset = [(JTAssetMediaItem *)self asset];
+  [videoMediaItemUtils naturalSizeWithIsMissing:v3 asset:asset];
   v7 = v6;
   v9 = v8;
 
@@ -277,12 +277,12 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (CGAffineTransform)transform
 {
-  v4 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  if (v4)
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  if (videoMediaItemUtils)
   {
-    v6 = v4;
-    [v4 transform];
-    v4 = v6;
+    v6 = videoMediaItemUtils;
+    [videoMediaItemUtils transform];
+    videoMediaItemUtils = v6;
   }
 
   else
@@ -310,8 +310,8 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (float)frameRate
 {
-  v2 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  [v2 frameRate];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  [videoMediaItemUtils frameRate];
   v4 = v3;
 
   return v4;
@@ -319,38 +319,38 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (id)colorSpace
 {
-  v2 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  v3 = [v2 colorSpace];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  colorSpace = [videoMediaItemUtils colorSpace];
 
-  if (v3)
+  if (colorSpace)
   {
-    v4 = v3;
+    rec709GammaColorSpace = colorSpace;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+    rec709GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
   }
 
-  v5 = v4;
+  v5 = rec709GammaColorSpace;
 
   return v5;
 }
 
 - (BOOL)hasVideoTracks
 {
-  v2 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  v3 = [v2 hasVideoTracks];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  hasVideoTracks = [videoMediaItemUtils hasVideoTracks];
 
-  return v3;
+  return hasVideoTracks;
 }
 
 - (int)durationAt30fps
 {
-  v3 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  v4 = [(JTAssetMediaItem *)self asset];
-  [v4 duration];
-  v5 = [v3 durationAt30fpsWithAssetDuration:?];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  asset = [(JTAssetMediaItem *)self asset];
+  [asset duration];
+  v5 = [videoMediaItemUtils durationAt30fpsWithAssetDuration:?];
 
   return v5;
 }
@@ -370,21 +370,21 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (BOOL)isUnsupportedAudio
 {
-  v2 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  v3 = [v2 isUnsupportedAudio];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  isUnsupportedAudio = [videoMediaItemUtils isUnsupportedAudio];
 
-  return v3;
+  return isUnsupportedAudio;
 }
 
-- (void)setAssetIs4kHEVC:(BOOL)a3
+- (void)setAssetIs4kHEVC:(BOOL)c
 {
-  if (self->_originalIsHEVC4k != a3)
+  if (self->_originalIsHEVC4k != c)
   {
-    self->_originalIsHEVC4k = a3;
+    self->_originalIsHEVC4k = c;
   }
 }
 
-- (CGAffineTransform)transform:(SEL)a3 fillDest:(CGSize)a4
+- (CGAffineTransform)transform:(SEL)transform fillDest:(CGSize)dest
 {
   v5 = MEMORY[0x277CBF2C0];
   v6 = *(MEMORY[0x277CBF2C0] + 16);
@@ -396,10 +396,10 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
 
 - (BOOL)hasAudioTracks
 {
-  v2 = [(JFXVideoMediaItem *)self videoMediaItemUtils];
-  v3 = [v2 hasAudioTracks];
+  videoMediaItemUtils = [(JFXVideoMediaItem *)self videoMediaItemUtils];
+  hasAudioTracks = [videoMediaItemUtils hasAudioTracks];
 
-  return v3;
+  return hasAudioTracks;
 }
 
 - (id)info
@@ -407,8 +407,8 @@ NSObject *__54__JFXVideoMediaItem_loadAVAssetWithCompletionHandler___block_invok
   v3 = MEMORY[0x277CBEB38];
   v10.receiver = self;
   v10.super_class = JFXVideoMediaItem;
-  v4 = [(JTAssetMediaItem *)&v10 info];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  info = [(JTAssetMediaItem *)&v10 info];
+  v5 = [v3 dictionaryWithDictionary:info];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_capturedByInAppCamera];
   [v5 setObject:v6 forKey:kRecordedWithInAppCamera];

@@ -1,6 +1,6 @@
 @interface ICCalculatePreviewBehaviorMenu
 - (ICCalculatePreviewBehaviorMenu)init;
-- (ICCalculatePreviewBehaviorMenu)initWithNote:(id)a3 isMathEnabled:(BOOL)a4;
+- (ICCalculatePreviewBehaviorMenu)initWithNote:(id)note isMathEnabled:(BOOL)enabled;
 - (ICNote)note;
 - (id)makeMenu;
 @end
@@ -15,13 +15,13 @@
   return Strong;
 }
 
-- (ICCalculatePreviewBehaviorMenu)initWithNote:(id)a3 isMathEnabled:(BOOL)a4
+- (ICCalculatePreviewBehaviorMenu)initWithNote:(id)note isMathEnabled:(BOOL)enabled
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___ICCalculatePreviewBehaviorMenu_allBehaviors) = &unk_1F4F8C128;
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
-  *(self + OBJC_IVAR___ICCalculatePreviewBehaviorMenu_isMathEnabled) = a4;
+  *(self + OBJC_IVAR___ICCalculatePreviewBehaviorMenu_isMathEnabled) = enabled;
   v7.receiver = self;
   v7.super_class = ICCalculatePreviewBehaviorMenu;
   return [(ICCalculatePreviewBehaviorMenu *)&v7 init];
@@ -29,7 +29,7 @@
 
 - (id)makeMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICCalculatePreviewBehaviorMenu.makeMenu()();
 
   return v3;

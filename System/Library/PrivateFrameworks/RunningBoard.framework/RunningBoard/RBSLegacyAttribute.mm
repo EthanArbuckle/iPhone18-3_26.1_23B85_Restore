@@ -1,35 +1,35 @@
 @interface RBSLegacyAttribute
 - (BOOL)_isLegacyReasonFinishableTask:(_BOOL8)result;
-- (double)_invalidationDurationExpiringTaskCompletionsQuickly:(void *)a1;
+- (double)_invalidationDurationExpiringTaskCompletionsQuickly:(void *)quickly;
 - (uint64_t)_definesRelativeStartTime;
-- (uint64_t)_explicitJetsamBand:(void *)a1;
+- (uint64_t)_explicitJetsamBand:(void *)band;
 - (uint64_t)_invalidateOnThermalLevel;
-- (uint64_t)_isOriginatorValidForContext:(__CFString *)a3 errorReason:;
-- (uint64_t)_isTargetValidForContext:(__CFString *)a3 errorReason:;
+- (uint64_t)_isOriginatorValidForContext:(__CFString *)context errorReason:;
+- (uint64_t)_isTargetValidForContext:(__CFString *)context errorReason:;
 - (uint64_t)_maxCPUDuration;
 - (uint64_t)_role;
 - (uint64_t)_startPolicy;
 - (uint64_t)_terminationResistance;
-- (void)_mutateReasonWithContext:(void *)a1;
+- (void)_mutateReasonWithContext:(void *)context;
 @end
 
 @implementation RBSLegacyAttribute
 
 - (uint64_t)_role
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 requestedReason] == 9)
+    if ([self requestedReason] == 9)
     {
       return 6;
     }
 
-    else if (([a1 flags] & 2) != 0)
+    else if (([self flags] & 2) != 0)
     {
       return 4;
     }
 
-    else if ([a1 flags])
+    else if ([self flags])
     {
       return 2;
     }
@@ -50,31 +50,31 @@
 {
   if (result)
   {
-    v1 = [result reason];
+    reason = [result reason];
     result = 1;
-    if (v1 <= 0x17)
+    if (reason <= 0x17)
     {
-      if (((1 << v1) & 0xBC33AE) != 0)
+      if (((1 << reason) & 0xBC33AE) != 0)
       {
         return result;
       }
 
-      if (((1 << v1) & 0x10011) != 0)
+      if (((1 << reason) & 0x10011) != 0)
       {
         return 102;
       }
 
-      if (v1 == 10)
+      if (reason == 10)
       {
         return 103;
       }
     }
 
-    v2 = v1 - 16;
-    if (v1 - 10000 > 8)
+    v2 = reason - 16;
+    if (reason - 10000 > 8)
     {
 LABEL_11:
-      v3 = v1 - 50000;
+      v3 = reason - 50000;
       if (v3 > 4 || ((1 << v3) & 0x19) == 0)
       {
         return 101;
@@ -101,11 +101,11 @@ LABEL_11:
 {
   if (result)
   {
-    v1 = [result reason];
+    reason = [result reason];
     result = 1;
-    if (v1 > 0x17 || ((1 << v1) & 0xBC33AE) == 0)
+    if (reason > 0x17 || ((1 << reason) & 0xBC33AE) == 0)
     {
-      v2 = v1 - 10000;
+      v2 = reason - 10000;
       if (v2 > 8 || ((1 << v2) & 0x135) == 0)
       {
         return 0;
@@ -120,9 +120,9 @@ LABEL_11:
 {
   if (result)
   {
-    v1 = [result reason];
+    reason = [result reason];
     result = 820;
-    switch(v1)
+    switch(reason)
     {
       case 1:
       case 2:
@@ -161,7 +161,7 @@ LABEL_3:
         result = 830;
         break;
       default:
-        switch(v1)
+        switch(reason)
         {
           case 10000:
           case 10007:
@@ -178,7 +178,7 @@ LABEL_3:
           case 10008:
             goto LABEL_6;
           default:
-            v2 = v1 - 50000;
+            v2 = reason - 50000;
             if (v2 <= 4 && ((1 << v2) & 0x19) != 0)
             {
               goto LABEL_10;
@@ -198,9 +198,9 @@ LABEL_3:
 {
   if (result)
   {
-    v1 = [result reason];
-    v2 = v1;
-    if (v1 <= 0x17 && ((1 << v1) & 0xA9132E) != 0)
+    reason = [result reason];
+    v2 = reason;
+    if (reason <= 0x17 && ((1 << reason) & 0xA9132E) != 0)
     {
       return 40;
     }
@@ -220,8 +220,8 @@ LABEL_3:
 {
   if (result)
   {
-    v1 = [result reason];
-    switch(v1)
+    reason = [result reason];
+    switch(reason)
     {
       case 19:
       case 21:
@@ -232,7 +232,7 @@ LABEL_3:
         result = 15;
         break;
       default:
-        if (v1 == 4)
+        if (reason == 4)
         {
           result = 180;
         }
@@ -269,79 +269,79 @@ uint64_t __93__RBSLegacyAttribute_RBProcessState__applyToAssertionIntransientSta
   return result;
 }
 
-- (void)_mutateReasonWithContext:(void *)a1
+- (void)_mutateReasonWithContext:(void *)context
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    v4 = [a1 reason];
-    if (v4 == 4)
+    reason = [context reason];
+    if (reason == 4)
     {
-      v5 = [v3 initialProcessState];
-      v6 = [v5 legacyFinishTaskReason];
-      if (v6 == 16)
+      initialProcessState = [v3 initialProcessState];
+      legacyFinishTaskReason = [initialProcessState legacyFinishTaskReason];
+      if (legacyFinishTaskReason == 16)
       {
-        v4 = 50004;
+        reason = 50004;
       }
 
       else
       {
-        v4 = v6;
-        if (v6 != 50004)
+        reason = legacyFinishTaskReason;
+        if (legacyFinishTaskReason != 50004)
         {
-          if (v6 == 10007)
+          if (legacyFinishTaskReason == 10007)
           {
-            v4 = 50003;
+            reason = 50003;
           }
 
-          else if (v6 != 50000 && v6 != 50003)
+          else if (legacyFinishTaskReason != 50000 && legacyFinishTaskReason != 50003)
           {
-            if (v6 == 10006)
+            if (legacyFinishTaskReason == 10006)
             {
-              v4 = 50000;
+              reason = 50000;
             }
 
             else
             {
-              v4 = 4;
+              reason = 4;
             }
           }
         }
       }
     }
 
-    if (v4 != [a1 reason])
+    if (reason != [context reason])
     {
       v8 = rbs_assertion_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [a1 reason];
-        v10 = [v3 assertion];
+        reason2 = [context reason];
+        assertion = [v3 assertion];
         v12 = 134349570;
-        v13 = v9;
+        v13 = reason2;
         v14 = 2050;
-        v15 = v4;
+        v15 = reason;
         v16 = 2114;
-        v17 = v10;
+        v17 = assertion;
         _os_log_impl(&dword_262485000, v8, OS_LOG_TYPE_DEFAULT, "Mutating assertion reason from %{public}lu to %{public}lu for assertion %{public}@", &v12, 0x20u);
       }
 
-      [a1 setReason:v4];
+      [context setReason:reason];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_invalidationDurationExpiringTaskCompletionsQuickly:(void *)a1
+- (double)_invalidationDurationExpiringTaskCompletionsQuickly:(void *)quickly
 {
   result = 0.0;
-  if (a1)
+  if (quickly)
   {
-    v4 = [a1 reason];
+    reason = [quickly reason];
     result = 1.0;
-    switch(v4)
+    switch(reason)
     {
       case 1:
       case 2:
@@ -378,18 +378,18 @@ uint64_t __93__RBSLegacyAttribute_RBProcessState__applyToAssertionIntransientSta
       case 16:
         return 15.0;
       default:
-        if ((v4 - 10000) > 8)
+        if ((reason - 10000) > 8)
         {
           goto LABEL_13;
         }
 
-        if (((1 << (v4 - 16)) & 0x135) != 0)
+        if (((1 << (reason - 16)) & 0x135) != 0)
         {
 LABEL_8:
           result = 0.0;
         }
 
-        else if (v4 == 10006)
+        else if (reason == 10006)
         {
           if (qword_2814AA0D0 != -1)
           {
@@ -399,7 +399,7 @@ LABEL_8:
           result = *&_MergedGlobals;
         }
 
-        else if (v4 == 10007)
+        else if (reason == 10007)
         {
           result = 30.0;
         }
@@ -407,7 +407,7 @@ LABEL_8:
         else
         {
 LABEL_13:
-          if (v4 == 50000)
+          if (reason == 50000)
           {
             if (qword_2814AA0D0 != -1)
             {
@@ -433,12 +433,12 @@ LABEL_13:
 
           else
           {
-            if (v4 == 50004)
+            if (reason == 50004)
             {
               result = 25.0;
             }
 
-            if (v4 == 50003)
+            if (reason == 50003)
             {
               result = 40.0;
             }
@@ -452,41 +452,41 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)_explicitJetsamBand:(void *)a1
+- (uint64_t)_explicitJetsamBand:(void *)band
 {
   v3 = a2;
-  if (a1)
+  if (band)
   {
-    v4 = [a1 flags];
-    v5 = [a1 reason];
-    if (v5 == 3 && (v4 & 8) != 0)
+    flags = [band flags];
+    reason = [band reason];
+    if (reason == 3 && (flags & 8) != 0)
     {
       v6 = 120;
     }
 
-    else if ((v4 & 8) != 0)
+    else if ((flags & 8) != 0)
     {
-      if (v5 != 9)
+      if (reason != 9)
       {
         goto LABEL_21;
       }
 
-      v9 = [v3 targetProcess];
-      if (!v9)
+      targetProcess = [v3 targetProcess];
+      if (!targetProcess)
       {
         goto LABEL_21;
       }
 
-      v10 = v9;
-      v11 = [v3 assertion];
-      v12 = [v11 explanation];
-      v13 = [v12 isEqualToString:@"com.apple.viewservice.session"];
+      v10 = targetProcess;
+      assertion = [v3 assertion];
+      explanation = [assertion explanation];
+      v13 = [explanation isEqualToString:@"com.apple.viewservice.session"];
 
       if (v13)
       {
-        v14 = [v3 entitlementManager];
-        v15 = [v3 targetProcess];
-        v16 = [v14 entitlementsForProcess:v15];
+        entitlementManager = [v3 entitlementManager];
+        targetProcess2 = [v3 targetProcess];
+        v16 = [entitlementManager entitlementsForProcess:targetProcess2];
 
         if ([v16 rb_hasEntitlement:*MEMORY[0x277D47040]])
         {
@@ -508,14 +508,14 @@ LABEL_21:
 
     else
     {
-      v7 = v5 == 10006 || v5 == 50000;
+      v7 = reason == 10006 || reason == 50000;
       v8 = 20;
       if (!v7)
       {
         v8 = 0;
       }
 
-      if (v4)
+      if (flags)
       {
         v6 = 40;
       }
@@ -549,60 +549,60 @@ LABEL_21:
   return result;
 }
 
-- (uint64_t)_isOriginatorValidForContext:(__CFString *)a3 errorReason:
+- (uint64_t)_isOriginatorValidForContext:(__CFString *)context errorReason:
 {
   v42 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_44;
   }
 
-  if (!a3)
+  if (!context)
   {
-    v3 = sel__isOriginatorValidForContext_errorReason_;
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:sel__isOriginatorValidForContext_errorReason_ object:a1 file:@"RBSLegacyAttribute+RBProcessState.m" lineNumber:383 description:@"outReason is required"];
+    originatorEntitlements4 = sel__isOriginatorValidForContext_errorReason_;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__isOriginatorValidForContext_errorReason_ object:self file:@"RBSLegacyAttribute+RBProcessState.m" lineNumber:383 description:@"outReason is required"];
   }
 
-  v7 = [a1 requestedReason];
-  if (v7 <= 0x17)
+  requestedReason = [self requestedReason];
+  if (requestedReason <= 0x17)
   {
-    if (((1 << v7) & 0xBD15AE) != 0)
+    if (((1 << requestedReason) & 0xBD15AE) != 0)
     {
 LABEL_32:
-      v25 = [v6 originatorEntitlements];
-      v3 = v25;
+      originatorEntitlements = [v6 originatorEntitlements];
+      originatorEntitlements4 = originatorEntitlements;
       goto LABEL_33;
     }
 
-    if (((1 << v7) & 0x2200) != 0)
+    if (((1 << requestedReason) & 0x2200) != 0)
     {
       [v6 originatorProcess];
       objc_claimAutoreleasedReturnValue();
-      v8 = [OUTLINED_FUNCTION_1() targetProcess];
+      targetProcess = [OUTLINED_FUNCTION_1() targetProcess];
 
-      if (v3 != v8)
+      if (originatorEntitlements4 != targetProcess)
       {
-        if ([a1 reason] != 9 || !objc_msgSend(v3, "isLifecycleManaged"))
+        if ([self reason] != 9 || !objc_msgSend(originatorEntitlements4, "isLifecycleManaged"))
         {
           goto LABEL_34;
         }
 
-        v9 = [v6 originatorState];
-        v10 = [v9 inheritances];
-        v11 = [v10 allNamespaces];
-        v12 = [v11 containsObject:*MEMORY[0x277D470D0]];
+        originatorState = [v6 originatorState];
+        inheritances = [originatorState inheritances];
+        allNamespaces = [inheritances allNamespaces];
+        v12 = [allNamespaces containsObject:*MEMORY[0x277D470D0]];
 
-        v13 = [v6 originatorEntitlements];
-        v14 = [v13 rb_hasEntitlement:@"com.apple.assertiond.background-view-services"];
+        originatorEntitlements2 = [v6 originatorEntitlements];
+        v14 = [originatorEntitlements2 rb_hasEntitlement:@"com.apple.assertiond.background-view-services"];
 
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v15 = [v9 legacyAssertions];
-        v16 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        legacyAssertions = [originatorState legacyAssertions];
+        v16 = [legacyAssertions countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v16)
         {
           v17 = v16;
@@ -614,7 +614,7 @@ LABEL_32:
             {
               if (*v34 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(legacyAssertions);
               }
 
               if ([*(*(&v33 + 1) + 8 * v19) isLegacyAssertionReason:9])
@@ -627,7 +627,7 @@ LABEL_32:
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v17 = [legacyAssertions countByEnumeratingWithState:&v33 objects:v41 count:16];
             if (v17)
             {
               continue;
@@ -639,7 +639,7 @@ LABEL_32:
 
         if (((v12 | v14) & 1) == 0)
         {
-          *a3 = @"Originator for view service request is not in a valid state";
+          *context = @"Originator for view service request is not in a valid state";
 LABEL_51:
 
           goto LABEL_43;
@@ -650,7 +650,7 @@ LABEL_51:
 
       v29 = @"Originator and target must be different processes";
 LABEL_42:
-      *a3 = v29;
+      *context = v29;
 LABEL_43:
 
 LABEL_44:
@@ -658,22 +658,22 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    if (v7 == 4)
+    if (requestedReason == 4)
     {
       [v6 originatorProcess];
       objc_claimAutoreleasedReturnValue();
-      v9 = [OUTLINED_FUNCTION_1() targetProcess];
-      if (v3 != v9)
+      originatorState = [OUTLINED_FUNCTION_1() targetProcess];
+      if (originatorEntitlements4 != originatorState)
       {
-        v20 = [v6 originatorEntitlements];
-        if (([v3 isPlatformBinary] & 1) == 0 && (objc_msgSend(v20, "rb_hasEntitlementDomain:", 63) & 1) == 0)
+        originatorEntitlements3 = [v6 originatorEntitlements];
+        if (([originatorEntitlements4 isPlatformBinary] & 1) == 0 && (objc_msgSend(originatorEntitlements3, "rb_hasEntitlementDomain:", 63) & 1) == 0)
         {
-          v21 = [v6 entitlementManager];
-          v22 = [v21 entitlementsForProcess:v9];
+          entitlementManager = [v6 entitlementManager];
+          v22 = [entitlementManager entitlementsForProcess:originatorState];
 
-          if (([v9 isPlatformBinary] & 1) == 0 && !objc_msgSend(v22, "rb_hasEntitlementDomain:", 63))
+          if (([originatorState isPlatformBinary] & 1) == 0 && !objc_msgSend(v22, "rb_hasEntitlementDomain:", 63))
           {
-            *a3 = @"Originator and target must be the same process";
+            *context = @"Originator and target must be the same process";
 
             goto LABEL_51;
           }
@@ -682,9 +682,9 @@ LABEL_44:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v38 = v3;
+            v38 = originatorEntitlements4;
             v39 = 2114;
-            v40 = v9;
+            v40 = originatorState;
             _os_log_impl(&dword_262485000, v23, OS_LOG_TYPE_DEFAULT, "allowing legacy background task: untrusted process %{public}@ is targeting trusted process %{public}@", buf, 0x16u);
           }
         }
@@ -696,12 +696,12 @@ LABEL_49:
     }
   }
 
-  v24 = v7 - 16;
-  if (v7 - 10000 > 8)
+  v24 = requestedReason - 16;
+  if (requestedReason - 10000 > 8)
   {
 LABEL_46:
     v26 = 0;
-    *a3 = @"Invalid assertion reason provided";
+    *context = @"Invalid assertion reason provided";
     goto LABEL_45;
   }
 
@@ -712,18 +712,18 @@ LABEL_46:
 
   if (((1 << v24) & 0x21) == 0)
   {
-    if (v7 == 10006)
+    if (requestedReason == 10006)
     {
-      v3 = [v6 originatorEntitlements];
-      if ([v3 rb_hasEntitlementDomain:32])
+      originatorEntitlements4 = [v6 originatorEntitlements];
+      if ([originatorEntitlements4 rb_hasEntitlementDomain:32])
       {
         goto LABEL_34;
       }
 
-      v27 = [v6 originatorProcess];
-      v28 = [v27 isPlatformBinary];
+      originatorProcess = [v6 originatorProcess];
+      isPlatformBinary = [originatorProcess isPlatformBinary];
 
-      if (v28)
+      if (isPlatformBinary)
       {
         goto LABEL_34;
       }
@@ -734,15 +734,15 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  v3 = [v6 originatorEntitlements];
-  if ([v3 rb_hasEntitlement:@"com.apple.backboard.client"])
+  originatorEntitlements4 = [v6 originatorEntitlements];
+  if ([originatorEntitlements4 rb_hasEntitlement:@"com.apple.backboard.client"])
   {
     goto LABEL_34;
   }
 
-  v25 = v3;
+  originatorEntitlements = originatorEntitlements4;
 LABEL_33:
-  if (([v25 rb_hasEntitlementDomain:32] & 1) == 0)
+  if (([originatorEntitlements rb_hasEntitlementDomain:32] & 1) == 0)
   {
 LABEL_41:
     v29 = @"Client is missing required entitlement";
@@ -751,7 +751,7 @@ LABEL_41:
 
 LABEL_34:
 
-  *a3 = 0;
+  *context = 0;
   v26 = 1;
 LABEL_45:
 
@@ -759,35 +759,35 @@ LABEL_45:
   return v26;
 }
 
-- (uint64_t)_isTargetValidForContext:(__CFString *)a3 errorReason:
+- (uint64_t)_isTargetValidForContext:(__CFString *)context errorReason:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if ([v5 targetIsSystem])
     {
-      a1 = 0;
+      self = 0;
       v7 = @"Attribute may not target the system";
 LABEL_4:
-      *a3 = v7;
+      *context = v7;
       goto LABEL_20;
     }
 
-    v8 = [a1 reason];
-    switch(v8)
+    reason = [self reason];
+    switch(reason)
     {
       case 9:
         [v6 targetProcess];
         objc_claimAutoreleasedReturnValue();
-        v15 = [OUTLINED_FUNCTION_1() entitlementManager];
-        v16 = [v15 entitlementsForProcess:a1];
+        entitlementManager = [OUTLINED_FUNCTION_1() entitlementManager];
+        v16 = [entitlementManager entitlementsForProcess:self];
 
         if (([v16 rb_hasEntitlement:*MEMORY[0x277D47040]] & 1) == 0)
         {
-          *a3 = @"Target lacks view service entitlement";
+          *context = @"Target lacks view service entitlement";
 
-          a1 = 0;
+          self = 0;
           goto LABEL_20;
         }
 
@@ -795,12 +795,12 @@ LABEL_4:
       case 12:
         if (([v6 ignoreRestrictions] & 1) == 0)
         {
-          v11 = [v6 targetProperties];
-          v12 = [v11 usesSocketMonitoring];
+          targetProperties = [v6 targetProperties];
+          usesSocketMonitoring = [targetProperties usesSocketMonitoring];
 
-          if ((v12 & 1) == 0)
+          if ((usesSocketMonitoring & 1) == 0)
           {
-            a1 = 0;
+            self = 0;
             v7 = @"Target doesn't support socket monitoring";
             goto LABEL_4;
           }
@@ -810,12 +810,12 @@ LABEL_4:
       case 10006:
         if (([v6 ignoreRestrictions] & 1) == 0)
         {
-          v13 = [v6 targetProperties];
-          v14 = [v13 supportsBackgroundContentFetching];
+          targetProperties2 = [v6 targetProperties];
+          supportsBackgroundContentFetching = [targetProperties2 supportsBackgroundContentFetching];
 
-          if ((v14 & 1) == 0)
+          if ((supportsBackgroundContentFetching & 1) == 0)
           {
-            a1 = 0;
+            self = 0;
             v7 = @"Target doesn't support background content fetching";
             goto LABEL_4;
           }
@@ -823,12 +823,12 @@ LABEL_4:
 
         break;
       case 13:
-        v9 = [v6 targetIdentity];
-        v10 = [v9 isXPCService];
+        targetIdentity = [v6 targetIdentity];
+        isXPCService = [targetIdentity isXPCService];
 
-        if ((v10 & 1) == 0)
+        if ((isXPCService & 1) == 0)
         {
-          a1 = 0;
+          self = 0;
           v7 = @"Target is not an xpc service";
           goto LABEL_4;
         }
@@ -836,13 +836,13 @@ LABEL_4:
         break;
     }
 
-    *a3 = 0;
-    a1 = 1;
+    *context = 0;
+    self = 1;
   }
 
 LABEL_20:
 
-  return a1;
+  return self;
 }
 
 @end

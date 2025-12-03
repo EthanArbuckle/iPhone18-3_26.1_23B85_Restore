@@ -1,34 +1,34 @@
 @interface NLWorkoutSplitStorage
 + (BOOL)isTesting;
 + (NSUserDefaults)userDefaults;
-+ (double)_defaultSplitDistanceForActivityType:(id)a3 userDistanceUnit:(id)a4;
-+ (id)_defaultSplit:(id)a3 activityType:(id)a4 userDistanceUnit:(id)a5;
-+ (id)mapSplitTypeEnumToString:(int64_t)a3;
-+ (id)restoreFromDictionary:(id)a3;
-+ (id)restoreFromDictionary:(id)a3 activityType:(id)a4;
-+ (id)serializeSplitStorage:(id)a3;
-+ (id)splitEnablementDictionaryForActivityTypes:(id)a3 splitsActivityTypeKey:(id)a4;
-+ (id)splitForActivityType:(id)a3 splitsActivityTypeKey:(id)a4 userDistanceUnit:(id)a5;
-+ (int64_t)mapSplitTypeStringToEnum:(id)a3;
-+ (void)saveSplitStorage:(id)a3 forActivityType:(id)a4 useLegacyUniqueIdentifier:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (NLWorkoutSplitStorage)initWithType:(int64_t)a3 value:(double)a4;
++ (double)_defaultSplitDistanceForActivityType:(id)type userDistanceUnit:(id)unit;
++ (id)_defaultSplit:(id)split activityType:(id)type userDistanceUnit:(id)unit;
++ (id)mapSplitTypeEnumToString:(int64_t)string;
++ (id)restoreFromDictionary:(id)dictionary;
++ (id)restoreFromDictionary:(id)dictionary activityType:(id)type;
++ (id)serializeSplitStorage:(id)storage;
++ (id)splitEnablementDictionaryForActivityTypes:(id)types splitsActivityTypeKey:(id)key;
++ (id)splitForActivityType:(id)type splitsActivityTypeKey:(id)key userDistanceUnit:(id)unit;
++ (int64_t)mapSplitTypeStringToEnum:(id)enum;
++ (void)saveSplitStorage:(id)storage forActivityType:(id)type useLegacyUniqueIdentifier:(BOOL)identifier;
+- (BOOL)isEqual:(id)equal;
+- (NLWorkoutSplitStorage)initWithType:(int64_t)type value:(double)value;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation NLWorkoutSplitStorage
 
-- (NLWorkoutSplitStorage)initWithType:(int64_t)a3 value:(double)a4
+- (NLWorkoutSplitStorage)initWithType:(int64_t)type value:(double)value
 {
   v9.receiver = self;
   v9.super_class = NLWorkoutSplitStorage;
   result = [(NLWorkoutSplitStorage *)&v9 init];
   if (result)
   {
-    result->_type = a3;
-    result->_value = a4;
-    v8 = a4 > 0.0 && a3 != 0;
+    result->_type = type;
+    result->_value = value;
+    v8 = value > 0.0 && type != 0;
     result->_enabled = v8;
   }
 
@@ -40,9 +40,9 @@
   v2 = _userDefaults;
   if (!_userDefaults)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v4 = _userDefaults;
-    _userDefaults = v3;
+    _userDefaults = standardUserDefaults;
 
     v2 = _userDefaults;
   }
@@ -53,16 +53,16 @@
 + (BOOL)isTesting
 {
   v2 = _userDefaults;
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  LOBYTE(v2) = [v2 isEqual:v3];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  LOBYTE(v2) = [v2 isEqual:standardUserDefaults];
 
   return v2 ^ 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -72,18 +72,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NLWorkoutSplitStorage *)self type];
-      v7 = [(NLWorkoutSplitStorage *)v5 type];
+      v5 = equalCopy;
+      type = [(NLWorkoutSplitStorage *)self type];
+      type2 = [(NLWorkoutSplitStorage *)v5 type];
       [(NLWorkoutSplitStorage *)self value];
       v9 = v8;
       [(NLWorkoutSplitStorage *)v5 value];
       v11 = v10;
-      v12 = [(NLWorkoutSplitStorage *)self enabled];
-      v13 = [(NLWorkoutSplitStorage *)v5 enabled];
+      enabled = [(NLWorkoutSplitStorage *)self enabled];
+      enabled2 = [(NLWorkoutSplitStorage *)v5 enabled];
 
-      v15 = v9 == v11 && v6 == v7;
-      v16 = v15 & (v12 ^ v13 ^ 1);
+      v15 = v9 == v11 && type == type2;
+      v16 = v15 & (enabled ^ enabled2 ^ 1);
     }
 
     else
@@ -105,14 +105,14 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NLWorkoutSplitStorage *)self type];
+  type = [(NLWorkoutSplitStorage *)self type];
   v5 = @"NLWorkoutSplitsTypeNone";
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"NLWorkoutSplitsTypeDistance";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"NLWorkoutSplitsTypeTime";
   }
@@ -134,19 +134,19 @@
   return v9;
 }
 
-+ (id)_defaultSplit:(id)a3 activityType:(id)a4 userDistanceUnit:(id)a5
++ (id)_defaultSplit:(id)split activityType:(id)type userDistanceUnit:(id)unit
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v7 isEqualToString:@"DistanceSplitsByActivityType"] & 1) == 0)
+  splitCopy = split;
+  typeCopy = type;
+  unitCopy = unit;
+  if (([splitCopy isEqualToString:@"DistanceSplitsByActivityType"] & 1) == 0)
   {
-    [v7 isEqualToString:@"TimeSplitsByActivityType"];
+    [splitCopy isEqualToString:@"TimeSplitsByActivityType"];
   }
 
-  if ([v7 isEqualToString:@"DistanceSplitsByActivityType"])
+  if ([splitCopy isEqualToString:@"DistanceSplitsByActivityType"])
   {
-    [NLWorkoutSplitStorage _defaultSplitDistanceForActivityType:v8 userDistanceUnit:v9];
+    [NLWorkoutSplitStorage _defaultSplitDistanceForActivityType:typeCopy userDistanceUnit:unitCopy];
     v11 = v10;
     v12 = [NLWorkoutSplitStorage alloc];
     v13 = 1;
@@ -165,40 +165,40 @@
   return v15;
 }
 
-+ (double)_defaultSplitDistanceForActivityType:(id)a3 userDistanceUnit:(id)a4
++ (double)_defaultSplitDistanceForActivityType:(id)type userDistanceUnit:(id)unit
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 effectiveTypeIdentifier];
-  if ((v7 - 13) <= 0x3A && ((1 << (v7 - 13)) & 0x600808001000800) == 0 && v7 == 13)
+  typeCopy = type;
+  unitCopy = unit;
+  effectiveTypeIdentifier = [typeCopy effectiveTypeIdentifier];
+  if ((effectiveTypeIdentifier - 13) <= 0x3A && ((1 << (effectiveTypeIdentifier - 13)) & 0x600808001000800) == 0 && effectiveTypeIdentifier == 13)
   {
-    [v5 isIndoor];
+    [typeCopy isIndoor];
   }
 
-  v8 = [MEMORY[0x1E696C348] quantityWithUnit:v6 doubleValue:?];
-  v9 = [MEMORY[0x1E696C510] meterUnit];
-  [v8 doubleValueForUnit:v9];
+  v8 = [MEMORY[0x1E696C348] quantityWithUnit:unitCopy doubleValue:?];
+  meterUnit = [MEMORY[0x1E696C510] meterUnit];
+  [v8 doubleValueForUnit:meterUnit];
   v11 = v10;
 
-  if ([v5 effectiveTypeIdentifier] == 35)
+  if ([typeCopy effectiveTypeIdentifier] == 35)
   {
     v12 = MEMORY[0x1E696C348];
-    v13 = [MEMORY[0x1E696C510] meterUnit];
-    v14 = [v12 quantityWithUnit:v13 doubleValue:500.0];
-    v15 = [MEMORY[0x1E696C510] meterUnit];
-    [v14 doubleValueForUnit:v15];
+    meterUnit2 = [MEMORY[0x1E696C510] meterUnit];
+    v14 = [v12 quantityWithUnit:meterUnit2 doubleValue:500.0];
+    meterUnit3 = [MEMORY[0x1E696C510] meterUnit];
+    [v14 doubleValueForUnit:meterUnit3];
     v11 = v16;
   }
 
   return v11;
 }
 
-+ (id)splitEnablementDictionaryForActivityTypes:(id)a3 splitsActivityTypeKey:(id)a4
++ (id)splitEnablementDictionaryForActivityTypes:(id)types splitsActivityTypeKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  typesCopy = types;
   v8 = +[NLWorkoutSplitStorage userDefaults];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:keyCopy];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = v10;
@@ -208,14 +208,14 @@
     v20[1] = 3221225472;
     v20[2] = __89__NLWorkoutSplitStorage_splitEnablementDictionaryForActivityTypes_splitsActivityTypeKey___block_invoke_2;
     v20[3] = &unk_1E878CAC0;
-    v24 = a1;
+    selfCopy = self;
     v12 = &v21;
     v21 = v9;
     v13 = v11;
     v22 = v13;
-    v23 = v6;
-    v14 = v6;
-    [v7 enumerateObjectsUsingBlock:v20];
+    v23 = keyCopy;
+    v14 = keyCopy;
+    [typesCopy enumerateObjectsUsingBlock:v20];
 
     v15 = v23;
     v16 = v13;
@@ -230,11 +230,11 @@
     v25[2] = __89__NLWorkoutSplitStorage_splitEnablementDictionaryForActivityTypes_splitsActivityTypeKey___block_invoke;
     v25[3] = &unk_1E878CA98;
     v12 = &v26;
-    v26 = v6;
+    v26 = keyCopy;
     v18 = v10;
     v27 = v18;
-    v16 = v6;
-    [v7 enumerateObjectsUsingBlock:v25];
+    v16 = keyCopy;
+    [typesCopy enumerateObjectsUsingBlock:v25];
 
     v17 = v27;
     v14 = v18;
@@ -288,18 +288,18 @@ void __89__NLWorkoutSplitStorage_splitEnablementDictionaryForActivityTypes_split
   }
 }
 
-+ (id)splitForActivityType:(id)a3 splitsActivityTypeKey:(id)a4 userDistanceUnit:(id)a5
++ (id)splitForActivityType:(id)type splitsActivityTypeKey:(id)key userDistanceUnit:(id)unit
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  keyCopy = key;
+  unitCopy = unit;
   v11 = +[NLWorkoutSplitStorage userDefaults];
-  v12 = [v11 objectForKey:v9];
+  v12 = [v11 objectForKey:keyCopy];
 
   if (v12)
   {
-    v13 = [a1 restoreFromDictionary:v12 activityType:v8];
+    v13 = [self restoreFromDictionary:v12 activityType:typeCopy];
     v14 = v13;
     if (v13)
     {
@@ -320,7 +320,7 @@ void __89__NLWorkoutSplitStorage_splitEnablementDictionaryForActivityTypes_split
 
     else
     {
-      v16 = [NLWorkoutSplitStorage _defaultSplit:v9 activityType:v8 userDistanceUnit:v10];
+      v16 = [NLWorkoutSplitStorage _defaultSplit:keyCopy activityType:typeCopy userDistanceUnit:unitCopy];
     }
 
     v17 = v16;
@@ -328,35 +328,35 @@ void __89__NLWorkoutSplitStorage_splitEnablementDictionaryForActivityTypes_split
 
   else
   {
-    v17 = [NLWorkoutSplitStorage _defaultSplit:v9 activityType:v8 userDistanceUnit:v10];
+    v17 = [NLWorkoutSplitStorage _defaultSplit:keyCopy activityType:typeCopy userDistanceUnit:unitCopy];
   }
 
   return v17;
 }
 
-+ (id)restoreFromDictionary:(id)a3 activityType:(id)a4
++ (id)restoreFromDictionary:(id)dictionary activityType:(id)type
 {
-  v5 = a3;
-  v6 = [a4 uniqueIdentifier];
-  v7 = [v5 objectForKey:v6];
+  dictionaryCopy = dictionary;
+  uniqueIdentifier = [type uniqueIdentifier];
+  v7 = [dictionaryCopy objectForKey:uniqueIdentifier];
 
   v8 = [NLWorkoutSplitStorage restoreFromDictionary:v7];
 
   return v8;
 }
 
-+ (id)restoreFromDictionary:(id)a3
++ (id)restoreFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"type"];
-    v6 = [a1 mapSplitTypeStringToEnum:v5];
-    v7 = [v4 objectForKey:@"value"];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy objectForKey:@"type"];
+    v6 = [self mapSplitTypeStringToEnum:v5];
+    v7 = [dictionaryCopy objectForKey:@"value"];
     [v7 doubleValue];
     v9 = v8;
 
-    v10 = [v4 objectForKey:@"enabled"];
+    v10 = [dictionaryCopy objectForKey:@"enabled"];
 
     v11 = [v10 isEqualToString:@"true"];
     v12 = [[NLWorkoutSplitStorage alloc] initWithType:v6 value:v9];
@@ -371,66 +371,66 @@ void __89__NLWorkoutSplitStorage_splitEnablementDictionaryForActivityTypes_split
   return v12;
 }
 
-+ (id)serializeSplitStorage:(id)a3
++ (id)serializeSplitStorage:(id)storage
 {
-  if (a3)
+  if (storage)
   {
     v3 = MEMORY[0x1E695DF90];
-    v4 = a3;
-    v5 = [v3 dictionary];
-    v6 = +[NLWorkoutSplitStorage mapSplitTypeEnumToString:](NLWorkoutSplitStorage, "mapSplitTypeEnumToString:", [v4 type]);
-    v7 = [v4 enabled];
+    storageCopy = storage;
+    dictionary = [v3 dictionary];
+    v6 = +[NLWorkoutSplitStorage mapSplitTypeEnumToString:](NLWorkoutSplitStorage, "mapSplitTypeEnumToString:", [storageCopy type]);
+    enabled = [storageCopy enabled];
     v8 = @"false";
-    if (v7)
+    if (enabled)
     {
       v8 = @"true";
     }
 
     v9 = v8;
-    [v5 setObject:v6 forKey:@"type"];
+    [dictionary setObject:v6 forKey:@"type"];
     v10 = MEMORY[0x1E696AD98];
-    [v4 value];
+    [storageCopy value];
     v12 = v11;
 
     v13 = [v10 numberWithDouble:v12];
-    [v5 setObject:v13 forKey:@"value"];
+    [dictionary setObject:v13 forKey:@"value"];
 
-    [v5 setObject:v9 forKey:@"enabled"];
+    [dictionary setObject:v9 forKey:@"enabled"];
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
-  v14 = [v5 copy];
+  v14 = [dictionary copy];
 
   return v14;
 }
 
-+ (void)saveSplitStorage:(id)a3 forActivityType:(id)a4 useLegacyUniqueIdentifier:(BOOL)a5
++ (void)saveSplitStorage:(id)storage forActivityType:(id)type useLegacyUniqueIdentifier:(BOOL)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  typeCopy = type;
   _HKInitializeLogging();
   v9 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412290;
-    v24 = v7;
+    v24 = storageCopy;
     _os_log_impl(&dword_1E5D0F000, v9, OS_LOG_TYPE_DEFAULT, "[SplitStorage] Saving split values to defaults. split:%@", &v23, 0xCu);
   }
 
-  v10 = [v7 type];
-  if (v10 == 1)
+  type = [storageCopy type];
+  if (type == 1)
   {
     v11 = kNLSessionTrackerAppKeyDistanceSplitsByActivityType;
   }
 
   else
   {
-    if (v10 != 2)
+    if (type != 2)
     {
       goto LABEL_16;
     }
@@ -444,74 +444,74 @@ void __89__NLWorkoutSplitStorage_splitEnablementDictionaryForActivityTypes_split
     v13 = v12;
     v14 = +[NLWorkoutSplitStorage userDefaults];
     v15 = [v14 objectForKey:v13];
-    v16 = [v15 mutableCopy];
+    dictionary = [v15 mutableCopy];
 
-    if (!v16)
+    if (!dictionary)
     {
-      v16 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v17 = [NLWorkoutSplitStorage serializeSplitStorage:v7];
-    if (a5)
+    v17 = [NLWorkoutSplitStorage serializeSplitStorage:storageCopy];
+    if (identifier)
     {
-      v18 = [v8 workoutActivityType];
-      v19 = [v18 legacyUniqueIdentifier];
+      workoutActivityType = [typeCopy workoutActivityType];
+      legacyUniqueIdentifier = [workoutActivityType legacyUniqueIdentifier];
     }
 
     else
     {
-      v19 = [v8 uniqueIdentifier];
+      legacyUniqueIdentifier = [typeCopy uniqueIdentifier];
     }
 
-    [v16 setObject:v17 forKey:v19];
+    [dictionary setObject:v17 forKey:legacyUniqueIdentifier];
     v20 = +[NLWorkoutSplitStorage userDefaults];
-    [v20 setObject:v16 forKey:v13];
+    [v20 setObject:dictionary forKey:v13];
 
     if (!+[NLWorkoutSplitStorage isTesting])
     {
       [MEMORY[0x1E695E000] fu_backupStandardUserDefaultsKey:v13];
     }
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    v22 = [v8 uniqueIdentifier];
-    [v21 postNotificationName:@"NLWorkoutSplitStorageSaved" object:v22];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    uniqueIdentifier = [typeCopy uniqueIdentifier];
+    [defaultCenter postNotificationName:@"NLWorkoutSplitStorageSaved" object:uniqueIdentifier];
   }
 
 LABEL_16:
 }
 
-+ (int64_t)mapSplitTypeStringToEnum:(id)a3
++ (int64_t)mapSplitTypeStringToEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"distance"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"distance"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"time"])
+  else if ([enumCopy isEqualToString:@"time"])
   {
     v4 = 2;
   }
 
   else
   {
-    [v3 isEqualToString:@"none"];
+    [enumCopy isEqualToString:@"none"];
     v4 = 0;
   }
 
   return v4;
 }
 
-+ (id)mapSplitTypeEnumToString:(int64_t)a3
++ (id)mapSplitTypeEnumToString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return &stru_1F5F88F90;
   }
 
   else
   {
-    return off_1E878CAE0[a3];
+    return off_1E878CAE0[string];
   }
 }
 

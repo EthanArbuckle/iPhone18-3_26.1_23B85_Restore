@@ -1,33 +1,33 @@
 @interface MCMotionTrigger
-+ (id)motionTriggerForTargetPlugObjectID:(id)a3 withKey:(id)a4 andDuration:(double)a5;
-- (MCMotionTrigger)initWithImprint:(id)a3;
++ (id)motionTriggerForTargetPlugObjectID:(id)d withKey:(id)key andDuration:(double)duration;
+- (MCMotionTrigger)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCMotionTrigger
 
-+ (id)motionTriggerForTargetPlugObjectID:(id)a3 withKey:(id)a4 andDuration:(double)a5
++ (id)motionTriggerForTargetPlugObjectID:(id)d withKey:(id)key andDuration:(double)duration
 {
-  v8 = objc_alloc_init(a1);
-  [v8 setTargetObjectID:a3];
-  [v8 setKey:a4];
-  v8[4] = a5;
+  v8 = objc_alloc_init(self);
+  [v8 setTargetObjectID:d];
+  [v8 setKey:key];
+  v8[4] = duration;
 
   return v8;
 }
 
-- (MCMotionTrigger)initWithImprint:(id)a3
+- (MCMotionTrigger)initWithImprint:(id)imprint
 {
   v14.receiver = self;
   v14.super_class = MCMotionTrigger;
   v4 = [(MCAction *)&v14 initWithImprint:?];
   if (v4)
   {
-    v4->_key = [a3 objectForKey:@"key"];
-    v5 = [a3 objectForKey:@"duration"];
+    v4->_key = [imprint objectForKey:@"key"];
+    v5 = [imprint objectForKey:@"duration"];
     v6 = 0.0;
     v7 = 0.0;
     if (v5)
@@ -36,7 +36,7 @@
     }
 
     v4->_duration = v7;
-    v8 = [a3 objectForKey:@"easeIn"];
+    v8 = [imprint objectForKey:@"easeIn"];
     if (v8)
     {
       [v8 floatValue];
@@ -44,7 +44,7 @@
     }
 
     v4->_easeIn = v6;
-    v10 = [a3 objectForKey:@"easeOut"];
+    v10 = [imprint objectForKey:@"easeOut"];
     if (v10)
     {
       [v10 floatValue];
@@ -74,12 +74,12 @@
 {
   v9.receiver = self;
   v9.super_class = MCMotionTrigger;
-  v3 = [(MCAction *)&v9 imprint];
-  v4 = v3;
+  imprint = [(MCAction *)&v9 imprint];
+  v4 = imprint;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [imprint setObject:key forKey:@"key"];
   }
 
   if (self->_duration != 0.0)
@@ -104,7 +104,7 @@
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MCMotionTrigger;
@@ -112,12 +112,12 @@
   key = self->_key;
   if (key)
   {
-    *(a3 + 3) = [(NSString *)key copy];
+    *(snapshot + 3) = [(NSString *)key copy];
   }
 
-  *(a3 + 4) = *&self->_duration;
-  *(a3 + 5) = *&self->_easeIn;
-  *(a3 + 6) = *&self->_easeOut;
+  *(snapshot + 4) = *&self->_duration;
+  *(snapshot + 5) = *&self->_easeIn;
+  *(snapshot + 6) = *&self->_easeOut;
 }
 
 - (id)description

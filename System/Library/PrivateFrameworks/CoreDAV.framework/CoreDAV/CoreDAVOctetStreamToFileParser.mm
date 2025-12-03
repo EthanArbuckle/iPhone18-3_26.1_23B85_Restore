@@ -1,32 +1,32 @@
 @interface CoreDAVOctetStreamToFileParser
-- (BOOL)processData:(id)a3 forTask:(id)a4;
-- (CoreDAVOctetStreamToFileParser)initWithFileHandle:(id)a3;
+- (BOOL)processData:(id)data forTask:(id)task;
+- (CoreDAVOctetStreamToFileParser)initWithFileHandle:(id)handle;
 @end
 
 @implementation CoreDAVOctetStreamToFileParser
 
-- (CoreDAVOctetStreamToFileParser)initWithFileHandle:(id)a3
+- (CoreDAVOctetStreamToFileParser)initWithFileHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v8.receiver = self;
   v8.super_class = CoreDAVOctetStreamToFileParser;
   v5 = [(CoreDAVOctetStreamParser *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CoreDAVOctetStreamToFileParser *)v5 setFileHandle:v4];
+    [(CoreDAVOctetStreamToFileParser *)v5 setFileHandle:handleCopy];
   }
 
   return v6;
 }
 
-- (BOOL)processData:(id)a3 forTask:(id)a4
+- (BOOL)processData:(id)data forTask:(id)task
 {
-  if (a3)
+  if (data)
   {
-    v5 = a3;
-    v6 = [(CoreDAVOctetStreamToFileParser *)self fileHandle];
-    [v6 writeData:v5];
+    dataCopy = data;
+    fileHandle = [(CoreDAVOctetStreamToFileParser *)self fileHandle];
+    [fileHandle writeData:dataCopy];
   }
 
   return 1;

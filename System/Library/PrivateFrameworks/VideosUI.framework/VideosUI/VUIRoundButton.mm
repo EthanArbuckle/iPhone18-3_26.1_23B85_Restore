@@ -1,24 +1,24 @@
 @interface VUIRoundButton
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIRoundButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIRoundButton)initWithFrame:(CGRect)frame;
 - (VUIRoundButtonDelegate)delegate;
 - (void)_setUpViews;
-- (void)buttonPressed:(id)a3;
-- (void)buttonReleased:(id)a3;
-- (void)buttonSelected:(id)a3;
+- (void)buttonPressed:(id)pressed;
+- (void)buttonReleased:(id)released;
+- (void)buttonSelected:(id)selected;
 - (void)configureTextStackView;
-- (void)setButtonImage:(id)a3;
-- (void)setTextLabels:(id)a3;
+- (void)setButtonImage:(id)image;
+- (void)setTextLabels:(id)labels;
 @end
 
 @implementation VUIRoundButton
 
-- (VUIRoundButton)initWithFrame:(CGRect)a3
+- (VUIRoundButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = VUIRoundButton;
-  v3 = [(VUIRoundButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIRoundButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
@@ -31,10 +31,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v21 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
@@ -42,8 +42,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(VUIRoundButton *)self textLabels];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  textLabels = [(VUIRoundButton *)self textLabels];
+  v8 = [textLabels countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -55,7 +55,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(textLabels);
         }
 
         [*(*(&v16 + 1) + 8 * v11) sizeThatFits:{width, height}];
@@ -69,7 +69,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [textLabels countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -99,85 +99,85 @@
   return result;
 }
 
-- (void)setButtonImage:(id)a3
+- (void)setButtonImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   if (([(UIImage *)self->_buttonImage isEqual:?]& 1) == 0)
   {
-    v5 = [(VUIRoundButton *)self button];
-    [v5 setImage:v6 forState:0];
+    button = [(VUIRoundButton *)self button];
+    [button setImage:imageCopy forState:0];
 
-    objc_storeStrong(&self->_buttonImage, a3);
+    objc_storeStrong(&self->_buttonImage, image);
   }
 }
 
-- (void)setTextLabels:(id)a3
+- (void)setTextLabels:(id)labels
 {
-  v5 = a3;
+  labelsCopy = labels;
   if (![(NSArray *)self->_textLabels isEqualToArray:?])
   {
-    objc_storeStrong(&self->_textLabels, a3);
+    objc_storeStrong(&self->_textLabels, labels);
     [(VUIRoundButton *)self configureTextStackView];
   }
 }
 
 - (void)_setUpViews
 {
-  v3 = [(VUIRoundButton *)self button];
-  [(VUIRoundButton *)self addSubview:v3];
+  button = [(VUIRoundButton *)self button];
+  [(VUIRoundButton *)self addSubview:button];
 
-  v4 = [(VUIRoundButton *)self button];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  button2 = [(VUIRoundButton *)self button];
+  [button2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(VUIRoundButton *)self button];
-  v6 = [MEMORY[0x1E69DC888] vui_keyColor];
-  [v5 setBackgroundColor:v6];
+  button3 = [(VUIRoundButton *)self button];
+  vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+  [button3 setBackgroundColor:vui_keyColor];
 
-  v7 = [(VUIRoundButton *)self button];
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v7 setTintColor:v8];
+  button4 = [(VUIRoundButton *)self button];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [button4 setTintColor:whiteColor];
 
-  v9 = [(VUIRoundButton *)self button];
-  v10 = [v9 layer];
-  [v10 setMasksToBounds:1];
+  button5 = [(VUIRoundButton *)self button];
+  layer = [button5 layer];
+  [layer setMasksToBounds:1];
 
-  v11 = [(VUIRoundButton *)self button];
-  v12 = [v11 layer];
-  [v12 setCornerRadius:14.0];
+  button6 = [(VUIRoundButton *)self button];
+  layer2 = [button6 layer];
+  [layer2 setCornerRadius:14.0];
 
-  v13 = [(VUIRoundButton *)self button];
-  v14 = [v13 leadingAnchor];
-  v15 = [(VUIRoundButton *)self leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  button7 = [(VUIRoundButton *)self button];
+  leadingAnchor = [button7 leadingAnchor];
+  leadingAnchor2 = [(VUIRoundButton *)self leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v16 setActive:1];
 
-  v17 = [(VUIRoundButton *)self button];
-  v18 = [v17 heightAnchor];
-  v19 = [v18 constraintEqualToConstant:28.0];
+  button8 = [(VUIRoundButton *)self button];
+  heightAnchor = [button8 heightAnchor];
+  v19 = [heightAnchor constraintEqualToConstant:28.0];
   [v19 setActive:1];
 
-  v20 = [(VUIRoundButton *)self button];
-  v21 = [v20 widthAnchor];
-  v22 = [v21 constraintEqualToConstant:28.0];
+  button9 = [(VUIRoundButton *)self button];
+  widthAnchor = [button9 widthAnchor];
+  v22 = [widthAnchor constraintEqualToConstant:28.0];
   [v22 setActive:1];
 
-  v23 = [(VUIRoundButton *)self button];
-  v24 = [v23 centerYAnchor];
-  v25 = [(VUIRoundButton *)self centerYAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  button10 = [(VUIRoundButton *)self button];
+  centerYAnchor = [button10 centerYAnchor];
+  centerYAnchor2 = [(VUIRoundButton *)self centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v26 setActive:1];
 
-  v27 = [(VUIRoundButton *)self button];
-  [v27 setImageEdgeInsets:{7.0, 7.0, 7.0, 7.0}];
+  button11 = [(VUIRoundButton *)self button];
+  [button11 setImageEdgeInsets:{7.0, 7.0, 7.0, 7.0}];
 
-  v28 = [(VUIRoundButton *)self button];
-  [v28 addTarget:self action:sel_buttonSelected_ forControlEvents:3];
+  button12 = [(VUIRoundButton *)self button];
+  [button12 addTarget:self action:sel_buttonSelected_ forControlEvents:3];
 
-  v29 = [(VUIRoundButton *)self button];
-  [v29 addTarget:self action:sel_buttonReleased_ forControlEvents:128];
+  button13 = [(VUIRoundButton *)self button];
+  [button13 addTarget:self action:sel_buttonReleased_ forControlEvents:128];
 
-  v30 = [(VUIRoundButton *)self button];
-  [v30 addTarget:self action:sel_buttonPressed_ forControlEvents:64];
+  button14 = [(VUIRoundButton *)self button];
+  [button14 addTarget:self action:sel_buttonPressed_ forControlEvents:64];
 }
 
 - (void)configureTextStackView
@@ -191,66 +191,66 @@
   }
 
   v5 = objc_alloc(MEMORY[0x1E69DCF90]);
-  v6 = [(VUIRoundButton *)self textLabels];
-  v7 = [v5 initWithArrangedSubviews:v6];
+  textLabels = [(VUIRoundButton *)self textLabels];
+  v7 = [v5 initWithArrangedSubviews:textLabels];
   v8 = self->_textLabelStackView;
   self->_textLabelStackView = v7;
 
-  v9 = [(VUIRoundButton *)self textLabelStackView];
-  [(VUIRoundButton *)self addSubview:v9];
+  textLabelStackView = [(VUIRoundButton *)self textLabelStackView];
+  [(VUIRoundButton *)self addSubview:textLabelStackView];
 
-  v10 = [(VUIRoundButton *)self textLabelStackView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabelStackView2 = [(VUIRoundButton *)self textLabelStackView];
+  [textLabelStackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(VUIRoundButton *)self textLabelStackView];
-  [v11 setAxis:1];
+  textLabelStackView3 = [(VUIRoundButton *)self textLabelStackView];
+  [textLabelStackView3 setAxis:1];
 
-  v12 = [(VUIRoundButton *)self textLabelStackView];
-  v13 = [v12 centerYAnchor];
-  v14 = [(VUIRoundButton *)self button];
-  v15 = [v14 centerYAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  textLabelStackView4 = [(VUIRoundButton *)self textLabelStackView];
+  centerYAnchor = [textLabelStackView4 centerYAnchor];
+  button = [(VUIRoundButton *)self button];
+  centerYAnchor2 = [button centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v16 setActive:1];
 
-  v17 = [(VUIRoundButton *)self textLabelStackView];
-  v18 = [v17 leadingAnchor];
-  v19 = [(VUIRoundButton *)self button];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20 constant:4.0];
+  textLabelStackView5 = [(VUIRoundButton *)self textLabelStackView];
+  leadingAnchor = [textLabelStackView5 leadingAnchor];
+  button2 = [(VUIRoundButton *)self button];
+  trailingAnchor = [button2 trailingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:4.0];
   [v21 setActive:1];
 
-  v25 = [(VUIRoundButton *)self textLabelStackView];
-  v22 = [v25 trailingAnchor];
-  v23 = [(VUIRoundButton *)self trailingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  textLabelStackView6 = [(VUIRoundButton *)self textLabelStackView];
+  trailingAnchor2 = [textLabelStackView6 trailingAnchor];
+  trailingAnchor3 = [(VUIRoundButton *)self trailingAnchor];
+  v24 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v24 setActive:1];
 }
 
-- (void)buttonSelected:(id)a3
+- (void)buttonSelected:(id)selected
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 vui_keyBlueHighlightedColor];
-  [v4 setBackgroundColor:v5];
+  selectedCopy = selected;
+  vui_keyBlueHighlightedColor = [v3 vui_keyBlueHighlightedColor];
+  [selectedCopy setBackgroundColor:vui_keyBlueHighlightedColor];
 }
 
-- (void)buttonReleased:(id)a3
+- (void)buttonReleased:(id)released
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 vui_keyColor];
-  [v4 setBackgroundColor:v5];
+  releasedCopy = released;
+  vui_keyColor = [v3 vui_keyColor];
+  [releasedCopy setBackgroundColor:vui_keyColor];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 vui_keyColor];
-  [v5 setBackgroundColor:v6];
+  pressedCopy = pressed;
+  vui_keyColor = [v4 vui_keyColor];
+  [pressedCopy setBackgroundColor:vui_keyColor];
 
-  v7 = [(VUIRoundButton *)self delegate];
-  [v7 didSelectButton:self];
+  delegate = [(VUIRoundButton *)self delegate];
+  [delegate didSelectButton:self];
 }
 
 - (VUIRoundButtonDelegate)delegate

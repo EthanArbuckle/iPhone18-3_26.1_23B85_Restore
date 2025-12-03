@@ -1,7 +1,7 @@
 @interface CHTransformationParameters
 - (CGPoint)insertionPoint;
 - (CHTransformationParameters)init;
-- (CHTransformationParameters)initWithOrientationBehavior:(unint64_t)a3 orientationTarget:(double)a4 italicsModifier:(double)a5 boldModifier:(double)a6 resizeBehavior:(unint64_t)a7 textSizeTarget:(unint64_t)a8 textSizeModifier:(double)a9 alignmentBehavior:(unint64_t)a10 leftMargin:(unint64_t)a11 rightMargin:(unint64_t)a12 insertionPoint:(CGPoint)a13 lineSpaceBehavior:(unint64_t)a14 lineSpaceTarget:(unint64_t)a15 mergeLines:(BOOL)a16 wrapLines:(BOOL)a17;
+- (CHTransformationParameters)initWithOrientationBehavior:(unint64_t)behavior orientationTarget:(double)target italicsModifier:(double)modifier boldModifier:(double)boldModifier resizeBehavior:(unint64_t)resizeBehavior textSizeTarget:(unint64_t)sizeTarget textSizeModifier:(double)sizeModifier alignmentBehavior:(unint64_t)self0 leftMargin:(unint64_t)self1 rightMargin:(unint64_t)self2 insertionPoint:(CGPoint)self3 lineSpaceBehavior:(unint64_t)self4 lineSpaceTarget:(unint64_t)self5 mergeLines:(BOOL)self6 wrapLines:(BOOL)self7;
 @end
 
 @implementation CHTransformationParameters
@@ -32,31 +32,31 @@
   return result;
 }
 
-- (CHTransformationParameters)initWithOrientationBehavior:(unint64_t)a3 orientationTarget:(double)a4 italicsModifier:(double)a5 boldModifier:(double)a6 resizeBehavior:(unint64_t)a7 textSizeTarget:(unint64_t)a8 textSizeModifier:(double)a9 alignmentBehavior:(unint64_t)a10 leftMargin:(unint64_t)a11 rightMargin:(unint64_t)a12 insertionPoint:(CGPoint)a13 lineSpaceBehavior:(unint64_t)a14 lineSpaceTarget:(unint64_t)a15 mergeLines:(BOOL)a16 wrapLines:(BOOL)a17
+- (CHTransformationParameters)initWithOrientationBehavior:(unint64_t)behavior orientationTarget:(double)target italicsModifier:(double)modifier boldModifier:(double)boldModifier resizeBehavior:(unint64_t)resizeBehavior textSizeTarget:(unint64_t)sizeTarget textSizeModifier:(double)sizeModifier alignmentBehavior:(unint64_t)self0 leftMargin:(unint64_t)self1 rightMargin:(unint64_t)self2 insertionPoint:(CGPoint)self3 lineSpaceBehavior:(unint64_t)self4 lineSpaceTarget:(unint64_t)self5 mergeLines:(BOOL)self6 wrapLines:(BOOL)self7
 {
-  y = a13.y;
-  x = a13.x;
+  y = point.y;
+  x = point.x;
   v30.receiver = self;
   v30.super_class = CHTransformationParameters;
   result = [(CHTransformationParameters *)&v30 init];
   if (result)
   {
-    result->_orientationBehavior = a3;
-    result->_orientationTarget = a4;
-    result->_italicsModifier = a5;
-    result->_boldModifier = a6;
-    result->_resizeBehavior = a7;
-    result->_textSizeTarget = a8;
-    result->_textSizeModifier = a9;
-    result->_alignmentBehavior = a10;
-    result->_leftMargin = a11;
+    result->_orientationBehavior = behavior;
+    result->_orientationTarget = target;
+    result->_italicsModifier = modifier;
+    result->_boldModifier = boldModifier;
+    result->_resizeBehavior = resizeBehavior;
+    result->_textSizeTarget = sizeTarget;
+    result->_textSizeModifier = sizeModifier;
+    result->_alignmentBehavior = alignmentBehavior;
+    result->_leftMargin = margin;
     result->_insertionPoint.x = x;
     result->_insertionPoint.y = y;
-    result->_rightMargin = a12;
-    result->_lineSpaceBehavior = a14;
-    result->_lineSpaceTarget = a15;
-    result->_mergeLines = a16;
-    result->_wrapLines = a17;
+    result->_rightMargin = rightMargin;
+    result->_lineSpaceBehavior = spaceBehavior;
+    result->_lineSpaceTarget = spaceTarget;
+    result->_mergeLines = lines;
+    result->_wrapLines = wrapLines;
   }
 
   return result;

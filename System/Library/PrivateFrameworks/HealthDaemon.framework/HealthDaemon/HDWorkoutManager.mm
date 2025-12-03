@@ -1,81 +1,81 @@
 @interface HDWorkoutManager
-- (BOOL)allowBackgroundStartForApplicationIdentifier:(id)a3;
-- (BOOL)canRecoverWorkoutSessionServerWithIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)allowBackgroundStartForApplicationIdentifier:(id)identifier;
+- (BOOL)canRecoverWorkoutSessionServerWithIdentifier:(id)identifier error:(id *)error;
 - (BOOL)currentActivityRequiresExtendedMode;
-- (BOOL)finishAllWorkoutsForClient:(id)a3 error:(id *)a4;
+- (BOOL)finishAllWorkoutsForClient:(id)client error:(id *)error;
 - (BOOL)hasAnyActiveWorkouts;
 - (BOOL)isInHeartRateRecovery;
 - (HDProfile)profile;
-- (HDWorkoutManager)initWithProfile:(id)a3;
+- (HDWorkoutManager)initWithProfile:(id)profile;
 - (HDWorkoutSessionServer)currentWorkout;
 - (NSDictionary)sessionServers;
 - (id)currentWorkoutClient;
 - (id)currentWorkoutConfiguration;
 - (id)currentWorkoutSessionServer;
 - (id)diagnosticDescription;
-- (id)sessionServerWithConfiguration:(id)a3 sessionUUID:(id)a4 clientBundleIdentifier:(id)a5 taskServer:(id)a6;
-- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)a3 clientBundleIdentifier:(id)a4 explanation:(id)a5;
+- (id)sessionServerWithConfiguration:(id)configuration sessionUUID:(id)d clientBundleIdentifier:(id)identifier taskServer:(id)server;
+- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)identifier clientBundleIdentifier:(id)bundleIdentifier explanation:(id)explanation;
 - (id)unitTest_currentWorkoutSession;
 - (uint64_t)_postWorkoutUpdatedNotification;
-- (void)_didCreateMirroredSessionServer:(id)a3;
-- (void)_finishAllWorkoutsWithExclusionHandler:(uint64_t)a1;
+- (void)_didCreateMirroredSessionServer:(id)server;
+- (void)_finishAllWorkoutsWithExclusionHandler:(uint64_t)handler;
 - (void)_handleBiometricLockout;
 - (void)_performFinishAllDetachedWorkoutBuilders;
-- (void)_performRecoverySessionCleanup:(void *)a3 sessionIdentifier:;
-- (void)_queue_beginTransitionToWorkoutSession:(uint64_t)a1;
-- (void)_queue_sessionFinished:(uint64_t)a1;
-- (void)_queue_setCurrentWorkout:(uint64_t)a1;
-- (void)_receivedStartWorkoutAppRequest:(id)a3 completion:(id)a4;
+- (void)_performRecoverySessionCleanup:(void *)cleanup sessionIdentifier:;
+- (void)_queue_beginTransitionToWorkoutSession:(uint64_t)session;
+- (void)_queue_sessionFinished:(uint64_t)finished;
+- (void)_queue_setCurrentWorkout:(uint64_t)workout;
+- (void)_receivedStartWorkoutAppRequest:(id)request completion:(id)completion;
 - (void)_scheduleFinishForDetachedWorkoutBuilders;
-- (void)_sendStartWorkoutAppResponse:(id)a3 error:(id)a4;
-- (void)_setupNewSessionServer:(void *)a3 withTaskServer:;
-- (void)_startWatchAppWithMirroredStartData:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_startWatchAppWithRequest:(void *)a3 completion:;
-- (void)_startWatchAppWithWorkoutConfiguration:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_startWatchAppWithWorkoutPlanData:(id)a3 client:(id)a4 completion:(id)a5;
+- (void)_sendStartWorkoutAppResponse:(id)response error:(id)error;
+- (void)_setupNewSessionServer:(void *)server withTaskServer:;
+- (void)_startWatchAppWithMirroredStartData:(id)data client:(id)client completion:(id)completion;
+- (void)_startWatchAppWithRequest:(void *)request completion:;
+- (void)_startWatchAppWithWorkoutConfiguration:(id)configuration client:(id)client completion:(id)completion;
+- (void)_startWatchAppWithWorkoutPlanData:(id)data client:(id)client completion:(id)completion;
 - (void)dealloc;
-- (void)devicePowerMonitor:(id)a3 primaryPowerSourceIsCharging:(BOOL)a4;
+- (void)devicePowerMonitor:(id)monitor primaryPowerSourceIsCharging:(BOOL)charging;
 - (void)endHeartRateRecovery;
-- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)a3 metadata:(id)a4 completion:(id)a5;
-- (void)getCurrentWorkoutSnapshotWithCompletion:(id)a3;
-- (void)hk_fakeLapEventWithDate:(id)a3 strokeStyle:(int64_t)a4;
-- (void)hk_fakeStopEventWithDate:(id)a3;
+- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)runtime metadata:(id)metadata completion:(id)completion;
+- (void)getCurrentWorkoutSnapshotWithCompletion:(id)completion;
+- (void)hk_fakeLapEventWithDate:(id)date strokeStyle:(int64_t)style;
+- (void)hk_fakeStopEventWithDate:(id)date;
 - (void)invalidateAndWait;
-- (void)mirroredSessionServerWithUUID:(id)a3 completion:(id)a4;
-- (void)performWhenPostLaunchSessionRecoveryHasCompleted:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)recoverAllActiveWorkoutSessionServersWithStates:(id)a3;
-- (void)recoverWorkoutSessionForClient:(id)a3 server:(id)a4 completion:(id)a5;
-- (void)registerCurrentWorkoutObserver:(id)a3;
-- (void)sessionServerFromSessionIdentifier:(id)a3 completion:(id)a4;
-- (void)takeBackgroundStartAssertionForApplicationIdentifier:(id)a3;
-- (void)tearDownMirroredWorkoutSession:(id)a3;
-- (void)unitTest_smoothRouteForTask:(id)a3 completion:(id)a4;
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6;
-- (void)workoutSession:(id)a3 didUpdateDataAccumulator:(id)a4;
+- (void)mirroredSessionServerWithUUID:(id)d completion:(id)completion;
+- (void)performWhenPostLaunchSessionRecoveryHasCompleted:(id)completed;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)recoverAllActiveWorkoutSessionServersWithStates:(id)states;
+- (void)recoverWorkoutSessionForClient:(id)client server:(id)server completion:(id)completion;
+- (void)registerCurrentWorkoutObserver:(id)observer;
+- (void)sessionServerFromSessionIdentifier:(id)identifier completion:(id)completion;
+- (void)takeBackgroundStartAssertionForApplicationIdentifier:(id)identifier;
+- (void)tearDownMirroredWorkoutSession:(id)session;
+- (void)unitTest_smoothRouteForTask:(id)task completion:(id)completion;
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date;
+- (void)workoutSession:(id)session didUpdateDataAccumulator:(id)accumulator;
 @end
 
 @implementation HDWorkoutManager
 
 - (BOOL)hasAnyActiveWorkouts
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__HDWorkoutManager_hasAnyActiveWorkouts__block_invoke;
   v5[3] = &unk_278613990;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)currentWorkoutClient
@@ -124,18 +124,18 @@ uint64_t __40__HDWorkoutManager_currentWorkoutClient__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)_startWatchAppWithWorkoutConfiguration:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_startWatchAppWithWorkoutConfiguration:(id)configuration client:(id)client completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 process];
-  v11 = [v10 applicationIdentifier];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  process = [client process];
+  applicationIdentifier = [process applicationIdentifier];
 
-  v12 = [(HDWorkoutManager *)self profile];
-  v13 = [v12 daemon];
-  v14 = [v13 processStateManager];
-  v15 = [v14 applicationIsForeground:v11];
+  profile = [(HDWorkoutManager *)self profile];
+  daemon = [profile daemon];
+  processStateManager = [daemon processStateManager];
+  v15 = [processStateManager applicationIsForeground:applicationIdentifier];
 
   _HKInitializeLogging();
   v16 = *MEMORY[0x277CCC330];
@@ -145,22 +145,22 @@ uint64_t __40__HDWorkoutManager_currentWorkoutClient__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138543618;
-      v24 = v11;
+      v24 = applicationIdentifier;
       v25 = 2114;
-      v26 = v8;
+      v26 = configurationCopy;
       _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "Starting workout app %{public}@ on watch. configuration: %{public}@", &v23, 0x16u);
     }
 
     v18 = objc_alloc_init(HDCodableStartWorkoutAppRequest);
-    [(HDCodableStartWorkoutAppRequest *)v18 setApplicationIdentifier:v11];
-    v19 = [v8 codableRepresentationForSync];
-    [(HDCodableStartWorkoutAppRequest *)v18 setWorkoutConfiguration:v19];
+    [(HDCodableStartWorkoutAppRequest *)v18 setApplicationIdentifier:applicationIdentifier];
+    codableRepresentationForSync = [configurationCopy codableRepresentationForSync];
+    [(HDCodableStartWorkoutAppRequest *)v18 setWorkoutConfiguration:codableRepresentationForSync];
 
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    [(HDCodableStartWorkoutAppRequest *)v18 setRequestIdentifier:v21];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(HDCodableStartWorkoutAppRequest *)v18 setRequestIdentifier:uUIDString];
 
-    [(HDWorkoutManager *)self _startWatchAppWithRequest:v18 completion:v9];
+    [(HDWorkoutManager *)self _startWatchAppWithRequest:v18 completion:completionCopy];
   }
 
   else
@@ -172,44 +172,44 @@ uint64_t __40__HDWorkoutManager_currentWorkoutClient__block_invoke(uint64_t a1)
     }
 
     v18 = [MEMORY[0x277CCA9B8] hk_error:550 description:@"Cannot start watch app when phone app is in background"];
-    (*(v9 + 2))(v9, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startWatchAppWithRequest:(void *)a3 completion:
+- (void)_startWatchAppWithRequest:(void *)request completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
-    v7 = [a1 queue];
+    queue = [self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__HDWorkoutManager_Platform___startWatchAppWithRequest_completion___block_invoke;
     block[3] = &unk_278616D18;
-    block[4] = a1;
-    v10 = v6;
+    block[4] = self;
+    v10 = requestCopy;
     v9 = v5;
-    dispatch_async(v7, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)_startWatchAppWithWorkoutPlanData:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_startWatchAppWithWorkoutPlanData:(id)data client:(id)client completion:(id)completion
 {
-  v8 = a3;
+  dataCopy = data;
   v9 = *MEMORY[0x277CCC8B0];
-  v10 = a5;
-  if ([a4 hasEntitlement:v9])
+  completionCopy = completion;
+  if ([client hasEntitlement:v9])
   {
     v11 = objc_alloc_init(HDCodableStartWorkoutAppRequest);
-    [(HDCodableStartWorkoutAppRequest *)v11 setWorkoutPlanData:v8];
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
-    [(HDCodableStartWorkoutAppRequest *)v11 setRequestIdentifier:v13];
+    [(HDCodableStartWorkoutAppRequest *)v11 setWorkoutPlanData:dataCopy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(HDCodableStartWorkoutAppRequest *)v11 setRequestIdentifier:uUIDString];
 
-    [(HDWorkoutManager *)self _startWatchAppWithRequest:v11 completion:v10];
+    [(HDWorkoutManager *)self _startWatchAppWithRequest:v11 completion:completionCopy];
   }
 
   else
@@ -223,24 +223,24 @@ uint64_t __40__HDWorkoutManager_currentWorkoutClient__block_invoke(uint64_t a1)
     }
 
     v15 = [MEMORY[0x277CCA9B8] hk_error:550 description:@"Client does not have required entitlement to launch workout app"];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 
-- (void)_startWatchAppWithMirroredStartData:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_startWatchAppWithMirroredStartData:(id)data client:(id)client completion:(id)completion
 {
-  v8 = a3;
+  dataCopy = data;
   v9 = *MEMORY[0x277CCC8B0];
-  v10 = a5;
-  if ([a4 hasEntitlement:v9])
+  completionCopy = completion;
+  if ([client hasEntitlement:v9])
   {
     v11 = objc_alloc_init(HDCodableStartWorkoutAppRequest);
-    [(HDCodableStartWorkoutAppRequest *)v11 setMirroredStartData:v8];
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
-    [(HDCodableStartWorkoutAppRequest *)v11 setRequestIdentifier:v13];
+    [(HDCodableStartWorkoutAppRequest *)v11 setMirroredStartData:dataCopy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(HDCodableStartWorkoutAppRequest *)v11 setRequestIdentifier:uUIDString];
 
-    [(HDWorkoutManager *)self _startWatchAppWithRequest:v11 completion:v10];
+    [(HDWorkoutManager *)self _startWatchAppWithRequest:v11 completion:completionCopy];
   }
 
   else
@@ -254,7 +254,7 @@ uint64_t __40__HDWorkoutManager_currentWorkoutClient__block_invoke(uint64_t a1)
     }
 
     v15 = [MEMORY[0x277CCA9B8] hk_error:550 description:@"Client does not have required entitlement to launch workout app (mirrored start)"];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 
@@ -307,9 +307,9 @@ void __67__HDWorkoutManager_Platform___startWatchAppWithRequest_completion___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_receivedStartWorkoutAppRequest:(id)a3 completion:(id)a4
+- (void)_receivedStartWorkoutAppRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
@@ -319,19 +319,19 @@ void __67__HDWorkoutManager_Platform___startWatchAppWithRequest_completion___blo
   }
 
   v7 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Start workout app request not supported on non-watch devices"];
-  [(HDWorkoutManager *)self _sendStartWorkoutAppResponse:v5 error:v7];
+  [(HDWorkoutManager *)self _sendStartWorkoutAppResponse:completionCopy error:v7];
 }
 
-- (HDWorkoutManager)initWithProfile:(id)a3
+- (HDWorkoutManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v33.receiver = self;
   v33.super_class = HDWorkoutManager;
   v5 = [(HDWorkoutManager *)&v33 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -348,11 +348,11 @@ void __67__HDWorkoutManager_Platform___startWatchAppWithRequest_completion___blo
     locationManager = v6->_locationManager;
     v6->_locationManager = v13;
 
-    v15 = [v4 daemon];
-    v16 = [v15 behavior];
-    if ([v16 routeSmoothingEnabled])
+    daemon = [profileCopy daemon];
+    behavior = [daemon behavior];
+    if ([behavior routeSmoothingEnabled])
     {
-      v17 = [[HDWorkoutLocationSmoother alloc] initWithProfile:v4];
+      v17 = [[HDWorkoutLocationSmoother alloc] initWithProfile:profileCopy];
     }
 
     else
@@ -375,8 +375,8 @@ void __67__HDWorkoutManager_Platform___startWatchAppWithRequest_completion___blo
     biomeInterface = v6->_biomeInterface;
     v6->_biomeInterface = v23;
 
-    v25 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v25 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
 
     v26 = objc_alloc(MEMORY[0x277CCD738]);
     v27 = [v26 initWithName:@"current-workout-observers" loggingCategory:*MEMORY[0x277CCC330]];
@@ -431,8 +431,8 @@ void __37__HDWorkoutManager_invalidateAndWait__block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained sessionAssertionManager];
-  v5 = [v4 activeAssertionsForIdentifier:@"HDAssertionIdentifierBackgroundWorkoutStart"];
+  sessionAssertionManager = [WeakRetained sessionAssertionManager];
+  v5 = [sessionAssertionManager activeAssertionsForIdentifier:@"HDAssertionIdentifierBackgroundWorkoutStart"];
 
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
@@ -519,9 +519,9 @@ uint64_t __34__HDWorkoutManager_sessionServers__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (BOOL)canRecoverWorkoutSessionServerWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)canRecoverWorkoutSessionServerWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -540,7 +540,7 @@ uint64_t __34__HDWorkoutManager_sessionServers__block_invoke(uint64_t a1)
   v14[2] = __71__HDWorkoutManager_canRecoverWorkoutSessionServerWithIdentifier_error___block_invoke;
   v14[3] = &unk_27862B9F8;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v16 = &v24;
   v17 = &v18;
@@ -552,10 +552,10 @@ uint64_t __34__HDWorkoutManager_sessionServers__block_invoke(uint64_t a1)
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -602,20 +602,20 @@ void __71__HDWorkoutManager_canRecoverWorkoutSessionServerWithIdentifier_error__
   }
 }
 
-- (void)sessionServerFromSessionIdentifier:(id)a3 completion:(id)a4
+- (void)sessionServerFromSessionIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__HDWorkoutManager_sessionServerFromSessionIdentifier_completion___block_invoke;
   block[3] = &unk_278616D18;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = identifierCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -658,12 +658,12 @@ void __66__HDWorkoutManager_sessionServerFromSessionIdentifier_completion___bloc
   }
 }
 
-- (id)sessionServerWithConfiguration:(id)a3 sessionUUID:(id)a4 clientBundleIdentifier:(id)a5 taskServer:(id)a6
+- (id)sessionServerWithConfiguration:(id)configuration sessionUUID:(id)d clientBundleIdentifier:(id)identifier taskServer:(id)server
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  dCopy = d;
+  identifierCopy = identifier;
+  serverCopy = server;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -677,7 +677,7 @@ void __66__HDWorkoutManager_sessionServerFromSessionIdentifier_completion___bloc
   block[3] = &unk_27861F190;
   v25 = &v26;
   block[4] = self;
-  v15 = v11;
+  v15 = dCopy;
   v24 = v15;
   dispatch_sync(queue, block);
   v16 = v27[5];
@@ -685,11 +685,11 @@ void __66__HDWorkoutManager_sessionServerFromSessionIdentifier_completion___bloc
   {
     v17 = [HDWorkoutSessionServer alloc];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v19 = [(HDWorkoutSessionServer *)v17 initWithProfile:WeakRetained configuration:v10 sessionUUID:v15];
+    v19 = [(HDWorkoutSessionServer *)v17 initWithProfile:WeakRetained configuration:configurationCopy sessionUUID:v15];
     v20 = v27[5];
     v27[5] = v19;
 
-    [(HDWorkoutManager *)self _setupNewSessionServer:v13 withTaskServer:?];
+    [(HDWorkoutManager *)self _setupNewSessionServer:serverCopy withTaskServer:?];
     v16 = v27[5];
   }
 
@@ -710,12 +710,12 @@ uint64_t __97__HDWorkoutManager_sessionServerWithConfiguration_sessionUUID_clien
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)_setupNewSessionServer:(void *)a3 withTaskServer:
+- (void)_setupNewSessionServer:(void *)server withTaskServer:
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  serverCopy = server;
+  if (self)
   {
     v21 = 0;
     v22 = &v21;
@@ -723,12 +723,12 @@ uint64_t __97__HDWorkoutManager_sessionServerWithConfiguration_sessionUUID_clien
     v24 = __Block_byref_object_copy__177;
     v25 = __Block_byref_object_dispose__177;
     v26 = 0;
-    v7 = *(a1 + 152);
+    v7 = *(self + 152);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__HDWorkoutManager__setupNewSessionServer_withTaskServer___block_invoke;
     block[3] = &unk_27862BA20;
-    block[4] = a1;
+    block[4] = self;
     v19 = &v21;
     v20 = sel__setupNewSessionServer_withTaskServer_;
     v18 = v5;
@@ -769,10 +769,10 @@ uint64_t __97__HDWorkoutManager_sessionServerWithConfiguration_sessionUUID_clien
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mirroredSessionServerWithUUID:(id)a3 completion:(id)a4
+- (void)mirroredSessionServerWithUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -786,7 +786,7 @@ uint64_t __97__HDWorkoutManager_sessionServerWithConfiguration_sessionUUID_clien
   block[3] = &unk_27861F190;
   v18 = &v19;
   block[4] = self;
-  v10 = v7;
+  v10 = dCopy;
   v17 = v10;
   dispatch_sync(queue, block);
   v11 = v20[5];
@@ -794,11 +794,11 @@ uint64_t __97__HDWorkoutManager_sessionServerWithConfiguration_sessionUUID_clien
   {
     if ([v11 sessionType] != 1)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"HDWorkoutManager.m" lineNumber:279 description:{@"Expected session %@ type to be mirrored", v10}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDWorkoutManager.m" lineNumber:279 description:{@"Expected session %@ type to be mirrored", v10}];
     }
 
-    v8[2](v8, v20[5], 0);
+    completionCopy[2](completionCopy, v20[5], 0);
   }
 
   else
@@ -808,7 +808,7 @@ uint64_t __97__HDWorkoutManager_sessionServerWithConfiguration_sessionUUID_clien
     v14[1] = 3221225472;
     v14[2] = __61__HDWorkoutManager_mirroredSessionServerWithUUID_completion___block_invoke_2;
     v14[3] = &unk_27861A2B0;
-    v15 = v8;
+    v15 = completionCopy;
     [(HDWorkoutMirroringManager *)mirroringManager recoverMirroredWorkoutSessionWithCompletion:v14];
   }
 
@@ -861,14 +861,14 @@ void __58__HDWorkoutManager__setupNewSessionServer_withTaskServer___block_invoke
   [v13 removeObjectForKey:v14];
 }
 
-- (void)_queue_sessionFinished:(uint64_t)a1
+- (void)_queue_sessionFinished:(uint64_t)finished
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (finished)
   {
-    dispatch_assert_queue_V2(*(a1 + 152));
-    if (*(a1 + 8) == v3)
+    dispatch_assert_queue_V2(*(finished + 152));
+    if (*(finished + 8) == v3)
     {
       _HKInitializeLogging();
       v5 = MEMORY[0x277CCC330];
@@ -876,62 +876,62 @@ void __58__HDWorkoutManager__setupNewSessionServer_withTaskServer___block_invoke
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v20 = v3;
+        finishedCopy2 = v3;
         _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ (#w0) Finished while current.", buf, 0xCu);
       }
 
-      [*(a1 + 8) removeObserver:a1];
-      v7 = *(a1 + 8);
-      *(a1 + 8) = 0;
+      [*(finished + 8) removeObserver:finished];
+      v7 = *(finished + 8);
+      *(finished + 8) = 0;
 
-      if (!*(a1 + 24))
+      if (!*(finished + 24))
       {
         _HKInitializeLogging();
         v8 = *v5;
         if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v20 = a1;
+          finishedCopy2 = finished;
           _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalidating all workout database assertions", buf, 0xCu);
         }
 
-        WeakRetained = objc_loadWeakRetained((a1 + 136));
-        v10 = [WeakRetained database];
-        [v10 invalidateAllAssertionsWithContextType:3];
+        WeakRetained = objc_loadWeakRetained((finished + 136));
+        database = [WeakRetained database];
+        [database invalidateAllAssertionsWithContextType:3];
       }
 
-      v11 = *(a1 + 96);
+      v11 = *(finished + 96);
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __43__HDWorkoutManager__queue_sessionFinished___block_invoke;
       v18[3] = &unk_27862BB18;
-      v18[4] = a1;
+      v18[4] = finished;
       [v11 notifyObservers:v18];
       if (![v3 sessionType])
       {
-        [*(a1 + 16) invalidate];
-        v12 = *(a1 + 16);
-        *(a1 + 16) = 0;
+        [*(finished + 16) invalidate];
+        v12 = *(finished + 16);
+        *(finished + 16) = 0;
       }
 
-      [(HDWorkoutManager *)a1 _postWorkoutUpdatedNotification];
-      v13 = *(a1 + 24);
+      [(HDWorkoutManager *)finished _postWorkoutUpdatedNotification];
+      v13 = *(finished + 24);
       if (!v13)
       {
         goto LABEL_17;
       }
 
-      [(HDWorkoutManager *)a1 _queue_setCurrentWorkout:v13];
+      [(HDWorkoutManager *)finished _queue_setCurrentWorkout:v13];
     }
 
     else
     {
-      if (*(a1 + 24) != v3)
+      if (*(finished + 24) != v3)
       {
 LABEL_17:
-        v15 = *(a1 + 32);
-        v16 = [v3 identifier];
-        [v15 removeObjectForKey:v16];
+        v15 = *(finished + 32);
+        identifier = [v3 identifier];
+        [v15 removeObjectForKey:identifier];
 
         goto LABEL_18;
       }
@@ -941,15 +941,15 @@ LABEL_17:
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v20 = a1;
+        finishedCopy2 = finished;
         v21 = 2114;
         v22 = v3;
         _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w0) %{public}@ Finished while pending.", buf, 0x16u);
       }
     }
 
-    v14 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v14 = *(finished + 24);
+    *(finished + 24) = 0;
 
     goto LABEL_17;
   }
@@ -959,50 +959,50 @@ LABEL_18:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_beginTransitionToWorkoutSession:(uint64_t)a1
+- (void)_queue_beginTransitionToWorkoutSession:(uint64_t)session
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = a2;
   v5 = v4;
-  if (!a1)
+  if (!session)
   {
     goto LABEL_28;
   }
 
-  v6 = *(a1 + 8);
+  v6 = *(session + 8);
   if (v6 == v4)
   {
     [v4 didBecomeCurrent];
     goto LABEL_28;
   }
 
-  v7 = (a1 + 24);
-  if (*(a1 + 24) != v4)
+  v7 = (session + 24);
+  if (*(session + 24) != v4)
   {
     if (!v6)
     {
-      [(HDWorkoutManager *)a1 _queue_setCurrentWorkout:v4];
+      [(HDWorkoutManager *)session _queue_setCurrentWorkout:v4];
 LABEL_23:
-      v16 = [v5 applicationIdentifier];
+      applicationIdentifier = [v5 applicationIdentifier];
 
-      if (v16)
+      if (applicationIdentifier)
       {
         v17 = [HDWatchAppStateMonitor alloc];
-        v18 = [v5 applicationIdentifier];
-        v19 = [(HDWatchAppStateMonitor *)v17 initWithBundleIdentifier:v18];
-        v20 = *(a1 + 64);
-        *(a1 + 64) = v19;
+        applicationIdentifier2 = [v5 applicationIdentifier];
+        v19 = [(HDWatchAppStateMonitor *)v17 initWithBundleIdentifier:applicationIdentifier2];
+        v20 = *(session + 64);
+        *(session + 64) = v19;
       }
 
       goto LABEL_28;
     }
 
-    v8 = [v4 taskServer];
-    if (v8 && ([v5 shouldStopPreviousSession] & 1) == 0)
+    taskServer = [v4 taskServer];
+    if (taskServer && ([v5 shouldStopPreviousSession] & 1) == 0)
     {
-      v21 = [*(a1 + 8) isActive];
+      isActive = [*(session + 8) isActive];
 
-      if (v21)
+      if (isActive)
       {
         v22 = [MEMORY[0x277CCA9B8] hk_error:551 description:@"Cannot start when another session is active"];
         [v5 didResignCurrentWithError:v22];
@@ -1016,14 +1016,14 @@ LABEL_23:
     }
 
     v9 = [MEMORY[0x277CCA9B8] hk_error:8 description:@"Another session is starting"];
-    if (_HDWorkoutSessionCanReplaceSession(*(a1 + 8), v5))
+    if (_HDWorkoutSessionCanReplaceSession(*(session + 8), v5))
     {
       if (!*v7)
       {
 LABEL_12:
-        objc_storeStrong((a1 + 24), a2);
-        [*(a1 + 8) didResignCurrentWithError:v9];
-        v10 = *(a1 + 8);
+        objc_storeStrong((session + 24), a2);
+        [*(session + 8) didResignCurrentWithError:v9];
+        v10 = *(session + 8);
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         v12 = MEMORY[0x277CCC330];
@@ -1034,11 +1034,11 @@ LABEL_12:
           if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
           {
             v24 = 138543362;
-            v25 = a1;
+            sessionCopy2 = session;
             _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w0) Tearing down mirrored session.", &v24, 0xCu);
           }
 
-          [*(a1 + 8) didDisconnectFromRemoteWithError:0];
+          [*(session + 8) didDisconnectFromRemoteWithError:0];
         }
 
         _HKInitializeLogging();
@@ -1046,7 +1046,7 @@ LABEL_12:
         if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
         {
           v24 = 138543618;
-          v25 = a1;
+          sessionCopy2 = session;
           v26 = 2114;
           v27 = v5;
           _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w0) %{public}@ In line as next workout.", &v24, 0x16u);
@@ -1072,7 +1072,7 @@ LABEL_12:
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138543362;
-    v25 = v5;
+    sessionCopy2 = v5;
     _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ (#w1) Ignorning became-current request while already in line as the next workout.", &v24, 0xCu);
   }
 
@@ -1081,80 +1081,80 @@ LABEL_28:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setCurrentWorkout:(uint64_t)a1
+- (void)_queue_setCurrentWorkout:(uint64_t)workout
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  dispatch_assert_queue_V2(*(a1 + 152));
+  dispatch_assert_queue_V2(*(workout + 152));
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = a1;
+    workoutCopy = workout;
     v20 = 2114;
     v21 = v4;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w0) %{public}@ Became current.", buf, 0x16u);
   }
 
-  objc_storeStrong((a1 + 8), a2);
-  v6 = *(a1 + 96);
+  objc_storeStrong((workout + 8), a2);
+  v6 = *(workout + 96);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __45__HDWorkoutManager__queue_setCurrentWorkout___block_invoke;
   v17[3] = &unk_27862BB18;
-  v17[4] = a1;
+  v17[4] = workout;
   [v6 notifyObservers:v17];
-  [*(a1 + 8) didBecomeCurrent];
-  v7 = [v4 applicationIdentifier];
+  [*(workout + 8) didBecomeCurrent];
+  applicationIdentifier = [v4 applicationIdentifier];
 
-  if (v7)
+  if (applicationIdentifier)
   {
-    v8 = [v4 applicationIdentifier];
-    os_unfair_lock_lock((a1 + 112));
-    v9 = [*(a1 + 104) objectForKeyedSubscript:v8];
-    [*(a1 + 104) setObject:0 forKeyedSubscript:v8];
+    applicationIdentifier2 = [v4 applicationIdentifier];
+    os_unfair_lock_lock((workout + 112));
+    v9 = [*(workout + 104) objectForKeyedSubscript:applicationIdentifier2];
+    [*(workout + 104) setObject:0 forKeyedSubscript:applicationIdentifier2];
 
-    os_unfair_lock_unlock((a1 + 112));
+    os_unfair_lock_unlock((workout + 112));
     [v9 invalidate];
   }
 
   if (![v4 sessionType])
   {
-    v10 = [v4 clientProcessBundleIdentifier];
-    v11 = *(a1 + 16);
-    if (v10)
+    clientProcessBundleIdentifier = [v4 clientProcessBundleIdentifier];
+    v11 = *(workout + 16);
+    if (clientProcessBundleIdentifier)
     {
-      v12 = [objc_alloc(MEMORY[0x277D10AB8]) initWithAssertionIdentifier:@"HDCurrentWorkoutSessionAssertion" ownerIdentifier:v10];
-      v13 = *(a1 + 16);
-      *(a1 + 16) = v12;
+      v12 = [objc_alloc(MEMORY[0x277D10AB8]) initWithAssertionIdentifier:@"HDCurrentWorkoutSessionAssertion" ownerIdentifier:clientProcessBundleIdentifier];
+      v13 = *(workout + 16);
+      *(workout + 16) = v12;
     }
 
     [v11 invalidate];
-    if (*(a1 + 16))
+    if (*(workout + 16))
     {
-      v14 = [a1 profile];
-      v15 = [v14 sessionAssertionManager];
-      [v15 takeAssertion:*(a1 + 16)];
+      profile = [workout profile];
+      sessionAssertionManager = [profile sessionAssertionManager];
+      [sessionAssertionManager takeAssertion:*(workout + 16)];
     }
   }
 
-  [(HDWorkoutManager *)a1 _postWorkoutUpdatedNotification];
+  [(HDWorkoutManager *)workout _postWorkoutUpdatedNotification];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendStartWorkoutAppResponse:(id)a3 error:(id)a4
+- (void)_sendStartWorkoutAppResponse:(id)response error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  errorCopy = error;
+  responseCopy = response;
   v7 = objc_alloc_init(HDCodableStartWorkoutAppResponse);
   v9 = v7;
-  if (v5)
+  if (errorCopy)
   {
     [(HDCodableStartWorkoutAppResponse *)v7 setSuccess:0];
-    v8 = [v5 hk_codableError];
-    [(HDCodableStartWorkoutAppResponse *)v9 setLaunchError:v8];
+    hk_codableError = [errorCopy hk_codableError];
+    [(HDCodableStartWorkoutAppResponse *)v9 setLaunchError:hk_codableError];
   }
 
   else
@@ -1162,7 +1162,7 @@ LABEL_28:
     [(HDCodableStartWorkoutAppResponse *)v7 setSuccess:1];
   }
 
-  v6[2](v6, v9, v5);
+  responseCopy[2](responseCopy, v9, errorCopy);
 }
 
 uint64_t __61__HDWorkoutManager__queue_sessionServerForRecoveryForClient___block_invoke(uint64_t a1, void *a2)
@@ -1173,16 +1173,16 @@ uint64_t __61__HDWorkoutManager__queue_sessionServerForRecoveryForClient___block
   return v4;
 }
 
-- (BOOL)finishAllWorkoutsForClient:(id)a3 error:(id *)a4
+- (BOOL)finishAllWorkoutsForClient:(id)client error:(id *)error
 {
-  v6 = a3;
+  clientCopy = client;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [HDWorkoutSessionServer finishAllWorkoutSessionsForClient:v6 profile:WeakRetained error:a4];
+  v8 = [HDWorkoutSessionServer finishAllWorkoutSessionsForClient:clientCopy profile:WeakRetained error:error];
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_profile);
-    v10 = [HDWorkoutBuilderServer finishAllWorkoutBuildersForClient:v6 profile:v9 error:a4];
+    v10 = [HDWorkoutBuilderServer finishAllWorkoutBuildersForClient:clientCopy profile:v9 error:error];
   }
 
   else
@@ -1193,20 +1193,20 @@ uint64_t __61__HDWorkoutManager__queue_sessionServerForRecoveryForClient___block
   return v10;
 }
 
-- (void)recoverWorkoutSessionForClient:(id)a3 server:(id)a4 completion:(id)a5
+- (void)recoverWorkoutSessionForClient:(id)client server:(id)server completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  clientCopy = client;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__HDWorkoutManager_recoverWorkoutSessionForClient_server_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = clientCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = clientCopy;
   dispatch_sync(queue, block);
 }
 
@@ -1273,28 +1273,28 @@ uint64_t __45__HDWorkoutManager__activeSessionIdentifiers__block_invoke(uint64_t
 - (void)_performFinishAllDetachedWorkoutBuilders
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_not_V2(*(a1 + 152));
+    dispatch_assert_queue_not_V2(*(self + 152));
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v16 = __Block_byref_object_copy__177;
     v17 = __Block_byref_object_dispose__177;
     v18 = 0;
-    v2 = *(a1 + 152);
+    v2 = *(self + 152);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__HDWorkoutManager__activeSessionIdentifiers__block_invoke;
     block[3] = &unk_278613990;
-    block[4] = a1;
+    block[4] = self;
     block[5] = buf;
     dispatch_sync(v2, block);
     v3 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
 
     v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v3];
-    WeakRetained = objc_loadWeakRetained((a1 + 136));
+    WeakRetained = objc_loadWeakRetained((self + 136));
     v13 = 0;
     v6 = [HDWorkoutBuilderServer finishAllDetachedWorkoutBuildersExcludingSessions:v4 profile:WeakRetained error:&v13];
     v7 = v13;
@@ -1309,7 +1309,7 @@ uint64_t __45__HDWorkoutManager__activeSessionIdentifiers__block_invoke(uint64_t
         v10 = v8;
         v11 = [v3 componentsJoinedByString:{@", "}];
         *buf = 138543618;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2112;
         *&buf[14] = v11;
         _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Finished all detached workout builders, excluding active sessions (%@)", buf, 0x16u);
@@ -1319,7 +1319,7 @@ uint64_t __45__HDWorkoutManager__activeSessionIdentifiers__block_invoke(uint64_t
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2114;
       *&buf[14] = v7;
       _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to finish detached workout builders: %{public}@", buf, 0x16u);
@@ -1362,37 +1362,37 @@ uint64_t __47__HDWorkoutManager_currentWorkoutConfiguration__block_invoke(uint64
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)a3 metadata:(id)a4 completion:(id)a5
+- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)runtime metadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
+  runtimeCopy = runtime;
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = MEMORY[0x277CCC330];
   v12 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     v13 = @"NO";
-    if (v6)
+    if (runtimeCopy)
     {
       v13 = @"YES";
     }
 
     *buf = 138543618;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v13;
     _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Received pause/resume request, allow background runtime: %@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
-  v16 = [v15 isProtectedDataAvailable];
+  database = [WeakRetained database];
+  isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-  v17 = [(HDWorkoutSessionServer *)self->_currentWorkout canBePaused];
-  v18 = [(HDWatchAppStateMonitor *)self->_appStateMonitor appIsActive];
-  if (((v16 & 1) != 0 || v17) && (v18 || (v16 & 1) == 0 || v6))
+  canBePaused = [(HDWorkoutSessionServer *)self->_currentWorkout canBePaused];
+  appIsActive = [(HDWatchAppStateMonitor *)self->_appStateMonitor appIsActive];
+  if (((isProtectedDataAvailable & 1) != 0 || canBePaused) && (appIsActive || (isProtectedDataAvailable & 1) == 0 || runtimeCopy))
   {
     queue = self->_queue;
     v26[0] = MEMORY[0x277D85DD0];
@@ -1400,8 +1400,8 @@ uint64_t __47__HDWorkoutManager_currentWorkoutConfiguration__block_invoke(uint64
     v26[2] = __94__HDWorkoutManager_generatePauseOrResumeRequestAllowingBackgroundRuntime_metadata_completion___block_invoke;
     v26[3] = &unk_278617418;
     v26[4] = self;
-    v27 = v9;
-    v28 = v10;
+    v27 = metadataCopy;
+    v28 = completionCopy;
     v29 = a2;
     dispatch_async(queue, v26);
   }
@@ -1417,7 +1417,7 @@ uint64_t __47__HDWorkoutManager_currentWorkoutConfiguration__block_invoke(uint64
       v22 = HKStringFromBool();
       v23 = HKStringFromBool();
       *buf = 138544130;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2114;
       v33 = v21;
       v34 = 2114;
@@ -1427,7 +1427,7 @@ uint64_t __47__HDWorkoutManager_currentWorkoutConfiguration__block_invoke(uint64
       _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring pause/resume request. { unlocked=%{public}@, can be paused=%{public}@, active=%{public}@.", buf, 0x2Au);
     }
 
-    (*(v10 + 2))(v10, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1577,31 +1577,31 @@ LABEL_26:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)a3 clientBundleIdentifier:(id)a4 explanation:(id)a5
+- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)identifier clientBundleIdentifier:(id)bundleIdentifier explanation:(id)explanation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HDWorkoutManager *)self assertionManager];
-  v12 = [v11 takeLiveActivityAssertionWithOwnerIdentifier:v10 clientBundleIdentifier:v9 explanation:v8];
+  explanationCopy = explanation;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  assertionManager = [(HDWorkoutManager *)self assertionManager];
+  v12 = [assertionManager takeLiveActivityAssertionWithOwnerIdentifier:identifierCopy clientBundleIdentifier:bundleIdentifierCopy explanation:explanationCopy];
 
   return v12;
 }
 
-- (BOOL)allowBackgroundStartForApplicationIdentifier:(id)a3
+- (BOOL)allowBackgroundStartForApplicationIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([&unk_283CB01B0 containsObject:v4] & 1) != 0 || objc_msgSend(MEMORY[0x277CCDCD8], "isFirstPartyForIdentifier:", v4))
+  identifierCopy = identifier;
+  if (([&unk_283CB01B0 containsObject:identifierCopy] & 1) != 0 || objc_msgSend(MEMORY[0x277CCDCD8], "isFirstPartyForIdentifier:", identifierCopy))
   {
     _HKInitializeLogging();
     v5 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Workout session allowed to start for %{public}@ because it is listed", &v11, 0x16u);
     }
 
@@ -1611,7 +1611,7 @@ LABEL_26:
   else
   {
     os_unfair_lock_lock(&self->_assertionsLock);
-    v7 = [(NSMutableDictionary *)self->_backgroundStartAssertions objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_backgroundStartAssertions objectForKeyedSubscript:identifierCopy];
     os_unfair_lock_unlock(&self->_assertionsLock);
     if (v7 && [v7 state] != 3)
     {
@@ -1620,9 +1620,9 @@ LABEL_26:
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2114;
-        v14 = v4;
+        v14 = identifierCopy;
         _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Workout session allowed to start for %{public}@ because an assertion is held", &v11, 0x16u);
       }
 
@@ -1639,19 +1639,19 @@ LABEL_26:
   return v6;
 }
 
-- (void)takeBackgroundStartAssertionForApplicationIdentifier:(id)a3
+- (void)takeBackgroundStartAssertionForApplicationIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D10AB8];
-  v5 = a3;
-  v9 = [[v4 alloc] initWithAssertionIdentifier:@"HDAssertionIdentifierBackgroundWorkoutStart" ownerIdentifier:v5];
+  identifierCopy = identifier;
+  v9 = [[v4 alloc] initWithAssertionIdentifier:@"HDAssertionIdentifierBackgroundWorkoutStart" ownerIdentifier:identifierCopy];
   [v9 setBudget:30.0];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained sessionAssertionManager];
-  [v7 takeAssertion:v9];
+  sessionAssertionManager = [WeakRetained sessionAssertionManager];
+  [sessionAssertionManager takeAssertion:v9];
 
   os_unfair_lock_lock(&self->_assertionsLock);
-  v8 = [(NSMutableDictionary *)self->_backgroundStartAssertions objectForKeyedSubscript:v5];
-  [(NSMutableDictionary *)self->_backgroundStartAssertions setObject:v9 forKeyedSubscript:v5];
+  v8 = [(NSMutableDictionary *)self->_backgroundStartAssertions objectForKeyedSubscript:identifierCopy];
+  [(NSMutableDictionary *)self->_backgroundStartAssertions setObject:v9 forKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_assertionsLock);
   [v8 invalidate];
@@ -1660,11 +1660,11 @@ LABEL_26:
 - (void)_scheduleFinishForDetachedWorkoutBuilders
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 behavior];
-  v6 = [v5 supportsWorkouts];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  supportsWorkouts = [behavior supportsWorkouts];
 
-  if (v6)
+  if (supportsWorkouts)
   {
     objc_initWeak(&location, self);
     v7 = dispatch_time(0, 30000000000);
@@ -1699,17 +1699,17 @@ void __61__HDWorkoutManager__scheduleFinishForDetachedWorkoutBuilders__block_inv
   }
 }
 
-- (void)recoverAllActiveWorkoutSessionServersWithStates:(id)a3
+- (void)recoverAllActiveWorkoutSessionServersWithStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HDWorkoutManager_recoverAllActiveWorkoutSessionServersWithStates___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statesCopy;
+  v6 = statesCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2007,19 +2007,19 @@ void __68__HDWorkoutManager_recoverAllActiveWorkoutSessionServersWithStates___bl
   return result;
 }
 
-- (void)_performRecoverySessionCleanup:(void *)a3 sessionIdentifier:
+- (void)_performRecoverySessionCleanup:(void *)cleanup sessionIdentifier:
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  cleanupCopy = cleanup;
+  if (self)
   {
     v7 = v5;
     if (!v7)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 136));
+      WeakRetained = objc_loadWeakRetained((self + 136));
       v12 = 0;
-      v9 = [HDWorkoutSessionServer workoutConfigurationForRecoveryWithProfile:WeakRetained sessionUUID:v6 error:&v12];
+      v9 = [HDWorkoutSessionServer workoutConfigurationForRecoveryWithProfile:WeakRetained sessionUUID:cleanupCopy error:&v12];
       v7 = v12;
 
       if (!v9)
@@ -2029,9 +2029,9 @@ void __68__HDWorkoutManager_recoverAllActiveWorkoutSessionServersWithStates___bl
         if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v14 = a1;
+          selfCopy = self;
           v15 = 2114;
-          v16 = v6;
+          v16 = cleanupCopy;
           v17 = 2114;
           v18 = v7;
           _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to recover workout configuration for session %{public}@ after restart with error %{public}@", buf, 0x20u);
@@ -2043,7 +2043,7 @@ void __68__HDWorkoutManager_recoverAllActiveWorkoutSessionServersWithStates___bl
       v7 = v9;
     }
 
-    [*(a1 + 48) stopSessionWithIdentifier:v6 recoveredWorkoutConfiguration:v7];
+    [*(self + 48) stopSessionWithIdentifier:cleanupCopy recoveredWorkoutConfiguration:v7];
 LABEL_6:
   }
 
@@ -2089,30 +2089,30 @@ uint64_t __68__HDWorkoutManager_recoverAllActiveWorkoutSessionServersWithStates_
   return v15;
 }
 
-- (void)_finishAllWorkoutsWithExclusionHandler:(uint64_t)a1
+- (void)_finishAllWorkoutsWithExclusionHandler:(uint64_t)handler
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_not_V2(*(a1 + 152));
+    dispatch_assert_queue_not_V2(*(handler + 152));
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy__177;
     v25 = __Block_byref_object_dispose__177;
     v26 = 0;
-    WeakRetained = objc_loadWeakRetained((a1 + 136));
-    v5 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((handler + 136));
+    database = [WeakRetained database];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __59__HDWorkoutManager__finishAllWorkoutsWithExclusionHandler___block_invoke;
     v16 = &unk_27862BAC8;
-    v17 = a1;
+    handlerCopy = handler;
     v19 = &v21;
     v20 = 0;
     v18 = v3;
-    v6 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:v5 error:&v20 block:&v13];
+    v6 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:database error:&v20 block:&v13];
     v7 = v20;
 
     if (v6)
@@ -2121,10 +2121,10 @@ uint64_t __68__HDWorkoutManager_recoverAllActiveWorkoutSessionServersWithStates_
       v8 = *MEMORY[0x277CCC330];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v22[5] allObjects];
-        v10 = [v9 componentsJoinedByString:{@", "}];
+        allObjects = [v22[5] allObjects];
+        v10 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 138543618;
-        v28 = a1;
+        handlerCopy3 = handler;
         v29 = 2112;
         v30 = v10;
         _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Finished all unrecovered workouts, excluding active sessions (%@)", buf, 0x16u);
@@ -2138,7 +2138,7 @@ uint64_t __68__HDWorkoutManager_recoverAllActiveWorkoutSessionServersWithStates_
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v28 = a1;
+        handlerCopy3 = handler;
         v29 = 2114;
         v30 = v7;
         _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to finish unrecovered workouts: %{public}@", buf, 0x16u);
@@ -2301,17 +2301,17 @@ id __60__HDWorkoutManager__recoverCurrentWorkoutSessionAfterLaunch__block_invoke
   return v3;
 }
 
-- (void)performWhenPostLaunchSessionRecoveryHasCompleted:(id)a3
+- (void)performWhenPostLaunchSessionRecoveryHasCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HDWorkoutManager_performWhenPostLaunchSessionRecoveryHasCompleted___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completedCopy;
+  v6 = completedCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2355,13 +2355,13 @@ void __69__HDWorkoutManager_performWhenPostLaunchSessionRecoveryHasCompleted___b
   }
 }
 
-- (void)getCurrentWorkoutSnapshotWithCompletion:(id)a3
+- (void)getCurrentWorkoutSnapshotWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDWorkoutManager.m" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"completion != NULL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDWorkoutManager.m" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"completion != NULL"}];
   }
 
   queue = self->_queue;
@@ -2370,8 +2370,8 @@ void __69__HDWorkoutManager_performWhenPostLaunchSessionRecoveryHasCompleted___b
   block[2] = __60__HDWorkoutManager_getCurrentWorkoutSnapshotWithCompletion___block_invoke;
   block[3] = &unk_278614008;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -2382,17 +2382,17 @@ void __60__HDWorkoutManager_getCurrentWorkoutSnapshotWithCompletion___block_invo
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)registerCurrentWorkoutObserver:(id)a3
+- (void)registerCurrentWorkoutObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HDWorkoutManager_registerCurrentWorkoutObserver___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2434,14 +2434,14 @@ uint64_t __51__HDWorkoutManager_registerCurrentWorkoutObserver___block_invoke(ui
 
 - (id)diagnosticDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__HDWorkoutManager_diagnosticDescription__block_invoke;
   v9[3] = &unk_278613920;
   v9[4] = self;
-  v5 = v3;
+  v5 = string;
   v10 = v5;
   dispatch_sync(queue, v9);
   v6 = v10;
@@ -2472,51 +2472,51 @@ void __41__HDWorkoutManager_diagnosticDescription__block_invoke(uint64_t a1)
   }
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = [(HDWorkoutManager *)self profile];
-  v5 = [v4 daemon];
-  v6 = [v5 devicePowerMonitor];
-  [v6 addDevicePowerObserver:self queue:0];
+  profile = [(HDWorkoutManager *)self profile];
+  daemon = [profile daemon];
+  devicePowerMonitor = [daemon devicePowerMonitor];
+  [devicePowerMonitor addDevicePowerObserver:self queue:0];
 
-  v7 = [(HDWorkoutManager *)self profile];
-  v8 = [v7 database];
-  [v8 addProtectedDataObserver:self];
+  profile2 = [(HDWorkoutManager *)self profile];
+  database = [profile2 database];
+  [database addProtectedDataObserver:self];
 
   if (self)
   {
-    v9 = [(HDWorkoutManager *)self profile];
-    v10 = [v9 daemon];
-    v11 = [v10 behavior];
-    v12 = [v11 supportsWorkouts];
+    profile3 = [(HDWorkoutManager *)self profile];
+    daemon2 = [profile3 daemon];
+    behavior = [daemon2 behavior];
+    supportsWorkouts = [behavior supportsWorkouts];
 
-    if (v12)
+    if (supportsWorkouts)
     {
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v14 = [WeakRetained database];
+      database2 = [WeakRetained database];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __60__HDWorkoutManager__recoverCurrentWorkoutSessionAfterLaunch__block_invoke;
       v15[3] = &unk_278613968;
       v15[4] = self;
-      [v14 performWhenDataProtectedByFirstUnlockIsAvailable:v15];
+      [database2 performWhenDataProtectedByFirstUnlockIsAvailable:v15];
     }
   }
 }
 
-- (void)devicePowerMonitor:(id)a3 primaryPowerSourceIsCharging:(BOOL)a4
+- (void)devicePowerMonitor:(id)monitor primaryPowerSourceIsCharging:(BOOL)charging
 {
-  v4 = a4;
+  chargingCopy = charging;
   v11 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_not_V2(self->_queue);
-  if (v4)
+  if (chargingCopy)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Device is now charging; finishing all detached sessions and builders.", buf, 0xCu);
     }
 
@@ -2605,18 +2605,18 @@ void __43__HDWorkoutManager__handleBiometricLockout__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hk_fakeLapEventWithDate:(id)a3 strokeStyle:(int64_t)a4
+- (void)hk_fakeLapEventWithDate:(id)date strokeStyle:(int64_t)style
 {
-  v6 = a3;
+  dateCopy = date;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HDWorkoutManager_hk_fakeLapEventWithDate_strokeStyle___block_invoke;
   block[3] = &unk_278614E78;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dateCopy;
+  styleCopy = style;
+  v8 = dateCopy;
   dispatch_async(queue, block);
 }
 
@@ -2643,17 +2643,17 @@ void __56__HDWorkoutManager_hk_fakeLapEventWithDate_strokeStyle___block_invoke(v
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hk_fakeStopEventWithDate:(id)a3
+- (void)hk_fakeStopEventWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HDWorkoutManager_hk_fakeStopEventWithDate___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2676,20 +2676,20 @@ void __45__HDWorkoutManager_hk_fakeStopEventWithDate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)unitTest_smoothRouteForTask:(id)a3 completion:(id)a4
+- (void)unitTest_smoothRouteForTask:(id)task completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HDWorkoutManager_unitTest_smoothRouteForTask_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = taskCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = taskCopy;
   dispatch_async(queue, block);
 }
 
@@ -2727,27 +2727,27 @@ void __59__HDWorkoutManager_unitTest_smoothRouteForTask_completion___block_invok
   return v3;
 }
 
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
   currentWorkout = self->_currentWorkout;
-  if (currentWorkout != v8)
+  if (currentWorkout != sessionCopy)
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    if ((state & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
-      [(HDWorkoutManager *)self _queue_beginTransitionToWorkoutSession:v8];
+      [(HDWorkoutManager *)self _queue_beginTransitionToWorkoutSession:sessionCopy];
       goto LABEL_10;
     }
 
-    if (a4 != 17)
+    if (state != 17)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    [(HDWorkoutManager *)self _queue_sessionFinished:v8];
+    [(HDWorkoutManager *)self _queue_sessionFinished:sessionCopy];
     goto LABEL_10;
   }
 
@@ -2756,11 +2756,11 @@ LABEL_9:
   v21[0] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v12 = kHDEventNameWorkoutSession;
-  v13 = [(HDWorkoutSessionServer *)self->_currentWorkout client];
-  HDPowerLogForClient(v12, v13, v11);
+  client = [(HDWorkoutSessionServer *)self->_currentWorkout client];
+  HDPowerLogForClient(v12, client, v11);
 
   [(HDWorkoutManager *)self _postWorkoutUpdatedNotification];
-  if (a4 == 17)
+  if (state == 17)
   {
     goto LABEL_9;
   }
@@ -2768,7 +2768,7 @@ LABEL_9:
   if (self->_nextWorkout)
   {
     v14 = [MEMORY[0x277CCA9B8] hk_error:8 description:@"Another session is starting"];
-    [(HDWorkoutSessionServer *)v8 didResignCurrentWithError:v14];
+    [(HDWorkoutSessionServer *)sessionCopy didResignCurrentWithError:v14];
   }
 
   currentWorkoutObservers = self->_currentWorkoutObservers;
@@ -2777,8 +2777,8 @@ LABEL_9:
   v17[2] = __67__HDWorkoutManager_workoutSession_didChangeToState_fromState_date___block_invoke;
   v17[3] = &unk_27862BB88;
   v17[4] = self;
-  v18 = v8;
-  v19 = a4;
+  v18 = sessionCopy;
+  stateCopy = state;
   [(HKObserverSet *)currentWorkoutObservers notifyObservers:v17];
 
 LABEL_10:
@@ -2794,12 +2794,12 @@ void __67__HDWorkoutManager_workoutSession_didChangeToState_fromState_date___blo
   }
 }
 
-- (void)workoutSession:(id)a3 didUpdateDataAccumulator:(id)a4
+- (void)workoutSession:(id)session didUpdateDataAccumulator:(id)accumulator
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  accumulatorCopy = accumulator;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_currentWorkout == v6)
+  if (self->_currentWorkout == sessionCopy)
   {
     currentWorkoutObservers = self->_currentWorkoutObservers;
     v9[0] = MEMORY[0x277D85DD0];
@@ -2807,8 +2807,8 @@ void __67__HDWorkoutManager_workoutSession_didChangeToState_fromState_date___blo
     v9[2] = __60__HDWorkoutManager_workoutSession_didUpdateDataAccumulator___block_invoke;
     v9[3] = &unk_27862BBB0;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = sessionCopy;
+    v11 = accumulatorCopy;
     [(HKObserverSet *)currentWorkoutObservers notifyObservers:v9];
   }
 }
@@ -2822,18 +2822,18 @@ void __60__HDWorkoutManager_workoutSession_didUpdateDataAccumulator___block_invo
   }
 }
 
-- (void)_didCreateMirroredSessionServer:(id)a3
+- (void)_didCreateMirroredSessionServer:(id)server
 {
-  v4 = a3;
-  [(HDWorkoutManager *)self _setupNewSessionServer:v4 withTaskServer:0];
+  serverCopy = server;
+  [(HDWorkoutManager *)self _setupNewSessionServer:serverCopy withTaskServer:0];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HDWorkoutManager__didCreateMirroredSessionServer___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serverCopy;
+  v6 = serverCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2896,24 +2896,24 @@ uint64_t __41__HDWorkoutManager_isInHeartRateRecovery__block_invoke(void *a1)
 
 - (BOOL)currentActivityRequiresExtendedMode
 {
-  v2 = [(HDWorkoutManager *)self currentWorkoutConfiguration];
-  v3 = [v2 shouldUseExtendedMode];
+  currentWorkoutConfiguration = [(HDWorkoutManager *)self currentWorkoutConfiguration];
+  shouldUseExtendedMode = [currentWorkoutConfiguration shouldUseExtendedMode];
 
-  return v3;
+  return shouldUseExtendedMode;
 }
 
-- (void)tearDownMirroredWorkoutSession:(id)a3
+- (void)tearDownMirroredWorkoutSession:(id)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = sessionCopy;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Tearing down mirrored Session server %{public}@.", buf, 0x16u);
   }
 
@@ -2923,8 +2923,8 @@ uint64_t __41__HDWorkoutManager_isInHeartRateRecovery__block_invoke(void *a1)
   v9[2] = __51__HDWorkoutManager_tearDownMirroredWorkoutSession___block_invoke;
   v9[3] = &unk_278613920;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];

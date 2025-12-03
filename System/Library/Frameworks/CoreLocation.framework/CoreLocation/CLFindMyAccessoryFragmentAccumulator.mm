@@ -1,15 +1,15 @@
 @interface CLFindMyAccessoryFragmentAccumulator
-+ (id)convertDataStatusToString:(unint64_t)a3;
-- (BOOL)appendData:(id)a3 forUUID:(id)a4;
-- (BOOL)clearForUUID:(id)a3;
-- (CLFindMyAccessoryFragmentAccumulator)initWithMaxBytesPerUUID:(unint64_t)a3;
-- (unint64_t)getDataStatusForUUID:(id)a3;
++ (id)convertDataStatusToString:(unint64_t)string;
+- (BOOL)appendData:(id)data forUUID:(id)d;
+- (BOOL)clearForUUID:(id)d;
+- (CLFindMyAccessoryFragmentAccumulator)initWithMaxBytesPerUUID:(unint64_t)d;
+- (unint64_t)getDataStatusForUUID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation CLFindMyAccessoryFragmentAccumulator
 
-- (CLFindMyAccessoryFragmentAccumulator)initWithMaxBytesPerUUID:(unint64_t)a3
+- (CLFindMyAccessoryFragmentAccumulator)initWithMaxBytesPerUUID:(unint64_t)d
 {
   v6.receiver = self;
   v6.super_class = CLFindMyAccessoryFragmentAccumulator;
@@ -17,7 +17,7 @@
   if (v4)
   {
     v4->_uuidToData = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4->_maxBytesPerUUID = a3;
+    v4->_maxBytesPerUUID = d;
   }
 
   return v4;
@@ -30,19 +30,19 @@
   [(CLFindMyAccessoryFragmentAccumulator *)&v3 dealloc];
 }
 
-- (BOOL)clearForUUID:(id)a3
+- (BOOL)clearForUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)self->_uuidToData removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_uuidToData removeObjectForKey:d];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (unint64_t)getDataStatusForUUID:(id)a3
+- (unint64_t)getDataStatusForUUID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
@@ -50,7 +50,7 @@
   result = [(NSMutableDictionary *)self->_uuidToData objectForKeyedSubscript:?];
   if (result)
   {
-    if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{a3), "length"}] < self->_maxBytesPerUUID)
+    if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{d), "length"}] < self->_maxBytesPerUUID)
     {
       return 1;
     }
@@ -64,11 +64,11 @@
   return result;
 }
 
-- (BOOL)appendData:(id)a3 forUUID:(id)a4
+- (BOOL)appendData:(id)data forUUID:(id)d
 {
-  if (a3)
+  if (data)
   {
-    v4 = a4 == 0;
+    v4 = d == 0;
   }
 
   else
@@ -79,51 +79,51 @@
   v5 = !v4;
   if (!v4)
   {
-    v7 = a3;
-    if (![(NSMutableDictionary *)self->_uuidToData objectForKeyedSubscript:a4])
+    dataCopy = data;
+    if (![(NSMutableDictionary *)self->_uuidToData objectForKeyedSubscript:d])
     {
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_uuidToData, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF88] data], a4);
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_uuidToData, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF88] data], d);
     }
 
-    if ([v7 length] >= self->_maxBytesPerUUID)
+    if ([dataCopy length] >= self->_maxBytesPerUUID)
     {
-      v7 = [v7 subdataWithRange:{objc_msgSend(v7, "length") - self->_maxBytesPerUUID}];
-      v14 = [MEMORY[0x1E695DF88] data];
+      dataCopy = [dataCopy subdataWithRange:{objc_msgSend(dataCopy, "length") - self->_maxBytesPerUUID}];
+      data = [MEMORY[0x1E695DF88] data];
     }
 
     else
     {
-      v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{a4), "length"}];
-      v10 = [v7 length] + v9;
+      v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{d), "length"}];
+      v10 = [dataCopy length] + v9;
       maxBytesPerUUID = self->_maxBytesPerUUID;
       if (v10 <= maxBytesPerUUID)
       {
 LABEL_15:
-        [-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{a4), "appendData:", v7}];
+        [-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{d), "appendData:", dataCopy}];
         return v5;
       }
 
-      v12 = maxBytesPerUUID - [v7 length];
-      v13 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{a4), "subdataWithRange:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData, "objectForKeyedSubscript:", a4), "length") - v12, v12}];
-      v14 = [MEMORY[0x1E695DF88] dataWithData:v13];
+      v12 = maxBytesPerUUID - [dataCopy length];
+      v13 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData objectForKeyedSubscript:{d), "subdataWithRange:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_uuidToData, "objectForKeyedSubscript:", d), "length") - v12, v12}];
+      data = [MEMORY[0x1E695DF88] dataWithData:v13];
     }
 
-    [(NSMutableDictionary *)self->_uuidToData setObject:v14 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)self->_uuidToData setObject:data forKeyedSubscript:d];
     goto LABEL_15;
   }
 
   return v5;
 }
 
-+ (id)convertDataStatusToString:(unint64_t)a3
++ (id)convertDataStatusToString:(unint64_t)string
 {
   v3 = @"Data does not exist";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Data is valid";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Data exceeded maximum buffer size";
   }

@@ -1,9 +1,9 @@
 @interface PMLAWDLogisticRegTrackerMock
-+ (id)mockTrackerForPlanId:(id)a3;
++ (id)mockTrackerForPlanId:(id)id;
 - (NSArray)trackedGradients;
 - (NSArray)trackedWeights;
-- (PMLAWDLogisticRegTrackerMock)initWithAdapter:(id)a3 modelInfo:(id)a4;
-- (PMLAWDLogisticRegTrackerMock)initWithModel:(id)a3;
+- (PMLAWDLogisticRegTrackerMock)initWithAdapter:(id)adapter modelInfo:(id)info;
+- (PMLAWDLogisticRegTrackerMock)initWithModel:(id)model;
 @end
 
 @implementation PMLAWDLogisticRegTrackerMock
@@ -24,34 +24,34 @@
   return [(PMLTrackerMockAdapter *)adapter trackedMessagesByClass:v3];
 }
 
-- (PMLAWDLogisticRegTrackerMock)initWithModel:(id)a3
+- (PMLAWDLogisticRegTrackerMock)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_new();
-  v6 = [(PMLAWDLogisticRegTrackerMock *)self initWithAdapter:v5 modelInfo:v4];
+  v6 = [(PMLAWDLogisticRegTrackerMock *)self initWithAdapter:v5 modelInfo:modelCopy];
 
   return v6;
 }
 
-- (PMLAWDLogisticRegTrackerMock)initWithAdapter:(id)a3 modelInfo:(id)a4
+- (PMLAWDLogisticRegTrackerMock)initWithAdapter:(id)adapter modelInfo:(id)info
 {
-  v7 = a3;
+  adapterCopy = adapter;
   v11.receiver = self;
   v11.super_class = PMLAWDLogisticRegTrackerMock;
-  v8 = [(PMLProtoBufTracker *)&v11 initWithAdapter:v7 modelInfo:a4];
+  v8 = [(PMLProtoBufTracker *)&v11 initWithAdapter:adapterCopy modelInfo:info];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_adapter, a3);
+    objc_storeStrong(&v8->_adapter, adapter);
   }
 
   return v9;
 }
 
-+ (id)mockTrackerForPlanId:(id)a3
++ (id)mockTrackerForPlanId:(id)id
 {
-  v4 = [AWDProactiveModelFittingModelInfo modelInfoFromPlanId:a3];
-  v5 = [[a1 alloc] initWithModel:v4];
+  v4 = [AWDProactiveModelFittingModelInfo modelInfoFromPlanId:id];
+  v5 = [[self alloc] initWithModel:v4];
 
   return v5;
 }

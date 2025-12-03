@@ -1,23 +1,23 @@
 @interface CHHistoryDataProvider
 - (CHHistoryDataProvider)init;
-- (void)setMindfulnessSessionDataProvider:(id)a3;
-- (void)setWorkoutDataProvider:(id)a3;
+- (void)setMindfulnessSessionDataProvider:(id)provider;
+- (void)setWorkoutDataProvider:(id)provider;
 @end
 
 @implementation CHHistoryDataProvider
 
-- (void)setWorkoutDataProvider:(id)a3
+- (void)setWorkoutDataProvider:(id)provider
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CHHistoryDataProvider_workoutDataProvider);
-  *(&self->super.isa + OBJC_IVAR___CHHistoryDataProvider_workoutDataProvider) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CHHistoryDataProvider_workoutDataProvider) = provider;
+  providerCopy = provider;
 }
 
-- (void)setMindfulnessSessionDataProvider:(id)a3
+- (void)setMindfulnessSessionDataProvider:(id)provider
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CHHistoryDataProvider_mindfulnessSessionDataProvider);
-  *(&self->super.isa + OBJC_IVAR___CHHistoryDataProvider_mindfulnessSessionDataProvider) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CHHistoryDataProvider_mindfulnessSessionDataProvider) = provider;
+  providerCopy = provider;
 }
 
 - (CHHistoryDataProvider)init

@@ -1,5 +1,5 @@
 @interface PXFeedSyntheticDataSourceManager
-- (PXFeedSyntheticDataSourceManager)initWithNumberOfSections:(int64_t)a3 numberOfItemsPerSection:(int64_t)a4;
+- (PXFeedSyntheticDataSourceManager)initWithNumberOfSections:(int64_t)sections numberOfItemsPerSection:(int64_t)section;
 - (id)createInitialDataSource;
 @end
 
@@ -12,15 +12,15 @@
   return v2;
 }
 
-- (PXFeedSyntheticDataSourceManager)initWithNumberOfSections:(int64_t)a3 numberOfItemsPerSection:(int64_t)a4
+- (PXFeedSyntheticDataSourceManager)initWithNumberOfSections:(int64_t)sections numberOfItemsPerSection:(int64_t)section
 {
   v7.receiver = self;
   v7.super_class = PXFeedSyntheticDataSourceManager;
   result = [(PXSectionedDataSourceManager *)&v7 init];
   if (result)
   {
-    result->_initialNumberOfSections = a3;
-    result->_initialNumberOfItemsPerSection = a4;
+    result->_initialNumberOfSections = sections;
+    result->_initialNumberOfItemsPerSection = section;
   }
 
   return result;

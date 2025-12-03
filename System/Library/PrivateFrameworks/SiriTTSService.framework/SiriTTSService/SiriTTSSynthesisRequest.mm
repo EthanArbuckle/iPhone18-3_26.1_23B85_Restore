@@ -16,20 +16,20 @@
 - (id)voice;
 - (int64_t)synthesisPriority;
 - (int64_t)synthesisProfile;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContextInfo:(id)a3;
-- (void)setCustomResourceURLs:(id)a3;
-- (void)setDidGenerateAudio:(id)a3;
-- (void)setDidGenerateWordTimings:(id)a3;
-- (void)setPitch:(float)a3;
-- (void)setProsodyProperties:(id)a3;
-- (void)setRate:(float)a3;
-- (void)setSynthesisContext:(id)a3;
-- (void)setSynthesisPriority:(int64_t)a3;
-- (void)setSynthesisProfile:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setVoice:(id)a3;
-- (void)setVolume:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContextInfo:(id)info;
+- (void)setCustomResourceURLs:(id)ls;
+- (void)setDidGenerateAudio:(id)audio;
+- (void)setDidGenerateWordTimings:(id)timings;
+- (void)setPitch:(float)pitch;
+- (void)setProsodyProperties:(id)properties;
+- (void)setRate:(float)rate;
+- (void)setSynthesisContext:(id)context;
+- (void)setSynthesisPriority:(int64_t)priority;
+- (void)setSynthesisProfile:(int64_t)profile;
+- (void)setText:(id)text;
+- (void)setVoice:(id)voice;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation SiriTTSSynthesisRequest
@@ -41,231 +41,231 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1A9CD00(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1A9CD00(coderCopy);
 }
 
-- (void)setSynthesisContext:(id)a3
+- (void)setSynthesisContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1B1B112AC();
 }
 
 - (BOOL)whisper
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 whisper];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  whisper = [synthesisContext whisper];
 
-  return v3;
+  return whisper;
 }
 
-- (void)setDidGenerateWordTimings:(id)a3
+- (void)setDidGenerateWordTimings:(id)timings
 {
-  v4 = a3;
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v5 setDidGenerateWordTimings:v4];
+  timingsCopy = timings;
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setDidGenerateWordTimings:timingsCopy];
 }
 
 - (id)didGenerateWordTimings
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 didGenerateWordTimings];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  didGenerateWordTimings = [synthesisContext didGenerateWordTimings];
 
-  return v3;
+  return didGenerateWordTimings;
 }
 
-- (void)setDidGenerateAudio:(id)a3
+- (void)setDidGenerateAudio:(id)audio
 {
-  v4 = a3;
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v5 setDidGenerateAudio:v4];
+  audioCopy = audio;
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setDidGenerateAudio:audioCopy];
 }
 
 - (id)didGenerateAudio
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 didGenerateAudio];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  didGenerateAudio = [synthesisContext didGenerateAudio];
 
-  return v3;
+  return didGenerateAudio;
 }
 
-- (void)setProsodyProperties:(id)a3
+- (void)setProsodyProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v5 setProsodyProperties:v4];
+  propertiesCopy = properties;
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setProsodyProperties:propertiesCopy];
 }
 
 - (id)prosodyProperties
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 prosodyProperties];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  prosodyProperties = [synthesisContext prosodyProperties];
 
-  return v3;
+  return prosodyProperties;
 }
 
-- (void)setSynthesisPriority:(int64_t)a3
+- (void)setSynthesisPriority:(int64_t)priority
 {
-  v4 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v4 setSynthesisPriority:a3];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setSynthesisPriority:priority];
 }
 
 - (int64_t)synthesisPriority
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 synthesisPriority];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  synthesisPriority = [synthesisContext synthesisPriority];
 
-  return v3;
+  return synthesisPriority;
 }
 
-- (void)setSynthesisProfile:(int64_t)a3
+- (void)setSynthesisProfile:(int64_t)profile
 {
-  v4 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v4 setSynthesisProfile:a3];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setSynthesisProfile:profile];
 }
 
 - (int64_t)synthesisProfile
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 synthesisProfile];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  synthesisProfile = [synthesisContext synthesisProfile];
 
-  return v3;
+  return synthesisProfile;
 }
 
 - (BOOL)disableCompactVoice
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 disableCompactVoice];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  disableCompactVoice = [synthesisContext disableCompactVoice];
 
-  return v3;
+  return disableCompactVoice;
 }
 
-- (void)setCustomResourceURLs:(id)a3
+- (void)setCustomResourceURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v5 setCustomResourceURLs:v4];
+  lsCopy = ls;
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setCustomResourceURLs:lsCopy];
 }
 
 - (id)customResourceURLs
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 customResourceURLs];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  customResourceURLs = [synthesisContext customResourceURLs];
 
-  return v3;
+  return customResourceURLs;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  *&v4 = a3;
-  [v5 setVolume:v4];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  *&v4 = volume;
+  [synthesisContext setVolume:v4];
 }
 
 - (float)volume
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v2 volume];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext volume];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPitch:(float)a3
+- (void)setPitch:(float)pitch
 {
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  *&v4 = a3;
-  [v5 setPitch:v4];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  *&v4 = pitch;
+  [synthesisContext setPitch:v4];
 }
 
 - (float)pitch
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v2 pitch];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext pitch];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  *&v4 = a3;
-  [v5 setRate:v4];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  *&v4 = rate;
+  [synthesisContext setRate:v4];
 }
 
 - (float)rate
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v2 rate];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext rate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setContextInfo:(id)a3
+- (void)setContextInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v5 setContextInfo:v4];
+  infoCopy = info;
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setContextInfo:infoCopy];
 }
 
 - (id)contextInfo
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 contextInfo];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  contextInfo = [synthesisContext contextInfo];
 
-  return v3;
+  return contextInfo;
 }
 
 - (BOOL)minimizeDeviceUsage
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 minimizeDeviceUsage];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  minimizeDeviceUsage = [synthesisContext minimizeDeviceUsage];
 
-  return v3;
+  return minimizeDeviceUsage;
 }
 
 - (BOOL)privacySensitive
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 privacySensitive];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  privacySensitive = [synthesisContext privacySensitive];
 
-  return v3;
+  return privacySensitive;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v4 = a3;
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v5 setVoice:v4];
+  voiceCopy = voice;
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setVoice:voiceCopy];
 }
 
 - (id)voice
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 voice];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  voice = [synthesisContext voice];
 
-  return v3;
+  return voice;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  [v5 setText:v4];
+  textCopy = text;
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  [synthesisContext setText:textCopy];
 }
 
 - (id)text
 {
-  v2 = [(SiriTTSSynthesisRequest *)self synthesisContext];
-  v3 = [v2 text];
+  synthesisContext = [(SiriTTSSynthesisRequest *)self synthesisContext];
+  text = [synthesisContext text];
 
-  return v3;
+  return text;
 }
 
 @end

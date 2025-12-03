@@ -17,26 +17,26 @@
   [(SBSystemAnimationSettings *)self setAssistantBottomEdgeDismissVelocity:v6];
   LODWORD(v7) = 1053609165;
   [(SBSystemAnimationSettings *)self setSpotlightNoninteractiveAnimationDuration:v7];
-  v8 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
-  [v8 setAnimationType:1];
+  slideoverDosidoAnimationSettings = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
+  [slideoverDosidoAnimationSettings setAnimationType:1];
 
-  v9 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
-  [v9 setDelay:0.0];
+  slideoverDosidoAnimationSettings2 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
+  [slideoverDosidoAnimationSettings2 setDelay:0.0];
 
-  v10 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
-  [v10 setDuration:0.58];
+  slideoverDosidoAnimationSettings3 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
+  [slideoverDosidoAnimationSettings3 setDuration:0.58];
 
-  v11 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
-  [v11 setMass:4.0];
+  slideoverDosidoAnimationSettings4 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
+  [slideoverDosidoAnimationSettings4 setMass:4.0];
 
-  v12 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
-  [v12 setStiffness:1000.0];
+  slideoverDosidoAnimationSettings5 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
+  [slideoverDosidoAnimationSettings5 setStiffness:1000.0];
 
-  v13 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
-  [v13 setDamping:500.0];
+  slideoverDosidoAnimationSettings6 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
+  [slideoverDosidoAnimationSettings6 setDamping:500.0];
 
-  v14 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
-  [v14 setCurve:0x10000];
+  slideoverDosidoAnimationSettings7 = [(SBSystemAnimationSettings *)self slideoverDosidoAnimationSettings];
+  [slideoverDosidoAnimationSettings7 setCurve:0x10000];
 }
 
 + (id)settingsControllerModule

@@ -1,18 +1,18 @@
 @interface SUCanvasMaskProvider
-- (CGPath)copyPathForMaskWithSize:(CGSize)a3;
-- (SUCanvasMaskProvider)initWithFunction:(id)a3;
-- (id)copyMaskImageWithSize:(CGSize)a3;
+- (CGPath)copyPathForMaskWithSize:(CGSize)size;
+- (SUCanvasMaskProvider)initWithFunction:(id)function;
+- (id)copyMaskImageWithSize:(CGSize)size;
 - (void)dealloc;
 @end
 
 @implementation SUCanvasMaskProvider
 
-- (SUCanvasMaskProvider)initWithFunction:(id)a3
+- (SUCanvasMaskProvider)initWithFunction:(id)function
 {
   v4 = [(SUCanvasMaskProvider *)self init];
   if (v4)
   {
-    v4->_function = a3;
+    v4->_function = function;
   }
 
   return v4;
@@ -26,22 +26,22 @@
   [(SUCanvasMaskProvider *)&v3 dealloc];
 }
 
-- (id)copyMaskImageWithSize:(CGSize)a3
+- (id)copyMaskImageWithSize:(CGSize)size
 {
-  v3 = [(SUScriptCanvasFunction *)self->_function copyResultForSize:a3.width, a3.height];
-  v4 = [v3 canvasImage];
+  v3 = [(SUScriptCanvasFunction *)self->_function copyResultForSize:size.width, size.height];
+  canvasImage = [v3 canvasImage];
 
-  return v4;
+  return canvasImage;
 }
 
-- (CGPath)copyPathForMaskWithSize:(CGSize)a3
+- (CGPath)copyPathForMaskWithSize:(CGSize)size
 {
-  v3 = [(SUScriptCanvasFunction *)self->_function copyResultForSize:a3.width, a3.height];
-  v4 = [v3 canvasPath];
-  v5 = v4;
-  if (v4)
+  v3 = [(SUScriptCanvasFunction *)self->_function copyResultForSize:size.width, size.height];
+  canvasPath = [v3 canvasPath];
+  v5 = canvasPath;
+  if (canvasPath)
   {
-    CGPathRetain(v4);
+    CGPathRetain(canvasPath);
   }
 
   return v5;

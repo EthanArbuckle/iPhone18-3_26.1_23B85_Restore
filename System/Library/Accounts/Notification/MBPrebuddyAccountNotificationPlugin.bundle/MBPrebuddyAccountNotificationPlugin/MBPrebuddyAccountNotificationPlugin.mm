@@ -1,27 +1,23 @@
-void sub_1184(id a1)
-{
-  v1 = +[MBPrebuddyManager sharedManager];
-  [v1 updateFollowUp];
-}
-
-WithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+@interface MBPrebuddyAccountNotificationPlugin
+- (BOOL)_shouldUpdateFollowUpForDataclasses:(id)dataclasses;
+- (BOOL)account:(id)account willChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 - (void)_updateFollowUp;
-- (void)account:(id)a3 didPerformActionsForDataclasses:(id)a4;
+- (void)account:(id)account didPerformActionsForDataclasses:(id)dataclasses;
 @end
 
 @implementation MBPrebuddyAccountNotificationPlugin
 
-- (BOOL)account:(id)a3 willChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (BOOL)account:(id)account willChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v8 = a6;
-  v9 = [v8 aa_isAccountClass:AAAccountClassPrimary];
-  if (!a3 && a4 == 3 && v9)
+  oldAccountCopy = oldAccount;
+  v9 = [oldAccountCopy aa_isAccountClass:AAAccountClassPrimary];
+  if (!account && type == 3 && v9)
   {
     v10 = MBGetDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v8;
+      v14 = oldAccountCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "MBPrebuddyAccountNotificationPlugin: iCloud Account will be signed out, so cancelling Prebuddy mode: %@", buf, 0xCu);
       _MBLog();
     }
@@ -33,11 +29,11 @@ WithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
   return 0;
 }
 
-- (void)account:(id)a3 didPerformActionsForDataclasses:(id)a4
+- (void)account:(id)account didPerformActionsForDataclasses:(id)dataclasses
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 aa_isAccountClass:AAAccountClassPrimary];
+  accountCopy = account;
+  dataclassesCopy = dataclasses;
+  v8 = [accountCopy aa_isAccountClass:AAAccountClassPrimary];
   v9 = MBGetDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -52,24 +48,24 @@ WithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
     }
 
     *buf = 138412802;
-    v12 = v6;
+    v12 = accountCopy;
     v13 = 2112;
     v14 = v10;
     v15 = 2112;
-    v16 = v7;
+    v16 = dataclassesCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "MBPrebuddyAccountNotificationPlugin: didPerformActionsForDataclasses: %@\nisPrimary: %@\n%@", buf, 0x20u);
     _MBLog();
   }
 
-  if (v8 && [(MBPrebuddyAccountNotificationPlugin *)self _shouldUpdateFollowUpForDataclasses:v7])
+  if (v8 && [(MBPrebuddyAccountNotificationPlugin *)self _shouldUpdateFollowUpForDataclasses:dataclassesCopy])
   {
     [(MBPrebuddyAccountNotificationPlugin *)self _updateFollowUp];
   }
 }
 
-- (BOOL)_shouldUpdateFollowUpForDataclasses:(id)a3
+- (BOOL)_shouldUpdateFollowUpForDataclasses:(id)dataclasses
 {
-  v3 = a3;
+  dataclassesCopy = dataclasses;
   v23[0] = ACAccountDataclassBookmarks;
   v23[1] = ACAccountDataclassNews;
   v23[2] = ACAccountDataclassStocks;
@@ -86,7 +82,7 @@ WithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = dataclassesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {

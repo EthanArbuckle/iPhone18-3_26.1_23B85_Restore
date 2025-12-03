@@ -1,22 +1,22 @@
 @interface SearchUICommandCardSectionView
-- (SearchUICommandCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
+- (SearchUICommandCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (id)setupContentView;
-- (void)fetchStateForNewRowModel:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)fetchStateForNewRowModel:(id)model;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUICommandCardSectionView
 
-- (SearchUICommandCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUICommandCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v6 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = SearchUICommandCardSectionView;
-  v7 = [(SearchUICardSectionView *)&v10 initWithRowModel:v6 feedbackDelegate:a4];
+  v7 = [(SearchUICardSectionView *)&v10 initWithRowModel:modelCopy feedbackDelegate:delegate];
   v8 = v7;
   if (v7)
   {
-    [(SearchUICommandCardSectionView *)v7 fetchStateForNewRowModel:v6];
+    [(SearchUICommandCardSectionView *)v7 fetchStateForNewRowModel:modelCopy];
   }
 
   return v8;
@@ -32,8 +32,8 @@
   v5 = *(MEMORY[0x1E69DDCE0] + 8);
   v6 = *(MEMORY[0x1E69DDCE0] + 16);
   v7 = *(MEMORY[0x1E69DDCE0] + 24);
-  v8 = [(SearchUICommandCardSectionView *)self rowView];
-  [v8 setLayoutMargins:{v4, v5, v6, v7}];
+  rowView = [(SearchUICommandCardSectionView *)self rowView];
+  [rowView setLayoutMargins:{v4, v5, v6, v7}];
 
   v9 = objc_opt_new();
   [v9 setSymbolName:@"clock.badge.fill"];
@@ -61,8 +61,8 @@
   [SearchUIAutoLayout requireIntrinsicSizeForView:v13];
   [(SearchUICommandCardSectionView *)self setCheckmarkImageView:v13];
   v16 = objc_alloc(MEMORY[0x1E698B730]);
-  v17 = [(SearchUICommandCardSectionView *)self rowView];
-  v24[1] = v17;
+  rowView2 = [(SearchUICommandCardSectionView *)self rowView];
+  v24[1] = rowView2;
   v24[2] = v13;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
   v19 = [v16 initWithArrangedSubviews:v18];
@@ -74,51 +74,51 @@
   v21 = v20;
   [MEMORY[0x1E69D9248] defaultLayoutMargins];
   [v19 setDirectionalLayoutMargins:{0.0, v21, 0.0}];
-  v22 = [(SearchUICommandCardSectionView *)self layer];
-  [v22 setAllowsGroupOpacity:0];
+  layer = [(SearchUICommandCardSectionView *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   return v19;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
-  v5 = [(SearchUICardSectionView *)self rowModel];
+  modelCopy = model;
+  rowModel = [(SearchUICardSectionView *)self rowModel];
 
   v11.receiver = self;
   v11.super_class = SearchUICommandCardSectionView;
-  [(SearchUICardSectionView *)&v11 updateWithRowModel:v4];
-  v6 = [v4 title];
-  v7 = [(SearchUICommandCardSectionView *)self rowView];
-  [v7 setLeadingTitle:v6];
+  [(SearchUICardSectionView *)&v11 updateWithRowModel:modelCopy];
+  title = [modelCopy title];
+  rowView = [(SearchUICommandCardSectionView *)self rowView];
+  [rowView setLeadingTitle:title];
 
-  v8 = [v4 subtitle];
-  v9 = [(SearchUICommandCardSectionView *)self rowView];
-  [v9 setLeadingSubtitle:v8];
+  subtitle = [modelCopy subtitle];
+  rowView2 = [(SearchUICommandCardSectionView *)self rowView];
+  [rowView2 setLeadingSubtitle:subtitle];
 
-  LODWORD(v8) = [v4 toggled];
-  v10 = [(SearchUICommandCardSectionView *)self checkmarkImageView];
-  [v10 setHidden:v8 ^ 1];
+  LODWORD(subtitle) = [modelCopy toggled];
+  checkmarkImageView = [(SearchUICommandCardSectionView *)self checkmarkImageView];
+  [checkmarkImageView setHidden:subtitle ^ 1];
 
-  if (v5 != v4)
+  if (rowModel != modelCopy)
   {
-    [(SearchUICommandCardSectionView *)self fetchStateForNewRowModel:v4];
+    [(SearchUICommandCardSectionView *)self fetchStateForNewRowModel:modelCopy];
   }
 }
 
-- (void)fetchStateForNewRowModel:(id)a3
+- (void)fetchStateForNewRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   [(SearchUICommandCardSectionView *)self setAlpha:0.0];
-  v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__SearchUICommandCardSectionView_fetchStateForNewRowModel___block_invoke;
   v7[3] = &unk_1E85B2540;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = modelCopy;
+  selfCopy = self;
+  v6 = modelCopy;
+  [currentRunLoop performBlock:v7];
 }
 
 void __59__SearchUICommandCardSectionView_fetchStateForNewRowModel___block_invoke(uint64_t a1)

@@ -1,8 +1,8 @@
 @interface PPKPayloadEncryption
 + (id)sharedInstance;
 - (PPKPayloadEncryption)init;
-- (_BYTE)encryptData:(_BYTE *)a1;
-- (id)decryptData:(_BYTE *)a1;
+- (_BYTE)encryptData:(_BYTE *)data;
+- (id)decryptData:(_BYTE *)data;
 - (void)initializeKey;
 @end
 
@@ -49,11 +49,11 @@ void __38__PPKPayloadEncryption_sharedInstance__block_invoke(uint64_t a1)
 - (void)initializeKey
 {
   v40[7] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_keyInitialized)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_keyInitialized)
   {
-    v2->_haveKey = 0;
+    selfCopy->_haveKey = 0;
     result = 0;
     v3 = *MEMORY[0x1E697AFF8];
     v4 = *MEMORY[0x1E697B008];
@@ -86,8 +86,8 @@ void __38__PPKPayloadEncryption_sharedInstance__block_invoke(uint64_t a1)
     v14 = v13;
     if (v13 == -25300)
     {
-      generateRandomKey(v2->_key);
-      v18 = [MEMORY[0x1E695DEF0] dataWithBytes:v2->_key length:16];
+      generateRandomKey(selfCopy->_key);
+      v18 = [MEMORY[0x1E695DEF0] dataWithBytes:selfCopy->_key length:16];
       v19 = [v18 base64EncodedDataWithOptions:0];
 
       v37[0] = v3;
@@ -127,7 +127,7 @@ void __38__PPKPayloadEncryption_sharedInstance__block_invoke(uint64_t a1)
 
       else
       {
-        v2->_haveKey = 1;
+        selfCopy->_haveKey = 1;
       }
 
       if (cf)
@@ -171,25 +171,25 @@ void __38__PPKPayloadEncryption_sharedInstance__block_invoke(uint64_t a1)
 
           if (v28)
           {
-            [v28 getBytes:v2->_key length:16];
-            v2->_haveKey = 1;
+            [v28 getBytes:selfCopy->_key length:16];
+            selfCopy->_haveKey = 1;
           }
         }
       }
     }
 
-    v2->_keyInitialized = 1;
+    selfCopy->_keyInitialized = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (_BYTE)encryptData:(_BYTE *)a1
+- (_BYTE)encryptData:(_BYTE *)data
 {
   v56 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (!a1)
+  if (!data)
   {
     goto LABEL_22;
   }
@@ -207,16 +207,16 @@ LABEL_16:
 
 LABEL_17:
 
-    a1 = 0;
+    data = 0;
     goto LABEL_22;
   }
 
-  if ((a1[8] & 1) == 0)
+  if ((data[8] & 1) == 0)
   {
-    [a1 initializeKey];
+    [data initializeKey];
   }
 
-  v6 = a1[9];
+  v6 = data[9];
   v7 = +[PPKImageWriter log];
   v8 = OUTLINED_FUNCTION_3(v7);
   if ((v6 & 1) == 0)
@@ -248,10 +248,10 @@ LABEL_17:
   [v18 appendData:v5];
   [v18 setLength:v17];
   v52 = 0;
-  v19 = [v18 mutableBytes];
+  mutableBytes = [v18 mutableBytes];
   dataOuta = [v18 mutableBytes];
   OUTLINED_FUNCTION_2();
-  v26 = CCCrypt(v20, v21, v22, v23, v24, v25, v19, v16, dataOuta, v17, &v52);
+  v26 = CCCrypt(v20, v21, v22, v23, v24, v25, mutableBytes, v16, dataOuta, v17, &v52);
   v27 = +[PPKImageWriter log];
   v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
   if (v26)
@@ -262,7 +262,7 @@ LABEL_17:
       OUTLINED_FUNCTION_0(&dword_1D38C4000, v29, v30, "PPKPayloadEncryption: Failed to encrypt with error code: %ld", v31, v32, v33, v34, dataOut, dataOutAvailable, v51, v52, 0);
     }
 
-    a1 = 0;
+    data = 0;
   }
 
   else
@@ -273,20 +273,20 @@ LABEL_17:
       OUTLINED_FUNCTION_0(&dword_1D38C4000, v41, v42, "PPKPayloadEncryption: %lu bytes encrypted", v43, v44, v45, v46, dataOut, dataOutAvailable, v51, v52, 0);
     }
 
-    a1 = v18;
+    data = v18;
   }
 
 LABEL_22:
 
-  return a1;
+  return data;
 }
 
-- (id)decryptData:(_BYTE *)a1
+- (id)decryptData:(_BYTE *)data
 {
   v53 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (!a1)
+  if (!data)
   {
     goto LABEL_19;
   }
@@ -309,12 +309,12 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ((a1[8] & 1) == 0)
+  if ((data[8] & 1) == 0)
   {
-    [a1 initializeKey];
+    [data initializeKey];
   }
 
-  v6 = a1[9];
+  v6 = data[9];
   v7 = +[PPKImageWriter log];
   v8 = OUTLINED_FUNCTION_3(v7);
   if ((v6 & 1) == 0)
@@ -338,11 +338,11 @@ LABEL_19:
 
   v50 = 0;
   v14 = malloc_type_malloc([v5 length], 0x5086D5AuLL);
-  v15 = [v5 bytes];
+  bytes = [v5 bytes];
   v16 = [v5 length] - 16;
   dataOutAvailablea = [v5 length] - 16;
   OUTLINED_FUNCTION_2();
-  v23 = CCCrypt(v17, v18, v19, v20, v21, v22, v15, v16, v14, dataOutAvailablea, &v50);
+  v23 = CCCrypt(v17, v18, v19, v20, v21, v22, bytes, v16, v14, dataOutAvailablea, &v50);
   if (v23)
   {
     v24 = v23;

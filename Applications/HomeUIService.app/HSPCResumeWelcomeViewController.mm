@@ -1,28 +1,28 @@
 @interface HSPCResumeWelcomeViewController
-- (HSPCResumeWelcomeViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCResumeWelcomeViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCResumeWelcomeViewController
 
-- (HSPCResumeWelcomeViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCResumeWelcomeViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
+  coordinatorCopy = coordinator;
   v18.receiver = self;
   v18.super_class = HSPCResumeWelcomeViewController;
-  v7 = [(HSPCDetectedViewController *)&v18 initWithCoordinator:v6 config:a4];
+  v7 = [(HSPCDetectedViewController *)&v18 initWithCoordinator:coordinatorCopy config:config];
   if (v7)
   {
-    v8 = [v6 activeTuple];
-    v9 = [v8 accessoryCategoryOrPrimaryServiceType];
+    activeTuple = [coordinatorCopy activeTuple];
+    accessoryCategoryOrPrimaryServiceType = [activeTuple accessoryCategoryOrPrimaryServiceType];
 
-    v10 = [v6 setupAccessoryDescription];
-    v11 = [v10 setupAccessoryPayload];
-    v12 = [v11 matterDeviceTypeID];
+    setupAccessoryDescription = [coordinatorCopy setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+    matterDeviceTypeID = [setupAccessoryPayload matterDeviceTypeID];
 
     v13 = HFLocalizedCategoryOrPrimaryServiceTypeString();
-    v14 = [v6 activeTuple];
-    v15 = [v14 titleForAccessoryWithDefaultValue:v13];
+    activeTuple2 = [coordinatorCopy activeTuple];
+    v15 = [activeTuple2 titleForAccessoryWithDefaultValue:v13];
     [(HSPCResumeWelcomeViewController *)v7 setTitle:v15];
 
     v16 = HFLocalizedCategoryOrPrimaryServiceTypeString();

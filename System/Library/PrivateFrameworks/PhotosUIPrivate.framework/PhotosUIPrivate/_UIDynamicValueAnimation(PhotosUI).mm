@@ -10,7 +10,7 @@
   UIAnimationDragCoefficient();
   v13 = a4 / (v12 * v12);
   v14 = v12;
-  v15 = [objc_alloc(MEMORY[0x1E69DD4A0]) initWithValue:a1 velocity:a2 / v12 unitSize:a6];
+  v15 = [objc_alloc(MEMORY[0x1E69DD4A0]) initWithValue:self velocity:a2 / v12 unitSize:a6];
   v16 = [MEMORY[0x1E69DD490] activeValue:0 ofType:a3];
   [v15 addActiveValue:v16];
   [v16 _setBoundaryPull:v13 * 0.001];

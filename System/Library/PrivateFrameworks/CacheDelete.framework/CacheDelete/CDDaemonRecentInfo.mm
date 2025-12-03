@@ -1,11 +1,11 @@
 @interface CDDaemonRecentInfo
 + (id)fetchAllowedClassesSet;
-+ (id)recentInfoForVolumes:(id)a3;
-- (BOOL)isInvalidForVolume:(id)a3;
++ (id)recentInfoForVolumes:(id)volumes;
+- (BOOL)isInvalidForVolume:(id)volume;
 - (id)_createNewRecentVolumeInfo;
-- (void)addInvalidVolume:(id)a3;
-- (void)invalidateForVolume:(id)a3;
-- (void)prunePreserving:(id)a3;
+- (void)addInvalidVolume:(id)volume;
+- (void)invalidateForVolume:(id)volume;
+- (void)prunePreserving:(id)preserving;
 - (void)updateInvalidVolumes;
 @end
 
@@ -17,10 +17,10 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(CDDaemonRecentInfo *)self invalidVolumes];
-  v4 = [v3 allObjects];
+  invalidVolumes = [(CDDaemonRecentInfo *)self invalidVolumes];
+  allObjects = [invalidVolumes allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -31,29 +31,29 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         v10 = [CacheDeleteDaemonVolume volumeWithMountpoint:v9];
         if ([v10 validate])
         {
-          v11 = [(CDDaemonRecentInfo *)self invalidVolumes];
-          [v11 removeObject:v9];
+          invalidVolumes2 = [(CDDaemonRecentInfo *)self invalidVolumes];
+          [invalidVolumes2 removeObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (id)recentInfoForVolumes:(id)a3
++ (id)recentInfoForVolumes:(id)volumes
 {
-  v3 = a3;
-  v4 = [[CDDaemonRecentInfo alloc] initWithVolumes:v3];
+  volumesCopy = volumes;
+  v4 = [[CDDaemonRecentInfo alloc] initWithVolumes:volumesCopy];
 
   return v4;
 }
@@ -73,31 +73,31 @@
   return v2;
 }
 
-- (void)prunePreserving:(id)a3
+- (void)prunePreserving:(id)preserving
 {
-  v4 = a3;
-  v5 = [(CDDaemonRecentInfo *)self volumes];
+  preservingCopy = preserving;
+  volumes = [(CDDaemonRecentInfo *)self volumes];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __38__CDDaemonRecentInfo_prunePreserving___block_invoke;
   v7[3] = &unk_100061CA0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = preservingCopy;
+  v6 = preservingCopy;
+  [volumes enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)invalidateForVolume:(id)a3
+- (void)invalidateForVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(CDDaemonRecentInfo *)self volumes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  volumeCopy = volume;
+  volumes = [(CDDaemonRecentInfo *)self volumes];
+  v6 = [volumes objectForKeyedSubscript:volumeCopy];
 
   [v6 invalidate];
 }
 
-- (BOOL)isInvalidForVolume:(id)a3
+- (BOOL)isInvalidForVolume:(id)volume
 {
-  v3 = [CacheDeleteDaemonVolume volumeWithMountpoint:a3];
+  v3 = [CacheDeleteDaemonVolume volumeWithMountpoint:volume];
   v4 = v3;
   if (v3)
   {
@@ -112,11 +112,11 @@
   return v5;
 }
 
-- (void)addInvalidVolume:(id)a3
+- (void)addInvalidVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(CDDaemonRecentInfo *)self invalidVolumes];
-  [v5 addObject:v4];
+  volumeCopy = volume;
+  invalidVolumes = [(CDDaemonRecentInfo *)self invalidVolumes];
+  [invalidVolumes addObject:volumeCopy];
 }
 
 @end

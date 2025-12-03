@@ -1,24 +1,24 @@
 @interface HDDeviceSyncEntity
-+ (BOOL)_syncCodableDevice:(id *)a3 fromRow:(HDSQLiteRow *)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)excludedSyncStoresForSession:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)_syncCodableDevice:(id *)device fromRow:(HDSQLiteRow *)row profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)excludedSyncStoresForSession:(id)session;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDDeviceSyncEntity
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v12 = a3;
-  v13 = a5;
-  v24 = a6;
-  v14 = [MEMORY[0x277CBEB18] array];
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = +[HDDeviceEntity _propertiesForDevice];
-  v16 = [v13 database];
+  database = [profileCopy database];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -29,20 +29,20 @@
   v25[3] = &unk_278625FA0;
   v17 = v15;
   v26 = v17;
-  v18 = v12;
+  v18 = sessionCopy;
   v32 = start;
   v33 = end;
   v27 = v18;
   v31 = &v34;
-  v19 = v16;
+  v19 = database;
   v28 = v19;
-  v20 = v13;
+  v20 = profileCopy;
   v29 = v20;
-  v21 = v14;
+  v21 = array;
   v30 = v21;
-  if ([(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v19 error:a7 block:v25])
+  if ([(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v19 error:error block:v25])
   {
-    v22 = [v24 sendCodableChange:v21 resultAnchor:v35[3] sequence:0 done:1 error:a7];
+    v22 = [handlerCopy sendCodableChange:v21 resultAnchor:v35[3] sequence:0 done:1 error:error];
   }
 
   else
@@ -90,75 +90,75 @@ BOOL __97__HDDeviceSyncEntity_generateSyncObjectsForSession_syncAnchorRange_prof
   return v9;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 database];
-  v11 = [(HDHealthEntity *)HDDeviceEntity nextSyncAnchorWithStartAnchor:a4 predicate:0 session:v9 healthDatabase:v10 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v11 = [(HDHealthEntity *)HDDeviceEntity nextSyncAnchorWithStartAnchor:anchor predicate:0 session:sessionCopy healthDatabase:database error:error];
 
   return v11;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableDevice alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableDevice alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v10 = a6;
-  v11 = a3;
-  LODWORD(a7) = +[HDDeviceEntity insertCodableDevices:syncProvenance:profile:error:](HDDeviceEntity, "insertCodableDevices:syncProvenance:profile:error:", v11, [a5 syncProvenance], v10, a7);
+  profileCopy = profile;
+  objectsCopy = objects;
+  LODWORD(error) = +[HDDeviceEntity insertCodableDevices:syncProvenance:profile:error:](HDDeviceEntity, "insertCodableDevices:syncProvenance:profile:error:", objectsCopy, [store syncProvenance], profileCopy, error);
 
-  return a7 ^ 1;
+  return error ^ 1;
 }
 
-+ (id)excludedSyncStoresForSession:(id)a3
++ (id)excludedSyncStoresForSession:(id)session
 {
-  v3 = a3;
-  v4 = [v3 syncStore];
-  v5 = [v4 syncStoreType];
+  sessionCopy = session;
+  syncStore = [sessionCopy syncStore];
+  syncStoreType = [syncStore syncStoreType];
 
-  if ((v5 - 3) >= 3 && v5 == 2)
+  if ((syncStoreType - 3) >= 3 && syncStoreType == 2)
   {
-    v6 = [MEMORY[0x277CBEB98] set];
+    excludedSyncStores = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
-    v6 = [v3 excludedSyncStores];
+    excludedSyncStores = [sessionCopy excludedSyncStores];
   }
 
-  v7 = v6;
+  v7 = excludedSyncStores;
 
   return v7;
 }
 
-+ (BOOL)_syncCodableDevice:(id *)a3 fromRow:(HDSQLiteRow *)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)_syncCodableDevice:(id *)device fromRow:(HDSQLiteRow *)row profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = [HDDeviceEntity _codableDeviceWithRow:a4];
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v13 = [HDDeviceEntity _codableDeviceWithRow:row];
   v14 = HDSQLiteColumnWithNameAsInt64();
-  v15 = [v12 syncIdentityManager];
+  syncIdentityManager = [profileCopy syncIdentityManager];
 
   v24 = 0;
-  v16 = [v15 identityForEntityID:v14 transaction:v11 error:&v24];
+  v16 = [syncIdentityManager identityForEntityID:v14 transaction:transactionCopy error:&v24];
 
   v17 = v24;
   if (v16)
   {
-    v18 = [v16 identity];
-    v19 = [v18 codableSyncIdentity];
-    [v13 setSyncIdentity:v19];
+    identity = [v16 identity];
+    codableSyncIdentity = [identity codableSyncIdentity];
+    [v13 setSyncIdentity:codableSyncIdentity];
 
-    if (a3)
+    if (device)
     {
       v20 = v13;
-      *a3 = v13;
+      *device = v13;
     }
   }
 
@@ -167,10 +167,10 @@ BOOL __97__HDDeviceSyncEntity_generateSyncObjectsForSession_syncAnchorRange_prof
     v21 = v17;
     if (v21)
     {
-      if (a7)
+      if (error)
       {
         v22 = v21;
-        *a7 = v21;
+        *error = v21;
       }
 
       else

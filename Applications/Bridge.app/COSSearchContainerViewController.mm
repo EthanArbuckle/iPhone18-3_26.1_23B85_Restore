@@ -1,49 +1,49 @@
 @interface COSSearchContainerViewController
-- (COSSearchContainerViewController)initWithCoder:(id)a3;
-- (COSSearchContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)presentController:(id)a3;
+- (COSSearchContainerViewController)initWithCoder:(id)coder;
+- (COSSearchContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)presentController:(id)controller;
 @end
 
 @implementation COSSearchContainerViewController
 
-- (void)presentController:(id)a3
+- (void)presentController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100143294(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100143294(controllerCopy);
 }
 
-- (COSSearchContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (COSSearchContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.isa + OBJC_IVAR___COSSearchContainerViewController_currentChildController) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
     *(&self->super.super.super.isa + OBJC_IVAR___COSSearchContainerViewController_currentChildController) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for SearchContainerViewController();
-  v9 = [(COSSearchContainerViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(COSSearchContainerViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (COSSearchContainerViewController)initWithCoder:(id)a3
+- (COSSearchContainerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___COSSearchContainerViewController_currentChildController) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SearchContainerViewController();
-  v4 = a3;
-  v5 = [(COSSearchContainerViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(COSSearchContainerViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

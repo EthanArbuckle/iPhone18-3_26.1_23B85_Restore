@@ -1,6 +1,6 @@
 @interface PDFCard
 - (UIColor)backgroundColor;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation PDFCard
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -30,9 +30,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a3;
-  v5 = self;
-  sub_1000B6CD0(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1000B6CD0(color);
 }
 
 @end

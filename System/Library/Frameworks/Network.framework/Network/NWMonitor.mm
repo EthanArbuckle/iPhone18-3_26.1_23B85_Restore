@@ -1,22 +1,22 @@
 @interface NWMonitor
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (NWMonitor)monitorWithNetworkDescription:(id)a3 endpoint:(id)a4 parameters:(id)a5;
-+ (NWMonitor)monitorWithNetworkDescriptionArray:(id)a3 endpoint:(id)a4 parameters:(id)a5;
-+ (id)copySavedMonitorForNetworkDescriptionArray:(id)a3 endpoint:(id)a4 parameters:(id)a5;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (NWMonitor)monitorWithNetworkDescription:(id)description endpoint:(id)endpoint parameters:(id)parameters;
++ (NWMonitor)monitorWithNetworkDescriptionArray:(id)array endpoint:(id)endpoint parameters:(id)parameters;
++ (id)copySavedMonitorForNetworkDescriptionArray:(id)array endpoint:(id)endpoint parameters:(id)parameters;
 + (id)mainOperationQueue;
 + (id)queue;
 + (void)initialize;
-+ (void)saveMonitor:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesNetworkDescriptionArray:(id)a3 endpoint:(id)a4 parameters:(id)a5;
++ (void)saveMonitor:(id)monitor;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesNetworkDescriptionArray:(id)array endpoint:(id)endpoint parameters:(id)parameters;
 - (NSString)description;
 - (NSString)privateDescription;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (unint64_t)hash;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)dealloc;
-- (void)evaluateStartingAtIndex:(unint64_t)a3 probeUUID:(id)a4 probeWasSuccessful:(BOOL)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)evaluateStartingAtIndex:(unint64_t)index probeUUID:(id)d probeWasSuccessful:(BOOL)successful;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NWMonitor
@@ -47,7 +47,7 @@ void __18__NWMonitor_queue__block_invoke()
   block[1] = 3221225472;
   block[2] = __31__NWMonitor_mainOperationQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mainOperationQueue_opQueueToken != -1)
   {
     dispatch_once(&mainOperationQueue_opQueueToken, block);
@@ -68,14 +68,14 @@ void __31__NWMonitor_mainOperationQueue__block_invoke()
   [mainOperationQueue_opQueue setUnderlyingQueue:v2];
 }
 
-+ (NWMonitor)monitorWithNetworkDescriptionArray:(id)a3 endpoint:(id)a4 parameters:(id)a5
++ (NWMonitor)monitorWithNetworkDescriptionArray:(id)array endpoint:(id)endpoint parameters:(id)parameters
 {
   v84 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arrayCopy = array;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
   nw_allow_use_of_dispatch_internal();
-  if (!v8)
+  if (!arrayCopy)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -181,7 +181,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (![v8 count])
+  if (![arrayCopy count])
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -276,7 +276,7 @@ LABEL_69:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v11 = v8;
+  v11 = arrayCopy;
   v12 = [v11 countByEnumeratingWithState:&v71 objects:v83 count:16];
   if (!v12)
   {
@@ -294,9 +294,9 @@ LABEL_69:
         objc_enumerationMutation(v11);
       }
 
-      v16 = [*(*(&v71 + 1) + 8 * i) ssidOptions];
+      ssidOptions = [*(*(&v71 + 1) + 8 * i) ssidOptions];
 
-      if (v16)
+      if (ssidOptions)
       {
 
         if (currentProcessHasSSIDEntitlement_onceToken != -1)
@@ -434,11 +434,11 @@ LABEL_72:
 LABEL_11:
 
 LABEL_19:
-  v22 = [NWMonitor copySavedMonitorForNetworkDescriptionArray:v11 endpoint:v9 parameters:v10];
+  v22 = [NWMonitor copySavedMonitorForNetworkDescriptionArray:v11 endpoint:endpointCopy parameters:parametersCopy];
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 privateDescription];
+    privateDescription = [v22 privateDescription];
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v25 = gLogObj;
@@ -447,7 +447,7 @@ LABEL_19:
       *buf = 136446466;
       v78 = "+[NWMonitor monitorWithNetworkDescriptionArray:endpoint:parameters:]";
       v79 = 2114;
-      v80 = v24;
+      v80 = privateDescription;
       _os_log_impl(&dword_181A37000, v25, OS_LOG_TYPE_DEBUG, "%{public}s found matching monitor %{public}@", buf, 0x16u);
     }
 
@@ -455,11 +455,11 @@ LABEL_19:
     goto LABEL_110;
   }
 
-  v70.receiver = a1;
+  v70.receiver = self;
   v70.super_class = &OBJC_METACLASS___NWMonitor;
   v40 = [objc_msgSendSuper2(&v70 alloc)];
-  v24 = v40;
-  if (!a1)
+  privateDescription = v40;
+  if (!self)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -544,10 +544,10 @@ LABEL_105:
     goto LABEL_106;
   }
 
-  [(__CFString *)v40 setEndpoint:v9];
-  if (v10)
+  [(__CFString *)v40 setEndpoint:endpointCopy];
+  if (parametersCopy)
   {
-    v41 = [v10 copy];
+    v41 = [parametersCopy copy];
   }
 
   else
@@ -556,28 +556,28 @@ LABEL_105:
   }
 
   v54 = v41;
-  [(__CFString *)v24 setParameters:v41];
+  [(__CFString *)privateDescription setParameters:v41];
 
   v55 = [NWPathEvaluator alloc];
-  v56 = [(__CFString *)v24 endpoint];
-  v57 = [(__CFString *)v24 parameters];
-  v58 = [(NWPathEvaluator *)v55 initWithEndpoint:v56 parameters:v57];
-  [(__CFString *)v24 setPathEvaluator:v58];
+  endpoint = [(__CFString *)privateDescription endpoint];
+  parameters = [(__CFString *)privateDescription parameters];
+  v58 = [(NWPathEvaluator *)v55 initWithEndpoint:endpoint parameters:parameters];
+  [(__CFString *)privateDescription setPathEvaluator:v58];
 
-  v59 = [(__CFString *)v24 pathEvaluator];
+  pathEvaluator = [(__CFString *)privateDescription pathEvaluator];
 
-  if (v59)
+  if (pathEvaluator)
   {
     v60 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v11 copyItems:1];
-    [(__CFString *)v24 setNetworkDescriptionArray:v60];
+    [(__CFString *)privateDescription setNetworkDescriptionArray:v60];
 
-    [(__CFString *)v24 setStatus:0];
-    [(__CFString *)v24 setBestAvailableNetworkDescription:0];
-    [NWMonitor saveMonitor:v24];
-    v61 = [(__CFString *)v24 pathEvaluator];
-    [v61 addObserver:v24 forKeyPath:@"path" options:5 context:0];
+    [(__CFString *)privateDescription setStatus:0];
+    [(__CFString *)privateDescription setBestAvailableNetworkDescription:0];
+    [NWMonitor saveMonitor:privateDescription];
+    pathEvaluator2 = [(__CFString *)privateDescription pathEvaluator];
+    [pathEvaluator2 addObserver:privateDescription forKeyPath:@"path" options:5 context:0];
 
-    v62 = [0 privateDescription];
+    privateDescription2 = [0 privateDescription];
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v63 = gLogObj;
@@ -586,12 +586,12 @@ LABEL_105:
       *buf = 136446466;
       v78 = "+[NWMonitor monitorWithNetworkDescriptionArray:endpoint:parameters:]";
       v79 = 2114;
-      v80 = v62;
+      v80 = privateDescription2;
       _os_log_impl(&dword_181A37000, v63, OS_LOG_TYPE_DEBUG, "%{public}s created monitor %{public}@", buf, 0x16u);
     }
 
-    v24 = v24;
-    v26 = v24;
+    privateDescription = privateDescription;
+    v26 = privateDescription;
     goto LABEL_110;
   }
 
@@ -699,67 +699,67 @@ LABEL_111:
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  if (v4)
+  if (contentCopy)
   {
     [v7 appendPrettyInt:-[NWMonitor mID](self withName:"mID") indent:{@"monitorID", v5}];
   }
 
-  v8 = [(NWMonitor *)self status];
-  if (v8 >= 3)
+  status = [(NWMonitor *)self status];
+  if (status >= 3)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown[%ld]", v8];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown[%ld]", status];
   }
 
   else
   {
-    v9 = *(&off_1E6A2CCB8 + v8);
+    v9 = *(&off_1E6A2CCB8 + status);
   }
 
-  [v7 appendPrettyObject:v9 withName:@"status" indent:v5 showFullContent:v4];
+  [v7 appendPrettyObject:v9 withName:@"status" indent:v5 showFullContent:contentCopy];
 
-  v10 = [(NWMonitor *)self endpoint];
-  [v7 appendPrettyObject:v10 withName:@"endpoint" indent:v5 showFullContent:v4];
+  endpoint = [(NWMonitor *)self endpoint];
+  [v7 appendPrettyObject:endpoint withName:@"endpoint" indent:v5 showFullContent:contentCopy];
 
-  v11 = [(NWMonitor *)self parameters];
-  [v7 appendPrettyObject:v11 withName:@"parameters" indent:v5 showFullContent:v4];
+  parameters = [(NWMonitor *)self parameters];
+  [v7 appendPrettyObject:parameters withName:@"parameters" indent:v5 showFullContent:contentCopy];
 
-  v12 = [(NWMonitor *)self networkDescriptionArray];
-  [v7 appendPrettyObject:v12 withName:@"descriptions" indent:v5 showFullContent:v4];
+  networkDescriptionArray = [(NWMonitor *)self networkDescriptionArray];
+  [v7 appendPrettyObject:networkDescriptionArray withName:@"descriptions" indent:v5 showFullContent:contentCopy];
 
-  v13 = [(NWMonitor *)self bestAvailableNetworkDescription];
-  [v7 appendPrettyObject:v13 withName:@"current" indent:v5 showFullContent:v4];
+  bestAvailableNetworkDescription = [(NWMonitor *)self bestAvailableNetworkDescription];
+  [v7 appendPrettyObject:bestAvailableNetworkDescription withName:@"current" indent:v5 showFullContent:contentCopy];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NWMonitor *)self networkDescriptionArray];
-  v4 = [v3 hash];
-  v5 = [(NWMonitor *)self endpoint];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(NWMonitor *)self parameters];
-  v8 = [v7 hash];
+  networkDescriptionArray = [(NWMonitor *)self networkDescriptionArray];
+  v4 = [networkDescriptionArray hash];
+  endpoint = [(NWMonitor *)self endpoint];
+  v6 = [endpoint hash] ^ v4;
+  parameters = [(NWMonitor *)self parameters];
+  v8 = [parameters hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [v5 networkDescriptionArray];
-    v7 = [v5 endpoint];
-    v8 = [v5 parameters];
+    v5 = equalCopy;
+    networkDescriptionArray = [v5 networkDescriptionArray];
+    endpoint = [v5 endpoint];
+    parameters = [v5 parameters];
 
-    v9 = [(NWMonitor *)self matchesNetworkDescriptionArray:v6 endpoint:v7 parameters:v8];
+    v9 = [(NWMonitor *)self matchesNetworkDescriptionArray:networkDescriptionArray endpoint:endpoint parameters:parameters];
   }
 
   else
@@ -770,43 +770,43 @@ LABEL_111:
   return v9;
 }
 
-- (BOOL)matchesNetworkDescriptionArray:(id)a3 endpoint:(id)a4 parameters:(id)a5
+- (BOOL)matchesNetworkDescriptionArray:(id)array endpoint:(id)endpoint parameters:(id)parameters
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NWMonitor *)self networkDescriptionArray];
-  v12 = [v11 isEqualToArray:v10];
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  arrayCopy = array;
+  networkDescriptionArray = [(NWMonitor *)self networkDescriptionArray];
+  v12 = [networkDescriptionArray isEqualToArray:arrayCopy];
 
   if (v12)
   {
-    v13 = [(NWMonitor *)self parameters];
-    v14 = v9;
+    parameters = [(NWMonitor *)self parameters];
+    v14 = parametersCopy;
     v15 = v14;
-    if (v13 != v14 && v13 && v14)
+    if (parameters != v14 && parameters && v14)
     {
-      if (![v13 isMemberOfClass:objc_opt_class()])
+      if (![parameters isMemberOfClass:objc_opt_class()])
       {
         goto LABEL_14;
       }
 
-      v16 = [v13 isEqual:v15];
+      v16 = [parameters isEqual:v15];
 
       if (v16)
       {
 LABEL_7:
-        v13 = [(NWMonitor *)self endpoint];
-        v17 = v8;
+        parameters = [(NWMonitor *)self endpoint];
+        v17 = endpointCopy;
         v15 = v17;
-        v18 = v13 == v17;
-        if (v13 == v17 || !v13 || !v17)
+        v18 = parameters == v17;
+        if (parameters == v17 || !parameters || !v17)
         {
           goto LABEL_15;
         }
 
-        if ([v13 isMemberOfClass:objc_opt_class()])
+        if ([parameters isMemberOfClass:objc_opt_class()])
         {
-          v18 = [v13 isEqual:v15];
+          v18 = [parameters isEqual:v15];
 LABEL_15:
 
           goto LABEL_16;
@@ -821,7 +821,7 @@ LABEL_14:
     else
     {
 
-      if (v13 == v15)
+      if (parameters == v15)
       {
         goto LABEL_7;
       }
@@ -836,18 +836,18 @@ LABEL_16:
 
 - (void)dealloc
 {
-  v3 = [(NWMonitor *)self pathEvaluator];
-  [v3 removeObserver:self forKeyPath:@"path"];
+  pathEvaluator = [(NWMonitor *)self pathEvaluator];
+  [pathEvaluator removeObserver:self forKeyPath:@"path"];
 
   v4.receiver = self;
   v4.super_class = NWMonitor;
   [(NWMonitor *)&v4 dealloc];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a7;
+  handlerCopy = handler;
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v9 = gLogObj;
@@ -860,23 +860,23 @@ LABEL_16:
     _os_log_impl(&dword_181A37000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s %u received a redirect on probe URL request, not following redirect", &v10, 0x12u);
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)evaluateStartingAtIndex:(unint64_t)a3 probeUUID:(id)a4 probeWasSuccessful:(BOOL)a5
+- (void)evaluateStartingAtIndex:(unint64_t)index probeUUID:(id)d probeWasSuccessful:(BOOL)successful
 {
-  v8 = a4;
-  v9 = [objc_opt_class() queue];
+  dCopy = d;
+  queue = [objc_opt_class() queue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__NWMonitor_evaluateStartingAtIndex_probeUUID_probeWasSuccessful___block_invoke;
   v11[3] = &unk_1E6A2CC98;
-  v12 = v8;
-  v13 = self;
-  v14 = a3;
-  v15 = a5;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v12 = dCopy;
+  selfCopy = self;
+  indexCopy = index;
+  successfulCopy = successful;
+  v10 = dCopy;
+  dispatch_async(queue, v11);
 }
 
 void __66__NWMonitor_evaluateStartingAtIndex_probeUUID_probeWasSuccessful___block_invoke(uint64_t a1)
@@ -1376,11 +1376,11 @@ uint64_t __66__NWMonitor_evaluateStartingAtIndex_probeUUID_probeWasSuccessful___
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1394,7 +1394,7 @@ uint64_t __66__NWMonitor_evaluateStartingAtIndex_probeUUID_probeWasSuccessful___
       v14 = 1024;
       v15 = [(NWMonitor *)self mID];
       v16 = 2114;
-      v17 = v9;
+      v17 = objectCopy;
       v11 = "%{public}s %u invalid object %{public}@";
 LABEL_8:
       _os_log_impl(&dword_181A37000, v10, OS_LOG_TYPE_ERROR, v11, &v12, 0x1Cu);
@@ -1405,7 +1405,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v8 isEqualToString:@"path"] & 1) == 0)
+  if (([pathCopy isEqualToString:@"path"] & 1) == 0)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -1417,7 +1417,7 @@ LABEL_9:
       v14 = 1024;
       v15 = [(NWMonitor *)self mID];
       v16 = 2114;
-      v17 = v8;
+      v17 = pathCopy;
       v11 = "%{public}s %u invalid keypath %{public}@";
       goto LABEL_8;
     }
@@ -1429,18 +1429,18 @@ LABEL_9:
 LABEL_10:
 }
 
-+ (NWMonitor)monitorWithNetworkDescription:(id)a3 endpoint:(id)a4 parameters:(id)a5
++ (NWMonitor)monitorWithNetworkDescription:(id)description endpoint:(id)endpoint parameters:(id)parameters
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptionCopy = description;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
   nw_allow_use_of_dispatch_internal();
-  if (v8)
+  if (descriptionCopy)
   {
-    v26 = v8;
+    v26 = descriptionCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-    v12 = [a1 monitorWithNetworkDescriptionArray:v11 endpoint:v9 parameters:v10];
+    v12 = [self monitorWithNetworkDescriptionArray:v11 endpoint:endpointCopy parameters:parametersCopy];
 
     goto LABEL_15;
   }
@@ -1548,23 +1548,23 @@ LABEL_15:
   return v12;
 }
 
-+ (void)saveMonitor:(id)a3
++ (void)saveMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   v3 = savedMonitorsLock;
   objc_sync_enter(v3);
   ++saveMonitor__sMonitorID;
-  [v4 setMID:?];
-  [savedMonitors addObject:v4];
+  [monitorCopy setMID:?];
+  [savedMonitors addObject:monitorCopy];
   objc_sync_exit(v3);
 }
 
-+ (id)copySavedMonitorForNetworkDescriptionArray:(id)a3 endpoint:(id)a4 parameters:(id)a5
++ (id)copySavedMonitorForNetworkDescriptionArray:(id)array endpoint:(id)endpoint parameters:(id)parameters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  arrayCopy = array;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
   v10 = savedMonitorsLock;
   objc_sync_enter(v10);
   v17 = 0u;
@@ -1586,7 +1586,7 @@ LABEL_15:
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        if ([v15 matchesNetworkDescriptionArray:v7 endpoint:v8 parameters:{v9, v17}])
+        if ([v15 matchesNetworkDescriptionArray:arrayCopy endpoint:endpointCopy parameters:{parametersCopy, v17}])
         {
           v12 = v15;
           goto LABEL_11;
@@ -1611,11 +1611,11 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v3 = savedMonitors;
-    savedMonitors = v2;
+    savedMonitors = weakObjectsHashTable;
 
     v4 = objc_opt_new();
     v5 = savedMonitorsLock;
@@ -1623,19 +1623,19 @@ LABEL_11:
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"status"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"bestAvailableNetworkDescription"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"status"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"bestAvailableNetworkDescription"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NWMonitor;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;

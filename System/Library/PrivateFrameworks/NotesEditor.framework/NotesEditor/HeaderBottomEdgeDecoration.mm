@@ -8,21 +8,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2153165BC();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(HeaderBottomEdgeDecoration *)v2 window];
+  selfCopy = self;
+  window = [(HeaderBottomEdgeDecoration *)selfCopy window];
   v4 = 1.0;
-  if (v3)
+  if (window)
   {
-    v5 = v3;
-    v6 = [v3 screen];
+    v5 = window;
+    screen = [window screen];
 
-    [v6 scale];
+    [screen scale];
     v4 = v7;
   }
 
@@ -37,7 +37,7 @@
 
 - (void)updateLayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_215316848();
 }
 

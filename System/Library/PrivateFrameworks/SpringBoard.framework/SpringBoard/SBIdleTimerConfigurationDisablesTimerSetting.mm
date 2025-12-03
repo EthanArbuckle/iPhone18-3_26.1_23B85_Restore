@@ -1,20 +1,20 @@
 @interface SBIdleTimerConfigurationDisablesTimerSetting
-- (SBIdleTimerConfigurationDisablesTimerSetting)initWithPrecedence:(unint64_t)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIdleTimerConfigurationDisablesTimerSetting)initWithPrecedence:(unint64_t)precedence;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBIdleTimerConfigurationDisablesTimerSetting
 
-- (SBIdleTimerConfigurationDisablesTimerSetting)initWithPrecedence:(unint64_t)a3
+- (SBIdleTimerConfigurationDisablesTimerSetting)initWithPrecedence:(unint64_t)precedence
 {
   v5.receiver = self;
   v5.super_class = SBIdleTimerConfigurationDisablesTimerSetting;
   result = [(SBIdleTimerConfigurationDisablesTimerSetting *)&v5 init];
   if (result)
   {
-    result->_precedence = a3;
+    result->_precedence = precedence;
   }
 
   return result;
@@ -22,10 +22,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIdleTimerConfigurationDisablesTimerSetting *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIdleTimerConfigurationDisablesTimerSetting *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -37,12 +37,12 @@
   return v2;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerConfigurationDisablesTimerSetting *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerConfigurationDisablesTimerSetting *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

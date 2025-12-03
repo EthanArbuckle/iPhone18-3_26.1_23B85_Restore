@@ -1,76 +1,76 @@
 @interface REMSmartListsDataView
-+ (id)smartListsFromSmartListStorages:(id)a3 accountStorages:(id)a4 parentListStorages:(id)a5 store:(id)a6;
-- (REMSmartListsDataView)initWithStore:(id)a3;
-- (id)fetchCustomSmartListWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchCustomSmartListsInAccount:(id)a3 error:(id *)a4;
-- (id)fetchCustomSmartListsInGroup:(id)a3 error:(id *)a4;
-- (id)fetchCustomSmartListsWithError:(id *)a3;
++ (id)smartListsFromSmartListStorages:(id)storages accountStorages:(id)accountStorages parentListStorages:(id)listStorages store:(id)store;
+- (REMSmartListsDataView)initWithStore:(id)store;
+- (id)fetchCustomSmartListWithObjectID:(id)d error:(id *)error;
+- (id)fetchCustomSmartListsInAccount:(id)account error:(id *)error;
+- (id)fetchCustomSmartListsInGroup:(id)group error:(id *)error;
+- (id)fetchCustomSmartListsWithError:(id *)error;
 @end
 
 @implementation REMSmartListsDataView
 
-- (REMSmartListsDataView)initWithStore:(id)a3
+- (REMSmartListsDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMSmartListsDataView;
   v6 = [(REMSmartListsDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchCustomSmartListWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchCustomSmartListWithObjectID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [[REMSmartListsDataViewInvocation_fetchSmartList alloc] initWithSmartListType:@"com.apple.reminders.smartlist.custom" objectID:v6 createIfNeeded:0];
+  dCopy = d;
+  v7 = [[REMSmartListsDataViewInvocation_fetchSmartList alloc] initWithSmartListType:@"com.apple.reminders.smartlist.custom" objectID:dCopy createIfNeeded:0];
 
-  v8 = [(REMSmartListsDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  store = [(REMSmartListsDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 smartListStorages];
+  smartListStorages = [v11 smartListStorages];
 
-  if (v12)
+  if (smartListStorages)
   {
-    v13 = [v11 smartListStorages];
-    v14 = [v11 accountStorages];
-    v15 = [v11 parentListStorages];
-    v16 = [(REMSmartListsDataView *)self store];
-    v17 = [REMSmartListsDataView smartListsFromSmartListStorages:v13 accountStorages:v14 parentListStorages:v15 store:v16];
-    v18 = [v17 firstObject];
+    smartListStorages2 = [v11 smartListStorages];
+    accountStorages = [v11 accountStorages];
+    parentListStorages = [v11 parentListStorages];
+    store2 = [(REMSmartListsDataView *)self store];
+    v17 = [REMSmartListsDataView smartListsFromSmartListStorages:smartListStorages2 accountStorages:accountStorages parentListStorages:parentListStorages store:store2];
+    firstObject = [v17 firstObject];
   }
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
-  return v18;
+  return firstObject;
 }
 
-- (id)fetchCustomSmartListsWithError:(id *)a3
+- (id)fetchCustomSmartListsWithError:(id *)error
 {
   v5 = objc_alloc_init(REMSmartListsDataViewInvocation_fetchAllCustomSmartLists);
-  v6 = [(REMSmartListsDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMSmartListsDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
-  v10 = [v9 smartListStorages];
+  smartListStorages = [v9 smartListStorages];
 
-  if (v10)
+  if (smartListStorages)
   {
-    v11 = [v9 smartListStorages];
-    v12 = [v9 accountStorages];
-    v13 = [v9 parentListStorages];
-    v14 = [(REMSmartListsDataView *)self store];
-    v15 = [REMSmartListsDataView smartListsFromSmartListStorages:v11 accountStorages:v12 parentListStorages:v13 store:v14];
+    smartListStorages2 = [v9 smartListStorages];
+    accountStorages = [v9 accountStorages];
+    parentListStorages = [v9 parentListStorages];
+    store2 = [(REMSmartListsDataView *)self store];
+    v15 = [REMSmartListsDataView smartListsFromSmartListStorages:smartListStorages2 accountStorages:accountStorages parentListStorages:parentListStorages store:store2];
   }
 
   else
@@ -81,32 +81,32 @@
   return v15;
 }
 
-- (id)fetchCustomSmartListsInAccount:(id)a3 error:(id *)a4
+- (id)fetchCustomSmartListsInAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 capabilities];
-  v8 = [v7 supportsCustomSmartLists];
+  accountCopy = account;
+  capabilities = [accountCopy capabilities];
+  supportsCustomSmartLists = [capabilities supportsCustomSmartLists];
 
-  if (v8)
+  if (supportsCustomSmartLists)
   {
     v9 = [REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount alloc];
-    v10 = [v6 objectID];
-    v11 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)v9 initWithParentAccountObjectID:v10];
+    objectID = [accountCopy objectID];
+    v11 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)v9 initWithParentAccountObjectID:objectID];
 
-    v12 = [(REMSmartListsDataView *)self store];
-    v13 = [v12 resultFromPerformingInvocation:v11 error:a4];
+    store = [(REMSmartListsDataView *)self store];
+    v13 = [store resultFromPerformingInvocation:v11 error:error];
 
     v14 = objc_opt_class();
     v15 = REMDynamicCast(v14, v13);
-    v16 = [v15 smartListStorages];
+    smartListStorages = [v15 smartListStorages];
 
-    if (v16)
+    if (smartListStorages)
     {
-      v17 = [v15 smartListStorages];
-      v18 = [v15 accountStorages];
-      v19 = [v15 parentListStorages];
-      v20 = [(REMSmartListsDataView *)self store];
-      v21 = [REMSmartListsDataView smartListsFromSmartListStorages:v17 accountStorages:v18 parentListStorages:v19 store:v20];
+      smartListStorages2 = [v15 smartListStorages];
+      accountStorages = [v15 accountStorages];
+      parentListStorages = [v15 parentListStorages];
+      store2 = [(REMSmartListsDataView *)self store];
+      v21 = [REMSmartListsDataView smartListsFromSmartListStorages:smartListStorages2 accountStorages:accountStorages parentListStorages:parentListStorages store:store2];
     }
 
     else
@@ -120,7 +120,7 @@
     v22 = +[REMLogStore read];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
-      [REMSmartListsDataView fetchCustomSmartListsInAccount:v6 error:?];
+      [REMSmartListsDataView fetchCustomSmartListsInAccount:accountCopy error:?];
     }
 
     v21 = MEMORY[0x1E695E0F0];
@@ -129,33 +129,33 @@
   return v21;
 }
 
-- (id)fetchCustomSmartListsInGroup:(id)a3 error:(id *)a4
+- (id)fetchCustomSmartListsInGroup:(id)group error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 account];
-  v8 = [v7 capabilities];
-  v9 = [v8 supportsCustomSmartLists];
+  groupCopy = group;
+  account = [groupCopy account];
+  capabilities = [account capabilities];
+  supportsCustomSmartLists = [capabilities supportsCustomSmartLists];
 
-  if (v9)
+  if (supportsCustomSmartLists)
   {
     v10 = [REMSmartListsDataViewInvocation_fetchCustomSmartListsInGroup alloc];
-    v11 = [v6 objectID];
-    v12 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInGroup *)v10 initWithParentGroupObjectID:v11];
+    objectID = [groupCopy objectID];
+    v12 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInGroup *)v10 initWithParentGroupObjectID:objectID];
 
-    v13 = [(REMSmartListsDataView *)self store];
-    v14 = [v13 resultFromPerformingInvocation:v12 error:a4];
+    store = [(REMSmartListsDataView *)self store];
+    v14 = [store resultFromPerformingInvocation:v12 error:error];
 
     v15 = objc_opt_class();
     v16 = REMDynamicCast(v15, v14);
-    v17 = [v16 smartListStorages];
+    smartListStorages = [v16 smartListStorages];
 
-    if (v17)
+    if (smartListStorages)
     {
-      v18 = [v16 smartListStorages];
-      v19 = [v16 accountStorages];
-      v20 = [v16 parentListStorages];
-      v21 = [(REMSmartListsDataView *)self store];
-      v22 = [REMSmartListsDataView smartListsFromSmartListStorages:v18 accountStorages:v19 parentListStorages:v20 store:v21];
+      smartListStorages2 = [v16 smartListStorages];
+      accountStorages = [v16 accountStorages];
+      parentListStorages = [v16 parentListStorages];
+      store2 = [(REMSmartListsDataView *)self store];
+      v22 = [REMSmartListsDataView smartListsFromSmartListStorages:smartListStorages2 accountStorages:accountStorages parentListStorages:parentListStorages store:store2];
     }
 
     else
@@ -169,7 +169,7 @@
     v23 = +[REMLogStore read];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      [REMSmartListsDataView fetchCustomSmartListsInGroup:v6 error:?];
+      [REMSmartListsDataView fetchCustomSmartListsInGroup:groupCopy error:?];
     }
 
     v22 = MEMORY[0x1E695E0F0];
@@ -178,19 +178,19 @@
   return v22;
 }
 
-+ (id)smartListsFromSmartListStorages:(id)a3 accountStorages:(id)a4 parentListStorages:(id)a5 store:(id)a6
++ (id)smartListsFromSmartListStorages:(id)storages accountStorages:(id)accountStorages parentListStorages:(id)listStorages store:(id)store
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v32 = a4;
-  v31 = a5;
-  v10 = a6;
-  v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  storagesCopy = storages;
+  accountStoragesCopy = accountStorages;
+  listStoragesCopy = listStorages;
+  storeCopy = store;
+  v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(storagesCopy, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v9;
+  obj = storagesCopy;
   v11 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v11)
   {
@@ -206,14 +206,14 @@
         }
 
         v15 = *(*(&v33 + 1) + 8 * i);
-        v16 = [v15 remObjectID];
-        v17 = [v32 objectForKey:v16];
+        remObjectID = [v15 remObjectID];
+        v17 = [accountStoragesCopy objectForKey:remObjectID];
 
-        v18 = [v15 remObjectID];
-        v19 = [v31 objectForKey:v18];
+        remObjectID2 = [v15 remObjectID];
+        v19 = [listStoragesCopy objectForKey:remObjectID2];
 
-        v20 = [v15 smartListType];
-        v21 = [v20 isEqualToString:@"com.apple.reminders.smartlist.custom"];
+        smartListType = [v15 smartListType];
+        v21 = [smartListType isEqualToString:@"com.apple.reminders.smartlist.custom"];
 
         if (v21)
         {
@@ -227,17 +227,17 @@
 
         if (v22)
         {
-          v23 = [[REMSmartList alloc] initWithStore:v10 storage:v15];
+          v23 = [[REMSmartList alloc] initWithStore:storeCopy storage:v15];
           [v30 addObject:v23];
         }
 
         else
         {
-          v24 = [[REMAccount alloc] initWithStore:v10 storage:v17];
+          v24 = [[REMAccount alloc] initWithStore:storeCopy storage:v17];
           v23 = v24;
           if (v19)
           {
-            v25 = [[REMList alloc] initWithStore:v10 account:v24 storage:v19];
+            v25 = [[REMList alloc] initWithStore:storeCopy account:v24 storage:v19];
           }
 
           else
@@ -245,7 +245,7 @@
             v25 = 0;
           }
 
-          v26 = [[REMSmartList alloc] initWithStore:v10 account:v23 parentList:v25 storage:v15];
+          v26 = [[REMSmartList alloc] initWithStore:storeCopy account:v23 parentList:v25 storage:v15];
           [v30 addObject:v26];
         }
       }

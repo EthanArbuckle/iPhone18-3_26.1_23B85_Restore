@@ -1,11 +1,11 @@
 @interface MUPlaceWebContentSectionController
 - (BOOL)hasContent;
-- (MUPlaceWebContentSectionController)initWithMapItem:(id)a3 configuration:(id)a4;
+- (MUPlaceWebContentSectionController)initWithMapItem:(id)item configuration:(id)configuration;
 - (MUPlaceWebContentSectionControllerDelegate)webContentDelegate;
 - (void)_setupWebContentViewController;
-- (void)removeWebContentViewController:(id)a3 arguments:(id)a4;
-- (void)webContentViewController:(id)a3 performHeightChangeWithBlock:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)webContentViewControllerDidStopLoading:(id)a3;
+- (void)removeWebContentViewController:(id)controller arguments:(id)arguments;
+- (void)webContentViewController:(id)controller performHeightChangeWithBlock:(id)block animated:(BOOL)animated completion:(id)completion;
+- (void)webContentViewControllerDidStopLoading:(id)loading;
 @end
 
 @implementation MUPlaceWebContentSectionController
@@ -17,17 +17,17 @@
   return WeakRetained;
 }
 
-- (void)webContentViewControllerDidStopLoading:(id)a3
+- (void)webContentViewControllerDidStopLoading:(id)loading
 {
-  v4 = [(MUPlaceWebContentSectionController *)self webContentDelegate];
-  [v4 webContentSectionControllerDidStopLoading:self];
+  webContentDelegate = [(MUPlaceWebContentSectionController *)self webContentDelegate];
+  [webContentDelegate webContentSectionControllerDidStopLoading:self];
 }
 
-- (void)webContentViewController:(id)a3 performHeightChangeWithBlock:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)webContentViewController:(id)controller performHeightChangeWithBlock:(id)block animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  controllerCopy = controller;
+  blockCopy = block;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12 = MEMORY[0x1E69DD250];
   v18[0] = MEMORY[0x1E69E9820];
@@ -36,14 +36,14 @@
   v18[3] = &unk_1E82194C8;
   objc_copyWeak(&v20, &location);
   v18[4] = self;
-  v13 = v10;
+  v13 = blockCopy;
   v19 = v13;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __112__MUPlaceWebContentSectionController_webContentViewController_performHeightChangeWithBlock_animated_completion___block_invoke_2;
   v15[3] = &unk_1E8219650;
   objc_copyWeak(&v17, &location);
-  v14 = v11;
+  v14 = completionCopy;
   v16 = v14;
   [v12 _mapsui_animateWithDuration:v18 animations:v15 completion:0.3];
 
@@ -82,7 +82,7 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
   }
 }
 
-- (void)removeWebContentViewController:(id)a3 arguments:(id)a4
+- (void)removeWebContentViewController:(id)controller arguments:(id)arguments
 {
   self->_shouldRemoveWebContent = 1;
   v5 = MUGetPlaceCardLog();
@@ -92,8 +92,8 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
     _os_log_impl(&dword_1C5620000, v5, OS_LOG_TYPE_INFO, "MUPlaceWebContentSectionController: Webmodule requested removal, will tell parent to update", v7, 2u);
   }
 
-  v6 = [(MUPlaceSectionController *)self delegate];
-  [v6 placeSectionControllerDidUpdateContent:self];
+  delegate = [(MUPlaceSectionController *)self delegate];
+  [delegate placeSectionControllerDidUpdateContent:self];
 }
 
 - (BOOL)hasContent
@@ -115,8 +115,8 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
   [(MUWebContentViewController *)self->_webContentViewController setDelegate:self];
   if ([(GEOWebContentModuleConfiguration *)self->_webContentConfig shouldDrawPlatter])
   {
-    v3 = [(MUWebContentViewController *)self->_webContentViewController view];
-    v4 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v3 sectionHeaderViewModel:0 sectionFooterViewModel:0];
+    view = [(MUWebContentViewController *)self->_webContentViewController view];
+    v4 = [MUPlaceSectionView insetPlatterSectionViewForContentView:view sectionHeaderViewModel:0 sectionFooterViewModel:0];
     sectionView = self->_sectionView;
     self->_sectionView = v4;
   }
@@ -128,8 +128,8 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
     self->_sectionView = v6;
 
     v8 = self->_sectionView;
-    v3 = [(MUWebContentViewController *)self->_webContentViewController view];
-    [(MUPlaceSectionView *)v8 attachViewToContentView:v3];
+    view = [(MUWebContentViewController *)self->_webContentViewController view];
+    [(MUPlaceSectionView *)v8 attachViewToContentView:view];
   }
 
   v9 = self->_sectionView;
@@ -137,23 +137,23 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
   [(MUPlaceSectionView *)v9 configureWithSectionController:self];
 }
 
-- (MUPlaceWebContentSectionController)initWithMapItem:(id)a3 configuration:(id)a4
+- (MUPlaceWebContentSectionController)initWithMapItem:(id)item configuration:(id)configuration
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(MUWebContentTraits);
   [(MUWebContentTraits *)v8 setVibrant:+[MUInfoCardStyle platterStyle]== 1];
-  -[MUWebContentTraits setNativelyDrawingPlatter:](v8, "setNativelyDrawingPlatter:", [v7 shouldDrawPlatter]);
+  -[MUWebContentTraits setNativelyDrawingPlatter:](v8, "setNativelyDrawingPlatter:", [configurationCopy shouldDrawPlatter]);
   v9 = [MUWebContentViewController alloc];
-  v10 = [v7 url];
+  v10 = [configurationCopy url];
   v11 = [(MUWebContentViewController *)v9 initWithURL:v10 traits:v8];
 
-  if (v11 && ([v7 url], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if (v11 && ([configurationCopy url], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     v20.receiver = self;
     v20.super_class = MUPlaceWebContentSectionController;
-    v13 = [(MUPlaceSectionController *)&v20 initWithMapItem:v6];
+    v13 = [(MUPlaceSectionController *)&v20 initWithMapItem:itemCopy];
     if (v13)
     {
       v14 = MUGetPlaceCardLog();
@@ -163,7 +163,7 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
         _os_signpost_emit_with_name_impl(&dword_1C5620000, v14, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceWebContentSectionControllerInit", "", buf, 2u);
       }
 
-      objc_storeStrong(&v13->_webContentConfig, a4);
+      objc_storeStrong(&v13->_webContentConfig, configuration);
       v13->_shouldRemoveWebContent = 0;
       objc_storeStrong(&v13->_webContentViewController, v11);
       [(MUPlaceWebContentSectionController *)v13 _setupWebContentViewController];
@@ -176,7 +176,7 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
     }
 
     self = v13;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -185,15 +185,15 @@ void __112__MUPlaceWebContentSectionController_webContentViewController_performH
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v22 = v7;
+      v22 = configurationCopy;
       _os_log_impl(&dword_1C5620000, v17, OS_LOG_TYPE_FAULT, "MUPlaceWebContentSectionController: Cannot load a webmodule with config %@ because the config url is empty", buf, 0xCu);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
 @end

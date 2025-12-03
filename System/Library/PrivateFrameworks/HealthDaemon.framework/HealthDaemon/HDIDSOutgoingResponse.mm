@@ -2,11 +2,11 @@
 - (HDIDSOutgoingResponse)init;
 - (NSString)description;
 - (id)nanoSyncDescription;
-- (void)configureWithActivationRestore:(id)a3 syncStore:(id)a4 profile:(id)a5;
-- (void)configureWithStatus:(id)a3 syncStore:(id)a4 profile:(id)a5;
+- (void)configureWithActivationRestore:(id)restore syncStore:(id)store profile:(id)profile;
+- (void)configureWithStatus:(id)status syncStore:(id)store profile:(id)profile;
 - (void)dealloc;
 - (void)send;
-- (void)setPbResponse:(id)a3;
+- (void)setPbResponse:(id)response;
 @end
 
 @implementation HDIDSOutgoingResponse
@@ -29,31 +29,31 @@
 - (void)send
 {
   messageCenter = self->_messageCenter;
-  v3 = self;
-  v4 = v3;
+  selfCopy = self;
+  v4 = selfCopy;
   if (messageCenter)
   {
-    v5 = [(HDIDSOutgoingResponse *)v3 messageID];
-    v6 = [(HDIDSOutgoingResponse *)v4 requestMessageID];
-    v7 = [(HDIDSOutgoingResponse *)v4 idsIdentifier];
-    if (!v7)
+    messageID = [(HDIDSOutgoingResponse *)selfCopy messageID];
+    requestMessageID = [(HDIDSOutgoingResponse *)v4 requestMessageID];
+    idsIdentifier = [(HDIDSOutgoingResponse *)v4 idsIdentifier];
+    if (!idsIdentifier)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:sel__sendResponse_ object:messageCenter file:@"HDIDSMessageCenter.m" lineNumber:425 description:@"Response's request needs an idsIdentifier"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__sendResponse_ object:messageCenter file:@"HDIDSMessageCenter.m" lineNumber:425 description:@"Response's request needs an idsIdentifier"];
     }
 
-    v8 = [(HDIDSOutgoingResponse *)v4 toParticipant];
+    toParticipant = [(HDIDSOutgoingResponse *)v4 toParticipant];
 
-    if (!v8)
+    if (!toParticipant)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:sel__sendResponse_ object:messageCenter file:@"HDIDSMessageCenter.m" lineNumber:426 description:@"Response's to participant not found"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__sendResponse_ object:messageCenter file:@"HDIDSMessageCenter.m" lineNumber:426 description:@"Response's to participant not found"];
     }
 
     if (v4->_sent)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:sel__sendResponse_ object:messageCenter file:@"HDIDSMessageCenter.m" lineNumber:427 description:@"You cannot call send twice for the same response object"];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel__sendResponse_ object:messageCenter file:@"HDIDSMessageCenter.m" lineNumber:427 description:@"You cannot call send twice for the same response object"];
     }
 
     v4->_sent = 1;
@@ -64,24 +64,24 @@
     block[3] = &unk_27862AF40;
     block[4] = messageCenter;
     v17 = sel__sendResponse_;
-    v18 = v5;
+    v18 = messageID;
     v15 = v4;
-    v16 = v7;
-    v19 = v6;
-    v10 = v7;
+    v16 = idsIdentifier;
+    v19 = requestMessageID;
+    v10 = idsIdentifier;
     dispatch_async(queue, block);
   }
 }
 
 - (id)nanoSyncDescription
 {
-  v3 = [(HDIDSOutgoingResponse *)self persistentUserInfo];
-  v4 = [HDCodableNanoSyncMessage messageFromPersistentUserInfo:v3];
+  persistentUserInfo = [(HDIDSOutgoingResponse *)self persistentUserInfo];
+  v4 = [HDCodableNanoSyncMessage messageFromPersistentUserInfo:persistentUserInfo];
 
-  LODWORD(v3) = [(HDIDSOutgoingResponse *)self messageID];
-  v5 = [(HDIDSOutgoingResponse *)self idsIdentifier];
-  v6 = [v4 nanoSyncDescription];
-  v7 = FormattedMessageDescription(v3, 0, 0, v5, v6);
+  LODWORD(persistentUserInfo) = [(HDIDSOutgoingResponse *)self messageID];
+  idsIdentifier = [(HDIDSOutgoingResponse *)self idsIdentifier];
+  nanoSyncDescription = [v4 nanoSyncDescription];
+  v7 = FormattedMessageDescription(persistentUserInfo, 0, 0, idsIdentifier, nanoSyncDescription);
 
   return v7;
 }
@@ -94,42 +94,42 @@
   [(HDIDSOutgoingResponse *)&v3 dealloc];
 }
 
-- (void)configureWithActivationRestore:(id)a3 syncStore:(id)a4 profile:(id)a5
+- (void)configureWithActivationRestore:(id)restore syncStore:(id)store profile:(id)profile
 {
-  v14 = a4;
-  v9 = a5;
-  v10 = a3;
+  storeCopy = store;
+  profileCopy = profile;
+  restoreCopy = restore;
   if ([(HDIDSOutgoingResponse *)self messageID]!= 1)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDNanoSyncSupport.m" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"[self messageID] == HDNanoSyncMessageRestore"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDNanoSyncSupport.m" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"[self messageID] == HDNanoSyncMessageRestore"}];
   }
 
-  v11 = [HDCodableNanoSyncMessage messageWithSyncStore:v14 profile:v9];
-  [v11 setActivationRestore:v10];
+  v11 = [HDCodableNanoSyncMessage messageWithSyncStore:storeCopy profile:profileCopy];
+  [v11 setActivationRestore:restoreCopy];
 
   [(HDIDSOutgoingResponse *)self setPbResponse:v11];
-  v12 = [v11 copyPersistentUserInfo];
-  [(HDIDSOutgoingResponse *)self setPersistentUserInfo:v12];
+  copyPersistentUserInfo = [v11 copyPersistentUserInfo];
+  [(HDIDSOutgoingResponse *)self setPersistentUserInfo:copyPersistentUserInfo];
 }
 
-- (void)configureWithStatus:(id)a3 syncStore:(id)a4 profile:(id)a5
+- (void)configureWithStatus:(id)status syncStore:(id)store profile:(id)profile
 {
-  v14 = a4;
-  v9 = a5;
-  v10 = a3;
+  storeCopy = store;
+  profileCopy = profile;
+  statusCopy = status;
   if ([(HDIDSOutgoingResponse *)self messageID]!= 2)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDNanoSyncSupport.m" lineNumber:660 description:{@"Invalid parameter not satisfying: %@", @"[self messageID] == HDNanoSyncMessageChanges"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDNanoSyncSupport.m" lineNumber:660 description:{@"Invalid parameter not satisfying: %@", @"[self messageID] == HDNanoSyncMessageChanges"}];
   }
 
-  v11 = [HDCodableNanoSyncMessage messageWithSyncStore:v14 profile:v9];
-  [v11 setStatus:v10];
+  v11 = [HDCodableNanoSyncMessage messageWithSyncStore:storeCopy profile:profileCopy];
+  [v11 setStatus:statusCopy];
 
   [(HDIDSOutgoingResponse *)self setPbResponse:v11];
-  v12 = [v11 copyPersistentUserInfo];
-  [(HDIDSOutgoingResponse *)self setPersistentUserInfo:v12];
+  copyPersistentUserInfo = [v11 copyPersistentUserInfo];
+  [(HDIDSOutgoingResponse *)self setPersistentUserInfo:copyPersistentUserInfo];
 }
 
 - (NSString)description
@@ -142,9 +142,9 @@
   return v6;
 }
 
-- (void)setPbResponse:(id)a3
+- (void)setPbResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v6 = [(HDIDSMessageCenter *)self->_messageCenter _pbMappingForMessageID:?];
   v7 = v6;
   if (v6)
@@ -156,19 +156,19 @@
 
   if ((isKindOfClass & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:859 description:{@"Invalid pbResponse of type %@", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:859 description:{@"Invalid pbResponse of type %@", v15}];
   }
 
   pbResponse = self->_pbResponse;
-  self->_pbResponse = v5;
-  v16 = v5;
+  self->_pbResponse = responseCopy;
+  v16 = responseCopy;
 
-  v11 = [(PBCodable *)self->_pbResponse data];
+  data = [(PBCodable *)self->_pbResponse data];
   data = self->_data;
-  self->_data = v11;
+  self->_data = data;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface MADPhotosDeferredProcessingTask
-- (BOOL)run:(id *)a3;
-- (MADPhotosDeferredProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (int)performSceneProcessing:(id)a3;
-- (void)generateError:(id *)a3 status:(int)a4;
+- (BOOL)run:(id *)run;
+- (MADPhotosDeferredProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)performSceneProcessing:(id)processing;
+- (void)generateError:(id *)error status:(int)status;
 @end
 
 @implementation MADPhotosDeferredProcessingTask
 
-- (MADPhotosDeferredProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (MADPhotosDeferredProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v7 = a3;
+  blockCopy = block;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000038F0;
   v14[3] = &unk_100282858;
-  v8 = a5;
-  v15 = v8;
+  completionHandlerCopy = completionHandler;
+  v15 = completionHandlerCopy;
   v9 = objc_retainBlock(v14);
   v13.receiver = self;
   v13.super_class = MADPhotosDeferredProcessingTask;
@@ -23,21 +23,21 @@
   v11 = v10;
   if (v10)
   {
-    [(MADPhotosDeferredProcessingTask *)v10 setCancelBlock:v7];
+    [(MADPhotosDeferredProcessingTask *)v10 setCancelBlock:blockCopy];
   }
 
   return v11;
 }
 
-- (int)performSceneProcessing:(id)a3
+- (int)performSceneProcessing:(id)processing
 {
-  v4 = a3;
+  processingCopy = processing;
   v5 = objc_autoreleasePoolPush();
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100003B44;
   v19[3] = &unk_100282880;
-  v6 = v4;
+  v6 = processingCopy;
   v20 = v6;
   v7 = objc_retainBlock(v19);
   v15 = 0;
@@ -46,7 +46,7 @@
   v18 = 0;
   v8 = [VCPMADSceneFetchProcessingTask alloc];
   v9 = +[PHPhotoLibrary systemPhotoLibraryURL];
-  v10 = [(MADPhotosDeferredProcessingTask *)self cancelBlock];
+  cancelBlock = [(MADPhotosDeferredProcessingTask *)self cancelBlock];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100003C2C;
@@ -57,7 +57,7 @@
   v13[2] = sub_100003C50;
   v13[3] = &unk_1002828D0;
   v13[4] = &v15;
-  v11 = [(VCPMADSceneFetchProcessingTask *)v8 initWithFetchBlock:v7 photoLibraryWithURL:v9 cancelBlock:v10 progressHandler:v14 completionHandler:v13];
+  v11 = [(VCPMADSceneFetchProcessingTask *)v8 initWithFetchBlock:v7 photoLibraryWithURL:v9 cancelBlock:cancelBlock progressHandler:v14 completionHandler:v13];
 
   [(VCPMADSceneFetchProcessingTask *)v11 run];
   LODWORD(v9) = *(v16 + 6);
@@ -68,10 +68,10 @@
   return v9;
 }
 
-- (void)generateError:(id *)a3 status:(int)a4
+- (void)generateError:(id *)error status:(int)status
 {
   v6 = MediaAnalysisLogLevel();
-  if (a4 == -128)
+  if (status == -128)
   {
     if (v6 >= 5)
     {
@@ -83,7 +83,7 @@
       }
     }
 
-    if (a3)
+    if (error)
     {
       v19 = NSLocalizedDescriptionKey;
       v8 = [NSString stringWithFormat:@"Deferred processing cancelled"];
@@ -93,8 +93,8 @@
       v11 = -128;
 LABEL_12:
       v14 = [NSError errorWithDomain:v10 code:v11 userInfo:v9];
-      v15 = *a3;
-      *a3 = v14;
+      v15 = *error;
+      *error = v14;
     }
   }
 
@@ -110,21 +110,21 @@ LABEL_12:
       }
     }
 
-    if (a3)
+    if (error)
     {
-      v13 = a4;
+      statusCopy = status;
       v17 = NSLocalizedDescriptionKey;
       v8 = [NSString stringWithFormat:@"Deferred processing failed"];
       v18 = v8;
       v9 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
       v10 = NSOSStatusErrorDomain;
-      v11 = v13;
+      v11 = statusCopy;
       goto LABEL_12;
     }
   }
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 5)
   {
@@ -139,13 +139,13 @@ LABEL_12:
   v6 = [(MADPhotosDeferredProcessingTask *)self performSceneProcessing:&stru_100282910];
   if (v6)
   {
-    [(MADPhotosDeferredProcessingTask *)self generateError:a3 status:v6];
+    [(MADPhotosDeferredProcessingTask *)self generateError:run status:v6];
   }
 
   else
   {
-    v7 = [(MADPhotosDeferredProcessingTask *)self completionHandler];
-    v7[2](v7, 0, 0);
+    completionHandler = [(MADPhotosDeferredProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
   }
 
   return v6 == 0;

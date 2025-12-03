@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterLockOperationErrorEvent
 - (MTRDoorLockClusterLockOperationErrorEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,29 +39,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterLockOperationErrorEvent);
-  v5 = [(MTRDoorLockClusterLockOperationErrorEvent *)self lockOperationType];
-  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setLockOperationType:v5];
+  lockOperationType = [(MTRDoorLockClusterLockOperationErrorEvent *)self lockOperationType];
+  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setLockOperationType:lockOperationType];
 
-  v6 = [(MTRDoorLockClusterLockOperationErrorEvent *)self operationSource];
-  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setOperationSource:v6];
+  operationSource = [(MTRDoorLockClusterLockOperationErrorEvent *)self operationSource];
+  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setOperationSource:operationSource];
 
-  v7 = [(MTRDoorLockClusterLockOperationErrorEvent *)self operationError];
-  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setOperationError:v7];
+  operationError = [(MTRDoorLockClusterLockOperationErrorEvent *)self operationError];
+  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setOperationError:operationError];
 
-  v8 = [(MTRDoorLockClusterLockOperationErrorEvent *)self userIndex];
-  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setUserIndex:v8];
+  userIndex = [(MTRDoorLockClusterLockOperationErrorEvent *)self userIndex];
+  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setUserIndex:userIndex];
 
-  v9 = [(MTRDoorLockClusterLockOperationErrorEvent *)self fabricIndex];
-  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setFabricIndex:v9];
+  fabricIndex = [(MTRDoorLockClusterLockOperationErrorEvent *)self fabricIndex];
+  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setFabricIndex:fabricIndex];
 
-  v10 = [(MTRDoorLockClusterLockOperationErrorEvent *)self sourceNode];
-  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setSourceNode:v10];
+  sourceNode = [(MTRDoorLockClusterLockOperationErrorEvent *)self sourceNode];
+  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setSourceNode:sourceNode];
 
-  v11 = [(MTRDoorLockClusterLockOperationErrorEvent *)self credentials];
-  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setCredentials:v11];
+  credentials = [(MTRDoorLockClusterLockOperationErrorEvent *)self credentials];
+  [(MTRDoorLockClusterLockOperationErrorEvent *)v4 setCredentials:credentials];
 
   return v4;
 }

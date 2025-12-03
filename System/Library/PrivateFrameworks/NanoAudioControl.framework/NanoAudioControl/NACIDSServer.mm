@@ -1,42 +1,42 @@
 @interface NACIDSServer
 - (BOOL)_shouldForceVolumeWarning;
-- (NACIDSServer)initWithVolumeAudioCategories:(id)a3;
-- (id)_nacVolumeControllerForTarget:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_targetForNACVolumeController:(id)a3;
-- (id)_targetForVolumeController:(id)a3;
+- (NACIDSServer)initWithVolumeAudioCategories:(id)categories;
+- (id)_nacVolumeControllerForTarget:(id)target createIfNeeded:(BOOL)needed;
+- (id)_targetForNACVolumeController:(id)controller;
+- (id)_targetForVolumeController:(id)controller;
 - (void)_beginObservingHapticState;
-- (void)_beginObservingProxyVolumeForTarget:(id)a3 withEndpointRoute:(id)a4;
+- (void)_beginObservingProxyVolumeForTarget:(id)target withEndpointRoute:(id)route;
 - (void)_beginObservingSystemMutedState;
 - (void)_beginObservingSystemVolume;
-- (void)_cancelProxyVolumeObservationForTarget:(id)a3;
-- (void)_cancelRouteObservationForCategory:(id)a3;
+- (void)_cancelProxyVolumeObservationForTarget:(id)target;
+- (void)_cancelRouteObservationForCategory:(id)category;
 - (void)_cancelSystemVolumeObservation;
-- (void)_handleBeginObservingAudioRoutes:(id)a3;
-- (void)_handleBeginObservingListeningModes:(id)a3;
-- (void)_handleBeginObservingProxyVolumeForTarget:(id)a3;
+- (void)_handleBeginObservingAudioRoutes:(id)routes;
+- (void)_handleBeginObservingListeningModes:(id)modes;
+- (void)_handleBeginObservingProxyVolumeForTarget:(id)target;
 - (void)_handleBeginObservingSystemVolume;
-- (void)_handleBeginObservingVolume:(id)a3;
-- (void)_handleEndObservingAudioRoutes:(id)a3;
-- (void)_handleEndObservingListeningModes:(id)a3;
-- (void)_handleEndObservingVolume:(id)a3;
-- (void)_handlePickAudioRoute:(id)a3;
-- (void)_handlePlayTone:(id)a3;
-- (void)_handleSetCurrentListeningMode:(id)a3;
-- (void)_handleSetHapticIntensity:(id)a3;
-- (void)_handleSetHapticState:(id)a3;
-- (void)_handleSetMuted:(id)a3;
-- (void)_handleSetProminentHapticEnabled:(id)a3;
-- (void)_handleSetSystemMuted:(id)a3;
-- (void)_handleSetVolume:(id)a3;
-- (void)_handleStopTone:(id)a3;
-- (void)_hapticIntensityDidChangeNotification:(id)a3;
-- (void)_sendAvailableListeningModes:(id)a3 currentListeningMode:(id)a4 error:(id)a5 forTarget:(id)a6;
+- (void)_handleBeginObservingVolume:(id)volume;
+- (void)_handleEndObservingAudioRoutes:(id)routes;
+- (void)_handleEndObservingListeningModes:(id)modes;
+- (void)_handleEndObservingVolume:(id)volume;
+- (void)_handlePickAudioRoute:(id)route;
+- (void)_handlePlayTone:(id)tone;
+- (void)_handleSetCurrentListeningMode:(id)mode;
+- (void)_handleSetHapticIntensity:(id)intensity;
+- (void)_handleSetHapticState:(id)state;
+- (void)_handleSetMuted:(id)muted;
+- (void)_handleSetProminentHapticEnabled:(id)enabled;
+- (void)_handleSetSystemMuted:(id)muted;
+- (void)_handleSetVolume:(id)volume;
+- (void)_handleStopTone:(id)tone;
+- (void)_hapticIntensityDidChangeNotification:(id)notification;
+- (void)_sendAvailableListeningModes:(id)modes currentListeningMode:(id)mode error:(id)error forTarget:(id)target;
 - (void)_sendCurrentObservingSystemVolumeValues;
-- (void)_sendEUVolumeLimit:(float)a3 forTarget:(id)a4;
-- (void)_sendHapticState:(int64_t)a3;
-- (void)_sendMessage:(id)a3 type:(int64_t)a4 timeout:(double)a5 queueOne:(id)a6 retry:(BOOL)a7;
-- (void)_sendVolumeValue:(float)a3 forTarget:(id)a4;
-- (void)_sendVolumeWarningEnabled:(BOOL)a3 volumeWarningState:(int64_t)a4 forTarget:(id)a5;
+- (void)_sendEUVolumeLimit:(float)limit forTarget:(id)target;
+- (void)_sendHapticState:(int64_t)state;
+- (void)_sendMessage:(id)message type:(int64_t)type timeout:(double)timeout queueOne:(id)one retry:(BOOL)retry;
+- (void)_sendVolumeValue:(float)value forTarget:(id)target;
+- (void)_sendVolumeWarningEnabled:(BOOL)enabled volumeWarningState:(int64_t)state forTarget:(id)target;
 - (void)_setRequestedVolumeAtLeastOnce;
 - (void)_updateHapticIntensityValue;
 - (void)_updateHapticState;
@@ -44,24 +44,24 @@
 - (void)beginObservingHapticState;
 - (void)beginObservingSystemMutedState;
 - (void)dealloc;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
 - (void)updateProminentHapticState;
-- (void)volumeController:(id)a3 EUVolumeLimitDidChange:(float)a4;
-- (void)volumeController:(id)a3 didFailToSetCurrentListeningModeWithError:(id)a4;
-- (void)volumeController:(id)a3 mutedStateDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
-- (void)volumeController:(id)a3 volumeWarningStateDidChange:(int64_t)a4;
-- (void)volumeControllerDidUpdateAvailableListeningModes:(id)a3;
-- (void)volumeControllerDidUpdateCurrentListeningMode:(id)a3;
+- (void)volumeController:(id)controller EUVolumeLimitDidChange:(float)change;
+- (void)volumeController:(id)controller didFailToSetCurrentListeningModeWithError:(id)error;
+- (void)volumeController:(id)controller mutedStateDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
+- (void)volumeController:(id)controller volumeWarningStateDidChange:(int64_t)change;
+- (void)volumeControllerDidUpdateAvailableListeningModes:(id)modes;
+- (void)volumeControllerDidUpdateCurrentListeningMode:(id)mode;
 @end
 
 @implementation NACIDSServer
 
-- (NACIDSServer)initWithVolumeAudioCategories:(id)a3
+- (NACIDSServer)initWithVolumeAudioCategories:(id)categories
 {
-  v5 = a3;
+  categoriesCopy = categories;
   v26.receiver = self;
   v26.super_class = NACIDSServer;
   v6 = [(NACIDSServer *)&v26 init];
@@ -87,7 +87,7 @@
     [(IDSService *)v6->_idsService setProtobufAction:sel__handleStopTone_ forIncomingRequestsOfType:29];
     [(IDSService *)v6->_idsService setProtobufAction:sel__handleSetHapticIntensity_ forIncomingRequestsOfType:13];
     [(IDSService *)v6->_idsService setProtobufAction:sel__handleSetProminentHapticEnabled_ forIncomingRequestsOfType:21];
-    objc_storeStrong(&v6->_volumeAudioCategories, a3);
+    objc_storeStrong(&v6->_volumeAudioCategories, categories);
     v9 = objc_opt_new();
     routesObservers = v6->_routesObservers;
     v6->_routesObservers = v9;
@@ -126,13 +126,13 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_systemSilentModeNotificationToken)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->_systemSilentModeNotificationToken];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self->_systemSilentModeNotificationToken];
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -164,13 +164,13 @@
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handleBeginObservingVolume:(id)a3
+- (void)_handleBeginObservingVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = [NACOriginIdentifierMessage alloc];
-  v6 = [v4 data];
+  data = [volumeCopy data];
 
-  v9 = [(NACOriginIdentifierMessage *)v5 initWithData:v6];
+  v9 = [(NACOriginIdentifierMessage *)v5 initWithData:data];
   if ([(NACOriginIdentifierMessage *)v9 hasOriginIdentifier])
   {
     [MEMORY[0x277CCABB0] numberWithInt:{-[NACOriginIdentifierMessage originIdentifier](v9, "originIdentifier")}];
@@ -193,14 +193,14 @@
   }
 }
 
-- (void)_handleEndObservingVolume:(id)a3
+- (void)_handleEndObservingVolume:(id)volume
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  volumeCopy = volume;
   v5 = [NACOriginIdentifierMessage alloc];
-  v6 = [v4 data];
+  data = [volumeCopy data];
 
-  v7 = [(NACOriginIdentifierMessage *)v5 initWithData:v6];
+  v7 = [(NACOriginIdentifierMessage *)v5 initWithData:data];
   if ([(NACOriginIdentifierMessage *)v7 hasOriginIdentifier])
   {
     [MEMORY[0x277CCABB0] numberWithInt:{-[NACOriginIdentifierMessage originIdentifier](v7, "originIdentifier")}];
@@ -212,10 +212,10 @@
   }
   v8 = ;
   v9 = [[NACProxyVolumeControlTarget alloc] initWithOriginIdentifier:v8 category:0];
-  v10 = [(NACProxyVolumeControlTarget *)v9 isPairedDevice];
+  isPairedDevice = [(NACProxyVolumeControlTarget *)v9 isPairedDevice];
   v11 = NMLogForCategory(4);
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (isPairedDevice)
   {
     if (v12)
     {
@@ -271,10 +271,10 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSetVolume:(id)a3
+- (void)_handleSetVolume:(id)volume
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  volumeCopy = volume;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -283,9 +283,9 @@
   }
 
   v6 = [NACVolumeValueMessage alloc];
-  v7 = [v4 data];
+  data = [volumeCopy data];
 
-  v8 = [(NACVolumeValueMessage *)v6 initWithData:v7];
+  v8 = [(NACVolumeValueMessage *)v6 initWithData:data];
   if ([(NACVolumeValueMessage *)v8 hasOriginIdentifier])
   {
     [MEMORY[0x277CCABB0] numberWithInt:{-[NACVolumeValueMessage originIdentifier](v8, "originIdentifier")}];
@@ -297,26 +297,26 @@
   }
   v9 = ;
   v10 = [NACProxyVolumeControlTarget alloc];
-  v11 = [(NACVolumeValueMessage *)v8 category];
-  v12 = [(NACProxyVolumeControlTarget *)v10 initWithOriginIdentifier:v9 category:v11];
+  category = [(NACVolumeValueMessage *)v8 category];
+  v12 = [(NACProxyVolumeControlTarget *)v10 initWithOriginIdentifier:v9 category:category];
 
   [(NACVolumeValueMessage *)v8 volumeValue];
   v14 = v13;
   if ([(NACProxyVolumeControlTarget *)v12 isPairedDevice])
   {
-    v15 = [(NACProxyVolumeControlTarget *)v12 category];
-    v16 = NACCategoryStringWithVolumeCategory(v15);
+    category2 = [(NACProxyVolumeControlTarget *)v12 category];
+    v16 = NACCategoryStringWithVolumeCategory(category2);
 
-    v17 = [(NSMutableDictionary *)self->_systemVolumeObservers objectForKeyedSubscript:v12];
-    v18 = [v17 volumeController];
-    [v18 EUVolumeLimit];
+    volumeController2 = [(NSMutableDictionary *)self->_systemVolumeObservers objectForKeyedSubscript:v12];
+    volumeController = [volumeController2 volumeController];
+    [volumeController EUVolumeLimit];
     v20 = v19;
-    [v18 volumeValue];
+    [volumeController volumeValue];
     v22 = v21;
-    if ([v18 volumeWarningEnabled] && v14 > v20 && v22 <= v20)
+    if ([volumeController volumeWarningEnabled] && v14 > v20 && v22 <= v20)
     {
-      v23 = [MEMORY[0x277D26E58] sharedAVSystemController];
-      [v23 allowUserToExceedEUVolumeLimit];
+      mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+      [mEMORY[0x277D26E58] allowUserToExceedEUVolumeLimit];
     }
 
     v24 = NMLogForCategory(4);
@@ -330,7 +330,7 @@
     }
 
     *&v25 = v14;
-    [v18 setVolumeValue:v25];
+    [volumeController setVolumeValue:v25];
     if ([(NACProxyVolumeControlTarget *)v16 isEqualToString:@"Ringtone"])
     {
       v26 = +[NACXPCServer server];
@@ -341,7 +341,7 @@
   else
   {
     v16 = [(NSMutableDictionary *)self->_proxyVolumeObservers objectForKeyedSubscript:v12];
-    v17 = [(NACProxyVolumeControlTarget *)v16 volumeController];
+    volumeController2 = [(NACProxyVolumeControlTarget *)v16 volumeController];
     v27 = NMLogForCategory(4);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
@@ -353,20 +353,20 @@
     }
 
     *&v28 = v14;
-    [v17 setVolumeValue:v28];
+    [volumeController2 setVolumeValue:v28];
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSetMuted:(id)a3
+- (void)_handleSetMuted:(id)muted
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mutedCopy = muted;
   v5 = [NACMutedMessage alloc];
-  v6 = [v4 data];
+  data = [mutedCopy data];
 
-  v7 = [(NACMutedMessage *)v5 initWithData:v6];
+  v7 = [(NACMutedMessage *)v5 initWithData:data];
   if ([(NACMutedMessage *)v7 hasOriginIdentifier])
   {
     [MEMORY[0x277CCABB0] numberWithInt:{-[NACMutedMessage originIdentifier](v7, "originIdentifier")}];
@@ -378,13 +378,13 @@
   }
   v8 = ;
   v9 = [NACProxyVolumeControlTarget alloc];
-  v10 = [(NACMutedMessage *)v7 category];
-  v11 = [(NACProxyVolumeControlTarget *)v9 initWithOriginIdentifier:v8 category:v10];
+  category = [(NACMutedMessage *)v7 category];
+  v11 = [(NACProxyVolumeControlTarget *)v9 initWithOriginIdentifier:v8 category:category];
 
   if ([(NACProxyVolumeControlTarget *)v11 isPairedDevice])
   {
-    v12 = [(NACProxyVolumeControlTarget *)v11 category];
-    v13 = NACCategoryStringWithVolumeCategory(v12);
+    category2 = [(NACProxyVolumeControlTarget *)v11 category];
+    v13 = NACCategoryStringWithVolumeCategory(category2);
 
     v14 = NMLogForCategory(4);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -410,15 +410,15 @@
     v15 = [(NSMutableDictionary *)self->_proxyVolumeObservers objectForKeyedSubscript:v11];
   }
 
-  v17 = [v15 volumeController];
-  [v17 setMuted:{-[NACMutedMessage muted](v7, "muted")}];
+  volumeController = [v15 volumeController];
+  [volumeController setMuted:{-[NACMutedMessage muted](v7, "muted")}];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSetSystemMuted:(id)a3
+- (void)_handleSetSystemMuted:(id)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v4 = NMLogForCategory(4);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -427,16 +427,16 @@
   }
 
   v5 = [NACMutedMessage alloc];
-  v6 = [v3 data];
+  data = [mutedCopy data];
 
-  v7 = [(NACMutedMessage *)v5 initWithData:v6];
-  v8 = [MEMORY[0x277D26E58] sharedInstance];
-  [v8 setSilentMode:-[NACMutedMessage muted](v7 untilTime:"muted") reason:0 clientType:{@"NanoAudioControl handling system mute setting", 7}];
+  v7 = [(NACMutedMessage *)v5 initWithData:data];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  [mEMORY[0x277D26E58] setSilentMode:-[NACMutedMessage muted](v7 untilTime:"muted") reason:0 clientType:{@"NanoAudioControl handling system mute setting", 7}];
 }
 
-- (void)_handleSetProminentHapticEnabled:(id)a3
+- (void)_handleSetProminentHapticEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -445,27 +445,27 @@
   }
 
   v6 = [NACProminentHapticStateMessage alloc];
-  v7 = [v4 data];
+  data = [enabledCopy data];
 
-  v8 = [(NACProminentHapticStateMessage *)v6 initWithData:v7];
-  v9 = [(NACProminentHapticStateMessage *)v8 enabled];
-  if (self->_prominentHapticEnabled != v9)
+  v8 = [(NACProminentHapticStateMessage *)v6 initWithData:data];
+  enabled = [(NACProminentHapticStateMessage *)v8 enabled];
+  if (self->_prominentHapticEnabled != enabled)
   {
-    [MEMORY[0x277D71F50] _setWatchPrefersSalientToneAndVibration:v9];
+    [MEMORY[0x277D71F50] _setWatchPrefersSalientToneAndVibration:enabled];
     [(NACIDSServer *)self _updateProminentHapticState];
     v10 = +[NACXPCServer server];
     [v10 playProminentHapticPreview];
   }
 }
 
-- (void)_handleSetHapticIntensity:(id)a3
+- (void)_handleSetHapticIntensity:(id)intensity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  intensityCopy = intensity;
   v4 = [NACHapticIntensityMessage alloc];
-  v5 = [v3 data];
+  data = [intensityCopy data];
 
-  v6 = [(NACHapticIntensityMessage *)v4 initWithData:v5];
+  v6 = [(NACHapticIntensityMessage *)v4 initWithData:data];
   [(NACHapticIntensityMessage *)v6 intensity];
   v8 = NACSystemHapticValueForUIValue(v7);
   v9 = NMLogForCategory(4);
@@ -476,9 +476,9 @@
     _os_log_impl(&dword_25AEBF000, v9, OS_LOG_TYPE_DEFAULT, "[NACIDS] Handle set haptic intensity. Setting haptic intensity: %f", &v15, 0xCu);
   }
 
-  v10 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   *&v11 = v8;
-  v12 = [v10 setVibeIntensityTo:v11];
+  v12 = [mEMORY[0x277D26E58] setVibeIntensityTo:v11];
 
   if (v12)
   {
@@ -489,14 +489,14 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSetCurrentListeningMode:(id)a3
+- (void)_handleSetCurrentListeningMode:(id)mode
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   v5 = [NACListeningModesMessage alloc];
-  v6 = [v4 data];
+  data = [modeCopy data];
 
-  v7 = [(NACListeningModesMessage *)v5 initWithData:v6];
+  v7 = [(NACListeningModesMessage *)v5 initWithData:data];
   if ([(NACListeningModesMessage *)v7 hasOriginIdentifier])
   {
     [MEMORY[0x277CCABB0] numberWithInt:{-[NACListeningModesMessage originIdentifier](v7, "originIdentifier")}];
@@ -508,35 +508,35 @@
   }
   v8 = ;
   v9 = [NACProxyVolumeControlTarget alloc];
-  v10 = [(NACListeningModesMessage *)v7 category];
-  v11 = [(NACProxyVolumeControlTarget *)v9 initWithOriginIdentifier:v8 category:v10];
+  category = [(NACListeningModesMessage *)v7 category];
+  v11 = [(NACProxyVolumeControlTarget *)v9 initWithOriginIdentifier:v8 category:category];
 
   v12 = NMLogForCategory(4);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(NACListeningModesMessage *)v7 currentListeningMode];
+    currentListeningMode = [(NACListeningModesMessage *)v7 currentListeningMode];
     v17 = 138412546;
-    v18 = v13;
+    v18 = currentListeningMode;
     v19 = 2112;
     v20 = v11;
     _os_log_impl(&dword_25AEBF000, v12, OS_LOG_TYPE_DEFAULT, "[NACIDS] [ListeningMode] Handle set current listening mode: %@ for target: %@", &v17, 0x16u);
   }
 
   v14 = [(NACIDSServer *)self _nacVolumeControllerForTarget:v11 createIfNeeded:1];
-  v15 = [(NACListeningModesMessage *)v7 currentListeningMode];
-  [v14 setCurrentListeningMode:v15];
+  currentListeningMode2 = [(NACListeningModesMessage *)v7 currentListeningMode];
+  [v14 setCurrentListeningMode:currentListeningMode2];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBeginObservingListeningModes:(id)a3
+- (void)_handleBeginObservingListeningModes:(id)modes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modesCopy = modes;
   v5 = [NACOriginIdentifierMessage alloc];
-  v6 = [v4 data];
+  data = [modesCopy data];
 
-  v7 = [(NACOriginIdentifierMessage *)v5 initWithData:v6];
+  v7 = [(NACOriginIdentifierMessage *)v5 initWithData:data];
   if ([(NACOriginIdentifierMessage *)v7 hasOriginIdentifier])
   {
     [MEMORY[0x277CCABB0] numberWithInt:{-[NACOriginIdentifierMessage originIdentifier](v7, "originIdentifier")}];
@@ -558,21 +558,21 @@
 
   v11 = [(NACIDSServer *)self _nacVolumeControllerForTarget:v9 createIfNeeded:1];
   [v11 beginObservingListeningModes];
-  v12 = [v11 availableListeningModes];
-  v13 = [v11 currentListeningMode];
-  [(NACIDSServer *)self _sendAvailableListeningModes:v12 currentListeningMode:v13 error:0 forTarget:v9];
+  availableListeningModes = [v11 availableListeningModes];
+  currentListeningMode = [v11 currentListeningMode];
+  [(NACIDSServer *)self _sendAvailableListeningModes:availableListeningModes currentListeningMode:currentListeningMode error:0 forTarget:v9];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleEndObservingListeningModes:(id)a3
+- (void)_handleEndObservingListeningModes:(id)modes
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modesCopy = modes;
   v5 = [NACOriginIdentifierMessage alloc];
-  v6 = [v4 data];
+  data = [modesCopy data];
 
-  v7 = [(NACOriginIdentifierMessage *)v5 initWithData:v6];
+  v7 = [(NACOriginIdentifierMessage *)v5 initWithData:data];
   if ([(NACOriginIdentifierMessage *)v7 hasOriginIdentifier])
   {
     [MEMORY[0x277CCABB0] numberWithInt:{-[NACOriginIdentifierMessage originIdentifier](v7, "originIdentifier")}];
@@ -598,38 +598,38 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePlayTone:(id)a3
+- (void)_handlePlayTone:(id)tone
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toneCopy = tone;
   v5 = [NACPlayToneMessage alloc];
-  v6 = [v4 data];
-  v7 = [(NACPlayToneMessage *)v5 initWithData:v6];
+  data = [toneCopy data];
+  v7 = [(NACPlayToneMessage *)v5 initWithData:data];
 
   v8 = NMLogForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NACPlayToneMessage *)v7 alertType];
-    v10 = [(NACPlayToneMessage *)v7 topic];
-    v11 = [(NACPlayToneMessage *)v7 toneIdentifier];
+    alertType = [(NACPlayToneMessage *)v7 alertType];
+    topic = [(NACPlayToneMessage *)v7 topic];
+    toneIdentifier = [(NACPlayToneMessage *)v7 toneIdentifier];
     *buf = 138412802;
-    v42 = v9;
+    v42 = alertType;
     v43 = 2112;
-    v44 = v10;
+    v44 = topic;
     v45 = 2112;
-    v46 = v11;
+    v46 = toneIdentifier;
     _os_log_impl(&dword_25AEBF000, v8, OS_LOG_TYPE_DEFAULT, "[NACIDS] Handle request to play alertType: %@, topic: %@, toneIdentifier: %@", buf, 0x20u);
   }
 
   v12 = objc_alloc(MEMORY[0x277D71F58]);
-  v13 = [(NACPlayToneMessage *)v7 alertType];
+  alertType2 = [(NACPlayToneMessage *)v7 alertType];
   v14 = [v12 initWithType:TLAlertTypeFromString()];
 
-  v15 = [(NACPlayToneMessage *)v7 topic];
-  [v14 setTopic:v15];
+  topic2 = [(NACPlayToneMessage *)v7 topic];
+  [v14 setTopic:topic2];
 
-  v16 = [(NACPlayToneMessage *)v7 toneIdentifier];
-  [v14 setToneIdentifier:v16];
+  toneIdentifier2 = [(NACPlayToneMessage *)v7 toneIdentifier];
+  [v14 setToneIdentifier:toneIdentifier2];
 
   [v14 setShouldRepeat:{-[NACPlayToneMessage shouldRepeat](v7, "shouldRepeat")}];
   [v14 setForPreview:{-[NACPlayToneMessage forPreview](v7, "forPreview")}];
@@ -745,13 +745,13 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStopTone:(id)a3
+- (void)_handleStopTone:(id)tone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toneCopy = tone;
   v5 = [NACStopToneMessage alloc];
-  v6 = [v4 data];
-  v7 = [(NACStopToneMessage *)v5 initWithData:v6];
+  data = [toneCopy data];
+  v7 = [(NACStopToneMessage *)v5 initWithData:data];
 
   v8 = NMLogForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -798,52 +798,52 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_nacVolumeControllerForTarget:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_nacVolumeControllerForTarget:(id)target createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 isPairedDevice];
+  neededCopy = needed;
+  targetCopy = target;
+  isPairedDevice = [targetCopy isPairedDevice];
   v8 = 32;
-  if (v7)
+  if (isPairedDevice)
   {
     v8 = 24;
   }
 
-  v9 = [*(&self->super.isa + v8) objectForKeyedSubscript:v6];
-  v10 = [v9 nacVolumeController];
-  if (v10)
+  v9 = [*(&self->super.isa + v8) objectForKeyedSubscript:targetCopy];
+  nacVolumeController = [v9 nacVolumeController];
+  if (nacVolumeController)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = !v4;
+    v11 = !neededCopy;
   }
 
   if (!v11)
   {
-    v12 = [v6 category];
-    v10 = [NACVolumeController localVolumeControllerWithAudioCategory:v12];
+    category = [targetCopy category];
+    nacVolumeController = [NACVolumeController localVolumeControllerWithAudioCategory:category];
 
-    [v10 setDelegate:self];
-    [v9 setNacVolumeController:v10];
+    [nacVolumeController setDelegate:self];
+    [v9 setNacVolumeController:nacVolumeController];
   }
 
-  return v10;
+  return nacVolumeController;
 }
 
-- (void)_handleSetHapticState:(id)a3
+- (void)_handleSetHapticState:(id)state
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = [NACHapticStateMessage alloc];
-  v6 = [v4 data];
+  data = [stateCopy data];
 
-  v7 = [(NACHapticStateMessage *)v5 initWithData:v6];
-  v8 = [(NACHapticStateMessage *)v7 state];
-  v9 = v8;
-  if (self->_hapticState == v8)
+  v7 = [(NACHapticStateMessage *)v5 initWithData:data];
+  state = [(NACHapticStateMessage *)v7 state];
+  v9 = state;
+  if (self->_hapticState == state)
   {
     v10 = NMLogForCategory(4);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -856,7 +856,7 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
 
   else
   {
-    v11 = NACIntensityFromState(v8);
+    v11 = NACIntensityFromState(state);
     v12 = NACProminentEnabledFromState(v9);
     v13 = NMLogForCategory(4);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -901,9 +901,9 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
     }
 
     [MEMORY[0x277D71F50] _setWatchPrefersSalientToneAndVibration:v12];
-    v18 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
     *&v19 = v11;
-    [v18 setVibeIntensityTo:v19];
+    [mEMORY[0x277D26E58] setVibeIntensityTo:v19];
 
     self->_prominentHapticEnabled = v12;
     self->_hapticIntensity = v11;
@@ -913,10 +913,10 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBeginObservingAudioRoutes:(id)a3
+- (void)_handleBeginObservingAudioRoutes:(id)routes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  routesCopy = routes;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -925,11 +925,11 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
   }
 
   v6 = [NACCategoryMessage alloc];
-  v7 = [v4 data];
+  data = [routesCopy data];
 
-  v8 = [(NACCategoryMessage *)v6 initWithData:v7];
-  v9 = [(NACCategoryMessage *)v8 category];
-  v10 = NACCategoryStringWithRouteCategory(v9);
+  v8 = [(NACCategoryMessage *)v6 initWithData:data];
+  category = [(NACCategoryMessage *)v8 category];
+  v10 = NACCategoryStringWithRouteCategory(category);
 
   v11 = [(NSMutableDictionary *)self->_routesObservers objectForKeyedSubscript:v10];
   v12 = NMLogForCategory(4);
@@ -954,8 +954,8 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
     }
 
     v12 = objc_opt_new();
-    v14 = [(NACCategoryMessage *)v8 category];
-    [v12 setCategory:v14];
+    category2 = [(NACCategoryMessage *)v8 category];
+    [v12 setCategory:category2];
 
     [v12 setDiscoveryMode:3];
     v11 = objc_opt_new();
@@ -974,7 +974,7 @@ void __32__NACIDSServer__handlePlayTone___block_invoke(id *a1, uint64_t a2, uint
     block[3] = &unk_27992B7C8;
     objc_copyWeak(&v22, buf);
     v20 = v10;
-    v21 = self;
+    selfCopy = self;
     dispatch_after(v16, serialQueue, block);
 
     objc_destroyWeak(&v22);
@@ -1006,10 +1006,10 @@ void __49__NACIDSServer__handleBeginObservingAudioRoutes___block_invoke(uint64_t
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleEndObservingAudioRoutes:(id)a3
+- (void)_handleEndObservingAudioRoutes:(id)routes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  routesCopy = routes;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1018,11 +1018,11 @@ void __49__NACIDSServer__handleBeginObservingAudioRoutes___block_invoke(uint64_t
   }
 
   v6 = [NACCategoryMessage alloc];
-  v7 = [v4 data];
+  data = [routesCopy data];
 
-  v8 = [(NACCategoryMessage *)v6 initWithData:v7];
-  v9 = [(NACCategoryMessage *)v8 category];
-  v10 = NACCategoryStringWithRouteCategory(v9);
+  v8 = [(NACCategoryMessage *)v6 initWithData:data];
+  category = [(NACCategoryMessage *)v8 category];
+  v10 = NACCategoryStringWithRouteCategory(category);
 
   v11 = [(NSMutableDictionary *)self->_routesObservers objectForKeyedSubscript:v10];
   v12 = NMLogForCategory(4);
@@ -1036,8 +1036,8 @@ void __49__NACIDSServer__handleBeginObservingAudioRoutes___block_invoke(uint64_t
       _os_log_impl(&dword_25AEBF000, v12, OS_LOG_TYPE_DEFAULT, "[NACIDS] End observing audio routes for category: %@", &v16, 0xCu);
     }
 
-    v14 = [v11 routingController];
-    [v14 setDiscoveryMode:0];
+    routingController = [v11 routingController];
+    [routingController setDiscoveryMode:0];
 
     [(NSMutableDictionary *)self->_routesObservers removeObjectForKey:v10];
   }
@@ -1055,10 +1055,10 @@ void __49__NACIDSServer__handleBeginObservingAudioRoutes___block_invoke(uint64_t
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePickAudioRoute:(id)a3
+- (void)_handlePickAudioRoute:(id)route
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  routeCopy = route;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1067,31 +1067,31 @@ void __49__NACIDSServer__handleBeginObservingAudioRoutes___block_invoke(uint64_t
   }
 
   v6 = [NACPickAudioRouteMessage alloc];
-  v7 = [v4 data];
-  v8 = [(NACPickAudioRouteMessage *)v6 initWithData:v7];
+  data = [routeCopy data];
+  v8 = [(NACPickAudioRouteMessage *)v6 initWithData:data];
 
-  v9 = [(NACPickAudioRouteMessage *)v8 category];
-  v10 = [(NSMutableDictionary *)self->_routesObservers objectForKeyedSubscript:v9];
+  category = [(NACPickAudioRouteMessage *)v8 category];
+  v10 = [(NSMutableDictionary *)self->_routesObservers objectForKeyedSubscript:category];
   if (v10)
   {
-    v11 = [(NACPickAudioRouteMessage *)v8 identifier];
+    identifier = [(NACPickAudioRouteMessage *)v8 identifier];
     v12 = NMLogForCategory(4);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = identifier;
       *&buf[12] = 2112;
-      *&buf[14] = v9;
+      *&buf[14] = category;
       _os_log_impl(&dword_25AEBF000, v12, OS_LOG_TYPE_DEFAULT, "[NACIDS] Pick audio route with identifier: %@, category: %@", buf, 0x16u);
     }
 
-    v13 = [v10 routingController];
+    routingController = [v10 routingController];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v31 = __Block_byref_object_copy_;
     v32 = __Block_byref_object_dispose_;
-    v33 = [v13 availableRoutes];
+    availableRoutes = [routingController availableRoutes];
     v24 = 0;
     v25 = &v24;
     v26 = 0x3032000000;
@@ -1102,9 +1102,9 @@ void __49__NACIDSServer__handleBeginObservingAudioRoutes___block_invoke(uint64_t
     v20[2] = __38__NACIDSServer__handlePickAudioRoute___block_invoke;
     v20[3] = &unk_27992B7F0;
     v23 = buf;
-    v14 = v11;
+    v14 = identifier;
     v21 = v14;
-    v15 = v13;
+    v15 = routingController;
     v22 = v15;
     v29 = MEMORY[0x25F85B570](v20);
     if ([*(*&buf[8] + 40) count])
@@ -1141,7 +1141,7 @@ void __49__NACIDSServer__handleBeginObservingAudioRoutes___block_invoke(uint64_t
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = category;
       _os_log_impl(&dword_25AEBF000, v14, OS_LOG_TYPE_DEFAULT, "[NACIDS] Received attempt to pick audio route for category [%@], but observing was not in progress", buf, 0xCu);
     }
   }
@@ -1332,10 +1332,10 @@ void __49__NACIDSServer__handleBeginObservingSystemVolume__block_invoke(uint64_t
   dispatch_assert_queue_V2(self->_serialQueue);
   if ([(NACIDSServer *)self _hasRequestedVolumeAtLeastOnce])
   {
-    v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v4 = [v3 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
     v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"AD00FAC5-9C37-4D0C-8F16-9B00B4C821C6"];
-    v6 = [v4 supportsCapability:v5];
+    v6 = [getActivePairedDevice supportsCapability:v5];
 
     if ((v6 & 1) == 0)
     {
@@ -1461,13 +1461,13 @@ void __42__NACIDSServer__beginObservingHapticState__block_invoke(uint64_t a1, vo
     }
 
     objc_initWeak(buf, self);
-    v4 = [MEMORY[0x277D26E58] sharedInstance];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
     v5 = MEMORY[0x277D26D58];
     v22[0] = *MEMORY[0x277D26D58];
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
     v7 = *MEMORY[0x277D26DD0];
     v20 = 0;
-    v8 = [v4 setAttribute:v6 forKey:v7 error:&v20];
+    v8 = [mEMORY[0x277D26E58] setAttribute:v6 forKey:v7 error:&v20];
     v9 = v20;
 
     if ((v8 & 1) == 0)
@@ -1479,14 +1479,14 @@ void __42__NACIDSServer__beginObservingHapticState__block_invoke(uint64_t a1, vo
       }
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v12 = *v5;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __47__NACIDSServer__beginObservingSystemMutedState__block_invoke;
     v18[3] = &unk_27992B8B8;
     objc_copyWeak(&v19, buf);
-    v13 = [v11 addObserverForName:v12 object:v4 queue:0 usingBlock:v18];
+    v13 = [defaultCenter addObserverForName:v12 object:mEMORY[0x277D26E58] queue:0 usingBlock:v18];
     systemSilentModeNotificationToken = self->_systemSilentModeNotificationToken;
     self->_systemSilentModeNotificationToken = v13;
 
@@ -1538,8 +1538,8 @@ uint64_t __47__NACIDSServer__beginObservingSystemMutedState__block_invoke_2(uint
 {
   v8 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [MEMORY[0x277D26E58] sharedInstance];
-  self->_isSystemMuted = [v3 getSilentMode];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  self->_isSystemMuted = [mEMORY[0x277D26E58] getSilentMode];
 
   v4 = NMLogForCategory(4);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1585,30 +1585,30 @@ uint64_t __42__NACIDSServer_updateProminentHapticState__block_invoke(uint64_t a1
   }
 }
 
-- (void)_handleBeginObservingProxyVolumeForTarget:(id)a3
+- (void)_handleBeginObservingProxyVolumeForTarget:(id)target
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetCopy = target;
   dispatch_assert_queue_V2(self->_serialQueue);
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v5, OS_LOG_TYPE_DEFAULT, "[NACIDS] Handle begin observing volume for target: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
   v6 = +[NACEndpointObserver sharedObserver];
-  v7 = [v4 originIdentifier];
+  originIdentifier = [targetCopy originIdentifier];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__NACIDSServer__handleBeginObservingProxyVolumeForTarget___block_invoke;
   v10[3] = &unk_27992B8E0;
   objc_copyWeak(&v12, buf);
-  v8 = v4;
+  v8 = targetCopy;
   v11 = v8;
-  [v6 fetchRouteForOriginIdentifier:v7 completion:v10];
+  [v6 fetchRouteForOriginIdentifier:originIdentifier completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -1635,12 +1635,12 @@ void __58__NACIDSServer__handleBeginObservingProxyVolumeForTarget___block_invoke
   }
 }
 
-- (void)_beginObservingProxyVolumeForTarget:(id)a3 withEndpointRoute:(id)a4
+- (void)_beginObservingProxyVolumeForTarget:(id)target withEndpointRoute:(id)route
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  routeCopy = route;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (v7)
+  if (routeCopy)
   {
     if (!self->_proxyVolumeRunAssertion)
     {
@@ -1650,7 +1650,7 @@ void __58__NACIDSServer__handleBeginObservingProxyVolumeForTarget___block_invoke
     }
 
     objc_initWeak(&location, self);
-    v10 = [objc_alloc(MEMORY[0x277CD60F8]) initWithGroupRoute:v7 outputDeviceRoute:0];
+    v10 = [objc_alloc(MEMORY[0x277CD60F8]) initWithGroupRoute:routeCopy outputDeviceRoute:0];
     v11 = [objc_alloc(MEMORY[0x277CD60F0]) initWithDataSource:v10];
     v12 = objc_opt_new();
     [v12 setVolumeController:v11];
@@ -1661,7 +1661,7 @@ void __58__NACIDSServer__handleBeginObservingProxyVolumeForTarget___block_invoke
     v21[2] = __70__NACIDSServer__beginObservingProxyVolumeForTarget_withEndpointRoute___block_invoke;
     v21[3] = &unk_27992B868;
     objc_copyWeak(&v23, &location);
-    v14 = v6;
+    v14 = targetCopy;
     v22 = v14;
     [(NACEventThrottler *)v13 setEventBlock:v21];
     [v12 setThrottler:v13];
@@ -1753,13 +1753,13 @@ void __70__NACIDSServer__beginObservingProxyVolumeForTarget_withEndpointRoute___
 
         v7 = [NACProxyVolumeControlTarget volumeControlTargetWithCategory:*(*(&v15 + 1) + 8 * v6)];
         v8 = [(NSMutableDictionary *)self->_systemVolumeObservers objectForKeyedSubscript:v7];
-        v9 = [v8 volumeController];
-        v10 = [v8 routingController];
-        [v9 volumeValue];
+        volumeController = [v8 volumeController];
+        routingController = [v8 routingController];
+        [volumeController volumeValue];
         [(NACIDSServer *)self _sendVolumeValue:v7 forTarget:?];
-        -[NACIDSServer _sendVolumeControlAvailability:forTarget:](self, "_sendVolumeControlAvailability:forTarget:", [v10 volumeControlIsAvailable], v7);
-        -[NACIDSServer _sendVolumeWarningEnabled:volumeWarningState:forTarget:](self, "_sendVolumeWarningEnabled:volumeWarningState:forTarget:", [v9 volumeWarningEnabled], objc_msgSend(v9, "volumeWarningState"), v7);
-        [v9 EUVolumeLimit];
+        -[NACIDSServer _sendVolumeControlAvailability:forTarget:](self, "_sendVolumeControlAvailability:forTarget:", [routingController volumeControlIsAvailable], v7);
+        -[NACIDSServer _sendVolumeWarningEnabled:volumeWarningState:forTarget:](self, "_sendVolumeWarningEnabled:volumeWarningState:forTarget:", [volumeController volumeWarningEnabled], objc_msgSend(volumeController, "volumeWarningState"), v7);
+        [volumeController EUVolumeLimit];
         [(NACIDSServer *)self _sendEUVolumeLimit:v7 forTarget:?];
 
         ++v6;
@@ -1796,8 +1796,8 @@ void __70__NACIDSServer__beginObservingProxyVolumeForTarget_withEndpointRoute___
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v6 = 0.0;
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v4 = [v3 getVibeIntensity:&v6];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v4 = [mEMORY[0x277D26E58] getVibeIntensity:&v6];
 
   if (v4)
   {
@@ -1825,18 +1825,18 @@ void __70__NACIDSServer__beginObservingProxyVolumeForTarget_withEndpointRoute___
   [(NACIDSServer *)self _sendMessage:0 type:16 timeout:v5 queueOne:1 retry:v4];
 }
 
-- (void)_cancelProxyVolumeObservationForTarget:(id)a3
+- (void)_cancelProxyVolumeObservationForTarget:(id)target
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  targetCopy = target;
   dispatch_assert_queue_V2(serialQueue);
   v6 = objc_opt_new();
-  v7 = [v5 originIdentifier];
-  [v6 setOriginIdentifier:{objc_msgSend(v7, "intValue")}];
+  originIdentifier = [targetCopy originIdentifier];
+  [v6 setOriginIdentifier:{objc_msgSend(originIdentifier, "intValue")}];
 
-  v8 = NACQueueOneIdentifierVolumeObservationCancelled(v5);
+  v8 = NACQueueOneIdentifierVolumeObservationCancelled(targetCopy);
   [(NACIDSServer *)self _sendMessage:v6 type:16 timeout:v8 queueOne:1 retry:*MEMORY[0x277D18828]];
-  [(NSMutableDictionary *)self->_proxyVolumeObservers removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_proxyVolumeObservers removeObjectForKey:targetCopy];
 
   if (![(NSMutableDictionary *)self->_proxyVolumeObservers count])
   {
@@ -1852,33 +1852,33 @@ void __70__NACIDSServer__beginObservingProxyVolumeForTarget_withEndpointRoute___
   }
 }
 
-- (void)_cancelRouteObservationForCategory:(id)a3
+- (void)_cancelRouteObservationForCategory:(id)category
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  categoryCopy = category;
   dispatch_assert_queue_V2(serialQueue);
   v9 = objc_opt_new();
-  [v9 setCategory:v5];
-  v6 = NACQueueOneIdentifierRouteObservationCancelled(v5);
+  [v9 setCategory:categoryCopy];
+  v6 = NACQueueOneIdentifierRouteObservationCancelled(categoryCopy);
   [(NACIDSServer *)self _sendMessage:v9 type:17 timeout:v6 queueOne:0 retry:*MEMORY[0x277D18828]];
-  v7 = [(NSMutableDictionary *)self->_routesObservers objectForKeyedSubscript:v5];
-  v8 = [v7 routingController];
-  [v8 setDiscoveryMode:0];
+  v7 = [(NSMutableDictionary *)self->_routesObservers objectForKeyedSubscript:categoryCopy];
+  routingController = [v7 routingController];
+  [routingController setDiscoveryMode:0];
 
-  [(NSMutableDictionary *)self->_routesObservers removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_routesObservers removeObjectForKey:categoryCopy];
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
-  v5 = a3;
+  controllerCopy = controller;
   serialQueue = self->_serialQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__NACIDSServer_volumeController_volumeValueDidChange___block_invoke;
   v8[3] = &unk_27992B510;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = controllerCopy;
+  v7 = controllerCopy;
   dispatch_async(serialQueue, v8);
 }
 
@@ -1914,17 +1914,17 @@ void __54__NACIDSServer_volumeController_volumeValueDidChange___block_invoke(uin
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change
 {
-  v5 = a3;
+  controllerCopy = controller;
   serialQueue = self->_serialQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__NACIDSServer_volumeController_volumeControlAvailableDidChange___block_invoke;
   v8[3] = &unk_27992B510;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = controllerCopy;
+  v7 = controllerCopy;
   dispatch_async(serialQueue, v8);
 }
 
@@ -1947,17 +1947,17 @@ void __65__NACIDSServer_volumeController_volumeControlAvailableDidChange___block
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeController:(id)a3 mutedStateDidChange:(BOOL)a4
+- (void)volumeController:(id)controller mutedStateDidChange:(BOOL)change
 {
-  v5 = a3;
+  controllerCopy = controller;
   serialQueue = self->_serialQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__NACIDSServer_volumeController_mutedStateDidChange___block_invoke;
   v8[3] = &unk_27992B510;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = controllerCopy;
+  v7 = controllerCopy;
   dispatch_async(serialQueue, v8);
 }
 
@@ -1984,18 +1984,18 @@ void __53__NACIDSServer_volumeController_mutedStateDidChange___block_invoke(uint
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeController:(id)a3 EUVolumeLimitDidChange:(float)a4
+- (void)volumeController:(id)controller EUVolumeLimitDidChange:(float)change
 {
-  v6 = a3;
+  controllerCopy = controller;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__NACIDSServer_volumeController_EUVolumeLimitDidChange___block_invoke;
   block[3] = &unk_27992B588;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = controllerCopy;
+  changeCopy = change;
+  v8 = controllerCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -2023,18 +2023,18 @@ void __56__NACIDSServer_volumeController_EUVolumeLimitDidChange___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeController:(id)a3 volumeWarningStateDidChange:(int64_t)a4
+- (void)volumeController:(id)controller volumeWarningStateDidChange:(int64_t)change
 {
-  v6 = a3;
+  controllerCopy = controller;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__NACIDSServer_volumeController_volumeWarningStateDidChange___block_invoke;
   block[3] = &unk_27992B930;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = controllerCopy;
+  selfCopy = self;
+  changeCopy = change;
+  v8 = controllerCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -2060,20 +2060,20 @@ void __61__NACIDSServer_volumeController_volumeWarningStateDidChange___block_inv
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_targetForVolumeController:(id)a3
+- (id)_targetForVolumeController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 dataSource];
+  controllerCopy = controller;
+  dataSource = [controllerCopy dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [v3 dataSource];
-  v7 = v6;
+  dataSource2 = [controllerCopy dataSource];
+  v7 = dataSource2;
   if (isKindOfClass)
   {
-    v8 = [v6 volumeAudioCategory];
+    volumeAudioCategory = [dataSource2 volumeAudioCategory];
 
-    v9 = [NACProxyVolumeControlTarget volumeControlTargetWithCategory:v8];
+    v9 = [NACProxyVolumeControlTarget volumeControlTargetWithCategory:volumeAudioCategory];
   }
 
   else
@@ -2087,11 +2087,11 @@ void __61__NACIDSServer_volumeController_volumeWarningStateDidChange___block_inv
       goto LABEL_10;
     }
 
-    v11 = [v3 dataSource];
-    v8 = [v11 groupRoute];
+    dataSource3 = [controllerCopy dataSource];
+    volumeAudioCategory = [dataSource3 groupRoute];
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 endpointWrapper], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "unwrappedValue"), MRAVEndpointGetExternalDevice(), v12, (v13 = MRExternalDeviceCopyCustomOrigin()) != 0))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([volumeAudioCategory endpointWrapper], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "unwrappedValue"), MRAVEndpointGetExternalDevice(), v12, (v13 = MRExternalDeviceCopyCustomOrigin()) != 0))
     {
       v14 = v13;
       v15 = [MEMORY[0x277CCABB0] numberWithInt:MROriginGetUniqueIdentifier()];
@@ -2111,9 +2111,9 @@ LABEL_10:
   return v9;
 }
 
-- (id)_targetForNACVolumeController:(id)a3
+- (id)_targetForNACVolumeController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -2125,7 +2125,7 @@ LABEL_10:
   v9[1] = 3221225472;
   v9[2] = __46__NACIDSServer__targetForNACVolumeController___block_invoke;
   v9[3] = &unk_27992B958;
-  v6 = v4;
+  v6 = controllerCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)systemVolumeObservers enumerateKeysAndObjectsUsingBlock:v9];
@@ -2149,17 +2149,17 @@ void __46__NACIDSServer__targetForNACVolumeController___block_invoke(uint64_t a1
   }
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__NACIDSServer_routingControllerAvailableRoutesDidChange___block_invoke;
   v7[3] = &unk_27992B510;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -2239,17 +2239,17 @@ void __58__NACIDSServer_routingControllerAvailableRoutesDidChange___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_hapticIntensityDidChangeNotification:(id)a3
+- (void)_hapticIntensityDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NACIDSServer__hapticIntensityDidChangeNotification___block_invoke;
   v7[3] = &unk_27992B510;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -2273,17 +2273,17 @@ void __54__NACIDSServer__hapticIntensityDidChangeNotification___block_invoke(uin
   [v7 setValue:v9];
 }
 
-- (void)volumeControllerDidUpdateAvailableListeningModes:(id)a3
+- (void)volumeControllerDidUpdateAvailableListeningModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__NACIDSServer_volumeControllerDidUpdateAvailableListeningModes___block_invoke;
   v7[3] = &unk_27992B510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modesCopy;
+  v6 = modesCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -2310,17 +2310,17 @@ void __65__NACIDSServer_volumeControllerDidUpdateAvailableListeningModes___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeControllerDidUpdateCurrentListeningMode:(id)a3
+- (void)volumeControllerDidUpdateCurrentListeningMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__NACIDSServer_volumeControllerDidUpdateCurrentListeningMode___block_invoke;
   v7[3] = &unk_27992B510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modeCopy;
+  v6 = modeCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -2347,20 +2347,20 @@ void __62__NACIDSServer_volumeControllerDidUpdateCurrentListeningMode___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeController:(id)a3 didFailToSetCurrentListeningModeWithError:(id)a4
+- (void)volumeController:(id)controller didFailToSetCurrentListeningModeWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithError___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controllerCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = controllerCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -2387,28 +2387,28 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendVolumeValue:(float)a3 forTarget:(id)a4
+- (void)_sendVolumeValue:(float)value forTarget:(id)target
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  targetCopy = target;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v7 = NACQueueOneIdentifierVolumeValue(v6);
+  v7 = NACQueueOneIdentifierVolumeValue(targetCopy);
   v8 = objc_opt_new();
-  *&v9 = a3;
+  *&v9 = value;
   [v8 setVolumeValue:v9];
-  v10 = [v6 originIdentifier];
-  [v8 setOriginIdentifier:{objc_msgSend(v10, "intValue")}];
+  originIdentifier = [targetCopy originIdentifier];
+  [v8 setOriginIdentifier:{objc_msgSend(originIdentifier, "intValue")}];
 
-  v11 = [v6 category];
-  [v8 setCategory:v11];
+  category = [targetCopy category];
+  [v8 setCategory:category];
 
   v12 = NMLogForCategory(4);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134218242;
-    v15 = a3;
+    valueCopy = value;
     v16 = 2112;
-    v17 = v6;
+    v17 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v12, OS_LOG_TYPE_DEFAULT, "[NACIDS] Sending system volume value: %f for target: %@", &v14, 0x16u);
   }
 
@@ -2416,39 +2416,39 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendEUVolumeLimit:(float)a3 forTarget:(id)a4
+- (void)_sendEUVolumeLimit:(float)limit forTarget:(id)target
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  targetCopy = target;
   dispatch_assert_queue_V2(self->_serialQueue);
   if ([(NACIDSServer *)self _shouldForceVolumeWarning])
   {
-    a3 = *"333?";
+    limit = *"333?";
   }
 
-  v7 = [(NSMutableDictionary *)self->_systemVolumeObservers objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_systemVolumeObservers objectForKeyedSubscript:targetCopy];
   [v7 EUVolumeLimit];
-  if (a3 != *&v8)
+  if (limit != *&v8)
   {
-    *&v8 = a3;
+    *&v8 = limit;
     [v7 setEUVolumeLimit:v8];
     v9 = objc_opt_new();
-    *&v10 = a3;
+    *&v10 = limit;
     [v9 setEUVolumeLimit:v10];
-    v11 = [v6 originIdentifier];
-    [v9 setOriginIdentifier:{objc_msgSend(v11, "intValue")}];
+    originIdentifier = [targetCopy originIdentifier];
+    [v9 setOriginIdentifier:{objc_msgSend(originIdentifier, "intValue")}];
 
-    v12 = [v6 category];
-    [v9 setCategory:v12];
+    category = [targetCopy category];
+    [v9 setCategory:category];
 
-    v13 = NACQueueOneIdentifierEUVolumeLimit(v6);
+    v13 = NACQueueOneIdentifierEUVolumeLimit(targetCopy);
     v14 = NMLogForCategory(4);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134218242;
-      v17 = a3;
+      limitCopy = limit;
       v18 = 2112;
-      v19 = v6;
+      v19 = targetCopy;
       _os_log_impl(&dword_25AEBF000, v14, OS_LOG_TYPE_DEFAULT, "[NACIDS] Sending system EU volume limit: %f for target: %@", &v16, 0x16u);
     }
 
@@ -2458,48 +2458,48 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendVolumeWarningEnabled:(BOOL)a3 volumeWarningState:(int64_t)a4 forTarget:(id)a5
+- (void)_sendVolumeWarningEnabled:(BOOL)enabled volumeWarningState:(int64_t)state forTarget:(id)target
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  targetCopy = target;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v9 = [(NACIDSServer *)self _shouldForceVolumeWarning];
-  if (v9)
+  _shouldForceVolumeWarning = [(NACIDSServer *)self _shouldForceVolumeWarning];
+  if (_shouldForceVolumeWarning)
   {
-    v10 = 1;
+    stateCopy = 1;
   }
 
   else
   {
-    v10 = a4;
+    stateCopy = state;
   }
 
-  v11 = v9 | v6;
-  v12 = [(NSMutableDictionary *)self->_systemVolumeObservers objectForKeyedSubscript:v8];
-  if (v11 != [v12 isVolumeWarningEnabled] || v10 != objc_msgSend(v12, "volumeWarningState"))
+  v11 = _shouldForceVolumeWarning | enabledCopy;
+  v12 = [(NSMutableDictionary *)self->_systemVolumeObservers objectForKeyedSubscript:targetCopy];
+  if (v11 != [v12 isVolumeWarningEnabled] || stateCopy != objc_msgSend(v12, "volumeWarningState"))
   {
     [v12 setVolumeWarningEnabled:v11];
-    [v12 setVolumeWarningState:v10];
+    [v12 setVolumeWarningState:stateCopy];
     v13 = objc_opt_new();
     [v13 setVolumeWarningEnabled:v11];
-    [v13 setVolumeWarningState:v10];
-    v14 = [v8 originIdentifier];
-    [v13 setOriginIdentifier:{objc_msgSend(v14, "intValue")}];
+    [v13 setVolumeWarningState:stateCopy];
+    originIdentifier = [targetCopy originIdentifier];
+    [v13 setOriginIdentifier:{objc_msgSend(originIdentifier, "intValue")}];
 
-    v15 = [v8 category];
-    [v13 setCategory:v15];
+    category = [targetCopy category];
+    [v13 setCategory:category];
 
-    v16 = NACQueueOneIdentifierVolumeWarning(v8);
+    v16 = NACQueueOneIdentifierVolumeWarning(targetCopy);
     v17 = NMLogForCategory(4);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v19[0] = 67109634;
       v19[1] = v11;
       v20 = 2048;
-      v21 = v10;
+      v21 = stateCopy;
       v22 = 2112;
-      v23 = v8;
+      v23 = targetCopy;
       _os_log_impl(&dword_25AEBF000, v17, OS_LOG_TYPE_DEFAULT, "[NACIDS] Sending system volume warning enabled: %d state: %ld for category: %@", v19, 0x1Cu);
     }
 
@@ -2509,20 +2509,20 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendAvailableListeningModes:(id)a3 currentListeningMode:(id)a4 error:(id)a5 forTarget:(id)a6
+- (void)_sendAvailableListeningModes:(id)modes currentListeningMode:(id)mode error:(id)error forTarget:(id)target
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modesCopy = modes;
+  modeCopy = mode;
+  errorCopy = error;
+  targetCopy = target;
   dispatch_assert_queue_V2(self->_serialQueue);
   v14 = objc_alloc_init(NACListeningModesMessage);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = v10;
+  v15 = modesCopy;
   v16 = [v15 countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v16)
   {
@@ -2548,11 +2548,11 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
     while (v17);
   }
 
-  [(NACListeningModesMessage *)v14 setCurrentListeningMode:v11];
-  if (v12)
+  [(NACListeningModesMessage *)v14 setCurrentListeningMode:modeCopy];
+  if (errorCopy)
   {
     v28 = 0;
-    v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v28];
+    v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:&v28];
     v21 = v28;
     if (v21)
     {
@@ -2566,24 +2566,24 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
     [(NACListeningModesMessage *)v14 setError:v20];
   }
 
-  v23 = [v13 originIdentifier];
-  -[NACListeningModesMessage setOriginIdentifier:](v14, "setOriginIdentifier:", [v23 intValue]);
+  originIdentifier = [targetCopy originIdentifier];
+  -[NACListeningModesMessage setOriginIdentifier:](v14, "setOriginIdentifier:", [originIdentifier intValue]);
 
-  v24 = [v13 category];
-  [(NACListeningModesMessage *)v14 setCategory:v24];
+  category = [targetCopy category];
+  [(NACListeningModesMessage *)v14 setCategory:category];
 
-  v25 = NACQueueOneIdentifierVolumeControlAvailability(v13);
+  v25 = NACQueueOneIdentifierVolumeControlAvailability(targetCopy);
   v26 = NMLogForCategory(4);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
     v34 = v15;
     v35 = 2112;
-    v36 = v11;
+    v36 = modeCopy;
     v37 = 2112;
-    v38 = v12;
+    v38 = errorCopy;
     v39 = 2112;
-    v40 = v13;
+    v40 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v26, OS_LOG_TYPE_DEFAULT, "[NACIDS] [ListeningMode] Sending available listening modes: %@ current listening mode: %@ error: %@ for target: %@", buf, 0x2Au);
   }
 
@@ -2591,30 +2591,30 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendHapticState:(int64_t)a3
+- (void)_sendHapticState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v6 = objc_opt_new();
-  [v6 setState:a3];
+  [v6 setState:state];
   v5 = NACQueueOneIdentifierHapticState();
   [(NACIDSServer *)self _sendMessage:v6 type:22 timeout:v5 queueOne:1 retry:*MEMORY[0x277D18828]];
 }
 
-- (void)_sendMessage:(id)a3 type:(int64_t)a4 timeout:(double)a5 queueOne:(id)a6 retry:(BOOL)a7
+- (void)_sendMessage:(id)message type:(int64_t)type timeout:(double)timeout queueOne:(id)one retry:(BOOL)retry
 {
-  v34 = a7;
+  retryCopy = retry;
   v49[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  messageCopy = message;
+  oneCopy = one;
   dispatch_assert_queue_V2(self->_serialQueue);
   v13 = objc_alloc(MEMORY[0x277D189F0]);
-  v35 = v11;
-  v14 = [v11 data];
-  v15 = [v13 initWithProtobufData:v14 type:a4 isResponse:0];
+  v35 = messageCopy;
+  data = [messageCopy data];
+  v15 = [v13 initWithProtobufData:data type:type isResponse:0];
 
   v16 = objc_alloc(MEMORY[0x277CBEB38]);
   v48[0] = *MEMORY[0x277D18650];
-  v17 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v17 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
   v48[1] = *MEMORY[0x277D185D0];
   v49[0] = v17;
   v49[1] = MEMORY[0x277CBEC38];
@@ -2626,9 +2626,9 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
     [v19 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18600]];
   }
 
-  if (v12)
+  if (oneCopy)
   {
-    [v19 setObject:v12 forKeyedSubscript:*MEMORY[0x277D18630]];
+    [v19 setObject:oneCopy forKeyedSubscript:*MEMORY[0x277D18630]];
   }
 
   idsService = self->_idsService;
@@ -2640,19 +2640,19 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
   v24 = v37;
   v25 = v36;
 
-  v26 = NSStringFromNACMessageType(a4);
+  v26 = NSStringFromNACMessageType(type);
   v27 = NMLogForCategory(4);
   v28 = v27;
   if ((v23 & 1) == 0)
   {
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v35 data];
-      v33 = [v32 length];
+      data2 = [v35 data];
+      v33 = [data2 length];
       *buf = 138413314;
       v39 = v26;
       v40 = 2112;
-      v41 = v12;
+      v41 = oneCopy;
       v42 = 2112;
       v43 = v24;
       v44 = 2048;
@@ -2667,12 +2667,12 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
 
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [v35 data];
-    v30 = [v29 length];
+    data3 = [v35 data];
+    v30 = [data3 length];
     *buf = 138413058;
     v39 = v26;
     v40 = 2112;
-    v41 = v12;
+    v41 = oneCopy;
     v42 = 2112;
     v43 = v24;
     v44 = 2048;
@@ -2680,13 +2680,13 @@ void __75__NACIDSServer_volumeController_didFailToSetCurrentListeningModeWithErr
     _os_log_impl(&dword_25AEBF000, v28, OS_LOG_TYPE_DEFAULT, "[NACIDS] Successfully requested delivery of IDS message, type: %@, queueOne: %@, identifier: %@, payload size: %tu", buf, 0x2Au);
   }
 
-  if (v34 && v24)
+  if (retryCopy && v24)
   {
     v28 = objc_opt_new();
     [v28 setMessage:v35];
-    [v28 setType:a4];
-    [v28 setTimeout:a5];
-    [v28 setQueueOne:v12];
+    [v28 setType:type];
+    [v28 setTimeout:timeout];
+    [v28 setQueueOne:oneCopy];
     [(NSMutableDictionary *)self->_messageRecords setObject:v28 forKeyedSubscript:v24];
 LABEL_13:
   }
@@ -2694,22 +2694,22 @@ LABEL_13:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v27 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = NMLogForCategory(4);
   v17 = v16;
-  if (v8)
+  if (successCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412290;
-      v26 = v14;
+      v26 = identifierCopy;
       _os_log_impl(&dword_25AEBF000, v17, OS_LOG_TYPE_DEFAULT, "[NACIDS] Successfully sent message (ID: %@).", &v25, 0xCu);
     }
 
@@ -2723,25 +2723,25 @@ LABEL_9:
     [NACIDSServer service:account:identifier:didSendWithSuccess:error:];
   }
 
-  if ([v15 code] == 23)
+  if ([errorCopy code] == 23)
   {
-    v18 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:v14];
+    v18 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:identifierCopy];
     v17 = v18;
     if (v18)
     {
-      v19 = [v18 message];
-      v20 = [v17 type];
+      message = [v18 message];
+      type = [v17 type];
       [v17 timeout];
       v22 = v21;
-      v23 = [v17 queueOne];
-      [(NACIDSServer *)self _sendMessage:v19 type:v20 timeout:v23 queueOne:1 retry:v22];
+      queueOne = [v17 queueOne];
+      [(NACIDSServer *)self _sendMessage:message type:type timeout:queueOne queueOne:1 retry:v22];
     }
 
     goto LABEL_9;
   }
 
 LABEL_10:
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v14];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:identifierCopy];
 
   v24 = *MEMORY[0x277D85DE8];
 }

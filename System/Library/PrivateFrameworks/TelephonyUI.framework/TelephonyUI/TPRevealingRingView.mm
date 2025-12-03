@@ -1,22 +1,22 @@
 @interface TPRevealingRingView
 + (id)classIdentifier;
-- (BOOL)_shouldDrawAsCircle:(CGSize)a3 cornerRadius:(double)a4;
+- (BOOL)_shouldDrawAsCircle:(CGSize)circle cornerRadius:(double)radius;
 - (CGSize)ringSize;
-- (TPRevealingRingView)initWithFrame:(CGRect)a3 paddingOutsideRing:(UIEdgeInsets)a4;
+- (TPRevealingRingView)initWithFrame:(CGRect)frame paddingOutsideRing:(UIEdgeInsets)ring;
 - (UIEdgeInsets)paddingOutsideRing;
 - (id)description;
-- (void)_animateForReveal:(BOOL)a3 withDuration:(float)a4 delay:(double)a5;
-- (void)_calculateOuter:(CGRect *)a3 inner:(CGRect *)a4 newXOffset:(double *)a5 newYOffset:(double *)a6 withScale:(double)a7;
-- (void)_computeInnerViewDrawingPropertiesWithScale:(double)a3;
-- (void)_computeOuterViewDrawingPropertiesWithScale:(double)a3;
+- (void)_animateForReveal:(BOOL)reveal withDuration:(float)duration delay:(double)delay;
+- (void)_calculateOuter:(CGRect *)outer inner:(CGRect *)inner newXOffset:(double *)offset newYOffset:(double *)yOffset withScale:(double)scale;
+- (void)_computeInnerViewDrawingPropertiesWithScale:(double)scale;
+- (void)_computeOuterViewDrawingPropertiesWithScale:(double)scale;
 - (void)_evaluateCircularness;
 - (void)layoutSubviews;
-- (void)setAlphaInsideRing:(double)a3;
-- (void)setColorInsideRing:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPaddingOutsideRing:(UIEdgeInsets)a3;
-- (void)setRevealed:(BOOL)a3 animated:(BOOL)a4 delay:(double)a5;
+- (void)setAlphaInsideRing:(double)ring;
+- (void)setColorInsideRing:(id)ring;
+- (void)setCornerRadius:(double)radius;
+- (void)setFrame:(CGRect)frame;
+- (void)setPaddingOutsideRing:(UIEdgeInsets)ring;
+- (void)setRevealed:(BOOL)revealed animated:(BOOL)animated delay:(double)delay;
 @end
 
 @implementation TPRevealingRingView
@@ -24,43 +24,43 @@
 + (id)classIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
-  v5 = [v4 bundleIdentifier];
-  v6 = NSStringFromClass(a1);
-  v7 = [v3 stringWithFormat:@"%@.%@", v5, v6];
+  v4 = [MEMORY[0x1E696AAE8] bundleForClass:self];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v6 = NSStringFromClass(self);
+  v7 = [v3 stringWithFormat:@"%@.%@", bundleIdentifier, v6];
 
   return v7;
 }
 
-- (TPRevealingRingView)initWithFrame:(CGRect)a3 paddingOutsideRing:(UIEdgeInsets)a4
+- (TPRevealingRingView)initWithFrame:(CGRect)frame paddingOutsideRing:(UIEdgeInsets)ring
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = ring.right;
+  bottom = ring.bottom;
+  left = ring.left;
+  top = ring.top;
   v23.receiver = self;
   v23.super_class = TPRevealingRingView;
-  v8 = [(TPRevealingRingView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(TPRevealingRingView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v9 = v8;
   if (v8)
   {
     [(TPRevealingRingView *)v8 setOpaque:0];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(TPRevealingRingView *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TPRevealingRingView *)v9 setBackgroundColor:clearColor];
 
-    v11 = [(TPRevealingRingView *)v9 layer];
-    [v11 setAllowsGroupBlending:0];
+    layer = [(TPRevealingRingView *)v9 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v12 = [(TPRevealingRingView *)v9 layer];
-    [v12 setAllowsGroupOpacity:0];
+    layer2 = [(TPRevealingRingView *)v9 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     v13 = objc_alloc_init(_TPTemplatedColoredImageView);
     outerView = v9->_outerView;
     v9->_outerView = v13;
 
     v15 = v9->_outerView;
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(_TPTemplatedColoredImageView *)v15 setBackgroundColor:v16];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(_TPTemplatedColoredImageView *)v15 setBackgroundColor:clearColor2];
 
     [(_TPTemplatedColoredImageView *)v9->_outerView setAlpha:1.0];
     [(TPRevealingRingView *)v9 addSubview:v9->_outerView];
@@ -69,8 +69,8 @@
     v9->_innerView = v17;
 
     v19 = v9->_innerView;
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(_TPTemplatedColoredImageView *)v19 setBackgroundColor:v20];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(_TPTemplatedColoredImageView *)v19 setBackgroundColor:clearColor3];
 
     [(_TPTemplatedColoredImageView *)v9->_innerView setAlpha:0.0];
     [(TPRevealingRingView *)v9 addSubview:v9->_innerView];
@@ -78,8 +78,8 @@
     [(TPRevealingRingView *)v9 setRevealAnimationDuration:0.00100000005];
     [(TPRevealingRingView *)v9 setUnrevealAnimationDuration:0.392500013];
     [(TPRevealingRingView *)v9 setPaddingOutsideRing:top, left, bottom, right];
-    v21 = [MEMORY[0x1E69DC888] whiteColor];
-    [(TPRevealingRingView *)v9 setColorInsideRing:v21];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(TPRevealingRingView *)v9 setColorInsideRing:whiteColor];
 
     [(TPRevealingRingView *)v9 setCornerRadius:0.0];
     v9->_alphaInsideRing = 1.0;
@@ -99,71 +99,71 @@
   return result;
 }
 
-- (void)setPaddingOutsideRing:(UIEdgeInsets)a3
+- (void)setPaddingOutsideRing:(UIEdgeInsets)ring
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = ring.top;
+  v3.f64[1] = ring.left;
+  v4.f64[0] = ring.bottom;
+  v4.f64[1] = ring.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_paddingOutsideRing.top, v3), vceqq_f64(*&self->_paddingOutsideRing.bottom, v4)))) & 1) == 0)
   {
-    self->_paddingOutsideRing = a3;
+    self->_paddingOutsideRing = ring;
     [(TPRevealingRingView *)self setNeedsLayout];
   }
 }
 
-- (void)setColorInsideRing:(id)a3
+- (void)setColorInsideRing:(id)ring
 {
-  v5 = a3;
-  if (self->_colorInsideRing != v5)
+  ringCopy = ring;
+  if (self->_colorInsideRing != ringCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_colorInsideRing, a3);
+    v6 = ringCopy;
+    objc_storeStrong(&self->_colorInsideRing, ring);
     [(_TPTemplatedColoredImageView *)self->_innerView setTemplateImageColor:self->_colorInsideRing];
-    v5 = v6;
+    ringCopy = v6;
   }
 }
 
-- (void)setAlphaInsideRing:(double)a3
+- (void)setAlphaInsideRing:(double)ring
 {
-  self->_alphaInsideRing = a3;
+  self->_alphaInsideRing = ring;
   if (!self->_revealed)
   {
     [(_TPTemplatedColoredImageView *)self->_innerView setAlpha:0.0];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(TPRevealingRingView *)self _evaluateCircularness];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TPRevealingRingView;
-  [(TPRevealingRingView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TPRevealingRingView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(TPRevealingRingView *)self _evaluateCircularness];
 }
 
-- (void)setRevealed:(BOOL)a3 animated:(BOOL)a4 delay:(double)a5
+- (void)setRevealed:(BOOL)revealed animated:(BOOL)animated delay:(double)delay
 {
-  if (self->_revealed != a3)
+  if (self->_revealed != revealed)
   {
-    self->_revealed = a3;
+    self->_revealed = revealed;
     v6 = &OBJC_IVAR___TPRevealingRingView__unrevealAnimationDuration;
-    if (a3)
+    if (revealed)
     {
       v6 = &OBJC_IVAR___TPRevealingRingView__revealAnimationDuration;
     }
 
     v7 = *(&self->super.super.super.isa + *v6);
     *&v7 = v7;
-    [(TPRevealingRingView *)self _animateForReveal:v7 withDuration:a5 delay:?];
+    [(TPRevealingRingView *)self _animateForReveal:v7 withDuration:delay delay:?];
   }
 }
 
@@ -216,7 +216,7 @@
   [(TPRevealingRingView *)&v21 layoutSubviews];
 }
 
-- (void)_calculateOuter:(CGRect *)a3 inner:(CGRect *)a4 newXOffset:(double *)a5 newYOffset:(double *)a6 withScale:(double)a7
+- (void)_calculateOuter:(CGRect *)outer inner:(CGRect *)inner newXOffset:(double *)offset newYOffset:(double *)yOffset withScale:(double)scale
 {
   [(TPRevealingRingView *)self bounds];
   top = self->_paddingOutsideRing.top;
@@ -230,31 +230,31 @@
   v23.size.width = v20;
   v23.size.height = v22;
   v24 = CGRectInset(v23, self->_defaultRingStrokeWidth, self->_defaultRingStrokeWidth);
-  if (a3)
+  if (outer)
   {
-    a3->origin.x = v16;
-    a3->origin.y = v18;
-    a3->size.width = v20;
-    a3->size.height = v22;
+    outer->origin.x = v16;
+    outer->origin.y = v18;
+    outer->size.width = v20;
+    outer->size.height = v22;
   }
 
-  if (a4)
+  if (inner)
   {
-    *a4 = v24;
+    *inner = v24;
   }
 
-  if (a5)
+  if (offset)
   {
-    *a5 = v24.size.width * 0.5 - v24.size.width * 0.5 * a7;
+    *offset = v24.size.width * 0.5 - v24.size.width * 0.5 * scale;
   }
 
-  if (a6)
+  if (yOffset)
   {
-    *a6 = v24.size.height * 0.5 - v24.size.height * 0.5 * a7;
+    *yOffset = v24.size.height * 0.5 - v24.size.height * 0.5 * scale;
   }
 }
 
-- (void)_computeInnerViewDrawingPropertiesWithScale:(double)a3
+- (void)_computeInnerViewDrawingPropertiesWithScale:(double)scale
 {
   memset(v15, 0, sizeof(v15));
   v13 = 0u;
@@ -264,8 +264,8 @@
   [(TPRevealingRingView *)self _calculateOuter:v15 inner:&v13 newXOffset:&v12 newYOffset:&v11 withScale:?];
   v5 = v11;
   v4 = v12;
-  v6 = (self->_cornerRadius - self->_defaultRingStrokeWidth) * a3;
-  v10 = vmulq_n_f64(v14, a3);
+  v6 = (self->_cornerRadius - self->_defaultRingStrokeWidth) * scale;
+  v10 = vmulq_n_f64(v14, scale);
   [(_TPTemplatedColoredImageView *)self->_innerView size];
   self->_innerViewDrawingProperties.size.width = v7;
   self->_innerViewDrawingProperties.size.height = v8;
@@ -275,7 +275,7 @@
   self->_innerViewDrawingProperties.outerPath.cornerRadius = v6;
 }
 
-- (void)_computeOuterViewDrawingPropertiesWithScale:(double)a3
+- (void)_computeOuterViewDrawingPropertiesWithScale:(double)scale
 {
   memset(v20, 0, sizeof(v20));
   v18 = 0u;
@@ -283,17 +283,17 @@
   v16 = 0.0;
   v17 = 0.0;
   [(TPRevealingRingView *)self _calculateOuter:v20 inner:&v18 newXOffset:&v17 newYOffset:&v16 withScale:?];
-  v4 = (self->_cornerRadius - self->_defaultRingStrokeWidth) * a3;
+  v4 = (self->_cornerRadius - self->_defaultRingStrokeWidth) * scale;
   [(_TPTemplatedColoredImageView *)self->_outerView bounds];
   v6 = v5;
   [(_TPTemplatedColoredImageView *)self->_outerView bounds];
   v8 = v7;
   defaultRingStrokeWidth = self->_defaultRingStrokeWidth;
-  v10 = v6 * 0.5 - (v6 * 0.5 - defaultRingStrokeWidth) * a3;
-  v11 = v8 * 0.5 - (v8 * 0.5 - defaultRingStrokeWidth) * a3;
+  v10 = v6 * 0.5 - (v6 * 0.5 - defaultRingStrokeWidth) * scale;
+  v11 = v8 * 0.5 - (v8 * 0.5 - defaultRingStrokeWidth) * scale;
   v16 = v11;
   v17 = v10;
-  v15 = vmulq_n_f64(v19, a3);
+  v15 = vmulq_n_f64(v19, scale);
   [(_TPTemplatedColoredImageView *)self->_outerView size];
   self->_outerViewDrawingProperties.size.width = v12;
   self->_outerViewDrawingProperties.size.height = v13;
@@ -315,27 +315,27 @@
   self->_isCircularRing = [TPRevealingRingView _shouldDrawAsCircle:"_shouldDrawAsCircle:cornerRadius:" cornerRadius:?];
 }
 
-- (BOOL)_shouldDrawAsCircle:(CGSize)a3 cornerRadius:(double)a4
+- (BOOL)_shouldDrawAsCircle:(CGSize)circle cornerRadius:(double)radius
 {
-  width = a3.width;
-  v6 = [(TPRevealingRingView *)self _isSquare:a3.width, a3.height];
+  width = circle.width;
+  v6 = [(TPRevealingRingView *)self _isSquare:circle.width, circle.height];
   if (v6)
   {
-    LOBYTE(v6) = vabdd_f64(width * 0.5, fabs(a4)) < 0.1;
+    LOBYTE(v6) = vabdd_f64(width * 0.5, fabs(radius)) < 0.1;
   }
 
   return v6;
 }
 
-- (void)_animateForReveal:(BOOL)a3 withDuration:(float)a4 delay:(double)a5
+- (void)_animateForReveal:(BOOL)reveal withDuration:(float)duration delay:(double)delay
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__TPRevealingRingView__animateForReveal_withDuration_delay___block_invoke;
   v5[3] = &unk_1E7C0C070;
   v5[4] = self;
-  v6 = a3;
-  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:a4];
+  revealCopy = reveal;
+  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:duration];
 }
 
 uint64_t __60__TPRevealingRingView__animateForReveal_withDuration_delay___block_invoke(uint64_t a1)

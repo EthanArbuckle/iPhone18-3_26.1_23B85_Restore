@@ -1,11 +1,11 @@
 @interface VFXEffectController
-- (VFXEffectController)initWithCoder:(id)a3;
+- (VFXEffectController)initWithCoder:(id)coder;
 - (void)dealloc;
 @end
 
 @implementation VFXEffectController
 
-- (VFXEffectController)initWithCoder:(id)a3
+- (VFXEffectController)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = VFXEffectController;
@@ -13,7 +13,7 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"rootIdentifier");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"rootIdentifier");
     objc_msgSend_setTag_(v4, v8, v7, v9);
   }
 

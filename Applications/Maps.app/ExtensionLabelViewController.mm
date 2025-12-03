@@ -1,10 +1,10 @@
 @interface ExtensionLabelViewController
-- (ExtensionLabelViewController)initWithTitle:(id)a3 advertisementText:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (ExtensionLabelViewController)initWithTitle:(id)title advertisementText:(id)text;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)text;
 - (void)configureLabelView;
 - (void)configureTableView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -12,36 +12,36 @@
 
 - (id)text
 {
-  v2 = [(ExtensionLabelViewController *)self label];
-  v3 = [v2 text];
+  label = [(ExtensionLabelViewController *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
 - (void)configureLabelView
 {
   v3 = +[UIColor clearColor];
-  v4 = [(ExtensionLabelViewController *)self label];
-  [v4 setBackgroundColor:v3];
+  label = [(ExtensionLabelViewController *)self label];
+  [label setBackgroundColor:v3];
 
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v5 = [(ExtensionLabelViewController *)self label];
-  [v5 setFont:v6];
+  label2 = [(ExtensionLabelViewController *)self label];
+  [label2 setFont:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 dequeueReusableCellWithIdentifier:v7];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:v7];
 
-  v9 = [v8 advertisementLabel];
-  [(ExtensionLabelViewController *)self setLabel:v9];
+  advertisementLabel = [v8 advertisementLabel];
+  [(ExtensionLabelViewController *)self setLabel:advertisementLabel];
 
-  v10 = [(ExtensionLabelViewController *)self advertisementText];
-  v11 = [(ExtensionLabelViewController *)self label];
-  [v11 setText:v10];
+  advertisementText = [(ExtensionLabelViewController *)self advertisementText];
+  label = [(ExtensionLabelViewController *)self label];
+  [label setText:advertisementText];
 
   [(ExtensionLabelViewController *)self configureLabelView];
 
@@ -51,30 +51,30 @@
 - (void)configureTableView
 {
   v3 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v4 = [(ExtensionLabelViewController *)self tableView];
-  [v4 setTableFooterView:v3];
+  tableView = [(ExtensionLabelViewController *)self tableView];
+  [tableView setTableFooterView:v3];
 
-  v5 = [(ExtensionLabelViewController *)self tableView];
+  tableView2 = [(ExtensionLabelViewController *)self tableView];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v5 registerClass:v6 forCellReuseIdentifier:v8];
+  [tableView2 registerClass:v6 forCellReuseIdentifier:v8];
 
-  v9 = [(ExtensionLabelViewController *)self tableView];
-  [v9 setRowHeight:UITableViewAutomaticDimension];
+  tableView3 = [(ExtensionLabelViewController *)self tableView];
+  [tableView3 setRowHeight:UITableViewAutomaticDimension];
 
-  v10 = [(ExtensionLabelViewController *)self tableView];
-  [v10 setScrollEnabled:0];
+  tableView4 = [(ExtensionLabelViewController *)self tableView];
+  [tableView4 setScrollEnabled:0];
 
-  v11 = [(ExtensionLabelViewController *)self tableView];
-  [v11 setAllowsSelection:0];
+  tableView5 = [(ExtensionLabelViewController *)self tableView];
+  [tableView5 setAllowsSelection:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ExtensionLabelViewController;
-  [(ExtensionLabelViewController *)&v3 viewDidAppear:a3];
+  [(ExtensionLabelViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)viewDidLoad
@@ -85,18 +85,18 @@
   [(ExtensionLabelViewController *)self configureTableView];
 }
 
-- (ExtensionLabelViewController)initWithTitle:(id)a3 advertisementText:(id)a4
+- (ExtensionLabelViewController)initWithTitle:(id)title advertisementText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = ExtensionLabelViewController;
   v8 = [(ExtensionLabelViewController *)&v13 initWithStyle:1];
   v9 = v8;
   if (v8)
   {
-    [(ExtensionLabelViewController *)v8 setTitle:v6];
-    v10 = [v7 copy];
+    [(ExtensionLabelViewController *)v8 setTitle:titleCopy];
+    v10 = [textCopy copy];
     advertisementText = v9->_advertisementText;
     v9->_advertisementText = v10;
   }

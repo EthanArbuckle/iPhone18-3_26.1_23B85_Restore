@@ -1,7 +1,7 @@
 @interface PSCoreAnalyticsProcessUsageTracker
 - (BOOL)okToSendCAEvents;
 - (PSCoreAnalyticsProcessUsageTracker)init;
-- (PSCoreAnalyticsProcessUsageTracker)initWithDelegate:(id)a3;
+- (PSCoreAnalyticsProcessUsageTracker)initWithDelegate:(id)delegate;
 @end
 
 @implementation PSCoreAnalyticsProcessUsageTracker
@@ -15,9 +15,9 @@
   return v5;
 }
 
-- (PSCoreAnalyticsProcessUsageTracker)initWithDelegate:(id)a3
+- (PSCoreAnalyticsProcessUsageTracker)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PSCoreAnalyticsProcessUsageTracker;
   v5 = [(PSCoreAnalyticsProcessUsageTracker *)&v8 init];
@@ -27,7 +27,7 @@
     [(PSCoreAnalyticsProcessUsageTracker *)v5 setMaxPhysicalFootprint:115343360];
     [(PSCoreAnalyticsProcessUsageTracker *)v6 setHysteresisMargin:10485760];
     [(PSCoreAnalyticsProcessUsageTracker *)v6 setAllowedPhysicalFootprint:[(PSCoreAnalyticsProcessUsageTracker *)v6 maxPhysicalFootprint]];
-    [(PSCoreAnalyticsProcessUsageTracker *)v6 setDelegate:v4];
+    [(PSCoreAnalyticsProcessUsageTracker *)v6 setDelegate:delegateCopy];
   }
 
   return v6;
@@ -35,28 +35,28 @@
 
 - (BOOL)okToSendCAEvents
 {
-  v3 = [(PSCoreAnalyticsProcessUsageTracker *)self delegate];
-  v4 = [v3 readProcessUsage];
+  delegate = [(PSCoreAnalyticsProcessUsageTracker *)self delegate];
+  readProcessUsage = [delegate readProcessUsage];
 
-  if (!v4)
+  if (!readProcessUsage)
   {
     return 0;
   }
 
-  v5 = [(PSCoreAnalyticsProcessUsageTracker *)self delegate];
-  v6 = [v5 physicalFootprint];
-  v7 = [(PSCoreAnalyticsProcessUsageTracker *)self allowedPhysicalFootprint];
+  delegate2 = [(PSCoreAnalyticsProcessUsageTracker *)self delegate];
+  physicalFootprint = [delegate2 physicalFootprint];
+  allowedPhysicalFootprint = [(PSCoreAnalyticsProcessUsageTracker *)self allowedPhysicalFootprint];
 
-  v8 = [(PSCoreAnalyticsProcessUsageTracker *)self maxPhysicalFootprint];
-  v9 = v6 <= v7;
-  if (v6 > v7)
+  maxPhysicalFootprint = [(PSCoreAnalyticsProcessUsageTracker *)self maxPhysicalFootprint];
+  v9 = physicalFootprint <= allowedPhysicalFootprint;
+  if (physicalFootprint > allowedPhysicalFootprint)
   {
-    v8 -= [(PSCoreAnalyticsProcessUsageTracker *)self hysteresisMargin];
+    maxPhysicalFootprint -= [(PSCoreAnalyticsProcessUsageTracker *)self hysteresisMargin];
   }
 
-  [(PSCoreAnalyticsProcessUsageTracker *)self setAllowedPhysicalFootprint:v8];
-  v10 = [(PSCoreAnalyticsProcessUsageTracker *)self delegate];
-  [v10 didCheckIfOKToSendCAEventsWithResult:v6 <= v7];
+  [(PSCoreAnalyticsProcessUsageTracker *)self setAllowedPhysicalFootprint:maxPhysicalFootprint];
+  delegate3 = [(PSCoreAnalyticsProcessUsageTracker *)self delegate];
+  [delegate3 didCheckIfOKToSendCAEventsWithResult:physicalFootprint <= allowedPhysicalFootprint];
 
   return v9;
 }

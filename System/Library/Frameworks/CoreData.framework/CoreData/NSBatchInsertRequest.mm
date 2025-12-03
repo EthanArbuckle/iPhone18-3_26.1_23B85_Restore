@@ -2,7 +2,7 @@
 + (NSBatchInsertRequest)batchInsertRequestWithEntityName:(NSString *)entityName dictionaryHandler:(void *)handler;
 + (NSBatchInsertRequest)batchInsertRequestWithEntityName:(NSString *)entityName managedObjectHandler:(void *)handler;
 + (NSBatchInsertRequest)batchInsertRequestWithEntityName:(NSString *)entityName objects:(NSArray *)dictionaries;
-+ (id)decodeFromXPCArchive:(id)a3 withContext:(id)a4 withPolicy:(id)a5;
++ (id)decodeFromXPCArchive:(id)archive withContext:(id)context withPolicy:(id)policy;
 - (NSBatchInsertRequest)init;
 - (NSBatchInsertRequest)initWithEntity:(NSEntityDescription *)entity dictionaryHandler:(void *)handler;
 - (NSBatchInsertRequest)initWithEntity:(NSEntityDescription *)entity managedObjectHandler:(void *)handler;
@@ -14,9 +14,9 @@
 - (NSString)entityName;
 - (id)description;
 - (id)encodeForXPC;
-- (void)_resolveEntityWithContext:(id)a3;
-- (void)_resolveEntityWithSQLCore:(uint64_t)a1;
-- (void)_setSecureOperation:(BOOL)a3;
+- (void)_resolveEntityWithContext:(id)context;
+- (void)_resolveEntityWithSQLCore:(uint64_t)core;
+- (void)_setSecureOperation:(BOOL)operation;
 - (void)dealloc;
 - (void)setDictionaryHandler:(void *)dictionaryHandler;
 - (void)setManagedObjectHandler:(void *)managedObjectHandler;
@@ -31,19 +31,19 @@
   [v3 setDelegate:objc_opt_class()];
   [v3 encodeObject:v2 forKey:@"root"];
   [v3 finishEncoding];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-+ (id)decodeFromXPCArchive:(id)a3 withContext:(id)a4 withPolicy:(id)a5
++ (id)decodeFromXPCArchive:(id)archive withContext:(id)context withPolicy:(id)policy
 {
-  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:a3 error:0];
-  [v7 setDelegate:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:archive error:0];
+  [v7 setDelegate:context];
   v8 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-  if (a5)
+  if (policy)
   {
-    v8 = [v8 setByAddingObjectsFromSet:{objc_msgSend(a5, "allowableClassesForClientWithContext:", a4)}];
+    v8 = [v8 setByAddingObjectsFromSet:{objc_msgSend(policy, "allowableClassesForClientWithContext:", context)}];
   }
 
   v9 = [v7 decodeObjectOfClasses:v8 forKey:@"root"];
@@ -282,15 +282,15 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NSBatchInsertRequest *)self entityName];
-  v6 = [(NSBatchInsertRequest *)self resultType];
+  entityName = [(NSBatchInsertRequest *)self entityName];
+  resultType = [(NSBatchInsertRequest *)self resultType];
   objc_opt_self();
-  if (v6 >= (NSBatchInsertRequestResultTypeCount|NSBatchInsertRequestResultTypeObjectIDs))
+  if (resultType >= (NSBatchInsertRequestResultTypeCount|NSBatchInsertRequestResultTypeObjectIDs))
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"'%ld' is an unknown NSBatchInsertRequestResultType value", v6), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"'%ld' is an unknown NSBatchInsertRequestResultType value", resultType), 0}]);
   }
 
-  v7 = off_1E6EC2A20[v6];
+  v7 = off_1E6EC2A20[resultType];
   if (self->_objectsToInsert)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu objects", -[NSArray count](-[NSBatchInsertRequest objectsToInsert](self, "objectsToInsert"), "count")];
@@ -301,7 +301,7 @@
     v8 = @"handler provided";
   }
 
-  v9 = [v4 stringWithFormat:@"<NSBatchInsertRequest : entity = %@ resultType = %@ and %@>", v5, v7, v8];
+  v9 = [v4 stringWithFormat:@"<NSBatchInsertRequest : entity = %@ resultType = %@ and %@>", entityName, v7, v8];
   objc_autoreleasePoolPop(v3);
 
   return v9;
@@ -328,9 +328,9 @@
   return self->_entity;
 }
 
-- (void)_setSecureOperation:(BOOL)a3
+- (void)_setSecureOperation:(BOOL)operation
 {
-  if (a3)
+  if (operation)
   {
     v3 = 8;
   }
@@ -343,7 +343,7 @@
   self->_flags = (*&self->_flags & 0xFFFFFFF7 | v3);
 }
 
-- (void)_resolveEntityWithContext:(id)a3
+- (void)_resolveEntityWithContext:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
   if ((*&self->_flags & 4) != 0)
@@ -353,7 +353,7 @@
     v24 = 0x3052000000;
     v25 = __Block_byref_object_copy__18;
     v26 = __Block_byref_object_dispose__18;
-    v5 = [objc_msgSend(a3 "persistentStoreCoordinator")];
+    v5 = [objc_msgSend(context "persistentStoreCoordinator")];
     if (v5)
     {
       v5 = [*(v5 + 32) objectForKey:self->_entity];
@@ -366,7 +366,7 @@
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v6 = [objc_msgSend(a3 "persistentStoreCoordinator")];
+      v6 = [objc_msgSend(context "persistentStoreCoordinator")];
       v7 = [v6 countByEnumeratingWithState:&v18 objects:v28 count:16];
       if (v7)
       {
@@ -380,14 +380,14 @@
               objc_enumerationMutation(v6);
             }
 
-            v10 = [*(*(&v18 + 1) + 8 * i) ancillaryModels];
+            ancillaryModels = [*(*(&v18 + 1) + 8 * i) ancillaryModels];
             v17[0] = MEMORY[0x1E69E9820];
             v17[1] = 3221225472;
             v17[2] = __50__NSBatchInsertRequest__resolveEntityWithContext___block_invoke;
             v17[3] = &unk_1E6EC2A00;
             v17[4] = self;
             v17[5] = &v22;
-            [v10 enumerateKeysAndObjectsUsingBlock:v17];
+            [ancillaryModels enumerateKeysAndObjectsUsingBlock:v17];
           }
 
           v7 = [v6 countByEnumeratingWithState:&v18 objects:v28 count:16];
@@ -437,9 +437,9 @@ uint64_t __50__NSBatchInsertRequest__resolveEntityWithContext___block_invoke(uin
   return result;
 }
 
-- (void)_resolveEntityWithSQLCore:(uint64_t)a1
+- (void)_resolveEntityWithSQLCore:(uint64_t)core
 {
-  if (a1 && (*(a1 + 48) & 4) != 0)
+  if (core && (*(core + 48) & 4) != 0)
   {
     v12 = 0;
     v13 = &v12;
@@ -449,34 +449,34 @@ uint64_t __50__NSBatchInsertRequest__resolveEntityWithContext___block_invoke(uin
     v4 = [objc_msgSend(a2 "persistentStoreCoordinator")];
     if (v4)
     {
-      v4 = [*(v4 + 32) objectForKey:*(a1 + 16)];
+      v4 = [*(v4 + 32) objectForKey:*(core + 16)];
     }
 
     v17 = v4;
     v5 = v13[5];
     if (!v5)
     {
-      v6 = [a2 ancillaryModels];
+      ancillaryModels = [a2 ancillaryModels];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __50__NSBatchInsertRequest__resolveEntityWithSQLCore___block_invoke;
       v11[3] = &unk_1E6EC2A00;
-      v11[4] = a1;
+      v11[4] = core;
       v11[5] = &v12;
-      [v6 enumerateKeysAndObjectsUsingBlock:v11];
+      [ancillaryModels enumerateKeysAndObjectsUsingBlock:v11];
       v5 = v13[5];
       if (!v5)
       {
         v9 = MEMORY[0x1E695DF30];
-        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find entity for batch insert (%@)", *(a1 + 16)];
+        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find entity for batch insert (%@)", *(core + 16)];
         objc_exception_throw([v9 exceptionWithName:*MEMORY[0x1E695D930] reason:v10 userInfo:0]);
       }
     }
 
     v7 = v5;
-    v8 = *(a1 + 16);
-    *(a1 + 16) = v13[5];
-    *(a1 + 48) &= ~4u;
+    v8 = *(core + 16);
+    *(core + 16) = v13[5];
+    *(core + 48) &= ~4u;
 
     _Block_object_dispose(&v12, 8);
   }

@@ -1,12 +1,12 @@
 @interface APBrokerHTTPUtilsTaskDelegate
-- (APBrokerHTTPUtilsTaskDelegate)initWithLogContext:(void *)a3 sslCertificateHostName:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
+- (APBrokerHTTPUtilsTaskDelegate)initWithLogContext:(void *)context sslCertificateHostName:(id)name;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation APBrokerHTTPUtilsTaskDelegate
 
-- (APBrokerHTTPUtilsTaskDelegate)initWithLogContext:(void *)a3 sslCertificateHostName:(id)a4
+- (APBrokerHTTPUtilsTaskDelegate)initWithLogContext:(void *)context sslCertificateHostName:(id)name
 {
   v9.receiver = self;
   v9.super_class = APBrokerHTTPUtilsTaskDelegate;
@@ -14,10 +14,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->_logContext = a3;
-    if (a4)
+    v6->_logContext = context;
+    if (name)
     {
-      v6->_sslCertificateHostName = a4;
+      v6->_sslCertificateHostName = name;
     }
 
     else
@@ -38,17 +38,17 @@
   [(APBrokerHTTPUtilsTaskDelegate *)&v3 dealloc];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
   error = 0;
-  v9 = [objc_msgSend(a5 "protectionSpace")];
+  v9 = [objc_msgSend(challenge "protectionSpace")];
   if (gLogCategory_APBrokerHTTPUtils <= 30 && (gLogCategory_APBrokerHTTPUtils != -1 || _LogCategory_Initialize()))
   {
-    [APBrokerHTTPUtilsTaskDelegate URLSession:a5 task:? didReceiveChallenge:? completionHandler:?];
+    [APBrokerHTTPUtilsTaskDelegate URLSession:challenge task:? didReceiveChallenge:? completionHandler:?];
   }
 
-  v10 = [objc_msgSend(a5 "protectionSpace")];
+  v10 = [objc_msgSend(challenge "protectionSpace")];
   if ([v10 isEqualToString:*MEMORY[0x277CCA720]])
   {
     v11 = v9 == 0;
@@ -76,7 +76,7 @@
 
       if (gLogCategory_APBrokerHTTPUtils >= 91)
       {
-        (*(a6 + 2))(a6, 2, 0);
+        (*(handler + 2))(handler, 2, 0);
 LABEL_22:
         CFRelease(v13);
         goto LABEL_23;
@@ -108,7 +108,7 @@ LABEL_17:
     LogPrintF();
   }
 
-  (*(a6 + 2))(a6, v14, v12);
+  (*(handler + 2))(handler, v14, v12);
   if (v13)
   {
     goto LABEL_22;

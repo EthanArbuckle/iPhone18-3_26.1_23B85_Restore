@@ -1,12 +1,12 @@
 @interface CAMOverlaySliderState
 + (id)coachingState;
 + (id)hiddenState;
-+ (id)hintWithNormalizedButtonOffset:(double)a3;
++ (id)hintWithNormalizedButtonOffset:(double)offset;
 + (id)presentedState;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToState:(id)state;
 - (CAMOverlaySliderState)init;
-- (double)_effectiveNormalizedButtonOffsetFromState:(id)a3;
+- (double)_effectiveNormalizedButtonOffsetFromState:(id)state;
 - (id)_modeDescription;
 - (id)description;
 @end
@@ -28,42 +28,42 @@
 
 + (id)hiddenState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (id)presentedState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[1] = 3;
   v2[2] = 0x3FE0000000000000;
 
   return v2;
 }
 
-+ (id)hintWithNormalizedButtonOffset:(double)a3
++ (id)hintWithNormalizedButtonOffset:(double)offset
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   *(v4 + 1) = 2;
-  v4[2] = a3;
+  v4[2] = offset;
 
   return v4;
 }
 
 + (id)coachingState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[1] = 1;
 
   return v2;
 }
 
-- (double)_effectiveNormalizedButtonOffsetFromState:(id)a3
+- (double)_effectiveNormalizedButtonOffsetFromState:(id)state
 {
-  v5 = a3;
-  v6 = [(CAMOverlaySliderState *)self _sliderMode];
-  if ((v6 - 1) < 3 || (self = v5, !v6))
+  stateCopy = state;
+  _sliderMode = [(CAMOverlaySliderState *)self _sliderMode];
+  if ((_sliderMode - 1) < 3 || (self = stateCopy, !_sliderMode))
   {
     [(CAMOverlaySliderState *)self _normalizedButtonOffset];
     v3 = v7;
@@ -72,13 +72,13 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CAMOverlaySliderState *)self isEqualToState:v4];
+    v5 = [(CAMOverlaySliderState *)self isEqualToState:equalCopy];
   }
 
   else
@@ -89,16 +89,16 @@
   return v5;
 }
 
-- (BOOL)isEqualToState:(id)a3
+- (BOOL)isEqualToState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (v6 = [(CAMOverlaySliderState *)v4 _sliderMode], v6 == [(CAMOverlaySliderState *)self _sliderMode]))
+  else if (stateCopy && (v6 = [(CAMOverlaySliderState *)stateCopy _sliderMode], v6 == [(CAMOverlaySliderState *)self _sliderMode]))
   {
     [(CAMOverlaySliderState *)v5 _normalizedButtonOffset];
     v8 = v7;
@@ -116,16 +116,16 @@
 
 - (id)_modeDescription
 {
-  v3 = [(CAMOverlaySliderState *)self _sliderMode];
-  if (v3 > 1)
+  _sliderMode = [(CAMOverlaySliderState *)self _sliderMode];
+  if (_sliderMode > 1)
   {
-    if (v3 == 2)
+    if (_sliderMode == 2)
     {
       [(CAMOverlaySliderState *)self _normalizedButtonOffset];
       v5 = [NSString stringWithFormat:@"Hinting (pos %.3f)", v6];
     }
 
-    else if (v3 == 3)
+    else if (_sliderMode == 3)
     {
       v5 = @"Presented";
     }
@@ -139,12 +139,12 @@
   else
   {
     v4 = @"Coaching";
-    if (v3 != 1)
+    if (_sliderMode != 1)
     {
       v4 = 0;
     }
 
-    if (v3)
+    if (_sliderMode)
     {
       v5 = v4;
     }
@@ -162,8 +162,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CAMOverlaySliderState *)self _modeDescription];
-  v6 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, v5];
+  _modeDescription = [(CAMOverlaySliderState *)self _modeDescription];
+  v6 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, _modeDescription];
 
   return v6;
 }

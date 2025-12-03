@@ -1,39 +1,39 @@
 @interface MTSchemaMTInvocationStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTSchemaMTApiInvocationMetadata)apiInvocationMetadata;
 - (MTSchemaMTAppInvocationMetadata)appInvocationMetadata;
-- (MTSchemaMTInvocationStarted)initWithDictionary:(id)a3;
-- (MTSchemaMTInvocationStarted)initWithJSON:(id)a3;
+- (MTSchemaMTInvocationStarted)initWithDictionary:(id)dictionary;
+- (MTSchemaMTInvocationStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteApiInvocationMetadata;
 - (void)deleteAppInvocationMetadata;
-- (void)setApiInvocationMetadata:(id)a3;
-- (void)setAppInvocationMetadata:(id)a3;
-- (void)setHasDisplayMode:(BOOL)a3;
-- (void)setHasInputSource:(BOOL)a3;
-- (void)setHasInvocationType:(BOOL)a3;
-- (void)setHasIsExplicitLanguageFilterEnabled:(BOOL)a3;
-- (void)setHasIsLanguageIdentificationEnabled:(BOOL)a3;
-- (void)setHasMobileAssetConfigVersion:(BOOL)a3;
-- (void)setHasTask:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setApiInvocationMetadata:(id)metadata;
+- (void)setAppInvocationMetadata:(id)metadata;
+- (void)setHasDisplayMode:(BOOL)mode;
+- (void)setHasInputSource:(BOOL)source;
+- (void)setHasInvocationType:(BOOL)type;
+- (void)setHasIsExplicitLanguageFilterEnabled:(BOOL)enabled;
+- (void)setHasIsLanguageIdentificationEnabled:(BOOL)enabled;
+- (void)setHasMobileAssetConfigVersion:(BOOL)version;
+- (void)setHasTask:(BOOL)task;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTInvocationStarted
 
-- (MTSchemaMTInvocationStarted)initWithDictionary:(id)a3
+- (MTSchemaMTInvocationStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = MTSchemaMTInvocationStarted;
   v5 = [(MTSchemaMTInvocationStarted *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,21 +42,21 @@
     }
 
     v28 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"isOnDeviceTranslation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isOnDeviceTranslation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTInvocationStarted setIsOnDeviceTranslation:](v5, "setIsOnDeviceTranslation:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"mobileAssetConfigVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"mobileAssetConfigVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTInvocationStarted setMobileAssetConfigVersion:](v5, "setMobileAssetConfigVersion:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"task"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"task"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
     }
 
     v25 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"inputSource"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"inputSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,14 +72,14 @@
     }
 
     v24 = v11;
-    v12 = [v4 objectForKeyedSubscript:@"isExplicitLanguageFilterEnabled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isExplicitLanguageFilterEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTInvocationStarted setIsExplicitLanguageFilterEnabled:](v5, "setIsExplicitLanguageFilterEnabled:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isLanguageIdentificationEnabled"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isLanguageIdentificationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,14 +87,14 @@
     }
 
     v27 = v8;
-    v14 = [v4 objectForKeyedSubscript:@"displayMode"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"displayMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTInvocationStarted setDisplayMode:](v5, "setDisplayMode:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"qssSessionId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"qssSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,14 +103,14 @@
     }
 
     v26 = v9;
-    v17 = [v4 objectForKeyedSubscript:@"invocationType"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"invocationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTInvocationStarted setInvocationType:](v5, "setInvocationType:", [v17 intValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"appInvocationMetadata"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"appInvocationMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,7 +118,7 @@
       [(MTSchemaMTInvocationStarted *)v5 setAppInvocationMetadata:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"apiInvocationMetadata"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"apiInvocationMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,30 +132,30 @@
   return v5;
 }
 
-- (MTSchemaMTInvocationStarted)initWithJSON:(id)a3
+- (MTSchemaMTInvocationStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTInvocationStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTInvocationStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTInvocationStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -168,36 +168,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_apiInvocationMetadata)
   {
-    v4 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    apiInvocationMetadata = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
+    dictionaryRepresentation = [apiInvocationMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"apiInvocationMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"apiInvocationMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"apiInvocationMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"apiInvocationMetadata"];
     }
   }
 
   if (self->_appInvocationMetadata)
   {
-    v7 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    appInvocationMetadata = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
+    dictionaryRepresentation2 = [appInvocationMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"appInvocationMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"appInvocationMetadata"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"appInvocationMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"appInvocationMetadata"];
     }
   }
 
@@ -215,7 +215,7 @@
       v12 = off_1E78D9CD8[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"displayMode"];
+    [dictionary setObject:v12 forKeyedSubscript:@"displayMode"];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -245,7 +245,7 @@ LABEL_13:
     v14 = off_1E78D9CF0[v13];
   }
 
-  [v3 setObject:v14 forKeyedSubscript:@"inputSource"];
+  [dictionary setObject:v14 forKeyedSubscript:@"inputSource"];
   has = self->_has;
   if (has < 0)
   {
@@ -261,7 +261,7 @@ LABEL_23:
       v16 = off_1E78D9D10[v15];
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"invocationType"];
+    [dictionary setObject:v16 forKeyedSubscript:@"invocationType"];
     has = self->_has;
   }
 
@@ -269,7 +269,7 @@ LABEL_27:
   if ((has & 0x10) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[MTSchemaMTInvocationStarted isExplicitLanguageFilterEnabled](self, "isExplicitLanguageFilterEnabled")}];
-    [v3 setObject:v20 forKeyedSubscript:@"isExplicitLanguageFilterEnabled"];
+    [dictionary setObject:v20 forKeyedSubscript:@"isExplicitLanguageFilterEnabled"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -290,51 +290,51 @@ LABEL_29:
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[MTSchemaMTInvocationStarted isLanguageIdentificationEnabled](self, "isLanguageIdentificationEnabled")}];
-  [v3 setObject:v21 forKeyedSubscript:@"isLanguageIdentificationEnabled"];
+  [dictionary setObject:v21 forKeyedSubscript:@"isLanguageIdentificationEnabled"];
 
   if (*&self->_has)
   {
 LABEL_30:
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[MTSchemaMTInvocationStarted isOnDeviceTranslation](self, "isOnDeviceTranslation")}];
-    [v3 setObject:v17 forKeyedSubscript:@"isOnDeviceTranslation"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isOnDeviceTranslation"];
   }
 
 LABEL_31:
   if (self->_linkId)
   {
-    v18 = [(MTSchemaMTInvocationStarted *)self linkId];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    linkId = [(MTSchemaMTInvocationStarted *)self linkId];
+    dictionaryRepresentation3 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"linkId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"linkId"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MTSchemaMTInvocationStarted mobileAssetConfigVersion](self, "mobileAssetConfigVersion")}];
-    [v3 setObject:v23 forKeyedSubscript:@"mobileAssetConfigVersion"];
+    [dictionary setObject:v23 forKeyedSubscript:@"mobileAssetConfigVersion"];
   }
 
   if (self->_qssSessionId)
   {
-    v24 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    qssSessionId = [(MTSchemaMTInvocationStarted *)self qssSessionId];
+    dictionaryRepresentation4 = [qssSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"qssSessionId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"qssSessionId"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"qssSessionId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"qssSessionId"];
     }
   }
 
@@ -351,12 +351,12 @@ LABEL_31:
       v28 = off_1E78D9DA8[v27];
     }
 
-    [v3 setObject:v28 forKeyedSubscript:@"task"];
+    [dictionary setObject:v28 forKeyedSubscript:@"task"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -470,34 +470,34 @@ LABEL_16:
   return v12 ^ v13 ^ [(MTSchemaMTApiInvocationMetadata *)self->_apiInvocationMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   whichInvocationmetadata = self->_whichInvocationmetadata;
-  if (whichInvocationmetadata != [v4 whichInvocationmetadata])
+  if (whichInvocationmetadata != [equalCopy whichInvocationmetadata])
   {
     goto LABEL_53;
   }
 
-  v6 = [(MTSchemaMTInvocationStarted *)self linkId];
-  v7 = [v4 linkId];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(MTSchemaMTInvocationStarted *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_52;
   }
 
-  v8 = [(MTSchemaMTInvocationStarted *)self linkId];
-  if (v8)
+  linkId3 = [(MTSchemaMTInvocationStarted *)self linkId];
+  if (linkId3)
   {
-    v9 = v8;
-    v10 = [(MTSchemaMTInvocationStarted *)self linkId];
-    v11 = [v4 linkId];
-    v12 = [v10 isEqual:v11];
+    v9 = linkId3;
+    linkId4 = [(MTSchemaMTInvocationStarted *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v12 = [linkId4 isEqual:linkId5];
 
     if (!v12)
     {
@@ -510,7 +510,7 @@ LABEL_16:
   }
 
   has = self->_has;
-  v14 = v4[72];
+  v14 = equalCopy[72];
   if ((*&has & 1) != (v14 & 1))
   {
     goto LABEL_53;
@@ -519,13 +519,13 @@ LABEL_16:
   if (*&has)
   {
     isOnDeviceTranslation = self->_isOnDeviceTranslation;
-    if (isOnDeviceTranslation != [v4 isOnDeviceTranslation])
+    if (isOnDeviceTranslation != [equalCopy isOnDeviceTranslation])
     {
       goto LABEL_53;
     }
 
     has = self->_has;
-    v14 = v4[72];
+    v14 = equalCopy[72];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -537,13 +537,13 @@ LABEL_16:
   if (v16)
   {
     mobileAssetConfigVersion = self->_mobileAssetConfigVersion;
-    if (mobileAssetConfigVersion != [v4 mobileAssetConfigVersion])
+    if (mobileAssetConfigVersion != [equalCopy mobileAssetConfigVersion])
     {
       goto LABEL_53;
     }
 
     has = self->_has;
-    v14 = v4[72];
+    v14 = equalCopy[72];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -555,13 +555,13 @@ LABEL_16:
   if (v18)
   {
     task = self->_task;
-    if (task != [v4 task])
+    if (task != [equalCopy task])
     {
       goto LABEL_53;
     }
 
     has = self->_has;
-    v14 = v4[72];
+    v14 = equalCopy[72];
   }
 
   v20 = (*&has >> 3) & 1;
@@ -573,13 +573,13 @@ LABEL_16:
   if (v20)
   {
     inputSource = self->_inputSource;
-    if (inputSource != [v4 inputSource])
+    if (inputSource != [equalCopy inputSource])
     {
       goto LABEL_53;
     }
 
     has = self->_has;
-    v14 = v4[72];
+    v14 = equalCopy[72];
   }
 
   v22 = (*&has >> 4) & 1;
@@ -591,13 +591,13 @@ LABEL_16:
   if (v22)
   {
     isExplicitLanguageFilterEnabled = self->_isExplicitLanguageFilterEnabled;
-    if (isExplicitLanguageFilterEnabled != [v4 isExplicitLanguageFilterEnabled])
+    if (isExplicitLanguageFilterEnabled != [equalCopy isExplicitLanguageFilterEnabled])
     {
       goto LABEL_53;
     }
 
     has = self->_has;
-    v14 = v4[72];
+    v14 = equalCopy[72];
   }
 
   v24 = (*&has >> 5) & 1;
@@ -609,13 +609,13 @@ LABEL_16:
   if (v24)
   {
     isLanguageIdentificationEnabled = self->_isLanguageIdentificationEnabled;
-    if (isLanguageIdentificationEnabled != [v4 isLanguageIdentificationEnabled])
+    if (isLanguageIdentificationEnabled != [equalCopy isLanguageIdentificationEnabled])
     {
       goto LABEL_53;
     }
 
     has = self->_has;
-    v14 = v4[72];
+    v14 = equalCopy[72];
   }
 
   v26 = (*&has >> 6) & 1;
@@ -627,26 +627,26 @@ LABEL_16:
   if (v26)
   {
     displayMode = self->_displayMode;
-    if (displayMode != [v4 displayMode])
+    if (displayMode != [equalCopy displayMode])
     {
       goto LABEL_53;
     }
   }
 
-  v6 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
-  v7 = [v4 qssSessionId];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(MTSchemaMTInvocationStarted *)self qssSessionId];
+  linkId2 = [equalCopy qssSessionId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_52;
   }
 
-  v28 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
-  if (v28)
+  qssSessionId = [(MTSchemaMTInvocationStarted *)self qssSessionId];
+  if (qssSessionId)
   {
-    v29 = v28;
-    v30 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
-    v31 = [v4 qssSessionId];
-    v32 = [v30 isEqual:v31];
+    v29 = qssSessionId;
+    qssSessionId2 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
+    qssSessionId3 = [equalCopy qssSessionId];
+    v32 = [qssSessionId2 isEqual:qssSessionId3];
 
     if (!v32)
     {
@@ -659,7 +659,7 @@ LABEL_16:
   }
 
   v33 = self->_has;
-  if (((v4[72] ^ *&v33) & 0x80) != 0)
+  if (((equalCopy[72] ^ *&v33) & 0x80) != 0)
   {
     goto LABEL_53;
   }
@@ -667,26 +667,26 @@ LABEL_16:
   if ((*&v33 & 0x80000000) != 0)
   {
     invocationType = self->_invocationType;
-    if (invocationType != [v4 invocationType])
+    if (invocationType != [equalCopy invocationType])
     {
       goto LABEL_53;
     }
   }
 
-  v6 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
-  v7 = [v4 appInvocationMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
+  linkId2 = [equalCopy appInvocationMetadata];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_52;
   }
 
-  v35 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
-  if (v35)
+  appInvocationMetadata = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
+  if (appInvocationMetadata)
   {
-    v36 = v35;
-    v37 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
-    v38 = [v4 appInvocationMetadata];
-    v39 = [v37 isEqual:v38];
+    v36 = appInvocationMetadata;
+    appInvocationMetadata2 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
+    appInvocationMetadata3 = [equalCopy appInvocationMetadata];
+    v39 = [appInvocationMetadata2 isEqual:appInvocationMetadata3];
 
     if (!v39)
     {
@@ -698,17 +698,17 @@ LABEL_16:
   {
   }
 
-  v6 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
-  v7 = [v4 apiInvocationMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
+  linkId2 = [equalCopy apiInvocationMetadata];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_52:
 
     goto LABEL_53;
   }
 
-  v40 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
-  if (!v40)
+  apiInvocationMetadata = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
+  if (!apiInvocationMetadata)
   {
 
 LABEL_56:
@@ -716,10 +716,10 @@ LABEL_56:
     goto LABEL_54;
   }
 
-  v41 = v40;
-  v42 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
-  v43 = [v4 apiInvocationMetadata];
-  v44 = [v42 isEqual:v43];
+  v41 = apiInvocationMetadata;
+  apiInvocationMetadata2 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
+  apiInvocationMetadata3 = [equalCopy apiInvocationMetadata];
+  v44 = [apiInvocationMetadata2 isEqual:apiInvocationMetadata3];
 
   if (v44)
   {
@@ -733,14 +733,14 @@ LABEL_54:
   return v45;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(MTSchemaMTInvocationStarted *)self linkId];
+  toCopy = to;
+  linkId = [(MTSchemaMTInvocationStarted *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(MTSchemaMTInvocationStarted *)self linkId];
+    linkId2 = [(MTSchemaMTInvocationStarted *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -830,11 +830,11 @@ LABEL_10:
   }
 
 LABEL_11:
-  v7 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
+  qssSessionId = [(MTSchemaMTInvocationStarted *)self qssSessionId];
 
-  if (v7)
+  if (qssSessionId)
   {
-    v8 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
+    qssSessionId2 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -843,23 +843,23 @@ LABEL_11:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
+  appInvocationMetadata = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
 
-  if (v9)
+  if (appInvocationMetadata)
   {
-    v10 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
+    appInvocationMetadata2 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
+  apiInvocationMetadata = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
 
-  v12 = v14;
-  if (v11)
+  v12 = toCopy;
+  if (apiInvocationMetadata)
   {
-    v13 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
+    apiInvocationMetadata2 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
     PBDataWriterWriteSubmessage();
 
-    v12 = v14;
+    v12 = toCopy;
   }
 }
 
@@ -888,21 +888,21 @@ LABEL_11:
   return v3;
 }
 
-- (void)setApiInvocationMetadata:(id)a3
+- (void)setApiInvocationMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   appInvocationMetadata = self->_appInvocationMetadata;
   self->_appInvocationMetadata = 0;
 
   v6 = 12;
-  if (!v4)
+  if (!metadataCopy)
   {
     v6 = 0;
   }
 
   self->_whichInvocationmetadata = v6;
   apiInvocationMetadata = self->_apiInvocationMetadata;
-  self->_apiInvocationMetadata = v4;
+  self->_apiInvocationMetadata = metadataCopy;
 }
 
 - (void)deleteAppInvocationMetadata
@@ -930,26 +930,26 @@ LABEL_11:
   return v3;
 }
 
-- (void)setAppInvocationMetadata:(id)a3
+- (void)setAppInvocationMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   apiInvocationMetadata = self->_apiInvocationMetadata;
   self->_apiInvocationMetadata = 0;
 
   v6 = 11;
-  if (!v4)
+  if (!metadataCopy)
   {
     v6 = 0;
   }
 
   self->_whichInvocationmetadata = v6;
   appInvocationMetadata = self->_appInvocationMetadata;
-  self->_appInvocationMetadata = v4;
+  self->_appInvocationMetadata = metadataCopy;
 }
 
-- (void)setHasInvocationType:(BOOL)a3
+- (void)setHasInvocationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x80;
   }
@@ -962,9 +962,9 @@ LABEL_11:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasDisplayMode:(BOOL)a3
+- (void)setHasDisplayMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 64;
   }
@@ -977,9 +977,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsLanguageIdentificationEnabled:(BOOL)a3
+- (void)setHasIsLanguageIdentificationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -992,9 +992,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsExplicitLanguageFilterEnabled:(BOOL)a3
+- (void)setHasIsExplicitLanguageFilterEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -1007,9 +1007,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasInputSource:(BOOL)a3
+- (void)setHasInputSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 8;
   }
@@ -1022,9 +1022,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTask:(BOOL)a3
+- (void)setHasTask:(BOOL)task
 {
-  if (a3)
+  if (task)
   {
     v3 = 4;
   }
@@ -1037,9 +1037,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMobileAssetConfigVersion:(BOOL)a3
+- (void)setHasMobileAssetConfigVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -1052,44 +1052,44 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = MTSchemaMTInvocationStarted;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(MTSchemaMTInvocationStarted *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(MTSchemaMTInvocationStarted *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MTSchemaMTInvocationStarted *)self deleteLinkId];
   }
 
-  v9 = [(MTSchemaMTInvocationStarted *)self qssSessionId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  qssSessionId = [(MTSchemaMTInvocationStarted *)self qssSessionId];
+  v10 = [qssSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MTSchemaMTInvocationStarted *)self deleteQssSessionId];
   }
 
-  v12 = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  appInvocationMetadata = [(MTSchemaMTInvocationStarted *)self appInvocationMetadata];
+  v13 = [appInvocationMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MTSchemaMTInvocationStarted *)self deleteAppInvocationMetadata];
   }
 
-  v15 = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  apiInvocationMetadata = [(MTSchemaMTInvocationStarted *)self apiInvocationMetadata];
+  v16 = [apiInvocationMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(MTSchemaMTInvocationStarted *)self deleteApiInvocationMetadata];
   }

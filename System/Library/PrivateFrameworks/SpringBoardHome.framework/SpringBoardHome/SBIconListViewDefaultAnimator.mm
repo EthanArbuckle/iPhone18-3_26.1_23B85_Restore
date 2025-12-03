@@ -1,6 +1,6 @@
 @interface SBIconListViewDefaultAnimator
 - (SBIconListViewDefaultAnimator)init;
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6;
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block;
 @end
 
 @implementation SBIconListViewDefaultAnimator
@@ -13,44 +13,44 @@
   if (v2)
   {
     v3 = +[SBHHomeScreenDomain rootSettings];
-    v4 = [v3 iconEditingSettings];
+    iconEditingSettings = [v3 iconEditingSettings];
     iconEditingSettings = v2->_iconEditingSettings;
-    v2->_iconEditingSettings = v4;
+    v2->_iconEditingSettings = iconEditingSettings;
   }
 
   return v2;
 }
 
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  blockCopy = block;
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDuration];
   v14 = v13;
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDampingRatio];
   v16 = v15;
   v17 = MEMORY[0x1E69DD250];
-  var7 = a5->var7;
+  var7 = parameters->var7;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
-  v19 = *&a5->var2.continuousCornerRadius;
-  v31 = *&a5->var2.size.height;
+  v19 = *&parameters->var2.continuousCornerRadius;
+  v31 = *&parameters->var2.size.height;
   v32 = v19;
-  v20 = *&a5->var5;
-  var4 = a5->var4;
+  v20 = *&parameters->var5;
+  var4 = parameters->var4;
   v34 = v20;
-  v21 = *&a5->var1;
-  var0 = a5->var0;
+  v21 = *&parameters->var1;
+  var0 = parameters->var0;
   v30 = v21;
   v25[2] = __116__SBIconListViewDefaultAnimator_iconListView_wantsAnimatedLayoutForIconView_withParameters_alongsideAnimationBlock___block_invoke;
   v25[3] = &unk_1E808C7A0;
-  v26 = v11;
-  v27 = v10;
-  v28 = v12;
-  v22 = v12;
-  v23 = v10;
-  v24 = v11;
+  v26 = iconViewCopy;
+  v27 = viewCopy;
+  v28 = blockCopy;
+  v22 = blockCopy;
+  v23 = viewCopy;
+  v24 = iconViewCopy;
   [v17 animateWithDuration:var7 delay:v25 usingSpringWithDamping:0 initialSpringVelocity:v14 options:0.0 animations:v16 completion:0.0];
 }
 

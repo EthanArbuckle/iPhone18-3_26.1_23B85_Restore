@@ -1,14 +1,14 @@
 @interface CKConversationListCollectionViewJunkConversationCell
-- (unint64_t)_daysUntilDeletion:(id)a3;
+- (unint64_t)_daysUntilDeletion:(id)deletion;
 @end
 
 @implementation CKConversationListCollectionViewJunkConversationCell
 
-- (unint64_t)_daysUntilDeletion:(id)a3
+- (unint64_t)_daysUntilDeletion:(id)deletion
 {
-  v3 = [a3 chat];
-  v4 = [v3 earliestCachedMessageDate];
-  v5 = [CKUtilities daysUntilJunkFilterDeletionForDate:v4];
+  chat = [deletion chat];
+  earliestCachedMessageDate = [chat earliestCachedMessageDate];
+  v5 = [CKUtilities daysUntilJunkFilterDeletionForDate:earliestCachedMessageDate];
 
   return v5;
 }

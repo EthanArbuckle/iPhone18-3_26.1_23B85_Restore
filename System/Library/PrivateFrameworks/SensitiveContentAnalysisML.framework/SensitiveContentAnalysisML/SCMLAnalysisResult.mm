@@ -1,48 +1,48 @@
 @interface SCMLAnalysisResult
-+ (id)obfuscateLabelName:(id)a3;
-+ (id)obfuscateLabels:(id)a3;
-- (SCMLAnalysisResult)initWithSensitive:(BOOL)a3 sensitivityScore:(id)a4 scoresForObfuscatedLabels:(id)a5;
++ (id)obfuscateLabelName:(id)name;
++ (id)obfuscateLabels:(id)labels;
+- (SCMLAnalysisResult)initWithSensitive:(BOOL)sensitive sensitivityScore:(id)score scoresForObfuscatedLabels:(id)labels;
 @end
 
 @implementation SCMLAnalysisResult
 
-- (SCMLAnalysisResult)initWithSensitive:(BOOL)a3 sensitivityScore:(id)a4 scoresForObfuscatedLabels:(id)a5
+- (SCMLAnalysisResult)initWithSensitive:(BOOL)sensitive sensitivityScore:(id)score scoresForObfuscatedLabels:(id)labels
 {
-  v9 = a4;
-  v10 = a5;
+  scoreCopy = score;
+  labelsCopy = labels;
   v14.receiver = self;
   v14.super_class = SCMLAnalysisResult;
   v11 = [(SCMLAnalysisResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_sensitiveExplicit = a3;
-    objc_storeStrong(&v11->_sensitivityScoreExplicit, a4);
-    objc_storeStrong(&v12->_scoresForLabels, a5);
+    v11->_sensitiveExplicit = sensitive;
+    objc_storeStrong(&v11->_sensitivityScoreExplicit, score);
+    objc_storeStrong(&v12->_scoresForLabels, labels);
   }
 
   return v12;
 }
 
-+ (id)obfuscateLabels:(id)a3
++ (id)obfuscateLabels:(id)labels
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"otgx_fyqmjdju"];
+  labelsCopy = labels;
+  v4 = [labelsCopy objectForKey:@"otgx_fyqmjdju"];
 
   if (v4)
   {
-    v5 = v3;
+    v5 = labelsCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(labelsCopy, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v3;
+    v7 = labelsCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -77,17 +77,17 @@
   return v5;
 }
 
-+ (id)obfuscateLabelName:(id)a3
++ (id)obfuscateLabelName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [v3 lowercaseString];
-  if ([v5 length])
+  nameCopy = name;
+  string = [MEMORY[0x1E696AD60] string];
+  lowercaseString = [nameCopy lowercaseString];
+  if ([lowercaseString length])
   {
     v6 = 0;
     do
     {
-      v7 = [v5 characterAtIndex:v6];
+      v7 = [lowercaseString characterAtIndex:v6];
       if (v7 - 97 >= 0x19)
       {
         v8 = v7;
@@ -98,14 +98,14 @@
         v8 = v7 + 1;
       }
 
-      [v4 appendFormat:@"%c", v8];
+      [string appendFormat:@"%c", v8];
       ++v6;
     }
 
-    while (v6 < [v5 length]);
+    while (v6 < [lowercaseString length]);
   }
 
-  return v4;
+  return string;
 }
 
 @end

@@ -1,92 +1,92 @@
 @interface TRIFetchOnDemandFactorsTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithAssetIndexesByTreatment:(id)a3 experimentId:(id)a4 assetIdsByFactorPack:(id)a5 rolloutFactorNames:(id)a6 rolloutDeployment:(id)a7 namespaceName:(id)a8 taskAttributing:(id)a9 notificationKey:(id)a10 capabilityModifier:(id)a11;
-- ($A5A652246548B43F8BC05201A1C72A70)_saveIndexedAssetURLs:(id)a3 withTreatmentId:(id)a4 usingAssetMetadata:(id)a5 downloadOptions:(id)a6 paths:(id)a7 downloadSize:(unint64_t *)a8 error:(id *)a9;
-- ($A5A652246548B43F8BC05201A1C72A70)_saveNamedAssetURLs:(id)a3 usingAssetMetadata:(id)a4 downloadOptions:(id)a5 downloadSize:(unint64_t *)a6 paths:(id)a7 error:(id *)a8;
-- (BOOL)_updateFactorPacksByMergingAssets:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data;
++ (id)taskWithAssetIndexesByTreatment:(id)treatment experimentId:(id)id assetIdsByFactorPack:(id)pack rolloutFactorNames:(id)names rolloutDeployment:(id)deployment namespaceName:(id)name taskAttributing:(id)attributing notificationKey:(id)self0 capabilityModifier:(id)self1;
+- ($A5A652246548B43F8BC05201A1C72A70)_saveIndexedAssetURLs:(id)ls withTreatmentId:(id)id usingAssetMetadata:(id)metadata downloadOptions:(id)options paths:(id)paths downloadSize:(unint64_t *)size error:(id *)error;
+- ($A5A652246548B43F8BC05201A1C72A70)_saveNamedAssetURLs:(id)ls usingAssetMetadata:(id)metadata downloadOptions:(id)options downloadSize:(unint64_t *)size paths:(id)paths error:(id *)error;
+- (BOOL)_updateFactorPacksByMergingAssets:(id)assets context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)tags;
 - (NSString)description;
-- (TRIFetchOnDemandFactorsTask)initWithAssetIndexesByTreatment:(id)a3 experimentId:(id)a4 assetIdsByFactorPack:(id)a5 rolloutFactorNames:(id)a6 rolloutDeployment:(id)a7 namespaceName:(id)a8 taskAttributing:(id)a9 notificationKey:(id)a10 capabilityModifier:(id)a11;
-- (TRIFetchOnDemandFactorsTask)initWithCoder:(id)a3;
+- (TRIFetchOnDemandFactorsTask)initWithAssetIndexesByTreatment:(id)treatment experimentId:(id)id assetIdsByFactorPack:(id)pack rolloutFactorNames:(id)names rolloutDeployment:(id)deployment namespaceName:(id)name taskAttributing:(id)attributing notificationKey:(id)self0 capabilityModifier:(id)self1;
+- (TRIFetchOnDemandFactorsTask)initWithCoder:(id)coder;
 - (id)_asPersistedTask;
-- (id)_assetIdsFromKeysInDictionary:(id)a3;
+- (id)_assetIdsFromKeysInDictionary:(id)dictionary;
 - (id)_currentTaskStatus;
-- (id)_fetchDiffsFromAssetDiffRecordsWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 options:(id)a7;
-- (id)_fetchOptionsWithDownloadOptions:(id)a3 paths:(id)a4;
-- (id)_planForFetchingAssetDiffsWithContext:(id)a3 downloadOptions:(id)a4 updatingAggregateProgress:(id)a5 nonDiffableAssetIds:(id *)a6 unlinkedMAAssetsOnDisk:(id *)a7;
-- (id)_planForFetchingAssetsFromFactorPacksWithContext:(id)a3 assetDiffFetchPlan:(id)a4 requiredAssetIds:(id)a5 downloadOptions:(id)a6 updatingAggregateProgress:(id)a7;
-- (id)_planForFetchingAssetsFromTreatmentRecordsWithContext:(id)a3 downloadOptions:(id)a4 updatingAggregateProgress:(id)a5;
-- (id)_telemetryForFactorPackIds:(id)a3 rolloutDeployment:(id)a4 treatmentIds:(id)a5 experimentId:(id)a6 namespaceName:(id)a7 taskAttributing:(id)a8;
+- (id)_fetchDiffsFromAssetDiffRecordsWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size options:(id)options;
+- (id)_fetchOptionsWithDownloadOptions:(id)options paths:(id)paths;
+- (id)_planForFetchingAssetDiffsWithContext:(id)context downloadOptions:(id)options updatingAggregateProgress:(id)progress nonDiffableAssetIds:(id *)ids unlinkedMAAssetsOnDisk:(id *)disk;
+- (id)_planForFetchingAssetsFromFactorPacksWithContext:(id)context assetDiffFetchPlan:(id)plan requiredAssetIds:(id)ids downloadOptions:(id)options updatingAggregateProgress:(id)progress;
+- (id)_planForFetchingAssetsFromTreatmentRecordsWithContext:(id)context downloadOptions:(id)options updatingAggregateProgress:(id)progress;
+- (id)_telemetryForFactorPackIds:(id)ids rolloutDeployment:(id)deployment treatmentIds:(id)treatmentIds experimentId:(id)id namespaceName:(id)name taskAttributing:(id)attributing;
 - (id)dimensions;
 - (id)metrics;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
-- (unint64_t)_requiredDiskSpaceForPlan:(id)a3;
+- (unint64_t)_requiredDiskSpaceForPlan:(id)plan;
 - (unint64_t)hash;
 - (unint64_t)requiredCapabilities;
-- (void)_addDimension:(id)a3;
-- (void)_addMetric:(id)a3;
-- (void)_addMetricForFetchOnDemandFactorsTaskError:(int)a3;
-- (void)_asyncFetchAssetsFromTreatmentRecordsWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 downloadOptions:(id)a7 group:(id)a8;
-- (void)_asyncFetchCKAssetsFromAssetRecordsWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 options:(id)a7 group:(id)a8;
-- (void)_asyncFetchMAAssetsFromFactorPacksWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 options:(id)a7 group:(id)a8;
-- (void)_completeTaskWithStatus:(int)a3 earliestRetryDate:(id)a4 error:(id)a5 aggregateProgress:(id)a6 context:(id)a7;
-- (void)_logOnDemandFactor:(id)a3 metricName:(id)a4 namespaceName:(id)a5 client:(id)a6 error:(id)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeDownloadableFactorNames:(id)a3;
+- (void)_addDimension:(id)dimension;
+- (void)_addMetric:(id)metric;
+- (void)_addMetricForFetchOnDemandFactorsTaskError:(int)error;
+- (void)_asyncFetchAssetsFromTreatmentRecordsWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size downloadOptions:(id)options group:(id)group;
+- (void)_asyncFetchCKAssetsFromAssetRecordsWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size options:(id)options group:(id)group;
+- (void)_asyncFetchMAAssetsFromFactorPacksWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size options:(id)options group:(id)group;
+- (void)_completeTaskWithStatus:(int)status earliestRetryDate:(id)date error:(id)error aggregateProgress:(id)progress context:(id)context;
+- (void)_logOnDemandFactor:(id)factor metricName:(id)name namespaceName:(id)namespaceName client:(id)client error:(id)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeDownloadableFactorNames:(id)names;
 @end
 
 @implementation TRIFetchOnDemandFactorsTask
 
-- (TRIFetchOnDemandFactorsTask)initWithAssetIndexesByTreatment:(id)a3 experimentId:(id)a4 assetIdsByFactorPack:(id)a5 rolloutFactorNames:(id)a6 rolloutDeployment:(id)a7 namespaceName:(id)a8 taskAttributing:(id)a9 notificationKey:(id)a10 capabilityModifier:(id)a11
+- (TRIFetchOnDemandFactorsTask)initWithAssetIndexesByTreatment:(id)treatment experimentId:(id)id assetIdsByFactorPack:(id)pack rolloutFactorNames:(id)names rolloutDeployment:(id)deployment namespaceName:(id)name taskAttributing:(id)attributing notificationKey:(id)self0 capabilityModifier:(id)self1
 {
   v53 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  obj = a4;
-  v48 = a4;
-  v40 = a5;
-  v49 = a5;
-  v41 = a6;
-  v47 = a6;
-  v18 = a7;
-  v42 = a8;
-  v19 = a8;
-  v20 = a9;
-  v46 = a10;
-  v45 = a11;
+  treatmentCopy = treatment;
+  obj = id;
+  idCopy = id;
+  packCopy = pack;
+  packCopy2 = pack;
+  namesCopy = names;
+  namesCopy2 = names;
+  deploymentCopy = deployment;
+  nameCopy = name;
+  nameCopy2 = name;
+  attributingCopy = attributing;
+  keyCopy = key;
+  modifierCopy = modifier;
   v50.receiver = self;
   v50.super_class = TRIFetchOnDemandFactorsTask;
   v21 = [(TRIFetchOnDemandFactorsTask *)&v50 init];
   v22 = v21;
   if (v21)
   {
-    v44 = v17;
-    objc_storeStrong(&v21->_assetIndexesByTreatment, a3);
+    v44 = treatmentCopy;
+    objc_storeStrong(&v21->_assetIndexesByTreatment, treatment);
     objc_storeStrong(&v22->_experimentId, obj);
-    objc_storeStrong(&v22->_assetIdsByFactorPack, v40);
-    objc_storeStrong(&v22->_rolloutFactorNames, v41);
-    objc_storeStrong(&v22->_deployment, a7);
-    objc_storeStrong(&v22->_namespaceName, v42);
-    objc_storeStrong(&v22->_taskAttributing, a9);
+    objc_storeStrong(&v22->_assetIdsByFactorPack, packCopy);
+    objc_storeStrong(&v22->_rolloutFactorNames, namesCopy);
+    objc_storeStrong(&v22->_deployment, deployment);
+    objc_storeStrong(&v22->_namespaceName, nameCopy);
+    objc_storeStrong(&v22->_taskAttributing, attributing);
     v22->_retryCount = 0;
-    objc_storeStrong(&v22->_notificationKey, a10);
-    objc_storeStrong(&v22->_capabilityModifier, a11);
+    objc_storeStrong(&v22->_notificationKey, key);
+    objc_storeStrong(&v22->_capabilityModifier, modifier);
     atomic_store(0, &v22->_isCurrentlyExecuting);
-    v23 = [v49 allKeys];
-    if ([v23 count] >= 2)
+    allKeys = [packCopy2 allKeys];
+    if ([allKeys count] >= 2)
     {
       v24 = TRILogCategory_Server();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v52 = v23;
+        v52 = allKeys;
         _os_log_error_impl(&dword_26F567000, v24, OS_LOG_TYPE_ERROR, "On-demand factor fetch was initiated for >1 factor pack and will be excluded from telemetry. Got %{public}@", buf, 0xCu);
       }
     }
 
-    v25 = [v44 allKeys];
-    v26 = [(TRIFetchOnDemandFactorsTask *)v22 _telemetryForFactorPackIds:v23 rolloutDeployment:v18 treatmentIds:v25 experimentId:v48 namespaceName:v19 taskAttributing:v20];
+    allKeys2 = [v44 allKeys];
+    v26 = [(TRIFetchOnDemandFactorsTask *)v22 _telemetryForFactorPackIds:allKeys rolloutDeployment:deploymentCopy treatmentIds:allKeys2 experimentId:idCopy namespaceName:nameCopy2 taskAttributing:attributingCopy];
     trialSystemTelemetry = v22->_trialSystemTelemetry;
     v22->_trialSystemTelemetry = v26;
 
@@ -108,70 +108,70 @@
     factorNameByAssetId = v22->_factorNameByAssetId;
     v22->_factorNameByAssetId = v35;
 
-    v17 = v44;
+    treatmentCopy = v44;
   }
 
   v37 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-+ (id)taskWithAssetIndexesByTreatment:(id)a3 experimentId:(id)a4 assetIdsByFactorPack:(id)a5 rolloutFactorNames:(id)a6 rolloutDeployment:(id)a7 namespaceName:(id)a8 taskAttributing:(id)a9 notificationKey:(id)a10 capabilityModifier:(id)a11
++ (id)taskWithAssetIndexesByTreatment:(id)treatment experimentId:(id)id assetIdsByFactorPack:(id)pack rolloutFactorNames:(id)names rolloutDeployment:(id)deployment namespaceName:(id)name taskAttributing:(id)attributing notificationKey:(id)self0 capabilityModifier:(id)self1
 {
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
-  v27 = [[a1 alloc] initWithAssetIndexesByTreatment:v26 experimentId:v25 assetIdsByFactorPack:v24 rolloutFactorNames:v23 rolloutDeployment:v22 namespaceName:v21 taskAttributing:v20 notificationKey:v19 capabilityModifier:v18];
+  modifierCopy = modifier;
+  keyCopy = key;
+  attributingCopy = attributing;
+  nameCopy = name;
+  deploymentCopy = deployment;
+  namesCopy = names;
+  packCopy = pack;
+  idCopy = id;
+  treatmentCopy = treatment;
+  v27 = [[self alloc] initWithAssetIndexesByTreatment:treatmentCopy experimentId:idCopy assetIdsByFactorPack:packCopy rolloutFactorNames:namesCopy rolloutDeployment:deploymentCopy namespaceName:nameCopy taskAttributing:attributingCopy notificationKey:keyCopy capabilityModifier:modifierCopy];
 
   return v27;
 }
 
-- (id)_telemetryForFactorPackIds:(id)a3 rolloutDeployment:(id)a4 treatmentIds:(id)a5 experimentId:(id)a6 namespaceName:(id)a7 taskAttributing:(id)a8
+- (id)_telemetryForFactorPackIds:(id)ids rolloutDeployment:(id)deployment treatmentIds:(id)treatmentIds experimentId:(id)id namespaceName:(id)name taskAttributing:(id)attributing
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
+  idsCopy = ids;
+  deploymentCopy = deployment;
+  treatmentIdsCopy = treatmentIds;
+  idCopy = id;
+  attributingCopy = attributing;
+  nameCopy = name;
   v19 = objc_opt_new();
-  v20 = [v17 networkOptions];
-  [v19 setFieldsForDownloadOptions:v20];
+  networkOptions = [attributingCopy networkOptions];
+  [v19 setFieldsForDownloadOptions:networkOptions];
 
-  v21 = [v19 ensureFactorFields];
-  [v21 setNamespaceName:v18];
+  ensureFactorFields = [v19 ensureFactorFields];
+  [ensureFactorFields setNamespaceName:nameCopy];
 
-  if ([v13 count] == 1)
+  if ([idsCopy count] == 1)
   {
-    v22 = [v13 firstObject];
-    v23 = [v19 ensureFactorFields];
-    [v23 setClientFactorPackId:v22];
+    firstObject = [idsCopy firstObject];
+    ensureFactorFields2 = [v19 ensureFactorFields];
+    [ensureFactorFields2 setClientFactorPackId:firstObject];
   }
 
-  if (v14)
+  if (deploymentCopy)
   {
-    [v19 setFieldsForRolloutDeployment:v14];
+    [v19 setFieldsForRolloutDeployment:deploymentCopy];
   }
 
-  if (v16)
+  if (idCopy)
   {
-    v24 = [v19 ensureExperimentFields];
-    [v24 setClientExperimentId:v16];
+    ensureExperimentFields = [v19 ensureExperimentFields];
+    [ensureExperimentFields setClientExperimentId:idCopy];
   }
 
-  if ([v15 count] == 1)
+  if ([treatmentIdsCopy count] == 1)
   {
-    v25 = [v15 firstObject];
-    v26 = [v19 ensureExperimentFields];
-    [v26 setClientTreatmentId:v25];
+    firstObject2 = [treatmentIdsCopy firstObject];
+    ensureExperimentFields2 = [v19 ensureExperimentFields];
+    [ensureExperimentFields2 setClientTreatmentId:firstObject2];
   }
 
-  v27 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:v17];
+  v27 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:attributingCopy];
   [v19 mergeFrom:v27];
 
   return v19;
@@ -196,16 +196,16 @@
   return v2;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_saveIndexedAssetURLs:(id)a3 withTreatmentId:(id)a4 usingAssetMetadata:(id)a5 downloadOptions:(id)a6 paths:(id)a7 downloadSize:(unint64_t *)a8 error:(id *)a9
+- ($A5A652246548B43F8BC05201A1C72A70)_saveIndexedAssetURLs:(id)ls withTreatmentId:(id)id usingAssetMetadata:(id)metadata downloadOptions:(id)options paths:(id)paths downloadSize:(unint64_t *)size error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  lsCopy = ls;
+  idCopy = id;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  pathsCopy = paths;
   v20 = [TRIAssetStore alloc];
-  v21 = [v18 activity];
-  v22 = [(TRIAssetStore *)v20 initWithPaths:v19 monitoredActivity:v21];
+  activity = [optionsCopy activity];
+  v22 = [(TRIAssetStore *)v20 initWithPaths:pathsCopy monitoredActivity:activity];
 
   v43 = 0;
   v44 = &v43;
@@ -224,19 +224,19 @@
   v29[3] = &unk_279DE4340;
   v35 = a2;
   v29[4] = self;
-  v23 = v16;
+  v23 = idCopy;
   v30 = v23;
-  v24 = v15;
+  v24 = lsCopy;
   v31 = v24;
   v25 = v22;
   v32 = v25;
   v33 = &v37;
   v34 = &v43;
-  v36 = a8;
-  [v17 enumerateKeysAndObjectsUsingBlock:v29];
-  if (a9)
+  sizeCopy = size;
+  [metadataCopy enumerateKeysAndObjectsUsingBlock:v29];
+  if (error)
   {
-    *a9 = v38[5];
+    *error = v38[5];
   }
 
   v26.var0 = *(v44 + 32);
@@ -289,15 +289,15 @@ void __129__TRIFetchOnDemandFactorsTask__saveIndexedAssetURLs_withTreatmentId_us
   }
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_saveNamedAssetURLs:(id)a3 usingAssetMetadata:(id)a4 downloadOptions:(id)a5 downloadSize:(unint64_t *)a6 paths:(id)a7 error:(id *)a8
+- ($A5A652246548B43F8BC05201A1C72A70)_saveNamedAssetURLs:(id)ls usingAssetMetadata:(id)metadata downloadOptions:(id)options downloadSize:(unint64_t *)size paths:(id)paths error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  lsCopy = ls;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  pathsCopy = paths;
   v18 = [TRIAssetStore alloc];
-  v19 = [v16 activity];
-  v20 = [(TRIAssetStore *)v18 initWithPaths:v17 monitoredActivity:v19];
+  activity = [optionsCopy activity];
+  v20 = [(TRIAssetStore *)v18 initWithPaths:pathsCopy monitoredActivity:activity];
 
   v40 = 0;
   v41 = &v40;
@@ -314,19 +314,19 @@ void __129__TRIFetchOnDemandFactorsTask__saveIndexedAssetURLs_withTreatmentId_us
   v26[1] = 3221225472;
   v26[2] = __111__TRIFetchOnDemandFactorsTask__saveNamedAssetURLs_usingAssetMetadata_downloadOptions_downloadSize_paths_error___block_invoke;
   v26[3] = &unk_279DE4368;
-  v21 = v15;
+  v21 = metadataCopy;
   v32 = a2;
   v27 = v21;
-  v28 = self;
+  selfCopy = self;
   v22 = v20;
   v29 = v22;
   v30 = &v34;
   v31 = &v40;
-  v33 = a6;
-  [v14 enumerateKeysAndObjectsUsingBlock:v26];
-  if (a8)
+  sizeCopy = size;
+  [lsCopy enumerateKeysAndObjectsUsingBlock:v26];
+  if (error)
   {
-    *a8 = v35[5];
+    *error = v35[5];
   }
 
   v23.var0 = *(v41 + 32);
@@ -367,16 +367,16 @@ void __111__TRIFetchOnDemandFactorsTask__saveNamedAssetURLs_usingAssetMetadata_d
   }
 }
 
-- (BOOL)_updateFactorPacksByMergingAssets:(id)a3 context:(id)a4
+- (BOOL)_updateFactorPacksByMergingAssets:(id)assets context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  contextCopy = context;
   v8 = [TRIFactorPackStorage alloc];
-  v9 = [v7 paths];
-  v10 = [(TRIFactorPackStorage *)v8 initWithPaths:v9];
+  paths = [contextCopy paths];
+  v10 = [(TRIFactorPackStorage *)v8 initWithPaths:paths];
 
   LOBYTE(v8) = _os_feature_enabled_impl();
-  LOBYTE(v9) = _os_feature_enabled_impl();
+  LOBYTE(paths) = _os_feature_enabled_impl();
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -386,21 +386,21 @@ void __111__TRIFetchOnDemandFactorsTask__saveNamedAssetURLs_usingAssetMetadata_d
   v16[1] = 3221225472;
   v16[2] = __73__TRIFetchOnDemandFactorsTask__updateFactorPacksByMergingAssets_context___block_invoke;
   v16[3] = &unk_279DE4390;
-  v12 = v6;
+  v12 = assetsCopy;
   v17 = v12;
   v13 = v10;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v21 = &v24;
-  v22 = v9;
-  v14 = v7;
+  v22 = paths;
+  v14 = contextCopy;
   v20 = v14;
   v23 = v8;
   [(NSDictionary *)assetIdsByFactorPack enumerateKeysAndObjectsUsingBlock:v16];
-  LOBYTE(v7) = *(v25 + 24);
+  LOBYTE(contextCopy) = *(v25 + 24);
 
   _Block_object_dispose(&v24, 8);
-  return v7;
+  return contextCopy;
 }
 
 void __73__TRIFetchOnDemandFactorsTask__updateFactorPacksByMergingAssets_context___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -547,16 +547,16 @@ void __73__TRIFetchOnDemandFactorsTask__updateFactorPacksByMergingAssets_context
   [v2 addObject:v3];
 }
 
-- (id)_assetIdsFromKeysInDictionary:(id)a3
+- (id)_assetIdsFromKeysInDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -585,32 +585,32 @@ void __73__TRIFetchOnDemandFactorsTask__updateFactorPacksByMergingAssets_context
   return v4;
 }
 
-- (id)_fetchOptionsWithDownloadOptions:(id)a3 paths:(id)a4
+- (id)_fetchOptionsWithDownloadOptions:(id)options paths:(id)paths
 {
   v6 = MEMORY[0x277D73688];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithPaths:v7];
-  v10 = [objc_alloc(MEMORY[0x277D737B0]) initWithPaths:v7 namespaceMetadataStorage:v9];
+  pathsCopy = paths;
+  optionsCopy = options;
+  v9 = [[v6 alloc] initWithPaths:pathsCopy];
+  v10 = [objc_alloc(MEMORY[0x277D737B0]) initWithPaths:pathsCopy namespaceMetadataStorage:v9];
 
   v11 = [v10 availableSpaceClassForFactorNames:self->_rolloutFactorNames namespaceName:self->_namespaceName];
   v12 = [TRIFetchOptions alloc];
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
-  v14 = [(TRIFetchOptions *)v12 initWithDownloadOptions:v8 cacheDeleteAvailableSpaceClass:v13];
+  v14 = [(TRIFetchOptions *)v12 initWithDownloadOptions:optionsCopy cacheDeleteAvailableSpaceClass:v13];
 
   return v14;
 }
 
-- (void)removeDownloadableFactorNames:(id)a3
+- (void)removeDownloadableFactorNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__TRIFetchOnDemandFactorsTask_removeDownloadableFactorNames___block_invoke;
   v7[3] = &unk_279DE43B8;
-  v8 = v4;
-  v6 = v4;
+  v8 = namesCopy;
+  v6 = namesCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -638,11 +638,11 @@ void __61__TRIFetchOnDemandFactorsTask_removeDownloadableFactorNames___block_inv
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v115 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v88 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v89 = os_transaction_create();
   atomic_store(1u, &self->_isCurrentlyExecuting);
   v106[0] = MEMORY[0x277D85DD0];
@@ -650,40 +650,40 @@ void __61__TRIFetchOnDemandFactorsTask_removeDownloadableFactorNames___block_inv
   v106[2] = __61__TRIFetchOnDemandFactorsTask_runUsingContext_withTaskQueue___block_invoke;
   v106[3] = &unk_279DDF7A0;
   v106[4] = self;
-  v7 = v6;
+  v7 = contextCopy;
   v107 = v7;
   v90 = MEMORY[0x2743948D0](v106);
-  v8 = [v7 keyValueStore];
-  v92 = [TRIFetchDateManager managerWithKeyValueStore:v8];
+  keyValueStore = [v7 keyValueStore];
+  v92 = [TRIFetchDateManager managerWithKeyValueStore:keyValueStore];
 
-  v9 = [v7 namespaceDatabase];
-  v10 = [v7 paths];
-  v11 = [v10 namespaceDescriptorsDefaultDir];
-  v91 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v9 defaultDescriptorDirectoryPath:v11];
+  namespaceDatabase = [v7 namespaceDatabase];
+  paths = [v7 paths];
+  namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+  v91 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir];
 
-  v12 = [(TRITaskAttributing *)self->_taskAttributing applicationBundleIdentifier];
+  applicationBundleIdentifier = [(TRITaskAttributing *)self->_taskAttributing applicationBundleIdentifier];
   v13 = objc_autoreleasePoolPush();
   v14 = MEMORY[0x277D73750];
   namespaceName = self->_namespaceName;
-  v16 = [v7 paths];
-  v17 = [v16 namespaceDescriptorsDefaultDir];
-  v18 = [v14 loadWithNamespaceName:namespaceName fromDirectory:v17];
+  paths2 = [v7 paths];
+  namespaceDescriptorsDefaultDir2 = [paths2 namespaceDescriptorsDefaultDir];
+  v18 = [v14 loadWithNamespaceName:namespaceName fromDirectory:namespaceDescriptorsDefaultDir2];
 
-  v19 = [v18 resourceAttributionIdentifier];
-  v20 = v19;
-  if (v19)
+  resourceAttributionIdentifier = [v18 resourceAttributionIdentifier];
+  v20 = resourceAttributionIdentifier;
+  if (resourceAttributionIdentifier)
   {
-    v21 = v19;
+    v21 = resourceAttributionIdentifier;
   }
 
   else
   {
-    v21 = v12;
+    v21 = applicationBundleIdentifier;
   }
 
   v22 = v21;
 
-  v86 = [v18 expensiveNetworkingAllowed];
+  expensiveNetworkingAllowed = [v18 expensiveNetworkingAllowed];
   v23 = TRILogCategory_Server();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
@@ -696,19 +696,19 @@ void __61__TRIFetchOnDemandFactorsTask_removeDownloadableFactorNames___block_inv
   }
 
   objc_autoreleasePoolPop(v13);
-  v25 = [(TRIFetchOnDemandFactorsTask *)self deployment];
+  deployment = [(TRIFetchOnDemandFactorsTask *)self deployment];
 
-  if (v25)
+  if (deployment)
   {
-    v26 = [v7 rolloutDatabase];
-    v27 = [(TRIFetchOnDemandFactorsTask *)self deployment];
-    v28 = [v26 recordWithDeployment:v27 usingTransaction:0];
+    rolloutDatabase = [v7 rolloutDatabase];
+    deployment2 = [(TRIFetchOnDemandFactorsTask *)self deployment];
+    v28 = [rolloutDatabase recordWithDeployment:deployment2 usingTransaction:0];
 
     if (v28)
     {
-      v29 = [v28 rampId];
+      rampId = [v28 rampId];
 
-      if (!v29)
+      if (!rampId)
       {
 LABEL_13:
 
@@ -716,9 +716,9 @@ LABEL_13:
       }
 
       v30 = objc_opt_new();
-      v31 = [v28 rampId];
-      v32 = [v30 ensureRolloutFields];
-      [v32 setClientRampId:v31];
+      rampId2 = [v28 rampId];
+      ensureRolloutFields = [v30 ensureRolloutFields];
+      [ensureRolloutFields setClientRampId:rampId2];
 
       [(TRITrialSystemTelemetry *)self->_trialSystemTelemetry mergeFrom:v30];
     }
@@ -728,10 +728,10 @@ LABEL_13:
       v30 = TRILogCategory_Server();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(TRIFetchOnDemandFactorsTask *)self deployment];
-        v34 = [v33 shortDesc];
+        deployment3 = [(TRIFetchOnDemandFactorsTask *)self deployment];
+        shortDesc = [deployment3 shortDesc];
         *buf = 138543362;
-        *&buf[4] = v34;
+        *&buf[4] = shortDesc;
         _os_log_impl(&dword_26F567000, v30, OS_LOG_TYPE_DEFAULT, "Warning: unable to find TRIRolloutRecord for deployment %{public}@; issuing incomplete telemetry.", buf, 0xCu);
       }
     }
@@ -740,23 +740,23 @@ LABEL_13:
   }
 
 LABEL_14:
-  v35 = [(TRITaskAttributing *)self->_taskAttributing triCloudKitContainer];
-  v36 = [(TRITaskAttributing *)self->_taskAttributing teamIdentifier];
-  v37 = [TRICKNativeArtifactProvider providerForContainer:v35 teamId:v36 bundleId:v22 dateProvider:v92 namespaceDescriptorProvider:v91 serverContext:v7];
+  triCloudKitContainer = [(TRITaskAttributing *)self->_taskAttributing triCloudKitContainer];
+  teamIdentifier = [(TRITaskAttributing *)self->_taskAttributing teamIdentifier];
+  v37 = [TRICKNativeArtifactProvider providerForContainer:triCloudKitContainer teamId:teamIdentifier bundleId:v22 dateProvider:v92 namespaceDescriptorProvider:v91 serverContext:v7];
   artifactProvider = self->_artifactProvider;
   self->_artifactProvider = v37;
 
   [(_PASLock *)self->_lock runWithLockAcquired:&__block_literal_global_39];
-  v39 = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
-  if (![v39 discretionaryBehavior])
+  networkOptions = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
+  if (![networkOptions discretionaryBehavior])
   {
     goto LABEL_25;
   }
 
-  v40 = [(TRIBaseTask *)self stateProvider];
-  v41 = [v40 activeActivityDescriptorGrantingCapability:16];
-  v42 = [v41 activity];
-  if (!v42)
+  stateProvider = [(TRIBaseTask *)self stateProvider];
+  v41 = [stateProvider activeActivityDescriptorGrantingCapability:16];
+  activity = [v41 activity];
+  if (!activity)
   {
     v67 = TRILogCategory_Server();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
@@ -767,14 +767,14 @@ LABEL_14:
 
     [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:1 earliestRetryDate:0 error:0 aggregateProgress:0 context:v7];
     [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:3];
-    v68 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+    _currentTaskStatus = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
     goto LABEL_48;
   }
 
-  [v39 setActivity:v42];
-  v43 = [v40 activeActivityDescriptorGrantingCapability:1];
+  [networkOptions setActivity:activity];
+  v43 = [stateProvider activeActivityDescriptorGrantingCapability:1];
 
-  v44 = [v39 allowsCellularAccess];
+  allowsCellularAccess = [networkOptions allowsCellularAccess];
   if (v43)
   {
     v45 = 0;
@@ -782,27 +782,27 @@ LABEL_14:
 
   else
   {
-    v45 = v44;
+    v45 = allowsCellularAccess;
   }
 
-  if (v45 == 1 && (!v22 || (([v22 length] != 0) & v86) == 0))
+  if (v45 == 1 && (!v22 || (([v22 length] != 0) & expensiveNetworkingAllowed) == 0))
   {
     v69 = TRILogCategory_Server();
     if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
     {
       v75 = self->_namespaceName;
-      v76 = [(NSSet *)self->_rolloutFactorNames anyObject];
-      v77 = v76;
+      anyObject = [(NSSet *)self->_rolloutFactorNames anyObject];
+      v77 = anyObject;
       v78 = @"NO";
       *buf = 138544130;
       *&buf[4] = v75;
       v109 = 2114;
-      if (v86)
+      if (expensiveNetworkingAllowed)
       {
         v78 = @"YES";
       }
 
-      v110 = v76;
+      v110 = anyObject;
       v111 = 2114;
       v112 = v22;
       v113 = 2114;
@@ -812,16 +812,16 @@ LABEL_14:
 
     [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:1 earliestRetryDate:0 error:0 aggregateProgress:0 context:v7];
     [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:23];
-    v68 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+    _currentTaskStatus = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
 LABEL_48:
-    v66 = v68;
+    _currentTaskStatus2 = _currentTaskStatus;
 
     goto LABEL_63;
   }
 
-  if ([v39 allowsCellularAccess])
+  if ([networkOptions allowsCellularAccess])
   {
-    v46 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(v39, "allowsCellularAccess")}];
+    v46 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(networkOptions, "allowsCellularAccess")}];
     [(TRIFetchOnDemandFactorsTask *)self _addMetric:v46];
   }
 
@@ -833,12 +833,12 @@ LABEL_25:
   v105[3] = &unk_279DE4428;
   v105[4] = self;
   v48 = [(TRIAggregateFetchRecordsProgress *)v47 initWithProgressBlock:v105];
-  v49 = [(TRIFetchOnDemandFactorsTask *)self _planForFetchingAssetsFromTreatmentRecordsWithContext:v7 downloadOptions:v39 updatingAggregateProgress:v48];
+  v49 = [(TRIFetchOnDemandFactorsTask *)self _planForFetchingAssetsFromTreatmentRecordsWithContext:v7 downloadOptions:networkOptions updatingAggregateProgress:v48];
   if (v49)
   {
     *buf = 0;
     v104 = 0;
-    v50 = [(TRIFetchOnDemandFactorsTask *)self _planForFetchingAssetDiffsWithContext:v7 downloadOptions:v39 updatingAggregateProgress:v48 nonDiffableAssetIds:buf unlinkedMAAssetsOnDisk:&v104];
+    v50 = [(TRIFetchOnDemandFactorsTask *)self _planForFetchingAssetDiffsWithContext:v7 downloadOptions:networkOptions updatingAggregateProgress:v48 nonDiffableAssetIds:buf unlinkedMAAssetsOnDisk:&v104];
     if (!v50)
     {
       goto LABEL_41;
@@ -846,8 +846,8 @@ LABEL_25:
 
     if (!*buf)
     {
-      v79 = [MEMORY[0x277CCA890] currentHandler];
-      [v79 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:602 description:{@"Invalid parameter not satisfying: %@", @"requiredNonDiffableAssetIds"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:602 description:{@"Invalid parameter not satisfying: %@", @"requiredNonDiffableAssetIds"}];
     }
 
     v51 = [TRIFetchOnDemandFactorsTask _planForFetchingAssetsFromFactorPacksWithContext:"_planForFetchingAssetsFromFactorPacksWithContext:assetDiffFetchPlan:requiredAssetIds:downloadOptions:updatingAggregateProgress:" assetDiffFetchPlan:v7 requiredAssetIds:v50 downloadOptions:? updatingAggregateProgress:?];
@@ -856,7 +856,7 @@ LABEL_25:
     {
 LABEL_41:
       [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:4];
-      v66 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+      _currentTaskStatus2 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
 LABEL_61:
 
       goto LABEL_62;
@@ -874,12 +874,12 @@ LABEL_61:
       [MEMORY[0x277D73698] notifyDownloadFailedForKey:self->_notificationKey withError:4];
       [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:3 earliestRetryDate:0 error:0 aggregateProgress:v48 context:v7];
       [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:24];
-      v65 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+      _currentTaskStatus3 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
       goto LABEL_52;
     }
 
-    v52 = [v7 paths];
-    v85 = [(TRIFetchOnDemandFactorsTask *)self _fetchOptionsWithDownloadOptions:v39 paths:v52];
+    paths3 = [v7 paths];
+    v85 = [(TRIFetchOnDemandFactorsTask *)self _fetchOptionsWithDownloadOptions:networkOptions paths:paths3];
 
     v53 = dispatch_group_create();
     *v103 = 0;
@@ -897,7 +897,7 @@ LABEL_36:
         [(TRIFetchOnDemandFactorsTask *)self _asyncFetchMAAssetsFromFactorPacksWithContext:v7 plan:v51 aggregateProgress:v48 downloadSize:&v101 options:v85 group:v53];
         v60 = dispatch_group_create();
         v100 = 0;
-        [(TRIFetchOnDemandFactorsTask *)self _asyncFetchAssetsFromTreatmentRecordsWithContext:v7 plan:v49 aggregateProgress:v48 downloadSize:&v100 downloadOptions:v39 group:v60];
+        [(TRIFetchOnDemandFactorsTask *)self _asyncFetchAssetsFromTreatmentRecordsWithContext:v7 plan:v49 aggregateProgress:v48 downloadSize:&v100 downloadOptions:networkOptions group:v60];
         dispatch_group_enter(v60);
         v61 = dispatch_get_global_queue(17, 0);
         block[0] = MEMORY[0x277D85DD0];
@@ -932,30 +932,30 @@ LABEL_36:
         }
 
         [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:2 earliestRetryDate:0 error:0 aggregateProgress:v81 context:v83];
-        v65 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+        _currentTaskStatus3 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
 LABEL_52:
-        v66 = v65;
+        _currentTaskStatus2 = _currentTaskStatus3;
 LABEL_60:
 
         goto LABEL_61;
       }
 
       v55 = [*buf setByAddingObjectsFromSet:v87];
-      v80 = [(TRIFetchOnDemandFactorsTask *)self _planForFetchingAssetsFromFactorPacksWithContext:v7 assetDiffFetchPlan:v51 requiredAssetIds:v55 downloadOptions:v39 updatingAggregateProgress:v48];
+      v80 = [(TRIFetchOnDemandFactorsTask *)self _planForFetchingAssetsFromFactorPacksWithContext:v7 assetDiffFetchPlan:v51 requiredAssetIds:v55 downloadOptions:networkOptions updatingAggregateProgress:v48];
       v82 = v53;
 
       if (!v80)
       {
         [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:4];
-        v66 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+        _currentTaskStatus2 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
 LABEL_59:
 
         v51 = v85;
         goto LABEL_60;
       }
 
-      v56 = [MEMORY[0x277CBEAC0] dictionary];
-      v57 = [v80 copyWithReplacementRecordIdsForDiffableAssetIds:v56];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
+      v57 = [v80 copyWithReplacementRecordIdsForDiffableAssetIds:dictionary];
       v58 = [(TRIFetchOnDemandFactorsTask *)self _requiredDiskSpaceForPlan:v57];
 
       if ([TRICacheDeleteUtils hasSufficientDiskSpaceForDownload:v58])
@@ -975,14 +975,14 @@ LABEL_59:
       [MEMORY[0x277D73698] notifyDownloadFailedForKey:self->_notificationKey withError:4];
       [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:3 earliestRetryDate:0 error:0 aggregateProgress:v48 context:v7];
       [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:24];
-      v66 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+      _currentTaskStatus2 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
       v51 = v80;
     }
 
     else
     {
       [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:10];
-      v66 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+      _currentTaskStatus2 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
       v82 = v53;
     }
 
@@ -990,7 +990,7 @@ LABEL_59:
   }
 
   [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:6];
-  v66 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+  _currentTaskStatus2 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
 LABEL_62:
 
 LABEL_63:
@@ -1003,7 +1003,7 @@ LABEL_63:
 
   v73 = *MEMORY[0x277D85DE8];
 
-  return v66;
+  return _currentTaskStatus2;
 }
 
 void __61__TRIFetchOnDemandFactorsTask_runUsingContext_withTaskQueue___block_invoke(uint64_t a1)
@@ -1138,37 +1138,37 @@ void __61__TRIFetchOnDemandFactorsTask_runUsingContext_withTaskQueue___block_inv
   dispatch_group_leave(v10);
 }
 
-- (unint64_t)_requiredDiskSpaceForPlan:(id)a3
+- (unint64_t)_requiredDiskSpaceForPlan:(id)plan
 {
-  v3 = a3;
+  planCopy = plan;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v4 = [v3 recordIdsForDiffableAssetIds];
+  recordIdsForDiffableAssetIds = [planCopy recordIdsForDiffableAssetIds];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__TRIFetchOnDemandFactorsTask__requiredDiskSpaceForPlan___block_invoke;
   v12[3] = &unk_279DE4478;
   v12[4] = &v13;
-  [v4 enumerateKeysAndObjectsUsingBlock:v12];
+  [recordIdsForDiffableAssetIds enumerateKeysAndObjectsUsingBlock:v12];
 
-  v5 = [v3 recordIdsForNonDiffableAssetIds];
+  recordIdsForNonDiffableAssetIds = [planCopy recordIdsForNonDiffableAssetIds];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__TRIFetchOnDemandFactorsTask__requiredDiskSpaceForPlan___block_invoke_2;
   v11[3] = &unk_279DE4478;
   v11[4] = &v13;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  [recordIdsForNonDiffableAssetIds enumerateKeysAndObjectsUsingBlock:v11];
 
-  v6 = [v3 metadataForRequestedUnlinkedAssets];
-  v7 = [v6 mobileAsset];
+  metadataForRequestedUnlinkedAssets = [planCopy metadataForRequestedUnlinkedAssets];
+  mobileAsset = [metadataForRequestedUnlinkedAssets mobileAsset];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__TRIFetchOnDemandFactorsTask__requiredDiskSpaceForPlan___block_invoke_3;
   v10[3] = &unk_279DE44A0;
   v10[4] = &v13;
-  [v7 enumerateObjectsUsingBlock:v10];
+  [mobileAsset enumerateObjectsUsingBlock:v10];
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -1196,24 +1196,24 @@ void __57__TRIFetchOnDemandFactorsTask__requiredDiskSpaceForPlan___block_invoke_
   *(*(*(a1 + 32) + 8) + 24) += [v3 downloadSize];
 }
 
-- (void)_completeTaskWithStatus:(int)a3 earliestRetryDate:(id)a4 error:(id)a5 aggregateProgress:(id)a6 context:(id)a7
+- (void)_completeTaskWithStatus:(int)status earliestRetryDate:(id)date error:(id)error aggregateProgress:(id)progress context:(id)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  errorCopy = error;
+  progressCopy = progress;
   lock = self->_lock;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __105__TRIFetchOnDemandFactorsTask__completeTaskWithStatus_earliestRetryDate_error_aggregateProgress_context___block_invoke;
   v18[3] = &unk_279DE44C8;
-  v22 = a3;
+  statusCopy = status;
   v18[4] = self;
-  v19 = v12;
-  v20 = v11;
-  v21 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
+  v19 = errorCopy;
+  v20 = dateCopy;
+  v21 = progressCopy;
+  v15 = progressCopy;
+  v16 = dateCopy;
+  v17 = errorCopy;
   [(_PASLock *)lock runWithLockAcquired:v18];
 }
 
@@ -1418,12 +1418,12 @@ uint64_t __49__TRIFetchOnDemandFactorsTask__currentTaskStatus__block_invoke(uint
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_planForFetchingAssetsFromTreatmentRecordsWithContext:(id)a3 downloadOptions:(id)a4 updatingAggregateProgress:(id)a5
+- (id)_planForFetchingAssetsFromTreatmentRecordsWithContext:(id)context downloadOptions:(id)options updatingAggregateProgress:(id)progress
 {
   v132 = *MEMORY[0x277D85DE8];
-  v78 = a3;
-  v67 = a4;
-  v75 = a5;
+  contextCopy = context;
+  optionsCopy = options;
+  progressCopy = progress;
   context = objc_autoreleasePoolPush();
   v7 = TRILogCategory_Server();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1437,7 +1437,7 @@ uint64_t __49__TRIFetchOnDemandFactorsTask__currentTaskStatus__block_invoke(uint
   v9 = objc_opt_new();
   v76 = [v8 initWithGuardedData:v9];
 
-  v73 = [[TRIFetchOptions alloc] initWithDownloadOptions:v67 cacheDeleteAvailableSpaceClass:&unk_287FC4CF0];
+  v73 = [[TRIFetchOptions alloc] initWithDownloadOptions:optionsCopy cacheDeleteAvailableSpaceClass:&unk_287FC4CF0];
   v119 = 0u;
   v120 = 0u;
   v117 = 0u;
@@ -1466,8 +1466,8 @@ uint64_t __49__TRIFetchOnDemandFactorsTask__currentTaskStatus__block_invoke(uint
         v110[2] = __127__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromTreatmentRecordsWithContext_downloadOptions_updatingAggregateProgress___block_invoke;
         v110[3] = &unk_279DE4540;
         v110[4] = self;
-        v111 = v75;
-        v112 = v78;
+        v111 = progressCopy;
+        v112 = contextCopy;
         v116 = a2;
         v113 = v76;
         v114 = v14;
@@ -1492,8 +1492,8 @@ uint64_t __49__TRIFetchOnDemandFactorsTask__currentTaskStatus__block_invoke(uint
   }
 
   [MEMORY[0x277D425A0] waitForGroup:v74];
-  v20 = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
-  v21 = [v20 runStatus] == 0;
+  _currentTaskStatus = [(TRIFetchOnDemandFactorsTask *)self _currentTaskStatus];
+  v21 = [_currentTaskStatus runStatus] == 0;
 
   if (v21)
   {
@@ -1519,14 +1519,14 @@ uint64_t __49__TRIFetchOnDemandFactorsTask__currentTaskStatus__block_invoke(uint
           v27 = *(*(&v104 + 1) + 8 * j);
           v28 = objc_autoreleasePoolPush();
           v29 = [TRIClientTreatmentStorage alloc];
-          v30 = [v78 paths];
-          v31 = [(TRIClientTreatmentStorage *)v29 initWithPaths:v30];
+          paths = [contextCopy paths];
+          v31 = [(TRIClientTreatmentStorage *)v29 initWithPaths:paths];
 
           v32 = [(TRIClientTreatmentStorage *)v31 loadTreatmentWithTreatmentId:v27 isFilePresent:0];
           v33 = v32;
           if (!v32)
           {
-            [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:3 earliestRetryDate:0 error:0 aggregateProgress:v75 context:v78];
+            [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:3 earliestRetryDate:0 error:0 aggregateProgress:progressCopy context:contextCopy];
             [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:13];
 
             objc_autoreleasePoolPop(v28);
@@ -1535,14 +1535,14 @@ LABEL_39:
             goto LABEL_44;
           }
 
-          v34 = [v32 unlinkedOnDemandAssets];
-          if (v34)
+          unlinkedOnDemandAssets = [v32 unlinkedOnDemandAssets];
+          if (unlinkedOnDemandAssets)
           {
             v35 = [(NSDictionary *)self->_assetIndexesByTreatment objectForKeyedSubscript:v27];
             if (!v35)
             {
-              v68 = [MEMORY[0x277CCA890] currentHandler];
-              [v68 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:932 description:{@"Expression was unexpectedly nil/false: %@", @"self->_assetIndexesByTreatment[treatmentId]", context}];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:932 description:{@"Expression was unexpectedly nil/false: %@", @"self->_assetIndexesByTreatment[treatmentId]", context}];
             }
 
             v100[0] = MEMORY[0x277D85DD0];
@@ -1554,17 +1554,17 @@ LABEL_39:
             v101 = v35;
             v102 = v70;
             v36 = v35;
-            [v34 enumerateKeysAndObjectsUsingBlock:v100];
+            [unlinkedOnDemandAssets enumerateKeysAndObjectsUsingBlock:v100];
           }
 
           else
           {
-            [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:3 earliestRetryDate:0 error:0 aggregateProgress:v75 context:v78];
+            [(TRIFetchOnDemandFactorsTask *)self _completeTaskWithStatus:3 earliestRetryDate:0 error:0 aggregateProgress:progressCopy context:contextCopy];
             [(TRIFetchOnDemandFactorsTask *)self _addMetricForFetchOnDemandFactorsTaskError:12];
           }
 
           objc_autoreleasePoolPop(v28);
-          if (!v34)
+          if (!unlinkedOnDemandAssets)
           {
             goto LABEL_39;
           }
@@ -1604,8 +1604,8 @@ LABEL_39:
           v42 = objc_autoreleasePoolPush();
           v43 = objc_opt_new();
           v44 = [TRIAssetStore alloc];
-          v45 = [v78 paths];
-          v46 = [(TRIAssetStore *)v44 initWithPaths:v45];
+          paths2 = [contextCopy paths];
+          v46 = [(TRIAssetStore *)v44 initWithPaths:paths2];
 
           v91[0] = MEMORY[0x277D85DD0];
           v91[1] = 3221225472;
@@ -1614,7 +1614,7 @@ LABEL_39:
           v92 = v46;
           v47 = v43;
           v93 = v47;
-          v94 = self;
+          selfCopy = self;
           v95 = a2;
           v48 = v46;
           [v70 enumerateKeysAndObjectsUsingBlock:v91];
@@ -1622,13 +1622,13 @@ LABEL_39:
 
           if ([v49 count])
           {
-            v50 = [v76 unsafeGuardedData];
-            v51 = [v50 objectForKeyedSubscript:v41];
+            unsafeGuardedData = [v76 unsafeGuardedData];
+            v51 = [unsafeGuardedData objectForKeyedSubscript:v41];
 
             if (!v51)
             {
-              v54 = [MEMORY[0x277CCA890] currentHandler];
-              [v54 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:959 description:{@"Expression was unexpectedly nil/false: %@", @"[guardedRecordIdForTreatment unsafeGuardedData][treatmentId]"}];
+              currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:959 description:{@"Expression was unexpectedly nil/false: %@", @"[guardedRecordIdForTreatment unsafeGuardedData][treatmentId]"}];
             }
 
             v52 = [[TRITreatmentRecordFetchPlan alloc] initWithRecordId:v51 assetIndexes:v49];
@@ -1673,7 +1673,7 @@ LABEL_39:
     v80[1] = 3221225472;
     v80[2] = __127__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromTreatmentRecordsWithContext_downloadOptions_updatingAggregateProgress___block_invoke_490;
     v80[3] = &unk_279DE45B8;
-    v81 = v75;
+    v81 = progressCopy;
     [v56 enumerateKeysAndObjectsUsingBlock:v80];
     v57 = TRILogCategory_Server();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -1886,27 +1886,27 @@ void __127__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromTreatmentRecor
   [v4 registerRecordId:v5 withExpectedSize:{objc_msgSend(a3, "unsignedLongLongValue")}];
 }
 
-- (id)_planForFetchingAssetDiffsWithContext:(id)a3 downloadOptions:(id)a4 updatingAggregateProgress:(id)a5 nonDiffableAssetIds:(id *)a6 unlinkedMAAssetsOnDisk:(id *)a7
+- (id)_planForFetchingAssetDiffsWithContext:(id)context downloadOptions:(id)options updatingAggregateProgress:(id)progress nonDiffableAssetIds:(id *)ids unlinkedMAAssetsOnDisk:(id *)disk
 {
   v117 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v59 = a4;
-  v11 = a5;
+  contextCopy = context;
+  optionsCopy = options;
+  progressCopy = progress;
   context = objc_autoreleasePoolPush();
   v12 = [TRIAssetStore alloc];
-  v13 = [v10 paths];
-  v14 = [(TRIAssetStore *)v12 initWithPaths:v13];
+  paths = [contextCopy paths];
+  v14 = [(TRIAssetStore *)v12 initWithPaths:paths];
 
   v15 = objc_opt_new();
   v16 = [TRIFactorPackStorage alloc];
-  v17 = [v10 paths];
-  v18 = [(TRIFactorPackStorage *)v16 initWithPaths:v17];
+  paths2 = [contextCopy paths];
+  v18 = [(TRIFactorPackStorage *)v16 initWithPaths:paths2];
 
   v19 = [TRIFBFactorPackStorage alloc];
-  v20 = [v10 paths];
-  v21 = [(TRIFBFactorPackStorage *)v19 initWithPaths:v20];
+  paths3 = [contextCopy paths];
+  v21 = [(TRIFBFactorPackStorage *)v19 initWithPaths:paths3];
 
-  LOBYTE(v20) = _os_feature_enabled_impl();
+  LOBYTE(paths3) = _os_feature_enabled_impl();
   v107 = 0;
   v108 = &v107;
   v109 = 0x3032000000;
@@ -1925,20 +1925,20 @@ void __127__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromTreatmentRecor
   v90[2] = __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_downloadOptions_updatingAggregateProgress_nonDiffableAssetIds_unlinkedMAAssetsOnDisk___block_invoke;
   v90[3] = &unk_279DE4658;
   v90[4] = self;
-  v100 = v20;
+  v100 = paths3;
   v55 = v21;
   v91 = v55;
   v97 = &v107;
   v54 = v18;
   v92 = v54;
-  v61 = v10;
+  v61 = contextCopy;
   v93 = v61;
   v60 = v14;
   v94 = v60;
   v53 = v15;
   v95 = v53;
-  v99 = a7;
-  v23 = v11;
+  diskCopy = disk;
+  v23 = progressCopy;
   v96 = v23;
   v98 = &v101;
   [(NSDictionary *)assetIdsByFactorPack enumerateKeysAndObjectsUsingBlock:v90];
@@ -1971,7 +1971,7 @@ void __127__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromTreatmentRecor
     v84[3] = &unk_279DE28B0;
     v85 = v27;
     v58 = MEMORY[0x2743948D0](v84);
-    v30 = [[TRIFetchOptions alloc] initWithDownloadOptions:v59 cacheDeleteAvailableSpaceClass:&unk_287FC4D20];
+    v30 = [[TRIFetchOptions alloc] initWithDownloadOptions:optionsCopy cacheDeleteAvailableSpaceClass:&unk_287FC4D20];
     *buf = 0;
     v79 = buf;
     v80 = 0x3032000000;
@@ -2031,7 +2031,7 @@ void __127__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromTreatmentRecor
         _os_log_impl(&dword_26F567000, v41, OS_LOG_TYPE_DEFAULT, "Factor pack asset diff fetch planning phase complete.  On-demand fetch task will construct %tu assets from asset diffs.  Total factor pack asset diff download size: %.2f MB", v113, 0x16u);
       }
 
-      objc_storeStrong(a6, v38);
+      objc_storeStrong(ids, v38);
       v44 = [TRIGenericRequiredAssets alloc];
       v45 = [(TRIGenericRequiredAssets *)v44 initWithCloudKit:v108[5] mobileAsset:v102[5]];
       v46 = [TRIFactorPackAssetFetchPlan alloc];
@@ -2421,14 +2421,14 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
   *(*(a1[6] + 8) + 24) += v9;
 }
 
-- (id)_planForFetchingAssetsFromFactorPacksWithContext:(id)a3 assetDiffFetchPlan:(id)a4 requiredAssetIds:(id)a5 downloadOptions:(id)a6 updatingAggregateProgress:(id)a7
+- (id)_planForFetchingAssetsFromFactorPacksWithContext:(id)context assetDiffFetchPlan:(id)plan requiredAssetIds:(id)ids downloadOptions:(id)options updatingAggregateProgress:(id)progress
 {
   v110 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v60 = a4;
-  v12 = a5;
-  v59 = a6;
-  v13 = a7;
+  contextCopy = context;
+  planCopy = plan;
+  idsCopy = ids;
+  optionsCopy = options;
+  progressCopy = progress;
   context = objc_autoreleasePoolPush();
   v14 = TRILogCategory_Server();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2437,7 +2437,7 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
     _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEFAULT, "Beginning plan for fetching assets from Asset records for use in factor packs.", buf, 2u);
   }
 
-  v58 = [[TRIFetchOptions alloc] initWithDownloadOptions:v59 cacheDeleteAvailableSpaceClass:&unk_287FC4D20];
+  v58 = [[TRIFetchOptions alloc] initWithDownloadOptions:optionsCopy cacheDeleteAvailableSpaceClass:&unk_287FC4D20];
   v15 = dispatch_semaphore_create(0);
   *buf = 0;
   v96 = buf;
@@ -2451,12 +2451,12 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
   v88[2] = __158__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromFactorPacksWithContext_assetDiffFetchPlan_requiredAssetIds_downloadOptions_updatingAggregateProgress___block_invoke;
   v88[3] = &unk_279DE46F8;
   v88[4] = self;
-  v57 = v13;
+  v57 = progressCopy;
   v89 = v57;
-  v56 = v11;
+  v56 = contextCopy;
   v90 = v56;
   v94 = a2;
-  v91 = v12;
+  v91 = idsCopy;
   v93 = buf;
   v17 = v15;
   v92 = v17;
@@ -2475,8 +2475,8 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
   v54 = v20;
   if (*(v96 + 5))
   {
-    v21 = [v60 metadataForRequestedUnlinkedAssets];
-    v65 = [TRIClientFactorPackUtils uniqueAssets:v21];
+    metadataForRequestedUnlinkedAssets = [planCopy metadataForRequestedUnlinkedAssets];
+    v65 = [TRIClientFactorPackUtils uniqueAssets:metadataForRequestedUnlinkedAssets];
 
     v82 = 0;
     v83 = &v82;
@@ -2506,8 +2506,8 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
           v27 = [*(v96 + 5) objectForKeyedSubscript:v26];
           if (!v27)
           {
-            v35 = [MEMORY[0x277CCA890] currentHandler];
-            [v35 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:1282 description:{@"Expression was unexpectedly nil/false: %@", @"recordIdsForAssetIds[assetId]"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:1282 description:{@"Expression was unexpectedly nil/false: %@", @"recordIdsForAssetIds[assetId]"}];
           }
 
           v28 = [v22 objectForKeyedSubscript:v27];
@@ -2521,23 +2521,23 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
             v29 = &unk_287FC4D08;
           }
 
-          v30 = [v65 cloudKit];
-          v31 = [v30 objectForKeyedSubscript:v26];
+          cloudKit = [v65 cloudKit];
+          v31 = [cloudKit objectForKeyedSubscript:v26];
 
           if (!v31)
           {
-            v36 = [MEMORY[0x277CCA890] currentHandler];
-            [v36 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:1287 description:{@"Expression was unexpectedly nil/false: %@", @"uniquePlannedAssets.cloudKit[assetId]"}];
+            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:1287 description:{@"Expression was unexpectedly nil/false: %@", @"uniquePlannedAssets.cloudKit[assetId]"}];
           }
 
-          v32 = [v31 downloadSize];
+          downloadSize = [v31 downloadSize];
 
-          v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v29, "unsignedLongLongValue") + v32}];
+          v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v29, "unsignedLongLongValue") + downloadSize}];
           [v22 setObject:v33 forKeyedSubscript:v27];
-          v34 = [[TRISizedCKRecordID alloc] initWithRecordId:v27 downloadSize:v32];
+          v34 = [[TRISizedCKRecordID alloc] initWithRecordId:v27 downloadSize:downloadSize];
           [v64 setObject:v34 forKeyedSubscript:v26];
 
-          v83[3] += v32;
+          v83[3] += downloadSize;
         }
 
         v23 = [obj countByEnumeratingWithState:&v78 objects:v109 count:16];
@@ -2557,29 +2557,29 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
     v73 = &v72;
     v74 = 0x2020000000;
     v75 = 1;
-    v38 = [v65 mobileAsset];
+    mobileAsset = [v65 mobileAsset];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __158__TRIFetchOnDemandFactorsTask__planForFetchingAssetsFromFactorPacksWithContext_assetDiffFetchPlan_requiredAssetIds_downloadOptions_updatingAggregateProgress___block_invoke_4;
     v66[3] = &unk_279DE4720;
     v70 = &v82;
     v67 = v37;
-    v68 = self;
+    selfCopy = self;
     v69 = v56;
     v71 = &v72;
-    [v38 enumerateKeysAndObjectsUsingBlock:v66];
+    [mobileAsset enumerateKeysAndObjectsUsingBlock:v66];
 
     if (v73[3])
     {
       v39 = TRILogCategory_Server();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [v60 metadataForRequestedUnlinkedAssets];
-        v41 = [v40 cloudKit];
-        v42 = [v41 count];
-        v43 = [v60 metadataForRequestedUnlinkedAssets];
-        v44 = [v43 mobileAsset];
-        v45 = [v44 count];
+        metadataForRequestedUnlinkedAssets2 = [planCopy metadataForRequestedUnlinkedAssets];
+        cloudKit2 = [metadataForRequestedUnlinkedAssets2 cloudKit];
+        v42 = [cloudKit2 count];
+        metadataForRequestedUnlinkedAssets3 = [planCopy metadataForRequestedUnlinkedAssets];
+        mobileAsset2 = [metadataForRequestedUnlinkedAssets3 mobileAsset];
+        v45 = [mobileAsset2 count];
         v46 = [(NSDictionary *)self->_assetIdsByFactorPack count];
         v47 = [obj count];
         v48 = v83[3];
@@ -2594,7 +2594,7 @@ void __154__TRIFetchOnDemandFactorsTask__planForFetchingAssetDiffsWithContext_do
         _os_log_impl(&dword_26F567000, v39, OS_LOG_TYPE_DEFAULT, "Factor pack asset fetch planning phase complete.  On-demand fetch task will result in linking %lu assets into %tu factor pack(s); %tu assets require full (unpatched) asset download.  Total factor pack unpatched asset download size: %.2f MB", v101, 0x2Au);
       }
 
-      v49 = [v60 copyWithReplacementRecordIdsForNonDiffableAssetIds:v64];
+      v49 = [planCopy copyWithReplacementRecordIdsForNonDiffableAssetIds:v64];
     }
 
     else
@@ -2835,36 +2835,36 @@ LABEL_26:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_asyncFetchAssetsFromTreatmentRecordsWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 downloadOptions:(id)a7 group:(id)a8
+- (void)_asyncFetchAssetsFromTreatmentRecordsWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size downloadOptions:(id)options group:(id)group
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  contextCopy = context;
+  planCopy = plan;
+  progressCopy = progress;
+  optionsCopy = options;
+  groupCopy = group;
   v19 = dispatch_group_create();
-  *a6 = 0;
-  v20 = [v15 fetchPlansForTreatmentIds];
+  *size = 0;
+  fetchPlansForTreatmentIds = [planCopy fetchPlansForTreatmentIds];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __138__TRIFetchOnDemandFactorsTask__asyncFetchAssetsFromTreatmentRecordsWithContext_plan_aggregateProgress_downloadSize_downloadOptions_group___block_invoke;
   v37[3] = &unk_279DE4798;
   v38 = v19;
-  v39 = v17;
-  v40 = self;
-  v21 = v16;
+  v39 = optionsCopy;
+  selfCopy = self;
+  v21 = progressCopy;
   v41 = v21;
-  v22 = v14;
+  v22 = contextCopy;
   v42 = v22;
   v44 = a2;
-  v23 = v15;
+  v23 = planCopy;
   v43 = v23;
-  v45 = a6;
-  v24 = v17;
+  sizeCopy = size;
+  v24 = optionsCopy;
   v25 = v19;
-  [v20 enumerateKeysAndObjectsUsingBlock:v37];
+  [fetchPlansForTreatmentIds enumerateKeysAndObjectsUsingBlock:v37];
 
-  dispatch_group_enter(v18);
+  dispatch_group_enter(groupCopy);
   v26 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2874,8 +2874,8 @@ LABEL_26:
   v33 = v22;
   v34 = v23;
   v35 = v21;
-  v36 = v18;
-  v27 = v18;
+  v36 = groupCopy;
+  v27 = groupCopy;
   v28 = v21;
   v29 = v23;
   v30 = v22;
@@ -3123,12 +3123,12 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchDiffsFromAssetDiffRecordsWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 options:(id)a7
+- (id)_fetchDiffsFromAssetDiffRecordsWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size options:(id)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  contextCopy = context;
+  planCopy = plan;
+  progressCopy = progress;
+  optionsCopy = options;
   v32 = dispatch_semaphore_create(0);
   v60 = 0;
   v61 = &v60;
@@ -3136,33 +3136,33 @@ LABEL_12:
   v63 = __Block_byref_object_copy__50;
   v64 = __Block_byref_object_dispose__50;
   v15 = objc_alloc(MEMORY[0x277CBEB58]);
-  v16 = [v12 recordIdsForDiffableAssetIds];
-  v65 = [v15 initWithCapacity:{objc_msgSend(v16, "count")}];
+  recordIdsForDiffableAssetIds = [planCopy recordIdsForDiffableAssetIds];
+  v65 = [v15 initWithCapacity:{objc_msgSend(recordIdsForDiffableAssetIds, "count")}];
 
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 0;
   artifactProvider = self->_artifactProvider;
-  v18 = [v12 recordIdsForDiffableAssetIds];
+  recordIdsForDiffableAssetIds2 = [planCopy recordIdsForDiffableAssetIds];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __118__TRIFetchOnDemandFactorsTask__fetchDiffsFromAssetDiffRecordsWithContext_plan_aggregateProgress_downloadSize_options___block_invoke;
   v54[3] = &unk_279DE47E8;
-  v55 = v13;
+  v55 = progressCopy;
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __118__TRIFetchOnDemandFactorsTask__fetchDiffsFromAssetDiffRecordsWithContext_plan_aggregateProgress_downloadSize_options___block_invoke_2;
   v51[3] = &unk_279DE4070;
-  v52 = v12;
-  v53 = self;
+  v52 = planCopy;
+  selfCopy = self;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __118__TRIFetchOnDemandFactorsTask__fetchDiffsFromAssetDiffRecordsWithContext_plan_aggregateProgress_downloadSize_options___block_invoke_535;
   v47[3] = &unk_279DE40C0;
   v48 = v52;
-  v49 = self;
-  v50 = v11;
+  selfCopy2 = self;
+  v50 = contextCopy;
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __118__TRIFetchOnDemandFactorsTask__fetchDiffsFromAssetDiffRecordsWithContext_plan_aggregateProgress_downloadSize_options___block_invoke_538;
@@ -3176,13 +3176,13 @@ LABEL_12:
   v43 = &v56;
   v21 = v48;
   v40 = v21;
-  v22 = v14;
-  v46 = a6;
+  v22 = optionsCopy;
+  sizeCopy = size;
   v41 = v22;
   v44 = &v60;
   v23 = v32;
   v42 = v23;
-  v24 = [(TRIArtifactProvider *)artifactProvider fetchDiffsWithRecordIds:v18 options:v22 perRecordProgress:v54 perRecordCompletionBlockOnSuccess:v51 perRecordCompletionBlockOnError:v47 completion:v37];
+  v24 = [(TRIArtifactProvider *)artifactProvider fetchDiffsWithRecordIds:recordIdsForDiffableAssetIds2 options:v22 perRecordProgress:v54 perRecordCompletionBlockOnSuccess:v51 perRecordCompletionBlockOnError:v47 completion:v37];
 
   lock = self->_lock;
   v35[0] = MEMORY[0x277D85DD0];
@@ -3196,9 +3196,9 @@ LABEL_12:
   if (v57[3])
   {
     v27 = objc_alloc(MEMORY[0x277CBEB58]);
-    v28 = [v21 recordIdsForDiffableAssetIds];
-    v29 = [v28 allKeys];
-    v30 = [v27 initWithArray:v29];
+    recordIdsForDiffableAssetIds3 = [v21 recordIdsForDiffableAssetIds];
+    allKeys = [recordIdsForDiffableAssetIds3 allKeys];
+    v30 = [v27 initWithArray:allKeys];
 
     [v30 minusSet:v61[5]];
   }
@@ -3533,35 +3533,35 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_asyncFetchCKAssetsFromAssetRecordsWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 options:(id)a7 group:(id)a8
+- (void)_asyncFetchCKAssetsFromAssetRecordsWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size options:(id)options group:(id)group
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  dispatch_group_enter(v19);
-  *a6 = 0;
+  contextCopy = context;
+  planCopy = plan;
+  progressCopy = progress;
+  optionsCopy = options;
+  groupCopy = group;
+  dispatch_group_enter(groupCopy);
+  *size = 0;
   artifactProvider = self->_artifactProvider;
-  v21 = [v16 recordIdsForNonDiffableAssetIds];
+  recordIdsForNonDiffableAssetIds = [planCopy recordIdsForNonDiffableAssetIds];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __128__TRIFetchOnDemandFactorsTask__asyncFetchCKAssetsFromAssetRecordsWithContext_plan_aggregateProgress_downloadSize_options_group___block_invoke;
   v47[3] = &unk_279DE47E8;
-  v48 = v17;
+  v48 = progressCopy;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __128__TRIFetchOnDemandFactorsTask__asyncFetchCKAssetsFromAssetRecordsWithContext_plan_aggregateProgress_downloadSize_options_group___block_invoke_2;
   v44[3] = &unk_279DE4070;
-  v45 = v16;
-  v46 = self;
+  v45 = planCopy;
+  selfCopy = self;
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __128__TRIFetchOnDemandFactorsTask__asyncFetchCKAssetsFromAssetRecordsWithContext_plan_aggregateProgress_downloadSize_options_group___block_invoke_549;
   v40[3] = &unk_279DE40C0;
   v41 = v45;
-  v42 = self;
-  v43 = v15;
+  selfCopy2 = self;
+  v43 = contextCopy;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __128__TRIFetchOnDemandFactorsTask__asyncFetchCKAssetsFromAssetRecordsWithContext_plan_aggregateProgress_downloadSize_options_group___block_invoke_551;
@@ -3571,15 +3571,15 @@ LABEL_11:
   v34 = v43;
   v35 = v41;
   v38 = a2;
-  v39 = a6;
-  v36 = v18;
-  v37 = v19;
-  v22 = v19;
-  v23 = v18;
+  sizeCopy = size;
+  v36 = optionsCopy;
+  v37 = groupCopy;
+  v22 = groupCopy;
+  v23 = optionsCopy;
   v24 = v41;
   v25 = v43;
   v26 = v48;
-  v27 = [(TRIArtifactProvider *)artifactProvider fetchAssetsWithRecordIds:v21 options:v23 perRecordProgress:v47 perRecordCompletionBlockOnSuccess:v44 perRecordCompletionBlockOnError:v40 completion:v32];
+  v27 = [(TRIArtifactProvider *)artifactProvider fetchAssetsWithRecordIds:recordIdsForNonDiffableAssetIds options:v23 perRecordProgress:v47 perRecordCompletionBlockOnSuccess:v44 perRecordCompletionBlockOnError:v40 completion:v32];
 
   lock = self->_lock;
   v30[0] = MEMORY[0x277D85DD0];
@@ -3870,31 +3870,31 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_asyncFetchMAAssetsFromFactorPacksWithContext:(id)a3 plan:(id)a4 aggregateProgress:(id)a5 downloadSize:(unint64_t *)a6 options:(id)a7 group:(id)a8
+- (void)_asyncFetchMAAssetsFromFactorPacksWithContext:(id)context plan:(id)plan aggregateProgress:(id)progress downloadSize:(unint64_t *)size options:(id)options group:(id)group
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a8;
-  *a6 = 0;
-  v16 = [a4 metadataForRequestedUnlinkedAssets];
-  v17 = [TRIClientFactorPackUtils uniqueAssets:v16];
+  contextCopy = context;
+  progressCopy = progress;
+  groupCopy = group;
+  *size = 0;
+  metadataForRequestedUnlinkedAssets = [plan metadataForRequestedUnlinkedAssets];
+  v17 = [TRIClientFactorPackUtils uniqueAssets:metadataForRequestedUnlinkedAssets];
 
-  v18 = [v17 mobileAsset];
-  v19 = [v18 count];
+  mobileAsset = [v17 mobileAsset];
+  v19 = [mobileAsset count];
 
   if (v19)
   {
     v20 = objc_opt_new();
-    v21 = [v17 mobileAsset];
+    mobileAsset2 = [v17 mobileAsset];
     taskAttributing = self->_taskAttributing;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __127__TRIFetchOnDemandFactorsTask__asyncFetchMAAssetsFromFactorPacksWithContext_plan_aggregateProgress_downloadSize_options_group___block_invoke;
     v27[3] = &unk_279DE48B0;
     v27[4] = self;
-    v28 = v14;
-    v29 = v13;
-    v23 = [v20 downloadAssets:v21 attribution:taskAttributing aggregateProgress:v28 group:v15 completion:v27];
+    v28 = progressCopy;
+    v29 = contextCopy;
+    v23 = [v20 downloadAssets:mobileAsset2 attribution:taskAttributing aggregateProgress:v28 group:groupCopy completion:v27];
 
     if (v23)
     {
@@ -3970,23 +3970,23 @@ void __70__TRIFetchOnDemandFactorsTask_willBeCancelledByTaskQueue_withContext___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addMetricForFetchOnDemandFactorsTaskError:(int)a3
+- (void)_addMetricForFetchOnDemandFactorsTaskError:(int)error
 {
   v4 = MEMORY[0x277D73B40];
-  v5 = fetchTaskErrorAsString(a3);
+  v5 = fetchTaskErrorAsString(error);
   v6 = [v4 metricWithName:@"fetchondemandfactorstask_error" categoricalValue:v5];
 
   [(TRIFetchOnDemandFactorsTask *)self _addMetric:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = TRIFetchOnDemandFactorsTask;
-  if ([(TRIBaseTask *)&v16 isEqual:v4])
+  if ([(TRIBaseTask *)&v16 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (![(NSDictionary *)self->_assetIndexesByTreatment isEqualToDictionary:*(v5 + 3)])
     {
       goto LABEL_27;
@@ -4098,42 +4098,42 @@ LABEL_29:
   return [(NSString *)self->_notificationKey hash]+ 37 * v6;
 }
 
-- (void)_addMetric:(id)a3
+- (void)_addMetric:(id)metric
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  metrics = v4->_metrics;
+  metricCopy = metric;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metrics = selfCopy->_metrics;
   if (!metrics)
   {
     v6 = objc_opt_new();
-    v7 = v4->_metrics;
-    v4->_metrics = v6;
+    v7 = selfCopy->_metrics;
+    selfCopy->_metrics = v6;
 
-    metrics = v4->_metrics;
+    metrics = selfCopy->_metrics;
   }
 
-  [(NSMutableArray *)metrics addObject:v8];
-  objc_sync_exit(v4);
+  [(NSMutableArray *)metrics addObject:metricCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_addDimension:(id)a3
+- (void)_addDimension:(id)dimension
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  dimensions = v4->_dimensions;
+  dimensionCopy = dimension;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dimensions = selfCopy->_dimensions;
   if (!dimensions)
   {
     v6 = objc_opt_new();
-    v7 = v4->_dimensions;
-    v4->_dimensions = v6;
+    v7 = selfCopy->_dimensions;
+    selfCopy->_dimensions = v6;
 
-    dimensions = v4->_dimensions;
+    dimensions = selfCopy->_dimensions;
   }
 
-  [(NSMutableArray *)dimensions addObject:v8];
-  objc_sync_exit(v4);
+  [(NSMutableArray *)dimensions addObject:dimensionCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)metrics
@@ -4148,16 +4148,16 @@ LABEL_29:
 
   v4 = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_metrics)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_metrics)
   {
     [v5 addObjectsFromArray:?];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  lock = v6->_lock;
+  lock = selfCopy->_lock;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __38__TRIFetchOnDemandFactorsTask_metrics__block_invoke;
@@ -4214,29 +4214,29 @@ void __38__TRIFetchOnDemandFactorsTask_metrics__block_invoke(uint64_t a1, void *
 
 - (id)dimensions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_dimensions copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_dimensions copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_logOnDemandFactor:(id)a3 metricName:(id)a4 namespaceName:(id)a5 client:(id)a6 error:(id)a7
+- (void)_logOnDemandFactor:(id)factor metricName:(id)name namespaceName:(id)namespaceName client:(id)client error:(id)error
 {
-  v30 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v14 && [v14 shouldLogAtLevel:20])
+  factorCopy = factor;
+  nameCopy = name;
+  namespaceNameCopy = namespaceName;
+  clientCopy = client;
+  errorCopy = error;
+  if (clientCopy && [clientCopy shouldLogAtLevel:20])
   {
     context = objc_autoreleasePoolPush();
-    v16 = [MEMORY[0x277D73B40] metricWithName:v12];
+    v16 = [MEMORY[0x277D73B40] metricWithName:nameCopy];
     v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v16, 0}];
-    if (v15)
+    if (errorCopy)
     {
-      v18 = TRIFetchErrorParseToMetrics(v15);
+      v18 = TRIFetchErrorParseToMetrics(errorCopy);
       if (v18)
       {
         [v17 addObjectsFromArray:v18];
@@ -4245,25 +4245,25 @@ void __38__TRIFetchOnDemandFactorsTask_metrics__block_invoke(uint64_t a1, void *
       else
       {
         v19 = MEMORY[0x277D73B40];
-        v20 = [v15 localizedDescription];
-        v21 = [v19 metricWithName:v20];
+        localizedDescription = [errorCopy localizedDescription];
+        v21 = [v19 metricWithName:localizedDescription];
         [v17 addObject:v21];
       }
     }
 
-    v22 = [(TRIFetchOnDemandFactorsTask *)self trialSystemTelemetry];
-    v23 = [v22 copy];
+    trialSystemTelemetry = [(TRIFetchOnDemandFactorsTask *)self trialSystemTelemetry];
+    v23 = [trialSystemTelemetry copy];
 
-    v24 = [v23 ensureOnDemandFactorFields];
-    [v24 setFactorName:v30];
+    ensureOnDemandFactorFields = [v23 ensureOnDemandFactorFields];
+    [ensureOnDemandFactorFields setFactorName:factorCopy];
 
-    v25 = [v23 ensureOnDemandFactorFields];
-    [v25 setNamespaceName:v13];
+    ensureOnDemandFactorFields2 = [v23 ensureOnDemandFactorFields];
+    [ensureOnDemandFactorFields2 setNamespaceName:namespaceNameCopy];
 
-    v26 = [v14 logger];
-    v27 = [v14 trackingId];
-    v28 = [(TRIFetchOnDemandFactorsTask *)self dimensions];
-    [v26 logWithTrackingId:v27 metrics:v17 dimensions:v28 trialSystemTelemetry:v23];
+    logger = [clientCopy logger];
+    trackingId = [clientCopy trackingId];
+    dimensions = [(TRIFetchOnDemandFactorsTask *)self dimensions];
+    [logger logWithTrackingId:trackingId metrics:v17 dimensions:dimensions trialSystemTelemetry:v23];
 
     objc_autoreleasePoolPop(context);
   }
@@ -4295,8 +4295,8 @@ void __38__TRIFetchOnDemandFactorsTask_metrics__block_invoke(uint64_t a1, void *
   v10 = [(NSSet *)self->_rolloutFactorNames mutableCopy];
   [v3 setRolloutFactorNamesArray:v10];
 
-  v11 = [(TRITaskAttributing *)self->_taskAttributing asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v11];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttributing asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
   [v3 setNamespaceName:self->_namespaceName];
   [v3 setRetryCount:self->_retryCount];
@@ -4313,14 +4313,14 @@ void __38__TRIFetchOnDemandFactorsTask_metrics__block_invoke(uint64_t a1, void *
   deployment = self->_deployment;
   if (deployment)
   {
-    v13 = [(TRIRolloutDeployment *)deployment rolloutId];
-    [v3 setRolloutId:v13];
+    rolloutId = [(TRIRolloutDeployment *)deployment rolloutId];
+    [v3 setRolloutId:rolloutId];
 
     [v3 setDeploymentId:{-[TRIRolloutDeployment deploymentId](self->_deployment, "deploymentId")}];
   }
 
-  v14 = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
-  [v3 setCapabilityModifier:v14];
+  asPersistedModifier = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
+  [v3 setCapabilityModifier:asPersistedModifier];
 
   return v3;
 }
@@ -4380,26 +4380,26 @@ void __47__TRIFetchOnDemandFactorsTask__asPersistedTask__block_invoke_4(uint64_t
 
 - (id)serialize
 {
-  v4 = [(TRIFetchOnDemandFactorsTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIFetchOnDemandFactorsTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:1973 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:1973 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v128 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v121 = 0;
-  v4 = [(TRIPBMessage *)TRIFetchOnDemandFactorsPersistedTask parseFromData:v3 error:&v121];
+  v4 = [(TRIPBMessage *)TRIFetchOnDemandFactorsPersistedTask parseFromData:dataCopy error:&v121];
   v5 = v121;
   if (!v4)
   {
@@ -4440,8 +4440,8 @@ void __47__TRIFetchOnDemandFactorsTask__asPersistedTask__block_invoke_4(uint64_t
     goto LABEL_64;
   }
 
-  v6 = [v4 namespaceName];
-  v7 = [v6 length];
+  namespaceName = [v4 namespaceName];
+  v7 = [namespaceName length];
 
   if (!v7)
   {
@@ -4478,7 +4478,7 @@ LABEL_65:
     goto LABEL_65;
   }
 
-  v99 = v3;
+  v99 = dataCopy;
   v8 = objc_opt_new();
   v117 = 0u;
   v118 = 0u;
@@ -4506,8 +4506,8 @@ LABEL_7:
 
     v13 = *(*(&v117 + 1) + 8 * v12);
     v14 = objc_autoreleasePoolPush();
-    v15 = [v13 treatmentId];
-    v16 = [v15 length];
+    treatmentId = [v13 treatmentId];
+    v16 = [treatmentId length];
 
     if (!v16)
     {
@@ -4528,8 +4528,8 @@ LABEL_99:
       goto LABEL_72;
     }
 
-    v17 = [v13 treatmentId];
-    v18 = [v8 objectForKeyedSubscript:v17];
+    treatmentId2 = [v13 treatmentId];
+    v18 = [v8 objectForKeyedSubscript:treatmentId2];
     v19 = v18;
     if (v18)
     {
@@ -4543,17 +4543,17 @@ LABEL_99:
 
     v21 = v20;
 
-    v22 = [v13 indexArray];
+    indexArray = [v13 indexArray];
     v115[0] = MEMORY[0x277D85DD0];
     v115[1] = 3221225472;
     v115[2] = __45__TRIFetchOnDemandFactorsTask_parseFromData___block_invoke;
     v115[3] = &unk_279DDF630;
     v116 = v21;
     v23 = v21;
-    [v22 enumerateValuesWithBlock:v115];
+    [indexArray enumerateValuesWithBlock:v115];
 
-    v24 = [v13 treatmentId];
-    [v8 setObject:v23 forKeyedSubscript:v24];
+    treatmentId3 = [v13 treatmentId];
+    [v8 setObject:v23 forKeyedSubscript:treatmentId3];
 
     objc_autoreleasePoolPop(v14);
     if (v10 == ++v12)
@@ -4570,38 +4570,38 @@ LABEL_17:
         v112 = 0u;
         v113 = 0u;
         v114 = 0u;
-        v25 = [v4 factorPackAssetIdsArray];
-        v26 = [v25 countByEnumeratingWithState:&v111 objects:v124 count:16];
+        factorPackAssetIdsArray = [v4 factorPackAssetIdsArray];
+        v26 = [factorPackAssetIdsArray countByEnumeratingWithState:&v111 objects:v124 count:16];
         if (!v26)
         {
 LABEL_51:
 
           v60 = MEMORY[0x277CBEB98];
-          v61 = [v4 rolloutFactorNamesArray];
-          v30 = [v60 setWithArray:v61];
+          rolloutFactorNamesArray = [v4 rolloutFactorNamesArray];
+          v30 = [v60 setWithArray:rolloutFactorNamesArray];
 
-          v62 = [v4 taskAttribution];
-          v63 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v62];
+          taskAttribution = [v4 taskAttribution];
+          v63 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
           if (v63)
           {
             if ([v4 hasExperimentId])
             {
-              v64 = [v4 experimentId];
+              experimentId = [v4 experimentId];
             }
 
             else
             {
-              v64 = 0;
+              experimentId = 0;
             }
 
-            v3 = v99;
-            v96 = v64;
+            dataCopy = v99;
+            v96 = experimentId;
             if ([v4 hasRolloutId] && objc_msgSend(v4, "hasDeploymentId"))
             {
               v79 = objc_alloc(MEMORY[0x277D737C8]);
-              v80 = [v4 rolloutId];
-              v100 = [v79 initWithRolloutId:v80 deploymentId:{objc_msgSend(v4, "deploymentId")}];
+              rolloutId = [v4 rolloutId];
+              v100 = [v79 initWithRolloutId:rolloutId deploymentId:{objc_msgSend(v4, "deploymentId")}];
             }
 
             else
@@ -4611,21 +4611,21 @@ LABEL_51:
 
             if ([v4 hasNotificationKey])
             {
-              v81 = [v4 notificationKey];
+              notificationKey = [v4 notificationKey];
             }
 
             else
             {
-              v81 = 0;
+              notificationKey = 0;
             }
 
             if ([v4 hasCapabilityModifier])
             {
               v82 = [TRITaskCapabilityModifier alloc];
-              v83 = [v4 capabilityModifier];
-              v84 = [v83 add];
-              v85 = [v4 capabilityModifier];
-              v86 = -[TRITaskCapabilityModifier initWithAdd:remove:](v82, "initWithAdd:remove:", v84, [v85 remove]);
+              capabilityModifier = [v4 capabilityModifier];
+              v84 = [capabilityModifier add];
+              capabilityModifier2 = [v4 capabilityModifier];
+              v86 = -[TRITaskCapabilityModifier initWithAdd:remove:](v82, "initWithAdd:remove:", v84, [capabilityModifier2 remove]);
             }
 
             else
@@ -4633,17 +4633,17 @@ LABEL_51:
               v86 = objc_opt_new();
             }
 
-            v87 = [v4 namespaceName];
+            namespaceName2 = [v4 namespaceName];
             v78 = v96;
-            v71 = [TRIFetchOnDemandFactorsTask taskWithAssetIndexesByTreatment:v8 experimentId:v96 assetIdsByFactorPack:obj rolloutFactorNames:v30 rolloutDeployment:v100 namespaceName:v87 taskAttributing:v63 notificationKey:v81 capabilityModifier:v86];
+            v71 = [TRIFetchOnDemandFactorsTask taskWithAssetIndexesByTreatment:v8 experimentId:v96 assetIdsByFactorPack:obj rolloutFactorNames:v30 rolloutDeployment:v100 namespaceName:namespaceName2 taskAttributing:v63 notificationKey:notificationKey capabilityModifier:v86];
 
-            v88 = [v4 hasRetryCount];
-            if (v88)
+            hasRetryCount = [v4 hasRetryCount];
+            if (hasRetryCount)
             {
-              v88 = [v4 retryCount];
+              hasRetryCount = [v4 retryCount];
             }
 
-            v71[16] = v88;
+            v71[16] = hasRetryCount;
 
             v5 = v101;
           }
@@ -4651,7 +4651,7 @@ LABEL_51:
           else
           {
             v78 = TRILogCategory_Server();
-            v3 = v99;
+            dataCopy = v99;
             if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
             {
               *buf = 0;
@@ -4667,24 +4667,24 @@ LABEL_96:
 
         v27 = v26;
         v28 = *v112;
-        v91 = v25;
+        v91 = factorPackAssetIdsArray;
         v93 = *v112;
         while (2)
         {
           v29 = 0;
-          v3 = v99;
+          dataCopy = v99;
           v90 = v27;
 LABEL_20:
           if (*v112 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(factorPackAssetIdsArray);
           }
 
-          v30 = v25;
+          v30 = factorPackAssetIdsArray;
           v92 = v29;
           v31 = *(*(&v111 + 1) + 8 * v29);
           v32 = objc_autoreleasePoolPush();
-          v33 = [v31 factorPackId];
+          factorPackId = [v31 factorPackId];
           v34 = TRIValidateFactorPackId();
 
           if (!v34)
@@ -4711,17 +4711,17 @@ LABEL_20:
 
           if ([v31 assetIdFactorNameArray_Count])
           {
-            v39 = [v31 assetIdFactorNameArray_Count];
+            assetIdFactorNameArray_Count = [v31 assetIdFactorNameArray_Count];
             v107 = 0u;
             v108 = 0u;
             v109 = 0u;
             v110 = 0u;
-            v40 = [v31 assetIdFactorNameArray];
-            v41 = [v40 countByEnumeratingWithState:&v107 objects:v123 count:16];
+            assetIdFactorNameArray = [v31 assetIdFactorNameArray];
+            v41 = [assetIdFactorNameArray countByEnumeratingWithState:&v107 objects:v123 count:16];
             if (v41)
             {
               v42 = v41;
-              v89 = v39;
+              v89 = assetIdFactorNameArray_Count;
               v98 = v4;
               v43 = *v108;
               while (2)
@@ -4730,11 +4730,11 @@ LABEL_20:
                 {
                   if (*v108 != v43)
                   {
-                    objc_enumerationMutation(v40);
+                    objc_enumerationMutation(assetIdFactorNameArray);
                   }
 
                   v45 = *(*(&v107 + 1) + 8 * i);
-                  v46 = [v45 assetId];
+                  assetId = [v45 assetId];
                   v47 = TRIValidateAssetId();
 
                   if (!v47)
@@ -4744,12 +4744,12 @@ LABEL_20:
                   }
 
                   v48 = objc_alloc(MEMORY[0x277D73658]);
-                  v49 = [v45 factorName];
-                  v50 = [v48 initWithAssetId:v47 factorName:v49];
+                  factorName = [v45 factorName];
+                  v50 = [v48 initWithAssetId:v47 factorName:factorName];
                   [v38 addObject:v50];
                 }
 
-                v42 = [v40 countByEnumeratingWithState:&v107 objects:v123 count:16];
+                v42 = [assetIdFactorNameArray countByEnumeratingWithState:&v107 objects:v123 count:16];
                 if (v42)
                 {
                   continue;
@@ -4763,31 +4763,31 @@ LABEL_20:
             }
 
 LABEL_47:
-            v25 = v30;
+            factorPackAssetIdsArray = v30;
           }
 
           else
           {
-            v25 = v30;
+            factorPackAssetIdsArray = v30;
             if (![v31 assetIdArray_Count])
             {
               goto LABEL_100;
             }
 
-            v39 = [v31 assetIdArray_Count];
+            assetIdFactorNameArray_Count = [v31 assetIdArray_Count];
             v103 = 0u;
             v104 = 0u;
             v105 = 0u;
             v106 = 0u;
-            v40 = [v31 assetIdArray];
-            v51 = [v40 countByEnumeratingWithState:&v103 objects:v122 count:16];
+            assetIdFactorNameArray = [v31 assetIdArray];
+            v51 = [assetIdFactorNameArray countByEnumeratingWithState:&v103 objects:v122 count:16];
             if (!v51)
             {
               goto LABEL_47;
             }
 
             v52 = v51;
-            v89 = v39;
+            v89 = assetIdFactorNameArray_Count;
             v53 = v4;
             v54 = *v104;
             while (2)
@@ -4796,7 +4796,7 @@ LABEL_47:
               {
                 if (*v104 != v54)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(assetIdFactorNameArray);
                 }
 
                 v56 = *(*(&v103 + 1) + 8 * j);
@@ -4815,7 +4815,7 @@ LABEL_75:
                 [v38 addObject:v59];
               }
 
-              v52 = [v40 countByEnumeratingWithState:&v103 objects:v122 count:16];
+              v52 = [assetIdFactorNameArray countByEnumeratingWithState:&v103 objects:v122 count:16];
               if (v52)
               {
                 continue;
@@ -4827,20 +4827,20 @@ LABEL_75:
             v4 = v53;
 LABEL_46:
             v5 = v101;
-            v25 = v91;
+            factorPackAssetIdsArray = v91;
             v28 = v93;
-            v39 = v89;
+            assetIdFactorNameArray_Count = v89;
           }
 
-          if (!v39)
+          if (!assetIdFactorNameArray_Count)
           {
 LABEL_100:
-            v30 = v25;
-            v40 = TRILogCategory_Server();
-            if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+            v30 = factorPackAssetIdsArray;
+            assetIdFactorNameArray = TRILogCategory_Server();
+            if (os_log_type_enabled(assetIdFactorNameArray, OS_LOG_TYPE_ERROR))
             {
               *buf = 0;
-              _os_log_error_impl(&dword_26F567000, v40, OS_LOG_TYPE_ERROR, "TRIFetchOnDemandFactorsPersistedTask contains empty asset index array", buf, 2u);
+              _os_log_error_impl(&dword_26F567000, assetIdFactorNameArray, OS_LOG_TYPE_ERROR, "TRIFetchOnDemandFactorsPersistedTask contains empty asset index array", buf, 2u);
             }
 
 LABEL_76:
@@ -4858,7 +4858,7 @@ LABEL_77:
           v29 = v92 + 1;
           if (v92 + 1 == v90)
           {
-            v27 = [v25 countByEnumeratingWithState:&v111 objects:v124 count:16];
+            v27 = [factorPackAssetIdsArray countByEnumeratingWithState:&v111 objects:v124 count:16];
             if (v27)
             {
               continue;
@@ -4885,7 +4885,7 @@ LABEL_77:
 
 LABEL_72:
   v4 = v97;
-  v3 = v99;
+  dataCopy = v99;
   v5 = v101;
 
   objc_autoreleasePoolPop(v14);
@@ -4900,21 +4900,21 @@ LABEL_66:
 
 - (unint64_t)requiredCapabilities
 {
-  v3 = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
-  v4 = [v3 requiredCapability];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
+  requiredCapability = [networkOptions requiredCapability];
   v7.receiver = self;
   v7.super_class = TRIFetchOnDemandFactorsTask;
-  v5 = [(TRIBaseTask *)&v7 requiredCapabilities]| v4 | (4 * (self->_retryCount > 0));
+  v5 = [(TRIBaseTask *)&v7 requiredCapabilities]| requiredCapability | (4 * (self->_retryCount > 0));
 
   return [(TRITaskCapabilityModifier *)self->_capabilityModifier updateCapability:v5];
 }
 
 - (NSString)description
 {
-  v3 = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
-  v4 = [v3 discretionaryBehavior];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
+  discretionaryBehavior = [networkOptions discretionaryBehavior];
   v5 = @"disc";
-  if (!v4)
+  if (!discretionaryBehavior)
   {
     v5 = @"non-disc";
   }
@@ -4925,22 +4925,22 @@ LABEL_66:
   v8 = objc_opt_class();
   namespaceName = self->_namespaceName;
   notificationKey = self->_notificationKey;
-  v11 = [(TRITaskAttributing *)self->_taskAttributing applicationBundleIdentifier];
-  v12 = [(NSSet *)self->_rolloutFactorNames anyObject];
-  v13 = [v7 stringWithFormat:@"<%@:%@, %@, a:%@, d:%@, f:%@, r:%d>", v8, namespaceName, notificationKey, v11, v6, v12, -[TRIFetchOnDemandFactorsTask retryCount](self, "retryCount")];
+  applicationBundleIdentifier = [(TRITaskAttributing *)self->_taskAttributing applicationBundleIdentifier];
+  anyObject = [(NSSet *)self->_rolloutFactorNames anyObject];
+  v13 = [v7 stringWithFormat:@"<%@:%@, %@, a:%@, d:%@, f:%@, r:%d>", v8, namespaceName, notificationKey, applicationBundleIdentifier, v6, anyObject, -[TRIFetchOnDemandFactorsTask retryCount](self, "retryCount")];
 
   return v13;
 }
 
-- (TRIFetchOnDemandFactorsTask)initWithCoder:(id)a3
+- (TRIFetchOnDemandFactorsTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIFetchOnDemandFactorsTask;
   v5 = [(TRIFetchOnDemandFactorsTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -4960,18 +4960,18 @@ LABEL_66:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:2098 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchOnDemandFactorsTask.m" lineNumber:2098 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIFetchOnDemandFactorsTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIFetchOnDemandFactorsTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

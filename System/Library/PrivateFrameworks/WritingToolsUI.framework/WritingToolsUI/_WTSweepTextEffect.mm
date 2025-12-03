@@ -1,20 +1,20 @@
 @interface _WTSweepTextEffect
 - (CGSize)lineSize;
-- (_WTSweepTextEffect)initWithChunk:(id)a3 effectView:(id)a4;
+- (_WTSweepTextEffect)initWithChunk:(id)chunk effectView:(id)view;
 - (double)sweepRadius;
-- (void)RBLayer:(id)a3 draw:(id)a4;
-- (void)invalidate:(BOOL)a3;
-- (void)update:(id)a3;
-- (void)updateEffectWith:(id)a3;
+- (void)RBLayer:(id)layer draw:(id)draw;
+- (void)invalidate:(BOOL)invalidate;
+- (void)update:(id)update;
+- (void)updateEffectWith:(id)with;
 @end
 
 @implementation _WTSweepTextEffect
 
-- (_WTSweepTextEffect)initWithChunk:(id)a3 effectView:(id)a4
+- (_WTSweepTextEffect)initWithChunk:(id)chunk effectView:(id)view
 {
   v9.receiver = self;
   v9.super_class = _WTSweepTextEffect;
-  v4 = [(_WTTextEffect *)&v9 initWithChunk:a3 effectView:a4];
+  v4 = [(_WTTextEffect *)&v9 initWithChunk:chunk effectView:view];
   if (v4)
   {
     v5 = +[_WTColor grayColor];
@@ -43,9 +43,9 @@
   return result;
 }
 
-- (void)invalidate:(BOOL)a3
+- (void)invalidate:(BOOL)invalidate
 {
-  if (a3)
+  if (invalidate)
   {
     v4 = dispatch_time(0, 16000000);
     block[0] = MEMORY[0x1E69E9820];
@@ -59,91 +59,91 @@
 
   else
   {
-    v5 = [(_WTSweepTextEffect *)self displayLink];
-    [v5 invalidate];
+    displayLink = [(_WTSweepTextEffect *)self displayLink];
+    [displayLink invalidate];
 
     [(_WTSweepTextEffect *)self setDisplayLink:0];
-    v6 = [(_WTTextEffect *)self rootLayer];
-    [v6 removeFromSuperlayer];
+    rootLayer = [(_WTTextEffect *)self rootLayer];
+    [rootLayer removeFromSuperlayer];
 
-    v7 = [(_WTSweepTextEffect *)self fadeOutLayer];
-    [v7 removeFromSuperlayer];
+    fadeOutLayer = [(_WTSweepTextEffect *)self fadeOutLayer];
+    [fadeOutLayer removeFromSuperlayer];
 
-    v8 = [(_WTTextEffect *)self completion];
+    completion = [(_WTTextEffect *)self completion];
 
-    if (v8)
+    if (completion)
     {
-      v9 = [(_WTTextEffect *)self completion];
-      v9[2]();
+      completion2 = [(_WTTextEffect *)self completion];
+      completion2[2]();
     }
   }
 }
 
-- (void)updateEffectWith:(id)a3
+- (void)updateEffectWith:(id)with
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  withCopy = with;
   v77.receiver = self;
   v77.super_class = _WTSweepTextEffect;
-  [(_WTTextEffect *)&v77 updateEffectWith:v4];
+  [(_WTTextEffect *)&v77 updateEffectWith:withCopy];
   if ([(_WTTextEffect *)self needsSetup])
   {
     [MEMORY[0x1E6979518] begin];
     [(_WTSweepTextEffect *)self setStartTime:CACurrentMediaTime() + 0.25];
-    v5 = [MEMORY[0x1E69C70E0] layer];
-    [(_WTSweepTextEffect *)self setRbLayer:v5];
+    layer = [MEMORY[0x1E69C70E0] layer];
+    [(_WTSweepTextEffect *)self setRbLayer:layer];
 
-    v6 = [(_WTSweepTextEffect *)self rbLayer];
-    [v6 setOpaque:0];
+    rbLayer = [(_WTSweepTextEffect *)self rbLayer];
+    [rbLayer setOpaque:0];
 
-    v7 = [(_WTSweepTextEffect *)self rbLayer];
-    [v7 setColorMode:11];
+    rbLayer2 = [(_WTSweepTextEffect *)self rbLayer];
+    [rbLayer2 setColorMode:11];
 
-    v8 = [(_WTSweepTextEffect *)self rbLayer];
-    [v8 setWantsExtendedDynamicRangeContent:1];
+    rbLayer3 = [(_WTSweepTextEffect *)self rbLayer];
+    [rbLayer3 setWantsExtendedDynamicRangeContent:1];
 
-    v9 = [(_WTSweepTextEffect *)self rbLayer];
-    [v9 setValue:MEMORY[0x1E695E118] forKey:@"allowsLimitedHeadroom"];
+    rbLayer4 = [(_WTSweepTextEffect *)self rbLayer];
+    [rbLayer4 setValue:MEMORY[0x1E695E118] forKey:@"allowsLimitedHeadroom"];
 
     [(_WTTextEffect *)self _maxRequestedEDR];
     v11 = v10;
-    v12 = [(_WTSweepTextEffect *)self rbLayer];
-    [v12 setContentsMaximumDesiredEDR:v11];
+    rbLayer5 = [(_WTSweepTextEffect *)self rbLayer];
+    [rbLayer5 setContentsMaximumDesiredEDR:v11];
 
-    v13 = [(_WTTextEffect *)self effectView];
-    v14 = [v13 window];
-    [v14 platformBackingScale];
+    effectView = [(_WTTextEffect *)self effectView];
+    window = [effectView window];
+    [window platformBackingScale];
     v16 = v15;
-    v17 = [(_WTSweepTextEffect *)self rbLayer];
-    [v17 setContentsScale:v16];
+    rbLayer6 = [(_WTSweepTextEffect *)self rbLayer];
+    [rbLayer6 setContentsScale:v16];
 
-    v18 = [(_WTSweepTextEffect *)self rbLayer];
-    [v18 setDelegate:self];
+    rbLayer7 = [(_WTSweepTextEffect *)self rbLayer];
+    [rbLayer7 setDelegate:self];
 
-    v19 = [(_WTTextEffect *)self effectView];
-    v20 = [v19 platformInstalledDisplayLinkWithTarget:self selector:sel_update_];
+    effectView2 = [(_WTTextEffect *)self effectView];
+    v20 = [effectView2 platformInstalledDisplayLinkWithTarget:self selector:sel_update_];
     [(_WTSweepTextEffect *)self setDisplayLink:v20];
 
-    v21 = [MEMORY[0x1E6979398] layer];
-    [(_WTTextEffect *)self setRootLayer:v21];
+    layer2 = [MEMORY[0x1E6979398] layer];
+    [(_WTTextEffect *)self setRootLayer:layer2];
 
-    v22 = [(_WTSweepTextEffect *)self baseFillColor];
-    v23 = [v22 CGColor];
-    v24 = [(_WTTextEffect *)self rootLayer];
-    [v24 setBackgroundColor:v23];
+    baseFillColor = [(_WTSweepTextEffect *)self baseFillColor];
+    cGColor = [baseFillColor CGColor];
+    rootLayer = [(_WTTextEffect *)self rootLayer];
+    [rootLayer setBackgroundColor:cGColor];
 
-    v25 = [(_WTSweepTextEffect *)self animateFromColor];
+    animateFromColor = [(_WTSweepTextEffect *)self animateFromColor];
 
     v26 = MEMORY[0x1E69797E0];
     v27 = MEMORY[0x1E6979EB8];
-    if (v25)
+    if (animateFromColor)
     {
       v28 = [MEMORY[0x1E6979318] animationWithKeyPath:@"backgroundColor"];
-      v29 = [(_WTSweepTextEffect *)self animateFromColor];
-      [v28 setFromValue:{objc_msgSend(v29, "CGColor")}];
+      animateFromColor2 = [(_WTSweepTextEffect *)self animateFromColor];
+      [v28 setFromValue:{objc_msgSend(animateFromColor2, "CGColor")}];
 
-      v30 = [(_WTSweepTextEffect *)self baseFillColor];
-      [v28 setToValue:{objc_msgSend(v30, "CGColor")}];
+      baseFillColor2 = [(_WTSweepTextEffect *)self baseFillColor];
+      [v28 setToValue:{objc_msgSend(baseFillColor2, "CGColor")}];
 
       [v28 setDuration:0.35];
       [v28 setFillMode:*v26];
@@ -151,38 +151,38 @@
       v31 = [MEMORY[0x1E69793D0] functionWithName:*v27];
       [v28 setTimingFunction:v31];
 
-      v32 = [(_WTTextEffect *)self rootLayer];
-      [v32 addAnimation:v28 forKey:@"backgroundColor"];
+      rootLayer2 = [(_WTTextEffect *)self rootLayer];
+      [rootLayer2 addAnimation:v28 forKey:@"backgroundColor"];
     }
 
-    v33 = [MEMORY[0x1E6979398] layer];
-    [(_WTSweepTextEffect *)self setRootMaskLayer:v33];
+    layer3 = [MEMORY[0x1E6979398] layer];
+    [(_WTSweepTextEffect *)self setRootMaskLayer:layer3];
 
-    v34 = [(_WTSweepTextEffect *)self rootMaskLayer];
-    v35 = [(_WTTextEffect *)self rootLayer];
-    [v35 setMask:v34];
+    rootMaskLayer = [(_WTSweepTextEffect *)self rootMaskLayer];
+    rootLayer3 = [(_WTTextEffect *)self rootLayer];
+    [rootLayer3 setMask:rootMaskLayer];
 
-    v36 = [(_WTTextEffect *)self rootLayer];
-    v37 = [(_WTSweepTextEffect *)self rbLayer];
-    [v36 addSublayer:v37];
+    rootLayer4 = [(_WTTextEffect *)self rootLayer];
+    rbLayer8 = [(_WTSweepTextEffect *)self rbLayer];
+    [rootLayer4 addSublayer:rbLayer8];
 
-    v38 = [MEMORY[0x1E6979398] layer];
-    [(_WTSweepTextEffect *)self setFadeOutLayer:v38];
+    layer4 = [MEMORY[0x1E6979398] layer];
+    [(_WTSweepTextEffect *)self setFadeOutLayer:layer4];
 
-    v39 = [(_WTTextEffect *)self effectView];
-    [v39 bounds];
+    effectView3 = [(_WTTextEffect *)self effectView];
+    [effectView3 bounds];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [(_WTSweepTextEffect *)self fadeOutLayer];
-    [v48 setFrame:{v41, v43, v45, v47}];
+    fadeOutLayer = [(_WTSweepTextEffect *)self fadeOutLayer];
+    [fadeOutLayer setFrame:{v41, v43, v45, v47}];
 
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v49 = v4;
+    v49 = withCopy;
     v50 = [v49 countByEnumeratingWithState:&v73 objects:v78 count:16];
     if (v50)
     {
@@ -199,9 +199,9 @@
           }
 
           v54 = *(*(&v73 + 1) + 8 * v53);
-          v55 = [(_WTSweepTextEffect *)self fadeOutLayer];
-          v56 = [v54 layerWithContents];
-          [v55 addSublayer:v56];
+          fadeOutLayer2 = [(_WTSweepTextEffect *)self fadeOutLayer];
+          layerWithContents = [v54 layerWithContents];
+          [fadeOutLayer2 addSublayer:layerWithContents];
 
           ++v53;
         }
@@ -213,19 +213,19 @@
       while (v51);
     }
 
-    v57 = [(_WTSweepTextEffect *)self fadeOutLayer];
-    [v57 setOpacity:0.0];
+    fadeOutLayer3 = [(_WTSweepTextEffect *)self fadeOutLayer];
+    [fadeOutLayer3 setOpacity:0.0];
 
-    v58 = [(_WTTextEffect *)self effectView];
-    v59 = [v58 layer];
-    v60 = [(_WTTextEffect *)self rootLayer];
-    [v59 addSublayer:v60];
+    effectView4 = [(_WTTextEffect *)self effectView];
+    layer5 = [effectView4 layer];
+    rootLayer5 = [(_WTTextEffect *)self rootLayer];
+    [layer5 addSublayer:rootLayer5];
 
-    v61 = [(_WTTextEffect *)self effectView];
-    v62 = [v61 layer];
-    v63 = [(_WTSweepTextEffect *)self fadeOutLayer];
-    v64 = [(_WTTextEffect *)self rootLayer];
-    [v62 insertSublayer:v63 above:v64];
+    effectView5 = [(_WTTextEffect *)self effectView];
+    layer6 = [effectView5 layer];
+    fadeOutLayer4 = [(_WTSweepTextEffect *)self fadeOutLayer];
+    rootLayer6 = [(_WTTextEffect *)self rootLayer];
+    [layer6 insertSublayer:fadeOutLayer4 above:rootLayer6];
 
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
@@ -242,27 +242,27 @@
     v66 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
     [v65 setTimingFunction:v66];
 
-    v67 = [(_WTSweepTextEffect *)self fadeOutLayer];
-    [v67 addAnimation:v65 forKey:@"opacity"];
+    fadeOutLayer5 = [(_WTSweepTextEffect *)self fadeOutLayer];
+    [fadeOutLayer5 addAnimation:v65 forKey:@"opacity"];
 
     [MEMORY[0x1E6979518] commit];
   }
 
-  v68 = [(_WTTextEffect *)self effectView];
+  effectView6 = [(_WTTextEffect *)self effectView];
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
   v70[2] = __39___WTSweepTextEffect_updateEffectWith___block_invoke_20;
   v70[3] = &unk_1E8480C70;
   v70[4] = self;
-  v71 = v4;
-  v69 = v4;
-  [v68 platformPerformWithoutAnimation:v70];
+  v71 = withCopy;
+  v69 = withCopy;
+  [effectView6 platformPerformWithoutAnimation:v70];
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v4 = [(_WTSweepTextEffect *)self displayLink];
-  [v4 timestamp];
+  displayLink = [(_WTSweepTextEffect *)self displayLink];
+  [displayLink timestamp];
   v6 = v5;
   [(_WTSweepTextEffect *)self startTime];
   v8 = v7;
@@ -270,29 +270,29 @@
   [(_WTSweepTextEffect *)self startTime];
   if (v9 == 0.0 || ([(_WTTextEffect *)self sweepDuration], v6 - v8 > v10))
   {
-    v11 = [(_WTSweepTextEffect *)self displayLink];
-    [v11 timestamp];
+    displayLink2 = [(_WTSweepTextEffect *)self displayLink];
+    [displayLink2 timestamp];
     [(_WTSweepTextEffect *)self setStartTime:?];
   }
 
-  v12 = [(_WTSweepTextEffect *)self rbLayer];
-  [v12 setNeedsDisplay];
+  rbLayer = [(_WTSweepTextEffect *)self rbLayer];
+  [rbLayer setNeedsDisplay];
 }
 
-- (void)RBLayer:(id)a3 draw:(id)a4
+- (void)RBLayer:(id)layer draw:(id)draw
 {
-  v5 = a4;
+  drawCopy = draw;
   [(_WTTextEffect *)self effectVisibilityFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(_WTTextEffect *)self effectView];
-  [v14 platformGetVisibleRect];
+  effectView = [(_WTTextEffect *)self effectView];
+  [effectView platformGetVisibleRect];
   v44 = v15;
 
-  v16 = [(_WTSweepTextEffect *)self displayLink];
-  [v16 timestamp];
+  displayLink = [(_WTSweepTextEffect *)self displayLink];
+  [displayLink timestamp];
   v18 = v17;
   [(_WTSweepTextEffect *)self startTime];
   v20 = v18 - v19;
@@ -333,28 +333,28 @@
 
   v34 = objc_opt_new();
   [v34 setInfinite];
-  [v5 beginLayer];
-  [v5 addBlurFilterWithRadius:50.0];
+  [drawCopy beginLayer];
+  [drawCopy addBlurFilterWithRadius:50.0];
   LODWORD(v35) = 1045220557;
-  [v5 addBrightnessFilterWithAmount:v35];
+  [drawCopy addBrightnessFilterWithAmount:v35];
   LODWORD(v36) = 1067030938;
-  [v5 addContrastFilterWithAmount:v36];
+  [drawCopy addContrastFilterWithAmount:v36];
   [(_WTTextEffect *)self clamp:v26 min:0.5 max:1.0];
   v38 = 1.0 - v37;
   *&v38 = v38;
-  [v5 drawShape:v34 fill:v45 alpha:0 blendMode:v38];
+  [drawCopy drawShape:v34 fill:v45 alpha:0 blendMode:v38];
   LODWORD(v39) = 1.0;
-  [v5 drawLayerWithAlpha:0 blendMode:v39];
-  [v5 beginLayer];
+  [drawCopy drawLayerWithAlpha:0 blendMode:v39];
+  [drawCopy beginLayer];
   v40 = objc_opt_new();
   v41 = +[_WTLightEffectPalette ponderingLightEdge];
   [(_WTTextEffect *)self _applyToFill:v40 colors:v41 center:MidX startRadius:v32 endRadius:v30 + -130.0, v30];
 
-  [v5 addBlurFilterWithRadius:20.0];
+  [drawCopy addBlurFilterWithRadius:20.0];
   LODWORD(v42) = *"333?";
-  [v5 drawShape:v34 fill:v40 alpha:27 blendMode:v42];
+  [drawCopy drawShape:v34 fill:v40 alpha:27 blendMode:v42];
   LODWORD(v43) = 1.0;
-  [v5 drawLayerWithAlpha:1003 blendMode:v43];
+  [drawCopy drawLayerWithAlpha:1003 blendMode:v43];
 }
 
 - (CGSize)lineSize

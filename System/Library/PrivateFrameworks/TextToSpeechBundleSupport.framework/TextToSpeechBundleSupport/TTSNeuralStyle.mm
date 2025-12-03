@@ -13,7 +13,7 @@
   v6 = [(TTSNeuralStyle *)&v21 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v9 = *v4;
     v10 = *(v4 + 8);
     if (*v4 != v10)
@@ -22,7 +22,7 @@
       {
         LODWORD(v8) = *v9;
         v11 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
-        [(NSArray *)v7 addObject:v11];
+        [(NSArray *)array addObject:v11];
 
         ++v9;
       }
@@ -53,7 +53,7 @@
     }
 
     styleVector = v6->_styleVector;
-    v6->_styleVector = v7;
+    v6->_styleVector = array;
   }
 
   v19 = v6;
@@ -72,8 +72,8 @@ LABEL_10:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(TTSNeuralStyle *)self styleVector];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  styleVector = [(TTSNeuralStyle *)self styleVector];
+  v5 = [styleVector countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = *v22;
@@ -83,7 +83,7 @@ LABEL_10:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(styleVector);
         }
 
         [*(*(&v21 + 1) + 8 * i) floatValue];
@@ -143,7 +143,7 @@ LABEL_10:
         retstr->var1 = v11;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [styleVector countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);

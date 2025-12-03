@@ -1,17 +1,17 @@
 @interface AALoginPluginManager
 + (id)sharedInstance;
 - (AALoginPluginManager)init;
-- (BOOL)_notifyServicesOfLoginResponse:(id)a3 forAppleID:(id)a4 password:(id)a5 rawPassword:(id)a6;
+- (BOOL)_notifyServicesOfLoginResponse:(id)response forAppleID:(id)d password:(id)password rawPassword:(id)rawPassword;
 - (BOOL)shouldStashLoginResponse;
-- (id)_createLoginContextForAppleID:(id)a3 rawPassword:(id)a4 loginResponse:(id)a5;
+- (id)_createLoginContextForAppleID:(id)d rawPassword:(id)password loginResponse:(id)response;
 - (id)_idsPlugin;
-- (id)_loadPluginsLimitedToBundleIDs:(id)a3;
+- (id)_loadPluginsLimitedToBundleIDs:(id)ds;
 - (id)_plugins;
 - (id)collectParametersForIdentityEstablishmentRequest;
 - (id)collectParametersForLoginRequest;
-- (void)notifyServicesOfLoginResponse:(id)a3 forAppleID:(id)a4 password:(id)a5 rawPassword:(id)a6 completion:(id)a7;
-- (void)restrictToPluginBundleIDs:(id)a3;
-- (void)setShouldStashLoginResponse:(BOOL)a3;
+- (void)notifyServicesOfLoginResponse:(id)response forAppleID:(id)d password:(id)password rawPassword:(id)rawPassword completion:(id)completion;
+- (void)restrictToPluginBundleIDs:(id)ds;
+- (void)setShouldStashLoginResponse:(BOOL)response;
 - (void)unstashLoginResponse;
 @end
 
@@ -51,9 +51,9 @@ uint64_t __38__AALoginPluginManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)restrictToPluginBundleIDs:(id)a3
+- (void)restrictToPluginBundleIDs:(id)ds
 {
-  v4 = [a3 copy];
+  v4 = [ds copy];
   allowedPluginBundleIDs = self->_allowedPluginBundleIDs;
   self->_allowedPluginBundleIDs = v4;
 
@@ -81,11 +81,11 @@ uint64_t __38__AALoginPluginManager_sharedInstance__block_invoke()
   idsPlugin = self->_idsPlugin;
   if (!idsPlugin)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 URLsForDirectory:5 inDomains:8];
-    v6 = [v5 firstObject];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v5 = [defaultManager URLsForDirectory:5 inDomains:8];
+    firstObject = [v5 firstObject];
 
-    v7 = [v6 URLByAppendingPathComponent:@"SetupAssistantBundles/SBSyncServiceSetupAssistantBundle.bundle"];
+    v7 = [firstObject URLByAppendingPathComponent:@"SetupAssistantBundles/SBSyncServiceSetupAssistantBundle.bundle"];
     v8 = [MEMORY[0x1E696AAE8] bundleWithURL:v7];
     v9 = objc_alloc_init([v8 principalClass]);
     v10 = self->_idsPlugin;
@@ -116,8 +116,8 @@ uint64_t __38__AALoginPluginManager_sharedInstance__block_invoke()
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(AALoginPluginManager *)self _plugins];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  _plugins = [(AALoginPluginManager *)self _plugins];
+  v5 = [_plugins countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v5)
   {
     v7 = v5;
@@ -130,16 +130,16 @@ uint64_t __38__AALoginPluginManager_sharedInstance__block_invoke()
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_plugins);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 parametersForLoginRequest];
-        v12 = [v10 serviceIdentifier];
-        v13 = v12;
-        if (v12)
+        parametersForLoginRequest = [v10 parametersForLoginRequest];
+        serviceIdentifier = [v10 serviceIdentifier];
+        v13 = serviceIdentifier;
+        if (serviceIdentifier)
         {
-          v14 = v11 == 0;
+          v14 = parametersForLoginRequest == 0;
         }
 
         else
@@ -155,7 +155,7 @@ uint64_t __38__AALoginPluginManager_sharedInstance__block_invoke()
             *buf = v27;
             v33 = v13;
             v34 = 2112;
-            v35 = v11;
+            v35 = parametersForLoginRequest;
             v16 = v15;
             v17 = "AALoginPluginManager: collectParametersForLoginRequest is skipping plugin with ID %@ and params %@";
             v18 = 22;
@@ -167,7 +167,7 @@ LABEL_14:
           goto LABEL_20;
         }
 
-        if (self->_shouldSkipiTunesPlugin && [v12 isEqualToString:@"com.apple.itunes"])
+        if (self->_shouldSkipiTunesPlugin && [serviceIdentifier isEqualToString:@"com.apple.itunes"])
         {
           v15 = _AALogSystem();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -183,25 +183,25 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        [v3 setObject:v11 forKey:v13];
+        [v3 setObject:parametersForLoginRequest forKey:v13];
 LABEL_20:
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v7 = [_plugins countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v7);
   }
 
-  v19 = [(AALoginPluginManager *)self _idsPlugin];
-  v20 = [v19 delegateServiceIdentifier];
+  _idsPlugin = [(AALoginPluginManager *)self _idsPlugin];
+  delegateServiceIdentifier = [_idsPlugin delegateServiceIdentifier];
 
-  v21 = [(AALoginPluginManager *)self _idsPlugin];
-  v22 = [v21 accountSetupRequestParameters];
+  _idsPlugin2 = [(AALoginPluginManager *)self _idsPlugin];
+  accountSetupRequestParameters = [_idsPlugin2 accountSetupRequestParameters];
 
-  if (v20 && v22)
+  if (delegateServiceIdentifier && accountSetupRequestParameters)
   {
-    [v3 setObject:v22 forKey:v20];
+    [v3 setObject:accountSetupRequestParameters forKey:delegateServiceIdentifier];
   }
 
   else
@@ -209,11 +209,11 @@ LABEL_20:
     v23 = _AALogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(AALoginPluginManager *)self _idsPlugin];
+      _idsPlugin3 = [(AALoginPluginManager *)self _idsPlugin];
       *buf = 138412546;
-      v33 = v24;
+      v33 = _idsPlugin3;
       v34 = 2112;
-      v35 = v22;
+      v35 = accountSetupRequestParameters;
       _os_log_impl(&dword_1B6F6A000, v23, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: collectParametersForLoginRequest is skipping IDS plugin %@ with params %@", buf, 0x16u);
     }
   }
@@ -231,8 +231,8 @@ LABEL_20:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(AALoginPluginManager *)self _plugins];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v32 count:16];
+  _plugins = [(AALoginPluginManager *)self _plugins];
+  v5 = [_plugins countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v5)
   {
     v7 = v5;
@@ -245,17 +245,17 @@ LABEL_20:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_plugins);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 parametersForIdentityEstablishmentRequest];
-        v12 = [v10 serviceIdentifier];
+        parametersForIdentityEstablishmentRequest = [v10 parametersForIdentityEstablishmentRequest];
+        serviceIdentifier = [v10 serviceIdentifier];
         v13 = _AALogSystem();
         v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-        if (v12)
+        if (serviceIdentifier)
         {
-          v15 = v11 == 0;
+          v15 = parametersForIdentityEstablishmentRequest == 0;
         }
 
         else
@@ -268,9 +268,9 @@ LABEL_20:
           if (v14)
           {
             *buf = 138412546;
-            v27 = v12;
+            v27 = serviceIdentifier;
             v28 = 2112;
-            v29 = v11;
+            v29 = parametersForIdentityEstablishmentRequest;
             _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: collectParametersForIdentityEstablishmentRequest is skipping plugin with ID %@ and params %@", buf, 0x16u);
           }
         }
@@ -280,18 +280,18 @@ LABEL_20:
           if (v14)
           {
             *buf = v19;
-            v27 = v12;
+            v27 = serviceIdentifier;
             _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: collectParametersForIdentityEstablishmentRequest got parameters from plugin %@", buf, 0xCu);
           }
 
           v30 = @"service-data";
-          v31 = v11;
+          v31 = parametersForIdentityEstablishmentRequest;
           v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-          [v3 setObject:v13 forKeyedSubscript:v12];
+          [v3 setObject:v13 forKeyedSubscript:serviceIdentifier];
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      v7 = [_plugins countByEnumeratingWithState:&v20 objects:v32 count:16];
     }
 
     while (v7);
@@ -306,29 +306,29 @@ LABEL_20:
   return v16;
 }
 
-- (void)notifyServicesOfLoginResponse:(id)a3 forAppleID:(id)a4 password:(id)a5 rawPassword:(id)a6 completion:(id)a7
+- (void)notifyServicesOfLoginResponse:(id)response forAppleID:(id)d password:(id)password rawPassword:(id)rawPassword completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  responseCopy = response;
+  dCopy = d;
+  passwordCopy = password;
+  rawPasswordCopy = rawPassword;
+  completionCopy = completion;
   v17 = dispatch_get_global_queue(0, 0);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __97__AALoginPluginManager_notifyServicesOfLoginResponse_forAppleID_password_rawPassword_completion___block_invoke;
   v23[3] = &unk_1E7C9CD80;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = responseCopy;
+  v25 = dCopy;
+  v26 = passwordCopy;
+  v27 = rawPasswordCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = rawPasswordCopy;
+  v20 = passwordCopy;
+  v21 = dCopy;
+  v22 = responseCopy;
   dispatch_async(v17, v23);
 }
 
@@ -340,21 +340,21 @@ uint64_t __97__AALoginPluginManager_notifyServicesOfLoginResponse_forAppleID_pas
   return v2();
 }
 
-- (id)_createLoginContextForAppleID:(id)a3 rawPassword:(id)a4 loginResponse:(id)a5
+- (id)_createLoginContextForAppleID:(id)d rawPassword:(id)password loginResponse:(id)response
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  dCopy = d;
+  responseCopy = response;
+  passwordCopy = password;
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v7;
+    v44 = dCopy;
     _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: creating login context for stashing (appleID: %@)...", buf, 0xCu);
   }
 
-  if (!v9)
+  if (!passwordCopy)
   {
     v11 = _AALogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -364,7 +364,7 @@ uint64_t __97__AALoginPluginManager_notifyServicesOfLoginResponse_forAppleID_pas
     }
   }
 
-  v12 = [v8 responseParametersForServiceIdentifier:@"com.apple.mobileme"];
+  v12 = [responseCopy responseParametersForServiceIdentifier:@"com.apple.mobileme"];
   v13 = [v12 objectForKeyedSubscript:@"service-data"];
   v14 = [v13 objectForKeyedSubscript:@"appleAccountInfo"];
   v15 = [v14 objectForKeyedSubscript:@"aDsID"];
@@ -377,7 +377,7 @@ uint64_t __97__AALoginPluginManager_notifyServicesOfLoginResponse_forAppleID_pas
       goto LABEL_14;
     }
 
-    v16 = [v15 stringValue];
+    stringValue = [v15 stringValue];
   }
 
   else
@@ -389,15 +389,15 @@ uint64_t __97__AALoginPluginManager_notifyServicesOfLoginResponse_forAppleID_pas
       _os_log_impl(&dword_1B6F6A000, v15, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: no altDSID was found in iCloud service data!", buf, 2u);
     }
 
-    v16 = 0;
+    stringValue = 0;
   }
 
-  v15 = v16;
+  v15 = stringValue;
 LABEL_14:
-  v17 = [v8 dsid];
-  if (v17)
+  dsid = [responseCopy dsid];
+  if (dsid)
   {
-    v18 = v17;
+    v18 = dsid;
   }
 
   else
@@ -422,7 +422,7 @@ LABEL_14:
         _os_log_impl(&dword_1B6F6A000, v18, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: no DSID was found in iCloud service data!", buf, 2u);
       }
 
-      v22 = 0;
+      stringValue2 = 0;
       goto LABEL_24;
     }
   }
@@ -433,10 +433,10 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v22 = [v18 stringValue];
+  stringValue2 = [v18 stringValue];
 LABEL_24:
 
-  v18 = v22;
+  v18 = stringValue2;
 LABEL_25:
   v23 = [v12 objectForKeyedSubscript:@"service-data"];
   v24 = [v23 objectForKeyedSubscript:@"tokens"];
@@ -453,7 +453,7 @@ LABEL_25:
   }
 
   v41 = v12;
-  v42 = v8;
+  v42 = responseCopy;
   v27 = _AALogSystem();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
@@ -466,14 +466,14 @@ LABEL_25:
     _os_log_impl(&dword_1B6F6A000, v27, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: using altDSID %{mask}@ (%@)", buf, 0x16u);
   }
 
-  v30 = v7;
-  v31 = [[AAStorableLoginContext alloc] initWithAppleID:v7 altDSID:v15];
+  v30 = dCopy;
+  v31 = [[AAStorableLoginContext alloc] initWithAppleID:dCopy altDSID:v15];
   [(AAStorableLoginContext *)v31 setCloudKitToken:v25];
   [(AAStorableLoginContext *)v31 setDSID:v18];
-  [(AAStorableLoginContext *)v31 setRawPassword:v9];
+  [(AAStorableLoginContext *)v31 setRawPassword:passwordCopy];
 
-  v32 = [MEMORY[0x1E6959A48] defaultStore];
-  v33 = [v32 aa_authKitAccountForAltDSID:v15];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v33 = [defaultStore aa_authKitAccountForAltDSID:v15];
   v34 = v33;
   if (v33)
   {
@@ -509,13 +509,13 @@ LABEL_25:
   return v31;
 }
 
-- (BOOL)_notifyServicesOfLoginResponse:(id)a3 forAppleID:(id)a4 password:(id)a5 rawPassword:(id)a6
+- (BOOL)_notifyServicesOfLoginResponse:(id)response forAppleID:(id)d password:(id)password rawPassword:(id)rawPassword
 {
   v60 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v39 = a4;
-  v38 = a5;
-  v36 = a6;
+  responseCopy = response;
+  dCopy = d;
+  passwordCopy = password;
+  rawPasswordCopy = rawPassword;
   v11 = _AALogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -527,18 +527,18 @@ LABEL_25:
   v56 = buf;
   v57 = 0x2020000000;
   v58 = 1;
-  if (v10)
+  if (responseCopy)
   {
-    v12 = self;
-    objc_sync_enter(v12);
-    if (v12->_shouldStashLoginResponse)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_shouldStashLoginResponse)
     {
-      v13 = [(AALoginPluginManager *)v12 _createLoginContextForAppleID:v39 rawPassword:v36 loginResponse:v10];
+      v13 = [(AALoginPluginManager *)selfCopy _createLoginContextForAppleID:dCopy rawPassword:rawPasswordCopy loginResponse:responseCopy];
       v14 = +[AALoginContextManager sharedManager];
       [v14 setStashedContext:v13];
     }
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
   }
 
   group = dispatch_group_create();
@@ -546,12 +546,12 @@ LABEL_25:
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v15 = [(AALoginPluginManager *)self _plugins];
-  v16 = [v15 countByEnumeratingWithState:&v51 objects:v59 count:16];
+  _plugins = [(AALoginPluginManager *)self _plugins];
+  v16 = [_plugins countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v16)
   {
     v17 = *v52;
-    obj = v15;
+    obj = _plugins;
     do
     {
       for (i = 0; i != v16; ++i)
@@ -562,9 +562,9 @@ LABEL_25:
         }
 
         v19 = *(*(&v51 + 1) + 8 * i);
-        v20 = [v19 serviceIdentifier];
-        v21 = v20;
-        if (self->_shouldSkipiTunesPlugin && [v20 isEqualToString:@"com.apple.itunes"])
+        serviceIdentifier = [v19 serviceIdentifier];
+        v21 = serviceIdentifier;
+        if (self->_shouldSkipiTunesPlugin && [serviceIdentifier isEqualToString:@"com.apple.itunes"])
         {
           v22 = _AALogSystem();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -576,9 +576,9 @@ LABEL_25:
 
         else
         {
-          v23 = [v10 dsid];
-          v24 = [v10 altDSID];
-          v25 = [v10 augmentedResponseParametersForServiceIdentifier:v21 withAppleID:v39 password:v38 DSID:v23 altDSID:v24];
+          dsid = [responseCopy dsid];
+          altDSID = [responseCopy altDSID];
+          v25 = [responseCopy augmentedResponseParametersForServiceIdentifier:v21 withAppleID:dCopy password:passwordCopy DSID:dsid altDSID:altDSID];
 
           pluginNotificationQueue = self->_pluginNotificationQueue;
           block[0] = MEMORY[0x1E69E9820];
@@ -594,7 +594,7 @@ LABEL_25:
         }
       }
 
-      v15 = obj;
+      _plugins = obj;
       v16 = [obj countByEnumeratingWithState:&v51 objects:v59 count:16];
     }
 
@@ -607,11 +607,11 @@ LABEL_25:
   v41[2] = __87__AALoginPluginManager__notifyServicesOfLoginResponse_forAppleID_password_rawPassword___block_invoke_52;
   v41[3] = &unk_1E7C9CDF8;
   v41[4] = self;
-  v28 = v10;
+  v28 = responseCopy;
   v42 = v28;
-  v29 = v39;
+  v29 = dCopy;
   v43 = v29;
-  v30 = v38;
+  v30 = passwordCopy;
   v44 = v30;
   dispatch_group_async(group, v27, v41);
   v31 = dispatch_time(0, 60000000000);
@@ -777,19 +777,19 @@ void __87__AALoginPluginManager__notifyServicesOfLoginResponse_forAppleID_passwo
 
 - (BOOL)shouldStashLoginResponse
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shouldStashLoginResponse = v2->_shouldStashLoginResponse;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shouldStashLoginResponse = selfCopy->_shouldStashLoginResponse;
+  objc_sync_exit(selfCopy);
 
   return shouldStashLoginResponse;
 }
 
-- (void)setShouldStashLoginResponse:(BOOL)a3
+- (void)setShouldStashLoginResponse:(BOOL)response
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_shouldStashLoginResponse = a3;
+  obj->_shouldStashLoginResponse = response;
   objc_sync_exit(obj);
 }
 
@@ -806,10 +806,10 @@ void __87__AALoginPluginManager__notifyServicesOfLoginResponse_forAppleID_passwo
   objc_sync_exit(obj);
 }
 
-- (id)_loadPluginsLimitedToBundleIDs:(id)a3
+- (id)_loadPluginsLimitedToBundleIDs:(id)ds
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -873,29 +873,29 @@ void __87__AALoginPluginManager__notifyServicesOfLoginResponse_forAppleID_passwo
           _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: processing plugin bundle %@.", buf, 0xCu);
         }
 
-        if (v3 && (v27[0] = MEMORY[0x1E69E9820], v27[1] = 3221225472, v27[2] = __55__AALoginPluginManager__loadPluginsLimitedToBundleIDs___block_invoke, v27[3] = &unk_1E7C9CE20, v27[4] = v13, [v3 indexOfObjectPassingTest:v27] == 0x7FFFFFFFFFFFFFFFLL))
+        if (dsCopy && (v27[0] = MEMORY[0x1E69E9820], v27[1] = 3221225472, v27[2] = __55__AALoginPluginManager__loadPluginsLimitedToBundleIDs___block_invoke, v27[3] = &unk_1E7C9CE20, v27[4] = v13, [dsCopy indexOfObjectPassingTest:v27] == 0x7FFFFFFFFFFFFFFFLL))
         {
           v15 = _AALogSystem();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v13 bundleIdentifier];
+            bundleIdentifier = [v13 bundleIdentifier];
             *buf = 138412290;
-            *&buf[4] = v16;
+            *&buf[4] = bundleIdentifier;
             _os_log_impl(&dword_1B6F6A000, v15, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: skipping plugin %@.", buf, 0xCu);
           }
         }
 
         else
         {
-          v17 = [v13 principalClass];
-          if ([(objc_class *)v17 conformsToProtocol:&unk_1F2F453B0])
+          principalClass = [v13 principalClass];
+          if ([(objc_class *)principalClass conformsToProtocol:&unk_1F2F453B0])
           {
-            v18 = objc_alloc_init(v17);
+            v18 = objc_alloc_init(principalClass);
             v19 = v18;
             if (v18)
             {
-              v20 = [v18 serviceIdentifier];
-              if (v20)
+              serviceIdentifier = [v18 serviceIdentifier];
+              if (serviceIdentifier)
               {
                 [v25 addObject:v19];
               }
@@ -914,14 +914,14 @@ void __87__AALoginPluginManager__notifyServicesOfLoginResponse_forAppleID_passwo
 
             else
             {
-              v20 = _AALogSystem();
-              if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+              serviceIdentifier = _AALogSystem();
+              if (os_log_type_enabled(serviceIdentifier, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                *&buf[4] = v17;
+                *&buf[4] = principalClass;
                 *&buf[12] = 2112;
                 *&buf[14] = v13;
-                _os_log_impl(&dword_1B6F6A000, v20, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: Could not instantiate object of class %@ for bundle %@", buf, 0x16u);
+                _os_log_impl(&dword_1B6F6A000, serviceIdentifier, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: Could not instantiate object of class %@ for bundle %@", buf, 0x16u);
               }
             }
           }
@@ -932,7 +932,7 @@ void __87__AALoginPluginManager__notifyServicesOfLoginResponse_forAppleID_passwo
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              *&buf[4] = v17;
+              *&buf[4] = principalClass;
               *&buf[12] = 2112;
               *&buf[14] = v13;
               _os_log_impl(&dword_1B6F6A000, v19, OS_LOG_TYPE_DEFAULT, "AALoginPluginManager: Principal class %@ does not conform to AAAppleIDLoginPlugin for bundle %@", buf, 0x16u);

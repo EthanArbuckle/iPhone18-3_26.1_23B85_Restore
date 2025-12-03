@@ -10,28 +10,28 @@
   v26.receiver = self;
   v26.super_class = HDSampleTypesQueryServer;
   [(HDQueryServer *)&v26 _queue_start];
-  v3 = [(HDQueryServer *)self clientProxy];
-  v4 = [v3 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  v5 = [(HDQueryServer *)self queryUUID];
-  v6 = [(HDQueryServer *)self filter];
-  v7 = [(HDQueryServer *)self profile];
-  v8 = [v6 predicateWithProfile:v7];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  filter = [(HDQueryServer *)self filter];
+  profile = [(HDQueryServer *)self profile];
+  v8 = [filter predicateWithProfile:profile];
 
-  v9 = [(HDQueryServer *)self profile];
+  profile2 = [(HDQueryServer *)self profile];
   v25 = 0;
-  v10 = [HDSampleEntity sampleTypesForSamplesMatchingPredicate:v8 profile:v9 error:&v25];
+  v10 = [HDSampleEntity sampleTypesForSamplesMatchingPredicate:v8 profile:profile2 error:&v25];
   v11 = v25;
 
   -[HDQueryServer setDataCount:](self, "setDataCount:", [v10 count]);
   if (v11)
   {
-    [v4 client_deliverError:v11 forQuery:v5];
+    [remoteObjectProxy client_deliverError:v11 forQuery:queryUUID];
   }
 
   else
   {
-    v20 = v5;
+    v20 = queryUUID;
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v21 = 0u;
     v22 = 0u;
@@ -66,8 +66,8 @@
       while (v15);
     }
 
-    v5 = v20;
-    [v4 client_deliverSampleTypes:v12 query:v20];
+    queryUUID = v20;
+    [remoteObjectProxy client_deliverSampleTypes:v12 query:v20];
   }
 
   v19 = *MEMORY[0x277D85DE8];

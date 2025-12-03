@@ -1,7 +1,7 @@
 @interface WCM_HPCellularStateMonitor
 - (BOOL)start;
 - (WCM_HPCellularStateMonitor)init;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation WCM_HPCellularStateMonitor
@@ -29,19 +29,19 @@
 - (BOOL)start
 {
   [WCM_Logging logLevel:4 message:@"HPCellular: start HPCellularStateMonitor ..."];
-  v3 = [(CTStewieStateMonitor *)self->fMonitor start];
-  if (v3)
+  start = [(CTStewieStateMonitor *)self->fMonitor start];
+  if (start)
   {
-    v4 = [(CTStewieStateMonitor *)self->fMonitor getState];
-    [WCM_Logging logLevel:4 message:@"HPCellular: Initial state queried succesfully. Initial state: %@", v4];
-    v5 = [v4 status];
+    getState = [(CTStewieStateMonitor *)self->fMonitor getState];
+    [WCM_Logging logLevel:4 message:@"HPCellular: Initial state queried succesfully. Initial state: %@", getState];
+    status = [getState status];
     v6 = +[WCM_PolicyManager singleton];
     if (v6)
     {
       v7 = v6;
       if ([objc_msgSend(v6 "activeCoexFeatures")])
       {
-        if (v5 == 5)
+        if (status == 5)
         {
           [(WCM_HPCellularStateMonitor *)self setBHPCellSetBTMitigation:1];
           [WCM_Logging logLevel:4 message:@"HPCellular: In initial state query, HPCellular Status is Active, bHPCellSetBTMitigation = (%d)", [(WCM_HPCellularStateMonitor *)self bHPCellSetBTMitigation]];
@@ -63,22 +63,22 @@
     [WCM_Logging logLevel:2 message:@"HPCellular: In initial state query, Failed to start"];
   }
 
-  return v3;
+  return start;
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
-    v5 = [a3 status];
-    [WCM_Logging logLevel:4 message:@"HPCellular: stateChanged : %@", a3];
+    status = [changed status];
+    [WCM_Logging logLevel:4 message:@"HPCellular: stateChanged : %@", changed];
     v6 = +[WCM_PolicyManager singleton];
     if (v6)
     {
       v7 = v6;
       if ([objc_msgSend(v6 "activeCoexFeatures")])
       {
-        if (v5 == 5)
+        if (status == 5)
         {
           [(WCM_HPCellularStateMonitor *)self setBHPCellSetBTMitigation:1];
           [WCM_Logging logLevel:4 message:@"HPCellular: stateChanged, HPCellular Status is Active, bHPCellSetBTMitigation = (%d)", [(WCM_HPCellularStateMonitor *)self bHPCellSetBTMitigation]];
@@ -90,9 +90,9 @@
         }
 
         [WCM_Logging logLevel:4 message:@"HPCellular: stateChanged, set bHPCellSetBTMitigation = (%d)", [(WCM_HPCellularStateMonitor *)self bHPCellSetBTMitigation]];
-        v8 = [(WCM_HPCellularStateMonitor *)self bHPCellSetBTMitigation];
+        bHPCellSetBTMitigation = [(WCM_HPCellularStateMonitor *)self bHPCellSetBTMitigation];
 
-        [v7 handleHPCellularStateUpdate:v8];
+        [v7 handleHPCellularStateUpdate:bHPCellSetBTMitigation];
       }
     }
   }

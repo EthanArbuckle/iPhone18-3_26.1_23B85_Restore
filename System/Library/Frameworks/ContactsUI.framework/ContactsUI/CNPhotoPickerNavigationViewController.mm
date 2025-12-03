@@ -2,19 +2,19 @@
 - (BOOL)isDisplayingTrapView;
 - (BOOL)shouldDisplayTrapOverlayView;
 - (CGSize)previousSize;
-- (CNPhotoPickerNavigationViewController)initWithRootViewController:(id)a3;
+- (CNPhotoPickerNavigationViewController)initWithRootViewController:(id)controller;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)beginDisablingAutorotation;
 - (void)dealloc;
 - (void)endDisablingAutorotation;
 - (void)endDisablingAutorotationIfNeeded;
-- (void)setAllowRotation:(BOOL)a3;
+- (void)setAllowRotation:(BOOL)rotation;
 - (void)setupTrapOverlayView;
-- (void)updateTrapOverlayViewIfNecessaryWithCoordinator:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateTrapOverlayViewIfNecessaryWithCoordinator:(id)coordinator;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CNPhotoPickerNavigationViewController
@@ -30,10 +30,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)updateTrapOverlayViewIfNecessaryWithCoordinator:(id)a3
+- (void)updateTrapOverlayViewIfNecessaryWithCoordinator:(id)coordinator
 {
-  if (a3)
+  if (coordinator)
   {
     v4[4] = self;
     v5[0] = MEMORY[0x1E69E9820];
@@ -58,7 +58,7 @@
     v4[1] = 3221225472;
     v4[2] = __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessaryWithCoordinator___block_invoke_3;
     v4[3] = &unk_1E74E3CC8;
-    [a3 animateAlongsideTransition:v5 completion:v4];
+    [coordinator animateAlongsideTransition:v5 completion:v4];
   }
 
   else
@@ -104,58 +104,58 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
   v43[4] = *MEMORY[0x1E69E9840];
   if ([(CNPhotoPickerNavigationViewController *)self shouldDisplayTrapOverlayView])
   {
-    v3 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
+    trapOverlayView = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
 
-    if (v3)
+    if (trapOverlayView)
     {
-      v4 = [(CNPhotoPickerNavigationViewController *)self view];
-      [(CNPhotoPickerTrapView *)v4 bringSubviewToFront:self->_trapOverlayView];
+      view = [(CNPhotoPickerNavigationViewController *)self view];
+      [(CNPhotoPickerTrapView *)view bringSubviewToFront:self->_trapOverlayView];
     }
 
     else
     {
       v10 = [CNPhotoPickerTrapView alloc];
-      v4 = [(CNPhotoPickerTrapView *)v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+      view = [(CNPhotoPickerTrapView *)v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       v11 = +[CNUIColorRepository photoPickerBackgroundColor];
-      [(CNPhotoPickerTrapView *)v4 setBackgroundColor:v11];
+      [(CNPhotoPickerTrapView *)view setBackgroundColor:v11];
 
       v12 = +[CNUIColorRepository photoPickerTrapViewMessageTextColor];
-      v13 = [(CNPhotoPickerTrapView *)v4 label];
-      [v13 setTextColor:v12];
+      label = [(CNPhotoPickerTrapView *)view label];
+      [label setTextColor:v12];
 
-      [(CNPhotoPickerTrapView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v14 = [(CNPhotoPickerNavigationViewController *)self view];
-      [v14 addSubview:v4];
+      [(CNPhotoPickerTrapView *)view setTranslatesAutoresizingMaskIntoConstraints:0];
+      view2 = [(CNPhotoPickerNavigationViewController *)self view];
+      [view2 addSubview:view];
 
-      v41 = [(CNPhotoPickerTrapView *)v4 leadingAnchor];
-      v42 = [(CNPhotoPickerNavigationViewController *)self view];
-      v40 = [v42 leadingAnchor];
-      v39 = [v41 constraintEqualToAnchor:v40];
+      leadingAnchor = [(CNPhotoPickerTrapView *)view leadingAnchor];
+      view3 = [(CNPhotoPickerNavigationViewController *)self view];
+      leadingAnchor2 = [view3 leadingAnchor];
+      v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v43[0] = v39;
-      v37 = [(CNPhotoPickerTrapView *)v4 trailingAnchor];
-      v38 = [(CNPhotoPickerNavigationViewController *)self view];
-      v36 = [v38 trailingAnchor];
-      v35 = [v37 constraintEqualToAnchor:v36];
+      trailingAnchor = [(CNPhotoPickerTrapView *)view trailingAnchor];
+      view4 = [(CNPhotoPickerNavigationViewController *)self view];
+      trailingAnchor2 = [view4 trailingAnchor];
+      v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v43[1] = v35;
-      v33 = [(CNPhotoPickerTrapView *)v4 topAnchor];
-      v34 = [(CNPhotoPickerNavigationViewController *)self view];
-      v15 = [v34 safeAreaLayoutGuide];
-      v16 = [v15 topAnchor];
-      v17 = [v33 constraintEqualToAnchor:v16];
+      topAnchor = [(CNPhotoPickerTrapView *)view topAnchor];
+      view5 = [(CNPhotoPickerNavigationViewController *)self view];
+      safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+      topAnchor2 = [safeAreaLayoutGuide topAnchor];
+      v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v43[2] = v17;
-      v18 = [(CNPhotoPickerTrapView *)v4 bottomAnchor];
-      v19 = [(CNPhotoPickerNavigationViewController *)self view];
-      v20 = [v19 bottomAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20];
+      bottomAnchor = [(CNPhotoPickerTrapView *)view bottomAnchor];
+      view6 = [(CNPhotoPickerNavigationViewController *)self view];
+      bottomAnchor2 = [view6 bottomAnchor];
+      v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v43[3] = v21;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:4];
       [(CNPhotoPickerNavigationViewController *)self setTrapOverlayConstraints:v22];
 
       v23 = MEMORY[0x1E696ACD8];
-      v24 = [(CNPhotoPickerNavigationViewController *)self trapOverlayConstraints];
-      [v23 activateConstraints:v24];
+      trapOverlayConstraints = [(CNPhotoPickerNavigationViewController *)self trapOverlayConstraints];
+      [v23 activateConstraints:trapOverlayConstraints];
 
-      [(CNPhotoPickerNavigationViewController *)self setTrapOverlayView:v4];
+      [(CNPhotoPickerNavigationViewController *)self setTrapOverlayView:view];
     }
 
     v25 = [(CNPhotoPickerNavigationViewController *)self interfaceOrientation]- 3;
@@ -172,33 +172,33 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
     }
 
     v29 = [v26 localizedStringForKey:v28 value:&stru_1F0CE7398 table:@"Localized"];
-    v30 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
-    v31 = [v30 label];
-    [v31 setText:v29];
+    trapOverlayView2 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
+    label2 = [trapOverlayView2 label];
+    [label2 setText:v29];
 
-    v32 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
-    [v32 layoutIfNeeded];
+    trapOverlayView3 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
+    [trapOverlayView3 layoutIfNeeded];
   }
 
   else
   {
-    v5 = [(CNPhotoPickerNavigationViewController *)self trapOverlayConstraints];
+    trapOverlayConstraints2 = [(CNPhotoPickerNavigationViewController *)self trapOverlayConstraints];
 
-    if (v5)
+    if (trapOverlayConstraints2)
     {
       v6 = MEMORY[0x1E696ACD8];
-      v7 = [(CNPhotoPickerNavigationViewController *)self trapOverlayConstraints];
-      [v6 deactivateConstraints:v7];
+      trapOverlayConstraints3 = [(CNPhotoPickerNavigationViewController *)self trapOverlayConstraints];
+      [v6 deactivateConstraints:trapOverlayConstraints3];
 
       [(CNPhotoPickerNavigationViewController *)self setTrapOverlayConstraints:0];
     }
 
-    v8 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
+    trapOverlayView4 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
 
-    if (v8)
+    if (trapOverlayView4)
     {
-      v9 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
-      [v9 removeFromSuperview];
+      trapOverlayView5 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
+      [trapOverlayView5 removeFromSuperview];
 
       [(CNPhotoPickerNavigationViewController *)self setTrapOverlayView:0];
     }
@@ -207,8 +207,8 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
 
 - (BOOL)isDisplayingTrapView
 {
-  v2 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
-  v3 = v2 != 0;
+  trapOverlayView = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
+  v3 = trapOverlayView != 0;
 
   return v3;
 }
@@ -222,9 +222,9 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
 
   else
   {
-    v4 = [(CNPhotoPickerNavigationViewController *)self view];
-    v5 = [(CNPhotoPickerNavigationViewController *)self traitCollection];
-    if ([(CNVisualIdentityPickerViewController *)CNPhotoPickerViewController canShowPhotoPickerForView:v4 withTraitCollection:v5])
+    view = [(CNPhotoPickerNavigationViewController *)self view];
+    traitCollection = [(CNPhotoPickerNavigationViewController *)self traitCollection];
+    if ([(CNVisualIdentityPickerViewController *)CNPhotoPickerViewController canShowPhotoPickerForView:view withTraitCollection:traitCollection])
     {
       LOBYTE(v3) = 0;
     }
@@ -238,16 +238,16 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
   return v3;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = CNPhotoPickerNavigationViewController;
-  v7 = a4;
-  [(CNPhotoPickerNavigationViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CNPhotoPickerNavigationViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(CNPhotoPickerNavigationViewController *)self setPreviousSize:width, height, v8.receiver, v8.super_class];
-  [(CNPhotoPickerNavigationViewController *)self updateTrapOverlayViewIfNecessaryWithCoordinator:v7];
+  [(CNPhotoPickerNavigationViewController *)self updateTrapOverlayViewIfNecessaryWithCoordinator:coordinatorCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -255,16 +255,16 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
   v10.receiver = self;
   v10.super_class = CNPhotoPickerNavigationViewController;
   [(CNPhotoPickerNavigationViewController *)&v10 viewWillLayoutSubviews];
-  v3 = [(CNPhotoPickerNavigationViewController *)self view];
-  [v3 frame];
+  view = [(CNPhotoPickerNavigationViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
   if (self->_previousSize.width == v5 && self->_previousSize.height == v7)
   {
-    v9 = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
+    trapOverlayView = [(CNPhotoPickerNavigationViewController *)self trapOverlayView];
 
-    if (((v9 == 0) ^ [(CNPhotoPickerNavigationViewController *)self shouldDisplayTrapOverlayView]))
+    if (((trapOverlayView == 0) ^ [(CNPhotoPickerNavigationViewController *)self shouldDisplayTrapOverlayView]))
     {
       return;
     }
@@ -301,55 +301,55 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
   }
 }
 
-- (void)setAllowRotation:(BOOL)a3
+- (void)setAllowRotation:(BOOL)rotation
 {
-  if (self->_allowRotation != a3)
+  if (self->_allowRotation != rotation)
   {
-    self->_allowRotation = a3;
+    self->_allowRotation = rotation;
     [(CNPhotoPickerNavigationViewController *)self updateTrapOverlayViewIfNecessaryWithCoordinator:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CNPhotoPickerNavigationViewController;
-  [(CNPhotoPickerNavigationViewController *)&v5 viewWillDisappear:a3];
+  [(CNPhotoPickerNavigationViewController *)&v5 viewWillDisappear:disappear];
   if ([(CNPhotoPickerNavigationViewController *)self disablingRotation]&& [(CNPhotoPickerNavigationViewController *)self _isInterfaceAutorotationDisabled])
   {
-    v4 = [(CNPhotoPickerNavigationViewController *)self presentedViewController];
+    presentedViewController = [(CNPhotoPickerNavigationViewController *)self presentedViewController];
 
-    if (!v4)
+    if (!presentedViewController)
     {
       [(CNPhotoPickerNavigationViewController *)self endDisablingAutorotation];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = CNPhotoPickerNavigationViewController;
-  [(CNPhotoPickerNavigationViewController *)&v14 viewDidAppear:a3];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  [(CNPhotoPickerNavigationViewController *)&v14 viewDidAppear:appear];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     if ([(CNPhotoPickerNavigationViewController *)self disablingRotation])
     {
-      v6 = [(CNPhotoPickerNavigationViewController *)self view];
-      v7 = [v6 window];
-      v8 = [v7 windowScene];
-      if (([v8 interfaceOrientation] - 3) > 1)
+      view = [(CNPhotoPickerNavigationViewController *)self view];
+      window = [view window];
+      windowScene = [window windowScene];
+      if (([windowScene interfaceOrientation] - 3) > 1)
       {
       }
 
       else
       {
-        v9 = [(CNPhotoPickerNavigationViewController *)self _isInterfaceAutorotationDisabled];
+        _isInterfaceAutorotationDisabled = [(CNPhotoPickerNavigationViewController *)self _isInterfaceAutorotationDisabled];
 
-        if (v9)
+        if (_isInterfaceAutorotationDisabled)
         {
           [(CNPhotoPickerNavigationViewController *)self endDisablingAutorotation];
         }
@@ -358,12 +358,12 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
 
     else if (![(CNPhotoPickerNavigationViewController *)self allowRotation])
     {
-      v10 = [(CNPhotoPickerNavigationViewController *)self view];
-      v11 = [v10 window];
-      v12 = [v11 windowScene];
-      v13 = [v12 interfaceOrientation];
+      view2 = [(CNPhotoPickerNavigationViewController *)self view];
+      window2 = [view2 window];
+      windowScene2 = [window2 windowScene];
+      interfaceOrientation = [windowScene2 interfaceOrientation];
 
-      if (v13 == 1)
+      if (interfaceOrientation == 1)
       {
         [(CNPhotoPickerNavigationViewController *)self beginDisablingAutorotation];
       }
@@ -373,30 +373,30 @@ void __89__CNPhotoPickerNavigationViewController_updateTrapOverlayViewIfNecessar
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNPhotoPickerNavigationViewController;
   [(CNPhotoPickerNavigationViewController *)&v4 dealloc];
 }
 
-- (CNPhotoPickerNavigationViewController)initWithRootViewController:(id)a3
+- (CNPhotoPickerNavigationViewController)initWithRootViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = CNPhotoPickerNavigationViewController;
-  v3 = [(CNPhotoPickerNavigationViewController *)&v9 initWithRootViewController:a3];
+  v3 = [(CNPhotoPickerNavigationViewController *)&v9 initWithRootViewController:controller];
   v4 = v3;
   if (v3)
   {
     *(v3 + 1496) = *MEMORY[0x1E695F060];
     v3[1473] = 0;
     v3[1474] = 0;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
 
     v7 = v4;
   }

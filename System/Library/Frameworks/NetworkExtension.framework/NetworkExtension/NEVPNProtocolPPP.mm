@@ -1,25 +1,25 @@
 @interface NEVPNProtocolPPP
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)a3;
-- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)a3;
-- (NEVPNProtocolPPP)initWithCoder:(id)a3;
-- (NEVPNProtocolPPP)initWithType:(int64_t)a3;
-- (id)copyLegacyDictionaryComplete:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)service;
+- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)service;
+- (NEVPNProtocolPPP)initWithCoder:(id)coder;
+- (NEVPNProtocolPPP)initWithType:(int64_t)type;
+- (id)copyLegacyDictionaryComplete:(BOOL)complete;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEVPNProtocolPPP
 
-- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)a3
+- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)service
 {
   v13.receiver = self;
   v13.super_class = NEVPNProtocolPPP;
   v5 = [(NEVPNProtocol *)&v13 updateWithServiceProtocolsFromService:?];
   if (v5)
   {
-    v6 = [NEConfiguration copyConfigurationForProtocol:a3 inService:?];
+    v6 = [NEConfiguration copyConfigurationForProtocol:service inService:?];
     if (v6)
     {
       v7 = v6;
@@ -29,7 +29,7 @@
       CFRelease(v7);
     }
 
-    v9 = [NEConfiguration copyConfigurationForProtocol:a3 inService:?];
+    v9 = [NEConfiguration copyConfigurationForProtocol:service inService:?];
     if (v9)
     {
       v10 = v9;
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)a3
+- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)service
 {
   v13.receiver = self;
   v13.super_class = NEVPNProtocolPPP;
@@ -52,18 +52,18 @@
     return 0;
   }
 
-  v5 = [(NEVPNProtocolPPP *)self IPv4Settings];
+  iPv4Settings = [(NEVPNProtocolPPP *)self IPv4Settings];
 
-  if (v5)
+  if (iPv4Settings)
   {
-    v6 = [(NEVPNProtocolPPP *)self IPv4Settings];
-    v5 = [v6 copyLegacyDictionary];
+    iPv4Settings2 = [(NEVPNProtocolPPP *)self IPv4Settings];
+    iPv4Settings = [iPv4Settings2 copyLegacyDictionary];
   }
 
-  v7 = [NEConfiguration setConfiguration:v5 forProtocol:*MEMORY[0x1E69823A0] inService:a3];
-  if (v5)
+  v7 = [NEConfiguration setConfiguration:iPv4Settings forProtocol:*MEMORY[0x1E69823A0] inService:service];
+  if (iPv4Settings)
   {
-    CFRelease(v5);
+    CFRelease(iPv4Settings);
   }
 
   if (!v7)
@@ -71,37 +71,37 @@
     return 0;
   }
 
-  v8 = [(NEVPNProtocolPPP *)self IPv6Settings];
+  iPv6Settings = [(NEVPNProtocolPPP *)self IPv6Settings];
 
-  if (v8)
+  if (iPv6Settings)
   {
-    v9 = [(NEVPNProtocolPPP *)self IPv6Settings];
-    v10 = [v9 copyLegacyDictionary];
+    iPv6Settings2 = [(NEVPNProtocolPPP *)self IPv6Settings];
+    copyLegacyDictionary = [iPv6Settings2 copyLegacyDictionary];
   }
 
   else
   {
-    v10 = 0;
+    copyLegacyDictionary = 0;
   }
 
-  v11 = [NEConfiguration setConfiguration:v10 forProtocol:*MEMORY[0x1E69823A8] inService:a3];
-  if (v10)
+  v11 = [NEConfiguration setConfiguration:copyLegacyDictionary forProtocol:*MEMORY[0x1E69823A8] inService:service];
+  if (copyLegacyDictionary)
   {
-    CFRelease(v10);
+    CFRelease(copyLegacyDictionary);
   }
 
   return v11;
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
   v6 = isa_nsuuid(v5);
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNProtocolIdentifier"];
     v8 = [(NEVPNProtocol *)self initWithProtocolIdentifier:v7];
 
     if (!v8)
@@ -119,44 +119,44 @@
     }
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"__NEVPNKeychainDomain"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNKeychainDomain"];
   v10 = isa_nsnumber(v9);
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:@"__NEVPNKeychainDomain"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNKeychainDomain"];
     v8->super._keychainDomain = [v11 intValue];
   }
 
   v12 = *MEMORY[0x1E69825B0];
-  v13 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69825B0]];
+  v13 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69825B0]];
   v14 = isa_nsstring(v13);
 
   if (v14)
   {
-    v15 = [v4 objectForKeyedSubscript:v12];
+    v15 = [dictionaryCopy objectForKeyedSubscript:v12];
     [(NEVPNProtocol *)v8 setServerAddress:v15];
   }
 
   v16 = *MEMORY[0x1E6982570];
-  v17 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982570]];
+  v17 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982570]];
   v18 = isa_nsstring(v17);
 
   if (v18)
   {
-    v19 = [v4 objectForKeyedSubscript:v16];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v16];
     [(NEVPNProtocol *)v8 setUsername:v19];
   }
 
   v8->_authenticationMethod = 1;
   v20 = *MEMORY[0x1E6982578];
-  v21 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982578]];
+  v21 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982578]];
   v22 = isa_nsstring(v21);
 
   if (v22)
   {
     v23 = [NEKeychainItem alloc];
-    v24 = [v4 objectForKeyedSubscript:v20];
+    v24 = [dictionaryCopy objectForKeyedSubscript:v20];
     keychainDomain = v8->super._keychainDomain;
     v27 = objc_getProperty(v8, v26, 88, 1);
     v28 = [(NEKeychainItem *)v23 initWithLegacyIdentifier:v24 domain:keychainDomain accessGroup:v27];
@@ -164,13 +164,13 @@
     goto LABEL_13;
   }
 
-  v24 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982588]];
+  v24 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982588]];
   if (!isa_nsarray(v24) || ![v24 containsObject:*MEMORY[0x1E6982900]])
   {
     goto LABEL_22;
   }
 
-  v27 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982568]];
+  v27 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982568]];
   if (isa_nsarray(v27) && [v27 count])
   {
     v28 = [v27 objectAtIndexedSubscript:0];
@@ -204,68 +204,68 @@ LABEL_13:
 
 LABEL_22:
   v30 = *MEMORY[0x1E69825F8];
-  v31 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69825F8]];
+  v31 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69825F8]];
   v32 = isa_nsnumber(v31);
 
   if (v32)
   {
-    v33 = [v4 objectForKeyedSubscript:v30];
+    v33 = [dictionaryCopy objectForKeyedSubscript:v30];
     v8->_verboseLoggingEnabled = [v33 BOOLValue];
   }
 
-  [(NEVPNProtocol *)v8 initDisconnectOptions:v4];
+  [(NEVPNProtocol *)v8 initDisconnectOptions:dictionaryCopy];
 LABEL_25:
 
   return v8;
 }
 
-- (id)copyLegacyDictionaryComplete:(BOOL)a3
+- (id)copyLegacyDictionaryComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v28[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(NEVPNProtocol *)self serverAddress];
+  serverAddress = [(NEVPNProtocol *)self serverAddress];
 
-  if (v6)
+  if (serverAddress)
   {
-    v7 = [(NEVPNProtocol *)self serverAddress];
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69825B0]];
+    serverAddress2 = [(NEVPNProtocol *)self serverAddress];
+    [v5 setObject:serverAddress2 forKeyedSubscript:*MEMORY[0x1E69825B0]];
   }
 
-  v8 = [(NEVPNProtocol *)self username];
+  username = [(NEVPNProtocol *)self username];
 
-  if (v8)
+  if (username)
   {
-    v9 = [(NEVPNProtocol *)self username];
-    [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6982570]];
+    username2 = [(NEVPNProtocol *)self username];
+    [v5 setObject:username2 forKeyedSubscript:*MEMORY[0x1E6982570]];
   }
 
   if ([(NEVPNProtocolPPP *)self authenticationMethod]== 1 && ([(NEVPNProtocol *)self passwordKeychainItem], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [(NEVPNProtocol *)self passwordKeychainItem];
-    v12 = [v11 password];
+    passwordKeychainItem = [(NEVPNProtocol *)self passwordKeychainItem];
+    password = [passwordKeychainItem password];
 
-    v13 = [(NEVPNProtocol *)self passwordKeychainItem];
-    v14 = v13;
-    if (v12)
+    passwordKeychainItem2 = [(NEVPNProtocol *)self passwordKeychainItem];
+    passwordKeychainItem3 = passwordKeychainItem2;
+    if (password)
     {
-      v15 = [v13 password];
+      password2 = [passwordKeychainItem2 password];
     }
 
     else
     {
-      v21 = [v13 identifier];
+      identifier = [passwordKeychainItem2 identifier];
 
-      if (!v21)
+      if (!identifier)
       {
         goto LABEL_22;
       }
 
-      v14 = [(NEVPNProtocol *)self passwordKeychainItem];
-      v15 = [v14 identifier];
+      passwordKeychainItem3 = [(NEVPNProtocol *)self passwordKeychainItem];
+      password2 = [passwordKeychainItem3 identifier];
     }
 
-    v22 = v15;
+    v22 = password2;
 
     if (v22)
     {
@@ -321,7 +321,7 @@ LABEL_25:
   }
 
 LABEL_22:
-  if (v3)
+  if (completeCopy)
   {
     if ([(NEVPNProtocolPPP *)self verboseLoggingEnabled])
     {
@@ -355,16 +355,16 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v17.receiver = self;
   v17.super_class = NEVPNProtocolPPP;
   if ([-[NEVPNProtocolPPP class](&v17 class)])
   {
     v16.receiver = self;
     v16.super_class = NEVPNProtocolPPP;
-    v5 = [(NEVPNProtocol *)&v16 checkValidityAndCollectErrors:v4];
+    v5 = [(NEVPNProtocol *)&v16 checkValidityAndCollectErrors:errorsCopy];
   }
 
   else
@@ -372,33 +372,33 @@ LABEL_22:
     v5 = 1;
   }
 
-  v6 = [(NEVPNProtocolPPP *)self IPv4Settings];
-  if (v6)
+  iPv4Settings = [(NEVPNProtocolPPP *)self IPv4Settings];
+  if (iPv4Settings)
   {
-    v7 = v6;
-    v8 = [(NEVPNProtocolPPP *)self IPv4Settings];
-    v9 = [v8 checkValidityAndCollectErrors:v4];
+    v7 = iPv4Settings;
+    iPv4Settings2 = [(NEVPNProtocolPPP *)self IPv4Settings];
+    v9 = [iPv4Settings2 checkValidityAndCollectErrors:errorsCopy];
 
     v5 &= v9;
   }
 
-  v10 = [(NEVPNProtocolPPP *)self IPv6Settings];
-  if (v10)
+  iPv6Settings = [(NEVPNProtocolPPP *)self IPv6Settings];
+  if (iPv6Settings)
   {
-    v11 = v10;
-    v12 = [(NEVPNProtocolPPP *)self IPv6Settings];
-    v13 = [v12 checkValidityAndCollectErrors:v4];
+    v11 = iPv6Settings;
+    iPv6Settings2 = [(NEVPNProtocolPPP *)self IPv6Settings];
+    v13 = [iPv6Settings2 checkValidityAndCollectErrors:errorsCopy];
 
     v5 &= v13;
   }
 
   if ([(NEVPNProtocolPPP *)self authenticationMethod]== 3)
   {
-    v14 = [(NEVPNProtocol *)self identityReferenceInternal];
+    identityReferenceInternal = [(NEVPNProtocol *)self identityReferenceInternal];
 
-    if (!v14)
+    if (!identityReferenceInternal)
     {
-      [NEConfiguration addError:v4 toList:?];
+      [NEConfiguration addError:errorsCopy toList:?];
       v5 = 0;
     }
   }
@@ -406,52 +406,52 @@ LABEL_22:
   return v5 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = NEVPNProtocolPPP;
-  v4 = [(NEVPNProtocol *)&v8 copyWithZone:a3];
+  v4 = [(NEVPNProtocol *)&v8 copyWithZone:zone];
   [v4 setAuthenticationMethod:{-[NEVPNProtocolPPP authenticationMethod](self, "authenticationMethod")}];
   [v4 setVerboseLoggingEnabled:{-[NEVPNProtocolPPP verboseLoggingEnabled](self, "verboseLoggingEnabled")}];
-  v5 = [(NEVPNProtocolPPP *)self IPv4Settings];
-  [v4 setIPv4Settings:v5];
+  iPv4Settings = [(NEVPNProtocolPPP *)self IPv4Settings];
+  [v4 setIPv4Settings:iPv4Settings];
 
-  v6 = [(NEVPNProtocolPPP *)self IPv6Settings];
-  [v4 setIPv6Settings:v6];
+  iPv6Settings = [(NEVPNProtocolPPP *)self IPv6Settings];
+  [v4 setIPv6Settings:iPv6Settings];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NEVPNProtocolPPP;
-  v4 = a3;
-  [(NEVPNProtocol *)&v7 encodeWithCoder:v4];
-  [v4 encodeInt32:-[NEVPNProtocolPPP authenticationMethod](self forKey:{"authenticationMethod", v7.receiver, v7.super_class), @"AuthenticationMethod"}];
-  [v4 encodeBool:-[NEVPNProtocolPPP verboseLoggingEnabled](self forKey:{"verboseLoggingEnabled"), @"VerboseLoggingEnabled"}];
-  v5 = [(NEVPNProtocolPPP *)self IPv4Settings];
-  [v4 encodeObject:v5 forKey:@"IPv4Settings"];
+  coderCopy = coder;
+  [(NEVPNProtocol *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:-[NEVPNProtocolPPP authenticationMethod](self forKey:{"authenticationMethod", v7.receiver, v7.super_class), @"AuthenticationMethod"}];
+  [coderCopy encodeBool:-[NEVPNProtocolPPP verboseLoggingEnabled](self forKey:{"verboseLoggingEnabled"), @"VerboseLoggingEnabled"}];
+  iPv4Settings = [(NEVPNProtocolPPP *)self IPv4Settings];
+  [coderCopy encodeObject:iPv4Settings forKey:@"IPv4Settings"];
 
-  v6 = [(NEVPNProtocolPPP *)self IPv6Settings];
-  [v4 encodeObject:v6 forKey:@"IPv6Settings"];
+  iPv6Settings = [(NEVPNProtocolPPP *)self IPv6Settings];
+  [coderCopy encodeObject:iPv6Settings forKey:@"IPv6Settings"];
 }
 
-- (NEVPNProtocolPPP)initWithCoder:(id)a3
+- (NEVPNProtocolPPP)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NEVPNProtocolPPP;
-  v5 = [(NEVPNProtocol *)&v11 initWithCoder:v4];
+  v5 = [(NEVPNProtocol *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_authenticationMethod = [v4 decodeInt32ForKey:@"AuthenticationMethod"];
-    v5->_verboseLoggingEnabled = [v4 decodeBoolForKey:@"VerboseLoggingEnabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IPv4Settings"];
+    v5->_authenticationMethod = [coderCopy decodeInt32ForKey:@"AuthenticationMethod"];
+    v5->_verboseLoggingEnabled = [coderCopy decodeBoolForKey:@"VerboseLoggingEnabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IPv4Settings"];
     IPv4Settings = v5->_IPv4Settings;
     v5->_IPv4Settings = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IPv6Settings"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IPv6Settings"];
     IPv6Settings = v5->_IPv6Settings;
     v5->_IPv6Settings = v8;
   }
@@ -459,11 +459,11 @@ LABEL_22:
   return v5;
 }
 
-- (NEVPNProtocolPPP)initWithType:(int64_t)a3
+- (NEVPNProtocolPPP)initWithType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = NEVPNProtocolPPP;
-  v3 = [(NEVPNProtocol *)&v10 initWithType:a3];
+  v3 = [(NEVPNProtocol *)&v10 initWithType:type];
   v4 = v3;
   if (v3)
   {

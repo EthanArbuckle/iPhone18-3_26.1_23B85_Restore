@@ -3,39 +3,39 @@
 - ($AC64C642040120CEEAD84DEEACA9A5CE)JFX_allMediaTimeRange;
 - ($AC64C642040120CEEAD84DEEACA9A5CE)currentReadingRange;
 - ($AC64C642040120CEEAD84DEEACA9A5CE)readableTimeRange;
-- (BOOL)JFX_resetReaderFromTime:(id *)a3;
-- (BOOL)JFX_shouldResetReaderWhenSeekingFromStartTimeOfCurrentData:(id *)a3 toTime:(id *)a4;
+- (BOOL)JFX_resetReaderFromTime:(id *)time;
+- (BOOL)JFX_shouldResetReaderWhenSeekingFromStartTimeOfCurrentData:(id *)data toTime:(id *)time;
 - (BOOL)beginReading;
-- (BOOL)beginReadingAtTime:(id *)a3;
-- (BOOL)beginReadingAtTimeRange:(id *)a3;
+- (BOOL)beginReadingAtTime:(id *)time;
+- (BOOL)beginReadingAtTimeRange:(id *)range;
 - (BOOL)hasRemainingAvailableData;
 - (BOOL)prepareAssetReaderForReading;
-- (BOOL)readAheadToTime:(id *)a3;
-- (BOOL)seekToTime:(id *)a3;
-- (BOOL)seekingAheadIsExpensiveFromTime:(id *)a3 toTime:(id *)a4;
-- (JFXAVMediaDataReader)initWithAVAssetTrack:(id)a3 withName:(id)a4;
+- (BOOL)readAheadToTime:(id *)time;
+- (BOOL)seekToTime:(id *)time;
+- (BOOL)seekingAheadIsExpensiveFromTime:(id *)time toTime:(id *)toTime;
+- (JFXAVMediaDataReader)initWithAVAssetTrack:(id)track withName:(id)name;
 - (id)createAssetReader;
 - (id)createAssetReaderTrackOutput;
-- (void)JFX_configureAssetReaderToReadFromTime:(id *)a3;
+- (void)JFX_configureAssetReaderToReadFromTime:(id *)time;
 - (void)JFX_configureAssetReaderTrackOutput;
 - (void)JFX_releaseReadersForReset;
-- (void)JFX_resetReaderIfNecessaryToSeekFromStartTimeOfCurrentData:(id *)a3 toTime:(id *)a4;
-- (void)JFX_resetReadingRangeWhenScrubbingToTime:(id *)a3;
+- (void)JFX_resetReaderIfNecessaryToSeekFromStartTimeOfCurrentData:(id *)data toTime:(id *)time;
+- (void)JFX_resetReadingRangeWhenScrubbingToTime:(id *)time;
 - (void)cancelReadingForReaderReset;
-- (void)didFailWithError:(id)a3;
+- (void)didFailWithError:(id)error;
 - (void)didUpdateReadingRange;
 - (void)readAndDiscardRemainingAvailableData;
-- (void)setCurrentReadingRange:(id *)a3;
-- (void)setIsScrubbing:(BOOL)a3;
-- (void)setReadableTimeRange:(id *)a3;
+- (void)setCurrentReadingRange:(id *)range;
+- (void)setIsScrubbing:(BOOL)scrubbing;
+- (void)setReadableTimeRange:(id *)range;
 @end
 
 @implementation JFXAVMediaDataReader
 
-- (JFXAVMediaDataReader)initWithAVAssetTrack:(id)a3 withName:(id)a4
+- (JFXAVMediaDataReader)initWithAVAssetTrack:(id)track withName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  trackCopy = track;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = JFXAVMediaDataReader;
   v9 = [(JFXAVMediaDataReader *)&v17 init];
@@ -47,16 +47,16 @@
     *(v9 + 104) = *MEMORY[0x277CC08E0];
     *(v9 + 120) = v12;
     *(v9 + 136) = *(v11 + 32);
-    objc_storeStrong(v9 + 5, a3);
-    v13 = [*(v10 + 5) asset];
+    objc_storeStrong(v9 + 5, track);
+    asset = [*(v10 + 5) asset];
     v14 = *(v10 + 6);
-    *(v10 + 6) = v13;
+    *(v10 + 6) = asset;
 
     *(v10 + 9) = JFXSignpostIDFromObject(v10);
-    objc_storeStrong(v10 + 2, a4);
-    if (v7)
+    objc_storeStrong(v10 + 2, name);
+    if (trackCopy)
     {
-      [v7 minFrameDuration];
+      [trackCopy minFrameDuration];
     }
 
     else
@@ -87,16 +87,16 @@
   return [(JFXAVMediaDataReader *)self beginReadingAtTimeRange:v4];
 }
 
-- (BOOL)beginReadingAtTimeRange:(id *)a3
+- (BOOL)beginReadingAtTimeRange:(id *)range
 {
   v31 = *MEMORY[0x277D85DE8];
   if ([(JFXAVMediaDataReader *)self status]== 1)
   {
     [(JFXAVMediaDataReader *)self readableTimeRange];
-    v5 = *&a3->var0.var3;
-    *&range2.start.value = *&a3->var0.var0;
+    v5 = *&range->var0.var3;
+    *&range2.start.value = *&range->var0.var0;
     *&range2.start.epoch = v5;
-    *&range2.duration.timescale = *&a3->var1.var1;
+    *&range2.duration.timescale = *&range->var1.var1;
     if (CMTimeRangeEqual(&range1, &range2))
     {
       return 1;
@@ -105,21 +105,21 @@
 
   memset(&v25, 0, sizeof(v25));
   [(JFXAVMediaDataReader *)self JFX_allMediaTimeRange];
-  *&range2.start.value = *&a3->var1.var0;
-  range2.start.epoch = a3->var1.var3;
+  *&range2.start.value = *&range->var1.var0;
+  range2.start.epoch = range->var1.var3;
   *&time2.start.value = kMinimumReadingRangeDuration;
   time2.start.epoch = 0;
   CMTimeMaximum(&range1.start, &range2.start, &time2.start);
-  *&a3->var1.var0 = *&range1.start.value;
-  a3->var1.var3 = range1.start.epoch;
+  *&range->var1.var0 = *&range1.start.value;
+  range->var1.var3 = range1.start.epoch;
   memset(&v24, 0, sizeof(v24));
   [(JFXAVMediaDataReader *)self minimumFrameDuration];
-  v7 = *&a3->var0.var0;
+  v7 = *&range->var0.var0;
   time2 = v25;
   *&v21.value = v7;
   *&range1.start.value = *&v25.start.value;
   *&range1.start.epoch = *&v25.start.epoch;
-  v21.epoch = a3->var0.var3;
+  v21.epoch = range->var0.var3;
   memset(&start, 0, sizeof(start));
   *&range1.duration.timescale = *&v25.duration.timescale;
   CMTimeRangeGetEnd(&range2.start, &range1);
@@ -152,10 +152,10 @@
   }
 
   memset(&range2, 0, 24);
-  v8 = *&a3->var0.var3;
-  *&range1.start.value = *&a3->var0.var0;
+  v8 = *&range->var0.var3;
+  *&range1.start.value = *&range->var0.var0;
   *&range1.start.epoch = v8;
-  *&range1.duration.timescale = *&a3->var1.var1;
+  *&range1.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&time2.start, &range1);
   range1 = v25;
   CMTimeClampToRange(&range2.start, &time2.start, &range1);
@@ -163,24 +163,24 @@
   start = range2.start;
   CMTimeRangeFromTimeToTime(&range1, &time2.start, &start);
   v9 = *&range1.start.epoch;
-  *&a3->var0.var0 = *&range1.start.value;
-  *&a3->var0.var3 = v9;
-  *&a3->var1.var1 = *&range1.duration.timescale;
-  v10 = *&a3->var0.var3;
-  *&range1.start.value = *&a3->var0.var0;
+  *&range->var0.var0 = *&range1.start.value;
+  *&range->var0.var3 = v9;
+  *&range->var1.var1 = *&range1.duration.timescale;
+  v10 = *&range->var0.var3;
+  *&range1.start.value = *&range->var0.var0;
   *&range1.start.epoch = v10;
-  *&range1.duration.timescale = *&a3->var1.var1;
+  *&range1.duration.timescale = *&range->var1.var1;
   [(JFXAVMediaDataReader *)self setReadableTimeRange:&range1];
   v11 = JFXLog_DebugMediaDataReader();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    *&range1.start.value = *&a3->var0.var0;
-    range1.start.epoch = a3->var0.var3;
+    *&range1.start.value = *&range->var0.var0;
+    range1.start.epoch = range->var0.var3;
     Seconds = CMTimeGetSeconds(&range1.start);
-    v16 = *&a3->var0.var3;
-    *&range1.start.value = *&a3->var0.var0;
+    v16 = *&range->var0.var3;
+    *&range1.start.value = *&range->var0.var0;
     *&range1.start.epoch = v16;
-    *&range1.duration.timescale = *&a3->var1.var1;
+    *&range1.duration.timescale = *&range->var1.var1;
     CMTimeRangeGetEnd(&time2.start, &range1);
     *&v17 = CMTimeGetSeconds(&time2.start);
     LODWORD(range1.start.value) = 138412802;
@@ -193,10 +193,10 @@
   }
 
   v12 = JFXMediaDataReaderEventSignpostPointCategory();
-  v13 = [(JFXAVMediaDataReader *)self signPostID];
-  if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXAVMediaDataReader *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v14 = v13;
+    v14 = signPostID;
     if (os_signpost_enabled(v12))
     {
       LOWORD(range1.start.value) = 0;
@@ -222,28 +222,28 @@
   }
 }
 
-- (void)setIsScrubbing:(BOOL)a3
+- (void)setIsScrubbing:(BOOL)scrubbing
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_isScrubbing != a3)
+  if (self->_isScrubbing != scrubbing)
   {
-    v3 = a3;
-    self->_isScrubbing = a3;
+    scrubbingCopy = scrubbing;
+    self->_isScrubbing = scrubbing;
     v5 = JFXLog_DebugMediaDataReader();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(JFXAVMediaDataReader *)self setIsScrubbing:v3, v5];
+      [(JFXAVMediaDataReader *)self setIsScrubbing:scrubbingCopy, v5];
     }
 
     v6 = JFXMediaDataReaderEventSignpostPointCategory();
-    v7 = [(JFXAVMediaDataReader *)self signPostID];
-    if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signPostID = [(JFXAVMediaDataReader *)self signPostID];
+    if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v8 = v7;
+      v8 = signPostID;
       if (os_signpost_enabled(v6))
       {
         v9[0] = 67109120;
-        v9[1] = v3;
+        v9[1] = scrubbingCopy;
         _os_signpost_emit_with_name_impl(&dword_242A3B000, v6, OS_SIGNPOST_EVENT, v8, "ScrubModeChanged", "scrubbingMode set to %{BOOL}d", v9, 8u);
       }
     }
@@ -256,19 +256,19 @@
   }
 }
 
-- (BOOL)beginReadingAtTime:(id *)a3
+- (BOOL)beginReadingAtTime:(id *)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(JFXAVMediaDataReader *)self status];
-  if (v5 != 1)
+  status = [(JFXAVMediaDataReader *)self status];
+  if (status != 1)
   {
-    v19 = *a3;
+    v19 = *time;
     Seconds = CMTimeGetSeconds(&v19);
     v7 = JFXMediaDataReaderIntervalSignpostCategory();
-    v8 = [(JFXAVMediaDataReader *)self signPostID];
-    if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signPostID = [(JFXAVMediaDataReader *)self signPostID];
+    if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v9 = v8;
+      v9 = signPostID;
       if (os_signpost_enabled(v7))
       {
         LODWORD(v19.var0) = 134217984;
@@ -283,46 +283,46 @@
       [(JFXAVMediaDataReader *)self beginReadingAtTime:v10, Seconds];
     }
 
-    v11 = [(JFXAVMediaDataReader *)self createAssetReader];
-    [(JFXAVMediaDataReader *)self setAssetReader:v11];
+    createAssetReader = [(JFXAVMediaDataReader *)self createAssetReader];
+    [(JFXAVMediaDataReader *)self setAssetReader:createAssetReader];
 
-    v12 = [(JFXAVMediaDataReader *)self assetReader];
+    assetReader = [(JFXAVMediaDataReader *)self assetReader];
 
-    if (!v12)
+    if (!assetReader)
     {
       goto LABEL_11;
     }
 
-    v19 = *a3;
+    v19 = *time;
     [(JFXAVMediaDataReader *)self JFX_configureAssetReaderToReadFromTime:&v19];
-    v13 = [(JFXAVMediaDataReader *)self createAssetReaderTrackOutput];
-    [(JFXAVMediaDataReader *)self setAssetReaderTrackOutput:v13];
+    createAssetReaderTrackOutput = [(JFXAVMediaDataReader *)self createAssetReaderTrackOutput];
+    [(JFXAVMediaDataReader *)self setAssetReaderTrackOutput:createAssetReaderTrackOutput];
 
-    v14 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+    assetReaderTrackOutput = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
 
-    if (!v14)
+    if (!assetReaderTrackOutput)
     {
       goto LABEL_11;
     }
 
     [(JFXAVMediaDataReader *)self JFX_configureAssetReaderTrackOutput];
-    LODWORD(v5) = [(JFXAVMediaDataReader *)self prepareAssetReaderForReading];
-    if (v5)
+    LODWORD(status) = [(JFXAVMediaDataReader *)self prepareAssetReaderForReading];
+    if (status)
     {
       if ([(JFXAVMediaDataReader *)self status]== 2)
       {
 LABEL_11:
-        LOBYTE(v5) = 0;
-        return v5;
+        LOBYTE(status) = 0;
+        return status;
       }
 
       [(JFXAVMediaDataReader *)self setStatus:1];
       [(JFXAVMediaDataReader *)self didUpdateReadingRange];
       v15 = JFXMediaDataReaderIntervalSignpostCategory();
-      v16 = [(JFXAVMediaDataReader *)self signPostID];
-      if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signPostID2 = [(JFXAVMediaDataReader *)self signPostID];
+      if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v17 = v16;
+        v17 = signPostID2;
         if (os_signpost_enabled(v15))
         {
           LOWORD(v19.var0) = 0;
@@ -330,14 +330,14 @@ LABEL_11:
         }
       }
 
-      LOBYTE(v5) = [(JFXAVMediaDataReader *)self status]!= 2;
+      LOBYTE(status) = [(JFXAVMediaDataReader *)self status]!= 2;
     }
   }
 
-  return v5;
+  return status;
 }
 
-- (void)JFX_configureAssetReaderToReadFromTime:(id *)a3
+- (void)JFX_configureAssetReaderToReadFromTime:(id *)time
 {
   memset(&v11, 0, sizeof(v11));
   memset(&start, 0, sizeof(start));
@@ -346,7 +346,7 @@ LABEL_11:
   if ([(JFXAVMediaDataReader *)self isScrubbing])
   {
     memset(&range, 0, 24);
-    lhs = *a3;
+    lhs = *time;
     *&rhs.value = kDefaultScrubbingReadingRangeDuration;
     rhs.epoch = 0;
     CMTimeAdd(&range.start, &lhs, &rhs);
@@ -358,24 +358,24 @@ LABEL_11:
     }
   }
 
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&time->var0;
+  range.start.epoch = time->var3;
   lhs = start;
   CMTimeRangeFromTimeToTime(&v11, &range.start, &lhs);
   range = v11;
   [(JFXAVMediaDataReader *)self setCurrentReadingRange:&range];
   v6 = v11;
-  v5 = [(JFXAVMediaDataReader *)self assetReader];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
   range = v6;
-  [v5 setTimeRange:&range];
+  [assetReader setTimeRange:&range];
 }
 
-- (void)setCurrentReadingRange:(id *)a3
+- (void)setCurrentReadingRange:(id *)range
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = *&a3->var0.var0;
-  v6 = *&a3->var0.var3;
-  *&self->_currentReadingRange.duration.timescale = *&a3->var1.var1;
+  v5 = *&range->var0.var0;
+  v6 = *&range->var0.var3;
+  *&self->_currentReadingRange.duration.timescale = *&range->var1.var1;
   *&self->_currentReadingRange.start.epoch = v6;
   *&self->_currentReadingRange.start.value = v5;
   v7 = JFXLog_DebugMediaDataReader();
@@ -386,13 +386,13 @@ LABEL_11:
     v9 = JFXLog_DebugMediaDataReader();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      *time = *&a3->var0.var0;
-      *&time[16] = a3->var0.var3;
+      *time = *&range->var0.var0;
+      *&time[16] = range->var0.var3;
       Seconds = CMTimeGetSeconds(time);
-      v11 = *&a3->var0.var3;
-      *time = *&a3->var0.var0;
+      v11 = *&range->var0.var3;
+      *time = *&range->var0.var0;
       *&time[16] = v11;
-      *v22 = *&a3->var1.var1;
+      *v22 = *&range->var1.var1;
       CMTimeRangeGetEnd(&v20, time);
       v12 = CMTimeGetSeconds(&v20);
       [(JFXAVMediaDataReader *)self readableTimeRange];
@@ -402,11 +402,11 @@ LABEL_11:
       [(JFXAVMediaDataReader *)self readableTimeRange];
       CMTimeRangeGetEnd(&v20, time);
       v14 = CMTimeGetSeconds(&v20);
-      v15 = [(JFXAVMediaDataReader *)self asset];
-      v16 = v15;
-      if (v15)
+      asset = [(JFXAVMediaDataReader *)self asset];
+      v16 = asset;
+      if (asset)
       {
-        [v15 duration];
+        [asset duration];
       }
 
       else
@@ -436,20 +436,20 @@ LABEL_11:
 {
   if ([(JFXAVMediaDataReader *)self isScrubbing])
   {
-    v3 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-    [v3 setSupportsRandomAccess:1];
+    assetReaderTrackOutput = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+    [assetReaderTrackOutput setSupportsRandomAccess:1];
   }
 
-  v4 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-  [v4 setAlwaysCopiesSampleData:0];
+  assetReaderTrackOutput2 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+  [assetReaderTrackOutput2 setAlwaysCopiesSampleData:0];
 }
 
 - (id)createAssetReader
 {
   v3 = MEMORY[0x277CE6410];
-  v4 = [(JFXAVMediaDataReader *)self asset];
+  asset = [(JFXAVMediaDataReader *)self asset];
   v9 = 0;
-  v5 = [v3 assetReaderWithAsset:v4 error:&v9];
+  v5 = [v3 assetReaderWithAsset:asset error:&v9];
   v6 = v9;
 
   if (v5)
@@ -468,32 +468,32 @@ LABEL_11:
 - (id)createAssetReaderTrackOutput
 {
   v2 = MEMORY[0x277CE6430];
-  v3 = [(JFXAVMediaDataReader *)self assetTrack];
-  v4 = [v2 assetReaderTrackOutputWithTrack:v3 outputSettings:0];
+  assetTrack = [(JFXAVMediaDataReader *)self assetTrack];
+  v4 = [v2 assetReaderTrackOutputWithTrack:assetTrack outputSettings:0];
 
   return v4;
 }
 
 - (BOOL)prepareAssetReaderForReading
 {
-  v3 = [(JFXAVMediaDataReader *)self assetReader];
-  v4 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-  [v3 addOutput:v4];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  assetReaderTrackOutput = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+  [assetReader addOutput:assetReaderTrackOutput];
 
-  v5 = [(JFXAVMediaDataReader *)self assetReader];
-  v6 = [v5 startReading];
+  assetReader2 = [(JFXAVMediaDataReader *)self assetReader];
+  startReading = [assetReader2 startReading];
 
-  if ((v6 & 1) == 0)
+  if ((startReading & 1) == 0)
   {
-    v7 = [(JFXAVMediaDataReader *)self assetReader];
-    v8 = [v7 error];
-    [(JFXAVMediaDataReader *)self didFailWithError:v8];
+    assetReader3 = [(JFXAVMediaDataReader *)self assetReader];
+    error = [assetReader3 error];
+    [(JFXAVMediaDataReader *)self didFailWithError:error];
   }
 
-  return v6;
+  return startReading;
 }
 
-- (BOOL)seekToTime:(id *)a3
+- (BOOL)seekToTime:(id *)time
 {
   v35 = *MEMORY[0x277D85DE8];
   if ([(JFXAVMediaDataReader *)self status]== 2)
@@ -503,8 +503,8 @@ LABEL_11:
 
   [(JFXAVMediaDataReader *)self readableTimeRange];
   [(JFXAVMediaDataReader *)self minimumFrameDuration];
-  *&v25.value = *&a3->var0;
-  v25.epoch = a3->var3;
+  *&v25.value = *&time->var0;
+  v25.epoch = time->var3;
   memset(&v33, 0, sizeof(v33));
   range = v28;
   CMTimeRangeGetEnd(&lhs.start, &range);
@@ -536,21 +536,21 @@ LABEL_11:
     v29 = v32;
   }
 
-  *a3 = v29;
+  *time = v29;
   memset(&lhs, 0, 24);
   [(JFXAVMediaDataReader *)self startTimeOfCurrentData:*&v25.value];
   v5 = JFXMediaDataReaderIntervalSignpostCategory();
-  v6 = [(JFXAVMediaDataReader *)self signPostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXAVMediaDataReader *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signPostID;
     if (os_signpost_enabled(v5))
     {
       *&range.start.value = *&lhs.start.value;
       range.start.epoch = lhs.start.epoch;
       Seconds = CMTimeGetSeconds(&range.start);
-      *&range.start.value = *&a3->var0;
-      range.start.epoch = a3->var3;
+      *&range.start.value = *&time->var0;
+      range.start.epoch = time->var3;
       v9 = CMTimeGetSeconds(&range.start);
       LODWORD(range.start.value) = 134218240;
       *(&range.start.value + 4) = Seconds;
@@ -566,8 +566,8 @@ LABEL_11:
     *&range.start.value = *&lhs.start.value;
     range.start.epoch = lhs.start.epoch;
     v20 = CMTimeGetSeconds(&range.start);
-    *&range.start.value = *&a3->var0;
-    range.start.epoch = a3->var3;
+    *&range.start.value = *&time->var0;
+    range.start.epoch = time->var3;
     *&v21 = CMTimeGetSeconds(&range.start);
     LODWORD(range.start.value) = 138412802;
     *(&range.start.value + 4) = self;
@@ -580,22 +580,22 @@ LABEL_11:
 
   *&range.start.value = *&lhs.start.value;
   range.start.epoch = lhs.start.epoch;
-  *&v28.start.value = *&a3->var0;
-  v28.start.epoch = a3->var3;
+  *&v28.start.value = *&time->var0;
+  v28.start.epoch = time->var3;
   [(JFXAVMediaDataReader *)self JFX_resetReaderIfNecessaryToSeekFromStartTimeOfCurrentData:&range toTime:&v28];
   if ([(JFXAVMediaDataReader *)self status]== 2)
   {
     return 0;
   }
 
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&time->var0;
+  range.start.epoch = time->var3;
   v11 = [(JFXAVMediaDataReader *)self readAheadToTime:&range];
   v12 = JFXMediaDataReaderIntervalSignpostCategory();
-  v13 = [(JFXAVMediaDataReader *)self signPostID];
-  if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID2 = [(JFXAVMediaDataReader *)self signPostID];
+  if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v14 = v13;
+    v14 = signPostID2;
     if (os_signpost_enabled(v12))
     {
       LOWORD(range.start.value) = 0;
@@ -609,8 +609,8 @@ LABEL_11:
   {
     if (v16)
     {
-      *&range.start.value = *&a3->var0;
-      range.start.epoch = a3->var3;
+      *&range.start.value = *&time->var0;
+      range.start.epoch = time->var3;
       v17 = CMTimeGetSeconds(&range.start);
       [(JFXAVMediaDataReader *)self startTimeOfCurrentData];
       *&v18 = CMTimeGetSeconds(&range.start);
@@ -626,61 +626,61 @@ LABEL_11:
 
   else if (v16)
   {
-    *&range.start.value = *&a3->var0;
-    range.start.epoch = a3->var3;
+    *&range.start.value = *&time->var0;
+    range.start.epoch = time->var3;
     v22 = CMTimeGetSeconds(&range.start);
-    v23 = [(JFXAVMediaDataReader *)self status];
-    v24 = [(JFXAVMediaDataReader *)self error];
+    status = [(JFXAVMediaDataReader *)self status];
+    error = [(JFXAVMediaDataReader *)self error];
     LODWORD(range.start.value) = 138413058;
     *(&range.start.value + 4) = self;
     LOWORD(range.start.flags) = 2048;
     *(&range.start.flags + 2) = v22;
     HIWORD(range.start.epoch) = 2048;
-    range.duration.value = v23;
+    range.duration.value = status;
     LOWORD(range.duration.timescale) = 2112;
-    *(&range.duration.timescale + 2) = v24;
+    *(&range.duration.timescale + 2) = error;
     _os_log_debug_impl(&dword_242A3B000, v15, OS_LOG_TYPE_DEBUG, "%@ data not found for time %f, status %ld error %@", &range, 0x2Au);
   }
 
   return v11;
 }
 
-- (void)JFX_resetReaderIfNecessaryToSeekFromStartTimeOfCurrentData:(id *)a3 toTime:(id *)a4
+- (void)JFX_resetReaderIfNecessaryToSeekFromStartTimeOfCurrentData:(id *)data toTime:(id *)time
 {
-  v7 = *a3;
-  v6 = *a4;
+  v7 = *data;
+  v6 = *time;
   if ([(JFXAVMediaDataReader *)self JFX_shouldResetReaderWhenSeekingFromStartTimeOfCurrentData:&v7 toTime:&v6])
   {
     if ([(JFXAVMediaDataReader *)self isScrubbing])
     {
-      v7 = *a4;
+      v7 = *time;
       [(JFXAVMediaDataReader *)self JFX_resetReadingRangeWhenScrubbingToTime:&v7];
     }
 
     else
     {
-      v7 = *a4;
+      v7 = *time;
       [(JFXAVMediaDataReader *)self JFX_resetReaderFromTime:&v7];
     }
   }
 }
 
-- (BOOL)JFX_shouldResetReaderWhenSeekingFromStartTimeOfCurrentData:(id *)a3 toTime:(id *)a4
+- (BOOL)JFX_shouldResetReaderWhenSeekingFromStartTimeOfCurrentData:(id *)data toTime:(id *)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  time.start = *a3;
+  time.start = *data;
   Seconds = CMTimeGetSeconds(&time.start);
-  time.start = *a4;
+  time.start = *time;
   v8 = CMTimeGetSeconds(&time.start);
-  time.start = *a4;
-  v18 = *a3;
+  time.start = *time;
+  v18 = *data;
   if (CMTimeCompare(&time.start, &v18) < 0)
   {
     v15 = JFXMediaDataReaderEventSignpostPointCategory();
-    v16 = [(JFXAVMediaDataReader *)self signPostID];
-    if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signPostID = [(JFXAVMediaDataReader *)self signPostID];
+    if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v17 = v16;
+      v17 = signPostID;
       if (os_signpost_enabled(v15))
       {
         LODWORD(time.start.value) = 134218240;
@@ -707,21 +707,21 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  *&time.start.value = *&a4->var0;
-  time.start.epoch = a4->var3;
-  v18 = *a3;
+  *&time.start.value = *&time->var0;
+  time.start.epoch = time->var3;
+  v18 = *data;
   if (CMTimeCompare(&time.start, &v18) >= 1)
   {
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
-    v18 = *a4;
+    *&time.start.value = *&data->var0;
+    time.start.epoch = data->var3;
+    v18 = *time;
     if ([(JFXAVMediaDataReader *)self seekingAheadIsExpensiveFromTime:&time toTime:&v18])
     {
       v9 = JFXMediaDataReaderEventSignpostPointCategory();
-      v10 = [(JFXAVMediaDataReader *)self signPostID];
-      if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signPostID2 = [(JFXAVMediaDataReader *)self signPostID];
+      if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v11 = v10;
+        v11 = signPostID2;
         if (os_signpost_enabled(v9))
         {
           LODWORD(time.start.value) = 134218240;
@@ -759,41 +759,41 @@ LABEL_16:
   }
 
   [(JFXAVMediaDataReader *)self currentReadingRange];
-  v18 = *a4;
+  v18 = *time;
   return !CMTimeRangeContainsTime(&time, &v18);
 }
 
-- (BOOL)seekingAheadIsExpensiveFromTime:(id *)a3 toTime:(id *)a4
+- (BOOL)seekingAheadIsExpensiveFromTime:(id *)time toTime:(id *)toTime
 {
-  v7 = *a3;
+  v7 = *time;
   Seconds = CMTimeGetSeconds(&v7);
-  v7 = *a4;
+  v7 = *toTime;
   return CMTimeGetSeconds(&v7) - Seconds > 1.0;
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = JFXLog_mediaDataReader();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(JFXAVMediaDataReader *)self didFailWithError:v4, v5];
+    [(JFXAVMediaDataReader *)self didFailWithError:errorCopy, v5];
   }
 
-  [(JFXAVMediaDataReader *)self setError:v4];
+  [(JFXAVMediaDataReader *)self setError:errorCopy];
   [(JFXAVMediaDataReader *)self setStatus:2];
 }
 
-- (BOOL)JFX_resetReaderFromTime:(id *)a3
+- (BOOL)JFX_resetReaderFromTime:(id *)time
 {
   v16 = *MEMORY[0x277D85DE8];
-  v15 = *a3;
+  v15 = *time;
   Seconds = CMTimeGetSeconds(&v15);
   v6 = JFXMediaDataReaderIntervalSignpostCategory();
-  v7 = [(JFXAVMediaDataReader *)self signPostID];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXAVMediaDataReader *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signPostID;
     if (os_signpost_enabled(v6))
     {
       LODWORD(v15.var0) = 134217984;
@@ -811,13 +811,13 @@ LABEL_16:
   [(JFXAVMediaDataReader *)self cancelReadingForReaderReset];
   [(JFXAVMediaDataReader *)self JFX_releaseReadersForReset];
   [(JFXAVMediaDataReader *)self setStatus:0];
-  v15 = *a3;
+  v15 = *time;
   v10 = [(JFXAVMediaDataReader *)self beginReadingAtTime:&v15];
   v11 = JFXMediaDataReaderIntervalSignpostCategory();
-  v12 = [(JFXAVMediaDataReader *)self signPostID];
-  if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID2 = [(JFXAVMediaDataReader *)self signPostID];
+  if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v13 = v12;
+    v13 = signPostID2;
     if (os_signpost_enabled(v11))
     {
       LOWORD(v15.var0) = 0;
@@ -830,8 +830,8 @@ LABEL_16:
 
 - (void)cancelReadingForReaderReset
 {
-  v2 = [(JFXAVMediaDataReader *)self assetReader];
-  [v2 cancelReading];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  [assetReader cancelReading];
 }
 
 - (void)JFX_releaseReadersForReset
@@ -841,16 +841,16 @@ LABEL_16:
   [(JFXAVMediaDataReader *)self setAssetReaderTrackOutput:0];
 }
 
-- (void)JFX_resetReadingRangeWhenScrubbingToTime:(id *)a3
+- (void)JFX_resetReadingRangeWhenScrubbingToTime:(id *)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  time.start = *a3;
+  time.start = *time;
   Seconds = CMTimeGetSeconds(&time.start);
   v6 = JFXMediaDataReaderIntervalSignpostCategory();
-  v7 = [(JFXAVMediaDataReader *)self signPostID];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXAVMediaDataReader *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signPostID;
     if (os_signpost_enabled(v6))
     {
       LODWORD(time.start.value) = 134217984;
@@ -868,31 +868,31 @@ LABEL_16:
   if (![(JFXAVMediaDataReader *)self hasRemainingAvailableData]|| ([(JFXAVMediaDataReader *)self readAndDiscardRemainingAvailableData], [(JFXAVMediaDataReader *)self status]!= 2))
   {
     memset(&time, 0, sizeof(time));
-    *&v16.start.value = *&a3->var0;
-    v16.start.epoch = a3->var3;
+    *&timeCopy2.start.value = *&time->var0;
+    timeCopy2.start.epoch = time->var3;
     *&duration.value = kDefaultScrubbingReadingRangeDuration;
     duration.epoch = 0;
-    CMTimeRangeMake(&time, &v16.start, &duration);
-    v16 = time;
-    v10 = [MEMORY[0x277CCAE60] valueWithCMTimeRange:&v16];
+    CMTimeRangeMake(&time, &timeCopy2.start, &duration);
+    timeCopy2 = time;
+    v10 = [MEMORY[0x277CCAE60] valueWithCMTimeRange:&timeCopy2];
     v18 = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
 
-    v12 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-    [v12 resetForReadingTimeRanges:v11];
+    assetReaderTrackOutput = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+    [assetReaderTrackOutput resetForReadingTimeRanges:v11];
 
-    v16 = time;
-    [(JFXAVMediaDataReader *)self setCurrentReadingRange:&v16];
+    timeCopy2 = time;
+    [(JFXAVMediaDataReader *)self setCurrentReadingRange:&timeCopy2];
     [(JFXAVMediaDataReader *)self didUpdateReadingRange];
     v13 = JFXMediaDataReaderIntervalSignpostCategory();
-    v14 = [(JFXAVMediaDataReader *)self signPostID];
-    if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signPostID2 = [(JFXAVMediaDataReader *)self signPostID];
+    if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v15 = v14;
+      v15 = signPostID2;
       if (os_signpost_enabled(v13))
       {
-        LOWORD(v16.start.value) = 0;
-        _os_signpost_emit_with_name_impl(&dword_242A3B000, v13, OS_SIGNPOST_INTERVAL_END, v15, "resetReadingRangeWhenScrubbingToTime", &unk_242B66C87, &v16, 2u);
+        LOWORD(timeCopy2.start.value) = 0;
+        _os_signpost_emit_with_name_impl(&dword_242A3B000, v13, OS_SIGNPOST_INTERVAL_END, v15, "resetReadingRangeWhenScrubbingToTime", &unk_242B66C87, &timeCopy2, 2u);
       }
     }
   }
@@ -911,7 +911,7 @@ LABEL_16:
   objc_exception_throw(v7);
 }
 
-- (BOOL)readAheadToTime:(id *)a3
+- (BOOL)readAheadToTime:(id *)time
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -965,11 +965,11 @@ LABEL_16:
 
 - ($AC64C642040120CEEAD84DEEACA9A5CE)JFX_allMediaTimeRange
 {
-  v4 = [(JFXAVMediaDataReader *)self asset];
-  v5 = v4;
-  if (v4)
+  asset = [(JFXAVMediaDataReader *)self asset];
+  v5 = asset;
+  if (asset)
   {
-    [v4 duration];
+    [asset duration];
   }
 
   else
@@ -992,11 +992,11 @@ LABEL_16:
   return self;
 }
 
-- (void)setReadableTimeRange:(id *)a3
+- (void)setReadableTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_readableTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_readableTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_readableTimeRange.start.epoch = v4;
   *&self->_readableTimeRange.start.value = v3;
 }

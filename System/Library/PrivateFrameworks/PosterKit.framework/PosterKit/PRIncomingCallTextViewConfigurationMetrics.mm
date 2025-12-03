@@ -1,20 +1,20 @@
 @interface PRIncomingCallTextViewConfigurationMetrics
-+ (double)idealSpaceBetweenTopText:(id)a3 topFont:(id)a4 bottomText:(id)a5 bottomFont:(id)a6;
++ (double)idealSpaceBetweenTopText:(id)text topFont:(id)font bottomText:(id)bottomText bottomFont:(id)bottomFont;
 - (PRIncomingCallTextViewConfigurationMetrics)init;
 @end
 
 @implementation PRIncomingCallTextViewConfigurationMetrics
 
-+ (double)idealSpaceBetweenTopText:(id)a3 topFont:(id)a4 bottomText:(id)a5 bottomFont:(id)a6
++ (double)idealSpaceBetweenTopText:(id)text topFont:(id)font bottomText:(id)bottomText bottomFont:(id)bottomFont
 {
   v8 = sub_1A8BDE134();
   v10 = v9;
   v11 = sub_1A8BDE134();
   v13 = v12;
-  v14 = a4;
-  v15 = a6;
-  sub_1A8BB0BC8(v8, v10, v14, v20);
-  v16 = v15;
+  fontCopy = font;
+  bottomFontCopy = bottomFont;
+  sub_1A8BB0BC8(v8, v10, fontCopy, v20);
+  v16 = bottomFontCopy;
   sub_1A8BB0BC8(v11, v13, v16, v21);
   sub_1A8BB1004(v21);
   sub_1A8BB1004(v20);

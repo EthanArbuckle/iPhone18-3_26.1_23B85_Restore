@@ -1,26 +1,26 @@
 @interface AXColorChooserCell
-- (BOOL)colorIsBlack:(id)a3;
-- (BOOL)colorIsWhite:(id)a3;
+- (BOOL)colorIsBlack:(id)black;
+- (BOOL)colorIsWhite:(id)white;
 - (BOOL)fillCircle;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setFillCircle:(BOOL)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setFillCircle:(BOOL)circle;
 @end
 
 @implementation AXColorChooserCell
 
-- (BOOL)colorIsWhite:(id)a3
+- (BOOL)colorIsWhite:(id)white
 {
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
+  whiteCopy = white;
+  v4 = [whiteCopy objectAtIndexedSubscript:0];
   [v4 floatValue];
   if (v5 == 1.0)
   {
-    v6 = [v3 objectAtIndexedSubscript:1];
+    v6 = [whiteCopy objectAtIndexedSubscript:1];
     [v6 floatValue];
     if (v7 == 1.0)
     {
-      v8 = [v3 objectAtIndexedSubscript:2];
+      v8 = [whiteCopy objectAtIndexedSubscript:2];
       [v8 floatValue];
       v10 = v9 == 1.0;
     }
@@ -39,18 +39,18 @@
   return v10;
 }
 
-- (BOOL)colorIsBlack:(id)a3
+- (BOOL)colorIsBlack:(id)black
 {
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
+  blackCopy = black;
+  v4 = [blackCopy objectAtIndexedSubscript:0];
   [v4 floatValue];
   if (v5 == 0.0)
   {
-    v6 = [v3 objectAtIndexedSubscript:1];
+    v6 = [blackCopy objectAtIndexedSubscript:1];
     [v6 floatValue];
     if (v7 == 0.0)
     {
-      v8 = [v3 objectAtIndexedSubscript:2];
+      v8 = [blackCopy objectAtIndexedSubscript:2];
       [v8 floatValue];
       v10 = v9 == 0.0;
     }
@@ -69,22 +69,22 @@
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v28.receiver = self;
   v28.super_class = AXColorChooserCell;
-  v4 = a3;
-  [(AXColorChooserCell *)&v28 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(AXColorChooserCell *)&v28 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [AXColorCircle alloc];
   v6 = [(AXColorCircle *)v5 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height, v28.receiver, v28.super_class];
-  v7 = [v4 propertyForKey:@"rgb"];
+  v7 = [specifierCopy propertyForKey:@"rgb"];
 
   if ([(AXColorChooserCell *)self colorIsWhite:v7])
   {
-    v8 = [(AXColorChooserCell *)self traitCollection];
-    v9 = [v8 userInterfaceStyle];
+    traitCollection = [(AXColorChooserCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v9 == &dword_0 + 1)
+    if (userInterfaceStyle == &dword_0 + 1)
     {
       v10 = +[UIColor blackColor];
 LABEL_7:
@@ -98,10 +98,10 @@ LABEL_11:
 
   if ([(AXColorChooserCell *)self colorIsBlack:v7])
   {
-    v11 = [(AXColorChooserCell *)self traitCollection];
-    v12 = [v11 userInterfaceStyle];
+    traitCollection2 = [(AXColorChooserCell *)self traitCollection];
+    userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-    if (v12 == &dword_0 + 2)
+    if (userInterfaceStyle2 == &dword_0 + 2)
     {
       v10 = +[UIColor whiteColor];
       goto LABEL_7;
@@ -133,28 +133,28 @@ LABEL_12:
   v25 = +[UIColor clearColor];
   [(AXColorCircle *)v6 setBackgroundColor:v25];
 
-  v26 = [(AXColorChooserCell *)self contentView];
-  [v26 addSubview:v6];
+  contentView = [(AXColorChooserCell *)self contentView];
+  [contentView addSubview:v6];
 
   [(AXColorChooserCell *)self setCircle:v6];
-  LODWORD(v26) = [(AXColorChooserCell *)self colorIsWhite:v7];
-  v27 = [(AXColorChooserCell *)self circle];
-  [v27 setFillCircle:v26 ^ 1];
+  LODWORD(contentView) = [(AXColorChooserCell *)self colorIsWhite:v7];
+  circle = [(AXColorChooserCell *)self circle];
+  [circle setFillCircle:contentView ^ 1];
 }
 
-- (void)setFillCircle:(BOOL)a3
+- (void)setFillCircle:(BOOL)circle
 {
-  v3 = a3;
-  v4 = [(AXColorChooserCell *)self circle];
-  [v4 setFillCircle:v3];
+  circleCopy = circle;
+  circle = [(AXColorChooserCell *)self circle];
+  [circle setFillCircle:circleCopy];
 }
 
 - (BOOL)fillCircle
 {
-  v2 = [(AXColorChooserCell *)self circle];
-  v3 = [v2 fillCircle];
+  circle = [(AXColorChooserCell *)self circle];
+  fillCircle = [circle fillCircle];
 
-  return v3;
+  return fillCircle;
 }
 
 - (void)layoutSubviews
@@ -175,8 +175,8 @@ LABEL_12:
 
   if (v3)
   {
-    v5 = [(AXColorChooserCell *)self contentView];
-    [v5 bounds];
+    contentView = [(AXColorChooserCell *)self contentView];
+    [contentView bounds];
     v6 = CGRectGetMaxX(v24) - v4 + -9.0;
   }
 
@@ -187,14 +187,14 @@ LABEL_12:
 
   [(AXColorChooserCell *)self bounds];
   v8 = v7 * 0.5 - v4 * 0.5;
-  v9 = [(AXColorChooserCell *)self circle];
-  [v9 setFrame:{v6, v8, v4, v4}];
+  circle = [(AXColorChooserCell *)self circle];
+  [circle setFrame:{v6, v8, v4, v4}];
 
-  v10 = [(AXColorChooserCell *)self circle];
-  [v10 setNeedsDisplay];
+  circle2 = [(AXColorChooserCell *)self circle];
+  [circle2 setNeedsDisplay];
 
-  v11 = [(AXColorChooserCell *)self textLabel];
-  [v11 frame];
+  textLabel = [(AXColorChooserCell *)self textLabel];
+  [textLabel frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -207,8 +207,8 @@ LABEL_12:
   }
 
   v21 = v20 + v13;
-  v22 = [(AXColorChooserCell *)self textLabel];
-  [v22 setFrame:{v21, v15, v17, v19}];
+  textLabel2 = [(AXColorChooserCell *)self textLabel];
+  [textLabel2 setFrame:{v21, v15, v17, v19}];
 }
 
 @end

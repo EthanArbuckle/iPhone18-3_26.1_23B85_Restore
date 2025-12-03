@@ -2,7 +2,7 @@
 - (id)_url;
 - (void)_presentWebsite;
 - (void)cancel;
-- (void)safariViewControllerDidFinish:(id)a3;
+- (void)safariViewControllerDidFinish:(id)finish;
 @end
 
 @implementation WebViewController
@@ -10,8 +10,8 @@
 - (void)_presentWebsite
 {
   v3 = [SFSafariViewController alloc];
-  v4 = [(WebViewController *)self _url];
-  v5 = [v3 initWithURL:v4];
+  _url = [(WebViewController *)self _url];
+  v5 = [v3 initWithURL:_url];
 
   [v5 setDelegate:self];
   [v5 setModalPresentationStyle:5];
@@ -26,31 +26,31 @@
   }
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
   self->_didDismissSafari = 1;
-  v3 = [(BaseViewController *)self viewServiceHost];
-  [v3 invalidate];
+  viewServiceHost = [(BaseViewController *)self viewServiceHost];
+  [viewServiceHost invalidate];
 }
 
 - (id)_url
 {
-  v3 = [(BaseViewController *)self presentationContext];
-  v4 = [v3 tvProviderRequest];
+  presentationContext = [(BaseViewController *)self presentationContext];
+  tvProviderRequest = [presentationContext tvProviderRequest];
 
-  if (v4)
+  if (tvProviderRequest)
   {
-    v5 = [(BaseViewController *)self presentationContext];
-    v6 = [v5 tvProviderRequest];
-    v7 = [v6 providerURL];
+    presentationContext2 = [(BaseViewController *)self presentationContext];
+    tvProviderRequest2 = [presentationContext2 tvProviderRequest];
+    providerURL = [tvProviderRequest2 providerURL];
   }
 
   else
   {
-    v7 = 0;
+    providerURL = 0;
   }
 
-  return v7;
+  return providerURL;
 }
 
 @end

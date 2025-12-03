@@ -1,13 +1,13 @@
 @interface SeparatorView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23AppStoreOverlaysService13SeparatorView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23AppStoreOverlaysService13SeparatorView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SeparatorView
 
-- (_TtC23AppStoreOverlaysService13SeparatorView)initWithCoder:(id)a3
+- (_TtC23AppStoreOverlaysService13SeparatorView)initWithCoder:(id)coder
 {
   v4 = sub_100018298();
   v5 = *(v4 - 8);
@@ -27,9 +27,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = sub_1000182C8();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -38,7 +38,7 @@
   v10 = OBJC_IVAR____TtC23AppStoreOverlaysService13SeparatorView_separator;
   swift_beginAccess();
   (*(v6 + 16))(v9, self + v10, v5);
-  v11 = self;
+  selfCopy = self;
   sub_100018288();
   v13 = v12;
 
@@ -60,7 +60,7 @@
   v8 = OBJC_IVAR____TtC23AppStoreOverlaysService13SeparatorView_separator;
   swift_beginAccess();
   (*(v4 + 16))(v7, self + v8, v3);
-  v9 = self;
+  selfCopy = self;
   sub_100018288();
   v11 = v10;
 
@@ -74,7 +74,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100010750();
 }
 

@@ -1,18 +1,18 @@
 @interface MTObject
 - (MTMetricsKitTemplate)metricsKit;
-- (MTObject)initWithMetricsKit:(id)a3;
+- (MTObject)initWithMetricsKit:(id)kit;
 @end
 
 @implementation MTObject
 
-- (MTObject)initWithMetricsKit:(id)a3
+- (MTObject)initWithMetricsKit:(id)kit
 {
-  v4 = a3;
+  kitCopy = kit;
   v5 = [(MTObject *)self init];
   v6 = v5;
   if (v5)
   {
-    [(MTObject *)v5 setMetricsKit:v4];
+    [(MTObject *)v5 setMetricsKit:kitCopy];
   }
 
   return v6;

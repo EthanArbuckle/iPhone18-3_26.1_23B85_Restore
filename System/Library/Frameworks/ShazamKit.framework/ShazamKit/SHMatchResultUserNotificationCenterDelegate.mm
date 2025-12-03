@@ -1,64 +1,64 @@
 @interface SHMatchResultUserNotificationCenterDelegate
-- (void)handleAppleMusicActionWithPayload:(id)a3 completionHandler:(id)a4;
-- (void)handleDefaultActionWithPayload:(id)a3 completionHandler:(id)a4;
-- (void)sendAnalyticsEvent:(id)a3 forBundleIdentifier:(id)a4 actionName:(id)a5;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)handleAppleMusicActionWithPayload:(id)payload completionHandler:(id)handler;
+- (void)handleDefaultActionWithPayload:(id)payload completionHandler:(id)handler;
+- (void)sendAnalyticsEvent:(id)event forBundleIdentifier:(id)identifier actionName:(id)name;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation SHMatchResultUserNotificationCenterDelegate
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = sh_log_object();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 notification];
-    v11 = [v10 request];
-    v12 = [v7 notification];
-    v13 = [v12 request];
-    v14 = [v13 content];
+    notification = [responseCopy notification];
+    request = [notification request];
+    notification2 = [responseCopy notification];
+    request2 = [notification2 request];
+    content = [request2 content];
     *buf = 138412802;
-    v30 = v7;
+    v30 = responseCopy;
     v31 = 2112;
-    v32 = v11;
+    v32 = request;
     v33 = 2112;
-    v34 = v14;
+    v34 = content;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Received notification response %@ for request %@ with content %@", buf, 0x20u);
   }
 
-  v15 = [v7 notification];
-  v16 = [v15 request];
-  v17 = [v16 content];
-  v18 = [v17 userInfo];
-  v19 = [SHMatchResultUserNotificationPayload payloadFromNotificationContentUserInfo:v18];
+  notification3 = [responseCopy notification];
+  request3 = [notification3 request];
+  content2 = [request3 content];
+  userInfo = [content2 userInfo];
+  v19 = [SHMatchResultUserNotificationPayload payloadFromNotificationContentUserInfo:userInfo];
 
   v20 = [NSString stringWithFormat:@"%@.%@", @"com.apple.ShazamNotifications", @"apple-music-action"];
-  v21 = [v7 actionIdentifier];
-  LODWORD(v18) = [v21 isEqualToString:v20];
+  actionIdentifier = [responseCopy actionIdentifier];
+  LODWORD(userInfo) = [actionIdentifier isEqualToString:v20];
 
-  if (v18)
+  if (userInfo)
   {
     v22 = SHAnalyticsEventMusicRecognitionResultAction;
-    v23 = [v19 bundleIdentifier];
-    [(SHMatchResultUserNotificationCenterDelegate *)self sendAnalyticsEvent:v22 forBundleIdentifier:v23 actionName:@"apple-music-action"];
+    bundleIdentifier = [v19 bundleIdentifier];
+    [(SHMatchResultUserNotificationCenterDelegate *)self sendAnalyticsEvent:v22 forBundleIdentifier:bundleIdentifier actionName:@"apple-music-action"];
 
-    [(SHMatchResultUserNotificationCenterDelegate *)self handleAppleMusicActionWithPayload:v19 completionHandler:v8];
+    [(SHMatchResultUserNotificationCenterDelegate *)self handleAppleMusicActionWithPayload:v19 completionHandler:handlerCopy];
   }
 
   else
   {
-    v24 = [v7 actionIdentifier];
-    v25 = [v24 isEqualToString:UNNotificationDefaultActionIdentifier];
+    actionIdentifier2 = [responseCopy actionIdentifier];
+    v25 = [actionIdentifier2 isEqualToString:UNNotificationDefaultActionIdentifier];
 
     if (v25)
     {
       v26 = SHAnalyticsEventMusicRecognitionResultAction;
-      v27 = [v19 bundleIdentifier];
-      [(SHMatchResultUserNotificationCenterDelegate *)self sendAnalyticsEvent:v26 forBundleIdentifier:v27 actionName:SHAnalyticsActionNotificationTap];
+      bundleIdentifier2 = [v19 bundleIdentifier];
+      [(SHMatchResultUserNotificationCenterDelegate *)self sendAnalyticsEvent:v26 forBundleIdentifier:bundleIdentifier2 actionName:SHAnalyticsActionNotificationTap];
 
-      [(SHMatchResultUserNotificationCenterDelegate *)self handleDefaultActionWithPayload:v19 completionHandler:v8];
+      [(SHMatchResultUserNotificationCenterDelegate *)self handleDefaultActionWithPayload:v19 completionHandler:handlerCopy];
     }
 
     else
@@ -70,45 +70,45 @@
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to handle notification action", buf, 2u);
       }
 
-      v8[2](v8);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)handleDefaultActionWithPayload:(id)a3 completionHandler:(id)a4
+- (void)handleDefaultActionWithPayload:(id)payload completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaItem];
+  payloadCopy = payload;
+  handlerCopy = handler;
+  mediaItem = [payloadCopy mediaItem];
 
-  if (v8)
+  if (mediaItem)
   {
     v9 = [SHMediaItemPresenter alloc];
-    v10 = [v6 bundleIdentifier];
-    v11 = [(SHMediaItemPresenter *)v9 initBundleIdentifier:v10];
+    bundleIdentifier = [payloadCopy bundleIdentifier];
+    v11 = [(SHMediaItemPresenter *)v9 initBundleIdentifier:bundleIdentifier];
     [(SHMatchResultUserNotificationCenterDelegate *)self setMediaItemPresenter:v11];
 
     v12 = sh_log_object();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v6 mediaItem];
-      v14 = [v13 webURL];
-      v15 = [v6 bundleIdentifier];
+      mediaItem2 = [payloadCopy mediaItem];
+      webURL = [mediaItem2 webURL];
+      bundleIdentifier2 = [payloadCopy bundleIdentifier];
       *buf = 138412546;
-      v22 = v14;
+      v22 = webURL;
       v23 = 2112;
-      v24 = v15;
+      v24 = bundleIdentifier2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Presenting media item with web url %@ from bundle identifier %@", buf, 0x16u);
     }
 
-    v16 = [(SHMatchResultUserNotificationCenterDelegate *)self mediaItemPresenter];
-    v17 = [v6 mediaItem];
+    mediaItemPresenter = [(SHMatchResultUserNotificationCenterDelegate *)self mediaItemPresenter];
+    mediaItem3 = [payloadCopy mediaItem];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000181A8;
     v19[3] = &unk_10007D148;
-    v20 = v7;
-    [v16 presentMediaItem:v17 completionHandler:v19];
+    v20 = handlerCopy;
+    [mediaItemPresenter presentMediaItem:mediaItem3 completionHandler:v19];
   }
 
   else
@@ -117,32 +117,32 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = payloadCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "No media item provided for payload %@", buf, 0xCu);
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)handleAppleMusicActionWithPayload:(id)a3 completionHandler:(id)a4
+- (void)handleAppleMusicActionWithPayload:(id)payload completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mediaItem];
-  v8 = [v7 appleMusicURL];
+  payloadCopy = payload;
+  handlerCopy = handler;
+  mediaItem = [payloadCopy mediaItem];
+  appleMusicURL = [mediaItem appleMusicURL];
 
-  if (v8)
+  if (appleMusicURL)
   {
     v9 = +[LSApplicationWorkspace defaultWorkspace];
-    v10 = [v5 mediaItem];
-    v11 = [v10 appleMusicURL];
+    mediaItem2 = [payloadCopy mediaItem];
+    appleMusicURL2 = [mediaItem2 appleMusicURL];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100018420;
     v13[3] = &unk_10007D400;
-    v14 = v6;
-    [v9 openURL:v11 configuration:0 completionHandler:v13];
+    v14 = handlerCopy;
+    [v9 openURL:appleMusicURL2 configuration:0 completionHandler:v13];
   }
 
   else
@@ -151,25 +151,25 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v5;
+      v16 = payloadCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "No apple music url provided for payload %@", buf, 0xCu);
     }
 
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)sendAnalyticsEvent:(id)a3 forBundleIdentifier:(id)a4 actionName:(id)a5
+- (void)sendAnalyticsEvent:(id)event forBundleIdentifier:(id)identifier actionName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  identifierCopy = identifier;
+  eventCopy = event;
   v11 = +[NSMutableDictionary dictionary];
-  [v11 setValue:v8 forKey:SHAnalyticsPayloadSourceKey];
+  [v11 setValue:identifierCopy forKey:SHAnalyticsPayloadSourceKey];
 
-  [v11 setValue:v7 forKey:SHAnalyticsPayloadActionKey];
+  [v11 setValue:nameCopy forKey:SHAnalyticsPayloadActionKey];
   v10 = [v11 copy];
-  [SHAnalytics sendEvent:v9 withPayload:v10];
+  [SHAnalytics sendEvent:eventCopy withPayload:v10];
 }
 
 @end

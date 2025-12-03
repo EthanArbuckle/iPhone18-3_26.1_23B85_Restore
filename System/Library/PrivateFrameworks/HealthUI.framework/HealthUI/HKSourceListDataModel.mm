@@ -1,15 +1,15 @@
 @interface HKSourceListDataModel
-- (HKSourceListDataModel)initWithSourceModels:(id)a3;
-- (HKSourceListDataModel)initWithSources:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_sortSources:(id)a3;
+- (HKSourceListDataModel)initWithSourceModels:(id)models;
+- (HKSourceListDataModel)initWithSources:(id)sources;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_sortSources:(id)sources;
 @end
 
 @implementation HKSourceListDataModel
 
-- (HKSourceListDataModel)initWithSources:(id)a3
+- (HKSourceListDataModel)initWithSources:(id)sources
 {
-  v4 = [a3 hk_map:&__block_literal_global_49];
+  v4 = [sources hk_map:&__block_literal_global_49];
   v5 = [(HKSourceListDataModel *)self initWithSourceModels:v4];
 
   return v5;
@@ -25,37 +25,37 @@ HKSourceDataModel *__41__HKSourceListDataModel_initWithSources___block_invoke(ui
   return v3;
 }
 
-- (HKSourceListDataModel)initWithSourceModels:(id)a3
+- (HKSourceListDataModel)initWithSourceModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   v8.receiver = self;
   v8.super_class = HKSourceListDataModel;
   v5 = [(HKSourceListDataModel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HKSourceListDataModel *)v5 _sortSources:v4];
+    [(HKSourceListDataModel *)v5 _sortSources:modelsCopy];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:self->_allSources copyItems:1];
-  v5 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  v6 = [[HKSourceListDataModel allocWithZone:?], "initWithSourceModels:", v5];
+  v6 = [[HKSourceListDataModel allocWithZone:?], "initWithSourceModels:", allObjects];
   return v6;
 }
 
-- (void)_sortSources:(id)a3
+- (void)_sortSources:(id)sources
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sourcesCopy = sources;
   context = objc_autoreleasePoolPush();
-  v31 = v3;
-  v4 = [v3 mutableCopy];
+  v31 = sourcesCopy;
+  v4 = [sourcesCopy mutableCopy];
   [v4 sortUsingComparator:&__block_literal_global_341_0];
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -84,22 +84,22 @@ HKSourceDataModel *__41__HKSourceListDataModel_initWithSources___block_invoke(ui
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
-        v12 = [v11 source];
-        if (([v12 _isHidden] & 1) == 0)
+        source = [v11 source];
+        if (([source _isHidden] & 1) == 0)
         {
-          v13 = [v12 bundleIdentifier];
-          if ([v13 isEqualToString:v9])
+          bundleIdentifier = [source bundleIdentifier];
+          if ([bundleIdentifier isEqualToString:v9])
           {
           }
 
           else
           {
-            v14 = [v12 bundleIdentifier];
-            v15 = [v14 isEqualToString:v37];
+            bundleIdentifier2 = [source bundleIdentifier];
+            v15 = [bundleIdentifier2 isEqualToString:v37];
 
             if ((v15 & 1) == 0)
             {
-              if ([v12 _isApplication])
+              if ([source _isApplication])
               {
                 if ([v11 installed])
                 {
@@ -112,12 +112,12 @@ HKSourceDataModel *__41__HKSourceListDataModel_initWithSources___block_invoke(ui
                 }
               }
 
-              else if ([v12 _isResearchStudy])
+              else if ([source _isResearchStudy])
               {
                 v16 = v34;
               }
 
-              else if ([v12 _isClinicalSource])
+              else if ([source _isClinicalSource])
               {
                 v16 = v32;
               }

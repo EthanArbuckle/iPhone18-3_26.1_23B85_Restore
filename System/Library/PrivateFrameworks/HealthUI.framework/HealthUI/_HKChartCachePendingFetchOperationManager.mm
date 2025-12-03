@@ -1,10 +1,10 @@
 @interface _HKChartCachePendingFetchOperationManager
 - (_HKChartCachePendingFetchOperationManager)init;
 - (id)allPendingIdentifiers;
-- (int64_t)retryCountForIdentifier:(id)a3;
-- (void)addFetchOperation:(id)a3;
-- (void)incrementRetryCountForIdentifier:(id)a3;
-- (void)removeFetchOperation:(id)a3;
+- (int64_t)retryCountForIdentifier:(id)identifier;
+- (void)addFetchOperation:(id)operation;
+- (void)incrementRetryCountForIdentifier:(id)identifier;
+- (void)removeFetchOperation:(id)operation;
 @end
 
 @implementation _HKChartCachePendingFetchOperationManager
@@ -32,44 +32,44 @@
   return v2;
 }
 
-- (void)addFetchOperation:(id)a3
+- (void)addFetchOperation:(id)operation
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  operationCopy = operation;
+  identifier = [operationCopy identifier];
 
-  if (!v6)
+  if (!identifier)
   {
     [(_HKChartCachePendingFetchOperationManager *)a2 addFetchOperation:?];
   }
 
   fetchOperationsByIdentifier = self->_fetchOperationsByIdentifier;
-  v8 = [v5 identifier];
-  [(NSMutableDictionary *)fetchOperationsByIdentifier setObject:v5 forKeyedSubscript:v8];
+  identifier2 = [operationCopy identifier];
+  [(NSMutableDictionary *)fetchOperationsByIdentifier setObject:operationCopy forKeyedSubscript:identifier2];
 
   fetchOperationsByUUID = self->_fetchOperationsByUUID;
-  v10 = [v5 UUID];
-  [(NSMutableDictionary *)fetchOperationsByUUID setObject:v5 forKeyedSubscript:v10];
+  uUID = [operationCopy UUID];
+  [(NSMutableDictionary *)fetchOperationsByUUID setObject:operationCopy forKeyedSubscript:uUID];
 }
 
-- (void)removeFetchOperation:(id)a3
+- (void)removeFetchOperation:(id)operation
 {
-  v4 = a3;
-  v6 = [v4 UUID];
-  v5 = [v4 identifier];
+  operationCopy = operation;
+  uUID = [operationCopy UUID];
+  identifier = [operationCopy identifier];
 
-  [(NSMutableDictionary *)self->_fetchOperationsByUUID removeObjectForKey:v6];
-  [(NSMutableDictionary *)self->_fetchOperationsByIdentifier removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_fetchOperationsByUUID removeObjectForKey:uUID];
+  [(NSMutableDictionary *)self->_fetchOperationsByIdentifier removeObjectForKey:identifier];
 }
 
 - (id)allPendingIdentifiers
 {
-  v3 = [(NSMutableDictionary *)self->_fetchOperationsByIdentifier allKeys];
-  v4 = [v3 count];
+  allKeys = [(NSMutableDictionary *)self->_fetchOperationsByIdentifier allKeys];
+  v4 = [allKeys count];
   v5 = MEMORY[0x1E695DFD8];
   if (v4)
   {
-    v6 = [(NSMutableDictionary *)self->_fetchOperationsByIdentifier allKeys];
-    v7 = [v5 setWithArray:v6];
+    allKeys2 = [(NSMutableDictionary *)self->_fetchOperationsByIdentifier allKeys];
+    v7 = [v5 setWithArray:allKeys2];
   }
 
   else
@@ -80,20 +80,20 @@
   return v7;
 }
 
-- (int64_t)retryCountForIdentifier:(id)a3
+- (int64_t)retryCountForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_retryCountByIdentifier objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_retryCountByIdentifier objectForKeyedSubscript:identifier];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)incrementRetryCountForIdentifier:(id)a3
+- (void)incrementRetryCountForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_HKChartCachePendingFetchOperationManager *)self retryCountForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(_HKChartCachePendingFetchOperationManager *)self retryCountForIdentifier:identifierCopy];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5 + 1];
-  [(NSMutableDictionary *)self->_retryCountByIdentifier setObject:v6 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_retryCountByIdentifier setObject:v6 forKeyedSubscript:identifierCopy];
 }
 
 - (void)addFetchOperation:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

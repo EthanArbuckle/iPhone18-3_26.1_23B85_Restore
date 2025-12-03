@@ -1,26 +1,26 @@
 @interface ESDStatusReportAggregator
-- (ESDStatusReportAggregator)initWithStatusReports:(id)a3 numOutstandingReports:(int)a4 timeout:(double)a5 completionBlock:(id)a6;
+- (ESDStatusReportAggregator)initWithStatusReports:(id)reports numOutstandingReports:(int)outstandingReports timeout:(double)timeout completionBlock:(id)block;
 - (void)_coalesceAndReport;
-- (void)noteAdditionalReportDicts:(id)a3;
+- (void)noteAdditionalReportDicts:(id)dicts;
 @end
 
 @implementation ESDStatusReportAggregator
 
-- (ESDStatusReportAggregator)initWithStatusReports:(id)a3 numOutstandingReports:(int)a4 timeout:(double)a5 completionBlock:(id)a6
+- (ESDStatusReportAggregator)initWithStatusReports:(id)reports numOutstandingReports:(int)outstandingReports timeout:(double)timeout completionBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  reportsCopy = reports;
+  blockCopy = block;
   v34.receiver = self;
   v34.super_class = ESDStatusReportAggregator;
   v12 = [(ESDStatusReportAggregator *)&v34 init];
   v13 = v12;
   if (v12)
   {
-    v12->_numOutstandingReports = a4;
-    if (v11)
+    v12->_numOutstandingReports = outstandingReports;
+    if (blockCopy)
     {
-      v14 = [v11 copy];
+      v14 = [blockCopy copy];
       completionBlock = v13->_completionBlock;
       v13->_completionBlock = v14;
     }
@@ -33,7 +33,7 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v10;
+    v18 = reportsCopy;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v19)
     {
@@ -49,8 +49,8 @@
           }
 
           v23 = *(*(&v30 + 1) + 8 * i);
-          v24 = [v23 persistentUUID];
-          [(NSMutableDictionary *)v13->_persistentUUIDToStatusReport setObject:v23 forKeyedSubscript:v24];
+          persistentUUID = [v23 persistentUUID];
+          [(NSMutableDictionary *)v13->_persistentUUIDToStatusReport setObject:v23 forKeyedSubscript:persistentUUID];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -59,7 +59,7 @@
       while (v20);
     }
 
-    v25 = dispatch_time(0, (a5 * 1000000000.0));
+    v25 = dispatch_time(0, (timeout * 1000000000.0));
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __97__ESDStatusReportAggregator_initWithStatusReports_numOutstandingReports_timeout_completionBlock___block_invoke;
@@ -90,13 +90,13 @@
 
     if ([(NSMutableDictionary *)obj->_persistentUUIDToStatusReport count])
     {
-      v3 = [(NSMutableDictionary *)obj->_persistentUUIDToStatusReport allValues];
+      allValues = [(NSMutableDictionary *)obj->_persistentUUIDToStatusReport allValues];
       v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableDictionary count](obj->_persistentUUIDToStatusReport, "count")}];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v5 = v3;
+      v5 = allValues;
       v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
@@ -111,8 +111,8 @@
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-            [v4 addObject:v10];
+            dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+            [v4 addObject:dictionaryRepresentation];
           }
 
           v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -139,16 +139,16 @@
   }
 }
 
-- (void)noteAdditionalReportDicts:(id)a3
+- (void)noteAdditionalReportDicts:(id)dicts
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictsCopy = dicts;
   --self->_numOutstandingReports;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [dictsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -159,12 +159,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictsCopy);
         }
 
         v9 = [objc_alloc(MEMORY[0x277D03978]) initWithDictionaryRepresentation:*(*(&v14 + 1) + 8 * i)];
-        v10 = [v9 persistentUUID];
-        v11 = [(NSMutableDictionary *)self->_persistentUUIDToStatusReport objectForKeyedSubscript:v10];
+        persistentUUID = [v9 persistentUUID];
+        v11 = [(NSMutableDictionary *)self->_persistentUUIDToStatusReport objectForKeyedSubscript:persistentUUID];
         v12 = v11;
         if (v11)
         {
@@ -173,11 +173,11 @@
 
         else
         {
-          [(NSMutableDictionary *)self->_persistentUUIDToStatusReport setObject:v9 forKeyedSubscript:v10];
+          [(NSMutableDictionary *)self->_persistentUUIDToStatusReport setObject:v9 forKeyedSubscript:persistentUUID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [dictsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

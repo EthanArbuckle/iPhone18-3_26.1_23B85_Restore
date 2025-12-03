@@ -1,43 +1,43 @@
 @interface AMSUIAuthKitUpdateTask
-- (AMSUIAuthKitUpdateTask)initWithAccount:(id)a3 presentingViewController:(id)a4 options:(id)a5;
-- (AMSUIAuthKitUpdateTask)initWithAccount:(id)a3 presentingWindow:(id)a4 options:(id)a5;
+- (AMSUIAuthKitUpdateTask)initWithAccount:(id)account presentingViewController:(id)controller options:(id)options;
+- (AMSUIAuthKitUpdateTask)initWithAccount:(id)account presentingWindow:(id)window options:(id)options;
 - (id)_createAuthKitContext;
 - (unint64_t)_authenticationType;
-- (void)_configureAuthKitContext:(id)a3;
-- (void)contextDidDismissLoginAlertController:(id)a3;
-- (void)contextDidEndPresentingSecondaryUI:(id)a3;
-- (void)contextDidPresentLoginAlertController:(id)a3;
-- (void)contextWillBeginPresentingSecondaryUI:(id)a3;
-- (void)contextWillDismissLoginAlertController:(id)a3;
+- (void)_configureAuthKitContext:(id)context;
+- (void)contextDidDismissLoginAlertController:(id)controller;
+- (void)contextDidEndPresentingSecondaryUI:(id)i;
+- (void)contextDidPresentLoginAlertController:(id)controller;
+- (void)contextWillBeginPresentingSecondaryUI:(id)i;
+- (void)contextWillDismissLoginAlertController:(id)controller;
 @end
 
 @implementation AMSUIAuthKitUpdateTask
 
-- (AMSUIAuthKitUpdateTask)initWithAccount:(id)a3 presentingViewController:(id)a4 options:(id)a5
+- (AMSUIAuthKitUpdateTask)initWithAccount:(id)account presentingViewController:(id)controller options:(id)options
 {
-  v9 = a4;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = AMSUIAuthKitUpdateTask;
-  v10 = [(AMSAuthKitUpdateTask *)&v13 initWithAccount:a3 options:a5];
+  v10 = [(AMSAuthKitUpdateTask *)&v13 initWithAccount:account options:options];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_presentingViewController, a4);
+    objc_storeStrong(&v10->_presentingViewController, controller);
   }
 
   return v11;
 }
 
-- (AMSUIAuthKitUpdateTask)initWithAccount:(id)a3 presentingWindow:(id)a4 options:(id)a5
+- (AMSUIAuthKitUpdateTask)initWithAccount:(id)account presentingWindow:(id)window options:(id)options
 {
-  v9 = a4;
+  windowCopy = window;
   v13.receiver = self;
   v13.super_class = AMSUIAuthKitUpdateTask;
-  v10 = [(AMSAuthKitUpdateTask *)&v13 initWithAccount:a3 options:a5];
+  v10 = [(AMSAuthKitUpdateTask *)&v13 initWithAccount:account options:options];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_presentingWindow, a4);
+    objc_storeStrong(&v10->_presentingWindow, window);
   }
 
   return v11;
@@ -45,54 +45,54 @@
 
 - (unint64_t)_authenticationType
 {
-  v2 = [(AMSAuthKitUpdateTask *)self options];
-  v3 = [v2 authenticationType];
+  options = [(AMSAuthKitUpdateTask *)self options];
+  authenticationType = [options authenticationType];
 
-  return v3;
+  return authenticationType;
 }
 
-- (void)_configureAuthKitContext:(id)a3
+- (void)_configureAuthKitContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = AMSUIAuthKitUpdateTask;
-  [(AMSAuthKitUpdateTask *)&v15 _configureAuthKitContext:v4];
+  [(AMSAuthKitUpdateTask *)&v15 _configureAuthKitContext:contextCopy];
   getAKAppleIDAuthenticationInAppContextClass();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 cancelButtonString];
+    v5 = contextCopy;
+    cancelButtonString = [v5 cancelButtonString];
 
-    if (!v6)
+    if (!cancelButtonString)
     {
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
       v8 = AMSUILocalizedStringFromBundle(@"CANCEL", 0, v7);
       [v5 setCancelButtonString:v8];
     }
 
-    v9 = [v5 defaultButtonString];
+    defaultButtonString = [v5 defaultButtonString];
 
-    if (!v9)
+    if (!defaultButtonString)
     {
       v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
       v11 = AMSUILocalizedStringFromBundle(@"SIGN_IN_BUTTON_TITLE", 0, v10);
       [v5 setDefaultButtonString:v11];
     }
 
-    v12 = [(AMSUIAuthKitUpdateTask *)self presentingWindow];
+    presentingWindow = [(AMSUIAuthKitUpdateTask *)self presentingWindow];
 
-    if (v12)
+    if (presentingWindow)
     {
-      v13 = [(AMSUIAuthKitUpdateTask *)self presentingWindow];
-      v14 = [v13 rootViewController];
-      [v5 setPresentingViewController:v14];
+      presentingWindow2 = [(AMSUIAuthKitUpdateTask *)self presentingWindow];
+      rootViewController = [presentingWindow2 rootViewController];
+      [v5 setPresentingViewController:rootViewController];
     }
 
     else
     {
-      v13 = [(AMSUIAuthKitUpdateTask *)self getPresentingViewController];
-      [v5 setPresentingViewController:v13];
+      presentingWindow2 = [(AMSUIAuthKitUpdateTask *)self getPresentingViewController];
+      [v5 setPresentingViewController:presentingWindow2];
     }
 
     [v5 setDelegate:self];
@@ -106,35 +106,35 @@
   return v2;
 }
 
-- (void)contextDidPresentLoginAlertController:(id)a3
+- (void)contextDidPresentLoginAlertController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v7)
+  controllerCopy = controller;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AMSAuthKitUpdateTask *)self options];
-    v10 = [v9 logKey];
+    options = [(AMSAuthKitUpdateTask *)self options];
+    logKey = [options logKey];
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
-    if (v10)
+    if (logKey)
     {
-      v13 = [(AMSAuthKitUpdateTask *)self options];
-      v3 = [v13 logKey];
+      options2 = [(AMSAuthKitUpdateTask *)self options];
+      logKey2 = [options2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, v3, a2];
+      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, logKey2, a2];
     }
 
     else
     {
-      v13 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: %@ ", v12, v13];
+      options2 = NSStringFromSelector(a2);
+      [v11 stringWithFormat:@"%@: %@ ", v12, options2];
     }
     v14 = ;
     v15 = AMSHashIfNeeded();
@@ -142,46 +142,46 @@
     v18 = v14;
     v19 = 2114;
     v20 = v15;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
-    if (v10)
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v14 = v3;
+      v14 = logKey2;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)contextWillDismissLoginAlertController:(id)a3
+- (void)contextWillDismissLoginAlertController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v7)
+  controllerCopy = controller;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AMSAuthKitUpdateTask *)self options];
-    v10 = [v9 logKey];
+    options = [(AMSAuthKitUpdateTask *)self options];
+    logKey = [options logKey];
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
-    if (v10)
+    if (logKey)
     {
-      v13 = [(AMSAuthKitUpdateTask *)self options];
-      v3 = [v13 logKey];
+      options2 = [(AMSAuthKitUpdateTask *)self options];
+      logKey2 = [options2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, v3, a2];
+      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, logKey2, a2];
     }
 
     else
     {
-      v13 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: %@ ", v12, v13];
+      options2 = NSStringFromSelector(a2);
+      [v11 stringWithFormat:@"%@: %@ ", v12, options2];
     }
     v14 = ;
     v15 = AMSHashIfNeeded();
@@ -189,46 +189,46 @@
     v18 = v14;
     v19 = 2114;
     v20 = v15;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
-    if (v10)
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v14 = v3;
+      v14 = logKey2;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)contextDidDismissLoginAlertController:(id)a3
+- (void)contextDidDismissLoginAlertController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v7)
+  controllerCopy = controller;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AMSAuthKitUpdateTask *)self options];
-    v10 = [v9 logKey];
+    options = [(AMSAuthKitUpdateTask *)self options];
+    logKey = [options logKey];
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
-    if (v10)
+    if (logKey)
     {
-      v13 = [(AMSAuthKitUpdateTask *)self options];
-      v3 = [v13 logKey];
+      options2 = [(AMSAuthKitUpdateTask *)self options];
+      logKey2 = [options2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, v3, a2];
+      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, logKey2, a2];
     }
 
     else
     {
-      v13 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: %@ ", v12, v13];
+      options2 = NSStringFromSelector(a2);
+      [v11 stringWithFormat:@"%@: %@ ", v12, options2];
     }
     v14 = ;
     v15 = AMSHashIfNeeded();
@@ -236,46 +236,46 @@
     v18 = v14;
     v19 = 2114;
     v20 = v15;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
-    if (v10)
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v14 = v3;
+      v14 = logKey2;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)contextWillBeginPresentingSecondaryUI:(id)a3
+- (void)contextWillBeginPresentingSecondaryUI:(id)i
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v7)
+  iCopy = i;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AMSAuthKitUpdateTask *)self options];
-    v10 = [v9 logKey];
+    options = [(AMSAuthKitUpdateTask *)self options];
+    logKey = [options logKey];
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
-    if (v10)
+    if (logKey)
     {
-      v13 = [(AMSAuthKitUpdateTask *)self options];
-      v3 = [v13 logKey];
+      options2 = [(AMSAuthKitUpdateTask *)self options];
+      logKey2 = [options2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, v3, a2];
+      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, logKey2, a2];
     }
 
     else
     {
-      v13 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: %@ ", v12, v13];
+      options2 = NSStringFromSelector(a2);
+      [v11 stringWithFormat:@"%@: %@ ", v12, options2];
     }
     v14 = ;
     v15 = AMSHashIfNeeded();
@@ -283,46 +283,46 @@
     v18 = v14;
     v19 = 2114;
     v20 = v15;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
-    if (v10)
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v14 = v3;
+      v14 = logKey2;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)contextDidEndPresentingSecondaryUI:(id)a3
+- (void)contextDidEndPresentingSecondaryUI:(id)i
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v7)
+  iCopy = i;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AMSAuthKitUpdateTask *)self options];
-    v10 = [v9 logKey];
+    options = [(AMSAuthKitUpdateTask *)self options];
+    logKey = [options logKey];
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
-    if (v10)
+    if (logKey)
     {
-      v13 = [(AMSAuthKitUpdateTask *)self options];
-      v3 = [v13 logKey];
+      options2 = [(AMSAuthKitUpdateTask *)self options];
+      logKey2 = [options2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, v3, a2];
+      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, logKey2, a2];
     }
 
     else
     {
-      v13 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: %@ ", v12, v13];
+      options2 = NSStringFromSelector(a2);
+      [v11 stringWithFormat:@"%@: %@ ", v12, options2];
     }
     v14 = ;
     v15 = AMSHashIfNeeded();
@@ -330,11 +330,11 @@
     v18 = v14;
     v19 = 2114;
     v20 = v15;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
-    if (v10)
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@context: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v14 = v3;
+      v14 = logKey2;
     }
   }
 

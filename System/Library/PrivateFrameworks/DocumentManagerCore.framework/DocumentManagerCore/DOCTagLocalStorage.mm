@@ -3,11 +3,11 @@
 - (DOCTagLocalStorage)init;
 - (NSOrderedSet)discoveredTags;
 - (NSOrderedSet)userTags;
-- (id)_unarchivedTagsFromData:(id)a3;
+- (id)_unarchivedTagsFromData:(id)data;
 - (int64_t)tagSerialNumber;
-- (void)setDiscoveredTags:(id)a3;
-- (void)setTagSerialNumber:(int64_t)a3;
-- (void)setUserTags:(id)a3;
+- (void)setDiscoveredTags:(id)tags;
+- (void)setTagSerialNumber:(int64_t)number;
+- (void)setUserTags:(id)tags;
 @end
 
 @implementation DOCTagLocalStorage
@@ -86,28 +86,28 @@ uint64_t __43__DOCTagLocalStorage_sharedAppGroupStorage__block_invoke()
 - (int64_t)tagSerialNumber
 {
   v2 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"FinderTagSerialNumber"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setTagSerialNumber:(int64_t)a3
+- (void)setTagSerialNumber:(int64_t)number
 {
   userDefaults = self->_userDefaults;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:number];
   [(NSUserDefaults *)userDefaults setObject:v4 forKey:@"FinderTagSerialNumber"];
 }
 
-- (id)_unarchivedTagsFromData:(id)a3
+- (id)_unarchivedTagsFromData:(id)data
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB98]);
     v5 = [v4 initWithObjects:{objc_msgSend(MEMORY[0x277CBEB70], "classForKeyedUnarchiver"), objc_opt_class(), 0}];
     v28 = 0;
-    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v5 fromData:v3 error:&v28];
+    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v5 fromData:dataCopy error:&v28];
     v7 = v28;
     if (v7)
     {
@@ -195,10 +195,10 @@ LABEL_12:
   return v15;
 }
 
-- (void)setUserTags:(id)a3
+- (void)setUserTags:(id)tags
 {
   v13 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v13];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tags requiringSecureCoding:1 error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -221,10 +221,10 @@ LABEL_12:
   }
 }
 
-- (void)setDiscoveredTags:(id)a3
+- (void)setDiscoveredTags:(id)tags
 {
   v13 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v13];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tags requiringSecureCoding:1 error:&v13];
   v5 = v13;
   if (v5)
   {

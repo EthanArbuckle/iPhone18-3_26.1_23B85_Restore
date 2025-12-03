@@ -1,8 +1,8 @@
 @interface QLImageData
 - (CGSize)size;
-- (QLImageData)initWithImageSource:(CGImageSource *)a3;
+- (QLImageData)initWithImageSource:(CGImageSource *)source;
 - (id)durations;
-- (id)imageAtIndex:(unint64_t)a3;
+- (id)imageAtIndex:(unint64_t)index;
 - (int64_t)orientation;
 - (void)dealloc;
 @end
@@ -22,35 +22,35 @@
   [(QLImageData *)&v4 dealloc];
 }
 
-- (QLImageData)initWithImageSource:(CGImageSource *)a3
+- (QLImageData)initWithImageSource:(CGImageSource *)source
 {
   v8.receiver = self;
   v8.super_class = QLImageData;
   v4 = [(QLImageData *)&v8 init];
   v5 = v4;
   v6 = 0;
-  if (a3 && v4)
+  if (source && v4)
   {
-    CFRetain(a3);
-    v5->_imageSource = a3;
+    CFRetain(source);
+    v5->_imageSource = source;
     v6 = v5;
   }
 
   return v6;
 }
 
-- (id)imageAtIndex:(unint64_t)a3
+- (id)imageAtIndex:(unint64_t)index
 {
   v5 = [(QLImageData *)self count];
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     goto LABEL_6;
   }
 
   v6 = v5;
-  v7 = [(QLImageData *)self orientation];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  orientation = [(QLImageData *)self orientation];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v10 = v9;
 
   if (v6 >= 2)
@@ -60,11 +60,11 @@
     v10 = v11;
   }
 
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(self->_imageSource, a3, 0);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(self->_imageSource, index, 0);
   if (ImageAtIndex)
   {
     v13 = ImageAtIndex;
-    v14 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:ImageAtIndex scale:v7 orientation:v10];
+    v14 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:ImageAtIndex scale:orientation orientation:v10];
     CFRelease(v13);
   }
 
@@ -95,8 +95,8 @@ LABEL_6:
 
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v3];
   v6 = MEMORY[0x277CE1CB8];
-  v7 = [(QLImageData *)self type];
-  v8 = [v6 typeWithIdentifier:v7];
+  type = [(QLImageData *)self type];
+  v8 = [v6 typeWithIdentifier:type];
 
   if ([v8 conformsToType:*MEMORY[0x277CE1D88]])
   {
@@ -236,8 +236,8 @@ LABEL_17:
       }
     }
 
-    v11 = [v8 integerValue];
-    switch(v11)
+    integerValue = [v8 integerValue];
+    switch(integerValue)
     {
       case 3:
         v9 = 1;

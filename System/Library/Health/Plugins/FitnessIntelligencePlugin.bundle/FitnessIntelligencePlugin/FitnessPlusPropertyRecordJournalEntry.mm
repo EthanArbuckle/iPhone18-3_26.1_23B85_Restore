@@ -1,25 +1,25 @@
 @interface FitnessPlusPropertyRecordJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
 - (_TtC25FitnessIntelligencePlugin37FitnessPlusPropertyRecordJournalEntry)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FitnessPlusPropertyRecordJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   sub_7688(0, &qword_8EF18, HDJournalEntry_ptr);
   v5 = sub_75688();
   swift_getObjCClassMetadata();
-  v6 = a4;
-  sub_1B7C4(v5, v6);
+  profileCopy = profile;
+  sub_1B7C4(v5, profileCopy);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C7E8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C7E8(coderCopy);
 }
 
 - (_TtC25FitnessIntelligencePlugin37FitnessPlusPropertyRecordJournalEntry)init

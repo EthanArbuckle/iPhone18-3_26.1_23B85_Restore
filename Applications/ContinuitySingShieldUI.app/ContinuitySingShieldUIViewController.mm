@@ -29,18 +29,18 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [*(&self->super._observingKVO + 1) view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view = [*(&self->super._observingKVO + 1) view];
+  [view setFrame:{v8, v10, v12, v14}];
 
-  v16 = [*(&self->super._observingKVO + 1) view];
-  [v16 setAutoresizingMask:18];
+  view2 = [*(&self->super._observingKVO + 1) view];
+  [view2 setAutoresizingMask:18];
 
   v17 = [[UINavigationController alloc] initWithRootViewController:*(&self->super._observingKVO + 1)];
   [v17 setOverrideUserInterfaceStyle:2];
   [(ContinuitySingShieldUIViewController *)self addChildViewController:v17];
-  v18 = [(ContinuitySingShieldUIViewController *)self view];
-  v19 = [v17 view];
-  [v18 addSubview:v19];
+  view3 = [(ContinuitySingShieldUIViewController *)self view];
+  view4 = [v17 view];
+  [view3 addSubview:view4];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -52,10 +52,10 @@
   v6.super_class = ContinuitySingShieldUIViewController;
   [(ContinuityCaptureShieldUIBaseViewController *)&v6 updateUI];
   v3 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-  v4 = [v3 activeConfiguration];
+  activeConfiguration = [v3 activeConfiguration];
 
   v5 = +[ContinuityCaptureShieldUIBackgroundActivityManager sharedInstance];
-  [v5 updateState:objc_msgSend(v4 micOnly:{"compositeState"), 1}];
+  [v5 updateState:objc_msgSend(activeConfiguration micOnly:{"compositeState"), 1}];
 
   [*(&self->super._observingKVO + 1) updateUI];
 }
@@ -74,16 +74,16 @@
   *(&self->_embeddedViewController + 1) = v3;
 
   v5 = +[CSShieldManager sharedManager];
-  v6 = [v5 requestClient];
+  requestClient = [v5 requestClient];
 
-  if (v6)
+  if (requestClient)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000B664;
     v10[3] = &unk_100018890;
     v10[4] = self;
-    [v6 sendDisconnectMessageWithCompletion:v10];
+    [requestClient sendDisconnectMessageWithCompletion:v10];
     v7 = dispatch_time(0, 500000000);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;

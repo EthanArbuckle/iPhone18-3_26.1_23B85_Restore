@@ -1,21 +1,21 @@
 @interface HDHRHeartbeatSeriesFeatureExclusivityManager
-- (BOOL)_isFeatureStatusAvailableForUsageOrBlockedOnlyByMutualExclusivityRequirement:(id)a3;
-- (HDHRHeartbeatSeriesFeatureExclusivityManager)initWithIrregularRhythmNotificationsStatusManager:(id)a3 aFibHistoryStatusManager:(id)a4 profile:(id)a5;
+- (BOOL)_isFeatureStatusAvailableForUsageOrBlockedOnlyByMutualExclusivityRequirement:(id)requirement;
+- (HDHRHeartbeatSeriesFeatureExclusivityManager)initWithIrregularRhythmNotificationsStatusManager:(id)manager aFibHistoryStatusManager:(id)statusManager profile:(id)profile;
 - (void)_fireSystemAlertBecauseIrregularRhythmNotificationsWereTurnedOff;
 - (void)_queue_disableIrregularRhythmNotificationsIfAFibHistoryIsEnabled;
-- (void)_scheduleInitialMaintenanceOperationWithProfile:(id)a3;
+- (void)_scheduleInitialMaintenanceOperationWithProfile:(id)profile;
 - (void)dealloc;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 @end
 
 @implementation HDHRHeartbeatSeriesFeatureExclusivityManager
 
-- (HDHRHeartbeatSeriesFeatureExclusivityManager)initWithIrregularRhythmNotificationsStatusManager:(id)a3 aFibHistoryStatusManager:(id)a4 profile:(id)a5
+- (HDHRHeartbeatSeriesFeatureExclusivityManager)initWithIrregularRhythmNotificationsStatusManager:(id)manager aFibHistoryStatusManager:(id)statusManager profile:(id)profile
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v11 profileType] == 1)
+  managerCopy = manager;
+  statusManagerCopy = statusManager;
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
     v28.receiver = self;
     v28.super_class = HDHRHeartbeatSeriesFeatureExclusivityManager;
@@ -23,8 +23,8 @@
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_irregularRhythmNotificationsStatusManager, a3);
-      objc_storeStrong(&v13->_aFibHistoryStatusManager, a4);
+      objc_storeStrong(&v12->_irregularRhythmNotificationsStatusManager, manager);
+      objc_storeStrong(&v13->_aFibHistoryStatusManager, statusManager);
       v14 = HKCreateSerialDispatchQueue();
       queue = v13->_queue;
       v13->_queue = v14;
@@ -41,7 +41,7 @@
       disableIrregularRhythmNotificationsIfAFibHistoryIsEnabledOperation = v13->_disableIrregularRhythmNotificationsIfAFibHistoryIsEnabledOperation;
       v13->_disableIrregularRhythmNotificationsIfAFibHistoryIsEnabledOperation = v18;
 
-      [(HDHRHeartbeatSeriesFeatureExclusivityManager *)v13 _scheduleInitialMaintenanceOperationWithProfile:v11, v22, v23, v24, v25];
+      [(HDHRHeartbeatSeriesFeatureExclusivityManager *)v13 _scheduleInitialMaintenanceOperationWithProfile:profileCopy, v22, v23, v24, v25];
       [(HKFeatureStatusManager *)v13->_irregularRhythmNotificationsStatusManager registerObserver:v13 queue:v13->_queue];
       [(HKFeatureStatusManager *)v13->_aFibHistoryStatusManager registerObserver:v13 queue:v13->_queue];
       objc_destroyWeak(&v26);
@@ -49,15 +49,15 @@
     }
 
     self = v13;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 void __131__HDHRHeartbeatSeriesFeatureExclusivityManager_initWithIrregularRhythmNotificationsStatusManager_aFibHistoryStatusManager_profile___block_invoke(uint64_t a1)
@@ -74,10 +74,10 @@ void __131__HDHRHeartbeatSeriesFeatureExclusivityManager_initWithIrregularRhythm
   [(HDHRHeartbeatSeriesFeatureExclusivityManager *)&v3 dealloc];
 }
 
-- (void)_scheduleInitialMaintenanceOperationWithProfile:(id)a3
+- (void)_scheduleInitialMaintenanceOperationWithProfile:(id)profile
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D10748];
   v6 = objc_opt_class();
@@ -101,9 +101,9 @@ void __131__HDHRHeartbeatSeriesFeatureExclusivityManager_initWithIrregularRhythm
     _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Scheduling initial maintenance operation", buf, 0xCu);
   }
 
-  v13 = [v4 daemon];
-  v14 = [v13 maintenanceWorkCoordinator];
-  [v14 enqueueMaintenanceOperation:v9];
+  daemon = [profileCopy daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  [maintenanceWorkCoordinator enqueueMaintenanceOperation:v9];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -187,20 +187,20 @@ LABEL_15:
   v4 = [(HDHRHeartbeatSeriesFeatureExclusivityManager *)self _isFeatureStatusAvailableForUsageOrBlockedOnlyByMutualExclusivityRequirement:self->_aFibHistoryStatus];
   if (v3 && v4)
   {
-    v5 = [(HKFeatureStatus *)self->_irregularRhythmNotificationsStatus onboardingRecord];
-    v6 = [v5 featureSettings];
+    onboardingRecord = [(HKFeatureStatus *)self->_irregularRhythmNotificationsStatus onboardingRecord];
+    featureSettings = [onboardingRecord featureSettings];
     v7 = *MEMORY[0x277CCC120];
-    v8 = [v6 numberForKey:*MEMORY[0x277CCC120]];
+    v8 = [featureSettings numberForKey:*MEMORY[0x277CCC120]];
 
     if (v8 && ([v8 BOOLValue]& 1) != 0)
     {
-      v9 = [(HKFeatureStatusManager *)self->_irregularRhythmNotificationsStatusManager featureAvailabilityProviding];
+      featureAvailabilityProviding = [(HKFeatureStatusManager *)self->_irregularRhythmNotificationsStatusManager featureAvailabilityProviding];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __112__HDHRHeartbeatSeriesFeatureExclusivityManager__queue_disableIrregularRhythmNotificationsIfAFibHistoryIsEnabled__block_invoke;
       v19[3] = &unk_278660408;
       v19[4] = self;
-      [v9 setFeatureSettingNumber:MEMORY[0x277CBEC28] forKey:v7 completion:v19];
+      [featureAvailabilityProviding setFeatureSettingNumber:MEMORY[0x277CBEC28] forKey:v7 completion:v19];
     }
 
     else
@@ -266,21 +266,21 @@ void __112__HDHRHeartbeatSeriesFeatureExclusivityManager__queue_disableIrregular
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isFeatureStatusAvailableForUsageOrBlockedOnlyByMutualExclusivityRequirement:(id)a3
+- (BOOL)_isFeatureStatusAvailableForUsageOrBlockedOnlyByMutualExclusivityRequirement:(id)requirement
 {
   v3 = *MEMORY[0x277CCBEA0];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v5 areAllRequirementsSatisfied];
+  requirementCopy = requirement;
+  v5 = [requirementCopy objectForKeyedSubscript:v3];
+  areAllRequirementsSatisfied = [v5 areAllRequirementsSatisfied];
 
-  v7 = [v4 objectForKeyedSubscript:v3];
+  v7 = [requirementCopy objectForKeyedSubscript:v3];
 
-  v8 = [v7 unsatisfiedRequirementIdentifiers];
+  unsatisfiedRequirementIdentifiers = [v7 unsatisfiedRequirementIdentifiers];
 
-  if ([v8 count] == 1)
+  if ([unsatisfiedRequirementIdentifiers count] == 1)
   {
-    v9 = [v8 firstObject];
-    v10 = [v9 isEqualToString:*MEMORY[0x277CCBF60]];
+    firstObject = [unsatisfiedRequirementIdentifiers firstObject];
+    v10 = [firstObject isEqualToString:*MEMORY[0x277CCBF60]];
   }
 
   else
@@ -288,7 +288,7 @@ void __112__HDHRHeartbeatSeriesFeatureExclusivityManager__queue_disableIrregular
     v10 = 0;
   }
 
-  return (v6 | v10) & 1;
+  return (areAllRequirementsSatisfied | v10) & 1;
 }
 
 - (void)_fireSystemAlertBecauseIrregularRhythmNotificationsWereTurnedOff
@@ -334,24 +334,24 @@ void __112__HDHRHeartbeatSeriesFeatureExclusivityManager__fireSystemAlertBecause
   }
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
-  v6 = a4;
+  statusCopy = status;
   queue = self->_queue;
-  v8 = a3;
+  providingCopy = providing;
   dispatch_assert_queue_V2(queue);
-  v9 = [v8 featureIdentifier];
+  featureIdentifier = [providingCopy featureIdentifier];
 
-  LODWORD(v8) = [v9 isEqualToString:*MEMORY[0x277CCBFF0]];
+  LODWORD(providingCopy) = [featureIdentifier isEqualToString:*MEMORY[0x277CCBFF0]];
   v10 = 40;
-  if (v8)
+  if (providingCopy)
   {
     v10 = 48;
   }
 
   v11 = *(&self->super.isa + v10);
-  *(&self->super.isa + v10) = v6;
-  v12 = v6;
+  *(&self->super.isa + v10) = statusCopy;
+  v12 = statusCopy;
 
   [(_HKDelayedOperation *)self->_disableIrregularRhythmNotificationsIfAFibHistoryIsEnabledOperation execute];
 }

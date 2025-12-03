@@ -1,15 +1,15 @@
 @interface MarketplaceKitLocalizedStrings
-+ (void)showDialogForAlreadyInstalledApp:(id)a3 presenter:(id)a4;
++ (void)showDialogForAlreadyInstalledApp:(id)app presenter:(id)presenter;
 - (_TtC9appstored30MarketplaceKitLocalizedStrings)init;
 @end
 
 @implementation MarketplaceKitLocalizedStrings
 
-+ (void)showDialogForAlreadyInstalledApp:(id)a3 presenter:(id)a4
++ (void)showDialogForAlreadyInstalledApp:(id)app presenter:(id)presenter
 {
-  v5 = a3;
+  appCopy = app;
   swift_unknownObjectRetain();
-  sub_10011BAF4(v5, a4);
+  sub_10011BAF4(appCopy, presenter);
 
   swift_unknownObjectRelease();
 }

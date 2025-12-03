@@ -1,19 +1,19 @@
 @interface UIStatusBarCarPlayRadarTimeItemView
-- (UIStatusBarCarPlayRadarTimeItemView)initWithFrame:(CGRect)a3;
+- (UIStatusBarCarPlayRadarTimeItemView)initWithFrame:(CGRect)frame;
 - (id)_timeImageSet;
 - (id)contentsImage;
 - (id)highlightImage;
-- (void)_gatheringLogsDidChangeStatusNotification:(id)a3;
+- (void)_gatheringLogsDidChangeStatusNotification:(id)notification;
 - (void)dealloc;
 @end
 
 @implementation UIStatusBarCarPlayRadarTimeItemView
 
-- (UIStatusBarCarPlayRadarTimeItemView)initWithFrame:(CGRect)a3
+- (UIStatusBarCarPlayRadarTimeItemView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = UIStatusBarCarPlayRadarTimeItemView;
-  v3 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_isInternalInstall = os_variant_has_internal_diagnostics();
@@ -80,11 +80,11 @@
     v3->_radarItemEnabled = v4;
     if (v3->_isInternalInstall)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:v3 selector:sel__gatheringLogsDidChangeStatusNotification_ name:@"UIStatusBarCarPlayDiagnosticsStartedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel__gatheringLogsDidChangeStatusNotification_ name:@"UIStatusBarCarPlayDiagnosticsStartedNotification" object:0];
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:v3 selector:sel__gatheringLogsDidChangeStatusNotification_ name:@"UIStatusBarCarPlayDiagnosticsCompletedNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v3 selector:sel__gatheringLogsDidChangeStatusNotification_ name:@"UIStatusBarCarPlayDiagnosticsCompletedNotification" object:0];
     }
   }
 
@@ -94,11 +94,11 @@
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIStatusBarCarPlayDiagnosticsStartedNotification";
   v6[1] = @"UIStatusBarCarPlayDiagnosticsCompletedNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIStatusBarCarPlayRadarTimeItemView;
@@ -107,18 +107,18 @@
 
 - (id)highlightImage
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
   v3 = MEMORY[0x1E696AEC0];
-  [v2 scale];
+  [foregroundStyle scale];
   v5 = [v3 stringWithFormat:@"_internal_radar_time_highlight_%ix.png", v4];
   v6 = MEMORY[0x1E696AAE8];
   v7 = _UIKitResourceBundlePath(@"CarPlayArtwork.bundle");
   v8 = [v6 bundleWithPath:v7];
 
   v9 = [UIImage imageNamed:v5 inBundle:v8];
-  v10 = [v9 CGImage];
-  [v2 scale];
-  v11 = [UIImage imageWithCGImage:v10 scale:0 orientation:?];
+  cGImage = [v9 CGImage];
+  [foregroundStyle scale];
+  v11 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
 
   v12 = [_UILegibilityImageSet imageFromImage:v11 withShadowImage:0];
 
@@ -129,30 +129,30 @@
 {
   if ([(UIStatusBarCarPlayRadarTimeItemView *)self _showRadarButtonForInternalInstalls]&& [(UIView *)self isFocused])
   {
-    v3 = [(UIStatusBarItemView *)self foregroundStyle];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
     v4 = MEMORY[0x1E696AEC0];
-    [v3 scale];
+    [foregroundStyle scale];
     v6 = [v4 stringWithFormat:@"_internal_radar_time_%ix.png", v5];
     v7 = MEMORY[0x1E696AAE8];
     v8 = _UIKitResourceBundlePath(@"CarPlayArtwork.bundle");
     v9 = [v7 bundleWithPath:v8];
 
     v10 = [UIImage imageNamed:v6 inBundle:v9];
-    v11 = [v10 CGImage];
-    [v3 scale];
-    v12 = [UIImage imageWithCGImage:v11 scale:0 orientation:?];
+    cGImage = [v10 CGImage];
+    [foregroundStyle scale];
+    v12 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
 
-    v13 = [_UILegibilityImageSet imageFromImage:v12 withShadowImage:0];
+    contentsImage = [_UILegibilityImageSet imageFromImage:v12 withShadowImage:0];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = UIStatusBarCarPlayRadarTimeItemView;
-    v13 = [(UIStatusBarCarPlayTimeItemView *)&v15 contentsImage];
+    contentsImage = [(UIStatusBarCarPlayTimeItemView *)&v15 contentsImage];
   }
 
-  return v13;
+  return contentsImage;
 }
 
 - (id)_timeImageSet
@@ -160,23 +160,23 @@
   if (self->_currentlyGatheringLogs)
   {
     v3 = +[UIColor systemPurpleColor];
-    v4 = [(UIStatusBarCarPlayTimeItemView *)self _timeImageSetForColor:v3];
+    _timeImageSet = [(UIStatusBarCarPlayTimeItemView *)self _timeImageSetForColor:v3];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIStatusBarCarPlayRadarTimeItemView;
-    v4 = [(UIStatusBarCarPlayTimeItemView *)&v6 _timeImageSet];
+    _timeImageSet = [(UIStatusBarCarPlayTimeItemView *)&v6 _timeImageSet];
   }
 
-  return v4;
+  return _timeImageSet;
 }
 
-- (void)_gatheringLogsDidChangeStatusNotification:(id)a3
+- (void)_gatheringLogsDidChangeStatusNotification:(id)notification
 {
-  v4 = [a3 name];
-  v5 = [v4 isEqualToString:@"UIStatusBarCarPlayDiagnosticsStartedNotification"];
+  name = [notification name];
+  v5 = [name isEqualToString:@"UIStatusBarCarPlayDiagnosticsStartedNotification"];
 
   if (self->_currentlyGatheringLogs != v5)
   {

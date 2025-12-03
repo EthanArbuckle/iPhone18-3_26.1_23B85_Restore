@@ -1,6 +1,6 @@
 @interface FCLocalVersionedTag
 - (FCLocalVersionedTag)init;
-- (FCLocalVersionedTag)initWithDictionary:(id)a3;
+- (FCLocalVersionedTag)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCLocalVersionedTag
@@ -31,19 +31,19 @@
   objc_exception_throw(v6);
 }
 
-- (FCLocalVersionedTag)initWithDictionary:(id)a3
+- (FCLocalVersionedTag)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FCLocalVersionedTag;
   v5 = [(FCLocalVersionedTag *)&v13 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"identifier", 0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"identifier", 0);
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = FCAppConfigurationStringValue(v4, @"minNewsVersion", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"minNewsVersion", 0);
     v9 = v8;
     if (v8)
     {
@@ -51,7 +51,7 @@
     }
 
     v5->_minVersion = v8;
-    v10 = FCAppConfigurationStringValue(v4, @"maxNewsVersion", 0);
+    v10 = FCAppConfigurationStringValue(dictionaryCopy, @"maxNewsVersion", 0);
     if (v10)
     {
       v11 = [FCRestrictions integerRepresentationOfShortVersionString:v10];

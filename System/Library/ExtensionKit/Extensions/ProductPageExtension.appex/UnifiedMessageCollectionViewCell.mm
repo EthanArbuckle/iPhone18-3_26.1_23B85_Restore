@@ -1,12 +1,12 @@
 @interface UnifiedMessageCollectionViewCell
-- (_TtC20ProductPageExtension32UnifiedMessageCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension32UnifiedMessageCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation UnifiedMessageCollectionViewCell
 
-- (_TtC20ProductPageExtension32UnifiedMessageCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension32UnifiedMessageCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension32UnifiedMessageCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -39,7 +39,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10025BFB8();
 }
 

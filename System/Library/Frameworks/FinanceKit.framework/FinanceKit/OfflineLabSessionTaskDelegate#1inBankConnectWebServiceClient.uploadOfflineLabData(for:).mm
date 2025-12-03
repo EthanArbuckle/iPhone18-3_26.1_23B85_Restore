@@ -10,7 +10,7 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = self;
+  selfCopy = self;
   v11 = a5;
   sub_1B779EA5C(v9, a5);
 }
@@ -40,7 +40,7 @@
   v16[5] = v15;
   v17 = a3;
   v18 = a4;
-  v19 = self;
+  selfCopy = self;
   sub_1B77E494C(0, 0, v11, &unk_1B780D8F0, v16);
 }
 

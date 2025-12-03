@@ -9,8 +9,8 @@
 - (uint64_t)NSNumber
 {
   v4 = a2;
-  v6 = *(a1 + 32);
-  v5 = *(a1 + 40);
+  v6 = *(self + 32);
+  v5 = *(self + 40);
   if (a2)
   {
     type metadata accessor for NSError(0, &lazy cache variable for type metadata for NSNumber, NSNumber_ptr);
@@ -23,7 +23,7 @@
 
 - (unint64_t)String
 {
-  result = OUTLINED_FUNCTION_135_0(a1);
+  result = OUTLINED_FUNCTION_135_0(self);
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDyS2SGMd, &_sSDyS2SGMR);
@@ -36,7 +36,7 @@
 
 - (unint64_t)Data
 {
-  result = OUTLINED_FUNCTION_135_0(a1);
+  result = OUTLINED_FUNCTION_135_0(self);
   if (!result)
   {
     OUTLINED_FUNCTION_40_11();

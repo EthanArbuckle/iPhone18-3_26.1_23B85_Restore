@@ -1,8 +1,8 @@
 @interface NTKDSiriDataSourcesObserver
 + (id)sharedInstance;
 - (NTKDSiriDataSourcesObserver)init;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 - (void)queue_buildInitialSetOfIdentifiersIfNeeded;
 - (void)queue_updateDeviceDataSourcesInNanoPreferences;
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100003004;
   block[3] = &unk_10005CB30;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100066B50 != -1)
   {
     dispatch_once(&qword_100066B50, block);
@@ -101,31 +101,31 @@
   dispatch_sync(bundleQueue, block);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   bundleQueue = self->_bundleQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003500;
   v7[3] = &unk_10005CA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = installCopy;
+  v6 = installCopy;
   dispatch_sync(bundleQueue, v7);
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   bundleQueue = self->_bundleQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000370C;
   v7[3] = &unk_10005CA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = uninstallCopy;
+  v6 = uninstallCopy;
   dispatch_sync(bundleQueue, v7);
 }
 

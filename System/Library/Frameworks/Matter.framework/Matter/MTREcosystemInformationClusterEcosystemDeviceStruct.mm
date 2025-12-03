@@ -1,6 +1,6 @@
 @interface MTREcosystemInformationClusterEcosystemDeviceStruct
 - (MTREcosystemInformationClusterEcosystemDeviceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,13 +26,13 @@
     originalEndpoint = v3->_originalEndpoint;
     v3->_originalEndpoint = &unk_284C3E588;
 
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     deviceTypes = v3->_deviceTypes;
-    v3->_deviceTypes = v8;
+    v3->_deviceTypes = array;
 
-    v10 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     uniqueLocationIDs = v3->_uniqueLocationIDs;
-    v3->_uniqueLocationIDs = v10;
+    v3->_uniqueLocationIDs = array2;
 
     uniqueLocationIDsLastEdit = v3->_uniqueLocationIDsLastEdit;
     v3->_uniqueLocationIDsLastEdit = &unk_284C3E588;
@@ -44,32 +44,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREcosystemInformationClusterEcosystemDeviceStruct);
-  v5 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self deviceName];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setDeviceName:v5];
+  deviceName = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self deviceName];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setDeviceName:deviceName];
 
-  v6 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self deviceNameLastEdit];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setDeviceNameLastEdit:v6];
+  deviceNameLastEdit = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self deviceNameLastEdit];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setDeviceNameLastEdit:deviceNameLastEdit];
 
-  v7 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self bridgedEndpoint];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setBridgedEndpoint:v7];
+  bridgedEndpoint = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self bridgedEndpoint];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setBridgedEndpoint:bridgedEndpoint];
 
-  v8 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self originalEndpoint];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setOriginalEndpoint:v8];
+  originalEndpoint = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self originalEndpoint];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setOriginalEndpoint:originalEndpoint];
 
-  v9 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self deviceTypes];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setDeviceTypes:v9];
+  deviceTypes = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self deviceTypes];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setDeviceTypes:deviceTypes];
 
-  v10 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self uniqueLocationIDs];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setUniqueLocationIDs:v10];
+  uniqueLocationIDs = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self uniqueLocationIDs];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setUniqueLocationIDs:uniqueLocationIDs];
 
-  v11 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self uniqueLocationIDsLastEdit];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setUniqueLocationIDsLastEdit:v11];
+  uniqueLocationIDsLastEdit = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self uniqueLocationIDsLastEdit];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setUniqueLocationIDsLastEdit:uniqueLocationIDsLastEdit];
 
-  v12 = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self fabricIndex];
-  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setFabricIndex:v12];
+  fabricIndex = [(MTREcosystemInformationClusterEcosystemDeviceStruct *)self fabricIndex];
+  [(MTREcosystemInformationClusterEcosystemDeviceStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

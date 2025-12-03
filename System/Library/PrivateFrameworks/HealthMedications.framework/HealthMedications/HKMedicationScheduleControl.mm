@@ -2,46 +2,46 @@
 + (id)clientInterface;
 + (id)serverInterface;
 + (id)taskIdentifier;
-- (BOOL)_synchronouslyRegisterToObserveMedicationScheduleChangesWithError:(id *)a3;
-- (HKMedicationScheduleControl)initWithHealthStore:(id)a3;
+- (BOOL)_synchronouslyRegisterToObserveMedicationScheduleChangesWithError:(id *)error;
+- (HKMedicationScheduleControl)initWithHealthStore:(id)store;
 - (id)exportedInterface;
 - (id)remoteInterface;
 - (void)_handleAutomaticProxyReconnection;
-- (void)_observeMedicationScheduleChanges:(BOOL)a3 completion:(id)a4;
+- (void)_observeMedicationScheduleChanges:(BOOL)changes completion:(id)completion;
 - (void)_registerFirstObserver;
 - (void)_unregisterLastObserver;
-- (void)client_notifyForAddOrModifySchedules:(id)a3;
-- (void)client_notifyForDidPruneSchduleItems:(id)a3;
-- (void)deleteSchedule:(id)a3 completion:(id)a4;
-- (void)fetchAllSchedulesWithCompletion:(id)a3;
-- (void)fetchScheduleWithMedicationIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchSchedulesWithMedicationIdentifiers:(id)a3 completion:(id)a4;
-- (void)logUnloggedDoseEventsForScheduledItemIdentifier:(id)a3 status:(int64_t)a4 logDate:(id)a5 completion:(id)a6;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)rescheduleMedicationsWithCompletion:(id)a3;
-- (void)saveSchedule:(id)a3 completion:(id)a4;
-- (void)saveScheduleItems:(id)a3 completion:(id)a4;
-- (void)setTimeZoneTipAsDismissedWithCompletion:(id)a3;
-- (void)unitTest_noOpWithCompletion:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateNotificationSent:(BOOL)a3 scheduleItemIdentifier:(id)a4 completion:(id)a5;
-- (void)updateSchedulesToLocalTimeZoneAndMaintainCalendarDatesAndTimes:(BOOL)a3 completion:(id)a4;
+- (void)client_notifyForAddOrModifySchedules:(id)schedules;
+- (void)client_notifyForDidPruneSchduleItems:(id)items;
+- (void)deleteSchedule:(id)schedule completion:(id)completion;
+- (void)fetchAllSchedulesWithCompletion:(id)completion;
+- (void)fetchScheduleWithMedicationIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchSchedulesWithMedicationIdentifiers:(id)identifiers completion:(id)completion;
+- (void)logUnloggedDoseEventsForScheduledItemIdentifier:(id)identifier status:(int64_t)status logDate:(id)date completion:(id)completion;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)rescheduleMedicationsWithCompletion:(id)completion;
+- (void)saveSchedule:(id)schedule completion:(id)completion;
+- (void)saveScheduleItems:(id)items completion:(id)completion;
+- (void)setTimeZoneTipAsDismissedWithCompletion:(id)completion;
+- (void)unitTest_noOpWithCompletion:(id)completion;
+- (void)unregisterObserver:(id)observer;
+- (void)updateNotificationSent:(BOOL)sent scheduleItemIdentifier:(id)identifier completion:(id)completion;
+- (void)updateSchedulesToLocalTimeZoneAndMaintainCalendarDatesAndTimes:(BOOL)times completion:(id)completion;
 @end
 
 @implementation HKMedicationScheduleControl
 
-- (HKMedicationScheduleControl)initWithHealthStore:(id)a3
+- (HKMedicationScheduleControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v24.receiver = self;
   v24.super_class = HKMedicationScheduleControl;
   v5 = [(HKMedicationScheduleControl *)&v24 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v9 = [v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -76,16 +76,16 @@ void __51__HKMedicationScheduleControl_initWithHealthStore___block_invoke(uint64
   [WeakRetained _handleAutomaticProxyReconnection];
 }
 
-- (void)saveSchedule:(id)a3 completion:(id)a4
+- (void)saveSchedule:(id)schedule completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  scheduleCopy = schedule;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__HKMedicationScheduleControl_saveSchedule_completion___block_invoke;
   v14[3] = &unk_2796CA138;
-  v15 = v6;
+  v15 = scheduleCopy;
   v16 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -112,15 +112,15 @@ void __55__HKMedicationScheduleControl_saveSchedule_completion___block_invoke_2(
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)updateSchedulesToLocalTimeZoneAndMaintainCalendarDatesAndTimes:(BOOL)a3 completion:(id)a4
+- (void)updateSchedulesToLocalTimeZoneAndMaintainCalendarDatesAndTimes:(BOOL)times completion:(id)completion
 {
-  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __105__HKMedicationScheduleControl_updateSchedulesToLocalTimeZoneAndMaintainCalendarDatesAndTimes_completion___block_invoke;
   v11[3] = &unk_2796CA188;
-  v13 = a3;
+  timesCopy = times;
   v12 = v6;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -145,9 +145,9 @@ void __105__HKMedicationScheduleControl_updateSchedulesToLocalTimeZoneAndMaintai
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setTimeZoneTipAsDismissedWithCompletion:(id)a3
+- (void)setTimeZoneTipAsDismissedWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -177,16 +177,16 @@ void __71__HKMedicationScheduleControl_setTimeZoneTipAsDismissedWithCompletion__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchScheduleWithMedicationIdentifier:(id)a3 completion:(id)a4
+- (void)fetchScheduleWithMedicationIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__HKMedicationScheduleControl_fetchScheduleWithMedicationIdentifier_completion___block_invoke;
   v14[3] = &unk_2796CA138;
-  v15 = v6;
+  v15 = identifierCopy;
   v16 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -213,16 +213,16 @@ void __80__HKMedicationScheduleControl_fetchScheduleWithMedicationIdentifier_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchSchedulesWithMedicationIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchSchedulesWithMedicationIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  identifiersCopy = identifiers;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__HKMedicationScheduleControl_fetchSchedulesWithMedicationIdentifiers_completion___block_invoke;
   v14[3] = &unk_2796CA138;
-  v15 = v6;
+  v15 = identifiersCopy;
   v16 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -249,9 +249,9 @@ void __82__HKMedicationScheduleControl_fetchSchedulesWithMedicationIdentifiers_c
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchAllSchedulesWithCompletion:(id)a3
+- (void)fetchAllSchedulesWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -281,16 +281,16 @@ void __63__HKMedicationScheduleControl_fetchAllSchedulesWithCompletion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteSchedule:(id)a3 completion:(id)a4
+- (void)deleteSchedule:(id)schedule completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  scheduleCopy = schedule;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__HKMedicationScheduleControl_deleteSchedule_completion___block_invoke;
   v14[3] = &unk_2796CA138;
-  v15 = v6;
+  v15 = scheduleCopy;
   v16 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -317,16 +317,16 @@ void __57__HKMedicationScheduleControl_deleteSchedule_completion___block_invoke_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)saveScheduleItems:(id)a3 completion:(id)a4
+- (void)saveScheduleItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  itemsCopy = items;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__HKMedicationScheduleControl_saveScheduleItems_completion___block_invoke;
   v14[3] = &unk_2796CA138;
-  v15 = v6;
+  v15 = itemsCopy;
   v16 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -353,17 +353,17 @@ void __60__HKMedicationScheduleControl_saveScheduleItems_completion___block_invo
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)updateNotificationSent:(BOOL)a3 scheduleItemIdentifier:(id)a4 completion:(id)a5
+- (void)updateNotificationSent:(BOOL)sent scheduleItemIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  identifierCopy = identifier;
+  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __88__HKMedicationScheduleControl_updateNotificationSent_scheduleItemIdentifier_completion___block_invoke;
   v16[3] = &unk_2796CA200;
-  v19 = a3;
-  v17 = v8;
+  sentCopy = sent;
+  v17 = identifierCopy;
   v18 = v9;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -390,9 +390,9 @@ void __88__HKMedicationScheduleControl_updateNotificationSent_scheduleItemIdenti
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)rescheduleMedicationsWithCompletion:(id)a3
+- (void)rescheduleMedicationsWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -422,19 +422,19 @@ void __67__HKMedicationScheduleControl_rescheduleMedicationsWithCompletion___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)logUnloggedDoseEventsForScheduledItemIdentifier:(id)a3 status:(int64_t)a4 logDate:(id)a5 completion:(id)a6
+- (void)logUnloggedDoseEventsForScheduledItemIdentifier:(id)identifier status:(int64_t)status logDate:(id)date completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a6];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __105__HKMedicationScheduleControl_logUnloggedDoseEventsForScheduledItemIdentifier_status_logDate_completion___block_invoke;
   v19[3] = &unk_2796CA228;
-  v23 = a4;
-  v20 = v10;
-  v21 = v11;
+  statusCopy = status;
+  v20 = identifierCopy;
+  v21 = dateCopy;
   v22 = v12;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -443,8 +443,8 @@ void __67__HKMedicationScheduleControl_rescheduleMedicationsWithCompletion___blo
   v17[4] = self;
   v18 = v22;
   v14 = v22;
-  v15 = v11;
-  v16 = v10;
+  v15 = dateCopy;
+  v16 = identifierCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v19 errorHandler:v17];
 }
 
@@ -461,7 +461,7 @@ void __105__HKMedicationScheduleControl_logUnloggedDoseEventsForScheduledItemIde
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -469,10 +469,10 @@ void __105__HKMedicationScheduleControl_logUnloggedDoseEventsForScheduledItemIde
   v5[2] = __54__HKMedicationScheduleControl_registerObserver_queue___block_invoke;
   v5[3] = &unk_2796CA058;
   v5[4] = self;
-  [(HKMedicationScheduleControlObserver *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKMedicationScheduleControlObserver *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -480,13 +480,13 @@ void __105__HKMedicationScheduleControl_logUnloggedDoseEventsForScheduledItemIde
   v4[2] = __50__HKMedicationScheduleControl_unregisterObserver___block_invoke;
   v4[3] = &unk_2796CA058;
   v4[4] = self;
-  [(HKMedicationScheduleControlObserver *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKMedicationScheduleControlObserver *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 - (void)_handleAutomaticProxyReconnection
 {
   *v4 = 138543618;
-  *&v4[4] = a1;
+  *&v4[4] = self;
   *&v4[12] = 2114;
   *&v4[14] = a2;
   OUTLINED_FUNCTION_2(&dword_2517E7000, a2, a3, "[%{public}@] Failed to resume observation on server reconnection: %{public}@", *v4, *&v4[8], *&v4[16], *MEMORY[0x277D85DE8]);
@@ -559,15 +559,15 @@ void __54__HKMedicationScheduleControl__unregisterLastObserver__block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_observeMedicationScheduleChanges:(BOOL)a3 completion:(id)a4
+- (void)_observeMedicationScheduleChanges:(BOOL)changes completion:(id)completion
 {
-  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__HKMedicationScheduleControl__observeMedicationScheduleChanges_completion___block_invoke;
   v11[3] = &unk_2796CA188;
-  v13 = a3;
+  changesCopy = changes;
   v12 = v6;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -578,7 +578,7 @@ void __54__HKMedicationScheduleControl__unregisterLastObserver__block_invoke(uin
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 
-- (BOOL)_synchronouslyRegisterToObserveMedicationScheduleChangesWithError:(id *)a3
+- (BOOL)_synchronouslyRegisterToObserveMedicationScheduleChangesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -607,10 +607,10 @@ void __54__HKMedicationScheduleControl__unregisterLastObserver__block_invoke(uin
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -636,18 +636,18 @@ uint64_t __97__HKMedicationScheduleControl__synchronouslyRegisterToObserveMedica
   return [a2 remote_observeMedicationScheduleChanges:1 completion:v3];
 }
 
-- (void)client_notifyForDidPruneSchduleItems:(id)a3
+- (void)client_notifyForDidPruneSchduleItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HKMedicationScheduleControl_client_notifyForDidPruneSchduleItems___block_invoke;
   v7[3] = &unk_2796CA358;
-  v8 = v4;
+  v8 = itemsCopy;
   v9 = sel_scheduleControl_didDeleteScheduleItems_;
   v7[4] = self;
-  v6 = v4;
+  v6 = itemsCopy;
   [(HKMedicationScheduleControlObserver *)observers notifyObservers:v7];
 }
 
@@ -662,18 +662,18 @@ void __68__HKMedicationScheduleControl_client_notifyForDidPruneSchduleItems___bl
   }
 }
 
-- (void)client_notifyForAddOrModifySchedules:(id)a3
+- (void)client_notifyForAddOrModifySchedules:(id)schedules
 {
-  v4 = a3;
+  schedulesCopy = schedules;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HKMedicationScheduleControl_client_notifyForAddOrModifySchedules___block_invoke;
   v7[3] = &unk_2796CA380;
-  v8 = v4;
+  v8 = schedulesCopy;
   v9 = sel_scheduleControl_didAddOrModifySchedules_;
   v7[4] = self;
-  v6 = v4;
+  v6 = schedulesCopy;
   [(HKMedicationScheduleControlObserver *)observers notifyObservers:v7];
 }
 
@@ -731,23 +731,23 @@ void __68__HKMedicationScheduleControl_client_notifyForAddOrModifySchedules___bl
   return [v2 serverInterface];
 }
 
-- (void)unitTest_noOpWithCompletion:(id)a3
+- (void)unitTest_noOpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  completionCopy = completion;
+  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__HKMedicationScheduleControl_unitTest_noOpWithCompletion___block_invoke;
   v11[3] = &unk_2796CA1D8;
-  v12 = v4;
+  v12 = completionCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__HKMedicationScheduleControl_unitTest_noOpWithCompletion___block_invoke_2;
   v9[3] = &unk_2796CA298;
   v10 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 

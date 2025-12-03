@@ -1,13 +1,13 @@
 @interface MLCFullyConnectedLayer
 + (MLCFullyConnectedLayer)layerWithWeights:(MLCTensor *)weights biases:(MLCTensor *)biases descriptor:(MLCConvolutionDescriptor *)descriptor;
-- (BOOL)allocateDataForOptimizer:(id)a3;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (BOOL)isSupportedShapeForTensorSources:(id)a3;
-- (MLCFullyConnectedLayer)initWithWeights:(id)a3 biases:(id)a4 descriptor:(id)a5;
+- (BOOL)allocateDataForOptimizer:(id)optimizer;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (BOOL)isSupportedShapeForTensorSources:(id)sources;
+- (MLCFullyConnectedLayer)initWithWeights:(id)weights biases:(id)biases descriptor:(id)descriptor;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
-- (unint64_t)allocatedDataSizeForTraining:(BOOL)a3 optimizer:(id)a4;
+- (unint64_t)allocatedDataSizeForTraining:(BOOL)training optimizer:(id)optimizer;
 - (unint64_t)parametersCount;
 - (void)linkAssociatedTensors;
 - (void)unlinkAssociatedTensors;
@@ -20,22 +20,22 @@
   v8 = descriptor;
   v9 = biases;
   v10 = weights;
-  v11 = [[a1 alloc] initWithWeights:v10 biases:v9 descriptor:v8];
+  v11 = [[self alloc] initWithWeights:v10 biases:v9 descriptor:v8];
 
   return v11;
 }
 
-- (MLCFullyConnectedLayer)initWithWeights:(id)a3 biases:(id)a4 descriptor:(id)a5
+- (MLCFullyConnectedLayer)initWithWeights:(id)weights biases:(id)biases descriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 descriptor];
-  v12 = [v11 shape];
-  v13 = [v12 objectAtIndexedSubscript:0];
-  v14 = [v13 unsignedIntegerValue];
+  weightsCopy = weights;
+  biasesCopy = biases;
+  descriptorCopy = descriptor;
+  descriptor = [weightsCopy descriptor];
+  shape = [descriptor shape];
+  v13 = [shape objectAtIndexedSubscript:0];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-  if (v14 >= 2)
+  if (unsignedIntegerValue >= 2)
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -46,9 +46,9 @@
     goto LABEL_11;
   }
 
-  v16 = [v8 data];
+  data = [weightsCopy data];
 
-  if (!v16)
+  if (!data)
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -59,15 +59,15 @@
     goto LABEL_11;
   }
 
-  v69 = v10;
-  if (v9)
+  v69 = descriptorCopy;
+  if (biasesCopy)
   {
-    v17 = [v9 descriptor];
-    v18 = [v17 shape];
-    v19 = [v18 objectAtIndexedSubscript:0];
-    v20 = [v19 unsignedIntegerValue];
+    descriptor2 = [biasesCopy descriptor];
+    shape2 = [descriptor2 shape];
+    v19 = [shape2 objectAtIndexedSubscript:0];
+    unsignedIntegerValue2 = [v19 unsignedIntegerValue];
 
-    if (v20 >= 2)
+    if (unsignedIntegerValue2 >= 2)
     {
       v15 = +[MLCLog framework];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -78,13 +78,13 @@
       goto LABEL_11;
     }
 
-    v24 = [v9 descriptor];
-    v25 = [v24 shape];
-    v26 = [v25 objectAtIndexedSubscript:1];
-    v27 = [v26 unsignedIntegerValue];
-    v28 = [v10 outputFeatureChannelCount];
+    descriptor3 = [biasesCopy descriptor];
+    shape3 = [descriptor3 shape];
+    v26 = [shape3 objectAtIndexedSubscript:1];
+    unsignedIntegerValue3 = [v26 unsignedIntegerValue];
+    outputFeatureChannelCount = [descriptorCopy outputFeatureChannelCount];
 
-    if (v27 != v28)
+    if (unsignedIntegerValue3 != outputFeatureChannelCount)
     {
       v34 = +[MLCLog framework];
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -93,22 +93,22 @@
       }
 
       v21 = 0;
-      v10 = v69;
+      descriptorCopy = v69;
       goto LABEL_12;
     }
 
-    v29 = [v9 descriptor];
-    v68 = [v29 shape];
-    v30 = [v68 count];
+    descriptor4 = [biasesCopy descriptor];
+    shape4 = [descriptor4 shape];
+    v30 = [shape4 count];
     if (v30 >= 4)
     {
-      v31 = [v9 descriptor];
-      v32 = [v31 shape];
-      v33 = [v32 objectAtIndexedSubscript:3];
+      descriptor5 = [biasesCopy descriptor];
+      shape5 = [descriptor5 shape];
+      v33 = [shape5 objectAtIndexedSubscript:3];
       if ([v33 unsignedIntegerValue] > 1)
       {
 
-        v10 = v69;
+        descriptorCopy = v69;
 LABEL_28:
         v15 = +[MLCLog framework];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -120,31 +120,31 @@ LABEL_28:
       }
 
       v61 = v33;
-      v63 = v32;
-      v64 = v31;
+      v63 = shape5;
+      v64 = descriptor5;
     }
 
     v67 = v30;
-    v35 = [v9 descriptor];
-    v36 = [v35 shape];
-    if ([v36 count] < 3)
+    descriptor6 = [biasesCopy descriptor];
+    shape6 = [descriptor6 shape];
+    if ([shape6 count] < 3)
     {
       v40 = 0;
     }
 
     else
     {
-      v65 = [v9 descriptor];
-      v66 = v29;
-      v37 = [v65 shape];
-      v38 = [v37 objectAtIndexedSubscript:2];
+      descriptor7 = [biasesCopy descriptor];
+      v66 = descriptor4;
+      shape7 = [descriptor7 shape];
+      v38 = [shape7 objectAtIndexedSubscript:2];
       v39 = [v38 unsignedIntegerValue] > 1;
 
       v40 = v39;
-      v29 = v66;
+      descriptor4 = v66;
     }
 
-    v10 = v69;
+    descriptorCopy = v69;
 
     if (v67 >= 4)
     {
@@ -155,22 +155,22 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    v41 = [v8 childLayers];
-    v42 = [v41 count];
-    v43 = [v9 childLayers];
-    v44 = [v43 count];
+    childLayers = [weightsCopy childLayers];
+    v42 = [childLayers count];
+    childLayers2 = [biasesCopy childLayers];
+    v44 = [childLayers2 count];
 
     if (v42 != v44)
     {
       v15 = +[MLCLog framework];
-      v10 = v69;
+      descriptorCopy = v69;
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
 LABEL_11:
 
         v21 = 0;
 LABEL_12:
-        v22 = self;
+        selfCopy = self;
         goto LABEL_13;
       }
 
@@ -179,18 +179,18 @@ LABEL_42:
       goto LABEL_11;
     }
 
-    v45 = [v8 childLayers];
-    v46 = [v45 count];
+    childLayers3 = [weightsCopy childLayers];
+    v46 = [childLayers3 count];
 
     if (v46)
     {
       v47 = 0;
       while (1)
       {
-        v48 = [v8 childLayers];
-        v49 = [v48 objectAtIndexedSubscript:v47];
-        v50 = [v9 childLayers];
-        v51 = [v50 objectAtIndexedSubscript:v47];
+        childLayers4 = [weightsCopy childLayers];
+        v49 = [childLayers4 objectAtIndexedSubscript:v47];
+        childLayers5 = [biasesCopy childLayers];
+        v51 = [childLayers5 objectAtIndexedSubscript:v47];
 
         if (v49 != v51)
         {
@@ -198,8 +198,8 @@ LABEL_42:
         }
 
         ++v47;
-        v52 = [v8 childLayers];
-        v53 = [v52 count];
+        childLayers6 = [weightsCopy childLayers];
+        v53 = [childLayers6 count];
 
         if (v47 >= v53)
         {
@@ -208,7 +208,7 @@ LABEL_42:
       }
 
       v15 = +[MLCLog framework];
-      v10 = v69;
+      descriptorCopy = v69;
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_11;
@@ -226,17 +226,17 @@ LABEL_35:
   if (v54)
   {
     v54->_accumulatorPrecisionOption = 0;
-    objc_storeStrong(&v54->_weights, a3);
-    objc_storeStrong(&v55->_descriptor, a5);
-    objc_storeStrong(&v55->_biases, a4);
-    v56 = [MLCTensorParameter parameterWithTensor:v8];
+    objc_storeStrong(&v54->_weights, weights);
+    objc_storeStrong(&v55->_descriptor, descriptor);
+    objc_storeStrong(&v55->_biases, biases);
+    v56 = [MLCTensorParameter parameterWithTensor:weightsCopy];
     weightsParameter = v55->_weightsParameter;
     v55->_weightsParameter = v56;
 
     [(MLCTensor *)v55->_weights setIsLayerParameter:1];
-    if (v9)
+    if (biasesCopy)
     {
-      v58 = [MLCTensorParameter parameterWithTensor:v9];
+      v58 = [MLCTensorParameter parameterWithTensor:biasesCopy];
       biasesParameter = v55->_biasesParameter;
       v55->_biasesParameter = v58;
 
@@ -254,22 +254,22 @@ LABEL_35:
     [(MLCLayer *)&v72 setIsUpdatable:1];
   }
 
-  v22 = v55;
-  v21 = v22;
-  v10 = v69;
+  selfCopy = v55;
+  v21 = selfCopy;
+  descriptorCopy = v69;
 LABEL_13:
 
   return v21;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MLCFullyConnectedLayer *)self weights];
-  v13 = [v12 parentLayers];
-  v14 = [v13 count];
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  weights = [(MLCFullyConnectedLayer *)self weights];
+  parentLayers = [weights parentLayers];
+  v14 = [parentLayers count];
 
   if (v14)
   {
@@ -282,9 +282,9 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v16 = [(MLCFullyConnectedLayer *)self biases];
-  v17 = [v16 parentLayers];
-  v18 = [v17 count];
+  biases = [(MLCFullyConnectedLayer *)self biases];
+  parentLayers2 = [biases parentLayers];
+  v18 = [parentLayers2 count];
 
   if (v18)
   {
@@ -298,24 +298,24 @@ LABEL_13:
   }
 
   v85 = a2;
-  v86 = v10;
-  v21 = [(MLCFullyConnectedLayer *)self biases];
-  v22 = [v21 childLayers];
-  v23 = [v22 count];
+  v86 = tensorsCopy;
+  biases2 = [(MLCFullyConnectedLayer *)self biases];
+  childLayers = [biases2 childLayers];
+  v23 = [childLayers count];
 
   if (v23)
   {
-    v24 = [(MLCFullyConnectedLayer *)self weights];
-    v25 = [v24 childLayers];
-    v26 = [v25 count];
-    v27 = [(MLCFullyConnectedLayer *)self biases];
-    v28 = [v27 childLayers];
-    v29 = [v28 count];
+    weights2 = [(MLCFullyConnectedLayer *)self weights];
+    childLayers2 = [weights2 childLayers];
+    v26 = [childLayers2 count];
+    biases3 = [(MLCFullyConnectedLayer *)self biases];
+    childLayers3 = [biases3 childLayers];
+    v29 = [childLayers3 count];
 
     if (v26 != v29)
     {
       v15 = +[MLCLog framework];
-      v10 = v86;
+      tensorsCopy = v86;
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
 LABEL_7:
@@ -328,21 +328,21 @@ LABEL_20:
       goto LABEL_7;
     }
 
-    v30 = [(MLCFullyConnectedLayer *)self weights];
-    v31 = [v30 childLayers];
-    v32 = [v31 count];
+    weights3 = [(MLCFullyConnectedLayer *)self weights];
+    childLayers4 = [weights3 childLayers];
+    v32 = [childLayers4 count];
 
     if (v32)
     {
       v33 = 0;
       while (1)
       {
-        v34 = [(MLCFullyConnectedLayer *)self weights];
-        v35 = [v34 childLayers];
-        v36 = [v35 objectAtIndexedSubscript:v33];
-        v37 = [(MLCFullyConnectedLayer *)self biases];
-        v38 = [v37 childLayers];
-        v39 = [v38 objectAtIndexedSubscript:v33];
+        weights4 = [(MLCFullyConnectedLayer *)self weights];
+        childLayers5 = [weights4 childLayers];
+        v36 = [childLayers5 objectAtIndexedSubscript:v33];
+        biases4 = [(MLCFullyConnectedLayer *)self biases];
+        childLayers6 = [biases4 childLayers];
+        v39 = [childLayers6 objectAtIndexedSubscript:v33];
 
         if (v36 != v39)
         {
@@ -350,9 +350,9 @@ LABEL_20:
         }
 
         ++v33;
-        v40 = [(MLCFullyConnectedLayer *)self weights];
-        v41 = [v40 childLayers];
-        v42 = [v41 count];
+        weights5 = [(MLCFullyConnectedLayer *)self weights];
+        childLayers7 = [weights5 childLayers];
+        v42 = [childLayers7 count];
 
         if (v33 >= v42)
         {
@@ -361,7 +361,7 @@ LABEL_20:
       }
 
       v15 = +[MLCLog framework];
-      v10 = v86;
+      tensorsCopy = v86;
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_7;
@@ -372,55 +372,55 @@ LABEL_20:
   }
 
 LABEL_15:
-  v43 = [(MLCLayer *)self fusedLayers];
-  v44 = [v43 count];
+  fusedLayers = [(MLCLayer *)self fusedLayers];
+  v44 = [fusedLayers count];
 
   if (v44)
   {
-    v45 = [(MLCLayer *)self fusedLayers];
-    v46 = [v45 objectAtIndexedSubscript:0];
+    fusedLayers2 = [(MLCLayer *)self fusedLayers];
+    v46 = [fusedLayers2 objectAtIndexedSubscript:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v48 = [(MLCLayer *)self fusedLayers];
-    v49 = [v48 objectAtIndexedSubscript:0];
+    fusedLayers3 = [(MLCLayer *)self fusedLayers];
+    computeEngine3 = [fusedLayers3 objectAtIndexedSubscript:0];
     if (isKindOfClass)
     {
 
-      v50 = [(MLCLayer *)self fusedLayers];
-      v51 = [v50 count];
+      fusedLayers4 = [(MLCLayer *)self fusedLayers];
+      v51 = [fusedLayers4 count];
 
       if (v51 < 2)
       {
-        v83 = 0;
+        descriptor = 0;
       }
 
       else
       {
-        v52 = [(MLCLayer *)self fusedLayers];
-        v53 = [v52 objectAtIndexedSubscript:1];
-        v83 = [v53 descriptor];
+        fusedLayers5 = [(MLCLayer *)self fusedLayers];
+        v53 = [fusedLayers5 objectAtIndexedSubscript:1];
+        descriptor = [v53 descriptor];
       }
 
-      v81 = [v9 computeEngine];
-      v84 = [(MLCFullyConnectedLayer *)self descriptor];
-      v82 = [v49 mean];
-      v80 = [v49 variance];
-      v60 = [v49 beta];
-      v61 = [v49 gamma];
-      [v49 varianceEpsilon];
+      computeEngine = [deviceCopy computeEngine];
+      descriptor2 = [(MLCFullyConnectedLayer *)self descriptor];
+      mean = [computeEngine3 mean];
+      variance = [computeEngine3 variance];
+      beta = [computeEngine3 beta];
+      gamma = [computeEngine3 gamma];
+      [computeEngine3 varianceEpsilon];
       v63 = v62;
-      [v49 momentum];
+      [computeEngine3 momentum];
       v65 = v64;
-      v79 = [(MLCFullyConnectedLayer *)self weights];
-      v66 = [(MLCFullyConnectedLayer *)self biases];
-      v55 = v81;
+      weights6 = [(MLCFullyConnectedLayer *)self weights];
+      biases5 = [(MLCFullyConnectedLayer *)self biases];
+      descriptor3 = computeEngine;
       LODWORD(v67) = v63;
       LODWORD(v68) = v65;
-      v54 = v83;
-      v15 = [v81 fusedFullyConnectedBatchNormalizationAndNeuronLayerWithDescriptor:v84 mean:v82 variance:v80 beta:v60 gamma:v61 varianceEpsilon:v83 momentum:v67 neuronDescriptor:v68 weights:v79 biasTerms:v66];
+      computeEngine2 = descriptor;
+      v15 = [computeEngine fusedFullyConnectedBatchNormalizationAndNeuronLayerWithDescriptor:descriptor2 mean:mean variance:variance beta:beta gamma:gamma varianceEpsilon:descriptor momentum:v67 neuronDescriptor:v68 weights:weights6 biasTerms:biases5];
 
-      v56 = v84;
+      weights7 = descriptor2;
     }
 
     else
@@ -428,42 +428,42 @@ LABEL_15:
       objc_opt_class();
       v57 = objc_opt_isKindOfClass();
 
-      v58 = [(MLCLayer *)self fusedLayers];
-      v49 = [v58 objectAtIndexedSubscript:0];
+      fusedLayers6 = [(MLCLayer *)self fusedLayers];
+      computeEngine3 = [fusedLayers6 objectAtIndexedSubscript:0];
 
-      v54 = [v9 computeEngine];
+      computeEngine2 = [deviceCopy computeEngine];
       if (v57)
       {
-        v55 = [(MLCFullyConnectedLayer *)self descriptor];
-        v56 = [(MLCFullyConnectedLayer *)self weights];
-        v59 = [(MLCFullyConnectedLayer *)self biases];
-        v15 = [v54 fusedFullyConnectedAndSoftmaxLayerWithDescriptor:v55 weights:v56 biasTerms:v59 softmaxOp:{objc_msgSend(v49, "operation")}];
+        descriptor3 = [(MLCFullyConnectedLayer *)self descriptor];
+        weights7 = [(MLCFullyConnectedLayer *)self weights];
+        biases6 = [(MLCFullyConnectedLayer *)self biases];
+        v15 = [computeEngine2 fusedFullyConnectedAndSoftmaxLayerWithDescriptor:descriptor3 weights:weights7 biasTerms:biases6 softmaxOp:{objc_msgSend(computeEngine3, "operation")}];
       }
 
       else
       {
-        v55 = [v49 descriptor];
-        v56 = [(MLCFullyConnectedLayer *)self descriptor];
-        v59 = [(MLCFullyConnectedLayer *)self weights];
-        v69 = [(MLCFullyConnectedLayer *)self biases];
-        v15 = [v54 fusedFullyConnectedAndNeuronLayerWithDescriptor:v55 convolutionDescriptor:v56 weights:v59 biasTerms:v69];
+        descriptor3 = [computeEngine3 descriptor];
+        weights7 = [(MLCFullyConnectedLayer *)self descriptor];
+        biases6 = [(MLCFullyConnectedLayer *)self weights];
+        biases7 = [(MLCFullyConnectedLayer *)self biases];
+        v15 = [computeEngine2 fusedFullyConnectedAndNeuronLayerWithDescriptor:descriptor3 convolutionDescriptor:weights7 weights:biases6 biasTerms:biases7];
       }
     }
   }
 
   else
   {
-    v49 = [v9 computeEngine];
-    v54 = [(MLCFullyConnectedLayer *)self descriptor];
-    v55 = [(MLCFullyConnectedLayer *)self weights];
-    v56 = [(MLCFullyConnectedLayer *)self biases];
-    v15 = [v49 fullyConnectedLayerWithDescriptor:v54 weights:v55 biasTerms:v56];
+    computeEngine3 = [deviceCopy computeEngine];
+    computeEngine2 = [(MLCFullyConnectedLayer *)self descriptor];
+    descriptor3 = [(MLCFullyConnectedLayer *)self weights];
+    weights7 = [(MLCFullyConnectedLayer *)self biases];
+    v15 = [computeEngine3 fullyConnectedLayerWithDescriptor:computeEngine2 weights:descriptor3 biasTerms:weights7];
   }
 
   if (!v15 || ![v15 count])
   {
     v78 = +[MLCLog framework];
-    v10 = v86;
+    tensorsCopy = v86;
     if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
     {
       [MLCScatterLayer compileForDevice:v85 sourceTensors:? resultTensor:?];
@@ -472,28 +472,28 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  v70 = [v9 computeEngine];
-  v10 = v86;
-  v19 = [v70 compileLayerDeviceOps:v15 sourceTensors:v86 resultTensor:v11];
+  computeEngine4 = [deviceCopy computeEngine];
+  tensorsCopy = v86;
+  v19 = [computeEngine4 compileLayerDeviceOps:v15 sourceTensors:v86 resultTensor:tensorCopy];
 
   v87.receiver = self;
   v87.super_class = MLCFullyConnectedLayer;
-  [(MLCLayer *)&v87 bindDevice:v9 deviceOps:v15];
-  v71 = [(MLCLayer *)self fusedLayers];
-  v72 = [v71 count];
+  [(MLCLayer *)&v87 bindDevice:deviceCopy deviceOps:v15];
+  fusedLayers7 = [(MLCLayer *)self fusedLayers];
+  v72 = [fusedLayers7 count];
 
   if (v72)
   {
     v73 = 0;
     do
     {
-      v74 = [(MLCLayer *)self fusedLayers];
-      v75 = [v74 objectAtIndexedSubscript:v73];
-      [v75 bindDevice:v9 deviceOps:v15];
+      fusedLayers8 = [(MLCLayer *)self fusedLayers];
+      v75 = [fusedLayers8 objectAtIndexedSubscript:v73];
+      [v75 bindDevice:deviceCopy deviceOps:v15];
 
       ++v73;
-      v76 = [(MLCLayer *)self fusedLayers];
-      v77 = [v76 count];
+      fusedLayers9 = [(MLCLayer *)self fusedLayers];
+      v77 = [fusedLayers9 count];
     }
 
     while (v73 < v77);
@@ -504,86 +504,86 @@ LABEL_8:
   return v19;
 }
 
-- (BOOL)allocateDataForOptimizer:(id)a3
+- (BOOL)allocateDataForOptimizer:(id)optimizer
 {
-  v4 = a3;
-  v5 = [(MLCFullyConnectedLayer *)self weightsParameter];
-  v6 = [(MLCLayer *)self device];
-  [v5 allocateDataForOptimizer:v4 device:v6 isVector:1];
+  optimizerCopy = optimizer;
+  weightsParameter = [(MLCFullyConnectedLayer *)self weightsParameter];
+  device = [(MLCLayer *)self device];
+  [weightsParameter allocateDataForOptimizer:optimizerCopy device:device isVector:1];
 
-  v7 = [(MLCFullyConnectedLayer *)self biases];
+  biases = [(MLCFullyConnectedLayer *)self biases];
 
-  if (v7)
+  if (biases)
   {
-    v8 = [(MLCFullyConnectedLayer *)self biasesParameter];
-    v9 = [(MLCLayer *)self device];
-    [v8 allocateDataForOptimizer:v4 device:v9 isVector:1];
+    biasesParameter = [(MLCFullyConnectedLayer *)self biasesParameter];
+    device2 = [(MLCLayer *)self device];
+    [biasesParameter allocateDataForOptimizer:optimizerCopy device:device2 isVector:1];
   }
 
-  v10 = [(MLCLayer *)self device];
-  v11 = [v10 computeEngine];
-  v12 = [(MLCLayer *)self deviceOps];
-  v13 = [(MLCFullyConnectedLayer *)self weights];
-  v14 = [(MLCFullyConnectedLayer *)self biases];
-  [v11 setConvolutionLayerOptimizerDataForDeviceOps:v12 weights:v13 bias:v14];
+  device3 = [(MLCLayer *)self device];
+  computeEngine = [device3 computeEngine];
+  deviceOps = [(MLCLayer *)self deviceOps];
+  weights = [(MLCFullyConnectedLayer *)self weights];
+  biases2 = [(MLCFullyConnectedLayer *)self biases];
+  [computeEngine setConvolutionLayerOptimizerDataForDeviceOps:deviceOps weights:weights bias:biases2];
 
   return 1;
 }
 
-- (unint64_t)allocatedDataSizeForTraining:(BOOL)a3 optimizer:(id)a4
+- (unint64_t)allocatedDataSizeForTraining:(BOOL)training optimizer:(id)optimizer
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MLCFullyConnectedLayer *)self weights];
-  v8 = [v7 descriptor];
-  v9 = [v8 tensorAllocationSizeInBytes];
-  v10 = [(MLCFullyConnectedLayer *)self biases];
-  v11 = [v10 descriptor];
-  v12 = [v11 tensorAllocationSizeInBytes] + v9;
+  trainingCopy = training;
+  optimizerCopy = optimizer;
+  weights = [(MLCFullyConnectedLayer *)self weights];
+  descriptor = [weights descriptor];
+  tensorAllocationSizeInBytes = [descriptor tensorAllocationSizeInBytes];
+  biases = [(MLCFullyConnectedLayer *)self biases];
+  descriptor2 = [biases descriptor];
+  v12 = [descriptor2 tensorAllocationSizeInBytes] + tensorAllocationSizeInBytes;
 
-  if (v4)
+  if (trainingCopy)
   {
-    v12 *= [v6 numOptimizerDataBuffers] + 2;
+    v12 *= [optimizerCopy numOptimizerDataBuffers] + 2;
   }
 
   return v12;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 descriptor];
-  v7 = [v6 shape];
-  v8 = [v7 mutableCopy];
+  sourcesCopy = sources;
+  v5 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor = [v5 descriptor];
+  shape = [descriptor shape];
+  v8 = [shape mutableCopy];
 
-  v9 = [v4 objectAtIndexedSubscript:0];
-  v10 = [v9 descriptor];
-  v11 = [v10 shape];
-  v12 = [v11 count];
+  v9 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v9 descriptor];
+  shape2 = [descriptor2 shape];
+  v12 = [shape2 count];
 
   if (v12 == 4)
   {
-    v13 = [v4 objectAtIndexedSubscript:0];
-    v14 = [v13 descriptor];
-    v15 = [v14 shape];
-    v16 = [v15 objectAtIndexedSubscript:3];
+    v13 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor3 = [v13 descriptor];
+    shape3 = [descriptor3 shape];
+    v16 = [shape3 objectAtIndexedSubscript:3];
     if ([v16 unsignedIntegerValue] == 1)
     {
-      v17 = [v4 objectAtIndexedSubscript:0];
-      v18 = [v17 descriptor];
-      [v18 shape];
+      v17 = [sourcesCopy objectAtIndexedSubscript:0];
+      descriptor4 = [v17 descriptor];
+      [descriptor4 shape];
       v19 = v36 = self;
       [v19 objectAtIndexedSubscript:2];
       v20 = v35 = v13;
-      v34 = [v20 unsignedIntegerValue];
+      unsignedIntegerValue = [v20 unsignedIntegerValue];
 
       self = v36;
-      if (v34 == 1)
+      if (unsignedIntegerValue == 1)
       {
         v21 = MEMORY[0x277CCABB0];
-        v22 = [(MLCFullyConnectedLayer *)v36 descriptor];
-        v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(v22, "outputFeatureChannelCount")}];
+        descriptor5 = [(MLCFullyConnectedLayer *)v36 descriptor];
+        v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(descriptor5, "outputFeatureChannelCount")}];
         v24 = v8;
         v25 = v23;
         v26 = 1;
@@ -597,8 +597,8 @@ LABEL_8:
   }
 
   v27 = MEMORY[0x277CCABB0];
-  v22 = [(MLCFullyConnectedLayer *)self descriptor];
-  v23 = [v27 numberWithUnsignedInteger:{objc_msgSend(v22, "outputFeatureChannelCount")}];
+  descriptor5 = [(MLCFullyConnectedLayer *)self descriptor];
+  v23 = [v27 numberWithUnsignedInteger:{objc_msgSend(descriptor5, "outputFeatureChannelCount")}];
   v26 = v12 - 1;
   v24 = v8;
   v25 = v23;
@@ -606,9 +606,9 @@ LABEL_7:
   [v24 setObject:v25 atIndexedSubscript:v26];
 
   v28 = [v8 copy];
-  v29 = [v4 objectAtIndexedSubscript:0];
-  v30 = [v29 descriptor];
-  v31 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v28, [v30 dataType]);
+  v29 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor6 = [v29 descriptor];
+  v31 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v28, [descriptor6 dataType]);
 
   v32 = [MLCTensor tensorWithDescriptor:v31];
 
@@ -620,13 +620,13 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCFullyConnectedLayer *)self accumulatorPrecisionOption];
-  v7 = [(MLCFullyConnectedLayer *)self weights];
-  v8 = [(MLCFullyConnectedLayer *)self biases];
-  v9 = [(MLCFullyConnectedLayer *)self descriptor];
-  v10 = [(MLCLayer *)self conditionalTreeNode];
-  v11 = [(MLCLayer *)self resultTensors];
-  v12 = [v3 stringWithFormat:@"%@: { accumulatorPrecisionOption=%d : weights=%@ : biasTerms=%@ : descriptor=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v6, v7, v8, v9, v10, v11];
+  accumulatorPrecisionOption = [(MLCFullyConnectedLayer *)self accumulatorPrecisionOption];
+  weights = [(MLCFullyConnectedLayer *)self weights];
+  biases = [(MLCFullyConnectedLayer *)self biases];
+  descriptor = [(MLCFullyConnectedLayer *)self descriptor];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v12 = [v3 stringWithFormat:@"%@: { accumulatorPrecisionOption=%d : weights=%@ : biasTerms=%@ : descriptor=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, accumulatorPrecisionOption, weights, biases, descriptor, conditionalTreeNode, resultTensors];
 
   return v12;
 }
@@ -636,59 +636,59 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
-  v7 = [(MLCFullyConnectedLayer *)self descriptor];
-  v8 = [v7 inputFeatureChannelCount];
-  v9 = [(MLCFullyConnectedLayer *)self descriptor];
-  v10 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Input Feature Channel Count: %lu<BR />Output Feature Channel Count: %lu<BR /></FONT>>", v5, v6, v8, objc_msgSend(v9, "outputFeatureChannelCount")];
+  layerID = [(MLCLayer *)self layerID];
+  descriptor = [(MLCFullyConnectedLayer *)self descriptor];
+  inputFeatureChannelCount = [descriptor inputFeatureChannelCount];
+  descriptor2 = [(MLCFullyConnectedLayer *)self descriptor];
+  v10 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Input Feature Channel Count: %lu<BR />Output Feature Channel Count: %lu<BR /></FONT>>", v5, layerID, inputFeatureChannelCount, objc_msgSend(descriptor2, "outputFeatureChannelCount")];
 
   return v10;
 }
 
 - (void)linkAssociatedTensors
 {
-  v3 = [(MLCFullyConnectedLayer *)self weights];
-  v4 = [v3 childLayers];
-  [v4 addObject:self];
+  weights = [(MLCFullyConnectedLayer *)self weights];
+  childLayers = [weights childLayers];
+  [childLayers addObject:self];
 
-  v5 = [(MLCFullyConnectedLayer *)self biases];
+  biases = [(MLCFullyConnectedLayer *)self biases];
 
-  if (v5)
+  if (biases)
   {
-    v7 = [(MLCFullyConnectedLayer *)self biases];
-    v6 = [v7 childLayers];
-    [v6 addObject:self];
+    biases2 = [(MLCFullyConnectedLayer *)self biases];
+    childLayers2 = [biases2 childLayers];
+    [childLayers2 addObject:self];
   }
 }
 
 - (void)unlinkAssociatedTensors
 {
-  v3 = [(MLCFullyConnectedLayer *)self weights];
-  v4 = [v3 childLayers];
-  [v4 removeObject:self];
+  weights = [(MLCFullyConnectedLayer *)self weights];
+  childLayers = [weights childLayers];
+  [childLayers removeObject:self];
 
-  v5 = [(MLCFullyConnectedLayer *)self biases];
+  biases = [(MLCFullyConnectedLayer *)self biases];
 
-  if (v5)
+  if (biases)
   {
-    v7 = [(MLCFullyConnectedLayer *)self biases];
-    v6 = [v7 childLayers];
-    [v6 removeObject:self];
+    biases2 = [(MLCFullyConnectedLayer *)self biases];
+    childLayers2 = [biases2 childLayers];
+    [childLayers2 removeObject:self];
   }
 }
 
-- (BOOL)isSupportedShapeForTensorSources:(id)a3
+- (BOOL)isSupportedShapeForTensorSources:(id)sources
 {
-  v3 = a3;
-  if ([v3 count])
+  sourcesCopy = sources;
+  if ([sourcesCopy count])
   {
     v4 = 0;
     do
     {
-      v5 = [v3 objectAtIndexedSubscript:v4];
-      v6 = [v5 descriptor];
-      v7 = [v6 shape];
-      v8 = [v7 count];
+      v5 = [sourcesCopy objectAtIndexedSubscript:v4];
+      descriptor = [v5 descriptor];
+      shape = [descriptor shape];
+      v8 = [shape count];
 
       v9 = v8 > 1;
       if (v8 <= 1)
@@ -699,7 +699,7 @@ LABEL_7:
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [sourcesCopy count]);
   }
 
   else
@@ -712,9 +712,9 @@ LABEL_7:
 
 - (unint64_t)parametersCount
 {
-  v2 = [(MLCFullyConnectedLayer *)self biasesParameter];
+  biasesParameter = [(MLCFullyConnectedLayer *)self biasesParameter];
 
-  if (v2)
+  if (biasesParameter)
   {
     return 2;
   }

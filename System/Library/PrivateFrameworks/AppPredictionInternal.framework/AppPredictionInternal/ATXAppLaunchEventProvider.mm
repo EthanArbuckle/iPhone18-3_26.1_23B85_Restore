@@ -1,23 +1,23 @@
 @interface ATXAppLaunchEventProvider
-- (BOOL)isEventFromProvider:(id)a3;
-- (id)aggregationEventsFromEvent:(id)a3;
-- (id)biomePublisherWithBookmark:(id)a3;
-- (id)dateIntervalFromEvent:(id)a3;
+- (BOOL)isEventFromProvider:(id)provider;
+- (id)aggregationEventsFromEvent:(id)event;
+- (id)biomePublisherWithBookmark:(id)bookmark;
+- (id)dateIntervalFromEvent:(id)event;
 - (id)eventsFromPublisher;
 @end
 
 @implementation ATXAppLaunchEventProvider
 
-- (id)biomePublisherWithBookmark:(id)a3
+- (id)biomePublisherWithBookmark:(id)bookmark
 {
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v5 + -2419200.0];
   v7 = BiomeLibrary();
   v8 = [v7 App];
-  v9 = [v8 InFocus];
+  inFocus = [v8 InFocus];
 
   v10 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v6 endDate:0 maxEvents:0 lastN:0 reversed:0];
-  v11 = [v9 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v10];
+  v11 = [inFocus publisherWithUseCase:*MEMORY[0x277CEBB48] options:v10];
   v12 = [v11 mapWithTransform:&__block_literal_global_163];
   if (!v12)
   {
@@ -77,26 +77,26 @@ void __48__ATXAppLaunchEventProvider_eventsFromPublisher__block_invoke_2(uint64_
   }
 }
 
-- (BOOL)isEventFromProvider:(id)a3
+- (BOOL)isEventFromProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && ([v3 isLocal] & 1) != 0;
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && ([providerCopy isLocal] & 1) != 0;
 
   return v4;
 }
 
-- (id)aggregationEventsFromEvent:(id)a3
+- (id)aggregationEventsFromEvent:(id)event
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(ATXAppLaunchEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXAppLaunchEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [v4 appLaunchEvent];
-    if ([v5 starting])
+    appLaunchEvent = [eventCopy appLaunchEvent];
+    if ([appLaunchEvent starting])
     {
-      v6 = [v5 bundleID];
-      v7 = [ATXSessionTaggingAppEntity genreIdForBundleId:v6];
+      bundleID = [appLaunchEvent bundleID];
+      v7 = [ATXSessionTaggingAppEntity genreIdForBundleId:bundleID];
       v8 = v7;
       v9 = &unk_283A56E28;
       if (v7)
@@ -107,15 +107,15 @@ void __48__ATXAppLaunchEventProvider_eventsFromPublisher__block_invoke_2(uint64_
       v10 = v9;
 
       v11 = objc_alloc(MEMORY[0x277CEB390]);
-      v12 = [v5 bundleID];
+      bundleID2 = [appLaunchEvent bundleID];
       v23[0] = v10;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-      v14 = [v11 initWithBundleId:v12 itunesGenreIds:v13];
+      v14 = [v11 initWithBundleId:bundleID2 itunesGenreIds:v13];
 
       v15 = [ATXModeEvent alloc];
-      v16 = [v5 absoluteTimestamp];
-      v17 = [v5 absoluteTimestamp];
-      v18 = [(ATXModeEvent *)v15 initWithStartDate:v16 endDate:v17 entity:v14];
+      absoluteTimestamp = [appLaunchEvent absoluteTimestamp];
+      absoluteTimestamp2 = [appLaunchEvent absoluteTimestamp];
+      v18 = [(ATXModeEvent *)v15 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2 entity:v14];
 
       v19 = objc_alloc(MEMORY[0x277CBEA60]);
       v20 = [v19 initWithObjects:{v18, 0}];
@@ -137,29 +137,29 @@ void __48__ATXAppLaunchEventProvider_eventsFromPublisher__block_invoke_2(uint64_
   return v20;
 }
 
-- (id)dateIntervalFromEvent:(id)a3
+- (id)dateIntervalFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXAppLaunchEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXAppLaunchEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = v4;
-    v6 = [v5 launchTimestamp];
+    v5 = eventCopy;
+    launchTimestamp = [v5 launchTimestamp];
 
-    if (v6)
+    if (launchTimestamp)
     {
       v7 = objc_alloc(MEMORY[0x277CCA970]);
-      v8 = [v5 launchTimestamp];
-      v9 = [v5 launchTimestamp];
-      v6 = [v7 initWithStartDate:v8 endDate:v9];
+      launchTimestamp2 = [v5 launchTimestamp];
+      launchTimestamp3 = [v5 launchTimestamp];
+      launchTimestamp = [v7 initWithStartDate:launchTimestamp2 endDate:launchTimestamp3];
     }
   }
 
   else
   {
-    v6 = 0;
+    launchTimestamp = 0;
   }
 
-  return v6;
+  return launchTimestamp;
 }
 
 - (void)biomePublisherWithBookmark:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

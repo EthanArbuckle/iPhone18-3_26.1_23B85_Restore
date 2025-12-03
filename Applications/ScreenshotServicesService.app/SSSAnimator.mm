@@ -1,50 +1,50 @@
 @interface SSSAnimator
-+ (id)animatorWithDragAnimating:(id)a3;
-+ (id)animatorWithPropertyAnimator:(id)a3;
++ (id)animatorWithDragAnimating:(id)animating;
++ (id)animatorWithPropertyAnimator:(id)animator;
 - (UIDragAnimating)dragAnimating;
 - (UIViewPropertyAnimator)propertyAnimator;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 @end
 
 @implementation SSSAnimator
 
-+ (id)animatorWithPropertyAnimator:(id)a3
++ (id)animatorWithPropertyAnimator:(id)animator
 {
-  v3 = a3;
+  animatorCopy = animator;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setPropertyAnimator:v3];
+  [v4 setPropertyAnimator:animatorCopy];
 
   return v4;
 }
 
-+ (id)animatorWithDragAnimating:(id)a3
++ (id)animatorWithDragAnimating:(id)animating
 {
-  v3 = a3;
+  animatingCopy = animating;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setDragAnimating:v3];
+  [v4 setDragAnimating:animatingCopy];
 
   return v4;
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
-  v4 = a3;
-  v5 = [(SSSAnimator *)self propertyAnimator];
-  [v5 addAnimations:v4];
+  animationsCopy = animations;
+  propertyAnimator = [(SSSAnimator *)self propertyAnimator];
+  [propertyAnimator addAnimations:animationsCopy];
 
-  v6 = [(SSSAnimator *)self dragAnimating];
-  [v6 addAnimations:v4];
+  dragAnimating = [(SSSAnimator *)self dragAnimating];
+  [dragAnimating addAnimations:animationsCopy];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SSSAnimator *)self propertyAnimator];
-  [v5 addCompletion:v4];
+  completionCopy = completion;
+  propertyAnimator = [(SSSAnimator *)self propertyAnimator];
+  [propertyAnimator addCompletion:completionCopy];
 
-  v6 = [(SSSAnimator *)self dragAnimating];
-  [v6 addCompletion:v4];
+  dragAnimating = [(SSSAnimator *)self dragAnimating];
+  [dragAnimating addCompletion:completionCopy];
 }
 
 - (UIViewPropertyAnimator)propertyAnimator

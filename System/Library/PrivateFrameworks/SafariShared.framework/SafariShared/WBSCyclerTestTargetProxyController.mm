@@ -1,20 +1,20 @@
 @interface WBSCyclerTestTargetProxyController
-- (WBSCyclerTestTargetProxyController)initWithEndpoint:(id)a3;
+- (WBSCyclerTestTargetProxyController)initWithEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)setDisconnectionHandler:(id)a3;
+- (void)setDisconnectionHandler:(id)handler;
 @end
 
 @implementation WBSCyclerTestTargetProxyController
 
-- (WBSCyclerTestTargetProxyController)initWithEndpoint:(id)a3
+- (WBSCyclerTestTargetProxyController)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = WBSCyclerTestTargetProxyController;
   v5 = [(WBSCyclerTestTargetProxyController *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     xpcConnection = v5->_xpcConnection;
     v5->_xpcConnection = v6;
 
@@ -37,12 +37,12 @@
   [(WBSCyclerTestTargetProxyController *)&v3 dealloc];
 }
 
-- (void)setDisconnectionHandler:(id)a3
+- (void)setDisconnectionHandler:(id)handler
 {
   xpcConnection = self->_xpcConnection;
-  v5 = a3;
-  [(NSXPCConnection *)xpcConnection setInterruptionHandler:v5];
-  [(NSXPCConnection *)self->_xpcConnection setInvalidationHandler:v5];
+  handlerCopy = handler;
+  [(NSXPCConnection *)xpcConnection setInterruptionHandler:handlerCopy];
+  [(NSXPCConnection *)self->_xpcConnection setInvalidationHandler:handlerCopy];
 }
 
 @end

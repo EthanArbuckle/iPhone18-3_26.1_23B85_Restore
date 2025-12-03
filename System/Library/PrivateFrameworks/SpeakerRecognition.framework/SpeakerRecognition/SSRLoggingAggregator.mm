@@ -1,20 +1,20 @@
 @interface SSRLoggingAggregator
-- (SSRLoggingAggregator)initWithEvent:(id)a3 locale:(id)a4 configVersion:(id)a5;
-- (void)appendVoiceProfileDiscardedImplicitUtteranceScoreWith:(float)a3;
-- (void)appendVoiceProfileExplicitUtteranceScoreWith:(float)a3;
-- (void)appendVoiceProfileFailedExplicitUtteranceScoreWith:(float)a3;
-- (void)appendVoiceProfileImplicitUtteranceScoreWith:(float)a3;
+- (SSRLoggingAggregator)initWithEvent:(id)event locale:(id)locale configVersion:(id)version;
+- (void)appendVoiceProfileDiscardedImplicitUtteranceScoreWith:(float)with;
+- (void)appendVoiceProfileExplicitUtteranceScoreWith:(float)with;
+- (void)appendVoiceProfileFailedExplicitUtteranceScoreWith:(float)with;
+- (void)appendVoiceProfileImplicitUtteranceScoreWith:(float)with;
 - (void)pushAnalytics;
-- (void)pushAnalyticsWithLazyBlock:(id)a3;
-- (void)setRetrainingWaitTime:(double)a3;
-- (void)setSpeakerRecognitionProcessingStatus:(unint64_t)a3;
-- (void)setSpeakerRecognitionWaitTime:(double)a3;
-- (void)setVoiceProfileDiscardedUtteranceCount:(unint64_t)a3;
-- (void)setVoiceProfilePruningFailureReasonCode:(unint64_t)a3;
-- (void)setVoiceProfileRetainedUtteranceCount:(unint64_t)a3;
-- (void)setVoiceProfileRetrainingFailureReasonCode:(unint64_t)a3;
-- (void)setVoiceProfileUpdateScoreMSE:(float)a3;
-- (void)setvoiceProfilePrunedUtteranceCount:(unint64_t)a3;
+- (void)pushAnalyticsWithLazyBlock:(id)block;
+- (void)setRetrainingWaitTime:(double)time;
+- (void)setSpeakerRecognitionProcessingStatus:(unint64_t)status;
+- (void)setSpeakerRecognitionWaitTime:(double)time;
+- (void)setVoiceProfileDiscardedUtteranceCount:(unint64_t)count;
+- (void)setVoiceProfilePruningFailureReasonCode:(unint64_t)code;
+- (void)setVoiceProfileRetainedUtteranceCount:(unint64_t)count;
+- (void)setVoiceProfileRetrainingFailureReasonCode:(unint64_t)code;
+- (void)setVoiceProfileUpdateScoreMSE:(float)e;
+- (void)setvoiceProfilePrunedUtteranceCount:(unint64_t)count;
 @end
 
 @implementation SSRLoggingAggregator
@@ -39,120 +39,120 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSpeakerRecognitionWaitTime:(double)a3
+- (void)setSpeakerRecognitionWaitTime:(double)time
 {
-  self->_speakerRecognitionWaitTime = a3;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:(a3 * 1000.0)];
+  self->_speakerRecognitionWaitTime = time;
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:(time * 1000.0)];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"speakerRecognitionWaitTimeMs"];
 }
 
-- (void)setSpeakerRecognitionProcessingStatus:(unint64_t)a3
+- (void)setSpeakerRecognitionProcessingStatus:(unint64_t)status
 {
-  self->_speakerRecognitionProcessingStatus = a3;
+  self->_speakerRecognitionProcessingStatus = status;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"speakerRecognitionProcessingStatus"];
 }
 
-- (void)setRetrainingWaitTime:(double)a3
+- (void)setRetrainingWaitTime:(double)time
 {
-  self->_retrainingWaitTime = a3;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:(a3 * 1000.0)];
+  self->_retrainingWaitTime = time;
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:(time * 1000.0)];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"retrainingWaitTimeMs"];
 }
 
-- (void)setVoiceProfileRetrainingFailureReasonCode:(unint64_t)a3
+- (void)setVoiceProfileRetrainingFailureReasonCode:(unint64_t)code
 {
-  self->_voiceProfileRetrainingFailureReasonCode = a3;
+  self->_voiceProfileRetrainingFailureReasonCode = code;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"TdPsrSATRetrainingTimedOut"];
 }
 
-- (void)appendVoiceProfileFailedExplicitUtteranceScoreWith:(float)a3
+- (void)appendVoiceProfileFailedExplicitUtteranceScoreWith:(float)with
 {
   v5 = MEMORY[0x277CCACA8];
   explicitFailedUtteranceIndex = self->explicitFailedUtteranceIndex;
   self->explicitFailedUtteranceIndex = explicitFailedUtteranceIndex + 1;
-  v9 = [v5 stringWithFormat:@"%@.%d", @"profileUpdateFailedExplicitUttScore", explicitFailedUtteranceIndex];
-  *&v7 = a3;
+  explicitFailedUtteranceIndex = [v5 stringWithFormat:@"%@.%d", @"profileUpdateFailedExplicitUttScore", explicitFailedUtteranceIndex];
+  *&v7 = with;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
-  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:explicitFailedUtteranceIndex];
 }
 
-- (void)appendVoiceProfileDiscardedImplicitUtteranceScoreWith:(float)a3
+- (void)appendVoiceProfileDiscardedImplicitUtteranceScoreWith:(float)with
 {
   v5 = MEMORY[0x277CCACA8];
   implicitDiscardedUtteranceIndex = self->implicitDiscardedUtteranceIndex;
   self->implicitDiscardedUtteranceIndex = implicitDiscardedUtteranceIndex + 1;
-  v9 = [v5 stringWithFormat:@"%@.%d", @"profileUpdateDiscardImplicitUttScore", implicitDiscardedUtteranceIndex];
-  *&v7 = a3;
+  implicitDiscardedUtteranceIndex = [v5 stringWithFormat:@"%@.%d", @"profileUpdateDiscardImplicitUttScore", implicitDiscardedUtteranceIndex];
+  *&v7 = with;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
-  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:implicitDiscardedUtteranceIndex];
 }
 
-- (void)appendVoiceProfileImplicitUtteranceScoreWith:(float)a3
+- (void)appendVoiceProfileImplicitUtteranceScoreWith:(float)with
 {
   v5 = MEMORY[0x277CCACA8];
   implicitUtteranceIndex = self->implicitUtteranceIndex;
   self->implicitUtteranceIndex = implicitUtteranceIndex + 1;
-  v9 = [v5 stringWithFormat:@"%@.%d", @"profileUpdateImplicitUttScore", implicitUtteranceIndex];
-  *&v7 = a3;
+  implicitUtteranceIndex = [v5 stringWithFormat:@"%@.%d", @"profileUpdateImplicitUttScore", implicitUtteranceIndex];
+  *&v7 = with;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
-  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:implicitUtteranceIndex];
 }
 
-- (void)appendVoiceProfileExplicitUtteranceScoreWith:(float)a3
+- (void)appendVoiceProfileExplicitUtteranceScoreWith:(float)with
 {
   v5 = MEMORY[0x277CCACA8];
   explicitUtteranceIndex = self->explicitUtteranceIndex;
   self->explicitUtteranceIndex = explicitUtteranceIndex + 1;
-  v9 = [v5 stringWithFormat:@"%@.%d", @"profileUpdateExplicitUttScore", explicitUtteranceIndex];
-  *&v7 = a3;
+  explicitUtteranceIndex = [v5 stringWithFormat:@"%@.%d", @"profileUpdateExplicitUttScore", explicitUtteranceIndex];
+  *&v7 = with;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
-  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_eventContext setObject:v8 forKeyedSubscript:explicitUtteranceIndex];
 }
 
-- (void)setVoiceProfileRetainedUtteranceCount:(unint64_t)a3
+- (void)setVoiceProfileRetainedUtteranceCount:(unint64_t)count
 {
-  self->_voiceProfileRetainedUtteranceCount = a3;
+  self->_voiceProfileRetainedUtteranceCount = count;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"profileUpdateNumRetainedUttsPHS"];
 }
 
-- (void)setvoiceProfilePrunedUtteranceCount:(unint64_t)a3
+- (void)setvoiceProfilePrunedUtteranceCount:(unint64_t)count
 {
-  self->_voiceProfilePrunedUtteranceCount = a3;
+  self->_voiceProfilePrunedUtteranceCount = count;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"profileUpdateNumPrunedUttsPHS"];
 }
 
-- (void)setVoiceProfileDiscardedUtteranceCount:(unint64_t)a3
+- (void)setVoiceProfileDiscardedUtteranceCount:(unint64_t)count
 {
-  self->_voiceProfileDiscardedUtteranceCount = a3;
+  self->_voiceProfileDiscardedUtteranceCount = count;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"profileUpdateNumDiscardedUttsPHS"];
 }
 
-- (void)setVoiceProfileUpdateScoreMSE:(float)a3
+- (void)setVoiceProfileUpdateScoreMSE:(float)e
 {
-  self->_voiceProfileUpdateScoreMSE = a3;
+  self->_voiceProfileUpdateScoreMSE = e;
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"profileUpdateScoreMSE"];
 }
 
-- (void)setVoiceProfilePruningFailureReasonCode:(unint64_t)a3
+- (void)setVoiceProfilePruningFailureReasonCode:(unint64_t)code
 {
-  self->_voiceProfilePruningFailureReasonCode = a3;
+  self->_voiceProfilePruningFailureReasonCode = code;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   [(NSMutableDictionary *)self->_eventContext setObject:v4 forKeyedSubscript:@"profileUpdateFailCode"];
 }
 
-- (void)pushAnalyticsWithLazyBlock:(id)a3
+- (void)pushAnalyticsWithLazyBlock:(id)block
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  blockCopy = block;
+  v4 = blockCopy;
+  if (blockCopy)
   {
-    v5 = v3;
+    v5 = blockCopy;
     AnalyticsSendEventLazy();
   }
 }
@@ -165,23 +165,23 @@ id __51__SSRLoggingAggregator_pushAnalyticsWithLazyBlock___block_invoke(uint64_t
   return v2;
 }
 
-- (SSRLoggingAggregator)initWithEvent:(id)a3 locale:(id)a4 configVersion:(id)a5
+- (SSRLoggingAggregator)initWithEvent:(id)event locale:(id)locale configVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  localeCopy = locale;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = SSRLoggingAggregator;
   v11 = [(SSRLoggingAggregator *)&v19 init];
   if (v11)
   {
-    v12 = [@"com.apple.ssr" stringByAppendingFormat:@".%@", v8];
+    eventCopy = [@"com.apple.ssr" stringByAppendingFormat:@".%@", eventCopy];
     eventString = v11->_eventString;
-    v11->_eventString = v12;
+    v11->_eventString = eventCopy;
 
-    if (v9)
+    if (localeCopy)
     {
-      v14 = v9;
+      v14 = localeCopy;
     }
 
     else
@@ -190,9 +190,9 @@ id __51__SSRLoggingAggregator_pushAnalyticsWithLazyBlock___block_invoke(uint64_t
     }
 
     [(NSMutableDictionary *)v11->_eventContext setObject:v14 forKeyedSubscript:@"locale"];
-    if (v10)
+    if (versionCopy)
     {
-      v15 = v10;
+      v15 = versionCopy;
     }
 
     else

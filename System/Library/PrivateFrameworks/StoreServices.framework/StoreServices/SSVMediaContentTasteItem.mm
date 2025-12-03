@@ -1,40 +1,40 @@
 @interface SSVMediaContentTasteItem
 - (NSString)description;
-- (SSVMediaContentTasteItem)initWithCoder:(id)a3;
-- (SSVMediaContentTasteItem)initWithXPCEncoding:(id)a3;
-- (id)_copyWithMediaContentTasteItemClass:(Class)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SSVMediaContentTasteItem)initWithCoder:(id)coder;
+- (SSVMediaContentTasteItem)initWithXPCEncoding:(id)encoding;
+- (id)_copyWithMediaContentTasteItemClass:(Class)class;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSVMediaContentTasteItem
 
-- (SSVMediaContentTasteItem)initWithCoder:(id)a3
+- (SSVMediaContentTasteItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSVMediaContentTasteItem *)self init];
   if (v5)
   {
-    v5->_contentType = [v4 decodeIntegerForKey:@"SSVMediaContentTasteItemContentType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSVMediaContentTasteItemPlaylistGlobalID"];
+    v5->_contentType = [coderCopy decodeIntegerForKey:@"SSVMediaContentTasteItemContentType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSVMediaContentTasteItemPlaylistGlobalID"];
     playlistGlobalID = v5->_playlistGlobalID;
     v5->_playlistGlobalID = v6;
 
-    v5->_storeAdamID = [v4 decodeInt64ForKey:@"SSVMediaContentTasteItemStoreAdamID"];
-    v5->_tasteType = [v4 decodeIntegerForKey:@"SSVMediaContentTasteItemTasteType"];
+    v5->_storeAdamID = [coderCopy decodeInt64ForKey:@"SSVMediaContentTasteItemStoreAdamID"];
+    v5->_tasteType = [coderCopy decodeIntegerForKey:@"SSVMediaContentTasteItemTasteType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contentType = self->_contentType;
-  v5 = a3;
-  [v5 encodeInteger:contentType forKey:@"SSVMediaContentTasteItemContentType"];
-  [v5 encodeObject:self->_playlistGlobalID forKey:@"SSVMediaContentTasteItemPlaylistGlobalID"];
-  [v5 encodeInt64:self->_storeAdamID forKey:@"SSVMediaContentTasteItemStoreAdamID"];
-  [v5 encodeInteger:self->_tasteType forKey:@"SSVMediaContentTasteItemTasteType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:contentType forKey:@"SSVMediaContentTasteItemContentType"];
+  [coderCopy encodeObject:self->_playlistGlobalID forKey:@"SSVMediaContentTasteItemPlaylistGlobalID"];
+  [coderCopy encodeInt64:self->_storeAdamID forKey:@"SSVMediaContentTasteItemStoreAdamID"];
+  [coderCopy encodeInteger:self->_tasteType forKey:@"SSVMediaContentTasteItemTasteType"];
 }
 
 - (NSString)description
@@ -71,26 +71,26 @@
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SSVMediaContentTasteItem *)self _copyWithMediaContentTasteItemClass:v4];
 }
 
-- (SSVMediaContentTasteItem)initWithXPCEncoding:(id)a3
+- (SSVMediaContentTasteItem)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
+  encodingCopy = encoding;
   v5 = objc_opt_class();
-  NSSecureCodingObjectForXPCObject = SSCodingCreateNSSecureCodingObjectForXPCObject(v4, v5);
+  NSSecureCodingObjectForXPCObject = SSCodingCreateNSSecureCodingObjectForXPCObject(encodingCopy, v5);
 
   v7 = NSSecureCodingObjectForXPCObject;
   return v7;
 }
 
-- (id)_copyWithMediaContentTasteItemClass:(Class)a3
+- (id)_copyWithMediaContentTasteItemClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {

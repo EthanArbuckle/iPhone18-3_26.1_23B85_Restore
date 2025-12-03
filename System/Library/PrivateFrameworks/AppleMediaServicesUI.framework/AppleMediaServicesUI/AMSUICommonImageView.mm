@@ -1,15 +1,15 @@
 @interface AMSUICommonImageView
-- (AMSUICommonImageView)initWithCoder:(id)a3;
-- (AMSUICommonImageView)initWithFrame:(CGRect)a3;
+- (AMSUICommonImageView)initWithCoder:(id)coder;
+- (AMSUICommonImageView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AMSUICommonImageView
 
-- (AMSUICommonImageView)initWithCoder:(id)a3
+- (AMSUICommonImageView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AMSUICommonImageView;
-  v3 = [(AMSUICommonImageView *)&v6 initWithCoder:a3];
+  v3 = [(AMSUICommonImageView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (AMSUICommonImageView)initWithFrame:(CGRect)a3
+- (AMSUICommonImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AMSUICommonImageView;
-  v3 = [(AMSUICommonImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMSUICommonImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

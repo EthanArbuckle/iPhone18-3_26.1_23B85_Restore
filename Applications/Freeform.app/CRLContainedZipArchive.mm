@@ -1,16 +1,16 @@
 @interface CRLContainedZipArchive
-+ (id)zipArchiveFromEntry:(id)a3 zipArchive:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (CRLContainedZipArchive)initWithEntry:(id)a3 zipArchive:(id)a4 options:(unint64_t)a5;
-- (id)readChannelForEntry:(id)a3 validateCRC:(BOOL)a4;
-- (id)streamReadChannelForEntry:(id)a3 validateCRC:(BOOL)a4;
++ (id)zipArchiveFromEntry:(id)entry zipArchive:(id)archive options:(unint64_t)options error:(id *)error;
+- (CRLContainedZipArchive)initWithEntry:(id)entry zipArchive:(id)archive options:(unint64_t)options;
+- (id)readChannelForEntry:(id)entry validateCRC:(BOOL)c;
+- (id)streamReadChannelForEntry:(id)entry validateCRC:(BOOL)c;
 @end
 
 @implementation CRLContainedZipArchive
 
-+ (id)zipArchiveFromEntry:(id)a3 zipArchive:(id)a4 options:(unint64_t)a5 error:(id *)a6
++ (id)zipArchiveFromEntry:(id)entry zipArchive:(id)archive options:(unint64_t)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  entryCopy = entry;
+  archiveCopy = archive;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -23,7 +23,7 @@
   v27 = sub_1004EB42C;
   v28 = sub_1004EB43C;
   v29 = 0;
-  v12 = [[a1 alloc] initWithEntry:v10 zipArchive:v11 options:a5];
+  v12 = [[self alloc] initWithEntry:entryCopy zipArchive:archiveCopy options:options];
   if (v12)
   {
     v13 = dispatch_semaphore_create(0);
@@ -40,18 +40,18 @@
     dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  if (a6 && !v31[5])
+  if (error && !v31[5])
   {
     v16 = v25[5];
     if (v16)
     {
-      *a6 = v16;
+      *error = v16;
     }
 
     else
     {
       v17 = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -63,45 +63,45 @@
   return v18;
 }
 
-- (CRLContainedZipArchive)initWithEntry:(id)a3 zipArchive:(id)a4 options:(unint64_t)a5
+- (CRLContainedZipArchive)initWithEntry:(id)entry zipArchive:(id)archive options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  v12 = 0;
-  if (v9 && v10)
+  entryCopy = entry;
+  archiveCopy = archive;
+  v11 = archiveCopy;
+  selfCopy = 0;
+  if (entryCopy && archiveCopy)
   {
     v16.receiver = self;
     v16.super_class = CRLContainedZipArchive;
-    v13 = [(CRLZipArchive *)&v16 initWithOptions:a5];
+    v13 = [(CRLZipArchive *)&v16 initWithOptions:options];
     p_isa = &v13->super.super.isa;
     if (v13)
     {
-      objc_storeStrong(&v13->_zipArchive, a4);
-      objc_storeStrong(p_isa + 6, a3);
+      objc_storeStrong(&v13->_zipArchive, archive);
+      objc_storeStrong(p_isa + 6, entry);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)readChannelForEntry:(id)a3 validateCRC:(BOOL)a4
+- (id)readChannelForEntry:(id)entry validateCRC:(BOOL)c
 {
   v6.receiver = self;
   v6.super_class = CRLContainedZipArchive;
-  v4 = [(CRLZipArchive *)&v6 readChannelForEntry:a3 validateCRC:0];
+  v4 = [(CRLZipArchive *)&v6 readChannelForEntry:entry validateCRC:0];
 
   return v4;
 }
 
-- (id)streamReadChannelForEntry:(id)a3 validateCRC:(BOOL)a4
+- (id)streamReadChannelForEntry:(id)entry validateCRC:(BOOL)c
 {
   v6.receiver = self;
   v6.super_class = CRLContainedZipArchive;
-  v4 = [(CRLZipArchive *)&v6 streamReadChannelForEntry:a3 validateCRC:0];
+  v4 = [(CRLZipArchive *)&v6 streamReadChannelForEntry:entry validateCRC:0];
 
   return v4;
 }

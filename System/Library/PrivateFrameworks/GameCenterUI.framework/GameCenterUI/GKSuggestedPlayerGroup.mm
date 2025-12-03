@@ -1,6 +1,6 @@
 @interface GKSuggestedPlayerGroup
 - (NSArray)players;
-- (void)setPlayers:(id)a3;
+- (void)setPlayers:(id)players;
 @end
 
 @implementation GKSuggestedPlayerGroup
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)setPlayers:(id)a3
+- (void)setPlayers:(id)players
 {
   sub_24DF95978();
   v4 = sub_24E347F08();
-  v5 = self;
+  selfCopy = self;
   sub_24E331ABC(v4);
 }
 

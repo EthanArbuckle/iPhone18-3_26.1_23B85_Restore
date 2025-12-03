@@ -1,14 +1,14 @@
 @interface PUQuickCropContext
-- (CGImage)_croppedCGImageForTransition:(CGImage *)a3;
+- (CGImage)_croppedCGImageForTransition:(CGImage *)transition;
 - (CGRect)_normalizedCropRectForTransition;
 - (CGRect)cropRectRelativeToRenderedImage;
 - (CGSize)aspectRatio;
 - (CGSize)renderedImageSize;
 - (CGSize)selectedAspectRatio;
-- (PUQuickCropContext)initWithTileTransform:(id)a3 renderedImageSize:(CGSize)a4 boundingSize:(CGSize)a5 selectedAspectRatio:(CGSize)a6;
-- (id)_croppedSnapshotViewForTransition:(id)a3;
-- (id)applyCropToAssetTransitionInfo:(id)a3;
-- (void)applyCropRectToCompositionController:(id)a3;
+- (PUQuickCropContext)initWithTileTransform:(id)transform renderedImageSize:(CGSize)size boundingSize:(CGSize)boundingSize selectedAspectRatio:(CGSize)ratio;
+- (id)_croppedSnapshotViewForTransition:(id)transition;
+- (id)applyCropToAssetTransitionInfo:(id)info;
+- (void)applyCropRectToCompositionController:(id)controller;
 @end
 
 @implementation PUQuickCropContext
@@ -53,40 +53,40 @@
   return result;
 }
 
-- (id)_croppedSnapshotViewForTransition:(id)a3
+- (id)_croppedSnapshotViewForTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   [(PUQuickCropContext *)self _normalizedCropRectForTransition];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 bounds];
-  v17 = [v4 resizableSnapshotViewFromRect:1 afterScreenUpdates:v13 + v6 * v14 withCapInsets:{v15 + v8 * v16, v10 * v14, v12 * v16, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  [transitionCopy bounds];
+  v17 = [transitionCopy resizableSnapshotViewFromRect:1 afterScreenUpdates:v13 + v6 * v14 withCapInsets:{v15 + v8 * v16, v10 * v14, v12 * v16, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   return v17;
 }
 
-- (CGImage)_croppedCGImageForTransition:(CGImage *)a3
+- (CGImage)_croppedCGImageForTransition:(CGImage *)transition
 {
   [(PUQuickCropContext *)self _normalizedCropRectForTransition];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(transition);
+  Height = CGImageGetHeight(transition);
   v14 = v5 * Width + 0.0;
   v15 = v7 * Height + 0.0;
   v16 = v11 * Height;
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(transition);
   if (CGColorSpaceUsesITUR_2100TF(ColorSpace))
   {
-    v18 = [MEMORY[0x1E695F658] imageWithCGImage:a3];
+    v18 = [MEMORY[0x1E695F658] imageWithCGImage:transition];
     [v18 extent];
     v21 = v19 + v20 - (v15 + v16);
-    v22 = [MEMORY[0x1E695F620] context];
-    v23 = [v22 createCGImage:v18 fromRect:*MEMORY[0x1E695F8F8] format:ColorSpace colorSpace:1 deferred:{v14, v21, v9 * Width, v16}];
+    context = [MEMORY[0x1E695F620] context];
+    v23 = [context createCGImage:v18 fromRect:*MEMORY[0x1E695F8F8] format:ColorSpace colorSpace:1 deferred:{v14, v21, v9 * Width, v16}];
 
     return v23;
   }
@@ -98,7 +98,7 @@
     v28 = v16;
 
     v27 = v9 * Width;
-    return CGImageCreateWithImageInRect(a3, *&v25);
+    return CGImageCreateWithImageInRect(transition, *&v25);
   }
 }
 
@@ -146,9 +146,9 @@
   return result;
 }
 
-- (void)applyCropRectToCompositionController:(id)a3
+- (void)applyCropRectToCompositionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(PUQuickCropContext *)self cropRectRelativeToRenderedImage];
   x = v31.origin.x;
   y = v31.origin.y;
@@ -156,8 +156,8 @@
   height = v31.size.height;
   if (!CGRectIsNull(v31))
   {
-    v9 = [v4 orientationAdjustmentController];
-    [v9 orientation];
+    orientationAdjustmentController = [controllerCopy orientationAdjustmentController];
+    [orientationAdjustmentController orientation];
 
     NUOrientationInverse();
     if (NUOrientationIsValid())
@@ -171,8 +171,8 @@
       height = v13;
     }
 
-    v14 = [v4 cropAdjustmentController];
-    [v14 cropRect];
+    cropAdjustmentController = [controllerCopy cropAdjustmentController];
+    [cropAdjustmentController cropRect];
     v16 = v15;
     v18 = v17;
 
@@ -188,7 +188,7 @@
     [(PUQuickCropContext *)self aspectRatio];
     v24 = v23;
     v26 = v25;
-    v27 = [(PUQuickCropContext *)self lockAspectRatio];
+    lockAspectRatio = [(PUQuickCropContext *)self lockAspectRatio];
     v28 = *MEMORY[0x1E69BDFC0];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -198,10 +198,10 @@
     *&v29[5] = v20;
     *&v29[6] = v21;
     *&v29[7] = v22;
-    v30 = v27;
+    v30 = lockAspectRatio;
     v29[8] = v24;
     v29[9] = v26;
-    [v4 modifyAdjustmentWithKey:v28 modificationBlock:v29];
+    [controllerCopy modifyAdjustmentWithKey:v28 modificationBlock:v29];
   }
 }
 
@@ -226,22 +226,22 @@ void __59__PUQuickCropContext_applyCropRectToCompositionController___block_invok
   [v4 setEnabled:1];
 }
 
-- (id)applyCropToAssetTransitionInfo:(id)a3
+- (id)applyCropToAssetTransitionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(PUQuickCropContext *)self cropRectRelativeToRenderedImage];
   if (CGRectIsNull(v23))
   {
-    v5 = v4;
+    v5 = infoCopy;
   }
 
   else
   {
-    v6 = [v4 image];
-    v7 = v6;
-    if (v6)
+    image = [infoCopy image];
+    v7 = image;
+    if (image)
     {
-      v8 = -[PUQuickCropContext _croppedCGImageForTransition:](self, "_croppedCGImageForTransition:", [v6 CGImage]);
+      v8 = -[PUQuickCropContext _croppedCGImageForTransition:](self, "_croppedCGImageForTransition:", [image CGImage]);
       v9 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v8];
       CGImageRelease(v8);
     }
@@ -251,18 +251,18 @@ void __59__PUQuickCropContext_applyCropRectToCompositionController___block_invok
       v9 = 0;
     }
 
-    v10 = [v4 imageLayerModulator];
+    imageLayerModulator = [infoCopy imageLayerModulator];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __53__PUQuickCropContext_applyCropToAssetTransitionInfo___block_invoke;
     v21[3] = &unk_1E7B7F3B8;
     v21[4] = self;
-    [v10 performChanges:v21];
-    v11 = [v4 snapshotView];
-    v12 = v11;
-    if (v11)
+    [imageLayerModulator performChanges:v21];
+    snapshotView = [infoCopy snapshotView];
+    v12 = snapshotView;
+    if (snapshotView)
     {
-      v11 = [(PUQuickCropContext *)self _croppedSnapshotViewForTransition:v11];
+      snapshotView = [(PUQuickCropContext *)self _croppedSnapshotViewForTransition:snapshotView];
     }
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -270,12 +270,12 @@ void __59__PUQuickCropContext_applyCropRectToCompositionController___block_invok
     v17[2] = __53__PUQuickCropContext_applyCropToAssetTransitionInfo___block_invoke_2;
     v17[3] = &unk_1E7B7F3E0;
     v18 = v9;
-    v19 = v10;
-    v20 = v11;
-    v13 = v11;
-    v14 = v10;
+    v19 = imageLayerModulator;
+    v20 = snapshotView;
+    v13 = snapshotView;
+    v14 = imageLayerModulator;
     v15 = v9;
-    v5 = [v4 assetTransitionInfoWithModifications:v17];
+    v5 = [infoCopy assetTransitionInfoWithModifications:v17];
   }
 
   return v5;
@@ -300,16 +300,16 @@ void __53__PUQuickCropContext_applyCropToAssetTransitionInfo___block_invoke_2(vo
   [v4 setSnapshotView:a1[6]];
 }
 
-- (PUQuickCropContext)initWithTileTransform:(id)a3 renderedImageSize:(CGSize)a4 boundingSize:(CGSize)a5 selectedAspectRatio:(CGSize)a6
+- (PUQuickCropContext)initWithTileTransform:(id)transform renderedImageSize:(CGSize)size boundingSize:(CGSize)boundingSize selectedAspectRatio:(CGSize)ratio
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = a5.height;
-  v9 = a5.width;
-  v10 = a4.height;
-  v11 = a4.width;
+  height = ratio.height;
+  width = ratio.width;
+  v8 = boundingSize.height;
+  v9 = boundingSize.width;
+  v10 = size.height;
+  v11 = size.width;
   v77 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  transformCopy = transform;
   v74.receiver = self;
   v74.super_class = PUQuickCropContext;
   v14 = [(PUQuickCropContext *)&v74 init];
@@ -337,7 +337,7 @@ void __53__PUQuickCropContext_applyCropToAssetTransitionInfo___block_invoke_2(vo
     width = v9;
   }
 
-  [v13 scale];
+  [transformCopy scale];
   v70 = v8;
   v19 = v9 / v8;
   v20 = v11 / v10;
@@ -380,7 +380,7 @@ void __53__PUQuickCropContext_applyCropToAssetTransitionInfo___block_invoke_2(vo
     v27 = v22;
   }
 
-  [v13 normalizedTranslation];
+  [transformCopy normalizedTranslation];
   v72 = v10;
   v73 = v11;
   v30 = v26;

@@ -1,34 +1,34 @@
 @interface DTConditionInducerSupportService
-- (BOOL)_disableConditionInducerWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_enableConditionInducerWithIdentifier:(id)a3 profileIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_stopActiveConditionInducerWithError:(id *)a3;
-- (DTConditionInducerSupportService)initWithConnection:(id)a3;
+- (BOOL)_disableConditionInducerWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_enableConditionInducerWithIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier error:(id *)error;
+- (BOOL)_stopActiveConditionInducerWithError:(id *)error;
+- (DTConditionInducerSupportService)initWithConnection:(id)connection;
 - (NSXPCConnection)connection;
-- (id)_availableConditionInducersWithError:(id *)a3;
-- (id)_dictRepresentingConditionWithIdentifier:(id)a3 activeProfileIdentifier:(id)a4 configuration:(id)a5;
+- (id)_availableConditionInducersWithError:(id *)error;
+- (id)_dictRepresentingConditionWithIdentifier:(id)identifier activeProfileIdentifier:(id)profileIdentifier configuration:(id)configuration;
 - (void)_activeConditionEnded;
-- (void)_endTransaction:(id)a3;
+- (void)_endTransaction:(id)transaction;
 - (void)_userStoppedActiveConditions;
 - (void)_userTearingDownActiveConditions;
 - (void)dealloc;
-- (void)disableActiveConditionInducerWithReply:(id)a3;
-- (void)disableConditionInducerWithIdentifier:(id)a3 reply:(id)a4;
-- (void)enableConditionInducerWithIdentifier:(id)a3 profileIdentifier:(id)a4 reply:(id)a5;
-- (void)listAvailableConditionInducersWithReply:(id)a3;
+- (void)disableActiveConditionInducerWithReply:(id)reply;
+- (void)disableConditionInducerWithIdentifier:(id)identifier reply:(id)reply;
+- (void)enableConditionInducerWithIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier reply:(id)reply;
+- (void)listAvailableConditionInducersWithReply:(id)reply;
 @end
 
 @implementation DTConditionInducerSupportService
 
-- (DTConditionInducerSupportService)initWithConnection:(id)a3
+- (DTConditionInducerSupportService)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = DTConditionInducerSupportService;
   v5 = [(DTConditionInducerSupportService *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
   }
 
   return v6;
@@ -40,16 +40,16 @@
   {
     v3 = objc_opt_class();
     v4 = v3;
-    v5 = [(DTConditionInducerSupportService *)self activeConditionSession];
+    activeConditionSession = [(DTConditionInducerSupportService *)self activeConditionSession];
     *buf = 138412546;
     v9 = v3;
     v10 = 2112;
-    v11 = v5;
+    v11 = activeConditionSession;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%@: connection going away, stopping condition: %@", buf, 0x16u);
   }
 
-  v6 = [(DTConditionInducerSupportService *)self activeConditionSession];
-  [v6 stopConditionWithCallback:0];
+  activeConditionSession2 = [(DTConditionInducerSupportService *)self activeConditionSession];
+  [activeConditionSession2 stopConditionWithCallback:0];
 
   [(DTConditionInducerSupportService *)self setKeepAliveTransaction:0];
   v7.receiver = self;
@@ -57,9 +57,9 @@
   [(DTConditionInducerSupportService *)&v7 dealloc];
 }
 
-- (void)listAvailableConditionInducersWithReply:(id)a3
+- (void)listAvailableConditionInducersWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v12 = 0;
   v5 = [(DTConditionInducerSupportService *)self _availableConditionInducersWithError:&v12];
   v6 = v12;
@@ -86,19 +86,19 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "%@: Failed to list available condition inducers with error: %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (replyCopy)
   {
-    v4[2](v4, v5, v6);
+    replyCopy[2](replyCopy, v5, v6);
   }
 }
 
-- (void)enableConditionInducerWithIdentifier:(id)a3 profileIdentifier:(id)a4 reply:(id)a5
+- (void)enableConditionInducerWithIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  replyCopy = reply;
   v17 = 0;
-  v11 = [(DTConditionInducerSupportService *)self _enableConditionInducerWithIdentifier:v8 profileIdentifier:v9 error:&v17];
+  v11 = [(DTConditionInducerSupportService *)self _enableConditionInducerWithIdentifier:identifierCopy profileIdentifier:profileIdentifierCopy error:&v17];
   v12 = v17;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -106,9 +106,9 @@
     *buf = 138413058;
     v19 = v13;
     v20 = 2112;
-    v21 = v8;
+    v21 = identifierCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = profileIdentifierCopy;
     v24 = 1024;
     LODWORD(v25) = v11;
     v14 = v13;
@@ -121,27 +121,27 @@
     *buf = 138413058;
     v19 = v15;
     v20 = 2112;
-    v21 = v8;
+    v21 = identifierCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = profileIdentifierCopy;
     v24 = 2112;
     v25 = v12;
     v16 = v15;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "%@: failed to enable %@ / %@ with error: %@", buf, 0x2Au);
   }
 
-  if (v10)
+  if (replyCopy)
   {
-    v10[2](v10, v11, v12);
+    replyCopy[2](replyCopy, v11, v12);
   }
 }
 
-- (void)disableConditionInducerWithIdentifier:(id)a3 reply:(id)a4
+- (void)disableConditionInducerWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v14 = 0;
-  v8 = [(DTConditionInducerSupportService *)self _disableConditionInducerWithIdentifier:v6 error:&v14];
+  v8 = [(DTConditionInducerSupportService *)self _disableConditionInducerWithIdentifier:identifierCopy error:&v14];
   v9 = v14;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -149,7 +149,7 @@
     *buf = 138412802;
     v16 = v10;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     v19 = 1024;
     LODWORD(v20) = v8;
     v11 = v10;
@@ -162,22 +162,22 @@
     *buf = 138412802;
     v16 = v12;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     v19 = 2112;
     v20 = v9;
     v13 = v12;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "%@: failed to disable %@ with error: %@", buf, 0x20u);
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v7[2](v7, v8, v9);
+    replyCopy[2](replyCopy, v8, v9);
   }
 }
 
-- (void)disableActiveConditionInducerWithReply:(id)a3
+- (void)disableActiveConditionInducerWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v11 = 0;
   v5 = [(DTConditionInducerSupportService *)self _stopActiveConditionInducerWithError:&v11];
   v6 = v11;
@@ -203,18 +203,18 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "%@: failed to disable active condition with error: %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (replyCopy)
   {
-    v4[2](v4, v5, v6);
+    replyCopy[2](replyCopy, v5, v6);
   }
 }
 
-- (id)_availableConditionInducersWithError:(id *)a3
+- (id)_availableConditionInducersWithError:(id *)error
 {
   v30 = +[NSMutableArray array];
   v4 = +[COConditionSession listAvailableConditions];
   v31 = +[COConditionSession getActiveConditions];
-  v32 = self;
+  selfCopy = self;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v5 = objc_opt_class();
@@ -271,7 +271,7 @@
             v19 = [v31 objectForKeyedSubscript:v18];
             v20 = [v19 objectForKeyedSubscript:v29];
 
-            v21 = [(DTConditionInducerSupportService *)v32 _dictRepresentingConditionWithIdentifier:v17 activeProfileIdentifier:v20 configuration:v13];
+            v21 = [(DTConditionInducerSupportService *)selfCopy _dictRepresentingConditionWithIdentifier:v17 activeProfileIdentifier:v20 configuration:v13];
             [v30 addObject:v21];
           }
 
@@ -310,14 +310,14 @@
   return v30;
 }
 
-- (id)_dictRepresentingConditionWithIdentifier:(id)a3 activeProfileIdentifier:(id)a4 configuration:(id)a5
+- (id)_dictRepresentingConditionWithIdentifier:(id)identifier activeProfileIdentifier:(id)profileIdentifier configuration:(id)configuration
 {
-  v36 = a3;
-  v35 = a4;
-  v7 = a5;
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  configurationCopy = configuration;
   v37 = +[NSMutableArray array];
-  v34 = v7;
-  [v7 objectForKeyedSubscript:kCOConditionBundleArray];
+  v34 = configurationCopy;
+  [configurationCopy objectForKeyedSubscript:kCOConditionBundleArray];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -371,33 +371,33 @@
 
   else
   {
-    v22 = v36;
+    v22 = identifierCopy;
   }
 
   v23 = v22;
 
   v24 = [v34 objectForKeyedSubscript:kCOConditionIsDestructive];
-  v25 = [v24 BOOLValue];
+  bOOLValue = [v24 BOOLValue];
 
   v26 = [v34 objectForKeyedSubscript:kCOConditionIsInternal];
-  v27 = [v26 BOOLValue];
+  bOOLValue2 = [v26 BOOLValue];
 
   v43[0] = @"identifier";
   v43[1] = @"name";
-  v44[0] = v36;
+  v44[0] = identifierCopy;
   v44[1] = v23;
   v44[2] = v37;
   v43[2] = @"profiles";
   v43[3] = @"isDestructive";
-  v28 = [NSNumber numberWithBool:v25];
+  v28 = [NSNumber numberWithBool:bOOLValue];
   v44[3] = v28;
   v43[4] = @"isInternal";
-  v29 = [NSNumber numberWithBool:v27];
+  v29 = [NSNumber numberWithBool:bOOLValue2];
   v44[4] = v29;
   v43[5] = @"isActive";
-  if (v35)
+  if (profileIdentifierCopy)
   {
-    v30 = v35;
+    v30 = profileIdentifierCopy;
   }
 
   else
@@ -405,7 +405,7 @@
     v30 = &stru_100008410;
   }
 
-  v31 = [NSNumber numberWithBool:v35 != 0];
+  v31 = [NSNumber numberWithBool:profileIdentifierCopy != 0];
   v44[5] = v31;
   v44[6] = v30;
   v43[6] = @"activeProfile";
@@ -416,37 +416,37 @@
   return v32;
 }
 
-- (BOOL)_enableConditionInducerWithIdentifier:(id)a3 profileIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_enableConditionInducerWithIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DTConditionInducerSupportService *)self activeConditionSession];
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  activeConditionSession = [(DTConditionInducerSupportService *)self activeConditionSession];
 
-  if (v10)
+  if (activeConditionSession)
   {
-    v11 = [(DTConditionInducerSupportService *)self activeConditionSession];
-    v12 = [v11 hasActiveCondition];
+    activeConditionSession2 = [(DTConditionInducerSupportService *)self activeConditionSession];
+    hasActiveCondition = [activeConditionSession2 hasActiveCondition];
 
-    if (v12)
+    if (hasActiveCondition)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         v13 = objc_opt_class();
         v14 = v13;
-        v15 = [(DTConditionInducerSupportService *)self activeConditionSession];
+        activeConditionSession3 = [(DTConditionInducerSupportService *)self activeConditionSession];
         *buf = 138412546;
         *&buf[4] = v13;
         *&buf[12] = 2112;
-        *&buf[14] = v15;
+        *&buf[14] = activeConditionSession3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%@: cannot enable inducer as a condition is already active: %@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v56 = NSLocalizedDescriptionKey;
         v57 = @"A condition is already active.";
         v16 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-        *a5 = [NSError errorWithDomain:@"DTConditionInducerSupportService" code:3 userInfo:v16];
+        *error = [NSError errorWithDomain:@"DTConditionInducerSupportService" code:3 userInfo:v16];
       }
 
       LOBYTE(v17) = 0;
@@ -463,7 +463,7 @@
   v53 = sub_100002458;
   v54 = sub_100002468;
   v55 = 0;
-  v18 = [[COConditionSession alloc] initWithConditionIdentifier:v8 profile:v9];
+  v18 = [[COConditionSession alloc] initWithConditionIdentifier:identifierCopy profile:profileIdentifierCopy];
   objc_initWeak(&location, self);
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
@@ -496,7 +496,7 @@
     }
 
     [(DTConditionInducerSupportService *)self setActiveConditionSession:v18];
-    v22 = [NSString stringWithFormat:@"com.apple.dt.DTConditionInducerSupportService.%@.%@", v8, v9, v35, v36, v37, v38];
+    v22 = [NSString stringWithFormat:@"com.apple.dt.DTConditionInducerSupportService.%@.%@", identifierCopy, profileIdentifierCopy, v35, v36, v37, v38];
     v23 = v22;
     [v22 cStringUsingEncoding:4];
     v24 = os_transaction_create();
@@ -506,11 +506,11 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       v26 = objc_opt_class();
-      v27 = [(DTConditionInducerSupportService *)self keepAliveTransaction];
+      keepAliveTransaction = [(DTConditionInducerSupportService *)self keepAliveTransaction];
       *v44 = 138412546;
       v45 = v26;
       v46 = 2112;
-      v47 = v27;
+      v47 = keepAliveTransaction;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%@: transaction created: %@", v44, 0x16u);
     }
   }
@@ -532,22 +532,22 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       v32 = objc_opt_class();
-      v33 = [*(*&buf[8] + 40) localizedDescription];
+      localizedDescription = [*(*&buf[8] + 40) localizedDescription];
       *v44 = 138412802;
       v45 = v32;
       v46 = 2112;
       v47 = v18;
       v48 = 2112;
-      v49 = v33;
+      v49 = localizedDescription;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%@: failed to enable %@ with error: %@", v44, 0x20u);
 
       v22 = &_os_log_default;
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   objc_destroyWeak(&v39);
@@ -566,18 +566,18 @@ LABEL_22:
   {
     v3 = objc_opt_class();
     v4 = v3;
-    v5 = [(DTConditionInducerSupportService *)self activeConditionSession];
+    activeConditionSession = [(DTConditionInducerSupportService *)self activeConditionSession];
     v8 = 138412546;
     v9 = v3;
     v10 = 2112;
-    v11 = v5;
+    v11 = activeConditionSession;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%@: user requested tear down of active condition session: %@", &v8, 0x16u);
   }
 
-  v6 = [(DTConditionInducerSupportService *)self connection];
-  v7 = [v6 remoteObjectProxy];
+  connection = [(DTConditionInducerSupportService *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  [v7 activeConditionsWillStop];
+  [remoteObjectProxy activeConditionsWillStop];
 }
 
 - (void)_userStoppedActiveConditions
@@ -586,38 +586,38 @@ LABEL_22:
   {
     v3 = objc_opt_class();
     v4 = v3;
-    v5 = [(DTConditionInducerSupportService *)self activeConditionSession];
+    activeConditionSession = [(DTConditionInducerSupportService *)self activeConditionSession];
     v8 = 138412546;
     v9 = v3;
     v10 = 2112;
-    v11 = v5;
+    v11 = activeConditionSession;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%@: user stopped active condition session: %@", &v8, 0x16u);
   }
 
-  v6 = [(DTConditionInducerSupportService *)self connection];
-  v7 = [v6 remoteObjectProxy];
+  connection = [(DTConditionInducerSupportService *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  [v7 activeConditionsDidStop];
+  [remoteObjectProxy activeConditionsDidStop];
   [(DTConditionInducerSupportService *)self _activeConditionEnded];
 }
 
-- (BOOL)_disableConditionInducerWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_disableConditionInducerWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DTConditionInducerSupportService *)self activeConditionSession];
-  if (v7)
+  identifierCopy = identifier;
+  activeConditionSession = [(DTConditionInducerSupportService *)self activeConditionSession];
+  if (activeConditionSession)
   {
-    v8 = v7;
-    v9 = [(DTConditionInducerSupportService *)self activeConditionSession];
-    v10 = [v9 selectedCondition];
-    v11 = [v10 isEqualToString:v6];
+    v8 = activeConditionSession;
+    activeConditionSession2 = [(DTConditionInducerSupportService *)self activeConditionSession];
+    selectedCondition = [activeConditionSession2 selectedCondition];
+    v11 = [selectedCondition isEqualToString:identifierCopy];
 
     if (v11)
     {
       v14 = 0;
       v12 = [(DTConditionInducerSupportService *)self _stopActiveConditionInducerWithError:&v14];
-      v7 = v14;
-      if (!a4)
+      activeConditionSession = v14;
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -625,15 +625,15 @@ LABEL_22:
       goto LABEL_7;
     }
 
-    v7 = 0;
+    activeConditionSession = 0;
   }
 
   v12 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_7:
-    v7 = v7;
-    *a4 = v7;
+    activeConditionSession = activeConditionSession;
+    *error = activeConditionSession;
   }
 
 LABEL_8:
@@ -641,7 +641,7 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)_stopActiveConditionInducerWithError:(id *)a3
+- (BOOL)_stopActiveConditionInducerWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -649,13 +649,13 @@ LABEL_8:
   v21 = sub_100002458;
   v22 = sub_100002468;
   v23 = 0;
-  v5 = [(DTConditionInducerSupportService *)self activeConditionSession];
+  activeConditionSession = [(DTConditionInducerSupportService *)self activeConditionSession];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100002AA0;
   v17[3] = &unk_100008258;
   v17[4] = &v18;
-  v6 = [v5 stopConditionWithCallback:v17];
+  v6 = [activeConditionSession stopConditionWithCallback:v17];
 
   v7 = v19[5];
   v8 = (v7 == 0) & v6;
@@ -680,21 +680,21 @@ LABEL_8:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
-      v14 = [(DTConditionInducerSupportService *)self activeConditionSession];
-      v15 = [v19[5] localizedDescription];
+      activeConditionSession2 = [(DTConditionInducerSupportService *)self activeConditionSession];
+      localizedDescription = [v19[5] localizedDescription];
       *buf = 138412802;
       v25 = v13;
       v26 = 2112;
-      v27 = v14;
+      v27 = activeConditionSession2;
       v28 = 2112;
-      v29 = v15;
+      v29 = localizedDescription;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%@: failed to disable %@ with error: %@", buf, 0x20u);
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -705,7 +705,7 @@ LABEL_8:
 - (void)_activeConditionEnded
 {
   [(DTConditionInducerSupportService *)self setActiveConditionSession:0];
-  v3 = [(DTConditionInducerSupportService *)self keepAliveTransaction];
+  keepAliveTransaction = [(DTConditionInducerSupportService *)self keepAliveTransaction];
   v4 = dispatch_time(0, 5000000000);
   v5 = dispatch_get_global_queue(21, 0);
   v6[0] = _NSConcreteStackBlock;
@@ -713,23 +713,23 @@ LABEL_8:
   v6[2] = sub_100002B90;
   v6[3] = &unk_1000082D0;
   v6[4] = self;
-  v6[5] = v3;
+  v6[5] = keepAliveTransaction;
   dispatch_after(v4, v5, v6);
 
   [(DTConditionInducerSupportService *)self setKeepAliveTransaction:0];
 }
 
-- (void)_endTransaction:(id)a3
+- (void)_endTransaction:(id)transaction
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v4 = a3;
+    transactionCopy = transaction;
     v5 = objc_opt_class();
 
     v7 = 138412546;
     v8 = v5;
     v9 = 2112;
-    v10 = v4;
+    v10 = transactionCopy;
     v6 = v5;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%@: transaction ending: %@", &v7, 0x16u);
   }

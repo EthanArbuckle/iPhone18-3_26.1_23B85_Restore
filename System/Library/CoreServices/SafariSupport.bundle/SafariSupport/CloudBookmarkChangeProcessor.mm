@@ -1,25 +1,25 @@
 @interface CloudBookmarkChangeProcessor
-- (CloudBookmarkChangeProcessor)initWithDatabase:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5;
+- (CloudBookmarkChangeProcessor)initWithDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater;
 - (CloudBookmarkUpdater)updater;
-- (id)_createServerSyncIDForItem:(void *)a3;
+- (id)_createServerSyncIDForItem:(void *)item;
 - (void)dealloc;
 - (void)processChanges;
 @end
 
 @implementation CloudBookmarkChangeProcessor
 
-- (CloudBookmarkChangeProcessor)initWithDatabase:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5
+- (CloudBookmarkChangeProcessor)initWithDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater
 {
-  v9 = a4;
-  v10 = a5;
+  accessorCopy = accessor;
+  updaterCopy = updater;
   v19.receiver = self;
   v19.super_class = CloudBookmarkChangeProcessor;
   v11 = [(CloudBookmarkChangeProcessor *)&v19 init];
   if (v11)
   {
-    v11->_databaseRef = CFRetain(a3);
-    objc_storeStrong(&v11->_databaseAccessor, a4);
-    objc_storeWeak(&v11->_updater, v10);
+    v11->_databaseRef = CFRetain(database);
+    objc_storeStrong(&v11->_databaseAccessor, accessor);
+    objc_storeWeak(&v11->_updater, updaterCopy);
     changes = v11->_changes;
     v11->_changes = &__NSArray0__struct;
 
@@ -321,14 +321,14 @@ LABEL_53:
   [(WBSBookmarkDBAccess *)self->_databaseAccessor saveDatabase:self->_databaseRef];
 }
 
-- (id)_createServerSyncIDForItem:(void *)a3
+- (id)_createServerSyncIDForItem:(void *)item
 {
   if ([(WBSBookmarkDBAccess *)self->_databaseAccessor itemTypeWithItem:?]!= 1)
   {
     goto LABEL_6;
   }
 
-  v5 = [(WBSBookmarkDBAccess *)self->_databaseAccessor folderTypeWithFolder:a3];
+  v5 = [(WBSBookmarkDBAccess *)self->_databaseAccessor folderTypeWithFolder:item];
   if (v5 == 3)
   {
     v6 = &WBSCloudBookmarkListRecordNameReadingList;
@@ -345,17 +345,17 @@ LABEL_53:
   {
 LABEL_6:
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
+    uUIDString = [v7 UUIDString];
 
     goto LABEL_10;
   }
 
   v6 = &WBSCloudBookmarkListRecordNameFavoritesBar;
 LABEL_9:
-  v8 = *v6;
+  uUIDString = *v6;
 LABEL_10:
 
-  return v8;
+  return uUIDString;
 }
 
 - (CloudBookmarkUpdater)updater

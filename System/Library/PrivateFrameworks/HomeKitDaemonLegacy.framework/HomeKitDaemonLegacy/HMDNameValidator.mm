@@ -1,35 +1,35 @@
 @interface HMDNameValidator
 + (id)allowedMiddleCharacters;
 + (id)allowedTerminalCharacters;
-- (HMDNameValidator)initWithUUID:(id)a3;
-- (id)_addName:(id)a3 namespace:(id)a4;
-- (id)_addNamespace:(id)a3;
-- (id)_checkForConflict:(id)a3 namespace:(id)a4;
-- (id)_removeName:(id)a3 namespace:(id)a4;
-- (id)_removeNamespace:(id)a3;
-- (id)_replaceName:(id)a3 withNewName:(id)a4 inNamespaces:(id)a5;
-- (id)_validateName:(id)a3;
-- (id)addName:(id)a3 namespace:(id)a4 voiceShortcutCheck:(BOOL)a5;
-- (id)addNamespace:(id)a3;
-- (id)checkForConflict:(id)a3 namespace:(id)a4;
-- (id)despaceName:(id)a3;
-- (id)nameByTrimmingDisallowedCharactersFromName:(id)a3;
-- (id)removeName:(id)a3 namespace:(id)a4;
-- (id)removeNamespace:(id)a3;
-- (id)replaceName:(id)a3 withNewName:(id)a4 inNamespaces:(id)a5 voiceShortcutCheck:(BOOL)a6;
-- (id)validateName:(id)a3;
+- (HMDNameValidator)initWithUUID:(id)d;
+- (id)_addName:(id)name namespace:(id)namespace;
+- (id)_addNamespace:(id)namespace;
+- (id)_checkForConflict:(id)conflict namespace:(id)namespace;
+- (id)_removeName:(id)name namespace:(id)namespace;
+- (id)_removeNamespace:(id)namespace;
+- (id)_replaceName:(id)name withNewName:(id)newName inNamespaces:(id)namespaces;
+- (id)_validateName:(id)name;
+- (id)addName:(id)name namespace:(id)namespace voiceShortcutCheck:(BOOL)check;
+- (id)addNamespace:(id)namespace;
+- (id)checkForConflict:(id)conflict namespace:(id)namespace;
+- (id)despaceName:(id)name;
+- (id)nameByTrimmingDisallowedCharactersFromName:(id)name;
+- (id)removeName:(id)name namespace:(id)namespace;
+- (id)removeNamespace:(id)namespace;
+- (id)replaceName:(id)name withNewName:(id)newName inNamespaces:(id)namespaces voiceShortcutCheck:(BOOL)check;
+- (id)validateName:(id)name;
 @end
 
 @implementation HMDNameValidator
 
-- (id)replaceName:(id)a3 withNewName:(id)a4 inNamespaces:(id)a5 voiceShortcutCheck:(BOOL)a6
+- (id)replaceName:(id)name withNewName:(id)newName inNamespaces:(id)namespaces voiceShortcutCheck:(BOOL)check
 {
-  v6 = a6;
+  checkCopy = check;
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (![v12 count])
+  nameCopy = name;
+  newNameCopy = newName;
+  namespacesCopy = namespaces;
+  if (![namespacesCopy count])
   {
     v14 = objc_autoreleasePoolPush();
     v15 = HMFGetOSLogHandle();
@@ -39,9 +39,9 @@
       *buf = 138543874;
       v25 = v16;
       v26 = 2112;
-      v27 = v10;
+      v27 = nameCopy;
       v28 = 2112;
-      v29 = v11;
+      v29 = newNameCopy;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Empty set of namespace UUIDs in operation to replace %@ with %@", buf, 0x20u);
     }
 
@@ -50,7 +50,7 @@
     goto LABEL_11;
   }
 
-  if (!v10 || !v11)
+  if (!nameCopy || !newNameCopy)
   {
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
 LABEL_11:
@@ -59,7 +59,7 @@ LABEL_11:
   }
 
   os_unfair_lock_lock_with_options();
-  if (v6 && (isNameValidWithVoiceShortcut(v11) & 1) == 0)
+  if (checkCopy && (isNameValidWithVoiceShortcut(newNameCopy) & 1) == 0)
   {
     v18 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2300];
     v22 = *MEMORY[0x277CCA7E8];
@@ -70,7 +70,7 @@ LABEL_11:
 
   else
   {
-    v13 = [(HMDNameValidator *)self _replaceName:v10 withNewName:v11 inNamespaces:v12];
+    v13 = [(HMDNameValidator *)self _replaceName:nameCopy withNewName:newNameCopy inNamespaces:namespacesCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -81,17 +81,17 @@ LABEL_14:
   return v13;
 }
 
-- (id)removeName:(id)a3 namespace:(id)a4
+- (id)removeName:(id)name namespace:(id)namespace
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  namespaceCopy = namespace;
+  if (namespaceCopy)
   {
-    if (v6)
+    if (nameCopy)
     {
       os_unfair_lock_lock_with_options();
-      v8 = [(HMDNameValidator *)self _removeName:v6 namespace:v7];
+      v8 = [(HMDNameValidator *)self _removeName:nameCopy namespace:namespaceCopy];
       os_unfair_lock_unlock(&self->_lock);
       goto LABEL_9;
     }
@@ -109,7 +109,7 @@ LABEL_14:
       v15 = 138543618;
       v16 = v11;
       v17 = 2112;
-      v18 = v6;
+      v18 = nameCopy;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Namespace UUID is nil in operation to remove %@", &v15, 0x16u);
     }
 
@@ -125,13 +125,13 @@ LABEL_9:
   return v8;
 }
 
-- (id)addName:(id)a3 namespace:(id)a4 voiceShortcutCheck:(BOOL)a5
+- (id)addName:(id)name namespace:(id)namespace voiceShortcutCheck:(BOOL)check
 {
-  v5 = a5;
+  checkCopy = check;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  nameCopy = name;
+  namespaceCopy = namespace;
+  if (!namespaceCopy)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = HMFGetOSLogHandle();
@@ -141,7 +141,7 @@ LABEL_9:
       *buf = 138543618;
       v22 = v13;
       v23 = 2112;
-      v24 = v8;
+      v24 = nameCopy;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Namespace UUID is nil in operation to add %@", buf, 0x16u);
     }
 
@@ -150,7 +150,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!nameCopy)
   {
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
 LABEL_10:
@@ -159,7 +159,7 @@ LABEL_10:
   }
 
   os_unfair_lock_lock_with_options();
-  if (v5 && (isNameValidWithVoiceShortcut(v8) & 1) == 0)
+  if (checkCopy && (isNameValidWithVoiceShortcut(nameCopy) & 1) == 0)
   {
     v15 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2300];
     v19 = *MEMORY[0x277CCA7E8];
@@ -170,7 +170,7 @@ LABEL_10:
 
   else
   {
-    v10 = [(HMDNameValidator *)self _addName:v8 namespace:v9];
+    v10 = [(HMDNameValidator *)self _addName:nameCopy namespace:namespaceCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -181,35 +181,35 @@ LABEL_13:
   return v10;
 }
 
-- (id)checkForConflict:(id)a3 namespace:(id)a4
+- (id)checkForConflict:(id)conflict namespace:(id)namespace
 {
-  v6 = a3;
-  v7 = a4;
+  conflictCopy = conflict;
+  namespaceCopy = namespace;
   os_unfair_lock_lock_with_options();
-  v8 = [(HMDNameValidator *)self _checkForConflict:v6 namespace:v7];
+  v8 = [(HMDNameValidator *)self _checkForConflict:conflictCopy namespace:namespaceCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v8;
 }
 
-- (id)validateName:(id)a3
+- (id)validateName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDNameValidator *)self _validateName:v4];
+  v5 = [(HMDNameValidator *)self _validateName:nameCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)removeNamespace:(id)a3
+- (id)removeNamespace:(id)namespace
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  namespaceCopy = namespace;
+  if (namespaceCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(HMDNameValidator *)self _removeNamespace:v4];
+    v5 = [(HMDNameValidator *)self _removeNamespace:namespaceCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -234,14 +234,14 @@ LABEL_13:
   return v5;
 }
 
-- (id)addNamespace:(id)a3
+- (id)addNamespace:(id)namespace
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  namespaceCopy = namespace;
+  if (namespaceCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(HMDNameValidator *)self _addNamespace:v4];
+    v5 = [(HMDNameValidator *)self _addNamespace:namespaceCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -266,14 +266,14 @@ LABEL_13:
   return v5;
 }
 
-- (id)_replaceName:(id)a3 withNewName:(id)a4 inNamespaces:(id)a5
+- (id)_replaceName:(id)name withNewName:(id)newName inNamespaces:(id)namespaces
 {
   v92 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v63 = v7;
-  if ([v7 isEqual:v8])
+  nameCopy = name;
+  newNameCopy = newName;
+  namespacesCopy = namespaces;
+  v63 = nameCopy;
+  if ([nameCopy isEqual:newNameCopy])
   {
     v10 = objc_autoreleasePoolPush();
     v11 = HMFGetOSLogHandle();
@@ -283,9 +283,9 @@ LABEL_13:
       *buf = 138543874;
       v84 = v12;
       v85 = 2112;
-      v86 = v7;
+      v86 = nameCopy;
       v87 = 2112;
-      v88 = v9;
+      v88 = namespacesCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Attempting to replace %@ with same entry in namespaces %@ - skipping...", buf, 0x20u);
     }
 
@@ -295,15 +295,15 @@ LABEL_13:
 
   else
   {
-    v60 = v8;
-    v61 = [MEMORY[0x277CBEB18] array];
+    v60 = newNameCopy;
+    array = [MEMORY[0x277CBEB18] array];
     [MEMORY[0x277CBEB18] array];
-    v59 = v58 = v9;
+    v59 = v58 = namespacesCopy;
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v14 = v9;
+    v14 = namespacesCopy;
     v15 = [v14 countByEnumeratingWithState:&v76 objects:v91 count:16];
     if (v15)
     {
@@ -319,7 +319,7 @@ LABEL_13:
           }
 
           v19 = *(*(&v76 + 1) + 8 * i);
-          v20 = [(HMDNameValidator *)self _removeName:v7 namespace:v19];
+          v20 = [(HMDNameValidator *)self _removeName:nameCopy namespace:v19];
           if (v20)
           {
             v21 = objc_autoreleasePoolPush();
@@ -330,7 +330,7 @@ LABEL_13:
               *buf = 138544130;
               v84 = v23;
               v85 = 2112;
-              v86 = v7;
+              v86 = nameCopy;
               v87 = 2112;
               v88 = v19;
               v89 = 2112;
@@ -343,7 +343,7 @@ LABEL_13:
 
           else
           {
-            [v61 addObject:v19];
+            [array addObject:v19];
           }
         }
 
@@ -353,7 +353,7 @@ LABEL_13:
       while (v16);
     }
 
-    v8 = v60;
+    newNameCopy = v60;
     if (v60)
     {
       v74 = 0u;
@@ -420,7 +420,7 @@ LABEL_13:
                     }
 
                     v41 = *(*(&v68 + 1) + 8 * k);
-                    v42 = [(HMDNameValidator *)self _removeName:v8 namespace:v41, v57];
+                    v42 = [(HMDNameValidator *)self _removeName:newNameCopy namespace:v41, v57];
                     if (v42)
                     {
                       v43 = objc_autoreleasePoolPush();
@@ -438,7 +438,7 @@ LABEL_13:
                         v90 = v42;
                         _os_log_impl(&dword_2531F8000, v44, OS_LOG_TYPE_ERROR, "%{public}@Failed to remove new name %@ to namespace %@ error %@", buf, 0x2Au);
 
-                        v8 = v60;
+                        newNameCopy = v60;
                       }
 
                       objc_autoreleasePoolPop(v43);
@@ -455,7 +455,7 @@ LABEL_13:
               v67 = 0u;
               v64 = 0u;
               v65 = 0u;
-              v24 = v61;
+              v24 = array;
               v46 = [v24 countByEnumeratingWithState:&v64 objects:v80 count:16];
               if (v46)
               {
@@ -498,7 +498,7 @@ LABEL_13:
                 }
 
                 while (v47);
-                v8 = v60;
+                newNameCopy = v60;
               }
 
               v28 = v59;
@@ -536,7 +536,7 @@ LABEL_55:
       v28 = v59;
     }
 
-    v9 = v58;
+    namespacesCopy = v58;
   }
 
   v55 = *MEMORY[0x277D85DE8];
@@ -544,17 +544,17 @@ LABEL_55:
   return v13;
 }
 
-- (id)_removeName:(id)a3 namespace:(id)a4
+- (id)_removeName:(id)name namespace:(id)namespace
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNameValidator *)self namespaceList];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  nameCopy = name;
+  namespaceCopy = namespace;
+  namespaceList = [(HMDNameValidator *)self namespaceList];
+  v9 = [namespaceList objectForKeyedSubscript:namespaceCopy];
 
   if (v9)
   {
-    v10 = [(HMDNameValidator *)self despaceName:v6];
+    v10 = [(HMDNameValidator *)self despaceName:nameCopy];
     if ([v9 containsObject:v10])
     {
       [v9 removeObject:v10];
@@ -577,9 +577,9 @@ LABEL_55:
       v17 = 138543874;
       v18 = v14;
       v19 = 2112;
-      v20 = v7;
+      v20 = namespaceCopy;
       v21 = 2112;
-      v22 = v6;
+      v22 = nameCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to look up namespace %@ to remove name %@", &v17, 0x20u);
     }
 
@@ -592,17 +592,17 @@ LABEL_55:
   return v11;
 }
 
-- (id)_addName:(id)a3 namespace:(id)a4
+- (id)_addName:(id)name namespace:(id)namespace
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNameValidator *)self _validateName:v6];
+  nameCopy = name;
+  namespaceCopy = namespace;
+  v8 = [(HMDNameValidator *)self _validateName:nameCopy];
   if (!v8)
   {
-    v9 = [(HMDNameValidator *)self despaceName:v6];
-    v10 = [(HMDNameValidator *)self namespaceList];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    v9 = [(HMDNameValidator *)self despaceName:nameCopy];
+    namespaceList = [(HMDNameValidator *)self namespaceList];
+    v11 = [namespaceList objectForKeyedSubscript:namespaceCopy];
 
     if (v11)
     {
@@ -628,9 +628,9 @@ LABEL_55:
         v20 = 138543874;
         v21 = v17;
         v22 = 2112;
-        v23 = v7;
+        v23 = namespaceCopy;
         v24 = 2112;
-        v25 = v6;
+        v25 = nameCopy;
         _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to look up namespace %@ to remove name %@", &v20, 0x20u);
       }
 
@@ -649,14 +649,14 @@ LABEL_10:
   return v8;
 }
 
-- (id)_checkForConflict:(id)a3 namespace:(id)a4
+- (id)_checkForConflict:(id)conflict namespace:(id)namespace
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNameValidator *)self despaceName:v6];
-  v9 = [(HMDNameValidator *)self namespaceList];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  conflictCopy = conflict;
+  namespaceCopy = namespace;
+  v8 = [(HMDNameValidator *)self despaceName:conflictCopy];
+  namespaceList = [(HMDNameValidator *)self namespaceList];
+  v10 = [namespaceList objectForKeyedSubscript:namespaceCopy];
 
   if (!v10)
   {
@@ -668,7 +668,7 @@ LABEL_10:
       v18 = 138543618;
       v19 = v14;
       v20 = 2112;
-      v21 = v7;
+      v21 = namespaceCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to look up namespace %@", &v18, 0x16u);
     }
 
@@ -693,14 +693,14 @@ LABEL_9:
   return v15;
 }
 
-- (id)nameByTrimmingDisallowedCharactersFromName:(id)a3
+- (id)nameByTrimmingDisallowedCharactersFromName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_opt_class() allowedMiddleCharacters];
-  v6 = [v5 invertedSet];
+  allowedMiddleCharacters = [objc_opt_class() allowedMiddleCharacters];
+  invertedSet = [allowedMiddleCharacters invertedSet];
 
-  v7 = [v3 componentsSeparatedByCharactersInSet:v6];
+  v7 = [nameCopy componentsSeparatedByCharactersInSet:invertedSet];
   v8 = [v7 componentsJoinedByString:&stru_286509E58];
 
   objc_autoreleasePoolPop(v4);
@@ -708,36 +708,36 @@ LABEL_9:
   return v8;
 }
 
-- (id)_validateName:(id)a3
+- (id)_validateName:(id)name
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  nameCopy = name;
+  v5 = [nameCopy length];
   v6 = objc_autoreleasePoolPush();
   if (v5)
   {
-    v7 = [objc_opt_class() allowedInitialCharacters];
-    v8 = [v4 rangeOfCharacterFromSet:v7 options:129];
+    allowedInitialCharacters = [objc_opt_class() allowedInitialCharacters];
+    v8 = [nameCopy rangeOfCharacterFromSet:allowedInitialCharacters options:129];
 
     if (v8)
     {
-      v9 = [v4 substringWithRange:{0, 1}];
+      v9 = [nameCopy substringWithRange:{0, 1}];
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = HMFGetLogIdentifier();
         v14 = [v9 dataUsingEncoding:4];
-        v15 = [v14 hmf_hexadecimalRepresentation];
+        hmf_hexadecimalRepresentation = [v14 hmf_hexadecimalRepresentation];
         v42 = 138544130;
         v43 = v13;
         v44 = 2112;
         v45 = v9;
         v46 = 2112;
-        v47 = v15;
+        v47 = hmf_hexadecimalRepresentation;
         v48 = 2112;
-        v49 = v4;
+        v49 = nameCopy;
         _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_ERROR, "%{public}@Name is invalid: starts with disallowed character '%@' (0x%@): '%@'", &v42, 0x2Au);
       }
 
@@ -751,28 +751,28 @@ LABEL_15:
       goto LABEL_21;
     }
 
-    v21 = [objc_opt_class() allowedTerminalCharacters];
-    v22 = [v4 rangeOfCharacterFromSet:v21 options:133];
+    allowedTerminalCharacters = [objc_opt_class() allowedTerminalCharacters];
+    v22 = [nameCopy rangeOfCharacterFromSet:allowedTerminalCharacters options:133];
 
-    if (v22 != [v4 length] - 1)
+    if (v22 != [nameCopy length] - 1)
     {
-      v9 = [v4 substringWithRange:{objc_msgSend(v4, "length") - 1, 1}];
+      v9 = [nameCopy substringWithRange:{objc_msgSend(nameCopy, "length") - 1, 1}];
       v10 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v29 = HMFGetLogIdentifier();
         v30 = [v9 dataUsingEncoding:4];
-        v31 = [v30 hmf_hexadecimalRepresentation];
+        hmf_hexadecimalRepresentation2 = [v30 hmf_hexadecimalRepresentation];
         v42 = 138544130;
         v43 = v29;
         v44 = 2112;
         v45 = v9;
         v46 = 2112;
-        v47 = v31;
+        v47 = hmf_hexadecimalRepresentation2;
         v48 = 2112;
-        v49 = v4;
+        v49 = nameCopy;
         _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_ERROR, "%{public}@Name is invalid: ends with allowed character '%@' (0x%@): '%@'", &v42, 0x2Au);
       }
 
@@ -780,10 +780,10 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v23 = [objc_opt_class() allowedMiddleCharacters];
-    v24 = [v23 invertedSet];
+    allowedMiddleCharacters = [objc_opt_class() allowedMiddleCharacters];
+    invertedSet = [allowedMiddleCharacters invertedSet];
 
-    v25 = [v4 rangeOfCharacterFromSet:v24 options:129];
+    v25 = [nameCopy rangeOfCharacterFromSet:invertedSet options:129];
     if (v25 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v27 = 0;
@@ -791,23 +791,23 @@ LABEL_15:
 
     else
     {
-      v33 = [v4 substringWithRange:{v25, v26}];
+      v33 = [nameCopy substringWithRange:{v25, v26}];
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy3 = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         v37 = HMFGetLogIdentifier();
         v38 = [v33 dataUsingEncoding:4];
-        v39 = [v38 hmf_hexadecimalRepresentation];
+        hmf_hexadecimalRepresentation3 = [v38 hmf_hexadecimalRepresentation];
         v42 = 138544130;
         v43 = v37;
         v44 = 2112;
         v45 = v33;
         v46 = 2112;
-        v47 = v39;
+        v47 = hmf_hexadecimalRepresentation3;
         v48 = 2112;
-        v49 = v4;
+        v49 = nameCopy;
         _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_ERROR, "%{public}@Name is invalid: contains disallowed character '%@' (0x%@): '%@'", &v42, 0x2Au);
       }
 
@@ -821,7 +821,7 @@ LABEL_15:
 
   else
   {
-    v17 = self;
+    selfCopy4 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -829,7 +829,7 @@ LABEL_15:
       v42 = 138543618;
       v43 = v19;
       v44 = 2112;
-      v45 = v4;
+      v45 = nameCopy;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Name %@ is empty", &v42, 0x16u);
     }
 
@@ -845,35 +845,35 @@ LABEL_21:
   return v32;
 }
 
-- (id)despaceName:(id)a3
+- (id)despaceName:(id)name
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceCharacterSet];
+  nameCopy = name;
+  whitespaceCharacterSet = [v4 whitespaceCharacterSet];
   v7 = MEMORY[0x277CBEB18];
-  v8 = [v5 componentsSeparatedByCharactersInSet:v6];
+  v8 = [nameCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v9 = [v7 arrayWithArray:v8];
 
-  v10 = [(HMDNameValidator *)self nonZeroLengthPredicate];
-  v11 = [v9 filteredArrayUsingPredicate:v10];
+  nonZeroLengthPredicate = [(HMDNameValidator *)self nonZeroLengthPredicate];
+  v11 = [v9 filteredArrayUsingPredicate:nonZeroLengthPredicate];
 
   v12 = [v11 componentsJoinedByString:&stru_286509E58];
-  v13 = [v12 lowercaseString];
+  lowercaseString = [v12 lowercaseString];
 
-  return v13;
+  return lowercaseString;
 }
 
-- (id)_removeNamespace:(id)a3
+- (id)_removeNamespace:(id)namespace
 {
-  v4 = a3;
-  v5 = [(HMDNameValidator *)self namespaceList];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  namespaceCopy = namespace;
+  namespaceList = [(HMDNameValidator *)self namespaceList];
+  v6 = [namespaceList objectForKeyedSubscript:namespaceCopy];
 
   if (v6)
   {
-    v7 = [(HMDNameValidator *)self namespaceList];
-    [v7 removeObjectForKey:v4];
+    namespaceList2 = [(HMDNameValidator *)self namespaceList];
+    [namespaceList2 removeObjectForKey:namespaceCopy];
 
     v8 = 0;
   }
@@ -886,11 +886,11 @@ LABEL_21:
   return v8;
 }
 
-- (id)_addNamespace:(id)a3
+- (id)_addNamespace:(id)namespace
 {
-  v4 = a3;
-  v5 = [(HMDNameValidator *)self namespaceList];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  namespaceCopy = namespace;
+  namespaceList = [(HMDNameValidator *)self namespaceList];
+  v6 = [namespaceList objectForKeyedSubscript:namespaceCopy];
 
   if (v6)
   {
@@ -900,8 +900,8 @@ LABEL_21:
   else
   {
     v8 = [MEMORY[0x277CBEB58] set];
-    v9 = [(HMDNameValidator *)self namespaceList];
-    [v9 setObject:v8 forKey:v4];
+    namespaceList2 = [(HMDNameValidator *)self namespaceList];
+    [namespaceList2 setObject:v8 forKey:namespaceCopy];
 
     v7 = 0;
   }
@@ -909,19 +909,19 @@ LABEL_21:
   return v7;
 }
 
-- (HMDNameValidator)initWithUUID:(id)a3
+- (HMDNameValidator)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = HMDNameValidator;
   v6 = [(HMDNameValidator *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     namespaceList = v6->_namespaceList;
-    v6->_namespaceList = v7;
+    v6->_namespaceList = dictionary;
 
-    objc_storeStrong(&v6->_homeManagerUUID, a3);
+    objc_storeStrong(&v6->_homeManagerUUID, d);
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"length != 0"];
     nonZeroLengthPredicate = v6->_nonZeroLengthPredicate;
     v6->_nonZeroLengthPredicate = v9;
@@ -934,25 +934,25 @@ LABEL_21:
 
 + (id)allowedMiddleCharacters
 {
-  v2 = [a1 allowedTerminalCharacters];
-  v3 = [v2 mutableCopy];
+  allowedTerminalCharacters = [self allowedTerminalCharacters];
+  v3 = [allowedTerminalCharacters mutableCopy];
 
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  [v3 formUnionWithCharacterSet:v4];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  [v3 formUnionWithCharacterSet:whitespaceCharacterSet];
 
-  v5 = [MEMORY[0x277CCA900] controlCharacterSet];
-  [v3 formUnionWithCharacterSet:v5];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  [v3 formUnionWithCharacterSet:controlCharacterSet];
 
-  v6 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-  [v3 formUnionWithCharacterSet:v6];
+  punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+  [v3 formUnionWithCharacterSet:punctuationCharacterSet];
 
   return v3;
 }
 
 + (id)allowedTerminalCharacters
 {
-  v2 = [a1 allowedInitialCharacters];
-  v3 = [v2 mutableCopy];
+  allowedInitialCharacters = [self allowedInitialCharacters];
+  v3 = [allowedInitialCharacters mutableCopy];
 
   [v3 addCharactersInString:@"."];
 

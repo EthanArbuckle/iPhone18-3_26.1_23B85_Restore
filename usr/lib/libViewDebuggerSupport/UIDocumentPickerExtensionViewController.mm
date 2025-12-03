@@ -1,6 +1,6 @@
 @interface UIDocumentPickerExtensionViewController
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIDocumentPickerExtensionViewController
@@ -36,27 +36,27 @@
   return v6;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"originalURL"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"originalURL"])
   {
-    v10 = [v9 originalURL];
+    originalURL = [objectCopy originalURL];
 LABEL_5:
-    v11 = v10;
-    a6 = [v10 absoluteString];
+    v11 = originalURL;
+    error = [originalURL absoluteString];
     goto LABEL_27;
   }
 
-  if ([v8 isEqualToString:@"originalURL"])
+  if ([nameCopy isEqualToString:@"originalURL"])
   {
-    v10 = [v9 documentStorageURL];
+    originalURL = [objectCopy documentStorageURL];
     goto LABEL_5;
   }
 
-  v11 = v9;
-  v12 = v8;
+  v11 = objectCopy;
+  v12 = nameCopy;
   if (![v12 length])
   {
     goto LABEL_17;
@@ -67,18 +67,18 @@ LABEL_5:
   {
     if ([v12 length] < 2)
     {
-      v17 = [v12 uppercaseString];
+      uppercaseString = [v12 uppercaseString];
     }
 
     else
     {
       v14 = [v12 substringToIndex:1];
-      v15 = [v14 uppercaseString];
+      uppercaseString2 = [v14 uppercaseString];
       v16 = [v12 substringFromIndex:1];
-      v17 = [v15 stringByAppendingString:v16];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v16];
     }
 
-    v18 = [@"is" stringByAppendingString:v17];
+    v18 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v18);
     if (objc_opt_respondsToSelector())
     {
@@ -96,7 +96,7 @@ LABEL_5:
     }
 
 LABEL_17:
-    if (a6)
+    if (error)
     {
       v19 = v12;
       if (v11)
@@ -130,10 +130,10 @@ LABEL_17:
       v24 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v23];
 
       v25 = v24;
-      *a6 = v24;
+      *error = v24;
 
       v13 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -151,12 +151,12 @@ LABEL_17:
   }
 
 LABEL_9:
-  a6 = [v11 valueForKey:v13];
+  error = [v11 valueForKey:v13];
 LABEL_26:
 
 LABEL_27:
 
-  return a6;
+  return error;
 }
 
 @end

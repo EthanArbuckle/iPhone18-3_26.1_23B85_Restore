@@ -1,25 +1,25 @@
 @interface MapsSuggestionsOfflineDownloadNotificationAction
-- (MapsSuggestionsOfflineDownloadNotificationAction)initWithEntry:(id)a3 budget:(id)a4 completion:(id)a5;
+- (MapsSuggestionsOfflineDownloadNotificationAction)initWithEntry:(id)entry budget:(id)budget completion:(id)completion;
 - (NSString)uniqueName;
-- (void)actWithHandler:(id)a3;
+- (void)actWithHandler:(id)handler;
 @end
 
 @implementation MapsSuggestionsOfflineDownloadNotificationAction
 
-- (MapsSuggestionsOfflineDownloadNotificationAction)initWithEntry:(id)a3 budget:(id)a4 completion:(id)a5
+- (MapsSuggestionsOfflineDownloadNotificationAction)initWithEntry:(id)entry budget:(id)budget completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  entryCopy = entry;
+  budgetCopy = budget;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = MapsSuggestionsOfflineDownloadNotificationAction;
   v12 = [(MapsSuggestionsOfflineDownloadNotificationAction *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entry, a3);
-    objc_storeStrong(&v13->_budget, a4);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(&v12->_entry, entry);
+    objc_storeStrong(&v13->_budget, budget);
+    v14 = objc_retainBlock(completionCopy);
     handler = v13->_handler;
     v13->_handler = v14;
 
@@ -29,7 +29,7 @@
   return v13;
 }
 
-- (void)actWithHandler:(id)a3
+- (void)actWithHandler:(id)handler
 {
   obj = self;
   objc_sync_enter(obj);

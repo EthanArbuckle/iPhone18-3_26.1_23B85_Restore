@@ -1,39 +1,39 @@
 @interface AKFormFeatureDetector
-+ (CGContext)_newBitmapFromCGPDFDocument:(CGPDFDocument *)a3;
-+ (CGContext)_newBitmapInRect:(CGRect)a3 onPage:(id)a4 scale:(double)a5;
-- ($F0CD3428A0DA0A278EE56C24FA6A9B79)_findVerticalEdgesAtPoint:(SEL)a3 extent:(CGPoint)a4 onPage:(int64_t)a5;
-- (AKFormFeatureDetector)initWithDelegate:(id)a3;
++ (CGContext)_newBitmapFromCGPDFDocument:(CGPDFDocument *)document;
++ (CGContext)_newBitmapInRect:(CGRect)rect onPage:(id)page scale:(double)scale;
+- ($F0CD3428A0DA0A278EE56C24FA6A9B79)_findVerticalEdgesAtPoint:(SEL)point extent:(CGPoint)extent onPage:(int64_t)page;
+- (AKFormFeatureDetector)initWithDelegate:(id)delegate;
 - (AKFormFeatureDetectorDelegate)delegate;
-- (BOOL)_floatPixelBufferForCGContext:(CGContext *)a3 imageBuffer:(vImage_Buffer *)a4;
-- (CGRect)_findExtentForLineTop:(double)a3 lineBottom:(double)a4 x:(double)a5 onPage:(id)a6;
-- (CGRect)_translateFeature:(id)a3 toPageOrigin:(CGPoint)a4;
-- (float)_shiftScanAwayFromEdgeInPixels:(float *)a3;
-- (float)_thresholdPixelStripIn:(float *)a3 withImageLenth:(int64_t)a4 thresholdValue:(float)a5 startingPtr:(float *)a6 withThresholdLength:(int64_t)a7;
-- (id)_boxOnLine:(id)a3 atPoint:(CGPoint)a4;
-- (id)_checkboxAtPoint:(CGPoint)a3 onPage:(id)a4 pageBitmap:(CGContext *)a5;
-- (id)_defaultFeatureForPoint:(CGPoint)a3 onPage:(id)a4 snapToVerticalEdges:(BOOL)a5;
-- (id)_featureAtPoint:(CGPoint)a3 onPage:(id)a4 mode:(int64_t)a5;
-- (id)_formFieldAtPoint:(CGPoint)a3 onPage:(id)a4 enforceMaxWidth:(BOOL)a5 pageBitmap:(CGContext *)a6;
-- (id)_lineAtPoint:(CGPoint)a3 onPage:(id)a4 useVerticalCenter:(BOOL)a5;
-- (id)_snappedFormFieldForField:(id)a3;
-- (int64_t)_scanToEdgeOfFormFieldStartingAtPoint:(CGPoint)a3 withBitmapData:(float *)a4 width:(int64_t)a5 height:(int64_t)a6 bottomRowStartsAt:(float *)a7 bottomRowEndsAt:(float *)a8 withLineThickness:(int64_t)a9 gapWidthForDottedLines:(int64_t)a10 separatorHeights:(id)a11 andRegionHeight:(int64_t *)a12 trackAverageSpacingWidth:(int64_t *)a13 trackFarthestPossibleEdge:(int64_t *)a14 trackNumberOfSegments:(int64_t *)a15 trackNumberOfGapsForDottedLine:(int64_t *)a16 goingLeft:(BOOL)a17;
-- (unint64_t)_findLineEdgeTypeOnLeft:(BOOL)a3 startingAt:(float *)a4 withPageLeftEdge:(float *)a5 withPageWidth:(int64_t)a6 andFormHeight:(unint64_t)a7;
-- (void)_drawThresholdedBitmapForTestForPageBitmap:(CGContext *)a3 withPixels:(float *)a4;
+- (BOOL)_floatPixelBufferForCGContext:(CGContext *)context imageBuffer:(vImage_Buffer *)buffer;
+- (CGRect)_findExtentForLineTop:(double)top lineBottom:(double)bottom x:(double)x onPage:(id)page;
+- (CGRect)_translateFeature:(id)feature toPageOrigin:(CGPoint)origin;
+- (float)_shiftScanAwayFromEdgeInPixels:(float *)pixels;
+- (float)_thresholdPixelStripIn:(float *)in withImageLenth:(int64_t)lenth thresholdValue:(float)value startingPtr:(float *)ptr withThresholdLength:(int64_t)length;
+- (id)_boxOnLine:(id)line atPoint:(CGPoint)point;
+- (id)_checkboxAtPoint:(CGPoint)point onPage:(id)page pageBitmap:(CGContext *)bitmap;
+- (id)_defaultFeatureForPoint:(CGPoint)point onPage:(id)page snapToVerticalEdges:(BOOL)edges;
+- (id)_featureAtPoint:(CGPoint)point onPage:(id)page mode:(int64_t)mode;
+- (id)_formFieldAtPoint:(CGPoint)point onPage:(id)page enforceMaxWidth:(BOOL)width pageBitmap:(CGContext *)bitmap;
+- (id)_lineAtPoint:(CGPoint)point onPage:(id)page useVerticalCenter:(BOOL)center;
+- (id)_snappedFormFieldForField:(id)field;
+- (int64_t)_scanToEdgeOfFormFieldStartingAtPoint:(CGPoint)point withBitmapData:(float *)data width:(int64_t)width height:(int64_t)height bottomRowStartsAt:(float *)at bottomRowEndsAt:(float *)endsAt withLineThickness:(int64_t)thickness gapWidthForDottedLines:(int64_t)self0 separatorHeights:(id)self1 andRegionHeight:(int64_t *)self2 trackAverageSpacingWidth:(int64_t *)self3 trackFarthestPossibleEdge:(int64_t *)self4 trackNumberOfSegments:(int64_t *)self5 trackNumberOfGapsForDottedLine:(int64_t *)self6 goingLeft:(BOOL)self7;
+- (unint64_t)_findLineEdgeTypeOnLeft:(BOOL)left startingAt:(float *)at withPageLeftEdge:(float *)edge withPageWidth:(int64_t)width andFormHeight:(unint64_t)height;
+- (void)_drawThresholdedBitmapForTestForPageBitmap:(CGContext *)bitmap withPixels:(float *)pixels;
 - (void)dealloc;
 @end
 
 @implementation AKFormFeatureDetector
 
-- (AKFormFeatureDetector)initWithDelegate:(id)a3
+- (AKFormFeatureDetector)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = AKFormFeatureDetector;
   v5 = [(AKFormFeatureDetector *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -47,17 +47,17 @@
   [(AKFormFeatureDetector *)&v3 dealloc];
 }
 
-- (id)_featureAtPoint:(CGPoint)a3 onPage:(id)a4 mode:(int64_t)a5
+- (id)_featureAtPoint:(CGPoint)point onPage:(id)page mode:(int64_t)mode
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
   [AKGeometryHelper rectWithSize:400.0 centeredAtPoint:400.0, x, y];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [objc_opt_class() _newBitmapInRect:v9 onPage:v10 scale:{v12, v14, v16, 1.0}];
+  v18 = [objc_opt_class() _newBitmapInRect:pageCopy onPage:v10 scale:{v12, v14, v16, 1.0}];
   if (!v18)
   {
     v37.origin.x = v11;
@@ -72,12 +72,12 @@
   }
 
   v19 = v18;
-  if ((a5 - 1) <= 1)
+  if ((mode - 1) <= 1)
   {
-    v20 = [(AKFormFeatureDetector *)self _checkboxAtPoint:v9 onPage:v18 pageBitmap:200.0, 200.0];
+    v20 = [(AKFormFeatureDetector *)self _checkboxAtPoint:pageCopy onPage:v18 pageBitmap:200.0, 200.0];
     if (!v20)
     {
-      v21 = [(AKFormFeatureDetector *)self _formFieldAtPoint:v9 onPage:1 enforceMaxWidth:v19 pageBitmap:200.0, 200.0];
+      v21 = [(AKFormFeatureDetector *)self _formFieldAtPoint:pageCopy onPage:1 enforceMaxWidth:v19 pageBitmap:200.0, 200.0];
       if (v21)
       {
         v22 = v21;
@@ -92,9 +92,9 @@
         goto LABEL_11;
       }
 
-      if (a5 == 2)
+      if (mode == 2)
       {
-        v32 = [(AKFormFeatureDetector *)self _defaultFeatureForPoint:v9 onPage:1 snapToVerticalEdges:x, y];
+        v32 = [(AKFormFeatureDetector *)self _defaultFeatureForPoint:pageCopy onPage:1 snapToVerticalEdges:x, y];
         goto LABEL_21;
       }
 
@@ -104,11 +104,11 @@
     goto LABEL_10;
   }
 
-  if ((a5 - 3) > 1)
+  if ((mode - 3) > 1)
   {
-    if (!a5)
+    if (!mode)
     {
-      v32 = [(AKFormFeatureDetector *)self _lineAtPoint:v9 onPage:1 useVerticalCenter:x, y];
+      v32 = [(AKFormFeatureDetector *)self _lineAtPoint:pageCopy onPage:1 useVerticalCenter:x, y];
 LABEL_21:
       v22 = v32;
       goto LABEL_29;
@@ -119,10 +119,10 @@ LABEL_13:
     goto LABEL_29;
   }
 
-  v20 = [(AKFormFeatureDetector *)self _checkboxAtPoint:v9 onPage:v18 pageBitmap:x, y];
+  v20 = [(AKFormFeatureDetector *)self _checkboxAtPoint:pageCopy onPage:v18 pageBitmap:x, y];
   if (!v20)
   {
-    v24 = [(AKFormFeatureDetector *)self _lineAtPoint:v9 onPage:0 useVerticalCenter:x, y];
+    v24 = [(AKFormFeatureDetector *)self _lineAtPoint:pageCopy onPage:0 useVerticalCenter:x, y];
     v25 = v24;
     if (v24)
     {
@@ -133,27 +133,27 @@ LABEL_13:
         goto LABEL_27;
       }
 
-      if (a5 == 4)
+      if (mode == 4)
       {
-        v27 = self;
+        selfCopy2 = self;
         v28 = x;
         v29 = y;
-        v30 = v9;
+        v30 = pageCopy;
         v31 = 0;
 LABEL_24:
-        v33 = [(AKFormFeatureDetector *)v27 _defaultFeatureForPoint:v30 onPage:v31 snapToVerticalEdges:v28, v29];
+        v33 = [(AKFormFeatureDetector *)selfCopy2 _defaultFeatureForPoint:v30 onPage:v31 snapToVerticalEdges:v28, v29];
 LABEL_27:
         v22 = v33;
         goto LABEL_28;
       }
     }
 
-    else if (a5 == 4)
+    else if (mode == 4)
     {
-      v27 = self;
+      selfCopy2 = self;
       v28 = x;
       v29 = y;
-      v30 = v9;
+      v30 = pageCopy;
       v31 = 1;
       goto LABEL_24;
     }
@@ -176,11 +176,11 @@ LABEL_30:
   return v22;
 }
 
-- (CGRect)_translateFeature:(id)a3 toPageOrigin:(CGPoint)a4
+- (CGRect)_translateFeature:(id)feature toPageOrigin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
-  [a3 rect];
+  y = origin.y;
+  x = origin.x;
+  [feature rect];
   v9 = x + v8;
   v11 = y + v10;
   result.size.height = v7;
@@ -190,14 +190,14 @@ LABEL_30:
   return result;
 }
 
-- (id)_formFieldAtPoint:(CGPoint)a3 onPage:(id)a4 enforceMaxWidth:(BOOL)a5 pageBitmap:(CGContext *)a6
+- (id)_formFieldAtPoint:(CGPoint)point onPage:(id)page enforceMaxWidth:(BOOL)width pageBitmap:(CGContext *)bitmap
 {
-  v7 = a5;
-  y = a3.y;
-  x = a3.x;
-  v11 = a4;
+  widthCopy = width;
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (([WeakRetained defaultFeatureSizeForPage:v11], v14 = v13, objc_msgSend(v11, "overlayView"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "bounds"), v17 = v16, v19 = v18, v21 = v20, v23 = v22, v15, (v24 = a6) != 0) || (v24 = objc_msgSend(objc_opt_class(), "_newBitmapInRect:onPage:scale:", v11, v17, v19, v21, v23, 1.0)) != 0))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (([WeakRetained defaultFeatureSizeForPage:pageCopy], v14 = v13, objc_msgSend(pageCopy, "overlayView"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "bounds"), v17 = v16, v19 = v18, v21 = v20, v23 = v22, v15, (v24 = bitmap) != 0) || (v24 = objc_msgSend(objc_opt_class(), "_newBitmapInRect:onPage:scale:", pageCopy, v17, v19, v21, v23, 1.0)) != 0))
   {
     Width = CGBitmapContextGetWidth(v24);
     Height = CGBitmapContextGetHeight(v24);
@@ -238,7 +238,7 @@ LABEL_30:
           if (Data)
           {
             v88 = BitmapInfo;
-            v86 = v7;
+            v86 = widthCopy;
             v35 = Data[Width * v97 + v27] + -0.01;
             v90 = 4 * Width * vcvtmd_s64_f64(v14);
             *&v33 = v35;
@@ -249,7 +249,7 @@ LABEL_30:
               v38 = v36;
               v87 = WeakRetained;
               v84 = v24;
-              v85 = a6;
+              bitmapCopy = bitmap;
               v39 = 0;
               v95 = 0;
               v40 = 0;
@@ -483,14 +483,14 @@ LABEL_74:
 LABEL_96:
                         v28 = 0;
                         v24 = v84;
-                        a6 = v85;
+                        bitmap = bitmapCopy;
                         goto LABEL_97;
                       }
 
-                      v76 = [AKFormFeatureLine featureWithRect:v11 onPage:v56, v65 - v96, v57];
-                      if (v86 && (objc_opt_respondsToSelector() & 1) != 0 && ([v87 maximumFeatureWidthForPage:v11], v77 < v57))
+                      v76 = [AKFormFeatureLine featureWithRect:pageCopy onPage:v56, v65 - v96, v57];
+                      if (v86 && (objc_opt_respondsToSelector() & 1) != 0 && ([v87 maximumFeatureWidthForPage:pageCopy], v77 < v57))
                       {
-                        [v87 defaultFeatureSizeForPage:v11];
+                        [v87 defaultFeatureSizeForPage:pageCopy];
                         v79 = v78;
                         v80 = x + v78 * -0.0;
                         v66 |= 1uLL;
@@ -502,7 +502,7 @@ LABEL_96:
                         v79 = v57;
                       }
 
-                      v28 = [AKFormFeatureBox boxWithRect:v11 onPage:v66 flags:v76 baseline:v80, v65, v79, v60];
+                      v28 = [AKFormFeatureBox boxWithRect:pageCopy onPage:v66 flags:v76 baseline:v80, v65, v79, v60];
                       [v28 setEnclosingRegionRect:{v56, v83, v57, v58}];
                     }
 
@@ -513,7 +513,7 @@ LABEL_45:
                     }
 
                     v24 = v84;
-                    a6 = v85;
+                    bitmap = bitmapCopy;
                     v52 = v88;
                     WeakRetained = v87;
                     goto LABEL_98;
@@ -595,7 +595,7 @@ LABEL_98:
       }
     }
 
-    if (!a6)
+    if (!bitmap)
     {
       CGContextRelease(v24);
     }
@@ -609,12 +609,12 @@ LABEL_98:
   return v28;
 }
 
-- (unint64_t)_findLineEdgeTypeOnLeft:(BOOL)a3 startingAt:(float *)a4 withPageLeftEdge:(float *)a5 withPageWidth:(int64_t)a6 andFormHeight:(unint64_t)a7
+- (unint64_t)_findLineEdgeTypeOnLeft:(BOOL)left startingAt:(float *)at withPageLeftEdge:(float *)edge withPageWidth:(int64_t)width andFormHeight:(unint64_t)height
 {
-  v11 = a3;
+  leftCopy = left;
   __C = 0.0;
-  v12 = -a6;
-  vDSP_sve(a4, -a6, &__C, a7);
+  v12 = -width;
+  vDSP_sve(at, -width, &__C, height);
   v13 = __C;
   if (__C == 0.0)
   {
@@ -622,23 +622,23 @@ LABEL_98:
   }
 
   __I = v12;
-  v15 = a7;
-  v16 = 2 * a7;
-  v17 = vcvts_n_f32_u64(a7, 1uLL);
-  v18 = a4 - 1;
-  v19 = a4 + 1;
-  v20 = a6;
+  heightCopy = height;
+  v16 = 2 * height;
+  v17 = vcvts_n_f32_u64(height, 1uLL);
+  v18 = at - 1;
+  v19 = at + 1;
+  widthCopy = width;
   v21 = -1;
   v22 = 1;
   v23 = __C;
-  v24 = &a5[v20];
+  v24 = &edge[widthCopy];
   do
   {
     v25 = v16;
-    v26 = v18 > a5 && v11;
+    v26 = v18 > edge && leftCopy;
     if (v26 || v24 > v19)
     {
-      if (v11)
+      if (leftCopy)
       {
         v27 = v21;
       }
@@ -648,57 +648,57 @@ LABEL_98:
         v27 = v22;
       }
 
-      vDSP_sve(&a4[v27], __I, &__C, a7);
-      v29 = __C != v15 && __C != 0.0;
+      vDSP_sve(&at[v27], __I, &__C, height);
+      v29 = __C != heightCopy && __C != 0.0;
       if (!v29 && (v25 - v23) < v17)
       {
         return 1;
       }
 
       v23 = v23 + __C;
-      if (__C == v15)
+      if (__C == heightCopy)
       {
         break;
       }
     }
 
     --v21;
-    v16 += a7;
+    v16 += height;
     --v18;
     ++v19;
     ++v22;
   }
 
   while (v21 != -4);
-  if ((v25 - v23) >= v17 && (v25 - v23) < v15)
+  if ((v25 - v23) >= v17 && (v25 - v23) < heightCopy)
   {
     return 3;
   }
 
   else
   {
-    return v13 < (a7 - 1);
+    return v13 < (height - 1);
   }
 }
 
-- (int64_t)_scanToEdgeOfFormFieldStartingAtPoint:(CGPoint)a3 withBitmapData:(float *)a4 width:(int64_t)a5 height:(int64_t)a6 bottomRowStartsAt:(float *)a7 bottomRowEndsAt:(float *)a8 withLineThickness:(int64_t)a9 gapWidthForDottedLines:(int64_t)a10 separatorHeights:(id)a11 andRegionHeight:(int64_t *)a12 trackAverageSpacingWidth:(int64_t *)a13 trackFarthestPossibleEdge:(int64_t *)a14 trackNumberOfSegments:(int64_t *)a15 trackNumberOfGapsForDottedLine:(int64_t *)a16 goingLeft:(BOOL)a17
+- (int64_t)_scanToEdgeOfFormFieldStartingAtPoint:(CGPoint)point withBitmapData:(float *)data width:(int64_t)width height:(int64_t)height bottomRowStartsAt:(float *)at bottomRowEndsAt:(float *)endsAt withLineThickness:(int64_t)thickness gapWidthForDottedLines:(int64_t)self0 separatorHeights:(id)self1 andRegionHeight:(int64_t *)self2 trackAverageSpacingWidth:(int64_t *)self3 trackFarthestPossibleEdge:(int64_t *)self4 trackNumberOfSegments:(int64_t *)self5 trackNumberOfGapsForDottedLine:(int64_t *)self6 goingLeft:(BOOL)self7
 {
-  x = a3.x;
-  v74 = a15;
-  v22 = a11;
-  v23 = a17;
+  x = point.x;
+  segmentsCopy = segments;
+  heightsCopy = heights;
+  leftCopy7 = left;
   v24 = vcvtmd_s64_f64(x);
-  v25 = *a13;
-  v26 = *a14;
-  v78 = *a16;
-  v79 = v22;
-  v27 = *a12;
-  v28 = &a7[v24];
+  v25 = *spacingWidth;
+  v26 = *edge;
+  v78 = *line;
+  v79 = heightsCopy;
+  v27 = *regionHeight;
+  v28 = &at[v24];
   v29 = v24 >= 0;
-  v89 = a8;
-  if (!a17)
+  endsAtCopy = endsAt;
+  if (!left)
   {
-    v29 = v28 <= a8;
+    v29 = v28 <= endsAt;
   }
 
   if (!v29)
@@ -709,13 +709,13 @@ LABEL_98:
     goto LABEL_62;
   }
 
-  v30 = a7;
+  atCopy = at;
   v31 = 0;
   v32 = 0;
   v33 = 0;
   v34 = 0;
   v90 = 0;
-  if (a17)
+  if (left)
   {
     v36 = -4;
   }
@@ -726,27 +726,27 @@ LABEL_98:
   }
 
   v37 = -1;
-  if (!a17)
+  if (!left)
   {
     v37 = 1;
   }
 
   v87 = v37;
   v88 = v36;
-  v38 = 4 * a5;
+  v38 = 4 * width;
   v39 = 0x7FFFFFFFFFFFFFFFLL;
   v40 = 0x7FFFFFFFFFFFFFFFLL;
-  v41 = -4 * a5;
-  v42 = &v30[v24 - a5];
-  v81 = a5;
-  v82 = v30;
-  v43 = a5;
-  v80 = 4 * a5;
-  while (v28 < a4 || v27 <= 0)
+  v41 = -4 * width;
+  v42 = &atCopy[v24 - width];
+  widthCopy = width;
+  v82 = atCopy;
+  widthCopy2 = width;
+  v80 = 4 * width;
+  while (v28 < data || v27 <= 0)
   {
     v50 = 0;
 LABEL_29:
-    if (v23)
+    if (leftCopy7)
     {
       v51 = v34;
     }
@@ -777,7 +777,7 @@ LABEL_29:
 
       if ((v31 & (v25 == 0x7FFFFFFFFFFFFFFFLL)) == 1)
       {
-        if (v23)
+        if (leftCopy7)
         {
           v25 = v26 - v24;
         }
@@ -803,16 +803,16 @@ LABEL_29:
 
       v53 = v60;
       v38 = v80;
-      v43 = v81;
+      widthCopy2 = widthCopy;
       v24 = v59;
       v25 = v58;
-      v30 = v82;
+      atCopy = v82;
       v34 = v84;
       v40 = v86;
-      v23 = a17;
+      leftCopy7 = left;
     }
 
-    a10 = 0;
+    lines = 0;
     v32 = 0;
     v31 = 1;
     v39 = v50;
@@ -820,10 +820,10 @@ LABEL_29:
 LABEL_57:
     v28 = (v28 + v88);
     v24 += v87;
-    v62 = v28 <= v89;
-    if (v23)
+    v62 = v28 <= endsAtCopy;
+    if (leftCopy7)
     {
-      v62 = v28 >= v30;
+      v62 = v28 >= atCopy;
     }
 
     v42 += v88;
@@ -846,7 +846,7 @@ LABEL_57:
 
     v48 = (v48 + v41);
     ++v46;
-    if (v48 < a4)
+    if (v48 < data)
     {
       break;
     }
@@ -867,7 +867,7 @@ LABEL_57:
       }
 
       ++v50;
-      if (v42 + v49 < a4)
+      if (v42 + v49 < data)
       {
         break;
       }
@@ -890,9 +890,9 @@ LABEL_57:
   }
 
   __C[0] = 0.0;
-  vDSP_sve(v28, v43, __C, a9);
+  vDSP_sve(v28, widthCopy2, __C, thickness);
   *&v55 = __C[0];
-  if (__C[0] < a9)
+  if (__C[0] < thickness)
   {
     v56 = v78;
     if (v54 > 0)
@@ -901,19 +901,19 @@ LABEL_57:
     }
 
     v78 = v56;
-    v23 = a17;
+    leftCopy7 = left;
     v24 = v83;
     v25 = v85;
     if ((v31 & (v75 > 19)) == 1)
     {
       v26 = v77;
-      if (!a17)
+      if (!left)
       {
         v65 = [MEMORY[0x277CCABB0] numberWithInteger:{v39, v55}];
         v66 = [v79 containsObject:v65];
 
         v25 = v85;
-        v23 = a17;
+        leftCopy7 = left;
         if (v66)
         {
           v67 = v85;
@@ -936,45 +936,45 @@ LABEL_57:
   }
 
   v34 = v54 + 1;
-  v23 = a17;
+  leftCopy7 = left;
   v24 = v83;
   v25 = v85;
-  if (v54 + 1 < a10)
+  if (v54 + 1 < lines)
   {
     v32 = 0;
 LABEL_52:
     v26 = v77;
     v53 = 0;
-    v43 = v81;
-    v30 = v82;
+    widthCopy2 = widthCopy;
+    atCopy = v82;
     v38 = v80;
     goto LABEL_57;
   }
 
-  if (a17)
+  if (left)
   {
-    v68 = a10;
+    linesCopy = lines;
   }
 
   else
   {
-    v68 = -a10;
+    linesCopy = -lines;
   }
 
-  v69 = v68 + v83;
+  v69 = linesCopy + v83;
   if ((v31 & 1) == 0)
   {
     v40 = v69;
   }
 
-  v70 = [MEMORY[0x277CCABB0] numberWithInteger:{v39, v55, a15}];
+  v70 = [MEMORY[0x277CCABB0] numberWithInteger:{v39, v55, segments}];
   v71 = [v79 containsObject:v70];
 
   if (v71 && v75 >= 5)
   {
-    v23 = a17;
+    leftCopy7 = left;
     v25 = v85;
-    if (a17)
+    if (left)
     {
       v72 = -v85;
     }
@@ -1007,14 +1007,14 @@ LABEL_52:
       v26 = v77;
     }
 
-    v23 = a17;
+    leftCopy7 = left;
   }
 
 LABEL_88:
   v53 = 0;
 LABEL_62:
-  *v74 = v90;
-  if (v23)
+  *segmentsCopy = v90;
+  if (leftCopy7)
   {
     v63 = v53;
   }
@@ -1024,63 +1024,63 @@ LABEL_62:
     v63 = -v53;
   }
 
-  *a14 = v63 + v26;
-  *a13 = v25;
-  *a16 = v78;
-  *a12 = v27;
+  *edge = v63 + v26;
+  *spacingWidth = v25;
+  *line = v78;
+  *regionHeight = v27;
 
   return v40;
 }
 
-- (float)_thresholdPixelStripIn:(float *)a3 withImageLenth:(int64_t)a4 thresholdValue:(float)a5 startingPtr:(float *)a6 withThresholdLength:(int64_t)a7
+- (float)_thresholdPixelStripIn:(float *)in withImageLenth:(int64_t)lenth thresholdValue:(float)value startingPtr:(float *)ptr withThresholdLength:(int64_t)length
 {
-  __B = a5;
+  __B = value;
   __C = 1.0;
-  v7 = &a3[a4];
-  if (v7 <= a6)
+  v7 = &in[lenth];
+  if (v7 <= ptr)
   {
     return 0;
   }
 
-  if (a6 >= a3)
+  if (ptr >= in)
   {
-    v8 = a6;
+    inCopy = ptr;
   }
 
   else
   {
-    v8 = a3;
+    inCopy = in;
   }
 
-  v9 = v7 - v8;
-  if (v9 >= a7)
+  v9 = v7 - inCopy;
+  if (v9 >= length)
   {
-    v10 = a7;
+    lengthCopy = length;
   }
 
   else
   {
-    v10 = v9;
+    lengthCopy = v9;
   }
 
-  v11 = &v8[v10];
-  vDSP_vthrsc(v8, 1, &__B, &__C, v8, 1, v10);
-  vDSP_vthres(v8, 1, &__C, v8, 1, v10);
+  v11 = &inCopy[lengthCopy];
+  vDSP_vthrsc(inCopy, 1, &__B, &__C, inCopy, 1, lengthCopy);
+  vDSP_vthres(inCopy, 1, &__C, inCopy, 1, lengthCopy);
   return v11;
 }
 
-- (void)_drawThresholdedBitmapForTestForPageBitmap:(CGContext *)a3 withPixels:(float *)a4
+- (void)_drawThresholdedBitmapForTestForPageBitmap:(CGContext *)bitmap withPixels:(float *)pixels
 {
-  Width = CGBitmapContextGetWidth(a3);
-  Height = CGBitmapContextGetHeight(a3);
-  BitsPerComponent = CGBitmapContextGetBitsPerComponent(a3);
-  BytesPerRow = CGBitmapContextGetBytesPerRow(a3);
-  ColorSpace = CGBitmapContextGetColorSpace(a3);
-  BitmapInfo = CGBitmapContextGetBitmapInfo(a3);
-  v12 = CGBitmapContextCreate(a4, Width, Height, BitsPerComponent, BytesPerRow, ColorSpace, BitmapInfo);
+  Width = CGBitmapContextGetWidth(bitmap);
+  Height = CGBitmapContextGetHeight(bitmap);
+  BitsPerComponent = CGBitmapContextGetBitsPerComponent(bitmap);
+  BytesPerRow = CGBitmapContextGetBytesPerRow(bitmap);
+  ColorSpace = CGBitmapContextGetColorSpace(bitmap);
+  BitmapInfo = CGBitmapContextGetBitmapInfo(bitmap);
+  v12 = CGBitmapContextCreate(pixels, Width, Height, BitsPerComponent, BytesPerRow, ColorSpace, BitmapInfo);
   Image = CGBitmapContextCreateImage(v12);
-  v14 = [@"~/Desktop/testImage.pdf" stringByExpandingTildeInPath];
-  [v14 cStringUsingEncoding:4];
+  stringByExpandingTildeInPath = [@"~/Desktop/testImage.pdf" stringByExpandingTildeInPath];
+  [stringByExpandingTildeInPath cStringUsingEncoding:4];
   CGImageWriteToFile();
 
   CGImageRelease(Image);
@@ -1088,16 +1088,16 @@ LABEL_62:
   CGContextRelease(v12);
 }
 
-- (float)_shiftScanAwayFromEdgeInPixels:(float *)a3
+- (float)_shiftScanAwayFromEdgeInPixels:(float *)pixels
 {
   __C = 0.0;
-  vDSP_sve(a3, 1, &__C, 8uLL);
+  vDSP_sve(pixels, 1, &__C, 8uLL);
   v6 = 0.0;
-  v4 = a3 + 8;
-  vDSP_sve(a3 + 8, 1, &v6, 8uLL);
+  v4 = pixels + 8;
+  vDSP_sve(pixels + 8, 1, &v6, 8uLL);
   if (v6 < 6.0)
   {
-    return a3 - 9;
+    return pixels - 9;
   }
 
   if (__C >= 6.0)
@@ -1108,28 +1108,28 @@ LABEL_62:
   return v4;
 }
 
-- (id)_snappedFormFieldForField:(id)a3
+- (id)_snappedFormFieldForField:(id)field
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  fieldCopy = field;
+  v4 = fieldCopy;
+  if (fieldCopy)
   {
-    [v3 rect];
+    [fieldCopy rect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [v4 baseline];
+    baseline = [v4 baseline];
 
-    if (!v13)
+    if (!baseline)
     {
 LABEL_5:
       v27 = v4;
       goto LABEL_10;
     }
 
-    v14 = [v4 baseline];
-    [v14 rect];
+    baseline2 = [v4 baseline];
+    [baseline2 rect];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -1176,10 +1176,10 @@ LABEL_5:
       v28 = 8;
     }
 
-    v29 = [v4 page];
-    v30 = [v4 flags];
-    v31 = [v4 baseline];
-    v27 = [AKFormFeatureBox boxWithRect:v29 onPage:v30 | v28 flags:v31 baseline:v16, v23, v10, v24];
+    page = [v4 page];
+    flags = [v4 flags];
+    baseline3 = [v4 baseline];
+    v27 = [AKFormFeatureBox boxWithRect:page onPage:flags | v28 flags:baseline3 baseline:v16, v23, v10, v24];
 
     [v4 enclosingRegionRect];
     [v27 setEnclosingRegionRect:?];
@@ -1195,15 +1195,15 @@ LABEL_10:
   return v27;
 }
 
-- (BOOL)_floatPixelBufferForCGContext:(CGContext *)a3 imageBuffer:(vImage_Buffer *)a4
+- (BOOL)_floatPixelBufferForCGContext:(CGContext *)context imageBuffer:(vImage_Buffer *)buffer
 {
-  Image = CGBitmapContextCreateImage(a3);
-  ColorSpace = CGBitmapContextGetColorSpace(a3);
-  BitmapInfo = CGBitmapContextGetBitmapInfo(a3);
-  BitsPerPixel = CGBitmapContextGetBitsPerPixel(a3);
-  BitsPerComponent = CGBitmapContextGetBitsPerComponent(a3);
-  Width = CGBitmapContextGetWidth(a3);
-  v12 = CGBitmapContextGetWidth(a3);
+  Image = CGBitmapContextCreateImage(context);
+  ColorSpace = CGBitmapContextGetColorSpace(context);
+  BitmapInfo = CGBitmapContextGetBitmapInfo(context);
+  BitsPerPixel = CGBitmapContextGetBitsPerPixel(context);
+  BitsPerComponent = CGBitmapContextGetBitsPerComponent(context);
+  Width = CGBitmapContextGetWidth(context);
+  v12 = CGBitmapContextGetWidth(context);
   v26 = 0;
   v21[0] = BitsPerComponent;
   v21[1] = BitsPerPixel;
@@ -1237,8 +1237,8 @@ LABEL_10:
     else
     {
       v17 = *&dest.width;
-      *&a4->data = *&dest.data;
-      *&a4->width = v17;
+      *&buffer->data = *&dest.data;
+      *&buffer->width = v17;
     }
   }
 
@@ -1246,32 +1246,32 @@ LABEL_10:
   return v15;
 }
 
-- (id)_checkboxAtPoint:(CGPoint)a3 onPage:(id)a4 pageBitmap:(CGContext *)a5
+- (id)_checkboxAtPoint:(CGPoint)point onPage:(id)page pageBitmap:(CGContext *)bitmap
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v66 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = [v9 overlayView];
-  [v10 bounds];
+  pageCopy = page;
+  overlayView = [pageCopy overlayView];
+  [overlayView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = a5;
-  if (!a5)
+  bitmapCopy = bitmap;
+  if (!bitmap)
   {
-    v19 = [objc_opt_class() _newBitmapInRect:v9 onPage:v12 scale:{v14, v16, v18, 1.0}];
-    if (!v19)
+    bitmapCopy = [objc_opt_class() _newBitmapInRect:pageCopy onPage:v12 scale:{v14, v16, v18, 1.0}];
+    if (!bitmapCopy)
     {
       v23 = 0;
       goto LABEL_17;
     }
   }
 
-  Width = CGBitmapContextGetWidth(v19);
-  Height = CGBitmapContextGetHeight(v19);
+  Width = CGBitmapContextGetWidth(bitmapCopy);
+  Height = CGBitmapContextGetHeight(bitmapCopy);
   v22 = vcvtmd_s64_f64(x);
   if (v22 < 20)
   {
@@ -1290,16 +1290,16 @@ LABEL_10:
       {
         *v52 = 0u;
         v53 = 0u;
-        BitmapInfo = CGBitmapContextGetBitmapInfo(v19);
+        BitmapInfo = CGBitmapContextGetBitmapInfo(bitmapCopy);
         if ((BitmapInfo & 0x100) != 0)
         {
-          Data = CGBitmapContextGetData(v19);
+          Data = CGBitmapContextGetData(bitmapCopy);
           v29 = 1;
         }
 
         else
         {
-          v29 = [(AKFormFeatureDetector *)self _floatPixelBufferForCGContext:v19 imageBuffer:v52];
+          v29 = [(AKFormFeatureDetector *)self _floatPixelBufferForCGContext:bitmapCopy imageBuffer:v52];
           Data = v29 ? v52[0] : 0;
         }
 
@@ -1363,7 +1363,7 @@ LABEL_33:
             while (v41 < v40);
             if (v38 * v40 == v44 && (v45 = &v48[(v42 - 1) * Width + v47], v46 = v45 - 1, v50 = 0.0, vDSP_sve(v45, 1, &__A, v38), vDSP_sve(&v46[Width + 1 + Width * v40], 1, &v55, v38), vDSP_sve(v46, Width, &v56, v40 + 2), vDSP_sve(&v46[v38 + 1], Width, &v57, v40 + 2), vDSP_sve(&__A, 1, &v50, 4uLL), v50 <= 0.0))
             {
-              v23 = [AKFormFeatureCheckbox checkboxWithRect:v9 onPage:(v22 - __I), v25 - v61, v38, v40];
+              v23 = [AKFormFeatureCheckbox checkboxWithRect:pageCopy onPage:(v22 - __I), v25 - v61, v38, v40];
             }
 
             else
@@ -1381,9 +1381,9 @@ LABEL_31:
   }
 
 LABEL_14:
-  if (!a5)
+  if (!bitmap)
   {
-    CGContextRelease(v19);
+    CGContextRelease(bitmapCopy);
   }
 
 LABEL_17:
@@ -1391,17 +1391,17 @@ LABEL_17:
   return v23;
 }
 
-- ($F0CD3428A0DA0A278EE56C24FA6A9B79)_findVerticalEdgesAtPoint:(SEL)a3 extent:(CGPoint)a4 onPage:(int64_t)a5
+- ($F0CD3428A0DA0A278EE56C24FA6A9B79)_findVerticalEdgesAtPoint:(SEL)point extent:(CGPoint)extent onPage:(int64_t)page
 {
-  y = a4.y;
-  x = a4.x;
+  y = extent.y;
+  x = extent.x;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
-  v10 = a5 * 0.0 + 20.0;
-  v11 = a5;
+  v10 = page * 0.0 + 20.0;
+  pageCopy = page;
   v12 = a6;
   v13 = round(x);
-  v14 = [objc_opt_class() _newBitmapInRect:v12 onPage:v13 - v10 scale:{round(y), (v11 + v10 - 1), 1.0, 1.0}];
+  v14 = [objc_opt_class() _newBitmapInRect:v12 onPage:v13 - v10 scale:{round(y), (pageCopy + v10 - 1), 1.0, 1.0}];
 
   if (v14)
   {
@@ -1442,7 +1442,7 @@ LABEL_16:
       v19 = &Data[4 * v10 - 4];
       vDSP_minvi(v19, -1, &__C + 1, &__I, v10);
       __I = -__I;
-      vDSP_minvi(v19, 1, &__C, &v20, v11);
+      vDSP_minvi(v19, 1, &__C, &v20, pageCopy);
       if (*(&__C + 1) < 0.25)
       {
         retstr->var0 = 1;
@@ -1467,14 +1467,14 @@ LABEL_16:
   return result;
 }
 
-- (id)_lineAtPoint:(CGPoint)a3 onPage:(id)a4 useVerticalCenter:(BOOL)a5
+- (id)_lineAtPoint:(CGPoint)point onPage:(id)page useVerticalCenter:(BOOL)center
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  centerCopy = center;
+  y = point.y;
+  x = point.x;
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (v5)
+  pageCopy = page;
+  if (centerCopy)
   {
     v10 = 8.0;
   }
@@ -1486,7 +1486,7 @@ LABEL_16:
 
   v11 = round(x);
   v12 = round(y);
-  v13 = [objc_opt_class() _newBitmapInRect:v9 onPage:v11 + -8.0 scale:{v12 - v10, 16.0, 16.0, 4.0}];
+  v13 = [objc_opt_class() _newBitmapInRect:pageCopy onPage:v11 + -8.0 scale:{v12 - v10, 16.0, 16.0, 4.0}];
   if (v13)
   {
     v14 = v13;
@@ -1517,8 +1517,8 @@ LABEL_16:
 
       else if (v21 > v20 && v19 == 1)
       {
-        [(AKFormFeatureDetector *)self _findExtentForLineTop:v9 lineBottom:v12 + 16.0 - v10 - vcvtd_n_f64_s32(v18 x:2uLL) onPage:v12 + 16.0 - v10 - vcvtd_n_f64_u32(v17, 2uLL), v11];
-        v24 = [AKFormFeatureLine featureWithRect:v9 onPage:?];
+        [(AKFormFeatureDetector *)self _findExtentForLineTop:pageCopy lineBottom:v12 + 16.0 - v10 - vcvtd_n_f64_s32(v18 x:2uLL) onPage:v12 + 16.0 - v10 - vcvtd_n_f64_u32(v17, 2uLL), v11];
+        v24 = [AKFormFeatureLine featureWithRect:pageCopy onPage:?];
         goto LABEL_22;
       }
 
@@ -1540,20 +1540,20 @@ LABEL_22:
   return v24;
 }
 
-- (id)_defaultFeatureForPoint:(CGPoint)a3 onPage:(id)a4 snapToVerticalEdges:(BOOL)a5
+- (id)_defaultFeatureForPoint:(CGPoint)point onPage:(id)page snapToVerticalEdges:(BOOL)edges
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained wantsDefaultFeatures] && (objc_opt_respondsToSelector())
   {
-    [WeakRetained defaultFeatureSizeForPage:v9];
+    [WeakRetained defaultFeatureSizeForPage:pageCopy];
     v12 = v11;
     v14 = v13;
-    if (a5)
+    if (edges)
     {
-      [(AKFormFeatureDetector *)self _findVerticalEdgesAtPoint:v11 extent:v9 onPage:x, y];
+      [(AKFormFeatureDetector *)self _findVerticalEdgesAtPoint:v11 extent:pageCopy onPage:x, y];
       v15 = v22;
       v16 = v24 - v12;
       if (v23)
@@ -1585,7 +1585,7 @@ LABEL_22:
       v18 = 3;
     }
 
-    v19 = [AKFormFeatureBox boxWithRect:v9 onPage:v18 flags:0 baseline:v15, y + v14 * -0.5, v12, v14];
+    v19 = [AKFormFeatureBox boxWithRect:pageCopy onPage:v18 flags:0 baseline:v15, y + v14 * -0.5, v12, v14];
   }
 
   else
@@ -1596,16 +1596,16 @@ LABEL_22:
   return v19;
 }
 
-- (id)_boxOnLine:(id)a3 atPoint:(CGPoint)a4
+- (id)_boxOnLine:(id)line atPoint:(CGPoint)point
 {
-  v5 = a3;
+  lineCopy = line;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 page];
-    [WeakRetained defaultFeatureSizeForPage:v7];
+    page = [lineCopy page];
+    [WeakRetained defaultFeatureSizeForPage:page];
     v9 = v8;
-    [v5 rect];
+    [lineCopy rect];
     x = v18.origin.x;
     y = v18.origin.y;
     width = v18.size.width;
@@ -1615,7 +1615,7 @@ LABEL_22:
     v19.origin.y = y;
     v19.size.width = width;
     v19.size.height = height;
-    v15 = [AKFormFeatureBox boxWithRect:v7 onPage:0 flags:v5 baseline:MinX, CGRectGetMaxY(v19), width, v9];
+    v15 = [AKFormFeatureBox boxWithRect:page onPage:0 flags:lineCopy baseline:MinX, CGRectGetMaxY(v19), width, v9];
   }
 
   else
@@ -1626,21 +1626,21 @@ LABEL_22:
   return v15;
 }
 
-- (CGRect)_findExtentForLineTop:(double)a3 lineBottom:(double)a4 x:(double)a5 onPage:(id)a6
+- (CGRect)_findExtentForLineTop:(double)top lineBottom:(double)bottom x:(double)x onPage:(id)page
 {
-  v9 = a6;
-  v10 = v9;
+  pageCopy = page;
+  v10 = pageCopy;
   MinX = *MEMORY[0x277CBF3A0];
-  v12 = *(MEMORY[0x277CBF3A0] + 8);
+  bottomCopy = *(MEMORY[0x277CBF3A0] + 8);
   v13 = *(MEMORY[0x277CBF3A0] + 16);
   v14 = *(MEMORY[0x277CBF3A0] + 24);
-  if (v9)
+  if (pageCopy)
   {
-    v50 = a5;
-    v15 = a3 - a4;
-    v16 = a3 - a4 + 2.0;
-    v17 = [v9 overlayView];
-    [v17 bounds];
+    xCopy = x;
+    v15 = top - bottom;
+    v16 = top - bottom + 2.0;
+    overlayView = [pageCopy overlayView];
+    [overlayView bounds];
     v19 = v18;
 
     v20 = vcvtpd_u64_f64(v19);
@@ -1654,18 +1654,18 @@ LABEL_22:
       {
         v26 = NumberOfComponents * v20;
         v51.origin.x = 0.0;
-        v12 = a4;
-        v51.origin.y = a4;
+        bottomCopy = bottom;
+        v51.origin.y = bottom;
         v51.size.width = v19;
         v51.size.height = v16;
         MinX = CGRectGetMinX(v51);
         v52.origin.x = 0.0;
-        v52.origin.y = a4;
+        v52.origin.y = bottom;
         v52.size.width = v19;
         v52.size.height = v16;
         MaxX = CGRectGetMaxX(v52);
         Data = CGBitmapContextGetData(v25);
-        v29 = vcvtmd_u64_f64(v50);
+        v29 = vcvtmd_u64_f64(xCopy);
         v14 = v15;
         v30 = vcvtpd_u64_f64(v15 * 4.0);
         if (v29 >= v20)
@@ -1806,7 +1806,7 @@ LABEL_46:
   }
 
   v46 = MinX;
-  v47 = v12;
+  v47 = bottomCopy;
   v48 = v13;
   v49 = v14;
   result.size.height = v49;
@@ -1816,23 +1816,23 @@ LABEL_46:
   return result;
 }
 
-+ (CGContext)_newBitmapInRect:(CGRect)a3 onPage:(id)a4 scale:(double)a5
++ (CGContext)_newBitmapInRect:(CGRect)rect onPage:(id)page scale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = [v10 controller];
-  v12 = [v11 delegate];
-  [v10 convertRectFromModelToOverlay:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pageCopy = page;
+  controller = [pageCopy controller];
+  delegate = [controller delegate];
+  [pageCopy convertRectFromModelToOverlay:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v10 pageIndex];
+  pageIndex = [pageCopy pageIndex];
 
-  v22 = [v12 newContentSnapshotPDFDataIncludingAdornments:0 atScale:v21 inRect:v11 onOverlayAtPageIndex:a5 forAnnotationController:{v14, v16, v18, v20}];
+  v22 = [delegate newContentSnapshotPDFDataIncludingAdornments:0 atScale:pageIndex inRect:controller onOverlayAtPageIndex:scale forAnnotationController:{v14, v16, v18, v20}];
   v23 = v22;
   if (v22 && (v24 = CGDataProviderCreateWithCFData(v22)) != 0)
   {
@@ -1861,19 +1861,19 @@ LABEL_46:
   return v28;
 }
 
-+ (CGContext)_newBitmapFromCGPDFDocument:(CGPDFDocument *)a3
++ (CGContext)_newBitmapFromCGPDFDocument:(CGPDFDocument *)document
 {
-  if (!a3)
+  if (!document)
   {
     return 0;
   }
 
-  if (!CGPDFDocumentGetNumberOfPages(a3))
+  if (!CGPDFDocumentGetNumberOfPages(document))
   {
     return 0;
   }
 
-  Page = CGPDFDocumentGetPage(a3, 1uLL);
+  Page = CGPDFDocumentGetPage(document, 1uLL);
   if (!Page)
   {
     return 0;

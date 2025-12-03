@@ -2,25 +2,25 @@
 - (AMSUIAssetQueue)init;
 - (BOOL)isSuspended;
 - (NSString)name;
-- (id)operationWithKey:(id)a3;
+- (id)operationWithKey:(id)key;
 - (int64_t)maxConcurrentOperationCount;
 - (int64_t)qualityOfService;
-- (void)_addObserverForOperation:(id)a3;
-- (void)_decrementCountAt:(int64_t)a3;
+- (void)_addObserverForOperation:(id)operation;
+- (void)_decrementCountAt:(int64_t)at;
 - (void)_didBeginFetchingAssets;
-- (void)_didFetchAllAssetsAtPriority:(int64_t)a3;
-- (void)_didFetchAssetWithKey:(id)a3 producingImage:(id)a4 orError:(id)a5;
+- (void)_didFetchAllAssetsAtPriority:(int64_t)priority;
+- (void)_didFetchAssetWithKey:(id)key producingImage:(id)image orError:(id)error;
 - (void)_didFinishFetchingAllAssets;
-- (void)_incrementCountAt:(int64_t)a3;
-- (void)_operationDidCancel:(id)a3;
-- (void)_operationDidChangePriority:(id)a3;
-- (void)_prepareToAddOperation:(id)a3 withKey:(id)a4;
-- (void)_removeObserverForOperation:(id)a3;
-- (void)addOperation:(id)a3 withKey:(id)a4;
+- (void)_incrementCountAt:(int64_t)at;
+- (void)_operationDidCancel:(id)cancel;
+- (void)_operationDidChangePriority:(id)priority;
+- (void)_prepareToAddOperation:(id)operation withKey:(id)key;
+- (void)_removeObserverForOperation:(id)operation;
+- (void)addOperation:(id)operation withKey:(id)key;
 - (void)dealloc;
-- (void)setMaxConcurrentOperationCount:(int64_t)a3;
-- (void)setName:(id)a3;
-- (void)setQualityOfService:(int64_t)a3;
+- (void)setMaxConcurrentOperationCount:(int64_t)count;
+- (void)setName:(id)name;
+- (void)setQualityOfService:(int64_t)service;
 @end
 
 @implementation AMSUIAssetQueue
@@ -37,9 +37,9 @@
     v2->_underlyingQueue = v3;
 
     v2->_stateLock._os_unfair_lock_opaque = 0;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pendingOperations = v2->_pendingOperations;
-    v2->_pendingOperations = v5;
+    v2->_pendingOperations = dictionary;
 
     v7 = [MEMORY[0x1E696AB50] set];
     priorityCounts = v2->_priorityCounts;
@@ -51,11 +51,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(AMSUIAssetQueue *)self underlyingQueue];
-  [v4 cancelAllOperations];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  [underlyingQueue cancelAllOperations];
 
   v5.receiver = self;
   v5.super_class = AMSUIAssetQueue;
@@ -64,63 +64,63 @@
 
 - (NSString)name
 {
-  v2 = [(AMSUIAssetQueue *)self underlyingQueue];
-  v3 = [v2 name];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  name = [underlyingQueue name];
 
-  return v3;
+  return name;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(AMSUIAssetQueue *)self underlyingQueue];
-  [v5 setName:v4];
+  nameCopy = name;
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  [underlyingQueue setName:nameCopy];
 }
 
 - (int64_t)qualityOfService
 {
-  v2 = [(AMSUIAssetQueue *)self underlyingQueue];
-  v3 = [v2 qualityOfService];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  qualityOfService = [underlyingQueue qualityOfService];
 
-  return v3;
+  return qualityOfService;
 }
 
-- (void)setQualityOfService:(int64_t)a3
+- (void)setQualityOfService:(int64_t)service
 {
-  v4 = [(AMSUIAssetQueue *)self underlyingQueue];
-  [v4 setQualityOfService:a3];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  [underlyingQueue setQualityOfService:service];
 }
 
 - (int64_t)maxConcurrentOperationCount
 {
-  v2 = [(AMSUIAssetQueue *)self underlyingQueue];
-  v3 = [v2 maxConcurrentOperationCount];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  maxConcurrentOperationCount = [underlyingQueue maxConcurrentOperationCount];
 
-  return v3;
+  return maxConcurrentOperationCount;
 }
 
-- (void)setMaxConcurrentOperationCount:(int64_t)a3
+- (void)setMaxConcurrentOperationCount:(int64_t)count
 {
-  v4 = [(AMSUIAssetQueue *)self underlyingQueue];
-  [v4 setMaxConcurrentOperationCount:a3];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  [underlyingQueue setMaxConcurrentOperationCount:count];
 }
 
 - (BOOL)isSuspended
 {
-  v2 = [(AMSUIAssetQueue *)self underlyingQueue];
-  v3 = [v2 isSuspended];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  isSuspended = [underlyingQueue isSuspended];
 
-  return v3;
+  return isSuspended;
 }
 
-- (void)_incrementCountAt:(int64_t)a3
+- (void)_incrementCountAt:(int64_t)at
 {
-  v5 = [(AMSUIAssetQueue *)self priorityCounts];
-  v6 = [v5 count];
+  priorityCounts = [(AMSUIAssetQueue *)self priorityCounts];
+  v6 = [priorityCounts count];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [(AMSUIAssetQueue *)self priorityCounts];
-  [v7 addObject:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:at];
+  priorityCounts2 = [(AMSUIAssetQueue *)self priorityCounts];
+  [priorityCounts2 addObject:v8];
 
   if (!v6)
   {
@@ -128,20 +128,20 @@
   }
 }
 
-- (void)_decrementCountAt:(int64_t)a3
+- (void)_decrementCountAt:(int64_t)at
 {
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  v5 = [(AMSUIAssetQueue *)self priorityCounts];
-  [v5 removeObject:v10];
+  priorityCounts = [(AMSUIAssetQueue *)self priorityCounts];
+  [priorityCounts removeObject:v10];
 
-  v6 = [(AMSUIAssetQueue *)self priorityCounts];
-  v7 = [v6 countForObject:v10];
+  priorityCounts2 = [(AMSUIAssetQueue *)self priorityCounts];
+  v7 = [priorityCounts2 countForObject:v10];
 
   if (!v7)
   {
-    [(AMSUIAssetQueue *)self _didFetchAllAssetsAtPriority:a3];
-    v8 = [(AMSUIAssetQueue *)self priorityCounts];
-    v9 = [v8 count];
+    [(AMSUIAssetQueue *)self _didFetchAllAssetsAtPriority:at];
+    priorityCounts3 = [(AMSUIAssetQueue *)self priorityCounts];
+    v9 = [priorityCounts3 count];
 
     if (!v9)
     {
@@ -153,14 +153,14 @@
 - (void)_didBeginFetchingAssets
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v2)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v2 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v3 = [v2 OSLogObject];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = v4;
@@ -169,23 +169,23 @@
     v9 = v4;
     v10 = 2114;
     v11 = v6;
-    _os_log_impl(&dword_1BB036000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Beginning to fetch assets", &v8, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Beginning to fetch assets", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didFetchAllAssetsAtPriority:(int64_t)a3
+- (void)_didFetchAllAssetsAtPriority:(int64_t)priority
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v4)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
@@ -195,8 +195,8 @@
     v12 = 2114;
     v13 = v8;
     v14 = 2048;
-    v15 = a3;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did fetch all assets at Priority %li", &v10, 0x20u);
+    priorityCopy = priority;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did fetch all assets at Priority %li", &v10, 0x20u);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -205,14 +205,14 @@
 - (void)_didFinishFetchingAllAssets
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v2)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v2 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v3 = [v2 OSLogObject];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = v4;
@@ -221,39 +221,39 @@
     v9 = v4;
     v10 = 2114;
     v11 = v6;
-    _os_log_impl(&dword_1BB036000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did fetch all assets in queue", &v8, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did fetch all assets in queue", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addObserverForOperation:(id)a3
+- (void)_addObserverForOperation:(id)operation
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel__operationDidChangePriority_ name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didChangePriority" object:v5];
-  [v6 addObserver:self selector:sel__operationDidCancel_ name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didCancel" object:v5];
+  operationCopy = operation;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel__operationDidChangePriority_ name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didChangePriority" object:operationCopy];
+  [defaultCenter addObserver:self selector:sel__operationDidCancel_ name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didCancel" object:operationCopy];
 }
 
-- (void)_removeObserverForOperation:(id)a3
+- (void)_removeObserverForOperation:(id)operation
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didChangePriority" object:v5];
-  [v6 removeObserver:self name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didCancel" object:v5];
+  operationCopy = operation;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didChangePriority" object:operationCopy];
+  [defaultCenter removeObserver:self name:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didCancel" object:operationCopy];
 }
 
-- (void)_operationDidChangePriority:(id)a3
+- (void)_operationDidChangePriority:(id)priority
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  priorityCopy = priority;
+  object = [priorityCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -263,22 +263,22 @@
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"oldPriority"];
-    v9 = [v7 objectForKeyedSubscript:@"newPriority"];
-    v10 = [MEMORY[0x1E698C968] sharedConfig];
-    v11 = v10;
-    if (v7)
+    userInfo = [priorityCopy userInfo];
+    oSLogObject3 = [userInfo objectForKeyedSubscript:@"oldPriority"];
+    v9 = [userInfo objectForKeyedSubscript:@"newPriority"];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
+    if (userInfo)
     {
-      if (v8 && v9 != 0)
+      if (oSLogObject3 && v9 != 0)
       {
-        if (!v10)
+        if (!mEMORY[0x1E698C968])
         {
-          v11 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v13 = [v11 OSLogObject];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+        oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
         {
           v14 = objc_opt_class();
           v22 = v14;
@@ -290,25 +290,25 @@
           v27 = 2112;
           v28 = v6;
           v29 = 2048;
-          v30 = [v9 integerValue];
-          _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Operation priority of %@ was changed to %li", buf, 0x2Au);
+          integerValue = [v9 integerValue];
+          _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Operation priority of %@ was changed to %li", buf, 0x2Au);
         }
 
         os_unfair_lock_lock(&self->_stateLock);
-        [(AMSUIAssetQueue *)self _decrementCountAt:[v8 integerValue]];
+        [(AMSUIAssetQueue *)self _decrementCountAt:[oSLogObject3 integerValue]];
         -[AMSUIAssetQueue _incrementCountAt:](self, "_incrementCountAt:", [v9 integerValue]);
         os_unfair_lock_unlock(&self->_stateLock);
         goto LABEL_25;
       }
     }
 
-    if (!v10)
+    if (!mEMORY[0x1E698C968])
     {
-      v11 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v17 = [v11 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
       v19 = v18;
@@ -317,7 +317,7 @@
       v24 = v18;
       v25 = 2114;
       v26 = v20;
-      _os_log_impl(&dword_1BB036000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] called with notification without priority keys", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] called with notification without priority keys", buf, 0x16u);
     }
 
 LABEL_24:
@@ -326,23 +326,23 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v7 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v7)
+  userInfo = [MEMORY[0x1E698C968] sharedConfig];
+  if (!userInfo)
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    userInfo = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [userInfo OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v16 = objc_opt_class();
     v9 = v16;
-    v11 = AMSLogKey();
+    mEMORY[0x1E698C968]2 = AMSLogKey();
     *buf = 138543618;
     v24 = v16;
     v25 = 2114;
-    v26 = v11;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] called with notification without operation object", buf, 0x16u);
+    v26 = mEMORY[0x1E698C968]2;
+    _os_log_impl(&dword_1BB036000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] called with notification without operation object", buf, 0x16u);
     goto LABEL_24;
   }
 
@@ -351,14 +351,14 @@ LABEL_26:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_operationDidCancel:(id)a3
+- (void)_operationDidCancel:(id)cancel
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
+  object = [cancel object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -366,17 +366,17 @@ LABEL_26:
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x1E698C968] sharedConfig];
-  v7 = v6;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
   if (v5)
   {
-    if (!v6)
+    if (!mEMORY[0x1E698C968])
     {
-      v7 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = objc_opt_class();
       v10 = v9;
@@ -387,7 +387,7 @@ LABEL_26:
       v34 = v11;
       v35 = 2112;
       v36 = v5;
-      _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Operation %@ was cancelled", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Operation %@ was cancelled", buf, 0x20u);
     }
 
     os_unfair_lock_lock(&self->_stateLock);
@@ -395,8 +395,8 @@ LABEL_26:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = [(AMSUIAssetQueue *)self pendingOperations];
-    v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    pendingOperations = [(AMSUIAssetQueue *)self pendingOperations];
+    v13 = [pendingOperations countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v13)
     {
       v14 = v13;
@@ -408,24 +408,24 @@ LABEL_26:
         {
           if (*v27 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(pendingOperations);
           }
 
           v17 = *(*(&v26 + 1) + 8 * v16);
-          v18 = [(AMSUIAssetQueue *)self pendingOperations];
-          v19 = [v18 objectForKey:v17];
+          pendingOperations2 = [(AMSUIAssetQueue *)self pendingOperations];
+          v19 = [pendingOperations2 objectForKey:v17];
 
           if (v19 == v5)
           {
-            v20 = [(AMSUIAssetQueue *)self pendingOperations];
-            [v20 removeObjectForKey:v17];
+            pendingOperations3 = [(AMSUIAssetQueue *)self pendingOperations];
+            [pendingOperations3 removeObjectForKey:v17];
           }
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v14 = [pendingOperations countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v14);
@@ -438,13 +438,13 @@ LABEL_26:
 
   else
   {
-    if (!v6)
+    if (!mEMORY[0x1E698C968])
     {
-      v7 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v21 = [v7 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       v23 = v22;
@@ -453,38 +453,38 @@ LABEL_26:
       v32 = v22;
       v33 = 2114;
       v34 = v24;
-      _os_log_impl(&dword_1BB036000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] called with notification without operation object", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] called with notification without operation object", buf, 0x16u);
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_prepareToAddOperation:(id)a3 withKey:(id)a4
+- (void)_prepareToAddOperation:(id)operation withKey:(id)key
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_stateLock);
-  v8 = [(AMSUIAssetQueue *)self pendingOperations];
-  v9 = [v7 absoluteString];
-  v10 = [v8 valueForKey:v9];
+  pendingOperations = [(AMSUIAssetQueue *)self pendingOperations];
+  absoluteString = [keyCopy absoluteString];
+  v10 = [pendingOperations valueForKey:absoluteString];
 
-  v11 = [(AMSUIAssetQueue *)self pendingOperations];
-  v12 = [v7 absoluteString];
-  [v11 setValue:v6 forKey:v12];
+  pendingOperations2 = [(AMSUIAssetQueue *)self pendingOperations];
+  absoluteString2 = [keyCopy absoluteString];
+  [pendingOperations2 setValue:operationCopy forKey:absoluteString2];
 
   os_unfair_lock_unlock(&self->_stateLock);
   if (v10)
   {
-    v13 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v13)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v13 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = objc_opt_class();
       v16 = v15;
@@ -494,34 +494,34 @@ LABEL_26:
       v33 = 2114;
       v34 = v17;
       v35 = 2117;
-      v36 = v7;
-      _os_log_impl(&dword_1BB036000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cancelling old enqueued operation with key %{sensitive}@", buf, 0x20u);
+      v36 = keyCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cancelling old enqueued operation with key %{sensitive}@", buf, 0x20u);
     }
 
-    v18 = [v10 operationPromise];
-    v19 = [v6 operationPromise];
-    [v18 finishWithPromise:v19];
+    operationPromise = [v10 operationPromise];
+    operationPromise2 = [operationCopy operationPromise];
+    [operationPromise finishWithPromise:operationPromise2];
 
     [v10 cancel];
   }
 
   objc_initWeak(buf, self);
-  objc_initWeak(&location, v6);
-  v20 = [v6 operationPromise];
+  objc_initWeak(&location, operationCopy);
+  operationPromise3 = [operationCopy operationPromise];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __50__AMSUIAssetQueue__prepareToAddOperation_withKey___block_invoke;
   v26 = &unk_1E7F24540;
   objc_copyWeak(&v28, buf);
   objc_copyWeak(&v29, &location);
-  v21 = v7;
+  v21 = keyCopy;
   v27 = v21;
-  [v20 addFinishBlock:&v23];
+  [operationPromise3 addFinishBlock:&v23];
 
   os_unfair_lock_lock(&self->_stateLock);
-  -[AMSUIAssetQueue _incrementCountAt:](self, "_incrementCountAt:", [v6 queuePriority]);
+  -[AMSUIAssetQueue _incrementCountAt:](self, "_incrementCountAt:", [operationCopy queuePriority]);
   os_unfair_lock_unlock(&self->_stateLock);
-  [(AMSUIAssetQueue *)self _addObserverForOperation:v6];
+  [(AMSUIAssetQueue *)self _addObserverForOperation:operationCopy];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&v28);
@@ -550,20 +550,20 @@ void __50__AMSUIAssetQueue__prepareToAddOperation_withKey___block_invoke(uint64_
   }
 }
 
-- (void)_didFetchAssetWithKey:(id)a3 producingImage:(id)a4 orError:(id)a5
+- (void)_didFetchAssetWithKey:(id)key producingImage:(id)image orError:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(AMSUIAssetQueue *)self pendingOperations];
-  v8 = [v6 absoluteString];
-  v9 = [v7 objectForKey:v8];
+  pendingOperations = [(AMSUIAssetQueue *)self pendingOperations];
+  absoluteString = [keyCopy absoluteString];
+  v9 = [pendingOperations objectForKey:absoluteString];
 
   if (v9)
   {
-    v10 = [(AMSUIAssetQueue *)self pendingOperations];
-    v11 = [v6 absoluteString];
-    [v10 removeObjectForKey:v11];
+    pendingOperations2 = [(AMSUIAssetQueue *)self pendingOperations];
+    absoluteString2 = [keyCopy absoluteString];
+    [pendingOperations2 removeObjectForKey:absoluteString2];
 
     -[AMSUIAssetQueue _decrementCountAt:](self, "_decrementCountAt:", [v9 queuePriority]);
     [(AMSUIAssetQueue *)self _removeObserverForOperation:v9];
@@ -571,14 +571,14 @@ void __50__AMSUIAssetQueue__prepareToAddOperation_withKey___block_invoke(uint64_
 
   else
   {
-    v12 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v12)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = v14;
@@ -588,84 +588,84 @@ void __50__AMSUIAssetQueue__prepareToAddOperation_withKey___block_invoke(uint64_
       v27 = 2114;
       v28 = v16;
       v29 = 2117;
-      v30 = v6;
-      _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Operation for key %{sensitive}@ completed with no record in queue. This is a serious bug.", &v25, 0x20u);
+      v30 = keyCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Operation for key %{sensitive}@ completed with no record in queue. This is a serious bug.", &v25, 0x20u);
     }
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
-  v17 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v17)
+  mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968]2)
   {
-    v17 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v18 = [v17 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
     v19 = objc_opt_class();
     v20 = v19;
     v21 = AMSLogKey();
-    v22 = [(AMSUIAssetQueue *)self underlyingQueue];
-    v23 = [v22 operationCount];
+    underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+    operationCount = [underlyingQueue operationCount];
     v25 = 138544131;
     v26 = v19;
     v27 = 2114;
     v28 = v21;
     v29 = 2117;
-    v30 = v6;
+    v30 = keyCopy;
     v31 = 2048;
-    v32 = v23;
-    _os_log_impl(&dword_1BB036000, v18, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Completed operation for %{sensitive}@ %lu operations pending", &v25, 0x2Au);
+    v32 = operationCount;
+    _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Completed operation for %{sensitive}@ %lu operations pending", &v25, 0x2Au);
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addOperation:(id)a3 withKey:(id)a4
+- (void)addOperation:(id)operation withKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  [(AMSUIAssetQueue *)self _prepareToAddOperation:v7 withKey:v6];
-  v8 = [(AMSUIAssetQueue *)self underlyingQueue];
-  [v8 addOperation:v7];
+  keyCopy = key;
+  operationCopy = operation;
+  [(AMSUIAssetQueue *)self _prepareToAddOperation:operationCopy withKey:keyCopy];
+  underlyingQueue = [(AMSUIAssetQueue *)self underlyingQueue];
+  [underlyingQueue addOperation:operationCopy];
 
-  v9 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v9)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v9 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v11 = objc_opt_class();
     v12 = v11;
     v13 = AMSLogKey();
-    v14 = [(AMSUIAssetQueue *)self underlyingQueue];
+    underlyingQueue2 = [(AMSUIAssetQueue *)self underlyingQueue];
     v16 = 138544130;
     v17 = v11;
     v18 = 2114;
     v19 = v13;
     v20 = 2114;
-    v21 = v6;
+    v21 = keyCopy;
     v22 = 2048;
-    v23 = [v14 operationCount];
-    _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Began operation for %{public}@ %lu operations pending", &v16, 0x2Au);
+    operationCount = [underlyingQueue2 operationCount];
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Began operation for %{public}@ %lu operations pending", &v16, 0x2Au);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)operationWithKey:(id)a3
+- (id)operationWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_stateLock);
-  v5 = [(AMSUIAssetQueue *)self pendingOperations];
-  v6 = [v4 absoluteString];
+  pendingOperations = [(AMSUIAssetQueue *)self pendingOperations];
+  absoluteString = [keyCopy absoluteString];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [pendingOperations objectForKey:absoluteString];
 
   os_unfair_lock_unlock(&self->_stateLock);
 

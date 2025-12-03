@@ -1,18 +1,18 @@
 @interface LARight
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (LARight)init;
-- (LARight)initWithAccessKey:(id)a3;
-- (LARight)initWithIdentifier:(id)a3 accessKey:(id)a4;
+- (LARight)initWithAccessKey:(id)key;
+- (LARight)initWithIdentifier:(id)identifier accessKey:(id)key;
 - (LARight)initWithRequirement:(LAAuthenticationRequirement *)requirement;
-- (void)_authorizeWithOptions:(void *)a3 completionHandler:;
+- (void)_authorizeWithOptions:(void *)options completionHandler:;
 - (void)authorizeWithLocalizedReason:(NSString *)localizedReason completion:(void *)handler;
-- (void)authorizeWithOptions:(id)a3 completion:(id)a4;
+- (void)authorizeWithOptions:(id)options completion:(id)completion;
 - (void)checkCanAuthorizeWithCompletion:(void *)handler;
 - (void)dealloc;
 - (void)deauthorizeWithCompletion:(void *)handler;
-- (void)setContext:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)setContext:(id)context;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation LARight
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (LARight)initWithAccessKey:(id)a3
+- (LARight)initWithAccessKey:(id)key
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [(LARight *)self initWithIdentifier:v7 accessKey:v5];
+  keyCopy = key;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [(LARight *)self initWithIdentifier:uUIDString accessKey:keyCopy];
 
   return v8;
 }
 
-- (LARight)initWithIdentifier:(id)a3 accessKey:(id)a4
+- (LARight)initWithIdentifier:(id)identifier accessKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = LARight;
   v9 = [(LARight *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_accessKey, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_accessKey, key);
     v11 = [[LARightContextHandler alloc] initWithDelegate:v10];
     contextHandler = v10->_contextHandler;
     v10->_contextHandler = v11;
@@ -66,8 +66,8 @@
     workQueue = v10->_workQueue;
     v10->_workQueue = v13;
 
-    v15 = [MEMORY[0x1E696EE90] sharedInstance];
-    v10->_instanceID = [v15 nextInstanceIDInDomain:@"LARight"];
+    mEMORY[0x1E696EE90] = [MEMORY[0x1E696EE90] sharedInstance];
+    v10->_instanceID = [mEMORY[0x1E696EE90] nextInstanceIDInDomain:@"LARight"];
 
     v16 = LA_LOG();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -89,7 +89,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A784E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocated", buf, 0xCu);
   }
 
@@ -344,22 +344,22 @@ uint64_t __37__LARight_deauthorizeWithCompletion___block_invoke(uint64_t a1)
   return v3();
 }
 
-- (void)authorizeWithOptions:(id)a3 completion:(id)a4
+- (void)authorizeWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A784E000, "LocalAuthentication.Authorization.authorizeWithOptions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__LARight_authorizeWithOptions_completion___block_invoke;
   v12[3] = &unk_1E77CB360;
   v12[4] = self;
-  v13 = v6;
+  v13 = optionsCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = completionCopy;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = optionsCopy;
   os_activity_apply(v9, v12);
 }
 
@@ -506,24 +506,24 @@ void __43__LARight_authorizeWithOptions_completion___block_invoke_2(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v6 = NSStringFromSelector(sel_state);
     [(LARight *)self willChangeValueForKey:v6];
 
-    self->_state = a3;
+    self->_state = state;
     v7 = NSStringFromSelector(sel_state);
     [(LARight *)self didChangeValueForKey:v7];
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector(sel_state);
-  v6 = [v4 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -532,17 +532,17 @@ void __43__LARight_authorizeWithOptions_completion___block_invoke_2(uint64_t a1)
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___LARight;
-    v7 = objc_msgSendSuper2(&v9, sel_automaticallyNotifiesObserversForKey_, v4);
+    v7 = objc_msgSendSuper2(&v9, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v7;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  [(LARightContextHandler *)self->_contextHandler setContext:a3];
+  [(LARightContextHandler *)self->_contextHandler setContext:context];
 
   [(LARight *)self setState:3];
 }
@@ -574,22 +574,22 @@ void __51__LARight__authorizeWithOptions_completionHandler___block_invoke(uint64
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 accessKey];
-    v7 = [(LARight *)self accessKey];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    accessKey = [v5 accessKey];
+    accessKey2 = [(LARight *)self accessKey];
+    v8 = [accessKey isEqual:accessKey2];
 
     if (v8)
     {
-      v9 = [v5 context];
-      v10 = [(LARight *)self context];
-      v11 = [v9 isEqual:v10];
+      context = [v5 context];
+      context2 = [(LARight *)self context];
+      v11 = [context isEqual:context2];
     }
 
     else
@@ -606,20 +606,20 @@ void __51__LARight__authorizeWithOptions_completionHandler___block_invoke(uint64
   return v11;
 }
 
-- (void)_authorizeWithOptions:(void *)a3 completionHandler:
+- (void)_authorizeWithOptions:(void *)options completionHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  optionsCopy = options;
+  if (self)
   {
-    objc_initWeak(&location, a1);
-    v7 = a1[4];
+    objc_initWeak(&location, self);
+    v7 = self[4];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__LARight__authorizeWithOptions_completionHandler___block_invoke;
     v8[3] = &unk_1E77CB388;
     objc_copyWeak(&v11, &location);
-    v10 = v6;
+    v10 = optionsCopy;
     v9 = v5;
     dispatch_async(v7, v8);
 

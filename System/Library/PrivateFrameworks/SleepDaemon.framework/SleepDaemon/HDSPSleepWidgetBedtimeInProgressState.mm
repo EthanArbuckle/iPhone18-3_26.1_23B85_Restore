@@ -1,14 +1,14 @@
 @interface HDSPSleepWidgetBedtimeInProgressState
-- (void)sleepModeDidChange:(int64_t)a3 isUserRequested:(BOOL)a4;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3;
+- (void)sleepModeDidChange:(int64_t)change isUserRequested:(BOOL)requested;
+- (void)sleepScheduleStateDidChange:(unint64_t)change;
 @end
 
 @implementation HDSPSleepWidgetBedtimeInProgressState
 
-- (void)sleepModeDidChange:(int64_t)a3 isUserRequested:(BOOL)a4
+- (void)sleepModeDidChange:(int64_t)change isUserRequested:(BOOL)requested
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 == 2 && a4)
+  if (change == 2 && requested)
   {
     v4 = HKSPLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -24,20 +24,20 @@
 
   else
   {
-    v8 = [(HKSPStateMachineState *)self stateMachine];
-    [v8 updateState];
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine updateState];
     v7 = *MEMORY[0x277D85DE8];
   }
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3
+- (void)sleepScheduleStateDidChange:(unint64_t)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [v5 infoProvider];
-  v7 = [v6 inUnscheduledSleepMode];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  inUnscheduledSleepMode = [infoProvider inUnscheduledSleepMode];
 
-  if (v7)
+  if (inUnscheduledSleepMode)
   {
     v8 = HKSPLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -53,7 +53,7 @@
   {
     v11.receiver = self;
     v11.super_class = HDSPSleepWidgetBedtimeInProgressState;
-    [(HDSPSleepWidgetStateMachineState *)&v11 sleepScheduleStateDidChange:a3];
+    [(HDSPSleepWidgetStateMachineState *)&v11 sleepScheduleStateDidChange:change];
   }
 
   v10 = *MEMORY[0x277D85DE8];

@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (CSNetworkAvailabilityMonitor)init;
 - (void)_availabilityChanged;
-- (void)_didReceivedNetworkAvailabilityChangedNotification:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceivedNetworkAvailabilityChangedNotification:(BOOL)notification;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSNetworkAvailabilityMonitor
 
-- (void)_didReceivedNetworkAvailabilityChangedNotification:(BOOL)a3
+- (void)_didReceivedNetworkAvailabilityChangedNotification:(BOOL)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __83__CSNetworkAvailabilityMonitor__didReceivedNetworkAvailabilityChangedNotification___block_invoke;
   v3[3] = &unk_1E865CA18;
   v3[4] = self;
-  v4 = a3;
+  notificationCopy = notification;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -57,10 +57,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     notify_key = nwi_state_get_notify_key();
@@ -79,7 +79,7 @@
     handler[2] = __58__CSNetworkAvailabilityMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_1E865C9F0;
     handler[4] = self;
-    notify_register_dispatch(notify_key, &self->_notifyToken, v4, handler);
+    notify_register_dispatch(notify_key, &self->_notifyToken, queueCopy, handler);
   }
 
   v7 = CSLogContextFacilityCoreSpeech;

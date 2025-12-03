@@ -1,32 +1,32 @@
 @interface ENPersistentTemporaryExposureKey
-- (ENPersistentTemporaryExposureKey)initWithTemporaryExposureKey:(id)a3 appBundleIdentifier:(id)a4 regionCountryCode:(id)a5;
+- (ENPersistentTemporaryExposureKey)initWithTemporaryExposureKey:(id)key appBundleIdentifier:(id)identifier regionCountryCode:(id)code;
 - (id)description;
 @end
 
 @implementation ENPersistentTemporaryExposureKey
 
-- (ENPersistentTemporaryExposureKey)initWithTemporaryExposureKey:(id)a3 appBundleIdentifier:(id)a4 regionCountryCode:(id)a5
+- (ENPersistentTemporaryExposureKey)initWithTemporaryExposureKey:(id)key appBundleIdentifier:(id)identifier regionCountryCode:(id)code
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  identifierCopy = identifier;
+  codeCopy = code;
   v19.receiver = self;
   v19.super_class = ENPersistentTemporaryExposureKey;
   v12 = [(ENPersistentTemporaryExposureKey *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_key, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_key, key);
+    v14 = [identifierCopy copy];
     appBundleIdentifier = v13->_appBundleIdentifier;
     v13->_appBundleIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [codeCopy copy];
     regionCountryCode = v13->_regionCountryCode;
     v13->_regionCountryCode = v16;
 
-    v13->_originalReportType = [v9 diagnosisReportType];
-    v13->_originalVariantOfConcernType = [v9 variantOfConcernType];
+    v13->_originalReportType = [keyCopy diagnosisReportType];
+    v13->_originalVariantOfConcernType = [keyCopy variantOfConcernType];
   }
 
   return v13;

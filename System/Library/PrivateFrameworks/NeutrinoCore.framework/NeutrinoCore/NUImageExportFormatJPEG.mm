@@ -1,26 +1,26 @@
 @interface NUImageExportFormatJPEG
 - (NUImageExportFormatJPEG)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addImageDestinationOptionsToImageProperties:(id)a3;
-- (void)setCompressionQuality:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addImageDestinationOptionsToImageProperties:(id)properties;
+- (void)setCompressionQuality:(double)quality;
 @end
 
 @implementation NUImageExportFormatJPEG
 
-- (void)addImageDestinationOptionsToImageProperties:(id)a3
+- (void)addImageDestinationOptionsToImageProperties:(id)properties
 {
   v3 = *MEMORY[0x1E696D338];
   v4 = MEMORY[0x1E696AD98];
   compressionQuality = self->_compressionQuality;
-  v6 = a3;
+  propertiesCopy = properties;
   v7 = [v4 numberWithDouble:compressionQuality];
-  [v6 setObject:v7 forKeyedSubscript:v3];
+  [propertiesCopy setObject:v7 forKeyedSubscript:v3];
 }
 
-- (void)setCompressionQuality:(double)a3
+- (void)setCompressionQuality:(double)quality
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0 || a3 > 1.0)
+  if (quality < 0.0 || quality > 1.0)
   {
     if (_NULogOnceToken != -1)
     {
@@ -64,8 +64,8 @@ LABEL_13:
         v17 = MEMORY[0x1E696AF00];
         v18 = specific;
         v19 = v11;
-        v20 = [v17 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v27 = 138543618;
         *&v27[4] = specific;
         v28 = 2114;
@@ -83,8 +83,8 @@ LABEL_19:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v23 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v27 = 138543362;
       *&v27[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v27, 0xCu);
@@ -94,12 +94,12 @@ LABEL_19:
   }
 
 LABEL_20:
-  self->_compressionQuality = fmax(fmin(a3, 1.0), 0.0);
+  self->_compressionQuality = fmax(fmin(quality, 1.0), 0.0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   if (result)
   {
     *(result + 1) = *&self->_compressionQuality;

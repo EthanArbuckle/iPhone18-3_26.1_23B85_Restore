@@ -1,57 +1,57 @@
 @interface SUUIItemCollectionViewCell
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SUUIItemCollectionViewCell
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = SUUIItemCollectionViewCell;
-  v4 = a3;
-  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
   v5 = [(SUUIItemCollectionViewCell *)self layout:v7.receiver];
-  v6 = [v4 backgroundColor];
+  backgroundColor = [attributesCopy backgroundColor];
 
-  [v5 setBackgroundColor:v6];
+  [v5 setBackgroundColor:backgroundColor];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(SUUIItemCollectionViewCell *)self layout];
-  [v3 prepareForReuse];
+  layout = [(SUUIItemCollectionViewCell *)self layout];
+  [layout prepareForReuse];
 
   v4.receiver = self;
   v4.super_class = SUUIItemCollectionViewCell;
   [(SUUIItemCollectionViewCell *)&v4 prepareForReuse];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SUUIItemCollectionViewCell *)self layout];
-  [v5 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  layout = [(SUUIItemCollectionViewCell *)self layout];
+  [layout setHighlighted:highlightedCopy];
 
   v6.receiver = self;
   v6.super_class = SUUIItemCollectionViewCell;
-  [(SUUICollectionViewCell *)&v6 setHighlighted:v3];
+  [(SUUICollectionViewCell *)&v6 setHighlighted:highlightedCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(SUUIItemCollectionViewCell *)self layout];
-  [v5 setSelected:v3];
+  selectedCopy = selected;
+  layout = [(SUUIItemCollectionViewCell *)self layout];
+  [layout setSelected:selectedCopy];
 
   v6.receiver = self;
   v6.super_class = SUUIItemCollectionViewCell;
-  [(SUUICollectionViewCell *)&v6 setSelected:v3];
+  [(SUUICollectionViewCell *)&v6 setSelected:selectedCopy];
 }
 
 - (void)layoutSubviews
@@ -61,19 +61,19 @@
   [(SUUICollectionViewCell *)&v4 layoutSubviews];
   if (self->_layoutNeedsLayout)
   {
-    v3 = [(SUUIItemCollectionViewCell *)self layout];
-    [v3 layoutSubviews];
+    layout = [(SUUIItemCollectionViewCell *)self layout];
+    [layout layoutSubviews];
   }
 
   self->_layoutNeedsLayout = 0;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SUUIItemCollectionViewCell *)self bounds];
   if (v9 != width || v8 != height)
   {
@@ -85,12 +85,12 @@
   [(SUUIItemCollectionViewCell *)&v11 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SUUIItemCollectionViewCell *)self frame];
   if (v9 != width || v8 != height)
   {

@@ -1,5 +1,5 @@
 @interface IDSSessionCompleted
-- (IDSSessionCompleted)initWithGuid:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(unsigned int)a6 isQREnabled:(BOOL)a7 isUsingQRDirectly:(BOOL)a8 isInitiator:(BOOL)a9 isScreenSharingSessionType:(BOOL)a10 isWithDefaultPairedDevice:(BOOL)a11 transportType:(unsigned int)a12 linkType:(unsigned int)a13 linkProtocol:(unsigned int)a14 endedReason:(unsigned int)a15 destinationType:(unsigned int)a16 durationOfSession:(id)a17 durationToConnect:(id)a18 isWifiInterfaceDisallowed:(BOOL)a19 isCellularInterfaceDisallowed:(BOOL)a20;
+- (IDSSessionCompleted)initWithGuid:(id)guid protocolVersionNumber:(id)number serviceName:(id)name clientType:(unsigned int)type isQREnabled:(BOOL)enabled isUsingQRDirectly:(BOOL)directly isInitiator:(BOOL)initiator isScreenSharingSessionType:(BOOL)self0 isWithDefaultPairedDevice:(BOOL)self1 transportType:(unsigned int)self2 linkType:(unsigned int)self3 linkProtocol:(unsigned int)self4 endedReason:(unsigned int)self5 destinationType:(unsigned int)self6 durationOfSession:(id)self7 durationToConnect:(id)self8 isWifiInterfaceDisallowed:(BOOL)self9 isCellularInterfaceDisallowed:(BOOL)interfaceDisallowed;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,22 +8,22 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSSessionCompleted *)self guid];
-  if (v4)
+  guid = [(IDSSessionCompleted *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
-  v5 = [(IDSSessionCompleted *)self protocolVersionNumber];
-  if (v5)
+  protocolVersionNumber = [(IDSSessionCompleted *)self protocolVersionNumber];
+  if (protocolVersionNumber)
   {
-    CFDictionarySetValue(v3, @"protocolVersionNumber", v5);
+    CFDictionarySetValue(v3, @"protocolVersionNumber", protocolVersionNumber);
   }
 
-  v6 = [(IDSSessionCompleted *)self serviceName];
-  if (v6)
+  serviceName = [(IDSSessionCompleted *)self serviceName];
+  if (serviceName)
   {
-    CFDictionarySetValue(v3, @"serviceName", v6);
+    CFDictionarySetValue(v3, @"serviceName", serviceName);
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IDSSessionCompleted clientType](self, "clientType")}];
@@ -86,16 +86,16 @@
     CFDictionarySetValue(v3, @"destinationType", v16);
   }
 
-  v17 = [(IDSSessionCompleted *)self durationOfSession];
-  if (v17)
+  durationOfSession = [(IDSSessionCompleted *)self durationOfSession];
+  if (durationOfSession)
   {
-    CFDictionarySetValue(v3, @"durationOfSession", v17);
+    CFDictionarySetValue(v3, @"durationOfSession", durationOfSession);
   }
 
-  v18 = [(IDSSessionCompleted *)self durationToConnect];
-  if (v18)
+  durationToConnect = [(IDSSessionCompleted *)self durationToConnect];
+  if (durationToConnect)
   {
-    CFDictionarySetValue(v3, @"durationToConnect", v18);
+    CFDictionarySetValue(v3, @"durationToConnect", durationToConnect);
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSSessionCompleted isWifiInterfaceDisallowed](self, "isWifiInterfaceDisallowed")}];
@@ -113,35 +113,35 @@
   return v3;
 }
 
-- (IDSSessionCompleted)initWithGuid:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(unsigned int)a6 isQREnabled:(BOOL)a7 isUsingQRDirectly:(BOOL)a8 isInitiator:(BOOL)a9 isScreenSharingSessionType:(BOOL)a10 isWithDefaultPairedDevice:(BOOL)a11 transportType:(unsigned int)a12 linkType:(unsigned int)a13 linkProtocol:(unsigned int)a14 endedReason:(unsigned int)a15 destinationType:(unsigned int)a16 durationOfSession:(id)a17 durationToConnect:(id)a18 isWifiInterfaceDisallowed:(BOOL)a19 isCellularInterfaceDisallowed:(BOOL)a20
+- (IDSSessionCompleted)initWithGuid:(id)guid protocolVersionNumber:(id)number serviceName:(id)name clientType:(unsigned int)type isQREnabled:(BOOL)enabled isUsingQRDirectly:(BOOL)directly isInitiator:(BOOL)initiator isScreenSharingSessionType:(BOOL)self0 isWithDefaultPairedDevice:(BOOL)self1 transportType:(unsigned int)self2 linkType:(unsigned int)self3 linkProtocol:(unsigned int)self4 endedReason:(unsigned int)self5 destinationType:(unsigned int)self6 durationOfSession:(id)self7 durationToConnect:(id)self8 isWifiInterfaceDisallowed:(BOOL)self9 isCellularInterfaceDisallowed:(BOOL)interfaceDisallowed
 {
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v34 = a17;
-  v33 = a18;
+  guidCopy = guid;
+  numberCopy = number;
+  nameCopy = name;
+  sessionCopy = session;
+  connectCopy = connect;
   v35.receiver = self;
   v35.super_class = IDSSessionCompleted;
   v28 = [(IDSSessionCompleted *)&v35 init];
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_guid, a3);
-    objc_storeStrong(&v29->_protocolVersionNumber, a4);
-    objc_storeStrong(&v29->_serviceName, a5);
-    v29->_isQREnabled = a7;
-    v29->_isUsingQRDirectly = a8;
-    v29->_isInitiator = a9;
-    v29->_isScreenSharingSessionType = a10;
-    v29->_isWithDefaultPairedDevice = a11;
-    v29->_clientType = a6;
-    v29->_transportType = a12;
-    v29->_linkType = a13;
-    v29->_linkProtocol = a14;
-    v29->_endedReason = a15;
-    v29->_destinationType = a16;
-    objc_storeStrong(&v29->_durationOfSession, a17);
-    objc_storeStrong(&v29->_durationToConnect, a18);
+    objc_storeStrong(&v28->_guid, guid);
+    objc_storeStrong(&v29->_protocolVersionNumber, number);
+    objc_storeStrong(&v29->_serviceName, name);
+    v29->_isQREnabled = enabled;
+    v29->_isUsingQRDirectly = directly;
+    v29->_isInitiator = initiator;
+    v29->_isScreenSharingSessionType = sessionType;
+    v29->_isWithDefaultPairedDevice = device;
+    v29->_clientType = type;
+    v29->_transportType = transportType;
+    v29->_linkType = linkType;
+    v29->_linkProtocol = protocol;
+    v29->_endedReason = reason;
+    v29->_destinationType = destinationType;
+    objc_storeStrong(&v29->_durationOfSession, session);
+    objc_storeStrong(&v29->_durationToConnect, connect);
   }
 
   return v29;

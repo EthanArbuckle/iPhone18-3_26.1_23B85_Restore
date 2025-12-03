@@ -1,7 +1,7 @@
 @interface SKARateLimiter
 + (id)logger;
 - (BOOL)isUnderRequestLimit;
-- (SKARateLimiter)initWithDomain:(id)a3 lastRequestTimePrefsKey:(id)a4 requestsCountPrefsKey:(id)a5 maxRequestsBagKey:(id)a6 defaultMaxRequests:(int64_t)a7 resetTimeBagKey:(id)a8 defaultResetTime:(int64_t)a9;
+- (SKARateLimiter)initWithDomain:(id)domain lastRequestTimePrefsKey:(id)key requestsCountPrefsKey:(id)prefsKey maxRequestsBagKey:(id)bagKey defaultMaxRequests:(int64_t)requests resetTimeBagKey:(id)timeBagKey defaultResetTime:(int64_t)time;
 - (int64_t)_maxRequests;
 - (int64_t)_requestResetTimeSeconds;
 - (void)isUnderRequestLimit;
@@ -10,26 +10,26 @@
 
 @implementation SKARateLimiter
 
-- (SKARateLimiter)initWithDomain:(id)a3 lastRequestTimePrefsKey:(id)a4 requestsCountPrefsKey:(id)a5 maxRequestsBagKey:(id)a6 defaultMaxRequests:(int64_t)a7 resetTimeBagKey:(id)a8 defaultResetTime:(int64_t)a9
+- (SKARateLimiter)initWithDomain:(id)domain lastRequestTimePrefsKey:(id)key requestsCountPrefsKey:(id)prefsKey maxRequestsBagKey:(id)bagKey defaultMaxRequests:(int64_t)requests resetTimeBagKey:(id)timeBagKey defaultResetTime:(int64_t)time
 {
-  v16 = a3;
-  v17 = a4;
-  v23 = a5;
-  v22 = a6;
-  v18 = a8;
+  domainCopy = domain;
+  keyCopy = key;
+  prefsKeyCopy = prefsKey;
+  bagKeyCopy = bagKey;
+  timeBagKeyCopy = timeBagKey;
   v24.receiver = self;
   v24.super_class = SKARateLimiter;
   v19 = [(SKARateLimiter *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_prefsDomain, a3);
-    objc_storeStrong(&v20->_lastRequestTimePrefsKey, a4);
-    objc_storeStrong(&v20->_requestsCountPrefsKey, a5);
-    objc_storeStrong(&v20->_maxRequestsBagKey, a6);
-    objc_storeStrong(&v20->_resetTimeBagKey, a8);
-    v20->_defaultMaxRequests = a7;
-    v20->_defaultResetTime = a9;
+    objc_storeStrong(&v19->_prefsDomain, domain);
+    objc_storeStrong(&v20->_lastRequestTimePrefsKey, key);
+    objc_storeStrong(&v20->_requestsCountPrefsKey, prefsKey);
+    objc_storeStrong(&v20->_maxRequestsBagKey, bagKey);
+    objc_storeStrong(&v20->_resetTimeBagKey, timeBagKey);
+    v20->_defaultMaxRequests = requests;
+    v20->_defaultResetTime = time;
   }
 
   return v20;
@@ -166,8 +166,8 @@ uint64_t __24__SKARateLimiter_logger__block_invoke()
     v3 = v8;
   }
 
-  v9 = [(SKARateLimiter *)self _requestResetTimeSeconds];
-  v10 = [(SKARateLimiter *)self _maxRequests];
+  _requestResetTimeSeconds = [(SKARateLimiter *)self _requestResetTimeSeconds];
+  _maxRequests = [(SKARateLimiter *)self _maxRequests];
   v11 = +[SKARateLimiter logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -177,17 +177,17 @@ uint64_t __24__SKARateLimiter_logger__block_invoke()
     v20 = 2112;
     v21 = v3;
     v22 = 2048;
-    v23 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     v24 = 2048;
-    v25 = v9;
+    v25 = _requestResetTimeSeconds;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "checking if we should request - currentTime: %@, lastAttempt: %@, countSinceLastAttempt: %ld, requestResetTime: %f", &v18, 0x2Au);
   }
 
-  if ([v6 integerValue] >= v10)
+  if ([v6 integerValue] >= _maxRequests)
   {
     v14 = +[SKAEnvironment dateNow];
     [v14 timeIntervalSinceDate:v3];
-    v13 = fabs(v15) > v9;
+    v13 = fabs(v15) > _requestResetTimeSeconds;
   }
 
   else
@@ -235,7 +235,7 @@ uint64_t __24__SKARateLimiter_logger__block_invoke()
     v6 = &unk_2833EB9D8;
   }
 
-  v9 = [(SKARateLimiter *)self _requestResetTimeSeconds];
+  _requestResetTimeSeconds = [(SKARateLimiter *)self _requestResetTimeSeconds];
   v10 = +[SKARateLimiter logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -245,9 +245,9 @@ uint64_t __24__SKARateLimiter_logger__block_invoke()
     v20 = 2112;
     v21 = v4;
     v22 = 2048;
-    v23 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     v24 = 2048;
-    v25 = v9;
+    v25 = _requestResetTimeSeconds;
     _os_log_impl(&dword_220099000, v10, OS_LOG_TYPE_DEFAULT, "marking request - currentTime: %@, lastAttempt: %@, countSinceLastAttempt: %ld, requestResetTime: %f", &v18, 0x2Au);
   }
 
@@ -255,7 +255,7 @@ uint64_t __24__SKARateLimiter_logger__block_invoke()
   [v12 timeIntervalSinceDate:v4];
   v14 = fabs(v13);
 
-  if (v14 > v9)
+  if (v14 > _requestResetTimeSeconds)
   {
     v15 = +[SKARateLimiter logger];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))

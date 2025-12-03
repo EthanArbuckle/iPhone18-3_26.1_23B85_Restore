@@ -1,32 +1,32 @@
 @interface _NSLineMetrics
 - (BOOL)_hasShaping;
-- (_NSLineMetrics)initWithAttributedString:(id)a3 range:(_NSRange)a4 line:(__CTLine *)a5;
+- (_NSLineMetrics)initWithAttributedString:(id)string range:(_NSRange)range line:(__CTLine *)line;
 - (_NSRange)lineRange;
-- (double)_finalAdvanceForCharacterAtIndex:(unint64_t)a3 range:(_NSRange *)a4;
-- (double)_initialAdvanceForCharacterAtIndex:(unint64_t)a3 range:(_NSRange *)a4;
-- (double)widthOfSubstringToIndex:(unint64_t)a3;
-- (double)widthOfSubstringWithRange:(_NSRange)a3;
-- (unint64_t)suggestedLineBreakAfterIndex:(unint64_t)a3 withWidth:(double)a4;
+- (double)_finalAdvanceForCharacterAtIndex:(unint64_t)index range:(_NSRange *)range;
+- (double)_initialAdvanceForCharacterAtIndex:(unint64_t)index range:(_NSRange *)range;
+- (double)widthOfSubstringToIndex:(unint64_t)index;
+- (double)widthOfSubstringWithRange:(_NSRange)range;
+- (unint64_t)suggestedLineBreakAfterIndex:(unint64_t)index withWidth:(double)width;
 - (void)_calculatePositions;
-- (void)_calculatePositions:(double *)a3 hasAdvanceAdjustment:(BOOL *)a4 withCapacity:(unint64_t)a5 forAttributedString:(id)a6 range:(_NSRange)a7 line:(__CTLine *)a8;
-- (void)_ensureGlyphCapacity:(unint64_t)a3;
-- (void)_ensureTerminalAdvancesCapacity:(unint64_t)a3;
-- (void)_getInitialAdvanceForComposedCharacterInRange:(_NSRange)a3 andFinalAdvanceForComposedCharacterInRange:(_NSRange)a4;
+- (void)_calculatePositions:(double *)positions hasAdvanceAdjustment:(BOOL *)adjustment withCapacity:(unint64_t)capacity forAttributedString:(id)string range:(_NSRange)range line:(__CTLine *)line;
+- (void)_ensureGlyphCapacity:(unint64_t)capacity;
+- (void)_ensureTerminalAdvancesCapacity:(unint64_t)capacity;
+- (void)_getInitialAdvanceForComposedCharacterInRange:(_NSRange)range andFinalAdvanceForComposedCharacterInRange:(_NSRange)inRange;
 - (void)dealloc;
-- (void)setAttributedString:(id)a3 range:(_NSRange)a4 line:(__CTLine *)a5;
-- (void)setLocale:(__CFLocale *)a3;
+- (void)setAttributedString:(id)string range:(_NSRange)range line:(__CTLine *)line;
+- (void)setLocale:(__CFLocale *)locale;
 @end
 
 @implementation _NSLineMetrics
 
-- (void)setLocale:(__CFLocale *)a3
+- (void)setLocale:(__CFLocale *)locale
 {
   locale = self->_locale;
-  if (locale != a3)
+  if (locale != locale)
   {
-    if (a3)
+    if (locale)
     {
-      CFRetain(a3);
+      CFRetain(locale);
       locale = self->_locale;
     }
 
@@ -35,18 +35,18 @@
       CFRelease(locale);
     }
 
-    self->_locale = a3;
+    self->_locale = locale;
   }
 
   self->_hasShaping = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_calculatePositions:(double *)a3 hasAdvanceAdjustment:(BOOL *)a4 withCapacity:(unint64_t)a5 forAttributedString:(id)a6 range:(_NSRange)a7 line:(__CTLine *)a8
+- (void)_calculatePositions:(double *)positions hasAdvanceAdjustment:(BOOL *)adjustment withCapacity:(unint64_t)capacity forAttributedString:(id)string range:(_NSRange)range line:(__CTLine *)line
 {
-  length = a7.length;
-  location = a7.location;
-  v40 = a6;
-  if (length + 1 > a5)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  if (length + 1 > capacity)
   {
     [_NSLineMetrics _calculatePositions:hasAdvanceAdjustment:withCapacity:forAttributedString:range:line:];
   }
@@ -58,15 +58,15 @@
 
   self->_isInCalculatePositions = 1;
   __pattern8 = 0x7FF8000000000000;
-  memset_pattern8(a3, &__pattern8, 8 * a5);
-  v13 = a8;
-  if (!a8)
+  memset_pattern8(positions, &__pattern8, 8 * capacity);
+  lineCopy = line;
+  if (!line)
   {
-    v13 = CTLineCreateWithAttributedString([v40 attributedSubstringFromRange:{location, length}]);
+    lineCopy = CTLineCreateWithAttributedString([stringCopy attributedSubstringFromRange:{location, length}]);
   }
 
-  v14 = CTLineGetStringRange(v13).location;
-  GlyphRuns = CTLineGetGlyphRuns(v13);
+  v14 = CTLineGetStringRange(lineCopy).location;
+  GlyphRuns = CTLineGetGlyphRuns(lineCopy);
   Count = CFArrayGetCount(GlyphRuns);
   runsBuf = self->_runsBuf;
   if (runsBuf)
@@ -81,19 +81,19 @@
   else
   {
     v19 = *MEMORY[0x1E695E480];
-    v20 = CTLineGetGlyphRuns(v13);
+    v20 = CTLineGetGlyphRuns(lineCopy);
     MutableCopy = CFArrayCreateMutableCopy(v19, 0, v20);
     self->_runsBuf = MutableCopy;
   }
 
-  v39 = v13;
+  v39 = lineCopy;
   _CFArraySortValuesWithBlock(MutableCopy, 0, Count, &__block_literal_global_6);
   if (Count)
   {
     v21 = 0;
     v22 = 0.0;
     v41 = Count;
-    v42 = self;
+    selfCopy = self;
     do
     {
       ValueAtIndex = CFArrayGetValueAtIndex(self->_runsBuf, v21);
@@ -130,9 +130,9 @@
           if (v35 != 0.0)
           {
             v22 = v22 + v35;
-            if (a4)
+            if (adjustment)
             {
-              a4[v33] = 1;
+              adjustment[v33] = 1;
             }
           }
 
@@ -151,9 +151,9 @@
             if (v30 != 0.0)
             {
               v22 = v22 + v30;
-              if (a4)
+              if (adjustment)
               {
-                a4[v28] = 1;
+                adjustment[v28] = 1;
               }
             }
           }
@@ -165,7 +165,7 @@
       }
 
       ++v21;
-      self = v42;
+      self = selfCopy;
     }
 
     while (v21 != v41);
@@ -176,11 +176,11 @@
     v22 = 0.0;
   }
 
-  a3[length] = v22;
+  positions[length] = v22;
   if (length)
   {
     v36 = -length;
-    v37 = &a3[length - 1];
+    v37 = &positions[length - 1];
     do
     {
       --v37;
@@ -190,7 +190,7 @@
   }
 
   CFArrayRemoveAllValues(self->_runsBuf);
-  if (!a8)
+  if (!line)
   {
     CFRelease(v39);
   }
@@ -208,29 +208,29 @@
   [(_NSLineMetrics *)self _calculatePositions:self->_positions hasAdvanceAdjustment:self->_hasAdvanceAdjustment withCapacity:v3 forAttributedString:self->_attributedString range:self->_lineRange.location line:self->_lineRange.length, self->_line];
 }
 
-- (_NSLineMetrics)initWithAttributedString:(id)a3 range:(_NSRange)a4 line:(__CTLine *)a5
+- (_NSLineMetrics)initWithAttributedString:(id)string range:(_NSRange)range line:(__CTLine *)line
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = _NSLineMetrics;
   v10 = [(_NSLineMetrics *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(_NSLineMetrics *)v10 setAttributedString:v9 range:location line:length, a5];
+    [(_NSLineMetrics *)v10 setAttributedString:stringCopy range:location line:length, line];
   }
 
   return v11;
 }
 
-- (void)setAttributedString:(id)a3 range:(_NSRange)a4 line:(__CTLine *)a5
+- (void)setAttributedString:(id)string range:(_NSRange)range line:(__CTLine *)line
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a3;
-  objc_storeStrong(&self->_attributedString, a3);
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  objc_storeStrong(&self->_attributedString, string);
   self->_lineRange.location = location;
   self->_lineRange.length = length;
   line = self->_line;
@@ -240,14 +240,14 @@
     self->_line = 0;
   }
 
-  if (a5)
+  if (line)
   {
-    self->_line = CFRetain(a5);
+    self->_line = CFRetain(line);
   }
 
   else
   {
-    v11 = [v12 attributedSubstringFromRange:{location, length}];
+    v11 = [stringCopy attributedSubstringFromRange:{location, length}];
     self->_line = CTLineCreateWithAttributedString(v11);
   }
 
@@ -317,7 +317,7 @@
   [(_NSLineMetrics *)&v12 dealloc];
 }
 
-- (void)_ensureGlyphCapacity:(unint64_t)a3
+- (void)_ensureGlyphCapacity:(unint64_t)capacity
 {
   glyphCapacity = self->_glyphCapacity;
   if (glyphCapacity)
@@ -336,7 +336,7 @@
     v5 *= 2;
   }
 
-  while (v6 < a3);
+  while (v6 < capacity);
   if (v6 > glyphCapacity)
   {
     self->_glyphCapacity = v6;
@@ -345,7 +345,7 @@
   }
 }
 
-- (void)_ensureTerminalAdvancesCapacity:(unint64_t)a3
+- (void)_ensureTerminalAdvancesCapacity:(unint64_t)capacity
 {
   terminalAdvancesCapacity = self->_terminalAdvancesCapacity;
   if (terminalAdvancesCapacity)
@@ -364,7 +364,7 @@
     v5 *= 2;
   }
 
-  while (v6 < a3);
+  while (v6 < capacity);
   if (v6 > terminalAdvancesCapacity)
   {
     self->_terminalAdvancesCapacity = v6;
@@ -417,7 +417,7 @@
   return hasShaping != 0;
 }
 
-- (double)_initialAdvanceForCharacterAtIndex:(unint64_t)a3 range:(_NSRange *)a4
+- (double)_initialAdvanceForCharacterAtIndex:(unint64_t)index range:(_NSRange *)range
 {
   if (_initialAdvanceForCharacterAtIndex_range__once != -1)
   {
@@ -425,26 +425,26 @@
   }
 
   location = self->_lineRange.location;
-  v9 = a3 >= location;
-  v8 = a3 - location;
+  v9 = index >= location;
+  v8 = index - location;
   v9 = !v9 || v8 >= self->_lineRange.length;
   if (v9)
   {
     [_NSLineMetrics _initialAdvanceForCharacterAtIndex:range:];
   }
 
-  v10 = [(NSAttributedString *)self->_attributedString string];
-  v11 = [v10 characterAtIndex:a3];
+  string = [(NSAttributedString *)self->_attributedString string];
+  v11 = [string characterAtIndex:index];
 
-  LOBYTE(v10) = self->_hasAdvanceAdjustment[a3 - self->_lineRange.location];
+  LOBYTE(string) = self->_hasAdvanceAdjustment[index - self->_lineRange.location];
   v12 = [_initialAdvanceForCharacterAtIndex_range__openingMarkCharacterSet characterIsMember:v11];
-  if ((v10 & 1) == 0 && !v12 || a3 + 1 == self->_lineRange.length + self->_lineRange.location)
+  if ((string & 1) == 0 && !v12 || index + 1 == self->_lineRange.length + self->_lineRange.location)
   {
     return NAN;
   }
 
-  v14 = [(NSAttributedString *)self->_attributedString string];
-  v15 = [v14 rangeOfComposedCharacterSequenceAtIndex:a3];
+  string2 = [(NSAttributedString *)self->_attributedString string];
+  v15 = [string2 rangeOfComposedCharacterSequenceAtIndex:index];
   v17 = v16;
 
   result = NAN;
@@ -458,8 +458,8 @@
         return NAN;
       }
 
-      a4->location = v15;
-      a4->length = v17;
+      range->location = v15;
+      range->length = v17;
       if (self->_terminalAdvancesValid)
       {
         return self->_initialAdvances[v15 - self->_lineRange.location];
@@ -467,8 +467,8 @@
 
       else
       {
-        v19 = [(NSAttributedString *)self->_attributedString string];
-        v20 = [v19 rangeOfComposedCharacterSequenceAtIndex:v15 + v17];
+        string3 = [(NSAttributedString *)self->_attributedString string];
+        v20 = [string3 rangeOfComposedCharacterSequenceAtIndex:v15 + v17];
         v22 = v21;
 
         result = NAN;
@@ -492,7 +492,7 @@
   return result;
 }
 
-- (double)_finalAdvanceForCharacterAtIndex:(unint64_t)a3 range:(_NSRange *)a4
+- (double)_finalAdvanceForCharacterAtIndex:(unint64_t)index range:(_NSRange *)range
 {
   if (_finalAdvanceForCharacterAtIndex_range__once != -1)
   {
@@ -500,37 +500,37 @@
   }
 
   location = self->_lineRange.location;
-  v9 = a3 >= location;
-  v8 = a3 - location;
+  v9 = index >= location;
+  v8 = index - location;
   v9 = !v9 || v8 >= self->_lineRange.length;
   if (v9)
   {
     [_NSLineMetrics _finalAdvanceForCharacterAtIndex:range:];
   }
 
-  v10 = [(NSAttributedString *)self->_attributedString string];
-  v11 = [v10 characterAtIndex:a3];
+  string = [(NSAttributedString *)self->_attributedString string];
+  v11 = [string characterAtIndex:index];
 
-  LOBYTE(v10) = self->_hasAdvanceAdjustment[a3 - self->_lineRange.location];
+  LOBYTE(string) = self->_hasAdvanceAdjustment[index - self->_lineRange.location];
   v12 = [_finalAdvanceForCharacterAtIndex_range__closingMarkCharacterSet characterIsMember:v11];
-  if ((v10 & 1) == 0 && !v12)
+  if ((string & 1) == 0 && !v12)
   {
     return NAN;
   }
 
   v13 = self->_lineRange.location;
-  if (a3 < v13 || a3 - v13 >= self->_lineRange.length)
+  if (index < v13 || index - v13 >= self->_lineRange.length)
   {
     [_NSLineMetrics _finalAdvanceForCharacterAtIndex:range:];
   }
 
-  if (a3 == v13)
+  if (index == v13)
   {
     return NAN;
   }
 
-  v15 = [(NSAttributedString *)self->_attributedString string];
-  v16 = [v15 rangeOfComposedCharacterSequenceAtIndex:a3];
+  string2 = [(NSAttributedString *)self->_attributedString string];
+  v16 = [string2 rangeOfComposedCharacterSequenceAtIndex:index];
   v18 = v17;
 
   result = NAN;
@@ -542,8 +542,8 @@
       result = NAN;
       if (v16 != v19 && v16 + v18 <= self->_lineRange.length + v19)
       {
-        a4->location = v16;
-        a4->length = v18;
+        range->location = v16;
+        range->length = v18;
         if (self->_terminalAdvancesValid)
         {
           return self->_finalAdvances[v16 - self->_lineRange.location];
@@ -551,8 +551,8 @@
 
         else
         {
-          v20 = [(NSAttributedString *)self->_attributedString string];
-          v21 = [v20 rangeOfComposedCharacterSequenceAtIndex:v16 - 1];
+          string3 = [(NSAttributedString *)self->_attributedString string];
+          v21 = [string3 rangeOfComposedCharacterSequenceAtIndex:v16 - 1];
           v23 = v22;
 
           result = NAN;
@@ -577,24 +577,24 @@
   return result;
 }
 
-- (void)_getInitialAdvanceForComposedCharacterInRange:(_NSRange)a3 andFinalAdvanceForComposedCharacterInRange:(_NSRange)a4
+- (void)_getInitialAdvanceForComposedCharacterInRange:(_NSRange)range andFinalAdvanceForComposedCharacterInRange:(_NSRange)inRange
 {
   __pattern8[32] = *MEMORY[0x1E69E9840];
   location = self->_lineRange.location;
-  v6 = a3.location == 0x7FFFFFFFFFFFFFFFLL || location == 0x7FFFFFFFFFFFFFFFLL || location > a3.location;
-  v7 = a3.location + a3.length;
+  v6 = range.location == 0x7FFFFFFFFFFFFFFFLL || location == 0x7FFFFFFFFFFFFFFFLL || location > range.location;
+  v7 = range.location + range.length;
   v8 = self->_lineRange.length + location;
   if (v6 || v7 > v8)
   {
     [_NSLineMetrics _getInitialAdvanceForComposedCharacterInRange:andFinalAdvanceForComposedCharacterInRange:];
   }
 
-  if (a4.location == 0x7FFFFFFFFFFFFFFFLL || location > a4.location || a4.location + a4.length > v8)
+  if (inRange.location == 0x7FFFFFFFFFFFFFFFLL || location > inRange.location || inRange.location + inRange.length > v8)
   {
     [_NSLineMetrics _getInitialAdvanceForComposedCharacterInRange:andFinalAdvanceForComposedCharacterInRange:];
   }
 
-  if (v7 > a4.location)
+  if (v7 > inRange.location)
   {
     [_NSLineMetrics _getInitialAdvanceForComposedCharacterInRange:andFinalAdvanceForComposedCharacterInRange:];
   }
@@ -614,33 +614,33 @@
   }
 }
 
-- (double)widthOfSubstringWithRange:(_NSRange)a3
+- (double)widthOfSubstringWithRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     [_NSLineMetrics widthOfSubstringWithRange:];
   }
 
-  location = a3.location;
+  location = range.location;
   v5 = self->_lineRange.location;
-  if (a3.location < v5)
+  if (range.location < v5)
   {
     [_NSLineMetrics widthOfSubstringWithRange:];
   }
 
-  v6 = a3.location + a3.length;
-  if (a3.location + a3.length > self->_lineRange.length + v5)
+  v6 = range.location + range.length;
+  if (range.location + range.length > self->_lineRange.length + v5)
   {
     [_NSLineMetrics widthOfSubstringWithRange:];
   }
 
-  if (!a3.length)
+  if (!range.length)
   {
     return 0.0;
   }
 
-  v7 = self->_positions[v6 - v5] - self->_positions[a3.location - v5];
-  if (a3.length != 1 && [(_NSLineMetrics *)self _hasShaping])
+  v7 = self->_positions[v6 - v5] - self->_positions[range.location - v5];
+  if (range.length != 1 && [(_NSLineMetrics *)self _hasShaping])
   {
     v13 = 0;
     v14 = 0;
@@ -662,10 +662,10 @@
   return v7;
 }
 
-- (double)widthOfSubstringToIndex:(unint64_t)a3
+- (double)widthOfSubstringToIndex:(unint64_t)index
 {
   location = self->_lineRange.location;
-  if (a3 < location || self->_lineRange.length + location < a3)
+  if (index < location || self->_lineRange.length + location < index)
   {
     [_NSLineMetrics widthOfSubstringToIndex:];
   }
@@ -674,10 +674,10 @@
   return result;
 }
 
-- (unint64_t)suggestedLineBreakAfterIndex:(unint64_t)a3 withWidth:(double)a4
+- (unint64_t)suggestedLineBreakAfterIndex:(unint64_t)index withWidth:(double)width
 {
   location = self->_lineRange.location;
-  if (location > a3 || self->_lineRange.length + location < a3)
+  if (location > index || self->_lineRange.length + location < index)
   {
     [_NSLineMetrics suggestedLineBreakAfterIndex:withWidth:];
   }
@@ -691,7 +691,7 @@
 
   else
   {
-    return v6 + a3;
+    return v6 + index;
   }
 }
 

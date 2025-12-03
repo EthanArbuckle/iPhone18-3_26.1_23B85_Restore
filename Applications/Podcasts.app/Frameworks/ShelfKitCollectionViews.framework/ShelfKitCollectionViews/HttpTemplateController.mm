@@ -1,8 +1,8 @@
 @interface HttpTemplateController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (_TtC23ShelfKitCollectionViews22HttpTemplateController)init;
 - (void)dealloc;
-- (void)textFieldDidChange:(id)a3;
+- (void)textFieldDidChange:(id)change;
 @end
 
 @implementation HttpTemplateController
@@ -11,29 +11,29 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(HttpTemplateController *)&v7 dealloc];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_30C0D8();
-  v9 = a3;
-  v10 = self;
-  sub_25A4B8(v9, location, length);
+  fieldCopy = field;
+  selfCopy = self;
+  sub_25A4B8(fieldCopy, location, length);
   LOBYTE(length) = v11;
 
   return length & 1;
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
   v4 = sub_3019D8();
   v5 = *(v4 - 8);
@@ -42,7 +42,7 @@
   sub_3019C8();
   if (*(&self->super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews22HttpTemplateController_hasRequiredParameters) == 1)
   {
-    v8 = self;
+    selfCopy = self;
     sub_25A12C();
   }
 

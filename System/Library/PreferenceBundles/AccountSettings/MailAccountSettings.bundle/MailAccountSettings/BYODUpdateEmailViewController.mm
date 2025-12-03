@@ -1,30 +1,30 @@
 @interface BYODUpdateEmailViewController
-- (BYODUpdateEmailViewController)initWithAccount:(id)a3 domain:(id)a4 addAlias:(BOOL)a5;
+- (BYODUpdateEmailViewController)initWithAccount:(id)account domain:(id)domain addAlias:(BOOL)alias;
 - (id)_getEmailFromSpecifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_addAliasAddress;
 - (void)_addEmailAddress;
-- (void)_postNotificationForDomainData:(id)a3;
-- (void)_updatEmailAddress:(id)a3;
+- (void)_postNotificationForDomainData:(id)data;
+- (void)_updatEmailAddress:(id)address;
 - (void)viewDidLoad;
 @end
 
 @implementation BYODUpdateEmailViewController
 
-- (BYODUpdateEmailViewController)initWithAccount:(id)a3 domain:(id)a4 addAlias:(BOOL)a5
+- (BYODUpdateEmailViewController)initWithAccount:(id)account domain:(id)domain addAlias:(BOOL)alias
 {
-  v9 = a3;
-  v10 = a4;
+  accountCopy = account;
+  domainCopy = domain;
   v14.receiver = self;
   v14.super_class = BYODUpdateEmailViewController;
   v11 = [(BYODUpdateEmailViewController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_loggedInUserAccount, a3);
-    objc_storeStrong(&v12->_domainResult, a4);
-    v12->_addAlias = a5;
+    objc_storeStrong(&v11->_loggedInUserAccount, account);
+    objc_storeStrong(&v12->_domainResult, domain);
+    v12->_addAlias = alias;
   }
 
   return v12;
@@ -35,21 +35,21 @@
   v13.receiver = self;
   v13.super_class = BYODUpdateEmailViewController;
   [(BYODUpdateEmailViewController *)&v13 viewDidLoad];
-  v3 = [(BYODUpdateEmailViewController *)self navigationItem];
+  navigationItem = [(BYODUpdateEmailViewController *)self navigationItem];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_EMAIL_ADDRESS_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  [v3 setTitle:v5];
+  [navigationItem setTitle:v5];
 
-  v6 = [(BYODUpdateEmailViewController *)self navigationItem];
+  navigationItem2 = [(BYODUpdateEmailViewController *)self navigationItem];
   v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-  [v6 setLeftBarButtonItem:v7];
+  [navigationItem2 setLeftBarButtonItem:v7];
 
-  v8 = [(BYODUpdateEmailViewController *)self navigationItem];
+  navigationItem3 = [(BYODUpdateEmailViewController *)self navigationItem];
   v9 = [UIBarButtonItem alloc];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"NEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
   v12 = [v9 initWithTitle:v11 style:2 target:self action:"_updatEmailAddress:"];
-  [v8 setRightBarButtonItem:v12];
+  [navigationItem3 setRightBarButtonItem:v12];
 }
 
 - (id)specifiers
@@ -84,7 +84,7 @@
   return v14;
 }
 
-- (void)_updatEmailAddress:(id)a3
+- (void)_updatEmailAddress:(id)address
 {
   if (self->_addAlias)
   {
@@ -100,34 +100,34 @@
 - (id)_getEmailFromSpecifier
 {
   v2 = [_updateEmailSpecifier propertyForKey:@"cellObject"];
-  v3 = [v2 value];
+  value = [v2 value];
 
-  return v3;
+  return value;
 }
 
 - (void)_addEmailAddress
 {
-  v3 = [(BYODUpdateEmailViewController *)self callingSpecifier];
-  v4 = [v3 propertyForKey:@"MEMBER_DSID"];
+  callingSpecifier = [(BYODUpdateEmailViewController *)self callingSpecifier];
+  v4 = [callingSpecifier propertyForKey:@"MEMBER_DSID"];
 
   v20 = v4;
   v22 = [(BYODGetDomainResult *)self->_domainResult getMemberFromIdentifier:v4];
-  v5 = [(BYODUpdateEmailViewController *)self _getEmailFromSpecifier];
-  v6 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v7 = [v6 name];
-  v21 = [NSString stringWithFormat:@"%@%@%@", v5, @"@", v7];
+  _getEmailFromSpecifier = [(BYODUpdateEmailViewController *)self _getEmailFromSpecifier];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  name = [domain name];
+  v21 = [NSString stringWithFormat:@"%@%@%@", _getEmailFromSpecifier, @"@", name];
 
   v8 = [BYODAddEmailRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v10 = [(ACAccount *)loggedInUserAccount accountStore];
-  v11 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v12 = [v11 name];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain2 = [(BYODGetDomainResult *)self->_domainResult domain];
+  name2 = [domain2 name];
   v26 = v21;
   v13 = [NSArray arrayWithObjects:&v26 count:1];
-  v14 = [v22 dsid];
-  v15 = [v22 invitedEmail];
-  v16 = [v22 invitedPhoneNumber];
-  v17 = [(BYODAddEmailRequest *)v8 initWithAccount:loggedInUserAccount accountStore:v10 domain:v12 emailArray:v13 dsid:v14 withEmail:v15 withPhone:v16];
+  dsid = [v22 dsid];
+  invitedEmail = [v22 invitedEmail];
+  invitedPhoneNumber = [v22 invitedPhoneNumber];
+  v17 = [(BYODAddEmailRequest *)v8 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name2 emailArray:v13 dsid:dsid withEmail:invitedEmail withPhone:invitedPhoneNumber];
 
   objc_initWeak(&location, self);
   v18 = [[BYODSpinner alloc] initWithViewController:self];
@@ -147,20 +147,20 @@
 
 - (void)_addAliasAddress
 {
-  v3 = [(BYODUpdateEmailViewController *)self _getEmailFromSpecifier];
-  v4 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v5 = [v4 name];
-  v6 = [NSString stringWithFormat:@"%@%@%@", v3, @"@", v5];
+  _getEmailFromSpecifier = [(BYODUpdateEmailViewController *)self _getEmailFromSpecifier];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  name = [domain name];
+  v6 = [NSString stringWithFormat:@"%@%@%@", _getEmailFromSpecifier, @"@", name];
 
   v7 = [BYODAddAliasRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v9 = [(ACAccount *)loggedInUserAccount accountStore];
-  v10 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v11 = [v10 name];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain2 = [(BYODGetDomainResult *)self->_domainResult domain];
+  name2 = [domain2 name];
   v20 = v6;
   v12 = [NSArray arrayWithObjects:&v20 count:1];
-  v13 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-  v14 = [(BYODAddAliasRequest *)v7 initWithAccount:loggedInUserAccount accountStore:v9 domain:v11 emailArray:v12 dsid:v13];
+  normalizedDSID = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+  v14 = [(BYODAddAliasRequest *)v7 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name2 emailArray:v12 dsid:normalizedDSID];
 
   objc_initWeak(&location, self);
   v15 = [[BYODSpinner alloc] initWithViewController:self];
@@ -178,40 +178,40 @@
   objc_destroyWeak(&location);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = BYODUpdateEmailViewController;
-  v5 = [(BYODUpdateEmailViewController *)&v15 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 detailTextLabel];
-  [v6 setNumberOfLines:0];
+  v5 = [(BYODUpdateEmailViewController *)&v15 tableView:view cellForRowAtIndexPath:path];
+  detailTextLabel = [v5 detailTextLabel];
+  [detailTextLabel setNumberOfLines:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 textField];
+    textField = [v5 textField];
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"BYOD_UPDATE_EMAIL_TEXT_PLACEHOLDER" value:&stru_B9FC8 table:@"AccountPreferences"];
-    [v7 setPlaceholder:v9];
+    [textField setPlaceholder:v9];
 
-    v10 = [(BYODGetDomainResult *)self->_domainResult domain];
-    v11 = [v10 name];
-    v12 = [NSString stringWithFormat:@"%@%@", @"@", v11];
+    domain = [(BYODGetDomainResult *)self->_domainResult domain];
+    name = [domain name];
+    v12 = [NSString stringWithFormat:@"%@%@", @"@", name];
 
     v13 = +[UIColor secondaryLabelColor];
-    [v7 _setSuffix:v12 withColor:v13];
+    [textField _setSuffix:v12 withColor:v13];
 
-    [v7 setDelegate:self];
+    [textField setDelegate:self];
   }
 
   return v5;
 }
 
-- (void)_postNotificationForDomainData:(id)a3
+- (void)_postNotificationForDomainData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v3 = objc_alloc_init(NSMutableDictionary);
-  [v3 setValue:v5 forKey:@"domainData"];
+  [v3 setValue:dataCopy forKey:@"domainData"];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"BYOD_DOMAIN_DATA_REFRESH_NOTIFICATION" object:0 userInfo:v3];
 }

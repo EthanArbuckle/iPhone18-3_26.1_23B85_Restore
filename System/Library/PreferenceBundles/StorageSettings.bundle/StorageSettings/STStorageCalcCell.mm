@@ -1,6 +1,6 @@
 @interface STStorageCalcCell
 + (id)specifierForCalc;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STStorageCalcCell
@@ -21,14 +21,14 @@
   return v2;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = STStorageCalcCell;
-  v4 = a3;
-  [(STStorageCalcCell *)&v6 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(STStorageCalcCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
   STLoadTableIconForAppID();
-  v5 = [v4 propertyForKey:PSTitleKey];
+  v5 = [specifierCopy propertyForKey:PSTitleKey];
 
   [(STStorageCalcCell *)self setTitle:v5];
   [(STStorageCalcCell *)self setSize:0];

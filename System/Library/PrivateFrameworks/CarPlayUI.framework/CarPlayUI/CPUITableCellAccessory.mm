@@ -1,7 +1,7 @@
 @interface CPUITableCellAccessory
 + (id)accessoryWithCloudIcon;
 + (id)accessoryWithDisclosureIndicator;
-+ (id)accessoryWithImage:(id)a3;
++ (id)accessoryWithImage:(id)image;
 + (id)accessoryWithiCloudIcon;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __48__CPUITableCellAccessory_accessoryWithCloudIcon__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accessoryWithCloudIcon_onceToken != -1)
   {
     dispatch_once(&accessoryWithCloudIcon_onceToken, block);
@@ -37,7 +37,7 @@ uint64_t __48__CPUITableCellAccessory_accessoryWithCloudIcon__block_invoke()
   block[1] = 3221225472;
   block[2] = __49__CPUITableCellAccessory_accessoryWithiCloudIcon__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accessoryWithiCloudIcon_onceToken != -1)
   {
     dispatch_once(&accessoryWithiCloudIcon_onceToken, block);
@@ -61,7 +61,7 @@ uint64_t __49__CPUITableCellAccessory_accessoryWithiCloudIcon__block_invoke()
   block[1] = 3221225472;
   block[2] = __58__CPUITableCellAccessory_accessoryWithDisclosureIndicator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accessoryWithDisclosureIndicator_onceToken != -1)
   {
     dispatch_once(&accessoryWithDisclosureIndicator_onceToken, block);
@@ -79,11 +79,11 @@ uint64_t __58__CPUITableCellAccessory_accessoryWithDisclosureIndicator__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)accessoryWithImage:(id)a3
++ (id)accessoryWithImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = objc_opt_new();
-  [v4 setImage:v3];
+  [v4 setImage:imageCopy];
 
   return v4;
 }

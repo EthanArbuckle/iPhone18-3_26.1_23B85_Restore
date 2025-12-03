@@ -1,14 +1,14 @@
 @interface InstallCoordinationObserver
 + (id)sharedInstance;
 - (InstallCoordinationObserver)init;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4;
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4;
-- (void)coordinatorShouldPause:(id)a3;
-- (void)coordinatorShouldPrioritize:(id)a3;
-- (void)coordinatorShouldResume:(id)a3;
-- (void)mayUninstallAppWithIdentity:(id)a3;
-- (void)shouldPrioritizeAppWithIdentity:(id)a3;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record;
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record;
+- (void)coordinatorShouldPause:(id)pause;
+- (void)coordinatorShouldPrioritize:(id)prioritize;
+- (void)coordinatorShouldResume:(id)resume;
+- (void)mayUninstallAppWithIdentity:(id)identity;
+- (void)shouldPrioritizeAppWithIdentity:(id)identity;
 @end
 
 @implementation InstallCoordinationObserver
@@ -68,38 +68,38 @@
   return v2;
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  reasonCopy = reason;
   databaseStore = self->_databaseStore;
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_1003DDD48;
   v19 = &unk_10051CA38;
-  v20 = v7;
-  v21 = v8;
-  v10 = v8;
-  v11 = v7;
+  v20 = coordinatorCopy;
+  v21 = reasonCopy;
+  v10 = reasonCopy;
+  v11 = coordinatorCopy;
   [(AppInstallsDatabaseStore *)databaseStore modifyUsingTransaction:&v16];
   v12 = sub_1003F281C();
-  v13 = [v11 identity];
-  v14 = [v13 bundleID];
-  v15 = [v11 uniqueIdentifier];
-  sub_1003F3770(v12, v14, v15);
+  identity = [v11 identity];
+  bundleID = [identity bundleID];
+  uniqueIdentifier = [v11 uniqueIdentifier];
+  sub_1003F3770(v12, bundleID, uniqueIdentifier);
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record
 {
-  v6 = a3;
-  v7 = [a4 URL];
+  successfullyCopy = successfully;
+  v7 = [record URL];
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 identity];
-    v10 = [v9 bundleID];
+    identity = [successfullyCopy identity];
+    bundleID = [identity bundleID];
     *buf = 138543618;
-    v24 = v10;
+    v24 = bundleID;
     v25 = 2114;
     v26 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "coordinatorDidCompleteSuccessfully for bundleID: %{public}@ at URL: %{public}@", buf, 0x16u);
@@ -110,7 +110,7 @@
   v20[1] = 3221225472;
   v20[2] = sub_1003DE584;
   v20[3] = &unk_10051CA38;
-  v12 = v6;
+  v12 = successfullyCopy;
   v21 = v12;
   v13 = v7;
   v22 = v13;
@@ -119,29 +119,29 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v14 = sub_1003F281C();
-    v15 = [v12 identity];
-    v16 = [v15 bundleID];
-    v17 = [v12 uniqueIdentifier];
+    identity2 = [v12 identity];
+    bundleID2 = [identity2 bundleID];
+    uniqueIdentifier = [v12 uniqueIdentifier];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1003DE970;
     v18[3] = &unk_10051AF98;
     v19 = v12;
-    sub_1003F5DB0(v14, v16, v17, v18);
+    sub_1003F5DB0(v14, bundleID2, uniqueIdentifier, v18);
   }
 }
 
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record
 {
-  v6 = a3;
-  v7 = [a4 URL];
+  placeholderCopy = placeholder;
+  v7 = [record URL];
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identity];
-    v10 = [v9 bundleID];
+    identity = [placeholderCopy identity];
+    bundleID = [identity bundleID];
     *buf = 138543618;
-    v16 = v10;
+    v16 = bundleID;
     v17 = 2114;
     v18 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "coordinatorDidInstallPlaceholder for bundleID: %{public}@ at URL: %{public}@", buf, 0x16u);
@@ -154,15 +154,15 @@
     v12[1] = 3221225472;
     v12[2] = sub_1003DEB74;
     v12[3] = &unk_10051FD88;
-    v13 = v6;
+    v13 = placeholderCopy;
     v14 = v7;
     [(AppInstallsDatabaseStore *)databaseStore readUsingSession:v12];
   }
 }
 
-- (void)coordinatorShouldPrioritize:(id)a3
+- (void)coordinatorShouldPrioritize:(id)prioritize
 {
-  v4 = a3;
+  prioritizeCopy = prioritize;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -171,7 +171,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v4;
+    v26 = prioritizeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Prioritization requested via coordinator %{public}@", buf, 0xCu);
   }
 
@@ -180,17 +180,17 @@
   v17[1] = 3221225472;
   v17[2] = sub_1003DF1EC;
   v17[3] = &unk_100527D18;
-  v7 = v4;
-  v19 = self;
+  v7 = prioritizeCopy;
+  selfCopy = self;
   v20 = &v21;
   v18 = v7;
   [(AppInstallsDatabaseStore *)databaseStore modifyUsingTransaction:v17];
   if (*(v22 + 24) == 1)
   {
     v8 = sub_1001DFF60();
-    v9 = [v7 identity];
-    v10 = [v9 bundleID];
-    v11 = sub_1001E03BC(v8, v10);
+    identity = [v7 identity];
+    bundleID = [identity bundleID];
+    v11 = sub_1001E03BC(v8, bundleID);
     *(v22 + 24) = v11 ^ 1;
 
     if (v22[3])
@@ -201,88 +201,88 @@
     v12 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v7 identity];
-      v14 = [v13 bundleID];
+      identity2 = [v7 identity];
+      bundleID2 = [identity2 bundleID];
       *buf = 138543362;
-      v26 = v14;
+      v26 = bundleID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Found in-flight purchase for '%{public}@', ignoring prioritization request", buf, 0xCu);
     }
 
     if (v22[3])
     {
 LABEL_8:
-      v15 = [v7 identity];
-      v16 = [v15 bundleID];
-      sub_1003DFC20(self, v16, v7);
+      identity3 = [v7 identity];
+      bundleID3 = [identity3 bundleID];
+      sub_1003DFC20(self, bundleID3, v7);
     }
   }
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)coordinatorShouldPause:(id)a3
+- (void)coordinatorShouldPause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   databaseStore = self->_databaseStore;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1003E0A10;
   v11[3] = &unk_10051D6C8;
-  v12 = v4;
-  v6 = v4;
+  v12 = pauseCopy;
+  v6 = pauseCopy;
   [(AppInstallsDatabaseStore *)databaseStore modifyUsingTransaction:v11];
   v7 = sub_1003F281C();
-  v8 = [v6 identity];
-  v9 = [v8 bundleID];
-  v10 = [v6 uniqueIdentifier];
-  sub_1003F40F4(v7, v9, v10);
+  identity = [v6 identity];
+  bundleID = [identity bundleID];
+  uniqueIdentifier = [v6 uniqueIdentifier];
+  sub_1003F40F4(v7, bundleID, uniqueIdentifier);
 }
 
-- (void)coordinatorShouldResume:(id)a3
+- (void)coordinatorShouldResume:(id)resume
 {
-  v4 = a3;
+  resumeCopy = resume;
   databaseStore = self->_databaseStore;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1003E0C6C;
   v14 = &unk_10051CA38;
-  v15 = v4;
-  v16 = self;
-  v6 = v4;
+  v15 = resumeCopy;
+  selfCopy = self;
+  v6 = resumeCopy;
   [(AppInstallsDatabaseStore *)databaseStore modifyUsingTransaction:&v11];
   v7 = sub_1003F281C();
-  v8 = [v6 identity];
-  v9 = [v8 bundleID];
-  v10 = [v6 uniqueIdentifier];
-  sub_1003F4628(v7, v9, v10);
+  identity = [v6 identity];
+  bundleID = [identity bundleID];
+  uniqueIdentifier = [v6 uniqueIdentifier];
+  sub_1003F4628(v7, bundleID, uniqueIdentifier);
 }
 
-- (void)mayUninstallAppWithIdentity:(id)a3
+- (void)mayUninstallAppWithIdentity:(id)identity
 {
-  v7 = [a3 bundleID];
+  bundleID = [identity bundleID];
   if (self)
   {
     v4 = sub_1003BBF50();
-    v5 = [v4 isHRNMode];
+    isHRNMode = [v4 isHRNMode];
 
-    if ((v5 & 1) == 0)
+    if ((isHRNMode & 1) == 0)
     {
       dispatchQueue = self->_dispatchQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1003E1B28;
       block[3] = &unk_10051AF98;
-      v9 = v7;
+      v9 = bundleID;
       dispatch_async(dispatchQueue, block);
     }
   }
 }
 
-- (void)shouldPrioritizeAppWithIdentity:(id)a3
+- (void)shouldPrioritizeAppWithIdentity:(id)identity
 {
-  v4 = [a3 bundleID];
+  bundleID = [identity bundleID];
   v5 = +[_TtC9appstored9MadBridge shared];
-  v6 = [v5 isThirdPartyRestore:v4];
+  v6 = [v5 isThirdPartyRestore:bundleID];
 
   if (v6)
   {
@@ -290,12 +290,12 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = v4;
+      v15 = bundleID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Forwarding prioritize call", &v14, 0xCu);
     }
 
     v8 = +[_TtC9appstored9MadBridge shared];
-    [v8 prioritize:v4];
+    [v8 prioritize:bundleID];
   }
 
   else
@@ -306,14 +306,14 @@ LABEL_8:
       v14 = 138543618;
       v15 = objc_opt_class();
       v16 = 2114;
-      v17 = v4;
+      v17 = bundleID;
       v10 = v15;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Prioritize for %{public}@", &v14, 0x16u);
     }
 
-    if ([v4 length])
+    if ([bundleID length])
     {
-      sub_1003DFC20(self, v4, 0);
+      sub_1003DFC20(self, bundleID, 0);
     }
 
     else

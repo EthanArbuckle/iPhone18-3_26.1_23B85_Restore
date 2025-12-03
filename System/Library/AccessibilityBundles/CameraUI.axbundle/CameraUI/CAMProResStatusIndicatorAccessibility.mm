@@ -1,5 +1,5 @@
 @interface CAMProResStatusIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation CAMProResStatusIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMProResStatusIndicator" hasInstanceMethod:@"proResVideoMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMProResStatusIndicator" hasInstanceMethod:@"colorSpace" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMProResStatusIndicator" hasInstanceMethod:@"proResVideoMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMProResStatusIndicator" hasInstanceMethod:@"colorSpace" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -33,16 +33,16 @@
   {
     v4 = @"pro.res.button.log";
 LABEL_7:
-    v5 = accessibilityCameraUILocalizedString(v4);
+    accessibilityLabel = accessibilityCameraUILocalizedString(v4);
     goto LABEL_8;
   }
 
   v7.receiver = self;
   v7.super_class = CAMProResStatusIndicatorAccessibility;
-  v5 = [(CAMProResStatusIndicatorAccessibility *)&v7 accessibilityLabel];
+  accessibilityLabel = [(CAMProResStatusIndicatorAccessibility *)&v7 accessibilityLabel];
 LABEL_8:
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue

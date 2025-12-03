@@ -2,8 +2,8 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)hasText;
 - (BOOL)resignFirstResponder;
-- (CGRect)_roundRectToPixel:(CGRect)a3;
-- (PinView)initWithPinLength:(id)a3 minLength:(id)a4 maxLength:(id)a5 charset:(id)a6;
+- (CGRect)_roundRectToPixel:(CGRect)pixel;
+- (PinView)initWithPinLength:(id)length minLength:(id)minLength maxLength:(id)maxLength charset:(id)charset;
 - (PinViewDelegate)delegate;
 - (int64_t)autocapitalizationType;
 - (int64_t)keyboardAppearance;
@@ -11,39 +11,39 @@
 - (void)_activateKeypadView;
 - (void)_deactivateKeypadView;
 - (void)_dismissKeypad;
-- (void)_layoutSubviewsWithKeyboard:(CGRect)a3;
+- (void)_layoutSubviewsWithKeyboard:(CGRect)keyboard;
 - (void)dealloc;
-- (void)keyboardDidShow:(id)a3;
+- (void)keyboardDidShow:(id)show;
 - (void)layoutSubviews;
-- (void)pinEntered:(id)a3;
-- (void)setCancelButton:(id)a3;
+- (void)pinEntered:(id)entered;
+- (void)setCancelButton:(id)button;
 @end
 
 @implementation PinView
 
-- (PinView)initWithPinLength:(id)a3 minLength:(id)a4 maxLength:(id)a5 charset:(id)a6
+- (PinView)initWithPinLength:(id)length minLength:(id)minLength maxLength:(id)maxLength charset:(id)charset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lengthCopy = length;
+  minLengthCopy = minLength;
+  maxLengthCopy = maxLength;
+  charsetCopy = charset;
   v40.receiver = self;
   v40.super_class = PinView;
   v14 = [(PinView *)&v40 init];
   if (v14)
   {
     +[UIScreen mainScreen];
-    v39 = v13;
-    v15 = v12;
-    v16 = v11;
-    v18 = v17 = v10;
+    v39 = charsetCopy;
+    v15 = maxLengthCopy;
+    v16 = minLengthCopy;
+    v18 = v17 = lengthCopy;
     [v18 scale];
     v14->_scale = v19;
 
     v20 = +[UIDevice currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    userInterfaceIdiom = [v20 userInterfaceIdiom];
 
-    v14->_autoKeyboard = (v21 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v14->_autoKeyboard = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
     v22 = objc_opt_new();
     titleLabel = v14->_titleLabel;
     v14->_titleLabel = v22;
@@ -58,22 +58,22 @@
     v26 = v14->_titleLabel;
     v27 = +[UIColor labelColor];
     v28 = v26;
-    v10 = v17;
-    v11 = v16;
-    v12 = v15;
-    v13 = v39;
+    lengthCopy = v17;
+    minLengthCopy = v16;
+    maxLengthCopy = v15;
+    charsetCopy = v39;
     [(UILabel *)v28 setTextColor:v27];
 
     [(UILabel *)v14->_titleLabel setNumberOfLines:0];
     [(PinView *)v14 addSubview:v14->_titleLabel];
-    v29 = [[PinField alloc] initWithPinLength:v10 minLength:v11 maxLength:v12 charset:v39];
+    v29 = [[PinField alloc] initWithPinLength:lengthCopy minLength:minLengthCopy maxLength:maxLengthCopy charset:v39];
     pinField = v14->_pinField;
     v14->_pinField = v29;
 
     [(PinView *)v14 addSubview:v14->_pinField];
     [(PinField *)v14->_pinField setDelegate:v14];
-    objc_storeStrong(&v14->_pinMinLength, a4);
-    objc_storeStrong(&v14->_pinCharset, a6);
+    objc_storeStrong(&v14->_pinMinLength, minLength);
+    objc_storeStrong(&v14->_pinCharset, charset);
     if (!v14->_autoKeyboard || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 userInterfaceIdiom], v31, (v32 & 0xFFFFFFFFFFFFFFFBLL) != 1))
     {
       v33 = objc_opt_new();
@@ -126,10 +126,10 @@
   [(PinView *)&v4 dealloc];
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v9 = [v4 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [show userInfo];
+  v9 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
 
   if (v9)
   {
@@ -147,13 +147,13 @@
   _objc_release_x1();
 }
 
-- (void)setCancelButton:(id)a3
+- (void)setCancelButton:(id)button
 {
-  v4 = a3;
-  v5 = v4;
+  buttonCopy = button;
+  v5 = buttonCopy;
   if (self->_cancelButton)
   {
-    [(UIButton *)v4 removeFromSuperview];
+    [(UIButton *)buttonCopy removeFromSuperview];
   }
 
   cancelButton = self->_cancelButton;
@@ -178,9 +178,9 @@
       width = self->_keyboardDefaultFrame.size.width;
       v6 = self->_keyboardDefaultFrame.size.height;
       v7 = +[UIDevice currentDevice];
-      v8 = [v7 userInterfaceIdiom];
+      userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-      if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v6 = 216.0;
         width = 320.0;
@@ -199,8 +199,8 @@
 
     else
     {
-      v11 = [(PinView *)self keyboardLayoutGuide];
-      [v11 layoutFrame];
+      keyboardLayoutGuide = [(PinView *)self keyboardLayoutGuide];
+      [keyboardLayoutGuide layoutFrame];
       x = v12;
       v10 = v13;
       width = v14;
@@ -225,12 +225,12 @@
   }
 }
 
-- (void)_layoutSubviewsWithKeyboard:(CGRect)a3
+- (void)_layoutSubviewsWithKeyboard:(CGRect)keyboard
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = keyboard.size.height;
+  width = keyboard.size.width;
+  y = keyboard.origin.y;
+  x = keyboard.origin.x;
   [(PinView *)self bounds];
   v8 = v26.origin.x;
   v9 = v26.origin.y;
@@ -238,9 +238,9 @@
   v11 = v26.size.height;
   if (!CGRectIsEmpty(v26))
   {
-    v12 = [(PinView *)self viewController];
-    v13 = [v12 view];
-    [v13 safeAreaInsets];
+    viewController = [(PinView *)self viewController];
+    view = [viewController view];
+    [view safeAreaInsets];
     v24 = v14;
 
     cancelButton = self->_cancelButton;
@@ -281,12 +281,12 @@
   }
 }
 
-- (CGRect)_roundRectToPixel:(CGRect)a3
+- (CGRect)_roundRectToPixel:(CGRect)pixel
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  [(PinView *)self _roundToPixel:a3.origin.x];
+  height = pixel.size.height;
+  width = pixel.size.width;
+  y = pixel.origin.y;
+  [(PinView *)self _roundToPixel:pixel.origin.x];
   v8 = v7;
   [(PinView *)self _roundToPixel:y];
   v10 = v9;
@@ -331,13 +331,13 @@
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(PinView *)self isFirstResponder];
-  if (v3)
+  isFirstResponder = [(PinView *)self isFirstResponder];
+  if (isFirstResponder)
   {
     v6.receiver = self;
     v6.super_class = PinView;
-    v3 = [(PinView *)&v6 resignFirstResponder];
-    if (v3)
+    isFirstResponder = [(PinView *)&v6 resignFirstResponder];
+    if (isFirstResponder)
     {
       if (self->_keypadActive)
       {
@@ -350,11 +350,11 @@
         [WeakRetained pinCancelled];
       }
 
-      LOBYTE(v3) = 1;
+      LOBYTE(isFirstResponder) = 1;
     }
   }
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (void)_activateKeypadView
@@ -364,15 +364,15 @@
     keypad = self->_keypad;
     if (!keypad)
     {
-      v4 = [[PinKeypad alloc] initWithDefaultSize];
+      initWithDefaultSize = [[PinKeypad alloc] initWithDefaultSize];
       v5 = self->_keypad;
-      self->_keypad = v4;
+      self->_keypad = initWithDefaultSize;
 
-      v6 = [(PinKeypad *)self->_keypad layer];
-      v7 = [v6 disableUpdateMask];
+      layer = [(PinKeypad *)self->_keypad layer];
+      disableUpdateMask = [layer disableUpdateMask];
 
-      v8 = [(PinKeypad *)self->_keypad layer];
-      [v8 setDisableUpdateMask:v7 | 0x10];
+      layer2 = [(PinKeypad *)self->_keypad layer];
+      [layer2 setDisableUpdateMask:disableUpdateMask | 0x10];
 
       [(PinKeypad *)self->_keypad frame];
       self->_keyboardDefaultFrame.origin.x = v9;
@@ -384,9 +384,9 @@
 
     [(PinKeypad *)keypad activate];
     self->_keypadActive = 1;
-    v13 = [(PinKeypad *)self->_keypad superview];
+    superview = [(PinKeypad *)self->_keypad superview];
 
-    if (!v13)
+    if (!superview)
     {
       v14 = self->_keypad;
 
@@ -416,12 +416,12 @@
   }
 }
 
-- (void)pinEntered:(id)a3
+- (void)pinEntered:(id)entered
 {
   self->_pinEntered = 1;
-  v4 = a3;
+  enteredCopy = entered;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pinEntered:v4];
+  [WeakRetained pinEntered:enteredCopy];
 }
 
 - (int64_t)keyboardType
@@ -429,9 +429,9 @@
   if (!self->_autoKeyboard)
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       return 127;
     }
@@ -447,10 +447,10 @@
 
 - (int64_t)keyboardAppearance
 {
-  v2 = [(PinView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(PinView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 1000 || v3 == 2)
+  if (userInterfaceStyle == 1000 || userInterfaceStyle == 2)
   {
     return 1;
   }
@@ -476,8 +476,8 @@
 
 - (BOOL)hasText
 {
-  v2 = [(PinField *)self->_pinField pinValue];
-  v3 = [v2 length] != 0;
+  pinValue = [(PinField *)self->_pinField pinValue];
+  v3 = [pinValue length] != 0;
 
   return v3;
 }

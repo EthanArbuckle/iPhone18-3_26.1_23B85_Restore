@@ -4,8 +4,8 @@
 - (void)recordCaptureEvent;
 - (void)recordMenuVisibleEvent;
 - (void)recordSliderVisibleEvent;
-- (void)setControlsCountParameter:(unint64_t)a3;
-- (void)startTipObservationForViewController:(id)a3 sourceItem:(id)a4;
+- (void)setControlsCountParameter:(unint64_t)parameter;
+- (void)startTipObservationForViewController:(id)controller sourceItem:(id)item;
 - (void)stopTipObservation;
 @end
 
@@ -41,17 +41,17 @@ LABEL_7:
   return v8 != v9;
 }
 
-- (void)startTipObservationForViewController:(id)a3 sourceItem:(id)a4
+- (void)startTipObservationForViewController:(id)controller sourceItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  itemCopy = item;
+  selfCopy = self;
   sub_100018668();
 }
 
 - (void)stopTipObservation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100019950();
 }
 
@@ -69,11 +69,11 @@ LABEL_7:
 
 - (void)recordMenuVisibleEvent
 {
-  v2 = self;
+  selfCopy = self;
   sub_100019AC0();
 }
 
-- (void)setControlsCountParameter:(unint64_t)a3
+- (void)setControlsCountParameter:(unint64_t)parameter
 {
   if (qword_10005F508 != -1)
   {
@@ -104,16 +104,16 @@ LABEL_7:
 
 - (void)recordCaptureEvent
 {
-  v0 = [BiomeLibrary() Discoverability];
+  discoverability = [BiomeLibrary() Discoverability];
   swift_unknownObjectRelease();
-  v1 = [v0 Signals];
+  signals = [discoverability Signals];
   swift_unknownObjectRelease();
   v2 = objc_allocWithZone(BMDiscoverabilitySignals);
   v3 = String._bridgeToObjectiveC()();
   v4 = [v2 initWithContentIdentifier:v3 context:0 osBuild:0 userInfo:0];
 
-  v5 = [v1 source];
-  [v5 sendEvent:v4];
+  source = [signals source];
+  [source sendEvent:v4];
 }
 
 @end

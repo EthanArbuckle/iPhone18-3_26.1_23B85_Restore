@@ -1,21 +1,21 @@
 @interface _WKUserContentWorld
-+ (_WKUserContentWorld)worldWithName:(id)a3;
++ (_WKUserContentWorld)worldWithName:(id)name;
 + (id)normalWorld;
 - (id)_init;
-- (id)_initWithContentWorld:(id)a3;
-- (id)_initWithName:(id)a3;
+- (id)_initWithContentWorld:(id)world;
+- (id)_initWithName:(id)name;
 @end
 
 @implementation _WKUserContentWorld
 
-- (id)_initWithName:(id)a3
+- (id)_initWithName:(id)name
 {
   v10.receiver = self;
   v10.super_class = _WKUserContentWorld;
   v4 = [(_WKUserContentWorld *)&v10 init];
   if (v4)
   {
-    v5 = [WKContentWorld worldWithName:a3];
+    v5 = [WKContentWorld worldWithName:name];
     v6 = v5;
     if (v5)
     {
@@ -56,20 +56,20 @@
   return v2;
 }
 
-- (id)_initWithContentWorld:(id)a3
+- (id)_initWithContentWorld:(id)world
 {
   v8.receiver = self;
   v8.super_class = _WKUserContentWorld;
   v4 = [(_WKUserContentWorld *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (world)
     {
-      v5 = a3;
+      worldCopy = world;
     }
 
     m_ptr = v4->_contentWorld.m_ptr;
-    v4->_contentWorld.m_ptr = a3;
+    v4->_contentWorld.m_ptr = world;
     if (m_ptr)
     {
     }
@@ -78,9 +78,9 @@
   return v4;
 }
 
-+ (_WKUserContentWorld)worldWithName:(id)a3
++ (_WKUserContentWorld)worldWithName:(id)name
 {
-  v3 = [[_WKUserContentWorld alloc] _initWithName:a3];
+  v3 = [[_WKUserContentWorld alloc] _initWithName:name];
   v4 = v3;
   if (v3)
   {
@@ -92,11 +92,11 @@
 
 + (id)normalWorld
 {
-  v2 = [[_WKUserContentWorld alloc] _init];
-  v3 = v2;
-  if (v2)
+  _init = [[_WKUserContentWorld alloc] _init];
+  v3 = _init;
+  if (_init)
   {
-    v4 = v2;
+    v4 = _init;
   }
 
   return v3;

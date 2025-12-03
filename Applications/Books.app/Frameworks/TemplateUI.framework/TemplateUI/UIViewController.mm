@@ -6,38 +6,38 @@
 
 - (id)tui_effectiveSyncLayoutController
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
-      v3 = TUIProtocolCast(&OBJC_PROTOCOL___TUISyncLayoutControllerHosting, v2);
-      v4 = [v3 syncLayoutController];
+      v3 = TUIProtocolCast(&OBJC_PROTOCOL___TUISyncLayoutControllerHosting, selfCopy);
+      syncLayoutController = [v3 syncLayoutController];
 
-      if (v4)
+      if (syncLayoutController)
       {
         break;
       }
 
-      v5 = [(UIViewController *)v2 parentViewController];
-      v6 = v5;
-      if (v5)
+      parentViewController = [(UIViewController *)selfCopy parentViewController];
+      v6 = parentViewController;
+      if (parentViewController)
       {
-        v7 = v5;
+        presentingViewController = parentViewController;
       }
 
       else
       {
-        v7 = [(UIViewController *)v2 presentingViewController];
+        presentingViewController = [(UIViewController *)selfCopy presentingViewController];
       }
 
-      v8 = v7;
+      v8 = presentingViewController;
 
-      v2 = v8;
+      selfCopy = v8;
       if (!v8)
       {
-        v4 = 0;
-        v2 = 0;
+        syncLayoutController = 0;
+        selfCopy = 0;
         break;
       }
     }
@@ -45,10 +45,10 @@
 
   else
   {
-    v4 = 0;
+    syncLayoutController = 0;
   }
 
-  return v4;
+  return syncLayoutController;
 }
 
 @end

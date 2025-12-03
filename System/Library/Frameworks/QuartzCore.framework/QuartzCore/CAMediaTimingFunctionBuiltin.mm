@@ -1,8 +1,8 @@
 @interface CAMediaTimingFunctionBuiltin
-- (CAMediaTimingFunctionBuiltin)initWithCoder:(id)a3;
+- (CAMediaTimingFunctionBuiltin)initWithCoder:(id)coder;
 - (id)description;
-- (void)_getPoints:(double *)a3;
-- (void)encodeWithCAMLWriter:(id)a3;
+- (void)_getPoints:(double *)points;
+- (void)encodeWithCAMLWriter:(id)writer;
 @end
 
 @implementation CAMediaTimingFunctionBuiltin
@@ -21,19 +21,19 @@
   return [(CAMediaTimingFunction *)&v4 description];
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   v4 = [(CAMediaTimingFunctionBuiltin *)self description];
 
-  [a3 setElementContent:v4];
+  [writer setElementContent:v4];
 }
 
-- (CAMediaTimingFunctionBuiltin)initWithCoder:(id)a3
+- (CAMediaTimingFunctionBuiltin)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ([a3 containsValueForKey:@"index"])
+  if ([coder containsValueForKey:@"index"])
   {
-    v5 = [a3 decodeIntForKey:@"index"];
+    v5 = [coder decodeIntForKey:@"index"];
 
     v6 = builtin_function(v5);
 
@@ -44,16 +44,16 @@
   {
     v8.receiver = self;
     v8.super_class = CAMediaTimingFunctionBuiltin;
-    return [(CAMediaTimingFunction *)&v8 initWithCoder:a3];
+    return [(CAMediaTimingFunction *)&v8 initWithCoder:coder];
   }
 }
 
-- (void)_getPoints:(double *)a3
+- (void)_getPoints:(double *)points
 {
   v3 = (&function_values + 16 * self->_index);
-  *a3 = vcvtq_f64_f32(*v3);
-  a3[2] = v3[1].f32[0];
-  a3[3] = 1.0;
+  *points = vcvtq_f64_f32(*v3);
+  points[2] = v3[1].f32[0];
+  points[3] = 1.0;
 }
 
 @end

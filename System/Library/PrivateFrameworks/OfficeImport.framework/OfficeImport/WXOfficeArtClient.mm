@@ -1,27 +1,27 @@
 @interface WXOfficeArtClient
-- (_xmlNode)genericNonVisualPropertiesNodeForDrawableNode:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5;
-- (id)readClientDrawableFromXmlNode:(_xmlNode *)a3 state:(id)a4;
-- (id)readGraphicData:(_xmlNode *)a3 state:(id)a4;
-- (void)readBlipExtWithURI:(id)a3 fromNode:(_xmlNode *)a4 toDrawable:(id)a5 state:(id)a6;
-- (void)readClientDataFromNode:(_xmlNode *)a3 toDrawable:(id)a4 state:(id)a5;
+- (_xmlNode)genericNonVisualPropertiesNodeForDrawableNode:(_xmlNode *)node inNamespace:(id)namespace state:(id)state;
+- (id)readClientDrawableFromXmlNode:(_xmlNode *)node state:(id)state;
+- (id)readGraphicData:(_xmlNode *)data state:(id)state;
+- (void)readBlipExtWithURI:(id)i fromNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state;
+- (void)readClientDataFromNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state;
 @end
 
 @implementation WXOfficeArtClient
 
-- (id)readClientDrawableFromXmlNode:(_xmlNode *)a3 state:(id)a4
+- (id)readClientDrawableFromXmlNode:(_xmlNode *)node state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   objc_opt_class();
-  v6 = [v5 documentState];
-  if (xmlStrEqual(a3->name, "wsp"))
+  documentState = [stateCopy documentState];
+  if (xmlStrEqual(node->name, "wsp"))
   {
-    v7 = [v6 WXShapeNamespace];
-    v8 = [v7 containsNode:a3];
+    wXShapeNamespace = [documentState WXShapeNamespace];
+    v8 = [wXShapeNamespace containsNode:node];
 
     if (v8)
     {
-      v9 = [v6 WXShapeNamespace];
-      v10 = [OAXShape readFromXmlNode:a3 inNamespace:v9 drawingState:v5];
+      wXShapeNamespace2 = [documentState WXShapeNamespace];
+      v10 = [OAXShape readFromXmlNode:node inNamespace:wXShapeNamespace2 drawingState:stateCopy];
 LABEL_10:
       v15 = v10;
 
@@ -29,28 +29,28 @@ LABEL_10:
     }
   }
 
-  if (xmlStrEqual(a3->name, "pic"))
+  if (xmlStrEqual(node->name, "pic"))
   {
-    v11 = [v5 OAXPictureNamespace];
-    v12 = [v11 containsNode:a3];
+    oAXPictureNamespace = [stateCopy OAXPictureNamespace];
+    v12 = [oAXPictureNamespace containsNode:node];
 
     if (v12)
     {
-      v9 = [v5 OAXPictureNamespace];
-      v10 = [OAXPicture readFromXmlNode:a3 inNamespace:v9 drawingState:v5];
+      wXShapeNamespace2 = [stateCopy OAXPictureNamespace];
+      v10 = [OAXPicture readFromXmlNode:node inNamespace:wXShapeNamespace2 drawingState:stateCopy];
       goto LABEL_10;
     }
   }
 
-  if (xmlStrEqual(a3->name, "grpSp"))
+  if (xmlStrEqual(node->name, "grpSp"))
   {
-    v13 = [v6 WXGroupNamespace];
-    v14 = [v13 containsNode:a3];
+    wXGroupNamespace = [documentState WXGroupNamespace];
+    v14 = [wXGroupNamespace containsNode:node];
 
     if (v14)
     {
-      v9 = [v6 WXGroupNamespace];
-      v10 = [OAXGroup readFromXmlNode:a3 inNamespace:v9 drawingState:v5];
+      wXShapeNamespace2 = [documentState WXGroupNamespace];
+      v10 = [OAXGroup readFromXmlNode:node inNamespace:wXShapeNamespace2 drawingState:stateCopy];
       goto LABEL_10;
     }
   }
@@ -61,44 +61,44 @@ LABEL_12:
   return v15;
 }
 
-- (_xmlNode)genericNonVisualPropertiesNodeForDrawableNode:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5
+- (_xmlNode)genericNonVisualPropertiesNodeForDrawableNode:(_xmlNode *)node inNamespace:(id)namespace state:(id)state
 {
-  v7 = a5;
-  v8 = OCXFindChild(a3, a4, "cNvPr");
+  stateCopy = state;
+  v8 = OCXFindChild(node, namespace, "cNvPr");
   if (!v8)
   {
-    parent = a3->parent->parent->parent;
-    v10 = [v7 documentState];
-    v11 = [v10 WXDrawingNamespace];
-    v8 = OCXFindChild(parent, v11, "docPr");
+    parent = node->parent->parent->parent;
+    documentState = [stateCopy documentState];
+    wXDrawingNamespace = [documentState WXDrawingNamespace];
+    v8 = OCXFindChild(parent, wXDrawingNamespace, "docPr");
   }
 
   return v8;
 }
 
-- (void)readClientDataFromNode:(_xmlNode *)a3 toDrawable:(id)a4 state:(id)a5
+- (void)readClientDataFromNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state
 {
-  v7 = a4;
-  v8 = [a5 oavState];
-  v9 = [v8 wxReadState];
+  drawableCopy = drawable;
+  oavState = [state oavState];
+  wxReadState = [oavState wxReadState];
   v10 = objc_alloc_init(WDAContent);
-  [v7 setClientData:v10];
-  -[WDAContent setTextType:](v10, "setTextType:", [v9 currentOfficeArtTextType]);
-  v11 = [v9 WXShapeNamespace];
-  v12 = OCXFindChild(a3, v11, "txbx");
+  [drawableCopy setClientData:v10];
+  -[WDAContent setTextType:](v10, "setTextType:", [wxReadState currentOfficeArtTextType]);
+  wXShapeNamespace = [wxReadState WXShapeNamespace];
+  v12 = OCXFindChild(node, wXShapeNamespace, "txbx");
 
   if (v12)
   {
-    v13 = [WXTextBox readFrom:v12 parent:v10 state:v8];
+    v13 = [WXTextBox readFrom:v12 parent:v10 state:oavState];
     if (!v13)
     {
       goto LABEL_21;
     }
 
-    v14 = [v9 document];
-    [(WDAContent *)v10 setTextBox:v13 document:v14];
+    document = [wxReadState document];
+    [(WDAContent *)v10 setTextBox:v13 document:document];
 
-    [(WDAContent *)v10 setDrawable:v7];
+    [(WDAContent *)v10 setDrawable:drawableCopy];
     v53 = -1;
     if (!CXOptionalLongAttribute(v12, CXNoNamespace, "id", &v53))
     {
@@ -110,24 +110,24 @@ LABEL_12:
     [(WDATextBox *)v13 setFlowId:v15];
 
     [(WDATextBox *)v13 setNextTextBoxId:0xFFFFFFFFLL];
-    v16 = [(WDATextBox *)v13 flowId];
-    [v9 setTextBox:v13 forFlowId:v16];
+    flowId = [(WDATextBox *)v13 flowId];
+    [wxReadState setTextBox:v13 forFlowId:flowId];
 LABEL_20:
 
 LABEL_21:
     goto LABEL_22;
   }
 
-  v17 = [v9 WXShapeNamespace];
-  v18 = OCXFindChild(a3, v17, "linkedTxbx");
+  wXShapeNamespace2 = [wxReadState WXShapeNamespace];
+  v18 = OCXFindChild(node, wXShapeNamespace2, "linkedTxbx");
 
   if (v18)
   {
     v13 = objc_alloc_init(WDATextBox);
     [(WDATextBox *)v13 setParent:v10];
-    [(WDAContent *)v10 setDrawable:v7];
-    v19 = [v9 document];
-    [(WDAContent *)v10 setTextBox:v13 document:v19];
+    [(WDAContent *)v10 setDrawable:drawableCopy];
+    document2 = [wxReadState document];
+    [(WDAContent *)v10 setTextBox:v13 document:document2];
 
     v52 = -1;
     v53 = -1;
@@ -140,39 +140,39 @@ LABEL_21:
       [(WDATextBox *)v13 setFlowId:v21];
     }
 
-    v22 = [(WDATextBox *)v13 flowId];
-    v16 = [v9 textBoxForFlowId:v22];
+    flowId2 = [(WDATextBox *)v13 flowId];
+    flowId = [wxReadState textBoxForFlowId:flowId2];
 
     if (![(WDAContent *)v10 hasText])
     {
-      v23 = [v9 drawingState];
-      v24 = [v23 isInsideGroup];
-      v25 = v16 ? v24 : 0;
+      drawingState = [wxReadState drawingState];
+      isInsideGroup = [drawingState isInsideGroup];
+      v25 = flowId ? isInsideGroup : 0;
 
       if (v25 == 1)
       {
-        v26 = [v7 drawableProperties];
-        v51 = [v26 orientedBounds];
+        drawableProperties = [drawableCopy drawableProperties];
+        orientedBounds = [drawableProperties orientedBounds];
 
-        v27 = [v16 parent];
-        v28 = [v27 drawable];
-        v29 = [v28 drawableProperties];
-        v30 = [v29 orientedBounds];
+        parent = [flowId parent];
+        drawable = [parent drawable];
+        drawableProperties2 = [drawable drawableProperties];
+        orientedBounds2 = [drawableProperties2 orientedBounds];
 
         objc_opt_class();
-        v31 = [v9 drawingState];
-        v32 = [v31 peekGroup];
+        drawingState2 = [wxReadState drawingState];
+        peekGroup = [drawingState2 peekGroup];
 
-        if (v30)
+        if (orientedBounds2)
         {
-          if (v51)
+          if (orientedBounds)
           {
-            [v51 bounds];
+            [orientedBounds bounds];
             v34 = v33;
             v36 = v35;
             v38 = v37;
             v40 = v39;
-            [v30 bounds];
+            [orientedBounds2 bounds];
             v57.origin.x = v41;
             v57.origin.y = v42;
             v44 = v43;
@@ -188,14 +188,14 @@ LABEL_21:
             y = v55.origin.y;
             width = v55.size.width;
             height = v55.size.height;
-            [v32 logicalBounds];
+            [peekGroup logicalBounds];
             v58.origin.x = x;
             v58.origin.y = y;
             v58.size.width = width;
             v58.size.height = height;
             if (CGRectContainsRect(v56, v58) && width * height < v44 * v46 + v38 * v40 + v44 * v46 + v38 * v40)
             {
-              [v30 setBounds:{x, y, width, height}];
+              [orientedBounds2 setBounds:{x, y, width, height}];
             }
           }
         }
@@ -208,50 +208,50 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)readGraphicData:(_xmlNode *)a3 state:(id)a4
+- (id)readGraphicData:(_xmlNode *)data state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   objc_opt_class();
-  v6 = [v5 documentState];
-  v7 = CXRequiredStringAttribute(a3, CXNoNamespace, "uri");
-  v8 = [v7 tc_xmlString];
-  v9 = [v6 WXShapeNamespace];
-  LODWORD(v8) = CXXmlStrEqualToNsUriOrFallbackNsUri(v8, v9);
+  documentState = [stateCopy documentState];
+  v7 = CXRequiredStringAttribute(data, CXNoNamespace, "uri");
+  tc_xmlString = [v7 tc_xmlString];
+  wXShapeNamespace = [documentState WXShapeNamespace];
+  LODWORD(tc_xmlString) = CXXmlStrEqualToNsUriOrFallbackNsUri(tc_xmlString, wXShapeNamespace);
 
-  if (v8)
+  if (tc_xmlString)
   {
-    v10 = [v6 WXShapeNamespace];
-    v11 = OCXFindChild(a3, v10, "wsp");
+    wXShapeNamespace2 = [documentState WXShapeNamespace];
+    v11 = OCXFindChild(data, wXShapeNamespace2, "wsp");
 
     if (!v11)
     {
       goto LABEL_9;
     }
 
-    v12 = [v6 WXShapeNamespace];
-    v13 = [OAXShape readFromXmlNode:v11 inNamespace:v12 drawingState:v5];
+    wXShapeNamespace3 = [documentState WXShapeNamespace];
+    v13 = [OAXShape readFromXmlNode:v11 inNamespace:wXShapeNamespace3 drawingState:stateCopy];
 LABEL_7:
     v11 = v13;
 
     goto LABEL_9;
   }
 
-  v14 = [v7 tc_xmlString];
-  v15 = [v6 WXGroupNamespace];
-  LODWORD(v14) = CXXmlStrEqualToNsUriOrFallbackNsUri(v14, v15);
+  tc_xmlString2 = [v7 tc_xmlString];
+  wXGroupNamespace = [documentState WXGroupNamespace];
+  LODWORD(tc_xmlString2) = CXXmlStrEqualToNsUriOrFallbackNsUri(tc_xmlString2, wXGroupNamespace);
 
-  if (v14)
+  if (tc_xmlString2)
   {
-    v16 = [v6 WXGroupNamespace];
-    v11 = OCXFindChild(a3, v16, "wgp");
+    wXGroupNamespace2 = [documentState WXGroupNamespace];
+    v11 = OCXFindChild(data, wXGroupNamespace2, "wgp");
 
     if (!v11)
     {
       goto LABEL_9;
     }
 
-    v12 = [v6 WXGroupNamespace];
-    v13 = [OAXGroup readFromXmlNode:v11 inNamespace:v12 drawingState:v5];
+    wXShapeNamespace3 = [documentState WXGroupNamespace];
+    v13 = [OAXGroup readFromXmlNode:v11 inNamespace:wXShapeNamespace3 drawingState:stateCopy];
     goto LABEL_7;
   }
 
@@ -261,14 +261,14 @@ LABEL_9:
   return v11;
 }
 
-- (void)readBlipExtWithURI:(id)a3 fromNode:(_xmlNode *)a4 toDrawable:(id)a5 state:(id)a6
+- (void)readBlipExtWithURI:(id)i fromNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state
 {
-  v24 = a5;
-  if ([a3 isEqualToString:@"{C809E66F-F1BF-436E-b5F7-EEA9579F0CBA}"])
+  drawableCopy = drawable;
+  if ([i isEqualToString:@"{C809E66F-F1BF-436E-b5F7-EEA9579F0CBA}"])
   {
-    v8 = OCXFindChild(a4, WXWord2012DrawingNamespace, "webVideoPr");
+    v8 = OCXFindChild(node, WXWord2012DrawingNamespace, "webVideoPr");
     v9 = objc_opt_class();
-    v10 = TSUDynamicCast(v9, v24);
+    v10 = TSUDynamicCast(v9, drawableCopy);
     v11 = v10;
     if (v8)
     {

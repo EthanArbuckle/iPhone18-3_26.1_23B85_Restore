@@ -1,24 +1,24 @@
 @interface BLDAAPArtRequest
-- (BLDAAPArtRequest)initWithDSID:(id)a3 databaseID:(id)a4 body:(id)a5;
+- (BLDAAPArtRequest)initWithDSID:(id)d databaseID:(id)iD body:(id)body;
 @end
 
 @implementation BLDAAPArtRequest
 
-- (BLDAAPArtRequest)initWithDSID:(id)a3 databaseID:(id)a4 body:(id)a5
+- (BLDAAPArtRequest)initWithDSID:(id)d databaseID:(id)iD body:(id)body
 {
-  v8 = a4;
-  v9 = a5;
+  iDCopy = iD;
+  bodyCopy = body;
   v14.receiver = self;
   v14.super_class = BLDAAPArtRequest;
-  v10 = [(BLDAAPURLRequest *)&v14 initWithDSID:a3 reason:5];
+  v10 = [(BLDAAPURLRequest *)&v14 initWithDSID:d reason:5];
   v11 = v10;
   if (v10)
   {
     [(BLDAAPURLRequest *)v10 setContentType:0];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%@/extra_data/cloud-artwork-info", v8];
-    [(BLDAAPURLRequest *)v11 setDaapURL:v12];
+    iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%@/extra_data/cloud-artwork-info", iDCopy];
+    [(BLDAAPURLRequest *)v11 setDaapURL:iDCopy];
 
-    [(BLDAAPURLRequest *)v11 setBody:v9];
+    [(BLDAAPURLRequest *)v11 setBody:bodyCopy];
     [(BLDAAPURLRequest *)v11 setDataEncoding:1];
   }
 

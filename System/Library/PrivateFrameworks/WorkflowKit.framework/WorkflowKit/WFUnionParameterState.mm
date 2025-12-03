@@ -1,59 +1,59 @@
 @interface WFUnionParameterState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)containedVariables;
 - (NSString)description;
 - (WFPropertyListObject)serializedRepresentation;
-- (WFUnionParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFUnionParameterState)initWithWhich:(id)a3 states:(id)a4;
+- (WFUnionParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFUnionParameterState)initWithWhich:(id)which states:(id)states;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFUnionParameterState
 
 - (NSArray)containedVariables
 {
-  v2 = [(WFUnionParameterState *)self states];
-  v3 = [v2 allValues];
-  v4 = [v3 valueForKeyPath:@"@unionOfArrays.containedVariables"];
+  states = [(WFUnionParameterState *)self states];
+  allValues = [states allValues];
+  v4 = [allValues valueForKeyPath:@"@unionOfArrays.containedVariables"];
 
   return v4;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WFUnionParameterState *)self states];
-  v11 = [(WFUnionParameterState *)self which];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  states = [(WFUnionParameterState *)self states];
+  which = [(WFUnionParameterState *)self which];
+  v12 = [states objectForKeyedSubscript:which];
 
   if (v12)
   {
-    [v12 processWithContext:v13 userInputRequiredHandler:v8 valueHandler:v9];
+    [v12 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(valueHandlerCopy + 2))(valueHandlerCopy, 0, 0);
   }
 }
 
 - (unint64_t)hash
 {
-  v3 = [(WFUnionParameterState *)self which];
-  v4 = [v3 hash];
-  v5 = [(WFUnionParameterState *)self states];
-  v6 = [v5 hash];
+  which = [(WFUnionParameterState *)self which];
+  v4 = [which hash];
+  states = [(WFUnionParameterState *)self states];
+  v6 = [states hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -63,18 +63,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFUnionParameterState *)v4 which];
-      v6 = [(WFUnionParameterState *)self which];
-      if ([v5 isEqualToString:v6])
+      which = [(WFUnionParameterState *)equalCopy which];
+      which2 = [(WFUnionParameterState *)self which];
+      if ([which isEqualToString:which2])
       {
         v7 = 0;
       }
 
       else
       {
-        v8 = [(WFUnionParameterState *)v4 states];
-        v9 = [(WFUnionParameterState *)self states];
-        v7 = [v8 isEqualToDictionary:v9];
+        states = [(WFUnionParameterState *)equalCopy states];
+        states2 = [(WFUnionParameterState *)self states];
+        v7 = [states isEqualToDictionary:states2];
       }
     }
 
@@ -90,13 +90,13 @@
 - (WFPropertyListObject)serializedRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(WFUnionParameterState *)self states];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  states = [(WFUnionParameterState *)self states];
+  v5 = [states countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -107,27 +107,27 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(states);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [(WFUnionParameterState *)self states];
-        v11 = [v10 objectForKey:v9];
-        v12 = [v11 serializedRepresentation];
-        [v3 setObject:v12 forKey:v9];
+        states2 = [(WFUnionParameterState *)self states];
+        v11 = [states2 objectForKey:v9];
+        serializedRepresentation = [v11 serializedRepresentation];
+        [dictionary setObject:serializedRepresentation forKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [states countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v6);
   }
 
   v21[0] = @"which";
-  v13 = [(WFUnionParameterState *)self which];
+  which = [(WFUnionParameterState *)self which];
   v21[1] = @"states";
-  v22[0] = v13;
-  v22[1] = v3;
+  v22[0] = which;
+  v22[1] = dictionary;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -135,16 +135,16 @@
   return v14;
 }
 
-- (WFUnionParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFUnionParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v36 = a4;
-  v9 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   v10 = objc_opt_class();
-  v11 = WFEnforceClass_1501(v8, v10);
+  v11 = WFEnforceClass_1501(representationCopy, v10);
   v12 = objc_opt_class();
-  v13 = WFEnforceClass_1501(v9, v12);
+  v13 = WFEnforceClass_1501(parameterCopy, v12);
   v14 = v13;
   if (v11)
   {
@@ -158,18 +158,18 @@
 
   if (v15)
   {
-    v16 = 0;
+    selfCopy2 = 0;
   }
 
   else
   {
-    v32 = v9;
-    v33 = self;
-    v34 = v8;
+    v32 = parameterCopy;
+    selfCopy = self;
+    v34 = representationCopy;
     v30 = [v11 objectForKey:@"which"];
     v31 = v11;
     v17 = [v11 objectForKey:@"states"];
-    v35 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -196,7 +196,7 @@
           {
             v26 = [WFParameter parameterWithDefinition:v25];
             v27 = [objc_alloc(objc_msgSend(v26 "singleStateClass"))];
-            [v35 setObject:v27 forKey:v23];
+            [dictionary setObject:v27 forKey:v23];
           }
         }
 
@@ -206,25 +206,25 @@
       while (v20);
     }
 
-    self = [(WFUnionParameterState *)v33 initWithWhich:v30 states:v35];
-    v16 = self;
-    v8 = v34;
+    self = [(WFUnionParameterState *)selfCopy initWithWhich:v30 states:dictionary];
+    selfCopy2 = self;
+    representationCopy = v34;
     v11 = v31;
-    v9 = v32;
+    parameterCopy = v32;
   }
 
   v28 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy2;
 }
 
-- (WFUnionParameterState)initWithWhich:(id)a3 states:(id)a4
+- (WFUnionParameterState)initWithWhich:(id)which states:(id)states
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  whichCopy = which;
+  statesCopy = states;
+  if (!whichCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFUnionParameterState.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"which"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFUnionParameterState.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"which"}];
   }
 
   v17.receiver = self;
@@ -232,13 +232,13 @@
   v9 = [(WFUnionParameterState *)&v17 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [whichCopy copy];
     which = v9->_which;
     v9->_which = v10;
 
-    if (v8)
+    if (statesCopy)
     {
-      v12 = [v8 copy];
+      v12 = [statesCopy copy];
     }
 
     else
@@ -259,9 +259,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WFUnionParameterState *)self which];
-  v6 = [(WFUnionParameterState *)self states];
-  v7 = [v3 stringWithFormat:@"%@ {\n    which: %@\n    %@}", v4, v5, v6];
+  which = [(WFUnionParameterState *)self which];
+  states = [(WFUnionParameterState *)self states];
+  v7 = [v3 stringWithFormat:@"%@ {\n    which: %@\n    %@}", v4, which, states];
 
   return v7;
 }

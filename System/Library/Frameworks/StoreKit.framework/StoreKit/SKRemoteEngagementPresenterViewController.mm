@@ -3,7 +3,7 @@
 - (SKRemoteEngagementPresenterViewController)init;
 - (void)_addRemoteView;
 - (void)_loadRemoteViewController;
-- (void)presentEngagementRequestData:(id)a3 completion:(id)a4;
+- (void)presentEngagementRequestData:(id)data completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -36,15 +36,15 @@
   [(SKRemoteEngagementPresenterViewController *)self _loadRemoteViewController];
 }
 
-- (void)presentEngagementRequestData:(id)a3 completion:(id)a4
+- (void)presentEngagementRequestData:(id)data completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v6;
+    v16 = dataCopy;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Present engagement request: %{public}@", buf, 0xCu);
   }
 
@@ -55,11 +55,11 @@
   v11[2] = __85__SKRemoteEngagementPresenterViewController_presentEngagementRequestData_completion___block_invoke;
   v11[3] = &unk_1E7B27DF8;
   objc_copyWeak(&v14, buf);
-  v12 = v6;
-  v13 = v7;
+  v12 = dataCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dataCopy;
+  v10 = completionCopy;
   dispatch_async(engagementPresentationQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -233,12 +233,12 @@ void __70__SKRemoteEngagementPresenterViewController__loadRemoteViewController__
 {
   if (self->_remoteViewController && [(SKRemoteEngagementPresenterViewController *)self isViewLoaded])
   {
-    v4 = [(SKRemoteEngagementPresenterViewController *)self view];
-    v3 = [(SKRemoteEngagementRemoteViewController *)self->_remoteViewController view];
-    [v4 bounds];
-    [v3 setFrame:?];
-    [v3 setAutoresizingMask:18];
-    [v4 addSubview:v3];
+    view = [(SKRemoteEngagementPresenterViewController *)self view];
+    view2 = [(SKRemoteEngagementRemoteViewController *)self->_remoteViewController view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view2 setAutoresizingMask:18];
+    [view addSubview:view2];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface NGMPadding
-+ (id)padMessage:(id)a3 error:(id *)a4;
-+ (id)unpadMessage:(id)a3 error:(id *)a4;
++ (id)padMessage:(id)message error:(id *)error;
++ (id)unpadMessage:(id)message error:(id *)error;
 @end
 
 @implementation NGMPadding
 
-+ (id)padMessage:(id)a3 error:(id *)a4
++ (id)padMessage:(id)message error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
+  messageCopy = message;
+  v6 = messageCopy;
   cf = 0;
-  if (v5)
+  if (messageCopy)
   {
-    v7 = SecMPComputePaddingForTransport([v5 length], 2, &cf);
+    v7 = SecMPComputePaddingForTransport([messageCopy length], 2, &cf);
     if (cf)
     {
       v8 = CFCopyDescription(cf);
       CFRelease(cf);
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error obtaining the padding length: %@", v8];
-      MPLogAndAssignError(401, a4, v9);
+      MPLogAndAssignError(401, error, v9);
     }
 
     else
@@ -32,7 +32,7 @@
         if (v13)
         {
           v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"An issue occured while generating random bytes for padding with error: %i", v13];
-          MPLogAndAssignError(4, a4, v14);
+          MPLogAndAssignError(4, error, v14);
 
           v10 = 0;
         }
@@ -47,13 +47,13 @@
       }
 
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"The padding configuration suggested is larger than what can be represented in the payload: %li", v7];
-      MPLogAndAssignError(401, a4, v8);
+      MPLogAndAssignError(401, error, v8);
     }
   }
 
   else
   {
-    MPLogAndAssignError(401, a4, @"Cannot pad a nil message.");
+    MPLogAndAssignError(401, error, @"Cannot pad a nil message.");
   }
 
   v10 = 0;
@@ -62,23 +62,23 @@ LABEL_9:
   return v10;
 }
 
-+ (id)unpadMessage:(id)a3 error:(id *)a4
++ (id)unpadMessage:(id)message error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  messageCopy = message;
+  v6 = messageCopy;
+  if (!messageCopy)
   {
-    MPLogAndAssignError(401, a4, @"Cannot unpad a nil message.");
+    MPLogAndAssignError(401, error, @"Cannot unpad a nil message.");
 LABEL_8:
     v10 = 0;
     goto LABEL_9;
   }
 
-  if ([v5 length] <= 3)
+  if ([messageCopy length] <= 3)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"The message is too short (%lu) to contain any padding.", objc_msgSend(v6, "length"), v14];
     v9 = LABEL_7:;
-    MPLogAndAssignError(401, a4, v9);
+    MPLogAndAssignError(401, error, v9);
 
     goto LABEL_8;
   }

@@ -1,26 +1,26 @@
 @interface CBSpatialInteractionFilter
-- (BOOL)isEqual:(id)a3;
-- (CBSpatialInteractionFilter)initWithXPCObject:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CBSpatialInteractionFilter)initWithXPCObject:(id)object error:(id *)error;
 - (id)blob;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)mask;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBSpatialInteractionFilter
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   if (self->_requiredSpatialFlags)
   {
-    xpc_dictionary_set_uint64(a3, "siFl", self->_requiredSpatialFlags);
+    xpc_dictionary_set_uint64(object, "siFl", self->_requiredSpatialFlags);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [v4 setRequiredSpatialFlags:{-[CBSpatialInteractionFilter requiredSpatialFlags](self, "requiredSpatialFlags")}];
@@ -39,24 +39,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
 LABEL_5:
 
     return 0;
   }
 
-  if (v4 != self)
+  if (equalCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CBSpatialInteractionFilter *)v5 requiredSpatialFlags];
-      v7 = v6 == [(CBSpatialInteractionFilter *)self requiredSpatialFlags];
+      requiredSpatialFlags = [(CBSpatialInteractionFilter *)v5 requiredSpatialFlags];
+      v7 = requiredSpatialFlags == [(CBSpatialInteractionFilter *)self requiredSpatialFlags];
 
       return v7;
     }
@@ -85,9 +85,9 @@ LABEL_5:
   return v4;
 }
 
-- (CBSpatialInteractionFilter)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBSpatialInteractionFilter)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

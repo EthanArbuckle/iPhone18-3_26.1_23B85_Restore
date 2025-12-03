@@ -1,16 +1,16 @@
 @interface ICAgeVerificationState
-+ (id)_stateFromDictionaryRepresentation:(id)a3 DSID:(id)a4;
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3;
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3 withError:(id)a4;
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3 withTreatment:(int64_t)a4;
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3 withTreatment:(int64_t)a4 verificationURL:(id)a5;
-+ (id)cachedStateForDSID:(id)a3;
++ (id)_stateFromDictionaryRepresentation:(id)representation DSID:(id)d;
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity;
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity withError:(id)error;
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity withTreatment:(int64_t)treatment;
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity withTreatment:(int64_t)treatment verificationURL:(id)l;
++ (id)cachedStateForDSID:(id)d;
 - (BOOL)isDynamic;
-- (BOOL)isEqual:(id)a3;
-- (ICAgeVerificationState)initWithUserIdentity:(id)a3 ageVerifier:(id)a4 treatment:(int64_t)a5 verificationURL:(id)a6;
-- (id)_dictionaryRepresentationWithDSID:(id)a3;
-- (id)_initWithUserIdentity:(id)a3 status:(int64_t)a4 treatment:(int64_t)a5 verificationURL:(id)a6 error:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICAgeVerificationState)initWithUserIdentity:(id)identity ageVerifier:(id)verifier treatment:(int64_t)treatment verificationURL:(id)l;
+- (id)_dictionaryRepresentationWithDSID:(id)d;
+- (id)_initWithUserIdentity:(id)identity status:(int64_t)status treatment:(int64_t)treatment verificationURL:(id)l error:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)status;
 - (void)saveToUserDefaults;
@@ -21,7 +21,7 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ICAgeVerificationState *)self isExplicitContentAllowed];
+  isExplicitContentAllowed = [(ICAgeVerificationState *)self isExplicitContentAllowed];
   v5 = [(ICAgeVerificationState *)self status]- 1;
   if (v5 > 2)
   {
@@ -33,26 +33,26 @@
     v6 = off_1E7BF5C98[v5];
   }
 
-  v7 = [(ICAgeVerificationState *)self treatment];
-  v8 = [(ICAgeVerificationState *)self verificationURL];
-  v9 = [(ICAgeVerificationState *)self ageVerifier];
-  v10 = [(ICAgeVerificationState *)self error];
-  v11 = [v3 stringWithFormat:@"ICAgeVerificationState %p - explicit content allowed: %u - status: %@ - treatment: %ld - url: %@ - verifier: %@ - error: %@", self, v4, v6, v7, v8, v9, v10];
+  treatment = [(ICAgeVerificationState *)self treatment];
+  verificationURL = [(ICAgeVerificationState *)self verificationURL];
+  ageVerifier = [(ICAgeVerificationState *)self ageVerifier];
+  error = [(ICAgeVerificationState *)self error];
+  v11 = [v3 stringWithFormat:@"ICAgeVerificationState %p - explicit content allowed: %u - status: %@ - treatment: %ld - url: %@ - verifier: %@ - error: %@", self, isExplicitContentAllowed, v6, treatment, verificationURL, ageVerifier, error];
 
   return v11;
 }
 
 - (int64_t)status
 {
-  v3 = [(ICAgeVerificationState *)self ageVerifier];
+  ageVerifier = [(ICAgeVerificationState *)self ageVerifier];
 
-  if (v3)
+  if (ageVerifier)
   {
-    v4 = [(ICAgeVerificationState *)self ageVerifier];
-    [v4 runAgeVerification];
+    ageVerifier2 = [(ICAgeVerificationState *)self ageVerifier];
+    [ageVerifier2 runAgeVerification];
 
-    v5 = [(ICAgeVerificationState *)self ageVerifier];
-    self->_status = [v5 status];
+    ageVerifier3 = [(ICAgeVerificationState *)self ageVerifier];
+    self->_status = [ageVerifier3 status];
     p_status = &self->_status;
   }
 
@@ -66,20 +66,20 @@
 
 - (void)saveToUserDefaults
 {
-  v3 = [(ICAgeVerificationState *)self userIdentity];
-  v4 = [v3 DSID];
-  v20 = [v4 stringValue];
+  userIdentity = [(ICAgeVerificationState *)self userIdentity];
+  dSID = [userIdentity DSID];
+  stringValue = [dSID stringValue];
 
-  if (!v20)
+  if (!stringValue)
   {
     v5 = +[ICUserIdentityStore defaultIdentityStore];
-    v6 = [(ICAgeVerificationState *)self userIdentity];
-    v7 = [v5 DSIDForUserIdentity:v6 outError:0];
-    v8 = [v7 stringValue];
-    v9 = v8;
-    if (v8)
+    userIdentity2 = [(ICAgeVerificationState *)self userIdentity];
+    v7 = [v5 DSIDForUserIdentity:userIdentity2 outError:0];
+    stringValue2 = [v7 stringValue];
+    v9 = stringValue2;
+    if (stringValue2)
     {
-      v10 = v8;
+      v10 = stringValue2;
     }
 
     else
@@ -87,12 +87,12 @@
       v10 = [@"NoDSID" copy];
     }
 
-    v20 = v10;
+    stringValue = v10;
   }
 
   v11 = +[ICDefaults standardDefaults];
-  v12 = [v11 lastKnownUserAgeVerificationState];
-  v13 = [v12 mutableCopy];
+  lastKnownUserAgeVerificationState = [v11 lastKnownUserAgeVerificationState];
+  v13 = [lastKnownUserAgeVerificationState mutableCopy];
   v14 = v13;
   if (v13)
   {
@@ -106,20 +106,20 @@
 
   v16 = v15;
 
-  v17 = [(ICAgeVerificationState *)self _dictionaryRepresentationWithDSID:v20];
-  [v16 setObject:v17 forKeyedSubscript:v20];
+  v17 = [(ICAgeVerificationState *)self _dictionaryRepresentationWithDSID:stringValue];
+  [v16 setObject:v17 forKeyedSubscript:stringValue];
 
   v18 = [v16 copy];
   v19 = +[ICDefaults standardDefaults];
   [v19 setLastKnownUserAgeVerificationState:v18];
 }
 
-- (id)_dictionaryRepresentationWithDSID:(id)a3
+- (id)_dictionaryRepresentationWithDSID:(id)d
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(v4);
-  [v6 setObject:v5 forKeyedSubscript:@"ICAgeVerificationStateKeyDSID"];
+  [v6 setObject:dCopy forKeyedSubscript:@"ICAgeVerificationStateKeyDSID"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[ICAgeVerificationState status](self, "status")}];
   [v6 setObject:v7 forKeyedSubscript:@"ICAgeVerificationStateKeyStatus"];
@@ -127,24 +127,24 @@
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[ICAgeVerificationState treatment](self, "treatment")}];
   [v6 setObject:v8 forKeyedSubscript:@"ICAgeVerificationStateKeyTreatment"];
 
-  v9 = [(ICAgeVerificationState *)self verificationURL];
-  v10 = [v9 absoluteString];
+  verificationURL = [(ICAgeVerificationState *)self verificationURL];
+  absoluteString = [verificationURL absoluteString];
 
-  if (v10)
+  if (absoluteString)
   {
-    v11 = [(ICAgeVerificationState *)self verificationURL];
-    v12 = [v11 absoluteString];
-    [v6 setObject:v12 forKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
+    verificationURL2 = [(ICAgeVerificationState *)self verificationURL];
+    absoluteString2 = [verificationURL2 absoluteString];
+    [v6 setObject:absoluteString2 forKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
   }
 
-  v13 = [(ICAgeVerificationState *)self ageVerifier];
-  v14 = [v13 verificationExpirationDate];
+  ageVerifier = [(ICAgeVerificationState *)self ageVerifier];
+  verificationExpirationDate = [ageVerifier verificationExpirationDate];
 
-  if (v14)
+  if (verificationExpirationDate)
   {
-    v15 = [(ICAgeVerificationState *)self ageVerifier];
-    v16 = [v15 verificationExpirationDate];
-    [v6 setObject:v16 forKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
+    ageVerifier2 = [(ICAgeVerificationState *)self ageVerifier];
+    verificationExpirationDate2 = [ageVerifier2 verificationExpirationDate];
+    [v6 setObject:verificationExpirationDate2 forKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
   }
 
   v17 = [v6 copy];
@@ -152,10 +152,10 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -165,16 +165,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(ICAgeVerificationState *)v6 ageVerifier];
-      if (v7 && (v8 = v7, [(ICAgeVerificationState *)self ageVerifier], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+      v6 = equalCopy;
+      ageVerifier = [(ICAgeVerificationState *)v6 ageVerifier];
+      if (ageVerifier && (v8 = ageVerifier, [(ICAgeVerificationState *)self ageVerifier], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
       {
-        v10 = [(ICAgeVerificationState *)v6 treatment];
-        if (v10 == [(ICAgeVerificationState *)self treatment])
+        treatment = [(ICAgeVerificationState *)v6 treatment];
+        if (treatment == [(ICAgeVerificationState *)self treatment])
         {
-          v11 = [(ICAgeVerificationState *)v6 ageVerifier];
-          v12 = [(ICAgeVerificationState *)self ageVerifier];
-          if (![v11 isEqual:v12])
+          ageVerifier2 = [(ICAgeVerificationState *)v6 ageVerifier];
+          ageVerifier3 = [(ICAgeVerificationState *)self ageVerifier];
+          if (![ageVerifier2 isEqual:ageVerifier3])
           {
             v16 = 0;
 LABEL_29:
@@ -182,13 +182,13 @@ LABEL_29:
             goto LABEL_30;
           }
 
-          v13 = [(ICAgeVerificationState *)v6 verificationURL];
-          v3 = [(ICAgeVerificationState *)self verificationURL];
-          if (v13 != v3)
+          verificationURL = [(ICAgeVerificationState *)v6 verificationURL];
+          verificationURL2 = [(ICAgeVerificationState *)self verificationURL];
+          if (verificationURL != verificationURL2)
           {
-            v14 = [(ICAgeVerificationState *)v6 verificationURL];
-            v15 = [(ICAgeVerificationState *)self verificationURL];
-            if (![v14 isEqual:v15])
+            verificationURL3 = [(ICAgeVerificationState *)v6 verificationURL];
+            verificationURL4 = [(ICAgeVerificationState *)self verificationURL];
+            if (![verificationURL3 isEqual:verificationURL4])
             {
               v16 = 0;
 LABEL_27:
@@ -197,36 +197,36 @@ LABEL_28:
               goto LABEL_29;
             }
 
-            v36 = v15;
-            v37 = v14;
+            v36 = verificationURL4;
+            v37 = verificationURL3;
           }
 
-          v21 = [(ICAgeVerificationState *)v6 error];
-          v22 = [(ICAgeVerificationState *)self error];
-          v23 = v22;
-          if (v21 == v22)
+          error = [(ICAgeVerificationState *)v6 error];
+          error2 = [(ICAgeVerificationState *)self error];
+          v23 = error2;
+          if (error == error2)
           {
 
             v16 = 1;
-            v27 = v13 == v3;
+            v27 = verificationURL == verificationURL2;
           }
 
           else
           {
             [(ICAgeVerificationState *)v6 error];
-            v24 = v35 = v3;
+            v24 = v35 = verificationURL2;
             [(ICAgeVerificationState *)self error];
-            v26 = v25 = v13;
+            v26 = v25 = verificationURL;
             v16 = [v24 isEqual:v26];
 
-            v13 = v25;
-            v3 = v35;
+            verificationURL = v25;
+            verificationURL2 = v35;
 
             v27 = v25 == v35;
           }
 
-          v15 = v36;
-          v14 = v37;
+          verificationURL4 = v36;
+          verificationURL3 = v37;
           if (v27)
           {
             goto LABEL_28;
@@ -238,45 +238,45 @@ LABEL_28:
 
       else
       {
-        v17 = [(ICAgeVerificationState *)v6 ageVerifier];
-        if (v17)
+        ageVerifier4 = [(ICAgeVerificationState *)v6 ageVerifier];
+        if (ageVerifier4)
         {
-          v11 = v17;
+          ageVerifier2 = ageVerifier4;
           v16 = 0;
 LABEL_30:
 
           goto LABEL_31;
         }
 
-        v18 = [(ICAgeVerificationState *)self ageVerifier];
+        ageVerifier5 = [(ICAgeVerificationState *)self ageVerifier];
 
-        if (!v18)
+        if (!ageVerifier5)
         {
-          v19 = [(ICAgeVerificationState *)v6 status];
-          if (v19 == [(ICAgeVerificationState *)self status])
+          status = [(ICAgeVerificationState *)v6 status];
+          if (status == [(ICAgeVerificationState *)self status])
           {
-            v20 = [(ICAgeVerificationState *)v6 treatment];
-            if (v20 == [(ICAgeVerificationState *)self treatment])
+            treatment2 = [(ICAgeVerificationState *)v6 treatment];
+            if (treatment2 == [(ICAgeVerificationState *)self treatment])
             {
-              v11 = [(ICAgeVerificationState *)v6 verificationURL];
-              v12 = [(ICAgeVerificationState *)self verificationURL];
-              if (v11 != v12)
+              ageVerifier2 = [(ICAgeVerificationState *)v6 verificationURL];
+              ageVerifier3 = [(ICAgeVerificationState *)self verificationURL];
+              if (ageVerifier2 != ageVerifier3)
               {
-                v13 = [(ICAgeVerificationState *)v6 verificationURL];
-                v3 = [(ICAgeVerificationState *)self verificationURL];
-                if (![v13 isEqual:v3])
+                verificationURL = [(ICAgeVerificationState *)v6 verificationURL];
+                verificationURL2 = [(ICAgeVerificationState *)self verificationURL];
+                if (![verificationURL isEqual:verificationURL2])
                 {
                   v16 = 0;
                   goto LABEL_28;
                 }
 
-                v37 = v13;
+                v37 = verificationURL;
               }
 
-              v29 = [(ICAgeVerificationState *)v6 error];
-              v30 = [(ICAgeVerificationState *)self error];
-              v31 = v30;
-              if (v29 == v30)
+              error3 = [(ICAgeVerificationState *)v6 error];
+              error4 = [(ICAgeVerificationState *)self error];
+              v31 = error4;
+              if (error3 == error4)
               {
 
                 v16 = 1;
@@ -285,15 +285,15 @@ LABEL_30:
               else
               {
                 [(ICAgeVerificationState *)v6 error];
-                v33 = v32 = v3;
-                v34 = [(ICAgeVerificationState *)self error];
-                v16 = [v33 isEqual:v34];
+                v33 = v32 = verificationURL2;
+                error5 = [(ICAgeVerificationState *)self error];
+                v16 = [v33 isEqual:error5];
 
-                v3 = v32;
+                verificationURL2 = v32;
               }
 
-              v13 = v37;
-              if (v11 == v12)
+              verificationURL = v37;
+              if (ageVerifier2 == ageVerifier3)
               {
                 goto LABEL_29;
               }
@@ -318,30 +318,30 @@ LABEL_32:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     v5[3] = [(ICAgeVerificationState *)self treatment];
-    v6 = [(ICAgeVerificationState *)self verificationURL];
-    v7 = [v6 copyWithZone:a3];
+    verificationURL = [(ICAgeVerificationState *)self verificationURL];
+    v7 = [verificationURL copyWithZone:zone];
     v8 = v5[4];
     v5[4] = v7;
 
-    v9 = [(ICAgeVerificationState *)self error];
-    v10 = [v9 copyWithZone:a3];
+    error = [(ICAgeVerificationState *)self error];
+    v10 = [error copyWithZone:zone];
     v11 = v5[5];
     v5[5] = v10;
 
-    v12 = [(ICAgeVerificationState *)self ageVerifier];
-    v13 = [v12 copyWithZone:a3];
+    ageVerifier = [(ICAgeVerificationState *)self ageVerifier];
+    v13 = [ageVerifier copyWithZone:zone];
     v14 = v5[6];
     v5[6] = v13;
 
-    v15 = [(ICAgeVerificationState *)self ageVerifier];
+    ageVerifier2 = [(ICAgeVerificationState *)self ageVerifier];
 
-    if (!v15)
+    if (!ageVerifier2)
     {
       v5[1] = [(ICAgeVerificationState *)self status];
     }
@@ -352,30 +352,30 @@ LABEL_32:
 
 - (BOOL)isDynamic
 {
-  v2 = [(ICAgeVerificationState *)self ageVerifier];
-  v3 = v2 != 0;
+  ageVerifier = [(ICAgeVerificationState *)self ageVerifier];
+  v3 = ageVerifier != 0;
 
   return v3;
 }
 
-- (ICAgeVerificationState)initWithUserIdentity:(id)a3 ageVerifier:(id)a4 treatment:(int64_t)a5 verificationURL:(id)a6
+- (ICAgeVerificationState)initWithUserIdentity:(id)identity ageVerifier:(id)verifier treatment:(int64_t)treatment verificationURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identityCopy = identity;
+  verifierCopy = verifier;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = ICAgeVerificationState;
   v13 = [(ICAgeVerificationState *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identityCopy copy];
     userIdentity = v13->_userIdentity;
     v13->_userIdentity = v14;
 
     v13->_status = 0;
-    objc_storeStrong(&v13->_ageVerifier, a4);
-    v13->_treatment = a5;
-    v16 = [v12 copy];
+    objc_storeStrong(&v13->_ageVerifier, verifier);
+    v13->_treatment = treatment;
+    v16 = [lCopy copy];
     verificationURL = v13->_verificationURL;
     v13->_verificationURL = v16;
   }
@@ -383,36 +383,36 @@ LABEL_32:
   return v13;
 }
 
-- (id)_initWithUserIdentity:(id)a3 status:(int64_t)a4 treatment:(int64_t)a5 verificationURL:(id)a6 error:(id)a7
+- (id)_initWithUserIdentity:(id)identity status:(int64_t)status treatment:(int64_t)treatment verificationURL:(id)l error:(id)error
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  identityCopy = identity;
+  lCopy = l;
+  errorCopy = error;
   v26.receiver = self;
   v26.super_class = ICAgeVerificationState;
   v16 = [(ICAgeVerificationState *)&v26 init];
   if (v16)
   {
-    if (!a4)
+    if (!status)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v16 file:@"ICAgeVerificationState.m" lineNumber:71 description:@"Must provide a valid status when creating user state object"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v16 file:@"ICAgeVerificationState.m" lineNumber:71 description:@"Must provide a valid status when creating user state object"];
     }
 
-    v17 = [v13 copy];
+    v17 = [identityCopy copy];
     userIdentity = v16->_userIdentity;
     v16->_userIdentity = v17;
 
-    v16->_status = a4;
+    v16->_status = status;
     ageVerifier = v16->_ageVerifier;
     v16->_ageVerifier = 0;
 
-    v16->_treatment = a5;
-    v20 = [v14 copy];
+    v16->_treatment = treatment;
+    v20 = [lCopy copy];
     verificationURL = v16->_verificationURL;
     v16->_verificationURL = v20;
 
-    v22 = [v15 copy];
+    v22 = [errorCopy copy];
     error = v16->_error;
     v16->_error = v22;
   }
@@ -420,82 +420,82 @@ LABEL_32:
   return v16;
 }
 
-+ (id)_stateFromDictionaryRepresentation:(id)a3 DSID:(id)a4
++ (id)_stateFromDictionaryRepresentation:(id)representation DSID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyDSID"];
+  representationCopy = representation;
+  dCopy = d;
+  v9 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyDSID"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:a1 file:@"ICAgeVerificationState.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyDSID] isKindOfClass:[NSString class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICAgeVerificationState.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyDSID] isKindOfClass:[NSString class]]"}];
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyStatus"];
+  v11 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyStatus"];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
   if ((v12 & 1) == 0)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:a1 file:@"ICAgeVerificationState.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyStatus] isKindOfClass:[NSNumber class]]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICAgeVerificationState.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyStatus] isKindOfClass:[NSNumber class]]"}];
   }
 
-  v13 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyTreatment"];
+  v13 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyTreatment"];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
 
   if ((v14 & 1) == 0)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:a1 file:@"ICAgeVerificationState.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyTreatment] isKindOfClass:[NSNumber class]]"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"ICAgeVerificationState.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyTreatment] isKindOfClass:[NSNumber class]]"}];
   }
 
-  v15 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
+  currentHandler4 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
+    v16 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
 
     if (!v16)
     {
       goto LABEL_11;
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"ICAgeVerificationState.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyVerificationURL] isKindOfClass:[NSString class]] || !dictionaryRepresentation[ICAgeVerificationStateKeyVerificationURL]"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"ICAgeVerificationState.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyVerificationURL] isKindOfClass:[NSString class]] || !dictionaryRepresentation[ICAgeVerificationStateKeyVerificationURL]"}];
   }
 
 LABEL_11:
-  v17 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
+  currentHandler5 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
+    v18 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
 
     if (!v18)
     {
       goto LABEL_15;
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"ICAgeVerificationState.m" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyAgeVerifierExpirationDate] isKindOfClass:[NSDate class]] || !dictionaryRepresentation[ICAgeVerificationStateKeyAgeVerifierExpirationDate]"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"ICAgeVerificationState.m" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"[dictionaryRepresentation[ICAgeVerificationStateKeyAgeVerifierExpirationDate] isKindOfClass:[NSDate class]] || !dictionaryRepresentation[ICAgeVerificationStateKeyAgeVerifierExpirationDate]"}];
   }
 
 LABEL_15:
-  v19 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyTreatment"];
-  v20 = [v19 integerValue];
+  v19 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyTreatment"];
+  integerValue = [v19 integerValue];
 
-  v21 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
+  v21 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
   objc_opt_class();
   v22 = objc_opt_isKindOfClass();
 
   if (v22)
   {
-    v23 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
+    v23 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyVerificationURL"];
     v24 = [MEMORY[0x1E695DFF8] URLWithString:v23];
   }
 
@@ -504,14 +504,14 @@ LABEL_15:
     v24 = 0;
   }
 
-  v25 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
+  v25 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
   objc_opt_class();
   v26 = objc_opt_isKindOfClass();
 
   if (v26)
   {
     v27 = [ICAgeVerifier alloc];
-    v28 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
+    v28 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyAgeVerifierExpirationDate"];
     v29 = [(ICAgeVerifier *)v27 initWithExpirationDate:v28];
   }
 
@@ -521,28 +521,28 @@ LABEL_15:
   }
 
   v30 = [@"NoDSID" copy];
-  if ([v8 isEqualToString:v30])
+  if ([dCopy isEqualToString:v30])
   {
     v31 = 0;
   }
 
   else
   {
-    v32 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "integerValue")}];
+    v32 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(dCopy, "integerValue")}];
     v31 = [ICUserIdentity specificAccountWithDSID:v32];
   }
 
   if (v29)
   {
-    v33 = [[a1 alloc] initWithUserIdentity:v31 ageVerifier:v29 treatment:v20 verificationURL:v24];
+    v33 = [[self alloc] initWithUserIdentity:v31 ageVerifier:v29 treatment:integerValue verificationURL:v24];
   }
 
   else
   {
-    v34 = [v7 objectForKeyedSubscript:@"ICAgeVerificationStateKeyStatus"];
-    v35 = [v34 integerValue];
+    v34 = [representationCopy objectForKeyedSubscript:@"ICAgeVerificationStateKeyStatus"];
+    integerValue2 = [v34 integerValue];
 
-    v33 = [[a1 alloc] _initWithUserIdentity:v31 status:v35 treatment:v20 verificationURL:v24 error:0];
+    v33 = [[self alloc] _initWithUserIdentity:v31 status:integerValue2 treatment:integerValue verificationURL:v24 error:0];
   }
 
   v36 = v33;
@@ -550,16 +550,16 @@ LABEL_15:
   return v36;
 }
 
-+ (id)cachedStateForDSID:(id)a3
++ (id)cachedStateForDSID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = +[ICDefaults standardDefaults];
-  v6 = [v5 lastKnownUserAgeVerificationState];
-  v7 = v6;
-  if (v4)
+  lastKnownUserAgeVerificationState = [v5 lastKnownUserAgeVerificationState];
+  v7 = lastKnownUserAgeVerificationState;
+  if (dCopy)
   {
-    v8 = v4;
+    v8 = dCopy;
   }
 
   else
@@ -567,7 +567,7 @@ LABEL_15:
     v8 = @"NoDSID";
   }
 
-  v9 = [v6 objectForKeyedSubscript:v8];
+  v9 = [lastKnownUserAgeVerificationState objectForKeyedSubscript:v8];
 
   if (v9)
   {
@@ -575,26 +575,26 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = dCopy;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "ICAgeVerificationState - cachedStateForDSID: - Reading state from disk - DSID=%@", &v17, 0xCu);
     }
 
-    v11 = [a1 _stateFromDictionaryRepresentation:v9 DSID:v4];
+    v11 = [self _stateFromDictionaryRepresentation:v9 DSID:dCopy];
   }
 
-  else if (v4 && [(__CFString *)v4 integerValue]>= 1)
+  else if (dCopy && [(__CFString *)dCopy integerValue]>= 1)
   {
     v12 = os_log_create("com.apple.amp.iTunesCloud", "AgeVerification");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = dCopy;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "ICAgeVerificationState - cachedStateForDSID: - Creating default state [No cache found] - DSID=%@", &v17, 0xCu);
     }
 
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[__CFString integerValue](v4, "integerValue")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[__CFString integerValue](dCopy, "integerValue")}];
     v14 = [ICUserIdentity specificAccountWithDSID:v13];
-    v11 = [a1 ageVerificationStateNotRequiredForUserIdentity:v14];
+    v11 = [self ageVerificationStateNotRequiredForUserIdentity:v14];
   }
 
   else
@@ -603,7 +603,7 @@ LABEL_15:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = dCopy;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "ICAgeVerificationState - cachedStateForDSID: - No cached state [Unactionable DSID] - DSID=%@", &v17, 0xCu);
     }
 
@@ -613,36 +613,36 @@ LABEL_15:
   return v11;
 }
 
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3 withTreatment:(int64_t)a4 verificationURL:(id)a5
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity withTreatment:(int64_t)treatment verificationURL:(id)l
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[ICAgeVerificationState alloc] _initWithUserIdentity:v8 status:1 treatment:a4 verificationURL:v7 error:0];
+  lCopy = l;
+  identityCopy = identity;
+  v9 = [[ICAgeVerificationState alloc] _initWithUserIdentity:identityCopy status:1 treatment:treatment verificationURL:lCopy error:0];
 
   return v9;
 }
 
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3 withTreatment:(int64_t)a4
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity withTreatment:(int64_t)treatment
 {
-  v5 = a3;
-  v6 = [objc_opt_class() ageVerificationStateNotRequiredForUserIdentity:v5 withTreatment:a4 verificationURL:0];
+  identityCopy = identity;
+  v6 = [objc_opt_class() ageVerificationStateNotRequiredForUserIdentity:identityCopy withTreatment:treatment verificationURL:0];
 
   return v6;
 }
 
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3 withError:(id)a4
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity withError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ICAgeVerificationState alloc] _initWithUserIdentity:v6 status:1 treatment:0 verificationURL:0 error:v5];
+  errorCopy = error;
+  identityCopy = identity;
+  v7 = [[ICAgeVerificationState alloc] _initWithUserIdentity:identityCopy status:1 treatment:0 verificationURL:0 error:errorCopy];
 
   return v7;
 }
 
-+ (id)ageVerificationStateNotRequiredForUserIdentity:(id)a3
++ (id)ageVerificationStateNotRequiredForUserIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [objc_opt_class() ageVerificationStateNotRequiredForUserIdentity:v3 withTreatment:0];
+  identityCopy = identity;
+  v4 = [objc_opt_class() ageVerificationStateNotRequiredForUserIdentity:identityCopy withTreatment:0];
 
   return v4;
 }

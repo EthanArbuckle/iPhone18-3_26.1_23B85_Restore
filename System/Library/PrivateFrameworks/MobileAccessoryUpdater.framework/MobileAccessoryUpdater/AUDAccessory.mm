@@ -1,9 +1,9 @@
 @interface AUDAccessory
-- (AUDAccessory)initWithCoder:(id)a3;
-- (AUDAccessory)initWithUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AUDAccessory)initWithCoder:(id)coder;
+- (AUDAccessory)initWithUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AUDAccessory
@@ -25,55 +25,55 @@
   [(AUDAccessory *)&v5 dealloc];
 }
 
-- (AUDAccessory)initWithCoder:(id)a3
+- (AUDAccessory)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AUDAccessory;
   v4 = [(AUDAccessory *)&v6 init];
   if (v4)
   {
-    v4->_uid = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AUDAccessory_UID"];
-    v4->_fwVersion = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AUDAccessory_FWVersion"];
+    v4->_uid = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AUDAccessory_UID"];
+    v4->_fwVersion = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AUDAccessory_FWVersion"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_uid forKey:@"AUDAccessory_UID"];
+  [coder encodeObject:self->_uid forKey:@"AUDAccessory_UID"];
   fwVersion = self->_fwVersion;
 
-  [a3 encodeObject:fwVersion forKey:@"AUDAccessory_FWVersion"];
+  [coder encodeObject:fwVersion forKey:@"AUDAccessory_FWVersion"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithUID:{-[NSString copyWithZone:](-[AUDAccessory uid](self, "uid"), "copyWithZone:", a3)}];
+  v5 = [objc_alloc(objc_opt_class()) initWithUID:{-[NSString copyWithZone:](-[AUDAccessory uid](self, "uid"), "copyWithZone:", zone)}];
   if (v5)
   {
-    [v5 setFwVersion:{-[NSString copyWithZone:](-[AUDAccessory fwVersion](self, "fwVersion"), "copyWithZone:", a3)}];
+    [v5 setFwVersion:{-[NSString copyWithZone:](-[AUDAccessory fwVersion](self, "fwVersion"), "copyWithZone:", zone)}];
   }
 
   return v5;
 }
 
-- (AUDAccessory)initWithUID:(id)a3
+- (AUDAccessory)initWithUID:(id)d
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (d)
   {
     v6.receiver = self;
     v6.super_class = AUDAccessory;
-    v3 = [(AUDAccessory *)&v6 init];
-    if (v3)
+    selfCopy = [(AUDAccessory *)&v6 init];
+    if (selfCopy)
     {
-      v3->_uid = [a3 copy];
-      v3->_fwVersion = 0;
+      selfCopy->_uid = [d copy];
+      selfCopy->_fwVersion = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

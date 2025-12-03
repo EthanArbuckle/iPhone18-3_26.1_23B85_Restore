@@ -1,22 +1,22 @@
 @interface CDPCustodianRecoveryController
-- (CDPCustodianRecoveryController)initWithContext:(id)a3;
-- (void)_fetchRecoveryInfoWithCompletion:(id)a3;
-- (void)startRecoverySessionWithCompletion:(id)a3;
-- (void)validateRecoveryCode:(id)a3 withCompletion:(id)a4;
+- (CDPCustodianRecoveryController)initWithContext:(id)context;
+- (void)_fetchRecoveryInfoWithCompletion:(id)completion;
+- (void)startRecoverySessionWithCompletion:(id)completion;
+- (void)validateRecoveryCode:(id)code withCompletion:(id)completion;
 @end
 
 @implementation CDPCustodianRecoveryController
 
-- (CDPCustodianRecoveryController)initWithContext:(id)a3
+- (CDPCustodianRecoveryController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CDPCustodianRecoveryController;
   v6 = [(CDPCustodianRecoveryController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = objc_alloc_init(MEMORY[0x1E698B850]);
     custodianController = v7->_custodianController;
     v7->_custodianController = v8;
@@ -25,18 +25,18 @@
   return v7;
 }
 
-- (void)startRecoverySessionWithCompletion:(id)a3
+- (void)startRecoverySessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E698B868]);
-  v6 = [(CDPContext *)self->_context appleID];
-  [v5 setOwnerAppleID:v6];
+  appleID = [(CDPContext *)self->_context appleID];
+  [v5 setOwnerAppleID:appleID];
 
-  v7 = [(CDPContext *)self->_context telemetryFlowID];
-  [v5 setTelemetryFlowID:v7];
+  telemetryFlowID = [(CDPContext *)self->_context telemetryFlowID];
+  [v5 setTelemetryFlowID:telemetryFlowID];
 
-  v8 = [(CDPContext *)self->_context altDSID];
-  [v5 setAltDSID:v8];
+  altDSID = [(CDPContext *)self->_context altDSID];
+  [v5 setAltDSID:altDSID];
 
   objc_initWeak(&location, self);
   custodianController = self->_custodianController;
@@ -45,7 +45,7 @@
   v11[2] = __69__CDPCustodianRecoveryController_startRecoverySessionWithCompletion___block_invoke;
   v11[3] = &unk_1E869DAE8;
   objc_copyWeak(&v13, &location);
-  v10 = v4;
+  v10 = completionCopy;
   v12 = v10;
   [(AACustodianController *)custodianController startCustodianRecoveryWithContext:v5 completion:v11];
 
@@ -102,18 +102,18 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)validateRecoveryCode:(id)a3 withCompletion:(id)a4
+- (void)validateRecoveryCode:(id)code withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E698B868]);
   [v8 setRecoverySessionID:self->_recoverySession];
-  [v8 setRecoveryCode:v6];
-  v9 = [(CDPContext *)self->_context telemetryFlowID];
-  [v8 setTelemetryFlowID:v9];
+  [v8 setRecoveryCode:codeCopy];
+  telemetryFlowID = [(CDPContext *)self->_context telemetryFlowID];
+  [v8 setTelemetryFlowID:telemetryFlowID];
 
-  v10 = [(CDPContext *)self->_context altDSID];
-  [v8 setAltDSID:v10];
+  altDSID = [(CDPContext *)self->_context altDSID];
+  [v8 setAltDSID:altDSID];
 
   objc_initWeak(&location, self);
   custodianController = self->_custodianController;
@@ -122,7 +122,7 @@ LABEL_12:
   v13[2] = __70__CDPCustodianRecoveryController_validateRecoveryCode_withCompletion___block_invoke;
   v13[3] = &unk_1E869DB10;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
+  v12 = completionCopy;
   v14 = v12;
   [(AACustodianController *)custodianController validateCustodianRecoveryCodeWithContext:v8 completion:v13];
 
@@ -177,34 +177,34 @@ void __70__CDPCustodianRecoveryController_validateRecoveryCode_withCompletion___
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchRecoveryInfoWithCompletion:(id)a3
+- (void)_fetchRecoveryInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __67__CDPCustodianRecoveryController__fetchRecoveryInfoWithCompletion___block_invoke;
   v14 = &unk_1E869DB38;
-  v15 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = completionCopy;
   v16 = v5;
   v6 = MEMORY[0x1E12CA380](&v11);
   custodianController = self->_custodianController;
   if (objc_opt_respondsToSelector())
   {
     v8 = objc_alloc_init(MEMORY[0x1E698B868]);
-    [v8 setRecoverySessionID:{self->_recoverySession, v11, v12, v13, v14, v15}];
-    v9 = [(CDPContext *)self->_context telemetryFlowID];
-    [v8 setTelemetryFlowID:v9];
+    [v8 setRecoverySessionID:{self->_recoverySession, v11, v12, v13, v14, selfCopy}];
+    telemetryFlowID = [(CDPContext *)self->_context telemetryFlowID];
+    [v8 setTelemetryFlowID:telemetryFlowID];
 
-    v10 = [(CDPContext *)self->_context altDSID];
-    [v8 setAltDSID:v10];
+    altDSID = [(CDPContext *)self->_context altDSID];
+    [v8 setAltDSID:altDSID];
 
     [(AACustodianController *)self->_custodianController fetchCustodianRecoveryKeysWithContext:v8 completion:v6];
   }
 
   else
   {
-    [(AACustodianController *)self->_custodianController fetchCustodianRecoveryKeysWithSessionID:self->_recoverySession completion:v6, v11, v12, v13, v14, v15];
+    [(AACustodianController *)self->_custodianController fetchCustodianRecoveryKeysWithSessionID:self->_recoverySession completion:v6, v11, v12, v13, v14, selfCopy];
   }
 }
 

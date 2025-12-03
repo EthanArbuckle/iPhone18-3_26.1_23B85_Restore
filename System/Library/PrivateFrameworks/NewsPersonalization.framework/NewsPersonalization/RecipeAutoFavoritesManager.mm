@@ -1,7 +1,7 @@
 @interface RecipeAutoFavoritesManager
 - (_TtC19NewsPersonalization26RecipeAutoFavoritesManager)init;
 - (id)autofavoriteTagIDs;
-- (void)prepareFavorites:(id)a3;
+- (void)prepareFavorites:(id)favorites;
 @end
 
 @implementation RecipeAutoFavoritesManager
@@ -15,7 +15,7 @@
 
 - (id)autofavoriteTagIDs
 {
-  v2 = self;
+  selfCopy = self;
   RecipeAutoFavoritesManager.autofavoriteTagIDs()();
 
   v3 = sub_1C6D79950();
@@ -23,13 +23,13 @@
   return v3;
 }
 
-- (void)prepareFavorites:(id)a3
+- (void)prepareFavorites:(id)favorites
 {
   sub_1C6B1ABB8();
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(favorites);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -45,7 +45,7 @@
   v13[3] = 0;
   v13[4] = &unk_1C6D92A90;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1C6D309F8(0, 0, v8, &unk_1C6D92A98, v13);
 }
 

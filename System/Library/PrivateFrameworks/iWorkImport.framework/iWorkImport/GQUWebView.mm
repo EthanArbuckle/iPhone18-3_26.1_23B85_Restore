@@ -1,16 +1,16 @@
 @interface GQUWebView
 + (id)_createWebPreferencesForRendering;
-+ (void)disableFrameScrollingRecursively:(id)a3;
-- (BOOL)_validateURL:(id)a3;
-- (GQUWebView)initWithFrame:(CGRect)a3;
-- (id)_urlToDownloadFromURL:(id)a3;
-- (id)webView:(id)a3 resource:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6 fromDataSource:(id)a7;
++ (void)disableFrameScrollingRecursively:(id)recursively;
+- (BOOL)_validateURL:(id)l;
+- (GQUWebView)initWithFrame:(CGRect)frame;
+- (id)_urlToDownloadFromURL:(id)l;
+- (id)webView:(id)view resource:(id)resource willSendRequest:(id)request redirectResponse:(id)response fromDataSource:(id)source;
 - (void)dealloc;
-- (void)loadDataSynchronously:(id)a3 textEncodingName:(id)a4 resources:(id)a5;
-- (void)webView:(id)a3 decidePolicyForMIMEType:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalLoadWithError:(id)a4 forFrame:(id)a5;
+- (void)loadDataSynchronously:(id)synchronously textEncodingName:(id)name resources:(id)resources;
+- (void)webView:(id)view decidePolicyForMIMEType:(id)type request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame;
+- (void)webView:(id)view didFailProvisionalLoadWithError:(id)error forFrame:(id)frame;
 @end
 
 @implementation GQUWebView
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (GQUWebView)initWithFrame:(CGRect)a3
+- (GQUWebView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GQUWebView;
-  v3 = [(GQUWebView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GQUWebView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_opt_class() _createWebPreferencesForRendering];
-    [(GQUWebView *)v3 setPreferences:v4];
+    _createWebPreferencesForRendering = [objc_opt_class() _createWebPreferencesForRendering];
+    [(GQUWebView *)v3 setPreferences:_createWebPreferencesForRendering];
 
     [(GQUWebView *)v3 setFrameLoadDelegate:v3];
     [(GQUWebView *)v3 setResourceLoadDelegate:v3];
@@ -56,7 +56,7 @@
   [(GQUWebView *)&v3 dealloc];
 }
 
-- (void)loadDataSynchronously:(id)a3 textEncodingName:(id)a4 resources:(id)a5
+- (void)loadDataSynchronously:(id)synchronously textEncodingName:(id)name resources:(id)resources
 {
   if ((byte_A42A8 & 1) == 0)
   {
@@ -64,7 +64,7 @@
     byte_A42A8 = 1;
   }
 
-  [GQUSimpleURLProtocol setResourcesDictionary:a5];
+  [GQUSimpleURLProtocol setResourcesDictionary:resources];
   [(GQUWebView *)self setHasAttachments:1];
   [(GQUWebView *)self stopLoading:0];
   [-[GQUWebView mainFrame](self "mainFrame")];
@@ -74,44 +74,44 @@
   [GQUSimpleURLProtocol setResourcesDictionary:0];
 }
 
-- (void)webView:(id)a3 didFailProvisionalLoadWithError:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didFailProvisionalLoadWithError:(id)error forFrame:(id)frame
 {
-  if ([(GQUWebView *)self mainFrame:a3]== a5)
+  if ([(GQUWebView *)self mainFrame:view]== frame)
   {
 
     [(GQUWebView *)self stopLoading:0];
   }
 }
 
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame
 {
-  if ([(GQUWebView *)self mainFrame:a3]== a5)
+  if ([(GQUWebView *)self mainFrame:view]== frame)
   {
 
     [(GQUWebView *)self stopLoading:0];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForMIMEType:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForMIMEType:(id)type request:(id)request frame:(id)frame decisionListener:(id)listener
 {
-  if ([objc_opt_class() canShowMIMEType:a4] || (v9 = objc_msgSend(objc_msgSend(objc_msgSend(a5, "URL"), "path"), "pathExtension")) != 0 && !objc_msgSend(v9, "caseInsensitiveCompare:", @"html"))
+  if ([objc_opt_class() canShowMIMEType:type] || (v9 = objc_msgSend(objc_msgSend(objc_msgSend(request, "URL"), "path"), "pathExtension")) != 0 && !objc_msgSend(v9, "caseInsensitiveCompare:", @"html"))
   {
 
-    [a7 use];
+    [listener use];
   }
 
   else
   {
 
-    [a7 ignore];
+    [listener ignore];
   }
 }
 
-- (BOOL)_validateURL:(id)a3
+- (BOOL)_validateURL:(id)l
 {
-  v5 = [a3 scheme];
-  v6 = v5;
-  if (self->mHasAttachments && ([v5 isEqual:off_9CBA0] & 1) != 0 || (objc_msgSend(a3, "isFileURL") & 1) != 0 || (objc_msgSend(v6, "isEqual:", @"about") & 1) != 0 || (objc_msgSend(v6, "isEqual:", @"applewebdata") & 1) != 0)
+  scheme = [l scheme];
+  v6 = scheme;
+  if (self->mHasAttachments && ([scheme isEqual:off_9CBA0] & 1) != 0 || (objc_msgSend(l, "isFileURL") & 1) != 0 || (objc_msgSend(v6, "isEqual:", @"about") & 1) != 0 || (objc_msgSend(v6, "isEqual:", @"applewebdata") & 1) != 0)
   {
     return 1;
   }
@@ -119,53 +119,53 @@
   return [v6 isEqual:@"data"];
 }
 
-- (id)_urlToDownloadFromURL:(id)a3
+- (id)_urlToDownloadFromURL:(id)l
 {
-  v4 = [a3 scheme];
-  if ([a3 isFileURL] & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"about") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"applewebdata") & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"data") & 1) != 0 || (objc_msgSend(v4, "isEqual:", off_9CBA0))
+  scheme = [l scheme];
+  if ([l isFileURL] & 1) != 0 || (objc_msgSend(scheme, "isEqual:", @"about") & 1) != 0 || (objc_msgSend(scheme, "isEqual:", @"applewebdata") & 1) != 0 || (objc_msgSend(scheme, "isEqual:", @"data") & 1) != 0 || (objc_msgSend(scheme, "isEqual:", off_9CBA0))
   {
-    return a3;
+    return l;
   }
 
   return [NSURL URLWithString:@"about:"];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener
 {
-  if (-[GQUWebView _validateURL:](self, "_validateURL:", [a5 URL]))
+  if (-[GQUWebView _validateURL:](self, "_validateURL:", [request URL]))
   {
 
-    [a7 use];
+    [listener use];
   }
 
   else
   {
 
-    [a7 ignore];
+    [listener ignore];
   }
 }
 
-- (id)webView:(id)a3 resource:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6 fromDataSource:(id)a7
+- (id)webView:(id)view resource:(id)resource willSendRequest:(id)request redirectResponse:(id)response fromDataSource:(id)source
 {
-  v9 = [a5 URL];
+  v9 = [request URL];
   v10 = [(GQUWebView *)self _urlToDownloadFromURL:v9];
   if (v10 == v9)
   {
-    return a5;
+    return request;
   }
 
   return [NSURLRequest requestWithURL:v10];
 }
 
-+ (void)disableFrameScrollingRecursively:(id)a3
++ (void)disableFrameScrollingRecursively:(id)recursively
 {
-  [objc_msgSend(a3 "frameView")];
+  [objc_msgSend(recursively "frameView")];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [a3 childFrames];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childFrames = [recursively childFrames];
+  v6 = [childFrames countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -177,15 +177,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childFrames);
         }
 
-        [a1 disableFrameScrollingRecursively:*(*(&v10 + 1) + 8 * v9)];
+        [self disableFrameScrollingRecursively:*(*(&v10 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [childFrames countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

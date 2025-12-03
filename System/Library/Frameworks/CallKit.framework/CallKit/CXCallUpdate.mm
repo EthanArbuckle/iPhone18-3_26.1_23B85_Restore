@@ -51,8 +51,8 @@
 - (CXAccount)account;
 - (CXCallTokens)callTokens;
 - (CXCallUpdate)init;
-- (CXCallUpdate)initWithCoder:(id)a3;
-- (CXCallUpdate)updateWithUpdate:(id)a3;
+- (CXCallUpdate)initWithCoder:(id)coder;
+- (CXCallUpdate)updateWithUpdate:(id)update;
 - (CXCallUpdateHasSet)hasSet;
 - (CXHandle)initiator;
 - (CXHandle)remoteHandle;
@@ -79,8 +79,8 @@
 - (NSUUID)localSenderIdentityAccountUUID;
 - (NSUUID)localSenderIdentityUUID;
 - (NSUUID)participantGroupUUID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)sanitizedCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)sanitizedCopyWithZone:(_NSZone *)zone;
 - (int)commTrustScore;
 - (int)filteredOutReason;
 - (int64_t)audioInterruptionOperationMode;
@@ -99,100 +99,100 @@
 - (int64_t)ttyType;
 - (int64_t)verificationStatus;
 - (int64_t)videoStreamToken;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessoryButtonEventsEnabled:(BOOL)a3;
-- (void)setAccount:(id)a3;
-- (void)setActiveRemoteParticipant:(id)a3;
-- (void)setActiveRemoteParticipantHandles:(id)a3;
-- (void)setAnnounceProviderIdentifier:(id)a3;
-- (void)setAnyRemoteSupportsRequestToScreenShare:(BOOL)a3;
-- (void)setAudioCategory:(id)a3;
-- (void)setAudioInterruptionOperationMode:(int64_t)a3;
-- (void)setAudioInterruptionProvider:(int64_t)a3;
-- (void)setAudioMode:(id)a3;
-- (void)setBlocked:(BOOL)a3;
-- (void)setBluetoothAudioFormat:(int64_t)a3;
-- (void)setCallSubType:(int64_t)a3;
-- (void)setCallTokens:(id)a3;
-- (void)setCommTrustScore:(int)a3;
-- (void)setContext:(id)a3;
-- (void)setConversation:(BOOL)a3;
-- (void)setConversationGroupUUID:(id)a3;
-- (void)setCrossDeviceIdentifier:(id)a3;
-- (void)setEmergency:(BOOL)a3;
-- (void)setFailureExpected:(BOOL)a3;
-- (void)setFilteredOutReason:(int)a3;
-- (void)setHandoffContext:(id)a3;
-- (void)setHasBeenRedirected:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessoryButtonEventsEnabled:(BOOL)enabled;
+- (void)setAccount:(id)account;
+- (void)setActiveRemoteParticipant:(id)participant;
+- (void)setActiveRemoteParticipantHandles:(id)handles;
+- (void)setAnnounceProviderIdentifier:(id)identifier;
+- (void)setAnyRemoteSupportsRequestToScreenShare:(BOOL)share;
+- (void)setAudioCategory:(id)category;
+- (void)setAudioInterruptionOperationMode:(int64_t)mode;
+- (void)setAudioInterruptionProvider:(int64_t)provider;
+- (void)setAudioMode:(id)mode;
+- (void)setBlocked:(BOOL)blocked;
+- (void)setBluetoothAudioFormat:(int64_t)format;
+- (void)setCallSubType:(int64_t)type;
+- (void)setCallTokens:(id)tokens;
+- (void)setCommTrustScore:(int)score;
+- (void)setContext:(id)context;
+- (void)setConversation:(BOOL)conversation;
+- (void)setConversationGroupUUID:(id)d;
+- (void)setCrossDeviceIdentifier:(id)identifier;
+- (void)setEmergency:(BOOL)emergency;
+- (void)setFailureExpected:(BOOL)expected;
+- (void)setFilteredOutReason:(int)reason;
+- (void)setHandoffContext:(id)context;
+- (void)setHasBeenRedirected:(BOOL)redirected;
 - (void)setHasVideo:(BOOL)hasVideo;
-- (void)setISOCountryCode:(id)a3;
-- (void)setIdentificationCategory:(int64_t)a3;
-- (void)setIgnoresBluetoothDeviceUID:(BOOL)a3;
-- (void)setInCallSoundRegion:(int64_t)a3;
-- (void)setInitiator:(id)a3;
-- (void)setIsKnownCaller:(BOOL)a3;
-- (void)setIsReRing:(BOOL)a3;
-- (void)setIsSharePlayCapable:(BOOL)a3;
-- (void)setIsUnderlyingLinksConnected:(BOOL)a3;
-- (void)setIsUpgradeToVideo:(BOOL)a3;
-- (void)setJunkConfidence:(int64_t)a3;
-- (void)setLaunchInBackground:(BOOL)a3;
-- (void)setLocalMemberHandleValue:(id)a3;
-- (void)setLocalSenderIdentityAccountUUID:(id)a3;
-- (void)setLocalSenderIdentityUUID:(id)a3;
-- (void)setLocalSenderSubscriptionIdentifier:(id)a3;
-- (void)setLocalizedCallerImageURL:(id)a3;
+- (void)setISOCountryCode:(id)code;
+- (void)setIdentificationCategory:(int64_t)category;
+- (void)setIgnoresBluetoothDeviceUID:(BOOL)d;
+- (void)setInCallSoundRegion:(int64_t)region;
+- (void)setInitiator:(id)initiator;
+- (void)setIsKnownCaller:(BOOL)caller;
+- (void)setIsReRing:(BOOL)ring;
+- (void)setIsSharePlayCapable:(BOOL)capable;
+- (void)setIsUnderlyingLinksConnected:(BOOL)connected;
+- (void)setIsUpgradeToVideo:(BOOL)video;
+- (void)setJunkConfidence:(int64_t)confidence;
+- (void)setLaunchInBackground:(BOOL)background;
+- (void)setLocalMemberHandleValue:(id)value;
+- (void)setLocalSenderIdentityAccountUUID:(id)d;
+- (void)setLocalSenderIdentityUUID:(id)d;
+- (void)setLocalSenderSubscriptionIdentifier:(id)identifier;
+- (void)setLocalizedCallerImageURL:(id)l;
 - (void)setLocalizedCallerName:(NSString *)localizedCallerName;
-- (void)setMayRequireBreakBeforeMake:(BOOL)a3;
-- (void)setMediaPlaybackOnExternalDevice:(BOOL)a3;
-- (void)setMixesVoiceWithMedia:(BOOL)a3;
-- (void)setMutuallyExclusiveCall:(BOOL)a3;
-- (void)setNearbyMode:(int64_t)a3;
-- (void)setOneToOneModeEnabled:(BOOL)a3;
-- (void)setOtherInvitedHandles:(id)a3;
-- (void)setParticipantGroupUUID:(id)a3;
-- (void)setPrefersExclusiveAccessToCellularNetwork:(BOOL)a3;
-- (void)setPrefersToPlayDuringWombat:(BOOL)a3;
-- (void)setPriority:(int64_t)a3;
+- (void)setMayRequireBreakBeforeMake:(BOOL)make;
+- (void)setMediaPlaybackOnExternalDevice:(BOOL)device;
+- (void)setMixesVoiceWithMedia:(BOOL)media;
+- (void)setMutuallyExclusiveCall:(BOOL)call;
+- (void)setNearbyMode:(int64_t)mode;
+- (void)setOneToOneModeEnabled:(BOOL)enabled;
+- (void)setOtherInvitedHandles:(id)handles;
+- (void)setParticipantGroupUUID:(id)d;
+- (void)setPrefersExclusiveAccessToCellularNetwork:(BOOL)network;
+- (void)setPrefersToPlayDuringWombat:(BOOL)wombat;
+- (void)setPriority:(int64_t)priority;
 - (void)setRemoteHandle:(CXHandle *)remoteHandle;
-- (void)setRemoteMember:(id)a3;
-- (void)setRemoteParticipantHandles:(id)a3;
-- (void)setRemoteUplinkMuted:(BOOL)a3;
-- (void)setRequiresAuthentication:(BOOL)a3;
-- (void)setRequiresInCallSounds:(BOOL)a3;
-- (void)setScreenShareAttributes:(id)a3;
-- (void)setScreenSharingIntention:(int64_t)a3;
-- (void)setScreenSharingType:(int64_t)a3;
-- (void)setSendingVideo:(BOOL)a3;
-- (void)setServiceStatus:(int64_t)a3;
-- (void)setSharingScreen:(BOOL)a3;
-- (void)setShouldSilentlyRegisterIMAVCall:(BOOL)a3;
-- (void)setShouldSuppressInCallUI:(BOOL)a3;
-- (void)setSpecialUnknown:(BOOL)a3;
-- (void)setSupportsAddCall:(BOOL)a3;
+- (void)setRemoteMember:(id)member;
+- (void)setRemoteParticipantHandles:(id)handles;
+- (void)setRemoteUplinkMuted:(BOOL)muted;
+- (void)setRequiresAuthentication:(BOOL)authentication;
+- (void)setRequiresInCallSounds:(BOOL)sounds;
+- (void)setScreenShareAttributes:(id)attributes;
+- (void)setScreenSharingIntention:(int64_t)intention;
+- (void)setScreenSharingType:(int64_t)type;
+- (void)setSendingVideo:(BOOL)video;
+- (void)setServiceStatus:(int64_t)status;
+- (void)setSharingScreen:(BOOL)screen;
+- (void)setShouldSilentlyRegisterIMAVCall:(BOOL)call;
+- (void)setShouldSuppressInCallUI:(BOOL)i;
+- (void)setSpecialUnknown:(BOOL)unknown;
+- (void)setSupportsAddCall:(BOOL)call;
 - (void)setSupportsDTMF:(BOOL)supportsDTMF;
-- (void)setSupportsDTMFUpdates:(BOOL)a3;
-- (void)setSupportsEmergencyFallback:(BOOL)a3;
+- (void)setSupportsDTMFUpdates:(BOOL)updates;
+- (void)setSupportsEmergencyFallback:(BOOL)fallback;
 - (void)setSupportsGrouping:(BOOL)supportsGrouping;
 - (void)setSupportsHolding:(BOOL)supportsHolding;
-- (void)setSupportsRecents:(BOOL)a3;
-- (void)setSupportsRecording:(BOOL)a3;
-- (void)setSupportsScreenShare:(BOOL)a3;
-- (void)setSupportsScreening:(BOOL)a3;
-- (void)setSupportsSendingToVoicemail:(BOOL)a3;
-- (void)setSupportsSharePlay:(BOOL)a3;
-- (void)setSupportsTTYWithVoice:(BOOL)a3;
-- (void)setSupportsUnambiguousMultiPartyState:(BOOL)a3;
+- (void)setSupportsRecents:(BOOL)recents;
+- (void)setSupportsRecording:(BOOL)recording;
+- (void)setSupportsScreenShare:(BOOL)share;
+- (void)setSupportsScreening:(BOOL)screening;
+- (void)setSupportsSendingToVoicemail:(BOOL)voicemail;
+- (void)setSupportsSharePlay:(BOOL)play;
+- (void)setSupportsTTYWithVoice:(BOOL)voice;
+- (void)setSupportsUnambiguousMultiPartyState:(BOOL)state;
 - (void)setSupportsUngrouping:(BOOL)supportsUngrouping;
-- (void)setSuppressRingtone:(BOOL)a3;
-- (void)setTTYType:(int64_t)a3;
-- (void)setTransmissionMode:(int64_t)a3;
-- (void)setUsingBaseband:(BOOL)a3;
-- (void)setVerificationStatus:(int64_t)a3;
-- (void)setVideoStreamToken:(int64_t)a3;
-- (void)startCallMuted:(BOOL)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)setSuppressRingtone:(BOOL)ringtone;
+- (void)setTTYType:(int64_t)type;
+- (void)setTransmissionMode:(int64_t)mode;
+- (void)setUsingBaseband:(BOOL)baseband;
+- (void)setVerificationStatus:(int64_t)status;
+- (void)setVideoStreamToken:(int64_t)token;
+- (void)startCallMuted:(BOOL)muted;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXCallUpdate
@@ -206,9 +206,9 @@
   if (v2)
   {
     v2->_accessorLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v3->_UUID;
-    v3->_UUID = v4;
+    v3->_UUID = uUID;
 
     *&v3->_hasSet = 0;
     *(&v3->_hasSet + 2) = 0;
@@ -219,7 +219,7 @@
 
 + (CXCallUpdate)callUpdateWithDefaultValuesSet
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setSupportsHolding:1];
   [v2 setSupportsGrouping:1];
   [v2 setSupportsUngrouping:1];
@@ -263,19 +263,19 @@
 
 - (CXHandle)remoteHandle
 {
-  v3 = [(CXCallUpdate *)self remoteMember];
-  if (v3)
+  remoteMember = [(CXCallUpdate *)self remoteMember];
+  if (remoteMember)
   {
-    v4 = [(CXCallUpdate *)self remoteMember];
-    v5 = [v4 handle];
+    remoteMember2 = [(CXCallUpdate *)self remoteMember];
+    handle = [remoteMember2 handle];
   }
 
   else
   {
-    v5 = 0;
+    handle = 0;
   }
 
-  return v5;
+  return handle;
 }
 
 - (int64_t)ttyType
@@ -735,20 +735,20 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CXCallUpdate *)self UUID];
-  v5 = [v4 UUIDString];
-  [v3 appendFormat:@" UUID=%@", v5];
+  uUID = [(CXCallUpdate *)self UUID];
+  uUIDString = [uUID UUIDString];
+  [v3 appendFormat:@" UUID=%@", uUIDString];
 
   if (([(CXCallUpdate *)self hasSet]& 1) != 0)
   {
-    v6 = [(CXCallUpdate *)self account];
-    [v3 appendFormat:@" account=%@", v6];
+    account = [(CXCallUpdate *)self account];
+    [v3 appendFormat:@" account=%@", account];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 2) != 0)
   {
-    v7 = [(CXCallUpdate *)self activeRemoteParticipant];
-    [v3 appendFormat:@" activeRemoteParticipant=%@", v7];
+    activeRemoteParticipant = [(CXCallUpdate *)self activeRemoteParticipant];
+    [v3 appendFormat:@" activeRemoteParticipant=%@", activeRemoteParticipant];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200) != 0)
@@ -778,20 +778,20 @@
 
   if (([(CXCallUpdate *)self hasSet]& 4) != 0)
   {
-    v8 = [(CXCallUpdate *)self remoteMember];
-    [v3 appendFormat:@" remoteMember=%@", v8];
+    remoteMember = [(CXCallUpdate *)self remoteMember];
+    [v3 appendFormat:@" remoteMember=%@", remoteMember];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 8) != 0)
   {
-    v9 = [(CXCallUpdate *)self localizedCallerName];
-    [v3 appendFormat:@" localizedCallerName=%@", v9];
+    localizedCallerName = [(CXCallUpdate *)self localizedCallerName];
+    [v3 appendFormat:@" localizedCallerName=%@", localizedCallerName];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10) != 0)
   {
-    v10 = [(CXCallUpdate *)self localizedCallerImageURL];
-    [v3 appendFormat:@" localizedCallerImageURL=%@", v10];
+    localizedCallerImageURL = [(CXCallUpdate *)self localizedCallerImageURL];
+    [v3 appendFormat:@" localizedCallerImageURL=%@", localizedCallerImageURL];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400) != 0)
@@ -816,14 +816,14 @@
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000) != 0)
   {
-    v11 = [(CXCallUpdate *)self audioCategory];
-    [v3 appendFormat:@" audioCategory=%@", v11];
+    audioCategory = [(CXCallUpdate *)self audioCategory];
+    [v3 appendFormat:@" audioCategory=%@", audioCategory];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000) != 0)
   {
-    v12 = [(CXCallUpdate *)self audioMode];
-    [v3 appendFormat:@" audioMode=%@", v12];
+    audioMode = [(CXCallUpdate *)self audioMode];
+    [v3 appendFormat:@" audioMode=%@", audioMode];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000) != 0)
@@ -935,98 +935,98 @@
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000) != 0)
   {
-    v15 = [(CXCallUpdate *)self callTokens];
-    [v3 appendFormat:@" callTokens=%@", v15];
+    callTokens = [(CXCallUpdate *)self callTokens];
+    [v3 appendFormat:@" callTokens=%@", callTokens];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000) != 0)
   {
-    v16 = [(CXCallUpdate *)self announceProviderIdentifier];
-    [v3 appendFormat:@" aPI=%@", v16];
+    announceProviderIdentifier = [(CXCallUpdate *)self announceProviderIdentifier];
+    [v3 appendFormat:@" aPI=%@", announceProviderIdentifier];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000) != 0)
   {
-    v17 = [(CXCallUpdate *)self initiator];
-    [v3 appendFormat:@" initiatorValue=%@", v17];
+    initiator = [(CXCallUpdate *)self initiator];
+    [v3 appendFormat:@" initiatorValue=%@", initiator];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000000) != 0)
   {
-    v18 = [(CXCallUpdate *)self crossDeviceIdentifier];
-    [v3 appendFormat:@" crossDeviceIdentifier=%@", v18];
+    crossDeviceIdentifier = [(CXCallUpdate *)self crossDeviceIdentifier];
+    [v3 appendFormat:@" crossDeviceIdentifier=%@", crossDeviceIdentifier];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000000) != 0)
   {
-    v19 = [(CXCallUpdate *)self ISOCountryCode];
-    [v3 appendFormat:@" ISOCountryCode=%@", v19];
+    iSOCountryCode = [(CXCallUpdate *)self ISOCountryCode];
+    [v3 appendFormat:@" ISOCountryCode=%@", iSOCountryCode];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000000000) != 0)
   {
-    v20 = [(CXCallUpdate *)self localSenderIdentityUUID];
-    [v3 appendFormat:@" localSenderIdentityUUID=%@", v20];
+    localSenderIdentityUUID = [(CXCallUpdate *)self localSenderIdentityUUID];
+    [v3 appendFormat:@" localSenderIdentityUUID=%@", localSenderIdentityUUID];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000000000) != 0)
   {
-    v21 = [(CXCallUpdate *)self localSenderIdentityAccountUUID];
-    [v3 appendFormat:@" localSenderIdentityAccountUUID=%@", v21];
+    localSenderIdentityAccountUUID = [(CXCallUpdate *)self localSenderIdentityAccountUUID];
+    [v3 appendFormat:@" localSenderIdentityAccountUUID=%@", localSenderIdentityAccountUUID];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000000000) != 0)
   {
-    v22 = [(CXCallUpdate *)self localMemberHandleValue];
-    [v3 appendFormat:@" localMemberHandleValue=%@", v22];
+    localMemberHandleValue = [(CXCallUpdate *)self localMemberHandleValue];
+    [v3 appendFormat:@" localMemberHandleValue=%@", localMemberHandleValue];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000000) != 0)
   {
-    v23 = [(CXCallUpdate *)self localSenderSubscriptionIdentifier];
-    [v3 appendFormat:@" localSenderSubscriptionIdentifier=%@", v23];
+    localSenderSubscriptionIdentifier = [(CXCallUpdate *)self localSenderSubscriptionIdentifier];
+    [v3 appendFormat:@" localSenderSubscriptionIdentifier=%@", localSenderSubscriptionIdentifier];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000000000) != 0)
   {
-    v24 = [(CXCallUpdate *)self participantGroupUUID];
-    [v3 appendFormat:@" participantGroupUUID=%@", v24];
+    participantGroupUUID = [(CXCallUpdate *)self participantGroupUUID];
+    [v3 appendFormat:@" participantGroupUUID=%@", participantGroupUUID];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000000) != 0)
   {
-    v25 = [(CXCallUpdate *)self remoteParticipantHandles];
-    [v3 appendFormat:@" remoteParticipantHandles=%@", v25];
+    remoteParticipantHandles = [(CXCallUpdate *)self remoteParticipantHandles];
+    [v3 appendFormat:@" remoteParticipantHandles=%@", remoteParticipantHandles];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000000000) != 0)
   {
-    v26 = [(CXCallUpdate *)self otherInvitedHandles];
-    [v3 appendFormat:@" otherInvitedHandles=%@", v26];
+    otherInvitedHandles = [(CXCallUpdate *)self otherInvitedHandles];
+    [v3 appendFormat:@" otherInvitedHandles=%@", otherInvitedHandles];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000000) != 0)
   {
-    v27 = [(CXCallUpdate *)self activeRemoteParticipantHandles];
-    [v3 appendFormat:@" activeRemoteParticipantHandles=%@", v27];
+    activeRemoteParticipantHandles = [(CXCallUpdate *)self activeRemoteParticipantHandles];
+    [v3 appendFormat:@" activeRemoteParticipantHandles=%@", activeRemoteParticipantHandles];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000000) != 0)
   {
-    v28 = [(CXCallUpdate *)self handoffContext];
-    [v3 appendFormat:@" handoffContext=%@", v28];
+    handoffContext = [(CXCallUpdate *)self handoffContext];
+    [v3 appendFormat:@" handoffContext=%@", handoffContext];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000000) != 0)
   {
-    v29 = [(CXCallUpdate *)self screenShareAttributes];
-    [v3 appendFormat:@" screenShareAttributes=%@", v29];
+    screenShareAttributes = [(CXCallUpdate *)self screenShareAttributes];
+    [v3 appendFormat:@" screenShareAttributes=%@", screenShareAttributes];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000000000) != 0)
   {
-    v30 = [(CXCallUpdate *)self context];
-    [v3 appendFormat:@" context=%@", v30];
+    context = [(CXCallUpdate *)self context];
+    [v3 appendFormat:@" context=%@", context];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000000000) != 0)
@@ -1229,8 +1229,8 @@
   [(CXCallUpdate *)self hasSet];
   if ((v53 & 0x1000000) != 0)
   {
-    v54 = [(CXCallUpdate *)self conversationGroupUUID];
-    [v3 appendFormat:@" conversationGroupUUID=%@", v54];
+    conversationGroupUUID = [(CXCallUpdate *)self conversationGroupUUID];
+    [v3 appendFormat:@" conversationGroupUUID=%@", conversationGroupUUID];
   }
 
   [(CXCallUpdate *)self hasSet];
@@ -1269,15 +1269,15 @@
   return v3;
 }
 
-- (void)setLocalizedCallerImageURL:(id)a3
+- (void)setLocalizedCallerImageURL:(id)l
 {
-  v10 = a3;
-  if (v10)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [(CXSandboxExtendedURL *)v10 URL];
-    v6 = [v5 isFileURL];
+    v5 = [(CXSandboxExtendedURL *)lCopy URL];
+    isFileURL = [v5 isFileURL];
 
-    if ((v6 & 1) == 0)
+    if ((isFileURL & 1) == 0)
     {
       v7 = MEMORY[0x1E695DF30];
       v8 = *MEMORY[0x1E695D940];
@@ -1287,10 +1287,10 @@
   }
 
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_localizedCallerImageURL != v10)
+  if (self->_localizedCallerImageURL != lCopy)
   {
     *&self->_hasSet |= 0x10uLL;
-    objc_storeStrong(&self->_localizedCallerImageURL, a3);
+    objc_storeStrong(&self->_localizedCallerImageURL, l);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -1304,15 +1304,15 @@
   return conversation;
 }
 
-- (void)setConversation:(BOOL)a3
+- (void)setConversation:(BOOL)conversation
 {
-  v3 = a3;
+  conversationCopy = conversation;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_conversation != v3)
+  if (self->_conversation != conversationCopy)
   {
     *&self->_hasSet |= 0x1000000000000000uLL;
-    self->_conversation = v3;
-    if (v3)
+    self->_conversation = conversationCopy;
+    if (conversationCopy)
     {
       *(&self->_hasSet + 2) |= 0x80000u;
       self->_isSharePlayCapable = 1;
@@ -1322,12 +1322,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 1uLL;
-  v5 = [v4 copy];
+  v5 = [accountCopy copy];
 
   account = self->_account;
   self->_account = v5;
@@ -1344,24 +1344,24 @@
   return v3;
 }
 
-- (void)setActiveRemoteParticipant:(id)a3
+- (void)setActiveRemoteParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 2uLL;
   activeRemoteParticipant = self->_activeRemoteParticipant;
-  self->_activeRemoteParticipant = v4;
+  self->_activeRemoteParticipant = participantCopy;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setRemoteMember:(id)a3
+- (void)setRemoteMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 4uLL;
   remoteMember = self->_remoteMember;
-  self->_remoteMember = v4;
+  self->_remoteMember = memberCopy;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1387,11 +1387,11 @@
   return emergency;
 }
 
-- (void)setEmergency:(BOOL)a3
+- (void)setEmergency:(BOOL)emergency
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x20uLL;
-  self->_emergency = a3;
+  self->_emergency = emergency;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1404,20 +1404,20 @@
   return failureExpected;
 }
 
-- (void)setFailureExpected:(BOOL)a3
+- (void)setFailureExpected:(BOOL)expected
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x40uLL;
-  self->_failureExpected = a3;
+  self->_failureExpected = expected;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsEmergencyFallback:(BOOL)a3
+- (void)setSupportsEmergencyFallback:(BOOL)fallback
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x80uLL;
-  self->_supportsEmergencyFallback = a3;
+  self->_supportsEmergencyFallback = fallback;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1430,11 +1430,11 @@
   return usingBaseband;
 }
 
-- (void)setUsingBaseband:(BOOL)a3
+- (void)setUsingBaseband:(BOOL)baseband
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x100uLL;
-  self->_usingBaseband = a3;
+  self->_usingBaseband = baseband;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1447,38 +1447,38 @@
   return blocked;
 }
 
-- (void)setBlocked:(BOOL)a3
+- (void)setBlocked:(BOOL)blocked
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x200uLL;
-  self->_blocked = a3;
+  self->_blocked = blocked;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setTTYType:(int64_t)a3
+- (void)setTTYType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x400uLL;
-  self->_ttyType = a3;
+  self->_ttyType = type;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setBluetoothAudioFormat:(int64_t)a3
+- (void)setBluetoothAudioFormat:(int64_t)format
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 4u;
-  self->_bluetoothAudioFormat = a3;
+  self->_bluetoothAudioFormat = format;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setMayRequireBreakBeforeMake:(BOOL)a3
+- (void)setMayRequireBreakBeforeMake:(BOOL)make
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x1000uLL;
-  self->_mayRequireBreakBeforeMake = a3;
+  self->_mayRequireBreakBeforeMake = make;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1508,21 +1508,21 @@
   return isUpgradeToVideo;
 }
 
-- (void)setIsUpgradeToVideo:(BOOL)a3
+- (void)setIsUpgradeToVideo:(BOOL)video
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x4000uLL;
-  self->_isUpgradeToVideo = a3;
+  self->_isUpgradeToVideo = video;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setAudioCategory:(id)a3
+- (void)setAudioCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x8000uLL;
-  v5 = [v4 copy];
+  v5 = [categoryCopy copy];
 
   audioCategory = self->_audioCategory;
   self->_audioCategory = v5;
@@ -1530,12 +1530,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setAudioMode:(id)a3
+- (void)setAudioMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x10000uLL;
-  v5 = [v4 copy];
+  v5 = [modeCopy copy];
 
   audioMode = self->_audioMode;
   self->_audioMode = v5;
@@ -1543,56 +1543,56 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setAudioInterruptionProvider:(int64_t)a3
+- (void)setAudioInterruptionProvider:(int64_t)provider
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x20000uLL;
-  self->_audioInterruptionProvider = a3;
+  self->_audioInterruptionProvider = provider;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setAudioInterruptionOperationMode:(int64_t)a3
+- (void)setAudioInterruptionOperationMode:(int64_t)mode
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x40000uLL;
-  self->_audioInterruptionOperationMode = a3;
+  self->_audioInterruptionOperationMode = mode;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setVerificationStatus:(int64_t)a3
+- (void)setVerificationStatus:(int64_t)status
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x80000uLL;
-  self->_verificationStatus = a3;
+  self->_verificationStatus = status;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x100000uLL;
-  self->_priority = a3;
+  self->_priority = priority;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setRequiresInCallSounds:(BOOL)a3
+- (void)setRequiresInCallSounds:(BOOL)sounds
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x200000uLL;
-  self->_requiresInCallSounds = a3;
+  self->_requiresInCallSounds = sounds;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setInCallSoundRegion:(int64_t)a3
+- (void)setInCallSoundRegion:(int64_t)region
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x400000uLL;
-  self->_inCallSoundRegion = a3;
+  self->_inCallSoundRegion = region;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1633,11 +1633,11 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsDTMFUpdates:(BOOL)a3
+- (void)setSupportsDTMFUpdates:(BOOL)updates
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x8000000uLL;
-  self->_supportsDTMFUpdates = a3;
+  self->_supportsDTMFUpdates = updates;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1650,11 +1650,11 @@
   return supportsSharePlay;
 }
 
-- (void)setSupportsSharePlay:(BOOL)a3
+- (void)setSupportsSharePlay:(BOOL)play
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x10000000uLL;
-  self->_supportsSharePlay = a3;
+  self->_supportsSharePlay = play;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1667,103 +1667,103 @@
   return supportsScreenShare;
 }
 
-- (void)setSupportsScreenShare:(BOOL)a3
+- (void)setSupportsScreenShare:(BOOL)share
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x20000000uLL;
-  self->_supportsScreenShare = a3;
+  self->_supportsScreenShare = share;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsUnambiguousMultiPartyState:(BOOL)a3
+- (void)setSupportsUnambiguousMultiPartyState:(BOOL)state
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x40000000uLL;
-  self->_supportsUnambiguousMultiPartyState = a3;
+  self->_supportsUnambiguousMultiPartyState = state;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsAddCall:(BOOL)a3
+- (void)setSupportsAddCall:(BOOL)call
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x80000000uLL;
-  self->_supportsAddCall = a3;
+  self->_supportsAddCall = call;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsSendingToVoicemail:(BOOL)a3
+- (void)setSupportsSendingToVoicemail:(BOOL)voicemail
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x100000000uLL;
-  self->_supportsSendingToVoicemail = a3;
+  self->_supportsSendingToVoicemail = voicemail;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsRecording:(BOOL)a3
+- (void)setSupportsRecording:(BOOL)recording
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x200000000uLL;
-  self->_supportsRecording = a3;
+  self->_supportsRecording = recording;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setIsUnderlyingLinksConnected:(BOOL)a3
+- (void)setIsUnderlyingLinksConnected:(BOOL)connected
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x400000000uLL;
-  self->_isUnderlyingLinksConnected = a3;
+  self->_isUnderlyingLinksConnected = connected;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsScreening:(BOOL)a3
+- (void)setSupportsScreening:(BOOL)screening
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x8000u;
-  self->_supportsScreening = a3;
+  self->_supportsScreening = screening;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsRecents:(BOOL)a3
+- (void)setSupportsRecents:(BOOL)recents
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x10000u;
-  self->_supportsRecents = a3;
+  self->_supportsRecents = recents;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setVideoStreamToken:(int64_t)a3
+- (void)setVideoStreamToken:(int64_t)token
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x800000000uLL;
-  self->_videoStreamToken = a3;
+  self->_videoStreamToken = token;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setCallTokens:(id)a3
+- (void)setCallTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x1000000000uLL;
   callTokens = self->_callTokens;
-  self->_callTokens = v4;
+  self->_callTokens = tokensCopy;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setCommTrustScore:(int)a3
+- (void)setCommTrustScore:(int)score
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x400000u;
-  self->_commTrustScore = a3;
+  self->_commTrustScore = score;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -1776,21 +1776,21 @@
   return specialUnknown;
 }
 
-- (void)setSpecialUnknown:(BOOL)a3
+- (void)setSpecialUnknown:(BOOL)unknown
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x800000u;
-  self->_specialUnknown = a3;
+  self->_specialUnknown = unknown;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setAnnounceProviderIdentifier:(id)a3
+- (void)setAnnounceProviderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x2000000000uLL;
-  v5 = [v4 copy];
+  v5 = [identifierCopy copy];
 
   announceProviderIdentifier = self->_announceProviderIdentifier;
   self->_announceProviderIdentifier = v5;
@@ -1807,12 +1807,12 @@
   return v3;
 }
 
-- (void)setInitiator:(id)a3
+- (void)setInitiator:(id)initiator
 {
-  v4 = a3;
+  initiatorCopy = initiator;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x4000000000uLL;
-  v5 = [v4 copy];
+  v5 = [initiatorCopy copy];
 
   initiator = self->_initiator;
   self->_initiator = v5;
@@ -1829,12 +1829,12 @@
   return v3;
 }
 
-- (void)setCrossDeviceIdentifier:(id)a3
+- (void)setCrossDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x8000000000uLL;
-  v5 = [v4 copy];
+  v5 = [identifierCopy copy];
 
   crossDeviceIdentifier = self->_crossDeviceIdentifier;
   self->_crossDeviceIdentifier = v5;
@@ -1842,12 +1842,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setISOCountryCode:(id)a3
+- (void)setISOCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x10000000000uLL;
-  v5 = [v4 copy];
+  v5 = [codeCopy copy];
 
   ISOCountryCode = self->_ISOCountryCode;
   self->_ISOCountryCode = v5;
@@ -1855,12 +1855,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setLocalSenderIdentityUUID:(id)a3
+- (void)setLocalSenderIdentityUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x20000000000uLL;
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   localSenderIdentityUUID = self->_localSenderIdentityUUID;
   self->_localSenderIdentityUUID = v5;
@@ -1868,12 +1868,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setLocalSenderIdentityAccountUUID:(id)a3
+- (void)setLocalSenderIdentityAccountUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x40000000000uLL;
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   localSenderIdentityAccountUUID = self->_localSenderIdentityAccountUUID;
   self->_localSenderIdentityAccountUUID = v5;
@@ -1881,12 +1881,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setLocalMemberHandleValue:(id)a3
+- (void)setLocalMemberHandleValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x80000000000uLL;
-  v5 = [v4 copy];
+  v5 = [valueCopy copy];
 
   localMemberHandleValue = self->_localMemberHandleValue;
   self->_localMemberHandleValue = v5;
@@ -1903,12 +1903,12 @@
   return v3;
 }
 
-- (void)setLocalSenderSubscriptionIdentifier:(id)a3
+- (void)setLocalSenderSubscriptionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x100000000000uLL;
-  v5 = [v4 copy];
+  v5 = [identifierCopy copy];
 
   localSenderSubscriptionIdentifier = self->_localSenderSubscriptionIdentifier;
   self->_localSenderSubscriptionIdentifier = v5;
@@ -1916,12 +1916,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setParticipantGroupUUID:(id)a3
+- (void)setParticipantGroupUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x200000000000uLL;
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   participantGroupUUID = self->_participantGroupUUID;
   self->_participantGroupUUID = v5;
@@ -1929,12 +1929,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setRemoteParticipantHandles:(id)a3
+- (void)setRemoteParticipantHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x400000000000uLL;
-  v5 = [v4 copy];
+  v5 = [handlesCopy copy];
 
   remoteParticipantHandles = self->_remoteParticipantHandles;
   self->_remoteParticipantHandles = v5;
@@ -1951,12 +1951,12 @@
   return v3;
 }
 
-- (void)setOtherInvitedHandles:(id)a3
+- (void)setOtherInvitedHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x800000000000uLL;
-  v5 = [v4 copy];
+  v5 = [handlesCopy copy];
 
   otherInvitedHandles = self->_otherInvitedHandles;
   self->_otherInvitedHandles = v5;
@@ -1964,12 +1964,12 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setActiveRemoteParticipantHandles:(id)a3
+- (void)setActiveRemoteParticipantHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x1000000000000uLL;
-  v5 = [v4 copy];
+  v5 = [handlesCopy copy];
 
   activeRemoteParticipantHandles = self->_activeRemoteParticipantHandles;
   self->_activeRemoteParticipantHandles = v5;
@@ -1986,43 +1986,43 @@
   return v3;
 }
 
-- (void)setHandoffContext:(id)a3
+- (void)setHandoffContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x2000000000000uLL;
   handoffContext = self->_handoffContext;
-  self->_handoffContext = v4;
+  self->_handoffContext = contextCopy;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setScreenShareAttributes:(id)a3
+- (void)setScreenShareAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x4000000000000uLL;
   screenShareAttributes = self->_screenShareAttributes;
-  self->_screenShareAttributes = v4;
+  self->_screenShareAttributes = attributesCopy;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setScreenSharingIntention:(int64_t)a3
+- (void)setScreenSharingIntention:(int64_t)intention
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x20000u;
-  self->_screenSharingIntention = a3;
+  self->_screenSharingIntention = intention;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x8000000000000uLL;
-  v5 = [v4 copy];
+  v5 = [contextCopy copy];
 
   context = self->_context;
   self->_context = v5;
@@ -2038,20 +2038,20 @@
   return prefersExclusiveAccessToCellularNetwork;
 }
 
-- (void)setPrefersExclusiveAccessToCellularNetwork:(BOOL)a3
+- (void)setPrefersExclusiveAccessToCellularNetwork:(BOOL)network
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x10000000000000uLL;
-  self->_prefersExclusiveAccessToCellularNetwork = a3;
+  self->_prefersExclusiveAccessToCellularNetwork = network;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setSupportsTTYWithVoice:(BOOL)a3
+- (void)setSupportsTTYWithVoice:(BOOL)voice
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x800uLL;
-  self->_supportsTTYWithVoice = a3;
+  self->_supportsTTYWithVoice = voice;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2064,20 +2064,20 @@
   return remoteUplinkMuted;
 }
 
-- (void)setRemoteUplinkMuted:(BOOL)a3
+- (void)setRemoteUplinkMuted:(BOOL)muted
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x20000000000000uLL;
-  self->_remoteUplinkMuted = a3;
+  self->_remoteUplinkMuted = muted;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setShouldSuppressInCallUI:(BOOL)a3
+- (void)setShouldSuppressInCallUI:(BOOL)i
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x40000000000000uLL;
-  self->_shouldSuppressInCallUI = a3;
+  self->_shouldSuppressInCallUI = i;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2090,20 +2090,20 @@
   return startCallMuted;
 }
 
-- (void)startCallMuted:(BOOL)a3
+- (void)startCallMuted:(BOOL)muted
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x2000000u;
-  self->_startCallMuted = a3;
+  self->_startCallMuted = muted;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setLaunchInBackground:(BOOL)a3
+- (void)setLaunchInBackground:(BOOL)background
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x80000000000000uLL;
-  self->_launchInBackground = a3;
+  self->_launchInBackground = background;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2116,11 +2116,11 @@
   return requiresAuthentication;
 }
 
-- (void)setRequiresAuthentication:(BOOL)a3
+- (void)setRequiresAuthentication:(BOOL)authentication
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x100000000000000uLL;
-  self->_requiresAuthentication = a3;
+  self->_requiresAuthentication = authentication;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2133,20 +2133,20 @@
   return mutuallyExclusiveCall;
 }
 
-- (void)setMutuallyExclusiveCall:(BOOL)a3
+- (void)setMutuallyExclusiveCall:(BOOL)call
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x200000000000000uLL;
-  self->_mutuallyExclusiveCall = a3;
+  self->_mutuallyExclusiveCall = call;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setJunkConfidence:(int64_t)a3
+- (void)setJunkConfidence:(int64_t)confidence
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x400000000000000uLL;
-  self->_junkConfidence = a3;
+  self->_junkConfidence = confidence;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2159,29 +2159,29 @@
   return callSubType;
 }
 
-- (void)setCallSubType:(int64_t)a3
+- (void)setCallSubType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x4000u;
-  self->_callSubType = a3;
+  self->_callSubType = type;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setIdentificationCategory:(int64_t)a3
+- (void)setIdentificationCategory:(int64_t)category
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x800000000000000uLL;
-  self->_identificationCategory = a3;
+  self->_identificationCategory = category;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setMixesVoiceWithMedia:(BOOL)a3
+- (void)setMixesVoiceWithMedia:(BOOL)media
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x2000000000000000uLL;
-  self->_mixesVoiceWithMedia = a3;
+  self->_mixesVoiceWithMedia = media;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2194,11 +2194,11 @@
   return prefersToPlayDuringWombat;
 }
 
-- (void)setPrefersToPlayDuringWombat:(BOOL)a3
+- (void)setPrefersToPlayDuringWombat:(BOOL)wombat
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x4000000000000000uLL;
-  self->_prefersToPlayDuringWombat = a3;
+  self->_prefersToPlayDuringWombat = wombat;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2211,11 +2211,11 @@
   return mediaPlaybackOnExternalDevice;
 }
 
-- (void)setMediaPlaybackOnExternalDevice:(BOOL)a3
+- (void)setMediaPlaybackOnExternalDevice:(BOOL)device
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *&self->_hasSet |= 0x8000000000000000;
-  self->_mediaPlaybackOnExternalDevice = a3;
+  self->_mediaPlaybackOnExternalDevice = device;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2228,11 +2228,11 @@
   return oneToOneModeEnabled;
 }
 
-- (void)setOneToOneModeEnabled:(BOOL)a3
+- (void)setOneToOneModeEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 1u;
-  self->_oneToOneModeEnabled = a3;
+  self->_oneToOneModeEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2245,47 +2245,47 @@
   return sharingScreen;
 }
 
-- (void)setSharingScreen:(BOOL)a3
+- (void)setSharingScreen:(BOOL)screen
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 2u;
-  self->_sharingScreen = a3;
+  self->_sharingScreen = screen;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setIgnoresBluetoothDeviceUID:(BOOL)a3
+- (void)setIgnoresBluetoothDeviceUID:(BOOL)d
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 8u;
-  self->_ignoresBluetoothDeviceUID = a3;
+  self->_ignoresBluetoothDeviceUID = d;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setServiceStatus:(int64_t)a3
+- (void)setServiceStatus:(int64_t)status
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x10u;
-  self->_serviceStatus = a3;
+  self->_serviceStatus = status;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setTransmissionMode:(int64_t)a3
+- (void)setTransmissionMode:(int64_t)mode
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x20u;
-  self->_transmissionMode = a3;
+  self->_transmissionMode = mode;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setAccessoryButtonEventsEnabled:(BOOL)a3
+- (void)setAccessoryButtonEventsEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x40u;
-  self->_accessoryButtonEventsEnabled = a3;
+  self->_accessoryButtonEventsEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2298,20 +2298,20 @@
   return sendingVideo;
 }
 
-- (void)setSendingVideo:(BOOL)a3
+- (void)setSendingVideo:(BOOL)video
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x80u;
-  self->_sendingVideo = a3;
+  self->_sendingVideo = video;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setIsReRing:(BOOL)a3
+- (void)setIsReRing:(BOOL)ring
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x1000u;
-  self->_isReRing = a3;
+  self->_isReRing = ring;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2324,20 +2324,20 @@
   return suppressRingtone;
 }
 
-- (void)setSuppressRingtone:(BOOL)a3
+- (void)setSuppressRingtone:(BOOL)ringtone
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x2000u;
-  self->_suppressRingtone = a3;
+  self->_suppressRingtone = ringtone;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setHasBeenRedirected:(BOOL)a3
+- (void)setHasBeenRedirected:(BOOL)redirected
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x100u;
-  self->_hasBeenRedirected = a3;
+  self->_hasBeenRedirected = redirected;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2350,11 +2350,11 @@
   return isKnownCaller;
 }
 
-- (void)setIsKnownCaller:(BOOL)a3
+- (void)setIsKnownCaller:(BOOL)caller
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x200u;
-  self->_isKnownCaller = a3;
+  self->_isKnownCaller = caller;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2367,20 +2367,20 @@
   return filteredOutReason;
 }
 
-- (void)setFilteredOutReason:(int)a3
+- (void)setFilteredOutReason:(int)reason
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x400u;
-  self->_filteredOutReason = a3;
+  self->_filteredOutReason = reason;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setScreenSharingType:(int64_t)a3
+- (void)setScreenSharingType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x40000u;
-  self->_screenSharingType = a3;
+  self->_screenSharingType = type;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2393,11 +2393,11 @@
   return isSharePlayCapable;
 }
 
-- (void)setIsSharePlayCapable:(BOOL)a3
+- (void)setIsSharePlayCapable:(BOOL)capable
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x80000u;
-  self->_isSharePlayCapable = a3;
+  self->_isSharePlayCapable = capable;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2410,20 +2410,20 @@
   return anyRemoteSupportsRequestToScreenShare;
 }
 
-- (void)setAnyRemoteSupportsRequestToScreenShare:(BOOL)a3
+- (void)setAnyRemoteSupportsRequestToScreenShare:(BOOL)share
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x100000u;
-  self->_anyRemoteSupportsRequestToScreenShare = a3;
+  self->_anyRemoteSupportsRequestToScreenShare = share;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setNearbyMode:(int64_t)a3
+- (void)setNearbyMode:(int64_t)mode
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x200000u;
-  self->_nearbyMode = a3;
+  self->_nearbyMode = mode;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
@@ -2437,12 +2437,12 @@
   return v3;
 }
 
-- (void)setConversationGroupUUID:(id)a3
+- (void)setConversationGroupUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x1000000u;
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   conversationGroupUUID = self->_conversationGroupUUID;
   self->_conversationGroupUUID = v5;
@@ -2458,1203 +2458,1203 @@
   return shouldSilentlyRegisterIMAVCall;
 }
 
-- (void)setShouldSilentlyRegisterIMAVCall:(BOOL)a3
+- (void)setShouldSilentlyRegisterIMAVCall:(BOOL)call
 {
   os_unfair_lock_lock(&self->_accessorLock);
   *(&self->_hasSet + 2) |= 0x4000000u;
-  self->_shouldSilentlyRegisterIMAVCall = a3;
+  self->_shouldSilentlyRegisterIMAVCall = call;
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (CXCallUpdate)updateWithUpdate:(id)a3
+- (CXCallUpdate)updateWithUpdate:(id)update
 {
-  v57 = a3;
-  if ([v57 hasSet])
+  updateCopy = update;
+  if ([updateCopy hasSet])
   {
-    v4 = [v57 account];
-    [(CXCallUpdate *)self setAccount:v4];
+    account = [updateCopy account];
+    [(CXCallUpdate *)self setAccount:account];
   }
 
-  if (([v57 hasSet] & 2) != 0)
+  if (([updateCopy hasSet] & 2) != 0)
   {
-    v5 = [v57 activeRemoteParticipant];
-    [(CXCallUpdate *)self setActiveRemoteParticipant:v5];
+    activeRemoteParticipant = [updateCopy activeRemoteParticipant];
+    [(CXCallUpdate *)self setActiveRemoteParticipant:activeRemoteParticipant];
   }
 
-  if (([v57 hasSet] & 4) != 0)
+  if (([updateCopy hasSet] & 4) != 0)
   {
-    v6 = [v57 remoteMember];
-    [(CXCallUpdate *)self setRemoteMember:v6];
+    remoteMember = [updateCopy remoteMember];
+    [(CXCallUpdate *)self setRemoteMember:remoteMember];
   }
 
-  if (([v57 hasSet] & 8) != 0)
+  if (([updateCopy hasSet] & 8) != 0)
   {
-    v7 = [v57 localizedCallerName];
-    [(CXCallUpdate *)self setLocalizedCallerName:v7];
+    localizedCallerName = [updateCopy localizedCallerName];
+    [(CXCallUpdate *)self setLocalizedCallerName:localizedCallerName];
   }
 
-  if (([v57 hasSet] & 0x10) != 0)
+  if (([updateCopy hasSet] & 0x10) != 0)
   {
-    v8 = [v57 localizedCallerImageURL];
-    [(CXCallUpdate *)self setLocalizedCallerImageURL:v8];
+    localizedCallerImageURL = [updateCopy localizedCallerImageURL];
+    [(CXCallUpdate *)self setLocalizedCallerImageURL:localizedCallerImageURL];
   }
 
-  if (([v57 hasSet] & 0x20) != 0)
+  if (([updateCopy hasSet] & 0x20) != 0)
   {
-    -[CXCallUpdate setEmergency:](self, "setEmergency:", [v57 isEmergency]);
+    -[CXCallUpdate setEmergency:](self, "setEmergency:", [updateCopy isEmergency]);
   }
 
-  if (([v57 hasSet] & 0x40) != 0)
+  if (([updateCopy hasSet] & 0x40) != 0)
   {
-    -[CXCallUpdate setFailureExpected:](self, "setFailureExpected:", [v57 isFailureExpected]);
+    -[CXCallUpdate setFailureExpected:](self, "setFailureExpected:", [updateCopy isFailureExpected]);
   }
 
-  if (([v57 hasSet] & 0x80) != 0)
+  if (([updateCopy hasSet] & 0x80) != 0)
   {
-    -[CXCallUpdate setSupportsEmergencyFallback:](self, "setSupportsEmergencyFallback:", [v57 supportsEmergencyFallback]);
+    -[CXCallUpdate setSupportsEmergencyFallback:](self, "setSupportsEmergencyFallback:", [updateCopy supportsEmergencyFallback]);
   }
 
-  if (([v57 hasSet] & 0x100) != 0)
+  if (([updateCopy hasSet] & 0x100) != 0)
   {
-    -[CXCallUpdate setUsingBaseband:](self, "setUsingBaseband:", [v57 isUsingBaseband]);
+    -[CXCallUpdate setUsingBaseband:](self, "setUsingBaseband:", [updateCopy isUsingBaseband]);
   }
 
-  if (([v57 hasSet] & 0x200) != 0)
+  if (([updateCopy hasSet] & 0x200) != 0)
   {
-    -[CXCallUpdate setBlocked:](self, "setBlocked:", [v57 isBlocked]);
+    -[CXCallUpdate setBlocked:](self, "setBlocked:", [updateCopy isBlocked]);
   }
 
-  if (([v57 hasSet] & 0x400) != 0)
+  if (([updateCopy hasSet] & 0x400) != 0)
   {
-    -[CXCallUpdate setTTYType:](self, "setTTYType:", [v57 ttyType]);
+    -[CXCallUpdate setTTYType:](self, "setTTYType:", [updateCopy ttyType]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v9 & 4) != 0)
   {
-    -[CXCallUpdate setBluetoothAudioFormat:](self, "setBluetoothAudioFormat:", [v57 bluetoothAudioFormat]);
+    -[CXCallUpdate setBluetoothAudioFormat:](self, "setBluetoothAudioFormat:", [updateCopy bluetoothAudioFormat]);
   }
 
-  if (([v57 hasSet] & 0x1000) != 0)
+  if (([updateCopy hasSet] & 0x1000) != 0)
   {
-    -[CXCallUpdate setMayRequireBreakBeforeMake:](self, "setMayRequireBreakBeforeMake:", [v57 mayRequireBreakBeforeMake]);
+    -[CXCallUpdate setMayRequireBreakBeforeMake:](self, "setMayRequireBreakBeforeMake:", [updateCopy mayRequireBreakBeforeMake]);
   }
 
-  if (([v57 hasSet] & 0x2000) != 0)
+  if (([updateCopy hasSet] & 0x2000) != 0)
   {
-    -[CXCallUpdate setHasVideo:](self, "setHasVideo:", [v57 hasVideo]);
+    -[CXCallUpdate setHasVideo:](self, "setHasVideo:", [updateCopy hasVideo]);
   }
 
-  if (([v57 hasSet] & 0x4000) != 0)
+  if (([updateCopy hasSet] & 0x4000) != 0)
   {
-    -[CXCallUpdate setIsUpgradeToVideo:](self, "setIsUpgradeToVideo:", [v57 isUpgradeToVideo]);
+    -[CXCallUpdate setIsUpgradeToVideo:](self, "setIsUpgradeToVideo:", [updateCopy isUpgradeToVideo]);
   }
 
-  if (([v57 hasSet] & 0x8000) != 0)
+  if (([updateCopy hasSet] & 0x8000) != 0)
   {
-    v10 = [v57 audioCategory];
-    [(CXCallUpdate *)self setAudioCategory:v10];
+    audioCategory = [updateCopy audioCategory];
+    [(CXCallUpdate *)self setAudioCategory:audioCategory];
   }
 
-  if (([v57 hasSet] & 0x10000) != 0)
+  if (([updateCopy hasSet] & 0x10000) != 0)
   {
-    v11 = [v57 audioMode];
-    [(CXCallUpdate *)self setAudioMode:v11];
+    audioMode = [updateCopy audioMode];
+    [(CXCallUpdate *)self setAudioMode:audioMode];
   }
 
-  if (([v57 hasSet] & 0x20000) != 0)
+  if (([updateCopy hasSet] & 0x20000) != 0)
   {
-    -[CXCallUpdate setAudioInterruptionProvider:](self, "setAudioInterruptionProvider:", [v57 audioInterruptionProvider]);
+    -[CXCallUpdate setAudioInterruptionProvider:](self, "setAudioInterruptionProvider:", [updateCopy audioInterruptionProvider]);
   }
 
-  if (([v57 hasSet] & 0x40000) != 0)
+  if (([updateCopy hasSet] & 0x40000) != 0)
   {
-    -[CXCallUpdate setAudioInterruptionOperationMode:](self, "setAudioInterruptionOperationMode:", [v57 audioInterruptionOperationMode]);
+    -[CXCallUpdate setAudioInterruptionOperationMode:](self, "setAudioInterruptionOperationMode:", [updateCopy audioInterruptionOperationMode]);
   }
 
-  if (([v57 hasSet] & 0x80000) != 0)
+  if (([updateCopy hasSet] & 0x80000) != 0)
   {
-    -[CXCallUpdate setVerificationStatus:](self, "setVerificationStatus:", [v57 verificationStatus]);
+    -[CXCallUpdate setVerificationStatus:](self, "setVerificationStatus:", [updateCopy verificationStatus]);
   }
 
-  if (([v57 hasSet] & 0x100000) != 0)
+  if (([updateCopy hasSet] & 0x100000) != 0)
   {
-    -[CXCallUpdate setPriority:](self, "setPriority:", [v57 priority]);
+    -[CXCallUpdate setPriority:](self, "setPriority:", [updateCopy priority]);
   }
 
-  if (([v57 hasSet] & 0x200000) != 0)
+  if (([updateCopy hasSet] & 0x200000) != 0)
   {
-    -[CXCallUpdate setRequiresInCallSounds:](self, "setRequiresInCallSounds:", [v57 requiresInCallSounds]);
+    -[CXCallUpdate setRequiresInCallSounds:](self, "setRequiresInCallSounds:", [updateCopy requiresInCallSounds]);
   }
 
-  if (([v57 hasSet] & 0x400000) != 0)
+  if (([updateCopy hasSet] & 0x400000) != 0)
   {
-    -[CXCallUpdate setInCallSoundRegion:](self, "setInCallSoundRegion:", [v57 inCallSoundRegion]);
+    -[CXCallUpdate setInCallSoundRegion:](self, "setInCallSoundRegion:", [updateCopy inCallSoundRegion]);
   }
 
-  if (([v57 hasSet] & 0x800000) != 0)
+  if (([updateCopy hasSet] & 0x800000) != 0)
   {
-    -[CXCallUpdate setSupportsHolding:](self, "setSupportsHolding:", [v57 supportsHolding]);
+    -[CXCallUpdate setSupportsHolding:](self, "setSupportsHolding:", [updateCopy supportsHolding]);
   }
 
-  if (([v57 hasSet] & 0x1000000) != 0)
+  if (([updateCopy hasSet] & 0x1000000) != 0)
   {
-    -[CXCallUpdate setSupportsGrouping:](self, "setSupportsGrouping:", [v57 supportsGrouping]);
+    -[CXCallUpdate setSupportsGrouping:](self, "setSupportsGrouping:", [updateCopy supportsGrouping]);
   }
 
-  if (([v57 hasSet] & 0x2000000) != 0)
+  if (([updateCopy hasSet] & 0x2000000) != 0)
   {
-    -[CXCallUpdate setSupportsUngrouping:](self, "setSupportsUngrouping:", [v57 supportsUngrouping]);
+    -[CXCallUpdate setSupportsUngrouping:](self, "setSupportsUngrouping:", [updateCopy supportsUngrouping]);
   }
 
-  if (([v57 hasSet] & 0x4000000) != 0)
+  if (([updateCopy hasSet] & 0x4000000) != 0)
   {
-    -[CXCallUpdate setSupportsDTMF:](self, "setSupportsDTMF:", [v57 supportsDTMF]);
+    -[CXCallUpdate setSupportsDTMF:](self, "setSupportsDTMF:", [updateCopy supportsDTMF]);
   }
 
-  if (([v57 hasSet] & 0x8000000) != 0)
+  if (([updateCopy hasSet] & 0x8000000) != 0)
   {
-    -[CXCallUpdate setSupportsDTMFUpdates:](self, "setSupportsDTMFUpdates:", [v57 supportsDTMFUpdates]);
+    -[CXCallUpdate setSupportsDTMFUpdates:](self, "setSupportsDTMFUpdates:", [updateCopy supportsDTMFUpdates]);
   }
 
-  if (([v57 hasSet] & 0x10000000) != 0)
+  if (([updateCopy hasSet] & 0x10000000) != 0)
   {
-    -[CXCallUpdate setSupportsSharePlay:](self, "setSupportsSharePlay:", [v57 supportsSharePlay]);
+    -[CXCallUpdate setSupportsSharePlay:](self, "setSupportsSharePlay:", [updateCopy supportsSharePlay]);
   }
 
-  if (([v57 hasSet] & 0x20000000) != 0)
+  if (([updateCopy hasSet] & 0x20000000) != 0)
   {
-    -[CXCallUpdate setSupportsScreenShare:](self, "setSupportsScreenShare:", [v57 supportsScreenShare]);
+    -[CXCallUpdate setSupportsScreenShare:](self, "setSupportsScreenShare:", [updateCopy supportsScreenShare]);
   }
 
-  if (([v57 hasSet] & 0x40000000) != 0)
+  if (([updateCopy hasSet] & 0x40000000) != 0)
   {
-    -[CXCallUpdate setSupportsUnambiguousMultiPartyState:](self, "setSupportsUnambiguousMultiPartyState:", [v57 supportsUnambiguousMultiPartyState]);
+    -[CXCallUpdate setSupportsUnambiguousMultiPartyState:](self, "setSupportsUnambiguousMultiPartyState:", [updateCopy supportsUnambiguousMultiPartyState]);
   }
 
-  if (([v57 hasSet] & 0x80000000) != 0)
+  if (([updateCopy hasSet] & 0x80000000) != 0)
   {
-    -[CXCallUpdate setSupportsAddCall:](self, "setSupportsAddCall:", [v57 supportsAddCall]);
+    -[CXCallUpdate setSupportsAddCall:](self, "setSupportsAddCall:", [updateCopy supportsAddCall]);
   }
 
-  if (([v57 hasSet] & 0x100000000) != 0)
+  if (([updateCopy hasSet] & 0x100000000) != 0)
   {
-    -[CXCallUpdate setSupportsSendingToVoicemail:](self, "setSupportsSendingToVoicemail:", [v57 supportsSendingToVoicemail]);
+    -[CXCallUpdate setSupportsSendingToVoicemail:](self, "setSupportsSendingToVoicemail:", [updateCopy supportsSendingToVoicemail]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v12 & 0x20000) != 0)
   {
-    -[CXCallUpdate setScreenSharingIntention:](self, "setScreenSharingIntention:", [v57 screenSharingIntention]);
+    -[CXCallUpdate setScreenSharingIntention:](self, "setScreenSharingIntention:", [updateCopy screenSharingIntention]);
   }
 
-  if (([v57 hasSet] & 0x200000000) != 0)
+  if (([updateCopy hasSet] & 0x200000000) != 0)
   {
-    -[CXCallUpdate setSupportsRecording:](self, "setSupportsRecording:", [v57 supportsRecording]);
+    -[CXCallUpdate setSupportsRecording:](self, "setSupportsRecording:", [updateCopy supportsRecording]);
   }
 
-  if (([v57 hasSet] & 0x400000000) != 0)
+  if (([updateCopy hasSet] & 0x400000000) != 0)
   {
-    -[CXCallUpdate setIsUnderlyingLinksConnected:](self, "setIsUnderlyingLinksConnected:", [v57 isUnderlyingLinksConnected]);
+    -[CXCallUpdate setIsUnderlyingLinksConnected:](self, "setIsUnderlyingLinksConnected:", [updateCopy isUnderlyingLinksConnected]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if (v13 < 0)
   {
-    -[CXCallUpdate setSupportsScreening:](self, "setSupportsScreening:", [v57 supportsScreening]);
+    -[CXCallUpdate setSupportsScreening:](self, "setSupportsScreening:", [updateCopy supportsScreening]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v14 & 0x10000) != 0)
   {
-    -[CXCallUpdate setSupportsRecents:](self, "setSupportsRecents:", [v57 supportsRecents]);
+    -[CXCallUpdate setSupportsRecents:](self, "setSupportsRecents:", [updateCopy supportsRecents]);
   }
 
-  if (([v57 hasSet] & 0x800000000) != 0)
+  if (([updateCopy hasSet] & 0x800000000) != 0)
   {
-    -[CXCallUpdate setVideoStreamToken:](self, "setVideoStreamToken:", [v57 videoStreamToken]);
+    -[CXCallUpdate setVideoStreamToken:](self, "setVideoStreamToken:", [updateCopy videoStreamToken]);
   }
 
-  if (([v57 hasSet] & 0x1000000000) != 0)
+  if (([updateCopy hasSet] & 0x1000000000) != 0)
   {
-    v15 = [v57 callTokens];
-    [(CXCallUpdate *)self setCallTokens:v15];
+    callTokens = [updateCopy callTokens];
+    [(CXCallUpdate *)self setCallTokens:callTokens];
   }
 
-  if (([v57 hasSet] & 0x2000000000) != 0)
+  if (([updateCopy hasSet] & 0x2000000000) != 0)
   {
-    v16 = [v57 announceProviderIdentifier];
-    [(CXCallUpdate *)self setAnnounceProviderIdentifier:v16];
+    announceProviderIdentifier = [updateCopy announceProviderIdentifier];
+    [(CXCallUpdate *)self setAnnounceProviderIdentifier:announceProviderIdentifier];
   }
 
-  if (([v57 hasSet] & 0x4000000000) != 0)
+  if (([updateCopy hasSet] & 0x4000000000) != 0)
   {
-    v17 = [v57 initiator];
-    [(CXCallUpdate *)self setInitiator:v17];
+    initiator = [updateCopy initiator];
+    [(CXCallUpdate *)self setInitiator:initiator];
   }
 
-  if (([v57 hasSet] & 0x8000000000) != 0)
+  if (([updateCopy hasSet] & 0x8000000000) != 0)
   {
-    v18 = [v57 crossDeviceIdentifier];
-    [(CXCallUpdate *)self setCrossDeviceIdentifier:v18];
+    crossDeviceIdentifier = [updateCopy crossDeviceIdentifier];
+    [(CXCallUpdate *)self setCrossDeviceIdentifier:crossDeviceIdentifier];
   }
 
-  if (([v57 hasSet] & 0x10000000000) != 0)
+  if (([updateCopy hasSet] & 0x10000000000) != 0)
   {
-    v19 = [v57 ISOCountryCode];
-    [(CXCallUpdate *)self setISOCountryCode:v19];
+    iSOCountryCode = [updateCopy ISOCountryCode];
+    [(CXCallUpdate *)self setISOCountryCode:iSOCountryCode];
   }
 
-  if (([v57 hasSet] & 0x20000000000) != 0)
+  if (([updateCopy hasSet] & 0x20000000000) != 0)
   {
-    v20 = [v57 localSenderIdentityUUID];
-    [(CXCallUpdate *)self setLocalSenderIdentityUUID:v20];
+    localSenderIdentityUUID = [updateCopy localSenderIdentityUUID];
+    [(CXCallUpdate *)self setLocalSenderIdentityUUID:localSenderIdentityUUID];
   }
 
-  if (([v57 hasSet] & 0x40000000000) != 0)
+  if (([updateCopy hasSet] & 0x40000000000) != 0)
   {
-    v21 = [v57 localSenderIdentityAccountUUID];
-    [(CXCallUpdate *)self setLocalSenderIdentityAccountUUID:v21];
+    localSenderIdentityAccountUUID = [updateCopy localSenderIdentityAccountUUID];
+    [(CXCallUpdate *)self setLocalSenderIdentityAccountUUID:localSenderIdentityAccountUUID];
   }
 
-  if (([v57 hasSet] & 0x80000000000) != 0)
+  if (([updateCopy hasSet] & 0x80000000000) != 0)
   {
-    v22 = [v57 localMemberHandleValue];
-    [(CXCallUpdate *)self setLocalMemberHandleValue:v22];
+    localMemberHandleValue = [updateCopy localMemberHandleValue];
+    [(CXCallUpdate *)self setLocalMemberHandleValue:localMemberHandleValue];
   }
 
-  if (([v57 hasSet] & 0x100000000000) != 0)
+  if (([updateCopy hasSet] & 0x100000000000) != 0)
   {
-    v23 = [v57 localSenderSubscriptionIdentifier];
-    [(CXCallUpdate *)self setLocalSenderSubscriptionIdentifier:v23];
+    localSenderSubscriptionIdentifier = [updateCopy localSenderSubscriptionIdentifier];
+    [(CXCallUpdate *)self setLocalSenderSubscriptionIdentifier:localSenderSubscriptionIdentifier];
   }
 
-  if (([v57 hasSet] & 0x200000000000) != 0)
+  if (([updateCopy hasSet] & 0x200000000000) != 0)
   {
-    v24 = [v57 participantGroupUUID];
-    [(CXCallUpdate *)self setParticipantGroupUUID:v24];
+    participantGroupUUID = [updateCopy participantGroupUUID];
+    [(CXCallUpdate *)self setParticipantGroupUUID:participantGroupUUID];
   }
 
-  if (([v57 hasSet] & 0x400000000000) != 0)
+  if (([updateCopy hasSet] & 0x400000000000) != 0)
   {
-    v25 = [v57 remoteParticipantHandles];
-    [(CXCallUpdate *)self setRemoteParticipantHandles:v25];
+    remoteParticipantHandles = [updateCopy remoteParticipantHandles];
+    [(CXCallUpdate *)self setRemoteParticipantHandles:remoteParticipantHandles];
   }
 
-  if (([v57 hasSet] & 0x800000000000) != 0)
+  if (([updateCopy hasSet] & 0x800000000000) != 0)
   {
-    v26 = [v57 otherInvitedHandles];
-    [(CXCallUpdate *)self setOtherInvitedHandles:v26];
+    otherInvitedHandles = [updateCopy otherInvitedHandles];
+    [(CXCallUpdate *)self setOtherInvitedHandles:otherInvitedHandles];
   }
 
-  if (([v57 hasSet] & 0x1000000000000) != 0)
+  if (([updateCopy hasSet] & 0x1000000000000) != 0)
   {
-    v27 = [v57 activeRemoteParticipantHandles];
-    [(CXCallUpdate *)self setActiveRemoteParticipantHandles:v27];
+    activeRemoteParticipantHandles = [updateCopy activeRemoteParticipantHandles];
+    [(CXCallUpdate *)self setActiveRemoteParticipantHandles:activeRemoteParticipantHandles];
   }
 
-  if (([v57 hasSet] & 0x2000000000000) != 0)
+  if (([updateCopy hasSet] & 0x2000000000000) != 0)
   {
-    v28 = [v57 handoffContext];
-    [(CXCallUpdate *)self setHandoffContext:v28];
+    handoffContext = [updateCopy handoffContext];
+    [(CXCallUpdate *)self setHandoffContext:handoffContext];
   }
 
-  if (([v57 hasSet] & 0x4000000000000) != 0)
+  if (([updateCopy hasSet] & 0x4000000000000) != 0)
   {
-    v29 = [v57 screenShareAttributes];
-    [(CXCallUpdate *)self setScreenShareAttributes:v29];
+    screenShareAttributes = [updateCopy screenShareAttributes];
+    [(CXCallUpdate *)self setScreenShareAttributes:screenShareAttributes];
   }
 
-  if (([v57 hasSet] & 0x8000000000000) != 0)
+  if (([updateCopy hasSet] & 0x8000000000000) != 0)
   {
-    v30 = [v57 context];
-    [(CXCallUpdate *)self setContext:v30];
+    context = [updateCopy context];
+    [(CXCallUpdate *)self setContext:context];
   }
 
-  if (([v57 hasSet] & 0x10000000000000) != 0)
+  if (([updateCopy hasSet] & 0x10000000000000) != 0)
   {
-    -[CXCallUpdate setPrefersExclusiveAccessToCellularNetwork:](self, "setPrefersExclusiveAccessToCellularNetwork:", [v57 prefersExclusiveAccessToCellularNetwork]);
+    -[CXCallUpdate setPrefersExclusiveAccessToCellularNetwork:](self, "setPrefersExclusiveAccessToCellularNetwork:", [updateCopy prefersExclusiveAccessToCellularNetwork]);
   }
 
-  if (([v57 hasSet] & 0x800) != 0)
+  if (([updateCopy hasSet] & 0x800) != 0)
   {
-    -[CXCallUpdate setSupportsTTYWithVoice:](self, "setSupportsTTYWithVoice:", [v57 supportsTTYWithVoice]);
+    -[CXCallUpdate setSupportsTTYWithVoice:](self, "setSupportsTTYWithVoice:", [updateCopy supportsTTYWithVoice]);
   }
 
-  if (([v57 hasSet] & 0x20000000000000) != 0)
+  if (([updateCopy hasSet] & 0x20000000000000) != 0)
   {
-    -[CXCallUpdate setRemoteUplinkMuted:](self, "setRemoteUplinkMuted:", [v57 isRemoteUplinkMuted]);
+    -[CXCallUpdate setRemoteUplinkMuted:](self, "setRemoteUplinkMuted:", [updateCopy isRemoteUplinkMuted]);
   }
 
-  if (([v57 hasSet] & 0x40000000000000) != 0)
+  if (([updateCopy hasSet] & 0x40000000000000) != 0)
   {
-    -[CXCallUpdate setShouldSuppressInCallUI:](self, "setShouldSuppressInCallUI:", [v57 shouldSuppressInCallUI]);
+    -[CXCallUpdate setShouldSuppressInCallUI:](self, "setShouldSuppressInCallUI:", [updateCopy shouldSuppressInCallUI]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v31 & 0x2000000) != 0)
   {
-    -[CXCallUpdate setStartCallMuted:](self, "setStartCallMuted:", [v57 startCallMuted]);
+    -[CXCallUpdate setStartCallMuted:](self, "setStartCallMuted:", [updateCopy startCallMuted]);
   }
 
-  if (([v57 hasSet] & 0x80000000000000) != 0)
+  if (([updateCopy hasSet] & 0x80000000000000) != 0)
   {
-    -[CXCallUpdate setLaunchInBackground:](self, "setLaunchInBackground:", [v57 launchInBackground]);
+    -[CXCallUpdate setLaunchInBackground:](self, "setLaunchInBackground:", [updateCopy launchInBackground]);
   }
 
-  if (([v57 hasSet] & 0x100000000000000) != 0)
+  if (([updateCopy hasSet] & 0x100000000000000) != 0)
   {
-    -[CXCallUpdate setRequiresAuthentication:](self, "setRequiresAuthentication:", [v57 requiresAuthentication]);
+    -[CXCallUpdate setRequiresAuthentication:](self, "setRequiresAuthentication:", [updateCopy requiresAuthentication]);
   }
 
-  if (([v57 hasSet] & 0x200000000000000) != 0)
+  if (([updateCopy hasSet] & 0x200000000000000) != 0)
   {
-    -[CXCallUpdate setMutuallyExclusiveCall:](self, "setMutuallyExclusiveCall:", [v57 isMutuallyExclusiveCall]);
+    -[CXCallUpdate setMutuallyExclusiveCall:](self, "setMutuallyExclusiveCall:", [updateCopy isMutuallyExclusiveCall]);
   }
 
-  if (([v57 hasSet] & 0x400000000000000) != 0)
+  if (([updateCopy hasSet] & 0x400000000000000) != 0)
   {
-    -[CXCallUpdate setJunkConfidence:](self, "setJunkConfidence:", [v57 junkConfidence]);
+    -[CXCallUpdate setJunkConfidence:](self, "setJunkConfidence:", [updateCopy junkConfidence]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v32 & 0x4000) != 0)
   {
-    -[CXCallUpdate setCallSubType:](self, "setCallSubType:", [v57 callSubType]);
+    -[CXCallUpdate setCallSubType:](self, "setCallSubType:", [updateCopy callSubType]);
   }
 
-  if (([v57 hasSet] & 0x800000000000000) != 0)
+  if (([updateCopy hasSet] & 0x800000000000000) != 0)
   {
-    -[CXCallUpdate setIdentificationCategory:](self, "setIdentificationCategory:", [v57 identificationCategory]);
+    -[CXCallUpdate setIdentificationCategory:](self, "setIdentificationCategory:", [updateCopy identificationCategory]);
   }
 
-  if (([v57 hasSet] & 0x1000000000000000) != 0)
+  if (([updateCopy hasSet] & 0x1000000000000000) != 0)
   {
-    -[CXCallUpdate setConversation:](self, "setConversation:", [v57 isConversation]);
+    -[CXCallUpdate setConversation:](self, "setConversation:", [updateCopy isConversation]);
   }
 
-  if (([v57 hasSet] & 0x2000000000000000) != 0)
+  if (([updateCopy hasSet] & 0x2000000000000000) != 0)
   {
-    -[CXCallUpdate setMixesVoiceWithMedia:](self, "setMixesVoiceWithMedia:", [v57 mixesVoiceWithMedia]);
+    -[CXCallUpdate setMixesVoiceWithMedia:](self, "setMixesVoiceWithMedia:", [updateCopy mixesVoiceWithMedia]);
   }
 
-  if (([v57 hasSet] & 0x4000000000000000) != 0)
+  if (([updateCopy hasSet] & 0x4000000000000000) != 0)
   {
-    -[CXCallUpdate setPrefersToPlayDuringWombat:](self, "setPrefersToPlayDuringWombat:", [v57 prefersToPlayDuringWombat]);
+    -[CXCallUpdate setPrefersToPlayDuringWombat:](self, "setPrefersToPlayDuringWombat:", [updateCopy prefersToPlayDuringWombat]);
   }
 
-  if ([v57 hasSet] < 0)
+  if ([updateCopy hasSet] < 0)
   {
-    -[CXCallUpdate setMediaPlaybackOnExternalDevice:](self, "setMediaPlaybackOnExternalDevice:", [v57 mediaPlaybackOnExternalDevice]);
+    -[CXCallUpdate setMediaPlaybackOnExternalDevice:](self, "setMediaPlaybackOnExternalDevice:", [updateCopy mediaPlaybackOnExternalDevice]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v33 & 8) != 0)
   {
-    -[CXCallUpdate setIgnoresBluetoothDeviceUID:](self, "setIgnoresBluetoothDeviceUID:", [v57 ignoresBluetoothDeviceUID]);
+    -[CXCallUpdate setIgnoresBluetoothDeviceUID:](self, "setIgnoresBluetoothDeviceUID:", [updateCopy ignoresBluetoothDeviceUID]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v34 & 2) != 0)
   {
-    -[CXCallUpdate setSharingScreen:](self, "setSharingScreen:", [v57 isSharingScreen]);
+    -[CXCallUpdate setSharingScreen:](self, "setSharingScreen:", [updateCopy isSharingScreen]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if (v35)
   {
-    -[CXCallUpdate setOneToOneModeEnabled:](self, "setOneToOneModeEnabled:", [v57 isOneToOneModeEnabled]);
+    -[CXCallUpdate setOneToOneModeEnabled:](self, "setOneToOneModeEnabled:", [updateCopy isOneToOneModeEnabled]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v36 & 0x10) != 0)
   {
-    -[CXCallUpdate setServiceStatus:](self, "setServiceStatus:", [v57 serviceStatus]);
+    -[CXCallUpdate setServiceStatus:](self, "setServiceStatus:", [updateCopy serviceStatus]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v37 & 0x20) != 0)
   {
-    -[CXCallUpdate setTransmissionMode:](self, "setTransmissionMode:", [v57 transmissionMode]);
+    -[CXCallUpdate setTransmissionMode:](self, "setTransmissionMode:", [updateCopy transmissionMode]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v38 & 0x40) != 0)
   {
-    -[CXCallUpdate setAccessoryButtonEventsEnabled:](self, "setAccessoryButtonEventsEnabled:", [v57 accessoryButtonEventsEnabled]);
+    -[CXCallUpdate setAccessoryButtonEventsEnabled:](self, "setAccessoryButtonEventsEnabled:", [updateCopy accessoryButtonEventsEnabled]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if (v39 < 0)
   {
-    -[CXCallUpdate setSendingVideo:](self, "setSendingVideo:", [v57 isSendingVideo]);
+    -[CXCallUpdate setSendingVideo:](self, "setSendingVideo:", [updateCopy isSendingVideo]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v40 & 0x1000) != 0)
   {
-    -[CXCallUpdate setIsReRing:](self, "setIsReRing:", [v57 isReRing]);
+    -[CXCallUpdate setIsReRing:](self, "setIsReRing:", [updateCopy isReRing]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v41 & 0x2000) != 0)
   {
-    -[CXCallUpdate setSuppressRingtone:](self, "setSuppressRingtone:", [v57 suppressRingtone]);
+    -[CXCallUpdate setSuppressRingtone:](self, "setSuppressRingtone:", [updateCopy suppressRingtone]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v42 & 0x100) != 0)
   {
-    -[CXCallUpdate setHasBeenRedirected:](self, "setHasBeenRedirected:", [v57 hasBeenRedirected]);
+    -[CXCallUpdate setHasBeenRedirected:](self, "setHasBeenRedirected:", [updateCopy hasBeenRedirected]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v43 & 0x200) != 0)
   {
-    -[CXCallUpdate setIsKnownCaller:](self, "setIsKnownCaller:", [v57 isKnownCaller]);
+    -[CXCallUpdate setIsKnownCaller:](self, "setIsKnownCaller:", [updateCopy isKnownCaller]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v44 & 0x400) != 0)
   {
-    -[CXCallUpdate setFilteredOutReason:](self, "setFilteredOutReason:", [v57 filteredOutReason]);
+    -[CXCallUpdate setFilteredOutReason:](self, "setFilteredOutReason:", [updateCopy filteredOutReason]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v45 & 0x800) != 0)
   {
-    v46 = [v57 silencingUserInfo];
-    [(CXCallUpdate *)self setSilencingUserInfo:v46];
+    silencingUserInfo = [updateCopy silencingUserInfo];
+    [(CXCallUpdate *)self setSilencingUserInfo:silencingUserInfo];
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v47 & 0x40000) != 0)
   {
-    -[CXCallUpdate setScreenSharingType:](self, "setScreenSharingType:", [v57 screenSharingType]);
+    -[CXCallUpdate setScreenSharingType:](self, "setScreenSharingType:", [updateCopy screenSharingType]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v48 & 0x80000) != 0)
   {
-    -[CXCallUpdate setIsSharePlayCapable:](self, "setIsSharePlayCapable:", [v57 isSharePlayCapable]);
+    -[CXCallUpdate setIsSharePlayCapable:](self, "setIsSharePlayCapable:", [updateCopy isSharePlayCapable]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v49 & 0x100000) != 0)
   {
-    -[CXCallUpdate setAnyRemoteSupportsRequestToScreenShare:](self, "setAnyRemoteSupportsRequestToScreenShare:", [v57 anyRemoteSupportsRequestToScreenShare]);
+    -[CXCallUpdate setAnyRemoteSupportsRequestToScreenShare:](self, "setAnyRemoteSupportsRequestToScreenShare:", [updateCopy anyRemoteSupportsRequestToScreenShare]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v50 & 0x200000) != 0)
   {
-    -[CXCallUpdate setNearbyMode:](self, "setNearbyMode:", [v57 nearbyMode]);
+    -[CXCallUpdate setNearbyMode:](self, "setNearbyMode:", [updateCopy nearbyMode]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v51 & 0x400000) != 0)
   {
-    -[CXCallUpdate setCommTrustScore:](self, "setCommTrustScore:", [v57 commTrustScore]);
+    -[CXCallUpdate setCommTrustScore:](self, "setCommTrustScore:", [updateCopy commTrustScore]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v52 & 0x800000) != 0)
   {
-    -[CXCallUpdate setSpecialUnknown:](self, "setSpecialUnknown:", [v57 specialUnknown]);
+    -[CXCallUpdate setSpecialUnknown:](self, "setSpecialUnknown:", [updateCopy specialUnknown]);
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v53 & 0x1000000) != 0)
   {
-    v54 = [v57 conversationGroupUUID];
-    [(CXCallUpdate *)self setConversationGroupUUID:v54];
+    conversationGroupUUID = [updateCopy conversationGroupUUID];
+    [(CXCallUpdate *)self setConversationGroupUUID:conversationGroupUUID];
   }
 
-  [v57 hasSet];
+  [updateCopy hasSet];
   if ((v55 & 0x4000000) != 0)
   {
-    -[CXCallUpdate setShouldSilentlyRegisterIMAVCall:](self, "setShouldSilentlyRegisterIMAVCall:", [v57 shouldSilentlyRegisterIMAVCall]);
+    -[CXCallUpdate setShouldSilentlyRegisterIMAVCall:](self, "setShouldSilentlyRegisterIMAVCall:", [updateCopy shouldSilentlyRegisterIMAVCall]);
   }
 
   return result;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v16 = a3;
-  v6 = [(CXCallUpdate *)self UUID];
-  v7 = [v6 copyWithZone:a4];
-  [v16 setUUID:v7];
+  copyCopy = copy;
+  uUID = [(CXCallUpdate *)self UUID];
+  v7 = [uUID copyWithZone:zone];
+  [copyCopy setUUID:v7];
 
   if (([(CXCallUpdate *)self hasSet]& 4) != 0)
   {
-    *(v16 + 51) |= 4uLL;
-    v8 = [(CXCallUpdate *)self remoteMember];
-    v9 = [v8 copyWithZone:a4];
-    [v16 setRemoteMember:v9];
+    *(copyCopy + 51) |= 4uLL;
+    remoteMember = [(CXCallUpdate *)self remoteMember];
+    v9 = [remoteMember copyWithZone:zone];
+    [copyCopy setRemoteMember:v9];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000000) != 0)
   {
-    *(v16 + 51) |= 0x400000000000uLL;
-    v10 = [(CXCallUpdate *)self remoteParticipantHandles];
-    v11 = [v10 copyWithZone:a4];
-    [v16 setRemoteParticipantHandles:v11];
+    *(copyCopy + 51) |= 0x400000000000uLL;
+    remoteParticipantHandles = [(CXCallUpdate *)self remoteParticipantHandles];
+    v11 = [remoteParticipantHandles copyWithZone:zone];
+    [copyCopy setRemoteParticipantHandles:v11];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 8) != 0)
   {
-    *(v16 + 51) |= 8uLL;
-    v12 = [(CXCallUpdate *)self localizedCallerName];
-    v13 = [v12 copyWithZone:a4];
-    [v16 setLocalizedCallerName:v13];
+    *(copyCopy + 51) |= 8uLL;
+    localizedCallerName = [(CXCallUpdate *)self localizedCallerName];
+    v13 = [localizedCallerName copyWithZone:zone];
+    [copyCopy setLocalizedCallerName:v13];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000) != 0)
   {
-    *(v16 + 51) |= 0x800000uLL;
-    [v16 setSupportsHolding:{-[CXCallUpdate supportsHolding](self, "supportsHolding")}];
+    *(copyCopy + 51) |= 0x800000uLL;
+    [copyCopy setSupportsHolding:{-[CXCallUpdate supportsHolding](self, "supportsHolding")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000) != 0)
   {
-    *(v16 + 51) |= 0x1000000uLL;
-    [v16 setSupportsGrouping:{-[CXCallUpdate supportsGrouping](self, "supportsGrouping")}];
+    *(copyCopy + 51) |= 0x1000000uLL;
+    [copyCopy setSupportsGrouping:{-[CXCallUpdate supportsGrouping](self, "supportsGrouping")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000) != 0)
   {
-    *(v16 + 51) |= 0x2000000uLL;
-    [v16 setSupportsUngrouping:{-[CXCallUpdate supportsUngrouping](self, "supportsUngrouping")}];
+    *(copyCopy + 51) |= 0x2000000uLL;
+    [copyCopy setSupportsUngrouping:{-[CXCallUpdate supportsUngrouping](self, "supportsUngrouping")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000) != 0)
   {
-    *(v16 + 51) |= 0x4000000uLL;
-    [v16 setSupportsDTMF:{-[CXCallUpdate supportsDTMF](self, "supportsDTMF")}];
+    *(copyCopy + 51) |= 0x4000000uLL;
+    [copyCopy setSupportsDTMF:{-[CXCallUpdate supportsDTMF](self, "supportsDTMF")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000) != 0)
   {
-    *(v16 + 51) |= 0x8000000uLL;
-    [v16 setSupportsDTMFUpdates:{-[CXCallUpdate supportsDTMFUpdates](self, "supportsDTMFUpdates")}];
+    *(copyCopy + 51) |= 0x8000000uLL;
+    [copyCopy setSupportsDTMFUpdates:{-[CXCallUpdate supportsDTMFUpdates](self, "supportsDTMFUpdates")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000) != 0)
   {
-    *(v16 + 51) |= 0x10000000uLL;
-    [v16 setSupportsSharePlay:{-[CXCallUpdate supportsSharePlay](self, "supportsSharePlay")}];
+    *(copyCopy + 51) |= 0x10000000uLL;
+    [copyCopy setSupportsSharePlay:{-[CXCallUpdate supportsSharePlay](self, "supportsSharePlay")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000000) != 0)
   {
-    *(v16 + 51) |= 0x20000000uLL;
-    [v16 setSupportsScreenShare:{-[CXCallUpdate supportsScreenShare](self, "supportsScreenShare")}];
+    *(copyCopy + 51) |= 0x20000000uLL;
+    [copyCopy setSupportsScreenShare:{-[CXCallUpdate supportsScreenShare](self, "supportsScreenShare")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000) != 0)
   {
-    *(v16 + 51) |= 0x2000uLL;
-    [v16 setHasVideo:{-[CXCallUpdate hasVideo](self, "hasVideo")}];
+    *(copyCopy + 51) |= 0x2000uLL;
+    [copyCopy setHasVideo:{-[CXCallUpdate hasVideo](self, "hasVideo")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000) != 0)
   {
-    *(v16 + 51) |= 0x4000uLL;
-    [v16 setIsUpgradeToVideo:{-[CXCallUpdate isUpgradeToVideo](self, "isUpgradeToVideo")}];
+    *(copyCopy + 51) |= 0x4000uLL;
+    [copyCopy setIsUpgradeToVideo:{-[CXCallUpdate isUpgradeToVideo](self, "isUpgradeToVideo")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000000000) != 0)
   {
-    *(v16 + 51) |= 0x100000000000000uLL;
-    [v16 setRequiresAuthentication:{-[CXCallUpdate requiresAuthentication](self, "requiresAuthentication")}];
+    *(copyCopy + 51) |= 0x100000000000000uLL;
+    [copyCopy setRequiresAuthentication:{-[CXCallUpdate requiresAuthentication](self, "requiresAuthentication")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v14 & 0x400000) != 0)
   {
-    *(v16 + 104) |= 0x400000u;
-    [v16 setCommTrustScore:{-[CXCallUpdate commTrustScore](self, "commTrustScore")}];
+    *(copyCopy + 104) |= 0x400000u;
+    [copyCopy setCommTrustScore:{-[CXCallUpdate commTrustScore](self, "commTrustScore")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v15 & 0x800000) != 0)
   {
-    *(v16 + 104) |= 0x800000u;
-    [v16 setSpecialUnknown:{-[CXCallUpdate specialUnknown](self, "specialUnknown")}];
+    *(copyCopy + 104) |= 0x800000u;
+    [copyCopy setSpecialUnknown:{-[CXCallUpdate specialUnknown](self, "specialUnknown")}];
   }
 }
 
-- (id)sanitizedCopyWithZone:(_NSZone *)a3
+- (id)sanitizedCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [(CXCallUpdate *)self updateSanitizedCopy:v5 withZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  [(CXCallUpdate *)self updateSanitizedCopy:v5 withZone:zone];
 
   return v5;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v70 = a3;
+  copyCopy = copy;
   [CXCallUpdate updateSanitizedCopy:"updateSanitizedCopy:withZone:" withZone:?];
   if (([(CXCallUpdate *)self hasSet]& 1) != 0)
   {
-    v70[51] |= 1uLL;
-    v6 = [(CXCallUpdate *)self account];
-    [v70 setAccount:v6];
+    copyCopy[51] |= 1uLL;
+    account = [(CXCallUpdate *)self account];
+    [copyCopy setAccount:account];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 2) != 0)
   {
-    v70[51] |= 2uLL;
-    v7 = [(CXCallUpdate *)self activeRemoteParticipant];
-    [v70 setActiveRemoteParticipant:v7];
+    copyCopy[51] |= 2uLL;
+    activeRemoteParticipant = [(CXCallUpdate *)self activeRemoteParticipant];
+    [copyCopy setActiveRemoteParticipant:activeRemoteParticipant];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20) != 0)
   {
-    v70[51] |= 0x20uLL;
-    [v70 setEmergency:{-[CXCallUpdate isEmergency](self, "isEmergency")}];
+    copyCopy[51] |= 0x20uLL;
+    [copyCopy setEmergency:{-[CXCallUpdate isEmergency](self, "isEmergency")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40) != 0)
   {
-    v70[51] |= 0x40uLL;
-    [v70 setFailureExpected:{-[CXCallUpdate isFailureExpected](self, "isFailureExpected")}];
+    copyCopy[51] |= 0x40uLL;
+    [copyCopy setFailureExpected:{-[CXCallUpdate isFailureExpected](self, "isFailureExpected")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80) != 0)
   {
-    v70[51] |= 0x80uLL;
-    [v70 setSupportsEmergencyFallback:{-[CXCallUpdate supportsEmergencyFallback](self, "supportsEmergencyFallback")}];
+    copyCopy[51] |= 0x80uLL;
+    [copyCopy setSupportsEmergencyFallback:{-[CXCallUpdate supportsEmergencyFallback](self, "supportsEmergencyFallback")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100) != 0)
   {
-    v70[51] |= 0x100uLL;
-    [v70 setUsingBaseband:{-[CXCallUpdate isUsingBaseband](self, "isUsingBaseband")}];
+    copyCopy[51] |= 0x100uLL;
+    [copyCopy setUsingBaseband:{-[CXCallUpdate isUsingBaseband](self, "isUsingBaseband")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200) != 0)
   {
-    v70[51] |= 0x200uLL;
-    [v70 setBlocked:{-[CXCallUpdate isBlocked](self, "isBlocked")}];
+    copyCopy[51] |= 0x200uLL;
+    [copyCopy setBlocked:{-[CXCallUpdate isBlocked](self, "isBlocked")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400) != 0)
   {
-    v70[51] |= 0x400uLL;
-    [v70 setTTYType:{-[CXCallUpdate ttyType](self, "ttyType")}];
+    copyCopy[51] |= 0x400uLL;
+    [copyCopy setTTYType:{-[CXCallUpdate ttyType](self, "ttyType")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v8 & 4) != 0)
   {
-    *(v70 + 104) |= 4u;
-    [v70 setBluetoothAudioFormat:-[CXCallUpdate bluetoothAudioFormat](self, "bluetoothAudioFormat")];
+    *(copyCopy + 104) |= 4u;
+    [copyCopy setBluetoothAudioFormat:-[CXCallUpdate bluetoothAudioFormat](self, "bluetoothAudioFormat")];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000) != 0)
   {
-    v70[51] |= 0x1000uLL;
-    [v70 setMayRequireBreakBeforeMake:{-[CXCallUpdate mayRequireBreakBeforeMake](self, "mayRequireBreakBeforeMake")}];
+    copyCopy[51] |= 0x1000uLL;
+    [copyCopy setMayRequireBreakBeforeMake:{-[CXCallUpdate mayRequireBreakBeforeMake](self, "mayRequireBreakBeforeMake")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000) != 0)
   {
-    v70[51] |= 0x8000uLL;
-    v9 = [(CXCallUpdate *)self audioCategory];
-    v10 = [v9 copyWithZone:a4];
-    [v70 setAudioCategory:v10];
+    copyCopy[51] |= 0x8000uLL;
+    audioCategory = [(CXCallUpdate *)self audioCategory];
+    v10 = [audioCategory copyWithZone:zone];
+    [copyCopy setAudioCategory:v10];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000) != 0)
   {
-    v70[51] |= 0x10000uLL;
-    v11 = [(CXCallUpdate *)self audioMode];
-    v12 = [v11 copyWithZone:a4];
-    [v70 setAudioMode:v12];
+    copyCopy[51] |= 0x10000uLL;
+    audioMode = [(CXCallUpdate *)self audioMode];
+    v12 = [audioMode copyWithZone:zone];
+    [copyCopy setAudioMode:v12];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000) != 0)
   {
-    v70[51] |= 0x20000uLL;
-    [v70 setAudioInterruptionProvider:{-[CXCallUpdate audioInterruptionProvider](self, "audioInterruptionProvider")}];
+    copyCopy[51] |= 0x20000uLL;
+    [copyCopy setAudioInterruptionProvider:{-[CXCallUpdate audioInterruptionProvider](self, "audioInterruptionProvider")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000) != 0)
   {
-    v70[51] |= 0x40000uLL;
-    [v70 setAudioInterruptionOperationMode:{-[CXCallUpdate audioInterruptionOperationMode](self, "audioInterruptionOperationMode")}];
+    copyCopy[51] |= 0x40000uLL;
+    [copyCopy setAudioInterruptionOperationMode:{-[CXCallUpdate audioInterruptionOperationMode](self, "audioInterruptionOperationMode")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000) != 0)
   {
-    v70[51] |= 0x80000uLL;
-    [v70 setVerificationStatus:{-[CXCallUpdate verificationStatus](self, "verificationStatus")}];
+    copyCopy[51] |= 0x80000uLL;
+    [copyCopy setVerificationStatus:{-[CXCallUpdate verificationStatus](self, "verificationStatus")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000) != 0)
   {
-    v70[51] |= 0x4000uLL;
-    [v70 setIsUpgradeToVideo:{-[CXCallUpdate isUpgradeToVideo](self, "isUpgradeToVideo")}];
+    copyCopy[51] |= 0x4000uLL;
+    [copyCopy setIsUpgradeToVideo:{-[CXCallUpdate isUpgradeToVideo](self, "isUpgradeToVideo")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000) != 0)
   {
-    v70[51] |= 0x100000uLL;
-    [v70 setPriority:{-[CXCallUpdate priority](self, "priority")}];
+    copyCopy[51] |= 0x100000uLL;
+    [copyCopy setPriority:{-[CXCallUpdate priority](self, "priority")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000) != 0)
   {
-    v70[51] |= 0x200000uLL;
-    [v70 setRequiresInCallSounds:{-[CXCallUpdate requiresInCallSounds](self, "requiresInCallSounds")}];
+    copyCopy[51] |= 0x200000uLL;
+    [copyCopy setRequiresInCallSounds:{-[CXCallUpdate requiresInCallSounds](self, "requiresInCallSounds")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000) != 0)
   {
-    v70[51] |= 0x400000uLL;
-    [v70 setInCallSoundRegion:{-[CXCallUpdate inCallSoundRegion](self, "inCallSoundRegion")}];
+    copyCopy[51] |= 0x400000uLL;
+    [copyCopy setInCallSoundRegion:{-[CXCallUpdate inCallSoundRegion](self, "inCallSoundRegion")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000000) != 0)
   {
-    v70[51] |= 0x40000000uLL;
-    [v70 setSupportsUnambiguousMultiPartyState:{-[CXCallUpdate supportsUnambiguousMultiPartyState](self, "supportsUnambiguousMultiPartyState")}];
+    copyCopy[51] |= 0x40000000uLL;
+    [copyCopy setSupportsUnambiguousMultiPartyState:{-[CXCallUpdate supportsUnambiguousMultiPartyState](self, "supportsUnambiguousMultiPartyState")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000000) != 0)
   {
-    v70[51] |= 0x80000000uLL;
-    [v70 setSupportsAddCall:{-[CXCallUpdate supportsAddCall](self, "supportsAddCall")}];
+    copyCopy[51] |= 0x80000000uLL;
+    [copyCopy setSupportsAddCall:{-[CXCallUpdate supportsAddCall](self, "supportsAddCall")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000) != 0)
   {
-    v70[51] |= 0x100000000uLL;
-    [v70 setSupportsSendingToVoicemail:{-[CXCallUpdate supportsSendingToVoicemail](self, "supportsSendingToVoicemail")}];
+    copyCopy[51] |= 0x100000000uLL;
+    [copyCopy setSupportsSendingToVoicemail:{-[CXCallUpdate supportsSendingToVoicemail](self, "supportsSendingToVoicemail")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000000) != 0)
   {
-    v70[51] |= 0x200000000uLL;
-    [v70 setSupportsRecording:{-[CXCallUpdate supportsRecording](self, "supportsRecording")}];
+    copyCopy[51] |= 0x200000000uLL;
+    [copyCopy setSupportsRecording:{-[CXCallUpdate supportsRecording](self, "supportsRecording")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000) != 0)
   {
-    v70[51] |= 0x400000000uLL;
-    [v70 setIsUnderlyingLinksConnected:{-[CXCallUpdate isUnderlyingLinksConnected](self, "isUnderlyingLinksConnected")}];
+    copyCopy[51] |= 0x400000000uLL;
+    [copyCopy setIsUnderlyingLinksConnected:{-[CXCallUpdate isUnderlyingLinksConnected](self, "isUnderlyingLinksConnected")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if (v13 < 0)
   {
-    *(v70 + 104) |= 0x8000u;
-    [v70 setSupportsScreening:{-[CXCallUpdate supportsScreening](self, "supportsScreening")}];
+    *(copyCopy + 104) |= 0x8000u;
+    [copyCopy setSupportsScreening:{-[CXCallUpdate supportsScreening](self, "supportsScreening")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v14 & 0x10000) != 0)
   {
-    *(v70 + 104) |= 0x10000u;
-    [v70 setSupportsRecents:{-[CXCallUpdate supportsRecents](self, "supportsRecents")}];
+    *(copyCopy + 104) |= 0x10000u;
+    [copyCopy setSupportsRecents:{-[CXCallUpdate supportsRecents](self, "supportsRecents")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000000) != 0)
   {
-    v70[51] |= 0x800000000uLL;
-    [v70 setVideoStreamToken:{-[CXCallUpdate videoStreamToken](self, "videoStreamToken")}];
+    copyCopy[51] |= 0x800000000uLL;
+    [copyCopy setVideoStreamToken:{-[CXCallUpdate videoStreamToken](self, "videoStreamToken")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000) != 0)
   {
-    v70[51] |= 0x1000000000uLL;
-    v15 = [(CXCallUpdate *)self callTokens];
-    [v70 setCallTokens:v15];
+    copyCopy[51] |= 0x1000000000uLL;
+    callTokens = [(CXCallUpdate *)self callTokens];
+    [copyCopy setCallTokens:callTokens];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000) != 0)
   {
-    v70[51] |= 0x2000000000uLL;
-    v16 = [(CXCallUpdate *)self announceProviderIdentifier];
-    v17 = [v16 copyWithZone:a4];
-    [v70 setAnnounceProviderIdentifier:v17];
+    copyCopy[51] |= 0x2000000000uLL;
+    announceProviderIdentifier = [(CXCallUpdate *)self announceProviderIdentifier];
+    v17 = [announceProviderIdentifier copyWithZone:zone];
+    [copyCopy setAnnounceProviderIdentifier:v17];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000) != 0)
   {
-    v70[51] |= 0x4000000000uLL;
-    v18 = [(CXCallUpdate *)self initiator];
-    v19 = [v18 copyWithZone:a4];
-    [v70 setInitiator:v19];
+    copyCopy[51] |= 0x4000000000uLL;
+    initiator = [(CXCallUpdate *)self initiator];
+    v19 = [initiator copyWithZone:zone];
+    [copyCopy setInitiator:v19];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000000) != 0)
   {
-    v70[51] |= 0x8000000000uLL;
-    v20 = [(CXCallUpdate *)self crossDeviceIdentifier];
-    v21 = [v20 copyWithZone:a4];
-    [v70 setCrossDeviceIdentifier:v21];
+    copyCopy[51] |= 0x8000000000uLL;
+    crossDeviceIdentifier = [(CXCallUpdate *)self crossDeviceIdentifier];
+    v21 = [crossDeviceIdentifier copyWithZone:zone];
+    [copyCopy setCrossDeviceIdentifier:v21];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000000) != 0)
   {
-    v70[51] |= 0x10000000000uLL;
-    v22 = [(CXCallUpdate *)self ISOCountryCode];
-    v23 = [v22 copyWithZone:a4];
-    [v70 setISOCountryCode:v23];
+    copyCopy[51] |= 0x10000000000uLL;
+    iSOCountryCode = [(CXCallUpdate *)self ISOCountryCode];
+    v23 = [iSOCountryCode copyWithZone:zone];
+    [copyCopy setISOCountryCode:v23];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10) != 0)
   {
-    v70[51] |= 0x10uLL;
-    v24 = [(CXCallUpdate *)self localizedCallerImageURL];
-    v25 = [v24 copyWithZone:a4];
-    [v70 setLocalizedCallerImageURL:v25];
+    copyCopy[51] |= 0x10uLL;
+    localizedCallerImageURL = [(CXCallUpdate *)self localizedCallerImageURL];
+    v25 = [localizedCallerImageURL copyWithZone:zone];
+    [copyCopy setLocalizedCallerImageURL:v25];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000000000) != 0)
   {
-    v70[51] |= 0x20000000000uLL;
-    v26 = [(CXCallUpdate *)self localSenderIdentityUUID];
-    v27 = [v26 copyWithZone:a4];
-    [v70 setLocalSenderIdentityUUID:v27];
+    copyCopy[51] |= 0x20000000000uLL;
+    localSenderIdentityUUID = [(CXCallUpdate *)self localSenderIdentityUUID];
+    v27 = [localSenderIdentityUUID copyWithZone:zone];
+    [copyCopy setLocalSenderIdentityUUID:v27];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000000000) != 0)
   {
-    v70[51] |= 0x40000000000uLL;
-    v28 = [(CXCallUpdate *)self localSenderIdentityAccountUUID];
-    v29 = [v28 copyWithZone:a4];
-    [v70 setLocalSenderIdentityAccountUUID:v29];
+    copyCopy[51] |= 0x40000000000uLL;
+    localSenderIdentityAccountUUID = [(CXCallUpdate *)self localSenderIdentityAccountUUID];
+    v29 = [localSenderIdentityAccountUUID copyWithZone:zone];
+    [copyCopy setLocalSenderIdentityAccountUUID:v29];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000000000) != 0)
   {
-    v70[51] |= 0x80000000000uLL;
-    v30 = [(CXCallUpdate *)self localMemberHandleValue];
-    v31 = [v30 copyWithZone:a4];
-    [v70 setLocalMemberHandleValue:v31];
+    copyCopy[51] |= 0x80000000000uLL;
+    localMemberHandleValue = [(CXCallUpdate *)self localMemberHandleValue];
+    v31 = [localMemberHandleValue copyWithZone:zone];
+    [copyCopy setLocalMemberHandleValue:v31];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000000) != 0)
   {
-    v70[51] |= 0x100000000000uLL;
-    v32 = [(CXCallUpdate *)self localSenderSubscriptionIdentifier];
-    v33 = [v32 copyWithZone:a4];
-    [v70 setLocalSenderSubscriptionIdentifier:v33];
+    copyCopy[51] |= 0x100000000000uLL;
+    localSenderSubscriptionIdentifier = [(CXCallUpdate *)self localSenderSubscriptionIdentifier];
+    v33 = [localSenderSubscriptionIdentifier copyWithZone:zone];
+    [copyCopy setLocalSenderSubscriptionIdentifier:v33];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000000000) != 0)
   {
-    v70[51] |= 0x200000000000uLL;
-    v34 = [(CXCallUpdate *)self participantGroupUUID];
-    v35 = [v34 copyWithZone:a4];
-    [v70 setParticipantGroupUUID:v35];
+    copyCopy[51] |= 0x200000000000uLL;
+    participantGroupUUID = [(CXCallUpdate *)self participantGroupUUID];
+    v35 = [participantGroupUUID copyWithZone:zone];
+    [copyCopy setParticipantGroupUUID:v35];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000000) != 0)
   {
-    v70[51] |= 0x400000000000uLL;
-    v36 = [(CXCallUpdate *)self remoteParticipantHandles];
-    v37 = [v36 copyWithZone:a4];
-    [v70 setRemoteParticipantHandles:v37];
+    copyCopy[51] |= 0x400000000000uLL;
+    remoteParticipantHandles = [(CXCallUpdate *)self remoteParticipantHandles];
+    v37 = [remoteParticipantHandles copyWithZone:zone];
+    [copyCopy setRemoteParticipantHandles:v37];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000000000) != 0)
   {
-    v70[51] |= 0x800000000000uLL;
-    v38 = [(CXCallUpdate *)self otherInvitedHandles];
-    v39 = [v38 copyWithZone:a4];
-    [v70 setOtherInvitedHandles:v39];
+    copyCopy[51] |= 0x800000000000uLL;
+    otherInvitedHandles = [(CXCallUpdate *)self otherInvitedHandles];
+    v39 = [otherInvitedHandles copyWithZone:zone];
+    [copyCopy setOtherInvitedHandles:v39];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000000) != 0)
   {
-    v70[51] |= 0x1000000000000uLL;
-    v40 = [(CXCallUpdate *)self activeRemoteParticipantHandles];
-    v41 = [v40 copyWithZone:a4];
-    [v70 setActiveRemoteParticipantHandles:v41];
+    copyCopy[51] |= 0x1000000000000uLL;
+    activeRemoteParticipantHandles = [(CXCallUpdate *)self activeRemoteParticipantHandles];
+    v41 = [activeRemoteParticipantHandles copyWithZone:zone];
+    [copyCopy setActiveRemoteParticipantHandles:v41];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000000) != 0)
   {
-    v70[51] |= 0x2000000000000uLL;
-    v42 = [(CXCallUpdate *)self handoffContext];
-    [v70 setHandoffContext:v42];
+    copyCopy[51] |= 0x2000000000000uLL;
+    handoffContext = [(CXCallUpdate *)self handoffContext];
+    [copyCopy setHandoffContext:handoffContext];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000000) != 0)
   {
-    v70[51] |= 0x4000000000000uLL;
-    v43 = [(CXCallUpdate *)self screenShareAttributes];
-    [v70 setScreenShareAttributes:v43];
+    copyCopy[51] |= 0x4000000000000uLL;
+    screenShareAttributes = [(CXCallUpdate *)self screenShareAttributes];
+    [copyCopy setScreenShareAttributes:screenShareAttributes];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000000000) != 0)
   {
-    v70[51] |= 0x8000000000000uLL;
-    v44 = [(CXCallUpdate *)self context];
-    v45 = [v44 copyWithZone:a4];
-    [v70 setContext:v45];
+    copyCopy[51] |= 0x8000000000000uLL;
+    context = [(CXCallUpdate *)self context];
+    v45 = [context copyWithZone:zone];
+    [copyCopy setContext:v45];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000000000) != 0)
   {
-    v70[51] |= 0x10000000000000uLL;
-    [v70 setPrefersExclusiveAccessToCellularNetwork:{-[CXCallUpdate prefersExclusiveAccessToCellularNetwork](self, "prefersExclusiveAccessToCellularNetwork")}];
+    copyCopy[51] |= 0x10000000000000uLL;
+    [copyCopy setPrefersExclusiveAccessToCellularNetwork:{-[CXCallUpdate prefersExclusiveAccessToCellularNetwork](self, "prefersExclusiveAccessToCellularNetwork")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800) != 0)
   {
-    v70[51] |= 0x800uLL;
-    [v70 setSupportsTTYWithVoice:{-[CXCallUpdate supportsTTYWithVoice](self, "supportsTTYWithVoice")}];
+    copyCopy[51] |= 0x800uLL;
+    [copyCopy setSupportsTTYWithVoice:{-[CXCallUpdate supportsTTYWithVoice](self, "supportsTTYWithVoice")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000000000000) != 0)
   {
-    v70[51] |= 0x20000000000000uLL;
-    [v70 setRemoteUplinkMuted:{-[CXCallUpdate isRemoteUplinkMuted](self, "isRemoteUplinkMuted")}];
+    copyCopy[51] |= 0x20000000000000uLL;
+    [copyCopy setRemoteUplinkMuted:{-[CXCallUpdate isRemoteUplinkMuted](self, "isRemoteUplinkMuted")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000000000000) != 0)
   {
-    v70[51] |= 0x40000000000000uLL;
-    [v70 setShouldSuppressInCallUI:{-[CXCallUpdate shouldSuppressInCallUI](self, "shouldSuppressInCallUI")}];
+    copyCopy[51] |= 0x40000000000000uLL;
+    [copyCopy setShouldSuppressInCallUI:{-[CXCallUpdate shouldSuppressInCallUI](self, "shouldSuppressInCallUI")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v46 & 0x2000000) != 0)
   {
-    *(v70 + 104) |= 0x2000000u;
-    [v70 setStartCallMuted:{-[CXCallUpdate startCallMuted](self, "startCallMuted")}];
+    *(copyCopy + 104) |= 0x2000000u;
+    [copyCopy setStartCallMuted:{-[CXCallUpdate startCallMuted](self, "startCallMuted")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000000000000) != 0)
   {
-    v70[51] |= 0x80000000000000uLL;
-    [v70 setLaunchInBackground:{-[CXCallUpdate launchInBackground](self, "launchInBackground")}];
+    copyCopy[51] |= 0x80000000000000uLL;
+    [copyCopy setLaunchInBackground:{-[CXCallUpdate launchInBackground](self, "launchInBackground")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000000000) != 0)
   {
-    v70[51] |= 0x100000000000000uLL;
-    [v70 setRequiresAuthentication:{-[CXCallUpdate requiresAuthentication](self, "requiresAuthentication")}];
+    copyCopy[51] |= 0x100000000000000uLL;
+    [copyCopy setRequiresAuthentication:{-[CXCallUpdate requiresAuthentication](self, "requiresAuthentication")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000000000000) != 0)
   {
-    v70[51] |= 0x200000000000000uLL;
-    [v70 setMutuallyExclusiveCall:{-[CXCallUpdate isMutuallyExclusiveCall](self, "isMutuallyExclusiveCall")}];
+    copyCopy[51] |= 0x200000000000000uLL;
+    [copyCopy setMutuallyExclusiveCall:{-[CXCallUpdate isMutuallyExclusiveCall](self, "isMutuallyExclusiveCall")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000000000) != 0)
   {
-    v70[51] |= 0x400000000000000uLL;
-    [v70 setJunkConfidence:{-[CXCallUpdate junkConfidence](self, "junkConfidence")}];
+    copyCopy[51] |= 0x400000000000000uLL;
+    [copyCopy setJunkConfidence:{-[CXCallUpdate junkConfidence](self, "junkConfidence")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v47 & 0x4000) != 0)
   {
-    *(v70 + 104) |= 0x4000u;
-    [v70 setCallSubType:{-[CXCallUpdate callSubType](self, "callSubType")}];
+    *(copyCopy + 104) |= 0x4000u;
+    [copyCopy setCallSubType:{-[CXCallUpdate callSubType](self, "callSubType")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000000000000) != 0)
   {
-    v70[51] |= 0x800000000000000uLL;
-    [v70 setIdentificationCategory:{-[CXCallUpdate identificationCategory](self, "identificationCategory")}];
+    copyCopy[51] |= 0x800000000000000uLL;
+    [copyCopy setIdentificationCategory:{-[CXCallUpdate identificationCategory](self, "identificationCategory")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000000000) != 0)
   {
-    v70[51] |= 0x1000000000000000uLL;
-    [v70 setConversation:{-[CXCallUpdate isConversation](self, "isConversation")}];
+    copyCopy[51] |= 0x1000000000000000uLL;
+    [copyCopy setConversation:{-[CXCallUpdate isConversation](self, "isConversation")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000000000) != 0)
   {
-    v70[51] |= 0x2000000000000000uLL;
-    [v70 setMixesVoiceWithMedia:{-[CXCallUpdate mixesVoiceWithMedia](self, "mixesVoiceWithMedia")}];
+    copyCopy[51] |= 0x2000000000000000uLL;
+    [copyCopy setMixesVoiceWithMedia:{-[CXCallUpdate mixesVoiceWithMedia](self, "mixesVoiceWithMedia")}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000000000) != 0)
   {
-    v70[51] |= 0x4000000000000000uLL;
-    [v70 setPrefersToPlayDuringWombat:{-[CXCallUpdate prefersToPlayDuringWombat](self, "prefersToPlayDuringWombat")}];
+    copyCopy[51] |= 0x4000000000000000uLL;
+    [copyCopy setPrefersToPlayDuringWombat:{-[CXCallUpdate prefersToPlayDuringWombat](self, "prefersToPlayDuringWombat")}];
   }
 
   if ([(CXCallUpdate *)self hasSet]< 0)
   {
-    v70[51] |= 0x8000000000000000;
-    [v70 setMediaPlaybackOnExternalDevice:{-[CXCallUpdate mediaPlaybackOnExternalDevice](self, "mediaPlaybackOnExternalDevice")}];
+    copyCopy[51] |= 0x8000000000000000;
+    [copyCopy setMediaPlaybackOnExternalDevice:{-[CXCallUpdate mediaPlaybackOnExternalDevice](self, "mediaPlaybackOnExternalDevice")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v48 & 8) != 0)
   {
-    *(v70 + 104) |= 8u;
-    [v70 setIgnoresBluetoothDeviceUID:{-[CXCallUpdate ignoresBluetoothDeviceUID](self, "ignoresBluetoothDeviceUID")}];
+    *(copyCopy + 104) |= 8u;
+    [copyCopy setIgnoresBluetoothDeviceUID:{-[CXCallUpdate ignoresBluetoothDeviceUID](self, "ignoresBluetoothDeviceUID")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v49 & 2) != 0)
   {
-    *(v70 + 104) |= 2u;
-    [v70 setSharingScreen:{-[CXCallUpdate isSharingScreen](self, "isSharingScreen")}];
+    *(copyCopy + 104) |= 2u;
+    [copyCopy setSharingScreen:{-[CXCallUpdate isSharingScreen](self, "isSharingScreen")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if (v50)
   {
-    *(v70 + 104) |= 1u;
-    [v70 setOneToOneModeEnabled:{-[CXCallUpdate isOneToOneModeEnabled](self, "isOneToOneModeEnabled")}];
+    *(copyCopy + 104) |= 1u;
+    [copyCopy setOneToOneModeEnabled:{-[CXCallUpdate isOneToOneModeEnabled](self, "isOneToOneModeEnabled")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v51 & 0x10) != 0)
   {
-    *(v70 + 104) |= 0x10u;
-    [v70 setServiceStatus:{-[CXCallUpdate serviceStatus](self, "serviceStatus")}];
+    *(copyCopy + 104) |= 0x10u;
+    [copyCopy setServiceStatus:{-[CXCallUpdate serviceStatus](self, "serviceStatus")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v52 & 0x20) != 0)
   {
-    *(v70 + 104) |= 0x20u;
-    [v70 setTransmissionMode:{-[CXCallUpdate transmissionMode](self, "transmissionMode")}];
+    *(copyCopy + 104) |= 0x20u;
+    [copyCopy setTransmissionMode:{-[CXCallUpdate transmissionMode](self, "transmissionMode")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v53 & 0x40) != 0)
   {
-    *(v70 + 104) |= 0x40u;
-    [v70 setAccessoryButtonEventsEnabled:{-[CXCallUpdate accessoryButtonEventsEnabled](self, "accessoryButtonEventsEnabled")}];
+    *(copyCopy + 104) |= 0x40u;
+    [copyCopy setAccessoryButtonEventsEnabled:{-[CXCallUpdate accessoryButtonEventsEnabled](self, "accessoryButtonEventsEnabled")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if (v54 < 0)
   {
-    *(v70 + 104) |= 0x80u;
-    [v70 setSendingVideo:{-[CXCallUpdate isSendingVideo](self, "isSendingVideo")}];
+    *(copyCopy + 104) |= 0x80u;
+    [copyCopy setSendingVideo:{-[CXCallUpdate isSendingVideo](self, "isSendingVideo")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v55 & 0x1000) != 0)
   {
-    *(v70 + 104) |= 0x1000u;
-    [v70 setIsReRing:{-[CXCallUpdate isReRing](self, "isReRing")}];
+    *(copyCopy + 104) |= 0x1000u;
+    [copyCopy setIsReRing:{-[CXCallUpdate isReRing](self, "isReRing")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v56 & 0x2000) != 0)
   {
-    *(v70 + 104) |= 0x2000u;
-    [v70 setSuppressRingtone:{-[CXCallUpdate suppressRingtone](self, "suppressRingtone")}];
+    *(copyCopy + 104) |= 0x2000u;
+    [copyCopy setSuppressRingtone:{-[CXCallUpdate suppressRingtone](self, "suppressRingtone")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v57 & 0x100) != 0)
   {
-    *(v70 + 104) |= 0x100u;
-    [v70 setHasBeenRedirected:{-[CXCallUpdate hasBeenRedirected](self, "hasBeenRedirected")}];
+    *(copyCopy + 104) |= 0x100u;
+    [copyCopy setHasBeenRedirected:{-[CXCallUpdate hasBeenRedirected](self, "hasBeenRedirected")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v58 & 0x200) != 0)
   {
-    *(v70 + 104) |= 0x200u;
-    [v70 setIsKnownCaller:{-[CXCallUpdate isKnownCaller](self, "isKnownCaller")}];
+    *(copyCopy + 104) |= 0x200u;
+    [copyCopy setIsKnownCaller:{-[CXCallUpdate isKnownCaller](self, "isKnownCaller")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v59 & 0x400) != 0)
   {
-    *(v70 + 104) |= 0x400u;
-    [v70 setFilteredOutReason:{-[CXCallUpdate filteredOutReason](self, "filteredOutReason")}];
+    *(copyCopy + 104) |= 0x400u;
+    [copyCopy setFilteredOutReason:{-[CXCallUpdate filteredOutReason](self, "filteredOutReason")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v60 & 0x800) != 0)
   {
-    *(v70 + 104) |= 0x800u;
-    v61 = [(CXCallUpdate *)self silencingUserInfo];
-    [v70 setSilencingUserInfo:v61];
+    *(copyCopy + 104) |= 0x800u;
+    silencingUserInfo = [(CXCallUpdate *)self silencingUserInfo];
+    [copyCopy setSilencingUserInfo:silencingUserInfo];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v62 & 0x20000) != 0)
   {
-    *(v70 + 104) |= 0x20000u;
-    [v70 setScreenSharingIntention:{-[CXCallUpdate screenSharingIntention](self, "screenSharingIntention")}];
+    *(copyCopy + 104) |= 0x20000u;
+    [copyCopy setScreenSharingIntention:{-[CXCallUpdate screenSharingIntention](self, "screenSharingIntention")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v63 & 0x40000) != 0)
   {
-    *(v70 + 104) |= 0x40000u;
-    [v70 setScreenSharingType:{-[CXCallUpdate screenSharingType](self, "screenSharingType")}];
+    *(copyCopy + 104) |= 0x40000u;
+    [copyCopy setScreenSharingType:{-[CXCallUpdate screenSharingType](self, "screenSharingType")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v64 & 0x80000) != 0)
   {
-    *(v70 + 104) |= 0x80000u;
-    [v70 setIsSharePlayCapable:{-[CXCallUpdate isSharePlayCapable](self, "isSharePlayCapable")}];
+    *(copyCopy + 104) |= 0x80000u;
+    [copyCopy setIsSharePlayCapable:{-[CXCallUpdate isSharePlayCapable](self, "isSharePlayCapable")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v65 & 0x100000) != 0)
   {
-    *(v70 + 104) |= 0x100000u;
-    [v70 setAnyRemoteSupportsRequestToScreenShare:{-[CXCallUpdate anyRemoteSupportsRequestToScreenShare](self, "anyRemoteSupportsRequestToScreenShare")}];
+    *(copyCopy + 104) |= 0x100000u;
+    [copyCopy setAnyRemoteSupportsRequestToScreenShare:{-[CXCallUpdate anyRemoteSupportsRequestToScreenShare](self, "anyRemoteSupportsRequestToScreenShare")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v66 & 0x200000) != 0)
   {
-    *(v70 + 104) |= 0x200000u;
-    [v70 setNearbyMode:{-[CXCallUpdate nearbyMode](self, "nearbyMode")}];
+    *(copyCopy + 104) |= 0x200000u;
+    [copyCopy setNearbyMode:{-[CXCallUpdate nearbyMode](self, "nearbyMode")}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v67 & 0x1000000) != 0)
   {
-    *(v70 + 104) |= 0x1000000u;
-    v68 = [(CXCallUpdate *)self conversationGroupUUID];
-    v69 = [v68 copyWithZone:a4];
-    [v70 setConversationGroupUUID:v69];
+    *(copyCopy + 104) |= 0x1000000u;
+    conversationGroupUUID = [(CXCallUpdate *)self conversationGroupUUID];
+    v69 = [conversationGroupUUID copyWithZone:zone];
+    [copyCopy setConversationGroupUUID:v69];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [(CXCallUpdate *)self updateCopy:v5 withZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  [(CXCallUpdate *)self updateCopy:v5 withZone:zone];
   return v5;
 }
 
-- (CXCallUpdate)initWithCoder:(id)a3
+- (CXCallUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CXCallUpdate *)self init];
 
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_UUID);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     UUID = v5->_UUID;
     v5->_UUID = v8;
 
     v132 = 0;
-    v10 = v4;
+    v10 = coderCopy;
     v11 = NSStringFromSelector(sel_hasSet);
-    v12 = [v4 decodeBytesForKey:v11 returnedLength:&v132];
+    v12 = [coderCopy decodeBytesForKey:v11 returnedLength:&v132];
 
     if (v132 != 12)
     {
@@ -3668,7 +3668,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 1) != 0)
     {
       v14 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v15 = [v4 decodeObjectOfClasses:v14 forKey:@"account"];
+      v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"account"];
       account = v5->_account;
       v5->_account = v15;
     }
@@ -3676,7 +3676,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 2) != 0)
     {
       v17 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v18 = [v4 decodeObjectOfClasses:v17 forKey:@"activeRemoteParticipant"];
+      v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"activeRemoteParticipant"];
       activeRemoteParticipant = v5->_activeRemoteParticipant;
       v5->_activeRemoteParticipant = v18;
     }
@@ -3684,7 +3684,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 4) != 0)
     {
       v20 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v21 = [v4 decodeObjectOfClasses:v20 forKey:@"remoteMember"];
+      v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"remoteMember"];
       remoteMember = v5->_remoteMember;
       v5->_remoteMember = v21;
     }
@@ -3692,7 +3692,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 8) != 0)
     {
       v23 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v24 = [v4 decodeObjectOfClasses:v23 forKey:@"localizedCallerName"];
+      v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"localizedCallerName"];
       localizedCallerName = v5->_localizedCallerName;
       v5->_localizedCallerName = v24;
     }
@@ -3700,66 +3700,66 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x10) != 0)
     {
       v26 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v27 = [v4 decodeObjectOfClasses:v26 forKey:@"localizedCallerImageURL"];
+      v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"localizedCallerImageURL"];
       localizedCallerImageURL = v5->_localizedCallerImageURL;
       v5->_localizedCallerImageURL = v27;
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x20) != 0)
     {
-      v5->_emergency = [v4 decodeBoolForKey:@"emergency"];
+      v5->_emergency = [coderCopy decodeBoolForKey:@"emergency"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x40) != 0)
     {
-      v5->_failureExpected = [v4 decodeBoolForKey:@"failureExpected"];
+      v5->_failureExpected = [coderCopy decodeBoolForKey:@"failureExpected"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x80) != 0)
     {
-      v5->_supportsEmergencyFallback = [v4 decodeBoolForKey:@"supportsEmergencyFallback"];
+      v5->_supportsEmergencyFallback = [coderCopy decodeBoolForKey:@"supportsEmergencyFallback"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x100) != 0)
     {
-      v5->_usingBaseband = [v4 decodeBoolForKey:@"usingBaseband"];
+      v5->_usingBaseband = [coderCopy decodeBoolForKey:@"usingBaseband"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x200) != 0)
     {
-      v5->_blocked = [v4 decodeBoolForKey:@"blocked"];
+      v5->_blocked = [coderCopy decodeBoolForKey:@"blocked"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x400) != 0)
     {
-      v5->_ttyType = [v4 decodeIntegerForKey:@"ttyType"];
+      v5->_ttyType = [coderCopy decodeIntegerForKey:@"ttyType"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v29 & 4) != 0)
     {
-      v5->_bluetoothAudioFormat = [v4 decodeIntegerForKey:@"bluetoothAudioFormat"];
+      v5->_bluetoothAudioFormat = [coderCopy decodeIntegerForKey:@"bluetoothAudioFormat"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x1000) != 0)
     {
-      v5->_mayRequireBreakBeforeMake = [v4 decodeBoolForKey:@"mayRequireBreakBeforeMake"];
+      v5->_mayRequireBreakBeforeMake = [coderCopy decodeBoolForKey:@"mayRequireBreakBeforeMake"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x2000) != 0)
     {
-      v5->_hasVideo = [v4 decodeBoolForKey:@"hasVideo"];
+      v5->_hasVideo = [coderCopy decodeBoolForKey:@"hasVideo"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x4000) != 0)
     {
-      v5->_isUpgradeToVideo = [v4 decodeBoolForKey:@"isUpgradeToVideo"];
+      v5->_isUpgradeToVideo = [coderCopy decodeBoolForKey:@"isUpgradeToVideo"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x8000) != 0)
     {
       v30 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v31 = [v4 decodeObjectOfClasses:v30 forKey:@"audioCategory"];
+      v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"audioCategory"];
       audioCategory = v5->_audioCategory;
       v5->_audioCategory = v31;
     }
@@ -3767,122 +3767,122 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x10000) != 0)
     {
       v33 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v34 = [v4 decodeObjectOfClasses:v33 forKey:@"audioMode"];
+      v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"audioMode"];
       audioMode = v5->_audioMode;
       v5->_audioMode = v34;
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x20000) != 0)
     {
-      v5->_audioInterruptionProvider = [v4 decodeIntegerForKey:@"audioInterruptionProvider"];
+      v5->_audioInterruptionProvider = [coderCopy decodeIntegerForKey:@"audioInterruptionProvider"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x40000) != 0)
     {
-      v5->_audioInterruptionOperationMode = [v4 decodeIntegerForKey:@"audioInterruptionOperationMode"];
+      v5->_audioInterruptionOperationMode = [coderCopy decodeIntegerForKey:@"audioInterruptionOperationMode"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x80000) != 0)
     {
-      v5->_verificationStatus = [v4 decodeIntegerForKey:@"verificationStatus"];
+      v5->_verificationStatus = [coderCopy decodeIntegerForKey:@"verificationStatus"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x100000) != 0)
     {
-      v5->_priority = [v4 decodeIntegerForKey:@"priority"];
+      v5->_priority = [coderCopy decodeIntegerForKey:@"priority"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x200000) != 0)
     {
-      v5->_requiresInCallSounds = [v4 decodeBoolForKey:@"requiresInCallSounds"];
+      v5->_requiresInCallSounds = [coderCopy decodeBoolForKey:@"requiresInCallSounds"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x400000) != 0)
     {
-      v5->_inCallSoundRegion = [v4 decodeIntegerForKey:@"inCallSoundRegion"];
+      v5->_inCallSoundRegion = [coderCopy decodeIntegerForKey:@"inCallSoundRegion"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x800000) != 0)
     {
-      v5->_supportsHolding = [v4 decodeBoolForKey:@"supportsHolding"];
+      v5->_supportsHolding = [coderCopy decodeBoolForKey:@"supportsHolding"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x1000000) != 0)
     {
-      v5->_supportsGrouping = [v4 decodeBoolForKey:@"supportsGrouping"];
+      v5->_supportsGrouping = [coderCopy decodeBoolForKey:@"supportsGrouping"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x2000000) != 0)
     {
-      v5->_supportsUngrouping = [v4 decodeBoolForKey:@"supportsUngrouping"];
+      v5->_supportsUngrouping = [coderCopy decodeBoolForKey:@"supportsUngrouping"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x4000000) != 0)
     {
-      v5->_supportsDTMF = [v4 decodeBoolForKey:@"supportsDTMF"];
+      v5->_supportsDTMF = [coderCopy decodeBoolForKey:@"supportsDTMF"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x8000000) != 0)
     {
-      v5->_supportsDTMFUpdates = [v4 decodeBoolForKey:@"supportsDTMFUpdates"];
+      v5->_supportsDTMFUpdates = [coderCopy decodeBoolForKey:@"supportsDTMFUpdates"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x10000000) != 0)
     {
-      v5->_supportsSharePlay = [v4 decodeBoolForKey:@"supportsSharePlay"];
+      v5->_supportsSharePlay = [coderCopy decodeBoolForKey:@"supportsSharePlay"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x20000000) != 0)
     {
-      v5->_supportsScreenShare = [v4 decodeBoolForKey:@"supportsScreenShare"];
+      v5->_supportsScreenShare = [coderCopy decodeBoolForKey:@"supportsScreenShare"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x40000000) != 0)
     {
-      v5->_supportsUnambiguousMultiPartyState = [v4 decodeBoolForKey:@"supportsUnambiguousMultiPartyState"];
+      v5->_supportsUnambiguousMultiPartyState = [coderCopy decodeBoolForKey:@"supportsUnambiguousMultiPartyState"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x80000000) != 0)
     {
-      v5->_supportsAddCall = [v4 decodeBoolForKey:@"supportsAddCall"];
+      v5->_supportsAddCall = [coderCopy decodeBoolForKey:@"supportsAddCall"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x100000000) != 0)
     {
-      v5->_supportsSendingToVoicemail = [v4 decodeBoolForKey:@"supportsSendingToVoicemail"];
+      v5->_supportsSendingToVoicemail = [coderCopy decodeBoolForKey:@"supportsSendingToVoicemail"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x200000000) != 0)
     {
-      v5->_supportsRecording = [v4 decodeBoolForKey:@"supportsRecording"];
+      v5->_supportsRecording = [coderCopy decodeBoolForKey:@"supportsRecording"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x400000000) != 0)
     {
-      v5->_isUnderlyingLinksConnected = [v4 decodeBoolForKey:@"isUnderlyingLinksConnected"];
+      v5->_isUnderlyingLinksConnected = [coderCopy decodeBoolForKey:@"isUnderlyingLinksConnected"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if (v36 < 0)
     {
-      v5->_supportsScreening = [v4 decodeBoolForKey:@"supportsScreening"];
+      v5->_supportsScreening = [coderCopy decodeBoolForKey:@"supportsScreening"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v37 & 0x10000) != 0)
     {
-      v5->_supportsRecents = [v4 decodeBoolForKey:@"supportsRecents"];
+      v5->_supportsRecents = [coderCopy decodeBoolForKey:@"supportsRecents"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x800000000) != 0)
     {
-      v5->_videoStreamToken = [v4 decodeIntegerForKey:@"videoStreamToken"];
+      v5->_videoStreamToken = [coderCopy decodeIntegerForKey:@"videoStreamToken"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x1000000000) != 0)
     {
       v38 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v39 = [v4 decodeObjectOfClasses:v38 forKey:@"callTokens"];
+      v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"callTokens"];
       callTokens = v5->_callTokens;
       v5->_callTokens = v39;
     }
@@ -3890,7 +3890,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x2000000000) != 0)
     {
       v41 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v42 = [v4 decodeObjectOfClasses:v41 forKey:@"announceProviderIdentifier"];
+      v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"announceProviderIdentifier"];
       announceProviderIdentifier = v5->_announceProviderIdentifier;
       v5->_announceProviderIdentifier = v42;
     }
@@ -3898,7 +3898,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x4000000000) != 0)
     {
       v44 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v45 = [v4 decodeObjectOfClasses:v44 forKey:@"initiator"];
+      v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"initiator"];
       initiator = v5->_initiator;
       v5->_initiator = v45;
     }
@@ -3906,7 +3906,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x8000000000) != 0)
     {
       v47 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v48 = [v4 decodeObjectOfClasses:v47 forKey:@"crossDeviceIdentifier"];
+      v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"crossDeviceIdentifier"];
       crossDeviceIdentifier = v5->_crossDeviceIdentifier;
       v5->_crossDeviceIdentifier = v48;
     }
@@ -3914,7 +3914,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x10000000000) != 0)
     {
       v50 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v51 = [v4 decodeObjectOfClasses:v50 forKey:@"ISOCountryCode"];
+      v51 = [coderCopy decodeObjectOfClasses:v50 forKey:@"ISOCountryCode"];
       ISOCountryCode = v5->_ISOCountryCode;
       v5->_ISOCountryCode = v51;
     }
@@ -3922,7 +3922,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x20000000000) != 0)
     {
       v53 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v54 = [v4 decodeObjectOfClasses:v53 forKey:@"localSenderIdentityUUID"];
+      v54 = [coderCopy decodeObjectOfClasses:v53 forKey:@"localSenderIdentityUUID"];
       localSenderIdentityUUID = v5->_localSenderIdentityUUID;
       v5->_localSenderIdentityUUID = v54;
     }
@@ -3930,7 +3930,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x40000000000) != 0)
     {
       v56 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v57 = [v4 decodeObjectOfClasses:v56 forKey:@"localSenderIdentityAccountUUID"];
+      v57 = [coderCopy decodeObjectOfClasses:v56 forKey:@"localSenderIdentityAccountUUID"];
       localSenderIdentityAccountUUID = v5->_localSenderIdentityAccountUUID;
       v5->_localSenderIdentityAccountUUID = v57;
     }
@@ -3938,7 +3938,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x80000000000) != 0)
     {
       v59 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v60 = [v4 decodeObjectOfClasses:v59 forKey:@"localMemberHandleValue"];
+      v60 = [coderCopy decodeObjectOfClasses:v59 forKey:@"localMemberHandleValue"];
       localMemberHandleValue = v5->_localMemberHandleValue;
       v5->_localMemberHandleValue = v60;
     }
@@ -3946,7 +3946,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x100000000000) != 0)
     {
       v62 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v63 = [v4 decodeObjectOfClasses:v62 forKey:@"localSenderSubscriptionIdentifier"];
+      v63 = [coderCopy decodeObjectOfClasses:v62 forKey:@"localSenderSubscriptionIdentifier"];
       localSenderSubscriptionIdentifier = v5->_localSenderSubscriptionIdentifier;
       v5->_localSenderSubscriptionIdentifier = v63;
     }
@@ -3954,7 +3954,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x200000000000) != 0)
     {
       v65 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v66 = [v4 decodeObjectOfClasses:v65 forKey:@"participantGroupUUID"];
+      v66 = [coderCopy decodeObjectOfClasses:v65 forKey:@"participantGroupUUID"];
       participantGroupUUID = v5->_participantGroupUUID;
       v5->_participantGroupUUID = v66;
     }
@@ -3964,7 +3964,7 @@
       v68 = MEMORY[0x1E695DFD8];
       v69 = objc_opt_class();
       v70 = [v68 setWithObjects:{v69, objc_opt_class(), 0}];
-      v71 = [v4 decodeObjectOfClasses:v70 forKey:@"remoteParticipantHandles"];
+      v71 = [coderCopy decodeObjectOfClasses:v70 forKey:@"remoteParticipantHandles"];
       remoteParticipantHandles = v5->_remoteParticipantHandles;
       v5->_remoteParticipantHandles = v71;
     }
@@ -3974,7 +3974,7 @@
       v73 = MEMORY[0x1E695DFD8];
       v74 = objc_opt_class();
       v75 = [v73 setWithObjects:{v74, objc_opt_class(), 0}];
-      v76 = [v4 decodeObjectOfClasses:v75 forKey:@"otherInvitedHandles"];
+      v76 = [coderCopy decodeObjectOfClasses:v75 forKey:@"otherInvitedHandles"];
       otherInvitedHandles = v5->_otherInvitedHandles;
       v5->_otherInvitedHandles = v76;
     }
@@ -3984,7 +3984,7 @@
       v78 = MEMORY[0x1E695DFD8];
       v79 = objc_opt_class();
       v80 = [v78 setWithObjects:{v79, objc_opt_class(), 0}];
-      v81 = [v4 decodeObjectOfClasses:v80 forKey:@"activeRemoteParticipantHandles"];
+      v81 = [coderCopy decodeObjectOfClasses:v80 forKey:@"activeRemoteParticipantHandles"];
       activeRemoteParticipantHandles = v5->_activeRemoteParticipantHandles;
       v5->_activeRemoteParticipantHandles = v81;
     }
@@ -3992,7 +3992,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x2000000000000) != 0)
     {
       v83 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v84 = [v4 decodeObjectOfClasses:v83 forKey:@"handoffContext"];
+      v84 = [coderCopy decodeObjectOfClasses:v83 forKey:@"handoffContext"];
       handoffContext = v5->_handoffContext;
       v5->_handoffContext = v84;
     }
@@ -4000,7 +4000,7 @@
     if (([(CXCallUpdate *)v5 hasSet]& 0x4000000000000) != 0)
     {
       v86 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v87 = [v4 decodeObjectOfClasses:v86 forKey:@"screenShareAttributes"];
+      v87 = [coderCopy decodeObjectOfClasses:v86 forKey:@"screenShareAttributes"];
       screenShareAttributes = v5->_screenShareAttributes;
       v5->_screenShareAttributes = v87;
     }
@@ -4014,152 +4014,152 @@
       v93 = objc_opt_class();
       v131 = objc_opt_class();
       v94 = [v89 setWithObjects:{v90, v91, v92, v93, v131, objc_opt_class(), 0}];
-      v95 = [v4 decodeObjectOfClasses:v94 forKey:@"context"];
+      v95 = [coderCopy decodeObjectOfClasses:v94 forKey:@"context"];
       context = v5->_context;
       v5->_context = v95;
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x10000000000000) != 0)
     {
-      v5->_prefersExclusiveAccessToCellularNetwork = [v4 decodeBoolForKey:@"prefersExclusiveAccessToCellularNetwork"];
+      v5->_prefersExclusiveAccessToCellularNetwork = [coderCopy decodeBoolForKey:@"prefersExclusiveAccessToCellularNetwork"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x800) != 0)
     {
-      v5->_supportsTTYWithVoice = [v4 decodeBoolForKey:@"supportsTTYWithVoice"];
+      v5->_supportsTTYWithVoice = [coderCopy decodeBoolForKey:@"supportsTTYWithVoice"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x20000000000000) != 0)
     {
-      v5->_remoteUplinkMuted = [v4 decodeBoolForKey:@"remoteUplinkMuted"];
+      v5->_remoteUplinkMuted = [coderCopy decodeBoolForKey:@"remoteUplinkMuted"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x40000000000000) != 0)
     {
-      v5->_shouldSuppressInCallUI = [v4 decodeBoolForKey:@"shouldSuppressInCallUI"];
+      v5->_shouldSuppressInCallUI = [coderCopy decodeBoolForKey:@"shouldSuppressInCallUI"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v97 & 0x2000000) != 0)
     {
-      v5->_startCallMuted = [v4 decodeBoolForKey:@"startCallMuted"];
+      v5->_startCallMuted = [coderCopy decodeBoolForKey:@"startCallMuted"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x80000000000000) != 0)
     {
-      v5->_launchInBackground = [v4 decodeBoolForKey:@"launchInBackground"];
+      v5->_launchInBackground = [coderCopy decodeBoolForKey:@"launchInBackground"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x100000000000000) != 0)
     {
-      v5->_requiresAuthentication = [v4 decodeBoolForKey:@"requiresAuthentication"];
+      v5->_requiresAuthentication = [coderCopy decodeBoolForKey:@"requiresAuthentication"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x200000000000000) != 0)
     {
-      v5->_mutuallyExclusiveCall = [v4 decodeBoolForKey:@"mutuallyExclusiveCall"];
+      v5->_mutuallyExclusiveCall = [coderCopy decodeBoolForKey:@"mutuallyExclusiveCall"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x400000000000000) != 0)
     {
-      v5->_junkConfidence = [v4 decodeIntegerForKey:@"junkConfidence"];
+      v5->_junkConfidence = [coderCopy decodeIntegerForKey:@"junkConfidence"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v98 & 0x4000) != 0)
     {
-      v5->_callSubType = [v4 decodeIntegerForKey:@"callSubType"];
+      v5->_callSubType = [coderCopy decodeIntegerForKey:@"callSubType"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x800000000000000) != 0)
     {
-      v5->_identificationCategory = [v4 decodeIntegerForKey:@"identificationCategory"];
+      v5->_identificationCategory = [coderCopy decodeIntegerForKey:@"identificationCategory"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x1000000000000000) != 0)
     {
-      v5->_conversation = [v4 decodeBoolForKey:@"conversation"];
+      v5->_conversation = [coderCopy decodeBoolForKey:@"conversation"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x2000000000000000) != 0)
     {
-      v5->_mixesVoiceWithMedia = [v4 decodeBoolForKey:@"mixesVoiceWithMedia"];
+      v5->_mixesVoiceWithMedia = [coderCopy decodeBoolForKey:@"mixesVoiceWithMedia"];
     }
 
     if (([(CXCallUpdate *)v5 hasSet]& 0x4000000000000000) != 0)
     {
-      v5->_prefersToPlayDuringWombat = [v4 decodeBoolForKey:@"prefersToPlayDuringWombat"];
+      v5->_prefersToPlayDuringWombat = [coderCopy decodeBoolForKey:@"prefersToPlayDuringWombat"];
     }
 
     if ([(CXCallUpdate *)v5 hasSet]< 0)
     {
-      v5->_mediaPlaybackOnExternalDevice = [v4 decodeBoolForKey:@"mediaPlaybackOnExternalDevice"];
+      v5->_mediaPlaybackOnExternalDevice = [coderCopy decodeBoolForKey:@"mediaPlaybackOnExternalDevice"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v99 & 8) != 0)
     {
-      v5->_ignoresBluetoothDeviceUID = [v4 decodeBoolForKey:@"ignoresBluetoothDeviceUID"];
+      v5->_ignoresBluetoothDeviceUID = [coderCopy decodeBoolForKey:@"ignoresBluetoothDeviceUID"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v100 & 2) != 0)
     {
-      v5->_sharingScreen = [v4 decodeBoolForKey:@"sharingScreen"];
+      v5->_sharingScreen = [coderCopy decodeBoolForKey:@"sharingScreen"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v101 & 0x10) != 0)
     {
-      v5->_serviceStatus = [v4 decodeIntegerForKey:@"serviceStatus"];
+      v5->_serviceStatus = [coderCopy decodeIntegerForKey:@"serviceStatus"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v102 & 0x20) != 0)
     {
-      v5->_transmissionMode = [v4 decodeIntegerForKey:@"transmissionMode"];
+      v5->_transmissionMode = [coderCopy decodeIntegerForKey:@"transmissionMode"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v103 & 0x40) != 0)
     {
-      v5->_accessoryButtonEventsEnabled = [v4 decodeBoolForKey:@"accessoryButtonEventsEnabled"];
+      v5->_accessoryButtonEventsEnabled = [coderCopy decodeBoolForKey:@"accessoryButtonEventsEnabled"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if (v104 < 0)
     {
-      v5->_sendingVideo = [v4 decodeBoolForKey:@"sendingVideo"];
+      v5->_sendingVideo = [coderCopy decodeBoolForKey:@"sendingVideo"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v105 & 0x1000) != 0)
     {
-      v5->_isReRing = [v4 decodeBoolForKey:@"isReRing"];
+      v5->_isReRing = [coderCopy decodeBoolForKey:@"isReRing"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v106 & 0x2000) != 0)
     {
-      v5->_suppressRingtone = [v4 decodeBoolForKey:@"suppressRingtone"];
+      v5->_suppressRingtone = [coderCopy decodeBoolForKey:@"suppressRingtone"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v107 & 0x100) != 0)
     {
-      v5->_hasBeenRedirected = [v4 decodeBoolForKey:@"hasBeenRedirected"];
+      v5->_hasBeenRedirected = [coderCopy decodeBoolForKey:@"hasBeenRedirected"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v108 & 0x200) != 0)
     {
-      v5->_isKnownCaller = [v4 decodeBoolForKey:@"isKnownCaller"];
+      v5->_isKnownCaller = [coderCopy decodeBoolForKey:@"isKnownCaller"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v109 & 0x400) != 0)
     {
-      v5->_filteredOutReason = [v4 decodeIntegerForKey:@"filteredOutReason"];
+      v5->_filteredOutReason = [coderCopy decodeIntegerForKey:@"filteredOutReason"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
@@ -4169,7 +4169,7 @@
       v112 = objc_opt_class();
       v113 = objc_opt_class();
       v114 = [v111 setWithObjects:{v112, v113, objc_opt_class(), 0}];
-      v115 = [v4 decodeObjectOfClasses:v114 forKey:@"silencingUserInfo"];
+      v115 = [coderCopy decodeObjectOfClasses:v114 forKey:@"silencingUserInfo"];
       silencingUserInfo = v5->_silencingUserInfo;
       v5->_silencingUserInfo = v115;
     }
@@ -4177,50 +4177,50 @@
     [(CXCallUpdate *)v5 hasSet];
     if ((v117 & 0x20000) != 0)
     {
-      v5->_screenSharingIntention = [v4 decodeIntegerForKey:@"screenSharingIntention"];
+      v5->_screenSharingIntention = [coderCopy decodeIntegerForKey:@"screenSharingIntention"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v118 & 0x40000) != 0)
     {
-      v5->_screenSharingType = [v4 decodeIntegerForKey:@"screenSharingType"];
+      v5->_screenSharingType = [coderCopy decodeIntegerForKey:@"screenSharingType"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v119 & 0x80000) != 0)
     {
-      v5->_isSharePlayCapable = [v4 decodeBoolForKey:@"isSharePlayCapable"];
+      v5->_isSharePlayCapable = [coderCopy decodeBoolForKey:@"isSharePlayCapable"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v120 & 0x100000) != 0)
     {
-      v5->_anyRemoteSupportsRequestToScreenShare = [v4 decodeBoolForKey:@"anyRemoteSupportsRequestToScreenShare"];
+      v5->_anyRemoteSupportsRequestToScreenShare = [coderCopy decodeBoolForKey:@"anyRemoteSupportsRequestToScreenShare"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v121 & 0x200000) != 0)
     {
-      v5->_nearbyMode = [v4 decodeBoolForKey:@"nearbyMode"];
+      v5->_nearbyMode = [coderCopy decodeBoolForKey:@"nearbyMode"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v122 & 0x400000) != 0)
     {
-      v5->_commTrustScore = [v4 decodeIntegerForKey:@"commTrustScore"];
+      v5->_commTrustScore = [coderCopy decodeIntegerForKey:@"commTrustScore"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v123 & 0x800000) != 0)
     {
-      v5->_specialUnknown = [v4 decodeBoolForKey:@"specialUnknown"];
+      v5->_specialUnknown = [coderCopy decodeBoolForKey:@"specialUnknown"];
     }
 
     [(CXCallUpdate *)v5 hasSet];
     if ((v124 & 0x1000000) != 0)
     {
       v125 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v126 = [v4 decodeObjectOfClasses:v125 forKey:@"conversationGroupUUID"];
+      v126 = [coderCopy decodeObjectOfClasses:v125 forKey:@"conversationGroupUUID"];
       conversationGroupUUID = v5->_conversationGroupUUID;
       v5->_conversationGroupUUID = v126;
     }
@@ -4228,7 +4228,7 @@
     [(CXCallUpdate *)v5 hasSet];
     if ((v128 & 0x4000000) != 0)
     {
-      v5->_shouldSilentlyRegisterIMAVCall = [v4 decodeBoolForKey:@"shouldSilentlyRegisterIMAVCall"];
+      v5->_shouldSilentlyRegisterIMAVCall = [coderCopy decodeBoolForKey:@"shouldSilentlyRegisterIMAVCall"];
     }
   }
 
@@ -4238,509 +4238,509 @@ LABEL_185:
   return v129;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v57 = a3;
-  v4 = [(CXCallUpdate *)self UUID];
+  coderCopy = coder;
+  uUID = [(CXCallUpdate *)self UUID];
   v5 = NSStringFromSelector(sel_UUID);
-  [v57 encodeObject:v4 forKey:v5];
+  [coderCopy encodeObject:uUID forKey:v5];
 
   v6 = NSStringFromSelector(sel_hasSet);
-  [v57 encodeBytes:&self->_hasSet length:12 forKey:v6];
+  [coderCopy encodeBytes:&self->_hasSet length:12 forKey:v6];
 
   if (([(CXCallUpdate *)self hasSet]& 1) != 0)
   {
-    v7 = [(CXCallUpdate *)self account];
-    [v57 encodeObject:v7 forKey:@"account"];
+    account = [(CXCallUpdate *)self account];
+    [coderCopy encodeObject:account forKey:@"account"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 2) != 0)
   {
-    v8 = [(CXCallUpdate *)self activeRemoteParticipant];
-    [v57 encodeObject:v8 forKey:@"activeRemoteParticipant"];
+    activeRemoteParticipant = [(CXCallUpdate *)self activeRemoteParticipant];
+    [coderCopy encodeObject:activeRemoteParticipant forKey:@"activeRemoteParticipant"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 4) != 0)
   {
-    v9 = [(CXCallUpdate *)self remoteMember];
-    [v57 encodeObject:v9 forKey:@"remoteMember"];
+    remoteMember = [(CXCallUpdate *)self remoteMember];
+    [coderCopy encodeObject:remoteMember forKey:@"remoteMember"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 8) != 0)
   {
-    v10 = [(CXCallUpdate *)self localizedCallerName];
-    [v57 encodeObject:v10 forKey:@"localizedCallerName"];
+    localizedCallerName = [(CXCallUpdate *)self localizedCallerName];
+    [coderCopy encodeObject:localizedCallerName forKey:@"localizedCallerName"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10) != 0)
   {
-    v11 = [(CXCallUpdate *)self localizedCallerImageURL];
-    [v57 encodeObject:v11 forKey:@"localizedCallerImageURL"];
+    localizedCallerImageURL = [(CXCallUpdate *)self localizedCallerImageURL];
+    [coderCopy encodeObject:localizedCallerImageURL forKey:@"localizedCallerImageURL"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isEmergency](self forKey:{"isEmergency"), @"emergency"}];
+    [coderCopy encodeBool:-[CXCallUpdate isEmergency](self forKey:{"isEmergency"), @"emergency"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isFailureExpected](self forKey:{"isFailureExpected"), @"failureExpected"}];
+    [coderCopy encodeBool:-[CXCallUpdate isFailureExpected](self forKey:{"isFailureExpected"), @"failureExpected"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsEmergencyFallback](self forKey:{"supportsEmergencyFallback"), @"supportsEmergencyFallback"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsEmergencyFallback](self forKey:{"supportsEmergencyFallback"), @"supportsEmergencyFallback"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isUsingBaseband](self forKey:{"isUsingBaseband"), @"usingBaseband"}];
+    [coderCopy encodeBool:-[CXCallUpdate isUsingBaseband](self forKey:{"isUsingBaseband"), @"usingBaseband"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isBlocked](self forKey:{"isBlocked"), @"blocked"}];
+    [coderCopy encodeBool:-[CXCallUpdate isBlocked](self forKey:{"isBlocked"), @"blocked"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate ttyType](self forKey:{"ttyType"), @"ttyType"}];
+    [coderCopy encodeInteger:-[CXCallUpdate ttyType](self forKey:{"ttyType"), @"ttyType"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v12 & 4) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate bluetoothAudioFormat](self forKey:{"bluetoothAudioFormat"), @"bluetoothAudioFormat"}];
+    [coderCopy encodeInteger:-[CXCallUpdate bluetoothAudioFormat](self forKey:{"bluetoothAudioFormat"), @"bluetoothAudioFormat"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate mayRequireBreakBeforeMake](self forKey:{"mayRequireBreakBeforeMake"), @"mayRequireBreakBeforeMake"}];
+    [coderCopy encodeBool:-[CXCallUpdate mayRequireBreakBeforeMake](self forKey:{"mayRequireBreakBeforeMake"), @"mayRequireBreakBeforeMake"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate hasVideo](self forKey:{"hasVideo"), @"hasVideo"}];
+    [coderCopy encodeBool:-[CXCallUpdate hasVideo](self forKey:{"hasVideo"), @"hasVideo"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isUpgradeToVideo](self forKey:{"isUpgradeToVideo"), @"isUpgradeToVideo"}];
+    [coderCopy encodeBool:-[CXCallUpdate isUpgradeToVideo](self forKey:{"isUpgradeToVideo"), @"isUpgradeToVideo"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000) != 0)
   {
-    v13 = [(CXCallUpdate *)self audioCategory];
-    [v57 encodeObject:v13 forKey:@"audioCategory"];
+    audioCategory = [(CXCallUpdate *)self audioCategory];
+    [coderCopy encodeObject:audioCategory forKey:@"audioCategory"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000) != 0)
   {
-    v14 = [(CXCallUpdate *)self audioMode];
-    [v57 encodeObject:v14 forKey:@"audioMode"];
+    audioMode = [(CXCallUpdate *)self audioMode];
+    [coderCopy encodeObject:audioMode forKey:@"audioMode"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate audioInterruptionProvider](self forKey:{"audioInterruptionProvider"), @"audioInterruptionProvider"}];
+    [coderCopy encodeInteger:-[CXCallUpdate audioInterruptionProvider](self forKey:{"audioInterruptionProvider"), @"audioInterruptionProvider"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate audioInterruptionOperationMode](self forKey:{"audioInterruptionOperationMode"), @"audioInterruptionOperationMode"}];
+    [coderCopy encodeInteger:-[CXCallUpdate audioInterruptionOperationMode](self forKey:{"audioInterruptionOperationMode"), @"audioInterruptionOperationMode"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate verificationStatus](self forKey:{"verificationStatus"), @"verificationStatus"}];
+    [coderCopy encodeInteger:-[CXCallUpdate verificationStatus](self forKey:{"verificationStatus"), @"verificationStatus"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate priority](self forKey:{"priority"), @"priority"}];
+    [coderCopy encodeInteger:-[CXCallUpdate priority](self forKey:{"priority"), @"priority"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate requiresInCallSounds](self forKey:{"requiresInCallSounds"), @"requiresInCallSounds"}];
+    [coderCopy encodeBool:-[CXCallUpdate requiresInCallSounds](self forKey:{"requiresInCallSounds"), @"requiresInCallSounds"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate inCallSoundRegion](self forKey:{"inCallSoundRegion"), @"inCallSoundRegion"}];
+    [coderCopy encodeInteger:-[CXCallUpdate inCallSoundRegion](self forKey:{"inCallSoundRegion"), @"inCallSoundRegion"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsHolding](self forKey:{"supportsHolding"), @"supportsHolding"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsHolding](self forKey:{"supportsHolding"), @"supportsHolding"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsGrouping](self forKey:{"supportsGrouping"), @"supportsGrouping"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsGrouping](self forKey:{"supportsGrouping"), @"supportsGrouping"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsUngrouping](self forKey:{"supportsUngrouping"), @"supportsUngrouping"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsUngrouping](self forKey:{"supportsUngrouping"), @"supportsUngrouping"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsDTMF](self forKey:{"supportsDTMF"), @"supportsDTMF"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsDTMF](self forKey:{"supportsDTMF"), @"supportsDTMF"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsDTMFUpdates](self forKey:{"supportsDTMFUpdates"), @"supportsDTMFUpdates"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsDTMFUpdates](self forKey:{"supportsDTMFUpdates"), @"supportsDTMFUpdates"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsSharePlay](self forKey:{"supportsSharePlay"), @"supportsSharePlay"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsSharePlay](self forKey:{"supportsSharePlay"), @"supportsSharePlay"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsScreenShare](self forKey:{"supportsScreenShare"), @"supportsScreenShare"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsScreenShare](self forKey:{"supportsScreenShare"), @"supportsScreenShare"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsUnambiguousMultiPartyState](self forKey:{"supportsUnambiguousMultiPartyState"), @"supportsUnambiguousMultiPartyState"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsUnambiguousMultiPartyState](self forKey:{"supportsUnambiguousMultiPartyState"), @"supportsUnambiguousMultiPartyState"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsAddCall](self forKey:{"supportsAddCall"), @"supportsAddCall"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsAddCall](self forKey:{"supportsAddCall"), @"supportsAddCall"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsSendingToVoicemail](self forKey:{"supportsSendingToVoicemail"), @"supportsSendingToVoicemail"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsSendingToVoicemail](self forKey:{"supportsSendingToVoicemail"), @"supportsSendingToVoicemail"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsRecording](self forKey:{"supportsRecording"), @"supportsRecording"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsRecording](self forKey:{"supportsRecording"), @"supportsRecording"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isUnderlyingLinksConnected](self forKey:{"isUnderlyingLinksConnected"), @"isUnderlyingLinksConnected"}];
+    [coderCopy encodeBool:-[CXCallUpdate isUnderlyingLinksConnected](self forKey:{"isUnderlyingLinksConnected"), @"isUnderlyingLinksConnected"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if (v15 < 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsScreening](self forKey:{"supportsScreening"), @"supportsScreening"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsScreening](self forKey:{"supportsScreening"), @"supportsScreening"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v16 & 0x10000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsRecents](self forKey:{"supportsRecents"), @"supportsRecents"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsRecents](self forKey:{"supportsRecents"), @"supportsRecents"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate videoStreamToken](self forKey:{"videoStreamToken"), @"videoStreamToken"}];
+    [coderCopy encodeInteger:-[CXCallUpdate videoStreamToken](self forKey:{"videoStreamToken"), @"videoStreamToken"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000) != 0)
   {
-    v17 = [(CXCallUpdate *)self callTokens];
-    [v57 encodeObject:v17 forKey:@"callTokens"];
+    callTokens = [(CXCallUpdate *)self callTokens];
+    [coderCopy encodeObject:callTokens forKey:@"callTokens"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000) != 0)
   {
-    v18 = [(CXCallUpdate *)self announceProviderIdentifier];
-    [v57 encodeObject:v18 forKey:@"announceProviderIdentifier"];
+    announceProviderIdentifier = [(CXCallUpdate *)self announceProviderIdentifier];
+    [coderCopy encodeObject:announceProviderIdentifier forKey:@"announceProviderIdentifier"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000) != 0)
   {
-    v19 = [(CXCallUpdate *)self initiator];
-    [v57 encodeObject:v19 forKey:@"initiator"];
+    initiator = [(CXCallUpdate *)self initiator];
+    [coderCopy encodeObject:initiator forKey:@"initiator"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000000) != 0)
   {
-    v20 = [(CXCallUpdate *)self crossDeviceIdentifier];
-    [v57 encodeObject:v20 forKey:@"crossDeviceIdentifier"];
+    crossDeviceIdentifier = [(CXCallUpdate *)self crossDeviceIdentifier];
+    [coderCopy encodeObject:crossDeviceIdentifier forKey:@"crossDeviceIdentifier"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000000) != 0)
   {
-    v21 = [(CXCallUpdate *)self ISOCountryCode];
-    [v57 encodeObject:v21 forKey:@"ISOCountryCode"];
+    iSOCountryCode = [(CXCallUpdate *)self ISOCountryCode];
+    [coderCopy encodeObject:iSOCountryCode forKey:@"ISOCountryCode"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000000000) != 0)
   {
-    v22 = [(CXCallUpdate *)self localSenderIdentityUUID];
-    [v57 encodeObject:v22 forKey:@"localSenderIdentityUUID"];
+    localSenderIdentityUUID = [(CXCallUpdate *)self localSenderIdentityUUID];
+    [coderCopy encodeObject:localSenderIdentityUUID forKey:@"localSenderIdentityUUID"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000000000) != 0)
   {
-    v23 = [(CXCallUpdate *)self localSenderIdentityAccountUUID];
-    [v57 encodeObject:v23 forKey:@"localSenderIdentityAccountUUID"];
+    localSenderIdentityAccountUUID = [(CXCallUpdate *)self localSenderIdentityAccountUUID];
+    [coderCopy encodeObject:localSenderIdentityAccountUUID forKey:@"localSenderIdentityAccountUUID"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000000000) != 0)
   {
-    v24 = [(CXCallUpdate *)self localMemberHandleValue];
-    [v57 encodeObject:v24 forKey:@"localMemberHandleValue"];
+    localMemberHandleValue = [(CXCallUpdate *)self localMemberHandleValue];
+    [coderCopy encodeObject:localMemberHandleValue forKey:@"localMemberHandleValue"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000000) != 0)
   {
-    v25 = [(CXCallUpdate *)self localSenderSubscriptionIdentifier];
-    [v57 encodeObject:v25 forKey:@"localSenderSubscriptionIdentifier"];
+    localSenderSubscriptionIdentifier = [(CXCallUpdate *)self localSenderSubscriptionIdentifier];
+    [coderCopy encodeObject:localSenderSubscriptionIdentifier forKey:@"localSenderSubscriptionIdentifier"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000000000) != 0)
   {
-    v26 = [(CXCallUpdate *)self participantGroupUUID];
-    [v57 encodeObject:v26 forKey:@"participantGroupUUID"];
+    participantGroupUUID = [(CXCallUpdate *)self participantGroupUUID];
+    [coderCopy encodeObject:participantGroupUUID forKey:@"participantGroupUUID"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000000) != 0)
   {
-    v27 = [(CXCallUpdate *)self remoteParticipantHandles];
-    [v57 encodeObject:v27 forKey:@"remoteParticipantHandles"];
+    remoteParticipantHandles = [(CXCallUpdate *)self remoteParticipantHandles];
+    [coderCopy encodeObject:remoteParticipantHandles forKey:@"remoteParticipantHandles"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000000000) != 0)
   {
-    v28 = [(CXCallUpdate *)self otherInvitedHandles];
-    [v57 encodeObject:v28 forKey:@"otherInvitedHandles"];
+    otherInvitedHandles = [(CXCallUpdate *)self otherInvitedHandles];
+    [coderCopy encodeObject:otherInvitedHandles forKey:@"otherInvitedHandles"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000000) != 0)
   {
-    v29 = [(CXCallUpdate *)self activeRemoteParticipantHandles];
-    [v57 encodeObject:v29 forKey:@"activeRemoteParticipantHandles"];
+    activeRemoteParticipantHandles = [(CXCallUpdate *)self activeRemoteParticipantHandles];
+    [coderCopy encodeObject:activeRemoteParticipantHandles forKey:@"activeRemoteParticipantHandles"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000000) != 0)
   {
-    v30 = [(CXCallUpdate *)self handoffContext];
-    [v57 encodeObject:v30 forKey:@"handoffContext"];
+    handoffContext = [(CXCallUpdate *)self handoffContext];
+    [coderCopy encodeObject:handoffContext forKey:@"handoffContext"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000000) != 0)
   {
-    v31 = [(CXCallUpdate *)self screenShareAttributes];
-    [v57 encodeObject:v31 forKey:@"screenShareAttributes"];
+    screenShareAttributes = [(CXCallUpdate *)self screenShareAttributes];
+    [coderCopy encodeObject:screenShareAttributes forKey:@"screenShareAttributes"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x8000000000000) != 0)
   {
-    v32 = [(CXCallUpdate *)self context];
-    [v57 encodeObject:v32 forKey:@"context"];
+    context = [(CXCallUpdate *)self context];
+    [coderCopy encodeObject:context forKey:@"context"];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x10000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate prefersExclusiveAccessToCellularNetwork](self forKey:{"prefersExclusiveAccessToCellularNetwork"), @"prefersExclusiveAccessToCellularNetwork"}];
+    [coderCopy encodeBool:-[CXCallUpdate prefersExclusiveAccessToCellularNetwork](self forKey:{"prefersExclusiveAccessToCellularNetwork"), @"prefersExclusiveAccessToCellularNetwork"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate supportsTTYWithVoice](self forKey:{"supportsTTYWithVoice"), @"supportsTTYWithVoice"}];
+    [coderCopy encodeBool:-[CXCallUpdate supportsTTYWithVoice](self forKey:{"supportsTTYWithVoice"), @"supportsTTYWithVoice"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x20000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isRemoteUplinkMuted](self forKey:{"isRemoteUplinkMuted"), @"remoteUplinkMuted"}];
+    [coderCopy encodeBool:-[CXCallUpdate isRemoteUplinkMuted](self forKey:{"isRemoteUplinkMuted"), @"remoteUplinkMuted"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x40000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate shouldSuppressInCallUI](self forKey:{"shouldSuppressInCallUI"), @"shouldSuppressInCallUI"}];
+    [coderCopy encodeBool:-[CXCallUpdate shouldSuppressInCallUI](self forKey:{"shouldSuppressInCallUI"), @"shouldSuppressInCallUI"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v33 & 0x2000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate startCallMuted](self forKey:{"startCallMuted"), @"startCallMuted"}];
+    [coderCopy encodeBool:-[CXCallUpdate startCallMuted](self forKey:{"startCallMuted"), @"startCallMuted"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x80000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate launchInBackground](self forKey:{"launchInBackground"), @"launchInBackground"}];
+    [coderCopy encodeBool:-[CXCallUpdate launchInBackground](self forKey:{"launchInBackground"), @"launchInBackground"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x100000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate requiresAuthentication](self forKey:{"requiresAuthentication"), @"requiresAuthentication"}];
+    [coderCopy encodeBool:-[CXCallUpdate requiresAuthentication](self forKey:{"requiresAuthentication"), @"requiresAuthentication"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x200000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isMutuallyExclusiveCall](self forKey:{"isMutuallyExclusiveCall"), @"mutuallyExclusiveCall"}];
+    [coderCopy encodeBool:-[CXCallUpdate isMutuallyExclusiveCall](self forKey:{"isMutuallyExclusiveCall"), @"mutuallyExclusiveCall"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x400000000000000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate junkConfidence](self forKey:{"junkConfidence"), @"junkConfidence"}];
+    [coderCopy encodeInteger:-[CXCallUpdate junkConfidence](self forKey:{"junkConfidence"), @"junkConfidence"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v34 & 0x4000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate callSubType](self forKey:{"callSubType"), @"callSubType"}];
+    [coderCopy encodeInteger:-[CXCallUpdate callSubType](self forKey:{"callSubType"), @"callSubType"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x800000000000000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate identificationCategory](self forKey:{"identificationCategory"), @"identificationCategory"}];
+    [coderCopy encodeInteger:-[CXCallUpdate identificationCategory](self forKey:{"identificationCategory"), @"identificationCategory"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x1000000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isConversation](self forKey:{"isConversation"), @"conversation"}];
+    [coderCopy encodeBool:-[CXCallUpdate isConversation](self forKey:{"isConversation"), @"conversation"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x2000000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate mixesVoiceWithMedia](self forKey:{"mixesVoiceWithMedia"), @"mixesVoiceWithMedia"}];
+    [coderCopy encodeBool:-[CXCallUpdate mixesVoiceWithMedia](self forKey:{"mixesVoiceWithMedia"), @"mixesVoiceWithMedia"}];
   }
 
   if (([(CXCallUpdate *)self hasSet]& 0x4000000000000000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate prefersToPlayDuringWombat](self forKey:{"prefersToPlayDuringWombat"), @"prefersToPlayDuringWombat"}];
+    [coderCopy encodeBool:-[CXCallUpdate prefersToPlayDuringWombat](self forKey:{"prefersToPlayDuringWombat"), @"prefersToPlayDuringWombat"}];
   }
 
   if ([(CXCallUpdate *)self hasSet]< 0)
   {
-    [v57 encodeBool:-[CXCallUpdate mediaPlaybackOnExternalDevice](self forKey:{"mediaPlaybackOnExternalDevice"), @"mediaPlaybackOnExternalDevice"}];
+    [coderCopy encodeBool:-[CXCallUpdate mediaPlaybackOnExternalDevice](self forKey:{"mediaPlaybackOnExternalDevice"), @"mediaPlaybackOnExternalDevice"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v35 & 8) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate ignoresBluetoothDeviceUID](self forKey:{"ignoresBluetoothDeviceUID"), @"ignoresBluetoothDeviceUID"}];
+    [coderCopy encodeBool:-[CXCallUpdate ignoresBluetoothDeviceUID](self forKey:{"ignoresBluetoothDeviceUID"), @"ignoresBluetoothDeviceUID"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v36 & 2) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isSharingScreen](self forKey:{"isSharingScreen"), @"sharingScreen"}];
+    [coderCopy encodeBool:-[CXCallUpdate isSharingScreen](self forKey:{"isSharingScreen"), @"sharingScreen"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v37 & 0x10) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate serviceStatus](self forKey:{"serviceStatus"), @"serviceStatus"}];
+    [coderCopy encodeInteger:-[CXCallUpdate serviceStatus](self forKey:{"serviceStatus"), @"serviceStatus"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v38 & 0x20) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate transmissionMode](self forKey:{"transmissionMode"), @"transmissionMode"}];
+    [coderCopy encodeInteger:-[CXCallUpdate transmissionMode](self forKey:{"transmissionMode"), @"transmissionMode"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v39 & 0x40) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate accessoryButtonEventsEnabled](self forKey:{"accessoryButtonEventsEnabled"), @"accessoryButtonEventsEnabled"}];
+    [coderCopy encodeBool:-[CXCallUpdate accessoryButtonEventsEnabled](self forKey:{"accessoryButtonEventsEnabled"), @"accessoryButtonEventsEnabled"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if (v40 < 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isSendingVideo](self forKey:{"isSendingVideo"), @"sendingVideo"}];
+    [coderCopy encodeBool:-[CXCallUpdate isSendingVideo](self forKey:{"isSendingVideo"), @"sendingVideo"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v41 & 0x1000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isReRing](self forKey:{"isReRing"), @"isReRing"}];
+    [coderCopy encodeBool:-[CXCallUpdate isReRing](self forKey:{"isReRing"), @"isReRing"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v42 & 0x2000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate suppressRingtone](self forKey:{"suppressRingtone"), @"suppressRingtone"}];
+    [coderCopy encodeBool:-[CXCallUpdate suppressRingtone](self forKey:{"suppressRingtone"), @"suppressRingtone"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v43 & 0x100) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate hasBeenRedirected](self forKey:{"hasBeenRedirected"), @"hasBeenRedirected"}];
+    [coderCopy encodeBool:-[CXCallUpdate hasBeenRedirected](self forKey:{"hasBeenRedirected"), @"hasBeenRedirected"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v44 & 0x200) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isKnownCaller](self forKey:{"isKnownCaller"), @"isKnownCaller"}];
+    [coderCopy encodeBool:-[CXCallUpdate isKnownCaller](self forKey:{"isKnownCaller"), @"isKnownCaller"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v45 & 0x400) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate filteredOutReason](self forKey:{"filteredOutReason"), @"filteredOutReason"}];
+    [coderCopy encodeInteger:-[CXCallUpdate filteredOutReason](self forKey:{"filteredOutReason"), @"filteredOutReason"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v46 & 0x20000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate screenSharingIntention](self forKey:{"screenSharingIntention"), @"screenSharingIntention"}];
+    [coderCopy encodeInteger:-[CXCallUpdate screenSharingIntention](self forKey:{"screenSharingIntention"), @"screenSharingIntention"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v47 & 0x800) != 0)
   {
-    v48 = [(CXCallUpdate *)self silencingUserInfo];
-    [v57 encodeObject:v48 forKey:@"silencingUserInfo"];
+    silencingUserInfo = [(CXCallUpdate *)self silencingUserInfo];
+    [coderCopy encodeObject:silencingUserInfo forKey:@"silencingUserInfo"];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v49 & 0x40000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate screenSharingType](self forKey:{"screenSharingType"), @"screenSharingType"}];
+    [coderCopy encodeInteger:-[CXCallUpdate screenSharingType](self forKey:{"screenSharingType"), @"screenSharingType"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v50 & 0x80000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate isSharePlayCapable](self forKey:{"isSharePlayCapable"), @"isSharePlayCapable"}];
+    [coderCopy encodeBool:-[CXCallUpdate isSharePlayCapable](self forKey:{"isSharePlayCapable"), @"isSharePlayCapable"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v51 & 0x100000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate anyRemoteSupportsRequestToScreenShare](self forKey:{"anyRemoteSupportsRequestToScreenShare"), @"anyRemoteSupportsRequestToScreenShare"}];
+    [coderCopy encodeBool:-[CXCallUpdate anyRemoteSupportsRequestToScreenShare](self forKey:{"anyRemoteSupportsRequestToScreenShare"), @"anyRemoteSupportsRequestToScreenShare"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v52 & 0x200000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate nearbyMode](self forKey:{"nearbyMode") != 0, @"nearbyMode"}];
+    [coderCopy encodeBool:-[CXCallUpdate nearbyMode](self forKey:{"nearbyMode") != 0, @"nearbyMode"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v53 & 0x400000) != 0)
   {
-    [v57 encodeInteger:-[CXCallUpdate commTrustScore](self forKey:{"commTrustScore"), @"commTrustScore"}];
+    [coderCopy encodeInteger:-[CXCallUpdate commTrustScore](self forKey:{"commTrustScore"), @"commTrustScore"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v54 & 0x800000) != 0)
   {
-    [v57 encodeBool:-[CXCallUpdate specialUnknown](self forKey:{"specialUnknown"), @"specialUnknown"}];
+    [coderCopy encodeBool:-[CXCallUpdate specialUnknown](self forKey:{"specialUnknown"), @"specialUnknown"}];
   }
 
   [(CXCallUpdate *)self hasSet];
   if ((v55 & 0x1000000) != 0)
   {
-    v56 = [(CXCallUpdate *)self conversationGroupUUID];
-    [v57 encodeObject:v56 forKey:@"conversationGroupUUID"];
+    conversationGroupUUID = [(CXCallUpdate *)self conversationGroupUUID];
+    [coderCopy encodeObject:conversationGroupUUID forKey:@"conversationGroupUUID"];
   }
 }
 

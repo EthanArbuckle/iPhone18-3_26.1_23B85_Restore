@@ -1,11 +1,11 @@
 @interface MFNanoBridgeAlertsFromListController
-- (id)_showAlerts:(id)a3;
-- (id)_sound:(id)a3;
-- (id)_vibration:(id)a3;
+- (id)_showAlerts:(id)alerts;
+- (id)_sound:(id)_sound;
+- (id)_vibration:(id)_vibration;
 - (id)specifiers;
-- (void)_setShowAlerts:(id)a3 withSpecifier:(id)a4;
-- (void)_setSound:(id)a3 withSpecifier:(id)a4;
-- (void)_setVibration:(id)a3 withSpecifier:(id)a4;
+- (void)_setShowAlerts:(id)alerts withSpecifier:(id)specifier;
+- (void)_setSound:(id)sound withSpecifier:(id)specifier;
+- (void)_setVibration:(id)vibration withSpecifier:(id)specifier;
 @end
 
 @implementation MFNanoBridgeAlertsFromListController
@@ -20,16 +20,16 @@
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"SHOW_ALERTS_FROM_FORMAT %@" value:&stru_34FF0 table:@"Main"];
     v8 = OBJC_IVAR___PSViewController__specifier;
-    v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] name];
-    v10 = [NSString stringWithFormat:v7, v9];
+    name = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] name];
+    v10 = [NSString stringWithFormat:v7, name];
     v11 = _ConfigurePSSpecifier(v5, v10, self, "_setShowAlerts:withSpecifier:", "_showAlerts:", 0, 0, 0, 6, 0, 0, 0, 0);
 
     v12 = +[PSSpecifier emptyGroupSpecifier];
     [v5 addObject:v12];
     v13 = [(MFNanoBridgeAlertsFromListController *)self _showAlerts:*&self->PSListController_opaque[v8]];
-    LODWORD(v9) = [v13 BOOLValue];
+    LODWORD(name) = [v13 BOOLValue];
 
-    if (v9)
+    if (name)
     {
       v14 = [NSBundle bundleForClass:objc_opt_class()];
       v15 = [v14 localizedStringForKey:@"SOUND" value:&stru_34FF0 table:@"Main"];
@@ -49,32 +49,32 @@
   return v4;
 }
 
-- (void)_setShowAlerts:(id)a3 withSpecifier:(id)a4
+- (void)_setShowAlerts:(id)alerts withSpecifier:(id)specifier
 {
-  v9 = a3;
-  v5 = [(MFNanoBridgeAlertsFromListController *)self specifier];
-  v6 = [v5 userInfo];
-  [v6 setObject:v9 forKeyedSubscript:BPSNanoBulletinShowsAlerts];
+  alertsCopy = alerts;
+  specifier = [(MFNanoBridgeAlertsFromListController *)self specifier];
+  userInfo = [specifier userInfo];
+  [userInfo setObject:alertsCopy forKeyedSubscript:BPSNanoBulletinShowsAlerts];
 
-  v7 = [(MFNanoBridgeAlertsFromListController *)self parentController];
-  v8 = [(MFNanoBridgeAlertsFromListController *)self specifier];
-  [v7 saveShowAlertsForSpecifier:v8];
+  parentController = [(MFNanoBridgeAlertsFromListController *)self parentController];
+  specifier2 = [(MFNanoBridgeAlertsFromListController *)self specifier];
+  [parentController saveShowAlertsForSpecifier:specifier2];
 
   [(MFNanoBridgeAlertsFromListController *)self reloadSpecifiers];
 }
 
-- (id)_showAlerts:(id)a3
+- (id)_showAlerts:(id)alerts
 {
-  v3 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v4 = [v3 objectForKeyedSubscript:BPSNanoBulletinShowsAlerts];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v4 = [userInfo objectForKeyedSubscript:BPSNanoBulletinShowsAlerts];
 
   return v4;
 }
 
-- (void)_setSound:(id)a3 withSpecifier:(id)a4
+- (void)_setSound:(id)sound withSpecifier:(id)specifier
 {
-  v9 = a3;
-  if ([v9 BOOLValue])
+  soundCopy = sound;
+  if ([soundCopy BOOLValue])
   {
     v5 = 1;
   }
@@ -85,16 +85,16 @@
   }
 
   v6 = +[TLToneManager sharedToneManager];
-  v7 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v8 = [v7 objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v8 = [userInfo objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
   [v6 _setCurrentToneWatchAlertPolicy:v5 forAlertType:5 topic:v8];
 }
 
-- (id)_sound:(id)a3
+- (id)_sound:(id)_sound
 {
   v4 = +[TLToneManager sharedToneManager];
-  v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v6 = [v5 objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v6 = [userInfo objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
   v7 = [v4 _currentToneWatchAlertPolicyForAlertType:5 topic:v6];
 
   v8 = [NSNumber numberWithInt:v7 == &dword_0 + 1];
@@ -102,10 +102,10 @@
   return v8;
 }
 
-- (void)_setVibration:(id)a3 withSpecifier:(id)a4
+- (void)_setVibration:(id)vibration withSpecifier:(id)specifier
 {
-  v9 = a3;
-  if ([v9 BOOLValue])
+  vibrationCopy = vibration;
+  if ([vibrationCopy BOOLValue])
   {
     v5 = 1;
   }
@@ -116,16 +116,16 @@
   }
 
   v6 = +[TLVibrationManager sharedVibrationManager];
-  v7 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v8 = [v7 objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v8 = [userInfo objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
   [v6 _setCurrentVibrationWatchAlertPolicy:v5 forAlertType:5 topic:v8];
 }
 
-- (id)_vibration:(id)a3
+- (id)_vibration:(id)_vibration
 {
   v4 = +[TLVibrationManager sharedVibrationManager];
-  v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v6 = [v5 objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v6 = [userInfo objectForKeyedSubscript:BPSNanoBulletinSubsectionId];
   v7 = [v4 _currentVibrationWatchAlertPolicyForAlertType:5 topic:v6];
 
   v8 = [NSNumber numberWithInt:v7 == &dword_0 + 1];

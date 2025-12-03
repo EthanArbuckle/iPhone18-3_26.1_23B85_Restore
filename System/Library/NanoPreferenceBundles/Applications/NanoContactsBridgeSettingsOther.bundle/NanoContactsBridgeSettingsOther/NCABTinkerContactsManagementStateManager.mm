@@ -1,50 +1,50 @@
 @interface NCABTinkerContactsManagementStateManager
-+ (BOOL)_familyMemberIsEligibleForScreenTime:(id)a3;
-+ (id)managerForBuddyControllerDelegate:(id)a3;
++ (BOOL)_familyMemberIsEligibleForScreenTime:(id)time;
++ (id)managerForBuddyControllerDelegate:(id)delegate;
 - (BOOL)_checkContactsCountStatusNotYetSyncedTimedOut;
 - (BOOL)_shouldRunAgainAfterSyncEnabled_LOCKED;
-- (NCABTinkerContactsManagementStateManager)initWithFamilyMember:(id)a3 autoEnableIfPossible:(BOOL)a4;
+- (NCABTinkerContactsManagementStateManager)initWithFamilyMember:(id)member autoEnableIfPossible:(BOOL)possible;
 - (int)contactsCountStatus;
 - (int)lastKnownContactsManagementState;
-- (void)__contactStoreDidChange:(id)a3;
+- (void)__contactStoreDidChange:(id)change;
 - (void)__contactsSyncRetryNow;
-- (void)__contactsSyncRetryTimer:(id)a3;
-- (void)__contactsSyncTimeoutTimer:(id)a3;
-- (void)_addFetchCompletionHandler:(id)a3;
-- (void)_enableContactsManagementForFamilyMember:(id)a3 request:(BOOL)a4 completionHandler:(id)a5;
-- (void)_fetchContactsCountStatusWithDeterminedStatusHandler:(id)a3 notTryingToSyncHandler:(id)a4 syncTimedOutHandler:(id)a5;
+- (void)__contactsSyncRetryTimer:(id)timer;
+- (void)__contactsSyncTimeoutTimer:(id)timer;
+- (void)_addFetchCompletionHandler:(id)handler;
+- (void)_enableContactsManagementForFamilyMember:(id)member request:(BOOL)request completionHandler:(id)handler;
+- (void)_fetchContactsCountStatusWithDeterminedStatusHandler:(id)handler notTryingToSyncHandler:(id)syncHandler syncTimedOutHandler:(id)outHandler;
 - (void)_fetchContactsManagementState;
 - (void)_installContactsCountRetryAndTimeoutHandlers;
-- (void)_processSTContactManagementState:(int64_t)a3 familyMember:(id)a4 error:(id)a5;
+- (void)_processSTContactManagementState:(int64_t)state familyMember:(id)member error:(id)error;
 - (void)_removeContactsCountRetryAndTimeoutHandlers;
 - (void)_removeContactsCountRetryAndTimeoutHandlers_SYNC;
-- (void)_runCompletionHandlersWithContactsManagementState:(int)a3 error:(id)a4;
-- (void)_setContactsManagementStateFromContactsCountStatus:(int)a3;
+- (void)_runCompletionHandlersWithContactsManagementState:(int)state error:(id)error;
+- (void)_setContactsManagementStateFromContactsCountStatus:(int)status;
 - (void)_startFetchingContactsManagementState;
 - (void)_waitOnContactsSyncWithRetries;
 - (void)dealloc;
-- (void)fetchContactsManagementStateWithCompletionHandler:(id)a3;
-- (void)requestContactsManagementForFamilyMember:(id)a3 completionHandler:(id)a4;
-- (void)setExtendedFamilyMemberContactsSyncTimeout:(BOOL)a3;
+- (void)fetchContactsManagementStateWithCompletionHandler:(id)handler;
+- (void)requestContactsManagementForFamilyMember:(id)member completionHandler:(id)handler;
+- (void)setExtendedFamilyMemberContactsSyncTimeout:(BOOL)timeout;
 @end
 
 @implementation NCABTinkerContactsManagementStateManager
 
-+ (id)managerForBuddyControllerDelegate:(id)a3
++ (id)managerForBuddyControllerDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [(NCABTinkerContactsManagementStateManager *)v3 setupFlowUserInfo];
-  v5 = [v4 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+  delegateCopy = delegate;
+  setupFlowUserInfo = [(NCABTinkerContactsManagementStateManager *)delegateCopy setupFlowUserInfo];
+  v5 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
-  v6 = objc_getAssociatedObject(v3, "managerForBuddyControllerDelegate:");
+  v6 = objc_getAssociatedObject(delegateCopy, "managerForBuddyControllerDelegate:");
   if (v6)
   {
     v7 = v6;
-    v8 = [(NCABTinkerContactsManagementStateManager *)v6 familyMember];
+    familyMember = [(NCABTinkerContactsManagementStateManager *)v6 familyMember];
 
     v9 = NCABCMS_Accounts_log();
     v10 = v9;
-    if (v8 != v5)
+    if (familyMember != v5)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -66,7 +66,7 @@
     v19 = 2112;
     v20 = v5;
     v21 = 2112;
-    v22 = v3;
+    v22 = delegateCopy;
     v11 = "%{public}s - Fetched existing tinkerContactsManagementStateManager: %@ for familyMember: %@, from delegate: %@";
     v12 = v10;
     v13 = OS_LOG_TYPE_INFO;
@@ -78,7 +78,7 @@ LABEL_10:
   if (v5)
   {
     v7 = [[NCABTinkerContactsManagementStateManager alloc] initWithFamilyMember:v5 autoEnableIfPossible:1];
-    objc_setAssociatedObject(v3, "managerForBuddyControllerDelegate:", v7, &dword_0 + 1);
+    objc_setAssociatedObject(delegateCopy, "managerForBuddyControllerDelegate:", v7, &dword_0 + 1);
     v10 = NCABCMS_Accounts_log();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -92,7 +92,7 @@ LABEL_10:
     v19 = 2112;
     v20 = v5;
     v21 = 2112;
-    v22 = v3;
+    v22 = delegateCopy;
     v11 = "%{public}s - Created tinkerContactsManagementStateManager: %@ for familyMember: %@, attached to delegate: %@";
     v12 = v10;
     v13 = OS_LOG_TYPE_DEFAULT;
@@ -105,7 +105,7 @@ LABEL_10:
     v15 = 136446466;
     v16 = "+[NCABTinkerContactsManagementStateManager managerForBuddyControllerDelegate:]";
     v17 = 2112;
-    v18 = v3;
+    v18 = delegateCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}s - Deferring creation of tinkerContactsManagementStateManager (no familyMember); delegate: %@", &v15, 0x16u);
   }
 
@@ -115,21 +115,21 @@ LABEL_14:
   return v7;
 }
 
-- (NCABTinkerContactsManagementStateManager)initWithFamilyMember:(id)a3 autoEnableIfPossible:(BOOL)a4
+- (NCABTinkerContactsManagementStateManager)initWithFamilyMember:(id)member autoEnableIfPossible:(BOOL)possible
 {
-  v7 = a3;
+  memberCopy = member;
   v13.receiver = self;
   v13.super_class = NCABTinkerContactsManagementStateManager;
   v8 = [(NCABTinkerContactsManagementStateManager *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_familyMember, a3);
+    objc_storeStrong(&v8->_familyMember, member);
     v10 = objc_opt_new();
     stManagementState = v9->_stManagementState;
     v9->_stManagementState = v10;
 
-    v9->_autoEnableContactsManagement = a4;
+    v9->_autoEnableContactsManagement = possible;
     v9->_completionHandlersLock._os_unfair_lock_opaque = 0;
     v9->_stateLock._os_unfair_lock_opaque = 0;
     [(NCABTinkerContactsManagementStateManager *)v9 setExtendedFamilyMemberContactsSyncTimeout:0];
@@ -150,12 +150,12 @@ LABEL_14:
   [(NCABTinkerContactsManagementStateManager *)&v4 dealloc];
 }
 
-- (void)setExtendedFamilyMemberContactsSyncTimeout:(BOOL)a3
+- (void)setExtendedFamilyMemberContactsSyncTimeout:(BOOL)timeout
 {
-  v3 = a3;
-  self->_extendedFamilyMemberContactsSyncTimeout = a3;
+  timeoutCopy = timeout;
+  self->_extendedFamilyMemberContactsSyncTimeout = timeout;
   v5 = 120.0;
-  if (a3)
+  if (timeout)
   {
     v5 = 300.0;
   }
@@ -168,20 +168,20 @@ LABEL_14:
     v8 = 136446722;
     v9 = "[NCABTinkerContactsManagementStateManager setExtendedFamilyMemberContactsSyncTimeout:]";
     v10 = 1024;
-    v11 = v3;
+    v11 = timeoutCopy;
     v12 = 2048;
     v13 = v7;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}s: %d - updated contactsCountSyncStatusRetryTimeoutInterval => %0.1f", &v8, 0x1Cu);
   }
 }
 
-- (void)fetchContactsManagementStateWithCompletionHandler:(id)a3
+- (void)fetchContactsManagementStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(handlerCopy);
     *buf = 136446466;
     v28 = "[NCABTinkerContactsManagementStateManager fetchContactsManagementStateWithCompletionHandler:]";
     v29 = 2114;
@@ -189,7 +189,7 @@ LABEL_14:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%{public}s: %{public}@", buf, 0x16u);
   }
 
-  if (!v4)
+  if (!handlerCopy)
   {
     v8 = NCABCMS_Tinker_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -200,9 +200,9 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v7 = [(NCABTinkerContactsManagementStateManager *)self familyMember];
+  familyMember = [(NCABTinkerContactsManagementStateManager *)self familyMember];
 
-  if (!v7)
+  if (!familyMember)
   {
     v16 = NCABCMS_Tinker_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -215,13 +215,13 @@ LABEL_14:
     v24 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v8 = [NSError errorWithDomain:@"NCABErrorDomain" code:1 userInfo:v24];
 
-    (*(v4 + 2))(v4, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  [(NCABTinkerContactsManagementStateManager *)self _addFetchCompletionHandler:v4];
+  [(NCABTinkerContactsManagementStateManager *)self _addFetchCompletionHandler:handlerCopy];
   [(NCABTinkerContactsManagementStateManager *)self _fetchContactsManagementState];
 LABEL_12:
 }
@@ -234,22 +234,22 @@ LABEL_12:
   return contactsManagementState;
 }
 
-- (void)requestContactsManagementForFamilyMember:(id)a3 completionHandler:(id)a4
+- (void)requestContactsManagementForFamilyMember:(id)member completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  handlerCopy = handler;
   v8 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136446466;
     v11 = "[NCABTinkerContactsManagementStateManager requestContactsManagementForFamilyMember:completionHandler:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = memberCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}s: %@", &v10, 0x16u);
   }
 
-  v9 = [(NCABTinkerContactsManagementStateManager *)self familyMember];
-  [(NCABTinkerContactsManagementStateManager *)self _enableContactsManagementForFamilyMember:v9 request:1 completionHandler:v7];
+  familyMember = [(NCABTinkerContactsManagementStateManager *)self familyMember];
+  [(NCABTinkerContactsManagementStateManager *)self _enableContactsManagementForFamilyMember:familyMember request:1 completionHandler:handlerCopy];
 }
 
 - (int)contactsCountStatus
@@ -257,8 +257,8 @@ LABEL_12:
   p_contactsCountStatus = &self->_contactsCountStatus;
   if (self->_contactsCountStatus <= 3u)
   {
-    v4 = [(NCABTinkerContactsManagementStateManager *)self familyMember];
-    self->_contactsCountStatus = [NCABContactsSyncHelper contactsCountStatusForFamilyMember:v4 contactsSyncAndNetworkAccessEnabled:[(NCABTinkerContactsManagementStateManager *)self contactsSyncAndNetworkAccessEnabled]];
+    familyMember = [(NCABTinkerContactsManagementStateManager *)self familyMember];
+    self->_contactsCountStatus = [NCABContactsSyncHelper contactsCountStatusForFamilyMember:familyMember contactsSyncAndNetworkAccessEnabled:[(NCABTinkerContactsManagementStateManager *)self contactsSyncAndNetworkAccessEnabled]];
 
     v5 = NCABCMS_Tinker_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -281,9 +281,9 @@ LABEL_12:
   return *p_contactsCountStatus;
 }
 
-- (void)_addFetchCompletionHandler:(id)a3
+- (void)_addFetchCompletionHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_completionHandlersLock);
   completionHandlersArray = self->_completionHandlersArray;
   if (!completionHandlersArray)
@@ -295,24 +295,24 @@ LABEL_12:
     completionHandlersArray = self->_completionHandlersArray;
   }
 
-  v7 = objc_retainBlock(v8);
+  v7 = objc_retainBlock(handlerCopy);
   [(NSMutableArray *)completionHandlersArray addObject:v7];
 
   os_unfair_lock_unlock(&self->_completionHandlersLock);
 }
 
-- (void)_runCompletionHandlersWithContactsManagementState:(int)a3 error:(id)a4
+- (void)_runCompletionHandlersWithContactsManagementState:(int)state error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     v20 = "[NCABTinkerContactsManagementStateManager _runCompletionHandlersWithContactsManagementState:error:]";
     v21 = 1024;
-    v22 = a3;
+    stateCopy = state;
     v23 = 2114;
-    v24 = v6;
+    v24 = errorCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}s - managementState: %d, error: %{public}@", buf, 0x1Cu);
   }
 
@@ -352,25 +352,25 @@ LABEL_12:
   }
 }
 
-- (void)_processSTContactManagementState:(int64_t)a3 familyMember:(id)a4 error:(id)a5
+- (void)_processSTContactManagementState:(int64_t)state familyMember:(id)member error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  memberCopy = member;
+  errorCopy = error;
   v10 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
     v24 = "[NCABTinkerContactsManagementStateManager _processSTContactManagementState:familyMember:error:]";
     v25 = 2048;
-    v26 = a3;
+    stateCopy = state;
     v27 = 2114;
-    v28 = v9;
+    v28 = errorCopy;
     v29 = 2112;
-    v30 = v8;
+    v30 = memberCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}s - stContactManagementState: %lld, error: %{public}@ for familyMember: %@ -  ", buf, 0x2Au);
   }
 
-  switch(a3)
+  switch(state)
   {
     case 2:
       v16[0] = _NSConcreteStackBlock;
@@ -415,7 +415,7 @@ LABEL_10:
       [(NCABTinkerContactsManagementStateManager *)self _fetchContactsCountStatusWithDeterminedStatusHandler:v11 notTryingToSyncHandler:v12 syncTimedOutHandler:v13];
       break;
     case 0:
-      if (([objc_opt_class() _familyMemberIsEligibleForScreenTime:v8] & 1) == 0)
+      if (([objc_opt_class() _familyMemberIsEligibleForScreenTime:memberCopy] & 1) == 0)
       {
         [(NCABTinkerContactsManagementStateManager *)self _updateContactsManagementState:1 error:0];
         break;
@@ -443,7 +443,7 @@ LABEL_10:
   }
 }
 
-- (void)_setContactsManagementStateFromContactsCountStatus:(int)a3
+- (void)_setContactsManagementStateFromContactsCountStatus:(int)status
 {
   v5 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -451,28 +451,28 @@ LABEL_10:
     v6 = 136446466;
     v7 = "[NCABTinkerContactsManagementStateManager _setContactsManagementStateFromContactsCountStatus:]";
     v8 = 1024;
-    v9 = a3;
+    statusCopy = status;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: %d", &v6, 0x12u);
   }
 
-  if ((a3 - 3) <= 2)
+  if ((status - 3) <= 2)
   {
-    [(NCABTinkerContactsManagementStateManager *)self _updateContactsManagementState:dword_77E8[a3 - 3] error:0];
+    [(NCABTinkerContactsManagementStateManager *)self _updateContactsManagementState:dword_77E8[status - 3] error:0];
   }
 }
 
-- (void)_fetchContactsCountStatusWithDeterminedStatusHandler:(id)a3 notTryingToSyncHandler:(id)a4 syncTimedOutHandler:(id)a5
+- (void)_fetchContactsCountStatusWithDeterminedStatusHandler:(id)handler notTryingToSyncHandler:(id)syncHandler syncTimedOutHandler:(id)outHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NCABTinkerContactsManagementStateManager *)self contactsSyncAndNetworkAccessEnabled];
+  handlerCopy = handler;
+  syncHandlerCopy = syncHandler;
+  outHandlerCopy = outHandler;
+  contactsSyncAndNetworkAccessEnabled = [(NCABTinkerContactsManagementStateManager *)self contactsSyncAndNetworkAccessEnabled];
   v12 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = objc_retainBlock(v8);
-    v14 = objc_retainBlock(v9);
-    v15 = objc_retainBlock(v10);
+    v13 = objc_retainBlock(handlerCopy);
+    v14 = objc_retainBlock(syncHandlerCopy);
+    v15 = objc_retainBlock(outHandlerCopy);
     v26 = 136447234;
     v27 = "[NCABTinkerContactsManagementStateManager _fetchContactsCountStatusWithDeterminedStatusHandler:notTryingToSyncHandler:syncTimedOutHandler:]";
     v28 = 2048;
@@ -482,35 +482,35 @@ LABEL_10:
     v30 = 2048;
     v31 = v15;
     v32 = 1024;
-    v33 = v11;
+    v33 = contactsSyncAndNetworkAccessEnabled;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}s :%p:%p:%p - syncEnabled:%d", &v26, 0x30u);
   }
 
-  if (v11)
+  if (contactsSyncAndNetworkAccessEnabled)
   {
-    v16 = [(NCABTinkerContactsManagementStateManager *)self contactsCountStatus];
+    contactsCountStatus = [(NCABTinkerContactsManagementStateManager *)self contactsCountStatus];
     v17 = NCABCMS_Tinker_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v26 = 136446722;
       v27 = "[NCABTinkerContactsManagementStateManager _fetchContactsCountStatusWithDeterminedStatusHandler:notTryingToSyncHandler:syncTimedOutHandler:]";
       v28 = 1024;
-      *v29 = v16;
+      *v29 = contactsCountStatus;
       *&v29[4] = 1024;
-      *&v29[6] = v16 == 2;
+      *&v29[6] = contactsCountStatus == 2;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "%{public}s - contactsCountStatus:%d => waitingOnContactsSync:%d", &v26, 0x18u);
     }
 
-    if (v16 == 2)
+    if (contactsCountStatus == 2)
     {
-      v18 = [(NCABTinkerContactsManagementStateManager *)self _checkContactsCountStatusNotYetSyncedTimedOut];
+      _checkContactsCountStatusNotYetSyncedTimedOut = [(NCABTinkerContactsManagementStateManager *)self _checkContactsCountStatusNotYetSyncedTimedOut];
       v19 = NCABCMS_Tinker_log();
       v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-      if (v18)
+      if (_checkContactsCountStatusNotYetSyncedTimedOut)
       {
         if (v20)
         {
-          v21 = objc_retainBlock(v10);
+          v21 = objc_retainBlock(outHandlerCopy);
           v26 = 136446466;
           v27 = "[NCABTinkerContactsManagementStateManager _fetchContactsCountStatusWithDeterminedStatusHandler:notTryingToSyncHandler:syncTimedOutHandler:]";
           v28 = 2048;
@@ -518,9 +518,9 @@ LABEL_10:
           _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "%{public}s timedOut => syncTimedOutHandler():%p", &v26, 0x16u);
         }
 
-        if (v10)
+        if (outHandlerCopy)
         {
-          v10[2](v10);
+          outHandlerCopy[2](outHandlerCopy);
         }
       }
 
@@ -542,19 +542,19 @@ LABEL_10:
       v24 = NCABCMS_Tinker_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = objc_retainBlock(v8);
+        v25 = objc_retainBlock(handlerCopy);
         v26 = 136446722;
         v27 = "[NCABTinkerContactsManagementStateManager _fetchContactsCountStatusWithDeterminedStatusHandler:notTryingToSyncHandler:syncTimedOutHandler:]";
         v28 = 1024;
-        *v29 = v16;
+        *v29 = contactsCountStatus;
         *&v29[4] = 2048;
         *&v29[6] = v25;
         _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "%{public}s => determinedStatusHandler(%d):%p", &v26, 0x1Cu);
       }
 
-      if (v8)
+      if (handlerCopy)
       {
-        (*(v8 + 2))(v8, v16);
+        (*(handlerCopy + 2))(handlerCopy, contactsCountStatus);
       }
     }
   }
@@ -564,7 +564,7 @@ LABEL_10:
     v22 = NCABCMS_Tinker_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = objc_retainBlock(v9);
+      v23 = objc_retainBlock(syncHandlerCopy);
       v26 = 136446466;
       v27 = "[NCABTinkerContactsManagementStateManager _fetchContactsCountStatusWithDeterminedStatusHandler:notTryingToSyncHandler:syncTimedOutHandler:]";
       v28 = 2048;
@@ -572,18 +572,18 @@ LABEL_10:
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "%{public}s !syncEnabled => notTryingToSyncHandler():%p", &v26, 0x16u);
     }
 
-    if (v9)
+    if (syncHandlerCopy)
     {
-      v9[2](v9);
+      syncHandlerCopy[2](syncHandlerCopy);
     }
   }
 }
 
 - (BOOL)_checkContactsCountStatusNotYetSyncedTimedOut
 {
-  v3 = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
+  contactsCountSyncStatusRetryTimeoutDate = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
 
-  if (!v3)
+  if (!contactsCountSyncStatusRetryTimeoutDate)
   {
     [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutInterval];
     v4 = [NSDate dateWithTimeIntervalSinceNow:?];
@@ -592,27 +592,27 @@ LABEL_10:
     v5 = NCABCMS_Tinker_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
+      contactsCountSyncStatusRetryTimeoutDate2 = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
       v13 = 136446466;
       v14 = "[NCABTinkerContactsManagementStateManager _checkContactsCountStatusNotYetSyncedTimedOut]";
       v15 = 2114;
-      v16 = v6;
+      v16 = contactsCountSyncStatusRetryTimeoutDate2;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s - set contactsCountSyncStatusRetryTimeoutDate:%{public}@", &v13, 0x16u);
     }
   }
 
-  v7 = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
-  [v7 timeIntervalSinceNow];
+  contactsCountSyncStatusRetryTimeoutDate3 = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
+  [contactsCountSyncStatusRetryTimeoutDate3 timeIntervalSinceNow];
   v9 = v8;
 
   v10 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
+    contactsCountSyncStatusRetryTimeoutDate4 = [(NCABTinkerContactsManagementStateManager *)self contactsCountSyncStatusRetryTimeoutDate];
     v13 = 136446978;
     v14 = "[NCABTinkerContactsManagementStateManager _checkContactsCountStatusNotYetSyncedTimedOut]";
     v15 = 2114;
-    v16 = v11;
+    v16 = contactsCountSyncStatusRetryTimeoutDate4;
     v17 = 2048;
     v18 = v9;
     v19 = 1024;
@@ -705,7 +705,7 @@ LABEL_10:
   [(NCABTinkerContactsManagementStateManager *)self _fetchContactsManagementState];
 }
 
-- (void)__contactsSyncTimeoutTimer:(id)a3
+- (void)__contactsSyncTimeoutTimer:(id)timer
 {
   v4 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -718,7 +718,7 @@ LABEL_10:
   [(NCABTinkerContactsManagementStateManager *)self __contactsSyncRetryNow];
 }
 
-- (void)__contactsSyncRetryTimer:(id)a3
+- (void)__contactsSyncRetryTimer:(id)timer
 {
   v4 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -731,7 +731,7 @@ LABEL_10:
   [(NCABTinkerContactsManagementStateManager *)self __contactsSyncRetryNow];
 }
 
-- (void)__contactStoreDidChange:(id)a3
+- (void)__contactStoreDidChange:(id)change
 {
   v4 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -746,13 +746,13 @@ LABEL_10:
 
 - (BOOL)_shouldRunAgainAfterSyncEnabled_LOCKED
 {
-  v3 = [(NCABTinkerContactsManagementStateManager *)self contactsSyncAndNetworkAccessEnabled];
-  if (v3)
+  contactsSyncAndNetworkAccessEnabled = [(NCABTinkerContactsManagementStateManager *)self contactsSyncAndNetworkAccessEnabled];
+  if (contactsSyncAndNetworkAccessEnabled)
   {
-    LOBYTE(v3) = (self->_contactsManagementState - 100) < 3;
+    LOBYTE(contactsSyncAndNetworkAccessEnabled) = (self->_contactsManagementState - 100) < 3;
   }
 
-  return v3;
+  return contactsSyncAndNetworkAccessEnabled;
 }
 
 - (void)_fetchContactsManagementState
@@ -767,7 +767,7 @@ LABEL_10:
 
   [(NCABTinkerContactsManagementStateManager *)self _removeContactsCountRetryAndTimeoutHandlers];
   os_unfair_lock_lock(&self->_stateLock);
-  v4 = [(NCABTinkerContactsManagementStateManager *)self _shouldRunAgainAfterSyncEnabled_LOCKED];
+  _shouldRunAgainAfterSyncEnabled_LOCKED = [(NCABTinkerContactsManagementStateManager *)self _shouldRunAgainAfterSyncEnabled_LOCKED];
   v5 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -780,12 +780,12 @@ LABEL_10:
     v19 = 1024;
     v20 = contactsManagementState;
     v21 = 1024;
-    v22 = v4;
+    v22 = _shouldRunAgainAfterSyncEnabled_LOCKED;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s - _contactsManagementRequestState: %d, _contactsManagementState: %d, shouldRunAgainAfterSyncEnabled: %d", &v15, 0x1Eu);
   }
 
   v8 = self->_contactsManagementRequestState;
-  if ((v8 != 4) | v4 & 1)
+  if ((v8 != 4) | _shouldRunAgainAfterSyncEnabled_LOCKED & 1)
   {
     if (!v8)
     {
@@ -813,7 +813,7 @@ LABEL_11:
       return;
     }
 
-    if (v4)
+    if (_shouldRunAgainAfterSyncEnabled_LOCKED)
     {
       if ((v8 | 4) == 4)
       {
@@ -852,55 +852,55 @@ LABEL_11:
 
 - (void)_startFetchingContactsManagementState
 {
-  v3 = [(NCABTinkerContactsManagementStateManager *)self familyMember];
+  familyMember = [(NCABTinkerContactsManagementStateManager *)self familyMember];
   v4 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v12 = "[NCABTinkerContactsManagementStateManager _startFetchingContactsManagementState]";
     v13 = 2112;
-    v14 = v3;
+    v14 = familyMember;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}s - familyMember: %@", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v5 = [(NCABTinkerContactsManagementStateManager *)self stManagementState];
-  v6 = [v3 dsid];
+  stManagementState = [(NCABTinkerContactsManagementStateManager *)self stManagementState];
+  dsid = [familyMember dsid];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_3ACC;
   v8[3] = &unk_C3B0;
   objc_copyWeak(&v10, buf);
-  v7 = v3;
+  v7 = familyMember;
   v9 = v7;
-  [v5 contactManagementStateForDSID:v6 completionHandler:v8];
+  [stManagementState contactManagementStateForDSID:dsid completionHandler:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)_enableContactsManagementForFamilyMember:(id)a3 request:(BOOL)a4 completionHandler:(id)a5
+- (void)_enableContactsManagementForFamilyMember:(id)member request:(BOOL)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NCABTinkerContactsManagementStateManager *)self lastKnownContactsManagementState];
+  requestCopy = request;
+  memberCopy = member;
+  handlerCopy = handler;
+  lastKnownContactsManagementState = [(NCABTinkerContactsManagementStateManager *)self lastKnownContactsManagementState];
   v11 = NCABCMS_Tinker_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
     v24 = "[NCABTinkerContactsManagementStateManager _enableContactsManagementForFamilyMember:request:completionHandler:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = memberCopy;
     v27 = 1024;
-    v28 = v6;
+    v28 = requestCopy;
     v29 = 1024;
-    LODWORD(v30) = v10;
+    LODWORD(v30) = lastKnownContactsManagementState;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}s: %@ request: %d lastKnownContactsManagementState: %d", buf, 0x22u);
   }
 
-  v12 = [(NCABTinkerContactsManagementStateManager *)self lastKnownContactsManagementState];
-  if ((v12 > 5 || ((1 << v12) & 0x23) == 0) && v12 - 100 >= 3)
+  lastKnownContactsManagementState2 = [(NCABTinkerContactsManagementStateManager *)self lastKnownContactsManagementState];
+  if ((lastKnownContactsManagementState2 > 5 || ((1 << lastKnownContactsManagementState2) & 0x23) == 0) && lastKnownContactsManagementState2 - 100 >= 3)
   {
     goto LABEL_14;
   }
@@ -912,12 +912,12 @@ LABEL_11:
   }
 
   v31 = NSLocalizedDescriptionKey;
-  v14 = [NSString stringWithFormat:@"Attempted to enable contacts management from bad state: %d", v10];
+  v14 = [NSString stringWithFormat:@"Attempted to enable contacts management from bad state: %d", lastKnownContactsManagementState];
   v32 = v14;
   v15 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-  v16 = [NSError errorWithDomain:@"NCABErrorDomain" code:3 userInfo:v15];
+  stManagementState2 = [NSError errorWithDomain:@"NCABErrorDomain" code:3 userInfo:v15];
 
-  if (v16)
+  if (stManagementState2)
   {
     v17 = 0;
   }
@@ -925,24 +925,24 @@ LABEL_11:
   else
   {
 LABEL_14:
-    v19 = [(NCABTinkerContactsManagementStateManager *)self stManagementState];
-    v20 = [v8 dsid];
+    stManagementState = [(NCABTinkerContactsManagementStateManager *)self stManagementState];
+    dsid = [memberCopy dsid];
     v22 = 0;
-    v17 = [v19 enableScreenTimeForDSID:v20 error:&v22];
-    v16 = v22;
+    v17 = [stManagementState enableScreenTimeForDSID:dsid error:&v22];
+    stManagementState2 = v22;
 
-    if (v17 && !v16)
+    if (v17 && !stManagementState2)
     {
-      v16 = [(NCABTinkerContactsManagementStateManager *)self stManagementState];
-      v21 = [v8 dsid];
-      if (v6)
+      stManagementState2 = [(NCABTinkerContactsManagementStateManager *)self stManagementState];
+      dsid2 = [memberCopy dsid];
+      if (requestCopy)
       {
-        [v16 requestToManageContactsForDSID:v21 completionHandler:v9];
+        [stManagementState2 requestToManageContactsForDSID:dsid2 completionHandler:handlerCopy];
       }
 
       else
       {
-        [v16 setManageContactsEnabled:1 forDSID:v21 completionHandler:v9];
+        [stManagementState2 setManageContactsEnabled:1 forDSID:dsid2 completionHandler:handlerCopy];
       }
 
       goto LABEL_20;
@@ -955,25 +955,25 @@ LABEL_14:
     *buf = 136446978;
     v24 = "[NCABTinkerContactsManagementStateManager _enableContactsManagementForFamilyMember:request:completionHandler:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = memberCopy;
     v27 = 1024;
     v28 = v17;
     v29 = 2114;
-    v30 = v16;
+    v30 = stManagementState2;
     _os_log_error_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "%{public}s - failed to enable Screen Time for family member: %@, enabledST: %d, error: %{public}@", buf, 0x26u);
   }
 
-  v9[2](v9, v16);
+  handlerCopy[2](handlerCopy, stManagementState2);
 LABEL_20:
 }
 
-+ (BOOL)_familyMemberIsEligibleForScreenTime:(id)a3
++ (BOOL)_familyMemberIsEligibleForScreenTime:(id)time
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  timeCopy = time;
+  v4 = timeCopy;
+  if (timeCopy)
   {
-    v5 = [v3 memberType] == &dword_0 + 1 || objc_msgSend(v4, "memberType") == &dword_0 + 2;
+    v5 = [timeCopy memberType] == &dword_0 + 1 || objc_msgSend(v4, "memberType") == &dword_0 + 2;
   }
 
   else

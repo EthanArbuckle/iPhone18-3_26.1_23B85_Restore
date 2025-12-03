@@ -1,71 +1,71 @@
 @interface NTKUtilityComplicationFactory
-+ (CGPoint)smileShapeAlignmentPointForDevice:(id)a3;
-+ (CGSize)smileShapeSizeForDevice:(id)a3;
-+ (id)smileShapeForDevice:(id)a3;
-+ (unint64_t)placementForSlot:(int64_t)a3;
-+ (void)curvedCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(int64_t)a8 forDevice:(id)a9;
-- (CGRect)keylineFrameForCornerComplicationSlot:(id)a3 selected:(BOOL)a4 faceView:(id)a5;
++ (CGPoint)smileShapeAlignmentPointForDevice:(id)device;
++ (CGSize)smileShapeSizeForDevice:(id)device;
++ (id)smileShapeForDevice:(id)device;
++ (unint64_t)placementForSlot:(int64_t)slot;
++ (void)curvedCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(int64_t)slot forDevice:(id)device;
+- (CGRect)keylineFrameForCornerComplicationSlot:(id)slot selected:(BOOL)selected faceView:(id)view;
 - (CGSize)normalCircularPadding;
 - (NTKFaceView)faceView;
 - (NTKUtilityComplicationFactoryDelegate)delegate;
 - (UIEdgeInsets)screenEdgeInsets;
-- (double)_maxBottomCenterWidthLeavingRoomForKeylines:(CGRect)a3;
-- (double)_maxBottomCornerWidthLeavingRoomForKeylines:(CGRect)a3;
+- (double)_maxBottomCenterWidthLeavingRoomForKeylines:(CGRect)keylines;
+- (double)_maxBottomCornerWidthLeavingRoomForKeylines:(CGRect)keylines;
 - (double)_maxDateWidthLeavingRoomForKeylines;
-- (double)_maxTopCornerWidthLeavingRoomForKeylines:(CGRect)a3;
+- (double)_maxTopCornerWidthLeavingRoomForKeylines:(CGRect)keylines;
 - (double)_maxWidthForKeylineAndPadding;
 - (double)bezelComplicationMaxAngularWidth;
-- (double)bezelComplicationRadiusWithDialDiameter:(double)a3;
-- (double)foregroundAlphaForEditing:(BOOL)a3;
-- (double)foregroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (double)foregroundImageAlphaForEditing:(BOOL)a3;
-- (double)foregroundImageAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (id)_curvedImageForSlot:(int64_t)a3 filled:(BOOL)a4;
-- (id)_slotForUtilitySlot:(int64_t)a3;
-- (id)_viewForDateComplication:(id)a3;
-- (id)initForDevice:(id)a3;
-- (id)keylineViewForComplicationSlot:(id)a3;
-- (id)keylineViewForSlot:(int64_t)a3 dialDiameter:(double)a4;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)newViewForComplication:(id)a3 family:(int64_t)a4 forSlot:(int64_t)a5;
-- (int64_t)_utilitySlotForSlot:(id)a3;
-- (int64_t)complicationPickerStyleForSlot:(id)a3;
-- (int64_t)layoutOverrideForComplicationType:(unint64_t)a3 inSlot:(int64_t)a4;
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4;
-- (void)_configureBottomCenterLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5;
-- (void)_configureBottomLeftLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5;
-- (void)_configureBottomRightAboveLayout:(id)a3 withBounds:(CGRect)a4;
-- (void)_configureBottomRightBelowLayout:(id)a3 withBounds:(CGRect)a4;
-- (void)_configureBottomRightLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5;
-- (void)_configureBottomRightLongLayout:(id)a3 withBounds:(CGRect)a4;
-- (void)_configureDateLayout:(id)a3 withBounds:(CGRect)a4;
-- (void)_configureLayout:(id)a3 withNormalSize:(CGSize)a4 editingSize:(CGSize)a5 variant:(BOOL)a6 addCircleOverrides:(BOOL)a7 makeRuleBlock:(id)a8;
-- (void)_configureOverridesForLayout:(id)a3 withNormalSize:(CGSize)a4 editingSize:(CGSize)a5 variant:(BOOL)a6 addCircleOverrides:(BOOL)a7 makeRuleBlock:(id)a8;
-- (void)_configureTopBezelLayout:(id)a3 withBounds:(CGRect)a4 dialDiameter:(double)a5;
-- (void)_configureTopLeftLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5;
-- (void)_configureTopRightAboveLayout:(id)a3 withBounds:(CGRect)a4;
-- (void)_configureTopRightBelowLayout:(id)a3 withBounds:(CGRect)a4;
-- (void)_configureTopRightLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5;
-- (void)_configureUpNextTopRightLayout:(id)a3 withBounds:(CGRect)a4;
-- (void)configureComplicationLayout:(id)a3 forSlot:(int64_t)a4 bounds:(CGRect)a5 dialDiameter:(double)a6;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 dialDiameter:(double)a5;
-- (void)curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8;
+- (double)bezelComplicationRadiusWithDialDiameter:(double)diameter;
+- (double)foregroundAlphaForEditing:(BOOL)editing;
+- (double)foregroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (double)foregroundImageAlphaForEditing:(BOOL)editing;
+- (double)foregroundImageAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (id)_curvedImageForSlot:(int64_t)slot filled:(BOOL)filled;
+- (id)_slotForUtilitySlot:(int64_t)slot;
+- (id)_viewForDateComplication:(id)complication;
+- (id)initForDevice:(id)device;
+- (id)keylineViewForComplicationSlot:(id)slot;
+- (id)keylineViewForSlot:(int64_t)slot dialDiameter:(double)diameter;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)newViewForComplication:(id)complication family:(int64_t)family forSlot:(int64_t)slot;
+- (int64_t)_utilitySlotForSlot:(id)slot;
+- (int64_t)complicationPickerStyleForSlot:(id)slot;
+- (int64_t)layoutOverrideForComplicationType:(unint64_t)type inSlot:(int64_t)slot;
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot;
+- (void)_configureBottomCenterLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant;
+- (void)_configureBottomLeftLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant;
+- (void)_configureBottomRightAboveLayout:(id)layout withBounds:(CGRect)bounds;
+- (void)_configureBottomRightBelowLayout:(id)layout withBounds:(CGRect)bounds;
+- (void)_configureBottomRightLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant;
+- (void)_configureBottomRightLongLayout:(id)layout withBounds:(CGRect)bounds;
+- (void)_configureDateLayout:(id)layout withBounds:(CGRect)bounds;
+- (void)_configureLayout:(id)layout withNormalSize:(CGSize)size editingSize:(CGSize)editingSize variant:(BOOL)variant addCircleOverrides:(BOOL)overrides makeRuleBlock:(id)block;
+- (void)_configureOverridesForLayout:(id)layout withNormalSize:(CGSize)size editingSize:(CGSize)editingSize variant:(BOOL)variant addCircleOverrides:(BOOL)overrides makeRuleBlock:(id)block;
+- (void)_configureTopBezelLayout:(id)layout withBounds:(CGRect)bounds dialDiameter:(double)diameter;
+- (void)_configureTopLeftLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant;
+- (void)_configureTopRightAboveLayout:(id)layout withBounds:(CGRect)bounds;
+- (void)_configureTopRightBelowLayout:(id)layout withBounds:(CGRect)bounds;
+- (void)_configureTopRightLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant;
+- (void)_configureUpNextTopRightLayout:(id)layout withBounds:(CGRect)bounds;
+- (void)configureComplicationLayout:(id)layout forSlot:(int64_t)slot bounds:(CGRect)bounds dialDiameter:(double)diameter;
+- (void)configureComplicationView:(id)view forSlot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot dialDiameter:(double)diameter;
+- (void)curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot;
 - (void)loadLayoutRules;
 @end
 
 @implementation NTKUtilityComplicationFactory
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v38.receiver = self;
   v38.super_class = NTKUtilityComplicationFactory;
   v6 = [(NTKUtilityComplicationFactory *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     *&v7->_graphicCornerComplications = 0;
     memset(v37, 0, sizeof(v37));
     v35 = 0u;
@@ -106,12 +106,12 @@
     v15 = *(&v35 + 1);
     *&v7->_bezelLabelTopPadding = v34[3];
     v16 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v15 design:*MEMORY[0x277D74410]];
-    v17 = [v16 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation = [v16 CLKFontWithAlternativePunctuation];
     topBezelLabelFont = v7->_topBezelLabelFont;
-    v7->_topBezelLabelFont = v17;
+    v7->_topBezelLabelFont = cLKFontWithAlternativePunctuation;
 
     *&v7->_bezelKeylineInnerCircleOffset = v36;
-    [v5 screenBounds];
+    [deviceCopy screenBounds];
     v20 = v19;
     ___LayoutConstants_block_invoke_5(v7->_device, v22);
     v7->_bezelKeylineDiameter = v20 - v23;
@@ -120,44 +120,44 @@
   return v7;
 }
 
-+ (unint64_t)placementForSlot:(int64_t)a3
++ (unint64_t)placementForSlot:(int64_t)slot
 {
-  if ((a3 - 2) > 0xB)
+  if ((slot - 2) > 0xB)
   {
     return 3;
   }
 
   else
   {
-    return qword_22DCE7B10[a3 - 2];
+    return qword_22DCE7B10[slot - 2];
   }
 }
 
-+ (id)smileShapeForDevice:(id)a3
++ (id)smileShapeForDevice:(id)device
 {
   v12 = 0.0;
   v13 = 0.0;
-  v3 = a3;
-  ___LayoutConstants_block_invoke_5(v3, v10);
+  deviceCopy = device;
+  ___LayoutConstants_block_invoke_5(deviceCopy, v10);
   v4 = v11;
-  ___LayoutConstants_block_invoke_5(v3, v8);
+  ___LayoutConstants_block_invoke_5(deviceCopy, v8);
   v5 = v9;
-  [NTKUtilityComplicationFactory curvedCircleRadius:&v13 centerAngle:0 maxAngularWidth:&v12 circleCenter:0 interior:0 forSlot:10 forDevice:v3];
-  v6 = [off_27877BE80 smileShapeWithDevice:v3 outerRadius:0 innerRadius:v5 + v13 angle:v13 - v4 strokeWidth:v12 * 0.5 filled:NTKKeylineWidth()];
+  [NTKUtilityComplicationFactory curvedCircleRadius:&v13 centerAngle:0 maxAngularWidth:&v12 circleCenter:0 interior:0 forSlot:10 forDevice:deviceCopy];
+  v6 = [off_27877BE80 smileShapeWithDevice:deviceCopy outerRadius:0 innerRadius:v5 + v13 angle:v13 - v4 strokeWidth:v12 * 0.5 filled:NTKKeylineWidth()];
 
   return v6;
 }
 
-+ (CGSize)smileShapeSizeForDevice:(id)a3
++ (CGSize)smileShapeSizeForDevice:(id)device
 {
   v17 = 0.0;
   v18 = 0.0;
-  v3 = a3;
-  ___LayoutConstants_block_invoke_5(v3, v15);
+  deviceCopy = device;
+  ___LayoutConstants_block_invoke_5(deviceCopy, v15);
   v4 = v16;
-  ___LayoutConstants_block_invoke_5(v3, v13);
+  ___LayoutConstants_block_invoke_5(deviceCopy, v13);
   v5 = v14;
-  [NTKUtilityComplicationFactory curvedCircleRadius:&v18 centerAngle:0 maxAngularWidth:&v17 circleCenter:0 interior:0 forSlot:10 forDevice:v3];
+  [NTKUtilityComplicationFactory curvedCircleRadius:&v18 centerAngle:0 maxAngularWidth:&v17 circleCenter:0 interior:0 forSlot:10 forDevice:deviceCopy];
 
   v6 = v5 + v18;
   v7 = v18 - v4;
@@ -171,12 +171,12 @@
   return result;
 }
 
-+ (CGPoint)smileShapeAlignmentPointForDevice:(id)a3
++ (CGPoint)smileShapeAlignmentPointForDevice:(id)device
 {
-  v3 = a3;
-  ___LayoutConstants_block_invoke_5(v3, v11);
+  deviceCopy = device;
+  ___LayoutConstants_block_invoke_5(deviceCopy, v11);
   v4 = v12;
-  [NTKUtilityComplicationFactory smileShapeSizeForDevice:v3];
+  [NTKUtilityComplicationFactory smileShapeSizeForDevice:deviceCopy];
   v6 = v5;
   v8 = v7;
 
@@ -187,17 +187,17 @@
   return result;
 }
 
-- (int64_t)layoutOverrideForComplicationType:(unint64_t)a3 inSlot:(int64_t)a4
+- (int64_t)layoutOverrideForComplicationType:(unint64_t)type inSlot:(int64_t)slot
 {
-  if ((a4 - 1) > 3)
+  if ((slot - 1) > 3)
   {
     return 0;
   }
 
   v5 = NTKUtilityComplicationCircularTypes();
-  LOBYTE(a3) = [v5 containsIndex:a3];
+  LOBYTE(type) = [v5 containsIndex:type];
 
-  if (a3)
+  if (type)
   {
     return 2;
   }
@@ -208,56 +208,56 @@
   }
 }
 
-- (id)newViewForComplication:(id)a3 family:(int64_t)a4 forSlot:(int64_t)a5
+- (id)newViewForComplication:(id)complication family:(int64_t)family forSlot:(int64_t)slot
 {
-  v8 = a3;
-  if (a5 == 12)
+  complicationCopy = complication;
+  if (slot == 12)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(NTKUtilityComplicationFactory *)self _viewForDateComplication:v8];
+      v9 = [(NTKUtilityComplicationFactory *)self _viewForDateComplication:complicationCopy];
 LABEL_10:
       v10 = v9;
       goto LABEL_11;
     }
   }
 
-  if ([v8 complicationType] != 56)
+  if ([complicationCopy complicationType] != 56)
   {
-    if ((a5 - 7) > 4)
+    if ((slot - 7) > 4)
     {
-      +[NTKUtilityComplicationView smallComplicationViewForType:](NTKUtilityComplicationView, "smallComplicationViewForType:", [v8 complicationType]);
+      +[NTKUtilityComplicationView smallComplicationViewForType:](NTKUtilityComplicationView, "smallComplicationViewForType:", [complicationCopy complicationType]);
     }
 
     else
     {
-      +[NTKUtilityComplicationView largeComplicationViewForType:narrow:](NTKUtilityComplicationView, "largeComplicationViewForType:narrow:", [v8 complicationType], a4 == 104);
+      +[NTKUtilityComplicationView largeComplicationViewForType:narrow:](NTKUtilityComplicationView, "largeComplicationViewForType:narrow:", [complicationCopy complicationType], family == 104);
     }
     v9 = ;
     goto LABEL_10;
   }
 
-  v10 = [[NTKWidgetUtilityComplicationProxyView alloc] initWithFamily:a4];
-  v11 = [(NTKUtilityComplicationFactory *)self _slotForUtilitySlot:a5];
+  v10 = [[NTKWidgetUtilityComplicationProxyView alloc] initWithFamily:family];
+  v11 = [(NTKUtilityComplicationFactory *)self _slotForUtilitySlot:slot];
   [(NTKUtilityComplicationFactory *)self configureComplicationView:v10 forSlot:v11];
 
 LABEL_11:
   return v10;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 dialDiameter:(double)a5
+- (void)configureComplicationView:(id)view forSlot:(id)slot dialDiameter:(double)diameter
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isEqualToString:@"bezel"])
+  viewCopy = view;
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"bezel"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v8;
-      v11 = [(NTKUtilityComplicationFactory *)self device];
-      ___LayoutConstants_block_invoke_5(v11, v57);
+      v10 = viewCopy;
+      device = [(NTKUtilityComplicationFactory *)self device];
+      ___LayoutConstants_block_invoke_5(device, v57);
       [v10 setFontSize:v58];
 
       [v10 setFontWeight:*MEMORY[0x277D74410]];
@@ -265,10 +265,10 @@ LABEL_11:
       [v10 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", 11)}];
       [(NTKUtilityComplicationFactory *)self bezelComplicationMaxAngularWidth];
       [v10 setMaxAngularWidth:?];
-      [(NTKUtilityComplicationFactory *)self bezelComplicationRadiusWithDialDiameter:a5];
+      [(NTKUtilityComplicationFactory *)self bezelComplicationRadiusWithDialDiameter:diameter];
       [v10 setCircleRadius:?];
-      v12 = [MEMORY[0x277D75348] whiteColor];
-      [v10 setForegroundColor:v12];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v10 setForegroundColor:whiteColor];
 
       [v10 setForegroundAlpha:1.0];
       [v10 setShouldScaleAndFadeWhenHighlighting:1];
@@ -278,22 +278,22 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [(NTKUtilityComplicationFactory *)self device];
+    device2 = [(NTKUtilityComplicationFactory *)self device];
     _UtilitarianFlatImageSizeForDevice();
 
-    if ([v9 isEqualToString:@"bottom-center"])
+    if ([slotCopy isEqualToString:@"bottom-center"])
     {
-      v14 = [(NTKUtilityComplicationFactory *)self device];
-      [v14 screenBounds];
+      device3 = [(NTKUtilityComplicationFactory *)self device];
+      [device3 screenBounds];
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v22 = v21;
 
-      v23 = [(NTKUtilityComplicationFactory *)self device];
-      v24 = NTKUtilityComplicationCurvedBuffer(v23);
+      device4 = [(NTKUtilityComplicationFactory *)self device];
+      v24 = NTKUtilityComplicationCurvedBuffer(device4);
 
-      v25 = [(NTKUtilityComplicationFactory *)self device];
+      device5 = [(NTKUtilityComplicationFactory *)self device];
       NTKUtilityComplicationCurvedCenterSize();
       v27 = v26;
 
@@ -307,41 +307,41 @@ LABEL_11:
       v60.size.width = v20;
       v60.size.height = v22;
       Width = CGRectGetWidth(v60);
-      v30 = [(NTKUtilityComplicationFactory *)self device];
+      device6 = [(NTKUtilityComplicationFactory *)self device];
       v31 = (Width - NTKUtilityComplicationCurvedCenterSize()) * -0.5;
 
-      v32 = [(NTKUtilityComplicationFactory *)self device];
-      v33 = NTKUtilityComplicationBottomCenterCurvedRadius(v32);
+      device7 = [(NTKUtilityComplicationFactory *)self device];
+      v33 = NTKUtilityComplicationBottomCenterCurvedRadius(device7);
 
-      v34 = [(NTKUtilityComplicationFactory *)self device];
-      v35 = NTKUtilityComplicationCurvedLowerOffset(v34);
+      device8 = [(NTKUtilityComplicationFactory *)self device];
+      v35 = NTKUtilityComplicationCurvedLowerOffset(device8);
 
-      v36 = [(NTKUtilityComplicationFactory *)self device];
-      [v36 screenBounds];
+      device9 = [(NTKUtilityComplicationFactory *)self device];
+      [device9 screenBounds];
       v37 = CGRectGetMaxY(v61) - (v33 + v35);
 
-      v38 = [(NTKUtilityComplicationFactory *)self device];
-      [v38 screenBounds];
+      device10 = [(NTKUtilityComplicationFactory *)self device];
+      [device10 screenBounds];
       MidX = CGRectGetMidX(v62);
 
-      v40 = v8;
-      v41 = [(NTKUtilityComplicationFactory *)self delegate];
-      [v40 setTextLayoutStyle:{objc_msgSend(v41, "textLayoutStyleForSlot:", -[NTKUtilityComplicationFactory _utilitySlotForSlot:](self, "_utilitySlotForSlot:", v9))}];
+      v40 = viewCopy;
+      delegate = [(NTKUtilityComplicationFactory *)self delegate];
+      [v40 setTextLayoutStyle:{objc_msgSend(delegate, "textLayoutStyleForSlot:", -[NTKUtilityComplicationFactory _utilitySlotForSlot:](self, "_utilitySlotForSlot:", slotCopy))}];
 
       [v40 setCurveRadius:v33];
       [v40 setInterior:1];
       [v40 setCurveCenter:{MidX + v31, v37 - v28}];
-      v42 = [MEMORY[0x277D75348] whiteColor];
-      [v40 setBezelTextColor:v42];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [v40 setBezelTextColor:whiteColor2];
 
-      v43 = [MEMORY[0x277D75348] whiteColor];
-      [v40 setTextColor:v43];
+      whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+      [v40 setTextColor:whiteColor3];
 
-      v44 = [(NTKUtilityComplicationFactory *)self device];
-      [v40 setFontSize:NTKUtilityComplicationFontSize(v44)];
+      device11 = [(NTKUtilityComplicationFactory *)self device];
+      [v40 setFontSize:NTKUtilityComplicationFontSize(device11)];
 
-      v45 = [(NTKUtilityComplicationFactory *)self device];
-      [v40 setMaxAngularWidth:NTKUtilityComplicationBottomCenterAngularWidth(v45)];
+      device12 = [(NTKUtilityComplicationFactory *)self device];
+      [v40 setMaxAngularWidth:NTKUtilityComplicationBottomCenterAngularWidth(device12)];
 
       if (CLKLayoutIsRTL())
       {
@@ -358,22 +358,22 @@ LABEL_11:
 
     else
     {
-      if ([v9 isEqualToString:@"bezel"])
+      if ([slotCopy isEqualToString:@"bezel"])
       {
-        v47 = v8;
+        v47 = viewCopy;
         [v47 setTextLayoutStyle:1];
-        [(NTKUtilityComplicationFactory *)self bezelComplicationRadiusWithDialDiameter:a5];
+        [(NTKUtilityComplicationFactory *)self bezelComplicationRadiusWithDialDiameter:diameter];
         [v47 setCurveRadius:?];
         [v47 setInterior:0];
-        [v47 setCurveCenter:{a5 * 0.5, a5 * 0.5}];
-        v48 = [MEMORY[0x277D75348] whiteColor];
-        [v47 setBezelTextColor:v48];
+        [v47 setCurveCenter:{diameter * 0.5, diameter * 0.5}];
+        whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+        [v47 setBezelTextColor:whiteColor4];
 
-        v49 = [MEMORY[0x277D75348] whiteColor];
-        [v47 setForegroundColor:v49];
+        whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+        [v47 setForegroundColor:whiteColor5];
 
-        v50 = [(NTKUtilityComplicationFactory *)self device];
-        [v47 setFontSize:NTKUtilityComplicationFontSize(v50)];
+        device13 = [(NTKUtilityComplicationFactory *)self device];
+        [v47 setFontSize:NTKUtilityComplicationFontSize(device13)];
 
         [(NTKUtilityComplicationFactory *)self bezelComplicationMaxAngularWidth];
         [v47 setMaxAngularWidth:?];
@@ -388,16 +388,16 @@ LABEL_11:
         }
 
         [v47 setImagePlacement:v51];
-        v52 = [(NTKUtilityComplicationFactory *)self device];
-        [v47 setImagePadding:NTKUtilityComplicationLabelImagePadding(v52)];
+        device14 = [(NTKUtilityComplicationFactory *)self device];
+        [v47 setImagePadding:NTKUtilityComplicationLabelImagePadding(device14)];
 
         [v47 setImageMaxSize:{0.0, 0.0}];
-        [v47 setContentHeight:a5 * 0.5];
+        [v47 setContentHeight:diameter * 0.5];
         [v47 setContentVerticalAlignment:1];
         goto LABEL_20;
       }
 
-      v53 = [NTKUtilityComplicationFactory placementForSlot:[(NTKUtilityComplicationFactory *)self _utilitySlotForSlot:v9]];
+      v53 = [NTKUtilityComplicationFactory placementForSlot:[(NTKUtilityComplicationFactory *)self _utilitySlotForSlot:slotCopy]];
       if ((v53 & 2) != 0)
       {
         v54 = 3;
@@ -408,17 +408,17 @@ LABEL_11:
         v54 = (v53 >> 1) & 4;
       }
 
-      v40 = v8;
+      v40 = viewCopy;
       [v40 setTextLayoutStyle:0];
-      v55 = [(NTKUtilityComplicationFactory *)self device];
-      [v40 setFontSize:NTKUtilityComplicationFontSize(v55)];
+      device15 = [(NTKUtilityComplicationFactory *)self device];
+      [v40 setFontSize:NTKUtilityComplicationFontSize(device15)];
 
       [v40 setFontWeight:*MEMORY[0x277D74418]];
       [v40 setTextAlignment:v54];
     }
 
-    v56 = [(NTKUtilityComplicationFactory *)self device];
-    [v40 setImagePadding:NTKUtilityComplicationLabelImagePadding(v56)];
+    device16 = [(NTKUtilityComplicationFactory *)self device];
+    [v40 setImagePadding:NTKUtilityComplicationLabelImagePadding(device16)];
 
     [v40 setImageMaxSize:{0.0, 0.0}];
     [v40 setContentHeight:0.0];
@@ -426,10 +426,10 @@ LABEL_20:
   }
 }
 
-- (double)bezelComplicationRadiusWithDialDiameter:(double)a3
+- (double)bezelComplicationRadiusWithDialDiameter:(double)diameter
 {
   [(CLKFont *)self->_topBezelLabelFont capHeight];
-  v4 = [(NTKUtilityComplicationFactory *)self device];
+  device = [(NTKUtilityComplicationFactory *)self device];
   CLKRoundForDevice();
   v6 = v5;
 
@@ -438,73 +438,73 @@ LABEL_20:
 
 - (double)bezelComplicationMaxAngularWidth
 {
-  v2 = [(NTKUtilityComplicationFactory *)self device];
+  device = [(NTKUtilityComplicationFactory *)self device];
   v3 = NTKWhistlerBezelCircularViewDefaultMaxAngularWidth();
 
   return v3;
 }
 
-- (void)configureComplicationLayout:(id)a3 forSlot:(int64_t)a4 bounds:(CGRect)a5 dialDiameter:(double)a6
+- (void)configureComplicationLayout:(id)layout forSlot:(int64_t)slot bounds:(CGRect)bounds dialDiameter:(double)diameter
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a3;
-  v13 = [(NTKUtilityComplicationFactory *)self delegate];
-  v14 = [v13 textLayoutStyleForSlot:a4];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  delegate = [(NTKUtilityComplicationFactory *)self delegate];
+  v14 = [delegate textLayoutStyleForSlot:slot];
 
-  switch(a4)
+  switch(slot)
   {
     case 1:
-      [(NTKUtilityComplicationFactory *)self _configureTopLeftLayout:v15 withBounds:v14 == 1 variant:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureTopLeftLayout:layoutCopy withBounds:v14 == 1 variant:x, y, width, height];
       break;
     case 2:
-      [(NTKUtilityComplicationFactory *)self _configureTopRightLayout:v15 withBounds:v14 == 1 variant:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureTopRightLayout:layoutCopy withBounds:v14 == 1 variant:x, y, width, height];
       break;
     case 3:
-      [(NTKUtilityComplicationFactory *)self _configureBottomLeftLayout:v15 withBounds:v14 == 1 variant:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureBottomLeftLayout:layoutCopy withBounds:v14 == 1 variant:x, y, width, height];
       break;
     case 4:
-      [(NTKUtilityComplicationFactory *)self _configureBottomRightLayout:v15 withBounds:v14 == 1 variant:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureBottomRightLayout:layoutCopy withBounds:v14 == 1 variant:x, y, width, height];
       break;
     case 5:
-      [(NTKUtilityComplicationFactory *)self _configureTopRightAboveLayout:v15 withBounds:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureTopRightAboveLayout:layoutCopy withBounds:x, y, width, height];
       break;
     case 6:
-      [(NTKUtilityComplicationFactory *)self _configureBottomRightAboveLayout:v15 withBounds:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureBottomRightAboveLayout:layoutCopy withBounds:x, y, width, height];
       break;
     case 7:
-      [(NTKUtilityComplicationFactory *)self _configureTopRightBelowLayout:v15 withBounds:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureTopRightBelowLayout:layoutCopy withBounds:x, y, width, height];
       break;
     case 8:
-      [(NTKUtilityComplicationFactory *)self _configureBottomRightBelowLayout:v15 withBounds:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureBottomRightBelowLayout:layoutCopy withBounds:x, y, width, height];
       break;
     case 9:
-      [(NTKUtilityComplicationFactory *)self _configureBottomRightLongLayout:v15 withBounds:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureBottomRightLongLayout:layoutCopy withBounds:x, y, width, height];
       break;
     case 10:
-      [(NTKUtilityComplicationFactory *)self _configureBottomCenterLayout:v15 withBounds:v14 == 1 variant:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureBottomCenterLayout:layoutCopy withBounds:v14 == 1 variant:x, y, width, height];
       break;
     case 11:
-      [(NTKUtilityComplicationFactory *)self _configureTopBezelLayout:v15 withBounds:x dialDiameter:y, width, height, a6];
+      [(NTKUtilityComplicationFactory *)self _configureTopBezelLayout:layoutCopy withBounds:x dialDiameter:y, width, height, diameter];
       break;
     case 12:
-      [(NTKUtilityComplicationFactory *)self _configureDateLayout:v15 withBounds:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureDateLayout:layoutCopy withBounds:x, y, width, height];
       break;
     case 13:
-      [(NTKUtilityComplicationFactory *)self _configureUpNextTopRightLayout:v15 withBounds:x, y, width, height];
+      [(NTKUtilityComplicationFactory *)self _configureUpNextTopRightLayout:layoutCopy withBounds:x, y, width, height];
       break;
     default:
       break;
   }
 }
 
-- (id)_curvedImageForSlot:(int64_t)a3 filled:(BOOL)a4
+- (id)_curvedImageForSlot:(int64_t)slot filled:(BOOL)filled
 {
-  v4 = a4;
+  filledCopy = filled;
   v21[4] = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) < 4)
+  if ((slot - 1) < 4)
   {
     v20[0] = &unk_284181C60;
     v20[1] = &unk_284181C90;
@@ -517,7 +517,7 @@ LABEL_20:
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:4];
     [(NTKUtilityComplicationFactory *)self device];
     objc_claimAutoreleasedReturnValue();
-    [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    [MEMORY[0x277CCABB0] numberWithInteger:slot];
     [v7 objectForKeyedSubscript:objc_claimAutoreleasedReturnValue()];
     [objc_claimAutoreleasedReturnValue() intValue];
     [(NTKUtilityComplicationFactory *)self device];
@@ -525,7 +525,7 @@ LABEL_20:
     CDCornerComplicationKeylineSize();
   }
 
-  if (a3 == 10)
+  if (slot == 10)
   {
     v18 = 0.0;
     v19 = 0.0;
@@ -534,15 +534,15 @@ LABEL_20:
     ___LayoutConstants_block_invoke_5(self->_device, v14);
     v10 = v15;
     [NTKUtilityComplicationFactory curvedCircleRadius:&v19 centerAngle:0 maxAngularWidth:&v18 circleCenter:0 interior:0 forSlot:10 forDevice:self->_device];
-    v11 = [(NTKUtilityComplicationFactory *)self device];
-    v12 = [off_27877BE80 smileKeylineWithDevice:v11 outerRadius:v4 innerRadius:v10 + v19 angle:v19 - v9 strokeWidth:v18 * 0.5 filled:NTKKeylineWidth()];
+    device = [(NTKUtilityComplicationFactory *)self device];
+    v12 = [off_27877BE80 smileKeylineWithDevice:device outerRadius:filledCopy innerRadius:v10 + v19 angle:v19 - v9 strokeWidth:v18 * 0.5 filled:NTKKeylineWidth()];
   }
 
   else
   {
-    if (a3 == 11)
+    if (slot == 11)
     {
-      if (a4)
+      if (filled)
       {
         v8 = [@"utility_bezel_keyline" stringByAppendingString:@"_filled"];
       }
@@ -561,17 +561,17 @@ LABEL_20:
   return v12;
 }
 
-- (id)keylineViewForSlot:(int64_t)a3 dialDiameter:(double)a4
+- (id)keylineViewForSlot:(int64_t)slot dialDiameter:(double)diameter
 {
-  v7 = [(NTKUtilityComplicationFactory *)self delegate];
-  v8 = [v7 textLayoutStyleForSlot:a3];
+  delegate = [(NTKUtilityComplicationFactory *)self delegate];
+  v8 = [delegate textLayoutStyleForSlot:slot];
 
   if (v8 == 1)
   {
-    v9 = [(NTKUtilityComplicationFactory *)self _curvedKeylineImageForSlot:a3];
+    v9 = [(NTKUtilityComplicationFactory *)self _curvedKeylineImageForSlot:slot];
     v10 = NTKKeylineViewWithImage(v9);
 
-    if (a3 == 10)
+    if (slot == 10)
     {
       v34 = 0.0;
       v33 = 0uLL;
@@ -603,7 +603,7 @@ LABEL_20:
     v10 = 0;
   }
 
-  if (a3 == 12)
+  if (slot == 12)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v20);
     v17 = NTKKeylineViewWithContinuousCurveCornerRadius(v21);
@@ -611,16 +611,16 @@ LABEL_20:
 
   else
   {
-    if (a3 != 11)
+    if (slot != 11)
     {
       goto LABEL_10;
     }
 
-    v14 = [(NTKUtilityComplicationFactory *)self faceView];
-    [v14 _faceEditingScaleForEditMode:1 slot:0];
+    faceView = [(NTKUtilityComplicationFactory *)self faceView];
+    [faceView _faceEditingScaleForEditMode:1 slot:0];
     v16 = v15;
 
-    v17 = NTKKeylineViewWithWheelShapedPath(a4, a4 - self->_bezelKeylineInnerCircleOffset, v16);
+    v17 = NTKKeylineViewWithWheelShapedPath(diameter, diameter - self->_bezelKeylineInnerCircleOffset, v16);
   }
 
   v18 = v17;
@@ -631,29 +631,29 @@ LABEL_10:
   return v10;
 }
 
-- (CGRect)keylineFrameForCornerComplicationSlot:(id)a3 selected:(BOOL)a4 faceView:(id)a5
+- (CGRect)keylineFrameForCornerComplicationSlot:(id)slot selected:(BOOL)selected faceView:(id)view
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isEqualToString:@"top-left"])
+  selectedCopy = selected;
+  slotCopy = slot;
+  viewCopy = view;
+  if ([slotCopy isEqualToString:@"top-left"])
   {
     v10 = 0;
   }
 
-  else if ([v8 isEqualToString:@"top-right"])
+  else if ([slotCopy isEqualToString:@"top-right"])
   {
     v10 = 1;
   }
 
-  else if ([v8 isEqualToString:@"bottom-left"])
+  else if ([slotCopy isEqualToString:@"bottom-left"])
   {
     v10 = 2;
   }
 
   else
   {
-    if (([v8 isEqualToString:@"bottom-right"] & 1) == 0)
+    if (([slotCopy isEqualToString:@"bottom-right"] & 1) == 0)
     {
       x = *MEMORY[0x277CBF3A0];
       y = *(MEMORY[0x277CBF3A0] + 8);
@@ -665,7 +665,7 @@ LABEL_10:
     v10 = 3;
   }
 
-  if (v6)
+  if (selectedCopy)
   {
     v11 = 3;
   }
@@ -675,7 +675,7 @@ LABEL_10:
     v11 = 2;
   }
 
-  [v9 bounds];
+  [viewCopy bounds];
   v12 = [NTKRichComplicationCornerUtilities layoutRuleForState:v11 position:v10 faceBounds:self->_device forDevice:self->_usesNarrowTopSlots narrowTopSlots:?];
   [v12 referenceFrame];
   v14 = v13;
@@ -687,18 +687,18 @@ LABEL_10:
   v26 = v16 - v25;
   v27 = v18 - (-v22 - v23);
   v28 = v20 - (-v21 - v25);
-  v29 = [v9 _complicationContainerViewForSlot:v8];
-  [v9 convertRect:v29 fromCoordinateSpace:{v24, v26, v27, v28}];
+  v29 = [viewCopy _complicationContainerViewForSlot:slotCopy];
+  [viewCopy convertRect:v29 fromCoordinateSpace:{v24, v26, v27, v28}];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
-  v38 = [MEMORY[0x277CBBAE8] currentDevice];
-  [v38 screenBounds];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  [currentDevice screenBounds];
   v40 = v39;
 
-  [v9 faceViewFrameForEditMode:1 option:0 slot:v8];
+  [viewCopy faceViewFrameForEditMode:1 option:0 slot:slotCopy];
   v42 = v41;
   v44 = v43;
   CGAffineTransformMakeScale(&v54, v45 / v40, v45 / v40);
@@ -725,44 +725,44 @@ LABEL_13:
   return result;
 }
 
-+ (void)curvedCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(int64_t)a8 forDevice:(id)a9
++ (void)curvedCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(int64_t)slot forDevice:(id)device
 {
-  v24 = a9;
-  v15 = [NTKUtilityComplicationFactory placementForSlot:a8];
-  [NTKUtilityFlatComplicationView circleRadius:a3 centerAngle:a4 maxAngularWidth:a5 interior:a7 forPlacement:v15 forDevice:v24];
+  deviceCopy = device;
+  v15 = [NTKUtilityComplicationFactory placementForSlot:slot];
+  [NTKUtilityFlatComplicationView circleRadius:radius centerAngle:angle maxAngularWidth:width interior:interior forPlacement:v15 forDevice:deviceCopy];
   if (v15)
   {
-    v17 = NTKUtilityComplicationCurvedUpperOffset(v24);
+    v17 = NTKUtilityComplicationCurvedUpperOffset(deviceCopy);
   }
 
   else
   {
-    v16 = NTKUtilityComplicationCurvedLowerOffset(v24);
-    ___LayoutConstants_block_invoke_5(v24, v25);
+    v16 = NTKUtilityComplicationCurvedLowerOffset(deviceCopy);
+    ___LayoutConstants_block_invoke_5(deviceCopy, v25);
     v17 = v16 + v26;
   }
 
-  [v24 screenBounds];
+  [deviceCopy screenBounds];
   x = v28.origin.x;
   y = v28.origin.y;
   width = v28.size.width;
   height = v28.size.height;
   MaxY = CGRectGetMaxY(v28);
-  if (a6)
+  if (center)
   {
-    v23 = MaxY - (v17 + *a3);
+    v23 = MaxY - (v17 + *radius);
     v29.origin.x = x;
     v29.origin.y = y;
     v29.size.width = width;
     v29.size.height = height;
-    a6->x = CGRectGetMidX(v29);
-    a6->y = v23;
+    center->x = CGRectGetMidX(v29);
+    center->y = v23;
   }
 }
 
-- (double)foregroundAlphaForEditing:(BOOL)a3
+- (double)foregroundAlphaForEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
     return NTKUtilityComplicationEditingForegroundAlpha();
   }
@@ -773,18 +773,18 @@ LABEL_13:
   }
 }
 
-- (double)foregroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (double)foregroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  [(NTKUtilityComplicationFactory *)self foregroundAlphaForEditing:a4 != 0];
-  [(NTKUtilityComplicationFactory *)self foregroundAlphaForEditing:a5 != 0];
+  [(NTKUtilityComplicationFactory *)self foregroundAlphaForEditing:mode != 0];
+  [(NTKUtilityComplicationFactory *)self foregroundAlphaForEditing:editMode != 0];
 
   CLKInterpolateBetweenFloatsClipped();
   return result;
 }
 
-- (double)foregroundImageAlphaForEditing:(BOOL)a3
+- (double)foregroundImageAlphaForEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
     return NTKUtilityComplicationEditingForegroundAlpha();
   }
@@ -795,36 +795,36 @@ LABEL_13:
   }
 }
 
-- (double)foregroundImageAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (double)foregroundImageAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  [(NTKUtilityComplicationFactory *)self foregroundImageAlphaForEditing:a4 != 0];
-  [(NTKUtilityComplicationFactory *)self foregroundImageAlphaForEditing:a5 != 0];
+  [(NTKUtilityComplicationFactory *)self foregroundImageAlphaForEditing:mode != 0];
+  [(NTKUtilityComplicationFactory *)self foregroundImageAlphaForEditing:editMode != 0];
 
   CLKInterpolateBetweenFloatsClipped();
   return result;
 }
 
-- (id)_viewForDateComplication:(id)a3
+- (id)_viewForDateComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v5 = objc_alloc_init(NTKUtilityDateComplicationView);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v4 dateStyle];
+  dateStyle = [complicationCopy dateStyle];
 
-  v8 = [WeakRetained utilityDateComplicationFontForDateStyle:v7];
+  v8 = [WeakRetained utilityDateComplicationFontForDateStyle:dateStyle];
   [(NTKUtilityDateComplicationView *)v5 setFont:v8];
 
   return v5;
 }
 
-- (void)_configureTopLeftLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5
+- (void)_configureTopLeftLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  variantCopy = variant;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   top = self->_screenEdgeInsets.top;
   left = self->_screenEdgeInsets.left;
   v25 = y;
@@ -834,7 +834,7 @@ LABEL_13:
   v27 = height;
   v16 = width - (left + self->_screenEdgeInsets.right);
   v17 = height - (top + self->_screenEdgeInsets.bottom);
-  if (v5)
+  if (variantCopy)
   {
     v18 = NTKUtilityComplicationCurvedCornerSize(self->_device);
     NTKUtilityComplicationCurvedCornerSize(self->_device);
@@ -855,7 +855,7 @@ LABEL_13:
   aBlock[1] = 3221225472;
   aBlock[2] = __76__NTKUtilityComplicationFactory__configureTopLeftLayout_withBounds_variant___block_invoke;
   aBlock[3] = &unk_27877EFF8;
-  v35 = v5;
+  v35 = variantCopy;
   aBlock[4] = self;
   *&aBlock[5] = v14;
   *&aBlock[6] = v15;
@@ -873,15 +873,15 @@ LABEL_13:
     v32 = v26;
     v33 = v27;
     v28[4] = self;
-    v24 = v11;
+    v24 = layoutCopy;
     v29 = v24;
     NTKEnumerateComplicationStates(v28);
-    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v24 withNormalSize:v5 editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v24 withNormalSize:variantCopy editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 
   else
   {
-    [(NTKUtilityComplicationFactory *)self _configureLayout:v11 withNormalSize:v5 editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:variantCopy editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 }
 
@@ -930,14 +930,14 @@ void __76__NTKUtilityComplicationFactory__configureTopLeftLayout_withBounds_vari
   [*(a1 + 40) setDefaultLayoutRule:v4 forState:a2];
 }
 
-- (void)_configureTopRightLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5
+- (void)_configureTopRightLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  variantCopy = variant;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   top = self->_screenEdgeInsets.top;
   left = self->_screenEdgeInsets.left;
   v26 = y;
@@ -947,7 +947,7 @@ void __76__NTKUtilityComplicationFactory__configureTopLeftLayout_withBounds_vari
   v28 = height;
   v16 = width - (left + self->_screenEdgeInsets.right);
   v17 = height - (top + self->_screenEdgeInsets.bottom);
-  if (v5)
+  if (variantCopy)
   {
     v18 = NTKUtilityComplicationCurvedCornerSize(self->_device);
     NTKUtilityComplicationCurvedCornerSize(self->_device);
@@ -969,7 +969,7 @@ void __76__NTKUtilityComplicationFactory__configureTopLeftLayout_withBounds_vari
   aBlock[1] = 3221225472;
   aBlock[2] = __77__NTKUtilityComplicationFactory__configureTopRightLayout_withBounds_variant___block_invoke;
   aBlock[3] = &unk_27877F020;
-  v36 = v5;
+  v36 = variantCopy;
   aBlock[4] = self;
   *&aBlock[5] = crownIndicatorGap;
   *&aBlock[6] = v14;
@@ -988,15 +988,15 @@ void __76__NTKUtilityComplicationFactory__configureTopLeftLayout_withBounds_vari
     v33 = v27;
     v34 = v28;
     v29[4] = self;
-    v25 = v11;
+    v25 = layoutCopy;
     v30 = v25;
     NTKEnumerateComplicationStates(v29);
-    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v25 withNormalSize:v5 editingSize:1 variant:v24 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v25 withNormalSize:variantCopy editingSize:1 variant:v24 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 
   else
   {
-    [(NTKUtilityComplicationFactory *)self _configureLayout:v11 withNormalSize:v5 editingSize:1 variant:v24 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:variantCopy editingSize:1 variant:v24 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 }
 
@@ -1051,14 +1051,14 @@ void __77__NTKUtilityComplicationFactory__configureTopRightLayout_withBounds_var
   [*(a1 + 40) setDefaultLayoutRule:v4 forState:a2];
 }
 
-- (void)_configureBottomLeftLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5
+- (void)_configureBottomLeftLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  variantCopy = variant;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   top = self->_screenEdgeInsets.top;
   left = self->_screenEdgeInsets.left;
   v25 = y;
@@ -1068,7 +1068,7 @@ void __77__NTKUtilityComplicationFactory__configureTopRightLayout_withBounds_var
   v27 = height;
   v16 = width - (left + self->_screenEdgeInsets.right);
   v17 = height - (top + self->_screenEdgeInsets.bottom);
-  if (v5)
+  if (variantCopy)
   {
     v18 = NTKUtilityComplicationCurvedCornerSize(self->_device);
     NTKUtilityComplicationCurvedCornerSize(self->_device);
@@ -1089,7 +1089,7 @@ void __77__NTKUtilityComplicationFactory__configureTopRightLayout_withBounds_var
   aBlock[1] = 3221225472;
   aBlock[2] = __79__NTKUtilityComplicationFactory__configureBottomLeftLayout_withBounds_variant___block_invoke;
   aBlock[3] = &unk_27877EFF8;
-  v35 = v5;
+  v35 = variantCopy;
   aBlock[4] = self;
   *&aBlock[5] = v14;
   *&aBlock[6] = v15;
@@ -1107,15 +1107,15 @@ void __77__NTKUtilityComplicationFactory__configureTopRightLayout_withBounds_var
     v32 = v26;
     v33 = v27;
     v28[4] = self;
-    v24 = v11;
+    v24 = layoutCopy;
     v29 = v24;
     NTKEnumerateComplicationStates(v28);
-    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v24 withNormalSize:v5 editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v24 withNormalSize:variantCopy editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 
   else
   {
-    [(NTKUtilityComplicationFactory *)self _configureLayout:v11 withNormalSize:v5 editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:variantCopy editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 }
 
@@ -1180,14 +1180,14 @@ void __79__NTKUtilityComplicationFactory__configureBottomLeftLayout_withBounds_v
   [*(a1 + 40) setDefaultLayoutRule:v4 forState:a2];
 }
 
-- (void)_configureBottomRightLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5
+- (void)_configureBottomRightLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  variantCopy = variant;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   top = self->_screenEdgeInsets.top;
   left = self->_screenEdgeInsets.left;
   v25 = y;
@@ -1197,7 +1197,7 @@ void __79__NTKUtilityComplicationFactory__configureBottomLeftLayout_withBounds_v
   v27 = height;
   v16 = width - (left + self->_screenEdgeInsets.right);
   v17 = height - (top + self->_screenEdgeInsets.bottom);
-  if (v5)
+  if (variantCopy)
   {
     v18 = NTKUtilityComplicationCurvedCornerSize(self->_device);
     NTKUtilityComplicationCurvedCornerSize(self->_device);
@@ -1218,7 +1218,7 @@ void __79__NTKUtilityComplicationFactory__configureBottomLeftLayout_withBounds_v
   aBlock[1] = 3221225472;
   aBlock[2] = __80__NTKUtilityComplicationFactory__configureBottomRightLayout_withBounds_variant___block_invoke;
   aBlock[3] = &unk_27877EFF8;
-  v35 = v5;
+  v35 = variantCopy;
   aBlock[4] = self;
   *&aBlock[5] = v14;
   *&aBlock[6] = v15;
@@ -1236,15 +1236,15 @@ void __79__NTKUtilityComplicationFactory__configureBottomLeftLayout_withBounds_v
     v32 = v26;
     v33 = v27;
     v28[4] = self;
-    v24 = v11;
+    v24 = layoutCopy;
     v29 = v24;
     NTKEnumerateComplicationStates(v28);
-    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v24 withNormalSize:v5 editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureOverridesForLayout:v24 withNormalSize:variantCopy editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 
   else
   {
-    [(NTKUtilityComplicationFactory *)self _configureLayout:v11 withNormalSize:v5 editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
+    [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:variantCopy editingSize:1 variant:v23 addCircleOverrides:v18 makeRuleBlock:v20, v21, v20];
   }
 }
 
@@ -1309,20 +1309,20 @@ void __80__NTKUtilityComplicationFactory__configureBottomRightLayout_withBounds_
   [*(a1 + 40) setDefaultLayoutRule:v4 forState:a2];
 }
 
-- (void)_configureTopBezelLayout:(id)a3 withBounds:(CGRect)a4 dialDiameter:(double)a5
+- (void)_configureTopBezelLayout:(id)layout withBounds:(CGRect)bounds dialDiameter:(double)diameter
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __82__NTKUtilityComplicationFactory__configureTopBezelLayout_withBounds_dialDiameter___block_invoke;
   v13 = &unk_27877F048;
-  v15 = a5;
-  v16 = a4;
-  v14 = self;
-  v8 = a3;
+  diameterCopy = diameter;
+  boundsCopy = bounds;
+  selfCopy = self;
+  layoutCopy = layout;
   v9 = _Block_copy(&v10);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v8 withNormalSize:1 editingSize:0 variant:v9 addCircleOverrides:width makeRuleBlock:height, width, height, v10, v11, v12, v13, v14, *&v15, *&v16.origin.x, *&v16.origin.y, *&v16.size.width, *&v16.size.height];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:1 editingSize:0 variant:v9 addCircleOverrides:width makeRuleBlock:height, width, height, v10, v11, v12, v13, selfCopy, *&diameterCopy, *&boundsCopy.origin.x, *&boundsCopy.origin.y, *&boundsCopy.size.width, *&boundsCopy.size.height];
 }
 
 id __82__NTKUtilityComplicationFactory__configureTopBezelLayout_withBounds_dialDiameter___block_invoke(uint64_t a1, int a2, char a3)
@@ -1358,23 +1358,23 @@ id __82__NTKUtilityComplicationFactory__configureTopBezelLayout_withBounds_dialD
   return [NTKComplicationLayoutRule layoutRuleForDevice:v17 withReferenceFrame:1 horizontalLayout:0 verticalLayout:1 keylinePadding:Width * 0.5 - v9 * 0.5 clip:v7, v6, v6, v13, v14, v15, v16];
 }
 
-- (void)_configureBottomCenterLayout:(id)a3 withBounds:(CGRect)a4 variant:(BOOL)a5
+- (void)_configureBottomCenterLayout:(id)layout withBounds:(CGRect)bounds variant:(BOOL)variant
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  variantCopy = variant;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   top = self->_screenEdgeInsets.top;
   left = self->_screenEdgeInsets.left;
   v14 = x + left;
-  v27 = a4.size.width - (left + self->_screenEdgeInsets.right);
+  v27 = bounds.size.width - (left + self->_screenEdgeInsets.right);
   v28 = y + top;
-  v15 = a4.size.height - (top + self->_screenEdgeInsets.bottom);
-  if (a5)
+  v15 = bounds.size.height - (top + self->_screenEdgeInsets.bottom);
+  if (variant)
   {
     device = self->_device;
-    v17 = a3;
+    layoutCopy = layout;
     maxNormalLongWidth = NTKUtilityComplicationCurvedCenterSize(device);
     NTKUtilityComplicationCurvedCenterSize(self->_device);
     v20 = v19;
@@ -1386,7 +1386,7 @@ id __82__NTKUtilityComplicationFactory__configureTopBezelLayout_withBounds_dialD
   {
     maxNormalLongWidth = self->_maxNormalLongWidth;
     v23 = self->_device;
-    v24 = a3;
+    layoutCopy2 = layout;
     v20 = NTKUtilityComplicationHeight(v23);
     [(NTKUtilityComplicationFactory *)self _maxBottomCenterWidthLeavingRoomForKeylines:v14, v28, v27, v15];
     v21 = v14;
@@ -1397,7 +1397,7 @@ id __82__NTKUtilityComplicationFactory__configureTopBezelLayout_withBounds_dialD
   aBlock[1] = 3221225472;
   aBlock[2] = __81__NTKUtilityComplicationFactory__configureBottomCenterLayout_withBounds_variant___block_invoke;
   aBlock[3] = &unk_27877F070;
-  v30 = v5;
+  v30 = variantCopy;
   aBlock[4] = self;
   *&aBlock[5] = x;
   *&aBlock[6] = y;
@@ -1408,7 +1408,7 @@ id __82__NTKUtilityComplicationFactory__configureTopBezelLayout_withBounds_dialD
   *&aBlock[11] = v27;
   *&aBlock[12] = v15;
   v26 = _Block_copy(aBlock);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:a3 withNormalSize:v5 editingSize:0 variant:v26 addCircleOverrides:maxNormalLongWidth makeRuleBlock:v20, v22, v20];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layout withNormalSize:variantCopy editingSize:0 variant:v26 addCircleOverrides:maxNormalLongWidth makeRuleBlock:v20, v22, v20];
 }
 
 id __81__NTKUtilityComplicationFactory__configureBottomCenterLayout_withBounds_variant___block_invoke(uint64_t a1, int a2, double a3, double a4, double a5, double a6)
@@ -1478,13 +1478,13 @@ id __81__NTKUtilityComplicationFactory__configureBottomCenterLayout_withBounds_v
   return v29;
 }
 
-- (void)_configureDateLayout:(id)a3 withBounds:(CGRect)a4
+- (void)_configureDateLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   [(NTKUtilityComplicationFactory *)self _maxDateWidthLeavingRoomForKeylines];
   v11 = v10;
   selectedKeylineHeight = self->_selectedKeylineHeight;
@@ -1498,7 +1498,7 @@ id __81__NTKUtilityComplicationFactory__configureBottomCenterLayout_withBounds_v
   *&aBlock[8] = height;
   aBlock[4] = self;
   v13 = _Block_copy(aBlock);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v9 withNormalSize:0 editingSize:0 variant:v13 addCircleOverrides:v11 makeRuleBlock:selectedKeylineHeight, v11, selectedKeylineHeight];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:0 editingSize:0 variant:v13 addCircleOverrides:v11 makeRuleBlock:selectedKeylineHeight, v11, selectedKeylineHeight];
 }
 
 id __65__NTKUtilityComplicationFactory__configureDateLayout_withBounds___block_invoke(uint64_t a1, char a2, double a3, double a4, double a5, double a6)
@@ -1525,14 +1525,14 @@ id __65__NTKUtilityComplicationFactory__configureDateLayout_withBounds___block_i
   return [NTKComplicationLayoutRule layoutRuleForDevice:v16 withReferenceFrame:1 horizontalLayout:1 verticalLayout:1 keylinePadding:v14 clip:v15, a3, a4, v6, v7, v11, v12];
 }
 
-- (void)_configureTopRightAboveLayout:(id)a3 withBounds:(CGRect)a4
+- (void)_configureTopRightAboveLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   device = self->_device;
-  v10 = a3;
+  layoutCopy = layout;
   ___LayoutConstants_block_invoke_5(device, v25);
   v27.origin.x = x;
   v27.origin.y = y;
@@ -1561,7 +1561,7 @@ id __65__NTKUtilityComplicationFactory__configureDateLayout_withBounds___block_i
   *&v22[8] = v14;
   *&v22[9] = crownIndicatorGap;
   v21 = _Block_copy(v22);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v10 withNormalSize:0 editingSize:1 variant:v21 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:0 editingSize:1 variant:v21 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
 }
 
 id __74__NTKUtilityComplicationFactory__configureTopRightAboveLayout_withBounds___block_invoke(uint64_t a1, char a2, double a3, double a4, double a5, double a6)
@@ -1600,14 +1600,14 @@ id __74__NTKUtilityComplicationFactory__configureTopRightAboveLayout_withBounds_
   return [NTKComplicationLayoutRule layoutRuleForDevice:v18 withReferenceFrame:3 horizontalLayout:1 verticalLayout:1 keylinePadding:v16 clip:v17, a3, a4, v14, v13, v20, v12];
 }
 
-- (void)_configureTopRightBelowLayout:(id)a3 withBounds:(CGRect)a4
+- (void)_configureTopRightBelowLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   device = self->_device;
-  v10 = a3;
+  layoutCopy = layout;
   ___LayoutConstants_block_invoke_5(device, v24);
   v26.origin.x = x;
   v26.origin.y = y;
@@ -1634,7 +1634,7 @@ id __74__NTKUtilityComplicationFactory__configureTopRightAboveLayout_withBounds_
   *&aBlock[7] = v13;
   *&aBlock[8] = v14;
   v20 = _Block_copy(aBlock);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v10 withNormalSize:0 editingSize:0 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:0 editingSize:0 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
 }
 
 id __74__NTKUtilityComplicationFactory__configureTopRightBelowLayout_withBounds___block_invoke(uint64_t a1, char a2, double a3, double a4, double a5, double a6)
@@ -1671,14 +1671,14 @@ id __74__NTKUtilityComplicationFactory__configureTopRightBelowLayout_withBounds_
   return [NTKComplicationLayoutRule layoutRuleForDevice:v18 withReferenceFrame:3 horizontalLayout:1 verticalLayout:1 keylinePadding:v16 clip:v17, a3, a4, v11, v14, v13, v12];
 }
 
-- (void)_configureBottomRightAboveLayout:(id)a3 withBounds:(CGRect)a4
+- (void)_configureBottomRightAboveLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   device = self->_device;
-  v10 = a3;
+  layoutCopy = layout;
   ___LayoutConstants_block_invoke_5(device, v24);
   v26.origin.x = x;
   v26.origin.y = y;
@@ -1705,7 +1705,7 @@ id __74__NTKUtilityComplicationFactory__configureTopRightBelowLayout_withBounds_
   *&aBlock[8] = v14;
   aBlock[4] = self;
   v20 = _Block_copy(aBlock);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v10 withNormalSize:0 editingSize:1 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:0 editingSize:1 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
 }
 
 id __77__NTKUtilityComplicationFactory__configureBottomRightAboveLayout_withBounds___block_invoke(uint64_t a1, char a2, double a3, double a4, double a5, double a6)
@@ -1731,14 +1731,14 @@ id __77__NTKUtilityComplicationFactory__configureBottomRightAboveLayout_withBoun
   return [NTKComplicationLayoutRule layoutRuleForDevice:v17 withReferenceFrame:3 horizontalLayout:1 verticalLayout:1 keylinePadding:v14 clip:v16, a3, a4, v10, v11, v12, v13];
 }
 
-- (void)_configureBottomRightBelowLayout:(id)a3 withBounds:(CGRect)a4
+- (void)_configureBottomRightBelowLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   device = self->_device;
-  v10 = a3;
+  layoutCopy = layout;
   ___LayoutConstants_block_invoke_5(device, v24);
   v26.origin.x = x;
   v26.origin.y = y;
@@ -1765,7 +1765,7 @@ id __77__NTKUtilityComplicationFactory__configureBottomRightAboveLayout_withBoun
   *&aBlock[8] = v14;
   aBlock[4] = self;
   v20 = _Block_copy(aBlock);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v10 withNormalSize:0 editingSize:0 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:0 editingSize:0 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
 }
 
 id __77__NTKUtilityComplicationFactory__configureBottomRightBelowLayout_withBounds___block_invoke(uint64_t a1, char a2, double a3, double a4, double a5, double a6)
@@ -1791,14 +1791,14 @@ id __77__NTKUtilityComplicationFactory__configureBottomRightBelowLayout_withBoun
   return [NTKComplicationLayoutRule layoutRuleForDevice:v17 withReferenceFrame:3 horizontalLayout:1 verticalLayout:1 keylinePadding:v14 clip:v16, a3, a4, v10, v11, v12, v13];
 }
 
-- (void)_configureBottomRightLongLayout:(id)a3 withBounds:(CGRect)a4
+- (void)_configureBottomRightLongLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   device = self->_device;
-  v10 = a3;
+  layoutCopy = layout;
   ___LayoutConstants_block_invoke_5(device, v24);
   v26.origin.x = x;
   v26.origin.y = y;
@@ -1825,7 +1825,7 @@ id __77__NTKUtilityComplicationFactory__configureBottomRightBelowLayout_withBoun
   *&aBlock[8] = v14;
   aBlock[4] = self;
   v20 = _Block_copy(aBlock);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v10 withNormalSize:0 editingSize:0 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:0 editingSize:0 variant:v20 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
 }
 
 id __76__NTKUtilityComplicationFactory__configureBottomRightLongLayout_withBounds___block_invoke(uint64_t a1, char a2, double a3, double a4, double a5, double a6)
@@ -1851,14 +1851,14 @@ id __76__NTKUtilityComplicationFactory__configureBottomRightLongLayout_withBound
   return [NTKComplicationLayoutRule layoutRuleForDevice:v17 withReferenceFrame:2 horizontalLayout:1 verticalLayout:1 keylinePadding:v14 clip:v16, a3, a4, v10, v11, v12, v13];
 }
 
-- (void)_configureUpNextTopRightLayout:(id)a3 withBounds:(CGRect)a4
+- (void)_configureUpNextTopRightLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   device = self->_device;
-  v10 = a3;
+  layoutCopy = layout;
   ___LayoutConstants_block_invoke_5(device, v25);
   v27.origin.x = x;
   v27.origin.y = y;
@@ -1887,7 +1887,7 @@ id __76__NTKUtilityComplicationFactory__configureBottomRightLongLayout_withBound
   *&v22[8] = v14;
   *&v22[9] = crownIndicatorGap;
   v21 = _Block_copy(v22);
-  [(NTKUtilityComplicationFactory *)self _configureLayout:v10 withNormalSize:0 editingSize:1 variant:v21 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
+  [(NTKUtilityComplicationFactory *)self _configureLayout:layoutCopy withNormalSize:0 editingSize:1 variant:v21 addCircleOverrides:v15 makeRuleBlock:v16, v18, v19];
 }
 
 id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds___block_invoke(uint64_t a1, char a2, double a3, double a4, double a5, double a6)
@@ -1926,17 +1926,17 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
   return [NTKComplicationLayoutRule layoutRuleForDevice:v18 withReferenceFrame:3 horizontalLayout:1 verticalLayout:1 keylinePadding:v16 clip:v17, a3, a4, v14, v13, v20, v12];
 }
 
-- (void)_configureLayout:(id)a3 withNormalSize:(CGSize)a4 editingSize:(CGSize)a5 variant:(BOOL)a6 addCircleOverrides:(BOOL)a7 makeRuleBlock:(id)a8
+- (void)_configureLayout:(id)layout withNormalSize:(CGSize)size editingSize:(CGSize)editingSize variant:(BOOL)variant addCircleOverrides:(BOOL)overrides makeRuleBlock:(id)block
 {
-  v9 = a7;
-  v10 = a6;
-  height = a5.height;
-  width = a5.width;
-  v13 = a4.height;
-  v14 = a4.width;
-  v39 = a3;
-  v16 = a8;
-  if (v10)
+  overridesCopy = overrides;
+  variantCopy = variant;
+  height = editingSize.height;
+  width = editingSize.width;
+  v13 = size.height;
+  v14 = size.width;
+  layoutCopy = layout;
+  blockCopy = block;
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v54);
     normalSidePadding = v55;
@@ -1950,10 +1950,10 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     p_normalVerticalPadding = &self->_normalVerticalPadding;
   }
 
-  v19 = (*(v16 + 2))(v16, 0, 0, v14, v13, normalSidePadding, *p_normalVerticalPadding);
-  [v39 setDefaultLayoutRule:v19 forState:0];
+  v19 = (*(blockCopy + 2))(blockCopy, 0, 0, v14, v13, normalSidePadding, *p_normalVerticalPadding);
+  [layoutCopy setDefaultLayoutRule:v19 forState:0];
 
-  if (v10)
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v50);
     v20 = v51;
@@ -1967,10 +1967,10 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     v21 = &self->_normalVerticalPadding;
   }
 
-  v22 = (*(v16 + 2))(v16, 0, 0, width, height, v20, *v21);
-  [v39 setDefaultLayoutRule:v22 forState:1];
+  v22 = (*(blockCopy + 2))(blockCopy, 0, 0, width, height, v20, *v21);
+  [layoutCopy setDefaultLayoutRule:v22 forState:1];
 
-  if (v10)
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v46);
     v23 = v47;
@@ -1984,10 +1984,10 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     v24.n128_f64[0] = NTKKeylineWidth() + self->_deselectedKeylineVerticalInnerPadding;
   }
 
-  v25 = (*(v16 + 2))(v16, 1, 0, width, height, v23, v24);
-  [v39 setDefaultLayoutRule:v25 forState:2];
+  v25 = (*(blockCopy + 2))(blockCopy, 1, 0, width, height, v23, v24);
+  [layoutCopy setDefaultLayoutRule:v25 forState:2];
 
-  if (v10)
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v42);
     v26 = v43;
@@ -2003,20 +2003,20 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     v27.n128_u64[0] = v28;
   }
 
-  v29 = (*(v16 + 2))(v16, 1, 1, width, height + self->_selectedKeylineVerticalInnerContentSpacer * 2.0, v26, v27);
-  [v39 setDefaultLayoutRule:v29 forState:3];
+  v29 = (*(blockCopy + 2))(blockCopy, 1, 1, width, height + self->_selectedKeylineVerticalInnerContentSpacer * 2.0, v26, v27);
+  [layoutCopy setDefaultLayoutRule:v29 forState:3];
 
-  if (v9)
+  if (overridesCopy)
   {
     v30 = NTKUtilityComplicationCircularDiameter(self->_device);
     v31 = NTKUtilityComplicationCircularDiameter(self->_device);
-    v32 = (*(v16 + 2))(v16, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
-    [v39 setOverrideLayoutRule:v32 forState:0 layoutOverride:2];
+    v32 = (*(blockCopy + 2))(blockCopy, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
+    [layoutCopy setOverrideLayoutRule:v32 forState:0 layoutOverride:2];
 
-    v33 = (*(v16 + 2))(v16, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
-    [v39 setOverrideLayoutRule:v33 forState:1 layoutOverride:2];
+    v33 = (*(blockCopy + 2))(blockCopy, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
+    [layoutCopy setOverrideLayoutRule:v33 forState:1 layoutOverride:2];
 
-    if (v10)
+    if (variantCopy)
     {
       v35 = self->_normalCircularPadding.width;
       v34.n128_u64[0] = *&self->_normalCircularPadding.height;
@@ -2028,37 +2028,37 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
       v34.n128_f64[0] = NTKKeylineWidth() + self->_deselectedKeylineCircularInnerPadding;
     }
 
-    v36 = (*(v16 + 2))(v16, 1, 0, v30, v31, v35, v34);
-    [v39 setOverrideLayoutRule:v36 forState:2 layoutOverride:2];
+    v36 = (*(blockCopy + 2))(blockCopy, 1, 0, v30, v31, v35, v34);
+    [layoutCopy setOverrideLayoutRule:v36 forState:2 layoutOverride:2];
 
-    if (v10)
+    if (variantCopy)
     {
-      v37 = (*(v16 + 2))(v16, 1, 1, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
+      v37 = (*(blockCopy + 2))(blockCopy, 1, 1, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
     }
 
     else
     {
-      v38 = [v39 defaultLayoutRuleForState:3];
+      v38 = [layoutCopy defaultLayoutRuleForState:3];
       v37 = [v38 copy];
 
       [v37 setVerticalLayout:4];
     }
 
-    [v39 setOverrideLayoutRule:v37 forState:3 layoutOverride:2];
+    [layoutCopy setOverrideLayoutRule:v37 forState:3 layoutOverride:2];
   }
 }
 
-- (void)_configureOverridesForLayout:(id)a3 withNormalSize:(CGSize)a4 editingSize:(CGSize)a5 variant:(BOOL)a6 addCircleOverrides:(BOOL)a7 makeRuleBlock:(id)a8
+- (void)_configureOverridesForLayout:(id)layout withNormalSize:(CGSize)size editingSize:(CGSize)editingSize variant:(BOOL)variant addCircleOverrides:(BOOL)overrides makeRuleBlock:(id)block
 {
-  v9 = a7;
-  v10 = a6;
-  height = a5.height;
-  width = a5.width;
-  v13 = a4.height;
-  v14 = a4.width;
-  v39 = a3;
-  v16 = a8;
-  if (v10)
+  overridesCopy = overrides;
+  variantCopy = variant;
+  height = editingSize.height;
+  width = editingSize.width;
+  v13 = size.height;
+  v14 = size.width;
+  layoutCopy = layout;
+  blockCopy = block;
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v54);
     normalSidePadding = v55;
@@ -2072,10 +2072,10 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     p_normalVerticalPadding = &self->_normalVerticalPadding;
   }
 
-  v19 = (*(v16 + 2))(v16, 0, 0, v14, v13, normalSidePadding, *p_normalVerticalPadding);
-  [v39 setOverrideLayoutRule:v19 forState:0 layoutOverride:1];
+  v19 = (*(blockCopy + 2))(blockCopy, 0, 0, v14, v13, normalSidePadding, *p_normalVerticalPadding);
+  [layoutCopy setOverrideLayoutRule:v19 forState:0 layoutOverride:1];
 
-  if (v10)
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v50);
     v20 = v51;
@@ -2089,10 +2089,10 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     v21 = &self->_normalVerticalPadding;
   }
 
-  v22 = (*(v16 + 2))(v16, 0, 0, width, height, v20, *v21);
-  [v39 setOverrideLayoutRule:v22 forState:1 layoutOverride:1];
+  v22 = (*(blockCopy + 2))(blockCopy, 0, 0, width, height, v20, *v21);
+  [layoutCopy setOverrideLayoutRule:v22 forState:1 layoutOverride:1];
 
-  if (v10)
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v46);
     v23 = v47;
@@ -2106,10 +2106,10 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     v24.n128_f64[0] = NTKKeylineWidth() + self->_deselectedKeylineVerticalInnerPadding;
   }
 
-  v25 = (*(v16 + 2))(v16, 1, 0, width, height, v23, v24);
-  [v39 setOverrideLayoutRule:v25 forState:2 layoutOverride:1];
+  v25 = (*(blockCopy + 2))(blockCopy, 1, 0, width, height, v23, v24);
+  [layoutCopy setOverrideLayoutRule:v25 forState:2 layoutOverride:1];
 
-  if (v10)
+  if (variantCopy)
   {
     ___LayoutConstants_block_invoke_5(self->_device, v42);
     v26 = v43;
@@ -2125,20 +2125,20 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
     v27.n128_u64[0] = v28;
   }
 
-  v29 = (*(v16 + 2))(v16, 1, 1, width, height + self->_selectedKeylineVerticalInnerContentSpacer * 2.0, v26, v27);
-  [v39 setOverrideLayoutRule:v29 forState:3 layoutOverride:1];
+  v29 = (*(blockCopy + 2))(blockCopy, 1, 1, width, height + self->_selectedKeylineVerticalInnerContentSpacer * 2.0, v26, v27);
+  [layoutCopy setOverrideLayoutRule:v29 forState:3 layoutOverride:1];
 
-  if (v9)
+  if (overridesCopy)
   {
     v30 = NTKUtilityComplicationCircularDiameter(self->_device);
     v31 = NTKUtilityComplicationCircularDiameter(self->_device);
-    v32 = (*(v16 + 2))(v16, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
-    [v39 setOverrideLayoutRule:v32 forState:0 layoutOverride:2];
+    v32 = (*(blockCopy + 2))(blockCopy, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
+    [layoutCopy setOverrideLayoutRule:v32 forState:0 layoutOverride:2];
 
-    v33 = (*(v16 + 2))(v16, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
-    [v39 setOverrideLayoutRule:v33 forState:1 layoutOverride:2];
+    v33 = (*(blockCopy + 2))(blockCopy, 0, 0, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
+    [layoutCopy setOverrideLayoutRule:v33 forState:1 layoutOverride:2];
 
-    if (v10)
+    if (variantCopy)
     {
       v35 = self->_normalCircularPadding.width;
       v34.n128_u64[0] = *&self->_normalCircularPadding.height;
@@ -2150,27 +2150,27 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
       v34.n128_f64[0] = NTKKeylineWidth() + self->_deselectedKeylineCircularInnerPadding;
     }
 
-    v36 = (*(v16 + 2))(v16, 1, 0, v30, v31, v35, v34);
-    [v39 setOverrideLayoutRule:v36 forState:2 layoutOverride:2];
+    v36 = (*(blockCopy + 2))(blockCopy, 1, 0, v30, v31, v35, v34);
+    [layoutCopy setOverrideLayoutRule:v36 forState:2 layoutOverride:2];
 
-    if (v10)
+    if (variantCopy)
     {
-      v37 = (*(v16 + 2))(v16, 1, 1, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
+      v37 = (*(blockCopy + 2))(blockCopy, 1, 1, v30, v31, self->_normalCircularPadding.width, self->_normalCircularPadding.height);
     }
 
     else
     {
-      v38 = [v39 defaultLayoutRuleForState:3];
+      v38 = [layoutCopy defaultLayoutRuleForState:3];
       v37 = [v38 copy];
 
       [v37 setVerticalLayout:4];
     }
 
-    [v39 setOverrideLayoutRule:v37 forState:3 layoutOverride:2];
+    [layoutCopy setOverrideLayoutRule:v37 forState:3 layoutOverride:2];
   }
 }
 
-- (double)_maxTopCornerWidthLeavingRoomForKeylines:(CGRect)a3
+- (double)_maxTopCornerWidthLeavingRoomForKeylines:(CGRect)keylines
 {
   ___LayoutConstants_block_invoke_5(self->_device, v8);
   CLKFloorForDevice();
@@ -2179,7 +2179,7 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
   return v5 - v6;
 }
 
-- (double)_maxBottomCornerWidthLeavingRoomForKeylines:(CGRect)a3
+- (double)_maxBottomCornerWidthLeavingRoomForKeylines:(CGRect)keylines
 {
   ___LayoutConstants_block_invoke_5(self->_device, v8);
   CLKFloorForDevice();
@@ -2188,10 +2188,10 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
   return v5 - v6;
 }
 
-- (double)_maxBottomCenterWidthLeavingRoomForKeylines:(CGRect)a3
+- (double)_maxBottomCenterWidthLeavingRoomForKeylines:(CGRect)keylines
 {
-  width = a3.size.width;
-  [(NTKUtilityComplicationFactory *)self _maxWidthForKeylineAndPadding:a3.origin.x];
+  width = keylines.size.width;
+  [(NTKUtilityComplicationFactory *)self _maxWidthForKeylineAndPadding:keylines.origin.x];
   return width - v4;
 }
 
@@ -2218,9 +2218,9 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
   return selectedKeylineSideInnerPadding + v3 + selectedKeylineSideInnerPadding + v3;
 }
 
-- (int64_t)complicationPickerStyleForSlot:(id)a3
+- (int64_t)complicationPickerStyleForSlot:(id)slot
 {
-  if ([a3 isEqualToString:@"bezel"])
+  if ([slot isEqualToString:@"bezel"])
   {
     return 2;
   }
@@ -2231,46 +2231,46 @@ id __75__NTKUtilityComplicationFactory__configureUpNextTopRightLayout_withBounds
   }
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)configureComplicationView:(id)view forSlot:(id)slot
 {
-  v13 = a3;
-  v6 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   [(NTKUtilityComplicationFactory *)self dialDiameter];
-  [(NTKUtilityComplicationFactory *)self configureComplicationView:v13 forSlot:v6 dialDiameter:?];
-  if ([v13 conformsToProtocol:&unk_28A859A10])
+  [(NTKUtilityComplicationFactory *)self configureComplicationView:viewCopy forSlot:slotCopy dialDiameter:?];
+  if ([viewCopy conformsToProtocol:&unk_28A859A10])
   {
-    v7 = v13;
-    v8 = [(NTKUtilityComplicationFactory *)self faceView];
-    v9 = [v8 conformsToProtocol:&unk_28A8ADE10];
+    v7 = viewCopy;
+    faceView = [(NTKUtilityComplicationFactory *)self faceView];
+    v9 = [faceView conformsToProtocol:&unk_28A8ADE10];
 
     if (v9)
     {
-      v10 = [(NTKUtilityComplicationFactory *)self faceView];
-      [v7 setDelegate:v10];
+      faceView2 = [(NTKUtilityComplicationFactory *)self faceView];
+      [v7 setDelegate:faceView2];
     }
   }
 
-  if ([v13 conformsToProtocol:&unk_28A8170A0])
+  if ([viewCopy conformsToProtocol:&unk_28A8170A0])
   {
-    v11 = v13;
-    if ([v6 isEqualToString:@"top-left"])
+    v11 = viewCopy;
+    if ([slotCopy isEqualToString:@"top-left"])
     {
       v12 = 0;
     }
 
-    else if ([v6 isEqualToString:@"top-right"])
+    else if ([slotCopy isEqualToString:@"top-right"])
     {
       v12 = 1;
     }
 
-    else if ([v6 isEqualToString:@"bottom-left"])
+    else if ([slotCopy isEqualToString:@"bottom-left"])
     {
       v12 = 2;
     }
 
     else
     {
-      if (![v6 isEqualToString:@"bottom-right"])
+      if (![slotCopy isEqualToString:@"bottom-right"])
       {
 LABEL_15:
 
@@ -2287,13 +2287,13 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)keylineViewForComplicationSlot:(id)a3
+- (id)keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = v4;
+  slotCopy = slot;
+  v5 = slotCopy;
   if (self->_graphicCornerComplications)
   {
-    if ([v4 isEqualToString:@"top-left"])
+    if ([slotCopy isEqualToString:@"top-left"])
     {
       device = self->_device;
       usesNarrowTopSlots = self->_usesNarrowTopSlots;
@@ -2335,38 +2335,38 @@ LABEL_12:
   return v10;
 }
 
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot
 {
-  v6 = [(NTKUtilityComplicationFactory *)self _utilitySlotForSlot:a4];
+  v6 = [(NTKUtilityComplicationFactory *)self _utilitySlotForSlot:slot];
 
-  return [(NTKUtilityComplicationFactory *)self layoutOverrideForComplicationType:a3 inSlot:v6];
+  return [(NTKUtilityComplicationFactory *)self layoutOverrideForComplicationType:type inSlot:v6];
 }
 
-- (void)curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8
+- (void)curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot
 {
-  v13 = a8;
-  if (@"bezel" == v13)
+  slotCopy = slot;
+  if (@"bezel" == slotCopy)
   {
-    v28 = v13;
-    if (a3)
+    v28 = slotCopy;
+    if (radius)
     {
       [(NTKUtilityComplicationFactory *)self dialDiameter];
       [(NTKUtilityComplicationFactory *)self bezelComplicationRadiusWithDialDiameter:v14 + v14];
-      v13 = v28;
-      *a3 = v15;
+      slotCopy = v28;
+      *radius = v15;
     }
 
-    if (a5)
+    if (width)
     {
       [(NTKUtilityComplicationFactory *)self bezelComplicationMaxAngularWidth];
-      v13 = v28;
-      *a5 = v16;
+      slotCopy = v28;
+      *width = v16;
     }
 
-    if (a6)
+    if (center)
     {
-      v17 = [(NTKUtilityComplicationFactory *)self faceView];
-      [v17 bounds];
+      faceView = [(NTKUtilityComplicationFactory *)self faceView];
+      [faceView bounds];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -2382,81 +2382,81 @@ LABEL_12:
       v31.size.width = v23;
       v31.size.height = v25;
       MidY = CGRectGetMidY(v31);
-      v13 = v28;
-      a6->x = MidX;
-      a6->y = MidY;
+      slotCopy = v28;
+      center->x = MidX;
+      center->y = MidY;
     }
 
-    if (a7)
+    if (interior)
     {
-      *a7 = 0;
+      *interior = 0;
     }
   }
 }
 
 - (void)loadLayoutRules
 {
-  v3 = [(NTKUtilityComplicationFactory *)self faceView];
-  v9 = [v3 complicationLayoutforSlot:@"bezel"];
+  faceView = [(NTKUtilityComplicationFactory *)self faceView];
+  v9 = [faceView complicationLayoutforSlot:@"bezel"];
 
-  v4 = [(NTKUtilityComplicationFactory *)self faceView];
-  [v4 bounds];
+  faceView2 = [(NTKUtilityComplicationFactory *)self faceView];
+  [faceView2 bounds];
   [NTKUtilityComplicationFactory configureComplicationLayout:"configureComplicationLayout:forSlot:bounds:dialDiameter:" forSlot:v9 bounds:11 dialDiameter:?];
 
   if ([(NTKUtilityComplicationFactory *)self includesDateComplicationLayoutRules])
   {
-    v5 = [(NTKUtilityComplicationFactory *)self faceView];
-    v6 = [v5 complicationLayoutforSlot:@"date"];
+    faceView3 = [(NTKUtilityComplicationFactory *)self faceView];
+    v6 = [faceView3 complicationLayoutforSlot:@"date"];
 
     v7 = [(NTKUtilityComplicationFactory *)self _utilitySlotForSlot:@"date"];
-    v8 = [(NTKUtilityComplicationFactory *)self faceView];
-    [v8 bounds];
+    faceView4 = [(NTKUtilityComplicationFactory *)self faceView];
+    [faceView4 bounds];
     [(NTKUtilityComplicationFactory *)self configureComplicationLayout:v6 forSlot:v7 withBounds:?];
   }
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a3;
-  v9 = [(NTKUtilityComplicationFactory *)self newViewForComplication:v8 family:a4 forSlot:[(NTKUtilityComplicationFactory *)self _utilitySlotForSlot:a5]];
+  complicationCopy = complication;
+  v9 = [(NTKUtilityComplicationFactory *)self newViewForComplication:complicationCopy family:family forSlot:[(NTKUtilityComplicationFactory *)self _utilitySlotForSlot:slot]];
 
   return v9;
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"bezel"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"bezel"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"top-left"])
+  else if ([slotCopy isEqualToString:@"top-left"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"bottom-left"])
+  else if ([slotCopy isEqualToString:@"bottom-left"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"bottom-center"])
+  else if ([slotCopy isEqualToString:@"bottom-center"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"top-right"])
+  else if ([slotCopy isEqualToString:@"top-right"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"bottom-right"])
+  else if ([slotCopy isEqualToString:@"bottom-right"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"date"])
+  else if ([slotCopy isEqualToString:@"date"])
   {
     v4 = 12;
   }
@@ -2469,10 +2469,10 @@ LABEL_12:
   return v4;
 }
 
-- (id)_slotForUtilitySlot:(int64_t)a3
+- (id)_slotForUtilitySlot:(int64_t)slot
 {
-  v4 = a3 - 1;
-  if (a3 - 1) <= 0xB && ((0xA0Fu >> v4))
+  v4 = slot - 1;
+  if (slot - 1) <= 0xB && ((0xA0Fu >> v4))
   {
     v5 = *off_27877F0B8[v4];
   }

@@ -1,17 +1,17 @@
 @interface SXFill
-- (unint64_t)attachmentWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)fillModeWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)horizontalAlignmentWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)verticalAlignmentWithValue:(id)a3 withType:(int)a4;
+- (unint64_t)attachmentWithValue:(id)value withType:(int)type;
+- (unint64_t)fillModeWithValue:(id)value withType:(int)type;
+- (unint64_t)horizontalAlignmentWithValue:(id)value withType:(int)type;
+- (unint64_t)verticalAlignmentWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXFill
 
-- (unint64_t)attachmentWithValue:(id)a3 withType:(int)a4
+- (unint64_t)attachmentWithValue:(id)value withType:(int)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    return [a3 isEqualToString:{@"fixed", v4, v5}];
+    return [value isEqualToString:{@"fixed", v4, v5}];
   }
 
   else
@@ -20,29 +20,29 @@
   }
 }
 
-- (unint64_t)fillModeWithValue:(id)a3 withType:(int)a4
+- (unint64_t)fillModeWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"fit"])
+  if ([valueCopy isEqualToString:@"fit"])
   {
     v5 = 0;
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"cover"])
+  if ([valueCopy isEqualToString:@"cover"])
   {
 LABEL_5:
     v5 = 1;
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"stretch"])
+  if ([valueCopy isEqualToString:@"stretch"])
   {
     v5 = 2;
   }
@@ -57,29 +57,29 @@ LABEL_6:
   return v5;
 }
 
-- (unint64_t)horizontalAlignmentWithValue:(id)a3 withType:(int)a4
+- (unint64_t)horizontalAlignmentWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"left"])
+  if ([valueCopy isEqualToString:@"left"])
   {
     v5 = 0;
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"center"])
+  if ([valueCopy isEqualToString:@"center"])
   {
 LABEL_5:
     v5 = 1;
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"right"])
+  if ([valueCopy isEqualToString:@"right"])
   {
     v5 = 2;
   }
@@ -94,29 +94,29 @@ LABEL_6:
   return v5;
 }
 
-- (unint64_t)verticalAlignmentWithValue:(id)a3 withType:(int)a4
+- (unint64_t)verticalAlignmentWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"top"])
+  if ([valueCopy isEqualToString:@"top"])
   {
     v5 = 0;
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"center"])
+  if ([valueCopy isEqualToString:@"center"])
   {
 LABEL_5:
     v5 = 1;
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"bottom"])
+  if ([valueCopy isEqualToString:@"bottom"])
   {
     v5 = 2;
   }

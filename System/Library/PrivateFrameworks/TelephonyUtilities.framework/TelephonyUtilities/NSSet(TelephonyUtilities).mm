@@ -7,15 +7,15 @@
 
 - (id)tu_anyObjectPassingTest:()TelephonyUtilities
 {
-  v1 = [a1 objectsPassingTest:?];
-  v2 = [v1 anyObject];
+  v1 = [self objectsPassingTest:?];
+  anyObject = [v1 anyObject];
 
-  return v2;
+  return anyObject;
 }
 
 - (BOOL)tu_containsObjectPassingTest:()TelephonyUtilities
 {
-  v1 = [a1 tu_anyObjectPassingTest:?];
+  v1 = [self tu_anyObjectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;

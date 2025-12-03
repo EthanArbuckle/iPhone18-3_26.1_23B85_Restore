@@ -1,38 +1,38 @@
 @interface HUTriggerListItemManager
-- (id)_buildItemProvidersForHome:(id)a3;
+- (id)_buildItemProvidersForHome:(id)home;
 - (id)_currentSectionIdentifiers;
-- (id)_identifierForSection:(unint64_t)a3;
-- (id)_sectionIdentifierForItem:(id)a3;
+- (id)_identifierForSection:(unint64_t)section;
+- (id)_sectionIdentifierForItem:(id)item;
 - (unint64_t)_numberOfSections;
 @end
 
 @implementation HUTriggerListItemManager
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  homeCopy = home;
   v6 = [v4 set];
   +[HUTriggerUtilities preloadShortcuts];
   v7 = [HUTriggerListSubheadlineItem alloc];
-  v8 = [(HFItemManager *)self home];
-  v9 = [(HUTriggerListSubheadlineItem *)v7 initWithRemoteAccessInfo:v8];
+  home = [(HFItemManager *)self home];
+  v9 = [(HUTriggerListSubheadlineItem *)v7 initWithRemoteAccessInfo:home];
   [(HUTriggerListItemManager *)self setSubheadlineItem:v9];
 
-  v10 = [(HUTriggerListItemManager *)self subheadlineItem];
-  [v6 addObject:v10];
+  subheadlineItem = [(HUTriggerListItemManager *)self subheadlineItem];
+  [v6 addObject:subheadlineItem];
 
   v11 = [HUAddTriggerItem alloc];
-  v12 = [(HFItemManager *)self home];
-  v13 = [(HUAddTriggerItem *)v11 initWithHome:v12 mode:0];
+  home2 = [(HFItemManager *)self home];
+  v13 = [(HUAddTriggerItem *)v11 initWithHome:home2 mode:0];
   [(HUTriggerListItemManager *)self setAddTriggerItem:v13];
 
-  v14 = [(HUTriggerListItemManager *)self addTriggerItem];
-  [v6 addObject:v14];
+  addTriggerItem = [(HUTriggerListItemManager *)self addTriggerItem];
+  [v6 addObject:addTriggerItem];
 
   v15 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v6];
-  v16 = [[HUTriggerItemProvider alloc] initWithHome:v5];
+  v16 = [[HUTriggerItemProvider alloc] initWithHome:homeCopy];
 
   [(HUTriggerItemProvider *)v16 setUsesRichIconDescriptors:1];
   [(HUTriggerItemProvider *)v16 setFilter:&__block_literal_global_247];
@@ -66,30 +66,30 @@ uint64_t __55__HUTriggerListItemManager__buildItemProvidersForHome___block_invok
 
 - (unint64_t)_numberOfSections
 {
-  v2 = [(HUTriggerListItemManager *)self _currentSectionIdentifiers];
-  v3 = [v2 count];
+  _currentSectionIdentifiers = [(HUTriggerListItemManager *)self _currentSectionIdentifiers];
+  v3 = [_currentSectionIdentifiers count];
 
   return v3;
 }
 
-- (id)_identifierForSection:(unint64_t)a3
+- (id)_identifierForSection:(unint64_t)section
 {
-  if (a3 < 4)
+  if (section < 4)
   {
-    return off_277DC3218[a3];
+    return off_277DC3218[section];
   }
 
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"HUTriggerListItemManager.m" lineNumber:78 description:{@"Couldn't find an identifier for section: %lu", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerListItemManager.m" lineNumber:78 description:{@"Couldn't find an identifier for section: %lu", section}];
 
   return 0;
 }
 
-- (id)_sectionIdentifierForItem:(id)a3
+- (id)_sectionIdentifierForItem:(id)item
 {
-  v5 = a3;
-  v6 = [(HUTriggerListItemManager *)self subheadlineItem];
-  v7 = [v5 isEqual:v6];
+  itemCopy = item;
+  subheadlineItem = [(HUTriggerListItemManager *)self subheadlineItem];
+  v7 = [itemCopy isEqual:subheadlineItem];
 
   if (v7)
   {
@@ -98,8 +98,8 @@ uint64_t __55__HUTriggerListItemManager__buildItemProvidersForHome___block_invok
 
   else
   {
-    v9 = [(HUTriggerListItemManager *)self addTriggerItem];
-    v10 = [v5 isEqual:v9];
+    addTriggerItem = [(HUTriggerListItemManager *)self addTriggerItem];
+    v10 = [itemCopy isEqual:addTriggerItem];
 
     if (v10)
     {
@@ -116,8 +116,8 @@ uint64_t __55__HUTriggerListItemManager__buildItemProvidersForHome___block_invok
 
       else
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"HUTriggerListItemManager.m" lineNumber:90 description:{@"Couldn't find a section for item: %@", v5}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerListItemManager.m" lineNumber:90 description:{@"Couldn't find a section for item: %@", itemCopy}];
 
         v8 = 0;
       }

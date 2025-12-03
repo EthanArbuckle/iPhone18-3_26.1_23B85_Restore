@@ -9,12 +9,12 @@
 - (NSURL)directory;
 - (NUNIFileConverter)fileConverter;
 - (_TtC12NanoUniverse22AegirCloudCoverService)init;
-- (_TtC12NanoUniverse22AegirCloudCoverService)initWithImageScale:(float)a3;
+- (_TtC12NanoUniverse22AegirCloudCoverService)initWithImageScale:(float)scale;
 - (id)cloudTextureURLs;
-- (void)retrieveCloudTextureURLsWithNotifyOn:(id)a3 completionHandler:(id)a4;
-- (void)setDirectory:(id)a3;
-- (void)setDisableFetch:(BOOL)a3;
-- (void)setFileConverter:(id)a3;
+- (void)retrieveCloudTextureURLsWithNotifyOn:(id)on completionHandler:(id)handler;
+- (void)setDirectory:(id)directory;
+- (void)setDisableFetch:(BOOL)fetch;
+- (void)setFileConverter:(id)converter;
 @end
 
 @implementation AegirCloudCoverService
@@ -29,12 +29,12 @@
   return v5;
 }
 
-- (void)setFileConverter:(id)a3
+- (void)setFileConverter:(id)converter
 {
   v5 = OBJC_IVAR____TtC12NanoUniverse22AegirCloudCoverService_fileConverter;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = converter;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -46,11 +46,11 @@
   return *(self + v3);
 }
 
-- (void)setDisableFetch:(BOOL)a3
+- (void)setDisableFetch:(BOOL)fetch
 {
   v5 = OBJC_IVAR____TtC12NanoUniverse22AegirCloudCoverService_disableFetch;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = fetch;
 }
 
 - (NSURL)directory
@@ -69,7 +69,7 @@
   return v9;
 }
 
-- (void)setDirectory:(id)a3
+- (void)setDirectory:(id)directory
 {
   v4 = sub_25B716250();
   v5 = *(v4 - 8);
@@ -84,7 +84,7 @@
   (*(v5 + 16))(v9, self + v12, v4);
   swift_beginAccess();
   v13 = *(v5 + 24);
-  v14 = self;
+  selfCopy = self;
   v13(self + v12, v11, v4);
   swift_endAccess();
   sub_25B702CE0();
@@ -94,7 +94,7 @@
   v15(v11, v4);
 }
 
-- (_TtC12NanoUniverse22AegirCloudCoverService)initWithImageScale:(float)a3
+- (_TtC12NanoUniverse22AegirCloudCoverService)initWithImageScale:(float)scale
 {
   static AegirCloudCoverService.Configuration.prodEnvironment.getter(v13);
   v10[0] = v13[0];
@@ -102,7 +102,7 @@
   v11 = v14;
   v12 = v15;
   v5 = objc_allocWithZone(type metadata accessor for AegirCloudCoverService());
-  v6 = AegirCloudCoverService.init(configuration:imageScale:)(v10, a3);
+  v6 = AegirCloudCoverService.init(configuration:imageScale:)(v10, scale);
   swift_getObjectType();
   v7 = *((*MEMORY[0x277D85000] & *self) + 0x30);
   v8 = *((*MEMORY[0x277D85000] & *self) + 0x34);
@@ -110,19 +110,19 @@
   return v6;
 }
 
-- (void)retrieveCloudTextureURLsWithNotifyOn:(id)a3 completionHandler:(id)a4
+- (void)retrieveCloudTextureURLsWithNotifyOn:(id)on completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_25B704BD4(v8, sub_25B715214, v7);
+  onCopy = on;
+  selfCopy = self;
+  sub_25B704BD4(onCopy, sub_25B715214, v7);
 }
 
 - (id)cloudTextureURLs
 {
-  v2 = self;
+  selfCopy = self;
   sub_25B704FCC();
 
   sub_25B716250();
@@ -133,8 +133,8 @@
 
 - (BOOL)canFetchData
 {
-  v2 = self;
-  v3 = sub_25B7055DC(v2);
+  selfCopy = self;
+  v3 = sub_25B7055DC(selfCopy);
 
   return v3 & 1;
 }

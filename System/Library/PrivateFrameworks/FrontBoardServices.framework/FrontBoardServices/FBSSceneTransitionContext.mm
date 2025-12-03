@@ -1,20 +1,20 @@
 @interface FBSSceneTransitionContext
 + (id)transitionContext;
-- (FBSSceneTransitionContext)initWithSettings:(id)a3;
+- (FBSSceneTransitionContext)initWithSettings:(id)settings;
 - (id)captureCompletions;
-- (void)addAction:(id)a3;
-- (void)addActions:(id)a3;
-- (void)addUpdateCompletion:(id)a3;
+- (void)addAction:(id)action;
+- (void)addActions:(id)actions;
+- (void)addUpdateCompletion:(id)completion;
 - (void)dealloc;
-- (void)removeAction:(id)a3;
-- (void)removeActions:(id)a3;
+- (void)removeAction:(id)action;
+- (void)removeActions:(id)actions;
 @end
 
 @implementation FBSSceneTransitionContext
 
 + (id)transitionContext
 {
-  v2 = [[a1 alloc] initWithSettings:0];
+  v2 = [[self alloc] initWithSettings:0];
 
   return v2;
 }
@@ -24,7 +24,7 @@
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"transition context deallocated with dangling completions"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -48,8 +48,8 @@
 
 - (id)captureCompletions
 {
-  v3 = [(FBSSceneTransitionContext *)self updateCompletions];
-  v4 = [v3 copy];
+  updateCompletions = [(FBSSceneTransitionContext *)self updateCompletions];
+  v4 = [updateCompletions copy];
 
   if (v4)
   {
@@ -59,42 +59,42 @@
   return v4;
 }
 
-- (FBSSceneTransitionContext)initWithSettings:(id)a3
+- (FBSSceneTransitionContext)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = FBSSceneTransitionContext;
-  v5 = [(FBSSettings *)&v11 initWithSettings:v4];
+  v5 = [(FBSSettings *)&v11 initWithSettings:settingsCopy];
   v6 = v5;
-  if (v4 && v5)
+  if (settingsCopy && v5)
   {
     [(FBSSceneTransitionContext *)v5 setUpdateContext:0];
-    v7 = [v4 animationFence];
-    v8 = [v7 copy];
+    animationFence = [settingsCopy animationFence];
+    v8 = [animationFence copy];
     [(FBSSceneTransitionContext *)v6 setAnimationFence:v8];
 
-    v9 = [v4 updateCompletions];
-    [(FBSSceneTransitionContext *)v6 setUpdateCompletions:v9];
+    updateCompletions = [settingsCopy updateCompletions];
+    [(FBSSceneTransitionContext *)v6 setUpdateCompletions:updateCompletions];
 
-    [v4 setUpdateCompletions:0];
+    [settingsCopy setUpdateCompletions:0];
   }
 
   return v6;
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:action];
   [(FBSSceneTransitionContext *)self addActions:v4];
 }
 
-- (void)addActions:(id)a3
+- (void)addActions:(id)actions
 {
-  v9 = a3;
-  if ([v9 count])
+  actionsCopy = actions;
+  if ([actionsCopy count])
   {
-    v4 = [(FBSSceneTransitionContext *)self actions];
-    v5 = [v4 mutableCopy];
+    actions = [(FBSSceneTransitionContext *)self actions];
+    v5 = [actions mutableCopy];
     v6 = v5;
     if (v5)
     {
@@ -108,52 +108,52 @@
 
     v8 = v7;
 
-    [v8 unionSet:v9];
+    [v8 unionSet:actionsCopy];
     [(FBSSceneTransitionContext *)self setActions:v8];
   }
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:action];
   [(FBSSceneTransitionContext *)self removeActions:v4];
 }
 
-- (void)removeActions:(id)a3
+- (void)removeActions:(id)actions
 {
-  v6 = a3;
-  if ([v6 count])
+  actionsCopy = actions;
+  if ([actionsCopy count])
   {
-    v4 = [(FBSSceneTransitionContext *)self actions];
-    v5 = [v4 mutableCopy];
+    actions = [(FBSSceneTransitionContext *)self actions];
+    v5 = [actions mutableCopy];
 
     if ([v5 count])
     {
-      [v5 minusSet:v6];
+      [v5 minusSet:actionsCopy];
       [(FBSSceneTransitionContext *)self setActions:v5];
     }
   }
 }
 
-- (void)addUpdateCompletion:(id)a3
+- (void)addUpdateCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FBSSceneTransitionContext *)self updateCompletions];
-  v6 = [v5 mutableCopy];
+  completionCopy = completion;
+  updateCompletions = [(FBSSceneTransitionContext *)self updateCompletions];
+  v6 = [updateCompletions mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    array = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  v11 = v8;
+  v11 = array;
 
-  v9 = [v4 copy];
+  v9 = [completionCopy copy];
   v10 = MEMORY[0x1A58E80F0](v9);
   [v11 addObject:v10];
 

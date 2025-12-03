@@ -1,104 +1,104 @@
 @interface CLSCurrentCalendar
-+ (BOOL)closestWeekendLocalStartDate:(id *)a3 interval:(double *)a4 afterDate:(id)a5;
-+ (BOOL)dateIntervalIntersectsWeekend:(id)a3;
-+ (BOOL)isWeekendDate:(id)a3;
-+ (BOOL)nextWeekendLocalStartDate:(id *)a3 interval:(double *)a4 options:(unint64_t)a5 afterDate:(id)a6;
-+ (BOOL)rangeOfWeekendLocalStartDate:(id *)a3 interval:(double *)a4 containingDate:(id)a5;
++ (BOOL)closestWeekendLocalStartDate:(id *)date interval:(double *)interval afterDate:(id)afterDate;
++ (BOOL)dateIntervalIntersectsWeekend:(id)weekend;
++ (BOOL)isWeekendDate:(id)date;
++ (BOOL)nextWeekendLocalStartDate:(id *)date interval:(double *)interval options:(unint64_t)options afterDate:(id)afterDate;
++ (BOOL)rangeOfWeekendLocalStartDate:(id *)date interval:(double *)interval containingDate:(id)containingDate;
 + (void)initialize;
 + (void)update;
 @end
 
 @implementation CLSCurrentCalendar
 
-+ (BOOL)nextWeekendLocalStartDate:(id *)a3 interval:(double *)a4 options:(unint64_t)a5 afterDate:(id)a6
++ (BOOL)nextWeekendLocalStartDate:(id *)date interval:(double *)interval options:(unint64_t)options afterDate:(id)afterDate
 {
-  v10 = a6;
-  v11 = a1;
-  objc_sync_enter(v11);
-  v13.receiver = v11;
+  afterDateCopy = afterDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13.receiver = selfCopy;
   v13.super_class = &OBJC_METACLASS___CLSCurrentCalendar;
-  LOBYTE(a5) = objc_msgSendSuper2(&v13, sel_nextWeekendLocalStartDate_interval_options_afterDate_, a3, a4, a5, v10);
-  objc_sync_exit(v11);
+  LOBYTE(options) = objc_msgSendSuper2(&v13, sel_nextWeekendLocalStartDate_interval_options_afterDate_, date, interval, options, afterDateCopy);
+  objc_sync_exit(selfCopy);
 
-  return a5;
+  return options;
 }
 
-+ (BOOL)rangeOfWeekendLocalStartDate:(id *)a3 interval:(double *)a4 containingDate:(id)a5
++ (BOOL)rangeOfWeekendLocalStartDate:(id *)date interval:(double *)interval containingDate:(id)containingDate
 {
-  v8 = a5;
-  v9 = a1;
-  objc_sync_enter(v9);
-  v11.receiver = v9;
+  containingDateCopy = containingDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11.receiver = selfCopy;
   v11.super_class = &OBJC_METACLASS___CLSCurrentCalendar;
-  LOBYTE(a4) = objc_msgSendSuper2(&v11, sel_rangeOfWeekendLocalStartDate_interval_containingDate_, a3, a4, v8);
-  objc_sync_exit(v9);
+  LOBYTE(interval) = objc_msgSendSuper2(&v11, sel_rangeOfWeekendLocalStartDate_interval_containingDate_, date, interval, containingDateCopy);
+  objc_sync_exit(selfCopy);
 
-  return a4;
+  return interval;
 }
 
-+ (BOOL)closestWeekendLocalStartDate:(id *)a3 interval:(double *)a4 afterDate:(id)a5
++ (BOOL)closestWeekendLocalStartDate:(id *)date interval:(double *)interval afterDate:(id)afterDate
 {
-  v8 = a5;
-  v9 = a1;
-  objc_sync_enter(v9);
-  v11.receiver = v9;
+  afterDateCopy = afterDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11.receiver = selfCopy;
   v11.super_class = &OBJC_METACLASS___CLSCurrentCalendar;
-  LOBYTE(a4) = objc_msgSendSuper2(&v11, sel_closestWeekendLocalStartDate_interval_afterDate_, a3, a4, v8);
-  objc_sync_exit(v9);
+  LOBYTE(interval) = objc_msgSendSuper2(&v11, sel_closestWeekendLocalStartDate_interval_afterDate_, date, interval, afterDateCopy);
+  objc_sync_exit(selfCopy);
 
-  return a4;
+  return interval;
 }
 
-+ (BOOL)dateIntervalIntersectsWeekend:(id)a3
++ (BOOL)dateIntervalIntersectsWeekend:(id)weekend
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v8.receiver = v5;
+  weekendCopy = weekend;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = &OBJC_METACLASS___CLSCurrentCalendar;
-  v6 = objc_msgSendSuper2(&v8, sel_dateIntervalIntersectsWeekend_, v4);
-  objc_sync_exit(v5);
+  v6 = objc_msgSendSuper2(&v8, sel_dateIntervalIntersectsWeekend_, weekendCopy);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (BOOL)isWeekendDate:(id)a3
++ (BOOL)isWeekendDate:(id)date
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v8.receiver = v5;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = &OBJC_METACLASS___CLSCurrentCalendar;
-  v6 = objc_msgSendSuper2(&v8, sel_isWeekendDate_, v4);
-  objc_sync_exit(v5);
+  v6 = objc_msgSendSuper2(&v8, sel_isWeekendDate_, dateCopy);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 + (void)update
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v3 = sCLSDateHelperCurrentCalendar;
-  sCLSDateHelperCurrentCalendar = v2;
+  sCLSDateHelperCurrentCalendar = currentCalendar;
 
-  v4 = [obj timezone];
-  [sCLSDateHelperCurrentCalendar setTimeZone:v4];
+  timezone = [obj timezone];
+  [sCLSDateHelperCurrentCalendar setTimeZone:timezone];
 
   objc_sync_exit(obj);
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v4 = sCLSDateHelperCurrentCalendar;
-    sCLSDateHelperCurrentCalendar = v3;
+    sCLSDateHelperCurrentCalendar = currentCalendar;
 
-    v5 = [a1 timezone];
-    [sCLSDateHelperCurrentCalendar setTimeZone:v5];
+    timezone = [self timezone];
+    [sCLSDateHelperCurrentCalendar setTimeZone:timezone];
   }
 }
 

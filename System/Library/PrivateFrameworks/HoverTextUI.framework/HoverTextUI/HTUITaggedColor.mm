@@ -1,67 +1,67 @@
 @interface HTUITaggedColor
-+ (id)color:(id)a3 identifier:(id)a4;
-+ (id)makeFromData:(id)a3;
++ (id)color:(id)color identifier:(id)identifier;
++ (id)makeFromData:(id)data;
 + (id)userPickableColors;
-- (BOOL)isEqual:(id)a3;
-- (HTUITaggedColor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HTUITaggedColor)initWithCoder:(id)coder;
 - (NSString)localizedName;
 - (id)dataRepresentation;
 - (unint64_t)hash;
 - (void)dataRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HTUITaggedColor
 
-+ (id)color:(id)a3 identifier:(id)a4
++ (id)color:(id)color identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  colorCopy = color;
   v7 = objc_alloc_init(HTUITaggedColor);
-  [(HTUITaggedColor *)v7 setColor:v6];
+  [(HTUITaggedColor *)v7 setColor:colorCopy];
 
-  [(HTUITaggedColor *)v7 setIdentifier:v5];
+  [(HTUITaggedColor *)v7 setIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HTUITaggedColor *)self color];
-  [v4 encodeObject:v5 forKey:@"color"];
+  coderCopy = coder;
+  color = [(HTUITaggedColor *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v6 = [(HTUITaggedColor *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(HTUITaggedColor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (HTUITaggedColor)initWithCoder:(id)a3
+- (HTUITaggedColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HTUITaggedColor;
   v5 = [(HTUITaggedColor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(HTUITaggedColor *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     [(HTUITaggedColor *)v5 setColor:v7];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HTUITaggedColor *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(HTUITaggedColor *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -74,16 +74,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HTUITaggedColor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HTUITaggedColor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (NSString)localizedName
 {
-  v2 = [(HTUITaggedColor *)self identifier];
-  if ([v2 isEqual:@"red"])
+  identifier = [(HTUITaggedColor *)self identifier];
+  if ([identifier isEqual:@"red"])
   {
     v3 = @"AXHoverTextTaggedColorRed";
 LABEL_31:
@@ -91,85 +91,85 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ([v2 isEqual:@"green"])
+  if ([identifier isEqual:@"green"])
   {
     v3 = @"AXHoverTextTaggedColorGreen";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"blue"])
+  if ([identifier isEqual:@"blue"])
   {
     v3 = @"AXHoverTextTaggedColorBlue";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"orange"])
+  if ([identifier isEqual:@"orange"])
   {
     v3 = @"AXHoverTextTaggedColorOrange";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"yellow"])
+  if ([identifier isEqual:@"yellow"])
   {
     v3 = @"AXHoverTextTaggedColorYellow";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"pink"])
+  if ([identifier isEqual:@"pink"])
   {
     v3 = @"AXHoverTextTaggedColorPink";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"purple"])
+  if ([identifier isEqual:@"purple"])
   {
     v3 = @"AXHoverTextTaggedColorPurple";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"teal"])
+  if ([identifier isEqual:@"teal"])
   {
     v3 = @"AXHoverTextTaggedColorTeal";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"indigo"])
+  if ([identifier isEqual:@"indigo"])
   {
     v3 = @"AXHoverTextTaggedColorIndigo";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"brown"])
+  if ([identifier isEqual:@"brown"])
   {
     v3 = @"AXHoverTextTaggedColorBrown";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"mint"])
+  if ([identifier isEqual:@"mint"])
   {
     v3 = @"AXHoverTextTaggedColorMint";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"cyan"])
+  if ([identifier isEqual:@"cyan"])
   {
     v3 = @"AXHoverTextTaggedColorCyan";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"gray"])
+  if ([identifier isEqual:@"gray"])
   {
     v3 = @"AXHoverTextTaggedColorGray";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"white"])
+  if ([identifier isEqual:@"white"])
   {
     v3 = @"AXHoverTextTaggedColorWhite";
     goto LABEL_31;
   }
 
-  if ([v2 isEqual:@"black"])
+  if ([identifier isEqual:@"black"])
   {
     v3 = @"AXHoverTextTaggedColorBlack";
     goto LABEL_31;
@@ -198,14 +198,14 @@ LABEL_32:
   return v2;
 }
 
-+ (id)makeFromData:(id)a3
++ (id)makeFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     v4 = objc_alloc_init(HTUITaggedColor);
     v9 = 0;
-    v5 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v9];
+    v5 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
     v6 = v9;
     [(HTUITaggedColor *)v4 setColor:v5];
@@ -231,11 +231,11 @@ LABEL_32:
 + (id)userPickableColors
 {
   v34[15] = *MEMORY[0x277D85DE8];
-  v33 = [MEMORY[0x277D75348] blackColor];
-  v32 = [HTUITaggedColor color:v33 identifier:@"black"];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v32 = [HTUITaggedColor color:blackColor identifier:@"black"];
   v34[0] = v32;
-  v31 = [MEMORY[0x277D75348] whiteColor];
-  v30 = [HTUITaggedColor color:v31 identifier:@"white"];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v30 = [HTUITaggedColor color:whiteColor identifier:@"white"];
   v34[1] = v30;
   v29 = [MEMORY[0x277D75348] colorWithRed:0.556862745 green:0.556862745 blue:0.576470588 alpha:1.0];
   v28 = [HTUITaggedColor color:v29 identifier:@"gray"];
@@ -285,7 +285,7 @@ LABEL_32:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_254615000, a2, OS_LOG_TYPE_ERROR, "Failed to encode HTUITaggedColor. %@", &v2, 0xCu);
 }
 

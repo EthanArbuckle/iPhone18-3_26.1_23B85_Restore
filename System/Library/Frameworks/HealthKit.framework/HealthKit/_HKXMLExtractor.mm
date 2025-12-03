@@ -1,15 +1,15 @@
 @interface _HKXMLExtractor
 - (_HKXMLExtractor)init;
-- (id)_matchSpecificationWithAttributes:(id)a3;
-- (id)getDataForTagSpecification:(id)a3;
-- (void)_parseWithXMLParser:(id)a3;
+- (id)_matchSpecificationWithAttributes:(id)attributes;
+- (id)getDataForTagSpecification:(id)specification;
+- (void)_parseWithXMLParser:(id)parser;
 - (void)_resetScanningState;
-- (void)addTagSpecificationForExtraction:(id)a3;
-- (void)parseWithData:(id)a3;
-- (void)parseWithStream:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)addTagSpecificationForExtraction:(id)extraction;
+- (void)parseWithData:(id)data;
+- (void)parseWithStream:(id)stream;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation _HKXMLExtractor
@@ -40,35 +40,35 @@
   return v2;
 }
 
-- (void)addTagSpecificationForExtraction:(id)a3
+- (void)addTagSpecificationForExtraction:(id)extraction
 {
-  v4 = a3;
-  v5 = [[_HKXMLExtractorSpecification alloc] initWithSpecificationString:v4];
+  extractionCopy = extraction;
+  v5 = [[_HKXMLExtractorSpecification alloc] initWithSpecificationString:extractionCopy];
 
   [(NSMutableArray *)self->_allTagSpecifications addObject:v5];
 }
 
-- (void)parseWithData:(id)a3
+- (void)parseWithData:(id)data
 {
   v4 = MEMORY[0x1E696B0A8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5];
+  dataCopy = data;
+  v6 = [[v4 alloc] initWithData:dataCopy];
 
   [(_HKXMLExtractor *)self _parseWithXMLParser:v6];
 }
 
-- (void)parseWithStream:(id)a3
+- (void)parseWithStream:(id)stream
 {
   v4 = MEMORY[0x1E696B0A8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithStream:v5];
+  streamCopy = stream;
+  v6 = [[v4 alloc] initWithStream:streamCopy];
 
   [(_HKXMLExtractor *)self _parseWithXMLParser:v6];
 }
 
-- (id)getDataForTagSpecification:(id)a3
+- (id)getDataForTagSpecification:(id)specification
 {
-  v3 = [(NSMutableDictionary *)self->_resultTagContent objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_resultTagContent objectForKeyedSubscript:specification];
   if (!v3)
   {
     v3 = MEMORY[0x1E695E0F0];
@@ -77,13 +77,13 @@
   return v3;
 }
 
-- (void)_parseWithXMLParser:(id)a3
+- (void)_parseWithXMLParser:(id)parser
 {
-  v4 = a3;
-  [v4 setShouldProcessNamespaces:1];
-  [v4 setDelegate:self];
+  parserCopy = parser;
+  [parserCopy setShouldProcessNamespaces:1];
+  [parserCopy setDelegate:self];
   [(_HKXMLExtractor *)self _resetScanningState];
-  [v4 parse];
+  [parserCopy parse];
 }
 
 - (void)_resetScanningState
@@ -94,7 +94,7 @@
   self->_matchedTagSpecification = 0;
 }
 
-- (id)_matchSpecificationWithAttributes:(id)a3
+- (id)_matchSpecificationWithAttributes:(id)attributes
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -119,7 +119,7 @@
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 matchesElementStack:{self->_stackOfElements, v13}])
         {
-          v10 = [v9 specificationString];
+          specificationString = [v9 specificationString];
           goto LABEL_11;
         }
       }
@@ -134,39 +134,39 @@
     }
   }
 
-  v10 = 0;
+  specificationString = 0;
 LABEL_11:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return specificationString;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v10 = a3;
+  parserCopy = parser;
   matchedTagSpecification = self->_matchedTagSpecification;
   self->_matchedTagSpecification = 0;
-  v12 = a7;
-  v13 = a4;
+  attributesCopy = attributes;
+  elementCopy = element;
 
-  v14 = [[_HKXMLExtractorElement alloc] initWithElementName:v13 attributes:v12];
+  v14 = [[_HKXMLExtractorElement alloc] initWithElementName:elementCopy attributes:attributesCopy];
   [(NSMutableArray *)self->_stackOfElements addObject:v14];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __80___HKXMLExtractor_parser_didStartElement_namespaceURI_qualifiedName_attributes___block_invoke;
   v21 = &unk_1E7383B98;
-  v22 = self;
-  v23 = v10;
-  v15 = v10;
-  [v12 enumerateKeysAndObjectsUsingBlock:&v18];
-  v16 = [(_HKXMLExtractor *)self _matchSpecificationWithAttributes:v12, v18, v19, v20, v21, v22];
+  selfCopy = self;
+  v23 = parserCopy;
+  v15 = parserCopy;
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:&v18];
+  selfCopy = [(_HKXMLExtractor *)self _matchSpecificationWithAttributes:attributesCopy, v18, v19, v20, v21, selfCopy];
 
   v17 = self->_matchedTagSpecification;
-  self->_matchedTagSpecification = v16;
+  self->_matchedTagSpecification = selfCopy;
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   matchedTagSpecification = self->_matchedTagSpecification;
   self->_matchedTagSpecification = 0;
@@ -176,22 +176,22 @@ LABEL_11:
   [(NSMutableArray *)stackOfElements removeLastObject];
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
-  if (v5 && self->_matchedTagSpecification)
+  charactersCopy = characters;
+  if (charactersCopy && self->_matchedTagSpecification)
   {
-    v7 = v5;
-    v6 = [(NSMutableDictionary *)self->_resultTagContent objectForKeyedSubscript:?];
-    if (!v6)
+    v7 = charactersCopy;
+    array = [(NSMutableDictionary *)self->_resultTagContent objectForKeyedSubscript:?];
+    if (!array)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      [(NSMutableDictionary *)self->_resultTagContent setObject:v6 forKey:self->_matchedTagSpecification];
+      array = [MEMORY[0x1E695DF70] array];
+      [(NSMutableDictionary *)self->_resultTagContent setObject:array forKey:self->_matchedTagSpecification];
     }
 
-    [v6 addObject:v7];
+    [array addObject:v7];
 
-    v5 = v7;
+    charactersCopy = v7;
   }
 }
 

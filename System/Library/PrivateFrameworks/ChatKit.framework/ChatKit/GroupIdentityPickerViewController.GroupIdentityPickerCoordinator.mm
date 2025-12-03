@@ -1,34 +1,34 @@
 @interface GroupIdentityPickerViewController.GroupIdentityPickerCoordinator
 - (_TtCV7ChatKit33GroupIdentityPickerViewController30GroupIdentityPickerCoordinator)init;
-- (void)dismissIdentityPicker:(id)a3;
-- (void)visualIdentityPicker:(id)a3 didUpdatePhotoForVisualIdentity:(id)a4 withContactImage:(id)a5;
+- (void)dismissIdentityPicker:(id)picker;
+- (void)visualIdentityPicker:(id)picker didUpdatePhotoForVisualIdentity:(id)identity withContactImage:(id)image;
 - (void)visualIdentityPicker:presentationControllerWillDismiss:;
-- (void)visualIdentityPickerDidCancel:(id)a3;
+- (void)visualIdentityPickerDidCancel:(id)cancel;
 @end
 
 @implementation GroupIdentityPickerViewController.GroupIdentityPickerCoordinator
 
-- (void)visualIdentityPickerDidCancel:(id)a3
+- (void)visualIdentityPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B29050(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_190B29050(cancelCopy);
 }
 
-- (void)visualIdentityPicker:(id)a3 didUpdatePhotoForVisualIdentity:(id)a4 withContactImage:(id)a5
+- (void)visualIdentityPicker:(id)picker didUpdatePhotoForVisualIdentity:(id)identity withContactImage:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_190B29140(v8, v9);
+  pickerCopy = picker;
+  identityCopy = identity;
+  imageCopy = image;
+  selfCopy = self;
+  sub_190B29140(pickerCopy, identityCopy);
 }
 
-- (void)dismissIdentityPicker:(id)a3
+- (void)dismissIdentityPicker:(id)picker
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B28F50(v4);
+  pickerCopy = picker;
+  selfCopy = self;
+  sub_190B28F50(pickerCopy);
 }
 
 - (_TtCV7ChatKit33GroupIdentityPickerViewController30GroupIdentityPickerCoordinator)init

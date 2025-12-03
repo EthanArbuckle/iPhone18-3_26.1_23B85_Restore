@@ -10,7 +10,7 @@
 - (id)_pu_uniqueAnimationKeyWithProposedKey:()PhotosUI
 {
   v4 = a3;
-  v5 = [a1 animationForKey:v4];
+  v5 = [self animationForKey:v4];
 
   v6 = v4;
   if (v5)
@@ -22,7 +22,7 @@
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%ld", v4, v7];
 
       ++v7;
-      v9 = [a1 animationForKey:v6];
+      v9 = [self animationForKey:v6];
 
       v8 = v6;
     }
@@ -36,7 +36,7 @@
 - (uint64_t)pu_setTransform:()PhotosUI
 {
   memset(&v33, 0, sizeof(v33));
-  [a1 transform];
+  [self transform];
   v5 = a3[5];
   *&a.m31 = a3[4];
   *&a.m33 = v5;
@@ -92,11 +92,11 @@
       [v10 setToValue:v20];
 
       [v10 setKeyPath:@"transform"];
-      v21 = [v10 keyPath];
-      v22 = [a1 _pu_uniqueAnimationKeyWithProposedKey:v21];
+      keyPath = [v10 keyPath];
+      v22 = [self _pu_uniqueAnimationKeyWithProposedKey:keyPath];
 
-      v23 = [v10 keyPath];
-      v24 = [v22 isEqualToString:v23];
+      keyPath2 = [v10 keyPath];
+      v24 = [v22 isEqualToString:keyPath2];
 
       if ((v24 & 1) == 0)
       {
@@ -108,7 +108,7 @@
         }
       }
 
-      [a1 addAnimation:v10 forKey:v22];
+      [self addAnimation:v10 forKey:v22];
     }
 
     v26 = a3[5];
@@ -123,7 +123,7 @@
     v29 = a3[3];
     *&a.m21 = a3[2];
     *&a.m23 = v29;
-    return [a1 setTransform:&a];
+    return [self setTransform:&a];
   }
 
   return result;
@@ -131,7 +131,7 @@
 
 - (uint64_t)pu_setPosition:()PhotosUI
 {
-  result = [a1 position];
+  result = [self position];
   if (a2 != v7 || a3 != v8)
   {
     if (PULayerReferenceBasicAnimation)
@@ -146,13 +146,13 @@
       [v12 setToValue:v14];
 
       [v12 setKeyPath:@"position"];
-      v15 = [v12 keyPath];
-      v16 = [a1 _pu_uniqueAnimationKeyWithProposedKey:v15];
+      keyPath = [v12 keyPath];
+      v16 = [self _pu_uniqueAnimationKeyWithProposedKey:keyPath];
 
-      [a1 addAnimation:v12 forKey:v16];
+      [self addAnimation:v12 forKey:v16];
     }
 
-    return [a1 setPosition:{a2, a3}];
+    return [self setPosition:{a2, a3}];
   }
 
   return result;
@@ -172,8 +172,8 @@
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"CALayer+PhotosUI.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CALayer+PhotosUI.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"view"}];
 
     if (!v8)
     {
@@ -194,9 +194,9 @@
 
   if (!v10)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = NSStringFromSelector(a2);
-    [v19 handleFailureInMethod:a2 object:a1 file:@"CALayer+PhotosUI.m" lineNumber:36 description:{@"nested calls to %@ with different views (%@ vs %@)", v20, v21, PULayerReferenceView}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CALayer+PhotosUI.m" lineNumber:36 description:{@"nested calls to %@ with different views (%@ vs %@)", v20, v21, PULayerReferenceView}];
 
     v9 = PULayerReferenceView;
   }
@@ -209,8 +209,8 @@
 
   else
   {
-    v12 = [v21 _pu_referenceBasicAnimationForCurrentAnimation];
-    v13 = [v12 mutableCopy];
+    _pu_referenceBasicAnimationForCurrentAnimation = [v21 _pu_referenceBasicAnimationForCurrentAnimation];
+    v13 = [_pu_referenceBasicAnimationForCurrentAnimation mutableCopy];
 
     [v13 setDelegate:0];
     [v13 setAdditive:1];

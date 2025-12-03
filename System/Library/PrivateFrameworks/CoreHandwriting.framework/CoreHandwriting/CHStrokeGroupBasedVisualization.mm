@@ -1,15 +1,15 @@
 @interface CHStrokeGroupBasedVisualization
-- (CGRect)dirtyRectForStrokeGroup:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (CGRect)dirtyRectForStrokeGroup:(id)group;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 - (void)recognitionSessionDidUpdateRecognitionResult;
-- (void)toggleVisualizationRegionAtPoint:(CGPoint)a3;
+- (void)toggleVisualizationRegionAtPoint:(CGPoint)point;
 @end
 
 @implementation CHStrokeGroupBasedVisualization
 
-- (CGRect)dirtyRectForStrokeGroup:(id)a3
+- (CGRect)dirtyRectForStrokeGroup:(id)group
 {
-  objc_msgSend_bounds(a3, a2, a3, v3, v4, v5);
+  objc_msgSend_bounds(group, a2, group, v3, v4, v5);
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -149,9 +149,9 @@ LABEL_23:
   }
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  v9 = objc_msgSend_resultDrawn(self, a2, a4, v5, v6, v7, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height);
+  v9 = objc_msgSend_resultDrawn(self, a2, context, v5, v6, v7, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height);
 
   if (!v9)
   {
@@ -172,10 +172,10 @@ LABEL_23:
   }
 }
 
-- (void)toggleVisualizationRegionAtPoint:(CGPoint)a3
+- (void)toggleVisualizationRegionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v104 = *MEMORY[0x1E69E9840];
   v10 = objc_msgSend_activeStrokeGroupAncestorIdentifiers(self, a2, v3, v4, v5, v6);
   v16 = objc_msgSend_mutableCopy(v10, v11, v12, v13, v14, v15);

@@ -1,10 +1,10 @@
 @interface CPSSystemAuthenticationRequest
-- (CPSSystemAuthenticationRequest)initWithCoder:(id)a3;
-- (CPSSystemAuthenticationRequest)initWithXPCDictionary:(id)a3;
+- (CPSSystemAuthenticationRequest)initWithCoder:(id)coder;
+- (CPSSystemAuthenticationRequest)initWithXPCDictionary:(id)dictionary;
 - (NSString)description;
 - (int64_t)authType;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation CPSSystemAuthenticationRequest
@@ -30,9 +30,9 @@
   [v3 appendString:v7 withName:@"options"];
 
   v8 = [v3 appendObject:self->_appleAccountAltDSID withName:@"appleAccountAltDSID"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (int64_t)authType
@@ -47,18 +47,18 @@
   return self;
 }
 
-- (CPSSystemAuthenticationRequest)initWithCoder:(id)a3
+- (CPSSystemAuthenticationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CPSSystemAuthenticationRequest;
-  v5 = [(CPSAuthenticationRequest *)&v10 initWithCoder:v4];
+  v5 = [(CPSAuthenticationRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_service = [v4 decodeIntegerForKey:@"service"];
-    v5->_options = [v4 decodeIntegerForKey:@"options"];
+    v5->_service = [coderCopy decodeIntegerForKey:@"service"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"options"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"appleAccountAltDSID"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"appleAccountAltDSID"];
     appleAccountAltDSID = v5->_appleAccountAltDSID;
     v5->_appleAccountAltDSID = v7;
   }
@@ -66,26 +66,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CPSSystemAuthenticationRequest;
-  v4 = a3;
-  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_service forKey:{@"service", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_options forKey:@"options"];
-  [v4 encodeObject:self->_appleAccountAltDSID forKey:@"appleAccountAltDSID"];
+  coderCopy = coder;
+  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_service forKey:{@"service", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
+  [coderCopy encodeObject:self->_appleAccountAltDSID forKey:@"appleAccountAltDSID"];
 }
 
-- (CPSSystemAuthenticationRequest)initWithXPCDictionary:(id)a3
+- (CPSSystemAuthenticationRequest)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CPSSystemAuthenticationRequest;
   v5 = [(CPSAuthenticationRequest *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CF0D20] coderWithMessage:v4];
+    v6 = [MEMORY[0x277CF0D20] coderWithMessage:dictionaryCopy];
     v7 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(CPSAuthenticationRequest *)v5 setIdentifier:v7];
 
@@ -103,11 +103,11 @@
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v7 = [MEMORY[0x277CF0D20] coderWithMessage:a3];
-  v4 = [(CPSAuthenticationRequest *)self identifier];
-  [v7 encodeObject:v4 forKey:@"identifier"];
+  v7 = [MEMORY[0x277CF0D20] coderWithMessage:dictionary];
+  identifier = [(CPSAuthenticationRequest *)self identifier];
+  [v7 encodeObject:identifier forKey:@"identifier"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_service];
   [v7 encodeObject:v5 forKey:@"service"];

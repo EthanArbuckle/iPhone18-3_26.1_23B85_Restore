@@ -1,25 +1,25 @@
 @interface DDConversionPreviewController
 - (CGSize)preferredContentSize;
-- (DDConversionPreviewController)initWithTitle:(id)a3 subTitle:(id)a4 finance:(BOOL)a5;
+- (DDConversionPreviewController)initWithTitle:(id)title subTitle:(id)subTitle finance:(BOOL)finance;
 - (double)preferredWidth;
 - (id)view;
 @end
 
 @implementation DDConversionPreviewController
 
-- (DDConversionPreviewController)initWithTitle:(id)a3 subTitle:(id)a4 finance:(BOOL)a5
+- (DDConversionPreviewController)initWithTitle:(id)title subTitle:(id)subTitle finance:(BOOL)finance
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  subTitleCopy = subTitle;
   v15.receiver = self;
   v15.super_class = DDConversionPreviewController;
   v10 = [(DDConversionPreviewController *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    if (v8)
+    if (titleCopy)
     {
-      v12 = v8;
+      v12 = titleCopy;
     }
 
     else
@@ -28,9 +28,9 @@
     }
 
     objc_storeStrong(&v10->_title, v12);
-    if (v9)
+    if (subTitleCopy)
     {
-      v13 = v9;
+      v13 = subTitleCopy;
     }
 
     else
@@ -39,7 +39,7 @@
     }
 
     objc_storeStrong(&v11->_subtitle, v13);
-    v11->_finance = a5;
+    v11->_finance = finance;
   }
 
   return v11;
@@ -55,8 +55,8 @@
     self->_mainView = v4;
 
     [(UIView *)self->_mainView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(UIView *)self->_mainView setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(UIView *)self->_mainView setBackgroundColor:systemBackgroundColor];
 
     v7 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -68,8 +68,8 @@
     v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
     [v8 setFont:v9];
 
-    v10 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v8 setTextColor:v10];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v8 setTextColor:secondaryLabelColor];
 
     [v8 setAdjustsFontSizeToFitWidth:1];
     [v7 addSubview:v8];
@@ -77,8 +77,8 @@
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v11 setTextAlignment:1];
     [v11 setText:self->_subtitle];
-    v12 = [MEMORY[0x277D75348] labelColor];
-    [v11 setTextColor:v12];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v11 setTextColor:labelColor];
 
     v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
     [v11 setFont:v13];
@@ -97,8 +97,8 @@
     v17 = [v16 imageWithRenderingMode:2];
 
     v18 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v17];
-    v19 = [MEMORY[0x277D75348] labelColor];
-    [v18 setTintColor:v19];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [v18 setTintColor:labelColor2];
 
     [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_mainView addSubview:v18];
@@ -126,19 +126,19 @@ LABEL_5:
     v23 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[title][subtitle]|" options:0 metrics:&unk_282C2CEF8 views:v20];
     [v7 addConstraints:v23];
 
-    v24 = [v7 centerXAnchor];
-    v25 = [v8 centerXAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerXAnchor = [v7 centerXAnchor];
+    centerXAnchor2 = [v8 centerXAnchor];
+    v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v26 setActive:1];
 
-    v27 = [v7 centerXAnchor];
-    v28 = [v11 centerXAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    centerXAnchor3 = [v7 centerXAnchor];
+    centerXAnchor4 = [v11 centerXAnchor];
+    v29 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v29 setActive:1];
 
-    v30 = [(UIView *)self->_mainView centerXAnchor];
-    v31 = [v7 centerXAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    centerXAnchor5 = [(UIView *)self->_mainView centerXAnchor];
+    centerXAnchor6 = [v7 centerXAnchor];
+    v32 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v32 setActive:1];
 
     v33 = self->_mainView;
@@ -165,14 +165,14 @@ LABEL_5:
     v39 = [v36 constraintsWithVisualFormat:v37 options:0 metrics:&unk_282C2CEF8 views:v20];
     [(UIView *)v35 addConstraints:v39];
 
-    v40 = [v7 centerXAnchor];
-    v41 = [(UIView *)self->_mainView centerXAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    centerXAnchor7 = [v7 centerXAnchor];
+    centerXAnchor8 = [(UIView *)self->_mainView centerXAnchor];
+    v42 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     [v42 setActive:1];
 
-    v43 = [v7 centerYAnchor];
-    v44 = [(UIView *)self->_mainView centerYAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerYAnchor = [v7 centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_mainView centerYAnchor];
+    v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v45 setActive:1];
 
     [(DDConversionPreviewController *)self preferredWidth];
@@ -210,12 +210,12 @@ LABEL_5:
 
     v58 = fmax(v49, fmax(v50, v53) + 20.0);
     v59 = fmax(v54 + 20.0 + v56, 85.0) + v57;
-    v60 = [(UIView *)self->_mainView widthAnchor];
-    v61 = [v60 constraintEqualToConstant:v58];
+    widthAnchor = [(UIView *)self->_mainView widthAnchor];
+    v61 = [widthAnchor constraintEqualToConstant:v58];
     [v61 setActive:1];
 
-    v62 = [(UIView *)self->_mainView heightAnchor];
-    v63 = [v62 constraintEqualToConstant:v59];
+    heightAnchor = [(UIView *)self->_mainView heightAnchor];
+    v63 = [heightAnchor constraintEqualToConstant:v59];
     [v63 setActive:1];
 
     self->_naturalTextSize.width = v58;
@@ -229,18 +229,18 @@ LABEL_5:
 
 - (double)preferredWidth
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 325.0;
   }
 
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  if ((v5 - 5) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((statusBarOrientation - 5) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     return 325.0;
   }

@@ -6,7 +6,7 @@
 
 + (id)imageForUIAlertController
 {
-  v8[2] = a1;
+  v8[2] = self;
   v8[1] = a2;
   v4 = objc_alloc(MEMORY[0x277CBEA90]);
   v5 = +[AKAlertImageURLProvider url];

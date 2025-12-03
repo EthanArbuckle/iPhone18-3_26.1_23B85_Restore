@@ -1,17 +1,17 @@
 @interface PublishedLocalStatus
-+ (id)predicateForPublishedLocalStatusIdentifiers:(id)a3;
++ (id)predicateForPublishedLocalStatusIdentifiers:(id)identifiers;
 @end
 
 @implementation PublishedLocalStatus
 
-+ (id)predicateForPublishedLocalStatusIdentifiers:(id)a3
++ (id)predicateForPublishedLocalStatusIdentifiers:(id)identifiers
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[PublishedLocalStatus identifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K IN %@", v5, v4];
+  identifiersCopy = [v3 predicateWithFormat:@"%K IN %@", v5, identifiersCopy];
 
-  return v6;
+  return identifiersCopy;
 }
 
 @end

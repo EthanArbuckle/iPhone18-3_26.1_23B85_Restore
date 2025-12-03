@@ -1,47 +1,47 @@
 @interface TKSlotRegistration
-+ (BOOL)handleConnection:(id)a3 server:(id)a4;
-- (TKSlotRegistration)initWithConnection:(id)a3 server:(id)a4;
-- (void)addSlotWithEndpoint:(id)a3 name:(id)a4 type:(id)a5 reply:(id)a6;
++ (BOOL)handleConnection:(id)connection server:(id)server;
+- (TKSlotRegistration)initWithConnection:(id)connection server:(id)server;
+- (void)addSlotWithEndpoint:(id)endpoint name:(id)name type:(id)type reply:(id)reply;
 @end
 
 @implementation TKSlotRegistration
 
-- (TKSlotRegistration)initWithConnection:(id)a3 server:(id)a4
+- (TKSlotRegistration)initWithConnection:(id)connection server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   v11.receiver = self;
   v11.super_class = TKSlotRegistration;
   v8 = [(TKSlotRegistration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_connection, v6);
-    objc_storeStrong(&v9->_server, a4);
+    objc_storeWeak(&v8->_connection, connectionCopy);
+    objc_storeStrong(&v9->_server, server);
   }
 
   return v9;
 }
 
-+ (BOOL)handleConnection:(id)a3 server:(id)a4
++ (BOOL)handleConnection:(id)connection server:(id)server
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TKSlotRegistration alloc] initWithConnection:v6 server:v5];
+  serverCopy = server;
+  connectionCopy = connection;
+  v7 = [[TKSlotRegistration alloc] initWithConnection:connectionCopy server:serverCopy];
 
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TKProtocolSlotRegistry];
-  [v6 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v6 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
   return 1;
 }
 
-- (void)addSlotWithEndpoint:(id)a3 name:(id)a4 type:(id)a5 reply:(id)a6
+- (void)addSlotWithEndpoint:(id)endpoint name:(id)name type:(id)type reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  endpointCopy = endpoint;
+  nameCopy = name;
+  typeCopy = type;
+  replyCopy = reply;
   if (!self->_endpoint)
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
@@ -50,11 +50,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v16 isEqualToString:v13])
+      if ([v16 isEqualToString:typeCopy])
       {
 LABEL_22:
-        objc_storeStrong(&self->_slotType, a5);
-        objc_storeStrong(&self->_endpoint, a3);
+        objc_storeStrong(&self->_slotType, type);
+        objc_storeStrong(&self->_endpoint, endpoint);
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_10000EE54;
@@ -63,9 +63,9 @@ LABEL_22:
         v25 = objc_loadWeakRetained(&self->_connection);
         [v25 setInvalidationHandler:v29];
 
-        [(TKSlotServer *)self->_server addSlotRegistration:self name:v12];
-        v24 = [(TKSlotRegistration *)self slotName];
-        v14[2](v14, v24);
+        [(TKSlotServer *)self->_server addSlotRegistration:self name:nameCopy];
+        slotName = [(TKSlotRegistration *)self slotName];
+        replyCopy[2](replyCopy, slotName);
 LABEL_23:
 
         goto LABEL_24;
@@ -77,9 +77,9 @@ LABEL_23:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = v14;
-        v27 = v12;
-        v28 = v11;
+        v26 = replyCopy;
+        v27 = nameCopy;
+        v28 = endpointCopy;
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
@@ -100,12 +100,12 @@ LABEL_23:
                 objc_enumerationMutation(v18);
               }
 
-              if ([v13 isEqualToString:{*(*(&v30 + 1) + 8 * v22), v26, v27, v28}])
+              if ([typeCopy isEqualToString:{*(*(&v30 + 1) + 8 * v22), v26, v27, v28}])
               {
 
-                v12 = v27;
-                v11 = v28;
-                v14 = v26;
+                nameCopy = v27;
+                endpointCopy = v28;
+                replyCopy = v26;
                 goto LABEL_22;
               }
 
@@ -123,9 +123,9 @@ LABEL_23:
           }
         }
 
-        v12 = v27;
-        v11 = v28;
-        v14 = v26;
+        nameCopy = v27;
+        endpointCopy = v28;
+        replyCopy = v26;
       }
     }
 
@@ -135,8 +135,8 @@ LABEL_23:
       sub_10001F524(&self->_connection);
     }
 
-    v24 = objc_loadWeakRetained(&self->_connection);
-    [v24 invalidate];
+    slotName = objc_loadWeakRetained(&self->_connection);
+    [slotName invalidate];
     goto LABEL_23;
   }
 

@@ -13,27 +13,27 @@
 {
   v9 = a5;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%g, %g}", *&a2, *&a3];
-  [a1 encodeObject:v8 forKey:v9];
+  [self encodeObject:v8 forKey:v9];
 }
 
 - (void)encodeCGVector:()PKPath forKey:
 {
   v9 = a5;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%g, %g}", *&a2, *&a3];
-  [a1 encodeObject:v8 forKey:v9];
+  [self encodeObject:v8 forKey:v9];
 }
 
 - (void)encodeCGSize:()PKPath forKey:
 {
   v9 = a5;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%g, %g}", *&a2, *&a3];
-  [a1 encodeObject:v8 forKey:v9];
+  [self encodeObject:v8 forKey:v9];
 }
 
 - (double)decodeCGPointForKey:()PKPath
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
   v6 = v5;
   if (v5)
   {
@@ -51,7 +51,7 @@
 - (double)decodeCGVectorForKey:()PKPath
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
   v6 = v5;
   if (v5)
   {
@@ -89,7 +89,7 @@
 - (double)decodeCGSizeForKey:()PKPath
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
   v6 = v5;
   if (v5)
   {

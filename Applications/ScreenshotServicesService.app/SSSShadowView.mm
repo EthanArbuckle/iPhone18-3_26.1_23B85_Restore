@@ -1,11 +1,11 @@
 @interface SSSShadowView
 + (CGSize)shadowOffset;
 + (id)shadowColor;
-- (BOOL)_arrayOfRectValues:(id)a3 isEqualToArrayOfRectValues:(id)a4;
-- (SSSShadowView)initWithFrame:(CGRect)a3;
-- (void)_enumerateAllShadowRectsWithBlock:(id)a3;
+- (BOOL)_arrayOfRectValues:(id)values isEqualToArrayOfRectValues:(id)rectValues;
+- (SSSShadowView)initWithFrame:(CGRect)frame;
+- (void)_enumerateAllShadowRectsWithBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setRectsForShadow:(id)a3;
+- (void)setRectsForShadow:(id)shadow;
 @end
 
 @implementation SSSShadowView
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (SSSShadowView)initWithFrame:(CGRect)a3
+- (SSSShadowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SSSShadowView;
-  v3 = [(SSSShadowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSShadowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SSSShadowView *)v3 setClipsToBounds:0];
   v4 = objc_alloc_init(_SSSShadowViewInnerViewWithShadow);
   innerView = v3->_innerView;
@@ -51,20 +51,20 @@
   [UIView performWithoutAnimation:v2];
 }
 
-- (BOOL)_arrayOfRectValues:(id)a3 isEqualToArrayOfRectValues:(id)a4
+- (BOOL)_arrayOfRectValues:(id)values isEqualToArrayOfRectValues:(id)rectValues
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  valuesCopy = values;
+  rectValuesCopy = rectValues;
+  v7 = [valuesCopy count];
+  if (v7 == [rectValuesCopy count])
   {
-    if ([v5 count])
+    if ([valuesCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndex:v8];
-        v10 = [v6 objectAtIndex:v8];
+        v9 = [valuesCopy objectAtIndex:v8];
+        v10 = [rectValuesCopy objectAtIndex:v8];
         [v9 CGRectValue];
         [v10 CGRectValue];
         v11 = SSRectEqualToRect();
@@ -77,7 +77,7 @@
         ++v8;
       }
 
-      while (v8 < [v5 count]);
+      while (v8 < [valuesCopy count]);
     }
 
     else
@@ -94,12 +94,12 @@
   return v11;
 }
 
-- (void)setRectsForShadow:(id)a3
+- (void)setRectsForShadow:(id)shadow
 {
-  v5 = a3;
-  if (![(SSSShadowView *)self _arrayOfRectValues:self->_rectsForShadow isEqualToArrayOfRectValues:v5])
+  shadowCopy = shadow;
+  if (![(SSSShadowView *)self _arrayOfRectValues:self->_rectsForShadow isEqualToArrayOfRectValues:shadowCopy])
   {
-    objc_storeStrong(&self->_rectsForShadow, a3);
+    objc_storeStrong(&self->_rectsForShadow, shadow);
     +[UIBezierPath bezierPath];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -107,7 +107,7 @@
     v12 = v11[3] = &unk_1000BAD20;
     v6 = v12;
     [(SSSShadowView *)self _enumerateAllShadowRectsWithBlock:v11];
-    v7 = [(SSSShadowView *)self traitCollection];
+    traitCollection = [(SSSShadowView *)self traitCollection];
     v8 = sub_10000F530();
 
     memset(&v10, 0, sizeof(v10));
@@ -119,26 +119,26 @@
   }
 }
 
-- (void)_enumerateAllShadowRectsWithBlock:(id)a3
+- (void)_enumerateAllShadowRectsWithBlock:(id)block
 {
-  v11 = a3;
-  v4 = [(SSSShadowView *)self rectsForShadow];
-  v5 = [v4 count];
+  blockCopy = block;
+  rectsForShadow = [(SSSShadowView *)self rectsForShadow];
+  v5 = [rectsForShadow count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(SSSShadowView *)self rectsForShadow];
-      v8 = [v7 objectAtIndex:v6];
+      rectsForShadow2 = [(SSSShadowView *)self rectsForShadow];
+      v8 = [rectsForShadow2 objectAtIndex:v6];
 
       [v8 CGRectValue];
-      v11[2](v11, v6);
+      blockCopy[2](blockCopy, v6);
 
       ++v6;
-      v9 = [(SSSShadowView *)self rectsForShadow];
-      v10 = [v9 count];
+      rectsForShadow3 = [(SSSShadowView *)self rectsForShadow];
+      v10 = [rectsForShadow3 count];
     }
 
     while (v6 < v10);

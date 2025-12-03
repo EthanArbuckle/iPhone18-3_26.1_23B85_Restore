@@ -7,9 +7,9 @@
 + (BOOL)__accessibilityGuidedAccessStateEnabled
 {
   v2 = +[GAXSpringboard sharedInstance];
-  v3 = [v2 isActive];
+  isActive = [v2 isActive];
 
-  return v3;
+  return isActive;
 }
 
 @end

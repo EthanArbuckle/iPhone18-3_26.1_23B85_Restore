@@ -1,20 +1,20 @@
 @interface ICStateHandler
-+ (void)addStateHandlerWithName:(const char *)a3 sysdiagnoseOnly:(BOOL)a4 stateBlock:(id)a5;
++ (void)addStateHandlerWithName:(const char *)name sysdiagnoseOnly:(BOOL)only stateBlock:(id)block;
 @end
 
 @implementation ICStateHandler
 
-+ (void)addStateHandlerWithName:(const char *)a3 sysdiagnoseOnly:(BOOL)a4 stateBlock:(id)a5
++ (void)addStateHandlerWithName:(const char *)name sysdiagnoseOnly:(BOOL)only stateBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   v7 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ICStateHandler *)a3 addStateHandlerWithName:v7 sysdiagnoseOnly:v8 stateBlock:v9, v10, v11, v12, v13];
+    [(ICStateHandler *)name addStateHandlerWithName:v7 sysdiagnoseOnly:v8 stateBlock:v9, v10, v11, v12, v13];
   }
 
   v14 = dispatch_get_global_queue(0, 0);
-  v15 = v6;
+  v15 = blockCopy;
   os_state_add_handler();
 }
 

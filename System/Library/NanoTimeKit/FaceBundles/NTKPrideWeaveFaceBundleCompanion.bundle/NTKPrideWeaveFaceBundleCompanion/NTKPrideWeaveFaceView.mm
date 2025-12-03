@@ -1,24 +1,24 @@
 @interface NTKPrideWeaveFaceView
-- (NTKPrideWeaveFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_dialAlphaForEditMode:(int64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (id)colorForView:(id)a3 accented:(BOOL)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (NTKPrideWeaveFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_dialAlphaForEditMode:(int64_t)mode;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (id)colorForView:(id)view accented:(BOOL)accented;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
-- (void)_finalizeForSnapshotting:(id)a3;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
+- (void)_finalizeForSnapshotting:(id)snapshotting;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_unloadSnapshotContentViews;
@@ -31,15 +31,15 @@
 
 @implementation NTKPrideWeaveFaceView
 
-- (NTKPrideWeaveFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKPrideWeaveFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKPrideWeaveFaceView;
-  v9 = [(NTKPrideWeaveFaceView *)&v14 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKPrideWeaveFaceView *)&v14 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    v10 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:v8];
+    v10 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     faceViewComplicationFactory = v9->_faceViewComplicationFactory;
     v9->_faceViewComplicationFactory = v10;
 
@@ -59,8 +59,8 @@
   v3 = +[UIColor blackColor];
   [(NTKPrideWeaveFaceView *)self setBackgroundColor:v3];
 
-  v4 = [(NTKPrideWeaveFaceView *)self device];
-  [v4 screenBounds];
+  device = [(NTKPrideWeaveFaceView *)self device];
+  [device screenBounds];
   v5 = [CLKUIQuadView quadViewWithFrame:@"PrWv" identifier:9 options:0 colorSpace:?];
   quadView = self->_quadView;
   self->_quadView = v5;
@@ -84,8 +84,8 @@
   [(NTKPrideWeaveSpiroQuad *)self->_spiroQuad setWinding:v12];
   [(NTKPrideWeaveSpiroQuad *)self->_spiroQuad setRotation:0.0];
   [(NTKPrideWeaveSpiroQuad *)self->_spiroQuad setTimeScale:0.0];
-  v13 = [(NTKPrideWeaveFaceView *)self contentView];
-  [v13 addSubview:self->_quadView];
+  contentView = [(NTKPrideWeaveFaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(CLKUIMetalQuadView *)self->_quadView setPreferredFramesPerSecond:60];
   [(CLKUIMetalQuadView *)self->_quadView setPaused:0];
@@ -117,29 +117,29 @@
   [(CLKUIMetalQuadView *)self->_quadView setFrame:?];
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v4.receiver = self;
   v4.super_class = NTKPrideWeaveFaceView;
-  [(NTKPrideWeaveFaceView *)&v4 _configureTimeView:a3];
+  [(NTKPrideWeaveFaceView *)&v4 _configureTimeView:view];
   [(NTKPrideWeaveFaceView *)self setAnalogHandsColor];
 }
 
 - (void)setAnalogHandsColor
 {
-  v3 = [(NTKPrideWeaveFaceView *)self timeView];
+  timeView = [(NTKPrideWeaveFaceView *)self timeView];
   v4 = +[UIColor whiteColor];
   v5 = +[UIColor blackColor];
-  [v3 applyHourMinuteHandsStrokeColor:v4 fillColor:v5];
+  [timeView applyHourMinuteHandsStrokeColor:v4 fillColor:v5];
 
-  v6 = [(NTKPrideWeaveFaceView *)self timeView];
+  timeView2 = [(NTKPrideWeaveFaceView *)self timeView];
   v7 = +[UIColor systemRedColor];
-  [v6 applySecondHandColor:v7];
+  [timeView2 applySecondHandColor:v7];
 
-  v10 = [(NTKPrideWeaveFaceView *)self timeView];
-  v8 = [v10 secondHandView];
+  timeView3 = [(NTKPrideWeaveFaceView *)self timeView];
+  secondHandView = [timeView3 secondHandView];
   v9 = +[UIColor blackColor];
-  [v8 setHandDotColor:v9];
+  [secondHandView setHandDotColor:v9];
 }
 
 - (void)prepareForEditing
@@ -209,14 +209,14 @@ LABEL_5:
   [(CLKUIMetalQuadView *)quadView setPaused:v3 | v4];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  if (a4 == 12)
+  optionCopy = option;
+  if (mode == 12)
   {
-    v15 = v8;
-    v9 = flt_1B128[[v8 dialShape]];
-    objc_storeStrong(&self->_currentContentOption, a3);
+    v15 = optionCopy;
+    v9 = flt_1B128[[optionCopy dialShape]];
+    objc_storeStrong(&self->_currentContentOption, option);
     *&v10 = v9;
     [(NTKPrideWeaveBarberQuad *)self->_barberQuad setViewMode:v10];
     *&v11 = v9;
@@ -225,22 +225,22 @@ LABEL_5:
     [(NTKPrideWeaveBarberQuad *)self->_barberQuad setThickness:v12];
     *&v13 = v9;
     [(NTKPrideWeaveSpiroQuad *)self->_spiroQuad setThickness:v13];
-    v14 = [(NTKPrideWeaveFaceView *)self delegate];
-    [v14 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKPrideWeaveFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
 
-    v8 = v15;
+    optionCopy = v15;
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 12)
+  if (mode == 12)
   {
-    v10 = a5;
-    v11 = flt_1B128[[a4 dialShape]];
-    v12 = [v10 dialShape];
+    toOptionCopy = toOption;
+    v11 = flt_1B128[[option dialShape]];
+    dialShape = [toOptionCopy dialShape];
 
-    v13 = flt_1B128[v12];
+    v13 = flt_1B128[dialShape];
     CLKInterpolateBetweenFloatsUnclipped();
     v15 = v14;
     *&v14 = v15;
@@ -257,10 +257,10 @@ LABEL_5:
   }
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }
@@ -268,10 +268,10 @@ LABEL_5:
   return result;
 }
 
-- (double)_dialAlphaForEditMode:(int64_t)a3
+- (double)_dialAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -279,102 +279,102 @@ LABEL_5:
   return result;
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
-  v5 = [(NTKPrideWeaveFaceView *)self complicationContainerView];
-  [(NTKPrideWeaveFaceView *)self _complicationAlphaForEditMode:a3];
-  [v5 setAlpha:?];
+  complicationContainerView = [(NTKPrideWeaveFaceView *)self complicationContainerView];
+  [(NTKPrideWeaveFaceView *)self _complicationAlphaForEditMode:mode];
+  [complicationContainerView setAlpha:?];
 
   quadView = self->_quadView;
-  [(NTKPrideWeaveFaceView *)self _dialAlphaForEditMode:a3];
+  [(NTKPrideWeaveFaceView *)self _dialAlphaForEditMode:mode];
 
   [(CLKUIMetalQuadView *)quadView setAlpha:?];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = [(NTKPrideWeaveFaceView *)self complicationContainerView];
-  [(NTKPrideWeaveFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKPrideWeaveFaceView *)self _complicationAlphaForEditMode:a5];
+  complicationContainerView = [(NTKPrideWeaveFaceView *)self complicationContainerView];
+  [(NTKPrideWeaveFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKPrideWeaveFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [complicationContainerView setAlpha:?];
 
-  [(NTKPrideWeaveFaceView *)self _dialAlphaForEditMode:a4];
-  [(NTKPrideWeaveFaceView *)self _dialAlphaForEditMode:a5];
+  [(NTKPrideWeaveFaceView *)self _dialAlphaForEditMode:mode];
+  [(NTKPrideWeaveFaceView *)self _dialAlphaForEditMode:editMode];
   quadView = self->_quadView;
   CLKInterpolateBetweenFloatsClipped();
 
   [(CLKUIMetalQuadView *)quadView setAlpha:?];
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
   v4.receiver = self;
   v4.super_class = NTKPrideWeaveFaceView;
-  [(NTKPrideWeaveFaceView *)&v4 _cleanupAfterTransitionComplicationSlot:a3 selectedComplication:a4];
+  [(NTKPrideWeaveFaceView *)&v4 _cleanupAfterTransitionComplicationSlot:slot selectedComplication:complication];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v5.receiver = self;
   v5.super_class = NTKPrideWeaveFaceView;
-  [(NTKPrideWeaveFaceView *)&v5 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:a3];
+  [(NTKPrideWeaveFaceView *)&v5 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:fraction];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v5.receiver = self;
   v5.super_class = NTKPrideWeaveFaceView;
-  [(NTKPrideWeaveFaceView *)&v5 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:a3];
+  [(NTKPrideWeaveFaceView *)&v5 _applyBreathingFraction:mode forCustomEditMode:slot slot:fraction];
 }
 
 - (void)_loadLayoutRules
 {
   faceViewComplicationFactory = self->_faceViewComplicationFactory;
-  v8 = [(NTKPrideWeaveFaceView *)self device];
-  [v8 screenBounds];
+  device = [(NTKPrideWeaveFaceView *)self device];
+  [device screenBounds];
   v5 = v4;
-  v6 = [(NTKPrideWeaveFaceView *)self device];
-  [v6 screenScale];
+  device2 = [(NTKPrideWeaveFaceView *)self device];
+  [device2 screenScale];
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)faceViewComplicationFactory loadLayoutRulesForFaceView:self dialDiameter:v5 * v7];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:v6 forSlot:a4 faceView:self];
+  viewCopy = view;
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:viewCopy forSlot:slot faceView:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v6 = [(NTKPrideWeaveFaceView *)self _outerComplicationColors];
-  v7 = [(NTKPrideWeaveFaceView *)self _innerComplicationColors];
+  _outerComplicationColors = [(NTKPrideWeaveFaceView *)self _outerComplicationColors];
+  _innerComplicationColors = [(NTKPrideWeaveFaceView *)self _innerComplicationColors];
   v8 = CLKUIMonochromeFiltersForStyleWithTintedBackground();
 
   return v8;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(NTKPrideWeaveFaceView *)self _outerComplicationColors];
-  v9 = [(NTKPrideWeaveFaceView *)self _innerComplicationColors];
-  if (a4 <= 2)
+  _outerComplicationColors = [(NTKPrideWeaveFaceView *)self _outerComplicationColors];
+  _innerComplicationColors = [(NTKPrideWeaveFaceView *)self _innerComplicationColors];
+  if (style <= 2)
   {
-    if (!a4)
+    if (!style)
     {
 LABEL_10:
       v10 = NTKFlatMonochromeFilter();
       goto LABEL_11;
     }
 
-    if (a4 != 1)
+    if (style != 1)
     {
-      if (a4 != 2)
+      if (style != 2)
       {
         goto LABEL_12;
       }
@@ -389,7 +389,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 == 3 || a4 == 4 || a4 == 5)
+  if (style == 3 || style == 4 || style == 5)
   {
     goto LABEL_9;
   }
@@ -399,22 +399,22 @@ LABEL_12:
   return v5;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v7 = [(NTKPrideWeaveFaceView *)self _outerComplicationColors];
-  v8 = [(NTKPrideWeaveFaceView *)self _innerComplicationColors];
-  if (a4 <= 2)
+  _outerComplicationColors = [(NTKPrideWeaveFaceView *)self _outerComplicationColors];
+  _innerComplicationColors = [(NTKPrideWeaveFaceView *)self _innerComplicationColors];
+  if (style <= 2)
   {
-    if (!a4)
+    if (!style)
     {
 LABEL_10:
       v9 = NTKFlatMonochromeFilterOpaque();
       goto LABEL_11;
     }
 
-    if (a4 != 1)
+    if (style != 1)
     {
-      if (a4 != 2)
+      if (style != 2)
       {
         goto LABEL_12;
       }
@@ -429,7 +429,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 == 3 || a4 == 4 || a4 == 5)
+  if (style == 3 || style == 4 || style == 5)
   {
     goto LABEL_9;
   }
@@ -439,9 +439,9 @@ LABEL_12:
   return v4;
 }
 
-- (id)colorForView:(id)a3 accented:(BOOL)a4
+- (id)colorForView:(id)view accented:(BOOL)accented
 {
-  if (a4)
+  if (accented)
   {
     [(NTKPrideWeaveFaceView *)self _innerComplicationColors];
   }
@@ -455,10 +455,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)_finalizeForSnapshotting:(id)a3
+- (void)_finalizeForSnapshotting:(id)snapshotting
 {
   barberQuad = self->_barberQuad;
-  v7 = a3;
+  snapshottingCopy = snapshotting;
   LODWORD(v5) = 1.0;
   [(NTKPrideWeaveBarberQuad *)barberQuad setWinding:v5];
   [(NTKPrideWeaveBarberQuad *)self->_barberQuad setRotation:0.0];
@@ -467,16 +467,16 @@ LABEL_12:
   [(NTKPrideWeaveSpiroQuad *)self->_spiroQuad setRotation:0.0];
   [(NTKSpringCrownHandler *)self->_barberCrownHandler setCurrentPosition:1.0];
   [(NTKSpringCrownHandler *)self->_spiroCrownHandler setCurrentPosition:1.0];
-  [(CLKUIMetalQuadView *)self->_quadView renderSynchronouslyWithImageQueueDiscard:1 inGroup:0 completion:v7];
+  [(CLKUIMetalQuadView *)self->_quadView renderSynchronouslyWithImageQueueDiscard:1 inGroup:0 completion:snapshottingCopy];
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v6 = a3;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [NTKPrideSwatchMappedImageCache keyForFaceStyle:@"NTKPrideWeaveFace" editOption:v6 mode:a4 selectedOptions:0];
+    v7 = [NTKPrideSwatchMappedImageCache keyForFaceStyle:@"NTKPrideWeaveFace" editOption:optionCopy mode:mode selectedOptions:0];
     v8 = +[NTKPrideSwatchMappedImageCache sharedCache];
     v9 = [v8 imageForKey:v7];
 
@@ -496,7 +496,7 @@ LABEL_12:
 
       [v12 setBounds:{0.0, 0.0, v14, v16}];
       [v12 layoutSubviews];
-      [v12 _applyOption:v6 forCustomEditMode:a4 slot:0];
+      [v12 _applyOption:optionCopy forCustomEditMode:mode slot:0];
       v9 = [v12[1] snapshotInRect:0.0 scale:0.0 time:{v14, v16, v19, 0.0}];
       v20 = +[NTKPrideSwatchMappedImageCache sharedCache];
       [v20 setImage:v9 forKey:v7];

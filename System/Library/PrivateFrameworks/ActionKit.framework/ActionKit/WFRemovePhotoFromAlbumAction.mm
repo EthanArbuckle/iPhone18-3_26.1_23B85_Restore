@@ -1,20 +1,20 @@
 @interface WFRemovePhotoFromAlbumAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFRemovePhotoFromAlbumAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFRemovePhotoFromAlbumAction *)self parameterValueForKey:@"WFRemoveAlbumSelectedGroup" ofClass:objc_opt_class()];
   v6 = WFPHAssetCollectionMatchingDescriptor(v5);
   if (v6)
   {
-    v7 = [MEMORY[0x277CFC520] sharedLibrary];
+    mEMORY[0x277CFC520] = [MEMORY[0x277CFC520] sharedLibrary];
     v20 = 0;
-    v8 = [v7 fetchOptionsWithError:&v20];
+    v8 = [mEMORY[0x277CFC520] fetchOptionsWithError:&v20];
     v9 = v20;
 
     if (v8)
@@ -29,7 +29,7 @@
       v18 = v6;
       v19 = v10;
       v11 = v10;
-      [v4 getObjectRepresentations:v17 forClass:getPHAssetClass()];
+      [inputCopy getObjectRepresentations:v17 forClass:getPHAssetClass()];
     }
 
     else

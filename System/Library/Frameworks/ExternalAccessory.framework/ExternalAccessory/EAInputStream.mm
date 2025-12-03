@@ -1,8 +1,8 @@
 @interface EAInputStream
 - (BOOL)hasBytesAvailable;
-- (EAInputStream)initWithAccessory:(id)a3 forSession:(id)a4 socket:(int)a5;
-- (EAInputStream)initWithAccessoryWithoutSocket:(id)a3 forSession:(id)a4;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (EAInputStream)initWithAccessory:(id)accessory forSession:(id)session socket:(int)socket;
+- (EAInputStream)initWithAccessoryWithoutSocket:(id)socket forSession:(id)session;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
 - (void)_performAtEndOfStreamValidation;
 - (void)_scheduleCallback;
@@ -12,15 +12,15 @@
 - (void)endStream;
 - (void)open;
 - (void)openCompleted;
-- (void)processIncomingAccessoryData:(id)a3;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)processIncomingAccessoryData:(id)data;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation EAInputStream
 
-- (EAInputStream)initWithAccessory:(id)a3 forSession:(id)a4 socket:(int)a5
+- (EAInputStream)initWithAccessory:(id)accessory forSession:(id)session socket:(int)socket
 {
   v11.receiver = self;
   v11.super_class = EAInputStream;
@@ -30,14 +30,14 @@
   {
     v8->_streamStatus = 0;
     v8->_delegate = v8;
-    v8->_accessory = a3;
-    v9->_session = a4;
+    v8->_accessory = accessory;
+    v9->_session = session;
     v9->_statusLock = objc_alloc_init(MEMORY[0x277CCAC60]);
     v9->_runloopLock = objc_alloc_init(MEMORY[0x277CCAC60]);
     v9->_inputFromAccBuffer = 0;
     v9->_useSocket = 1;
     v9->_sockListenSource = 0;
-    v9->_sock = a5;
+    v9->_sock = socket;
     v9->_zeroBytesReadCount = 0;
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   }
@@ -45,7 +45,7 @@
   return v9;
 }
 
-- (EAInputStream)initWithAccessoryWithoutSocket:(id)a3 forSession:(id)a4
+- (EAInputStream)initWithAccessoryWithoutSocket:(id)socket forSession:(id)session
 {
   v9.receiver = self;
   v9.super_class = EAInputStream;
@@ -55,8 +55,8 @@
   {
     v6->_streamStatus = 0;
     v6->_delegate = v6;
-    v6->_accessory = a3;
-    v7->_session = a4;
+    v6->_accessory = socket;
+    v7->_session = session;
     v7->_statusLock = objc_alloc_init(MEMORY[0x277CCAC60]);
     v7->_runloopLock = objc_alloc_init(MEMORY[0x277CCAC60]);
     v7->_inputFromAccBuffer = 0;
@@ -285,29 +285,29 @@ LABEL_15:
   [(NSRecursiveLock *)runloopLock unlock];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v3 = a3;
+    selfCopy = delegate;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  self->_delegate = v3;
+  self->_delegate = selfCopy;
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
   [(NSRecursiveLock *)self->_runloopLock lock];
   if (!self->_runLoopSource)
   {
-    v8 = [a3 getCFRunLoop];
-    self->_runLoop = v8;
-    CFRetain(v8);
+    getCFRunLoop = [loop getCFRunLoop];
+    self->_runLoop = getCFRunLoop;
+    CFRetain(getCFRunLoop);
     v10.version = 0;
     memset(&v10.retain, 0, 56);
     v10.info = self;
@@ -320,19 +320,19 @@ LABEL_15:
       runLoopSource = self->_runLoopSource;
     }
 
-    CFRunLoopAddSource(self->_runLoop, runLoopSource, a4);
+    CFRunLoopAddSource(self->_runLoop, runLoopSource, mode);
     CFRelease(self->_runLoopSource);
   }
 
   [(NSRecursiveLock *)self->_runloopLock unlock];
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
   [(NSRecursiveLock *)self->_runloopLock lock];
   if (self->_runLoopSource)
   {
-    CFRunLoopRemoveSource([a3 getCFRunLoop], self->_runLoopSource, a4);
+    CFRunLoopRemoveSource([loop getCFRunLoop], self->_runLoopSource, mode);
     self->_runLoopSource = 0;
   }
 
@@ -357,7 +357,7 @@ LABEL_15:
   return streamStatus;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   [(NSRecursiveLock *)self->_statusLock lock];
   if (self->_streamStatus == 2)
@@ -367,19 +367,19 @@ LABEL_15:
     if (v7)
     {
       v8 = v7;
-      if (v7 >= a4)
+      if (v7 >= length)
       {
-        v9 = a4;
+        lengthCopy = length;
       }
 
       else
       {
-        v9 = v7;
+        lengthCopy = v7;
       }
 
-      [(NSMutableData *)self->_inputFromAccData getBytes:a3 length:v9];
-      [(NSMutableData *)self->_inputFromAccData replaceBytesInRange:0 withBytes:v9 length:0, 0];
-      if (v8 >= 0x20000 && a4 != 0)
+      [(NSMutableData *)self->_inputFromAccData getBytes:read length:lengthCopy];
+      [(NSMutableData *)self->_inputFromAccData replaceBytesInRange:0 withBytes:lengthCopy length:0, 0];
+      if (v8 >= 0x20000 && length != 0)
       {
         [(NSCondition *)self->_inputFromAccCondition signal];
       }
@@ -387,7 +387,7 @@ LABEL_15:
 
     else
     {
-      v9 = 0;
+      lengthCopy = 0;
     }
 
     [(NSCondition *)self->_inputFromAccCondition unlock];
@@ -395,11 +395,11 @@ LABEL_15:
 
   else
   {
-    v9 = 0;
+    lengthCopy = 0;
   }
 
   [(NSRecursiveLock *)self->_statusLock unlock];
-  return v9;
+  return lengthCopy;
 }
 
 - (BOOL)hasBytesAvailable
@@ -421,23 +421,23 @@ LABEL_15:
   return v3;
 }
 
-- (void)processIncomingAccessoryData:(id)a3
+- (void)processIncomingAccessoryData:(id)data
 {
   if (self->_streamStatus - 2 > 2)
   {
-    NSLog(&cfstr_Externalaccess_92.isa, a2, a3, self->_streamStatus);
+    NSLog(&cfstr_Externalaccess_92.isa, a2, data, self->_streamStatus);
   }
 
   else
   {
-    v5 = a3;
+    dataCopy = data;
     inputFromAccQueue = self->_inputFromAccQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__EAInputStream_processIncomingAccessoryData___block_invoke;
     block[3] = &unk_278A4E390;
     block[4] = self;
-    block[5] = a3;
+    block[5] = data;
     dispatch_async(inputFromAccQueue, block);
   }
 }
@@ -502,7 +502,7 @@ void __46__EAInputStream_processIncomingAccessoryData___block_invoke(uint64_t a1
 
 - (void)_streamEventTrigger
 {
-  v3 = self;
+  selfCopy = self;
   v10 = objc_alloc_init(MEMORY[0x277CCA8B0]);
   v4 = self->_inputFromAccCondition;
   v5 = self->_statusLock;

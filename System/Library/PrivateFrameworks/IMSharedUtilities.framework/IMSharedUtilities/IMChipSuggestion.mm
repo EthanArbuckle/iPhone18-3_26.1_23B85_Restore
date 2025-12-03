@@ -1,9 +1,9 @@
 @interface IMChipSuggestion
 - (IMChipSuggestion)init;
-- (IMChipSuggestion)initWithDisplayText:(id)a3 postback:(id)a4 inReplyToID:(id)a5;
+- (IMChipSuggestion)initWithDisplayText:(id)text postback:(id)postback inReplyToID:(id)d;
 - (NSString)displayText;
 - (id)dictionaryRepresentation;
-- (void)setDisplayText:(id)a3;
+- (void)setDisplayText:(id)text;
 @end
 
 @implementation IMChipSuggestion
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (void)setDisplayText:(id)a3
+- (void)setDisplayText:(id)text
 {
   v4 = sub_1A88C82E8();
   v5 = (self + OBJC_IVAR___IMChipSuggestion_displayText);
@@ -24,14 +24,14 @@
   v5[1] = v6;
 }
 
-- (IMChipSuggestion)initWithDisplayText:(id)a3 postback:(id)a4 inReplyToID:(id)a5
+- (IMChipSuggestion)initWithDisplayText:(id)text postback:(id)postback inReplyToID:(id)d
 {
   v8 = sub_1A88C82E8();
   v10 = v9;
-  if (!a4)
+  if (!postback)
   {
     v12 = 0;
-    if (a5)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -42,9 +42,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  a4 = sub_1A88C82E8();
+  postback = sub_1A88C82E8();
   v12 = v11;
-  if (!a5)
+  if (!d)
   {
     goto LABEL_5;
   }
@@ -61,7 +61,7 @@ LABEL_6:
   v17 = (self + OBJC_IVAR___IMChipSuggestion_displayText);
   *v17 = v8;
   v17[1] = v10;
-  *v15 = a4;
+  *v15 = postback;
   v15[1] = v12;
   *v16 = v13;
   v16[1] = v14;
@@ -72,7 +72,7 @@ LABEL_6:
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A8797C48();
 
   v3 = sub_1A88C8188();

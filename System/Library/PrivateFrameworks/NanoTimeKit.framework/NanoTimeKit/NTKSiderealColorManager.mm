@@ -1,6 +1,6 @@
 @interface NTKSiderealColorManager
 + (id)sharedInstance;
-- (id)_createElementsFromDict:(id)a3;
+- (id)_createElementsFromDict:(id)dict;
 - (id)_init;
 - (id)astronomicalTwilightColorCurve;
 - (id)astronomicalTwilightCurveP3;
@@ -16,7 +16,7 @@
 - (id)nauticalTwilightCurveP3;
 - (id)outerComplicationColorCurve;
 - (void)_notifyHandlers;
-- (void)addColorUpdateHandler:(id)a3;
+- (void)addColorUpdateHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -48,9 +48,9 @@ void __41__NTKSiderealColorManager_sharedInstance__block_invoke()
   v2 = [(NTKSiderealColorManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     updateHandlers = v2->_updateHandlers;
-    v2->_updateHandlers = v3;
+    v2->_updateHandlers = array;
   }
 
   return v2;
@@ -66,10 +66,10 @@ void __41__NTKSiderealColorManager_sharedInstance__block_invoke()
   [(NTKSiderealColorManager *)&v4 dealloc];
 }
 
-- (void)addColorUpdateHandler:(id)a3
+- (void)addColorUpdateHandler:(id)handler
 {
   updateHandlers = self->_updateHandlers;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   [(NSMutableArray *)updateHandlers addObject:v4];
 }
 
@@ -108,17 +108,17 @@ void __41__NTKSiderealColorManager_sharedInstance__block_invoke()
   }
 }
 
-- (id)_createElementsFromDict:(id)a3
+- (id)_createElementsFromDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_6];
+  allKeys = [dictCopy allKeys];
+  v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_6];
 
   if ([v6 count])
   {
     v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v3 objectForKeyedSubscript:v7];
+    v8 = [dictCopy objectForKeyedSubscript:v7];
     [v7 floatValue];
     NTKSunriseAltitudeToSolarDayPercentage();
     v10 = v9;
@@ -135,7 +135,7 @@ void __41__NTKSiderealColorManager_sharedInstance__block_invoke()
   if (v11 >= 0)
   {
     v12 = [v6 objectAtIndexedSubscript:v11];
-    v13 = [v3 objectForKeyedSubscript:v12];
+    v13 = [dictCopy objectForKeyedSubscript:v12];
     [v12 floatValue];
     NTKSunsetAltitudeToSolarDayPercentage();
     v15 = v14;

@@ -1,5 +1,5 @@
 @interface CDPUtilities
-+ (BOOL)BOOLFromAKConfigurations:(id)a3;
++ (BOOL)BOOLFromAKConfigurations:(id)configurations;
 + (BOOL)canEnableMultiUserManatee;
 + (BOOL)deferSOSFromSignIn;
 + (BOOL)isADPInBuddyEnabled;
@@ -10,15 +10,15 @@
 + (BOOL)isSEPBasedICSCHealingEnabled;
 + (BOOL)isSolariumEnabled;
 + (BOOL)isVirtualMachine;
-+ (BOOL)readPreferencesFor:(id)a3;
++ (BOOL)readPreferencesFor:(id)for;
 + (BOOL)shouldCentralizeRPDFlow;
 + (BOOL)shouldClearRKCacheAfterGeneration;
 + (BOOL)shouldUseNewMacOSRPDFlow;
 + (void)deferSOSFromSignIn;
-+ (void)fetchRPDProbationDurationConfigsWithCompletion:(id)a3;
++ (void)fetchRPDProbationDurationConfigsWithCompletion:(id)completion;
 + (void)isICSCHarmonizationEnabled;
-+ (void)isManateeNotificationOnFirstUnlockEnabledUsingURLBag:(id)a3 completion:(id)a4;
-+ (void)isWalrusStatusMismatchDetectionEnabledWithCompletion:(id)a3;
++ (void)isManateeNotificationOnFirstUnlockEnabledUsingURLBag:(id)bag completion:(id)completion;
++ (void)isWalrusStatusMismatchDetectionEnabledWithCompletion:(id)completion;
 + (void)shouldCentralizeRPDFlow;
 + (void)shouldUseNewMacOSRPDFlow;
 + (void)sosCompatibilityEnabled;
@@ -78,12 +78,12 @@ uint64_t __31__CDPUtilities_isInternalBuild__block_invoke()
 
 + (BOOL)shouldCentralizeRPDFlow
 {
-  if ([a1 readPreferencesFor:@"CentralizedRPDFlow"])
+  if ([self readPreferencesFor:@"CentralizedRPDFlow"])
   {
     return 1;
   }
 
-  if ([a1 BOOLFromAKConfigurations:@"disableRPDCentralization"])
+  if ([self BOOLFromAKConfigurations:@"disableRPDCentralization"])
   {
     v4 = _CDPLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -121,12 +121,12 @@ uint64_t __31__CDPUtilities_isInternalBuild__block_invoke()
 
 + (BOOL)isICSCHarmonizationEnabled
 {
-  if ([a1 readPreferencesFor:@"SwiftUIRemoteSecretFlow"])
+  if ([self readPreferencesFor:@"SwiftUIRemoteSecretFlow"])
   {
     return 1;
   }
 
-  if ([a1 BOOLFromAKConfigurations:@"disableiCSCHarmonizationFlow"])
+  if ([self BOOLFromAKConfigurations:@"disableiCSCHarmonizationFlow"])
   {
     v4 = _CDPLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -150,12 +150,12 @@ uint64_t __31__CDPUtilities_isInternalBuild__block_invoke()
   return v3;
 }
 
-+ (BOOL)BOOLFromAKConfigurations:(id)a3
++ (BOOL)BOOLFromAKConfigurations:(id)configurations
 {
   v3 = MEMORY[0x1E698DDF8];
-  v4 = a3;
-  v5 = [v3 sharedBag];
-  v6 = [v5 configurationAtKey:v4];
+  configurationsCopy = configurations;
+  sharedBag = [v3 sharedBag];
+  v6 = [sharedBag configurationAtKey:configurationsCopy];
 
   if (v6)
   {
@@ -195,18 +195,18 @@ uint64_t __32__CDPUtilities_isVirtualMachine__block_invoke()
   return result;
 }
 
-+ (BOOL)readPreferencesFor:(id)a3
++ (BOOL)readPreferencesFor:(id)for
 {
-  v4 = a3;
-  if ([a1 isInternalBuild])
+  forCopy = for;
+  if ([self isInternalBuild])
   {
     keyExistsAndHasValidFormat = 0;
-    AppBooleanValue = CFPreferencesGetAppBooleanValue(v4, @"com.apple.corecdp", &keyExistsAndHasValidFormat);
+    AppBooleanValue = CFPreferencesGetAppBooleanValue(forCopy, @"com.apple.corecdp", &keyExistsAndHasValidFormat);
     v6 = AppBooleanValue != 0;
     v7 = _CDPLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(CDPUtilities *)v4 readPreferencesFor:v7];
+      [(CDPUtilities *)forCopy readPreferencesFor:v7];
     }
   }
 
@@ -256,9 +256,9 @@ void __49__CDPUtilities_shouldClearRKCacheAfterGeneration__block_invoke()
   return result;
 }
 
-+ (void)isWalrusStatusMismatchDetectionEnabledWithCompletion:(id)a3
++ (void)isWalrusStatusMismatchDetectionEnabledWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (+[CDPUtilities isInternalBuild]&& CFPreferencesGetAppBooleanValue(@"disableWalrusStatusMismatchDetectionEnabled", @"com.apple.corecdp", 0))
   {
     v4 = _CDPLogSystem();
@@ -267,18 +267,18 @@ void __49__CDPUtilities_shouldClearRKCacheAfterGeneration__block_invoke()
       +[CDPUtilities isWalrusStatusMismatchDetectionEnabledWithCompletion:];
     }
 
-    (*(v3 + 2))(v3, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698DDF8] sharedBag];
+    mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __69__CDPUtilities_isWalrusStatusMismatchDetectionEnabledWithCompletion___block_invoke;
     v6[3] = &unk_1E869D6C8;
-    v7 = v3;
-    [v5 requestNewURLBagIfNecessaryWithCompletion:v6];
+    v7 = completionCopy;
+    [mEMORY[0x1E698DDF8] requestNewURLBagIfNecessaryWithCompletion:v6];
   }
 }
 
@@ -328,17 +328,17 @@ void __69__CDPUtilities_isWalrusStatusMismatchDetectionEnabledWithCompletion___b
   }
 }
 
-+ (void)fetchRPDProbationDurationConfigsWithCompletion:(id)a3
++ (void)fetchRPDProbationDurationConfigsWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E698DDF8] sharedBag];
+  completionCopy = completion;
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__CDPUtilities_fetchRPDProbationDurationConfigsWithCompletion___block_invoke;
   v6[3] = &unk_1E869D628;
-  v7 = v3;
-  v5 = v3;
-  [v4 configurationValueForKey:@"rpd-probation-cfgs" completion:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [mEMORY[0x1E698DDF8] configurationValueForKey:@"rpd-probation-cfgs" completion:v6];
 }
 
 void __63__CDPUtilities_fetchRPDProbationDurationConfigsWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -397,7 +397,7 @@ void __44__CDPUtilities_isSEPBasedICSCHealingEnabled__block_invoke()
     return 0;
   }
 
-  return [a1 isSolariumEnabled];
+  return [self isSolariumEnabled];
 }
 
 uint64_t __34__CDPUtilities_isNaturalUIEnabled__block_invoke()
@@ -444,15 +444,15 @@ void __35__CDPUtilities_isADPInBuddyEnabled__block_invoke()
   }
 }
 
-+ (void)isManateeNotificationOnFirstUnlockEnabledUsingURLBag:(id)a3 completion:(id)a4
++ (void)isManateeNotificationOnFirstUnlockEnabledUsingURLBag:(id)bag completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 readPreferencesFor:@"ManateeNotificationFirstUnlockKillSwitch"])
+  bagCopy = bag;
+  completionCopy = completion;
+  if ([self readPreferencesFor:@"ManateeNotificationFirstUnlockKillSwitch"])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -462,8 +462,8 @@ void __35__CDPUtilities_isADPInBuddyEnabled__block_invoke()
     v8[1] = 3221225472;
     v8[2] = __80__CDPUtilities_isManateeNotificationOnFirstUnlockEnabledUsingURLBag_completion___block_invoke;
     v8[3] = &unk_1E869DEC8;
-    v9 = v7;
-    [v6 configurationValueForKey:@"disableManateeNotificationOnFirstUnlock" fromCache:1 completion:v8];
+    v9 = completionCopy;
+    [bagCopy configurationValueForKey:@"disableManateeNotificationOnFirstUnlock" fromCache:1 completion:v8];
   }
 }
 
@@ -535,7 +535,7 @@ LABEL_7:
 + (void)sosCompatibilityEnabled
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_1DED99000, a2, OS_LOG_TYPE_ERROR, "deferSOSFromSignInAndSOSCompatible: error=%@ when checking for SOS compatibility mode.", &v4, 0xCu);

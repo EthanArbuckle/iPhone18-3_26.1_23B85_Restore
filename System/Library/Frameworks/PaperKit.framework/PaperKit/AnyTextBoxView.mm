@@ -1,16 +1,16 @@
 @interface AnyTextBoxView
-- (_TtC8PaperKit14AnyTextBoxView)initWithCoder:(id)a3;
-- (_TtC8PaperKit14AnyTextBoxView)initWithFrame:(CGRect)a3;
+- (_TtC8PaperKit14AnyTextBoxView)initWithCoder:(id)coder;
+- (_TtC8PaperKit14AnyTextBoxView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AnyTextBoxView
 
-- (_TtC8PaperKit14AnyTextBoxView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit14AnyTextBoxView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14AnyTextBoxView_textView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14AnyTextBoxView_isScribbling) = 0;
   v8 = self + OBJC_IVAR____TtC8PaperKit14AnyTextBoxView_liveUneditedModelCoordinateSpace;
@@ -27,7 +27,7 @@
   return [(AnyTextBoxView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8PaperKit14AnyTextBoxView)initWithCoder:(id)a3
+- (_TtC8PaperKit14AnyTextBoxView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14AnyTextBoxView_textView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14AnyTextBoxView_isScribbling) = 0;

@@ -1,35 +1,35 @@
 @interface MTUpNextManifest
 - (MTPlayerController)playerController;
-- (MTUpNextManifest)initWithPlayerController:(id)a3;
-- (void)_mediaItemDidChange:(id)a3;
+- (MTUpNextManifest)initWithPlayerController:(id)controller;
+- (void)_mediaItemDidChange:(id)change;
 - (void)_upNextItemsDidChange;
 - (void)_updateUpNext;
 - (void)dealloc;
-- (void)setCurrentIndex:(unint64_t)a3;
+- (void)setCurrentIndex:(unint64_t)index;
 @end
 
 @implementation MTUpNextManifest
 
-- (MTUpNextManifest)initWithPlayerController:(id)a3
+- (MTUpNextManifest)initWithPlayerController:(id)controller
 {
-  v4 = a3;
-  [(MTUpNextManifest *)self setPlayerController:v4];
-  v5 = [v4 upNextController];
-  v6 = [v5 items];
+  controllerCopy = controller;
+  [(MTUpNextManifest *)self setPlayerController:controllerCopy];
+  upNextController = [controllerCopy upNextController];
+  items = [upNextController items];
 
   v14.receiver = self;
   v14.super_class = MTUpNextManifest;
-  v7 = [(MTItemListManifest *)&v14 initWithItems:v6];
+  v7 = [(MTItemListManifest *)&v14 initWithItems:items];
   if (v7)
   {
     v8 = +[NSNotificationCenter defaultCenter];
     v9 = IMAVPlayerNotification_MediaItemDidChange;
-    v10 = [v4 player];
-    [v8 addObserver:v7 selector:"_mediaItemDidChange:" name:v9 object:v10];
+    player = [controllerCopy player];
+    [v8 addObserver:v7 selector:"_mediaItemDidChange:" name:v9 object:player];
 
     v11 = +[NSNotificationCenter defaultCenter];
-    v12 = [v4 upNextController];
-    [v11 addObserver:v7 selector:"_upNextItemsDidChange" name:@"MTUpNextControllerItemsDidChange" object:v12];
+    upNextController2 = [controllerCopy upNextController];
+    [v11 addObserver:v7 selector:"_upNextItemsDidChange" name:@"MTUpNextControllerItemsDidChange" object:upNextController2];
   }
 
   return v7;
@@ -45,32 +45,32 @@
   [(MTUpNextManifest *)&v4 dealloc];
 }
 
-- (void)setCurrentIndex:(unint64_t)a3
+- (void)setCurrentIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (a3 && a3 != 0x7FFFFFFFFFFFFFFFLL)
+  indexCopy = index;
+  if (index && index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(MTUpNextManifest *)self playerController];
-    v6 = [v5 upNextController];
-    [v6 beginUpdates];
+    playerController = [(MTUpNextManifest *)self playerController];
+    upNextController = [playerController upNextController];
+    [upNextController beginUpdates];
 
     do
     {
-      v7 = [(MTUpNextManifest *)self playerController];
-      v8 = [v7 upNextController];
-      [v8 removeEpisodeAtIndex:0];
+      playerController2 = [(MTUpNextManifest *)self playerController];
+      upNextController2 = [playerController2 upNextController];
+      [upNextController2 removeEpisodeAtIndex:0];
 
-      --v3;
+      --indexCopy;
     }
 
-    while (v3);
-    v9 = [(MTUpNextManifest *)self playerController];
-    v10 = [v9 upNextController];
-    [v10 endUpdates];
+    while (indexCopy);
+    playerController3 = [(MTUpNextManifest *)self playerController];
+    upNextController3 = [playerController3 upNextController];
+    [upNextController3 endUpdates];
 
-    v11 = [(MTUpNextManifest *)self playerController];
-    v12 = [v11 upNextController];
-    if ([v12 count])
+    playerController4 = [(MTUpNextManifest *)self playerController];
+    upNextController4 = [playerController4 upNextController];
+    if ([upNextController4 count])
     {
       v13 = 0;
     }
@@ -85,7 +85,7 @@
 
   else
   {
-    [(MTUpNextManifest *)&v14 setCurrentIndex:a3, self, MTUpNextManifest, v15.receiver, v15.super_class];
+    [(MTUpNextManifest *)&v14 setCurrentIndex:index, self, MTUpNextManifest, v15.receiver, v15.super_class];
   }
 }
 
@@ -99,20 +99,20 @@
   [IMAVPlayer performOnMainQueue:v2];
 }
 
-- (void)_mediaItemDidChange:(id)a3
+- (void)_mediaItemDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v11 = [v4 objectForKeyedSubscript:IMAVPlayerNotificationKey_OldMediaItem];
+  userInfo = [change userInfo];
+  v11 = [userInfo objectForKeyedSubscript:IMAVPlayerNotificationKey_OldMediaItem];
 
   v5 = v11;
   if (v11)
   {
-    v6 = [(MTUpNextManifest *)self currentItem];
-    if (v11 == v6)
+    currentItem = [(MTUpNextManifest *)self currentItem];
+    if (v11 == currentItem)
     {
-      v7 = [(MTUpNextManifest *)self playerController];
-      v8 = [v7 upNextController];
-      v9 = [v8 count];
+      playerController = [(MTUpNextManifest *)self playerController];
+      upNextController = [playerController upNextController];
+      v9 = [upNextController count];
 
       v5 = v11;
       if (!v9)
@@ -120,9 +120,9 @@
         goto LABEL_6;
       }
 
-      v6 = [(MTUpNextManifest *)self playerController];
-      v10 = [v6 upNextController];
-      [v10 removeEpisodeAtIndex:0];
+      currentItem = [(MTUpNextManifest *)self playerController];
+      upNextController2 = [currentItem upNextController];
+      [upNextController2 removeEpisodeAtIndex:0];
     }
 
     v5 = v11;
@@ -133,11 +133,11 @@ LABEL_6:
 
 - (void)_updateUpNext
 {
-  v3 = [(MTUpNextManifest *)self playerController];
-  v4 = [v3 upNextController];
-  v5 = [v4 items];
+  playerController = [(MTUpNextManifest *)self playerController];
+  upNextController = [playerController upNextController];
+  items = [upNextController items];
 
-  [(MTItemListManifest *)self setItems:v5];
+  [(MTItemListManifest *)self setItems:items];
 }
 
 - (MTPlayerController)playerController

@@ -1,14 +1,14 @@
 @interface TSCEDistributor
-- (BOOL)hasReceiver:(id)a3;
+- (BOOL)hasReceiver:(id)receiver;
 - (BOOL)hasReceivers;
 - (Protocol)protocol;
 - (TSCEDistributor)init;
-- (void)addReceiver:(id)a3;
-- (void)addReceiverIfMissing:(id)a3;
-- (void)distributeBlock:(id)a3;
+- (void)addReceiver:(id)receiver;
+- (void)addReceiverIfMissing:(id)missing;
+- (void)distributeBlock:(id)block;
 - (void)dropAllTargets;
-- (void)removeReceiver:(id)a3;
-- (void)suspendDuringBlock:(id)a3;
+- (void)removeReceiver:(id)receiver;
+- (void)suspendDuringBlock:(id)block;
 @end
 
 @implementation TSCEDistributor
@@ -53,12 +53,12 @@
   objc_exception_throw(v27);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v5 = a3;
-  if (v5)
+  receiverCopy = receiver;
+  if (receiverCopy)
   {
-    v54 = v5;
+    v54 = receiverCopy;
     v13 = objc_msgSend_protocol(self, v6, v7, v8, v9);
     if (v13)
     {
@@ -114,33 +114,33 @@ LABEL_8:
 LABEL_10:
     os_unfair_lock_unlock(p_receiversLock);
 
-    v5 = v54;
+    receiverCopy = v54;
   }
 }
 
-- (void)addReceiverIfMissing:(id)a3
+- (void)addReceiverIfMissing:(id)missing
 {
-  v4 = a3;
-  if (v4)
+  missingCopy = missing;
+  if (missingCopy)
   {
-    v10 = v4;
-    hasReceiver = objc_msgSend_hasReceiver_(self, v4, v4, v5, v6);
-    v4 = v10;
+    v10 = missingCopy;
+    hasReceiver = objc_msgSend_hasReceiver_(self, missingCopy, missingCopy, v5, v6);
+    missingCopy = v10;
     if ((hasReceiver & 1) == 0)
     {
       objc_msgSend_addReceiver_(self, v10, v10, v8, v9);
-      v4 = v10;
+      missingCopy = v10;
     }
   }
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  if (a3)
+  if (receiver)
   {
-    v4 = a3;
+    receiverCopy = receiver;
     os_unfair_lock_lock(&self->_receiversLock);
-    objc_msgSend_removeObjectIdenticalTo_(self->_receivers, v5, v4, v6, v7);
+    objc_msgSend_removeObjectIdenticalTo_(self->_receivers, v5, receiverCopy, v6, v7);
 
     os_unfair_lock_unlock(&self->_receiversLock);
   }
@@ -154,13 +154,13 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)hasReceiver:(id)a3
+- (BOOL)hasReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   os_unfair_lock_lock(&self->_receiversLock);
-  if (v4)
+  if (receiverCopy)
   {
-    v8 = objc_msgSend_indexOfObjectIdenticalTo_(self->_receivers, v5, v4, v6, v7) != 0x7FFFFFFFFFFFFFFFLL;
+    v8 = objc_msgSend_indexOfObjectIdenticalTo_(self->_receivers, v5, receiverCopy, v6, v7) != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -181,10 +181,10 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_receiversLock);
 }
 
-- (void)distributeBlock:(id)a3
+- (void)distributeBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_receiversLock);
   if (objc_msgSend_count(self->_receivers, v5, v6, v7, v8))
   {
@@ -217,7 +217,7 @@ LABEL_10:
           objc_enumerationMutation(v14);
         }
 
-        v4[2](v4, *(*(&v21 + 1) + 8 * v19++));
+        blockCopy[2](blockCopy, *(*(&v21 + 1) + 8 * v19++));
       }
 
       while (v17 != v19);
@@ -228,10 +228,10 @@ LABEL_10:
   }
 }
 
-- (void)suspendDuringBlock:(id)a3
+- (void)suspendDuringBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_receiversLock);
   receivers = self->_receivers;
   v6 = receivers;
@@ -240,7 +240,7 @@ LABEL_10:
   self->_receivers = v7;
 
   os_unfair_lock_unlock(&self->_receiversLock);
-  v4[2](v4);
+  blockCopy[2](blockCopy);
   os_unfair_lock_lock(&self->_receiversLock);
   v9 = self->_receivers;
   if (objc_msgSend_count(v9, v10, v11, v12, v13))

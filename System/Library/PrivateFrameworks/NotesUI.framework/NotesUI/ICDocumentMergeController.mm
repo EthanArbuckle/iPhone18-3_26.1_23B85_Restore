@@ -3,12 +3,12 @@
 - (ICDocumentMergeController)init;
 - (ICDocumentMergeControlling)parentController;
 - (NSSet)textViews;
-- (void)addTextView:(id)a3;
-- (void)beginBlockingMergeForReason:(unint64_t)a3 textView:(id)a4;
-- (void)blockingMergeForReason:(unint64_t)a3 textView:(id)a4 block:(id)a5;
-- (void)endBlockingMergeForReason:(unint64_t)a3 textView:(id)a4;
-- (void)removeTextView:(id)a3;
-- (void)requestMergeWithBlock:(id)a3;
+- (void)addTextView:(id)view;
+- (void)beginBlockingMergeForReason:(unint64_t)reason textView:(id)view;
+- (void)blockingMergeForReason:(unint64_t)reason textView:(id)view block:(id)block;
+- (void)endBlockingMergeForReason:(unint64_t)reason textView:(id)view;
+- (void)removeTextView:(id)view;
+- (void)requestMergeWithBlock:(id)block;
 @end
 
 @implementation ICDocumentMergeController
@@ -26,11 +26,11 @@
   return [(ICDocumentMergeController *)&v6 init];
 }
 
-- (void)addTextView:(id)a3
+- (void)addTextView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D41867CC(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D41867CC(viewCopy);
 }
 
 - (ICDocumentMergeControlling)parentController
@@ -52,53 +52,53 @@
   return v3;
 }
 
-- (void)removeTextView:(id)a3
+- (void)removeTextView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D4320C64(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D4320C64(viewCopy);
 }
 
 - (BOOL)isBlockingMerge
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D4320E9C();
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)beginBlockingMergeForReason:(unint64_t)a3 textView:(id)a4
+- (void)beginBlockingMergeForReason:(unint64_t)reason textView:(id)view
 {
-  v6 = a4;
-  v7 = self;
-  sub_1D43210DC(a3, v6);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D43210DC(reason, viewCopy);
 }
 
-- (void)endBlockingMergeForReason:(unint64_t)a3 textView:(id)a4
+- (void)endBlockingMergeForReason:(unint64_t)reason textView:(id)view
 {
-  v6 = a4;
-  v7 = self;
-  sub_1D432145C(a3, v6);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D432145C(reason, viewCopy);
 }
 
-- (void)blockingMergeForReason:(unint64_t)a3 textView:(id)a4 block:(id)a5
+- (void)blockingMergeForReason:(unint64_t)reason textView:(id)view block:(id)block
 {
-  v7 = _Block_copy(a5);
-  v8 = a4;
-  v9 = self;
-  [(ICDocumentMergeController *)v9 beginBlockingMergeForReason:3 textView:v8];
+  v7 = _Block_copy(block);
+  viewCopy = view;
+  selfCopy = self;
+  [(ICDocumentMergeController *)selfCopy beginBlockingMergeForReason:3 textView:viewCopy];
   v7[2](v7);
   _Block_release(v7);
-  [(ICDocumentMergeController *)v9 endBlockingMergeForReason:3 textView:v8];
+  [(ICDocumentMergeController *)selfCopy endBlockingMergeForReason:3 textView:viewCopy];
 }
 
-- (void)requestMergeWithBlock:(id)a3
+- (void)requestMergeWithBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_1D4322AE4(v5, v4);
+  selfCopy = self;
+  sub_1D4322AE4(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

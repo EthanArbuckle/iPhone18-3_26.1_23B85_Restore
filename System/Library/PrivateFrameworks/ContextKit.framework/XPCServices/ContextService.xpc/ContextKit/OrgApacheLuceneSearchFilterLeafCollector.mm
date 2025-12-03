@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchFilterLeafCollector
 - (NSString)description;
 - (void)dealloc;
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3;
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer;
 @end
 
 @implementation OrgApacheLuceneSearchFilterLeafCollector
 
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer
 {
   in = self->in_;
   if (!in)
@@ -14,7 +14,7 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneSearchLeafCollector *)in setScorerWithOrgApacheLuceneSearchScorer:a3];
+  [(OrgApacheLuceneSearchLeafCollector *)in setScorerWithOrgApacheLuceneSearchScorer:scorer];
 }
 
 - (NSString)description

@@ -1,6 +1,6 @@
 @interface VisibilityFormatter
 - (NSLocale)locale;
-- (void)setLocale:(id)a3;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation VisibilityFormatter
@@ -10,7 +10,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD07890);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v10 - v4;
-  v6 = self;
+  selfCopy = self;
   VisibilityFormatter.locale.getter(v5);
 
   v7 = sub_1BCE19280();
@@ -24,12 +24,12 @@
   return v8;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD07890);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (locale)
   {
     sub_1BCE19170();
     v8 = sub_1BCE19280();
@@ -43,7 +43,7 @@
   }
 
   __swift_storeEnumTagSinglePayload(v7, v9, 1, v8);
-  v10 = self;
+  selfCopy = self;
   VisibilityFormatter.locale.setter(v7);
 }
 

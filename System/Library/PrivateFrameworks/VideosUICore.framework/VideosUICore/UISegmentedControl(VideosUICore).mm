@@ -7,7 +7,7 @@
 - (void)vuiSetAccessibilityIdentifier:()VideosUICore forSegment:
 {
   v8 = a3;
-  v6 = [a1 valueForKey:@"_segments"];
+  v6 = [self valueForKey:@"_segments"];
   if ([v6 count] > a4)
   {
     v7 = [v6 objectAtIndex:a4];

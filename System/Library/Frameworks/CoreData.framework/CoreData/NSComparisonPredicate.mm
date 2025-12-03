@@ -1,10 +1,10 @@
 @interface NSComparisonPredicate
-- (BOOL)_isForeignObjectExpression:(void *)a3 givenContext:;
+- (BOOL)_isForeignObjectExpression:(void *)expression givenContext:;
 @end
 
 @implementation NSComparisonPredicate
 
-- (BOOL)_isForeignObjectExpression:(void *)a3 givenContext:
+- (BOOL)_isForeignObjectExpression:(void *)expression givenContext:
 {
   if (result)
   {
@@ -13,18 +13,18 @@
       return 0;
     }
 
-    v5 = [a2 constantValue];
-    if (!v5)
+    constantValue = [a2 constantValue];
+    if (!constantValue)
     {
       return 0;
     }
 
-    v6 = v5;
+    objectID = constantValue;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v6 objectID];
-      if (!v6)
+      objectID = [objectID objectID];
+      if (!objectID)
       {
         return 0;
       }
@@ -39,13 +39,13 @@
       }
     }
 
-    if ([v6 isTemporaryID])
+    if ([objectID isTemporaryID])
     {
       return 1;
     }
 
-    v7 = [v6 persistentStore];
-    return v7 != [a3 objectForKey:@"persistentStore"];
+    persistentStore = [objectID persistentStore];
+    return persistentStore != [expression objectForKey:@"persistentStore"];
   }
 
   return result;

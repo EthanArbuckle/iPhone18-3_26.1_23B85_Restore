@@ -1,12 +1,12 @@
 @interface HDHealthTopicsDiagnosticOperation
-- (HDHealthTopicsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3;
+- (HDHealthTopicsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l;
 - (NSString)reportFilename;
 - (void)run;
 @end
 
 @implementation HDHealthTopicsDiagnosticOperation
 
-- (HDHealthTopicsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3
+- (HDHealthTopicsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l
 {
   v3 = *(*(sub_31CC() - 8) + 64);
   __chkstk_darwin();
@@ -24,7 +24,7 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   sub_155C();
 }
 

@@ -1,46 +1,46 @@
 @interface AXPIFingerContainerView
 - (AXPIFingerAppearanceDelegate)appearanceDelegate;
-- (AXPIFingerContainerView)initWithFrame:(CGRect)a3;
-- (CGRect)rectForFingersAtPoints:(id)a3;
-- (unint64_t)indexOfFingerAtPoint:(CGPoint)a3;
-- (void)_updateFingerModelViews:(BOOL)a3 startPointForAnimation:(CGPoint)a4;
+- (AXPIFingerContainerView)initWithFrame:(CGRect)frame;
+- (CGRect)rectForFingersAtPoints:(id)points;
+- (unint64_t)indexOfFingerAtPoint:(CGPoint)point;
+- (void)_updateFingerModelViews:(BOOL)views startPointForAnimation:(CGPoint)animation;
 - (void)_updateLumaMeasurementViewFrame;
 - (void)_updatePinchChainAppearance;
-- (void)_updateSystemFiltersWithBackgroundLuminanceLevel:(unint64_t)a3;
-- (void)animateToTapWithDuration:(double)a3;
+- (void)_updateSystemFiltersWithBackgroundLuminanceLevel:(unint64_t)level;
+- (void)animateToTapWithDuration:(double)duration;
 - (void)cancelCircularProgressAnimation;
-- (void)clearAllFingersAnimated:(BOOL)a3 endPointForAnimation:(CGPoint)a4;
-- (void)performCircularProgressAnimationOnFingersWithDuration:(double)a3 completion:(id)a4;
-- (void)setPointerLumaMeasurementViewEnabled:(BOOL)a3;
-- (void)setPressedState:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldSuppressFingerVisuals:(BOOL)a3;
-- (void)showFingerModels:(id)a3 animated:(BOOL)a4 startPointForAnimation:(CGPoint)a5 shouldShowPinchChain:(BOOL)a6;
-- (void)updateWithFingerModel:(id)a3 forFingerAtIndex:(unint64_t)a4;
+- (void)clearAllFingersAnimated:(BOOL)animated endPointForAnimation:(CGPoint)animation;
+- (void)performCircularProgressAnimationOnFingersWithDuration:(double)duration completion:(id)completion;
+- (void)setPointerLumaMeasurementViewEnabled:(BOOL)enabled;
+- (void)setPressedState:(BOOL)state animated:(BOOL)animated;
+- (void)setShouldSuppressFingerVisuals:(BOOL)visuals;
+- (void)showFingerModels:(id)models animated:(BOOL)animated startPointForAnimation:(CGPoint)animation shouldShowPinchChain:(BOOL)chain;
+- (void)updateWithFingerModel:(id)model forFingerAtIndex:(unint64_t)index;
 @end
 
 @implementation AXPIFingerContainerView
 
-- (AXPIFingerContainerView)initWithFrame:(CGRect)a3
+- (AXPIFingerContainerView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = AXPIFingerContainerView;
-  v3 = [(AXPIFingerContainerView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXPIFingerContainerView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     fingerViews = v3->_fingerViews;
-    v3->_fingerViews = v4;
+    v3->_fingerViews = array;
 
     objc_initWeak(&location, v3);
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v8 = *MEMORY[0x277D76480];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__AXPIFingerContainerView_initWithFrame___block_invoke;
     v11[3] = &unk_278BE6750;
     objc_copyWeak(&v12, &location);
-    v9 = [v6 addObserverForName:v8 object:0 queue:v7 usingBlock:v11];
+    v9 = [defaultCenter addObserverForName:v8 object:0 queue:mainQueue usingBlock:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -55,15 +55,15 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained _updateFingerModelViews:0 startPointForAnimation:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 }
 
-- (void)_updateFingerModelViews:(BOOL)a3 startPointForAnimation:(CGPoint)a4
+- (void)_updateFingerModelViews:(BOOL)views startPointForAnimation:(CGPoint)animation
 {
-  y = a4.y;
-  x = a4.x;
-  v26 = a3;
+  y = animation.y;
+  x = animation.x;
+  viewsCopy = views;
   v32 = *MEMORY[0x277D85DE8];
   [(NSMutableArray *)self->_fingerViews enumerateObjectsUsingBlock:&__block_literal_global_7];
-  v7 = [(UIView *)self->_viewForAnimatingAlpha subviews];
-  [v7 enumerateObjectsUsingBlock:&__block_literal_global_285];
+  subviews = [(UIView *)self->_viewForAnimatingAlpha subviews];
+  [subviews enumerateObjectsUsingBlock:&__block_literal_global_285];
 
   [(NSMutableArray *)self->_fingerViews removeAllObjects];
   v29 = 0u;
@@ -76,7 +76,7 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
   {
     v9 = v8;
     v10 = *v28;
-    v11 = !v26;
+    v11 = !viewsCopy;
     if (x != *MEMORY[0x277CBF348])
     {
       v11 = 1;
@@ -102,12 +102,12 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        v15 = [(AXPIFingerContainerView *)self appearanceDelegate];
-        [v15 fingerWidth];
+        appearanceDelegate = [(AXPIFingerContainerView *)self appearanceDelegate];
+        [appearanceDelegate fingerWidth];
         v17 = v16;
 
         [v14 location];
-        if (v26)
+        if (viewsCopy)
         {
           v19 = y;
           v18 = x;
@@ -121,8 +121,8 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
         v20 = v18 - v17 * 0.5;
         v21 = v19 - v17 * 0.5;
         v22 = [AXPIFingerView alloc];
-        v23 = [(AXPIFingerContainerView *)self appearanceDelegate];
-        v24 = [(AXPIFingerView *)v22 initWithFrame:v23 appearanceDelegate:v20, v21, v17, v17];
+        appearanceDelegate2 = [(AXPIFingerContainerView *)self appearanceDelegate];
+        v24 = [(AXPIFingerView *)v22 initWithFrame:appearanceDelegate2 appearanceDelegate:v20, v21, v17, v17];
 
         -[AXPIFingerView setPressed:animated:](v24, "setPressed:animated:", [v14 isPressed], -[AXPIFingerContainerView shouldAnimatePress](self, "shouldAnimatePress"));
         -[AXPIFingerView setSelected:](v24, "setSelected:", [v14 isSelected]);
@@ -139,20 +139,20 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)showFingerModels:(id)a3 animated:(BOOL)a4 startPointForAnimation:(CGPoint)a5 shouldShowPinchChain:(BOOL)a6
+- (void)showFingerModels:(id)models animated:(BOOL)animated startPointForAnimation:(CGPoint)animation shouldShowPinchChain:(BOOL)chain
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  chainCopy = chain;
+  y = animation.y;
+  x = animation.x;
+  animatedCopy = animated;
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  modelsCopy = models;
   v12 = [objc_alloc(MEMORY[0x277D760C0]) initWithTransitionBoundaries:self delegate:0.45 frame:{0.55, 0.0, 0.0, 19.0, 19.0}];
   pointerLumaMeasurementView = self->_pointerLumaMeasurementView;
   self->_pointerLumaMeasurementView = v12;
 
-  v14 = [MEMORY[0x277CE7E18] sharedInstance];
-  -[AXPIFingerContainerView setPointerLumaMeasurementViewEnabled:](self, "setPointerLumaMeasurementViewEnabled:", [v14 assistiveTouchMouseBehavesLikeFinger]);
+  mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+  -[AXPIFingerContainerView setPointerLumaMeasurementViewEnabled:](self, "setPointerLumaMeasurementViewEnabled:", [mEMORY[0x277CE7E18] assistiveTouchMouseBehavesLikeFinger]);
 
   [(AXPIFingerContainerView *)self addSubview:self->_pointerLumaMeasurementView];
   viewForAnimatingAlpha = self->_viewForAnimatingAlpha;
@@ -169,21 +169,21 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
 
   [(UIView *)self->_viewForAnimatingAlpha setAutoresizingMask:18];
   [(AXPIFingerContainerView *)self addSubview:self->_viewForAnimatingAlpha];
-  [(AXPIFingerContainerView *)self setFingerModels:v11];
-  [(AXPIFingerContainerView *)self _updateFingerModelViews:v9 startPointForAnimation:x, y];
+  [(AXPIFingerContainerView *)self setFingerModels:modelsCopy];
+  [(AXPIFingerContainerView *)self _updateFingerModelViews:animatedCopy startPointForAnimation:x, y];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v19 = v11;
+  v19 = modelsCopy;
   v20 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v20)
   {
     v21 = v20;
-    v36 = v6;
-    v22 = v9;
-    v23 = 0;
-    v24 = 0;
+    v36 = chainCopy;
+    v22 = animatedCopy;
+    isPressed = 0;
+    isSelected = 0;
     v25 = *v40;
     while (1)
     {
@@ -195,10 +195,10 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
         }
 
         v27 = *(*(&v39 + 1) + 8 * i);
-        if (v24)
+        if (isSelected)
         {
-          v24 = 1;
-          if ((v23 & 1) == 0)
+          isSelected = 1;
+          if ((isPressed & 1) == 0)
           {
             goto LABEL_10;
           }
@@ -206,24 +206,24 @@ void __41__AXPIFingerContainerView_initWithFrame___block_invoke(uint64_t a1)
 
         else
         {
-          v24 = [*(*(&v39 + 1) + 8 * i) isSelected];
-          if ((v23 & 1) == 0)
+          isSelected = [*(*(&v39 + 1) + 8 * i) isSelected];
+          if ((isPressed & 1) == 0)
           {
 LABEL_10:
-            v23 = [v27 isPressed];
+            isPressed = [v27 isPressed];
             continue;
           }
         }
 
-        v23 = 1;
+        isPressed = 1;
       }
 
       v21 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (!v21)
       {
-        v28 = v24 | v23;
-        LODWORD(v9) = v22;
-        v6 = v36;
+        v28 = isSelected | isPressed;
+        LODWORD(animatedCopy) = v22;
+        chainCopy = v36;
         goto LABEL_17;
       }
     }
@@ -232,7 +232,7 @@ LABEL_10:
   v28 = 0;
 LABEL_17:
 
-  if (v6)
+  if (chainCopy)
   {
     pinchChainView = self->_pinchChainView;
     if (pinchChainView)
@@ -244,8 +244,8 @@ LABEL_17:
     v31 = self->_pinchChainView;
     self->_pinchChainView = v30;
 
-    v32 = [(AXPIFingerContainerView *)self appearanceDelegate];
-    [(AXPIPinchChainView *)self->_pinchChainView setAppearanceDelegate:v32];
+    appearanceDelegate = [(AXPIFingerContainerView *)self appearanceDelegate];
+    [(AXPIPinchChainView *)self->_pinchChainView setAppearanceDelegate:appearanceDelegate];
 
     [(UIView *)self->_viewForAnimatingAlpha addSubview:self->_pinchChainView];
     if ([v19 count] == 2)
@@ -274,7 +274,7 @@ LABEL_17:
     [(UIView *)self->_viewForAnimatingAlpha setAlpha:0.0];
   }
 
-  else if (v9)
+  else if (animatedCopy)
   {
     [(UIView *)self->_viewForAnimatingAlpha setAlpha:0.0];
     v35 = MEMORY[0x277D75D18];
@@ -311,31 +311,31 @@ void __97__AXPIFingerContainerView_showFingerModels_animated_startPointForAnimat
   [v6 setFrame:_frameCenteredAroundPointForView(v6)];
 }
 
-- (void)setShouldSuppressFingerVisuals:(BOOL)a3
+- (void)setShouldSuppressFingerVisuals:(BOOL)visuals
 {
-  if (self->_shouldSuppressFingerVisuals != a3)
+  if (self->_shouldSuppressFingerVisuals != visuals)
   {
     v10 = v4;
     v11 = v3;
-    v7 = a3;
-    self->_shouldSuppressFingerVisuals = a3;
+    visualsCopy = visuals;
+    self->_shouldSuppressFingerVisuals = visuals;
     v9 = 1.0;
-    if (a3)
+    if (visuals)
     {
       v9 = 0.0;
     }
 
     [(UIView *)self->_viewForAnimatingAlpha setAlpha:v9, v10, v11, v5];
 
-    [(AXPIFingerContainerView *)self setPointerLumaMeasurementViewEnabled:!v7];
+    [(AXPIFingerContainerView *)self setPointerLumaMeasurementViewEnabled:!visualsCopy];
   }
 }
 
-- (void)clearAllFingersAnimated:(BOOL)a3 endPointForAnimation:(CGPoint)a4
+- (void)clearAllFingersAnimated:(BOOL)animated endPointForAnimation:(CGPoint)animation
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = animation.y;
+  x = animation.x;
+  animatedCopy = animated;
   v31 = *MEMORY[0x277D85DE8];
   v8 = [(NSMutableArray *)self->_fingerViews copy];
   [(NSMutableArray *)self->_fingerViews removeAllObjects];
@@ -351,7 +351,7 @@ void __97__AXPIFingerContainerView_showFingerModels_animated_startPointForAnimat
   pointerLumaMeasurementView = self->_pointerLumaMeasurementView;
   self->_pointerLumaMeasurementView = 0;
 
-  if (v6)
+  if (animatedCopy)
   {
     v13 = MEMORY[0x277D75D18];
     v25[0] = MEMORY[0x277D85DD0];
@@ -446,10 +446,10 @@ void __72__AXPIFingerContainerView_clearAllFingersAnimated_endPointForAnimation_
   }
 }
 
-- (unint64_t)indexOfFingerAtPoint:(CGPoint)a3
+- (unint64_t)indexOfFingerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
@@ -495,24 +495,24 @@ LABEL_11:
   return v12;
 }
 
-- (void)updateWithFingerModel:(id)a3 forFingerAtIndex:(unint64_t)a4
+- (void)updateWithFingerModel:(id)model forFingerAtIndex:(unint64_t)index
 {
-  v11 = a3;
-  v6 = [(NSMutableArray *)self->_fingerViews objectAtIndexedSubscript:a4];
-  v7 = [v6 isPressed];
-  v8 = [v6 isSelected];
-  [v11 location];
+  modelCopy = model;
+  v6 = [(NSMutableArray *)self->_fingerViews objectAtIndexedSubscript:index];
+  isPressed = [v6 isPressed];
+  isSelected = [v6 isSelected];
+  [modelCopy location];
   [v6 setFrame:_frameCenteredAroundPointForView(v6)];
-  [v6 setPressed:objc_msgSend(v11 animated:{"isPressed"), -[AXPIFingerContainerView shouldAnimatePress](self, "shouldAnimatePress")}];
-  [v6 setSelected:{objc_msgSend(v11, "isSelected")}];
-  [v11 force];
+  [v6 setPressed:objc_msgSend(modelCopy animated:{"isPressed"), -[AXPIFingerContainerView shouldAnimatePress](self, "shouldAnimatePress")}];
+  [v6 setSelected:{objc_msgSend(modelCopy, "isSelected")}];
+  [modelCopy force];
   [v6 setForce:?];
-  [v6 setShape:{objc_msgSend(v11, "shape")}];
+  [v6 setShape:{objc_msgSend(modelCopy, "shape")}];
   if (self->_pinchChainView)
   {
-    [v11 location];
+    [modelCopy location];
     pinchChainView = self->_pinchChainView;
-    if (a4)
+    if (index)
     {
       [(AXPIPinchChainView *)pinchChainView setEndPoint:?];
     }
@@ -525,39 +525,39 @@ LABEL_11:
     [(AXPIFingerContainerView *)self _updatePinchChainAppearance];
   }
 
-  if (v7 != [v6 isPressed] || v8 != objc_msgSend(v6, "isSelected"))
+  if (isPressed != [v6 isPressed] || isSelected != objc_msgSend(v6, "isSelected"))
   {
     if ([v6 isPressed])
     {
-      v10 = 1;
+      isSelected2 = 1;
     }
 
     else
     {
-      v10 = [v6 isSelected];
+      isSelected2 = [v6 isSelected];
     }
 
-    [(AXPIFingerContainerView *)self setPressedState:v10 animated:1];
+    [(AXPIFingerContainerView *)self setPressedState:isSelected2 animated:1];
   }
 
   [(AXPIFingerContainerView *)self _updateLumaMeasurementViewFrame];
 }
 
-- (void)setPressedState:(BOOL)a3 animated:(BOOL)a4
+- (void)setPressedState:(BOOL)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (+[AXPIFingerUtilities laserEnabled])
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __52__AXPIFingerContainerView_setPressedState_animated___block_invoke;
     aBlock[3] = &unk_278BE6590;
-    v19 = a3;
+    stateCopy = state;
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = v7;
     v9 = MEMORY[0x277D75D18];
-    if (v4)
+    if (animatedCopy)
     {
       v10 = +[AXPIFingerUtilities pointerAnimationSettings];
       v16[0] = MEMORY[0x277D85DD0];
@@ -677,21 +677,21 @@ void *__52__AXPIFingerContainerView_setPressedState_animated___block_invoke(uint
   return result;
 }
 
-- (void)_updateSystemFiltersWithBackgroundLuminanceLevel:(unint64_t)a3
+- (void)_updateSystemFiltersWithBackgroundLuminanceLevel:(unint64_t)level
 {
   if (+[AXPIFingerUtilities laserEnabled])
   {
-    v5 = [(AXPIFingerContainerView *)self appearanceDelegate];
-    v6 = [v5 useSystemFilters];
+    appearanceDelegate = [(AXPIFingerContainerView *)self appearanceDelegate];
+    useSystemFilters = [appearanceDelegate useSystemFilters];
 
-    if (v6)
+    if (useSystemFilters)
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __76__AXPIFingerContainerView__updateSystemFiltersWithBackgroundLuminanceLevel___block_invoke;
       v10[3] = &unk_278BE64A0;
       v10[4] = self;
-      v10[5] = a3;
+      v10[5] = level;
       v7 = _Block_copy(v10);
       v8 = MEMORY[0x277D75D18];
       v9 = +[AXPIFingerUtilities pointerAnimationSettings];
@@ -810,8 +810,8 @@ void __76__AXPIFingerContainerView__updateSystemFiltersWithBackgroundLuminanceLe
   {
     v9 = v8;
     v10 = *v20;
-    LOBYTE(v11) = 1;
-    LOBYTE(v12) = 1;
+    LOBYTE(isSelected) = 1;
+    LOBYTE(isPressed) = 1;
     while (1)
     {
       for (i = 0; i != v9; ++i)
@@ -836,10 +836,10 @@ void __76__AXPIFingerContainerView__updateSystemFiltersWithBackgroundLuminanceLe
         y = v26.origin.y;
         width = v26.size.width;
         height = v26.size.height;
-        if (v12)
+        if (isPressed)
         {
-          v12 = [v14 isPressed];
-          if ((v11 & 1) == 0)
+          isPressed = [v14 isPressed];
+          if ((isSelected & 1) == 0)
           {
             goto LABEL_8;
           }
@@ -847,16 +847,16 @@ void __76__AXPIFingerContainerView__updateSystemFiltersWithBackgroundLuminanceLe
 
         else
         {
-          v12 = 0;
-          if ((v11 & 1) == 0)
+          isPressed = 0;
+          if ((isSelected & 1) == 0)
           {
 LABEL_8:
-            v11 = 0;
+            isSelected = 0;
             continue;
           }
         }
 
-        v11 = [v14 isSelected];
+        isSelected = [v14 isSelected];
       }
 
       v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -867,19 +867,19 @@ LABEL_8:
     }
   }
 
-  v11 = 1;
-  v12 = 1;
+  isSelected = 1;
+  isPressed = 1;
 LABEL_15:
 
   [(AXPIPinchChainView *)self->_pinchChainView setFrame:x, y, width, height];
-  [(AXPIPinchChainView *)self->_pinchChainView setPressed:v12];
-  [(AXPIPinchChainView *)self->_pinchChainView setSelected:v11];
+  [(AXPIPinchChainView *)self->_pinchChainView setPressed:isPressed];
+  [(AXPIPinchChainView *)self->_pinchChainView setSelected:isSelected];
 }
 
-- (CGRect)rectForFingersAtPoints:(id)a3
+- (CGRect)rectForFingersAtPoints:(id)points
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pointsCopy = points;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
@@ -888,7 +888,7 @@ LABEL_15:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v9 = [pointsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -902,7 +902,7 @@ LABEL_15:
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pointsCopy);
         }
 
         v15 = CGPointFromString(*(*(&v27 + 1) + 8 * v14));
@@ -923,14 +923,14 @@ LABEL_15:
       }
 
       while (v10 != v14);
-      v10 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v10 = [pointsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  v16 = [(AXPIFingerContainerView *)self appearanceDelegate];
-  [v16 fingerWidth];
+  appearanceDelegate = [(AXPIFingerContainerView *)self appearanceDelegate];
+  [appearanceDelegate fingerWidth];
   v18 = v17;
 
   v35.origin.x = x;
@@ -954,10 +954,10 @@ LABEL_15:
   return result;
 }
 
-- (void)performCircularProgressAnimationOnFingersWithDuration:(double)a3 completion:(id)a4
+- (void)performCircularProgressAnimationOnFingersWithDuration:(double)duration completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v13 = a4;
+  completionCopy = completion;
   [(AXPIFingerContainerView *)self cancelCircularProgressAnimation];
   v6 = dispatch_group_create();
   v24[0] = 0;
@@ -990,7 +990,7 @@ LABEL_15:
         v17[3] = &unk_278BE67C0;
         v19 = v24;
         v18 = v6;
-        [v11 animateCircularProgressWithDuration:v17 completion:a3];
+        [v11 animateCircularProgressWithDuration:v17 completion:duration];
       }
 
       v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
@@ -1003,10 +1003,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __92__AXPIFingerContainerView_performCircularProgressAnimationOnFingersWithDuration_completion___block_invoke_2;
   block[3] = &unk_278BE67E8;
-  v15 = v13;
+  v15 = completionCopy;
   v16 = v24;
   block[4] = self;
-  v12 = v13;
+  v12 = completionCopy;
   dispatch_group_notify(v6, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v24, 8);
@@ -1059,7 +1059,7 @@ uint64_t __92__AXPIFingerContainerView_performCircularProgressAnimationOnFingers
   }
 }
 
-- (void)animateToTapWithDuration:(double)a3
+- (void)animateToTapWithDuration:(double)duration
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -1082,7 +1082,7 @@ uint64_t __92__AXPIFingerContainerView_performCircularProgressAnimationOnFingers
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) animateToTapWithDuration:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) animateToTapWithDuration:{duration, v9}];
       }
 
       while (v6 != v8);
@@ -1093,16 +1093,16 @@ uint64_t __92__AXPIFingerContainerView_performCircularProgressAnimationOnFingers
   }
 }
 
-- (void)setPointerLumaMeasurementViewEnabled:(BOOL)a3
+- (void)setPointerLumaMeasurementViewEnabled:(BOOL)enabled
 {
   pointerLumaMeasurementView = self->_pointerLumaMeasurementView;
   if (pointerLumaMeasurementView)
   {
-    v5 = a3;
-    [(_UILumaTrackingBackdropView *)pointerLumaMeasurementView setHidden:!a3];
+    enabledCopy = enabled;
+    [(_UILumaTrackingBackdropView *)pointerLumaMeasurementView setHidden:!enabled];
     v6 = self->_pointerLumaMeasurementView;
 
-    [(_UILumaTrackingBackdropView *)v6 setPaused:!v5];
+    [(_UILumaTrackingBackdropView *)v6 setPaused:!enabledCopy];
   }
 }
 

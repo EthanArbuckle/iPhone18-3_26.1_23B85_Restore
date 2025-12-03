@@ -1,28 +1,28 @@
 @interface ObjCBootstrap
-- (id)cachedLocationFor:(id)a3 includeAddress:(BOOL)a4;
-- (id)cachedOfferExpirationFor:(id)a3 groupId:(id)a4;
+- (id)cachedLocationFor:(id)for includeAddress:(BOOL)address;
+- (id)cachedOfferExpirationFor:(id)for groupId:(id)id;
 - (id)friendshipUpdateCallback;
 - (id)locationUpdateCallback;
 - (id)meDeviceUpdateCallback;
-- (int64_t)cachedCanShareLocationWithHandle:(id)a3 isFromGroup:(BOOL)a4;
-- (void)canShareLocationWithHandle:(FMLHandle *)a3 isFromGroup:(BOOL)a4 completionHandler:(id)a5;
-- (void)friendshipStateWithHandle:(FMLHandle *)a3 isFromGroup:(BOOL)a4 completionHandler:(id)a5;
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3;
-- (void)getFriendsWith:(int64_t)a3 completionHandler:(id)a4;
-- (void)getOfferExpirationForHandle:(FMLHandle *)a3 groupId:(NSString *)a4 completionHandler:(id)a5;
-- (void)sendFriendshipInviteTo:(FMLHandle *)a3 from:(FMLHandle *)a4 isFromGroup:(BOOL)a5 completionHandler:(id)a6;
-- (void)sendFriendshipOfferTo:(NSArray *)a3 from:(FMLHandle *)a4 end:(int64_t)a5 isFromGroup:(BOOL)a6 completionHandler:(id)a7;
-- (void)setActiveLocationSharingDevice:(NSString *)a3 completionHandler:(id)a4;
-- (void)setFriendshipUpdateCallback:(id)a3;
-- (void)setLocationUpdateCallback:(id)a3;
-- (void)setMeDeviceUpdateCallback:(id)a3;
-- (void)startMonitoringActiveLocationSharingDeviceWithCompletionHandler:(id)a3;
-- (void)startRefreshingLocationFor:(NSArray *)a3 priority:(int64_t)a4 isFromGroup:(BOOL)a5 reverseGeocode:(BOOL)a6 completionHandler:(id)a7;
-- (void)startUpdatingFriendsWithInitialUpdates:(BOOL)a3 completionHandler:(id)a4;
-- (void)stopRefreshingLocationFor:(NSArray *)a3 priority:(int64_t)a4 isFromGroup:(BOOL)a5 completionHandler:(id)a6;
-- (void)stopRefreshingLocationWithCompletionHandler:(id)a3;
-- (void)stopSharingLocationWith:(NSArray *)a3 from:(FMLHandle *)a4 isFromGroup:(BOOL)a5 completionHandler:(id)a6;
-- (void)stopUpdatingFriendsWithCompletionHandler:(id)a3;
+- (int64_t)cachedCanShareLocationWithHandle:(id)handle isFromGroup:(BOOL)group;
+- (void)canShareLocationWithHandle:(FMLHandle *)handle isFromGroup:(BOOL)group completionHandler:(id)handler;
+- (void)friendshipStateWithHandle:(FMLHandle *)handle isFromGroup:(BOOL)group completionHandler:(id)handler;
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler;
+- (void)getFriendsWith:(int64_t)with completionHandler:(id)handler;
+- (void)getOfferExpirationForHandle:(FMLHandle *)handle groupId:(NSString *)id completionHandler:(id)handler;
+- (void)sendFriendshipInviteTo:(FMLHandle *)to from:(FMLHandle *)from isFromGroup:(BOOL)group completionHandler:(id)handler;
+- (void)sendFriendshipOfferTo:(NSArray *)to from:(FMLHandle *)from end:(int64_t)end isFromGroup:(BOOL)group completionHandler:(id)handler;
+- (void)setActiveLocationSharingDevice:(NSString *)device completionHandler:(id)handler;
+- (void)setFriendshipUpdateCallback:(id)callback;
+- (void)setLocationUpdateCallback:(id)callback;
+- (void)setMeDeviceUpdateCallback:(id)callback;
+- (void)startMonitoringActiveLocationSharingDeviceWithCompletionHandler:(id)handler;
+- (void)startRefreshingLocationFor:(NSArray *)for priority:(int64_t)priority isFromGroup:(BOOL)group reverseGeocode:(BOOL)geocode completionHandler:(id)handler;
+- (void)startUpdatingFriendsWithInitialUpdates:(BOOL)updates completionHandler:(id)handler;
+- (void)stopRefreshingLocationFor:(NSArray *)for priority:(int64_t)priority isFromGroup:(BOOL)group completionHandler:(id)handler;
+- (void)stopRefreshingLocationWithCompletionHandler:(id)handler;
+- (void)stopSharingLocationWith:(NSArray *)with from:(FMLHandle *)from isFromGroup:(BOOL)group completionHandler:(id)handler;
+- (void)stopUpdatingFriendsWithCompletionHandler:(id)handler;
 @end
 
 @implementation ObjCBootstrap
@@ -51,9 +51,9 @@
   return v4;
 }
 
-- (void)setLocationUpdateCallback:(id)a3
+- (void)setLocationUpdateCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -72,7 +72,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_24AE9C8F8(v7);
 }
 
@@ -100,9 +100,9 @@
   return v4;
 }
 
-- (void)setFriendshipUpdateCallback:(id)a3
+- (void)setFriendshipUpdateCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -121,7 +121,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_24AE9C8F8(v7);
 }
 
@@ -149,9 +149,9 @@
   return v4;
 }
 
-- (void)setMeDeviceUpdateCallback:(id)a3
+- (void)setMeDeviceUpdateCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -170,22 +170,22 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_24AE9C8F8(v7);
 }
 
-- (void)sendFriendshipOfferTo:(NSArray *)a3 from:(FMLHandle *)a4 end:(int64_t)a5 isFromGroup:(BOOL)a6 completionHandler:(id)a7
+- (void)sendFriendshipOfferTo:(NSArray *)to from:(FMLHandle *)from end:(int64_t)end isFromGroup:(BOOL)group completionHandler:(id)handler
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v25 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 32) = a5;
-  *(v18 + 40) = a6;
+  *(v18 + 16) = to;
+  *(v18 + 24) = from;
+  *(v18 + 32) = end;
+  *(v18 + 40) = group;
   *(v18 + 48) = v17;
   *(v18 + 56) = self;
   v19 = sub_24AEC63EC();
@@ -200,23 +200,23 @@
   v21[3] = 0;
   v21[4] = &unk_24AEC8C88;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = self;
+  toCopy = to;
+  fromCopy = from;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v16, &unk_24AEC8C90, v21);
 }
 
-- (void)sendFriendshipInviteTo:(FMLHandle *)a3 from:(FMLHandle *)a4 isFromGroup:(BOOL)a5 completionHandler:(id)a6
+- (void)sendFriendshipInviteTo:(FMLHandle *)to from:(FMLHandle *)from isFromGroup:(BOOL)group completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 16) = a3;
-  *(v16 + 24) = a4;
-  *(v16 + 32) = a5;
+  *(v16 + 16) = to;
+  *(v16 + 24) = from;
+  *(v16 + 32) = group;
   *(v16 + 40) = v15;
   *(v16 + 48) = self;
   v17 = sub_24AEC63EC();
@@ -231,23 +231,23 @@
   v19[3] = 0;
   v19[4] = &unk_24AEC8C68;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = self;
+  toCopy = to;
+  fromCopy = from;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v14, &unk_24AEC8C70, v19);
 }
 
-- (void)stopSharingLocationWith:(NSArray *)a3 from:(FMLHandle *)a4 isFromGroup:(BOOL)a5 completionHandler:(id)a6
+- (void)stopSharingLocationWith:(NSArray *)with from:(FMLHandle *)from isFromGroup:(BOOL)group completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 16) = a3;
-  *(v16 + 24) = a4;
-  *(v16 + 32) = a5;
+  *(v16 + 16) = with;
+  *(v16 + 24) = from;
+  *(v16 + 32) = group;
   *(v16 + 40) = v15;
   *(v16 + 48) = self;
   v17 = sub_24AEC63EC();
@@ -262,24 +262,24 @@
   v19[3] = 0;
   v19[4] = &unk_24AEC8C48;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = self;
+  withCopy = with;
+  fromCopy = from;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v14, &unk_24AEC8C50, v19);
 }
 
-- (void)startRefreshingLocationFor:(NSArray *)a3 priority:(int64_t)a4 isFromGroup:(BOOL)a5 reverseGeocode:(BOOL)a6 completionHandler:(id)a7
+- (void)startRefreshingLocationFor:(NSArray *)for priority:(int64_t)priority isFromGroup:(BOOL)group reverseGeocode:(BOOL)geocode completionHandler:(id)handler
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v24 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 32) = a5;
-  *(v18 + 33) = a6;
+  *(v18 + 16) = for;
+  *(v18 + 24) = priority;
+  *(v18 + 32) = group;
+  *(v18 + 33) = geocode;
   *(v18 + 40) = v17;
   *(v18 + 48) = self;
   v19 = sub_24AEC63EC();
@@ -294,22 +294,22 @@
   v21[3] = 0;
   v21[4] = &unk_24AEC8C28;
   v21[5] = v20;
-  v22 = a3;
-  v23 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v16, &unk_24AEC8C30, v21);
 }
 
-- (void)stopRefreshingLocationFor:(NSArray *)a3 priority:(int64_t)a4 isFromGroup:(BOOL)a5 completionHandler:(id)a6
+- (void)stopRefreshingLocationFor:(NSArray *)for priority:(int64_t)priority isFromGroup:(BOOL)group completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v22 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 16) = a3;
-  *(v16 + 24) = a4;
-  *(v16 + 32) = a5;
+  *(v16 + 16) = for;
+  *(v16 + 24) = priority;
+  *(v16 + 32) = group;
   *(v16 + 40) = v15;
   *(v16 + 48) = self;
   v17 = sub_24AEC63EC();
@@ -324,18 +324,18 @@
   v19[3] = 0;
   v19[4] = &unk_24AEC8C08;
   v19[5] = v18;
-  v20 = a3;
-  v21 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v14, &unk_24AEC8C10, v19);
 }
 
-- (void)stopRefreshingLocationWithCompletionHandler:(id)a3
+- (void)stopRefreshingLocationWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -351,19 +351,19 @@
   v13[3] = 0;
   v13[4] = &unk_24AEC8BE8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v8, &unk_24AEC8BF0, v13);
 }
 
-- (void)startUpdatingFriendsWithInitialUpdates:(BOOL)a3 completionHandler:(id)a4
+- (void)startUpdatingFriendsWithInitialUpdates:(BOOL)updates completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = updates;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = sub_24AEC63EC();
@@ -378,17 +378,17 @@
   v15[3] = 0;
   v15[4] = &unk_24AEC8BC8;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v10, &unk_24AEC8BD0, v15);
 }
 
-- (void)stopUpdatingFriendsWithCompletionHandler:(id)a3
+- (void)stopUpdatingFriendsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -404,17 +404,17 @@
   v13[3] = 0;
   v13[4] = &unk_24AEC8BA8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v8, &unk_24AEC8BB0, v13);
 }
 
-- (void)startMonitoringActiveLocationSharingDeviceWithCompletionHandler:(id)a3
+- (void)startMonitoringActiveLocationSharingDeviceWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -430,19 +430,19 @@
   v13[3] = 0;
   v13[4] = &unk_24AEC8B88;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v8, &unk_24AEC8B90, v13);
 }
 
-- (void)setActiveLocationSharingDevice:(NSString *)a3 completionHandler:(id)a4
+- (void)setActiveLocationSharingDevice:(NSString *)device completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = device;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_24AEC63EC();
@@ -457,18 +457,18 @@
   v15[3] = 0;
   v15[4] = &unk_24AEC8B68;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  deviceCopy = device;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v10, &unk_24AEC8B70, v15);
 }
 
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -484,19 +484,19 @@
   v13[3] = 0;
   v13[4] = &unk_24AEC8B48;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v8, &unk_24AEC8B50, v13);
 }
 
-- (void)getFriendsWith:(int64_t)a3 completionHandler:(id)a4
+- (void)getFriendsWith:(int64_t)with completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = with;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_24AEC63EC();
@@ -511,20 +511,20 @@
   v15[3] = 0;
   v15[4] = &unk_24AEC8B28;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v10, &unk_24AEC8B30, v15);
 }
 
-- (void)canShareLocationWithHandle:(FMLHandle *)a3 isFromGroup:(BOOL)a4 completionHandler:(id)a5
+- (void)canShareLocationWithHandle:(FMLHandle *)handle isFromGroup:(BOOL)group completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = handle;
+  *(v14 + 24) = group;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = sub_24AEC63EC();
@@ -539,21 +539,21 @@
   v17[3] = 0;
   v17[4] = &unk_24AEC8B08;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  handleCopy = handle;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v12, &unk_24AEC8B10, v17);
 }
 
-- (void)friendshipStateWithHandle:(FMLHandle *)a3 isFromGroup:(BOOL)a4 completionHandler:(id)a5
+- (void)friendshipStateWithHandle:(FMLHandle *)handle isFromGroup:(BOOL)group completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = handle;
+  *(v14 + 24) = group;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = sub_24AEC63EC();
@@ -568,21 +568,21 @@
   v17[3] = 0;
   v17[4] = &unk_24AEC8AE8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  handleCopy = handle;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v12, &unk_24AEC8AF0, v17);
 }
 
-- (void)getOfferExpirationForHandle:(FMLHandle *)a3 groupId:(NSString *)a4 completionHandler:(id)a5
+- (void)getOfferExpirationForHandle:(FMLHandle *)handle groupId:(NSString *)id completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0090, &qword_24AEC88F0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = handle;
+  v14[3] = id;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_24AEC63EC();
@@ -597,35 +597,35 @@
   v17[3] = 0;
   v17[4] = &unk_24AEC8AA8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  handleCopy = handle;
+  idCopy = id;
+  selfCopy = self;
   sub_24AEBFA28(0, 0, v12, &unk_24AEC8AB8, v17);
 }
 
-- (id)cachedLocationFor:(id)a3 includeAddress:(BOOL)a4
+- (id)cachedLocationFor:(id)for includeAddress:(BOOL)address
 {
   swift_getObjectType();
   v6 = *(self + OBJC_IVAR____TtC23FindMyLocateObjCWrapper13ObjCBootstrap_serialQueue);
-  v7 = a3;
-  v8 = self;
+  forCopy = for;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFC0168, &qword_24AEC8A80);
   sub_24AEC648C();
 
   return v10;
 }
 
-- (id)cachedOfferExpirationFor:(id)a3 groupId:(id)a4
+- (id)cachedOfferExpirationFor:(id)for groupId:(id)id
 {
   ObjectType = swift_getObjectType();
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFBFFD8, &qword_24AEC8568);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x28223BE20](v8);
   v11 = &v23[-v10];
-  if (a4)
+  if (id)
   {
     v12 = sub_24AEC62FC();
-    a4 = v13;
+    id = v13;
   }
 
   else
@@ -635,12 +635,12 @@
 
   v14 = *(self + OBJC_IVAR____TtC23FindMyLocateObjCWrapper13ObjCBootstrap_serialQueue);
   *&v23[-48] = MEMORY[0x28223BE20](v12);
-  *&v23[-40] = a4;
+  *&v23[-40] = id;
   *&v23[-32] = self;
-  *&v23[-24] = a3;
+  *&v23[-24] = for;
   *&v23[-16] = ObjectType;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_24AEC648C();
 
   v17 = sub_24AEC5CDC();
@@ -657,13 +657,13 @@
   return v20;
 }
 
-- (int64_t)cachedCanShareLocationWithHandle:(id)a3 isFromGroup:(BOOL)a4
+- (int64_t)cachedCanShareLocationWithHandle:(id)handle isFromGroup:(BOOL)group
 {
   swift_getObjectType();
   v6 = *(self + OBJC_IVAR____TtC23FindMyLocateObjCWrapper13ObjCBootstrap_serialQueue);
   type metadata accessor for FMLLocationShareState(0);
-  v7 = a3;
-  v8 = self;
+  handleCopy = handle;
+  selfCopy = self;
   sub_24AEC648C();
 
   return v10;

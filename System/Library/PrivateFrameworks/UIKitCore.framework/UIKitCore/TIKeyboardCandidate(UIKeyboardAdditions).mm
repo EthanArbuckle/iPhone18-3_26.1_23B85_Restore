@@ -11,13 +11,13 @@
 + (id)textEffectsButtonCandidate
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 textEffectsButtonLanguageCode];
+  textEffectsButtonLanguageCode = [v2 textEffectsButtonLanguageCode];
 
-  v4 = [a1 imageNameForTextEffectsButton];
-  v5 = v4;
-  if (v3)
+  imageNameForTextEffectsButton = [self imageNameForTextEffectsButton];
+  v5 = imageNameForTextEffectsButton;
+  if (textEffectsButtonLanguageCode)
   {
-    v6 = v4 == 0;
+    v6 = imageNameForTextEffectsButton == 0;
   }
 
   else
@@ -51,7 +51,7 @@
     v13 = [UITraitCollection traitCollectionWithUserInterfaceStyle:v12];
     v14 = [v10 configurationWithTraitCollection:v13];
 
-    v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v3];
+    v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:textEffectsButtonLanguageCode];
     v16 = [v14 configurationWithLocale:v15];
 
     v17 = [UIImage _systemImageNamed:v5 withConfiguration:v16];
@@ -64,8 +64,8 @@
 + (__CFString)imageNameForTextEffectsButton
 {
   v0 = +[UIKeyboardImpl activeInstance];
-  v1 = [v0 traitCollection];
-  if ([v1 userInterfaceIdiom])
+  traitCollection = [v0 traitCollection];
+  if ([traitCollection userInterfaceIdiom])
   {
     v2 = +[UIKeyboardImpl isFloating];
 
@@ -80,10 +80,10 @@
   }
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 textInputTraits];
-  v6 = [v5 allowsTextAnimationsType];
+  textInputTraits = [v4 textInputTraits];
+  allowsTextAnimationsType = [textInputTraits allowsTextAnimationsType];
 
-  if (v6 == 2)
+  if (allowsTextAnimationsType == 2)
   {
     return @"character.motion";
   }
@@ -97,12 +97,12 @@
 - (void)setHandler:()UIKeyboardAdditions
 {
   v4 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, &kKeyboardCandidateHandlerKey, v4, 1);
+  objc_setAssociatedObject(self, &kKeyboardCandidateHandlerKey, v4, 1);
 }
 
 - (uint64_t)isSlottedCandidate
 {
-  if ([a1 isSecureContentCandidate])
+  if ([self isSecureContentCandidate])
   {
     isKindOfClass = 1;
   }
@@ -118,8 +118,8 @@
 
 - (BOOL)isReplacement
 {
-  v1 = [a1 input];
-  v2 = [v1 length] != 0;
+  input = [self input];
+  v2 = [input length] != 0;
 
   return v2;
 }

@@ -1,74 +1,74 @@
 @interface HFHumidifierDehumidifierServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
-- (void)_formatDescription:(id *)a3 controlDescription:(id *)a4 optionalDescriptions:(id *)a5 forResponse:(id)a6;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
+- (void)_formatDescription:(id *)description controlDescription:(id *)controlDescription optionalDescriptions:(id *)descriptions forResponse:(id)response;
 @end
 
 @implementation HFHumidifierDehumidifierServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v136[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  optionsCopy = options;
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v106 = [MEMORY[0x277CBEB58] set];
-  v6 = [(HFServiceItem *)self service];
-  v7 = [v6 hf_childServices];
-  v111 = [v7 na_firstObjectPassingTest:&__block_literal_global_126];
+  service = [(HFServiceItem *)self service];
+  hf_childServices = [service hf_childServices];
+  v111 = [hf_childServices na_firstObjectPassingTest:&__block_literal_global_126];
 
   v8 = MEMORY[0x277CBEB58];
-  v9 = [(HFServiceItem *)self service];
-  v10 = [v8 setWithObject:v9];
+  service2 = [(HFServiceItem *)self service];
+  v10 = [v8 setWithObject:service2];
 
   [v10 na_safeAddObject:v111];
   v103 = v10;
   v110 = [(HFServiceItem *)self controlItemValueSourceForServices:v10];
-  v11 = [(HFServiceItem *)self service];
-  v12 = [v11 hf_childServices];
-  v13 = [v12 na_filter:&__block_literal_global_7_4];
+  service3 = [(HFServiceItem *)self service];
+  hf_childServices2 = [service3 hf_childServices];
+  v13 = [hf_childServices2 na_filter:&__block_literal_global_7_4];
 
   v14 = MEMORY[0x277CBEB58];
-  v15 = [(HFServiceItem *)self service];
-  v16 = [v14 setWithObject:v15];
+  service4 = [(HFServiceItem *)self service];
+  v16 = [v14 setWithObject:service4];
 
   v102 = v13;
   [v16 unionSet:v13];
   v101 = v16;
   v109 = [(HFServiceItem *)self controlItemValueSourceForServices:v16];
   v135[0] = @"title";
-  v17 = HFItemOptionalLocalizedString(@"HFControlShortTitleHumidity", v4);
+  v17 = HFItemOptionalLocalizedString(@"HFControlShortTitleHumidity", optionsCopy);
   v136[0] = v17;
   v135[1] = @"controlItemPurpose";
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:2];
   v136[1] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v136 forKeys:v135 count:2];
 
-  v107 = v5;
+  v107 = controlItemValueSourceForPrimaryService;
   v100 = v19;
-  v99 = [[HFHumidifierDehumidifierThresholdControlItem alloc] initWithValueSource:v5 displayResults:v19];
+  v99 = [[HFHumidifierDehumidifierThresholdControlItem alloc] initWithValueSource:controlItemValueSourceForPrimaryService displayResults:v19];
   [v106 na_safeAddObject:?];
-  v96 = self;
-  v20 = [(HFServiceItem *)self service];
+  selfCopy = self;
+  service5 = [(HFServiceItem *)self service];
   v104 = *MEMORY[0x277CCFB30];
-  v21 = [v20 hf_characteristicOfType:?];
-  v22 = [v21 metadata];
+  v21 = [service5 hf_characteristicOfType:?];
+  metadata = [v21 metadata];
 
-  v98 = v22;
-  v23 = [[HFMultiStateValueSet alloc] initWithCharacteristicMetadata:v22];
+  v98 = metadata;
+  v23 = [[HFMultiStateValueSet alloc] initWithCharacteristicMetadata:metadata];
   v133 = @"title";
-  v24 = HFItemOptionalLocalizedString(@"HFServiceHumidifierDehumidifierStateAuto", v4);
+  v24 = HFItemOptionalLocalizedString(@"HFServiceHumidifierDehumidifierStateAuto", optionsCopy);
   v134 = v24;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v134 forKeys:&v133 count:1];
   [(HFMultiStateValueSet *)v23 addValue:&unk_2825241E0 displayResults:v25];
 
   v131 = @"title";
-  v26 = HFItemOptionalLocalizedString(@"HFServiceHumidifierDehumidifierStateHumidify", v4);
+  v26 = HFItemOptionalLocalizedString(@"HFServiceHumidifierDehumidifierStateHumidify", optionsCopy);
   v132 = v26;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v132 forKeys:&v131 count:1];
   [(HFMultiStateValueSet *)v23 addValue:&unk_2825241F8 displayResults:v27];
 
   v129 = @"title";
-  v28 = HFItemOptionalLocalizedString(@"HFServiceHumidifierDehumidifierStateDehumidify", v4);
+  v28 = HFItemOptionalLocalizedString(@"HFServiceHumidifierDehumidifierStateDehumidify", optionsCopy);
   v130 = v28;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v130 forKeys:&v129 count:1];
   [(HFMultiStateValueSet *)v23 addValue:&unk_282524210 displayResults:v29];
@@ -81,15 +81,15 @@
   v33 = +[HFPowerStateTargetValueTuple fanStateTargetValueTuple];
   v34 = [v32 setWithObject:v33];
   v127 = @"title";
-  v35 = HFItemOptionalLocalizedString(@"HFControlShortTitlePower", v4);
+  v35 = HFItemOptionalLocalizedString(@"HFControlShortTitlePower", optionsCopy);
   v128 = v35;
   v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v128 forKeys:&v127 count:1];
   v37 = [(HFPowerStateControlItem *)v31 initWithValueSource:v110 auxiliaryTargetValueTuples:v34 displayResults:v36];
 
   v38 = v106;
   v125[0] = @"title";
-  v39 = v4;
-  v40 = HFItemOptionalLocalizedString(@"HFControlShortTitleHumidifierDehumidifierState", v4);
+  v39 = optionsCopy;
+  v40 = HFItemOptionalLocalizedString(@"HFControlShortTitleHumidifierDehumidifierState", optionsCopy);
   v125[1] = @"controlItemPurpose";
   v126[0] = v40;
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:12];
@@ -106,9 +106,9 @@
   v112 = *MEMORY[0x277CCFA20];
   if (v111 && ([v111 hf_characteristicOfType:v112], v45 = objc_claimAutoreleasedReturnValue(), v45, v45))
   {
-    v46 = v96;
-    v47 = [(HFServiceItem *)v96 service];
-    v48 = [v47 hf_characteristicOfType:v112];
+    v46 = selfCopy;
+    service6 = [(HFServiceItem *)selfCopy service];
+    v48 = [service6 hf_characteristicOfType:v112];
 
     v49 = v39;
     if (v48)
@@ -116,9 +116,9 @@
       v50 = HFLogForCategory(0x2CuLL);
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
-        v93 = [(HFServiceItem *)v96 service];
+        service7 = [(HFServiceItem *)selfCopy service];
         *buf = 138412546;
-        v122 = v93;
+        v122 = service7;
         v123 = 2112;
         v124 = v111;
         _os_log_error_impl(&dword_20D9BF000, v50, OS_LOG_TYPE_ERROR, "Both the humidifier/dehumidifier service (%@) and the fan child service (%@) have a rotation speed characteristic. This is not a valid configuration. Arbitrarily choosing to use the child fan's characteristic,", buf, 0x16u);
@@ -126,24 +126,24 @@
     }
 
     v51 = [MEMORY[0x277CBEB98] setWithObject:v111];
-    v52 = [(HFServiceItem *)v96 controlItemValueSourceForServices:v51];
+    v52 = [(HFServiceItem *)selfCopy controlItemValueSourceForServices:v51];
 
     v53 = [v111 hf_characteristicOfType:*MEMORY[0x277CCFA18]];
-    v54 = [v53 metadata];
+    metadata2 = [v53 metadata];
     v55 = HFItemOptionalLocalizedString(@"HFCharacteristicValueRotationDirectionClockwise", v49);
     v56 = HFItemOptionalLocalizedString(@"HFCharacteristicValueRotationDirectionCounterClockwise", v49);
-    v57 = [HFMultiStateValueSet binaryValueSetWithCharacteristicMetadata:v54 firstValue:&unk_2825241E0 firstTitle:v55 secondValue:&unk_2825241F8 secondTitle:v56];
+    v57 = [HFMultiStateValueSet binaryValueSetWithCharacteristicMetadata:metadata2 firstValue:&unk_2825241E0 firstTitle:v55 secondValue:&unk_2825241F8 secondTitle:v56];
 
     if (v57)
     {
       v58 = [HFMultiStateControlItem alloc];
-      v59 = [v53 characteristicType];
+      characteristicType = [v53 characteristicType];
       v119 = @"title";
       v60 = HFItemOptionalLocalizedString(@"HFControlShortTitleRotationDirection", v49);
       v120 = v60;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
       v62 = v61 = v53;
-      v63 = [(HFMultiStateControlItem *)v58 initWithValueSource:v52 characteristicType:v59 possibleValueSet:v57 displayResults:v62];
+      v63 = [(HFMultiStateControlItem *)v58 initWithValueSource:v52 characteristicType:characteristicType possibleValueSet:v57 displayResults:v62];
       [v106 na_safeAddObject:v63];
 
       v53 = v61;
@@ -169,13 +169,13 @@
   {
     v68 = 0;
     v69 = v107;
-    v49 = v4;
-    v46 = v96;
+    v49 = optionsCopy;
+    v46 = selfCopy;
   }
 
   v108 = v68;
-  v70 = [(HFServiceItem *)v46 service];
-  v71 = [v70 hf_characteristicOfType:v112];
+  service8 = [(HFServiceItem *)v46 service];
+  v71 = [service8 hf_characteristicOfType:v112];
 
   if (!v71)
   {
@@ -213,24 +213,24 @@ LABEL_19:
   v78 = [[HFSwingModeControlItem alloc] initWithValueSource:v109];
   [v38 na_safeAddObject:v78];
 
-  v79 = [(HFServiceItem *)v46 service];
-  v80 = [v79 hf_characteristicOfType:*MEMORY[0x277CCF958]];
+  service9 = [(HFServiceItem *)v46 service];
+  v80 = [service9 hf_characteristicOfType:*MEMORY[0x277CCF958]];
 
-  v81 = [v80 metadata];
+  metadata3 = [v80 metadata];
   v82 = HFItemOptionalLocalizedString(@"HFCharacteristicValueLockPhysicalControlsUnlocked", v72);
   HFItemOptionalLocalizedString(@"HFCharacteristicValueLockPhysicalControlsLocked", v72);
   v84 = v83 = v38;
-  v85 = [HFMultiStateValueSet binaryValueSetWithCharacteristicMetadata:v81 firstValue:&unk_2825241E0 firstTitle:v82 secondValue:&unk_2825241F8 secondTitle:v84];
+  v85 = [HFMultiStateValueSet binaryValueSetWithCharacteristicMetadata:metadata3 firstValue:&unk_2825241E0 firstTitle:v82 secondValue:&unk_2825241F8 secondTitle:v84];
 
   if (v85)
   {
     v86 = [HFMultiStateControlItem alloc];
-    v87 = [v80 characteristicType];
+    characteristicType2 = [v80 characteristicType];
     v113 = @"title";
     v88 = HFItemOptionalLocalizedString(@"HFControlShortTitleLockPhysicalControls", v72);
     v114 = v88;
     v89 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
-    v90 = [(HFMultiStateControlItem *)v86 initWithValueSource:v73 characteristicType:v87 possibleValueSet:v85 displayResults:v89];
+    v90 = [(HFMultiStateControlItem *)v86 initWithValueSource:v73 characteristicType:characteristicType2 possibleValueSet:v85 displayResults:v89];
     [v83 na_safeAddObject:v90];
   }
 
@@ -255,7 +255,7 @@ uint64_t __69__HFHumidifierDehumidifierServiceItem_createControlItemsWithOptions
   return v3;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = *MEMORY[0x277CCF748];
@@ -265,9 +265,9 @@ uint64_t __69__HFHumidifierDehumidifierServiceItem_createControlItemsWithOptions
   v9 = *MEMORY[0x277CCF8E0];
   v10 = *MEMORY[0x277CCF888];
   v11 = *MEMORY[0x277CCFBC0];
-  v12 = a3;
+  optionsCopy = options;
   v13 = [v4 setWithObjects:{v5, v6, v7, v8, v9, v10, v11, 0}];
-  v14 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v13 options:v12];
+  v14 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v13 options:optionsCopy];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -344,10 +344,10 @@ id __67__HFHumidifierDehumidifierServiceItem__subclass_updateWithOptions___block
   return v27;
 }
 
-- (void)_formatDescription:(id *)a3 controlDescription:(id *)a4 optionalDescriptions:(id *)a5 forResponse:(id)a6
+- (void)_formatDescription:(id *)description controlDescription:(id *)controlDescription optionalDescriptions:(id *)descriptions forResponse:(id)response
 {
   v129[2] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  responseCopy = response;
   v122 = 0;
   v123 = &v122;
   v124 = 0x3032000000;
@@ -372,29 +372,29 @@ id __67__HFHumidifierDehumidifierServiceItem__subclass_updateWithOptions___block
   aBlock[3] = &unk_277DFBEE0;
   aBlock[4] = &v122;
   aBlock[5] = &v116;
-  aBlock[8] = a4;
-  aBlock[9] = a5;
+  aBlock[8] = controlDescription;
+  aBlock[9] = descriptions;
   aBlock[6] = &v110;
-  aBlock[7] = a3;
+  aBlock[7] = description;
   v103 = _Block_copy(aBlock);
-  v11 = [(HFServiceItem *)self service];
-  v12 = [v11 hf_childServices];
-  v106 = [v12 na_firstObjectPassingTest:&__block_literal_global_68_1];
+  service = [(HFServiceItem *)self service];
+  hf_childServices = [service hf_childServices];
+  v106 = [hf_childServices na_firstObjectPassingTest:&__block_literal_global_68_1];
 
-  v13 = [v10 responseForCharacteristicType:*MEMORY[0x277CCF828]];
+  v13 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF828]];
   v108 = [v13 valueWithExpectedClass:objc_opt_class()];
 
-  v14 = [v10 responseForCharacteristicType:*MEMORY[0x277CCFB30]];
+  v14 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB30]];
   v15 = [v14 valueWithExpectedClass:objc_opt_class()];
 
-  v16 = [(HFServiceItem *)self service];
+  service2 = [(HFServiceItem *)self service];
   v17 = *MEMORY[0x277CCF748];
-  v18 = [v10 responseForCharacteristicType:*MEMORY[0x277CCF748] inService:v16];
+  v18 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF748] inService:service2];
   v107 = [v18 valueWithExpectedClass:objc_opt_class()];
 
   if (v106)
   {
-    v19 = [v10 responseForCharacteristicType:v17 inService:?];
+    v19 = [responseCopy responseForCharacteristicType:v17 inService:?];
     v104 = [v19 valueWithExpectedClass:objc_opt_class()];
 
     if (!v15)
@@ -417,16 +417,16 @@ id __67__HFHumidifierDehumidifierServiceItem__subclass_updateWithOptions___block
     v105 = [@"HFServiceDescriptionHumidifier" mutableCopy];
     if ([v15 integerValue])
     {
-      v20 = [v108 integerValue];
-      if (v20 >= 2)
+      integerValue = [v108 integerValue];
+      if (integerValue >= 2)
       {
-        if (v20 == 2)
+        if (integerValue == 2)
         {
           v21 = @"Humidify";
           goto LABEL_21;
         }
 
-        if (v20 == 3)
+        if (integerValue == 3)
         {
           v21 = @"Dehumidify";
 LABEL_21:
@@ -440,8 +440,8 @@ LABEL_21:
 
       if ([v107 BOOLValue])
       {
-        v23 = [v15 integerValue];
-        switch(v23)
+        integerValue2 = [v15 integerValue];
+        switch(integerValue2)
         {
           case 0:
 LABEL_22:
@@ -483,14 +483,14 @@ LABEL_23:
 LABEL_29:
         v25 = +[HFTargetRangeUtilities rangeModeForTargetHumidifierDehumidifierState:](HFTargetRangeUtilities, "rangeModeForTargetHumidifierDehumidifierState:", [v15 integerValue]);
         v26 = +[HFTargetRangeUtilities rangeModeForCurrentHumidifierDehumidifierState:](HFTargetRangeUtilities, "rangeModeForCurrentHumidifierDehumidifierState:", [v108 integerValue]);
-        v102 = [v10 responseForCharacteristicType:*MEMORY[0x277CCF888]];
-        v27 = [v102 value];
-        if (v27)
+        v102 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF888]];
+        value = [v102 value];
+        if (value)
         {
           v28 = [HFRelativePercentValue alloc];
           v29 = [v102 valueWithExpectedClass:objc_opt_class()];
-          v30 = [v102 characteristic];
-          v101 = [(HFRelativePercentValue *)v28 initWithValue:v29 forCharacteristic:v30];
+          characteristic = [v102 characteristic];
+          v101 = [(HFRelativePercentValue *)v28 initWithValue:v29 forCharacteristic:characteristic];
         }
 
         else
@@ -498,14 +498,14 @@ LABEL_29:
           v101 = 0;
         }
 
-        v31 = [v10 responseForCharacteristicType:*MEMORY[0x277CCF8E0]];
-        v32 = [v31 value];
-        if (v32)
+        v31 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF8E0]];
+        value2 = [v31 value];
+        if (value2)
         {
           v33 = [HFRelativePercentValue alloc];
           v34 = [v31 valueWithExpectedClass:objc_opt_class()];
-          v35 = [v31 characteristic];
-          v36 = [(HFRelativePercentValue *)v33 initWithValue:v34 forCharacteristic:v35];
+          characteristic2 = [v31 characteristic];
+          v36 = [(HFRelativePercentValue *)v33 initWithValue:v34 forCharacteristic:characteristic2];
         }
 
         else
@@ -515,11 +515,11 @@ LABEL_29:
 
         v37 = [HFTargetRangeUtilities targetRelativePercentValueWithTargetMode:v25 currentMode:v26 rawTargetResponse:0 minimumThresholdResponse:v31 maximumThresholdResponse:v102];
         v38 = +[HFFormatterManager sharedInstance];
-        v39 = [v38 percentFormatter];
+        percentFormatter = [v38 percentFormatter];
 
         if (v37)
         {
-          v40 = [v39 stringForRelativePercentValue:v37];
+          v40 = [percentFormatter stringForRelativePercentValue:v37];
         }
 
         else
@@ -532,24 +532,24 @@ LABEL_29:
           if (v99 != 1 && v36 && v101)
           {
             [v105 appendString:@"WithHumidityRange"];
-            v62 = [v39 stringForRelativePercentValue:v36];
-            v63 = [v39 stringForRelativePercentValue:v101];
+            v62 = [percentFormatter stringForRelativePercentValue:v36];
+            v63 = [percentFormatter stringForRelativePercentValue:v101];
             v70 = HFLocalizedStringWithFormat(v105, @"%@%@", v64, v65, v66, v67, v68, v69, v62);
             v71 = v123[5];
             v123[5] = v70;
 
-            v72 = [v39 stringForRelativePercentValue:v36];
-            v98 = [v39 stringForRelativePercentValue:v101];
+            v72 = [percentFormatter stringForRelativePercentValue:v36];
+            v98 = [percentFormatter stringForRelativePercentValue:v101];
             v79 = HFLocalizedStringWithFormat(@"HFServiceControlDescriptionHumidifierAutoWithHumidityRange", @"%@%@", v73, v74, v75, v76, v77, v78, v72);
             v80 = v117[5];
             v117[5] = v79;
 
             v128[0] = @"humidifyThresholdDescription";
-            v51 = [v39 stringForRelativePercentValue:v36];
+            v51 = [percentFormatter stringForRelativePercentValue:v36];
             v87 = HFLocalizedStringWithFormat(@"HFServiceControlDescriptionHumidifierHumidifyWithHumidity", @"%@", v81, v82, v83, v84, v85, v86, v51);
             v128[1] = @"dehumidifyThresholdDescription";
             v129[0] = v87;
-            v100 = [v39 stringForRelativePercentValue:v101];
+            v100 = [percentFormatter stringForRelativePercentValue:v101];
             v94 = HFLocalizedStringWithFormat(@"HFServiceControlDescriptionHumidifierDehumidifyWithHumidity", @"%@", v88, v89, v90, v91, v92, v93, v100);
             v129[1] = v94;
             v95 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v129 forKeys:v128 count:2];

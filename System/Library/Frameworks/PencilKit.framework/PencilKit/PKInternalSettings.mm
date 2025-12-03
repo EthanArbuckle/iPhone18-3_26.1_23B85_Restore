@@ -40,8 +40,8 @@ void __36__PKInternalSettings_sharedInstance__block_invoke()
 {
   if (result)
   {
-    v1 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2 = [v1 BOOLForKey:@"internalSettings.drawing.showResetImageWandOnboardingInPalette"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2 = [standardUserDefaults BOOLForKey:@"internalSettings.drawing.showResetImageWandOnboardingInPalette"];
 
     return v2;
   }
@@ -53,8 +53,8 @@ void __36__PKInternalSettings_sharedInstance__block_invoke()
 {
   if (result)
   {
-    v1 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2 = [v1 BOOLForKey:@"PKForceShowImageWandOnboarding"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2 = [standardUserDefaults BOOLForKey:@"PKForceShowImageWandOnboarding"];
 
     return v2;
   }
@@ -66,8 +66,8 @@ void __36__PKInternalSettings_sharedInstance__block_invoke()
 {
   if (result)
   {
-    v1 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2 = [v1 BOOLForKey:@"PKImageWandOnboardingDisabled"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2 = [standardUserDefaults BOOLForKey:@"PKImageWandOnboardingDisabled"];
 
     return v2;
   }

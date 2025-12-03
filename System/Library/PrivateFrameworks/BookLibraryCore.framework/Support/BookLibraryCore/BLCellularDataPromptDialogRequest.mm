@@ -1,34 +1,34 @@
 @interface BLCellularDataPromptDialogRequest
-+ (id)_bodyStringWithKind:(id)a3 andSize:(unint64_t)a4 remaining:(BOOL)a5;
++ (id)_bodyStringWithKind:(id)kind andSize:(unint64_t)size remaining:(BOOL)remaining;
 + (id)_buttonActions;
-+ (id)_dialogForDownloadWithKind:(id)a3 andSize:(unint64_t)a4 forRoaming:(BOOL)a5 remaining:(BOOL)a6;
-+ (id)dialogForDownload:(id)a3 roaming:(BOOL)a4;
++ (id)_dialogForDownloadWithKind:(id)kind andSize:(unint64_t)size forRoaming:(BOOL)roaming remaining:(BOOL)remaining;
++ (id)dialogForDownload:(id)download roaming:(BOOL)roaming;
 @end
 
 @implementation BLCellularDataPromptDialogRequest
 
-+ (id)dialogForDownload:(id)a3 roaming:(BOOL)a4
++ (id)dialogForDownload:(id)download roaming:(BOOL)roaming
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 kind];
-  v8 = [v6 bytes];
-  v9 = [v6 isRemaining];
+  roamingCopy = roaming;
+  downloadCopy = download;
+  kind = [downloadCopy kind];
+  bytes = [downloadCopy bytes];
+  isRemaining = [downloadCopy isRemaining];
 
-  v10 = [a1 _dialogForDownloadWithKind:v7 andSize:v8 forRoaming:v4 remaining:v9];
+  v10 = [self _dialogForDownloadWithKind:kind andSize:bytes forRoaming:roamingCopy remaining:isRemaining];
 
   return v10;
 }
 
-+ (id)_dialogForDownloadWithKind:(id)a3 andSize:(unint64_t)a4 forRoaming:(BOOL)a5 remaining:(BOOL)a6
++ (id)_dialogForDownloadWithKind:(id)kind andSize:(unint64_t)size forRoaming:(BOOL)roaming remaining:(BOOL)remaining
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  remainingCopy = remaining;
+  roamingCopy = roaming;
+  kindCopy = kind;
   v11 = objc_alloc_init(AMSDialogRequest);
   v12 = BLBundle();
   v13 = v12;
-  if (v7)
+  if (roamingCopy)
   {
     v14 = @"Download Using Data Roaming?";
   }
@@ -41,15 +41,15 @@
   v15 = [v12 localizedStringForKey:v14 value:&stru_100125DB0 table:@"Localizable"];
   [v11 setTitle:v15];
 
-  v16 = [a1 _bodyStringWithKind:v10 andSize:a4 remaining:v6];
+  v16 = [self _bodyStringWithKind:kindCopy andSize:size remaining:remainingCopy];
 
   [v11 setMessage:v16];
-  v17 = [a1 _buttonActions];
-  [v11 setButtonActions:v17];
+  _buttonActions = [self _buttonActions];
+  [v11 setButtonActions:_buttonActions];
 
-  v18 = [v11 buttonActions];
-  v19 = [v18 lastObject];
-  [v11 setDefaultAction:v19];
+  buttonActions = [v11 buttonActions];
+  lastObject = [buttonActions lastObject];
+  [v11 setDefaultAction:lastObject];
 
   return v11;
 }
@@ -63,10 +63,10 @@
 
   [v3 setIdentifier:@"BLCellularDataPromptActionDownloadNow"];
   v6 = objc_alloc_init(AMSDialogAction);
-  LODWORD(a1) = [a1 _hasWAPICapability];
+  LODWORD(self) = [self _hasWAPICapability];
   v7 = BLBundle();
   v8 = v7;
-  if (a1)
+  if (self)
   {
     v9 = @"Wait for WLAN";
   }
@@ -88,12 +88,12 @@
   return v11;
 }
 
-+ (id)_bodyStringWithKind:(id)a3 andSize:(unint64_t)a4 remaining:(BOOL)a5
++ (id)_bodyStringWithKind:(id)kind andSize:(unint64_t)size remaining:(BOOL)remaining
 {
-  if (a4)
+  if (size)
   {
-    v5 = a5;
-    v7 = [a3 isEqualToString:@"book"];
+    remainingCopy = remaining;
+    v7 = [kind isEqualToString:@"book"];
     v8 = BLBundle();
     v9 = v8;
     v10 = @"This book has %@ remaining to download. Downloading over a cellular network may incur additional fees.";
@@ -108,7 +108,7 @@
       v11 = @"This book is %@. Downloading over a cellular network may incur additional fees.";
     }
 
-    if (v5)
+    if (remainingCopy)
     {
       v12 = v10;
     }
@@ -120,7 +120,7 @@
 
     v13 = [v8 localizedStringForKey:v12 value:&stru_100125DB0 table:@"Localizable"];
 
-    v14 = [BLEvaluatorDownload formatSize:a4];
+    v14 = [BLEvaluatorDownload formatSize:size];
     v15 = [NSString stringWithFormat:v13, v14];
   }
 

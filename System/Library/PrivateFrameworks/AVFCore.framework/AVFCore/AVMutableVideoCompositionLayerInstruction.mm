@@ -15,7 +15,7 @@
 
 + (AVMutableVideoCompositionLayerInstruction)videoCompositionLayerInstructionWithAssetTrack:(AVAssetTrack *)track
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   if (track)
   {
     [(AVMutableVideoCompositionLayerInstruction *)v4 setTrackID:[(AVAssetTrack *)track trackID]];
@@ -26,7 +26,7 @@
 
 + (AVMutableVideoCompositionLayerInstruction)videoCompositionLayerInstruction
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

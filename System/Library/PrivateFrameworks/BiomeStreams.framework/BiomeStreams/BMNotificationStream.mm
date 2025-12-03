@@ -13,9 +13,9 @@
   if (v2)
   {
     v3 = BMRootLibraryBridge();
-    v4 = [v3 Notification];
-    v5 = [v4 Usage];
-    v6 = [v5 storeStreamWithLegacyClass:objc_opt_class()];
+    notification = [v3 Notification];
+    usage = [notification Usage];
+    v6 = [usage storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v6;
 
@@ -35,8 +35,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMNotificationStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMNotificationStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

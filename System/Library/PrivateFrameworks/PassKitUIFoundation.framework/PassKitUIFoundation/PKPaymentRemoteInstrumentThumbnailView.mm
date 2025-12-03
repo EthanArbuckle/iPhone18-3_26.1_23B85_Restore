@@ -1,16 +1,16 @@
 @interface PKPaymentRemoteInstrumentThumbnailView
-- (PKPaymentRemoteInstrumentThumbnailView)initWithRemotePaymentInstrument:(id)a3 thumbnailSize:(CGSize)a4;
+- (PKPaymentRemoteInstrumentThumbnailView)initWithRemotePaymentInstrument:(id)instrument thumbnailSize:(CGSize)size;
 - (void)_prepareConstraints;
-- (void)_updateCardImage:(CGImage *)a3 size:(CGSize)a4;
+- (void)_updateCardImage:(CGImage *)image size:(CGSize)size;
 @end
 
 @implementation PKPaymentRemoteInstrumentThumbnailView
 
-- (PKPaymentRemoteInstrumentThumbnailView)initWithRemotePaymentInstrument:(id)a3 thumbnailSize:(CGSize)a4
+- (PKPaymentRemoteInstrumentThumbnailView)initWithRemotePaymentInstrument:(id)instrument thumbnailSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  instrumentCopy = instrument;
   v42.receiver = self;
   v42.super_class = PKPaymentRemoteInstrumentThumbnailView;
   v8 = [(PKPaymentRemoteInstrumentThumbnailView *)&v42 init];
@@ -34,20 +34,20 @@
 
   v18 = 1;
   [(UIImageView *)v8->_cardImageView setContentMode:1];
-  v19 = [v7 primaryPaymentApplication];
-  v20 = [v19 paymentNetworkIdentifier];
+  primaryPaymentApplication = [instrumentCopy primaryPaymentApplication];
+  paymentNetworkIdentifier = [primaryPaymentApplication paymentNetworkIdentifier];
   v21 = 0;
-  if (v20 <= 11)
+  if (paymentNetworkIdentifier <= 11)
   {
-    if (v20 <= 2)
+    if (paymentNetworkIdentifier <= 2)
     {
-      if (v20 == 1)
+      if (paymentNetworkIdentifier == 1)
       {
         v18 = 0;
         v21 = @"AmericanExpressRemoteCard";
       }
 
-      else if (v20 == 2)
+      else if (paymentNetworkIdentifier == 2)
       {
         v18 = 0;
         v21 = @"DiscoverRemoteCard";
@@ -56,16 +56,16 @@
       goto LABEL_22;
     }
 
-    if (v20 == 3)
+    if (paymentNetworkIdentifier == 3)
     {
       v18 = 0;
       v21 = @"MastercardRemoteCard";
       goto LABEL_22;
     }
 
-    if (v20 != 4)
+    if (paymentNetworkIdentifier != 4)
     {
-      if (v20 == 11)
+      if (paymentNetworkIdentifier == 11)
       {
         v18 = 0;
         v21 = @"ChinaUnionPayRemoteCard";
@@ -77,9 +77,9 @@
     goto LABEL_17;
   }
 
-  if (v20 <= 15)
+  if (paymentNetworkIdentifier <= 15)
   {
-    switch(v20)
+    switch(paymentNetworkIdentifier)
     {
       case 12:
         v18 = 0;
@@ -98,7 +98,7 @@
     goto LABEL_22;
   }
 
-  if ((v20 - 16) < 2)
+  if ((paymentNetworkIdentifier - 16) < 2)
   {
 LABEL_17:
     v18 = 0;
@@ -110,37 +110,37 @@ LABEL_22:
   v23 = llround(width * v22);
   v24 = llround(height * v22);
   v25 = MEMORY[0x277D38240];
-  v26 = [v7 manifestHash];
-  v27 = [v26 hexEncoding];
-  v28 = [v25 thumbnailCachePathForManifestHash:v27 size:0 planningToWrite:{v23, v24}];
+  manifestHash = [instrumentCopy manifestHash];
+  hexEncoding = [manifestHash hexEncoding];
+  v28 = [v25 thumbnailCachePathForManifestHash:hexEncoding size:0 planningToWrite:{v23, v24}];
 
   v29 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:v28];
   if (v29)
   {
-    v30 = [(PKPaymentRemoteInstrumentThumbnailView *)v8 cardImageView];
-    [v30 setImage:v29];
+    cardImageView = [(PKPaymentRemoteInstrumentThumbnailView *)v8 cardImageView];
+    [cardImageView setImage:v29];
   }
 
   else
   {
     if (v18)
     {
-      v30 = 0;
+      cardImageView = 0;
     }
 
     else
     {
       v31 = MEMORY[0x277D755B8];
       v32 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v30 = [v31 imageNamed:v21 inBundle:v32 compatibleWithTraitCollection:0];
+      cardImageView = [v31 imageNamed:v21 inBundle:v32 compatibleWithTraitCollection:0];
     }
 
-    v33 = [(PKPaymentRemoteInstrumentThumbnailView *)v8 cardImageView];
-    [v33 setImage:v30];
+    cardImageView2 = [(PKPaymentRemoteInstrumentThumbnailView *)v8 cardImageView];
+    [cardImageView2 setImage:cardImageView];
   }
 
   objc_initWeak(&location, v8);
-  v34 = [MEMORY[0x277D37E40] sharedService];
+  mEMORY[0x277D37E40] = [MEMORY[0x277D37E40] sharedService];
   v36 = MEMORY[0x277D85DD0];
   v37 = 3221225472;
   v38 = __88__PKPaymentRemoteInstrumentThumbnailView_initWithRemotePaymentInstrument_thumbnailSize___block_invoke;
@@ -148,7 +148,7 @@ LABEL_22:
   objc_copyWeak(v40, &location);
   v40[1] = *&width;
   v40[2] = *&height;
-  [v34 requestInstrumentThumbnail:v7 forRemoteDevice:0 size:&v36 completion:{v23, v24}];
+  [mEMORY[0x277D37E40] requestInstrumentThumbnail:instrumentCopy forRemoteDevice:0 size:&v36 completion:{v23, v24}];
 
   [(PKPaymentRemoteInstrumentThumbnailView *)v8 addSubview:v8->_cardImageView, v36, v37, v38, v39];
   [(PKPaymentRemoteInstrumentThumbnailView *)v8 _prepareConstraints];
@@ -193,35 +193,35 @@ void __88__PKPaymentRemoteInstrumentThumbnailView_initWithRemotePaymentInstrumen
 - (void)_prepareConstraints
 {
   [(PKPaymentRemoteInstrumentThumbnailView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cardImageView = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
+  [cardImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v4 = MEMORY[0x277CCAAD0];
-  v5 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
-  v6 = [v4 constraintWithItem:v5 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
+  cardImageView2 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
+  v6 = [v4 constraintWithItem:cardImageView2 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
   [v6 setActive:1];
 
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
-  v9 = [v7 constraintWithItem:v8 attribute:8 relatedBy:0 toItem:self attribute:8 multiplier:1.0 constant:0.0];
+  cardImageView3 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
+  v9 = [v7 constraintWithItem:cardImageView3 attribute:8 relatedBy:0 toItem:self attribute:8 multiplier:1.0 constant:0.0];
   [v9 setActive:1];
 
   v10 = MEMORY[0x277CCAAD0];
-  v11 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
-  v12 = [v10 constraintWithItem:v11 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  cardImageView4 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
+  v12 = [v10 constraintWithItem:cardImageView4 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [v12 setActive:1];
 
   v13 = MEMORY[0x277CCAAD0];
-  v15 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
-  v14 = [v13 constraintWithItem:v15 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+  cardImageView5 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
+  v14 = [v13 constraintWithItem:cardImageView5 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
   [v14 setActive:1];
 }
 
-- (void)_updateCardImage:(CGImage *)a3 size:(CGSize)a4
+- (void)_updateCardImage:(CGImage *)image size:(CGSize)size
 {
-  v6 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:a3];
-  v5 = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
-  [v5 setImage:v6];
+  v6 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:image];
+  cardImageView = [(PKPaymentRemoteInstrumentThumbnailView *)self cardImageView];
+  [cardImageView setImage:v6];
 
   [(PKPaymentRemoteInstrumentThumbnailView *)self setNeedsLayout];
 }

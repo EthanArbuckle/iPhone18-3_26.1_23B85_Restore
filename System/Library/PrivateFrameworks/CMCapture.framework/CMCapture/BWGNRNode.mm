@@ -1,30 +1,30 @@
 @interface BWGNRNode
-- (id)_copyAndZoomSampleBuffer:(double)a3 usingNormalizedZoomRectangle:(double)a4;
-- (id)_initWithSISEnabled:(BOOL)a3 OISEnabled:(BOOL)a4 LTMHDREnabled:(BOOL)a5 processingLTMHDRFusion:(BOOL)a6 portType:(id)a7 sensorID:(id)a8 sensorIDDictionary:(id)a9 telephotoPortType:(id)a10 telephotoSensorID:(id)a11 telephotoSensorIDDictionary:(id)a12 sbpCreationFunction:(void *)a13 treatSoftErrorsAsHardErrors:(BOOL)a14;
+- (id)_copyAndZoomSampleBuffer:(double)buffer usingNormalizedZoomRectangle:(double)rectangle;
+- (id)_initWithSISEnabled:(BOOL)enabled OISEnabled:(BOOL)sEnabled LTMHDREnabled:(BOOL)rEnabled processingLTMHDRFusion:(BOOL)fusion portType:(id)type sensorID:(id)d sensorIDDictionary:(id)dictionary telephotoPortType:(id)self0 telephotoSensorID:(id)self1 telephotoSensorIDDictionary:(id)self2 sbpCreationFunction:(void *)self3 treatSoftErrorsAsHardErrors:(BOOL)self4;
 - (id)_setExpectedFrameCountForPortType:(id *)result;
 - (uint64_t)_gnrProcessingTypeWithMetadataDictionary:(uint64_t)result;
 - (uint64_t)_isBravoDepthDataCapture;
 - (uint64_t)_isBravoHDRDepthDataCapture;
 - (uint64_t)_isBravoTelephotoHDRDepthDataCapture;
 - (uint64_t)_sampleBufferProcessorOutputReady:(CMAttachmentBearerRef)target sampleBuffer:;
-- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)a3 value:;
+- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)key value:;
 - (uint64_t)_setupSampleBufferProcessor;
 - (void)_clearCaptureRequestState;
 - (void)_detectMissingPreBracketedFrameAndEmitBWNodeError;
-- (void)_setReferenceFrameBracketedCaptureSequenceNumberOnSampleBufferProcessor:(_DWORD *)a1;
+- (void)_setReferenceFrameBracketedCaptureSequenceNumberOnSampleBufferProcessor:(_DWORD *)processor;
 - (void)_tuningDictionaryWithOnlyGNRParameters;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 - (void)sbpOptionsDictionary;
 @end
 
 @implementation BWGNRNode
 
-- (id)_initWithSISEnabled:(BOOL)a3 OISEnabled:(BOOL)a4 LTMHDREnabled:(BOOL)a5 processingLTMHDRFusion:(BOOL)a6 portType:(id)a7 sensorID:(id)a8 sensorIDDictionary:(id)a9 telephotoPortType:(id)a10 telephotoSensorID:(id)a11 telephotoSensorIDDictionary:(id)a12 sbpCreationFunction:(void *)a13 treatSoftErrorsAsHardErrors:(BOOL)a14
+- (id)_initWithSISEnabled:(BOOL)enabled OISEnabled:(BOOL)sEnabled LTMHDREnabled:(BOOL)rEnabled processingLTMHDRFusion:(BOOL)fusion portType:(id)type sensorID:(id)d sensorIDDictionary:(id)dictionary telephotoPortType:(id)self0 telephotoSensorID:(id)self1 telephotoSensorIDDictionary:(id)self2 sbpCreationFunction:(void *)self3 treatSoftErrorsAsHardErrors:(BOOL)self4
 {
   v31.receiver = self;
   v31.super_class = BWGNRNode;
@@ -32,23 +32,23 @@
   v21 = v20;
   if (v20)
   {
-    v20->_sisEnabled = a3;
-    v20->_oisEnabled = a4;
-    v20->_hdrEnabled = a5;
-    v20->_processingLTMHDRFusion = a6;
+    v20->_sisEnabled = enabled;
+    v20->_oisEnabled = sEnabled;
+    v20->_hdrEnabled = rEnabled;
+    v20->_processingLTMHDRFusion = fusion;
     v20->_previouslyCompletedFusionSettingsID = -1;
     v20->_receivedReferenceFrameBracketedCaptureSequenceNumber = -1;
     v20->_gnrFusionReferenceFrameBracketedCaptureSequenceNumber = -1;
     v20->_processingHDREV0BracketFrame = 0;
     v20->_hdrEV0BracketCaptureIdentifier = -1;
     v20->_hdrDisparityBracketedCaptureSequenceNumber = -1;
-    v20->_portType = a7;
-    v21->_sensorID = a8;
-    v21->_sensorIDDictionary = a9;
-    v21->_telephotoPortType = a10;
-    v21->_telephotoSensorID = a11;
-    v21->_telephotoSensorIDDictionary = a12;
-    v21->_createSampleBufferProcessorFunction = a13;
+    v20->_portType = type;
+    v21->_sensorID = d;
+    v21->_sensorIDDictionary = dictionary;
+    v21->_telephotoPortType = portType;
+    v21->_telephotoSensorID = iD;
+    v21->_telephotoSensorIDDictionary = dDictionary;
+    v21->_createSampleBufferProcessorFunction = function;
     v22 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v21];
     v23 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v23 setSupportedPixelFormats:&unk_1F22483B8];
@@ -157,17 +157,17 @@
   [(BWNode *)&v9 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v6 = objc_alloc_init(BWVideoFormatRequirements);
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
   -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1]);
-  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [a3 width]);
-  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [a3 height]);
+  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [format width]);
+  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [format height]);
   [(BWVideoFormatRequirements *)v6 setSupportedCacheModes:+[BWVideoFormatRequirements cacheModesForOptimizedHWAccess]];
-  if ([a3 colorSpaceProperties])
+  if ([format colorSpaceProperties])
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
   }
 
@@ -198,7 +198,7 @@
 
 - (uint64_t)_setupSampleBufferProcessor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -210,9 +210,9 @@
   v14[2] = 0x3052000000;
   v14[3] = __Block_byref_object_copy__11;
   v14[4] = __Block_byref_object_dispose__11;
-  v14[5] = a1;
-  v2 = [(BWGNRNode *)a1 sbpOptionsDictionary];
-  if (!v2 || (v3 = *(a1 + 144)) == 0)
+  v14[5] = self;
+  sbpOptionsDictionary = [(BWGNRNode *)self sbpOptionsDictionary];
+  if (!sbpOptionsDictionary || (v3 = *(self + 144)) == 0)
   {
     v10 = 0;
     v5 = 0;
@@ -220,7 +220,7 @@
   }
 
   v4 = *MEMORY[0x1E695E480];
-  v5 = v3(*MEMORY[0x1E695E480], @"GNR", v2, &v16);
+  v5 = v3(*MEMORY[0x1E695E480], @"GNR", sbpOptionsDictionary, &v16);
   if (v5)
   {
     fig_log_get_emitter();
@@ -229,11 +229,11 @@
   }
 
   v6 = v16;
-  *(a1 + 152) = v16;
+  *(self + 152) = v16;
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v7)
   {
-    v5 = v7(v6, gnrn_processorOutputReadyCallback, a1);
+    v5 = v7(v6, gnrn_processorOutputReadyCallback, self);
     if (!v5)
     {
       FigBaseObject = FigSampleBufferProcessorGetFigBaseObject();
@@ -250,8 +250,8 @@
           v13[3] = &unk_1E7990FD0;
           v13[4] = v14;
           [v15 setReferenceFrameSelectionHandlerBlock:v13];
-          v11 = [*(a1 + 8) videoFormat];
-          [v15 prepareForProcessingPixelBuffersWithAttributes:{objc_msgSend(v11, "pixelBufferAttributes")}];
+          videoFormat = [*(self + 8) videoFormat];
+          [v15 prepareForProcessingPixelBuffersWithAttributes:{objc_msgSend(videoFormat, "pixelBufferAttributes")}];
           v5 = 0;
           v10 = v15;
         }
@@ -276,9 +276,9 @@ LABEL_11:
   return v5;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (!a3)
+  if (!buffer)
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     LODWORD(cf) = 0;
@@ -287,14 +287,14 @@ LABEL_11:
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     v102 = 138412290;
-    v103 = [(BWNode *)self name];
+    name = [(BWNode *)self name];
     v78 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(FrameworkRadarComponent, v78, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWGNRNode.m", 332, @"LastShownDate:BWGNRNode.m:332", @"LastShownBuild:BWGNRNode.m:332", 0);
     goto LABEL_146;
   }
 
   v6 = v4;
-  v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v8)
   {
     v68 = FigCaptureGetFrameworkRadarComponent();
@@ -304,7 +304,7 @@ LABEL_11:
     os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     v102 = 138412290;
-    v103 = [(BWNode *)self name];
+    name = [(BWNode *)self name];
     v78 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(v68, v78, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWGNRNode.m", 335, @"LastShownDate:BWGNRNode.m:335", @"LastShownBuild:BWGNRNode.m:335", 0);
     goto LABEL_146;
@@ -324,7 +324,7 @@ LABEL_11:
     os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     v102 = 138412290;
-    v103 = [(BWNode *)self name];
+    name = [(BWNode *)self name];
     v72 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(v70, v72, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWGNRNode.m", 343, @"LastShownDate:BWGNRNode.m:343", @"LastShownBuild:BWGNRNode.m:343", 0);
 LABEL_132:
@@ -338,7 +338,7 @@ LABEL_132:
     goto LABEL_5;
   }
 
-  v43 = CMGetAttachment(a3, @"StillSettings", 0);
+  v43 = CMGetAttachment(buffer, @"StillSettings", 0);
   if (!v43)
   {
     v79 = FigCaptureGetFrameworkRadarComponent();
@@ -348,7 +348,7 @@ LABEL_132:
     os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     v102 = 138412290;
-    v103 = [(BWNode *)self name];
+    name = [(BWNode *)self name];
     v72 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(v79, v72, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWGNRNode.m", 348, @"LastShownDate:BWGNRNode.m:348", @"LastShownBuild:BWGNRNode.m:348", 0);
     goto LABEL_132;
@@ -364,7 +364,7 @@ LABEL_132:
     os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     v102 = 138412546;
-    v103 = [(BWNode *)self name];
+    name = [(BWNode *)self name];
     v104 = 2048;
     v105[0] = [v44 settingsID];
     v72 = _os_log_send_and_compose_impl();
@@ -382,8 +382,8 @@ LABEL_132:
   }
 
   self->_processingType = v45;
-  v47 = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] captureType];
-  if ((v47 & 0xFFFFFFFE) == 4)
+  captureType = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] captureType];
+  if ((captureType & 0xFFFFFFFE) == 4)
   {
     v48 = 1;
     v6 = v4;
@@ -392,7 +392,7 @@ LABEL_132:
   else
   {
     v6 = v4;
-    v48 = v47 == 3 && self->_hdrEnabled;
+    v48 = captureType == 3 && self->_hdrEnabled;
   }
 
   if (self->_allowedToModifyInputBuffers && v48)
@@ -416,7 +416,7 @@ LABEL_132:
     os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     v102 = 138412546;
-    v103 = [(BWNode *)self name];
+    name = [(BWNode *)self name];
     v104 = 1024;
     LODWORD(v105[0]) = v96;
     v53 = _os_log_send_and_compose_impl();
@@ -443,7 +443,7 @@ LABEL_5:
     {
       v18 = 0;
       v95 = 0;
-      v91 = a3;
+      bufferCopy3 = buffer;
 LABEL_39:
       ++self->_receivedFrameCount;
       if (self->_hdrEnabled)
@@ -464,7 +464,7 @@ LABEL_39:
               v55 = *(*(CMBaseObjectGetVTable() + 16) + 16);
               if (v55)
               {
-                v55(sampleBufferProcessor, a3);
+                v55(sampleBufferProcessor, buffer);
               }
 
               [(BWGNRNode *)self _setPropertyOnSampleBufferProcessorWithKey:0 value:?];
@@ -479,7 +479,7 @@ LABEL_75:
                 }
 
 LABEL_76:
-                CFRelease(v91);
+                CFRelease(bufferCopy3);
                 return;
               }
 
@@ -493,7 +493,7 @@ LABEL_76:
       v25 = self->_processingType;
       if (v25 > 0xA || ((1 << v25) & 0x431) == 0)
       {
-        [(BWGNRNode *)v91 renderSampleBuffer:a3 forInput:self, v97];
+        [(BWGNRNode *)bufferCopy3 renderSampleBuffer:buffer forInput:self, v97];
       }
 
       if (v97 < 1)
@@ -552,13 +552,13 @@ LABEL_55:
         v34 = *(*(CMBaseObjectGetVTable() + 16) + 16);
         if (v34)
         {
-          v34(v33, v91);
+          v34(v33, bufferCopy3);
         }
 
         if ([v93 captureType] == 5 && self->_receivedFrameCount == self->_expectedFrameCount - 1)
         {
-          v35 = [v93 timeMachineFrameCount];
-          if ([(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] bracketedCaptureSequenceNumberForOISLongExposure]+ v35 == self->_expectedFrameCount)
+          timeMachineFrameCount = [v93 timeMachineFrameCount];
+          if ([(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] bracketedCaptureSequenceNumberForOISLongExposure]+ timeMachineFrameCount == self->_expectedFrameCount)
           {
             [(BWGNRNode *)self _setPropertyOnSampleBufferProcessorWithKey:MEMORY[0x1E695E118] value:?];
           }
@@ -585,9 +585,9 @@ LABEL_69:
         }
 
         [(BWGNRNode *)self _detectMissingPreBracketedFrameAndEmitBWNodeError];
-        v37 = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] expectReferenceFrameBracketedCaptureSequenceNumber];
+        expectReferenceFrameBracketedCaptureSequenceNumber = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] expectReferenceFrameBracketedCaptureSequenceNumber];
         receivedReferenceFrameBracketedCaptureSequenceNumber = self->_receivedReferenceFrameBracketedCaptureSequenceNumber;
-        if (v37)
+        if (expectReferenceFrameBracketedCaptureSequenceNumber)
         {
           if (receivedReferenceFrameBracketedCaptureSequenceNumber != -1)
           {
@@ -621,11 +621,11 @@ LABEL_124:
           v57 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
           os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT);
           fig_log_call_emit_and_clean_up_after_send_and_compose();
-          v60 = [(BWNode *)self name];
+          name2 = [(BWNode *)self name];
           v61 = self->_receivedReferenceFrameBracketedCaptureSequenceNumber;
           v62 = BWPhotoEncoderStringFromEncodingScheme([(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] captureType]);
           v102 = 138412802;
-          v103 = v60;
+          name = name2;
           v104 = 1024;
           LODWORD(v105[0]) = v61;
           WORD2(v105[0]) = 2112;
@@ -662,13 +662,13 @@ LABEL_124:
     v20 = [v9 objectForKeyedSubscript:*off_1E798A830];
     if (v20 && ([v20 doubleValue], v21 == 0.0))
     {
-      CMSetAttachment(a3, *off_1E798D090, *MEMORY[0x1E695E4D0], 1u);
+      CMSetAttachment(buffer, *off_1E798D090, *MEMORY[0x1E695E4D0], 1u);
     }
 
     else if (!CGRectIsNull(*v98))
     {
-      v91 = [(BWGNRNode *)&self->super.super.isa _copyAndZoomSampleBuffer:a3 usingNormalizedZoomRectangle:*v98, *&v98[8], *&v98[16], *&v98[24]];
-      if (v91)
+      bufferCopy3 = [(BWGNRNode *)&self->super.super.isa _copyAndZoomSampleBuffer:buffer usingNormalizedZoomRectangle:*v98, *&v98[8], *&v98[16], *&v98[24]];
+      if (bufferCopy3)
       {
         v95 = 1;
       }
@@ -682,21 +682,21 @@ LABEL_124:
         os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT);
         fig_log_call_emit_and_clean_up_after_send_and_compose();
         v102 = 138412546;
-        v103 = [(BWNode *)self name];
+        name = [(BWNode *)self name];
         v104 = 1024;
         LODWORD(v105[0]) = v97;
         v65 = _os_log_send_and_compose_impl();
         FigCapturePleaseFileRadar(v58, v65, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWGNRNode.m", 541, @"LastShownDate:BWGNRNode.m:541", @"LastShownBuild:BWGNRNode.m:541", 0);
         free(v65);
         v95 = 0;
-        v91 = a3;
+        bufferCopy3 = buffer;
       }
 
       goto LABEL_38;
     }
 
     v95 = 0;
-    v91 = a3;
+    bufferCopy3 = buffer;
 LABEL_38:
     v18 = 1;
     goto LABEL_39;
@@ -712,7 +712,7 @@ LABEL_38:
   {
     if (self->_hdrEnabled)
     {
-      self->_collectedUnprocessedPreBracketHDR = CFRetain(a3);
+      self->_collectedUnprocessedPreBracketHDR = CFRetain(buffer);
       if (![(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings] deliverOriginalImage])
       {
         return;
@@ -730,7 +730,7 @@ LABEL_38:
     }
 
     cf = 0;
-    CopyIncludingMetadata = BWCMSampleBufferCreateCopyIncludingMetadata(a3, &cf);
+    CopyIncludingMetadata = BWCMSampleBufferCreateCopyIncludingMetadata(buffer, &cf);
     if (!CopyIncludingMetadata)
     {
       [(BWNodeOutput *)self->super._output emitSampleBuffer:cf];
@@ -774,9 +774,9 @@ LABEL_31:
     }
 
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    v88 = [(BWNode *)self name];
+    name3 = [(BWNode *)self name];
     v102 = 138412290;
-    v103 = v88;
+    name = name3;
     v78 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(v84, v78, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWGNRNode.m", 445, @"LastShownDate:BWGNRNode.m:445", @"LastShownBuild:BWGNRNode.m:445", 0);
 LABEL_146:
@@ -811,7 +811,7 @@ LABEL_83:
   v41 = *(*(CMBaseObjectGetVTable() + 16) + 16);
   if (v41)
   {
-    v41(v40, a3);
+    v41(v40, buffer);
   }
 
   v42 = self->_processingType;
@@ -882,12 +882,12 @@ LABEL_145:
   }
 }
 
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input
 {
-  v4 = *&a3;
+  v4 = *&number;
   if (self->_receivedAllFrames)
   {
-    if (![(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings:*&a3] expectReferenceFrameBracketedCaptureSequenceNumber])
+    if (![(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings captureSettings:*&number] expectReferenceFrameBracketedCaptureSequenceNumber])
     {
       FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -908,33 +908,33 @@ LABEL_145:
 
   else
   {
-    self->_receivedReferenceFrameBracketedCaptureSequenceNumber = a3;
+    self->_receivedReferenceFrameBracketedCaptureSequenceNumber = number;
   }
 }
 
 - (void)_clearCaptureRequestState
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 208) = 0;
-    *(a1 + 216) = 0;
-    *(a1 + 220) = 0;
-    *(a1 + 221) = 0;
-    *(a1 + 222) = 0;
-    *(a1 + 224) = 0;
-    *(a1 + 228) = 0;
-    *(a1 + 232) = 0;
-    *(a1 + 236) = -1;
-    *(a1 + 240) = -1;
-    *(a1 + 248) = -1;
-    *(a1 + 252) = -1;
-    [*(a1 + 256) removeAllObjects];
-    v2 = *(a1 + 264);
+    *(self + 208) = 0;
+    *(self + 216) = 0;
+    *(self + 220) = 0;
+    *(self + 221) = 0;
+    *(self + 222) = 0;
+    *(self + 224) = 0;
+    *(self + 228) = 0;
+    *(self + 232) = 0;
+    *(self + 236) = -1;
+    *(self + 240) = -1;
+    *(self + 248) = -1;
+    *(self + 252) = -1;
+    [*(self + 256) removeAllObjects];
+    v2 = *(self + 264);
     if (v2)
     {
       CFRelease(v2);
-      *(a1 + 264) = 0;
+      *(self + 264) = 0;
     }
   }
 }
@@ -945,27 +945,27 @@ LABEL_145:
   {
     v2 = result;
     v3 = [objc_msgSend(result[26] "captureSettings")];
-    v4 = [v3 captureType];
+    captureType = [v3 captureType];
     result = [v3 bracketSettings];
     v5 = result;
     if (result)
     {
-      v6 = [result providePreBracketedEV0];
-      v7 = [v3 expectedFrameCount];
+      providePreBracketedEV0 = [result providePreBracketedEV0];
+      expectedFrameCount = [v3 expectedFrameCount];
       result = [v5 providePreBracketedEV0];
-      v8 = v7 - result;
+      v8 = expectedFrameCount - result;
     }
 
     else
     {
-      v6 = 0;
+      providePreBracketedEV0 = 0;
       v8 = 1;
     }
 
     if (!*(v2 + 224))
     {
       *(v2 + 224) = v8;
-      *(v2 + 221) = v6;
+      *(v2 + 221) = providePreBracketedEV0;
       result = [v5 providePreBracketedEV0];
       if (result)
       {
@@ -973,7 +973,7 @@ LABEL_145:
       }
 
       *(v2 + 220) = result;
-      if (v4 == 3)
+      if (captureType == 3)
       {
         if (*(v2 + 130))
         {
@@ -1117,7 +1117,7 @@ LABEL_145:
   return result;
 }
 
-- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)a3 value:
+- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)key value:
 {
   if (result)
   {
@@ -1126,7 +1126,7 @@ LABEL_145:
     if (v6)
     {
 
-      return v6(FigBaseObject, a2, a3);
+      return v6(FigBaseObject, a2, key);
     }
 
     else
@@ -1138,7 +1138,7 @@ LABEL_145:
   return result;
 }
 
-- (id)_copyAndZoomSampleBuffer:(double)a3 usingNormalizedZoomRectangle:(double)a4
+- (id)_copyAndZoomSampleBuffer:(double)buffer usingNormalizedZoomRectangle:(double)rectangle
 {
   if (result)
   {
@@ -1147,8 +1147,8 @@ LABEL_145:
     FormatDescription = CMSampleBufferGetFormatDescription(sbuf);
     Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
     v14 = v11[34];
-    v15 = [OUTLINED_FUNCTION_8_19() pixelFormat];
-    if ([v14 updateOutputPixelFormat:v15 dimensions:Dimensions poolCapacity:2 colorSpaceProperties:objc_msgSend(OUTLINED_FUNCTION_8_19(), "colorSpaceProperties")])
+    pixelFormat = [OUTLINED_FUNCTION_8_19() pixelFormat];
+    if ([v14 updateOutputPixelFormat:pixelFormat dimensions:Dimensions poolCapacity:2 colorSpaceProperties:objc_msgSend(OUTLINED_FUNCTION_8_19(), "colorSpaceProperties")])
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_2_33();
@@ -1156,7 +1156,7 @@ LABEL_145:
 
     else
     {
-      if (![v11[34] convertSampleBuffer:sbuf cropRect:&target outputSampleBuffer:{a3 * Dimensions.width, a4 * Dimensions.height, a5 * Dimensions.width, a6 * Dimensions.height}])
+      if (![v11[34] convertSampleBuffer:sbuf cropRect:&target outputSampleBuffer:{buffer * Dimensions.width, rectangle * Dimensions.height, a5 * Dimensions.width, a6 * Dimensions.height}])
       {
         LODWORD(v16) = [objc_msgSend(v11[26] "requestedSettings")];
         v17 = [objc_msgSend(v11[26] "requestedSettings")];
@@ -1176,16 +1176,16 @@ LABEL_145:
         if (v19)
         {
           v20 = v19;
-          v21 = [OUTLINED_FUNCTION_8_19() width];
-          v22 = [OUTLINED_FUNCTION_8_19() height];
-          FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(v21, v22, a3, a4, a5, a6, v16 / v18);
+          width = [OUTLINED_FUNCTION_8_19() width];
+          height = [OUTLINED_FUNCTION_8_19() height];
+          FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(width, height, buffer, rectangle, a5, a6, v16 / v18);
           v24 = v23;
           v26 = v25;
           v28 = v27;
           v30 = v29;
-          LODWORD(v21) = [OUTLINED_FUNCTION_8_19() width];
-          v31 = [OUTLINED_FUNCTION_8_19() height];
-          FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v20, v21 | (v31 << 32), v16 | (v18 << 32), v24, v26, v28, v30, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+          LODWORD(width) = [OUTLINED_FUNCTION_8_19() width];
+          height2 = [OUTLINED_FUNCTION_8_19() height];
+          FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v20, width | (height2 << 32), v16 | (v18 << 32), v24, v26, v28, v30, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
           FigCaptureMetadataUtilitiesPreventFurtherCropping(v20, v32);
           return target;
         }
@@ -1204,17 +1204,17 @@ LABEL_145:
 
 - (uint64_t)_isBravoHDRDepthDataCapture
 {
-  if (!a1 || [objc_msgSend(*(a1 + 208) "captureSettings")] != 3)
+  if (!self || [objc_msgSend(*(self + 208) "captureSettings")] != 3)
   {
     return 0;
   }
 
-  return [(BWGNRNode *)a1 _isBravoDepthDataCapture];
+  return [(BWGNRNode *)self _isBravoDepthDataCapture];
 }
 
 - (uint64_t)_isBravoTelephotoHDRDepthDataCapture
 {
-  if (!a1 || [OUTLINED_FUNCTION_12_14(a1) captureType] != 3 || (objc_msgSend(objc_msgSend(*(v1 + *(v2 + 3252)), "captureSettings"), "captureFlags") & 0x800) == 0)
+  if (!self || [OUTLINED_FUNCTION_12_14(self) captureType] != 3 || (objc_msgSend(objc_msgSend(*(v1 + *(v2 + 3252)), "captureSettings"), "captureFlags") & 0x800) == 0)
   {
     return 0;
   }
@@ -1227,24 +1227,24 @@ LABEL_145:
 
 - (void)_detectMissingPreBracketedFrameAndEmitBWNodeError
 {
-  if (a1 && *(a1 + 221) == 1 && (*(a1 + 222) & 1) == 0)
+  if (self && *(self + 221) == 1 && (*(self + 222) & 1) == 0)
   {
-    v2 = *(a1 + 288) == 1 && [objc_msgSend(*(a1 + 208) "captureSettings")] == 3;
-    if ((*(a1 + 220) & 1) != 0 || v2)
+    v2 = *(self + 288) == 1 && [objc_msgSend(*(self + 208) "captureSettings")] == 3;
+    if ((*(self + 220) & 1) != 0 || v2)
     {
-      v3 = [BWNodeError newError:4294954516 sourceNode:a1 stillImageSettings:*(a1 + 208) metadata:0];
-      [*(a1 + 16) emitNodeError:v3];
+      v3 = [BWNodeError newError:4294954516 sourceNode:self stillImageSettings:*(self + 208) metadata:0];
+      [*(self + 16) emitNodeError:v3];
     }
   }
 }
 
-- (void)_setReferenceFrameBracketedCaptureSequenceNumberOnSampleBufferProcessor:(_DWORD *)a1
+- (void)_setReferenceFrameBracketedCaptureSequenceNumberOnSampleBufferProcessor:(_DWORD *)processor
 {
-  if (a1)
+  if (processor)
   {
-    if ([(BWGNRNode *)a1 _isBravoDepthDataCapture])
+    if ([(BWGNRNode *)processor _isBravoDepthDataCapture])
     {
-      v4 = a1[54];
+      v4 = processor[54];
       v6 = v4 != 3 && v4 != 9;
     }
 
@@ -1253,7 +1253,7 @@ LABEL_145:
       v6 = 0;
     }
 
-    if (-[BWGNRNode _setPropertyOnSampleBufferProcessorWithKey:value:](a1, *off_1E798D060, [MEMORY[0x1E696AD98] numberWithBool:v6]))
+    if (-[BWGNRNode _setPropertyOnSampleBufferProcessorWithKey:value:](processor, *off_1E798D060, [MEMORY[0x1E696AD98] numberWithBool:v6]))
     {
       FigCaptureGetFrameworkRadarComponent();
       v37 = 0;
@@ -1284,7 +1284,7 @@ LABEL_145:
 
       OUTLINED_FUNCTION_7_0();
       fig_log_call_emit_and_clean_up_after_send_and_compose();
-      [a1 name];
+      [processor name];
       OUTLINED_FUNCTION_7_20();
       v32 = 2080;
       v33 = v9;
@@ -1297,7 +1297,7 @@ LABEL_145:
       free(v11);
     }
 
-    if (-[BWGNRNode _setPropertyOnSampleBufferProcessorWithKey:value:](a1, *off_1E798D080, [MEMORY[0x1E696AD98] numberWithInt:a2]))
+    if (-[BWGNRNode _setPropertyOnSampleBufferProcessorWithKey:value:](processor, *off_1E798D080, [MEMORY[0x1E696AD98] numberWithInt:a2]))
     {
       FigCaptureGetFrameworkRadarComponent();
       v37 = 0;
@@ -1317,14 +1317,14 @@ LABEL_145:
 
       if (v21)
       {
-        [a1 name];
+        [processor name];
         OUTLINED_FUNCTION_6_22();
         _os_log_send_and_compose_impl();
       }
 
       OUTLINED_FUNCTION_7_0();
       fig_log_call_emit_and_clean_up_after_send_and_compose();
-      [a1 name];
+      [processor name];
       OUTLINED_FUNCTION_7_20();
       v32 = v22;
       LODWORD(v33) = a2;
@@ -1337,12 +1337,12 @@ LABEL_145:
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   if (self->_sampleBufferProcessor)
   {
-    v6 = [a3 errorCode] == -16800 || objc_msgSend(a3, "errorCode") == -16802;
-    if ([objc_msgSend(a3 "stillImageSettings")] == self->_previouslyCompletedFusionSettingsID && !v6)
+    v6 = [error errorCode] == -16800 || objc_msgSend(error, "errorCode") == -16802;
+    if ([objc_msgSend(error "stillImageSettings")] == self->_previouslyCompletedFusionSettingsID && !v6)
     {
       goto LABEL_13;
     }
@@ -1379,9 +1379,9 @@ LABEL_13:
     v9 = 1;
     OUTLINED_FUNCTION_4_29();
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    v12 = [(BWNode *)self name];
+    name = [(BWNode *)self name];
     v21 = 138412290;
-    v22 = v12;
+    v22 = name;
     v13 = OUTLINED_FUNCTION_6_0();
     OUTLINED_FUNCTION_11();
     OUTLINED_FUNCTION_10();
@@ -1394,10 +1394,10 @@ LABEL_15:
   [(BWGNRNode *)self _clearCaptureRequestState];
   if (v9)
   {
-    [(BWNodeOutput *)self->super._output emitNodeError:a3];
+    [(BWNodeOutput *)self->super._output emitNodeError:error];
     if (isBravoTelephotoHDRDepthData)
     {
-      [(BWNodeOutput *)self->super._output emitNodeError:a3];
+      [(BWNodeOutput *)self->super._output emitNodeError:error];
     }
   }
 }
@@ -1565,7 +1565,7 @@ LABEL_16:
         os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
         OUTLINED_FUNCTION_7_0();
         fig_log_call_emit_and_clean_up_after_send_and_compose();
-        v26 = [v5 name];
+        name = [v5 name];
         if ((a2 + 17402) > 2)
         {
           v27 = @"unknown error";
@@ -1577,7 +1577,7 @@ LABEL_16:
         }
 
         v37 = 138412802;
-        v38 = v26;
+        v38 = name;
         v39 = 1024;
         v40 = a2;
         v41 = 2112;

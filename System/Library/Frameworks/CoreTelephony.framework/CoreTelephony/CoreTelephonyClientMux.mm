@@ -1,34 +1,34 @@
 @interface CoreTelephonyClientMux
 - (CoreTelephonyClientMux)init;
-- (CoreTelephonyClientMux)initWithEndpoint:(id)a3 sink:(id)a4 systemConfigurationProvider:(id)a5;
-- (CoreTelephonyClientMux)initWithSink:(id)a3 systemConfigurationProvider:(id)a4;
-- (__CTAssertionType)createCTAssertionForConnectionType:(int)a3 allocator:(__CFAllocator *)a4 proxy:(id)a5;
+- (CoreTelephonyClientMux)initWithEndpoint:(id)endpoint sink:(id)sink systemConfigurationProvider:(id)provider;
+- (CoreTelephonyClientMux)initWithSink:(id)sink systemConfigurationProvider:(id)provider;
+- (__CTAssertionType)createCTAssertionForConnectionType:(int)type allocator:(__CFAllocator *)allocator proxy:(id)proxy;
 - (id).cxx_construct;
 - (id)_sendConnectionInterruptedNotification_sync:(dispatch_queue_s *);
 - (id)addDelegate:(dispatch_queue_s *) queue:(std::unique_ptr<-[CoreTelephonyClientMux)addDelegate:queue:]::$_1>;
-- (id)addDelegate:(id *)a1 queue:;
+- (id)addDelegate:(id *)delegate queue:;
 - (id)dealloc;
-- (id)proxyWithErrorHandler_sync:(id)a3;
-- (id)proxyWithQueue:(dispatch_queue_s *)a3 errorHandler:(id)a4;
+- (id)proxyWithErrorHandler_sync:(id)handler_sync;
+- (id)proxyWithQueue:(dispatch_queue_s *)queue errorHandler:(id)handler;
 - (id)removeDelegate:(dispatch_queue_s *);
-- (id)removeDelegate:(id *)a1;
+- (id)removeDelegate:(id *)delegate;
 - (id)sink:(dispatch_queue_s *) handleNotification:(std::unique_ptr<-[CoreTelephonyClientMux)sink:handleNotification:]::$_3>;
-- (id)sink:(id *)a1 handleNotification:;
-- (id)synchronousProxyWithErrorHandler:(id)a3;
+- (id)sink:(id *)sink handleNotification:;
+- (id)synchronousProxyWithErrorHandler:(id)handler;
 - (queue)xpcQueue;
 - (uint64_t)_getAssertionTypeId;
 - (unint64_t)_getAssertionTypeId;
 - (void)_connect_sync;
-- (void)_ensureConnectionSetup_sync:(BOOL)a3;
-- (void)_registerForNotifications_sync:(id)a3 shouldForce:(BOOL)a4 completion:(id)a5;
-- (void)_sendConnectionInterruptedNotification_sync:(id)a3;
-- (void)addDelegate:(id)a3 queue:(dispatch_queue_s *)a4;
+- (void)_ensureConnectionSetup_sync:(BOOL)setup_sync;
+- (void)_registerForNotifications_sync:(id)notifications_sync shouldForce:(BOOL)force completion:(id)completion;
+- (void)_sendConnectionInterruptedNotification_sync:(id)notification_sync;
+- (void)addDelegate:(id)delegate queue:(dispatch_queue_s *)queue;
 - (void)dealloc;
-- (void)registerBlockForInvalidationNotification:(__CTAssertionType *)a3 callbackQueue:(dispatch_queue_s *)a4 callback:(id)a5;
-- (void)removeAssertionForInvalidationNotification:(__CTAssertionType *)a3;
-- (void)removeDelegate:(id)a3;
-- (void)setXpcQueue:(queue)a3;
-- (void)sink:(id)a3 handleNotification:(id)a4;
+- (void)registerBlockForInvalidationNotification:(__CTAssertionType *)notification callbackQueue:(dispatch_queue_s *)queue callback:(id)callback;
+- (void)removeAssertionForInvalidationNotification:(__CTAssertionType *)notification;
+- (void)removeDelegate:(id)delegate;
+- (void)setXpcQueue:(queue)queue;
+- (void)sink:(id)sink handleNotification:(id)notification;
 @end
 
 @implementation CoreTelephonyClientMux
@@ -102,59 +102,59 @@
   v16 = objc_opt_class();
   v17 = objc_opt_class();
   v18 = [v11 setWithObjects:{v12, v13, v14, v15, v16, v17, objc_opt_class(), 0}];
-  v19 = [*(self + 10) remoteObjectInterface];
-  [v19 setClasses:v18 forSelector:sel_copyCarrierBundleValue_key_bundleType_completion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface setClasses:v18 forSelector:sel_copyCarrierBundleValue_key_bundleType_completion_ argumentIndex:0 ofReply:1];
 
-  v20 = [*(self + 10) remoteObjectInterface];
-  [v20 setClasses:v18 forSelector:sel_copyCarrierBundleValue_keyHierarchy_bundleType_completion_ argumentIndex:1 ofReply:0];
+  remoteObjectInterface2 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface2 setClasses:v18 forSelector:sel_copyCarrierBundleValue_keyHierarchy_bundleType_completion_ argumentIndex:1 ofReply:0];
 
-  v21 = [*(self + 10) remoteObjectInterface];
-  [v21 setClasses:v18 forSelector:sel_copyCarrierBundleValue_keyHierarchy_bundleType_completion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface3 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface3 setClasses:v18 forSelector:sel_copyCarrierBundleValue_keyHierarchy_bundleType_completion_ argumentIndex:0 ofReply:1];
 
-  v22 = [*(self + 10) remoteObjectInterface];
-  [v22 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithDefault_key_bundleType_completion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface4 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface4 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithDefault_key_bundleType_completion_ argumentIndex:0 ofReply:1];
 
-  v23 = [*(self + 10) remoteObjectInterface];
-  [v23 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithDefault_keyHierarchy_bundleType_completion_ argumentIndex:1 ofReply:0];
+  remoteObjectInterface5 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface5 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithDefault_keyHierarchy_bundleType_completion_ argumentIndex:1 ofReply:0];
 
-  v24 = [*(self + 10) remoteObjectInterface];
-  [v24 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithDefault_keyHierarchy_bundleType_completion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface6 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface6 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithDefault_keyHierarchy_bundleType_completion_ argumentIndex:0 ofReply:1];
 
-  v25 = [*(self + 10) remoteObjectInterface];
-  [v25 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithCountryBundleLookup_keyHierarchy_matchingInfo_completion_ argumentIndex:1 ofReply:0];
+  remoteObjectInterface7 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface7 setClasses:v18 forSelector:sel_copyCarrierBundleValueWithCountryBundleLookup_keyHierarchy_matchingInfo_completion_ argumentIndex:1 ofReply:0];
 
-  v26 = [*(self + 10) remoteObjectInterface];
-  [v26 setClasses:v18 forSelector:sel_getWiFiCallingSettingPreferences_key_completion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface8 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface8 setClasses:v18 forSelector:sel_getWiFiCallingSettingPreferences_key_completion_ argumentIndex:0 ofReply:1];
 
-  v27 = [*(self + 10) remoteObjectInterface];
-  [v27 setClasses:v18 forSelector:sel_setWiFiCallingSettingPreferences_key_value_completion_ argumentIndex:2 ofReply:0];
+  remoteObjectInterface9 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface9 setClasses:v18 forSelector:sel_setWiFiCallingSettingPreferences_key_value_completion_ argumentIndex:2 ofReply:0];
 
-  v28 = [*(self + 10) remoteObjectInterface];
-  [v28 setClasses:v18 forSelector:sel_setPrefForKey_heirarchy_value_storage_completion_ argumentIndex:2 ofReply:0];
+  remoteObjectInterface10 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface10 setClasses:v18 forSelector:sel_setPrefForKey_heirarchy_value_storage_completion_ argumentIndex:2 ofReply:0];
 
-  v29 = [*(self + 10) remoteObjectInterface];
-  [v29 setClasses:v18 forSelector:sel_getPrefForKey_heirarchy_storage_completion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface11 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface11 setClasses:v18 forSelector:sel_getPrefForKey_heirarchy_storage_completion_ argumentIndex:0 ofReply:1];
 
-  v30 = [*(self + 10) remoteObjectInterface];
-  [v30 setClasses:v18 forSelector:sel_getRadioPersonality_completion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface12 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface12 setClasses:v18 forSelector:sel_getRadioPersonality_completion_ argumentIndex:0 ofReply:1];
 
-  v31 = [*(self + 10) remoteObjectInterface];
-  [v31 setClasses:v18 forSelector:sel_getEOSFirmwareUpdateInfo_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface13 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface13 setClasses:v18 forSelector:sel_getEOSFirmwareUpdateInfo_ argumentIndex:0 ofReply:1];
 
-  v32 = [*(self + 10) remoteObjectInterface];
-  [v32 setClasses:v18 forSelector:sel_getPNRPriorityRegistrationListWithCompletion_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface14 = [*(self + 10) remoteObjectInterface];
+  [remoteObjectInterface14 setClasses:v18 forSelector:sel_getPNRPriorityRegistrationListWithCompletion_ argumentIndex:0 ofReply:1];
 
-  v33 = [*(self + 10) exportedInterface];
+  exportedInterface = [*(self + 10) exportedInterface];
   v34 = MEMORY[0x1E695DFD8];
   v35 = objc_opt_class();
   v36 = [v34 setWithObjects:{v35, objc_opt_class(), 0}];
-  [v33 setClasses:v36 forSelector:sel_launchSimSetupForTransferPlanSelection_completion_ argumentIndex:0 ofReply:0];
+  [exportedInterface setClasses:v36 forSelector:sel_launchSimSetupForTransferPlanSelection_completion_ argumentIndex:0 ofReply:0];
 
-  v37 = [*(self + 10) exportedInterface];
+  exportedInterface2 = [*(self + 10) exportedInterface];
   v38 = MEMORY[0x1E695DFD8];
   v39 = objc_opt_class();
   v40 = [v38 setWithObjects:{v39, objc_opt_class(), 0}];
-  [v37 setClasses:v40 forSelector:sel_handleCrossplatformSessionResponse_completion_ argumentIndex:0 ofReply:0];
+  [exportedInterface2 setClasses:v40 forSelector:sel_handleCrossplatformSessionResponse_completion_ argumentIndex:0 ofReply:0];
 
   objc_initWeak(location, self);
   v44[0] = MEMORY[0x1E69E9820];
@@ -239,20 +239,20 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke(uint64_t a1)
   }
 }
 
-- (CoreTelephonyClientMux)initWithSink:(id)a3 systemConfigurationProvider:(id)a4
+- (CoreTelephonyClientMux)initWithSink:(id)sink systemConfigurationProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  sinkCopy = sink;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = CoreTelephonyClientMux;
   v9 = [(CoreTelephonyClientMux *)&v19 init];
   if (v9)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.CoreTelephonyClientMux.xpc.%p", v9];
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_DEFAULT, 0);
-    v14 = dispatch_queue_create(v11, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     v15 = *(v9 + 11);
     *(v9 + 11) = v14;
     if (v15)
@@ -260,36 +260,36 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke(uint64_t a1)
       dispatch_release(v15);
     }
 
-    objc_storeStrong(v9 + 13, a3);
+    objc_storeStrong(v9 + 13, sink);
     [*(v9 + 13) setDelegate:v9];
     v16 = objc_opt_new();
     v17 = *(v9 + 8);
     *(v9 + 8) = v16;
 
-    objc_storeStrong(v9 + 9, a4);
+    objc_storeStrong(v9 + 9, provider);
     [v9 _initializeConnection_sync];
   }
 
   return v9;
 }
 
-- (CoreTelephonyClientMux)initWithEndpoint:(id)a3 sink:(id)a4 systemConfigurationProvider:(id)a5
+- (CoreTelephonyClientMux)initWithEndpoint:(id)endpoint sink:(id)sink systemConfigurationProvider:(id)provider
 {
-  objc_storeStrong(self + 12, a3);
-  v8 = a5;
-  v9 = a4;
-  v10 = [(CoreTelephonyClientMux *)self initWithSink:v9 systemConfigurationProvider:v8];
+  objc_storeStrong(self + 12, endpoint);
+  providerCopy = provider;
+  sinkCopy = sink;
+  v10 = [(CoreTelephonyClientMux *)self initWithSink:sinkCopy systemConfigurationProvider:providerCopy];
 
   return v10;
 }
 
-- (void)addDelegate:(id)a3 queue:(dispatch_queue_s *)a4
+- (void)addDelegate:(id)delegate queue:(dispatch_queue_s *)queue
 {
-  v5 = a3;
+  delegateCopy = delegate;
   if ([*(self + 9) isCommCenterSupported])
   {
-    v6 = self;
-    v7 = v5;
+    selfCopy = self;
+    v7 = delegateCopy;
     v8 = *(self + 11);
     operator new();
   }
@@ -304,11 +304,11 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   if ([*(self + 9) isCommCenterSupported])
   {
-    v4 = self;
+    selfCopy = self;
     v5 = *(self + 11);
     operator new();
   }
@@ -323,12 +323,12 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke(uint64_t a1)
   }
 }
 
-- (void)sink:(id)a3 handleNotification:(id)a4
+- (void)sink:(id)sink handleNotification:(id)notification
 {
-  v6 = a3;
-  v7 = a4;
-  [*(self + 8) handleNotification:v7];
-  v8 = NSStringFromSelector([v7 selector]);
+  sinkCopy = sink;
+  notificationCopy = notification;
+  [*(self + 8) handleNotification:notificationCopy];
+  v8 = NSStringFromSelector([notificationCopy selector]);
   v11 = *(self + 1);
   v9 = (self + 8);
   v10 = v11;
@@ -390,17 +390,17 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke(uint64_t a1)
   }
 }
 
-- (id)proxyWithQueue:(dispatch_queue_s *)a3 errorHandler:(id)a4
+- (id)proxyWithQueue:(dispatch_queue_s *)queue errorHandler:(id)handler
 {
-  v17 = self;
-  v16 = a3;
-  v6 = a4;
-  v15 = v6;
+  selfCopy = self;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v15 = handlerCopy;
   if ([*(self + 9) isCommCenterSupported])
   {
-    v11[0] = &v17;
+    v11[0] = &selfCopy;
     v11[1] = &v12;
-    v11[2] = &v16;
+    v11[2] = &queueCopy;
     v11[3] = &v15;
     v12 = 0;
     v7 = *(self + 11);
@@ -421,9 +421,9 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke(uint64_t a1)
     v13[1] = 3221225472;
     v13[2] = __54__CoreTelephonyClientMux_proxyWithQueue_errorHandler___block_invoke;
     v13[3] = &unk_1E6A43D10;
-    v9 = v6;
+    v9 = handlerCopy;
     v14 = v9;
-    dispatch_async(a3, v13);
+    dispatch_async(queue, v13);
 
     v8 = 0;
   }
@@ -438,15 +438,15 @@ void __54__CoreTelephonyClientMux_proxyWithQueue_errorHandler___block_invoke(uin
   (*(v1 + 16))(v1);
 }
 
-- (id)synchronousProxyWithErrorHandler:(id)a3
+- (id)synchronousProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([*(self + 9) isCommCenterSupported])
   {
     v11 = 0;
     v9[0] = self;
     v9[1] = &v11;
-    v10 = _Block_copy(v4);
+    v10 = _Block_copy(handlerCopy);
     v5 = *(self + 11);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -461,7 +461,7 @@ void __54__CoreTelephonyClientMux_proxyWithQueue_errorHandler___block_invoke(uin
   else
   {
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:45 userInfo:0];
-    (*(v4 + 2))(v4, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
 
     v6 = 0;
   }
@@ -469,12 +469,12 @@ void __54__CoreTelephonyClientMux_proxyWithQueue_errorHandler___block_invoke(uin
   return v6;
 }
 
-- (id)proxyWithErrorHandler_sync:(id)a3
+- (id)proxyWithErrorHandler_sync:(id)handler_sync
 {
-  v4 = a3;
+  handler_syncCopy = handler_sync;
   [(CoreTelephonyClientMux *)self _setReconnectError_sync:0];
   [(CoreTelephonyClientMux *)self _ensureConnectionSetup_sync];
-  v5 = [*(self + 10) remoteObjectProxyWithErrorHandler:v4];
+  v5 = [*(self + 10) remoteObjectProxyWithErrorHandler:handler_syncCopy];
 
   return v5;
 }
@@ -495,22 +495,22 @@ void __60__CoreTelephonyClientMux__computeNotificationSetForced_sync__block_invo
   }
 }
 
-- (void)_registerForNotifications_sync:(id)a3 shouldForce:(BOOL)a4 completion:(id)a5
+- (void)_registerForNotifications_sync:(id)notifications_sync shouldForce:(BOOL)force completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (a4 || ![*(self + 4) isEqualToSet:v9])
+  notifications_syncCopy = notifications_sync;
+  completionCopy = completion;
+  if (force || ![*(self + 4) isEqualToSet:notifications_syncCopy])
   {
-    v12 = [(CoreTelephonyClientMux *)self proxyWithErrorHandler_sync:v10];
-    if ([v9 count])
+    v12 = [(CoreTelephonyClientMux *)self proxyWithErrorHandler_sync:completionCopy];
+    if ([notifications_syncCopy count])
     {
-      v13 = [v9 allObjects];
+      allObjects = [notifications_syncCopy allObjects];
     }
 
     else
     {
-      v13 = 0;
+      allObjects = 0;
     }
 
     if (isFrameworkLoggingSupported())
@@ -519,13 +519,13 @@ void __60__CoreTelephonyClientMux__computeNotificationSetForced_sync__block_invo
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v13;
+        v17 = allObjects;
         _os_log_impl(&dword_182E9B000, v14, OS_LOG_TYPE_DEFAULT, "Sending selectors to server: %@", &v16, 0xCu);
       }
     }
 
-    [v12 registerForNotifications:v13 completion:v10];
-    objc_storeStrong(self + 4, a3);
+    [v12 registerForNotifications:allObjects completion:completionCopy];
+    objc_storeStrong(self + 4, notifications_sync);
   }
 
   else if (isFrameworkLoggingSupported())
@@ -601,15 +601,15 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
   }
 }
 
-- (void)_ensureConnectionSetup_sync:(BOOL)a3
+- (void)_ensureConnectionSetup_sync:(BOOL)setup_sync
 {
-  v3 = a3;
+  setup_syncCopy = setup_sync;
   if ([*(self + 9) isCommCenterSupported])
   {
     if (!*(self + 10))
     {
       [(CoreTelephonyClientMux *)self _connect_sync];
-      if (v3)
+      if (setup_syncCopy)
       {
 
         [(CoreTelephonyClientMux *)self _computeNotificationSetForced_sync];
@@ -627,10 +627,10 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
   }
 }
 
-- (void)_sendConnectionInterruptedNotification_sync:(id)a3
+- (void)_sendConnectionInterruptedNotification_sync:(id)notification_sync
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notification_syncCopy = notification_sync;
   v5 = CTLogClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -653,7 +653,7 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
           if (*(v7 + 5))
           {
             _Block_copy(v8);
-            v9 = v4;
+            v9 = notification_syncCopy;
             v10 = *(v7 + 5);
             operator new();
           }
@@ -699,12 +699,12 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAssertionForInvalidationNotification:(__CTAssertionType *)a3
+- (void)removeAssertionForInvalidationNotification:(__CTAssertionType *)notification
 {
-  if (a3)
+  if (notification)
   {
     v7[0] = self;
-    v7[1] = a3;
+    v7[1] = notification;
     v5 = *(self + 11);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -734,9 +734,9 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
   return [CoreTelephonyClientMux _getAssertionTypeId]::_CTAssertionConnectionTypeID;
 }
 
-- (__CTAssertionType)createCTAssertionForConnectionType:(int)a3 allocator:(__CFAllocator *)a4 proxy:(id)a5
+- (__CTAssertionType)createCTAssertionForConnectionType:(int)type allocator:(__CFAllocator *)allocator proxy:(id)proxy
 {
-  v8 = a5;
+  proxyCopy = proxy;
   [(CoreTelephonyClientMux *)self _getAssertionTypeId];
   Instance = _CFRuntimeCreateInstance();
   v10 = Instance;
@@ -745,8 +745,8 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
     *(Instance + 16) = 0;
     *(Instance + 32) = 0;
     *(Instance + 24) = 0;
-    objc_storeStrong((Instance + 16), a5);
-    v10->var3 = a3;
+    objc_storeStrong((Instance + 16), proxy);
+    v10->var3 = type;
     objc_storeWeak(&v10->var2, self);
   }
 
@@ -762,16 +762,16 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
   return v10;
 }
 
-- (void)registerBlockForInvalidationNotification:(__CTAssertionType *)a3 callbackQueue:(dispatch_queue_s *)a4 callback:(id)a5
+- (void)registerBlockForInvalidationNotification:(__CTAssertionType *)notification callbackQueue:(dispatch_queue_s *)queue callback:(id)callback
 {
-  if (a3)
+  if (notification)
   {
-    if (a5)
+    if (callback)
     {
       v10[0] = self;
-      v10[1] = a3;
-      v11 = _Block_copy(a5);
-      v12 = a4;
+      v10[1] = notification;
+      v11 = _Block_copy(callback);
+      queueCopy = queue;
       v9 = *(self + 11);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -795,12 +795,12 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
   return v3;
 }
 
-- (void)setXpcQueue:(queue)a3
+- (void)setXpcQueue:(queue)queue
 {
-  v4 = *a3.fObj.fObj;
-  if (*a3.fObj.fObj)
+  v4 = *queue.fObj.fObj;
+  if (*queue.fObj.fObj)
   {
-    dispatch_retain(*a3.fObj.fObj);
+    dispatch_retain(*queue.fObj.fObj);
   }
 
   v5 = *(self + 11);
@@ -821,40 +821,40 @@ void __39__CoreTelephonyClientMux__connect_sync__block_invoke_436(uint64_t a1, v
 
 - (id)dealloc
 {
-  v3 = a1;
-  [*a1 setInvalidationHandler:0];
-  [*a1 setInterruptionHandler:0];
-  [*a1 invalidate];
-  return std::unique_ptr<-[CoreTelephonyClientMux dealloc]::$_0>::~unique_ptr[abi:nn200100](&v3);
+  selfCopy = self;
+  [*self setInvalidationHandler:0];
+  [*self setInterruptionHandler:0];
+  [*self invalidate];
+  return std::unique_ptr<-[CoreTelephonyClientMux dealloc]::$_0>::~unique_ptr[abi:nn200100](&selfCopy);
 }
 
-- (id)addDelegate:(id *)a1 queue:
+- (id)addDelegate:(id *)delegate queue:
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *delegate;
+  *delegate = 0;
   if (v2)
   {
 
     MEMORY[0x1865E0880](v2, 0xE0C4087BCC992);
   }
 
-  return a1;
+  return delegate;
 }
 
 - (id)addDelegate:(dispatch_queue_s *) queue:(std::unique_ptr<-[CoreTelephonyClientMux)addDelegate:queue:]::$_1>
 {
   v64 = *MEMORY[0x1E69E9840];
-  v50 = a1;
-  v2 = *(a1 + 16);
+  selfCopy = self;
+  v2 = *(self + 16);
   if (v2)
   {
-    dispatch_retain(*(a1 + 16));
+    dispatch_retain(*(self + 16));
   }
 
   v52 = 0;
   v53 = 0;
-  v47 = a1;
-  v3 = *(a1 + 8);
+  selfCopy2 = self;
+  v3 = *(self + 8);
   object = v2;
   objc_initWeak(&v52, v3);
   v45 = &unk_1EF0671B8;
@@ -965,19 +965,19 @@ LABEL_11:
   std::vector<Protocol * {__strong}>::__destroy_vector::operator()[abi:nn200100](&v57);
 
   v53 = v5;
-  v21 = *v47;
-  v23 = *v47 + 16;
+  v21 = *selfCopy2;
+  v23 = *selfCopy2 + 16;
   v22 = *v23;
   if (!*v23)
   {
-    v25 = *v47 + 16;
+    v25 = *selfCopy2 + 16;
     if (v21[1] != v23)
     {
       goto LABEL_41;
     }
 
     v30 = 0;
-    v25 = *v47 + 16;
+    v25 = *selfCopy2 + 16;
     v32 = v25;
 LABEL_57:
     if (v30)
@@ -999,8 +999,8 @@ LABEL_61:
     operator new();
   }
 
-  v24 = v47[1];
-  v25 = *v47 + 16;
+  v24 = selfCopy2[1];
+  v25 = *selfCopy2 + 16;
   v26 = *v25;
   do
   {
@@ -1068,14 +1068,14 @@ LABEL_41:
 
   while (*v32 == v33);
   v30 = 0;
-  v24 = v47[1];
+  v24 = selfCopy2[1];
 LABEL_44:
   if (v32[4] < v24)
   {
     goto LABEL_57;
   }
 
-  v34 = *v47 + 16;
+  v34 = *selfCopy2 + 16;
   if (!v22)
   {
     goto LABEL_61;
@@ -1112,7 +1112,7 @@ LABEL_44:
   }
 
 LABEL_62:
-  [*v47 _computeNotificationSet_sync:&__block_literal_global_1021];
+  [*selfCopy2 _computeNotificationSet_sync:&__block_literal_global_1021];
 
   objc_destroyWeak(&v52);
   if (object)
@@ -1120,36 +1120,36 @@ LABEL_62:
     dispatch_release(object);
   }
 
-  result = std::unique_ptr<-[CoreTelephonyClientMux addDelegate:queue:]::$_1>::~unique_ptr[abi:nn200100](&v50);
+  result = std::unique_ptr<-[CoreTelephonyClientMux addDelegate:queue:]::$_1>::~unique_ptr[abi:nn200100](&selfCopy);
   v44 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)removeDelegate:(id *)a1
+- (id)removeDelegate:(id *)delegate
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *delegate;
+  *delegate = 0;
   if (v2)
   {
 
     MEMORY[0x1865E0880](v2, 0xC0C402DE288CCLL);
   }
 
-  return a1;
+  return delegate;
 }
 
 - (id)removeDelegate:(dispatch_queue_s *)
 {
-  v12 = a1;
-  v2 = *(a1 + 8);
-  v3 = (*a1 + 16);
+  selfCopy = self;
+  v2 = *(self + 8);
+  v3 = (*self + 16);
   v4 = *v3;
   if (!*v3)
   {
     goto LABEL_16;
   }
 
-  v5 = (*a1 + 8);
+  v5 = (*self + 8);
   v6 = v3;
   do
   {
@@ -1182,34 +1182,34 @@ LABEL_16:
     }
   }
 
-  [*a1 _computeNotificationSet_sync:&__block_literal_global_1025];
-  return std::unique_ptr<-[CoreTelephonyClientMux removeDelegate:]::$_2>::~unique_ptr[abi:nn200100](&v12);
+  [*self _computeNotificationSet_sync:&__block_literal_global_1025];
+  return std::unique_ptr<-[CoreTelephonyClientMux removeDelegate:]::$_2>::~unique_ptr[abi:nn200100](&selfCopy);
 }
 
-- (id)sink:(id *)a1 handleNotification:
+- (id)sink:(id *)sink handleNotification:
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *sink;
+  *sink = 0;
   if (v2)
   {
 
     MEMORY[0x1865E0880](v2, 0x80C40803F642BLL);
   }
 
-  return a1;
+  return sink;
 }
 
 - (id)sink:(dispatch_queue_s *) handleNotification:(std::unique_ptr<-[CoreTelephonyClientMux)sink:handleNotification:]::$_3>
 {
-  v2 = a1;
-  [a1[1] invokeWithTarget:*a1];
-  return std::unique_ptr<-[CoreTelephonyClientMux sink:handleNotification:]::$_3>::~unique_ptr[abi:nn200100](&v2);
+  selfCopy = self;
+  [self[1] invokeWithTarget:*self];
+  return std::unique_ptr<-[CoreTelephonyClientMux sink:handleNotification:]::$_3>::~unique_ptr[abi:nn200100](&selfCopy);
 }
 
 - (id)_sendConnectionInterruptedNotification_sync:(dispatch_queue_s *)
 {
-  v5 = a1;
-  if (*a1)
+  selfCopy = self;
+  if (*self)
   {
     v2 = CTLogClient();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -1218,11 +1218,11 @@ LABEL_16:
       _os_log_impl(&dword_182E9B000, v2, OS_LOG_TYPE_DEFAULT, "_sendConnectionInterruptedNotification_sync invoke callback", buf, 2u);
     }
 
-    v3 = *(a1 + 8);
-    (*(*a1 + 16))();
+    v3 = *(self + 8);
+    (*(*self + 16))();
   }
 
-  return std::unique_ptr<-[CoreTelephonyClientMux sink:handleNotification:]::$_3>::~unique_ptr[abi:nn200100](&v5);
+  return std::unique_ptr<-[CoreTelephonyClientMux sink:handleNotification:]::$_3>::~unique_ptr[abi:nn200100](&selfCopy);
 }
 
 @end

@@ -3,7 +3,7 @@
 - (BOOL)isSupportedPlatform;
 - (id)batteryHealthState;
 - (int)rawBatteryHealthServiceState;
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5;
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler;
 @end
 
 @implementation PowerStatus
@@ -17,22 +17,22 @@
   return v3;
 }
 
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler
 {
-  v7 = a3;
-  v20 = a5;
+  pathsCopy = paths;
+  handlerCopy = handler;
   v8 = +[RMLog batteryHealthLog];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100001374(v7, v8);
+    sub_100001374(pathsCopy, v8);
   }
 
-  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
+  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [pathsCopy count]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v7;
+  v10 = pathsCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v11)
   {
@@ -60,8 +60,8 @@
 
         if ([v16 isEqualToString:v14])
         {
-          v18 = [(PowerStatus *)self batteryHealthState];
-          [v9 setObject:v18 forKeyedSubscript:v16];
+          batteryHealthState = [(PowerStatus *)self batteryHealthState];
+          [v9 setObject:batteryHealthState forKeyedSubscript:v16];
         }
 
         v15 = v15 + 1;
@@ -75,7 +75,7 @@
   }
 
   v19 = [v9 copy];
-  v20[2](v20, v19, 0);
+  handlerCopy[2](handlerCopy, v19, 0);
 }
 
 - (int)rawBatteryHealthServiceState
@@ -91,7 +91,7 @@
     }
 
 LABEL_9:
-    v5 = -1;
+    intValue = -1;
     goto LABEL_10;
   }
 
@@ -108,10 +108,10 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 LABEL_10:
 
-  return [RMFeatureOverrides batteryHealthServiceStateWithDefaultValue:v5];
+  return [RMFeatureOverrides batteryHealthServiceStateWithDefaultValue:intValue];
 }
 
 - (BOOL)isSupportedPlatform
@@ -142,15 +142,15 @@ LABEL_10:
 {
   if ([(PowerStatus *)self isSupportedPlatform])
   {
-    v3 = [(PowerStatus *)self rawBatteryHealthServiceState];
-    if (v3 > 4)
+    rawBatteryHealthServiceState = [(PowerStatus *)self rawBatteryHealthServiceState];
+    if (rawBatteryHealthServiceState > 4)
     {
       v4 = &RMModelStatusDeviceBatteryHealth_DevicePowerBatteryHealth_unknown;
     }
 
     else
     {
-      v4 = *(&off_100004160 + v3);
+      v4 = *(&off_100004160 + rawBatteryHealthServiceState);
     }
   }
 

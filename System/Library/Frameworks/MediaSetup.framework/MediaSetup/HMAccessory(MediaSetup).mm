@@ -8,28 +8,28 @@
 
 - (uint64_t)isHomePod
 {
-  v1 = [a1 category];
-  v2 = [v1 categoryType];
+  category = [self category];
+  categoryType = [category categoryType];
 
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCE8B0]];
+  v3 = [categoryType isEqualToString:*MEMORY[0x277CCE8B0]];
   return v3;
 }
 
 - (uint64_t)isPartOfHome:()MediaSetup
 {
   v4 = a3;
-  v5 = [a1 home];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v4 uniqueIdentifier];
+  home = [self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [v4 uniqueIdentifier];
 
-  v8 = [v6 isEqual:v7];
+  v8 = [uniqueIdentifier isEqual:uniqueIdentifier2];
   return v8;
 }
 
 - (BOOL)isEndpoint
 {
-  v1 = [a1 siriEndpointProfile];
-  v2 = v1 != 0;
+  siriEndpointProfile = [self siriEndpointProfile];
+  v2 = siriEndpointProfile != 0;
 
   return v2;
 }

@@ -1,19 +1,19 @@
 @interface CBService
 - (CBPeripheral)peripheral;
-- (CBService)initWithPeripheral:(id)a3 dictionary:(id)a4;
+- (CBService)initWithPeripheral:(id)peripheral dictionary:(id)dictionary;
 - (id)description;
-- (id)handleCharacteristicsDiscovered:(id)a3;
-- (id)handleIncludedServicesDiscovered:(id)a3;
+- (id)handleCharacteristicsDiscovered:(id)discovered;
+- (id)handleIncludedServicesDiscovered:(id)discovered;
 - (void)invalidate;
 @end
 
 @implementation CBService
 
-- (CBService)initWithPeripheral:(id)a3 dictionary:(id)a4
+- (CBService)initWithPeripheral:(id)peripheral dictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"kCBMsgArgUUID"];
+  peripheralCopy = peripheral;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgUUID"];
   v9 = [CBUUID UUIDWithData:v8];
   v17.receiver = self;
   v17.super_class = CBService;
@@ -21,15 +21,15 @@
 
   if (v10)
   {
-    objc_storeWeak(&v10->_peripheral, v6);
-    v11 = [v7 objectForKeyedSubscript:@"kCBMsgArgType"];
+    objc_storeWeak(&v10->_peripheral, peripheralCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgType"];
     v10->_isPrimary = [v11 BOOLValue];
 
-    v12 = [v7 objectForKeyedSubscript:@"kCBMsgArgServiceStartHandle"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgServiceStartHandle"];
     startHandle = v10->_startHandle;
     v10->_startHandle = v12;
 
-    v14 = [v7 objectForKeyedSubscript:@"kCBMsgArgServiceEndHandle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgServiceEndHandle"];
     endHandle = v10->_endHandle;
     v10->_endHandle = v14;
   }
@@ -51,8 +51,8 @@
     v5 = @"NO";
   }
 
-  v6 = [(CBAttribute *)self UUID];
-  v7 = [v3 stringWithFormat:@"<%@: %p, isPrimary = %@, UUID = %@>", v4, self, v5, v6];
+  uUID = [(CBAttribute *)self UUID];
+  v7 = [v3 stringWithFormat:@"<%@: %p, isPrimary = %@, UUID = %@>", v4, self, v5, uUID];
 
   return v7;
 }
@@ -128,10 +128,10 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)handleIncludedServicesDiscovered:(id)a3
+- (id)handleIncludedServicesDiscovered:(id)discovered
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgServices"];
+  v4 = [discovered objectForKeyedSubscript:@"kCBMsgArgServices"];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_includedServices];
   v29 = 0u;
   v30 = 0u;
@@ -146,7 +146,7 @@ LABEL_25:
     v23 = [v5 copy];
     [(CBService *)self setIncludedServices:v23];
 
-    v22 = self;
+    selfCopy = self;
     goto LABEL_26;
   }
 
@@ -192,8 +192,8 @@ LABEL_4:
     v13 = [(CBService *)v15 initWithPeripheral:v18 dictionary:v10];
 
     v19 = objc_loadWeakRetained(&self->_peripheral);
-    v20 = [(CBService *)v13 startHandle];
-    [v19 setAttribute:v13 forHandle:v20];
+    startHandle = [(CBService *)v13 startHandle];
+    [v19 setAttribute:v13 forHandle:startHandle];
 
     v6 = v17;
     v5 = v16;
@@ -214,7 +214,7 @@ LABEL_16:
         *buf = v26;
         v34 = v13;
         v35 = 2112;
-        v36 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_1C0AC1000, v21, OS_LOG_TYPE_DEBUG, "Added %@ to %@", buf, 0x16u);
       }
     }
@@ -243,18 +243,18 @@ LABEL_5:
     [CBService handleIncludedServicesDiscovered:];
   }
 
-  v22 = 0;
+  selfCopy = 0;
 LABEL_26:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return selfCopy;
 }
 
-- (id)handleCharacteristicsDiscovered:(id)a3
+- (id)handleCharacteristicsDiscovered:(id)discovered
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgCharacteristics"];
+  v4 = [discovered objectForKeyedSubscript:@"kCBMsgArgCharacteristics"];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_characteristics];
   v28 = 0u;
   v29 = 0u;
@@ -269,7 +269,7 @@ LABEL_25:
     v22 = [v5 copy];
     [(CBService *)self setCharacteristics:v22];
 
-    v21 = self;
+    selfCopy = self;
     goto LABEL_26;
   }
 
@@ -315,8 +315,8 @@ LABEL_4:
     [v15 setAttribute:v13 forHandle:v17];
 
     v18 = objc_loadWeakRetained(&self->_peripheral);
-    v19 = [(CBCharacteristic *)v13 valueHandle];
-    [v18 setAttribute:v13 forHandle:v19];
+    valueHandle = [(CBCharacteristic *)v13 valueHandle];
+    [v18 setAttribute:v13 forHandle:valueHandle];
 
     v7 = v16;
     if (([v5 containsObject:v13] & 1) == 0)
@@ -334,7 +334,7 @@ LABEL_16:
         *buf = v25;
         v33 = v13;
         v34 = 2112;
-        v35 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_1C0AC1000, v20, OS_LOG_TYPE_DEBUG, "Added %@ to %@", buf, 0x16u);
       }
     }
@@ -363,12 +363,12 @@ LABEL_5:
     [CBService handleCharacteristicsDiscovered:];
   }
 
-  v21 = 0;
+  selfCopy = 0;
 LABEL_26:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return selfCopy;
 }
 
 - (CBPeripheral)peripheral

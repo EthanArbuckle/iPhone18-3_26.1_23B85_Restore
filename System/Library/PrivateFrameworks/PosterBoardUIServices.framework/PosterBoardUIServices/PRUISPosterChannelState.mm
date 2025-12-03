@@ -1,24 +1,24 @@
 @interface PRUISPosterChannelState
 - (NSString)description;
 - (_TtC21PosterBoardUIServices23PRUISPosterChannelState)init;
-- (_TtC21PosterBoardUIServices23PRUISPosterChannelState)initWithChannelIdentifier:(id)a3 channelVersion:(unint64_t)a4 posterVersion:(unint64_t)a5 channelContext:(id)a6 posterConfigurationIdentity:(id)a7 creationDate:(id)a8 lastModifiedDate:(id)a9;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC21PosterBoardUIServices23PRUISPosterChannelState)initWithChannelIdentifier:(id)identifier channelVersion:(unint64_t)version posterVersion:(unint64_t)posterVersion channelContext:(id)context posterConfigurationIdentity:(id)identity creationDate:(id)date lastModifiedDate:(id)modifiedDate;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRUISPosterChannelState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PRUISPosterChannelState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PRUISPosterChannelState.encode(with:)(coderCopy);
 }
 
-- (_TtC21PosterBoardUIServices23PRUISPosterChannelState)initWithChannelIdentifier:(id)a3 channelVersion:(unint64_t)a4 posterVersion:(unint64_t)a5 channelContext:(id)a6 posterConfigurationIdentity:(id)a7 creationDate:(id)a8 lastModifiedDate:(id)a9
+- (_TtC21PosterBoardUIServices23PRUISPosterChannelState)initWithChannelIdentifier:(id)identifier channelVersion:(unint64_t)version posterVersion:(unint64_t)posterVersion channelContext:(id)context posterConfigurationIdentity:(id)identity creationDate:(id)date lastModifiedDate:(id)modifiedDate
 {
-  v27 = a4;
-  v28 = a5;
-  v29 = self;
+  versionCopy = version;
+  posterVersionCopy = posterVersion;
+  selfCopy = self;
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC481D30);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v13 = &v26 - v12;
@@ -31,7 +31,7 @@
   v20 = &v26 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CAEF9DFC();
   sub_1CAEF9D8C();
-  if (a9)
+  if (modifiedDate)
   {
     sub_1CAEF9D8C();
     v21 = 0;
@@ -43,16 +43,16 @@
   }
 
   (*(v15 + 56))(v13, v21, 1, v14);
-  v22 = a6;
-  v23 = a7;
-  v24 = sub_1CAEB91A8(v20, v27, v28, v22, a7, v17, v13);
+  contextCopy = context;
+  identityCopy = identity;
+  v24 = sub_1CAEB91A8(v20, versionCopy, posterVersionCopy, contextCopy, identity, v17, v13);
 
   return v24;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   PRUISPosterChannelState.description.getter();
 
   v3 = sub_1CAEFA4BC();

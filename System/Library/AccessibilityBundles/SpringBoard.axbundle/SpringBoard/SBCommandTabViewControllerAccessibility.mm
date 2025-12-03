@@ -1,20 +1,20 @@
 @interface SBCommandTabViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)a3;
+- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)index;
 - (void)accessibilityAnnounceSelectedIcon;
 - (void)viewDidLoad;
 @end
 
 @implementation SBCommandTabViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBCommandTabViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBCommandTabViewController" hasInstanceVariable:@"_iconViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"SBCommandTabViewController" hasInstanceVariable:@"_selectedIconView" withType:"SBIconView"];
-  [v3 validateClass:@"SBCommandTabViewController" hasInstanceMethod:@"_moveSelectionSquareToIconAtIndex:" withFullSignature:{"v", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBCommandTabViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBCommandTabViewController" hasInstanceVariable:@"_iconViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"SBCommandTabViewController" hasInstanceVariable:@"_selectedIconView" withType:"SBIconView"];
+  [validationsCopy validateClass:@"SBCommandTabViewController" hasInstanceMethod:@"_moveSelectionSquareToIconAtIndex:" withFullSignature:{"v", "Q", 0}];
 }
 
 - (void)viewDidLoad
@@ -67,25 +67,25 @@
   }
 }
 
-- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)a3
+- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)index
 {
   v4.receiver = self;
   v4.super_class = SBCommandTabViewControllerAccessibility;
-  [(SBCommandTabViewControllerAccessibility *)&v4 _moveSelectionSquareToIconAtIndex:a3];
+  [(SBCommandTabViewControllerAccessibility *)&v4 _moveSelectionSquareToIconAtIndex:index];
   [(SBCommandTabViewControllerAccessibility *)self accessibilityAnnounceSelectedIcon];
 }
 
 - (void)accessibilityAnnounceSelectedIcon
 {
-  v3 = [MEMORY[0x29EDBDFA8] server];
-  v4 = [v3 isScreenLockedWithPasscode:0];
+  server = [MEMORY[0x29EDBDFA8] server];
+  v4 = [server isScreenLockedWithPasscode:0];
 
   if ((v4 & 1) == 0)
   {
     v7 = [(SBCommandTabViewControllerAccessibility *)self safeValueForKey:@"_selectedIconView"];
     v5 = *MEMORY[0x29EDC7EA8];
-    v6 = [v7 accessibilityLabel];
-    UIAccessibilityPostNotification(v5, v6);
+    accessibilityLabel = [v7 accessibilityLabel];
+    UIAccessibilityPostNotification(v5, accessibilityLabel);
   }
 }
 

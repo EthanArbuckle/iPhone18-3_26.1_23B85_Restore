@@ -1,28 +1,28 @@
 @interface MKMessagePhoneNumber
-+ (id)addCountryCallingCode:(id)a3;
-+ (id)addDefaultCountryCallingCode:(id)a3 number:(id)a4;
-+ (id)countryCallingCode:(id)a3;
++ (id)addCountryCallingCode:(id)code;
++ (id)addDefaultCountryCallingCode:(id)code number:(id)number;
++ (id)countryCallingCode:(id)code;
 @end
 
 @implementation MKMessagePhoneNumber
 
-+ (id)addCountryCallingCode:(id)a3
++ (id)addCountryCallingCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   if (addCountryCallingCode__onceToken != -1)
   {
     +[MKMessagePhoneNumber addCountryCallingCode:];
   }
 
-  if (![v3 length])
+  if (![codeCopy length])
   {
     goto LABEL_39;
   }
 
-  v4 = [v3 hasPrefix:@"+"];
+  v4 = [codeCopy hasPrefix:@"+"];
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (![v3 length])
+  if (![codeCopy length])
   {
 LABEL_16:
     if (v4)
@@ -40,7 +40,7 @@ LABEL_16:
       {
         v16 = v15;
 
-        v3 = v16;
+        codeCopy = v16;
       }
 
       free(v14);
@@ -48,7 +48,7 @@ LABEL_16:
       v26 = *(MEMORY[0x277D007E8] + 16);
       v27 = *(MEMORY[0x277D007E8] + 32);
       v28 = *(MEMORY[0x277D007E8] + 48);
-      [v3 UTF8String];
+      [codeCopy UTF8String];
       if (PNDecomposeForCountry())
       {
         if (v25)
@@ -82,14 +82,14 @@ LABEL_16:
 
         v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@", v18, v20, v21, v22];
 
-        v3 = v23;
+        codeCopy = v23;
         goto LABEL_39;
       }
     }
 
-    v19 = [MKMessagePhoneNumber addDefaultCountryCallingCode:addCountryCallingCode__internationalCallingCodeDefault number:v3];
+    v19 = [MKMessagePhoneNumber addDefaultCountryCallingCode:addCountryCallingCode__internationalCallingCodeDefault number:codeCopy];
 
-    v3 = v19;
+    codeCopy = v19;
     goto LABEL_39;
   }
 
@@ -99,7 +99,7 @@ LABEL_16:
   {
     while (1)
     {
-      v9 = [v3 characterAtIndex:v8];
+      v9 = [codeCopy characterAtIndex:v8];
       v10 = v9;
       if ((v9 - 48) <= 9)
       {
@@ -116,7 +116,7 @@ LABEL_16:
       [v6 appendFormat:@"%C", v9];
       ++v8;
       v7 = 1;
-      if (v8 >= [v3 length])
+      if (v8 >= [codeCopy length])
       {
         goto LABEL_15;
       }
@@ -131,7 +131,7 @@ LABEL_10:
     ++v8;
   }
 
-  while (v8 < [v3 length]);
+  while (v8 < [codeCopy length]);
   if ((v7 & 1) == 0)
   {
     goto LABEL_16;
@@ -142,12 +142,12 @@ LABEL_15:
 LABEL_18:
   v12 = v11;
 
-  v3 = v12;
+  codeCopy = v12;
 LABEL_19:
 
 LABEL_39:
 
-  return v3;
+  return codeCopy;
 }
 
 void __46__MKMessagePhoneNumber_addCountryCallingCode___block_invoke()
@@ -174,11 +174,11 @@ void __46__MKMessagePhoneNumber_addCountryCallingCode___block_invoke()
   }
 }
 
-+ (id)addDefaultCountryCallingCode:(id)a3 number:(id)a4
++ (id)addDefaultCountryCallingCode:(id)code number:(id)number
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:&stru_286A8E730 options:1024 range:{0, objc_msgSend(v6, "length")}];
+  codeCopy = code;
+  numberCopy = number;
+  v7 = [numberCopy stringByReplacingOccurrencesOfString:@"[^0-9]" withString:&stru_286A8E730 options:1024 range:{0, objc_msgSend(numberCopy, "length")}];
 
   if ([v7 hasPrefix:@"0"])
   {
@@ -187,12 +187,12 @@ void __46__MKMessagePhoneNumber_addCountryCallingCode___block_invoke()
     v7 = v8;
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"+%@%@", v5, v7];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"+%@%@", codeCopy, v7];
 
   return v9;
 }
 
-+ (id)countryCallingCode:(id)a3
++ (id)countryCallingCode:(id)code
 {
   v3 = _PNCopyInternationalCodeForCountry();
 

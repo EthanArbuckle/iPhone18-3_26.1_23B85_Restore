@@ -1,33 +1,33 @@
 @interface RTReachabilityManager
-+ (id)reachabilityToString:(unint64_t)a3;
++ (id)reachabilityToString:(unint64_t)string;
 - (RTReachabilityManager)init;
-- (RTReachabilityManager)initWithPathEvaluator:(id)a3;
+- (RTReachabilityManager)initWithPathEvaluator:(id)evaluator;
 - (unint64_t)reachability;
-- (void)_fetchCurrentReachability:(id)a3;
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)_processReachabilityChange:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_fetchCurrentReachability:(id)reachability;
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)_processReachabilityChange:(id)change;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchCurrentReachability:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)fetchCurrentReachability:(id)reachability;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation RTReachabilityManager
 
 - (RTReachabilityManager)init
 {
-  v3 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
-  v4 = [(RTReachabilityManager *)self initWithPathEvaluator:v3];
+  mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+  v4 = [(RTReachabilityManager *)self initWithPathEvaluator:mEMORY[0x277CD9200]];
 
   return v4;
 }
 
-- (RTReachabilityManager)initWithPathEvaluator:(id)a3
+- (RTReachabilityManager)initWithPathEvaluator:(id)evaluator
 {
-  v5 = a3;
-  if (v5)
+  evaluatorCopy = evaluator;
+  if (evaluatorCopy)
   {
     v11.receiver = self;
     v11.super_class = RTReachabilityManager;
@@ -35,14 +35,14 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_pathEvaluator, a3);
+      objc_storeStrong(&v6->_pathEvaluator, evaluator);
       v7->_currentReachability = 0;
       [(NWPathEvaluator *)v7->_pathEvaluator addObserver:v7 forKeyPath:@"path" options:5 context:0];
       v7->_observingReachabilityChanges = 1;
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -54,24 +54,24 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: pathEvaluator", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v8 = +[(RTNotification *)RTReachabilityMonitorNotificationReachabilityChanged];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
     v10 = [[RTReachabilityMonitorNotificationReachabilityChanged alloc] initWithReachability:self->_currentReachability];
-    [(RTNotifier *)self postNotification:v10 toObserver:v6];
+    [(RTNotifier *)self postNotification:v10 toObserver:observerCopy];
   }
 
   else
@@ -80,7 +80,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v13, 0xCu);
     }
 
@@ -88,7 +88,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412802;
-      v14 = v7;
+      v14 = nameCopy;
       v15 = 2080;
       v16 = "[RTReachabilityManager internalAddObserver:name:]";
       v17 = 1024;
@@ -98,12 +98,12 @@
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  nameCopy = name;
   v5 = +[(RTNotification *)RTReachabilityMonitorNotificationReachabilityChanged];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if ((v6 & 1) == 0)
   {
@@ -111,7 +111,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v9, 0xCu);
     }
 
@@ -119,7 +119,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412802;
-      v10 = v4;
+      v10 = nameCopy;
       v11 = 2080;
       v12 = "[RTReachabilityManager internalRemoveObserver:name:]";
       v13 = 1024;
@@ -143,33 +143,33 @@
   [(RTReachabilityManager *)&v3 dealloc];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_observingReachabilityChanges)
   {
     [(NWPathEvaluator *)self->_pathEvaluator removeObserver:self forKeyPath:@"path" context:0];
-    v4 = v5;
+    handlerCopy = v5;
     self->_observingReachabilityChanges = 0;
   }
 
   self->_currentReachability = 0;
-  if (v4)
+  if (handlerCopy)
   {
-    (*(v4 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(v5, 0);
+    handlerCopy = v5;
   }
 }
 
-- (void)_processReachabilityChange:(id)a3
+- (void)_processReachabilityChange:(id)change
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v5 status];
+  changeCopy = change;
+  path = [changeCopy path];
+  status = [path status];
 
-  v7 = v6 & 0xFFFFFFFFFFFFFFFDLL;
+  v7 = status & 0xFFFFFFFFFFFFFFFDLL;
   if (v7)
   {
     if (v7 != 1)
@@ -194,12 +194,12 @@
       goto LABEL_18;
     }
 
-    v8 = [v4 path];
-    v9 = [v8 usesInterfaceType:1];
+    path2 = [changeCopy path];
+    v9 = [path2 usesInterfaceType:1];
 
     v10 = v9;
-    v11 = [v4 path];
-    v12 = [v11 usesInterfaceType:2];
+    path3 = [changeCopy path];
+    v12 = [path3 usesInterfaceType:2];
 
     if (v12)
     {
@@ -211,14 +211,14 @@
       v13 = v10;
     }
 
-    v14 = [v4 path];
-    v15 = [v14 usesInterfaceType:0];
+    path4 = [changeCopy path];
+    v15 = [path4 usesInterfaceType:0];
 
-    v16 = [v4 path];
-    v17 = [v16 usesInterfaceType:3];
+    path5 = [changeCopy path];
+    v17 = [path5 usesInterfaceType:3];
 
-    v18 = [v4 path];
-    v19 = [v18 usesInterfaceType:4];
+    path6 = [changeCopy path];
+    v19 = [path6 usesInterfaceType:4];
 
     if (((v19 | v17) | v15))
     {
@@ -256,20 +256,20 @@ LABEL_18:
   }
 }
 
-+ (id)reachabilityToString:(unint64_t)a3
++ (id)reachabilityToString:(unint64_t)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = objc_opt_new();
     v5 = v4;
-    if (v3)
+    if (stringCopy)
     {
       [v4 addObject:@"WiFi"];
-      if ((v3 & 2) == 0)
+      if ((stringCopy & 2) == 0)
       {
 LABEL_4:
-        if ((v3 & 4) == 0)
+        if ((stringCopy & 4) == 0)
         {
 LABEL_6:
           v6 = [v5 componentsJoinedByString:{@", "}];
@@ -283,13 +283,13 @@ LABEL_5:
       }
     }
 
-    else if ((v3 & 2) == 0)
+    else if ((stringCopy & 2) == 0)
     {
       goto LABEL_4;
     }
 
     [v5 addObject:@"Cellular"];
-    if ((v3 & 4) == 0)
+    if ((stringCopy & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -303,32 +303,32 @@ LABEL_8:
   return v6;
 }
 
-- (void)fetchCurrentReachability:(id)a3
+- (void)fetchCurrentReachability:(id)reachability
 {
-  v4 = a3;
-  if (v4)
+  reachabilityCopy = reachability;
+  if (reachabilityCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __50__RTReachabilityManager_fetchCurrentReachability___block_invoke;
     v6[3] = &unk_2788C4938;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = reachabilityCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)_fetchCurrentReachability:(id)a3
+- (void)_fetchCurrentReachability:(id)reachability
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  reachabilityCopy = reachability;
+  v5 = reachabilityCopy;
+  if (reachabilityCopy)
   {
     if (self->_pathEvaluator)
     {
-      (*(v4 + 2))(v4, self->_currentReachability);
+      (*(reachabilityCopy + 2))(reachabilityCopy, self->_currentReachability);
     }
 
     else
@@ -371,47 +371,47 @@ LABEL_8:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__RTReachabilityManager_reachability__block_invoke;
   v6[3] = &unk_2788C7FB0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(RTNotifier *)self queue];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__RTReachabilityManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_2788C50E8;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = pathCopy;
+  v19 = objectCopy;
+  v20 = changeCopy;
+  contextCopy = context;
+  v14 = changeCopy;
+  v15 = objectCopy;
+  v16 = pathCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  if ([a3 isEqualToString:@"path"] && -[NWPathEvaluator isEqual:](self->_pathEvaluator, "isEqual:", v8))
+  objectCopy = object;
+  if ([path isEqualToString:@"path"] && -[NWPathEvaluator isEqual:](self->_pathEvaluator, "isEqual:", objectCopy))
   {
-    [(RTReachabilityManager *)self _processReachabilityChange:v8];
+    [(RTReachabilityManager *)self _processReachabilityChange:objectCopy];
   }
 }
 

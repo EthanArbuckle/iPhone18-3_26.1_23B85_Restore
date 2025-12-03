@@ -1,17 +1,17 @@
 @interface MattingV2TuningParameters
 - (MattingV2TuningParameters)initWithDefaults;
-- (MattingV2TuningParameters)initWithTuningDictionary:(id)a3;
-- (id)getSemanticConfigurationsFor:(id)a3 mattingConfiguration:(id *)a4;
-- (id)parseSemanticConfiguration:(id)a3 semanticKey:(id)a4 mattingConfiguration:(id *)a5;
+- (MattingV2TuningParameters)initWithTuningDictionary:(id)dictionary;
+- (id)getSemanticConfigurationsFor:(id)for mattingConfiguration:(id *)configuration;
+- (id)parseSemanticConfiguration:(id)configuration semanticKey:(id)key mattingConfiguration:(id *)mattingConfiguration;
 @end
 
 @implementation MattingV2TuningParameters
 
-- (id)parseSemanticConfiguration:(id)a3 semanticKey:(id)a4 mattingConfiguration:(id *)a5
+- (id)parseSemanticConfiguration:(id)configuration semanticKey:(id)key mattingConfiguration:(id *)mattingConfiguration
 {
-  v6 = a3;
-  v8 = objc_msgSend_objectForKeyedSubscript_(v6, v7, a4);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v6, v9, @"Default");
+  configurationCopy = configuration;
+  v8 = objc_msgSend_objectForKeyedSubscript_(configurationCopy, v7, key);
+  v10 = objc_msgSend_objectForKeyedSubscript_(configurationCopy, v9, @"Default");
 
   v11 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v13 = v11;
@@ -71,23 +71,23 @@
   v36 = v34;
   if (v29 == 2)
   {
-    var4 = a5->var4;
-    if (a5->var5 * var4 >= a5->var3 * a5->var2)
+    var4 = mattingConfiguration->var4;
+    if (mattingConfiguration->var5 * var4 >= mattingConfiguration->var3 * mattingConfiguration->var2)
     {
-      var5 = a5->var5;
+      var5 = mattingConfiguration->var5;
     }
 
     else
     {
-      var4 = a5->var2;
-      var5 = a5->var3;
+      var4 = mattingConfiguration->var2;
+      var5 = mattingConfiguration->var3;
     }
   }
 
   else if (v29 == 1)
   {
-    var4 = a5->var4;
-    var5 = a5->var5;
+    var4 = mattingConfiguration->var4;
+    var5 = mattingConfiguration->var5;
   }
 
   else if (v29)
@@ -98,8 +98,8 @@
 
   else
   {
-    var4 = a5->var2;
-    var5 = a5->var3;
+    var4 = mattingConfiguration->var2;
+    var5 = mattingConfiguration->var3;
   }
 
   objc_msgSend_setWidth_(v34, v35, var4 / v20);
@@ -133,21 +133,21 @@
   return v3;
 }
 
-- (MattingV2TuningParameters)initWithTuningDictionary:(id)a3
+- (MattingV2TuningParameters)initWithTuningDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = MattingV2TuningParameters;
   v5 = [(MattingV2TuningParameters *)&v35 init];
   v8 = v5;
-  if (v4 && v5)
+  if (dictionaryCopy && v5)
   {
-    v9 = objc_msgSend_allKeys(v4, v6, v7);
+    v9 = objc_msgSend_allKeys(dictionaryCopy, v6, v7);
     v12 = objc_msgSend_firstObject(v9, v10, v11);
     portType = v8->_portType;
     v8->_portType = v12;
 
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, v8->_portType);
+    v15 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, v8->_portType);
     tuningDictionaryForPortType = v8->_tuningDictionaryForPortType;
     v8->_tuningDictionaryForPortType = v15;
 
@@ -155,7 +155,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v19 = objc_msgSend_allKeys(v4, v17, v18);
+    v19 = objc_msgSend_allKeys(dictionaryCopy, v17, v18);
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v31, v30, 16);
     if (v21)
     {
@@ -173,7 +173,7 @@
           v26 = *(*(&v31 + 1) + 8 * i);
           if ((objc_msgSend_isEqualToString_(v26, v22, v8->_portType) & 1) == 0)
           {
-            v27 = objc_msgSend_objectForKeyedSubscript_(v4, v22, v26);
+            v27 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v22, v26);
             objc_msgSend_isEqualToDictionary_(v27, v28, v8->_tuningDictionaryForPortType);
           }
         }
@@ -188,11 +188,11 @@
   return v8;
 }
 
-- (id)getSemanticConfigurationsFor:(id)a3 mattingConfiguration:(id *)a4
+- (id)getSemanticConfigurationsFor:(id)for mattingConfiguration:(id *)configuration
 {
-  v6 = a3;
+  forCopy = for;
   v8 = objc_alloc_init(MEMORY[0x29EDB8E00]);
-  if (a4->var7 == 1)
+  if (configuration->var7 == 1)
   {
     objc_msgSend_objectForKeyedSubscript_(self->_tuningDictionaryForPortType, v7, @"Fast");
   }
@@ -214,7 +214,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v6;
+  obj = forCopy;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v18, &v40, v39, 16);
   if (v19)
   {
@@ -274,8 +274,8 @@
         }
 
 LABEL_18:
-        v33 = *&a4->var4;
-        v38[0] = *&a4->var0;
+        v33 = *&configuration->var4;
+        v38[0] = *&configuration->var0;
         v38[1] = v33;
         v34 = objc_msgSend_parseSemanticConfiguration_semanticKey_mattingConfiguration_(self, v20, v11, v26, v38);
         objc_msgSend_setObject_forKeyedSubscript_(v8, v35, v34, v24);

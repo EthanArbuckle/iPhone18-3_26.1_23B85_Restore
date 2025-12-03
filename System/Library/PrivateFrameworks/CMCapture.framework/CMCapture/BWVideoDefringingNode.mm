@@ -1,34 +1,34 @@
 @interface BWVideoDefringingNode
-- (BWVideoDefringingNode)initWithSensorIDString:(id)a3 portType:(id)a4 propagateSynchronizedSlaveFrame:(BOOL)a5 isSlomo:(BOOL)a6;
+- (BWVideoDefringingNode)initWithSensorIDString:(id)string portType:(id)type propagateSynchronizedSlaveFrame:(BOOL)frame isSlomo:(BOOL)slomo;
 - (uint64_t)_loadAndConfigureVideoDefringingBundle;
 - (uint64_t)_processorOptions;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWVideoDefringingNode
 
-- (BWVideoDefringingNode)initWithSensorIDString:(id)a3 portType:(id)a4 propagateSynchronizedSlaveFrame:(BOOL)a5 isSlomo:(BOOL)a6
+- (BWVideoDefringingNode)initWithSensorIDString:(id)string portType:(id)type propagateSynchronizedSlaveFrame:(BOOL)frame isSlomo:(BOOL)slomo
 {
-  v7 = a5;
+  frameCopy = frame;
   v18.receiver = self;
   v18.super_class = BWVideoDefringingNode;
   v10 = [(BWNode *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_isSlomo = a6;
-    v10->_propagateSynchronizedSlaveFrame = v7;
+    v10->_isSlomo = slomo;
+    v10->_propagateSynchronizedSlaveFrame = frameCopy;
     v12 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v10];
     v13 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v13 setSupportedPixelFormats:&unk_1F22488B0];
     [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v12 primaryMediaConfiguration] setFormatRequirements:v13];
     [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v12 primaryMediaConfiguration] setPassthroughMode:2];
-    if (v7)
+    if (frameCopy)
     {
       v14 = objc_alloc_init(BWNodeInputMediaConfiguration);
       [(BWNodeInputMediaConfiguration *)v14 setFormatRequirements:v13];
@@ -44,7 +44,7 @@
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v15 primaryMediaConfiguration] setFormatRequirements:v13];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v15 primaryMediaConfiguration] setPassthroughMode:2];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v15 primaryMediaConfiguration] setProvidesPixelBufferPool:1];
-    if (v7)
+    if (frameCopy)
     {
       v16 = objc_alloc_init(BWNodeOutputMediaConfiguration);
       [(BWNodeOutputMediaConfiguration *)v16 setFormatRequirements:v13];
@@ -55,9 +55,9 @@
 
     [(BWNode *)v11 addOutput:v15];
 
-    v11->_cameraToDefringe = a4;
-    v11->_sensorIDString = a3;
-    v11->_portType = a4;
+    v11->_cameraToDefringe = type;
+    v11->_sensorIDString = string;
+    v11->_portType = type;
     v11->_limitedGMErrorLogger = [[BWLimitedGMErrorLogger alloc] initWithName:@"BWVideoDefringingNode" maxLoggingCount:10];
   }
 
@@ -77,31 +77,31 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if (([a5 isEqualToString:@"PrimaryFormat"] & 1) != 0 || objc_msgSend(a5, "isEqualToString:", @"SynchronizedSlaveFrame"))
+  if (([key isEqualToString:@"PrimaryFormat"] & 1) != 0 || objc_msgSend(key, "isEqualToString:", @"SynchronizedSlaveFrame"))
   {
-    v9 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:a5];
+    v9 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:key];
     if (!v9)
     {
-      if ([a5 isEqualToString:@"PrimaryFormat"])
+      if ([key isEqualToString:@"PrimaryFormat"])
       {
-        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, self->super._output, a5];
+        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, self->super._output, key];
         objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
       }
 
       v9 = objc_alloc_init(BWNodeOutputMediaProperties);
-      [(BWNodeOutput *)self->super._output _setMediaProperties:v9 forAttachedMediaKey:a5];
+      [(BWNodeOutput *)self->super._output _setMediaProperties:v9 forAttachedMediaKey:key];
     }
 
-    [(BWNodeOutputMediaProperties *)v9 setResolvedFormat:a3];
+    [(BWNodeOutputMediaProperties *)v9 setResolvedFormat:format];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = BWVideoDefringingNode;
-    [(BWNode *)&v11 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+    [(BWNode *)&v11 didSelectFormat:format forInput:input forAttachedMediaKey:key];
   }
 }
 
@@ -116,7 +116,7 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger resetCurrentLoggingCounter];
   output = self->super._output;
@@ -124,28 +124,28 @@
   [(BWNodeOutput *)output markEndOfLiveOutput];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   cf = 0;
   target = 0;
   v21 = 0;
   v22 = 0;
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
     limitedGMErrorLogger = self->_limitedGMErrorLogger;
 
     [(BWLimitedGMErrorLogger *)limitedGMErrorLogger resetCurrentLoggingCounter];
     return;
   }
 
-  v7 = BWOverCaptureSampleBufferUnpackAndRetain(a3, 0, &target, &cf, 0, 0);
+  v7 = BWOverCaptureSampleBufferUnpackAndRetain(buffer, 0, &target, &cf, 0, 0);
   if (v7)
   {
     CopyWithNewPixelBuffer = v7;
     [BWVideoDefringingNode renderSampleBuffer:forInput:];
     v12 = 0;
-    v17 = 0;
+    newPixelBuffer = 0;
     goto LABEL_25;
   }
 
@@ -158,8 +158,8 @@
     v12 = [objc_msgSend(-[BWNodeOutput mediaPropertiesForAttachedMediaKey:](self->super._output mediaPropertiesForAttachedMediaKey:{@"SynchronizedSlaveFrame", "livePixelBufferPool"), "newPixelBuffer"}];
     [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor setInputSampleBuffer:target];
     [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor setOutputPixelBuffer:v12];
-    v13 = [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor process];
-    if (!v13 && self->_videoDefringingProcessor)
+    process = [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor process];
+    if (!process && self->_videoDefringingProcessor)
     {
       CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(target, v12, &self->_outputFormatDescription, &v22);
       ImageBuffer = CMSampleBufferGetImageBuffer(target);
@@ -167,7 +167,7 @@
       goto LABEL_15;
     }
 
-    [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger logErrorNumber:v13 errorString:@"defringed Wide Failed"];
+    [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger logErrorNumber:process errorString:@"defringed Wide Failed"];
     v14 = CFRetain(target);
 LABEL_11:
     CopyWithNewPixelBuffer = 0;
@@ -187,27 +187,27 @@ LABEL_11:
 LABEL_15:
   if ([objc_msgSend(v10 objectForKeyedSubscript:{v11), "isEqualToString:", self->_cameraToDefringe}])
   {
-    v17 = [(BWPixelBufferPool *)[(BWNodeOutput *)self->super._output livePixelBufferPool] newPixelBuffer];
+    newPixelBuffer = [(BWPixelBufferPool *)[(BWNodeOutput *)self->super._output livePixelBufferPool] newPixelBuffer];
     [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor setInputSampleBuffer:cf];
-    [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor setOutputPixelBuffer:v17];
-    v18 = [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor process];
-    if (v18 || !self->_videoDefringingProcessor)
+    [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor setOutputPixelBuffer:newPixelBuffer];
+    process2 = [(FigVideoDefringingProcessor *)self->_videoDefringingProcessor process];
+    if (process2 || !self->_videoDefringingProcessor)
     {
-      [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger logErrorNumber:v18 errorString:@"defringed Narrow Failed"];
+      [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger logErrorNumber:process2 errorString:@"defringed Narrow Failed"];
       v21 = CFRetain(cf);
     }
 
     else
     {
-      CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(cf, v17, &self->_outputFormatDescription, &v21);
+      CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(cf, newPixelBuffer, &self->_outputFormatDescription, &v21);
       v19 = CMSampleBufferGetImageBuffer(cf);
-      CVBufferPropagateAttachments(v19, v17);
+      CVBufferPropagateAttachments(v19, newPixelBuffer);
     }
   }
 
   else
   {
-    v17 = 0;
+    newPixelBuffer = 0;
     if (cf)
     {
       v21 = CFRetain(cf);
@@ -226,7 +226,7 @@ LABEL_15:
   }
 
 LABEL_25:
-  CMSampleBufferGetPresentationTimeStamp(&v20, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v20, buffer);
   [(BWNodeOutput *)self->super._output emitDroppedSample:[BWDroppedSample newDroppedSampleWithReason:0x1F219C010 pts:&v20]];
   [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger logErrorNumber:CopyWithNewPixelBuffer errorString:@"Error : Emitting dropped buffer"];
 LABEL_27:
@@ -255,22 +255,22 @@ LABEL_27:
     CFRelease(v12);
   }
 
-  if (v17)
+  if (newPixelBuffer)
   {
-    CFRelease(v17);
+    CFRelease(newPixelBuffer);
   }
 }
 
 - (uint64_t)_loadAndConfigureVideoDefringingBundle
 {
-  v1 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    return v1;
+    return selfCopy;
   }
 
   v14 = 0;
-  v2 = [(BWVideoDefringingNode *)a1 _processorOptions];
+  _processorOptions = [(BWVideoDefringingNode *)self _processorOptions];
   v3 = [MEMORY[0x1E696AAE8] bundleWithPath:@"/System/Library/VideoProcessors/VideoDefringing.bundle"];
   if (!v3)
   {
@@ -297,7 +297,7 @@ LABEL_27:
   }
 
   v6 = [[v5 alloc] initWithCommandQueue:0];
-  *(v1 + 168) = v6;
+  *(selfCopy + 168) = v6;
   if (!v6)
   {
     OUTLINED_FUNCTION_2();
@@ -307,26 +307,26 @@ LABEL_27:
     return FigSignalErrorAtGM();
   }
 
-  v7 = [OUTLINED_FUNCTION_2_61() width];
-  v8 = [OUTLINED_FUNCTION_2_61() height];
-  v9 = [OUTLINED_FUNCTION_2_61() width];
-  v10 = [OUTLINED_FUNCTION_2_61() height];
-  v11 = *(v1 + 168);
-  v13[0] = v7;
-  v13[1] = v8;
-  v13[2] = v9;
-  v13[3] = v10;
+  width = [OUTLINED_FUNCTION_2_61() width];
+  height = [OUTLINED_FUNCTION_2_61() height];
+  width2 = [OUTLINED_FUNCTION_2_61() width];
+  height2 = [OUTLINED_FUNCTION_2_61() height];
+  v11 = *(selfCopy + 168);
+  v13[0] = width;
+  v13[1] = height;
+  v13[2] = width2;
+  v13[3] = height2;
   [v11 setDefringeConfig:v13];
-  [*(v1 + 168) setOptions:v2];
-  v1 = [*(v1 + 168) prepareToProcess:*(v1 + 128) ^ 1u];
-  if (v1)
+  [*(selfCopy + 168) setOptions:_processorOptions];
+  selfCopy = [*(selfCopy + 168) prepareToProcess:*(selfCopy + 128) ^ 1u];
+  if (selfCopy)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_6();
     FigDebugAssert3();
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)_processorOptions

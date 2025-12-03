@@ -1,17 +1,17 @@
 @interface COSMigrationChoiceHeaderView
 - (CGRect)_computedFrameForTextLabel;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (COSMigrationChoiceHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (COSMigrationChoiceHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation COSMigrationChoiceHeaderView
 
-- (COSMigrationChoiceHeaderView)initWithFrame:(CGRect)a3
+- (COSMigrationChoiceHeaderView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = COSMigrationChoiceHeaderView;
-  v3 = [(COSMigrationChoiceHeaderView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSMigrationChoiceHeaderView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = BPSSetupBackgroundColor();
@@ -66,9 +66,9 @@
   [(UILabel *)titleLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(COSMigrationChoiceHeaderView *)self bounds:a3.width];
+  [(COSMigrationChoiceHeaderView *)self bounds:fits.width];
   v5 = v4;
   v7 = v6;
   v9 = v8;

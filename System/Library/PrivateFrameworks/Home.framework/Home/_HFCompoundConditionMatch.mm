@@ -1,17 +1,17 @@
 @interface _HFCompoundConditionMatch
-+ (id)matchWithCondition:(id)a3 matchedPredicates:(id)a4;
++ (id)matchWithCondition:(id)condition matchedPredicates:(id)predicates;
 @end
 
 @implementation _HFCompoundConditionMatch
 
-+ (id)matchWithCondition:(id)a3 matchedPredicates:(id)a4
++ (id)matchWithCondition:(id)condition matchedPredicates:(id)predicates
 {
-  v5 = a4;
-  v6 = a3;
+  predicatesCopy = predicates;
+  conditionCopy = condition;
   v7 = objc_alloc_init(_HFCompoundConditionMatch);
-  [(_HFCompoundConditionMatch *)v7 setMatchedCondition:v6];
+  [(_HFCompoundConditionMatch *)v7 setMatchedCondition:conditionCopy];
 
-  [(_HFCompoundConditionMatch *)v7 setMatchedPredicates:v5];
+  [(_HFCompoundConditionMatch *)v7 setMatchedPredicates:predicatesCopy];
 
   return v7;
 }

@@ -1,33 +1,33 @@
 @interface BRCloudTelemetryTTRDecisionRequest
-+ (id)requestWithSenderID:(id)a3 ruleID:(id)a4 completionHandler:(id)a5;
++ (id)requestWithSenderID:(id)d ruleID:(id)iD completionHandler:(id)handler;
 - (NSObject)networkingDelegate;
-- (id)_initWithSenderID:(id)a3 ruleID:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (id)_initWithSenderID:(id)d ruleID:(id)iD completionHandler:(id)handler;
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)resume;
 @end
 
 @implementation BRCloudTelemetryTTRDecisionRequest
 
-+ (id)requestWithSenderID:(id)a3 ruleID:(id)a4 completionHandler:(id)a5
++ (id)requestWithSenderID:(id)d ruleID:(id)iD completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[BRCloudTelemetryTTRDecisionRequest alloc] _initWithSenderID:v9 ruleID:v8 completionHandler:v7];
+  handlerCopy = handler;
+  iDCopy = iD;
+  dCopy = d;
+  v10 = [[BRCloudTelemetryTTRDecisionRequest alloc] _initWithSenderID:dCopy ruleID:iDCopy completionHandler:handlerCopy];
 
   return v10;
 }
 
-- (id)_initWithSenderID:(id)a3 ruleID:(id)a4 completionHandler:(id)a5
+- (id)_initWithSenderID:(id)d ruleID:(id)iD completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v32.receiver = self;
   v32.super_class = BRCloudTelemetryTTRDecisionRequest;
   v12 = [(BRCloudTelemetryTTRDecisionRequest *)&v32 init];
@@ -44,20 +44,20 @@
     apsConnection = v12->_apsConnection;
     v12->_apsConnection = v17;
 
-    v19 = [(APSConnection *)v12->_apsConnection publicToken];
+    publicToken = [(APSConnection *)v12->_apsConnection publicToken];
     publicToken = v12->_publicToken;
-    v12->_publicToken = v19;
+    v12->_publicToken = publicToken;
 
     v21 = [BRCUserDefaults defaultsForMangledID:0];
     v12->_useDecisionServer = [v21 useIDSDecisionService];
 
     v22 = [BRCUserDefaults defaultsForMangledID:0];
-    v23 = [v22 idsDecisionServiceURL];
+    idsDecisionServiceURL = [v22 idsDecisionServiceURL];
     decisonServerURL = v12->_decisonServerURL;
-    v12->_decisonServerURL = v23;
+    v12->_decisonServerURL = idsDecisionServiceURL;
 
-    objc_storeStrong(&v12->_senderID, a3);
-    objc_storeStrong(&v12->_ruleID, a4);
+    objc_storeStrong(&v12->_senderID, d);
+    objc_storeStrong(&v12->_ruleID, iD);
     v25 = objc_alloc_init(MEMORY[0x277CBEB28]);
     responseBody = v12->_responseBody;
     v12->_responseBody = v25;
@@ -66,7 +66,7 @@
     v30[1] = 3221225472;
     v30[2] = __81__BRCloudTelemetryTTRDecisionRequest__initWithSenderID_ruleID_completionHandler___block_invoke;
     v30[3] = &unk_278500CB8;
-    v31 = v11;
+    v31 = handlerCopy;
     v27 = MEMORY[0x22AA4A310](v30);
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v27;
@@ -110,15 +110,15 @@ void __81__BRCloudTelemetryTTRDecisionRequest__initWithSenderID_ruleID_completio
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  if (a7)
+  if (handler)
   {
-    (*(a7 + 2))(a7, a6);
+    (*(handler + 2))(handler, request);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
@@ -128,19 +128,19 @@ void __81__BRCloudTelemetryTTRDecisionRequest__initWithSenderID_ruleID_completio
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a4 response];
-  v9 = v8;
-  if (v7)
+  errorCopy = error;
+  response = [task response];
+  v9 = response;
+  if (errorCopy)
   {
     (*(self->_completionHandler + 2))();
     goto LABEL_31;
   }
 
-  if (!v8)
+  if (!response)
   {
     completionHandler = self->_completionHandler;
     v21 = MEMORY[0x277CCA9B8];
@@ -266,7 +266,7 @@ LABEL_36:
   }
 
   v34 = v34;
-  v35 = [v34 BOOLValue];
+  bOOLValue = [v34 BOOLValue];
   v36 = [v17 objectForKey:@"reason"];
   if (v36)
   {
@@ -281,7 +281,7 @@ LABEL_36:
     }
   }
 
-  v48 = v35;
+  v48 = bOOLValue;
   v49 = v36;
   v37 = brc_bread_crumbs();
   v38 = brc_default_log();
@@ -308,23 +308,23 @@ LABEL_31:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, a5);
+    (*(handler + 2))(handler, connection);
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, 1);
+    (*(handler + 2))(handler, 1);
   }
 }
 
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error
 {
   v6 = objc_alloc_init(MEMORY[0x277CBEB28]);
   responseBody = self->_responseBody;

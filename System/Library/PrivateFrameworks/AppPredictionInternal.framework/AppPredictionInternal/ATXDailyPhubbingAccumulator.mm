@@ -1,18 +1,18 @@
 @interface ATXDailyPhubbingAccumulator
 - (ATXDailyPhubbingAccumulator)init;
-- (ATXDailyPhubbingAccumulator)initWithProximityEventPublisher:(id)a3 screenLockedPublisher:(id)a4 appLaunchPublisher:(id)a5;
-- (BOOL)appInFocusEventOccured:(id)a3 whileNearPeople:(id)a4;
-- (BOOL)screenEventOccured:(id)a3 whileNearPeople:(id)a4;
+- (ATXDailyPhubbingAccumulator)initWithProximityEventPublisher:(id)publisher screenLockedPublisher:(id)lockedPublisher appLaunchPublisher:(id)launchPublisher;
+- (BOOL)appInFocusEventOccured:(id)occured whileNearPeople:(id)people;
+- (BOOL)screenEventOccured:(id)occured whileNearPeople:(id)people;
 - (BOOL)successfullyAccumulatedPhubbingEvents;
-- (id)dateIntervalFromAppInFocusEvent:(id)a3;
-- (id)dateIntervalFromPeopleEvent:(id)a3;
-- (id)dateIntervalFromScreenLockEvent:(id)a3;
-- (void)addAppSession:(id)a3 launchReason:(id)a4 startTime:(id)a5 endTime:(id)a6 duration:(double)a7;
-- (void)recordAppLaunchEndEvent:(id)a3;
-- (void)recordAppLaunchStartEvent:(id)a3;
+- (id)dateIntervalFromAppInFocusEvent:(id)event;
+- (id)dateIntervalFromPeopleEvent:(id)event;
+- (id)dateIntervalFromScreenLockEvent:(id)event;
+- (void)addAppSession:(id)session launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration;
+- (void)recordAppLaunchEndEvent:(id)event;
+- (void)recordAppLaunchStartEvent:(id)event;
 - (void)successfullyAccumulatedPhubbingEvents;
-- (void)trackScreenEndingEvent:(id)a3;
-- (void)trackScreenStartingEvent:(id)a3;
+- (void)trackScreenEndingEvent:(id)event;
+- (void)trackScreenStartingEvent:(id)event;
 @end
 
 @implementation ATXDailyPhubbingAccumulator
@@ -25,36 +25,36 @@
   v6 = [v4 fetchPeopleWithProximityFromStartDate:v3 toEndDate:v5];
 
   v7 = BiomeLibrary();
-  v8 = [v7 Device];
-  v9 = [v8 ScreenLocked];
+  device = [v7 Device];
+  screenLocked = [device ScreenLocked];
 
   v10 = BiomeLibrary();
   v11 = [v10 App];
-  v12 = [v11 InFocus];
+  inFocus = [v11 InFocus];
 
   v13 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v3 endDate:0 maxEvents:0 lastN:0 reversed:0];
   v14 = *MEMORY[0x277CEBB48];
-  v15 = [v9 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v13];
-  v16 = [v12 publisherWithUseCase:v14 options:v13];
+  v15 = [screenLocked publisherWithUseCase:*MEMORY[0x277CEBB48] options:v13];
+  v16 = [inFocus publisherWithUseCase:v14 options:v13];
   v17 = [(ATXDailyPhubbingAccumulator *)self initWithProximityEventPublisher:v6 screenLockedPublisher:v15 appLaunchPublisher:v16];
 
   return v17;
 }
 
-- (ATXDailyPhubbingAccumulator)initWithProximityEventPublisher:(id)a3 screenLockedPublisher:(id)a4 appLaunchPublisher:(id)a5
+- (ATXDailyPhubbingAccumulator)initWithProximityEventPublisher:(id)publisher screenLockedPublisher:(id)lockedPublisher appLaunchPublisher:(id)launchPublisher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  publisherCopy = publisher;
+  lockedPublisherCopy = lockedPublisher;
+  launchPublisherCopy = launchPublisher;
   v21.receiver = self;
   v21.super_class = ATXDailyPhubbingAccumulator;
   v12 = [(ATXDailyPhubbingAccumulator *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_proximityPublisher, a3);
-    objc_storeStrong(&v13->_deviceScreenLockedPublisher, a4);
-    objc_storeStrong(&v13->_appLaunchPublisher, a5);
+    objc_storeStrong(&v12->_proximityPublisher, publisher);
+    objc_storeStrong(&v13->_deviceScreenLockedPublisher, lockedPublisher);
+    objc_storeStrong(&v13->_appLaunchPublisher, launchPublisher);
     v14 = objc_opt_new();
     phubbingSessionEvents = v13->_phubbingSessionEvents;
     v13->_phubbingSessionEvents = v14;
@@ -76,8 +76,8 @@
   v28[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v4 = +[_ATXAppIconState sharedInstance];
-  v5 = [v4 allInstalledAppsKnownToSpringBoard];
-  v6 = [v3 initWithArray:v5];
+  allInstalledAppsKnownToSpringBoard = [v4 allInstalledAppsKnownToSpringBoard];
+  v6 = [v3 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   proximityPublisher = self->_proximityPublisher;
   appLaunchPublisher = self->_appLaunchPublisher;
@@ -316,18 +316,18 @@ void __68__ATXDailyPhubbingAccumulator_successfullyAccumulatedPhubbingEvents__bl
   }
 }
 
-- (id)dateIntervalFromPeopleEvent:(id)a3
+- (id)dateIntervalFromPeopleEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 endDate];
+    v4 = eventCopy;
+    endDate = [v4 endDate];
 
     v6 = objc_alloc(MEMORY[0x277CCA970]);
-    v7 = [v4 startDate];
-    if (v5)
+    startDate = [v4 startDate];
+    if (endDate)
     {
       [v4 endDate];
     }
@@ -337,7 +337,7 @@ void __68__ATXDailyPhubbingAccumulator_successfullyAccumulatedPhubbingEvents__bl
       [v4 startDate];
     }
     v9 = ;
-    v8 = [v6 initWithStartDate:v7 endDate:v9];
+    v8 = [v6 initWithStartDate:startDate endDate:v9];
   }
 
   else
@@ -348,14 +348,14 @@ void __68__ATXDailyPhubbingAccumulator_successfullyAccumulatedPhubbingEvents__bl
   return v8;
 }
 
-- (id)dateIntervalFromScreenLockEvent:(id)a3
+- (id)dateIntervalFromScreenLockEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 eventBody];
+    v4 = eventCopy;
+    eventBody = [v4 eventBody];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -381,24 +381,24 @@ void __68__ATXDailyPhubbingAccumulator_successfullyAccumulatedPhubbingEvents__bl
   return v9;
 }
 
-- (id)dateIntervalFromAppInFocusEvent:(id)a3
+- (id)dateIntervalFromAppInFocusEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 eventBody];
+    v4 = eventCopy;
+    eventBody = [v4 eventBody];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 eventBody];
+      eventBody2 = [v4 eventBody];
       v8 = objc_alloc(MEMORY[0x277CCA970]);
-      v9 = [v7 absoluteTimestamp];
-      v10 = [v7 absoluteTimestamp];
-      v11 = [v8 initWithStartDate:v9 endDate:v10];
+      absoluteTimestamp = [eventBody2 absoluteTimestamp];
+      absoluteTimestamp2 = [eventBody2 absoluteTimestamp];
+      v11 = [v8 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
     }
 
     else
@@ -415,28 +415,28 @@ void __68__ATXDailyPhubbingAccumulator_successfullyAccumulatedPhubbingEvents__bl
   return v11;
 }
 
-- (void)trackScreenStartingEvent:(id)a3
+- (void)trackScreenStartingEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 eventBody];
-  if (([v4 starting] & 1) == 0 && -[ATXDailyPhubbingAccumulator screenEventOccured:whileNearPeople:](self, "screenEventOccured:whileNearPeople:", v8, self->_mostRecentProximityPeopleEvent))
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
+  if (([eventBody starting] & 1) == 0 && -[ATXDailyPhubbingAccumulator screenEventOccured:whileNearPeople:](self, "screenEventOccured:whileNearPeople:", eventCopy, self->_mostRecentProximityPeopleEvent))
   {
     v5 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v8 timestamp];
+    [eventCopy timestamp];
     v6 = [v5 initWithTimeIntervalSinceReferenceDate:?];
     phubbingStartTime = self->_phubbingStartTime;
     self->_phubbingStartTime = v6;
   }
 }
 
-- (void)trackScreenEndingEvent:(id)a3
+- (void)trackScreenEndingEvent:(id)event
 {
-  v16 = a3;
-  v4 = [v16 eventBody];
-  if ([v4 starting] && self->_phubbingStartTime && -[ATXDailyPhubbingAccumulator screenEventOccured:whileNearPeople:](self, "screenEventOccured:whileNearPeople:", v16, self->_mostRecentProximityPeopleEvent))
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
+  if ([eventBody starting] && self->_phubbingStartTime && -[ATXDailyPhubbingAccumulator screenEventOccured:whileNearPeople:](self, "screenEventOccured:whileNearPeople:", eventCopy, self->_mostRecentProximityPeopleEvent))
   {
     v5 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v16 timestamp];
+    [eventCopy timestamp];
     v6 = [v5 initWithTimeIntervalSinceReferenceDate:?];
     objc_storeStrong(&self->_phubbingEndTime, v6);
     v7 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:self->_phubbingStartTime endDate:self->_phubbingEndTime];
@@ -470,21 +470,21 @@ void __68__ATXDailyPhubbingAccumulator_successfullyAccumulatedPhubbingEvents__bl
   }
 }
 
-- (void)recordAppLaunchStartEvent:(id)a3
+- (void)recordAppLaunchStartEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   mostRecentProximityPeopleEvent = self->_mostRecentProximityPeopleEvent;
-  v6 = v4;
+  v6 = eventCopy;
   if ([ATXDailyPhubbingAccumulator appInFocusEventOccured:"appInFocusEventOccured:whileNearPeople:" whileNearPeople:?]&& self->_phubbingStartTime)
   {
     [(NSMutableArray *)self->_appInFocusStartingEvents addObject:v6];
   }
 }
 
-- (void)recordAppLaunchEndEvent:(id)a3
+- (void)recordAppLaunchEndEvent:(id)event
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = [(NSMutableArray *)self->_appInFocusStartingEvents copy];
   v24 = 0u;
   v25 = 0u;
@@ -506,25 +506,25 @@ void __68__ATXDailyPhubbingAccumulator_successfullyAccumulatedPhubbingEvents__bl
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v4 bundleID];
-        v13 = [v11 bundleID];
-        v14 = [v12 isEqualToString:v13];
+        bundleID = [eventCopy bundleID];
+        bundleID2 = [v11 bundleID];
+        v14 = [bundleID isEqualToString:bundleID2];
 
         if (v14)
         {
-          if ([(ATXDailyPhubbingAccumulator *)self appInFocusEventOccured:v4 whileNearPeople:self->_mostRecentProximityPeopleEvent])
+          if ([(ATXDailyPhubbingAccumulator *)self appInFocusEventOccured:eventCopy whileNearPeople:self->_mostRecentProximityPeopleEvent])
           {
             v15 = objc_alloc(MEMORY[0x277CCA970]);
-            v16 = [v11 absoluteTimestamp];
-            v17 = [v4 absoluteTimestamp];
-            v18 = [v15 initWithStartDate:v16 endDate:v17];
+            absoluteTimestamp = [v11 absoluteTimestamp];
+            absoluteTimestamp2 = [eventCopy absoluteTimestamp];
+            v18 = [v15 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
 
-            v19 = [v4 bundleID];
-            v20 = [v11 launchReason];
-            v21 = [v11 absoluteTimestamp];
-            v22 = [v4 absoluteTimestamp];
+            bundleID3 = [eventCopy bundleID];
+            launchReason = [v11 launchReason];
+            absoluteTimestamp3 = [v11 absoluteTimestamp];
+            absoluteTimestamp4 = [eventCopy absoluteTimestamp];
             [v18 duration];
-            [(ATXDailyPhubbingAccumulator *)self addAppSession:v19 launchReason:v20 startTime:v21 endTime:v22 duration:?];
+            [(ATXDailyPhubbingAccumulator *)self addAppSession:bundleID3 launchReason:launchReason startTime:absoluteTimestamp3 endTime:absoluteTimestamp4 duration:?];
           }
 
           [(NSMutableArray *)self->_appInFocusStartingEvents removeObject:v11];
@@ -547,36 +547,36 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAppSession:(id)a3 launchReason:(id)a4 startTime:(id)a5 endTime:(id)a6 duration:(double)a7
+- (void)addAppSession:(id)session launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [ATXSessionTaggingAppEntity genreIdForBundleId:v15];
-  v17 = [v16 unsignedIntegerValue];
+  endTimeCopy = endTime;
+  timeCopy = time;
+  reasonCopy = reason;
+  sessionCopy = session;
+  v16 = [ATXSessionTaggingAppEntity genreIdForBundleId:sessionCopy];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
   v18 = objc_alloc(MEMORY[0x277CEB8F8]);
-  v19 = [MEMORY[0x277CEB8F8] usageInsightsAppLaunchReasonFromBMAppInFocus:v14];
+  v19 = [MEMORY[0x277CEB8F8] usageInsightsAppLaunchReasonFromBMAppInFocus:reasonCopy];
 
-  v20 = [v18 initWithBundleID:v15 category:v17 launchReason:v19 startTime:v13 endTime:v12 duration:a7];
+  v20 = [v18 initWithBundleID:sessionCopy category:unsignedIntegerValue launchReason:v19 startTime:timeCopy endTime:endTimeCopy duration:duration];
   [(NSMutableArray *)self->_appSessionsWithinPhubbingEvent addObject:v20];
 }
 
-- (BOOL)screenEventOccured:(id)a3 whileNearPeople:(id)a4
+- (BOOL)screenEventOccured:(id)occured whileNearPeople:(id)people
 {
-  v5 = a4;
+  peopleCopy = people;
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  occuredCopy = occured;
   v8 = [v6 alloc];
-  [v7 timestamp];
+  [occuredCopy timestamp];
   v10 = v9;
 
   v11 = [v8 initWithTimeIntervalSinceReferenceDate:v10];
   [v11 timeIntervalSince1970];
   v13 = v12;
-  v14 = [v5 startDate];
-  [v14 timeIntervalSince1970];
+  startDate = [peopleCopy startDate];
+  [startDate timeIntervalSince1970];
   if (v13 <= v15)
   {
     v20 = 0;
@@ -586,23 +586,23 @@ LABEL_13:
   {
     [v11 timeIntervalSince1970];
     v17 = v16;
-    v18 = [v5 endDate];
-    [v18 timeIntervalSince1970];
+    endDate = [peopleCopy endDate];
+    [endDate timeIntervalSince1970];
     v20 = v17 < v19;
   }
 
   return v20;
 }
 
-- (BOOL)appInFocusEventOccured:(id)a3 whileNearPeople:(id)a4
+- (BOOL)appInFocusEventOccured:(id)occured whileNearPeople:(id)people
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 absoluteTimestamp];
-  [v7 timeIntervalSince1970];
+  occuredCopy = occured;
+  peopleCopy = people;
+  absoluteTimestamp = [occuredCopy absoluteTimestamp];
+  [absoluteTimestamp timeIntervalSince1970];
   v9 = v8;
-  v10 = [v6 startDate];
-  [v10 timeIntervalSince1970];
+  startDate = [peopleCopy startDate];
+  [startDate timeIntervalSince1970];
   if (v9 <= v11)
   {
     v17 = 0;
@@ -610,11 +610,11 @@ LABEL_13:
 
   else
   {
-    v12 = [v5 absoluteTimestamp];
-    [v12 timeIntervalSince1970];
+    absoluteTimestamp2 = [occuredCopy absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSince1970];
     v14 = v13;
-    v15 = [v6 endDate];
-    [v15 timeIntervalSince1970];
+    endDate = [peopleCopy endDate];
+    [endDate timeIntervalSince1970];
     v17 = v14 < v16;
   }
 
@@ -624,7 +624,7 @@ LABEL_13:
 - (void)successfullyAccumulatedPhubbingEvents
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 136315394;
   v5 = "[ATXDailyPhubbingAccumulator successfullyAccumulatedPhubbingEvents]";
   v6 = 2112;

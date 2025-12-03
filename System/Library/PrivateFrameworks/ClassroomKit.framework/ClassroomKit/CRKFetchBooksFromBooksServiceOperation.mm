@@ -1,7 +1,7 @@
 @interface CRKFetchBooksFromBooksServiceOperation
 + (id)defaultRequest;
 - (CRKFetchBooksFromBooksServiceOperation)init;
-- (CRKFetchBooksFromBooksServiceOperation)initWithRequest:(id)a3;
+- (CRKFetchBooksFromBooksServiceOperation)initWithRequest:(id)request;
 - (void)main;
 @end
 
@@ -17,22 +17,22 @@
 
 - (CRKFetchBooksFromBooksServiceOperation)init
 {
-  v3 = [objc_opt_class() defaultRequest];
-  v4 = [(CRKFetchBooksFromBooksServiceOperation *)self initWithRequest:v3];
+  defaultRequest = [objc_opt_class() defaultRequest];
+  v4 = [(CRKFetchBooksFromBooksServiceOperation *)self initWithRequest:defaultRequest];
 
   return v4;
 }
 
-- (CRKFetchBooksFromBooksServiceOperation)initWithRequest:(id)a3
+- (CRKFetchBooksFromBooksServiceOperation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CRKFetchBooksFromBooksServiceOperation;
   v6 = [(CRKFetchBooksFromBooksServiceOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mRequest, a3);
+    objc_storeStrong(&v6->mRequest, request);
   }
 
   return v7;

@@ -1,20 +1,20 @@
 @interface RadioSyncRequest
 - (RadioSyncRequest)init;
-- (RadioSyncRequest)initWithGlobalVersion:(unint64_t)a3;
-- (id)_sortedChangesByType:(id)a3;
-- (id)_stationSortOrderForChanges:(id)a3;
-- (id)_updateModel:(id)a3 withChangeDictionary:(id)a4 changeType:(int64_t *)a5 loadArtworkSynchronously:(BOOL)a6;
-- (void)startWithCompletionHandler:(id)a3;
+- (RadioSyncRequest)initWithGlobalVersion:(unint64_t)version;
+- (id)_sortedChangesByType:(id)type;
+- (id)_stationSortOrderForChanges:(id)changes;
+- (id)_updateModel:(id)model withChangeDictionary:(id)dictionary changeType:(int64_t *)type loadArtworkSynchronously:(BOOL)synchronously;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation RadioSyncRequest
 
-- (id)_updateModel:(id)a3 withChangeDictionary:(id)a4 changeType:(int64_t *)a5 loadArtworkSynchronously:(BOOL)a6
+- (id)_updateModel:(id)model withChangeDictionary:(id)dictionary changeType:(int64_t *)type loadArtworkSynchronously:(BOOL)synchronously
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectForKey:@"change-type"];
+  modelCopy = model;
+  dictionaryCopy = dictionary;
+  v10 = [dictionaryCopy objectForKey:@"change-type"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -22,16 +22,16 @@
     goto LABEL_30;
   }
 
-  v11 = [v10 integerValue];
-  v12 = v11;
-  if (a5)
+  integerValue = [v10 integerValue];
+  v12 = integerValue;
+  if (type)
   {
-    *a5 = v11;
+    *type = integerValue;
   }
 
-  if (v11 == 4)
+  if (integerValue == 4)
   {
-    v13 = [v9 objectForKey:@"sort-order"];
+    v13 = [dictionaryCopy objectForKey:@"sort-order"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,15 +73,15 @@
       }
 
       v19 = [v13 valueForKey:@"longLongValue", v29];
-      [v8 setStationSortOrdering:v19];
+      [modelCopy setStationSortOrdering:v19];
 LABEL_27:
     }
 
     goto LABEL_28;
   }
 
-  v21 = v11 - 1;
-  if ((v11 - 1) > 2)
+  v21 = integerValue - 1;
+  if ((integerValue - 1) > 2)
   {
     v13 = os_log_create("com.apple.amp.radio", "Requests");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -89,14 +89,14 @@ LABEL_27:
       *buf = 134218242;
       v34 = v12;
       v35 = 2112;
-      v36 = v9;
+      v36 = dictionaryCopy;
       _os_log_impl(&dword_261792000, v13, OS_LOG_TYPE_INFO, "[RadioSyncRequest] Unknown change type (%ld): %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v13 = [v9 objectForKey:@"station-dict"];
+    v13 = [dictionaryCopy objectForKey:@"station-dict"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,10 +104,10 @@ LABEL_27:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v22 longLongValue];
+        longLongValue = [v22 longLongValue];
         if (v21 > 1)
         {
-          v27 = v23;
+          v27 = longLongValue;
           v28 = _RadioLogCategoryRequests();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
@@ -116,12 +116,12 @@ LABEL_27:
             _os_log_impl(&dword_261792000, v28, OS_LOG_TYPE_INFO, "[RadioSyncRequest] Deleting station with id: %llu", buf, 0xCu);
           }
 
-          [v8 deleteStationWithID:v27];
+          [modelCopy deleteStationWithID:v27];
         }
 
         else
         {
-          v20 = [v8 newStationWithDictionary:v13];
+          v20 = [modelCopy newStationWithDictionary:v13];
           if (v20)
           {
 LABEL_37:
@@ -154,15 +154,15 @@ LABEL_30:
   return v20;
 }
 
-- (id)_stationSortOrderForChanges:(id)a3
+- (id)_stationSortOrderForChanges:(id)changes
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  changesCopy = changes;
+  v4 = [changesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -173,7 +173,7 @@ LABEL_30:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(changesCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -187,7 +187,7 @@ LABEL_30:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [changesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -205,16 +205,16 @@ LABEL_12:
   return v10;
 }
 
-- (id)_sortedChangesByType:(id)a3
+- (id)_sortedChangesByType:(id)type
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  typeCopy = type;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(typeCopy, "count")}];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v5 = v3;
+  v5 = typeCopy;
   v6 = [v5 countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v6)
   {
@@ -352,14 +352,14 @@ LABEL_12:
   return v33;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RadioRequest *)self requestContext];
+  handlerCopy = handler;
+  requestContext = [(RadioRequest *)self requestContext];
   v6 = +[RadioModel sharedModel];
-  v7 = [v6 databaseVersion];
+  databaseVersion = [v6 databaseVersion];
 
-  if (v7 != 3)
+  if (databaseVersion != 3)
   {
     v8 = os_log_create("com.apple.amp.radio", "Requests");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -376,12 +376,12 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = __47__RadioSyncRequest_startWithCompletionHandler___block_invoke;
   v11[3] = &unk_279AEADC0;
-  v12 = v5;
-  v13 = v4;
+  v12 = requestContext;
+  v13 = handlerCopy;
   v11[4] = self;
-  v14 = v7 != 3;
-  v9 = v5;
-  v10 = v4;
+  v14 = databaseVersion != 3;
+  v9 = requestContext;
+  v10 = handlerCopy;
   [(RadioRequest *)self _loadRadioStoreBagWithCompletionHandler:v11];
 }
 
@@ -976,7 +976,7 @@ void __47__RadioSyncRequest_startWithCompletionHandler___block_invoke_64(void *a
   [v3 postNotificationName:@"RadioRequestDidFinishNotification" object:a1[5]];
 }
 
-- (RadioSyncRequest)initWithGlobalVersion:(unint64_t)a3
+- (RadioSyncRequest)initWithGlobalVersion:(unint64_t)version
 {
   v9.receiver = self;
   v9.super_class = RadioSyncRequest;
@@ -984,7 +984,7 @@ void __47__RadioSyncRequest_startWithCompletionHandler___block_invoke_64(void *a
   v5 = v4;
   if (v4)
   {
-    v4->_globalVersion = a3;
+    v4->_globalVersion = version;
     v6 = dispatch_queue_create("com.apple.Radio.RadioSyncRequest.artworkQueue", 0);
     artworkQueue = v5->_artworkQueue;
     v5->_artworkQueue = v6;

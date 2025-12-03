@@ -1,21 +1,21 @@
 @interface MCDForYouDataSource
-- (MCDForYouDataSource)initWithRecommendationGroup:(id)a3;
+- (MCDForYouDataSource)initWithRecommendationGroup:(id)group;
 - (MPPropertySet)subgroupProperties;
 - (id)itemProperties;
 @end
 
 @implementation MCDForYouDataSource
 
-- (MCDForYouDataSource)initWithRecommendationGroup:(id)a3
+- (MCDForYouDataSource)initWithRecommendationGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = MCDForYouDataSource;
   v6 = [(MCDForYouDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_group, a3);
+    objc_storeStrong(&v6->_group, group);
   }
 
   return v7;
@@ -47,17 +47,17 @@
   v16[3] = MPModelForYouRecommendationGroupPropertyDisplaysAsGridCellInCarPlay;
   v16[4] = MPModelForYouRecommendationGroupPropertyDisplaysAsTitledSectionWithRowsInCarPlay;
   v3 = [NSArray arrayWithObjects:v16 count:5];
-  v4 = [(MCDFuseDataSource *)self albumProperties];
-  v15[0] = v4;
+  albumProperties = [(MCDFuseDataSource *)self albumProperties];
+  v15[0] = albumProperties;
   v14[1] = MPModelForYouRecommendationItemRelationshipPlaylist;
-  v5 = [(MCDFuseDataSource *)self playlistProperties];
-  v15[1] = v5;
+  playlistProperties = [(MCDFuseDataSource *)self playlistProperties];
+  v15[1] = playlistProperties;
   v14[2] = MPModelForYouRecommendationItemRelationshipSubgroup;
-  v6 = [(MCDForYouDataSource *)self subgroupProperties];
-  v15[2] = v6;
+  subgroupProperties = [(MCDForYouDataSource *)self subgroupProperties];
+  v15[2] = subgroupProperties;
   v14[3] = MPModelForYouRecommendationItemRelationshipRadioStation;
-  v7 = [(MCDFuseDataSource *)self radioStationProperties];
-  v15[3] = v7;
+  radioStationProperties = [(MCDFuseDataSource *)self radioStationProperties];
+  v15[3] = radioStationProperties;
   v8 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4];
   v9 = [NSMutableDictionary dictionaryWithDictionary:v8];
 

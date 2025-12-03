@@ -1,79 +1,79 @@
 @interface UITextEffectsWindow
-+ (id)_sceneForScreen:(id)a3;
-+ (id)_sharedTextEffectsWindowforWindowScene:(id)a3 allowHosted:(BOOL)a4 forViewService:(BOOL)a5 matchesStatusBarOrientationOnAccess:(BOOL)a6 shouldCreateIfNecessary:(BOOL)a7;
-+ (id)activeTextEffectsWindowForScreen:(id)a3;
-+ (id)activeTextEffectsWindowForWindowScene:(id)a3 forViewService:(BOOL)a4;
-+ (id)sharedTextEffectsWindowForScreen:(id)a3;
-+ (id)sharedTextEffectsWindowForWindowScene:(id)a3 forViewService:(BOOL)a4;
++ (id)_sceneForScreen:(id)screen;
++ (id)_sharedTextEffectsWindowforWindowScene:(id)scene allowHosted:(BOOL)hosted forViewService:(BOOL)service matchesStatusBarOrientationOnAccess:(BOOL)access shouldCreateIfNecessary:(BOOL)necessary;
++ (id)activeTextEffectsWindowForScreen:(id)screen;
++ (id)activeTextEffectsWindowForWindowScene:(id)scene forViewService:(BOOL)service;
++ (id)sharedTextEffectsWindowForScreen:(id)screen;
++ (id)sharedTextEffectsWindowForWindowScene:(id)scene forViewService:(BOOL)service;
 + (void)lowerTextEffectsWindowsForHideNotificationCenter;
 + (void)raiseTextEffectsWindowsForShowNotificationCenter;
 - (BOOL)_isFullscreen;
-- (BOOL)_matchingOptions:(id)a3;
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)_matchingOptions:(id)options;
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (BOOL)_shouldResizeWithScene;
-- (BOOL)_shouldTextEffectsWindowBeHostedForView:(id)a3;
+- (BOOL)_shouldTextEffectsWindowBeHostedForView:(id)view;
 - (BOOL)isTrackingKeyboard;
-- (CGPoint)_forHostedProcessConvertPoint:(CGPoint)a3 forWindow:(id)a4 wasFromWindow:(BOOL)a5;
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 fromWindow:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toWindow:(id)a4;
+- (CGPoint)_forHostedProcessConvertPoint:(CGPoint)point forWindow:(id)window wasFromWindow:(BOOL)fromWindow;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point fromWindow:(id)window;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point toWindow:(id)window;
 - (CGPoint)hostedViewOrigin;
 - (CGPoint)hostedWindowOffset;
-- (CGRect)_forHostedProcessConvertRect:(CGRect)a3 forWindow:(id)a4 wasFromWindow:(BOOL)a5;
+- (CGRect)_forHostedProcessConvertRect:(CGRect)rect forWindow:(id)window wasFromWindow:(BOOL)fromWindow;
 - (CGRect)_sceneBounds;
 - (CGRect)_sceneReferenceBounds;
 - (CGRect)actualSceneBounds;
-- (CGRect)actualSceneBoundsForLandscape:(BOOL)a3;
+- (CGRect)actualSceneBoundsForLandscape:(BOOL)landscape;
 - (CGRect)actualSceneFrame;
-- (CGRect)actualSceneFrameForOrientation:(int64_t)a3;
-- (CGRect)convertRect:(CGRect)a3 fromView:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 fromWindow:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toView:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toWindow:(id)a4;
+- (CGRect)actualSceneFrameForOrientation:(int64_t)orientation;
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view;
+- (CGRect)convertRect:(CGRect)rect fromWindow:(id)window;
+- (CGRect)convertRect:(CGRect)rect toView:(id)view;
+- (CGRect)convertRect:(CGRect)rect toWindow:(id)window;
 - (CGRect)hostedFrame;
 - (CGRect)hostedViewReference;
 - (CGSize)hostedViewSize;
 - (CGSize)keyboardScreenReferenceSize;
 - (UIEdgeInsets)hostedSafeInsets;
-- (UITextEffectsWindow)initWithFrame:(CGRect)a3;
+- (UITextEffectsWindow)initWithFrame:(CGRect)frame;
 - (UIWindowScene)_intendedScene;
 - (double)slideOverWindowVerticalOffset;
-- (id)_initBasicWithScene:(id)a3 options:(id)a4;
-- (id)_initWithFrame:(CGRect)a3 attached:(BOOL)a4;
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 windowScene:(id)a5;
-- (id)_initWithScene:(id)a3 options:(id)a4;
+- (id)_initBasicWithScene:(id)scene options:(id)options;
+- (id)_initWithFrame:(CGRect)frame attached:(BOOL)attached;
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name windowScene:(id)scene;
+- (id)_initWithScene:(id)scene options:(id)options;
 - (id)rootViewController;
 - (int64_t)actualSceneOrientation;
 - (int64_t)interfaceOrientation;
-- (void)_commonInitWithOptions:(id)a3;
+- (void)_commonInitWithOptions:(id)options;
 - (void)_commonTextEffectsInit;
-- (void)_configureContextOptions:(id)a3;
-- (void)_didRemoveSubview:(id)a3;
+- (void)_configureContextOptions:(id)options;
+- (void)_didRemoveSubview:(id)subview;
 - (void)_didSnapshot;
 - (void)_matchDeviceOrientation;
 - (void)_restoreWindowLevel;
 - (void)_sceneBoundsDidChange;
-- (void)_setWindowLevel:(double)a3;
-- (void)_sortSubviewsOfView:(id)a3;
+- (void)_setWindowLevel:(double)level;
+- (void)_sortSubviewsOfView:(id)view;
 - (void)_updateRootViewConstraintsForInterfaceOrientationAndStatusBarHeight;
 - (void)_updateTransformLayer;
 - (void)_willSnapshot;
-- (void)addBottomPadding:(double)a3;
-- (void)addSubview:(id)a3;
+- (void)addBottomPadding:(double)padding;
+- (void)addSubview:(id)subview;
 - (void)becomeKeyWindow;
 - (void)dealloc;
 - (void)delayHideWindow;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)layoutSubviews;
 - (void)layoutViewsForTrackedGuides;
 - (void)resetTransform;
-- (void)setFrame:(CGRect)a3;
-- (void)setHostedSafeInsets:(UIEdgeInsets)a3;
-- (void)setHostedViewOrigin:(CGPoint)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHostedSafeInsets:(UIEdgeInsets)insets;
+- (void)setHostedViewOrigin:(CGPoint)origin;
 - (void)updateEditingOverlayContainer;
-- (void)updateForOrientation:(int64_t)a3 forceResetTransform:(BOOL)a4;
-- (void)updateLastRemoteView:(BOOL)a3 forView:(id)a4 inContainer:(id)a5;
+- (void)updateForOrientation:(int64_t)orientation forceResetTransform:(BOOL)transform;
+- (void)updateLastRemoteView:(BOOL)view forView:(id)forView inContainer:(id)container;
 @end
 
 @implementation UITextEffectsWindow
@@ -82,9 +82,9 @@
 {
   v4.receiver = self;
   v4.super_class = UITextEffectsWindow;
-  v2 = [(UIWindow *)&v4 rootViewController];
+  rootViewController = [(UIWindow *)&v4 rootViewController];
 
-  return v2;
+  return rootViewController;
 }
 
 - (int64_t)interfaceOrientation
@@ -104,10 +104,10 @@
 - (CGRect)_sceneBounds
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 windowingModeEnabled];
+  visualModeManager = [v3 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if (v5)
+  if (windowingModeEnabled)
   {
     v24.receiver = self;
     v24.super_class = UITextEffectsWindow;
@@ -128,14 +128,14 @@
         viewOrientation = self->super._interfaceOrientation;
       }
 
-      v15 = [(UIWindow *)self screen];
-      [v15 _boundsForInterfaceOrientation:viewOrientation];
+      screen = [(UIWindow *)self screen];
+      [screen _boundsForInterfaceOrientation:viewOrientation];
     }
 
     else
     {
-      v15 = [(UIWindow *)self screen];
-      [v15 bounds];
+      screen = [(UIWindow *)self screen];
+      [screen bounds];
     }
 
     v7 = v16;
@@ -157,9 +157,9 @@
 
 - (void)_matchDeviceOrientation
 {
-  v3 = [(UIView *)self _keyboardOrientation];
+  _keyboardOrientation = [(UIView *)self _keyboardOrientation];
 
-  [(UITextEffectsWindow *)self updateForOrientation:v3];
+  [(UITextEffectsWindow *)self updateForOrientation:_keyboardOrientation];
 }
 
 - (UIWindowScene)_intendedScene
@@ -171,19 +171,19 @@
 
 - (BOOL)isTrackingKeyboard
 {
-  v2 = [(UITextEffectsWindow *)self rootViewController];
-  v3 = [v2 isTrackingElementController];
+  rootViewController = [(UITextEffectsWindow *)self rootViewController];
+  isTrackingElementController = [rootViewController isTrackingElementController];
 
-  return v3;
+  return isTrackingElementController;
 }
 
 - (CGRect)_sceneReferenceBounds
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 windowingModeEnabled];
+  visualModeManager = [v3 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if (v5)
+  if (windowingModeEnabled)
   {
     v23.receiver = self;
     v23.super_class = UITextEffectsWindow;
@@ -196,8 +196,8 @@
 
   else
   {
-    v14 = [(UIWindow *)self screen];
-    [v14 _referenceBounds];
+    screen = [(UIWindow *)self screen];
+    [screen _referenceBounds];
     v7 = v15;
     v9 = v16;
     v11 = v17;
@@ -221,30 +221,30 @@
   v12.receiver = self;
   v12.super_class = UITextEffectsWindow;
   [(UIWindow *)&v12 _sceneBoundsDidChange];
-  v3 = [(UITextEffectsWindow *)self rootViewController];
+  rootViewController = [(UITextEffectsWindow *)self rootViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UITextEffectsWindow *)self rootViewController];
-    [v5 hostAppSceneBoundsChanged];
+    rootViewController2 = [(UITextEffectsWindow *)self rootViewController];
+    [rootViewController2 hostAppSceneBoundsChanged];
   }
 
   [(UITextEffectsWindow *)self _updateRootViewConstraintsForInterfaceOrientationAndStatusBarHeight];
   [(UITextEffectsWindow *)self updateEditingOverlayContainer];
   v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v7 = [v6 visualModeManager];
-  v8 = [v7 windowingModeEnabled];
+  visualModeManager = [v6 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if (v8)
+  if (windowingModeEnabled)
   {
-    v9 = [(UITextEffectsWindow *)self rootViewController];
+    rootViewController3 = [(UITextEffectsWindow *)self rootViewController];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(UITextEffectsWindow *)self rootViewController];
-      [v11 hostAppSceneBoundsChanged];
+      rootViewController4 = [(UITextEffectsWindow *)self rootViewController];
+      [rootViewController4 hostAppSceneBoundsChanged];
     }
   }
 
@@ -253,9 +253,9 @@
 
 - (void)_updateTransformLayer
 {
-  v3 = [(UIView *)self layer];
-  v4 = [v3 superlayer];
-  [v4 bounds];
+  layer = [(UIView *)self layer];
+  superlayer = [layer superlayer];
+  [superlayer bounds];
   v6 = v5;
   v8 = v7;
 
@@ -263,26 +263,26 @@
   v21.super_class = UITextEffectsWindow;
   [(UIWindow *)&v21 _updateTransformLayer];
   v9 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v10 = [v9 visualModeManager];
-  v11 = [v10 windowingModeEnabled];
+  visualModeManager = [v9 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if ((v11 & 1) == 0)
+  if ((windowingModeEnabled & 1) == 0)
   {
-    v12 = [(UIView *)self layer];
-    v13 = [v12 superlayer];
-    [v13 bounds];
+    layer2 = [(UIView *)self layer];
+    superlayer2 = [layer2 superlayer];
+    [superlayer2 bounds];
     v15 = v14;
     v17 = v16;
 
     if (v6 != v15 || v8 != v17)
     {
-      v18 = [(UITextEffectsWindow *)self rootViewController];
+      rootViewController = [(UITextEffectsWindow *)self rootViewController];
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [(UITextEffectsWindow *)self rootViewController];
-        [v20 hostAppSceneBoundsChanged];
+        rootViewController2 = [(UITextEffectsWindow *)self rootViewController];
+        [rootViewController2 hostAppSceneBoundsChanged];
       }
     }
   }
@@ -292,8 +292,8 @@
 
 - (void)updateEditingOverlayContainer
 {
-  v6 = [(UIWindow *)self traitCollection];
-  if ([v6 userInterfaceIdiom] == 3)
+  traitCollection = [(UIWindow *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
   }
 
@@ -329,14 +329,14 @@
   v30 = *MEMORY[0x1E69E9840];
   if (+[UIKeyboard isInputSystemUI])
   {
-    v3 = 1;
+    windowingModeEnabled = 1;
   }
 
   else
   {
     v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v4 visualModeManager];
-    v3 = [v5 windowingModeEnabled];
+    visualModeManager = [v4 visualModeManager];
+    windowingModeEnabled = [visualModeManager windowingModeEnabled];
   }
 
   [(UIView *)self frame];
@@ -344,8 +344,8 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(UIWindow *)self screen];
-  [v14 bounds];
+  screen = [(UIWindow *)self screen];
+  [screen bounds];
   v32.origin.x = v15;
   v32.origin.y = v16;
   v32.size.width = v17;
@@ -354,41 +354,41 @@
   v31.origin.y = v9;
   v31.size.width = v11;
   v31.size.height = v13;
-  v19 = (CGRectEqualToRect(v31, v32) | v3) ^ 1;
+  v19 = (CGRectEqualToRect(v31, v32) | windowingModeEnabled) ^ 1;
 
-  if (v3 & 1) != 0 || (v19)
+  if (windowingModeEnabled & 1) != 0 || (v19)
   {
     v23.receiver = self;
     v23.super_class = UITextEffectsWindow;
-    v20 = [(UIWindow *)&v23 _shouldResizeWithScene];
+    _shouldResizeWithScene = [(UIWindow *)&v23 _shouldResizeWithScene];
   }
 
   else
   {
-    v20 = 0;
+    _shouldResizeWithScene = 0;
   }
 
   v21 = +[UIKeyboardVisualModeManager visualModeLog];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109632;
-    v25 = v20;
+    v25 = _shouldResizeWithScene;
     v26 = 1024;
-    v27 = v3;
+    v27 = windowingModeEnabled;
     v28 = 1024;
     v29 = v19 & 1;
     _os_log_debug_impl(&dword_188A29000, v21, OS_LOG_TYPE_DEBUG, "TEW _shouldResizeWithScene %d (windowingModeEnabled: %d, resizeFor: %d)", buf, 0x14u);
   }
 
-  return v20;
+  return _shouldResizeWithScene;
 }
 
 - (void)_updateRootViewConstraintsForInterfaceOrientationAndStatusBarHeight
 {
   if (([UIApp _isClassic] & 1) == 0)
   {
-    v16 = [(UITextEffectsWindow *)self rootViewController];
-    if (!-[UIWindow _isHostedInAnotherProcess](self, "_isHostedInAnotherProcess") || (objc_opt_respondsToSelector() & 1) == 0 || ([v16 isRotating] & 1) == 0)
+    rootViewController = [(UITextEffectsWindow *)self rootViewController];
+    if (!-[UIWindow _isHostedInAnotherProcess](self, "_isHostedInAnotherProcess") || (objc_opt_respondsToSelector() & 1) == 0 || ([rootViewController isRotating] & 1) == 0)
     {
       [(UITextEffectsWindow *)self actualSceneFrameForOrientation:[(UITextEffectsWindow *)self interfaceOrientation]];
       x = v18.origin.x;
@@ -397,21 +397,21 @@
       height = v18.size.height;
       if (!CGRectIsEmpty(v18))
       {
-        v7 = [(UIWindow *)self _keyboardSceneSettings];
+        _keyboardSceneSettings = [(UIWindow *)self _keyboardSceneSettings];
 
-        if (v7)
+        if (_keyboardSceneSettings)
         {
           v8 = +[UIDevice currentDevice];
-          v9 = [v8 userInterfaceIdiom];
+          userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-          if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             v10 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-            v11 = [v10 visualModeManager];
-            v12 = [v11 shouldShowWithinAppWindow];
+            visualModeManager = [v10 visualModeManager];
+            shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
             v13 = 0.0;
-            if ((v12 & 1) == 0)
+            if ((shouldShowWithinAppWindow & 1) == 0)
             {
               v19.origin.x = x;
               v19.origin.y = y;
@@ -449,39 +449,39 @@
 {
   if (![UIApp _isSpringBoard])
   {
-    v6 = [(UIWindow *)self _keyboardSceneSettings];
-    v5 = v6;
+    _keyboardSceneSettings = [(UIWindow *)self _keyboardSceneSettings];
+    v5 = _keyboardSceneSettings;
 LABEL_8:
-    v8 = [v6 interfaceOrientation];
+    interfaceOrientation = [_keyboardSceneSettings interfaceOrientation];
     goto LABEL_10;
   }
 
-  v3 = [UIApp keyWindow];
-  v4 = v3;
-  if (v3)
+  keyWindow = [UIApp keyWindow];
+  v4 = keyWindow;
+  if (keyWindow)
   {
-    v5 = v3;
+    v5 = keyWindow;
   }
 
   else
   {
-    v7 = [(UITextEffectsWindow *)self rootViewController];
-    v5 = [(UIViewController *)v7 _windowForAutorotationBelowWindow:?];
+    rootViewController = [(UITextEffectsWindow *)self rootViewController];
+    v5 = [(UIViewController *)rootViewController _windowForAutorotationBelowWindow:?];
   }
 
   if ([v5 _windowOwnsInterfaceOrientation])
   {
-    v6 = v5;
+    _keyboardSceneSettings = v5;
     goto LABEL_8;
   }
 
-  v9 = [v5 _keyboardSceneSettings];
-  v8 = [v9 interfaceOrientation];
+  _keyboardSceneSettings2 = [v5 _keyboardSceneSettings];
+  interfaceOrientation = [_keyboardSceneSettings2 interfaceOrientation];
 
 LABEL_10:
-  if (v8)
+  if (interfaceOrientation)
   {
-    return v8;
+    return interfaceOrientation;
   }
 
   return [(UITextEffectsWindow *)self interfaceOrientation];
@@ -489,9 +489,9 @@ LABEL_10:
 
 - (CGRect)actualSceneFrame
 {
-  v3 = [(UITextEffectsWindow *)self actualSceneOrientation];
+  actualSceneOrientation = [(UITextEffectsWindow *)self actualSceneOrientation];
 
-  [(UITextEffectsWindow *)self actualSceneFrameForOrientation:v3];
+  [(UITextEffectsWindow *)self actualSceneFrameForOrientation:actualSceneOrientation];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -529,8 +529,8 @@ LABEL_10:
 
 - (CGSize)keyboardScreenReferenceSize
 {
-  v2 = [(UIWindow *)self screen];
-  [v2 _referenceBounds];
+  screen = [(UIWindow *)self screen];
+  [screen _referenceBounds];
   v4 = v3;
   v6 = v5;
 
@@ -541,17 +541,17 @@ LABEL_10:
   return result;
 }
 
-- (id)_initBasicWithScene:(id)a3 options:(id)a4
+- (id)_initBasicWithScene:(id)scene options:(id)options
 {
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  v7 = a3;
-  v8 = [v7 _coordinateSpace];
-  [v8 bounds];
+  sceneCopy = scene;
+  _coordinateSpace = [sceneCopy _coordinateSpace];
+  [_coordinateSpace bounds];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UITextEffectsWindow *)self _initWithFrame:0 debugName:v7 windowScene:v5, v6, v10, v12];
+  v13 = [(UITextEffectsWindow *)self _initWithFrame:0 debugName:sceneCopy windowScene:v5, v6, v10, v12];
   v14 = v13;
   v15 = v14;
   if (v14)
@@ -563,43 +563,43 @@ LABEL_10:
   return v15;
 }
 
-- (id)_initWithScene:(id)a3 options:(id)a4
+- (id)_initWithScene:(id)scene options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UITextEffectsWindow *)self _initBasicWithScene:v6 options:v7];
+  sceneCopy = scene;
+  optionsCopy = options;
+  v8 = [(UITextEffectsWindow *)self _initBasicWithScene:sceneCopy options:optionsCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(v8 + 125, v6);
-    objc_storeStrong(v9 + 124, a4);
-    v10 = [v7 objectForKey:@"Fullscreen"];
+    objc_storeWeak(v8 + 125, sceneCopy);
+    objc_storeStrong(v9 + 124, options);
+    v10 = [optionsCopy objectForKey:@"Fullscreen"];
     *(v9 + 960) = [v10 BOOLValue];
 
-    v11 = [v7 objectForKey:@"ViewService"];
+    v11 = [optionsCopy objectForKey:@"ViewService"];
     *(v9 + 961) = [v11 BOOLValue];
 
-    [v9 _commonInitWithOptions:v7];
+    [v9 _commonInitWithOptions:optionsCopy];
     v12 = v9;
   }
 
   return v9;
 }
 
-- (BOOL)_matchingOptions:(id)a3
+- (BOOL)_matchingOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Level"];
-  v6 = [v4 objectForKey:@"Fullscreen"];
-  v7 = [v4 objectForKey:@"ViewService"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKey:@"Level"];
+  v6 = [optionsCopy objectForKey:@"Fullscreen"];
+  v7 = [optionsCopy objectForKey:@"ViewService"];
 
   [v5 floatValue];
   v9 = v8;
   [(UITextEffectsWindow *)self defaultWindowLevel];
   if (v10 == v9 && ([v7 floatValue], v11 == -[UITextEffectsWindow isForViewService](self, "isForViewService")))
   {
-    v12 = [v6 BOOLValue];
-    v13 = v12 ^ [(UITextEffectsWindow *)self isFullscreen]^ 1;
+    bOOLValue = [v6 BOOLValue];
+    v13 = bOOLValue ^ [(UITextEffectsWindow *)self isFullscreen]^ 1;
   }
 
   else
@@ -613,10 +613,10 @@ LABEL_10:
 - (CGPoint)hostedWindowOffset
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 windowingModeEnabled];
+  visualModeManager = [v3 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if (v5)
+  if (windowingModeEnabled)
   {
     v6 = *MEMORY[0x1E695EFF8];
     v7 = *(MEMORY[0x1E695EFF8] + 8);
@@ -632,32 +632,32 @@ LABEL_10:
   return result;
 }
 
-- (void)setHostedSafeInsets:(UIEdgeInsets)a3
+- (void)setHostedSafeInsets:(UIEdgeInsets)insets
 {
-  *&self->_hostedSceneSize.height = a3;
+  *&self->_hostedSceneSize.height = insets;
   [(UIView *)self _updateSafeAreaInsets];
-  v4 = [(UITextEffectsWindow *)self rootViewController];
-  [v4 _updateContentOverlayInsetsForSelfAndChildren];
+  rootViewController = [(UITextEffectsWindow *)self rootViewController];
+  [rootViewController _updateContentOverlayInsetsForSelfAndChildren];
 }
 
-- (void)setHostedViewOrigin:(CGPoint)a3
+- (void)setHostedViewOrigin:(CGPoint)origin
 {
-  if (a3.x != self->_defaultWindowLevel || a3.y != self->_hostedViewOrigin.x)
+  if (origin.x != self->_defaultWindowLevel || origin.y != self->_hostedViewOrigin.x)
   {
-    *&self->_defaultWindowLevel = a3;
-    v5 = [(UITextEffectsWindow *)self rootViewController];
-    [v5 hostedOriginDidUpdate];
+    *&self->_defaultWindowLevel = origin;
+    rootViewController = [(UITextEffectsWindow *)self rootViewController];
+    [rootViewController hostedOriginDidUpdate];
   }
 }
 
-- (void)_commonInitWithOptions:(id)a3
+- (void)_commonInitWithOptions:(id)options
 {
-  v22 = a3;
-  v4 = [v22 objectForKey:@"Level"];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKey:@"Level"];
   [v4 floatValue];
   v6 = v5;
 
-  v7 = [v22 objectForKey:@"Opaque"];
+  v7 = [optionsCopy objectForKey:@"Opaque"];
   [(UIView *)self setUserInteractionEnabled:1];
   [(UIWindow *)self setWindowLevel:v6];
   [(UITextEffectsWindow *)self setDefaultWindowLevel:v6];
@@ -669,7 +669,7 @@ LABEL_10:
   [(UIWindow *)self setHidden:0];
   if (+[UIInputWindowController useMetronomeTracking])
   {
-    v8 = [v22 objectForKey:@"TrackingElementWindow"];
+    v8 = [optionsCopy objectForKey:@"TrackingElementWindow"];
     v9 = v8;
     if (v8 && ([v8 BOOLValue] & 1) != 0)
     {
@@ -689,7 +689,7 @@ LABEL_10:
     v11 = objc_alloc_init(UIInputWindowController);
   }
 
-  v12 = [v22 objectForKey:@"Notify"];
+  v12 = [optionsCopy objectForKey:@"Notify"];
   v13 = v12;
   if (v12)
   {
@@ -698,10 +698,10 @@ LABEL_10:
 
   [(UIWindow *)self setRootViewController:v11];
   WeakRetained = objc_loadWeakRetained(&self->_perSceneOptions);
-  v15 = [WeakRetained screen];
-  v16 = [v15 _userInterfaceIdiom];
+  screen = [WeakRetained screen];
+  _userInterfaceIdiom = [screen _userInterfaceIdiom];
 
-  if (v16 != 3 && (self->_activeEffectsCount & 0x100) == 0)
+  if (_userInterfaceIdiom != 3 && (self->_activeEffectsCount & 0x100) == 0)
   {
     v17 = objc_opt_class();
     if (([v17 isEqual:objc_opt_class()] & 1) != 0 || (v18 = objc_opt_class(), objc_msgSend(v18, "isEqual:", objc_opt_class())))
@@ -710,17 +710,17 @@ LABEL_10:
       v20 = *&self->_manualHostingOverride;
       *&self->_manualHostingOverride = v19;
 
-      v21 = [(UITextEffectsWindow *)self rootViewController];
-      [v21 presentViewController:*&self->_manualHostingOverride];
+      rootViewController = [(UITextEffectsWindow *)self rootViewController];
+      [rootViewController presentViewController:*&self->_manualHostingOverride];
     }
   }
 }
 
-- (id)_initWithFrame:(CGRect)a3 attached:(BOOL)a4
+- (id)_initWithFrame:(CGRect)frame attached:(BOOL)attached
 {
   v7.receiver = self;
   v7.super_class = UITextEffectsWindow;
-  v4 = [(UIAutoRotatingWindow *)&v7 _initWithFrame:a4 attached:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIAutoRotatingWindow *)&v7 _initWithFrame:attached attached:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -730,11 +730,11 @@ LABEL_10:
   return v5;
 }
 
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 windowScene:(id)a5
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name windowScene:(id)scene
 {
   v8.receiver = self;
   v8.super_class = UITextEffectsWindow;
-  v5 = [(UIAutoRotatingWindow *)&v8 _initWithFrame:a4 debugName:a5 windowScene:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIAutoRotatingWindow *)&v8 _initWithFrame:name debugName:scene windowScene:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -744,11 +744,11 @@ LABEL_10:
   return v6;
 }
 
-- (UITextEffectsWindow)initWithFrame:(CGRect)a3
+- (UITextEffectsWindow)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UITextEffectsWindow;
-  v3 = [(UIWindow *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIWindow *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -766,10 +766,10 @@ LABEL_10:
   [(UIWindow *)&v2 dealloc];
 }
 
-- (void)_setWindowLevel:(double)a3
+- (void)_setWindowLevel:(double)level
 {
   [(UIWindow *)self windowLevel];
-  if (v5 != a3)
+  if (v5 != level)
   {
     if (self->__intendedWindowScene && (v6 = self->_activeRemoteViewCount, v6 != 5))
     {
@@ -787,7 +787,7 @@ LABEL_10:
       self->_activeRemoteViewCount = 0;
     }
 
-    [(UIWindow *)self setWindowLevel:a3];
+    [(UIWindow *)self setWindowLevel:level];
   }
 }
 
@@ -808,19 +808,19 @@ LABEL_10:
   [(UIWindow *)self setWindowLevel:v2];
 }
 
-- (void)_configureContextOptions:(id)a3
+- (void)_configureContextOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5.receiver = self;
   v5.super_class = UITextEffectsWindow;
-  [(UIWindow *)&v5 _configureContextOptions:v4];
+  [(UIWindow *)&v5 _configureContextOptions:optionsCopy];
   if ([(UIWindow *)self _isHostedInAnotherProcess])
   {
-    [v4 setObject:*MEMORY[0x1E695E4C0] forKey:*MEMORY[0x1E69796A8]];
+    [optionsCopy setObject:*MEMORY[0x1E695E4C0] forKey:*MEMORY[0x1E69796A8]];
   }
 }
 
-- (void)addBottomPadding:(double)a3
+- (void)addBottomPadding:(double)padding
 {
   v17 = *MEMORY[0x1E69E9840];
   editingOverlayViewController = self->_editingOverlayViewController;
@@ -830,8 +830,8 @@ LABEL_10:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(UIView *)self constraints];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    constraints = [(UIView *)self constraints];
+    v7 = [constraints countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -842,7 +842,7 @@ LABEL_10:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(constraints);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
@@ -852,7 +852,7 @@ LABEL_10:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [constraints countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -861,7 +861,7 @@ LABEL_10:
     editingOverlayViewController = self->_editingOverlayViewController;
   }
 
-  [(UIEditingOverlayViewController *)editingOverlayViewController setConstant:-a3];
+  [(UIEditingOverlayViewController *)editingOverlayViewController setConstant:-padding];
 }
 
 - (CGRect)hostedFrame
@@ -888,25 +888,25 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)_forHostedProcessConvertPoint:(CGPoint)a3 forWindow:(id)a4 wasFromWindow:(BOOL)a5
+- (CGPoint)_forHostedProcessConvertPoint:(CGPoint)point forWindow:(id)window wasFromWindow:(BOOL)fromWindow
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  if (([a4 _isTextEffectsWindow] & 1) == 0)
+  fromWindowCopy = fromWindow;
+  y = point.y;
+  x = point.x;
+  if (([window _isTextEffectsWindow] & 1) == 0)
   {
     [(UITextEffectsWindow *)self hostedViewOrigin];
     v10 = v9;
     [(UITextEffectsWindow *)self hostedViewOrigin];
     v12 = -v11;
     v13 = -v10;
-    if (v5)
+    if (fromWindowCopy)
     {
       v13 = v10;
     }
 
     x = x + v13;
-    if (v5)
+    if (fromWindowCopy)
     {
       v12 = v11;
     }
@@ -921,11 +921,11 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)_forHostedProcessConvertRect:(CGRect)a3 forWindow:(id)a4 wasFromWindow:(BOOL)a5
+- (CGRect)_forHostedProcessConvertRect:(CGRect)rect forWindow:(id)window wasFromWindow:(BOOL)fromWindow
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(UITextEffectsWindow *)self _forHostedProcessConvertPoint:a4 forWindow:a5 wasFromWindow:a3.origin.x, a3.origin.y];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(UITextEffectsWindow *)self _forHostedProcessConvertPoint:window forWindow:fromWindow wasFromWindow:rect.origin.x, rect.origin.y];
   v9 = width;
   v10 = height;
   result.size.height = v10;
@@ -935,15 +935,15 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromWindow:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(UITextEffectsWindow *)self _forHostedProcessConvertPoint:v7 forWindow:1 wasFromWindow:x, y];
+  y = point.y;
+  x = point.x;
+  windowCopy = window;
+  [(UITextEffectsWindow *)self _forHostedProcessConvertPoint:windowCopy forWindow:1 wasFromWindow:x, y];
   v14.receiver = self;
   v14.super_class = UITextEffectsWindow;
-  [(UIWindow *)&v14 convertPoint:v7 fromWindow:?];
+  [(UIWindow *)&v14 convertPoint:windowCopy fromWindow:?];
   v9 = v8;
   v11 = v10;
 
@@ -954,15 +954,15 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toWindow:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(UITextEffectsWindow *)self _forHostedProcessConvertPoint:v7 forWindow:0 wasFromWindow:x, y];
+  y = point.y;
+  x = point.x;
+  windowCopy = window;
+  [(UITextEffectsWindow *)self _forHostedProcessConvertPoint:windowCopy forWindow:0 wasFromWindow:x, y];
   v14.receiver = self;
   v14.super_class = UITextEffectsWindow;
-  [(UIWindow *)&v14 convertPoint:v7 toWindow:?];
+  [(UIWindow *)&v14 convertPoint:windowCopy toWindow:?];
   v9 = v8;
   v11 = v10;
 
@@ -973,18 +973,18 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 _window];
-  v9 = v8;
-  if (!v7 || v8 == self)
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  _window = [viewCopy _window];
+  v9 = _window;
+  if (!viewCopy || _window == self)
   {
     v22.receiver = self;
     v22.super_class = UITextEffectsWindow;
-    [(UIView *)&v22 convertPoint:v7 toView:x, y];
+    [(UIView *)&v22 convertPoint:viewCopy toView:x, y];
     v15 = v14;
     v17 = v16;
   }
@@ -993,11 +993,11 @@ LABEL_10:
   {
     if ([UIApp _isSpringBoard])
     {
-      v10 = [(UIWindow *)v9 _hostingWindow];
-      v11 = v10;
-      if (v10)
+      _hostingWindow = [(UIWindow *)v9 _hostingWindow];
+      v11 = _hostingWindow;
+      if (_hostingWindow)
       {
-        v12 = v10;
+        v12 = _hostingWindow;
       }
 
       else
@@ -1014,7 +1014,7 @@ LABEL_10:
     }
 
     [(UITextEffectsWindow *)self convertPoint:v9 toWindow:x, y];
-    [(UITextEffectsWindow *)v13 convertPoint:v7 toView:?];
+    [(UITextEffectsWindow *)v13 convertPoint:viewCopy toView:?];
     v15 = v18;
     v17 = v19;
   }
@@ -1026,18 +1026,18 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 _window];
-  v9 = v8;
-  if (!v7 || v8 == self)
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  _window = [viewCopy _window];
+  v9 = _window;
+  if (!viewCopy || _window == self)
   {
     v22.receiver = self;
     v22.super_class = UITextEffectsWindow;
-    [(UIView *)&v22 convertPoint:v7 fromView:x, y];
+    [(UIView *)&v22 convertPoint:viewCopy fromView:x, y];
     v15 = v14;
     v17 = v16;
   }
@@ -1046,11 +1046,11 @@ LABEL_10:
   {
     if ([UIApp _isSpringBoard])
     {
-      v10 = [(UIWindow *)v9 _hostingWindow];
-      v11 = v10;
-      if (v10)
+      _hostingWindow = [(UIWindow *)v9 _hostingWindow];
+      v11 = _hostingWindow;
+      if (_hostingWindow)
       {
-        v12 = v10;
+        v12 = _hostingWindow;
       }
 
       else
@@ -1066,7 +1066,7 @@ LABEL_10:
       v13 = v9;
     }
 
-    [(UITextEffectsWindow *)v9 convertPoint:v7 fromView:x, y];
+    [(UITextEffectsWindow *)v9 convertPoint:viewCopy fromView:x, y];
     [(UITextEffectsWindow *)self convertPoint:v13 fromWindow:?];
     v15 = v18;
     v17 = v19;
@@ -1079,25 +1079,25 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromWindow:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  windowCopy = window;
   if ([UIApp _isSpringBoard])
   {
-    v10 = [v9 _hostingWindow];
-    v11 = v10;
-    if (v10)
+    _hostingWindow = [windowCopy _hostingWindow];
+    v11 = _hostingWindow;
+    if (_hostingWindow)
     {
-      v12 = v10;
+      v12 = _hostingWindow;
     }
 
     else
     {
-      v12 = v9;
+      v12 = windowCopy;
     }
 
     v13 = v12;
@@ -1105,7 +1105,7 @@ LABEL_10:
 
   else
   {
-    v13 = v9;
+    v13 = windowCopy;
   }
 
   [(UITextEffectsWindow *)self _forHostedProcessConvertRect:v13 forWindow:1 wasFromWindow:x, y, width, height];
@@ -1128,25 +1128,25 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toWindow:(id)a4
+- (CGRect)convertRect:(CGRect)rect toWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  windowCopy = window;
   if ([UIApp _isSpringBoard])
   {
-    v10 = [v9 _hostingWindow];
-    v11 = v10;
-    if (v10)
+    _hostingWindow = [windowCopy _hostingWindow];
+    v11 = _hostingWindow;
+    if (_hostingWindow)
     {
-      v12 = v10;
+      v12 = _hostingWindow;
     }
 
     else
     {
-      v12 = v9;
+      v12 = windowCopy;
     }
 
     v13 = v12;
@@ -1154,7 +1154,7 @@ LABEL_10:
 
   else
   {
-    v13 = v9;
+    v13 = windowCopy;
   }
 
   [(UITextEffectsWindow *)self _forHostedProcessConvertRect:v13 forWindow:0 wasFromWindow:x, y, width, height];
@@ -1177,20 +1177,20 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toView:(id)a4
+- (CGRect)convertRect:(CGRect)rect toView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [v9 _window];
-  v11 = v10;
-  if (!v9 || v10 == self)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  _window = [viewCopy _window];
+  v11 = _window;
+  if (!viewCopy || _window == self)
   {
     v32.receiver = self;
     v32.super_class = UITextEffectsWindow;
-    [(UIView *)&v32 convertRect:v9 toView:x, y, width, height];
+    [(UIView *)&v32 convertRect:viewCopy toView:x, y, width, height];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -1201,11 +1201,11 @@ LABEL_10:
   {
     if ([UIApp _isSpringBoard])
     {
-      v12 = [(UIWindow *)v11 _hostingWindow];
-      v13 = v12;
-      if (v12)
+      _hostingWindow = [(UIWindow *)v11 _hostingWindow];
+      v13 = _hostingWindow;
+      if (_hostingWindow)
       {
-        v14 = v12;
+        v14 = _hostingWindow;
       }
 
       else
@@ -1222,7 +1222,7 @@ LABEL_10:
     }
 
     [(UITextEffectsWindow *)self convertRect:v15 toWindow:x, y, width, height];
-    [(UITextEffectsWindow *)v11 convertRect:v9 toView:?];
+    [(UITextEffectsWindow *)v11 convertRect:viewCopy toView:?];
     v17 = v24;
     v19 = v25;
     v21 = v26;
@@ -1240,20 +1240,20 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromView:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [v9 _window];
-  v11 = v10;
-  if (!v9 || v10 == self)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  _window = [viewCopy _window];
+  v11 = _window;
+  if (!viewCopy || _window == self)
   {
     v32.receiver = self;
     v32.super_class = UITextEffectsWindow;
-    [(UIView *)&v32 convertRect:v9 fromView:x, y, width, height];
+    [(UIView *)&v32 convertRect:viewCopy fromView:x, y, width, height];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -1264,11 +1264,11 @@ LABEL_10:
   {
     if ([UIApp _isSpringBoard])
     {
-      v12 = [(UIWindow *)v11 _hostingWindow];
-      v13 = v12;
-      if (v12)
+      _hostingWindow = [(UIWindow *)v11 _hostingWindow];
+      v13 = _hostingWindow;
+      if (_hostingWindow)
       {
-        v14 = v12;
+        v14 = _hostingWindow;
       }
 
       else
@@ -1284,7 +1284,7 @@ LABEL_10:
       v15 = v11;
     }
 
-    [(UITextEffectsWindow *)v11 convertRect:v9 fromView:x, y, width, height];
+    [(UITextEffectsWindow *)v11 convertRect:viewCopy fromView:x, y, width, height];
     [(UITextEffectsWindow *)self convertRect:v15 fromWindow:?];
     v17 = v24;
     v19 = v25;
@@ -1314,9 +1314,9 @@ LABEL_10:
       goto LABEL_5;
     }
 
-    v6 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
     *buf = 138412290;
-    v9 = v6;
+    v9 = callStackSymbols;
     _os_log_fault_impl(&dword_188A29000, v5, OS_LOG_TYPE_FAULT, "UITextEffectsWindow should not become key. Please file a bug to Keyboard | iOS with this call stack: %@", buf, 0xCu);
 LABEL_4:
 
@@ -1329,9 +1329,9 @@ LABEL_5:
   {
     v4 = MEMORY[0x1E696AF00];
     v5 = v3;
-    v6 = [v4 callStackSymbols];
+    callStackSymbols = [v4 callStackSymbols];
     *buf = 138412290;
-    v9 = v6;
+    v9 = callStackSymbols;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "UITextEffectsWindow should not become key. Please file a bug to Keyboard | iOS with this call stack: %@", buf, 0xCu);
     goto LABEL_4;
   }
@@ -1352,26 +1352,26 @@ LABEL_6:
 
 - (void)layoutViewsForTrackedGuides
 {
-  v2 = [(UITextEffectsWindow *)self rootViewController];
-  [v2 layoutFromCoordinatorIfNeeded];
+  rootViewController = [(UITextEffectsWindow *)self rootViewController];
+  [rootViewController layoutFromCoordinatorIfNeeded];
 }
 
-- (void)updateLastRemoteView:(BOOL)a3 forView:(id)a4 inContainer:(id)a5
+- (void)updateLastRemoteView:(BOOL)view forView:(id)forView inContainer:(id)container
 {
-  v6 = a3;
+  viewCopy = view;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  forViewCopy = forView;
+  containerCopy = container;
   if ([UIApp _isSpringBoard])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v8 subviews];
-    v10 = [v9 reverseObjectEnumerator];
+    subviews = [containerCopy subviews];
+    reverseObjectEnumerator = [subviews reverseObjectEnumerator];
 
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1382,22 +1382,22 @@ LABEL_6:
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v15 = *(*(&v16 + 1) + 8 * i);
-          if (v15 != v7)
+          if (v15 != forViewCopy)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v15 setHidden:v6];
+              [v15 setHidden:viewCopy];
               goto LABEL_13;
             }
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v12)
         {
           continue;
@@ -1411,12 +1411,12 @@ LABEL_13:
   }
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [v4 superview];
-  v6 = v5;
-  if (v5 == self)
+  subviewCopy = subview;
+  superview = [subviewCopy superview];
+  v6 = superview;
+  if (superview == self)
   {
   }
 
@@ -1434,27 +1434,27 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UITextEffectsWindow *)self updateLastRemoteView:1 forView:v4 inContainer:self];
+    [(UITextEffectsWindow *)self updateLastRemoteView:1 forView:subviewCopy inContainer:self];
   }
 
   v8.receiver = self;
   v8.super_class = UITextEffectsWindow;
-  [(UIView *)&v8 addSubview:v4];
+  [(UIView *)&v8 addSubview:subviewCopy];
 }
 
-- (void)_didRemoveSubview:(id)a3
+- (void)_didRemoveSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   if (!*(&self->super._unknownOrientation + 1))
   {
     v6.receiver = self;
     v6.super_class = UITextEffectsWindow;
-    [(UIAutoRotatingWindow *)&v6 _didRemoveSubview:v4];
+    [(UIAutoRotatingWindow *)&v6 _didRemoveSubview:subviewCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       --self->__intendedWindowScene;
-      [(UITextEffectsWindow *)self updateLastRemoteView:0 forView:v4 inContainer:self];
+      [(UITextEffectsWindow *)self updateLastRemoteView:0 forView:subviewCopy inContainer:self];
     }
 
     v5 = *&self->_inDealloc - 1;
@@ -1466,13 +1466,13 @@ LABEL_13:
   }
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   if (!*(&self->super._unknownOrientation + 1))
   {
     v4.receiver = self;
     v4.super_class = UITextEffectsWindow;
-    [(UIView *)&v4 didAddSubview:a3];
+    [(UIView *)&v4 didAddSubview:subview];
     if (!*&self->_inDealloc || [(UIView *)self isHidden])
     {
       [(UIWindow *)self setBecomeKeyOnOrderFront:0];
@@ -1484,25 +1484,25 @@ LABEL_13:
   }
 }
 
-- (void)_sortSubviewsOfView:(id)a3
+- (void)_sortSubviewsOfView:(id)view
 {
-  v3 = a3;
-  v6 = [v3 layer];
-  v4 = [v6 sublayers];
-  v5 = [v4 mutableCopy];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  sublayers = [layer sublayers];
+  v5 = [sublayers mutableCopy];
 
   [v5 sortUsingSelector:sel_compareTextEffectsOrdering_];
-  [v6 setSublayers:v5];
-  [v3 _invalidateSubviewCache];
+  [layer setSublayers:v5];
+  [viewCopy _invalidateSubviewCache];
 }
 
-- (void)updateForOrientation:(int64_t)a3 forceResetTransform:(BOOL)a4
+- (void)updateForOrientation:(int64_t)orientation forceResetTransform:(BOOL)transform
 {
-  if (self->super._interfaceOrientation == a3 && !self->super._unknownOrientation)
+  if (self->super._interfaceOrientation == orientation && !self->super._unknownOrientation)
   {
-    if (a4)
+    if (transform)
     {
-      [(UIWindow *)self setupForOrientation:a3];
+      [(UIWindow *)self setupForOrientation:orientation];
       self->super._unknownOrientation = [(UIWindow *)self inhibitTextEffectsRotation];
     }
   }
@@ -1511,43 +1511,43 @@ LABEL_13:
   {
     v7.receiver = self;
     v7.super_class = UITextEffectsWindow;
-    [(UIAutoRotatingWindow *)&v7 updateForOrientation:a3, a4];
-    self->super._interfaceOrientation = a3;
+    [(UIAutoRotatingWindow *)&v7 updateForOrientation:orientation, transform];
+    self->super._interfaceOrientation = orientation;
     self->super._unknownOrientation = [(UIWindow *)self inhibitTextEffectsRotation];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"UITextEffectsWindowDidRotateNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UITextEffectsWindowDidRotateNotification" object:self];
   }
 }
 
 - (void)resetTransform
 {
-  v3 = [(UIView *)self _keyboardOrientation];
+  _keyboardOrientation = [(UIView *)self _keyboardOrientation];
 
-  [(UITextEffectsWindow *)self updateForOrientation:v3 forceResetTransform:1];
+  [(UITextEffectsWindow *)self updateForOrientation:_keyboardOrientation forceResetTransform:1];
 }
 
-+ (id)_sharedTextEffectsWindowforWindowScene:(id)a3 allowHosted:(BOOL)a4 forViewService:(BOOL)a5 matchesStatusBarOrientationOnAccess:(BOOL)a6 shouldCreateIfNecessary:(BOOL)a7
++ (id)_sharedTextEffectsWindowforWindowScene:(id)scene allowHosted:(BOOL)hosted forViewService:(BOOL)service matchesStatusBarOrientationOnAccess:(BOOL)access shouldCreateIfNecessary:(BOOL)necessary
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  necessaryCopy = necessary;
+  accessCopy = access;
+  serviceCopy = service;
+  hostedCopy = hosted;
   v38 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (!v11)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
     v12 = [(UIScene *)UIWindowScene _scenesIncludingInternal:1, 0];
-    v11 = [v12 countByEnumeratingWithState:&v31 objects:v37 count:16];
-    if (v11)
+    sceneCopy = [v12 countByEnumeratingWithState:&v31 objects:v37 count:16];
+    if (sceneCopy)
     {
       v13 = *v32;
       while (2)
       {
-        for (i = 0; i != v11; i = i + 1)
+        for (i = 0; i != sceneCopy; i = i + 1)
         {
           if (*v32 != v13)
           {
@@ -1555,17 +1555,17 @@ LABEL_13:
           }
 
           v15 = *(*(&v31 + 1) + 8 * i);
-          v16 = [v15 keyboardSceneDelegate];
+          keyboardSceneDelegate = [v15 keyboardSceneDelegate];
 
-          if (v16)
+          if (keyboardSceneDelegate)
           {
-            v11 = v15;
+            sceneCopy = v15;
             goto LABEL_12;
           }
         }
 
-        v11 = [v12 countByEnumeratingWithState:&v31 objects:v37 count:16];
-        if (v11)
+        sceneCopy = [v12 countByEnumeratingWithState:&v31 objects:v37 count:16];
+        if (sceneCopy)
         {
           continue;
         }
@@ -1577,23 +1577,23 @@ LABEL_13:
 LABEL_12:
   }
 
-  v17 = [v11 session];
-  v18 = [v17 role];
-  v19 = [v18 isEqualToString:@"UIWindowSceneSessionRoleExternalDisplayNonInteractive"];
+  session = [sceneCopy session];
+  role = [session role];
+  v19 = [role isEqualToString:@"UIWindowSceneSessionRoleExternalDisplayNonInteractive"];
 
   if ([objc_opt_class() _suppressesTextEffectsWindow])
   {
     goto LABEL_23;
   }
 
-  if (v10)
+  if (hostedCopy)
   {
-    v20 = [UITextEffectsHostingInfo hostingInfoForWindowScene:v11];
-    v21 = [v20 useHostedInstance];
+    v20 = [UITextEffectsHostingInfo hostingInfoForWindowScene:sceneCopy];
+    useHostedInstance = [v20 useHostedInstance];
 
-    if (v21)
+    if (useHostedInstance)
     {
-      v9 = 0;
+      serviceCopy = 0;
     }
   }
 
@@ -1616,21 +1616,21 @@ LABEL_23:
     v35[2] = @"Fullscreen";
     v36[2] = MEMORY[0x1E695E110];
     v35[3] = @"ViewService";
-    v26 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+    v26 = [MEMORY[0x1E696AD98] numberWithBool:serviceCopy];
     v36[3] = v26;
     v35[4] = @"TrackingElementWindow";
     v27 = [MEMORY[0x1E696AD98] numberWithBool:v24];
     v36[4] = v27;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:5];
 
-    v29 = [_UIObjectPerScene objectOfClass:v23 forScene:v11 withOptions:v28 createIfNecessary:v7 & ~v19];
+    v29 = [_UIObjectPerScene objectOfClass:v23 forScene:sceneCopy withOptions:v28 createIfNecessary:necessaryCopy & ~v19];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v29 setWindowLevel:-10000003.0];
     }
 
-    if (v8)
+    if (accessCopy)
     {
       [v29 _matchDeviceOrientation];
     }
@@ -1639,62 +1639,62 @@ LABEL_23:
   return v29;
 }
 
-+ (id)sharedTextEffectsWindowForWindowScene:(id)a3 forViewService:(BOOL)a4
++ (id)sharedTextEffectsWindowForWindowScene:(id)scene forViewService:(BOOL)service
 {
-  v4 = a4;
-  v6 = a3;
+  serviceCopy = service;
+  sceneCopy = scene;
   v7 = +[UIWindowScene _keyWindowScene];
-  v8 = v7 == v6;
+  v8 = v7 == sceneCopy;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 windows];
-    v10 = [v9 firstObject];
+    windows = [sceneCopy windows];
+    firstObject = [windows firstObject];
 
-    if ([v10 _isRemoteKeyboardWindow] && !objc_msgSend(v10, "_isHostedInAnotherProcess"))
+    if ([firstObject _isRemoteKeyboardWindow] && !objc_msgSend(firstObject, "_isHostedInAnotherProcess"))
     {
       goto LABEL_8;
     }
   }
 
-  if (!v6)
+  if (!sceneCopy)
   {
-    v6 = +[UIWindowScene _keyWindowScene];
+    sceneCopy = +[UIWindowScene _keyWindowScene];
     v8 = 1;
   }
 
-  v10 = [a1 _sharedTextEffectsWindowforWindowScene:v6 allowHosted:1 forViewService:v4 matchesStatusBarOrientationOnAccess:v8 shouldCreateIfNecessary:1];
+  firstObject = [self _sharedTextEffectsWindowforWindowScene:sceneCopy allowHosted:1 forViewService:serviceCopy matchesStatusBarOrientationOnAccess:v8 shouldCreateIfNecessary:1];
 LABEL_8:
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)activeTextEffectsWindowForWindowScene:(id)a3 forViewService:(BOOL)a4
++ (id)activeTextEffectsWindowForWindowScene:(id)scene forViewService:(BOOL)service
 {
-  v4 = a4;
-  v6 = a3;
+  serviceCopy = service;
+  sceneCopy = scene;
   v7 = +[UIWindowScene _keyWindowScene];
-  v8 = v7 == v6;
+  v8 = v7 == sceneCopy;
 
-  if (!v6)
+  if (!sceneCopy)
   {
-    v6 = +[UIWindowScene _keyWindowScene];
+    sceneCopy = +[UIWindowScene _keyWindowScene];
     v8 = 1;
   }
 
-  v9 = [a1 _sharedTextEffectsWindowforWindowScene:v6 allowHosted:1 forViewService:v4 matchesStatusBarOrientationOnAccess:v8 shouldCreateIfNecessary:0];
+  v9 = [self _sharedTextEffectsWindowforWindowScene:sceneCopy allowHosted:1 forViewService:serviceCopy matchesStatusBarOrientationOnAccess:v8 shouldCreateIfNecessary:0];
 
   return v9;
 }
 
-+ (id)_sceneForScreen:(id)a3
++ (id)_sceneForScreen:(id)screen
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  screenCopy = screen;
+  if (!screenCopy)
   {
-    v3 = [objc_opt_self() mainScreen];
+    screenCopy = [objc_opt_self() mainScreen];
   }
 
   v13 = 0u;
@@ -1716,9 +1716,9 @@ LABEL_8:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 screen];
+        screen = [v8 screen];
 
-        if (v9 == v3)
+        if (screen == screenCopy)
         {
           v5 = v8;
           goto LABEL_13;
@@ -1740,36 +1740,36 @@ LABEL_13:
   return v5;
 }
 
-+ (id)sharedTextEffectsWindowForScreen:(id)a3
++ (id)sharedTextEffectsWindowForScreen:(id)screen
 {
-  v4 = a3;
-  v5 = [objc_opt_self() mainScreen];
-  v6 = v5 == v4;
+  screenCopy = screen;
+  mainScreen = [objc_opt_self() mainScreen];
+  v6 = mainScreen == screenCopy;
 
-  if (!v4)
+  if (!screenCopy)
   {
-    v4 = [objc_opt_self() mainScreen];
+    screenCopy = [objc_opt_self() mainScreen];
     v6 = 1;
   }
 
-  v7 = [a1 _sceneForScreen:v4];
-  v8 = [a1 _sharedTextEffectsWindowforWindowScene:v7 allowHosted:1 forViewService:0 matchesStatusBarOrientationOnAccess:v6 shouldCreateIfNecessary:1];
+  v7 = [self _sceneForScreen:screenCopy];
+  v8 = [self _sharedTextEffectsWindowforWindowScene:v7 allowHosted:1 forViewService:0 matchesStatusBarOrientationOnAccess:v6 shouldCreateIfNecessary:1];
 
   return v8;
 }
 
-+ (id)activeTextEffectsWindowForScreen:(id)a3
++ (id)activeTextEffectsWindowForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = objc_opt_class();
-  v6 = [a1 _sceneForScreen:v4];
+  v6 = [self _sceneForScreen:screenCopy];
 
   v7 = [v5 _sharedTextEffectsWindowforWindowScene:v6 allowHosted:1 forViewService:0 matchesStatusBarOrientationOnAccess:0 shouldCreateIfNecessary:0];
 
   return v7;
 }
 
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   if ([UIApp _isSpringBoard])
   {
@@ -1778,15 +1778,15 @@ LABEL_13:
 
   v6.receiver = self;
   v6.super_class = UITextEffectsWindow;
-  return [(UIApplicationRotationFollowingWindow *)&v6 _shouldAutorotateToInterfaceOrientation:a3];
+  return [(UIApplicationRotationFollowingWindow *)&v6 _shouldAutorotateToInterfaceOrientation:orientation];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22[2] = *MEMORY[0x1E69E9840];
   [(UIView *)self frame];
   v9 = v8;
@@ -1806,7 +1806,7 @@ LABEL_13:
   v24.size.height = height;
   if (!CGRectEqualToRect(v23, v24))
   {
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v21[0] = @"UITextEffectsWindowFrameDidChangeNotificationFromFrame";
     v17 = [MEMORY[0x1E696B098] valueWithCGRect:{v9, v11, v13, v15}];
     v21[1] = @"UITextEffectsWindowFrameDidChangeNotificationToFrame";
@@ -1814,13 +1814,13 @@ LABEL_13:
     v18 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
     v22[1] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
-    [v16 postNotificationName:@"UITextEffectsWindowFrameDidChangeNotification" object:self userInfo:v19];
+    [defaultCenter postNotificationName:@"UITextEffectsWindowFrameDidChangeNotification" object:self userInfo:v19];
   }
 }
 
-- (CGRect)actualSceneBoundsForLandscape:(BOOL)a3
+- (CGRect)actualSceneBoundsForLandscape:(BOOL)landscape
 {
-  if (a3)
+  if (landscape)
   {
     v3 = 4;
   }
@@ -1840,25 +1840,25 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)actualSceneFrameForOrientation:(int64_t)a3
+- (CGRect)actualSceneFrameForOrientation:(int64_t)orientation
 {
-  v5 = [(UIWindow *)self _keyboardSceneSettings];
-  v6 = v5;
-  if (v5)
+  _keyboardSceneSettings = [(UIWindow *)self _keyboardSceneSettings];
+  v6 = _keyboardSceneSettings;
+  if (_keyboardSceneSettings)
   {
-    [v5 frame];
+    [_keyboardSceneSettings frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(UIWindow *)self screen];
-    [v15 _referenceBounds];
+    screen = [(UIWindow *)self screen];
+    [screen _referenceBounds];
     v17 = v16;
     v19 = v18;
 
-    if (a3 <= 2)
+    if (orientation <= 2)
     {
-      if (a3 < 2)
+      if (orientation < 2)
       {
         v20 = v8;
         v8 = v10;
@@ -1868,7 +1868,7 @@ LABEL_17:
         goto LABEL_21;
       }
 
-      if (a3 == 2)
+      if (orientation == 2)
       {
         v20 = v17 - (v8 + v12);
         v8 = v19 - (v10 + v14);
@@ -1883,14 +1883,14 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (a3 == 4)
+    if (orientation == 4)
     {
       v20 = v19 - (v10 + v14);
     }
 
     else
     {
-      if (a3 != 3)
+      if (orientation != 3)
       {
         goto LABEL_20;
       }
@@ -1944,17 +1944,17 @@ LABEL_21:
   {
     if ([(UITextEffectsWindow *)self _isTextEffectsWindow])
     {
-      v4 = [(UIWindow *)&self->super.super.super.super.super.super.isa _fbsScene];
+      _fbsScene = [(UIWindow *)&self->super.super.super.super.super.super.isa _fbsScene];
 
-      if (v4)
+      if (_fbsScene)
       {
         [(UITextEffectsWindow *)self actualSceneFrame];
         v8 = v5;
         v9 = v7;
         if ((v10 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&v5 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (v6 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&v7 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
         {
-          v11 = [(UIWindow *)self screen];
-          [v11 _boundsForInterfaceOrientation:{-[UITextEffectsWindow actualSceneOrientation](self, "actualSceneOrientation")}];
+          screen = [(UIWindow *)self screen];
+          [screen _boundsForInterfaceOrientation:{-[UITextEffectsWindow actualSceneOrientation](self, "actualSceneOrientation")}];
           v13 = v12;
 
           return v13 - (v8 + v9);
@@ -1968,19 +1968,19 @@ LABEL_21:
 
 + (void)raiseTextEffectsWindowsForShowNotificationCenter
 {
-  v2 = [a1 sharedTextEffectsWindowForWindowScene:0];
+  v2 = [self sharedTextEffectsWindowForWindowScene:0];
   [v2 setWindowLevel:1060.0];
 }
 
 + (void)lowerTextEffectsWindowsForHideNotificationCenter
 {
-  v2 = [a1 sharedTextEffectsWindowForWindowScene:0];
+  v2 = [self sharedTextEffectsWindowForWindowScene:0];
   [v2 setWindowLevel:10.0];
 }
 
-- (BOOL)_shouldTextEffectsWindowBeHostedForView:(id)a3
+- (BOOL)_shouldTextEffectsWindowBeHostedForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(UITextEffectsWindow *)self enableRemoteHosting])
   {
     v5 = 1;
@@ -1988,9 +1988,9 @@ LABEL_21:
 
   else if ([UIApp _isSpringBoard])
   {
-    v6 = [v4 _window];
-    v7 = [v6 _hostingWindow];
-    v5 = v7 != 0;
+    _window = [viewCopy _window];
+    _hostingWindow = [_window _hostingWindow];
+    v5 = _hostingWindow != 0;
   }
 
   else
@@ -2003,16 +2003,16 @@ LABEL_21:
 
 - (BOOL)_isFullscreen
 {
-  v3 = [(UIWindow *)&self->super.super.super.super.super.super.isa _fbsScene];
-  v4 = [v3 settings];
+  _fbsScene = [(UIWindow *)&self->super.super.super.super.super.super.isa _fbsScene];
+  settings = [_fbsScene settings];
 
-  if (v4)
+  if (settings)
   {
-    [v4 frame];
+    [settings frame];
     v6 = v5;
     v8 = v7;
-    v9 = [(UIWindow *)self screen];
-    [v9 _referenceBounds];
+    screen = [(UIWindow *)self screen];
+    [screen _referenceBounds];
     v12 = v8 == v11 && v6 == v10;
   }
 
@@ -2026,13 +2026,13 @@ LABEL_21:
 
 - (void)_willSnapshot
 {
-  v3 = [(UITextEffectsWindow *)self rootViewController];
-  v4 = [v3 conformsToProtocol:&unk_1F0037730];
+  rootViewController = [(UITextEffectsWindow *)self rootViewController];
+  v4 = [rootViewController conformsToProtocol:&unk_1F0037730];
 
   if (v4)
   {
-    v5 = [(UITextEffectsWindow *)self rootViewController];
-    [v5 willSnapshot];
+    rootViewController2 = [(UITextEffectsWindow *)self rootViewController];
+    [rootViewController2 willSnapshot];
   }
 
   v6.receiver = self;
@@ -2045,13 +2045,13 @@ LABEL_21:
   v6.receiver = self;
   v6.super_class = UITextEffectsWindow;
   [(UIWindow *)&v6 _didSnapshot];
-  v3 = [(UITextEffectsWindow *)self rootViewController];
-  v4 = [v3 conformsToProtocol:&unk_1F0037730];
+  rootViewController = [(UITextEffectsWindow *)self rootViewController];
+  v4 = [rootViewController conformsToProtocol:&unk_1F0037730];
 
   if (v4)
   {
-    v5 = [(UITextEffectsWindow *)self rootViewController];
-    [v5 didSnapshot];
+    rootViewController2 = [(UITextEffectsWindow *)self rootViewController];
+    [rootViewController2 didSnapshot];
   }
 }
 

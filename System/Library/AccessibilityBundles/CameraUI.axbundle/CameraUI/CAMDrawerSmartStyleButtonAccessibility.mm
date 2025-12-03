@@ -1,18 +1,18 @@
 @interface CAMDrawerSmartStyleButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (int64_t)_accessibilityExpandedStatus;
 @end
 
 @implementation CAMDrawerSmartStyleButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
-  [v3 validateClass:@"CAMDrawerSmartStyleButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
-  [v3 validateClass:@"CAMDrawerSmartStyleButton" hasInstanceMethod:@"shutterButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
+  [validationsCopy validateClass:@"CAMDrawerSmartStyleButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
+  [validationsCopy validateClass:@"CAMDrawerSmartStyleButton" hasInstanceMethod:@"shutterButton" withFullSignature:{"@", 0}];
 }
 
 - (int64_t)_accessibilityExpandedStatus
@@ -33,20 +33,20 @@
   v3 = MEMORY[0x29EDB8DE8];
   v11.receiver = self;
   v11.super_class = CAMDrawerSmartStyleButtonAccessibility;
-  v4 = [(CAMDrawerSmartStyleButtonAccessibility *)&v11 _accessibilitySupplementaryFooterViews];
-  v5 = [v3 axArrayWithPossiblyNilArrays:{1, v4}];
+  _accessibilitySupplementaryFooterViews = [(CAMDrawerSmartStyleButtonAccessibility *)&v11 _accessibilitySupplementaryFooterViews];
+  v5 = [v3 axArrayWithPossiblyNilArrays:{1, _accessibilitySupplementaryFooterViews}];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    array = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v8 = v7;
+  v8 = array;
 
   v9 = [(CAMDrawerSmartStyleButtonAccessibility *)self safeValueForKey:@"shutterButton"];
   [v9 _setIsAccessibilityElementBlock:&__block_literal_global_3];

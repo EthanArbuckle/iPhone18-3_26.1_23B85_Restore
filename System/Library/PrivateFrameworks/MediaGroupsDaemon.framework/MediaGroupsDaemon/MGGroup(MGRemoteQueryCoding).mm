@@ -23,31 +23,31 @@
 
 - (id)rq_coded
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [a1 identifier];
-  v4 = [v3 rq_coded];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [self identifier];
+  rq_coded = [identifier rq_coded];
 
-  v5 = [a1 name];
-  v6 = [v5 rq_coded];
+  name = [self name];
+  rq_coded2 = [name rq_coded];
 
-  v7 = [a1 type];
-  v8 = [v7 rq_coded];
+  type = [self type];
+  rq_coded3 = [type rq_coded];
 
-  v9 = [a1 memberIdentifiers];
-  v10 = [v9 rq_coded];
+  memberIdentifiers = [self memberIdentifiers];
+  rq_coded4 = [memberIdentifiers rq_coded];
 
-  v11 = [a1 rq_codedProperties];
-  [v2 setObject:v4 forKey:@"identifier"];
-  if (v6)
+  rq_codedProperties = [self rq_codedProperties];
+  [dictionary setObject:rq_coded forKey:@"identifier"];
+  if (rq_coded2)
   {
-    [v2 setObject:v6 forKey:@"name"];
+    [dictionary setObject:rq_coded2 forKey:@"name"];
   }
 
-  [v2 setObject:v8 forKey:@"type"];
-  [v2 setObject:v10 forKey:@"member_identifiers"];
-  [v2 setObject:v11 forKey:@"properties"];
+  [dictionary setObject:rq_coded3 forKey:@"type"];
+  [dictionary setObject:rq_coded4 forKey:@"member_identifiers"];
+  [dictionary setObject:rq_codedProperties forKey:@"properties"];
 
-  return v2;
+  return dictionary;
 }
 
 + (id)rq_instanceFromCoded:()MGRemoteQueryCoding

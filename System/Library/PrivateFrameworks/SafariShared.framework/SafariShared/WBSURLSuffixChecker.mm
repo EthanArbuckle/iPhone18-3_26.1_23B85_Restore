@@ -1,29 +1,29 @@
 @interface WBSURLSuffixChecker
-- (BOOL)hasSuffix:(id)a3;
-- (BOOL)insertString:(id)a3 intoTrieWithCache:(id *)a4;
-- (WBSURLSuffixChecker)initWithSuffixes:(id)a3;
-- (void)addStringToFailedSuffixes:(id)a3;
+- (BOOL)hasSuffix:(id)suffix;
+- (BOOL)insertString:(id)string intoTrieWithCache:(id *)cache;
+- (WBSURLSuffixChecker)initWithSuffixes:(id)suffixes;
+- (void)addStringToFailedSuffixes:(id)suffixes;
 - (void)dealloc;
 @end
 
 @implementation WBSURLSuffixChecker
 
-- (BOOL)insertString:(id)a3 intoTrieWithCache:(id *)a4
+- (BOOL)insertString:(id)string intoTrieWithCache:(id *)cache
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  Length = CFStringGetLength(v6);
+  stringCopy = string;
+  Length = CFStringGetLength(stringCopy);
   if (Length > 0x20)
   {
     goto LABEL_33;
   }
 
   v8 = Length;
-  CStringPtr = CFStringGetCStringPtr(v6, 0x600u);
+  CStringPtr = CFStringGetCStringPtr(stringCopy, 0x600u);
   if (!CStringPtr)
   {
     CStringPtr = buffer;
-    if (!CFStringGetCString(v6, buffer, 32, 0x600u))
+    if (!CFStringGetCString(stringCopy, buffer, 32, 0x600u))
     {
       goto LABEL_33;
     }
@@ -38,10 +38,10 @@
   self->_maxLength = maxLength;
   if (*CStringPtr == 46)
   {
-    var1 = a4->var1;
+    var1 = cache->var1;
     if (v8 >= var1)
     {
-      v12 = a4->var1;
+      v12 = cache->var1;
     }
 
     else
@@ -51,7 +51,7 @@
 
     if (v12 >= 2)
     {
-      v13 = &a4->var0[1];
+      v13 = &cache->var0[1];
       v14 = 1;
       do
       {
@@ -74,7 +74,7 @@
 
         if (v17 != v13->var0)
         {
-          a4->var1 = v14;
+          cache->var1 = v14;
           var1 = v14;
         }
 
@@ -97,7 +97,7 @@
 
     v19 = var1 - 1;
     trie = self->_trie;
-    a4->var1 = v8;
+    cache->var1 = v8;
     v21 = v8 - 1;
     if (v8 - 1 <= var1 - 1)
     {
@@ -106,7 +106,7 @@
 
     else
     {
-      p_var1 = &a4->var0[v8 - 1].var1;
+      p_var1 = &cache->var0[v8 - 1].var1;
       v23 = trie;
       do
       {
@@ -176,7 +176,7 @@
       v35 = v34;
     }
 
-    v23->var0[v35] = a4->var0[v19].var1;
+    v23->var0[v35] = cache->var0[v19].var1;
     v31 = 1;
   }
 
@@ -189,28 +189,28 @@ LABEL_33:
   return v31;
 }
 
-- (void)addStringToFailedSuffixes:(id)a3
+- (void)addStringToFailedSuffixes:(id)suffixes
 {
-  v4 = a3;
+  suffixesCopy = suffixes;
   failedSuffixes = self->_failedSuffixes;
-  v8 = v4;
+  v8 = suffixesCopy;
   if (!failedSuffixes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_failedSuffixes;
     self->_failedSuffixes = v6;
 
-    v4 = v8;
+    suffixesCopy = v8;
     failedSuffixes = self->_failedSuffixes;
   }
 
-  [(NSMutableArray *)failedSuffixes addObject:v4];
+  [(NSMutableArray *)failedSuffixes addObject:suffixesCopy];
 }
 
-- (WBSURLSuffixChecker)initWithSuffixes:(id)a3
+- (WBSURLSuffixChecker)initWithSuffixes:(id)suffixes
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suffixesCopy = suffixes;
   v20.receiver = self;
   v20.super_class = WBSURLSuffixChecker;
   v5 = [(WBSURLSuffixChecker *)&v20 init];
@@ -225,7 +225,7 @@ LABEL_33:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = suffixesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v21 count:16];
     if (v7)
     {
@@ -259,17 +259,17 @@ LABEL_33:
   return v5;
 }
 
-- (BOOL)hasSuffix:(id)a3
+- (BOOL)hasSuffix:(id)suffix
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  suffixCopy = suffix;
+  v5 = suffixCopy;
+  if (!suffixCopy)
   {
     goto LABEL_30;
   }
 
-  Length = CFStringGetLength(v4);
+  Length = CFStringGetLength(suffixCopy);
   CStringPtr = CFStringGetCStringPtr(v5, 0x600u);
   if (CStringPtr || (CStringPtr = buffer, CFStringGetCString(v5, buffer, 32, 0x600u)))
   {

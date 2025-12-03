@@ -1,15 +1,15 @@
 @interface LNAutoShortcutsProvider
 + (id)sharedInstance;
-- (LNAutoShortcutsProvider)initWithOptions:(int64_t)a3;
-- (id)autoShortcutsForApplicationRecord:(id)a3 localeIdentifier:(id)a4;
-- (id)autoShortcutsForLocaleIdentifier:(id)a3 error:(id *)a4;
-- (id)propertiesForIdentifiers:(id)a3 error:(id *)a4;
-- (void)autoShortcutsForBundleIdentifier:(id)a3 localeIdentifier:(id)a4 completion:(id)a5;
-- (void)autoShortcutsForLocaleIdentifier:(id)a3 completion:(id)a4;
+- (LNAutoShortcutsProvider)initWithOptions:(int64_t)options;
+- (id)autoShortcutsForApplicationRecord:(id)record localeIdentifier:(id)identifier;
+- (id)autoShortcutsForLocaleIdentifier:(id)identifier error:(id *)error;
+- (id)propertiesForIdentifiers:(id)identifiers error:(id *)error;
+- (void)autoShortcutsForBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier completion:(id)completion;
+- (void)autoShortcutsForLocaleIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)retrieveActionForBundleIdentifier:(id)a3 appShortcutIdentifier:(id)a4 parameterIdentifier:(id)a5 completion:(id)a6;
-- (void)retrieveActionForBundleIdentifier:(id)a3 basePhraseTemplate:(id)a4 actionIdentifier:(id)a5 parameterIdentifier:(id)a6 completion:(id)a7;
-- (void)retrieveActionForLocalizedPhrase:(id)a3 completion:(id)a4;
+- (void)retrieveActionForBundleIdentifier:(id)identifier appShortcutIdentifier:(id)shortcutIdentifier parameterIdentifier:(id)parameterIdentifier completion:(id)completion;
+- (void)retrieveActionForBundleIdentifier:(id)identifier basePhraseTemplate:(id)template actionIdentifier:(id)actionIdentifier parameterIdentifier:(id)parameterIdentifier completion:(id)completion;
+- (void)retrieveActionForLocalizedPhrase:(id)phrase completion:(id)completion;
 @end
 
 @implementation LNAutoShortcutsProvider
@@ -29,10 +29,10 @@
   [(LNAutoShortcutsProvider *)&v4 dealloc];
 }
 
-- (id)propertiesForIdentifiers:(id)a3 error:(id *)a4
+- (id)propertiesForIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v28 = 0;
     v29 = &v28;
@@ -52,7 +52,7 @@
     aBlock[3] = &unk_1E74B1228;
     v20 = &v22;
     aBlock[4] = self;
-    v7 = v6;
+    v7 = identifiersCopy;
     v19 = v7;
     v21 = &v28;
     v8 = _Block_copy(aBlock);
@@ -74,9 +74,9 @@
       v11 = v10;
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = v29[5];
+      *error = v29[5];
     }
 
     _Block_object_dispose(&v22, 8);
@@ -132,9 +132,9 @@ void __58__LNAutoShortcutsProvider_propertiesForIdentifiers_error___block_invoke
   }
 }
 
-- (id)autoShortcutsForLocaleIdentifier:(id)a3 error:(id *)a4
+- (id)autoShortcutsForLocaleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -153,7 +153,7 @@ void __58__LNAutoShortcutsProvider_propertiesForIdentifiers_error___block_invoke
   aBlock[3] = &unk_1E74B1228;
   v21 = &v23;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = identifierCopy;
   v20 = v7;
   v22 = &v29;
   v8 = _Block_copy(aBlock);
@@ -176,9 +176,9 @@ void __58__LNAutoShortcutsProvider_propertiesForIdentifiers_error___block_invoke
     v12 = v11;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v30[5];
+    *error = v30[5];
   }
 
   _Block_object_dispose(&v23, 8);
@@ -228,20 +228,20 @@ void __66__LNAutoShortcutsProvider_autoShortcutsForLocaleIdentifier_error___bloc
   }
 }
 
-- (void)autoShortcutsForLocaleIdentifier:(id)a3 completion:(id)a4
+- (void)autoShortcutsForLocaleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_19763D000, "appintents:fetch all app shortcuts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__LNAutoShortcutsProvider_autoShortcutsForLocaleIdentifier_completion___block_invoke;
   block[3] = &unk_1E74B2580;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   os_activity_apply(v8, block);
 }
 
@@ -285,10 +285,10 @@ uint64_t __71__LNAutoShortcutsProvider_autoShortcutsForLocaleIdentifier_completi
   }
 }
 
-- (id)autoShortcutsForApplicationRecord:(id)a3 localeIdentifier:(id)a4
+- (id)autoShortcutsForApplicationRecord:(id)record localeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  identifierCopy = identifier;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -306,13 +306,13 @@ uint64_t __71__LNAutoShortcutsProvider_autoShortcutsForLocaleIdentifier_completi
   block[1] = 3221225472;
   block[2] = __78__LNAutoShortcutsProvider_autoShortcutsForApplicationRecord_localeIdentifier___block_invoke;
   block[3] = &unk_1E74B11D8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
+  v15 = recordCopy;
+  selfCopy = self;
+  v17 = identifierCopy;
   v18 = v26;
   v19 = &v20;
-  v9 = v7;
-  v10 = v6;
+  v9 = identifierCopy;
+  v10 = recordCopy;
   os_activity_apply(v8, block);
 
   v11 = v21[5];
@@ -402,22 +402,22 @@ void __78__LNAutoShortcutsProvider_autoShortcutsForApplicationRecord_localeIdent
   *(v9 + 40) = v6;
 }
 
-- (void)retrieveActionForBundleIdentifier:(id)a3 appShortcutIdentifier:(id)a4 parameterIdentifier:(id)a5 completion:(id)a6
+- (void)retrieveActionForBundleIdentifier:(id)identifier appShortcutIdentifier:(id)shortcutIdentifier parameterIdentifier:(id)parameterIdentifier completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  shortcutIdentifierCopy = shortcutIdentifier;
+  parameterIdentifierCopy = parameterIdentifier;
+  completionCopy = completion;
   v14 = getLNLogCategoryGeneral();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v35 = v10;
+    v35 = identifierCopy;
     v36 = 2112;
-    v37 = v11;
+    v37 = shortcutIdentifierCopy;
     v38 = 2112;
-    v39 = v12;
+    v39 = parameterIdentifierCopy;
     _os_log_impl(&dword_19763D000, v14, OS_LOG_TYPE_DEBUG, "Fetching action for bundleIdentifier: %@ appShortcutIdentifier: %@ parameterIdentifier: %@", buf, 0x20u);
   }
 
@@ -426,7 +426,7 @@ void __78__LNAutoShortcutsProvider_autoShortcutsForApplicationRecord_localeIdent
   v32[1] = 3221225472;
   v32[2] = __114__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_appShortcutIdentifier_parameterIdentifier_completion___block_invoke;
   v32[3] = &unk_1E74B2848;
-  v16 = v13;
+  v16 = completionCopy;
   v33 = v16;
   v17 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v32];
   v18 = _os_activity_create(&dword_19763D000, "appintents:retrieve action for appshortcut identifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -435,15 +435,15 @@ void __78__LNAutoShortcutsProvider_autoShortcutsForApplicationRecord_localeIdent
   block[2] = __114__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_appShortcutIdentifier_parameterIdentifier_completion___block_invoke_27;
   block[3] = &unk_1E74B1188;
   v26 = v17;
-  v27 = v10;
-  v28 = v11;
-  v29 = v12;
-  v30 = self;
+  v27 = identifierCopy;
+  v28 = shortcutIdentifierCopy;
+  v29 = parameterIdentifierCopy;
+  selfCopy = self;
   v31 = v16;
   v19 = v16;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
+  v20 = parameterIdentifierCopy;
+  v21 = shortcutIdentifierCopy;
+  v22 = identifierCopy;
   v23 = v17;
   os_activity_apply(v18, block);
 
@@ -482,25 +482,25 @@ void __114__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_appShortcu
   [v1 actionForBundleIdentifier:v2 appShortcutIdentifier:v3 parameterIdentifier:v4 completionHandler:v6];
 }
 
-- (void)retrieveActionForBundleIdentifier:(id)a3 basePhraseTemplate:(id)a4 actionIdentifier:(id)a5 parameterIdentifier:(id)a6 completion:(id)a7
+- (void)retrieveActionForBundleIdentifier:(id)identifier basePhraseTemplate:(id)template actionIdentifier:(id)actionIdentifier parameterIdentifier:(id)parameterIdentifier completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  templateCopy = template;
+  actionIdentifierCopy = actionIdentifier;
+  parameterIdentifierCopy = parameterIdentifier;
+  completionCopy = completion;
   v17 = getLNLogCategoryGeneral();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v40 = v12;
+    v40 = identifierCopy;
     v41 = 2112;
-    v42 = v13;
+    v42 = templateCopy;
     v43 = 2112;
-    v44 = v14;
+    v44 = actionIdentifierCopy;
     v45 = 2112;
-    v46 = v15;
+    v46 = parameterIdentifierCopy;
   }
 
   connection = self->_connection;
@@ -508,7 +508,7 @@ void __114__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_appShortcu
   v37[1] = 3221225472;
   v37[2] = __128__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_basePhraseTemplate_actionIdentifier_parameterIdentifier_completion___block_invoke;
   v37[3] = &unk_1E74B2848;
-  v19 = v16;
+  v19 = completionCopy;
   v38 = v19;
   v20 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v37];
   v21 = _os_activity_create(&dword_19763D000, "appintents:retrieve action for actionId, parameterId", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -517,17 +517,17 @@ void __114__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_appShortcu
   v29[2] = __128__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_basePhraseTemplate_actionIdentifier_parameterIdentifier_completion___block_invoke_26;
   v29[3] = &unk_1E74B1138;
   v30 = v20;
-  v31 = v12;
-  v32 = v13;
-  v33 = v14;
-  v35 = self;
+  v31 = identifierCopy;
+  v32 = templateCopy;
+  v33 = actionIdentifierCopy;
+  selfCopy = self;
   v36 = v19;
-  v34 = v15;
+  v34 = parameterIdentifierCopy;
   v22 = v19;
-  v23 = v15;
-  v24 = v14;
-  v25 = v13;
-  v26 = v12;
+  v23 = parameterIdentifierCopy;
+  v24 = actionIdentifierCopy;
+  v25 = templateCopy;
+  v26 = identifierCopy;
   v27 = v20;
   os_activity_apply(v21, v29);
 
@@ -567,17 +567,17 @@ void __128__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_basePhrase
   [v2 actionForBundleIdentifier:v3 basePhraseTemplate:v4 actionIdentifier:v5 parameterIdentifier:v6 completionHandler:v8];
 }
 
-- (void)retrieveActionForLocalizedPhrase:(id)a3 completion:(id)a4
+- (void)retrieveActionForLocalizedPhrase:(id)phrase completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  phraseCopy = phrase;
+  completionCopy = completion;
   v8 = getLNLogCategoryGeneral();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 bundleIdentifier];
+    bundleIdentifier = [phraseCopy bundleIdentifier];
     *buf = 138412290;
-    v26 = v9;
+    v26 = bundleIdentifier;
     _os_log_impl(&dword_19763D000, v8, OS_LOG_TYPE_DEBUG, "Fetching action for bundleIdentifier: %@", buf, 0xCu);
   }
 
@@ -586,7 +586,7 @@ void __128__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_basePhrase
   v23[1] = 3221225472;
   v23[2] = __71__LNAutoShortcutsProvider_retrieveActionForLocalizedPhrase_completion___block_invoke;
   v23[3] = &unk_1E74B2848;
-  v11 = v7;
+  v11 = completionCopy;
   v24 = v11;
   v12 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v23];
   v13 = _os_activity_create(&dword_19763D000, "appintents:retrieve action for phrase", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -594,13 +594,13 @@ void __128__LNAutoShortcutsProvider_retrieveActionForBundleIdentifier_basePhrase
   block[1] = 3221225472;
   block[2] = __71__LNAutoShortcutsProvider_retrieveActionForLocalizedPhrase_completion___block_invoke_24;
   block[3] = &unk_1E74B12A0;
-  v19 = v6;
+  v19 = phraseCopy;
   v20 = v12;
-  v21 = self;
+  selfCopy = self;
   v22 = v11;
   v14 = v11;
   v15 = v12;
-  v16 = v6;
+  v16 = phraseCopy;
   os_activity_apply(v13, block);
 
   v17 = *MEMORY[0x1E69E9840];
@@ -657,23 +657,23 @@ void __71__LNAutoShortcutsProvider_retrieveActionForLocalizedPhrase_completion__
   }
 }
 
-- (void)autoShortcutsForBundleIdentifier:(id)a3 localeIdentifier:(id)a4 completion:(id)a5
+- (void)autoShortcutsForBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_19763D000, "appintents:fetch app shortcuts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __88__LNAutoShortcutsProvider_autoShortcutsForBundleIdentifier_localeIdentifier_completion___block_invoke;
   v15[3] = &unk_1E74B12A0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = localeIdentifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = localeIdentifierCopy;
+  v14 = identifierCopy;
   os_activity_apply(v11, v15);
 }
 
@@ -741,7 +741,7 @@ void __88__LNAutoShortcutsProvider_autoShortcutsForBundleIdentifier_localeIdenti
   }
 }
 
-- (LNAutoShortcutsProvider)initWithOptions:(int64_t)a3
+- (LNAutoShortcutsProvider)initWithOptions:(int64_t)options
 {
   v24 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -757,7 +757,7 @@ void __88__LNAutoShortcutsProvider_autoShortcutsForBundleIdentifier_localeIdenti
     [(NSXPCConnection *)v4->_connection setRemoteObjectInterface:v7];
 
     [(NSXPCConnection *)v4->_connection resume];
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v8 = getLNLogCategoryMetadata();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -769,7 +769,7 @@ void __88__LNAutoShortcutsProvider_autoShortcutsForBundleIdentifier_localeIdenti
       v9 = [_TtC12LinkServices25_LNMetadataProviderDirect alloc];
       v10 = v4->_connection;
       v20 = 0;
-      v11 = [(_LNMetadataProviderDirect *)v9 initWithConnection:v10 options:a3 error:&v20];
+      v11 = [(_LNMetadataProviderDirect *)v9 initWithConnection:v10 options:options error:&v20];
       v12 = v20;
       directAccess = v4->_directAccess;
       v4->_directAccess = v11;

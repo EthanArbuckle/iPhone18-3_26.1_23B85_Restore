@@ -8,21 +8,21 @@
 {
   if (FeldsparCoreInternalExtrasEnabled())
   {
-    v2 = [MEMORY[0x1E696AAE8] fc_feldsparCoreInternalExtrasBundle];
-    [v2 load];
+    fc_feldsparCoreInternalExtrasBundle = [MEMORY[0x1E696AAE8] fc_feldsparCoreInternalExtrasBundle];
+    [fc_feldsparCoreInternalExtrasBundle load];
 
-    v3 = [MEMORY[0x1E696AAE8] fc_feldsparCoreInternalExtrasBundle];
-    v4 = [v3 classNamed:@"FCSimulatorSearchAPITokenProvider_Internal"];
+    fc_feldsparCoreInternalExtrasBundle2 = [MEMORY[0x1E696AAE8] fc_feldsparCoreInternalExtrasBundle];
+    v4 = [fc_feldsparCoreInternalExtrasBundle2 classNamed:@"FCSimulatorSearchAPITokenProvider_Internal"];
 
-    v5 = [v4 apiToken];
+    apiToken = [v4 apiToken];
   }
 
   else
   {
-    v5 = 0;
+    apiToken = 0;
   }
 
-  return v5;
+  return apiToken;
 }
 
 @end

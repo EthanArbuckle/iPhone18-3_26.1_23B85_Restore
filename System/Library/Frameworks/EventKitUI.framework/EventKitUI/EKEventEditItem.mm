@@ -1,35 +1,35 @@
 @interface EKEventEditItem
 - (id)event;
-- (void)setCalendarItem:(id)a3 store:(id)a4;
+- (void)setCalendarItem:(id)item store:(id)store;
 @end
 
 @implementation EKEventEditItem
 
-- (void)setCalendarItem:(id)a3 store:(id)a4
+- (void)setCalendarItem:(id)item store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  itemCopy = item;
+  storeCopy = store;
+  if (itemCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(EKEventEditItem *)a2 setCalendarItem:v7 store:?];
+      [(EKEventEditItem *)a2 setCalendarItem:itemCopy store:?];
     }
   }
 
   v9.receiver = self;
   v9.super_class = EKEventEditItem;
-  [(EKCalendarItemEditItem *)&v9 setCalendarItem:v7 store:v8];
+  [(EKCalendarItemEditItem *)&v9 setCalendarItem:itemCopy store:storeCopy];
 }
 
 - (id)event
 {
   v4.receiver = self;
   v4.super_class = EKEventEditItem;
-  v2 = [(EKCalendarItemEditItem *)&v4 calendarItem];
+  calendarItem = [(EKCalendarItemEditItem *)&v4 calendarItem];
 
-  return v2;
+  return calendarItem;
 }
 
 - (void)setCalendarItem:(uint64_t)a3 store:.cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

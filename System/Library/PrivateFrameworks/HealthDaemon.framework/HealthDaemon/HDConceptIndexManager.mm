@@ -1,28 +1,28 @@
 @interface HDConceptIndexManager
 - (BOOL)_computeIsEnabled;
-- (BOOL)_updateConceptIndexWithReason:(id)a3;
+- (BOOL)_updateConceptIndexWithReason:(id)reason;
 - (BOOL)unitTest_hasScheduledIndexing;
 - (HDConceptIndexManager)init;
-- (HDConceptIndexManager)initWithConceptIndexerClass:(Class)a3 batchSize:(unint64_t)a4 profile:(id)a5;
-- (HDConceptIndexManager)initWithProfile:(id)a3;
-- (id)_takeAssertionWithError:(uint64_t)a1;
+- (HDConceptIndexManager)initWithConceptIndexerClass:(Class)class batchSize:(unint64_t)size profile:(id)profile;
+- (HDConceptIndexManager)initWithProfile:(id)profile;
+- (id)_takeAssertionWithError:(uint64_t)error;
 - (uint64_t)_canAutomaticallyScheduleConceptIndexing;
 - (unint64_t)currentExecutionState;
 - (void)_clearHasScheduledIndexing;
-- (void)_dispatchDelayedOperationWithReason:(uint64_t)a1;
-- (void)_setObservationForDataManager:(uint64_t)a1;
-- (void)accountExistenceNotifier:(id)a3 didChangeHealthRecordAccountExistence:(BOOL)a4;
-- (void)addObserver:(id)a3;
-- (void)contentDatabaseDidBecomeAvailable:(BOOL)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_dispatchDelayedOperationWithReason:(uint64_t)reason;
+- (void)_setObservationForDataManager:(uint64_t)manager;
+- (void)accountExistenceNotifier:(id)notifier didChangeHealthRecordAccountExistence:(BOOL)existence;
+- (void)addObserver:(id)observer;
+- (void)contentDatabaseDidBecomeAvailable:(BOOL)available;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
 - (void)didImportOntologyShard;
 - (void)invalidateAndWait;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 - (void)resetWithReindex;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
-- (void)unitTest_setHasScheduledIndexing:(BOOL)a3;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
+- (void)unitTest_setHasScheduledIndexing:(BOOL)indexing;
 @end
 
 @implementation HDConceptIndexManager
@@ -37,21 +37,21 @@
   return 0;
 }
 
-- (HDConceptIndexManager)initWithProfile:(id)a3
+- (HDConceptIndexManager)initWithProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HDConceptIndexManager *)self initWithConceptIndexerClass:objc_opt_class() batchSize:20 profile:v4];
+  profileCopy = profile;
+  v5 = [(HDConceptIndexManager *)self initWithConceptIndexerClass:objc_opt_class() batchSize:20 profile:profileCopy];
 
   return v5;
 }
 
-- (HDConceptIndexManager)initWithConceptIndexerClass:(Class)a3 batchSize:(unint64_t)a4 profile:(id)a5
+- (HDConceptIndexManager)initWithConceptIndexerClass:(Class)class batchSize:(unint64_t)size profile:(id)profile
 {
-  v9 = a5;
-  v10 = v9;
-  if (a4)
+  profileCopy = profile;
+  v10 = profileCopy;
+  if (size)
   {
-    if (v9)
+    if (profileCopy)
     {
       goto LABEL_3;
     }
@@ -59,8 +59,8 @@
 
   else
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"HDConceptIndexManager.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"batchSize"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDConceptIndexManager.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"batchSize"}];
 
     if (v10)
     {
@@ -68,8 +68,8 @@
     }
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"HDConceptIndexManager.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDConceptIndexManager.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
 
 LABEL_3:
   v31.receiver = self;
@@ -86,8 +86,8 @@ LABEL_3:
     v12->_delayedOperationQueue = v13;
 
     objc_storeWeak(&v12->_profile, v10);
-    v12->_conceptIndexerClass = a3;
-    v12->_batchSize = a4;
+    v12->_conceptIndexerClass = class;
+    v12->_batchSize = size;
     v15 = objc_alloc(MEMORY[0x277CCD738]);
     v16 = [v15 initWithName:@"concept-index-scheduler-observers" loggingCategory:*MEMORY[0x277CCC2B0]];
     observerSet = v12->_observerSet;
@@ -337,16 +337,16 @@ uint64_t __41__HDConceptIndexManager_resetWithReindex__block_invoke(uint64_t res
   {
     v1 = result;
     WeakRetained = objc_loadWeakRetained((result + 16));
-    v3 = [WeakRetained daemon];
-    v4 = [v3 behavior];
-    v5 = [v4 healthAppNotInstalled];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    healthAppNotInstalled = [behavior healthAppNotInstalled];
 
     v6 = objc_loadWeakRetained((v1 + 16));
-    v7 = [v6 daemon];
-    v8 = [v7 behavior];
-    if ([v8 performsAutomaticConceptIndexing])
+    daemon2 = [v6 daemon];
+    behavior2 = [daemon2 behavior];
+    if ([behavior2 performsAutomaticConceptIndexing])
     {
-      v9 = *(v1 + 96) | v5;
+      v9 = *(v1 + 96) | healthAppNotInstalled;
 
       if ((v9 & 1) == 0)
       {
@@ -365,9 +365,9 @@ uint64_t __41__HDConceptIndexManager_resetWithReindex__block_invoke(uint64_t res
     {
       v11 = HKStringFromBool();
       v12 = objc_loadWeakRetained((v1 + 16));
-      v13 = [v12 daemon];
-      v14 = [v13 behavior];
-      [v14 performsAutomaticConceptIndexing];
+      daemon3 = [v12 daemon];
+      behavior3 = [daemon3 behavior];
+      [behavior3 performsAutomaticConceptIndexing];
       v15 = HKStringFromBool();
       v16 = *(v1 + 96);
       v17 = HKStringFromBool();
@@ -390,18 +390,18 @@ LABEL_9:
   return result;
 }
 
-- (void)_dispatchDelayedOperationWithReason:(uint64_t)a1
+- (void)_dispatchDelayedOperationWithReason:(uint64_t)reason
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (reason)
   {
-    v5 = *(a1 + 64);
+    v5 = *(reason + 64);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__HDConceptIndexManager__dispatchDelayedOperationWithReason___block_invoke;
     v6[3] = &unk_278613920;
-    v6[4] = a1;
+    v6[4] = reason;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -411,12 +411,12 @@ LABEL_9:
 {
   atomic_store(1u, &self->_isInvalidated);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained internalContentDatabaseManager];
-  [v4 removeOntologyShardImportObserver:self];
+  internalContentDatabaseManager = [WeakRetained internalContentDatabaseManager];
+  [internalContentDatabaseManager removeOntologyShardImportObserver:self];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v5 = [v6 internalContentDatabaseManager];
-  [v5 removeContentDatabaseAvailabilityObserver:self];
+  internalContentDatabaseManager2 = [v6 internalContentDatabaseManager];
+  [internalContentDatabaseManager2 removeContentDatabaseAvailabilityObserver:self];
 }
 
 - (unint64_t)currentExecutionState
@@ -440,8 +440,8 @@ LABEL_9:
 {
   [(HDConceptIndexManager *)self _setObservationForDataManager:?];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   [(_HKDelayedOperation *)self->_updateIndexOperation invalidate];
   [(HDAssertion *)self->_preparedDatabaseAccessibilityAssertion invalidate];
@@ -450,15 +450,15 @@ LABEL_9:
   [(HDConceptIndexManager *)&v5 dealloc];
 }
 
-- (void)_setObservationForDataManager:(uint64_t)a1
+- (void)_setObservationForDataManager:(uint64_t)manager
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (manager)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v5 = [WeakRetained daemon];
-    v6 = [v5 behavior];
-    if ([v6 futureMigrationsEnabled])
+    WeakRetained = objc_loadWeakRetained((manager + 16));
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    if ([behavior futureMigrationsEnabled])
     {
       v7 = 8;
     }
@@ -488,17 +488,17 @@ LABEL_9:
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = objc_loadWeakRetained((a1 + 16));
-          v15 = [v14 dataManager];
-          v16 = v15;
+          v14 = objc_loadWeakRetained((manager + 16));
+          dataManager = [v14 dataManager];
+          v16 = dataManager;
           if (a2)
           {
-            [v15 addObserver:a1 forDataType:v13];
+            [dataManager addObserver:manager forDataType:v13];
           }
 
           else
           {
-            [v15 removeObserver:a1 forDataType:v13];
+            [dataManager removeObserver:manager forDataType:v13];
           }
         }
 
@@ -512,18 +512,18 @@ LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   observerSet = self->_observerSet;
-  v5 = a3;
-  [(HKObserverSet *)observerSet registerObserver:v5];
+  observerCopy = observer;
+  [(HKObserverSet *)observerSet registerObserver:observerCopy];
   v6 = self->_observerSet;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__HDConceptIndexManager_addObserver___block_invoke;
   v7[3] = &unk_2786233C8;
   v7[4] = self;
-  [(HKObserverSet *)v6 notifyObserver:v5 handler:v7];
+  [(HKObserverSet *)v6 notifyObserver:observerCopy handler:v7];
 }
 
 void __37__HDConceptIndexManager_addObserver___block_invoke(uint64_t a1, void *a2)
@@ -536,27 +536,27 @@ void __37__HDConceptIndexManager_addObserver___block_invoke(uint64_t a1, void *a
 - (BOOL)_computeIsEnabled
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_12;
   }
 
-  v2 = atomic_load((a1 + 40));
+  v2 = atomic_load((self + 40));
   if ((v2 & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v7 = [WeakRetained daemon];
-    v8 = [v7 behavior];
-    v9 = [v8 supportsOntology];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    supportsOntology = [behavior supportsOntology];
 
-    if (v9)
+    if (supportsOntology)
     {
-      v10 = [WeakRetained daemon];
-      v11 = [v10 behavior];
-      v12 = [v11 ontologyIndexingEnabled];
+      daemon2 = [WeakRetained daemon];
+      behavior2 = [daemon2 behavior];
+      ontologyIndexingEnabled = [behavior2 ontologyIndexingEnabled];
 
       _HKInitializeLogging();
-      if (v12)
+      if (ontologyIndexingEnabled)
       {
         v13 = HKLogHealthOntology();
         v6 = 1;
@@ -568,7 +568,7 @@ void __37__HDConceptIndexManager_addObserver___block_invoke(uint64_t a1, void *a
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
             v21 = 138543362;
-            v22 = a1;
+            selfCopy4 = self;
             _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_INFO, "%{public}@: Concept Indexing Is Enabled", &v21, 0xCu);
           }
 
@@ -592,7 +592,7 @@ LABEL_22:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v21 = 138543362;
-        v22 = a1;
+        selfCopy4 = self;
         v17 = "%{public}@: Indexing not enabled: behavior for indexing disabled";
         goto LABEL_19;
       }
@@ -613,7 +613,7 @@ LABEL_22:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v21 = 138543362;
-        v22 = a1;
+        selfCopy4 = self;
         v17 = "%{public}@: Indexing not enabled: behavior does not support ontology";
 LABEL_19:
         _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_INFO, v17, &v21, 0xCu);
@@ -636,7 +636,7 @@ LABEL_21:
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_INFO))
     {
       v21 = 138543362;
-      v22 = a1;
+      selfCopy4 = self;
       _os_log_impl(&dword_228986000, WeakRetained, OS_LOG_TYPE_INFO, "%{public}@: Indexing is not enabled: either ontology is currently updating, or the index manager has been invalidated.", &v21, 0xCu);
     }
 
@@ -651,22 +651,22 @@ LABEL_23:
   return v6;
 }
 
-- (id)_takeAssertionWithError:(uint64_t)a1
+- (id)_takeAssertionWithError:(uint64_t)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
-    v9 = [v4 stringWithFormat:@"%@-%@", v6, v8];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v9 = [v4 stringWithFormat:@"%@-%@", v6, uUIDString];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v11 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((error + 16));
+    database = [WeakRetained database];
     v21 = 0;
-    v12 = [v11 takeAccessibilityAssertionWithOwnerIdentifier:v9 timeout:&v21 error:300.0];
+    v12 = [database takeAccessibilityAssertionWithOwnerIdentifier:v9 timeout:&v21 error:300.0];
     v13 = v21;
 
     if (!v12)
@@ -680,11 +680,11 @@ LABEL_23:
         v16 = HKLogHealthOntology();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v13 localizedDescription];
+          localizedDescription = [v13 localizedDescription];
           *buf = 138543618;
-          v23 = a1;
+          errorCopy = error;
           v24 = 2114;
-          v25 = v17;
+          v25 = localizedDescription;
           _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_INFO, "%{public}@: unable to take accessibility assertion with error: %{public}@.", buf, 0x16u);
         }
       }
@@ -729,12 +729,12 @@ void __85__HDConceptIndexManager__delayedOperationQueue_scheduleConceptIndexUpda
 
 - (void)_clearHasScheduledIndexing
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 56));
-    *(a1 + 60) = 0;
+    os_unfair_lock_lock((self + 56));
+    *(self + 60) = 0;
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((self + 56));
   }
 }
 
@@ -746,10 +746,10 @@ void __85__HDConceptIndexManager__delayedOperationQueue_scheduleConceptIndexUpda
   v3[2]();
 }
 
-- (BOOL)_updateConceptIndexWithReason:(id)a3
+- (BOOL)_updateConceptIndexWithReason:(id)reason
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = self->_preparedDatabaseAccessibilityAssertion;
   preparedDatabaseAccessibilityAssertion = self->_preparedDatabaseAccessibilityAssertion;
   self->_preparedDatabaseAccessibilityAssertion = 0;
@@ -775,7 +775,7 @@ LABEL_4:
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = reasonCopy;
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning concept indexing with reason: %{public}@.", buf, 0x16u);
     }
 
@@ -785,7 +785,7 @@ LABEL_4:
     v43 = 0;
     Current = CFAbsoluteTimeGetCurrent();
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v13 = [WeakRetained database];
+    database = [WeakRetained database];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __55__HDConceptIndexManager__updateConceptIndexWithReason___block_invoke;
@@ -793,7 +793,7 @@ LABEL_4:
     v38[4] = self;
     v38[5] = &v40;
     v39 = v7;
-    v14 = [v13 performWithTransactionContext:v9 error:&v39 block:v38];
+    v14 = [database performWithTransactionContext:v9 error:&v39 block:v38];
     v15 = v39;
 
     v16 = v41[3];
@@ -815,7 +815,7 @@ LABEL_4:
       v37 = v5;
       v20 = v9;
       v21 = v14;
-      v22 = v4;
+      v22 = reasonCopy;
       v23 = v21;
       if (v21)
       {
@@ -829,7 +829,7 @@ LABEL_4:
 
       v25 = v41[3];
       v26 = CFAbsoluteTimeGetCurrent();
-      v27 = [v15 localizedDescription];
+      localizedDescription = [v15 localizedDescription];
       *buf = 138544898;
       *&buf[4] = self;
       *&buf[12] = 2114;
@@ -839,12 +839,12 @@ LABEL_4:
       *v48 = 2048;
       *&v48[2] = v18;
       *&v48[10] = 2114;
-      v4 = v22;
+      reasonCopy = v22;
       *&v48[12] = v22;
       v49 = 2048;
       v50 = v26 - Current;
       v51 = 2114;
-      v52 = v27;
+      v52 = localizedDescription;
       _os_log_impl(&dword_228986000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ indexing %ld records in %ld batches with reason %{public}@, duration: %.3f seconds, Error: %{public}@", buf, 0x48u);
 
       v14 = v23;
@@ -901,11 +901,11 @@ LABEL_4:
   v9 = HKLogConceptIndex();
   if (os_log_type_enabled(&v9->super.super, OS_LOG_TYPE_ERROR))
   {
-    v36 = [v7 localizedDescription];
+    localizedDescription2 = [v7 localizedDescription];
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v36;
+    *&buf[14] = localizedDescription2;
     _os_log_error_impl(&dword_228986000, &v9->super.super, OS_LOG_TYPE_ERROR, "%{public}@: Was not able to take out inner acessibility assertion with error %{public}@. Cannot perform concept index work.", buf, 0x16u);
   }
 
@@ -1145,7 +1145,7 @@ uint64_t __61__HDConceptIndexManager__dispatchDelayedOperationWithReason___block
   return [v3 executeWithDelay:v4];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   if ([(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
   {
@@ -1154,7 +1154,7 @@ uint64_t __61__HDConceptIndexManager__dispatchDelayedOperationWithReason___block
   }
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   if ([(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
   {
@@ -1163,41 +1163,41 @@ uint64_t __61__HDConceptIndexManager__dispatchDelayedOperationWithReason___block
   }
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  if (a4 && [(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
+  if (available && [(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
   {
 
     [(HDConceptIndexManager *)self _dispatchDelayedOperationWithReason:?];
   }
 }
 
-- (void)accountExistenceNotifier:(id)a3 didChangeHealthRecordAccountExistence:(BOOL)a4
+- (void)accountExistenceNotifier:(id)notifier didChangeHealthRecordAccountExistence:(BOOL)existence
 {
-  if (a4 && [(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
+  if (existence && [(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
   {
 
     [(HDConceptIndexManager *)self _dispatchDelayedOperationWithReason:?];
   }
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 addProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v7 = [v6 internalContentDatabaseManager];
-  [v7 addContentDatabaseAvailabilityObserver:self];
+  internalContentDatabaseManager = [v6 internalContentDatabaseManager];
+  [internalContentDatabaseManager addContentDatabaseAvailabilityObserver:self];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v9 = [v8 internalContentDatabaseManager];
-  [v9 addContentDatabaseAvailabilityObserver:self];
+  internalContentDatabaseManager2 = [v8 internalContentDatabaseManager];
+  [internalContentDatabaseManager2 addContentDatabaseAvailabilityObserver:self];
 
   v10 = objc_loadWeakRetained(&self->_profile);
-  v11 = [v10 healthRecordsAccountExistenceNotifier];
-  [v11 addAccountExistenceObserver:self];
+  healthRecordsAccountExistenceNotifier = [v10 healthRecordsAccountExistenceNotifier];
+  [healthRecordsAccountExistenceNotifier addAccountExistenceObserver:self];
 
   [(HDConceptIndexManager *)self _setObservationForDataManager:?];
   if ([(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
@@ -1207,9 +1207,9 @@ uint64_t __61__HDConceptIndexManager__dispatchDelayedOperationWithReason___block
   }
 }
 
-- (void)contentDatabaseDidBecomeAvailable:(BOOL)a3
+- (void)contentDatabaseDidBecomeAvailable:(BOOL)available
 {
-  if (a3 && [(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
+  if (available && [(HDConceptIndexManager *)self _canAutomaticallyScheduleConceptIndexing])
   {
 
     [(HDConceptIndexManager *)self _dispatchDelayedOperationWithReason:?];
@@ -1224,7 +1224,7 @@ uint64_t __61__HDConceptIndexManager__dispatchDelayedOperationWithReason___block
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Request reset concept index due to importing a new ontology shard", &v5, 0xCu);
   }
 
@@ -1232,10 +1232,10 @@ uint64_t __61__HDConceptIndexManager__dispatchDelayedOperationWithReason___block
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unitTest_setHasScheduledIndexing:(BOOL)a3
+- (void)unitTest_setHasScheduledIndexing:(BOOL)indexing
 {
   os_unfair_lock_lock(&self->_stateLock);
-  self->_hasScheduledIndexing = a3;
+  self->_hasScheduledIndexing = indexing;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }

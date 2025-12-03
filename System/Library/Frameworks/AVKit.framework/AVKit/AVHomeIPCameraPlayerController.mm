@@ -1,9 +1,9 @@
 @interface AVHomeIPCameraPlayerController
 - (AVHomeIPCameraActionButtonHandling)delegate;
 - (CGSize)presentationSize;
-- (void)setMuted:(BOOL)a3;
-- (void)setVolume:(double)a3;
-- (void)togglePlaybackEvenWhenInBackground:(id)a3;
+- (void)setMuted:(BOOL)muted;
+- (void)setVolume:(double)volume;
+- (void)togglePlaybackEvenWhenInBackground:(id)background;
 @end
 
 @implementation AVHomeIPCameraPlayerController
@@ -24,35 +24,35 @@
   return WeakRetained;
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  if (LOBYTE(self->_volume) != a3)
+  if (LOBYTE(self->_volume) != muted)
   {
-    v4 = a3;
-    LOBYTE(self->_volume) = a3;
-    v5 = [(AVHomeIPCameraPlayerController *)self delegate];
-    [v5 playbackControlsDidToggleMuted:v4];
+    mutedCopy = muted;
+    LOBYTE(self->_volume) = muted;
+    delegate = [(AVHomeIPCameraPlayerController *)self delegate];
+    [delegate playbackControlsDidToggleMuted:mutedCopy];
   }
 }
 
-- (void)setVolume:(double)a3
+- (void)setVolume:(double)volume
 {
-  if (*&self->super._seekToTimeInternal.epoch != a3)
+  if (*&self->super._seekToTimeInternal.epoch != volume)
   {
-    *&self->super._seekToTimeInternal.epoch = a3;
+    *&self->super._seekToTimeInternal.epoch = volume;
     v7.receiver = self;
     v7.super_class = AVHomeIPCameraPlayerController;
-    [(AVPlayerController *)&v7 setVolume:a3];
-    v5 = [(AVHomeIPCameraPlayerController *)self delegate];
-    *&v6 = a3;
-    [v5 playbackControlsDidChangePlayerVolume:v6];
+    [(AVPlayerController *)&v7 setVolume:volume];
+    delegate = [(AVHomeIPCameraPlayerController *)self delegate];
+    *&v6 = volume;
+    [delegate playbackControlsDidChangePlayerVolume:v6];
   }
 }
 
-- (void)togglePlaybackEvenWhenInBackground:(id)a3
+- (void)togglePlaybackEvenWhenInBackground:(id)background
 {
-  v3 = [(AVHomeIPCameraPlayerController *)self delegate];
-  [v3 pictureInPictureActionButtonTapped];
+  delegate = [(AVHomeIPCameraPlayerController *)self delegate];
+  [delegate pictureInPictureActionButtonTapped];
 }
 
 @end

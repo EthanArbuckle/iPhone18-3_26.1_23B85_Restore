@@ -1,5 +1,5 @@
 @interface GKLocalizedAchievementDescription
-- (id)_localizedStringFromKey:(id)a3;
+- (id)_localizedStringFromKey:(id)key;
 - (id)achievedDescription;
 - (id)title;
 - (id)unachievedDescription;
@@ -7,14 +7,14 @@
 
 @implementation GKLocalizedAchievementDescription
 
-- (id)_localizedStringFromKey:(id)a3
+- (id)_localizedStringFromKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKLocalizedAchievementDescription *)self game];
-  v6 = [v5 gameDescriptorDictionary];
-  v7 = [GKContentPropertyList localPropertyListForGameDescriptor:v6];
+  keyCopy = key;
+  game = [(GKLocalizedAchievementDescription *)self game];
+  gameDescriptorDictionary = [game gameDescriptorDictionary];
+  v7 = [GKContentPropertyList localPropertyListForGameDescriptor:gameDescriptorDictionary];
 
-  v8 = [v7 localizedStringForKey:v4];
+  v8 = [v7 localizedStringForKey:keyCopy];
 
   return v8;
 }
@@ -23,8 +23,8 @@
 {
   v6.receiver = self;
   v6.super_class = GKLocalizedAchievementDescription;
-  v3 = [(GKLocalizedAchievementDescription *)&v6 title];
-  v4 = [(GKLocalizedAchievementDescription *)self _localizedStringFromKey:v3];
+  title = [(GKLocalizedAchievementDescription *)&v6 title];
+  v4 = [(GKLocalizedAchievementDescription *)self _localizedStringFromKey:title];
 
   return v4;
 }
@@ -33,8 +33,8 @@
 {
   v6.receiver = self;
   v6.super_class = GKLocalizedAchievementDescription;
-  v3 = [(GKLocalizedAchievementDescription *)&v6 achievedDescription];
-  v4 = [(GKLocalizedAchievementDescription *)self _localizedStringFromKey:v3];
+  achievedDescription = [(GKLocalizedAchievementDescription *)&v6 achievedDescription];
+  v4 = [(GKLocalizedAchievementDescription *)self _localizedStringFromKey:achievedDescription];
 
   return v4;
 }
@@ -43,8 +43,8 @@
 {
   v6.receiver = self;
   v6.super_class = GKLocalizedAchievementDescription;
-  v3 = [(GKLocalizedAchievementDescription *)&v6 unachievedDescription];
-  v4 = [(GKLocalizedAchievementDescription *)self _localizedStringFromKey:v3];
+  unachievedDescription = [(GKLocalizedAchievementDescription *)&v6 unachievedDescription];
+  v4 = [(GKLocalizedAchievementDescription *)self _localizedStringFromKey:unachievedDescription];
 
   return v4;
 }

@@ -3,17 +3,17 @@
 - (BOOL)_isParsingExtension;
 - (BOOL)_isParsingExtensionsArray;
 - (BOOL)_openBrowserExtensionMappingJSONFile;
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4;
-- (BOOL)jsonReaderBeginArray:(id)a3;
-- (BOOL)jsonReaderBeginObject:(id)a3;
-- (BOOL)jsonReaderEndArray:(id)a3;
-- (BOOL)jsonReaderEndObject:(id)a3;
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value;
+- (BOOL)jsonReaderBeginArray:(id)array;
+- (BOOL)jsonReaderBeginObject:(id)object;
+- (BOOL)jsonReaderEndArray:(id)array;
+- (BOOL)jsonReaderEndObject:(id)object;
 - (WBSChromeExtensionsImporter)init;
 - (WBSExtensionsImporterDelegate)delegate;
 - (id)_popKeyFromStackIfPossible;
 - (void)_openBrowserExtensionMappingJSONFile;
-- (void)parseFileHandle:(id)a3 completionHandler:(id)a4;
-- (void)parseURL:(id)a3 completionHandler:(id)a4;
+- (void)parseFileHandle:(id)handle completionHandler:(id)handler;
+- (void)parseURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSChromeExtensionsImporter
@@ -153,12 +153,12 @@ LABEL_27:
   return v21;
 }
 
-- (void)parseURL:(id)a3 completionHandler:(id)a4
+- (void)parseURL:(id)l completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696AC00];
   v11 = 0;
-  v7 = a4;
-  v8 = [v6 safari_fileHandleWithURL:a3 options:0 createMode:0 error:&v11];
+  handlerCopy = handler;
+  v8 = [v6 safari_fileHandleWithURL:l options:0 createMode:0 error:&v11];
   v9 = v11;
   if (v9)
   {
@@ -172,20 +172,20 @@ LABEL_27:
 
   if (v10)
   {
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   else
   {
-    [(WBSChromeExtensionsImporter *)self parseFileHandle:v8 completionHandler:v7];
+    [(WBSChromeExtensionsImporter *)self parseFileHandle:v8 completionHandler:handlerCopy];
   }
 }
 
-- (void)parseFileHandle:(id)a3 completionHandler:(id)a4
+- (void)parseFileHandle:(id)handle completionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  handleCopy = handle;
   v8 = objc_alloc_init(WBSJSONReader);
   [(WBSJSONReader *)v8 setDelegate:self];
   lastError = self->_lastError;
@@ -196,12 +196,12 @@ LABEL_27:
   self->_stack = v10;
 
   v19 = 0;
-  [(WBSJSONReader *)v8 parseFileHandle:v7 error:&v19];
+  [(WBSJSONReader *)v8 parseFileHandle:handleCopy error:&v19];
 
   v12 = v19;
   if (v12)
   {
-    v6[2](v6, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 
   else
@@ -220,7 +220,7 @@ LABEL_27:
       v13 = self->_lastError;
     }
 
-    v6[2](v6, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -277,42 +277,42 @@ LABEL_27:
 
 - (id)_popKeyFromStackIfPossible
 {
-  v3 = [(NSMutableArray *)self->_stack lastObject];
+  lastObject = [(NSMutableArray *)self->_stack lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(NSMutableArray *)self->_stack lastObject];
+    lastObject2 = [(NSMutableArray *)self->_stack lastObject];
     [(NSMutableArray *)self->_stack removeLastObject];
   }
 
   else
   {
-    v5 = 0;
+    lastObject2 = 0;
   }
 
-  return v5;
+  return lastObject2;
 }
 
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value
 {
-  v6 = a4;
-  v7 = [(WBSChromeExtensionsImporter *)self _checkNotAtRootLevel];
-  if (v7)
+  valueCopy = value;
+  _checkNotAtRootLevel = [(WBSChromeExtensionsImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
-    v8 = [(WBSChromeExtensionsImporter *)self _popKeyFromStackIfPossible];
+    _popKeyFromStackIfPossible = [(WBSChromeExtensionsImporter *)self _popKeyFromStackIfPossible];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 isEqualToString:@"id"])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [_popKeyFromStackIfPossible isEqualToString:@"id"])
     {
-      objc_storeStrong(&self->_chromeExtensionIdentifier, a4);
+      objc_storeStrong(&self->_chromeExtensionIdentifier, value);
     }
   }
 
-  return v7;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderBeginObject:(id)a3
+- (BOOL)jsonReaderBeginObject:(id)object
 {
   [(NSMutableArray *)self->_stack addObject:&unk_1F308E258];
   if ([(WBSChromeExtensionsImporter *)self _isParsingExtension])
@@ -324,7 +324,7 @@ LABEL_27:
   return 1;
 }
 
-- (BOOL)jsonReaderEndObject:(id)a3
+- (BOOL)jsonReaderEndObject:(id)object
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = [(NSMutableDictionary *)self->_browserExtensionMapping objectForKeyedSubscript:self->_chromeExtensionIdentifier];
@@ -374,16 +374,16 @@ LABEL_27:
   }
 
   [(NSMutableArray *)self->_stack removeLastObject];
-  v13 = [(WBSChromeExtensionsImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSChromeExtensionsImporter *)self _popKeyFromStackIfPossible];
 
   v14 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (BOOL)jsonReaderBeginArray:(id)a3
+- (BOOL)jsonReaderBeginArray:(id)array
 {
-  v4 = [(WBSChromeExtensionsImporter *)self _checkNotAtRootLevel];
-  if (v4)
+  _checkNotAtRootLevel = [(WBSChromeExtensionsImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
     [(NSMutableArray *)self->_stack addObject:&unk_1F308E270];
     if ([(WBSChromeExtensionsImporter *)self _isParsingExtensionsArray])
@@ -392,13 +392,13 @@ LABEL_27:
     }
   }
 
-  return v4;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderEndArray:(id)a3
+- (BOOL)jsonReaderEndArray:(id)array
 {
   [(NSMutableArray *)self->_stack removeLastObject];
-  v4 = [(WBSChromeExtensionsImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSChromeExtensionsImporter *)self _popKeyFromStackIfPossible];
   return 1;
 }
 
@@ -412,8 +412,8 @@ LABEL_27:
 - (void)_openBrowserExtensionMappingJSONFile
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_2(&dword_1B8447000, v5, v6, "The browser extension mapping JSON file could not be opened: %{public}@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x1E69E9840];

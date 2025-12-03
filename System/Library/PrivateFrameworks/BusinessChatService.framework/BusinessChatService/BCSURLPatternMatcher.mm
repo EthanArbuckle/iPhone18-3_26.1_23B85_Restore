@@ -1,44 +1,44 @@
 @interface BCSURLPatternMatcher
-- (BOOL)isAnyMatchFoundForPathPattern:(id)a3 countOfPathComponents:(int64_t *)a4 error:(id *)a5;
-- (BOOL)isValidDomainForURL:(id)a3 domainBundleIDPatterns:(id)a4;
-- (id)dictionaryFromQueryString:(id)a3 orderedKeys:(id *)a4;
-- (id)extractedPathForAnyMatchUsingScanner:(id)a3 delimiter:(id)a4 extractedPath:(id)a5 countOfPathComponentsToMatch:(unint64_t)a6;
-- (id)extractedPathForExactMatchUsingScanner:(id)a3 delimiter:(id)a4 extractedPath:(id)a5 patternPathComponent:(id)a6;
-- (id)extractedQueryByAddingKey:(id)a3 value:(id)a4 toExtractedQuery:(id)a5;
-- (id)extractedURLForOriginalURL:(id)a3 originalURLPathComponents:(id)a4 extractedPath:(id)a5 extractedQuery:(id)a6;
-- (id)matchPattern:(id)a3 withURL:(id)a4 forBundleID:(id)a5 expirationDate:(id)a6 error:(id *)a7;
-- (id)orderedKeysForPatternQuery:(id)a3 originalURLQuery:(id)a4 orderedOriginalURLQueryKeys:(id)a5;
+- (BOOL)isAnyMatchFoundForPathPattern:(id)pattern countOfPathComponents:(int64_t *)components error:(id *)error;
+- (BOOL)isValidDomainForURL:(id)l domainBundleIDPatterns:(id)patterns;
+- (id)dictionaryFromQueryString:(id)string orderedKeys:(id *)keys;
+- (id)extractedPathForAnyMatchUsingScanner:(id)scanner delimiter:(id)delimiter extractedPath:(id)path countOfPathComponentsToMatch:(unint64_t)match;
+- (id)extractedPathForExactMatchUsingScanner:(id)scanner delimiter:(id)delimiter extractedPath:(id)path patternPathComponent:(id)component;
+- (id)extractedQueryByAddingKey:(id)key value:(id)value toExtractedQuery:(id)query;
+- (id)extractedURLForOriginalURL:(id)l originalURLPathComponents:(id)components extractedPath:(id)path extractedQuery:(id)query;
+- (id)matchPattern:(id)pattern withURL:(id)l forBundleID:(id)d expirationDate:(id)date error:(id *)error;
+- (id)orderedKeysForPatternQuery:(id)query originalURLQuery:(id)lQuery orderedOriginalURLQueryKeys:(id)keys;
 @end
 
 @implementation BCSURLPatternMatcher
 
-- (BOOL)isValidDomainForURL:(id)a3 domainBundleIDPatterns:(id)a4
+- (BOOL)isValidDomainForURL:(id)l domainBundleIDPatterns:(id)patterns
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  lCopy = l;
+  patternsCopy = patterns;
+  v7 = patternsCopy;
+  if (!lCopy)
   {
     goto LABEL_5;
   }
 
-  v8 = [v6 domain];
-  v9 = [v8 length];
+  domain = [patternsCopy domain];
+  v9 = [domain length];
 
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  v10 = [v7 bundleIdPatterns];
-  v11 = [v10 count];
+  bundleIdPatterns = [v7 bundleIdPatterns];
+  v11 = [bundleIdPatterns count];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CCACE0] componentsWithURL:v5 resolvingAgainstBaseURL:1];
-    v13 = [v12 host];
-    v14 = [v7 domain];
-    v15 = [v13 isEqualToString:v14];
+    v12 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    host = [v12 host];
+    domain2 = [v7 domain];
+    v15 = [host isEqualToString:domain2];
   }
 
   else
@@ -50,19 +50,19 @@ LABEL_5:
   return v15;
 }
 
-- (id)matchPattern:(id)a3 withURL:(id)a4 forBundleID:(id)a5 expirationDate:(id)a6 error:(id *)a7
+- (id)matchPattern:(id)pattern withURL:(id)l forBundleID:(id)d expirationDate:(id)date error:(id *)error
 {
   v86 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12 && v13)
+  patternCopy = pattern;
+  lCopy = l;
+  dCopy = d;
+  dateCopy = date;
+  if (patternCopy && lCopy)
   {
-    v16 = [v12 path];
-    v17 = [v12 query];
-    v18 = v17;
-    if (!v16 && ![v17 length])
+    path = [patternCopy path];
+    query = [patternCopy query];
+    v18 = query;
+    if (!path && ![query length])
     {
       v36 = ABSLogCommon();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -76,15 +76,15 @@ LABEL_5:
       goto LABEL_66;
     }
 
-    v19 = [MEMORY[0x277CCACE0] componentsWithURL:v13 resolvingAgainstBaseURL:1];
-    v20 = [v19 percentEncodedPath];
-    v71 = [v19 percentEncodedQuery];
-    v69 = v20;
-    if ([v16 length])
+    v19 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    percentEncodedPath = [v19 percentEncodedPath];
+    percentEncodedQuery = [v19 percentEncodedQuery];
+    v69 = percentEncodedPath;
+    if ([path length])
     {
-      v72 = a7;
+      errorCopy = error;
       v21 = &stru_28544C2A0;
-      if (*[v16 UTF8String]!= 47)
+      if (*[path UTF8String]!= 47)
       {
         v35 = 0;
         v73 = &stru_28544C2A0;
@@ -93,18 +93,18 @@ LABEL_5:
 
       v65 = v18;
       v67 = v19;
-      v63 = v15;
-      v59 = v14;
-      if (*[v20 UTF8String] == 47)
+      v63 = dateCopy;
+      v59 = dCopy;
+      if (*[percentEncodedPath UTF8String] == 47)
       {
         v21 = @"/";
       }
 
       v22 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:?];
-      v61 = v16;
-      v23 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v16];
+      v61 = path;
+      v23 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:path];
       [v23 setCharactersToBeSkipped:v22];
-      v24 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v20];
+      v24 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:percentEncodedPath];
       [v24 setCharactersToBeSkipped:v22];
       v83 = 0;
       v25 = [v23 scanUpToCharactersFromSet:v22 intoString:&v83];
@@ -146,7 +146,7 @@ LABEL_5:
             if (!v30)
             {
 LABEL_30:
-              v33 = v13;
+              v33 = lCopy;
               v21 = 0;
               goto LABEL_31;
             }
@@ -163,18 +163,18 @@ LABEL_30:
           v26 = v32;
           if ((v31 & 1) == 0)
           {
-            v33 = v13;
+            v33 = lCopy;
             v34 = 0;
             v26 = v32;
             goto LABEL_32;
           }
         }
 
-        v33 = v13;
-        if (v72)
+        v33 = lCopy;
+        if (errorCopy)
         {
           v37 = v28;
-          *v72 = v29;
+          *errorCopy = v29;
         }
 
 LABEL_31:
@@ -184,7 +184,7 @@ LABEL_31:
 
       else
       {
-        v33 = v13;
+        v33 = lCopy;
         v74 = 0;
         v75 = 0;
         v76 = 0;
@@ -193,26 +193,26 @@ LABEL_31:
 
 LABEL_32:
 
-      v15 = v63;
+      dateCopy = v63;
       if (v34)
       {
         v73 = v21;
         v35 = 0;
         v21 = &stru_28544C2A0;
-        v13 = v33;
-        v14 = v59;
-        v16 = v61;
+        lCopy = v33;
+        dCopy = v59;
+        path = v61;
         v18 = v65;
         v19 = v67;
         goto LABEL_65;
       }
 
-      v13 = v33;
-      v14 = v59;
-      v16 = v61;
+      lCopy = v33;
+      dCopy = v59;
+      path = v61;
       v18 = v65;
       v19 = v67;
-      v20 = v69;
+      percentEncodedPath = v69;
     }
 
     else
@@ -224,7 +224,7 @@ LABEL_32:
     }
 
     v73 = v21;
-    if (-[NSObject length](v16, "length") && [v18 length] && !-[__CFString isEqualToString:](v21, "isEqualToString:", v20) || !v16 && objc_msgSend(v18, "length") && objc_msgSend(v20, "length") && !objc_msgSend(v20, "isEqualToString:", @"/"))
+    if (-[NSObject length](path, "length") && [v18 length] && !-[__CFString isEqualToString:](v21, "isEqualToString:", percentEncodedPath) || !path && objc_msgSend(v18, "length") && objc_msgSend(percentEncodedPath, "length") && !objc_msgSend(percentEncodedPath, "isEqualToString:", @"/"))
     {
       v35 = 0;
       v21 = &stru_28544C2A0;
@@ -232,16 +232,16 @@ LABEL_32:
 
     else
     {
-      v62 = v16;
-      v64 = v15;
+      v62 = path;
+      v64 = dateCopy;
       v66 = v18;
       v68 = v19;
       if ([v18 length])
       {
-        v58 = v12;
+        v58 = patternCopy;
         v38 = [(BCSURLPatternMatcher *)self dictionaryFromQueryString:v18 orderedKeys:0];
         v81 = 0;
-        v39 = [(BCSURLPatternMatcher *)self dictionaryFromQueryString:v71 orderedKeys:&v81];
+        v39 = [(BCSURLPatternMatcher *)self dictionaryFromQueryString:percentEncodedQuery orderedKeys:&v81];
         v57 = v81;
         [(BCSURLPatternMatcher *)self orderedKeysForPatternQuery:v38 originalURLQuery:v39 orderedOriginalURLQueryKeys:?];
         v77 = 0u;
@@ -252,8 +252,8 @@ LABEL_32:
         if (v40)
         {
           v41 = v40;
-          v60 = v14;
-          v56 = v13;
+          v60 = dCopy;
+          v56 = lCopy;
           v42 = *v78;
           v43 = &stru_28544C2A0;
           while (2)
@@ -312,8 +312,8 @@ LABEL_57:
           v48 = 1;
           v21 = v43;
 LABEL_58:
-          v13 = v56;
-          v14 = v60;
+          lCopy = v56;
+          dCopy = v60;
           v18 = v66;
         }
 
@@ -323,12 +323,12 @@ LABEL_58:
           v21 = &stru_28544C2A0;
         }
 
-        v12 = v58;
+        patternCopy = v58;
         if (!v48)
         {
           v35 = 0;
-          v16 = v62;
-          v15 = v64;
+          path = v62;
+          dateCopy = v64;
           v19 = v68;
           goto LABEL_65;
         }
@@ -341,16 +341,16 @@ LABEL_58:
         v21 = &stru_28544C2A0;
       }
 
-      v49 = [(BCSURLPatternMatcher *)self extractedURLForOriginalURL:v13 originalURLPathComponents:v19 extractedPath:v73 extractedQuery:v21];
+      v49 = [(BCSURLPatternMatcher *)self extractedURLForOriginalURL:lCopy originalURLPathComponents:v19 extractedPath:v73 extractedQuery:v21];
       v50 = [BCSURLNormalizer normalizedURLForURL:v49];
       v51 = [BCSURLPatternMatchResult alloc];
-      v52 = [v12 description];
+      v52 = [patternCopy description];
       v53 = objc_alloc_init(BCSDateHelper);
-      v35 = [(BCSURLPatternMatchResult *)v51 initWithOriginalURL:v13 extractedURL:v50 totalConsecutivePrefixMatches:v74 totalExactMatches:v75 totalAnyMatches:v76 bundleID:v14 pattern:v52 expirationDate:v64 dateHelper:v53];
+      v35 = [(BCSURLPatternMatchResult *)v51 initWithOriginalURL:lCopy extractedURL:v50 totalConsecutivePrefixMatches:v74 totalExactMatches:v75 totalAnyMatches:v76 bundleID:dCopy pattern:v52 expirationDate:v64 dateHelper:v53];
 
       v19 = v68;
-      v15 = v64;
-      v16 = v62;
+      dateCopy = v64;
+      path = v62;
       v18 = v66;
     }
 
@@ -362,12 +362,12 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  v16 = ABSLogCommon();
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  path = ABSLogCommon();
+  if (os_log_type_enabled(path, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     *&buf[4] = "[BCSURLPatternMatcher matchPattern:withURL:forBundleID:expirationDate:error:]";
-    _os_log_impl(&dword_242072000, v16, OS_LOG_TYPE_DEFAULT, "%s Aborting parsing due to nil argument", buf, 0xCu);
+    _os_log_impl(&dword_242072000, path, OS_LOG_TYPE_DEFAULT, "%s Aborting parsing due to nil argument", buf, 0xCu);
   }
 
   v35 = 0;
@@ -378,18 +378,18 @@ LABEL_67:
   return v35;
 }
 
-- (id)extractedPathForAnyMatchUsingScanner:(id)a3 delimiter:(id)a4 extractedPath:(id)a5 countOfPathComponentsToMatch:(unint64_t)a6
+- (id)extractedPathForAnyMatchUsingScanner:(id)scanner delimiter:(id)delimiter extractedPath:(id)path countOfPathComponentsToMatch:(unint64_t)match
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (a6)
+  scannerCopy = scanner;
+  delimiterCopy = delimiter;
+  pathCopy = path;
+  v12 = pathCopy;
+  if (match)
   {
     while (1)
     {
       v16 = 0;
-      [v9 scanUpToCharactersFromSet:v10 intoString:&v16];
+      [scannerCopy scanUpToCharactersFromSet:delimiterCopy intoString:&v16];
       v13 = v16;
       if (![v13 length])
       {
@@ -399,7 +399,7 @@ LABEL_67:
       v14 = [v12 stringByAppendingPathComponent:v13];
 
       v12 = v14;
-      if (!--a6)
+      if (!--match)
       {
         goto LABEL_7;
       }
@@ -410,7 +410,7 @@ LABEL_67:
 
   else
   {
-    v14 = v11;
+    v14 = pathCopy;
   }
 
 LABEL_7:
@@ -418,16 +418,16 @@ LABEL_7:
   return v14;
 }
 
-- (id)extractedPathForExactMatchUsingScanner:(id)a3 delimiter:(id)a4 extractedPath:(id)a5 patternPathComponent:(id)a6
+- (id)extractedPathForExactMatchUsingScanner:(id)scanner delimiter:(id)delimiter extractedPath:(id)path patternPathComponent:(id)component
 {
-  v9 = a5;
-  v10 = a6;
+  pathCopy = path;
+  componentCopy = component;
   v14 = 0;
-  [a3 scanUpToCharactersFromSet:a4 intoString:&v14];
+  [scanner scanUpToCharactersFromSet:delimiter intoString:&v14];
   v11 = v14;
-  if ([v11 length] && !objc_msgSend(v11, "caseInsensitiveCompare:", v10))
+  if ([v11 length] && !objc_msgSend(v11, "caseInsensitiveCompare:", componentCopy))
   {
-    v12 = [v9 stringByAppendingPathComponent:v11];
+    v12 = [pathCopy stringByAppendingPathComponent:v11];
   }
 
   else
@@ -438,14 +438,14 @@ LABEL_7:
   return v12;
 }
 
-- (id)extractedURLForOriginalURL:(id)a3 originalURLPathComponents:(id)a4 extractedPath:(id)a5 extractedQuery:(id)a6
+- (id)extractedURLForOriginalURL:(id)l originalURLPathComponents:(id)components extractedPath:(id)path extractedQuery:(id)query
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a4 percentEncodedQuery];
-  v13 = [v9 scheme];
-  if (![v13 length])
+  lCopy = l;
+  pathCopy = path;
+  queryCopy = query;
+  percentEncodedQuery = [components percentEncodedQuery];
+  scheme = [lCopy scheme];
+  if (![scheme length])
   {
     v23 = 0;
 LABEL_13:
@@ -453,17 +453,17 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v14 = [v9 host];
-  v15 = [v14 length];
+  host = [lCopy host];
+  v15 = [host length];
 
   if (v15)
   {
     v16 = MEMORY[0x277CCACA8];
-    v17 = [v9 scheme];
-    v18 = [v9 host];
-    if ([(__CFString *)v10 length])
+    scheme2 = [lCopy scheme];
+    host2 = [lCopy host];
+    if ([(__CFString *)pathCopy length])
     {
-      v19 = v10;
+      v19 = pathCopy;
     }
 
     else
@@ -471,14 +471,14 @@ LABEL_13:
       v19 = &stru_28544C2A0;
     }
 
-    v13 = [v16 stringWithFormat:@"%@://%@%@", v17, v18, v19];
+    scheme = [v16 stringWithFormat:@"%@://%@%@", scheme2, host2, v19];
 
-    if ([v12 length])
+    if ([percentEncodedQuery length])
     {
       v20 = MEMORY[0x277CCACA8];
-      if ([(__CFString *)v11 length])
+      if ([(__CFString *)queryCopy length])
       {
-        v21 = v11;
+        v21 = queryCopy;
       }
 
       else
@@ -486,12 +486,12 @@ LABEL_13:
         v21 = &stru_28544C2A0;
       }
 
-      v22 = [v20 stringWithFormat:@"%@%@", v13, v21];
+      v22 = [v20 stringWithFormat:@"%@%@", scheme, v21];
 
-      v13 = v22;
+      scheme = v22;
     }
 
-    v23 = [MEMORY[0x277CBEBC0] URLWithString:v13];
+    v23 = [MEMORY[0x277CBEBC0] URLWithString:scheme];
     goto LABEL_13;
   }
 
@@ -501,30 +501,30 @@ LABEL_15:
   return v23;
 }
 
-- (BOOL)isAnyMatchFoundForPathPattern:(id)a3 countOfPathComponents:(int64_t *)a4 error:(id *)a5
+- (BOOL)isAnyMatchFoundForPathPattern:(id)pattern countOfPathComponents:(int64_t *)components error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 length] < 3)
+  patternCopy = pattern;
+  if ([patternCopy length] < 3)
   {
     v18 = 0;
   }
 
   else
   {
-    [v7 length];
+    [patternCopy length];
     MEMORY[0x28223BE20]();
     v9 = (v22 - v8);
-    [v7 length];
+    [patternCopy length];
     MEMORY[0x28223BE20]();
     v11 = v22 - v10;
-    [v7 getCharacters:v9 range:{0, objc_msgSend(v7, "length")}];
-    if (*v9 != 91 || v9[[v7 length] - 1] != 93)
+    [patternCopy getCharacters:v9 range:{0, objc_msgSend(patternCopy, "length")}];
+    if (*v9 != 91 || v9[[patternCopy length] - 1] != 93)
     {
       goto LABEL_16;
     }
 
-    if (([v7 length] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    if (([patternCopy length] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v12 = 0;
       v13 = v9 + 1;
@@ -538,7 +538,7 @@ LABEL_15:
 
         v15 = v12 + 1;
         *&v11[2 * v12] = v14;
-        v16 = [v7 length];
+        v16 = [patternCopy length];
         v17 = v12 + 2;
         ++v12;
         if (v17 >= v16 - 1)
@@ -547,10 +547,10 @@ LABEL_15:
         }
       }
 
-      if (a5)
+      if (error)
       {
         [BCSError errorWithDomain:@"com.apple.businessservices" code:41 userInfo:0];
-        *a5 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_17;
       }
 
@@ -563,9 +563,9 @@ LABEL_16:
 LABEL_11:
     *&v11[2 * v15] = 0;
     v19 = strtol(v11, 0, 10);
-    if (a4)
+    if (components)
     {
-      *a4 = v19;
+      *components = v19;
     }
 
     v18 = 1;
@@ -577,13 +577,13 @@ LABEL_17:
   return v18;
 }
 
-- (id)dictionaryFromQueryString:(id)a3 orderedKeys:(id *)a4
+- (id)dictionaryFromQueryString:(id)string orderedKeys:(id *)keys
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [a3 componentsSeparatedByString:@"&"];
+  v5 = [string componentsSeparatedByString:@"&"];
   [MEMORY[0x277CBEB38] dictionary];
-  v23 = v22 = a4;
-  if (a4)
+  v23 = v22 = keys;
+  if (keys)
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
   }
@@ -654,41 +654,41 @@ LABEL_17:
   return v23;
 }
 
-- (id)extractedQueryByAddingKey:(id)a3 value:(id)a4 toExtractedQuery:(id)a5
+- (id)extractedQueryByAddingKey:(id)key value:(id)value toExtractedQuery:(id)query
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![(__CFString *)v9 length])
+  keyCopy = key;
+  valueCopy = value;
+  queryCopy = query;
+  if (![(__CFString *)queryCopy length])
   {
 
-    v9 = @"?";
+    queryCopy = @"?";
   }
 
-  if ([(__CFString *)v9 length]>= 2)
+  if ([(__CFString *)queryCopy length]>= 2)
   {
-    v10 = [(__CFString *)v9 stringByAppendingString:@"&"];
+    v10 = [(__CFString *)queryCopy stringByAppendingString:@"&"];
 
-    v9 = v10;
+    queryCopy = v10;
   }
 
-  v11 = [(__CFString *)v9 stringByAppendingFormat:@"%@=%@", v7, v8];
+  valueCopy = [(__CFString *)queryCopy stringByAppendingFormat:@"%@=%@", keyCopy, valueCopy];
 
-  return v11;
+  return valueCopy;
 }
 
-- (id)orderedKeysForPatternQuery:(id)a3 originalURLQuery:(id)a4 orderedOriginalURLQueryKeys:(id)a5
+- (id)orderedKeysForPatternQuery:(id)query originalURLQuery:(id)lQuery orderedOriginalURLQueryKeys:(id)keys
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  queryCopy = query;
+  lQueryCopy = lQuery;
+  keysCopy = keys;
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(queryCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = v9;
+  v11 = keysCopy;
   v12 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v12)
   {
@@ -704,7 +704,7 @@ LABEL_17:
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
-        v17 = [v7 objectForKeyedSubscript:v16];
+        v17 = [queryCopy objectForKeyedSubscript:v16];
 
         if (v17)
         {
@@ -722,8 +722,8 @@ LABEL_17:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = [v7 allKeys];
-  v19 = [v18 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  allKeys = [queryCopy allKeys];
+  v19 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v19)
   {
     v20 = v19;
@@ -734,11 +734,11 @@ LABEL_17:
       {
         if (*v29 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(*(&v28 + 1) + 8 * j);
-        v24 = [v8 objectForKeyedSubscript:v23];
+        v24 = [lQueryCopy objectForKeyedSubscript:v23];
 
         if (!v24)
         {
@@ -746,7 +746,7 @@ LABEL_17:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v20 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v20);

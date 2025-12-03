@@ -1,20 +1,20 @@
 @interface GKMultiplayerButtonHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithCancelButtonHandler:(id)a3;
-- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithMinimumValue:(int64_t)a3 maximumValue:(int64_t)a4 initialValue:(int64_t)a5 cancelButtonHandler:(id)a6;
-- (void)applyGame:(id)a3;
-- (void)cancelPressed:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithCancelButtonHandler:(id)handler;
+- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithMinimumValue:(int64_t)value maximumValue:(int64_t)maximumValue initialValue:(int64_t)initialValue cancelButtonHandler:(id)handler;
+- (void)applyGame:(id)game;
+- (void)cancelPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)updateCountWithMinPlayers:(int64_t)a3 maxPlayers:(int64_t)a4;
-- (void)wantsMaterialBackgroundWithScrollOffset:(double)a3;
+- (void)updateCountWithMinPlayers:(int64_t)players maxPlayers:(int64_t)maxPlayers;
+- (void)wantsMaterialBackgroundWithScrollOffset:(double)offset;
 @end
 
 @implementation GKMultiplayerButtonHeaderView
 
-- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithCancelButtonHandler:(id)a3
+- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithCancelButtonHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   if (v3)
   {
     v4 = v3;
@@ -31,9 +31,9 @@
   return GKMultiplayerButtonHeaderView.init(cancelButtonHandler:)(v3, v5);
 }
 
-- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithMinimumValue:(int64_t)a3 maximumValue:(int64_t)a4 initialValue:(int64_t)a5 cancelButtonHandler:(id)a6
+- (_TtC12GameCenterUI29GKMultiplayerButtonHeaderView)initWithMinimumValue:(int64_t)value maximumValue:(int64_t)maximumValue initialValue:(int64_t)initialValue cancelButtonHandler:(id)handler
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v10 = v8;
@@ -48,22 +48,22 @@
     v11 = 0;
   }
 
-  return GKMultiplayerButtonHeaderView.init(minimumValue:maximumValue:initialValue:cancelButtonHandler:)(a3, a4, v9, v12, v11);
+  return GKMultiplayerButtonHeaderView.init(minimumValue:maximumValue:initialValue:cancelButtonHandler:)(value, maximumValue, v9, v12, v11);
 }
 
-- (void)wantsMaterialBackgroundWithScrollOffset:(double)a3
+- (void)wantsMaterialBackgroundWithScrollOffset:(double)offset
 {
-  v4 = self;
-  GKMultiplayerButtonHeaderView.wantsMaterialBackground(scrollOffset:)(a3);
+  selfCopy = self;
+  GKMultiplayerButtonHeaderView.wantsMaterialBackground(scrollOffset:)(offset);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_24E00CB4C(a4, v7, width);
+  selfCopy = self;
+  v8 = sub_24E00CB4C(in, selfCopy, width);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -80,11 +80,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = GKMultiplayerButtonHeaderView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -96,28 +96,28 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerButtonHeaderView.layoutSubviews()();
 }
 
-- (void)applyGame:(id)a3
+- (void)applyGame:(id)game
 {
-  v4 = a3;
-  v5 = self;
-  GKMultiplayerButtonHeaderView.apply(game:)(v4);
+  gameCopy = game;
+  selfCopy = self;
+  GKMultiplayerButtonHeaderView.apply(game:)(gameCopy);
 }
 
-- (void)updateCountWithMinPlayers:(int64_t)a3 maxPlayers:(int64_t)a4
+- (void)updateCountWithMinPlayers:(int64_t)players maxPlayers:(int64_t)maxPlayers
 {
-  v6 = self;
-  GKMultiplayerButtonHeaderView.updateCount(minPlayers:maxPlayers:)(a3, a4);
+  selfCopy = self;
+  GKMultiplayerButtonHeaderView.updateCount(minPlayers:maxPlayers:)(players, maxPlayers);
 }
 
-- (void)cancelPressed:(id)a3
+- (void)cancelPressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -126,7 +126,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24E00C924();

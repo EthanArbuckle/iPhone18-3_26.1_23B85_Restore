@@ -1,14 +1,14 @@
 @interface NSKeyedArchiver
-+ (id)crl_securelyArchiveRoot:(id)a3;
++ (id)crl_securelyArchiveRoot:(id)root;
 @end
 
 @implementation NSKeyedArchiver
 
-+ (id)crl_securelyArchiveRoot:(id)a3
++ (id)crl_securelyArchiveRoot:(id)root
 {
-  v3 = a3;
+  rootCopy = root;
   v20 = 0;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v20];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:rootCopy requiringSecureCoding:1 error:&v20];
   v5 = v20;
   if (!v4)
   {
@@ -24,8 +24,8 @@
       v15 = v7;
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v5 domain];
-      v19 = [v5 code];
+      domain = [v5 domain];
+      code = [v5 code];
       *buf = 67111170;
       v22 = v6;
       v23 = 2082;
@@ -35,13 +35,13 @@
       v27 = 1024;
       v28 = 17;
       v29 = 2112;
-      v30 = v3;
+      v30 = rootCopy;
       v31 = 2114;
       v32 = v17;
       v33 = 2114;
-      v34 = v18;
+      v34 = domain;
       v35 = 2048;
-      v36 = v19;
+      v36 = code;
       v37 = 2112;
       v38 = v5;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Unable to encode object %@: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x54u);
@@ -62,8 +62,8 @@
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/NSKeyedArchiver_CRLAdditions.m"];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v5 domain];
-    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v9, v10, 17, 0, "Unable to encode object %@: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", v3, v12, v13, [v5 code], v5);
+    domain2 = [v5 domain];
+    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v9, v10, 17, 0, "Unable to encode object %@: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", rootCopy, v12, domain2, [v5 code], v5);
   }
 
   return v4;

@@ -1,93 +1,93 @@
 @interface AXPIFingerModel
-+ (id)fingerModelForLocation:(CGPoint)a3;
++ (id)fingerModelForLocation:(CGPoint)location;
 - (CGPoint)location;
 - (id)description;
-- (void)setForce:(double)a3;
-- (void)setLocation:(CGPoint)a3;
-- (void)setPressed:(BOOL)a3 sendDelegateCallback:(BOOL)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)setShape:(unint64_t)a3;
-- (void)updateWithPropertiesFromFingerModel:(id)a3;
+- (void)setForce:(double)force;
+- (void)setLocation:(CGPoint)location;
+- (void)setPressed:(BOOL)pressed sendDelegateCallback:(BOOL)callback;
+- (void)setSelected:(BOOL)selected;
+- (void)setShape:(unint64_t)shape;
+- (void)updateWithPropertiesFromFingerModel:(id)model;
 @end
 
 @implementation AXPIFingerModel
 
-+ (id)fingerModelForLocation:(CGPoint)a3
++ (id)fingerModelForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = objc_alloc_init(a1);
+  y = location.y;
+  x = location.x;
+  v5 = objc_alloc_init(self);
   [v5 setLocation:{x, y}];
   [v5 setShape:0];
 
   return v5;
 }
 
-- (void)setPressed:(BOOL)a3 sendDelegateCallback:(BOOL)a4
+- (void)setPressed:(BOOL)pressed sendDelegateCallback:(BOOL)callback
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
-    if (a4)
+    self->_pressed = pressed;
+    if (callback)
     {
-      v5 = [(AXPIFingerModel *)self delegate];
-      [v5 didUpdatePressStateForFingerModel:self];
+      delegate = [(AXPIFingerModel *)self delegate];
+      [delegate didUpdatePressStateForFingerModel:self];
     }
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
-    v5 = [(AXPIFingerModel *)self delegate];
-    [v5 didUpdateSelectedStateForFingerModel:self];
+    self->_selected = selected;
+    delegate = [(AXPIFingerModel *)self delegate];
+    [delegate didUpdateSelectedStateForFingerModel:self];
   }
 }
 
-- (void)setLocation:(CGPoint)a3
+- (void)setLocation:(CGPoint)location
 {
-  if (self->_location.x != a3.x || self->_location.y != a3.y)
+  if (self->_location.x != location.x || self->_location.y != location.y)
   {
-    self->_location = a3;
-    v6 = [(AXPIFingerModel *)self delegate];
-    [v6 didUpdateLocationForFingerModel:self];
+    self->_location = location;
+    delegate = [(AXPIFingerModel *)self delegate];
+    [delegate didUpdateLocationForFingerModel:self];
   }
 }
 
-- (void)setForce:(double)a3
+- (void)setForce:(double)force
 {
-  if (self->_force != a3)
+  if (self->_force != force)
   {
-    self->_force = a3;
-    v5 = [(AXPIFingerModel *)self delegate];
-    [v5 didUpdateForceForFingerModel:self];
+    self->_force = force;
+    delegate = [(AXPIFingerModel *)self delegate];
+    [delegate didUpdateForceForFingerModel:self];
   }
 }
 
-- (void)setShape:(unint64_t)a3
+- (void)setShape:(unint64_t)shape
 {
-  if (self->_shape != a3)
+  if (self->_shape != shape)
   {
-    self->_shape = a3;
-    v5 = [(AXPIFingerModel *)self delegate];
-    [v5 didUpdateShapeForFingerModel:self];
+    self->_shape = shape;
+    delegate = [(AXPIFingerModel *)self delegate];
+    [delegate didUpdateShapeForFingerModel:self];
   }
 }
 
-- (void)updateWithPropertiesFromFingerModel:(id)a3
+- (void)updateWithPropertiesFromFingerModel:(id)model
 {
-  v4 = a3;
-  [v4 location];
+  modelCopy = model;
+  [modelCopy location];
   [(AXPIFingerModel *)self setLocation:?];
-  [v4 force];
+  [modelCopy force];
   [(AXPIFingerModel *)self setForce:?];
-  -[AXPIFingerModel setPressed:](self, "setPressed:", [v4 isPressed]);
-  -[AXPIFingerModel setSelected:](self, "setSelected:", [v4 isSelected]);
-  v5 = [v4 shape];
+  -[AXPIFingerModel setPressed:](self, "setPressed:", [modelCopy isPressed]);
+  -[AXPIFingerModel setSelected:](self, "setSelected:", [modelCopy isSelected]);
+  shape = [modelCopy shape];
 
-  [(AXPIFingerModel *)self setShape:v5];
+  [(AXPIFingerModel *)self setShape:shape];
 }
 
 - (id)description
@@ -99,10 +99,10 @@
   v5 = v4;
   [(AXPIFingerModel *)self location];
   v7 = v6;
-  v8 = [(AXPIFingerModel *)self isPressed];
-  v9 = [(AXPIFingerModel *)self isSelected];
+  isPressed = [(AXPIFingerModel *)self isPressed];
+  isSelected = [(AXPIFingerModel *)self isSelected];
   [(AXPIFingerModel *)self force];
-  v11 = [v3 stringByAppendingFormat:@" - location: {%f, %f}, pressed: %i, selected: %i, force: %f, shape: %i", v5, v7, v8, v9, v10, -[AXPIFingerModel shape](self, "shape")];
+  v11 = [v3 stringByAppendingFormat:@" - location: {%f, %f}, pressed: %i, selected: %i, force: %f, shape: %i", v5, v7, isPressed, isSelected, v10, -[AXPIFingerModel shape](self, "shape")];
 
   return v11;
 }

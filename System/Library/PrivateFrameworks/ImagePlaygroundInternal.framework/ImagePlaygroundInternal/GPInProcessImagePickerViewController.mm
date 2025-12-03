@@ -2,19 +2,19 @@
 - (BOOL)isLoadingRecipe;
 - (GPAppleConnectTokenProvider)appleConnectTokenProvider;
 - (GPImagePickerViewControllerDelegate)delegate;
-- (GPInProcessImagePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GPInProcessImagePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (GPRecipe)recipe;
 - (NSArray)selectedAssets;
 - (NSString)localizedCreateButtonTitle;
 - (int64_t)style;
 - (void)closeComposingViewIfNeeded;
-- (void)delegate:(id)a3 didDismissPickerWithStagedAssets:(id)a4;
-- (void)setAppleConnectTokenProvider:(id)a3;
-- (void)setIsLoadingRecipe:(BOOL)a3;
-- (void)setLocalizedCreateButtonTitle:(id)a3;
-- (void)setRecipe:(id)a3;
-- (void)setSelectedAssets:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)delegate:(id)delegate didDismissPickerWithStagedAssets:(id)assets;
+- (void)setAppleConnectTokenProvider:(id)provider;
+- (void)setIsLoadingRecipe:(BOOL)recipe;
+- (void)setLocalizedCreateButtonTitle:(id)title;
+- (void)setRecipe:(id)recipe;
+- (void)setSelectedAssets:(id)assets;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation GPInProcessImagePickerViewController
@@ -26,11 +26,11 @@
   return *(self + v3);
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___GPInProcessImagePickerViewController_style;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (NSArray)selectedAssets
@@ -43,7 +43,7 @@
   return v2;
 }
 
-- (void)setSelectedAssets:(id)a3
+- (void)setSelectedAssets:(id)assets
 {
   sub_1D2878C28();
   v4 = sub_1D28783E8();
@@ -67,25 +67,25 @@
   return *(self + v3);
 }
 
-- (void)setAppleConnectTokenProvider:(id)a3
+- (void)setAppleConnectTokenProvider:(id)provider
 {
   v5 = OBJC_IVAR___GPInProcessImagePickerViewController_appleConnectTokenProvider;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = provider;
+  providerCopy = provider;
+  selfCopy = self;
 
   if (*(self + v5))
   {
     sub_1D2792380();
-    v9 = v7;
+    v9 = providerCopy;
   }
 
   else
   {
-    v9 = v8;
-    v8 = v7;
+    v9 = selfCopy;
+    selfCopy = providerCopy;
   }
 }
 
@@ -103,10 +103,10 @@
   }
 }
 
-- (void)setIsLoadingRecipe:(BOOL)a3
+- (void)setIsLoadingRecipe:(BOOL)recipe
 {
-  v4 = self;
-  GPInProcessImagePickerViewController.isLoadingRecipe.setter(a3);
+  selfCopy = self;
+  GPInProcessImagePickerViewController.isLoadingRecipe.setter(recipe);
 }
 
 - (GPRecipe)recipe
@@ -125,24 +125,24 @@
   return v4;
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v5 = a3;
-  v6 = self;
-  GPInProcessImagePickerViewController.recipe.setter(a3);
+  recipeCopy = recipe;
+  selfCopy = self;
+  GPInProcessImagePickerViewController.recipe.setter(recipe);
 }
 
 - (void)closeComposingViewIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   GPInProcessImagePickerViewController.closeComposingViewIfNeeded()();
 }
 
-- (void)delegate:(id)a3 didDismissPickerWithStagedAssets:(id)a4
+- (void)delegate:(id)delegate didDismissPickerWithStagedAssets:(id)assets
 {
   v5 = sub_1D28783E8();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1D2794764(v5);
   swift_unknownObjectRelease();
 }
@@ -163,9 +163,9 @@
   return v2;
 }
 
-- (void)setLocalizedCreateButtonTitle:(id)a3
+- (void)setLocalizedCreateButtonTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1D28780A8();
   }
@@ -179,12 +179,12 @@
   v6 = (self + OBJC_IVAR___GPInProcessImagePickerViewController_localizedCreateButtonTitle);
   *v6 = v4;
   v6[1] = v5;
-  v7 = self;
+  selfCopy = self;
 
   sub_1D2872678();
 }
 
-- (GPInProcessImagePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GPInProcessImagePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

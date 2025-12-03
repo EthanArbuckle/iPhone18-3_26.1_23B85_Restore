@@ -1,8 +1,8 @@
 @interface AOSTransaction
 - (AOSTransaction)init;
-- (AOSTransaction)initWithCoder:(id)a3;
+- (AOSTransaction)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)finalize;
 @end
 
@@ -127,36 +127,36 @@
   [(AOSTransaction *)&v7 finalize];
 }
 
-- (AOSTransaction)initWithCoder:(id)a3
+- (AOSTransaction)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AOSTransaction;
   v4 = [(AOSTransaction *)&v6 init];
   if (v4)
   {
-    v4->didSucceed = [objc_msgSend(a3 decodeObjectForKey:{@"didSucceed", "BOOLValue"}];
-    v4->didFinish = [objc_msgSend(a3 decodeObjectForKey:{@"didFinish", "BOOLValue"}];
-    v4->result = [a3 decodeObjectForKey:@"result"];
-    v4->error = [a3 decodeObjectForKey:@"error"];
+    v4->didSucceed = [objc_msgSend(coder decodeObjectForKey:{@"didSucceed", "BOOLValue"}];
+    v4->didFinish = [objc_msgSend(coder decodeObjectForKey:{@"didFinish", "BOOLValue"}];
+    v4->result = [coder decodeObjectForKey:@"result"];
+    v4->error = [coder decodeObjectForKey:@"error"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->didSucceed != 0), @"didSucceed"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->didFinish != 0), @"didFinish"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->didSucceed != 0), @"didSucceed"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->didFinish != 0), @"didFinish"}];
   result = self->result;
   if (result)
   {
-    [a3 encodeObject:result forKey:@"result"];
+    [coder encodeObject:result forKey:@"result"];
   }
 
   if (self->error)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 

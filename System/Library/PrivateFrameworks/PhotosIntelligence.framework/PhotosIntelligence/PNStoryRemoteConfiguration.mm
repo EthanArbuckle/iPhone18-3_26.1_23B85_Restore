@@ -1,6 +1,6 @@
 @interface PNStoryRemoteConfiguration
 + (NSString)personalTraitsEntityConfiguration;
-- (id)fileURLForFactorKey:(id)a3 error:(id *)a4;
+- (id)fileURLForFactorKey:(id)key error:(id *)error;
 @end
 
 @implementation PNStoryRemoteConfiguration
@@ -13,14 +13,14 @@
   return v2;
 }
 
-- (id)fileURLForFactorKey:(id)a3 error:(id *)a4
+- (id)fileURLForFactorKey:(id)key error:(id *)error
 {
   v5 = sub_1C754DD2C();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C755068C();
-  v9 = self;
+  selfCopy = self;
   sub_1C6F85DE8();
 
   v10 = sub_1C754DC8C();

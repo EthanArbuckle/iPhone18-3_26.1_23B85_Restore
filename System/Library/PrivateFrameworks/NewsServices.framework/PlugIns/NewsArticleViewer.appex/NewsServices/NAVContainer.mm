@@ -1,27 +1,27 @@
 @interface NAVContainer
-+ (id)createContainerWithExtensionContext:(id)a3 hostViewController:(id)a4;
-+ (id)sharedContainerForExtension:(id)a3 hostViewController:(id)a4;
-- (NAVContainer)initWithExtensionContext:(id)a3 hostViewController:(id)a4;
++ (id)createContainerWithExtensionContext:(id)context hostViewController:(id)controller;
++ (id)sharedContainerForExtension:(id)extension hostViewController:(id)controller;
+- (NAVContainer)initWithExtensionContext:(id)context hostViewController:(id)controller;
 - (UIViewController)hostViewController;
 @end
 
 @implementation NAVContainer
 
-+ (id)sharedContainerForExtension:(id)a3 hostViewController:(id)a4
++ (id)sharedContainerForExtension:(id)extension hostViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  controllerCopy = controller;
   FCSetupLogging();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000129C;
   block[3] = &unk_100004130;
-  v16 = v7;
-  v17 = a1;
-  v15 = v6;
+  v16 = controllerCopy;
+  selfCopy = self;
+  v15 = extensionCopy;
   v8 = qword_100008930;
-  v9 = v7;
-  v10 = v6;
+  v9 = controllerCopy;
+  v10 = extensionCopy;
   if (v8 != -1)
   {
     dispatch_once(&qword_100008930, block);
@@ -35,11 +35,11 @@
   return v11;
 }
 
-+ (id)createContainerWithExtensionContext:(id)a3 hostViewController:(id)a4
++ (id)createContainerWithExtensionContext:(id)context hostViewController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NAVContainer alloc] initWithExtensionContext:v6 hostViewController:v5];
+  controllerCopy = controller;
+  contextCopy = context;
+  v7 = [[NAVContainer alloc] initWithExtensionContext:contextCopy hostViewController:controllerCopy];
 
   v8 = [TFContainer alloc];
   v9 = [[NUExtensionFrameworkAssembly alloc] initWithExtensionContextProvider:v7];
@@ -48,24 +48,24 @@
   v11 = [v8 initWithBundleAssemblies:v10 assemblies:&__NSArray0__struct];
 
   [(NAVContainer *)v7 setContainer:v11];
-  v12 = [v11 resolver];
-  [(NAVContainer *)v7 setResolver:v12];
+  resolver = [v11 resolver];
+  [(NAVContainer *)v7 setResolver:resolver];
 
   return v7;
 }
 
-- (NAVContainer)initWithExtensionContext:(id)a3 hostViewController:(id)a4
+- (NAVContainer)initWithExtensionContext:(id)context hostViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = NAVContainer;
   v9 = [(NAVContainer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extensionContext, a3);
-    objc_storeWeak(&v10->_hostViewController, v8);
+    objc_storeStrong(&v9->_extensionContext, context);
+    objc_storeWeak(&v10->_hostViewController, controllerCopy);
   }
 
   return v10;

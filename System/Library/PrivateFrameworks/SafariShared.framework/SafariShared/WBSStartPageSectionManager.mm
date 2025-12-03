@@ -1,26 +1,26 @@
 @interface WBSStartPageSectionManager
 + (NSArray)allSections;
 + (WBSStartPageSectionManager)defaultManager;
-+ (unint64_t)preferredVisiblePositionForNewSectionWithIdentifier:(id)a3;
++ (unint64_t)preferredVisiblePositionForNewSectionWithIdentifier:(id)identifier;
 - (NSArray)cloudKitStartPageSectionOrder;
 - (NSArray)enabledSectionIdentifiers;
 - (NSArray)sectionIdentifiers;
 - (NSArray)sections;
 - (NSArray)suggestionsDataSourceSections;
 - (WBSStartPageSectionManager)init;
-- (WBSStartPageSectionManager)initWithStorage:(id)a3;
-- (id)_migrateUnknownSectionIdentifiersIntoCurrentSections:(id)a3 didChangeSections:(BOOL *)a4;
+- (WBSStartPageSectionManager)initWithStorage:(id)storage;
+- (id)_migrateUnknownSectionIdentifiersIntoCurrentSections:(id)sections didChangeSections:(BOOL *)changeSections;
 - (id)readAndValidateSections;
-- (id)sectionForIdentifier:(id)a3;
-- (uint64_t)ensureSection:(uint64_t)a3 enabled:(void *)a4 inSectionData:;
+- (id)sectionForIdentifier:(id)identifier;
+- (uint64_t)ensureSection:(uint64_t)section enabled:(void *)enabled inSectionData:;
 - (void)_updateCloudKitStartPageSectionOrderPreferenceKey;
 - (void)dealloc;
 - (void)invalidateCache;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reorderSectionsToMatchOrderedIdentifiers:(id)a3;
-- (void)saveSections:(id)a3 andUpdateInMemoryCache:(BOOL)a4;
-- (void)setSectionIdentifier:(id)a3 enabled:(BOOL)a4;
-- (void)setSectionsIdentifiers:(id)a3 enabledIndexes:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reorderSectionsToMatchOrderedIdentifiers:(id)identifiers;
+- (void)saveSections:(id)sections andUpdateInMemoryCache:(BOOL)cache;
+- (void)setSectionIdentifier:(id)identifier enabled:(BOOL)enabled;
+- (void)setSectionsIdentifiers:(id)identifiers enabledIndexes:(id)indexes;
 @end
 
 @implementation WBSStartPageSectionManager
@@ -35,8 +35,8 @@
 
 - (NSArray)enabledSectionIdentifiers
 {
-  v2 = [(WBSStartPageSectionManager *)self sections];
-  v3 = [v2 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_74];
+  sections = [(WBSStartPageSectionManager *)self sections];
+  v3 = [sections safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_74];
 
   return v3;
 }
@@ -47,32 +47,32 @@
   cachedSections = self->_cachedSections;
   if (cachedSections)
   {
-    v4 = [(NSArray *)cachedSections copy];
+    readAndValidateSections = [(NSArray *)cachedSections copy];
   }
 
   else
   {
     ++self->_ignoreChanges;
     os_unfair_lock_unlock(&self->_lock);
-    v4 = [(WBSStartPageSectionManager *)self readAndValidateSections];
+    readAndValidateSections = [(WBSStartPageSectionManager *)self readAndValidateSections];
     os_unfair_lock_lock(&self->_lock);
     --self->_ignoreChanges;
-    objc_storeStrong(&self->_cachedSections, v4);
+    objc_storeStrong(&self->_cachedSections, readAndValidateSections);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return readAndValidateSections;
 }
 
 - (id)readAndValidateSections
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    os_unfair_lock_assert_not_owner(a1 + 8);
-    v2 = [v1[1] startPageSectionDescriptors];
-    v3 = [v2 mutableCopy];
+    os_unfair_lock_assert_not_owner(self + 8);
+    startPageSectionDescriptors = [selfCopy[1] startPageSectionDescriptors];
+    v3 = [startPageSectionDescriptors mutableCopy];
 
     if (v3)
     {
@@ -90,7 +90,7 @@
       [v3 removeObjectsAtIndexes:v6];
 
       v18 = 0;
-      v8 = [v1 _migrateUnknownSectionIdentifiersIntoCurrentSections:v3 didChangeSections:&v18];
+      v8 = [selfCopy _migrateUnknownSectionIdentifiersIntoCurrentSections:v3 didChangeSections:&v18];
       v9 = v8;
       if (v18)
       {
@@ -98,7 +98,7 @@
 
         if (v18)
         {
-          [v1 saveSections:v10 andUpdateInMemoryCache:0];
+          [selfCopy saveSections:v10 andUpdateInMemoryCache:0];
         }
       }
 
@@ -112,15 +112,15 @@
 
     else
     {
-      v11 = [objc_opt_class() allSections];
-      v12 = [v11 safari_mapObjectsUsingBlock:&__block_literal_global_94_1];
+      allSections = [objc_opt_class() allSections];
+      v12 = [allSections safari_mapObjectsUsingBlock:&__block_literal_global_94_1];
       v13 = [v12 mutableCopy];
 
-      v14 = [MEMORY[0x1E695E000] safari_browserDefaults];
-      v9 = v14;
-      if (v1[1] == v14)
+      safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+      v9 = safari_browserDefaults;
+      if (selfCopy[1] == safari_browserDefaults)
       {
-        if ([v14 BOOLForKey:@"HideFrequentlyVisitedSites"])
+        if ([safari_browserDefaults BOOLForKey:@"HideFrequentlyVisitedSites"])
         {
           v15 = indexOfSectionWithIdentifier(v13, @"frequentlyVisitedItemIdentifier");
           if (v15 != 0x7FFFFFFFFFFFFFFFLL)
@@ -130,14 +130,14 @@
         }
       }
 
-      [v1 saveSections:v13 andUpdateInMemoryCache:0];
+      [selfCopy saveSections:v13 andUpdateInMemoryCache:0];
       v16 = v13;
     }
 
-    v1 = v16;
+    selfCopy = v16;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __53__WBSStartPageSectionManager_readAndValidateSections__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -236,8 +236,8 @@ LABEL_6:
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 identifier];
-        v10 = [v9 isEqualToString:@"frequentlyVisitedItemIdentifier"];
+        identifier = [v8 identifier];
+        v10 = [identifier isEqualToString:@"frequentlyVisitedItemIdentifier"];
 
         if (v10)
         {
@@ -246,8 +246,8 @@ LABEL_6:
           v5 = v11;
         }
 
-        v12 = [v8 identifier];
-        v13 = [v12 isEqualToString:@"highlightsItemIdentifier"];
+        identifier2 = [v8 identifier];
+        v13 = [identifier2 isEqualToString:@"highlightsItemIdentifier"];
 
         if (v13)
         {
@@ -269,34 +269,34 @@ LABEL_6:
     v5 = 0;
   }
 
-  v15 = [MEMORY[0x1E695DF70] array];
-  [v15 safari_addObjectUnlessNil:v5];
-  [v15 safari_addObjectUnlessNil:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safari_addObjectUnlessNil:v5];
+  [array safari_addObjectUnlessNil:v4];
 
-  return v15;
+  return array;
 }
 
-+ (unint64_t)preferredVisiblePositionForNewSectionWithIdentifier:(id)a3
++ (unint64_t)preferredVisiblePositionForNewSectionWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (preferredVisiblePositionForNewSectionWithIdentifier__onceToken != -1)
   {
     +[WBSStartPageSectionManager preferredVisiblePositionForNewSectionWithIdentifier:];
   }
 
-  v4 = [preferredVisiblePositionForNewSectionWithIdentifier__identifiersToStartPositions objectForKeyedSubscript:v3];
+  v4 = [preferredVisiblePositionForNewSectionWithIdentifier__identifiersToStartPositions objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 void __82__WBSStartPageSectionManager_preferredVisiblePositionForNewSectionWithIdentifier___block_invoke()
@@ -326,33 +326,33 @@ void __44__WBSStartPageSectionManager_defaultManager__block_invoke()
 
 - (WBSStartPageSectionManager)init
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [(WBSStartPageSectionManager *)self initWithStorage:v3];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [(WBSStartPageSectionManager *)self initWithStorage:safari_browserDefaults];
 
   return v4;
 }
 
-- (WBSStartPageSectionManager)initWithStorage:(id)a3
+- (WBSStartPageSectionManager)initWithStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = WBSStartPageSectionManager;
   v5 = [(WBSStartPageSectionManager *)&v9 init];
   v5->_lock._os_unfair_lock_opaque = 0;
   storage = v5->_storage;
-  v5->_storage = v4;
-  v7 = v4;
+  v5->_storage = storageCopy;
+  v7 = storageCopy;
 
   [(WBSStartPageSectionManagerStorage *)v5->_storage addObserver:v5 forKeyPath:@"StartPageSections" options:0 context:kvoContext];
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kvoContext == a6)
+  if (kvoContext == context)
   {
 
-    [(WBSStartPageSectionManager *)self invalidateCache:a3];
+    [(WBSStartPageSectionManager *)self invalidateCache:path];
   }
 
   else
@@ -361,23 +361,23 @@ void __44__WBSStartPageSectionManager_defaultManager__block_invoke()
     v10 = v7;
     v8.receiver = self;
     v8.super_class = WBSStartPageSectionManager;
-    [(WBSStartPageSectionManager *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WBSStartPageSectionManager *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (NSArray)sectionIdentifiers
 {
-  v2 = [(WBSStartPageSectionManager *)self sections];
-  v3 = [v2 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_77_1];
+  sections = [(WBSStartPageSectionManager *)self sections];
+  v3 = [sections safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_77_1];
 
   return v3;
 }
 
-- (id)sectionForIdentifier:(id)a3
+- (id)sectionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WBSStartPageSectionManager *)self sections];
-  v6 = indexOfSectionWithIdentifier(v5, v4);
+  identifierCopy = identifier;
+  sections = [(WBSStartPageSectionManager *)self sections];
+  v6 = indexOfSectionWithIdentifier(sections, identifierCopy);
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -386,7 +386,7 @@ void __44__WBSStartPageSectionManager_defaultManager__block_invoke()
 
   else
   {
-    v7 = [v5 objectAtIndexedSubscript:v6];
+    v7 = [sections objectAtIndexedSubscript:v6];
   }
 
   return v7;
@@ -395,8 +395,8 @@ void __44__WBSStartPageSectionManager_defaultManager__block_invoke()
 - (NSArray)cloudKitStartPageSectionOrder
 {
   [(WBSStartPageSectionManager *)self _updateCloudKitStartPageSectionOrderPreferenceKey];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 arrayForKey:*MEMORY[0x1E69C8B48]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults arrayForKey:*MEMORY[0x1E69C8B48]];
 
   return v3;
 }
@@ -424,16 +424,16 @@ uint64_t __79__WBSStartPageSectionManager__updateCloudKitStartPageSectionOrderPr
   return v11;
 }
 
-- (void)reorderSectionsToMatchOrderedIdentifiers:(id)a3
+- (void)reorderSectionsToMatchOrderedIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  identifiersCopy = identifiers;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -452,7 +452,7 @@ uint64_t __79__WBSStartPageSectionManager__updateCloudKitStartPageSectionOrderPr
 
         v12 = *(*(&v21 + 1) + 8 * v11);
         v13 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
-        [v5 setObject:v13 forKeyedSubscript:v12];
+        [dictionary setObject:v13 forKeyedSubscript:v12];
 
         ++v9;
         ++v11;
@@ -465,16 +465,16 @@ uint64_t __79__WBSStartPageSectionManager__updateCloudKitStartPageSectionOrderPr
     while (v8);
   }
 
-  v14 = [(WBSStartPageSectionManager *)self sections];
-  v15 = [v14 mutableCopy];
+  sections = [(WBSStartPageSectionManager *)self sections];
+  v15 = [sections mutableCopy];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __71__WBSStartPageSectionManager_reorderSectionsToMatchOrderedIdentifiers___block_invoke;
   v19[3] = &unk_1E7FCAB70;
-  v16 = v5;
+  v16 = dictionary;
   v20 = v16;
   [v15 sortUsingComparator:v19];
-  if (([v14 isEqualToArray:v15] & 1) == 0)
+  if (([sections isEqualToArray:v15] & 1) == 0)
   {
     v18 = 0;
     v17 = [(WBSStartPageSectionManager *)self _migrateUnknownSectionIdentifiersIntoCurrentSections:v15 didChangeSections:&v18];
@@ -517,21 +517,21 @@ uint64_t __71__WBSStartPageSectionManager_reorderSectionsToMatchOrderedIdentifie
   return v12;
 }
 
-- (void)setSectionsIdentifiers:(id)a3 enabledIndexes:(id)a4
+- (void)setSectionsIdentifiers:(id)identifiers enabledIndexes:(id)indexes
 {
-  v6 = a4;
+  indexesCopy = indexes;
   v7 = MEMORY[0x1E695DFA8];
-  v8 = a3;
+  identifiersCopy = identifiers;
   v9 = objc_alloc_init(v7);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__WBSStartPageSectionManager_setSectionsIdentifiers_enabledIndexes___block_invoke;
   v15[3] = &unk_1E7FCAB98;
   v16 = v9;
-  v17 = v6;
-  v10 = v6;
+  v17 = indexesCopy;
+  v10 = indexesCopy;
   v11 = v9;
-  v12 = [v8 safari_mapAndFilterObjectsWithOptions:0 usingBlock:v15];
+  v12 = [identifiersCopy safari_mapAndFilterObjectsWithOptions:0 usingBlock:v15];
 
   v14 = 0;
   v13 = [(WBSStartPageSectionManager *)self _migrateUnknownSectionIdentifiersIntoCurrentSections:v12 didChangeSections:&v14];
@@ -556,19 +556,19 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
   return v6;
 }
 
-- (id)_migrateUnknownSectionIdentifiersIntoCurrentSections:(id)a3 didChangeSections:(BOOL *)a4
+- (id)_migrateUnknownSectionIdentifiersIntoCurrentSections:(id)sections didChangeSections:(BOOL *)changeSections
 {
   v80 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [objc_opt_class() allSections];
+  sectionsCopy = sections;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  allSections = [objc_opt_class() allSections];
   v69[0] = MEMORY[0x1E69E9820];
   v69[1] = 3221225472;
   v69[2] = __101__WBSStartPageSectionManager__migrateUnknownSectionIdentifiersIntoCurrentSections_didChangeSections___block_invoke;
   v69[3] = &unk_1E7FCABC0;
-  v7 = v5;
+  v7 = dictionary;
   v70 = v7;
-  [v6 enumerateObjectsUsingBlock:v69];
+  [allSections enumerateObjectsUsingBlock:v69];
 
   v65 = 0;
   v66 = &v65;
@@ -586,7 +586,7 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
   v60 = &v61;
   v8 = v7;
   v58 = v8;
-  [v40 enumerateObjectsUsingBlock:v57];
+  [sectionsCopy enumerateObjectsUsingBlock:v57];
   v39 = [v8 objectForKeyedSubscript:@"suggestionsItemIdentifier"];
   if (v39 && v66[3] != -1)
   {
@@ -607,7 +607,7 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
   [v10 enumerateObjectsUsingBlock:v55];
   v42 = v11;
   v12 = [v11 keysSortedByValueUsingSelector:sel_compare_];
-  v13 = [v40 mutableCopy];
+  v13 = [sectionsCopy mutableCopy];
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -639,9 +639,9 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
 
         v19 = [[WBSStartPageSectionDescriptor alloc] initWithIdentifier:v17 enabled:v18];
         v20 = [v42 objectForKeyedSubscript:v17];
-        v21 = [v20 unsignedIntValue];
+        unsignedIntValue = [v20 unsignedIntValue];
 
-        if ([v13 count] <= v21)
+        if ([v13 count] <= unsignedIntValue)
         {
           v22 = WBS_LOG_CHANNEL_PREFIXStartPage();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -650,7 +650,7 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
             *buf = 138412802;
             v74 = v17;
             v75 = 2048;
-            v76 = v21;
+            v76 = unsignedIntValue;
             v77 = 2048;
             v78 = v23;
             _os_log_error_impl(&dword_1BB6F3000, v22, OS_LOG_TYPE_ERROR, "Attempting to add section identifier: %@ to index %lu which is outside of bounds [0..%lu]", buf, 0x20u);
@@ -661,7 +661,7 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
 
         else
         {
-          [v13 insertObject:v19 atIndex:v21];
+          [v13 insertObject:v19 atIndex:unsignedIntValue];
         }
       }
 
@@ -690,8 +690,8 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
           objc_enumerationMutation(v25);
         }
 
-        v29 = [*(*(&v47 + 1) + 8 * j) identifier];
-        [v24 addObject:v29];
+        identifier = [*(*(&v47 + 1) + 8 * j) identifier];
+        [v24 addObject:identifier];
       }
 
       v26 = [v25 countByEnumeratingWithState:&v47 objects:v72 count:16];
@@ -705,7 +705,7 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v31 = v40;
+  v31 = sectionsCopy;
   v32 = [v31 countByEnumeratingWithState:&v43 objects:v71 count:16];
   if (v32)
   {
@@ -719,8 +719,8 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
           objc_enumerationMutation(v31);
         }
 
-        v35 = [*(*(&v43 + 1) + 8 * k) identifier];
-        [v30 addObject:v35];
+        identifier2 = [*(*(&v43 + 1) + 8 * k) identifier];
+        [v30 addObject:identifier2];
       }
 
       v32 = [v31 countByEnumeratingWithState:&v43 objects:v71 count:16];
@@ -729,7 +729,7 @@ WBSStartPageSectionDescriptor *__68__WBSStartPageSectionManager_setSectionsIdent
     while (v32);
   }
 
-  *a4 = [v24 isEqualToSet:v30] ^ 1;
+  *changeSections = [v24 isEqualToSet:v30] ^ 1;
   _Block_object_dispose(&v61, 8);
   _Block_object_dispose(&v65, 8);
 
@@ -798,22 +798,22 @@ void __101__WBSStartPageSectionManager__migrateUnknownSectionIdentifiersIntoCurr
   }
 }
 
-- (void)setSectionIdentifier:(id)a3 enabled:(BOOL)a4
+- (void)setSectionIdentifier:(id)identifier enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WBSStartPageSectionManager *)self sections];
-  v8 = [v7 mutableCopy];
+  identifierCopy = identifier;
+  sections = [(WBSStartPageSectionManager *)self sections];
+  v8 = [sections mutableCopy];
 
-  if ([(WBSStartPageSectionManager *)self ensureSection:v6 enabled:v4 inSectionData:v8])
+  if ([(WBSStartPageSectionManager *)self ensureSection:identifierCopy enabled:enabledCopy inSectionData:v8])
   {
     [(WBSStartPageSectionManager *)self saveSections:v8 andUpdateInMemoryCache:1];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v11 = @"WBSStartPageSectionManagerSectionUserInfoKey";
-    v12[0] = v6;
+    v12[0] = identifierCopy;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    [v9 postNotificationName:@"WBSStartPageSectionManagerSectionVisibilityChangedNotification" object:self userInfo:v10];
+    [defaultCenter postNotificationName:@"WBSStartPageSectionManagerSectionVisibilityChangedNotification" object:self userInfo:v10];
   }
 }
 
@@ -827,20 +827,20 @@ void __101__WBSStartPageSectionManager__migrateUnknownSectionIdentifiersIntoCurr
   os_unfair_lock_unlock(&self->_lock);
   if (!ignoreChanges)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"WBSStartPageSectionManagerSectionsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSStartPageSectionManagerSectionsDidChangeNotification" object:self];
   }
 }
 
-- (void)saveSections:(id)a3 andUpdateInMemoryCache:(BOOL)a4
+- (void)saveSections:(id)sections andUpdateInMemoryCache:(BOOL)cache
 {
-  v4 = a4;
-  v8 = a3;
+  cacheCopy = cache;
+  sectionsCopy = sections;
   [(WBSStartPageSectionManagerStorage *)self->_storage setStartPageSectionDescriptors:?];
-  if (v4)
+  if (cacheCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v6 = [v8 copy];
+    v6 = [sectionsCopy copy];
     cachedSections = self->_cachedSections;
     self->_cachedSections = v6;
 
@@ -858,22 +858,22 @@ WBSStartPageSectionDescriptor *__53__WBSStartPageSectionManager_readAndValidateS
 
 - (void)_updateCloudKitStartPageSectionOrderPreferenceKey
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v3 = *MEMORY[0x1E69C8B48];
-    v4 = [v2 arrayForKey:*MEMORY[0x1E69C8B48]];
+    v4 = [standardUserDefaults arrayForKey:*MEMORY[0x1E69C8B48]];
 
     v5 = [v4 mutableCopy];
-    v6 = [a1 sectionIdentifiers];
-    v7 = v6;
+    sectionIdentifiers = [self sectionIdentifiers];
+    v7 = sectionIdentifiers;
     if (v5)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __79__WBSStartPageSectionManager__updateCloudKitStartPageSectionOrderPreferenceKey__block_invoke;
       v9[3] = &unk_1E7FCAB48;
-      v10 = v6;
+      v10 = sectionIdentifiers;
       v11 = v4;
       v7 = v7;
       [v5 sortUsingComparator:v9];
@@ -881,29 +881,29 @@ WBSStartPageSectionDescriptor *__53__WBSStartPageSectionManager_readAndValidateS
 
     else
     {
-      v5 = [v6 mutableCopy];
+      v5 = [sectionIdentifiers mutableCopy];
     }
 
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v8 setObject:v5 forKey:v3];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setObject:v5 forKey:v3];
   }
 }
 
-- (uint64_t)ensureSection:(uint64_t)a3 enabled:(void *)a4 inSectionData:
+- (uint64_t)ensureSection:(uint64_t)section enabled:(void *)enabled inSectionData:
 {
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
-  if (!a1)
+  enabledCopy = enabled;
+  v9 = enabledCopy;
+  if (!self)
   {
     v14 = 0;
     goto LABEL_9;
   }
 
-  v10 = indexOfSectionWithIdentifier(v8, v7);
+  v10 = indexOfSectionWithIdentifier(enabledCopy, v7);
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [[WBSStartPageSectionDescriptor alloc] initWithIdentifier:v7 enabled:a3];
+    v11 = [[WBSStartPageSectionDescriptor alloc] initWithIdentifier:v7 enabled:section];
     [v9 addObject:v11];
   }
 
@@ -911,13 +911,13 @@ WBSStartPageSectionDescriptor *__53__WBSStartPageSectionManager_readAndValidateS
   {
     v12 = v10;
     v11 = [v9 objectAtIndexedSubscript:v10];
-    if ([(WBSStartPageSectionDescriptor *)v11 isEnabled]== a3)
+    if ([(WBSStartPageSectionDescriptor *)v11 isEnabled]== section)
     {
       v14 = 0;
       goto LABEL_8;
     }
 
-    v13 = [(WBSStartPageSectionDescriptor *)v11 sectionWithEnabled:a3];
+    v13 = [(WBSStartPageSectionDescriptor *)v11 sectionWithEnabled:section];
     [v9 setObject:v13 atIndexedSubscript:v12];
   }
 

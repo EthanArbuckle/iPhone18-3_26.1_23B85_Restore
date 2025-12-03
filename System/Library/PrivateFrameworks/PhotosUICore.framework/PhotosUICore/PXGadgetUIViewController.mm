@@ -1,32 +1,32 @@
 @interface PXGadgetUIViewController
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSesson:(id)a4;
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canHandleDropSesson:(id)sesson;
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (BOOL)isTogglingSidebarNoRotating;
-- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)a3;
+- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)animated;
 - (CGRect)visibleBounds;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (OS_os_log)gadgetViewControllerLog;
-- (PXGadgetUIViewController)initWithLayout:(id)a3 dataSourceManager:(id)a4;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (PXGadgetUIViewController)initWithLayout:(id)layout dataSourceManager:(id)manager;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (UIEdgeInsets)insetsForSectionHeaders;
-- (id)_gadgetAtIndexPath:(id)a3;
-- (id)_indexPathForGadget:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (id)_gadgetAtIndexPath:(id)path;
+- (id)_indexPathForGadget:(id)gadget;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 - (id)debugURLsForDiagnostics;
-- (id)gadgetAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (id)presentationEnvironmentForGadget:(id)a3;
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
+- (id)gadgetAtLocation:(CGPoint)location inCoordinateSpace:(id)space;
+- (id)presentationEnvironmentForGadget:(id)gadget;
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space;
 - (int64_t)_scrollAxis;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_addContextMenuInteraction;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)_clearTimerToHandleGadgetsSeen;
 - (void)_dataSourceManagerDidChange;
 - (void)_gadgetSpecDidChange;
@@ -41,39 +41,39 @@
 - (void)_scrollViewDidEndScrolling;
 - (void)_setTimerToHandleGadgetsSeen;
 - (void)_updateGadgetVisibleRects;
-- (void)_updateVisibleRectForGadget:(id)a3 inCell:(id)a4 collectionView:(id)a5;
+- (void)_updateVisibleRectForGadget:(id)gadget inCell:(id)cell collectionView:(id)view;
 - (void)_updaterNeedsUpdate;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
-- (void)dismissGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)gadget:(id)a3 animateChanges:(id)a4;
-- (void)gadget:(id)a3 didChange:(unint64_t)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)presentGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)dismissGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)gadget:(id)gadget animateChanges:(id)changes;
+- (void)gadget:(id)gadget didChange:(unint64_t)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)presentGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)reloadContent;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentVisible:(BOOL)a3;
-- (void)setDataSource:(id)a3;
-- (void)setLayout:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentVisible:(BOOL)visible;
+- (void)setDataSource:(id)source;
+- (void)setLayout:(id)layout;
 - (void)updateIfNeeded;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PXGadgetUIViewController
@@ -97,57 +97,57 @@ void __51__PXGadgetUIViewController_gadgetViewControllerLog__block_invoke()
   gadgetViewControllerLog_sectionedDataSourceLog = v0;
 }
 
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
   v13.receiver = self;
   v13.super_class = PXGadgetUIViewController;
-  v8 = [(UIViewController *)&v13 px_diagnosticsItemProvidersForPoint:v7 inCoordinateSpace:x, y];
+  v8 = [(UIViewController *)&v13 px_diagnosticsItemProvidersForPoint:spaceCopy inCoordinateSpace:x, y];
   v9 = [v8 mutableCopy];
 
-  v10 = [(PXGadgetUIViewController *)self gadgetAtLocation:v7 inCoordinateSpace:x, y];
+  v10 = [(PXGadgetUIViewController *)self gadgetAtLocation:spaceCopy inCoordinateSpace:x, y];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 px_diagnosticsItemProvidersForPoint:v7 inCoordinateSpace:{x, y}];
+    v11 = [v10 px_diagnosticsItemProvidersForPoint:spaceCopy inCoordinateSpace:{x, y}];
     [v9 addObjectsFromArray:v11];
   }
 
   return v9;
 }
 
-- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)a3
+- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(PXGadgetUIViewController *)self collectionView];
-  [v4 px_scrollToEdge:1 animated:v3];
+  animatedCopy = animated;
+  collectionView = [(PXGadgetUIViewController *)self collectionView];
+  [collectionView px_scrollToEdge:1 animated:animatedCopy];
 
   return 1;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXDataSourceManagerObservationContext_122915 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXDataSourceManagerObservationContext_122915 == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v9 = v8;
+    v9 = observableCopy;
     [(PXGadgetUIViewController *)self _dataSourceManagerDidChange];
     goto LABEL_7;
   }
 
-  if ((v6 & 1) != 0 && PXGadgetSpecManagerObservationContext == a5)
+  if ((changeCopy & 1) != 0 && PXGadgetSpecManagerObservationContext == context)
   {
-    v9 = v8;
+    v9 = observableCopy;
     [(PXGadgetUIViewController *)self _gadgetSpecDidChange];
 LABEL_7:
-    v8 = v9;
+    observableCopy = v9;
   }
 
 LABEL_8:
@@ -155,18 +155,18 @@ LABEL_8:
 
 - (void)_gadgetSpecDidChange
 {
-  v19 = [(PXGadgetUIViewController *)self specManager];
-  v3 = [(PXGadgetUIViewController *)self layout];
-  v4 = [v19 currentGadgetSpec];
-  [v3 setSpec:v4];
+  specManager = [(PXGadgetUIViewController *)self specManager];
+  layout = [(PXGadgetUIViewController *)self layout];
+  currentGadgetSpec = [specManager currentGadgetSpec];
+  [layout setSpec:currentGadgetSpec];
 
-  v5 = [v19 currentGadgetSpec];
-  [v5 contentInsets];
+  currentGadgetSpec2 = [specManager currentGadgetSpec];
+  [currentGadgetSpec2 contentInsets];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(PXGadgetUIViewController *)self navigationItem];
-  [v10 largeTitleInsets];
+  navigationItem = [(PXGadgetUIViewController *)self navigationItem];
+  [navigationItem largeTitleInsets];
   if (v7 == v14 && v11 == 0.0 && v9 == v13)
   {
     v15 = v12;
@@ -181,34 +181,34 @@ LABEL_8:
   {
   }
 
-  v16 = [(PXGadgetUIViewController *)self navigationItem];
-  [v16 setLargeTitleInsets:{0.0, v7, 0.0, v9}];
+  navigationItem2 = [(PXGadgetUIViewController *)self navigationItem];
+  [navigationItem2 setLargeTitleInsets:{0.0, v7, 0.0, v9}];
 
-  v17 = [(PXGadgetUIViewController *)self navigationItem];
-  v18 = [v17 navigationBar];
-  [v18 setNeedsLayout];
+  navigationItem3 = [(PXGadgetUIViewController *)self navigationItem];
+  navigationBar = [navigationItem3 navigationBar];
+  [navigationBar setNeedsLayout];
 
 LABEL_8:
   if (![(PXGadgetUIViewController *)self isBatchUpdating])
   {
-    [v3 invalidateLayout];
+    [layout invalidateLayout];
   }
 }
 
 - (void)_dataSourceManagerDidChange
 {
   v59 = *MEMORY[0x1E69E9840];
-  v23 = [(PXGadgetUIViewController *)self collectionView];
-  v4 = [(PXGadgetUIViewController *)self dataSourceManager];
-  v5 = [(PXGadgetUIViewController *)self dataSource];
-  v6 = [v4 dataSource];
-  v22 = [(PXGadgetUIViewController *)self specManager];
+  collectionView = [(PXGadgetUIViewController *)self collectionView];
+  dataSourceManager = [(PXGadgetUIViewController *)self dataSourceManager];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  dataSource2 = [dataSourceManager dataSource];
+  specManager = [(PXGadgetUIViewController *)self specManager];
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy__122916;
   v49 = __Block_byref_object_dispose__122917;
-  v50 = _GetChangeDetails(v4, [v5 identifier], objc_msgSend(v6, "identifier"));
+  v50 = _GetChangeDetails(dataSourceManager, [dataSource identifier], objc_msgSend(dataSource2, "identifier"));
   if ([(PXGadgetUIViewController *)self isCurrentlyVisible])
   {
     v7 = PLGadgetsGetLog();
@@ -218,11 +218,11 @@ LABEL_8:
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Gadget view controller is visible and evaulating changes.", buf, 2u);
     }
 
-    v8 = [v46[5] sectionChanges];
+    sectionChanges = [v46[5] sectionChanges];
     v41 = 0;
     v42 = &v41;
     v43 = 0x2020000000;
-    v44 = [v8 hasIncrementalChanges];
+    hasIncrementalChanges = [sectionChanges hasIncrementalChanges];
     if (*(v42 + 24) == 1 && ([v46[5] sectionsWithItemChanges], v9 = objc_claimAutoreleasedReturnValue(), v40[0] = MEMORY[0x1E69E9820], v40[1] = 3221225472, v40[2] = __55__PXGadgetUIViewController__dataSourceManagerDidChange__block_invoke, v40[3] = &unk_1E773B000, v40[4] = &v45, v40[5] = &v41, objc_msgSend(v9, "enumerateIndexesUsingBlock:", v40), v9, (v42[3] & 1) != 0))
     {
       v10 = PLGadgetsGetLog();
@@ -240,13 +240,13 @@ LABEL_8:
       v32[2] = __55__PXGadgetUIViewController__dataSourceManagerDidChange__block_invoke_326;
       v32[3] = &unk_1E773B078;
       v32[4] = self;
-      v33 = v6;
-      v34 = v8;
-      v35 = v23;
+      v33 = dataSource2;
+      v34 = sectionChanges;
+      v35 = collectionView;
       v39 = a2;
-      v36 = v5;
+      v36 = dataSource;
       v38 = &v45;
-      v37 = v22;
+      v37 = specManager;
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __55__PXGadgetUIViewController__dataSourceManagerDidChange__block_invoke_2_330;
@@ -254,8 +254,8 @@ LABEL_8:
       v25 = v35;
       v26 = v34;
       v27 = v33;
-      v28 = self;
-      v29 = v4;
+      selfCopy = self;
+      v29 = dataSourceManager;
       v31 = &v45;
       v30 = v36;
       [v25 performBatchUpdates:v32 completion:v24];
@@ -266,38 +266,38 @@ LABEL_8:
       v15 = PLGadgetsGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v6 publiclySafeDescription];
-        v17 = [v5 publiclySafeDescription];
-        v18 = [v23 numberOfSections];
+        publiclySafeDescription = [dataSource2 publiclySafeDescription];
+        publiclySafeDescription2 = [dataSource publiclySafeDescription];
+        numberOfSections = [collectionView numberOfSections];
         v19 = v46[5];
         *buf = 138544130;
-        v52 = v16;
+        v52 = publiclySafeDescription;
         v53 = 2114;
-        v54 = v17;
+        v54 = publiclySafeDescription2;
         v55 = 2048;
-        v56 = v18;
+        v56 = numberOfSections;
         v57 = 2112;
         v58 = v19;
         _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, "Gadget view controller will not perform UICollectionView batch updates. Setting new data source: %{public}@, Old data source: %{public}@, UICollectionView number of sections: %ld, Change details: %@", buf, 0x2Au);
       }
 
-      [(PXGadgetUIViewController *)self setDataSource:v6];
+      [(PXGadgetUIViewController *)self setDataSource:dataSource2];
       if (_HasAnyInsertionsForChangeDetails(v46[5]))
       {
-        [v22 updateGadgetDataSourceToSpecIfNeeded:v6];
+        [specManager updateGadgetDataSourceToSpecIfNeeded:dataSource2];
       }
 
       [(PXGadgetUIViewController *)self _notifyGadgetsThatGadgetControllerHasAppeared];
       v20 = PLGadgetsGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v6 publiclySafeDescription];
+        publiclySafeDescription3 = [dataSource2 publiclySafeDescription];
         *buf = 138543362;
-        v52 = v21;
+        v52 = publiclySafeDescription3;
         _os_log_impl(&dword_1A3C1C000, v20, OS_LOG_TYPE_DEFAULT, "Reloading Gadget view controller's UICollectionView with new data source: %{public}@", buf, 0xCu);
       }
 
-      [v23 reloadData];
+      [collectionView reloadData];
       [(PXGadgetUIViewController *)self gadgetControllerFinishedUpdatingDataSourceWithChange:v46[5]];
     }
 
@@ -309,20 +309,20 @@ LABEL_8:
     v12 = PLGadgetsGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 publiclySafeDescription];
-      v14 = [v5 publiclySafeDescription];
+      publiclySafeDescription4 = [dataSource2 publiclySafeDescription];
+      publiclySafeDescription5 = [dataSource publiclySafeDescription];
       *buf = 138543618;
-      v52 = v13;
+      v52 = publiclySafeDescription4;
       v53 = 2114;
-      v54 = v14;
+      v54 = publiclySafeDescription5;
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEFAULT, "Gadget view controller not yet visible. Setting new data source: %{public}@, old data source: %{public}@", buf, 0x16u);
     }
 
-    [(PXGadgetUIViewController *)self setDataSource:v6];
+    [(PXGadgetUIViewController *)self setDataSource:dataSource2];
     self->_updateFlags = 257;
     if (_HasAnyInsertionsForChangeDetails(v46[5]))
     {
-      [v22 updateGadgetDataSourceToSpecIfNeeded:v6];
+      [specManager updateGadgetDataSourceToSpecIfNeeded:dataSource2];
     }
 
     [(PXGadgetUIViewController *)self gadgetControllerFinishedUpdatingDataSourceWithChange:v46[5]];
@@ -490,93 +490,93 @@ void __55__PXGadgetUIViewController__dataSourceManagerDidChange__block_invoke_32
   [*(a1 + 32) moveItemAtIndexPath:v6 toIndexPath:v5];
 }
 
-- (id)presentationEnvironmentForGadget:(id)a3
+- (id)presentationEnvironmentForGadget:(id)gadget
 {
-  if (!a3)
+  if (!gadget)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1156 description:{@"Invalid parameter not satisfying: %@", @"gadget"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1156 description:{@"Invalid parameter not satisfying: %@", @"gadget"}];
   }
 
   return [off_1E7721960 defaultPresenterWithViewController:self];
 }
 
-- (void)dismissGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v12 = a3;
-  v9 = a5;
-  if (!v12)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (!controllerCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1148 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1148 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
   }
 
-  v10 = [(PXGadgetUIViewController *)self presentedViewController];
+  presentedViewController = [(PXGadgetUIViewController *)self presentedViewController];
 
-  if (v10 == v12)
+  if (presentedViewController == controllerCopy)
   {
-    [(PXGadgetUIViewController *)self dismissViewControllerAnimated:v6 completion:v9];
+    [(PXGadgetUIViewController *)self dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)presentGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v13 = a3;
-  v9 = a5;
-  v10 = v13;
-  v11 = v9;
-  if (!v13)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  v10 = controllerCopy;
+  v11 = completionCopy;
+  if (!controllerCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1141 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1141 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
 
     v10 = 0;
   }
 
-  [(PXGadgetUIViewController *)self presentViewController:v10 animated:v6 completion:v11];
+  [(PXGadgetUIViewController *)self presentViewController:v10 animated:animatedCopy completion:v11];
 }
 
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PXGadgetUIViewController *)self navigationController];
-  if (v13)
+  animatedCopy = animated;
+  gadgetCopy = gadget;
+  controllerCopy = controller;
+  completionCopy = completion;
+  navigationController = [(PXGadgetUIViewController *)self navigationController];
+  if (navigationController)
   {
-    [(PXGadgetUIViewController *)self setSelectedGadget:v10];
-    [v13 px_pushViewController:v11 animated:v7 completion:v12];
+    [(PXGadgetUIViewController *)self setSelectedGadget:gadgetCopy];
+    [navigationController px_pushViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
-  return v13 != 0;
+  return navigationController != 0;
 }
 
-- (void)gadget:(id)a3 animateChanges:(id)a4
+- (void)gadget:(id)gadget animateChanges:(id)changes
 {
-  v6 = a3;
-  v7 = a4;
+  gadgetCopy = gadget;
+  changesCopy = changes;
   if ([(PXGadgetUIViewController *)self isCurrentlyVisible])
   {
     [(PXGadgetUIViewController *)self setGadgetAnimating:1];
     objc_initWeak(&location, self);
-    v8 = [(PXGadgetUIViewController *)self collectionView];
+    collectionView = [(PXGadgetUIViewController *)self collectionView];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke;
     v9[3] = &unk_1E7747EB0;
     objc_copyWeak(&v10, &location);
-    [v8 performBatchUpdates:v7 completion:v9];
+    [collectionView performBatchUpdates:changesCopy completion:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (changesCopy)
   {
-    v7[2](v7);
+    changesCopy[2](changesCopy);
   }
 }
 
@@ -586,60 +586,60 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
   [WeakRetained setGadgetAnimating:0];
 }
 
-- (void)gadget:(id)a3 didChange:(unint64_t)a4
+- (void)gadget:(id)gadget didChange:(unint64_t)change
 {
-  v4 = a4;
-  v6 = a3;
-  if ((v4 & 0x40) != 0)
+  changeCopy = change;
+  gadgetCopy = gadget;
+  if ((changeCopy & 0x40) != 0)
   {
-    v10 = v6;
-    v7 = [(PXGadgetUIViewController *)self isGadgetAnimating];
-    v6 = v10;
-    if (!v7)
+    v10 = gadgetCopy;
+    isGadgetAnimating = [(PXGadgetUIViewController *)self isGadgetAnimating];
+    gadgetCopy = v10;
+    if (!isGadgetAnimating)
     {
-      v8 = [(PXGadgetUIViewController *)self isBatchUpdating];
-      v6 = v10;
-      if (!v8)
+      isBatchUpdating = [(PXGadgetUIViewController *)self isBatchUpdating];
+      gadgetCopy = v10;
+      if (!isBatchUpdating)
       {
-        v9 = [(PXGadgetUIViewController *)self layout];
-        [v9 invalidateLayout];
+        layout = [(PXGadgetUIViewController *)self layout];
+        [layout invalidateLayout];
 
-        v6 = v10;
+        gadgetCopy = v10;
       }
     }
   }
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v3 = [(PXGadgetUIViewController *)self layout];
-  [v3 invalidateLayout];
+  layout = [(PXGadgetUIViewController *)self layout];
+  [layout invalidateLayout];
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  viewCopy = view;
+  coordinatorCopy = coordinator;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1086 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetUIViewController collectionView:performDropWithCoordinator:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetUIViewController.m" lineNumber:1086 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetUIViewController collectionView:performDropWithCoordinator:]", v11}];
 
   abort();
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10 && (v12 = [v10 section], -[PXGadgetUIViewController dataSource](self, "dataSource"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "numberOfSections"), v13, v12 < v14))
+  viewCopy = view;
+  updateCopy = update;
+  pathCopy = path;
+  v11 = pathCopy;
+  if (pathCopy && (v12 = [pathCopy section], -[PXGadgetUIViewController dataSource](self, "dataSource"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "numberOfSections"), v13, v12 < v14))
   {
     v15 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:v11];
-    v16 = [v15 gadgetCapabilities];
+    gadgetCapabilities = [v15 gadgetCapabilities];
     v17 = objc_alloc(MEMORY[0x1E69DC838]);
-    if (v16)
+    if (gadgetCapabilities)
     {
       v18 = 2;
       v19 = 2;
@@ -662,82 +662,82 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
   return v20;
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSesson:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSesson:(id)sesson
 {
-  v4 = a4;
+  sessonCopy = sesson;
   v5 = +[PXImportManager supportedTypeIdentifiers];
-  v6 = [v4 hasItemsConformingToTypeIdentifiers:v5];
+  v6 = [sessonCopy hasItemsConformingToTypeIdentifiers:v5];
 
   return v6;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
-    v9 = v6;
-    v7 = [(PXGadgetUIViewController *)self collectionView];
-    v8 = [v7 isDecelerating];
+    v9 = draggingCopy;
+    collectionView = [(PXGadgetUIViewController *)self collectionView];
+    isDecelerating = [collectionView isDecelerating];
 
-    v6 = v9;
-    if ((v8 & 1) == 0)
+    draggingCopy = v9;
+    if ((isDecelerating & 1) == 0)
     {
       [(PXGadgetUIViewController *)self _scrollViewDidEndScrolling];
-      v6 = v9;
+      draggingCopy = v9;
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   [(PXGadgetUIViewController *)self _clearTimerToHandleGadgetsSeen];
   [(PXGadgetUIViewController *)self setIsScrolling:1];
-  v5 = [v4 isDecelerating];
+  isDecelerating = [draggingCopy isDecelerating];
 
-  if ((v5 & 1) == 0)
+  if ((isDecelerating & 1) == 0)
   {
-    v6 = [(PXGadgetUIViewController *)self scrollAnimationIdentifier];
+    scrollAnimationIdentifier = [(PXGadgetUIViewController *)self scrollAnimationIdentifier];
 
-    [PXAnimationTracker scrollAnimationDidBegin:v6];
+    [PXAnimationTracker scrollAnimationDidBegin:scrollAnimationIdentifier];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(PXGadgetUIViewController *)self _updateGadgetVisibleRects];
-  v3 = [off_1E7721878 sharedScheduler];
-  [v3 scrollViewDidScroll];
+  sharedScheduler = [off_1E7721878 sharedScheduler];
+  [sharedScheduler scrollViewDidScroll];
 }
 
 - (BOOL)isTogglingSidebarNoRotating
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v5 = [(PXGadgetUIViewController *)self isDFITogglingSidebar];
-    if (v5)
+    isDFITogglingSidebar = [(PXGadgetUIViewController *)self isDFITogglingSidebar];
+    if (isDFITogglingSidebar)
     {
-      LOBYTE(v5) = ![(PXGadgetUIViewController *)self isRotatingVerticalLayout];
+      LOBYTE(isDFITogglingSidebar) = ![(PXGadgetUIViewController *)self isRotatingVerticalLayout];
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(isDFITogglingSidebar) = 0;
   }
 
-  return v5;
+  return isDFITogglingSidebar;
 }
 
 - (UIEdgeInsets)insetsForSectionHeaders
 {
-  v2 = [(PXGadgetUIViewController *)self specManager];
-  v3 = [v2 currentGadgetSpec];
-  [v3 contentInsets];
+  specManager = [(PXGadgetUIViewController *)self specManager];
+  currentGadgetSpec = [specManager currentGadgetSpec];
+  [currentGadgetSpec contentInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -754,12 +754,12 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PXGadgetUIViewController *)self layout];
-  [v10 collectionView:v9 layout:v8 referenceSizeForHeaderInSection:a5];
+  layoutCopy = layout;
+  viewCopy = view;
+  layout = [(PXGadgetUIViewController *)self layout];
+  [layout collectionView:viewCopy layout:layoutCopy referenceSizeForHeaderInSection:section];
   v12 = v11;
   v14 = v13;
 
@@ -770,13 +770,13 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PXGadgetUIViewController *)self layout];
-  [v11 collectionView:v10 layout:v9 sizeForItemAtIndexPath:v8];
+  pathCopy = path;
+  layoutCopy = layout;
+  viewCopy = view;
+  layout = [(PXGadgetUIViewController *)self layout];
+  [layout collectionView:viewCopy layout:layoutCopy sizeForItemAtIndexPath:pathCopy];
   v13 = v12;
   v15 = v14;
 
@@ -787,12 +787,12 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PXGadgetUIViewController *)self layout];
-  [v10 collectionView:v9 layout:v8 insetForSectionAtIndex:a5];
+  layoutCopy = layout;
+  viewCopy = view;
+  layout = [(PXGadgetUIViewController *)self layout];
+  [layout collectionView:viewCopy layout:layoutCopy insetForSectionAtIndex:index];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -809,41 +809,41 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v4 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:a4];
+  v4 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:path];
   v5 = ([v4 gadgetCapabilities] >> 1) & 1;
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
     [v7 userDidSelectGadget];
   }
 
-  [v8 deselectItemAtIndexPath:v6 animated:0];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:0];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v14 = a4;
+  cellCopy = cell;
   v6 = [(PXGadgetUIViewController *)self _gadgetForCollectionViewCell:?];
   if (v6)
   {
     if ([(PXGadgetUIViewController *)self _isUsingDeprecatedViewLoadingForGadget:v6])
     {
-      v7 = v14;
-      v8 = [v7 contentView];
-      v9 = [v7 gadgetContentView];
-      v10 = [v9 superview];
+      v7 = cellCopy;
+      contentView = [v7 contentView];
+      gadgetContentView = [v7 gadgetContentView];
+      superview = [gadgetContentView superview];
 
-      if (v8 == v10)
+      if (contentView == superview)
       {
         if ([(PXGadgetUIViewController *)self isContentVisible]&& (objc_opt_respondsToSelector() & 1) != 0)
         {
@@ -852,11 +852,11 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
 
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v6 contentViewController];
-          v12 = v11;
-          if (v11)
+          contentViewController = [v6 contentViewController];
+          v12 = contentViewController;
+          if (contentViewController)
           {
-            [v11 willMoveToParentViewController:0];
+            [contentViewController willMoveToParentViewController:0];
             [v12 removeFromParentViewController];
           }
         }
@@ -867,32 +867,32 @@ void __50__PXGadgetUIViewController_gadget_animateChanges___block_invoke(uint64_
 
     else if (objc_opt_respondsToSelector())
     {
-      [v6 removeCollectionViewItem:v14];
+      [v6 removeCollectionViewItem:cellCopy];
     }
   }
 
-  v13 = [(PXGadgetUIViewController *)self cellsWantingVisibleRectUpdates];
-  [v13 removeObject:v14];
+  cellsWantingVisibleRectUpdates = [(PXGadgetUIViewController *)self cellsWantingVisibleRectUpdates];
+  [cellsWantingVisibleRectUpdates removeObject:cellCopy];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:a5];
+  viewCopy = view;
+  cellCopy = cell;
+  v10 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:path];
   if (![(PXGadgetUIViewController *)self _isUsingDeprecatedViewLoadingForGadget:v10])
   {
-    [v10 prepareCollectionViewItem:v9];
+    [v10 prepareCollectionViewItem:cellCopy];
     goto LABEL_12;
   }
 
-  v11 = v9;
+  v11 = cellCopy;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v12 = 0;
+    contentViewController = 0;
 LABEL_7:
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v10 contentView], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v10 contentView], (view = objc_claimAutoreleasedReturnValue()) == 0))
     {
       PXAssertGetLog();
     }
@@ -900,19 +900,19 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v12 = [v10 contentViewController];
-  v13 = [v12 view];
-  if (!v13)
+  contentViewController = [v10 contentViewController];
+  view = [contentViewController view];
+  if (!view)
   {
     goto LABEL_7;
   }
 
 LABEL_9:
-  v14 = v13;
-  if (v12)
+  v14 = view;
+  if (contentViewController)
   {
-    [(PXGadgetUIViewController *)self addChildViewController:v12];
-    [v12 didMoveToParentViewController:self];
+    [(PXGadgetUIViewController *)self addChildViewController:contentViewController];
+    [contentViewController didMoveToParentViewController:self];
   }
 
   [v11 setGadgetContentView:v14];
@@ -920,53 +920,53 @@ LABEL_9:
 LABEL_12:
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(PXGadgetUIViewController *)self cellsWantingVisibleRectUpdates];
-    [v15 addObject:v9];
+    cellsWantingVisibleRectUpdates = [(PXGadgetUIViewController *)self cellsWantingVisibleRectUpdates];
+    [cellsWantingVisibleRectUpdates addObject:cellCopy];
 
-    [(PXGadgetUIViewController *)self _updateVisibleRectForGadget:v10 inCell:v9 collectionView:v8];
+    [(PXGadgetUIViewController *)self _updateVisibleRectForGadget:v10 inCell:cellCopy collectionView:viewCopy];
   }
 
   if ([(PXGadgetUIViewController *)self isContentVisible]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v16 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
-    if (os_signpost_enabled(v16))
+    gadgetViewControllerLog = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
+    if (os_signpost_enabled(gadgetViewControllerLog))
     {
       LOWORD(v17) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetContentWillAppear", "", &v17, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetContentWillAppear", "", &v17, 2u);
     }
 
     [v10 contentViewWillAppear];
-    if (os_signpost_enabled(v16))
+    if (os_signpost_enabled(gadgetViewControllerLog))
     {
       LOWORD(v17) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "GadgetContentWillAppear", "", &v17, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "GadgetContentWillAppear", "", &v17, 2u);
     }
   }
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
-  if (os_signpost_enabled(v8))
+  viewCopy = view;
+  pathsCopy = paths;
+  gadgetViewControllerLog = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
+  if (os_signpost_enabled(gadgetViewControllerLog))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Gadget_CV_prefetchItems", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Gadget_CV_prefetchItems", "", buf, 2u);
   }
 
-  v9 = [v7 firstObject];
+  firstObject = [pathsCopy firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:v9];
+    v10 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:firstObject];
     if ([(PXGadgetUIViewController *)self _isUsingDeprecatedViewLoadingForGadget:v10])
     {
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v10 contentViewController];
+        contentViewController = [v10 contentViewController];
 
-        [v11 view];
+        [contentViewController view];
 LABEL_9:
 
         goto LABEL_10;
@@ -974,7 +974,7 @@ LABEL_9:
 
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v10 contentView];
+        contentViewController = [v10 contentView];
         goto LABEL_9;
       }
     }
@@ -982,23 +982,23 @@ LABEL_9:
 LABEL_10:
     if (objc_opt_respondsToSelector())
     {
-      [v6 bounds];
+      [viewCopy bounds];
       [v10 prefetchDuringScrollingForWidth:v12];
     }
   }
 
-  if (os_signpost_enabled(v8))
+  if (os_signpost_enabled(gadgetViewControllerLog))
   {
     *v13 = 0;
-    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "Gadget_CV_prefetchItems", "", v13, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "Gadget_CV_prefetchItems", "", v13, 2u);
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
     [v8 setVisibleContentRect:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -1006,23 +1006,23 @@ LABEL_10:
 
   if ([(PXGadgetUIViewController *)self _isUsingDeprecatedViewLoadingForGadget:v8])
   {
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"PXGadgetControllerCellReuseIdentifier" forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PXGadgetControllerCellReuseIdentifier" forIndexPath:pathCopy];
     [v9 setClipsToBounds:0];
   }
 
   else
   {
-    v10 = [v8 collectionViewItemClass];
-    v11 = NSStringFromClass(v10);
+    collectionViewItemClass = [v8 collectionViewItemClass];
+    v11 = NSStringFromClass(collectionViewItemClass);
     v12 = [v11 stringByAppendingString:@"ReuseIdentifier"];
 
     if (([(NSMutableSet *)self->_registeredCellReuseIdentifiers containsObject:v12]& 1) == 0)
     {
       [(NSMutableSet *)self->_registeredCellReuseIdentifiers addObject:v12];
-      [v6 registerClass:v10 forCellWithReuseIdentifier:v12];
+      [viewCopy registerClass:collectionViewItemClass forCellWithReuseIdentifier:v12];
     }
 
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
   }
 
   [(PXGadgetUIViewController *)self _setGadget:v8 forCollectionViewCell:v9];
@@ -1030,26 +1030,26 @@ LABEL_10:
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(PXGadgetUIViewController *)self dataSource];
-  v6 = [v5 numberOfItemsInSection:a4];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  v6 = [dataSource numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(PXGadgetUIViewController *)self dataSource];
-  v4 = [v3 numberOfSections];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
 - (CGRect)visibleBounds
 {
-  v2 = [(PXGadgetUIViewController *)self collectionView];
-  [v2 bounds];
+  collectionView = [(PXGadgetUIViewController *)self collectionView];
+  [collectionView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1066,20 +1066,20 @@ LABEL_10:
   return result;
 }
 
-- (void)_updateVisibleRectForGadget:(id)a3 inCell:(id)a4 collectionView:(id)a5
+- (void)_updateVisibleRectForGadget:(id)gadget inCell:(id)cell collectionView:(id)view
 {
-  v35 = a3;
-  v8 = a4;
-  v9 = a5;
+  gadgetCopy = gadget;
+  cellCopy = cell;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
     [(PXGadgetUIViewController *)self visibleBounds];
-    [v8 convertRect:v9 fromView:?];
+    [cellCopy convertRect:viewCopy fromView:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v8 bounds];
+    [cellCopy bounds];
     v39.origin.x = v18;
     v39.origin.y = v19;
     v39.size.width = v20;
@@ -1101,14 +1101,14 @@ LABEL_10:
       height = *(MEMORY[0x1E695F058] + 24);
     }
 
-    v26 = [v8 contentView];
-    [v26 convertRect:v8 fromView:{x, y, width, height}];
+    contentView = [cellCopy contentView];
+    [contentView convertRect:cellCopy fromView:{x, y, width, height}];
     v28 = v27;
     v30 = v29;
     v32 = v31;
     v34 = v33;
 
-    [v35 setVisibleContentRect:{v28, v30, v32, v34}];
+    [gadgetCopy setVisibleContentRect:{v28, v30, v32, v34}];
   }
 }
 
@@ -1117,16 +1117,16 @@ LABEL_10:
   v18 = *MEMORY[0x1E69E9840];
   if (!self->_updateFlags.collectionNeedsUpdate && ![(PXGadgetUIViewController *)self isBatchUpdating])
   {
-    v3 = [(PXGadgetUIViewController *)self cellsWantingVisibleRectUpdates];
-    if ([v3 count])
+    cellsWantingVisibleRectUpdates = [(PXGadgetUIViewController *)self cellsWantingVisibleRectUpdates];
+    if ([cellsWantingVisibleRectUpdates count])
     {
-      v4 = [(PXGadgetUIViewController *)self collectionView];
-      v5 = [v4 indexPathsForVisibleItems];
+      collectionView = [(PXGadgetUIViewController *)self collectionView];
+      indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1137,19 +1137,19 @@ LABEL_10:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(indexPathsForVisibleItems);
             }
 
             v10 = *(*(&v13 + 1) + 8 * i);
-            v11 = [v4 cellForItemAtIndexPath:v10];
-            if ([v3 containsObject:v11])
+            v11 = [collectionView cellForItemAtIndexPath:v10];
+            if ([cellsWantingVisibleRectUpdates containsObject:v11])
             {
               v12 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:v10];
-              [(PXGadgetUIViewController *)self _updateVisibleRectForGadget:v12 inCell:v11 collectionView:v4];
+              [(PXGadgetUIViewController *)self _updateVisibleRectForGadget:v12 inCell:v11 collectionView:collectionView];
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
@@ -1171,14 +1171,14 @@ LABEL_10:
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_updateFlags.collectionNeedsUpdate)
   {
-    v3 = [(PXGadgetUIViewController *)self isContentVisible];
-    v13 = [(PXGadgetUIViewController *)self collectionView];
-    v4 = [v13 indexPathsForVisibleItems];
+    isContentVisible = [(PXGadgetUIViewController *)self isContentVisible];
+    collectionView = [(PXGadgetUIViewController *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (!v5)
     {
       goto LABEL_22;
@@ -1192,32 +1192,32 @@ LABEL_10:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:*(*(&v15 + 1) + 8 * i)];
-        if (v3)
+        if (isContentVisible)
         {
           if ((objc_opt_respondsToSelector() & 1) == 0)
           {
             goto LABEL_20;
           }
 
-          v10 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
-          if (os_signpost_enabled(v10))
+          gadgetViewControllerLog = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
+          if (os_signpost_enabled(gadgetViewControllerLog))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetContentWillAppear", "", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetContentWillAppear", "", buf, 2u);
           }
 
           [v9 contentViewWillAppear];
-          if (!os_signpost_enabled(v10))
+          if (!os_signpost_enabled(gadgetViewControllerLog))
           {
             goto LABEL_19;
           }
 
           *buf = 0;
-          v11 = v10;
+          v11 = gadgetViewControllerLog;
           v12 = "GadgetContentWillAppear";
           goto LABEL_18;
         }
@@ -1227,18 +1227,18 @@ LABEL_10:
           goto LABEL_20;
         }
 
-        v10 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
-        if (os_signpost_enabled(v10))
+        gadgetViewControllerLog = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
+        if (os_signpost_enabled(gadgetViewControllerLog))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetContentDidDisappear", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetContentDidDisappear", "", buf, 2u);
         }
 
         [v9 contentViewDidDisappear];
-        if (os_signpost_enabled(v10))
+        if (os_signpost_enabled(gadgetViewControllerLog))
         {
           *buf = 0;
-          v11 = v10;
+          v11 = gadgetViewControllerLog;
           v12 = "GadgetContentDidDisappear";
 LABEL_18:
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, v12, "", buf, 2u);
@@ -1249,7 +1249,7 @@ LABEL_19:
 LABEL_20:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (!v6)
       {
 LABEL_22:
@@ -1262,8 +1262,8 @@ LABEL_22:
 
 - (void)_notifyGadgetsThatGadgetWasDismissed
 {
-  v2 = [(PXGadgetUIViewController *)self dataSource];
-  [v2 enumerateGadgetsUsingBlock:&__block_literal_global_280_122997];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  [dataSource enumerateGadgetsUsingBlock:&__block_literal_global_280_122997];
 }
 
 void __64__PXGadgetUIViewController__notifyGadgetsThatGadgetWasDismissed__block_invoke(uint64_t a1, void *a2)
@@ -1277,8 +1277,8 @@ void __64__PXGadgetUIViewController__notifyGadgetsThatGadgetWasDismissed__block_
 
 - (void)_notifyGadgetsThatGadgetControllerHasDisappeared
 {
-  v2 = [(PXGadgetUIViewController *)self dataSource];
-  [v2 enumerateGadgetsUsingBlock:&__block_literal_global_276_123002];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  [dataSource enumerateGadgetsUsingBlock:&__block_literal_global_276_123002];
 }
 
 void __76__PXGadgetUIViewController__notifyGadgetsThatGadgetControllerHasDisappeared__block_invoke(uint64_t a1, void *a2)
@@ -1292,8 +1292,8 @@ void __76__PXGadgetUIViewController__notifyGadgetsThatGadgetControllerHasDisappe
 
 - (void)_notifyGadgetsThatGadgetControllerHasAppeared
 {
-  v2 = [(PXGadgetUIViewController *)self dataSource];
-  [v2 enumerateGadgetsUsingBlock:&__block_literal_global_123005];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  [dataSource enumerateGadgetsUsingBlock:&__block_literal_global_123005];
 }
 
 void __73__PXGadgetUIViewController__notifyGadgetsThatGadgetControllerHasAppeared__block_invoke(uint64_t a1, void *a2)
@@ -1330,8 +1330,8 @@ void __56__PXGadgetUIViewController__setTimerToHandleGadgetsSeen__block_invoke(u
 
 - (void)_clearTimerToHandleGadgetsSeen
 {
-  v2 = [(PXGadgetUIViewController *)self gadgetSeenTimer];
-  [v2 invalidate];
+  gadgetSeenTimer = [(PXGadgetUIViewController *)self gadgetSeenTimer];
+  [gadgetSeenTimer invalidate];
 }
 
 - (void)_handleGadgetsSeen
@@ -1339,27 +1339,27 @@ void __56__PXGadgetUIViewController__setTimerToHandleGadgetsSeen__block_invoke(u
   v26 = *MEMORY[0x1E69E9840];
   if (!self->_updateFlags.collectionNeedsUpdate && ![(PXGadgetUIViewController *)self isBatchUpdating]&& [(PXGadgetUIViewController *)self isContentVisible])
   {
-    v3 = [(PXGadgetUIViewController *)self collectionView];
+    collectionView = [(PXGadgetUIViewController *)self collectionView];
     [(PXGadgetUIViewController *)self visibleBounds];
     r2[0] = v4;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [v3 window];
-    v21 = v11;
-    if (v11)
+    window = [collectionView window];
+    v21 = window;
+    if (window)
     {
-      v12 = v11;
-      [v11 bounds];
-      [v3 convertRect:v12 fromCoordinateSpace:?];
+      v12 = window;
+      [window bounds];
+      [collectionView convertRect:v12 fromCoordinateSpace:?];
     }
 
-    v13 = [v3 indexPathsForVisibleItems];
-    v14 = [(PXGadgetUIViewController *)self seenGadgetIdentifiers];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+    seenGadgetIdentifiers = [(PXGadgetUIViewController *)self seenGadgetIdentifiers];
     memset(&r2[1], 0, 32);
     v23 = 0u;
     v24 = 0u;
-    v15 = v13;
+    v15 = indexPathsForVisibleItems;
     v16 = [v15 countByEnumeratingWithState:&r2[1] objects:v25 count:16];
     if (v16)
     {
@@ -1374,7 +1374,7 @@ void __56__PXGadgetUIViewController__setTimerToHandleGadgetsSeen__block_invoke(u
             objc_enumerationMutation(v15);
           }
 
-          v20 = [v3 layoutAttributesForItemAtIndexPath:*(r2[2] + 8 * i)];
+          v20 = [collectionView layoutAttributesForItemAtIndexPath:*(r2[2] + 8 * i)];
           [v20 frame];
           *&v29.origin.x = r2[0];
           v29.origin.y = v6;
@@ -1395,15 +1395,15 @@ void __56__PXGadgetUIViewController__setTimerToHandleGadgetsSeen__block_invoke(u
   }
 }
 
-- (id)_indexPathForGadget:(id)a3
+- (id)_indexPathForGadget:(id)gadget
 {
-  v4 = a3;
+  gadgetCopy = gadget;
   v11 = 0u;
-  v5 = [(PXGadgetUIViewController *)self dataSource];
-  v6 = v5;
-  if (v5)
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    [v5 indexPathForGadget:v4];
+    [dataSource indexPathForGadget:gadgetCopy];
   }
 
   else
@@ -1434,19 +1434,19 @@ void __56__PXGadgetUIViewController__setTimerToHandleGadgetsSeen__block_invoke(u
   return v9;
 }
 
-- (id)_gadgetAtIndexPath:(id)a3
+- (id)_gadgetAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXGadgetUIViewController *)self dataSource];
-  v6 = [v5 identifier];
-  v7 = [v4 section];
-  v8 = [v4 item];
+  pathCopy = path;
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  identifier = [dataSource identifier];
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v11[0] = v6;
-  v11[1] = v7;
-  v11[2] = v8;
+  v11[0] = identifier;
+  v11[1] = section;
+  v11[2] = item;
   v11[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [v5 gadgetAtIndexPath:v11];
+  v9 = [dataSource gadgetAtIndexPath:v11];
 
   return v9;
 }
@@ -1456,8 +1456,8 @@ void __56__PXGadgetUIViewController__setTimerToHandleGadgetsSeen__block_invoke(u
   if (self->_updateFlags.collectionNeedsUpdate)
   {
     self->_updateFlags.collectionNeedsUpdate = 0;
-    v3 = [(PXGadgetUIViewController *)self collectionView];
-    [v3 reloadData];
+    collectionView = [(PXGadgetUIViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
@@ -1483,15 +1483,15 @@ void __47__PXGadgetUIViewController__updaterNeedsUpdate__block_invoke(uint64_t a
 
 - (void)_removeContextMenuInteraction
 {
-  v3 = [(PXGadgetUIViewController *)self contextMenuInteraction];
-  if (v3)
+  contextMenuInteraction = [(PXGadgetUIViewController *)self contextMenuInteraction];
+  if (contextMenuInteraction)
   {
-    v5 = v3;
-    v4 = [v3 view];
-    [v4 removeInteraction:v5];
+    v5 = contextMenuInteraction;
+    view = [contextMenuInteraction view];
+    [view removeInteraction:v5];
 
     [(PXGadgetUIViewController *)self setContextMenuInteraction:0];
-    v3 = v5;
+    contextMenuInteraction = v5;
   }
 }
 
@@ -1499,37 +1499,37 @@ void __47__PXGadgetUIViewController__updaterNeedsUpdate__block_invoke(uint64_t a
 {
   if ([(PXGadgetUIViewController *)self isRootGadgetViewController])
   {
-    v3 = [(PXGadgetUIViewController *)self contextMenuInteraction];
+    contextMenuInteraction = [(PXGadgetUIViewController *)self contextMenuInteraction];
 
-    if (!v3)
+    if (!contextMenuInteraction)
     {
       v5 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:self];
       [(PXGadgetUIViewController *)self setContextMenuInteraction:v5];
-      v4 = [(PXGadgetUIViewController *)self view];
-      [v4 addInteraction:v5];
+      view = [(PXGadgetUIViewController *)self view];
+      [view addInteraction:v5];
     }
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v10 = [(PXGadgetUIViewController *)self interactionPreviewGadget];
-  v7 = [(PXGadgetUIViewController *)self isInteractionPreviewCancelled];
-  v8 = [(PXGadgetUIViewController *)self interactionPreviewView];
-  v9 = [v6 previewViewController];
+  animatorCopy = animator;
+  interactionPreviewGadget = [(PXGadgetUIViewController *)self interactionPreviewGadget];
+  isInteractionPreviewCancelled = [(PXGadgetUIViewController *)self isInteractionPreviewCancelled];
+  interactionPreviewView = [(PXGadgetUIViewController *)self interactionPreviewView];
+  previewViewController = [animatorCopy previewViewController];
 
-  if (v9)
+  if (previewViewController)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v10 didDismissPreviewViewController:v9 committing:!v7];
+      [interactionPreviewGadget didDismissPreviewViewController:previewViewController committing:!isInteractionPreviewCancelled];
     }
   }
 
-  else if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (interactionPreviewView && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 didDismissPreviewWithPreviewView:v8 committing:!v7];
+    [interactionPreviewGadget didDismissPreviewWithPreviewView:interactionPreviewView committing:!isInteractionPreviewCancelled];
   }
 
   [(PXGadgetUIViewController *)self setInteractionPreviewGadget:0];
@@ -1537,14 +1537,14 @@ void __47__PXGadgetUIViewController__updaterNeedsUpdate__block_invoke(uint64_t a
   [(PXGadgetUIViewController *)self setIsInteractionPreviewCancelled:0];
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v7 = [(PXGadgetUIViewController *)self interactionPreviewGadget];
-  v8 = [(PXGadgetUIViewController *)self interactionPreviewView];
-  v9 = [v6 previewViewController];
-  [v6 setPreferredCommitStyle:v9 != 0];
-  if (v9)
+  animatorCopy = animator;
+  interactionPreviewGadget = [(PXGadgetUIViewController *)self interactionPreviewGadget];
+  interactionPreviewView = [(PXGadgetUIViewController *)self interactionPreviewView];
+  previewViewController = [animatorCopy previewViewController];
+  [animatorCopy setPreferredCommitStyle:previewViewController != 0];
+  if (previewViewController)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -1552,33 +1552,33 @@ void __47__PXGadgetUIViewController__updaterNeedsUpdate__block_invoke(uint64_t a
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v11 = __109__PXGadgetUIViewController_contextMenuInteraction_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
-      v12 = v9;
+      v12 = previewViewController;
 LABEL_7:
       v10[2] = v11;
       v10[3] = &unk_1E774C620;
-      v10[4] = v7;
+      v10[4] = interactionPreviewGadget;
       v10[5] = v12;
-      [v6 addCompletion:v10];
+      [animatorCopy addCompletion:v10];
     }
   }
 
-  else if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (interactionPreviewView && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v10 = &v13;
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v11 = __109__PXGadgetUIViewController_contextMenuInteraction_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke_2;
-    v12 = v8;
+    v12 = interactionPreviewView;
     goto LABEL_7;
   }
 
   [(PXGadgetUIViewController *)self setIsInteractionPreviewCancelled:0, v13, v14];
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = [(PXGadgetUIViewController *)self interactionPreviewView:a3];
-  v6 = [(PXGadgetUIViewController *)self interactionPreviewGadget];
+  v5 = [(PXGadgetUIViewController *)self interactionPreviewView:interaction];
+  interactionPreviewGadget = [(PXGadgetUIViewController *)self interactionPreviewGadget];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     if (v5)
@@ -1590,7 +1590,7 @@ LABEL_7:
     PXAssertGetLog();
   }
 
-  v7 = [v6 previewParametersForTargetPreviewView:v5];
+  v7 = [interactionPreviewGadget previewParametersForTargetPreviewView:v5];
   v8 = v7;
   if (!v5)
   {
@@ -1611,13 +1611,13 @@ LABEL_8:
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(PXGadgetUIViewController *)self view];
-  v8 = [(PXGadgetUIViewController *)self gadgetAtLocation:v7 inCoordinateSpace:x, y];
-  if (!v8 || (objc_opt_respondsToSelector() & 1) == 0 || ([v8 targetPreviewViewForLocation:v7 inCoordinateSpace:{x, y}], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  y = location.y;
+  x = location.x;
+  view = [(PXGadgetUIViewController *)self view];
+  v8 = [(PXGadgetUIViewController *)self gadgetAtLocation:view inCoordinateSpace:x, y];
+  if (!v8 || (objc_opt_respondsToSelector() & 1) == 0 || ([v8 targetPreviewViewForLocation:view inCoordinateSpace:{x, y}], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v12 = 0;
     goto LABEL_9;
@@ -1626,7 +1626,7 @@ LABEL_8:
   v10 = v9;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 previewViewControllerAtLocation:v7 fromSourceView:{x, y}];
+    v11 = [v8 previewViewControllerAtLocation:view fromSourceView:{x, y}];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       if (!v11)
@@ -1639,8 +1639,8 @@ LABEL_8:
 
 LABEL_13:
     v14 = [v8 contextMenuWithSuggestedActions:MEMORY[0x1E695E0F0]];
-    v15 = [v14 children];
-    v12 = [v15 count];
+    children = [v14 children];
+    v12 = [children count];
 
     if (v12 || !v11)
     {
@@ -1653,8 +1653,8 @@ LABEL_13:
     }
 
 LABEL_15:
-    v16 = [v11 px_previewActionMenus];
-    v17 = [v16 count];
+    px_previewActionMenus = [v11 px_previewActionMenus];
+    v17 = [px_previewActionMenus count];
 
     if (!v17)
     {
@@ -1720,29 +1720,29 @@ id __82__PXGadgetUIViewController_contextMenuInteraction_configurationForMenuAtL
   return v4;
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   layout = self->_layout;
-  if (layout != v5)
+  if (layout != layoutCopy)
   {
-    v9 = v5;
+    v9 = layoutCopy;
     [(PXGadgetCollectionViewLayout *)layout setDelegate:0];
-    objc_storeStrong(&self->_layout, a3);
+    objc_storeStrong(&self->_layout, layout);
     [(PXGadgetCollectionViewLayout *)self->_layout setDelegate:self];
     v7 = self->_layout;
-    v8 = [(PXGadgetUIViewController *)self collectionView];
-    [v8 setCollectionViewLayout:v7];
+    collectionView = [(PXGadgetUIViewController *)self collectionView];
+    [collectionView setCollectionViewLayout:v7];
 
-    v5 = v9;
+    layoutCopy = v9;
   }
 }
 
-- (void)setContentVisible:(BOOL)a3
+- (void)setContentVisible:(BOOL)visible
 {
-  if (self->_isContentVisible != a3)
+  if (self->_isContentVisible != visible)
   {
-    self->_isContentVisible = a3;
+    self->_isContentVisible = visible;
     if ([(PXGadgetUIViewController *)self isViewLoaded])
     {
       [(PXGadgetUIViewController *)self _notifyPresentedGadgetsOfVisibilityChange];
@@ -1761,12 +1761,12 @@ id __82__PXGadgetUIViewController_contextMenuInteraction_configurationForMenuAtL
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v9 = a3;
+  sourceCopy = source;
   v5 = self->_dataSource;
-  v6 = v5;
-  if (v5 == v9)
+  collectionView = v5;
+  if (v5 == sourceCopy)
   {
     goto LABEL_5;
   }
@@ -1775,25 +1775,25 @@ id __82__PXGadgetUIViewController_contextMenuInteraction_configurationForMenuAtL
 
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&self->_dataSource, a3);
+    objc_storeStrong(&self->_dataSource, source);
     if ([(PXGadgetUIViewController *)self isRootGadgetViewController])
     {
-      v8 = [(PXGadgetDataSource *)v9 hasNoContentGadget];
-      v6 = [(PXGadgetUIViewController *)self collectionView];
-      [v6 setAlwaysBounceVertical:!v8];
+      hasNoContentGadget = [(PXGadgetDataSource *)sourceCopy hasNoContentGadget];
+      collectionView = [(PXGadgetUIViewController *)self collectionView];
+      [collectionView setAlwaysBounceVertical:!hasNoContentGadget];
 LABEL_5:
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_backgroundColor != v4)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (self->_backgroundColor != colorCopy)
   {
-    v12 = v4;
-    v6 = [(UIColor *)v4 isEqual:?];
+    v12 = colorCopy;
+    v6 = [(UIColor *)colorCopy isEqual:?];
     v5 = v12;
     if ((v6 & 1) == 0)
     {
@@ -1801,13 +1801,13 @@ LABEL_5:
       backgroundColor = self->_backgroundColor;
       self->_backgroundColor = v7;
 
-      v9 = [(PXGadgetUIViewController *)self isViewLoaded];
+      isViewLoaded = [(PXGadgetUIViewController *)self isViewLoaded];
       v5 = v12;
-      if (v9)
+      if (isViewLoaded)
       {
         v10 = self->_backgroundColor;
-        v11 = [(PXGadgetUIViewController *)self collectionView];
-        [v11 setBackgroundColor:v10];
+        collectionView = [(PXGadgetUIViewController *)self collectionView];
+        [collectionView setBackgroundColor:v10];
 
         v5 = v12;
       }
@@ -1818,14 +1818,14 @@ LABEL_5:
 - (id)debugURLsForDiagnostics
 {
   v3 = objc_opt_new();
-  v4 = [(PXGadgetUIViewController *)self dataSource];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__PXGadgetUIViewController_debugURLsForDiagnostics__block_invoke;
   v7[3] = &unk_1E773AFB0;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateGadgetsUsingBlock:v7];
+  [dataSource enumerateGadgetsUsingBlock:v7];
 
   return v5;
 }
@@ -1840,17 +1840,17 @@ void __51__PXGadgetUIViewController_debugURLsForDiagnostics__block_invoke(uint64
   }
 }
 
-- (id)gadgetAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)gadgetAtLocation:(CGPoint)location inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXGadgetUIViewController *)self collectionView];
-  [v8 convertPoint:v7 fromCoordinateSpace:{x, y}];
+  y = location.y;
+  x = location.x;
+  spaceCopy = space;
+  collectionView = [(PXGadgetUIViewController *)self collectionView];
+  [collectionView convertPoint:spaceCopy fromCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v8 indexPathForItemAtPoint:{v10, v12}];
+  v13 = [collectionView indexPathForItemAtPoint:{v10, v12}];
   if (v13)
   {
     v14 = [(PXGadgetUIViewController *)self _gadgetAtIndexPath:v13];
@@ -1866,12 +1866,12 @@ void __51__PXGadgetUIViewController_debugURLsForDiagnostics__block_invoke(uint64
 
 - (void)reloadContent
 {
-  v3 = [(PXGadgetUIViewController *)self dataSourceManager];
-  [v3 removeCachedProviders];
-  [v3 beginLoadingInitialGadgets:{-[PXGadgetUIViewController numberOfInitialGadgetsToLoad](self, "numberOfInitialGadgetsToLoad")}];
+  dataSourceManager = [(PXGadgetUIViewController *)self dataSourceManager];
+  [dataSourceManager removeCachedProviders];
+  [dataSourceManager beginLoadingInitialGadgets:{-[PXGadgetUIViewController numberOfInitialGadgetsToLoad](self, "numberOfInitialGadgetsToLoad")}];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   if ([(PXGadgetUIViewController *)self isRootGadgetViewController])
   {
@@ -1882,7 +1882,7 @@ void __51__PXGadgetUIViewController_debugURLsForDiagnostics__block_invoke(uint64
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   if ([(PXGadgetUIViewController *)self px_isVisible]&& [(PXGadgetUIViewController *)self isRootGadgetViewController])
   {
@@ -1894,29 +1894,29 @@ void __51__PXGadgetUIViewController_debugURLsForDiagnostics__block_invoke(uint64
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = PXGadgetUIViewController;
   [(PXGadgetUIViewController *)&v4 dealloc];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = PXGadgetUIViewController;
-  [(PXGadgetUIViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PXGadgetUIViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ([(PXGadgetUIViewController *)self isCurrentlyVisible])
   {
     [(PXGadgetUIViewController *)self setIsRotatingVerticalLayout:0];
     if ([(PXGadgetUIViewController *)self _scrollAxis]== 1)
     {
-      v8 = [(PXGadgetUIViewController *)self collectionView];
-      [v8 bounds];
+      collectionView = [(PXGadgetUIViewController *)self collectionView];
+      [collectionView bounds];
       v10 = height != v9;
 
       [(PXGadgetUIViewController *)self setIsRotatingVerticalLayout:v10];
@@ -1932,7 +1932,7 @@ void __51__PXGadgetUIViewController_debugURLsForDiagnostics__block_invoke(uint64
     v11[1] = 3221225472;
     v11[2] = __79__PXGadgetUIViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
     v11[3] = &unk_1E774BC60;
-    [v7 animateAlongsideTransition:v12 completion:v11];
+    [coordinatorCopy animateAlongsideTransition:v12 completion:v11];
   }
 }
 
@@ -1947,8 +1947,8 @@ void __79__PXGadgetUIViewController_viewWillTransitionToSize_withTransitionCoord
 
 - (int64_t)_scrollAxis
 {
-  v2 = [(PXGadgetUIViewController *)self layout];
-  [v2 scrollDirection];
+  layout = [(PXGadgetUIViewController *)self layout];
+  [layout scrollDirection];
 
   PXAxisFromUICollectionViewScrollDirection();
 }
@@ -1966,34 +1966,34 @@ void __79__PXGadgetUIViewController_viewWillTransitionToSize_withTransitionCoord
   v6.receiver = self;
   v6.super_class = PXGadgetUIViewController;
   [(PXGadgetUIViewController *)&v6 viewWillLayoutSubviews];
-  v3 = [(PXGadgetUIViewController *)self specManager];
-  v4 = [(PXGadgetUIViewController *)self dataSource];
-  [v3 updateGadgetDataSourceToSpecIfNeeded:v4];
+  specManager = [(PXGadgetUIViewController *)self specManager];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  [specManager updateGadgetDataSourceToSpecIfNeeded:dataSource];
 
-  v5 = [off_1E7721878 sharedScheduler];
-  [v5 scrollViewWillLayoutSubviews];
+  sharedScheduler = [off_1E7721878 sharedScheduler];
+  [sharedScheduler scrollViewWillLayoutSubviews];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12.receiver = self;
   v12.super_class = PXGadgetUIViewController;
-  [(PXGadgetUIViewController *)&v12 viewDidDisappear:a3];
+  [(PXGadgetUIViewController *)&v12 viewDidDisappear:disappear];
   [(PXGadgetUIViewController *)self setCurrentlyVisible:0];
   [(PXGadgetUIViewController *)self _removeContextMenuInteraction];
   if ([(PXGadgetUIViewController *)self isRootGadgetViewController])
   {
     [(PXGadgetUIViewController *)self rootGadgetControllerDidDisappear];
     [(PXGadgetUIViewController *)self _notifyGadgetsThatGadgetControllerHasDisappeared];
-    v4 = [(PXGadgetUIViewController *)self navigationController];
-    v5 = [v4 topViewController];
-    if (v5 != self)
+    navigationController = [(PXGadgetUIViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    if (topViewController != self)
     {
       if (([(PXGadgetUIViewController *)self isBeingDismissed]& 1) != 0)
       {
-        v6 = [(PXGadgetUIViewController *)self isViewLoaded];
+        isViewLoaded = [(PXGadgetUIViewController *)self isViewLoaded];
 
-        if (!v6)
+        if (!isViewLoaded)
         {
           goto LABEL_14;
         }
@@ -2006,19 +2006,19 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v7 = [(PXGadgetUIViewController *)self presentedViewController];
-    if (v7)
+    presentedViewController = [(PXGadgetUIViewController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v8 = v7;
+      v8 = presentedViewController;
       if (([(PXGadgetUIViewController *)self isBeingDismissed]& 1) == 0)
       {
 
         goto LABEL_13;
       }
 
-      v9 = [(PXGadgetUIViewController *)self isViewLoaded];
+      isViewLoaded2 = [(PXGadgetUIViewController *)self isViewLoaded];
 
-      if ((v9 & 1) == 0)
+      if ((isViewLoaded2 & 1) == 0)
       {
         goto LABEL_14;
       }
@@ -2026,13 +2026,13 @@ LABEL_13:
 
     else
     {
-      v10 = [(PXGadgetUIViewController *)self isViewLoaded];
+      isViewLoaded3 = [(PXGadgetUIViewController *)self isViewLoaded];
 
-      if ((v10 & 1) == 0)
+      if ((isViewLoaded3 & 1) == 0)
       {
 LABEL_14:
-        v11 = [(PXGadgetUIViewController *)self dataSourceManager];
-        [v11 setCanLoadRemainingDataForProviders:0];
+        dataSourceManager = [(PXGadgetUIViewController *)self dataSourceManager];
+        [dataSourceManager setCanLoadRemainingDataForProviders:0];
 
         return;
       }
@@ -2044,44 +2044,44 @@ LABEL_11:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PXGadgetUIViewController;
-  [(PXGadgetUIViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PXGadgetUIViewController *)self collectionView];
-  if (([v4 isDragging] & 1) != 0 || objc_msgSend(v4, "isDecelerating"))
+  [(PXGadgetUIViewController *)&v5 viewWillDisappear:disappear];
+  collectionView = [(PXGadgetUIViewController *)self collectionView];
+  if (([collectionView isDragging] & 1) != 0 || objc_msgSend(collectionView, "isDecelerating"))
   {
     [(PXGadgetUIViewController *)self _scrollViewDidEndScrolling];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PXGadgetUIViewController;
-  [(PXGadgetUIViewController *)&v6 viewDidAppear:a3];
+  [(PXGadgetUIViewController *)&v6 viewDidAppear:appear];
   [(PXGadgetUIViewController *)self setSelectedGadget:0];
-  v4 = [(PXGadgetUIViewController *)self dataSourceManager];
+  dataSourceManager = [(PXGadgetUIViewController *)self dataSourceManager];
   if ([(PXGadgetUIViewController *)self isRootGadgetViewController])
   {
-    [v4 setCanLoadRemainingDataForProviders:1];
+    [dataSourceManager setCanLoadRemainingDataForProviders:1];
     [(PXGadgetUIViewController *)self _notifyGadgetsThatGadgetControllerHasAppeared];
   }
 
   p_updateFlags = &self->_updateFlags;
   if (p_updateFlags->loadRemaingGadgetsAfterViewAppeared)
   {
-    [v4 loadRemainingGadgetsIfNeeded];
+    [dataSourceManager loadRemainingGadgetsIfNeeded];
     p_updateFlags->loadRemaingGadgetsAfterViewAppeared = 0;
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXGadgetUIViewController;
-  [(PXGadgetUIViewController *)&v4 viewWillAppear:a3];
+  [(PXGadgetUIViewController *)&v4 viewWillAppear:appear];
   if ([(PXGadgetUIViewController *)self isRootGadgetViewController])
   {
     [(PXGadgetUIViewController *)self rootGadgetControllerWillAppear];
@@ -2095,23 +2095,23 @@ LABEL_11:
 
 - (void)_initializeHelpers
 {
-  v2 = [(PXGadgetUIViewController *)self layout];
-  [v2 scrollDirection];
+  layout = [(PXGadgetUIViewController *)self layout];
+  [layout scrollDirection];
 
   PXAxisFromUICollectionViewScrollDirection();
 }
 
 - (void)_initializeDataSource
 {
-  v5 = [(PXGadgetUIViewController *)self dataSourceManager];
-  v3 = [v5 dataSource];
-  [(PXGadgetUIViewController *)self setDataSource:v3];
+  dataSourceManager = [(PXGadgetUIViewController *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  [(PXGadgetUIViewController *)self setDataSource:dataSource];
 
-  v4 = [(PXGadgetUIViewController *)self dataSourceManager];
-  [v4 registerChangeObserver:self context:PXDataSourceManagerObservationContext_122915];
+  dataSourceManager2 = [(PXGadgetUIViewController *)self dataSourceManager];
+  [dataSourceManager2 registerChangeObserver:self context:PXDataSourceManagerObservationContext_122915];
 
   self->_updateFlags.collectionNeedsUpdate = 1;
-  [v5 beginLoadingInitialGadgets:{-[PXGadgetUIViewController numberOfInitialGadgetsToLoad](self, "numberOfInitialGadgetsToLoad")}];
+  [dataSourceManager beginLoadingInitialGadgets:{-[PXGadgetUIViewController numberOfInitialGadgetsToLoad](self, "numberOfInitialGadgetsToLoad")}];
 }
 
 - (void)viewDidLoad
@@ -2119,52 +2119,52 @@ LABEL_11:
   v9.receiver = self;
   v9.super_class = PXGadgetUIViewController;
   [(PXGadgetUIViewController *)&v9 viewDidLoad];
-  v3 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
-  if (os_signpost_enabled(v3))
+  gadgetViewControllerLog = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
+  if (os_signpost_enabled(gadgetViewControllerLog))
   {
     *v8 = 0;
-    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetVCViewDidLoad", "", v8, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GadgetVCViewDidLoad", "", v8, 2u);
   }
 
-  v4 = [(PXGadgetUIViewController *)self collectionView];
-  [v4 setClipsToBounds:0];
-  v5 = [(PXGadgetUIViewController *)self backgroundColor];
-  [v4 setBackgroundColor:v5];
+  collectionView = [(PXGadgetUIViewController *)self collectionView];
+  [collectionView setClipsToBounds:0];
+  backgroundColor = [(PXGadgetUIViewController *)self backgroundColor];
+  [collectionView setBackgroundColor:backgroundColor];
 
-  [v4 setDropDelegate:self];
-  [v4 setAlwaysBounceVertical:1];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PXGadgetControllerCellReuseIdentifier"];
-  [v4 _setAutomaticContentOffsetAdjustmentEnabled:0];
-  [v4 setPrefetchDataSource:self];
+  [collectionView setDropDelegate:self];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PXGadgetControllerCellReuseIdentifier"];
+  [collectionView _setAutomaticContentOffsetAdjustmentEnabled:0];
+  [collectionView setPrefetchDataSource:self];
   [(PXGadgetUIViewController *)self _initializeHelpers];
   [(PXGadgetUIViewController *)self _initializeDataSource];
   if ([(PXGadgetUIViewController *)self isRootGadgetViewController]&& [(PXGadgetUIViewController *)self allowsBarManagement])
   {
     [(UIViewController *)self px_enableBarAppearance];
-    [v4 setContentInset:{0.0, 0.0, 16.0, 0.0}];
+    [collectionView setContentInset:{0.0, 0.0, 16.0, 0.0}];
   }
 
-  v6 = [(UIViewController *)self px_splitViewController];
-  [v6 registerChangeObserver:self];
-  v7 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
-  if (os_signpost_enabled(v7))
+  px_splitViewController = [(UIViewController *)self px_splitViewController];
+  [px_splitViewController registerChangeObserver:self];
+  gadgetViewControllerLog2 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
+  if (os_signpost_enabled(gadgetViewControllerLog2))
   {
     *v8 = 0;
-    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "GadgetVCViewDidLoad", "", v8, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog2, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "GadgetVCViewDidLoad", "", v8, 2u);
   }
 }
 
-- (PXGadgetUIViewController)initWithLayout:(id)a3 dataSourceManager:(id)a4
+- (PXGadgetUIViewController)initWithLayout:(id)layout dataSourceManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  layoutCopy = layout;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = PXGadgetUIViewController;
-  v9 = [(PXGadgetUIViewController *)&v27 initWithCollectionViewLayout:v7];
+  v9 = [(PXGadgetUIViewController *)&v27 initWithCollectionViewLayout:layoutCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layout, a3);
+    objc_storeStrong(&v9->_layout, layout);
     [(PXGadgetCollectionViewLayout *)v10->_layout setDelegate:v10];
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     registeredCellReuseIdentifiers = v10->_registeredCellReuseIdentifiers;
@@ -2174,10 +2174,10 @@ LABEL_11:
     updater = v10->_updater;
     v10->_updater = v13;
 
-    objc_storeStrong(&v10->_dataSourceManager, a4);
+    objc_storeStrong(&v10->_dataSourceManager, manager);
     [(PXGadgetDataSourceManager *)v10->_dataSourceManager setNextGadgetResponder:v10];
-    v15 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v15 userInterfaceIdiom] == 6)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 6)
     {
       [MEMORY[0x1E69DC888] clearColor];
     }
@@ -2199,20 +2199,20 @@ LABEL_11:
     cellsWantingVisibleRectUpdates = v10->_cellsWantingVisibleRectUpdates;
     v10->_cellsWantingVisibleRectUpdates = v19;
 
-    v21 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     cellsToGadgets = v10->_cellsToGadgets;
-    v10->_cellsToGadgets = v21;
+    v10->_cellsToGadgets = weakToWeakObjectsMapTable;
 
     v10->_allowsBarManagement = 1;
     [(PXGadgetUIViewController *)v10 px_enableExtendedTraitCollection];
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v10 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 addObserver:v10 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v10 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v10 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v10;

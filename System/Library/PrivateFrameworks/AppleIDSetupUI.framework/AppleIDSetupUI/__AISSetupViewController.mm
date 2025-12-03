@@ -1,24 +1,24 @@
 @interface __AISSetupViewController
-- (__AISSetupViewController)initWithCoder:(id)a3;
-- (__AISSetupViewController)initWithContext:(id)a3 dontSuggestUserAction:(id)a4 skipAction:(id)a5 shouldAutoDismiss:(BOOL)a6 isPreEstablishedClient:(BOOL)a7 reportHandler:(id)a8;
-- (__AISSetupViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (__AISSetupViewController)initWithCoder:(id)coder;
+- (__AISSetupViewController)initWithContext:(id)context dontSuggestUserAction:(id)action skipAction:(id)skipAction shouldAutoDismiss:(BOOL)dismiss isPreEstablishedClient:(BOOL)client reportHandler:(id)handler;
+- (__AISSetupViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation __AISSetupViewController
 
-- (__AISSetupViewController)initWithContext:(id)a3 dontSuggestUserAction:(id)a4 skipAction:(id)a5 shouldAutoDismiss:(BOOL)a6 isPreEstablishedClient:(BOOL)a7 reportHandler:(id)a8
+- (__AISSetupViewController)initWithContext:(id)context dontSuggestUserAction:(id)action skipAction:(id)skipAction shouldAutoDismiss:(BOOL)dismiss isPreEstablishedClient:(BOOL)client reportHandler:(id)handler
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  return SetupViewController.init(context:dontSuggestUserAction:skipAction:shouldAutoDismiss:isPreEstablishedClient:reportHandler:)(a3, a4, a5, a6, a7, sub_2409C4520, v14);
+  contextCopy = context;
+  actionCopy = action;
+  skipActionCopy = skipAction;
+  return SetupViewController.init(context:dontSuggestUserAction:skipAction:shouldAutoDismiss:isPreEstablishedClient:reportHandler:)(context, action, skipAction, dismiss, client, sub_2409C4520, v14);
 }
 
-- (__AISSetupViewController)initWithCoder:(id)a3
+- (__AISSetupViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR_____AISSetupViewController_hostingController) = 0;
   result = sub_240A2C58C();
@@ -28,11 +28,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2409C3404();
 }
 
-- (__AISSetupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (__AISSetupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

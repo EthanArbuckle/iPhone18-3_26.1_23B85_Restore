@@ -1,6 +1,6 @@
 @interface ArticleAudioPrewarmer
 - (_TtC12NewsArticles21ArticleAudioPrewarmer)init;
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4;
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription;
 @end
 
 @implementation ArticleAudioPrewarmer
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s12NewsArticles21ArticleAudioPrewarmerC27bundleSubscriptionDidChange_014previousBundleG0ySo08FCBundleG0C_AGtF_0(v6);
+  changeCopy = change;
+  subscriptionCopy = subscription;
+  selfCopy = self;
+  _s12NewsArticles21ArticleAudioPrewarmerC27bundleSubscriptionDidChange_014previousBundleG0ySo08FCBundleG0C_AGtF_0(changeCopy);
 }
 
 @end

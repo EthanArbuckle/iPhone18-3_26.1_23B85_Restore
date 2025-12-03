@@ -1,40 +1,40 @@
 @interface BCCardSetExpandingState
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewWillBeginDragging:(id)a5 contentScrollView:(id)a6;
-- (void)didBecomeCurrentStateCardViewController:(id)a3 previousState:(id)a4 cardData:(id)a5;
-- (void)setFractionComplete:(double)a3 cardData:(id)a4;
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewWillBeginDragging:(id)dragging contentScrollView:(id)view;
+- (void)didBecomeCurrentStateCardViewController:(id)controller previousState:(id)state cardData:(id)data;
+- (void)setFractionComplete:(double)complete cardData:(id)data;
 @end
 
 @implementation BCCardSetExpandingState
 
-- (void)setFractionComplete:(double)a3 cardData:(id)a4
+- (void)setFractionComplete:(double)complete cardData:(id)data
 {
-  v5 = [a4 animator];
-  [v5 setFractionComplete:a3];
+  animator = [data animator];
+  [animator setFractionComplete:complete];
 }
 
-- (void)didBecomeCurrentStateCardViewController:(id)a3 previousState:(id)a4 cardData:(id)a5
+- (void)didBecomeCurrentStateCardViewController:(id)controller previousState:(id)state cardData:(id)data
 {
   v9.receiver = self;
   v9.super_class = BCCardSetExpandingState;
-  v7 = a5;
-  [(BCCardSetTransitioningState *)&v9 didBecomeCurrentStateCardViewController:a3 previousState:a4 cardData:v7];
-  v8 = [v7 cardSetData];
+  dataCopy = data;
+  [(BCCardSetTransitioningState *)&v9 didBecomeCurrentStateCardViewController:controller previousState:state cardData:dataCopy];
+  cardSetData = [dataCopy cardSetData];
 
-  [v8 goExpandedInteractive:1];
+  [cardSetData goExpandedInteractive:1];
 }
 
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewWillBeginDragging:(id)a5 contentScrollView:(id)a6
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewWillBeginDragging:(id)dragging contentScrollView:(id)view
 {
-  v21 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v21 animator];
+  dataCopy = data;
+  draggingCopy = dragging;
+  viewCopy = view;
+  animator = [dataCopy animator];
 
-  if (v11)
+  if (animator)
   {
-    [(BCCardSetTransitioningState *)self _resetInteractiveAnimationWithScrollView:v9 cardData:v21];
-    v20 = [v10 delegate];
-    [v20 scrollViewWillBeginDragging:v10];
+    [(BCCardSetTransitioningState *)self _resetInteractiveAnimationWithScrollView:draggingCopy cardData:dataCopy];
+    delegate = [viewCopy delegate];
+    [delegate scrollViewWillBeginDragging:viewCopy];
   }
 
   else

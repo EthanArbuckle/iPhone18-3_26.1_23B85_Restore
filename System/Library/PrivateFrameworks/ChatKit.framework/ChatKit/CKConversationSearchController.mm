@@ -1,6 +1,6 @@
 @interface CKConversationSearchController
-+ (Class)cellClassForMode:(unint64_t)a3;
-+ (id)reuseIdentifierForMode:(unint64_t)a3;
++ (Class)cellClassForMode:(unint64_t)mode;
++ (id)reuseIdentifierForMode:(unint64_t)mode;
 + (id)sectionTitle;
 + (id)supportedCellClasses;
 - (BOOL)applyLayoutMarginsToLayoutGroup;
@@ -9,12 +9,12 @@
 - (NSDirectionalEdgeInsets)additionalGroupInsets;
 - (double)interGroupSpacing;
 - (double)widthForDeterminingAvatarVisibility;
-- (id)_additionalMenuElementsForResult:(id)a3;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)customLayoutSectionForEnvironment:(id)a3;
-- (id)layoutGroupWithEnvironment:(id)a3;
-- (id)navigationBarTitleSummaryForSearchText:(id)a3;
-- (void)didSelectResult:(id)a3 visibleResults:(id)a4;
+- (id)_additionalMenuElementsForResult:(id)result;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)customLayoutSectionForEnvironment:(id)environment;
+- (id)layoutGroupWithEnvironment:(id)environment;
+- (id)navigationBarTitleSummaryForSearchText:(id)text;
+- (void)didSelectResult:(id)result visibleResults:(id)results;
 @end
 
 @implementation CKConversationSearchController
@@ -27,33 +27,33 @@
   return v4;
 }
 
-- (void)didSelectResult:(id)a3 visibleResults:(id)a4
+- (void)didSelectResult:(id)result visibleResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  resultsCopy = results;
   v26.receiver = self;
   v26.super_class = CKConversationSearchController;
-  [(CKSearchController *)&v26 didSelectResult:v6 visibleResults:v7];
+  [(CKSearchController *)&v26 didSelectResult:resultCopy visibleResults:resultsCopy];
   v8 = MEMORY[0x193AF5EC0](@"_PSMessagesZkwFeedback", @"PeopleSuggester");
-  v9 = [(CKSearchController *)self queryController];
-  objc_initWeak(&location, v9);
+  queryController = [(CKSearchController *)self queryController];
+  objc_initWeak(&location, queryController);
 
-  v10 = [v6 conversation];
-  v11 = [v10 chat];
-  v12 = [v11 guid];
+  conversation = [resultCopy conversation];
+  chat = [conversation chat];
+  guid = [chat guid];
 
   v13 = objc_loadWeakRetained(&location);
-  v14 = [v13 currentZKWSuggestions];
-  if ([v14 count])
+  currentZKWSuggestions = [v13 currentZKWSuggestions];
+  if ([currentZKWSuggestions count])
   {
     v15 = objc_loadWeakRetained(&location);
-    v16 = [v15 currentZKWSuggestions];
-    v17 = [v16 copy];
+    currentZKWSuggestions2 = [v15 currentZKWSuggestions];
+    array = [currentZKWSuggestions2 copy];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   v18 = dispatch_get_global_queue(0, 0);
@@ -62,10 +62,10 @@
   block[2] = __65__CKConversationSearchController_didSelectResult_visibleResults___block_invoke;
   block[3] = &unk_1E72F4348;
   v24[1] = v8;
-  v22 = v12;
-  v23 = v17;
-  v19 = v17;
-  v20 = v12;
+  v22 = guid;
+  v23 = array;
+  v19 = array;
+  v20 = guid;
   objc_copyWeak(v24, &location);
   dispatch_async(v18, block);
 
@@ -99,20 +99,20 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
   }
 }
 
-- (id)navigationBarTitleSummaryForSearchText:(id)a3
+- (id)navigationBarTitleSummaryForSearchText:(id)text
 {
-  v3 = a3;
-  if ([v3 length])
+  textCopy = text;
+  if ([textCopy length])
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = CKFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"CONVERSATION_SEARCH_RESULTS_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
-    v7 = [v4 stringWithFormat:v6, v3];
+    textCopy = [v4 stringWithFormat:v6, textCopy];
 
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v9 = [v8 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v9 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v10 = @"\u200F";
     }
@@ -122,15 +122,15 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
       v10 = @"\u200E";
     }
 
-    v11 = [(__CFString *)v10 stringByAppendingString:v7];
+    sectionTitle = [(__CFString *)v10 stringByAppendingString:textCopy];
   }
 
   else
   {
-    v11 = [objc_opt_class() sectionTitle];
+    sectionTitle = [objc_opt_class() sectionTitle];
   }
 
-  return v11;
+  return sectionTitle;
 }
 
 + (id)sectionTitle
@@ -141,23 +141,23 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
   return v3;
 }
 
-+ (id)reuseIdentifierForMode:(unint64_t)a3
++ (id)reuseIdentifierForMode:(unint64_t)mode
 {
-  v3 = [objc_opt_class() _shouldUseAvatarCellsForMode:a3];
+  v3 = [objc_opt_class() _shouldUseAvatarCellsForMode:mode];
   v4 = off_1E72E4B48;
   if (!v3)
   {
     v4 = off_1E72E4C10;
   }
 
-  v5 = [(__objc2_class *)*v4 reuseIdentifier];
+  reuseIdentifier = [(__objc2_class *)*v4 reuseIdentifier];
 
-  return v5;
+  return reuseIdentifier;
 }
 
-+ (Class)cellClassForMode:(unint64_t)a3
++ (Class)cellClassForMode:(unint64_t)mode
 {
-  [objc_opt_class() _shouldUseAvatarCellsForMode:a3];
+  [objc_opt_class() _shouldUseAvatarCellsForMode:mode];
   v3 = objc_opt_class();
 
   return v3;
@@ -175,8 +175,8 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
 
 - (NSDirectionalEdgeInsets)additionalGroupInsets
 {
-  v3 = [(CKSearchController *)self delegate];
-  [v3 parentMarginInsetsForSearchController:self];
+  delegate = [(CKSearchController *)self delegate];
+  [delegate parentMarginInsetsForSearchController:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -208,8 +208,8 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
 
   if ([(CKSearchController *)self mode]!= 1)
   {
-    v17 = [(CKSearchController *)self results];
-    v18 = [v17 count];
+    results = [(CKSearchController *)self results];
+    v18 = [results count];
 
     if (!v18)
     {
@@ -231,11 +231,11 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
   return result;
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = CKConversationSearchController;
-  v6 = [(CKSearchController *)&v15 cellForItemInCollectionView:a3 atIndexPath:a4 withIdentifier:a5];
+  v6 = [(CKSearchController *)&v15 cellForItemInCollectionView:view atIndexPath:path withIdentifier:identifier];
   if ([objc_opt_class() _shouldUseAvatarCellsForMode:{-[CKSearchController mode](self, "mode")}])
   {
     v7 = v6;
@@ -249,14 +249,14 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
     if (isKindOfClass)
     {
       v10 = v9;
-      v11 = [(CKSearchController *)self delegate];
-      [v10 setShouldInsetResults:{objc_msgSend(v11, "shouldInsetResultsForSearchController:", self)}];
+      delegate = [(CKSearchController *)self delegate];
+      [v10 setShouldInsetResults:{objc_msgSend(delegate, "shouldInsetResultsForSearchController:", self)}];
 
-      v12 = [v10 topHairline];
-      [v12 setHidden:0];
+      topHairline = [v10 topHairline];
+      [topHairline setHidden:0];
 
-      v13 = [v10 bottomHairline];
-      [v13 setHidden:1];
+      bottomHairline = [v10 bottomHairline];
+      [bottomHairline setHidden:1];
 
       [v10 setDelegate:self];
     }
@@ -292,18 +292,18 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
 - (BOOL)applyLayoutMarginsToLayoutGroup
 {
   v3 = objc_opt_class();
-  v4 = [(CKSearchController *)self mode];
+  mode = [(CKSearchController *)self mode];
 
-  return [v3 _shouldUseAvatarCellsForMode:v4];
+  return [v3 _shouldUseAvatarCellsForMode:mode];
 }
 
-- (id)layoutGroupWithEnvironment:(id)a3
+- (id)layoutGroupWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   if ([objc_opt_class() _shouldUseAvatarCellsForMode:{-[CKSearchController mode](self, "mode")}])
   {
-    v5 = [(CKSearchController *)self layoutWidth];
-    if (v5)
+    layoutWidth = [(CKSearchController *)self layoutWidth];
+    if (layoutWidth)
     {
       v6 = 4;
     }
@@ -314,7 +314,7 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
     }
 
     v7 = 0.33;
-    if (v5)
+    if (layoutWidth)
     {
       v7 = 0.25;
     }
@@ -339,28 +339,28 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
   {
     v20.receiver = self;
     v20.super_class = CKConversationSearchController;
-    v15 = [(CKSearchController *)&v20 layoutGroupWithEnvironment:v4];
+    v15 = [(CKSearchController *)&v20 layoutGroupWithEnvironment:environmentCopy];
   }
 
   return v15;
 }
 
-- (id)customLayoutSectionForEnvironment:(id)a3
+- (id)customLayoutSectionForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   if ([objc_opt_class() _shouldUseAvatarCellsForMode:{-[CKSearchController mode](self, "mode")}])
   {
     v20.receiver = self;
     v20.super_class = CKConversationSearchController;
-    v5 = [(CKSearchController *)&v20 customLayoutSectionForEnvironment:v4];
+    v5 = [(CKSearchController *)&v20 customLayoutSectionForEnvironment:environmentCopy];
   }
 
   else
   {
     if (CKIsRunningInMacCatalyst())
     {
-      v6 = [v4 container];
-      [v6 contentSize];
+      container = [environmentCopy container];
+      [container contentSize];
       v8 = v7;
       v9 = +[CKUIBehavior sharedBehaviors];
       [v9 minConversationListWidth];
@@ -372,8 +372,8 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
       v11 = 1;
     }
 
-    v12 = [(CKSearchController *)self delegate];
-    v13 = [v12 shouldInsetResultsForSearchController:self];
+    delegate = [(CKSearchController *)self delegate];
+    v13 = [delegate shouldInsetResultsForSearchController:self];
 
     if (v13)
     {
@@ -385,14 +385,14 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
       v14 = 4;
     }
 
-    v15 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v14 layoutEnvironment:v4];
+    v15 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v14 layoutEnvironment:environmentCopy];
     [v15 setSeparatorStyle:v11];
     v16 = +[CKUIBehavior sharedBehaviors];
-    [v16 conversationCellLeadingSeparatorInsetForEnvironment:v4];
+    [v16 conversationCellLeadingSeparatorInsetForEnvironment:environmentCopy];
     v18 = v17;
 
     [v15 setSeparatorInset:{0.0, v18, 0.0, 0.0}];
-    v5 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v15 layoutEnvironment:v4];
+    v5 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v15 layoutEnvironment:environmentCopy];
   }
 
   return v5;
@@ -400,18 +400,18 @@ void __65__CKConversationSearchController_didSelectResult_visibleResults___block
 
 - (double)widthForDeterminingAvatarVisibility
 {
-  v2 = [(CKSearchController *)self delegate];
-  [v2 widthForDeterminingAvatarVisibility];
+  delegate = [(CKSearchController *)self delegate];
+  [delegate widthForDeterminingAvatarVisibility];
   v4 = v3;
 
   return v4;
 }
 
-- (id)_additionalMenuElementsForResult:(id)a3
+- (id)_additionalMenuElementsForResult:(id)result
 {
-  v4 = [a3 conversation];
-  v5 = [(CKSearchController *)self delegate];
-  v6 = [v5 contextMenusForConversation:v4];
+  conversation = [result conversation];
+  delegate = [(CKSearchController *)self delegate];
+  v6 = [delegate contextMenusForConversation:conversation];
 
   return v6;
 }

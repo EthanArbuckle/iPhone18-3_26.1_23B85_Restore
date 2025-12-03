@@ -1,18 +1,18 @@
 @interface FCThreadSafeMutableSet
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (FCThreadSafeMutableSet)init;
 - (NSArray)allObjects;
 - (NSSet)readOnlySet;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)readWithAccessor:(id)a3;
-- (void)readWriteWithAccessor:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)removeObjectsInArray:(id)a3;
-- (void)removeObjectsInSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)readWithAccessor:(id)accessor;
+- (void)readWriteWithAccessor:(id)accessor;
+- (void)removeObject:(id)object;
+- (void)removeObjectsInArray:(id)array;
+- (void)removeObjectsInSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation FCThreadSafeMutableSet
@@ -36,59 +36,59 @@
   return v2;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__FCThreadSafeMutableSet_addObject___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__FCThreadSafeMutableSet_addObjectsFromArray___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__FCThreadSafeMutableSet_removeObject___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)removeObjectsInSet:(id)a3
+- (void)removeObjectsInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__FCThreadSafeMutableSet_removeObjectsInSet___block_invoke;
   v7[3] = &unk_1E7C36C58;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = setCopy;
+  selfCopy = self;
+  v6 = setCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -128,17 +128,17 @@ void __45__FCThreadSafeMutableSet_removeObjectsInSet___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsInArray:(id)a3
+- (void)removeObjectsInArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__FCThreadSafeMutableSet_removeObjectsInArray___block_invoke;
   v7[3] = &unk_1E7C36C58;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = arrayCopy;
+  selfCopy = self;
+  v6 = arrayCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -178,23 +178,23 @@ void __47__FCThreadSafeMutableSet_removeObjectsInArray___block_invoke(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__FCThreadSafeMutableSet_unionSet___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -206,7 +206,7 @@ void __47__FCThreadSafeMutableSet_removeObjectsInArray___block_invoke(uint64_t a
   v8[3] = &unk_1E7C37138;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   v9 = v6;
   [(NFUnfairLock *)lock performWithLockSync:v8];
   LOBYTE(lock) = *(v12 + 24);
@@ -222,31 +222,31 @@ uint64_t __41__FCThreadSafeMutableSet_containsObject___block_invoke(void *a1)
   return result;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__FCThreadSafeMutableSet_enumerateObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E7C37BC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)readWithAccessor:(id)a3
+- (void)readWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__FCThreadSafeMutableSet_readWithAccessor___block_invoke;
   v7[3] = &unk_1E7C37778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessorCopy;
+  v6 = accessorCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -261,17 +261,17 @@ uint64_t __43__FCThreadSafeMutableSet_readWithAccessor___block_invoke(uint64_t a
   return result;
 }
 
-- (void)readWriteWithAccessor:(id)a3
+- (void)readWriteWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__FCThreadSafeMutableSet_readWriteWithAccessor___block_invoke;
   v7[3] = &unk_1E7C37778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessorCopy;
+  v6 = accessorCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 

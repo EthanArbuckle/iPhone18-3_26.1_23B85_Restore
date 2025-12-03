@@ -1,28 +1,28 @@
 @interface _PSFamilyRecommender
-- (BOOL)regexMatchForRegex:(id)a3 string:(id)a4;
+- (BOOL)regexMatchForRegex:(id)regex string:(id)string;
 - (CNContactStore)contactStore;
 - (HKMedicalIDStore)medicalIDStore;
 - (_CDInteractionStore)interactionStore;
 - (_PSContactResolver)contactResolver;
 - (_PSFamilyRecommender)init;
-- (id)contactIdsFromContactNamesUsingMe:(id)a3;
-- (id)contactIdsFromContactRelationsUsingMe:(id)a3;
+- (id)contactIdsFromContactNamesUsingMe:(id)me;
+- (id)contactIdsFromContactRelationsUsingMe:(id)me;
 - (id)contactIdsFromEmergencyContacts;
 - (id)contactKeysToFetch;
 - (id)currentFamily;
-- (id)currentFamilyExcludingMe:(id)a3;
-- (id)familyRecipientsForShareSheetWithPredictionContext:(id)a3;
-- (id)familyRecommendationSuggestionsForShareSheetWithPredictionContext:(id)a3;
-- (id)fetchAllContactIdsFromContactStore:(id)a3;
-- (id)handleAndBundleIdDictionaryForFamilyRecipientContact:(id)a3 lookBackDays:(int64_t)a4;
+- (id)currentFamilyExcludingMe:(id)me;
+- (id)familyRecipientsForShareSheetWithPredictionContext:(id)context;
+- (id)familyRecommendationSuggestionsForShareSheetWithPredictionContext:(id)context;
+- (id)fetchAllContactIdsFromContactStore:(id)store;
+- (id)handleAndBundleIdDictionaryForFamilyRecipientContact:(id)contact lookBackDays:(int64_t)days;
 - (id)nonFamilyRelations;
-- (id)recipientFromFamilyContactId:(id)a3 familySuggestions:(id)a4 me:(id)a5 currentFamilyIds:(id)a6;
+- (id)recipientFromFamilyContactId:(id)id familySuggestions:(id)suggestions me:(id)me currentFamilyIds:(id)ids;
 - (id)relationshipRegularExpressionForRelationship;
-- (id)rerankFamilyRecipients:(id)a3 usingPredictionContext:(id)a4;
-- (id)suggestionsForPhotosContactInferencesWithPredictionContext:(id)a3;
-- (id)suggestionsForPhotosRelationshipsWithPredictionContext:(id)a3;
-- (id)suggestionsFromRecipients:(id)a3;
-- (unint64_t)indexToInsertDate:(id)a3 array:(id)a4;
+- (id)rerankFamilyRecipients:(id)recipients usingPredictionContext:(id)context;
+- (id)suggestionsForPhotosContactInferencesWithPredictionContext:(id)context;
+- (id)suggestionsForPhotosRelationshipsWithPredictionContext:(id)context;
+- (id)suggestionsFromRecipients:(id)recipients;
+- (unint64_t)indexToInsertDate:(id)date array:(id)array;
 @end
 
 @implementation _PSFamilyRecommender
@@ -54,8 +54,8 @@
   if (!interactionStore)
   {
     v4 = MEMORY[0x1E69978F8];
-    v5 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
-    v6 = [v4 storeWithDirectory:v5 readOnly:1];
+    defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+    v6 = [v4 storeWithDirectory:defaultDatabaseDirectory readOnly:1];
     v7 = self->_interactionStore;
     self->_interactionStore = v6;
 
@@ -614,24 +614,24 @@ LABEL_25:
   return v24;
 }
 
-- (BOOL)regexMatchForRegex:(id)a3 string:(id)a4
+- (BOOL)regexMatchForRegex:(id)regex string:(id)string
 {
-  if (!a4)
+  if (!string)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 numberOfMatchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+  stringCopy = string;
+  regexCopy = regex;
+  v7 = [regexCopy numberOfMatchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
 
   return v7 != 0;
 }
 
-- (id)fetchAllContactIdsFromContactStore:(id)a3
+- (id)fetchAllContactIdsFromContactStore:(id)store
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -660,8 +660,8 @@ LABEL_25:
   v7 = v5;
   _Block_object_dispose(&v23, 8);
   v8 = [v5 alloc];
-  v9 = [(_PSFamilyRecommender *)self contactKeysToFetch];
-  v10 = [v8 initWithKeysToFetch:v9];
+  contactKeysToFetch = [(_PSFamilyRecommender *)self contactKeysToFetch];
+  v10 = [v8 initWithKeysToFetch:contactKeysToFetch];
 
   [v10 setContactBatchCount:25];
   v16[0] = MEMORY[0x1E69E9820];
@@ -669,7 +669,7 @@ LABEL_25:
   v16[2] = __59___PSFamilyRecommender_fetchAllContactIdsFromContactStore___block_invoke;
   v16[3] = &unk_1E7C24FD8;
   v16[4] = &v17;
-  [v4 enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v16];
+  [storeCopy enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v16];
   v11 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -679,25 +679,25 @@ LABEL_25:
     _os_log_impl(&dword_1B5ED1000, v11, OS_LOG_TYPE_INFO, "_PSFamilyRecommender: Fetched %tu contact ids from contact store", &buf, 0xCu);
   }
 
-  v13 = [v18[5] allObjects];
+  allObjects = [v18[5] allObjects];
 
   _Block_object_dispose(&v17, 8);
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return allObjects;
 }
 
 - (id)relationshipRegularExpressionForRelationship
 {
   v36 = *MEMORY[0x1E69E9840];
-  v18 = [(_PSFamilyRecommender *)self personRelationshipVocabularyByLocaleDictionary];
-  v2 = [v18 allValues];
-  v3 = [MEMORY[0x1E695DF70] array];
+  personRelationshipVocabularyByLocaleDictionary = [(_PSFamilyRecommender *)self personRelationshipVocabularyByLocaleDictionary];
+  allValues = [personRelationshipVocabularyByLocaleDictionary allValues];
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v2;
+  obj = allValues;
   v21 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v21)
   {
@@ -713,12 +713,12 @@ LABEL_25:
         }
 
         v22 = v4;
-        v5 = [*(*(&v28 + 1) + 8 * v4) allValues];
+        allValues2 = [*(*(&v28 + 1) + 8 * v4) allValues];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v6 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+        v6 = [allValues2 countByEnumeratingWithState:&v24 objects:v34 count:16];
         if (v6)
         {
           v7 = v6;
@@ -730,7 +730,7 @@ LABEL_25:
             {
               if (*v25 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(allValues2);
               }
 
               v10 = MEMORY[0x1E696AEC0];
@@ -753,14 +753,14 @@ LABEL_25:
 
               if (v13)
               {
-                [v3 addObject:v13];
+                [array addObject:v13];
               }
 
               ++v9;
             }
 
             while (v7 != v9);
-            v7 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+            v7 = [allValues2 countByEnumeratingWithState:&v24 objects:v34 count:16];
           }
 
           while (v7);
@@ -778,32 +778,32 @@ LABEL_25:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (unint64_t)indexToInsertDate:(id)a3 array:(id)a4
+- (unint64_t)indexToInsertDate:(id)date array:(id)array
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 indexOfObject:v6 inSortedRange:0 options:objc_msgSend(v5 usingComparator:{"count"), 1024, &__block_literal_global_10}];
+  arrayCopy = array;
+  dateCopy = date;
+  v7 = [arrayCopy indexOfObject:dateCopy inSortedRange:0 options:objc_msgSend(arrayCopy usingComparator:{"count"), 1024, &__block_literal_global_10}];
 
   return v7;
 }
 
-- (id)handleAndBundleIdDictionaryForFamilyRecipientContact:(id)a3 lookBackDays:(int64_t)a4
+- (id)handleAndBundleIdDictionaryForFamilyRecipientContact:(id)contact lookBackDays:(int64_t)days
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_PSFamilyRecommender *)self contactResolver];
-  v8 = [v7 allEmailAndPhoneNumberHandlesForContact:v6];
+  contactCopy = contact;
+  contactResolver = [(_PSFamilyRecommender *)self contactResolver];
+  v8 = [contactResolver allEmailAndPhoneNumberHandlesForContact:contactCopy];
 
   v9 = MEMORY[0x1E695DFD8];
-  v10 = [v6 identifier];
-  v11 = [v9 setWithObject:v10];
+  identifier = [contactCopy identifier];
+  v11 = [v9 setWithObject:identifier];
 
   v12 = +[_PSConstants mobileMessagesBundleId];
   v13 = v12;
-  if (a4 == 56)
+  if (days == 56)
   {
     v48[0] = v12;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
@@ -817,29 +817,29 @@ LABEL_25:
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
   }
 
-  v16 = [(_PSFamilyRecommender *)self interactionStore];
-  v17 = [_PSInteractionStoreUtils interactionsMatchingAnyHandlesOrContactIds:v8 identifiers:v11 account:0 directions:&unk_1F2D8C210 mechanisms:&unk_1F2D8C228 bundleIds:v14 store:v16 fetchLimit:1 messageInteractionCache:0];
+  interactionStore = [(_PSFamilyRecommender *)self interactionStore];
+  v17 = [_PSInteractionStoreUtils interactionsMatchingAnyHandlesOrContactIds:v8 identifiers:v11 account:0 directions:&unk_1F2D8C210 mechanisms:&unk_1F2D8C228 bundleIds:v14 store:interactionStore fetchLimit:1 messageInteractionCache:0];
 
-  v18 = [MEMORY[0x1E695DF90] dictionary];
-  v19 = [v17 firstObject];
-  v20 = [v19 startDate];
-  v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * a4)];
-  [v20 timeIntervalSinceDate:v21];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  firstObject = [v17 firstObject];
+  startDate = [firstObject startDate];
+  v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * days)];
+  [startDate timeIntervalSinceDate:v21];
   v23 = v22;
 
   if (v23 > 0.0)
   {
     v39 = v14;
     v40 = v11;
-    v41 = v6;
-    v24 = [v17 firstObject];
-    v25 = [v24 recipients];
+    v41 = contactCopy;
+    firstObject2 = [v17 firstObject];
+    recipients = [firstObject2 recipients];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v26 = v25;
+    v26 = recipients;
     v27 = [v26 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v27)
     {
@@ -855,17 +855,17 @@ LABEL_25:
           }
 
           v31 = *(*(&v42 + 1) + 8 * i);
-          v32 = [v31 identifier];
-          v33 = [v8 containsObject:v32];
+          identifier2 = [v31 identifier];
+          v33 = [v8 containsObject:identifier2];
 
           if (v33)
           {
-            v34 = [v31 identifier];
-            [v18 setObject:v34 forKeyedSubscript:@"handle"];
+            identifier3 = [v31 identifier];
+            [dictionary setObject:identifier3 forKeyedSubscript:@"handle"];
 
-            v35 = [v17 firstObject];
-            v36 = [v35 bundleId];
-            [v18 setObject:v36 forKeyedSubscript:@"bundleId"];
+            firstObject3 = [v17 firstObject];
+            bundleId = [firstObject3 bundleId];
+            [dictionary setObject:bundleId forKeyedSubscript:@"bundleId"];
           }
         }
 
@@ -876,13 +876,13 @@ LABEL_25:
     }
 
     v11 = v40;
-    v6 = v41;
+    contactCopy = v41;
     v14 = v39;
   }
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return dictionary;
 }
 
 - (id)currentFamily
@@ -911,7 +911,7 @@ LABEL_25:
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__3;
   v20 = __Block_byref_object_dispose__3;
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = dispatch_semaphore_create(0);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -925,9 +925,9 @@ LABEL_25:
   v8 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v7, v8))
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v10 = *(v17 + 40);
-    *(v17 + 40) = v9;
+    *(v17 + 40) = array2;
   }
 
   v11 = [*(v17 + 40) copy];
@@ -937,17 +937,17 @@ LABEL_25:
   return v11;
 }
 
-- (id)currentFamilyExcludingMe:(id)a3
+- (id)currentFamilyExcludingMe:(id)me
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_PSFamilyRecommender *)self currentFamily];
-  v6 = [v5 mutableCopy];
+  meCopy = me;
+  currentFamily = [(_PSFamilyRecommender *)self currentFamily];
+  v6 = [currentFamily mutableCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = currentFamily;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -963,9 +963,9 @@ LABEL_25:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v4 identifier];
-        v14 = [v12 identifier];
-        v15 = [v13 isEqualToString:v14];
+        identifier = [meCopy identifier];
+        identifier2 = [v12 identifier];
+        v15 = [identifier isEqualToString:identifier2];
 
         if (v15)
         {
@@ -984,23 +984,23 @@ LABEL_25:
   return v6;
 }
 
-- (id)familyRecipientsForShareSheetWithPredictionContext:(id)a3
+- (id)familyRecipientsForShareSheetWithPredictionContext:(id)context
 {
   v111 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[_PSLogging familyRecommenderChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 seedContactIdentifiers];
+    seedContactIdentifiers = [contextCopy seedContactIdentifiers];
     *buf = 138412290;
-    v110 = v6;
+    v110 = seedContactIdentifiers;
     _os_log_impl(&dword_1B5ED1000, v5, OS_LOG_TYPE_INFO, "Prediction context, seed contact identifiers %@", buf, 0xCu);
   }
 
-  v7 = [(_PSFamilyRecommender *)self contactStore];
-  v8 = [(_PSFamilyRecommender *)self contactKeysToFetch];
+  contactStore = [(_PSFamilyRecommender *)self contactStore];
+  contactKeysToFetch = [(_PSFamilyRecommender *)self contactKeysToFetch];
   v106 = 0;
-  v9 = [v7 _ios_meContactWithKeysToFetch:v8 error:&v106];
+  v9 = [contactStore _ios_meContactWithKeysToFetch:contactKeysToFetch error:&v106];
   v10 = v106;
 
   if (v10)
@@ -1013,11 +1013,11 @@ LABEL_25:
   }
 
   v82 = v10;
-  v92 = v4;
+  v92 = contextCopy;
   v91 = [(_PSFamilyRecommender *)self currentFamilyExcludingMe:v9];
   v12 = [v91 valueForKey:@"identifier"];
   v13 = objc_opt_new();
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v102[0] = MEMORY[0x1E69E9820];
   v102[1] = 3221225472;
   v102[2] = __75___PSFamilyRecommender_familyRecipientsForShareSheetWithPredictionContext___block_invoke;
@@ -1040,7 +1040,7 @@ LABEL_25:
   v98 = v90;
   v88 = v18;
   v101 = v88;
-  v94 = v14;
+  v94 = array;
   v99 = v94;
   v89 = v17;
   v100 = v89;
@@ -1055,21 +1055,21 @@ LABEL_25:
   v21 = [(_PSFamilyRecommender *)self contactIdsFromContactRelationsUsingMe:v93];
   v22 = [v21 copy];
 
-  v23 = [(_PSFamilyRecommender *)self contactIdsFromEmergencyContacts];
-  v24 = [v23 copy];
+  contactIdsFromEmergencyContacts = [(_PSFamilyRecommender *)self contactIdsFromEmergencyContacts];
+  v24 = [contactIdsFromEmergencyContacts copy];
 
   v25 = objc_opt_new();
   v87 = v22;
-  v26 = [v22 allObjects];
-  [v25 addObjectsFromArray:v26];
+  allObjects = [v22 allObjects];
+  [v25 addObjectsFromArray:allObjects];
 
   v86 = v24;
-  v27 = [v24 allObjects];
-  [v25 addObjectsFromArray:v27];
+  allObjects2 = [v24 allObjects];
+  [v25 addObjectsFromArray:allObjects2];
 
   v85 = v25;
-  v28 = [v25 allObjects];
-  (v19)[2](v19, v28, &__block_literal_global_377);
+  allObjects3 = [v25 allObjects];
+  (v19)[2](v19, allObjects3, &__block_literal_global_377);
 
   v29 = +[_PSLogging familyRecommenderChannel];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -1103,8 +1103,8 @@ LABEL_25:
   }
 
   v84 = +[_PSFamilyPhotoSuggestions photosRelationshipKnowledgeSuggestions];
-  v34 = [v84 allObjects];
-  (v19)[2](v19, v34, &__block_literal_global_381);
+  allObjects4 = [v84 allObjects];
+  (v19)[2](v19, allObjects4, &__block_literal_global_381);
 
   v35 = +[_PSLogging familyRecommenderChannel];
   if (os_signpost_enabled(v35))
@@ -1121,8 +1121,8 @@ LABEL_25:
   }
 
   v81 = +[_PSFamilyPhotoSuggestions photosContactsKnowledgeSuggestions];
-  v37 = [v81 allObjects];
-  (v19)[2](v19, v37, &__block_literal_global_384);
+  allObjects5 = [v81 allObjects];
+  (v19)[2](v19, allObjects5, &__block_literal_global_384);
 
   v38 = +[_PSLogging familyRecommenderChannel];
   if (os_signpost_enabled(v38))
@@ -1155,11 +1155,11 @@ LABEL_25:
     _os_log_impl(&dword_1B5ED1000, v42, OS_LOG_TYPE_INFO, "Getting suggestions from on device models", buf, 2u);
   }
 
-  v43 = [MEMORY[0x1E69979A0] knowledgeStore];
+  knowledgeStore = [MEMORY[0x1E69979A0] knowledgeStore];
   v44 = MEMORY[0x1E6997968];
   v45 = [MEMORY[0x1E696AE18] predicateWithValue:1];
-  v46 = [MEMORY[0x1E69979E8] familyPredictionStream];
-  v108 = v46;
+  familyPredictionStream = [MEMORY[0x1E69979E8] familyPredictionStream];
+  v108 = familyPredictionStream;
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v108 count:1];
   v48 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
   v107 = v48;
@@ -1174,8 +1174,8 @@ LABEL_25:
   [v50 setExecuteConcurrently:1];
 
   v95 = 0;
-  v83 = v43;
-  v53 = [v43 executeQuery:v50 error:&v95];
+  v83 = knowledgeStore;
+  v53 = [knowledgeStore executeQuery:v50 error:&v95];
   v54 = v95;
   if (v54)
   {
@@ -1186,10 +1186,10 @@ LABEL_25:
     }
   }
 
-  v56 = [v53 firstObject];
-  v57 = [v56 metadata];
-  v58 = [MEMORY[0x1E6997978] suggestions];
-  v59 = [v57 objectForKeyedSubscript:v58];
+  firstObject = [v53 firstObject];
+  metadata = [firstObject metadata];
+  suggestions = [MEMORY[0x1E6997978] suggestions];
+  v59 = [metadata objectForKeyedSubscript:suggestions];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1218,8 +1218,8 @@ LABEL_25:
   v64 = [(_PSFamilyRecommender *)self contactIdsFromContactNamesUsingMe:v93];
   v65 = [v64 copy];
 
-  v66 = [v65 allObjects];
-  (v19)[2](v19, v66, &__block_literal_global_412);
+  allObjects6 = [v65 allObjects];
+  (v19)[2](v19, allObjects6, &__block_literal_global_412);
 
   v67 = +[_PSLogging familyRecommenderChannel];
   if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
@@ -1238,9 +1238,9 @@ LABEL_25:
     _os_log_impl(&dword_1B5ED1000, v68, OS_LOG_TYPE_INFO, "Suggestions after contact name regex match %tu", buf, 0xCu);
   }
 
-  v70 = [v92 seedContactIdentifiers];
+  seedContactIdentifiers2 = [v92 seedContactIdentifiers];
 
-  if (v70)
+  if (seedContactIdentifiers2)
   {
     v71 = [(_PSFamilyRecommender *)self rerankFamilyRecipients:v94 usingPredictionContext:v92];
   }
@@ -1277,20 +1277,20 @@ LABEL_25:
     _os_log_impl(&dword_1B5ED1000, v76, OS_LOG_TYPE_INFO, "Final results %tu", buf, 0xCu);
   }
 
-  v78 = [v74 array];
+  array2 = [v74 array];
 
   v79 = *MEMORY[0x1E69E9840];
 
-  return v78;
+  return array2;
 }
 
-- (id)suggestionsForPhotosRelationshipsWithPredictionContext:(id)a3
+- (id)suggestionsForPhotosRelationshipsWithPredictionContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(_PSFamilyRecommender *)self contactStore];
-  v6 = [(_PSFamilyRecommender *)self contactKeysToFetch];
-  v7 = [v5 _ios_meContactWithKeysToFetch:v6 error:0];
+  array = [MEMORY[0x1E695DF70] array];
+  contactStore = [(_PSFamilyRecommender *)self contactStore];
+  contactKeysToFetch = [(_PSFamilyRecommender *)self contactKeysToFetch];
+  v7 = [contactStore _ios_meContactWithKeysToFetch:contactKeysToFetch error:0];
 
   v8 = [(_PSFamilyRecommender *)self currentFamilyExcludingMe:v7];
   v9 = [v8 valueForKey:@"identifier"];
@@ -1319,7 +1319,7 @@ LABEL_25:
         {
           [v15 setPhotosInference:1];
           [v16 setFamilyHeuristic:0];
-          [v4 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -1329,20 +1329,20 @@ LABEL_25:
     while (v12);
   }
 
-  v17 = [(_PSFamilyRecommender *)self suggestionsFromRecipients:v4];
+  v17 = [(_PSFamilyRecommender *)self suggestionsFromRecipients:array];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)suggestionsForPhotosContactInferencesWithPredictionContext:(id)a3
+- (id)suggestionsForPhotosContactInferencesWithPredictionContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(_PSFamilyRecommender *)self contactStore];
-  v6 = [(_PSFamilyRecommender *)self contactKeysToFetch];
-  v7 = [v5 _ios_meContactWithKeysToFetch:v6 error:0];
+  array = [MEMORY[0x1E695DF70] array];
+  contactStore = [(_PSFamilyRecommender *)self contactStore];
+  contactKeysToFetch = [(_PSFamilyRecommender *)self contactKeysToFetch];
+  v7 = [contactStore _ios_meContactWithKeysToFetch:contactKeysToFetch error:0];
 
   v8 = [(_PSFamilyRecommender *)self currentFamilyExcludingMe:v7];
   v9 = [v8 valueForKey:@"identifier"];
@@ -1371,7 +1371,7 @@ LABEL_25:
         {
           [v15 setPhotosInference:1];
           [v16 setFamilyHeuristic:0];
-          [v4 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -1381,31 +1381,31 @@ LABEL_25:
     while (v12);
   }
 
-  v17 = [(_PSFamilyRecommender *)self suggestionsFromRecipients:v4];
+  v17 = [(_PSFamilyRecommender *)self suggestionsFromRecipients:array];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)rerankFamilyRecipients:(id)a3 usingPredictionContext:(id)a4
+- (id)rerankFamilyRecipients:(id)recipients usingPredictionContext:(id)context
 {
   v160 = *MEMORY[0x1E69E9840];
-  v95 = a3;
-  v6 = a4;
-  v7 = [(_PSFamilyRecommender *)self contactStore];
-  v111 = self;
-  v8 = [(_PSFamilyRecommender *)self contactKeysToFetch];
-  v98 = [v7 _ios_meContactWithKeysToFetch:v8 error:0];
+  recipientsCopy = recipients;
+  contextCopy = context;
+  contactStore = [(_PSFamilyRecommender *)self contactStore];
+  selfCopy = self;
+  contactKeysToFetch = [(_PSFamilyRecommender *)self contactKeysToFetch];
+  v98 = [contactStore _ios_meContactWithKeysToFetch:contactKeysToFetch error:0];
 
   v110 = objc_opt_new();
   v146 = 0u;
   v147 = 0u;
   v148 = 0u;
   v149 = 0u;
-  v94 = v6;
-  v9 = [v6 seedContactIdentifiers];
-  v10 = [v9 countByEnumeratingWithState:&v146 objects:v159 count:16];
+  v94 = contextCopy;
+  seedContactIdentifiers = [contextCopy seedContactIdentifiers];
+  v10 = [seedContactIdentifiers countByEnumeratingWithState:&v146 objects:v159 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1419,14 +1419,14 @@ LABEL_25:
         v15 = v12;
         if (*v147 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(seedContactIdentifiers);
         }
 
         v16 = *(*(&v146 + 1) + 8 * i);
-        v17 = [(_PSFamilyRecommender *)v111 contactStore];
-        v18 = [(_PSFamilyRecommender *)v111 contactKeysToFetch];
+        contactStore2 = [(_PSFamilyRecommender *)selfCopy contactStore];
+        contactKeysToFetch2 = [(_PSFamilyRecommender *)selfCopy contactKeysToFetch];
         v145 = v12;
-        v19 = [v17 unifiedContactWithIdentifier:v16 keysToFetch:v18 error:&v145];
+        v19 = [contactStore2 unifiedContactWithIdentifier:v16 keysToFetch:contactKeysToFetch2 error:&v145];
         v12 = v145;
 
         if (v12)
@@ -1443,16 +1443,16 @@ LABEL_25:
         else
         {
           v21 = [_PSRecipient alloc];
-          v22 = [v19 identifier];
-          v20 = [(_PSRecipient *)v21 initWithIdentifier:v22 handle:0 contact:v19];
+          identifier = [v19 identifier];
+          v20 = [(_PSRecipient *)v21 initWithIdentifier:identifier handle:0 contact:v19];
 
           [v20 setFamilyHeuristic:0];
           [v20 setPhotosInference:0];
           if (v20)
           {
-            v23 = [v98 identifier];
-            v24 = [v19 identifier];
-            v25 = [v23 isEqualToString:v24];
+            identifier2 = [v98 identifier];
+            identifier3 = [v19 identifier];
+            v25 = [identifier2 isEqualToString:identifier3];
 
             if ((v25 & 1) == 0)
             {
@@ -1465,7 +1465,7 @@ LABEL_25:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v146 objects:v159 count:16];
+      v11 = [seedContactIdentifiers countByEnumeratingWithState:&v146 objects:v159 count:16];
     }
 
     while (v11);
@@ -1479,14 +1479,14 @@ LABEL_25:
   v26 = v110;
   if (![v110 count])
   {
-    v81 = v95;
-    v99 = v95;
+    v81 = recipientsCopy;
+    v99 = recipientsCopy;
     goto LABEL_88;
   }
 
   v27 = [v110 count];
-  v28 = [v94 seedContactIdentifiers];
-  v29 = [v28 count];
+  seedContactIdentifiers2 = [v94 seedContactIdentifiers];
+  v29 = [seedContactIdentifiers2 count];
 
   if (v27 != v29)
   {
@@ -1505,7 +1505,7 @@ LABEL_25:
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v31 = v95;
+  v31 = recipientsCopy;
   v107 = [v31 countByEnumeratingWithState:&v141 objects:v156 count:16];
   if (v107)
   {
@@ -1543,19 +1543,19 @@ LABEL_25:
               }
 
               v39 = *(*(&v137 + 1) + 8 * j);
-              v40 = [v33 contact];
-              if (v40)
+              contact = [v33 contact];
+              if (contact)
               {
-                v41 = v40;
-                v42 = [v39 contact];
+                v41 = contact;
+                contact2 = [v39 contact];
 
-                if (v42)
+                if (contact2)
                 {
-                  v43 = [v33 contact];
-                  v44 = [v43 identifier];
-                  v45 = [v39 contact];
-                  v46 = [v45 identifier];
-                  v47 = [v44 isEqualToString:v46];
+                  contact3 = [v33 contact];
+                  identifier4 = [contact3 identifier];
+                  contact4 = [v39 contact];
+                  identifier5 = [contact4 identifier];
+                  v47 = [identifier4 isEqualToString:identifier5];
 
                   if (v47)
                   {
@@ -1627,15 +1627,15 @@ LABEL_25:
                 }
 
                 v54 = *(*(&v129 + 1) + 8 * k);
-                v55 = [v49 contact];
-                if (v55)
+                contact5 = [v49 contact];
+                if (contact5)
                 {
-                  v56 = v55;
-                  v57 = [v49 contact];
-                  v58 = [v57 identifier];
-                  v59 = [v54 contact];
-                  v60 = [v59 identifier];
-                  v61 = [v58 isEqualToString:v60];
+                  v56 = contact5;
+                  contact6 = [v49 contact];
+                  identifier6 = [contact6 identifier];
+                  contact7 = [v54 contact];
+                  identifier7 = [contact7 identifier];
+                  v61 = [identifier6 isEqualToString:identifier7];
 
                   if (v61)
                   {
@@ -1716,11 +1716,11 @@ LABEL_57:
                   objc_enumerationMutation(v66);
                 }
 
-                v71 = [*(*(&v121 + 1) + 8 * m) contact];
-                v72 = [v71 identifier];
-                v73 = [v65 contact];
-                v74 = [v73 identifier];
-                v75 = [v72 isEqualToString:v74];
+                contact8 = [*(*(&v121 + 1) + 8 * m) contact];
+                identifier8 = [contact8 identifier];
+                contact9 = [v65 contact];
+                identifier9 = [contact9 identifier];
+                v75 = [identifier8 isEqualToString:identifier9];
 
                 if (v75)
                 {
@@ -1741,11 +1741,11 @@ LABEL_57:
             }
           }
 
-          v76 = [(_PSFamilyRecommender *)v111 contactResolver];
-          v77 = [v65 contact];
-          v78 = [v76 allEmailAndPhoneNumberHandlesForContact:v77];
-          v79 = [v78 firstObject];
-          [v65 setHandle:v79];
+          contactResolver = [(_PSFamilyRecommender *)selfCopy contactResolver];
+          contact10 = [v65 contact];
+          v78 = [contactResolver allEmailAndPhoneNumberHandlesForContact:contact10];
+          firstObject = [v78 firstObject];
+          [v65 setHandle:firstObject];
 
           v80 = +[_PSConstants mobileMessagesBundleId];
           [v65 setMostRecentTransportBundleId:v80];
@@ -1788,11 +1788,11 @@ LABEL_75:
           }
 
           v87 = *(*(&v117 + 1) + 8 * n);
-          v88 = [(_PSFamilyRecommender *)v111 contactResolver];
-          v89 = [v87 contact];
-          v90 = [v88 allEmailAndPhoneNumberHandlesForContact:v89];
-          v91 = [v90 firstObject];
-          [v87 setHandle:v91];
+          contactResolver2 = [(_PSFamilyRecommender *)selfCopy contactResolver];
+          contact11 = [v87 contact];
+          v90 = [contactResolver2 allEmailAndPhoneNumberHandlesForContact:contact11];
+          firstObject2 = [v90 firstObject];
+          [v87 setHandle:firstObject2];
 
           [v99 insertObject:v87 atIndex:v85++];
         }
@@ -1805,7 +1805,7 @@ LABEL_75:
   }
 
 LABEL_87:
-  v81 = v95;
+  v81 = recipientsCopy;
   v26 = v110;
 LABEL_88:
 
@@ -1814,23 +1814,23 @@ LABEL_88:
   return v99;
 }
 
-- (id)suggestionsFromRecipients:(id)a3
+- (id)suggestionsFromRecipients:(id)recipients
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v39 = [MEMORY[0x1E695DF70] array];
+  recipientsCopy = recipients;
+  array = [MEMORY[0x1E695DF70] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v4;
+  obj = recipientsCopy;
   v5 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v42;
     v37 = *v42;
-    v38 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v6; ++i)
@@ -1841,30 +1841,30 @@ LABEL_88:
         }
 
         v9 = *(*(&v41 + 1) + 8 * i);
-        v10 = [v9 mostRecentTransportBundleId];
-        if (v10)
+        mostRecentTransportBundleId = [v9 mostRecentTransportBundleId];
+        if (mostRecentTransportBundleId)
         {
-          v11 = v10;
-          v12 = [v9 photosInference];
+          v11 = mostRecentTransportBundleId;
+          photosInference = [v9 photosInference];
 
-          if ((v12 & 1) == 0)
+          if ((photosInference & 1) == 0)
           {
             v22 = [_PSSuggestion alloc];
-            v23 = [v9 mostRecentTransportBundleId];
+            mostRecentTransportBundleId2 = [v9 mostRecentTransportBundleId];
             v46 = v9;
             v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
             LOBYTE(v36) = 1;
-            v14 = [(_PSSuggestion *)v22 initWithBundleID:v23 conversationIdentifier:0 groupName:0 recipients:v24 derivedIntentIdentifier:0 image:0 reason:@"iCloudFamily - Model" reasonType:0 score:0 familySuggestion:v36];
+            v14 = [(_PSSuggestion *)v22 initWithBundleID:mostRecentTransportBundleId2 conversationIdentifier:0 groupName:0 recipients:v24 derivedIntentIdentifier:0 image:0 reason:@"iCloudFamily - Model" reasonType:0 score:0 familySuggestion:v36];
 
-            [v39 addObject:v14];
+            [array addObject:v14];
             goto LABEL_31;
           }
         }
 
         if (([v9 familyHeuristic] & 1) != 0 || objc_msgSend(v9, "photosInference"))
         {
-          v13 = [v9 contact];
-          v14 = [(_PSFamilyRecommender *)self handleAndBundleIdDictionaryForFamilyRecipientContact:v13 lookBackDays:168];
+          contact = [v9 contact];
+          v14 = [(_PSFamilyRecommender *)self handleAndBundleIdDictionaryForFamilyRecipientContact:contact lookBackDays:168];
 
           v15 = [(_PSSuggestion *)v14 objectForKeyedSubscript:@"handle"];
           v16 = [(_PSSuggestion *)v14 objectForKeyedSubscript:@"bundleId"];
@@ -1881,23 +1881,23 @@ LABEL_88:
 
           if (!v18)
           {
-            v25 = v15;
+            firstObject = v15;
             goto LABEL_22;
           }
 
-          v19 = [(_PSFamilyRecommender *)self contactResolver];
-          v20 = [v9 contact];
-          v21 = [v19 allEmailAndPhoneNumberHandlesForContact:v20];
-          v25 = [v21 firstObject];
+          contactResolver = [(_PSFamilyRecommender *)self contactResolver];
+          contact2 = [v9 contact];
+          v21 = [contactResolver allEmailAndPhoneNumberHandlesForContact:contact2];
+          firstObject = [v21 firstObject];
 
-          if (![(_PSSuggestion *)v25 length])
+          if (![(_PSSuggestion *)firstObject length])
           {
-            v26 = v25;
-            v25 = v15;
+            v26 = firstObject;
+            firstObject = v15;
             goto LABEL_29;
           }
 
-          if ([(_PSSuggestion *)v25 containsString:@"@"])
+          if ([(_PSSuggestion *)firstObject containsString:@"@"])
           {
             +[_PSConstants mobileMailBundleId];
           }
@@ -1908,11 +1908,11 @@ LABEL_88:
           }
           v27 = ;
           v7 = v37;
-          self = v38;
+          self = selfCopy;
 
           v17 = v27;
 LABEL_22:
-          if (v25)
+          if (firstObject)
           {
             v28 = v17 == 0;
           }
@@ -1924,10 +1924,10 @@ LABEL_22:
 
           if (!v28)
           {
-            [v9 setHandle:v25];
-            v29 = [v9 familyHeuristic];
+            [v9 setHandle:firstObject];
+            familyHeuristic = [v9 familyHeuristic];
             v30 = @"iCloudFamily - PhotosInference";
-            if (v29)
+            if (familyHeuristic)
             {
               v30 = @"iCloudFamily - Heuristic";
             }
@@ -1939,11 +1939,11 @@ LABEL_22:
             LOBYTE(v36) = 1;
             v26 = [(_PSSuggestion *)v32 initWithBundleID:v17 conversationIdentifier:0 groupName:0 recipients:v33 derivedIntentIdentifier:0 image:0 reason:v31 reasonType:0 score:0 familySuggestion:v36];
 
-            [v39 addObject:v26];
+            [array addObject:v26];
 LABEL_29:
 
             v7 = v37;
-            self = v38;
+            self = selfCopy;
           }
 
 LABEL_31:
@@ -1959,29 +1959,29 @@ LABEL_31:
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v39;
+  return array;
 }
 
-- (id)familyRecommendationSuggestionsForShareSheetWithPredictionContext:(id)a3
+- (id)familyRecommendationSuggestionsForShareSheetWithPredictionContext:(id)context
 {
-  v4 = [(_PSFamilyRecommender *)self familyRecipientsForShareSheetWithPredictionContext:a3];
+  v4 = [(_PSFamilyRecommender *)self familyRecipientsForShareSheetWithPredictionContext:context];
   v5 = [(_PSFamilyRecommender *)self suggestionsFromRecipients:v4];
 
   return v5;
 }
 
-- (id)recipientFromFamilyContactId:(id)a3 familySuggestions:(id)a4 me:(id)a5 currentFamilyIds:(id)a6
+- (id)recipientFromFamilyContactId:(id)id familySuggestions:(id)suggestions me:(id)me currentFamilyIds:(id)ids
 {
   v63 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v59 = a4;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  suggestionsCopy = suggestions;
+  meCopy = me;
+  idsCopy = ids;
   v13 = objc_opt_new();
-  v14 = [(_PSFamilyRecommender *)self contactStore];
-  v15 = [(_PSFamilyRecommender *)self contactKeysToFetch];
+  contactStore = [(_PSFamilyRecommender *)self contactStore];
+  contactKeysToFetch = [(_PSFamilyRecommender *)self contactKeysToFetch];
   v60 = 0;
-  v16 = [v14 unifiedContactWithIdentifier:v10 keysToFetch:v15 error:&v60];
+  v16 = [contactStore unifiedContactWithIdentifier:idCopy keysToFetch:contactKeysToFetch error:&v60];
   v17 = v60;
 
   if (!v16)
@@ -1997,8 +1997,8 @@ LABEL_31:
     goto LABEL_36;
   }
 
-  v18 = [v16 identifier];
-  v19 = [v12 containsObject:v18];
+  identifier = [v16 identifier];
+  v19 = [idsCopy containsObject:identifier];
 
   if (v19)
   {
@@ -2016,8 +2016,8 @@ LABEL_31:
     if (([v13 containsObject:v23] & 1) == 0)
     {
       v25 = [_PSRecipient alloc];
-      v26 = [v16 identifier];
-      v27 = [(_PSRecipient *)v25 initWithIdentifier:v26 handle:v57 contact:v16];
+      identifier2 = [v16 identifier];
+      v27 = [(_PSRecipient *)v25 initWithIdentifier:identifier2 handle:v57 contact:v16];
 
       [(_PSRecipient *)v27 setMostRecentTransportBundleId:v24];
       v28 = +[_PSLogging familyRecommenderChannel];
@@ -2030,14 +2030,14 @@ LABEL_31:
 
       [v13 addObject:v57];
 LABEL_29:
-      v48 = [(_PSRecipient *)v27 handle];
-      if ([v48 length])
+      handle = [(_PSRecipient *)v27 handle];
+      if ([handle length])
       {
         v54 = v24;
-        v56 = v11;
-        v49 = [v11 identifier];
-        v50 = [v16 identifier];
-        v51 = [v49 isEqualToString:v50];
+        v56 = meCopy;
+        identifier3 = [meCopy identifier];
+        identifier4 = [v16 identifier];
+        v51 = [identifier3 isEqualToString:identifier4];
 
         if (v51)
         {
@@ -2054,7 +2054,7 @@ LABEL_29:
           v20 = v27;
         }
 
-        v11 = v56;
+        meCopy = v56;
       }
 
       else
@@ -2070,7 +2070,7 @@ LABEL_29:
     goto LABEL_16;
   }
 
-  v29 = [v59 objectForKeyedSubscript:v10];
+  v29 = [suggestionsCopy objectForKeyedSubscript:idCopy];
   [v29 doubleValue];
   v31 = v30;
 
@@ -2087,8 +2087,8 @@ LABEL_29:
       if (([v13 containsObject:v32] & 1) == 0)
       {
         v39 = [_PSRecipient alloc];
-        v40 = [v16 identifier];
-        v41 = [(_PSRecipient *)v39 initWithIdentifier:v40 handle:v32 contact:v16];
+        identifier5 = [v16 identifier];
+        v41 = [(_PSRecipient *)v39 initWithIdentifier:identifier5 handle:v32 contact:v16];
         v42 = v32;
         v27 = v41;
 
@@ -2113,11 +2113,11 @@ LABEL_26:
 
     else
     {
-      v36 = [(_PSFamilyRecommender *)self contactResolver];
-      v37 = [v36 allEmailAndPhoneNumberHandlesForContact:v16];
-      v38 = [v37 firstObject];
+      contactResolver = [(_PSFamilyRecommender *)self contactResolver];
+      v37 = [contactResolver allEmailAndPhoneNumberHandlesForContact:v16];
+      firstObject = [v37 firstObject];
 
-      if (![v38 length] || (objc_msgSend(v13, "containsObject:", v38) & 1) != 0)
+      if (![firstObject length] || (objc_msgSend(v13, "containsObject:", firstObject) & 1) != 0)
       {
 
         v27 = 0;
@@ -2127,10 +2127,10 @@ LABEL_26:
         goto LABEL_35;
       }
 
-      v43 = [v38 containsString:@"@"];
+      v43 = [firstObject containsString:@"@"];
       v44 = [_PSRecipient alloc];
-      v45 = [v16 identifier];
-      v27 = [(_PSRecipient *)v44 initWithIdentifier:v45 handle:0 contact:v16];
+      identifier6 = [v16 identifier];
+      v27 = [(_PSRecipient *)v44 initWithIdentifier:identifier6 handle:0 contact:v16];
 
       if (v43)
       {
@@ -2151,8 +2151,8 @@ LABEL_26:
 
 LABEL_16:
   v33 = [_PSRecipient alloc];
-  v34 = [v16 identifier];
-  v35 = [(_PSRecipient *)v33 initWithIdentifier:v34 handle:0 contact:v16];
+  identifier7 = [v16 identifier];
+  v35 = [(_PSRecipient *)v33 initWithIdentifier:identifier7 handle:0 contact:v16];
 
   v27 = v35;
   v21 = v22;
@@ -2168,21 +2168,21 @@ LABEL_37:
   return v20;
 }
 
-- (id)contactIdsFromContactRelationsUsingMe:(id)a3
+- (id)contactIdsFromContactRelationsUsingMe:(id)me
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v31 = [(_PSFamilyRecommender *)self contactStore];
+  meCopy = me;
+  contactStore = [(_PSFamilyRecommender *)self contactStore];
   v29 = [MEMORY[0x1E695DFA8] set];
-  v30 = self;
-  v5 = [(_PSFamilyRecommender *)self nonFamilyRelations];
-  v28 = v4;
-  v6 = [v4 contactRelations];
+  selfCopy = self;
+  nonFamilyRelations = [(_PSFamilyRecommender *)self nonFamilyRelations];
+  v28 = meCopy;
+  contactRelations = [meCopy contactRelations];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  v7 = [contactRelations countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2194,23 +2194,23 @@ LABEL_37:
       {
         if (*v34 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(contactRelations);
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 label];
-        v14 = [v5 containsObject:v13];
+        label = [v12 label];
+        v14 = [nonFamilyRelations containsObject:label];
 
         if ((v14 & 1) == 0)
         {
           CNContactClass_1 = getCNContactClass_1();
-          v16 = [v12 value];
-          v17 = [v16 name];
-          v18 = [CNContactClass_1 predicateForContactsMatchingName:v17];
+          value = [v12 value];
+          name = [value name];
+          v18 = [CNContactClass_1 predicateForContactsMatchingName:name];
 
-          v19 = [(_PSFamilyRecommender *)v30 contactKeysToFetch];
+          contactKeysToFetch = [(_PSFamilyRecommender *)selfCopy contactKeysToFetch];
           v32 = v9;
-          v20 = [v31 unifiedContactsMatchingPredicate:v18 keysToFetch:v19 error:&v32];
+          v20 = [contactStore unifiedContactsMatchingPredicate:v18 keysToFetch:contactKeysToFetch error:&v32];
           v21 = v32;
 
           if (v21)
@@ -2226,16 +2226,16 @@ LABEL_37:
 
           if ([v20 count])
           {
-            v23 = [v20 firstObject];
-            v24 = [v23 identifier];
-            [v29 addObject:v24];
+            firstObject = [v20 firstObject];
+            identifier = [firstObject identifier];
+            [v29 addObject:identifier];
           }
 
           v9 = v21;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v8 = [contactRelations countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v8);
@@ -2253,15 +2253,15 @@ LABEL_37:
   return v25;
 }
 
-- (id)contactIdsFromContactNamesUsingMe:(id)a3
+- (id)contactIdsFromContactNamesUsingMe:(id)me
 {
   v92 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v58 = [(_PSFamilyRecommender *)self contactStore];
+  meCopy = me;
+  contactStore = [(_PSFamilyRecommender *)self contactStore];
   v5 = [(_PSFamilyRecommender *)self fetchAllContactIdsFromContactStore:?];
   v6 = [MEMORY[0x1E695DFA8] set];
-  v67 = [(_PSFamilyRecommender *)self nonFamilyRelations];
-  v55 = [(_PSFamilyRecommender *)self relationshipRegularExpressionForRelationship];
+  nonFamilyRelations = [(_PSFamilyRecommender *)self nonFamilyRelations];
+  relationshipRegularExpressionForRelationship = [(_PSFamilyRecommender *)self relationshipRegularExpressionForRelationship];
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
@@ -2272,7 +2272,7 @@ LABEL_37:
   if (v56)
   {
     v54 = *v83;
-    v68 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -2290,7 +2290,7 @@ LABEL_37:
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v65 = v55;
+        v65 = relationshipRegularExpressionForRelationship;
         v10 = [v65 countByEnumeratingWithState:&v78 objects:v90 count:16];
         if (v10)
         {
@@ -2306,16 +2306,16 @@ LABEL_37:
               }
 
               v14 = *(*(&v78 + 1) + 8 * i);
-              v15 = [v9 givenName];
-              if (![(_PSFamilyRecommender *)self regexMatchForRegex:v14 string:v15])
+              givenName = [v9 givenName];
+              if (![(_PSFamilyRecommender *)self regexMatchForRegex:v14 string:givenName])
               {
-                v16 = [v9 familyName];
-                if (![(_PSFamilyRecommender *)self regexMatchForRegex:v14 string:v16])
+                familyName = [v9 familyName];
+                if (![(_PSFamilyRecommender *)self regexMatchForRegex:v14 string:familyName])
                 {
-                  v22 = [v9 nickname];
-                  v23 = [(_PSFamilyRecommender *)v68 regexMatchForRegex:v14 string:v22];
+                  nickname = [v9 nickname];
+                  v23 = [(_PSFamilyRecommender *)selfCopy regexMatchForRegex:v14 string:nickname];
 
-                  self = v68;
+                  self = selfCopy;
                   if (!v23)
                   {
                     continue;
@@ -2326,17 +2326,17 @@ LABEL_37:
               }
 
 LABEL_15:
-              v17 = [v9 identifier];
-              if (v17)
+              identifier = [v9 identifier];
+              if (identifier)
               {
-                v18 = v17;
-                v19 = [v9 identifier];
-                v20 = [v6 containsObject:v19];
+                v18 = identifier;
+                identifier2 = [v9 identifier];
+                v20 = [v6 containsObject:identifier2];
 
                 if ((v20 & 1) == 0)
                 {
-                  v21 = [v9 identifier];
-                  [v6 addObject:v21];
+                  identifier3 = [v9 identifier];
+                  [v6 addObject:identifier3];
                 }
               }
             }
@@ -2347,13 +2347,13 @@ LABEL_15:
           while (v11);
         }
 
-        v24 = [v9 contactRelations];
+        contactRelations = [v9 contactRelations];
         v74 = 0u;
         v75 = 0u;
         v76 = 0u;
         v77 = 0u;
-        v61 = v24;
-        v25 = [v24 countByEnumeratingWithState:&v74 objects:v89 count:16];
+        v61 = contactRelations;
+        v25 = [contactRelations countByEnumeratingWithState:&v74 objects:v89 count:16];
         if (v25)
         {
           v26 = v25;
@@ -2372,21 +2372,21 @@ LABEL_15:
               }
 
               v29 = *(*(&v74 + 1) + 8 * v28);
-              v30 = [v29 label];
-              v31 = [v67 containsObject:v30];
+              label = [v29 label];
+              v31 = [nonFamilyRelations containsObject:label];
 
               if ((v31 & 1) == 0)
               {
                 v66 = v28;
                 CNContactClass_1 = getCNContactClass_1();
-                v33 = [v29 value];
-                v34 = [v33 name];
-                v35 = [CNContactClass_1 predicateForContactsMatchingName:v34];
+                value = [v29 value];
+                name = [value name];
+                v35 = [CNContactClass_1 predicateForContactsMatchingName:name];
 
-                v36 = [(_PSFamilyRecommender *)v68 contactKeysToFetch];
+                contactKeysToFetch = [(_PSFamilyRecommender *)selfCopy contactKeysToFetch];
                 v73 = v7;
                 v64 = v35;
-                v37 = [v58 unifiedContactsMatchingPredicate:v35 keysToFetch:v36 error:&v73];
+                v37 = [contactStore unifiedContactsMatchingPredicate:v35 keysToFetch:contactKeysToFetch error:&v73];
                 v38 = v73;
 
                 if (v38)
@@ -2421,14 +2421,14 @@ LABEL_15:
                       }
 
                       v45 = *(*(&v69 + 1) + 8 * j);
-                      v46 = [v4 identifier];
-                      v47 = [v45 identifier];
-                      v48 = [v46 isEqualToString:v47];
+                      identifier4 = [meCopy identifier];
+                      identifier5 = [v45 identifier];
+                      v48 = [identifier4 isEqualToString:identifier5];
 
                       if (v48)
                       {
-                        v49 = [v9 identifier];
-                        [v6 addObject:v49];
+                        identifier6 = [v9 identifier];
+                        [v6 addObject:identifier6];
                       }
                     }
 
@@ -2460,7 +2460,7 @@ LABEL_15:
         }
 
         v8 = v57 + 1;
-        self = v68;
+        self = selfCopy;
       }
 
       while (v57 + 1 != v56);
@@ -2479,9 +2479,9 @@ LABEL_15:
 - (id)contactIdsFromEmergencyContacts
 {
   v59 = *MEMORY[0x1E69E9840];
-  v36 = [(_PSFamilyRecommender *)self medicalIDStore];
+  medicalIDStore = [(_PSFamilyRecommender *)self medicalIDStore];
   v39 = [MEMORY[0x1E695DFA8] set];
-  v40 = [(_PSFamilyRecommender *)self nonFamilyRelations];
+  nonFamilyRelations = [(_PSFamilyRecommender *)self nonFamilyRelations];
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
@@ -2496,7 +2496,7 @@ LABEL_15:
   v49 = &v50;
   dsema = v2;
   v48 = dsema;
-  [v36 fetchMedicalIDEmergencyContactsWithCompletion:v47];
+  [medicalIDStore fetchMedicalIDEmergencyContactsWithCompletion:v47];
   v3 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(dsema, v3))
   {
@@ -2525,19 +2525,19 @@ LABEL_15:
         }
 
         v9 = *(*(&v43 + 1) + 8 * i);
-        v10 = [v9 relationship];
-        v11 = [v40 containsObject:v10];
+        relationship = [v9 relationship];
+        v11 = [nonFamilyRelations containsObject:relationship];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 nameContactIdentifier];
-          if (v12 && ([v9 nameContactIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v39, "containsObject:", v13), v13, v12, (v14 & 1) == 0))
+          nameContactIdentifier = [v9 nameContactIdentifier];
+          if (nameContactIdentifier && ([v9 nameContactIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v39, "containsObject:", v13), v13, nameContactIdentifier, (v14 & 1) == 0))
           {
-            v16 = [(_PSFamilyRecommender *)self contactStore];
-            v17 = [v9 nameContactIdentifier];
-            v18 = [(_PSFamilyRecommender *)self contactKeysToFetch];
+            contactStore = [(_PSFamilyRecommender *)self contactStore];
+            nameContactIdentifier2 = [v9 nameContactIdentifier];
+            contactKeysToFetch = [(_PSFamilyRecommender *)self contactKeysToFetch];
             v42 = v5;
-            v19 = [v16 unifiedContactWithIdentifier:v17 keysToFetch:v18 error:&v42];
+            v19 = [contactStore unifiedContactWithIdentifier:nameContactIdentifier2 keysToFetch:contactKeysToFetch error:&v42];
             v15 = v42;
 
             if (v15)
@@ -2553,11 +2553,11 @@ LABEL_15:
 
             if (v19)
             {
-              v21 = [v9 nameContactIdentifier];
-              [v39 addObject:v21];
+              nameContactIdentifier3 = [v9 nameContactIdentifier];
+              [v39 addObject:nameContactIdentifier3];
 
-              v22 = [v19 identifier];
-              [v39 addObject:v22];
+              identifier = [v19 identifier];
+              [v39 addObject:identifier];
             }
           }
 
@@ -2566,14 +2566,14 @@ LABEL_15:
             v15 = v5;
           }
 
-          v23 = [v9 phoneNumberContactIdentifier];
-          if (v23 && ([v9 phoneNumberContactIdentifier], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v39, "containsObject:", v24), v24, v23, (v25 & 1) == 0))
+          phoneNumberContactIdentifier = [v9 phoneNumberContactIdentifier];
+          if (phoneNumberContactIdentifier && ([v9 phoneNumberContactIdentifier], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v39, "containsObject:", v24), v24, phoneNumberContactIdentifier, (v25 & 1) == 0))
           {
-            v26 = [(_PSFamilyRecommender *)self contactStore];
-            v27 = [v9 phoneNumberContactIdentifier];
-            v28 = [(_PSFamilyRecommender *)self contactKeysToFetch];
+            contactStore2 = [(_PSFamilyRecommender *)self contactStore];
+            phoneNumberContactIdentifier2 = [v9 phoneNumberContactIdentifier];
+            contactKeysToFetch2 = [(_PSFamilyRecommender *)self contactKeysToFetch];
             v41 = v15;
-            v29 = [v26 unifiedContactWithIdentifier:v27 keysToFetch:v28 error:&v41];
+            v29 = [contactStore2 unifiedContactWithIdentifier:phoneNumberContactIdentifier2 keysToFetch:contactKeysToFetch2 error:&v41];
             v5 = v41;
 
             if (v5)
@@ -2589,8 +2589,8 @@ LABEL_15:
 
             if (v29)
             {
-              v31 = [v9 phoneNumberContactIdentifier];
-              [v39 addObject:v31];
+              phoneNumberContactIdentifier3 = [v9 phoneNumberContactIdentifier];
+              [v39 addObject:phoneNumberContactIdentifier3];
             }
           }
 

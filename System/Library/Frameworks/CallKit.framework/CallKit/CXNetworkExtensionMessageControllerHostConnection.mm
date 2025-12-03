@@ -1,20 +1,20 @@
 @interface CXNetworkExtensionMessageControllerHostConnection
-- (CXNetworkExtensionMessageControllerHostConnection)initWithConnection:(id)a3;
+- (CXNetworkExtensionMessageControllerHostConnection)initWithConnection:(id)connection;
 - (CXNetworkExtensionMessageControllerHostConnectionDelegate)delegate;
 - (NSString)description;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendNetworkExtensionMessage:(id)a3 forBundleIdentifier:(id)a4 reply:(id)a5;
-- (void)sendNetworkExtensionPushToTalkMessage:(id)a3 forBundleIdentifier:(id)a4 reply:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)sendNetworkExtensionMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply;
+- (void)sendNetworkExtensionPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CXNetworkExtensionMessageControllerHostConnection
 
-- (CXNetworkExtensionMessageControllerHostConnection)initWithConnection:(id)a3
+- (CXNetworkExtensionMessageControllerHostConnection)initWithConnection:(id)connection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectionCopy = connection;
   v21.receiver = self;
   v21.super_class = CXNetworkExtensionMessageControllerHostConnection;
   v6 = [(CXNetworkExtensionMessageControllerHostConnection *)&v21 init];
@@ -22,18 +22,18 @@
   if (v6)
   {
     v6->_accessorLock._os_unfair_lock_opaque = 0;
-    v8 = [v5 cx_applicationIdentifier];
+    cx_applicationIdentifier = [connectionCopy cx_applicationIdentifier];
     applicationIdentifier = v7->_applicationIdentifier;
-    v7->_applicationIdentifier = v8;
+    v7->_applicationIdentifier = cx_applicationIdentifier;
 
-    v10 = [v5 cx_capabilities];
+    cx_capabilities = [connectionCopy cx_capabilities];
     capabilities = v7->_capabilities;
-    v7->_capabilities = v10;
+    v7->_capabilities = cx_capabilities;
 
-    objc_storeStrong(&v7->_connection, a3);
+    objc_storeStrong(&v7->_connection, connection);
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
-    v12 = [MEMORY[0x1E696B0D0] cx_networkExtensionMessageControllerHostInterface];
-    [(NSXPCConnection *)v7->_connection setExportedInterface:v12];
+    cx_networkExtensionMessageControllerHostInterface = [MEMORY[0x1E696B0D0] cx_networkExtensionMessageControllerHostInterface];
+    [(NSXPCConnection *)v7->_connection setExportedInterface:cx_networkExtensionMessageControllerHostInterface];
 
     objc_initWeak(&location, v7);
     v18[0] = MEMORY[0x1E69E9820];
@@ -124,9 +124,9 @@ void __72__CXNetworkExtensionMessageControllerHostConnection_initWithConnection_
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -141,24 +141,24 @@ void __72__CXNetworkExtensionMessageControllerHostConnection_initWithConnection_
 - (void)invalidate
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v3 = [(CXNetworkExtensionMessageControllerHostConnection *)self connection];
-  [v3 invalidate];
+  connection = [(CXNetworkExtensionMessageControllerHostConnection *)self connection];
+  [connection invalidate];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)sendNetworkExtensionMessage:(id)a3 forBundleIdentifier:(id)a4 reply:(id)a5
+- (void)sendNetworkExtensionMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CXNetworkExtensionMessageControllerHostConnection *)self capabilities];
-  v12 = [v11 containsObject:@"private-network-extension-message-api"];
+  messageCopy = message;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  capabilities = [(CXNetworkExtensionMessageControllerHostConnection *)self capabilities];
+  v12 = [capabilities containsObject:@"private-network-extension-message-api"];
 
   if (v12)
   {
-    v13 = [(CXNetworkExtensionMessageControllerHostConnection *)self delegate];
-    [v13 networkExtensionMessageControllerHostConnection:self didReceiveIncomingMessage:v8 forBundleIdentifier:v9];
+    delegate = [(CXNetworkExtensionMessageControllerHostConnection *)self delegate];
+    [delegate networkExtensionMessageControllerHostConnection:self didReceiveIncomingMessage:messageCopy forBundleIdentifier:identifierCopy];
 
     v14 = 0;
   }
@@ -174,21 +174,21 @@ void __72__CXNetworkExtensionMessageControllerHostConnection_initWithConnection_
     v14 = [MEMORY[0x1E696ABC0] cx_requestTransactionErrorWithCode:1];
   }
 
-  v10[2](v10, v12, v14);
+  replyCopy[2](replyCopy, v12, v14);
 }
 
-- (void)sendNetworkExtensionPushToTalkMessage:(id)a3 forBundleIdentifier:(id)a4 reply:(id)a5
+- (void)sendNetworkExtensionPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CXNetworkExtensionMessageControllerHostConnection *)self capabilities];
-  v12 = [v11 containsObject:@"private-network-extension-message-api"];
+  messageCopy = message;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  capabilities = [(CXNetworkExtensionMessageControllerHostConnection *)self capabilities];
+  v12 = [capabilities containsObject:@"private-network-extension-message-api"];
 
   if (v12)
   {
-    v13 = [(CXNetworkExtensionMessageControllerHostConnection *)self delegate];
-    [v13 networkExtensionMessageControllerHostConnection:self didReceiveIncomingPushToTalkMessage:v8 forBundleIdentifier:v9];
+    delegate = [(CXNetworkExtensionMessageControllerHostConnection *)self delegate];
+    [delegate networkExtensionMessageControllerHostConnection:self didReceiveIncomingPushToTalkMessage:messageCopy forBundleIdentifier:identifierCopy];
 
     v14 = 0;
   }
@@ -204,16 +204,16 @@ void __72__CXNetworkExtensionMessageControllerHostConnection_initWithConnection_
     v14 = [MEMORY[0x1E696ABC0] cx_requestTransactionErrorWithCode:1];
   }
 
-  v10[2](v10, v12, v14);
+  replyCopy[2](replyCopy, v12, v14);
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CXNetworkExtensionMessageControllerHostConnection *)self applicationIdentifier];
-  v6 = [(CXNetworkExtensionMessageControllerHostConnection *)self capabilities];
-  v7 = [v3 stringWithFormat:@"<%@ %p applicationIdentifier=%@ capabilities=%@", v4, self, v5, v6];
+  applicationIdentifier = [(CXNetworkExtensionMessageControllerHostConnection *)self applicationIdentifier];
+  capabilities = [(CXNetworkExtensionMessageControllerHostConnection *)self capabilities];
+  v7 = [v3 stringWithFormat:@"<%@ %p applicationIdentifier=%@ capabilities=%@", v4, self, applicationIdentifier, capabilities];
 
   return v7;
 }

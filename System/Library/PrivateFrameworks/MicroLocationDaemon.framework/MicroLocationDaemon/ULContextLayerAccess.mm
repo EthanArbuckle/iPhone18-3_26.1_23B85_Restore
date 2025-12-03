@@ -1,15 +1,15 @@
 @interface ULContextLayerAccess
-- (ULContextLayerAccess)initWithSingleAccess:(id)a3;
-- (ULContextLayerAccess)initWithWriter:(id)a3 readers:(id)a4;
+- (ULContextLayerAccess)initWithSingleAccess:(id)access;
+- (ULContextLayerAccess)initWithWriter:(id)writer readers:(id)readers;
 @end
 
 @implementation ULContextLayerAccess
 
-- (ULContextLayerAccess)initWithWriter:(id)a3 readers:(id)a4
+- (ULContextLayerAccess)initWithWriter:(id)writer readers:(id)readers
 {
   v54 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v6 = a4;
+  writerCopy = writer;
+  readersCopy = readers;
   v43.receiver = self;
   v43.super_class = ULContextLayerAccess;
   v7 = [(ULContextLayerAccess *)&v43 init];
@@ -17,26 +17,26 @@
   if (v7)
   {
     [(ULContextLayerAccess *)v7 setWriter:0];
-    if (v38)
+    if (writerCopy)
     {
-      v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v38];
+      v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:writerCopy];
       [(ULContextLayerAccess *)v8 setWriter:v9];
 
-      v10 = [(ULContextLayerAccess *)v8 writer];
-      v11 = v10 == 0;
+      writer = [(ULContextLayerAccess *)v8 writer];
+      v11 = writer == 0;
 
       if (v11)
       {
         v30 = _CLLogObjectForCategory_MicroLocation_Default();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
         {
-          v31 = v38;
-          v32 = [v38 UTF8String];
+          v31 = writerCopy;
+          uTF8String = [writerCopy UTF8String];
           buf = 68289795;
           v46 = 2082;
           v47 = "";
           v48 = 2081;
-          v49 = v32;
+          v49 = uTF8String;
           v50 = 2082;
           v51 = "assert";
           v52 = 2081;
@@ -47,13 +47,13 @@
         v33 = _CLLogObjectForCategory_MicroLocation_Default();
         if (os_signpost_enabled(v33))
         {
-          v34 = v38;
-          v35 = [v38 UTF8String];
+          v34 = writerCopy;
+          uTF8String2 = [writerCopy UTF8String];
           buf = 68289795;
           v46 = 2082;
           v47 = "";
           v48 = 2081;
-          v49 = v35;
+          v49 = uTF8String2;
           v50 = 2082;
           v51 = "assert";
           v52 = 2081;
@@ -64,8 +64,8 @@
         v36 = _CLLogObjectForCategory_MicroLocation_Default();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
         {
-          v37 = v38;
-          -[ULContextLayerAccess initWithWriter:readers:].cold.1([v38 UTF8String], &buf);
+          v37 = writerCopy;
+          -[ULContextLayerAccess initWithWriter:readers:].cold.1([writerCopy UTF8String], &buf);
         }
 
         abort_report_np();
@@ -75,14 +75,14 @@ LABEL_29:
     }
 
     [(ULContextLayerAccess *)v8 setReaders:0];
-    if (v6)
+    if (readersCopy)
     {
       v12 = [MEMORY[0x277CBEB58] set];
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v13 = v6;
+      v13 = readersCopy;
       v14 = [v13 countByEnumeratingWithState:&v39 objects:v44 count:16];
       if (!v14)
       {
@@ -107,12 +107,12 @@ LABEL_29:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
             {
               v23 = v17;
-              v24 = [v17 UTF8String];
+              uTF8String3 = [v17 UTF8String];
               buf = 68289795;
               v46 = 2082;
               v47 = "";
               v48 = 2081;
-              v49 = v24;
+              v49 = uTF8String3;
               v50 = 2082;
               v51 = "assert";
               v52 = 2081;
@@ -124,12 +124,12 @@ LABEL_29:
             if (os_signpost_enabled(v25))
             {
               v26 = v17;
-              v27 = [v17 UTF8String];
+              uTF8String4 = [v17 UTF8String];
               buf = 68289795;
               v46 = 2082;
               v47 = "";
               v48 = 2081;
-              v49 = v27;
+              v49 = uTF8String4;
               v50 = 2082;
               v51 = "assert";
               v52 = 2081;
@@ -169,13 +169,13 @@ LABEL_13:
   return v8;
 }
 
-- (ULContextLayerAccess)initWithSingleAccess:(id)a3
+- (ULContextLayerAccess)initWithSingleAccess:(id)access
 {
-  v4 = a3;
-  if (v4)
+  accessCopy = access;
+  if (accessCopy)
   {
-    v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
-    v6 = [(ULContextLayerAccess *)self initWithWriter:v4 readers:v5];
+    v5 = [MEMORY[0x277CBEB98] setWithObject:accessCopy];
+    v6 = [(ULContextLayerAccess *)self initWithWriter:accessCopy readers:v5];
   }
 
   else

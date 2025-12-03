@@ -7,15 +7,15 @@
 
 - (id)hudItemForAccessibilityHUDManager:()Camera
 {
-  v2 = [a1 titleForState:{objc_msgSend(a1, "state")}];
+  v2 = [self titleForState:{objc_msgSend(self, "state")}];
   if (objc_opt_respondsToSelector())
   {
-    [a1 imageForAccessibilityHUD];
+    [self imageForAccessibilityHUD];
   }
 
   else
   {
-    [a1 imageForState:{objc_msgSend(a1, "state")}];
+    [self imageForState:{objc_msgSend(self, "state")}];
   }
   v3 = ;
   v4 = objc_alloc(MEMORY[0x1E69DC618]);
@@ -26,15 +26,15 @@
 
 - (void)selectedByAccessibilityHUDManager:()Camera
 {
-  [a1 cancelTouchTracking];
-  [a1 sendActionsForControlEvents:64];
-  [a1 setHighlighted:1];
+  [self cancelTouchTracking];
+  [self sendActionsForControlEvents:64];
+  [self setHighlighted:1];
   v2 = dispatch_time(0, 200000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__UIButton_Camera__selectedByAccessibilityHUDManager___block_invoke;
   block[3] = &unk_1E76F77B0;
-  block[4] = a1;
+  block[4] = self;
   dispatch_after(v2, MEMORY[0x1E69E96A0], block);
 }
 

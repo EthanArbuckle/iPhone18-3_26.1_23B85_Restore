@@ -3,30 +3,30 @@
 + (void)pauseIfPlaying;
 - (BOOL)isPlaying;
 - (ICAudioController)init;
-- (int64_t)remoteChangePlaybackPosition:(id)a3;
-- (int64_t)remoteChangeRate:(id)a3;
-- (int64_t)remoteSkipBackward:(id)a3;
-- (int64_t)remoteSkipForward:(id)a3;
-- (void)attachmentWillBeDeletedNotification:(id)a3;
-- (void)deviceWillLock:(id)a3;
+- (int64_t)remoteChangePlaybackPosition:(id)position;
+- (int64_t)remoteChangeRate:(id)rate;
+- (int64_t)remoteSkipBackward:(id)backward;
+- (int64_t)remoteSkipForward:(id)forward;
+- (void)attachmentWillBeDeletedNotification:(id)notification;
+- (void)deviceWillLock:(id)lock;
 - (void)notifyPaused;
 - (void)notifyPlaying;
 - (void)notifyStopped;
 - (void)pause;
 - (void)play;
-- (void)play:(id)a3;
-- (void)playerItemDidPlayToEndTime:(id)a3;
-- (void)prepareToPlayAttachment:(id)a3 completion:(id)a4;
+- (void)play:(id)play;
+- (void)playerItemDidPlayToEndTime:(id)time;
+- (void)prepareToPlayAttachment:(id)attachment completion:(id)completion;
 - (void)registerForRemoteControlEvents;
-- (void)seekToTime:(double)a3 completion:(id)a4;
-- (void)setCurrentAttachment:(id)a3;
-- (void)skipAheadByInterval:(double)a3 completion:(id)a4;
-- (void)skipBackByInterval:(double)a3 completion:(id)a4;
+- (void)seekToTime:(double)time completion:(id)completion;
+- (void)setCurrentAttachment:(id)attachment;
+- (void)skipAheadByInterval:(double)interval completion:(id)completion;
+- (void)skipBackByInterval:(double)interval completion:(id)completion;
 - (void)stop;
 - (void)togglePlayPause;
 - (void)unregisterForRemoteControlEvents;
 - (void)updateNowPlayingInfo;
-- (void)updateTime:(double)a3 duration:(double)a4;
+- (void)updateTime:(double)time duration:(double)duration;
 @end
 
 @implementation ICAudioController
@@ -35,13 +35,13 @@
 {
   if (sDidCreateSharedController == 1)
   {
-    v3 = [a1 sharedAudioController];
-    v4 = [v3 isPlaying];
+    sharedAudioController = [self sharedAudioController];
+    isPlaying = [sharedAudioController isPlaying];
 
-    if (v4)
+    if (isPlaying)
     {
-      v5 = [a1 sharedAudioController];
-      [v5 pause];
+      sharedAudioController2 = [self sharedAudioController];
+      [sharedAudioController2 pause];
     }
   }
 }
@@ -74,11 +74,11 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
   v2 = [(ICAudioController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_playerItemDidPlayToEndTime_ name:*MEMORY[0x1E6987A10] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_playerItemDidPlayToEndTime_ name:*MEMORY[0x1E6987A10] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_deviceWillLock_ name:*MEMORY[0x1E69DDB70] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_deviceWillLock_ name:*MEMORY[0x1E69DDB70] object:0];
   }
 
   return v2;
@@ -93,47 +93,47 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
 
   if (![(ICAudioController *)self registeredForRemoteControlEvents])
   {
-    v15 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-    v3 = [v15 pauseCommand];
-    [v3 addTarget:self action:sel_remotePause_];
+    mEMORY[0x1E69708D8] = [MEMORY[0x1E69708D8] sharedCommandCenter];
+    pauseCommand = [mEMORY[0x1E69708D8] pauseCommand];
+    [pauseCommand addTarget:self action:sel_remotePause_];
 
-    v4 = [v15 playCommand];
-    [v4 addTarget:self action:sel_remotePlay_];
+    playCommand = [mEMORY[0x1E69708D8] playCommand];
+    [playCommand addTarget:self action:sel_remotePlay_];
 
-    v5 = [v15 stopCommand];
-    [v5 addTarget:self action:sel_remoteStop_];
+    stopCommand = [mEMORY[0x1E69708D8] stopCommand];
+    [stopCommand addTarget:self action:sel_remoteStop_];
 
-    v6 = [v15 togglePlayPauseCommand];
-    [v6 addTarget:self action:sel_remoteTogglePlayPause_];
+    togglePlayPauseCommand = [mEMORY[0x1E69708D8] togglePlayPauseCommand];
+    [togglePlayPauseCommand addTarget:self action:sel_remoteTogglePlayPause_];
 
-    v7 = [v15 skipBackwardCommand];
-    [v7 setEnabled:1];
-    [v7 setPreferredIntervals:&unk_1F4FC3B28];
-    [v7 addTarget:self action:sel_remoteSkipBackward_];
-    v8 = [v15 skipForwardCommand];
+    skipBackwardCommand = [mEMORY[0x1E69708D8] skipBackwardCommand];
+    [skipBackwardCommand setEnabled:1];
+    [skipBackwardCommand setPreferredIntervals:&unk_1F4FC3B28];
+    [skipBackwardCommand addTarget:self action:sel_remoteSkipBackward_];
+    skipForwardCommand = [mEMORY[0x1E69708D8] skipForwardCommand];
 
-    [v8 setEnabled:1];
-    [v8 setPreferredIntervals:&unk_1F4FC3B40];
-    [v8 addTarget:self action:sel_remoteSkipForward_];
-    v9 = [v15 seekForwardCommand];
-    [v9 setEnabled:0];
+    [skipForwardCommand setEnabled:1];
+    [skipForwardCommand setPreferredIntervals:&unk_1F4FC3B40];
+    [skipForwardCommand addTarget:self action:sel_remoteSkipForward_];
+    seekForwardCommand = [mEMORY[0x1E69708D8] seekForwardCommand];
+    [seekForwardCommand setEnabled:0];
 
-    v10 = [v15 seekBackwardCommand];
-    [v10 setEnabled:0];
+    seekBackwardCommand = [mEMORY[0x1E69708D8] seekBackwardCommand];
+    [seekBackwardCommand setEnabled:0];
 
-    v11 = [v15 nextTrackCommand];
-    [v11 setEnabled:0];
+    nextTrackCommand = [mEMORY[0x1E69708D8] nextTrackCommand];
+    [nextTrackCommand setEnabled:0];
 
-    v12 = [v15 previousTrackCommand];
-    [v12 setEnabled:0];
+    previousTrackCommand = [mEMORY[0x1E69708D8] previousTrackCommand];
+    [previousTrackCommand setEnabled:0];
 
-    v13 = [v15 changePlaybackPositionCommand];
-    [v13 setEnabled:1];
-    [v13 addTarget:self action:sel_remoteChangePlaybackPosition_];
-    v14 = [v15 changePlaybackRateCommand];
-    [v14 setEnabled:1];
-    [v14 setSupportedPlaybackRates:&unk_1F4FC3B58];
-    [v14 addTarget:self action:sel_remoteChangeRate_];
+    changePlaybackPositionCommand = [mEMORY[0x1E69708D8] changePlaybackPositionCommand];
+    [changePlaybackPositionCommand setEnabled:1];
+    [changePlaybackPositionCommand addTarget:self action:sel_remoteChangePlaybackPosition_];
+    changePlaybackRateCommand = [mEMORY[0x1E69708D8] changePlaybackRateCommand];
+    [changePlaybackRateCommand setEnabled:1];
+    [changePlaybackRateCommand setSupportedPlaybackRates:&unk_1F4FC3B58];
+    [changePlaybackRateCommand addTarget:self action:sel_remoteChangeRate_];
     [(ICAudioController *)self setRegisteredForRemoteControlEvents:1];
   }
 }
@@ -147,62 +147,62 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
 
   if ([(ICAudioController *)self registeredForRemoteControlEvents])
   {
-    v11 = [MEMORY[0x1E69708D8] sharedCommandCenter];
-    v3 = [v11 pauseCommand];
-    [v3 removeTarget:self];
+    mEMORY[0x1E69708D8] = [MEMORY[0x1E69708D8] sharedCommandCenter];
+    pauseCommand = [mEMORY[0x1E69708D8] pauseCommand];
+    [pauseCommand removeTarget:self];
 
-    v4 = [v11 playCommand];
-    [v4 removeTarget:self];
+    playCommand = [mEMORY[0x1E69708D8] playCommand];
+    [playCommand removeTarget:self];
 
-    v5 = [v11 stopCommand];
-    [v5 removeTarget:self];
+    stopCommand = [mEMORY[0x1E69708D8] stopCommand];
+    [stopCommand removeTarget:self];
 
-    v6 = [v11 togglePlayPauseCommand];
-    [v6 removeTarget:self];
+    togglePlayPauseCommand = [mEMORY[0x1E69708D8] togglePlayPauseCommand];
+    [togglePlayPauseCommand removeTarget:self];
 
-    v7 = [v11 skipBackwardCommand];
-    [v7 removeTarget:self];
+    skipBackwardCommand = [mEMORY[0x1E69708D8] skipBackwardCommand];
+    [skipBackwardCommand removeTarget:self];
 
-    v8 = [v11 skipForwardCommand];
-    [v8 removeTarget:self];
+    skipForwardCommand = [mEMORY[0x1E69708D8] skipForwardCommand];
+    [skipForwardCommand removeTarget:self];
 
-    v9 = [v11 changePlaybackPositionCommand];
-    [v9 removeTarget:self];
+    changePlaybackPositionCommand = [mEMORY[0x1E69708D8] changePlaybackPositionCommand];
+    [changePlaybackPositionCommand removeTarget:self];
 
-    v10 = [v11 changePlaybackRateCommand];
-    [v10 removeTarget:self];
+    changePlaybackRateCommand = [mEMORY[0x1E69708D8] changePlaybackRateCommand];
+    [changePlaybackRateCommand removeTarget:self];
 
     [(ICAudioController *)self setRegisteredForRemoteControlEvents:0];
   }
 }
 
-- (void)setCurrentAttachment:(id)a3
+- (void)setCurrentAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   currentAttachment = self->_currentAttachment;
-  v10 = v5;
-  if (currentAttachment != v5)
+  v10 = attachmentCopy;
+  if (currentAttachment != attachmentCopy)
   {
     v7 = MEMORY[0x1E69B7468];
     if (currentAttachment)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 removeObserver:self name:*v7 object:self->_currentAttachment];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*v7 object:self->_currentAttachment];
     }
 
-    objc_storeStrong(&self->_currentAttachment, a3);
+    objc_storeStrong(&self->_currentAttachment, attachment);
     if (self->_currentAttachment)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel_attachmentWillBeDeletedNotification_ name:*v7 object:self->_currentAttachment];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_attachmentWillBeDeletedNotification_ name:*v7 object:self->_currentAttachment];
     }
   }
 }
 
 - (BOOL)isPlaying
 {
-  v2 = [(ICAudioController *)self currentPlayer];
-  [v2 rate];
+  currentPlayer = [(ICAudioController *)self currentPlayer];
+  [currentPlayer rate];
   v4 = v3 > 0.0;
 
   return v4;
@@ -210,11 +210,11 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
 
 - (void)play
 {
-  v3 = [(ICAudioController *)self currentAsset];
-  v4 = v3;
-  if (v3)
+  currentAsset = [(ICAudioController *)self currentAsset];
+  v4 = currentAsset;
+  if (currentAsset)
   {
-    [v3 duration];
+    [currentAsset duration];
   }
 
   else
@@ -224,11 +224,11 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
 
   Seconds = CMTimeGetSeconds(&time);
 
-  v6 = [(ICAudioController *)self currentPlayer];
-  v7 = v6;
-  if (v6)
+  currentPlayer = [(ICAudioController *)self currentPlayer];
+  v7 = currentPlayer;
+  if (currentPlayer)
   {
-    [v6 currentTime];
+    [currentPlayer currentTime];
   }
 
   else
@@ -252,10 +252,10 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
   }
 
   [(ICAudioController *)self registerForRemoteControlEvents];
-  v10 = [MEMORY[0x1E6958460] sharedInstance];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
   v11 = *MEMORY[0x1E6958068];
   v18 = 0;
-  v12 = [v10 setCategory:v11 error:&v18];
+  v12 = [mEMORY[0x1E6958460] setCategory:v11 error:&v18];
   v13 = v18;
   if ((v12 & 1) == 0)
   {
@@ -267,7 +267,7 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
   }
 
   v17 = 0;
-  if (([v10 setActive:1 error:&v17] & 1) == 0)
+  if (([mEMORY[0x1E6958460] setActive:1 error:&v17] & 1) == 0)
   {
     v15 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -276,8 +276,8 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
     }
   }
 
-  v16 = [(ICAudioController *)self currentPlayer];
-  [v16 play];
+  currentPlayer2 = [(ICAudioController *)self currentPlayer];
+  [currentPlayer2 play];
 
   [(ICAudioController *)self notifyPlaying];
   [(ICAudioController *)self updateNowPlayingInfo];
@@ -285,9 +285,9 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
 
 - (void)pause
 {
-  v3 = [(ICAudioController *)self currentPlayer];
+  currentPlayer = [(ICAudioController *)self currentPlayer];
 
-  if (v3)
+  if (currentPlayer)
   {
     if ([MEMORY[0x1E69DC938] ic_isLocked])
     {
@@ -297,8 +297,8 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
 
     else
     {
-      v4 = [(ICAudioController *)self currentPlayer];
-      [v4 pause];
+      currentPlayer2 = [(ICAudioController *)self currentPlayer];
+      [currentPlayer2 pause];
 
       [(ICAudioController *)self notifyPaused];
 
@@ -324,34 +324,34 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
 
 - (void)stop
 {
-  v3 = [(ICAudioController *)self currentPlayer];
+  currentPlayer = [(ICAudioController *)self currentPlayer];
 
-  if (v3)
+  if (currentPlayer)
   {
-    v4 = [(ICAudioController *)self currentPlayer];
-    [v4 pause];
+    currentPlayer2 = [(ICAudioController *)self currentPlayer];
+    [currentPlayer2 pause];
 
     [(ICAudioController *)self notifyStopped];
-    v5 = [(ICAudioController *)self playbackTimeObserver];
+    playbackTimeObserver = [(ICAudioController *)self playbackTimeObserver];
 
-    if (v5)
+    if (playbackTimeObserver)
     {
-      v6 = [(ICAudioController *)self currentPlayer];
-      v7 = [(ICAudioController *)self playbackTimeObserver];
-      [v6 removeTimeObserver:v7];
+      currentPlayer3 = [(ICAudioController *)self currentPlayer];
+      playbackTimeObserver2 = [(ICAudioController *)self playbackTimeObserver];
+      [currentPlayer3 removeTimeObserver:playbackTimeObserver2];
 
       [(ICAudioController *)self setPlaybackTimeObserver:0];
     }
 
     [(ICAudioController *)self setCurrentPlayer:0];
     [(ICAudioController *)self setCurrentAttachment:0];
-    v8 = [MEMORY[0x1E6970850] defaultCenter];
-    [v8 setNowPlayingInfo:0];
+    defaultCenter = [MEMORY[0x1E6970850] defaultCenter];
+    [defaultCenter setNowPlayingInfo:0];
 
     [(ICAudioController *)self unregisterForRemoteControlEvents];
-    v9 = [MEMORY[0x1E6958460] sharedInstance];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
     v11 = 0;
-    if (([v9 setActive:0 error:&v11] & 1) == 0)
+    if (([mEMORY[0x1E6958460] setActive:0 error:&v11] & 1) == 0)
     {
       v10 = os_log_create("com.apple.notes", "UI");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -362,35 +362,35 @@ void __42__ICAudioController_sharedAudioController__block_invoke()
   }
 }
 
-- (void)prepareToPlayAttachment:(id)a3 completion:(id)a4
+- (void)prepareToPlayAttachment:(id)attachment completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 attachmentType] == 4)
+  attachmentCopy = attachment;
+  completionCopy = completion;
+  if ([attachmentCopy attachmentType] == 4)
   {
-    v8 = [(ICAudioController *)self currentAttachment];
+    currentAttachment = [(ICAudioController *)self currentAttachment];
 
-    if (v8 != v6)
+    if (currentAttachment != attachmentCopy)
     {
-      v9 = [(ICAudioController *)self currentPlayer];
-      [v9 pause];
+      currentPlayer = [(ICAudioController *)self currentPlayer];
+      [currentPlayer pause];
 
       [(ICAudioController *)self notifyStopped];
     }
 
     [(ICAudioController *)self setCurrentAttachment:0];
-    v10 = [v6 managedObjectContext];
-    v11 = [v6 attachmentModel];
+    managedObjectContext = [attachmentCopy managedObjectContext];
+    attachmentModel = [attachmentCopy attachmentModel];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__ICAudioController_prepareToPlayAttachment_completion___block_invoke;
     v13[3] = &unk_1E846C828;
-    v14 = v10;
-    v15 = self;
-    v16 = v6;
-    v17 = v7;
-    v12 = v10;
-    [v11 assetWithCompletion:v13];
+    v14 = managedObjectContext;
+    selfCopy = self;
+    v16 = attachmentCopy;
+    v17 = completionCopy;
+    v12 = managedObjectContext;
+    [attachmentModel assetWithCompletion:v13];
   }
 }
 
@@ -588,16 +588,16 @@ void __56__ICAudioController_prepareToPlayAttachment_completion___block_invoke_3
   }
 }
 
-- (void)play:(id)a3
+- (void)play:(id)play
 {
-  v4 = a3;
+  playCopy = play;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __26__ICAudioController_play___block_invoke;
   v6[3] = &unk_1E8468F80;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = playCopy;
+  selfCopy = self;
+  v5 = playCopy;
   [(ICAudioController *)self prepareToPlayAttachment:v5 completion:v6];
 }
 
@@ -615,34 +615,34 @@ uint64_t __26__ICAudioController_play___block_invoke(uint64_t a1)
   return [*(a1 + 40) play];
 }
 
-- (void)seekToTime:(double)a3 completion:(id)a4
+- (void)seekToTime:(double)time completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ICAudioController *)self currentPlayer];
+  completionCopy = completion;
+  currentPlayer = [(ICAudioController *)self currentPlayer];
 
-  if (v7)
+  if (currentPlayer)
   {
-    v8 = [(ICAudioController *)self currentPlayer];
-    CMTimeMakeWithSeconds(&v15, a3, 600);
+    currentPlayer2 = [(ICAudioController *)self currentPlayer];
+    CMTimeMakeWithSeconds(&v15, time, 600);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __43__ICAudioController_seekToTime_completion___block_invoke;
     v13[3] = &unk_1E846C850;
     v13[4] = self;
-    v14 = v6;
+    v14 = completionCopy;
     v11 = *MEMORY[0x1E6960CC0];
     v12 = *(MEMORY[0x1E6960CC0] + 16);
     v9 = v11;
     v10 = v12;
-    [v8 seekToTime:&v15 toleranceBefore:&v11 toleranceAfter:&v9 completionHandler:v13];
+    [currentPlayer2 seekToTime:&v15 toleranceBefore:&v11 toleranceAfter:&v9 completionHandler:v13];
   }
 
   else
   {
-    [(ICAudioController *)self setPendingSeekTime:a3];
-    if (v6)
+    [(ICAudioController *)self setPendingSeekTime:time];
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -665,16 +665,16 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
   return result;
 }
 
-- (void)skipAheadByInterval:(double)a3 completion:(id)a4
+- (void)skipAheadByInterval:(double)interval completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[ICAudioController sharedAudioController];
-  v8 = [v7 currentPlayer];
-  v9 = [v8 currentItem];
-  v10 = v9;
-  if (v9)
+  currentPlayer = [v7 currentPlayer];
+  currentItem = [currentPlayer currentItem];
+  v10 = currentItem;
+  if (currentItem)
   {
-    [v9 duration];
+    [currentItem duration];
   }
 
   else
@@ -685,11 +685,11 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
   Seconds = CMTimeGetSeconds(&time);
 
   v12 = +[ICAudioController sharedAudioController];
-  v13 = [v12 currentPlayer];
-  v14 = v13;
-  if (v13)
+  currentPlayer2 = [v12 currentPlayer];
+  v14 = currentPlayer2;
+  if (currentPlayer2)
   {
-    [v13 currentTime];
+    [currentPlayer2 currentTime];
   }
 
   else
@@ -697,7 +697,7 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
     memset(&time, 0, sizeof(time));
   }
 
-  v15 = CMTimeGetSeconds(&time) + a3;
+  v15 = CMTimeGetSeconds(&time) + interval;
 
   if (Seconds >= v15)
   {
@@ -709,17 +709,17 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
     v16 = Seconds;
   }
 
-  [(ICAudioController *)self seekToTime:v6 completion:v16];
+  [(ICAudioController *)self seekToTime:completionCopy completion:v16];
 }
 
-- (void)skipBackByInterval:(double)a3 completion:(id)a4
+- (void)skipBackByInterval:(double)interval completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ICAudioController *)self currentPlayer];
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  currentPlayer = [(ICAudioController *)self currentPlayer];
+  v8 = currentPlayer;
+  if (currentPlayer)
   {
-    [v7 currentTime];
+    [currentPlayer currentTime];
   }
 
   else
@@ -727,71 +727,71 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
     memset(&time, 0, sizeof(time));
   }
 
-  v9 = CMTimeGetSeconds(&time) - a3;
+  v9 = CMTimeGetSeconds(&time) - interval;
 
-  [(ICAudioController *)self seekToTime:v6 completion:fmax(v9, 0.0)];
+  [(ICAudioController *)self seekToTime:completionCopy completion:fmax(v9, 0.0)];
 }
 
-- (int64_t)remoteSkipBackward:(id)a3
+- (int64_t)remoteSkipBackward:(id)backward
 {
-  [a3 interval];
+  [backward interval];
   [(ICAudioController *)self skipBackByInterval:0 completion:?];
   return 0;
 }
 
-- (int64_t)remoteSkipForward:(id)a3
+- (int64_t)remoteSkipForward:(id)forward
 {
-  [a3 interval];
+  [forward interval];
   [(ICAudioController *)self skipAheadByInterval:0 completion:?];
   return 0;
 }
 
-- (int64_t)remoteChangePlaybackPosition:(id)a3
+- (int64_t)remoteChangePlaybackPosition:(id)position
 {
-  [a3 positionTime];
+  [position positionTime];
   [(ICAudioController *)self seekToTime:0 completion:?];
   return 0;
 }
 
-- (int64_t)remoteChangeRate:(id)a3
+- (int64_t)remoteChangeRate:(id)rate
 {
-  [a3 playbackRate];
+  [rate playbackRate];
   v5 = v4;
-  v6 = [(ICAudioController *)self currentPlayer];
+  currentPlayer = [(ICAudioController *)self currentPlayer];
   LODWORD(v7) = v5;
-  [v6 setRate:v7];
+  [currentPlayer setRate:v7];
 
   return 0;
 }
 
-- (void)attachmentWillBeDeletedNotification:(id)a3
+- (void)attachmentWillBeDeletedNotification:(id)notification
 {
-  v6 = [a3 object];
-  v4 = [(ICAudioController *)self currentAttachment];
+  object = [notification object];
+  currentAttachment = [(ICAudioController *)self currentAttachment];
 
-  v5 = v6;
-  if (v6 == v4)
+  v5 = object;
+  if (object == currentAttachment)
   {
     [(ICAudioController *)self stop];
     [(ICAudioController *)self setCurrentAttachment:0];
-    v5 = v6;
+    v5 = object;
   }
 }
 
-- (void)playerItemDidPlayToEndTime:(id)a3
+- (void)playerItemDidPlayToEndTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [timeCopy object];
 
   v10 = ICDynamicCast();
 
   v6 = v10;
   if (v10)
   {
-    v7 = [(ICAudioController *)self currentPlayer];
-    v8 = [v7 currentItem];
-    v9 = [v10 isEqual:v8];
+    currentPlayer = [(ICAudioController *)self currentPlayer];
+    currentItem = [currentPlayer currentItem];
+    v9 = [v10 isEqual:currentItem];
 
     v6 = v10;
     if (v9)
@@ -802,7 +802,7 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
   }
 }
 
-- (void)deviceWillLock:(id)a3
+- (void)deviceWillLock:(id)lock
 {
   if (![(ICAudioController *)self isPlaying])
   {
@@ -813,38 +813,38 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
 
 - (void)notifyPlaying
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [(ICAudioController *)self currentAttachment];
-  [v4 postNotificationName:@"ICAudioPlaybackPlayNotification" object:v3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  currentAttachment = [(ICAudioController *)self currentAttachment];
+  [defaultCenter postNotificationName:@"ICAudioPlaybackPlayNotification" object:currentAttachment];
 }
 
 - (void)notifyPaused
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [(ICAudioController *)self currentAttachment];
-  [v4 postNotificationName:@"ICAudioPlaybackPauseNotification" object:v3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  currentAttachment = [(ICAudioController *)self currentAttachment];
+  [defaultCenter postNotificationName:@"ICAudioPlaybackPauseNotification" object:currentAttachment];
 }
 
 - (void)notifyStopped
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [(ICAudioController *)self currentAttachment];
-  [v4 postNotificationName:@"ICAudioPlaybackStopNotification" object:v3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  currentAttachment = [(ICAudioController *)self currentAttachment];
+  [defaultCenter postNotificationName:@"ICAudioPlaybackStopNotification" object:currentAttachment];
 }
 
-- (void)updateTime:(double)a3 duration:(double)a4
+- (void)updateTime:(double)time duration:(double)duration
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [(ICAudioController *)self currentAttachment];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  currentAttachment = [(ICAudioController *)self currentAttachment];
   v12[0] = @"ICAudioPlaybackNotificationTimeKey";
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:time];
   v12[1] = @"ICAudioPlaybackNotificationDurationKey";
   v13[0] = v9;
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v13[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  [v7 postNotificationName:@"ICAudioPlaybackTimeChangedNotification" object:v8 userInfo:v11];
+  [defaultCenter postNotificationName:@"ICAudioPlaybackTimeChangedNotification" object:currentAttachment userInfo:v11];
 }
 
 - (void)updateNowPlayingInfo
@@ -852,39 +852,39 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
   v31[4] = *MEMORY[0x1E69E9840];
   if ([MEMORY[0x1E69DC938] ic_isLocked] && !-[ICAudioController isPlaying](self, "isPlaying"))
   {
-    v28 = [MEMORY[0x1E6970850] defaultCenter];
-    [v28 setNowPlayingInfo:0];
+    defaultCenter = [MEMORY[0x1E6970850] defaultCenter];
+    [defaultCenter setNowPlayingInfo:0];
   }
 
   else
   {
-    v3 = [(ICAudioController *)self currentAttachment];
-    v4 = [v3 title];
-    v5 = v4;
-    if (v4)
+    currentAttachment = [(ICAudioController *)self currentAttachment];
+    title = [currentAttachment title];
+    v5 = title;
+    if (title)
     {
-      v6 = v4;
+      v6 = title;
     }
 
     else
     {
-      v7 = [(ICAudioController *)self currentAttachment];
-      v8 = [v7 defaultTitle];
-      v9 = v8;
+      currentAttachment2 = [(ICAudioController *)self currentAttachment];
+      defaultTitle = [currentAttachment2 defaultTitle];
+      v9 = defaultTitle;
       v10 = &stru_1F4F94F00;
-      if (v8)
+      if (defaultTitle)
       {
-        v10 = v8;
+        v10 = defaultTitle;
       }
 
       v6 = v10;
     }
 
-    v11 = [(ICAudioController *)self currentAsset];
-    v12 = v11;
-    if (v11)
+    currentAsset = [(ICAudioController *)self currentAsset];
+    v12 = currentAsset;
+    if (currentAsset)
     {
-      [v11 duration];
+      [currentAsset duration];
     }
 
     else
@@ -894,11 +894,11 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
 
     Seconds = CMTimeGetSeconds(&time);
 
-    v14 = [(ICAudioController *)self currentPlayer];
-    v15 = v14;
-    if (v14)
+    currentPlayer = [(ICAudioController *)self currentPlayer];
+    v15 = currentPlayer;
+    if (currentPlayer)
     {
-      [v14 currentTime];
+      [currentPlayer currentTime];
     }
 
     else
@@ -908,8 +908,8 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
 
     v16 = CMTimeGetSeconds(&time);
 
-    v17 = [(ICAudioController *)self currentPlayer];
-    [v17 rate];
+    currentPlayer2 = [(ICAudioController *)self currentPlayer];
+    [currentPlayer2 rate];
     v19 = v18;
 
     v20 = *MEMORY[0x1E696FB88];
@@ -927,8 +927,8 @@ uint64_t __43__ICAudioController_seekToTime_completion___block_invoke(uint64_t a
     v25 = [MEMORY[0x1E696AD98] numberWithFloat:v24];
     v31[3] = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:4];
-    v27 = [MEMORY[0x1E6970850] defaultCenter];
-    [v27 setNowPlayingInfo:v26];
+    defaultCenter2 = [MEMORY[0x1E6970850] defaultCenter];
+    [defaultCenter2 setNowPlayingInfo:v26];
   }
 }
 

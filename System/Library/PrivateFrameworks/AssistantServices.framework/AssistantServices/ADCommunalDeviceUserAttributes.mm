@@ -1,9 +1,9 @@
 @interface ADCommunalDeviceUserAttributes
-+ (id)saCopy:(id)a3;
-- (ADCommunalDeviceUserAttributes)initWithAttribute:(unint64_t)a3;
++ (id)saCopy:(id)copy;
+- (ADCommunalDeviceUserAttributes)initWithAttribute:(unint64_t)attribute;
 - (id)attributes;
-- (void)addAttribute:(unint64_t)a3;
-- (void)deleteAttribute:(unint64_t)a3;
+- (void)addAttribute:(unint64_t)attribute;
+- (void)deleteAttribute:(unint64_t)attribute;
 @end
 
 @implementation ADCommunalDeviceUserAttributes
@@ -15,21 +15,21 @@
   return v2;
 }
 
-- (void)deleteAttribute:(unint64_t)a3
+- (void)deleteAttribute:(unint64_t)attribute
 {
   attributes = self->_attributes;
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:attribute];
   [(NSMutableArray *)attributes removeObject:v4];
 }
 
-- (void)addAttribute:(unint64_t)a3
+- (void)addAttribute:(unint64_t)attribute
 {
   attributes = self->_attributes;
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:attribute];
   [(NSMutableArray *)attributes addObject:v4];
 }
 
-- (ADCommunalDeviceUserAttributes)initWithAttribute:(unint64_t)a3
+- (ADCommunalDeviceUserAttributes)initWithAttribute:(unint64_t)attribute
 {
   v10.receiver = self;
   v10.super_class = ADCommunalDeviceUserAttributes;
@@ -41,24 +41,24 @@
     v4->_attributes = v5;
 
     v7 = v4->_attributes;
-    v8 = [NSNumber numberWithUnsignedInteger:a3];
+    v8 = [NSNumber numberWithUnsignedInteger:attribute];
     [(NSMutableArray *)v7 addObject:v8];
   }
 
   return v4;
 }
 
-+ (id)saCopy:(id)a3
++ (id)saCopy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
-    v3 = [a3 attributes];
+    attributes = [copy attributes];
     v4 = objc_alloc_init(NSMutableArray);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = attributes;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {

@@ -1,32 +1,32 @@
 @interface PKPaymentPassAMPEnrollmentViewController
-+ (void)shouldOfferAMPEnrollmentForPass:(id)a3 provisioningController:(id)a4 withCompletion:(id)a5;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
++ (void)shouldOfferAMPEnrollmentForPass:(id)pass provisioningController:(id)controller withCompletion:(id)completion;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (CGSize)_snapshotSize;
-- (PKPaymentPassAMPEnrollmentViewController)initWithProvisioningController:(id)a3 paymentPass:(id)a4 context:(int64_t)a5;
+- (PKPaymentPassAMPEnrollmentViewController)initWithProvisioningController:(id)controller paymentPass:(id)pass context:(int64_t)context;
 - (PKPaymentPassAMPEnrollmentViewControllerFlowDelegate)flowItemDelegate;
-- (id)_createBodyImage:(id)a3;
-- (void)_displayTermsWithCompletion:(id)a3;
+- (id)_createBodyImage:(id)image;
+- (void)_displayTermsWithCompletion:(id)completion;
 - (void)_done;
-- (void)_performAMPEnrollmentWithPass:(id)a3 asDefault:(BOOL)a4 completion:(id)a5;
+- (void)_performAMPEnrollmentWithPass:(id)pass asDefault:(BOOL)default completion:(id)completion;
 - (void)_performTerms;
 - (void)_updateBodyImage;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)loadView;
 - (void)proceedToNextScreen;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentPassAMPEnrollmentViewController
 
-+ (void)shouldOfferAMPEnrollmentForPass:(id)a3 provisioningController:(id)a4 withCompletion:(id)a5
++ (void)shouldOfferAMPEnrollmentForPass:(id)pass provisioningController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [MEMORY[0x1E69B8310] sharedManager];
-  v9 = [v6 paymentPass];
-  v10 = [v8 shouldOfferAMPEnrollmentForPaymentPass:v9];
+  passCopy = pass;
+  completionCopy = completion;
+  mEMORY[0x1E69B8310] = [MEMORY[0x1E69B8310] sharedManager];
+  paymentPass = [passCopy paymentPass];
+  v10 = [mEMORY[0x1E69B8310] shouldOfferAMPEnrollmentForPaymentPass:paymentPass];
 
   if (v10)
   {
@@ -34,22 +34,22 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentForPass_provisioningController_withCompletion___block_invoke;
     aBlock[3] = &unk_1E8013FF8;
-    v18 = v7;
+    v18 = completionCopy;
     v11 = _Block_copy(aBlock);
-    v12 = [v6 paymentPass];
+    paymentPass2 = [passCopy paymentPass];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentForPass_provisioningController_withCompletion___block_invoke_32;
     v14[3] = &unk_1E801BBA0;
-    v15 = v6;
+    v15 = passCopy;
     v16 = v11;
     v13 = v11;
-    [v8 enrollmentStatusForPaymentPass:v12 completion:v14 progress:0];
+    [mEMORY[0x1E69B8310] enrollmentStatusForPaymentPass:paymentPass2 completion:v14 progress:0];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -87,18 +87,18 @@ void __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentFor
   (*(*(a1 + 40) + 16))(*(a1 + 40), v10, v6);
 }
 
-- (PKPaymentPassAMPEnrollmentViewController)initWithProvisioningController:(id)a3 paymentPass:(id)a4 context:(int64_t)a5
+- (PKPaymentPassAMPEnrollmentViewController)initWithProvisioningController:(id)controller paymentPass:(id)pass context:(int64_t)context
 {
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  passCopy = pass;
   v14.receiver = self;
   v14.super_class = PKPaymentPassAMPEnrollmentViewController;
-  v11 = [(PKExplanationViewController *)&v14 initWithContext:a5];
+  v11 = [(PKExplanationViewController *)&v14 initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_provisioningController, a3);
-    objc_storeStrong(&v12->_pass, a4);
+    objc_storeStrong(&v11->_provisioningController, controller);
+    objc_storeStrong(&v12->_pass, pass);
   }
 
   return v12;
@@ -110,94 +110,94 @@ void __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentFor
   v28.receiver = self;
   v28.super_class = PKPaymentPassAMPEnrollmentViewController;
   [(PKExplanationViewController *)&v28 loadView];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v3 dockView];
-  v25 = [v4 footerView];
-  v5 = [(PKSecureElementPass *)self->_pass organizationName];
-  v27 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro.isa, &stru_1F3BD5BF0.isa, v5);
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  organizationName = [(PKSecureElementPass *)self->_pass organizationName];
+  v27 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro.isa, &stru_1F3BD5BF0.isa, organizationName);
 
-  [v3 setTitleText:v27];
-  v6 = [v4 primaryButton];
+  [explanationView setTitleText:v27];
+  primaryButton = [dockView primaryButton];
   v7 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro_0.isa);
-  [v6 setTitle:v7 forState:0];
+  [primaryButton setTitle:v7 forState:0];
 
-  [v3 setForceShowSetupLaterButton:1];
-  v8 = [(PKSecureElementPass *)self->_pass organizationName];
-  v26 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro_1.isa, &stru_1F3BD5BF0.isa, v8);
+  [explanationView setForceShowSetupLaterButton:1];
+  organizationName2 = [(PKSecureElementPass *)self->_pass organizationName];
+  v26 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro_1.isa, &stru_1F3BD5BF0.isa, organizationName2);
 
-  [v3 setBodyText:v26];
-  v9 = [v4 buttonExplanationTextView];
-  v10 = [(PKSecureElementPass *)self->_pass organizationName];
-  v11 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro_2.isa, &stru_1F3BD5BF0.isa, v10);
+  [explanationView setBodyText:v26];
+  buttonExplanationTextView = [dockView buttonExplanationTextView];
+  organizationName3 = [(PKSecureElementPass *)self->_pass organizationName];
+  v11 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro_2.isa, &stru_1F3BD5BF0.isa, organizationName3);
 
-  v12 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v13 = [v12 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v13 = [defaultParagraphStyle mutableCopy];
 
   [v13 setLineBreakMode:0];
   [v13 setAlignment:1];
   v31[0] = *MEMORY[0x1E69DB648];
-  v14 = [v9 font];
+  font = [buttonExplanationTextView font];
   v15 = *MEMORY[0x1E69DB688];
-  v32[0] = v14;
+  v32[0] = font;
   v32[1] = v13;
   v16 = *MEMORY[0x1E69DB650];
   v31[1] = v15;
   v31[2] = v16;
-  v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v32[2] = v17;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v32[2] = secondaryLabelColor;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:3];
 
   v19 = PKAttributedStringByParsingLinksInString();
-  [v9 setAttributedText:v19];
-  [v9 setDataDetectorTypes:2];
-  [v9 setDelegate:self];
+  [buttonExplanationTextView setAttributedText:v19];
+  [buttonExplanationTextView setDataDetectorTypes:2];
+  [buttonExplanationTextView setDelegate:self];
   v29 = v16;
-  v20 = [MEMORY[0x1E69DC888] linkColor];
-  v30 = v20;
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
+  v30 = linkColor;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-  [v9 setLinkTextAttributes:v21];
+  [buttonExplanationTextView setLinkTextAttributes:v21];
 
-  v22 = [v25 setUpLaterButton];
+  setUpLaterButton = [footerView setUpLaterButton];
   v23 = PKLocalizedPaymentString(&cfstr_PaymentAmpEnro_3.isa);
-  [v22 setTitle:v23 forState:0];
+  [setUpLaterButton setTitle:v23 forState:0];
 
-  [v3 setImage:0];
+  [explanationView setImage:0];
   [(PKPaymentPassAMPEnrollmentViewController *)self _updateBodyImage];
-  [v3 setShowPrivacyView:0];
-  [v3 setDelegate:self];
-  [v3 showCheckmark:0 animated:0];
-  [v3 setNeedsLayout];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
+  [explanationView showCheckmark:0 animated:0];
+  [explanationView setNeedsLayout];
   [(PKExplanationViewController *)self setShowCancelButton:0];
   [(PKExplanationViewController *)self setShowDoneButton:0];
-  v24 = [(PKPaymentPassAMPEnrollmentViewController *)self navigationItem];
-  [v24 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKPaymentPassAMPEnrollmentViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentPassAMPEnrollmentViewController;
-  [(PKPaymentPassAMPEnrollmentViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentPassAMPEnrollmentViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v5 = [v4 dockView];
-  [v5 setButtonsEnabled:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:0];
 
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
-  v6 = [(PKSecureElementPass *)self->_pass paymentPass];
-  [(PKPaymentPassAMPEnrollmentViewController *)self _performAMPEnrollmentWithPass:v6 asDefault:0 completion:0];
+  paymentPass = [(PKSecureElementPass *)self->_pass paymentPass];
+  [(PKPaymentPassAMPEnrollmentViewController *)self _performAMPEnrollmentWithPass:paymentPass asDefault:0 completion:0];
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v5 = [v4 dockView];
-  [v5 setButtonsEnabled:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:0];
 
   reporter = self->_reporter;
   v8 = *MEMORY[0x1E69BB158];
@@ -224,9 +224,9 @@ void __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentFor
   [(PKPaymentPassAMPEnrollmentViewController *)self _displayTermsWithCompletion:v2];
 }
 
-- (void)_displayTermsWithCompletion:(id)a3
+- (void)_displayTermsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x1E698C7D8] bagForProfile:*MEMORY[0x1E69B9378] profileVersion:*MEMORY[0x1E69B9380]];
   v6 = [v5 URLForKey:@"alipay-terms-url"];
   v48[0] = 0;
@@ -254,12 +254,12 @@ void __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentFor
     aBlock[2] = __72__PKPaymentPassAMPEnrollmentViewController__displayTermsWithCompletion___block_invoke;
     aBlock[3] = &unk_1E80111D0;
     objc_copyWeak(&v46, &location);
-    v45 = v4;
+    v45 = completionCopy;
     v13 = _Block_copy(aBlock);
     v14 = objc_alloc_init(MEMORY[0x1E69DD258]);
     v15 = [[PKExplanationView alloc] initWithContext:[(PKExplanationViewController *)self context] delegate:self];
-    v16 = [(PKExplanationView *)v15 dockView];
-    [v16 setPrimaryButton:0];
+    dockView = [(PKExplanationView *)v15 dockView];
+    [dockView setPrimaryButton:0];
 
     v17 = PKProvisioningBackgroundColor();
     [(PKExplanationView *)v15 setBackgroundColor:v17];
@@ -272,29 +272,29 @@ void __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentFor
     [v14 setModalInPresentation:1];
     v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__done];
     [v19 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
-    v20 = [v14 navigationItem];
-    [v20 setRightBarButtonItem:v19];
+    navigationItem = [v14 navigationItem];
+    [navigationItem setRightBarButtonItem:v19];
 
-    v21 = [v14 navigationItem];
-    [v21 setHidesBackButton:1];
-    v34 = v4;
+    navigationItem2 = [v14 navigationItem];
+    [navigationItem2 setHidesBackButton:1];
+    v34 = completionCopy;
     v35 = v13;
     v33 = v5;
 
-    v22 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v23 = [v22 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v23 = [defaultParagraphStyle mutableCopy];
 
     [v23 setLineBreakMode:0];
     [v23 setAlignment:1];
     v24 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v24 configureWithOpaqueBackground];
-    v25 = [v14 navigationItem];
-    [v25 setStandardAppearance:v24];
+    navigationItem3 = [v14 navigationItem];
+    [navigationItem3 setStandardAppearance:v24];
 
-    v26 = [(RemoteUIController *)self->_termsController loader];
-    v27 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-    v28 = [v27 context];
-    [v26 setAllowNonSecureHTTP:{objc_msgSend(v28, "devSigned")}];
+    loader = [(RemoteUIController *)self->_termsController loader];
+    webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+    context = [webService context];
+    [loader setAllowNonSecureHTTP:{objc_msgSend(context, "devSigned")}];
 
     v29 = self->_termsController;
     v37[0] = MEMORY[0x1E69E9820];
@@ -305,7 +305,7 @@ void __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentFor
     v38 = v7;
     v30 = v15;
     v39 = v30;
-    v40 = self;
+    selfCopy = self;
     v31 = v14;
     v41 = v31;
     v32 = v35;
@@ -316,13 +316,13 @@ void __114__PKPaymentPassAMPEnrollmentViewController_shouldOfferAMPEnrollmentFor
     objc_destroyWeak(&v46);
     objc_destroyWeak(&location);
     v5 = v33;
-    v4 = v34;
+    completionCopy = v34;
     v8 = v36;
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -414,8 +414,8 @@ void __72__PKPaymentPassAMPEnrollmentViewController__displayTermsWithCompletion_
 
 - (void)_done
 {
-  v3 = [(PKPaymentPassAMPEnrollmentViewController *)self navigationController];
-  [v3 _pk_popToViewController:self animated:1];
+  navigationController = [(PKPaymentPassAMPEnrollmentViewController *)self navigationController];
+  [navigationController _pk_popToViewController:self animated:1];
 }
 
 - (CGSize)_snapshotSize
@@ -427,11 +427,11 @@ void __72__PKPaymentPassAMPEnrollmentViewController__displayTermsWithCompletion_
   return result;
 }
 
-- (id)_createBodyImage:(id)a3
+- (id)_createBodyImage:(id)image
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  imageCopy = image;
+  v4 = [imageCopy count];
   if (v4)
   {
     v5 = (v4 - 1) * 25.0 + v4 * 48.0;
@@ -443,7 +443,7 @@ void __72__PKPaymentPassAMPEnrollmentViewController__displayTermsWithCompletion_
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v3;
+    v7 = imageCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -536,11 +536,11 @@ void __60__PKPaymentPassAMPEnrollmentViewController__updateBodyImage__block_invo
   [v3 setBodyImage:v2];
 }
 
-- (void)_performAMPEnrollmentWithPass:(id)a3 asDefault:(BOOL)a4 completion:(id)a5
+- (void)_performAMPEnrollmentWithPass:(id)pass asDefault:(BOOL)default completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69B8310] sharedManager];
+  passCopy = pass;
+  completionCopy = completion;
+  mEMORY[0x1E69B8310] = [MEMORY[0x1E69B8310] sharedManager];
   v11 = AMPEnrollmentDismissedKeyForPass();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -555,15 +555,15 @@ void __60__PKPaymentPassAMPEnrollmentViewController__updateBodyImage__block_invo
   v18[1] = 3221225472;
   v18[2] = __95__PKPaymentPassAMPEnrollmentViewController__performAMPEnrollmentWithPass_asDefault_completion___block_invoke_2;
   v18[3] = &unk_1E801BBF0;
-  v19 = v10;
-  v20 = v8;
-  v23 = a4;
+  v19 = mEMORY[0x1E69B8310];
+  v20 = passCopy;
+  defaultCopy = default;
   v21 = v13;
-  v22 = v9;
-  v14 = v9;
+  v22 = completionCopy;
+  v14 = completionCopy;
   v15 = v13;
-  v16 = v8;
-  v17 = v10;
+  v16 = passCopy;
+  v17 = mEMORY[0x1E69B8310];
   [v17 enrollmentStatusForPaymentPass:v16 completion:v18 progress:v15];
 }
 
@@ -632,10 +632,10 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = [a4 absoluteString];
-  if ([v7 isEqualToString:@"OPEN_TERMS_AND_CONDITIONS"])
+  absoluteString = [l absoluteString];
+  if ([absoluteString isEqualToString:@"OPEN_TERMS_AND_CONDITIONS"])
   {
     [(PKExplanationViewController *)self showSpinner:1];
     [(PKPaymentPassAMPEnrollmentViewController *)self _performTerms];
@@ -644,13 +644,13 @@ LABEL_9:
   return 0;
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKPaymentPassAMPEnrollmentViewController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(PKPaymentPassAMPEnrollmentViewController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  [(PKExplanationViewController *)self showSpinner:v4];
+  [(PKExplanationViewController *)self showSpinner:iCopy];
 }
 
 - (PKPaymentPassAMPEnrollmentViewControllerFlowDelegate)flowItemDelegate

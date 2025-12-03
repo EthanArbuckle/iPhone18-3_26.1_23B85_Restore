@@ -1,33 +1,33 @@
 @interface CDPDSecureBackupProxyImpl
-- (BOOL)_createAndRegisterBackupPublicKeyInSOS:(id)a3 error:(id *)a4;
-- (BOOL)disableWithInfo:(id)a3 error:(id *)a4;
-- (BOOL)enableWithInfo:(id)a3 error:(id *)a4;
-- (BOOL)isRecoveryKeySet:(id *)a3;
-- (BOOL)setRecoveryKeyInSOS:(id)a3 error:(id *)a4;
-- (BOOL)verifyRecoveryKey:(id)a3 error:(id *)a4;
-- (CDPDSecureBackupProxyImpl)initWithContext:(id)a3;
-- (id)accountInfoWithInfo:(id)a3 error:(id *)a4;
+- (BOOL)_createAndRegisterBackupPublicKeyInSOS:(id)s error:(id *)error;
+- (BOOL)disableWithInfo:(id)info error:(id *)error;
+- (BOOL)enableWithInfo:(id)info error:(id *)error;
+- (BOOL)isRecoveryKeySet:(id *)set;
+- (BOOL)setRecoveryKeyInSOS:(id)s error:(id *)error;
+- (BOOL)verifyRecoveryKey:(id)key error:(id *)error;
+- (CDPDSecureBackupProxyImpl)initWithContext:(id)context;
+- (id)accountInfoWithInfo:(id)info error:(id *)error;
 - (id)activityTypeString;
-- (id)recoverWithInfo:(id)a3 error:(id *)a4;
-- (id)secureBackupContextWithInfo:(id)a3;
+- (id)recoverWithInfo:(id)info error:(id *)error;
+- (id)secureBackupContextWithInfo:(id)info;
 - (void)_cleanUpPostEscrowCreationStates;
-- (void)accountInfoWithInfo:(id)a3 completion:(id)a4;
-- (void)cacheRecoveryKey:(id)a3 completionBlock:(id)a4;
+- (void)accountInfoWithInfo:(id)info completion:(id)completion;
+- (void)cacheRecoveryKey:(id)key completionBlock:(id)block;
 - (void)uncacheAllSecrets;
 @end
 
 @implementation CDPDSecureBackupProxyImpl
 
-- (CDPDSecureBackupProxyImpl)initWithContext:(id)a3
+- (CDPDSecureBackupProxyImpl)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = CDPDSecureBackupProxyImpl;
   v6 = [(CDPDSecureBackupProxyImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cdpContext, a3);
+    objc_storeStrong(&v6->_cdpContext, context);
   }
 
   return v7;
@@ -38,198 +38,198 @@
   v3 = MEMORY[0x277CCACA8];
   [(CDPContext *)self->_cdpContext type];
   v4 = CDPContextTypeAnalyticsString();
-  v5 = [(CDPContext *)self->_cdpContext endpoint];
+  endpoint = [(CDPContext *)self->_cdpContext endpoint];
   v6 = @"Unknown";
-  if (v5 <= 266770438)
+  if (endpoint <= 266770438)
   {
-    if (v5 > -754113827)
+    if (endpoint > -754113827)
     {
-      if (v5 > -344522787)
+      if (endpoint > -344522787)
       {
-        if (v5 > -61689622)
+        if (endpoint > -61689622)
         {
-          if (v5 == -61689621)
+          if (endpoint == -61689621)
           {
             v6 = @"RecoverAndSynchronizeSquirrel";
           }
 
-          else if (v5 == -45788238)
+          else if (endpoint == -45788238)
           {
             v6 = @"FinishOfflineLocalSecretChange";
           }
         }
 
-        else if (v5 == -344522786)
+        else if (endpoint == -344522786)
         {
           v6 = @"AttemptToEscrowPreRecord";
         }
 
-        else if (v5 == -275221680)
+        else if (endpoint == -275221680)
         {
           v6 = @"GenerateRandomRecoveryKey";
         }
       }
 
-      else if (v5 > -569191000)
+      else if (endpoint > -569191000)
       {
-        if (v5 == -569190999)
+        if (endpoint == -569190999)
         {
           v6 = @"ClearFollowUp";
         }
 
-        else if (v5 == -428461448)
+        else if (endpoint == -428461448)
         {
           v6 = @"RemoveNonViewAwarePeersFromCircle";
         }
       }
 
-      else if (v5 == -754113826)
+      else if (endpoint == -754113826)
       {
         v6 = @"WalrusStatus";
       }
 
-      else if (v5 == -617686711)
+      else if (endpoint == -617686711)
       {
         v6 = @"SaveTermsAcceptance";
       }
     }
 
-    else if (v5 > -1249140061)
+    else if (endpoint > -1249140061)
     {
-      if (v5 > -993238036)
+      if (endpoint > -993238036)
       {
-        if (v5 == -993238035)
+        if (endpoint == -993238035)
         {
           v6 = @"GenerateNewRecoveryKey";
         }
 
-        else if (v5 == -936527855)
+        else if (endpoint == -936527855)
         {
           v6 = @"IsUserVisibleKeychainSyncEnabled";
         }
       }
 
-      else if (v5 == -1249140060)
+      else if (endpoint == -1249140060)
       {
         v6 = @"PostFollowUp";
       }
 
-      else if (v5 == -1152544766)
+      else if (endpoint == -1152544766)
       {
         v6 = @"HandleCloudDataProtectionState";
       }
     }
 
-    else if (v5 > -1589433122)
+    else if (endpoint > -1589433122)
     {
-      if (v5 == -1589433121)
+      if (endpoint == -1589433121)
       {
         v6 = @"PerformRecovery";
       }
 
-      else if (v5 == -1280150785)
+      else if (endpoint == -1280150785)
       {
         v6 = @"IsICDPEnabledForDSID";
       }
     }
 
-    else if (v5 == -1748609038)
+    else if (endpoint == -1748609038)
     {
       v6 = @"BroadcastWalrusStateChange";
     }
 
-    else if (v5 == -1737446029)
+    else if (endpoint == -1737446029)
     {
       v6 = @"UpdateWebAccessStatus";
     }
   }
 
-  else if (v5 <= 1512741305)
+  else if (endpoint <= 1512741305)
   {
-    if (v5 > 819347452)
+    if (endpoint > 819347452)
     {
-      if (v5 > 1288689616)
+      if (endpoint > 1288689616)
       {
-        if (v5 == 1288689617)
+        if (endpoint == 1288689617)
         {
           v6 = @"FetchEscrowRecordDevices";
         }
 
-        else if (v5 == 1504201822)
+        else if (endpoint == 1504201822)
         {
           v6 = @"WebAccessStatus";
         }
       }
 
-      else if (v5 == 819347453)
+      else if (endpoint == 819347453)
       {
         v6 = @"FetchTermsAcceptanceForAccount";
       }
 
-      else if (v5 == 844041777)
+      else if (endpoint == 844041777)
       {
         v6 = @"RepairCloudDataProtectionState";
       }
     }
 
-    else if (v5 > 546710379)
+    else if (endpoint > 546710379)
     {
-      if (v5 == 546710380)
+      if (endpoint == 546710380)
       {
         v6 = @"ShouldPerformRepairForContext";
       }
 
-      else if (v5 == 581976373)
+      else if (endpoint == 581976373)
       {
         v6 = @"SetUserVisibleKeychainSyncEnabled";
       }
     }
 
-    else if (v5 == 266770439)
+    else if (endpoint == 266770439)
     {
       v6 = @"IsRecoveryKeyAvailable";
     }
 
-    else if (v5 == 540884795)
+    else if (endpoint == 540884795)
     {
       v6 = @"HasLocalSecret";
     }
   }
 
-  else if (v5 <= 1956379799)
+  else if (endpoint <= 1956379799)
   {
-    if (v5 > 1660047999)
+    if (endpoint > 1660047999)
     {
-      if (v5 == 1660048000)
+      if (endpoint == 1660048000)
       {
         v6 = @"VerifyRecoveryKey";
       }
 
-      else if (v5 == 1888483151)
+      else if (endpoint == 1888483151)
       {
         v6 = @"DeviceEscrowRecordRecoverable";
       }
     }
 
-    else if (v5 == 1512741306)
+    else if (endpoint == 1512741306)
     {
       v6 = @"DeleteRecoveryKey";
     }
 
-    else if (v5 == 1547867365)
+    else if (endpoint == 1547867365)
     {
       v6 = @"UpdateWalrusStatus";
     }
   }
 
-  else if (v5 <= 1996176789)
+  else if (endpoint <= 1996176789)
   {
-    if (v5 == 1956379800)
+    if (endpoint == 1956379800)
     {
       v6 = @"PcsKeysForServices";
     }
 
-    else if (v5 == 1979543336)
+    else if (endpoint == 1979543336)
     {
       v6 = @"FinishCyrusFlowAfterTermsAgreement";
     }
@@ -237,7 +237,7 @@
 
   else
   {
-    switch(v5)
+    switch(endpoint)
     {
       case 1996176790:
         v6 = @"LocalSecretChangedTo";
@@ -251,44 +251,44 @@
     }
   }
 
-  v7 = [(CDPContext *)self->_cdpContext backupActivity];
+  backupActivity = [(CDPContext *)self->_cdpContext backupActivity];
   v8 = @"Unknown";
-  if (v7 <= -189876308)
+  if (backupActivity <= -189876308)
   {
-    if (v7 <= -1236246174)
+    if (backupActivity <= -1236246174)
     {
-      if (v7 > -1686228710)
+      if (backupActivity > -1686228710)
       {
-        if (v7 == -1686228709)
+        if (backupActivity == -1686228709)
         {
           v8 = @"CheckAndRemoveExistingThenEnableSecureBackupRecord";
         }
 
-        else if (v7 == -1385651654)
+        else if (backupActivity == -1385651654)
         {
           v8 = @"IsEligibleForCDP";
         }
       }
 
-      else if (v7 == -2145163342)
+      else if (backupActivity == -2145163342)
       {
         v8 = @"PerformEscrowRecoveryWithRecoveryContext";
       }
 
-      else if (v7 == -2040123582)
+      else if (backupActivity == -2040123582)
       {
         v8 = @"BackupRecordsArePresent";
       }
     }
 
-    else if (v7 <= -486826559)
+    else if (backupActivity <= -486826559)
     {
-      if (v7 == -1236246173)
+      if (backupActivity == -1236246173)
       {
         v8 = @"DisableRecoveryKey";
       }
 
-      else if (v7 == -671128312)
+      else if (backupActivity == -671128312)
       {
         v8 = @"SupportsRecoveryKey";
       }
@@ -296,7 +296,7 @@
 
     else
     {
-      switch(v7)
+      switch(backupActivity)
       {
         case -486826558:
           v8 = @"EnableSecureBackup";
@@ -311,16 +311,16 @@
     }
   }
 
-  else if (v7 > 1142884429)
+  else if (backupActivity > 1142884429)
   {
-    if (v7 <= 1412515334)
+    if (backupActivity <= 1412515334)
     {
-      if (v7 == 1142884430)
+      if (backupActivity == 1142884430)
       {
         v8 = @"DisableSecureBackup";
       }
 
-      else if (v7 == 1401497941)
+      else if (backupActivity == 1401497941)
       {
         v8 = @"EnableSecureBackupWithRecoveryKey";
       }
@@ -328,7 +328,7 @@
 
     else
     {
-      switch(v7)
+      switch(backupActivity)
       {
         case 1412515335:
           v8 = @"CheckForExistingRecordWithPeerId";
@@ -343,14 +343,14 @@
     }
   }
 
-  else if (v7 <= -61353304)
+  else if (backupActivity <= -61353304)
   {
-    if (v7 == -189876307)
+    if (backupActivity == -189876307)
     {
       v8 = @"UpgradeICSCRecordsThenEnableSecureBackup";
     }
 
-    else if (v7 == -186675152)
+    else if (backupActivity == -186675152)
     {
       v8 = @"DeleteAllBackupRecords";
     }
@@ -358,7 +358,7 @@
 
   else
   {
-    switch(v7)
+    switch(backupActivity)
     {
       case -61353303:
         v8 = @"SynchronizeKeyValueStore";
@@ -377,24 +377,24 @@
   return v9;
 }
 
-- (id)secureBackupContextWithInfo:(id)a3
+- (id)secureBackupContextWithInfo:(id)info
 {
   v4 = MEMORY[0x277CFB280];
-  v5 = a3;
+  infoCopy = info;
   v6 = [v4 alloc];
-  v7 = [(CDPDSecureBackupProxyImpl *)self activityTypeString];
-  v8 = [v6 initWithUserActivityLabel:v7];
+  activityTypeString = [(CDPDSecureBackupProxyImpl *)self activityTypeString];
+  v8 = [v6 initWithUserActivityLabel:activityTypeString];
 
-  [v8 populateWithInfo:v5];
+  [v8 populateWithInfo:infoCopy];
 
   return v8;
 }
 
-- (void)accountInfoWithInfo:(id)a3 completion:(id)a4
+- (void)accountInfoWithInfo:(id)info completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v8 = _CDPSignpostLogSystem();
   v9 = _CDPSignpostCreate();
   v11 = v10;
@@ -415,7 +415,7 @@
     _os_log_impl(&dword_24510B000, v14, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: AccountInfoWithInfo  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v15 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:v7];
+  v15 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:infoCopy];
 
   v16 = objc_alloc_init(_TtC15CoreCDPInternal28CDPExponentialRetryScheduler);
   cdpContext = self->_cdpContext;
@@ -425,8 +425,8 @@
   v20[3] = &unk_278E24C00;
   v22 = v9;
   v23 = v11;
-  v21 = v6;
-  v18 = v6;
+  v21 = completionCopy;
+  v18 = completionCopy;
   [(CDPExponentialRetryScheduler *)v16 retryFetchAccountInfo:v15 cdpContext:cdpContext completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -501,10 +501,10 @@ LABEL_16:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accountInfoWithInfo:(id)a3 error:(id *)a4
+- (id)accountInfoWithInfo:(id)info error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v7 = _CDPSignpostLogSystem();
   v8 = _CDPSignpostCreate();
 
@@ -524,16 +524,16 @@ LABEL_16:
     _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: AccountInfoWithInfo  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v12 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:v6];
+  v12 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:infoCopy];
 
   v24 = 0;
   v13 = [v12 getAccountInfoWithError:&v24];
   v14 = v24;
 
-  if (a4)
+  if (error)
   {
     v15 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   Nanoseconds = _CDPSignpostGetNanoseconds();
@@ -541,22 +541,22 @@ LABEL_16:
   v18 = v17;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
-    v19 = [v14 code];
+    code = [v14 code];
     *buf = 67240192;
-    LODWORD(v26) = v19;
+    LODWORD(v26) = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v18, OS_SIGNPOST_INTERVAL_END, v8, "AccountInfoWithInfo", " error=%{public,signpost.telemetry:number1,name=error}d ", buf, 8u);
   }
 
   v20 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v14 code];
+    code2 = [v14 code];
     *buf = 134218496;
     v26 = v8;
     v27 = 2048;
     v28 = Nanoseconds / 1000000000.0;
     v29 = 1026;
-    v30 = v21;
+    v30 = code2;
     _os_log_impl(&dword_24510B000, v20, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: AccountInfoWithInfo  error=%{public,signpost.telemetry:number1,name=error}d ", buf, 0x1Cu);
   }
 
@@ -565,14 +565,14 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)enableWithInfo:(id)a3 error:(id *)a4
+- (BOOL)enableWithInfo:(id)info error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v7 = *MEMORY[0x277CFD930];
   v8 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD700] category:*MEMORY[0x277CFD930]];
   v9 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD6F0] category:v7];
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277CFB348]];
+  v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CFB348]];
   if (v10)
   {
 
@@ -582,11 +582,11 @@ LABEL_16:
   else
   {
     v11 = *MEMORY[0x277CFB3A0];
-    v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277CFB3A0]];
+    v12 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CFB3A0]];
 
     if (!v12)
     {
-      v40 = [v6 objectForKeyedSubscript:*MEMORY[0x277CFB360]];
+      v40 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CFB360]];
 
       if (v40)
       {
@@ -602,7 +602,7 @@ LABEL_16:
     }
   }
 
-  v13 = [v6 objectForKeyedSubscript:v11];
+  v13 = [infoCopy objectForKeyedSubscript:v11];
 
   if (v13)
   {
@@ -633,19 +633,19 @@ LABEL_7:
     _os_log_impl(&dword_24510B000, v21, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: EnableBackupWithInfo  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v22 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
   v23 = v8;
-  [v22 sendEvent:v8];
+  [rtcAnalyticsReporter sendEvent:v8];
 
-  v24 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:v6];
+  v24 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:infoCopy];
   v43 = 0;
   v25 = [v24 enableWithError:&v43];
   v26 = v43;
 
-  if (a4)
+  if (error)
   {
     v27 = v26;
-    *a4 = v26;
+    *error = v26;
   }
 
   v28 = _CDPLogSystem();
@@ -674,22 +674,22 @@ LABEL_7:
   v32 = v31;
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v31))
   {
-    v33 = [v26 code];
+    code = [v26 code];
     *buf = 67240192;
-    LODWORD(v45) = v33;
+    LODWORD(v45) = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v32, OS_SIGNPOST_INTERVAL_END, v17, "EnableBackupWithInfo", " error=%{public,signpost.telemetry:number1,name=error}d ", buf, 8u);
   }
 
   v34 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v26 code];
+    code2 = [v26 code];
     *buf = 134218496;
     v45 = v17;
     v46 = 2048;
     v47 = Nanoseconds / 1000000000.0;
     v48 = 1026;
-    v49 = v35;
+    v49 = code2;
     _os_log_impl(&dword_24510B000, v34, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: EnableBackupWithInfo  error=%{public,signpost.telemetry:number1,name=error}d ", buf, 0x1Cu);
   }
 
@@ -701,17 +701,17 @@ LABEL_7:
     [v9 populateUnderlyingErrorsStartingWithRootError:v26];
   }
 
-  v37 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v37 sendEvent:v9];
+  rtcAnalyticsReporter2 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter2 sendEvent:v9];
 
   v38 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (id)recoverWithInfo:(id)a3 error:(id *)a4
+- (id)recoverWithInfo:(id)info error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v7 = _CDPSignpostLogSystem();
   v8 = _CDPSignpostCreate();
 
@@ -731,16 +731,16 @@ LABEL_7:
     _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: RecoverBackupWithInfo  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v12 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:v6];
+  v12 = [(CDPDSecureBackupProxyImpl *)self secureBackupContextWithInfo:infoCopy];
 
   v24 = 0;
   v13 = [v12 recoverWithError:&v24];
   v14 = v24;
 
-  if (a4)
+  if (error)
   {
     v15 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   Nanoseconds = _CDPSignpostGetNanoseconds();
@@ -748,22 +748,22 @@ LABEL_7:
   v18 = v17;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
-    v19 = [v14 code];
+    code = [v14 code];
     *buf = 67240192;
-    LODWORD(v26) = v19;
+    LODWORD(v26) = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v18, OS_SIGNPOST_INTERVAL_END, v8, "RecoverBackupWithInfo", " error=%{public,signpost.telemetry:number1,name=error}d ", buf, 8u);
   }
 
   v20 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v14 code];
+    code2 = [v14 code];
     *buf = 134218496;
     v26 = v8;
     v27 = 2048;
     v28 = Nanoseconds / 1000000000.0;
     v29 = 1026;
-    v30 = v21;
+    v30 = code2;
     _os_log_impl(&dword_24510B000, v20, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: RecoverBackupWithInfo  error=%{public,signpost.telemetry:number1,name=error}d ", buf, 0x1Cu);
   }
 
@@ -772,33 +772,33 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)disableWithInfo:(id)a3 error:(id *)a4
+- (BOOL)disableWithInfo:(id)info error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v7 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD708] category:*MEMORY[0x277CFD930]];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CFB3D8]];
+  v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CFB3D8]];
 
   if (v8)
   {
     [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFD710]];
   }
 
-  v9 = [v6 mutableCopy];
-  v10 = [(CDPContext *)self->_cdpContext telemetryFlowID];
+  v9 = [infoCopy mutableCopy];
+  telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
 
-  if (v10)
+  if (telemetryFlowID)
   {
-    v11 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-    [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277CFB310]];
+    telemetryFlowID2 = [(CDPContext *)self->_cdpContext telemetryFlowID];
+    [v9 setObject:telemetryFlowID2 forKeyedSubscript:*MEMORY[0x277CFB310]];
   }
 
-  v12 = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
 
-  if (v12)
+  if (telemetryDeviceSessionID)
   {
-    v13 = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
-    [v9 setObject:v13 forKeyedSubscript:*MEMORY[0x277CFB2E8]];
+    telemetryDeviceSessionID2 = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
+    [v9 setObject:telemetryDeviceSessionID2 forKeyedSubscript:*MEMORY[0x277CFB2E8]];
   }
 
   v14 = _CDPSignpostLogSystem();
@@ -825,10 +825,10 @@ LABEL_7:
   v20 = [v19 disableWithError:&v35];
   v21 = v35;
 
-  if (a4)
+  if (error)
   {
     v22 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
   v23 = _CDPLogSystem();
@@ -851,22 +851,22 @@ LABEL_7:
   v27 = v26;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
   {
-    v28 = [v21 code];
+    code = [v21 code];
     *buf = 67240192;
-    LODWORD(v37) = v28;
+    LODWORD(v37) = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v27, OS_SIGNPOST_INTERVAL_END, v15, "DisableBackupWithInfo", " enableError=%{public,signpost.telemetry:number1,name=enableError}d ", buf, 8u);
   }
 
   v29 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v21 code];
+    code2 = [v21 code];
     *buf = 134218496;
     v37 = v15;
     v38 = 2048;
     v39 = Nanoseconds / 1000000000.0;
     v40 = 1026;
-    v41 = v30;
+    v41 = code2;
     _os_log_impl(&dword_24510B000, v29, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: DisableBackupWithInfo  enableError=%{public,signpost.telemetry:number1,name=enableError}d ", buf, 0x1Cu);
   }
 
@@ -878,17 +878,17 @@ LABEL_7:
     [v7 populateUnderlyingErrorsStartingWithRootError:v21];
   }
 
-  v32 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v32 sendEvent:v7];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v7];
 
   v33 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (void)cacheRecoveryKey:(id)a3 completionBlock:(id)a4
+- (void)cacheRecoveryKey:(id)key completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -900,14 +900,14 @@ LABEL_7:
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__2;
   v18 = __Block_byref_object_dispose__2;
-  v19 = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
-  [v15[5] setRecoveryKey:v6];
+  secureBackupContext = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
+  [v15[5] setRecoveryKey:keyCopy];
   v9 = v15[5];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_invoke;
   v11[3] = &unk_278E24C28;
-  v10 = v7;
+  v10 = blockCopy;
   v12 = v10;
   v13 = &v14;
   [v9 cacheRecoveryKeyWithCompletionBlock:v11];
@@ -946,8 +946,8 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
 
 - (void)uncacheAllSecrets
 {
-  v2 = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
-  [v2 uncachePassphrase];
+  secureBackupContext = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
+  [secureBackupContext uncachePassphrase];
 }
 
 - (void)_cleanUpPostEscrowCreationStates
@@ -958,11 +958,11 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isRecoveryKeySet:(id *)a3
+- (BOOL)isRecoveryKeySet:(id *)set
 {
-  v4 = [(CDPContext *)self->_cdpContext cliqueConfiguration];
+  cliqueConfiguration = [(CDPContext *)self->_cdpContext cliqueConfiguration];
   v10 = 0;
-  v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInSOS:v4 error:&v10];
+  v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInSOS:cliqueConfiguration error:&v10];
   v6 = v10;
   if (v6)
   {
@@ -972,11 +972,11 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
       [CDPDSecureBackupProxyImpl isRecoveryKeySet:];
     }
 
-    if (a3)
+    if (set)
     {
       v8 = v6;
       v5 = 0;
-      *a3 = v6;
+      *set = v6;
     }
 
     else
@@ -988,12 +988,12 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
   return v5;
 }
 
-- (BOOL)verifyRecoveryKey:(id)a3 error:(id *)a4
+- (BOOL)verifyRecoveryKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
+  keyCopy = key;
+  secureBackupContext = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
   v13 = 0;
-  v8 = [v7 verifyRecoveryKey:v6 error:&v13];
+  v8 = [secureBackupContext verifyRecoveryKey:keyCopy error:&v13];
 
   v9 = v13;
   if (v9)
@@ -1004,11 +1004,11 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
       [CDPDSecureBackupProxyImpl verifyRecoveryKey:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v9;
       v8 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1020,9 +1020,9 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
   return v8;
 }
 
-- (BOOL)setRecoveryKeyInSOS:(id)a3 error:(id *)a4
+- (BOOL)setRecoveryKeyInSOS:(id)s error:(id *)error
 {
-  v6 = a3;
+  sCopy = s;
   v31 = 0;
   v7 = SOSCCCopyMyPeerInfo();
   if (!v7)
@@ -1033,10 +1033,10 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
       [CDPDSecureBackupProxyImpl setRecoveryKeyInSOS:? error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = 0;
-      *a4 = v31;
+      *error = v31;
       goto LABEL_41;
     }
 
@@ -1073,9 +1073,9 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
         [CDPDSecureBackupProxyImpl setRecoveryKeyInSOS:? error:?];
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v29;
+        *error = v29;
       }
 
       if (v29)
@@ -1092,9 +1092,9 @@ void __62__CDPDSecureBackupProxyImpl_cacheRecoveryKey_completionBlock___block_in
         [CDPDSecureBackupProxyImpl setRecoveryKeyInSOS:? error:?];
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v30;
+        *error = v30;
       }
     }
 
@@ -1114,16 +1114,16 @@ LABEL_5:
 
   CFRelease(v8);
   v28 = 0;
-  v11 = [(CDPDSecureBackupProxyImpl *)self _createAndRegisterBackupPublicKeyInSOS:v6 error:&v28];
+  v11 = [(CDPDSecureBackupProxyImpl *)self _createAndRegisterBackupPublicKeyInSOS:sCopy error:&v28];
   v12 = v28;
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v14 = v12;
       v11 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -1134,8 +1134,8 @@ LABEL_5:
 
   else
   {
-    v21 = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
-    v22 = [v21 backupForRecoveryKeyWithInfo:0];
+    secureBackupContext = [(CDPDSecureBackupProxyImpl *)self secureBackupContext];
+    v22 = [secureBackupContext backupForRecoveryKeyWithInfo:0];
 
     v23 = _CDPLogSystem();
     v24 = v23;
@@ -1146,11 +1146,11 @@ LABEL_5:
         [CDPDSecureBackupProxyImpl setRecoveryKeyInSOS:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v25 = v22;
         v11 = 0;
-        *a4 = v22;
+        *error = v22;
       }
 
       else
@@ -1172,7 +1172,7 @@ LABEL_41:
   return v11;
 }
 
-- (BOOL)_createAndRegisterBackupPublicKeyInSOS:(id)a3 error:(id *)a4
+- (BOOL)_createAndRegisterBackupPublicKeyInSOS:(id)s error:(id *)error
 {
   v5 = SecRKCreateRecoveryKeyWithError();
   v6 = 0;
@@ -1184,11 +1184,11 @@ LABEL_41:
       [CDPDSecureBackupProxyImpl _createAndRegisterBackupPublicKeyInSOS:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v8 = v6;
       v9 = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else

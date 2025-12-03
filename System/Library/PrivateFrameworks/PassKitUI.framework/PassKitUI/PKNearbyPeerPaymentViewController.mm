@@ -1,11 +1,11 @@
 @interface PKNearbyPeerPaymentViewController
-- (PKNearbyPeerPaymentViewController)initWithContext:(int64_t)a3 screenEdgeSwipeAction:(id)a4 dismissAction:(id)a5;
-- (PKNearbyPeerPaymentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PKNearbyPeerPaymentViewController)initWithContext:(int64_t)context screenEdgeSwipeAction:(id)action dismissAction:(id)dismissAction;
+- (PKNearbyPeerPaymentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)prefersStatusBarHidden;
-- (void)handlePan:(id)a3;
-- (void)peerPaymentIdentityManager:(id)a3 didUpdateProfileAppearanceData:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setHideStatusBar:(BOOL)a3;
+- (void)handlePan:(id)pan;
+- (void)peerPaymentIdentityManager:(id)manager didUpdateProfileAppearanceData:(id)data;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setHideStatusBar:(BOOL)bar;
 - (void)showAppearanceDetail;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -17,75 +17,75 @@
 {
   v2 = OBJC_IVAR___PKNearbyPeerPaymentViewController_hideStatusBar;
   swift_beginAccess();
-  return *(a1 + v2);
+  return *(self + v2);
 }
 
-- (void)setHideStatusBar:(BOOL)a3
+- (void)setHideStatusBar:(BOOL)bar
 {
-  v4 = self;
-  sub_1BD38CA60(a3);
+  selfCopy = self;
+  sub_1BD38CA60(bar);
 }
 
-- (PKNearbyPeerPaymentViewController)initWithContext:(int64_t)a3 screenEdgeSwipeAction:(id)a4 dismissAction:(id)a5
+- (PKNearbyPeerPaymentViewController)initWithContext:(int64_t)context screenEdgeSwipeAction:(id)action dismissAction:(id)dismissAction
 {
-  v7 = _Block_copy(a4);
-  v8 = _Block_copy(a5);
+  v7 = _Block_copy(action);
+  v8 = _Block_copy(dismissAction);
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
   v10 = swift_allocObject();
   *(v10 + 16) = v8;
-  return NearbyPeerPaymentViewController.init(context:screenEdgeSwipeAction:dismissAction:)(a3, sub_1BD166E88, v9, sub_1BD267094, v10);
+  return NearbyPeerPaymentViewController.init(context:screenEdgeSwipeAction:dismissAction:)(context, sub_1BD166E88, v9, sub_1BD267094, v10);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD38D928();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD38DD48();
 }
 
 - (void)showAppearanceDetail
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD38CD04();
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v6 = a3;
-  v4 = self;
-  if ([(PKNearbyPeerPaymentViewController *)v6 state]== 3)
+  panCopy = pan;
+  selfCopy = self;
+  if ([(PKNearbyPeerPaymentViewController *)panCopy state]== 3)
   {
-    (*(&v4->super.super.super.isa + OBJC_IVAR___PKNearbyPeerPaymentViewController_screenEdgeSwipeAction))();
-    v5 = v4;
+    (*(&selfCopy->super.super.super.isa + OBJC_IVAR___PKNearbyPeerPaymentViewController_screenEdgeSwipeAction))();
+    v5 = selfCopy;
   }
 
   else
   {
-    v5 = v6;
-    v6 = v4;
+    v5 = panCopy;
+    panCopy = selfCopy;
   }
 }
 
-- (void)peerPaymentIdentityManager:(id)a3 didUpdateProfileAppearanceData:(id)a4
+- (void)peerPaymentIdentityManager:(id)manager didUpdateProfileAppearanceData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD38EACC(v7);
+  managerCopy = manager;
+  dataCopy = data;
+  selfCopy = self;
+  sub_1BD38EACC(dataCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___PKNearbyPeerPaymentViewController_divider);
-  v8 = a3;
-  v5 = self;
-  [v8 contentOffset];
+  scrollCopy = scroll;
+  selfCopy = self;
+  [scrollCopy contentOffset];
   v6 = 0.0;
   if (v7 > 0.0)
   {
@@ -95,7 +95,7 @@
   [v4 setAlpha_];
 }
 
-- (PKNearbyPeerPaymentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKNearbyPeerPaymentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

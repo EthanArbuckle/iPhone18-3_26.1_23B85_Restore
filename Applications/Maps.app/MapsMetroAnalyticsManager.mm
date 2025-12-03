@@ -1,10 +1,10 @@
 @interface MapsMetroAnalyticsManager
 + (id)sharedManager;
 - (MapsMetroAnalyticsManager)init;
-- (void)_locationManagerApprovalDidChange:(id)a3;
+- (void)_locationManagerApprovalDidChange:(id)change;
 - (void)_startLocationUpdateTimerIfNeeded;
 - (void)_stopLocationUpdateTimer;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
@@ -13,8 +13,8 @@
 
 - (void)stopMonitoring
 {
-  v3 = [(MapsMetroAnalyticsManager *)self meCardProvider];
-  [v3 setActive:0];
+  meCardProvider = [(MapsMetroAnalyticsManager *)self meCardProvider];
+  [meCardProvider setActive:0];
 
   [(MapsMetroAnalyticsManager *)self _stopLocationUpdateTimer];
 }
@@ -30,25 +30,25 @@
   }
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(MapsMetroAnalyticsManager *)self meCardProvider];
+  updateCopy = update;
+  meCardProvider = [(MapsMetroAnalyticsManager *)self meCardProvider];
 
-  if (v5 == v4)
+  if (meCardProvider == updateCopy)
   {
-    v6 = [(MapsMetroAnalyticsManager *)self meCardProvider];
-    v7 = [v6 meCard];
-    v8 = [v7 mapItemsForHome];
-    v9 = [v8 firstObject];
+    meCardProvider2 = [(MapsMetroAnalyticsManager *)self meCardProvider];
+    meCard = [meCardProvider2 meCard];
+    mapItemsForHome = [meCard mapItemsForHome];
+    firstObject = [mapItemsForHome firstObject];
 
     analyticsQueue = self->_analyticsQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10081EA88;
     block[3] = &unk_101661B18;
-    v13 = v9;
-    v11 = v9;
+    v13 = firstObject;
+    v11 = firstObject;
     dispatch_async(analyticsQueue, block);
   }
 }
@@ -58,9 +58,9 @@
   if (!self->_currentLocationUpdateTimer)
   {
     v3 = +[MKLocationManager sharedLocationManager];
-    v4 = [v3 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v3 isAuthorizedForPreciseLocation];
 
-    if (v4)
+    if (isAuthorizedForPreciseLocation)
     {
       GEOConfigGetDouble();
       v5 = geo_dispatch_timer_create_on_queue();
@@ -74,12 +74,12 @@
   }
 }
 
-- (void)_locationManagerApprovalDidChange:(id)a3
+- (void)_locationManagerApprovalDidChange:(id)change
 {
   v4 = +[MKLocationManager sharedLocationManager];
-  v5 = [v4 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v4 isAuthorizedForPreciseLocation];
 
-  if (v5)
+  if (isAuthorizedForPreciseLocation)
   {
     dispatch_async(self->_analyticsQueue, &stru_10162B5B8);
 
@@ -96,8 +96,8 @@
 
 - (void)startMonitoring
 {
-  v3 = [(MapsMetroAnalyticsManager *)self meCardProvider];
-  [v3 setActive:1];
+  meCardProvider = [(MapsMetroAnalyticsManager *)self meCardProvider];
+  [meCardProvider setActive:1];
 
   [(MapsMetroAnalyticsManager *)self _startLocationUpdateTimerIfNeeded];
 }
@@ -117,8 +117,8 @@
     meCardProvider = v2->_meCardProvider;
     v2->_meCardProvider = v5;
 
-    v7 = [(MeCardDataProvider *)v2->_meCardProvider observers];
-    [v7 registerObserver:v2];
+    observers = [(MeCardDataProvider *)v2->_meCardProvider observers];
+    [observers registerObserver:v2];
 
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v2 selector:"_applicationWillEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
@@ -139,7 +139,7 @@
   block[1] = 3221225472;
   block[2] = sub_10081F014;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195D978 != -1)
   {
     dispatch_once(&qword_10195D978, block);

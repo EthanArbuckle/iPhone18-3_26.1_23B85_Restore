@@ -1,23 +1,23 @@
 @interface SQLiteHasAssociatedEntityPredicate
-+ (id)predicateWithAssociatedEntityClass:(Class)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)predicateWithAssociatedEntityClass:(Class)class;
+- (id)SQLForEntityClass:(Class)class;
 - (id)description;
 @end
 
 @implementation SQLiteHasAssociatedEntityPredicate
 
-+ (id)predicateWithAssociatedEntityClass:(Class)a3
++ (id)predicateWithAssociatedEntityClass:(Class)class
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v4[1] = a3;
+  v4[1] = class;
 
   return v4;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
-  v5 = [(objc_class *)a3 associationPropertyForEntityClass:self->_associatedEntityClass];
-  v6 = [(objc_class *)self->_associatedEntityClass associationPropertyForEntityClass:a3];
+  v5 = [(objc_class *)class associationPropertyForEntityClass:self->_associatedEntityClass];
+  v6 = [(objc_class *)self->_associatedEntityClass associationPropertyForEntityClass:class];
   v7 = v6;
   if (v5)
   {
@@ -36,10 +36,10 @@
 
   else
   {
-    v21 = [(objc_class *)a3 disambiguatedSQLForProperty:v5];
+    v21 = [(objc_class *)class disambiguatedSQLForProperty:v5];
     v9 = [(objc_class *)self->_associatedEntityClass disambiguatedSQLForProperty:v7];
-    v10 = [(objc_class *)self->_associatedEntityClass databaseTable];
-    v11 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", CFSTR("((SELECT 1 FROM %@"), v10);
+    databaseTable = [(objc_class *)self->_associatedEntityClass databaseTable];
+    v11 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", CFSTR("((SELECT 1 FROM %@"), databaseTable);
 
     v12 = objc_alloc_init(NSMutableSet);
     [(objc_class *)self->_associatedEntityClass addJoinClausesForProperty:v9 toJoins:v12];

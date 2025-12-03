@@ -1,13 +1,13 @@
 @interface EXFill
-+ (id)edFillFromXmlFillElement:(_xmlNode *)a3 differentialFill:(BOOL)a4 state:(id)a5;
-+ (id)edFillFromXmlFillElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)edGradientFillFromXmlElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)edPatternFillFromXmlElement:(_xmlNode *)a3 differentialFill:(BOOL)a4 state:(id)a5;
-+ (id)edStopFromXmlGradientElement:(_xmlNode *)a3 state:(id)a4;
++ (id)edFillFromXmlFillElement:(_xmlNode *)element differentialFill:(BOOL)fill state:(id)state;
++ (id)edFillFromXmlFillElement:(_xmlNode *)element state:(id)state;
++ (id)edGradientFillFromXmlElement:(_xmlNode *)element state:(id)state;
++ (id)edPatternFillFromXmlElement:(_xmlNode *)element differentialFill:(BOOL)fill state:(id)state;
++ (id)edStopFromXmlGradientElement:(_xmlNode *)element state:(id)state;
 + (id)gradientFillTypeEnumMap;
 + (id)patternFillTypeEnumMap;
-+ (int)edGradientTypeFromXmlGradientTypeString:(id)a3 state:(id)a4;
-+ (int)edPatternTypeFromXmlPatternTypeString:(id)a3;
++ (int)edGradientTypeFromXmlGradientTypeString:(id)string state:(id)state;
++ (int)edPatternTypeFromXmlPatternTypeString:(id)string;
 + (void)gradientFillTypeEnumMap;
 + (void)patternFillTypeEnumMap;
 @end
@@ -60,91 +60,91 @@ void __33__EXFill_gradientFillTypeEnumMap__block_invoke()
   +[EXFill gradientFillTypeEnumMap]::sGradientFillTypeEnumMap = v0;
 }
 
-+ (id)edFillFromXmlFillElement:(_xmlNode *)a3 state:(id)a4
++ (id)edFillFromXmlFillElement:(_xmlNode *)element state:(id)state
 {
-  v4 = [a1 edFillFromXmlFillElement:a3 differentialFill:0 state:a4];
+  v4 = [self edFillFromXmlFillElement:element differentialFill:0 state:state];
 
   return v4;
 }
 
-+ (id)edFillFromXmlFillElement:(_xmlNode *)a3 differentialFill:(BOOL)a4 state:(id)a5
++ (id)edFillFromXmlFillElement:(_xmlNode *)element differentialFill:(BOOL)fill state:(id)state
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  fillCopy = fill;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (element)
   {
-    v10 = [v8 EXSpreadsheetMLNamespace];
-    v11 = OCXFindChild(a3, v10, "patternFill");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v11 = OCXFindChild(element, eXSpreadsheetMLNamespace, "patternFill");
 
     if (v11)
     {
-      v12 = [a1 edPatternFillFromXmlElement:v11 differentialFill:v5 state:v9];
+      v12 = [self edPatternFillFromXmlElement:v11 differentialFill:fillCopy state:v9];
 LABEL_6:
-      a3 = v12;
+      element = v12;
       goto LABEL_7;
     }
 
-    v13 = [v9 EXSpreadsheetMLNamespace];
-    v14 = OCXFindChild(a3, v13, "gradientFill");
+    eXSpreadsheetMLNamespace2 = [v9 EXSpreadsheetMLNamespace];
+    v14 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "gradientFill");
 
     if (v14)
     {
-      v12 = [a1 edGradientFillFromXmlElement:v14 state:v9];
+      v12 = [self edGradientFillFromXmlElement:v14 state:v9];
       goto LABEL_6;
     }
 
-    v16 = [v9 EXSpreadsheetMLNamespace];
-    a3 = OCXFindChild(a3, v16, "imageFill");
+    eXSpreadsheetMLNamespace3 = [v9 EXSpreadsheetMLNamespace];
+    element = OCXFindChild(element, eXSpreadsheetMLNamespace3, "imageFill");
 
-    if (a3)
+    if (element)
     {
       v17 = [EDFill alloc];
-      v18 = [v9 resources];
-      a3 = [(EDFill *)v17 initWithResources:v18];
+      resources = [v9 resources];
+      element = [(EDFill *)v17 initWithResources:resources];
     }
   }
 
 LABEL_7:
 
-  return a3;
+  return element;
 }
 
-+ (id)edPatternFillFromXmlElement:(_xmlNode *)a3 differentialFill:(BOOL)a4 state:(id)a5
++ (id)edPatternFillFromXmlElement:(_xmlNode *)element differentialFill:(BOOL)fill state:(id)state
 {
-  v8 = a5;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v23 = 0;
-    CXOptionalStringAttribute(a3, CXNoNamespace, "patternType", &v23);
+    CXOptionalStringAttribute(element, CXNoNamespace, "patternType", &v23);
     v9 = v23;
-    v10 = [a1 edPatternTypeFromXmlPatternTypeString:v9];
-    v11 = [v8 EXSpreadsheetMLNamespace];
-    v12 = OCXFindChild(a3, v11, "fgColor");
+    v10 = [self edPatternTypeFromXmlPatternTypeString:v9];
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v12 = OCXFindChild(element, eXSpreadsheetMLNamespace, "fgColor");
 
     if (v12)
     {
-      v13 = [EXColorReference edColorReferenceFromXmlColorElement:v12 callerClass:objc_opt_class() state:v8];
+      v13 = [EXColorReference edColorReferenceFromXmlColorElement:v12 callerClass:objc_opt_class() state:stateCopy];
     }
 
-    else if (a4)
+    else if (fill)
     {
       v13 = 0;
     }
 
     else
     {
-      v15 = [v8 resources];
-      v13 = [EDColorReference colorReferenceWithSystemColorID:11 resources:v15];
+      resources = [stateCopy resources];
+      v13 = [EDColorReference colorReferenceWithSystemColorID:11 resources:resources];
     }
 
-    v16 = [v8 EXSpreadsheetMLNamespace];
-    v17 = OCXFindChild(a3, v16, "bgColor");
+    eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+    v17 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "bgColor");
 
     if (v17)
     {
-      v18 = [EXColorReference edColorReferenceFromXmlColorElement:v17 callerClass:objc_opt_class() state:v8];
-      if (a4 && v9 == 0)
+      v18 = [EXColorReference edColorReferenceFromXmlColorElement:v17 callerClass:objc_opt_class() state:stateCopy];
+      if (fill && v9 == 0)
       {
         v10 = 1;
       }
@@ -157,19 +157,19 @@ LABEL_7:
       v19 = v18;
     }
 
-    else if (a4)
+    else if (fill)
     {
       v19 = 0;
     }
 
     else
     {
-      v20 = [v8 resources];
-      v19 = [EDColorReference colorReferenceWithSystemColorID:7 resources:v20];
+      resources2 = [stateCopy resources];
+      v19 = [EDColorReference colorReferenceWithSystemColorID:7 resources:resources2];
     }
 
-    v21 = [v8 resources];
-    v14 = [EDPatternFill patternFillWithType:v10 foreColorReference:v13 backColorReference:v19 resources:v21];
+    resources3 = [stateCopy resources];
+    v14 = [EDPatternFill patternFillWithType:v10 foreColorReference:v13 backColorReference:v19 resources:resources3];
   }
 
   else
@@ -180,13 +180,13 @@ LABEL_7:
   return v14;
 }
 
-+ (int)edPatternTypeFromXmlPatternTypeString:(id)a3
++ (int)edPatternTypeFromXmlPatternTypeString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [a1 patternFillTypeEnumMap];
-    v6 = [v5 valueForString:v4];
+    patternFillTypeEnumMap = [self patternFillTypeEnumMap];
+    v6 = [patternFillTypeEnumMap valueForString:stringCopy];
 
     if (v6 == -130883970)
     {
@@ -207,33 +207,33 @@ LABEL_7:
   return v7;
 }
 
-+ (id)edGradientFillFromXmlElement:(_xmlNode *)a3 state:(id)a4
++ (id)edGradientFillFromXmlElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v23 = 0;
-    CXOptionalStringAttribute(a3, CXNoNamespace, "type", &v23);
+    CXOptionalStringAttribute(element, CXNoNamespace, "type", &v23);
     v7 = v23;
-    v8 = [a1 edGradientTypeFromXmlGradientTypeString:v7 state:v6];
+    v8 = [self edGradientTypeFromXmlGradientTypeString:v7 state:stateCopy];
     v22 = 0.0;
-    CXOptionalDoubleAttribute(a3, CXNoNamespace, "top", &v22);
+    CXOptionalDoubleAttribute(element, CXNoNamespace, "top", &v22);
     v21 = 0.0;
-    CXOptionalDoubleAttribute(a3, CXNoNamespace, "bottom", &v21);
+    CXOptionalDoubleAttribute(element, CXNoNamespace, "bottom", &v21);
     v20 = 0.0;
-    CXOptionalDoubleAttribute(a3, CXNoNamespace, "right", &v20);
+    CXOptionalDoubleAttribute(element, CXNoNamespace, "right", &v20);
     v19 = 0.0;
-    CXOptionalDoubleAttribute(a3, CXNoNamespace, "left", &v19);
+    CXOptionalDoubleAttribute(element, CXNoNamespace, "left", &v19);
     v18 = 0.0;
-    CXOptionalDoubleAttribute(a3, CXNoNamespace, "degree", &v18);
-    v9 = [a1 edStopFromXmlGradientElement:a3 state:v6];
+    CXOptionalDoubleAttribute(element, CXNoNamespace, "degree", &v18);
+    v9 = [self edStopFromXmlGradientElement:element state:stateCopy];
     v10 = v18;
     v11 = v19;
     v13 = v21;
     v12 = v22;
     v14 = v20;
-    v15 = [v6 resources];
-    v16 = [EDGradientFill gradientWithType:v8 degree:v9 top:v15 bottom:v10 right:v12 left:v13 stops:v14 resources:v11];
+    resources = [stateCopy resources];
+    v16 = [EDGradientFill gradientWithType:v8 degree:v9 top:resources bottom:v10 right:v12 left:v13 stops:v14 resources:v11];
   }
 
   else
@@ -244,13 +244,13 @@ LABEL_7:
   return v16;
 }
 
-+ (int)edGradientTypeFromXmlGradientTypeString:(id)a3 state:(id)a4
++ (int)edGradientTypeFromXmlGradientTypeString:(id)string state:(id)state
 {
-  v5 = a3;
-  if (v5)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v6 = [a1 gradientFillTypeEnumMap];
-    v7 = [v6 valueForString:v5];
+    gradientFillTypeEnumMap = [self gradientFillTypeEnumMap];
+    v7 = [gradientFillTypeEnumMap valueForString:stringCopy];
 
     if (v7 == -130883970)
     {
@@ -271,30 +271,30 @@ LABEL_7:
   return v8;
 }
 
-+ (id)edStopFromXmlGradientElement:(_xmlNode *)a3 state:(id)a4
++ (id)edStopFromXmlGradientElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [v5 EXSpreadsheetMLNamespace];
-  Child = OCXFindChild(a3, v7, "stop");
+  stateCopy = state;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+  Child = OCXFindChild(element, eXSpreadsheetMLNamespace, "stop");
 
   while (Child)
   {
     v16 = 0.0;
     CXOptionalDoubleAttribute(Child, CXNoNamespace, "position", &v16);
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
-    v10 = [v5 EXSpreadsheetMLNamespace];
-    v11 = OCXFindChild(Child, v10, "color");
+    eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+    v11 = OCXFindChild(Child, eXSpreadsheetMLNamespace2, "color");
 
-    v12 = [EXColorReference edColorReferenceFromXmlColorElement:v11 callerClass:objc_opt_class() state:v5];
-    v13 = [v12 color];
+    v12 = [EXColorReference edColorReferenceFromXmlColorElement:v11 callerClass:objc_opt_class() state:stateCopy];
+    color = [v12 color];
 
-    [v6 setObject:v13 forKey:v9];
-    v14 = [v5 EXSpreadsheetMLNamespace];
-    Child = OCXFindNextChild(Child, v14, "stop");
+    [dictionary setObject:color forKey:v9];
+    eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace3, "stop");
   }
 
-  return v6;
+  return dictionary;
 }
 
 + (void)patternFillTypeEnumMap

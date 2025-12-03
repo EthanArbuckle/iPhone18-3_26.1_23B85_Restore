@@ -1,11 +1,11 @@
 @interface FMHelpFriendView
-- (_TtC6FindMy16FMHelpFriendView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy16FMHelpFriendView)initWithFrame:(CGRect)frame;
 - (void)handleLinkTap;
 @end
 
 @implementation FMHelpFriendView
 
-- (_TtC6FindMy16FMHelpFriendView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy16FMHelpFriendView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -61,7 +61,7 @@
       _os_log_impl(&_mh_execute_header, v12, v13, "FMHelpFriendView: User tapped help a friend", v14, 2u);
     }
 
-    v15 = [objc_opt_self() sharedApplication];
+    sharedApplication = [objc_opt_self() sharedApplication];
     URL._bridgeToObjectiveC()(v16);
     v18 = v17;
     sub_10015391C(_swiftEmptyArrayStorage);
@@ -69,7 +69,7 @@
     sub_10010E644();
     isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
-    [v15 openURL:v18 options:isa completionHandler:0];
+    [sharedApplication openURL:v18 options:isa completionHandler:0];
 
     (*(v4 + 8))(v6, v3);
   }

@@ -1,6 +1,6 @@
 @interface SRUserAttentionSignalProviderFactory
-+ (id)_attentionAwarenessConfigurationWithIdentifier:(id)a3 eventMask:(unint64_t)a4 samplingInterval:(double)a5 attentionLossTimeout:(double)a6;
-- (SRUserAttentionSignalProviderFactory)initWithSamplingInterval:(double)a3 attentionLossTimeout:(double)a4 supportedAttentionAwarenessEvents:(unint64_t)a5;
++ (id)_attentionAwarenessConfigurationWithIdentifier:(id)identifier eventMask:(unint64_t)mask samplingInterval:(double)interval attentionLossTimeout:(double)timeout;
+- (SRUserAttentionSignalProviderFactory)initWithSamplingInterval:(double)interval attentionLossTimeout:(double)timeout supportedAttentionAwarenessEvents:(unint64_t)events;
 - (id)buttonPressAwarenessClient;
 - (id)faceAttentionAwarenessClient;
 - (id)touchAttentionAwarenessClient;
@@ -8,16 +8,16 @@
 
 @implementation SRUserAttentionSignalProviderFactory
 
-- (SRUserAttentionSignalProviderFactory)initWithSamplingInterval:(double)a3 attentionLossTimeout:(double)a4 supportedAttentionAwarenessEvents:(unint64_t)a5
+- (SRUserAttentionSignalProviderFactory)initWithSamplingInterval:(double)interval attentionLossTimeout:(double)timeout supportedAttentionAwarenessEvents:(unint64_t)events
 {
   v9.receiver = self;
   v9.super_class = SRUserAttentionSignalProviderFactory;
   result = [(SRUserAttentionSignalProviderFactory *)&v9 init];
   if (result)
   {
-    result->_samplingInterval = a3;
-    result->_attentionLossTimeout = a4;
-    result->_supportedAttentionAwarenessEvents = a5;
+    result->_samplingInterval = interval;
+    result->_attentionLossTimeout = timeout;
+    result->_supportedAttentionAwarenessEvents = events;
   }
 
   return result;
@@ -50,15 +50,15 @@
   return v3;
 }
 
-+ (id)_attentionAwarenessConfigurationWithIdentifier:(id)a3 eventMask:(unint64_t)a4 samplingInterval:(double)a5 attentionLossTimeout:(double)a6
++ (id)_attentionAwarenessConfigurationWithIdentifier:(id)identifier eventMask:(unint64_t)mask samplingInterval:(double)interval attentionLossTimeout:(double)timeout
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(AWAttentionAwarenessConfiguration);
-  [v10 setIdentifier:v9];
+  [v10 setIdentifier:identifierCopy];
 
-  [v10 setEventMask:a4];
-  [v10 setSamplingInterval:a5];
-  [v10 setAttentionLostTimeout:a6];
+  [v10 setEventMask:mask];
+  [v10 setSamplingInterval:interval];
+  [v10 setAttentionLostTimeout:timeout];
 
   return v10;
 }

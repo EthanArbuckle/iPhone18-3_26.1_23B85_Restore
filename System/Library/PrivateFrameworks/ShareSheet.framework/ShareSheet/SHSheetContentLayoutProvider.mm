@@ -1,62 +1,62 @@
 @interface SHSheetContentLayoutProvider
-+ (id)_createFooterSupplementaryItemWithHeightDimension:(id)a3;
-+ (id)_createHeaderSupplementaryItemWithHeightDimension:(id)a3;
-- (NSDirectionalEdgeInsets)_resolvedDirectionalLayoutMargins:(double)a3 trailingMargin:(double)a4;
++ (id)_createFooterSupplementaryItemWithHeightDimension:(id)dimension;
++ (id)_createHeaderSupplementaryItemWithHeightDimension:(id)dimension;
+- (NSDirectionalEdgeInsets)_resolvedDirectionalLayoutMargins:(double)margins trailingMargin:(double)margin;
 - (SHSheetContentLayoutDelegate)delegate;
-- (SHSheetContentLayoutProvider)initWithLayoutSpec:(id)a3;
-- (id)_createHorizontalLayoutSectionWithContext:(id)a3 iconWidth:(double)a4 sectionHeight:(double)a5 labelHeightCalculationBlock:(id)a6;
-- (id)_layoutForActionsSectionWithContext:(id)a3;
-- (id)_layoutForAppsSectionWithContext:(id)a3;
-- (id)_layoutForCustomViewSectionWithContext:(id)a3;
-- (id)_layoutForHeroActionsSectionWithContext:(id)a3;
-- (id)_layoutForPeopleSectionWithContext:(id)a3;
-- (id)_layoutForTopActionSectionWithContext:(id)a3;
-- (id)layoutSectionForContext:(id)a3;
-- (int64_t)_sectionForContext:(id)a3;
+- (SHSheetContentLayoutProvider)initWithLayoutSpec:(id)spec;
+- (id)_createHorizontalLayoutSectionWithContext:(id)context iconWidth:(double)width sectionHeight:(double)height labelHeightCalculationBlock:(id)block;
+- (id)_layoutForActionsSectionWithContext:(id)context;
+- (id)_layoutForAppsSectionWithContext:(id)context;
+- (id)_layoutForCustomViewSectionWithContext:(id)context;
+- (id)_layoutForHeroActionsSectionWithContext:(id)context;
+- (id)_layoutForPeopleSectionWithContext:(id)context;
+- (id)_layoutForTopActionSectionWithContext:(id)context;
+- (id)layoutSectionForContext:(id)context;
+- (int64_t)_sectionForContext:(id)context;
 @end
 
 @implementation SHSheetContentLayoutProvider
 
-- (SHSheetContentLayoutProvider)initWithLayoutSpec:(id)a3
+- (SHSheetContentLayoutProvider)initWithLayoutSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   v9.receiver = self;
   v9.super_class = SHSheetContentLayoutProvider;
   v6 = [(SHSheetContentLayoutProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layoutSpec, a3);
+    objc_storeStrong(&v6->_layoutSpec, spec);
   }
 
   return v7;
 }
 
-- (int64_t)_sectionForContext:(id)a3
+- (int64_t)_sectionForContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 sectionIdentifier];
-  if ([v4 isEqualToString:@"SHSheetContentCustomViewSectionIdentifier"])
+  contextCopy = context;
+  sectionIdentifier = [contextCopy sectionIdentifier];
+  if ([sectionIdentifier isEqualToString:@"SHSheetContentCustomViewSectionIdentifier"])
   {
     v5 = 0;
   }
 
-  else if ([v4 isEqualToString:@"SHSheetContentPeopleSectionIdentifier"])
+  else if ([sectionIdentifier isEqualToString:@"SHSheetContentPeopleSectionIdentifier"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"SHSheetContentAppsSectionIdentifier"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"SHSheetContentEmbeddedActionsSectionIdentifier"))
+  else if ([sectionIdentifier isEqualToString:@"SHSheetContentAppsSectionIdentifier"] & 1) != 0 || (objc_msgSend(sectionIdentifier, "isEqualToString:", @"SHSheetContentEmbeddedActionsSectionIdentifier"))
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"SHSheetContentHeroActionsSectionIdentifier"] && (objc_msgSend(v3, "enableHeroActions") & 1) != 0)
+  else if ([sectionIdentifier isEqualToString:@"SHSheetContentHeroActionsSectionIdentifier"] && (objc_msgSend(contextCopy, "enableHeroActions") & 1) != 0)
   {
     v5 = 4;
   }
 
-  else if ([v4 isEqualToString:@"SHSheetContentTopActionsSectionIdentifier"])
+  else if ([sectionIdentifier isEqualToString:@"SHSheetContentTopActionsSectionIdentifier"])
   {
     v5 = 6;
   }
@@ -69,23 +69,23 @@
   return v5;
 }
 
-- (id)layoutSectionForContext:(id)a3
+- (id)layoutSectionForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SHSheetContentLayoutProvider *)self _sectionForContext:v4];
+  contextCopy = context;
+  v5 = [(SHSheetContentLayoutProvider *)self _sectionForContext:contextCopy];
   v6 = 0;
   if (v5 > 3)
   {
     switch(v5)
     {
       case 4:
-        v7 = [(SHSheetContentLayoutProvider *)self _layoutForHeroActionsSectionWithContext:v4];
+        v7 = [(SHSheetContentLayoutProvider *)self _layoutForHeroActionsSectionWithContext:contextCopy];
         break;
       case 5:
-        v7 = [(SHSheetContentLayoutProvider *)self _layoutForActionsSectionWithContext:v4];
+        v7 = [(SHSheetContentLayoutProvider *)self _layoutForActionsSectionWithContext:contextCopy];
         break;
       case 6:
-        v7 = [(SHSheetContentLayoutProvider *)self _layoutForTopActionSectionWithContext:v4];
+        v7 = [(SHSheetContentLayoutProvider *)self _layoutForTopActionSectionWithContext:contextCopy];
         break;
       default:
         goto LABEL_15;
@@ -94,7 +94,7 @@
 
   else if ((v5 - 2) < 2)
   {
-    v7 = [(SHSheetContentLayoutProvider *)self _layoutForAppsSectionWithContext:v4];
+    v7 = [(SHSheetContentLayoutProvider *)self _layoutForAppsSectionWithContext:contextCopy];
   }
 
   else if (v5)
@@ -104,12 +104,12 @@
       goto LABEL_15;
     }
 
-    v7 = [(SHSheetContentLayoutProvider *)self _layoutForPeopleSectionWithContext:v4];
+    v7 = [(SHSheetContentLayoutProvider *)self _layoutForPeopleSectionWithContext:contextCopy];
   }
 
   else
   {
-    v7 = [(SHSheetContentLayoutProvider *)self _layoutForCustomViewSectionWithContext:v4];
+    v7 = [(SHSheetContentLayoutProvider *)self _layoutForCustomViewSectionWithContext:contextCopy];
   }
 
   v6 = v7;
@@ -118,14 +118,14 @@ LABEL_15:
   return v6;
 }
 
-- (id)_layoutForCustomViewSectionWithContext:(id)a3
+- (id)_layoutForCustomViewSectionWithContext:(id)context
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SHSheetContentLayoutProvider *)self layoutSpec];
+  contextCopy = context;
+  layoutSpec = [(SHSheetContentLayoutProvider *)self layoutSpec];
   v6 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
   v7 = MEMORY[0x1E6995558];
-  [v5 customViewSectionHeight];
+  [layoutSpec customViewSectionHeight];
   v8 = [v7 absoluteDimension:?];
   v28 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v6 heightDimension:v8];
   v9 = [MEMORY[0x1E6995578] itemWithLayoutSize:?];
@@ -137,19 +137,19 @@ LABEL_15:
   v13 = [v11 horizontalGroupWithLayoutSize:v10 subitems:v12];
 
   v14 = [MEMORY[0x1E6995580] sectionWithGroup:v13];
-  [v5 customViewVerticalInset];
+  [layoutSpec customViewVerticalInset];
   v16 = v15;
-  [v5 customViewVerticalInset];
+  [layoutSpec customViewVerticalInset];
   [v14 setContentInsets:{v16, 0.0, v17, 0.0}];
-  v18 = [v4 environment];
-  v19 = [v18 traitCollection];
-  v20 = [v19 verticalSizeClass];
+  environment = [contextCopy environment];
+  traitCollection = [environment traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  LODWORD(v18) = [v4 enableCustomViewSectionFooter];
-  if (v18 && v20 != 1)
+  LODWORD(environment) = [contextCopy enableCustomViewSectionFooter];
+  if (environment && verticalSizeClass != 1)
   {
     v21 = MEMORY[0x1E6995558];
-    [v5 estimatedFooterHeight];
+    [layoutSpec estimatedFooterHeight];
     v22 = [v21 absoluteDimension:?];
     v23 = [SHSheetContentLayoutProvider _createFooterSupplementaryItemWithHeightDimension:v22];
 
@@ -165,29 +165,29 @@ LABEL_15:
   return v25;
 }
 
-- (id)_layoutForPeopleSectionWithContext:(id)a3
+- (id)_layoutForPeopleSectionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SHSheetContentLayoutProvider *)self layoutSpec];
-  [v5 peopleIconWidth];
+  contextCopy = context;
+  layoutSpec = [(SHSheetContentLayoutProvider *)self layoutSpec];
+  [layoutSpec peopleIconWidth];
   v7 = v6;
-  [v5 peopleSectionHeight];
+  [layoutSpec peopleSectionHeight];
   v9 = v8;
   v28 = MEMORY[0x1E69E9820];
   v29 = 3221225472;
   v30 = __67__SHSheetContentLayoutProvider__layoutForPeopleSectionWithContext___block_invoke;
   v31 = &unk_1E71F97A0;
-  v32 = self;
-  v10 = v4;
+  selfCopy = self;
+  v10 = contextCopy;
   v33 = v10;
   v11 = [(SHSheetContentLayoutProvider *)self _createHorizontalLayoutSectionWithContext:v10 iconWidth:&v28 sectionHeight:v7 labelHeightCalculationBlock:v9];
-  v12 = [v11 layoutSection];
-  [v12 setSupplementariesFollowContentInsets:0];
+  layoutSection = [v11 layoutSection];
+  [layoutSection setSupplementariesFollowContentInsets:0];
   v13 = objc_opt_new();
   if ([v10 enableTopContentSectionText])
   {
     v14 = MEMORY[0x1E6995558];
-    [v5 estimatedHeaderHeight];
+    [layoutSpec estimatedHeaderHeight];
     v15 = [v14 estimatedDimension:?];
     v16 = [SHSheetContentLayoutProvider _createHeaderSupplementaryItemWithHeightDimension:v15];
 
@@ -197,13 +197,13 @@ LABEL_15:
   if ([v10 enableSectionFooter])
   {
     v17 = MEMORY[0x1E6995558];
-    [v5 estimatedFooterHeight];
+    [layoutSpec estimatedFooterHeight];
     v18 = [v17 absoluteDimension:?];
     v19 = [SHSheetContentLayoutProvider _createFooterSupplementaryItemWithHeightDimension:v18];
 
     if (_ShareSheetSolariumEnabled())
     {
-      [v12 contentInsets];
+      [layoutSection contentInsets];
       v21 = v20;
       v23 = v22;
       v25 = v24;
@@ -214,7 +214,7 @@ LABEL_15:
     [v13 addObject:v19];
   }
 
-  [v12 setBoundarySupplementaryItems:v13];
+  [layoutSection setBoundarySupplementaryItems:v13];
 
   return v11;
 }
@@ -234,33 +234,33 @@ double __67__SHSheetContentLayoutProvider__layoutForPeopleSectionWithContext___b
   return v12;
 }
 
-- (id)_layoutForAppsSectionWithContext:(id)a3
+- (id)_layoutForAppsSectionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SHSheetContentLayoutProvider *)self layoutSpec];
-  [v5 sharingAppIconWidth];
+  contextCopy = context;
+  layoutSpec = [(SHSheetContentLayoutProvider *)self layoutSpec];
+  [layoutSpec sharingAppIconWidth];
   v7 = v6;
-  [v5 sharingAppSectionHeight];
+  [layoutSpec sharingAppSectionHeight];
   v9 = v8;
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __65__SHSheetContentLayoutProvider__layoutForAppsSectionWithContext___block_invoke;
   v30 = &unk_1E71F97A0;
-  v31 = self;
-  v10 = v4;
+  selfCopy = self;
+  v10 = contextCopy;
   v32 = v10;
   v11 = [(SHSheetContentLayoutProvider *)self _createHorizontalLayoutSectionWithContext:v10 iconWidth:&v27 sectionHeight:v7 labelHeightCalculationBlock:v9];
-  v12 = [v11 layoutSection];
-  [v12 setSupplementariesFollowContentInsets:0];
+  layoutSection = [v11 layoutSection];
+  [layoutSection setSupplementariesFollowContentInsets:0];
   v13 = objc_opt_new();
-  v14 = [v10 dataSourceSnapshot];
-  v15 = [v14 sectionIdentifiers];
-  v16 = [v15 containsObject:@"SHSheetContentPeopleSectionIdentifier"];
+  dataSourceSnapshot = [v10 dataSourceSnapshot];
+  sectionIdentifiers = [dataSourceSnapshot sectionIdentifiers];
+  v16 = [sectionIdentifiers containsObject:@"SHSheetContentPeopleSectionIdentifier"];
 
   if ([v10 enableTopContentSectionText] && (v16 & 1) == 0)
   {
     v17 = MEMORY[0x1E6995558];
-    [v5 estimatedHeaderHeight];
+    [layoutSpec estimatedHeaderHeight];
     v18 = [v17 estimatedDimension:?];
     v19 = [SHSheetContentLayoutProvider _createHeaderSupplementaryItemWithHeightDimension:v18];
 
@@ -270,13 +270,13 @@ double __67__SHSheetContentLayoutProvider__layoutForPeopleSectionWithContext___b
   if (_ShareSheetSolariumEnabled() && [v10 enableSectionFooter])
   {
     v20 = MEMORY[0x1E6995558];
-    [v5 estimatedFooterHeight];
+    [layoutSpec estimatedFooterHeight];
     v21 = [v20 absoluteDimension:?];
     v22 = [SHSheetContentLayoutProvider _createFooterSupplementaryItemWithHeightDimension:v21];
 
     if (_ShareSheetSolariumEnabled())
     {
-      [v12 contentInsets];
+      [layoutSection contentInsets];
       v24 = v23;
       [v11 cellSideInset];
       [v22 setContentInsets:{0.0, v24 + v25, 0.0, v24 + v25}];
@@ -285,7 +285,7 @@ double __67__SHSheetContentLayoutProvider__layoutForPeopleSectionWithContext___b
     [v13 addObject:v22];
   }
 
-  [v12 setBoundarySupplementaryItems:v13];
+  [layoutSection setBoundarySupplementaryItems:v13];
 
   return v11;
 }
@@ -306,40 +306,40 @@ double __65__SHSheetContentLayoutProvider__layoutForAppsSectionWithContext___blo
   return v13;
 }
 
-- (id)_layoutForTopActionSectionWithContext:(id)a3
+- (id)_layoutForTopActionSectionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SHSheetContentLayoutProvider *)self layoutSpec];
-  [v5 sharingAppIconWidth];
+  contextCopy = context;
+  layoutSpec = [(SHSheetContentLayoutProvider *)self layoutSpec];
+  [layoutSpec sharingAppIconWidth];
   v7 = v6;
-  [v5 topActionsSectionHeight];
-  v9 = [(SHSheetContentLayoutProvider *)self _createHorizontalLayoutSectionWithContext:v4 iconWidth:0 sectionHeight:v7 labelHeightCalculationBlock:v8];
+  [layoutSpec topActionsSectionHeight];
+  v9 = [(SHSheetContentLayoutProvider *)self _createHorizontalLayoutSectionWithContext:contextCopy iconWidth:0 sectionHeight:v7 labelHeightCalculationBlock:v8];
 
   return v9;
 }
 
-- (id)_layoutForHeroActionsSectionWithContext:(id)a3
+- (id)_layoutForHeroActionsSectionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SHSheetContentLayoutProvider *)self layoutSpec];
-  v6 = [v4 environment];
-  v7 = [v6 container];
-  [v7 effectiveContentSize];
+  contextCopy = context;
+  layoutSpec = [(SHSheetContentLayoutProvider *)self layoutSpec];
+  environment = [contextCopy environment];
+  container = [environment container];
+  [container effectiveContentSize];
   v9 = v8;
 
-  [v4 viewDirectionalLayoutMargins];
+  [contextCopy viewDirectionalLayoutMargins];
   v11 = v10;
-  v12 = [v6 container];
-  [v12 contentInsets];
+  container2 = [environment container];
+  [container2 contentInsets];
   v14 = v11 - v13;
 
-  [v4 viewDirectionalLayoutMargins];
+  [contextCopy viewDirectionalLayoutMargins];
   v16 = v15;
-  v17 = [v6 container];
-  [v17 contentInsets];
+  container3 = [environment container];
+  [container3 contentInsets];
   v19 = v16 - v18;
 
-  [v5 heroActionItemSpacing];
+  [layoutSpec heroActionItemSpacing];
   v21 = v20;
   v48 = MEMORY[0x1E69E9820];
   v49 = 3221225472;
@@ -349,15 +349,15 @@ double __65__SHSheetContentLayoutProvider__layoutForAppsSectionWithContext___blo
   v55 = v14;
   v56 = v19;
   v57 = v20;
-  v22 = v4;
+  v22 = contextCopy;
   v52 = v22;
-  v53 = self;
+  selfCopy = self;
   v23 = MEMORY[0x18CFF58E0](&v48);
-  v24 = [v22 dataSourceSnapshot];
-  v25 = [v22 sectionIdentifier];
-  v26 = [v24 numberOfItemsInSection:v25];
+  dataSourceSnapshot = [v22 dataSourceSnapshot];
+  sectionIdentifier = [v22 sectionIdentifier];
+  v26 = [dataSourceSnapshot numberOfItemsInSection:sectionIdentifier];
 
-  v27 = [v5 shouldUseNarrowLayoutForHeroActionsWithContainerWidth:v9];
+  v27 = [layoutSpec shouldUseNarrowLayoutForHeroActionsWithContainerWidth:v9];
   v28 = 2;
   if (v26 < 2)
   {
@@ -400,7 +400,7 @@ double __65__SHSheetContentLayoutProvider__layoutForAppsSectionWithContext___blo
 
   v44 = [MEMORY[0x1E6995580] sectionWithGroup:v42];
   [v44 setInterGroupSpacing:v21];
-  [v5 actionInterGroupInset];
+  [layoutSpec actionInterGroupInset];
   [v44 setContentInsets:{v14, v14, v45, v19}];
   v46 = [[SHSheetContentLayoutSection alloc] initWithLayoutSection:v44];
 
@@ -464,65 +464,65 @@ uint64_t __72__SHSheetContentLayoutProvider__layoutForHeroActionsSectionWithCont
   return v16;
 }
 
-- (NSDirectionalEdgeInsets)_resolvedDirectionalLayoutMargins:(double)a3 trailingMargin:(double)a4
+- (NSDirectionalEdgeInsets)_resolvedDirectionalLayoutMargins:(double)margins trailingMargin:(double)margin
 {
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v8 = 24.0;
+    marginCopy = 24.0;
   }
 
   else
   {
-    v8 = a4;
+    marginCopy = margin;
   }
 
-  if (v7 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v9 = 24.0;
+    marginsCopy = 24.0;
   }
 
   else
   {
-    v9 = a3;
+    marginsCopy = margins;
   }
 
   v10 = 0.0;
   v11 = 0.0;
-  result.trailing = v8;
+  result.trailing = marginCopy;
   result.bottom = v11;
-  result.leading = v9;
+  result.leading = marginsCopy;
   result.top = v10;
   return result;
 }
 
-- (id)_layoutForActionsSectionWithContext:(id)a3
+- (id)_layoutForActionsSectionWithContext:(id)context
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SHSheetContentLayoutProvider *)self layoutSpec];
-  v6 = [v4 environment];
-  v7 = [v5 actionsLayoutSectionConfigurationWithEnvironment:v6];
+  contextCopy = context;
+  layoutSpec = [(SHSheetContentLayoutProvider *)self layoutSpec];
+  environment = [contextCopy environment];
+  v7 = [layoutSpec actionsLayoutSectionConfigurationWithEnvironment:environment];
 
   v8 = objc_alloc(MEMORY[0x1E69DD3F0]);
-  v9 = [v4 environment];
-  v10 = [v8 initWithConfiguration:v7 layoutEnvironment:v9];
+  environment2 = [contextCopy environment];
+  v10 = [v8 initWithConfiguration:v7 layoutEnvironment:environment2];
 
   [v10 setContentInsetsReference:2];
-  v11 = [v4 sectionIdentifier];
-  v12 = [v4 dataSourceSnapshot];
-  v13 = [v12 sectionIdentifiers];
+  sectionIdentifier = [contextCopy sectionIdentifier];
+  dataSourceSnapshot = [contextCopy dataSourceSnapshot];
+  sectionIdentifiers = [dataSourceSnapshot sectionIdentifiers];
 
-  v14 = [v13 lastObject];
-  if ([v11 isEqualToString:v14])
+  lastObject = [sectionIdentifiers lastObject];
+  if ([sectionIdentifier isEqualToString:lastObject])
   {
   }
 
   else
   {
-    v15 = [v11 hasPrefix:@"SHSheetContentInformationalActionsSectionIdentifier_"];
+    v15 = [sectionIdentifier hasPrefix:@"SHSheetContentInformationalActionsSectionIdentifier_"];
 
     if ((v15 & 1) == 0)
     {
@@ -531,7 +531,7 @@ uint64_t __72__SHSheetContentLayoutProvider__layoutForHeroActionsSectionWithCont
   }
 
   v16 = MEMORY[0x1E6995558];
-  [v5 estimatedActionFooterHeight];
+  [layoutSpec estimatedActionFooterHeight];
   v17 = [v16 estimatedDimension:?];
   v18 = [SHSheetContentLayoutProvider _createFooterSupplementaryItemWithHeightDimension:v17];
 
@@ -551,39 +551,39 @@ LABEL_5:
     v20 = 0.0;
   }
 
-  v21 = [v13 indexOfObject:v11];
+  v21 = [sectionIdentifiers indexOfObject:sectionIdentifier];
   if (v21)
   {
-    v22 = [v13 objectAtIndexedSubscript:v21 - 1];
+    v22 = [sectionIdentifiers objectAtIndexedSubscript:v21 - 1];
     if (([v22 isEqualToString:@"SHSheetContentCustomViewSectionIdentifier"] & 1) != 0 || objc_msgSend(v22, "isEqualToString:", @"SHSheetContentPeopleSectionIdentifier"))
     {
-      [v5 actionInterGroupInset];
+      [layoutSpec actionInterGroupInset];
       v20 = v23;
     }
   }
 
-  [v4 viewDirectionalLayoutMargins];
+  [contextCopy viewDirectionalLayoutMargins];
   v25 = v24;
-  v26 = [v4 environment];
-  v27 = [v26 container];
-  [v27 contentInsets];
+  environment3 = [contextCopy environment];
+  container = [environment3 container];
+  [container contentInsets];
   v29 = v25 - v28;
 
-  [v4 viewDirectionalLayoutMargins];
+  [contextCopy viewDirectionalLayoutMargins];
   v31 = v30;
-  v32 = [v4 environment];
-  v33 = [v32 container];
-  [v33 contentInsets];
+  environment4 = [contextCopy environment];
+  container2 = [environment4 container];
+  [container2 contentInsets];
   v35 = v31 - v34;
 
   [(SHSheetContentLayoutProvider *)self _resolvedDirectionalLayoutMargins:v29 trailingMargin:v35];
   v37 = v36;
   v39 = v38;
-  v40 = [v13 firstObject];
-  if ([v11 isEqualToString:v40])
+  firstObject = [sectionIdentifiers firstObject];
+  if ([sectionIdentifier isEqualToString:firstObject])
   {
-    v41 = [v13 lastObject];
-    v42 = [v11 isEqualToString:v41];
+    lastObject2 = [sectionIdentifiers lastObject];
+    v42 = [sectionIdentifier isEqualToString:lastObject2];
 
     v43 = 0.0;
     if (v42)
@@ -596,8 +596,8 @@ LABEL_5:
   {
   }
 
-  v44 = [v13 lastObject];
-  v45 = [v11 isEqualToString:v44];
+  lastObject3 = [sectionIdentifiers lastObject];
+  v45 = [sectionIdentifier isEqualToString:lastObject3];
 
   v43 = 0.0;
   if (v45)
@@ -607,10 +607,10 @@ LABEL_5:
 
   else
   {
-    v46 = [v13 firstObject];
-    v47 = [v11 isEqualToString:v46];
+    firstObject2 = [sectionIdentifiers firstObject];
+    v47 = [sectionIdentifier isEqualToString:firstObject2];
 
-    [v5 actionInterGroupInset];
+    [layoutSpec actionInterGroupInset];
     v43 = v48;
     if (!v47)
     {
@@ -625,34 +625,34 @@ LABEL_21:
   return v49;
 }
 
-- (id)_createHorizontalLayoutSectionWithContext:(id)a3 iconWidth:(double)a4 sectionHeight:(double)a5 labelHeightCalculationBlock:(id)a6
+- (id)_createHorizontalLayoutSectionWithContext:(id)context iconWidth:(double)width sectionHeight:(double)height labelHeightCalculationBlock:(id)block
 {
   v99 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(SHSheetContentLayoutProvider *)self layoutSpec];
-  v13 = [v12 isAccessibilityContentSize];
-  v14 = [v10 environment];
-  v15 = [v14 container];
-  [v15 effectiveContentSize];
+  contextCopy = context;
+  blockCopy = block;
+  layoutSpec = [(SHSheetContentLayoutProvider *)self layoutSpec];
+  isAccessibilityContentSize = [layoutSpec isAccessibilityContentSize];
+  environment = [contextCopy environment];
+  container = [environment container];
+  [container effectiveContentSize];
   v17 = v16;
 
-  [v10 viewDirectionalLayoutMargins];
+  [contextCopy viewDirectionalLayoutMargins];
   v19 = v18;
-  v20 = [v10 environment];
-  v21 = [v20 container];
-  [v21 contentInsets];
+  environment2 = [contextCopy environment];
+  container2 = [environment2 container];
+  [container2 contentInsets];
   v23 = v19 - v22;
 
-  [v12 horizontalCellWidthForContentWidth:v17 sizeOffset:v23];
+  [layoutSpec horizontalCellWidthForContentWidth:v17 sizeOffset:v23];
   v25 = v24;
   v26 = 0.0;
   v27 = 0.0;
-  if (v11)
+  if (blockCopy)
   {
-    v28 = [v10 dataSourceSnapshot];
-    v29 = [v10 sectionIdentifier];
-    v30 = [v28 itemIdentifiersInSectionWithIdentifier:v29];
+    dataSourceSnapshot = [contextCopy dataSourceSnapshot];
+    sectionIdentifier = [contextCopy sectionIdentifier];
+    v30 = [dataSourceSnapshot itemIdentifiersInSectionWithIdentifier:sectionIdentifier];
 
     v95 = 0u;
     v96 = 0u;
@@ -673,7 +673,7 @@ LABEL_21:
             objc_enumerationMutation(v31);
           }
 
-          v36 = v11[2](v11, *(*(&v93 + 1) + 8 * i), v25);
+          v36 = blockCopy[2](blockCopy, *(*(&v93 + 1) + 8 * i), v25);
           if (v36 > v27)
           {
             v27 = v36;
@@ -687,21 +687,21 @@ LABEL_21:
     }
   }
 
-  v37 = v27 + a5;
+  v37 = v27 + height;
   v38 = [MEMORY[0x1E6995558] estimatedDimension:{v37, v93}];
   v39 = MEMORY[0x1E6995588];
   v40 = [MEMORY[0x1E6995558] absoluteDimension:v25];
   v41 = [v39 sizeWithWidthDimension:v40 heightDimension:v38];
 
   v42 = [MEMORY[0x1E6995578] itemWithLayoutSize:v41];
-  if (v13)
+  if (isAccessibilityContentSize)
   {
     v43 = 2;
     v44 = v23;
     goto LABEL_27;
   }
 
-  v45 = [v12 numberOfHorizontalItemsPerGroupForContentWidth:v17];
+  v45 = [layoutSpec numberOfHorizontalItemsPerGroupForContentWidth:v17];
   if (v45 == 3)
   {
     v46 = v25 * 0.5;
@@ -709,17 +709,17 @@ LABEL_21:
 
   else
   {
-    v46 = v23 + 1.0 + (v25 - a4) * 0.5;
+    v46 = v23 + 1.0 + (v25 - width) * 0.5;
   }
 
-  v47 = [MEMORY[0x1E69DC938] currentDevice];
-  v48 = [v47 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v49 = 0x1E69DC000uLL;
-  if (v48 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v23 = 16.0;
-    if ([v12 deviceClass] == 10)
+    if ([layoutSpec deviceClass] == 10)
     {
       v44 = 24.0;
     }
@@ -736,52 +736,52 @@ LABEL_21:
   v50 = v45;
   if (!_ShareSheetSolariumEnabled())
   {
-    v44 = v23 + -1.0 + (v25 - a4) * -0.5;
+    v44 = v23 + -1.0 + (v25 - width) * -0.5;
     v23 = (v17 - v44 - v46 - v25 * v50) / v50;
 LABEL_25:
     v26 = 0.0;
     goto LABEL_26;
   }
 
-  [v12 peopleIconWidth];
+  [layoutSpec peopleIconWidth];
   v52 = (v25 - v51) * 0.5;
-  v53 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v53 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v55 = round(v52 * v54);
-  v56 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v56 scale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 scale];
   v26 = v55 / v57;
 
-  v58 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v58 scale];
+  mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen3 scale];
   v60 = round((v17 - v25 * v50 + (v26 + 6.0) * -2.0) / (v45 + 1) * v59);
-  v61 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v61 scale];
+  mainScreen4 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen4 scale];
   v63 = v60 / v62;
 
   v23 = fmax(v63, 0.0);
-  v64 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v64 scale];
+  mainScreen5 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen5 scale];
   v66 = round((v26 + v23 + 6.0) * v65);
-  v67 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v67 scale];
+  mainScreen6 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen6 scale];
   v69 = v66 / v68;
 
-  v70 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v70 scale];
+  mainScreen7 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen7 scale];
   v72 = round(v69 * v71);
-  v73 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v73 scale];
+  mainScreen8 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen8 scale];
   v44 = v72 / v74;
 
   v49 = 0x1E69DC000;
 LABEL_26:
   v75 = v23 * (v45 - 1) + v25 * v50;
-  v76 = [*(v49 + 3760) mainScreen];
-  [v76 scale];
+  mainScreen9 = [*(v49 + 3760) mainScreen];
+  [mainScreen9 scale];
   v78 = round(v75 * v77);
-  v79 = [*(v49 + 3760) mainScreen];
-  [v79 scale];
+  mainScreen10 = [*(v49 + 3760) mainScreen];
+  [mainScreen10 scale];
   v25 = v78 / v80;
 
   v43 = 1;
@@ -801,7 +801,7 @@ LABEL_27:
 
   v89 = [MEMORY[0x1E6995580] sectionWithGroup:v87];
   [v89 setInterGroupSpacing:v23];
-  [v12 horizontalSectionBottomInset];
+  [layoutSpec horizontalSectionBottomInset];
   [v89 setContentInsets:{0.0, v44, v90, v44}];
   [v89 setOrthogonalScrollingBehavior:v43];
   v91 = [[SHSheetContentLayoutSection alloc] initWithLayoutSection:v89];
@@ -810,26 +810,26 @@ LABEL_27:
   return v91;
 }
 
-+ (id)_createHeaderSupplementaryItemWithHeightDimension:(id)a3
++ (id)_createHeaderSupplementaryItemWithHeightDimension:(id)dimension
 {
   v3 = MEMORY[0x1E6995588];
   v4 = MEMORY[0x1E6995558];
-  v5 = a3;
+  dimensionCopy = dimension;
   v6 = [v4 fractionalWidthDimension:1.0];
-  v7 = [v3 sizeWithWidthDimension:v6 heightDimension:v5];
+  v7 = [v3 sizeWithWidthDimension:v6 heightDimension:dimensionCopy];
 
   v8 = [MEMORY[0x1E6995548] boundarySupplementaryItemWithLayoutSize:v7 elementKind:@"UIActivityContentHeaderSectionKind" alignment:1];
 
   return v8;
 }
 
-+ (id)_createFooterSupplementaryItemWithHeightDimension:(id)a3
++ (id)_createFooterSupplementaryItemWithHeightDimension:(id)dimension
 {
   v3 = MEMORY[0x1E6995588];
   v4 = MEMORY[0x1E6995558];
-  v5 = a3;
+  dimensionCopy = dimension;
   v6 = [v4 fractionalWidthDimension:1.0];
-  v7 = [v3 sizeWithWidthDimension:v6 heightDimension:v5];
+  v7 = [v3 sizeWithWidthDimension:v6 heightDimension:dimensionCopy];
 
   v8 = [MEMORY[0x1E6995548] boundarySupplementaryItemWithLayoutSize:v7 elementKind:@"UIActivityContentFooterSectionKind" alignment:5];
 

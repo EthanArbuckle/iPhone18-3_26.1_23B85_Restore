@@ -3,9 +3,9 @@
 - (BOOL)shouldCopyBackup;
 - (BOOL)shouldNotifySpringBoard;
 - (BOOL)shouldRemoveItemsNotRestored;
-- (BOOL)shouldRestoreAppWithID:(id)a3;
+- (BOOL)shouldRestoreAppWithID:(id)d;
 - (BOOL)shouldRestoreSystemFiles;
-- (MBDriveSettingsContext)initWithPersona:(id)a3;
+- (MBDriveSettingsContext)initWithPersona:(id)persona;
 - (NSString)driveBackupDatabaseIndexPath;
 - (NSString)driveBackupDatabasePath;
 - (NSString)driveBackupDir;
@@ -18,9 +18,9 @@
 - (NSString)driveSnapshotDir;
 - (NSString)driveSnapshotManifestDatabasePath;
 - (NSString)driveSnapshotPropertiesPath;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)log;
-- (void)updatePassword:(id)a3;
+- (void)updatePassword:(id)password;
 @end
 
 @implementation MBDriveSettingsContext
@@ -52,7 +52,7 @@
   return v4;
 }
 
-- (MBDriveSettingsContext)initWithPersona:(id)a3
+- (MBDriveSettingsContext)initWithPersona:(id)persona
 {
   v15.receiver = self;
   v15.super_class = MBDriveSettingsContext;
@@ -83,7 +83,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = MBDriveSettingsContext;
@@ -92,10 +92,10 @@
   [v5 setTargetDeviceClass:self->_targetDeviceClass];
   [v5 setSourceIdentifier:self->_sourceIdentifier];
   [v5 setTargetIdentifier:self->_targetIdentifier];
-  v6 = [(NSSet *)self->_applicationIDs mutableCopyWithZone:a3];
+  v6 = [(NSSet *)self->_applicationIDs mutableCopyWithZone:zone];
   [v5 setApplicationIDs:v6];
 
-  v7 = [(NSMutableDictionary *)self->_options mutableCopyWithZone:a3];
+  v7 = [(NSMutableDictionary *)self->_options mutableCopyWithZone:zone];
   [v5 setOptions:v7];
 
   [v5 setDrive:self->_drive];
@@ -110,23 +110,23 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldCopyBackup
 {
   v2 = [(NSMutableDictionary *)self->_options objectForKeyedSubscript:@"RestoreDontCopyBackup"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (BOOL)shouldRestoreSystemFiles
@@ -135,15 +135,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldRemoveItemsNotRestored
@@ -152,15 +152,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)driveBackupDir
@@ -176,98 +176,98 @@
 
 - (NSString)driveBackupStatusPath
 {
-  v2 = [(MBDriveSettingsContext *)self driveBackupDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Status.plist"];
+  driveBackupDir = [(MBDriveSettingsContext *)self driveBackupDir];
+  v3 = [driveBackupDir stringByAppendingPathComponent:@"Status.plist"];
 
   return v3;
 }
 
 - (NSString)driveBackupPropertiesPath
 {
-  v2 = [(MBDriveSettingsContext *)self driveBackupDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.plist"];
+  driveBackupDir = [(MBDriveSettingsContext *)self driveBackupDir];
+  v3 = [driveBackupDir stringByAppendingPathComponent:@"Manifest.plist"];
 
   return v3;
 }
 
 - (NSString)driveBackupDatabasePath
 {
-  v2 = [(MBDriveSettingsContext *)self driveBackupDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.mbdb"];
+  driveBackupDir = [(MBDriveSettingsContext *)self driveBackupDir];
+  v3 = [driveBackupDir stringByAppendingPathComponent:@"Manifest.mbdb"];
 
   return v3;
 }
 
 - (NSString)driveBackupDatabaseIndexPath
 {
-  v2 = [(MBDriveSettingsContext *)self driveBackupDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.mbdx"];
+  driveBackupDir = [(MBDriveSettingsContext *)self driveBackupDir];
+  v3 = [driveBackupDir stringByAppendingPathComponent:@"Manifest.mbdx"];
 
   return v3;
 }
 
 - (NSString)driveBackupManifestDatabasePath
 {
-  v2 = [(MBDriveSettingsContext *)self driveBackupDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.db"];
+  driveBackupDir = [(MBDriveSettingsContext *)self driveBackupDir];
+  v3 = [driveBackupDir stringByAppendingPathComponent:@"Manifest.db"];
 
   return v3;
 }
 
 - (NSString)driveBackupInfoPath
 {
-  v2 = [(MBDriveSettingsContext *)self driveBackupDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Info.plist"];
+  driveBackupDir = [(MBDriveSettingsContext *)self driveBackupDir];
+  v3 = [driveBackupDir stringByAppendingPathComponent:@"Info.plist"];
 
   return v3;
 }
 
 - (NSString)driveSnapshotDir
 {
-  v2 = [(MBDriveSettingsContext *)self driveBackupDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Snapshot"];
+  driveBackupDir = [(MBDriveSettingsContext *)self driveBackupDir];
+  v3 = [driveBackupDir stringByAppendingPathComponent:@"Snapshot"];
 
   return v3;
 }
 
 - (NSString)driveSnapshotPropertiesPath
 {
-  v2 = [(MBDriveSettingsContext *)self driveSnapshotDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.plist"];
+  driveSnapshotDir = [(MBDriveSettingsContext *)self driveSnapshotDir];
+  v3 = [driveSnapshotDir stringByAppendingPathComponent:@"Manifest.plist"];
 
   return v3;
 }
 
 - (NSString)driveSnapshotDatabasePath
 {
-  v2 = [(MBDriveSettingsContext *)self driveSnapshotDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.mbdb"];
+  driveSnapshotDir = [(MBDriveSettingsContext *)self driveSnapshotDir];
+  v3 = [driveSnapshotDir stringByAppendingPathComponent:@"Manifest.mbdb"];
 
   return v3;
 }
 
 - (NSString)driveSnapshotDatabaseIndexPath
 {
-  v2 = [(MBDriveSettingsContext *)self driveSnapshotDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.mbdx"];
+  driveSnapshotDir = [(MBDriveSettingsContext *)self driveSnapshotDir];
+  v3 = [driveSnapshotDir stringByAppendingPathComponent:@"Manifest.mbdx"];
 
   return v3;
 }
 
 - (NSString)driveSnapshotManifestDatabasePath
 {
-  v2 = [(MBDriveSettingsContext *)self driveSnapshotDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Manifest.db"];
+  driveSnapshotDir = [(MBDriveSettingsContext *)self driveSnapshotDir];
+  v3 = [driveSnapshotDir stringByAppendingPathComponent:@"Manifest.db"];
 
   return v3;
 }
 
-- (BOOL)shouldRestoreAppWithID:(id)a3
+- (BOOL)shouldRestoreAppWithID:(id)d
 {
   applicationIDs = self->_applicationIDs;
   if (applicationIDs)
   {
-    return [(NSSet *)applicationIDs containsObject:a3];
+    return [(NSSet *)applicationIDs containsObject:d];
   }
 
   else
@@ -276,12 +276,12 @@
   }
 }
 
-- (void)updatePassword:(id)a3
+- (void)updatePassword:(id)password
 {
   options = self->_options;
-  if (a3)
+  if (password)
   {
-    [(NSMutableDictionary *)options setObject:a3 forKeyedSubscript:@"Password"];
+    [(NSMutableDictionary *)options setObject:password forKeyedSubscript:@"Password"];
   }
 
   else
@@ -298,12 +298,12 @@
   v3 = MBGetDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(MBDriveSettingsContext *)self targetDeviceClass];
+    targetDeviceClass = [(MBDriveSettingsContext *)self targetDeviceClass];
     *buf = 138412290;
-    v27 = v4;
+    v27 = targetDeviceClass;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "TargetDeviceClass: %@", buf, 0xCu);
 
-    v20 = [(MBDriveSettingsContext *)self targetDeviceClass];
+    targetDeviceClass2 = [(MBDriveSettingsContext *)self targetDeviceClass];
     _MBLog();
   }
 
@@ -321,43 +321,43 @@
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(MBDriveSettingsContext *)self sourceIdentifier];
+    sourceIdentifier = [(MBDriveSettingsContext *)self sourceIdentifier];
     *buf = 138412290;
-    v27 = v8;
+    v27 = sourceIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SourceIdentifier: %@", buf, 0xCu);
 
-    v21 = [(MBDriveSettingsContext *)self sourceIdentifier];
+    sourceIdentifier2 = [(MBDriveSettingsContext *)self sourceIdentifier];
     _MBLog();
   }
 
   v9 = MBGetDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(MBDriveSettingsContext *)self targetIdentifier];
+    targetIdentifier = [(MBDriveSettingsContext *)self targetIdentifier];
     *buf = 138412290;
-    v27 = v10;
+    v27 = targetIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "TargetIdentifier: %@", buf, 0xCu);
 
-    v22 = [(MBDriveSettingsContext *)self targetIdentifier];
+    targetIdentifier2 = [(MBDriveSettingsContext *)self targetIdentifier];
     _MBLog();
   }
 
   v11 = MBGetDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(MBDriveSettingsContext *)self applicationIDs];
+    applicationIDs = [(MBDriveSettingsContext *)self applicationIDs];
     v13 = MBStringWithSet();
     *buf = 138412290;
     v27 = v13;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "ApplicationIDs: %@", buf, 0xCu);
 
-    v14 = [(MBDriveSettingsContext *)self applicationIDs];
+    applicationIDs2 = [(MBDriveSettingsContext *)self applicationIDs];
     v23 = MBStringWithSet();
     _MBLog();
   }
 
-  v15 = [(MBDriveSettingsContext *)self options];
-  v16 = [v15 mutableCopy];
+  options = [(MBDriveSettingsContext *)self options];
+  v16 = [options mutableCopy];
 
   v17 = [v16 objectForKeyedSubscript:@"Password"];
 

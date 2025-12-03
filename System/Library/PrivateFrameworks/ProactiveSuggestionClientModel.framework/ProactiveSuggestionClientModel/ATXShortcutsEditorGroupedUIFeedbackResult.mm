@@ -1,17 +1,17 @@
 @interface ATXShortcutsEditorGroupedUIFeedbackResult
 - (ATXShortcutsEditorGroupedUIFeedbackResult)init;
-- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithCoder:(id)a3;
-- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProto:(id)a3;
-- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXContextualActionsGroupedUIFeedbackResult:(id)a3;
+- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithCoder:(id)coder;
+- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProto:(id)proto;
+- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXContextualActionsGroupedUIFeedbackResult:(id)result;
 - (BOOL)isValid;
 - (id)description;
 - (id)encodeAsProto;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXShortcutsEditorGroupedUIFeedbackResult
@@ -34,19 +34,19 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self jsonDict];
-  v5 = [v3 initWithFormat:@"%@", v4];
+  jsonDict = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self jsonDict];
+  v5 = [v3 initWithFormat:@"%@", jsonDict];
 
   return v5;
 }
 
 - (BOOL)isValid
 {
-  v3 = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self startDateOfFirstSession];
-  if (v3)
+  startDateOfFirstSession = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self startDateOfFirstSession];
+  if (startDateOfFirstSession)
   {
-    v4 = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self endDateOfLastSession];
-    v5 = v4 != 0;
+    endDateOfLastSession = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self endDateOfLastSession];
+    v5 = endDateOfLastSession != 0;
   }
 
   else
@@ -61,21 +61,21 @@
 {
   v6.receiver = self;
   v6.super_class = ATXShortcutsEditorGroupedUIFeedbackResult;
-  v3 = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)&v6 proto];
-  [(ATXPBContextualActionsGroupedUIFeedbackResult *)self->_proto setGroupedUIFeedbackResults:v3];
+  proto = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)&v6 proto];
+  [(ATXPBContextualActionsGroupedUIFeedbackResult *)self->_proto setGroupedUIFeedbackResults:proto];
 
-  v4 = [(ATXPBContextualActionsGroupedUIFeedbackResult *)self->_proto data];
+  data = [(ATXPBContextualActionsGroupedUIFeedbackResult *)self->_proto data];
 
-  return v4;
+  return data;
 }
 
-- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProto:(id)a3
+- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProto:(id)proto
 {
-  v5 = a3;
-  if (!v5)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_9:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -85,7 +85,7 @@ LABEL_9:
     v9 = __atxlog_handle_blending();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self initWithProto:v5, v9];
+      [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self initWithProto:protoCopy, v9];
     }
 
     goto LABEL_9;
@@ -97,58 +97,58 @@ LABEL_9:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proto, a3);
+    objc_storeStrong(&v6->_proto, proto);
   }
 
   self = v7;
-  v8 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProtoData:(id)a3
+- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBContextualActionsGroupedUIFeedbackResult alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBContextualActionsGroupedUIFeedbackResult alloc] initWithData:dataCopy];
 
     self = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v6.receiver = self;
   v6.super_class = ATXShortcutsEditorGroupedUIFeedbackResult;
-  v3 = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)&v6 proto];
-  [(ATXPBContextualActionsGroupedUIFeedbackResult *)self->_proto setGroupedUIFeedbackResults:v3];
+  proto = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)&v6 proto];
+  [(ATXPBContextualActionsGroupedUIFeedbackResult *)self->_proto setGroupedUIFeedbackResults:proto];
 
   proto = self->_proto;
 
   return proto;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithCoder:(id)a3
+- (ATXShortcutsEditorGroupedUIFeedbackResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self initWithProtoData:v5];
   return v6;
@@ -156,45 +156,45 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self proto];
-  v3 = [v2 hash];
+  proto = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self proto];
+  v3 = [proto hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorGroupedUIFeedbackResult *)self isEqualToATXContextualActionsGroupedUIFeedbackResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorGroupedUIFeedbackResult *)self isEqualToATXContextualActionsGroupedUIFeedbackResult:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXContextualActionsGroupedUIFeedbackResult:(id)a3
+- (BOOL)isEqualToATXContextualActionsGroupedUIFeedbackResult:(id)result
 {
-  v4 = a3;
-  v5 = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self proto];
-  v6 = [v4 proto];
+  resultCopy = result;
+  proto = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self proto];
+  proto2 = [resultCopy proto];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(resultCopy) = [proto isEqual:proto2];
+  return resultCopy;
 }
 
 - (id)jsonDict
 {
-  v2 = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self proto];
-  v3 = [v2 dictionaryRepresentation];
+  proto = [(ATXShortcutsEditorGroupedUIFeedbackResult *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface VCRateControlMachineLearningLocalTrainingDataProducer
-- (BOOL)checkCountQuery:(char *)a3 withDatabase:(sqlite3 *)a4 minValue:(int)a5 maxValue:(int)a6;
-- (VCRateControlMachineLearningLocalTrainingDataProducer)initWithDataStore:(id)a3 recipeID:(id)a4;
+- (BOOL)checkCountQuery:(char *)query withDatabase:(sqlite3 *)database minValue:(int)value maxValue:(int)maxValue;
+- (VCRateControlMachineLearningLocalTrainingDataProducer)initWithDataStore:(id)store recipeID:(id)d;
 - (void)dealloc;
 - (void)removeDatabaseFile;
-- (void)runTrainingDataPostProcessing:(id)a3;
+- (void)runTrainingDataPostProcessing:(id)processing;
 - (void)setUpTrainingDataForPlugin;
 @end
 
 @implementation VCRateControlMachineLearningLocalTrainingDataProducer
 
-- (VCRateControlMachineLearningLocalTrainingDataProducer)initWithDataStore:(id)a3 recipeID:(id)a4
+- (VCRateControlMachineLearningLocalTrainingDataProducer)initWithDataStore:(id)store recipeID:(id)d
 {
   v11.receiver = self;
   v11.super_class = VCRateControlMachineLearningLocalTrainingDataProducer;
@@ -22,7 +22,7 @@ LABEL_7:
     return 0;
   }
 
-  *(v6 + 4) = a4;
+  *(v6 + 4) = d;
   v7 = [objc_alloc(MEMORY[0x277CCACA0]) initWithFormat:@"%@/%s", +[VCDiskUtils getCachesDirectoryPath](VCDiskUtils, "getCachesDirectoryPath"), "rc_fl_data"];
   *(v6 + 3) = v7;
   if (![VCDiskUtils createDefaultAttributeDirectoryIfNeeded:v7])
@@ -37,7 +37,7 @@ LABEL_7:
   v10[2] = __84__VCRateControlMachineLearningLocalTrainingDataProducer_initWithDataStore_recipeID___block_invoke;
   v10[3] = &unk_278BD4868;
   v10[4] = v8;
-  [a3 registerDataProducerWithType:1 producerCallback:v10];
+  [store registerDataProducerWithType:1 producerCallback:v10];
   return v6;
 }
 
@@ -55,10 +55,10 @@ uint64_t __84__VCRateControlMachineLearningLocalTrainingDataProducer_initWithDat
   [(VCRateControlMachineLearningLocalTrainingDataProducer *)&v3 dealloc];
 }
 
-- (void)runTrainingDataPostProcessing:(id)a3
+- (void)runTrainingDataPostProcessing:(id)processing
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
+  v4 = [processing copy];
   self->_databasePath = v4;
   v5 = sqlite3_open([(NSString *)v4 UTF8String], &self->_database);
   if (!v5 || (v6 = v5, v5 == 101))
@@ -169,7 +169,7 @@ LABEL_7:
 - (void)setUpTrainingDataForPlugin
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule("") < 3)
     {
@@ -193,7 +193,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule("") >= 3)
@@ -214,11 +214,11 @@ LABEL_9:
 - (void)removeDatabaseFile
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA08] defaultManager];
-  if ([v3 fileExistsAtPath:self->_databasePath])
+  defaultManager = [MEMORY[0x277CCAA08] defaultManager];
+  if ([defaultManager fileExistsAtPath:self->_databasePath])
   {
     v18 = 0;
-    if (![v3 removeItemAtPath:self->_databasePath error:&v18] || v18 != 0)
+    if (![defaultManager removeItemAtPath:self->_databasePath error:&v18] || v18 != 0)
     {
       if (objc_opt_class() == self)
       {
@@ -235,7 +235,7 @@ LABEL_9:
         }
 
         databasePath = self->_databasePath;
-        v9 = [v18 localizedDescription];
+        localizedDescription = [v18 localizedDescription];
         *buf = 136316162;
         v20 = v6;
         v21 = 2080;
@@ -245,7 +245,7 @@ LABEL_9:
         v25 = 2112;
         v26 = databasePath;
         v27 = 2112;
-        v28 = v9;
+        selfCopy = localizedDescription;
         v10 = " [%s] %s:%d Failed to delete RemoteDataCollectionDumpProducer database with databasePath=%@, error=%@";
         v11 = v7;
         v12 = 48;
@@ -276,7 +276,7 @@ LABEL_9:
         }
 
         v16 = self->_databasePath;
-        v17 = [v18 localizedDescription];
+        localizedDescription2 = [v18 localizedDescription];
         *buf = 136316674;
         v20 = v13;
         v21 = 2080;
@@ -286,11 +286,11 @@ LABEL_9:
         v25 = 2112;
         v26 = v5;
         v27 = 2048;
-        v28 = self;
+        selfCopy = self;
         v29 = 2112;
         v30 = v16;
         v31 = 2112;
-        v32 = v17;
+        v32 = localizedDescription2;
         v10 = " [%s] %s:%d %@(%p) Failed to delete RemoteDataCollectionDumpProducer database with databasePath=%@, error=%@";
         v11 = v14;
         v12 = 68;
@@ -304,11 +304,11 @@ LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checkCountQuery:(char *)a3 withDatabase:(sqlite3 *)a4 minValue:(int)a5 maxValue:(int)a6
+- (BOOL)checkCountQuery:(char *)query withDatabase:(sqlite3 *)database minValue:(int)value maxValue:(int)maxValue
 {
   v36 = *MEMORY[0x277D85DE8];
   ppStmt = 0;
-  if (sqlite3_prepare_v2(a4, a3, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 100)
+  if (sqlite3_prepare_v2(database, query, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 100)
   {
     v21 = 0;
     goto LABEL_20;
@@ -345,13 +345,13 @@ LABEL_15:
     v27 = 2112;
     *v28 = v10;
     *&v28[8] = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = v19;
     v31 = v9;
     v32 = v19;
-    v33 = a5;
+    valueCopy = value;
     v34 = v19;
-    v35 = a6;
+    maxValueCopy = maxValue;
     v14 = " [%s] %s:%d %@(%p) Training table has numberOfRows=%d, requiredRange=[%d, %d]";
     v15 = v18;
     v16 = 66;
@@ -370,9 +370,9 @@ LABEL_15:
       v27 = v13;
       *v28 = v9;
       *&v28[4] = v13;
-      *&v28[6] = a5;
-      LOWORD(v29) = v13;
-      *(&v29 + 2) = a6;
+      *&v28[6] = value;
+      LOWORD(selfCopy) = v13;
+      *(&selfCopy + 2) = maxValue;
       v14 = " [%s] %s:%d Training table has numberOfRows=%d, requiredRange=[%d, %d]";
       v15 = v12;
       v16 = 46;
@@ -382,7 +382,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  v21 = v9 >= a5 && v9 <= a6;
+  v21 = v9 >= value && v9 <= maxValue;
 LABEL_20:
   sqlite3_finalize(ppStmt);
   v22 = *MEMORY[0x277D85DE8];

@@ -4,226 +4,226 @@
 - (NSXPCConnection)connection;
 - (id).cxx_construct;
 - (optional<BOOL>)restrictedPublicCarrierInfoKeys;
-- (optional<PhoneServicesType>)serviceFromCFName:(id)a3;
+- (optional<PhoneServicesType>)serviceFromCFName:(id)name;
 - (shared_ptr<const)registry;
 - (void)SIMUnlockProcedureDidComplete;
-- (void)acknowledgeIncomingMessages:(id)a3 withMessageIDList:(id)a4 completion:(id)a5;
-- (void)activateTurboMode:(id)a3;
-- (void)addDedicatedBearer:(id)a3 completion:(id)a4;
-- (void)addParticipants:(id)a3 toGroupChat:(id)a4 withParticipantsToAdd:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)authenticate:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)billingCycleEndDatesForLastPeriods:(unint64_t)a3 completion:(id)a4;
-- (void)cancelSIMToolkitUSSDSessionForContext:(id)a3 completion:(id)a4;
-- (void)changeIcon:(id)a3 forGroupChat:(id)a4 withNewIcon:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)changePIN:(id)a3 oldPin:(id)a4 newPin:(id)a5 completion:(id)a6;
-- (void)changeSubject:(id)a3 forGroupChat:(id)a4 withNewSubject:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)checkBasebandConfigUpdateInfo:(id)a3;
-- (void)checkCellularDiagnosticsStatus:(id)a3;
-- (void)checkEmbeddedSimHealthWithCompletion:(id)a3;
-- (void)checkRadioBootHealth:(id)a3;
-- (void)checkRadioBootHealthDetails:(id)a3;
-- (void)clearUserEnteredBillingEndDayOfMonth:(id)a3 completion:(id)a4;
-- (void)clearUserEnteredMonthlyBudget:(id)a3 completion:(id)a4;
-- (void)clearUserEnteredMonthlyRoamingBudget:(id)a3 completion:(id)a4;
-- (void)context:(id)a3 addPhoneServicesDevice:(id)a4 withCompletion:(id)a5;
-- (void)context:(id)a3 canSetCapability:(id)a4 completion:(id)a5;
-- (void)context:(id)a3 getCapability:(id)a4 completion:(id)a5;
-- (void)context:(id)a3 getPseudoIdentityFor:(id)a4 completion:(id)a5;
-- (void)context:(id)a3 getSystemCapabilities:(id)a4;
-- (void)context:(id)a3 isMandatoryDisabledVoLTE:(id)a4;
-- (void)context:(id)a3 isProtectedIdentitySupported:(id)a4 completion:(id)a5;
-- (void)context:(id)a3 mandatoryDisableVoLTE:(BOOL)a4 withCompletion:(id)a5;
-- (void)context:(id)a3 recheckPhoneServicesAccountStatus:(id)a4 completion:(id)a5;
-- (void)context:(id)a3 removePhoneServicesDevice:(id)a4 withCompletion:(id)a5;
-- (void)context:(id)a3 setCapability:(id)a4 enabled:(BOOL)a5 info:(id)a6 completion:(id)a7;
-- (void)context:(id)a3 supportedIdentityProtectionFor:(id)a4 completion:(id)a5;
-- (void)copyCellId:(id)a3 completion:(id)a4;
-- (void)copyCellInfo:(id)a3 completion:(id)a4;
-- (void)copyFirmwareUpdateInfo:(id)a3;
-- (void)copyGid1:(id)a3 completion:(id)a4;
-- (void)copyGid2:(id)a3 completion:(id)a4;
-- (void)copyLabel:(id)a3 completion:(id)a4;
-- (void)copyLastKnownMobileSubscriberCountryCode:(id)a3 completion:(id)a4;
-- (void)copyLocationAreaCode:(id)a3 completion:(id)a4;
-- (void)copyMccOrPlmnsListForIso3CountryCode:(id)a3 completion:(id)a4;
-- (void)copyMobileEquipmentInfo:(id)a3;
-- (void)copyMobileSubscriberCountryCode:(id)a3 completion:(id)a4;
-- (void)copyMobileSubscriberIdentity:(id)a3 completion:(id)a4;
-- (void)copyMobileSubscriberIso3CountryCode:(id)a3 MNC:(id)a4 completion:(id)a5;
-- (void)copyMobileSubscriberIsoCountryCode:(id)a3 completion:(id)a4;
-- (void)copyMobileSubscriberIsoSubregionCode:(id)a3 MNC:(id)a4 completion:(id)a5;
-- (void)copyMobileSubscriberNetworkCode:(id)a3 completion:(id)a4;
-- (void)copyPriVersion:(id)a3 completion:(id)a4;
-- (void)copyPublicCellId:(id)a3 completion:(id)a4;
-- (void)copySIMIdentity:(id)a3 completion:(id)a4;
-- (void)create:(id)a3 groupChat:(id)a4 withOperationID:(id)a5 completion:(id)a6;
-- (void)createEncryptedIdentity:(id)a3 identity:(id)a4 completion:(id)a5;
-- (void)dataUsageForLastPeriods:(unint64_t)a3 completion:(id)a4;
-- (void)dataUsageForLastPeriodsOnActivePairedDevice:(unint64_t)a3 completion:(id)a4;
-- (void)decodeSuggestionsBase64:(id)a3 withBase64String:(id)a4 completion:(id)a5;
-- (void)deleteChat:(id)a3 chat:(id)a4 completion:(id)a5;
-- (void)deleteHiddenSims:(id)a3;
-- (void)disableBusinessMessaging:(id)a3 completion:(id)a4;
-- (void)disableLazuli:(id)a3 completion:(id)a4;
-- (void)discoverCapabilities:(id)a3 forDestination:(id)a4 completion:(id)a5;
-- (void)discoverRemoteCapabilities:(id)a3 forDestination:(id)a4 withOperationID:(id)a5 completion:(id)a6;
-- (void)enableBusinessMessaging:(id)a3 completion:(id)a4;
-- (void)enableLazuli:(id)a3 completion:(id)a4;
-- (void)evaluateMobileSubscriberIdentity:(id)a3 identity:(id)a4 completion:(id)a5;
-- (void)exit:(id)a3 groupChat:(id)a4 withOperationID:(id)a5 completion:(id)a6;
-- (void)fetchBasebandTicket:(BOOL)a3 withCompletion:(id)a4;
-- (void)fetchChatBotRenderInformation:(id)a3 forDestination:(id)a4 completion:(id)a5;
-- (void)fetchPhonebook:(id)a3 completion:(id)a4;
-- (void)fetchRemoteCapabilities:(id)a3 forDestination:(id)a4 withOptions:(id)a5 withOperationID:(id)a6 completion:(id)a7;
-- (void)fetchRenderInformation:(id)a3 forChatBot:(id)a4 withOperationID:(id)a5 completion:(id)a6;
-- (void)fetchSIMLockValue:(id)a3 completion:(id)a4;
-- (void)forceRollAllTransportKeys:(id)a3;
-- (void)generateAuthenticationInfoUsingSim:(id)a3 authParams:(id)a4 completion:(id)a5;
-- (void)getActivationPolicyState:(id)a3;
-- (void)getBasebandRadioFrequencyFrontEndScanData:(id)a3;
-- (void)getCellularUsageWorkspaceInfo:(id)a3;
-- (void)getEOSFirmwareUpdateInfo:(id)a3;
-- (void)getEosStatus:(id)a3;
-- (void)getLastKnownSimDeactivationInfoFor:(id)a3 completion:(id)a4;
-- (void)getListOfPresentDedicatedBearers:(id)a3;
-- (void)getMobileSubscriberHomeCountryList:(id)a3 completion:(id)a4;
-- (void)getPhoneNumberWithCompletion:(id)a3 completion:(id)a4;
-- (void)getPhoneServicesDeviceInfo:(id)a3;
-- (void)getPhoneServicesDeviceList:(id)a3;
-- (void)getPhonebookEntryCountWithCompletion:(id)a3 completion:(id)a4;
-- (void)getPhonebookEntryWithCompletion:(id)a3 atIndex:(int)a4 completion:(id)a5;
-- (void)getPrivateNetworkCapabilitiesForContext:(id)a3 completion:(id)a4;
-- (void)getPrivateNetworkSimInfoForContext:(id)a3 completion:(id)a4;
-- (void)getProvisioningServerURL:(id)a3 completion:(id)a4;
-- (void)getQoSLinkCharacteristics:(id)a3;
-- (void)getRemainingPINAttemptCount:(id)a3 completion:(id)a4;
-- (void)getRemainingPUKAttemptCount:(id)a3 completion:(id)a4;
-- (void)getSIMStatus:(id)a3 completion:(id)a4;
-- (void)getSIMToolkitListItemsForContext:(id)a3 completion:(id)a4;
-- (void)getSIMToolkitMenuForContext:(id)a3 completion:(id)a4;
-- (void)getSIMToolkitUSSDStringForContext:(id)a3 completion:(id)a4;
-- (void)getSIMTrayStatus:(id)a3;
-- (void)getSatelliteMsgCfgToUpdate:(id)a3;
-- (void)getShortLabel:(id)a3 completion:(id)a4;
-- (void)getSimHardwareInfo:(id)a3 completion:(id)a4;
-- (void)getSimLabel:(id)a3 completion:(id)a4;
-- (void)getSubscriptionUserFacingName:(id)a3 completion:(id)a4;
-- (void)getSupports5G:(id)a3 completion:(id)a4;
-- (void)getSupportsTARandomization:(id)a3 completion:(id)a4;
-- (void)getSweetgumApps:(id)a3 completion:(id)a4;
-- (void)getSweetgumCapabilities:(id)a3 completion:(id)a4;
-- (void)getSweetgumDataPlanMetrics:(id)a3 completion:(id)a4;
-- (void)getSweetgumPlans:(id)a3 completion:(id)a4;
-- (void)getSweetgumUsage:(id)a3 completion:(id)a4;
-- (void)getSweetgumUserConsentInfo:(id)a3 completion:(id)a4;
-- (void)getSystemConfiguration:(id)a3 completion:(id)a4;
-- (void)getTARandomizationSetting:(id)a3 completion:(id)a4;
-- (void)getTransportKeysToUpdate:(id)a3;
-- (void)getTypeAllocationCode:(id)a3 completion:(id)a4;
-- (void)getUserAuthToken:(id)a3 completion:(id)a4;
-- (void)getUserDefaultVoiceSubscriptionContext:(id)a3;
-- (void)hasDedicatedBearerSupport:(id)a3;
-- (void)installPrivateNetworkProfile:(id)a3 completion:(id)a4;
-- (void)interfaceCostExpensive:(id)a3 completion:(id)a4;
-- (void)isAnySimReadyWithCompletion:(id)a3;
-- (void)isDedicatedBearerPresent:(id)a3 completion:(id)a4;
-- (void)isEmbeddedSIMOnlyConfig:(id)a3;
-- (void)isFactoryDebugEnabled:(id)a3;
-- (void)isHighDataModeSupported:(id)a3 completion:(id)a4;
-- (void)isPrivateNetworkContext:(id)a3 completion:(id)a4;
-- (void)isPrivateNetworkEvaluationNeeded:(id)a3;
-- (void)isPrivateNetworkPreferredOverWifi:(id)a3 completion:(id)a4;
-- (void)isPrivateNetworkSIM:(id)a3 completion:(id)a4;
-- (void)isSimMatching:(id)a3 carrierDescriptors:(id)a4 completion:(id)a5;
-- (void)isSmartDataModeSupportedWithCompletion:(id)a3;
-- (void)lowDataMode:(id)a3 completion:(id)a4;
-- (void)overriddenInterfaceCostInexpensiveWithCompletion:(id)a3;
-- (void)privacyProxy:(id)a3 completion:(id)a4;
-- (void)promptForSIMUnlock:(id)a3 completion:(id)a4;
-- (void)purchaseSweetgumPlan:(id)a3 completion:(id)a4;
-- (void)readCachedCapabilities:(id)a3 forDestination:(id)a4 completion:(id)a5;
-- (void)readCachedChatBotRenderInformation:(id)a3 forChatBot:(id)a4 completion:(id)a5;
-- (void)refreshCellMonitor:(id)a3 completion:(id)a4;
-- (void)refreshSweetgumAll:(id)a3 completion:(id)a4;
-- (void)refreshSweetgumApps:(id)a3 completion:(id)a4;
-- (void)refreshSweetgumPlans:(id)a3 completion:(id)a4;
-- (void)refreshSweetgumUsage:(id)a3 completion:(id)a4;
-- (void)refreshUserAuthToken:(id)a3 completion:(id)a4;
-- (void)reliableNetworkFallback:(id)a3 completion:(id)a4;
-- (void)removeAllDedicatedBearers:(id)a3;
-- (void)removeDedicatedBearer:(id)a3 completion:(id)a4;
-- (void)removeGeofenceProfile:(id)a3;
-- (void)removeParticipants:(id)a3 fromGroupChat:(id)a4 withParticipantsToRemove:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)removePrivateNetworkProfile:(id)a3 completion:(id)a4;
-- (void)reportChatbotSpam:(id)a3 forChatbot:(id)a4 withSpamReportInfo:(id)a5 andOperationID:(id)a6 completion:(id)a7;
-- (void)reportLazuliSpamWithContext:(id)a3 destination:(id)a4 spamReportInfo:(id)a5 operationID:(id)a6 completion:(id)a7;
-- (void)reprovisionSatelliteMsg:(BOOL)a3 completion:(id)a4;
-- (void)requestQoSLinkCharacteristics:(id)a3;
-- (void)retrieveAllIncomingMessageIDs:(id)a3 completion:(id)a4;
-- (void)retrieveMessage:(id)a3 withMessageID:(id)a4 completion:(id)a5;
-- (void)revokeMessage:(id)a3 withRevokeData:(id)a4 withMessageID:(id)a5 completion:(id)a6;
-- (void)savePhonebookEntry:(id)a3 atIndex:(int)a4 withContactName:(id)a5 contactNumber:(id)a6 completion:(id)a7;
-- (void)saveSIMLockValue:(id)a3 enabled:(BOOL)a4 pin:(id)a5 completion:(id)a6;
-- (void)selectPhonebook:(id)a3 forPhonebookName:(int)a4 withPassword:(id)a5 completion:(id)a6;
-- (void)selectSIMToolkitListItemForContext:(id)a3 session:(id)a4 response:(id)a5 index:(id)a6 completion:(id)a7;
-- (void)selectSIMToolkitMenuItemForContext:(id)a3 index:(id)a4 completion:(id)a5;
-- (void)sendComposingIndicator:(id)a3 to:(id)a4 withMessageID:(id)a5 withIndication:(id)a6 withSecurity:(id)a7 withError:(id *)a8;
-- (void)sendDeviceAction:(id)a3 to:(id)a4 withMessageID:(id)a5 withAction:(id)a6 completion:(id)a7;
-- (void)sendDeviceSettings:(id)a3 to:(id)a4 withMessageID:(id)a5 withSetting:(id)a6 completion:(id)a7;
-- (void)sendDispositionNotificationMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withDisposition:(int64_t)a6 forMessageID:(id)a7 withSecurity:(id)a8 completion:(id)a9;
-- (void)sendFileTransferMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withFileInformation:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)sendFileTransferMessage:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withFileInformation:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)sendGeolocationMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withGeoPush:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)sendGeolocationMessage:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withGeoPush:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)sendGroupComposingIndicator:(id)a3 toGroup:(id)a4 withMessageID:(id)a5 withIndication:(id)a6 completion:(id)a7;
-- (void)sendGroupComposingIndicator:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withIndication:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)sendGroupDispositionNotificationMessage:(id)a3 toGroup:(id)a4 to:(id)a5 withMessageID:(id)a6 withDisposition:(int64_t)a7 forMessageID:(id)a8 withSecurity:(id)a9 completion:(id)a10;
-- (void)sendOneToManyFileTransferMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withDescriptor:(id)a6 completion:(id)a7;
-- (void)sendOneToManyGeolocationMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withGeoPush:(id)a6 completion:(id)a7;
-- (void)sendOneToManyTextMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withMessage:(id)a6 completion:(id)a7;
-- (void)sendResponseForSuggestedAction:(id)a3 to:(id)a4 withMessageID:(id)a5 response:(id)a6 completion:(id)a7;
-- (void)sendResponseForSuggestedReply:(id)a3 to:(id)a4 withMessageID:(id)a5 response:(id)a6 completion:(id)a7;
-- (void)sendSIMToolkitBooleanResponseForContext:(id)a3 session:(id)a4 response:(id)a5 yesNo:(BOOL)a6 completion:(id)a7;
-- (void)sendSIMToolkitDisplayReadyForContext:(id)a3 completion:(id)a4;
-- (void)sendSIMToolkitResponseForContext:(id)a3 session:(id)a4 response:(id)a5 completion:(id)a6;
-- (void)sendSIMToolkitStringResponseForContext:(id)a3 session:(id)a4 response:(id)a5 string:(id)a6 completion:(id)a7;
-- (void)sendSIMToolkitUSSDResponseForContext:(id)a3 response:(id)a4 completion:(id)a5;
-- (void)sendSIMToolkitUserActivityForContext:(id)a3 completion:(id)a4;
-- (void)sendTextMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withMessage:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)sendTextMessage:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withMessage:(id)a6 withSecurity:(id)a7 completion:(id)a8;
-- (void)setActiveUserDataSelection:(id)a3 completion:(id)a4;
-- (void)setDefaultVoice:(id)a3 completion:(id)a4;
-- (void)setEosStatus:(id)a3 assertionState:(id)a4 completion:(id)a5;
-- (void)setInterfaceCost:(id)a3 expensive:(BOOL)a4 completion:(id)a5;
-- (void)setLabel:(id)a3 label:(id)a4 completion:(id)a5;
-- (void)setLowDataMode:(id)a3 enable:(BOOL)a4 completion:(id)a5;
-- (void)setOverriddenInterfaceCostInexpensive:(BOOL)a3 completion:(id)a4;
-- (void)setPrivacyProxy:(id)a3 enabled:(BOOL)a4 completion:(id)a5;
-- (void)setProvisioningServerURL:(id)a3 url:(id)a4 completion:(id)a5;
-- (void)setReliableNetworkFallback:(id)a3 enable:(BOOL)a4 completion:(id)a5;
-- (void)setSatelliteMsgCfgUpdated:(id)a3 completion:(id)a4;
-- (void)setSmartDataMode:(id)a3 enable:(BOOL)a4 completion:(id)a5;
-- (void)setSweetgumUserConsent:(id)a3 userConsent:(BOOL)a4 completion:(id)a5;
-- (void)setTARandomizationUserSetting:(id)a3 enabled:(BOOL)a4 completion:(id)a5;
-- (void)setTransportKeysUpdated:(BOOL)a3 with:(id)a4 completion:(id)a5;
-- (void)setUsageCollectionEnabled:(BOOL)a3 completion:(id)a4;
-- (void)setUserEntered:(id)a3 monthlyBudget:(id)a4 completion:(id)a5;
-- (void)setUserEntered:(id)a3 monthlyRoamingBudget:(id)a4 completion:(id)a5;
-- (void)setUserEnteredBillingEnd:(id)a3 dayOfMonth:(id)a4 completion:(id)a5;
-- (void)setVoLTEAudioCodec:(id)a3 codecInfo:(id)a4 completion:(id)a5;
-- (void)shouldAllowSimLockFor:(id)a3 completion:(id)a4;
-- (void)smartDataMode:(id)a3 completion:(id)a4;
-- (void)supportsEmbeddedSIMWithCompletion:(id)a3;
-- (void)supportsLimitedUseSIMsWithCompletion:(id)a3;
-- (void)unlockPIN:(id)a3 pin:(id)a4 completion:(id)a5;
-- (void)unlockPUK:(id)a3 puk:(id)a4 newPin:(id)a5 completion:(id)a6;
-- (void)updateGeofenceProfile:(id)a3 completion:(id)a4;
-- (void)updatePrivateNetworkProfile:(id)a3 setProfileAside:(BOOL)a4 completion:(id)a5;
-- (void)usageCollectionEnabled:(id)a3;
-- (void)userEnteredBillingEndDayOfMont:(id)a3 completion:(id)a4;
-- (void)userEnteredMonthlyBudget:(id)a3 completion:(id)a4;
-- (void)userEnteredMonthlyRoamingBudget:(id)a3 completion:(id)a4;
-- (void)wifiCallingCTFollowUpComplete:(id)a3 withCompletion:(id)a4;
+- (void)acknowledgeIncomingMessages:(id)messages withMessageIDList:(id)list completion:(id)completion;
+- (void)activateTurboMode:(id)mode;
+- (void)addDedicatedBearer:(id)bearer completion:(id)completion;
+- (void)addParticipants:(id)participants toGroupChat:(id)chat withParticipantsToAdd:(id)add withOperationID:(id)d withSecurity:(id)security completion:(id)completion;
+- (void)authenticate:(id)authenticate request:(id)request completion:(id)completion;
+- (void)billingCycleEndDatesForLastPeriods:(unint64_t)periods completion:(id)completion;
+- (void)cancelSIMToolkitUSSDSessionForContext:(id)context completion:(id)completion;
+- (void)changeIcon:(id)icon forGroupChat:(id)chat withNewIcon:(id)newIcon withOperationID:(id)d withSecurity:(id)security completion:(id)completion;
+- (void)changePIN:(id)n oldPin:(id)pin newPin:(id)newPin completion:(id)completion;
+- (void)changeSubject:(id)subject forGroupChat:(id)chat withNewSubject:(id)newSubject withOperationID:(id)d withSecurity:(id)security completion:(id)completion;
+- (void)checkBasebandConfigUpdateInfo:(id)info;
+- (void)checkCellularDiagnosticsStatus:(id)status;
+- (void)checkEmbeddedSimHealthWithCompletion:(id)completion;
+- (void)checkRadioBootHealth:(id)health;
+- (void)checkRadioBootHealthDetails:(id)details;
+- (void)clearUserEnteredBillingEndDayOfMonth:(id)month completion:(id)completion;
+- (void)clearUserEnteredMonthlyBudget:(id)budget completion:(id)completion;
+- (void)clearUserEnteredMonthlyRoamingBudget:(id)budget completion:(id)completion;
+- (void)context:(id)context addPhoneServicesDevice:(id)device withCompletion:(id)completion;
+- (void)context:(id)context canSetCapability:(id)capability completion:(id)completion;
+- (void)context:(id)context getCapability:(id)capability completion:(id)completion;
+- (void)context:(id)context getPseudoIdentityFor:(id)for completion:(id)completion;
+- (void)context:(id)context getSystemCapabilities:(id)capabilities;
+- (void)context:(id)context isMandatoryDisabledVoLTE:(id)e;
+- (void)context:(id)context isProtectedIdentitySupported:(id)supported completion:(id)completion;
+- (void)context:(id)context mandatoryDisableVoLTE:(BOOL)e withCompletion:(id)completion;
+- (void)context:(id)context recheckPhoneServicesAccountStatus:(id)status completion:(id)completion;
+- (void)context:(id)context removePhoneServicesDevice:(id)device withCompletion:(id)completion;
+- (void)context:(id)context setCapability:(id)capability enabled:(BOOL)enabled info:(id)info completion:(id)completion;
+- (void)context:(id)context supportedIdentityProtectionFor:(id)for completion:(id)completion;
+- (void)copyCellId:(id)id completion:(id)completion;
+- (void)copyCellInfo:(id)info completion:(id)completion;
+- (void)copyFirmwareUpdateInfo:(id)info;
+- (void)copyGid1:(id)gid1 completion:(id)completion;
+- (void)copyGid2:(id)gid2 completion:(id)completion;
+- (void)copyLabel:(id)label completion:(id)completion;
+- (void)copyLastKnownMobileSubscriberCountryCode:(id)code completion:(id)completion;
+- (void)copyLocationAreaCode:(id)code completion:(id)completion;
+- (void)copyMccOrPlmnsListForIso3CountryCode:(id)code completion:(id)completion;
+- (void)copyMobileEquipmentInfo:(id)info;
+- (void)copyMobileSubscriberCountryCode:(id)code completion:(id)completion;
+- (void)copyMobileSubscriberIdentity:(id)identity completion:(id)completion;
+- (void)copyMobileSubscriberIso3CountryCode:(id)code MNC:(id)c completion:(id)completion;
+- (void)copyMobileSubscriberIsoCountryCode:(id)code completion:(id)completion;
+- (void)copyMobileSubscriberIsoSubregionCode:(id)code MNC:(id)c completion:(id)completion;
+- (void)copyMobileSubscriberNetworkCode:(id)code completion:(id)completion;
+- (void)copyPriVersion:(id)version completion:(id)completion;
+- (void)copyPublicCellId:(id)id completion:(id)completion;
+- (void)copySIMIdentity:(id)identity completion:(id)completion;
+- (void)create:(id)create groupChat:(id)chat withOperationID:(id)d completion:(id)completion;
+- (void)createEncryptedIdentity:(id)identity identity:(id)a4 completion:(id)completion;
+- (void)dataUsageForLastPeriods:(unint64_t)periods completion:(id)completion;
+- (void)dataUsageForLastPeriodsOnActivePairedDevice:(unint64_t)device completion:(id)completion;
+- (void)decodeSuggestionsBase64:(id)base64 withBase64String:(id)string completion:(id)completion;
+- (void)deleteChat:(id)chat chat:(id)a4 completion:(id)completion;
+- (void)deleteHiddenSims:(id)sims;
+- (void)disableBusinessMessaging:(id)messaging completion:(id)completion;
+- (void)disableLazuli:(id)lazuli completion:(id)completion;
+- (void)discoverCapabilities:(id)capabilities forDestination:(id)destination completion:(id)completion;
+- (void)discoverRemoteCapabilities:(id)capabilities forDestination:(id)destination withOperationID:(id)d completion:(id)completion;
+- (void)enableBusinessMessaging:(id)messaging completion:(id)completion;
+- (void)enableLazuli:(id)lazuli completion:(id)completion;
+- (void)evaluateMobileSubscriberIdentity:(id)identity identity:(id)a4 completion:(id)completion;
+- (void)exit:(id)exit groupChat:(id)chat withOperationID:(id)d completion:(id)completion;
+- (void)fetchBasebandTicket:(BOOL)ticket withCompletion:(id)completion;
+- (void)fetchChatBotRenderInformation:(id)information forDestination:(id)destination completion:(id)completion;
+- (void)fetchPhonebook:(id)phonebook completion:(id)completion;
+- (void)fetchRemoteCapabilities:(id)capabilities forDestination:(id)destination withOptions:(id)options withOperationID:(id)d completion:(id)completion;
+- (void)fetchRenderInformation:(id)information forChatBot:(id)bot withOperationID:(id)d completion:(id)completion;
+- (void)fetchSIMLockValue:(id)value completion:(id)completion;
+- (void)forceRollAllTransportKeys:(id)keys;
+- (void)generateAuthenticationInfoUsingSim:(id)sim authParams:(id)params completion:(id)completion;
+- (void)getActivationPolicyState:(id)state;
+- (void)getBasebandRadioFrequencyFrontEndScanData:(id)data;
+- (void)getCellularUsageWorkspaceInfo:(id)info;
+- (void)getEOSFirmwareUpdateInfo:(id)info;
+- (void)getEosStatus:(id)status;
+- (void)getLastKnownSimDeactivationInfoFor:(id)for completion:(id)completion;
+- (void)getListOfPresentDedicatedBearers:(id)bearers;
+- (void)getMobileSubscriberHomeCountryList:(id)list completion:(id)completion;
+- (void)getPhoneNumberWithCompletion:(id)completion completion:(id)a4;
+- (void)getPhoneServicesDeviceInfo:(id)info;
+- (void)getPhoneServicesDeviceList:(id)list;
+- (void)getPhonebookEntryCountWithCompletion:(id)completion completion:(id)a4;
+- (void)getPhonebookEntryWithCompletion:(id)completion atIndex:(int)index completion:(id)a5;
+- (void)getPrivateNetworkCapabilitiesForContext:(id)context completion:(id)completion;
+- (void)getPrivateNetworkSimInfoForContext:(id)context completion:(id)completion;
+- (void)getProvisioningServerURL:(id)l completion:(id)completion;
+- (void)getQoSLinkCharacteristics:(id)characteristics;
+- (void)getRemainingPINAttemptCount:(id)count completion:(id)completion;
+- (void)getRemainingPUKAttemptCount:(id)count completion:(id)completion;
+- (void)getSIMStatus:(id)status completion:(id)completion;
+- (void)getSIMToolkitListItemsForContext:(id)context completion:(id)completion;
+- (void)getSIMToolkitMenuForContext:(id)context completion:(id)completion;
+- (void)getSIMToolkitUSSDStringForContext:(id)context completion:(id)completion;
+- (void)getSIMTrayStatus:(id)status;
+- (void)getSatelliteMsgCfgToUpdate:(id)update;
+- (void)getShortLabel:(id)label completion:(id)completion;
+- (void)getSimHardwareInfo:(id)info completion:(id)completion;
+- (void)getSimLabel:(id)label completion:(id)completion;
+- (void)getSubscriptionUserFacingName:(id)name completion:(id)completion;
+- (void)getSupports5G:(id)g completion:(id)completion;
+- (void)getSupportsTARandomization:(id)randomization completion:(id)completion;
+- (void)getSweetgumApps:(id)apps completion:(id)completion;
+- (void)getSweetgumCapabilities:(id)capabilities completion:(id)completion;
+- (void)getSweetgumDataPlanMetrics:(id)metrics completion:(id)completion;
+- (void)getSweetgumPlans:(id)plans completion:(id)completion;
+- (void)getSweetgumUsage:(id)usage completion:(id)completion;
+- (void)getSweetgumUserConsentInfo:(id)info completion:(id)completion;
+- (void)getSystemConfiguration:(id)configuration completion:(id)completion;
+- (void)getTARandomizationSetting:(id)setting completion:(id)completion;
+- (void)getTransportKeysToUpdate:(id)update;
+- (void)getTypeAllocationCode:(id)code completion:(id)completion;
+- (void)getUserAuthToken:(id)token completion:(id)completion;
+- (void)getUserDefaultVoiceSubscriptionContext:(id)context;
+- (void)hasDedicatedBearerSupport:(id)support;
+- (void)installPrivateNetworkProfile:(id)profile completion:(id)completion;
+- (void)interfaceCostExpensive:(id)expensive completion:(id)completion;
+- (void)isAnySimReadyWithCompletion:(id)completion;
+- (void)isDedicatedBearerPresent:(id)present completion:(id)completion;
+- (void)isEmbeddedSIMOnlyConfig:(id)config;
+- (void)isFactoryDebugEnabled:(id)enabled;
+- (void)isHighDataModeSupported:(id)supported completion:(id)completion;
+- (void)isPrivateNetworkContext:(id)context completion:(id)completion;
+- (void)isPrivateNetworkEvaluationNeeded:(id)needed;
+- (void)isPrivateNetworkPreferredOverWifi:(id)wifi completion:(id)completion;
+- (void)isPrivateNetworkSIM:(id)m completion:(id)completion;
+- (void)isSimMatching:(id)matching carrierDescriptors:(id)descriptors completion:(id)completion;
+- (void)isSmartDataModeSupportedWithCompletion:(id)completion;
+- (void)lowDataMode:(id)mode completion:(id)completion;
+- (void)overriddenInterfaceCostInexpensiveWithCompletion:(id)completion;
+- (void)privacyProxy:(id)proxy completion:(id)completion;
+- (void)promptForSIMUnlock:(id)unlock completion:(id)completion;
+- (void)purchaseSweetgumPlan:(id)plan completion:(id)completion;
+- (void)readCachedCapabilities:(id)capabilities forDestination:(id)destination completion:(id)completion;
+- (void)readCachedChatBotRenderInformation:(id)information forChatBot:(id)bot completion:(id)completion;
+- (void)refreshCellMonitor:(id)monitor completion:(id)completion;
+- (void)refreshSweetgumAll:(id)all completion:(id)completion;
+- (void)refreshSweetgumApps:(id)apps completion:(id)completion;
+- (void)refreshSweetgumPlans:(id)plans completion:(id)completion;
+- (void)refreshSweetgumUsage:(id)usage completion:(id)completion;
+- (void)refreshUserAuthToken:(id)token completion:(id)completion;
+- (void)reliableNetworkFallback:(id)fallback completion:(id)completion;
+- (void)removeAllDedicatedBearers:(id)bearers;
+- (void)removeDedicatedBearer:(id)bearer completion:(id)completion;
+- (void)removeGeofenceProfile:(id)profile;
+- (void)removeParticipants:(id)participants fromGroupChat:(id)chat withParticipantsToRemove:(id)remove withOperationID:(id)d withSecurity:(id)security completion:(id)completion;
+- (void)removePrivateNetworkProfile:(id)profile completion:(id)completion;
+- (void)reportChatbotSpam:(id)spam forChatbot:(id)chatbot withSpamReportInfo:(id)info andOperationID:(id)d completion:(id)completion;
+- (void)reportLazuliSpamWithContext:(id)context destination:(id)destination spamReportInfo:(id)info operationID:(id)d completion:(id)completion;
+- (void)reprovisionSatelliteMsg:(BOOL)msg completion:(id)completion;
+- (void)requestQoSLinkCharacteristics:(id)characteristics;
+- (void)retrieveAllIncomingMessageIDs:(id)ds completion:(id)completion;
+- (void)retrieveMessage:(id)message withMessageID:(id)d completion:(id)completion;
+- (void)revokeMessage:(id)message withRevokeData:(id)data withMessageID:(id)d completion:(id)completion;
+- (void)savePhonebookEntry:(id)entry atIndex:(int)index withContactName:(id)name contactNumber:(id)number completion:(id)completion;
+- (void)saveSIMLockValue:(id)value enabled:(BOOL)enabled pin:(id)pin completion:(id)completion;
+- (void)selectPhonebook:(id)phonebook forPhonebookName:(int)name withPassword:(id)password completion:(id)completion;
+- (void)selectSIMToolkitListItemForContext:(id)context session:(id)session response:(id)response index:(id)index completion:(id)completion;
+- (void)selectSIMToolkitMenuItemForContext:(id)context index:(id)index completion:(id)completion;
+- (void)sendComposingIndicator:(id)indicator to:(id)to withMessageID:(id)d withIndication:(id)indication withSecurity:(id)security withError:(id *)error;
+- (void)sendDeviceAction:(id)action to:(id)to withMessageID:(id)d withAction:(id)withAction completion:(id)completion;
+- (void)sendDeviceSettings:(id)settings to:(id)to withMessageID:(id)d withSetting:(id)setting completion:(id)completion;
+- (void)sendDispositionNotificationMessage:(id)message to:(id)to withMessageID:(id)d withDisposition:(int64_t)disposition forMessageID:(id)iD withSecurity:(id)security completion:(id)completion;
+- (void)sendFileTransferMessage:(id)message to:(id)to withMessageID:(id)d withFileInformation:(id)information withSecurity:(id)security completion:(id)completion;
+- (void)sendFileTransferMessage:(id)message toGroupDestination:(id)destination withMessageID:(id)d withFileInformation:(id)information withSecurity:(id)security completion:(id)completion;
+- (void)sendGeolocationMessage:(id)message to:(id)to withMessageID:(id)d withGeoPush:(id)push withSecurity:(id)security completion:(id)completion;
+- (void)sendGeolocationMessage:(id)message toGroupDestination:(id)destination withMessageID:(id)d withGeoPush:(id)push withSecurity:(id)security completion:(id)completion;
+- (void)sendGroupComposingIndicator:(id)indicator toGroup:(id)group withMessageID:(id)d withIndication:(id)indication completion:(id)completion;
+- (void)sendGroupComposingIndicator:(id)indicator toGroupDestination:(id)destination withMessageID:(id)d withIndication:(id)indication withSecurity:(id)security completion:(id)completion;
+- (void)sendGroupDispositionNotificationMessage:(id)message toGroup:(id)group to:(id)to withMessageID:(id)d withDisposition:(int64_t)disposition forMessageID:(id)iD withSecurity:(id)security completion:(id)self0;
+- (void)sendOneToManyFileTransferMessage:(id)message to:(id)to withMessageID:(id)d withDescriptor:(id)descriptor completion:(id)completion;
+- (void)sendOneToManyGeolocationMessage:(id)message to:(id)to withMessageID:(id)d withGeoPush:(id)push completion:(id)completion;
+- (void)sendOneToManyTextMessage:(id)message to:(id)to withMessageID:(id)d withMessage:(id)withMessage completion:(id)completion;
+- (void)sendResponseForSuggestedAction:(id)action to:(id)to withMessageID:(id)d response:(id)response completion:(id)completion;
+- (void)sendResponseForSuggestedReply:(id)reply to:(id)to withMessageID:(id)d response:(id)response completion:(id)completion;
+- (void)sendSIMToolkitBooleanResponseForContext:(id)context session:(id)session response:(id)response yesNo:(BOOL)no completion:(id)completion;
+- (void)sendSIMToolkitDisplayReadyForContext:(id)context completion:(id)completion;
+- (void)sendSIMToolkitResponseForContext:(id)context session:(id)session response:(id)response completion:(id)completion;
+- (void)sendSIMToolkitStringResponseForContext:(id)context session:(id)session response:(id)response string:(id)string completion:(id)completion;
+- (void)sendSIMToolkitUSSDResponseForContext:(id)context response:(id)response completion:(id)completion;
+- (void)sendSIMToolkitUserActivityForContext:(id)context completion:(id)completion;
+- (void)sendTextMessage:(id)message to:(id)to withMessageID:(id)d withMessage:(id)withMessage withSecurity:(id)security completion:(id)completion;
+- (void)sendTextMessage:(id)message toGroupDestination:(id)destination withMessageID:(id)d withMessage:(id)withMessage withSecurity:(id)security completion:(id)completion;
+- (void)setActiveUserDataSelection:(id)selection completion:(id)completion;
+- (void)setDefaultVoice:(id)voice completion:(id)completion;
+- (void)setEosStatus:(id)status assertionState:(id)state completion:(id)completion;
+- (void)setInterfaceCost:(id)cost expensive:(BOOL)expensive completion:(id)completion;
+- (void)setLabel:(id)label label:(id)a4 completion:(id)completion;
+- (void)setLowDataMode:(id)mode enable:(BOOL)enable completion:(id)completion;
+- (void)setOverriddenInterfaceCostInexpensive:(BOOL)inexpensive completion:(id)completion;
+- (void)setPrivacyProxy:(id)proxy enabled:(BOOL)enabled completion:(id)completion;
+- (void)setProvisioningServerURL:(id)l url:(id)url completion:(id)completion;
+- (void)setReliableNetworkFallback:(id)fallback enable:(BOOL)enable completion:(id)completion;
+- (void)setSatelliteMsgCfgUpdated:(id)updated completion:(id)completion;
+- (void)setSmartDataMode:(id)mode enable:(BOOL)enable completion:(id)completion;
+- (void)setSweetgumUserConsent:(id)consent userConsent:(BOOL)userConsent completion:(id)completion;
+- (void)setTARandomizationUserSetting:(id)setting enabled:(BOOL)enabled completion:(id)completion;
+- (void)setTransportKeysUpdated:(BOOL)updated with:(id)with completion:(id)completion;
+- (void)setUsageCollectionEnabled:(BOOL)enabled completion:(id)completion;
+- (void)setUserEntered:(id)entered monthlyBudget:(id)budget completion:(id)completion;
+- (void)setUserEntered:(id)entered monthlyRoamingBudget:(id)budget completion:(id)completion;
+- (void)setUserEnteredBillingEnd:(id)end dayOfMonth:(id)month completion:(id)completion;
+- (void)setVoLTEAudioCodec:(id)codec codecInfo:(id)info completion:(id)completion;
+- (void)shouldAllowSimLockFor:(id)for completion:(id)completion;
+- (void)smartDataMode:(id)mode completion:(id)completion;
+- (void)supportsEmbeddedSIMWithCompletion:(id)completion;
+- (void)supportsLimitedUseSIMsWithCompletion:(id)completion;
+- (void)unlockPIN:(id)n pin:(id)pin completion:(id)completion;
+- (void)unlockPUK:(id)k puk:(id)puk newPin:(id)pin completion:(id)completion;
+- (void)updateGeofenceProfile:(id)profile completion:(id)completion;
+- (void)updatePrivateNetworkProfile:(id)profile setProfileAside:(BOOL)aside completion:(id)completion;
+- (void)usageCollectionEnabled:(id)enabled;
+- (void)userEnteredBillingEndDayOfMont:(id)mont completion:(id)completion;
+- (void)userEnteredMonthlyBudget:(id)budget completion:(id)completion;
+- (void)userEnteredMonthlyRoamingBudget:(id)budget completion:(id)completion;
+- (void)wifiCallingCTFollowUpComplete:(id)complete withCompletion:(id)completion;
 @end
 
 @implementation CTXPCClientHandler
@@ -343,20 +343,20 @@ LABEL_4:
   return (v6 | (v4 << 8));
 }
 
-- (void)disableLazuli:(id)a3 completion:(id)a4
+- (void)disableLazuli:(id)lazuli completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lazuliCopy = lazuli;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (lazuliCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v8 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 slotID];
+        [lazuliCopy slotID];
         v9 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         *&buf[4] = v9;
@@ -368,10 +368,10 @@ LABEL_4:
       v10 = *buf;
       if (*buf)
       {
-        v11 = sub_100018A64([v6 slotID]);
+        v11 = sub_100018A64([lazuliCopy slotID]);
         if ((*(*v10 + 40))(v10, v11))
         {
-          v7[2](v7, 0);
+          completionCopy[2](completionCopy, 0);
           goto LABEL_19;
         }
 
@@ -398,7 +398,7 @@ LABEL_4:
       v18 = 5;
       v19 = 1;
       v17 = sub_100A99330(&v18);
-      (v7)[2](v7, v17);
+      (completionCopy)[2](completionCopy, v17);
 
 LABEL_19:
       if (*&buf[8])
@@ -420,7 +420,7 @@ LABEL_19:
     *buf = 4;
     buf[4] = 1;
     v14 = sub_100A99330(buf);
-    (v7)[2](v7, v14);
+    (completionCopy)[2](completionCopy, v14);
   }
 
   else
@@ -437,20 +437,20 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)disableBusinessMessaging:(id)a3 completion:(id)a4
+- (void)disableBusinessMessaging:(id)messaging completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  messagingCopy = messaging;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (messagingCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v8 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 slotID];
+        [messagingCopy slotID];
         v9 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         *&buf[4] = v9;
@@ -462,10 +462,10 @@ LABEL_21:
       v10 = *buf;
       if (*buf)
       {
-        v11 = sub_100018A64([v6 slotID]);
+        v11 = sub_100018A64([messagingCopy slotID]);
         if ((*(*v10 + 56))(v10, v11))
         {
-          v7[2](v7, 0);
+          completionCopy[2](completionCopy, 0);
           goto LABEL_19;
         }
 
@@ -492,7 +492,7 @@ LABEL_21:
       v18 = 5;
       v19 = 1;
       v17 = sub_100A99330(&v18);
-      (v7)[2](v7, v17);
+      (completionCopy)[2](completionCopy, v17);
 
 LABEL_19:
       if (*&buf[8])
@@ -514,7 +514,7 @@ LABEL_19:
     *buf = 4;
     buf[4] = 1;
     v14 = sub_100A99330(buf);
-    (v7)[2](v7, v14);
+    (completionCopy)[2](completionCopy, v14);
   }
 
   else
@@ -531,20 +531,20 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)enableLazuli:(id)a3 completion:(id)a4
+- (void)enableLazuli:(id)lazuli completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lazuliCopy = lazuli;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (lazuliCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v8 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 slotID];
+        [lazuliCopy slotID];
         v9 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         *&buf[4] = v9;
@@ -556,10 +556,10 @@ LABEL_21:
       v10 = *buf;
       if (*buf)
       {
-        v11 = sub_100018A64([v6 slotID]);
+        v11 = sub_100018A64([lazuliCopy slotID]);
         if ((*(*v10 + 32))(v10, v11))
         {
-          v7[2](v7, 0);
+          completionCopy[2](completionCopy, 0);
           goto LABEL_19;
         }
 
@@ -586,7 +586,7 @@ LABEL_21:
       v18 = 5;
       v19 = 1;
       v17 = sub_100A99330(&v18);
-      (v7)[2](v7, v17);
+      (completionCopy)[2](completionCopy, v17);
 
 LABEL_19:
       if (*&buf[8])
@@ -608,7 +608,7 @@ LABEL_19:
     *buf = 4;
     buf[4] = 1;
     v14 = sub_100A99330(buf);
-    (v7)[2](v7, v14);
+    (completionCopy)[2](completionCopy, v14);
   }
 
   else
@@ -625,20 +625,20 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)enableBusinessMessaging:(id)a3 completion:(id)a4
+- (void)enableBusinessMessaging:(id)messaging completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  messagingCopy = messaging;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (messagingCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v8 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 slotID];
+        [messagingCopy slotID];
         v9 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         *&buf[4] = v9;
@@ -650,10 +650,10 @@ LABEL_21:
       v10 = *buf;
       if (*buf)
       {
-        v11 = sub_100018A64([v6 slotID]);
+        v11 = sub_100018A64([messagingCopy slotID]);
         if ((*(*v10 + 48))(v10, v11))
         {
-          v7[2](v7, 0);
+          completionCopy[2](completionCopy, 0);
           goto LABEL_19;
         }
 
@@ -680,7 +680,7 @@ LABEL_21:
       v18 = 5;
       v19 = 1;
       v17 = sub_100A99330(&v18);
-      (v7)[2](v7, v17);
+      (completionCopy)[2](completionCopy, v17);
 
 LABEL_19:
       if (*&buf[8])
@@ -702,7 +702,7 @@ LABEL_19:
     *buf = 4;
     buf[4] = 1;
     v14 = sub_100A99330(buf);
-    (v7)[2](v7, v14);
+    (completionCopy)[2](completionCopy, v14);
   }
 
   else
@@ -719,18 +719,18 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)fetchChatBotRenderInformation:(id)a3 forDestination:(id)a4 completion:(id)a5
+- (void)fetchChatBotRenderInformation:(id)information forDestination:(id)destination completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  informationCopy = information;
+  destinationCopy = destination;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (destinationCopy)
     {
-      v11 = [v9 uri];
+      v11 = [destinationCopy uri];
 
-      if (v8)
+      if (informationCopy)
       {
         if (v11)
         {
@@ -739,9 +739,9 @@ LABEL_21:
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            [v8 slotID];
+            [informationCopy slotID];
             v13 = CTSubscriptionSlotAsString();
-            v14 = [v9 uri];
+            v14 = [destinationCopy uri];
             *buf = 136315395;
             *&buf[4] = v13;
             *&buf[12] = 2113;
@@ -749,7 +749,7 @@ LABEL_21:
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] fetchChatBotRenderInformation: [slot: %s, destination: %{private}@]", buf, 0x16u);
           }
 
-          v15 = sub_100018A64([v8 slotID]);
+          v15 = sub_100018A64([informationCopy slotID]);
           v29 = 0;
           v30 = 0;
           sub_1006E5E0C(self, &v29);
@@ -766,7 +766,7 @@ LABEL_21:
             *buf = 5;
             buf[4] = 1;
             v21 = sub_100A99330(buf);
-            v10[2](v10, v21);
+            completionCopy[2](completionCopy, v21);
 
             goto LABEL_34;
           }
@@ -777,7 +777,7 @@ LABEL_21:
           sub_100A972E8(v27);
           v26 = 0;
           v16 = v29;
-          sub_1006E72AC(v9, buf);
+          sub_1006E72AC(destinationCopy, buf);
           if (SHIBYTE(v28) < 0)
           {
             sub_100005F2C(__p, v27[0], v27[1]);
@@ -825,12 +825,12 @@ LABEL_21:
           else if ((v22 & 0x100000000) == 0)
           {
 LABEL_29:
-            v10[2](v10, 0);
+            completionCopy[2](completionCopy, 0);
             goto LABEL_32;
           }
 
           v23 = sub_100A99330(&v26);
-          v10[2](v10, v23);
+          completionCopy[2](completionCopy, v23);
 
 LABEL_32:
           if (SHIBYTE(v28) < 0)
@@ -860,7 +860,7 @@ LABEL_34:
     *buf = 4;
     buf[4] = 1;
     v18 = sub_100A99330(buf);
-    v10[2](v10, v18);
+    completionCopy[2](completionCopy, v18);
   }
 
   else
@@ -878,23 +878,23 @@ LABEL_34:
 LABEL_36:
 }
 
-- (void)readCachedChatBotRenderInformation:(id)a3 forChatBot:(id)a4 completion:(id)a5
+- (void)readCachedChatBotRenderInformation:(id)information forChatBot:(id)bot completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  informationCopy = information;
+  botCopy = bot;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9 && ([v9 uri], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    if (informationCopy && botCopy && ([botCopy uri], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
       [(CTXPCClientHandler *)self getLogContext];
       v12 = *&v36[4];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 slotID];
+        [informationCopy slotID];
         v13 = CTSubscriptionSlotAsString();
-        v14 = [v9 uri];
+        v14 = [botCopy uri];
         *buf = 136315395;
         *v36 = v13;
         *&v36[8] = 2113;
@@ -902,7 +902,7 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] readCachedChatBotRenderInformation [slot: %s, destination: %{private}@]", buf, 0x16u);
       }
 
-      v15 = sub_100018A64([v8 slotID]);
+      v15 = sub_100018A64([informationCopy slotID]);
       v32 = 0;
       v33 = 0;
       sub_1006E5FC4(self, &v32);
@@ -912,7 +912,7 @@ LABEL_36:
         bzero(buf, 0x2C0uLL);
         memset(v30, 0, sizeof(v30));
         v31 = 1;
-        sub_1006E72AC(v9, v23);
+        sub_1006E72AC(botCopy, v23);
         (*(*v16 + 288))(buf, v16, v30, v15, v23);
         if (v29 < 0)
         {
@@ -937,7 +937,7 @@ LABEL_36:
 
         TMClientInfo::~TMClientInfo(v30);
         v17 = [[CTLazuliChatBotRenderInformationData alloc] initWithReflection:buf];
-        v10[2](v10, v17, 0);
+        completionCopy[2](completionCopy, v17, 0);
 
         if (v45 == 1)
         {
@@ -979,7 +979,7 @@ LABEL_36:
         *buf = 5;
         v36[0] = 1;
         v22 = sub_100A99330(buf);
-        (v10)[2](v10, 0, v22);
+        (completionCopy)[2](completionCopy, 0, v22);
       }
 
       if (v33)
@@ -1001,7 +1001,7 @@ LABEL_36:
       *buf = 4;
       v36[0] = 1;
       v19 = sub_100A99330(buf);
-      (v10)[2](v10, 0, v19);
+      (completionCopy)[2](completionCopy, 0, v19);
     }
   }
 
@@ -1018,43 +1018,43 @@ LABEL_36:
   }
 }
 
-- (void)fetchRenderInformation:(id)a3 forChatBot:(id)a4 withOperationID:(id)a5 completion:(id)a6
+- (void)fetchRenderInformation:(id)information forChatBot:(id)bot withOperationID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  informationCopy = information;
+  botCopy = bot;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v10 && v11)
+    if (informationCopy && botCopy)
     {
-      v14 = [v11 uri];
+      v14 = [botCopy uri];
       v15 = v14;
-      if (v12 && v14)
+      if (dCopy && v14)
       {
-        v16 = [v12 uuid];
+        uuid = [dCopy uuid];
 
-        if (v16)
+        if (uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v17 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            [v10 slotID];
+            [informationCopy slotID];
             v18 = CTSubscriptionSlotAsString();
-            v19 = [v11 uri];
-            v20 = [v12 uuid];
+            v19 = [botCopy uri];
+            uuid2 = [dCopy uuid];
             *buf = 136315651;
             *&buf[4] = v18;
             *&buf[12] = 2113;
             *&buf[14] = v19;
             v40 = 2113;
-            v41 = v20;
+            v41 = uuid2;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] fetchRenderInformation [slot: %s, destination: %{private}@, operationID: %{private}@]", buf, 0x20u);
           }
 
-          v21 = sub_100018A64([v10 slotID]);
+          v21 = sub_100018A64([informationCopy slotID]);
           v37 = 0;
           v38 = 0;
           sub_1006E5FC4(self, &v37);
@@ -1064,10 +1064,10 @@ LABEL_36:
             v36 = 0;
             memset(v34, 0, sizeof(v34));
             v35 = 1;
-            sub_1006E72AC(v11, buf);
-            v23 = [v12 uuid];
-            v24 = v23;
-            sub_10000501C(__p, [v23 UTF8String]);
+            sub_1006E72AC(botCopy, buf);
+            uuid3 = [dCopy uuid];
+            v24 = uuid3;
+            sub_10000501C(__p, [uuid3 UTF8String]);
             v25 = (*(*v22 + 280))(v22, v34, v21, buf, __p);
             LODWORD(v36) = v25;
             BYTE4(v36) = BYTE4(v25);
@@ -1101,12 +1101,12 @@ LABEL_36:
             if ((v25 & 0x100000000) != 0)
             {
               v31 = sub_100A99330(&v36);
-              v13[2](v13, v31);
+              completionCopy[2](completionCopy, v31);
             }
 
             else
             {
-              v13[2](v13, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -1123,7 +1123,7 @@ LABEL_36:
             *buf = 5;
             buf[4] = 1;
             v30 = sub_100A99330(buf);
-            v13[2](v13, v30);
+            completionCopy[2](completionCopy, v30);
           }
 
           if (v38)
@@ -1151,7 +1151,7 @@ LABEL_36:
     *buf = 4;
     buf[4] = 1;
     v28 = sub_100A99330(buf);
-    v13[2](v13, v28);
+    completionCopy[2](completionCopy, v28);
   }
 
   else
@@ -1169,20 +1169,20 @@ LABEL_36:
 LABEL_28:
 }
 
-- (void)getSystemConfiguration:(id)a3 completion:(id)a4
+- (void)getSystemConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (configurationCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v8 = *(v21 + 4);
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 slotID];
+        [configurationCopy slotID];
         v9 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         v21[0] = v9;
@@ -1195,11 +1195,11 @@ LABEL_28:
       v10 = v17;
       if (v17)
       {
-        v11 = sub_100018A64([v6 slotID]);
+        v11 = sub_100018A64([configurationCopy slotID]);
         bzero(buf, 0x208uLL);
         (*(*v10 + 64))(buf, v10, v11);
         v12 = [[CTLazuliSystemConfiguration alloc] initWithReflection:buf];
-        v7[2](v7, v12, 0);
+        completionCopy[2](completionCopy, v12, 0);
 
         if (v45 < 0)
         {
@@ -1253,7 +1253,7 @@ LABEL_28:
       else
       {
         v16 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        (v7)[2](v7, 0, v16);
+        (completionCopy)[2](completionCopy, 0, v16);
       }
 
       if (v18)
@@ -1275,7 +1275,7 @@ LABEL_28:
       *buf = 4;
       LOBYTE(v21[0]) = 1;
       v15 = sub_100A99330(buf);
-      (v7)[2](v7, 0, v15);
+      (completionCopy)[2](completionCopy, 0, v15);
     }
   }
 
@@ -1292,27 +1292,27 @@ LABEL_28:
   }
 }
 
-- (void)retrieveMessage:(id)a3 withMessageID:(id)a4 completion:(id)a5
+- (void)retrieveMessage:(id)message withMessageID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  messageCopy = message;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9 && ([v9 uuid], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    if (messageCopy && dCopy && ([dCopy uuid], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
       [(CTXPCClientHandler *)self getLogContext];
       v12 = *(v34 + 4);
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v9 uuid];
+        uuid = [dCopy uuid];
         *buf = 138543362;
-        v34[0] = v13;
+        v34[0] = uuid;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] retrieveMessage [identifier: %{public}@]", buf, 0xCu);
       }
 
-      v14 = sub_100018A64([v8 slotID]);
+      v14 = sub_100018A64([messageCopy slotID]);
       v31 = 0;
       v32 = 0;
       sub_1006E5FC4(self, &v31);
@@ -1322,7 +1322,7 @@ LABEL_28:
         bzero(buf, 0x468uLL);
         memset(v29, 0, sizeof(v29));
         v30 = 1;
-        sub_1006E8724(v9, v24);
+        sub_1006E8724(dCopy, v24);
         (*(*v15 + 168))(buf, v15, v29, v14, v24);
         if (v28 == 1 && v27 < 0)
         {
@@ -1344,7 +1344,7 @@ LABEL_28:
           }
 
           v17 = [v16 initWithReflection:buf];
-          v10[2](v10, v17, 0);
+          completionCopy[2](completionCopy, v17, 0);
         }
 
         else
@@ -1357,7 +1357,7 @@ LABEL_28:
             sub_10177AE70();
           }
 
-          v10[2](v10, 0, 0);
+          completionCopy[2](completionCopy, 0, 0);
         }
 
         if (v47 == 1)
@@ -1409,7 +1409,7 @@ LABEL_28:
         *buf = 5;
         LOBYTE(v34[0]) = 1;
         v22 = sub_100A99330(buf);
-        (v10)[2](v10, 0, v22);
+        (completionCopy)[2](completionCopy, 0, v22);
       }
 
       if (v32)
@@ -1431,7 +1431,7 @@ LABEL_28:
       *buf = 4;
       LOBYTE(v34[0]) = 1;
       v19 = sub_100A99330(buf);
-      (v10)[2](v10, 0, v19);
+      (completionCopy)[2](completionCopy, 0, v19);
     }
   }
 
@@ -1448,27 +1448,27 @@ LABEL_28:
   }
 }
 
-- (void)retrieveAllIncomingMessageIDs:(id)a3 completion:(id)a4
+- (void)retrieveAllIncomingMessageIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (dsCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v8 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 slotID];
+        [dsCopy slotID];
         v9 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         *&buf[4] = v9;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] retrieveAllIncomingMessageIDs: [slot: %s]", buf, 0xCu);
       }
 
-      sub_100018A64([v6 slotID]);
+      sub_100018A64([dsCopy slotID]);
       v17 = 0;
       v18 = 0;
       sub_1006E5E0C(self, &v17);
@@ -1486,12 +1486,12 @@ LABEL_28:
           }
 
           v11 = [v10 initWithReflection:buf];
-          v7[2](v7, v11, 0);
+          completionCopy[2](completionCopy, v11, 0);
         }
 
         else
         {
-          v7[2](v7, 0, 0);
+          completionCopy[2](completionCopy, 0, 0);
         }
 
         if (BYTE8(v21) == 1)
@@ -1514,7 +1514,7 @@ LABEL_28:
         *buf = 5;
         buf[4] = 1;
         v16 = sub_100A99330(buf);
-        (v7)[2](v7, 0, v16);
+        (completionCopy)[2](completionCopy, 0, v16);
       }
 
       if (v18)
@@ -1536,7 +1536,7 @@ LABEL_28:
       *buf = 4;
       buf[4] = 1;
       v14 = sub_100A99330(buf);
-      (v7)[2](v7, 0, v14);
+      (completionCopy)[2](completionCopy, 0, v14);
     }
   }
 
@@ -1552,28 +1552,28 @@ LABEL_28:
   }
 }
 
-- (void)acknowledgeIncomingMessages:(id)a3 withMessageIDList:(id)a4 completion:(id)a5
+- (void)acknowledgeIncomingMessages:(id)messages withMessageIDList:(id)list completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  messagesCopy = messages;
+  listCopy = list;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9)
+    if (messagesCopy && listCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v11 = *(&buf + 1);
       ctu::OsLogContext::~OsLogContext(&buf);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 slotID];
+        [messagesCopy slotID];
         v12 = CTSubscriptionSlotAsString();
         LODWORD(buf) = 136315138;
         *(&buf + 4) = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] acknowledgeIncomingMessages: [slot: %s]", &buf, 0xCu);
       }
 
-      v13 = sub_100018A64([v8 slotID]);
+      v13 = sub_100018A64([messagesCopy slotID]);
       v30 = 0;
       v31 = 0;
       sub_1006E5E0C(self, &v30);
@@ -1584,8 +1584,8 @@ LABEL_28:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v14 = [v9 list];
-        v15 = [v14 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        list = [listCopy list];
+        v15 = [list countByEnumeratingWithState:&v25 objects:v37 count:16];
         if (v15)
         {
           v16 = *v26;
@@ -1595,7 +1595,7 @@ LABEL_28:
             {
               if (*v26 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(list);
               }
 
               sub_1006E8724(*(*(&v25 + 1) + 8 * i), &buf);
@@ -1611,7 +1611,7 @@ LABEL_28:
               }
             }
 
-            v15 = [v14 countByEnumeratingWithState:&v25 objects:v37 count:16];
+            v15 = [list countByEnumeratingWithState:&v25 objects:v37 count:16];
           }
 
           while (v15);
@@ -1624,12 +1624,12 @@ LABEL_28:
         if ((v18 & 0x100000000) != 0)
         {
           v24 = sub_100A99330(&buf);
-          v10[2](v10, v24);
+          completionCopy[2](completionCopy, v24);
         }
 
         else
         {
-          v10[2](v10, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         *&buf = v29;
@@ -1649,7 +1649,7 @@ LABEL_28:
         LODWORD(buf) = 5;
         BYTE4(buf) = 1;
         v23 = sub_100A99330(&buf);
-        v10[2](v10, v23);
+        completionCopy[2](completionCopy, v23);
       }
 
       if (v31)
@@ -1671,7 +1671,7 @@ LABEL_28:
       LODWORD(buf) = 4;
       BYTE4(buf) = 1;
       v21 = sub_100A99330(&buf);
-      v10[2](v10, v21);
+      completionCopy[2](completionCopy, v21);
     }
   }
 
@@ -1687,18 +1687,18 @@ LABEL_28:
   }
 }
 
-- (void)discoverCapabilities:(id)a3 forDestination:(id)a4 completion:(id)a5
+- (void)discoverCapabilities:(id)capabilities forDestination:(id)destination completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  capabilitiesCopy = capabilities;
+  destinationCopy = destination;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (capabilitiesCopy)
     {
-      if (v9)
+      if (destinationCopy)
       {
-        v11 = [v9 uri];
+        v11 = [destinationCopy uri];
 
         if (v11)
         {
@@ -1707,9 +1707,9 @@ LABEL_28:
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            [v8 slotID];
+            [capabilitiesCopy slotID];
             v13 = CTSubscriptionSlotAsString();
-            v14 = [v9 uri];
+            v14 = [destinationCopy uri];
             *buf = 136315395;
             *&buf[4] = v13;
             *&buf[12] = 2113;
@@ -1717,7 +1717,7 @@ LABEL_28:
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] discoverCapabilities [slot: %s, destination: %{private}@]", buf, 0x16u);
           }
 
-          v15 = sub_100018A64([v8 slotID]);
+          v15 = sub_100018A64([capabilitiesCopy slotID]);
           v29 = 0;
           v30 = 0;
           sub_1006E5E0C(self, &v29);
@@ -1734,7 +1734,7 @@ LABEL_28:
             *buf = 5;
             buf[4] = 1;
             v21 = sub_100A99330(buf);
-            v10[2](v10, v21);
+            completionCopy[2](completionCopy, v21);
 
             goto LABEL_34;
           }
@@ -1745,7 +1745,7 @@ LABEL_28:
           sub_100A972E8(v27);
           v26 = 0;
           v16 = v29;
-          sub_1006E72AC(v9, buf);
+          sub_1006E72AC(destinationCopy, buf);
           if (SHIBYTE(v28) < 0)
           {
             sub_100005F2C(__p, v27[0], v27[1]);
@@ -1793,12 +1793,12 @@ LABEL_28:
           else if ((v22 & 0x100000000) == 0)
           {
 LABEL_29:
-            v10[2](v10, 0);
+            completionCopy[2](completionCopy, 0);
             goto LABEL_32;
           }
 
           v23 = sub_100A99330(&v26);
-          v10[2](v10, v23);
+          completionCopy[2](completionCopy, v23);
 
 LABEL_32:
           if (SHIBYTE(v28) < 0)
@@ -1828,7 +1828,7 @@ LABEL_34:
     *buf = 4;
     buf[4] = 1;
     v18 = sub_100A99330(buf);
-    v10[2](v10, v18);
+    completionCopy[2](completionCopy, v18);
   }
 
   else
@@ -1845,14 +1845,14 @@ LABEL_34:
 LABEL_36:
 }
 
-- (void)fetchRemoteCapabilities:(id)a3 forDestination:(id)a4 withOptions:(id)a5 withOperationID:(id)a6 completion:(id)a7
+- (void)fetchRemoteCapabilities:(id)capabilities forDestination:(id)destination withOptions:(id)options withOperationID:(id)d completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v16)
+  capabilitiesCopy = capabilities;
+  destinationCopy = destination;
+  optionsCopy = options;
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v27 = *&buf[8];
@@ -1865,22 +1865,22 @@ LABEL_36:
     goto LABEL_19;
   }
 
-  if (!v12 || !v13)
+  if (!capabilitiesCopy || !destinationCopy)
   {
     goto LABEL_16;
   }
 
-  v17 = [v13 uri];
+  v17 = [destinationCopy uri];
   v18 = v17;
-  if (!v15 || !v14 || !v17)
+  if (!dCopy || !optionsCopy || !v17)
   {
 
     goto LABEL_16;
   }
 
-  v19 = [v15 uuid];
+  uuid = [dCopy uuid];
 
-  if (!v19)
+  if (!uuid)
   {
 LABEL_16:
     [(CTXPCClientHandler *)self getLogContext];
@@ -1894,7 +1894,7 @@ LABEL_16:
     *buf = 4;
     buf[4] = 1;
     v29 = sub_100A99330(buf);
-    v16[2](v16, v29);
+    completionCopy[2](completionCopy, v29);
 
     goto LABEL_19;
   }
@@ -1904,31 +1904,31 @@ LABEL_16:
   ctu::OsLogContext::~OsLogContext(buf);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    [v12 slotID];
+    [capabilitiesCopy slotID];
     v39 = CTSubscriptionSlotAsString();
-    v21 = [v13 uri];
-    v22 = [v14 type];
-    v23 = [v15 uuid];
+    v21 = [destinationCopy uri];
+    type = [optionsCopy type];
+    uuid2 = [dCopy uuid];
     *buf = 136315907;
     *&buf[4] = v39;
     *&buf[12] = 2113;
     *&buf[14] = v21;
     v50 = 2048;
-    v51 = v22;
+    v51 = type;
     v52 = 2113;
-    v53 = v23;
+    v53 = uuid2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] fetchRemoteCapabilities [slot: %s, destination: %{private}@, options: %ld, operationID: %{private}@]", buf, 0x2Au);
   }
 
-  v24 = sub_100018A64([v12 slotID]);
-  v25 = [v14 type];
-  if (!v25)
+  v24 = sub_100018A64([capabilitiesCopy slotID]);
+  type2 = [optionsCopy type];
+  if (!type2)
   {
     v26 = 0;
     goto LABEL_21;
   }
 
-  if (v25 == 2)
+  if (type2 == 2)
   {
     v26 = 2;
 LABEL_21:
@@ -1942,14 +1942,14 @@ LABEL_21:
       v43[0] = 0;
       v43[1] = 0;
       v44 = 0;
-      v31 = [v15 uuid];
-      v32 = v31;
-      sub_10000501C(v43, [v31 UTF8String]);
+      uuid3 = [dCopy uuid];
+      v32 = uuid3;
+      sub_10000501C(v43, [uuid3 UTF8String]);
 
       v42 = 0;
       memset(v40, 0, sizeof(v40));
       v41 = 1;
-      sub_1006E72AC(v13, buf);
+      sub_1006E72AC(destinationCopy, buf);
       v33 = (*(*v30 + 224))(v30, v40, v24, buf, v43, &v45);
       LODWORD(v42) = v33;
       BYTE4(v42) = BYTE4(v33);
@@ -1978,12 +1978,12 @@ LABEL_21:
       if ((v33 & 0x100000000) != 0)
       {
         v38 = sub_100A99330(&v42);
-        v16[2](v16, v38);
+        completionCopy[2](completionCopy, v38);
       }
 
       else
       {
-        v16[2](v16, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       if (SHIBYTE(v44) < 0)
@@ -2005,7 +2005,7 @@ LABEL_21:
       *buf = 5;
       buf[4] = 1;
       v37 = sub_100A99330(buf);
-      v16[2](v16, v37);
+      completionCopy[2](completionCopy, v37);
     }
 
     if (v47)
@@ -2027,48 +2027,48 @@ LABEL_21:
   *buf = -1;
   buf[4] = 1;
   v35 = sub_100A99330(buf);
-  v16[2](v16, v35);
+  completionCopy[2](completionCopy, v35);
 
 LABEL_19:
 }
 
-- (void)discoverRemoteCapabilities:(id)a3 forDestination:(id)a4 withOperationID:(id)a5 completion:(id)a6
+- (void)discoverRemoteCapabilities:(id)capabilities forDestination:(id)destination withOperationID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  capabilitiesCopy = capabilities;
+  destinationCopy = destination;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v10 && v11)
+    if (capabilitiesCopy && destinationCopy)
     {
-      v14 = [v11 uri];
+      v14 = [destinationCopy uri];
       v15 = v14;
-      if (v12 && v14)
+      if (dCopy && v14)
       {
-        v16 = [v12 uuid];
+        uuid = [dCopy uuid];
 
-        if (v16)
+        if (uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v17 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            [v10 slotID];
+            [capabilitiesCopy slotID];
             v18 = CTSubscriptionSlotAsString();
-            v19 = [v11 uri];
-            v20 = [v12 uuid];
+            v19 = [destinationCopy uri];
+            uuid2 = [dCopy uuid];
             *buf = 136315651;
             *&buf[4] = v18;
             *&buf[12] = 2113;
             *&buf[14] = v19;
             v39 = 2113;
-            v40 = v20;
+            v40 = uuid2;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] discoverRemoteCapabilities [slot: %s, destination: %{private}@, operationID: %{private}@]", buf, 0x20u);
           }
 
-          v21 = sub_100018A64([v10 slotID]);
+          v21 = sub_100018A64([capabilitiesCopy slotID]);
           v35 = 0;
           v36 = 0;
           sub_1006E5E0C(self, &v35);
@@ -2077,13 +2077,13 @@ LABEL_19:
             v33[0] = 0;
             v33[1] = 0;
             v34 = 0;
-            v22 = [v12 uuid];
-            v23 = v22;
-            sub_10000501C(v33, [v22 UTF8String]);
+            uuid3 = [dCopy uuid];
+            v23 = uuid3;
+            sub_10000501C(v33, [uuid3 UTF8String]);
 
             v32 = 0;
             v24 = v35;
-            sub_1006E72AC(v11, buf);
+            sub_1006E72AC(destinationCopy, buf);
             v25 = (*(*v24 + 128))(v24, v21, buf, v33);
             LODWORD(v32) = v25;
             BYTE4(v32) = BYTE4(v25);
@@ -2111,12 +2111,12 @@ LABEL_19:
             if ((v25 & 0x100000000) != 0)
             {
               v31 = sub_100A99330(&v32);
-              v13[2](v13, v31);
+              completionCopy[2](completionCopy, v31);
             }
 
             else
             {
-              v13[2](v13, 0);
+              completionCopy[2](completionCopy, 0);
             }
 
             if (SHIBYTE(v34) < 0)
@@ -2138,7 +2138,7 @@ LABEL_19:
             *buf = 5;
             buf[4] = 1;
             v30 = sub_100A99330(buf);
-            v13[2](v13, v30);
+            completionCopy[2](completionCopy, v30);
           }
 
           if (v36)
@@ -2166,7 +2166,7 @@ LABEL_19:
     *buf = 4;
     buf[4] = 1;
     v28 = sub_100A99330(buf);
-    v13[2](v13, v28);
+    completionCopy[2](completionCopy, v28);
   }
 
   else
@@ -2183,23 +2183,23 @@ LABEL_19:
 LABEL_26:
 }
 
-- (void)readCachedCapabilities:(id)a3 forDestination:(id)a4 completion:(id)a5
+- (void)readCachedCapabilities:(id)capabilities forDestination:(id)destination completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  capabilitiesCopy = capabilities;
+  destinationCopy = destination;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9 && ([v9 uri], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    if (capabilitiesCopy && destinationCopy && ([destinationCopy uri], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
       [(CTXPCClientHandler *)self getLogContext];
       v12 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 slotID];
+        [capabilitiesCopy slotID];
         v13 = CTSubscriptionSlotAsString();
-        v14 = [v9 uri];
+        v14 = [destinationCopy uri];
         *buf = 136315395;
         *&buf[4] = v13;
         *&buf[12] = 2113;
@@ -2207,7 +2207,7 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] readCachedCapabilities [slot: %s, destination: %{private}@]", buf, 0x16u);
       }
 
-      v15 = sub_100018A64([v8 slotID]);
+      v15 = sub_100018A64([capabilitiesCopy slotID]);
       v32 = 0;
       v33 = 0;
       sub_1006E5E0C(self, &v32);
@@ -2228,7 +2228,7 @@ LABEL_26:
         v36 = 0u;
         memset(v37, 0, sizeof(v37));
         memset(buf, 0, sizeof(buf));
-        sub_1006E72AC(v9, v25);
+        sub_1006E72AC(destinationCopy, v25);
         (*(*v16 + 144))(buf, v16, v15, v25);
         if (v31 < 0)
         {
@@ -2260,12 +2260,12 @@ LABEL_26:
           }
 
           v18 = [v17 initWithReflection:buf];
-          v10[2](v10, v18, 0);
+          completionCopy[2](completionCopy, v18, 0);
         }
 
         else
         {
-          v10[2](v10, 0, 0);
+          completionCopy[2](completionCopy, 0, 0);
         }
 
         if (BYTE8(v48) == 1)
@@ -2322,7 +2322,7 @@ LABEL_26:
         *buf = 0;
         buf[4] = 1;
         v24 = sub_100A99330(buf);
-        (v10)[2](v10, 0, v24);
+        (completionCopy)[2](completionCopy, 0, v24);
       }
 
       if (v33)
@@ -2344,7 +2344,7 @@ LABEL_26:
       *buf = 4;
       buf[4] = 1;
       v20 = sub_100A99330(buf);
-      (v10)[2](v10, 0, v20);
+      (completionCopy)[2](completionCopy, 0, v20);
     }
   }
 
@@ -2365,46 +2365,46 @@ LABEL_26:
   }
 }
 
-- (void)sendDispositionNotificationMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withDisposition:(int64_t)a6 forMessageID:(id)a7 withSecurity:(id)a8 completion:(id)a9
+- (void)sendDispositionNotificationMessage:(id)message to:(id)to withMessageID:(id)d withDisposition:(int64_t)disposition forMessageID:(id)iD withSecurity:(id)security completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v42 = a8;
-  v19 = a9;
-  if (v19)
+  messageCopy = message;
+  toCopy = to;
+  dCopy = d;
+  iDCopy = iD;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v15 && v16)
+    if (messageCopy && toCopy)
     {
-      v20 = [v16 uri];
+      v20 = [toCopy uri];
       v21 = v20;
-      if (v17 && v20)
+      if (dCopy && v20)
       {
-        v22 = [v17 uuid];
-        v23 = v22;
-        if (v18 && v22)
+        uuid = [dCopy uuid];
+        v23 = uuid;
+        if (iDCopy && uuid)
         {
-          v24 = [v18 uuid];
+          uuid2 = [iDCopy uuid];
 
-          if (v24)
+          if (uuid2)
           {
             [(CTXPCClientHandler *)self getLogContext];
             v25 = *&buf[8];
             ctu::OsLogContext::~OsLogContext(buf);
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              [v15 slotID];
+              [messageCopy slotID];
               v40 = CTSubscriptionSlotAsString();
               v26 = "true";
-              if (!v42)
+              if (!securityCopy)
               {
                 v26 = "false";
               }
 
-              v41 = [v16 uri];
-              v39 = [v17 uuid];
-              v27 = [v18 uuid];
+              v41 = [toCopy uri];
+              uuid3 = [dCopy uuid];
+              uuid4 = [iDCopy uuid];
               *buf = 136316419;
               *&buf[4] = v40;
               *&buf[12] = 2080;
@@ -2412,15 +2412,15 @@ LABEL_26:
               v68 = 2113;
               v69 = v41;
               v70 = 2114;
-              v71 = v39;
+              v71 = uuid3;
               v72 = 2048;
-              v73 = a6;
+              dispositionCopy = disposition;
               v74 = 2114;
-              v75 = v27;
+              v75 = uuid4;
               _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendDispositionNotificationMessage [slot: %s, security: %s, to: %{private}@, identifier: %{public}@, type: %ld, forMessageID: %{public}@]", buf, 0x3Eu);
             }
 
-            v28 = sub_100018A64([v15 slotID]);
+            v28 = sub_100018A64([messageCopy slotID]);
             v65 = 0;
             v66 = 0;
             sub_1006E5FC4(self, &v65);
@@ -2428,7 +2428,7 @@ LABEL_26:
             if (v65)
             {
               v64 = 0;
-              if (a6 == 2)
+              if (disposition == 2)
               {
                 v30 = 2;
               }
@@ -2440,7 +2440,7 @@ LABEL_26:
 
               v62 = 0u;
               v63 = 0u;
-              if (!a6)
+              if (!disposition)
               {
                 v30 = 0;
               }
@@ -2450,13 +2450,13 @@ LABEL_26:
               v58 = 0uLL;
               v59 = 0uLL;
               LODWORD(v58) = v30;
-              sub_1006E8724(v18, &v58 + 8);
+              sub_1006E8724(iDCopy, &v58 + 8);
               v57 = 0;
               memset(v55, 0, sizeof(v55));
               v56 = 1;
-              sub_1006E72AC(v16, v48);
-              sub_1006E8724(v17, v43);
-              buf[0] = v42 != 0;
+              sub_1006E72AC(toCopy, v48);
+              sub_1006E8724(dCopy, v43);
+              buf[0] = securityCopy != 0;
               buf[8] = 0;
               v76 = 0;
               v31 = (*(*v29 + 72))(v29, v55, v28, v48, v43, &v58, buf);
@@ -2502,12 +2502,12 @@ LABEL_26:
               if ((v31 & 0x100000000) != 0)
               {
                 v37 = sub_100A99330(&v57);
-                v19[2](v19, v37);
+                completionCopy[2](completionCopy, v37);
               }
 
               else
               {
-                v19[2](v19, 0);
+                completionCopy[2](completionCopy, 0);
               }
 
               if (v64 == 1 && SHIBYTE(v62) < 0)
@@ -2534,7 +2534,7 @@ LABEL_26:
               *buf = 5;
               buf[4] = 1;
               v36 = sub_100A99330(buf);
-              v19[2](v19, v36);
+              completionCopy[2](completionCopy, v36);
             }
 
             if (v66)
@@ -2562,7 +2562,7 @@ LABEL_40:
     *buf = 4;
     buf[4] = 1;
     v34 = sub_100A99330(buf);
-    v19[2](v19, v34);
+    completionCopy[2](completionCopy, v34);
 
     goto LABEL_43;
   }
@@ -2578,34 +2578,34 @@ LABEL_40:
 LABEL_43:
 }
 
-- (void)sendFileTransferMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withFileInformation:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)sendFileTransferMessage:(id)message to:(id)to withMessageID:(id)d withFileInformation:(id)information withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  messageCopy = message;
+  toCopy = to;
+  dCopy = d;
+  informationCopy = information;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15)
+    if (messageCopy && toCopy)
     {
-      v20 = [v15 uri];
+      v20 = [toCopy uri];
       v21 = v20;
-      if (v16 && v20)
+      if (dCopy && v20)
       {
-        v22 = [v16 uuid];
+        uuid = [dCopy uuid];
 
-        if (v17 && v22)
+        if (informationCopy && uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v23 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            [v14 slotID];
+            [messageCopy slotID];
             v37 = CTSubscriptionSlotAsString();
-            if (v18)
+            if (securityCopy)
             {
               v24 = "true";
             }
@@ -2615,8 +2615,8 @@ LABEL_43:
               v24 = "false";
             }
 
-            v38 = [v15 uri];
-            v25 = [v16 uuid];
+            v38 = [toCopy uri];
+            uuid2 = [dCopy uuid];
             *buf = 136315907;
             *&buf[4] = v37;
             *&buf[12] = 2080;
@@ -2624,11 +2624,11 @@ LABEL_43:
             v85 = 2113;
             v86 = v38;
             LOWORD(v87[0]) = 2114;
-            *(v87 + 2) = v25;
+            *(v87 + 2) = uuid2;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendFileTransferMessage [slot: %s, security: %s, to: %{private}@, identifier: %{public}@]", buf, 0x2Au);
           }
 
-          v26 = sub_100018A64([v14 slotID]);
+          v26 = sub_100018A64([messageCopy slotID]);
           v79 = 0;
           v78 = 0;
           sub_1006E5E0C(self, &v78);
@@ -2641,20 +2641,20 @@ LABEL_43:
             if (v76)
             {
               bzero(v55, 0x208uLL);
-              sub_1006EB6AC(v17, v55);
+              sub_1006EB6AC(informationCopy, v55);
               v54 = 0;
               memset(v52, 0, sizeof(v52));
               v53 = 1;
-              sub_1006E72AC(v15, v45);
-              sub_1006E8724(v16, v40);
+              sub_1006E72AC(toCopy, v45);
+              sub_1006E8724(dCopy, v40);
               sub_1001907C0(buf, v55);
               sub_100190C40(v103, v74);
               sub_100190324(v104, v75);
               v105 = 0;
               v106 = 0;
-              v39 = [v17 metaData];
-              sub_1006EBDBC(v39, v107);
-              LOBYTE(v80) = v18 != 0;
+              metaData = [informationCopy metaData];
+              sub_1006EBDBC(metaData, v107);
+              LOBYTE(v80) = securityCopy != 0;
               v81 = 0;
               v83 = 0;
               v28 = (*(*v27 + 40))(v27, v52, v26, v45, v40, buf, &v80);
@@ -2764,12 +2764,12 @@ LABEL_43:
               if (BYTE4(v54) == 1)
               {
                 v29 = sub_100A99330(&v54);
-                v19[2](v19, v29);
+                completionCopy[2](completionCopy, v29);
               }
 
               else
               {
-                v19[2](v19, 0);
+                completionCopy[2](completionCopy, 0);
               }
 
               if (v75[24] == 1)
@@ -2838,7 +2838,7 @@ LABEL_43:
               *buf = 5;
               buf[4] = 1;
               v36 = sub_100A99330(buf);
-              v19[2](v19, v36);
+              completionCopy[2](completionCopy, v36);
             }
 
             if (v77)
@@ -2860,7 +2860,7 @@ LABEL_43:
             *buf = 5;
             buf[4] = 1;
             v34 = sub_100A99330(buf);
-            v19[2](v19, v34);
+            completionCopy[2](completionCopy, v34);
           }
 
           if (v79)
@@ -2888,7 +2888,7 @@ LABEL_43:
     *buf = 4;
     buf[4] = 1;
     v32 = sub_100A99330(buf);
-    v19[2](v19, v32);
+    completionCopy[2](completionCopy, v32);
   }
 
   else
@@ -2905,31 +2905,31 @@ LABEL_43:
 LABEL_62:
 }
 
-- (void)sendTextMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withMessage:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)sendTextMessage:(id)message to:(id)to withMessageID:(id)d withMessage:(id)withMessage withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  messageCopy = message;
+  toCopy = to;
+  dCopy = d;
+  withMessageCopy = withMessage;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15)
+    if (messageCopy && toCopy)
     {
-      v20 = [v15 uri];
+      v20 = [toCopy uri];
       v21 = v20;
-      if (v16 && v20)
+      if (dCopy && v20)
       {
-        v22 = [v16 uuid];
-        v23 = v22;
-        if (v17 && v22)
+        uuid = [dCopy uuid];
+        v23 = uuid;
+        if (withMessageCopy && uuid)
         {
-          v24 = [v17 content];
+          content = [withMessageCopy content];
 
-          if (v24)
+          if (content)
           {
-            v25 = sub_100018A64([v14 slotID]);
+            v25 = sub_100018A64([messageCopy slotID]);
             v68 = 0;
             v69 = 0;
             sub_1006E5E0C(self, &v68);
@@ -2947,18 +2947,18 @@ LABEL_62:
                 ctu::OsLogContext::~OsLogContext(buf);
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                 {
-                  [v14 slotID];
+                  [messageCopy slotID];
                   v44 = CTSubscriptionSlotAsString();
                   v28 = "true";
-                  if (!v18)
+                  if (!securityCopy)
                   {
                     v28 = "false";
                   }
 
                   v43 = v28;
-                  v45 = [v15 uri];
-                  v29 = [v16 uuid];
-                  v30 = [v17 content];
+                  v45 = [toCopy uri];
+                  uuid2 = [dCopy uuid];
+                  content2 = [withMessageCopy content];
                   *buf = 136316419;
                   *&buf[4] = v44;
                   *&buf[12] = 2080;
@@ -2966,26 +2966,26 @@ LABEL_62:
                   v71 = 2113;
                   v72 = v45;
                   v73 = 2114;
-                  v74 = v29;
+                  v74 = uuid2;
                   v75 = 2160;
                   v76 = 1752392040;
                   v77 = 2117;
-                  v78 = v30;
+                  v78 = content2;
                   _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendTextMessage [slot: %s, security: %s, to: %{private}@, identifier: %{public}@, content: %{sensitive, mask.hash}@]", buf, 0x3Eu);
                 }
 
                 memset(v64, 0, sizeof(v64));
                 v65 = 1;
-                sub_1006E72AC(v15, v57);
-                sub_1006E8724(v16, v52);
-                v31 = [v17 content];
-                v32 = v31;
-                sub_10000501C(__p, [v31 UTF8String]);
+                sub_1006E72AC(toCopy, v57);
+                sub_1006E8724(dCopy, v52);
+                content3 = [withMessageCopy content];
+                v32 = content3;
+                sub_10000501C(__p, [content3 UTF8String]);
                 v49 = 0;
                 v50 = 0;
-                v33 = [v17 metaData];
-                sub_1006EBDBC(v33, v51);
-                buf[0] = v18 != 0;
+                metaData = [withMessageCopy metaData];
+                sub_1006EBDBC(metaData, v51);
+                buf[0] = securityCopy != 0;
                 buf[8] = 0;
                 v79 = 0;
                 v34 = (*(*v26 + 24))(v26, v64, v46, v57, v52, __p, buf);
@@ -3048,12 +3048,12 @@ LABEL_62:
                   *buf = v34;
                   buf[4] = 1;
                   v42 = sub_100A99330(buf);
-                  v19[2](v19, v42);
+                  completionCopy[2](completionCopy, v42);
                 }
 
                 else
                 {
-                  v19[2](v19, 0);
+                  completionCopy[2](completionCopy, 0);
                 }
               }
 
@@ -3070,7 +3070,7 @@ LABEL_62:
                 *buf = 5;
                 buf[4] = 1;
                 v41 = sub_100A99330(buf);
-                v19[2](v19, v41);
+                completionCopy[2](completionCopy, v41);
               }
 
               if (v67)
@@ -3092,7 +3092,7 @@ LABEL_62:
               *buf = 5;
               buf[4] = 1;
               v39 = sub_100A99330(buf);
-              v19[2](v19, v39);
+              completionCopy[2](completionCopy, v39);
             }
 
             if (v69)
@@ -3120,7 +3120,7 @@ LABEL_42:
     *buf = 4;
     buf[4] = 1;
     v37 = sub_100A99330(buf);
-    v19[2](v19, v37);
+    completionCopy[2](completionCopy, v37);
 
     goto LABEL_45;
   }
@@ -3136,28 +3136,28 @@ LABEL_42:
 LABEL_45:
 }
 
-- (void)sendComposingIndicator:(id)a3 to:(id)a4 withMessageID:(id)a5 withIndication:(id)a6 withSecurity:(id)a7 withError:(id *)a8
+- (void)sendComposingIndicator:(id)indicator to:(id)to withMessageID:(id)d withIndication:(id)indication withSecurity:(id)security withError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  indicatorCopy = indicator;
+  toCopy = to;
+  dCopy = d;
+  indicationCopy = indication;
+  securityCopy = security;
   v70 = 0;
   v71 = 0;
   sub_1006E5FC4(self, &v70);
   v19 = v70;
   if (v70)
   {
-    if (v14 && v15)
+    if (indicatorCopy && toCopy)
     {
-      v20 = [v15 uri];
+      v20 = [toCopy uri];
       v21 = v20;
-      if (v16 && v20)
+      if (dCopy && v20)
       {
-        v22 = [v16 uuid];
+        uuid = [dCopy uuid];
 
-        if (v17 && v22)
+        if (indicationCopy && uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v23 = *&buf[8];
@@ -3165,40 +3165,40 @@ LABEL_45:
           log = v23;
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            [v14 slotID];
+            [indicatorCopy slotID];
             v49 = CTSubscriptionSlotAsString();
             v24 = "true";
-            if (!v18)
+            if (!securityCopy)
             {
               v24 = "false";
             }
 
             v48 = v24;
-            v52 = [v15 uri];
-            v51 = [v16 uuid];
-            v25 = [v17 refreshTime];
-            if (v25)
+            v52 = [toCopy uri];
+            uuid2 = [dCopy uuid];
+            refreshTime = [indicationCopy refreshTime];
+            if (refreshTime)
             {
-              v45 = [v17 refreshTime];
-              v47 = [v45 longValue];
+              refreshTime2 = [indicationCopy refreshTime];
+              longValue = [refreshTime2 longValue];
             }
 
             else
             {
-              v47 = -1;
+              longValue = -1;
             }
 
-            v46 = [v17 active];
-            v50 = [v17 lastActive];
-            if (v50)
+            active = [indicationCopy active];
+            lastActive = [indicationCopy lastActive];
+            if (lastActive)
             {
-              v44 = [v17 lastActive];
-              v29 = [v44 UTF8String];
+              lastActive2 = [indicationCopy lastActive];
+              uTF8String = [lastActive2 UTF8String];
             }
 
             else
             {
-              v29 = "";
+              uTF8String = "";
             }
 
             *buf = 136316675;
@@ -3208,75 +3208,75 @@ LABEL_45:
             *&buf[22] = 2113;
             *&buf[24] = v52;
             *&buf[32] = 2114;
-            *&buf[34] = v51;
+            *&buf[34] = uuid2;
             *&buf[42] = 2048;
-            *&buf[44] = v47;
+            *&buf[44] = longValue;
             *&buf[52] = 1024;
-            *&buf[54] = v46;
+            *&buf[54] = active;
             *&buf[58] = 2080;
-            *&buf[60] = v29;
+            *&buf[60] = uTF8String;
             _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendComposingIndicator [slot: %s, security: %s, to: %{private}@, identifier: %{public}@, ind.refreshTime: %ld, ind.active: %d, ind.lastActive: %s]", buf, 0x44u);
-            if (v50)
+            if (lastActive)
             {
             }
 
-            if (v25)
+            if (refreshTime)
             {
             }
           }
 
-          v54 = sub_100018A64([v14 slotID]);
+          v54 = sub_100018A64([indicatorCopy slotID]);
           v79 = 0;
           memset(v78, 0, sizeof(v78));
           v77 = 0u;
           memset(buf, 0, sizeof(buf));
-          v30 = [v17 refreshTime];
-          v31 = v30 == 0;
+          refreshTime3 = [indicationCopy refreshTime];
+          v31 = refreshTime3 == 0;
 
           if (!v31)
           {
-            v32 = [v17 refreshTime];
-            v33 = [v32 longValue];
+            refreshTime4 = [indicationCopy refreshTime];
+            longValue2 = [refreshTime4 longValue];
             if ((buf[8] & 1) == 0)
             {
               buf[8] = 1;
             }
 
-            *buf = v33;
+            *buf = longValue2;
           }
 
-          buf[16] = [v17 active];
-          v34 = [v17 lastActive];
-          v35 = v34 == 0;
+          buf[16] = [indicationCopy active];
+          lastActive3 = [indicationCopy lastActive];
+          v35 = lastActive3 == 0;
 
           if (!v35)
           {
-            v36 = [v17 lastActive];
-            v37 = v36;
-            v72 = [v36 UTF8String];
-            sub_100184AD0(&buf[24], &v72);
+            lastActive4 = [indicationCopy lastActive];
+            v37 = lastActive4;
+            uTF8String2 = [lastActive4 UTF8String];
+            sub_100184AD0(&buf[24], &uTF8String2);
           }
 
-          v38 = [v17 contentType];
-          v39 = v38 == 0;
+          contentType = [indicationCopy contentType];
+          v39 = contentType == 0;
 
           if (!v39)
           {
-            v40 = [v17 contentType];
-            v41 = v40;
-            v72 = [v40 UTF8String];
-            sub_100184AD0(&buf[56], &v72);
+            contentType2 = [indicationCopy contentType];
+            v41 = contentType2;
+            uTF8String2 = [contentType2 UTF8String];
+            sub_100184AD0(&buf[56], &uTF8String2);
           }
 
           v69 = 0;
           memset(v67, 0, sizeof(v67));
           v68 = 1;
-          sub_1006E72AC(v15, v60);
-          sub_1006E8724(v16, v55);
-          LOBYTE(v72) = v18 != 0;
+          sub_1006E72AC(toCopy, v60);
+          sub_1006E8724(dCopy, v55);
+          LOBYTE(uTF8String2) = securityCopy != 0;
           LOBYTE(v73) = 0;
           v75 = 0;
-          v42 = (*(*v19 + 88))(v19, v67, v54, v60, v55, buf, &v72);
+          v42 = (*(*v19 + 88))(v19, v67, v54, v60, v55, buf, &uTF8String2);
           LODWORD(v69) = v42;
           BYTE4(v69) = BYTE4(v42);
           if (v75 == 1)
@@ -3301,8 +3301,8 @@ LABEL_45:
 
           if (v64[24] == 1)
           {
-            v72 = v64;
-            sub_1000087B4(&v72);
+            uTF8String2 = v64;
+            sub_1000087B4(&uTF8String2);
           }
 
           if (v63 < 0)
@@ -3320,15 +3320,15 @@ LABEL_45:
           {
             [(CTXPCClientHandler *)self getLogContext];
             v43 = v73;
-            ctu::OsLogContext::~OsLogContext(&v72);
+            ctu::OsLogContext::~OsLogContext(&uTF8String2);
             if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
             {
               sub_10177B280();
             }
 
-            if (a8)
+            if (error)
             {
-              *a8 = sub_100A99330(&v69);
+              *error = sub_100A99330(&v69);
             }
           }
 
@@ -3364,7 +3364,7 @@ LABEL_45:
       sub_10177ABCC();
     }
 
-    if (a8)
+    if (error)
     {
       *buf = 4;
       buf[4] = 1;
@@ -3383,13 +3383,13 @@ LABEL_45:
       sub_10177B2B4();
     }
 
-    if (a8)
+    if (error)
     {
       *buf = 3;
       buf[4] = 1;
       v27 = sub_100A99330(buf);
 LABEL_22:
-      *a8 = v27;
+      *error = v27;
     }
   }
 
@@ -3400,55 +3400,55 @@ LABEL_23:
   }
 }
 
-- (void)revokeMessage:(id)a3 withRevokeData:(id)a4 withMessageID:(id)a5 completion:(id)a6
+- (void)revokeMessage:(id)message withRevokeData:(id)data withMessageID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  messageCopy = message;
+  dataCopy = data;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v11)
+    if (dataCopy)
     {
-      if (v12)
+      if (dCopy)
       {
-        v14 = [v12 uuid];
-        if (v14)
+        uuid = [dCopy uuid];
+        if (uuid)
         {
-          v15 = [v11 destination];
-          if (v15)
+          destination = [dataCopy destination];
+          if (destination)
           {
-            v16 = [v11 messageID];
-            if (v16)
+            messageID = [dataCopy messageID];
+            if (messageID)
             {
-              v17 = [v11 messageID];
-              v18 = [v17 uuid];
+              messageID2 = [dataCopy messageID];
+              uuid2 = [messageID2 uuid];
 
-              if (v18)
+              if (uuid2)
               {
                 [(CTXPCClientHandler *)self getLogContext];
                 v19 = *&buf[8];
                 ctu::OsLogContext::~OsLogContext(buf);
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
                 {
-                  [v10 slotID];
+                  [messageCopy slotID];
                   v20 = CTSubscriptionSlotAsString();
-                  v36 = [v12 uuid];
-                  v37 = [v11 destination];
-                  v21 = [v11 messageID];
-                  v22 = [v21 uuid];
+                  uuid3 = [dCopy uuid];
+                  destination2 = [dataCopy destination];
+                  messageID3 = [dataCopy messageID];
+                  uuid4 = [messageID3 uuid];
                   *buf = 136315907;
                   *&buf[4] = v20;
                   *&buf[12] = 2114;
-                  *&buf[14] = v36;
+                  *&buf[14] = uuid3;
                   *&buf[22] = 2113;
-                  *&buf[24] = v37;
+                  *&buf[24] = destination2;
                   LOWORD(v51) = 2114;
-                  *(&v51 + 2) = v22;
+                  *(&v51 + 2) = uuid4;
                   _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] revokeMessage [slot: %s, identifier: %{public}@, revoke.dst = %{private}@, revoke.messageID: %{public}@]", buf, 0x2Au);
                 }
 
-                v23 = sub_100018A64([v10 slotID]);
+                v23 = sub_100018A64([messageCopy slotID]);
                 v48 = 0;
                 v49 = 0;
                 sub_1006E5FC4(self, &v48);
@@ -3466,8 +3466,8 @@ LABEL_23:
                   memset(v52, 0, sizeof(v52));
                   v51 = 0u;
                   memset(buf, 0, sizeof(buf));
-                  v25 = [v11 destination];
-                  v26 = [v25 uri];
+                  destination3 = [dataCopy destination];
+                  v26 = [destination3 uri];
                   v27 = v26;
                   sub_10000501C(buf, [v26 UTF8String]);
                   v52[8] = 0;
@@ -3477,8 +3477,8 @@ LABEL_23:
                   v51 = 0uLL;
                   *&buf[24] = 0;
                   v52[0] = 0;
-                  v28 = [v11 messageID];
-                  sub_1006E8724(v28, &v55);
+                  messageID4 = [dataCopy messageID];
+                  sub_1006E8724(messageID4, &v55);
 
                   v46 = 0u;
                   v47 = 0u;
@@ -3486,7 +3486,7 @@ LABEL_23:
                   *__p = 0u;
                   *v42 = 0u;
                   v43 = 0u;
-                  sub_1006E8724(v12, v42);
+                  sub_1006E8724(dCopy, v42);
                   memset(v40, 0, sizeof(v40));
                   v41 = 1;
                   v29 = (*(*v24 + 272))(v24, v40, v23, buf, v42);
@@ -3496,12 +3496,12 @@ LABEL_23:
                     v38 = v29;
                     v39 = 1;
                     v35 = sub_100A99330(&v38);
-                    v13[2](v13, v35);
+                    completionCopy[2](completionCopy, v35);
                   }
 
                   else
                   {
-                    v13[2](v13, 0);
+                    completionCopy[2](completionCopy, 0);
                   }
 
                   if (BYTE8(v47) == 1 && SBYTE7(v46) < 0)
@@ -3559,7 +3559,7 @@ LABEL_23:
                   *buf = 5;
                   buf[4] = 1;
                   v34 = sub_100A99330(buf);
-                  v13[2](v13, v34);
+                  completionCopy[2](completionCopy, v34);
                 }
 
                 if (v49)
@@ -3589,7 +3589,7 @@ LABEL_17:
     *buf = 4;
     buf[4] = 1;
     v32 = sub_100A99330(buf);
-    v13[2](v13, v32);
+    completionCopy[2](completionCopy, v32);
 
     goto LABEL_20;
   }
@@ -3605,34 +3605,34 @@ LABEL_17:
 LABEL_20:
 }
 
-- (void)sendGeolocationMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withGeoPush:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)sendGeolocationMessage:(id)message to:(id)to withMessageID:(id)d withGeoPush:(id)push withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  messageCopy = message;
+  toCopy = to;
+  dCopy = d;
+  pushCopy = push;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15)
+    if (messageCopy && toCopy)
     {
-      v20 = [v15 uri];
+      v20 = [toCopy uri];
       v21 = v20;
-      if (v16 && v20)
+      if (dCopy && v20)
       {
-        v22 = [v16 uuid];
+        uuid = [dCopy uuid];
 
-        if (v17 && v22)
+        if (pushCopy && uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v23 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            [v14 slotID];
+            [messageCopy slotID];
             v24 = CTSubscriptionSlotAsString();
-            if (v18)
+            if (securityCopy)
             {
               v25 = "true";
             }
@@ -3642,17 +3642,17 @@ LABEL_20:
               v25 = "false";
             }
 
-            v57 = [v15 uri];
-            v55 = [v16 uuid];
+            v57 = [toCopy uri];
+            uuid2 = [dCopy uuid];
             v51 = v25;
             v52 = v24;
-            [v17 coordinates];
-            v53 = v26 = "3$_5EEvRNS2_10RestModuleEOT_NS_17integral_constantIbLb0EEEEUlRKN3xpc6objectEE_NS8_ISS_EEFvSP_EEE";
+            [pushCopy coordinates];
+            v53 = longitude = "3$_5EEvRNS2_10RestModuleEOT_NS_17integral_constantIbLb0EEEEUlRKN3xpc6objectEE_NS8_ISS_EEFvSP_EEE";
             if (v53)
             {
-              v49 = [v17 coordinates];
-              v50 = [v49 latitude];
-              [v50 doubleValue];
+              coordinates = [pushCopy coordinates];
+              latitude = [coordinates latitude];
+              [latitude doubleValue];
               v28 = v27;
             }
 
@@ -3661,12 +3661,12 @@ LABEL_20:
               v28 = 0x406FE00000000000;
             }
 
-            v32 = [v17 coordinates];
-            if (v32)
+            coordinates2 = [pushCopy coordinates];
+            if (coordinates2)
             {
-              v48 = [v17 coordinates];
-              v26 = [v48 longitude];
-              [v26 doubleValue];
+              coordinates3 = [pushCopy coordinates];
+              longitude = [coordinates3 longitude];
+              [longitude doubleValue];
             }
 
             else
@@ -3681,13 +3681,13 @@ LABEL_20:
             v85 = 2113;
             v86 = v57;
             v87 = 2114;
-            v88 = v55;
+            v88 = uuid2;
             v89 = 2048;
             v90 = v28;
             v91 = 2048;
             v92 = v33;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendGeolocationMessage [slot: %s, security: %s, to: %{private}@, messageIdentifier: %{public}@, push.latitude: %{senstive}f, push.longitude: %{senstive}f]", buf, 0x3Eu);
-            if (v32)
+            if (coordinates2)
             {
             }
 
@@ -3696,7 +3696,7 @@ LABEL_20:
             }
           }
 
-          v58 = sub_100018A64([v14 slotID]);
+          v58 = sub_100018A64([messageCopy slotID]);
           v82 = 0;
           v83 = 0;
           sub_1006E5FC4(self, &v82);
@@ -3705,14 +3705,14 @@ LABEL_20:
           {
             *v80 = 0u;
             v81 = 0u;
-            v35 = [v17 additionalDescription];
-            v36 = v35 == 0;
+            additionalDescription = [pushCopy additionalDescription];
+            v36 = additionalDescription == 0;
 
             if (!v36)
             {
-              v37 = [v17 additionalDescription];
-              v38 = v37;
-              *buf = [v37 UTF8String];
+              additionalDescription2 = [pushCopy additionalDescription];
+              v38 = additionalDescription2;
+              *buf = [additionalDescription2 UTF8String];
               sub_100184AD0(v80, buf);
             }
 
@@ -3722,25 +3722,25 @@ LABEL_20:
             v77 = 0u;
             *v74 = 0u;
             v75 = 0u;
-            v54 = [v17 coordinates];
-            v56 = [v54 longitude];
-            [v56 doubleValue];
+            coordinates4 = [pushCopy coordinates];
+            longitude2 = [coordinates4 longitude];
+            [longitude2 doubleValue];
             v73[0] = v39;
-            v40 = [v17 coordinates];
-            v41 = [v40 latitude];
-            [v41 doubleValue];
+            coordinates5 = [pushCopy coordinates];
+            latitude2 = [coordinates5 latitude];
+            [latitude2 doubleValue];
             v73[1] = v42;
             sub_10006F264(v74, v80);
             LOBYTE(v76) = 0;
             BYTE8(v77) = 0;
-            v43 = [v17 metaData];
-            sub_1006EBDBC(v43, &v78);
+            metaData = [pushCopy metaData];
+            sub_1006EBDBC(metaData, &v78);
 
             memset(v71, 0, sizeof(v71));
             v72 = 1;
-            sub_1006E72AC(v15, v64);
-            sub_1006E8724(v16, v59);
-            buf[0] = v18 != 0;
+            sub_1006E72AC(toCopy, v64);
+            sub_1006E8724(dCopy, v59);
+            buf[0] = securityCopy != 0;
             buf[8] = 0;
             v93 = 0;
             v44 = (*(*v34 + 56))(v34, v71, v58, v64, v59, v73, buf);
@@ -3786,12 +3786,12 @@ LABEL_20:
               *buf = v44;
               buf[4] = 1;
               v47 = sub_100A99330(buf);
-              v19[2](v19, v47);
+              completionCopy[2](completionCopy, v47);
             }
 
             else
             {
-              v19[2](v19, 0);
+              completionCopy[2](completionCopy, 0);
             }
 
             if (BYTE8(v79) == 1)
@@ -3830,7 +3830,7 @@ LABEL_20:
             *buf = 5;
             buf[4] = 1;
             v46 = sub_100A99330(buf);
-            v19[2](v19, v46);
+            completionCopy[2](completionCopy, v46);
           }
 
           if (v83)
@@ -3858,7 +3858,7 @@ LABEL_20:
     *buf = 4;
     buf[4] = 1;
     v31 = sub_100A99330(buf);
-    v19[2](v19, v31);
+    completionCopy[2](completionCopy, v31);
   }
 
   else
@@ -3875,54 +3875,54 @@ LABEL_20:
 LABEL_20:
 }
 
-- (void)sendDeviceAction:(id)a3 to:(id)a4 withMessageID:(id)a5 withAction:(id)a6 completion:(id)a7
+- (void)sendDeviceAction:(id)action to:(id)to withMessageID:(id)d withAction:(id)withAction completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  actionCopy = action;
+  toCopy = to;
+  dCopy = d;
+  withActionCopy = withAction;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v13)
+    if (toCopy)
     {
-      v17 = [v13 uri];
+      v17 = [toCopy uri];
       v18 = v17;
-      if (v14 && v17)
+      if (dCopy && v17)
       {
-        v19 = [v14 uuid];
+        uuid = [dCopy uuid];
 
-        if (v15 && v19)
+        if (withActionCopy && uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v20 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            [v12 slotID];
+            [actionCopy slotID];
             v21 = CTSubscriptionSlotAsString();
-            v22 = [v13 uri];
-            v23 = [v14 uuid];
-            v24 = [v15 type];
+            v22 = [toCopy uri];
+            uuid2 = [dCopy uuid];
+            type = [withActionCopy type];
             *buf = 136315906;
             *&buf[4] = v21;
             *&buf[12] = 2112;
             *&buf[14] = v22;
             v47 = 2114;
-            v48 = v23;
+            v48 = uuid2;
             v49 = 2048;
-            v50 = v24;
+            v50 = type;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendDeviceAction [slot: %s, to: %@, messageIdentifier: %{public}@, type: %ld]", buf, 0x2Au);
           }
 
-          v25 = sub_100018A64([v12 slotID]);
+          v25 = sub_100018A64([actionCopy slotID]);
           v44 = 0;
           v45 = 0;
           sub_1006E5FC4(self, &v44);
           v26 = v44;
           if (v44)
           {
-            if ([v15 type])
+            if ([withActionCopy type])
             {
               v27 = -1;
             }
@@ -3936,8 +3936,8 @@ LABEL_20:
             v42 = 0;
             memset(v40, 0, sizeof(v40));
             v41 = 1;
-            sub_1006E72AC(v13, buf);
-            sub_1006E8724(v14, v35);
+            sub_1006E72AC(toCopy, buf);
+            sub_1006E8724(dCopy, v35);
             v28 = (*(*v26 + 160))(v26, v40, v25, buf, v35, &v43);
             LODWORD(v42) = v28;
             BYTE4(v42) = BYTE4(v28);
@@ -3976,12 +3976,12 @@ LABEL_20:
             if ((v28 & 0x100000000) != 0)
             {
               v34 = sub_100A99330(&v42);
-              v16[2](v16, v34);
+              completionCopy[2](completionCopy, v34);
             }
 
             else
             {
-              v16[2](v16, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -3998,7 +3998,7 @@ LABEL_20:
             *buf = 5;
             buf[4] = 1;
             v33 = sub_100A99330(buf);
-            v16[2](v16, v33);
+            completionCopy[2](completionCopy, v33);
           }
 
           if (v45)
@@ -4026,7 +4026,7 @@ LABEL_20:
     *buf = 4;
     buf[4] = 1;
     v31 = sub_100A99330(buf);
-    v16[2](v16, v31);
+    completionCopy[2](completionCopy, v31);
   }
 
   else
@@ -4043,54 +4043,54 @@ LABEL_20:
 LABEL_34:
 }
 
-- (void)sendDeviceSettings:(id)a3 to:(id)a4 withMessageID:(id)a5 withSetting:(id)a6 completion:(id)a7
+- (void)sendDeviceSettings:(id)settings to:(id)to withMessageID:(id)d withSetting:(id)setting completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  settingsCopy = settings;
+  toCopy = to;
+  dCopy = d;
+  settingCopy = setting;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v13)
+    if (toCopy)
     {
-      v17 = [v13 uri];
+      v17 = [toCopy uri];
       v18 = v17;
-      if (v14 && v17)
+      if (dCopy && v17)
       {
-        v19 = [v14 uuid];
+        uuid = [dCopy uuid];
 
-        if (v15 && v19)
+        if (settingCopy && uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v20 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            [v12 slotID];
+            [settingsCopy slotID];
             v21 = CTSubscriptionSlotAsString();
-            v36 = [v13 uri];
-            v22 = [v14 uuid];
-            v23 = [v15 type];
+            v36 = [toCopy uri];
+            uuid2 = [dCopy uuid];
+            type = [settingCopy type];
             *buf = 136315906;
             *&buf[4] = v21;
             *&buf[12] = 2112;
             *&buf[14] = v36;
             v47 = 2112;
-            v48 = v22;
+            v48 = uuid2;
             v49 = 2048;
-            v50 = v23;
+            v50 = type;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendDeviceSettings [slot: %s, to: %@, identifier: %@, type: %ld]", buf, 0x2Au);
           }
 
-          v24 = sub_100018A64([v12 slotID]);
+          v24 = sub_100018A64([settingsCopy slotID]);
           v44 = 0;
           v45 = 0;
           sub_1006E5E0C(self, &v44);
           if (v44)
           {
-            v25 = [v15 type];
-            if (v25)
+            type2 = [settingCopy type];
+            if (type2)
             {
               v26 = -1;
             }
@@ -4100,7 +4100,7 @@ LABEL_34:
               v26 = 0;
             }
 
-            if (v25 == 1)
+            if (type2 == 1)
             {
               v27 = 1;
             }
@@ -4112,8 +4112,8 @@ LABEL_34:
 
             v43 = 0;
             v28 = v44;
-            sub_1006E72AC(v13, buf);
-            sub_1006E8724(v14, v38);
+            sub_1006E72AC(toCopy, buf);
+            sub_1006E8724(dCopy, v38);
             v37 = v27;
             v29 = (*(*v28 + 264))(v28, v24, buf, v38, &v37);
             LODWORD(v43) = v29;
@@ -4152,12 +4152,12 @@ LABEL_34:
             if ((v29 & 0x100000000) != 0)
             {
               v35 = sub_100A99330(&v43);
-              v16[2](v16, v35);
+              completionCopy[2](completionCopy, v35);
             }
 
             else
             {
-              v16[2](v16, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -4174,7 +4174,7 @@ LABEL_34:
             *buf = 5;
             buf[4] = 1;
             v34 = sub_100A99330(buf);
-            v16[2](v16, v34);
+            completionCopy[2](completionCopy, v34);
           }
 
           if (v45)
@@ -4202,7 +4202,7 @@ LABEL_34:
     *buf = 4;
     buf[4] = 1;
     v32 = sub_100A99330(buf);
-    v16[2](v16, v32);
+    completionCopy[2](completionCopy, v32);
   }
 
   else
@@ -4219,69 +4219,69 @@ LABEL_34:
 LABEL_37:
 }
 
-- (void)sendResponseForSuggestedReply:(id)a3 to:(id)a4 withMessageID:(id)a5 response:(id)a6 completion:(id)a7
+- (void)sendResponseForSuggestedReply:(id)reply to:(id)to withMessageID:(id)d response:(id)response completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  replyCopy = reply;
+  toCopy = to;
+  dCopy = d;
+  responseCopy = response;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v13)
+    if (toCopy)
     {
-      v17 = [v13 uri];
+      v17 = [toCopy uri];
       v18 = v17;
-      if (v14 && v17)
+      if (dCopy && v17)
       {
-        v19 = [v14 uuid];
+        uuid = [dCopy uuid];
 
-        if (v15 && v19)
+        if (responseCopy && uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v20 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            [v12 slotID];
+            [replyCopy slotID];
             v21 = CTSubscriptionSlotAsString();
-            v45 = [v13 uri];
-            v43 = [v14 uuid];
-            v41 = [v15 displayText];
-            if (v41)
+            v45 = [toCopy uri];
+            uuid2 = [dCopy uuid];
+            displayText = [responseCopy displayText];
+            if (displayText)
             {
-              v42 = [v15 displayText];
+              displayText2 = [responseCopy displayText];
             }
 
             else
             {
-              v42 = &stru_101F6AFB8;
+              displayText2 = &stru_101F6AFB8;
             }
 
-            v40 = [v15 inReplyToID];
-            if (v40)
+            inReplyToID = [responseCopy inReplyToID];
+            if (inReplyToID)
             {
-              v39 = [v15 inReplyToID];
-              v25 = [v39 uuid];
-              if (v25)
+              inReplyToID2 = [responseCopy inReplyToID];
+              uuid3 = [inReplyToID2 uuid];
+              if (uuid3)
               {
-                v38 = v25;
-                v37 = [v15 inReplyToID];
-                v26 = [v37 uuid];
-                LODWORD(v25) = 1;
+                v38 = uuid3;
+                inReplyToID3 = [responseCopy inReplyToID];
+                uuid4 = [inReplyToID3 uuid];
+                LODWORD(uuid3) = 1;
               }
 
               else
               {
                 v38 = 0;
-                v26 = &stru_101F6AFB8;
+                uuid4 = &stru_101F6AFB8;
               }
             }
 
             else
             {
-              LODWORD(v25) = 0;
-              v26 = &stru_101F6AFB8;
+              LODWORD(uuid3) = 0;
+              uuid4 = &stru_101F6AFB8;
             }
 
             *buf = 136316163;
@@ -4289,26 +4289,26 @@ LABEL_37:
             *&buf[12] = 2113;
             *&buf[14] = v45;
             v64 = 2114;
-            v65 = v43;
+            v65 = uuid2;
             v66 = 2113;
-            v67 = v42;
+            v67 = displayText2;
             v68 = 2114;
-            *v69 = v26;
+            *v69 = uuid4;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendResponseForSuggestedReply [slot: %s, to: %{private}@, identifier: %{public}@, response.displayText: %{private}@, response.inReplyToID: %{public}@]", buf, 0x34u);
-            if (v25)
+            if (uuid3)
             {
             }
 
-            if (v40)
+            if (inReplyToID)
             {
             }
 
-            if (v41)
+            if (displayText)
             {
             }
           }
 
-          v27 = sub_100018A64([v12 slotID]);
+          v27 = sub_100018A64([replyCopy slotID]);
           v61 = 0;
           v62 = 0;
           sub_1006E5FC4(self, &v61);
@@ -4317,17 +4317,17 @@ LABEL_37:
           {
             memset(v59, 0, sizeof(v59));
             v60 = 1;
-            sub_1006E72AC(v13, v52);
-            sub_1006E8724(v14, v47);
-            v46 = [v15 displayText];
-            v29 = v46;
-            sub_10000501C(buf, [v46 UTF8String]);
-            v44 = [v15 postBackData];
-            v30 = [v44 data];
-            v31 = v30;
-            sub_10000501C(&v65, [v30 UTF8String]);
-            v32 = [v15 inReplyToID];
-            sub_1006E8724(v32, &v69[4]);
+            sub_1006E72AC(toCopy, v52);
+            sub_1006E8724(dCopy, v47);
+            displayText3 = [responseCopy displayText];
+            v29 = displayText3;
+            sub_10000501C(buf, [displayText3 UTF8String]);
+            postBackData = [responseCopy postBackData];
+            data = [postBackData data];
+            v31 = data;
+            sub_10000501C(&v65, [data UTF8String]);
+            inReplyToID4 = [responseCopy inReplyToID];
+            sub_1006E8724(inReplyToID4, &v69[4]);
             v33 = (*(*v28 + 144))(v28, v59, v27, v52, v47, buf);
             if (v73 == 1 && v72 < 0)
             {
@@ -4386,12 +4386,12 @@ LABEL_37:
               *buf = v33;
               buf[4] = 1;
               v36 = sub_100A99330(buf);
-              v16[2](v16, v36);
+              completionCopy[2](completionCopy, v36);
             }
 
             else
             {
-              v16[2](v16, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -4408,7 +4408,7 @@ LABEL_37:
             *buf = 5;
             buf[4] = 1;
             v35 = sub_100A99330(buf);
-            v16[2](v16, v35);
+            completionCopy[2](completionCopy, v35);
           }
 
           if (v62)
@@ -4436,7 +4436,7 @@ LABEL_37:
     *buf = 4;
     buf[4] = 1;
     v24 = sub_100A99330(buf);
-    v16[2](v16, v24);
+    completionCopy[2](completionCopy, v24);
   }
 
   else
@@ -4453,69 +4453,69 @@ LABEL_37:
 LABEL_16:
 }
 
-- (void)sendResponseForSuggestedAction:(id)a3 to:(id)a4 withMessageID:(id)a5 response:(id)a6 completion:(id)a7
+- (void)sendResponseForSuggestedAction:(id)action to:(id)to withMessageID:(id)d response:(id)response completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  actionCopy = action;
+  toCopy = to;
+  dCopy = d;
+  responseCopy = response;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v13)
+    if (toCopy)
     {
-      v17 = [v13 uri];
+      v17 = [toCopy uri];
       v18 = v17;
-      if (v14 && v17)
+      if (dCopy && v17)
       {
-        v19 = [v14 uuid];
+        uuid = [dCopy uuid];
 
-        if (v15 && v19)
+        if (responseCopy && uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v20 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            [v12 slotID];
+            [actionCopy slotID];
             v21 = CTSubscriptionSlotAsString();
-            v45 = [v13 uri];
-            v43 = [v14 uuid];
-            v41 = [v15 displayText];
-            if (v41)
+            v45 = [toCopy uri];
+            uuid2 = [dCopy uuid];
+            displayText = [responseCopy displayText];
+            if (displayText)
             {
-              v42 = [v15 displayText];
+              displayText2 = [responseCopy displayText];
             }
 
             else
             {
-              v42 = &stru_101F6AFB8;
+              displayText2 = &stru_101F6AFB8;
             }
 
-            v40 = [v15 inReplyToID];
-            if (v40)
+            inReplyToID = [responseCopy inReplyToID];
+            if (inReplyToID)
             {
-              v39 = [v15 inReplyToID];
-              v25 = [v39 uuid];
-              if (v25)
+              inReplyToID2 = [responseCopy inReplyToID];
+              uuid3 = [inReplyToID2 uuid];
+              if (uuid3)
               {
-                v38 = v25;
-                v37 = [v15 inReplyToID];
-                v26 = [v37 uuid];
-                LODWORD(v25) = 1;
+                v38 = uuid3;
+                inReplyToID3 = [responseCopy inReplyToID];
+                uuid4 = [inReplyToID3 uuid];
+                LODWORD(uuid3) = 1;
               }
 
               else
               {
                 v38 = 0;
-                v26 = &stru_101F6AFB8;
+                uuid4 = &stru_101F6AFB8;
               }
             }
 
             else
             {
-              LODWORD(v25) = 0;
-              v26 = &stru_101F6AFB8;
+              LODWORD(uuid3) = 0;
+              uuid4 = &stru_101F6AFB8;
             }
 
             *buf = 136316163;
@@ -4523,26 +4523,26 @@ LABEL_16:
             *&buf[12] = 2113;
             *&buf[14] = v45;
             v64 = 2114;
-            v65 = v43;
+            v65 = uuid2;
             v66 = 2113;
-            v67 = v42;
+            v67 = displayText2;
             v68 = 2114;
-            *v69 = v26;
+            *v69 = uuid4;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendResponseForSuggestedAction [slot: %s, to: %{private}@, identifier: %{public}@, response.displayText: %{private}@, response.inReplyToID: %{public}@]", buf, 0x34u);
-            if (v25)
+            if (uuid3)
             {
             }
 
-            if (v40)
+            if (inReplyToID)
             {
             }
 
-            if (v41)
+            if (displayText)
             {
             }
           }
 
-          v27 = sub_100018A64([v12 slotID]);
+          v27 = sub_100018A64([actionCopy slotID]);
           v61 = 0;
           v62 = 0;
           sub_1006E5FC4(self, &v61);
@@ -4551,17 +4551,17 @@ LABEL_16:
           {
             memset(v59, 0, sizeof(v59));
             v60 = 1;
-            sub_1006E72AC(v13, v52);
-            sub_1006E8724(v14, v47);
-            v46 = [v15 displayText];
-            v29 = v46;
-            sub_10000501C(buf, [v46 UTF8String]);
-            v44 = [v15 postBackData];
-            v30 = [v44 data];
-            v31 = v30;
-            sub_10000501C(&v65, [v30 UTF8String]);
-            v32 = [v15 inReplyToID];
-            sub_1006E8724(v32, &v69[4]);
+            sub_1006E72AC(toCopy, v52);
+            sub_1006E8724(dCopy, v47);
+            displayText3 = [responseCopy displayText];
+            v29 = displayText3;
+            sub_10000501C(buf, [displayText3 UTF8String]);
+            postBackData = [responseCopy postBackData];
+            data = [postBackData data];
+            v31 = data;
+            sub_10000501C(&v65, [data UTF8String]);
+            inReplyToID4 = [responseCopy inReplyToID];
+            sub_1006E8724(inReplyToID4, &v69[4]);
             v33 = (*(*v28 + 152))(v28, v59, v27, v52, v47, buf);
             if (v73 == 1 && v72 < 0)
             {
@@ -4620,12 +4620,12 @@ LABEL_16:
               *buf = v33;
               buf[4] = 1;
               v36 = sub_100A99330(buf);
-              v16[2](v16, v36);
+              completionCopy[2](completionCopy, v36);
             }
 
             else
             {
-              v16[2](v16, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -4642,7 +4642,7 @@ LABEL_16:
             *buf = 5;
             buf[4] = 1;
             v35 = sub_100A99330(buf);
-            v16[2](v16, v35);
+            completionCopy[2](completionCopy, v35);
           }
 
           if (v62)
@@ -4670,7 +4670,7 @@ LABEL_16:
     *buf = 4;
     buf[4] = 1;
     v24 = sub_100A99330(buf);
-    v16[2](v16, v24);
+    completionCopy[2](completionCopy, v24);
   }
 
   else
@@ -4687,66 +4687,66 @@ LABEL_16:
 LABEL_16:
 }
 
-- (void)reportChatbotSpam:(id)a3 forChatbot:(id)a4 withSpamReportInfo:(id)a5 andOperationID:(id)a6 completion:(id)a7
+- (void)reportChatbotSpam:(id)spam forChatbot:(id)chatbot withSpamReportInfo:(id)info andOperationID:(id)d completion:(id)completion
 {
-  v62 = a3;
-  v12 = a4;
-  v13 = a5;
-  v63 = a6;
-  v14 = a7;
-  if (v14)
+  spamCopy = spam;
+  chatbotCopy = chatbot;
+  infoCopy = info;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v12)
+    if (chatbotCopy)
     {
-      v15 = [v12 uri];
+      v15 = [chatbotCopy uri];
       v16 = v15;
-      if (v63)
+      if (dCopy)
       {
-        if (v13)
+        if (infoCopy)
         {
           if (v15)
           {
-            v17 = [v63 uuid];
-            if (v17)
+            uuid = [dCopy uuid];
+            if (uuid)
             {
-              v18 = [v13 chatbotUri];
-              if (v18)
+              chatbotUri = [infoCopy chatbotUri];
+              if (chatbotUri)
               {
-                v19 = [v13 messageIDList];
-                if (v19)
+                messageIDList = [infoCopy messageIDList];
+                if (messageIDList)
                 {
-                  v20 = [v13 messageIDList];
-                  v21 = [v20 list];
+                  messageIDList2 = [infoCopy messageIDList];
+                  list = [messageIDList2 list];
 
-                  if (v21)
+                  if (list)
                   {
                     [(CTXPCClientHandler *)self getLogContext];
                     v22 = *&buf[8];
                     ctu::OsLogContext::~OsLogContext(buf);
                     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                     {
-                      [v62 slotID];
+                      [spamCopy slotID];
                       v60 = CTSubscriptionSlotAsString();
-                      v23 = [v12 uri];
-                      v61 = [v13 chatbotUri];
-                      v24 = [v13 messageIDList];
-                      v25 = [v24 list];
-                      v26 = [v25 count];
-                      v27 = [v13 spamType];
+                      v23 = [chatbotCopy uri];
+                      chatbotUri2 = [infoCopy chatbotUri];
+                      messageIDList3 = [infoCopy messageIDList];
+                      list2 = [messageIDList3 list];
+                      v26 = [list2 count];
+                      spamType = [infoCopy spamType];
                       *buf = 136316163;
                       *&buf[4] = v60;
                       *&buf[12] = 2113;
                       *&buf[14] = v23;
                       *&buf[22] = 2113;
-                      *&buf[24] = v61;
+                      *&buf[24] = chatbotUri2;
                       *&buf[32] = 2048;
                       *&buf[34] = v26;
                       *&buf[42] = 2048;
-                      *&buf[44] = v27;
+                      *&buf[44] = spamType;
                       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] reportChatbotSpam: [slot: %s, to: %{private}@ spamReportInfo.uri: %{private}@, spamReportInfo.messageIDList.length: %ld, spamReportInfo.spamType: %ld]", buf, 0x34u);
                     }
 
-                    v28 = sub_100018A64([v62 slotID]);
+                    v28 = sub_100018A64([spamCopy slotID]);
                     v77 = 0;
                     v78 = 0;
                     sub_1006E5E0C(self, &v77);
@@ -4763,12 +4763,12 @@ LABEL_16:
                       *buf = 5;
                       buf[4] = 1;
                       v51 = sub_100A99330(buf);
-                      v14[2](v14, v51);
+                      completionCopy[2](completionCopy, v51);
 
                       goto LABEL_74;
                     }
 
-                    v29 = [v12 uri];
+                    v29 = [chatbotCopy uri];
                     v30 = v29 == 0;
 
                     if (v30)
@@ -4784,9 +4784,9 @@ LABEL_16:
 
                     else
                     {
-                      v31 = [v13 messageIDList];
-                      v32 = [v31 list];
-                      v33 = [v32 count] == 0;
+                      messageIDList4 = [infoCopy messageIDList];
+                      list3 = [messageIDList4 list];
+                      v33 = [list3 count] == 0;
 
                       if (!v33)
                       {
@@ -4797,10 +4797,10 @@ LABEL_16:
                         v71 = 0u;
                         v72 = 0u;
                         v73 = 0u;
-                        v34 = [v13 messageIDList];
-                        v35 = [v34 list];
+                        messageIDList5 = [infoCopy messageIDList];
+                        list4 = [messageIDList5 list];
 
-                        v36 = [v35 countByEnumeratingWithState:&v70 objects:v86 count:16];
+                        v36 = [list4 countByEnumeratingWithState:&v70 objects:v86 count:16];
                         if (v36)
                         {
                           v37 = *v71;
@@ -4810,7 +4810,7 @@ LABEL_16:
                             {
                               if (*v71 != v37)
                               {
-                                objc_enumerationMutation(v35);
+                                objc_enumerationMutation(list4);
                               }
 
                               sub_1006E8724(*(*(&v70 + 1) + 8 * i), buf);
@@ -4826,7 +4826,7 @@ LABEL_16:
                               }
                             }
 
-                            v36 = [v35 countByEnumeratingWithState:&v70 objects:v86 count:16];
+                            v36 = [list4 countByEnumeratingWithState:&v70 objects:v86 count:16];
                           }
 
                           while (v36);
@@ -4834,27 +4834,27 @@ LABEL_16:
 
                         memset(&v69, 0, sizeof(v69));
                         sub_10000501C(&v69, "");
-                        v39 = [v13 freeBodyText];
-                        v40 = v39 == 0;
+                        freeBodyText = [infoCopy freeBodyText];
+                        v40 = freeBodyText == 0;
 
                         if (!v40)
                         {
-                          v41 = [v13 freeBodyText];
-                          v42 = v41;
-                          sub_100016890(&v69, [v41 UTF8String]);
+                          freeBodyText2 = [infoCopy freeBodyText];
+                          v42 = freeBodyText2;
+                          sub_100016890(&v69, [freeBodyText2 UTF8String]);
                         }
 
-                        v43 = [v13 spamType];
+                        spamType2 = [infoCopy spamType];
                         v84 = 0u;
                         v85 = 0u;
-                        if (v43 + 1 >= 4)
+                        if (spamType2 + 1 >= 4)
                         {
                           v44 = 3;
                         }
 
                         else
                         {
-                          v44 = v43;
+                          v44 = spamType2;
                         }
 
                         v82 = 0uLL;
@@ -4863,7 +4863,7 @@ LABEL_16:
                         v81 = 0uLL;
                         memset(buf, 0, sizeof(buf));
                         buf[0] = 1;
-                        v45 = [v12 uri];
+                        v45 = [chatbotCopy uri];
                         v46 = v45;
                         sub_10000501C(&buf[8], [v45 UTF8String]);
                         buf[32] = 0;
@@ -4890,9 +4890,9 @@ LABEL_16:
                         v67[0] = 0;
                         v67[1] = 0;
                         v68 = 0;
-                        v55 = [v63 uuid];
-                        v56 = v55;
-                        sub_10000501C(v67, [v55 UTF8String]);
+                        uuid2 = [dCopy uuid];
+                        v56 = uuid2;
+                        sub_10000501C(v67, [uuid2 UTF8String]);
 
                         v66 = 0;
                         v57 = (*(*v77 + 112))(v77, v28, buf, v67);
@@ -4909,12 +4909,12 @@ LABEL_16:
                           }
 
                           v59 = sub_100A99330(&v66);
-                          v14[2](v14, v59);
+                          completionCopy[2](completionCopy, v59);
                         }
 
                         else
                         {
-                          v14[2](v14, 0);
+                          completionCopy[2](completionCopy, 0);
                         }
 
                         if (SHIBYTE(v68) < 0)
@@ -4966,7 +4966,7 @@ LABEL_16:
                     *buf = -1;
                     buf[4] = 1;
                     v53 = sub_100A99330(buf);
-                    v14[2](v14, v53);
+                    completionCopy[2](completionCopy, v53);
 
 LABEL_74:
                     if (v78)
@@ -4998,7 +4998,7 @@ LABEL_39:
     *buf = 4;
     buf[4] = 1;
     v49 = sub_100A99330(buf);
-    v14[2](v14, v49);
+    completionCopy[2](completionCopy, v49);
 
     goto LABEL_42;
   }
@@ -5015,66 +5015,66 @@ LABEL_39:
 LABEL_42:
 }
 
-- (void)reportLazuliSpamWithContext:(id)a3 destination:(id)a4 spamReportInfo:(id)a5 operationID:(id)a6 completion:(id)a7
+- (void)reportLazuliSpamWithContext:(id)context destination:(id)destination spamReportInfo:(id)info operationID:(id)d completion:(id)completion
 {
-  v67 = a3;
-  v12 = a4;
-  v13 = a5;
-  v68 = a6;
-  v14 = a7;
-  if (v14)
+  contextCopy = context;
+  destinationCopy = destination;
+  infoCopy = info;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v12)
+    if (destinationCopy)
     {
-      v15 = [v12 uri];
+      v15 = [destinationCopy uri];
       v16 = v15;
-      if (v68)
+      if (dCopy)
       {
-        if (v13)
+        if (infoCopy)
         {
           if (v15)
           {
-            v17 = [v68 uuid];
-            if (v17)
+            uuid = [dCopy uuid];
+            if (uuid)
             {
-              v18 = [v13 destinationUri];
-              if (v18)
+              destinationUri = [infoCopy destinationUri];
+              if (destinationUri)
               {
-                v19 = [v13 messageIDList];
-                if (v19)
+                messageIDList = [infoCopy messageIDList];
+                if (messageIDList)
                 {
-                  v20 = [v13 messageIDList];
-                  v21 = [v20 list];
+                  messageIDList2 = [infoCopy messageIDList];
+                  list = [messageIDList2 list];
 
-                  if (v21)
+                  if (list)
                   {
                     [(CTXPCClientHandler *)self getLogContext];
                     v22 = *&buf[8];
                     ctu::OsLogContext::~OsLogContext(buf);
                     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                     {
-                      [v67 slotID];
+                      [contextCopy slotID];
                       v66 = CTSubscriptionSlotAsString();
-                      v23 = [v12 uri];
-                      v24 = [v13 destinationUri];
-                      v25 = [v13 messageIDList];
-                      v26 = [v25 list];
-                      v27 = [v26 count];
-                      v28 = [v13 spamType];
+                      v23 = [destinationCopy uri];
+                      destinationUri2 = [infoCopy destinationUri];
+                      messageIDList3 = [infoCopy messageIDList];
+                      list2 = [messageIDList3 list];
+                      v27 = [list2 count];
+                      spamType = [infoCopy spamType];
                       *buf = 136316163;
                       *&buf[4] = v66;
                       *&buf[12] = 2113;
                       *&buf[14] = v23;
                       *&buf[22] = 2113;
-                      *&buf[24] = v24;
+                      *&buf[24] = destinationUri2;
                       *&buf[32] = 2048;
                       *&buf[34] = v27;
                       *&buf[42] = 2048;
-                      *&buf[44] = v28;
+                      *&buf[44] = spamType;
                       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] reportSpam: [slot: %s, to: %{private}@ spamReportInfo.uri: %{private}@, spamReportInfo.messageIDList.length: %ld, spamReportInfo.spamType: %ld]", buf, 0x34u);
                     }
 
-                    v29 = sub_100018A64([v67 slotID]);
+                    v29 = sub_100018A64([contextCopy slotID]);
                     v85 = 0;
                     v86 = 0;
                     sub_1006E5FC4(self, &v85);
@@ -5092,12 +5092,12 @@ LABEL_42:
                       *buf = 5;
                       buf[4] = 1;
                       v57 = sub_100A99330(buf);
-                      v14[2](v14, v57);
+                      completionCopy[2](completionCopy, v57);
 
                       goto LABEL_81;
                     }
 
-                    v31 = [v12 uri];
+                    v31 = [destinationCopy uri];
                     v32 = v31 == 0;
 
                     if (v32)
@@ -5113,9 +5113,9 @@ LABEL_42:
 
                     else
                     {
-                      v33 = [v13 messageIDList];
-                      v34 = [v33 list];
-                      v35 = [v34 count] == 0;
+                      messageIDList4 = [infoCopy messageIDList];
+                      list3 = [messageIDList4 list];
+                      v35 = [list3 count] == 0;
 
                       if (!v35)
                       {
@@ -5126,10 +5126,10 @@ LABEL_42:
                         v79 = 0u;
                         v80 = 0u;
                         v81 = 0u;
-                        v36 = [v13 messageIDList];
-                        v37 = [v36 list];
+                        messageIDList5 = [infoCopy messageIDList];
+                        list4 = [messageIDList5 list];
 
-                        v38 = [v37 countByEnumeratingWithState:&v78 objects:v92 count:16];
+                        v38 = [list4 countByEnumeratingWithState:&v78 objects:v92 count:16];
                         if (v38)
                         {
                           v39 = *v79;
@@ -5139,7 +5139,7 @@ LABEL_42:
                             {
                               if (*v79 != v39)
                               {
-                                objc_enumerationMutation(v37);
+                                objc_enumerationMutation(list4);
                               }
 
                               sub_1006E8724(*(*(&v78 + 1) + 8 * i), buf);
@@ -5155,7 +5155,7 @@ LABEL_42:
                               }
                             }
 
-                            v38 = [v37 countByEnumeratingWithState:&v78 objects:v92 count:16];
+                            v38 = [list4 countByEnumeratingWithState:&v78 objects:v92 count:16];
                           }
 
                           while (v38);
@@ -5163,46 +5163,46 @@ LABEL_42:
 
                         memset(&v77, 0, sizeof(v77));
                         sub_10000501C(&v77, "");
-                        v41 = [v13 content];
-                        v42 = v41 == 0;
+                        content = [infoCopy content];
+                        v42 = content == 0;
 
                         if (!v42)
                         {
-                          v43 = [v13 content];
-                          v44 = v43;
-                          sub_100016890(&v77, [v43 UTF8String]);
+                          content2 = [infoCopy content];
+                          v44 = content2;
+                          sub_100016890(&v77, [content2 UTF8String]);
                         }
 
                         memset(&v76, 0, sizeof(v76));
                         sub_10000501C(&v76, "");
-                        v45 = [v13 freeBodyText];
-                        v46 = v45 == 0;
+                        freeBodyText = [infoCopy freeBodyText];
+                        v46 = freeBodyText == 0;
 
                         if (!v46)
                         {
-                          v47 = [v13 freeBodyText];
-                          v48 = v47;
-                          sub_100016890(&v76, [v47 UTF8String]);
+                          freeBodyText2 = [infoCopy freeBodyText];
+                          v48 = freeBodyText2;
+                          sub_100016890(&v76, [freeBodyText2 UTF8String]);
                         }
 
-                        v49 = [v13 spamType];
+                        spamType2 = [infoCopy spamType];
                         *v90 = 0u;
                         v91 = 0u;
-                        if (v49 + 1 >= 4)
+                        if (spamType2 + 1 >= 4)
                         {
                           v50 = 3;
                         }
 
                         else
                         {
-                          v50 = v49;
+                          v50 = spamType2;
                         }
 
                         v89 = 0uLL;
                         memset(v88, 0, sizeof(v88));
                         memset(buf, 0, sizeof(buf));
-                        buf[0] = [v13 isChatbot];
-                        v51 = [v12 uri];
+                        buf[0] = [infoCopy isChatbot];
+                        v51 = [destinationCopy uri];
                         v52 = v51;
                         sub_10000501C(&buf[8], [v51 UTF8String]);
                         buf[32] = 0;
@@ -5237,9 +5237,9 @@ LABEL_42:
                         v74[0] = 0;
                         v74[1] = 0;
                         v75 = 0;
-                        v61 = [v68 uuid];
-                        v62 = v61;
-                        sub_10000501C(v74, [v61 UTF8String]);
+                        uuid2 = [dCopy uuid];
+                        v62 = uuid2;
+                        sub_10000501C(v74, [uuid2 UTF8String]);
 
                         v73 = 0;
                         memset(v71, 0, sizeof(v71));
@@ -5259,12 +5259,12 @@ LABEL_42:
                           }
 
                           v65 = sub_100A99330(&v73);
-                          v14[2](v14, v65);
+                          completionCopy[2](completionCopy, v65);
                         }
 
                         else
                         {
-                          v14[2](v14, 0);
+                          completionCopy[2](completionCopy, 0);
                         }
 
                         if (SHIBYTE(v75) < 0)
@@ -5321,7 +5321,7 @@ LABEL_42:
                     *buf = -1;
                     buf[4] = 1;
                     v59 = sub_100A99330(buf);
-                    v14[2](v14, v59);
+                    completionCopy[2](completionCopy, v59);
 
 LABEL_81:
                     if (v86)
@@ -5353,7 +5353,7 @@ LABEL_41:
     *buf = 4;
     buf[4] = 1;
     v55 = sub_100A99330(buf);
-    v14[2](v14, v55);
+    completionCopy[2](completionCopy, v55);
 
     goto LABEL_44;
   }
@@ -5370,33 +5370,33 @@ LABEL_41:
 LABEL_44:
 }
 
-- (void)decodeSuggestionsBase64:(id)a3 withBase64String:(id)a4 completion:(id)a5
+- (void)decodeSuggestionsBase64:(id)base64 withBase64String:(id)string completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  base64Copy = base64;
+  stringCopy = string;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9 && ([v9 base64String], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    if (base64Copy && stringCopy && ([stringCopy base64String], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
       [(CTXPCClientHandler *)self getLogContext];
       v12 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 slotID];
+        [base64Copy slotID];
         v13 = CTSubscriptionSlotAsString();
-        v14 = [v9 base64String];
+        base64String = [stringCopy base64String];
         *buf = 136315651;
         *&buf[4] = v13;
         *&buf[12] = 2160;
         *&buf[14] = 1752392040;
         *&buf[22] = 2117;
-        *&buf[24] = v14;
+        *&buf[24] = base64String;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] decodeSuggestionsBase64: [slot: %s, link: %{sensitive, mask.hash}@]", buf, 0x20u);
       }
 
-      v15 = sub_100018A64([v8 slotID]);
+      v15 = sub_100018A64([base64Copy slotID]);
       v29 = 0;
       v30 = 0;
       sub_1006E5E0C(self, &v29);
@@ -5405,9 +5405,9 @@ LABEL_44:
       {
         v32 = 0;
         memset(buf, 0, sizeof(buf));
-        v17 = [v9 base64String];
-        v18 = v17;
-        sub_10000501C(__p, [v17 UTF8String]);
+        base64String2 = [stringCopy base64String];
+        v18 = base64String2;
+        sub_10000501C(__p, [base64String2 UTF8String]);
         (*(*v16 + 152))(buf, v16, v15, __p);
         if (v28 < 0)
         {
@@ -5423,7 +5423,7 @@ LABEL_44:
           }
 
           v20 = [v19 initWithReflection:buf];
-          v10[2](v10, 0, v20);
+          completionCopy[2](completionCopy, 0, v20);
         }
 
         else
@@ -5431,7 +5431,7 @@ LABEL_44:
           LODWORD(__p[0]) = 6;
           BYTE4(__p[0]) = 1;
           v26 = sub_100A99330(__p);
-          (v10)[2](v10, v26, 0);
+          (completionCopy)[2](completionCopy, v26, 0);
         }
 
         if (v32 == 1 && buf[24] == 1)
@@ -5454,7 +5454,7 @@ LABEL_44:
         *buf = 5;
         buf[4] = 1;
         v25 = sub_100A99330(buf);
-        (v10)[2](v10, v25, 0);
+        (completionCopy)[2](completionCopy, v25, 0);
       }
 
       if (v30)
@@ -5476,7 +5476,7 @@ LABEL_44:
       *buf = 4;
       buf[4] = 1;
       v22 = sub_100A99330(buf);
-      (v10)[2](v10, v22, 0);
+      (completionCopy)[2](completionCopy, v22, 0);
     }
   }
 
@@ -5492,61 +5492,61 @@ LABEL_44:
   }
 }
 
-- (void)sendTextMessage:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withMessage:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)sendTextMessage:(id)message toGroupDestination:(id)destination withMessageID:(id)d withMessage:(id)withMessage withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  messageCopy = message;
+  destinationCopy = destination;
+  dCopy = d;
+  withMessageCopy = withMessage;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15 && v16)
+    if (messageCopy && destinationCopy && dCopy)
     {
-      v20 = [v16 uuid];
-      v21 = v20;
-      if (v17 && v20)
+      uuid = [dCopy uuid];
+      v21 = uuid;
+      if (withMessageCopy && uuid)
       {
-        v22 = [v17 content];
+        content = [withMessageCopy content];
 
-        if (v22)
+        if (content)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v23 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            [v14 slotID];
+            [messageCopy slotID];
             v38 = CTSubscriptionSlotAsString();
             v24 = "true";
-            if (!v18)
+            if (!securityCopy)
             {
               v24 = "false";
             }
 
-            v40 = [v15 focus];
-            v39 = [v15 conversationID];
-            v25 = [v16 uuid];
-            v26 = [v17 content];
+            focus = [destinationCopy focus];
+            conversationID = [destinationCopy conversationID];
+            uuid2 = [dCopy uuid];
+            content2 = [withMessageCopy content];
             *buf = 136316675;
             *&buf[4] = v38;
             *&buf[12] = 2080;
             *&buf[14] = v37;
             v63 = 2113;
-            v64 = v40;
+            v64 = focus;
             v65 = 2114;
-            v66 = v39;
+            v66 = conversationID;
             v67 = 2114;
-            v68 = v25;
+            v68 = uuid2;
             v69 = 2160;
             v70 = 1752392040;
             v71 = 2117;
-            v72 = v26;
+            v72 = content2;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendTextMessage: [slot: %s, security: %s, to.focus: %{private}@, to.conversationID: %{public}@, messageIdentifier: %{public}@, message: %{sensitive, mask.hash}@]", buf, 0x48u);
           }
 
-          v27 = sub_100018A64([v14 slotID]);
+          v27 = sub_100018A64([messageCopy slotID]);
           v60 = 0;
           v61 = 0;
           sub_1006E5FC4(self, &v60);
@@ -5555,15 +5555,15 @@ LABEL_44:
           {
             memset(v58, 0, sizeof(v58));
             v59 = 1;
-            sub_1006F2118(v15, v52);
-            sub_1006E8724(v16, v47);
-            v41 = [v17 content];
-            sub_10000501C(__p, [v41 UTF8String]);
+            sub_1006F2118(destinationCopy, v52);
+            sub_1006E8724(dCopy, v47);
+            content3 = [withMessageCopy content];
+            sub_10000501C(__p, [content3 UTF8String]);
             v44 = 0;
             v45 = 0;
-            v29 = [v17 metaData];
-            sub_1006EBDBC(v29, v46);
-            buf[0] = v18 != 0;
+            metaData = [withMessageCopy metaData];
+            sub_1006EBDBC(metaData, v46);
+            buf[0] = securityCopy != 0;
             buf[8] = 0;
             v73 = 0;
             v30 = (*(*v28 + 32))(v28, v58, v27, v52, v47, __p, buf);
@@ -5620,12 +5620,12 @@ LABEL_44:
               *buf = v30;
               buf[4] = 1;
               v36 = sub_100A99330(buf);
-              v19[2](v19, v36);
+              completionCopy[2](completionCopy, v36);
             }
 
             else
             {
-              v19[2](v19, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -5642,7 +5642,7 @@ LABEL_44:
             *buf = 5;
             buf[4] = 1;
             v35 = sub_100A99330(buf);
-            v19[2](v19, v35);
+            completionCopy[2](completionCopy, v35);
           }
 
           if (v61)
@@ -5670,7 +5670,7 @@ LABEL_44:
     *buf = 4;
     buf[4] = 1;
     v33 = sub_100A99330(buf);
-    v19[2](v19, v33);
+    completionCopy[2](completionCopy, v33);
   }
 
   else
@@ -5687,80 +5687,80 @@ LABEL_44:
 LABEL_40:
 }
 
-- (void)sendGroupComposingIndicator:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withIndication:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)sendGroupComposingIndicator:(id)indicator toGroupDestination:(id)destination withMessageID:(id)d withIndication:(id)indication withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v55 = a7;
-  v18 = a8;
-  if (v18)
+  indicatorCopy = indicator;
+  destinationCopy = destination;
+  dCopy = d;
+  indicationCopy = indication;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15 && v16 && ([v16 uuid], v19 = objc_claimAutoreleasedReturnValue(), v19, v17) && v19)
+    if (indicatorCopy && destinationCopy && dCopy && ([dCopy uuid], v19 = objc_claimAutoreleasedReturnValue(), v19, indicationCopy) && v19)
     {
       [(CTXPCClientHandler *)self getLogContext];
-      v20 = *&buf[8];
+      lastActive2 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
-      log = v20;
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      log = lastActive2;
+      if (os_log_type_enabled(lastActive2, OS_LOG_TYPE_DEFAULT))
       {
-        [v14 slotID];
+        [indicatorCopy slotID];
         v45 = CTSubscriptionSlotAsString();
         v21 = "true";
-        if (!v55)
+        if (!securityCopy)
         {
           v21 = "false";
         }
 
         v44 = v21;
-        v48 = [v15 focus];
-        if (v48)
+        focus = [destinationCopy focus];
+        if (focus)
         {
-          v47 = [v15 focus];
+          focus2 = [destinationCopy focus];
         }
 
         else
         {
-          v47 = &stru_101F6AFB8;
+          focus2 = &stru_101F6AFB8;
         }
 
-        v49 = [v15 conversationID];
-        if (v49)
+        conversationID = [destinationCopy conversationID];
+        if (conversationID)
         {
-          v46 = [v15 conversationID];
-        }
-
-        else
-        {
-          v46 = &stru_101F6AFB8;
-        }
-
-        v50 = [v16 uuid];
-        v51 = [v17 refreshTime];
-        if (v51)
-        {
-          v42 = [v17 refreshTime];
-          v43 = [v42 longValue];
+          conversationID2 = [destinationCopy conversationID];
         }
 
         else
         {
-          v43 = -1;
+          conversationID2 = &stru_101F6AFB8;
         }
 
-        v25 = [v17 active];
-        v26 = [v17 lastActive];
-        if (v26)
+        uuid = [dCopy uuid];
+        refreshTime = [indicationCopy refreshTime];
+        if (refreshTime)
         {
-          v20 = [v17 lastActive];
-          v27 = v20;
-          v28 = [v20 UTF8String];
+          refreshTime2 = [indicationCopy refreshTime];
+          longValue = [refreshTime2 longValue];
         }
 
         else
         {
-          v28 = "";
+          longValue = -1;
+        }
+
+        active = [indicationCopy active];
+        lastActive = [indicationCopy lastActive];
+        if (lastActive)
+        {
+          lastActive2 = [indicationCopy lastActive];
+          v27 = lastActive2;
+          uTF8String = [lastActive2 UTF8String];
+        }
+
+        else
+        {
+          uTF8String = "";
         }
 
         *buf = 136316931;
@@ -5768,33 +5768,33 @@ LABEL_40:
         *&buf[12] = 2080;
         *&buf[14] = v44;
         *&buf[22] = 2114;
-        *&buf[24] = v47;
+        *&buf[24] = focus2;
         *&buf[32] = 2114;
-        *&buf[34] = v46;
+        *&buf[34] = conversationID2;
         *&buf[42] = 2113;
-        *&buf[44] = v50;
+        *&buf[44] = uuid;
         *&buf[52] = 2048;
-        *&buf[54] = v43;
+        *&buf[54] = longValue;
         *&buf[62] = 1024;
-        LODWORD(v77) = v25;
+        LODWORD(v77) = active;
         WORD2(v77) = 2081;
-        *(&v77 + 6) = v28;
+        *(&v77 + 6) = uTF8String;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendGroupComposingIndicator: [slot: %s, security: %s, to.focus: %{public}@, to.conversationID: %{public}@, messageIdentifier: %{private}@, ind.refreshTime: %ld, ind.active: %d, ind.lastActive: %{private}s]", buf, 0x4Eu);
-        if (v26)
+        if (lastActive)
         {
         }
 
-        if (v51)
+        if (refreshTime)
         {
         }
 
-        if (v49)
+        if (conversationID)
         {
         }
 
-        v20 = v48 == 0;
+        lastActive2 = focus == 0;
 
-        if (v48)
+        if (focus)
         {
         }
       }
@@ -5805,65 +5805,65 @@ LABEL_40:
       v29 = v69;
       if (v69)
       {
-        v52 = sub_100018A64([v14 slotID]);
+        v52 = sub_100018A64([indicatorCopy slotID]);
         v80 = 0;
         memset(v79, 0, sizeof(v79));
         v77 = 0u;
         v78 = 0u;
         memset(buf, 0, sizeof(buf));
-        loga = [v17 refreshTime];
+        loga = [indicationCopy refreshTime];
         if (loga)
         {
-          v49 = [v17 refreshTime];
-          v30 = [v49 longValue];
+          conversationID = [indicationCopy refreshTime];
+          longValue2 = [conversationID longValue];
         }
 
         else
         {
-          v30 = -1;
+          longValue2 = -1;
         }
 
-        *buf = v30;
+        *buf = longValue2;
         buf[8] = 1;
-        buf[16] = [v17 active];
-        v33 = [v17 lastActive];
-        if (v33)
+        buf[16] = [indicationCopy active];
+        lastActive3 = [indicationCopy lastActive];
+        if (lastActive3)
         {
-          v50 = [v17 lastActive];
-          v34 = v50;
-          v35 = [v50 UTF8String];
+          uuid = [indicationCopy lastActive];
+          v34 = uuid;
+          uTF8String2 = [uuid UTF8String];
         }
 
         else
         {
-          v35 = "";
+          uTF8String2 = "";
         }
 
-        sub_10000501C(&buf[24], v35);
+        sub_10000501C(&buf[24], uTF8String2);
         buf[48] = 1;
-        v36 = [v17 contentType];
-        if (v36)
+        contentType = [indicationCopy contentType];
+        if (contentType)
         {
-          v20 = [v17 contentType];
-          v37 = v20;
-          v38 = [v20 UTF8String];
+          lastActive2 = [indicationCopy contentType];
+          v37 = lastActive2;
+          uTF8String3 = [lastActive2 UTF8String];
         }
 
         else
         {
-          v38 = "";
+          uTF8String3 = "";
         }
 
-        sub_10000501C(&buf[56], v38);
+        sub_10000501C(&buf[56], uTF8String3);
         LOBYTE(v78) = 1;
         BYTE8(v78) = 0;
         v79[0] = 0;
         LOBYTE(v80) = 0;
-        if (v36)
+        if (contentType)
         {
         }
 
-        if (v33)
+        if (lastActive3)
         {
         }
 
@@ -5873,9 +5873,9 @@ LABEL_40:
 
         memset(v67, 0, sizeof(v67));
         v68 = 1;
-        sub_1006F2118(v15, v61);
-        sub_1006E8724(v16, v56);
-        LOBYTE(v71) = v55 != 0;
+        sub_1006F2118(destinationCopy, v61);
+        sub_1006E8724(dCopy, v56);
+        LOBYTE(v71) = securityCopy != 0;
         LOBYTE(v73) = 0;
         v75 = 0;
         v39 = (*(*v29 + 96))(v29, v67, v52, v61, v56, buf, &v71);
@@ -5923,12 +5923,12 @@ LABEL_40:
           v71 = v39;
           v72 = 1;
           v41 = sub_100A99330(&v71);
-          v18[2](v18, v41);
+          completionCopy[2](completionCopy, v41);
         }
 
         else
         {
-          v18[2](v18, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         if (v80 == 1)
@@ -5960,7 +5960,7 @@ LABEL_40:
         *buf = 5;
         buf[4] = 1;
         v32 = sub_100A99330(buf);
-        v18[2](v18, v32);
+        completionCopy[2](completionCopy, v32);
       }
 
       if (v70)
@@ -5982,7 +5982,7 @@ LABEL_40:
       *buf = 4;
       buf[4] = 1;
       v23 = sub_100A99330(buf);
-      v18[2](v18, v23);
+      completionCopy[2](completionCopy, v23);
     }
   }
 
@@ -5998,14 +5998,14 @@ LABEL_40:
   }
 }
 
-- (void)sendGroupComposingIndicator:(id)a3 toGroup:(id)a4 withMessageID:(id)a5 withIndication:(id)a6 completion:(id)a7
+- (void)sendGroupComposingIndicator:(id)indicator toGroup:(id)group withMessageID:(id)d withIndication:(id)indication completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  indicatorCopy = indicator;
+  groupCopy = group;
+  dCopy = d;
+  indicationCopy = indication;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v17 = v23;
@@ -6027,7 +6027,7 @@ LABEL_40:
     v21 = 5;
     v22 = 1;
     v19 = sub_100A99330(&v21);
-    v16[2](v16, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   else
@@ -6042,74 +6042,74 @@ LABEL_40:
   }
 }
 
-- (void)sendGeolocationMessage:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withGeoPush:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)sendGeolocationMessage:(id)message toGroupDestination:(id)destination withMessageID:(id)d withGeoPush:(id)push withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v66 = a4;
-  v15 = a5;
-  v16 = a6;
-  v65 = a7;
-  v17 = a8;
-  if (v17)
+  messageCopy = message;
+  destinationCopy = destination;
+  dCopy = d;
+  pushCopy = push;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v66 && v15 && ([v15 uuid], v18 = objc_claimAutoreleasedReturnValue(), v18, v16) && v18)
+    if (messageCopy && destinationCopy && dCopy && ([dCopy uuid], v18 = objc_claimAutoreleasedReturnValue(), v18, pushCopy) && v18)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v19 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        [v14 slotID];
+        [messageCopy slotID];
         v20 = CTSubscriptionSlotAsString();
         v21 = "true";
-        if (!v65)
+        if (!securityCopy)
         {
           v21 = "false";
         }
 
         v55 = v21;
-        v56 = [v66 focus];
-        if (v56)
+        focus = [destinationCopy focus];
+        if (focus)
         {
-          v58 = [v66 focus];
+          focus2 = [destinationCopy focus];
         }
 
         else
         {
-          v58 = &stru_101F6AFB8;
+          focus2 = &stru_101F6AFB8;
         }
 
-        v59 = [v66 conversationID];
-        if (v59)
+        conversationID = [destinationCopy conversationID];
+        if (conversationID)
         {
-          v57 = [v66 conversationID];
+          conversationID2 = [destinationCopy conversationID];
         }
 
         else
         {
-          v57 = &stru_101F6AFB8;
+          conversationID2 = &stru_101F6AFB8;
         }
 
-        v63 = [v15 uuid];
+        uuid = [dCopy uuid];
         v54 = v20;
-        [v16 coordinates];
+        [pushCopy coordinates];
         v61 = v26 = 0x406FE00000000000;
         if (v61)
         {
-          v50 = [v16 coordinates];
-          v52 = [v50 latitude];
-          if (v52)
+          coordinates = [pushCopy coordinates];
+          latitude = [coordinates latitude];
+          if (latitude)
           {
-            v47 = [v16 coordinates];
-            v51 = [v47 latitude];
-            [v51 doubleValue];
+            coordinates2 = [pushCopy coordinates];
+            latitude2 = [coordinates2 latitude];
+            [latitude2 doubleValue];
             v26 = v27;
             v53 = 1;
           }
 
           else
           {
-            v52 = 0;
+            latitude = 0;
             v53 = 0;
           }
         }
@@ -6119,26 +6119,26 @@ LABEL_40:
           v53 = 0;
         }
 
-        v28 = [v16 coordinates];
+        coordinates3 = [pushCopy coordinates];
         v29 = 0x406FE00000000000;
-        if (v28)
+        if (coordinates3)
         {
-          v49 = [v16 coordinates];
-          v30 = [v49 longitude];
-          if (v30)
+          coordinates4 = [pushCopy coordinates];
+          longitude = [coordinates4 longitude];
+          if (longitude)
           {
-            v48 = v30;
-            v46 = [v16 coordinates];
-            v45 = [v46 longitude];
-            [v45 doubleValue];
+            v48 = longitude;
+            coordinates5 = [pushCopy coordinates];
+            longitude2 = [coordinates5 longitude];
+            [longitude2 doubleValue];
             v29 = v31;
-            v32 = v14;
+            v32 = messageCopy;
             v33 = 1;
           }
 
           else
           {
-            v32 = v14;
+            v32 = messageCopy;
             v48 = 0;
             v33 = 0;
           }
@@ -6146,7 +6146,7 @@ LABEL_40:
 
         else
         {
-          v32 = v14;
+          v32 = messageCopy;
           v33 = 0;
         }
 
@@ -6155,11 +6155,11 @@ LABEL_40:
         *&buf[12] = 2080;
         *&buf[14] = v55;
         v90 = 2114;
-        v91 = v58;
+        v91 = focus2;
         v92 = 2114;
-        v93 = v57;
+        v93 = conversationID2;
         v94 = 2114;
-        v95 = v63;
+        v95 = uuid;
         v96 = 2048;
         v97 = v26;
         v98 = 2048;
@@ -6169,7 +6169,7 @@ LABEL_40:
         {
         }
 
-        if (v28)
+        if (coordinates3)
         {
         }
 
@@ -6181,15 +6181,15 @@ LABEL_40:
         {
         }
 
-        if (v59)
+        if (conversationID)
         {
         }
 
-        if (v56)
+        if (focus)
         {
         }
 
-        v14 = v32;
+        messageCopy = v32;
       }
 
       v87 = 0;
@@ -6198,32 +6198,32 @@ LABEL_40:
       v34 = v87;
       if (v87)
       {
-        v60 = sub_100018A64([v14 slotID]);
+        v60 = sub_100018A64([messageCopy slotID]);
         v85 = 0u;
         v86 = 0u;
         v83 = 0u;
         v84 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v62 = [v16 coordinates];
-        v64 = [v62 longitude];
-        [v64 doubleValue];
+        coordinates6 = [pushCopy coordinates];
+        longitude3 = [coordinates6 longitude];
+        [longitude3 doubleValue];
         v80[0] = v35;
-        v36 = [v16 coordinates];
-        v37 = [v36 latitude];
-        v22 = v14;
-        [v37 doubleValue];
+        coordinates7 = [pushCopy coordinates];
+        latitude3 = [coordinates7 latitude];
+        v22 = messageCopy;
+        [latitude3 doubleValue];
         v80[1] = v38;
         BYTE8(v82) = 0;
         BYTE8(v84) = 0;
-        v39 = [v16 metaData];
-        sub_1006EBDBC(v39, &v85);
+        metaData = [pushCopy metaData];
+        sub_1006EBDBC(metaData, &v85);
 
         memset(v78, 0, sizeof(v78));
         v79 = 1;
-        sub_1006F2118(v66, v72);
-        sub_1006E8724(v15, v67);
-        buf[0] = v65 != 0;
+        sub_1006F2118(destinationCopy, v72);
+        sub_1006E8724(dCopy, v67);
+        buf[0] = securityCopy != 0;
         buf[8] = 0;
         v100 = 0;
         v40 = (*(*v34 + 64))(v34, v78, v60, v72, v67, v80, buf);
@@ -6271,12 +6271,12 @@ LABEL_40:
           *buf = v40;
           buf[4] = 1;
           v44 = sub_100A99330(buf);
-          v17[2](v17, v44);
+          completionCopy[2](completionCopy, v44);
         }
 
         else
         {
-          v17[2](v17, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         if (BYTE8(v86) == 1)
@@ -6299,7 +6299,7 @@ LABEL_40:
 
       else
       {
-        v22 = v14;
+        v22 = messageCopy;
         [(CTXPCClientHandler *)self getLogContext];
         v41 = *&buf[8];
         ctu::OsLogContext::~OsLogContext(buf);
@@ -6311,7 +6311,7 @@ LABEL_40:
         *buf = 5;
         buf[4] = 1;
         v42 = sub_100A99330(buf);
-        v17[2](v17, v42);
+        completionCopy[2](completionCopy, v42);
       }
 
       if (v88)
@@ -6322,7 +6322,7 @@ LABEL_40:
 
     else
     {
-      v22 = v14;
+      v22 = messageCopy;
       [(CTXPCClientHandler *)self getLogContext];
       v23 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
@@ -6334,13 +6334,13 @@ LABEL_40:
       *buf = 4;
       buf[4] = 1;
       v24 = sub_100A99330(buf);
-      v17[2](v17, v24);
+      completionCopy[2](completionCopy, v24);
     }
   }
 
   else
   {
-    v22 = v14;
+    v22 = messageCopy;
     [(CTXPCClientHandler *)self getLogContext];
     v25 = *&buf[8];
     ctu::OsLogContext::~OsLogContext(buf);
@@ -6351,72 +6351,72 @@ LABEL_40:
   }
 }
 
-- (void)sendFileTransferMessage:(id)a3 toGroupDestination:(id)a4 withMessageID:(id)a5 withFileInformation:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)sendFileTransferMessage:(id)message toGroupDestination:(id)destination withMessageID:(id)d withFileInformation:(id)information withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v41 = a7;
-  v18 = a8;
-  if (v18)
+  messageCopy = message;
+  destinationCopy = destination;
+  dCopy = d;
+  informationCopy = information;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15 && v16 && ([v16 uuid], v19 = objc_claimAutoreleasedReturnValue(), v19, v17) && v19)
+    if (messageCopy && destinationCopy && dCopy && ([dCopy uuid], v19 = objc_claimAutoreleasedReturnValue(), v19, informationCopy) && v19)
     {
-      v40 = v14;
+      v40 = messageCopy;
       [(CTXPCClientHandler *)self getLogContext];
       v20 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        [v14 slotID];
+        [messageCopy slotID];
         v37 = CTSubscriptionSlotAsString();
         v21 = "true";
-        if (!v41)
+        if (!securityCopy)
         {
           v21 = "false";
         }
 
-        v38 = [v15 focus];
-        if (v38)
+        focus = [destinationCopy focus];
+        if (focus)
         {
-          v39 = [v15 focus];
+          focus2 = [destinationCopy focus];
         }
 
         else
         {
-          v39 = &stru_101F6AFB8;
+          focus2 = &stru_101F6AFB8;
         }
 
-        v25 = [v15 conversationID];
-        if (v25)
+        conversationID = [destinationCopy conversationID];
+        if (conversationID)
         {
-          v26 = [v15 conversationID];
+          conversationID2 = [destinationCopy conversationID];
         }
 
         else
         {
-          v26 = &stru_101F6AFB8;
+          conversationID2 = &stru_101F6AFB8;
         }
 
-        v27 = [v16 uuid];
+        uuid = [dCopy uuid];
         *buf = 136316162;
         *&buf[4] = v37;
         *&buf[12] = 2080;
         *&buf[14] = v36;
         v83 = 2114;
-        v84 = v39;
+        v84 = focus2;
         *v85 = 2114;
-        *&v85[2] = v26;
+        *&v85[2] = conversationID2;
         v86 = 2114;
-        v87 = v27;
+        v87 = uuid;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendFileTransferMessage: [slot: %s, security: %s, to.focus: %{public}@, to.conversationID: %{public}@, identifier: %{public}@]", buf, 0x34u);
 
-        if (v25)
+        if (conversationID)
         {
         }
 
-        if (v38)
+        if (focus)
         {
         }
       }
@@ -6425,24 +6425,24 @@ LABEL_40:
       v76 = 0;
       sub_1006E5FC4(self, &v76);
       v28 = v76;
-      v14 = v40;
+      messageCopy = v40;
       if (v76)
       {
         v29 = sub_100018A64([v40 slotID]);
         bzero(v55, 0x208uLL);
-        sub_1006EB6AC(v17, v55);
+        sub_1006EB6AC(informationCopy, v55);
         memset(v53, 0, sizeof(v53));
         v54 = 1;
-        sub_1006F2118(v15, v47);
-        sub_1006E8724(v16, v42);
+        sub_1006F2118(destinationCopy, v47);
+        sub_1006E8724(dCopy, v42);
         sub_1001907C0(buf, v55);
         sub_100190C40(v103, v74);
         sub_100190324(v104, v75);
         v105 = 0;
         v106 = 0;
-        v30 = [v17 metaData];
-        sub_1006EBDBC(v30, v107);
-        LOBYTE(v78) = v41 != 0;
+        metaData = [informationCopy metaData];
+        sub_1006EBDBC(metaData, v107);
+        LOBYTE(v78) = securityCopy != 0;
         v79 = 0;
         v81 = 0;
         v31 = (*(*v28 + 48))(v28, v53, v29, v47, v42, buf, &v78);
@@ -6470,7 +6470,7 @@ LABEL_40:
         }
 
         sub_100190D9C(v103);
-        v14 = v40;
+        messageCopy = v40;
         if (v102 == 1)
         {
           if (v101 == 1)
@@ -6555,12 +6555,12 @@ LABEL_40:
           *buf = v31;
           buf[4] = 1;
           v35 = sub_100A99330(buf);
-          v18[2](v18, v35);
+          completionCopy[2](completionCopy, v35);
         }
 
         else
         {
-          v18[2](v18, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         if (v75[24] == 1)
@@ -6629,7 +6629,7 @@ LABEL_40:
         *buf = 5;
         buf[4] = 1;
         v33 = sub_100A99330(buf);
-        v18[2](v18, v33);
+        completionCopy[2](completionCopy, v33);
       }
 
       if (v77)
@@ -6651,7 +6651,7 @@ LABEL_40:
       *buf = 4;
       buf[4] = 1;
       v23 = sub_100A99330(buf);
-      v18[2](v18, v23);
+      completionCopy[2](completionCopy, v23);
     }
   }
 
@@ -6667,93 +6667,93 @@ LABEL_40:
   }
 }
 
-- (void)sendGroupDispositionNotificationMessage:(id)a3 toGroup:(id)a4 to:(id)a5 withMessageID:(id)a6 withDisposition:(int64_t)a7 forMessageID:(id)a8 withSecurity:(id)a9 completion:(id)a10
+- (void)sendGroupDispositionNotificationMessage:(id)message toGroup:(id)group to:(id)to withMessageID:(id)d withDisposition:(int64_t)disposition forMessageID:(id)iD withSecurity:(id)security completion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v49 = a8;
-  v48 = a9;
-  v20 = a10;
-  if (v20)
+  messageCopy = message;
+  groupCopy = group;
+  toCopy = to;
+  dCopy = d;
+  iDCopy = iD;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v16 && v17 && v18)
+    if (messageCopy && groupCopy && toCopy)
     {
-      v21 = [v18 uri];
+      v21 = [toCopy uri];
       v22 = v21;
-      if (v19 && v21)
+      if (dCopy && v21)
       {
-        v23 = [v19 uuid];
-        v24 = v23;
-        if (v49 && v23)
+        uuid = [dCopy uuid];
+        v24 = uuid;
+        if (iDCopy && uuid)
         {
-          v25 = [v49 uuid];
+          uuid2 = [iDCopy uuid];
 
-          if (v25)
+          if (uuid2)
           {
             [(CTXPCClientHandler *)self getLogContext];
             v26 = *&buf[8];
             ctu::OsLogContext::~OsLogContext(buf);
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              [v16 slotID];
+              [messageCopy slotID];
               v42 = CTSubscriptionSlotAsString();
               v27 = "true";
-              if (!v48)
+              if (!securityCopy)
               {
                 v27 = "false";
               }
 
               v41 = v27;
-              v45 = [v17 focus];
-              if (v45)
+              focus = [groupCopy focus];
+              if (focus)
               {
-                v44 = [v17 focus];
+                focus2 = [groupCopy focus];
               }
 
               else
               {
-                v44 = &stru_101F6AFB8;
+                focus2 = &stru_101F6AFB8;
               }
 
-              v47 = [v17 conversationID];
-              if (v47)
+              conversationID = [groupCopy conversationID];
+              if (conversationID)
               {
-                v43 = [v17 conversationID];
+                conversationID2 = [groupCopy conversationID];
               }
 
               else
               {
-                v43 = &stru_101F6AFB8;
+                conversationID2 = &stru_101F6AFB8;
               }
 
-              v46 = [v18 uri];
-              v31 = [v19 uuid];
-              v32 = [v49 uuid];
+              v46 = [toCopy uri];
+              uuid3 = [dCopy uuid];
+              uuid4 = [iDCopy uuid];
               *buf = 136316930;
               *&buf[4] = v42;
               *&buf[12] = 2080;
               *&buf[14] = v41;
               v80 = 2114;
-              v81 = v44;
+              v81 = focus2;
               v82 = 2114;
-              v83 = v43;
+              v83 = conversationID2;
               v84 = 2112;
               v85 = v46;
               v86 = 2114;
-              v87 = v31;
+              v87 = uuid3;
               v88 = 2048;
-              v89 = a7;
+              dispositionCopy = disposition;
               v90 = 2114;
-              v91 = v32;
+              v91 = uuid4;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] sendGroupDispositionNotificationMessage: [slot: %s, security: %s, group.focus: %{public}@, group.conversationID: %{public}@, to: %@, identifier: %{public}@, type: %ld, forMessageID: %{public}@]", buf, 0x52u);
 
-              if (v47)
+              if (conversationID)
               {
               }
 
-              if (v45)
+              if (focus)
               {
               }
             }
@@ -6764,9 +6764,9 @@ LABEL_40:
             v33 = v77;
             if (v77)
             {
-              v34 = sub_100018A64([v16 slotID]);
+              v34 = sub_100018A64([messageCopy slotID]);
               v76 = 0;
-              if (a7 == 2)
+              if (disposition == 2)
               {
                 v35 = 2;
               }
@@ -6778,7 +6778,7 @@ LABEL_40:
 
               v74 = 0u;
               v75 = 0u;
-              if (!a7)
+              if (!disposition)
               {
                 v35 = 0;
               }
@@ -6788,13 +6788,13 @@ LABEL_40:
               v70 = 0uLL;
               v71 = 0uLL;
               LODWORD(v70) = v35;
-              sub_1006E8724(v49, &v70 + 8);
+              sub_1006E8724(iDCopy, &v70 + 8);
               memset(v68, 0, sizeof(v68));
               v69 = 1;
-              sub_1006F2118(v17, v62);
-              sub_1006E72AC(v18, v55);
-              sub_1006E8724(v19, v50);
-              buf[0] = v48 != 0;
+              sub_1006F2118(groupCopy, v62);
+              sub_1006E72AC(toCopy, v55);
+              sub_1006E8724(dCopy, v50);
+              buf[0] = securityCopy != 0;
               buf[8] = 0;
               v92 = 0;
               v36 = (*(*v33 + 80))(v33, v68, v34, v62, v55, v50, &v70, buf);
@@ -6863,12 +6863,12 @@ LABEL_40:
                 *buf = v36;
                 buf[4] = 1;
                 v40 = sub_100A99330(buf);
-                v20[2](v20, v40);
+                completionCopy[2](completionCopy, v40);
               }
 
               else
               {
-                v20[2](v20, 0);
+                completionCopy[2](completionCopy, 0);
               }
 
               if (v76 == 1 && SHIBYTE(v74) < 0)
@@ -6895,7 +6895,7 @@ LABEL_40:
               *buf = 5;
               buf[4] = 1;
               v38 = sub_100A99330(buf);
-              v20[2](v20, v38);
+              completionCopy[2](completionCopy, v38);
             }
 
             if (v78)
@@ -6923,7 +6923,7 @@ LABEL_19:
     *buf = 4;
     buf[4] = 1;
     v30 = sub_100A99330(buf);
-    v20[2](v20, v30);
+    completionCopy[2](completionCopy, v30);
 
     goto LABEL_22;
   }
@@ -6939,86 +6939,86 @@ LABEL_19:
 LABEL_22:
 }
 
-- (void)addParticipants:(id)a3 toGroupChat:(id)a4 withParticipantsToAdd:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)addParticipants:(id)participants toGroupChat:(id)chat withParticipantsToAdd:(id)add withOperationID:(id)d withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  participantsCopy = participants;
+  chatCopy = chat;
+  addCopy = add;
+  dCopy = d;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15 && v16)
+    if (participantsCopy && chatCopy && addCopy)
     {
-      v20 = [v16 memberList];
-      v21 = v20;
-      if (v17 && v20)
+      memberList = [addCopy memberList];
+      v21 = memberList;
+      if (dCopy && memberList)
       {
-        v22 = [v17 uuid];
+        uuid = [dCopy uuid];
 
-        if (v22)
+        if (uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v23 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            [v14 slotID];
+            [participantsCopy slotID];
             v24 = CTSubscriptionSlotAsString();
             v25 = "true";
-            if (!v18)
+            if (!securityCopy)
             {
               v25 = "false";
             }
 
             v44 = v25;
-            v45 = [v15 focus];
-            if (v45)
+            focus = [chatCopy focus];
+            if (focus)
             {
-              v47 = [v15 focus];
+              focus2 = [chatCopy focus];
             }
 
             else
             {
-              v47 = &stru_101F6AFB8;
+              focus2 = &stru_101F6AFB8;
             }
 
-            v29 = [v15 conversationID];
-            if (v29)
+            conversationID = [chatCopy conversationID];
+            if (conversationID)
             {
-              v46 = [v15 conversationID];
+              conversationID2 = [chatCopy conversationID];
             }
 
             else
             {
-              v46 = &stru_101F6AFB8;
+              conversationID2 = &stru_101F6AFB8;
             }
 
             v42 = v24;
             v43 = v23;
-            v41 = [v16 memberList];
-            v30 = [v41 count];
-            v31 = [v17 uuid];
+            memberList2 = [addCopy memberList];
+            v30 = [memberList2 count];
+            uuid2 = [dCopy uuid];
             *buf = 136316418;
             *&buf[4] = v42;
             *&buf[12] = 2080;
             *&buf[14] = v44;
             v63 = 2114;
-            v64 = v47;
+            v64 = focus2;
             v65 = 2114;
-            v66 = v46;
+            v66 = conversationID2;
             v67 = 2048;
             v68 = v30;
             v69 = 2112;
-            v70 = v31;
+            v70 = uuid2;
             _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] addParticipants: [slot: %s, security: %s, to.focus: %{public}@, to.conversationID: %{public}@, list.memberList.size: %ld,  operationID: %@]", buf, 0x3Eu);
 
-            if (v29)
+            if (conversationID)
             {
             }
 
-            if (v45)
+            if (focus)
             {
             }
           }
@@ -7029,15 +7029,15 @@ LABEL_22:
           v32 = v60;
           if (v60)
           {
-            v33 = sub_100018A64([v14 slotID]);
+            v33 = sub_100018A64([participantsCopy slotID]);
             memset(v58, 0, sizeof(v58));
             v59 = 1;
-            sub_1006F2118(v15, v52);
-            sub_1006F51D4(v16, v50);
-            v34 = [v17 uuid];
-            v35 = v34;
-            sub_10000501C(__p, [v34 UTF8String]);
-            buf[0] = v18 != 0;
+            sub_1006F2118(chatCopy, v52);
+            sub_1006F51D4(addCopy, v50);
+            uuid3 = [dCopy uuid];
+            v35 = uuid3;
+            sub_10000501C(__p, [uuid3 UTF8String]);
+            buf[0] = securityCopy != 0;
             buf[8] = 0;
             v71 = 0;
             v36 = (*(*v32 + 104))(v32, v58, v33, v52, v50, __p, buf);
@@ -7084,12 +7084,12 @@ LABEL_22:
               *buf = v36;
               buf[4] = 1;
               v40 = sub_100A99330(buf);
-              v19[2](v19, v40);
+              completionCopy[2](completionCopy, v40);
             }
 
             else
             {
-              v19[2](v19, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -7106,7 +7106,7 @@ LABEL_22:
             *buf = 5;
             buf[4] = 1;
             v38 = sub_100A99330(buf);
-            v19[2](v19, v38);
+            completionCopy[2](completionCopy, v38);
           }
 
           if (v61)
@@ -7134,7 +7134,7 @@ LABEL_22:
     *buf = 4;
     buf[4] = 1;
     v28 = sub_100A99330(buf);
-    v19[2](v19, v28);
+    completionCopy[2](completionCopy, v28);
   }
 
   else
@@ -7151,92 +7151,92 @@ LABEL_22:
 LABEL_19:
 }
 
-- (void)removeParticipants:(id)a3 fromGroupChat:(id)a4 withParticipantsToRemove:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)removeParticipants:(id)participants fromGroupChat:(id)chat withParticipantsToRemove:(id)remove withOperationID:(id)d withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  participantsCopy = participants;
+  chatCopy = chat;
+  removeCopy = remove;
+  dCopy = d;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14 && v15 && v16)
+    if (participantsCopy && chatCopy && removeCopy)
     {
-      v20 = [v16 memberList];
-      v21 = v20;
-      if (v17 && v20)
+      memberList = [removeCopy memberList];
+      v21 = memberList;
+      if (dCopy && memberList)
       {
-        v22 = [v17 uuid];
+        uuid = [dCopy uuid];
 
-        if (v22)
+        if (uuid)
         {
           [(CTXPCClientHandler *)self getLogContext];
           v23 = *&buf[8];
           ctu::OsLogContext::~OsLogContext(buf);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            [v14 slotID];
+            [participantsCopy slotID];
             v24 = CTSubscriptionSlotAsString();
             v25 = "true";
-            if (!v18)
+            if (!securityCopy)
             {
               v25 = "false";
             }
 
             v45 = v25;
-            v46 = [v15 focus];
-            if (v46)
+            focus = [chatCopy focus];
+            if (focus)
             {
-              v48 = [v15 focus];
+              focus2 = [chatCopy focus];
             }
 
             else
             {
-              v48 = &stru_101F6AFB8;
+              focus2 = &stru_101F6AFB8;
             }
 
-            v29 = [v15 conversationID];
-            if (v29)
+            conversationID = [chatCopy conversationID];
+            if (conversationID)
             {
-              v47 = [v15 conversationID];
+              conversationID2 = [chatCopy conversationID];
             }
 
             else
             {
-              v47 = &stru_101F6AFB8;
+              conversationID2 = &stru_101F6AFB8;
             }
 
             v43 = v24;
             v44 = v23;
-            v42 = [v16 memberList];
-            v30 = [v42 count];
-            v31 = [v17 uuid];
-            v41 = v29;
+            memberList2 = [removeCopy memberList];
+            v30 = [memberList2 count];
+            uuid2 = [dCopy uuid];
+            v41 = conversationID;
             *buf = 136316418;
             *&buf[4] = v43;
             *&buf[12] = 2080;
             *&buf[14] = v45;
             v64 = 2114;
-            v65 = v48;
+            v65 = focus2;
             v66 = 2114;
-            v67 = v47;
+            v67 = conversationID2;
             v68 = 2048;
             v69 = v30;
             v70 = 2114;
-            v71 = v31;
+            v71 = uuid2;
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] removeParticipants: [slot: %s, security: %s, from.focus: %{public}@, from.conversationID: %{public}@, list.memberList.size: %lu, operationID: %{public}@]", buf, 0x3Eu);
 
-            if (v29)
+            if (conversationID)
             {
             }
 
-            if (v46)
+            if (focus)
             {
             }
           }
 
-          v32 = sub_100018A64([v14 slotID]);
+          v32 = sub_100018A64([participantsCopy slotID]);
           v61 = 0;
           v62 = 0;
           sub_1006E5FC4(self, &v61);
@@ -7245,12 +7245,12 @@ LABEL_19:
           {
             memset(v59, 0, sizeof(v59));
             v60 = 1;
-            sub_1006F2118(v15, v53);
-            sub_1006F51D4(v16, v51);
-            v34 = [v17 uuid];
-            v35 = v34;
-            sub_10000501C(__p, [v34 UTF8String]);
-            buf[0] = v18 != 0;
+            sub_1006F2118(chatCopy, v53);
+            sub_1006F51D4(removeCopy, v51);
+            uuid3 = [dCopy uuid];
+            v35 = uuid3;
+            sub_10000501C(__p, [uuid3 UTF8String]);
+            buf[0] = securityCopy != 0;
             buf[8] = 0;
             v72 = 0;
             v36 = (*(*v33 + 112))(v33, v59, v32, v53, v51, __p, buf);
@@ -7297,12 +7297,12 @@ LABEL_19:
               *buf = v36;
               buf[4] = 1;
               v40 = sub_100A99330(buf);
-              v19[2](v19, v40);
+              completionCopy[2](completionCopy, v40);
             }
 
             else
             {
-              v19[2](v19, 0);
+              completionCopy[2](completionCopy, 0);
             }
           }
 
@@ -7319,7 +7319,7 @@ LABEL_19:
             *buf = 5;
             buf[4] = 1;
             v38 = sub_100A99330(buf);
-            v19[2](v19, v38);
+            completionCopy[2](completionCopy, v38);
           }
 
           if (v62)
@@ -7347,7 +7347,7 @@ LABEL_19:
     *buf = 4;
     buf[4] = 1;
     v28 = sub_100A99330(buf);
-    v19[2](v19, v28);
+    completionCopy[2](completionCopy, v28);
   }
 
   else
@@ -7364,79 +7364,79 @@ LABEL_19:
 LABEL_19:
 }
 
-- (void)changeIcon:(id)a3 forGroupChat:(id)a4 withNewIcon:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)changeIcon:(id)icon forGroupChat:(id)chat withNewIcon:(id)newIcon withOperationID:(id)d withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v52 = a5;
-  v16 = a6;
-  v51 = a7;
-  v17 = a8;
-  if (v17)
+  iconCopy = icon;
+  chatCopy = chat;
+  newIconCopy = newIcon;
+  dCopy = d;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14)
+    if (iconCopy)
     {
-      if (v15)
+      if (chatCopy)
       {
-        if (v16)
+        if (dCopy)
         {
-          v18 = [v16 uuid];
+          uuid = [dCopy uuid];
 
-          if (v18)
+          if (uuid)
           {
             [(CTXPCClientHandler *)self getLogContext];
             v19 = *&buf[8];
             ctu::OsLogContext::~OsLogContext(buf);
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              [v14 slotID];
+              [iconCopy slotID];
               v48 = CTSubscriptionSlotAsString();
               v20 = "true";
-              if (!v51)
+              if (!securityCopy)
               {
                 v20 = "false";
               }
 
-              v50 = [v15 focus];
-              if (v50)
+              focus = [chatCopy focus];
+              if (focus)
               {
-                v49 = [v15 focus];
+                focus2 = [chatCopy focus];
               }
 
               else
               {
-                v49 = &stru_101F6AFB8;
+                focus2 = &stru_101F6AFB8;
               }
 
-              v24 = [v15 conversationID];
-              if (v24)
+              conversationID = [chatCopy conversationID];
+              if (conversationID)
               {
-                v25 = [v15 conversationID];
+                conversationID2 = [chatCopy conversationID];
               }
 
               else
               {
-                v25 = &stru_101F6AFB8;
+                conversationID2 = &stru_101F6AFB8;
               }
 
-              v26 = [v16 uuid];
+              uuid2 = [dCopy uuid];
               *buf = 136316163;
               *&buf[4] = v48;
               *&buf[12] = 2080;
               *&buf[14] = v47;
               *&buf[22] = 2113;
-              *v69 = v49;
+              *v69 = focus2;
               *&v69[8] = 2114;
-              *&v69[10] = v25;
+              *&v69[10] = conversationID2;
               *&v69[18] = 2114;
-              *&v69[20] = v26;
+              *&v69[20] = uuid2;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] changeIcon: [slot: %s, security: %s, chat.focus: %{private}@, chat.conversationID: %{public}@, operationID: %{public}@]", buf, 0x34u);
 
-              if (v24)
+              if (conversationID)
               {
               }
 
-              if (v50)
+              if (focus)
               {
               }
             }
@@ -7457,42 +7457,42 @@ LABEL_19:
               *buf = 5;
               buf[4] = 1;
               v40 = sub_100A99330(buf);
-              v17[2](v17, v40);
+              completionCopy[2](completionCopy, v40);
 
               goto LABEL_64;
             }
 
-            v27 = sub_100018A64([v14 slotID]);
+            v27 = sub_100018A64([iconCopy slotID]);
             v65 = 0;
             *v64 = 0u;
             *__p = 0u;
             memset(v63, 0, sizeof(v63));
-            if (v52)
+            if (newIconCopy)
             {
-              v28 = [v52 data];
-              v29 = v28 == 0;
+              data = [newIconCopy data];
+              v29 = data == 0;
 
               if (!v29)
               {
-                v30 = [v52 data];
-                v31 = [v30 length];
+                data2 = [newIconCopy data];
+                v31 = [data2 length];
 
-                v32 = [v52 data];
-                v33 = v32;
-                v34 = [v32 bytes];
+                data3 = [newIconCopy data];
+                v33 = data3;
+                bytes = [data3 bytes];
 
                 v55 = 0;
                 v56 = 0;
                 v57 = 0;
-                sub_1000DCF88(&v55, v34, v31 + v34, v31);
-                v35 = [v52 name];
-                v36 = v35;
-                sub_10000501C(buf, [v35 UTF8String]);
+                sub_1000DCF88(&v55, bytes, v31 + bytes, v31);
+                name = [newIconCopy name];
+                v36 = name;
+                sub_10000501C(buf, [name UTF8String]);
                 memset(v69, 0, 24);
                 sub_100034C50(v69, v55, v56, v56 - v55);
-                v37 = [v52 type];
-                v38 = v37;
-                sub_10000501C(&v69[24], [v37 UTF8String]);
+                type = [newIconCopy type];
+                v38 = type;
+                sub_10000501C(&v69[24], [type UTF8String]);
                 if (SHIBYTE(v63[0]) < 0)
                 {
                   operator delete(__p[0]);
@@ -7547,11 +7547,11 @@ LABEL_19:
             }
 
             v41 = v66;
-            sub_1006F2118(v15, &v55);
-            v42 = [v16 uuid];
-            v43 = v42;
-            sub_10000501C(v53, [v42 UTF8String]);
-            buf[0] = v51 != 0;
+            sub_1006F2118(chatCopy, &v55);
+            uuid3 = [dCopy uuid];
+            v43 = uuid3;
+            sub_10000501C(v53, [uuid3 UTF8String]);
+            buf[0] = securityCopy != 0;
             buf[8] = 0;
             v71 = 0;
             v44 = (*(*v41 + 352))(v41, v27, &v55, __p, v53, buf);
@@ -7587,7 +7587,7 @@ LABEL_19:
             else if ((v44 & 0x100000000) == 0)
             {
 LABEL_53:
-              v17[2](v17, 0);
+              completionCopy[2](completionCopy, 0);
 LABEL_58:
               if (SHIBYTE(v65) < 0)
               {
@@ -7625,7 +7625,7 @@ LABEL_64:
             *buf = v44;
             buf[4] = 1;
             v46 = sub_100A99330(buf);
-            v17[2](v17, v46);
+            completionCopy[2](completionCopy, v46);
 
             goto LABEL_58;
           }
@@ -7644,7 +7644,7 @@ LABEL_64:
     *buf = 4;
     buf[4] = 1;
     v22 = sub_100A99330(buf);
-    v17[2](v17, v22);
+    completionCopy[2](completionCopy, v22);
   }
 
   else
@@ -7661,25 +7661,25 @@ LABEL_64:
 LABEL_66:
 }
 
-- (void)changeSubject:(id)a3 forGroupChat:(id)a4 withNewSubject:(id)a5 withOperationID:(id)a6 withSecurity:(id)a7 completion:(id)a8
+- (void)changeSubject:(id)subject forGroupChat:(id)chat withNewSubject:(id)newSubject withOperationID:(id)d withSecurity:(id)security completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  subjectCopy = subject;
+  chatCopy = chat;
+  newSubjectCopy = newSubject;
+  dCopy = d;
+  securityCopy = security;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14)
+    if (subjectCopy)
     {
-      if (v15)
+      if (chatCopy)
       {
-        if (v17)
+        if (dCopy)
         {
-          v20 = [v17 uuid];
+          uuid = [dCopy uuid];
 
-          if (v20)
+          if (uuid)
           {
             [(CTXPCClientHandler *)self getLogContext];
             v21 = *&v61[4];
@@ -7688,14 +7688,14 @@ LABEL_66:
             {
 LABEL_33:
               memset(&v59, 0, sizeof(v59));
-              if (v16)
+              if (newSubjectCopy)
               {
-                v28 = [v16 displayString];
-                v29 = v28;
-                sub_100016890(&v59, [v28 UTF8String]);
+                displayString = [newSubjectCopy displayString];
+                v29 = displayString;
+                sub_100016890(&v59, [displayString UTF8String]);
               }
 
-              v30 = sub_100018A64([v14 slotID]);
+              v30 = sub_100018A64([subjectCopy slotID]);
               v57 = 0;
               v58 = 0;
               sub_1006E5FC4(self, &v57);
@@ -7704,11 +7704,11 @@ LABEL_33:
               {
                 memset(v55, 0, sizeof(v55));
                 v56 = 1;
-                sub_1006F2118(v15, v49);
-                v32 = [v17 uuid];
-                v33 = v32;
-                sub_10000501C(__p, [v32 UTF8String]);
-                buf[0] = v18 != 0;
+                sub_1006F2118(chatCopy, v49);
+                uuid2 = [dCopy uuid];
+                v33 = uuid2;
+                sub_10000501C(__p, [uuid2 UTF8String]);
+                buf[0] = securityCopy != 0;
                 v61[4] = 0;
                 v70 = 0;
                 v34 = (*(*v31 + 120))(v31, v55, v30, v49, &v59, __p, buf);
@@ -7751,12 +7751,12 @@ LABEL_33:
                   *buf = v34;
                   v61[0] = 1;
                   v38 = sub_100A99330(buf);
-                  v19[2](v19, v38);
+                  completionCopy[2](completionCopy, v38);
                 }
 
                 else
                 {
-                  v19[2](v19, 0);
+                  completionCopy[2](completionCopy, 0);
                 }
               }
 
@@ -7773,7 +7773,7 @@ LABEL_33:
                 *buf = 5;
                 v61[0] = 1;
                 v36 = sub_100A99330(buf);
-                v19[2](v19, v36);
+                completionCopy[2](completionCopy, v36);
               }
 
               if (v58)
@@ -7789,31 +7789,31 @@ LABEL_33:
               goto LABEL_58;
             }
 
-            [v14 slotID];
+            [subjectCopy slotID];
             v42 = CTSubscriptionSlotAsString();
             v22 = "true";
-            if (!v18)
+            if (!securityCopy)
             {
               v22 = "false";
             }
 
             v41 = v22;
-            v46 = [v15 focus];
-            if (v46)
+            focus = [chatCopy focus];
+            if (focus)
             {
-              v44 = [v15 focus];
+              focus2 = [chatCopy focus];
             }
 
             else
             {
-              v44 = &stru_101F6AFB8;
+              focus2 = &stru_101F6AFB8;
             }
 
-            v45 = [v15 conversationID];
-            if (v45)
+            conversationID = [chatCopy conversationID];
+            if (conversationID)
             {
-              v43 = [v15 conversationID];
-              if (v16)
+              conversationID2 = [chatCopy conversationID];
+              if (newSubjectCopy)
               {
                 goto LABEL_19;
               }
@@ -7821,22 +7821,22 @@ LABEL_33:
 
             else
             {
-              v43 = &stru_101F6AFB8;
-              if (v16)
+              conversationID2 = &stru_101F6AFB8;
+              if (newSubjectCopy)
               {
 LABEL_19:
-                v39 = [v16 displayString];
-                if (v39)
+                displayString2 = [newSubjectCopy displayString];
+                if (displayString2)
                 {
-                  v26 = [v16 displayString];
+                  displayString3 = [newSubjectCopy displayString];
                   v40 = 1;
                 }
 
                 else
                 {
-                  v39 = 0;
+                  displayString2 = 0;
                   v40 = 0;
-                  v26 = &stru_101F6AFB8;
+                  displayString3 = &stru_101F6AFB8;
                 }
 
                 goto LABEL_24;
@@ -7844,36 +7844,36 @@ LABEL_19:
             }
 
             v40 = 0;
-            v26 = &stru_101F6AFB8;
+            displayString3 = &stru_101F6AFB8;
 LABEL_24:
-            v27 = [v17 uuid];
+            uuid3 = [dCopy uuid];
             *buf = 136316418;
             *v61 = v42;
             *&v61[8] = 2080;
             *&v61[10] = v41;
             v62 = 2114;
-            v63 = v44;
+            v63 = focus2;
             v64 = 2114;
-            v65 = v43;
+            v65 = conversationID2;
             v66 = 2112;
-            v67 = v26;
+            v67 = displayString3;
             v68 = 2114;
-            v69 = v27;
+            v69 = uuid3;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] changeSubject: [slot: %s, security: %s, chat.focus: %{public}@, chat.conversationID: %{public}@, subject: %{senstive}@, operationID: %{public}@]", buf, 0x3Eu);
 
             if (v40)
             {
             }
 
-            if (v16)
+            if (newSubjectCopy)
             {
             }
 
-            if (v45)
+            if (conversationID)
             {
             }
 
-            if (v46)
+            if (focus)
             {
             }
 
@@ -7894,7 +7894,7 @@ LABEL_24:
     *buf = 4;
     v61[0] = 1;
     v24 = sub_100A99330(buf);
-    v19[2](v19, v24);
+    completionCopy[2](completionCopy, v24);
   }
 
   else
@@ -7911,70 +7911,70 @@ LABEL_24:
 LABEL_58:
 }
 
-- (void)create:(id)a3 groupChat:(id)a4 withOperationID:(id)a5 completion:(id)a6
+- (void)create:(id)create groupChat:(id)chat withOperationID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v84 = a5;
-  v12 = a6;
-  v83 = v10;
-  if (v12)
+  createCopy = create;
+  chatCopy = chat;
+  dCopy = d;
+  completionCopy = completion;
+  v83 = createCopy;
+  if (completionCopy)
   {
-    if (v10)
+    if (createCopy)
     {
-      if (v11)
+      if (chatCopy)
       {
-        if (v84)
+        if (dCopy)
         {
-          v13 = [v84 uuid];
-          if (v13)
+          uuid = [dCopy uuid];
+          if (uuid)
           {
-            v14 = [v11 participants];
-            if (v14)
+            participants = [chatCopy participants];
+            if (participants)
             {
-              v15 = [v11 participants];
-              v16 = [v15 memberList];
+              participants2 = [chatCopy participants];
+              memberList = [participants2 memberList];
 
-              if (v16)
+              if (memberList)
               {
                 [(CTXPCClientHandler *)self getLogContext];
                 v17 = *&buf[8];
                 ctu::OsLogContext::~OsLogContext(buf);
-                v81 = self;
+                selfCopy = self;
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
                 {
-                  [v10 slotID];
+                  [createCopy slotID];
                   v82 = CTSubscriptionSlotAsString();
-                  v18 = [v11 participants];
-                  v19 = [v18 memberList];
-                  v20 = [v19 count];
-                  v21 = [v11 subject];
-                  if (v21)
+                  participants3 = [chatCopy participants];
+                  memberList2 = [participants3 memberList];
+                  v20 = [memberList2 count];
+                  subject = [chatCopy subject];
+                  if (subject)
                   {
-                    v78 = [v11 subject];
-                    v79 = [v78 displayString];
-                    if (v79)
+                    subject2 = [chatCopy subject];
+                    displayString = [subject2 displayString];
+                    if (displayString)
                     {
-                      v77 = [v11 subject];
-                      v22 = [v77 displayString];
+                      subject3 = [chatCopy subject];
+                      displayString2 = [subject3 displayString];
                       v23 = 1;
                     }
 
                     else
                     {
-                      v79 = 0;
+                      displayString = 0;
                       v23 = 0;
-                      v22 = &stru_101F6AFB8;
+                      displayString2 = &stru_101F6AFB8;
                     }
                   }
 
                   else
                   {
                     v23 = 0;
-                    v22 = &stru_101F6AFB8;
+                    displayString2 = &stru_101F6AFB8;
                   }
 
-                  v27 = [v84 uuid];
+                  uuid2 = [dCopy uuid];
                   *buf = 136316163;
                   *&buf[4] = v82;
                   *&buf[12] = 2048;
@@ -7982,16 +7982,16 @@ LABEL_58:
                   *&buf[22] = 2160;
                   *&buf[24] = 1752392040;
                   *&buf[32] = 2117;
-                  *&buf[34] = v22;
+                  *&buf[34] = displayString2;
                   *&buf[42] = 2114;
-                  *&buf[44] = v27;
+                  *&buf[44] = uuid2;
                   _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] create: [slot: %s, chat.participants.size: %ld, chat.subject: %{sensitive, mask.hash}@, operationID: %{public}@]", buf, 0x34u);
 
                   if (v23)
                   {
                   }
 
-                  if (v21)
+                  if (subject)
                   {
                   }
                 }
@@ -8000,21 +8000,21 @@ LABEL_58:
                 v100 = 0u;
                 v101 = 0u;
                 v99 = 0u;
-                v28 = [v11 participants];
-                v29 = [v28 memberList];
-                v30 = [v29 count];
+                participants4 = [chatCopy participants];
+                memberList3 = [participants4 memberList];
+                v30 = [memberList3 count];
 
                 if (v30)
                 {
                   for (i = 0; i != v30; ++i)
                   {
-                    v32 = [v11 participants];
-                    v33 = [v32 memberList];
-                    v34 = [v33 objectAtIndexedSubscript:i];
+                    participants5 = [chatCopy participants];
+                    memberList4 = [participants5 memberList];
+                    v34 = [memberList4 objectAtIndexedSubscript:i];
 
-                    v35 = [v34 member];
-                    v36 = v35;
-                    sub_10000501C(buf, [v35 UTF8String]);
+                    member = [v34 member];
+                    v36 = member;
+                    sub_10000501C(buf, [member UTF8String]);
                     *&buf[24] = -1;
                     buf[28] = 0;
                     v37 = v101;
@@ -8043,23 +8043,23 @@ LABEL_58:
 
                 __p = 0u;
                 v98 = 0u;
-                v40 = [v11 subject];
-                if (v40)
+                subject4 = [chatCopy subject];
+                if (subject4)
                 {
-                  v41 = [v11 subject];
-                  v42 = [v41 displayString];
-                  if (v42)
+                  subject5 = [chatCopy subject];
+                  displayString3 = [subject5 displayString];
+                  if (displayString3)
                   {
-                    v43 = [v11 subject];
-                    v44 = [v43 displayString];
-                    v45 = [v44 length] == 0;
+                    subject6 = [chatCopy subject];
+                    displayString4 = [subject6 displayString];
+                    v45 = [displayString4 length] == 0;
 
                     if (!v45)
                     {
-                      v46 = [v11 subject];
-                      v47 = [v46 displayString];
-                      v48 = v47;
-                      sub_10000501C(buf, [v47 UTF8String]);
+                      subject7 = [chatCopy subject];
+                      displayString5 = [subject7 displayString];
+                      v48 = displayString5;
+                      sub_10000501C(buf, [displayString5 UTF8String]);
                       if (BYTE8(v98) == 1)
                       {
                         if (SBYTE7(v98) < 0)
@@ -8093,14 +8093,14 @@ LABEL_58:
                 *v95 = 0u;
                 *v92 = 0u;
                 *v93 = 0u;
-                v49 = [v11 icon];
-                v50 = v49 == 0;
+                icon = [chatCopy icon];
+                v50 = icon == 0;
 
                 if (!v50)
                 {
-                  v51 = [v11 icon];
-                  v52 = [v51 data];
-                  v53 = v52 == 0;
+                  icon2 = [chatCopy icon];
+                  data = [icon2 data];
+                  v53 = data == 0;
 
                   if (v53)
                   {
@@ -8110,31 +8110,31 @@ LABEL_58:
 
                   else
                   {
-                    v54 = [v11 icon];
-                    v55 = [v54 data];
-                    v56 = [v55 length];
+                    icon3 = [chatCopy icon];
+                    data2 = [icon3 data];
+                    v56 = [data2 length];
 
-                    v57 = [v11 icon];
-                    v58 = [v57 data];
-                    v59 = v58;
-                    v60 = [v58 bytes];
+                    icon4 = [chatCopy icon];
+                    data3 = [icon4 data];
+                    v59 = data3;
+                    bytes = [data3 bytes];
 
                     memset(buf, 0, 24);
-                    sub_1000DCF88(buf, v60, v56 + v60, v56);
+                    sub_1000DCF88(buf, bytes, v56 + bytes, v56);
                     v62 = *buf;
                     v61 = *&buf[8];
                   }
 
-                  v63 = [v11 icon];
-                  v64 = [v63 name];
-                  v65 = v64;
-                  sub_10000501C(buf, [v64 UTF8String]);
+                  icon5 = [chatCopy icon];
+                  name = [icon5 name];
+                  v65 = name;
+                  sub_10000501C(buf, [name UTF8String]);
                   memset(&buf[24], 0, 24);
                   sub_100034C50(&buf[24], v62, v61, v61 - v62);
-                  v66 = [v11 icon];
-                  v67 = [v66 type];
-                  v68 = v67;
-                  sub_10000501C(&buf[48], [v67 UTF8String]);
+                  icon6 = [chatCopy icon];
+                  type = [icon6 type];
+                  v68 = type;
+                  sub_10000501C(&buf[48], [type UTF8String]);
                   sub_1006F79E0(v92, buf);
                   if (SBYTE7(v103) < 0)
                   {
@@ -8185,18 +8185,18 @@ LABEL_58:
                 *&v113 = 0;
                 DWORD2(v113) = -1;
                 BYTE12(v113) = 0;
-                LOBYTE(v114) = [v11 secure];
+                LOBYTE(v114) = [chatCopy secure];
                 v90 = 0;
                 v91 = 0;
-                sub_1006E5FC4(v81, &v90);
+                sub_1006E5FC4(selfCopy, &v90);
                 v69 = v90;
                 if (v90)
                 {
                   memset(v88, 0, sizeof(v88));
                   v89 = 1;
-                  v70 = [v84 uuid];
-                  v71 = v70;
-                  sub_10000501C(&v85, [v70 UTF8String]);
+                  uuid3 = [dCopy uuid];
+                  v71 = uuid3;
+                  sub_10000501C(&v85, [uuid3 UTF8String]);
                   v72 = (*(*v69 + 128))(v69, v88, v80, buf, &v85);
                   if (v87 < 0)
                   {
@@ -8206,7 +8206,7 @@ LABEL_58:
                   TMClientInfo::~TMClientInfo(v88);
                   if ((v72 & 0x100000000) != 0)
                   {
-                    [(CTXPCClientHandler *)v81 getLogContext];
+                    [(CTXPCClientHandler *)selfCopy getLogContext];
                     v75 = v86;
                     ctu::OsLogContext::~OsLogContext(&v85);
                     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
@@ -8217,18 +8217,18 @@ LABEL_58:
                     LODWORD(v85) = v72;
                     BYTE4(v85) = 1;
                     v76 = sub_100A99330(&v85);
-                    v12[2](v12, v76);
+                    completionCopy[2](completionCopy, v76);
                   }
 
                   else
                   {
-                    v12[2](v12, 0);
+                    completionCopy[2](completionCopy, 0);
                   }
                 }
 
                 else
                 {
-                  [(CTXPCClientHandler *)v81 getLogContext];
+                  [(CTXPCClientHandler *)selfCopy getLogContext];
                   v73 = v86;
                   ctu::OsLogContext::~OsLogContext(&v85);
                   if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -8239,7 +8239,7 @@ LABEL_58:
                   LODWORD(v85) = 5;
                   BYTE4(v85) = 1;
                   v74 = sub_100A99330(&v85);
-                  v12[2](v12, v74);
+                  completionCopy[2](completionCopy, v74);
                 }
 
                 if (v91)
@@ -8299,7 +8299,7 @@ LABEL_58:
     *buf = 4;
     buf[4] = 1;
     v26 = sub_100A99330(buf);
-    v12[2](v12, v26);
+    completionCopy[2](completionCopy, v26);
   }
 
   else
@@ -8316,67 +8316,67 @@ LABEL_58:
 LABEL_18:
 }
 
-- (void)exit:(id)a3 groupChat:(id)a4 withOperationID:(id)a5 completion:(id)a6
+- (void)exit:(id)exit groupChat:(id)chat withOperationID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  exitCopy = exit;
+  chatCopy = chat;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v10 && v11 && v12 && ([v12 uuid], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+    if (exitCopy && chatCopy && dCopy && ([dCopy uuid], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
     {
       [(CTXPCClientHandler *)self getLogContext];
       v15 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        [v10 slotID];
+        [exitCopy slotID];
         v16 = CTSubscriptionSlotAsString();
-        v34 = [v11 focus];
-        if (v34)
+        focus = [chatCopy focus];
+        if (focus)
         {
-          v33 = [v11 focus];
+          focus2 = [chatCopy focus];
         }
 
         else
         {
-          v33 = &stru_101F6AFB8;
+          focus2 = &stru_101F6AFB8;
         }
 
-        v20 = [v11 conversationID];
-        if (v20)
+        conversationID = [chatCopy conversationID];
+        if (conversationID)
         {
-          v21 = [v11 conversationID];
+          conversationID2 = [chatCopy conversationID];
         }
 
         else
         {
-          v21 = &stru_101F6AFB8;
+          conversationID2 = &stru_101F6AFB8;
         }
 
-        v22 = [v12 uuid];
-        v32 = v20;
+        uuid = [dCopy uuid];
+        v32 = conversationID;
         *buf = 136315906;
         *&buf[4] = v16;
         *&buf[12] = 2114;
-        *&buf[14] = v33;
+        *&buf[14] = focus2;
         v42 = 2114;
-        v43 = v21;
+        v43 = conversationID2;
         v44 = 2114;
-        v45 = v22;
+        v45 = uuid;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] exit: [slot: %s, chat.focus: %{public}@, chat.conversationID: %{public}@, operationID: %{public}@]", buf, 0x2Au);
 
-        if (v20)
+        if (conversationID)
         {
         }
 
-        if (v34)
+        if (focus)
         {
         }
       }
 
-      v23 = sub_100018A64([v10 slotID]);
+      v23 = sub_100018A64([exitCopy slotID]);
       v39 = 0;
       v40 = 0;
       sub_1006E5FC4(self, &v39);
@@ -8385,10 +8385,10 @@ LABEL_18:
       {
         memset(v37, 0, sizeof(v37));
         v38 = 1;
-        sub_1006F2118(v11, buf);
-        v25 = [v12 uuid];
-        v26 = v25;
-        sub_10000501C(__p, [v25 UTF8String]);
+        sub_1006F2118(chatCopy, buf);
+        uuid2 = [dCopy uuid];
+        v26 = uuid2;
+        sub_10000501C(__p, [uuid2 UTF8String]);
         v27 = (*(*v24 + 136))(v24, v37, v23, buf, __p);
         if (v36 < 0)
         {
@@ -8424,12 +8424,12 @@ LABEL_18:
           *buf = v27;
           buf[4] = 1;
           v31 = sub_100A99330(buf);
-          v13[2](v13, v31);
+          completionCopy[2](completionCopy, v31);
         }
 
         else
         {
-          v13[2](v13, 0);
+          completionCopy[2](completionCopy, 0);
         }
       }
 
@@ -8446,7 +8446,7 @@ LABEL_18:
         *buf = 5;
         buf[4] = 1;
         v29 = sub_100A99330(buf);
-        v13[2](v13, v29);
+        completionCopy[2](completionCopy, v29);
       }
 
       if (v40)
@@ -8468,7 +8468,7 @@ LABEL_18:
       *buf = 4;
       buf[4] = 1;
       v18 = sub_100A99330(buf);
-      v13[2](v13, v18);
+      completionCopy[2](completionCopy, v18);
     }
   }
 
@@ -8484,21 +8484,21 @@ LABEL_18:
   }
 }
 
-- (void)deleteChat:(id)a3 chat:(id)a4 completion:(id)a5
+- (void)deleteChat:(id)chat chat:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  chatCopy = chat;
   v9 = a4;
-  v10 = a5;
-  if (v10)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9)
+    if (chatCopy && v9)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v11 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 slotID];
+        [chatCopy slotID];
         v12 = CTSubscriptionSlotAsString();
         *buf = 136315395;
         *&buf[4] = v12;
@@ -8523,12 +8523,12 @@ LABEL_18:
         *buf = 5;
         buf[4] = 1;
         v21 = sub_100A99330(buf);
-        v10[2](v10, v21);
+        completionCopy[2](completionCopy, v21);
 
         goto LABEL_20;
       }
 
-      v13 = sub_100018A64([v8 slotID]);
+      v13 = sub_100018A64([chatCopy slotID]);
       v14 = v23;
       v15 = v9;
       sub_10000501C(buf, [v9 UTF8String]);
@@ -8545,14 +8545,14 @@ LABEL_18:
       else if ((v16 & 0x100000000) == 0)
       {
 LABEL_9:
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_20;
       }
 
       *buf = v16;
       buf[4] = 1;
       v22 = sub_100A99330(buf);
-      v10[2](v10, v22);
+      completionCopy[2](completionCopy, v22);
 
 LABEL_20:
       if (v24)
@@ -8574,7 +8574,7 @@ LABEL_20:
     *buf = 4;
     buf[4] = 1;
     v19 = sub_100A99330(buf);
-    v10[2](v10, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   else
@@ -8591,26 +8591,26 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)setProvisioningServerURL:(id)a3 url:(id)a4 completion:(id)a5
+- (void)setProvisioningServerURL:(id)l url:(id)url completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  lCopy = l;
+  urlCopy = url;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9)
+    if (lCopy && urlCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v11 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 slotID];
+        [lCopy slotID];
         v12 = CTSubscriptionSlotAsString();
         *buf = 136315395;
         *&buf[4] = v12;
         *&buf[12] = 2113;
-        *&buf[14] = v9;
+        *&buf[14] = urlCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MSG] ==>> laz ==>> [CT] setProvisioningServerURL: [slot: %s, url: %{private}@]", buf, 0x16u);
       }
 
@@ -8619,17 +8619,17 @@ LABEL_22:
       sub_1006E5E0C(self, buf);
       if (*buf)
       {
-        v13 = sub_100018A64([v8 slotID]);
+        v13 = sub_100018A64([lCopy slotID]);
         v14 = *buf;
-        v15 = v9;
-        sub_10000501C(__p, [v9 UTF8String]);
+        v15 = urlCopy;
+        sub_10000501C(__p, [urlCopy UTF8String]);
         (*(*v14 + 160))(v14, v13, __p);
         if (v22 < 0)
         {
           operator delete(__p[0]);
         }
 
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       else
@@ -8645,7 +8645,7 @@ LABEL_22:
         v23 = 5;
         v24 = 1;
         v20 = sub_100A99330(&v23);
-        (v10)[2](v10, v20);
+        (completionCopy)[2](completionCopy, v20);
       }
 
       if (*&buf[8])
@@ -8667,7 +8667,7 @@ LABEL_22:
       *buf = 4;
       buf[4] = 1;
       v18 = sub_100A99330(buf);
-      (v10)[2](v10, v18);
+      (completionCopy)[2](completionCopy, v18);
     }
   }
 
@@ -8683,20 +8683,20 @@ LABEL_22:
   }
 }
 
-- (void)getProvisioningServerURL:(id)a3 completion:(id)a4
+- (void)getProvisioningServerURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lCopy = l;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (lCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v8 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 slotID];
+        [lCopy slotID];
         v9 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         *&buf[4] = v9;
@@ -8708,7 +8708,7 @@ LABEL_22:
       sub_1006E5E0C(self, &v22);
       if (v22)
       {
-        sub_100018A64([v6 slotID]);
+        sub_100018A64([lCopy slotID]);
         *buf = 0u;
         v25 = 0u;
         (*(*v22 + 168))(buf);
@@ -8725,7 +8725,7 @@ LABEL_22:
           }
 
           v11 = [NSString stringWithUTF8String:v10];
-          v7[2](v7, v11, 0);
+          completionCopy[2](completionCopy, v11, 0);
         }
 
         else
@@ -8741,7 +8741,7 @@ LABEL_22:
           v19 = 5;
           v20 = 1;
           v18 = sub_100A99330(&v19);
-          (v7)[2](v7, 0, v18);
+          (completionCopy)[2](completionCopy, 0, v18);
         }
 
         if (BYTE8(v25) == 1 && SBYTE7(v25) < 0)
@@ -8763,7 +8763,7 @@ LABEL_22:
         *buf = 5;
         buf[4] = 1;
         v16 = sub_100A99330(buf);
-        (v7)[2](v7, 0, v16);
+        (completionCopy)[2](completionCopy, 0, v16);
       }
 
       if (v23)
@@ -8785,7 +8785,7 @@ LABEL_22:
       *buf = 4;
       buf[4] = 1;
       v14 = sub_100A99330(buf);
-      (v7)[2](v7, 0, v14);
+      (completionCopy)[2](completionCopy, 0, v14);
     }
   }
 
@@ -8801,23 +8801,23 @@ LABEL_22:
   }
 }
 
-- (void)sendOneToManyTextMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withMessage:(id)a6 completion:(id)a7
+- (void)sendOneToManyTextMessage:(id)message to:(id)to withMessageID:(id)d withMessage:(id)withMessage completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  messageCopy = message;
+  toCopy = to;
+  dCopy = d;
+  withMessageCopy = withMessage;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v12 && v13 && v14 && v15)
+    if (messageCopy && toCopy && dCopy && withMessageCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v17 = *(&buf + 1);
       ctu::OsLogContext::~OsLogContext(&buf);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        [v12 slotID];
+        [messageCopy slotID];
         v18 = CTSubscriptionSlotAsString();
         LODWORD(buf) = 136315138;
         *(&buf + 4) = v18;
@@ -8829,18 +8829,18 @@ LABEL_22:
       sub_1006E5E0C(self, &v38);
       if (v38)
       {
-        v19 = sub_100018A64([v12 slotID]);
+        v19 = sub_100018A64([messageCopy slotID]);
         v37 = 0;
         v20 = v38;
-        sub_1006F907C(v13, v36);
-        sub_1006E8724(v14, &buf);
-        v21 = [v15 content];
-        v22 = v21;
-        sub_10000501C(__p, [v21 UTF8String]);
+        sub_1006F907C(toCopy, v36);
+        sub_1006E8724(dCopy, &buf);
+        content = [withMessageCopy content];
+        v22 = content;
+        sub_10000501C(__p, [content UTF8String]);
         v33 = 0;
         v34 = 0;
-        v23 = [v15 metaData];
-        sub_1006EBDBC(v23, v35);
+        metaData = [withMessageCopy metaData];
+        sub_1006EBDBC(metaData, v35);
         v24 = (*(*v20 + 384))(v20, v19, v36, &buf, __p);
         LODWORD(v37) = v24;
         BYTE4(v37) = BYTE4(v24);
@@ -8876,12 +8876,12 @@ LABEL_22:
         if ((v24 & 0x100000000) != 0)
         {
           v30 = sub_100A99330(&v37);
-          v16[2](v16, v30);
+          completionCopy[2](completionCopy, v30);
         }
 
         else
         {
-          v16[2](v16, 0);
+          completionCopy[2](completionCopy, 0);
         }
       }
 
@@ -8898,7 +8898,7 @@ LABEL_22:
         LODWORD(buf) = 5;
         BYTE4(buf) = 1;
         v29 = sub_100A99330(&buf);
-        v16[2](v16, v29);
+        completionCopy[2](completionCopy, v29);
       }
 
       if (v39)
@@ -8920,7 +8920,7 @@ LABEL_22:
       LODWORD(buf) = 4;
       BYTE4(buf) = 1;
       v27 = sub_100A99330(&buf);
-      v16[2](v16, v27);
+      completionCopy[2](completionCopy, v27);
     }
   }
 
@@ -8936,23 +8936,23 @@ LABEL_22:
   }
 }
 
-- (void)sendOneToManyGeolocationMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withGeoPush:(id)a6 completion:(id)a7
+- (void)sendOneToManyGeolocationMessage:(id)message to:(id)to withMessageID:(id)d withGeoPush:(id)push completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  messageCopy = message;
+  toCopy = to;
+  dCopy = d;
+  pushCopy = push;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v12 && v13 && v14 && v15)
+    if (messageCopy && toCopy && dCopy && pushCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v17 = *&buf[8];
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        [v12 slotID];
+        [messageCopy slotID];
         v18 = CTSubscriptionSlotAsString();
         *buf = 136315138;
         *&buf[4] = v18;
@@ -8964,17 +8964,17 @@ LABEL_22:
       sub_1006E5E0C(self, &v48);
       if (v48)
       {
-        v38 = sub_100018A64([v12 slotID]);
+        v38 = sub_100018A64([messageCopy slotID]);
         *v46 = 0u;
         v47 = 0u;
-        v19 = [v15 additionalDescription];
-        v20 = v19 == 0;
+        additionalDescription = [pushCopy additionalDescription];
+        v20 = additionalDescription == 0;
 
         if (!v20)
         {
-          v21 = [v15 additionalDescription];
-          v22 = v21;
-          *buf = [v21 UTF8String];
+          additionalDescription2 = [pushCopy additionalDescription];
+          v22 = additionalDescription2;
+          *buf = [additionalDescription2 UTF8String];
           sub_100184AD0(v46, buf);
         }
 
@@ -8985,24 +8985,24 @@ LABEL_22:
         *v51 = 0u;
         v52 = 0u;
         *buf = 0u;
-        v37 = [v15 coordinates];
-        v23 = [v37 longitude];
-        [v23 doubleValue];
+        coordinates = [pushCopy coordinates];
+        longitude = [coordinates longitude];
+        [longitude doubleValue];
         *buf = v24;
-        v25 = [v15 coordinates];
-        v26 = [v25 latitude];
-        [v26 doubleValue];
+        coordinates2 = [pushCopy coordinates];
+        latitude = [coordinates2 latitude];
+        [latitude doubleValue];
         *&buf[8] = v27;
         sub_10006F264(v51, v46);
         LOBYTE(v53) = 0;
         BYTE8(v54) = 0;
-        v28 = [v15 metaData];
-        sub_1006EBDBC(v28, &v55);
+        metaData = [pushCopy metaData];
+        sub_1006EBDBC(metaData, &v55);
 
         v45 = 0;
         v29 = v48;
-        sub_1006F907C(v13, v44);
-        sub_1006E8724(v14, v39);
+        sub_1006F907C(toCopy, v44);
+        sub_1006E8724(dCopy, v39);
         v30 = (*(*v29 + 392))(v29, v38, v44, v39, buf);
         LODWORD(v45) = v30;
         BYTE4(v45) = BYTE4(v30);
@@ -9021,12 +9021,12 @@ LABEL_22:
         if ((v30 & 0x100000000) != 0)
         {
           v36 = sub_100A99330(&v45);
-          v16[2](v16, v36);
+          completionCopy[2](completionCopy, v36);
         }
 
         else
         {
-          v16[2](v16, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         if (BYTE8(v56) == 1)
@@ -9065,7 +9065,7 @@ LABEL_22:
         *buf = 5;
         buf[4] = 1;
         v35 = sub_100A99330(buf);
-        v16[2](v16, v35);
+        completionCopy[2](completionCopy, v35);
       }
 
       if (v49)
@@ -9087,7 +9087,7 @@ LABEL_22:
       *buf = 4;
       buf[4] = 1;
       v33 = sub_100A99330(buf);
-      v16[2](v16, v33);
+      completionCopy[2](completionCopy, v33);
     }
   }
 
@@ -9103,23 +9103,23 @@ LABEL_22:
   }
 }
 
-- (void)sendOneToManyFileTransferMessage:(id)a3 to:(id)a4 withMessageID:(id)a5 withDescriptor:(id)a6 completion:(id)a7
+- (void)sendOneToManyFileTransferMessage:(id)message to:(id)to withMessageID:(id)d withDescriptor:(id)descriptor completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  messageCopy = message;
+  toCopy = to;
+  dCopy = d;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v12 && v13 && v14 && v15)
+    if (messageCopy && toCopy && dCopy && descriptorCopy)
     {
       [(CTXPCClientHandler *)self getLogContext];
       v17 = *(&buf + 1);
       ctu::OsLogContext::~OsLogContext(&buf);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        [v12 slotID];
+        [messageCopy slotID];
         v18 = CTSubscriptionSlotAsString();
         LODWORD(buf) = 136315138;
         *(&buf + 4) = v18;
@@ -9131,20 +9131,20 @@ LABEL_22:
       sub_1006E5E0C(self, &v57);
       if (v57)
       {
-        v19 = sub_100018A64([v12 slotID]);
+        v19 = sub_100018A64([messageCopy slotID]);
         bzero(v36, 0x208uLL);
-        sub_1006EB6AC(v15, v36);
+        sub_1006EB6AC(descriptorCopy, v36);
         v35 = 0;
         v20 = v57;
-        sub_1006F907C(v13, v34);
-        sub_1006E8724(v14, v29);
+        sub_1006F907C(toCopy, v34);
+        sub_1006E8724(dCopy, v29);
         sub_1001907C0(&buf, v36);
         sub_100190C40(v78, v55);
         sub_100190324(v79, v56);
         v80 = 0;
         v81 = 0;
-        v21 = [v15 metaData];
-        sub_1006EBDBC(v21, v82);
+        metaData = [descriptorCopy metaData];
+        sub_1006EBDBC(metaData, v82);
         v22 = (*(*v20 + 400))(v20, v19, v34, v29, &buf);
         LODWORD(v35) = v22;
         BYTE4(v35) = BYTE4(v22);
@@ -9227,12 +9227,12 @@ LABEL_22:
         if (BYTE4(v35) == 1)
         {
           v23 = sub_100A99330(&v35);
-          v16[2](v16, v23);
+          completionCopy[2](completionCopy, v23);
         }
 
         else
         {
-          v16[2](v16, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         if (v56[24] == 1)
@@ -9301,7 +9301,7 @@ LABEL_22:
         LODWORD(buf) = 5;
         BYTE4(buf) = 1;
         v28 = sub_100A99330(&buf);
-        v16[2](v16, v28);
+        completionCopy[2](completionCopy, v28);
       }
 
       if (v58)
@@ -9323,7 +9323,7 @@ LABEL_22:
       LODWORD(buf) = 4;
       BYTE4(buf) = 1;
       v26 = sub_100A99330(&buf);
-      v16[2](v16, v26);
+      completionCopy[2](completionCopy, v26);
     }
   }
 
@@ -9339,16 +9339,16 @@ LABEL_22:
   }
 }
 
-- (void)copyPriVersion:(id)a3 completion:(id)a4
+- (void)copyPriVersion:(id)version completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  versionCopy = version;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!versionCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -9392,8 +9392,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([versionCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F11378;
           v27[1] = v21;
           v27[3] = v27;
@@ -9413,7 +9413,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -9448,10 +9448,10 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)getActivationPolicyState:(id)a3
+- (void)getActivationPolicyState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v20);
@@ -9514,7 +9514,7 @@ LABEL_12:
       }
 
       v16 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v4[2](v4, 0, v16);
+      stateCopy[2](stateCopy, 0, v16);
       goto LABEL_24;
     }
 
@@ -9531,7 +9531,7 @@ LABEL_12:
       if (v17 != 2)
       {
 LABEL_23:
-        (v4)[2](v4, v16, 0);
+        (stateCopy)[2](stateCopy, v16, 0);
 LABEL_24:
 
         if ((v14 & 1) == 0)
@@ -9561,10 +9561,10 @@ LABEL_24:
 LABEL_26:
 }
 
-- (void)isFactoryDebugEnabled:(id)a3
+- (void)isFactoryDebugEnabled:(id)enabled
 {
-  v4 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  if (enabledCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v18);
@@ -9606,7 +9606,7 @@ LABEL_12:
         if (v13)
         {
           v16 = [NSNumber numberWithBool:(*(*v13 + 96))(v13)];
-          v4[2](v4, v16, 0);
+          enabledCopy[2](enabledCopy, v16, 0);
         }
 
         else
@@ -9621,7 +9621,7 @@ LABEL_12:
           }
 
           v16 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (v4)[2](v4, 0, v16);
+          (enabledCopy)[2](enabledCopy, 0, v16);
         }
 
         if ((v14 & 1) == 0)
@@ -9656,11 +9656,11 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)fetchBasebandTicket:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchBasebandTicket:(BOOL)ticket withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  ticketCopy = ticket;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v21);
@@ -9701,11 +9701,11 @@ LABEL_12:
 
         if (v15)
         {
-          v18 = objc_retainBlock(v6);
+          v18 = objc_retainBlock(completionCopy);
           v24[0] = off_101F11408;
           v24[1] = v18;
           v24[3] = v24;
-          (*(*v15 + 104))(v15, v4, v24);
+          (*(*v15 + 104))(v15, ticketCopy, v24);
           sub_10000FF50(v24);
         }
 
@@ -9721,7 +9721,7 @@ LABEL_12:
           }
 
           v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v6 + 2))(v6, 0, v20);
+          (*(completionCopy + 2))(completionCopy, 0, v20);
         }
 
         if ((v16 & 1) == 0)
@@ -9756,16 +9756,16 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)setVoLTEAudioCodec:(id)a3 codecInfo:(id)a4 completion:(id)a5
+- (void)setVoLTEAudioCodec:(id)codec codecInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  codecCopy = codec;
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (codecCopy)
     {
-      if (v9)
+      if (infoCopy)
       {
         [(CTXPCClientHandler *)self registry];
         ServiceMap = Registry::getServiceMap(*buf);
@@ -9807,19 +9807,19 @@ LABEL_20:
 
             if (v18)
             {
-              v27 = sub_100018A64([v8 slotID]);
+              v27 = sub_100018A64([codecCopy slotID]);
               *buf = 0;
               v31 = 0;
               v32 = 0;
-              [v9 callId];
-              [v9 codec];
-              [v9 amrMode];
-              [v9 evsBandwidth];
-              [v9 evsBitrate];
-              [v9 sampleRate];
-              [v9 i2SClockRate];
+              [infoCopy callId];
+              [infoCopy codec];
+              [infoCopy amrMode];
+              [infoCopy evsBandwidth];
+              [infoCopy evsBitrate];
+              [infoCopy sampleRate];
+              [infoCopy i2SClockRate];
               AudioCodecInfo::AudioCodecInfo();
-              v24 = objc_retainBlock(v10);
+              v24 = objc_retainBlock(completionCopy);
               v34[0] = off_101F11D78;
               v34[1] = v24;
               v34[3] = v34;
@@ -9839,7 +9839,7 @@ LABEL_20:
               }
 
               v26 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:6 userInfo:0];
-              (*(v10 + 2))(v10, v26);
+              (*(completionCopy + 2))(completionCopy, v26);
             }
 
             if ((v29 & 1) == 0)
@@ -9885,7 +9885,7 @@ LABEL_20:
     }
 
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    (*(v10 + 2))(v10, v22);
+    (*(completionCopy + 2))(completionCopy, v22);
 
     goto LABEL_29;
   }
@@ -9902,11 +9902,11 @@ LABEL_20:
 LABEL_29:
 }
 
-- (void)getSIMToolkitMenuForContext:(id)a3 completion:(id)a4
+- (void)getSIMToolkitMenuForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -9947,7 +9947,7 @@ LABEL_12:
 
         if (v16)
         {
-          v19 = sub_100018A64([v6 slotID]);
+          v19 = sub_100018A64([contextCopy slotID]);
           v39 = 0;
           v37 = 0u;
           v38 = 0u;
@@ -9955,7 +9955,7 @@ LABEL_12:
           (*(*v16 + 24))(buf, v16, v19);
           if (v39)
           {
-            v30 = v6;
+            v30 = contextCopy;
             v20 = [CTSIMToolkitMenu alloc];
             if ((SBYTE7(v37) & 0x80u) == 0)
             {
@@ -10008,14 +10008,14 @@ LABEL_12:
             }
 
             [v20 setSubTitles:v23];
-            v7[2](v7, v20, 0);
+            completionCopy[2](completionCopy, v20, 0);
 
-            v6 = v30;
+            contextCopy = v30;
           }
 
           else
           {
-            v7[2](v7, 0, 0);
+            completionCopy[2](completionCopy, 0, 0);
           }
 
           if (v39 == 1 && SBYTE7(v37) < 0)
@@ -10036,7 +10036,7 @@ LABEL_12:
           }
 
           v29 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (v7)[2](v7, 0, v29);
+          (completionCopy)[2](completionCopy, 0, v29);
         }
 
         if ((v17 & 1) == 0)
@@ -10071,11 +10071,11 @@ LABEL_12:
 LABEL_39:
 }
 
-- (void)selectSIMToolkitMenuItemForContext:(id)a3 index:(id)a4 completion:(id)a5
+- (void)selectSIMToolkitMenuItemForContext:(id)context index:(id)index completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  indexCopy = index;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(v24);
   v12 = ServiceMap;
@@ -10127,11 +10127,11 @@ LABEL_9:
 
   if (v19)
   {
-    v21 = sub_100018A64([v8 slotID]);
-    (*(*v19 + 112))(v19, v21, [v9 unsignedIntValue], 0);
-    if (v10)
+    v21 = sub_100018A64([contextCopy slotID]);
+    (*(*v19 + 112))(v19, v21, [indexCopy unsignedIntValue], 0);
+    if (completionCopy)
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     if ((v20 & 1) == 0)
@@ -10153,9 +10153,9 @@ LABEL_15:
     }
 
     v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    if (v10)
+    if (completionCopy)
     {
-      (v10)[2](v10, v23);
+      (completionCopy)[2](completionCopy, v23);
     }
 
     if ((v20 & 1) == 0)
@@ -10165,11 +10165,11 @@ LABEL_15:
   }
 }
 
-- (void)getSIMToolkitListItemsForContext:(id)a3 completion:(id)a4
+- (void)getSIMToolkitListItemsForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v18 = v35;
@@ -10234,9 +10234,9 @@ LABEL_12:
 
   if (v16)
   {
-    v29 = v7;
-    v30 = v6;
-    v19 = sub_100018A64([v6 slotID]);
+    v29 = completionCopy;
+    v30 = contextCopy;
+    v19 = sub_100018A64([contextCopy slotID]);
     *buf = 0;
     v35 = 0;
     v36 = 0;
@@ -10267,10 +10267,10 @@ LABEL_12:
     }
 
     v26 = objc_alloc_init(CTSIMToolkitItemList);
-    v7 = v29;
-    v6 = v30;
+    completionCopy = v29;
+    contextCopy = v30;
     [v26 setItemList:v20];
-    v7[2](v7, v26, 0);
+    completionCopy[2](completionCopy, v26, 0);
 
     if (SHIBYTE(v36) < 0)
     {
@@ -10302,7 +10302,7 @@ LABEL_23:
     }
 
     v28 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v7)[2](v7, 0, v28);
+    (completionCopy)[2](completionCopy, 0, v28);
 
     if ((v17 & 1) == 0)
     {
@@ -10313,13 +10313,13 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)selectSIMToolkitListItemForContext:(id)a3 session:(id)a4 response:(id)a5 index:(id)a6 completion:(id)a7
+- (void)selectSIMToolkitListItemForContext:(id)context session:(id)session response:(id)response index:(id)index completion:(id)completion
 {
-  v32 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  contextCopy = context;
+  sessionCopy = session;
+  responseCopy = response;
+  indexCopy = index;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(*buf);
   v17 = ServiceMap;
@@ -10371,14 +10371,14 @@ LABEL_9:
 
   if (v24)
   {
-    v26 = [v12 unsignedIntValue];
-    v27 = sub_101164C98(v13);
-    v28 = [v14 unsignedIntValue];
-    v29 = sub_100018A64([v32 slotID]);
-    (*(*v24 + 88))(v24, v29, v26, v27, v28);
-    if (v15)
+    unsignedIntValue = [sessionCopy unsignedIntValue];
+    v27 = sub_101164C98(responseCopy);
+    unsignedIntValue2 = [indexCopy unsignedIntValue];
+    v29 = sub_100018A64([contextCopy slotID]);
+    (*(*v24 + 88))(v24, v29, unsignedIntValue, v27, unsignedIntValue2);
+    if (completionCopy)
     {
-      v15[2](v15, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     if ((v25 & 1) == 0)
@@ -10400,9 +10400,9 @@ LABEL_15:
     }
 
     v31 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    if (v15)
+    if (completionCopy)
     {
-      (v15)[2](v15, v31);
+      (completionCopy)[2](completionCopy, v31);
     }
 
     if ((v25 & 1) == 0)
@@ -10412,12 +10412,12 @@ LABEL_15:
   }
 }
 
-- (void)sendSIMToolkitResponseForContext:(id)a3 session:(id)a4 response:(id)a5 completion:(id)a6
+- (void)sendSIMToolkitResponseForContext:(id)context session:(id)session response:(id)response completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  sessionCopy = session;
+  responseCopy = response;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(v31);
   v15 = ServiceMap;
@@ -10469,9 +10469,9 @@ LABEL_9:
 
   if (v22)
   {
-    v24 = [v11 unsignedIntValue];
-    v25 = sub_101164C98(v12);
-    v26 = sub_100018A64([v10 slotID]);
+    unsignedIntValue = [sessionCopy unsignedIntValue];
+    v25 = sub_101164C98(responseCopy);
+    v26 = sub_100018A64([contextCopy slotID]);
     v27 = *v22;
     if (v25 == 6)
     {
@@ -10482,11 +10482,11 @@ LABEL_9:
     {
       if (v25 != 7)
       {
-        (*(v27 + 72))(v22, v26, v24, v25);
+        (*(v27 + 72))(v22, v26, unsignedIntValue, v25);
 LABEL_23:
-        if (v13)
+        if (completionCopy)
         {
-          v13[2](v13, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         goto LABEL_25;
@@ -10495,7 +10495,7 @@ LABEL_23:
       v28 = 0;
     }
 
-    (*(v27 + 80))(v22, v26, v24, v25, v28);
+    (*(v27 + 80))(v22, v26, unsignedIntValue, v25, v28);
     goto LABEL_23;
   }
 
@@ -10509,9 +10509,9 @@ LABEL_23:
   }
 
   v30 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  if (v13)
+  if (completionCopy)
   {
-    (v13)[2](v13, v30);
+    (completionCopy)[2](completionCopy, v30);
   }
 
 LABEL_25:
@@ -10521,13 +10521,13 @@ LABEL_25:
   }
 }
 
-- (void)sendSIMToolkitStringResponseForContext:(id)a3 session:(id)a4 response:(id)a5 string:(id)a6 completion:(id)a7
+- (void)sendSIMToolkitStringResponseForContext:(id)context session:(id)session response:(id)response string:(id)string completion:(id)completion
 {
-  v32 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  contextCopy = context;
+  sessionCopy = session;
+  responseCopy = response;
+  stringCopy = string;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(__p[0]);
   v17 = ServiceMap;
@@ -10589,9 +10589,9 @@ LABEL_9:
     }
 
     v31 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    if (v15)
+    if (completionCopy)
     {
-      v15[2](v15, v31);
+      completionCopy[2](completionCopy, v31);
     }
 
     if ((v25 & 1) == 0)
@@ -10602,13 +10602,13 @@ LABEL_9:
     goto LABEL_34;
   }
 
-  v26 = [v12 unsignedIntValue];
-  v27 = sub_101164C98(v13);
+  unsignedIntValue = [sessionCopy unsignedIntValue];
+  v27 = sub_101164C98(responseCopy);
   __p[0] = 0;
   __p[1] = 0;
   v36 = 0;
-  sub_10000501C(__p, [v14 UTF8String]);
-  v28 = sub_100018A64([v32 slotID]);
+  sub_10000501C(__p, [stringCopy UTF8String]);
+  v28 = sub_100018A64([contextCopy slotID]);
   if (v27 >= 2)
   {
     if (v27 == 6)
@@ -10621,13 +10621,13 @@ LABEL_9:
     {
       v29 = 0;
 LABEL_25:
-      (*(*v24 + 80))(v24, v28, v26, v27, v29);
+      (*(*v24 + 80))(v24, v28, unsignedIntValue, v27, v29);
       goto LABEL_29;
     }
 
-    (*(*v24 + 72))(v24, v28, v26, v27);
+    (*(*v24 + 72))(v24, v28, unsignedIntValue, v27);
 LABEL_29:
-    if (!v15)
+    if (!completionCopy)
     {
       goto LABEL_31;
     }
@@ -10646,17 +10646,17 @@ LABEL_29:
     v34 = v36;
   }
 
-  (*(*v24 + 96))(v24, v28, v26, v27, __dst);
+  (*(*v24 + 96))(v24, v28, unsignedIntValue, v27, __dst);
   if ((SHIBYTE(v34) & 0x80000000) == 0)
   {
     goto LABEL_29;
   }
 
   operator delete(__dst[0]);
-  if (v15)
+  if (completionCopy)
   {
 LABEL_30:
-    v15[2](v15, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_31:
@@ -10680,13 +10680,13 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)sendSIMToolkitBooleanResponseForContext:(id)a3 session:(id)a4 response:(id)a5 yesNo:(BOOL)a6 completion:(id)a7
+- (void)sendSIMToolkitBooleanResponseForContext:(id)context session:(id)session response:(id)response yesNo:(BOOL)no completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  noCopy = no;
+  contextCopy = context;
+  sessionCopy = session;
+  responseCopy = response;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(v32);
   v17 = ServiceMap;
@@ -10738,9 +10738,9 @@ LABEL_9:
 
   if (v24)
   {
-    v26 = [v13 unsignedIntValue];
-    v27 = sub_101164C98(v14);
-    v28 = sub_100018A64([v12 slotID]);
+    unsignedIntValue = [sessionCopy unsignedIntValue];
+    v27 = sub_101164C98(responseCopy);
+    v28 = sub_100018A64([contextCopy slotID]);
     if (v27 < 2)
     {
       v29 = (*v24 + 104);
@@ -10749,28 +10749,28 @@ LABEL_9:
     else if (v27 == 6)
     {
       v29 = (*v24 + 80);
-      v8 = 1;
+      noCopy = 1;
     }
 
     else
     {
       if (v27 != 7)
       {
-        (*(*v24 + 72))(v24, v28, v26, v27);
+        (*(*v24 + 72))(v24, v28, unsignedIntValue, v27);
 LABEL_24:
-        if (v15)
+        if (completionCopy)
         {
-          v15[2](v15, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         goto LABEL_26;
       }
 
-      v8 = 0;
+      noCopy = 0;
       v29 = (*v24 + 80);
     }
 
-    (*v29)(v24, v28, v26, v27, v8);
+    (*v29)(v24, v28, unsignedIntValue, v27, noCopy);
     goto LABEL_24;
   }
 
@@ -10784,9 +10784,9 @@ LABEL_24:
   }
 
   v31 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  if (v15)
+  if (completionCopy)
   {
-    (v15)[2](v15, v31);
+    (completionCopy)[2](completionCopy, v31);
   }
 
 LABEL_26:
@@ -10796,10 +10796,10 @@ LABEL_26:
   }
 }
 
-- (void)sendSIMToolkitUserActivityForContext:(id)a3 completion:(id)a4
+- (void)sendSIMToolkitUserActivityForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(v20);
   v9 = ServiceMap;
@@ -10852,9 +10852,9 @@ LABEL_9:
   if (v16)
   {
     (*(*v16 + 128))(v16);
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     if ((v17 & 1) == 0)
@@ -10876,9 +10876,9 @@ LABEL_15:
     }
 
     v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    if (v7)
+    if (completionCopy)
     {
-      (v7)[2](v7, v19);
+      (completionCopy)[2](completionCopy, v19);
     }
 
     if ((v17 & 1) == 0)
@@ -10888,10 +10888,10 @@ LABEL_15:
   }
 }
 
-- (void)sendSIMToolkitDisplayReadyForContext:(id)a3 completion:(id)a4
+- (void)sendSIMToolkitDisplayReadyForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(v20);
   v9 = ServiceMap;
@@ -10944,9 +10944,9 @@ LABEL_9:
   if (v16)
   {
     (*(*v16 + 144))(v16);
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     if ((v17 & 1) == 0)
@@ -10968,9 +10968,9 @@ LABEL_15:
     }
 
     v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    if (v7)
+    if (completionCopy)
     {
-      (v7)[2](v7, v19);
+      (completionCopy)[2](completionCopy, v19);
     }
 
     if ((v17 & 1) == 0)
@@ -10980,11 +10980,11 @@ LABEL_15:
   }
 }
 
-- (void)getSIMToolkitUSSDStringForContext:(id)a3 completion:(id)a4
+- (void)getSIMToolkitUSSDStringForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(__p);
@@ -11027,7 +11027,7 @@ LABEL_12:
         {
           if ((sub_100B051A4() & 2) != 0)
           {
-            v7[2](v7, @"Please add a description for this capture:", 1, 0);
+            completionCopy[2](completionCopy, @"Please add a description for this capture:", 1, 0);
           }
 
           else
@@ -11048,7 +11048,7 @@ LABEL_12:
             }
 
             v21 = [NSString stringWithUTF8String:p_p];
-            v7[2](v7, v21, v19, 0);
+            completionCopy[2](completionCopy, v21, v19, 0);
 
             if (SHIBYTE(v26) < 0)
             {
@@ -11069,7 +11069,7 @@ LABEL_12:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (v7)[2](v7, &stru_101F6AFB8, 0, v23);
+          (completionCopy)[2](completionCopy, &stru_101F6AFB8, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -11104,11 +11104,11 @@ LABEL_12:
 LABEL_27:
 }
 
-- (void)sendSIMToolkitUSSDResponseForContext:(id)a3 response:(id)a4 completion:(id)a5
+- (void)sendSIMToolkitUSSDResponseForContext:(id)context response:(id)response completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  responseCopy = response;
+  completionCopy = completion;
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(v42[0]);
   v12 = ServiceMap;
@@ -11165,7 +11165,7 @@ LABEL_9:
     v42[1] = 0;
     v43 = 0;
     v21 = v42;
-    sub_10000501C(v42, [v9 UTF8String]);
+    sub_10000501C(v42, [responseCopy UTF8String]);
     v22 = HIBYTE(v43);
     v23 = v42[0];
     if (v43 >= 0)
@@ -11267,7 +11267,7 @@ LABEL_42:
             v42[0] = 0;
             v42[1] = 0;
             v43 = 0;
-            sub_10000501C(v42, [v9 UTF8String]);
+            sub_10000501C(v42, [responseCopy UTF8String]);
             if (SHIBYTE(v43) < 0)
             {
               sub_100005F2C(v36, v42[0], v42[1]);
@@ -11315,7 +11315,7 @@ LABEL_42:
     v42[0] = 0;
     v42[1] = 0;
     v43 = 0;
-    sub_10000501C(v42, [v9 UTF8String]);
+    sub_10000501C(v42, [responseCopy UTF8String]);
     sub_10005B8C8(&v38);
     (*(*v38 + 216))(v38, v42);
     if (v39)
@@ -11331,9 +11331,9 @@ LABEL_42:
   }
 
 LABEL_54:
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   if ((v20 & 1) == 0)
@@ -11342,10 +11342,10 @@ LABEL_54:
   }
 }
 
-- (void)cancelSIMToolkitUSSDSessionForContext:(id)a3 completion:(id)a4
+- (void)cancelSIMToolkitUSSDSessionForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (sub_100B051A4())
   {
     sub_100B051E4(-1);
@@ -11412,17 +11412,17 @@ LABEL_11:
   }
 
 LABEL_17:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)reliableNetworkFallback:(id)a3 completion:(id)a4
+- (void)reliableNetworkFallback:(id)fallback completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  fallbackCopy = fallback;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v23);
@@ -11463,8 +11463,8 @@ LABEL_12:
 
         if (v16)
         {
-          v19 = sub_10002A8E0(v6);
-          v20 = objc_retainBlock(v7);
+          v19 = sub_10002A8E0(fallbackCopy);
+          v20 = objc_retainBlock(completionCopy);
           v26[0] = off_101F1AB10;
           v26[1] = v20;
           v26[3] = v26;
@@ -11484,7 +11484,7 @@ LABEL_12:
           }
 
           v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v7 + 2))(v7, 0, 0, v22);
+          (*(completionCopy + 2))(completionCopy, 0, 0, v22);
         }
 
         if ((v17 & 1) == 0)
@@ -11519,12 +11519,12 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)setReliableNetworkFallback:(id)a3 enable:(BOOL)a4 completion:(id)a5
+- (void)setReliableNetworkFallback:(id)fallback enable:(BOOL)enable completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  enableCopy = enable;
+  fallbackCopy = fallback;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v20 = v25;
@@ -11589,9 +11589,9 @@ LABEL_12:
 
   if (v18)
   {
-    v21 = sub_10002A8E0(v8);
-    (*(*v18 + 128))(v18, v21, v6);
-    v9[2](v9, 0);
+    v21 = sub_10002A8E0(fallbackCopy);
+    (*(*v18 + 128))(v18, v21, enableCopy);
+    completionCopy[2](completionCopy, 0);
     if ((v19 & 1) == 0)
     {
 LABEL_16:
@@ -11611,7 +11611,7 @@ LABEL_16:
     }
 
     v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v9)[2](v9, v23);
+    (completionCopy)[2](completionCopy, v23);
 
     if ((v19 & 1) == 0)
     {
@@ -11622,11 +11622,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)lowDataMode:(id)a3 completion:(id)a4
+- (void)lowDataMode:(id)mode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  modeCopy = mode;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v23);
@@ -11667,8 +11667,8 @@ LABEL_12:
 
         if (v16)
         {
-          v19 = sub_10002A8E0(v6);
-          v20 = objc_retainBlock(v7);
+          v19 = sub_10002A8E0(modeCopy);
+          v20 = objc_retainBlock(completionCopy);
           v26[0] = off_101F1ABA0;
           v26[1] = v20;
           v26[3] = v26;
@@ -11688,7 +11688,7 @@ LABEL_12:
           }
 
           v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v7 + 2))(v7, 0, v22);
+          (*(completionCopy + 2))(completionCopy, 0, v22);
         }
 
         if ((v17 & 1) == 0)
@@ -11723,12 +11723,12 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)setLowDataMode:(id)a3 enable:(BOOL)a4 completion:(id)a5
+- (void)setLowDataMode:(id)mode enable:(BOOL)enable completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  enableCopy = enable;
+  modeCopy = mode;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v20 = v25;
@@ -11793,9 +11793,9 @@ LABEL_12:
 
   if (v18)
   {
-    v21 = sub_10002A8E0(v8);
-    (*(*v18 + 24))(v18, v21, v6);
-    v9[2](v9, 0);
+    v21 = sub_10002A8E0(modeCopy);
+    (*(*v18 + 24))(v18, v21, enableCopy);
+    completionCopy[2](completionCopy, 0);
     if ((v19 & 1) == 0)
     {
 LABEL_16:
@@ -11815,7 +11815,7 @@ LABEL_16:
     }
 
     v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v9)[2](v9, v23);
+    (completionCopy)[2](completionCopy, v23);
 
     if ((v19 & 1) == 0)
     {
@@ -11826,10 +11826,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)isSmartDataModeSupportedWithCompletion:(id)a3
+- (void)isSmartDataModeSupportedWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v18);
@@ -11887,7 +11887,7 @@ LABEL_12:
           v16 = 0;
         }
 
-        v4[2](v4, v16);
+        completionCopy[2](completionCopy, v16);
         if ((v14 & 1) == 0)
         {
           sub_100004A34(v12);
@@ -11920,11 +11920,11 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)smartDataMode:(id)a3 completion:(id)a4
+- (void)smartDataMode:(id)mode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  modeCopy = mode;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v18 = v24;
@@ -11989,9 +11989,9 @@ LABEL_12:
 
   if (v16)
   {
-    v19 = sub_10002A8E0(v6);
+    v19 = sub_10002A8E0(modeCopy);
     v20 = (*(*v16 + 40))(v16, v19);
-    v7[2](v7, v20, 0);
+    completionCopy[2](completionCopy, v20, 0);
     if ((v17 & 1) == 0)
     {
 LABEL_16:
@@ -12011,7 +12011,7 @@ LABEL_16:
     }
 
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v7)[2](v7, 0, v22);
+    (completionCopy)[2](completionCopy, 0, v22);
 
     if ((v17 & 1) == 0)
     {
@@ -12022,12 +12022,12 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setSmartDataMode:(id)a3 enable:(BOOL)a4 completion:(id)a5
+- (void)setSmartDataMode:(id)mode enable:(BOOL)enable completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  enableCopy = enable;
+  modeCopy = mode;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v20 = v25;
@@ -12092,9 +12092,9 @@ LABEL_12:
 
   if (v18)
   {
-    v21 = sub_10002A8E0(v8);
-    (*(*v18 + 48))(v18, v21, v6);
-    v9[2](v9, 0);
+    v21 = sub_10002A8E0(modeCopy);
+    (*(*v18 + 48))(v18, v21, enableCopy);
+    completionCopy[2](completionCopy, 0);
     if ((v19 & 1) == 0)
     {
 LABEL_16:
@@ -12114,7 +12114,7 @@ LABEL_16:
     }
 
     v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v9)[2](v9, v23);
+    (completionCopy)[2](completionCopy, v23);
 
     if ((v19 & 1) == 0)
     {
@@ -12125,11 +12125,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)isHighDataModeSupported:(id)a3 completion:(id)a4
+- (void)isHighDataModeSupported:(id)supported completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  supportedCopy = supported;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v22);
@@ -12170,9 +12170,9 @@ LABEL_12:
 
         if (v16)
         {
-          v19 = sub_10002A8E0(v6);
+          v19 = sub_10002A8E0(supportedCopy);
           v20 = (*(*v16 + 56))(v16, v19);
-          v7[2](v7, v20);
+          completionCopy[2](completionCopy, v20);
         }
 
         else
@@ -12186,7 +12186,7 @@ LABEL_12:
             _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Could not find SaveDataMode interface for getting current support", &v22, 2u);
           }
 
-          v7[2](v7, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         if ((v17 & 1) == 0)
@@ -12221,11 +12221,11 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)interfaceCostExpensive:(id)a3 completion:(id)a4
+- (void)interfaceCostExpensive:(id)expensive completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  expensiveCopy = expensive;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v18 = v24;
@@ -12290,9 +12290,9 @@ LABEL_12:
 
   if (v16)
   {
-    v19 = sub_10002A8E0(v6);
+    v19 = sub_10002A8E0(expensiveCopy);
     v20 = (*(*v16 + 64))(v16, v19);
-    v7[2](v7, v20, 0);
+    completionCopy[2](completionCopy, v20, 0);
     if ((v17 & 1) == 0)
     {
 LABEL_16:
@@ -12312,7 +12312,7 @@ LABEL_16:
     }
 
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v7)[2](v7, 1, v22);
+    (completionCopy)[2](completionCopy, 1, v22);
 
     if ((v17 & 1) == 0)
     {
@@ -12323,12 +12323,12 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setInterfaceCost:(id)a3 expensive:(BOOL)a4 completion:(id)a5
+- (void)setInterfaceCost:(id)cost expensive:(BOOL)expensive completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  expensiveCopy = expensive;
+  costCopy = cost;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v20 = v25;
@@ -12393,9 +12393,9 @@ LABEL_12:
 
   if (v18)
   {
-    v21 = sub_10002A8E0(v8);
-    (*(*v18 + 72))(v18, v21, v6);
-    v9[2](v9, 0);
+    v21 = sub_10002A8E0(costCopy);
+    (*(*v18 + 72))(v18, v21, expensiveCopy);
+    completionCopy[2](completionCopy, 0);
     if ((v19 & 1) == 0)
     {
 LABEL_16:
@@ -12415,7 +12415,7 @@ LABEL_16:
     }
 
     v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v9)[2](v9, v23);
+    (completionCopy)[2](completionCopy, v23);
 
     if ((v19 & 1) == 0)
     {
@@ -12426,10 +12426,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)overriddenInterfaceCostInexpensiveWithCompletion:(id)a3
+- (void)overriddenInterfaceCostInexpensiveWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v15 = v20;
@@ -12495,7 +12495,7 @@ LABEL_12:
   if (v13)
   {
     v16 = (*(*v13 + 80))(v13);
-    v4[2](v4, v16, 0);
+    completionCopy[2](completionCopy, v16, 0);
     if ((v14 & 1) == 0)
     {
 LABEL_16:
@@ -12515,7 +12515,7 @@ LABEL_16:
     }
 
     v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v4)[2](v4, 1, v18);
+    (completionCopy)[2](completionCopy, 1, v18);
 
     if ((v14 & 1) == 0)
     {
@@ -12526,11 +12526,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setOverriddenInterfaceCostInexpensive:(BOOL)a3 completion:(id)a4
+- (void)setOverriddenInterfaceCostInexpensive:(BOOL)inexpensive completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v6)
+  inexpensiveCopy = inexpensive;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v17 = v21;
@@ -12595,8 +12595,8 @@ LABEL_12:
 
   if (v15)
   {
-    (*(*v15 + 88))(v15, v4);
-    v6[2](v6, 0);
+    (*(*v15 + 88))(v15, inexpensiveCopy);
+    completionCopy[2](completionCopy, 0);
     if ((v16 & 1) == 0)
     {
 LABEL_16:
@@ -12616,7 +12616,7 @@ LABEL_16:
     }
 
     v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v6)[2](v6, v19);
+    (completionCopy)[2](completionCopy, v19);
 
     if ((v16 & 1) == 0)
     {
@@ -12627,11 +12627,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)privacyProxy:(id)a3 completion:(id)a4
+- (void)privacyProxy:(id)proxy completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  proxyCopy = proxy;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v18 = v24;
@@ -12696,9 +12696,9 @@ LABEL_12:
 
   if (v16)
   {
-    v19 = sub_10002A8E0(v6);
+    v19 = sub_10002A8E0(proxyCopy);
     v20 = (*(*v16 + 16))(v16, v19);
-    (*(v7 + 2))(v7, v20 & 1, (v20 >> 8) & 1, 0);
+    (*(completionCopy + 2))(completionCopy, v20 & 1, (v20 >> 8) & 1, 0);
     if ((v17 & 1) == 0)
     {
 LABEL_16:
@@ -12718,7 +12718,7 @@ LABEL_16:
     }
 
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v22);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v22);
 
     if ((v17 & 1) == 0)
     {
@@ -12729,12 +12729,12 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setPrivacyProxy:(id)a3 enabled:(BOOL)a4 completion:(id)a5
+- (void)setPrivacyProxy:(id)proxy enabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  enabledCopy = enabled;
+  proxyCopy = proxy;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v20 = v25;
@@ -12799,9 +12799,9 @@ LABEL_12:
 
   if (v18)
   {
-    v21 = sub_10002A8E0(v8);
-    (*(*v18 + 24))(v18, v21, v6);
-    v9[2](v9, 0);
+    v21 = sub_10002A8E0(proxyCopy);
+    (*(*v18 + 24))(v18, v21, enabledCopy);
+    completionCopy[2](completionCopy, 0);
     if ((v19 & 1) == 0)
     {
 LABEL_16:
@@ -12821,7 +12821,7 @@ LABEL_16:
     }
 
     v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v9)[2](v9, v23);
+    (completionCopy)[2](completionCopy, v23);
 
     if ((v19 & 1) == 0)
     {
@@ -12832,10 +12832,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)checkRadioBootHealth:(id)a3
+- (void)checkRadioBootHealth:(id)health
 {
-  v4 = a3;
-  if (v4)
+  healthCopy = health;
+  if (healthCopy)
   {
     *buf = 0;
     v11 = 0;
@@ -12843,7 +12843,7 @@ LABEL_17:
     if (*buf && (v9 = 2048, IsTelephonyRunningExtended(&v9)))
     {
       v5 = *buf;
-      v6 = objc_retainBlock(v4);
+      v6 = objc_retainBlock(healthCopy);
       v12[0] = off_101F249C8;
       v12[1] = v6;
       v12[3] = v12;
@@ -12854,7 +12854,7 @@ LABEL_17:
     else
     {
       v7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      (*(v4 + 2))(v4, 0, v7);
+      (*(healthCopy + 2))(healthCopy, 0, v7);
     }
 
     if (v11)
@@ -12876,10 +12876,10 @@ LABEL_17:
   }
 }
 
-- (void)checkRadioBootHealthDetails:(id)a3
+- (void)checkRadioBootHealthDetails:(id)details
 {
-  v4 = a3;
-  if (v4)
+  detailsCopy = details;
+  if (detailsCopy)
   {
     *buf = 0;
     v11 = 0;
@@ -12887,7 +12887,7 @@ LABEL_17:
     if (*buf && (v9 = 2048, IsTelephonyRunningExtended(&v9)))
     {
       v5 = *buf;
-      v6 = objc_retainBlock(v4);
+      v6 = objc_retainBlock(detailsCopy);
       v12[0] = off_101F24A48;
       v12[1] = v6;
       v12[3] = v12;
@@ -12898,7 +12898,7 @@ LABEL_17:
     else
     {
       v7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      (*(v4 + 2))(v4, 0, 0, v7);
+      (*(detailsCopy + 2))(detailsCopy, 0, 0, v7);
     }
 
     if (v11)
@@ -12920,10 +12920,10 @@ LABEL_17:
   }
 }
 
-- (void)getBasebandRadioFrequencyFrontEndScanData:(id)a3
+- (void)getBasebandRadioFrequencyFrontEndScanData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     *buf = 0;
     v11 = 0;
@@ -12931,7 +12931,7 @@ LABEL_17:
     if (*buf && (v9 = 2048, IsTelephonyRunningExtended(&v9)))
     {
       v5 = *buf;
-      object[0] = objc_retainBlock(v4);
+      object[0] = objc_retainBlock(dataCopy);
       [(CTXPCClientHandler *)self getQueue];
       v12 = off_101F24AD8;
       v13 = *object;
@@ -12944,7 +12944,7 @@ LABEL_17:
     else
     {
       v6 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      (*(v4 + 2))(v4, 0, v6);
+      (*(dataCopy + 2))(dataCopy, 0, v6);
     }
 
     if (v11)
@@ -12966,10 +12966,10 @@ LABEL_17:
   }
 }
 
-- (void)checkCellularDiagnosticsStatus:(id)a3
+- (void)checkCellularDiagnosticsStatus:(id)status
 {
-  v4 = a3;
-  if (v4)
+  statusCopy = status;
+  if (statusCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(buf);
@@ -13068,7 +13068,7 @@ LABEL_12:
       {
         v20 = 3;
 LABEL_30:
-        v4[2](v4, v20, v19);
+        statusCopy[2](statusCopy, v20, v19);
         if ((v14 & 1) == 0)
         {
           sub_100004A34(v12);
@@ -13099,10 +13099,10 @@ LABEL_30:
 LABEL_32:
 }
 
-- (void)activateTurboMode:(id)a3
+- (void)activateTurboMode:(id)mode
 {
-  v4 = a3;
-  if (!v4)
+  modeCopy = mode;
+  if (!modeCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v5 = v19;
@@ -13165,7 +13165,7 @@ LABEL_12:
 
   if (v14)
   {
-    v16 = objc_retainBlock(v4);
+    v16 = objc_retainBlock(modeCopy);
     v21[0] = off_101F24B68;
     v21[1] = v16;
     v21[3] = v21;
@@ -13179,7 +13179,7 @@ LABEL_12:
   ctu::OsLogContext::~OsLogContext(&v18);
   if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    if (!v4)
+    if (!modeCopy)
     {
       goto LABEL_19;
     }
@@ -13189,10 +13189,10 @@ LABEL_12:
 
   LOWORD(v18) = 0;
   _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Could not find BasebandSettingsInterface for activating turbo mode.", &v18, 2u);
-  if (v4)
+  if (modeCopy)
   {
 LABEL_18:
-    (*(v4 + 2))(v4, 0);
+    (*(modeCopy + 2))(modeCopy, 0);
   }
 
 LABEL_19:
@@ -13202,10 +13202,10 @@ LABEL_19:
   }
 }
 
-- (void)checkBasebandConfigUpdateInfo:(id)a3
+- (void)checkBasebandConfigUpdateInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     *buf = 0;
     v11 = 0;
@@ -13213,7 +13213,7 @@ LABEL_19:
     if (*buf && (v9 = 2048, IsTelephonyRunningExtended(&v9)))
     {
       v5 = *buf;
-      v6 = objc_retainBlock(v4);
+      v6 = objc_retainBlock(infoCopy);
       v12[0] = off_101F24BE8;
       v12[1] = v6;
       v12[3] = v12;
@@ -13224,7 +13224,7 @@ LABEL_19:
     else
     {
       v7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      (*(v4 + 2))(v4, 0, v7);
+      (*(infoCopy + 2))(infoCopy, 0, v7);
     }
 
     if (v11)
@@ -13246,11 +13246,11 @@ LABEL_19:
   }
 }
 
-- (void)getSupportsTARandomization:(id)a3 completion:(id)a4
+- (void)getSupportsTARandomization:(id)randomization completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  randomizationCopy = randomization;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v23);
@@ -13291,8 +13291,8 @@ LABEL_12:
 
         if (v16)
         {
-          v19 = sub_10002A8E0(v6);
-          v20 = objc_retainBlock(v7);
+          v19 = sub_10002A8E0(randomizationCopy);
+          v20 = objc_retainBlock(completionCopy);
           v26[0] = off_101F24C78;
           v26[1] = v20;
           v26[3] = v26;
@@ -13312,7 +13312,7 @@ LABEL_12:
           }
 
           v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v7 + 2))(v7, 0, v22);
+          (*(completionCopy + 2))(completionCopy, 0, v22);
         }
 
         if ((v17 & 1) == 0)
@@ -13347,11 +13347,11 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)getTARandomizationSetting:(id)a3 completion:(id)a4
+- (void)getTARandomizationSetting:(id)setting completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  settingCopy = setting;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v23);
@@ -13404,12 +13404,12 @@ LABEL_12:
 
     if (v16)
     {
-      v19 = sub_10002A8E0(v6);
+      v19 = sub_10002A8E0(settingCopy);
       v20 = (*(*v16 + 240))(v16, v19);
       if ((v20 & 0x100) != 0)
       {
         v21 = [NSNumber numberWithBool:v20 & 1];
-        v7[2](v7, v21, 0);
+        completionCopy[2](completionCopy, v21, 0);
 LABEL_21:
 
         if ((v17 & 1) == 0)
@@ -13434,7 +13434,7 @@ LABEL_21:
     }
 
     v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v7)[2](v7, 0, v21);
+    (completionCopy)[2](completionCopy, 0, v21);
     goto LABEL_21;
   }
 
@@ -13450,12 +13450,12 @@ LABEL_21:
 LABEL_23:
 }
 
-- (void)setTARandomizationUserSetting:(id)a3 enabled:(BOOL)a4 completion:(id)a5
+- (void)setTARandomizationUserSetting:(id)setting enabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  enabledCopy = enabled;
+  settingCopy = setting;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v25);
@@ -13496,12 +13496,12 @@ LABEL_12:
 
         if (v18)
         {
-          v21 = sub_10002A8E0(v8);
-          v22 = objc_retainBlock(v9);
+          v21 = sub_10002A8E0(settingCopy);
+          v22 = objc_retainBlock(completionCopy);
           v28[0] = off_101F24CF8;
           v28[1] = v22;
           v28[3] = v28;
-          (*(*v18 + 248))(v18, v21, v6, v28);
+          (*(*v18 + 248))(v18, v21, enabledCopy, v28);
           sub_100014380(v28);
         }
 
@@ -13517,7 +13517,7 @@ LABEL_12:
           }
 
           v24 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v9 + 2))(v9, v24);
+          (*(completionCopy + 2))(completionCopy, v24);
         }
 
         if ((v19 & 1) == 0)
@@ -13552,12 +13552,12 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)getTransportKeysToUpdate:(id)a3
+- (void)getTransportKeysToUpdate:(id)update
 {
-  v4 = a3;
-  if (v4)
+  updateCopy = update;
+  if (updateCopy)
   {
-    v5 = v4;
+    v5 = updateCopy;
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v20);
     v7 = ServiceMap;
@@ -13597,9 +13597,9 @@ LABEL_13:
 
         if (v14)
         {
-          v17 = self;
+          selfCopy = self;
           v23[0] = off_101F24D78;
-          v23[1] = v17;
+          v23[1] = selfCopy;
           v23[2] = v5;
           v23[3] = v23;
           (**v14)(v14, v23);
@@ -13655,13 +13655,13 @@ LABEL_13:
 LABEL_22:
 }
 
-- (void)setTransportKeysUpdated:(BOOL)a3 with:(id)a4 completion:(id)a5
+- (void)setTransportKeysUpdated:(BOOL)updated with:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v53 = v8;
-  v51 = a5;
-  if (v51)
+  updatedCopy = updated;
+  withCopy = with;
+  v53 = withCopy;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(buf);
@@ -13683,7 +13683,7 @@ LABEL_22:
     std::mutex::lock(ServiceMap);
     v60 = v11;
     v15 = sub_100009510(&v10[1].__m_.__sig, &v60);
-    v49 = v6;
+    v49 = updatedCopy;
     if (v15)
     {
       v16 = v15[3];
@@ -13707,19 +13707,19 @@ LABEL_12:
           v60 = 0;
           v61 = 0;
           v62 = 0;
-          if (v8)
+          if (withCopy)
           {
-            v19 = [v8 stks];
-            if (v19)
+            stks = [withCopy stks];
+            if (stks)
             {
               v20 = v17;
-              v21 = [v8 stks];
-              v22 = [v21 count] == 0;
+              stks2 = [withCopy stks];
+              v22 = [stks2 count] == 0;
 
               if (!v22)
               {
-                v23 = [v8 stks];
-                v24 = [v23 count];
+                stks3 = [withCopy stks];
+                v24 = [stks3 count];
                 if (0xAAAAAAAAAAAAAAABLL * ((v62 - v60) >> 3) < v24)
                 {
                   if (v24 <= 0xAAAAAAAAAAAAAAALL)
@@ -13735,12 +13735,12 @@ LABEL_12:
                 v59 = 0u;
                 v56 = 0u;
                 v57 = 0u;
-                v25 = [v8 stks];
-                v26 = [v25 countByEnumeratingWithState:&v56 objects:v63 count:16];
+                stks4 = [withCopy stks];
+                v26 = [stks4 countByEnumeratingWithState:&v56 objects:v63 count:16];
                 if (v26)
                 {
                   v27 = *v57;
-                  obj = v25;
+                  obj = stks4;
                   do
                   {
                     for (i = 0; i != v26; i = i + 1)
@@ -13751,13 +13751,13 @@ LABEL_12:
                       }
 
                       v29 = *(*(&v56 + 1) + 8 * i);
-                      v54 = [v29 index];
-                      v30 = [v29 key_epki];
-                      v31 = v30;
-                      *&v55 = v30;
-                      if (v30)
+                      index = [v29 index];
+                      key_epki = [v29 key_epki];
+                      v31 = key_epki;
+                      *&v55 = key_epki;
+                      if (key_epki)
                       {
-                        CFRetain(v30);
+                        CFRetain(key_epki);
                       }
 
                       v32 = [v29 stk];
@@ -13800,7 +13800,7 @@ LABEL_12:
                         }
 
                         v39 = 8 * (v61 - v60);
-                        *v39 = v54;
+                        *v39 = index;
                         *(v39 + 8) = 0;
                         *(v39 + 8) = v55;
                         *&v55 = 0;
@@ -13820,12 +13820,12 @@ LABEL_12:
                         *&buf = v41;
                         *(&buf + 1) = v41;
                         sub_10129FB70(&buf);
-                        v8 = v53;
+                        withCopy = v53;
                       }
 
                       else
                       {
-                        *v61 = v54;
+                        *v61 = index;
                         *(v34 + 1) = 0u;
                         *(v34 + 1) = v55;
                         v55 = 0u;
@@ -13839,7 +13839,7 @@ LABEL_12:
                       v17 = v20;
                     }
 
-                    v25 = obj;
+                    stks4 = obj;
                     v26 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
                   }
 
@@ -13849,19 +13849,19 @@ LABEL_12:
             }
           }
 
-          v43 = [v8 sps_environment];
-          (*(*v48 + 8))(v48, v49, &v60, v43);
+          sps_environment = [withCopy sps_environment];
+          (*(*v48 + 8))(v48, v49, &v60, sps_environment);
           [(CTXPCClientHandler *)self getLogContext];
           v44 = *(&buf + 1);
           ctu::OsLogContext::~OsLogContext(&buf);
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(buf) = 138412290;
-            *(&buf + 4) = v8;
+            *(&buf + 4) = withCopy;
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "processed setTransportKeysUpdated: %@", &buf, 0xCu);
           }
 
-          v51[2](v51, 0);
+          completionCopy[2](completionCopy, 0);
           *&buf = &v60;
           sub_10129FBD4(&buf);
         }
@@ -13878,7 +13878,7 @@ LABEL_12:
           }
 
           v46 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (v51)[2](v51, v46);
+          (completionCopy)[2](completionCopy, v46);
         }
 
         if ((v50 & 1) == 0)
@@ -13913,10 +13913,10 @@ LABEL_12:
 LABEL_52:
 }
 
-- (void)forceRollAllTransportKeys:(id)a3
+- (void)forceRollAllTransportKeys:(id)keys
 {
-  v4 = a3;
-  if (!v4)
+  keysCopy = keys;
+  if (!keysCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v15 = v20;
@@ -13991,7 +13991,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "processed forceRollAllTransportKeys", &v19, 2u);
     }
 
-    v4[2](v4, 0);
+    keysCopy[2](keysCopy, 0);
     if ((v14 & 1) == 0)
     {
 LABEL_18:
@@ -14011,7 +14011,7 @@ LABEL_18:
     }
 
     v18 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v4)[2](v4, v18);
+    (keysCopy)[2](keysCopy, v18);
 
     if ((v14 & 1) == 0)
     {
@@ -14022,12 +14022,12 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)getSatelliteMsgCfgToUpdate:(id)a3
+- (void)getSatelliteMsgCfgToUpdate:(id)update
 {
-  v4 = a3;
-  if (v4)
+  updateCopy = update;
+  if (updateCopy)
   {
-    v5 = v4;
+    v5 = updateCopy;
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v20);
     v7 = ServiceMap;
@@ -14125,11 +14125,11 @@ LABEL_13:
 LABEL_22:
 }
 
-- (void)setSatelliteMsgCfgUpdated:(id)a3 completion:(id)a4
+- (void)setSatelliteMsgCfgUpdated:(id)updated completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  updatedCopy = updated;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(buf);
@@ -14170,10 +14170,10 @@ LABEL_12:
 
         if (v16)
         {
-          v19 = [v6 result];
-          v20 = [v6 cfg_id];
-          sub_100047544(v20, &buf);
-          (*(*(v16 + 8) + 8))(v16 + 8, v19, buf, [v6 sps_environment]);
+          result = [updatedCopy result];
+          cfg_id = [updatedCopy cfg_id];
+          sub_100047544(cfg_id, &buf);
+          (*(*(v16 + 8) + 8))(v16 + 8, result, buf, [updatedCopy sps_environment]);
           sub_1000475BC(&buf);
 
           [(CTXPCClientHandler *)self getLogContext];
@@ -14182,11 +14182,11 @@ LABEL_12:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(buf) = 138412290;
-            *(&buf + 4) = v6;
+            *(&buf + 4) = updatedCopy;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "processed setSatelliteMsgCfgUpdated: %@", &buf, 0xCu);
           }
 
-          v7[2](v7, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         else
@@ -14201,7 +14201,7 @@ LABEL_12:
           }
 
           v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (v7)[2](v7, v23);
+          (completionCopy)[2](completionCopy, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -14236,10 +14236,10 @@ LABEL_12:
 LABEL_23:
 }
 
-- (void)reprovisionSatelliteMsg:(BOOL)a3 completion:(id)a4
+- (void)reprovisionSatelliteMsg:(BOOL)msg completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -14280,8 +14280,8 @@ LABEL_12:
 
         if (v14)
         {
-          v17 = self;
-          objc_retainBlock(v5);
+          selfCopy = self;
+          objc_retainBlock(completionCopy);
           operator new();
         }
 
@@ -14295,7 +14295,7 @@ LABEL_12:
         }
 
         v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        (*(v5 + 2))(v5, v19);
+        (*(completionCopy + 2))(completionCopy, v19);
 
         if ((v15 & 1) == 0)
         {
@@ -14329,10 +14329,10 @@ LABEL_12:
 LABEL_20:
 }
 
-- (void)hasDedicatedBearerSupport:(id)a3
+- (void)hasDedicatedBearerSupport:(id)support
 {
-  v4 = a3;
-  if (v4)
+  supportCopy = support;
+  if (supportCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -14379,7 +14379,7 @@ LABEL_12:
           v16 = v20;
           if (v20)
           {
-            v17 = objc_retainBlock(v4);
+            v17 = objc_retainBlock(supportCopy);
             *buf = off_101F24F18;
             v23 = v17;
             v24 = buf;
@@ -14398,7 +14398,7 @@ LABEL_12:
               _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Dedicated Bearer management is not available", buf, 2u);
             }
 
-            (*(v4 + 2))(v4, 0);
+            (*(supportCopy + 2))(supportCopy, 0);
           }
 
           if (v21)
@@ -14418,7 +14418,7 @@ LABEL_12:
             _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Carrier Entitlement service is not available", buf, 2u);
           }
 
-          (*(v4 + 2))(v4, 0);
+          (*(supportCopy + 2))(supportCopy, 0);
         }
 
         if ((v14 & 1) == 0)
@@ -14453,14 +14453,14 @@ LABEL_12:
 LABEL_27:
 }
 
-- (void)addDedicatedBearer:(id)a3 completion:(id)a4
+- (void)addDedicatedBearer:(id)bearer completion:(id)completion
 {
-  v6 = a3;
-  v29 = v6;
-  v30 = a4;
-  if (v30)
+  bearerCopy = bearer;
+  v29 = bearerCopy;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (bearerCopy)
     {
       [(CTXPCClientHandler *)self registry];
       ServiceMap = Registry::getServiceMap(*buf);
@@ -14509,14 +14509,14 @@ LABEL_16:
             {
               memset(__src, 0, sizeof(__src));
               memset(v31, 0, sizeof(v31));
-              v19 = [v29 details];
-              if ([v19 countByEnumeratingWithState:v31 objects:v38 count:16])
+              details = [v29 details];
+              if ([details countByEnumeratingWithState:v31 objects:v38 count:16])
               {
                 operator new();
               }
 
               v20 = v33;
-              v21 = objc_retainBlock(v30);
+              v21 = objc_retainBlock(completionCopy);
               *buf = off_101F24FE8;
               v36 = v21;
               v37 = buf;
@@ -14538,7 +14538,7 @@ LABEL_16:
               }
 
               v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-              (*(v30 + 2))(v30, 0, v25);
+              (*(completionCopy + 2))(completionCopy, 0, v25);
             }
 
             if (v34)
@@ -14559,7 +14559,7 @@ LABEL_16:
             }
 
             v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            (*(v30 + 2))(v30, 0, v23);
+            (*(completionCopy + 2))(completionCopy, 0, v23);
           }
 
           if ((v28 & 1) == 0)
@@ -14592,7 +14592,7 @@ LABEL_16:
     }
 
     v18 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    (*(v30 + 2))(v30, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
   else
@@ -14610,13 +14610,13 @@ LABEL_16:
 LABEL_33:
 }
 
-- (void)removeDedicatedBearer:(id)a3 completion:(id)a4
+- (void)removeDedicatedBearer:(id)bearer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  bearerCopy = bearer;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (bearerCopy)
     {
       [(CTXPCClientHandler *)self registry];
       ServiceMap = Registry::getServiceMap(*buf);
@@ -14663,11 +14663,11 @@ LABEL_16:
             v21 = v27;
             if (v27)
             {
-              v22 = objc_retainBlock(v7);
+              v22 = objc_retainBlock(completionCopy);
               *buf = off_101F25078;
               v30 = v22;
               v31 = buf;
-              (*(*v21 + 16))(v21, v6, buf);
+              (*(*v21 + 16))(v21, bearerCopy, buf);
               sub_10036EC9C(buf);
             }
 
@@ -14683,7 +14683,7 @@ LABEL_16:
               }
 
               v26 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-              (*(v7 + 2))(v7, v26);
+              (*(completionCopy + 2))(completionCopy, v26);
             }
 
             if (v28)
@@ -14704,7 +14704,7 @@ LABEL_16:
             }
 
             v24 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            (*(v7 + 2))(v7, v24);
+            (*(completionCopy + 2))(completionCopy, v24);
           }
 
           if ((v17 & 1) == 0)
@@ -14737,7 +14737,7 @@ LABEL_16:
     }
 
     v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, v20);
+    (*(completionCopy + 2))(completionCopy, v20);
   }
 
   else
@@ -14755,10 +14755,10 @@ LABEL_16:
 LABEL_31:
 }
 
-- (void)removeAllDedicatedBearers:(id)a3
+- (void)removeAllDedicatedBearers:(id)bearers
 {
-  v4 = a3;
-  if (v4)
+  bearersCopy = bearers;
+  if (bearersCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -14805,7 +14805,7 @@ LABEL_12:
           v16 = v22;
           if (v22)
           {
-            v17 = objc_retainBlock(v4);
+            v17 = objc_retainBlock(bearersCopy);
             *buf = off_101F250F8;
             v25 = v17;
             v26 = buf;
@@ -14825,7 +14825,7 @@ LABEL_12:
             }
 
             v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            (*(v4 + 2))(v4, v21);
+            (*(bearersCopy + 2))(bearersCopy, v21);
           }
 
           if (v23)
@@ -14846,7 +14846,7 @@ LABEL_12:
           }
 
           v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v4 + 2))(v4, v19);
+          (*(bearersCopy + 2))(bearersCopy, v19);
         }
 
         if ((v14 & 1) == 0)
@@ -14881,13 +14881,13 @@ LABEL_12:
 LABEL_27:
 }
 
-- (void)isDedicatedBearerPresent:(id)a3 completion:(id)a4
+- (void)isDedicatedBearerPresent:(id)present completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  presentCopy = present;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (presentCopy)
     {
       [(CTXPCClientHandler *)self registry];
       ServiceMap = Registry::getServiceMap(*buf);
@@ -14934,11 +14934,11 @@ LABEL_16:
             v21 = v27;
             if (v27)
             {
-              v22 = objc_retainBlock(v7);
+              v22 = objc_retainBlock(completionCopy);
               *buf = off_101F25178;
               v30 = v22;
               v31 = buf;
-              (*(*v21 + 32))(v21, v6, buf);
+              (*(*v21 + 32))(v21, presentCopy, buf);
               sub_10036ED1C(buf);
             }
 
@@ -14954,7 +14954,7 @@ LABEL_16:
               }
 
               v26 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-              (*(v7 + 2))(v7, 0, v26);
+              (*(completionCopy + 2))(completionCopy, 0, v26);
             }
 
             if (v28)
@@ -14975,7 +14975,7 @@ LABEL_16:
             }
 
             v24 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            (*(v7 + 2))(v7, 0, v24);
+            (*(completionCopy + 2))(completionCopy, 0, v24);
           }
 
           if ((v17 & 1) == 0)
@@ -15008,7 +15008,7 @@ LABEL_16:
     }
 
     v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 
   else
@@ -15026,10 +15026,10 @@ LABEL_16:
 LABEL_31:
 }
 
-- (void)getListOfPresentDedicatedBearers:(id)a3
+- (void)getListOfPresentDedicatedBearers:(id)bearers
 {
-  v4 = a3;
-  if (v4)
+  bearersCopy = bearers;
+  if (bearersCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -15076,7 +15076,7 @@ LABEL_12:
           v16 = v20;
           if (v20)
           {
-            v17 = objc_retainBlock(v4);
+            v17 = objc_retainBlock(bearersCopy);
             *buf = off_101F25208;
             v23 = v17;
             v24 = buf;
@@ -15095,7 +15095,7 @@ LABEL_12:
               _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Dedicated Bearer management is not available", buf, 2u);
             }
 
-            (*(v4 + 2))(v4, 0);
+            (*(bearersCopy + 2))(bearersCopy, 0);
           }
 
           if (v21)
@@ -15115,7 +15115,7 @@ LABEL_12:
             _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Carrier Entitlement service is not available", buf, 2u);
           }
 
-          (*(v4 + 2))(v4, 0);
+          (*(bearersCopy + 2))(bearersCopy, 0);
         }
 
         if ((v14 & 1) == 0)
@@ -15150,10 +15150,10 @@ LABEL_12:
 LABEL_27:
 }
 
-- (void)getQoSLinkCharacteristics:(id)a3
+- (void)getQoSLinkCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  if (v4)
+  characteristicsCopy = characteristics;
+  if (characteristicsCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -15200,7 +15200,7 @@ LABEL_12:
           v16 = v22;
           if (v22)
           {
-            v17 = objc_retainBlock(v4);
+            v17 = objc_retainBlock(characteristicsCopy);
             *buf = off_101F25298;
             v25 = v17;
             v26 = buf;
@@ -15220,7 +15220,7 @@ LABEL_12:
             }
 
             v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            (*(v4 + 2))(v4, 0, v21);
+            (*(characteristicsCopy + 2))(characteristicsCopy, 0, v21);
           }
 
           if (v23)
@@ -15241,7 +15241,7 @@ LABEL_12:
           }
 
           v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v4 + 2))(v4, 0, v19);
+          (*(characteristicsCopy + 2))(characteristicsCopy, 0, v19);
         }
 
         if ((v14 & 1) == 0)
@@ -15276,10 +15276,10 @@ LABEL_12:
 LABEL_27:
 }
 
-- (void)requestQoSLinkCharacteristics:(id)a3
+- (void)requestQoSLinkCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  if (v4)
+  characteristicsCopy = characteristics;
+  if (characteristicsCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -15326,7 +15326,7 @@ LABEL_12:
           v16 = v22;
           if (v22)
           {
-            v17 = objc_retainBlock(v4);
+            v17 = objc_retainBlock(characteristicsCopy);
             *buf = off_101F25328;
             v25 = v17;
             v26 = buf;
@@ -15346,7 +15346,7 @@ LABEL_12:
             }
 
             v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            (*(v4 + 2))(v4, v21);
+            (*(characteristicsCopy + 2))(characteristicsCopy, v21);
           }
 
           if (v23)
@@ -15367,7 +15367,7 @@ LABEL_12:
           }
 
           v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (*(v4 + 2))(v4, v19);
+          (*(characteristicsCopy + 2))(characteristicsCopy, v19);
         }
 
         if ((v14 & 1) == 0)
@@ -15402,18 +15402,18 @@ LABEL_12:
 LABEL_27:
 }
 
-- (void)selectPhonebook:(id)a3 forPhonebookName:(int)a4 withPassword:(id)a5 completion:(id)a6
+- (void)selectPhonebook:(id)phonebook forPhonebookName:(int)name withPassword:(id)password completion:(id)completion
 {
-  LODWORD(v8) = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  LODWORD(v8) = name;
+  phonebookCopy = phonebook;
+  passwordCopy = password;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v10)
+    if (!phonebookCopy)
     {
       v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v12[2](v12, v24);
+      completionCopy[2](completionCopy, v24);
 
       goto LABEL_30;
     }
@@ -15457,7 +15457,7 @@ LABEL_14:
 
         if (v21)
         {
-          v25 = sub_100018A64([v10 slotID]);
+          v25 = sub_100018A64([phonebookCopy slotID]);
           memset(buf, 0, sizeof(buf));
           v33 = 0;
           ctu::cf::assign();
@@ -15483,7 +15483,7 @@ LABEL_14:
             v26 = *buf;
           }
 
-          v27 = objc_retainBlock(v12);
+          v27 = objc_retainBlock(completionCopy);
           v34[0] = off_101F2CE38;
           v34[1] = v27;
           v34[3] = v34;
@@ -15507,7 +15507,7 @@ LABEL_14:
           }
 
           v29 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v12[2](v12, v29);
+          completionCopy[2](completionCopy, v29);
         }
 
         if ((v22 & 1) == 0)
@@ -15542,19 +15542,19 @@ LABEL_14:
 LABEL_30:
 }
 
-- (void)savePhonebookEntry:(id)a3 atIndex:(int)a4 withContactName:(id)a5 contactNumber:(id)a6 completion:(id)a7
+- (void)savePhonebookEntry:(id)entry atIndex:(int)index withContactName:(id)name contactNumber:(id)number completion:(id)completion
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  v10 = *&index;
+  entryCopy = entry;
+  nameCopy = name;
+  numberCopy = number;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v12)
+    if (!entryCopy)
     {
       v27 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v15[2](v15, v27);
+      completionCopy[2](completionCopy, v27);
 
       goto LABEL_39;
     }
@@ -15598,7 +15598,7 @@ LABEL_14:
 
         if (v24)
         {
-          v28 = sub_100018A64([v12 slotID]);
+          v28 = sub_100018A64([entryCopy slotID]);
           v48 = 0uLL;
           v49 = 0;
           ctu::cf::assign();
@@ -15620,7 +15620,7 @@ LABEL_14:
             v29 = __p[0];
           }
 
-          v30 = objc_retainBlock(v15);
+          v30 = objc_retainBlock(completionCopy);
           v50[0] = off_101F2CEB8;
           v50[1] = v30;
           v50[3] = v50;
@@ -15674,7 +15674,7 @@ LABEL_14:
           }
 
           v32 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v15[2](v15, v32);
+          completionCopy[2](completionCopy, v32);
         }
 
         if ((v25 & 1) == 0)
@@ -15709,16 +15709,16 @@ LABEL_14:
 LABEL_39:
 }
 
-- (void)fetchPhonebook:(id)a3 completion:(id)a4
+- (void)fetchPhonebook:(id)phonebook completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  phonebookCopy = phonebook;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!phonebookCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_23;
     }
@@ -15762,8 +15762,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([phonebookCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F2CF38;
           v27[1] = v21;
           v27[3] = v27;
@@ -15783,7 +15783,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, v23);
+          completionCopy[2](completionCopy, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -15818,13 +15818,13 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)getPhonebookEntryCountWithCompletion:(id)a3 completion:(id)a4
+- (void)getPhonebookEntryCountWithCompletion:(id)completion completion:(id)a4
 {
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   if (v7)
   {
-    if (!v6)
+    if (!completionCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       v7[2](v7, 0, v19);
@@ -15871,7 +15871,7 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
+          v20 = sub_100018A64([completionCopy slotID]);
           v21 = objc_retainBlock(v7);
           v27[0] = off_101F2CFB8;
           v27[1] = v21;
@@ -15927,14 +15927,14 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)getPhonebookEntryWithCompletion:(id)a3 atIndex:(int)a4 completion:(id)a5
+- (void)getPhonebookEntryWithCompletion:(id)completion atIndex:(int)index completion:(id)a5
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&index;
+  completionCopy = completion;
   v9 = a5;
   if (v9)
   {
-    if (!v8)
+    if (!completionCopy)
     {
       v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       v9[2](v9, 0, v21);
@@ -15981,7 +15981,7 @@ LABEL_14:
 
         if (v18)
         {
-          v22 = sub_100018A64([v8 slotID]);
+          v22 = sub_100018A64([completionCopy slotID]);
           v23 = objc_retainBlock(v9);
           v29[0] = off_101F2D038;
           v29[1] = v23;
@@ -16037,13 +16037,13 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)getPhoneNumberWithCompletion:(id)a3 completion:(id)a4
+- (void)getPhoneNumberWithCompletion:(id)completion completion:(id)a4
 {
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   if (v7)
   {
-    if (!v6)
+    if (!completionCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       v7[2](v7, 0, v19);
@@ -16090,11 +16090,11 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = self;
+          v20 = sub_100018A64([completionCopy slotID]);
+          selfCopy = self;
           v22 = objc_retainBlock(v7);
           v28[0] = off_101F2D0B8;
-          v28[1] = v21;
+          v28[1] = selfCopy;
           v28[2] = v22;
           v28[3] = v28;
           (*(*v16 + 264))(v16, v20, v28);
@@ -16148,13 +16148,13 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)getSIMStatus:(id)a3 completion:(id)a4
+- (void)getSIMStatus:(id)status completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  statusCopy = status;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (statusCopy)
     {
       *buf = 0;
       v15 = 0;
@@ -16175,7 +16175,7 @@ LABEL_23:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -16186,7 +16186,7 @@ LABEL_23:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -16203,10 +16203,10 @@ LABEL_23:
   }
 }
 
-- (void)getSIMTrayStatus:(id)a3
+- (void)getSIMTrayStatus:(id)status
 {
-  v4 = a3;
-  if (v4)
+  statusCopy = status;
+  if (statusCopy)
   {
     *buf = 0;
     v11 = 0;
@@ -16227,7 +16227,7 @@ LABEL_23:
     }
 
     v7 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    v4[2](v4, 0, v7);
+    statusCopy[2](statusCopy, 0, v7);
 
     if (v11)
     {
@@ -16248,9 +16248,9 @@ LABEL_23:
   }
 }
 
-- (void)isEmbeddedSIMOnlyConfig:(id)a3
+- (void)isEmbeddedSIMOnlyConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v9 = 0;
   v10 = 0;
   [(CTXPCClientHandler *)self registry];
@@ -16270,7 +16270,7 @@ LABEL_23:
   }
 
   v6 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-  v4[2](v4, 0, v6);
+  configCopy[2](configCopy, 0, v6);
 
   if (v10)
   {
@@ -16278,10 +16278,10 @@ LABEL_23:
   }
 }
 
-- (void)copyMobileEquipmentInfo:(id)a3
+- (void)copyMobileEquipmentInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     *buf = 0;
     v11 = 0;
@@ -16302,7 +16302,7 @@ LABEL_23:
     }
 
     v7 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    v4[2](v4, 0, v7);
+    infoCopy[2](infoCopy, 0, v7);
 
     if (v11)
     {
@@ -16323,13 +16323,13 @@ LABEL_23:
   }
 }
 
-- (void)getTypeAllocationCode:(id)a3 completion:(id)a4
+- (void)getTypeAllocationCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (codeCopy)
     {
       v14 = 0;
       v15 = 0;
@@ -16350,7 +16350,7 @@ LABEL_23:
       }
 
       v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -16361,7 +16361,7 @@ LABEL_23:
     else
     {
       v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -16378,10 +16378,10 @@ LABEL_23:
   }
 }
 
-- (void)copyFirmwareUpdateInfo:(id)a3
+- (void)copyFirmwareUpdateInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -16446,7 +16446,7 @@ LABEL_12:
         v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
       }
 
-      v4[2](v4, 0, v18);
+      infoCopy[2](infoCopy, 0, v18);
 
 LABEL_20:
       if ((v14 & 1) == 0)
@@ -16501,7 +16501,7 @@ LABEL_31:
           v31[2] = sub_1014342FC;
           v31[3] = &unk_101F3B988;
           v31[4] = self;
-          v32 = v4;
+          v32 = infoCopy;
           (*(*v27 + 144))(v27, 1, v31, 0);
           v29 = v32;
         }
@@ -16518,7 +16518,7 @@ LABEL_31:
           }
 
           v29 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v4[2](v4, 0, v29);
+          infoCopy[2](infoCopy, 0, v29);
         }
 
         if ((v28 & 1) == 0)
@@ -16553,13 +16553,13 @@ LABEL_31:
 LABEL_22:
 }
 
-- (void)copySIMIdentity:(id)a3 completion:(id)a4
+- (void)copySIMIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identityCopy = identity;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (identityCopy)
     {
       *buf = 0;
       v15 = 0;
@@ -16580,7 +16580,7 @@ LABEL_22:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -16591,7 +16591,7 @@ LABEL_22:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -16608,13 +16608,13 @@ LABEL_22:
   }
 }
 
-- (void)copyMobileSubscriberIdentity:(id)a3 completion:(id)a4
+- (void)copyMobileSubscriberIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identityCopy = identity;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (identityCopy)
     {
       v13 = 0;
       v14 = 0;
@@ -16635,7 +16635,7 @@ LABEL_22:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v14)
       {
@@ -16646,7 +16646,7 @@ LABEL_22:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -16663,17 +16663,17 @@ LABEL_22:
   }
 }
 
-- (void)context:(id)a3 isProtectedIdentitySupported:(id)a4 completion:(id)a5
+- (void)context:(id)context isProtectedIdentitySupported:(id)supported completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  contextCopy = context;
+  supportedCopy = supported;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9)
+    if (contextCopy && supportedCopy)
     {
-      v11 = [(CTXPCClientHandler *)self dataProviderDelegate];
-      v12 = [v11 resolveContext:v8];
+      dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+      v12 = [dataProviderDelegate resolveContext:contextCopy];
 
       if (v12)
       {
@@ -16690,7 +16690,7 @@ LABEL_22:
           }
 
           v28 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-          v10[2](v10, 0, v28);
+          completionCopy[2](completionCopy, 0, v28);
 
           goto LABEL_28;
         }
@@ -16734,8 +16734,8 @@ LABEL_21:
 
             if (v22)
             {
-              v29 = [v9 isEqualToString:kCTEncryptedIdentityWiFiCalling];
-              v30 = objc_retainBlock(v10);
+              v29 = [supportedCopy isEqualToString:kCTEncryptedIdentityWiFiCalling];
+              v30 = objc_retainBlock(completionCopy);
               v35[0] = off_101F3BC60;
               v35[1] = v30;
               v35[3] = v35;
@@ -16746,7 +16746,7 @@ LABEL_21:
             else
             {
               v31 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-              v10[2](v10, 0, v31);
+              completionCopy[2](completionCopy, 0, v31);
             }
 
             if ((v23 & 1) == 0)
@@ -16755,7 +16755,7 @@ LABEL_21:
             }
 
 LABEL_28:
-            v8 = v12;
+            contextCopy = v12;
             goto LABEL_29;
           }
         }
@@ -16772,15 +16772,15 @@ LABEL_28:
       }
 
       v26 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-      v10[2](v10, 0, v26);
+      completionCopy[2](completionCopy, 0, v26);
 
-      v8 = 0;
+      contextCopy = 0;
     }
 
     else
     {
       v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, 0, v25);
+      completionCopy[2](completionCopy, 0, v25);
     }
   }
 
@@ -16799,22 +16799,22 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)context:(id)a3 supportedIdentityProtectionFor:(id)a4 completion:(id)a5
+- (void)context:(id)context supportedIdentityProtectionFor:(id)for completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  contextCopy = context;
+  forCopy = for;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!contextCopy)
     {
       v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
 
       goto LABEL_25;
     }
 
-    v11 = sub_100018A64([v8 slotID]);
+    v11 = sub_100018A64([contextCopy slotID]);
     if (v11)
     {
       [(CTXPCClientHandler *)self registry];
@@ -16856,8 +16856,8 @@ LABEL_18:
 
           if (v20)
           {
-            v26 = [v9 isEqualToString:kCTEncryptedIdentityWiFiCalling];
-            v27 = objc_retainBlock(v10);
+            v26 = [forCopy isEqualToString:kCTEncryptedIdentityWiFiCalling];
+            v27 = objc_retainBlock(completionCopy);
             v32[0] = off_101F3BCF0;
             v32[1] = v27;
             v32[3] = v32;
@@ -16868,7 +16868,7 @@ LABEL_18:
           else
           {
             v28 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            v10[2](v10, 0, v28);
+            completionCopy[2](completionCopy, 0, v28);
           }
 
           if ((v21 & 1) == 0)
@@ -16901,7 +16901,7 @@ LABEL_18:
     }
 
     v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-    v10[2](v10, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 
   else
@@ -16919,22 +16919,22 @@ LABEL_18:
 LABEL_25:
 }
 
-- (void)createEncryptedIdentity:(id)a3 identity:(id)a4 completion:(id)a5
+- (void)createEncryptedIdentity:(id)identity identity:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  identityCopy = identity;
   v9 = a4;
-  v10 = a5;
-  if (v10)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!identityCopy)
     {
       v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
 
       goto LABEL_25;
     }
 
-    v11 = sub_100018A64([v8 slotID]);
+    v11 = sub_100018A64([identityCopy slotID]);
     if (v11)
     {
       [(CTXPCClientHandler *)self registry];
@@ -16976,7 +16976,7 @@ LABEL_18:
 
           if (v20)
           {
-            v26 = objc_retainBlock(v10);
+            v26 = objc_retainBlock(completionCopy);
             v31[0] = off_101F3BD70;
             v31[1] = v26;
             v31[3] = v31;
@@ -16987,7 +16987,7 @@ LABEL_18:
           else
           {
             v27 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            v10[2](v10, 0, v27);
+            completionCopy[2](completionCopy, 0, v27);
           }
 
           if ((v21 & 1) == 0)
@@ -17020,7 +17020,7 @@ LABEL_18:
     }
 
     v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-    v10[2](v10, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 
   else
@@ -17038,22 +17038,22 @@ LABEL_18:
 LABEL_25:
 }
 
-- (void)context:(id)a3 getPseudoIdentityFor:(id)a4 completion:(id)a5
+- (void)context:(id)context getPseudoIdentityFor:(id)for completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  contextCopy = context;
+  forCopy = for;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!contextCopy)
     {
       v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
 
       goto LABEL_25;
     }
 
-    v11 = sub_100018A64([v8 slotID]);
+    v11 = sub_100018A64([contextCopy slotID]);
     if (v11)
     {
       [(CTXPCClientHandler *)self registry];
@@ -17095,8 +17095,8 @@ LABEL_18:
 
           if (v20)
           {
-            v26 = [v9 isEqualToString:kCTEncryptedIdentityWiFiCalling];
-            v27 = objc_retainBlock(v10);
+            v26 = [forCopy isEqualToString:kCTEncryptedIdentityWiFiCalling];
+            v27 = objc_retainBlock(completionCopy);
             v32[0] = off_101F3BE00;
             v32[1] = v27;
             v32[3] = v32;
@@ -17107,7 +17107,7 @@ LABEL_18:
           else
           {
             v28 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-            v10[2](v10, 0, v28);
+            completionCopy[2](completionCopy, 0, v28);
           }
 
           if ((v21 & 1) == 0)
@@ -17140,7 +17140,7 @@ LABEL_18:
     }
 
     v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-    v10[2](v10, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 
   else
@@ -17158,16 +17158,16 @@ LABEL_18:
 LABEL_25:
 }
 
-- (void)evaluateMobileSubscriberIdentity:(id)a3 identity:(id)a4 completion:(id)a5
+- (void)evaluateMobileSubscriberIdentity:(id)identity identity:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  identityCopy = identity;
   v9 = a4;
-  v10 = a5;
-  if (v10)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (identityCopy)
     {
-      v11 = sub_100018A64([v8 slotID]);
+      v11 = sub_100018A64([identityCopy slotID]);
       if (v11)
       {
         [(CTXPCClientHandler *)self registry];
@@ -17218,7 +17218,7 @@ LABEL_19:
               v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
             }
 
-            v10[2](v10, v25);
+            completionCopy[2](completionCopy, v25);
             if ((v21 & 1) == 0)
             {
               sub_100004A34(v19);
@@ -17249,13 +17249,13 @@ LABEL_19:
       }
 
       v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-      v10[2](v10, v23);
+      completionCopy[2](completionCopy, v23);
     }
 
     else
     {
       v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, v23);
+      completionCopy[2](completionCopy, v23);
     }
 
     goto LABEL_27;
@@ -17273,16 +17273,16 @@ LABEL_19:
 LABEL_27:
 }
 
-- (void)copyMobileSubscriberCountryCode:(id)a3 completion:(id)a4
+- (void)copyMobileSubscriberCountryCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!codeCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 LABEL_15:
 
       goto LABEL_30;
@@ -17297,7 +17297,7 @@ LABEL_15:
     if ((v20 & 0x100) == 0)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
       goto LABEL_15;
     }
 
@@ -17343,9 +17343,9 @@ LABEL_22:
 
           if (v16)
           {
-            sub_100018A64([v6 slotID]);
-            v22 = self;
-            objc_retainBlock(v7);
+            sub_100018A64([codeCopy slotID]);
+            selfCopy = self;
+            objc_retainBlock(completionCopy);
             v27[4] = 0;
             operator new();
           }
@@ -17360,7 +17360,7 @@ LABEL_22:
           }
 
           v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v24);
+          completionCopy[2](completionCopy, 0, v24);
 
           if ((v17 & 1) == 0)
           {
@@ -17391,7 +17391,7 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Returning default value for copyMobileSubscriberCountryCode", &v25, 2u);
     }
 
-    (v7)[2](v7, @"65535", 0);
+    (completionCopy)[2](completionCopy, @"65535", 0);
   }
 
   else
@@ -17409,16 +17409,16 @@ LABEL_22:
 LABEL_30:
 }
 
-- (void)copyMobileSubscriberIsoCountryCode:(id)a3 completion:(id)a4
+- (void)copyMobileSubscriberIsoCountryCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!codeCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 LABEL_15:
 
       goto LABEL_40;
@@ -17479,7 +17479,7 @@ LABEL_21:
 
       if (v16)
       {
-        sub_10000501C(__p, [v6 UTF8String]);
+        sub_10000501C(__p, [codeCopy UTF8String]);
         (*(*v16 + 24))(v27, v16, __p);
         if (SHIBYTE(v30) < 0)
         {
@@ -17526,7 +17526,7 @@ LABEL_33:
         }
 
         v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-        v7[2](v7, 0, v22);
+        completionCopy[2](completionCopy, 0, v22);
 
         if ((v17 & 1) == 0)
         {
@@ -17558,7 +17558,7 @@ LABEL_34:
       }
 
       v24 = [NSString stringWithUTF8String:v23];
-      (v7)[2](v7, v24, 0);
+      (completionCopy)[2](completionCopy, v24, 0);
 
       goto LABEL_38;
     }
@@ -17566,7 +17566,7 @@ LABEL_34:
     if (([(CTXPCClientHandler *)self isLinkedOnOrAfterVersion:@"16.4"]& 0x100) == 0)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
       goto LABEL_15;
     }
 
@@ -17579,7 +17579,7 @@ LABEL_34:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Returning default value for copyMobileSubscriberIsoCountryCode", buf, 2u);
     }
 
-    (v7)[2](v7, @"--", 0);
+    (completionCopy)[2](completionCopy, @"--", 0);
   }
 
   else
@@ -17597,12 +17597,12 @@ LABEL_34:
 LABEL_40:
 }
 
-- (void)copyMobileSubscriberIsoSubregionCode:(id)a3 MNC:(id)a4 completion:(id)a5
+- (void)copyMobileSubscriberIsoSubregionCode:(id)code MNC:(id)c completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  codeCopy = code;
+  cCopy = c;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v21 = v35;
@@ -17616,10 +17616,10 @@ LABEL_40:
     goto LABEL_27;
   }
 
-  if (!v8 || !v9)
+  if (!codeCopy || !cCopy)
   {
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v10[2](v10, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
 
     goto LABEL_27;
   }
@@ -17679,8 +17679,8 @@ LABEL_15:
     v35 = 0;
     v36 = 0;
     v29 = v20;
-    sub_10000501C(v32, [v8 UTF8String]);
-    sub_10000501C(__p, [v9 UTF8String]);
+    sub_10000501C(v32, [codeCopy UTF8String]);
+    sub_10000501C(__p, [cCopy UTF8String]);
     (*(*v19 + 80))(buf, v19, v32, __p);
     if (v31 < 0)
     {
@@ -17709,7 +17709,7 @@ LABEL_15:
       while (v25 < 0xAAAAAAAAAAAAAAABLL * ((v35 - *buf) >> 3));
     }
 
-    (v10)[2](v10, v23, 0);
+    (completionCopy)[2](completionCopy, v23, 0);
 
     v32[0] = buf;
     sub_1000087B4(v32);
@@ -17732,7 +17732,7 @@ LABEL_26:
     }
 
     v28 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    v10[2](v10, 0, v28);
+    completionCopy[2](completionCopy, 0, v28);
 
     if ((v20 & 1) == 0)
     {
@@ -17743,16 +17743,16 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)getSimHardwareInfo:(id)a3 completion:(id)a4
+- (void)getSimHardwareInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!infoCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_30;
     }
@@ -17796,7 +17796,7 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
+          v20 = sub_100018A64([infoCopy slotID]);
           v25 = 0;
           v25 = (*(*v16 + 24))(v16, v20);
           if (subscriber::isEsimCapable())
@@ -17827,7 +17827,7 @@ LABEL_14:
           }
 
           v24 = [[CTSimHardwareInfo alloc] initWithHardwareInfo:v22 simLocation:v21];
-          (v7)[2](v7, v24, 0);
+          (completionCopy)[2](completionCopy, v24, 0);
         }
 
         else
@@ -17842,7 +17842,7 @@ LABEL_14:
           }
 
           v24 = [NSError errorWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v24);
+          completionCopy[2](completionCopy, 0, v24);
         }
 
         if ((v17 & 1) == 0)
@@ -17877,16 +17877,16 @@ LABEL_14:
 LABEL_30:
 }
 
-- (void)getMobileSubscriberHomeCountryList:(id)a3 completion:(id)a4
+- (void)getMobileSubscriberHomeCountryList:(id)list completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  listCopy = list;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!listCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -17930,8 +17930,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([listCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F3BF00;
           v27[1] = v21;
           v27[3] = v27;
@@ -17951,7 +17951,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -17986,16 +17986,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)copyLastKnownMobileSubscriberCountryCode:(id)a3 completion:(id)a4
+- (void)copyLastKnownMobileSubscriberCountryCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!codeCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -18039,8 +18039,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([codeCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F3BF80;
           v27[1] = v21;
           v27[3] = v27;
@@ -18060,7 +18060,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -18095,16 +18095,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)copyMobileSubscriberNetworkCode:(id)a3 completion:(id)a4
+- (void)copyMobileSubscriberNetworkCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!codeCopy)
     {
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       goto LABEL_60;
     }
@@ -18118,7 +18118,7 @@ LABEL_23:
     if ((v8 & 0x100) == 0)
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
 
       goto LABEL_13;
     }
@@ -18187,12 +18187,12 @@ LABEL_21:
         }
 
         v36 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-        v7[2](v7, 0, v36);
+        completionCopy[2](completionCopy, 0, v36);
 
         goto LABEL_58;
       }
 
-      v23 = sub_100018A64([v6 slotID]);
+      v23 = sub_100018A64([codeCopy slotID]);
       __p[0] = 0;
       __p[1] = 0;
       v50 = 0;
@@ -18217,7 +18217,7 @@ LABEL_53:
         }
 
         v40 = [NSString stringWithUTF8String:v39];
-        (v7)[2](v7, v40, 0);
+        (completionCopy)[2](completionCopy, v40, 0);
 
         if (SHIBYTE(v50) < 0)
         {
@@ -18338,7 +18338,7 @@ LABEL_38:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Returning default value for copyMobileSubscriberCountryCode", &v41, 2u);
     }
 
-    (v7)[2](v7, @"65535", 0);
+    (completionCopy)[2](completionCopy, @"65535", 0);
   }
 
   else
@@ -18356,13 +18356,13 @@ LABEL_38:
 LABEL_60:
 }
 
-- (void)copyGid1:(id)a3 completion:(id)a4
+- (void)copyGid1:(id)gid1 completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  gid1Copy = gid1;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (gid1Copy)
     {
       *buf = 0;
       v15 = 0;
@@ -18383,7 +18383,7 @@ LABEL_60:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -18394,7 +18394,7 @@ LABEL_60:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -18411,13 +18411,13 @@ LABEL_60:
   }
 }
 
-- (void)copyGid2:(id)a3 completion:(id)a4
+- (void)copyGid2:(id)gid2 completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  gid2Copy = gid2;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (gid2Copy)
     {
       *buf = 0;
       v15 = 0;
@@ -18438,7 +18438,7 @@ LABEL_60:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -18449,7 +18449,7 @@ LABEL_60:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -18466,27 +18466,27 @@ LABEL_60:
   }
 }
 
-- (void)copyLabel:(id)a3 completion:(id)a4
+- (void)copyLabel:(id)label completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_101438788;
   v7[3] = &unk_101F3B9B0;
-  v8 = a4;
-  v6 = v8;
-  [(CTXPCClientHandler *)self getSimLabel:a3 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(CTXPCClientHandler *)self getSimLabel:label completion:v7];
 }
 
-- (void)getSimLabel:(id)a3 completion:(id)a4
+- (void)getSimLabel:(id)label completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  labelCopy = label;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!labelCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_51;
     }
@@ -18532,7 +18532,7 @@ LABEL_14:
         {
           v33 = 0;
           v34 = 0;
-          v20 = sub_100018A64([v6 slotID]);
+          v20 = sub_100018A64([labelCopy slotID]);
           (*(*v16 + 8))(&v33, v16, v20);
           if (v33)
           {
@@ -18580,13 +18580,13 @@ LABEL_14:
               v26 = [NSString stringWithUTF8String:v25];
               v27 = [v22 initWithId:v24 andText:v26 andDidSetup:BYTE8(v39)];
 
-              (v7)[2](v7, v27, 0);
+              (completionCopy)[2](completionCopy, v27, 0);
             }
 
             else
             {
               v27 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-              v7[2](v7, 0, v27);
+              completionCopy[2](completionCopy, 0, v27);
             }
 
             if (SHIBYTE(v44) < 0)
@@ -18627,14 +18627,14 @@ LABEL_14:
             ctu::OsLogContext::~OsLogContext(buf);
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
-              v32 = asString([v6 slotID] != 0);
+              v32 = asString([labelCopy slotID] != 0);
               *buf = 136315138;
               *&buf[4] = v32;
               _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "getSimLabel, no personality for slot %s", buf, 0xCu);
             }
 
             v31 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            v7[2](v7, 0, v31);
+            completionCopy[2](completionCopy, 0, v31);
           }
 
           if (v34)
@@ -18655,7 +18655,7 @@ LABEL_14:
           }
 
           v29 = [NSError errorWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v29);
+          completionCopy[2](completionCopy, 0, v29);
         }
 
         if ((v17 & 1) == 0)
@@ -18690,11 +18690,11 @@ LABEL_14:
 LABEL_51:
 }
 
-- (void)getShortLabel:(id)a3 completion:(id)a4
+- (void)getShortLabel:(id)label completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  labelCopy = label;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v18 = v27[0];
@@ -18708,10 +18708,10 @@ LABEL_51:
     goto LABEL_27;
   }
 
-  if (!v6)
+  if (!labelCopy)
   {
     v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v7[2](v7, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
 
     goto LABEL_27;
   }
@@ -18771,7 +18771,7 @@ LABEL_14:
     v27[0] = 0;
     v27[1] = 0;
     (*(*v16 + 336))(&v26, v16);
-    v20 = sub_100018A64([v6 slotID]);
+    v20 = sub_100018A64([labelCopy slotID]);
     v21 = v27[0];
     if (!v27[0])
     {
@@ -18792,14 +18792,14 @@ LABEL_14:
     while (v21);
     if (v22 != v27 && v20 >= *(v22 + 8))
     {
-      (v7)[2](v7, v22[5], 0);
+      (completionCopy)[2](completionCopy, v22[5], 0);
     }
 
     else
     {
 LABEL_24:
       v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-      v7[2](v7, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
     }
 
     sub_1001B1588(&v26, v27[0]);
@@ -18822,7 +18822,7 @@ LABEL_26:
     }
 
     v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    v7[2](v7, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
 
     if ((v17 & 1) == 0)
     {
@@ -18833,16 +18833,16 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)getSubscriptionUserFacingName:(id)a3 completion:(id)a4
+- (void)getSubscriptionUserFacingName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!nameCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_32;
     }
@@ -18886,7 +18886,7 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
+          v20 = sub_100018A64([nameCopy slotID]);
           v27 = 0;
           v28 = 0;
           (*(*v16 + 8))(&v27, v16, v20);
@@ -18896,13 +18896,13 @@ LABEL_14:
             (*(*v16 + 216))(&buf, v16, v27 + 24);
             if (buf)
             {
-              v7[2](v7, buf, 0);
+              completionCopy[2](completionCopy, buf, 0);
             }
 
             else
             {
               v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-              v7[2](v7, 0, v25);
+              completionCopy[2](completionCopy, 0, v25);
             }
 
             sub_100005978(&buf);
@@ -18922,7 +18922,7 @@ LABEL_14:
             }
 
             v24 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            v7[2](v7, 0, v24);
+            completionCopy[2](completionCopy, 0, v24);
           }
 
           if (v28)
@@ -18943,7 +18943,7 @@ LABEL_14:
           }
 
           v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v22);
+          completionCopy[2](completionCopy, 0, v22);
         }
 
         if ((v17 & 1) == 0)
@@ -18978,20 +18978,20 @@ LABEL_14:
 LABEL_32:
 }
 
-- (void)generateAuthenticationInfoUsingSim:(id)a3 authParams:(id)a4 completion:(id)a5
+- (void)generateAuthenticationInfoUsingSim:(id)sim authParams:(id)params completion:(id)completion
 {
-  v8 = a3;
-  v48 = a4;
-  v9 = a5;
-  v10 = v9;
-  v47 = v8;
-  if (v9)
+  simCopy = sim;
+  paramsCopy = params;
+  completionCopy = completion;
+  v10 = completionCopy;
+  v47 = simCopy;
+  if (completionCopy)
   {
-    if (v8)
+    if (simCopy)
     {
-      v11 = v48;
-      v46 = v9;
-      if (!v48)
+      v11 = paramsCopy;
+      v46 = completionCopy;
+      if (!paramsCopy)
       {
         [(CTXPCClientHandler *)self getLogContext];
         v24 = *&buf[8];
@@ -19005,9 +19005,9 @@ LABEL_32:
         goto LABEL_22;
       }
 
-      v12 = [v48 data];
+      data = [paramsCopy data];
 
-      if (!v12)
+      if (!data)
       {
         [(CTXPCClientHandler *)self getLogContext];
         v26 = *&buf[8];
@@ -19026,19 +19026,19 @@ LABEL_32:
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v48 data];
+        data2 = [paramsCopy data];
         *buf = 136315395;
         *&buf[4] = "[CTXPCClientHandler(Subscriber) generateAuthenticationInfoUsingSim:authParams:completion:]";
         *&buf[12] = 2117;
-        *&buf[14] = v14;
+        *&buf[14] = data2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: input auth params: %{sensitive}@", buf, 0x16u);
 
         v10 = v46;
       }
 
-      v15 = [v48 data];
+      data3 = [paramsCopy data];
       v16 = kCTSimSupportUICCAuthenticationTypeKey;
-      Value = CFDictionaryGetValue(v15, kCTSimSupportUICCAuthenticationTypeKey);
+      Value = CFDictionaryGetValue(data3, kCTSimSupportUICCAuthenticationTypeKey);
       v18 = Value;
       if (!Value || (v19 = CFGetTypeID(Value), v19 != CFStringGetTypeID()))
       {
@@ -19072,9 +19072,9 @@ LABEL_22:
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v28 = [v48 data];
+      data4 = [paramsCopy data];
       v45 = AuthTypeFromClientKey;
-      v29 = [v28 countByEnumeratingWithState:&v54 objects:v62 count:16];
+      v29 = [data4 countByEnumeratingWithState:&v54 objects:v62 count:16];
       if (v29)
       {
         v30 = *v55;
@@ -19084,7 +19084,7 @@ LABEL_22:
           {
             if (*v55 != v30)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(data4);
             }
 
             v32 = *(*(&v54 + 1) + 8 * i);
@@ -19096,8 +19096,8 @@ LABEL_22:
               BYTE4(v52) = BYTE4(AuthInfoTypeFromClientKey);
               if ((AuthInfoTypeFromClientKey & 0x100000000) != 0)
               {
-                v36 = [v11 data];
-                [v36 objectForKey:v32];
+                data5 = [v11 data];
+                [data5 objectForKey:v32];
                 memset(buf, 0, 24);
                 ctu::cf::assign();
                 v49 = *buf;
@@ -19117,7 +19117,7 @@ LABEL_22:
                 *(v38 + 5) = v49;
                 v38[7] = v37;
 
-                v11 = v48;
+                v11 = paramsCopy;
               }
 
               else
@@ -19135,7 +19135,7 @@ LABEL_22:
             }
           }
 
-          v29 = [v28 countByEnumeratingWithState:&v54 objects:v62 count:16];
+          v29 = [data4 countByEnumeratingWithState:&v54 objects:v62 count:16];
         }
 
         while (v29);
@@ -19161,10 +19161,10 @@ LABEL_22:
         v40 = v52;
         v50 = *buf;
         sub_1004F1F78(v51, &buf[8]);
-        v41 = self;
+        selfCopy = self;
         v42 = objc_retainBlock(v46);
         v60[0] = off_101F3C100;
-        v60[1] = v41;
+        v60[1] = selfCopy;
         v60[2] = v42;
         v60[3] = v60;
         (*(*v40 + 256))(v40, &v50, v60);
@@ -19199,7 +19199,7 @@ LABEL_22:
 
     else
     {
-      v11 = v48;
+      v11 = paramsCopy;
       v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       (v10)[2](v10, 0, v23);
     }
@@ -19210,7 +19210,7 @@ LABEL_22:
     [(CTXPCClientHandler *)self getLogContext];
     v22 = *&buf[8];
     ctu::OsLogContext::~OsLogContext(buf);
-    v11 = v48;
+    v11 = paramsCopy;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -19221,15 +19221,15 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)setLabel:(id)a3 label:(id)a4 completion:(id)a5
+- (void)setLabel:(id)label label:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  labelCopy = label;
   v9 = a4;
-  v10 = a5;
-  if (v10)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    v10[2](v10, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
@@ -19245,16 +19245,16 @@ LABEL_23:
   }
 }
 
-- (void)setDefaultVoice:(id)a3 completion:(id)a4
+- (void)setDefaultVoice:(id)voice completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  voiceCopy = voice;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!voiceCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_23;
     }
@@ -19299,8 +19299,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([voiceCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F3C180;
           v27[1] = v21;
           v27[3] = v27;
@@ -19320,7 +19320,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, v23);
+          completionCopy[2](completionCopy, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -19355,16 +19355,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)setActiveUserDataSelection:(id)a3 completion:(id)a4
+- (void)setActiveUserDataSelection:(id)selection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  selectionCopy = selection;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!selectionCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_23;
     }
@@ -19409,8 +19409,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([selectionCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F3C200;
           v27[1] = v21;
           v27[3] = v27;
@@ -19430,7 +19430,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, v23);
+          completionCopy[2](completionCopy, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -19465,16 +19465,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)shouldAllowSimLockFor:(id)a3 completion:(id)a4
+- (void)shouldAllowSimLockFor:(id)for completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  forCopy = for;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!forCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -19518,9 +19518,9 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
+          v20 = sub_100018A64([forCopy slotID]);
           v21 = [NSNumber numberWithBool:(*(*v16 + 72))(v16, v20)];
-          (v7)[2](v7, v21, 0);
+          (completionCopy)[2](completionCopy, v21, 0);
         }
 
         else
@@ -19535,7 +19535,7 @@ LABEL_14:
           }
 
           v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v21);
+          completionCopy[2](completionCopy, 0, v21);
         }
 
         if ((v17 & 1) == 0)
@@ -19570,13 +19570,13 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)fetchSIMLockValue:(id)a3 completion:(id)a4
+- (void)fetchSIMLockValue:(id)value completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  valueCopy = value;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (valueCopy)
     {
       *buf = 0;
       v15 = 0;
@@ -19597,7 +19597,7 @@ LABEL_23:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -19608,7 +19608,7 @@ LABEL_23:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -19625,14 +19625,14 @@ LABEL_23:
   }
 }
 
-- (void)saveSIMLockValue:(id)a3 enabled:(BOOL)a4 pin:(id)a5 completion:(id)a6
+- (void)saveSIMLockValue:(id)value enabled:(BOOL)enabled pin:(id)pin completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  valueCopy = value;
+  pinCopy = pin;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (valueCopy)
     {
       *buf = 0;
       v19 = 0;
@@ -19653,7 +19653,7 @@ LABEL_23:
       }
 
       v15 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v11[2](v11, v15);
+      completionCopy[2](completionCopy, v15);
 
       if (v19)
       {
@@ -19664,7 +19664,7 @@ LABEL_23:
     else
     {
       v13 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v11[2](v11, v13);
+      completionCopy[2](completionCopy, v13);
     }
   }
 
@@ -19681,14 +19681,14 @@ LABEL_23:
   }
 }
 
-- (void)unlockPIN:(id)a3 pin:(id)a4 completion:(id)a5
+- (void)unlockPIN:(id)n pin:(id)pin completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  nCopy = n;
+  pinCopy = pin;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && v9)
+    if (nCopy && pinCopy)
     {
       *buf = 0;
       v18 = 0;
@@ -19709,7 +19709,7 @@ LABEL_23:
       }
 
       v14 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v10[2](v10, v14);
+      completionCopy[2](completionCopy, v14);
 
       if (v18)
       {
@@ -19720,7 +19720,7 @@ LABEL_23:
     else
     {
       v12 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, v12);
+      completionCopy[2](completionCopy, v12);
     }
   }
 
@@ -19737,15 +19737,15 @@ LABEL_23:
   }
 }
 
-- (void)unlockPUK:(id)a3 puk:(id)a4 newPin:(id)a5 completion:(id)a6
+- (void)unlockPUK:(id)k puk:(id)puk newPin:(id)pin completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  kCopy = k;
+  pukCopy = puk;
+  pinCopy = pin;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v10 && v11 && v12)
+    if (kCopy && pukCopy && pinCopy)
     {
       *buf = 0;
       v21 = 0;
@@ -19766,7 +19766,7 @@ LABEL_23:
       }
 
       v17 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v13[2](v13, v17);
+      completionCopy[2](completionCopy, v17);
 
       if (v21)
       {
@@ -19777,7 +19777,7 @@ LABEL_23:
     else
     {
       v15 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v13[2](v13, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 
@@ -19794,15 +19794,15 @@ LABEL_23:
   }
 }
 
-- (void)changePIN:(id)a3 oldPin:(id)a4 newPin:(id)a5 completion:(id)a6
+- (void)changePIN:(id)n oldPin:(id)pin newPin:(id)newPin completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  nCopy = n;
+  pinCopy = pin;
+  newPinCopy = newPin;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v10 && v11 && v12)
+    if (nCopy && pinCopy && newPinCopy)
     {
       *buf = 0;
       v21 = 0;
@@ -19823,7 +19823,7 @@ LABEL_23:
       }
 
       v17 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v13[2](v13, v17);
+      completionCopy[2](completionCopy, v17);
 
       if (v21)
       {
@@ -19834,7 +19834,7 @@ LABEL_23:
     else
     {
       v15 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v13[2](v13, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 
@@ -19851,13 +19851,13 @@ LABEL_23:
   }
 }
 
-- (void)getRemainingPINAttemptCount:(id)a3 completion:(id)a4
+- (void)getRemainingPINAttemptCount:(id)count completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  countCopy = count;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (countCopy)
     {
       *buf = 0;
       v15 = 0;
@@ -19878,7 +19878,7 @@ LABEL_23:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -19889,7 +19889,7 @@ LABEL_23:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -19906,13 +19906,13 @@ LABEL_23:
   }
 }
 
-- (void)getRemainingPUKAttemptCount:(id)a3 completion:(id)a4
+- (void)getRemainingPUKAttemptCount:(id)count completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  countCopy = count;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (countCopy)
     {
       *buf = 0;
       v15 = 0;
@@ -19933,7 +19933,7 @@ LABEL_23:
       }
 
       v11 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 
       if (v15)
       {
@@ -19944,7 +19944,7 @@ LABEL_23:
     else
     {
       v9 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -19961,11 +19961,11 @@ LABEL_23:
   }
 }
 
-- (void)promptForSIMUnlock:(id)a3 completion:(id)a4
+- (void)promptForSIMUnlock:(id)unlock completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  unlockCopy = unlock;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v18 = v24;
@@ -19979,10 +19979,10 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  if (!v6)
+  if (!unlockCopy)
   {
     v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v7[2](v7, v19);
+    completionCopy[2](completionCopy, v19);
 
     goto LABEL_19;
   }
@@ -20038,9 +20038,9 @@ LABEL_14:
 
   if (v16)
   {
-    v20 = sub_100018A64([v6 slotID]);
+    v20 = sub_100018A64([unlockCopy slotID]);
     (*(*v16 + 24))(v16, v20);
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     if ((v17 & 1) == 0)
     {
 LABEL_18:
@@ -20060,7 +20060,7 @@ LABEL_18:
     }
 
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    v7[2](v7, v22);
+    completionCopy[2](completionCopy, v22);
 
     if ((v17 & 1) == 0)
     {
@@ -20153,14 +20153,14 @@ LABEL_15:
   sub_100004A34(v10);
 }
 
-- (void)authenticate:(id)a3 request:(id)a4 completion:(id)a5
+- (void)authenticate:(id)authenticate request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  authenticateCopy = authenticate;
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (authenticateCopy)
     {
       v16 = 0;
       v17 = 0;
@@ -20181,7 +20181,7 @@ LABEL_15:
       }
 
       v14 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v10[2](v10, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
 
       if (v17)
       {
@@ -20192,7 +20192,7 @@ LABEL_15:
     else
     {
       v12 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, 0, v12);
+      completionCopy[2](completionCopy, 0, v12);
     }
   }
 
@@ -20209,21 +20209,21 @@ LABEL_15:
   }
 }
 
-- (void)getUserAuthToken:(id)a3 completion:(id)a4
+- (void)getUserAuthToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  tokenCopy = token;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!tokenCopy)
     {
       v20 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v20);
+      completionCopy[2](completionCopy, 0, v20);
 
       goto LABEL_25;
     }
 
-    v8 = sub_10002A8E0(v6);
+    v8 = sub_10002A8E0(tokenCopy);
     *buf = 0;
     v28 = 0;
     [(CTXPCClientHandler *)self registry];
@@ -20272,7 +20272,7 @@ LABEL_14:
         v21 = *buf;
         if (*buf)
         {
-          v22 = objc_retainBlock(v7);
+          v22 = objc_retainBlock(completionCopy);
           v30[0] = off_101F3C480;
           v30[1] = v22;
           v30[3] = v30;
@@ -20292,7 +20292,7 @@ LABEL_14:
           }
 
           v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v24);
+          completionCopy[2](completionCopy, 0, v24);
         }
 
         if (v28)
@@ -20327,21 +20327,21 @@ LABEL_14:
 LABEL_25:
 }
 
-- (void)refreshUserAuthToken:(id)a3 completion:(id)a4
+- (void)refreshUserAuthToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  tokenCopy = token;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!tokenCopy)
     {
       v20 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v20);
+      completionCopy[2](completionCopy, v20);
 
       goto LABEL_25;
     }
 
-    v8 = sub_10002A8E0(v6);
+    v8 = sub_10002A8E0(tokenCopy);
     *buf = 0;
     v28 = 0;
     [(CTXPCClientHandler *)self registry];
@@ -20390,7 +20390,7 @@ LABEL_14:
         v21 = *buf;
         if (*buf)
         {
-          v22 = objc_retainBlock(v7);
+          v22 = objc_retainBlock(completionCopy);
           v30[0] = off_101F3C500;
           v30[1] = v22;
           v30[3] = v30;
@@ -20410,7 +20410,7 @@ LABEL_14:
           }
 
           v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, v24);
+          completionCopy[2](completionCopy, v24);
         }
 
         if (v28)
@@ -20445,10 +20445,10 @@ LABEL_14:
 LABEL_25:
 }
 
-- (void)getUserDefaultVoiceSubscriptionContext:(id)a3
+- (void)getUserDefaultVoiceSubscriptionContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     buf = 0uLL;
     v5 = sub_10006C5D0(&buf);
@@ -20460,13 +20460,13 @@ LABEL_25:
         v7 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:sub_10000FD54(v6)];
         if (v7)
         {
-          v4[2](v4, v7, 0);
+          contextCopy[2](contextCopy, v7, 0);
         }
 
         else
         {
           v10 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:12 userInfo:0];
-          (v4)[2](v4, 0, v10);
+          (contextCopy)[2](contextCopy, 0, v10);
 
           v7 = 0;
         }
@@ -20475,7 +20475,7 @@ LABEL_25:
       else
       {
         v7 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-        (v4)[2](v4, 0, v7);
+        (contextCopy)[2](contextCopy, 0, v7);
       }
     }
 
@@ -20491,7 +20491,7 @@ LABEL_25:
       }
 
       v7 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      (v4)[2](v4, 0, v7);
+      (contextCopy)[2](contextCopy, 0, v7);
     }
 
     if (*(&buf + 1))
@@ -20513,11 +20513,11 @@ LABEL_25:
   }
 }
 
-- (void)getLastKnownSimDeactivationInfoFor:(id)a3 completion:(id)a4
+- (void)getLastKnownSimDeactivationInfoFor:(id)for completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_100018A64([v6 slotID]);
+  forCopy = for;
+  completionCopy = completion;
+  v8 = sub_100018A64([forCopy slotID]);
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(__p[0]);
   v10 = ServiceMap;
@@ -20570,7 +20570,7 @@ LABEL_9:
   if (!v17)
   {
     v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    v7[2](v7, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 
   v23 = 0;
@@ -20580,13 +20580,13 @@ LABEL_9:
   if (v23)
   {
     v20 = sub_100185E04(__p);
-    (v7)[2](v7, v20, 0);
+    (completionCopy)[2](completionCopy, v20, 0);
   }
 
   else
   {
     v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:6 userInfo:0];
-    v7[2](v7, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
   }
 
   if (v23 == 1)
@@ -20614,12 +20614,12 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)copyMobileSubscriberIso3CountryCode:(id)a3 MNC:(id)a4 completion:(id)a5
+- (void)copyMobileSubscriberIso3CountryCode:(id)code MNC:(id)c completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  codeCopy = code;
+  cCopy = c;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v21 = v35;
@@ -20633,10 +20633,10 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  if (!v8 || !v9)
+  if (!codeCopy || !cCopy)
   {
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v10[2](v10, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
 
     goto LABEL_27;
   }
@@ -20696,8 +20696,8 @@ LABEL_15:
     v35 = 0;
     v36 = 0;
     v29 = v20;
-    sub_10000501C(v32, [v8 UTF8String]);
-    sub_10000501C(__p, [v9 UTF8String]);
+    sub_10000501C(v32, [codeCopy UTF8String]);
+    sub_10000501C(__p, [cCopy UTF8String]);
     (*(*v19 + 88))(buf, v19, v32, __p);
     if (v31 < 0)
     {
@@ -20726,7 +20726,7 @@ LABEL_15:
       while (v25 < 0xAAAAAAAAAAAAAAABLL * ((v35 - *buf) >> 3));
     }
 
-    (v10)[2](v10, v23, 0);
+    (completionCopy)[2](completionCopy, v23, 0);
 
     v32[0] = buf;
     sub_1000087B4(v32);
@@ -20749,7 +20749,7 @@ LABEL_26:
     }
 
     v28 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    v10[2](v10, 0, v28);
+    completionCopy[2](completionCopy, 0, v28);
 
     if ((v20 & 1) == 0)
     {
@@ -20760,10 +20760,10 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)checkEmbeddedSimHealthWithCompletion:(id)a3
+- (void)checkEmbeddedSimHealthWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v19);
@@ -20819,7 +20819,7 @@ LABEL_12:
       v16 = (*(*v13 + 288))(v13);
       if ((v16 & 0x100) != 0)
       {
-        (*(v4 + 2))(v4, v16 & 1, 0);
+        (*(completionCopy + 2))(completionCopy, v16 & 1, 0);
 LABEL_22:
         if ((v14 & 1) == 0)
         {
@@ -20830,7 +20830,7 @@ LABEL_22:
       }
 
       v17 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      (*(v4 + 2))(v4, 0, v17);
+      (*(completionCopy + 2))(completionCopy, 0, v17);
     }
 
     else
@@ -20845,7 +20845,7 @@ LABEL_22:
       }
 
       v17 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      (*(v4 + 2))(v4, 0, v17);
+      (*(completionCopy + 2))(completionCopy, 0, v17);
     }
 
     goto LABEL_22;
@@ -20863,10 +20863,10 @@ LABEL_22:
 LABEL_24:
 }
 
-- (void)supportsEmbeddedSIMWithCompletion:(id)a3
+- (void)supportsEmbeddedSIMWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v18);
@@ -20907,7 +20907,7 @@ LABEL_12:
 
         if (v13)
         {
-          v16 = objc_retainBlock(v4);
+          v16 = objc_retainBlock(completionCopy);
           v21[0] = off_101F3C580;
           v21[1] = v16;
           v21[3] = v21;
@@ -20926,7 +20926,7 @@ LABEL_12:
             _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "SubscriberSimInterface not available", &v18, 2u);
           }
 
-          (*(v4 + 2))(v4, 0);
+          (*(completionCopy + 2))(completionCopy, 0);
         }
 
         if ((v14 & 1) == 0)
@@ -20961,13 +20961,13 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)supportsLimitedUseSIMsWithCompletion:(id)a3
+- (void)supportsLimitedUseSIMsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    if (capabilities::ct::supportsVoiceCall(v4))
+    if (capabilities::ct::supportsVoiceCall(completionCopy))
     {
       v6 = _os_feature_enabled_impl();
     }
@@ -20993,16 +20993,16 @@ LABEL_21:
   }
 }
 
-- (void)copyMccOrPlmnsListForIso3CountryCode:(id)a3 completion:(id)a4
+- (void)copyMccOrPlmnsListForIso3CountryCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!codeCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_32;
     }
@@ -21049,7 +21049,7 @@ LABEL_14:
           *buf = 0;
           v32 = 0;
           v33 = 0;
-          sub_10000501C(buf, [v6 UTF8String]);
+          sub_10000501C(buf, [codeCopy UTF8String]);
           v20 = HIBYTE(v33);
           if (v33 < 0)
           {
@@ -21079,7 +21079,7 @@ LABEL_14:
               while (v23 < 0xAAAAAAAAAAAAAAABLL * ((v29 - v28) >> 3));
             }
 
-            (v7)[2](v7, v21, 0);
+            (completionCopy)[2](completionCopy, v21, 0);
 
             v34 = &v28;
             sub_1000087B4(&v34);
@@ -21088,7 +21088,7 @@ LABEL_14:
           else
           {
             v27 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            v7[2](v7, 0, v27);
+            completionCopy[2](completionCopy, 0, v27);
           }
 
           if (SHIBYTE(v33) < 0)
@@ -21109,7 +21109,7 @@ LABEL_14:
           }
 
           v26 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          v7[2](v7, 0, v26);
+          completionCopy[2](completionCopy, 0, v26);
         }
 
         if ((v17 & 1) == 0)
@@ -21144,10 +21144,10 @@ LABEL_14:
 LABEL_32:
 }
 
-- (void)isAnySimReadyWithCompletion:(id)a3
+- (void)isAnySimReadyWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v15 = v19;
@@ -21212,7 +21212,7 @@ LABEL_12:
   if (!v13)
   {
     v17 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v4[2](v4, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
 
     if (v14)
     {
@@ -21223,7 +21223,7 @@ LABEL_12:
   }
 
   v16 = (*(*v13 + 304))(v13);
-  v4[2](v4, v16, 0);
+  completionCopy[2](completionCopy, v16, 0);
   if ((v14 & 1) == 0)
   {
 LABEL_16:
@@ -21233,12 +21233,12 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)isSimMatching:(id)a3 carrierDescriptors:(id)a4 completion:(id)a5
+- (void)isSimMatching:(id)matching carrierDescriptors:(id)descriptors completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  matchingCopy = matching;
+  descriptorsCopy = descriptors;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v23 = v41;
@@ -21252,10 +21252,10 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  if (!v9 || ![v9 count] || (v11 = sub_10002A8E0(v8), !v11))
+  if (!descriptorsCopy || ![descriptorsCopy count] || (v11 = sub_10002A8E0(matchingCopy), !v11))
   {
     v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v10[2](v10, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
 
     goto LABEL_15;
   }
@@ -21314,10 +21314,10 @@ LABEL_25:
 
     if (v20)
     {
-      v39 = v9;
-      CFRetain(v9);
+      v39 = descriptorsCopy;
+      CFRetain(descriptorsCopy);
       v33 = (*(*v20 + 312))(v20, v11, &v39);
-      v10[2](v10, v33, 0);
+      completionCopy[2](completionCopy, v33, 0);
       sub_100010250(&v39);
       if ((v21 & 1) == 0)
       {
@@ -21328,7 +21328,7 @@ LABEL_25:
     else
     {
       v34 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-      v10[2](v10, 0, v34);
+      completionCopy[2](completionCopy, 0, v34);
 
       if ((v21 & 1) == 0)
       {
@@ -21405,13 +21405,13 @@ LABEL_34:
       }
 
       v37 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:13 userInfo:0];
-      v10[2](v10, 0, v37);
+      completionCopy[2](completionCopy, 0, v37);
     }
 
     else
     {
       v37 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-      v10[2](v10, 0, v37);
+      completionCopy[2](completionCopy, 0, v37);
     }
   }
 
@@ -21427,7 +21427,7 @@ LABEL_34:
     }
 
     v37 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-    v10[2](v10, 0, v37);
+    completionCopy[2](completionCopy, 0, v37);
   }
 
   if ((v32 & 1) == 0)
@@ -21439,15 +21439,15 @@ LABEL_51:
 LABEL_15:
 }
 
-- (void)dataUsageForLastPeriods:(unint64_t)a3 completion:(id)a4
+- (void)dataUsageForLastPeriods:(unint64_t)periods completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!a3)
+    if (!periods)
     {
       v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v6[2](v6, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
 
       goto LABEL_23;
     }
@@ -21491,13 +21491,13 @@ LABEL_14:
 
         if (v15)
         {
-          v19 = objc_retainBlock(v6);
-          v20 = self;
+          v19 = objc_retainBlock(completionCopy);
+          selfCopy = self;
           v26[0] = off_101F40540;
           v26[1] = v19;
-          v26[2] = v20;
+          v26[2] = selfCopy;
           v26[3] = v26;
-          (*(*v15 + 176))(v15, a3, v26);
+          (*(*v15 + 176))(v15, periods, v26);
           sub_1010CE1B8(v26);
         }
 
@@ -21513,7 +21513,7 @@ LABEL_14:
           }
 
           v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v6[2](v6, 0, v22);
+          completionCopy[2](completionCopy, 0, v22);
         }
 
         if ((v16 & 1) == 0)
@@ -21548,10 +21548,10 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)dataUsageForLastPeriodsOnActivePairedDevice:(unint64_t)a3 completion:(id)a4
+- (void)dataUsageForLastPeriodsOnActivePairedDevice:(unint64_t)device completion:(id)completion
 {
-  v6 = a4;
-  if (!v6)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v17 = v31;
@@ -21565,10 +21565,10 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  if (!a3)
+  if (!device)
   {
     v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v6[2](v6, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
 
     goto LABEL_31;
   }
@@ -21654,7 +21654,7 @@ LABEL_25:
     v27 = v22;
 LABEL_26:
     xpc_release(v20);
-    v25 = xpc_int64_create(a3);
+    v25 = xpc_int64_create(device);
     if (!v25)
     {
       v25 = xpc_null_create();
@@ -21667,10 +21667,10 @@ LABEL_26:
     object = 0;
     xpc_release(v25);
     v25 = 0;
-    v23 = self;
-    v24 = objc_retainBlock(v6);
+    selfCopy = self;
+    v24 = objc_retainBlock(completionCopy);
     v29[0] = off_101F405C0;
-    v29[1] = v23;
+    v29[1] = selfCopy;
     v29[2] = v24;
     v29[3] = v29;
     v28 = 0uLL;
@@ -21678,7 +21678,7 @@ LABEL_26:
   }
 
   v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  v6[2](v6, 0, v21);
+  completionCopy[2](completionCopy, 0, v21);
 
   if ((v16 & 1) == 0)
   {
@@ -21688,15 +21688,15 @@ LABEL_26:
 LABEL_31:
 }
 
-- (void)billingCycleEndDatesForLastPeriods:(unint64_t)a3 completion:(id)a4
+- (void)billingCycleEndDatesForLastPeriods:(unint64_t)periods completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!a3)
+    if (!periods)
     {
       v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v6[2](v6, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
 
       goto LABEL_26;
     }
@@ -21740,7 +21740,7 @@ LABEL_14:
 
         if (v15)
         {
-          v19 = (*(*v15 + 184))(v15, a3);
+          v19 = (*(*v15 + 184))(v15, periods);
           if (v19)
           {
             v20 = 0;
@@ -21751,7 +21751,7 @@ LABEL_14:
             v20 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
           }
 
-          (v6)[2](v6, v19, v20);
+          (completionCopy)[2](completionCopy, v19, v20);
         }
 
         else
@@ -21766,7 +21766,7 @@ LABEL_14:
           }
 
           v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v6[2](v6, 0, v19);
+          completionCopy[2](completionCopy, 0, v19);
         }
 
         if ((v16 & 1) == 0)
@@ -21801,10 +21801,10 @@ LABEL_14:
 LABEL_26:
 }
 
-- (void)usageCollectionEnabled:(id)a3
+- (void)usageCollectionEnabled:(id)enabled
 {
-  v4 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  if (enabledCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v18);
@@ -21846,7 +21846,7 @@ LABEL_12:
         if (v13)
         {
           v16 = [NSNumber numberWithBool:(*(*v13 + 16))(v13)];
-          v4[2](v4, v16, 0);
+          enabledCopy[2](enabledCopy, v16, 0);
         }
 
         else
@@ -21861,7 +21861,7 @@ LABEL_12:
           }
 
           v16 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (v4)[2](v4, 0, v16);
+          (enabledCopy)[2](enabledCopy, 0, v16);
         }
 
         if ((v14 & 1) == 0)
@@ -21896,11 +21896,11 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)setUsageCollectionEnabled:(BOOL)a3 completion:(id)a4
+- (void)setUsageCollectionEnabled:(BOOL)enabled completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v6)
+  enabledCopy = enabled;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v17 = v21;
@@ -21965,8 +21965,8 @@ LABEL_12:
 
   if (v15)
   {
-    (*(*v15 + 24))(v15, v4);
-    v6[2](v6, 0);
+    (*(*v15 + 24))(v15, enabledCopy);
+    completionCopy[2](completionCopy, 0);
     if ((v16 & 1) == 0)
     {
 LABEL_16:
@@ -21986,7 +21986,7 @@ LABEL_16:
     }
 
     v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    (v6)[2](v6, v19);
+    (completionCopy)[2](completionCopy, v19);
 
     if ((v16 & 1) == 0)
     {
@@ -21997,16 +21997,16 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)userEnteredMonthlyBudget:(id)a3 completion:(id)a4
+- (void)userEnteredMonthlyBudget:(id)budget completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  budgetCopy = budget;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!budgetCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_33;
     }
@@ -22053,7 +22053,7 @@ LABEL_14:
           memset(buf, 0, sizeof(buf));
           v29 = 0;
           [(CTXPCClientHandler *)self registry];
-          sub_100018A64([v6 slotID]);
+          sub_100018A64([budgetCopy slotID]);
           PersonalityIdFromSlotId();
           if (SHIBYTE(v27) < 0)
           {
@@ -22079,13 +22079,13 @@ LABEL_14:
           if (v23)
           {
             v24 = [NSNumber numberWithUnsignedLongLong:v22];
-            (v7)[2](v7, v24, 0);
+            (completionCopy)[2](completionCopy, v24, 0);
           }
 
           else
           {
             v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            v7[2](v7, 0, v24);
+            completionCopy[2](completionCopy, 0, v24);
           }
 
           if (SHIBYTE(v29) < 0)
@@ -22106,7 +22106,7 @@ LABEL_14:
           }
 
           v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v21);
+          completionCopy[2](completionCopy, 0, v21);
         }
 
         if ((v17 & 1) == 0)
@@ -22141,17 +22141,17 @@ LABEL_14:
 LABEL_33:
 }
 
-- (void)setUserEntered:(id)a3 monthlyBudget:(id)a4 completion:(id)a5
+- (void)setUserEntered:(id)entered monthlyBudget:(id)budget completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  enteredCopy = entered;
+  budgetCopy = budget;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!enteredCopy)
     {
       v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, v22);
+      completionCopy[2](completionCopy, v22);
 
       goto LABEL_37;
     }
@@ -22217,14 +22217,14 @@ LABEL_14:
       }
 
       v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v10[2](v10, v24);
+      completionCopy[2](completionCopy, v24);
       goto LABEL_35;
     }
 
     memset(buf, 0, sizeof(buf));
     v29 = 0;
     [(CTXPCClientHandler *)self registry];
-    sub_100018A64([v8 slotID]);
+    sub_100018A64([enteredCopy slotID]);
     PersonalityIdFromSlotId();
     if (SHIBYTE(v27) < 0)
     {
@@ -22259,7 +22259,7 @@ LABEL_14:
       goto LABEL_32;
     }
 
-    if ((*(*v19 + 200))(v19, buf, [v9 unsignedLongLongValue]))
+    if ((*(*v19 + 200))(v19, buf, [budgetCopy unsignedLongLongValue]))
     {
       v24 = 0;
       goto LABEL_33;
@@ -22268,7 +22268,7 @@ LABEL_14:
 LABEL_32:
     v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
 LABEL_33:
-    v10[2](v10, v24);
+    completionCopy[2](completionCopy, v24);
     if (SHIBYTE(v29) < 0)
     {
       operator delete(*buf);
@@ -22296,16 +22296,16 @@ LABEL_35:
 LABEL_37:
 }
 
-- (void)clearUserEnteredMonthlyBudget:(id)a3 completion:(id)a4
+- (void)clearUserEnteredMonthlyBudget:(id)budget completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  budgetCopy = budget;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!budgetCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_37;
     }
@@ -22371,14 +22371,14 @@ LABEL_14:
       }
 
       v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v7[2](v7, v21);
+      completionCopy[2](completionCopy, v21);
       goto LABEL_35;
     }
 
     memset(buf, 0, sizeof(buf));
     v26 = 0;
     [(CTXPCClientHandler *)self registry];
-    sub_100018A64([v6 slotID]);
+    sub_100018A64([budgetCopy slotID]);
     PersonalityIdFromSlotId();
     if (SHIBYTE(v24) < 0)
     {
@@ -22422,7 +22422,7 @@ LABEL_14:
 LABEL_32:
     v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
 LABEL_33:
-    v7[2](v7, v21);
+    completionCopy[2](completionCopy, v21);
     if (SHIBYTE(v26) < 0)
     {
       operator delete(*buf);
@@ -22450,16 +22450,16 @@ LABEL_35:
 LABEL_37:
 }
 
-- (void)userEnteredMonthlyRoamingBudget:(id)a3 completion:(id)a4
+- (void)userEnteredMonthlyRoamingBudget:(id)budget completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  budgetCopy = budget;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!budgetCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_33;
     }
@@ -22506,7 +22506,7 @@ LABEL_14:
           memset(buf, 0, sizeof(buf));
           v29 = 0;
           [(CTXPCClientHandler *)self registry];
-          sub_100018A64([v6 slotID]);
+          sub_100018A64([budgetCopy slotID]);
           PersonalityIdFromSlotId();
           if (SHIBYTE(v27) < 0)
           {
@@ -22532,13 +22532,13 @@ LABEL_14:
           if (v23)
           {
             v24 = [NSNumber numberWithUnsignedLongLong:v22];
-            (v7)[2](v7, v24, 0);
+            (completionCopy)[2](completionCopy, v24, 0);
           }
 
           else
           {
             v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            v7[2](v7, 0, v24);
+            completionCopy[2](completionCopy, 0, v24);
           }
 
           if (SHIBYTE(v29) < 0)
@@ -22559,7 +22559,7 @@ LABEL_14:
           }
 
           v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v21);
+          completionCopy[2](completionCopy, 0, v21);
         }
 
         if ((v17 & 1) == 0)
@@ -22594,17 +22594,17 @@ LABEL_14:
 LABEL_33:
 }
 
-- (void)setUserEntered:(id)a3 monthlyRoamingBudget:(id)a4 completion:(id)a5
+- (void)setUserEntered:(id)entered monthlyRoamingBudget:(id)budget completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  enteredCopy = entered;
+  budgetCopy = budget;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!enteredCopy)
     {
       v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, v22);
+      completionCopy[2](completionCopy, v22);
 
       goto LABEL_37;
     }
@@ -22670,14 +22670,14 @@ LABEL_14:
       }
 
       v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v10[2](v10, v24);
+      completionCopy[2](completionCopy, v24);
       goto LABEL_35;
     }
 
     memset(buf, 0, sizeof(buf));
     v29 = 0;
     [(CTXPCClientHandler *)self registry];
-    sub_100018A64([v8 slotID]);
+    sub_100018A64([enteredCopy slotID]);
     PersonalityIdFromSlotId();
     if (SHIBYTE(v27) < 0)
     {
@@ -22712,7 +22712,7 @@ LABEL_14:
       goto LABEL_32;
     }
 
-    if ((*(*v19 + 224))(v19, buf, [v9 unsignedLongLongValue]))
+    if ((*(*v19 + 224))(v19, buf, [budgetCopy unsignedLongLongValue]))
     {
       v24 = 0;
       goto LABEL_33;
@@ -22721,7 +22721,7 @@ LABEL_14:
 LABEL_32:
     v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
 LABEL_33:
-    v10[2](v10, v24);
+    completionCopy[2](completionCopy, v24);
     if (SHIBYTE(v29) < 0)
     {
       operator delete(*buf);
@@ -22749,16 +22749,16 @@ LABEL_35:
 LABEL_37:
 }
 
-- (void)clearUserEnteredMonthlyRoamingBudget:(id)a3 completion:(id)a4
+- (void)clearUserEnteredMonthlyRoamingBudget:(id)budget completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  budgetCopy = budget;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!budgetCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_37;
     }
@@ -22824,14 +22824,14 @@ LABEL_14:
       }
 
       v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v7[2](v7, v21);
+      completionCopy[2](completionCopy, v21);
       goto LABEL_35;
     }
 
     memset(buf, 0, sizeof(buf));
     v26 = 0;
     [(CTXPCClientHandler *)self registry];
-    sub_100018A64([v6 slotID]);
+    sub_100018A64([budgetCopy slotID]);
     PersonalityIdFromSlotId();
     if (SHIBYTE(v24) < 0)
     {
@@ -22875,7 +22875,7 @@ LABEL_14:
 LABEL_32:
     v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
 LABEL_33:
-    v7[2](v7, v21);
+    completionCopy[2](completionCopy, v21);
     if (SHIBYTE(v26) < 0)
     {
       operator delete(*buf);
@@ -22903,16 +22903,16 @@ LABEL_35:
 LABEL_37:
 }
 
-- (void)userEnteredBillingEndDayOfMont:(id)a3 completion:(id)a4
+- (void)userEnteredBillingEndDayOfMont:(id)mont completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  montCopy = mont;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!montCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_33;
     }
@@ -22959,7 +22959,7 @@ LABEL_14:
           memset(buf, 0, sizeof(buf));
           v28 = 0;
           [(CTXPCClientHandler *)self registry];
-          sub_100018A64([v6 slotID]);
+          sub_100018A64([montCopy slotID]);
           PersonalityIdFromSlotId();
           if (SHIBYTE(v26) < 0)
           {
@@ -22985,13 +22985,13 @@ LABEL_14:
           if ((v22 & 0x100000000) != 0)
           {
             v23 = [NSNumber numberWithInt:v22];
-            (v7)[2](v7, v23, 0);
+            (completionCopy)[2](completionCopy, v23, 0);
           }
 
           else
           {
             v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            v7[2](v7, 0, v23);
+            completionCopy[2](completionCopy, 0, v23);
           }
 
           if (SHIBYTE(v28) < 0)
@@ -23012,7 +23012,7 @@ LABEL_14:
           }
 
           v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v21);
+          completionCopy[2](completionCopy, 0, v21);
         }
 
         if ((v17 & 1) == 0)
@@ -23047,17 +23047,17 @@ LABEL_14:
 LABEL_33:
 }
 
-- (void)setUserEnteredBillingEnd:(id)a3 dayOfMonth:(id)a4 completion:(id)a5
+- (void)setUserEnteredBillingEnd:(id)end dayOfMonth:(id)month completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  endCopy = end;
+  monthCopy = month;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!endCopy)
     {
       v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v10[2](v10, v22);
+      completionCopy[2](completionCopy, v22);
 
       goto LABEL_37;
     }
@@ -23123,14 +23123,14 @@ LABEL_14:
       }
 
       v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v10[2](v10, v24);
+      completionCopy[2](completionCopy, v24);
       goto LABEL_35;
     }
 
     memset(buf, 0, sizeof(buf));
     v29 = 0;
     [(CTXPCClientHandler *)self registry];
-    sub_100018A64([v8 slotID]);
+    sub_100018A64([endCopy slotID]);
     PersonalityIdFromSlotId();
     if (SHIBYTE(v27) < 0)
     {
@@ -23165,7 +23165,7 @@ LABEL_14:
       goto LABEL_32;
     }
 
-    if ((*(*v19 + 248))(v19, buf, [v9 intValue]))
+    if ((*(*v19 + 248))(v19, buf, [monthCopy intValue]))
     {
       v24 = 0;
       goto LABEL_33;
@@ -23174,7 +23174,7 @@ LABEL_14:
 LABEL_32:
     v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
 LABEL_33:
-    v10[2](v10, v24);
+    completionCopy[2](completionCopy, v24);
     if (SHIBYTE(v29) < 0)
     {
       operator delete(*buf);
@@ -23202,16 +23202,16 @@ LABEL_35:
 LABEL_37:
 }
 
-- (void)clearUserEnteredBillingEndDayOfMonth:(id)a3 completion:(id)a4
+- (void)clearUserEnteredBillingEndDayOfMonth:(id)month completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  monthCopy = month;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!monthCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_37;
     }
@@ -23277,14 +23277,14 @@ LABEL_14:
       }
 
       v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-      v7[2](v7, v21);
+      completionCopy[2](completionCopy, v21);
       goto LABEL_35;
     }
 
     memset(buf, 0, sizeof(buf));
     v26 = 0;
     [(CTXPCClientHandler *)self registry];
-    sub_100018A64([v6 slotID]);
+    sub_100018A64([monthCopy slotID]);
     PersonalityIdFromSlotId();
     if (SHIBYTE(v24) < 0)
     {
@@ -23328,7 +23328,7 @@ LABEL_14:
 LABEL_32:
     v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
 LABEL_33:
-    v7[2](v7, v21);
+    completionCopy[2](completionCopy, v21);
     if (SHIBYTE(v26) < 0)
     {
       operator delete(*buf);
@@ -23356,10 +23356,10 @@ LABEL_35:
 LABEL_37:
 }
 
-- (void)getCellularUsageWorkspaceInfo:(id)a3
+- (void)getCellularUsageWorkspaceInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(*buf);
@@ -23418,7 +23418,7 @@ LABEL_12:
           v22 = [v16 objectForKey:@"kCTCellularUsageWorkspacePath"];
           v23 = [v17 initWithSubscriberTag:v32 metaDataForHomeCountry:v31 metaDataForRoaming:v30 billingCycleEndDate:v28 previousBillingCycleDate:v27 billingCycleSupported:v26 carrierSpaceSupported:v20 workspaceName:v21 workspacePath:v22];
 
-          v4[2](v4, v23, 0);
+          infoCopy[2](infoCopy, v23, 0);
           v14 = v29;
           v24 = v16;
         }
@@ -23435,7 +23435,7 @@ LABEL_12:
           }
 
           v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          (v4)[2](v4, 0, v24);
+          (infoCopy)[2](infoCopy, 0, v24);
         }
 
         if ((v14 & 1) == 0)
@@ -23470,11 +23470,11 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)isPrivateNetworkContext:(id)a3 completion:(id)a4
+- (void)isPrivateNetworkContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v26);
@@ -23516,12 +23516,12 @@ LABEL_12:
 
         if (v16)
         {
-          if (v6 && (v19 = sub_100018A64([v6 slotID]), v19))
+          if (contextCopy && (v19 = sub_100018A64([contextCopy slotID]), v19))
           {
-            v20 = self;
-            v21 = objc_retainBlock(v7);
+            selfCopy = self;
+            v21 = objc_retainBlock(completionCopy);
             v29[0] = off_101F42088;
-            v29[1] = v20;
+            v29[1] = selfCopy;
             v29[2] = v21;
             v29[3] = v29;
             (*(*v16 + 880))(v16, v19, v29);
@@ -23540,7 +23540,7 @@ LABEL_12:
             }
 
             v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            (*(v7 + 2))(v7, 0, v23);
+            (*(completionCopy + 2))(completionCopy, 0, v23);
           }
         }
 
@@ -23556,7 +23556,7 @@ LABEL_12:
           }
 
           v25 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          (*(v7 + 2))(v7, 0, v25);
+          (*(completionCopy + 2))(completionCopy, 0, v25);
         }
 
         if ((v17 & 1) == 0)
@@ -23591,11 +23591,11 @@ LABEL_12:
 LABEL_26:
 }
 
-- (void)getPrivateNetworkCapabilitiesForContext:(id)a3 completion:(id)a4
+- (void)getPrivateNetworkCapabilitiesForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v26);
@@ -23637,12 +23637,12 @@ LABEL_12:
 
         if (v16)
         {
-          if (v6 && (v19 = sub_100018A64([v6 slotID]), v19))
+          if (contextCopy && (v19 = sub_100018A64([contextCopy slotID]), v19))
           {
-            v20 = self;
-            v21 = objc_retainBlock(v7);
+            selfCopy = self;
+            v21 = objc_retainBlock(completionCopy);
             v29[0] = off_101F42108;
-            v29[1] = v20;
+            v29[1] = selfCopy;
             v29[2] = v21;
             v29[3] = v29;
             (*(*v16 + 888))(v16, v19, v29);
@@ -23661,7 +23661,7 @@ LABEL_12:
             }
 
             v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            (*(v7 + 2))(v7, 0, v23);
+            (*(completionCopy + 2))(completionCopy, 0, v23);
           }
         }
 
@@ -23677,7 +23677,7 @@ LABEL_12:
           }
 
           v25 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          (*(v7 + 2))(v7, 0, v25);
+          (*(completionCopy + 2))(completionCopy, 0, v25);
         }
 
         if ((v17 & 1) == 0)
@@ -23712,11 +23712,11 @@ LABEL_12:
 LABEL_26:
 }
 
-- (void)isPrivateNetworkSIM:(id)a3 completion:(id)a4
+- (void)isPrivateNetworkSIM:(id)m completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  mCopy = m;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v25);
@@ -23758,9 +23758,9 @@ LABEL_12:
 
         if (v16)
         {
-          if (v6 && (v19 = sub_100018A64([v6 slotID]), v19))
+          if (mCopy && (v19 = sub_100018A64([mCopy slotID]), v19))
           {
-            v20 = objc_retainBlock(v7);
+            v20 = objc_retainBlock(completionCopy);
             v28[0] = off_101F42198;
             v28[1] = v20;
             v28[3] = v28;
@@ -23780,7 +23780,7 @@ LABEL_12:
             }
 
             v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-            (*(v7 + 2))(v7, 0, v22);
+            (*(completionCopy + 2))(completionCopy, 0, v22);
           }
         }
 
@@ -23796,7 +23796,7 @@ LABEL_12:
           }
 
           v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          (*(v7 + 2))(v7, 0, v24);
+          (*(completionCopy + 2))(completionCopy, 0, v24);
         }
 
         if ((v17 & 1) == 0)
@@ -23831,10 +23831,10 @@ LABEL_12:
 LABEL_26:
 }
 
-- (void)isPrivateNetworkEvaluationNeeded:(id)a3
+- (void)isPrivateNetworkEvaluationNeeded:(id)needed
 {
-  v4 = a3;
-  if (!v4)
+  neededCopy = needed;
+  if (!neededCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v15 = v20;
@@ -23901,7 +23901,7 @@ LABEL_12:
   if (v13)
   {
     v16 = (*(*v13 + 920))(v13);
-    v4[2](v4, v16, 0);
+    neededCopy[2](neededCopy, v16, 0);
     if ((v14 & 1) == 0)
     {
 LABEL_16:
@@ -23921,7 +23921,7 @@ LABEL_16:
     }
 
     v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    (v4)[2](v4, 0, v18);
+    (neededCopy)[2](neededCopy, 0, v18);
 
     if ((v14 & 1) == 0)
     {
@@ -23932,11 +23932,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)isPrivateNetworkPreferredOverWifi:(id)a3 completion:(id)a4
+- (void)isPrivateNetworkPreferredOverWifi:(id)wifi completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  wifiCopy = wifi;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v25);
@@ -23978,9 +23978,9 @@ LABEL_12:
 
         if (v16)
         {
-          if (v6 && (v19 = sub_100018A64([v6 slotID]), v19))
+          if (wifiCopy && (v19 = sub_100018A64([wifiCopy slotID]), v19))
           {
-            v20 = objc_retainBlock(v7);
+            v20 = objc_retainBlock(completionCopy);
             v28[0] = off_101F42218;
             v28[1] = v20;
             v28[3] = v28;
@@ -24000,7 +24000,7 @@ LABEL_12:
             }
 
             v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-            (*(v7 + 2))(v7, 0, v22);
+            (*(completionCopy + 2))(completionCopy, 0, v22);
           }
         }
 
@@ -24016,7 +24016,7 @@ LABEL_12:
           }
 
           v24 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          (*(v7 + 2))(v7, 0, v24);
+          (*(completionCopy + 2))(completionCopy, 0, v24);
         }
 
         if ((v17 & 1) == 0)
@@ -24051,15 +24051,15 @@ LABEL_12:
 LABEL_26:
 }
 
-- (void)updateGeofenceProfile:(id)a3 completion:(id)a4
+- (void)updateGeofenceProfile:(id)profile completion:(id)completion
 {
-  v47 = a3;
-  v6 = a4;
-  if (v6)
+  profileCopy = profile;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(buf);
-    v8 = ServiceMap;
+    dataSetName3 = ServiceMap;
     v9 = "22CellularPlanController";
     if (("22CellularPlanController" & 0x8000000000000000) != 0)
     {
@@ -24077,7 +24077,7 @@ LABEL_26:
 
     std::mutex::lock(ServiceMap);
     *&v58 = v9;
-    v13 = sub_100009510(&v8[1].__m_.__sig, &v58);
+    v13 = sub_100009510(&dataSetName3[1].__m_.__sig, &v58);
     if (v13)
     {
       v15 = v13[3];
@@ -24085,7 +24085,7 @@ LABEL_26:
       if (v14)
       {
         atomic_fetch_add_explicit(&v14->__shared_owners_, 1uLL, memory_order_relaxed);
-        std::mutex::unlock(v8);
+        std::mutex::unlock(dataSetName3);
         atomic_fetch_add_explicit(&v14->__shared_owners_, 1uLL, memory_order_relaxed);
         v16 = v14;
         sub_100004A34(v14);
@@ -24099,7 +24099,7 @@ LABEL_26:
       v15 = 0;
     }
 
-    std::mutex::unlock(v8);
+    std::mutex::unlock(dataSetName3);
     v16 = 0;
     v46 = 1;
 LABEL_12:
@@ -24111,14 +24111,14 @@ LABEL_12:
     v45 = v16;
     if (v15)
     {
-      if (v47)
+      if (profileCopy)
       {
-        v18 = [v47 geofenceList];
-        if (v18)
+        geofenceList = [profileCopy geofenceList];
+        if (geofenceList)
         {
           v44 = v15;
-          v19 = [v47 dataSetName];
-          v20 = v19 == 0;
+          dataSetName = [profileCopy dataSetName];
+          v20 = dataSetName == 0;
 
           if (!v20)
           {
@@ -24139,55 +24139,55 @@ LABEL_12:
             v75 = 0;
             *&v74 = &v74 + 8;
             LODWORD(buf) = 1;
-            v21 = [v47 dataSetName];
-            if (v21)
+            dataSetName2 = [profileCopy dataSetName];
+            if (dataSetName2)
             {
-              v8 = [v47 dataSetName];
-              v22 = v8;
-              v23 = [(std::mutex *)v8 UTF8String];
+              dataSetName3 = [profileCopy dataSetName];
+              v22 = dataSetName3;
+              uTF8String = [(std::mutex *)dataSetName3 UTF8String];
             }
 
             else
             {
-              v23 = "";
+              uTF8String = "";
             }
 
-            sub_100016890((&buf + 8), v23);
-            if (v21)
+            sub_100016890((&buf + 8), uTF8String);
+            if (dataSetName2)
             {
             }
 
-            v25 = [v47 versionNumber];
-            if (v25)
+            versionNumber = [profileCopy versionNumber];
+            if (versionNumber)
             {
-              v8 = [v47 versionNumber];
-              v26 = v8;
-              v27 = [(std::mutex *)v8 UTF8String];
+              dataSetName3 = [profileCopy versionNumber];
+              v26 = dataSetName3;
+              uTF8String2 = [(std::mutex *)dataSetName3 UTF8String];
             }
 
             else
             {
-              v27 = "";
+              uTF8String2 = "";
             }
 
-            sub_100016890(&v69, v27);
-            if (v25)
+            sub_100016890(&v69, uTF8String2);
+            if (versionNumber)
             {
             }
 
-            BYTE9(v73) = [v47 cellularDataPreferred];
-            v28 = [v47 NRStandaloneMode];
-            if (v28 < 3)
+            BYTE9(v73) = [profileCopy cellularDataPreferred];
+            nRStandaloneMode = [profileCopy NRStandaloneMode];
+            if (nRStandaloneMode < 3)
             {
-              HIDWORD(v73) = dword_10197B278[v28];
+              HIDWORD(v73) = dword_10197B278[nRStandaloneMode];
             }
 
             v65 = 0u;
             v66 = 0u;
             v63 = 0u;
             v64 = 0u;
-            v29 = [v47 geofenceList];
-            v30 = [v29 countByEnumeratingWithState:&v63 objects:v77 count:16];
+            geofenceList2 = [profileCopy geofenceList];
+            v30 = [geofenceList2 countByEnumeratingWithState:&v63 objects:v77 count:16];
             if (v30)
             {
               v31 = 0;
@@ -24196,7 +24196,7 @@ LABEL_12:
               {
                 if (i != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(geofenceList2);
                 }
 
                 v34 = *(*(&v63 + 1) + 8 * v31);
@@ -24205,21 +24205,21 @@ LABEL_12:
                 __p = 0u;
                 v58 = 0u;
                 v59 = 0u;
-                v35 = [v34 radius];
-                [v35 doubleValue];
+                radius = [v34 radius];
+                [radius doubleValue];
                 *&v58 = v36;
 
-                v37 = [v34 longitude];
-                [v37 doubleValue];
+                longitude = [v34 longitude];
+                [longitude doubleValue];
                 *(&v58 + 1) = v38;
 
-                v39 = [v34 latitude];
-                [v39 doubleValue];
+                latitude = [v34 latitude];
+                [latitude doubleValue];
                 *&v59 = v40;
 
-                v41 = [v34 geofenceId];
-                v42 = v41;
-                sub_100016890((&v59 + 8), [v41 UTF8String]);
+                geofenceId = [v34 geofenceId];
+                v42 = geofenceId;
+                sub_100016890((&v59 + 8), [geofenceId UTF8String]);
 
                 sub_1004604CC(&v74, &v59 + 1);
                 if (SHIBYTE(v62) < 0)
@@ -24234,7 +24234,7 @@ LABEL_12:
 
                 if (++v31 >= v30)
                 {
-                  v30 = [v29 countByEnumeratingWithState:&v63 objects:v77 count:16];
+                  v30 = [geofenceList2 countByEnumeratingWithState:&v63 objects:v77 count:16];
                   if (!v30)
                   {
                     break;
@@ -24246,7 +24246,7 @@ LABEL_12:
             }
 
             sub_100134E64(v48, &buf);
-            v43 = objc_retainBlock(v6);
+            v43 = objc_retainBlock(completionCopy);
             v76[0] = off_101F42298;
             v76[1] = v43;
             v76[3] = v76;
@@ -24312,7 +24312,7 @@ LABEL_12:
       }
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
 LABEL_23:
     if ((v46 & 1) == 0)
     {
@@ -24334,10 +24334,10 @@ LABEL_23:
 LABEL_25:
 }
 
-- (void)removeGeofenceProfile:(id)a3
+- (void)removeGeofenceProfile:(id)profile
 {
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(buf);
@@ -24397,7 +24397,7 @@ LABEL_12:
           *&v35 = &v35 + 8;
           LODWORD(buf) = 1;
           sub_100134E64(v18, &buf);
-          v16 = objc_retainBlock(v4);
+          v16 = objc_retainBlock(profileCopy);
           v38[0] = off_101F42318;
           v38[1] = v16;
           v38[3] = v38;
@@ -24457,7 +24457,7 @@ LABEL_12:
             _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Could not find CellularPlanController for removeGeofenceProfile", &buf, 2u);
           }
 
-          (*(v4 + 2))(v4, 0);
+          (*(profileCopy + 2))(profileCopy, 0);
         }
 
         if ((v14 & 1) == 0)
@@ -24492,10 +24492,10 @@ LABEL_12:
 LABEL_36:
 }
 
-- (void)deleteHiddenSims:(id)a3
+- (void)deleteHiddenSims:(id)sims
 {
-  v4 = a3;
-  if (!v4)
+  simsCopy = sims;
+  if (!simsCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v5 = v20;
@@ -24506,7 +24506,7 @@ LABEL_36:
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Invalid completion handler for deleteHiddenSims", &v19, 2u);
     }
 
-    v4 = &stru_101F42058;
+    simsCopy = &stru_101F42058;
   }
 
   [(CTXPCClientHandler *)self registry];
@@ -24561,7 +24561,7 @@ LABEL_13:
 
   if (v14)
   {
-    v16 = objc_retainBlock(v4);
+    v16 = objc_retainBlock(simsCopy);
     v22[0] = off_101F42398;
     v22[1] = v16;
     v22[3] = v22;
@@ -24581,7 +24581,7 @@ LABEL_13:
     }
 
     v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    v4->invoke(v4, v18);
+    simsCopy->invoke(simsCopy, v18);
   }
 
   if ((v15 & 1) == 0)
@@ -24590,12 +24590,12 @@ LABEL_13:
   }
 }
 
-- (void)installPrivateNetworkProfile:(id)a3 completion:(id)a4
+- (void)installPrivateNetworkProfile:(id)profile completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v55 = v6;
-  if (!v7)
+  profileCopy = profile;
+  completionCopy = completion;
+  v55 = profileCopy;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v17 = *(&buf + 1);
@@ -24611,7 +24611,7 @@ LABEL_13:
 
   [(CTXPCClientHandler *)self registry];
   ServiceMap = Registry::getServiceMap(buf);
-  v9 = ServiceMap;
+  dataSetName2 = ServiceMap;
   v10 = "22CellularPlanController";
   if (("22CellularPlanController" & 0x8000000000000000) != 0)
   {
@@ -24629,7 +24629,7 @@ LABEL_13:
 
   std::mutex::lock(ServiceMap);
   *&v66 = v10;
-  v14 = sub_100009510(&v9[1].__m_.__sig, &v66);
+  v14 = sub_100009510(&dataSetName2[1].__m_.__sig, &v66);
   if (!v14)
   {
     v16 = 0;
@@ -24641,14 +24641,14 @@ LABEL_13:
   if (!v15)
   {
 LABEL_11:
-    std::mutex::unlock(v9);
+    std::mutex::unlock(dataSetName2);
     v53 = 0;
     v54 = 1;
     goto LABEL_12;
   }
 
   atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
-  std::mutex::unlock(v9);
+  std::mutex::unlock(dataSetName2);
   atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
   v53 = v15;
   sub_100004A34(v15);
@@ -24661,7 +24661,7 @@ LABEL_12:
 
   if (v16)
   {
-    if (v6 && ([v6 versionNumber], (v18 = objc_claimAutoreleasedReturnValue()) != 0) && (v52 = v16, objc_msgSend(v6, "dataSetName"), v19 = objc_claimAutoreleasedReturnValue(), v20 = v19 == 0, v19, v18, !v20))
+    if (profileCopy && ([profileCopy versionNumber], (v18 = objc_claimAutoreleasedReturnValue()) != 0) && (v52 = v16, objc_msgSend(profileCopy, "dataSetName"), v19 = objc_claimAutoreleasedReturnValue(), v20 = v19 == 0, v19, v18, !v20))
     {
       v83 = 0;
       v81 = 0u;
@@ -24680,91 +24680,91 @@ LABEL_12:
       v83 = 0;
       *&v82 = &v82 + 8;
       LODWORD(buf) = 1;
-      v21 = [v6 dataSetName];
-      if (v21)
+      dataSetName = [profileCopy dataSetName];
+      if (dataSetName)
       {
-        v9 = [v6 dataSetName];
-        v22 = v9;
-        v23 = [(std::mutex *)v9 UTF8String];
+        dataSetName2 = [profileCopy dataSetName];
+        v22 = dataSetName2;
+        uTF8String = [(std::mutex *)dataSetName2 UTF8String];
       }
 
       else
       {
-        v23 = "";
+        uTF8String = "";
       }
 
-      sub_100016890((&buf + 8), v23);
-      if (v21)
+      sub_100016890((&buf + 8), uTF8String);
+      if (dataSetName)
       {
       }
 
-      v27 = [v6 versionNumber];
-      if (v27)
+      versionNumber = [profileCopy versionNumber];
+      if (versionNumber)
       {
-        v9 = [v6 versionNumber];
-        v28 = v9;
-        v29 = [(std::mutex *)v9 UTF8String];
-      }
-
-      else
-      {
-        v29 = "";
-      }
-
-      sub_100016890(&v77, v29);
-      if (v27)
-      {
-      }
-
-      v30 = [v6 csgNetworkIdentifier];
-      if (v30)
-      {
-        v9 = [v6 csgNetworkIdentifier];
-        v31 = v9;
-        v32 = [(std::mutex *)v9 UTF8String];
+        dataSetName2 = [profileCopy versionNumber];
+        v28 = dataSetName2;
+        uTF8String2 = [(std::mutex *)dataSetName2 UTF8String];
       }
 
       else
       {
-        v32 = "";
+        uTF8String2 = "";
       }
 
-      sub_100016890((&v78 + 8), v32);
-      if (v30)
+      sub_100016890(&v77, uTF8String2);
+      if (versionNumber)
       {
       }
 
-      v33 = [v6 networkIdentifier];
-      if (v33)
+      csgNetworkIdentifier = [profileCopy csgNetworkIdentifier];
+      if (csgNetworkIdentifier)
       {
-        v9 = [v6 networkIdentifier];
-        v34 = v9;
-        v35 = [(std::mutex *)v9 UTF8String];
+        dataSetName2 = [profileCopy csgNetworkIdentifier];
+        v31 = dataSetName2;
+        uTF8String3 = [(std::mutex *)dataSetName2 UTF8String];
       }
 
       else
       {
-        v35 = "";
+        uTF8String3 = "";
       }
 
-      sub_100016890(&v80, v35);
-      if (v33)
+      sub_100016890((&v78 + 8), uTF8String3);
+      if (csgNetworkIdentifier)
       {
       }
 
-      BYTE9(v81) = [v6 cellularDataPreferred];
-      v36 = [v6 NRStandaloneMode];
-      if (v36 < 3)
+      networkIdentifier = [profileCopy networkIdentifier];
+      if (networkIdentifier)
       {
-        HIDWORD(v81) = dword_10197B278[v36];
+        dataSetName2 = [profileCopy networkIdentifier];
+        v34 = dataSetName2;
+        uTF8String4 = [(std::mutex *)dataSetName2 UTF8String];
+      }
+
+      else
+      {
+        uTF8String4 = "";
+      }
+
+      sub_100016890(&v80, uTF8String4);
+      if (networkIdentifier)
+      {
+      }
+
+      BYTE9(v81) = [profileCopy cellularDataPreferred];
+      nRStandaloneMode = [profileCopy NRStandaloneMode];
+      if (nRStandaloneMode < 3)
+      {
+        HIDWORD(v81) = dword_10197B278[nRStandaloneMode];
       }
 
       v73 = 0u;
       v74 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v37 = [v6 geofenceList];
-      v38 = [v37 countByEnumeratingWithState:&v71 objects:v85 count:16];
+      geofenceList = [profileCopy geofenceList];
+      v38 = [geofenceList countByEnumeratingWithState:&v71 objects:v85 count:16];
       if (v38)
       {
         v39 = 0;
@@ -24773,7 +24773,7 @@ LABEL_12:
         {
           if (i != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(geofenceList);
           }
 
           v42 = *(*(&v71 + 1) + 8 * v39);
@@ -24782,21 +24782,21 @@ LABEL_12:
           __p = 0u;
           v66 = 0u;
           v67 = 0u;
-          v43 = [v42 radius];
-          [v43 doubleValue];
+          radius = [v42 radius];
+          [radius doubleValue];
           *&v66 = v44;
 
-          v45 = [v42 longitude];
-          [v45 doubleValue];
+          longitude = [v42 longitude];
+          [longitude doubleValue];
           *(&v66 + 1) = v46;
 
-          v47 = [v42 latitude];
-          [v47 doubleValue];
+          latitude = [v42 latitude];
+          [latitude doubleValue];
           *&v67 = v48;
 
-          v49 = [v42 geofenceId];
-          v50 = v49;
-          sub_100016890((&v67 + 8), [v49 UTF8String]);
+          geofenceId = [v42 geofenceId];
+          v50 = geofenceId;
+          sub_100016890((&v67 + 8), [geofenceId UTF8String]);
 
           sub_1004604CC(&v82, &v67 + 1);
           if (SHIBYTE(v70) < 0)
@@ -24811,7 +24811,7 @@ LABEL_12:
 
           if (++v39 >= v38)
           {
-            v38 = [v37 countByEnumeratingWithState:&v71 objects:v85 count:16];
+            v38 = [geofenceList countByEnumeratingWithState:&v71 objects:v85 count:16];
             if (!v38)
             {
               break;
@@ -24823,7 +24823,7 @@ LABEL_12:
       }
 
       sub_100134E64(v56, &buf);
-      v51 = objc_retainBlock(v7);
+      v51 = objc_retainBlock(completionCopy);
       v84[0] = off_101F42418;
       v84[1] = v51;
       v84[3] = v84;
@@ -24875,7 +24875,7 @@ LABEL_12:
     else
     {
       v26 = [NSError errorWithDomain:&stru_101F6AFB8 code:4 userInfo:0];
-      (*(v7 + 2))(v7, v26);
+      (*(completionCopy + 2))(completionCopy, v26);
     }
   }
 
@@ -24891,7 +24891,7 @@ LABEL_12:
     }
 
     v25 = [NSError errorWithDomain:&stru_101F6AFB8 code:0 userInfo:0];
-    (*(v7 + 2))(v7, v25);
+    (*(completionCopy + 2))(completionCopy, v25);
   }
 
   if ((v54 & 1) == 0)
@@ -24902,15 +24902,15 @@ LABEL_12:
 LABEL_74:
 }
 
-- (void)removePrivateNetworkProfile:(id)a3 completion:(id)a4
+- (void)removePrivateNetworkProfile:(id)profile completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  profileCopy = profile;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(buf);
-    v9 = ServiceMap;
+    dataSetName2 = ServiceMap;
     v10 = "22CellularPlanController";
     if (("22CellularPlanController" & 0x8000000000000000) != 0)
     {
@@ -24928,7 +24928,7 @@ LABEL_74:
 
     std::mutex::lock(ServiceMap);
     v54 = v10;
-    v14 = sub_100009510(&v9[1].__m_.__sig, &v54);
+    v14 = sub_100009510(&dataSetName2[1].__m_.__sig, &v54);
     if (v14)
     {
       v16 = v14[3];
@@ -24936,7 +24936,7 @@ LABEL_74:
       if (v15)
       {
         atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
-        std::mutex::unlock(v9);
+        std::mutex::unlock(dataSetName2);
         atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
         sub_100004A34(v15);
         v17 = 0;
@@ -24948,7 +24948,7 @@ LABEL_12:
 
         if (v16)
         {
-          if (v6)
+          if (profileCopy)
           {
             v53 = 0;
             v51 = 0u;
@@ -24966,80 +24966,80 @@ LABEL_12:
             *(&v52 + 1) = 0;
             v53 = 0;
             *&v52 = &v52 + 8;
-            v19 = [v6 dataSetName];
-            if (v19)
+            dataSetName = [profileCopy dataSetName];
+            if (dataSetName)
             {
-              v9 = [v6 dataSetName];
-              v20 = v9;
-              v21 = [(std::mutex *)v9 UTF8String];
+              dataSetName2 = [profileCopy dataSetName];
+              v20 = dataSetName2;
+              uTF8String = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v21 = "";
+              uTF8String = "";
             }
 
-            sub_100016890((&buf + 8), v21);
-            if (v19)
+            sub_100016890((&buf + 8), uTF8String);
+            if (dataSetName)
             {
             }
 
-            v25 = [v6 versionNumber];
-            if (v25)
+            versionNumber = [profileCopy versionNumber];
+            if (versionNumber)
             {
-              v9 = [v6 versionNumber];
-              v26 = v9;
-              v27 = [(std::mutex *)v9 UTF8String];
+              dataSetName2 = [profileCopy versionNumber];
+              v26 = dataSetName2;
+              uTF8String2 = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v27 = "";
+              uTF8String2 = "";
             }
 
-            sub_100016890(&v47, v27);
-            if (v25)
+            sub_100016890(&v47, uTF8String2);
+            if (versionNumber)
             {
             }
 
-            v28 = [v6 csgNetworkIdentifier];
-            if (v28)
+            csgNetworkIdentifier = [profileCopy csgNetworkIdentifier];
+            if (csgNetworkIdentifier)
             {
-              v9 = [v6 csgNetworkIdentifier];
-              v29 = v9;
-              v30 = [(std::mutex *)v9 UTF8String];
+              dataSetName2 = [profileCopy csgNetworkIdentifier];
+              v29 = dataSetName2;
+              uTF8String3 = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v30 = "";
+              uTF8String3 = "";
             }
 
-            sub_100016890((&v48 + 8), v30);
-            if (v28)
+            sub_100016890((&v48 + 8), uTF8String3);
+            if (csgNetworkIdentifier)
             {
             }
 
-            v31 = [v6 networkIdentifier];
-            if (v31)
+            networkIdentifier = [profileCopy networkIdentifier];
+            if (networkIdentifier)
             {
-              v9 = [v6 networkIdentifier];
-              v32 = v9;
-              v33 = [(std::mutex *)v9 UTF8String];
+              dataSetName2 = [profileCopy networkIdentifier];
+              v32 = dataSetName2;
+              uTF8String4 = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v33 = "";
+              uTF8String4 = "";
             }
 
-            sub_100016890(&v50, v33);
-            if (v31)
+            sub_100016890(&v50, uTF8String4);
+            if (networkIdentifier)
             {
             }
 
             sub_100134E64(v35, &buf);
-            v34 = objc_retainBlock(v7);
+            v34 = objc_retainBlock(completionCopy);
             v55[0] = off_101F42498;
             v55[1] = v34;
             v55[3] = v55;
@@ -25091,7 +25091,7 @@ LABEL_12:
           else
           {
             v24 = [NSError errorWithDomain:&stru_101F6AFB8 code:4 userInfo:0];
-            (*(v7 + 2))(v7, v24);
+            (*(completionCopy + 2))(completionCopy, v24);
           }
         }
 
@@ -25107,7 +25107,7 @@ LABEL_12:
           }
 
           v23 = [NSError errorWithDomain:&stru_101F6AFB8 code:0 userInfo:0];
-          (*(v7 + 2))(v7, v23);
+          (*(completionCopy + 2))(completionCopy, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -25124,7 +25124,7 @@ LABEL_12:
       v16 = 0;
     }
 
-    std::mutex::unlock(v9);
+    std::mutex::unlock(dataSetName2);
     v15 = 0;
     v17 = 1;
     goto LABEL_12;
@@ -25142,16 +25142,16 @@ LABEL_12:
 LABEL_58:
 }
 
-- (void)updatePrivateNetworkProfile:(id)a3 setProfileAside:(BOOL)a4 completion:(id)a5
+- (void)updatePrivateNetworkProfile:(id)profile setProfileAside:(BOOL)aside completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  asideCopy = aside;
+  profileCopy = profile;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(buf);
-    v11 = ServiceMap;
+    dataSetName2 = ServiceMap;
     v12 = "22CellularPlanController";
     if (("22CellularPlanController" & 0x8000000000000000) != 0)
     {
@@ -25169,7 +25169,7 @@ LABEL_58:
 
     std::mutex::lock(ServiceMap);
     v56 = v12;
-    v16 = sub_100009510(&v11[1].__m_.__sig, &v56);
+    v16 = sub_100009510(&dataSetName2[1].__m_.__sig, &v56);
     if (v16)
     {
       v18 = v16[3];
@@ -25177,7 +25177,7 @@ LABEL_58:
       if (v17)
       {
         atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
-        std::mutex::unlock(v11);
+        std::mutex::unlock(dataSetName2);
         atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
         sub_100004A34(v17);
         v19 = 0;
@@ -25189,7 +25189,7 @@ LABEL_12:
 
         if (v18)
         {
-          if (v8)
+          if (profileCopy)
           {
             v55 = 0;
             v53 = 0u;
@@ -25207,84 +25207,84 @@ LABEL_12:
             *(&v54 + 1) = 0;
             v55 = 0;
             *&v54 = &v54 + 8;
-            v21 = [v8 dataSetName];
-            if (v21)
+            dataSetName = [profileCopy dataSetName];
+            if (dataSetName)
             {
-              v11 = [v8 dataSetName];
-              v22 = v11;
-              v23 = [(std::mutex *)v11 UTF8String];
+              dataSetName2 = [profileCopy dataSetName];
+              v22 = dataSetName2;
+              uTF8String = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v23 = "";
+              uTF8String = "";
             }
 
-            sub_100016890((&buf + 8), v23);
-            if (v21)
+            sub_100016890((&buf + 8), uTF8String);
+            if (dataSetName)
             {
             }
 
-            v27 = [v8 versionNumber];
-            if (v27)
+            versionNumber = [profileCopy versionNumber];
+            if (versionNumber)
             {
-              v11 = [v8 versionNumber];
-              v28 = v11;
-              v29 = [(std::mutex *)v11 UTF8String];
+              dataSetName2 = [profileCopy versionNumber];
+              v28 = dataSetName2;
+              uTF8String2 = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v29 = "";
+              uTF8String2 = "";
             }
 
-            sub_100016890(&v49, v29);
-            if (v27)
+            sub_100016890(&v49, uTF8String2);
+            if (versionNumber)
             {
             }
 
-            v30 = [v8 csgNetworkIdentifier];
-            if (v30)
+            csgNetworkIdentifier = [profileCopy csgNetworkIdentifier];
+            if (csgNetworkIdentifier)
             {
-              v11 = [v8 csgNetworkIdentifier];
-              v31 = v11;
-              v32 = [(std::mutex *)v11 UTF8String];
+              dataSetName2 = [profileCopy csgNetworkIdentifier];
+              v31 = dataSetName2;
+              uTF8String3 = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v32 = "";
+              uTF8String3 = "";
             }
 
-            sub_100016890((&v50 + 8), v32);
-            if (v30)
+            sub_100016890((&v50 + 8), uTF8String3);
+            if (csgNetworkIdentifier)
             {
             }
 
-            v33 = [v8 networkIdentifier];
-            if (v33)
+            networkIdentifier = [profileCopy networkIdentifier];
+            if (networkIdentifier)
             {
-              v11 = [v8 networkIdentifier];
-              v34 = v11;
-              v35 = [(std::mutex *)v11 UTF8String];
+              dataSetName2 = [profileCopy networkIdentifier];
+              v34 = dataSetName2;
+              uTF8String4 = [(std::mutex *)dataSetName2 UTF8String];
             }
 
             else
             {
-              v35 = "";
+              uTF8String4 = "";
             }
 
-            sub_100016890(&v52, v35);
-            if (v33)
+            sub_100016890(&v52, uTF8String4);
+            if (networkIdentifier)
             {
             }
 
             sub_100134E64(v37, &buf);
-            v36 = objc_retainBlock(v9);
+            v36 = objc_retainBlock(completionCopy);
             v57[0] = off_101F42518;
             v57[1] = v36;
             v57[3] = v57;
-            (*(*v18 + 960))(v18, v37, v6, v57);
+            (*(*v18 + 960))(v18, v37, asideCopy, v57);
             sub_1008A1348(v57);
             sub_1001349A0(v46, v46[1]);
             if (v45 < 0)
@@ -25332,7 +25332,7 @@ LABEL_12:
           else
           {
             v26 = [NSError errorWithDomain:&stru_101F6AFB8 code:4 userInfo:0];
-            (*(v9 + 2))(v9, v26);
+            (*(completionCopy + 2))(completionCopy, v26);
           }
         }
 
@@ -25348,7 +25348,7 @@ LABEL_12:
           }
 
           v25 = [NSError errorWithDomain:&stru_101F6AFB8 code:0 userInfo:0];
-          (*(v9 + 2))(v9, v25);
+          (*(completionCopy + 2))(completionCopy, v25);
         }
 
         if ((v19 & 1) == 0)
@@ -25365,7 +25365,7 @@ LABEL_12:
       v18 = 0;
     }
 
-    std::mutex::unlock(v11);
+    std::mutex::unlock(dataSetName2);
     v17 = 0;
     v19 = 1;
     goto LABEL_12;
@@ -25383,11 +25383,11 @@ LABEL_12:
 LABEL_58:
 }
 
-- (void)getPrivateNetworkSimInfoForContext:(id)a3 completion:(id)a4
+- (void)getPrivateNetworkSimInfoForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v26);
@@ -25429,12 +25429,12 @@ LABEL_12:
 
         if (v16)
         {
-          if (v6 && (v19 = sub_100018A64([v6 slotID]), v19))
+          if (contextCopy && (v19 = sub_100018A64([contextCopy slotID]), v19))
           {
-            v20 = self;
-            v21 = objc_retainBlock(v7);
+            selfCopy = self;
+            v21 = objc_retainBlock(completionCopy);
             v29[0] = off_101F42598;
-            v29[1] = v20;
+            v29[1] = selfCopy;
             v29[2] = v21;
             v29[3] = v29;
             (*(*v16 + 896))(v16, v19, v29);
@@ -25453,7 +25453,7 @@ LABEL_12:
             }
 
             v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            (*(v7 + 2))(v7, 0, v23);
+            (*(completionCopy + 2))(completionCopy, 0, v23);
           }
         }
 
@@ -25469,7 +25469,7 @@ LABEL_12:
           }
 
           v25 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-          (*(v7 + 2))(v7, 0, v25);
+          (*(completionCopy + 2))(completionCopy, 0, v25);
         }
 
         if ((v17 & 1) == 0)
@@ -25504,10 +25504,10 @@ LABEL_12:
 LABEL_26:
 }
 
-- (void)getEosStatus:(id)a3
+- (void)getEosStatus:(id)status
 {
-  v4 = a3;
-  if (v4)
+  statusCopy = status;
+  if (statusCopy)
   {
     *buf = 0;
     v13 = 0;
@@ -25522,13 +25522,13 @@ LABEL_26:
 
     if (v5)
     {
-      v4[2](v4, 0, v5);
+      statusCopy[2](statusCopy, 0, v5);
     }
 
     else
     {
       v7 = *buf;
-      v8 = objc_retainBlock(v4);
+      v8 = objc_retainBlock(statusCopy);
       v14[0] = off_101F492C8;
       v14[1] = v8;
       v14[3] = v14;
@@ -25555,12 +25555,12 @@ LABEL_26:
   }
 }
 
-- (void)setEosStatus:(id)a3 assertionState:(id)a4 completion:(id)a5
+- (void)setEosStatus:(id)status assertionState:(id)state completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  statusCopy = status;
+  stateCopy = state;
+  completionCopy = completion;
+  if (completionCopy)
   {
     *buf = 0;
     v25 = 0;
@@ -25575,17 +25575,17 @@ LABEL_26:
 
     if (v11)
     {
-      v10[2](v10, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
     }
 
     else
     {
       v13 = *buf;
-      v14 = v8;
-      sub_10000501C(v19, [v8 UTF8String]);
-      v15 = v9;
-      sub_10000501C(__p, [v9 UTF8String]);
-      v16 = objc_retainBlock(v10);
+      v14 = statusCopy;
+      sub_10000501C(v19, [statusCopy UTF8String]);
+      v15 = stateCopy;
+      sub_10000501C(__p, [stateCopy UTF8String]);
+      v16 = objc_retainBlock(completionCopy);
       v26[0] = off_101F49358;
       v26[1] = v16;
       v26[3] = v26;
@@ -25621,10 +25621,10 @@ LABEL_26:
   }
 }
 
-- (void)getEOSFirmwareUpdateInfo:(id)a3
+- (void)getEOSFirmwareUpdateInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     *buf = 0;
     v26 = 0;
@@ -25639,7 +25639,7 @@ LABEL_26:
 
     if (v5)
     {
-      v4[2](v4, 0, v5);
+      infoCopy[2](infoCopy, 0, v5);
 LABEL_23:
       if (v26)
       {
@@ -25693,7 +25693,7 @@ LABEL_16:
           v18[2] = sub_10152E8D8;
           v18[3] = &unk_101F3B988;
           v18[4] = self;
-          v19 = v4;
+          v19 = infoCopy;
           (*(*v15 + 144))(v15, 0, v18, 1);
           v17 = v19;
         }
@@ -25701,7 +25701,7 @@ LABEL_16:
         else
         {
           v17 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v4[2](v4, 0, v17);
+          infoCopy[2](infoCopy, 0, v17);
         }
 
         if ((v16 & 1) == 0)
@@ -25736,20 +25736,20 @@ LABEL_16:
 LABEL_26:
 }
 
-- (optional<PhoneServicesType>)serviceFromCFName:(id)a3
+- (optional<PhoneServicesType>)serviceFromCFName:(id)name
 {
-  v3 = a3;
-  if (CFStringCompare(v3, kCTCapabilityAgent, 0))
+  nameCopy = name;
+  if (CFStringCompare(nameCopy, kCTCapabilityAgent, 0))
   {
-    if (CFStringCompare(v3, kCTCapabilityAgent2, 0))
+    if (CFStringCompare(nameCopy, kCTCapabilityAgent2, 0))
     {
-      if (CFStringCompare(v3, kCTCapabilityPhoneServices, 0))
+      if (CFStringCompare(nameCopy, kCTCapabilityPhoneServices, 0))
       {
-        if (CFStringCompare(v3, kCTCapabilityAgent3, 0))
+        if (CFStringCompare(nameCopy, kCTCapabilityAgent3, 0))
         {
-          if (CFStringCompare(v3, kCTCapabilityNetworkSlicing, 0))
+          if (CFStringCompare(nameCopy, kCTCapabilityNetworkSlicing, 0))
           {
-            v4 = CFStringCompare(v3, kCTCapabilitySatellite, 0);
+            v4 = CFStringCompare(nameCopy, kCTCapabilitySatellite, 0);
             v5 = (v4 == kCFCompareEqualTo) << 32;
             if (v4)
             {
@@ -25799,13 +25799,13 @@ LABEL_26:
   return (v6 | v5);
 }
 
-- (void)context:(id)a3 canSetCapability:(id)a4 completion:(id)a5
+- (void)context:(id)context canSetCapability:(id)capability completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8 || !v9 || !v10)
+  contextCopy = context;
+  capabilityCopy = capability;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!contextCopy || !capabilityCopy || !completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v26 = *&buf[8];
@@ -25823,7 +25823,7 @@ LABEL_26:
     else if (!v11)
     {
 LABEL_19:
-      v13 = v8;
+      v13 = contextCopy;
       goto LABEL_41;
     }
 
@@ -25833,8 +25833,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v12 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v13 = [v12 resolveContext:v8];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v13 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (v13)
   {
@@ -25842,8 +25842,8 @@ LABEL_19:
     v68 = 0;
     v69 = 0;
     [(CTXPCClientHandler *)self registry];
-    v14 = [v13 uuid];
-    sub_100047544(v14, &v64);
+    uuid = [v13 uuid];
+    sub_100047544(uuid, &v64);
     PersonalityIdFromUuid();
     sub_1000475BC(&v64);
 
@@ -25865,12 +25865,12 @@ LABEL_19:
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v53 = [v13 uuid];
-        v54 = [v53 UUIDString];
-        v55 = v54;
-        v56 = [v54 UTF8String];
+        uuid2 = [v13 uuid];
+        uUIDString = [uuid2 UUIDString];
+        v55 = uUIDString;
+        uTF8String = [uUIDString UTF8String];
         *buf = 136315138;
-        *&buf[4] = v56;
+        *&buf[4] = uTF8String;
         _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "no personality for UUID '%s'", buf, 0xCu);
       }
 
@@ -25960,11 +25960,11 @@ LABEL_39:
     }
 
     v66 = 0;
-    if (CFStringCompare(v9, kCTCapabilityBrandedCallingInfo, 0))
+    if (CFStringCompare(capabilityCopy, kCTCapabilityBrandedCallingInfo, 0))
     {
-      if (CFStringCompare(v9, kCTCapabilityTurnOffCellular, 0))
+      if (CFStringCompare(capabilityCopy, kCTCapabilityTurnOffCellular, 0))
       {
-        if (([(CTXPCClientHandler *)self serviceFromCFName:v9]& 0x100000000) == 0)
+        if (([(CTXPCClientHandler *)self serviceFromCFName:capabilityCopy]& 0x100000000) == 0)
         {
 LABEL_71:
           v46 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
@@ -26090,7 +26090,7 @@ LABEL_81:
         {
           v59 = asStringBool(v45);
           *buf = 138412802;
-          *&buf[4] = v9;
+          *&buf[4] = capabilityCopy;
           *&buf[12] = 2080;
           *&buf[14] = v59;
           v72 = 2112;
@@ -26209,13 +26209,13 @@ LABEL_74:
 LABEL_41:
 }
 
-- (void)context:(id)a3 getCapability:(id)a4 completion:(id)a5
+- (void)context:(id)context getCapability:(id)capability completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8 || !v9 || !v10)
+  contextCopy = context;
+  capabilityCopy = capability;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!contextCopy || !capabilityCopy || !completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v26 = *&buf[8];
@@ -26233,7 +26233,7 @@ LABEL_41:
     else if (!v11)
     {
 LABEL_19:
-      v13 = v8;
+      v13 = contextCopy;
       goto LABEL_41;
     }
 
@@ -26243,8 +26243,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v12 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v13 = [v12 resolveContext:v8];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v13 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (v13)
   {
@@ -26252,8 +26252,8 @@ LABEL_19:
     v68 = 0;
     v69 = 0;
     [(CTXPCClientHandler *)self registry];
-    v14 = [v13 uuid];
-    sub_100047544(v14, &v64);
+    uuid = [v13 uuid];
+    sub_100047544(uuid, &v64);
     PersonalityIdFromUuid();
     sub_1000475BC(&v64);
 
@@ -26275,12 +26275,12 @@ LABEL_19:
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v53 = [v13 uuid];
-        v54 = [v53 UUIDString];
-        v55 = v54;
-        v56 = [v54 UTF8String];
+        uuid2 = [v13 uuid];
+        uUIDString = [uuid2 UUIDString];
+        v55 = uUIDString;
+        uTF8String = [uUIDString UTF8String];
         *buf = 136315138;
-        *&buf[4] = v56;
+        *&buf[4] = uTF8String;
         _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "no personality for UUID '%s'", buf, 0xCu);
       }
 
@@ -26370,11 +26370,11 @@ LABEL_39:
     }
 
     v66 = 0;
-    if (CFStringCompare(v9, kCTCapabilityBrandedCallingInfo, 0))
+    if (CFStringCompare(capabilityCopy, kCTCapabilityBrandedCallingInfo, 0))
     {
-      if (CFStringCompare(v9, kCTCapabilityTurnOffCellular, 0))
+      if (CFStringCompare(capabilityCopy, kCTCapabilityTurnOffCellular, 0))
       {
-        if (([(CTXPCClientHandler *)self serviceFromCFName:v9]& 0x100000000) == 0)
+        if (([(CTXPCClientHandler *)self serviceFromCFName:capabilityCopy]& 0x100000000) == 0)
         {
 LABEL_71:
           v46 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
@@ -26500,7 +26500,7 @@ LABEL_81:
         {
           v59 = asStringBool(v45);
           *buf = 138412802;
-          *&buf[4] = v9;
+          *&buf[4] = capabilityCopy;
           *&buf[12] = 2080;
           *&buf[14] = v59;
           v72 = 2112;
@@ -26619,15 +26619,15 @@ LABEL_74:
 LABEL_41:
 }
 
-- (void)context:(id)a3 setCapability:(id)a4 enabled:(BOOL)a5 info:(id)a6 completion:(id)a7
+- (void)context:(id)context setCapability:(id)capability enabled:(BOOL)enabled info:(id)info completion:(id)completion
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (!v12 || !v13 || !v15)
+  enabledCopy = enabled;
+  contextCopy = context;
+  capabilityCopy = capability;
+  infoCopy = info;
+  completionCopy = completion;
+  v16 = completionCopy;
+  if (!contextCopy || !capabilityCopy || !completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v31 = *&buf[8];
@@ -26645,7 +26645,7 @@ LABEL_41:
     else if (!v16)
     {
 LABEL_19:
-      v18 = v12;
+      v18 = contextCopy;
       goto LABEL_84;
     }
 
@@ -26655,8 +26655,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v17 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v18 = [v17 resolveContext:v12];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v18 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (v18)
   {
@@ -26664,8 +26664,8 @@ LABEL_19:
     v73 = 0;
     v74 = 0;
     [(CTXPCClientHandler *)self registry];
-    v19 = [v18 uuid];
-    sub_100047544(v19, v70);
+    uuid = [v18 uuid];
+    sub_100047544(uuid, v70);
     PersonalityIdFromUuid();
     sub_1000475BC(v70);
 
@@ -26687,12 +26687,12 @@ LABEL_19:
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v61 = [v18 uuid];
-        v62 = [v61 UUIDString];
-        v63 = v62;
-        v64 = [v62 UTF8String];
+        uuid2 = [v18 uuid];
+        uUIDString = [uuid2 UUIDString];
+        v63 = uUIDString;
+        uTF8String = [uUIDString UTF8String];
         *buf = 136315138;
-        *&buf[4] = v64;
+        *&buf[4] = uTF8String;
         _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "no personality for UUID '%s'", buf, 0xCu);
       }
 
@@ -26722,7 +26722,7 @@ LABEL_19:
     std::mutex::lock(ServiceMap);
     *v70 = v23;
     v27 = sub_100009510(&v22[1].__m_.__sig, v70);
-    v67 = v9;
+    v67 = enabledCopy;
     if (v27)
     {
       v29 = v27[3];
@@ -26768,26 +26768,26 @@ LABEL_28:
       goto LABEL_80;
     }
 
-    if (CFStringCompare(v13, kCTCapabilityBrandedCallingInfo, 0))
+    if (CFStringCompare(capabilityCopy, kCTCapabilityBrandedCallingInfo, 0))
     {
-      if (CFStringCompare(v13, kCTCapabilityTurnOffCellular, 0))
+      if (CFStringCompare(capabilityCopy, kCTCapabilityTurnOffCellular, 0))
       {
-        v37 = [(CTXPCClientHandler *)self serviceFromCFName:v13];
+        v37 = [(CTXPCClientHandler *)self serviceFromCFName:capabilityCopy];
         v38 = v37;
         if ((*&v37 & 0x100000000) != 0)
         {
           if (v37.var0.var1 == 1)
           {
             v52 = sub_1000B1374();
-            if (v14)
+            if (infoCopy)
             {
               if (v52)
               {
                 v53 = v30;
                 (**v29)(buf, v29, &__p);
                 v54 = *buf;
-                v69 = v14;
-                CFRetain(v14);
+                v69 = infoCopy;
+                CFRetain(infoCopy);
                 (*(*v54 + 192))(v54, &v69);
                 sub_10001021C(&v69);
                 v30 = v53;
@@ -26801,10 +26801,10 @@ LABEL_28:
 
           (**v29)(buf, v29, &__p);
           v55 = *buf;
-          v68 = v14;
-          if (v14)
+          v68 = infoCopy;
+          if (infoCopy)
           {
-            CFRetain(v14);
+            CFRetain(infoCopy);
           }
 
           (*(*v55 + 32))(v55, v38, v67, &v68);
@@ -26835,7 +26835,7 @@ LABEL_28:
 
           if (*buf)
           {
-            (*(**buf + 192))(*buf, v51, v9);
+            (*(**buf + 192))(*buf, v51, enabledCopy);
             v40 = 0;
           }
 
@@ -26880,11 +26880,11 @@ LABEL_77:
       {
         v60 = asStringBool(v67);
         *buf = 138412802;
-        *&buf[4] = v13;
+        *&buf[4] = capabilityCopy;
         *&buf[12] = 2080;
         *&buf[14] = v60;
         v76 = 2112;
-        v77 = v14;
+        v77 = infoCopy;
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_INFO, "%@ Set = %s with [%@]", buf, 0x20u);
       }
 
@@ -26960,7 +26960,7 @@ LABEL_63:
       if ([v18 slotID])
       {
         v56 = sub_100018A64([v18 slotID]);
-        (*(*v49 + 48))(v49, v9, v56);
+        (*(*v49 + 48))(v49, enabledCopy, v56);
         v40 = 0;
 LABEL_74:
         if ((v50 & 1) == 0)
@@ -27000,12 +27000,12 @@ LABEL_74:
 LABEL_84:
 }
 
-- (void)context:(id)a3 getSystemCapabilities:(id)a4
+- (void)context:(id)context getSystemCapabilities:(id)capabilities
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  contextCopy = context;
+  capabilitiesCopy = capabilities;
+  v8 = capabilitiesCopy;
+  if (!contextCopy || !capabilitiesCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v22 = v31;
@@ -27031,8 +27031,8 @@ LABEL_84:
     goto LABEL_30;
   }
 
-  v9 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v10 = [v9 resolveContext:v6];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v10 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (v10)
   {
@@ -27043,7 +27043,7 @@ LABEL_84:
       (v8)[2](v8, 0, v26);
 
 LABEL_29:
-      v6 = v10;
+      contextCopy = v10;
       goto LABEL_30;
     }
 
@@ -27141,20 +27141,20 @@ LABEL_20:
   v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
   (v8)[2](v8, 0, v25);
 
-  v6 = 0;
+  contextCopy = 0;
 LABEL_30:
 }
 
-- (void)getSupports5G:(id)a3 completion:(id)a4
+- (void)getSupports5G:(id)g completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  gCopy = g;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!gCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_29;
     }
@@ -27198,7 +27198,7 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
+          v20 = sub_100018A64([gCopy slotID]);
           [(CTXPCClientHandler *)self registry];
           isValidSimSlot = subscriber::isValidSimSlot();
           if (v26)
@@ -27209,7 +27209,7 @@ LABEL_14:
           if (isValidSimSlot)
           {
             v22 = [NSNumber numberWithBool:(*(*v16 + 24))(v16, v20)];
-            (v7)[2](v7, v22, 0);
+            (completionCopy)[2](completionCopy, v22, 0);
           }
 
           else
@@ -27224,7 +27224,7 @@ LABEL_14:
             }
 
             v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-            v7[2](v7, 0, v22);
+            completionCopy[2](completionCopy, 0, v22);
           }
         }
 
@@ -27240,7 +27240,7 @@ LABEL_14:
           }
 
           v22 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v22);
+          completionCopy[2](completionCopy, 0, v22);
         }
 
         if ((v17 & 1) == 0)
@@ -27275,13 +27275,13 @@ LABEL_14:
 LABEL_29:
 }
 
-- (void)context:(id)a3 recheckPhoneServicesAccountStatus:(id)a4 completion:(id)a5
+- (void)context:(id)context recheckPhoneServicesAccountStatus:(id)status completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8 || !v9 || !v10)
+  contextCopy = context;
+  statusCopy = status;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!contextCopy || !statusCopy || !completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v15 = v26;
@@ -27299,7 +27299,7 @@ LABEL_29:
     else if (!v11)
     {
 LABEL_11:
-      v13 = v8;
+      v13 = contextCopy;
       goto LABEL_22;
     }
 
@@ -27309,8 +27309,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v12 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v13 = [v12 resolveContext:v8];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v13 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (v13)
   {
@@ -27318,8 +27318,8 @@ LABEL_11:
     v26 = 0;
     v27 = 0;
     [(CTXPCClientHandler *)self registry];
-    v14 = [v13 uuid];
-    sub_100047544(v14, &v28);
+    uuid = [v13 uuid];
+    sub_100047544(uuid, &v28);
     PersonalityIdFromUuid();
     sub_1000475BC(&v28);
 
@@ -27333,12 +27333,12 @@ LABEL_11:
     ctu::OsLogContext::~OsLogContext(&buf);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v13 uuid];
-      v22 = [v21 UUIDString];
-      v23 = v22;
-      v24 = [v22 UTF8String];
+      uuid2 = [v13 uuid];
+      uUIDString = [uuid2 UUIDString];
+      v23 = uUIDString;
+      uTF8String = [uUIDString UTF8String];
       buf = 136315138;
-      *buf_4 = v24;
+      *buf_4 = uTF8String;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "no personality for UUID '%s'", &buf, 0xCu);
     }
 
@@ -27371,10 +27371,10 @@ LABEL_11:
 LABEL_22:
 }
 
-- (void)getPhoneServicesDeviceList:(id)a3
+- (void)getPhoneServicesDeviceList:(id)list
 {
-  v4 = a3;
-  if (v4)
+  listCopy = list;
+  if (listCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v20);
@@ -27415,10 +27415,10 @@ LABEL_12:
 
         if (v13)
         {
-          v16 = self;
-          v17 = objc_retainBlock(v4);
+          selfCopy = self;
+          v17 = objc_retainBlock(listCopy);
           v23[0] = off_101F546A0;
-          v23[1] = v16;
+          v23[1] = selfCopy;
           v23[2] = v17;
           v23[3] = v23;
           (*(*v13 + 72))(v13, v23);
@@ -27437,7 +27437,7 @@ LABEL_12:
           }
 
           v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-          (*(v4 + 2))(v4, 0, v19);
+          (*(listCopy + 2))(listCopy, 0, v19);
         }
 
         if ((v14 & 1) == 0)
@@ -27472,10 +27472,10 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)getPhoneServicesDeviceInfo:(id)a3
+- (void)getPhoneServicesDeviceInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     [(CTXPCClientHandler *)self registry];
     ServiceMap = Registry::getServiceMap(v20);
@@ -27516,10 +27516,10 @@ LABEL_12:
 
         if (v13)
         {
-          v16 = self;
-          v17 = objc_retainBlock(v4);
+          selfCopy = self;
+          v17 = objc_retainBlock(infoCopy);
           v23[0] = off_101F54720;
-          v23[1] = v16;
+          v23[1] = selfCopy;
           v23[2] = v17;
           v23[3] = v23;
           (*(*v13 + 64))(v13, v23);
@@ -27538,7 +27538,7 @@ LABEL_12:
           }
 
           v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-          (*(v4 + 2))(v4, 0, v19);
+          (*(infoCopy + 2))(infoCopy, 0, v19);
         }
 
         if ((v14 & 1) == 0)
@@ -27573,13 +27573,13 @@ LABEL_12:
 LABEL_21:
 }
 
-- (void)context:(id)a3 addPhoneServicesDevice:(id)a4 withCompletion:(id)a5
+- (void)context:(id)context addPhoneServicesDevice:(id)device withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8 || !v10)
+  contextCopy = context;
+  deviceCopy = device;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!contextCopy || !completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v15 = v26;
@@ -27597,7 +27597,7 @@ LABEL_21:
     else if (!v11)
     {
 LABEL_10:
-      v13 = v8;
+      v13 = contextCopy;
       goto LABEL_18;
     }
 
@@ -27607,8 +27607,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v13 = [v12 resolveContext:v8];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v13 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (v13)
   {
@@ -27616,8 +27616,8 @@ LABEL_10:
     v26 = 0;
     v27 = 0;
     [(CTXPCClientHandler *)self registry];
-    v14 = [v13 uuid];
-    sub_100047544(v14, &v28);
+    uuid = [v13 uuid];
+    sub_100047544(uuid, &v28);
     PersonalityIdFromUuid();
     sub_1000475BC(&v28);
 
@@ -27631,12 +27631,12 @@ LABEL_10:
     ctu::OsLogContext::~OsLogContext(&buf);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v13 uuid];
-      v22 = [v21 UUIDString];
-      v23 = v22;
-      v24 = [v22 UTF8String];
+      uuid2 = [v13 uuid];
+      uUIDString = [uuid2 UUIDString];
+      v23 = uUIDString;
+      uTF8String = [uUIDString UTF8String];
       buf = 136315138;
-      *buf_4 = v24;
+      *buf_4 = uTF8String;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "no personality for UUID '%s'", &buf, 0xCu);
     }
 
@@ -27669,13 +27669,13 @@ LABEL_10:
 LABEL_18:
 }
 
-- (void)context:(id)a3 removePhoneServicesDevice:(id)a4 withCompletion:(id)a5
+- (void)context:(id)context removePhoneServicesDevice:(id)device withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8 || !v10)
+  contextCopy = context;
+  deviceCopy = device;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!contextCopy || !completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v15 = v26;
@@ -27693,7 +27693,7 @@ LABEL_18:
     else if (!v11)
     {
 LABEL_10:
-      v13 = v8;
+      v13 = contextCopy;
       goto LABEL_18;
     }
 
@@ -27703,8 +27703,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v13 = [v12 resolveContext:v8];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v13 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (v13)
   {
@@ -27712,8 +27712,8 @@ LABEL_10:
     v26 = 0;
     v27 = 0;
     [(CTXPCClientHandler *)self registry];
-    v14 = [v13 uuid];
-    sub_100047544(v14, &v28);
+    uuid = [v13 uuid];
+    sub_100047544(uuid, &v28);
     PersonalityIdFromUuid();
     sub_1000475BC(&v28);
 
@@ -27727,12 +27727,12 @@ LABEL_10:
     ctu::OsLogContext::~OsLogContext(&buf);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v13 uuid];
-      v22 = [v21 UUIDString];
-      v23 = v22;
-      v24 = [v22 UTF8String];
+      uuid2 = [v13 uuid];
+      uUIDString = [uuid2 UUIDString];
+      v23 = uUIDString;
+      uTF8String = [uUIDString UTF8String];
       buf = 136315138;
-      *buf_4 = v24;
+      *buf_4 = uTF8String;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "no personality for UUID '%s'", &buf, 0xCu);
     }
 
@@ -27765,13 +27765,13 @@ LABEL_10:
 LABEL_18:
 }
 
-- (void)wifiCallingCTFollowUpComplete:(id)a3 withCompletion:(id)a4
+- (void)wifiCallingCTFollowUpComplete:(id)complete withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  completeCopy = complete;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 objectForKey:@"SlotID"];
+    v8 = [completeCopy objectForKey:@"SlotID"];
     if (!v8)
     {
       [(CTXPCClientHandler *)self getLogContext];
@@ -27784,7 +27784,7 @@ LABEL_18:
       }
 
       v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v21);
+      completionCopy[2](completionCopy, v21);
 
       goto LABEL_31;
     }
@@ -27833,8 +27833,8 @@ LABEL_16:
           (*(*v17 + 8))(&v26, v17, [v8 intValue]);
           if (v26)
           {
-            (*(*v26 + 88))(v26, v6);
-            v7[2](v7, 0);
+            (*(*v26 + 88))(v26, completeCopy);
+            completionCopy[2](completionCopy, 0);
           }
 
           else
@@ -27850,7 +27850,7 @@ LABEL_16:
             }
 
             v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-            v7[2](v7, v25);
+            completionCopy[2](completionCopy, v25);
           }
 
           if (v27)
@@ -27871,7 +27871,7 @@ LABEL_16:
           }
 
           v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:35 userInfo:0];
-          v7[2](v7, v23);
+          completionCopy[2](completionCopy, v23);
         }
 
         if ((v18 & 1) == 0)
@@ -27908,13 +27908,13 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)context:(id)a3 mandatoryDisableVoLTE:(BOOL)a4 withCompletion:(id)a5
+- (void)context:(id)context mandatoryDisableVoLTE:(BOOL)e withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8 || !v9)
+  eCopy = e;
+  contextCopy = context;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (!contextCopy || !completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v14 = v19;
@@ -27941,8 +27941,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v11 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v12 = [v11 resolveContext:v8];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v12 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (!v12)
   {
@@ -27957,7 +27957,7 @@ LABEL_17:
 
     v15 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     (v10)[2](v10, v15);
-    v8 = 0;
+    contextCopy = 0;
     goto LABEL_17;
   }
 
@@ -27975,28 +27975,28 @@ LABEL_17:
 
     v15 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
     (v10)[2](v10, v15);
-    v8 = v12;
+    contextCopy = v12;
     goto LABEL_17;
   }
 
   [(CTXPCClientHandler *)self registry];
-  mandatoryDisableVoLTE(&v18, v13, v6);
+  mandatoryDisableVoLTE(&v18, v13, eCopy);
   if (v19)
   {
     sub_100004A34(v19);
   }
 
   v10[2](v10, 0);
-  v8 = v12;
+  contextCopy = v12;
 LABEL_18:
 }
 
-- (void)context:(id)a3 isMandatoryDisabledVoLTE:(id)a4
+- (void)context:(id)context isMandatoryDisabledVoLTE:(id)e
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  contextCopy = context;
+  eCopy = e;
+  v8 = eCopy;
+  if (!contextCopy || !eCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v13 = v18;
@@ -28023,8 +28023,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(CTXPCClientHandler *)self dataProviderDelegate];
-  v10 = [v9 resolveContext:v6];
+  dataProviderDelegate = [(CTXPCClientHandler *)self dataProviderDelegate];
+  v10 = [dataProviderDelegate resolveContext:contextCopy];
 
   if (!v10)
   {
@@ -28039,7 +28039,7 @@ LABEL_15:
 
     v14 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     (v8)[2](v8, 0, v14);
-    v6 = 0;
+    contextCopy = 0;
     goto LABEL_15;
   }
 
@@ -28057,21 +28057,21 @@ LABEL_15:
 
     v14 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
     (v8)[2](v8, 0, v14);
-    v6 = v10;
+    contextCopy = v10;
     goto LABEL_15;
   }
 
   v12 = isMandatoryDisabledVoLTE(v11);
   v8[2](v8, v12, 0);
-  v6 = v10;
+  contextCopy = v10;
 LABEL_16:
 }
 
-- (void)refreshCellMonitor:(id)a3 completion:(id)a4
+- (void)refreshCellMonitor:(id)monitor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  monitorCopy = monitor;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v18 = v24;
@@ -28135,9 +28135,9 @@ LABEL_12:
 
   if (v16)
   {
-    if (v6)
+    if (monitorCopy)
     {
-      v19 = sub_100018A64([v6 slotID]);
+      v19 = sub_100018A64([monitorCopy slotID]);
     }
 
     else
@@ -28145,7 +28145,7 @@ LABEL_12:
       v19 = 3;
     }
 
-    v22 = objc_retainBlock(v7);
+    v22 = objc_retainBlock(completionCopy);
     v26[0] = off_101F58480;
     v26[1] = v22;
     v26[3] = v26;
@@ -28171,7 +28171,7 @@ LABEL_20:
   }
 
   v21 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  (*(v7 + 2))(v7, v21);
+  (*(completionCopy + 2))(completionCopy, v21);
 
   if ((v17 & 1) == 0)
   {
@@ -28181,16 +28181,16 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)copyCellInfo:(id)a3 completion:(id)a4
+- (void)copyCellInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!infoCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -28234,8 +28234,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([infoCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F58500;
           v27[1] = v21;
           v27[3] = v27;
@@ -28255,7 +28255,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -28290,16 +28290,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)copyCellId:(id)a3 completion:(id)a4
+- (void)copyCellId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!idCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -28343,8 +28343,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([idCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F58580;
           v27[1] = v21;
           v27[3] = v27;
@@ -28364,7 +28364,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -28399,16 +28399,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)copyPublicCellId:(id)a3 completion:(id)a4
+- (void)copyPublicCellId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!idCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -28452,8 +28452,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_10002A8E0(v6);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_10002A8E0(idCopy);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F58610;
           v27[1] = v21;
           v27[3] = v27;
@@ -28473,7 +28473,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -28508,16 +28508,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)copyLocationAreaCode:(id)a3 completion:(id)a4
+- (void)copyLocationAreaCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!codeCopy)
     {
       v19 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_23;
     }
@@ -28561,8 +28561,8 @@ LABEL_14:
 
         if (v16)
         {
-          v20 = sub_100018A64([v6 slotID]);
-          v21 = objc_retainBlock(v7);
+          v20 = sub_100018A64([codeCopy slotID]);
+          v21 = objc_retainBlock(completionCopy);
           v27[0] = off_101F586A0;
           v27[1] = v21;
           v27[3] = v27;
@@ -28582,7 +28582,7 @@ LABEL_14:
           }
 
           v23 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-          v7[2](v7, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
         }
 
         if ((v17 & 1) == 0)
@@ -28617,16 +28617,16 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)getSweetgumCapabilities:(id)a3 completion:(id)a4
+- (void)getSweetgumCapabilities:(id)capabilities completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  capabilitiesCopy = capabilities;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!capabilitiesCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_20;
     }
@@ -28671,7 +28671,7 @@ LABEL_14:
         if (v16)
         {
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           object = v22;
           *buf = off_101F5D6F0;
           v25 = v20;
@@ -28680,7 +28680,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, 0, v21);
+        completionCopy[2](completionCopy, 0, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -28714,16 +28714,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)getSweetgumUserConsentInfo:(id)a3 completion:(id)a4
+- (void)getSweetgumUserConsentInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!infoCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_20;
     }
@@ -28768,7 +28768,7 @@ LABEL_14:
         if (v16)
         {
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           object = v22;
           *buf = off_101F5D770;
           v25 = v20;
@@ -28777,7 +28777,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, 0, v21);
+        completionCopy[2](completionCopy, 0, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -28811,12 +28811,12 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)setSweetgumUserConsent:(id)a3 userConsent:(BOOL)a4 completion:(id)a5
+- (void)setSweetgumUserConsent:(id)consent userConsent:(BOOL)userConsent completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  userConsentCopy = userConsent;
+  consentCopy = consent;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(CTXPCClientHandler *)self getLogContext];
     v20 = v24;
@@ -28830,10 +28830,10 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  if (!v8)
+  if (!consentCopy)
   {
     v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v9[2](v9, v21);
+    completionCopy[2](completionCopy, v21);
 
     goto LABEL_19;
   }
@@ -28889,7 +28889,7 @@ LABEL_14:
   if (!v18)
   {
     v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-    v9[2](v9, v22);
+    completionCopy[2](completionCopy, v22);
 
     if (v19)
     {
@@ -28899,8 +28899,8 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  (*(*v18 + 32))(v18, v6);
-  v9[2](v9, 0);
+  (*(*v18 + 32))(v18, userConsentCopy);
+  completionCopy[2](completionCopy, 0);
   if ((v19 & 1) == 0)
   {
 LABEL_18:
@@ -28910,16 +28910,16 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)getSweetgumUsage:(id)a3 completion:(id)a4
+- (void)getSweetgumUsage:(id)usage completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  usageCopy = usage;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!usageCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_20;
     }
@@ -28966,7 +28966,7 @@ LABEL_14:
           v23[0] = 0;
           v23[1] = 0;
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           v23[2] = v22;
           *buf = off_101F5D7F0;
           v25 = v20;
@@ -28975,7 +28975,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, 0, v21);
+        completionCopy[2](completionCopy, 0, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29009,16 +29009,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)refreshSweetgumUsage:(id)a3 completion:(id)a4
+- (void)refreshSweetgumUsage:(id)usage completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  usageCopy = usage;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!usageCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_20;
     }
@@ -29063,7 +29063,7 @@ LABEL_14:
         if (v16)
         {
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           object = v22;
           *buf = off_101F5D870;
           v25 = v20;
@@ -29072,7 +29072,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, v21);
+        completionCopy[2](completionCopy, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29106,16 +29106,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)getSweetgumPlans:(id)a3 completion:(id)a4
+- (void)getSweetgumPlans:(id)plans completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  plansCopy = plans;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!plansCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_20;
     }
@@ -29162,7 +29162,7 @@ LABEL_14:
           v23[0] = 0;
           v23[1] = 0;
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           v23[2] = v22;
           *buf = off_101F5D8F0;
           v25 = v20;
@@ -29171,7 +29171,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, 0, v21);
+        completionCopy[2](completionCopy, 0, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29205,16 +29205,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)refreshSweetgumPlans:(id)a3 completion:(id)a4
+- (void)refreshSweetgumPlans:(id)plans completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  plansCopy = plans;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!plansCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_20;
     }
@@ -29259,7 +29259,7 @@ LABEL_14:
         if (v16)
         {
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           object = v22;
           *buf = off_101F5D970;
           v25 = v20;
@@ -29268,7 +29268,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, v21);
+        completionCopy[2](completionCopy, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29302,16 +29302,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)getSweetgumApps:(id)a3 completion:(id)a4
+- (void)getSweetgumApps:(id)apps completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  appsCopy = apps;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!appsCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_20;
     }
@@ -29358,7 +29358,7 @@ LABEL_14:
           v23[0] = 0;
           v23[1] = 0;
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           v23[2] = v22;
           *buf = off_101F5D9F0;
           v25 = v20;
@@ -29367,7 +29367,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, 0, v21);
+        completionCopy[2](completionCopy, 0, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29401,16 +29401,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)refreshSweetgumApps:(id)a3 completion:(id)a4
+- (void)refreshSweetgumApps:(id)apps completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  appsCopy = apps;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!appsCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_20;
     }
@@ -29455,7 +29455,7 @@ LABEL_14:
         if (v16)
         {
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           object = v22;
           *buf = off_101F5DA70;
           v25 = v20;
@@ -29464,7 +29464,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, v21);
+        completionCopy[2](completionCopy, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29498,16 +29498,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)refreshSweetgumAll:(id)a3 completion:(id)a4
+- (void)refreshSweetgumAll:(id)all completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  allCopy = all;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!allCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_20;
     }
@@ -29552,7 +29552,7 @@ LABEL_14:
         if (v16)
         {
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           object = v22;
           *buf = off_101F5DAF0;
           v25 = v20;
@@ -29561,7 +29561,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, v21);
+        completionCopy[2](completionCopy, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29595,16 +29595,16 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)getSweetgumDataPlanMetrics:(id)a3 completion:(id)a4
+- (void)getSweetgumDataPlanMetrics:(id)metrics completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  metricsCopy = metrics;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!metricsCopy)
     {
       v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
 
       goto LABEL_20;
     }
@@ -29649,7 +29649,7 @@ LABEL_14:
         if (v16)
         {
           [(CTXPCClientHandler *)self getQueue];
-          v20 = objc_retainBlock(v7);
+          v20 = objc_retainBlock(completionCopy);
           object = v22;
           *buf = off_101F5DB70;
           v25 = v20;
@@ -29658,7 +29658,7 @@ LABEL_14:
         }
 
         v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, 0, v21);
+        completionCopy[2](completionCopy, 0, v21);
 
         if ((v17 & 1) == 0)
         {
@@ -29692,18 +29692,18 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)purchaseSweetgumPlan:(id)a3 completion:(id)a4
+- (void)purchaseSweetgumPlan:(id)plan completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  planCopy = plan;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 planId];
+    planId = [planCopy planId];
 
-    if (!v8)
+    if (!planId)
     {
       v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      v7[2](v7, v20);
+      completionCopy[2](completionCopy, v20);
 
       goto LABEL_25;
     }
@@ -29751,37 +29751,37 @@ LABEL_14:
           memset(v36, 0, sizeof(v36));
           *buf = 0u;
           memset(v35, 0, sizeof(v35));
-          v21 = [v6 planId];
-          v22 = v21;
-          sub_100016890(v35, [v21 UTF8String]);
+          planId2 = [planCopy planId];
+          v22 = planId2;
+          sub_100016890(v35, [planId2 UTF8String]);
 
-          v23 = [v6 planLabel];
-          LOBYTE(v21) = v23 == 0;
+          planLabel = [planCopy planLabel];
+          LOBYTE(planId2) = planLabel == 0;
 
-          if ((v21 & 1) == 0)
+          if ((planId2 & 1) == 0)
           {
-            v24 = [v6 planLabel];
-            v25 = v24;
-            sub_100016890(&v35[1], [v24 UTF8String]);
+            planLabel2 = [planCopy planLabel];
+            v25 = planLabel2;
+            sub_100016890(&v35[1], [planLabel2 UTF8String]);
           }
 
-          v26 = [v6 planTermsURL];
-          if (v26)
+          planTermsURL = [planCopy planTermsURL];
+          if (planTermsURL)
           {
-            v27 = [v6 planTermsURL];
-            v28 = [v27 length] == 0;
+            planTermsURL2 = [planCopy planTermsURL];
+            v28 = [planTermsURL2 length] == 0;
 
             if (!v28)
             {
-              v29 = [v6 planTermsURL];
-              v30 = v29;
-              v39[0] = [v29 UTF8String];
+              planTermsURL3 = [planCopy planTermsURL];
+              v30 = planTermsURL3;
+              v39[0] = [planTermsURL3 UTF8String];
               sub_100184AD0(v36, v39);
             }
           }
 
           [(CTXPCClientHandler *)self getQueue];
-          v31 = objc_retainBlock(v7);
+          v31 = objc_retainBlock(completionCopy);
           v38 = object;
           v39[0] = off_101F5DBF0;
           v39[1] = v31;
@@ -29790,7 +29790,7 @@ LABEL_14:
         }
 
         v32 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-        v7[2](v7, v32);
+        completionCopy[2](completionCopy, v32);
 
         if ((v18 & 1) == 0)
         {

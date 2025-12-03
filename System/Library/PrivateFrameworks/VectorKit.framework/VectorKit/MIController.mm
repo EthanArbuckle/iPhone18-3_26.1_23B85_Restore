@@ -1,78 +1,78 @@
 @interface MIController
 + (id)sharedController;
 - (MIController)init;
-- (void)activateController:(id)a3;
+- (void)activateController:(id)controller;
 - (void)deactivateController;
-- (void)decodeDebugTreeData:(id)a3;
-- (void)handleXPCEvent:(id)a3;
-- (void)recievedData:(id)a3;
-- (void)sendData:(id)a3;
+- (void)decodeDebugTreeData:(id)data;
+- (void)handleXPCEvent:(id)event;
+- (void)recievedData:(id)data;
+- (void)sendData:(id)data;
 @end
 
 @implementation MIController
 
-- (void)decodeDebugTreeData:(id)a3
+- (void)decodeDebugTreeData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Client Request ID"];
-  v17 = [v4 objectForKey:@"Data Request"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKey:@"Client Request ID"];
+  v17 = [dataCopy objectForKey:@"Data Request"];
   v6 = objc_alloc_init(VKDebugTree);
   [(VKDebugTree *)v6 setOptions:v17];
   [(VKDebugTree *)v6 populateData:self->_mapView];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:v5 forKey:@"Data Response ID"];
-  v8 = [(VKMapView *)self->_mapView carDisplayType];
-  if (v8 > 2)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v5 forKey:@"Data Response ID"];
+  carDisplayType = [(VKMapView *)self->_mapView carDisplayType];
+  if (carDisplayType > 2)
   {
     v9 = "none";
   }
 
   else
   {
-    v9 = off_1E7B306B0[v8];
+    v9 = off_1E7B306B0[carDisplayType];
   }
 
   v10 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v17}];
-  [v7 setObject:v10 forKey:@"Display Type"];
+  [dictionary setObject:v10 forKey:@"Display Type"];
 
-  v11 = [(VKDebugTree *)v6 logTree];
-  v12 = [v11 dataUsingEncoding:4];
+  logTree = [(VKDebugTree *)v6 logTree];
+  v12 = [logTree dataUsingEncoding:4];
   v19 = 0;
   v13 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v12 options:0 error:&v19];
   v14 = v5;
   v15 = v19;
-  [v7 setObject:v13 forKey:@"Data"];
-  v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:v7 format:200 options:0 error:0];
+  [dictionary setObject:v13 forKey:@"Data"];
+  v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:0];
   [(MIController *)self sendData:v16];
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self->_connection)
   {
-    v7 = v4;
+    v7 = dataCopy;
     v5 = CFDataCreate(0, [v7 bytes], objc_msgSend(v7, "length"));
     v6 = _CFXPCCreateXPCMessageWithCFObject();
     xpc_connection_send_message(self->_connection, v6);
     CFRelease(v5);
 
-    v4 = v7;
+    dataCopy = v7;
   }
 }
 
-- (void)recievedData:(id)a3
+- (void)recievedData:(id)data
 {
-  v4 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:0];
   if (v4)
   {
     [(MIController *)self decodeDebugTreeData:v4];
   }
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  v7 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x1B8C632E0]();
   if (v4 == MEMORY[0x1E69E9E80])
   {
@@ -83,7 +83,7 @@
 
   else if (v4 == MEMORY[0x1E69E9E98] && self->_isActive)
   {
-    v5 = MEMORY[0x1B8C632D0](v7);
+    v5 = MEMORY[0x1B8C632D0](eventCopy);
     free(v5);
     [(MIController *)self deactivateController];
   }
@@ -102,10 +102,10 @@
   self->_isActive = 0;
 }
 
-- (void)activateController:(id)a3
+- (void)activateController:(id)controller
 {
-  v5 = a3;
-  objc_storeStrong(&self->_mapView, a3);
+  controllerCopy = controller;
+  objc_storeStrong(&self->_mapView, controller);
   mach_service = xpc_connection_create_mach_service("com.apple.mapinspectord", self->_queue, 2uLL);
   connection = self->_connection;
   self->_connection = mach_service;
@@ -151,7 +151,7 @@
   block[1] = 3221225472;
   block[2] = __32__MIController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MIController sharedController]::onceToken != -1)
   {
     dispatch_once(&+[MIController sharedController]::onceToken, block);

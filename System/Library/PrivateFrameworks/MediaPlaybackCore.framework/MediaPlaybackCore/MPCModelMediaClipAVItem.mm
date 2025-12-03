@@ -3,15 +3,15 @@
 - (BOOL)_allowsCellularPlayback;
 - (BOOL)_isVideoAsset;
 - (BOOL)isAssetURLValid;
-- (BOOL)isValidPlayerSubstituteForItem:(id)a3;
-- (MPCModelMediaClipAVItem)initWithMediaClip:(id)a3;
+- (BOOL)isValidPlayerSubstituteForItem:(id)item;
+- (MPCModelMediaClipAVItem)initWithMediaClip:(id)clip;
 - (double)durationFromExternalMetadata;
 - (id)_currentPreferredStaticAsset;
 - (id)artworkCatalogBlock;
 - (id)description;
 - (id)modelGenericObject;
 - (void)_applyLoudnessInfo;
-- (void)loadAssetAndPlayerItemWithTask:(id)a3 completion:(id)a4;
+- (void)loadAssetAndPlayerItemWithTask:(id)task completion:(id)completion;
 - (void)reevaluateType;
 @end
 
@@ -63,8 +63,8 @@ LABEL_11:
 - (id)_currentPreferredStaticAsset
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v4 = [v3 networkType];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  networkType = [mEMORY[0x1E69E4428] networkType];
 
   if (CFPreferencesGetAppBooleanValue(@"AlwaysUse64kbpsQuality", @"com.apple.mobileipod", 0))
   {
@@ -80,22 +80,22 @@ LABEL_11:
   {
     if ([(MPCModelMediaClipAVItem *)self _isVideoAsset])
     {
-      if ((ICEnvironmentNetworkTypeIsWiFi() & 1) != 0 || ICEnvironmentNetworkTypeIsWired() || v4 >= 3 && ([MEMORY[0x1E69E4428] sharedMonitor], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isCurrentNetworkLinkExpensive"), v24, (v25 & 1) == 0))
+      if ((ICEnvironmentNetworkTypeIsWiFi() & 1) != 0 || ICEnvironmentNetworkTypeIsWired() || networkType >= 3 && ([MEMORY[0x1E69E4428] sharedMonitor], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isCurrentNetworkLinkExpensive"), v24, (v25 & 1) == 0))
       {
-        v18 = [MEMORY[0x1E69708A8] standardUserDefaults];
-        v19 = [v18 preferredVideoHighBandwidthResolution];
+        standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+        preferredVideoHighBandwidthResolution = [standardUserDefaults preferredVideoHighBandwidthResolution];
         goto LABEL_27;
       }
 
-      v26 = [MEMORY[0x1E69708A8] standardUserDefaults];
-      v27 = [v26 preferredVideoLowBandwidthResolution];
+      standardUserDefaults2 = [MEMORY[0x1E69708A8] standardUserDefaults];
+      preferredVideoLowBandwidthResolution = [standardUserDefaults2 preferredVideoLowBandwidthResolution];
 
-      if (v27 > 0)
+      if (preferredVideoLowBandwidthResolution > 0)
       {
-        v18 = [MEMORY[0x1E69708A8] standardUserDefaults];
-        v19 = [v18 preferredVideoLowBandwidthResolution];
+        standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+        preferredVideoHighBandwidthResolution = [standardUserDefaults preferredVideoLowBandwidthResolution];
 LABEL_27:
-        v20 = v19;
+        v20 = preferredVideoHighBandwidthResolution;
 
         v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
         if (v20 != 1000000)
@@ -124,30 +124,30 @@ LABEL_5:
         goto LABEL_40;
       }
 
-      v21 = [MEMORY[0x1E69708A8] standardUserDefaults];
-      if ([v21 preferredMusicLowBandwidthResolution] >= 256)
+      standardUserDefaults3 = [MEMORY[0x1E69708A8] standardUserDefaults];
+      if ([standardUserDefaults3 preferredMusicLowBandwidthResolution] >= 256)
       {
       }
 
       else
       {
-        v22 = [MEMORY[0x1E69E4428] sharedMonitor];
-        v23 = [v22 isCurrentNetworkLinkExpensive];
+        mEMORY[0x1E69E4428]2 = [MEMORY[0x1E69E4428] sharedMonitor];
+        isCurrentNetworkLinkExpensive = [mEMORY[0x1E69E4428]2 isCurrentNetworkLinkExpensive];
 
-        if (v23)
+        if (isCurrentNetworkLinkExpensive)
         {
           goto LABEL_2;
         }
       }
 
-      if (v4 > 2)
+      if (networkType > 2)
       {
 LABEL_40:
-        v28 = [MEMORY[0x1E69E4428] sharedMonitor];
-        v29 = [v28 isNetworkConstrained];
+        mEMORY[0x1E69E4428]3 = [MEMORY[0x1E69E4428] sharedMonitor];
+        isNetworkConstrained = [mEMORY[0x1E69E4428]3 isNetworkConstrained];
 
         v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        if (v29)
+        if (isNetworkConstrained)
         {
           goto LABEL_6;
         }
@@ -161,12 +161,12 @@ LABEL_2:
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
 LABEL_6:
   [v5 addObject:&unk_1F45993A0];
-  v6 = [(MPModelMediaClip *)self->_mediaClip staticAssets];
+  staticAssets = [(MPModelMediaClip *)self->_mediaClip staticAssets];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v7 = [staticAssets countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (!v7)
   {
     goto LABEL_18;
@@ -182,7 +182,7 @@ LABEL_6:
     {
       if (*v32 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(staticAssets);
       }
 
       v12 = *(*(&v31 + 1) + 8 * i);
@@ -198,18 +198,18 @@ LABEL_6:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v8 = [staticAssets countByEnumeratingWithState:&v31 objects:v35 count:16];
   }
 
   while (v8);
-  v16 = v30;
+  firstObject = v30;
   if (!v30)
   {
 LABEL_18:
-    v16 = [v6 firstObject];
+    firstObject = [staticAssets firstObject];
   }
 
-  return v16;
+  return firstObject;
 }
 
 - (void)_applyLoudnessInfo
@@ -217,8 +217,8 @@ LABEL_18:
   v19 = *MEMORY[0x1E69E9840];
   if ([(MPCModelMediaClipAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPCModelMediaClipAVItem *)self asset];
-    v4 = [v3 statusOfValueForKey:@"tracks" error:0];
+    asset = [(MPCModelMediaClipAVItem *)self asset];
+    v4 = [asset statusOfValueForKey:@"tracks" error:0];
 
     if (v4 == 2)
     {
@@ -230,13 +230,13 @@ LABEL_18:
         [v6 setObject:v5 forKey:*MEMORY[0x1E698DA60]];
       }
 
-      v8 = [(MPCModelMediaClipAVItem *)self playerItem];
-      v9 = [v8 tracks];
+      playerItem = [(MPCModelMediaClipAVItem *)self playerItem];
+      tracks = [playerItem tracks];
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [tracks countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v10)
       {
         v11 = v10;
@@ -248,14 +248,14 @@ LABEL_18:
           {
             if (*v15 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(tracks);
             }
 
             [*(*(&v14 + 1) + 8 * v13++) setLoudnessInfo:v7];
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v11 = [tracks countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v11);
@@ -266,20 +266,20 @@ LABEL_18:
 
 - (BOOL)_allowsCellularPlayback
 {
-  v2 = [(MPCModelMediaClipAVItem *)self _isVideoAsset];
-  v3 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v4 = v3;
-  if (v2)
+  _isVideoAsset = [(MPCModelMediaClipAVItem *)self _isVideoAsset];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  v4 = standardUserDefaults;
+  if (_isVideoAsset)
   {
-    v5 = [v3 preferredVideoLowBandwidthResolution];
+    preferredVideoLowBandwidthResolution = [standardUserDefaults preferredVideoLowBandwidthResolution];
   }
 
   else
   {
-    v5 = [v3 preferredMusicLowBandwidthResolution];
+    preferredVideoLowBandwidthResolution = [standardUserDefaults preferredMusicLowBandwidthResolution];
   }
 
-  v6 = v5;
+  v6 = preferredVideoLowBandwidthResolution;
 
   return v6 > 0;
 }
@@ -312,13 +312,13 @@ LABEL_18:
   if (!modelGenericObject)
   {
     v4 = objc_alloc(MEMORY[0x1E6970670]);
-    v5 = [MEMORY[0x1E6970550] emptyIdentifierSet];
+    emptyIdentifierSet = [MEMORY[0x1E6970550] emptyIdentifierSet];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__MPCModelMediaClipAVItem_modelGenericObject__block_invoke;
     v9[3] = &unk_1E8235578;
     v9[4] = self;
-    v6 = [v4 initWithIdentifiers:v5 block:v9];
+    v6 = [v4 initWithIdentifiers:emptyIdentifierSet block:v9];
     v7 = self->_modelGenericObject;
     self->_modelGenericObject = v6;
 
@@ -328,34 +328,34 @@ LABEL_18:
   return modelGenericObject;
 }
 
-- (void)loadAssetAndPlayerItemWithTask:(id)a3 completion:(id)a4
+- (void)loadAssetAndPlayerItemWithTask:(id)task completion:(id)completion
 {
-  v22 = a4;
-  v5 = [MEMORY[0x1E69E4428] sharedMonitor];
-  [v5 networkType];
+  completionCopy = completion;
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  [mEMORY[0x1E69E4428] networkType];
 
-  v6 = [(MPCModelMediaClipAVItem *)self _allowsCellularPlayback];
+  _allowsCellularPlayback = [(MPCModelMediaClipAVItem *)self _allowsCellularPlayback];
   IsCellular = ICEnvironmentNetworkTypeIsCellular();
-  if ((ICEnvironmentNetworkTypeIsWiFi() & 1) != 0 || (IsWired = ICEnvironmentNetworkTypeIsWired(), v6 || (IsCellular & 1) == 0) || IsWired)
+  if ((ICEnvironmentNetworkTypeIsWiFi() & 1) != 0 || (IsWired = ICEnvironmentNetworkTypeIsWired(), _allowsCellularPlayback || (IsCellular & 1) == 0) || IsWired)
   {
-    v8 = [(MPCModelMediaClipAVItem *)self _currentPreferredStaticAsset];
-    if (v8)
+    _currentPreferredStaticAsset = [(MPCModelMediaClipAVItem *)self _currentPreferredStaticAsset];
+    if (_currentPreferredStaticAsset)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v10 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+      v10 = [MEMORY[0x1E696AD98] numberWithBool:_allowsCellularPlayback];
       [v9 setObject:v10 forKey:*MEMORY[0x1E6987B18]];
 
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v12 = [(MPCModelMediaClipAVItem *)self rtcReportingServiceIdentifier];
-      if (v12)
+      rtcReportingServiceIdentifier = [(MPCModelMediaClipAVItem *)self rtcReportingServiceIdentifier];
+      if (rtcReportingServiceIdentifier)
       {
-        [v11 setObject:v12 forKey:*MEMORY[0x1E6987B40]];
+        [v11 setObject:rtcReportingServiceIdentifier forKey:*MEMORY[0x1E6987B40]];
       }
 
       [v9 setObject:v11 forKey:*MEMORY[0x1E6987B38]];
       [v9 setObject:&unk_1F4599358 forKeyedSubscript:*MEMORY[0x1E6987BF0]];
       v13 = MEMORY[0x1E6988168];
-      v14 = [v8 url];
+      v14 = [_currentPreferredStaticAsset url];
       v15 = [v13 URLAssetWithURL:v14 options:v9];
       v16 = *MEMORY[0x1E6970A58];
       v17 = *(&self->super.super.isa + v16);
@@ -375,13 +375,13 @@ LABEL_18:
     v21 = *(&self->super.super.isa + v20);
   }
 
-  v22[2](v22, v21, 0);
+  completionCopy[2](completionCopy, v21, 0);
 }
 
-- (BOOL)isValidPlayerSubstituteForItem:(id)a3
+- (BOOL)isValidPlayerSubstituteForItem:(id)item
 {
-  v4 = a3;
-  if (self == v4)
+  itemCopy = item;
+  if (self == itemCopy)
   {
     v6 = 1;
   }
@@ -392,8 +392,8 @@ LABEL_18:
     if (v5 == objc_opt_class())
     {
       mediaClip = self->_mediaClip;
-      v8 = [(MPCModelMediaClipAVItem *)v4 mediaClip];
-      v6 = mediaClip == v8;
+      mediaClip = [(MPCModelMediaClipAVItem *)itemCopy mediaClip];
+      v6 = mediaClip == mediaClip;
     }
 
     else
@@ -407,8 +407,8 @@ LABEL_18:
 
 - (BOOL)isAssetURLValid
 {
-  v3 = [MEMORY[0x1E69E4428] sharedMonitor];
-  [v3 networkType];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  [mEMORY[0x1E69E4428] networkType];
 
   if (ICEnvironmentNetworkTypeIsWiFi() & 1) != 0 || (ICEnvironmentNetworkTypeIsWired())
   {
@@ -430,9 +430,9 @@ LABEL_18:
 
 - (double)durationFromExternalMetadata
 {
-  v2 = [(MPModelMediaClip *)self->_mediaClip staticAssets];
-  v3 = [v2 firstObject];
-  [v3 duration];
+  staticAssets = [(MPModelMediaClip *)self->_mediaClip staticAssets];
+  firstObject = [staticAssets firstObject];
+  [firstObject duration];
   v5 = v4;
 
   return v5;
@@ -444,20 +444,20 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = MPCModelMediaClipAVItem;
   v4 = [(MPCModelMediaClipAVItem *)&v8 description];
-  v5 = [(MPCModelMediaClipAVItem *)self mainTitle];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  mainTitle = [(MPCModelMediaClipAVItem *)self mainTitle];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, mainTitle];
 
   return v6;
 }
 
-- (MPCModelMediaClipAVItem)initWithMediaClip:(id)a3
+- (MPCModelMediaClipAVItem)initWithMediaClip:(id)clip
 {
-  v5 = a3;
+  clipCopy = clip;
   v6 = [(MPCModelMediaClipAVItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaClip, a3);
+    objc_storeStrong(&v6->_mediaClip, clip);
   }
 
   return v7;

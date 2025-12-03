@@ -1,26 +1,26 @@
 @interface TrustedPeersHelperTLKRecoveryResult
-- (TrustedPeersHelperTLKRecoveryResult)initWithCoder:(id)a3;
-- (TrustedPeersHelperTLKRecoveryResult)initWithSuccessfulKeyUUIDs:(id)a3 totalTLKSharesRecovered:(int64_t)a4 tlkRecoveryErrors:(id)a5;
+- (TrustedPeersHelperTLKRecoveryResult)initWithCoder:(id)coder;
+- (TrustedPeersHelperTLKRecoveryResult)initWithSuccessfulKeyUUIDs:(id)ds totalTLKSharesRecovered:(int64_t)recovered tlkRecoveryErrors:(id)errors;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TrustedPeersHelperTLKRecoveryResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TrustedPeersHelperTLKRecoveryResult *)self successfulKeysRecovered];
-  [v4 encodeObject:v5 forKey:@"keys"];
+  coderCopy = coder;
+  successfulKeysRecovered = [(TrustedPeersHelperTLKRecoveryResult *)self successfulKeysRecovered];
+  [coderCopy encodeObject:successfulKeysRecovered forKey:@"keys"];
 
-  [v4 encodeInt64:-[TrustedPeersHelperTLKRecoveryResult totalTLKSharesRecovered](self forKey:{"totalTLKSharesRecovered"), @"totalShares"}];
-  v6 = [(TrustedPeersHelperTLKRecoveryResult *)self tlkRecoveryErrors];
-  [v4 encodeObject:v6 forKey:@"errors"];
+  [coderCopy encodeInt64:-[TrustedPeersHelperTLKRecoveryResult totalTLKSharesRecovered](self forKey:{"totalTLKSharesRecovered"), @"totalShares"}];
+  tlkRecoveryErrors = [(TrustedPeersHelperTLKRecoveryResult *)self tlkRecoveryErrors];
+  [coderCopy encodeObject:tlkRecoveryErrors forKey:@"errors"];
 }
 
-- (TrustedPeersHelperTLKRecoveryResult)initWithCoder:(id)a3
+- (TrustedPeersHelperTLKRecoveryResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = TrustedPeersHelperTLKRecoveryResult;
   v5 = [(TrustedPeersHelperTLKRecoveryResult *)&v14 init];
@@ -30,13 +30,13 @@
     v15[1] = objc_opt_class();
     v6 = [NSArray arrayWithObjects:v15 count:2];
     v7 = [NSSet setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"keys"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"keys"];
     successfulKeysRecovered = v5->_successfulKeysRecovered;
     v5->_successfulKeysRecovered = v8;
 
-    v5->_totalTLKSharesRecovered = [v4 decodeInt64ForKey:@"totalShares"];
+    v5->_totalTLKSharesRecovered = [coderCopy decodeInt64ForKey:@"totalShares"];
     v10 = +[SecXPCHelper safeErrorClasses];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"errors"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"errors"];
     tlkRecoveryErrors = v5->_tlkRecoveryErrors;
     v5->_tlkRecoveryErrors = v11;
   }
@@ -46,25 +46,25 @@
 
 - (id)description
 {
-  v3 = [(TrustedPeersHelperTLKRecoveryResult *)self successfulKeysRecovered];
-  v4 = [NSString stringWithFormat:@"<TLKRecoveryResult: %@ totalTLKSharesRecovered:%d>", v3, [(TrustedPeersHelperTLKRecoveryResult *)self totalTLKSharesRecovered]];
+  successfulKeysRecovered = [(TrustedPeersHelperTLKRecoveryResult *)self successfulKeysRecovered];
+  v4 = [NSString stringWithFormat:@"<TLKRecoveryResult: %@ totalTLKSharesRecovered:%d>", successfulKeysRecovered, [(TrustedPeersHelperTLKRecoveryResult *)self totalTLKSharesRecovered]];
 
   return v4;
 }
 
-- (TrustedPeersHelperTLKRecoveryResult)initWithSuccessfulKeyUUIDs:(id)a3 totalTLKSharesRecovered:(int64_t)a4 tlkRecoveryErrors:(id)a5
+- (TrustedPeersHelperTLKRecoveryResult)initWithSuccessfulKeyUUIDs:(id)ds totalTLKSharesRecovered:(int64_t)recovered tlkRecoveryErrors:(id)errors
 {
-  v9 = a3;
-  v10 = a5;
+  dsCopy = ds;
+  errorsCopy = errors;
   v14.receiver = self;
   v14.super_class = TrustedPeersHelperTLKRecoveryResult;
   v11 = [(TrustedPeersHelperTLKRecoveryResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_successfulKeysRecovered, a3);
-    v12->_totalTLKSharesRecovered = a4;
-    objc_storeStrong(&v12->_tlkRecoveryErrors, a5);
+    objc_storeStrong(&v11->_successfulKeysRecovered, ds);
+    v12->_totalTLKSharesRecovered = recovered;
+    objc_storeStrong(&v12->_tlkRecoveryErrors, errors);
   }
 
   return v12;

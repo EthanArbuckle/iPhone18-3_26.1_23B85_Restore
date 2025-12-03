@@ -8,64 +8,64 @@
 + (BOOL)isSiriAllowedWhileLocked;
 + (BOOL)isSiriEnabled;
 + (int64_t)announceCallsState;
-+ (void)setAnnounceCallsState:(int64_t)a3;
-+ (void)setAnnounceMessagesEnabled:(BOOL)a3;
-+ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)a3;
-+ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)a3;
++ (void)setAnnounceCallsState:(int64_t)state;
++ (void)setAnnounceMessagesEnabled:(BOOL)enabled;
++ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)screen;
++ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)screen;
 @end
 
 @implementation HPSiriController
 
 + (BOOL)isSiriEnabled
 {
-  v2 = [(objc_class *)off_10011C330() sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  sharedPreferences = [(objc_class *)off_10011C330() sharedPreferences];
+  assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 + (BOOL)isHeySiriEnabled
 {
   CFStringGetTypeID();
 
-  v2 = [(objc_class *)off_10011C338() sharedPreferences];
-  v3 = [(objc_class *)off_10011C330() sharedPreferences];
-  v4 = 0;
-  if ([v3 assistantIsEnabled])
+  sharedPreferences = [(objc_class *)off_10011C338() sharedPreferences];
+  sharedPreferences2 = [(objc_class *)off_10011C330() sharedPreferences];
+  voiceTriggerEnabled = 0;
+  if ([sharedPreferences2 assistantIsEnabled])
   {
-    v4 = [v2 voiceTriggerEnabled];
+    voiceTriggerEnabled = [sharedPreferences voiceTriggerEnabled];
   }
 
-  return v4;
+  return voiceTriggerEnabled;
 }
 
 + (BOOL)isSiriAllowedWhileLocked
 {
-  v2 = [(objc_class *)off_10011C330() sharedPreferences];
-  v3 = [v2 disableAssistantWhilePasscodeLocked];
+  sharedPreferences = [(objc_class *)off_10011C330() sharedPreferences];
+  disableAssistantWhilePasscodeLocked = [sharedPreferences disableAssistantWhilePasscodeLocked];
 
-  return v3 ^ 1;
+  return disableAssistantWhilePasscodeLocked ^ 1;
 }
 
 + (BOOL)isCurrentLocaleSupported
 {
-  v2 = [(objc_class *)off_10011C330() sharedPreferences];
-  v3 = [v2 isCurrentLocaleNativelySupported];
+  sharedPreferences = [(objc_class *)off_10011C330() sharedPreferences];
+  isCurrentLocaleNativelySupported = [sharedPreferences isCurrentLocaleNativelySupported];
 
-  return v3;
+  return isCurrentLocaleNativelySupported;
 }
 
-+ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)a3
++ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     [SFDefaults setSiriNotificationsPrompted:3];
   }
 }
 
-+ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)a3
++ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     [SFDefaults setSiriNotificationsPrompted:4];
   }
@@ -73,20 +73,20 @@
 
 + (BOOL)isAnnounceMessagesEnabled
 {
-  v2 = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementSetting] == 2;
+  currentNotificationSettingsCenter = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = [notificationSystemSettings announcementSetting] == 2;
 
   return v4;
 }
 
-+ (void)setAnnounceMessagesEnabled:(BOOL)a3
++ (void)setAnnounceMessagesEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v8 = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
-  v4 = [v8 notificationSystemSettings];
-  v5 = v4;
-  if (v3)
+  enabledCopy = enabled;
+  currentNotificationSettingsCenter = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v5 = notificationSystemSettings;
+  if (enabledCopy)
   {
     v6 = 2;
   }
@@ -96,23 +96,23 @@
     v6 = 1;
   }
 
-  if ([v4 announcementSetting] != v6)
+  if ([notificationSystemSettings announcementSetting] != v6)
   {
     v7 = objc_alloc_init(off_10011C348());
     [v7 setAnnouncementSetting:v6];
     [v7 setShowPreviewsSetting:{objc_msgSend(v5, "showPreviewsSetting")}];
-    [v8 setNotificationSystemSettings:v7];
+    [currentNotificationSettingsCenter setNotificationSystemSettings:v7];
   }
 }
 
 + (BOOL)isAnnounceMessagesSupported
 {
-  v2 = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = v3;
-  if (v3)
+  currentNotificationSettingsCenter = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = notificationSystemSettings;
+  if (notificationSystemSettings)
   {
-    v5 = [v3 announcementSetting] != 0;
+    v5 = [notificationSystemSettings announcementSetting] != 0;
   }
 
   else
@@ -125,21 +125,21 @@
 
 + (BOOL)isAnnounceEnabledForHeadphones
 {
-  v2 = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementHeadphonesSetting];
+  currentNotificationSettingsCenter = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  announcementHeadphonesSetting = [notificationSystemSettings announcementHeadphonesSetting];
 
-  return v4 == 2;
+  return announcementHeadphonesSetting == 2;
 }
 
 + (BOOL)isAnnounceSupported
 {
-  v2 = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = v3;
-  if (v3)
+  currentNotificationSettingsCenter = [(objc_class *)off_10011C340() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = notificationSystemSettings;
+  if (notificationSystemSettings)
   {
-    v5 = [v3 announcementSetting] != 0;
+    v5 = [notificationSystemSettings announcementSetting] != 0;
   }
 
   else
@@ -153,48 +153,48 @@
 + (int64_t)announceCallsState
 {
   v2 = objc_alloc_init(off_10011C350());
-  v3 = [v2 announceCalls];
-  if (v3 >= 4)
+  announceCalls = [v2 announceCalls];
+  if (announceCalls >= 4)
   {
     v4 = sub_100004060();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CF6F8(v3, v4);
+      sub_1000CF6F8(announceCalls, v4);
     }
 
-    v3 = 0;
+    announceCalls = 0;
   }
 
-  return v3;
+  return announceCalls;
 }
 
-+ (void)setAnnounceCallsState:(int64_t)a3
++ (void)setAnnounceCallsState:(int64_t)state
 {
   v4 = objc_alloc_init(off_10011C350());
-  v5 = a3;
-  if (a3 >= 4)
+  stateCopy = state;
+  if (state >= 4)
   {
     v6 = sub_100004060();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CF770(a3, v6);
+      sub_1000CF770(state, v6);
     }
 
-    v5 = 0;
+    stateCopy = 0;
   }
 
-  [v4 setAnnounceCalls:v5];
+  [v4 setAnnounceCalls:stateCopy];
   v7 = sub_100004060();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (state > 3)
     {
       v8 = @"?";
     }
 
     else
     {
-      v8 = *(&off_1001027A8 + a3);
+      v8 = *(&off_1001027A8 + state);
     }
 
     v9 = 138412290;

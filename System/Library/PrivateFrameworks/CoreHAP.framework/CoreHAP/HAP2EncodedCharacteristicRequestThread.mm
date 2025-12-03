@@ -1,6 +1,6 @@
 @interface HAP2EncodedCharacteristicRequestThread
 - (BOOL)isEncrypted;
-- (HAP2EncodedCharacteristicRequestThread)initWithBTLERequests:(id)a3 requestType:(unint64_t)a4 enforcePDUBodyLength:(BOOL)a5;
+- (HAP2EncodedCharacteristicRequestThread)initWithBTLERequests:(id)requests requestType:(unint64_t)type enforcePDUBodyLength:(BOOL)length;
 - (NSArray)btleRequests;
 - (NSArray)characteristics;
 - (id)serialize;
@@ -11,7 +11,7 @@
 
 - (id)serialize
 {
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   if (self)
   {
     internalCharacteristics = self->_internalCharacteristics;
@@ -28,8 +28,8 @@
   v8[3] = &unk_2786D3518;
   v10 = 0;
   v8[4] = self;
-  v9 = v3;
-  v5 = v3;
+  v9 = data;
+  v5 = data;
   [(NSArray *)internalCharacteristics hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
   v6 = [v5 copy];
 
@@ -61,7 +61,7 @@ void __51__HAP2EncodedCharacteristicRequestThread_serialize__block_invoke(uint64
 
 - (NSArray)characteristics
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MEMORY[0x277CBEB18];
   if (self)
   {
@@ -76,9 +76,9 @@ void __51__HAP2EncodedCharacteristicRequestThread_serialize__block_invoke(uint64
   v5 = internalCharacteristics;
   v6 = [v3 arrayWithCapacity:{-[NSArray count](v5, "count")}];
 
-  if (v2)
+  if (selfCopy)
   {
-    v2 = v2->_internalCharacteristics;
+    selfCopy = selfCopy->_internalCharacteristics;
   }
 
   v10[0] = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@ void __51__HAP2EncodedCharacteristicRequestThread_serialize__block_invoke(uint64
   v10[3] = &unk_2786D34F0;
   v11 = v6;
   v7 = v6;
-  [(HAP2EncodedCharacteristicRequestThread *)v2 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+  [(HAP2EncodedCharacteristicRequestThread *)selfCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
   v8 = [v7 copy];
 
   return v8;
@@ -123,10 +123,10 @@ void __57__HAP2EncodedCharacteristicRequestThread_characteristics__block_invoke(
     self = self->_internalCharacteristics;
   }
 
-  v2 = [(HAP2EncodedCharacteristicRequestThread *)self firstObject];
-  v3 = [v2 isEncrypted];
+  firstObject = [(HAP2EncodedCharacteristicRequestThread *)self firstObject];
+  isEncrypted = [firstObject isEncrypted];
 
-  return v3;
+  return isEncrypted;
 }
 
 - (NSArray)btleRequests
@@ -139,18 +139,18 @@ void __57__HAP2EncodedCharacteristicRequestThread_characteristics__block_invoke(
   return self;
 }
 
-- (HAP2EncodedCharacteristicRequestThread)initWithBTLERequests:(id)a3 requestType:(unint64_t)a4 enforcePDUBodyLength:(BOOL)a5
+- (HAP2EncodedCharacteristicRequestThread)initWithBTLERequests:(id)requests requestType:(unint64_t)type enforcePDUBodyLength:(BOOL)length
 {
-  v9 = a3;
+  requestsCopy = requests;
   v13.receiver = self;
   v13.super_class = HAP2EncodedCharacteristicRequestThread;
   v10 = [(HAP2EncodedCharacteristicRequestThread *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_internalCharacteristics, a3);
-    v11->_requestType = a4;
-    v11->_enforcePDUBodyLength = a5;
+    objc_storeStrong(&v10->_internalCharacteristics, requests);
+    v11->_requestType = type;
+    v11->_enforcePDUBodyLength = length;
   }
 
   return v11;

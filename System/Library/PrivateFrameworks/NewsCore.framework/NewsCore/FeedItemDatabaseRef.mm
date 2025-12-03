@@ -1,18 +1,18 @@
 @interface FeedItemDatabaseRef
 - (NSString)description;
 - (_TtC8NewsCore19FeedItemDatabaseRef)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FeedItemDatabaseRef
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v5 = sub_1B67D858C();
   v6 = sub_1B67D963C();
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 - (_TtC8NewsCore19FeedItemDatabaseRef)init
@@ -24,7 +24,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B67D857C();
 
   v3 = sub_1B67D963C();

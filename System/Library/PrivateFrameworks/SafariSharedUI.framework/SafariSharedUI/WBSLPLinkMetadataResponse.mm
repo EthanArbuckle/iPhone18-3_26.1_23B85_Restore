@@ -1,22 +1,22 @@
 @interface WBSLPLinkMetadataResponse
-- (WBSLPLinkMetadataResponse)initWithURL:(id)a3 metadata:(id)a4 canAttemptFetchNow:(BOOL)a5;
+- (WBSLPLinkMetadataResponse)initWithURL:(id)l metadata:(id)metadata canAttemptFetchNow:(BOOL)now;
 @end
 
 @implementation WBSLPLinkMetadataResponse
 
-- (WBSLPLinkMetadataResponse)initWithURL:(id)a3 metadata:(id)a4 canAttemptFetchNow:(BOOL)a5
+- (WBSLPLinkMetadataResponse)initWithURL:(id)l metadata:(id)metadata canAttemptFetchNow:(BOOL)now
 {
-  v8 = a4;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = WBSLPLinkMetadataResponse;
-  v9 = [(WBSSiteMetadataResponse *)&v14 initWithURL:a3];
+  v9 = [(WBSSiteMetadataResponse *)&v14 initWithURL:l];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [metadataCopy copy];
     metadata = v9->_metadata;
     v9->_metadata = v10;
 
-    v9->_canAttemptFetchNow = a5;
+    v9->_canAttemptFetchNow = now;
     v12 = v9;
   }
 

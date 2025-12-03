@@ -1,37 +1,37 @@
 @interface CPLPushSessionTracker
-+ (BOOL)notifyClientOfStore:(id)a3 ofStatusChanges:(id)a4 error:(id *)a5;
-- (BOOL)checkScopeIdentifier:(id)a3;
-- (BOOL)cleanupWithError:(id *)a3;
++ (BOOL)notifyClientOfStore:(id)store ofStatusChanges:(id)changes error:(id *)error;
+- (BOOL)checkScopeIdentifier:(id)identifier;
+- (BOOL)cleanupWithError:(id *)error;
 - (BOOL)computeDiff;
-- (BOOL)computeExpandedBatchWithError:(id *)a3;
-- (BOOL)hasClientRecordWithLocalScopedIdentifier:(id)a3;
-- (BOOL)hasCloudRecordWithLocalScopedIdentifier:(id)a3;
-- (BOOL)knowsClientRecordWithScopedIdentifier:(id)a3;
-- (BOOL)notifyClientOfStatusChangesIfNecessaryWithError:(id *)a3;
-- (BOOL)shouldCancelSyncSessionTryingToUploadChange:(id)a3;
-- (CPLPushSessionTracker)initWithIncomingBatch:(id)a3 store:(id)a4 error:(id *)a5;
-- (id)_realChangeFromChange:(id)a3 comparedToStoredRecord:(id)a4 changeType:(unint64_t)a5;
-- (id)_resourceIdentitiesFromChange:(id)a3;
+- (BOOL)computeExpandedBatchWithError:(id *)error;
+- (BOOL)hasClientRecordWithLocalScopedIdentifier:(id)identifier;
+- (BOOL)hasCloudRecordWithLocalScopedIdentifier:(id)identifier;
+- (BOOL)knowsClientRecordWithScopedIdentifier:(id)identifier;
+- (BOOL)notifyClientOfStatusChangesIfNecessaryWithError:(id *)error;
+- (BOOL)shouldCancelSyncSessionTryingToUploadChange:(id)change;
+- (CPLPushSessionTracker)initWithIncomingBatch:(id)batch store:(id)store error:(id *)error;
+- (id)_realChangeFromChange:(id)change comparedToStoredRecord:(id)record changeType:(unint64_t)type;
+- (id)_resourceIdentitiesFromChange:(id)change;
 - (id)deletedRecordIdentifiers;
-- (id)enqueuedOrStoredRecordWithLocalScopedIdentifier:(id)a3;
-- (id)resourceIdentitiesForRecordWithLocalScopedIdentifier:(id)a3;
-- (id)storedClientRecordWithLocalScopedIdentifier:(id)a3;
-- (id)storedCloudRecordWithLocalScopedIdentifier:(id)a3;
-- (uint64_t)_checkFingerPrint:(void *)a3 ofResource:(void *)a4 inChange:(void *)a5 localScopedIdentifier:(void *)a6 fingerprintContext:(void *)a7 fingerprintScheme:;
-- (void)acknowledgeNewClientRecord:(id)a3 withScopedIdentifier:(id)a4;
-- (void)enumerateDiffWithBlock:(id)a3;
+- (id)enqueuedOrStoredRecordWithLocalScopedIdentifier:(id)identifier;
+- (id)resourceIdentitiesForRecordWithLocalScopedIdentifier:(id)identifier;
+- (id)storedClientRecordWithLocalScopedIdentifier:(id)identifier;
+- (id)storedCloudRecordWithLocalScopedIdentifier:(id)identifier;
+- (uint64_t)_checkFingerPrint:(void *)print ofResource:(void *)resource inChange:(void *)change localScopedIdentifier:(void *)identifier fingerprintContext:(void *)context fingerprintScheme:;
+- (void)acknowledgeNewClientRecord:(id)record withScopedIdentifier:(id)identifier;
+- (void)enumerateDiffWithBlock:(id)block;
 @end
 
 @implementation CPLPushSessionTracker
 
-- (BOOL)shouldCancelSyncSessionTryingToUploadChange:(id)a3
+- (BOOL)shouldCancelSyncSessionTryingToUploadChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 scopedIdentifier];
-  if (-[NSMutableArray containsObject:](self->_changesWithResourceChanges, "containsObject:", v5) && [v4 supportsResources] && objc_msgSend(v4, "hasChangeType:", 8))
+  changeCopy = change;
+  scopedIdentifier = [changeCopy scopedIdentifier];
+  if (-[NSMutableArray containsObject:](self->_changesWithResourceChanges, "containsObject:", scopedIdentifier) && [changeCopy supportsResources] && objc_msgSend(changeCopy, "hasChangeType:", 8))
   {
-    v6 = [v4 resources];
-    v7 = [v6 count] != 0;
+    resources = [changeCopy resources];
+    v7 = [resources count] != 0;
   }
 
   else
@@ -42,7 +42,7 @@
   return v7;
 }
 
-- (BOOL)notifyClientOfStatusChangesIfNecessaryWithError:(id *)a3
+- (BOOL)notifyClientOfStatusChangesIfNecessaryWithError:(id *)error
 {
   if ([(CPLChangeBatch *)self->_diffedBatch count]|| !self->_recordWithStatusChangesToNotify)
   {
@@ -53,21 +53,21 @@
   store = self->_store;
   recordWithStatusChangesToNotify = self->_recordWithStatusChangesToNotify;
 
-  return [v6 notifyClientOfStore:store ofStatusChanges:recordWithStatusChangesToNotify error:a3];
+  return [v6 notifyClientOfStore:store ofStatusChanges:recordWithStatusChangesToNotify error:error];
 }
 
 - (id)deletedRecordIdentifiers
 {
-  v2 = [(CPLPushSessionTracker *)self deletedRecordScopedIdentifiers];
-  v3 = [CPLScopedIdentifier unscopedIdentifiersFromArrayOfScopedIdentifiers:v2];
+  deletedRecordScopedIdentifiers = [(CPLPushSessionTracker *)self deletedRecordScopedIdentifiers];
+  v3 = [CPLScopedIdentifier unscopedIdentifiersFromArrayOfScopedIdentifiers:deletedRecordScopedIdentifiers];
 
   return v3;
 }
 
-- (void)enumerateDiffWithBlock:(id)a3
+- (void)enumerateDiffWithBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -78,8 +78,8 @@
   {
     v6 = v5;
     v21 = *v24;
-    v7 = v4 + 16;
-    v19 = v4;
+    v7 = blockCopy + 16;
+    v19 = blockCopy;
 LABEL_3:
     v8 = 0;
     while (1)
@@ -91,29 +91,29 @@ LABEL_3:
 
       v9 = *(*(&v23 + 1) + 8 * v8);
       v22 = 0;
-      v10 = [v9 scopedIdentifier];
-      v11 = [(NSMutableDictionary *)self->_fullRecords objectForKeyedSubscript:v10];
+      scopedIdentifier = [v9 scopedIdentifier];
+      v11 = [(NSMutableDictionary *)self->_fullRecords objectForKeyedSubscript:scopedIdentifier];
       v12 = v9;
       if (([v12 hasChangeType:2] & 1) == 0)
       {
         v13 = v7;
-        v14 = [v11 relatedIdentifier];
-        v15 = [v11 secondaryIdentifier];
-        if (v14 | v15)
+        relatedIdentifier = [v11 relatedIdentifier];
+        secondaryIdentifier = [v11 secondaryIdentifier];
+        if (relatedIdentifier | secondaryIdentifier)
         {
           v16 = [v12 copy];
 
-          [v16 setRelatedIdentifier:v14];
-          [v16 setSecondaryIdentifier:v15];
+          [v16 setRelatedIdentifier:relatedIdentifier];
+          [v16 setSecondaryIdentifier:secondaryIdentifier];
           v12 = v16;
-          v4 = v19;
+          blockCopy = v19;
         }
 
         v7 = v13;
       }
 
-      v17 = [(NSMutableDictionary *)self->_resourcesToUpload objectForKeyedSubscript:v10];
-      (*(v4 + 2))(v4, v12, v17, &v22);
+      v17 = [(NSMutableDictionary *)self->_resourcesToUpload objectForKeyedSubscript:scopedIdentifier];
+      (*(blockCopy + 2))(blockCopy, v12, v17, &v22);
 
       LOBYTE(v17) = v22;
       if (v17)
@@ -137,7 +137,7 @@ LABEL_3:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)cleanupWithError:(id *)a3
+- (BOOL)cleanupWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_changesWithMissingIDMapping count])
@@ -151,7 +151,7 @@ LABEL_3:
     if (v6)
     {
       v7 = v6;
-      v23 = a3;
+      errorCopy = error;
       v8 = 0;
       v9 = *v27;
       while (2)
@@ -164,9 +164,9 @@ LABEL_3:
           }
 
           v11 = *(*(&v26 + 1) + 8 * i);
-          v12 = [v11 scopedIdentifier];
+          scopedIdentifier = [v11 scopedIdentifier];
           v25 = 0;
-          v13 = [(CPLEngineIDMapping *)self->_realIDMapping cloudScopedIdentifierForLocalScopedIdentifier:v12 isFinal:&v25];
+          v13 = [(CPLEngineIDMapping *)self->_realIDMapping cloudScopedIdentifierForLocalScopedIdentifier:scopedIdentifier isFinal:&v25];
           if (v13)
           {
           }
@@ -184,20 +184,20 @@ LABEL_3:
               }
             }
 
-            v15 = [v11 proposedCloudScopedIdentifier];
+            proposedCloudScopedIdentifier = [v11 proposedCloudScopedIdentifier];
             realIDMapping = self->_realIDMapping;
             v24 = v8;
-            v17 = [(CPLEngineIDMapping *)realIDMapping setupCloudScopedIdentifier:v15 forLocalScopedIdentifier:v12 isFinal:0 direction:0 error:&v24];
+            v17 = [(CPLEngineIDMapping *)realIDMapping setupCloudScopedIdentifier:proposedCloudScopedIdentifier forLocalScopedIdentifier:scopedIdentifier isFinal:0 direction:0 error:&v24];
             v18 = v24;
 
             if (!v17)
             {
 
-              if (v23)
+              if (errorCopy)
               {
                 v20 = v18;
                 v19 = 0;
-                *v23 = v18;
+                *errorCopy = v18;
               }
 
               else
@@ -260,10 +260,10 @@ LABEL_24:
       }
     }
 
-    v105 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v106 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPushSessionTracker.m"];
     v107 = NSStringFromSelector(a2);
-    [v105 handleFailureInMethod:a2 object:self file:v106 lineNumber:917 description:{@"%@ called before expansion", v107}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v106 lineNumber:917 description:{@"%@ called before expansion", v107}];
 
 LABEL_131:
     abort();
@@ -283,10 +283,10 @@ LABEL_131:
       }
     }
 
-    v110 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v111 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPushSessionTracker.m"];
     v112 = NSStringFromSelector(a2);
-    [v110 handleFailureInMethod:a2 object:self file:v111 lineNumber:918 description:{@"%@ called twice", v112}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:v111 lineNumber:918 description:{@"%@ called twice", v112}];
 
     goto LABEL_131;
   }
@@ -327,8 +327,8 @@ LABEL_131:
   v160[3] = &unk_1E861E2C0;
   v115 = v17;
   v161 = v115;
-  v126 = self;
-  v162 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v18 = MEMORY[0x1E128EBA0](v160);
   v159[0] = MEMORY[0x1E69E9820];
   v159[1] = 3221225472;
@@ -369,8 +369,8 @@ LABEL_131:
 
         v123 = v20;
         v22 = *(*(&v152 + 1) + 8 * v20);
-        v23 = [v22 scopedIdentifier];
-        if (!v23)
+        scopedIdentifier = [v22 scopedIdentifier];
+        if (!scopedIdentifier)
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -383,16 +383,16 @@ LABEL_131:
             }
           }
 
-          v95 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
           v96 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPushSessionTracker.m"];
-          [v95 handleFailureInMethod:a2 object:v126 file:v96 lineNumber:974 description:{@"%@ should have an identifier", v22}];
+          [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:v96 lineNumber:974 description:{@"%@ should have an identifier", v22}];
 
           goto LABEL_131;
         }
 
         if ([v22 isFullRecord])
         {
-          [(CPLPushSessionTracker *)v126 acknowledgeNewClientRecord:v22 withScopedIdentifier:v23];
+          [(CPLPushSessionTracker *)selfCopy acknowledgeNewClientRecord:v22 withScopedIdentifier:scopedIdentifier];
         }
 
         *&v171 = 0;
@@ -400,8 +400,8 @@ LABEL_131:
         v172 = 0x2020000000;
         if ([v22 supportsResources] && objc_msgSend(v22, "hasChangeType:", 8))
         {
-          v24 = [v22 resources];
-          v25 = [v24 count] != 0;
+          resources = [v22 resources];
+          v25 = [resources count] != 0;
         }
 
         else
@@ -415,8 +415,8 @@ LABEL_131:
         v148[2] = __36__CPLPushSessionTracker_computeDiff__block_invoke_49;
         v148[3] = &unk_1E861E338;
         v151 = &v171;
-        v148[4] = v126;
-        v26 = v23;
+        v148[4] = selfCopy;
+        v26 = scopedIdentifier;
         v149 = v26;
         v150 = v121;
         v125 = MEMORY[0x1E128EBA0](v148);
@@ -425,7 +425,7 @@ LABEL_131:
         v144[2] = __36__CPLPushSessionTracker_computeDiff__block_invoke_2_50;
         v144[3] = &unk_1E861E338;
         v147 = &v171;
-        v144[4] = v126;
+        v144[4] = selfCopy;
         v27 = v26;
         v145 = v27;
         v146 = v120;
@@ -435,7 +435,7 @@ LABEL_131:
           [v117 setObject:&unk_1F57EF698 forKeyedSubscript:v27];
         }
 
-        v28 = [(CPLPushSessionTracker *)v126 storedClientRecordWithLocalScopedIdentifier:v27];
+        v28 = [(CPLPushSessionTracker *)selfCopy storedClientRecordWithLocalScopedIdentifier:v27];
         if (v28)
         {
           if ([v22 isDelete])
@@ -446,34 +446,34 @@ LABEL_131:
               if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
               {
                 v30 = objc_opt_class();
-                v31 = [v22 scopedIdentifier];
+                scopedIdentifier2 = [v22 scopedIdentifier];
                 *buf = 138412546;
                 v165 = v30;
                 v166 = 2112;
-                v167 = v31;
+                v167 = scopedIdentifier2;
                 _os_log_impl(&dword_1DC05A000, v29, OS_LOG_TYPE_DEBUG, "-- adding real change delete <%@ %@> to batch", buf, 0x16u);
               }
             }
 
-            [(NSMutableArray *)v126->_deletedRecordScopedIdentifiers addObject:v27];
-            if (v126->_diffedBatchCanLowerQuota)
+            [(NSMutableArray *)selfCopy->_deletedRecordScopedIdentifiers addObject:v27];
+            if (selfCopy->_diffedBatchCanLowerQuota)
             {
-              v32 = 1;
+              canLowerQuota = 1;
             }
 
             else
             {
-              v32 = [v22 canLowerQuota];
+              canLowerQuota = [v22 canLowerQuota];
             }
 
-            v126->_diffedBatchCanLowerQuota = v32;
-            v62 = [v28 relatedIdentifier];
-            v63 = [v28 secondaryIdentifier];
-            if (v62 | v63)
+            selfCopy->_diffedBatchCanLowerQuota = canLowerQuota;
+            relatedIdentifier = [v28 relatedIdentifier];
+            secondaryIdentifier = [v28 secondaryIdentifier];
+            if (relatedIdentifier | secondaryIdentifier)
             {
               v33 = [v22 copy];
-              [v33 setRelatedIdentifier:v62];
-              [v33 setSecondaryIdentifier:v63];
+              [v33 setRelatedIdentifier:relatedIdentifier];
+              [v33 setSecondaryIdentifier:secondaryIdentifier];
             }
 
             else
@@ -482,26 +482,26 @@ LABEL_131:
             }
 
             (v125)[2](v125, v33, v28);
-            [(NSMutableDictionary *)v126->_fullRecords setObject:v28 forKeyedSubscript:v27];
+            [(NSMutableDictionary *)selfCopy->_fullRecords setObject:v28 forKeyedSubscript:v27];
             if ([v22 isAssetChange])
             {
-              v64 = [v28 masterScopedIdentifier];
-              if (v64)
+              masterScopedIdentifier = [v28 masterScopedIdentifier];
+              if (masterScopedIdentifier)
               {
-                v65 = [v117 objectForKeyedSubscript:v64];
-                v66 = [v65 integerValue];
+                v65 = [v117 objectForKeyedSubscript:masterScopedIdentifier];
+                integerValue = [v65 integerValue];
 
-                if (v66 != 0x8000000000000000)
+                if (integerValue != 0x8000000000000000)
                 {
-                  v67 = [MEMORY[0x1E696AD98] numberWithInteger:v66 + 1];
-                  [v117 setObject:v67 forKeyedSubscript:v64];
+                  v67 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
+                  [v117 setObject:v67 forKeyedSubscript:masterScopedIdentifier];
                 }
               }
             }
 
             if ([v28 supportsResources])
             {
-              [(NSMutableArray *)v126->_changesWithResourceChanges addObject:v27];
+              [(NSMutableArray *)selfCopy->_changesWithResourceChanges addObject:v27];
             }
           }
 
@@ -543,8 +543,8 @@ LABEL_131:
               v134 = 0u;
               v131 = 0u;
               v132 = 0u;
-              v42 = [v37 resources];
-              v43 = [v42 countByEnumeratingWithState:&v131 objects:v163 count:16];
+              resources2 = [v37 resources];
+              v43 = [resources2 countByEnumeratingWithState:&v131 objects:v163 count:16];
               if (v43)
               {
                 v44 = *v132;
@@ -554,15 +554,15 @@ LABEL_131:
                   {
                     if (*v132 != v44)
                     {
-                      objc_enumerationMutation(v42);
+                      objc_enumerationMutation(resources2);
                     }
 
-                    v46 = [*(*(&v131 + 1) + 8 * i) identity];
-                    [v46 setAvailable:1];
-                    [v46 setFileURL:0];
+                    identity = [*(*(&v131 + 1) + 8 * i) identity];
+                    [identity setAvailable:1];
+                    [identity setFileURL:0];
                   }
 
-                  v43 = [v42 countByEnumeratingWithState:&v131 objects:v163 count:16];
+                  v43 = [resources2 countByEnumeratingWithState:&v131 objects:v163 count:16];
                 }
 
                 while (v43);
@@ -579,7 +579,7 @@ LABEL_131:
             v33 = [v28 realRecordChangeFromRecordChange:v37 direction:1 newRecord:&v130 diffTracker:v47];
             v48 = v130;
 
-            if ([(NSMutableSet *)v126->_unquarantinedRecordScopedIdentifiers containsObject:v27])
+            if ([(NSMutableSet *)selfCopy->_unquarantinedRecordScopedIdentifiers containsObject:v27])
             {
               if (v33)
               {
@@ -613,20 +613,20 @@ LABEL_131:
                   }
                 }
 
-                v98 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
                 v99 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPushSessionTracker.m"];
-                [v98 handleFailureInMethod:a2 object:v126 file:v99 lineNumber:1173 description:{@"With a real change should come an updated record for %@", v36}];
+                [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:v99 lineNumber:1173 description:{@"With a real change should come an updated record for %@", v36}];
 
                 goto LABEL_131;
               }
 
-              v71 = [v33 recordModificationDate];
-              v72 = v71 == 0;
+              recordModificationDate = [v33 recordModificationDate];
+              v72 = recordModificationDate == 0;
 
               if (v72)
               {
-                v73 = [v36 recordModificationDate];
-                [v33 setRecordModificationDate:v73];
+                recordModificationDate2 = [v36 recordModificationDate];
+                [v33 setRecordModificationDate:recordModificationDate2];
               }
 
               if ((_CPLSilentLogging & 1) == 0)
@@ -635,48 +635,48 @@ LABEL_131:
                 if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
                 {
                   v75 = objc_opt_class();
-                  v76 = [v36 scopedIdentifier];
+                  scopedIdentifier3 = [v36 scopedIdentifier];
                   *buf = 138412802;
                   v165 = v75;
                   v166 = 2112;
-                  v167 = v76;
+                  v167 = scopedIdentifier3;
                   v168 = 2112;
                   v169 = v47;
                   _os_log_impl(&dword_1DC05A000, v74, OS_LOG_TYPE_DEFAULT, "-- adding real change <%@ %@> to batch (%@)", buf, 0x20u);
                 }
               }
 
-              [(NSMutableArray *)v126->_updatedRecords addObject:v48];
-              if (v126->_diffedBatchCanLowerQuota)
+              [(NSMutableArray *)selfCopy->_updatedRecords addObject:v48];
+              if (selfCopy->_diffedBatchCanLowerQuota)
               {
-                v77 = 1;
+                canLowerQuota2 = 1;
               }
 
               else
               {
-                v77 = [v33 canLowerQuota];
+                canLowerQuota2 = [v33 canLowerQuota];
               }
 
-              v126->_diffedBatchCanLowerQuota = v77;
+              selfCopy->_diffedBatchCanLowerQuota = canLowerQuota2;
               if (([v33 hasChangeType:2]& 1) == 0)
               {
-                v82 = [v28 relatedIdentifier];
-                [v33 setRelatedIdentifier:v82];
+                relatedIdentifier2 = [v28 relatedIdentifier];
+                [v33 setRelatedIdentifier:relatedIdentifier2];
 
-                v83 = [v28 secondaryIdentifier];
-                [v33 setSecondaryIdentifier:v83];
+                secondaryIdentifier2 = [v28 secondaryIdentifier];
+                [v33 setSecondaryIdentifier:secondaryIdentifier2];
               }
 
               (v125)[2](v125, v33, v28);
-              [(NSMutableDictionary *)v126->_fullRecords setObject:v48 forKeyedSubscript:v27];
+              [(NSMutableDictionary *)selfCopy->_fullRecords setObject:v48 forKeyedSubscript:v27];
               if (v118 && [v33 hasChangeType:8])
               {
-                [(NSMutableDictionary *)v126->_resourcesToUpload setObject:v118 forKeyedSubscript:v27];
+                [(NSMutableDictionary *)selfCopy->_resourcesToUpload setObject:v118 forKeyedSubscript:v27];
               }
 
               if ([v33 supportsResources]&& [v33 hasChangeType:8])
               {
-                [(NSMutableArray *)v126->_changesWithResourceChanges addObject:v27];
+                [(NSMutableArray *)selfCopy->_changesWithResourceChanges addObject:v27];
               }
             }
 
@@ -688,14 +688,14 @@ LABEL_131:
                 if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
                 {
                   v79 = objc_opt_class();
-                  v80 = [v36 scopedIdentifier];
-                  v81 = [v28 cplFullDescription];
+                  scopedIdentifier4 = [v36 scopedIdentifier];
+                  cplFullDescription = [v28 cplFullDescription];
                   *buf = 138412802;
                   v165 = v79;
                   v166 = 2112;
-                  v167 = v80;
+                  v167 = scopedIdentifier4;
                   v168 = 2112;
-                  v169 = v81;
+                  v169 = cplFullDescription;
                   _os_log_impl(&dword_1DC05A000, v78, OS_LOG_TYPE_DEBUG, "-- <%@ %@> did not result in a change of the stored record: %@", buf, 0x20u);
                 }
               }
@@ -724,25 +724,25 @@ LABEL_122:
               }
             }
 
-            v101 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
             v102 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPushSessionTracker.m"];
-            [v101 handleFailureInMethod:a2 object:v126 file:v102 lineNumber:1020 description:{@"%@ should be a full record as a new record", v22}];
+            [currentHandler5 handleFailureInMethod:a2 object:selfCopy file:v102 lineNumber:1020 description:{@"%@ should be a full record as a new record", v22}];
 
             goto LABEL_131;
           }
 
           if ([v22 isAssetChange])
           {
-            v50 = [0 masterScopedIdentifier];
-            if (v50)
+            masterScopedIdentifier2 = [0 masterScopedIdentifier];
+            if (masterScopedIdentifier2)
             {
-              v51 = [v117 objectForKeyedSubscript:v50];
-              v52 = [v51 integerValue];
+              v51 = [v117 objectForKeyedSubscript:masterScopedIdentifier2];
+              integerValue2 = [v51 integerValue];
 
-              if (v52 != 0x8000000000000000)
+              if (integerValue2 != 0x8000000000000000)
               {
-                v53 = [MEMORY[0x1E696AD98] numberWithInteger:v52 - 1];
-                [v117 setObject:v53 forKeyedSubscript:v50];
+                v53 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue2 - 1];
+                [v117 setObject:v53 forKeyedSubscript:masterScopedIdentifier2];
               }
             }
           }
@@ -750,20 +750,20 @@ LABEL_122:
           v54 = v22;
           if ([v54 supportsResources])
           {
-            v55 = [v54 resources];
-            v56 = [v55 cplDeepCopy];
+            resources3 = [v54 resources];
+            cplDeepCopy = [resources3 cplDeepCopy];
 
-            if (v56)
+            if (cplDeepCopy)
             {
-              [(NSMutableDictionary *)v126->_resourcesToUpload setObject:v56 forKeyedSubscript:v27];
+              [(NSMutableDictionary *)selfCopy->_resourcesToUpload setObject:cplDeepCopy forKeyedSubscript:v27];
               v33 = [v54 copy];
 
               v142 = 0u;
               v143 = 0u;
               v140 = 0u;
               v141 = 0u;
-              v57 = [v33 resources];
-              v58 = [v57 countByEnumeratingWithState:&v140 objects:v170 count:16];
+              resources4 = [v33 resources];
+              v58 = [resources4 countByEnumeratingWithState:&v140 objects:v170 count:16];
               if (v58)
               {
                 v59 = *v141;
@@ -773,15 +773,15 @@ LABEL_122:
                   {
                     if (*v141 != v59)
                     {
-                      objc_enumerationMutation(v57);
+                      objc_enumerationMutation(resources4);
                     }
 
-                    v61 = [*(*(&v140 + 1) + 8 * j) identity];
-                    [v61 setAvailable:1];
-                    [v61 setFileURL:0];
+                    identity2 = [*(*(&v140 + 1) + 8 * j) identity];
+                    [identity2 setAvailable:1];
+                    [identity2 setFileURL:0];
                   }
 
-                  v58 = [v57 countByEnumeratingWithState:&v140 objects:v170 count:16];
+                  v58 = [resources4 countByEnumeratingWithState:&v140 objects:v170 count:16];
                 }
 
                 while (v58);
@@ -805,36 +805,36 @@ LABEL_122:
             if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
             {
               v85 = objc_opt_class();
-              v86 = [v33 scopedIdentifier];
-              v87 = [v33 cplFullDescription];
+              scopedIdentifier5 = [v33 scopedIdentifier];
+              cplFullDescription2 = [v33 cplFullDescription];
               *buf = 138412802;
               v165 = v85;
               v166 = 2112;
-              v167 = v86;
+              v167 = scopedIdentifier5;
               v168 = 2112;
-              v169 = v87;
+              v169 = cplFullDescription2;
               _os_log_impl(&dword_1DC05A000, v84, OS_LOG_TYPE_DEBUG, "-- adding real change <%@ %@> to batch (new record): %@", buf, 0x20u);
             }
           }
 
-          [(NSMutableArray *)v126->_addedRecords addObject:v33];
-          if (v126->_diffedBatchCanLowerQuota)
+          [(NSMutableArray *)selfCopy->_addedRecords addObject:v33];
+          if (selfCopy->_diffedBatchCanLowerQuota)
           {
-            v88 = 1;
+            canLowerQuota3 = 1;
           }
 
           else
           {
-            v88 = [v33 canLowerQuota];
+            canLowerQuota3 = [v33 canLowerQuota];
           }
 
-          v126->_diffedBatchCanLowerQuota = v88;
+          selfCopy->_diffedBatchCanLowerQuota = canLowerQuota3;
           (v125)[2](v125, v33, 0);
-          [(NSMutableDictionary *)v126->_fullRecords setObject:v33 forKeyedSubscript:v27];
+          [(NSMutableDictionary *)selfCopy->_fullRecords setObject:v33 forKeyedSubscript:v27];
           goto LABEL_122;
         }
 
-        if ([(NSMutableSet *)v126->_unquarantinedRecordScopedIdentifiers containsObject:v27])
+        if ([(NSMutableSet *)selfCopy->_unquarantinedRecordScopedIdentifiers containsObject:v27])
         {
           if (_CPLSilentLogging)
           {
@@ -845,11 +845,11 @@ LABEL_122:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
             v34 = objc_opt_class();
-            v35 = [v22 scopedIdentifier];
+            scopedIdentifier6 = [v22 scopedIdentifier];
             *buf = 138412546;
             v165 = v34;
             v166 = 2112;
-            v167 = v35;
+            v167 = scopedIdentifier6;
             _os_log_impl(&dword_1DC05A000, v33, OS_LOG_TYPE_DEFAULT, "-- <%@ %@> is already missing in cache but forcing delete as it is unquarantining the record", buf, 0x16u);
           }
 
@@ -862,11 +862,11 @@ LABEL_122:
           if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
           {
             v69 = objc_opt_class();
-            v70 = [v22 scopedIdentifier];
+            scopedIdentifier7 = [v22 scopedIdentifier];
             *buf = 138412546;
             v165 = v69;
             v166 = 2112;
-            v167 = v70;
+            v167 = scopedIdentifier7;
             _os_log_impl(&dword_1DC05A000, v68, OS_LOG_TYPE_DEBUG, "-- <%@ %@> is already missing in cache. Ignoring delete", buf, 0x16u);
           }
         }
@@ -885,18 +885,18 @@ LABEL_123:
     while (v122);
   }
 
-  v89 = [(CPLEngineStore *)v126->_store quarantinedRecords];
+  quarantinedRecords = [(CPLEngineStore *)selfCopy->_store quarantinedRecords];
   v127[0] = MEMORY[0x1E69E9820];
   v127[1] = 3221225472;
   v127[2] = __36__CPLPushSessionTracker_computeDiff__block_invoke_68;
   v127[3] = &unk_1E861E3A8;
-  v127[4] = v126;
-  v128 = v89;
+  v127[4] = selfCopy;
+  v128 = quarantinedRecords;
   v129 = v121;
   v90 = v121;
-  v91 = v89;
+  v91 = quarantinedRecords;
   [v117 enumerateKeysAndObjectsUsingBlock:v127];
-  v126->_diffHasBeenSuccessful = 1;
+  selfCopy->_diffHasBeenSuccessful = 1;
 
   v92 = *MEMORY[0x1E69E9840];
   return 1;
@@ -1094,9 +1094,9 @@ void __36__CPLPushSessionTracker_computeDiff__block_invoke_68(uint64_t a1, void 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)computeExpandedBatchWithError:(id *)a3
+- (BOOL)computeExpandedBatchWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v336 = *MEMORY[0x1E69E9840];
   if (self->_expandHasBeenSuccessful)
   {
@@ -1112,55 +1112,55 @@ void __36__CPLPushSessionTracker_computeDiff__block_invoke_68(uint64_t a1, void 
       }
     }
 
-    v218 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v219 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPushSessionTracker.m"];
     v222 = NSStringFromSelector(a2);
-    [v218 handleFailureInMethod:a2 object:v3 file:v219 lineNumber:354 description:{@"%@ called twice", v222}];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:v219 lineNumber:354 description:{@"%@ called twice", v222}];
 
 LABEL_403:
     abort();
   }
 
-  v4 = a3;
+  errorCopy = error;
   now = self->_now;
   if (now)
   {
-    v230 = now;
+    date = now;
   }
 
   else
   {
-    v230 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[CPLChangeBatch count](v3->_incomingBatch, "count")}];
-  incomingBatchRecordPerScopedIdentifiers = v3->_incomingBatchRecordPerScopedIdentifiers;
-  v3->_incomingBatchRecordPerScopedIdentifiers = v6;
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[CPLChangeBatch count](selfCopy->_incomingBatch, "count")}];
+  incomingBatchRecordPerScopedIdentifiers = selfCopy->_incomingBatchRecordPerScopedIdentifiers;
+  selfCopy->_incomingBatchRecordPerScopedIdentifiers = v6;
 
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  unquarantinedRecordScopedIdentifiers = v3->_unquarantinedRecordScopedIdentifiers;
-  v3->_unquarantinedRecordScopedIdentifiers = v8;
+  unquarantinedRecordScopedIdentifiers = selfCopy->_unquarantinedRecordScopedIdentifiers;
+  selfCopy->_unquarantinedRecordScopedIdentifiers = v8;
 
   v10 = objc_alloc_init(CPLChangeBatch);
-  expandedBatch = v3->_expandedBatch;
-  v3->_expandedBatch = v10;
+  expandedBatch = selfCopy->_expandedBatch;
+  selfCopy->_expandedBatch = v10;
 
-  v12 = [[CPLPushChangeTasks alloc] initEmpty];
-  pushChangeTasks = v3->_pushChangeTasks;
-  v3->_pushChangeTasks = v12;
+  initEmpty = [[CPLPushChangeTasks alloc] initEmpty];
+  pushChangeTasks = selfCopy->_pushChangeTasks;
+  selfCopy->_pushChangeTasks = initEmpty;
 
-  v14 = [(CPLPushSessionTracker *)v3 store];
-  v15 = [v14 engineLibrary];
-  v16 = [v15 transport];
-  v229 = [v16 fingerprintContext];
+  store = [(CPLPushSessionTracker *)selfCopy store];
+  engineLibrary = [store engineLibrary];
+  transport = [engineLibrary transport];
+  fingerprintContext = [transport fingerprintContext];
 
-  v265 = [(CPLEngineStore *)v3->_store pushPullGatekeepers];
+  pushPullGatekeepers = [(CPLEngineStore *)selfCopy->_store pushPullGatekeepers];
   v270 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v315 = 0u;
   v316 = 0u;
   v317 = 0u;
   v318 = 0u;
-  obj = v3->_incomingBatch;
+  obj = selfCopy->_incomingBatch;
   v269 = [(CPLChangeBatch *)obj countByEnumeratingWithState:&v315 objects:v335 count:16];
   if (!v269)
   {
@@ -1170,7 +1170,7 @@ LABEL_403:
 
   v243 = 0;
   v267 = *v316;
-  v227 = v4;
+  v227 = errorCopy;
   do
   {
     v17 = 0;
@@ -1185,7 +1185,7 @@ LABEL_403:
       [v18 awakeFromStorage];
       if ([v18 isScopeChange])
       {
-        if ([(CPLEngineStore *)v3->_store clientCanPushScopeChange:v18])
+        if ([(CPLEngineStore *)selfCopy->_store clientCanPushScopeChange:v18])
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -1198,7 +1198,7 @@ LABEL_403:
             }
           }
 
-          scopes = v3->_scopes;
+          scopes = selfCopy->_scopes;
           v314 = 0;
           v21 = [(CPLEngineScopeStorage *)scopes updateScopeWithChange:v18 error:&v314];
           v22 = v314;
@@ -1217,10 +1217,10 @@ LABEL_403:
               }
             }
 
-            if (v4)
+            if (errorCopy)
             {
               v40 = v22;
-              *v4 = v22;
+              *errorCopy = v22;
             }
 
             v41 = 1;
@@ -1235,9 +1235,9 @@ LABEL_403:
               v23 = objc_alloc_init(MEMORY[0x1E695DFA8]);
             }
 
-            v24 = [v18 scopeIdentifier];
+            scopeIdentifier = [v18 scopeIdentifier];
             v243 = v23;
-            [v23 addObject:v24];
+            [v23 addObject:scopeIdentifier];
           }
 
           goto LABEL_73;
@@ -1264,7 +1264,7 @@ LABEL_55:
       v313 = 0u;
       v310 = 0u;
       v311 = 0u;
-      v25 = v265;
+      v25 = pushPullGatekeepers;
       v26 = [v25 countByEnumeratingWithState:&v310 objects:v334 count:16];
       if (!v26)
       {
@@ -1316,9 +1316,9 @@ LABEL_55:
                 }
               }
 
-              v37 = v3->_pushChangeTasks;
-              v38 = [v18 scopedIdentifier];
-              [(CPLPushChangeTasks *)v37 addTask:1 forRecordWithScopedIdentifier:v38];
+              v37 = selfCopy->_pushChangeTasks;
+              scopedIdentifier = [v18 scopedIdentifier];
+              [(CPLPushChangeTasks *)v37 addTask:1 forRecordWithScopedIdentifier:scopedIdentifier];
 
               goto LABEL_54;
             case 1:
@@ -1358,18 +1358,18 @@ LABEL_37:
       v17 = v268;
       if (([v18 isDelete]& 1) == 0)
       {
-        v34 = [v18 recordModificationDate];
+        recordModificationDate = [v18 recordModificationDate];
 
-        v33 = v230;
-        if (!v34)
+        v33 = date;
+        if (!recordModificationDate)
         {
 LABEL_65:
           [v18 setRecordModificationDate:v33];
         }
       }
 
-      v42 = [v18 scopedIdentifier];
-      if (!v42)
+      scopedIdentifier2 = [v18 scopedIdentifier];
+      if (!scopedIdentifier2)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -1384,14 +1384,14 @@ LABEL_65:
           }
         }
 
-        v218 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v219 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPushSessionTracker.m"];
-        [v218 handleFailureInMethod:a2 object:v3 file:v219 lineNumber:423 description:{@"%@ should have an identifier here", objc_opt_class(), v276}];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:v219 lineNumber:423 description:{@"%@ should have an identifier here", objc_opt_class(), v276}];
         goto LABEL_403;
       }
 
-      v22 = v42;
-      v43 = [(NSMutableDictionary *)v3->_incomingBatchRecordPerScopedIdentifiers objectForKey:v42];
+      v22 = scopedIdentifier2;
+      v43 = [(NSMutableDictionary *)selfCopy->_incomingBatchRecordPerScopedIdentifiers objectForKey:scopedIdentifier2];
 
       if (v43)
       {
@@ -1406,11 +1406,11 @@ LABEL_65:
           }
         }
 
-        ++v3->_ignoredRecordCount;
+        ++selfCopy->_ignoredRecordCount;
         goto LABEL_73;
       }
 
-      [(NSMutableDictionary *)v3->_incomingBatchRecordPerScopedIdentifiers setObject:v18 forKeyedSubscript:v22];
+      [(NSMutableDictionary *)selfCopy->_incomingBatchRecordPerScopedIdentifiers setObject:v18 forKeyedSubscript:v22];
       if (computeExpandedBatchWithError__onceToken != -1)
       {
         dispatch_once(&computeExpandedBatchWithError__onceToken, &__block_literal_global_16395);
@@ -1421,8 +1421,8 @@ LABEL_65:
         goto LABEL_128;
       }
 
-      v45 = [v18 resourceCopyFromScopedIdentifier];
-      if (!v45)
+      resourceCopyFromScopedIdentifier = [v18 resourceCopyFromScopedIdentifier];
+      if (!resourceCopyFromScopedIdentifier)
       {
         goto LABEL_127;
       }
@@ -1437,12 +1437,12 @@ LABEL_65:
             *buf = 138412546;
             p_super = v18;
             v329 = 2112;
-            v330 = v45;
+            v330 = resourceCopyFromScopedIdentifier;
             _os_log_impl(&dword_1DC05A000, v46, OS_LOG_TYPE_ERROR, "Simulating resource copy failure for change %@ with resources copied from %@", buf, 0x16u);
           }
         }
 
-        [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:7 forRecordWithScopedIdentifier:v22];
+        [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:7 forRecordWithScopedIdentifier:v22];
 LABEL_328:
 
 LABEL_73:
@@ -1450,17 +1450,17 @@ LABEL_73:
         goto LABEL_74;
       }
 
-      v47 = [v18 resources];
-      if ([v47 count])
+      resources = [v18 resources];
+      if ([resources count])
       {
-        v48 = [(CPLPushSessionTracker *)v3 resourceIdentitiesForRecordWithLocalScopedIdentifier:v45];
+        v48 = [(CPLPushSessionTracker *)selfCopy resourceIdentitiesForRecordWithLocalScopedIdentifier:resourceCopyFromScopedIdentifier];
         if (v48)
         {
           v308 = 0u;
           v309 = 0u;
           v306 = 0u;
           v307 = 0u;
-          v251 = v47;
+          v251 = resources;
           v49 = [v251 countByEnumeratingWithState:&v306 objects:v326 count:16];
           if (!v49)
           {
@@ -1469,9 +1469,9 @@ LABEL_73:
 
           v50 = v49;
           v257 = v48;
-          v260 = v3;
-          v244 = v47;
-          v241 = v45;
+          v260 = selfCopy;
+          v244 = resources;
+          v241 = resourceCopyFromScopedIdentifier;
           v224 = v22;
           v51 = *v307;
           while (1)
@@ -1484,13 +1484,13 @@ LABEL_73:
               }
 
               v53 = *(*(&v306 + 1) + 8 * j);
-              v54 = [v53 identity];
-              v55 = [v53 sourceResourceType];
-              if (!v55)
+              identity = [v53 identity];
+              sourceResourceType = [v53 sourceResourceType];
+              if (!sourceResourceType)
               {
-                v3 = v260;
-                v45 = v241;
-                v47 = v244;
+                selfCopy = v260;
+                resourceCopyFromScopedIdentifier = v241;
+                resources = v244;
                 v127 = v251;
                 if ((_CPLSilentLogging & 1) == 0)
                 {
@@ -1513,7 +1513,7 @@ LABEL_73:
 
 LABEL_324:
 
-                v4 = v227;
+                errorCopy = v227;
                 v22 = v224;
                 v48 = v257;
 LABEL_325:
@@ -1521,18 +1521,18 @@ LABEL_325:
                 goto LABEL_326;
               }
 
-              v56 = v55;
-              v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v55];
+              v56 = sourceResourceType;
+              v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:sourceResourceType];
               v58 = [v257 objectForKeyedSubscript:v57];
 
               if (v58)
               {
-                v59 = [v54 fingerPrint];
-                v60 = [v58 fingerPrint];
-                v61 = v60;
-                if (v59)
+                fingerPrint = [identity fingerPrint];
+                fingerPrint2 = [v58 fingerPrint];
+                v61 = fingerPrint2;
+                if (fingerPrint)
                 {
-                  v62 = v60 == 0;
+                  v62 = fingerPrint2 == 0;
                 }
 
                 else
@@ -1543,7 +1543,7 @@ LABEL_325:
                 if (v62)
                 {
 
-                  if (v59 | v61)
+                  if (fingerPrint | v61)
                   {
                     goto LABEL_317;
                   }
@@ -1551,7 +1551,7 @@ LABEL_325:
 
                 else
                 {
-                  v63 = [v59 isEqual:v60];
+                  v63 = [fingerPrint isEqual:fingerPrint2];
 
                   if ((v63 & 1) == 0)
                   {
@@ -1559,8 +1559,8 @@ LABEL_317:
                     if ((_CPLSilentLogging & 1) == 0)
                     {
                       v130 = __CPLSessionOSLogDomain_16325();
-                      v45 = v241;
-                      v47 = v244;
+                      resourceCopyFromScopedIdentifier = v241;
+                      resources = v244;
                       if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
                       {
                         v186 = [CPLResource shortDescriptionForResourceType:v56];
@@ -1573,7 +1573,7 @@ LABEL_317:
                         _os_log_impl(&dword_1DC05A000, v130, OS_LOG_TYPE_ERROR, "Client pushed %@ copying resource %@ from %@ but the fingerprints don't match", buf, 0x20u);
                       }
 
-                      v3 = v260;
+                      selfCopy = v260;
                       v17 = v268;
                       goto LABEL_321;
                     }
@@ -1589,8 +1589,8 @@ LABEL_317:
                 {
                   v130 = __CPLSessionOSLogDomain_16325();
                   v17 = v268;
-                  v45 = v241;
-                  v47 = v244;
+                  resourceCopyFromScopedIdentifier = v241;
+                  resources = v244;
                   if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
                   {
                     v177 = [CPLResource shortDescriptionForResourceType:v56];
@@ -1604,7 +1604,7 @@ LABEL_317:
                   }
 
                   v58 = 0;
-                  v3 = v260;
+                  selfCopy = v260;
 LABEL_321:
 
 LABEL_322:
@@ -1616,14 +1616,14 @@ LABEL_323:
 
                 v58 = 0;
 LABEL_377:
-                v3 = v260;
+                selfCopy = v260;
                 v17 = v268;
-                v45 = v241;
-                v47 = v244;
+                resourceCopyFromScopedIdentifier = v241;
+                resources = v244;
                 goto LABEL_322;
               }
 
-              v4 = v227;
+              errorCopy = v227;
               v17 = v268;
             }
 
@@ -1631,10 +1631,10 @@ LABEL_377:
             if (!v50)
             {
               v48 = v257;
-              v3 = v260;
+              selfCopy = v260;
               v22 = v224;
-              v45 = v241;
-              v47 = v244;
+              resourceCopyFromScopedIdentifier = v241;
+              resources = v244;
 LABEL_112:
               v64 = v251;
 LABEL_113:
@@ -1649,13 +1649,13 @@ LABEL_113:
           v127 = __CPLSessionOSLogDomain_16325();
           if (os_log_type_enabled(v127, OS_LOG_TYPE_ERROR))
           {
-            v128 = [v47 count];
+            v128 = [resources count];
             *buf = 138412802;
             p_super = v18;
             v329 = 2048;
             v330 = v128;
             v331 = 2112;
-            v332 = v45;
+            v332 = resourceCopyFromScopedIdentifier;
             _os_log_impl(&dword_1DC05A000, v127, OS_LOG_TYPE_ERROR, "Client pushed %@ copying %lu resources from %@ which is unknown or deleted", buf, 0x20u);
           }
 
@@ -1663,14 +1663,14 @@ LABEL_113:
         }
 
 LABEL_326:
-        [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:7 forRecordWithScopedIdentifier:v22];
+        [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:7 forRecordWithScopedIdentifier:v22];
 
         goto LABEL_327;
       }
 
       if (![v18 isAssetChange]|| ([v18 adjustments], v65 = objc_claimAutoreleasedReturnValue(), v65, !v65))
       {
-        if ([(CPLPushSessionTracker *)v3 knowsClientRecordWithScopedIdentifier:v45])
+        if ([(CPLPushSessionTracker *)selfCopy knowsClientRecordWithScopedIdentifier:resourceCopyFromScopedIdentifier])
         {
           goto LABEL_126;
         }
@@ -1684,18 +1684,18 @@ LABEL_241:
             *buf = 138412546;
             p_super = v18;
             v329 = 2112;
-            v330 = v45;
+            v330 = resourceCopyFromScopedIdentifier;
             _os_log_impl(&dword_1DC05A000, v129, OS_LOG_TYPE_ERROR, "Client pushed %@ copying 0 resources from %@ which is unknown or deleted", buf, 0x16u);
           }
         }
 
-        [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:7 forRecordWithScopedIdentifier:v22];
+        [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:7 forRecordWithScopedIdentifier:v22];
 LABEL_327:
 
         goto LABEL_328;
       }
 
-      v66 = [(CPLPushSessionTracker *)v3 enqueuedOrStoredRecordWithLocalScopedIdentifier:v45];
+      v66 = [(CPLPushSessionTracker *)selfCopy enqueuedOrStoredRecordWithLocalScopedIdentifier:resourceCopyFromScopedIdentifier];
       if (!v66)
       {
         goto LABEL_241;
@@ -1708,7 +1708,7 @@ LABEL_327:
         v258 = v48;
         if (v64)
         {
-          v245 = v47;
+          v245 = resources;
           if ((_CPLSilentLogging & 1) == 0)
           {
             v67 = __CPLSessionOSLogDomain_16325();
@@ -1730,7 +1730,7 @@ LABEL_327:
           [v18 setResources:v70];
 
           v22 = v69;
-          v47 = v245;
+          resources = v245;
           goto LABEL_335;
         }
 
@@ -1779,10 +1779,10 @@ LABEL_126:
 LABEL_127:
 
 LABEL_128:
-      v71 = [(CPLEngineStore *)v3->_store quarantinedRecords];
-      v72 = [v71 isRecordWithScopedIdentifierQuarantined:v22];
+      quarantinedRecords = [(CPLEngineStore *)selfCopy->_store quarantinedRecords];
+      v72 = [quarantinedRecords isRecordWithScopedIdentifierQuarantined:v22];
       v73 = v72;
-      v242 = v71;
+      v242 = quarantinedRecords;
       if (v72)
       {
         if (([v18 isFullRecord]& 1) == 0 && ![v18 isDelete])
@@ -1798,7 +1798,7 @@ LABEL_128:
             }
           }
 
-          [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:1 forRecordWithScopedIdentifier:v22];
+          [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:1 forRecordWithScopedIdentifier:v22];
           goto LABEL_166;
         }
 
@@ -1815,8 +1815,8 @@ LABEL_128:
 
         if ([v18 isAssetChange])
         {
-          v75 = [v18 masterScopedIdentifier];
-          if (v75 && (-[NSMutableSet containsObject:](v3->_unquarantinedRecordScopedIdentifiers, "containsObject:", v75) & 1) == 0 && [v71 isRecordWithScopedIdentifierQuarantined:v75])
+          masterScopedIdentifier = [v18 masterScopedIdentifier];
+          if (masterScopedIdentifier && (-[NSMutableSet containsObject:](selfCopy->_unquarantinedRecordScopedIdentifiers, "containsObject:", masterScopedIdentifier) & 1) == 0 && [quarantinedRecords isRecordWithScopedIdentifierQuarantined:masterScopedIdentifier])
           {
             if ((_CPLSilentLogging & 1) == 0)
             {
@@ -1832,16 +1832,16 @@ LABEL_128:
               v22 = v76;
             }
 
-            [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:4 forRecordWithScopedIdentifier:v22];
+            [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:4 forRecordWithScopedIdentifier:v22];
 
             goto LABEL_166;
           }
         }
 
-        [(NSMutableSet *)v3->_unquarantinedRecordScopedIdentifiers addObject:v22];
+        [(NSMutableSet *)selfCopy->_unquarantinedRecordScopedIdentifiers addObject:v22];
       }
 
-      if (![v18 validateRecordForTracker:v3])
+      if (![v18 validateRecordForTracker:selfCopy])
       {
 LABEL_166:
         v41 = 3;
@@ -1854,12 +1854,12 @@ LABEL_166:
       v302[3] = &unk_1E861E270;
       v78 = v18;
       v303 = v78;
-      v304 = v3;
+      v304 = selfCopy;
       v79 = v22;
       v305 = v79;
       v226 = MEMORY[0x1E128EBA0](v302);
       v259 = v79;
-      v228 = [(CPLPushSessionTracker *)v3 storedClientRecordWithLocalScopedIdentifier:v79];
+      v228 = [(CPLPushSessionTracker *)selfCopy storedClientRecordWithLocalScopedIdentifier:v79];
       if (v228)
       {
         v80 = objc_opt_class();
@@ -1878,17 +1878,17 @@ LABEL_166:
             }
           }
 
-          v82 = v3->_pushChangeTasks;
+          v82 = selfCopy->_pushChangeTasks;
           v83 = 0;
           goto LABEL_154;
         }
 
         if ([v78 supportsResources])
         {
-          v261 = [v228 fingerprintSchemeWithContext:v229];
+          v261 = [v228 fingerprintSchemeWithContext:fingerprintContext];
           if ([v78 isAssetChange]&& [v78 hasChangeType:2])
           {
-            v86 = [v78 fingerprintSchemeWithContext:v229];
+            v86 = [v78 fingerprintSchemeWithContext:fingerprintContext];
             if ([v86 isCompatibleWithFingerprintScheme:v261])
             {
 
@@ -1902,21 +1902,21 @@ LABEL_166:
               v179 = __CPLSessionOSLogDomain_16325();
               if (os_log_type_enabled(v179, OS_LOG_TYPE_ERROR))
               {
-                v180 = [v261 fingerprintSchemeDescription];
-                v181 = [v246 fingerprintSchemeDescription];
+                fingerprintSchemeDescription = [v261 fingerprintSchemeDescription];
+                fingerprintSchemeDescription2 = [v246 fingerprintSchemeDescription];
                 *buf = 138412802;
                 p_super = v78;
                 v329 = 2112;
-                v330 = v180;
+                v330 = fingerprintSchemeDescription;
                 v331 = 2112;
-                v332 = v181;
+                v332 = fingerprintSchemeDescription2;
                 _os_log_impl(&dword_1DC05A000, v179, OS_LOG_TYPE_ERROR, "Client pushed %@ changing from %@ to %@", buf, 0x20u);
 
                 v17 = v268;
               }
             }
 
-            [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:0 forRecordWithScopedIdentifier:v259];
+            [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:0 forRecordWithScopedIdentifier:v259];
             v22 = v178;
 LABEL_307:
 
@@ -1933,16 +1933,16 @@ LABEL_172:
             v293 = 0u;
             v290 = 0u;
             v291 = 0u;
-            v87 = [v78 resources];
-            v88 = [v87 countByEnumeratingWithState:&v290 objects:v323 count:16];
+            resources2 = [v78 resources];
+            v88 = [resources2 countByEnumeratingWithState:&v290 objects:v323 count:16];
             if (v88)
             {
               v89 = v88;
-              v246 = v87;
+              v246 = resources2;
               v252 = v78;
               v225 = v22;
-              v90 = v3;
-              v238 = 0;
+              v90 = selfCopy;
+              canGenerateDerivative = 0;
               v91 = 0;
               v92 = *v291;
               while (2)
@@ -1955,28 +1955,28 @@ LABEL_172:
                   }
 
                   v94 = *(*(&v290 + 1) + 8 * k);
-                  v95 = [v94 identity];
-                  v96 = [v95 fileURL];
+                  identity2 = [v94 identity];
+                  fileURL = [identity2 fileURL];
 
-                  if (!v96)
+                  if (!fileURL)
                   {
-                    v238 = [v94 canGenerateDerivative];
+                    canGenerateDerivative = [v94 canGenerateDerivative];
                     v91 = 1;
                   }
 
-                  v97 = [v95 fingerPrint];
-                  v98 = [(CPLPushSessionTracker *)v90 _checkFingerPrint:v97 ofResource:v94 inChange:v252 localScopedIdentifier:v259 fingerprintContext:v229 fingerprintScheme:v261];
+                  fingerPrint3 = [identity2 fingerPrint];
+                  v98 = [(CPLPushSessionTracker *)v90 _checkFingerPrint:fingerPrint3 ofResource:v94 inChange:v252 localScopedIdentifier:v259 fingerprintContext:fingerprintContext fingerprintScheme:v261];
 
                   if (!v98)
                   {
-                    v3 = v90;
-                    v4 = v227;
+                    selfCopy = v90;
+                    errorCopy = v227;
                     v17 = v268;
                     v22 = v225;
                     goto LABEL_307;
                   }
 
-                  v4 = v227;
+                  errorCopy = v227;
                 }
 
                 v89 = [v246 countByEnumeratingWithState:&v290 objects:v323 count:16];
@@ -1992,14 +1992,14 @@ LABEL_172:
               v99 = (v226)[2](v226, v252, v228);
               if (v99 & v91)
               {
-                v3 = v90;
+                selfCopy = v90;
                 v100 = [(CPLPushSessionTracker *)v90 _realChangeFromChange:v252 comparedToStoredRecord:v228 changeType:8];
                 v101 = v100;
                 v17 = v268;
                 v22 = v225;
                 if (v100 && [v100 hasChangeType:8])
                 {
-                  if ((v238 & 1) == 0 && [v252 allowsToOnlyUploadNewResources])
+                  if ((canGenerateDerivative & 1) == 0 && [v252 allowsToOnlyUploadNewResources])
                   {
                     v289 = 0;
                     v102 = [v252 changeIsOnlyAddingResourcesToRecord:v228 addedResources:&v289];
@@ -2020,14 +2020,14 @@ LABEL_172:
                         }
                       }
 
-                      v3 = v90;
-                      v4 = v227;
+                      selfCopy = v90;
+                      errorCopy = v227;
                       v17 = v268;
                       goto LABEL_366;
                     }
 
-                    v3 = v90;
-                    v4 = v227;
+                    selfCopy = v90;
+                    errorCopy = v227;
                     v17 = v268;
 LABEL_371:
                     if ((_CPLSilentLogging & 1) == 0)
@@ -2042,14 +2042,14 @@ LABEL_371:
                     }
 
                     v41 = 3;
-                    [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:3 forRecordWithScopedIdentifier:v259];
+                    [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:3 forRecordWithScopedIdentifier:v259];
 
                     goto LABEL_359;
                   }
 
-                  v200 = [v101 resourceCopyFromScopedIdentifier];
+                  resourceCopyFromScopedIdentifier2 = [v101 resourceCopyFromScopedIdentifier];
 
-                  if (!v200)
+                  if (!resourceCopyFromScopedIdentifier2)
                   {
                     goto LABEL_371;
                   }
@@ -2075,7 +2075,7 @@ LABEL_366:
 
               else
               {
-                v3 = v90;
+                selfCopy = v90;
                 v17 = v268;
                 v22 = v225;
                 if ((v99 & 1) == 0)
@@ -2107,8 +2107,8 @@ LABEL_366:
             v288 = 0u;
             v285 = 0u;
             v286 = 0u;
-            v131 = [(CPLEngineStore *)v3->_store transactionClientCacheView];
-            v132 = [v131 recordViewsWithRelatedScopedIdentifier:v259 class:objc_opt_class()];
+            transactionClientCacheView = [(CPLEngineStore *)selfCopy->_store transactionClientCacheView];
+            v132 = [transactionClientCacheView recordViewsWithRelatedScopedIdentifier:v259 class:objc_opt_class()];
 
             v133 = [v132 countByEnumeratingWithState:&v285 objects:v322 count:16];
             if (v133)
@@ -2125,12 +2125,12 @@ LABEL_366:
                   }
 
                   v137 = *(*(&v285 + 1) + 8 * m);
-                  v138 = [v137 scopedIdentifier];
-                  v139 = [v137 synthesizedRecord];
-                  [(NSMutableDictionary *)v3->_storedClientRecords setObject:v139 forKeyedSubscript:v138];
+                  scopedIdentifier3 = [v137 scopedIdentifier];
+                  synthesizedRecord = [v137 synthesizedRecord];
+                  [(NSMutableDictionary *)selfCopy->_storedClientRecords setObject:synthesizedRecord forKeyedSubscript:scopedIdentifier3];
 
-                  v140 = v3->_expandedBatch;
-                  v141 = [(CPLRecordChange *)CPLContainerRelationChange newDeleteChangeWithScopedIdentifier:v138];
+                  v140 = selfCopy->_expandedBatch;
+                  v141 = [(CPLRecordChange *)CPLContainerRelationChange newDeleteChangeWithScopedIdentifier:scopedIdentifier3];
                   [(CPLChangeBatch *)v140 addRecord:v141];
                 }
 
@@ -2140,7 +2140,7 @@ LABEL_366:
               while (v134);
             }
 
-            [(CPLChangeBatch *)v3->_expandedBatch addRecord:v254];
+            [(CPLChangeBatch *)selfCopy->_expandedBatch addRecord:v254];
             v41 = 0;
             goto LABEL_357;
           }
@@ -2148,7 +2148,7 @@ LABEL_366:
           if ([v78 hasChangeType:16])
           {
             v225 = v22;
-            v248 = [v78 containerRelations];
+            containerRelations = [v78 containerRelations];
             if ([v78 changeType]!= 16)
             {
               if (([v78 isFullRecord]& 1) == 0)
@@ -2157,13 +2157,13 @@ LABEL_366:
               }
 
               [v78 setContainerRelations:0];
-              [(CPLChangeBatch *)v3->_expandedBatch addRecord:v78];
+              [(CPLChangeBatch *)selfCopy->_expandedBatch addRecord:v78];
             }
 
             v142 = v78;
-            v263 = v3;
-            v143 = [(CPLEngineStore *)v3->_store transactionClientCacheView];
-            v144 = [v143 recordViewsWithRelatedScopedIdentifier:v259 class:objc_opt_class()];
+            v263 = selfCopy;
+            transactionClientCacheView2 = [(CPLEngineStore *)selfCopy->_store transactionClientCacheView];
+            v144 = [transactionClientCacheView2 recordViewsWithRelatedScopedIdentifier:v259 class:objc_opt_class()];
 
             v145 = objc_alloc_init(MEMORY[0x1E695DF90]);
             v281 = 0u;
@@ -2186,17 +2186,17 @@ LABEL_366:
                   }
 
                   v150 = *(*(&v281 + 1) + 8 * n);
-                  v151 = [v150 synthesizedRecord];
-                  v152 = [v151 relation];
-                  v153 = [v152 containerIdentifier];
+                  synthesizedRecord2 = [v150 synthesizedRecord];
+                  relation = [synthesizedRecord2 relation];
+                  containerIdentifier = [relation containerIdentifier];
 
-                  if (v153)
+                  if (containerIdentifier)
                   {
-                    [v145 setObject:v151 forKeyedSubscript:v153];
+                    [v145 setObject:synthesizedRecord2 forKeyedSubscript:containerIdentifier];
                     storedClientRecords = v263->_storedClientRecords;
                     [v150 scopedIdentifier];
                     v156 = v155 = v145;
-                    [(NSMutableDictionary *)storedClientRecords setObject:v151 forKeyedSubscript:v156];
+                    [(NSMutableDictionary *)storedClientRecords setObject:synthesizedRecord2 forKeyedSubscript:v156];
 
                     v145 = v155;
                   }
@@ -2210,12 +2210,12 @@ LABEL_366:
 
             v157 = objc_alloc_init(MEMORY[0x1E695DFA8]);
             v237 = objc_alloc_init(MEMORY[0x1E695DF70]);
-            v240 = [v142 recordModificationDate];
+            recordModificationDate2 = [v142 recordModificationDate];
             v277 = 0u;
             v278 = 0u;
             v279 = 0u;
             v280 = 0u;
-            v249 = v248;
+            v249 = containerRelations;
             v158 = [v249 countByEnumeratingWithState:&v277 objects:v320 count:16];
             if (v158)
             {
@@ -2233,24 +2233,24 @@ LABEL_366:
                   }
 
                   v162 = *(*(&v277 + 1) + 8 * ii);
-                  v163 = [v162 containerIdentifier];
-                  if (v163 && ([v157 containsObject:v163] & 1) == 0)
+                  containerIdentifier2 = [v162 containerIdentifier];
+                  if (containerIdentifier2 && ([v157 containsObject:containerIdentifier2] & 1) == 0)
                   {
-                    [v157 addObject:v163];
-                    v164 = [v145 objectForKeyedSubscript:v163];
+                    [v157 addObject:containerIdentifier2];
+                    v164 = [v145 objectForKeyedSubscript:containerIdentifier2];
                     v165 = v164;
                     v166 = v145;
                     if (v164)
                     {
-                      v167 = [v164 scopedIdentifier];
-                      v168 = [(CPLRecordChange *)CPLContainerRelationChange newRecordWithScopedIdentifier:v167];
+                      scopedIdentifier4 = [v164 scopedIdentifier];
+                      v168 = [(CPLRecordChange *)CPLContainerRelationChange newRecordWithScopedIdentifier:scopedIdentifier4];
 
-                      v169 = [v259 identifier];
-                      [v168 setItemIdentifier:v169];
+                      identifier = [v259 identifier];
+                      [v168 setItemIdentifier:identifier];
 
                       [v168 setRelation:v162];
-                      [v168 setRecordModificationDate:v240];
-                      [v166 removeObjectForKey:v163];
+                      [v168 setRecordModificationDate:recordModificationDate2];
+                      [v166 removeObjectForKey:containerIdentifier2];
                       [v237 addObject:v168];
                     }
 
@@ -2258,11 +2258,11 @@ LABEL_366:
                     {
                       v168 = [v162 proposedScopedIdentifierForItemScopedIdentifier:v259];
                       v170 = [(CPLRecordChange *)CPLContainerRelationChange newRecordWithScopedIdentifier:v168];
-                      v171 = [v259 identifier];
-                      [v170 setItemIdentifier:v171];
+                      identifier2 = [v259 identifier];
+                      [v170 setItemIdentifier:identifier2];
 
                       [v170 setRelation:v162];
-                      [v170 setRecordModificationDate:v240];
+                      [v170 setRecordModificationDate:recordModificationDate2];
                       [v237 addObject:v170];
                     }
 
@@ -2283,7 +2283,7 @@ LABEL_366:
             v275[1] = 3221225472;
             v276[0] = __55__CPLPushSessionTracker_computeExpandedBatchWithError___block_invoke_33;
             v276[1] = &unk_1E861E298;
-            v3 = v263;
+            selfCopy = v263;
             v276[2] = v263;
             [v145 enumerateKeysAndObjectsUsingBlock:v275];
             v273 = 0u;
@@ -2292,7 +2292,7 @@ LABEL_366:
             v272 = 0u;
             v172 = v237;
             v173 = [v172 countByEnumeratingWithState:&v271 objects:v319 count:16];
-            v4 = v227;
+            errorCopy = v227;
             if (v173)
             {
               v174 = v173;
@@ -2321,7 +2321,7 @@ LABEL_366:
         }
 
 LABEL_360:
-        [(CPLChangeBatch *)v3->_expandedBatch addRecord:v78];
+        [(CPLChangeBatch *)selfCopy->_expandedBatch addRecord:v78];
         v41 = 0;
         goto LABEL_310;
       }
@@ -2339,7 +2339,7 @@ LABEL_360:
           }
         }
 
-        ++v3->_ignoredRecordCount;
+        ++selfCopy->_ignoredRecordCount;
         goto LABEL_309;
       }
 
@@ -2356,7 +2356,7 @@ LABEL_360:
           }
         }
 
-        v82 = v3->_pushChangeTasks;
+        v82 = selfCopy->_pushChangeTasks;
         v83 = 2;
 LABEL_154:
         [(CPLPushChangeTasks *)v82 addTask:v83 forRecordWithScopedIdentifier:v259];
@@ -2366,12 +2366,12 @@ LABEL_154:
       v225 = v22;
       if ([v78 isAssetChange])
       {
-        v106 = [(CPLPushSessionTracker *)v3 storedCloudRecordWithLocalScopedIdentifier:v79];
+        v106 = [(CPLPushSessionTracker *)selfCopy storedCloudRecordWithLocalScopedIdentifier:v79];
         v107 = v106;
         if (v106)
         {
-          v108 = [v106 fingerprintSchemeWithContext:v229];
-          v109 = [v78 fingerprintSchemeWithContext:v229];
+          v108 = [v106 fingerprintSchemeWithContext:fingerprintContext];
+          v109 = [v78 fingerprintSchemeWithContext:fingerprintContext];
           if (![v109 isCompatibleWithFingerprintScheme:v108])
           {
             if ((_CPLSilentLogging & 1) == 0)
@@ -2379,23 +2379,23 @@ LABEL_154:
               v182 = __CPLSessionOSLogDomain_16325();
               if (os_log_type_enabled(v182, OS_LOG_TYPE_ERROR))
               {
-                v183 = [v108 fingerprintSchemeDescription];
+                fingerprintSchemeDescription3 = [v108 fingerprintSchemeDescription];
                 [v109 fingerprintSchemeDescription];
-                v185 = v184 = v3;
+                v185 = v184 = selfCopy;
                 *buf = 138412802;
                 p_super = v78;
                 v329 = 2112;
-                v330 = v183;
+                v330 = fingerprintSchemeDescription3;
                 v331 = 2112;
                 v332 = v185;
                 _os_log_impl(&dword_1DC05A000, v182, OS_LOG_TYPE_ERROR, "Client pushed %@ changing from %@ to %@", buf, 0x20u);
 
-                v3 = v184;
-                v4 = v227;
+                selfCopy = v184;
+                errorCopy = v227;
               }
             }
 
-            [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:0 forRecordWithScopedIdentifier:v259];
+            [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:0 forRecordWithScopedIdentifier:v259];
 
             v41 = 3;
             goto LABEL_358;
@@ -2411,14 +2411,14 @@ LABEL_154:
         goto LABEL_346;
       }
 
-      v247 = [v78 fingerprintSchemeWithContext:v229];
+      v247 = [v78 fingerprintSchemeWithContext:fingerprintContext];
       v253 = v78;
       v298 = 0u;
       v299 = 0u;
       v300 = 0u;
       v301 = 0u;
-      v234 = [v78 resources];
-      v236 = [v234 countByEnumeratingWithState:&v298 objects:v325 count:16];
+      resources3 = [v78 resources];
+      v236 = [resources3 countByEnumeratingWithState:&v298 objects:v325 count:16];
       if (!v236)
       {
         v125 = 1;
@@ -2433,22 +2433,22 @@ LABEL_154:
         {
           if (*v299 != v239)
           {
-            objc_enumerationMutation(v234);
+            objc_enumerationMutation(resources3);
           }
 
           v111 = *(*(&v298 + 1) + 8 * v110);
-          v112 = [v111 identity];
-          v113 = [v112 fingerPrint];
-          v114 = [(CPLPushSessionTracker *)v3 _checkFingerPrint:v113 ofResource:v111 inChange:v253 localScopedIdentifier:v259 fingerprintContext:v229 fingerprintScheme:v247];
+          identity3 = [v111 identity];
+          fingerPrint4 = [identity3 fingerPrint];
+          v114 = [(CPLPushSessionTracker *)selfCopy _checkFingerPrint:fingerPrint4 ofResource:v111 inChange:v253 localScopedIdentifier:v259 fingerprintContext:fingerprintContext fingerprintScheme:v247];
 
           if (!v114)
           {
             goto LABEL_343;
           }
 
-          v115 = [v112 fileUTI];
+          fileUTI = [identity3 fileUTI];
 
-          if (!v115 && (_CPLSilentLogging & 1) == 0)
+          if (!fileUTI && (_CPLSilentLogging & 1) == 0)
           {
             v116 = __CPLSessionOSLogDomain_16325();
             if (os_log_type_enabled(v116, OS_LOG_TYPE_ERROR))
@@ -2461,18 +2461,18 @@ LABEL_154:
             }
           }
 
-          v117 = [(CPLPushSessionTracker *)v3 storedCloudRecordWithLocalScopedIdentifier:v259];
-          v118 = [v112 fileURL];
-          if (v118)
+          v117 = [(CPLPushSessionTracker *)selfCopy storedCloudRecordWithLocalScopedIdentifier:v259];
+          fileURL2 = [identity3 fileURL];
+          if (fileURL2)
           {
 LABEL_213:
 
-            v4 = v227;
+            errorCopy = v227;
           }
 
           else
           {
-            v4 = v227;
+            errorCopy = v227;
             if ([v111 canGenerateDerivative])
             {
               if (computeExpandedBatchWithError__onceToken_24 == -1)
@@ -2508,22 +2508,22 @@ LABEL_213:
                 goto LABEL_338;
               }
 
-              v118 = v119;
-              v120 = [v119 identity];
-              if (![v120 isAvailable])
+              fileURL2 = v119;
+              identity4 = [v119 identity];
+              if (![identity4 isAvailable])
               {
                 goto LABEL_337;
               }
 
-              v262 = v3;
-              v121 = [v120 fingerPrint];
-              v122 = [v112 fingerPrint];
-              v123 = v122;
-              if (v121 && v122)
+              v262 = selfCopy;
+              fingerPrint5 = [identity4 fingerPrint];
+              fingerPrint6 = [identity3 fingerPrint];
+              v123 = fingerPrint6;
+              if (fingerPrint5 && fingerPrint6)
               {
-                v231 = [v121 isEqual:v122];
+                v231 = [fingerPrint5 isEqual:fingerPrint6];
 
-                v3 = v262;
+                selfCopy = v262;
                 if ((v231 & 1) == 0)
                 {
                   goto LABEL_337;
@@ -2532,9 +2532,9 @@ LABEL_213:
 
               else
               {
-                v232 = v121 | v122;
+                v232 = fingerPrint5 | fingerPrint6;
 
-                v3 = v262;
+                selfCopy = v262;
                 if (v232)
                 {
 LABEL_337:
@@ -2551,11 +2551,11 @@ LABEL_338:
                     }
                   }
 
-                  [(CPLPushChangeTasks *)v3->_pushChangeTasks addTask:3 forRecordWithScopedIdentifier:v259];
+                  [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks addTask:3 forRecordWithScopedIdentifier:v259];
 
 LABEL_343:
                   v125 = 0;
-                  v4 = v227;
+                  errorCopy = v227;
                   v17 = v268;
                   goto LABEL_344;
                 }
@@ -2573,7 +2573,7 @@ LABEL_343:
           break;
         }
 
-        v124 = [v234 countByEnumeratingWithState:&v298 objects:v325 count:16];
+        v124 = [resources3 countByEnumeratingWithState:&v298 objects:v325 count:16];
         v125 = 1;
         v17 = v268;
         v236 = v124;
@@ -2608,17 +2608,17 @@ LABEL_346:
         goto LABEL_360;
       }
 
-      v189 = [v78 containerRelations];
+      containerRelations2 = [v78 containerRelations];
       [v78 setContainerRelations:0];
-      v264 = v3;
-      [(CPLChangeBatch *)v3->_expandedBatch addRecord:v78];
+      v264 = selfCopy;
+      [(CPLChangeBatch *)selfCopy->_expandedBatch addRecord:v78];
       v190 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v250 = [v78 recordModificationDate];
+      recordModificationDate3 = [v78 recordModificationDate];
       v294 = 0u;
       v295 = 0u;
       v296 = 0u;
       v297 = 0u;
-      v256 = v189;
+      v256 = containerRelations2;
       v191 = [v256 countByEnumeratingWithState:&v294 objects:v324 count:16];
       if (v191)
       {
@@ -2634,17 +2634,17 @@ LABEL_346:
             }
 
             v195 = *(*(&v294 + 1) + 8 * kk);
-            v196 = [v195 containerIdentifier];
-            if (([v190 containsObject:v196] & 1) == 0)
+            containerIdentifier3 = [v195 containerIdentifier];
+            if (([v190 containsObject:containerIdentifier3] & 1) == 0)
             {
-              [v190 addObject:v196];
+              [v190 addObject:containerIdentifier3];
               v197 = [v195 proposedScopedIdentifierForItemScopedIdentifier:v259];
               v198 = [(CPLRecordChange *)CPLContainerRelationChange newRecordWithScopedIdentifier:v197];
-              v199 = [v259 identifier];
-              [v198 setItemIdentifier:v199];
+              identifier3 = [v259 identifier];
+              [v198 setItemIdentifier:identifier3];
 
               [v198 setRelation:v195];
-              [v198 setRecordModificationDate:v250];
+              [v198 setRecordModificationDate:recordModificationDate3];
               [(CPLChangeBatch *)v264->_expandedBatch addRecord:v198];
             }
           }
@@ -2656,9 +2656,9 @@ LABEL_346:
       }
 
       v41 = 0;
-      v3 = v264;
+      selfCopy = v264;
 LABEL_357:
-      v4 = v227;
+      errorCopy = v227;
 LABEL_358:
       v17 = v268;
 LABEL_359:
@@ -2688,19 +2688,19 @@ LABEL_76:
 LABEL_383:
 
   v204 = [v243 copy];
-  deletedScopeIdentifiers = v3->_deletedScopeIdentifiers;
-  v3->_deletedScopeIdentifiers = v204;
+  deletedScopeIdentifiers = selfCopy->_deletedScopeIdentifiers;
+  selfCopy->_deletedScopeIdentifiers = v204;
 
-  v206 = [(CPLPushChangeTasks *)v3->_pushChangeTasks hasTasks];
-  v3->_expandHasBeenSuccessful = !v206;
-  if (v206)
+  hasTasks = [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks hasTasks];
+  selfCopy->_expandHasBeenSuccessful = !hasTasks;
+  if (hasTasks)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v207 = __CPLSessionOSLogDomain_16325();
       if (os_log_type_enabled(v207, OS_LOG_TYPE_DEFAULT))
       {
-        v208 = v3->_pushChangeTasks;
+        v208 = selfCopy->_pushChangeTasks;
         *buf = 138412290;
         p_super = &v208->super;
         _os_log_impl(&dword_1DC05A000, v207, OS_LOG_TYPE_DEFAULT, "Batch was rejected because of %@", buf, 0xCu);
@@ -2708,16 +2708,16 @@ LABEL_383:
     }
 
     revertedChanges = [CPLErrors cplErrorWithCode:18 description:@"Client needs to fix records in batch"];
-    v210 = [(CPLPushChangeTasks *)v3->_pushChangeTasks invalidRecordScopedIdentifiers];
-    if ([v210 count])
+    invalidRecordScopedIdentifiers = [(CPLPushChangeTasks *)selfCopy->_pushChangeTasks invalidRecordScopedIdentifiers];
+    if ([invalidRecordScopedIdentifiers count])
     {
-      [(CPLEngineStore *)v3->_store noteInvalidRecordScopedIdentifiersInPushSession:v210];
+      [(CPLEngineStore *)selfCopy->_store noteInvalidRecordScopedIdentifiersInPushSession:invalidRecordScopedIdentifiers];
     }
 
-    if (v4)
+    if (errorCopy)
     {
       v211 = revertedChanges;
-      *v4 = revertedChanges;
+      *errorCopy = revertedChanges;
     }
 
 LABEL_395:
@@ -2725,13 +2725,13 @@ LABEL_395:
 
   else if ([v270 count])
   {
-    v212 = [v270 array];
-    revertedChanges = v3->_revertedChanges;
-    v3->_revertedChanges = v212;
+    array = [v270 array];
+    revertedChanges = selfCopy->_revertedChanges;
+    selfCopy->_revertedChanges = array;
     goto LABEL_395;
   }
 
-  expandHasBeenSuccessful = v3->_expandHasBeenSuccessful;
+  expandHasBeenSuccessful = selfCopy->_expandHasBeenSuccessful;
 LABEL_397:
 
   v213 = *MEMORY[0x1E69E9840];
@@ -2823,30 +2823,30 @@ LABEL_20:
   return v16;
 }
 
-- (uint64_t)_checkFingerPrint:(void *)a3 ofResource:(void *)a4 inChange:(void *)a5 localScopedIdentifier:(void *)a6 fingerprintContext:(void *)a7 fingerprintScheme:
+- (uint64_t)_checkFingerPrint:(void *)print ofResource:(void *)resource inChange:(void *)change localScopedIdentifier:(void *)identifier fingerprintContext:(void *)context fingerprintScheme:
 {
   v28 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (a1)
+  printCopy = print;
+  resourceCopy = resource;
+  changeCopy = change;
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (self)
   {
     if (v13)
     {
-      v19 = [v17 fingerprintSchemeForFingerprint:v13];
-      v20 = [v19 isCompatibleWithFingerprintScheme:v18];
+      v19 = [identifierCopy fingerprintSchemeForFingerprint:v13];
+      v20 = [v19 isCompatibleWithFingerprintScheme:contextCopy];
 
       if (v20)
       {
-        v21 = [v18 zeroByteFileFingerprint];
-        v22 = [v13 isEqualToString:v21];
+        zeroByteFileFingerprint = [contextCopy zeroByteFileFingerprint];
+        v22 = [v13 isEqualToString:zeroByteFileFingerprint];
 
         if (!v22)
         {
-          a1 = 1;
+          self = 1;
           goto LABEL_17;
         }
 
@@ -2862,9 +2862,9 @@ LABEL_20:
         }
 
         *v27 = 138412546;
-        *&v27[4] = v14;
+        *&v27[4] = printCopy;
         *&v27[12] = 2112;
-        *&v27[14] = v15;
+        *&v27[14] = resourceCopy;
         v24 = "Client pushed a record with 0 fileSize %@: %@";
         goto LABEL_14;
       }
@@ -2875,9 +2875,9 @@ LABEL_20:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           *v27 = 138412546;
-          *&v27[4] = v14;
+          *&v27[4] = printCopy;
           *&v27[12] = 2112;
-          *&v27[14] = v15;
+          *&v27[14] = resourceCopy;
           v24 = "Client pushed a record with mismatched fingerprint scheme resources %@: %@";
           goto LABEL_14;
         }
@@ -2892,9 +2892,9 @@ LABEL_20:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *v27 = 138412546;
-        *&v27[4] = v14;
+        *&v27[4] = printCopy;
         *&v27[12] = 2112;
-        *&v27[14] = v15;
+        *&v27[14] = resourceCopy;
         v24 = "Client pushed a record with a resource missing finger print %@: %@";
 LABEL_14:
         _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_ERROR, v24, v27, 0x16u);
@@ -2904,14 +2904,14 @@ LABEL_15:
     }
 
 LABEL_16:
-    [*(a1 + 176) addTask:0 forRecordWithScopedIdentifier:{v16, *v27, *&v27[16], v28}];
-    a1 = 0;
+    [*(self + 176) addTask:0 forRecordWithScopedIdentifier:{changeCopy, *v27, *&v27[16], v28}];
+    self = 0;
   }
 
 LABEL_17:
 
   v25 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 void __55__CPLPushSessionTracker_computeExpandedBatchWithError___block_invoke_33(uint64_t a1, uint64_t a2, void *a3)
@@ -2934,22 +2934,22 @@ void __55__CPLPushSessionTracker_computeExpandedBatchWithError___block_invoke()
   computeExpandedBatchWithError__simulateResourceCopyFailure = [v0 BOOLForKey:@"CPLSimulateResourceCopyFailure"];
 }
 
-- (id)_realChangeFromChange:(id)a3 comparedToStoredRecord:(id)a4 changeType:(unint64_t)a5
+- (id)_realChangeFromChange:(id)change comparedToStoredRecord:(id)record changeType:(unint64_t)type
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  changeCopy = change;
+  recordCopy = record;
+  v9 = changeCopy;
   v10 = v9;
   if ([v9 supportsResources])
   {
-    if (!a5 || (v10 = v9, (a5 & 8) != 0))
+    if (!type || (v10 = v9, (type & 8) != 0))
     {
-      v11 = [v9 resources];
-      v12 = [v11 cplDeepCopy];
+      resources = [v9 resources];
+      cplDeepCopy = [resources cplDeepCopy];
 
       v10 = v9;
-      if (v12)
+      if (cplDeepCopy)
       {
         v10 = [v9 copy];
 
@@ -2957,8 +2957,8 @@ void __55__CPLPushSessionTracker_computeExpandedBatchWithError___block_invoke()
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v13 = [v10 resources];
-        v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        resources2 = [v10 resources];
+        v14 = [resources2 countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v14)
         {
           v15 = v14;
@@ -2969,15 +2969,15 @@ void __55__CPLPushSessionTracker_computeExpandedBatchWithError___block_invoke()
             {
               if (*v24 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(resources2);
               }
 
-              v18 = [*(*(&v23 + 1) + 8 * i) identity];
-              [v18 setAvailable:1];
-              [v18 setFileURL:0];
+              identity = [*(*(&v23 + 1) + 8 * i) identity];
+              [identity setAvailable:1];
+              [identity setFileURL:0];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+            v15 = [resources2 countByEnumeratingWithState:&v23 objects:v27 count:16];
           }
 
           while (v15);
@@ -2987,37 +2987,37 @@ void __55__CPLPushSessionTracker_computeExpandedBatchWithError___block_invoke()
   }
 
   v22 = 0;
-  v19 = [v8 realRecordChangeFromRecordChange:v10 direction:1 newRecord:&v22 changeType:a5 diffTracker:0];
+  v19 = [recordCopy realRecordChangeFromRecordChange:v10 direction:1 newRecord:&v22 changeType:type diffTracker:0];
 
   v20 = *MEMORY[0x1E69E9840];
 
   return v19;
 }
 
-- (BOOL)hasCloudRecordWithLocalScopedIdentifier:(id)a3
+- (BOOL)hasCloudRecordWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storedCloudRecords objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_storedCloudRecords objectForKeyedSubscript:identifierCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
-    v7 = v5 != v6;
+    null = [MEMORY[0x1E695DFB0] null];
+    v7 = v5 != null;
   }
 
   else
   {
     v13 = 0;
-    v8 = [(CPLEngineIDMapping *)self->_optimisticIDMapping cloudScopedIdentifierForLocalScopedIdentifier:v4 isFinal:&v13];
+    v8 = [(CPLEngineIDMapping *)self->_optimisticIDMapping cloudScopedIdentifierForLocalScopedIdentifier:identifierCopy isFinal:&v13];
     if (v8 && (-[CPLEngineStore cloudCache](self->_store, "cloudCache"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hasRecordWithScopedIdentifier:v8], v9, v10))
     {
-      [(NSMutableDictionary *)self->_storedCloudRecords setObject:MEMORY[0x1E695E118] forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_storedCloudRecords setObject:MEMORY[0x1E695E118] forKeyedSubscript:identifierCopy];
       v7 = 1;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [(NSMutableDictionary *)self->_storedCloudRecords setObject:v11 forKeyedSubscript:v4];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [(NSMutableDictionary *)self->_storedCloudRecords setObject:null2 forKeyedSubscript:identifierCopy];
 
       v7 = 0;
     }
@@ -3026,29 +3026,29 @@ void __55__CPLPushSessionTracker_computeExpandedBatchWithError___block_invoke()
   return v7;
 }
 
-- (void)acknowledgeNewClientRecord:(id)a3 withScopedIdentifier:(id)a4
+- (void)acknowledgeNewClientRecord:(id)record withScopedIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v14 = 0;
-  v6 = [(CPLEngineIDMapping *)self->_optimisticIDMapping cloudScopedIdentifierForLocalScopedIdentifier:v5 isFinal:&v14];
+  v6 = [(CPLEngineIDMapping *)self->_optimisticIDMapping cloudScopedIdentifierForLocalScopedIdentifier:identifierCopy isFinal:&v14];
   if (v6)
   {
-    v7 = [(CPLEngineStore *)self->_store cloudCache];
+    cloudCache = [(CPLEngineStore *)self->_store cloudCache];
     v13 = 0;
-    v8 = [v7 ackownledgeRecordWithScopedIdentifier:v6 error:&v13];
+    v8 = [cloudCache ackownledgeRecordWithScopedIdentifier:v6 error:&v13];
     v9 = v13;
 
     if (v8)
     {
-      v10 = [(NSMutableDictionary *)self->_storedClientRecords objectForKeyedSubscript:v5];
+      v10 = [(NSMutableDictionary *)self->_storedClientRecords objectForKeyedSubscript:identifierCopy];
       if (v10)
       {
-        v11 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v10 == v11)
+        if (v10 == null)
         {
-          [(NSMutableDictionary *)self->_storedClientRecords setObject:MEMORY[0x1E695E118] forKeyedSubscript:v5];
+          [(NSMutableDictionary *)self->_storedClientRecords setObject:MEMORY[0x1E695E118] forKeyedSubscript:identifierCopy];
         }
       }
     }
@@ -3066,7 +3066,7 @@ LABEL_10:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v16 = v5;
+        v16 = identifierCopy;
         v17 = 2112;
         v18 = v6;
         v19 = 2112;
@@ -3083,10 +3083,10 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)storedCloudRecordWithLocalScopedIdentifier:(id)a3
+- (id)storedCloudRecordWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storedCloudRecords objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_storedCloudRecords objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -3101,32 +3101,32 @@ LABEL_11:
   if (v7)
   {
     v14 = 0;
-    v8 = [(CPLEngineIDMapping *)self->_optimisticIDMapping cloudScopedIdentifierForLocalScopedIdentifier:v4 isFinal:&v14];
+    v8 = [(CPLEngineIDMapping *)self->_optimisticIDMapping cloudScopedIdentifierForLocalScopedIdentifier:identifierCopy isFinal:&v14];
     if (v8)
     {
-      v9 = [(CPLEngineStore *)self->_store cloudCache];
-      v10 = [v9 recordWithScopedIdentifier:v8 isFinal:1];
+      cloudCache = [(CPLEngineStore *)self->_store cloudCache];
+      v10 = [cloudCache recordWithScopedIdentifier:v8 isFinal:1];
 
       v6 = v10;
     }
 
     if (v6)
     {
-      [(NSMutableDictionary *)self->_storedCloudRecords setObject:v6 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_storedCloudRecords setObject:v6 forKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [(NSMutableDictionary *)self->_storedCloudRecords setObject:v12 forKeyedSubscript:v4];
+      null = [MEMORY[0x1E695DFB0] null];
+      [(NSMutableDictionary *)self->_storedCloudRecords setObject:null forKeyedSubscript:identifierCopy];
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (v6 == v11)
+    if (v6 == null2)
     {
 
       v6 = 0;
@@ -3136,31 +3136,31 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasClientRecordWithLocalScopedIdentifier:(id)a3
+- (BOOL)hasClientRecordWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storedClientRecords objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_storedClientRecords objectForKeyedSubscript:identifierCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
-    v7 = v5 != v6;
+    null = [MEMORY[0x1E695DFB0] null];
+    v7 = v5 != null;
   }
 
   else
   {
-    v8 = [(CPLEngineStore *)self->_store transactionClientCacheView];
-    v9 = [v8 hasRecordWithScopedIdentifier:v4];
+    transactionClientCacheView = [(CPLEngineStore *)self->_store transactionClientCacheView];
+    v9 = [transactionClientCacheView hasRecordWithScopedIdentifier:identifierCopy];
 
     if (v9)
     {
-      [(NSMutableDictionary *)self->_storedClientRecords setObject:MEMORY[0x1E695E118] forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_storedClientRecords setObject:MEMORY[0x1E695E118] forKeyedSubscript:identifierCopy];
       v7 = 1;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [(NSMutableDictionary *)self->_storedClientRecords setObject:v10 forKeyedSubscript:v4];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [(NSMutableDictionary *)self->_storedClientRecords setObject:null2 forKeyedSubscript:identifierCopy];
 
       v7 = 0;
     }
@@ -3169,11 +3169,11 @@ LABEL_11:
   return v7;
 }
 
-- (id)storedClientRecordWithLocalScopedIdentifier:(id)a3
+- (id)storedClientRecordWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storedClientRecords objectForKeyedSubscript:v4];
-  v6 = v5;
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_storedClientRecords objectForKeyedSubscript:identifierCopy];
+  null = v5;
   if (v5)
   {
     v7 = v5 == MEMORY[0x1E695E118];
@@ -3186,51 +3186,51 @@ LABEL_11:
 
   if (v7)
   {
-    v8 = [(CPLEngineStore *)self->_store transactionClientCacheView];
-    v9 = [v8 recordViewWithScopedIdentifier:v4];
-    v10 = [v9 synthesizedRecord];
+    transactionClientCacheView = [(CPLEngineStore *)self->_store transactionClientCacheView];
+    v9 = [transactionClientCacheView recordViewWithScopedIdentifier:identifierCopy];
+    synthesizedRecord = [v9 synthesizedRecord];
 
-    if (v10)
+    if (synthesizedRecord)
     {
-      [(NSMutableDictionary *)self->_storedClientRecords setObject:v10 forKeyedSubscript:v4];
-      v6 = v10;
+      [(NSMutableDictionary *)self->_storedClientRecords setObject:synthesizedRecord forKeyedSubscript:identifierCopy];
+      null = synthesizedRecord;
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableDictionary *)self->_storedClientRecords setObject:v6 forKeyedSubscript:v4];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableDictionary *)self->_storedClientRecords setObject:null forKeyedSubscript:identifierCopy];
     goto LABEL_11;
   }
 
-  v11 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
-  if (v6 == v11)
+  if (null == null2)
   {
 LABEL_11:
 
-    v6 = 0;
+    null = 0;
   }
 
 LABEL_12:
 
-  return v6;
+  return null;
 }
 
-- (BOOL)checkScopeIdentifier:(id)a3
+- (BOOL)checkScopeIdentifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   validScopeIdentifiers = self->_validScopeIdentifiers;
-  if (!validScopeIdentifiers || ([(NSMutableSet *)validScopeIdentifiers containsObject:v4]& 1) == 0)
+  if (!validScopeIdentifiers || ([(NSMutableSet *)validScopeIdentifiers containsObject:identifierCopy]& 1) == 0)
   {
     invalidScopeIdentifiers = self->_invalidScopeIdentifiers;
-    if (invalidScopeIdentifiers && ([(NSMutableSet *)invalidScopeIdentifiers containsObject:v4]& 1) != 0)
+    if (invalidScopeIdentifiers && ([(NSMutableSet *)invalidScopeIdentifiers containsObject:identifierCopy]& 1) != 0)
     {
       v6 = 0;
       goto LABEL_32;
     }
 
-    v8 = [(CPLEngineScopeStorage *)self->_scopes scopeWithIdentifier:v4];
+    v8 = [(CPLEngineScopeStorage *)self->_scopes scopeWithIdentifier:identifierCopy];
     if (v8 && ((-[CPLEngineScopeStorage flagsForScope:](self->_scopes, "flagsForScope:", v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 valueForFlag:16], v11 = objc_msgSend(v9, "valueForFlag:", 36), v12 = v10 | v11, v9, (v12 & 1) == 0) || (v11 & 1) != 0))
     {
       if ((v12 & 1) == 0)
@@ -3241,8 +3241,8 @@ LABEL_12:
 
     else
     {
-      v13 = [(CPLEngineStore *)self->_store mainScopeIdentifier];
-      v14 = [v4 isEqualToString:v13];
+      mainScopeIdentifier = [(CPLEngineStore *)self->_store mainScopeIdentifier];
+      v14 = [identifierCopy isEqualToString:mainScopeIdentifier];
 
       if (v14)
       {
@@ -3251,9 +3251,9 @@ LABEL_12:
           v15 = __CPLSessionOSLogDomain_16325();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
-            v16 = [(CPLEngineStore *)self->_store mainScopeIdentifier];
+            mainScopeIdentifier2 = [(CPLEngineStore *)self->_store mainScopeIdentifier];
             *buf = 138412290;
-            v33 = v16;
+            v33 = mainScopeIdentifier2;
             _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_ERROR, "Client failed to properly re-enable %@ - will do it directly", buf, 0xCu);
           }
         }
@@ -3270,12 +3270,12 @@ LABEL_18:
           v21 = self->_validScopeIdentifiers;
           if (v21)
           {
-            [(NSMutableSet *)v21 addObject:v4];
+            [(NSMutableSet *)v21 addObject:identifierCopy];
           }
 
           else
           {
-            v27 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v4, 0}];
+            v27 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{identifierCopy, 0}];
             v28 = self->_validScopeIdentifiers;
             self->_validScopeIdentifiers = v27;
           }
@@ -3291,9 +3291,9 @@ LABEL_31:
           v22 = __CPLSessionOSLogDomain_16325();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [(CPLEngineStore *)self->_store mainScopeIdentifier];
+            mainScopeIdentifier3 = [(CPLEngineStore *)self->_store mainScopeIdentifier];
             *buf = 138412546;
-            v33 = v23;
+            v33 = mainScopeIdentifier3;
             v34 = 2112;
             v35 = v20;
             _os_log_impl(&dword_1DC05A000, v22, OS_LOG_TYPE_ERROR, "Failed to auto-enable %@: %@", buf, 0x16u);
@@ -3305,12 +3305,12 @@ LABEL_31:
     v24 = self->_invalidScopeIdentifiers;
     if (v24)
     {
-      [(NSMutableSet *)v24 addObject:v4];
+      [(NSMutableSet *)v24 addObject:identifierCopy];
     }
 
     else
     {
-      v25 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v4, 0}];
+      v25 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{identifierCopy, 0}];
       v26 = self->_invalidScopeIdentifiers;
       self->_invalidScopeIdentifiers = v25;
     }
@@ -3326,10 +3326,10 @@ LABEL_32:
   return v6;
 }
 
-- (id)resourceIdentitiesForRecordWithLocalScopedIdentifier:(id)a3
+- (id)resourceIdentitiesForRecordWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_incomingBatchRecordPerScopedIdentifiers objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_incomingBatchRecordPerScopedIdentifiers objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (!v5)
   {
@@ -3345,7 +3345,7 @@ LABEL_32:
   if (![v6 supportsResources] || !objc_msgSend(v6, "hasChangeType:", 8))
   {
 LABEL_7:
-    v8 = [(CPLPushSessionTracker *)self storedClientRecordWithLocalScopedIdentifier:v4];
+    v8 = [(CPLPushSessionTracker *)self storedClientRecordWithLocalScopedIdentifier:identifierCopy];
     v9 = v8;
     if (v8)
     {
@@ -3374,10 +3374,10 @@ LABEL_13:
   return v7;
 }
 
-- (id)enqueuedOrStoredRecordWithLocalScopedIdentifier:(id)a3
+- (id)enqueuedOrStoredRecordWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_incomingBatchRecordPerScopedIdentifiers objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_incomingBatchRecordPerScopedIdentifiers objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -3392,7 +3392,7 @@ LABEL_13:
 
   else
   {
-    v8 = [(CPLPushSessionTracker *)self storedClientRecordWithLocalScopedIdentifier:v4];
+    v8 = [(CPLPushSessionTracker *)self storedClientRecordWithLocalScopedIdentifier:identifierCopy];
   }
 
   v7 = v8;
@@ -3401,18 +3401,18 @@ LABEL_7:
   return v7;
 }
 
-- (id)_resourceIdentitiesFromChange:(id)a3
+- (id)_resourceIdentitiesFromChange:(id)change
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [a3 resources];
-  if ([v3 count])
+  resources = [change resources];
+  if ([resources count])
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(resources, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = resources;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -3428,11 +3428,11 @@ LABEL_7:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 identity];
-          if (v11)
+          identity = [v10 identity];
+          if (identity)
           {
             v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "resourceType")}];
-            [v4 setObject:v11 forKeyedSubscript:v12];
+            [v4 setObject:identity forKeyedSubscript:v12];
           }
         }
 
@@ -3453,10 +3453,10 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)knowsClientRecordWithScopedIdentifier:(id)a3
+- (BOOL)knowsClientRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_incomingBatchRecordPerScopedIdentifiers objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_incomingBatchRecordPerScopedIdentifiers objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -3465,37 +3465,37 @@ LABEL_7:
 
   else
   {
-    LOBYTE(self) = [(CPLPushSessionTracker *)self hasClientRecordWithLocalScopedIdentifier:v4];
+    LOBYTE(self) = [(CPLPushSessionTracker *)self hasClientRecordWithLocalScopedIdentifier:identifierCopy];
   }
 
   return self;
 }
 
-- (CPLPushSessionTracker)initWithIncomingBatch:(id)a3 store:(id)a4 error:(id *)a5
+- (CPLPushSessionTracker)initWithIncomingBatch:(id)batch store:(id)store error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  batchCopy = batch;
+  storeCopy = store;
   v25.receiver = self;
   v25.super_class = CPLPushSessionTracker;
   v11 = [(CPLPushSessionTracker *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_store, a4);
+    objc_storeStrong(&v11->_store, store);
     v13 = [CPLClientCacheBaseView clientCacheBaseViewIDMappingForStore:v12->_store];
     optimisticIDMapping = v12->_optimisticIDMapping;
     v12->_optimisticIDMapping = v13;
 
-    v15 = [(CPLEngineStore *)v12->_store idMapping];
+    idMapping = [(CPLEngineStore *)v12->_store idMapping];
     realIDMapping = v12->_realIDMapping;
-    v12->_realIDMapping = v15;
+    v12->_realIDMapping = idMapping;
 
-    v17 = [v10 scopes];
+    scopes = [storeCopy scopes];
     scopes = v12->_scopes;
-    v12->_scopes = v17;
+    v12->_scopes = scopes;
 
-    objc_storeStrong(&v12->_incomingBatch, a3);
-    if (![(CPLChangeBatch *)v12->_incomingBatch sortBatchWithError:a5])
+    objc_storeStrong(&v12->_incomingBatch, batch);
+    if (![(CPLChangeBatch *)v12->_incomingBatch sortBatchWithError:error])
     {
       v23 = 0;
       goto LABEL_6;
@@ -3516,17 +3516,17 @@ LABEL_6:
   return v23;
 }
 
-+ (BOOL)notifyClientOfStore:(id)a3 ofStatusChanges:(id)a4 error:(id *)a5
++ (BOOL)notifyClientOfStore:(id)store ofStatusChanges:(id)changes error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  changesCopy = changes;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 1;
-  if ([v8 count])
+  if ([changesCopy count])
   {
-    v9 = [v7 statusCenter];
+    statusCenter = [storeCopy statusCenter];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -3538,13 +3538,13 @@ LABEL_6:
     v13[2] = __67__CPLPushSessionTracker_notifyClientOfStore_ofStatusChanges_error___block_invoke;
     v13[3] = &unk_1E861E3D0;
     v15 = &v23;
-    v10 = v9;
+    v10 = statusCenter;
     v14 = v10;
     v16 = &v17;
-    [v8 enumerateKeysAndObjectsUsingBlock:v13];
-    if (a5 && (v24[3] & 1) == 0)
+    [changesCopy enumerateKeysAndObjectsUsingBlock:v13];
+    if (error && (v24[3] & 1) == 0)
     {
-      *a5 = v18[5];
+      *error = v18[5];
     }
 
     _Block_object_dispose(&v17, 8);

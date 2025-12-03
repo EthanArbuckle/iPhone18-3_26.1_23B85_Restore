@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct
 - (MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct);
-  v5 = [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)self powerAdjustCapability];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)v4 setPowerAdjustCapability:v5];
+  powerAdjustCapability = [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)self powerAdjustCapability];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)v4 setPowerAdjustCapability:powerAdjustCapability];
 
-  v6 = [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)self cause];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)v4 setCause:v6];
+  cause = [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)self cause];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustCapabilityStruct *)v4 setCause:cause];
 
   return v4;
 }

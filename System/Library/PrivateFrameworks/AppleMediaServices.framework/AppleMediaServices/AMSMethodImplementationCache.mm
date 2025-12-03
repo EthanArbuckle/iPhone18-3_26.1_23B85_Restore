@@ -1,14 +1,14 @@
 @interface AMSMethodImplementationCache
-+ (BOOL)implementationsOf:(SEL)a3 areEqualIn:(Class)a4 and:(Class)a5;
++ (BOOL)implementationsOf:(SEL)of areEqualIn:(Class)in and:(Class)and;
 @end
 
 @implementation AMSMethodImplementationCache
 
-+ (BOOL)implementationsOf:(SEL)a3 areEqualIn:(Class)a4 and:(Class)a5
++ (BOOL)implementationsOf:(SEL)of areEqualIn:(Class)in and:(Class)and
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   swift_getObjCClassMetadata();
-  return static MethodImplementationCache.implementations(of:areEqualIn:and:)(a3, ObjCClassMetadata) & 1;
+  return static MethodImplementationCache.implementations(of:areEqualIn:and:)(of, ObjCClassMetadata) & 1;
 }
 
 @end

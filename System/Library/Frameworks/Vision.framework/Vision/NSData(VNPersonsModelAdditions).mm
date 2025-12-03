@@ -14,7 +14,7 @@
   v14[3] = &unk_1E77B6810;
   v15 = v10;
   v11 = v10;
-  v12 = [a1 VNPersonsModelSubdataWithRange:a3 rangeDescriptionProvidingBlock:a4 error:{v14, a6}];
+  v12 = [self VNPersonsModelSubdataWithRange:a3 rangeDescriptionProvidingBlock:a4 error:{v14, a6}];
 
   return v12;
 }
@@ -22,7 +22,7 @@
 - (void)VNPersonsModelSubdataWithRange:()VNPersonsModelAdditions rangeDescriptionProvidingBlock:error:
 {
   v10 = a5;
-  v11 = [a1 length];
+  v11 = [self length];
   if (a3 >= v11 || a4 > v11 || a3 + a4 > v11)
   {
     if (a6)
@@ -37,7 +37,7 @@
 
   else
   {
-    a6 = [a1 subdataWithRange:{a3, a4}];
+    a6 = [self subdataWithRange:{a3, a4}];
   }
 
   return a6;

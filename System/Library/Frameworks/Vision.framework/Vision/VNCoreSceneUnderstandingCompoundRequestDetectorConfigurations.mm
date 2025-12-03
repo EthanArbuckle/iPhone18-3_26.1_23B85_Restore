@@ -1,30 +1,30 @@
 @interface VNCoreSceneUnderstandingCompoundRequestDetectorConfigurations
 - (VNCoreSceneUnderstandingCompoundRequestDetectorConfigurations)init;
 - (id)allConfigurations;
-- (id)configurationForRequest:(id)a3;
+- (id)configurationForRequest:(id)request;
 @end
 
 @implementation VNCoreSceneUnderstandingCompoundRequestDetectorConfigurations
 
 - (id)allConfigurations
 {
-  v2 = [(NSMutableDictionary *)self->_configurations allValues];
-  v3 = [v2 copy];
+  allValues = [(NSMutableDictionary *)self->_configurations allValues];
+  v3 = [allValues copy];
 
   return v3;
 }
 
-- (id)configurationForRequest:(id)a3
+- (id)configurationForRequest:(id)request
 {
-  v4 = a3;
-  [v4 regionOfInterest];
+  requestCopy = request;
+  [requestCopy regionOfInterest];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   if (objc_opt_respondsToSelector())
   {
-    v13 = ([v4 methodForSelector:sel_imageCropAndScaleOption])(v4, sel_imageCropAndScaleOption);
+    v13 = ([requestCopy methodForSelector:sel_imageCropAndScaleOption])(requestCopy, sel_imageCropAndScaleOption);
   }
 
   else
@@ -33,7 +33,7 @@
   }
 
   v21 = 0;
-  v14 = [v4 applicableDetectorClassAndOptions:&v21 forRevision:objc_msgSend(v4 error:{"resolvedRevision"), 0}];
+  v14 = [requestCopy applicableDetectorClassAndOptions:&v21 forRevision:objc_msgSend(requestCopy error:{"resolvedRevision"), 0}];
   v15 = v21;
   [VNError VNAssert:v14 != 0 log:@"detector class could not be resolved"];
   v16 = [v14 computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v15 error:0];
@@ -46,7 +46,7 @@
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   }
 
-  [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)v18 addOriginalRequest:v4];
+  [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)v18 addOriginalRequest:requestCopy];
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
   [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)v18 setDetectorConfigurationOption:@"VNDetectorProcessOption_ImageCropAndScaleOption" value:v19];
 

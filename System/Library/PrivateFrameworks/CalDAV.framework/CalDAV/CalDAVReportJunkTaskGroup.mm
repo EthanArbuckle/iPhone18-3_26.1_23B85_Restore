@@ -1,20 +1,20 @@
 @interface CalDAVReportJunkTaskGroup
-- (CalDAVReportJunkTaskGroup)initWithReportJunkActions:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5;
+- (CalDAVReportJunkTaskGroup)initWithReportJunkActions:(id)actions accountInfoProvider:(id)provider taskManager:(id)manager;
 - (void)startTaskGroup;
 @end
 
 @implementation CalDAVReportJunkTaskGroup
 
-- (CalDAVReportJunkTaskGroup)initWithReportJunkActions:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5
+- (CalDAVReportJunkTaskGroup)initWithReportJunkActions:(id)actions accountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v9 = a3;
+  actionsCopy = actions;
   v13.receiver = self;
   v13.super_class = CalDAVReportJunkTaskGroup;
-  v10 = [(CoreDAVTaskGroup *)&v13 initWithAccountInfoProvider:a4 taskManager:a5];
+  v10 = [(CoreDAVTaskGroup *)&v13 initWithAccountInfoProvider:provider taskManager:manager];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_reportJunkActions, a3);
+    objc_storeStrong(&v10->_reportJunkActions, actions);
   }
 
   return v11;
@@ -51,11 +51,11 @@
 
         v7 = *(*(&v25 + 1) + 8 * v6);
         v8 = [CalDAVPostAuditFailureTask alloc];
-        v9 = [v7 resourceURL];
-        v10 = [(CalDAVPostAuditFailureTask *)v8 initWithResourceURL:v9 reason:0];
+        resourceURL = [v7 resourceURL];
+        v10 = [(CalDAVPostAuditFailureTask *)v8 initWithResourceURL:resourceURL reason:0];
 
-        v11 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-        [(CalDAVPostAuditFailureTask *)v10 setAccountInfoProvider:v11];
+        accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+        [(CalDAVPostAuditFailureTask *)v10 setAccountInfoProvider:accountInfoProvider];
 
         objc_initWeak(&location, self);
         objc_initWeak(&from, v10);
@@ -70,12 +70,12 @@
         v12 = v3;
         v19 = v12;
         [(CalDAVPostAuditFailureTask *)v10 setCompletionBlock:v18];
-        v13 = [(CoreDAVTaskGroup *)self outstandingTasks];
-        [v13 addObject:v10];
+        outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+        [outstandingTasks addObject:v10];
 
         dispatch_group_enter(v12);
-        v14 = [(CoreDAVTaskGroup *)self taskManager];
-        [v14 submitQueuedCoreDAVTask:v10];
+        taskManager = [(CoreDAVTaskGroup *)self taskManager];
+        [taskManager submitQueuedCoreDAVTask:v10];
 
         objc_destroyWeak(&v22);
         objc_destroyWeak(&v21);

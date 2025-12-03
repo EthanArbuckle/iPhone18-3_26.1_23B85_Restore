@@ -23,18 +23,18 @@
 - (BOOL)isTrue
 {
   v2 = +[MNNavdStateUpdater sharedUpdater];
-  v3 = [v2 isNavigatingOrPredictingDestination];
+  isNavigatingOrPredictingDestination = [v2 isNavigatingOrPredictingDestination];
 
-  return v3 ^ 1;
+  return isNavigatingOrPredictingDestination ^ 1;
 }
 
 - (void)didNavigationStateChange
 {
-  v3 = [(NavdVenueNavigationSessionTrigger *)self isTrue];
-  if (self->_previousShouldRun != v3)
+  isTrue = [(NavdVenueNavigationSessionTrigger *)self isTrue];
+  if (self->_previousShouldRun != isTrue)
   {
-    self->_previousShouldRun = v3;
-    if (v3)
+    self->_previousShouldRun = isTrue;
+    if (isTrue)
     {
 
       [(NavdVenueNavigationSessionTrigger *)self triggerMyObservers];

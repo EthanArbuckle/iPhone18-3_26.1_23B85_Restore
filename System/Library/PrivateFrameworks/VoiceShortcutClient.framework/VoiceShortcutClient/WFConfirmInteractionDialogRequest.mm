@@ -1,45 +1,45 @@
 @interface WFConfirmInteractionDialogRequest
-- (WFConfirmInteractionDialogRequest)initWithCoder:(id)a3;
-- (WFConfirmInteractionDialogRequest)initWithInteraction:(id)a3 prompt:(id)a4;
+- (WFConfirmInteractionDialogRequest)initWithCoder:(id)coder;
+- (WFConfirmInteractionDialogRequest)initWithInteraction:(id)interaction prompt:(id)prompt;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFConfirmInteractionDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = WFConfirmInteractionDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v8 encodeWithCoder:coderCopy];
   v5 = [(WFConfirmInteractionDialogRequest *)self interaction:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"interaction"];
+  [coderCopy encodeObject:v5 forKey:@"interaction"];
 
-  v6 = [(WFConfirmInteractionDialogRequest *)self confirmButton];
-  [v4 encodeObject:v6 forKey:@"confirmButton"];
+  confirmButton = [(WFConfirmInteractionDialogRequest *)self confirmButton];
+  [coderCopy encodeObject:confirmButton forKey:@"confirmButton"];
 
-  v7 = [(WFConfirmInteractionDialogRequest *)self cancelButton];
-  [v4 encodeObject:v7 forKey:@"cancelButton"];
+  cancelButton = [(WFConfirmInteractionDialogRequest *)self cancelButton];
+  [coderCopy encodeObject:cancelButton forKey:@"cancelButton"];
 }
 
-- (WFConfirmInteractionDialogRequest)initWithCoder:(id)a3
+- (WFConfirmInteractionDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFConfirmInteractionDialogRequest;
-  v5 = [(WFDialogRequest *)&v14 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
     interaction = v5->_interaction;
     v5->_interaction = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confirmButton"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confirmButton"];
     confirmButton = v5->_confirmButton;
     v5->_confirmButton = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
     cancelButton = v5->_cancelButton;
     v5->_cancelButton = v10;
 
@@ -54,37 +54,37 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDialogRequest *)self attribution];
-  v7 = [v6 title];
-  v8 = [(WFConfirmInteractionDialogRequest *)self interaction];
-  v9 = [(WFConfirmInteractionDialogRequest *)self confirmButton];
-  v10 = [(WFConfirmInteractionDialogRequest *)self cancelButton];
-  v11 = [v3 stringWithFormat:@"<%@: %p, title: %@, interaction: %@, confirmButton: %@, cancelButton: %@>", v5, self, v7, v8, v9, v10];
+  attribution = [(WFDialogRequest *)self attribution];
+  title = [attribution title];
+  interaction = [(WFConfirmInteractionDialogRequest *)self interaction];
+  confirmButton = [(WFConfirmInteractionDialogRequest *)self confirmButton];
+  cancelButton = [(WFConfirmInteractionDialogRequest *)self cancelButton];
+  v11 = [v3 stringWithFormat:@"<%@: %p, title: %@, interaction: %@, confirmButton: %@, cancelButton: %@>", v5, self, title, interaction, confirmButton, cancelButton];
 
   return v11;
 }
 
-- (WFConfirmInteractionDialogRequest)initWithInteraction:(id)a3 prompt:(id)a4
+- (WFConfirmInteractionDialogRequest)initWithInteraction:(id)interaction prompt:(id)prompt
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 intent];
-  v9 = [v8 _intents_bundleIdForDisplay];
+  interactionCopy = interaction;
+  promptCopy = prompt;
+  intent = [interactionCopy intent];
+  _intents_bundleIdForDisplay = [intent _intents_bundleIdForDisplay];
 
-  v10 = [WFDialogAttribution attributionWithAppBundleIdentifier:v9];
+  v10 = [WFDialogAttribution attributionWithAppBundleIdentifier:_intents_bundleIdForDisplay];
   v22.receiver = self;
   v22.super_class = WFConfirmInteractionDialogRequest;
-  v11 = [(WFDialogRequest *)&v22 initWithAttribution:v10 prompt:v7];
+  v11 = [(WFDialogRequest *)&v22 initWithAttribution:v10 prompt:promptCopy];
 
   if (v11)
   {
-    v12 = [v6 copy];
+    v12 = [interactionCopy copy];
     interaction = v11->_interaction;
     v11->_interaction = v12;
 
-    v14 = [v6 intent];
-    v15 = [v14 _categoryVerb];
-    v16 = [WFDialogButton defaultButtonWithTitle:v15];
+    intent2 = [interactionCopy intent];
+    _categoryVerb = [intent2 _categoryVerb];
+    v16 = [WFDialogButton defaultButtonWithTitle:_categoryVerb];
     confirmButton = v11->_confirmButton;
     v11->_confirmButton = v16;
 

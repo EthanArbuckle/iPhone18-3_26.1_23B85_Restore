@@ -1,23 +1,23 @@
 @interface TSWPStorageAttributeRangeProvider
-- (TSWPStorageAttributeRangeProvider)initWithStorage:(id)a3 kind:(unint64_t)a4;
+- (TSWPStorageAttributeRangeProvider)initWithStorage:(id)storage kind:(unint64_t)kind;
 - (void)dealloc;
 - (void)nextRange;
 @end
 
 @implementation TSWPStorageAttributeRangeProvider
 
-- (TSWPStorageAttributeRangeProvider)initWithStorage:(id)a3 kind:(unint64_t)a4
+- (TSWPStorageAttributeRangeProvider)initWithStorage:(id)storage kind:(unint64_t)kind
 {
-  v6 = a3;
-  v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"attribute-%lu", a4);
+  storageCopy = storage;
+  v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"attribute-%lu", kind);
   v15.receiver = self;
   v15.super_class = TSWPStorageAttributeRangeProvider;
   v9 = [(TSWPStorageRangeProvider *)&v15 initWithIdentifier:v8];
 
   if (v9)
   {
-    objc_msgSend_range(v6, v10, v11);
-    objc_msgSend_range(v6, v12, v13);
+    objc_msgSend_range(storageCopy, v10, v11);
+    objc_msgSend_range(storageCopy, v12, v13);
     operator new();
   }
 

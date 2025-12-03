@@ -1,26 +1,26 @@
 @interface CPLCKUnsharePlan
-- (BOOL)hasShareTodoForScopedIdentifier:(id)a3;
-- (BOOL)shouldCopyCKRecordKeyToDestinationCKRecord:(id)a3;
+- (BOOL)hasShareTodoForScopedIdentifier:(id)identifier;
+- (BOOL)shouldCopyCKRecordKeyToDestinationCKRecord:(id)record;
 - (CPLCKBatchUploadPlanner)planner;
-- (CPLCKUnsharePlan)initWithPlanner:(id)a3;
+- (CPLCKUnsharePlan)initWithPlanner:(id)planner;
 - (CPLFingerprintContext)fingerprintContext;
 - (NSArray)ckRecordIDsToUnshare;
 - (NSArray)privateRecordIDs;
-- (id)baseDestinationCKRecordForSourceCKRecord:(id)a3 destinationCKRecordID:(id)a4 error:(id *)a5;
+- (id)baseDestinationCKRecordForSourceCKRecord:(id)record destinationCKRecordID:(id)d error:(id *)error;
 - (id)ckRecordIDsToDelete;
 - (id)ckRecordsToUpdate;
-- (id)cloudKitScopeForScopeIdentifier:(id)a3;
-- (id)finalizedDestinationCKRecordFromProposedCKRecord:(id)a3 error:(id *)a4;
-- (id)recordNameInDestinationCKRecordFromRecordName:(id)a3 error:(id *)a4;
-- (id)rejectedScopedIdentifierForRejectedCKRecordID:(id)a3;
-- (id)scopeIdentifierFromZoneID:(id)a3;
-- (id)scopedIdentifierForCKRecordID:(id)a3;
-- (id)zoneIDFromScopeIdentifier:(id)a3;
+- (id)cloudKitScopeForScopeIdentifier:(id)identifier;
+- (id)finalizedDestinationCKRecordFromProposedCKRecord:(id)record error:(id *)error;
+- (id)recordNameInDestinationCKRecordFromRecordName:(id)name error:(id *)error;
+- (id)rejectedScopedIdentifierForRejectedCKRecordID:(id)d;
+- (id)scopeIdentifierFromZoneID:(id)d;
+- (id)scopedIdentifierForCKRecordID:(id)d;
+- (id)zoneIDFromScopeIdentifier:(id)identifier;
 - (void)_prepareRecordsToDelete;
-- (void)addShareTodo:(id)a3;
-- (void)prepareCopyForCKRecordID:(id)a3 fromCKRecord:(id)a4;
-- (void)removeShareTodoForScopedIdentifier:(id)a3;
-- (void)updateTargetMappingAfterUploadWithRealSourceRecordIDs:(id)a3;
+- (void)addShareTodo:(id)todo;
+- (void)prepareCopyForCKRecordID:(id)d fromCKRecord:(id)record;
+- (void)removeShareTodoForScopedIdentifier:(id)identifier;
+- (void)updateTargetMappingAfterUploadWithRealSourceRecordIDs:(id)ds;
 @end
 
 @implementation CPLCKUnsharePlan
@@ -28,21 +28,21 @@
 - (CPLFingerprintContext)fingerprintContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v3 = [WeakRetained fingerprintContext];
+  fingerprintContext = [WeakRetained fingerprintContext];
 
-  return v3;
+  return fingerprintContext;
 }
 
-- (CPLCKUnsharePlan)initWithPlanner:(id)a3
+- (CPLCKUnsharePlan)initWithPlanner:(id)planner
 {
-  v4 = a3;
+  plannerCopy = planner;
   v12.receiver = self;
   v12.super_class = CPLCKUnsharePlan;
   v5 = [(CPLCKUnsharePlan *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_planner, v4);
+    objc_storeWeak(&v5->_planner, plannerCopy);
     v7 = objc_alloc_init(NSMutableArray);
     todos = v6->_todos;
     v6->_todos = v7;
@@ -55,24 +55,24 @@
   return v6;
 }
 
-- (BOOL)hasShareTodoForScopedIdentifier:(id)a3
+- (BOOL)hasShareTodoForScopedIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_todoPerScopedIdentifier objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_todoPerScopedIdentifier objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)removeShareTodoForScopedIdentifier:(id)a3
+- (void)removeShareTodoForScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  [(NSMutableDictionary *)self->_todoPerScopedIdentifier removeObjectForKey:v4];
+  identifierCopy = identifier;
+  [(NSMutableDictionary *)self->_todoPerScopedIdentifier removeObjectForKey:identifierCopy];
   todos = self->_todos;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100196634;
   v8[3] = &unk_100273A90;
-  v6 = v4;
+  v6 = identifierCopy;
   v9 = v6;
   v7 = [(NSMutableArray *)todos indexOfObjectPassingTest:v8];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -137,13 +137,13 @@
     v21 = objc_alloc_init(NSMutableArray);
     v3 = objc_alloc_init(NSMutableArray);
     WeakRetained = objc_loadWeakRetained(&self->_planner);
-    v5 = [WeakRetained sharedZoneIdentification];
+    weakRetained = [WeakRetained sharedZoneIdentification];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v20 = self;
+    selfCopy = self;
     v6 = self->_todos;
     v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
@@ -173,12 +173,12 @@
           }
 
           v13 = v11;
-          if ([v5 supportsDirectDeletionOfRecordClass:v12])
+          if ([weakRetained supportsDirectDeletionOfRecordClass:v12])
           {
             [(NSArray *)v3 addObject:v13];
           }
 
-          else if ([v5 supportsDeletionOfRecordClass:v12])
+          else if ([weakRetained supportsDeletionOfRecordClass:v12])
           {
             v14 = CPLCKRecord(v12, v13, 1);
             v15 = +[NSDate date];
@@ -200,12 +200,12 @@
       while (v16);
     }
 
-    ckRecordsToUpdate = v20->_ckRecordsToUpdate;
-    v20->_ckRecordsToUpdate = v21;
+    ckRecordsToUpdate = selfCopy->_ckRecordsToUpdate;
+    selfCopy->_ckRecordsToUpdate = v21;
     v18 = v21;
 
-    ckRecordIDsToDelete = v20->_ckRecordIDsToDelete;
-    v20->_ckRecordIDsToDelete = v3;
+    ckRecordIDsToDelete = selfCopy->_ckRecordIDsToDelete;
+    selfCopy->_ckRecordIDsToDelete = v3;
   }
 }
 
@@ -225,10 +225,10 @@
   return ckRecordIDsToDelete;
 }
 
-- (void)updateTargetMappingAfterUploadWithRealSourceRecordIDs:(id)a3
+- (void)updateTargetMappingAfterUploadWithRealSourceRecordIDs:(id)ds
 {
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v5 = [WeakRetained targetMapping];
+  targetMapping = [WeakRetained targetMapping];
 
   v16 = 0u;
   v17 = 0u;
@@ -257,7 +257,7 @@
           if (v12)
           {
             v13 = v12;
-            [v5 setTarget:v12 forRecordWithScopedIdentifier:{*(v11 + 8), v14}];
+            [targetMapping setTarget:v12 forRecordWithScopedIdentifier:{*(v11 + 8), v14}];
           }
         }
 
@@ -321,16 +321,16 @@
   return v3;
 }
 
-- (void)prepareCopyForCKRecordID:(id)a3 fromCKRecord:(id)a4
+- (void)prepareCopyForCKRecordID:(id)d fromCKRecord:(id)record
 {
-  v18 = a3;
-  v7 = a4;
+  dCopy = d;
+  recordCopy = record;
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v9 = [WeakRetained scopedIdentifierForCKRecordID:v18];
+  v9 = [WeakRetained scopedIdentifierForCKRecordID:dCopy];
 
   if (!v9)
   {
-    sub_1001976A4(a2, self, v18);
+    sub_1001976A4(a2, self, dCopy);
   }
 
   v10 = [(NSMutableDictionary *)self->_todoPerScopedIdentifier objectForKeyedSubscript:v9];
@@ -345,7 +345,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v20 = v18;
+        v20 = dCopy;
         v21 = 2112;
         v22 = v9;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Unable to find unshare todo matching %@/%@", buf, 0x16u);
@@ -354,14 +354,14 @@
 
     v16 = +[NSAssertionHandler currentHandler];
     v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/CloudKit/CPLCKBatchUploadPlanner.m"];
-    [v16 handleFailureInMethod:a2 object:self file:v17 lineNumber:1615 description:{@"Unable to find unshare todo matching %@/%@", v18, v9}];
+    [v16 handleFailureInMethod:a2 object:self file:v17 lineNumber:1615 description:{@"Unable to find unshare todo matching %@/%@", dCopy, v9}];
 
     abort();
   }
 
   v12 = objc_loadWeakRetained(&self->_planner);
-  v13 = [v12 targetMapping];
-  v14 = [v13 targetForRecordWithScopedIdentifier:v9];
+  targetMapping = [v12 targetMapping];
+  v14 = [targetMapping targetForRecordWithScopedIdentifier:v9];
 
   if (!v14)
   {
@@ -371,49 +371,49 @@
   self->_wasSplit = [v14 targetState] == 3;
 }
 
-- (BOOL)shouldCopyCKRecordKeyToDestinationCKRecord:(id)a3
+- (BOOL)shouldCopyCKRecordKeyToDestinationCKRecord:(id)record
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"dateExpunged"])
+  recordCopy = record;
+  if ([recordCopy isEqualToString:@"dateExpunged"])
   {
     v5 = 1;
   }
 
   else
   {
-    sub_100197770(self, v4, &v7);
+    sub_100197770(self, recordCopy, &v7);
     v5 = v7;
   }
 
   return v5;
 }
 
-- (id)recordNameInDestinationCKRecordFromRecordName:(id)a3 error:(id *)a4
+- (id)recordNameInDestinationCKRecordFromRecordName:(id)name error:(id *)error
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = [CPLScopedIdentifier alloc];
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v8 = [WeakRetained sharedZoneIdentification];
-  v9 = [v8 scopeIdentifier];
-  v10 = [v6 initWithScopeIdentifier:v9 identifier:v5];
+  weakRetained = [WeakRetained sharedZoneIdentification];
+  scopeIdentifier = [weakRetained scopeIdentifier];
+  v10 = [v6 initWithScopeIdentifier:scopeIdentifier identifier:nameCopy];
 
   v11 = objc_loadWeakRetained(&self->_planner);
-  v12 = [v11 targetMapping];
-  v13 = [v12 targetForRecordWithOtherScopedIdentifier:v10];
+  targetMapping = [v11 targetMapping];
+  v13 = [targetMapping targetForRecordWithOtherScopedIdentifier:v10];
 
   if (v13)
   {
-    v14 = [v13 otherScopedIdentifier];
-    v15 = [v14 identifier];
-    v16 = v15;
-    if (v15)
+    otherScopedIdentifier = [v13 otherScopedIdentifier];
+    identifier = [otherScopedIdentifier identifier];
+    v16 = identifier;
+    if (identifier)
     {
-      v17 = v15;
+      v17 = identifier;
     }
 
     else
     {
-      v17 = v5;
+      v17 = nameCopy;
     }
 
     v18 = v17;
@@ -421,75 +421,75 @@
 
   else
   {
-    v18 = v5;
+    v18 = nameCopy;
   }
 
   return v18;
 }
 
-- (id)finalizedDestinationCKRecordFromProposedCKRecord:(id)a3 error:(id *)a4
+- (id)finalizedDestinationCKRecordFromProposedCKRecord:(id)record error:(id *)error
 {
-  v5 = a3;
+  recordCopy = record;
   currentTodo = self->_currentTodo;
   if (!currentTodo || (v7 = currentTodo->_recordModificationDate) == 0)
   {
     v7 = +[NSDate date];
   }
 
-  [v5 setObject:v7 forKey:@"recordModificationDate"];
-  [v5 setObject:0 forKey:@"linkedShareZoneName"];
-  [v5 setObject:0 forKey:@"linkedShareZoneOwner"];
-  [v5 setObject:0 forKey:@"linkedShareRecordName"];
-  if (self->_wasSplit && ([v5 isKnownToServer] & 1) == 0)
+  [recordCopy setObject:v7 forKey:@"recordModificationDate"];
+  [recordCopy setObject:0 forKey:@"linkedShareZoneName"];
+  [recordCopy setObject:0 forKey:@"linkedShareZoneOwner"];
+  [recordCopy setObject:0 forKey:@"linkedShareRecordName"];
+  if (self->_wasSplit && ([recordCopy isKnownToServer] & 1) == 0)
   {
-    [v5 setKnownToServer:1];
-    [v5 setEtag:@"-gateon"];
+    [recordCopy setKnownToServer:1];
+    [recordCopy setEtag:@"-gateon"];
   }
 
-  return v5;
+  return recordCopy;
 }
 
-- (id)cloudKitScopeForScopeIdentifier:(id)a3
+- (id)cloudKitScopeForScopeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v6 = [WeakRetained cloudKitScopeForScopeIdentifier:v4];
+  v6 = [WeakRetained cloudKitScopeForScopeIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)zoneIDFromScopeIdentifier:(id)a3
+- (id)zoneIDFromScopeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v6 = [WeakRetained zoneIDFromScopeIdentifier:v4];
+  v6 = [WeakRetained zoneIDFromScopeIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)scopeIdentifierFromZoneID:(id)a3
+- (id)scopeIdentifierFromZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v6 = [WeakRetained scopeIdentifierFromZoneID:v4];
+  v6 = [WeakRetained scopeIdentifierFromZoneID:dCopy];
 
   return v6;
 }
 
-- (id)scopedIdentifierForCKRecordID:(id)a3
+- (id)scopedIdentifierForCKRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v6 = [WeakRetained scopedIdentifierForCKRecordID:v4];
+  v6 = [WeakRetained scopedIdentifierForCKRecordID:dCopy];
 
   return v6;
 }
 
-- (id)rejectedScopedIdentifierForRejectedCKRecordID:(id)a3
+- (id)rejectedScopedIdentifierForRejectedCKRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v6 = [WeakRetained rejectedScopedIdentifierForRejectedCKRecordID:v4];
+  v6 = [WeakRetained rejectedScopedIdentifierForRejectedCKRecordID:dCopy];
 
   return v6;
 }
@@ -501,14 +501,14 @@
   return WeakRetained;
 }
 
-- (void)addShareTodo:(id)a3
+- (void)addShareTodo:(id)todo
 {
   todos = self->_todos;
-  v6 = a3;
-  [(NSMutableArray *)todos addObject:v6];
-  if (v6)
+  todoCopy = todo;
+  [(NSMutableArray *)todos addObject:todoCopy];
+  if (todoCopy)
   {
-    v5 = v6[1];
+    v5 = todoCopy[1];
   }
 
   else
@@ -516,34 +516,34 @@
     v5 = 0;
   }
 
-  [(NSMutableDictionary *)self->_todoPerScopedIdentifier setObject:v6 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_todoPerScopedIdentifier setObject:todoCopy forKeyedSubscript:v5];
 }
 
-- (id)baseDestinationCKRecordForSourceCKRecord:(id)a3 destinationCKRecordID:(id)a4 error:(id *)a5
+- (id)baseDestinationCKRecordForSourceCKRecord:(id)record destinationCKRecordID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_planner);
-  v11 = [WeakRetained currentUserRecordID];
-  v12 = [v8 cpl_destinationRecordIDInPrivateScopeWithCurrentUserRecordID:v11 proposedDestinationRecordID:v9];
+  currentUserRecordID = [WeakRetained currentUserRecordID];
+  v12 = [recordCopy cpl_destinationRecordIDInPrivateScopeWithCurrentUserRecordID:currentUserRecordID proposedDestinationRecordID:dCopy];
 
-  if (([v12 isEqual:v9] & 1) == 0)
+  if (([v12 isEqual:dCopy] & 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v13 = sub_1000035AC();
       if (sub_1000374B8(v13))
       {
-        v14 = [v8 recordID];
-        v15 = [v14 cplFullDescription];
-        v16 = [v12 cplFullDescription];
-        v17 = [v9 cplFullDescription];
+        recordID = [recordCopy recordID];
+        cplFullDescription = [recordID cplFullDescription];
+        cplFullDescription2 = [v12 cplFullDescription];
+        cplFullDescription3 = [dCopy cplFullDescription];
         *buf = 138412802;
-        v41 = v15;
+        v41 = cplFullDescription;
         v42 = 2112;
-        v43 = v16;
+        v43 = cplFullDescription2;
         v44 = 2112;
-        v45 = v17;
+        v45 = cplFullDescription3;
         _os_log_impl(&_mh_execute_header, WeakRetained, OS_LOG_TYPE_DEFAULT, "Moving %@ to %@ instead of %@", buf, 0x20u);
       }
     }
@@ -568,25 +568,25 @@
 
   v22 = [CPLScopedIdentifier alloc];
   v23 = objc_loadWeakRetained(&self->_planner);
-  v24 = [v23 destinationZoneIdentification];
-  v25 = [v24 scopeIdentifier];
-  v26 = [v8 recordID];
-  v27 = [v26 recordName];
-  v28 = sub_1000374F4(v27);
+  destinationZoneIdentification = [v23 destinationZoneIdentification];
+  scopeIdentifier = [destinationZoneIdentification scopeIdentifier];
+  recordID2 = [recordCopy recordID];
+  recordName = [recordID2 recordName];
+  v28 = sub_1000374F4(recordName);
 
   v29 = [CPLScopedIdentifier alloc];
   v30 = objc_loadWeakRetained(&self->_planner);
-  v31 = [v30 sharedZoneIdentification];
-  v32 = [v31 scopeIdentifier];
-  v33 = [v12 recordName];
-  v34 = [v29 initWithScopeIdentifier:v32 identifier:v33];
+  sharedZoneIdentification = [v30 sharedZoneIdentification];
+  scopeIdentifier2 = [sharedZoneIdentification scopeIdentifier];
+  recordName2 = [v12 recordName];
+  v34 = [v29 initWithScopeIdentifier:scopeIdentifier2 identifier:recordName2];
 
   v35 = [[CPLRecordTarget alloc] initWithScopedIdentifier:v28 otherScopedIdentifier:v34 targetState:1];
   sub_100195F98(self->_currentTodo, v35);
 
   v36 = [CKRecord alloc];
-  v37 = [v8 recordType];
-  v38 = [v36 initWithRecordType:v37 recordID:v12];
+  recordType = [recordCopy recordType];
+  v38 = [v36 initWithRecordType:recordType recordID:v12];
 
   return v38;
 }

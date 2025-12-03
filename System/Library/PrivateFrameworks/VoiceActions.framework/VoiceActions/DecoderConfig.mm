@@ -5,11 +5,11 @@
 - (NSString)description;
 - (PostKeywordSilenceConfig)postKeywordSilence;
 - (PreKeywordSilenceConfig)preKeywordSilence;
-- (void)setAudioCapture:(id)a3;
-- (void)setDuringKeywordSilence:(id)a3;
-- (void)setPostKeywordSilence:(id)a3;
-- (void)setPreKeywordSilence:(id)a3;
-- (void)setUseChecker:(BOOL)a3;
+- (void)setAudioCapture:(id)capture;
+- (void)setDuringKeywordSilence:(id)silence;
+- (void)setPostKeywordSilence:(id)silence;
+- (void)setPreKeywordSilence:(id)silence;
+- (void)setUseChecker:(BOOL)checker;
 @end
 
 @implementation DecoderConfig
@@ -21,11 +21,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUseChecker:(BOOL)a3
+- (void)setUseChecker:(BOOL)checker
 {
   v5 = OBJC_IVAR___DecoderConfig_useChecker;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = checker;
 }
 
 - (PreKeywordSilenceConfig)preKeywordSilence
@@ -35,13 +35,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPreKeywordSilence:(id)a3
+- (void)setPreKeywordSilence:(id)silence
 {
   v5 = OBJC_IVAR___DecoderConfig_preKeywordSilence;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = silence;
+  silenceCopy = silence;
 }
 
 - (DuringKeywordSilenceConfig)duringKeywordSilence
@@ -51,13 +51,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDuringKeywordSilence:(id)a3
+- (void)setDuringKeywordSilence:(id)silence
 {
   v5 = OBJC_IVAR___DecoderConfig_duringKeywordSilence;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = silence;
+  silenceCopy = silence;
 }
 
 - (PostKeywordSilenceConfig)postKeywordSilence
@@ -67,13 +67,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPostKeywordSilence:(id)a3
+- (void)setPostKeywordSilence:(id)silence
 {
   v5 = OBJC_IVAR___DecoderConfig_postKeywordSilence;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = silence;
+  silenceCopy = silence;
 }
 
 - (AudioCaptureConfig)audioCapture
@@ -83,13 +83,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAudioCapture:(id)a3
+- (void)setAudioCapture:(id)capture
 {
   v5 = OBJC_IVAR___DecoderConfig_audioCapture;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = capture;
+  captureCopy = capture;
 }
 
 - (NSString)description
@@ -101,7 +101,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for DecoderConfig();
   sub_27227DA80(&qword_280882378, v9, type metadata accessor for DecoderConfig);

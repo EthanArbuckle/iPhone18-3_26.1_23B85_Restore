@@ -2,7 +2,7 @@
 - (id).cxx_construct;
 - (void)_dump;
 - (void)beginFrame;
-- (void)collectStatsFromLayoutController:(id)a3;
+- (void)collectStatsFromLayoutController:(id)controller;
 - (void)endLiveResize;
 @end
 
@@ -21,14 +21,14 @@
   v4 = [NSURL fileURLWithPath:v3 isDirectory:1];
   v5 = [v4 URLByAppendingPathComponent:@"LiveResizeStats"];
   v6 = [v5 URLByAppendingPathExtension:@"json"];
-  v18 = self;
+  selfCopy = self;
 
   v19 = +[NSFileManager defaultManager];
   v7 = 1;
   for (i = v6; ; i = v15)
   {
-    v9 = [i path];
-    v10 = [v19 fileExistsAtPath:v9];
+    path = [i path];
+    v10 = [v19 fileExistsAtPath:path];
 
     if (!v10)
     {
@@ -44,7 +44,7 @@
     ++v7;
   }
 
-  v16 = sub_145554(&v18->_summary._components.__table_.__bucket_list_.__ptr_);
+  v16 = sub_145554(&selfCopy->_summary._components.__table_.__bucket_list_.__ptr_);
   v17 = [NSJSONSerialization dataWithJSONObject:v16 options:1 error:0];
   [v17 writeToURL:i atomically:0];
 
@@ -136,13 +136,13 @@
   *(self->_summary._frames.__end_ - 2) = mach_absolute_time();
 }
 
-- (void)collectStatsFromLayoutController:(id)a3
+- (void)collectStatsFromLayoutController:(id)controller
 {
-  v7 = a3;
-  v4 = [v7 instantiateContext];
-  v5 = [v4 _context];
+  controllerCopy = controller;
+  instantiateContext = [controllerCopy instantiateContext];
+  _context = [instantiateContext _context];
 
-  v6 = v5[96];
+  v6 = _context[96];
   if (v6)
   {
     sub_145F18(v6, &self->_summary._components.__table_.__bucket_list_.__ptr_);

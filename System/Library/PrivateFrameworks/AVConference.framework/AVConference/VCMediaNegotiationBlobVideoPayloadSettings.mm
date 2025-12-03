@@ -1,14 +1,14 @@
 @interface VCMediaNegotiationBlobVideoPayloadSettings
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addVideoRuleCollections:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addVideoRuleCollections:(id)collections;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobVideoPayloadSettings
@@ -23,7 +23,7 @@
   [(VCMediaNegotiationBlobVideoPayloadSettings *)&v3 dealloc];
 }
 
-- (void)addVideoRuleCollections:(id)a3
+- (void)addVideoRuleCollections:(id)collections
 {
   videoRuleCollections = self->_videoRuleCollections;
   if (!videoRuleCollections)
@@ -32,7 +32,7 @@
     self->_videoRuleCollections = videoRuleCollections;
   }
 
-  [(NSMutableArray *)videoRuleCollections addObject:a3];
+  [(NSMutableArray *)videoRuleCollections addObject:collections];
 }
 
 - (id)description
@@ -46,8 +46,8 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payload), @"payload"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payload), @"payload"}];
   if ([(NSMutableArray *)self->_videoRuleCollections count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_videoRuleCollections, "count")}];
@@ -79,20 +79,20 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"videoRuleCollections"];
+    [dictionary setObject:v4 forKey:@"videoRuleCollections"];
   }
 
   featureString = self->_featureString;
   if (featureString)
   {
-    [v3 setObject:featureString forKey:@"featureString"];
+    [dictionary setObject:featureString forKey:@"featureString"];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_parameterSet), @"parameterSet"}];
-  return v3;
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_parameterSet), @"parameterSet"}];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v14 = *MEMORY[0x1E69E9840];
   PBDataWriterWriteUint32Field();
@@ -128,31 +128,31 @@
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 5) = self->_payload;
+  *(to + 5) = self->_payload;
   if ([(VCMediaNegotiationBlobVideoPayloadSettings *)self videoRuleCollectionsCount])
   {
-    [a3 clearVideoRuleCollections];
-    v5 = [(VCMediaNegotiationBlobVideoPayloadSettings *)self videoRuleCollectionsCount];
-    if (v5)
+    [to clearVideoRuleCollections];
+    videoRuleCollectionsCount = [(VCMediaNegotiationBlobVideoPayloadSettings *)self videoRuleCollectionsCount];
+    if (videoRuleCollectionsCount)
     {
-      v6 = v5;
+      v6 = videoRuleCollectionsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addVideoRuleCollections:{-[VCMediaNegotiationBlobVideoPayloadSettings videoRuleCollectionsAtIndex:](self, "videoRuleCollectionsAtIndex:", i)}];
+        [to addVideoRuleCollections:{-[VCMediaNegotiationBlobVideoPayloadSettings videoRuleCollectionsAtIndex:](self, "videoRuleCollectionsAtIndex:", i)}];
       }
     }
   }
 
-  [a3 setFeatureString:self->_featureString];
-  *(a3 + 4) = self->_parameterSet;
+  [to setFeatureString:self->_featureString];
+  *(to + 4) = self->_parameterSet;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 20) = self->_payload;
   v14 = 0u;
   v15 = 0u;
@@ -173,7 +173,7 @@
           objc_enumerationMutation(videoRuleCollections);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v14 + 1) + 8 * i) copyWithZone:zone];
         [v5 addVideoRuleCollections:v11];
       }
 
@@ -183,25 +183,25 @@
     while (v8);
   }
 
-  *(v5 + 8) = [(NSString *)self->_featureString copyWithZone:a3];
+  *(v5 + 8) = [(NSString *)self->_featureString copyWithZone:zone];
   *(v5 + 16) = self->_parameterSet;
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_payload == *(a3 + 5))
+    if (self->_payload == *(equal + 5))
     {
       videoRuleCollections = self->_videoRuleCollections;
-      if (!(videoRuleCollections | *(a3 + 3)) || (v5 = [(NSMutableArray *)videoRuleCollections isEqual:?]) != 0)
+      if (!(videoRuleCollections | *(equal + 3)) || (v5 = [(NSMutableArray *)videoRuleCollections isEqual:?]) != 0)
       {
         featureString = self->_featureString;
-        if (!(featureString | *(a3 + 1)) || (v5 = [(NSString *)featureString isEqual:?]) != 0)
+        if (!(featureString | *(equal + 1)) || (v5 = [(NSString *)featureString isEqual:?]) != 0)
         {
-          LOBYTE(v5) = self->_parameterSet == *(a3 + 4);
+          LOBYTE(v5) = self->_parameterSet == *(equal + 4);
         }
       }
     }
@@ -222,15 +222,15 @@
   return v4 ^ [(NSString *)self->_featureString hash]^ v3 ^ (2654435761 * self->_parameterSet);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_payload = *(a3 + 5);
+  self->_payload = *(from + 5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
@@ -254,12 +254,12 @@
     while (v7);
   }
 
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(VCMediaNegotiationBlobVideoPayloadSettings *)self setFeatureString:?];
   }
 
-  self->_parameterSet = *(a3 + 4);
+  self->_parameterSet = *(from + 4);
 }
 
 @end

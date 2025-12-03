@@ -1,21 +1,21 @@
 @interface AMRLocalUSBDevice
-- (AMRLocalUSBDevice)initWithService:(unsigned int)a3;
+- (AMRLocalUSBDevice)initWithService:(unsigned int)service;
 - (void)dealloc;
-- (void)getDeviceReleaseNumberWithReply:(id)a3;
-- (void)getLocationIDWithReply:(id)a3;
-- (void)getManufacturerStringIndexForIndexWithReply:(id)a3;
-- (void)getProductIDWithReply:(id)a3;
-- (void)handleUSBDeviceGeneralInterestNotification:(unsigned int)a3;
-- (void)interfaceWithClass:(unsigned __int16)a3 subclass:(unsigned __int16)a4 withReply:(id)a5;
-- (void)openDeviceWithReply:(id)a3;
+- (void)getDeviceReleaseNumberWithReply:(id)reply;
+- (void)getLocationIDWithReply:(id)reply;
+- (void)getManufacturerStringIndexForIndexWithReply:(id)reply;
+- (void)getProductIDWithReply:(id)reply;
+- (void)handleUSBDeviceGeneralInterestNotification:(unsigned int)notification;
+- (void)interfaceWithClass:(unsigned __int16)class subclass:(unsigned __int16)subclass withReply:(id)reply;
+- (void)openDeviceWithReply:(id)reply;
 - (void)printDeviceWithExclusiveAccess;
-- (void)reEnumerateWithReply:(id)a3;
-- (void)sendDeviceRequestTO:(unsigned __int16)a3 direction:(unsigned __int8)a4 requestType:(unsigned __int8)a5 recipient:(unsigned __int8)a6 request:(unsigned __int8)a7 value:(unsigned __int16)a8 length:(unsigned __int16)size data:(id)a10 noDataTO:(unsigned int)a11 completionTO:(unsigned int)a12 withReply:(id)a13;
+- (void)reEnumerateWithReply:(id)reply;
+- (void)sendDeviceRequestTO:(unsigned __int16)o direction:(unsigned __int8)direction requestType:(unsigned __int8)type recipient:(unsigned __int8)recipient request:(unsigned __int8)request value:(unsigned __int16)value length:(unsigned __int16)size data:(id)self0 noDataTO:(unsigned int)self1 completionTO:(unsigned int)self2 withReply:(id)self3;
 @end
 
 @implementation AMRLocalUSBDevice
 
-- (AMRLocalUSBDevice)initWithService:(unsigned int)a3
+- (AMRLocalUSBDevice)initWithService:(unsigned int)service
 {
   if (qword_1000C8848 != -1)
   {
@@ -27,14 +27,14 @@
   v5 = [(AMRLocalUSBDevice *)&v8 init];
   if (v5)
   {
-    DeviceInterfaceForService = _getDeviceInterfaceForService(a3);
+    DeviceInterfaceForService = _getDeviceInterfaceForService(service);
     v5->deviceInterface = DeviceInterfaceForService;
     if (DeviceInterfaceForService)
     {
-      v5->serialNumber = IORegistryEntryCreateCFProperty(a3, @"kUSBSerialNumberString", kCFAllocatorDefault, 0);
-      v5->productString = IORegistryEntryCreateCFProperty(a3, @"kUSBProductString", kCFAllocatorDefault, 0);
-      IOObjectRetain(a3);
-      v5->usbService = a3;
+      v5->serialNumber = IORegistryEntryCreateCFProperty(service, @"kUSBSerialNumberString", kCFAllocatorDefault, 0);
+      v5->productString = IORegistryEntryCreateCFProperty(service, @"kUSBProductString", kCFAllocatorDefault, 0);
+      IOObjectRetain(service);
+      v5->usbService = service;
       v5->usbDeviceNotification = 0;
       v5->waitForOpenSemaphore = dispatch_semaphore_create(0);
       v5->deviceOpenResult = 0;
@@ -91,7 +91,7 @@
   [(AMRLocalUSBDevice *)&v7 dealloc];
 }
 
-- (void)openDeviceWithReply:(id)a3
+- (void)openDeviceWithReply:(id)reply
 {
   v5 = ((*self->deviceInterface)->USBDeviceOpen)(self->deviceInterface, a2);
   if (v5)
@@ -152,7 +152,7 @@ LABEL_14:
   ((*self->deviceInterface)->USBDeviceClose)(self->deviceInterface);
 LABEL_15:
   v37 = _AMRestoreErrorForIOReturn(v12, 2010);
-  (*(a3 + 2))(a3, v37, v21);
+  (*(reply + 2))(reply, v37, v21);
 }
 
 - (void)printDeviceWithExclusiveAccess
@@ -177,9 +177,9 @@ LABEL_15:
   }
 }
 
-- (void)handleUSBDeviceGeneralInterestNotification:(unsigned int)a3
+- (void)handleUSBDeviceGeneralInterestNotification:(unsigned int)notification
 {
-  if (a3 == -536870640)
+  if (notification == -536870640)
   {
     v4 = ((*self->deviceInterface)->USBDeviceOpen)(self->deviceInterface, a2);
     self->deviceOpenResult = v4;
@@ -200,21 +200,21 @@ LABEL_15:
   }
 }
 
-- (void)sendDeviceRequestTO:(unsigned __int16)a3 direction:(unsigned __int8)a4 requestType:(unsigned __int8)a5 recipient:(unsigned __int8)a6 request:(unsigned __int8)a7 value:(unsigned __int16)a8 length:(unsigned __int16)size data:(id)a10 noDataTO:(unsigned int)a11 completionTO:(unsigned int)a12 withReply:(id)a13
+- (void)sendDeviceRequestTO:(unsigned __int16)o direction:(unsigned __int8)direction requestType:(unsigned __int8)type recipient:(unsigned __int8)recipient request:(unsigned __int8)request value:(unsigned __int16)value length:(unsigned __int16)size data:(id)self0 noDataTO:(unsigned int)self1 completionTO:(unsigned int)self2 withReply:(id)self3
 {
   v18 = size;
   v19 = malloc_type_malloc(size, 0x43B1E67EuLL);
-  [a10 getBytes:v19 length:size];
+  [data getBytes:v19 length:size];
   v41 = 0;
-  v36[0] = (a4 << 7) | (32 * (a5 & 3)) | a6 & 0x1F;
-  v36[1] = a7;
-  v37 = a8;
-  v38 = a3;
+  v36[0] = (direction << 7) | (32 * (type & 3)) | recipient & 0x1F;
+  v36[1] = request;
+  valueCopy = value;
+  oCopy = o;
   v39 = size;
   v20 = v19;
   v40 = v19;
-  v42 = a11;
-  v43 = a12;
+  tOCopy = tO;
+  completionTOCopy = completionTO;
   v21 = ((*self->deviceInterface)->DeviceRequestTO)(self->deviceInterface, v36);
   v28 = v21;
   if (!v21)
@@ -262,15 +262,15 @@ LABEL_11:
   v32 = [v31 initWithBytes:v40 length:v18];
   free(v30);
   v33 = _AMRestoreErrorForIOReturn(v28, 2009);
-  (*(a13 + 2))(a13, v33, v32, v29);
+  (*(reply + 2))(reply, v33, v32, v29);
 }
 
-- (void)interfaceWithClass:(unsigned __int16)a3 subclass:(unsigned __int16)a4 withReply:(id)a5
+- (void)interfaceWithClass:(unsigned __int16)class subclass:(unsigned __int16)subclass withReply:(id)reply
 {
   iterator = 0;
   v11 = -1;
-  v10[0] = a3;
-  v10[1] = a4;
+  v10[0] = class;
+  v10[1] = subclass;
   v6 = ((*self->deviceInterface)->CreateInterfaceIterator)(self->deviceInterface, v10, &iterator);
   if (v6)
   {
@@ -282,17 +282,17 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "error creating interface iterator: 0x%x\n", buf, 8u);
     }
 
-    (*(a5 + 2))(a5, 0, 0);
+    (*(reply + 2))(reply, 0, 0);
   }
 
   v8 = IOIteratorNext(iterator);
   IOObjectRelease(iterator);
   v9 = [[AMRLocalUSBInterface alloc] initWithService:v8];
   IOObjectRelease(v8);
-  (*(a5 + 2))(a5, v9, 0);
+  (*(reply + 2))(reply, v9, 0);
 }
 
-- (void)getLocationIDWithReply:(id)a3
+- (void)getLocationIDWithReply:(id)reply
 {
   v4 = 0xFFFFFFFFLL;
   v5 = -1;
@@ -306,10 +306,10 @@ LABEL_11:
     v4 = v5;
   }
 
-  (*(a3 + 2))(a3, v4, 0);
+  (*(reply + 2))(reply, v4, 0);
 }
 
-- (void)getProductIDWithReply:(id)a3
+- (void)getProductIDWithReply:(id)reply
 {
   v5 = 0;
   if (((*self->deviceInterface)->GetDeviceProduct)(self->deviceInterface, &v5))
@@ -323,10 +323,10 @@ LABEL_11:
     v4 = v5;
   }
 
-  (*(a3 + 2))(a3, v4, 0);
+  (*(reply + 2))(reply, v4, 0);
 }
 
-- (void)getDeviceReleaseNumberWithReply:(id)a3
+- (void)getDeviceReleaseNumberWithReply:(id)reply
 {
   v5 = 0;
   if (((*self->deviceInterface)->GetDeviceReleaseNumber)(self->deviceInterface, &v5))
@@ -340,24 +340,24 @@ LABEL_11:
     v4 = v5;
   }
 
-  (*(a3 + 2))(a3, v4, 0);
+  (*(reply + 2))(reply, v4, 0);
 }
 
-- (void)reEnumerateWithReply:(id)a3
+- (void)reEnumerateWithReply:(id)reply
 {
   v4 = ((*self->deviceInterface)->USBDeviceReEnumerate)(self->deviceInterface, 0);
   v5 = _AMRestoreErrorForIOReturn(v4, 2010);
-  v6 = *(a3 + 2);
+  v6 = *(reply + 2);
 
-  v6(a3, v5, 0);
+  v6(reply, v5, 0);
 }
 
-- (void)getManufacturerStringIndexForIndexWithReply:(id)a3
+- (void)getManufacturerStringIndexForIndexWithReply:(id)reply
 {
   v6 = 0;
   v4 = ((*self->deviceInterface)->USBGetManufacturerStringIndex)(self->deviceInterface, &v6);
   v5 = _AMRestoreErrorForIOReturn(v4, 2010);
-  (*(a3 + 2))(a3, v5, v6, 0);
+  (*(reply + 2))(reply, v5, v6, 0);
 }
 
 @end

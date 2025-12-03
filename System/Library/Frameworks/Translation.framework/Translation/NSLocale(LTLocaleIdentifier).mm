@@ -22,32 +22,32 @@
 
 - (id)_ltLocaleIdentifier
 {
-  v1 = [a1 localeIdentifier];
-  v2 = [v1 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  localeIdentifier = [self localeIdentifier];
+  v2 = [localeIdentifier stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   return v2;
 }
 
 + (id)lt_localeWithLTIdentifier:()LTLocaleIdentifier
 {
-  v4 = [a3 lt_localeIdentifier];
-  v5 = [a1 localeWithLocaleIdentifier:v4];
+  lt_localeIdentifier = [a3 lt_localeIdentifier];
+  v5 = [self localeWithLocaleIdentifier:lt_localeIdentifier];
 
   return v5;
 }
 
 - (id)_ltCsLocaleIdentifier
 {
-  v1 = [a1 localeIdentifier];
-  v2 = [v1 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  localeIdentifier = [self localeIdentifier];
+  v2 = [localeIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   return v2;
 }
 
 - (id)_vsLocaleIdentifier
 {
-  v1 = [a1 localeIdentifier];
-  v2 = [v1 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  localeIdentifier = [self localeIdentifier];
+  v2 = [localeIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   return v2;
 }
@@ -55,36 +55,36 @@
 - (uint64_t)_ltEqual:()LTLocaleIdentifier
 {
   v4 = a3;
-  v5 = [a1 _ltLocaleIdentifier];
-  v6 = [v4 _ltLocaleIdentifier];
+  _ltLocaleIdentifier = [self _ltLocaleIdentifier];
+  _ltLocaleIdentifier2 = [v4 _ltLocaleIdentifier];
 
-  v7 = [v5 isEqualToString:v6];
+  v7 = [_ltLocaleIdentifier isEqualToString:_ltLocaleIdentifier2];
   return v7;
 }
 
 - (id)lt_nlLanguageCode
 {
   v1 = MEMORY[0x277CBEAF8];
-  v2 = [a1 localeIdentifier];
-  v3 = [v1 baseLanguageFromLanguage:v2];
+  localeIdentifier = [self localeIdentifier];
+  v3 = [v1 baseLanguageFromLanguage:localeIdentifier];
 
   return v3;
 }
 
 + (id)lt_preferredLocales
 {
-  v0 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v1 = [v0 _ltCompactMap:&__block_literal_global_17];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v1 = [preferredLanguages _ltCompactMap:&__block_literal_global_17];
 
   return v1;
 }
 
 + (id)lt_bestMatchForPreferredLocales:()LTLocaleIdentifier fromSupportedLocales:
 {
-  v1 = [a1 lt_bestMatchesForPreferredLocales:? fromSupportedLocales:?];
-  v2 = [v1 firstObject];
+  v1 = [self lt_bestMatchesForPreferredLocales:? fromSupportedLocales:?];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 + (void)lt_bestMatchesForPreferredLocales:()LTLocaleIdentifier fromSupportedLocales:
@@ -94,14 +94,14 @@
   v6 = a4;
   if (![v5 count])
   {
-    v7 = [MEMORY[0x277CBEAF8] lt_preferredLocales];
+    lt_preferredLocales = [MEMORY[0x277CBEAF8] lt_preferredLocales];
 
-    v5 = v7;
+    v5 = lt_preferredLocales;
   }
 
   v8 = [v6 _ltCompactMap:&__block_literal_global_7_0];
   v9 = [v5 _ltCompactMap:&__block_literal_global_9_0];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v28 = v9;
   v29 = v8;
   v11 = [MEMORY[0x277CBEAF8] matchedLanguagesFromAvailableLanguages:v8 forPreferredLanguages:v9];
@@ -127,7 +127,7 @@
         v16 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:*(*(&v34 + 1) + 8 * v15)];
         if (v16)
         {
-          [v10 addObject:v16];
+          [array addObject:v16];
         }
 
         ++v15;
@@ -140,8 +140,8 @@
     while (v13);
   }
 
-  v17 = v10;
-  if (![v10 count])
+  v17 = array;
+  if (![array count])
   {
     v32 = 0u;
     v33 = 0u;
@@ -163,12 +163,12 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v30 + 1) + 8 * v22) _ltLocaleIdentifier];
-          v24 = _LTLanguageCodeToSupportedLocale(v23, v6);
+          _ltLocaleIdentifier = [*(*(&v30 + 1) + 8 * v22) _ltLocaleIdentifier];
+          v24 = _LTLanguageCodeToSupportedLocale(_ltLocaleIdentifier, v6);
 
           if (v24)
           {
-            [v10 addObject:v24];
+            [array addObject:v24];
           }
 
           ++v22;
@@ -181,9 +181,9 @@
       while (v20);
     }
 
-    if ([v10 count])
+    if ([array count])
     {
-      v17 = v10;
+      v17 = array;
     }
 
     else
@@ -204,10 +204,10 @@
   v4 = a3;
   v5 = [v3 localeWithLocaleIdentifier:@"en_US"];
   v6 = [[_LTLocalePair alloc] initWithSourceLocale:v4 targetLocale:v5];
-  v7 = [v4 _ltLocaleIdentifier];
+  _ltLocaleIdentifier = [v4 _ltLocaleIdentifier];
 
-  v8 = [v5 _ltLocaleIdentifier];
-  if ([v7 isEqualToString:v8])
+  _ltLocaleIdentifier2 = [v5 _ltLocaleIdentifier];
+  if ([_ltLocaleIdentifier isEqualToString:_ltLocaleIdentifier2])
   {
 
 LABEL_4:
@@ -215,9 +215,9 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v9 = [(_LTLocalePair *)v6 isVariantPair];
+  isVariantPair = [(_LTLocalePair *)v6 isVariantPair];
 
-  if (v9)
+  if (isVariantPair)
   {
     goto LABEL_4;
   }
@@ -239,7 +239,7 @@ LABEL_6:
   v14 = v13;
   if (!v13)
   {
-    v50 = a1;
+    selfCopy = self;
     v53 = v12;
     v55 = v11;
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -268,11 +268,11 @@ LABEL_6:
 
     v12 = v53;
     v11 = v55;
-    a1 = v50;
+    self = selfCopy;
     v13 = 0;
   }
 
-  v57 = [v11 regionCode];
+  regionCode = [v11 regionCode];
   v24 = [v14 objectForKeyedSubscript:?];
   v25 = [v24 objectForKeyedSubscript:@"source"];
   if (v25)
@@ -326,33 +326,33 @@ LABEL_6:
     v31 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v58];
     v66[0] = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:1];
-    v33 = [a1 lt_bestMatchForPreferredLocales:v32 fromSupportedLocales:v12];
+    v33 = [self lt_bestMatchForPreferredLocales:v32 fromSupportedLocales:v12];
 
     v49 = v29;
     v34 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v29];
     v65 = v34;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
-    v36 = [a1 lt_bestMatchForPreferredLocales:v35 fromSupportedLocales:v12];
+    v36 = [self lt_bestMatchForPreferredLocales:v35 fromSupportedLocales:v12];
 
-    v37 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v33 && ([v10 _ltEqual:v33] & 1) == 0)
     {
-      [v37 addObject:v33];
+      [array addObject:v33];
     }
 
     v48 = v33;
-    v51 = a1;
+    selfCopy2 = self;
     v54 = v12;
     if (v36)
     {
-      [v37 addObject:v36];
+      [array addObject:v36];
     }
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v38 = v37;
+    v38 = array;
     v39 = [v38 countByEnumeratingWithState:&v59 objects:v64 count:16];
     if (v39)
     {
@@ -387,7 +387,7 @@ LABEL_6:
       }
     }
 
-    v45 = [v51 lt_fallbackForLocale:v10];
+    v45 = [selfCopy2 lt_fallbackForLocale:v10];
 LABEL_41:
 
     v12 = v54;
@@ -399,7 +399,7 @@ LABEL_41:
 
   else
   {
-    v45 = [a1 lt_fallbackForLocale:v10];
+    v45 = [self lt_fallbackForLocale:v10];
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -413,30 +413,30 @@ LABEL_41:
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    currentLocale = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
-  v9 = v8;
-  v10 = [a1 languageCode];
-  if (!v10)
+  v9 = currentLocale;
+  languageCode = [self languageCode];
+  if (!languageCode)
   {
     a3 = 0;
     goto LABEL_39;
   }
 
-  v11 = [v9 localizedStringForLanguageCode:v10];
-  v12 = [v11 capitalizedString];
+  v11 = [v9 localizedStringForLanguageCode:languageCode];
+  capitalizedString = [v11 capitalizedString];
 
-  v13 = [a1 lt_displaySubnameForContext:a3 inTargetLocale:v7];
-  v14 = [MEMORY[0x277CBEAF8] currentLocale];
-  v15 = [v14 _ltLocaleIdentifier];
-  v16 = [v9 _ltLocaleIdentifier];
-  if (![v15 isEqualToString:v16])
+  v13 = [self lt_displaySubnameForContext:a3 inTargetLocale:v7];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  _ltLocaleIdentifier = [currentLocale2 _ltLocaleIdentifier];
+  _ltLocaleIdentifier2 = [v9 _ltLocaleIdentifier];
+  if (![_ltLocaleIdentifier isEqualToString:_ltLocaleIdentifier2])
   {
 
     goto LABEL_10;
@@ -444,13 +444,13 @@ LABEL_41:
 
   v28 = v9;
   v17 = v13;
-  v18 = [a1 _lt_isChinese];
+  _lt_isChinese = [self _lt_isChinese];
 
-  if (v18)
+  if (_lt_isChinese)
   {
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    [v14 localizedStringForKey:@"MANDARIN_TITLE" value:&stru_284DBB9B8 table:0];
-    v12 = v15 = v12;
+    currentLocale2 = [MEMORY[0x277CCA8D8] mainBundle];
+    [currentLocale2 localizedStringForKey:@"MANDARIN_TITLE" value:&stru_284DBB9B8 table:0];
+    capitalizedString = _ltLocaleIdentifier = capitalizedString;
     v13 = v17;
     v9 = v28;
 LABEL_10:
@@ -465,15 +465,15 @@ LABEL_12:
   {
     if (a3 == 2)
     {
-      if ([a1 _lt_isChinese])
+      if ([self _lt_isChinese])
       {
-        v19 = a1;
+        selfCopy2 = self;
         v20 = 4;
         goto LABEL_26;
       }
 
       v24 = v9;
-      v25 = v10;
+      v25 = languageCode;
       v26 = 4;
 LABEL_32:
       v23 = [v24 localizedStringForLanguage:v25 context:v26];
@@ -498,26 +498,26 @@ LABEL_36:
     {
       if (a3 == 3)
       {
-        if ([a1 _lt_isChinese])
+        if ([self _lt_isChinese])
         {
-          v19 = a1;
+          selfCopy2 = self;
           v20 = 5;
 LABEL_26:
-          if ([v19 _lt_shouldCapitalizeDisplayNameForContext:v20 inTargetLocale:v9])
+          if ([selfCopy2 _lt_shouldCapitalizeDisplayNameForContext:v20 inTargetLocale:v9])
           {
-            [v12 capitalizedStringWithLocale:v9];
+            [capitalizedString capitalizedStringWithLocale:v9];
           }
 
           else
           {
-            [v12 lowercaseStringWithLocale:v9];
+            [capitalizedString lowercaseStringWithLocale:v9];
           }
           v23 = ;
           goto LABEL_33;
         }
 
         v24 = v9;
-        v25 = v10;
+        v25 = languageCode;
         v26 = 5;
         goto LABEL_32;
       }
@@ -533,13 +533,13 @@ LABEL_26:
 LABEL_21:
     if ([v13 length])
     {
-      a3 = concatenate(v12, v13);
-      v21 = v12;
+      a3 = concatenate(capitalizedString, v13);
+      v21 = capitalizedString;
       goto LABEL_38;
     }
 
 LABEL_23:
-    v22 = v12;
+    v22 = capitalizedString;
     goto LABEL_36;
   }
 
@@ -549,7 +549,7 @@ LABEL_23:
   }
 
 LABEL_20:
-  v21 = v12;
+  v21 = capitalizedString;
 LABEL_38:
 
 LABEL_39:
@@ -559,17 +559,17 @@ LABEL_39:
 
 - (id)lt_displaySubnameForContext:()LTLocaleIdentifier inTargetLocale:
 {
-  v6 = a4;
-  if (!v6)
+  currentLocale = a4;
+  if (!currentLocale)
   {
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
-  v7 = [a1 regionCode];
-  v8 = [a1 languageCode];
-  v9 = v8;
+  regionCode = [self regionCode];
+  languageCode = [self languageCode];
+  v9 = languageCode;
   v10 = 0;
-  if (v7 && v8)
+  if (regionCode && languageCode)
   {
     v11 = [MEMORY[0x277CBEB98] setWithArray:&unk_284DC98B8];
     if (![v11 containsObject:v9])
@@ -580,7 +580,7 @@ LABEL_15:
       v16 = v15;
       if (!a3 && [v15 containsObject:v9])
       {
-        v17 = [v6 localizedStringForRegion:v7 context:3 short:0];
+        v17 = [currentLocale localizedStringForRegion:regionCode context:3 short:0];
 
         v12 = v17;
       }
@@ -591,8 +591,8 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    v12 = [v6 localizedStringForRegion:v7 context:3 short:1];
-    if ([a1 _lt_isTraditionalChinese] && a3 <= 4)
+    v12 = [currentLocale localizedStringForRegion:regionCode context:3 short:1];
+    if ([self _lt_isTraditionalChinese] && a3 <= 4)
     {
       if (((1 << a3) & 0xB) == 0)
       {
@@ -604,7 +604,7 @@ LABEL_15:
       v12 = v13;
     }
 
-    if (![a1 _lt_isSimplifiedChinese] || a3 > 4)
+    if (![self _lt_isSimplifiedChinese] || a3 > 4)
     {
       goto LABEL_15;
     }
@@ -627,25 +627,25 @@ LABEL_19:
 
 - (uint64_t)_lt_isTraditionalChinese
 {
-  v2 = [a1 _ltLocaleIdentifier];
-  if ([v2 isEqualToString:@"zh_TW"])
+  _ltLocaleIdentifier = [self _ltLocaleIdentifier];
+  if ([_ltLocaleIdentifier isEqualToString:@"zh_TW"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 scriptCode];
-    v5 = [v4 capitalizedString];
-    if ([v5 isEqualToString:@"HANT"])
+    scriptCode = [self scriptCode];
+    capitalizedString = [scriptCode capitalizedString];
+    if ([capitalizedString isEqualToString:@"HANT"])
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [a1 languageIdentifier];
-      v3 = [v6 containsString:@"-Hant-"];
+      languageIdentifier = [self languageIdentifier];
+      v3 = [languageIdentifier containsString:@"-Hant-"];
     }
   }
 
@@ -654,25 +654,25 @@ LABEL_19:
 
 - (uint64_t)_lt_isSimplifiedChinese
 {
-  v2 = [a1 _ltLocaleIdentifier];
-  if ([v2 isEqualToString:@"zh_CN"])
+  _ltLocaleIdentifier = [self _ltLocaleIdentifier];
+  if ([_ltLocaleIdentifier isEqualToString:@"zh_CN"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 scriptCode];
-    v5 = [v4 capitalizedString];
-    if ([v5 isEqualToString:@"HANS"])
+    scriptCode = [self scriptCode];
+    capitalizedString = [scriptCode capitalizedString];
+    if ([capitalizedString isEqualToString:@"HANS"])
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [a1 languageIdentifier];
-      v3 = [v6 containsString:@"-Hans-"];
+      languageIdentifier = [self languageIdentifier];
+      v3 = [languageIdentifier containsString:@"-Hans-"];
     }
   }
 
@@ -681,8 +681,8 @@ LABEL_19:
 
 - (uint64_t)_lt_isChinese
 {
-  v1 = [a1 languageCode];
-  v2 = [v1 hasPrefix:@"zh-"];
+  languageCode = [self languageCode];
+  v2 = [languageCode hasPrefix:@"zh-"];
 
   return v2;
 }
@@ -690,12 +690,12 @@ LABEL_19:
 - (uint64_t)_lt_shouldCapitalizeDisplayNameForContext:()LTLocaleIdentifier inTargetLocale:
 {
   v6 = a4;
-  v7 = [a1 languageCode];
-  v8 = v7;
+  languageCode = [self languageCode];
+  v8 = languageCode;
   v9 = @"und";
-  if (v7)
+  if (languageCode)
   {
-    v9 = v7;
+    v9 = languageCode;
   }
 
   v10 = v9;

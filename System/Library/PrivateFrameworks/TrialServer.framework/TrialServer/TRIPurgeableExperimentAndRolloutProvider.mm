@@ -1,44 +1,44 @@
 @interface TRIPurgeableExperimentAndRolloutProvider
-- (BOOL)_checkForPurgeableFactorsInEagerFactors:(id)a3 factorLevel:(id)a4 legacyPath:(id)a5 overriddenFactors:(id)a6 purgeableNamespaces:(id)a7 returningAssets:(id)a8;
-- (BOOL)_factorPackSetHasPurgeableFactorsWithFPSId:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5 purgeableNamespaces:(id)a6 returningAssets:(id)a7;
-- (TRIPurgeableExperimentAndRolloutProvider)initWithPaths:(id)a3 experimentDatabase:(id)a4 rolloutDatabase:(id)a5;
-- (id)purgeableExperimentAssetsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5;
-- (id)purgeableExperimentsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5;
-- (id)purgeableRolloutAssetsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5;
-- (id)purgeableRolloutsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5;
-- (void)_checkTreatmentBasedExperimentForPurgeables:(id)a3 experimentAssets:(id)a4 experimentHasNamespaceWithEagerFactors:(BOOL *)a5 experimentHasPurgeableNamespace:(BOOL)a6 overriddenFactors:(id)a7 record:(id)a8 shouldGenerateAssetPaths:(BOOL)a9 storage:(id)a10;
-- (void)_purgeablesForExperimentsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5 shouldGenerateAssetPaths:(BOOL)a6 purgeableExperiments:(id *)a7 purgeableAssets:(id *)a8;
-- (void)_purgeablesForRolloutsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5 shouldGenerateAssetPaths:(BOOL)a6 purgeableExperiments:(id *)a7 purgeableAssets:(id *)a8;
+- (BOOL)_checkForPurgeableFactorsInEagerFactors:(id)factors factorLevel:(id)level legacyPath:(id)path overriddenFactors:(id)overriddenFactors purgeableNamespaces:(id)namespaces returningAssets:(id)assets;
+- (BOOL)_factorPackSetHasPurgeableFactorsWithFPSId:(id)id eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors purgeableNamespaces:(id)namespaces returningAssets:(id)assets;
+- (TRIPurgeableExperimentAndRolloutProvider)initWithPaths:(id)paths experimentDatabase:(id)database rolloutDatabase:(id)rolloutDatabase;
+- (id)purgeableExperimentAssetsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors;
+- (id)purgeableExperimentsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors;
+- (id)purgeableRolloutAssetsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors;
+- (id)purgeableRolloutsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors;
+- (void)_checkTreatmentBasedExperimentForPurgeables:(id)purgeables experimentAssets:(id)assets experimentHasNamespaceWithEagerFactors:(BOOL *)factors experimentHasPurgeableNamespace:(BOOL)namespace overriddenFactors:(id)overriddenFactors record:(id)record shouldGenerateAssetPaths:(BOOL)paths storage:(id)self0;
+- (void)_purgeablesForExperimentsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors shouldGenerateAssetPaths:(BOOL)paths purgeableExperiments:(id *)experiments purgeableAssets:(id *)assets;
+- (void)_purgeablesForRolloutsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors shouldGenerateAssetPaths:(BOOL)paths purgeableExperiments:(id *)experiments purgeableAssets:(id *)assets;
 @end
 
 @implementation TRIPurgeableExperimentAndRolloutProvider
 
-- (TRIPurgeableExperimentAndRolloutProvider)initWithPaths:(id)a3 experimentDatabase:(id)a4 rolloutDatabase:(id)a5
+- (TRIPurgeableExperimentAndRolloutProvider)initWithPaths:(id)paths experimentDatabase:(id)database rolloutDatabase:(id)rolloutDatabase
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathsCopy = paths;
+  databaseCopy = database;
+  rolloutDatabaseCopy = rolloutDatabase;
   v15.receiver = self;
   v15.super_class = TRIPurgeableExperimentAndRolloutProvider;
   v12 = [(TRIPurgeableExperimentAndRolloutProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_paths, a3);
-    objc_storeStrong(&v13->_experimentDatabase, a4);
-    objc_storeStrong(&v13->_rolloutDatabase, a5);
+    objc_storeStrong(&v12->_paths, paths);
+    objc_storeStrong(&v13->_experimentDatabase, database);
+    objc_storeStrong(&v13->_rolloutDatabase, rolloutDatabase);
   }
 
   return v13;
 }
 
-- (id)purgeableExperimentsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5
+- (id)purgeableExperimentsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEB98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  overriddenFactorsCopy = overriddenFactors;
+  factorsCopy = factors;
+  namespacesCopy = namespaces;
   v18 = [v8 set];
   v12 = TRILogCategory_Server();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -47,7 +47,7 @@
     _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_DEFAULT, "Querying for purgeable experiments.", buf, 2u);
   }
 
-  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForExperimentsFromNamespaces:v11 eagerFactors:v10 overriddenFactors:v9 shouldGenerateAssetPaths:0 purgeableExperiments:&v18 purgeableAssets:0];
+  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForExperimentsFromNamespaces:namespacesCopy eagerFactors:factorsCopy overriddenFactors:overriddenFactorsCopy shouldGenerateAssetPaths:0 purgeableExperiments:&v18 purgeableAssets:0];
   v13 = TRILogCategory_Server();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -63,14 +63,14 @@
   return v15;
 }
 
-- (id)purgeableExperimentAssetsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5
+- (id)purgeableExperimentAssetsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v18 = [v8 dictionary];
+  overriddenFactorsCopy = overriddenFactors;
+  factorsCopy = factors;
+  namespacesCopy = namespaces;
+  dictionary = [v8 dictionary];
   v12 = TRILogCategory_Server();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,29 +78,29 @@
     _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_DEFAULT, "Querying for purgeable experiment regular (not on-demand) assets.", buf, 2u);
   }
 
-  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForExperimentsFromNamespaces:v11 eagerFactors:v10 overriddenFactors:v9 shouldGenerateAssetPaths:1 purgeableExperiments:0 purgeableAssets:&v18];
+  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForExperimentsFromNamespaces:namespacesCopy eagerFactors:factorsCopy overriddenFactors:overriddenFactorsCopy shouldGenerateAssetPaths:1 purgeableExperiments:0 purgeableAssets:&dictionary];
   v13 = TRILogCategory_Server();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v18 count];
+    v14 = [dictionary count];
     *buf = 134217984;
     v20 = v14;
     _os_log_impl(&dword_26F567000, v13, OS_LOG_TYPE_DEFAULT, "Found %lu purgeable experiment assets.", buf, 0xCu);
   }
 
-  v15 = v18;
+  v15 = dictionary;
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)purgeableRolloutsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5
+- (id)purgeableRolloutsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEB98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  overriddenFactorsCopy = overriddenFactors;
+  factorsCopy = factors;
+  namespacesCopy = namespaces;
   v18 = [v8 set];
   v12 = TRILogCategory_Server();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -109,7 +109,7 @@
     _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_DEFAULT, "Querying for purgeable rollouts.", buf, 2u);
   }
 
-  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForRolloutsFromNamespaces:v11 eagerFactors:v10 overriddenFactors:v9 shouldGenerateAssetPaths:0 purgeableExperiments:&v18 purgeableAssets:0];
+  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForRolloutsFromNamespaces:namespacesCopy eagerFactors:factorsCopy overriddenFactors:overriddenFactorsCopy shouldGenerateAssetPaths:0 purgeableExperiments:&v18 purgeableAssets:0];
   v13 = TRILogCategory_Server();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -125,14 +125,14 @@
   return v15;
 }
 
-- (id)purgeableRolloutAssetsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5
+- (id)purgeableRolloutAssetsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v18 = [v8 dictionary];
+  overriddenFactorsCopy = overriddenFactors;
+  factorsCopy = factors;
+  namespacesCopy = namespaces;
+  dictionary = [v8 dictionary];
   v12 = TRILogCategory_Server();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -140,42 +140,42 @@
     _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_DEFAULT, "Querying for purgeable rollout regular (not on-demand) assets.", buf, 2u);
   }
 
-  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForRolloutsFromNamespaces:v11 eagerFactors:v10 overriddenFactors:v9 shouldGenerateAssetPaths:1 purgeableExperiments:0 purgeableAssets:&v18];
+  [(TRIPurgeableExperimentAndRolloutProvider *)self _purgeablesForRolloutsFromNamespaces:namespacesCopy eagerFactors:factorsCopy overriddenFactors:overriddenFactorsCopy shouldGenerateAssetPaths:1 purgeableExperiments:0 purgeableAssets:&dictionary];
   v13 = TRILogCategory_Server();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v18 count];
+    v14 = [dictionary count];
     *buf = 134217984;
     v20 = v14;
     _os_log_impl(&dword_26F567000, v13, OS_LOG_TYPE_DEFAULT, "Found %lu purgeable rollout assets.", buf, 0xCu);
   }
 
-  v15 = v18;
+  v15 = dictionary;
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (void)_checkTreatmentBasedExperimentForPurgeables:(id)a3 experimentAssets:(id)a4 experimentHasNamespaceWithEagerFactors:(BOOL *)a5 experimentHasPurgeableNamespace:(BOOL)a6 overriddenFactors:(id)a7 record:(id)a8 shouldGenerateAssetPaths:(BOOL)a9 storage:(id)a10
+- (void)_checkTreatmentBasedExperimentForPurgeables:(id)purgeables experimentAssets:(id)assets experimentHasNamespaceWithEagerFactors:(BOOL *)factors experimentHasPurgeableNamespace:(BOOL)namespace overriddenFactors:(id)overriddenFactors record:(id)record shouldGenerateAssetPaths:(BOOL)paths storage:(id)self0
 {
-  v66 = a6;
+  namespaceCopy = namespace;
   v79 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a10;
-  v18 = [v16 treatmentId];
+  purgeablesCopy = purgeables;
+  assetsCopy = assets;
+  overriddenFactorsCopy = overriddenFactors;
+  recordCopy = record;
+  storageCopy = storage;
+  treatmentId = [recordCopy treatmentId];
 
-  if (v18)
+  if (treatmentId)
   {
-    v19 = [v16 treatmentId];
-    v20 = [v17 loadTreatmentWithTreatmentId:v19 isFilePresent:0];
+    treatmentId2 = [recordCopy treatmentId];
+    v20 = [storageCopy loadTreatmentWithTreatmentId:treatmentId2 isFilePresent:0];
 
     if (v20)
     {
-      v21 = [v16 namespaces];
-      v22 = [v21 count];
+      namespaces = [recordCopy namespaces];
+      v22 = [namespaces count];
 
       if (v22 != 1)
       {
@@ -187,21 +187,21 @@
         }
       }
 
-      v24 = [v16 namespaces];
-      v25 = [v24 firstObject];
-      v26 = [v25 name];
+      namespaces2 = [recordCopy namespaces];
+      firstObject = [namespaces2 firstObject];
+      name = [firstObject name];
 
-      if (v26)
+      if (name)
       {
-        log = [v15 objectForKeyedSubscript:v26];
-        v62 = v16;
-        v63 = v15;
-        v61 = v17;
-        v59 = v26;
-        if (a9)
+        log = [overriddenFactorsCopy objectForKeyedSubscript:name];
+        v62 = recordCopy;
+        v63 = overriddenFactorsCopy;
+        v61 = storageCopy;
+        v59 = name;
+        if (paths)
         {
-          v27 = [v16 treatmentId];
-          v65 = [v17 urlForFactorsWithTreatmentId:v27 namespaceName:v26];
+          treatmentId3 = [recordCopy treatmentId];
+          v65 = [storageCopy urlForFactorsWithTreatmentId:treatmentId3 namespaceName:name];
         }
 
         else
@@ -209,7 +209,7 @@
           v65 = 0;
         }
 
-        v30 = v66;
+        v30 = namespaceCopy;
         v73 = 0u;
         v74 = 0u;
         v71 = 0u;
@@ -221,7 +221,7 @@
         {
           v32 = v31;
           v70 = *v72;
-          v64 = v13;
+          v64 = purgeablesCopy;
           do
           {
             for (i = 0; i != v32; ++i)
@@ -236,42 +236,42 @@
               v36 = v35;
               if (v35)
               {
-                v37 = [v35 asset];
-                v38 = [v37 assetId];
+                asset = [v35 asset];
+                assetId = [asset assetId];
                 v39 = TRIValidateAssetId();
 
-                if (a9)
+                if (paths)
                 {
-                  v40 = [v36 path];
-                  v41 = [v40 length];
+                  path = [v36 path];
+                  v41 = [path length];
 
                   if (v41 && v39 != 0)
                   {
-                    v43 = [v14 objectForKeyedSubscript:v39];
+                    v43 = [assetsCopy objectForKeyedSubscript:v39];
                     if (v43)
                     {
-                      [v14 setObject:v43 forKeyedSubscript:v39];
+                      [assetsCopy setObject:v43 forKeyedSubscript:v39];
                     }
 
                     else
                     {
                       v44 = objc_opt_new();
-                      [v14 setObject:v44 forKeyedSubscript:v39];
+                      [assetsCopy setObject:v44 forKeyedSubscript:v39];
                     }
 
-                    v45 = [v14 objectForKeyedSubscript:v39];
-                    v46 = [v36 path];
-                    [v45 addObject:v46];
+                    v45 = [assetsCopy objectForKeyedSubscript:v39];
+                    path2 = [v36 path];
+                    [v45 addObject:path2];
 
                     v47 = [v65 triPathAsOwner:0];
-                    v48 = [v47 stringByDeletingLastPathComponent];
+                    stringByDeletingLastPathComponent = [v47 stringByDeletingLastPathComponent];
 
-                    v49 = [v36 path];
-                    [v49 lastPathComponent];
-                    v51 = v50 = v14;
+                    path3 = [v36 path];
+                    [path3 lastPathComponent];
+                    v51 = v50 = assetsCopy;
 
                     v52 = MEMORY[0x277CCACA8];
-                    v75[0] = v48;
+                    v75[0] = stringByDeletingLastPathComponent;
                     v75[1] = @"assets";
                     v75[2] = v51;
                     v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:3];
@@ -280,21 +280,21 @@
                     v55 = [v50 objectForKeyedSubscript:v39];
                     [v55 addObject:v54];
 
-                    v14 = v50;
-                    v13 = v64;
-                    v30 = v66;
+                    assetsCopy = v50;
+                    purgeablesCopy = v64;
+                    v30 = namespaceCopy;
                   }
                 }
               }
 
               if (factorIsValidRegularFileFactor(v34))
               {
-                v56 = [v34 factor];
-                v57 = [v56 name];
+                factor = [v34 factor];
+                name2 = [factor name];
 
-                if (v30 && !-[NSObject containsObject:](log, "containsObject:", v57) || [v13 containsObject:v57])
+                if (v30 && !-[NSObject containsObject:](log, "containsObject:", name2) || [purgeablesCopy containsObject:name2])
                 {
-                  *a5 = 1;
+                  *factors = 1;
                 }
               }
             }
@@ -305,11 +305,11 @@
           while (v32);
         }
 
-        v16 = v62;
-        v15 = v63;
+        recordCopy = v62;
+        overriddenFactorsCopy = v63;
         v20 = v60;
-        v17 = v61;
-        v26 = v59;
+        storageCopy = v61;
+        name = v59;
       }
 
       else
@@ -329,10 +329,10 @@
     v20 = TRILogCategory_Server();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v16 experimentDeployment];
-      v29 = [v28 experimentId];
+      experimentDeployment = [recordCopy experimentDeployment];
+      experimentId = [experimentDeployment experimentId];
       *buf = 138412290;
-      v78 = v29;
+      v78 = experimentId;
       _os_log_error_impl(&dword_26F567000, v20, OS_LOG_TYPE_ERROR, "No treatment Id for experiment with experiment id: %@", buf, 0xCu);
     }
   }
@@ -340,13 +340,13 @@
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_purgeablesForExperimentsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5 shouldGenerateAssetPaths:(BOOL)a6 purgeableExperiments:(id *)a7 purgeableAssets:(id *)a8
+- (void)_purgeablesForExperimentsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors shouldGenerateAssetPaths:(BOOL)paths purgeableExperiments:(id *)experiments purgeableAssets:(id *)assets
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if ([v14 count] || objc_msgSend(v15, "count"))
+  pathsCopy = paths;
+  namespacesCopy = namespaces;
+  factorsCopy = factors;
+  overriddenFactorsCopy = overriddenFactors;
+  if ([namespacesCopy count] || objc_msgSend(factorsCopy, "count"))
   {
     *buf = 0;
     v51[0] = buf;
@@ -360,7 +360,7 @@
     v48[2] = __Block_byref_object_copy__4;
     v48[3] = __Block_byref_object_dispose__4;
     v49 = 0;
-    if (v10)
+    if (pathsCopy)
     {
       v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v18 = v51;
@@ -387,34 +387,34 @@
     v34 = 3221225472;
     v35 = __177__TRIPurgeableExperimentAndRolloutProvider__purgeablesForExperimentsFromNamespaces_eagerFactors_overriddenFactors_shouldGenerateAssetPaths_purgeableExperiments_purgeableAssets___block_invoke;
     v36 = &unk_279DDFEC8;
-    v37 = v14;
-    v44 = v10;
-    v38 = v15;
-    v39 = self;
-    v40 = v16;
+    v37 = namespacesCopy;
+    v44 = pathsCopy;
+    v38 = factorsCopy;
+    selfCopy = self;
+    v40 = overriddenFactorsCopy;
     v41 = v45;
     v42 = buf;
     v43 = &v47;
     [(TRIExperimentDatabase *)experimentDatabase enumerateExperimentRecordsWithBlock:&v33];
-    if (a8)
+    if (assets)
     {
       v22 = *(v51[0] + 40);
       if (v22)
       {
         v23 = [v22 copy];
-        v24 = *a8;
-        *a8 = v23;
+        v24 = *assets;
+        *assets = v23;
       }
     }
 
-    if (a7)
+    if (experiments)
     {
       v25 = *(v48[0] + 40);
       if (v25)
       {
         v26 = [v25 copy];
-        v27 = *a7;
-        *a7 = v26;
+        v27 = *experiments;
+        *experiments = v26;
       }
     }
 
@@ -433,18 +433,18 @@
     _os_log_impl(&dword_26F567000, v29, OS_LOG_TYPE_DEFAULT, "Stopping search for purgeable experiments as there are no purgeable namespaces or factors", buf, 2u);
   }
 
-  if (a8)
+  if (assets)
   {
     v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v31 = *a8;
-    *a8 = v30;
+    v31 = *assets;
+    *assets = v30;
   }
 
-  if (a7)
+  if (experiments)
   {
     v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v28 = *a7;
-    *a7 = v32;
+    v28 = *experiments;
+    *experiments = v32;
 LABEL_13:
   }
 }
@@ -673,56 +673,56 @@ void __177__TRIPurgeableExperimentAndRolloutProvider__purgeablesForExperimentsFr
   [v9 unionSet:v6];
 }
 
-- (BOOL)_checkForPurgeableFactorsInEagerFactors:(id)a3 factorLevel:(id)a4 legacyPath:(id)a5 overriddenFactors:(id)a6 purgeableNamespaces:(id)a7 returningAssets:(id)a8
+- (BOOL)_checkForPurgeableFactorsInEagerFactors:(id)factors factorLevel:(id)level legacyPath:(id)path overriddenFactors:(id)overriddenFactors purgeableNamespaces:(id)namespaces returningAssets:(id)assets
 {
   v55[3] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = fileFromFactor(v14);
+  factorsCopy = factors;
+  levelCopy = level;
+  pathCopy = path;
+  overriddenFactorsCopy = overriddenFactors;
+  namespacesCopy = namespaces;
+  assetsCopy = assets;
+  v19 = fileFromFactor(levelCopy);
   v20 = v19;
-  v54 = v18;
+  v54 = assetsCopy;
   if (v19)
   {
-    v21 = [v19 asset];
-    v22 = [v21 assetId];
+    asset = [v19 asset];
+    assetId = [asset assetId];
     v23 = TRIValidateAssetId();
 
-    if (v18)
+    if (assetsCopy)
     {
-      v24 = [v20 path];
-      v25 = [v24 length];
+      path = [v20 path];
+      v25 = [path length];
 
       if (v25)
       {
         if (v23)
         {
-          v26 = [v18 objectForKeyedSubscript:v23];
+          v26 = [assetsCopy objectForKeyedSubscript:v23];
           if (v26)
           {
-            [v18 setObject:v26 forKeyedSubscript:v23];
+            [assetsCopy setObject:v26 forKeyedSubscript:v23];
           }
 
           else
           {
             v27 = objc_opt_new();
-            [v18 setObject:v27 forKeyedSubscript:v23];
+            [assetsCopy setObject:v27 forKeyedSubscript:v23];
           }
 
-          v28 = [v18 objectForKeyedSubscript:v23];
-          v29 = [v20 path];
-          [v28 addObject:v29];
+          v28 = [assetsCopy objectForKeyedSubscript:v23];
+          path2 = [v20 path];
+          [v28 addObject:path2];
 
-          if ([v15 length])
+          if ([pathCopy length])
           {
-            v30 = [v20 path];
-            [v30 lastPathComponent];
-            v31 = v17;
-            v32 = v15;
-            v34 = v33 = v13;
+            path3 = [v20 path];
+            [path3 lastPathComponent];
+            v31 = namespacesCopy;
+            v32 = pathCopy;
+            v34 = v33 = factorsCopy;
 
             v35 = MEMORY[0x277CCACA8];
             v55[0] = v32;
@@ -734,50 +734,50 @@ void __177__TRIPurgeableExperimentAndRolloutProvider__purgeablesForExperimentsFr
             v38 = [v54 objectForKeyedSubscript:v23];
             [v38 addObject:v37];
 
-            v13 = v33;
-            v15 = v32;
-            v17 = v31;
+            factorsCopy = v33;
+            pathCopy = v32;
+            namespacesCopy = v31;
           }
         }
       }
     }
   }
 
-  if (factorIsValidRegularFileFactor(v14))
+  if (factorIsValidRegularFileFactor(levelCopy))
   {
-    v53 = v13;
-    v39 = [v14 factor];
-    v40 = [v39 namespaceName];
+    v53 = factorsCopy;
+    factor = [levelCopy factor];
+    namespaceName = [factor namespaceName];
 
-    v41 = [v14 factor];
-    v42 = [v41 name];
+    factor2 = [levelCopy factor];
+    name = [factor2 name];
 
-    v43 = [v17 containsObject:v40];
+    v43 = [namespacesCopy containsObject:namespaceName];
     if (v43)
     {
-      v44 = [v16 objectForKeyedSubscript:v40];
-      if (![v44 containsObject:v42])
+      v44 = [overriddenFactorsCopy objectForKeyedSubscript:namespaceName];
+      if (![v44 containsObject:name])
       {
         v49 = 1;
 LABEL_19:
 
 LABEL_20:
-        v13 = v53;
+        factorsCopy = v53;
         goto LABEL_21;
       }
 
       v52 = v44;
     }
 
-    [v53 objectForKeyedSubscript:v40];
-    v45 = v17;
-    v46 = v16;
-    v48 = v47 = v15;
-    v49 = [v48 containsObject:v42];
+    [v53 objectForKeyedSubscript:namespaceName];
+    v45 = namespacesCopy;
+    v46 = overriddenFactorsCopy;
+    v48 = v47 = pathCopy;
+    v49 = [v48 containsObject:name];
 
-    v15 = v47;
-    v16 = v46;
-    v17 = v45;
+    pathCopy = v47;
+    overriddenFactorsCopy = v46;
+    namespacesCopy = v45;
     v44 = v52;
     if (!v43)
     {
@@ -794,13 +794,13 @@ LABEL_21:
   return v49;
 }
 
-- (void)_purgeablesForRolloutsFromNamespaces:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5 shouldGenerateAssetPaths:(BOOL)a6 purgeableExperiments:(id *)a7 purgeableAssets:(id *)a8
+- (void)_purgeablesForRolloutsFromNamespaces:(id)namespaces eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors shouldGenerateAssetPaths:(BOOL)paths purgeableExperiments:(id *)experiments purgeableAssets:(id *)assets
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if ([v14 count] || objc_msgSend(v15, "count"))
+  pathsCopy = paths;
+  namespacesCopy = namespaces;
+  factorsCopy = factors;
+  overriddenFactorsCopy = overriddenFactors;
+  if ([namespacesCopy count] || objc_msgSend(factorsCopy, "count"))
   {
     *buf = 0;
     v45[0] = buf;
@@ -814,7 +814,7 @@ LABEL_21:
     v42[2] = __Block_byref_object_copy__4;
     v42[3] = __Block_byref_object_dispose__4;
     v43 = 0;
-    if (v10)
+    if (pathsCopy)
     {
       v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v18 = v45;
@@ -834,34 +834,34 @@ LABEL_21:
     v33[1] = 3221225472;
     v33[2] = __174__TRIPurgeableExperimentAndRolloutProvider__purgeablesForRolloutsFromNamespaces_eagerFactors_overriddenFactors_shouldGenerateAssetPaths_purgeableExperiments_purgeableAssets___block_invoke;
     v33[3] = &unk_279DDFEF0;
-    v34 = v14;
-    v40 = v10;
-    v35 = v15;
-    v36 = self;
-    v37 = v16;
+    v34 = namespacesCopy;
+    v40 = pathsCopy;
+    v35 = factorsCopy;
+    selfCopy = self;
+    v37 = overriddenFactorsCopy;
     v38 = buf;
     v39 = &v41;
     v21 = MEMORY[0x2743948D0](v33);
     [(TRIRolloutDatabase *)self->_rolloutDatabase enumerateRecordsUsingTransaction:0 block:v21];
-    if (a8)
+    if (assets)
     {
       v22 = *(v45[0] + 40);
       if (v22)
       {
         v23 = [v22 copy];
-        v24 = *a8;
-        *a8 = v23;
+        v24 = *assets;
+        *assets = v23;
       }
     }
 
-    if (a7)
+    if (experiments)
     {
       v25 = *(v42[0] + 40);
       if (v25)
       {
         v26 = [v25 copy];
-        v27 = *a7;
-        *a7 = v26;
+        v27 = *experiments;
+        *experiments = v26;
       }
     }
 
@@ -878,18 +878,18 @@ LABEL_21:
     _os_log_impl(&dword_26F567000, v29, OS_LOG_TYPE_DEFAULT, "Stopping search for purgeable rollouts as there are no purgeable namespaces or factors", buf, 2u);
   }
 
-  if (a8)
+  if (assets)
   {
     v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v31 = *a8;
-    *a8 = v30;
+    v31 = *assets;
+    *assets = v30;
   }
 
-  if (a7)
+  if (experiments)
   {
     v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v28 = *a7;
-    *a7 = v32;
+    v28 = *experiments;
+    *experiments = v32;
 LABEL_13:
   }
 }
@@ -1056,13 +1056,13 @@ void __174__TRIPurgeableExperimentAndRolloutProvider__purgeablesForRolloutsFromN
   [v9 unionSet:v6];
 }
 
-- (BOOL)_factorPackSetHasPurgeableFactorsWithFPSId:(id)a3 eagerFactors:(id)a4 overriddenFactors:(id)a5 purgeableNamespaces:(id)a6 returningAssets:(id)a7
+- (BOOL)_factorPackSetHasPurgeableFactorsWithFPSId:(id)id eagerFactors:(id)factors overriddenFactors:(id)overriddenFactors purgeableNamespaces:(id)namespaces returningAssets:(id)assets
 {
-  v27 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  factorsCopy = factors;
+  overriddenFactorsCopy = overriddenFactors;
+  namespacesCopy = namespaces;
+  assetsCopy = assets;
   v17 = [[TRIFactorPackSetStorage alloc] initWithPaths:self->_paths];
   v18 = [[TRIFactorPackStorage alloc] initWithPaths:self->_paths];
   v19 = [[TRIFBFactorPackStorage alloc] initWithPaths:self->_paths];
@@ -1078,22 +1078,22 @@ void __174__TRIPurgeableExperimentAndRolloutProvider__purgeablesForRolloutsFromN
   v28[4] = self;
   v20 = v19;
   v29 = v20;
-  v21 = v13;
+  v21 = factorsCopy;
   v30 = v21;
-  v22 = v14;
+  v22 = overriddenFactorsCopy;
   v31 = v22;
-  v23 = v15;
+  v23 = namespacesCopy;
   v32 = v23;
-  v24 = v16;
+  v24 = assetsCopy;
   v33 = v24;
   v35 = &v37;
   v25 = v18;
   v34 = v25;
-  [(TRIFactorPackSetStorage *)v17 enumerateFactorPacksForFactorPackSet:v27 usingLegacyPaths:0 withBlock:v28];
-  LOBYTE(v14) = *(v38 + 24);
+  [(TRIFactorPackSetStorage *)v17 enumerateFactorPacksForFactorPackSet:idCopy usingLegacyPaths:0 withBlock:v28];
+  LOBYTE(overriddenFactorsCopy) = *(v38 + 24);
 
   _Block_object_dispose(&v37, 8);
-  return v14;
+  return overriddenFactorsCopy;
 }
 
 void __154__TRIPurgeableExperimentAndRolloutProvider__factorPackSetHasPurgeableFactorsWithFPSId_eagerFactors_overriddenFactors_purgeableNamespaces_returningAssets___block_invoke(uint64_t a1, void *a2, void *a3)

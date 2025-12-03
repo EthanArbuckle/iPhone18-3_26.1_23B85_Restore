@@ -1,31 +1,31 @@
 @interface PDCFileBackedConsentStore
 - (NSSet)consentedBundleIdentifiers;
-- (PDCFileBackedConsentStore)initWithConsentStoreURL:(id)a3;
-- (id)userConsentedRegulatoryDisclosureVersionForBundleIdentifier:(id)a3;
-- (id)writeUserConsentedRegulatoryDisclosureVersion:(id)a3 forBundleIdentifier:(id)a4;
+- (PDCFileBackedConsentStore)initWithConsentStoreURL:(id)l;
+- (id)userConsentedRegulatoryDisclosureVersionForBundleIdentifier:(id)identifier;
+- (id)writeUserConsentedRegulatoryDisclosureVersion:(id)version forBundleIdentifier:(id)identifier;
 @end
 
 @implementation PDCFileBackedConsentStore
 
-- (PDCFileBackedConsentStore)initWithConsentStoreURL:(id)a3
+- (PDCFileBackedConsentStore)initWithConsentStoreURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = PDCFileBackedConsentStore;
   v6 = [(PDCFileBackedConsentStore *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeURL, a3);
+    objc_storeStrong(&v6->_storeURL, l);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)userConsentedRegulatoryDisclosureVersionForBundleIdentifier:(id)a3
+- (id)userConsentedRegulatoryDisclosureVersionForBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(PDCFileBackedConsentStore *)self consentRecordURLForBundleIdentifier:?];
     if (v3)
@@ -64,18 +64,18 @@
   return v7;
 }
 
-- (id)writeUserConsentedRegulatoryDisclosureVersion:(id)a3 forBundleIdentifier:(id)a4
+- (id)writeUserConsentedRegulatoryDisclosureVersion:(id)version forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDCFileBackedConsentStore *)self consentRecordURLForBundleIdentifier:v7];
+  versionCopy = version;
+  identifierCopy = identifier;
+  v8 = [(PDCFileBackedConsentStore *)self consentRecordURLForBundleIdentifier:identifierCopy];
   v9 = v8;
-  if (v6)
+  if (versionCopy)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v9 URLByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    uRLByDeletingLastPathComponent = [v9 URLByDeletingLastPathComponent];
     v19 = 0;
-    [v10 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v19];
+    [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v19];
     v12 = v19;
 
     if (v12)
@@ -84,7 +84,7 @@
     }
 
     v18 = 0;
-    [v6 writeToURL:v9 atomically:1 encoding:4 error:&v18];
+    [versionCopy writeToURL:v9 atomically:1 encoding:4 error:&v18];
   }
 
   else if (unlink([v8 fileSystemRepresentation]))
@@ -98,11 +98,11 @@
     }
   }
 
-  v14 = [(PDCFileBackedConsentStore *)self changeObserver];
-  v15 = v14;
-  if (v14)
+  changeObserver = [(PDCFileBackedConsentStore *)self changeObserver];
+  v15 = changeObserver;
+  if (changeObserver)
   {
-    (*(v14 + 16))(v14, self, v7, v6);
+    (*(changeObserver + 16))(changeObserver, self, identifierCopy, versionCopy);
   }
 
   v12 = 0;
@@ -114,8 +114,8 @@ LABEL_9:
 - (NSSet)consentedBundleIdentifiers
 {
   v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:{-[NSURL fileSystemRepresentation](self->_storeURL, "fileSystemRepresentation")}];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 contentsOfDirectoryAtPath:v2 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager contentsOfDirectoryAtPath:v2 error:0];
 
   v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
 

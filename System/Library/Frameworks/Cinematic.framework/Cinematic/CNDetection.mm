@@ -1,14 +1,14 @@
 @interface CNDetection
-+ (id)_copyDetectionFromInternal:(id)a3;
-+ (id)_copyDetectionsFromInternal:(id)a3;
-+ (id)_copyInternalFromDetections:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_copyDetectionFromInternal:(id)internal;
++ (id)_copyDetectionsFromInternal:(id)internal;
++ (id)_copyInternalFromDetections:(id)detections;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)normalizedRect;
 - (CMTime)time;
 - (CNDetection)initWithTime:(CMTime *)time detectionType:(CNDetectionType)detectionType normalizedRect:(CGRect)normalizedRect focusDisparity:(float)focusDisparity;
-- (id)_initCopyingInternalDetection:(id)a3;
-- (id)_initTakingInternalDetection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initCopyingInternalDetection:(id)detection;
+- (id)_initTakingInternalDetection:(id)detection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -56,17 +56,17 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CNDetection *)self internalDetection];
-    v7 = [v5 internalDetection];
+    v5 = equalCopy;
+    internalDetection = [(CNDetection *)self internalDetection];
+    internalDetection2 = [v5 internalDetection];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [internalDetection isEqual:internalDetection2];
   }
 
   else
@@ -79,13 +79,13 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CNDetection *)self internalDetection];
-  v3 = [v2 hash];
+  internalDetection = [(CNDetection *)self internalDetection];
+  v3 = [internalDetection hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   internalDetection = self->_internalDetection;
@@ -93,48 +93,48 @@
   return [v4 _initCopyingInternalDetection:internalDetection];
 }
 
-- (id)_initTakingInternalDetection:(id)a3
+- (id)_initTakingInternalDetection:(id)detection
 {
-  v5 = a3;
+  detectionCopy = detection;
   v9.receiver = self;
   v9.super_class = CNDetection;
   v6 = [(CNDetection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalDetection, a3);
+    objc_storeStrong(&v6->_internalDetection, detection);
     v7->_creationHash = [(CNDetection *)v7 hash];
   }
 
   return v7;
 }
 
-- (id)_initCopyingInternalDetection:(id)a3
+- (id)_initCopyingInternalDetection:(id)detection
 {
-  v4 = [a3 copy];
+  v4 = [detection copy];
   v5 = [(CNDetection *)self _initTakingInternalDetection:v4];
 
   return v5;
 }
 
-+ (id)_copyDetectionFromInternal:(id)a3
++ (id)_copyDetectionFromInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initCopyingInternalDetection:v4];
+  internalCopy = internal;
+  v5 = [[self alloc] _initCopyingInternalDetection:internalCopy];
 
   return v5;
 }
 
-+ (id)_copyDetectionsFromInternal:(id)a3
++ (id)_copyDetectionsFromInternal:(id)internal
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  internalCopy = internal;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = internalCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -150,8 +150,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _copyDetectionFromInternal:{*(*(&v15 + 1) + 8 * v10), v15}];
-        [v5 addObject:v11];
+        v11 = [self _copyDetectionFromInternal:{*(*(&v15 + 1) + 8 * v10), v15}];
+        [array addObject:v11];
 
         ++v10;
       }
@@ -163,21 +163,21 @@
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-+ (id)_copyInternalFromDetections:(id)a3
++ (id)_copyInternalFromDetections:(id)detections
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  detectionsCopy = detections;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = detectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -193,9 +193,9 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) internalDetection];
-        v11 = [v10 copy];
-        [v4 addObject:v11];
+        internalDetection = [*(*(&v15 + 1) + 8 * v9) internalDetection];
+        v11 = [internalDetection copy];
+        [array addObject:v11];
 
         ++v9;
       }
@@ -207,7 +207,7 @@
     while (v7);
   }
 
-  v12 = [v4 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }

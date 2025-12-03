@@ -1,11 +1,11 @@
 @interface DSReadOnlyResourceSharingDetailController
-+ (id)_removeDisplayedFromArray:(id)a3;
-+ (id)initWithSharingPeople:(id)a3 startingViewController:(id)a4 delegate:(id)a5;
-+ (id)initWithSharingTypes:(id)a3 startingViewController:(id)a4 delegate:(id)a5;
++ (id)_removeDisplayedFromArray:(id)array;
++ (id)initWithSharingPeople:(id)people startingViewController:(id)controller delegate:(id)delegate;
++ (id)initWithSharingTypes:(id)types startingViewController:(id)controller delegate:(id)delegate;
 + (void)initialize;
 - (DSNavigationDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_finishReviewingReadOnlySharing;
 - (void)_learnMorePressed;
 - (void)_pushNextPane;
@@ -17,7 +17,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.DigitalSeparation", "DSReadOnlyResourceSharingDetail");
     v3 = DSLogReadOnlySharingDetail;
@@ -27,68 +27,68 @@
   }
 }
 
-+ (id)initWithSharingTypes:(id)a3 startingViewController:(id)a4 delegate:(id)a5
++ (id)initWithSharingTypes:(id)types startingViewController:(id)controller delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 firstObject];
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  typesCopy = types;
+  firstObject = [typesCopy firstObject];
   v12 = [DSReadOnlyResourceSharingDetailController alloc];
-  v13 = [v11 displayName];
-  v14 = [v11 localizedDetailText];
-  v15 = [v11 iconForDetail];
-  v16 = [(DSTableWelcomeController *)v12 initWithTitle:v13 detailText:v14 icon:v15 adoptTableViewScrollView:0 shouldShowSearchBar:0];
+  displayName = [firstObject displayName];
+  localizedDetailText = [firstObject localizedDetailText];
+  iconForDetail = [firstObject iconForDetail];
+  v16 = [(DSTableWelcomeController *)v12 initWithTitle:displayName detailText:localizedDetailText icon:iconForDetail adoptTableViewScrollView:0 shouldShowSearchBar:0];
 
-  v17 = [a1 _removeDisplayedFromArray:v10];
+  v17 = [self _removeDisplayedFromArray:typesCopy];
 
   [(DSReadOnlyResourceSharingDetailController *)v16 setRemainingSharingTypes:v17];
-  [(DSReadOnlyResourceSharingDetailController *)v16 setSharingType:v11];
-  [(DSReadOnlyResourceSharingDetailController *)v16 setStartingViewController:v9];
+  [(DSReadOnlyResourceSharingDetailController *)v16 setSharingType:firstObject];
+  [(DSReadOnlyResourceSharingDetailController *)v16 setStartingViewController:controllerCopy];
 
-  [(DSReadOnlyResourceSharingDetailController *)v16 setDetailDelegate:v8];
+  [(DSReadOnlyResourceSharingDetailController *)v16 setDetailDelegate:delegateCopy];
 
   return v16;
 }
 
-+ (id)initWithSharingPeople:(id)a3 startingViewController:(id)a4 delegate:(id)a5
++ (id)initWithSharingPeople:(id)people startingViewController:(id)controller delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 firstObject];
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  peopleCopy = people;
+  firstObject = [peopleCopy firstObject];
   v11 = DSUILocStringForKey(@"READ_ONLY_SHARING_BY_PERSON_DETAIL_FORMAT");
   v12 = [DSUIUtilities valueForUnfinalizedString:v11];
 
   v13 = [DSReadOnlyResourceSharingDetailController alloc];
-  v14 = [v10 displayName];
+  displayName = [firstObject displayName];
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v10 displayGivenName];
-  v17 = [v15 stringWithFormat:v12, v16];
-  v18 = [v10 iconForDetail];
-  v19 = [(DSTableWelcomeController *)v13 initWithTitle:v14 detailText:v17 icon:v18 adoptTableViewScrollView:0 shouldShowSearchBar:0];
+  displayGivenName = [firstObject displayGivenName];
+  v17 = [v15 stringWithFormat:v12, displayGivenName];
+  iconForDetail = [firstObject iconForDetail];
+  v19 = [(DSTableWelcomeController *)v13 initWithTitle:displayName detailText:v17 icon:iconForDetail adoptTableViewScrollView:0 shouldShowSearchBar:0];
 
-  v20 = [a1 _removeDisplayedFromArray:v9];
+  v20 = [self _removeDisplayedFromArray:peopleCopy];
 
   [(DSReadOnlyResourceSharingDetailController *)v19 setRemainingSharingPeople:v20];
-  [(DSReadOnlyResourceSharingDetailController *)v19 setSharingPerson:v10];
-  [(DSReadOnlyResourceSharingDetailController *)v19 setStartingViewController:v8];
+  [(DSReadOnlyResourceSharingDetailController *)v19 setSharingPerson:firstObject];
+  [(DSReadOnlyResourceSharingDetailController *)v19 setStartingViewController:controllerCopy];
 
-  [(DSReadOnlyResourceSharingDetailController *)v19 setDetailDelegate:v7];
+  [(DSReadOnlyResourceSharingDetailController *)v19 setDetailDelegate:delegateCopy];
 
   return v19;
 }
 
-+ (id)_removeDisplayedFromArray:(id)a3
++ (id)_removeDisplayedFromArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  arrayCopy = array;
+  if ([arrayCopy count] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+    v4 = [arrayCopy subarrayWithRange:{1, objc_msgSend(arrayCopy, "count") - 1}];
   }
 
   return v4;
@@ -99,16 +99,16 @@
   v14.receiver = self;
   v14.super_class = DSReadOnlyResourceSharingDetailController;
   [(DSTableWelcomeController *)&v14 viewDidLoad];
-  v3 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
-  if (v3)
+  remainingSharingTypes = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
+  if (remainingSharingTypes)
   {
 
     goto LABEL_4;
   }
 
-  v4 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
+  remainingSharingPeople = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
 
-  if (v4)
+  if (remainingSharingPeople)
   {
 LABEL_4:
     v5 = DSUILocStringForKey(@"CONTINUE");
@@ -119,9 +119,9 @@ LABEL_4:
     v8 = [DSUIUtilities setUpLinkButtonForController:self title:v7 target:self selector:sel__finishReviewingReadOnlySharing];
     [(DSTableWelcomeController *)self setLinkButton:v8];
 
-    v9 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+    sharingType = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
 
-    if (v9)
+    if (sharingType)
     {
       v10 = [DSUIUtilities setUpLearnMoreButtonForController:self selector:sel__learnMorePressed];
     }
@@ -147,36 +147,36 @@ LABEL_4:
 
 - (void)_pushNextPane
 {
-  v3 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
+  remainingSharingTypes = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
 
-  if (v3)
+  if (remainingSharingTypes)
   {
-    v4 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
-    v5 = [(DSReadOnlyResourceSharingDetailController *)self startingViewController];
-    v6 = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
-    v15 = [DSReadOnlyResourceSharingDetailController initWithSharingTypes:v4 startingViewController:v5 delegate:v6];
+    remainingSharingTypes2 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
+    startingViewController = [(DSReadOnlyResourceSharingDetailController *)self startingViewController];
+    detailDelegate = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
+    v15 = [DSReadOnlyResourceSharingDetailController initWithSharingTypes:remainingSharingTypes2 startingViewController:startingViewController delegate:detailDelegate];
 
-    v7 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
+    remainingSharingTypes3 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingTypes];
 LABEL_5:
-    v12 = v7;
-    [v15 setIsFinishedReviewing:{objc_msgSend(v7, "count") == 1}];
+    v12 = remainingSharingTypes3;
+    [v15 setIsFinishedReviewing:{objc_msgSend(remainingSharingTypes3, "count") == 1}];
 
-    v13 = [(DSReadOnlyResourceSharingDetailController *)self navigationController];
-    [v13 pushViewController:v15 animated:1];
+    navigationController = [(DSReadOnlyResourceSharingDetailController *)self navigationController];
+    [navigationController pushViewController:v15 animated:1];
 
     return;
   }
 
-  v8 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
+  remainingSharingPeople = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
 
-  if (v8)
+  if (remainingSharingPeople)
   {
-    v9 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
-    v10 = [(DSReadOnlyResourceSharingDetailController *)self startingViewController];
-    v11 = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
-    v15 = [DSReadOnlyResourceSharingDetailController initWithSharingPeople:v9 startingViewController:v10 delegate:v11];
+    remainingSharingPeople2 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
+    startingViewController2 = [(DSReadOnlyResourceSharingDetailController *)self startingViewController];
+    detailDelegate2 = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
+    v15 = [DSReadOnlyResourceSharingDetailController initWithSharingPeople:remainingSharingPeople2 startingViewController:startingViewController2 delegate:detailDelegate2];
 
-    v7 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
+    remainingSharingTypes3 = [(DSReadOnlyResourceSharingDetailController *)self remainingSharingPeople];
     goto LABEL_5;
   }
 
@@ -192,73 +192,73 @@ LABEL_5:
 
 - (void)_removeFromView
 {
-  v3 = [(DSReadOnlyResourceSharingDetailController *)self navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(DSReadOnlyResourceSharingDetailController *)self navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)_finishReviewingReadOnlySharing
 {
-  v2 = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
-  [v2 reviewReadOnlySharingCompleted];
+  detailDelegate = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
+  [detailDelegate reviewReadOnlySharingCompleted];
 }
 
 - (void)_learnMorePressed
 {
-  v3 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+  sharingType = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
 
-  if (v3)
+  if (sharingType)
   {
-    v5 = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
-    v4 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
-    [v5 learnMorePressedForSharingType:v4];
+    detailDelegate = [(DSReadOnlyResourceSharingDetailController *)self detailDelegate];
+    sharingType2 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+    [detailDelegate learnMorePressedForSharingType:sharingType2];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
-  if (v6)
+  pathCopy = path;
+  sharingType = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+  if (sharingType)
   {
 
 LABEL_4:
-    v8 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+    sharingType2 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
 
-    if (v8)
+    if (sharingType2)
     {
-      v9 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
-      v10 = [v9 allPeople];
-      v11 = [v10 objectAtIndex:{objc_msgSend(v5, "row")}];
+      sharingType3 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+      allPeople = [sharingType3 allPeople];
+      v11 = [allPeople objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       v12 = MEMORY[0x277D054C0];
-      v13 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
-      v14 = [v13 source];
-      v15 = [v14 name];
-      v16 = [v12 sourceDescriptorForSource:v15];
+      sharingType4 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+      source = [sharingType4 source];
+      name = [source name];
+      v16 = [v12 sourceDescriptorForSource:name];
 
-      v17 = [(OBTableWelcomeController *)self tableView];
-      v18 = [v11 displayName];
-      v19 = [v16 localizedStopByPerson:v11];
-      v20 = [v11 iconForTable];
-      v21 = [DSIconTableViewCell iconTableViewCellFromTableView:v17 withText:v18 detail:v19 icon:v20];
+      tableView = [(OBTableWelcomeController *)self tableView];
+      displayName = [v11 displayName];
+      sharingPerson2 = [v16 localizedStopByPerson:v11];
+      iconForTable = [v11 iconForTable];
+      v21 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:displayName detail:sharingPerson2 icon:iconForTable];
     }
 
     else
     {
-      v22 = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
-      v23 = [v22 allSources];
-      v11 = [v23 objectAtIndex:{objc_msgSend(v5, "row")}];
+      sharingPerson = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
+      allSources = [sharingPerson allSources];
+      v11 = [allSources objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       v24 = MEMORY[0x277D054C0];
-      v25 = [v11 name];
-      v16 = [v24 sourceDescriptorForSource:v25];
+      name2 = [v11 name];
+      v16 = [v24 sourceDescriptorForSource:name2];
 
-      v17 = [(OBTableWelcomeController *)self tableView];
-      v18 = [v16 localizedName];
-      v19 = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
-      v20 = [v16 localizedStopByPerson:v19];
-      v26 = [v16 iconForTable];
-      v21 = [DSIconTableViewCell iconTableViewCellFromTableView:v17 withText:v18 detail:v20 icon:v26];
+      tableView = [(OBTableWelcomeController *)self tableView];
+      displayName = [v16 localizedName];
+      sharingPerson2 = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
+      iconForTable = [v16 localizedStopByPerson:sharingPerson2];
+      iconForTable2 = [v16 iconForTable];
+      v21 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:displayName detail:iconForTable icon:iconForTable2];
     }
 
     [v21 setAccessoryType:0];
@@ -266,9 +266,9 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v7 = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
+  sharingPerson3 = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
 
-  if (v7)
+  if (sharingPerson3)
   {
     goto LABEL_4;
   }
@@ -285,27 +285,27 @@ LABEL_8:
   return v21;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(DSReadOnlyResourceSharingDetailController *)self sharingType:a3];
+  v5 = [(DSReadOnlyResourceSharingDetailController *)self sharingType:view];
 
   if (v5)
   {
-    v6 = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
-    v7 = [v6 allPeople];
+    sharingType = [(DSReadOnlyResourceSharingDetailController *)self sharingType];
+    allPeople = [sharingType allPeople];
 LABEL_5:
-    v9 = v7;
-    v10 = [v7 count];
+    v9 = allPeople;
+    v10 = [allPeople count];
 
     return v10;
   }
 
-  v8 = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
+  sharingPerson = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
 
-  if (v8)
+  if (sharingPerson)
   {
-    v6 = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
-    v7 = [v6 allSources];
+    sharingType = [(DSReadOnlyResourceSharingDetailController *)self sharingPerson];
+    allPeople = [sharingType allSources];
     goto LABEL_5;
   }
 

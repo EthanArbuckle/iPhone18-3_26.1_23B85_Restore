@@ -1,11 +1,11 @@
 @interface NCBacklightAssertionManager
 + (id)sharedManager;
 - (NCBacklightAssertionManager)init;
-- (void)assertion:(id)a3 didCancelWithError:(id)a4;
-- (void)assertion:(id)a3 didFailToAcquireWithError:(id)a4;
-- (void)assertionWasAcquired:(id)a3;
-- (void)queue_acquireAssertionWithReason:(unint64_t)a3 onScene:(id)a4 completion:(id)a5;
-- (void)queue_releaseAssertionWithReason:(unint64_t)a3;
+- (void)assertion:(id)assertion didCancelWithError:(id)error;
+- (void)assertion:(id)assertion didFailToAcquireWithError:(id)error;
+- (void)assertionWasAcquired:(id)acquired;
+- (void)queue_acquireAssertionWithReason:(unint64_t)reason onScene:(id)scene completion:(id)completion;
+- (void)queue_releaseAssertionWithReason:(unint64_t)reason;
 @end
 
 @implementation NCBacklightAssertionManager
@@ -22,21 +22,21 @@
   return v3;
 }
 
-- (void)queue_acquireAssertionWithReason:(unint64_t)a3 onScene:(id)a4 completion:(id)a5
+- (void)queue_acquireAssertionWithReason:(unint64_t)reason onScene:(id)scene completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a4;
-  v10 = self;
-  sub_21E91ED60(a3, a4, v10, v8);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_21E91ED60(reason, scene, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)queue_releaseAssertionWithReason:(unint64_t)a3
+- (void)queue_releaseAssertionWithReason:(unint64_t)reason
 {
-  v4 = self;
-  sub_21E91D4A8(a3);
+  selfCopy = self;
+  sub_21E91D4A8(reason);
 }
 
 - (NCBacklightAssertionManager)init
@@ -51,27 +51,27 @@
   return [(NCBacklightAssertionManager *)&v4 init];
 }
 
-- (void)assertionWasAcquired:(id)a3
+- (void)assertionWasAcquired:(id)acquired
 {
-  v4 = a3;
-  v5 = self;
-  NCBacklightAssertionManager.assertionWasAcquired(_:)(v4);
+  acquiredCopy = acquired;
+  selfCopy = self;
+  NCBacklightAssertionManager.assertionWasAcquired(_:)(acquiredCopy);
 }
 
-- (void)assertion:(id)a3 didCancelWithError:(id)a4
+- (void)assertion:(id)assertion didCancelWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  NCBacklightAssertionManager.assertion(_:didCancelWithError:)(v6, a4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  errorCopy = error;
+  NCBacklightAssertionManager.assertion(_:didCancelWithError:)(assertionCopy, error);
 }
 
-- (void)assertion:(id)a3 didFailToAcquireWithError:(id)a4
+- (void)assertion:(id)assertion didFailToAcquireWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  NCBacklightAssertionManager.assertion(_:didFailToAcquireWithError:)(v6, v8);
+  assertionCopy = assertion;
+  errorCopy = error;
+  selfCopy = self;
+  NCBacklightAssertionManager.assertion(_:didFailToAcquireWithError:)(assertionCopy, errorCopy);
 }
 
 @end

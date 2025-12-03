@@ -1,70 +1,70 @@
 @interface GTMTLCaptureServiceObserver
-- (void)notifyCaptureObjectsChanged:(id)a3;
-- (void)notifyCaptureProgress:(id)a3;
-- (void)notifyCaptureRequest:(id)a3;
-- (void)notifyUnsupportedFenum:(id)a3;
+- (void)notifyCaptureObjectsChanged:(id)changed;
+- (void)notifyCaptureProgress:(id)progress;
+- (void)notifyCaptureRequest:(id)request;
+- (void)notifyUnsupportedFenum:(id)fenum;
 @end
 
 @implementation GTMTLCaptureServiceObserver
 
-- (void)notifyCaptureProgress:(id)a3
+- (void)notifyCaptureProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
   xpc_dictionary_set_uint64(xdict, "_port", [(GTServiceObserver *)self replyStream]);
-  v7 = [(GTServiceObserver *)self replyPath];
-  xpc_dictionary_set_value(xdict, "_replyPath", v7);
+  replyPath = [(GTServiceObserver *)self replyPath];
+  xpc_dictionary_set_value(xdict, "_replyPath", replyPath);
 
-  xpc_dictionary_set_nsobject(xdict, "progress", v5);
-  v8 = [(GTServiceObserver *)self connection];
-  [v8 sendMessage:xdict];
+  xpc_dictionary_set_nsobject(xdict, "progress", progressCopy);
+  connection = [(GTServiceObserver *)self connection];
+  [connection sendMessage:xdict];
 }
 
-- (void)notifyUnsupportedFenum:(id)a3
+- (void)notifyUnsupportedFenum:(id)fenum
 {
-  v5 = a3;
+  fenumCopy = fenum;
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
   xpc_dictionary_set_uint64(xdict, "_port", [(GTServiceObserver *)self replyStream]);
-  v7 = [(GTServiceObserver *)self replyPath];
-  xpc_dictionary_set_value(xdict, "_replyPath", v7);
+  replyPath = [(GTServiceObserver *)self replyPath];
+  xpc_dictionary_set_value(xdict, "_replyPath", replyPath);
 
-  xpc_dictionary_set_nsobject(xdict, "info", v5);
-  v8 = [(GTServiceObserver *)self connection];
-  [v8 sendMessage:xdict];
+  xpc_dictionary_set_nsobject(xdict, "info", fenumCopy);
+  connection = [(GTServiceObserver *)self connection];
+  [connection sendMessage:xdict];
 }
 
-- (void)notifyCaptureObjectsChanged:(id)a3
+- (void)notifyCaptureObjectsChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
   xpc_dictionary_set_uint64(xdict, "_port", [(GTServiceObserver *)self replyStream]);
-  v7 = [(GTServiceObserver *)self replyPath];
-  xpc_dictionary_set_value(xdict, "_replyPath", v7);
+  replyPath = [(GTServiceObserver *)self replyPath];
+  xpc_dictionary_set_value(xdict, "_replyPath", replyPath);
 
-  xpc_dictionary_set_nsobject(xdict, "captureObjects", v5);
-  v8 = [(GTServiceObserver *)self connection];
-  [v8 sendMessage:xdict];
+  xpc_dictionary_set_nsobject(xdict, "captureObjects", changedCopy);
+  connection = [(GTServiceObserver *)self connection];
+  [connection sendMessage:xdict];
 }
 
-- (void)notifyCaptureRequest:(id)a3
+- (void)notifyCaptureRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
   xpc_dictionary_set_uint64(xdict, "_port", [(GTServiceObserver *)self replyStream]);
-  v7 = [(GTServiceObserver *)self replyPath];
-  xpc_dictionary_set_value(xdict, "_replyPath", v7);
+  replyPath = [(GTServiceObserver *)self replyPath];
+  xpc_dictionary_set_value(xdict, "_replyPath", replyPath);
 
-  xpc_dictionary_set_nsobject(xdict, "descriptor", v5);
-  v8 = [(GTServiceObserver *)self connection];
-  [v8 sendMessage:xdict];
+  xpc_dictionary_set_nsobject(xdict, "descriptor", requestCopy);
+  connection = [(GTServiceObserver *)self connection];
+  [connection sendMessage:xdict];
 }
 
 @end

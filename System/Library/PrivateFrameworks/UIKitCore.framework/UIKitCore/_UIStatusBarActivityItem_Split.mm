@@ -2,10 +2,10 @@
 - (UIEdgeInsets)activityIndicatorAlignmentRectInsets;
 - (_UIStatusBarActivityIndicator)syncStartView;
 - (_UIStatusBarActivityView)activityView;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_activityView;
 - (void)_create_syncStartView;
 @end
@@ -69,84 +69,84 @@
   [(UIActivityIndicatorView *)v6 setActivityIndicatorViewStyle:12];
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() syncStartDisplayIdentifier];
+  identifierCopy = identifier;
+  syncStartDisplayIdentifier = [objc_opt_class() syncStartDisplayIdentifier];
 
-  if (v5 == v4)
+  if (syncStartDisplayIdentifier == identifierCopy)
   {
-    v7 = [(_UIStatusBarActivityItem_Split *)self syncStartView];
+    syncStartView = [(_UIStatusBarActivityItem_Split *)self syncStartView];
   }
 
   else
   {
-    v6 = [objc_opt_class() pillDisplayIdentifier];
+    pillDisplayIdentifier = [objc_opt_class() pillDisplayIdentifier];
 
-    if (v6 == v4)
+    if (pillDisplayIdentifier == identifierCopy)
     {
-      v7 = [(_UIStatusBarActivityItem_Split *)self activityView];
+      syncStartView = [(_UIStatusBarActivityItem_Split *)self activityView];
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = _UIStatusBarActivityItem_Split;
-      v7 = [(_UIStatusBarActivityItem *)&v10 viewForIdentifier:v4];
+      syncStartView = [(_UIStatusBarActivityItem *)&v10 viewForIdentifier:identifierCopy];
     }
   }
 
-  v8 = v7;
+  v8 = syncStartView;
 
   return v8;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = _UIStatusBarActivityItem_Split;
-  v8 = [(_UIStatusBarActivityItem *)&v20 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(_UIStatusBarActivityItem *)&v20 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v6 data];
-    v10 = [v9 activityEntry];
-    v11 = [v10 type];
+    data = [updateCopy data];
+    activityEntry = [data activityEntry];
+    type = [activityEntry type];
 
-    v12 = [v7 identifier];
-    v13 = [objc_opt_class() syncStartDisplayIdentifier];
+    identifier = [itemCopy identifier];
+    syncStartDisplayIdentifier = [objc_opt_class() syncStartDisplayIdentifier];
 
-    if (v12 != v13)
+    if (identifier != syncStartDisplayIdentifier)
     {
-      v14 = [v7 identifier];
-      v15 = [objc_opt_class() pillDisplayIdentifier];
+      identifier2 = [itemCopy identifier];
+      pillDisplayIdentifier = [objc_opt_class() pillDisplayIdentifier];
 
-      if (v14 != v15)
+      if (identifier2 != pillDisplayIdentifier)
       {
         goto LABEL_9;
       }
 
-      v16 = [(_UIStatusBarActivityItem_Split *)self activityView];
-      [v16 setIsSlow:(v11 >> 1) & 1];
+      activityView = [(_UIStatusBarActivityItem_Split *)self activityView];
+      [activityView setIsSlow:(type >> 1) & 1];
       goto LABEL_7;
     }
 
-    if ([(_UIStatusBarActivityItem_SyncOnly *)self _enableForType:v11])
+    if ([(_UIStatusBarActivityItem_SyncOnly *)self _enableForType:type])
     {
-      [v7 setViewAlpha:0.8];
-      v17 = dbl_18A681690[(v11 & 2) == 0];
-      v18 = [(_UIStatusBarActivityItem_Split *)self syncStartView];
-      [v18 setAnimationDuration:v17];
+      [itemCopy setViewAlpha:0.8];
+      v17 = dbl_18A681690[(type & 2) == 0];
+      syncStartView = [(_UIStatusBarActivityItem_Split *)self syncStartView];
+      [syncStartView setAnimationDuration:v17];
 
-      v16 = [(_UIStatusBarActivityItem_Split *)self syncStartView];
-      [v16 startAnimating];
+      activityView = [(_UIStatusBarActivityItem_Split *)self syncStartView];
+      [activityView startAnimating];
 LABEL_7:
 
       goto LABEL_9;
     }
 
-    [v7 setEnabled:0];
+    [itemCopy setEnabled:0];
   }
 
 LABEL_9:
@@ -154,12 +154,12 @@ LABEL_9:
   return v8;
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() pillDisplayIdentifier];
+  identifierCopy = identifier;
+  pillDisplayIdentifier = [objc_opt_class() pillDisplayIdentifier];
 
-  if (v5 == v4)
+  if (pillDisplayIdentifier == identifierCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -173,7 +173,7 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = _UIStatusBarActivityItem_Split;
-    v6 = [(_UIStatusBarItem *)&v9 additionAnimationForDisplayItemWithIdentifier:v4];
+    v6 = [(_UIStatusBarItem *)&v9 additionAnimationForDisplayItemWithIdentifier:identifierCopy];
   }
 
   v7 = v6;
@@ -181,12 +181,12 @@ LABEL_9:
   return v7;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() pillDisplayIdentifier];
+  identifierCopy = identifier;
+  pillDisplayIdentifier = [objc_opt_class() pillDisplayIdentifier];
 
-  if (v5 == v4)
+  if (pillDisplayIdentifier == identifierCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -200,7 +200,7 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = _UIStatusBarActivityItem_Split;
-    v6 = [(_UIStatusBarItem *)&v9 removalAnimationForDisplayItemWithIdentifier:v4];
+    v6 = [(_UIStatusBarItem *)&v9 removalAnimationForDisplayItemWithIdentifier:identifierCopy];
   }
 
   v7 = v6;

@@ -3,13 +3,13 @@
 - (BOOL)_isLPMEnabled;
 - (BOOL)start;
 - (id)defaultPropertiesThatAffectPredicate;
-- (id)episodePredicateForPodcast:(id)a3;
+- (id)episodePredicateForPodcast:(id)podcast;
 - (void)_lpmDidChange;
 - (void)_reCheck;
 - (void)_reportRetentionPolicy;
-- (void)autodownloadEpisodesChanged:(id)a3;
-- (void)episodeUuidObserver:(id)a3 resultsChangedForPodcast:(id)a4 withDeletedIds:(id)a5 andInsertIds:(id)a6;
-- (void)reachabilityChangedFrom:(BOOL)a3 to:(BOOL)a4;
+- (void)autodownloadEpisodesChanged:(id)changed;
+- (void)episodeUuidObserver:(id)observer resultsChangedForPodcast:(id)podcast withDeletedIds:(id)ids andInsertIds:(id)insertIds;
+- (void)reachabilityChangedFrom:(BOOL)from to:(BOOL)to;
 - (void)stop;
 @end
 
@@ -19,10 +19,10 @@
 {
   v9 = 0;
   v2 = +[MTConstants sharedDocumentsDirectory];
-  v3 = [v2 path];
+  path = [v2 path];
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 attributesOfFileSystemForPath:v3 error:&v9];
+  v5 = [v4 attributesOfFileSystemForPath:path error:&v9];
 
   if (v9)
   {
@@ -32,15 +32,15 @@
   if (v5)
   {
     v6 = [v5 objectForKey:NSFileSystemFreeSize];
-    v7 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)start
@@ -48,8 +48,8 @@
   [(MTAutoDownloadProcessor *)self _reportRetentionPolicy];
   v15.receiver = self;
   v15.super_class = MTAutoDownloadProcessor;
-  v3 = [(MTBaseProcessor *)&v15 start];
-  if (v3)
+  start = [(MTBaseProcessor *)&v15 start];
+  if (start)
   {
     objc_initWeak(&location, self);
     [(MTAutoDownloadProcessor *)self setLastCheckTime:0.0];
@@ -72,7 +72,7 @@
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return start;
 }
 
 - (void)stop
@@ -96,9 +96,9 @@
   return v4;
 }
 
-- (id)episodePredicateForPodcast:(id)a3
+- (id)episodePredicateForPodcast:(id)podcast
 {
-  v4 = a3;
+  podcastCopy = podcast;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -116,15 +116,15 @@
   v28 = 0x2020000000;
   v29 = 0;
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10006585C;
   v19 = &unk_1004D8D80;
-  v7 = v6;
+  v7 = mainOrPrivateContext;
   v20 = v7;
-  v8 = v4;
+  v8 = podcastCopy;
   v21 = v8;
   v22 = &v38;
   v23 = &v34;
@@ -137,8 +137,8 @@
     v10 = v35[3];
     v11 = *(v27 + 24);
     v12 = +[MTAccountController sharedInstance];
-    v13 = [v12 activeDsid];
-    v14 = [MTEpisode predicateForAutomaticDownloadsOnShow:v8 deletePlayedEpisodes:v9 episodeLimit:v10 serialNextEpisodesSort:v11 includePlayableWithoutAccount:v13 == 0];
+    activeDsid = [v12 activeDsid];
+    v14 = [MTEpisode predicateForAutomaticDownloadsOnShow:v8 deletePlayedEpisodes:v9 episodeLimit:v10 serialNextEpisodesSort:v11 includePlayableWithoutAccount:activeDsid == 0];
   }
 
   else
@@ -154,33 +154,33 @@
   return v14;
 }
 
-- (void)episodeUuidObserver:(id)a3 resultsChangedForPodcast:(id)a4 withDeletedIds:(id)a5 andInsertIds:(id)a6
+- (void)episodeUuidObserver:(id)observer resultsChangedForPodcast:(id)podcast withDeletedIds:(id)ids andInsertIds:(id)insertIds
 {
-  if ([a6 count])
+  if ([insertIds count])
   {
 
     [(MTAutoDownloadProcessor *)self _reCheck];
   }
 }
 
-- (void)autodownloadEpisodesChanged:(id)a3
+- (void)autodownloadEpisodesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(MTAutoDownloadProcessor *)self _reportRetentionPolicy];
-  if ([v4 count])
+  if ([changedCopy count])
   {
     v5 = +[MTReachability sharedInstance];
-    v6 = [v5 isReachable];
+    isReachable = [v5 isReachable];
 
-    if (v6)
+    if (isReachable)
     {
       v7 = +[MTReachability sharedInstance];
-      v8 = [v7 isReachableViaCellular];
+      isReachableViaCellular = [v7 isReachableViaCellular];
 
       v9 = +[MTReachability sharedInstance];
-      v10 = [v9 isPodcastsCellularDownloadsEnabled];
+      isPodcastsCellularDownloadsEnabled = [v9 isPodcastsCellularDownloadsEnabled];
 
-      if ((v10 & 1) != 0 || !v8)
+      if ((isPodcastsCellularDownloadsEnabled & 1) != 0 || !isReachableViaCellular)
       {
         if ([(MTAutoDownloadProcessor *)self _isLPMEnabled])
         {
@@ -195,38 +195,38 @@
           goto LABEL_9;
         }
 
-        v13 = [(MTAutoDownloadProcessor *)self isDeviceStorageSpaceAvailableForPersistence];
+        isDeviceStorageSpaceAvailableForPersistence = [(MTAutoDownloadProcessor *)self isDeviceStorageSpaceAvailableForPersistence];
         v14 = _MTLogCategoryDownload();
         v11 = v14;
-        if (v13)
+        if (isDeviceStorageSpaceAvailableForPersistence)
         {
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v30 = [v4 count];
+            v30 = [changedCopy count];
             v31 = 2112;
-            v32 = v4;
+            v32 = changedCopy;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Checking Autodownloads for %lu episodes: %@", buf, 0x16u);
           }
 
           v15 = +[MTDB sharedInstance];
-          v16 = [v15 importContext];
+          importContext = [v15 importContext];
 
           v17 = objc_alloc_init(NSMutableSet);
           v21 = _NSConcreteStackBlock;
           v22 = 3221225472;
           v23 = sub_100065C6C;
           v24 = &unk_1004D8DA8;
-          v25 = v4;
-          v26 = v16;
-          v27 = self;
+          v25 = changedCopy;
+          v26 = importContext;
+          selfCopy = self;
           v28 = v17;
           v18 = v17;
-          v11 = v16;
+          v11 = importContext;
           [v11 performBlockAndWait:&v21];
           v19 = [MTLegacyDownloadManagerProvider sharedInstance:v21];
-          v20 = [v19 downloadManager];
-          [v20 addEpisodeAutoDownloads:v18 completion:0];
+          downloadManager = [v19 downloadManager];
+          [downloadManager addEpisodeAutoDownloads:v18 completion:0];
 
           goto LABEL_10;
         }
@@ -270,9 +270,9 @@ LABEL_10:
 - (BOOL)_isLPMEnabled
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
 - (void)_reCheck
@@ -295,9 +295,9 @@ LABEL_10:
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    if (![(MTAutoDownloadProcessor *)v7 hasCheckQueued])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (![(MTAutoDownloadProcessor *)selfCopy hasCheckQueued])
     {
       v8 = _MTLogCategoryDownload();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -307,17 +307,17 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Postponing recheck for %.0lf sec.", buf, 0xCu);
       }
 
-      [(MTAutoDownloadProcessor *)v7 setHasCheckQueued:1];
-      [(MTAutoDownloadProcessor *)v7 performSelector:"_reCheck" withObject:0 afterDelay:v6 + 1.0];
+      [(MTAutoDownloadProcessor *)selfCopy setHasCheckQueued:1];
+      [(MTAutoDownloadProcessor *)selfCopy performSelector:"_reCheck" withObject:0 afterDelay:v6 + 1.0];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)reachabilityChangedFrom:(BOOL)a3 to:(BOOL)a4
+- (void)reachabilityChangedFrom:(BOOL)from to:(BOOL)to
 {
-  if (a4)
+  if (to)
   {
     [(MTAutoDownloadProcessor *)self _reCheck];
   }

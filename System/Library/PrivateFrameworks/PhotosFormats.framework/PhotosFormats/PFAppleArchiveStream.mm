@@ -1,15 +1,15 @@
 @interface PFAppleArchiveStream
 - (AAByteStream_impl)_byteStreamToBeReadByArchiveDecodingStream;
 - (AAByteStream_impl)_byteStreamToBeTargetedByArchiveEncodingStream;
-- (BOOL)_openForReadingEncryptionStreamWithError:(id *)a3;
-- (BOOL)_openForWritingCompressionStreamShouldAppend:(BOOL)a3 error:(id *)a4;
-- (BOOL)_openForWritingEncryptionStreamWithError:(id *)a3;
-- (BOOL)_setupEncryptionContextForWritingWithError:(id *)a3;
-- (BOOL)close:(id *)a3;
-- (BOOL)openForReading:(id *)a3;
-- (BOOL)openForWriting:(id *)a3;
+- (BOOL)_openForReadingEncryptionStreamWithError:(id *)error;
+- (BOOL)_openForWritingCompressionStreamShouldAppend:(BOOL)append error:(id *)error;
+- (BOOL)_openForWritingEncryptionStreamWithError:(id *)error;
+- (BOOL)_setupEncryptionContextForWritingWithError:(id *)error;
+- (BOOL)close:(id *)close;
+- (BOOL)openForReading:(id *)reading;
+- (BOOL)openForWriting:(id *)writing;
 - (PFAppleArchiveStream)init;
-- (PFAppleArchiveStream)initWithArchiveURL:(id)a3;
+- (PFAppleArchiveStream)initWithArchiveURL:(id)l;
 - (id)description;
 - (unsigned)aaCompressionAlgorithm;
 - (void)dealloc;
@@ -19,15 +19,15 @@
 
 - (unsigned)aaCompressionAlgorithm
 {
-  v2 = [(PFAppleArchiveStream *)self compression];
-  if (v2 > 3)
+  compression = [(PFAppleArchiveStream *)self compression];
+  if (compression > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_1B36A1F60[v2];
+    return dword_1B36A1F60[compression];
   }
 }
 
@@ -72,7 +72,7 @@
   [(PFAppleArchiveStream *)&v8 dealloc];
 }
 
-- (BOOL)close:(id *)a3
+- (BOOL)close:(id *)close
 {
   v28[1] = *MEMORY[0x1E69E9840];
   encryptionStream = self->_encryptionStream;
@@ -83,7 +83,7 @@
 
   v6 = AAByteStreamClose(encryptionStream);
   self->_encryptionStream = 0;
-  if (a3 && v6)
+  if (close && v6)
   {
     v7 = MEMORY[0x1E696ABC0];
     v8 = v6;
@@ -95,7 +95,7 @@
     v12 = &v27;
 LABEL_20:
     v19 = [v10 dictionaryWithObjects:v11 forKeys:v12 count:1];
-    *a3 = [v7 errorWithDomain:@"com.apple.PhotosFormats" code:v8 userInfo:v19];
+    *close = [v7 errorWithDomain:@"com.apple.PhotosFormats" code:v8 userInfo:v19];
 
     return 0;
   }
@@ -111,7 +111,7 @@ LABEL_6:
 
     v14 = AAByteStreamClose(compressionStream);
     self->_compressionStream = 0;
-    if (a3 && v14)
+    if (close && v14)
     {
       v7 = MEMORY[0x1E696ABC0];
       v8 = v14;
@@ -135,7 +135,7 @@ LABEL_11:
 
       v16 = AAByteStreamClose(inputStream);
       self->_inputStream = 0;
-      if (a3 && v16)
+      if (close && v16)
       {
         v7 = MEMORY[0x1E696ABC0];
         v8 = v16;
@@ -156,7 +156,7 @@ LABEL_16:
         {
           v18 = AAByteStreamClose(outputStream);
           self->_outputStream = 0;
-          if (a3 && v18)
+          if (close && v18)
           {
             v7 = MEMORY[0x1E696ABC0];
             v8 = v18;
@@ -182,16 +182,16 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)_openForReadingEncryptionStreamWithError:(id *)a3
+- (BOOL)_openForReadingEncryptionStreamWithError:(id *)error
 {
   v59[1] = *MEMORY[0x1E69E9840];
   v5 = AEAContextCreateWithEncryptedStream(self->_inputStream);
   self->_encryptionContext = v5;
   if (!v5)
   {
-    if (!a3)
+    if (!error)
     {
-      return a3;
+      return error;
     }
 
     v14 = MEMORY[0x1E696ABC0];
@@ -204,10 +204,10 @@ LABEL_16:
   }
 
   v6 = v5;
-  v7 = [(PFAppleArchiveStream *)self encryptionKey];
-  v8 = [v7 bytes];
-  v9 = [(PFAppleArchiveStream *)self encryptionKey];
-  v10 = AEAContextSetFieldBlob(v6, 9u, 0, v8, [v9 length]);
+  encryptionKey = [(PFAppleArchiveStream *)self encryptionKey];
+  bytes = [encryptionKey bytes];
+  encryptionKey2 = [(PFAppleArchiveStream *)self encryptionKey];
+  v10 = AEAContextSetFieldBlob(v6, 9u, 0, bytes, [encryptionKey2 length]);
 
   if (!v10)
   {
@@ -218,14 +218,14 @@ LABEL_16:
       EntryCount = AEAAuthDataGetEntryCount(v18);
       if (EntryCount <= 1)
       {
-        if (a3)
+        if (error)
         {
           v21 = MEMORY[0x1E696ABC0];
           v52 = *MEMORY[0x1E696A278];
           v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected entry count %u, expected at least %u", EntryCount, 2];
           v53 = v22;
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-          *a3 = [v21 errorWithDomain:@"com.apple.PhotosFormats" code:500008 userInfo:v23];
+          *error = [v21 errorWithDomain:@"com.apple.PhotosFormats" code:500008 userInfo:v23];
         }
 
         AEAAuthDataDestroy(v19);
@@ -240,14 +240,14 @@ LABEL_16:
         Entry = AEAAuthDataGetEntry(v19, v26, 0x64uLL, key, 0, 0x64uLL, data, &data_size);
         if (Entry)
         {
-          if (a3)
+          if (error)
           {
             v32 = MEMORY[0x1E696ABC0];
             v48 = *MEMORY[0x1E696A278];
-            v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to get auth data entry %d: %d", v26, Entry];
-            v49 = v33;
+            entry = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to get auth data entry %d: %d", v26, Entry];
+            v49 = entry;
             v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-            *a3 = [v32 errorWithDomain:@"com.apple.PhotosFormats" code:500009 userInfo:v34];
+            *error = [v32 errorWithDomain:@"com.apple.PhotosFormats" code:500009 userInfo:v34];
           }
 
           AEAAuthDataDestroy(v19);
@@ -281,31 +281,31 @@ LABEL_16:
       self->_encryptionStream = v35;
       if (v35)
       {
-        LOBYTE(a3) = 1;
+        LOBYTE(error) = 1;
         goto LABEL_30;
       }
 
-      if (a3)
+      if (error)
       {
         v36 = MEMORY[0x1E696ABC0];
         v40 = *MEMORY[0x1E696A278];
         v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to open decryption input stream"];
         v41 = v37;
         v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-        *a3 = [v36 errorWithDomain:@"com.apple.PhotosFormats" code:500002 userInfo:v38];
+        *error = [v36 errorWithDomain:@"com.apple.PhotosFormats" code:500002 userInfo:v38];
 
 LABEL_27:
-        LOBYTE(a3) = 0;
+        LOBYTE(error) = 0;
       }
 
 LABEL_30:
 
-      return a3;
+      return error;
     }
 
-    if (!a3)
+    if (!error)
     {
-      return a3;
+      return error;
     }
 
     v14 = MEMORY[0x1E696ABC0];
@@ -315,28 +315,28 @@ LABEL_30:
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
     v17 = 500007;
 LABEL_7:
-    *a3 = [v14 errorWithDomain:@"com.apple.PhotosFormats" code:v17 userInfo:v16];
+    *error = [v14 errorWithDomain:@"com.apple.PhotosFormats" code:v17 userInfo:v16];
 
     goto LABEL_13;
   }
 
-  if (a3)
+  if (error)
   {
     v11 = MEMORY[0x1E696ABC0];
     v56 = *MEMORY[0x1E696A278];
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to set symmetric key for decryption: %d", v10];
     v57 = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-    *a3 = [v11 errorWithDomain:@"com.apple.PhotosFormats" code:500005 userInfo:v13];
+    *error = [v11 errorWithDomain:@"com.apple.PhotosFormats" code:500005 userInfo:v13];
 
 LABEL_13:
-    LOBYTE(a3) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a3;
+  return error;
 }
 
-- (BOOL)openForReading:(id *)a3
+- (BOOL)openForReading:(id *)reading
 {
   v18[1] = *MEMORY[0x1E69E9840];
   if (self->_inputStream || self->_outputStream)
@@ -344,12 +344,12 @@ LABEL_13:
     _PFAssertFailHandler();
   }
 
-  v5 = [(PFAppleArchiveStream *)self archiveURL];
-  self->_inputStream = AAFileStreamOpenWithPath([v5 fileSystemRepresentation], 0, 0x1A4u);
+  archiveURL = [(PFAppleArchiveStream *)self archiveURL];
+  self->_inputStream = AAFileStreamOpenWithPath([archiveURL fileSystemRepresentation], 0, 0x1A4u);
 
   if (!self->_inputStream)
   {
-    if (a3)
+    if (reading)
     {
       v8 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E696A278];
@@ -360,15 +360,15 @@ LABEL_13:
       v12 = &v17;
 LABEL_10:
       v13 = [v10 dictionaryWithObjects:v11 forKeys:v12 count:1];
-      *a3 = [v8 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v13];
+      *reading = [v8 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v13];
     }
 
     return 0;
   }
 
-  v6 = [(PFAppleArchiveStream *)self encryptionKey];
+  encryptionKey = [(PFAppleArchiveStream *)self encryptionKey];
 
-  if (!v6)
+  if (!encryptionKey)
   {
     if ([(PFAppleArchiveStream *)self compression]== -1)
     {
@@ -382,7 +382,7 @@ LABEL_10:
       return 1;
     }
 
-    if (a3)
+    if (reading)
     {
       v8 = MEMORY[0x1E696ABC0];
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"Failed to open decompression stream", *MEMORY[0x1E696A278]];
@@ -396,7 +396,7 @@ LABEL_10:
     return 0;
   }
 
-  return [(PFAppleArchiveStream *)self _openForReadingEncryptionStreamWithError:a3];
+  return [(PFAppleArchiveStream *)self _openForReadingEncryptionStreamWithError:reading];
 }
 
 - (AAByteStream_impl)_byteStreamToBeReadByArchiveDecodingStream
@@ -429,17 +429,17 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_openForWritingCompressionStreamShouldAppend:(BOOL)a3 error:(id *)a4
+- (BOOL)_openForWritingCompressionStreamShouldAppend:(BOOL)append error:(id *)error
 {
-  v5 = a3;
+  appendCopy = append;
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = [(PFAppleArchiveStream *)self aaCompressionAlgorithm];
-  if (!v7)
+  aaCompressionAlgorithm = [(PFAppleArchiveStream *)self aaCompressionAlgorithm];
+  if (!aaCompressionAlgorithm)
   {
     return 1;
   }
 
-  v8 = v5 ? AACompressionOutputStreamOpenExisting(self->_outputStream, 0, 0) : AACompressionOutputStreamOpen(self->_outputStream, v7, [(PFAppleArchiveStream *)self blockSize], 0, 0);
+  v8 = appendCopy ? AACompressionOutputStreamOpenExisting(self->_outputStream, 0, 0) : AACompressionOutputStreamOpen(self->_outputStream, aaCompressionAlgorithm, [(PFAppleArchiveStream *)self blockSize], 0, 0);
   self->_compressionStream = v8;
   if (v8)
   {
@@ -466,16 +466,16 @@ LABEL_10:
   v24[1] = v18;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v22 = [v19 errorWithDomain:@"com.apple.PhotosFormats" code:500300 userInfo:v21];
-  if (a4)
+  if (error)
   {
     v22 = v22;
-    *a4 = v22;
+    *error = v22;
   }
 
   return 0;
 }
 
-- (BOOL)_setupEncryptionContextForWritingWithError:(id *)a3
+- (BOOL)_setupEncryptionContextForWritingWithError:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
   if (self->_encryptionContext)
@@ -487,10 +487,10 @@ LABEL_10:
   self->_encryptionContext = v5;
   if (v5)
   {
-    v6 = [(PFAppleArchiveStream *)self aaCompressionAlgorithm];
-    if (v6 && (v7 = v6, v8 = AEAContextSetFieldUInt(self->_encryptionContext, 3u, v6), v8))
+    aaCompressionAlgorithm = [(PFAppleArchiveStream *)self aaCompressionAlgorithm];
+    if (aaCompressionAlgorithm && (v7 = aaCompressionAlgorithm, v8 = AEAContextSetFieldUInt(self->_encryptionContext, 3u, aaCompressionAlgorithm), v8))
     {
-      if (a3)
+      if (error)
       {
         v9 = MEMORY[0x1E696ABC0];
         v37 = *MEMORY[0x1E696A278];
@@ -501,29 +501,29 @@ LABEL_10:
 LABEL_10:
         v18 = v9;
 LABEL_13:
-        *a3 = [v18 errorWithDomain:@"com.apple.PhotosFormats" code:v12 userInfo:v11];
+        *error = [v18 errorWithDomain:@"com.apple.PhotosFormats" code:v12 userInfo:v11];
       }
     }
 
     else
     {
       encryptionContext = self->_encryptionContext;
-      v14 = [(PFAppleArchiveStream *)self encryptionKey];
-      v15 = [v14 bytes];
-      v16 = [(PFAppleArchiveStream *)self encryptionKey];
-      v17 = AEAContextSetFieldBlob(encryptionContext, 9u, 0, v15, [v16 length]);
+      encryptionKey = [(PFAppleArchiveStream *)self encryptionKey];
+      bytes = [encryptionKey bytes];
+      encryptionKey2 = [(PFAppleArchiveStream *)self encryptionKey];
+      v17 = AEAContextSetFieldBlob(encryptionContext, 9u, 0, bytes, [encryptionKey2 length]);
 
       if (!v17)
       {
-        v21 = [(PFAppleArchiveStream *)self encryptedArchiveMetadata];
-        v22 = [v21 count];
+        encryptedArchiveMetadata = [(PFAppleArchiveStream *)self encryptedArchiveMetadata];
+        v22 = [encryptedArchiveMetadata count];
 
         if (v22)
         {
           v23 = AEAAuthDataCreate();
           if (!v23)
           {
-            if (!a3)
+            if (!error)
             {
               return 0;
             }
@@ -538,13 +538,13 @@ LABEL_13:
           }
 
           v24 = v23;
-          v25 = [(PFAppleArchiveStream *)self encryptedArchiveMetadata];
+          encryptedArchiveMetadata2 = [(PFAppleArchiveStream *)self encryptedArchiveMetadata];
           v30[0] = MEMORY[0x1E69E9820];
           v30[1] = 3221225472;
           v30[2] = __67__PFAppleArchiveStream__setupEncryptionContextForWritingWithError___block_invoke;
           v30[3] = &__block_descriptor_40_e35_v32__0__NSString_8__NSString_16_B24l;
           v30[4] = v24;
-          [v25 enumerateKeysAndObjectsUsingBlock:v30];
+          [encryptedArchiveMetadata2 enumerateKeysAndObjectsUsingBlock:v30];
 
           v26 = self->_encryptionContext;
           EncodedData = AEAAuthDataGetEncodedData(v24);
@@ -553,7 +553,7 @@ LABEL_13:
           AEAAuthDataDestroy(v24);
           if (v29)
           {
-            if (!a3)
+            if (!error)
             {
               return 0;
             }
@@ -571,7 +571,7 @@ LABEL_13:
         return 1;
       }
 
-      if (a3)
+      if (error)
       {
         v9 = MEMORY[0x1E696ABC0];
         v35 = *MEMORY[0x1E696A278];
@@ -584,7 +584,7 @@ LABEL_13:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v19 = MEMORY[0x1E696ABC0];
     v39 = *MEMORY[0x1E696A278];
@@ -611,7 +611,7 @@ uint64_t __67__PFAppleArchiveStream__setupEncryptionContextForWritingWithError__
   return AEAAuthDataAppendEntry(v5, v8, v9, v10);
 }
 
-- (BOOL)_openForWritingEncryptionStreamWithError:(id *)a3
+- (BOOL)_openForWritingEncryptionStreamWithError:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v5 = [(PFAppleArchiveStream *)self _setupEncryptionContextForWritingWithError:?];
@@ -626,14 +626,14 @@ uint64_t __67__PFAppleArchiveStream__setupEncryptionContextForWritingWithError__
 
     else
     {
-      if (a3)
+      if (error)
       {
         v7 = MEMORY[0x1E696ABC0];
         v11 = *MEMORY[0x1E696A278];
         v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to open encryption output stream"];
         v12[0] = v8;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-        *a3 = [v7 errorWithDomain:@"com.apple.PhotosFormats" code:500001 userInfo:v9];
+        *error = [v7 errorWithDomain:@"com.apple.PhotosFormats" code:500001 userInfo:v9];
       }
 
       LOBYTE(v5) = 0;
@@ -643,7 +643,7 @@ uint64_t __67__PFAppleArchiveStream__setupEncryptionContextForWritingWithError__
   return v5;
 }
 
-- (BOOL)openForWriting:(id *)a3
+- (BOOL)openForWriting:(id *)writing
 {
   v23[1] = *MEMORY[0x1E69E9840];
   if (self->_inputStream || self->_outputStream)
@@ -651,8 +651,8 @@ uint64_t __67__PFAppleArchiveStream__setupEncryptionContextForWritingWithError__
     _PFAssertFailHandler();
   }
 
-  v5 = [(PFAppleArchiveStream *)self appendToExistingArchive];
-  if (v5)
+  appendToExistingArchive = [(PFAppleArchiveStream *)self appendToExistingArchive];
+  if (appendToExistingArchive)
   {
     v6 = 2561;
   }
@@ -662,14 +662,14 @@ uint64_t __67__PFAppleArchiveStream__setupEncryptionContextForWritingWithError__
     v6 = 1537;
   }
 
-  v7 = [(PFAppleArchiveStream *)self archiveURL];
-  v8 = open([v7 fileSystemRepresentation], v6, 420);
+  archiveURL = [(PFAppleArchiveStream *)self archiveURL];
+  v8 = open([archiveURL fileSystemRepresentation], v6, 420);
 
   if ((v8 & 0x80000000) != 0)
   {
-    if (!v5 || *__error() != 17 || (-[PFAppleArchiveStream archiveURL](self, "archiveURL"), v13 = objc_claimAutoreleasedReturnValue(), v9 = open([v13 fileSystemRepresentation], 2, 420), v13, v9 < 0))
+    if (!appendToExistingArchive || *__error() != 17 || (-[PFAppleArchiveStream archiveURL](self, "archiveURL"), v13 = objc_claimAutoreleasedReturnValue(), v9 = open([v13 fileSystemRepresentation], 2, 420), v13, v9 < 0))
     {
-      if (a3)
+      if (writing)
       {
         v14 = MEMORY[0x1E696ABC0];
         v22 = *MEMORY[0x1E696A278];
@@ -680,7 +680,7 @@ uint64_t __67__PFAppleArchiveStream__setupEncryptionContextForWritingWithError__
         v18 = &v22;
 LABEL_20:
         v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
-        *a3 = [v14 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v19];
+        *writing = [v14 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v19];
       }
 
       return 0;
@@ -696,7 +696,7 @@ LABEL_20:
   self->_outputStream = v10;
   if (!v10)
   {
-    if (a3)
+    if (writing)
     {
       v14 = MEMORY[0x1E696ABC0];
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"Failed to open output file stream", *MEMORY[0x1E696A278]];
@@ -710,32 +710,32 @@ LABEL_20:
     return 0;
   }
 
-  v11 = [(PFAppleArchiveStream *)self encryptionKey];
+  encryptionKey = [(PFAppleArchiveStream *)self encryptionKey];
 
-  if (v11)
+  if (encryptionKey)
   {
 
-    return [(PFAppleArchiveStream *)self _openForWritingEncryptionStreamWithError:a3];
+    return [(PFAppleArchiveStream *)self _openForWritingEncryptionStreamWithError:writing];
   }
 
   else
   {
 
-    return [(PFAppleArchiveStream *)self _openForWritingCompressionStreamShouldAppend:v8 >> 31 error:a3];
+    return [(PFAppleArchiveStream *)self _openForWritingCompressionStreamShouldAppend:v8 >> 31 error:writing];
   }
 }
 
 - (id)description
 {
-  v3 = [(PFAppleArchiveStream *)self compression];
-  if ((v3 + 1) > 4)
+  compression = [(PFAppleArchiveStream *)self compression];
+  if ((compression + 1) > 4)
   {
     v4 = @"???";
   }
 
   else
   {
-    v4 = off_1E7B65A08[v3 + 1];
+    v4 = off_1E7B65A08[compression + 1];
   }
 
   if (self->_inputStream)
@@ -756,25 +756,25 @@ LABEL_20:
   v6 = MEMORY[0x1E696AEC0];
   v7 = v5;
   v8 = objc_opt_class();
-  v9 = [(PFAppleArchiveStream *)self archiveURL];
-  v10 = [v6 stringWithFormat:@"<%@:%p %@ append=%d block_size=%ld compression=%@ open:%@>", v8, self, v9, -[PFAppleArchiveStream appendToExistingArchive](self, "appendToExistingArchive"), -[PFAppleArchiveStream blockSize](self, "blockSize"), v4, v7];
+  archiveURL = [(PFAppleArchiveStream *)self archiveURL];
+  v10 = [v6 stringWithFormat:@"<%@:%p %@ append=%d block_size=%ld compression=%@ open:%@>", v8, self, archiveURL, -[PFAppleArchiveStream appendToExistingArchive](self, "appendToExistingArchive"), -[PFAppleArchiveStream blockSize](self, "blockSize"), v4, v7];
 
   return v10;
 }
 
-- (PFAppleArchiveStream)initWithArchiveURL:(id)a3
+- (PFAppleArchiveStream)initWithArchiveURL:(id)l
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
-    v6 = v5;
+    v6 = lCopy;
     v12.receiver = self;
     v12.super_class = PFAppleArchiveStream;
     v7 = [(PFAppleArchiveStream *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_archiveURL, a3);
+      objc_storeStrong(&v7->_archiveURL, l);
       v8->_blockSize = 0x100000;
     }
 

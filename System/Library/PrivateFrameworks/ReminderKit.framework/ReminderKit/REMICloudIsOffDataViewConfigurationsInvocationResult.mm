@@ -1,48 +1,48 @@
 @interface REMICloudIsOffDataViewConfigurationsInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithCoder:(id)a3;
-- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithTimeIntervalSinceLastPrompt:(double)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithCoder:(id)coder;
+- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithTimeIntervalSinceLastPrompt:(double)prompt;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMICloudIsOffDataViewConfigurationsInvocationResult
 
-- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithTimeIntervalSinceLastPrompt:(double)a3
+- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithTimeIntervalSinceLastPrompt:(double)prompt
 {
   v5.receiver = self;
   v5.super_class = REMICloudIsOffDataViewConfigurationsInvocationResult;
   result = [(REMStoreInvocationValueStorage *)&v5 init];
   if (result)
   {
-    result->_timeIntervalSinceLastPrompt = a3;
+    result->_timeIntervalSinceLastPrompt = prompt;
   }
 
   return result;
 }
 
-- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithCoder:(id)a3
+- (REMICloudIsOffDataViewConfigurationsInvocationResult)initWithCoder:(id)coder
 {
-  [a3 decodeDoubleForKey:@"timeIntervalSinceLastPrompt"];
+  [coder decodeDoubleForKey:@"timeIntervalSinceLastPrompt"];
 
   return [(REMICloudIsOffDataViewConfigurationsInvocationResult *)self initWithTimeIntervalSinceLastPrompt:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(REMICloudIsOffDataViewConfigurationsInvocationResult *)self timeIntervalSinceLastPrompt];
-  [v4 encodeDouble:@"timeIntervalSinceLastPrompt" forKey:?];
+  [coderCopy encodeDouble:@"timeIntervalSinceLastPrompt" forKey:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(REMICloudIsOffDataViewConfigurationsInvocationResult *)self timeIntervalSinceLastPrompt];
     v6 = v5;
-    [v4 timeIntervalSinceLastPrompt];
+    [equalCopy timeIntervalSinceLastPrompt];
     v8 = v6 == v7;
   }
 

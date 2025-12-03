@@ -1,11 +1,11 @@
 @interface ACM2SVHTTPVerifySecurityCodeHandler
-- (ACM2SVHTTPVerifySecurityCodeHandler)initWithContext:(id)a3;
-- (id)convertErrorToACMError:(id)a3;
+- (ACM2SVHTTPVerifySecurityCodeHandler)initWithContext:(id)context;
+- (id)convertErrorToACMError:(id)error;
 @end
 
 @implementation ACM2SVHTTPVerifySecurityCodeHandler
 
-- (ACM2SVHTTPVerifySecurityCodeHandler)initWithContext:(id)a3
+- (ACM2SVHTTPVerifySecurityCodeHandler)initWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = ACM2SVHTTPVerifySecurityCodeHandler;
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (id)convertErrorToACMError:(id)a3
+- (id)convertErrorToACMError:(id)error
 {
   if (qword_2A1EB9008 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
   {
-    ACFLog(6, "[ACM2SVHTTPVerifySecurityCodeHandler convertErrorToACMError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVHTTPVerifySecurityCodeHandler.m", 30, 0, "Convert error %@ to user-friedly error.", a3);
+    ACFLog(6, "[ACM2SVHTTPVerifySecurityCodeHandler convertErrorToACMError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVHTTPVerifySecurityCodeHandler.m", 30, 0, "Convert error %@ to user-friedly error.", error);
   }
 
   v6.receiver = self;
   v6.super_class = ACM2SVHTTPVerifySecurityCodeHandler;
-  return [(ACM2SVHTTPHandler *)&v6 convertErrorToACMError:a3];
+  return [(ACM2SVHTTPHandler *)&v6 convertErrorToACMError:error];
 }
 
 @end

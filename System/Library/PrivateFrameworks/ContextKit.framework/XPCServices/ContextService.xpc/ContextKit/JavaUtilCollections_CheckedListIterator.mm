@@ -1,23 +1,23 @@
 @interface JavaUtilCollections_CheckedListIterator
 - (BOOL)hasNext;
 - (BOOL)hasPrevious;
-- (JavaUtilCollections_CheckedListIterator)initWithJavaUtilListIterator:(id)a3 withIOSClass:(id)a4;
+- (JavaUtilCollections_CheckedListIterator)initWithJavaUtilListIterator:(id)iterator withIOSClass:(id)class;
 - (id)next;
 - (id)previous;
 - (int)nextIndex;
 - (int)previousIndex;
-- (void)addWithId:(id)a3;
+- (void)addWithId:(id)id;
 - (void)dealloc;
 - (void)remove;
-- (void)setWithId:(id)a3;
+- (void)setWithId:(id)id;
 @end
 
 @implementation JavaUtilCollections_CheckedListIterator
 
-- (JavaUtilCollections_CheckedListIterator)initWithJavaUtilListIterator:(id)a3 withIOSClass:(id)a4
+- (JavaUtilCollections_CheckedListIterator)initWithJavaUtilListIterator:(id)iterator withIOSClass:(id)class
 {
-  JreStrongAssign(&self->i_, a3);
-  JreStrongAssign(&self->type_, a4);
+  JreStrongAssign(&self->i_, iterator);
+  JreStrongAssign(&self->type_, class);
   return self;
 }
 
@@ -98,7 +98,7 @@
   return [(JavaUtilListIterator *)i previousIndex];
 }
 
-- (void)setWithId:(id)a3
+- (void)setWithId:(id)id
 {
   i = self->i_;
   if (!i)
@@ -106,12 +106,12 @@
     JreThrowNullPointerException();
   }
 
-  JavaUtilCollections_checkTypeWithId_withIOSClass_(a3, self->type_);
+  JavaUtilCollections_checkTypeWithId_withIOSClass_(id, self->type_);
 
-  [(JavaUtilListIterator *)i setWithId:a3];
+  [(JavaUtilListIterator *)i setWithId:id];
 }
 
-- (void)addWithId:(id)a3
+- (void)addWithId:(id)id
 {
   i = self->i_;
   if (!i)
@@ -119,9 +119,9 @@
     JreThrowNullPointerException();
   }
 
-  JavaUtilCollections_checkTypeWithId_withIOSClass_(a3, self->type_);
+  JavaUtilCollections_checkTypeWithId_withIOSClass_(id, self->type_);
 
-  [(JavaUtilListIterator *)i addWithId:a3];
+  [(JavaUtilListIterator *)i addWithId:id];
 }
 
 - (void)dealloc

@@ -1,8 +1,8 @@
 @interface _UISticker
 - (BOOL)isAnimated;
 - (_UISticker)init;
-- (_UISticker)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UISticker)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UISticker
@@ -41,36 +41,36 @@
   return v3;
 }
 
-- (_UISticker)initWithCoder:(id)a3
+- (_UISticker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = _UISticker;
   v5 = [(_UISticker *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"r"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"r"];
     representations = v5->_representations;
     v5->_representations = v8;
 
-    v5->_effectType = [v4 decodeIntegerForKey:@"et"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"n"];
+    v5->_effectType = [coderCopy decodeIntegerForKey:@"et"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"n"];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eu"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eu"];
     externalURI = v5->_externalURI;
     v5->_externalURI = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"al"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"al"];
     accessibilityLabel = v5->_accessibilityLabel;
     v5->_accessibilityLabel = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"m"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"m"];
     metadata = v5->_metadata;
     v5->_metadata = v16;
 
@@ -78,23 +78,23 @@
     v19 = MEMORY[0x1E695DFD8];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeDictionaryWithKeysOfClasses:v18 objectsOfClasses:v21 forKey:@"ai"];
+    v22 = [coderCopy decodeDictionaryWithKeysOfClasses:v18 objectsOfClasses:v21 forKey:@"ai"];
     attributionInfo = v5->_attributionInfo;
     v5->_attributionInfo = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"b"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"b"];
     bakedInRep = v5->_bakedInRep;
     v5->_bakedInRep = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"st"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"st"];
     searchText = v5->_searchText;
     v5->_searchText = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sp"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sp"];
     sanitizedPrompt = v5->_sanitizedPrompt;
     v5->_sanitizedPrompt = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"an"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"an"];
     accessibilityName = v5->_accessibilityName;
     v5->_accessibilityName = v30;
   }
@@ -102,58 +102,58 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UISticker *)self identifier];
-  [v4 encodeObject:v5 forKey:@"i"];
+  coderCopy = coder;
+  identifier = [(_UISticker *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"i"];
 
-  v6 = [(_UISticker *)self representations];
-  [v4 encodeObject:v6 forKey:@"r"];
+  representations = [(_UISticker *)self representations];
+  [coderCopy encodeObject:representations forKey:@"r"];
 
-  [v4 encodeInteger:-[_UISticker effectType](self forKey:{"effectType"), @"et"}];
-  v7 = [(_UISticker *)self name];
-  [v4 encodeObject:v7 forKey:@"n"];
+  [coderCopy encodeInteger:-[_UISticker effectType](self forKey:{"effectType"), @"et"}];
+  name = [(_UISticker *)self name];
+  [coderCopy encodeObject:name forKey:@"n"];
 
-  v8 = [(_UISticker *)self externalURI];
-  [v4 encodeObject:v8 forKey:@"eu"];
+  externalURI = [(_UISticker *)self externalURI];
+  [coderCopy encodeObject:externalURI forKey:@"eu"];
 
-  v9 = [(_UISticker *)self accessibilityLabel];
-  [v4 encodeObject:v9 forKey:@"al"];
+  accessibilityLabel = [(_UISticker *)self accessibilityLabel];
+  [coderCopy encodeObject:accessibilityLabel forKey:@"al"];
 
-  v10 = [(_UISticker *)self metadata];
-  [v4 encodeObject:v10 forKey:@"m"];
+  metadata = [(_UISticker *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"m"];
 
-  v11 = [(_UISticker *)self attributionInfo];
-  [v4 encodeObject:v11 forKey:@"ai"];
+  attributionInfo = [(_UISticker *)self attributionInfo];
+  [coderCopy encodeObject:attributionInfo forKey:@"ai"];
 
-  v12 = [(_UISticker *)self bakedInRep];
-  [v4 encodeObject:v12 forKey:@"b"];
+  bakedInRep = [(_UISticker *)self bakedInRep];
+  [coderCopy encodeObject:bakedInRep forKey:@"b"];
 
-  v13 = [(_UISticker *)self searchText];
-  [v4 encodeObject:v13 forKey:@"st"];
+  searchText = [(_UISticker *)self searchText];
+  [coderCopy encodeObject:searchText forKey:@"st"];
 
-  v14 = [(_UISticker *)self sanitizedPrompt];
-  [v4 encodeObject:v14 forKey:@"sp"];
+  sanitizedPrompt = [(_UISticker *)self sanitizedPrompt];
+  [coderCopy encodeObject:sanitizedPrompt forKey:@"sp"];
 
-  v15 = [(_UISticker *)self accessibilityName];
-  [v4 encodeObject:v15 forKey:@"an"];
+  accessibilityName = [(_UISticker *)self accessibilityName];
+  [coderCopy encodeObject:accessibilityName forKey:@"an"];
 }
 
 - (BOOL)isAnimated
 {
-  v3 = [(_UISticker *)self representations];
-  v4 = [v3 count];
+  representations = [(_UISticker *)self representations];
+  v4 = [representations count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(_UISticker *)self representations];
-  v6 = [v5 firstObject];
-  v7 = [v6 role];
-  v8 = [v7 isEqualToString:@"com.apple.stickers.role.animated"];
+  representations2 = [(_UISticker *)self representations];
+  firstObject = [representations2 firstObject];
+  role = [firstObject role];
+  v8 = [role isEqualToString:@"com.apple.stickers.role.animated"];
 
   return v8;
 }

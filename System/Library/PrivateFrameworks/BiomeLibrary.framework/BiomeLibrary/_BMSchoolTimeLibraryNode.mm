@@ -2,25 +2,25 @@
 + (id)Session;
 + (id)configurationForSession;
 + (id)storeConfigurationForSession;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSchoolTimeLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Session"])
+  if ([name isEqualToString:@"Session"])
   {
-    v4 = [a1 Session];
+    session = [self Session];
   }
 
   else
   {
-    v4 = 0;
+    session = 0;
   }
 
-  return v4;
+  return session;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForSession
 {
-  v3 = [a1 storeConfigurationForSession];
-  v4 = [a1 syncPolicyForSession];
+  storeConfigurationForSession = [self storeConfigurationForSession];
+  syncPolicyForSession = [self syncPolicyForSession];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F12DB0EF-BE8C-4C62-BDBD-13CDFD030CE1"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SchoolTime.Session" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EA5D8 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SchoolTime.Session" eventClass:objc_opt_class() storeConfig:storeConfigurationForSession syncPolicy:syncPolicyForSession legacyNames:&unk_1EF3EA5D8 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)Session
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSession];
+  configurationForSession = [self configurationForSession];
   v3 = +[BMSchoolTimeSession columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SchoolTime.Session" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SchoolTime.Session" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SchoolTime.Session" schema:v9 configuration:configurationForSession];
 
   v11 = *MEMORY[0x1E69E9840];
 

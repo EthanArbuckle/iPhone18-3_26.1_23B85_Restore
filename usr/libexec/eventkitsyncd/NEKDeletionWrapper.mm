@@ -1,20 +1,20 @@
 @interface NEKDeletionWrapper
-+ (id)deletionWrapperForObjectID:(id)a3 deletedReminderAndListMapping:(id)a4;
-+ (id)deletionWrapperForRecordID:(id)a3 eventStore:(id)a4;
-+ (id)deletionWrapperForSourceID:(id)a3;
-- (NEKDeletionWrapper)initWithStoreType:(int64_t)a3 identifier:(id)a4 calendarIdentifier:(id)a5 type:(int)a6;
++ (id)deletionWrapperForObjectID:(id)d deletedReminderAndListMapping:(id)mapping;
++ (id)deletionWrapperForRecordID:(id)d eventStore:(id)store;
++ (id)deletionWrapperForSourceID:(id)d;
+- (NEKDeletionWrapper)initWithStoreType:(int64_t)type identifier:(id)identifier calendarIdentifier:(id)calendarIdentifier type:(int)a6;
 - (id)description;
 - (id)objectIdentifier;
 @end
 
 @implementation NEKDeletionWrapper
 
-+ (id)deletionWrapperForRecordID:(id)a3 eventStore:(id)a4
++ (id)deletionWrapperForRecordID:(id)d eventStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  dCopy = d;
+  storeCopy = store;
+  v8 = storeCopy;
+  if (!dCopy || !storeCopy)
   {
     v17 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@
     goto LABEL_10;
   }
 
-  v9 = [v6 entityType] - 1;
+  v9 = [dCopy entityType] - 1;
   if (v9 > 5 || ((0x27u >> v9) & 1) == 0)
   {
 LABEL_10:
@@ -34,18 +34,18 @@ LABEL_10:
   }
 
   v10 = dword_1000A2640[v9];
-  v11 = [v8 identifierInRowMappingForRecordIDRef:v6];
-  v12 = [v8 calendarIdentifierInRowMappingForRecordIDRef:v6];
+  v11 = [v8 identifierInRowMappingForRecordIDRef:dCopy];
+  v12 = [v8 calendarIdentifierInRowMappingForRecordIDRef:dCopy];
   if (v11)
   {
-    v13 = [[a1 alloc] initWithStoreType:0 identifier:v11 calendarIdentifier:v12 type:v10];
+    v13 = [[self alloc] initWithStoreType:0 identifier:v11 calendarIdentifier:v12 type:v10];
     v14 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v6 stringRepresentation];
+      stringRepresentation = [dCopy stringRepresentation];
       v19 = 138543618;
-      v20 = v16;
+      v20 = stringRepresentation;
       v21 = 2114;
       v22 = v11;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Event deletion wrapper: %{public}@ -> %{public}@", &v19, 0x16u);
@@ -62,26 +62,26 @@ LABEL_11:
   return v13;
 }
 
-+ (id)deletionWrapperForSourceID:(id)a3
++ (id)deletionWrapperForSourceID:(id)d
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithStoreType:0 identifier:v4 calendarIdentifier:0 type:1];
+  dCopy = d;
+  v5 = [[self alloc] initWithStoreType:0 identifier:dCopy calendarIdentifier:0 type:1];
 
   return v5;
 }
 
-- (NEKDeletionWrapper)initWithStoreType:(int64_t)a3 identifier:(id)a4 calendarIdentifier:(id)a5 type:(int)a6
+- (NEKDeletionWrapper)initWithStoreType:(int64_t)type identifier:(id)identifier calendarIdentifier:(id)calendarIdentifier type:(int)a6
 {
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  calendarIdentifierCopy = calendarIdentifier;
   v16.receiver = self;
   v16.super_class = NEKDeletionWrapper;
-  v13 = [(NEKWrapper *)&v16 initWithStoreType:a3 nekChangeType:4];
+  v13 = [(NEKWrapper *)&v16 initWithStoreType:type nekChangeType:4];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a4);
-    objc_storeStrong(&v14->_calendarIdentifier, a5);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_calendarIdentifier, calendarIdentifier);
     v14->_type = a6;
   }
 
@@ -126,15 +126,15 @@ LABEL_11:
   return v3;
 }
 
-+ (id)deletionWrapperForObjectID:(id)a3 deletedReminderAndListMapping:(id)a4
++ (id)deletionWrapperForObjectID:(id)d deletedReminderAndListMapping:(id)mapping
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  mappingCopy = mapping;
+  if (dCopy)
   {
-    v8 = [v6 entityName];
+    entityName = [dCopy entityName];
     v9 = +[REMAccount cdEntityName];
-    v10 = [v8 isEqualToString:v9];
+    v10 = [entityName isEqualToString:v9];
 
     if (v10)
     {
@@ -145,16 +145,16 @@ LABEL_20:
     }
 
     v14 = +[REMList cdEntityName];
-    v15 = [v8 isEqualToString:v14];
+    v15 = [entityName isEqualToString:v14];
 
     if (v15)
     {
-      v16 = [v6 uuid];
-      v17 = [v16 UUIDString];
+      uuid = [dCopy uuid];
+      uUIDString = [uuid UUIDString];
 
       v11 = 0;
       v18 = 2;
-      if (!v17)
+      if (!uUIDString)
       {
         goto LABEL_20;
       }
@@ -163,7 +163,7 @@ LABEL_20:
     else
     {
       v20 = +[REMReminder cdEntityName];
-      v21 = [v8 isEqualToString:v20];
+      v21 = [entityName isEqualToString:v20];
 
       if ((v21 & 1) == 0)
       {
@@ -175,12 +175,12 @@ LABEL_22:
       }
 
       v22 = +[REMStore eks_storeForSyncing];
-      v23 = [v22 fetchReminderIncludingConcealedWithObjectID:v6 error:0];
+      v23 = [v22 fetchReminderIncludingConcealedWithObjectID:dCopy error:0];
       v24 = v23;
       if (v23)
       {
-        v17 = [v23 daCalendarItemUniqueIdentifier];
-        v25 = [v7 objectForKeyedSubscript:v6];
+        uUIDString = [v23 daCalendarItemUniqueIdentifier];
+        v25 = [mappingCopy objectForKeyedSubscript:dCopy];
         if (v25)
         {
           v11 = v25;
@@ -201,17 +201,17 @@ LABEL_22:
       else
       {
         v11 = 0;
-        v17 = 0;
+        uUIDString = 0;
       }
 
       v18 = 3;
-      if (!v17)
+      if (!uUIDString)
       {
         goto LABEL_20;
       }
     }
 
-    v19 = [[a1 alloc] initWithStoreType:1 identifier:v17 calendarIdentifier:v11 type:v18];
+    v19 = [[self alloc] initWithStoreType:1 identifier:uUIDString calendarIdentifier:v11 type:v18];
 
 LABEL_21:
     goto LABEL_22;

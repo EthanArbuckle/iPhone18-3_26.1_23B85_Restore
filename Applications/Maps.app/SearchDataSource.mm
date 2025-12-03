@@ -2,72 +2,72 @@
 - (BOOL)shouldReloadOnHeightChange;
 - (BOOL)shouldShowLoadingIndicator;
 - (BOOL)shouldShowNoResultsCell;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (SearchDataSource)initWithTableView:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (SearchDataSource)initWithTableView:(id)view;
 - (double)rowHeight;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_contentFilteredIfNeeded;
-- (id)autocompleteObjectAtIndexPath:(id)a3;
+- (id)autocompleteObjectAtIndexPath:(id)path;
 - (id)flattenedArray;
-- (id)flattenedIndexPath:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
+- (id)flattenedIndexPath:(id)path;
+- (id)objectAtIndexPath:(id)path;
 - (id)objectsForAnalytics;
-- (id)personalizedItemForQuickActionMenuWithCell:(id)a3;
-- (id)placeSummaryTemplateForObject:(id)a3 autocompleteClientSourceType:(int64_t)a4 atIndexPath:(id)a5;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 legacyCellFromSearchCompletion:(id)a4 accessoryViewType:(int64_t)a5 indexPath:(id)a6;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (id)personalizedItemForQuickActionMenuWithCell:(id)cell;
+- (id)placeSummaryTemplateForObject:(id)object autocompleteClientSourceType:(int64_t)type atIndexPath:(id)path;
+- (id)sectionAtIndex:(unint64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view legacyCellFromSearchCompletion:(id)completion accessoryViewType:(int64_t)type indexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (void)_hoverGestureRecognizerStateDidChange:(id)a3;
+- (void)_hoverGestureRecognizerStateDidChange:(id)change;
 - (void)_invalidateFilteredContent;
-- (void)_sendAnalyticsForDataSelectedAtIndexPath:(id)a3 fromContent:(id)a4 childPlaceIndexPath:(id)a5 childItem:(id)a6 resultRefinement:(id)a7 containmentParent:(id)a8 tappableEntryIdentifier:(id)a9 tappedAccessoryViewType:(int64_t)a10;
-- (void)_sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:(id)a3 indexPathInSection:(id)a4 sections:(id)a5 context:(id)a6 selectedChildItemIndexPath:(id)a7 indexOfResultWithSelectedChildItem:(id)a8;
-- (void)configureAutocompleteOriginationTypeFromSource:(int)a3 inTraits:(id)a4;
-- (void)didTapOnAccessoryEntityQueryAcceleratorWithCell:(id)a3;
-- (void)didTapOnAccessoryView:(id)a3 withType:(int64_t)a4 object:(id)a5;
-- (void)didTapOnContainmentParentMapItem:(id)a3 cell:(id)a4;
-- (void)didTapOnCuratedGuide:(id)a3 cell:(id)a4;
-- (void)didTapOnCuratedGuides:(id)a3 cell:(id)a4;
-- (void)didTapOnItemInChildItems:(id)a3 cell:(id)a4 buttonIndex:(int64_t)a5;
+- (void)_sendAnalyticsForDataSelectedAtIndexPath:(id)path fromContent:(id)content childPlaceIndexPath:(id)indexPath childItem:(id)item resultRefinement:(id)refinement containmentParent:(id)parent tappableEntryIdentifier:(id)identifier tappedAccessoryViewType:(int64_t)self0;
+- (void)_sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:(id)path indexPathInSection:(id)section sections:(id)sections context:(id)context selectedChildItemIndexPath:(id)indexPath indexOfResultWithSelectedChildItem:(id)item;
+- (void)configureAutocompleteOriginationTypeFromSource:(int)source inTraits:(id)traits;
+- (void)didTapOnAccessoryEntityQueryAcceleratorWithCell:(id)cell;
+- (void)didTapOnAccessoryView:(id)view withType:(int64_t)type object:(id)object;
+- (void)didTapOnContainmentParentMapItem:(id)item cell:(id)cell;
+- (void)didTapOnCuratedGuide:(id)guide cell:(id)cell;
+- (void)didTapOnCuratedGuides:(id)guides cell:(id)cell;
+- (void)didTapOnItemInChildItems:(id)items cell:(id)cell buttonIndex:(int64_t)index;
 - (void)didTapOnReportAnIssue;
-- (void)didTapOnResultRefinement:(id)a3 cell:(id)a4;
-- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)a3 cell:(id)a4;
-- (void)didTapOnUserGeneratedGuide:(id)a3 cell:(id)a4;
+- (void)didTapOnResultRefinement:(id)refinement cell:(id)cell;
+- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)identifier cell:(id)cell;
+- (void)didTapOnUserGeneratedGuide:(id)guide cell:(id)cell;
 - (void)invalidateDataForFilterChange;
 - (void)reset;
-- (void)searchDataProviderDidUpdate:(id)a3;
-- (void)sendMapsSuggestionsInsightsAnalyticsWithEntry:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setInputText:(id)a3 tappedQuerySuggestionCompletion:(id)a4 isRetainQuery:(BOOL)a5 traits:(id)a6 source:(int)a7;
-- (void)setResultTypes:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
+- (void)searchDataProviderDidUpdate:(id)update;
+- (void)sendMapsSuggestionsInsightsAnalyticsWithEntry:(id)entry;
+- (void)setActive:(BOOL)active;
+- (void)setInputText:(id)text tappedQuerySuggestionCompletion:(id)completion isRetainQuery:(BOOL)query traits:(id)traits source:(int)source;
+- (void)setResultTypes:(unint64_t)types;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation SearchDataSource
 
-- (void)sendMapsSuggestionsInsightsAnalyticsWithEntry:(id)a3
+- (void)sendMapsSuggestionsInsightsAnalyticsWithEntry:(id)entry
 {
-  v25 = a3;
+  entryCopy = entry;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v25 contact];
-    if (!v3)
+    contact = [entryCopy contact];
+    if (!contact)
     {
       goto LABEL_29;
     }
 
-    v4 = MapsSuggestionsEngineForMapsProcess();
-    [v4 feedbackForContact:v3 action:1];
+    _geoMapItem = MapsSuggestionsEngineForMapsProcess();
+    [_geoMapItem feedbackForContact:contact action:1];
   }
 
   else
   {
-    v5 = v25;
+    v5 = entryCopy;
     v6 = &OBJC_PROTOCOL___MSPHistoryEntryPlaceDisplay;
     objc_opt_class();
     v7 = v5;
@@ -121,9 +121,9 @@
         v20 = 0;
       }
 
-      v21 = [v20 historyEntry];
-      v22 = [v21 geoMapItem];
-      v3 = [MKMapItem _itemWithGeoMapItem:v22];
+      historyEntry = [v20 historyEntry];
+      geoMapItem = [historyEntry geoMapItem];
+      contact = [MKMapItem _itemWithGeoMapItem:geoMapItem];
     }
 
     else
@@ -131,17 +131,17 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v3 = [v7 mapItem];
+        contact = [v7 mapItem];
       }
 
       else
       {
-        v3 = 0;
+        contact = 0;
       }
     }
 
-    v4 = [v3 _geoMapItem];
-    if (v4)
+    _geoMapItem = [contact _geoMapItem];
+    if (_geoMapItem)
     {
       v23 = MapsSuggestionsMapItemConvertIfNeeded();
       if (v23)
@@ -155,19 +155,19 @@
 LABEL_29:
 }
 
-- (void)_sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:(id)a3 indexPathInSection:(id)a4 sections:(id)a5 context:(id)a6 selectedChildItemIndexPath:(id)a7 indexOfResultWithSelectedChildItem:(id)a8
+- (void)_sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:(id)path indexPathInSection:(id)section sections:(id)sections context:(id)context selectedChildItemIndexPath:(id)indexPath indexOfResultWithSelectedChildItem:(id)item
 {
-  v53 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v42 = v18;
-  v43 = v17;
-  if (v15)
+  pathCopy = path;
+  sectionCopy = section;
+  sectionsCopy = sections;
+  contextCopy = context;
+  indexPathCopy = indexPath;
+  itemCopy = item;
+  v42 = itemCopy;
+  v43 = indexPathCopy;
+  if (sectionsCopy)
   {
-    v52 = [(SearchDataProvider *)self->_searchDataProvider autocompleteAnalyticsSuggestionsFromSections:v15 context:v16 selectedChildItemIndexPath:v17 indexOfResultWithSelectedChildItem:v18];
+    v52 = [(SearchDataProvider *)self->_searchDataProvider autocompleteAnalyticsSuggestionsFromSections:sectionsCopy context:contextCopy selectedChildItemIndexPath:indexPathCopy indexOfResultWithSelectedChildItem:itemCopy];
   }
 
   else
@@ -185,9 +185,9 @@ LABEL_29:
     v49 = 0;
   }
 
-  if (v53)
+  if (pathCopy)
   {
-    v51 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v53 row]);
+    v51 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [pathCopy row]);
   }
 
   else
@@ -195,12 +195,12 @@ LABEL_29:
     v51 = 0;
   }
 
-  v44 = v15;
-  v41 = v14;
-  if (v14)
+  v44 = sectionsCopy;
+  v41 = sectionCopy;
+  if (sectionCopy)
   {
-    v50 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 section]);
-    v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 row]);
+    v50 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sectionCopy section]);
+    v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sectionCopy row]);
   }
 
   else
@@ -209,114 +209,114 @@ LABEL_29:
     v50 = 0;
   }
 
-  v48 = [v16 queryString];
-  v39 = [v16 query];
-  v47 = [v39 queryTerms];
+  queryString = [contextCopy queryString];
+  query = [contextCopy query];
+  queryTerms = [query queryTerms];
   v33 = [NSNumber numberWithBool:[(SearchDataProvider *)self->_searchDataProvider lastRequestIsRetainQuery]];
-  v32 = [(SearchDataProvider *)self->_searchDataProvider rankerResponseStatus];
-  v38 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
-  v46 = [v38 modelVersion];
-  v37 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
-  v45 = [v37 rolloutId];
-  v35 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
-  v29 = [v35 rolloutDeploymentId];
-  v34 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
-  v28 = [v34 rolloutFactorpackId];
-  v31 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
-  v19 = [v31 rolloutRampId];
-  v30 = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
-  v20 = [v30 experimentId];
-  v21 = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
-  v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v21 deploymentId]);
-  v23 = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
-  [v23 treatmentId];
-  v24 = v36 = v16;
-  v25 = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
-  v26 = [v25 experimentDescription];
-  LODWORD(v27) = v32;
-  [GEOAPPortal captureClientACSuggestionWithQuery:v48 queryTokens:v47 entries:v52 selectedIndex:v51 selectedSectionIndex:v50 withinSectionSelectedIndex:v40 isRetainedQuery:v33 isRerankerTriggered:0 shouldDifferentiateClientAndServerResults:v49 responseStatus:v27 GEOModelMetadata_modelVersion:v46 GEOModelMetadata_rolloutId:v45 GEOModelMetadata_rolloutDeploymentId:v29 GEOModelMetadata_rolloutFactorpackId:v28 GEOModelMetadata_rolloutRampId:v19 GEOExperimentMetadata_experimentId:v20 GEOExperimentMetadata_deploymentId:v22 GEOExperimentMetadata_treatmentId:v24 GEOExperimentMetadata_experimentDescription:v26];
+  rankerResponseStatus = [(SearchDataProvider *)self->_searchDataProvider rankerResponseStatus];
+  modelMetadata = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
+  modelVersion = [modelMetadata modelVersion];
+  modelMetadata2 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
+  rolloutId = [modelMetadata2 rolloutId];
+  modelMetadata3 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
+  rolloutDeploymentId = [modelMetadata3 rolloutDeploymentId];
+  modelMetadata4 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
+  rolloutFactorpackId = [modelMetadata4 rolloutFactorpackId];
+  modelMetadata5 = [(SearchDataProvider *)self->_searchDataProvider modelMetadata];
+  rolloutRampId = [modelMetadata5 rolloutRampId];
+  experimentMetadata = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
+  experimentId = [experimentMetadata experimentId];
+  experimentMetadata2 = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
+  v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [experimentMetadata2 deploymentId]);
+  experimentMetadata3 = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
+  [experimentMetadata3 treatmentId];
+  v24 = v36 = contextCopy;
+  experimentMetadata4 = [(SearchDataProvider *)self->_searchDataProvider experimentMetadata];
+  experimentDescription = [experimentMetadata4 experimentDescription];
+  LODWORD(v27) = rankerResponseStatus;
+  [GEOAPPortal captureClientACSuggestionWithQuery:queryString queryTokens:queryTerms entries:v52 selectedIndex:v51 selectedSectionIndex:v50 withinSectionSelectedIndex:v40 isRetainedQuery:v33 isRerankerTriggered:0 shouldDifferentiateClientAndServerResults:v49 responseStatus:v27 GEOModelMetadata_modelVersion:modelVersion GEOModelMetadata_rolloutId:rolloutId GEOModelMetadata_rolloutDeploymentId:rolloutDeploymentId GEOModelMetadata_rolloutFactorpackId:rolloutFactorpackId GEOModelMetadata_rolloutRampId:rolloutRampId GEOExperimentMetadata_experimentId:experimentId GEOExperimentMetadata_deploymentId:v22 GEOExperimentMetadata_treatmentId:v24 GEOExperimentMetadata_experimentDescription:experimentDescription];
 }
 
-- (void)_sendAnalyticsForDataSelectedAtIndexPath:(id)a3 fromContent:(id)a4 childPlaceIndexPath:(id)a5 childItem:(id)a6 resultRefinement:(id)a7 containmentParent:(id)a8 tappableEntryIdentifier:(id)a9 tappedAccessoryViewType:(int64_t)a10
+- (void)_sendAnalyticsForDataSelectedAtIndexPath:(id)path fromContent:(id)content childPlaceIndexPath:(id)indexPath childItem:(id)item resultRefinement:(id)refinement containmentParent:(id)parent tappableEntryIdentifier:(id)identifier tappedAccessoryViewType:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v86 = a8;
-  v21 = a9;
-  v22 = [v16 row];
-  if (v22 < [v17 count])
+  pathCopy = path;
+  contentCopy = content;
+  indexPathCopy = indexPath;
+  itemCopy = item;
+  refinementCopy = refinement;
+  parentCopy = parent;
+  identifierCopy = identifier;
+  v22 = [pathCopy row];
+  if (v22 < [contentCopy count])
   {
-    v81 = v19;
-    v82 = v21;
-    v85 = v20;
+    v81 = itemCopy;
+    v82 = identifierCopy;
+    v85 = refinementCopy;
     if ([(SearchDataProvider *)self->_searchDataProvider searchMode]== 1)
     {
-      v23 = 1;
+      searchFieldTypeForAnalytics = 1;
     }
 
     else if ([(SearchDataProvider *)self->_searchDataProvider searchMode]== 2)
     {
-      v33 = [(DataSource *)self delegate];
-      v34 = [v33 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+      delegate = [(DataSource *)self delegate];
+      v34 = [delegate conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
       if (v34)
       {
-        v35 = [(DataSource *)self delegate];
+        delegate2 = [(DataSource *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v23 = [v35 searchFieldTypeForAnalytics];
+          searchFieldTypeForAnalytics = [delegate2 searchFieldTypeForAnalytics];
         }
 
         else
         {
-          v23 = 2;
+          searchFieldTypeForAnalytics = 2;
         }
       }
 
       else
       {
-        v23 = 2;
+        searchFieldTypeForAnalytics = 2;
       }
     }
 
     else
     {
-      v23 = 0;
+      searchFieldTypeForAnalytics = 0;
     }
 
-    v36 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", v17, [v16 row]);
+    v36 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", contentCopy, [pathCopy row]);
     v37 = v36;
-    +[MapsAnalyticStateProvider updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:](MapsAnalyticStateProvider, "updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:", v36, self->_searchText, [v16 row], v23, -[SearchDataProvider searchRequestAnalyticsSequenceNumber](self->_searchDataProvider, "searchRequestAnalyticsSequenceNumber"));
-    v38 = [v17 objectAtIndexedSubscript:{objc_msgSend(v16, "row")}];
+    +[MapsAnalyticStateProvider updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:](MapsAnalyticStateProvider, "updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:", v36, self->_searchText, [pathCopy row], searchFieldTypeForAnalytics, -[SearchDataProvider searchRequestAnalyticsSequenceNumber](self->_searchDataProvider, "searchRequestAnalyticsSequenceNumber"));
+    v38 = [contentCopy objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = [v38 autocompleteObject];
+      autocompleteObject = [v38 autocompleteObject];
 
-      v38 = v39;
+      v38 = autocompleteObject;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[AutocompleteAnalyticsManager addAPlaceTappedWithNumberOfResults:](self->_analyticsManager, "addAPlaceTappedWithNumberOfResults:", [v17 count]);
+      -[AutocompleteAnalyticsManager addAPlaceTappedWithNumberOfResults:](self->_analyticsManager, "addAPlaceTappedWithNumberOfResults:", [contentCopy count]);
 LABEL_21:
-      v32 = v19;
-      v21 = v82;
+      v32 = itemCopy;
+      identifierCopy = v82;
 LABEL_22:
       v40 = +[GEOAPSharedStateData sharedData];
       [v40 clearSuggestionsData];
 
-      v20 = v85;
+      refinementCopy = v85;
       goto LABEL_23;
     }
 
-    if (v86)
+    if (parentCopy)
     {
-      -[AutocompleteAnalyticsManager containmentParentUnitTappedWithMuid:](self->_analyticsManager, "containmentParentUnitTappedWithMuid:", [v86 _muid]);
+      -[AutocompleteAnalyticsManager containmentParentUnitTappedWithMuid:](self->_analyticsManager, "containmentParentUnitTappedWithMuid:", [parentCopy _muid]);
       goto LABEL_21;
     }
 
@@ -324,35 +324,35 @@ LABEL_22:
     if (v85)
     {
       analyticsManager = self->_analyticsManager;
-      v42 = [v85 toggle];
-      v43 = [v42 refinementKey];
-      [(AutocompleteAnalyticsManager *)analyticsManager resultRefinementTappedWithKey:v43];
+      toggle = [v85 toggle];
+      refinementKey = [toggle refinementKey];
+      [(AutocompleteAnalyticsManager *)analyticsManager resultRefinementTappedWithKey:refinementKey];
 
-      v32 = v19;
-      v21 = v82;
+      v32 = itemCopy;
+      identifierCopy = v82;
 LABEL_28:
       v37 = v79;
       goto LABEL_22;
     }
 
-    v21 = v82;
+    identifierCopy = v82;
     if (v82)
     {
       -[AutocompleteAnalyticsManager tappableEntryUnitTappedWithMuid:](self->_analyticsManager, "tappableEntryUnitTappedWithMuid:", [v82 muid]);
-      v32 = v19;
+      v32 = itemCopy;
       goto LABEL_28;
     }
 
-    v32 = v19;
-    if (v19)
+    v32 = itemCopy;
+    if (itemCopy)
     {
-      v44 = [v19 childItemAction];
+      childItemAction = [itemCopy childItemAction];
 
-      if (v44)
+      if (childItemAction)
       {
-        v45 = [v19 childItemAction];
-        v46 = [v19 childItemAction];
-        v47 = [v45 childActionTypeAsString:{objc_msgSend(v46, "childActionType")}];
+        childItemAction2 = [itemCopy childItemAction];
+        childItemAction3 = [itemCopy childItemAction];
+        v47 = [childItemAction2 childActionTypeAsString:{objc_msgSend(childItemAction3, "childActionType")}];
       }
 
       else
@@ -360,42 +360,42 @@ LABEL_28:
         v47 = 0;
       }
 
-      v21 = 0;
+      identifierCopy = 0;
       v37 = v79;
-      v54 = [v81 childItemPlace];
+      childItemPlace = [v81 childItemPlace];
       LOBYTE(v75) = 0;
-      [(DataSource *)self sendAnalyticsForDataAtIndexPath:v16 object:v38 childPlaceIndexPath:v18 childPlaceObject:v54 action:2031 eventValue:v47 populateSearchTapEvent:v75];
+      [(DataSource *)self sendAnalyticsForDataAtIndexPath:pathCopy object:v38 childPlaceIndexPath:indexPathCopy childPlaceObject:childItemPlace action:2031 eventValue:v47 populateSearchTapEvent:v75];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v55 = [v38 publisherResult];
-        v84 = [v55 publisher];
+        publisherResult = [v38 publisherResult];
+        publisher = [publisherResult publisher];
 
-        v56 = [v81 childItemAction];
-        v80 = [v56 guideLocation];
+        childItemAction4 = [v81 childItemAction];
+        guideLocation = [childItemAction4 guideLocation];
 
-        if (v84)
+        if (publisher)
         {
           v57 = self->_analyticsManager;
-          v58 = [v84 identifier];
-          v59 = [v58 muid];
-          v60 = [v16 row];
-          v61 = v59;
+          identifier = [publisher identifier];
+          muid = [identifier muid];
+          v60 = [pathCopy row];
+          v61 = muid;
           v32 = v81;
           [(AutocompleteAnalyticsManager *)v57 publisherChildItemButtonTappedWithPublisherMuid:v61 verticalIndex:v60];
 
           v37 = v79;
-          v62 = v80;
+          v62 = guideLocation;
         }
 
         else
         {
-          v62 = v80;
-          if (v80)
+          v62 = guideLocation;
+          if (guideLocation)
           {
-            -[AutocompleteAnalyticsManager guidesHomeChildItemButtonTappedWithVerticalIndex:](self->_analyticsManager, "guidesHomeChildItemButtonTappedWithVerticalIndex:", [v16 row]);
-            v62 = v80;
+            -[AutocompleteAnalyticsManager guidesHomeChildItemButtonTappedWithVerticalIndex:](self->_analyticsManager, "guidesHomeChildItemButtonTappedWithVerticalIndex:", [pathCopy row]);
+            v62 = guideLocation;
           }
         }
       }
@@ -418,7 +418,7 @@ LABEL_28:
       }
     }
 
-    if (a10 == 2)
+    if (type == 2)
     {
       v49 = 2032;
     }
@@ -432,13 +432,13 @@ LABEL_28:
     if (objc_opt_isKindOfClass())
     {
       v50 = v38;
-      v51 = [v50 mapItem];
-      v52 = [v51 _hasHikeInfo];
+      mapItem = [v50 mapItem];
+      _hasHikeInfo = [mapItem _hasHikeInfo];
 
-      if (v52)
+      if (_hasHikeInfo)
       {
-        v53 = [v50 mapItem];
-        v78 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v53 _muid]);
+        mapItem2 = [v50 mapItem];
+        v78 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [mapItem2 _muid]);
       }
 
       else
@@ -448,19 +448,19 @@ LABEL_28:
 
       v37 = v79;
 
-      [(DataSource *)self sendAnalyticsForDataAtIndexPath:v16 object:v38 action:v49 eventValue:v78];
+      [(DataSource *)self sendAnalyticsForDataAtIndexPath:pathCopy object:v38 action:v49 eventValue:v78];
     }
 
     else
     {
       v78 = 0;
       v37 = v79;
-      [(DataSource *)self sendAnalyticsForDataAtIndexPath:v16 object:v38 action:v49 eventValue:0];
+      [(DataSource *)self sendAnalyticsForDataAtIndexPath:pathCopy object:v38 action:v49 eventValue:0];
     }
 
     objc_opt_class();
     v32 = 0;
-    v21 = 0;
+    identifierCopy = 0;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_60:
@@ -468,31 +468,31 @@ LABEL_60:
       goto LABEL_22;
     }
 
-    v63 = [v38 collectionResult];
-    v64 = [v63 collection];
+    collectionResult = [v38 collectionResult];
+    collection = [collectionResult collection];
 
-    v65 = [v38 publisherResult];
-    v77 = [v65 publisher];
+    publisherResult2 = [v38 publisherResult];
+    publisher2 = [publisherResult2 publisher];
 
-    if (v64)
+    if (collection)
     {
       v66 = +[CuratedCollectionSyncManager sharedManager];
-      v67 = [v66 collectionIsSaved:v64];
+      v67 = [v66 collectionIsSaved:collection];
 
       v68 = self->_analyticsManager;
-      v76 = v64;
-      v69 = [v64 collectionIdentifier];
-      v70 = [v69 muid];
-      v71 = [v16 row];
-      v72 = v70;
+      v76 = collection;
+      collectionIdentifier = [collection collectionIdentifier];
+      muid2 = [collectionIdentifier muid];
+      v71 = [pathCopy row];
+      v72 = muid2;
       v32 = v81;
       [(AutocompleteAnalyticsManager *)v68 curatedCollectionTappedWithMUID:v72 isCurrentlySaved:v67 verticalIndex:v71];
     }
 
     else
     {
-      v73 = v77;
-      if (!v77)
+      v73 = publisher2;
+      if (!publisher2)
       {
 LABEL_59:
 
@@ -501,36 +501,36 @@ LABEL_59:
 
       v76 = 0;
       v74 = self->_analyticsManager;
-      v69 = [v77 identifier];
-      -[AutocompleteAnalyticsManager publisherTappedWithMuid:verticalIndex:](v74, "publisherTappedWithMuid:verticalIndex:", [v69 muid], objc_msgSend(v16, "row"));
+      collectionIdentifier = [publisher2 identifier];
+      -[AutocompleteAnalyticsManager publisherTappedWithMuid:verticalIndex:](v74, "publisherTappedWithMuid:verticalIndex:", [collectionIdentifier muid], objc_msgSend(pathCopy, "row"));
     }
 
     v37 = v79;
-    v64 = v76;
-    v73 = v77;
+    collection = v76;
+    v73 = publisher2;
     goto LABEL_59;
   }
 
   v24 = sub_100067540();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    v25 = [v16 row];
-    v83 = v16;
-    v26 = v20;
+    v25 = [pathCopy row];
+    v83 = pathCopy;
+    v26 = refinementCopy;
     v27 = v25;
-    v28 = [v17 count];
-    v29 = v18;
+    v28 = [contentCopy count];
+    v29 = indexPathCopy;
     searchText = self->_searchText;
-    v31 = [ChildItemButton buttonTitleWithChildItem:v19];
+    v31 = [ChildItemButton buttonTitleWithChildItem:itemCopy];
     *buf = 134219010;
     v88 = v27;
-    v20 = v26;
-    v16 = v83;
+    refinementCopy = v26;
+    pathCopy = v83;
     v89 = 2048;
     v90 = v28;
     v91 = 2112;
     v92 = searchText;
-    v18 = v29;
+    indexPathCopy = v29;
     v93 = 2112;
     v94 = v31;
     v95 = 2048;
@@ -538,7 +538,7 @@ LABEL_59:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Logging out of bounds tap. IndexPath %ld. Content count: %lu. Query: %@. ChildItem title: %@. ChildPlaceIndexPath: %ld", buf, 0x34u);
   }
 
-  v32 = v19;
+  v32 = itemCopy;
 LABEL_23:
 }
 
@@ -549,8 +549,8 @@ LABEL_23:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  v5 = [sections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -561,14 +561,14 @@ LABEL_23:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sections);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) items];
-        [v3 addObjectsFromArray:v9];
+        items = [*(*(&v12 + 1) + 8 * i) items];
+        [v3 addObjectsFromArray:items];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [sections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -579,22 +579,22 @@ LABEL_23:
   return v10;
 }
 
-- (id)flattenedIndexPath:(id)a3
+- (id)flattenedIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  if ([v4 section] >= 1)
+  pathCopy = path;
+  v5 = [pathCopy row];
+  if ([pathCopy section] >= 1)
   {
     v6 = 0;
     do
     {
-      v7 = [(DataSource *)self tableView];
-      v5 = &v5[[(SearchDataSource *)self tableView:v7 numberOfRowsInSection:v6]];
+      tableView = [(DataSource *)self tableView];
+      v5 = &v5[[(SearchDataSource *)self tableView:tableView numberOfRowsInSection:v6]];
 
       ++v6;
     }
 
-    while ([v4 section] > v6);
+    while ([pathCopy section] > v6);
   }
 
   v8 = [NSIndexPath indexPathForRow:v5 inSection:0];
@@ -606,24 +606,24 @@ LABEL_23:
 {
   [(AutocompleteAnalyticsManager *)self->_analyticsManager addAPlaceTappedWithNumberOfResults:0];
   v3 = [ReportASearchAutocompleteResult alloc];
-  v4 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  v5 = [v4 queryString];
-  v7 = [(ReportASearchAutocompleteResult *)v3 initWithTitle:v5];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  queryString = [autocompleteContext queryString];
+  v7 = [(ReportASearchAutocompleteResult *)v3 initWithTitle:queryString];
 
-  v6 = [(DataSource *)self delegate];
-  [v6 dataSource:self itemTapped:v7];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v7];
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
   if ([(SearchDataSource *)self shouldShowNoResultsCell]|| [(SearchDataSource *)self shouldShowLoadingIndicator])
   {
     return 1;
   }
 
-  v6 = [(SearchDataSource *)self sectionAtIndex:a3];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  v6 = [(SearchDataSource *)self sectionAtIndex:section];
+  items = [v6 items];
+  v8 = [items count];
 
   return v8;
 }
@@ -635,8 +635,8 @@ LABEL_23:
     return 1;
   }
 
-  v4 = [(SearchDataSource *)self _contentFilteredIfNeeded];
-  v5 = [v4 count];
+  _contentFilteredIfNeeded = [(SearchDataSource *)self _contentFilteredIfNeeded];
+  v5 = [_contentFilteredIfNeeded count];
 
   return v5;
 }
@@ -657,19 +657,19 @@ LABEL_23:
 
   else
   {
-    v5 = [(SearchDataProvider *)self->_searchDataProvider sections];
-    v6 = [(DataSource *)self delegate];
+    sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+    delegate = [(DataSource *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v23 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+      v23 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [sections count]);
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v21 = v5;
-      obj = v5;
+      v21 = sections;
+      obj = sections;
       v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v8)
       {
@@ -685,19 +685,19 @@ LABEL_23:
             }
 
             v12 = *(*(&v25 + 1) + 8 * i);
-            v13 = [v12 items];
+            items = [v12 items];
             v24[0] = _NSConcreteStackBlock;
             v24[1] = 3221225472;
             v24[2] = sub_10073D094;
             v24[3] = &unk_101656A98;
             v24[4] = self;
             v14 = [NSPredicate predicateWithBlock:v24];
-            v15 = [v13 filteredArrayUsingPredicate:v14];
+            v15 = [items filteredArrayUsingPredicate:v14];
 
             if ([v15 count])
             {
-              v16 = [v12 title];
-              v17 = +[AutocompleteSection sectionWithTitle:items:isQuerySuggestionsSection:](AutocompleteSection, "sectionWithTitle:items:isQuerySuggestionsSection:", v16, v15, [v12 isQuerySuggestionsSection]);
+              title = [v12 title];
+              v17 = +[AutocompleteSection sectionWithTitle:items:isQuerySuggestionsSection:](AutocompleteSection, "sectionWithTitle:items:isQuerySuggestionsSection:", title, v15, [v12 isQuerySuggestionsSection]);
               [v23 addObject:v17];
             }
           }
@@ -712,12 +712,12 @@ LABEL_23:
       v19 = self->_filteredContent;
       self->_filteredContent = v18;
 
-      v5 = v21;
+      sections = v21;
     }
 
     else
     {
-      objc_storeStrong(&self->_filteredContent, v5);
+      objc_storeStrong(&self->_filteredContent, sections);
     }
 
     v3 = self->_filteredContent;
@@ -726,35 +726,35 @@ LABEL_23:
   return v3;
 }
 
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v11 = a3;
-  v7 = a4;
-  if (sub_10000FA08(v11) == 5)
+  viewCopy = view;
+  contextCopy = context;
+  if (sub_10000FA08(viewCopy) == 5)
   {
-    [v11 deselectRowAtIndexPath:self->_lastSelectedIndexPath animated:0];
-    v8 = [v7 nextFocusedIndexPath];
-    [v11 selectRowAtIndexPath:v8 animated:0 scrollPosition:0];
+    [viewCopy deselectRowAtIndexPath:self->_lastSelectedIndexPath animated:0];
+    nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
+    [viewCopy selectRowAtIndexPath:nextFocusedIndexPath animated:0 scrollPosition:0];
   }
 
-  v9 = [v7 nextFocusedIndexPath];
+  nextFocusedIndexPath2 = [contextCopy nextFocusedIndexPath];
   lastSelectedIndexPath = self->_lastSelectedIndexPath;
-  self->_lastSelectedIndexPath = v9;
+  self->_lastSelectedIndexPath = nextFocusedIndexPath2;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 row] && (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") || -[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator")))
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy row] && (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") || -[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator")))
   {
-    [v6 frame];
+    [viewCopy frame];
     v11 = v10;
   }
 
   else
   {
-    v8 = -[SearchDataSource sectionAtIndex:](self, "sectionAtIndex:", [v7 section]);
+    v8 = -[SearchDataSource sectionAtIndex:](self, "sectionAtIndex:", [pathCopy section]);
     if ([v8 isQuerySuggestionsSection])
     {
       +[QuerySuggestionTableViewCell estimatedCellHeight];
@@ -771,13 +771,13 @@ LABEL_23:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v15 = a3;
-  v6 = a4;
-  if ([v6 row] || !-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") && !-[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator"))
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row] || !-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") && !-[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator"))
   {
-    v7 = [(SearchDataSource *)self autocompleteObjectAtIndexPath:v6];
+    v7 = [(SearchDataSource *)self autocompleteObjectAtIndexPath:pathCopy];
     if (v7)
     {
       objc_opt_class();
@@ -787,19 +787,19 @@ LABEL_23:
       }
 
       [(SearchDataSource *)self sendMapsSuggestionsInsightsAnalyticsWithEntry:v7];
-      v8 = [(SearchDataSource *)self flattenedArray];
-      v9 = [(SearchDataSource *)self flattenedIndexPath:v6];
-      [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:v8];
-      v10 = [(SearchDataProvider *)self->_searchDataProvider sections];
-      v11 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-      [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v6 sections:v10 context:v11];
+      flattenedArray = [(SearchDataSource *)self flattenedArray];
+      v9 = [(SearchDataSource *)self flattenedIndexPath:pathCopy];
+      [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:flattenedArray];
+      sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+      autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+      [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:pathCopy sections:sections context:autocompleteContext];
 
-      v12 = [(DataSource *)self delegate];
-      [v12 dataSource:self itemTapped:v7];
+      delegate = [(DataSource *)self delegate];
+      [delegate dataSource:self itemTapped:v7];
     }
 
-    [v15 deselectRowAtIndexPath:v6 animated:1];
-    v13 = [v15 cellForRowAtIndexPath:v6];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    v13 = [viewCopy cellForRowAtIndexPath:pathCopy];
     if ([v13 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteCellAccessoryView])
     {
       v14 = v13;
@@ -811,94 +811,94 @@ LABEL_23:
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 row] && (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") || -[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator")))
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy row] && (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") || -[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator")))
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [v6 cellForRowAtIndexPath:v7];
+    v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v9 = ![v8 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteCellAccessoryView] || objc_msgSend(v8, "accessoryViewType") != 3;
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 legacyCellFromSearchCompletion:(id)a4 accessoryViewType:(int64_t)a5 indexPath:(id)a6
+- (id)tableView:(id)view legacyCellFromSearchCompletion:(id)completion accessoryViewType:(int64_t)type indexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 mapItem];
-  if (v11)
+  viewCopy = view;
+  completionCopy = completion;
+  mapItem = [completionCopy mapItem];
+  if (mapItem)
   {
 
 LABEL_4:
-    v13 = v10;
-    v14 = [v13 childItems];
+    clientResolved = completionCopy;
+    childItems = [clientResolved childItems];
     v41 = 0;
     goto LABEL_5;
   }
 
-  v12 = [v10 publisherResult];
+  publisherResult = [completionCopy publisherResult];
 
-  if (v12)
+  if (publisherResult)
   {
     goto LABEL_4;
   }
 
-  v37 = [(SearchDataSource *)self userLocationSearchResult];
-  v41 = [TwoLinesContentViewModelComposer cellModelForLocalSearchCompletion:v10 userLocationSearchResult:v37 autocompleteClientSourceType:0];
+  userLocationSearchResult = [(SearchDataSource *)self userLocationSearchResult];
+  v41 = [TwoLinesContentViewModelComposer cellModelForLocalSearchCompletion:completionCopy userLocationSearchResult:userLocationSearchResult autocompleteClientSourceType:0];
 
-  v13 = [v10 clientResolved];
-  if (v13)
+  clientResolved = [completionCopy clientResolved];
+  if (clientResolved)
   {
-    v38 = [v10 clientResolved];
-    if ([v38 itemType] == 4)
+    clientResolved2 = [completionCopy clientResolved];
+    if ([clientResolved2 itemType] == 4)
     {
-      v39 = [v10 subtitle];
-      v40 = [v39 length];
+      subtitle = [completionCopy subtitle];
+      v40 = [subtitle length];
 
       if (v40)
       {
 LABEL_21:
-        v14 = 0;
-        v13 = 0;
+        childItems = 0;
+        clientResolved = 0;
         goto LABEL_5;
       }
 
-      v13 = +[CustomLocationManager sharedManager];
-      v38 = [(SearchDataSource *)self userLocationSearchResult];
-      [v13 processSearchResult:v38 traits:0];
+      clientResolved = +[CustomLocationManager sharedManager];
+      clientResolved2 = [(SearchDataSource *)self userLocationSearchResult];
+      [clientResolved processSearchResult:clientResolved2 traits:0];
     }
 
     goto LABEL_21;
   }
 
-  v14 = 0;
+  childItems = 0;
 LABEL_5:
-  v15 = +[AcSearchResultTableViewCell identifierWithChildItemsCount:](AcSearchResultTableViewCell, "identifierWithChildItemsCount:", [v14 count]);
-  v16 = [v9 dequeueReusableCellWithIdentifier:v15];
+  v15 = +[AcSearchResultTableViewCell identifierWithChildItemsCount:](AcSearchResultTableViewCell, "identifierWithChildItemsCount:", [childItems count]);
+  v16 = [viewCopy dequeueReusableCellWithIdentifier:v15];
   if (!v16)
   {
     v16 = [[AcSearchResultTableViewCell alloc] initWithStyle:0 reuseIdentifier:v15];
   }
 
-  v17 = [(DataSource *)self currentLocation];
-  [(_SearchResultTableViewCell *)v16 setCurrentLocation:v17];
+  currentLocation = [(DataSource *)self currentLocation];
+  [(_SearchResultTableViewCell *)v16 setCurrentLocation:currentLocation];
 
   [(_SearchResultTableViewCell *)v16 setAccessoryViewDelegate:self];
-  [(_SearchResultTableViewCell *)v16 setAccessoryViewObject:v13];
-  [(AcSearchResultTableViewCell *)v16 setAccessoryViewType:a5];
+  [(_SearchResultTableViewCell *)v16 setAccessoryViewObject:clientResolved];
+  [(AcSearchResultTableViewCell *)v16 setAccessoryViewType:type];
   [(AcSearchResultTableViewCell *)v16 setShouldEnableGrayscaleHighlighting:[(SearchDataProvider *)self->_searchDataProvider shouldEnableGrayscaleHighlighting]];
-  v18 = [(SearchDataSource *)self searchDataProvider];
-  v19 = [v18 autocompleteContext];
-  v20 = [v19 queryString];
-  [(AcSearchResultTableViewCell *)v16 setSearchQuery:v20];
+  searchDataProvider = [(SearchDataSource *)self searchDataProvider];
+  autocompleteContext = [searchDataProvider autocompleteContext];
+  queryString = [autocompleteContext queryString];
+  [(AcSearchResultTableViewCell *)v16 setSearchQuery:queryString];
 
   v21 = +[UIColor secondarySystemGroupedBackgroundColor];
   [(AcSearchResultTableViewCell *)v16 setBackgroundColor:v21];
@@ -906,31 +906,31 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = [v13 autocompleteCellType];
+    autocompleteCellType = [clientResolved autocompleteCellType];
   }
 
   else
   {
-    v22 = 3;
+    autocompleteCellType = 3;
   }
 
-  [(AcSearchResultTableViewCell *)v16 setAutocompleteCellType:v22];
+  [(AcSearchResultTableViewCell *)v16 setAutocompleteCellType:autocompleteCellType];
   [(AcSearchResultTableViewCell *)v16 setAutocompleteClientSourceType:0];
-  if ([v14 count])
+  if ([childItems count])
   {
-    v23 = [(DataSource *)self tableView];
-    [v23 frame];
+    tableView = [(DataSource *)self tableView];
+    [tableView frame];
     [(AcSearchResultTableViewCell *)v16 estimatedChildItemsStackViewWidthWithContentViewWidth:CGRectGetWidth(v43)];
     v25 = v24;
 
-    sub_10000FA08(v9);
+    sub_10000FA08(viewCopy);
     v26 = objc_opt_class();
     v27 = [ChildItemsViewModel alloc];
     +[AcSearchResultTableViewCell childItemRowSpacing];
     v29 = v28;
-    v30 = [v26 buttonTitleFont];
+    buttonTitleFont = [v26 buttonTitleFont];
     [v26 contentEdgeInsets];
-    v35 = [(ChildItemsViewModel *)v27 initWithChildItems:v14 childItemsSpacing:v30 font:v29 maxWidth:v25 buttonContentEdgeInsets:v31, v32, v33, v34];
+    v35 = [(ChildItemsViewModel *)v27 initWithChildItems:childItems childItemsSpacing:buttonTitleFont font:v29 maxWidth:v25 buttonContentEdgeInsets:v31, v32, v33, v34];
   }
 
   else
@@ -938,39 +938,39 @@ LABEL_5:
     v35 = 0;
   }
 
-  [(AcSearchResultTableViewCell *)v16 setChildItems:v14 viewModel:v35];
-  [(AcSearchResultTableViewCell *)v16 setObject:v13];
+  [(AcSearchResultTableViewCell *)v16 setChildItems:childItems viewModel:v35];
+  [(AcSearchResultTableViewCell *)v16 setObject:clientResolved];
 
   return v16;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator") && ![v7 row])
+  viewCopy = view;
+  pathCopy = path;
+  if (-[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator") && ![pathCopy row])
   {
     v12 = +[SearchLoadingTableViewCell identifier];
-    v13 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
 
     LODWORD(v14) = 1144750080;
     [(QuerySuggestionTableViewCell *)v13 setHeightConstraint:40.0 withPriority:v14];
   }
 
-  else if (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") && ![v7 row])
+  else if (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") && ![pathCopy row])
   {
     v40 = +[SearchNoResultsTableViewCell identifier];
-    v13 = [v6 dequeueReusableCellWithIdentifier:v40 forIndexPath:v7];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v40 forIndexPath:pathCopy];
 
     [(QuerySuggestionTableViewCell *)v13 setEnableStructuredRAPAffordance:[(SearchDataProvider *)self->_searchDataProvider shouldEnableRAPForNoResults]];
-    if (sub_10000FA08(v6) == 5)
+    if (sub_10000FA08(viewCopy) == 5)
     {
       v42 = 40.0;
     }
 
     else
     {
-      [v6 frame];
+      [viewCopy frame];
       v42 = v43;
     }
 
@@ -981,14 +981,14 @@ LABEL_5:
 
   else
   {
-    v8 = [(SearchDataSource *)self objectAtIndexPath:v7];
+    v8 = [(SearchDataSource *)self objectAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(SearchDataSource *)self searchDataProvider];
-      v10 = [v9 showAutocompleteClientSource];
+      searchDataProvider = [(SearchDataSource *)self searchDataProvider];
+      showAutocompleteClientSource = [searchDataProvider showAutocompleteClientSource];
 
-      if (v10)
+      if (showAutocompleteClientSource)
       {
         v11 = [AutocompleteClientSource autocompleteClientSourceTypeWithItem:v8];
       }
@@ -998,9 +998,9 @@ LABEL_5:
         v11 = 0;
       }
 
-      v15 = [v8 autocompleteObject];
+      autocompleteObject = [v8 autocompleteObject];
 
-      v8 = v15;
+      v8 = autocompleteObject;
     }
 
     else
@@ -1035,11 +1035,11 @@ LABEL_5:
       }
     }
 
-    v51 = -[SearchDataSource sectionAtIndex:](self, "sectionAtIndex:", [v7 section]);
+    v51 = -[SearchDataSource sectionAtIndex:](self, "sectionAtIndex:", [pathCopy section]);
     if ([v51 isQuerySuggestionsSection])
     {
       v17 = +[QuerySuggestionTableViewCell identifier];
-      v13 = [v6 dequeueReusableCellWithIdentifier:v17];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:v17];
 
       if (!v13)
       {
@@ -1048,37 +1048,37 @@ LABEL_5:
         v13 = [(QuerySuggestionTableViewCell *)v18 initWithStyle:0 reuseIdentifier:v19];
       }
 
-      v50 = v6;
+      v50 = viewCopy;
       v20 = v8;
-      v21 = [v20 directionIntent];
+      directionIntent = [v20 directionIntent];
 
-      if (v21)
+      if (directionIntent)
       {
-        v22 = [[DirectionIntentCellViewModel alloc] initWithLocalSearchCompletion:v20];
-        v23 = [(DirectionIntentCellViewModel *)v22 titleCellString];
-        v24 = [(DirectionIntentCellViewModel *)v22 subtitleCellString];
-        if ([v24 length])
+        title = [[DirectionIntentCellViewModel alloc] initWithLocalSearchCompletion:v20];
+        titleCellString = [(DirectionIntentCellViewModel *)title titleCellString];
+        subtitleCellString = [(DirectionIntentCellViewModel *)title subtitleCellString];
+        if ([subtitleCellString length])
         {
-          v25 = [NSString stringWithFormat:@"%@ %@", v23, v24];
+          v25 = [NSString stringWithFormat:@"%@ %@", titleCellString, subtitleCellString];
 
-          v23 = v25;
+          titleCellString = v25;
         }
 
-        v26 = [v20 titleHighlightRanges];
-        [(QuerySuggestionTableViewCell *)v13 setTitle:v23 highlightTitleRanges:v26 detailText:0 style:0];
+        titleHighlightRanges = [v20 titleHighlightRanges];
+        [(QuerySuggestionTableViewCell *)v13 setTitle:titleCellString highlightTitleRanges:titleHighlightRanges detailText:0 style:0];
       }
 
       else
       {
-        v22 = [v20 title];
-        v23 = [v20 titleHighlightRanges];
-        [(QuerySuggestionTableViewCell *)v13 setTitle:v22 highlightTitleRanges:v23 detailText:0 style:0];
+        title = [v20 title];
+        titleCellString = [v20 titleHighlightRanges];
+        [(QuerySuggestionTableViewCell *)v13 setTitle:title highlightTitleRanges:titleCellString detailText:0 style:0];
       }
 
       [(QuerySuggestionTableViewCell *)v13 setAccessoryViewDelegate:self];
       [(QuerySuggestionTableViewCell *)v13 setAccessoryViewObject:v20];
       [(QuerySuggestionTableViewCell *)v13 setAccessoryViewType:accessoryType];
-      v6 = v50;
+      viewCopy = v50;
     }
 
     else
@@ -1097,41 +1097,41 @@ LABEL_5:
 
       v20 = v28;
 
-      v29 = [v20 clientResolved];
-      if (v29)
+      clientResolved = [v20 clientResolved];
+      if (clientResolved)
       {
-        v30 = v29;
-        v31 = [v20 clientResolved];
-        v32 = [v31 itemType];
+        v30 = clientResolved;
+        clientResolved2 = [v20 clientResolved];
+        itemType = [clientResolved2 itemType];
 
-        if (v32 == 4)
+        if (itemType == 4)
         {
           v33 = +[CustomLocationManager sharedManager];
-          v34 = [(SearchDataSource *)self userLocationSearchResult];
-          [v33 processSearchResult:v34 traits:0];
+          userLocationSearchResult = [(SearchDataSource *)self userLocationSearchResult];
+          [v33 processSearchResult:userLocationSearchResult traits:0];
         }
       }
 
       if (v20 && [(SearchDataSource *)self useLegacyCellsForSearchAC])
       {
-        v13 = [(SearchDataSource *)self tableView:v6 legacyCellFromSearchCompletion:v20 accessoryViewType:self->_accessoryType indexPath:v7];
+        v13 = [(SearchDataSource *)self tableView:viewCopy legacyCellFromSearchCompletion:v20 accessoryViewType:self->_accessoryType indexPath:pathCopy];
       }
 
       else
       {
-        v35 = [(SearchDataSource *)self placeSummaryTemplateForObject:v27 autocompleteClientSourceType:v11 atIndexPath:v7];
+        v35 = [(SearchDataSource *)self placeSummaryTemplateForObject:v27 autocompleteClientSourceType:v11 atIndexPath:pathCopy];
         if (v35)
         {
           if (_UISolariumEnabled())
           {
             if ([v20 _type] == 4)
             {
-              v36 = [v27 collectionResult];
-              v37 = [v36 collection];
+              collectionResult = [v27 collectionResult];
+              collection = [collectionResult collection];
 
-              v38 = [[_TtC4Maps21CuratedGuideViewModel alloc] initWithPlaceCollection:v37 useRichLayout:0 isAutocompleteContext:1];
+              v38 = [[_TtC4Maps21CuratedGuideViewModel alloc] initWithPlaceCollection:collection useRichLayout:0 isAutocompleteContext:1];
               v39 = +[_TtC4Maps25CuratedGuideTableViewCell reuseIdentifier];
-              v13 = [v6 dequeueReusableCellWithIdentifier:v39];
+              v13 = [viewCopy dequeueReusableCellWithIdentifier:v39];
 
               [(QuerySuggestionTableViewCell *)v13 configureWith:v38 delegate:self template:v35];
             }
@@ -1140,18 +1140,18 @@ LABEL_5:
             {
               v45 = objc_opt_class();
               v46 = NSStringFromClass(v45);
-              v13 = [v6 dequeueReusableCellWithIdentifier:v46];
+              v13 = [viewCopy dequeueReusableCellWithIdentifier:v46];
 
-              v47 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-              v48 = [v47 queryString];
-              [(QuerySuggestionTableViewCell *)v13 configureWithTemplate:v35 query:v48 asyncDataManager:self->_placeSummaryAsyncDataManager delegate:self];
+              autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+              queryString = [autocompleteContext queryString];
+              [(QuerySuggestionTableViewCell *)v13 configureWithTemplate:v35 query:queryString asyncDataManager:self->_placeSummaryAsyncDataManager delegate:self];
             }
           }
 
           else
           {
             v44 = +[_TtC4Maps25PlaceSummaryTableViewCell reuseIdentifier];
-            v13 = [v6 dequeueReusableCellWithIdentifier:v44];
+            v13 = [viewCopy dequeueReusableCellWithIdentifier:v44];
 
             [(QuerySuggestionTableViewCell *)v13 setViewModel:v35 delegate:self asyncDataManager:self->_placeSummaryAsyncDataManager];
           }
@@ -1168,26 +1168,26 @@ LABEL_5:
   return v13;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(SearchDataSource *)self sectionAtIndex:a4];
-  v8 = [v7 title];
-  if ([v8 length])
+  viewCopy = view;
+  v7 = [(SearchDataSource *)self sectionAtIndex:section];
+  title = [v7 title];
+  if ([title length])
   {
     v9 = 0.0;
     if (!-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") && -[DataSource active](self, "active") && !-[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator") && ([v7 isQuerySuggestionsSection] & 1) == 0)
     {
-      v10 = [v6 _maps_indexOfFirstNonEmptySection] == a4;
-      [v6 bounds];
+      v10 = [viewCopy _maps_indexOfFirstNonEmptySection] == section;
+      [viewCopy bounds];
       Width = CGRectGetWidth(v16);
-      v12 = [v6 traitCollection];
-      [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:v10 title:v8 actionTitle:0 availableWidth:v12 traitCollection:Width];
+      traitCollection = [viewCopy traitCollection];
+      [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:v10 title:title actionTitle:0 availableWidth:traitCollection traitCollection:Width];
       v9 = v13;
     }
   }
 
-  else if (a4)
+  else if (section)
   {
     +[_TtC4Maps23MapsDesignConstantsShim discreetListRowSpacing];
     v9 = v14;
@@ -1201,9 +1201,9 @@ LABEL_5:
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(SearchDataSource *)self shouldShowNoResultsCell]|| ![(DataSource *)self active]|| [(SearchDataSource *)self shouldShowLoadingIndicator])
   {
     v7 = 0;
@@ -1211,7 +1211,7 @@ LABEL_5:
 
   else
   {
-    v9 = [(SearchDataSource *)self sectionAtIndex:a4];
+    v9 = [(SearchDataSource *)self sectionAtIndex:section];
     if (([v9 isQuerySuggestionsSection] & 1) != 0 || (objc_msgSend(v9, "title"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, !v11))
     {
       v7 = 0;
@@ -1219,12 +1219,12 @@ LABEL_5:
 
     else
     {
-      v12 = [v9 title];
-      if ([v12 length])
+      title = [v9 title];
+      if ([title length])
       {
         v13 = [SectionHeaderTableViewHeaderFooterView alloc];
-        v14 = [v9 title];
-        v7 = -[SectionHeaderTableViewHeaderFooterView initWithTitle:isFirstNonEmptySection:](v13, "initWithTitle:isFirstNonEmptySection:", v14, [v6 _maps_indexOfFirstNonEmptySection] == a4);
+        title2 = [v9 title];
+        v7 = -[SectionHeaderTableViewHeaderFooterView initWithTitle:isFirstNonEmptySection:](v13, "initWithTitle:isFirstNonEmptySection:", title2, [viewCopy _maps_indexOfFirstNonEmptySection] == section);
 
         [(SectionHeaderTableViewHeaderFooterView *)v7 setAccessibilityIdentifiersWithBaseString:@"Autocomplete"];
         [(SectionHeaderTableViewHeaderFooterView *)v7 setShowsBottomHairline:0];
@@ -1242,17 +1242,17 @@ LABEL_5:
 
 - (id)objectsForAnalytics
 {
-  v2 = [(SearchDataSource *)self _contentFilteredIfNeeded];
-  v3 = [v2 copy];
+  _contentFilteredIfNeeded = [(SearchDataSource *)self _contentFilteredIfNeeded];
+  v3 = [_contentFilteredIfNeeded copy];
 
   return v3;
 }
 
-- (id)personalizedItemForQuickActionMenuWithCell:(id)a3
+- (id)personalizedItemForQuickActionMenuWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v6 = [tableView indexPathForCell:cellCopy];
 
   v7 = [(SearchDataSource *)self autocompleteObjectAtIndexPath:v6];
   objc_opt_class();
@@ -1306,10 +1306,10 @@ LABEL_5:
 
     if (v20)
     {
-      v21 = [(SearchResult *)v20 historyEntry];
+      historyEntry = [(SearchResult *)v20 historyEntry];
       v22 = &OBJC_PROTOCOL___MSPHistoryEntryPlaceDisplay;
       objc_opt_class();
-      v23 = v21;
+      v23 = historyEntry;
       if (objc_opt_isKindOfClass())
       {
         v24 = v23;
@@ -1324,8 +1324,8 @@ LABEL_5:
 
       if (v25)
       {
-        v26 = [v25 historyEntry];
-        v27 = [v26 conformsToProtocol:v22];
+        historyEntry2 = [v25 historyEntry];
+        v27 = [historyEntry2 conformsToProtocol:v22];
 
         if (v27)
         {
@@ -1376,10 +1376,10 @@ LABEL_5:
         v31 = 0;
       }
 
-      v45 = [(SearchResult *)v31 historyEntry];
-      v33 = [v45 geoMapItem];
+      historyEntry3 = [(SearchResult *)v31 historyEntry];
+      geoMapItem = [historyEntry3 geoMapItem];
 
-      v37 = [[SearchResult alloc] initWithGEOMapItem:v33];
+      v37 = [[SearchResult alloc] initWithGEOMapItem:geoMapItem];
     }
 
     else
@@ -1412,11 +1412,11 @@ LABEL_5:
           v48 = 0;
         }
 
-        v33 = v48;
+        geoMapItem = v48;
 
-        if (v33 && ([(SearchResult *)v33 BOOLeanForKey:@"MapsSuggestionsIsNotADestinationKey" is:1]& 1) == 0)
+        if (geoMapItem && ([(SearchResult *)geoMapItem BOOLeanForKey:@"MapsSuggestionsIsNotADestinationKey" is:1]& 1) == 0)
         {
-          v10 = [[SuggestionsItem alloc] initWithSuggestion:v33 order:0 sourceType:9 sourceSubtype:0 hasPriorityOverride:0 priorityOverride:0];
+          v10 = [[SuggestionsItem alloc] initWithSuggestion:geoMapItem order:0 sourceType:9 sourceSubtype:0 hasPriorityOverride:0 priorityOverride:0];
           v31 = 0;
           v11 = 0;
         }
@@ -1431,15 +1431,15 @@ LABEL_5:
         goto LABEL_42;
       }
 
-      v32 = [(SearchResult *)v31 geocodedMapItem];
-      v33 = v32;
-      if (!v32 || ([v32 _geoMapItem], v34 = objc_claimAutoreleasedReturnValue(), v34, !v34))
+      geocodedMapItem = [(SearchResult *)v31 geocodedMapItem];
+      geoMapItem = geocodedMapItem;
+      if (!geocodedMapItem || ([geocodedMapItem _geoMapItem], v34 = objc_claimAutoreleasedReturnValue(), v34, !v34))
       {
         v35 = [MKMapItem alloc];
-        v36 = [(SearchResult *)v31 addressDictionary];
-        v11 = [v35 initWithAddressDictionary:v36];
+        addressDictionary = [(SearchResult *)v31 addressDictionary];
+        v11 = [v35 initWithAddressDictionary:addressDictionary];
 
-        v33 = v11;
+        geoMapItem = v11;
         if (!v11)
         {
           v10 = 0;
@@ -1447,7 +1447,7 @@ LABEL_5:
         }
       }
 
-      v37 = [[SearchResult alloc] initWithMapItem:v33 searchResultType:0 addressBookAddress:v31 retainedSearchMetadata:0 resultIndex:0];
+      v37 = [[SearchResult alloc] initWithMapItem:geoMapItem searchResultType:0 addressBookAddress:v31 retainedSearchMetadata:0 resultIndex:0];
     }
 
     v11 = v37;
@@ -1461,8 +1461,8 @@ LABEL_45:
   }
 
   v16 = [SearchResult alloc];
-  v17 = [(SearchResult *)v14 mapItem];
-  v11 = [(SearchResult *)v16 initWithMapItem:v17];
+  mapItem = [(SearchResult *)v14 mapItem];
+  v11 = [(SearchResult *)v16 initWithMapItem:mapItem];
 
   v10 = [(SearchResultMapItemBase *)[SearchResultMapItem alloc] initWithSearchResult:v11];
 LABEL_46:
@@ -1472,197 +1472,197 @@ LABEL_47:
   return v10;
 }
 
-- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)a3 cell:(id)a4
+- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)identifier cell:(id)cell
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(DataSource *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  identifierCopy = identifier;
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
   v9 = [(SearchDataSource *)self flattenedIndexPath:v8];
-  v10 = [(SearchDataSource *)self flattenedArray];
-  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:v10 childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:v16 tappedAccessoryViewType:0];
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:flattenedArray childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:identifierCopy tappedAccessoryViewType:0];
 
-  v11 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v12 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:v11 context:v12];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:sections context:autocompleteContext];
 
-  v13 = [(DataSource *)self delegate];
-  LOBYTE(v12) = objc_opt_respondsToSelector();
+  delegate = [(DataSource *)self delegate];
+  LOBYTE(autocompleteContext) = objc_opt_respondsToSelector();
 
-  if (v12)
+  if (autocompleteContext)
   {
-    v14 = [(DataSource *)self delegate];
+    delegate2 = [(DataSource *)self delegate];
     v15 = [(SearchDataSource *)self autocompleteObjectAtIndexPath:v8];
-    [v14 dataSource:self itemTapped:v16 childItemParent:v15];
+    [delegate2 dataSource:self itemTapped:identifierCopy childItemParent:v15];
   }
 }
 
-- (void)didTapOnResultRefinement:(id)a3 cell:(id)a4
+- (void)didTapOnResultRefinement:(id)refinement cell:(id)cell
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(DataSource *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  refinementCopy = refinement;
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
   v9 = [(SearchDataSource *)self flattenedIndexPath:v8];
-  v10 = [(SearchDataSource *)self flattenedArray];
-  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:v10 childPlaceIndexPath:0 childItem:0 resultRefinement:v16 containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:0];
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:flattenedArray childPlaceIndexPath:0 childItem:0 resultRefinement:refinementCopy containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:0];
 
-  v11 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v12 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:v11 context:v12];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:sections context:autocompleteContext];
 
-  v13 = [(DataSource *)self delegate];
-  LOBYTE(v12) = objc_opt_respondsToSelector();
+  delegate = [(DataSource *)self delegate];
+  LOBYTE(autocompleteContext) = objc_opt_respondsToSelector();
 
-  if (v12)
+  if (autocompleteContext)
   {
-    v14 = [(DataSource *)self delegate];
+    delegate2 = [(DataSource *)self delegate];
     v15 = [(SearchDataSource *)self autocompleteObjectAtIndexPath:v8];
-    [v14 dataSource:self itemTapped:v16 childItemParent:v15];
+    [delegate2 dataSource:self itemTapped:refinementCopy childItemParent:v15];
   }
 }
 
-- (void)didTapOnContainmentParentMapItem:(id)a3 cell:(id)a4
+- (void)didTapOnContainmentParentMapItem:(id)item cell:(id)cell
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(DataSource *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  itemCopy = item;
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
   v9 = [(SearchDataSource *)self flattenedIndexPath:v8];
-  v10 = [(SearchDataSource *)self flattenedArray];
-  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:v10 childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:v15 tappableEntryIdentifier:0 tappedAccessoryViewType:0];
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v9 fromContent:flattenedArray childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:itemCopy tappableEntryIdentifier:0 tappedAccessoryViewType:0];
 
-  v11 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v12 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:v11 context:v12];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:sections context:autocompleteContext];
 
-  v13 = [(DataSource *)self delegate];
-  LOBYTE(v12) = objc_opt_respondsToSelector();
+  delegate = [(DataSource *)self delegate];
+  LOBYTE(autocompleteContext) = objc_opt_respondsToSelector();
 
-  if (v12)
+  if (autocompleteContext)
   {
-    v14 = [(DataSource *)self delegate];
-    [v14 dataSource:self itemTapped:v15 childItemParent:0];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 dataSource:self itemTapped:itemCopy childItemParent:0];
   }
 }
 
-- (void)didTapOnAccessoryEntityQueryAcceleratorWithCell:(id)a3
+- (void)didTapOnAccessoryEntityQueryAcceleratorWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v13 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v13 = [tableView indexPathForCell:cellCopy];
 
   v6 = [(SearchDataSource *)self flattenedIndexPath:v13];
   v7 = [(SearchDataSource *)self autocompleteObjectAtIndexPath:v13];
-  v8 = [(SearchDataSource *)self flattenedArray];
-  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v6 fromContent:v8 childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:2];
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v6 fromContent:flattenedArray childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:2];
 
-  v9 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v10 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v6 indexPathInSection:v13 sections:v9 context:v10];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v6 indexPathInSection:v13 sections:sections context:autocompleteContext];
 
-  v11 = [(DataSource *)self delegate];
-  LOBYTE(v10) = objc_opt_respondsToSelector();
+  delegate = [(DataSource *)self delegate];
+  LOBYTE(autocompleteContext) = objc_opt_respondsToSelector();
 
-  if (v10)
+  if (autocompleteContext)
   {
-    v12 = [(DataSource *)self delegate];
-    [v12 searchDataSource:self replaceQueryWithItem:v7];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 searchDataSource:self replaceQueryWithItem:v7];
   }
 }
 
-- (void)didTapOnItemInChildItems:(id)a3 cell:(id)a4 buttonIndex:(int64_t)a5
+- (void)didTapOnItemInChildItems:(id)items cell:(id)cell buttonIndex:(int64_t)index
 {
-  v8 = a4;
-  v9 = a3;
+  cellCopy = cell;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_contentTableView);
-  v21 = [WeakRetained indexPathForCell:v8];
+  v21 = [WeakRetained indexPathForCell:cellCopy];
 
   v11 = [(SearchDataSource *)self flattenedIndexPath:v21];
-  v12 = [NSIndexPath indexPathForRow:a5 inSection:0];
-  v13 = [v9 childItems];
+  v12 = [NSIndexPath indexPathForRow:index inSection:0];
+  childItems = [itemsCopy childItems];
 
-  v14 = [v13 objectAtIndexedSubscript:a5];
+  v14 = [childItems objectAtIndexedSubscript:index];
 
-  v15 = [(SearchDataSource *)self flattenedArray];
-  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v11 fromContent:v15 childPlaceIndexPath:v12 childItem:v14 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:0];
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v11 fromContent:flattenedArray childPlaceIndexPath:v12 childItem:v14 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:0];
 
-  v16 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v17 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v11 indexPathInSection:v21 sections:v16 context:v17 selectedChildItemIndexPath:v12 indexOfResultWithSelectedChildItem:v21];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v11 indexPathInSection:v21 sections:sections context:autocompleteContext selectedChildItemIndexPath:v12 indexOfResultWithSelectedChildItem:v21];
 
-  v18 = [(DataSource *)self delegate];
-  LOBYTE(v17) = objc_opt_respondsToSelector();
+  delegate = [(DataSource *)self delegate];
+  LOBYTE(autocompleteContext) = objc_opt_respondsToSelector();
 
-  if (v17)
+  if (autocompleteContext)
   {
-    v19 = [(DataSource *)self delegate];
+    delegate2 = [(DataSource *)self delegate];
     v20 = [(SearchDataSource *)self autocompleteObjectAtIndexPath:v21];
-    [v19 dataSource:self itemTapped:v14 childItemParent:v20];
+    [delegate2 dataSource:self itemTapped:v14 childItemParent:v20];
   }
 }
 
-- (void)didTapOnUserGeneratedGuide:(id)a3 cell:(id)a4
+- (void)didTapOnUserGeneratedGuide:(id)guide cell:(id)cell
 {
-  v17 = a3;
-  v6 = a4;
+  guideCopy = guide;
+  cellCopy = cell;
   WeakRetained = objc_loadWeakRetained(&self->_contentTableView);
-  v8 = [WeakRetained indexPathForCell:v6];
+  v8 = [WeakRetained indexPathForCell:cellCopy];
 
   v9 = [(SearchDataSource *)self flattenedIndexPath:v8];
-  v10 = [(SearchDataSource *)self flattenedArray];
-  v11 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", v10, [v9 row]);
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  v11 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", flattenedArray, [v9 row]);
 
   +[MapsAnalyticStateProvider updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:](MapsAnalyticStateProvider, "updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:", v11, self->_searchText, [v9 row], 1, -[SearchDataProvider searchRequestAnalyticsSequenceNumber](self->_searchDataProvider, "searchRequestAnalyticsSequenceNumber"));
-  v12 = [(DataSource *)self delegate];
+  delegate = [(DataSource *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(DataSource *)self delegate];
-    [v14 didTapOnUserGeneratedGuide:v17];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnUserGeneratedGuide:guideCopy];
 
     [(AutocompleteAnalyticsManager *)self->_analyticsManager userGeneratedGuideUnitTapped];
   }
 
-  v15 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v16 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:0 indexPathInSection:0 sections:v15 context:v16];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:0 indexPathInSection:0 sections:sections context:autocompleteContext];
 }
 
-- (void)didTapOnCuratedGuides:(id)a3 cell:(id)a4
+- (void)didTapOnCuratedGuides:(id)guides cell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  guidesCopy = guides;
+  cellCopy = cell;
   WeakRetained = objc_loadWeakRetained(&self->_contentTableView);
-  v28 = v7;
-  v9 = [WeakRetained indexPathForCell:v7];
+  v28 = cellCopy;
+  v9 = [WeakRetained indexPathForCell:cellCopy];
 
   v27 = v9;
   v10 = [(SearchDataSource *)self flattenedIndexPath:v9];
-  v11 = [(SearchDataSource *)self flattenedArray];
-  v12 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", v11, [v10 row]);
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  v12 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", flattenedArray, [v10 row]);
 
   v26 = v12;
   +[MapsAnalyticStateProvider updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:](MapsAnalyticStateProvider, "updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:", v12, self->_searchText, [v10 row], 1, -[SearchDataProvider searchRequestAnalyticsSequenceNumber](self->_searchDataProvider, "searchRequestAnalyticsSequenceNumber"));
-  v13 = [(DataSource *)self delegate];
+  delegate = [(DataSource *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(DataSource *)self delegate];
-    [v15 didTapOnCuratedGuides:v6];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnCuratedGuides:guidesCopy];
   }
 
-  v16 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v16 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(guidesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = v6;
+  v17 = guidesCopy;
   v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v18)
   {
@@ -1677,8 +1677,8 @@ LABEL_47:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v29 + 1) + 8 * i) collectionIdentifier];
-        v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v22 muid]);
+        collectionIdentifier = [*(*(&v29 + 1) + 8 * i) collectionIdentifier];
+        v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [collectionIdentifier muid]);
         [v16 addObject:v23];
       }
 
@@ -1689,63 +1689,63 @@ LABEL_47:
   }
 
   -[AutocompleteAnalyticsManager placeContextMultipleCollectionsTappedWithMuids:verticalIndex:](self->_analyticsManager, "placeContextMultipleCollectionsTappedWithMuids:verticalIndex:", v16, [v10 row]);
-  v24 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v25 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v10 indexPathInSection:v27 sections:v24 context:v25];
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v10 indexPathInSection:v27 sections:sections context:autocompleteContext];
 }
 
-- (void)didTapOnCuratedGuide:(id)a3 cell:(id)a4
+- (void)didTapOnCuratedGuide:(id)guide cell:(id)cell
 {
-  v21 = a3;
-  v6 = a4;
+  guideCopy = guide;
+  cellCopy = cell;
   WeakRetained = objc_loadWeakRetained(&self->_contentTableView);
-  v8 = [WeakRetained indexPathForCell:v6];
+  v8 = [WeakRetained indexPathForCell:cellCopy];
 
   v9 = [(SearchDataSource *)self flattenedIndexPath:v8];
-  v10 = [(SearchDataSource *)self flattenedArray];
-  v11 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", v10, [v9 row]);
+  flattenedArray = [(SearchDataSource *)self flattenedArray];
+  v11 = +[MapsAnalyticsHelper analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:](MapsAnalyticsHelper, "analyticsResultsInfoArrayFromAutoCompleteResultsArray:selectedIndex:", flattenedArray, [v9 row]);
 
   +[MapsAnalyticStateProvider updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:](MapsAnalyticStateProvider, "updateSuggestionSearchInformation:searchText:searchIndex:searchfieldType:suggestionsAcSequenceNumber:", v11, self->_searchText, [v9 row], 1, -[SearchDataProvider searchRequestAnalyticsSequenceNumber](self->_searchDataProvider, "searchRequestAnalyticsSequenceNumber"));
-  v12 = [(DataSource *)self delegate];
+  delegate = [(DataSource *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(DataSource *)self delegate];
-    [v14 didTapOnCuratedGuide:v21];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnCuratedGuide:guideCopy];
   }
 
-  v15 = [v21 collectionIdentifier];
-  v16 = [v15 muid];
+  collectionIdentifier = [guideCopy collectionIdentifier];
+  muid = [collectionIdentifier muid];
 
   v17 = +[CuratedCollectionSyncManager sharedManager];
-  v18 = [v17 collectionIsSaved:v21];
+  v18 = [v17 collectionIsSaved:guideCopy];
 
-  -[AutocompleteAnalyticsManager placeContextSingleCollectionTappedWithMuid:isCurrentlySaved:verticalIndex:](self->_analyticsManager, "placeContextSingleCollectionTappedWithMuid:isCurrentlySaved:verticalIndex:", v16, v18, [v9 row]);
-  v19 = [(SearchDataProvider *)self->_searchDataProvider sections];
-  v20 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:v19 context:v20];
+  -[AutocompleteAnalyticsManager placeContextSingleCollectionTappedWithMuid:isCurrentlySaved:verticalIndex:](self->_analyticsManager, "placeContextSingleCollectionTappedWithMuid:isCurrentlySaved:verticalIndex:", muid, v18, [v9 row]);
+  sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+  autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+  [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v9 indexPathInSection:v8 sections:sections context:autocompleteContext];
 }
 
-- (id)placeSummaryTemplateForObject:(id)a3 autocompleteClientSourceType:(int64_t)a4 atIndexPath:(id)a5
+- (id)placeSummaryTemplateForObject:(id)object autocompleteClientSourceType:(int64_t)type atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_placeSummaryTemplateViewModels objectForKeyedSubscript:v9];
+  objectCopy = object;
+  pathCopy = path;
+  v10 = [(NSMutableDictionary *)self->_placeSummaryTemplateViewModels objectForKeyedSubscript:pathCopy];
 
   if (v10)
   {
-    v11 = [(NSMutableDictionary *)self->_placeSummaryTemplateViewModels objectForKeyedSubscript:v9];
+    v11 = [(NSMutableDictionary *)self->_placeSummaryTemplateViewModels objectForKeyedSubscript:pathCopy];
     goto LABEL_70;
   }
 
-  v12 = [(DataSource *)self tableView];
-  [v12 frame];
+  tableView = [(DataSource *)self tableView];
+  [tableView frame];
   Width = CGRectGetWidth(v107);
 
   v14 = [_TtC4Maps29PlaceSummaryTextHighlightType alloc];
-  v15 = [(SearchDataSource *)self searchDataProvider];
-  v90 = -[PlaceSummaryTextHighlightType initWithHighlightType:](v14, "initWithHighlightType:", [v15 highlightType]);
+  searchDataProvider = [(SearchDataSource *)self searchDataProvider];
+  v90 = -[PlaceSummaryTextHighlightType initWithHighlightType:](v14, "initWithHighlightType:", [searchDataProvider highlightType]);
 
   v100 = 0;
   v101 = &v100;
@@ -1753,7 +1753,7 @@ LABEL_47:
   v103 = sub_1007400D8;
   v104 = sub_1007400E8;
   v105 = 0;
-  v16 = v8;
+  v16 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1767,14 +1767,14 @@ LABEL_47:
 
   v18 = v17;
 
-  v88 = v8;
+  v88 = objectCopy;
   v89 = v18;
   if (v18)
   {
-    v19 = [(SearchDataSource *)self searchDataProvider];
-    v20 = [v19 placeSummaryMetadata];
-    v21 = [(DataSource *)self currentLocation];
-    v22 = [(SearchDataSource *)self userLocationSearchResult];
+    searchDataProvider2 = [(SearchDataSource *)self searchDataProvider];
+    placeSummaryMetadata = [searchDataProvider2 placeSummaryMetadata];
+    currentLocation = [(DataSource *)self currentLocation];
+    userLocationSearchResult = [(SearchDataSource *)self userLocationSearchResult];
     if ([(SearchDataSource *)self searchAlongRoute])
     {
       v23 = 0;
@@ -1787,18 +1787,18 @@ LABEL_47:
 
     BYTE1(v83) = [(SearchDataSource *)self searchAlongRoute];
     LOBYTE(v83) = v23;
-    v24 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithCompletion:v89 metadata:v20 currentLocation:v21 userLocationSearchResult:v22 highlightType:v90 availableWidth:a4 clientSourceType:Width allowsTappableUnits:v83 searchAlongRoute:?];
+    v24 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithCompletion:v89 metadata:placeSummaryMetadata currentLocation:currentLocation userLocationSearchResult:userLocationSearchResult highlightType:v90 availableWidth:type clientSourceType:Width allowsTappableUnits:v83 searchAlongRoute:?];
     v25 = v101[5];
     v101[5] = v24;
 
-    v8 = v88;
+    objectCopy = v88;
   }
 
   v26 = [_TtC4Maps38PlaceSummaryTextHighlightConfiguration alloc];
-  v27 = [(SearchDataSource *)self searchDataProvider];
-  v28 = [v27 autocompleteContext];
-  v29 = [v28 queryString];
-  v30 = [(PlaceSummaryTextHighlightConfiguration *)v26 initWithTypedAutocompleteQuery:v29 type:v90];
+  searchDataProvider3 = [(SearchDataSource *)self searchDataProvider];
+  autocompleteContext = [searchDataProvider3 autocompleteContext];
+  queryString = [autocompleteContext queryString];
+  v30 = [(PlaceSummaryTextHighlightConfiguration *)v26 initWithTypedAutocompleteQuery:queryString type:v90];
 
   v31 = v16;
   objc_opt_class();
@@ -1819,14 +1819,14 @@ LABEL_47:
     v34 = v101[5];
     v101[5] = 0;
 
-    v35 = [v33 historyEntry];
+    historyEntry = [v33 historyEntry];
     v96[0] = _NSConcreteStackBlock;
     v96[1] = 3221225472;
     v96[2] = sub_1007400F0;
     v96[3] = &unk_101627DC0;
     v99 = &v100;
     v97 = v30;
-    v98 = self;
+    selfCopy = self;
     v91[0] = _NSConcreteStackBlock;
     v91[1] = 3221225472;
     v91[2] = sub_10074017C;
@@ -1834,8 +1834,8 @@ LABEL_47:
     v94 = &v100;
     v95 = Width;
     v92 = v97;
-    v93 = self;
-    [v35 ifSearch:v96 ifRoute:0 ifPlaceDisplay:v91 ifTransitLineItem:0];
+    selfCopy2 = self;
+    [historyEntry ifSearch:v96 ifRoute:0 ifPlaceDisplay:v91 ifTransitLineItem:0];
   }
 
   v36 = v31;
@@ -1920,8 +1920,8 @@ LABEL_47:
 
   if (v53)
   {
-    v54 = [(DataSource *)self currentLocation];
-    v55 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:v53 highlightConfiguration:v30 currentLocation:v54 availableWidth:[(SearchDataSource *)self searchAlongRoute] searchAlongRoute:Width];
+    currentLocation2 = [(DataSource *)self currentLocation];
+    v55 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:v53 highlightConfiguration:v30 currentLocation:currentLocation2 availableWidth:[(SearchDataSource *)self searchAlongRoute] searchAlongRoute:Width];
     v56 = v101[5];
     v101[5] = v55;
   }
@@ -1986,12 +1986,12 @@ LABEL_47:
 
   if (v69)
   {
-    v70 = [(DataSource *)self currentLocation];
-    v71 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithUserRoute:v69 highlightConfiguration:v30 currentLocation:v70];
+    currentLocation3 = [(DataSource *)self currentLocation];
+    v71 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithUserRoute:v69 highlightConfiguration:v30 currentLocation:currentLocation3];
     v72 = v101[5];
     v101[5] = v71;
 
-    v8 = v88;
+    objectCopy = v88;
   }
 
   if (v101[5])
@@ -2004,16 +2004,16 @@ LABEL_47:
       v80 = 0;
 LABEL_68:
       [v101[5] setDebugString:v80];
-      [(NSMutableDictionary *)self->_placeSummaryTemplateViewModels setObject:v101[5] forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_placeSummaryTemplateViewModels setObject:v101[5] forKeyedSubscript:pathCopy];
       v11 = v101[5];
 
-      v8 = v88;
+      objectCopy = v88;
       goto LABEL_69;
     }
 
-    v75 = [(SearchDataSource *)self searchDataProvider];
-    v76 = [v75 autocompleteContext];
-    v77 = [v76 matchInfoForObject:v67];
+    searchDataProvider4 = [(SearchDataSource *)self searchDataProvider];
+    autocompleteContext2 = [searchDataProvider4 autocompleteContext];
+    v77 = [autocompleteContext2 matchInfoForObject:v67];
 
     if (v77)
     {
@@ -2062,50 +2062,50 @@ LABEL_70:
   return v11;
 }
 
-- (void)didTapOnAccessoryView:(id)a3 withType:(int64_t)a4 object:(id)a5
+- (void)didTapOnAccessoryView:(id)view withType:(int64_t)type object:(id)object
 {
-  v23 = a3;
-  v8 = a5;
-  if (a4 != 4)
+  viewCopy = view;
+  objectCopy = object;
+  if (type != 4)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      v16 = [(DataSource *)self tableView];
-      v12 = [v16 indexPathForCell:v23];
+      tableView = [(DataSource *)self tableView];
+      v12 = [tableView indexPathForCell:viewCopy];
 
       v17 = [(SearchDataSource *)self flattenedIndexPath:v12];
-      v18 = [(SearchDataSource *)self flattenedArray];
-      [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v17 fromContent:v18 childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:2];
+      flattenedArray = [(SearchDataSource *)self flattenedArray];
+      [(SearchDataSource *)self _sendAnalyticsForDataSelectedAtIndexPath:v17 fromContent:flattenedArray childPlaceIndexPath:0 childItem:0 resultRefinement:0 containmentParent:0 tappableEntryIdentifier:0 tappedAccessoryViewType:2];
 
-      v19 = [(SearchDataProvider *)self->_searchDataProvider sections];
-      v20 = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
-      [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v17 indexPathInSection:v12 sections:v19 context:v20];
+      sections = [(SearchDataProvider *)self->_searchDataProvider sections];
+      autocompleteContext = [(SearchDataProvider *)self->_searchDataProvider autocompleteContext];
+      [(SearchDataSource *)self _sendSessionlessAnalyticsForSelectedAtFlattenedIndexPath:v17 indexPathInSection:v12 sections:sections context:autocompleteContext];
 
-      v21 = [(DataSource *)self delegate];
-      LOBYTE(v20) = objc_opt_respondsToSelector();
+      delegate = [(DataSource *)self delegate];
+      LOBYTE(autocompleteContext) = objc_opt_respondsToSelector();
 
-      if (v20)
+      if (autocompleteContext)
       {
-        v22 = [(DataSource *)self delegate];
-        [v22 searchDataSource:self replaceQueryWithItem:v8];
+        delegate2 = [(DataSource *)self delegate];
+        [delegate2 searchDataSource:self replaceQueryWithItem:objectCopy];
       }
 
       goto LABEL_10;
     }
 
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
   }
 
-  v9 = [(DataSource *)self delegate];
+  delegate3 = [(DataSource *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(DataSource *)self delegate];
-    [v11 searchDataSource:self addItem:v8];
+    delegate4 = [(DataSource *)self delegate];
+    [delegate4 searchDataSource:self addItem:objectCopy];
   }
 
   v12 = [UIButton buttonWithType:0];
@@ -2120,7 +2120,7 @@ LABEL_70:
   [v12 setTintColor:v15];
 
   [v12 setAccessibilityIdentifier:@"AccessoryCheckmarkButton"];
-  [v23 setAccessoryView:v12];
+  [viewCopy setAccessoryView:v12];
 LABEL_10:
 
 LABEL_11:
@@ -2170,14 +2170,14 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(SearchDataSource *)self searchDataProvider];
-  v5 = [v4 autocompleteContext];
-  v3 = v5 != 0;
+  searchDataProvider = [(SearchDataSource *)self searchDataProvider];
+  autocompleteContext = [searchDataProvider autocompleteContext];
+  v3 = autocompleteContext != 0;
 
   return v3;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
   if ([(SearchDataSource *)self shouldShowNoResultsCell]|| [(SearchDataSource *)self shouldShowLoadingIndicator])
   {
@@ -2186,55 +2186,55 @@ LABEL_11:
 
   else
   {
-    v6 = [(SearchDataSource *)self _contentFilteredIfNeeded];
-    if ([v6 count] <= a3)
+    _contentFilteredIfNeeded = [(SearchDataSource *)self _contentFilteredIfNeeded];
+    if ([_contentFilteredIfNeeded count] <= index)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = [v6 objectAtIndex:a3];
+      v5 = [_contentFilteredIfNeeded objectAtIndex:index];
     }
   }
 
   return v5;
 }
 
-- (id)autocompleteObjectAtIndexPath:(id)a3
+- (id)autocompleteObjectAtIndexPath:(id)path
 {
-  v3 = [(SearchDataSource *)self objectAtIndexPath:a3];
+  v3 = [(SearchDataSource *)self objectAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 autocompleteObject];
+    autocompleteObject = [v3 autocompleteObject];
 
-    v3 = v4;
+    v3 = autocompleteObject;
   }
 
   return v3;
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (![v4 row] && (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") || -[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator")))
+  pathCopy = path;
+  if (![pathCopy row] && (-[SearchDataSource shouldShowNoResultsCell](self, "shouldShowNoResultsCell") || -[SearchDataSource shouldShowLoadingIndicator](self, "shouldShowLoadingIndicator")))
   {
     v10 = 0;
   }
 
   else
   {
-    v5 = -[SearchDataSource sectionAtIndex:](self, "sectionAtIndex:", [v4 section]);
-    if (([v4 row] & 0x8000000000000000) != 0 || (v6 = objc_msgSend(v4, "row"), objc_msgSend(v5, "items"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 >= v8))
+    v5 = -[SearchDataSource sectionAtIndex:](self, "sectionAtIndex:", [pathCopy section]);
+    if (([pathCopy row] & 0x8000000000000000) != 0 || (v6 = objc_msgSend(pathCopy, "row"), objc_msgSend(v5, "items"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 >= v8))
     {
       v10 = 0;
     }
 
     else
     {
-      v9 = [v5 items];
-      v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+      items = [v5 items];
+      v10 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     }
   }
 
@@ -2261,20 +2261,20 @@ LABEL_11:
   [(NSMutableDictionary *)placeSummaryTemplateViewModels removeAllObjects];
 }
 
-- (void)configureAutocompleteOriginationTypeFromSource:(int)a3 inTraits:(id)a4
+- (void)configureAutocompleteOriginationTypeFromSource:(int)source inTraits:(id)traits
 {
-  v5 = a4;
-  v7 = v5;
-  if ((a3 - 13) > 3)
+  traitsCopy = traits;
+  v7 = traitsCopy;
+  if ((source - 13) > 3)
   {
-    if (a3 == 21)
+    if (source == 21)
     {
       v6 = 3;
     }
 
-    else if (a3 == 11)
+    else if (source == 11)
     {
-      if ([v5 navigating])
+      if ([traitsCopy navigating])
       {
         v6 = 2;
       }
@@ -2291,7 +2291,7 @@ LABEL_11:
     }
   }
 
-  else if ([v5 navigating])
+  else if ([traitsCopy navigating])
   {
     v6 = 2;
   }
@@ -2304,19 +2304,19 @@ LABEL_11:
   [v7 setAutocompleteOriginationType:v6];
 }
 
-- (void)setInputText:(id)a3 tappedQuerySuggestionCompletion:(id)a4 isRetainQuery:(BOOL)a5 traits:(id)a6 source:(int)a7
+- (void)setInputText:(id)text tappedQuerySuggestionCompletion:(id)completion isRetainQuery:(BOOL)query traits:(id)traits source:(int)source
 {
-  v7 = *&a7;
-  v9 = a5;
-  v19 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [v19 isEqualToString:self->_searchText];
-  if (v13 || (v15 & 1) == 0)
+  v7 = *&source;
+  queryCopy = query;
+  textCopy = text;
+  completionCopy = completion;
+  traitsCopy = traits;
+  v15 = [textCopy isEqualToString:self->_searchText];
+  if (completionCopy || (v15 & 1) == 0)
   {
-    objc_storeStrong(&self->_searchText, a3);
-    v16 = [(NSString *)self->_searchText _maps_stringByTrimmingLeadingWhitespace];
-    v17 = [v16 length];
+    objc_storeStrong(&self->_searchText, text);
+    _maps_stringByTrimmingLeadingWhitespace = [(NSString *)self->_searchText _maps_stringByTrimmingLeadingWhitespace];
+    v17 = [_maps_stringByTrimmingLeadingWhitespace length];
 
     if (v17 && [(SearchDataSource *)self shouldShowLoadingIndicator])
     {
@@ -2324,12 +2324,12 @@ LABEL_11:
       [WeakRetained reloadData];
     }
 
-    [(SearchDataSource *)self configureAutocompleteOriginationTypeFromSource:v7 inTraits:v14];
-    [(SearchDataProvider *)self->_searchDataProvider setInputText:v19 tappedQuerySuggestionCompletion:v13 isRetainQuery:v9 traits:v14 source:v7];
+    [(SearchDataSource *)self configureAutocompleteOriginationTypeFromSource:v7 inTraits:traitsCopy];
+    [(SearchDataProvider *)self->_searchDataProvider setInputText:textCopy tappedQuerySuggestionCompletion:completionCopy isRetainQuery:queryCopy traits:traitsCopy source:v7];
   }
 }
 
-- (void)searchDataProviderDidUpdate:(id)a3
+- (void)searchDataProviderDidUpdate:(id)update
 {
   if ([(DataSource *)self active])
   {
@@ -2346,17 +2346,17 @@ LABEL_11:
 
   [(NSMutableDictionary *)self->_placeSummaryTemplateViewModels removeAllObjects];
   [(SearchDataSource *)self _invalidateFilteredContent];
-  v7 = [(DataSource *)self delegate];
-  [v7 dataSourceUpdated:self];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSourceUpdated:self];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v8.receiver = self;
   v8.super_class = SearchDataSource;
   [(DataSource *)&v8 setActive:?];
-  if (v3)
+  if (activeCopy)
   {
     self->_isLoadingData = 1;
     WeakRetained = objc_loadWeakRetained(&self->_contentTableView);
@@ -2372,14 +2372,14 @@ LABEL_11:
     [(SearchDataSource *)self reset];
   }
 
-  [(SearchDataProvider *)self->_searchDataProvider setActive:v3];
+  [(SearchDataProvider *)self->_searchDataProvider setActive:activeCopy];
 }
 
-- (void)setResultTypes:(unint64_t)a3
+- (void)setResultTypes:(unint64_t)types
 {
-  if (self->_resultTypes != a3)
+  if (self->_resultTypes != types)
   {
-    self->_resultTypes = a3;
+    self->_resultTypes = types;
     [(SearchDataProvider *)self->_searchDataProvider setResultTypes:?];
   }
 }
@@ -2397,41 +2397,41 @@ LABEL_11:
 - (void)invalidateDataForFilterChange
 {
   [(SearchDataSource *)self _invalidateFilteredContent];
-  v3 = [(DataSource *)self delegate];
-  [v3 dataSourceUpdated:self];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSourceUpdated:self];
 }
 
-- (void)_hoverGestureRecognizerStateDidChange:(id)a3
+- (void)_hoverGestureRecognizerStateDidChange:(id)change
 {
-  v27 = a3;
+  changeCopy = change;
   if ([(SearchDataSource *)self shouldShowNoResultsCell]|| [(SearchDataSource *)self shouldShowLoadingIndicator])
   {
     goto LABEL_23;
   }
 
-  v4 = [(DataSource *)self tableView];
-  v5 = [v4 dataSource];
-  v6 = v5;
-  if (v5 == self)
+  tableView = [(DataSource *)self tableView];
+  dataSource = [tableView dataSource];
+  v6 = dataSource;
+  if (dataSource == self)
   {
-    v8 = [v27 _maps_isHovering];
+    _maps_isHovering = [changeCopy _maps_isHovering];
 
-    v7 = v27;
-    if (!v8)
+    v7 = changeCopy;
+    if (!_maps_isHovering)
     {
       goto LABEL_11;
     }
 
-    v9 = [(DataSource *)self tableView];
-    [v27 locationInView:v9];
+    tableView2 = [(DataSource *)self tableView];
+    [changeCopy locationInView:tableView2];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(DataSource *)self tableView];
-    v15 = [v14 indexPathForRowAtPoint:{v11, v13}];
+    tableView3 = [(DataSource *)self tableView];
+    v15 = [tableView3 indexPathForRowAtPoint:{v11, v13}];
 
-    v16 = [(DataSource *)self tableView];
-    v17 = [v16 cellForRowAtIndexPath:v15];
+    tableView4 = [(DataSource *)self tableView];
+    v17 = [tableView4 cellForRowAtIndexPath:v15];
 
     if (v17 && ([v17 frame], v29.x = v11, v29.y = v13, CGRectContainsPoint(v30, v29)))
     {
@@ -2441,8 +2441,8 @@ LABEL_11:
         {
           v18 = 0;
 LABEL_17:
-          v23 = [(DataSource *)self tableView];
-          [v23 selectRowAtIndexPath:v15 animated:0 scrollPosition:0];
+          tableView5 = [(DataSource *)self tableView];
+          [tableView5 selectRowAtIndexPath:v15 animated:0 scrollPosition:0];
 
           objc_storeStrong(&self->_lastSelectedIndexPath, v15);
           if (v17)
@@ -2490,7 +2490,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = v27;
+  v7 = changeCopy;
 LABEL_11:
   if ([v7 state] == 3)
   {
@@ -2502,32 +2502,32 @@ LABEL_11:
       self->_lastSelectedIndexPath = 0;
 
 LABEL_22:
-      v24 = [(DataSource *)self tableView];
-      v25 = [v24 cellForRowAtIndexPath:v18];
+      tableView6 = [(DataSource *)self tableView];
+      v25 = [tableView6 cellForRowAtIndexPath:v18];
 
       [v25 resignFirstResponder];
-      v26 = [(DataSource *)self tableView];
-      [v26 deselectRowAtIndexPath:v18 animated:0];
+      tableView7 = [(DataSource *)self tableView];
+      [tableView7 deselectRowAtIndexPath:v18 animated:0];
     }
   }
 
 LABEL_23:
 }
 
-- (SearchDataSource)initWithTableView:(id)a3
+- (SearchDataSource)initWithTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v29.receiver = self;
   v29.super_class = SearchDataSource;
-  v5 = [(DataSource *)&v29 initWithTableView:v4 updateLocation:1];
+  v5 = [(DataSource *)&v29 initWithTableView:viewCopy updateLocation:1];
   if (v5)
   {
     v6 = objc_alloc_init(AutocompleteAnalyticsManager);
     analyticsManager = v5->_analyticsManager;
     v5->_analyticsManager = v6;
 
-    v8 = objc_storeWeak(&v5->_contentTableView, v4);
-    v5->_originalHeaderAndFooterViewsFloat = [v4 _headerAndFooterViewsFloat];
+    v8 = objc_storeWeak(&v5->_contentTableView, viewCopy);
+    v5->_originalHeaderAndFooterViewsFloat = [viewCopy _headerAndFooterViewsFloat];
 
     v9 = objc_alloc_init(SearchDataProvider);
     searchDataProvider = v5->_searchDataProvider;
@@ -2544,29 +2544,29 @@ LABEL_23:
 
     v15 = objc_opt_class();
     v16 = +[SearchNoResultsTableViewCell identifier];
-    [v4 registerClass:v15 forCellReuseIdentifier:v16];
+    [viewCopy registerClass:v15 forCellReuseIdentifier:v16];
 
     v17 = objc_opt_class();
     v18 = +[SearchLoadingTableViewCell identifier];
-    [v4 registerClass:v17 forCellReuseIdentifier:v18];
+    [viewCopy registerClass:v17 forCellReuseIdentifier:v18];
 
     v19 = objc_opt_class();
     v20 = +[_TtC4Maps25PlaceSummaryTableViewCell reuseIdentifier];
-    [v4 registerClass:v19 forCellReuseIdentifier:v20];
+    [viewCopy registerClass:v19 forCellReuseIdentifier:v20];
 
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v4 registerClass:v21 forCellReuseIdentifier:v23];
+    [viewCopy registerClass:v21 forCellReuseIdentifier:v23];
 
     v24 = objc_opt_class();
     v25 = +[_TtC4Maps25CuratedGuideTableViewCell reuseIdentifier];
-    [v4 registerClass:v24 forCellReuseIdentifier:v25];
+    [viewCopy registerClass:v24 forCellReuseIdentifier:v25];
 
-    if (sub_10000FA08(v4) == 5)
+    if (sub_10000FA08(viewCopy) == 5)
     {
       v26 = [[UIHoverGestureRecognizer alloc] initWithTarget:v5 action:"_hoverGestureRecognizerStateDidChange:"];
-      [v4 addGestureRecognizer:v26];
+      [viewCopy addGestureRecognizer:v26];
       if ((_UISolariumEnabled() & 1) == 0)
       {
         WeakRetained = objc_loadWeakRetained(&v5->_contentTableView);

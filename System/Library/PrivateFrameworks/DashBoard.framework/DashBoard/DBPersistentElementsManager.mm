@@ -1,13 +1,13 @@
 @interface DBPersistentElementsManager
 - (BOOL)hasClientWithPersistentElements;
-- (BOOL)hasPersistentElementsForClient:(int64_t)a3;
+- (BOOL)hasPersistentElementsForClient:(int64_t)client;
 - (_TtC9DashBoard27DBPersistentElementsManager)init;
 - (_TtP9DashBoard35DBPersistentElementsManagerDelegate_)delegate;
-- (id)observerFor:(int64_t)a3;
-- (void)addObserver:(id)a3 for:(int64_t)a4;
+- (id)observerFor:(int64_t)for;
+- (void)addObserver:(id)observer for:(int64_t)for;
 - (void)clearPersistentElements;
-- (void)removeObserverFor:(int64_t)a3;
-- (void)updateWithPersistentElements:(id)a3;
+- (void)removeObserverFor:(int64_t)for;
+- (void)updateWithPersistentElements:(id)elements;
 @end
 
 @implementation DBPersistentElementsManager
@@ -41,13 +41,13 @@
   v5 = &v8 - v4;
   v6 = sub_248381500();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
-  v7 = self;
+  selfCopy = self;
   sub_2482BF01C(v5);
 
   sub_24822D578(v5, &qword_27EE923D8);
 }
 
-- (void)updateWithPersistentElements:(id)a3
+- (void)updateWithPersistentElements:(id)elements
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE923D8);
   MEMORY[0x28223BE20](v5 - 8);
@@ -56,9 +56,9 @@
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a3;
-  v13 = self;
-  [v12 integerValue];
+  elementsCopy = elements;
+  selfCopy = self;
+  [elementsCopy integerValue];
   sub_2483814E0();
   (*(v9 + 16))(v7, v11, v8);
   (*(v9 + 56))(v7, 0, 1, v8);
@@ -70,59 +70,59 @@
 
 - (BOOL)hasClientWithPersistentElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DBPersistentElementsManager.hasClientWithPersistentElements.getter();
 
   return v3 & 1;
 }
 
-- (BOOL)hasPersistentElementsForClient:(int64_t)a3
+- (BOOL)hasPersistentElementsForClient:(int64_t)client
 {
-  v4 = self;
-  LOBYTE(a3) = DBPersistentElementsManager.hasPersistentElements(client:)(a3);
+  selfCopy = self;
+  LOBYTE(client) = DBPersistentElementsManager.hasPersistentElements(client:)(client);
 
-  return a3 & 1;
+  return client & 1;
 }
 
-- (void)addObserver:(id)a3 for:(int64_t)a4
+- (void)addObserver:(id)observer for:(int64_t)for
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE923E8);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v11 - v7;
   swift_unknownObjectRetain_n();
-  v9 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE923F0);
   sub_248382610();
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE923F8);
   (*(*(v10 - 8) + 56))(v8, 0, 1, v10);
   swift_beginAccess();
-  sub_2482C0E00(v8, a4);
+  sub_2482C0E00(v8, for);
   swift_endAccess();
-  if (DBPersistentElementsManager.hasPersistentElements(client:)(a4))
+  if (DBPersistentElementsManager.hasPersistentElements(client:)(for))
   {
-    sub_2482C05D8(a4);
+    sub_2482C05D8(for);
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)removeObserverFor:(int64_t)a3
+- (void)removeObserverFor:(int64_t)for
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE923E8);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v9 - v6;
   swift_beginAccess();
-  v8 = self;
-  sub_2482C13D0(a3, v7);
+  selfCopy = self;
+  sub_2482C13D0(for, v7);
   swift_endAccess();
 
   sub_24822D578(v7, &qword_27EE923E8);
 }
 
-- (id)observerFor:(int64_t)a3
+- (id)observerFor:(int64_t)for
 {
-  v4 = self;
-  v5 = DBPersistentElementsManager.observer(for:)(a3);
+  selfCopy = self;
+  v5 = DBPersistentElementsManager.observer(for:)(for);
 
   return v5;
 }

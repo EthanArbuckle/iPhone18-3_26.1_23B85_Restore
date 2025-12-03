@@ -1,40 +1,40 @@
 @interface HMMTRMatterKeypair
 + (id)logCategory;
 - (BOOL)_generateKeys;
-- (BOOL)_reloadWithData:(id)a3;
-- (BOOL)_reloadWithDictionary:(id)a3;
-- (BOOL)_storePrivateKeyData:(id)a3;
-- (BOOL)deserialize:(id)a3;
-- (BOOL)initializeAllowingNew:(BOOL)a3;
-- (BOOL)updateStorageWithPrivateKeyData:(id)a3;
-- (HMMTRMatterKeypair)initWithAccount:(id)a3;
-- (HMMTRMatterKeypair)initWithPrivateKey:(__SecKey *)a3;
-- (HMMTRMatterKeypair)initWithPrivateKeyExternalRepresentation:(id)a3;
-- (HMMTRMatterKeypair)initWithTLVData:(id)a3;
-- (HMMTRMatterKeypair)initWithV0Account:(id)a3;
-- (HMMTRMatterKeypair)initWithV0Account:(id)a3 privateKey:(__SecKey *)a4;
-- (HMMTRMatterKeypair)initWithV1Account:(id)a3;
-- (HMMTRMatterKeypair)initWithV1Account:(id)a3 privateKey:(__SecKey *)a4 operationalKey:(__SecKey *)a5 rootCert:(id)a6 operationalCert:(id)a7 ipk:(id)a8;
+- (BOOL)_reloadWithData:(id)data;
+- (BOOL)_reloadWithDictionary:(id)dictionary;
+- (BOOL)_storePrivateKeyData:(id)data;
+- (BOOL)deserialize:(id)deserialize;
+- (BOOL)initializeAllowingNew:(BOOL)new;
+- (BOOL)updateStorageWithPrivateKeyData:(id)data;
+- (HMMTRMatterKeypair)initWithAccount:(id)account;
+- (HMMTRMatterKeypair)initWithPrivateKey:(__SecKey *)key;
+- (HMMTRMatterKeypair)initWithPrivateKeyExternalRepresentation:(id)representation;
+- (HMMTRMatterKeypair)initWithTLVData:(id)data;
+- (HMMTRMatterKeypair)initWithV0Account:(id)account;
+- (HMMTRMatterKeypair)initWithV0Account:(id)account privateKey:(__SecKey *)key;
+- (HMMTRMatterKeypair)initWithV1Account:(id)account;
+- (HMMTRMatterKeypair)initWithV1Account:(id)account privateKey:(__SecKey *)key operationalKey:(__SecKey *)operationalKey rootCert:(id)cert operationalCert:(id)operationalCert ipk:(id)ipk;
 - (__SecKey)copyPublicKey;
-- (__SecKey)createPrivateKeyWithData:(id)a3;
+- (__SecKey)createPrivateKeyWithData:(id)data;
 - (id)_getPrivateKeydata;
 - (id)archiveV1KeyItemValue;
 - (id)copyV0KeyPair;
 - (id)initAsDeviceLocal;
 - (id)initUnassociated;
 - (id)serialize;
-- (id)signMessageECDSA_DER:(id)a3;
-- (id)unarchiveV1KeyItemValue:(id)a3;
+- (id)signMessageECDSA_DER:(id)r;
+- (id)unarchiveV1KeyItemValue:(id)value;
 - (void)dealloc;
-- (void)setOperationalKey:(__SecKey *)a3;
+- (void)setOperationalKey:(__SecKey *)key;
 @end
 
 @implementation HMMTRMatterKeypair
 
-- (__SecKey)createPrivateKeyWithData:(id)a3
+- (__SecKey)createPrivateKeyWithData:(id)data
 {
   v21[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = *MEMORY[0x277CDBFF0];
   v6 = *MEMORY[0x277CDC028];
   v20[0] = *MEMORY[0x277CDBFE0];
@@ -51,11 +51,11 @@
   v20[4] = *MEMORY[0x277CDBF30];
   v21[4] = @"com.apple.matter.commissioner.ca.issuer.id";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:5];
-  v10 = SecKeyCreateWithData(v4, v9, &error);
+  v10 = SecKeyCreateWithData(dataCopy, v9, &error);
   if (error)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -72,10 +72,10 @@
   return v10;
 }
 
-- (BOOL)_reloadWithDictionary:(id)a3
+- (BOOL)_reloadWithDictionary:(id)dictionary
 {
   v35[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ([(HMMTRMatterKeypair *)self version]!= 1)
   {
     _HMFPreconditionFailure();
@@ -97,13 +97,13 @@
   v34[4] = *MEMORY[0x277CDBF30];
   v35[4] = @"com.apple.matter.commissioner.ca.issuer.id";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:5];
-  v10 = [v4 objectForKeyedSubscript:@"privkey"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"privkey"];
   self->_privateKey = SecKeyCreateWithData(v10, v9, &error);
 
   if (error)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -128,7 +128,7 @@ LABEL_6:
     if (!v21)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy3 = self;
       v13 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -144,20 +144,20 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"opkey"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"opkey"];
     self->_operationalKey = SecKeyCreateWithData(v22, v9, &error);
 
     if (self->_operationalKey)
     {
-      v23 = [v4 objectForKeyedSubscript:@"rootcert"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"rootcert"];
       rootCert = self->_rootCert;
       self->_rootCert = v23;
 
-      v25 = [v4 objectForKeyedSubscript:@"opcert"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"opcert"];
       operationalCert = self->_operationalCert;
       self->_operationalCert = v25;
 
-      v27 = [v4 objectForKeyedSubscript:@"ipk"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"ipk"];
       ipk = self->_ipk;
       self->_ipk = v27;
 
@@ -166,7 +166,7 @@ LABEL_6:
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -190,13 +190,13 @@ LABEL_8:
   return v18;
 }
 
-- (BOOL)_reloadWithData:(id)a3
+- (BOOL)_reloadWithData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([(HMMTRMatterKeypair *)self version]!= 1)
   {
-    v7 = [(HMMTRMatterKeypair *)self createPrivateKeyWithData:v4];
+    v7 = [(HMMTRMatterKeypair *)self createPrivateKeyWithData:dataCopy];
     self->_privateKey = v7;
     if (v7)
     {
@@ -209,7 +209,7 @@ LABEL_8:
       }
 
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -224,7 +224,7 @@ LABEL_8:
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -242,7 +242,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v5 = [(HMMTRMatterKeypair *)self unarchiveV1KeyItemValue:v4];
+  v5 = [(HMMTRMatterKeypair *)self unarchiveV1KeyItemValue:dataCopy];
   if (v5)
   {
     v6 = [(HMMTRMatterKeypair *)self _reloadWithDictionary:v5];
@@ -261,15 +261,15 @@ LABEL_15:
 - (id)_getPrivateKeydata
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFEC78] systemStore];
-  v4 = [(HMMTRMatterKeypair *)self keychainAccount];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  keychainAccount = [(HMMTRMatterKeypair *)self keychainAccount];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMMTRMatterKeypair deviceLocal](self, "deviceLocal") ^ 1}];
   v34 = 0;
-  v6 = [v3 allKeychainItemsForType:&unk_283EE7E60 identifier:v4 syncable:v5 error:&v34];
+  v6 = [systemStore allKeychainItemsForType:&unk_283EE7E60 identifier:keychainAccount syncable:v5 error:&v34];
   v7 = v34;
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -303,28 +303,28 @@ LABEL_15:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v17 account];
-        v19 = [(HMMTRMatterKeypair *)v9 keychainAccount];
-        v20 = [v18 isEqualToString:v19];
+        account = [v17 account];
+        keychainAccount2 = [(HMMTRMatterKeypair *)selfCopy keychainAccount];
+        v20 = [account isEqualToString:keychainAccount2];
 
         if (v20)
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = v9;
+          v23 = selfCopy;
           v24 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
             v25 = HMFGetLogIdentifier();
-            v26 = [v17 valueData];
+            valueData = [v17 valueData];
             *buf = 138543618;
             v37 = v25;
             v38 = 2112;
-            v39 = v26;
+            v39 = valueData;
             _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_INFO, "%{public}@Returning matching key : %@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v22);
-          v21 = [v17 valueData];
+          valueData2 = [v17 valueData];
           goto LABEL_15;
         }
       }
@@ -338,19 +338,19 @@ LABEL_15:
       break;
     }
 
-    v21 = 0;
+    valueData2 = 0;
 LABEL_15:
     v7 = v29;
   }
 
   else
   {
-    v21 = 0;
+    valueData2 = 0;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return valueData2;
 }
 
 - (BOOL)_generateKeys
@@ -362,7 +362,7 @@ LABEL_15:
   }
 
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -390,11 +390,11 @@ LABEL_15:
   v31[4] = @"com.apple.matter.commissioner.ca.issuer.id";
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:5];
   v12 = SecKeyCreateRandomKey(v11, &error);
-  v4->_privateKey = v12;
+  selfCopy->_privateKey = v12;
   if (error)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v4;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -412,25 +412,25 @@ LABEL_15:
 
   else
   {
-    v4->_publicKey = SecKeyCopyPublicKey(v12);
-    v18 = SecKeyCopyExternalRepresentation(v4->_privateKey, 0);
+    selfCopy->_publicKey = SecKeyCopyPublicKey(v12);
+    v18 = SecKeyCopyExternalRepresentation(selfCopy->_privateKey, 0);
     if (v18)
     {
-      if (v4->_deviceLocal)
+      if (selfCopy->_deviceLocal)
       {
         v17 = 1;
       }
 
       else
       {
-        v17 = [(HMMTRMatterKeypair *)v4 _storePrivateKeyData:v18];
+        v17 = [(HMMTRMatterKeypair *)selfCopy _storePrivateKeyData:v18];
       }
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v4;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -449,12 +449,12 @@ LABEL_15:
   return v17;
 }
 
-- (BOOL)updateStorageWithPrivateKeyData:(id)a3
+- (BOOL)updateStorageWithPrivateKeyData:(id)data
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -465,15 +465,15 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [MEMORY[0x277CFEC78] systemStore];
-  v10 = [(HMMTRMatterKeypair *)v6 keychainAccount];
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMMTRMatterKeypair deviceLocal](v6, "deviceLocal") ^ 1}];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  keychainAccount = [(HMMTRMatterKeypair *)selfCopy keychainAccount];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMMTRMatterKeypair deviceLocal](selfCopy, "deviceLocal") ^ 1}];
   v63 = 0;
-  v12 = [v9 allKeychainItemsForType:&unk_283EE7E60 identifier:v10 syncable:v11 error:&v63];
+  v12 = [systemStore allKeychainItemsForType:&unk_283EE7E60 identifier:keychainAccount syncable:v11 error:&v63];
   v13 = v63;
 
   v14 = objc_autoreleasePoolPush();
-  v15 = v6;
+  v15 = selfCopy;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -495,8 +495,8 @@ LABEL_15:
   if (v19)
   {
     v20 = v19;
-    v54 = v4;
-    v55 = v9;
+    v54 = dataCopy;
+    v55 = systemStore;
     v21 = *v60;
     while (2)
     {
@@ -508,9 +508,9 @@ LABEL_15:
         }
 
         v23 = *(*(&v59 + 1) + 8 * i);
-        v24 = [v23 account];
-        v25 = [(HMMTRMatterKeypair *)v15 keychainAccount];
-        v26 = [v24 isEqualToString:v25];
+        account = [v23 account];
+        keychainAccount2 = [(HMMTRMatterKeypair *)v15 keychainAccount];
+        v26 = [account isEqualToString:keychainAccount2];
 
         if (v26)
         {
@@ -520,11 +520,11 @@ LABEL_15:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
             v31 = HMFGetLogIdentifier();
-            v32 = [v23 valueData];
+            valueData = [v23 valueData];
             *buf = 138543618;
             v66 = v31;
             v67 = 2112;
-            v68 = v32;
+            v68 = valueData;
             _os_log_impl(&dword_22AEAE000, v30, OS_LOG_TYPE_INFO, "%{public}@Returning matching key : %@", buf, 0x16u);
           }
 
@@ -545,8 +545,8 @@ LABEL_15:
 
     v27 = 0;
 LABEL_17:
-    v4 = v54;
-    v9 = v55;
+    dataCopy = v54;
+    systemStore = v55;
   }
 
   else
@@ -556,20 +556,20 @@ LABEL_17:
 
   v33 = [v27 mutableCopy];
   v58 = v13;
-  v34 = [v9 deleteKeychainItem:v27 error:&v58];
+  v34 = [systemStore deleteKeychainItem:v27 error:&v58];
   v35 = v58;
 
   if (v34)
   {
-    [v33 setValueData:v4];
+    [v33 setValueData:dataCopy];
     v57 = v35;
-    v36 = [v9 updateKeychainItem:v33 createIfNeeded:1 error:&v57];
+    v36 = [systemStore updateKeychainItem:v33 createIfNeeded:1 error:&v57];
     v37 = v57;
 
     if ((v36 & 1) == 0)
     {
-      v56 = v9;
-      v38 = v4;
+      v56 = systemStore;
+      v38 = dataCopy;
       v39 = objc_autoreleasePoolPush();
       v40 = v15;
       v41 = HMFGetOSLogHandle();
@@ -584,8 +584,8 @@ LABEL_17:
       }
 
       objc_autoreleasePoolPop(v39);
-      v4 = v38;
-      v9 = v56;
+      dataCopy = v38;
+      systemStore = v56;
     }
 
     v43 = objc_autoreleasePoolPush();
@@ -627,31 +627,31 @@ LABEL_17:
   return v47;
 }
 
-- (BOOL)_storePrivateKeyData:(id)a3
+- (BOOL)_storePrivateKeyData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CFEC78] systemStore];
+  dataCopy = data;
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v6 = objc_alloc_init(MEMORY[0x277CFEBC8]);
-  [v6 setValueData:v4];
+  [v6 setValueData:dataCopy];
   [v6 setSyncable:{-[HMMTRMatterKeypair deviceLocal](self, "deviceLocal") ^ 1}];
-  v7 = [(HMMTRMatterKeypair *)self keychainAccount];
-  [v6 setAccount:v7];
+  keychainAccount = [(HMMTRMatterKeypair *)self keychainAccount];
+  [v6 setAccount:keychainAccount];
 
   [v6 setAccessGroup:@"com.apple.hap.pairing"];
   [v6 setLabel:@"A CHIPPlugin Matter Keypair."];
   [v6 setItemDescription:@"A CHIPPlugin Matter keypair is stored here."];
   [v6 setType:&unk_283EE7E60];
   v8 = MEMORY[0x277CFEC78];
-  v9 = [v6 type];
-  v10 = [v8 viewHintForType:v9];
+  type = [v6 type];
+  v10 = [v8 viewHintForType:type];
   [v6 setViewHint:v10];
 
   v18 = 0;
-  [v5 updateKeychainItem:v6 createIfNeeded:1 error:&v18];
+  [systemStore updateKeychainItem:v6 createIfNeeded:1 error:&v18];
   v11 = v18;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -688,11 +688,11 @@ LABEL_17:
       v32[0] = v3;
       v32[1] = v4;
       v31[2] = @"rootcert";
-      v6 = [(HMMTRMatterKeypair *)self rootCert];
-      v32[2] = v6;
+      rootCert = [(HMMTRMatterKeypair *)self rootCert];
+      v32[2] = rootCert;
       v31[3] = @"opcert";
-      v7 = [(HMMTRMatterKeypair *)self operationalCert];
-      v32[3] = v7;
+      operationalCert = [(HMMTRMatterKeypair *)self operationalCert];
+      v32[3] = operationalCert;
       v31[4] = @"ipk";
       v8 = [(HMMTRMatterKeypair *)self ipk];
       v32[4] = v8;
@@ -704,7 +704,7 @@ LABEL_17:
       if (!v10)
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = self;
+        selfCopy = self;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
@@ -723,7 +723,7 @@ LABEL_17:
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -741,7 +741,7 @@ LABEL_17:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -760,10 +760,10 @@ LABEL_17:
   return v10;
 }
 
-- (id)unarchiveV1KeyItemValue:(id)a3
+- (id)unarchiveV1KeyItemValue:(id)value
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   if ([(HMMTRMatterKeypair *)self version]!= 1)
   {
     _HMFPreconditionFailure();
@@ -772,12 +772,12 @@ LABEL_17:
   v5 = MEMORY[0x277CCAAC8];
   v6 = objc_opt_class();
   v15 = 0;
-  v7 = [v5 unarchivedDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() fromData:v4 error:&v15];
+  v7 = [v5 unarchivedDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() fromData:valueCopy error:&v15];
   v8 = v15;
   if (!v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -797,16 +797,16 @@ LABEL_17:
   return v7;
 }
 
-- (id)signMessageECDSA_DER:(id)a3
+- (id)signMessageECDSA_DER:(id)r
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rCopy = r;
   error = 0;
-  v5 = SecKeyCreateSignature(self->_privateKey, *MEMORY[0x277CDC300], v4, &error);
+  v5 = SecKeyCreateSignature(self->_privateKey, *MEMORY[0x277CDC300], rCopy, &error);
   if (error)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -834,20 +834,20 @@ LABEL_17:
   }
 
   v4 = [HMMTRMatterKeypair alloc];
-  v5 = [(HMMTRMatterKeypair *)self privateKey];
+  privateKey = [(HMMTRMatterKeypair *)self privateKey];
 
-  return [(HMMTRMatterKeypair *)v4 initWithPrivateKey:v5];
+  return [(HMMTRMatterKeypair *)v4 initWithPrivateKey:privateKey];
 }
 
-- (BOOL)deserialize:(id)a3
+- (BOOL)deserialize:(id)deserialize
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [HMMTRTLVParser keyPairDataFromTLV:v4];
+  deserializeCopy = deserialize;
+  v5 = [HMMTRTLVParser keyPairDataFromTLV:deserializeCopy];
   if (!v5)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v11 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -869,7 +869,7 @@ LABEL_11:
   if (!v6)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v11 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -888,7 +888,7 @@ LABEL_11:
   if (!v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -930,7 +930,7 @@ LABEL_13:
     *(v22 + v5 + 3) = 24;
     v6 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:v5 + 8];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -948,7 +948,7 @@ LABEL_13:
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -992,17 +992,17 @@ LABEL_13:
   [(HMMTRMatterKeypair *)&v6 dealloc];
 }
 
-- (BOOL)initializeAllowingNew:(BOOL)a3
+- (BOOL)initializeAllowingNew:(BOOL)new
 {
   v22 = *MEMORY[0x277D85DE8];
   if (![(HMMTRMatterKeypair *)self initialized])
   {
-    v5 = [(HMMTRMatterKeypair *)self _getPrivateKeydata];
+    _getPrivateKeydata = [(HMMTRMatterKeypair *)self _getPrivateKeydata];
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (_getPrivateKeydata)
     {
       if (v9)
       {
@@ -1013,10 +1013,10 @@ LABEL_13:
       }
 
       objc_autoreleasePoolPop(v6);
-      if (![(HMMTRMatterKeypair *)v7 _reloadWithData:v5])
+      if (![(HMMTRMatterKeypair *)selfCopy _reloadWithData:_getPrivateKeydata])
       {
         v6 = objc_autoreleasePoolPush();
-        v11 = v7;
+        v11 = selfCopy;
         v8 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
@@ -1036,7 +1036,7 @@ LABEL_18:
 
     else
     {
-      if (!a3)
+      if (!new)
       {
         if (v9)
         {
@@ -1064,10 +1064,10 @@ LABEL_19:
       }
 
       objc_autoreleasePoolPop(v6);
-      if (![(HMMTRMatterKeypair *)v7 _generateKeys])
+      if (![(HMMTRMatterKeypair *)selfCopy _generateKeys])
       {
         v6 = objc_autoreleasePoolPush();
-        v18 = v7;
+        v18 = selfCopy;
         v8 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
@@ -1086,7 +1086,7 @@ LABEL_20:
       }
     }
 
-    [(HMMTRMatterKeypair *)v7 setInitialized:1];
+    [(HMMTRMatterKeypair *)selfCopy setInitialized:1];
   }
 
   result = [(HMMTRMatterKeypair *)self initialized];
@@ -1107,12 +1107,12 @@ LABEL_21:
   return result;
 }
 
-- (void)setOperationalKey:(__SecKey *)a3
+- (void)setOperationalKey:(__SecKey *)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (key)
   {
-    v4 = SecKeyCopyExternalRepresentation(a3, 0);
+    v4 = SecKeyCopyExternalRepresentation(key, 0);
     opKeyRepr = self->_opKeyRepr;
     self->_opKeyRepr = v4;
 
@@ -1124,7 +1124,7 @@ LABEL_21:
     else
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -1147,13 +1147,13 @@ LABEL_21:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRMatterKeypair)initWithV1Account:(id)a3 privateKey:(__SecKey *)a4 operationalKey:(__SecKey *)a5 rootCert:(id)a6 operationalCert:(id)a7 ipk:(id)a8
+- (HMMTRMatterKeypair)initWithV1Account:(id)account privateKey:(__SecKey *)key operationalKey:(__SecKey *)operationalKey rootCert:(id)cert operationalCert:(id)operationalCert ipk:(id)ipk
 {
   v36 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  accountCopy = account;
+  certCopy = cert;
+  operationalCertCopy = operationalCert;
+  ipkCopy = ipk;
   v33.receiver = self;
   v33.super_class = HMMTRMatterKeypair;
   v18 = [(HMMTRMatterKeypair *)&v33 init];
@@ -1164,7 +1164,7 @@ LABEL_21:
   }
 
   v18->_version = 1;
-  v20 = SecKeyCopyExternalRepresentation(a4, 0);
+  v20 = SecKeyCopyExternalRepresentation(key, 0);
   keyRepr = v19->_keyRepr;
   v19->_keyRepr = v20;
 
@@ -1186,12 +1186,12 @@ LABEL_11:
 LABEL_12:
 
     objc_autoreleasePoolPop(v25);
-    v24 = 0;
+    archiveV1KeyItemValue = 0;
     goto LABEL_13;
   }
 
   v19->_privateKey = [(HMMTRMatterKeypair *)v19 createPrivateKeyWithData:?];
-  v22 = SecKeyCopyExternalRepresentation(a5, 0);
+  v22 = SecKeyCopyExternalRepresentation(operationalKey, 0);
   opKeyRepr = v19->_opKeyRepr;
   v19->_opKeyRepr = v22;
 
@@ -1214,33 +1214,33 @@ LABEL_12:
 
   v19->_operationalKey = [(HMMTRMatterKeypair *)v19 createPrivateKeyWithData:?];
   v19->_publicKey = SecKeyCopyPublicKey(v19->_privateKey);
-  objc_storeStrong(&v19->_keychainAccount, a3);
-  objc_storeStrong(&v19->_rootCert, a6);
-  objc_storeStrong(&v19->_operationalCert, a7);
-  objc_storeStrong(&v19->_ipk, a8);
-  v24 = [(HMMTRMatterKeypair *)v19 archiveV1KeyItemValue];
-  if (v24)
+  objc_storeStrong(&v19->_keychainAccount, account);
+  objc_storeStrong(&v19->_rootCert, cert);
+  objc_storeStrong(&v19->_operationalCert, operationalCert);
+  objc_storeStrong(&v19->_ipk, ipk);
+  archiveV1KeyItemValue = [(HMMTRMatterKeypair *)v19 archiveV1KeyItemValue];
+  if (archiveV1KeyItemValue)
   {
-    [(HMMTRMatterKeypair *)v19 _storePrivateKeyData:v24];
+    [(HMMTRMatterKeypair *)v19 _storePrivateKeyData:archiveV1KeyItemValue];
 
 LABEL_6:
-    v24 = v19;
+    archiveV1KeyItemValue = v19;
   }
 
 LABEL_13:
 
   v30 = *MEMORY[0x277D85DE8];
-  return v24;
+  return archiveV1KeyItemValue;
 }
 
-- (HMMTRMatterKeypair)initWithV1Account:(id)a3
+- (HMMTRMatterKeypair)initWithV1Account:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = HMMTRMatterKeypair;
   v6 = [(HMMTRMatterKeypair *)&v10 init];
   v7 = v6;
-  if (v6 && (v6->_version = 1, objc_storeStrong(&v6->_keychainAccount, a3), ![(HMMTRMatterKeypair *)v7 initializeAllowingNew:0]))
+  if (v6 && (v6->_version = 1, objc_storeStrong(&v6->_keychainAccount, account), ![(HMMTRMatterKeypair *)v7 initializeAllowingNew:0]))
   {
     v8 = 0;
   }
@@ -1315,17 +1315,17 @@ LABEL_8:
   return v14;
 }
 
-- (HMMTRMatterKeypair)initWithPrivateKeyExternalRepresentation:(id)a3
+- (HMMTRMatterKeypair)initWithPrivateKeyExternalRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = HMMTRMatterKeypair;
   v6 = [(HMMTRMatterKeypair *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyRepr, a3);
-    v8 = [(HMMTRMatterKeypair *)v7 createPrivateKeyWithData:v5];
+    objc_storeStrong(&v6->_keyRepr, representation);
+    v8 = [(HMMTRMatterKeypair *)v7 createPrivateKeyWithData:representationCopy];
     v7->_privateKey = v8;
     if (!v8)
     {
@@ -1342,7 +1342,7 @@ LABEL_6:
   return v9;
 }
 
-- (HMMTRMatterKeypair)initWithPrivateKey:(__SecKey *)a3
+- (HMMTRMatterKeypair)initWithPrivateKey:(__SecKey *)key
 {
   v18 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
@@ -1353,7 +1353,7 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  v5 = SecKeyCopyExternalRepresentation(a3, 0);
+  v5 = SecKeyCopyExternalRepresentation(key, 0);
   keyRepr = v4->_keyRepr;
   v4->_keyRepr = v5;
 
@@ -1386,9 +1386,9 @@ LABEL_8:
   return v8;
 }
 
-- (HMMTRMatterKeypair)initWithTLVData:(id)a3
+- (HMMTRMatterKeypair)initWithTLVData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HMMTRMatterKeypair;
   v5 = [(HMMTRMatterKeypair *)&v9 init];
@@ -1398,16 +1398,16 @@ LABEL_8:
     keychainAccount = v5->_keychainAccount;
     v5->_keychainAccount = @"null";
 
-    [(HMMTRMatterKeypair *)v6 deserialize:v4];
+    [(HMMTRMatterKeypair *)v6 deserialize:dataCopy];
   }
 
   return v6;
 }
 
-- (HMMTRMatterKeypair)initWithV0Account:(id)a3 privateKey:(__SecKey *)a4
+- (HMMTRMatterKeypair)initWithV0Account:(id)account privateKey:(__SecKey *)key
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  accountCopy = account;
   v21.receiver = self;
   v21.super_class = HMMTRMatterKeypair;
   v8 = [(HMMTRMatterKeypair *)&v21 init];
@@ -1417,8 +1417,8 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v8->_keychainAccount, a3);
-  v10 = SecKeyCopyExternalRepresentation(a4, 0);
+  objc_storeStrong(&v8->_keychainAccount, account);
+  v10 = SecKeyCopyExternalRepresentation(key, 0);
   if (v10)
   {
     keyRepr = v9->_keyRepr;
@@ -1497,14 +1497,14 @@ LABEL_8:
   return v5;
 }
 
-- (HMMTRMatterKeypair)initWithV0Account:(id)a3
+- (HMMTRMatterKeypair)initWithV0Account:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = HMMTRMatterKeypair;
   v6 = [(HMMTRMatterKeypair *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_keychainAccount, a3), ![(HMMTRMatterKeypair *)v7 initializeAllowingNew:0]))
+  if (v6 && (objc_storeStrong(&v6->_keychainAccount, account), ![(HMMTRMatterKeypair *)v7 initializeAllowingNew:0]))
   {
     v8 = 0;
   }
@@ -1517,14 +1517,14 @@ LABEL_8:
   return v8;
 }
 
-- (HMMTRMatterKeypair)initWithAccount:(id)a3
+- (HMMTRMatterKeypair)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = HMMTRMatterKeypair;
   v5 = [(HMMTRMatterKeypair *)&v9 init];
   v6 = v5;
-  if (v5 && ([(HMMTRMatterKeypair *)v5 setKeychainAccount:v4], ![(HMMTRMatterKeypair *)v6 initializeAllowingNew:1]))
+  if (v5 && ([(HMMTRMatterKeypair *)v5 setKeychainAccount:accountCopy], ![(HMMTRMatterKeypair *)v6 initializeAllowingNew:1]))
   {
     v7 = 0;
   }

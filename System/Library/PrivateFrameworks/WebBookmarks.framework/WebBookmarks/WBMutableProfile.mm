@@ -1,67 +1,67 @@
 @interface WBMutableProfile
-+ (id)createDefaultProfileWithTabGroups:(id)a3;
-- (WBMutableProfile)initWithBookmark:(id)a3 kind:(int64_t)a4 tabGroups:(id)a5;
-- (WBMutableProfile)initWithBookmark:(id)a3 tabGroups:(id)a4;
++ (id)createDefaultProfileWithTabGroups:(id)groups;
+- (WBMutableProfile)initWithBookmark:(id)bookmark kind:(int64_t)kind tabGroups:(id)groups;
+- (WBMutableProfile)initWithBookmark:(id)bookmark tabGroups:(id)groups;
 - (WBSCRDTPosition)syncPosition;
 - (void)markBackgroundImageAsModified;
-- (void)mergeWithProfile:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setSetting:(id)a3 forKey:(id)a4;
-- (void)setSettingsDictionary:(id)a3;
-- (void)setStartPageSectionsDataRepresentation:(id)a3;
-- (void)setSymbolImageName:(id)a3;
-- (void)setSyncPosition:(id)a3;
-- (void)setTabGroups:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)mergeWithProfile:(id)profile;
+- (void)setColor:(id)color;
+- (void)setIdentifier:(id)identifier;
+- (void)setSetting:(id)setting forKey:(id)key;
+- (void)setSettingsDictionary:(id)dictionary;
+- (void)setStartPageSectionsDataRepresentation:(id)representation;
+- (void)setSymbolImageName:(id)name;
+- (void)setSyncPosition:(id)position;
+- (void)setTabGroups:(id)groups;
+- (void)setTitle:(id)title;
 @end
 
 @implementation WBMutableProfile
 
-+ (id)createDefaultProfileWithTabGroups:(id)a3
++ (id)createDefaultProfileWithTabGroups:(id)groups
 {
-  v3 = a3;
+  groupsCopy = groups;
   v4 = [WebBookmark alloc];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringWithFormat:@"~DefaultProfileDeviceIdentifier-%@", v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v5 stringWithFormat:@"~DefaultProfileDeviceIdentifier-%@", uUIDString];
   v9 = [(WebBookmark *)v4 initFolderWithParentID:0 subtype:2 deviceIdentifier:v8 collectionType:1];
 
   v10 = *MEMORY[0x277D49BD8];
   [v9 _setUUID:*MEMORY[0x277D49BD8]];
   [v9 _setServerID:v10];
-  v11 = [[WBMutableProfile alloc] initWithBookmark:v9 kind:0 tabGroups:v3];
+  v11 = [[WBMutableProfile alloc] initWithBookmark:v9 kind:0 tabGroups:groupsCopy];
 
   [(WBMutableProfile *)v11 setSyncable:1];
-  v12 = [MEMORY[0x277D499E8] defaultPersonalProfileSymbolImage];
-  [(WBMutableProfile *)v11 setSymbolImageName:v12];
+  defaultPersonalProfileSymbolImage = [MEMORY[0x277D499E8] defaultPersonalProfileSymbolImage];
+  [(WBMutableProfile *)v11 setSymbolImageName:defaultPersonalProfileSymbolImage];
 
-  v13 = [MEMORY[0x277D499E8] defaultPersonalProfileColor];
-  [(WBMutableProfile *)v11 setColor:v13];
+  defaultPersonalProfileColor = [MEMORY[0x277D499E8] defaultPersonalProfileColor];
+  [(WBMutableProfile *)v11 setColor:defaultPersonalProfileColor];
 
   return v11;
 }
 
-- (WBMutableProfile)initWithBookmark:(id)a3 tabGroups:(id)a4
+- (WBMutableProfile)initWithBookmark:(id)bookmark tabGroups:(id)groups
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 UUID];
-  v9 = [v8 isEqualToString:*MEMORY[0x277D49BD8]] ^ 1;
+  groupsCopy = groups;
+  bookmarkCopy = bookmark;
+  uUID = [bookmarkCopy UUID];
+  v9 = [uUID isEqualToString:*MEMORY[0x277D49BD8]] ^ 1;
 
-  v10 = [(WBMutableProfile *)self initWithBookmark:v7 kind:v9 tabGroups:v6];
+  v10 = [(WBMutableProfile *)self initWithBookmark:bookmarkCopy kind:v9 tabGroups:groupsCopy];
   return v10;
 }
 
-- (WBMutableProfile)initWithBookmark:(id)a3 kind:(int64_t)a4 tabGroups:(id)a5
+- (WBMutableProfile)initWithBookmark:(id)bookmark kind:(int64_t)kind tabGroups:(id)groups
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(WBProfile *)self initWithBookmark:a3 kind:a4];
+  groupsCopy = groups;
+  v9 = [(WBProfile *)self initWithBookmark:bookmark kind:kind];
   if (v9)
   {
-    v10 = [v8 mutableCopy];
+    v10 = [groupsCopy mutableCopy];
     tabGroups = v9->super._tabGroups;
     v9->super._tabGroups = v10;
 
@@ -86,8 +86,8 @@
           }
 
           v17 = *(*(&v22 + 1) + 8 * v16);
-          v18 = [(WBProfile *)v9 identifier];
-          [v17 setProfileIdentifier:v18];
+          identifier = [(WBProfile *)v9 identifier];
+          [v17 setProfileIdentifier:identifier];
 
           ++v16;
         }
@@ -108,43 +108,43 @@
 
 - (WBSCRDTPosition)syncPosition
 {
-  v2 = [(WBProfile *)self bookmark];
-  v3 = [v2 syncPosition];
+  bookmark = [(WBProfile *)self bookmark];
+  syncPosition = [bookmark syncPosition];
 
-  return v3;
+  return syncPosition;
 }
 
-- (void)setSyncPosition:(id)a3
+- (void)setSyncPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(WBProfile *)self bookmark];
-  [v5 setSyncPosition:v4];
+  positionCopy = position;
+  bookmark = [(WBProfile *)self bookmark];
+  [bookmark setSyncPosition:positionCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(WBProfile *)self bookmark];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  bookmark = [(WBProfile *)self bookmark];
+  [bookmark setTitle:titleCopy];
 }
 
-- (void)setSymbolImageName:(id)a3
+- (void)setSymbolImageName:(id)name
 {
-  v4 = a3;
-  v5 = [(WBProfile *)self bookmark];
-  [v5 setSymbolImageName:v4];
+  nameCopy = name;
+  bookmark = [(WBProfile *)self bookmark];
+  [bookmark setSymbolImageName:nameCopy];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WBProfile *)self bookmark];
-  [v5 _setUUID:v4];
+  identifierCopy = identifier;
+  bookmark = [(WBProfile *)self bookmark];
+  [bookmark _setUUID:identifierCopy];
 }
 
-- (void)setTabGroups:(id)a3
+- (void)setTabGroups:(id)groups
 {
-  v4 = [a3 mutableCopy];
+  v4 = [groups mutableCopy];
   tabGroups = self->super._tabGroups;
   self->super._tabGroups = v4;
 
@@ -154,44 +154,44 @@
 - (void)markBackgroundImageAsModified
 {
   v3 = MEMORY[0x277CCABB0];
-  v7 = [(WBProfile *)self bookmark];
-  v4 = [v7 backgroundImageModifiedState];
-  v5 = [v3 numberWithInt:{objc_msgSend(v4, "BOOLValue") ^ 1}];
-  v6 = [(WBProfile *)self bookmark];
-  [v6 setBackgroundImageModifiedState:v5];
+  bookmark = [(WBProfile *)self bookmark];
+  backgroundImageModifiedState = [bookmark backgroundImageModifiedState];
+  v5 = [v3 numberWithInt:{objc_msgSend(backgroundImageModifiedState, "BOOLValue") ^ 1}];
+  bookmark2 = [(WBProfile *)self bookmark];
+  [bookmark2 setBackgroundImageModifiedState:v5];
 }
 
-- (void)setStartPageSectionsDataRepresentation:(id)a3
+- (void)setStartPageSectionsDataRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(WBProfile *)self bookmark];
-  [v5 setStartPageSectionsDataRepresentation:v4];
+  representationCopy = representation;
+  bookmark = [(WBProfile *)self bookmark];
+  [bookmark setStartPageSectionsDataRepresentation:representationCopy];
 }
 
-- (void)setSettingsDictionary:(id)a3
+- (void)setSettingsDictionary:(id)dictionary
 {
-  v4 = [a3 mutableCopy];
+  v4 = [dictionary mutableCopy];
   settingsDictionary = self->super._settingsDictionary;
   self->super._settingsDictionary = v4;
 
   MEMORY[0x2821F96F8](v4, settingsDictionary);
 }
 
-- (void)setSetting:(id)a3 forKey:(id)a4
+- (void)setSetting:(id)setting forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBProfile *)self bookmark];
+  settingCopy = setting;
+  keyCopy = key;
+  bookmark = [(WBProfile *)self bookmark];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__WBMutableProfile_setSetting_forKey___block_invoke;
   v11[3] = &unk_279E75D50;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  [v8 performWithFieldsWriteLock:v11];
+  v12 = keyCopy;
+  v13 = settingCopy;
+  v9 = settingCopy;
+  v10 = keyCopy;
+  [bookmark performWithFieldsWriteLock:v11];
 }
 
 void __38__WBMutableProfile_setSetting_forKey___block_invoke(uint64_t a1)
@@ -239,23 +239,23 @@ void __38__WBMutableProfile_setSetting_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = [a3 dataRepresentation];
-  [(WBMutableProfile *)self setSetting:v4 forKey:*MEMORY[0x277D49CF0]];
+  dataRepresentation = [color dataRepresentation];
+  [(WBMutableProfile *)self setSetting:dataRepresentation forKey:*MEMORY[0x277D49CF0]];
 }
 
-- (void)mergeWithProfile:(id)a3
+- (void)mergeWithProfile:(id)profile
 {
-  v7 = a3;
-  if ([v7 isSyncable])
+  profileCopy = profile;
+  if ([profileCopy isSyncable])
   {
-    v4 = [(WBProfile *)self bookmark];
-    v5 = [v7 bookmark];
-    [v4 mergeWithBookmark:v5];
+    bookmark = [(WBProfile *)self bookmark];
+    bookmark2 = [profileCopy bookmark];
+    [bookmark mergeWithBookmark:bookmark2];
 
-    v6 = [v7 recentsStore];
-    [(WBProfile *)self setRecentsStore:v6];
+    recentsStore = [profileCopy recentsStore];
+    [(WBProfile *)self setRecentsStore:recentsStore];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface CUIKSpanDecisionInfo
-+ (BOOL)_allowSlicingEvent:(id)a3;
-+ (id)spanDecisionInfoForEvents:(id)a3;
++ (BOOL)_allowSlicingEvent:(id)event;
++ (id)spanDecisionInfoForEvents:(id)events;
 @end
 
 @implementation CUIKSpanDecisionInfo
 
-+ (id)spanDecisionInfoForEvents:(id)a3
++ (id)spanDecisionInfoForEvents:(id)events
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventsCopy = events;
   v36 = objc_alloc_init(CUIKSpanDecisionInfo);
   v44 = objc_opt_new();
   v43 = objc_opt_new();
@@ -16,7 +16,7 @@
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v4 = [obj countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v4)
   {
@@ -42,8 +42,8 @@
         {
           v41 = v9;
           v42 = v6;
-          v11 = [v10 eventStore];
-          v12 = [v11 eventsWithSameRecurrenceSetAsEvent:v10];
+          eventStore = [v10 eventStore];
+          v12 = [eventStore eventsWithSameRecurrenceSetAsEvent:v10];
 
           v48 = 0u;
           v49 = 0u;
@@ -65,27 +65,27 @@
                 }
 
                 v18 = *(*(&v46 + 1) + 8 * i);
-                v19 = [v18 eventOccurrenceID];
-                v20 = [v10 eventOccurrenceID];
-                v21 = [v19 isEqualToString:v20];
+                eventOccurrenceID = [v18 eventOccurrenceID];
+                eventOccurrenceID2 = [v10 eventOccurrenceID];
+                v21 = [eventOccurrenceID isEqualToString:eventOccurrenceID2];
 
                 if ((v21 & 1) == 0)
                 {
                   ++v7;
-                  v22 = [v18 isFirstOccurrenceIncludingSlices];
-                  v23 = [v18 localUID];
-                  if (v22)
+                  isFirstOccurrenceIncludingSlices = [v18 isFirstOccurrenceIncludingSlices];
+                  localUID = [v18 localUID];
+                  if (isFirstOccurrenceIncludingSlices)
                   {
-                    [v44 addObject:v23];
+                    [v44 addObject:localUID];
                   }
 
                   else
                   {
-                    [v43 addObject:v23];
+                    [v43 addObject:localUID];
 
-                    v24 = [v18 currentUserGeneralizedParticipantRole];
+                    currentUserGeneralizedParticipantRole = [v18 currentUserGeneralizedParticipantRole];
                     v25 = v45;
-                    if (v24 == 1)
+                    if (currentUserGeneralizedParticipantRole == 1)
                     {
                       v25 = v45 + 1;
                     }
@@ -113,11 +113,11 @@
         else
         {
           ++v7;
-          v26 = [v10 isFirstOccurrenceIncludingSlices];
-          v27 = [v10 localUID];
-          if (v26)
+          isFirstOccurrenceIncludingSlices2 = [v10 isFirstOccurrenceIncludingSlices];
+          localUID2 = [v10 localUID];
+          if (isFirstOccurrenceIncludingSlices2)
           {
-            [v44 addObject:v27];
+            [v44 addObject:localUID2];
 
             if ((v6 & 1) == 0)
             {
@@ -127,11 +127,11 @@
 
           else
           {
-            [v43 addObject:v27];
+            [v43 addObject:localUID2];
 
-            v28 = [v10 currentUserGeneralizedParticipantRole];
+            currentUserGeneralizedParticipantRole2 = [v10 currentUserGeneralizedParticipantRole];
             v29 = v45;
-            if (v28 == 1)
+            if (currentUserGeneralizedParticipantRole2 == 1)
             {
               v29 = v45 + 1;
             }
@@ -140,7 +140,7 @@
             if ((v6 & 1) == 0)
             {
 LABEL_24:
-              v6 = [a1 _allowSlicingEvent:v10] ^ 1;
+              v6 = [self _allowSlicingEvent:v10] ^ 1;
               goto LABEL_29;
             }
           }
@@ -194,28 +194,28 @@ LABEL_33:
   return v31;
 }
 
-+ (BOOL)_allowSlicingEvent:(id)a3
++ (BOOL)_allowSlicingEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 calendar];
-  v5 = [v4 type];
+  eventCopy = event;
+  calendar = [eventCopy calendar];
+  type = [calendar type];
 
-  if (v5 == 4)
+  if (type == 4)
   {
     goto LABEL_2;
   }
 
-  v7 = [v3 calendar];
-  v8 = [v7 source];
-  v9 = [v8 sourceType];
+  calendar2 = [eventCopy calendar];
+  source = [calendar2 source];
+  sourceType = [source sourceType];
 
-  if (v9 != 1)
+  if (sourceType != 1)
   {
     LOBYTE(v6) = 1;
     goto LABEL_7;
   }
 
-  if ([v3 hasAttendees])
+  if ([eventCopy hasAttendees])
   {
 LABEL_2:
     LOBYTE(v6) = 0;
@@ -223,8 +223,8 @@ LABEL_2:
 
   else
   {
-    v10 = [v3 masterEvent];
-    v6 = [v10 hasAttendees] ^ 1;
+    masterEvent = [eventCopy masterEvent];
+    v6 = [masterEvent hasAttendees] ^ 1;
   }
 
 LABEL_7:

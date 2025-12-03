@@ -1,31 +1,31 @@
 @interface FCANEFFileDataProvider
-- (FCANEFFileDataProvider)initWithFilePath:(id)a3 wrappingKey:(id)a4 options:(int64_t)a5 holdToken:(id)a6;
+- (FCANEFFileDataProvider)initWithFilePath:(id)path wrappingKey:(id)key options:(int64_t)options holdToken:(id)token;
 - (NSData)data;
 - (NSString)filePath;
 @end
 
 @implementation FCANEFFileDataProvider
 
-- (FCANEFFileDataProvider)initWithFilePath:(id)a3 wrappingKey:(id)a4 options:(int64_t)a5 holdToken:(id)a6
+- (FCANEFFileDataProvider)initWithFilePath:(id)path wrappingKey:(id)key options:(int64_t)options holdToken:(id)token
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  pathCopy = path;
+  keyCopy = key;
+  tokenCopy = token;
   v19.receiver = self;
   v19.super_class = FCANEFFileDataProvider;
   v13 = [(FCANEFFileDataProvider *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [pathCopy copy];
     filePath = v13->_filePath;
     v13->_filePath = v14;
 
-    v16 = [v11 copy];
+    v16 = [keyCopy copy];
     wrappingKey = v13->_wrappingKey;
     v13->_wrappingKey = v16;
 
-    v13->_options = a5;
-    objc_storeStrong(&v13->_holdToken, a6);
+    v13->_options = options;
+    objc_storeStrong(&v13->_holdToken, token);
   }
 
   return v13;
@@ -52,15 +52,15 @@
       v10 = v8;
       v22 = v3;
       [v7 seekToFileOffset:{objc_msgSend(v10[4], "length")}];
-      v23 = [v7 readDataToEndOfFile];
+      readDataToEndOfFile = [v7 readDataToEndOfFile];
       v11 = v10[2];
-      v12 = [(FCANEFFileDataProvider *)self wrappingKey];
-      v13 = [v11 fc_anefDecryptWithKey:v12];
+      wrappingKey = [(FCANEFFileDataProvider *)self wrappingKey];
+      v13 = [v11 fc_anefDecryptWithKey:wrappingKey];
 
       if (v13)
       {
         v14 = v13;
-        v15 = [v23 fc_anefDecryptWithKey:v14];
+        v15 = [readDataToEndOfFile fc_anefDecryptWithKey:v14];
         v16 = v15;
         if (v15)
         {

@@ -1,28 +1,28 @@
 @interface PPPBMusicDataCollectionArray
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addExperimentalGroups:(id)a3;
-- (void)addRecords:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addExperimentalGroups:(id)groups;
+- (void)addRecords:(id)records;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBMusicDataCollectionArray
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -46,9 +46,9 @@
     while (v7);
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_hasMusicSubscription = *(v4 + 32);
+    self->_hasMusicSubscription = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 
@@ -56,7 +56,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -80,7 +80,7 @@
     while (v12);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PPPBMusicDataCollectionArray *)self setAssetVersion:?];
   }
@@ -106,16 +106,16 @@
   return v5 ^ v6 ^ [(NSString *)self->_assetVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   records = self->_records;
-  if (records | *(v4 + 3))
+  if (records | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)records isEqual:?])
     {
@@ -123,18 +123,18 @@
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_11;
     }
 
-    v6 = *(v4 + 32);
+    v6 = *(equalCopy + 32);
     if (self->_hasMusicSubscription)
     {
-      if (*(v4 + 32))
+      if (*(equalCopy + 32))
       {
         goto LABEL_6;
       }
@@ -152,13 +152,13 @@ LABEL_11:
 
 LABEL_6:
   experimentalGroups = self->_experimentalGroups;
-  if (experimentalGroups | *(v4 + 2) && ![(NSMutableArray *)experimentalGroups isEqual:?])
+  if (experimentalGroups | *(equalCopy + 2) && ![(NSMutableArray *)experimentalGroups isEqual:?])
   {
     goto LABEL_11;
   }
 
   assetVersion = self->_assetVersion;
-  if (assetVersion | *(v4 + 1))
+  if (assetVersion | *(equalCopy + 1))
   {
     v9 = [(NSString *)assetVersion isEqual:?];
   }
@@ -173,10 +173,10 @@ LABEL_12:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -197,7 +197,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addRecords:v11];
 
         ++v10;
@@ -236,7 +236,7 @@ LABEL_12:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v22 + 1) + 8 * v16) copyWithZone:{a3, v22}];
+        v17 = [*(*(&v22 + 1) + 8 * v16) copyWithZone:{zone, v22}];
         [v5 addExperimentalGroups:v17];
 
         ++v16;
@@ -249,7 +249,7 @@ LABEL_12:
     while (v14);
   }
 
-  v18 = [(NSString *)self->_assetVersion copyWithZone:a3];
+  v18 = [(NSString *)self->_assetVersion copyWithZone:zone];
   v19 = *(v5 + 8);
   *(v5 + 8) = v18;
 
@@ -257,55 +257,55 @@ LABEL_12:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(PPPBMusicDataCollectionArray *)self recordsCount])
   {
-    [v12 clearRecords];
-    v4 = [(PPPBMusicDataCollectionArray *)self recordsCount];
-    if (v4)
+    [toCopy clearRecords];
+    recordsCount = [(PPPBMusicDataCollectionArray *)self recordsCount];
+    if (recordsCount)
     {
-      v5 = v4;
+      v5 = recordsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PPPBMusicDataCollectionArray *)self recordsAtIndex:i];
-        [v12 addRecords:v7];
+        [toCopy addRecords:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v12[32] = self->_hasMusicSubscription;
-    v12[36] |= 1u;
+    toCopy[32] = self->_hasMusicSubscription;
+    toCopy[36] |= 1u;
   }
 
   if ([(PPPBMusicDataCollectionArray *)self experimentalGroupsCount])
   {
-    [v12 clearExperimentalGroups];
-    v8 = [(PPPBMusicDataCollectionArray *)self experimentalGroupsCount];
-    if (v8)
+    [toCopy clearExperimentalGroups];
+    experimentalGroupsCount = [(PPPBMusicDataCollectionArray *)self experimentalGroupsCount];
+    if (experimentalGroupsCount)
     {
-      v9 = v8;
+      v9 = experimentalGroupsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PPPBMusicDataCollectionArray *)self experimentalGroupsAtIndex:j];
-        [v12 addExperimentalGroups:v11];
+        [toCopy addExperimentalGroups:v11];
       }
     }
   }
 
   if (self->_assetVersion)
   {
-    [v12 setAssetVersion:?];
+    [toCopy setAssetVersion:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -387,7 +387,7 @@ LABEL_12:
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_records count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_records, "count")}];
@@ -410,8 +410,8 @@ LABEL_12:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -420,13 +420,13 @@ LABEL_12:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"records"];
+    [dictionary setObject:v4 forKey:@"records"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasMusicSubscription];
-    [v3 setObject:v11 forKey:@"hasMusicSubscription"];
+    [dictionary setObject:v11 forKey:@"hasMusicSubscription"];
   }
 
   if ([(NSMutableArray *)self->_experimentalGroups count])
@@ -451,8 +451,8 @@ LABEL_12:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -461,18 +461,18 @@ LABEL_12:
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"experimentalGroups"];
+    [dictionary setObject:v12 forKey:@"experimentalGroups"];
   }
 
   assetVersion = self->_assetVersion;
   if (assetVersion)
   {
-    [v3 setObject:assetVersion forKey:@"assetVersion"];
+    [dictionary setObject:assetVersion forKey:@"assetVersion"];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -481,46 +481,46 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = PPPBMusicDataCollectionArray;
   v4 = [(PPPBMusicDataCollectionArray *)&v8 description];
-  v5 = [(PPPBMusicDataCollectionArray *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBMusicDataCollectionArray *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addExperimentalGroups:(id)a3
+- (void)addExperimentalGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   experimentalGroups = self->_experimentalGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!experimentalGroups)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_experimentalGroups;
     self->_experimentalGroups = v6;
 
-    v4 = v8;
+    groupsCopy = v8;
     experimentalGroups = self->_experimentalGroups;
   }
 
-  [(NSMutableArray *)experimentalGroups addObject:v4];
+  [(NSMutableArray *)experimentalGroups addObject:groupsCopy];
 }
 
-- (void)addRecords:(id)a3
+- (void)addRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   records = self->_records;
-  v8 = v4;
+  v8 = recordsCopy;
   if (!records)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_records;
     self->_records = v6;
 
-    v4 = v8;
+    recordsCopy = v8;
     records = self->_records;
   }
 
-  [(NSMutableArray *)records addObject:v4];
+  [(NSMutableArray *)records addObject:recordsCopy];
 }
 
 + (id)options

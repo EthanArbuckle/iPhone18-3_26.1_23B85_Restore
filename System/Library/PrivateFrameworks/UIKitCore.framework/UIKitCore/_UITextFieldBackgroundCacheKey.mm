@@ -1,30 +1,30 @@
 @interface _UITextFieldBackgroundCacheKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (_UITextFieldBackgroundCacheKey)initWithClassName:(id)a3 scale:(double)a4 cornerRadius:(double)a5 lineWidth:(double)a6 strokeColor:(CGColor *)a7 fillColor:(CGColor *)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (_UITextFieldBackgroundCacheKey)initWithClassName:(id)name scale:(double)scale cornerRadius:(double)radius lineWidth:(double)width strokeColor:(CGColor *)color fillColor:(CGColor *)fillColor;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation _UITextFieldBackgroundCacheKey
 
-- (_UITextFieldBackgroundCacheKey)initWithClassName:(id)a3 scale:(double)a4 cornerRadius:(double)a5 lineWidth:(double)a6 strokeColor:(CGColor *)a7 fillColor:(CGColor *)a8
+- (_UITextFieldBackgroundCacheKey)initWithClassName:(id)name scale:(double)scale cornerRadius:(double)radius lineWidth:(double)width strokeColor:(CGColor *)color fillColor:(CGColor *)fillColor
 {
-  v15 = a3;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = _UITextFieldBackgroundCacheKey;
   v16 = [(_UITextFieldBackgroundCacheKey *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_className, a3);
-    v17->_scale = a4;
-    v17->_cornerRadius = a5;
-    v17->_lineWidth = a6;
-    CGColorRetain(a7);
-    v17->_strokeColor = a7;
-    CGColorRetain(a8);
-    v17->_fillColor = a8;
+    objc_storeStrong(&v16->_className, name);
+    v17->_scale = scale;
+    v17->_cornerRadius = radius;
+    v17->_lineWidth = width;
+    CGColorRetain(color);
+    v17->_strokeColor = color;
+    CGColorRetain(fillColor);
+    v17->_fillColor = fillColor;
   }
 
   return v17;
@@ -56,10 +56,10 @@
   return v3 ^ scale ^ cornerRadius ^ lineWidth ^ v8 ^ fillColor;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -67,16 +67,16 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UITextFieldBackgroundCacheKey *)self isEqualToCacheKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UITextFieldBackgroundCacheKey *)self isEqualToCacheKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
-  v6 = v4 && ((className = self->_className, className == *(v4 + 1)) || [(NSString *)className isEqualToString:?]) && self->_scale == *(v4 + 2) && self->_cornerRadius == *(v4 + 3) && self->_lineWidth == *(v4 + 4) && CGColorEqualToColor(self->_strokeColor, *(v4 + 5)) && CGColorEqualToColor(self->_fillColor, *(v4 + 6));
+  keyCopy = key;
+  v6 = keyCopy && ((className = self->_className, className == *(keyCopy + 1)) || [(NSString *)className isEqualToString:?]) && self->_scale == *(keyCopy + 2) && self->_cornerRadius == *(keyCopy + 3) && self->_lineWidth == *(keyCopy + 4) && CGColorEqualToColor(self->_strokeColor, *(keyCopy + 5)) && CGColorEqualToColor(self->_fillColor, *(keyCopy + 6));
 
   return v6;
 }

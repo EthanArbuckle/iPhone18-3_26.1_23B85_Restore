@@ -1,31 +1,31 @@
 @interface NSTextSelectionNavigation
-+ (id)_substringRangeForEnumerationType:(unint64_t)a3 location:(id)a4 dataSource:(id)a5 string:(id *)a6 enclosingRange:(id *)a7;
++ (id)_substringRangeForEnumerationType:(unint64_t)type location:(id)location dataSource:(id)source string:(id *)string enclosingRange:(id *)range;
 + (void)_setupCharacterSets;
 + (void)initialize;
-- (BOOL)_location:(id)a3 withAffinity:(int64_t)a4 isAtBoundaryOfDestination:(int64_t)a5 onSide:(int64_t)a6;
+- (BOOL)_location:(id)_location withAffinity:(int64_t)affinity isAtBoundaryOfDestination:(int64_t)destination onSide:(int64_t)side;
 - (NSArray)textSelectionsInteractingAtPoint:(CGPoint)point inContainerAtLocation:(id)containerLocation anchors:(NSArray *)anchors modifiers:(NSTextSelectionNavigationModifier)modifiers selecting:(BOOL)selecting bounds:(CGRect)bounds;
 - (NSTextSelection)destinationSelectionForTextSelection:(NSTextSelection *)textSelection direction:(NSTextSelectionNavigationDirection)direction destination:(NSTextSelectionNavigationDestination)destination extending:(BOOL)extending confined:(BOOL)confined;
 - (NSTextSelection)textSelectionForSelectionGranularity:(NSTextSelectionGranularity)selectionGranularity enclosingTextSelection:(NSTextSelection *)textSelection;
 - (NSTextSelectionNavigation)initWithDataSource:(id)dataSource;
-- (double)_anchorPositionOffsetForLocation:(id)a3 textSelection:(id)a4 affinity:(int64_t)a5;
-- (double)_caretOffsetForTextLocation:(id)a3 affinity:(int64_t)a4;
-- (id)_adjustLocationForNearestCaretPosition:(id)a3 direction:(int64_t)a4;
-- (id)_copyRangeForTextLineFragmentAtLocation:(id)a3 affinity:(int64_t)a4 copyEnclosingRange:(id *)a5;
-- (id)_findAnchorInfoForTextSelection:(id)a3 anchorPositionOffset:(double *)a4 anchorLocation:(id *)a5;
-- (id)_lineFragmentInfoForLocation:(id)a3 affinity:(int64_t)a4;
-- (id)_lineFragmentInfoForPoint:(CGPoint)a3 inContainerAtLocation:(id)a4 bounds:(CGRect)a5 layoutOrientation:(int64_t)a6 beforeLineFragment:(BOOL *)a7 afterLineFragment:(BOOL *)a8 lineFragmentRange:(id *)a9;
-- (id)_lineFragmentInfoForRange:(id)a3;
-- (id)_logicalDestinationLocationForTextSelection:(id)a3 originLocation:(id)a4 direction:(int64_t)a5 destination:(int64_t)a6 extending:(BOOL)a7 confined:(BOOL)a8 affinity:(int64_t *)a9;
-- (id)_mergeVisuallyContiguousRanges:(id)a3 withRanges:(id)a4;
-- (id)_rangeOfCombinedLineFragmentsInRanges:(id)a3;
-- (id)_rangesForSelectionStartingOffset:(double)a3 inLineFragmentInfo:(id)a4 endingOffset:(double)a5 inLineFragmentInfo:(id)a6 contiguous:(BOOL)a7;
-- (id)_visualDestinationLocationForTextSelection:(id)a3 originLocation:(id *)a4 direction:(int64_t)a5 destination:(int64_t)a6 extending:(BOOL)a7 confined:(BOOL)a8 affinity:(int64_t *)a9 crossedLine:(BOOL *)a10;
-- (id)deletionRangesForTextSelection:(id)a3 direction:(int64_t)a4 destination:(int64_t)a5 allowsDecomposition:(BOOL)a6 confined:(BOOL)a7;
+- (double)_anchorPositionOffsetForLocation:(id)location textSelection:(id)selection affinity:(int64_t)affinity;
+- (double)_caretOffsetForTextLocation:(id)location affinity:(int64_t)affinity;
+- (id)_adjustLocationForNearestCaretPosition:(id)position direction:(int64_t)direction;
+- (id)_copyRangeForTextLineFragmentAtLocation:(id)location affinity:(int64_t)affinity copyEnclosingRange:(id *)range;
+- (id)_findAnchorInfoForTextSelection:(id)selection anchorPositionOffset:(double *)offset anchorLocation:(id *)location;
+- (id)_lineFragmentInfoForLocation:(id)location affinity:(int64_t)affinity;
+- (id)_lineFragmentInfoForPoint:(CGPoint)point inContainerAtLocation:(id)location bounds:(CGRect)bounds layoutOrientation:(int64_t)orientation beforeLineFragment:(BOOL *)fragment afterLineFragment:(BOOL *)lineFragment lineFragmentRange:(id *)range;
+- (id)_lineFragmentInfoForRange:(id)range;
+- (id)_logicalDestinationLocationForTextSelection:(id)selection originLocation:(id)location direction:(int64_t)direction destination:(int64_t)destination extending:(BOOL)extending confined:(BOOL)confined affinity:(int64_t *)affinity;
+- (id)_mergeVisuallyContiguousRanges:(id)ranges withRanges:(id)withRanges;
+- (id)_rangeOfCombinedLineFragmentsInRanges:(id)ranges;
+- (id)_rangesForSelectionStartingOffset:(double)offset inLineFragmentInfo:(id)info endingOffset:(double)endingOffset inLineFragmentInfo:(id)fragmentInfo contiguous:(BOOL)contiguous;
+- (id)_visualDestinationLocationForTextSelection:(id)selection originLocation:(id *)location direction:(int64_t)direction destination:(int64_t)destination extending:(BOOL)extending confined:(BOOL)confined affinity:(int64_t *)affinity crossedLine:(BOOL *)self0;
+- (id)deletionRangesForTextSelection:(id)selection direction:(int64_t)direction destination:(int64_t)destination allowsDecomposition:(BOOL)decomposition confined:(BOOL)confined;
 - (id)resolvedInsertionLocationForTextSelection:(NSTextSelection *)textSelection writingDirection:(NSTextSelectionNavigationWritingDirection)writingDirection;
-- (id)textSelectionForSelectionGranularity:(int64_t)a3 enclosingPoint:(CGPoint)a4 inContainerAtLocation:(id)a5 bounds:(CGRect)a6;
-- (int64_t)_horizontalDirectionForDirection:(int64_t)a3 location:(id)a4;
-- (int64_t)_logicalDirectionForDirection:(int64_t)a3 textSelection:(id)a4;
-- (unsigned)_bidiLevelAtLocation:(id)a3 affinity:(int64_t)a4;
+- (id)textSelectionForSelectionGranularity:(int64_t)granularity enclosingPoint:(CGPoint)point inContainerAtLocation:(id)location bounds:(CGRect)bounds;
+- (int64_t)_horizontalDirectionForDirection:(int64_t)direction location:(id)location;
+- (int64_t)_logicalDirectionForDirection:(int64_t)direction textSelection:(id)selection;
+- (unsigned)_bidiLevelAtLocation:(id)location affinity:(int64_t)affinity;
 - (void)dealloc;
 - (void)flushLayoutCache;
 @end
@@ -34,9 +34,9 @@
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-  [v2 registerDefaults:&unk_1F01CC1F8];
+  [standardUserDefaults registerDefaults:&unk_1F01CC1F8];
 }
 
 - (void)flushLayoutCache
@@ -70,15 +70,15 @@
   [(NSTextSelectionNavigation *)&v3 dealloc];
 }
 
-+ (id)_substringRangeForEnumerationType:(unint64_t)a3 location:(id)a4 dataSource:(id)a5 string:(id *)a6 enclosingRange:(id *)a7
++ (id)_substringRangeForEnumerationType:(unint64_t)type location:(id)location dataSource:(id)source string:(id *)string enclosingRange:(id *)range
 {
   v11 = 1024;
-  if (!a6)
+  if (!string)
   {
     v11 = 1536;
   }
 
-  v12 = v11 | a3 & 0xFFFFFFFFFFFFFEFFLL;
+  v12 = v11 | type & 0xFFFFFFFFFFFFFEFFLL;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3052000000;
@@ -107,18 +107,18 @@
   v23[1] = 3221225472;
   v23[2] = __105__NSTextSelectionNavigation__substringRangeForEnumerationType_location_dataSource_string_enclosingRange___block_invoke;
   v23[3] = &unk_1E7265C80;
-  v23[4] = a4;
+  v23[4] = location;
   v23[5] = &v36;
   v23[6] = &v30;
   v23[7] = &v24;
   v23[8] = &v42;
-  [a5 enumerateSubstringsFromLocation:a4 options:v12 usingBlock:v23];
+  [source enumerateSubstringsFromLocation:location options:v12 usingBlock:v23];
   if (!v25[5])
   {
     v13 = v37[5];
     if (v13)
     {
-      if (![a4 isEqual:{objc_msgSend(v13, "location")}])
+      if (![location isEqual:{objc_msgSend(v13, "location")}])
       {
         goto LABEL_13;
       }
@@ -128,27 +128,27 @@
         goto LABEL_11;
       }
 
-      v14 = [v37[5] location];
-      if (![v14 isEqual:{objc_msgSend(v31[5], "location")}])
+      location = [v37[5] location];
+      if (![location isEqual:{objc_msgSend(v31[5], "location")}])
       {
         goto LABEL_13;
       }
 
-      v15 = v31[5];
-      if (!v15)
+      documentRange = v31[5];
+      if (!documentRange)
       {
 LABEL_11:
-        v15 = v37[5];
+        documentRange = v37[5];
       }
     }
 
     else
     {
-      v15 = [a5 documentRange];
+      documentRange = [source documentRange];
     }
 
-    v16 = [v15 endLocation];
-    v25[5] = v16;
+    endLocation = [documentRange endLocation];
+    v25[5] = endLocation;
   }
 
 LABEL_13:
@@ -159,17 +159,17 @@ LABEL_13:
     v22[1] = 3221225472;
     v22[2] = __105__NSTextSelectionNavigation__substringRangeForEnumerationType_location_dataSource_string_enclosingRange___block_invoke_2;
     v22[3] = &unk_1E7265CA8;
-    v22[4] = a4;
+    v22[4] = location;
     v22[5] = &v36;
     v22[6] = &v30;
     v22[7] = &v42;
-    [a5 enumerateSubstringsFromLocation:v17 options:v12 | 0x100 usingBlock:v22];
+    [source enumerateSubstringsFromLocation:v17 options:v12 | 0x100 usingBlock:v22];
   }
 
   v18 = v43[5];
-  if (a6)
+  if (string)
   {
-    *a6 = v18;
+    *string = v18;
   }
 
   else
@@ -177,9 +177,9 @@ LABEL_13:
   }
 
   v19 = v31[5];
-  if (a7)
+  if (range)
   {
-    *a7 = v19;
+    *range = v19;
   }
 
   else
@@ -257,15 +257,15 @@ LABEL_8:
   return result;
 }
 
-- (double)_caretOffsetForTextLocation:(id)a3 affinity:(int64_t)a4
+- (double)_caretOffsetForTextLocation:(id)location affinity:(int64_t)affinity
 {
-  v5 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:a3 affinity:a4];
+  v5 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:location affinity:affinity];
   if (!v5)
   {
     return -1.0;
   }
 
-  [v5 offsetForLocation:a3];
+  [v5 offsetForLocation:location];
   return result;
 }
 
@@ -286,13 +286,13 @@ void __48__NSTextSelectionNavigation__setupCharacterSets__block_invoke()
   __NSSkippableSet = [v0 copy];
 }
 
-- (int64_t)_horizontalDirectionForDirection:(int64_t)a3 location:(id)a4
+- (int64_t)_horizontalDirectionForDirection:(int64_t)direction location:(id)location
 {
   if (self->_supportsLayoutOrientation)
   {
     v5 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
-    v6 = a3 - 2;
-    if (a3 >= 2 && v5 == 1)
+    v6 = direction - 2;
+    if (direction >= 2 && v5 == 1)
     {
       if (v6 > 3)
       {
@@ -306,15 +306,15 @@ void __48__NSTextSelectionNavigation__setupCharacterSets__block_invoke()
     }
   }
 
-  return a3;
+  return direction;
 }
 
-- (int64_t)_logicalDirectionForDirection:(int64_t)a3 textSelection:(id)a4
+- (int64_t)_logicalDirectionForDirection:(int64_t)direction textSelection:(id)selection
 {
-  v4 = a3;
-  if (a3 >= 2)
+  directionCopy = direction;
+  if (direction >= 2)
   {
-    v7 = -[NSTextSelectionNavigation _horizontalDirectionForDirection:location:](self, "_horizontalDirectionForDirection:location:", a3, [objc_msgSend(objc_msgSend(a4 "textRanges")]);
+    v7 = -[NSTextSelectionNavigation _horizontalDirectionForDirection:location:](self, "_horizontalDirectionForDirection:location:", direction, [objc_msgSend(objc_msgSend(selection "textRanges")]);
     v8 = v7;
     if (v7 > 3)
     {
@@ -333,12 +333,12 @@ void __48__NSTextSelectionNavigation__setupCharacterSets__block_invoke()
     }
   }
 
-  return v4;
+  return directionCopy;
 }
 
-- (id)_copyRangeForTextLineFragmentAtLocation:(id)a3 affinity:(int64_t)a4 copyEnclosingRange:(id *)a5
+- (id)_copyRangeForTextLineFragmentAtLocation:(id)location affinity:(int64_t)affinity copyEnclosingRange:(id *)range
 {
-  v9 = [a3 isEqual:{objc_msgSend(objc_msgSend(-[NSTextSelectionNavigation textSelectionDataSource](self, "textSelectionDataSource"), "documentRange"), "endLocation")}];
+  v9 = [location isEqual:{objc_msgSend(objc_msgSend(-[NSTextSelectionNavigation textSelectionDataSource](self, "textSelectionDataSource"), "documentRange"), "endLocation")}];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3052000000;
@@ -351,26 +351,26 @@ void __48__NSTextSelectionNavigation__setupCharacterSets__block_invoke()
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
-  v10 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+  textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __97__NSTextSelectionNavigation__copyRangeForTextLineFragmentAtLocation_affinity_copyEnclosingRange___block_invoke;
   v20[3] = &unk_1E7265CD0;
-  v20[4] = a3;
+  v20[4] = location;
   v20[5] = &v27;
-  v20[7] = a4;
-  v20[8] = a5;
+  v20[7] = affinity;
+  v20[8] = range;
   v20[6] = &v21;
-  [v10 enumerateSubstringsFromLocation:a3 options:512 usingBlock:v20];
+  [textSelectionDataSource enumerateSubstringsFromLocation:location options:512 usingBlock:v20];
   v11 = v28[5];
-  if (!v11 || [a3 compare:{objc_msgSend(v11, "location")}] == -1)
+  if (!v11 || [location compare:{objc_msgSend(v11, "location")}] == -1)
   {
-    v12 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+    textSelectionDataSource2 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
     v13 = v28[5];
-    v14 = a3;
+    locationCopy = location;
     if (v13)
     {
-      v14 = [v13 location];
+      locationCopy = [v13 location];
     }
 
     v18[0] = MEMORY[0x1E69E9820];
@@ -378,25 +378,25 @@ void __48__NSTextSelectionNavigation__setupCharacterSets__block_invoke()
     v18[2] = __97__NSTextSelectionNavigation__copyRangeForTextLineFragmentAtLocation_affinity_copyEnclosingRange___block_invoke_2;
     v18[3] = &unk_1E7265CF8;
     v19 = v9;
-    v18[4] = a3;
+    v18[4] = location;
     v18[5] = &v27;
     v18[6] = &v21;
-    v18[7] = a5;
-    [v12 enumerateSubstringsFromLocation:v14 options:768 usingBlock:v18];
+    v18[7] = range;
+    [textSelectionDataSource2 enumerateSubstringsFromLocation:locationCopy options:768 usingBlock:v18];
   }
 
   v15 = v28;
   v16 = v28[5];
   if (!v16 && v9)
   {
-    v16 = [[NSTextRange alloc] initWithLocation:a3];
+    v16 = [[NSTextRange alloc] initWithLocation:location];
     v15 = v28;
     v28[5] = v16;
   }
 
-  if (a5)
+  if (range)
   {
-    *a5 = v22[5];
+    *range = v22[5];
     v16 = v15[5];
   }
 
@@ -440,10 +440,10 @@ id __97__NSTextSelectionNavigation__copyRangeForTextLineFragmentAtLocation_affin
   return result;
 }
 
-- (id)_lineFragmentInfoForRange:(id)a3
+- (id)_lineFragmentInfoForRange:(id)range
 {
   v5 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
-  if (([v5 containsRange:a3] & 1) == 0 && (!objc_msgSend(a3, "isEmpty") || !objc_msgSend(objc_msgSend(v5, "endLocation"), "isEqual:", objc_msgSend(a3, "location"))))
+  if (([v5 containsRange:range] & 1) == 0 && (!objc_msgSend(range, "isEmpty") || !objc_msgSend(objc_msgSend(v5, "endLocation"), "isEqual:", objc_msgSend(range, "location"))))
   {
     return 0;
   }
@@ -484,7 +484,7 @@ id __97__NSTextSelectionNavigation__copyRangeForTextLineFragmentAtLocation_affin
   }
 
 LABEL_16:
-  v10 = [[__NSTextSelectionLineFragmentInfo alloc] initWithTextSelectionNavigation:self range:a3];
+  v10 = [[__NSTextSelectionLineFragmentInfo alloc] initWithTextSelectionNavigation:self range:range];
   if (v11 >= 8)
   {
     v13 = self->_lineFragmentInfoCache[0];
@@ -502,16 +502,16 @@ LABEL_16:
   return v10;
 }
 
-- (id)_lineFragmentInfoForPoint:(CGPoint)a3 inContainerAtLocation:(id)a4 bounds:(CGRect)a5 layoutOrientation:(int64_t)a6 beforeLineFragment:(BOOL *)a7 afterLineFragment:(BOOL *)a8 lineFragmentRange:(id *)a9
+- (id)_lineFragmentInfoForPoint:(CGPoint)point inContainerAtLocation:(id)location bounds:(CGRect)bounds layoutOrientation:(int64_t)orientation beforeLineFragment:(BOOL *)fragment afterLineFragment:(BOOL *)lineFragment lineFragmentRange:(id *)range
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = a3.y;
-  v19 = a3.x;
-  v21 = [(NSTextSelectionNavigation *)self textSelectionDataSourcePrivate];
-  v22 = [(NSTextSelectionDataSourcePrivate *)v21 documentRange];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v18 = point.y;
+  v19 = point.x;
+  textSelectionDataSourcePrivate = [(NSTextSelectionNavigation *)self textSelectionDataSourcePrivate];
+  documentRange = [(NSTextSelectionDataSourcePrivate *)textSelectionDataSourcePrivate documentRange];
   v46 = 0;
   v47 = &v46;
   v48 = 0x3052000000;
@@ -524,7 +524,7 @@ LABEL_16:
   v52.size.height = height;
   if (!NSIsEmptyRect(v52))
   {
-    if (a6 && self->_rotatesCoordinateSystemForLayoutOrientation)
+    if (orientation && self->_rotatesCoordinateSystemForLayoutOrientation)
     {
       v26 = v19 >= x + width;
       if (v19 >= x)
@@ -550,7 +550,7 @@ LABEL_10:
       }
     }
 
-    v28 = [v22 location];
+    location = [documentRange location];
     if (self->_supportsContainer)
     {
       v40 = 0;
@@ -564,11 +564,11 @@ LABEL_10:
       v39[2] = __157__NSTextSelectionNavigation__lineFragmentInfoForPoint_inContainerAtLocation_bounds_layoutOrientation_beforeLineFragment_afterLineFragment_lineFragmentRange___block_invoke;
       v39[3] = &unk_1E7265D20;
       v39[4] = &v40;
-      [(NSTextSelectionDataSourcePrivate *)v21 enumerateContainerBoundariesFromLocation:a4 reverse:1 usingBlock:v39];
+      [(NSTextSelectionDataSourcePrivate *)textSelectionDataSourcePrivate enumerateContainerBoundariesFromLocation:location reverse:1 usingBlock:v39];
       v29 = v41[5];
-      if (v29 && ([v29 isEqual:v28] & 1) == 0)
+      if (v29 && ([v29 isEqual:location] & 1) == 0)
       {
-        v28 = v41[5];
+        location = v41[5];
       }
 
       _Block_object_dispose(&v40, 8);
@@ -579,13 +579,13 @@ LABEL_10:
     v38[2] = __157__NSTextSelectionNavigation__lineFragmentInfoForPoint_inContainerAtLocation_bounds_layoutOrientation_beforeLineFragment_afterLineFragment_lineFragmentRange___block_invoke_2;
     v38[3] = &unk_1E7265D48;
     v38[4] = &v46;
-    [(NSTextSelectionDataSourcePrivate *)v21 enumerateSubstringsFromLocation:v28 options:512 usingBlock:v38];
+    [(NSTextSelectionDataSourcePrivate *)textSelectionDataSourcePrivate enumerateSubstringsFromLocation:location options:512 usingBlock:v38];
     v25 = 1;
     goto LABEL_22;
   }
 
 LABEL_2:
-  v23 = [(NSTextSelectionDataSourcePrivate *)v21 lineFragmentRangeForPoint:a4 inContainerAtLocation:v19, v18];
+  v23 = [(NSTextSelectionDataSourcePrivate *)textSelectionDataSourcePrivate lineFragmentRangeForPoint:location inContainerAtLocation:v19, v18];
   v47[5] = v23;
   if (v23)
   {
@@ -594,7 +594,7 @@ LABEL_2:
       goto LABEL_12;
     }
 
-    v24 = [(NSTextSelectionDataSourcePrivate *)v21 placementOfPoint:a4 inContainerAtLocation:v19, v18]& 6;
+    v24 = [(NSTextSelectionDataSourcePrivate *)textSelectionDataSourcePrivate placementOfPoint:location inContainerAtLocation:v19, v18]& 6;
     if (v24 == 2)
     {
       v26 = 0;
@@ -626,7 +626,7 @@ LABEL_13:
 LABEL_22:
   if (!v47[5])
   {
-    v30 = [v22 endLocation];
+    endLocation = [documentRange endLocation];
     if (self->_supportsContainer)
     {
       v40 = 0;
@@ -640,35 +640,35 @@ LABEL_22:
       v37[2] = __157__NSTextSelectionNavigation__lineFragmentInfoForPoint_inContainerAtLocation_bounds_layoutOrientation_beforeLineFragment_afterLineFragment_lineFragmentRange___block_invoke_3;
       v37[3] = &unk_1E7265D20;
       v37[4] = &v40;
-      [(NSTextSelectionDataSourcePrivate *)v21 enumerateContainerBoundariesFromLocation:a4 reverse:0 usingBlock:v37];
+      [(NSTextSelectionDataSourcePrivate *)textSelectionDataSourcePrivate enumerateContainerBoundariesFromLocation:location reverse:0 usingBlock:v37];
       v31 = v41[5];
-      if (v31 && ([v31 isEqual:v30] & 1) == 0)
+      if (v31 && ([v31 isEqual:endLocation] & 1) == 0)
       {
-        v30 = v41[5];
+        endLocation = v41[5];
       }
 
       _Block_object_dispose(&v40, 8);
     }
 
-    v32 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+    textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __157__NSTextSelectionNavigation__lineFragmentInfoForPoint_inContainerAtLocation_bounds_layoutOrientation_beforeLineFragment_afterLineFragment_lineFragmentRange___block_invoke_4;
     v36[3] = &unk_1E7265D70;
-    v36[4] = v30;
+    v36[4] = endLocation;
     v36[5] = &v46;
-    [v32 enumerateSubstringsFromLocation:v30 options:768 usingBlock:v36];
+    [textSelectionDataSource enumerateSubstringsFromLocation:endLocation options:768 usingBlock:v36];
     v26 = 1;
   }
 
-  if (a7)
+  if (fragment)
   {
-    *a7 = v25;
+    *fragment = v25;
   }
 
-  if (a8)
+  if (lineFragment)
   {
-    *a8 = v26;
+    *lineFragment = v26;
   }
 
   if (v47[5])
@@ -682,9 +682,9 @@ LABEL_22:
   }
 
   v34 = v47[5];
-  if (a9)
+  if (range)
   {
-    *a9 = v34;
+    *range = v34;
   }
 
   else
@@ -734,11 +734,11 @@ NSTextRange *__157__NSTextSelectionNavigation__lineFragmentInfoForPoint_inContai
   return result;
 }
 
-- (id)_lineFragmentInfoForLocation:(id)a3 affinity:(int64_t)a4
+- (id)_lineFragmentInfoForLocation:(id)location affinity:(int64_t)affinity
 {
-  v6 = [(NSTextSelectionNavigation *)self _copyRangeForTextLineFragmentAtLocation:a3 affinity:a4];
+  v6 = [(NSTextSelectionNavigation *)self _copyRangeForTextLineFragmentAtLocation:location affinity:affinity];
   v7 = v6;
-  if (v6 && (-[NSTextRange containsLocation:](v6, "containsLocation:", a3) || ([a3 isEqual:{-[NSTextRange endLocation](v7, "endLocation")}] & 1) != 0 || !objc_msgSend(a3, "isEqual:", objc_msgSend(objc_msgSend(-[NSTextSelectionNavigation textSelectionDataSource](self, "textSelectionDataSource"), "documentRange"), "endLocation")) || (v7, (v7 = -[NSTextRange initWithLocation:]([NSTextRange alloc], "initWithLocation:", a3)) != 0)))
+  if (v6 && (-[NSTextRange containsLocation:](v6, "containsLocation:", location) || ([location isEqual:{-[NSTextRange endLocation](v7, "endLocation")}] & 1) != 0 || !objc_msgSend(location, "isEqual:", objc_msgSend(objc_msgSend(-[NSTextSelectionNavigation textSelectionDataSource](self, "textSelectionDataSource"), "documentRange"), "endLocation")) || (v7, (v7 = -[NSTextRange initWithLocation:]([NSTextRange alloc], "initWithLocation:", location)) != 0)))
   {
     v8 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForRange:v7];
   }
@@ -751,26 +751,26 @@ NSTextRange *__157__NSTextSelectionNavigation__lineFragmentInfoForPoint_inContai
   return v8;
 }
 
-- (id)_adjustLocationForNearestCaretPosition:(id)a3 direction:(int64_t)a4
+- (id)_adjustLocationForNearestCaretPosition:(id)position direction:(int64_t)direction
 {
   v7 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
-  v8 = a3;
-  if (([objc_msgSend(v7 "location")] & 1) == 0 && (objc_msgSend(objc_msgSend(v7, "endLocation"), "isEqual:", a3) & 1) == 0)
+  positionCopy = position;
+  if (([objc_msgSend(v7 "location")] & 1) == 0 && (objc_msgSend(objc_msgSend(v7, "endLocation"), "isEqual:", position) & 1) == 0)
   {
     v20 = 0;
-    v9 = [(NSTextSelectionNavigation *)self _copyRangeForTextLineFragmentAtLocation:a3 affinity:1 copyEnclosingRange:&v20];
+    v9 = [(NSTextSelectionNavigation *)self _copyRangeForTextLineFragmentAtLocation:position affinity:1 copyEnclosingRange:&v20];
     if (!v9)
     {
       goto LABEL_29;
     }
 
-    v10 = [(NSTextSelectionNavigation *)self _horizontalDirectionForDirection:a4 location:a3];
-    if (v20 && ([v9 containsLocation:a3] & 1) == 0 && (objc_msgSend(objc_msgSend(v9, "endLocation"), "isEqual:", a3) & 1) == 0 && objc_msgSend(v20, "containsLocation:", a3) && (v10 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+    v10 = [(NSTextSelectionNavigation *)self _horizontalDirectionForDirection:direction location:position];
+    if (v20 && ([v9 containsLocation:position] & 1) == 0 && (objc_msgSend(objc_msgSend(v9, "endLocation"), "isEqual:", position) & 1) == 0 && objc_msgSend(v20, "containsLocation:", position) && (v10 & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
 
-      v14 = [v20 endLocation];
+      endLocation = [v20 endLocation];
 LABEL_28:
-      v8 = v14;
+      positionCopy = endLocation;
       goto LABEL_29;
     }
 
@@ -833,7 +833,7 @@ LABEL_18:
 
 LABEL_24:
     v19 = 1;
-    v15 = [v12 caretPositionClosestToLocation:a3 visualDirection:v10 matchLocation:&v19];
+    v15 = [v12 caretPositionClosestToLocation:position visualDirection:v10 matchLocation:&v19];
     if (v15)
     {
       v16 = v15;
@@ -844,32 +844,32 @@ LABEL_24:
         v17 = 8;
       }
 
-      v14 = *(v16 + v17);
+      endLocation = *(v16 + v17);
       goto LABEL_28;
     }
 
 LABEL_29:
   }
 
-  return v8;
+  return positionCopy;
 }
 
-- (BOOL)_location:(id)a3 withAffinity:(int64_t)a4 isAtBoundaryOfDestination:(int64_t)a5 onSide:(int64_t)a6
+- (BOOL)_location:(id)_location withAffinity:(int64_t)affinity isAtBoundaryOfDestination:(int64_t)destination onSide:(int64_t)side
 {
-  if (a6 >= 2)
+  if (side >= 2)
   {
     [NSTextSelectionNavigation _location:withAffinity:isAtBoundaryOfDestination:onSide:];
   }
 
-  if (a5 > 2)
+  if (destination > 2)
   {
-    if (a5 == 3)
+    if (destination == 3)
     {
       v8 = 4;
       goto LABEL_13;
     }
 
-    if (a5 == 4)
+    if (destination == 4)
     {
       v8 = 1;
       goto LABEL_13;
@@ -880,18 +880,18 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (a5 == 1)
+  if (destination == 1)
   {
     v8 = 3;
     goto LABEL_13;
   }
 
-  if (a5 != 2)
+  if (destination != 2)
   {
     goto LABEL_10;
   }
 
-  if ((a6 == 1) != a4)
+  if ((side == 1) != affinity)
   {
     return 0;
   }
@@ -904,9 +904,9 @@ LABEL_13:
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
   v21 = 0;
-  v9 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+  textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
   v10 = 512;
-  if (!a6)
+  if (!side)
   {
     v10 = 768;
   }
@@ -916,21 +916,21 @@ LABEL_13:
   v15[2] = __85__NSTextSelectionNavigation__location_withAffinity_isAtBoundaryOfDestination_onSide___block_invoke;
   v15[3] = &unk_1E7265D48;
   v15[4] = &v16;
-  [v9 enumerateSubstringsFromLocation:a3 options:v8 | v10 usingBlock:v15];
+  [textSelectionDataSource enumerateSubstringsFromLocation:_location options:v8 | v10 usingBlock:v15];
   v11 = v17[5];
   if (v11)
   {
-    if (a6 == 1)
+    if (side == 1)
     {
-      v12 = [v11 location];
+      location = [v11 location];
     }
 
     else
     {
-      v12 = [v11 endLocation];
+      location = [v11 endLocation];
     }
 
-    v13 = [v12 isEqual:a3];
+    v13 = [location isEqual:_location];
   }
 
   else
@@ -950,22 +950,22 @@ id __85__NSTextSelectionNavigation__location_withAffinity_isAtBoundaryOfDestinat
   return result;
 }
 
-- (id)_logicalDestinationLocationForTextSelection:(id)a3 originLocation:(id)a4 direction:(int64_t)a5 destination:(int64_t)a6 extending:(BOOL)a7 confined:(BOOL)a8 affinity:(int64_t *)a9
+- (id)_logicalDestinationLocationForTextSelection:(id)selection originLocation:(id)location direction:(int64_t)direction destination:(int64_t)destination extending:(BOOL)extending confined:(BOOL)confined affinity:(int64_t *)affinity
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = [(NSTextSelectionNavigation *)self _logicalDirectionForDirection:a5 textSelection:a3];
-  v16 = [a3 textRanges];
-  v17 = [objc_msgSend(v16 "firstObject")];
+  confinedCopy = confined;
+  extendingCopy = extending;
+  v15 = [(NSTextSelectionNavigation *)self _logicalDirectionForDirection:direction textSelection:selection];
+  textRanges = [selection textRanges];
+  v17 = [objc_msgSend(textRanges "firstObject")];
   v49 = 0;
   v50 = &v49;
   v51 = 0x3052000000;
   v52 = __Block_byref_object_copy__1;
   v53 = __Block_byref_object_dispose__1;
   v54 = 0;
-  if ((a6 - 5) <= 1)
+  if ((destination - 5) <= 1)
   {
-    if (a6 == 5 && self->_supportsContainer)
+    if (destination == 5 && self->_supportsContainer)
     {
       v43 = 0;
       v44 = &v43;
@@ -973,14 +973,14 @@ id __85__NSTextSelectionNavigation__location_withAffinity_isAtBoundaryOfDestinat
       v46 = __Block_byref_object_copy__1;
       v47 = __Block_byref_object_dispose__1;
       v48 = 0;
-      v18 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+      textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity___block_invoke;
       v42[3] = &unk_1E7265D20;
       v42[4] = &v43;
-      [v18 enumerateContainerBoundariesFromLocation:a4 reverse:v15 == 1 usingBlock:v42];
-      a4 = v44[5];
+      [textSelectionDataSource enumerateContainerBoundariesFromLocation:location reverse:v15 == 1 usingBlock:v42];
+      location = v44[5];
       _Block_object_dispose(&v43, 8);
     }
 
@@ -989,28 +989,28 @@ id __85__NSTextSelectionNavigation__location_withAffinity_isAtBoundaryOfDestinat
       v21 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
       if (v15)
       {
-        v22 = [v21 location];
+        location = [v21 location];
       }
 
       else
       {
-        v22 = [v21 endLocation];
+        location = [v21 endLocation];
       }
 
-      a4 = v22;
+      location = location;
     }
 
     goto LABEL_47;
   }
 
   v19 = v17;
-  if (!v9 || (!v17 ? (v20 = [a3 affinity] == 0) : (v20 = objc_msgSend(a3, "affinity")), (v23 = -[NSTextSelectionNavigation _location:withAffinity:isAtBoundaryOfDestination:onSide:](self, "_location:withAffinity:isAtBoundaryOfDestination:onSide:", a4, v20, a6, v15), a4) ? (v24 = v23) : (v24 = 0), !v24))
+  if (!confinedCopy || (!v17 ? (v20 = [selection affinity] == 0) : (v20 = objc_msgSend(selection, "affinity")), (v23 = -[NSTextSelectionNavigation _location:withAffinity:isAtBoundaryOfDestination:onSide:](self, "_location:withAffinity:isAtBoundaryOfDestination:onSide:", location, v20, destination, v15), location) ? (v24 = v23) : (v24 = 0), !v24))
   {
-    if (a6 < 1)
+    if (destination < 1)
     {
-      if ((v19 | v10))
+      if ((v19 | extendingCopy))
       {
-        v26 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+        textSelectionDataSource2 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
         if (v15 == 1)
         {
           v27 = 773;
@@ -1026,87 +1026,87 @@ id __85__NSTextSelectionNavigation__location_withAffinity_isAtBoundaryOfDestinat
         v38[2] = __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity___block_invoke_3;
         v38[3] = &unk_1E7265D48;
         v38[4] = &v49;
-        [v26 enumerateSubstringsFromLocation:a4 options:v27 usingBlock:v38];
+        [textSelectionDataSource2 enumerateSubstringsFromLocation:location options:v27 usingBlock:v38];
       }
 
       else
       {
         if (v15 == 1)
         {
-          v28 = [v16 firstObject];
+          firstObject = [textRanges firstObject];
         }
 
         else
         {
-          v28 = [v16 lastObject];
+          firstObject = [textRanges lastObject];
         }
 
-        v50[5] = v28;
-        v31 = v28;
+        v50[5] = firstObject;
+        v31 = firstObject;
       }
     }
 
     else
     {
-      if (((v19 | v10) & 1) == 0)
+      if (((v19 | extendingCopy) & 1) == 0)
       {
         if (v15 == 1)
         {
-          v25 = [objc_msgSend(v16 "firstObject")];
+          v25 = [objc_msgSend(textRanges "firstObject")];
         }
 
         else
         {
-          v25 = [objc_msgSend(v16 "lastObject")];
+          v25 = [objc_msgSend(textRanges "lastObject")];
         }
 
-        a4 = v25;
+        location = v25;
       }
 
-      v29 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
-      if (a6 > 4)
+      textSelectionDataSource3 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+      if (destination > 4)
       {
         v30 = 2;
       }
 
       else
       {
-        v30 = qword_18E856310[a6 - 1];
+        v30 = qword_18E856310[destination - 1];
       }
 
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity___block_invoke_2;
       v39[3] = &unk_1E7265D98;
-      v40 = a6 == 1;
+      v40 = destination == 1;
       v41 = v15 == 1;
-      v39[4] = a4;
+      v39[4] = location;
       v39[5] = &v49;
-      v39[6] = a6;
-      [v29 enumerateSubstringsFromLocation:a4 options:((v15 == 1) << 8) | ((a6 != 1) << 9) | v30 usingBlock:v39];
+      v39[6] = destination;
+      [textSelectionDataSource3 enumerateSubstringsFromLocation:location options:((v15 == 1) << 8) | ((destination != 1) << 9) | v30 usingBlock:v39];
     }
 
     v32 = v50[5];
     if (v32)
     {
-      if (!v9)
+      if (!confinedCopy)
       {
 LABEL_42:
         v33 = v50[5];
         if (v15 == 1)
         {
-          v34 = [v33 location];
+          location2 = [v33 location];
         }
 
         else
         {
-          v34 = [v33 endLocation];
+          location2 = [v33 endLocation];
         }
 
-        a4 = v34;
-        if (a6 == 2)
+        location = location2;
+        if (destination == 2)
         {
-          *a9 = v15 == 1;
+          *affinity = v15 == 1;
         }
 
         goto LABEL_47;
@@ -1117,13 +1117,13 @@ LABEL_42:
     {
       v32 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
       v50[5] = v32;
-      if (!v9)
+      if (!confinedCopy)
       {
         goto LABEL_42;
       }
     }
 
-    if (([v32 containsLocation:a4] & 1) == 0 && !objc_msgSend(objc_msgSend(v50[5], "endLocation"), "isEqual:", a4))
+    if (([v32 containsLocation:location] & 1) == 0 && !objc_msgSend(objc_msgSend(v50[5], "endLocation"), "isEqual:", location))
     {
       goto LABEL_47;
     }
@@ -1132,11 +1132,11 @@ LABEL_42:
   }
 
 LABEL_47:
-  v35 = a4;
+  locationCopy = location;
 
-  v36 = a4;
+  locationCopy2 = location;
   _Block_object_dispose(&v49, 8);
-  return v36;
+  return locationCopy2;
 }
 
 id __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -1170,17 +1170,17 @@ id __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_
   return result;
 }
 
-- (id)_visualDestinationLocationForTextSelection:(id)a3 originLocation:(id *)a4 direction:(int64_t)a5 destination:(int64_t)a6 extending:(BOOL)a7 confined:(BOOL)a8 affinity:(int64_t *)a9 crossedLine:(BOOL *)a10
+- (id)_visualDestinationLocationForTextSelection:(id)selection originLocation:(id *)location direction:(int64_t)direction destination:(int64_t)destination extending:(BOOL)extending confined:(BOOL)confined affinity:(int64_t *)affinity crossedLine:(BOOL *)self0
 {
-  v92 = a8;
-  v10 = a7;
+  confinedCopy = confined;
+  extendingCopy = extending;
   v108[1] = *MEMORY[0x1E69E9840];
-  v16 = *a4;
-  v17 = [a3 textRanges];
-  v18 = [(NSTextSelectionNavigation *)self _horizontalDirectionForDirection:a5 location:v16];
+  v16 = *location;
+  textRanges = [selection textRanges];
+  v18 = [(NSTextSelectionNavigation *)self _horizontalDirectionForDirection:direction location:v16];
   v19 = v18 & 0xFFFFFFFFFFFFFFFELL;
-  v20 = [objc_msgSend(v17 "firstObject")];
-  if (a6)
+  v20 = [objc_msgSend(textRanges "firstObject")];
+  if (destination)
   {
     v21 = 1;
   }
@@ -1194,13 +1194,13 @@ id __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_
   if (v19 == 2 || (v22 & 1) == 0)
   {
     v90 = v19 != 2;
-    [a3 anchorPositionOffset];
-    if ((a6 | 2) == 2)
+    [selection anchorPositionOffset];
+    if ((destination | 2) == 2)
     {
       v24 = v23;
-      v91 = v10;
-      v25 = v20 | v10;
-      if (a6)
+      v91 = extendingCopy;
+      v25 = v20 | extendingCopy;
+      if (destination)
       {
         v26 = 1;
       }
@@ -1216,7 +1216,7 @@ id __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_
         v27 = v16;
         if (v19 != 2)
         {
-          v28 = (v18 == 4 ? [objc_msgSend(v17 "firstObject")] : objc_msgSend(objc_msgSend(v17, "lastObject"), "endLocation"));
+          v28 = (v18 == 4 ? [objc_msgSend(textRanges "firstObject")] : objc_msgSend(objc_msgSend(textRanges, "lastObject"), "endLocation"));
           v27 = v28;
           if ([v28 isEqual:v16])
           {
@@ -1225,15 +1225,15 @@ id __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_
         }
       }
 
-      v29 = [objc_msgSend(v17 "firstObject")] ? *a9 : 1;
+      v29 = [objc_msgSend(textRanges "firstObject")] ? *affinity : 1;
       v94 = [(NSTextSelectionNavigation *)self _copyRangeForTextLineFragmentAtLocation:v27 affinity:v29];
       if (v94)
       {
         v88 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
-        v86 = a4;
-        v30 = ([objc_msgSend(v17 "firstObject")] & 1) != 0 || *a9 != 1 || objc_msgSend(objc_msgSend(objc_msgSend(v17, "firstObject"), "location"), "compare:", objc_msgSend(v94, "location")) != -1;
+        locationCopy = location;
+        v30 = ([objc_msgSend(textRanges "firstObject")] & 1) != 0 || *affinity != 1 || objc_msgSend(objc_msgSend(objc_msgSend(textRanges, "firstObject"), "location"), "compare:", objc_msgSend(v94, "location")) != -1;
         v87 = v30;
-        if (a6 || v19 == 2)
+        if (destination || v19 == 2)
         {
           goto LABEL_86;
         }
@@ -1249,7 +1249,7 @@ id __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_
             goto LABEL_37;
           }
 
-          v35 = [v89 location];
+          location = [v89 location];
         }
 
         else
@@ -1261,16 +1261,16 @@ id __138__NSTextSelectionNavigation__logicalDestinationLocationForTextSelection_
             goto LABEL_37;
           }
 
-          v35 = [v89 endLocation];
+          location = [v89 endLocation];
         }
 
-        v31 = v35;
+        endLocation2 = location;
         v34 = v89;
-        if (v35)
+        if (location)
         {
 LABEL_162:
 
-          return v31;
+          return endLocation2;
         }
 
 LABEL_37:
@@ -1299,7 +1299,7 @@ LABEL_41:
           {
             if (v18 == 4)
             {
-              v39 = [v94 location];
+              location2 = [v94 location];
               v40 = 0;
               v41 = &v98;
               v98 = 0;
@@ -1310,13 +1310,13 @@ LABEL_41:
             }
 
 LABEL_51:
-            v39 = [v94 endLocation];
+            location2 = [v94 endLocation];
             v98 = 0;
             v99 = &v98;
             v100 = 0x2020000000;
             v101 = 0;
             v42 = v91;
-            if ((v38 & 1) != 0 || ![objc_msgSend(v17 "firstObject")] || (objc_msgSend(v94, "isEmpty") & 1) != 0 || !objc_msgSend(v27, "isEqual:", objc_msgSend(v94, "endLocation")) || *a9)
+            if ((v38 & 1) != 0 || ![objc_msgSend(textRanges "firstObject")] || (objc_msgSend(v94, "isEmpty") & 1) != 0 || !objc_msgSend(v27, "isEqual:", objc_msgSend(v94, "endLocation")) || *affinity)
             {
               goto LABEL_56;
             }
@@ -1326,7 +1326,7 @@ LABEL_51:
 LABEL_47:
             *(v41 + 24) = v40;
 LABEL_56:
-            v43 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+            textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
             v97[0] = MEMORY[0x1E69E9820];
             v97[1] = 3221225472;
             v97[2] = __149__NSTextSelectionNavigation__visualDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity_crossedLine___block_invoke;
@@ -1342,10 +1342,10 @@ LABEL_56:
             }
 
             v97[4] = v27;
-            v97[5] = v39;
+            v97[5] = location2;
             v97[6] = &v98;
             v97[7] = &v102;
-            [v43 enumerateSubstringsFromLocation:v39 options:v44 usingBlock:v97];
+            [textSelectionDataSource enumerateSubstringsFromLocation:location2 options:v44 usingBlock:v97];
             _Block_object_dispose(&v98, 8);
             v45 = v103[5];
             if (v45)
@@ -1353,7 +1353,7 @@ LABEL_56:
 LABEL_60:
               if (v24 <= 0.0)
               {
-                v46 = [a3 affinity];
+                affinity = [selection affinity];
                 if (v42)
                 {
                   v47 = 1;
@@ -1361,10 +1361,10 @@ LABEL_60:
 
                 else
                 {
-                  v47 = v46;
+                  v47 = affinity;
                 }
 
-                [(NSTextSelectionNavigation *)self _anchorPositionOffsetForLocation:v16 textSelection:a3 affinity:v47];
+                [(NSTextSelectionNavigation *)self _anchorPositionOffsetForLocation:v16 textSelection:selection affinity:v47];
                 v24 = v48;
                 v45 = v103[5];
               }
@@ -1373,10 +1373,10 @@ LABEL_60:
               v50 = [v49 caretPositionClosestToOffset:v24];
               if (v50 || (v54 = [v49 numberOfCaretPositions], v54 >= 1) && (v50 = objc_msgSend(v49, "caretPositionAtIndex:", v54 - 1)) != 0)
               {
-                v31 = *(v50 + 8);
+                endLocation2 = *(v50 + 8);
                 if (v42)
                 {
-                  v51 = [objc_msgSend(v17 "firstObject")];
+                  v51 = [objc_msgSend(textRanges "firstObject")];
                   v52 = v18 != 4;
                   if ((v51 & 1) == 0)
                   {
@@ -1399,26 +1399,26 @@ LABEL_60:
                   v52 = v53 ^ 1;
                 }
 
-                *a9 = v52;
+                *affinity = v52;
               }
 
               else
               {
-                v31 = 0;
+                endLocation2 = 0;
               }
 
 LABEL_81:
 
 LABEL_82:
-              if (a10 && v31)
+              if (line && endLocation2)
               {
-                *a10 = 1;
+                *line = 1;
                 _Block_object_dispose(&v102, 8);
                 goto LABEL_162;
               }
 
               _Block_object_dispose(&v102, 8);
-              if (v31)
+              if (endLocation2)
               {
                 goto LABEL_162;
               }
@@ -1441,7 +1441,7 @@ LABEL_86:
                 goto LABEL_161;
               }
 
-              if (a6)
+              if (destination)
               {
                 v57 = 1;
               }
@@ -1453,16 +1453,16 @@ LABEL_86:
 
               if (v57)
               {
-                if ((a6 | 2) != 2)
+                if ((destination | 2) != 2)
                 {
                   v64 = v88 != (v18 != 2) && v87;
-                  v31 = [(NSTextSelectionNavigation *)self _logicalDestinationLocationForTextSelection:a3 originLocation:*v86 direction:v64 destination:a6 extending:v91 confined:v92 affinity:a9];
-                  if (!v31 || ![v94 containsLocation:v31])
+                  endLocation2 = [(NSTextSelectionNavigation *)self _logicalDestinationLocationForTextSelection:selection originLocation:*locationCopy direction:v64 destination:destination extending:v91 confined:confinedCopy affinity:affinity];
+                  if (!endLocation2 || ![v94 containsLocation:endLocation2])
                   {
                     goto LABEL_162;
                   }
 
-                  if (a6 == 2)
+                  if (destination == 2)
                   {
                     if (v18 == 3)
                     {
@@ -1477,10 +1477,10 @@ LABEL_86:
                     v83 = [v56 caretPositionAtIndex:v65];
                     if (v83)
                     {
-                      v31 = *(v83 + 8);
-                      if (![v31 compare:{objc_msgSend(v94, "endLocation")}])
+                      endLocation2 = *(v83 + 8);
+                      if (![endLocation2 compare:{objc_msgSend(v94, "endLocation")}])
                       {
-                        *a9 = 0;
+                        *affinity = 0;
                       }
 
                       goto LABEL_162;
@@ -1490,11 +1490,11 @@ LABEL_86:
                   }
 
 LABEL_98:
-                  v58 = [v56 caretIndexForEdgeLocationInTextRanges:v17 leftEdge:(v88 == 0) ^ (*a9 != 0)];
+                  v58 = [v56 caretIndexForEdgeLocationInTextRanges:textRanges leftEdge:(v88 == 0) ^ (*affinity != 0)];
                   if (v58 == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     v84 = 0;
-                    if (!a6)
+                    if (!destination)
                     {
 LABEL_150:
                       if (v18 == 3)
@@ -1512,14 +1512,14 @@ LABEL_150:
                         v81 = [v56 caretPositionAtIndex:v80];
                         if (v81)
                         {
-                          v31 = *(v81 + 8);
+                          endLocation2 = *(v81 + 8);
 LABEL_157:
-                          if (v31)
+                          if (endLocation2)
                           {
-                            *v86 = v84;
-                            if ([objc_msgSend(v17 "firstObject")])
+                            *locationCopy = v84;
+                            if ([objc_msgSend(textRanges "firstObject")])
                             {
-                              *a9 = (v18 == 3) ^ (v88 == 0);
+                              *affinity = (v18 == 3) ^ (v88 == 0);
                             }
 
                             goto LABEL_162;
@@ -1544,7 +1544,7 @@ LABEL_157:
                       v84 = 0;
                     }
 
-                    if (!a6)
+                    if (!destination)
                     {
                       goto LABEL_150;
                     }
@@ -1565,11 +1565,11 @@ LABEL_160:
                   }
 
                   v85 = v66;
-                  v67 = a6 - 1;
+                  v67 = destination - 1;
                   while (v58 < [v56 numberOfCaretPositions])
                   {
                     v68 = [v56 caretPositionAtIndex:v58];
-                    v31 = v68;
+                    endLocation2 = v68;
                     if (v68)
                     {
                       v102 = 0;
@@ -1579,7 +1579,7 @@ LABEL_160:
                       v106 = __Block_byref_object_dispose__1;
                       v107 = 0;
                       v69 = *(v68 + 25);
-                      v70 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+                      textSelectionDataSource2 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
                       if (v67 > 3)
                       {
                         v71 = 2;
@@ -1590,14 +1590,14 @@ LABEL_160:
                         v71 = qword_18E856310[v67];
                       }
 
-                      v72 = v31[1];
+                      v72 = endLocation2[1];
                       v96[0] = MEMORY[0x1E69E9820];
                       v96[1] = 3221225472;
                       v96[2] = __149__NSTextSelectionNavigation__visualDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity_crossedLine___block_invoke_2;
                       v96[3] = &unk_1E7265DE8;
                       v96[4] = &v102;
-                      v96[5] = a6;
-                      [v70 enumerateSubstringsFromLocation:v72 options:v71 | ((v69 != v93) << 8) usingBlock:v96];
+                      v96[5] = destination;
+                      [textSelectionDataSource2 enumerateSubstringsFromLocation:v72 options:v71 | ((v69 != v93) << 8) usingBlock:v96];
                       if (v69 == v93)
                       {
                         v73 = 768;
@@ -1608,16 +1608,16 @@ LABEL_160:
                         v73 = 512;
                       }
 
-                      v74 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+                      textSelectionDataSource3 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
                       v75 = v103[5];
                       if (v69 == v93)
                       {
-                        v76 = [v75 endLocation];
+                        endLocation = [v75 endLocation];
                       }
 
                       else
                       {
-                        v76 = [v75 location];
+                        endLocation = [v75 location];
                       }
 
                       if (v67 > 3)
@@ -1635,12 +1635,12 @@ LABEL_160:
                       v95[2] = __149__NSTextSelectionNavigation__visualDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity_crossedLine___block_invoke_3;
                       v95[3] = &unk_1E7265D48;
                       v95[4] = &v102;
-                      [v74 enumerateSubstringsFromLocation:v76 options:v77 | v73 usingBlock:v95];
+                      [textSelectionDataSource3 enumerateSubstringsFromLocation:endLocation options:v77 | v73 usingBlock:v95];
                       v108[0] = v103[5];
                       v78 = [v56 caretIndexForEdgeLocationInTextRanges:objc_msgSend(MEMORY[0x1E695DEC8] leftEdge:{"arrayWithObjects:count:", v108, 1), v18 == 3}];
                       if (v58 == v78)
                       {
-                        v31 = 0;
+                        endLocation2 = 0;
                         v58 += v85;
                       }
 
@@ -1649,19 +1649,19 @@ LABEL_160:
                         v79 = [v56 caretPositionAtIndex:v78];
                         if (v79)
                         {
-                          v31 = *(v79 + 8);
+                          endLocation2 = *(v79 + 8);
                         }
 
                         else
                         {
-                          v31 = 0;
+                          endLocation2 = 0;
                         }
                       }
 
                       _Block_object_dispose(&v102, 8);
                     }
 
-                    if (v31 || v58 < 0)
+                    if (endLocation2 || v58 < 0)
                     {
                       goto LABEL_157;
                     }
@@ -1670,7 +1670,7 @@ LABEL_160:
                   goto LABEL_160;
                 }
 
-                if (!a6)
+                if (!destination)
                 {
                   goto LABEL_98;
                 }
@@ -1678,14 +1678,14 @@ LABEL_160:
 
               else
               {
-                if (([objc_msgSend(v17 "firstObject")] | v91))
+                if (([objc_msgSend(textRanges "firstObject")] | v91))
                 {
                   goto LABEL_98;
                 }
 
                 if (!v87)
                 {
-                  v59 = [objc_msgSend(v17 "firstObject")];
+                  v59 = [objc_msgSend(textRanges "firstObject")];
                   v60 = [(NSTextSelectionNavigation *)self _copyRangeForTextLineFragmentAtLocation:v59 affinity:1];
                   if (v60)
                   {
@@ -1702,16 +1702,16 @@ LABEL_160:
                   }
                 }
 
-                v62 = [v56 caretPositionAtIndex:{objc_msgSend(v56, "caretIndexForEdgeLocationInTextRanges:leftEdge:", v17, v18 == 3)}];
+                v62 = [v56 caretPositionAtIndex:{objc_msgSend(v56, "caretIndexForEdgeLocationInTextRanges:leftEdge:", textRanges, v18 == 3)}];
                 if (v62)
                 {
-                  v31 = *(v62 + 8);
+                  endLocation2 = *(v62 + 8);
                   goto LABEL_162;
                 }
               }
 
 LABEL_161:
-              v31 = 0;
+              endLocation2 = 0;
               goto LABEL_162;
             }
 
@@ -1722,11 +1722,11 @@ LABEL_70:
               goto LABEL_86;
             }
 
-            v31 = [v89 endLocation];
+            endLocation2 = [v89 endLocation];
             goto LABEL_82;
           }
 
-          if (![v27 isEqual:{objc_msgSend(v94, "location")}] || v25 && *a9)
+          if (![v27 isEqual:{objc_msgSend(v94, "location")}] || v25 && *affinity)
           {
             goto LABEL_51;
           }
@@ -1745,8 +1745,8 @@ LABEL_70:
     }
   }
 
-  v31 = 0;
-  return v31;
+  endLocation2 = 0;
+  return endLocation2;
 }
 
 id __149__NSTextSelectionNavigation__visualDestinationLocationForTextSelection_originLocation_direction_destination_extending_confined_affinity_crossedLine___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4, _BYTE *a5)
@@ -1798,7 +1798,7 @@ uint64_t __149__NSTextSelectionNavigation__visualDestinationLocationForTextSelec
   return result;
 }
 
-- (id)_rangeOfCombinedLineFragmentsInRanges:(id)a3
+- (id)_rangeOfCombinedLineFragmentsInRanges:(id)ranges
 {
   v22 = 0;
   v23 = &v22;
@@ -1806,15 +1806,15 @@ uint64_t __149__NSTextSelectionNavigation__visualDestinationLocationForTextSelec
   v25 = __Block_byref_object_copy__1;
   v26 = __Block_byref_object_dispose__1;
   v27 = 0;
-  v5 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
-  v6 = [objc_msgSend(a3 "firstObject")];
+  textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+  v6 = [objc_msgSend(ranges "firstObject")];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __67__NSTextSelectionNavigation__rangeOfCombinedLineFragmentsInRanges___block_invoke;
   v21[3] = &unk_1E7265D48;
   v21[4] = &v22;
-  [v5 enumerateSubstringsFromLocation:v6 options:0 usingBlock:v21];
-  if (([objc_msgSend(a3 "firstObject")] & 1) == 0 && objc_msgSend(objc_msgSend(v23[5], "endLocation"), "compare:", objc_msgSend(objc_msgSend(a3, "lastObject"), "endLocation")) == -1)
+  [textSelectionDataSource enumerateSubstringsFromLocation:v6 options:0 usingBlock:v21];
+  if (([objc_msgSend(ranges "firstObject")] & 1) == 0 && objc_msgSend(objc_msgSend(v23[5], "endLocation"), "compare:", objc_msgSend(objc_msgSend(ranges, "lastObject"), "endLocation")) == -1)
   {
     v15 = 0;
     v16 = &v15;
@@ -1822,20 +1822,20 @@ uint64_t __149__NSTextSelectionNavigation__visualDestinationLocationForTextSelec
     v18 = __Block_byref_object_copy__1;
     v19 = __Block_byref_object_dispose__1;
     v20 = 0;
-    v7 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
-    v8 = [objc_msgSend(a3 "lastObject")];
+    textSelectionDataSource2 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+    v8 = [objc_msgSend(ranges "lastObject")];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __67__NSTextSelectionNavigation__rangeOfCombinedLineFragmentsInRanges___block_invoke_2;
     v14[3] = &unk_1E7265D48;
     v14[4] = &v15;
-    [v7 enumerateSubstringsFromLocation:v8 options:256 usingBlock:v14];
+    [textSelectionDataSource2 enumerateSubstringsFromLocation:v8 options:256 usingBlock:v14];
     if (v16[5])
     {
 
       v9 = [NSTextRange alloc];
-      v10 = [v23[5] location];
-      v11 = [(NSTextRange *)v9 initWithLocation:v10 endLocation:v16[5]];
+      location = [v23[5] location];
+      v11 = [(NSTextRange *)v9 initWithLocation:location endLocation:v16[5]];
       v23[5] = v11;
     }
 
@@ -1863,20 +1863,20 @@ id __67__NSTextSelectionNavigation__rangeOfCombinedLineFragmentsInRanges___block
   return result;
 }
 
-- (id)_rangesForSelectionStartingOffset:(double)a3 inLineFragmentInfo:(id)a4 endingOffset:(double)a5 inLineFragmentInfo:(id)a6 contiguous:(BOOL)a7
+- (id)_rangesForSelectionStartingOffset:(double)offset inLineFragmentInfo:(id)info endingOffset:(double)endingOffset inLineFragmentInfo:(id)fragmentInfo contiguous:(BOOL)contiguous
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = a4;
+  contiguousCopy = contiguous;
+  fragmentInfoCopy = fragmentInfo;
+  infoCopy = info;
   v50[1] = *MEMORY[0x1E69E9840];
-  if (a4 == a6)
+  if (info == fragmentInfo)
   {
     v14 = 0;
   }
 
   else
   {
-    v13 = [objc_msgSend(objc_msgSend(a4 "textRange")];
+    v13 = [objc_msgSend(objc_msgSend(info "textRange")];
     if (v13 == 1)
     {
       v14 = -1;
@@ -1889,126 +1889,126 @@ id __67__NSTextSelectionNavigation__rangeOfCombinedLineFragmentsInRanges___block
 
     if (v13 == 1)
     {
-      v15 = v10;
+      v15 = infoCopy;
     }
 
     else
     {
-      v15 = v8;
+      v15 = fragmentInfoCopy;
     }
 
     if (v13 == 1)
     {
-      v16 = a3;
+      endingOffsetCopy = offset;
     }
 
     else
     {
-      v16 = a5;
+      endingOffsetCopy = endingOffset;
     }
 
     if (v13 == 1)
     {
-      v10 = v8;
-      a3 = a5;
+      infoCopy = fragmentInfoCopy;
+      offset = endingOffset;
     }
 
-    v8 = v15;
-    a5 = v16;
+    fragmentInfoCopy = v15;
+    endingOffset = endingOffsetCopy;
   }
 
-  v17 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
-  if (!v7)
+  textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+  if (!contiguousCopy)
   {
-    if (![objc_msgSend(objc_msgSend(v10 "textRange")])
+    if (![objc_msgSend(objc_msgSend(infoCopy "textRange")])
     {
-      v31 = [MEMORY[0x1E695DF70] array];
-      if (a3 >= a5)
+      array = [MEMORY[0x1E695DF70] array];
+      if (offset >= endingOffset)
       {
-        v32 = a5;
+        offsetCopy2 = endingOffset;
       }
 
       else
       {
-        v32 = a3;
+        offsetCopy2 = offset;
       }
 
-      if (a3 >= a5)
+      if (offset >= endingOffset)
       {
-        a5 = a3;
+        endingOffset = offset;
       }
 
-      v33 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
-      v34 = [objc_msgSend(v10 "textRange")];
+      textSelectionDataSource2 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+      v34 = [objc_msgSend(infoCopy "textRange")];
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __125__NSTextSelectionNavigation__rangesForSelectionStartingOffset_inLineFragmentInfo_endingOffset_inLineFragmentInfo_contiguous___block_invoke;
       v46[3] = &unk_1E7265E10;
-      *&v46[7] = v32;
-      *&v46[8] = a5;
+      *&v46[7] = offsetCopy2;
+      *&v46[8] = endingOffset;
       v46[4] = self;
-      v46[5] = v31;
-      v46[6] = v8;
-      [v33 enumerateSubstringsFromLocation:v34 options:0 usingBlock:v46];
-      return v31;
+      v46[5] = array;
+      v46[6] = fragmentInfoCopy;
+      [textSelectionDataSource2 enumerateSubstringsFromLocation:v34 options:0 usingBlock:v46];
+      return array;
     }
 
-    v47 = [v10 textRange];
-    v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
+    textRange = [infoCopy textRange];
+    v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&textRange count:1];
     return [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
   }
 
-  v18 = [v17 baseWritingDirectionAtLocation:{objc_msgSend(objc_msgSend(v10, "textRange"), "location")}];
-  v19 = [(NSTextSelectionNavigation *)self _isVisuallyContiguousNavigation];
+  v18 = [textSelectionDataSource baseWritingDirectionAtLocation:{objc_msgSend(objc_msgSend(infoCopy, "textRange"), "location")}];
+  _isVisuallyContiguousNavigation = [(NSTextSelectionNavigation *)self _isVisuallyContiguousNavigation];
   if (v14)
   {
-    if (v19)
+    if (_isVisuallyContiguousNavigation)
     {
       if (v18 == 1)
       {
-        v20 = -1.79769313e308;
+        offsetCopy3 = -1.79769313e308;
       }
 
       else
       {
-        v20 = a3;
+        offsetCopy3 = offset;
       }
 
       if (v18 == 1)
       {
-        v21 = a3;
+        offsetCopy4 = offset;
       }
 
       else
       {
-        v21 = 1.79769313e308;
+        offsetCopy4 = 1.79769313e308;
       }
 
-      v22 = [v10 rangesBetweenStartingOffset:0 endOffset:v20 logicallyContinuous:v21];
+      v22 = [infoCopy rangesBetweenStartingOffset:0 endOffset:offsetCopy3 logicallyContinuous:offsetCopy4];
       v23 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
       if (v23 == 1)
       {
-        v24 = a5;
+        endingOffsetCopy3 = endingOffset;
       }
 
       else
       {
-        v24 = -1.79769313e308;
+        endingOffsetCopy3 = -1.79769313e308;
       }
 
       if (v23 == 1)
       {
-        v25 = 1.79769313e308;
+        endingOffsetCopy4 = 1.79769313e308;
       }
 
       else
       {
-        v25 = a5;
+        endingOffsetCopy4 = endingOffset;
       }
 
-      v26 = [v8 rangesBetweenStartingOffset:0 endOffset:v24 logicallyContinuous:v25];
-      v27 = [objc_msgSend(v10 "textRange")];
-      v28 = [objc_msgSend(v8 "textRange")];
+      v26 = [fragmentInfoCopy rangesBetweenStartingOffset:0 endOffset:endingOffsetCopy3 logicallyContinuous:endingOffsetCopy4];
+      v27 = [objc_msgSend(infoCopy "textRange")];
+      v28 = [objc_msgSend(fragmentInfoCopy "textRange")];
       if ([v27 compare:v28] == -1)
       {
         v29 = [[NSTextRange alloc] initWithLocation:v27 endLocation:v28];
@@ -2019,18 +2019,18 @@ id __67__NSTextSelectionNavigation__rangeOfCombinedLineFragmentsInRanges___block
       return [NSTextRange combineTextRanges:v22 withTextRanges:v26 usingOperator:7];
     }
 
-    v39 = [v10 caretPositionClosestToOffset:a3];
-    v40 = [v8 caretPositionClosestToOffset:a5];
+    v39 = [infoCopy caretPositionClosestToOffset:offset];
+    v40 = [fragmentInfoCopy caretPositionClosestToOffset:endingOffset];
     if (v39)
     {
       v41 = *(v39 + 8);
       if (!v40)
       {
         v43 = 0;
-        v31 = 0;
+        array = 0;
         if (!v41)
         {
-          return v31;
+          return array;
         }
 
         goto LABEL_73;
@@ -2051,9 +2051,9 @@ id __67__NSTextSelectionNavigation__rangeOfCombinedLineFragmentsInRanges___block
 LABEL_73:
           v45 = [[NSTextRange alloc] initWithLocation:v41 endLocation:v43];
           v49 = v45;
-          v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
+          array = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
 
-          return v31;
+          return array;
         }
 
 LABEL_68:
@@ -2090,42 +2090,42 @@ LABEL_68:
     return 0;
   }
 
-  if (a5 >= a3)
+  if (endingOffset >= offset)
   {
-    v35 = a5;
+    offsetCopy5 = endingOffset;
   }
 
   else
   {
-    v35 = a3;
+    offsetCopy5 = offset;
   }
 
-  if (a5 >= a3)
+  if (endingOffset >= offset)
   {
-    v36 = a3;
+    endingOffsetCopy6 = offset;
   }
 
   else
   {
-    v36 = a5;
+    endingOffsetCopy6 = endingOffset;
   }
 
   if (v18 == 1)
   {
-    v37 = v35;
+    v37 = offsetCopy5;
   }
 
   else
   {
-    v37 = v36;
+    v37 = endingOffsetCopy6;
   }
 
   if (v18 == 1)
   {
-    v35 = v36;
+    offsetCopy5 = endingOffsetCopy6;
   }
 
-  return [v10 rangesBetweenStartingOffset:!v19 endOffset:v37 logicallyContinuous:v35];
+  return [infoCopy rangesBetweenStartingOffset:!_isVisuallyContiguousNavigation endOffset:v37 logicallyContinuous:offsetCopy5];
 }
 
 uint64_t __125__NSTextSelectionNavigation__rangesForSelectionStartingOffset_inLineFragmentInfo_endingOffset_inLineFragmentInfo_contiguous___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, _BYTE *a5)
@@ -2149,19 +2149,19 @@ uint64_t __125__NSTextSelectionNavigation__rangesForSelectionStartingOffset_inLi
   return result;
 }
 
-- (double)_anchorPositionOffsetForLocation:(id)a3 textSelection:(id)a4 affinity:(int64_t)a5
+- (double)_anchorPositionOffsetForLocation:(id)location textSelection:(id)selection affinity:(int64_t)affinity
 {
-  v8 = [a4 textRanges];
-  v9 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:a3 affinity:a5];
-  if (([objc_msgSend(v8 "firstObject")] & 1) == 0 && objc_msgSend(objc_msgSend(v9, "textRange"), "isEqual:", a3) && objc_msgSend(objc_msgSend(objc_msgSend(v8, "lastObject"), "endLocation"), "isEqual:", a3))
+  textRanges = [selection textRanges];
+  v9 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:location affinity:affinity];
+  if (([objc_msgSend(textRanges "firstObject")] & 1) == 0 && objc_msgSend(objc_msgSend(v9, "textRange"), "isEqual:", location) && objc_msgSend(objc_msgSend(objc_msgSend(textRanges, "lastObject"), "endLocation"), "isEqual:", location))
   {
-    v9 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:a3 affinity:0];
+    v9 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:location affinity:0];
   }
 
   v10 = 0.0;
   if (v9)
   {
-    v11 = [v9 caretPositionAtIndex:{objc_msgSend(v9, "caretIndexForPrimaryLocation:", a3)}];
+    v11 = [v9 caretPositionAtIndex:{objc_msgSend(v9, "caretIndexForPrimaryLocation:", location)}];
     if (v11)
     {
       return *v11;
@@ -2171,29 +2171,29 @@ uint64_t __125__NSTextSelectionNavigation__rangesForSelectionStartingOffset_inLi
   return v10;
 }
 
-- (id)_findAnchorInfoForTextSelection:(id)a3 anchorPositionOffset:(double *)a4 anchorLocation:(id *)a5
+- (id)_findAnchorInfoForTextSelection:(id)selection anchorPositionOffset:(double *)offset anchorLocation:(id *)location
 {
-  if (a4)
+  if (offset)
   {
-    v9 = *a4;
+    v9 = *offset;
   }
 
   else
   {
-    [a3 anchorPositionOffset];
+    [selection anchorPositionOffset];
     v9 = v10;
   }
 
-  v11 = [a3 selectionAnchorLocation];
-  v12 = v11;
-  if (!v11)
+  selectionAnchorLocation = [selection selectionAnchorLocation];
+  v12 = selectionAnchorLocation;
+  if (!selectionAnchorLocation)
   {
-    v12 = [objc_msgSend(objc_msgSend(a3 "textRanges")];
+    v12 = [objc_msgSend(objc_msgSend(selection "textRanges")];
   }
 
-  v13 = -[NSTextSelectionNavigation _lineFragmentInfoForLocation:affinity:](self, "_lineFragmentInfoForLocation:affinity:", v12, [a3 affinity]);
+  v13 = -[NSTextSelectionNavigation _lineFragmentInfoForLocation:affinity:](self, "_lineFragmentInfoForLocation:affinity:", v12, [selection affinity]);
   v14 = v13;
-  if (v11 || !v13)
+  if (selectionAnchorLocation || !v13)
   {
     goto LABEL_16;
   }
@@ -2206,9 +2206,9 @@ uint64_t __125__NSTextSelectionNavigation__rangesForSelectionStartingOffset_inLi
       goto LABEL_21;
     }
 
-    v11 = *(v17 + 8);
+    selectionAnchorLocation = *(v17 + 8);
 LABEL_16:
-    if (!a4)
+    if (!offset)
     {
       goto LABEL_18;
     }
@@ -2216,44 +2216,44 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v15 = [v13 caretIndexForPrimaryLocation:{objc_msgSend(objc_msgSend(objc_msgSend(a3, "textRanges"), "firstObject"), "location")}];
+  v15 = [v13 caretIndexForPrimaryLocation:{objc_msgSend(objc_msgSend(objc_msgSend(selection, "textRanges"), "firstObject"), "location")}];
   if (v15 != 0x7FFFFFFFFFFFFFFFLL && (v16 = [v14 caretPositionAtIndex:v15]) != 0 || (v16 = objc_msgSend(v14, "caretPositionClosestToOffset:", v9)) != 0)
   {
-    v11 = *(v16 + 8);
+    selectionAnchorLocation = *(v16 + 8);
     v9 = *v16;
-    if (!a4)
+    if (!offset)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
-    *a4 = v9;
+    *offset = v9;
     goto LABEL_18;
   }
 
 LABEL_21:
-  v11 = 0;
-  if (a4)
+  selectionAnchorLocation = 0;
+  if (offset)
   {
     goto LABEL_17;
   }
 
 LABEL_18:
-  if (a5)
+  if (location)
   {
-    *a5 = v11;
+    *location = selectionAnchorLocation;
   }
 
   return v14;
 }
 
-- (unsigned)_bidiLevelAtLocation:(id)a3 affinity:(int64_t)a4
+- (unsigned)_bidiLevelAtLocation:(id)location affinity:(int64_t)affinity
 {
-  v5 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:a3 affinity:a4];
+  v5 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForLocation:location affinity:affinity];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 caretIndexForPrimaryLocation:a3];
+    v7 = [v5 caretIndexForPrimaryLocation:location];
   }
 
   else
@@ -2270,29 +2270,29 @@ LABEL_18:
   return v8;
 }
 
-- (id)_mergeVisuallyContiguousRanges:(id)a3 withRanges:(id)a4
+- (id)_mergeVisuallyContiguousRanges:(id)ranges withRanges:(id)withRanges
 {
-  v5 = a3;
+  rangesCopy = ranges;
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = [a3 count];
-  v8 = [a4 count];
+  v7 = [ranges count];
+  v8 = [withRanges count];
   if (!v7 || !v8)
   {
     if (!v7)
     {
-      return a4;
+      return withRanges;
     }
 
-    return v5;
+    return rangesCopy;
   }
 
-  v9 = [objc_msgSend(objc_msgSend(v5 "lastObject")];
-  v10 = v5;
-  v11 = a4;
-  if (v9 != 1 || (v12 = [objc_msgSend(objc_msgSend(a4 "lastObject")], v10 = a4, v11 = v5, v12 != 1))
+  v9 = [objc_msgSend(objc_msgSend(rangesCopy "lastObject")];
+  v10 = rangesCopy;
+  withRangesCopy = withRanges;
+  if (v9 != 1 || (v12 = [objc_msgSend(objc_msgSend(withRanges "lastObject")], v10 = withRanges, withRangesCopy = rangesCopy, v12 != 1))
   {
     v14 = [objc_msgSend(v10 "firstObject")];
-    v15 = [objc_msgSend(v11 "lastObject")];
+    v15 = [objc_msgSend(withRangesCopy "lastObject")];
     v16 = [v14 compare:v15];
     if (v16 == 1)
     {
@@ -2315,18 +2315,18 @@ LABEL_18:
     {
       v20 = -[NSTextRange initWithLocation:endLocation:]([NSTextRange alloc], "initWithLocation:endLocation:", [v18 endLocation], objc_msgSend(v19, "location"));
       v21[0] = v20;
-      v5 = +[NSTextRange combineTextRanges:withTextRanges:usingOperator:](NSTextRange, "combineTextRanges:withTextRanges:usingOperator:", [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1], v5, 7);
+      rangesCopy = +[NSTextRange combineTextRanges:withTextRanges:usingOperator:](NSTextRange, "combineTextRanges:withTextRanges:usingOperator:", [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1], rangesCopy, 7);
     }
 
-    if (a4)
+    if (withRanges)
     {
-      return [NSTextRange combineTextRanges:v5 withTextRanges:a4 usingOperator:7];
+      return [NSTextRange combineTextRanges:rangesCopy withTextRanges:withRanges usingOperator:7];
     }
 
-    return v5;
+    return rangesCopy;
   }
 
-  return [NSTextRange combineTextRanges:v5 withTextRanges:a4 usingOperator:3];
+  return [NSTextRange combineTextRanges:rangesCopy withTextRanges:withRanges usingOperator:3];
 }
 
 - (NSTextSelectionNavigation)initWithDataSource:(id)dataSource
@@ -2358,23 +2358,23 @@ LABEL_18:
   v8 = extending;
   v11 = textSelection;
   v66[1] = *MEMORY[0x1E69E9840];
-  v13 = [(NSTextSelection *)textSelection textRanges];
+  textRanges = [(NSTextSelection *)textSelection textRanges];
   v65 = 0;
-  v14 = [(NSTextSelection *)v11 affinity];
-  v64 = v14;
+  affinity = [(NSTextSelection *)v11 affinity];
+  v64 = affinity;
   v63 = 0;
   context = objc_autoreleasePoolPush();
-  if ([-[NSArray firstObject](v13 "firstObject")])
+  if ([-[NSArray firstObject](textRanges "firstObject")])
   {
     v15 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
     v16 = -[NSTextSelectionNavigation _logicalDirectionForDirection:textSelection:](self, "_logicalDirectionForDirection:textSelection:", direction, v11) ? [v15 location] : objc_msgSend(v15, "endLocation");
-    if ([objc_msgSend(-[NSArray firstObject](v13 "firstObject")])
+    if ([objc_msgSend(-[NSArray firstObject](textRanges "firstObject")])
     {
       goto LABEL_61;
     }
   }
 
-  v17 = (v8 && v14 ? [-[NSArray lastObject](v13 "lastObject")] : objc_msgSend(-[NSArray firstObject](v13, "firstObject"), "location"));
+  v17 = (v8 && affinity ? [-[NSArray lastObject](textRanges "lastObject")] : objc_msgSend(-[NSArray firstObject](textRanges, "firstObject"), "location"));
   v65 = v17;
   v18 = [(NSTextSelectionNavigation *)self _visualDestinationLocationForTextSelection:v11 originLocation:&v65 direction:direction destination:destination extending:v8 confined:v7 affinity:&v64 crossedLine:&v63];
   v19 = v18;
@@ -2401,8 +2401,8 @@ LABEL_18:
     goto LABEL_61;
   }
 
-  v22 = [(NSTextSelection *)v11 textRanges];
-  v23 = v22;
+  textRanges2 = [(NSTextSelection *)v11 textRanges];
+  v23 = textRanges2;
   if (v21 == 1)
   {
     v19 = v65;
@@ -2476,7 +2476,7 @@ LABEL_53:
   v54 = &v53;
   v55 = 0x2020000000;
   v56 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([v50 compare:{objc_msgSend(-[NSArray firstObject](v22, "firstObject"), "location")}] == -1)
+  if ([v50 compare:{objc_msgSend(-[NSArray firstObject](textRanges2, "firstObject"), "location")}] == -1)
   {
     v37 = -[NSTextRange initWithLocation:endLocation:]([NSTextRange alloc], "initWithLocation:endLocation:", v50, [-[NSTextSelection firstObject](v23 "firstObject")]);
     v58[5] = v37;
@@ -2609,21 +2609,21 @@ LABEL_70:
     }
 
 LABEL_64:
-    v47 = [(NSTextSelection *)v23 affinity];
+    affinity2 = [(NSTextSelection *)v23 affinity];
     if ([-[NSArray firstObject](-[NSTextSelection textRanges](v23 "textRanges")])
     {
       if ([objc_msgSend(-[NSArray firstObject](-[NSTextSelection textRanges](v23 "textRanges")])
       {
-        v47 = 1;
+        affinity2 = 1;
       }
 
       else if ([objc_msgSend(-[NSArray lastObject](-[NSTextSelection textRanges](v23 "textRanges")])
       {
-        v47 = 0;
+        affinity2 = 0;
       }
     }
 
-    [(NSTextSelectionNavigation *)self _anchorPositionOffsetForLocation:v50 textSelection:v23 affinity:v47];
+    [(NSTextSelectionNavigation *)self _anchorPositionOffsetForLocation:v50 textSelection:v23 affinity:affinity2];
     goto LABEL_70;
   }
 
@@ -2674,14 +2674,14 @@ uint64_t __107__NSTextSelectionNavigation_destinationSelectionForTextSelection_d
   return result;
 }
 
-- (id)textSelectionForSelectionGranularity:(int64_t)a3 enclosingPoint:(CGPoint)a4 inContainerAtLocation:(id)a5 bounds:(CGRect)a6
+- (id)textSelectionForSelectionGranularity:(int64_t)granularity enclosingPoint:(CGPoint)point inContainerAtLocation:(id)location bounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a4.y;
-  v12 = a4.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = point.y;
+  v12 = point.x;
   if (self->_supportsLayoutOrientation)
   {
     v15 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
@@ -2693,24 +2693,24 @@ uint64_t __107__NSTextSelectionNavigation_destinationSelectionForTextSelection_d
   }
 
   v25 = 0;
-  v16 = [(NSTextSelectionNavigation *)self _lineFragmentInfoForPoint:a5 inContainerAtLocation:v15 bounds:&v25 + 1 layoutOrientation:&v25 beforeLineFragment:0 afterLineFragment:v12 lineFragmentRange:v11, x, y, width, height];
-  if (!v16)
+  height = [(NSTextSelectionNavigation *)self _lineFragmentInfoForPoint:location inContainerAtLocation:v15 bounds:&v25 + 1 layoutOrientation:&v25 beforeLineFragment:0 afterLineFragment:v12 lineFragmentRange:v11, x, y, width, height];
+  if (!height)
   {
     return 0;
   }
 
-  v17 = v16;
+  v17 = height;
   if (HIBYTE(v25) == 1)
   {
-    v18 = [v16 logicalFirstCaret];
+    logicalFirstCaret = [height logicalFirstCaret];
 LABEL_10:
-    v20 = *v18;
+    v20 = *logicalFirstCaret;
     goto LABEL_14;
   }
 
   if (v25 == 1)
   {
-    v18 = [v16 logicalLastCaret];
+    logicalFirstCaret = [height logicalLastCaret];
     goto LABEL_10;
   }
 
@@ -2729,7 +2729,7 @@ LABEL_14:
   if (v21)
   {
     v22 = [[NSTextSelection alloc] initWithRange:v21 affinity:0 granularity:0];
-    v23 = [(NSTextSelectionNavigation *)self textSelectionForSelectionGranularity:a3 enclosingTextSelection:v22];
+    v23 = [(NSTextSelectionNavigation *)self textSelectionForSelectionGranularity:granularity enclosingTextSelection:v22];
 
     v19 = v23;
   }
@@ -2805,35 +2805,35 @@ LABEL_14:
 
   if (HIBYTE(v82) == 1)
   {
-    v23 = [v22 logicalFirstCaret];
+    logicalFirstCaret = [v22 logicalFirstCaret];
   }
 
   else if (v82 == 1)
   {
-    v23 = [v22 logicalLastCaret];
+    logicalFirstCaret = [v22 logicalLastCaret];
   }
 
   else
   {
-    v23 = [v22 caretPositionClosestToOffset:v21];
+    logicalFirstCaret = [v22 caretPositionClosestToOffset:v21];
   }
 
-  v25 = v23;
+  v25 = logicalFirstCaret;
   v26 = v22;
   if (v25)
   {
     if (self->_multipleSelectionAnchor)
     {
-      v27 = [(NSArray *)anchors firstObject];
+      firstObject = [(NSArray *)anchors firstObject];
     }
 
     else
     {
-      v27 = [(NSArray *)anchors lastObject];
+      firstObject = [(NSArray *)anchors lastObject];
     }
 
-    v28 = v27;
-    [v27 anchorPositionOffset];
+    v28 = firstObject;
+    [firstObject anchorPositionOffset];
     v74 = v29;
     if (v28)
     {
@@ -2900,10 +2900,10 @@ LABEL_14:
         v67[6] = &v69;
         v67[4] = self;
         [(NSArray *)anchors enumerateObjectsWithOptions:2 * v44 usingBlock:v67];
-        v46 = [MEMORY[0x1E695DF70] array];
-        [v46 addObject:v40];
-        [v46 replaceObjectsInRange:*(v61 + 24) ^ 1 withObjectsFromArray:0 range:{anchors, v70[4], v70[5]}];
-        v24 = v46;
+        array = [MEMORY[0x1E695DF70] array];
+        [array addObject:v40];
+        [array replaceObjectsInRange:*(v61 + 24) ^ 1 withObjectsFromArray:0 range:{anchors, v70[4], v70[5]}];
+        v24 = array;
         _Block_object_dispose(&v60, 8);
         _Block_object_dispose(&v69, 8);
         goto LABEL_61;
@@ -2978,14 +2978,14 @@ LABEL_14:
           v72 = __Block_byref_object_copy__1;
           *&v73 = __Block_byref_object_dispose__1;
           *(&v73 + 1) = 0;
-          v51 = [v28 textRanges];
+          textRanges = [v28 textRanges];
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
           v66[2] = __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inContainerAtLocation_anchors_modifiers_selecting_bounds___block_invoke_3;
           v66[3] = &unk_1E7265EB0;
           v66[4] = v80;
           v66[5] = &v69;
-          [v51 enumerateObjectsUsingBlock:v66];
+          [textRanges enumerateObjectsUsingBlock:v66];
           if (v70[5])
           {
             if ([-[NSArray firstObject](v24 "firstObject")])
@@ -3234,9 +3234,9 @@ uint64_t __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inCon
 
 - (NSTextSelection)textSelectionForSelectionGranularity:(NSTextSelectionGranularity)selectionGranularity enclosingTextSelection:(NSTextSelection *)textSelection
 {
-  v7 = [(NSArray *)[(NSTextSelection *)textSelection textRanges] lastObject];
+  lastObject = [(NSArray *)[(NSTextSelection *)textSelection textRanges] lastObject];
   v8 = [-[NSArray firstObject](-[NSTextSelection textRanges](textSelection "textRanges")];
-  v9 = [v7 endLocation];
+  endLocation = [lastObject endLocation];
   v10 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
   if (!v10)
   {
@@ -3244,7 +3244,7 @@ uint64_t __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inCon
   }
 
   v11 = v10;
-  if (([v8 isEqual:v9] & 1) == 0 && (objc_msgSend(v11, "containsLocation:", v9) & 1) == 0)
+  if (([v8 isEqual:endLocation] & 1) == 0 && (objc_msgSend(v11, "containsLocation:", endLocation) & 1) == 0)
   {
     v12 = [-[NSTextSelectionNavigation textSelectionDataSource](self "textSelectionDataSource")];
     if (v12)
@@ -3271,9 +3271,9 @@ uint64_t __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inCon
 
   if ((-[NSTextSelectionNavigation _bidiLevelAtLocation:affinity:](self, "_bidiLevelAtLocation:affinity:", [-[NSArray firstObject](-[NSTextSelection textRanges](textSelection "textRanges")], -[NSTextSelection affinity](textSelection, "affinity")) & 1) == writingDirection)
   {
-    v7 = [(NSArray *)[(NSTextSelection *)textSelection textRanges] firstObject];
+    firstObject = [(NSArray *)[(NSTextSelection *)textSelection textRanges] firstObject];
 
-    return [v7 location];
+    return [firstObject location];
   }
 
   else
@@ -3283,29 +3283,29 @@ uint64_t __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inCon
   }
 }
 
-- (id)deletionRangesForTextSelection:(id)a3 direction:(int64_t)a4 destination:(int64_t)a5 allowsDecomposition:(BOOL)a6 confined:(BOOL)a7
+- (id)deletionRangesForTextSelection:(id)selection direction:(int64_t)direction destination:(int64_t)destination allowsDecomposition:(BOOL)decomposition confined:(BOOL)confined
 {
-  v7 = a7;
+  confinedCopy = confined;
   v28[1] = *MEMORY[0x1E69E9840];
-  v13 = [a3 textRanges];
-  if (-[NSArray count](v13, "count") == 1 && [-[NSArray firstObject](v13 "firstObject")])
+  textRanges = [selection textRanges];
+  if (-[NSArray count](textRanges, "count") == 1 && [-[NSArray firstObject](textRanges "firstObject")])
   {
-    if (a5)
+    if (destination)
     {
-      v13 = [[(NSTextSelectionNavigation *)self destinationSelectionForTextSelection:a3 direction:a4 destination:a5 extending:1 confined:v7] textRanges];
+      textRanges = [[(NSTextSelectionNavigation *)self destinationSelectionForTextSelection:selection direction:direction destination:destination extending:1 confined:confinedCopy] textRanges];
     }
 
     else
     {
-      v14 = [(NSTextSelectionNavigation *)self _logicalDirectionForDirection:a4 textSelection:a3];
-      v15 = [-[NSArray firstObject](v13 "firstObject")];
+      v14 = [(NSTextSelectionNavigation *)self _logicalDirectionForDirection:direction textSelection:selection];
+      v15 = [-[NSArray firstObject](textRanges "firstObject")];
       v22 = 0;
       v23 = &v22;
       v24 = 0x3052000000;
       v25 = __Block_byref_object_copy__1;
       v26 = __Block_byref_object_dispose__1;
       v27 = 0;
-      v16 = [(NSTextSelectionNavigation *)self textSelectionDataSource];
+      textSelectionDataSource = [(NSTextSelectionNavigation *)self textSelectionDataSource];
       v17 = 2;
       if (v14 == 1)
       {
@@ -3317,7 +3317,7 @@ uint64_t __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inCon
       v21[1] = 3221225472;
       v21[2] = __111__NSTextSelectionNavigation_deletionRangesForTextSelection_direction_destination_allowsDecomposition_confined___block_invoke;
       v21[3] = &unk_1E7265F50;
-      if (v14 == 1 && a6)
+      if (v14 == 1 && decomposition)
       {
         v18 = 0;
       }
@@ -3325,12 +3325,12 @@ uint64_t __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inCon
       v21[5] = &v22;
       v21[6] = v18;
       v21[4] = self;
-      [v16 enumerateSubstringsFromLocation:v15 options:v18 | v17 usingBlock:v21];
+      [textSelectionDataSource enumerateSubstringsFromLocation:v15 options:v18 | v17 usingBlock:v21];
       v19 = v23[5];
       if (v19)
       {
         v28[0] = v23[5];
-        v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
+        textRanges = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
         v19 = v23[5];
       }
 
@@ -3338,7 +3338,7 @@ uint64_t __119__NSTextSelectionNavigation_textSelectionsInteractingAtPoint_inCon
     }
   }
 
-  return [(NSTextSelectionNavigation *)self _rangesWithDirectionalFormatAdjustmentsForRanges:v13];
+  return [(NSTextSelectionNavigation *)self _rangesWithDirectionalFormatAdjustmentsForRanges:textRanges];
 }
 
 uint64_t __111__NSTextSelectionNavigation_deletionRangesForTextSelection_direction_destination_allowsDecomposition_confined___block_invoke(uint64_t result, void *a2, void *a3, uint64_t a4, _BYTE *a5)

@@ -1,6 +1,6 @@
 @interface MKTimeFormatter
 - (MKTimeFormatter)init;
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation MKTimeFormatter
@@ -23,12 +23,12 @@
   return v3;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v4 = MEMORY[0x277CCABB0];
-    [a3 doubleValue];
+    [value doubleValue];
     v6 = [v4 numberWithDouble:v5 / 60.0];
     v10.receiver = self;
     v10.super_class = MKTimeFormatter;

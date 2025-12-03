@@ -1,29 +1,29 @@
 @interface PLExpandedPlatterView
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (CGRect)_actionsViewFrame;
 - (CGRect)_boundsInsetHorizontallyFromDismissControlIfNecessary;
 - (CGRect)_effectiveMainContentViewFrame;
 - (CGRect)_headerFrame;
 - (CGRect)_mainContentViewFrame;
 - (CGRect)_scrollViewContentViewFrame;
-- (CGRect)frameForPlatterFrame:(CGRect)a3;
-- (CGRect)platterFrameForFrame:(CGRect)a3;
+- (CGRect)frameForPlatterFrame:(CGRect)frame;
+- (CGRect)platterFrameForFrame:(CGRect)frame;
 - (CGRect)scrollViewFrame;
-- (CGSize)_actionsSizeThatFits:(CGSize)a3 includingPadding:(BOOL)a4;
+- (CGSize)_actionsSizeThatFits:(CGSize)fits includingPadding:(BOOL)padding;
 - (CGSize)_contentViewSize;
-- (CGSize)_flexibleAreaSizeForBounds:(CGRect)a3;
-- (CGSize)_sizeThatFitsContentExcludingActionsWithSize:(CGSize)a3;
-- (CGSize)actionsSizeThatFits:(CGSize)a3;
+- (CGSize)_flexibleAreaSizeForBounds:(CGRect)bounds;
+- (CGSize)_sizeThatFitsContentExcludingActionsWithSize:(CGSize)size;
+- (CGSize)actionsSizeThatFits:(CGSize)fits;
 - (CGSize)contentSizeExcludingActions;
-- (CGSize)contentSizeForSize:(CGSize)a3;
+- (CGSize)contentSizeForSize:(CGSize)size;
 - (CGSize)customContentSize;
 - (CGSize)sizeExcludingActions;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3;
-- (PLExpandedPlatterView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size;
+- (PLExpandedPlatterView)initWithFrame:(CGRect)frame;
 - (PLExpandedPlatterViewDelegate)delegate;
 - (UIButton)utilityButton;
 - (UIControl)dismissControl;
@@ -32,9 +32,9 @@
 - (UIEdgeInsets)minimumScrollViewContentInsets;
 - (UIView)customContentView;
 - (double)_headerKeyLineAlphaForContentOffset;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_configureActionViewIfNecessaryWithActions:(id)a3;
-- (void)_configureActionsBackgroundViewIfNecessaryWithActions:(id)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_configureActionViewIfNecessaryWithActions:(id)actions;
+- (void)_configureActionsBackgroundViewIfNecessaryWithActions:(id)actions;
 - (void)_configureCustomContentView;
 - (void)_configureCustomContentViewIfNecessary;
 - (void)_configureDismissControlIfNecessary;
@@ -51,47 +51,47 @@
 - (void)_layoutActionsView;
 - (void)_layoutCustomContentView;
 - (void)_layoutDismissControl;
-- (void)_layoutHeaderBackgroundViewsWithFrame:(CGRect)a3;
-- (void)_layoutHeaderContainerViewWithFrame:(CGRect)a3;
-- (void)_layoutHeaderContentViewWithFrame:(CGRect)a3;
+- (void)_layoutHeaderBackgroundViewsWithFrame:(CGRect)frame;
+- (void)_layoutHeaderContainerViewWithFrame:(CGRect)frame;
+- (void)_layoutHeaderContentViewWithFrame:(CGRect)frame;
 - (void)_layoutMainContentView;
 - (void)_layoutMainContentViewIfNecessary;
 - (void)_layoutScrollView;
 - (void)_layoutScrollViewContentView;
 - (void)_layoutTopRubberbandingView;
-- (void)_reduceTransparencyDidChange:(id)a3;
-- (void)_updateHeaderKeyLineAlphaIfNecessaryAnimated:(BOOL)a3;
+- (void)_reduceTransparencyDidChange:(id)change;
+- (void)_updateHeaderKeyLineAlphaIfNecessaryAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setActionsHidden:(BOOL)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setCustomContentSize:(CGSize)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setDismissControlEnabled:(BOOL)a3;
-- (void)setDismissControlPosition:(int64_t)a3;
-- (void)setHeaderEnabled:(BOOL)a3;
-- (void)setIcons:(id)a3;
-- (void)setInterfaceActions:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setActionsHidden:(BOOL)hidden;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setCustomContentSize:(CGSize)size;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setDismissControlEnabled:(BOOL)enabled;
+- (void)setDismissControlPosition:(int64_t)position;
+- (void)setHeaderEnabled:(BOOL)enabled;
+- (void)setIcons:(id)icons;
+- (void)setInterfaceActions:(id)actions;
+- (void)setTimeZone:(id)zone;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PLExpandedPlatterView
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(PLPlatterHeaderContentView *)self->_headerContentView adjustForContentSizeCategoryChange];
-  if (v3)
+  adjustForContentSizeCategoryChange = [(PLPlatterHeaderContentView *)self->_headerContentView adjustForContentSizeCategoryChange];
+  if (adjustForContentSizeCategoryChange)
   {
     [(PLExpandedPlatterView *)self setNeedsLayout];
   }
 
-  return v3;
+  return adjustForContentSizeCategoryChange;
 }
 
 - (CGSize)customContentSize
@@ -175,11 +175,11 @@
     self->_mainContentView = v3;
 
     v5 = self->_mainContentView;
-    v6 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(UIView *)v5 setBackgroundColor:_systemBackgroundColor];
 
-    v7 = [(UIView *)self->_mainContentView layer];
-    [v7 setMaskedCorners:12];
+    layer = [(UIView *)self->_mainContentView layer];
+    [layer setMaskedCorners:12];
 
     [(UIView *)self->_mainContentView _setContinuousCornerRadius:13.0];
     scrollViewContentView = self->_scrollViewContentView;
@@ -225,8 +225,8 @@
     headerContentView = self->_headerContentView;
     self->_headerContentView = &v3->super;
 
-    v5 = [(PLPlatterHeaderContentView *)self->_headerContentView layer];
-    [v5 setMaskedCorners:3];
+    layer = [(PLPlatterHeaderContentView *)self->_headerContentView layer];
+    [layer setMaskedCorners:3];
 
     [(PLPlatterHeaderContentView *)self->_headerContentView _setContinuousCornerRadius:13.0];
     [(PLExpandedPlatterView *)self _configureHeaderContainerViewIfNecessary];
@@ -321,8 +321,8 @@
     scrollView = self->_scrollView;
     self->_scrollView = v3;
 
-    v5 = [(UIScrollView *)self->_scrollView layer];
-    [v5 setMaskedCorners:3];
+    layer = [(UIScrollView *)self->_scrollView layer];
+    [layer setMaskedCorners:3];
 
     [(UIScrollView *)self->_scrollView _setContinuousCornerRadius:13.0];
     [(UIScrollView *)self->_scrollView setShowsHorizontalScrollIndicator:0];
@@ -334,13 +334,13 @@
     topRubberbandingView = self->_topRubberbandingView;
     self->_topRubberbandingView = v6;
 
-    v8 = [(UIView *)self->_topRubberbandingView layer];
-    [v8 setMaskedCorners:3];
+    layer2 = [(UIView *)self->_topRubberbandingView layer];
+    [layer2 setMaskedCorners:3];
 
     [(UIView *)self->_topRubberbandingView _setContinuousCornerRadius:13.0];
     v9 = self->_topRubberbandingView;
-    v10 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(UIView *)v9 setBackgroundColor:v10];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(UIView *)v9 setBackgroundColor:_systemBackgroundColor];
 
     v11 = self->_scrollView;
     v12 = self->_topRubberbandingView;
@@ -358,8 +358,8 @@
     scrollViewContentView = self->_scrollViewContentView;
     self->_scrollViewContentView = v3;
 
-    v5 = [(UIView *)self->_scrollViewContentView layer];
-    [v5 setMaskedCorners:3];
+    layer = [(UIView *)self->_scrollViewContentView layer];
+    [layer setMaskedCorners:3];
 
     [(UIView *)self->_scrollViewContentView _setContinuousCornerRadius:13.0];
     scrollView = self->_scrollView;
@@ -380,9 +380,9 @@
   {
     [(PLExpandedPlatterView *)self _dismissControlTotalOutset];
     v12 = v11;
-    v13 = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
     v14 = 0.0;
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       v14 = v12;
     }
@@ -432,12 +432,12 @@
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
     v20 = v4;
     v21 = v6;
     v22 = v8;
     v23 = v10;
-    if (v19)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMinX(*&v20);
       v25 = 12.0;
@@ -536,8 +536,8 @@
   [(PLExpandedPlatterView *)self _contentViewSize];
   BSRectWithSize();
   [(PLExpandedPlatterView *)self _configureHeaderContentViewIfNecessary];
-  v7 = [(PLExpandedPlatterView *)self _headerContentView];
-  [v7 sizeThatFits:{v4, v6}];
+  _headerContentView = [(PLExpandedPlatterView *)self _headerContentView];
+  [_headerContentView sizeThatFits:{v4, v6}];
 
   PLMainScreenScale();
 
@@ -639,8 +639,8 @@
   if (self->_customContentView)
   {
     [(PLExpandedPlatterView *)self _layoutMainContentViewIfNecessary];
-    v3 = [(PLExpandedPlatterView *)self _mainContentView];
-    [v3 frame];
+    _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+    [_mainContentView frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -670,10 +670,10 @@
 
 - (void)_layoutMainContentViewIfNecessary
 {
-  v3 = [(UIView *)self->_mainContentView layer];
-  v4 = [v3 needsLayout];
+  layer = [(UIView *)self->_mainContentView layer];
+  needsLayout = [layer needsLayout];
 
-  if (v4)
+  if (needsLayout)
   {
 
     [(PLExpandedPlatterView *)self _layoutMainContentView];
@@ -718,15 +718,15 @@
   return customContentView;
 }
 
-- (PLExpandedPlatterView)initWithFrame:(CGRect)a3
+- (PLExpandedPlatterView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLExpandedPlatterView;
-  v3 = [(PLExpandedPlatterView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLExpandedPlatterView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
 
     [(PLExpandedPlatterView *)v3 setHeaderEnabled:1];
     [(PLExpandedPlatterView *)v3 setDismissControlEnabled:1];
@@ -737,17 +737,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D764C8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D764C8] object:0];
 
   v4.receiver = self;
   v4.super_class = PLExpandedPlatterView;
   [(PLExpandedPlatterView *)&v4 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PLExpandedPlatterView *)self contentSizeForSize:a3.width, a3.height];
+  [(PLExpandedPlatterView *)self contentSizeForSize:fits.width, fits.height];
 
   [(PLExpandedPlatterView *)self sizeThatFitsContentWithSize:?];
   result.height = v5;
@@ -755,20 +755,20 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v27.receiver = self;
   v27.super_class = PLExpandedPlatterView;
-  if ([(PLExpandedPlatterView *)&v27 pointInside:v7 withEvent:x, y])
+  if ([(PLExpandedPlatterView *)&v27 pointInside:eventCopy withEvent:x, y])
   {
     if (-[PLExpandedPlatterView isDismissControlEnabled](self, "isDismissControlEnabled") && ((-[PLPlatterHeaderContentView superview](self->_headerContentView, "superview"), v8 = objc_claimAutoreleasedReturnValue(), -[PLPlatterHeaderContentView frame](self->_headerContentView, "frame"), [v8 convertRect:self toView:?], v10 = v9, v12 = v11, v14 = v13, v16 = v15, v8, v28.origin.x = v10, v28.origin.y = v12, v28.size.width = v14, v28.size.height = v16, MinY = CGRectGetMinY(v28), v18 = -[PLExpandedPlatterView _shouldReverseLayoutDirection](self, "_shouldReverseLayoutDirection"), v19 = v10, v20 = v12, v21 = v14, v22 = v16, !v18) ? (v23 = x <= CGRectGetMaxX(*&v19)) : (v23 = x >= CGRectGetMinX(*&v19)), y < MinY || !v23))
     {
       dismissControl = self->_dismissControl;
       [(PLExpandedPlatterView *)self convertPoint:dismissControl toView:x, y];
-      v24 = [(UIControl *)dismissControl pointInside:v7 withEvent:?];
+      v24 = [(UIControl *)dismissControl pointInside:eventCopy withEvent:?];
     }
 
     else
@@ -785,10 +785,10 @@
   return v24;
 }
 
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PLExpandedPlatterView *)self _sizeThatFitsContentExcludingActionsWithSize:?];
   v7 = v6;
   v9 = v8;
@@ -805,14 +805,14 @@
   return result;
 }
 
-- (CGSize)contentSizeForSize:(CGSize)a3
+- (CGSize)contentSizeForSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v5 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3.width > 0.0 && height > 0.0)
+  if (size.width > 0.0 && height > 0.0)
   {
-    width = a3.width;
+    width = size.width;
     [(PLExpandedPlatterView *)self _dismissControlTotalOutset];
     v5 = width - v8;
     [(PLExpandedPlatterView *)self sizeThatFitsContentWithSize:width - v8, 0.0];
@@ -825,71 +825,71 @@
   return result;
 }
 
-- (void)setIcons:(id)a3
+- (void)setIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   [(PLExpandedPlatterView *)self _configureHeaderContentViewIfNecessary];
-  [(PLPlatterHeaderContentView *)self->_headerContentView setIcons:v4];
+  [(PLPlatterHeaderContentView *)self->_headerContentView setIcons:iconsCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView title];
-  v5 = [v6 isEqual:v4];
+  titleCopy = title;
+  title = [(PLPlatterHeaderContentView *)self->_headerContentView title];
+  v5 = [titleCopy isEqual:title];
 
   if ((v5 & 1) == 0)
   {
     [(PLExpandedPlatterView *)self _configureHeaderContentViewIfNecessary];
-    [(PLPlatterHeaderContentView *)self->_headerContentView setTitle:v6];
+    [(PLPlatterHeaderContentView *)self->_headerContentView setTitle:titleCopy];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView date];
-  v5 = [v6 isEqual:v4];
+  dateCopy = date;
+  date = [(PLPlatterHeaderContentView *)self->_headerContentView date];
+  v5 = [dateCopy isEqual:date];
 
   if ((v5 & 1) == 0)
   {
     [(PLExpandedPlatterView *)self _configureHeaderContentViewIfNecessary];
-    [(PLPlatterHeaderContentView *)self->_headerContentView setDate:v6];
+    [(PLPlatterHeaderContentView *)self->_headerContentView setDate:dateCopy];
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  v3 = a3;
-  if ([(PLPlatterHeaderContentView *)self->_headerContentView isDateAllDay]!= a3)
+  dayCopy = day;
+  if ([(PLPlatterHeaderContentView *)self->_headerContentView isDateAllDay]!= day)
   {
     [(PLExpandedPlatterView *)self _configureHeaderContentViewIfNecessary];
     headerContentView = self->_headerContentView;
 
-    [(PLPlatterHeaderContentView *)headerContentView setDateAllDay:v3];
+    [(PLPlatterHeaderContentView *)headerContentView setDateAllDay:dayCopy];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
-  v4 = [(PLPlatterHeaderContentView *)self->_headerContentView timeZone];
-  v5 = [v6 isEqual:v4];
+  zoneCopy = zone;
+  timeZone = [(PLPlatterHeaderContentView *)self->_headerContentView timeZone];
+  v5 = [zoneCopy isEqual:timeZone];
 
   if ((v5 & 1) == 0)
   {
     [(PLExpandedPlatterView *)self _configureHeaderContentViewIfNecessary];
-    [(PLPlatterHeaderContentView *)self->_headerContentView setTimeZone:v6];
+    [(PLPlatterHeaderContentView *)self->_headerContentView setTimeZone:zoneCopy];
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if ([(PLPlatterHeaderContentView *)self->_headerContentView dateFormatStyle]!= a3)
+  if ([(PLPlatterHeaderContentView *)self->_headerContentView dateFormatStyle]!= style)
   {
     headerContentView = self->_headerContentView;
 
-    [(PLPlatterHeaderContentView *)headerContentView setDateFormatStyle:a3];
+    [(PLPlatterHeaderContentView *)headerContentView setDateFormatStyle:style];
   }
 }
 
@@ -911,10 +911,10 @@
 
 - (UIEdgeInsets)dismissControlInsets
 {
-  v3 = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
   v4 = self->_dismissControlPosition == 0;
   v5 = 0.0;
-  if ((v3 & v4) != 0)
+  if ((_shouldReverseLayoutDirection & v4) != 0)
   {
     v6 = 12.0;
   }
@@ -924,7 +924,7 @@
     v6 = 0.0;
   }
 
-  if ((v3 & v4) != 0)
+  if ((_shouldReverseLayoutDirection & v4) != 0)
   {
     v7 = 0.0;
   }
@@ -942,33 +942,33 @@
   return result;
 }
 
-- (void)setDismissControlPosition:(int64_t)a3
+- (void)setDismissControlPosition:(int64_t)position
 {
-  if (self->_dismissControlPosition != a3)
+  if (self->_dismissControlPosition != position)
   {
-    self->_dismissControlPosition = a3;
+    self->_dismissControlPosition = position;
     [(PLExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomContentSize:(CGSize)a3
+- (void)setCustomContentSize:(CGSize)size
 {
-  if (a3.width != self->_customContentSize.width || a3.height != self->_customContentSize.height)
+  if (size.width != self->_customContentSize.width || size.height != self->_customContentSize.height)
   {
-    self->_customContentSize = a3;
+    self->_customContentSize = size;
     [(PLExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setActionsHidden:(BOOL)a3
+- (void)setActionsHidden:(BOOL)hidden
 {
-  if (self->_actionsHidden != a3)
+  if (self->_actionsHidden != hidden)
   {
     v13 = v7;
     v14 = v3;
-    self->_actionsHidden = a3;
+    self->_actionsHidden = hidden;
     actionsBackgroundView = self->_actionsBackgroundView;
-    if (a3)
+    if (hidden)
     {
       v11 = 0.0;
     }
@@ -985,20 +985,20 @@
   }
 }
 
-- (void)setDismissControlEnabled:(BOOL)a3
+- (void)setDismissControlEnabled:(BOOL)enabled
 {
-  if (self->_dismissControlEnabled != a3)
+  if (self->_dismissControlEnabled != enabled)
   {
-    self->_dismissControlEnabled = a3;
+    self->_dismissControlEnabled = enabled;
     [(PLExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setHeaderEnabled:(BOOL)a3
+- (void)setHeaderEnabled:(BOOL)enabled
 {
-  if (self->_headerEnabled != a3)
+  if (self->_headerEnabled != enabled)
   {
-    self->_headerEnabled = a3;
+    self->_headerEnabled = enabled;
     [(PLExpandedPlatterView *)self setNeedsLayout];
   }
 }
@@ -1019,26 +1019,26 @@
   return result;
 }
 
-- (CGSize)actionsSizeThatFits:(CGSize)a3
+- (CGSize)actionsSizeThatFits:(CGSize)fits
 {
-  [(PLExpandedPlatterView *)self _actionsSizeThatFits:1 includingPadding:a3.width, a3.height];
+  [(PLExpandedPlatterView *)self _actionsSizeThatFits:1 includingPadding:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGRect)frameForPlatterFrame:(CGRect)a3
+- (CGRect)frameForPlatterFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PLExpandedPlatterView *)self _dismissControlTotalOutset];
   v9 = v8;
   v11 = v10;
-  v12 = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
   v13 = 0.0;
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v13 = v11;
   }
@@ -1057,18 +1057,18 @@
   return result;
 }
 
-- (CGRect)platterFrameForFrame:(CGRect)a3
+- (CGRect)platterFrameForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PLExpandedPlatterView *)self _dismissControlTotalOutset];
   v9 = v8;
   v11 = v10;
-  v12 = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PLExpandedPlatterView *)self _shouldReverseLayoutDirection];
   v13 = 0.0;
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v13 = v11;
   }
@@ -1087,24 +1087,24 @@
   return result;
 }
 
-- (void)setInterfaceActions:(id)a3
+- (void)setInterfaceActions:(id)actions
 {
-  v6 = a3;
-  v4 = [(PLExpandedPlatterView *)self interfaceActions];
-  v5 = [v6 isEqual:v4];
+  actionsCopy = actions;
+  interfaceActions = [(PLExpandedPlatterView *)self interfaceActions];
+  v5 = [actionsCopy isEqual:interfaceActions];
 
   if ((v5 & 1) == 0)
   {
-    [(PLExpandedPlatterView *)self _configureActionViewIfNecessaryWithActions:v6];
-    [(PLInterfaceActionGroupView *)self->_actionsView setActions:v6];
+    [(PLExpandedPlatterView *)self _configureActionViewIfNecessaryWithActions:actionsCopy];
+    [(PLInterfaceActionGroupView *)self->_actionsView setActions:actionsCopy];
     [(PLExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)_sizeThatFitsContentExcludingActionsWithSize:(CGSize)a3
+- (CGSize)_sizeThatFitsContentExcludingActionsWithSize:(CGSize)size
 {
-  width = a3.width;
-  [(PLExpandedPlatterView *)self _contentSizeThatFitsContentWithSizeExcludingActions:a3.width, a3.height];
+  width = size.width;
+  [(PLExpandedPlatterView *)self _contentSizeThatFitsContentWithSizeExcludingActions:size.width, size.height];
   v6 = v5;
   v8 = v7;
   if ([(PLExpandedPlatterView *)self isDismissControlEnabled])
@@ -1128,20 +1128,20 @@
   return result;
 }
 
-- (CGSize)_actionsSizeThatFits:(CGSize)a3 includingPadding:(BOOL)a4
+- (CGSize)_actionsSizeThatFits:(CGSize)fits includingPadding:(BOOL)padding
 {
   actionsView = self->_actionsView;
   if (actionsView)
   {
-    v5 = a4;
-    width = a3.width;
-    [(PLInterfaceActionGroupView *)actionsView sizeThatFits:a3.width, a3.height];
+    paddingCopy = padding;
+    width = fits.width;
+    [(PLInterfaceActionGroupView *)actionsView sizeThatFits:fits.width, fits.height];
     if (v7 < width)
     {
       v7 = width;
     }
 
-    if (v5)
+    if (paddingCopy)
     {
       v8 = v8 + 8.0;
     }
@@ -1168,8 +1168,8 @@
     headerBackgroundView = self->_headerBackgroundView;
     self->_headerBackgroundView = v5;
 
-    v7 = [(UIView *)self->_headerBackgroundView layer];
-    [v7 setMaskedCorners:3];
+    layer = [(UIView *)self->_headerBackgroundView layer];
+    [layer setMaskedCorners:3];
 
     [(UIView *)self->_headerBackgroundView _setContinuousCornerRadius:13.0];
     [(PLExpandedPlatterView *)self _configureHeaderContainerViewIfNecessary];
@@ -1190,12 +1190,12 @@
     self->_headerTintView = v10;
 
     v12 = self->_headerTintView;
-    v13 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(UIView *)v12 setBackgroundColor:systemBackgroundColor];
 
     [(UIView *)self->_headerTintView setAlpha:0.65];
-    v14 = [(UIView *)self->_headerTintView layer];
-    [v14 setMaskedCorners:3];
+    layer2 = [(UIView *)self->_headerTintView layer];
+    [layer2 setMaskedCorners:3];
 
     [(UIView *)self->_headerTintView _setContinuousCornerRadius:13.0];
     [(UIView *)self->_headerContainerView insertSubview:self->_headerTintView aboveSubview:self->_headerBackgroundView];
@@ -1220,11 +1220,11 @@
   return result;
 }
 
-- (void)_updateHeaderKeyLineAlphaIfNecessaryAnimated:(BOOL)a3
+- (void)_updateHeaderKeyLineAlphaIfNecessaryAnimated:(BOOL)animated
 {
   if (self->_headerKeyLineView)
   {
-    v3 = a3;
+    animatedCopy = animated;
     [(PLExpandedPlatterView *)self _headerKeyLineAlphaForContentOffset];
     v6 = v5;
     [(UIView *)self->_headerKeyLineView alpha];
@@ -1238,7 +1238,7 @@
       *&v10[5] = v6;
       v8 = MEMORY[0x223D70F60](v10);
       v9 = v8;
-      if (v3)
+      if (animatedCopy)
       {
         [MEMORY[0x277D75D18] animateWithDuration:v8 animations:0.25];
       }
@@ -1260,11 +1260,11 @@
     self->_headerBackgroundView = v3;
 
     v5 = self->_headerBackgroundView;
-    v6 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(UIView *)v5 setBackgroundColor:_systemBackgroundColor];
 
-    v7 = [(UIView *)self->_headerBackgroundView layer];
-    [v7 setMaskedCorners:3];
+    layer = [(UIView *)self->_headerBackgroundView layer];
+    [layer setMaskedCorners:3];
 
     [(UIView *)self->_headerBackgroundView _setContinuousCornerRadius:13.0];
     [(PLExpandedPlatterView *)self _configureHeaderContainerViewIfNecessary];
@@ -1285,8 +1285,8 @@
     self->_headerKeyLineView = v10;
 
     v12 = self->_headerKeyLineView;
-    v13 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v12 setBackgroundColor:separatorColor];
 
     [(PLExpandedPlatterView *)self _updateHeaderKeyLineAlphaIfNecessaryAnimated:0];
     [(UIView *)self->_headerContainerView addSubview:self->_headerKeyLineView];
@@ -1311,9 +1311,9 @@
   }
 }
 
-- (void)_configureActionsBackgroundViewIfNecessaryWithActions:(id)a3
+- (void)_configureActionsBackgroundViewIfNecessaryWithActions:(id)actions
 {
-  if (!self->_actionsBackgroundView && [a3 count])
+  if (!self->_actionsBackgroundView && [actions count])
   {
     [(PLExpandedPlatterView *)self _configureScrollViewContentViewIfNecessary];
     v4 = [MEMORY[0x277D26718] materialViewWithRecipe:1 options:1];
@@ -1332,12 +1332,12 @@
   }
 }
 
-- (void)_configureActionViewIfNecessaryWithActions:(id)a3
+- (void)_configureActionViewIfNecessaryWithActions:(id)actions
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_actionsView || ![v4 count])
+  actionsCopy = actions;
+  v5 = actionsCopy;
+  if (self->_actionsView || ![actionsCopy count])
   {
     if (![v5 count])
     {
@@ -1363,8 +1363,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(PLInterfaceActionGroupView *)self->_actionsView requiredVisualStyleCategories];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    requiredVisualStyleCategories = [(PLInterfaceActionGroupView *)self->_actionsView requiredVisualStyleCategories];
+    v11 = [requiredVisualStyleCategories countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1376,19 +1376,19 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * v14) integerValue];
+          integerValue = [*(*(&v20 + 1) + 8 * v14) integerValue];
           v16 = self->_actionsView;
-          v17 = [(MTMaterialView *)self->_actionsBackgroundView visualStylingProviderForCategory:v15];
-          [(PLInterfaceActionGroupView *)v16 setVisualStylingProvider:v17 forCategory:v15];
+          v17 = [(MTMaterialView *)self->_actionsBackgroundView visualStylingProviderForCategory:integerValue];
+          [(PLInterfaceActionGroupView *)v16 setVisualStylingProvider:v17 forCategory:integerValue];
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [requiredVisualStyleCategories countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v12);
@@ -1441,12 +1441,12 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
   return result;
 }
 
-- (void)_layoutHeaderContainerViewWithFrame:(CGRect)a3
+- (void)_layoutHeaderContainerViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(PLExpandedPlatterView *)self isHeaderEnabled])
   {
     headerContainerView = self->_headerContainerView;
@@ -1455,12 +1455,12 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
   }
 }
 
-- (void)_layoutHeaderContentViewWithFrame:(CGRect)a3
+- (void)_layoutHeaderContentViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(PLExpandedPlatterView *)self isHeaderEnabled])
   {
     [(PLPlatterHeaderContentView *)self->_headerContentView setFrame:x, y, width, height];
@@ -1480,12 +1480,12 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
   }
 }
 
-- (void)_layoutHeaderBackgroundViewsWithFrame:(CGRect)a3
+- (void)_layoutHeaderBackgroundViewsWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(PLExpandedPlatterView *)self isHeaderEnabled])
   {
     headerBackgroundView = self->_headerBackgroundView;
@@ -1519,14 +1519,14 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
   }
 }
 
-- (void)_reduceTransparencyDidChange:(id)a3
+- (void)_reduceTransparencyDidChange:(id)change
 {
   [(PLExpandedPlatterView *)self _invalidateHeaderBackgroundViews];
 
   [(PLExpandedPlatterView *)self setNeedsLayout];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = PLExpandedPlatterView;
@@ -1535,7 +1535,7 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
     v5 = 1;
   }
 
-  else if ([(UIView *)self pl_isScrollViewDelegateMethod:a3])
+  else if ([(UIView *)self pl_isScrollViewDelegateMethod:selector])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -1549,29 +1549,29 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
   return v5 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if (-[UIView pl_isScrollViewDelegateMethod:](self, "pl_isScrollViewDelegateMethod:", [v4 selector]))
+  invocationCopy = invocation;
+  if (-[UIView pl_isScrollViewDelegateMethod:](self, "pl_isScrollViewDelegateMethod:", [invocationCopy selector]))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v4 invokeWithTarget:WeakRetained];
+      [invocationCopy invokeWithTarget:WeakRetained];
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = PLExpandedPlatterView;
-      [(PLExpandedPlatterView *)&v6 forwardInvocation:v4];
+      [(PLExpandedPlatterView *)&v6 forwardInvocation:invocationCopy];
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(PLExpandedPlatterView *)self _configureHeaderBackgroundViewsIfCanScroll];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1580,10 +1580,10 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
   v10[4] = self;
   [MEMORY[0x277D75D18] performWithoutAnimation:v10];
   [(PLExpandedPlatterView *)self _layoutTopRubberbandingView];
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   v6 = v5;
-  [v4 contentInset];
-  [v4 setClipsToBounds:v6 > -v7];
+  [scrollCopy contentInset];
+  [scrollCopy setClipsToBounds:v6 > -v7];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -1598,7 +1598,7 @@ uint64_t __68__PLExpandedPlatterView__configureActionViewIfNecessaryWithActions_
   [(PLExpandedPlatterView *)self _updateHeaderKeyLineAlphaIfNecessaryAnimated:v9];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scrollViewDidScroll:v4];
+    [WeakRetained scrollViewDidScroll:scrollCopy];
   }
 }
 
@@ -1610,19 +1610,19 @@ uint64_t __45__PLExpandedPlatterView_scrollViewDidScroll___block_invoke(uint64_t
   return [v1 _layoutHeaderBackgroundViewsWithFrame:?];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4)
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  if (decelerateCopy)
   {
-    [v7 setClipsToBounds:1];
+    [draggingCopy setClipsToBounds:1];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scrollViewDidEndDragging:v7 willDecelerate:v4];
+    [WeakRetained scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 }
 
@@ -1634,16 +1634,16 @@ uint64_t __45__PLExpandedPlatterView_scrollViewDidScroll___block_invoke(uint64_t
   return [(PLPlatterHeaderContentView *)headerContentView adjustsFontForContentSizeCategory];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   [(PLExpandedPlatterView *)self _configureHeaderContentViewIfNecessary];
   headerContentView = self->_headerContentView;
 
-  [(PLPlatterHeaderContentView *)headerContentView setAdjustsFontForContentSizeCategory:v3];
+  [(PLPlatterHeaderContentView *)headerContentView setAdjustsFontForContentSizeCategory:categoryCopy];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self->_dismissControl];
   v5 = [MEMORY[0x277D75878] effectWithPreview:v4];
@@ -1667,13 +1667,13 @@ uint64_t __45__PLExpandedPlatterView_scrollViewDidScroll___block_invoke(uint64_t
   self->_customContentView = v3;
 
   v5 = self->_customContentView;
-  v6 = [MEMORY[0x277D75348] _systemBackgroundColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+  [(UIView *)v5 setBackgroundColor:_systemBackgroundColor];
 
   [(UIView *)self->_customContentView setClipsToBounds:1];
   [(UIView *)self->_customContentView setAutoresizesSubviews:1];
-  v7 = [(UIView *)self->_customContentView layer];
-  [v7 setMaskedCorners:12];
+  layer = [(UIView *)self->_customContentView layer];
+  [layer setMaskedCorners:12];
 
   [(UIView *)self->_customContentView _setContinuousCornerRadius:13.0];
   mainContentView = self->_mainContentView;
@@ -1726,11 +1726,11 @@ uint64_t __45__PLExpandedPlatterView_scrollViewDidScroll___block_invoke(uint64_t
   return result;
 }
 
-- (CGSize)_flexibleAreaSizeForBounds:(CGRect)a3
+- (CGSize)_flexibleAreaSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(PLExpandedPlatterView *)self _dismissControlTotalOutset:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(PLExpandedPlatterView *)self _dismissControlTotalOutset:bounds.origin.x];
   v7 = v6;
   [(PLPlatterHeaderContentView *)self->_headerContentView sizeThatFits:width, height];
   v9 = v8;

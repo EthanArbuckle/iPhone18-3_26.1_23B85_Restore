@@ -1,13 +1,13 @@
 @interface ANAnnouncementStatePublisher
 - (ANAnnouncementStatePublisher)init;
-- (BOOL)_setName:(id)a3;
-- (BOOL)_setState:(unint64_t)a3 withToken:(int)a4;
-- (void)_publishState:(unint64_t)a3 name:(id)a4;
+- (BOOL)_setName:(id)name;
+- (BOOL)_setState:(unint64_t)state withToken:(int)token;
+- (void)_publishState:(unint64_t)state name:(id)name;
 - (void)_register;
 - (void)_unregister;
 - (void)dealloc;
 - (void)invalidate;
-- (void)publishState:(unint64_t)a3 name:(id)a4;
+- (void)publishState:(unint64_t)state name:(id)name;
 @end
 
 @implementation ANAnnouncementStatePublisher
@@ -42,9 +42,9 @@
   return v2;
 }
 
-- (void)publishState:(unint64_t)a3 name:(id)a4
+- (void)publishState:(unint64_t)state name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -52,9 +52,9 @@
   v9[2] = __50__ANAnnouncementStatePublisher_publishState_name___block_invoke;
   v9[3] = &unk_278C876C0;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
-  v10 = v6;
-  v8 = v6;
+  v11[1] = state;
+  v10 = nameCopy;
+  v8 = nameCopy;
   dispatch_async(queue, v9);
 
   objc_destroyWeak(v11);
@@ -78,15 +78,15 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
   dispatch_async(queue, block);
 }
 
-- (void)_publishState:(unint64_t)a3 name:(id)a4
+- (void)_publishState:(unint64_t)state name:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(ANAnnouncementStatePublisher *)self _setName:v6])
+  if ([(ANAnnouncementStatePublisher *)self _setName:nameCopy])
   {
     [(ANAnnouncementStatePublisher *)self _register];
-    if (self->_registrationToken != -1 && [(ANAnnouncementStatePublisher *)self _setState:a3 withToken:?])
+    if (self->_registrationToken != -1 && [(ANAnnouncementStatePublisher *)self _setState:state withToken:?])
     {
       notify_post(self->_name);
       v7 = ANLogHandleAnnouncementStatePublisher();
@@ -95,9 +95,9 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
         v10 = 138412802;
         v11 = &stru_2851BDB18;
         v12 = 2048;
-        v13 = a3;
+        stateCopy = state;
         v14 = 2112;
-        v15 = v6;
+        v15 = nameCopy;
         _os_log_impl(&dword_23F525000, v7, OS_LOG_TYPE_DEFAULT, "%@Publish state: %lu for name: %@", &v10, 0x20u);
       }
     }
@@ -113,7 +113,7 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
       v10 = 138412546;
       v11 = &stru_2851BDB18;
       v12 = 2112;
-      v13 = v6;
+      stateCopy = nameCopy;
       _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_ERROR, "%@Error while setting name: %@.", &v10, 0x16u);
     }
   }
@@ -121,10 +121,10 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_setName:(id)a3
+- (BOOL)_setName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   [(ANAnnouncementStatePublisher *)self _unregister];
   name = self->_name;
   if (name)
@@ -133,10 +133,10 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
     self->_name = 0;
   }
 
-  v6 = [v4 maximumLengthOfBytesUsingEncoding:4];
+  v6 = [nameCopy maximumLengthOfBytesUsingEncoding:4];
   v7 = malloc_type_malloc(v6 + 1, 0x57D6DC50uLL);
   self->_name = v7;
-  v8 = [v4 getCString:v7 maxLength:v6 + 1 encoding:4];
+  v8 = [nameCopy getCString:v7 maxLength:v6 + 1 encoding:4];
   if ((v8 & 1) == 0)
   {
     v9 = ANLogHandleAnnouncementStatePublisher();
@@ -145,7 +145,7 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
       v12 = 138412546;
       v13 = &stru_2851BDB18;
       v14 = 2112;
-      v15 = v4;
+      v15 = nameCopy;
       _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_ERROR, "%@Unable to get C string of name from %@.", &v12, 0x16u);
     }
   }
@@ -154,10 +154,10 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
   return v8;
 }
 
-- (BOOL)_setState:(unint64_t)a3 withToken:(int)a4
+- (BOOL)_setState:(unint64_t)state withToken:(int)token
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = notify_set_state(a4, a3);
+  v7 = notify_set_state(token, state);
   if (v7)
   {
     v8 = ANLogHandleAnnouncementStatePublisher();
@@ -167,11 +167,11 @@ void __50__ANAnnouncementStatePublisher_publishState_name___block_invoke(uint64_
       v13 = 138413314;
       v14 = &stru_2851BDB18;
       v15 = 2048;
-      v16 = a3;
+      stateCopy = state;
       v17 = 2080;
       v18 = name;
       v19 = 1024;
-      v20 = a4;
+      tokenCopy = token;
       v21 = 1024;
       v22 = v7;
       _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_ERROR, "%@Failed to set state to %lu of %s with token %d (status = %u).", &v13, 0x2Cu);

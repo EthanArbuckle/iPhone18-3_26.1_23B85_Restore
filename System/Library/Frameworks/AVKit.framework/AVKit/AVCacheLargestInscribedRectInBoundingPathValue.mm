@@ -1,5 +1,5 @@
 @interface AVCacheLargestInscribedRectInBoundingPathValue
-- (AVCacheLargestInscribedRectInBoundingPathValue)initWithLargestInscribedRect:(CGRect)a3;
+- (AVCacheLargestInscribedRectInBoundingPathValue)initWithLargestInscribedRect:(CGRect)rect;
 - (CGRect)largestInscribedRect;
 @end
 
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (AVCacheLargestInscribedRectInBoundingPathValue)initWithLargestInscribedRect:(CGRect)a3
+- (AVCacheLargestInscribedRectInBoundingPathValue)initWithLargestInscribedRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10.receiver = self;
   v10.super_class = AVCacheLargestInscribedRectInBoundingPathValue;
   v7 = [(AVCacheLargestInscribedRectInBoundingPathValue *)&v10 init];

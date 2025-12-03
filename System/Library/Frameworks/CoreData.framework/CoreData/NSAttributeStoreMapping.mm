@@ -1,16 +1,16 @@
 @interface NSAttributeStoreMapping
-- (BOOL)isEqual:(id)a3;
-- (NSAttributeStoreMapping)initWithProperty:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSAttributeStoreMapping)initWithProperty:(id)property;
 - (id)sqlType;
 @end
 
 @implementation NSAttributeStoreMapping
 
-- (NSAttributeStoreMapping)initWithProperty:(id)a3
+- (NSAttributeStoreMapping)initWithProperty:(id)property
 {
   v6.receiver = self;
   v6.super_class = NSAttributeStoreMapping;
-  v3 = [(NSPropertyStoreMapping *)&v6 initWithProperty:a3];
+  v3 = [(NSPropertyStoreMapping *)&v6 initWithProperty:property];
   v4 = v3;
   if (v3)
   {
@@ -22,15 +22,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v12.receiver = self;
   v12.super_class = NSAttributeStoreMapping;
   v5 = [(NSPropertyStoreMapping *)&v12 isEqual:?];
   if (v5)
   {
-    v6 = [(NSAttributeStoreMapping *)self externalType];
-    if (v6 != [a3 externalType])
+    externalType = [(NSAttributeStoreMapping *)self externalType];
+    if (externalType != [equal externalType])
     {
       goto LABEL_11;
     }
@@ -38,10 +38,10 @@
     if (self)
     {
       externalPrecision = self->_externalPrecision;
-      if (a3)
+      if (equal)
       {
 LABEL_5:
-        v8 = *(a3 + 7);
+        v8 = *(equal + 7);
         goto LABEL_6;
       }
     }
@@ -49,7 +49,7 @@ LABEL_5:
     else
     {
       externalPrecision = 0;
-      if (a3)
+      if (equal)
       {
         goto LABEL_5;
       }
@@ -62,10 +62,10 @@ LABEL_6:
       if (self)
       {
         externalScale = self->_externalScale;
-        if (a3)
+        if (equal)
         {
 LABEL_9:
-          v10 = *(a3 + 8);
+          v10 = *(equal + 8);
 LABEL_10:
           LOBYTE(v5) = externalScale == v10;
           return v5;
@@ -75,7 +75,7 @@ LABEL_10:
       else
       {
         externalScale = 0;
-        if (a3)
+        if (equal)
         {
           goto LABEL_9;
         }
@@ -94,17 +94,17 @@ LABEL_11:
 
 - (id)sqlType
 {
-  v2 = [(NSAttributeStoreMapping *)self externalType];
-  if (v2 <= 699)
+  externalType = [(NSAttributeStoreMapping *)self externalType];
+  if (externalType <= 699)
   {
-    if (v2 > 399)
+    if (externalType > 399)
     {
-      if (v2 == 400)
+      if (externalType == 400)
       {
         return @"NUMERIC";
       }
 
-      if (v2 == 500 || v2 == 600)
+      if (externalType == 500 || externalType == 600)
       {
         return @"DOUBLE";
       }
@@ -113,7 +113,7 @@ LABEL_11:
     else
     {
       v3 = @"INTEGER";
-      if (v2 == 100 || v2 == 200 || v2 == 300)
+      if (externalType == 100 || externalType == 200 || externalType == 300)
       {
         return v3;
       }
@@ -123,11 +123,11 @@ LABEL_27:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Undefined attribute type." userInfo:0]);
   }
 
-  if (v2 > 999)
+  if (externalType > 999)
   {
-    if (v2 <= 1199)
+    if (externalType <= 1199)
     {
-      if (v2 != 1000 && v2 != 1100)
+      if (externalType != 1000 && externalType != 1100)
       {
         goto LABEL_27;
       }
@@ -135,9 +135,9 @@ LABEL_27:
       return @"BLOB";
     }
 
-    if (v2 != 1200)
+    if (externalType != 1200)
     {
-      if (v2 != 1800)
+      if (externalType != 1800)
       {
         goto LABEL_27;
       }
@@ -148,17 +148,17 @@ LABEL_27:
     return @"TEXT";
   }
 
-  if (v2 == 700)
+  if (externalType == 700)
   {
     return @"TEXT";
   }
 
-  if (v2 == 800)
+  if (externalType == 800)
   {
     return @"BOOLEAN";
   }
 
-  if (v2 != 900)
+  if (externalType != 900)
   {
     goto LABEL_27;
   }

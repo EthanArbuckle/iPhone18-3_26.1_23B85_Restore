@@ -2,36 +2,36 @@
 - (CGPoint)contentAnchorPoint;
 - (CGPoint)offset;
 - (CGPoint)sceneAnchorPoint;
-- (ICPillOrnamentViewController)initWithRootViewController:(id)a3 contentAnchorPoint:(CGPoint)a4 sceneAnchorPoint:(CGPoint)a5 offset:(CGPoint)a6 cornerRadius:(double)a7;
+- (ICPillOrnamentViewController)initWithRootViewController:(id)controller contentAnchorPoint:(CGPoint)point sceneAnchorPoint:(CGPoint)anchorPoint offset:(CGPoint)offset cornerRadius:(double)radius;
 - (void)loadView;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation ICPillOrnamentViewController
 
-- (ICPillOrnamentViewController)initWithRootViewController:(id)a3 contentAnchorPoint:(CGPoint)a4 sceneAnchorPoint:(CGPoint)a5 offset:(CGPoint)a6 cornerRadius:(double)a7
+- (ICPillOrnamentViewController)initWithRootViewController:(id)controller contentAnchorPoint:(CGPoint)point sceneAnchorPoint:(CGPoint)anchorPoint offset:(CGPoint)offset cornerRadius:(double)radius
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  v12 = a4.y;
-  v13 = a4.x;
-  v16 = a3;
+  y = offset.y;
+  x = offset.x;
+  v10 = anchorPoint.y;
+  v11 = anchorPoint.x;
+  v12 = point.y;
+  v13 = point.x;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = ICPillOrnamentViewController;
   v17 = [(ICPillOrnamentViewController *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_rootViewController, a3);
+    objc_storeStrong(&v17->_rootViewController, controller);
     v18->_contentAnchorPoint.x = v13;
     v18->_contentAnchorPoint.y = v12;
     v18->_sceneAnchorPoint.x = v11;
     v18->_sceneAnchorPoint.y = v10;
     v18->_offset.x = x;
     v18->_offset.y = y;
-    v18->_cornerRadius = a7;
+    v18->_cornerRadius = radius;
     v19 = objc_alloc_init(MEMORY[0x1E69DD250]);
     contentView = v18->_contentView;
     v18->_contentView = v19;
@@ -42,15 +42,15 @@
 
 - (void)loadView
 {
-  v3 = [(ICPillOrnamentViewController *)self contentView];
-  [(ICPillOrnamentViewController *)self setView:v3];
+  contentView = [(ICPillOrnamentViewController *)self contentView];
+  [(ICPillOrnamentViewController *)self setView:contentView];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
   v3.receiver = self;
   v3.super_class = ICPillOrnamentViewController;
-  [(ICPillOrnamentViewController *)&v3 setPreferredContentSize:a3.width, a3.height];
+  [(ICPillOrnamentViewController *)&v3 setPreferredContentSize:size.width, size.height];
 }
 
 - (CGPoint)contentAnchorPoint

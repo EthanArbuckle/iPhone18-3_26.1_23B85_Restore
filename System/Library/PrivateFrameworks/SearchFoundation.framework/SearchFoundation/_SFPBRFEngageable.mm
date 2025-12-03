@@ -1,47 +1,47 @@
 @interface _SFPBRFEngageable
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (_SFPBCommandReference)command_reference;
-- (_SFPBRFEngageable)initWithDictionary:(id)a3;
-- (_SFPBRFEngageable)initWithFacade:(id)a3;
-- (_SFPBRFEngageable)initWithJSON:(id)a3;
+- (_SFPBRFEngageable)initWithDictionary:(id)dictionary;
+- (_SFPBRFEngageable)initWithFacade:(id)facade;
+- (_SFPBRFEngageable)initWithJSON:(id)n;
 - (_SFPBRFPreviewList)preview_list;
 - (id)dictionaryRepresentation;
-- (void)setCommand_reference:(id)a3;
-- (void)setPreview_list:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCommand_reference:(id)command_reference;
+- (void)setPreview_list:(id)preview_list;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFEngageable
 
-- (_SFPBRFEngageable)initWithFacade:(id)a3
+- (_SFPBRFEngageable)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFEngageable *)self init];
   if (v5)
   {
-    if ([v4 hasCommand_reference])
+    if ([facadeCopy hasCommand_reference])
     {
-      v6 = [v4 command_reference];
+      command_reference = [facadeCopy command_reference];
 
-      if (v6)
+      if (command_reference)
       {
         v7 = [_SFPBCommandReference alloc];
-        v8 = [v4 command_reference];
-        v9 = [(_SFPBCommandReference *)v7 initWithFacade:v8];
+        command_reference2 = [facadeCopy command_reference];
+        v9 = [(_SFPBCommandReference *)v7 initWithFacade:command_reference2];
         [(_SFPBRFEngageable *)v5 setCommand_reference:v9];
       }
     }
 
-    if ([v4 hasPreview_list])
+    if ([facadeCopy hasPreview_list])
     {
-      v10 = [v4 preview_list];
+      preview_list = [facadeCopy preview_list];
 
-      if (v10)
+      if (preview_list)
       {
         v11 = [_SFPBRFPreviewList alloc];
-        v12 = [v4 preview_list];
-        v13 = [(_SFPBRFPreviewList *)v11 initWithFacade:v12];
+        preview_list2 = [facadeCopy preview_list];
+        v13 = [(_SFPBRFPreviewList *)v11 initWithFacade:preview_list2];
         [(_SFPBRFEngageable *)v5 setPreview_list:v13];
       }
     }
@@ -52,15 +52,15 @@
   return v5;
 }
 
-- (_SFPBRFEngageable)initWithDictionary:(id)a3
+- (_SFPBRFEngageable)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRFEngageable;
   v5 = [(_SFPBRFEngageable *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"commandReference"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"commandReference"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(_SFPBRFEngageable *)v5 setCommand_reference:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"previewList"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"previewList"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (_SFPBRFEngageable)initWithJSON:(id)a3
+- (_SFPBRFEngageable)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFEngageable *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFEngageable *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFEngageable *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,64 +118,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_command_reference)
   {
-    v4 = [(_SFPBRFEngageable *)self command_reference];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    command_reference = [(_SFPBRFEngageable *)self command_reference];
+    dictionaryRepresentation = [command_reference dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"commandReference"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"commandReference"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"commandReference"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"commandReference"];
     }
   }
 
   if (self->_preview_list)
   {
-    v7 = [(_SFPBRFEngageable *)self preview_list];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    preview_list = [(_SFPBRFEngageable *)self preview_list];
+    dictionaryRepresentation2 = [preview_list dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"previewList"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"previewList"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"previewList"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"previewList"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRFEngageable *)self command_reference];
-  v6 = [v4 command_reference];
-  if ((v5 != 0) == (v6 == 0))
+  command_reference = [(_SFPBRFEngageable *)self command_reference];
+  command_reference2 = [equalCopy command_reference];
+  if ((command_reference != 0) == (command_reference2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBRFEngageable *)self command_reference];
-  if (v7)
+  command_reference3 = [(_SFPBRFEngageable *)self command_reference];
+  if (command_reference3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFEngageable *)self command_reference];
-    v10 = [v4 command_reference];
-    v11 = [v9 isEqual:v10];
+    v8 = command_reference3;
+    command_reference4 = [(_SFPBRFEngageable *)self command_reference];
+    command_reference5 = [equalCopy command_reference];
+    v11 = [command_reference4 isEqual:command_reference5];
 
     if (!v11)
     {
@@ -187,12 +187,12 @@
   {
   }
 
-  v5 = [(_SFPBRFEngageable *)self preview_list];
-  v6 = [v4 preview_list];
-  if ((v5 != 0) != (v6 == 0))
+  command_reference = [(_SFPBRFEngageable *)self preview_list];
+  command_reference2 = [equalCopy preview_list];
+  if ((command_reference != 0) != (command_reference2 == 0))
   {
-    v12 = [(_SFPBRFEngageable *)self preview_list];
-    if (!v12)
+    preview_list = [(_SFPBRFEngageable *)self preview_list];
+    if (!preview_list)
     {
 
 LABEL_15:
@@ -200,10 +200,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRFEngageable *)self preview_list];
-    v15 = [v4 preview_list];
-    v16 = [v14 isEqual:v15];
+    v13 = preview_list;
+    preview_list2 = [(_SFPBRFEngageable *)self preview_list];
+    preview_list3 = [equalCopy preview_list];
+    v16 = [preview_list2 isEqual:preview_list3];
 
     if (v16)
     {
@@ -223,17 +223,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBRFEngageable *)self command_reference];
-  if (v4)
+  toCopy = to;
+  command_reference = [(_SFPBRFEngageable *)self command_reference];
+  if (command_reference)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFEngageable *)self preview_list];
-  if (v5)
+  preview_list = [(_SFPBRFEngageable *)self preview_list];
+  if (preview_list)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -254,15 +254,15 @@ LABEL_13:
   return v3;
 }
 
-- (void)setPreview_list:(id)a3
+- (void)setPreview_list:(id)preview_list
 {
-  v4 = a3;
+  preview_listCopy = preview_list;
   command_reference = self->_command_reference;
   self->_command_reference = 0;
 
-  self->_whichEngageable_Oneof = 2 * (v4 != 0);
+  self->_whichEngageable_Oneof = 2 * (preview_listCopy != 0);
   preview_list = self->_preview_list;
-  self->_preview_list = v4;
+  self->_preview_list = preview_listCopy;
 }
 
 - (_SFPBCommandReference)command_reference
@@ -280,15 +280,15 @@ LABEL_13:
   return v3;
 }
 
-- (void)setCommand_reference:(id)a3
+- (void)setCommand_reference:(id)command_reference
 {
-  v4 = a3;
+  command_referenceCopy = command_reference;
   preview_list = self->_preview_list;
   self->_preview_list = 0;
 
-  self->_whichEngageable_Oneof = v4 != 0;
+  self->_whichEngageable_Oneof = command_referenceCopy != 0;
   command_reference = self->_command_reference;
-  self->_command_reference = v4;
+  self->_command_reference = command_referenceCopy;
 }
 
 @end

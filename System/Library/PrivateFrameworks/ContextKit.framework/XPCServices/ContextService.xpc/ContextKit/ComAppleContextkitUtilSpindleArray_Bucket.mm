@@ -1,12 +1,12 @@
 @interface ComAppleContextkitUtilSpindleArray_Bucket
-- (BOOL)skipToEntryIdWithComAppleContextkitUtilSpindleArray_State:(id)a3 withInt:(int)a4;
-- (void)completeEntryWithComAppleContextkitUtilSpindleArray_State:(id)a3;
+- (BOOL)skipToEntryIdWithComAppleContextkitUtilSpindleArray_State:(id)state withInt:(int)int;
+- (void)completeEntryWithComAppleContextkitUtilSpindleArray_State:(id)state;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitUtilSpindleArray_Bucket
 
-- (void)completeEntryWithComAppleContextkitUtilSpindleArray_State:(id)a3
+- (void)completeEntryWithComAppleContextkitUtilSpindleArray_State:(id)state
 {
   self->startOffset_ = self->bytesRead_;
   do
@@ -33,9 +33,9 @@
   self->entryLength_ = self->bytesRead_ - self->startOffset_;
 }
 
-- (BOOL)skipToEntryIdWithComAppleContextkitUtilSpindleArray_State:(id)a3 withInt:(int)a4
+- (BOOL)skipToEntryIdWithComAppleContextkitUtilSpindleArray_State:(id)state withInt:(int)int
 {
-  if (self->currentEntryId_ < a4)
+  if (self->currentEntryId_ < int)
   {
     while (1)
     {
@@ -60,7 +60,7 @@ LABEL_20:
       {
         v10 = self->currentEntryId_ + 1;
         self->currentEntryId_ = v10;
-        if (v10 >= a4)
+        if (v10 >= int)
         {
           break;
         }

@@ -1,19 +1,19 @@
 @interface SBHIconShareSheetManager
 - (BOOL)areAnyAppIconShareSheetsShowing;
-- (CGRect)_iconViewFrameInScreenCoordinateSpace:(id)a3;
+- (CGRect)_iconViewFrameInScreenCoordinateSpace:(id)space;
 - (SBHIconManager)iconManager;
-- (SBHIconShareSheetManager)initWithIconManager:(id)a3;
+- (SBHIconShareSheetManager)initWithIconManager:(id)manager;
 - (SBIcon)iconWithShareSheetHidingForRotationAnimation;
 - (SBIconView)iconView;
-- (id)_shareSheetPresentationViewControllerForIconView:(id)a3;
-- (void)_appIconForceTouchControllerDidDismissNotification:(id)a3;
-- (void)_createFakeSourceViewForIconView:(id)a3;
-- (void)_presentShareSheet:(id)a3 forIconView:(id)a4;
-- (void)_queueShareSheetPresentation:(id)a3 forIconView:(id)a4;
+- (id)_shareSheetPresentationViewControllerForIconView:(id)view;
+- (void)_appIconForceTouchControllerDidDismissNotification:(id)notification;
+- (void)_createFakeSourceViewForIconView:(id)view;
+- (void)_presentShareSheet:(id)sheet forIconView:(id)view;
+- (void)_queueShareSheetPresentation:(id)presentation forIconView:(id)view;
 - (void)dealloc;
 - (void)dismissIconShareSheetsIfNecessaryAndCleanUp;
 - (void)hideIconShareSheetsIfAnyForRotationAnimation;
-- (void)presentShareSheetForIconView:(id)a3;
+- (void)presentShareSheetForIconView:(id)view;
 - (void)showIconShareSheetsIfAnyWereHiddenForRotationAnimation;
 @end
 
@@ -21,24 +21,24 @@
 
 - (BOOL)areAnyAppIconShareSheetsShowing
 {
-  v2 = [(SBHIconShareSheetManager *)self shareSheetViewController];
-  v3 = v2 != 0;
+  shareSheetViewController = [(SBHIconShareSheetManager *)self shareSheetViewController];
+  v3 = shareSheetViewController != 0;
 
   return v3;
 }
 
-- (SBHIconShareSheetManager)initWithIconManager:(id)a3
+- (SBHIconShareSheetManager)initWithIconManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBHIconShareSheetManager;
   v5 = [(SBHIconShareSheetManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconManager, v4);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__appIconForceTouchControllerDidDismissNotification_ name:@"SBIconViewDidDismissContextMenuNotification" object:0];
+    objc_storeWeak(&v5->_iconManager, managerCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__appIconForceTouchControllerDidDismissNotification_ name:@"SBIconViewDidDismissContextMenuNotification" object:0];
   }
 
   return v6;
@@ -46,8 +46,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBHIconShareSheetManager;
@@ -56,39 +56,39 @@
 
 - (void)dismissIconShareSheetsIfNecessaryAndCleanUp
 {
-  v3 = [(SBHIconShareSheetManager *)self fakeSourceView];
-  [v3 removeFromSuperview];
+  fakeSourceView = [(SBHIconShareSheetManager *)self fakeSourceView];
+  [fakeSourceView removeFromSuperview];
 
   [(SBHIconShareSheetManager *)self setFakeSourceView:0];
-  v5 = [(SBHIconShareSheetManager *)self shareSheetViewController];
-  v4 = [v5 presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  shareSheetViewController = [(SBHIconShareSheetManager *)self shareSheetViewController];
+  presentingViewController = [shareSheetViewController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
   [(SBHIconShareSheetManager *)self setShareSheetViewController:0];
   [(SBHIconShareSheetManager *)self setIconView:0];
 }
 
-- (void)presentShareSheetForIconView:(id)a3
+- (void)presentShareSheetForIconView:(id)view
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconShareSheetManager *)self iconManager];
-  v6 = [v4 icon];
-  v7 = [[SBHIconShareSheetActivityItemProvider alloc] initWithIconManager:v5 icon:v6];
+  viewCopy = view;
+  iconManager = [(SBHIconShareSheetManager *)self iconManager];
+  icon = [viewCopy icon];
+  v7 = [[SBHIconShareSheetActivityItemProvider alloc] initWithIconManager:iconManager icon:icon];
   v8 = objc_alloc(MEMORY[0x1E69CD9F8]);
   v21[0] = v7;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v10 = [v8 initWithActivityItems:v9 applicationActivities:0];
 
-  if ([v5 isFloatingDockSupported])
+  if ([iconManager isFloatingDockSupported])
   {
-    [(SBHIconShareSheetManager *)self _createFakeSourceViewForIconView:v4];
-    v11 = [(SBHIconShareSheetManager *)self fakeSourceView];
-    v12 = [v10 popoverPresentationController];
-    [v12 setSourceView:v11];
-    [v11 bounds];
-    [v12 setSourceRect:?];
-    [v12 setPermittedArrowDirections:15];
-    [v12 setCanOverlapSourceViewRect:1];
+    [(SBHIconShareSheetManager *)self _createFakeSourceViewForIconView:viewCopy];
+    fakeSourceView = [(SBHIconShareSheetManager *)self fakeSourceView];
+    popoverPresentationController = [v10 popoverPresentationController];
+    [popoverPresentationController setSourceView:fakeSourceView];
+    [fakeSourceView bounds];
+    [popoverPresentationController setSourceRect:?];
+    [popoverPresentationController setPermittedArrowDirections:15];
+    [popoverPresentationController setCanOverlapSourceViewRect:1];
   }
 
   objc_initWeak(&location, self);
@@ -100,7 +100,7 @@
   objc_copyWeak(&v17, &from);
   objc_copyWeak(&v18, &location);
   [v10 setCompletionWithItemsHandler:&v13];
-  [(SBHIconShareSheetManager *)self _queueShareSheetPresentation:v10 forIconView:v4, v13, v14, v15, v16];
+  [(SBHIconShareSheetManager *)self _queueShareSheetPresentation:v10 forIconView:viewCopy, v13, v14, v15, v16];
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v17);
   objc_destroyWeak(&from);
@@ -121,38 +121,38 @@ void __57__SBHIconShareSheetManager_presentShareSheetForIconView___block_invoke(
 
 - (void)hideIconShareSheetsIfAnyForRotationAnimation
 {
-  v3 = [(SBHIconShareSheetManager *)self areAnyAppIconShareSheetsShowing];
-  v4 = [(SBHIconShareSheetManager *)self iconShareSheetsAreHiddenForRotation];
-  if (v3 || !v4)
+  areAnyAppIconShareSheetsShowing = [(SBHIconShareSheetManager *)self areAnyAppIconShareSheetsShowing];
+  iconShareSheetsAreHiddenForRotation = [(SBHIconShareSheetManager *)self iconShareSheetsAreHiddenForRotation];
+  if (areAnyAppIconShareSheetsShowing || !iconShareSheetsAreHiddenForRotation)
   {
     [(SBHIconShareSheetManager *)self setIconShareSheetsAreHiddenForRotation:1];
-    v8 = [(SBHIconShareSheetManager *)self iconView];
-    v5 = [v8 icon];
-    v6 = [v8 location];
-    [(SBHIconShareSheetManager *)self setIconWithShareSheetHidingForRotationAnimation:v5];
-    [(SBHIconShareSheetManager *)self setLocationOfIconWithShareSheetHiddenForRotationAnimation:v6];
-    v7 = [(SBHIconShareSheetManager *)self fakeSourceView];
-    [v7 setFrame:{-10000.0, -10000.0, 100.0, 100.0}];
+    iconView = [(SBHIconShareSheetManager *)self iconView];
+    icon = [iconView icon];
+    location = [iconView location];
+    [(SBHIconShareSheetManager *)self setIconWithShareSheetHidingForRotationAnimation:icon];
+    [(SBHIconShareSheetManager *)self setLocationOfIconWithShareSheetHiddenForRotationAnimation:location];
+    fakeSourceView = [(SBHIconShareSheetManager *)self fakeSourceView];
+    [fakeSourceView setFrame:{-10000.0, -10000.0, 100.0, 100.0}];
   }
 }
 
 - (void)showIconShareSheetsIfAnyWereHiddenForRotationAnimation
 {
-  v3 = [(SBHIconShareSheetManager *)self areAnyAppIconShareSheetsShowing];
-  v4 = [(SBHIconShareSheetManager *)self iconShareSheetsAreHiddenForRotation];
-  if (v3 || v4)
+  areAnyAppIconShareSheetsShowing = [(SBHIconShareSheetManager *)self areAnyAppIconShareSheetsShowing];
+  iconShareSheetsAreHiddenForRotation = [(SBHIconShareSheetManager *)self iconShareSheetsAreHiddenForRotation];
+  if (areAnyAppIconShareSheetsShowing || iconShareSheetsAreHiddenForRotation)
   {
     [(SBHIconShareSheetManager *)self setIconShareSheetsAreHiddenForRotation:0];
-    v9 = [(SBHIconShareSheetManager *)self iconManager];
-    v5 = [(SBHIconShareSheetManager *)self iconWithShareSheetHidingForRotationAnimation];
-    v6 = [(SBHIconShareSheetManager *)self locationOfIconWithShareSheetHiddenForRotationAnimation];
-    v7 = [v9 iconViewForIcon:v5 location:v6];
+    iconManager = [(SBHIconShareSheetManager *)self iconManager];
+    iconWithShareSheetHidingForRotationAnimation = [(SBHIconShareSheetManager *)self iconWithShareSheetHidingForRotationAnimation];
+    locationOfIconWithShareSheetHiddenForRotationAnimation = [(SBHIconShareSheetManager *)self locationOfIconWithShareSheetHiddenForRotationAnimation];
+    v7 = [iconManager iconViewForIcon:iconWithShareSheetHidingForRotationAnimation location:locationOfIconWithShareSheetHiddenForRotationAnimation];
     if (v7)
     {
       [(SBHIconShareSheetManager *)self setIconView:v7];
-      v8 = [(SBHIconShareSheetManager *)self fakeSourceView];
+      fakeSourceView = [(SBHIconShareSheetManager *)self fakeSourceView];
       [(SBHIconShareSheetManager *)self _iconViewFrameInScreenCoordinateSpace:v7];
-      [v8 setFrame:?];
+      [fakeSourceView setFrame:?];
 
       [(SBHIconShareSheetManager *)self setIconWithShareSheetHidingForRotationAnimation:0];
       [(SBHIconShareSheetManager *)self setLocationOfIconWithShareSheetHiddenForRotationAnimation:0];
@@ -165,60 +165,60 @@ void __57__SBHIconShareSheetManager_presentShareSheetForIconView___block_invoke(
   }
 }
 
-- (id)_shareSheetPresentationViewControllerForIconView:(id)a3
+- (id)_shareSheetPresentationViewControllerForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconShareSheetManager *)self iconManager];
-  if ([v5 isFloatingDockSupported])
+  viewCopy = view;
+  iconManager = [(SBHIconShareSheetManager *)self iconManager];
+  if ([iconManager isFloatingDockSupported])
   {
-    v6 = [v5 floatingDockViewControllerForView:v4];
+    rootViewController = [iconManager floatingDockViewControllerForView:viewCopy];
   }
 
   else
   {
-    v7 = [v4 window];
+    window = [viewCopy window];
 
-    v6 = [v7 rootViewController];
-    v4 = v7;
+    rootViewController = [window rootViewController];
+    viewCopy = window;
   }
 
-  return v6;
+  return rootViewController;
 }
 
-- (void)_queueShareSheetPresentation:(id)a3 forIconView:(id)a4
+- (void)_queueShareSheetPresentation:(id)presentation forIconView:(id)view
 {
-  v8 = a3;
-  v6 = a4;
-  [(SBHIconShareSheetManager *)self setShareSheetViewController:v8];
-  [(SBHIconShareSheetManager *)self setIconView:v6];
-  v7 = [(SBHIconShareSheetManager *)self iconManager];
-  if ([v7 isFloatingDockSupported] && objc_msgSend(v7, "isShowingIconContextMenu"))
+  presentationCopy = presentation;
+  viewCopy = view;
+  [(SBHIconShareSheetManager *)self setShareSheetViewController:presentationCopy];
+  [(SBHIconShareSheetManager *)self setIconView:viewCopy];
+  iconManager = [(SBHIconShareSheetManager *)self iconManager];
+  if ([iconManager isFloatingDockSupported] && objc_msgSend(iconManager, "isShowingIconContextMenu"))
   {
     [(SBHIconShareSheetManager *)self setQueuedToPresentShareSheet:1];
   }
 
   else
   {
-    [(SBHIconShareSheetManager *)self _presentShareSheet:v8 forIconView:v6];
+    [(SBHIconShareSheetManager *)self _presentShareSheet:presentationCopy forIconView:viewCopy];
   }
 }
 
-- (void)_appIconForceTouchControllerDidDismissNotification:(id)a3
+- (void)_appIconForceTouchControllerDidDismissNotification:(id)notification
 {
   if ([(SBHIconShareSheetManager *)self queuedToPresentShareSheet])
   {
     [(SBHIconShareSheetManager *)self setQueuedToPresentShareSheet:0];
-    v5 = [(SBHIconShareSheetManager *)self shareSheetViewController];
-    v4 = [(SBHIconShareSheetManager *)self iconView];
-    [(SBHIconShareSheetManager *)self _presentShareSheet:v5 forIconView:v4];
+    shareSheetViewController = [(SBHIconShareSheetManager *)self shareSheetViewController];
+    iconView = [(SBHIconShareSheetManager *)self iconView];
+    [(SBHIconShareSheetManager *)self _presentShareSheet:shareSheetViewController forIconView:iconView];
   }
 }
 
-- (void)_presentShareSheet:(id)a3 forIconView:(id)a4
+- (void)_presentShareSheet:(id)sheet forIconView:(id)view
 {
-  v8 = a3;
-  v6 = a4;
-  [(SBHIconShareSheetManager *)self _iconViewFrameInScreenCoordinateSpace:v6];
+  sheetCopy = sheet;
+  viewCopy = view;
+  [(SBHIconShareSheetManager *)self _iconViewFrameInScreenCoordinateSpace:viewCopy];
   if (CGRectIsEmpty(v10))
   {
     [(SBHIconShareSheetManager *)self dismissIconShareSheetsIfNecessaryAndCleanUp];
@@ -226,38 +226,38 @@ void __57__SBHIconShareSheetManager_presentShareSheetForIconView___block_invoke(
 
   else
   {
-    v7 = [(SBHIconShareSheetManager *)self _shareSheetPresentationViewControllerForIconView:v6];
-    [v7 presentViewController:v8 animated:1 completion:0];
+    v7 = [(SBHIconShareSheetManager *)self _shareSheetPresentationViewControllerForIconView:viewCopy];
+    [v7 presentViewController:sheetCopy animated:1 completion:0];
   }
 }
 
-- (void)_createFakeSourceViewForIconView:(id)a3
+- (void)_createFakeSourceViewForIconView:(id)view
 {
-  v4 = a3;
-  [(SBHIconShareSheetManager *)self _iconViewFrameInScreenCoordinateSpace:v4];
+  viewCopy = view;
+  [(SBHIconShareSheetManager *)self _iconViewFrameInScreenCoordinateSpace:viewCopy];
   v11 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v5, v6, v7, v8}];
-  v9 = [(SBHIconShareSheetManager *)self _shareSheetPresentationViewControllerForIconView:v4];
+  v9 = [(SBHIconShareSheetManager *)self _shareSheetPresentationViewControllerForIconView:viewCopy];
 
-  v10 = [v9 view];
-  [v10 addSubview:v11];
+  view = [v9 view];
+  [view addSubview:v11];
   [(SBHIconShareSheetManager *)self setFakeSourceView:v11];
 }
 
-- (CGRect)_iconViewFrameInScreenCoordinateSpace:(id)a3
+- (CGRect)_iconViewFrameInScreenCoordinateSpace:(id)space
 {
-  v3 = a3;
-  v4 = [v3 window];
-  v5 = [v4 screen];
-  [v3 frame];
+  spaceCopy = space;
+  window = [spaceCopy window];
+  screen = [window screen];
+  [spaceCopy frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 iconImageFrame];
+  [spaceCopy iconImageFrame];
   Height = CGRectGetHeight(v27);
-  v13 = [v3 superview];
+  superview = [spaceCopy superview];
 
-  v14 = [v5 coordinateSpace];
-  [v13 convertRect:v14 toCoordinateSpace:{v7, v9, v11, Height}];
+  coordinateSpace = [screen coordinateSpace];
+  [superview convertRect:coordinateSpace toCoordinateSpace:{v7, v9, v11, Height}];
   v16 = v15;
   v18 = v17;
   v20 = v19;

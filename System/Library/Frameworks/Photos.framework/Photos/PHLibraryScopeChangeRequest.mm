@@ -1,19 +1,19 @@
 @interface PHLibraryScopeChangeRequest
-+ (id)changeRequestForLibraryScope:(id)a3;
-+ (id)creationRequestForOwnedLibraryScopeInPreviewStateWithTitle:(id)a3;
-+ (void)_expungeLibraryScopes:(id)a3 ignorePhotosctlExpungeOverride:(BOOL)a4;
-+ (void)trashLibraryScopes:(id)a3;
-+ (void)untrashLibraryScopes:(id)a3;
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
++ (id)changeRequestForLibraryScope:(id)scope;
++ (id)creationRequestForOwnedLibraryScopeInPreviewStateWithTitle:(id)title;
++ (void)_expungeLibraryScopes:(id)scopes ignorePhotosctlExpungeOverride:(BOOL)override;
++ (void)trashLibraryScopes:(id)scopes;
++ (void)untrashLibraryScopes:(id)scopes;
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (NSDate)creationDate;
 - (NSString)title;
 - (PHLibraryScope)originalLibraryScope;
-- (PHLibraryScopeChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHLibraryScopeChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHLibraryScopeChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHLibraryScopeChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedLibraryScope;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (id)lastParticipantAssetTrashNotificationDate;
 - (id)rulesData;
@@ -28,31 +28,31 @@
 - (signed)scopeSyncingState;
 - (signed)status;
 - (void)_updateParticipantCloudUpdateStateIfNecessary;
-- (void)addParticipants:(id)a3;
-- (void)addPreviewAssetsSuggestedByPhotos:(id)a3;
-- (void)encodeToXPCDict:(id)a3;
-- (void)markAssetsAsRejectedByPhotosSuggester:(id)a3;
-- (void)moveToPersonalLibrary:(id)a3;
-- (void)moveToSharedLibrary:(id)a3;
-- (void)rejectPreviewAssetsSuggestedByPhotos:(id)a3;
-- (void)removeParticipants:(id)a3;
-- (void)removePreviewAssetsSuggestedByPhotos:(id)a3;
-- (void)setAutoSharePolicy:(signed __int16)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setExitState:(signed __int16)a3;
-- (void)setLastParticipantAssetTrashNotificationDate:(id)a3;
-- (void)setLocalPublishState:(signed __int16)a3;
-- (void)setParticipantCloudUpdateState:(signed __int16)a3;
-- (void)setPreviewState:(signed __int16)a3;
-- (void)setRulesData:(id)a3;
-- (void)setScopeIdentifier:(id)a3;
-- (void)setScopeSyncingState:(signed __int16)a3;
-- (void)setScopeType:(int64_t)a3;
-- (void)setStatus:(signed __int16)a3;
-- (void)setTitle:(id)a3;
-- (void)setTrashedDate:(id)a3;
-- (void)unRejectPreviewAssetsSuggestedByPhotos:(id)a3;
-- (void)updateWithCustomRules:(id)a3;
+- (void)addParticipants:(id)participants;
+- (void)addPreviewAssetsSuggestedByPhotos:(id)photos;
+- (void)encodeToXPCDict:(id)dict;
+- (void)markAssetsAsRejectedByPhotosSuggester:(id)suggester;
+- (void)moveToPersonalLibrary:(id)library;
+- (void)moveToSharedLibrary:(id)library;
+- (void)rejectPreviewAssetsSuggestedByPhotos:(id)photos;
+- (void)removeParticipants:(id)participants;
+- (void)removePreviewAssetsSuggestedByPhotos:(id)photos;
+- (void)setAutoSharePolicy:(signed __int16)policy;
+- (void)setCreationDate:(id)date;
+- (void)setExitState:(signed __int16)state;
+- (void)setLastParticipantAssetTrashNotificationDate:(id)date;
+- (void)setLocalPublishState:(signed __int16)state;
+- (void)setParticipantCloudUpdateState:(signed __int16)state;
+- (void)setPreviewState:(signed __int16)state;
+- (void)setRulesData:(id)data;
+- (void)setScopeIdentifier:(id)identifier;
+- (void)setScopeSyncingState:(signed __int16)state;
+- (void)setScopeType:(int64_t)type;
+- (void)setStatus:(signed __int16)status;
+- (void)setTitle:(id)title;
+- (void)setTrashedDate:(id)date;
+- (void)unRejectPreviewAssetsSuggestedByPhotos:(id)photos;
+- (void)updateWithCustomRules:(id)rules;
 @end
 
 @implementation PHLibraryScopeChangeRequest
@@ -64,27 +64,27 @@
   return WeakRetained;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v205[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  libraryCopy = library;
+  helper = [(PHChangeRequest *)self helper];
   v178 = 0;
-  v10 = [v9 applyMutationsToManagedObject:v7 error:&v178];
+  v10 = [helper applyMutationsToManagedObject:objectCopy error:&v178];
   v11 = v178;
 
   if (v10)
   {
-    v12 = [(PHLibraryScopeChangeRequest *)self participantsAddedToLibraryScope];
-    if ([v12 count])
+    participantsAddedToLibraryScope = [(PHLibraryScopeChangeRequest *)self participantsAddedToLibraryScope];
+    if ([participantsAddedToLibraryScope count])
     {
     }
 
     else
     {
-      v13 = [(PHLibraryScopeChangeRequest *)self participantsRemovedFromLibraryScope];
-      v14 = [v13 count];
+      participantsRemovedFromLibraryScope = [(PHLibraryScopeChangeRequest *)self participantsRemovedFromLibraryScope];
+      v14 = [participantsRemovedFromLibraryScope count];
 
       if (!v14)
       {
@@ -93,22 +93,22 @@
     }
 
     v15 = MEMORY[0x1E69BE4E8];
-    v16 = [(PHLibraryScopeChangeRequest *)self participantsAddedToLibraryScope];
-    [v15 informRapportToAddShareParticipantUUIDs:v16 photoLibrary:v8];
+    participantsAddedToLibraryScope2 = [(PHLibraryScopeChangeRequest *)self participantsAddedToLibraryScope];
+    [v15 informRapportToAddShareParticipantUUIDs:participantsAddedToLibraryScope2 photoLibrary:libraryCopy];
 
     v17 = MEMORY[0x1E69BE4E8];
-    v18 = [(PHLibraryScopeChangeRequest *)self participantsRemovedFromLibraryScope];
-    v19 = [v8 libraryBundle];
-    [v17 informRapportToRemoveShareParticipantUUIDs:v18 photoLibraryBundle:v19];
+    participantsRemovedFromLibraryScope2 = [(PHLibraryScopeChangeRequest *)self participantsRemovedFromLibraryScope];
+    libraryBundle = [libraryCopy libraryBundle];
+    [v17 informRapportToRemoveShareParticipantUUIDs:participantsRemovedFromLibraryScope2 photoLibraryBundle:libraryBundle];
   }
 
 LABEL_6:
-  v20 = v7;
+  v20 = objectCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __80__PHLibraryScopeChangeRequest_applyMutationsToManagedObject_photoLibrary_error___block_invoke;
   aBlock[3] = &unk_1E75A82B0;
-  v21 = v8;
+  v21 = libraryCopy;
   v177 = v21;
   v22 = _Block_copy(aBlock);
   if (!v10)
@@ -117,20 +117,20 @@ LABEL_6:
     goto LABEL_95;
   }
 
-  v23 = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyAddedToLibraryScope];
-  v24 = [v23 count];
+  assetUUIDsManuallyAddedToLibraryScope = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyAddedToLibraryScope];
+  v24 = [assetUUIDsManuallyAddedToLibraryScope count];
 
-  v144 = self;
+  selfCopy = self;
   v145 = v22;
   if (v24)
   {
     v25 = MEMORY[0x1E69BE540];
-    v26 = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyAddedToLibraryScope];
-    v27 = [v25 assetsWithUUIDs:v26 options:1 inLibrary:v21];
+    assetUUIDsManuallyAddedToLibraryScope2 = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyAddedToLibraryScope];
+    v27 = [v25 assetsWithUUIDs:assetUUIDsManuallyAddedToLibraryScope2 options:1 inLibrary:v21];
     v28 = v22[2](v22, v27);
 
-    v29 = [v20 currentUserParticipant];
-    if (!v29)
+    currentUserParticipant = [v20 currentUserParticipant];
+    if (!currentUserParticipant)
     {
       v111 = MEMORY[0x1E696ABC0];
       v204 = *MEMORY[0x1E696A578];
@@ -140,7 +140,7 @@ LABEL_6:
       goto LABEL_93;
     }
 
-    v30 = v29;
+    v30 = currentUserParticipant;
     v143 = v21;
     v174 = 0u;
     v175 = 0u;
@@ -167,9 +167,9 @@ LABEL_6:
             v105 = MEMORY[0x1E696ABC0];
             v201 = *MEMORY[0x1E696A578];
             v106 = MEMORY[0x1E696AEC0];
-            v107 = [v35 uuid];
-            v108 = [v106 stringWithFormat:@"Attempting to move asset %@ that cannot be moved to shared library. Check with -[PHAsset canPerformEditOperation:PHAssetEditOperationMoveToSharedLibrary] first", v107];
-            v202 = v108;
+            uuid = [v35 uuid];
+            v107 = [v106 stringWithFormat:@"Attempting to move asset %@ that cannot be moved to shared library. Check with -[PHAsset canPerformEditOperation:PHAssetEditOperationMoveToSharedLibrary] first", uuid];
+            v202 = v107;
             v109 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v202 forKeys:&v201 count:1];
             v110 = [v105 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v109];
 
@@ -195,18 +195,18 @@ LABEL_6:
       while (v32);
     }
 
-    self = v144;
+    self = selfCopy;
   }
 
-  v37 = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyRemovedFromLibraryScope];
-  v38 = [v37 count];
+  assetUUIDsManuallyRemovedFromLibraryScope = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyRemovedFromLibraryScope];
+  v38 = [assetUUIDsManuallyRemovedFromLibraryScope count];
 
   if (v38)
   {
     v39 = MEMORY[0x1E69BE540];
-    v40 = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyRemovedFromLibraryScope];
+    assetUUIDsManuallyRemovedFromLibraryScope2 = [(PHLibraryScopeChangeRequest *)self assetUUIDsManuallyRemovedFromLibraryScope];
     v143 = v21;
-    v41 = [v39 assetsWithUUIDs:v40 options:1 inLibrary:v21];
+    v41 = [v39 assetsWithUUIDs:assetUUIDsManuallyRemovedFromLibraryScope2 options:1 inLibrary:v21];
     v42 = v145[2](v145, v41);
 
     v170 = 0u;
@@ -237,16 +237,16 @@ LABEL_6:
           v112 = MEMORY[0x1E696ABC0];
           v198 = *MEMORY[0x1E696A578];
           v113 = MEMORY[0x1E696AEC0];
-          v114 = [v47 uuid];
-          v115 = [v113 stringWithFormat:@"Attempting to move asset %@ that cannot be moved to personal library. Check with -[PHAsset canPerformEditOperation:PHAssetEditOperationMoveToPersonalLibrary] first", v114];
-          v199 = v115;
+          uuid2 = [v47 uuid];
+          v114 = [v113 stringWithFormat:@"Attempting to move asset %@ that cannot be moved to personal library. Check with -[PHAsset canPerformEditOperation:PHAssetEditOperationMoveToPersonalLibrary] first", uuid2];
+          v199 = v114;
           v116 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v199 forKeys:&v198 count:1];
           v110 = [v112 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v116];
 
-          v11 = v114;
+          v11 = uuid2;
           v28 = v30;
 LABEL_86:
-          self = v144;
+          self = selfCopy;
 LABEL_87:
           v21 = v143;
           goto LABEL_92;
@@ -267,20 +267,20 @@ LABEL_87:
 LABEL_27:
 
         v21 = v143;
-        self = v144;
+        self = selfCopy;
         break;
       }
     }
   }
 
-  v48 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedAddedToLibraryScope];
-  v49 = [v48 count];
+  assetUUIDsPhotosSuggestedAddedToLibraryScope = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedAddedToLibraryScope];
+  v49 = [assetUUIDsPhotosSuggestedAddedToLibraryScope count];
 
   if (v49)
   {
     v50 = MEMORY[0x1E69BE540];
-    v51 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedAddedToLibraryScope];
-    v52 = [v50 assetsWithUUIDs:v51 options:1 inLibrary:v21];
+    assetUUIDsPhotosSuggestedAddedToLibraryScope2 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedAddedToLibraryScope];
+    v52 = [v50 assetsWithUUIDs:assetUUIDsPhotosSuggestedAddedToLibraryScope2 options:1 inLibrary:v21];
     v53 = v145[2](v145, v52);
 
     v166 = 0u;
@@ -308,9 +308,9 @@ LABEL_27:
             v117 = MEMORY[0x1E696ABC0];
             v195 = *MEMORY[0x1E696A578];
             v118 = MEMORY[0x1E696AEC0];
-            v119 = [v58 uuid];
-            v120 = [v118 stringWithFormat:@"Attempting to move asset %@ that cannot be moved to shared library. Check with -[PHAsset canPerformEditOperation:PHAssetEditOperationMoveToSharedLibrary] first", v119];
-            v196 = v120;
+            uuid3 = [v58 uuid];
+            v119 = [v118 stringWithFormat:@"Attempting to move asset %@ that cannot be moved to shared library. Check with -[PHAsset canPerformEditOperation:PHAssetEditOperationMoveToSharedLibrary] first", uuid3];
+            v196 = v119;
             v121 = MEMORY[0x1E695DF20];
             v122 = &v196;
             v123 = &v195;
@@ -328,17 +328,17 @@ LABEL_27:
       while (v55);
     }
 
-    self = v144;
+    self = selfCopy;
   }
 
-  v59 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRemovedFromLibraryScope];
-  v60 = [v59 count];
+  assetUUIDsPhotosSuggestedRemovedFromLibraryScope = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRemovedFromLibraryScope];
+  v60 = [assetUUIDsPhotosSuggestedRemovedFromLibraryScope count];
 
   if (v60)
   {
     v61 = MEMORY[0x1E69BE540];
-    v62 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRemovedFromLibraryScope];
-    v63 = [v61 assetsWithUUIDs:v62 options:1 inLibrary:v21];
+    assetUUIDsPhotosSuggestedRemovedFromLibraryScope2 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRemovedFromLibraryScope];
+    v63 = [v61 assetsWithUUIDs:assetUUIDsPhotosSuggestedRemovedFromLibraryScope2 options:1 inLibrary:v21];
     v64 = v145[2](v145, v63);
 
     v162 = 0u;
@@ -367,9 +367,9 @@ LABEL_27:
             v117 = MEMORY[0x1E696ABC0];
             v192 = *MEMORY[0x1E696A578];
             v124 = MEMORY[0x1E696AEC0];
-            v119 = [v69 uuid];
-            v120 = [v124 stringWithFormat:@"Attempting to remove an asset %@ that is not in a suggested state", v119];
-            v193 = v120;
+            uuid3 = [v69 uuid];
+            v119 = [v124 stringWithFormat:@"Attempting to remove an asset %@ that is not in a suggested state", uuid3];
+            v193 = v119;
             v121 = MEMORY[0x1E695DF20];
             v122 = &v193;
             v123 = &v192;
@@ -386,11 +386,11 @@ LABEL_27:
       while (v66);
     }
 
-    self = v144;
+    self = selfCopy;
   }
 
-  v70 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRejectedFromLibraryScope];
-  v71 = [v70 count];
+  assetUUIDsPhotosSuggestedRejectedFromLibraryScope = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRejectedFromLibraryScope];
+  v71 = [assetUUIDsPhotosSuggestedRejectedFromLibraryScope count];
 
   if (!v71)
   {
@@ -398,8 +398,8 @@ LABEL_27:
   }
 
   v72 = MEMORY[0x1E69BE540];
-  v73 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRejectedFromLibraryScope];
-  v74 = [v72 assetsWithUUIDs:v73 options:1 inLibrary:v21];
+  assetUUIDsPhotosSuggestedRejectedFromLibraryScope2 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedRejectedFromLibraryScope];
+  v74 = [v72 assetsWithUUIDs:assetUUIDsPhotosSuggestedRejectedFromLibraryScope2 options:1 inLibrary:v21];
   v75 = v145[2](v145, v74);
 
   v158 = 0u;
@@ -431,9 +431,9 @@ LABEL_27:
         v117 = MEMORY[0x1E696ABC0];
         v189 = *MEMORY[0x1E696A578];
         v125 = MEMORY[0x1E696AEC0];
-        v119 = [v80 uuid];
-        v120 = [v125 stringWithFormat:@"Attempting to reject an asset %@ that is not in a suggested state", v119];
-        v190 = v120;
+        uuid3 = [v80 uuid];
+        v119 = [v125 stringWithFormat:@"Attempting to reject an asset %@ that is not in a suggested state", uuid3];
+        v190 = v119;
         v121 = MEMORY[0x1E695DF20];
         v122 = &v190;
         v123 = &v189;
@@ -441,9 +441,9 @@ LABEL_91:
         v126 = [v121 dictionaryWithObjects:v122 forKeys:v123 count:1];
         v110 = [v117 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v126];
 
-        v11 = v119;
+        v11 = uuid3;
         v28 = v30;
-        self = v144;
+        self = selfCopy;
 LABEL_92:
         v22 = v145;
 LABEL_93:
@@ -463,10 +463,10 @@ LABEL_93:
   while (v77);
 LABEL_57:
 
-  self = v144;
+  self = selfCopy;
 LABEL_58:
-  v81 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope];
-  v82 = [v81 count];
+  assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope];
+  v82 = [assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope count];
 
   if (!v82)
   {
@@ -474,8 +474,8 @@ LABEL_58:
   }
 
   v83 = MEMORY[0x1E69BE540];
-  v84 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope];
-  v85 = [v83 assetsWithUUIDs:v84 options:1 inLibrary:v21];
+  assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope2 = [(PHLibraryScopeChangeRequest *)self assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope];
+  v85 = [v83 assetsWithUUIDs:assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope2 options:1 inLibrary:v21];
   v86 = v145[2](v145, v85);
 
   v154 = 0u;
@@ -494,7 +494,7 @@ LABEL_58:
   v143 = v21;
   while (2)
   {
-    v90 = self;
+    selfCopy3 = self;
     v91 = 0;
     while (2)
     {
@@ -510,9 +510,9 @@ LABEL_58:
         v132 = MEMORY[0x1E696ABC0];
         v186 = *MEMORY[0x1E696A578];
         v133 = MEMORY[0x1E696AEC0];
-        v134 = [v92 uuid];
-        v135 = [v133 stringWithFormat:@"Attempting to unreject an asset %@ that is not in a manually rejected state", v134];
-        v187 = v135;
+        uuid4 = [v92 uuid];
+        v134 = [v133 stringWithFormat:@"Attempting to unreject an asset %@ that is not in a manually rejected state", uuid4];
+        v187 = v134;
         v136 = MEMORY[0x1E695DF20];
         v137 = &v187;
         v138 = &v186;
@@ -520,9 +520,9 @@ LABEL_109:
         v142 = [v136 dictionaryWithObjects:v137 forKeys:v138 count:1];
         v110 = [v132 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v142];
 
-        v11 = v134;
+        v11 = uuid4;
         v28 = v30;
-        self = v90;
+        self = selfCopy3;
         goto LABEL_87;
       }
 
@@ -531,9 +531,9 @@ LABEL_109:
         v132 = MEMORY[0x1E696ABC0];
         v184 = *MEMORY[0x1E696A578];
         v139 = MEMORY[0x1E696AEC0];
-        v134 = [v92 uuid];
-        v135 = [v139 stringWithFormat:@"Attempting to unreject an asset %@ that does not have a suggested bit set", v134];
-        v185 = v135;
+        uuid4 = [v92 uuid];
+        v134 = [v139 stringWithFormat:@"Attempting to unreject an asset %@ that does not have a suggested bit set", uuid4];
+        v185 = v134;
         v136 = MEMORY[0x1E695DF20];
         v137 = &v185;
         v138 = &v184;
@@ -551,7 +551,7 @@ LABEL_109:
     }
 
     v88 = [v30 countByEnumeratingWithState:&v152 objects:v188 count:16];
-    self = v90;
+    self = selfCopy3;
     v21 = v143;
     if (v88)
     {
@@ -564,15 +564,15 @@ LABEL_109:
 LABEL_68:
 
 LABEL_69:
-  v93 = [(PHLibraryScopeChangeRequest *)self assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope];
-  v94 = [v93 count];
+  assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope = [(PHLibraryScopeChangeRequest *)self assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope];
+  v94 = [assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope count];
 
   if (v94)
   {
     v95 = MEMORY[0x1E69BE540];
-    v96 = [(PHLibraryScopeChangeRequest *)self assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope];
+    assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope2 = [(PHLibraryScopeChangeRequest *)self assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope];
     v97 = 1;
-    v98 = [v95 assetsWithUUIDs:v96 options:1 inLibrary:v21];
+    v98 = [v95 assetsWithUUIDs:assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope2 options:1 inLibrary:v21];
     v99 = v145[2](v145, v98);
 
     v150 = 0u;
@@ -585,7 +585,7 @@ LABEL_69:
     {
       v101 = v100;
       v143 = v21;
-      v90 = self;
+      selfCopy3 = self;
       v102 = *v149;
       while (2)
       {
@@ -603,9 +603,9 @@ LABEL_69:
             v132 = MEMORY[0x1E696ABC0];
             v181 = *MEMORY[0x1E696A578];
             v140 = MEMORY[0x1E696AEC0];
-            v134 = [v104 uuid];
-            v135 = [v140 stringWithFormat:@"PhotosSuggester is attempting to reject an asset %@ that is already in a rejected state", v134];
-            v182 = v135;
+            uuid4 = [v104 uuid];
+            v134 = [v140 stringWithFormat:@"PhotosSuggester is attempting to reject an asset %@ that is already in a rejected state", uuid4];
+            v182 = v134;
             v136 = MEMORY[0x1E695DF20];
             v137 = &v182;
             v138 = &v181;
@@ -617,9 +617,9 @@ LABEL_69:
             v132 = MEMORY[0x1E696ABC0];
             v179 = *MEMORY[0x1E696A578];
             v141 = MEMORY[0x1E696AEC0];
-            v134 = [v104 uuid];
-            v135 = [v141 stringWithFormat:@"PhotosSuggester is attempting to reject an asset %@ that is already added to shared zone", v134];
-            v180 = v135;
+            uuid4 = [v104 uuid];
+            v134 = [v141 stringWithFormat:@"PhotosSuggester is attempting to reject an asset %@ that is already added to shared zone", uuid4];
+            v180 = v134;
             v136 = MEMORY[0x1E695DF20];
             v137 = &v180;
             v138 = &v179;
@@ -643,7 +643,7 @@ LABEL_69:
       }
 
       v28 = v30;
-      self = v90;
+      self = selfCopy3;
       v21 = v143;
     }
 
@@ -666,9 +666,9 @@ LABEL_95:
 
   if (v97)
   {
-    v127 = [(PHLibraryScopeChangeRequest *)self participantsHelper];
+    participantsHelper = [(PHLibraryScopeChangeRequest *)self participantsHelper];
     v147 = v11;
-    v128 = [v127 applyMutationsToManagedObject:v20 error:&v147];
+    v128 = [participantsHelper applyMutationsToManagedObject:v20 error:&v147];
     v129 = v147;
 
     v11 = v129;
@@ -679,10 +679,10 @@ LABEL_95:
     v128 = 0;
   }
 
-  if (a5 && (v128 & 1) == 0)
+  if (error && (v128 & 1) == 0)
   {
     v130 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v128;
@@ -736,14 +736,14 @@ id __80__PHLibraryScopeChangeRequest_applyMutationsToManagedObject_photoLibrary_
   return v15;
 }
 
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error
 {
   v49[13] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  keyCopy = key;
+  helper = [(PHChangeRequest *)self helper];
   v40 = 0;
-  v11 = [v10 allowMutationToManagedObject:v8 propertyKey:v9 error:&v40];
+  v11 = [helper allowMutationToManagedObject:objectCopy propertyKey:keyCopy error:&v40];
   v12 = v40;
 
   if (v11)
@@ -762,7 +762,7 @@ id __80__PHLibraryScopeChangeRequest_applyMutationsToManagedObject_photoLibrary_
     v49[11] = @"trashedDate";
     v49[12] = @"lastParticipantAssetTrashNotificationDate";
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:13];
-    if (-[PHChangeRequest isNewRequest](self, "isNewRequest") || ([v13 containsObject:v9] & 1) != 0)
+    if (-[PHChangeRequest isNewRequest](self, "isNewRequest") || ([v13 containsObject:keyCopy] & 1) != 0)
     {
       v14 = 1;
     }
@@ -771,8 +771,8 @@ id __80__PHLibraryScopeChangeRequest_applyMutationsToManagedObject_photoLibrary_
     {
       v15 = MEMORY[0x1E696ABC0];
       v47 = *MEMORY[0x1E696A578];
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on key %@", v9];
-      v48 = v16;
+      keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on key %@", keyCopy];
+      v48 = keyCopy;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
       v18 = [v15 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v17];
 
@@ -786,28 +786,28 @@ id __80__PHLibraryScopeChangeRequest_applyMutationsToManagedObject_photoLibrary_
     v14 = 0;
   }
 
-  if (([v9 isEqualToString:@"autoSharePolicy"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"rulesData"))
+  if (([keyCopy isEqualToString:@"autoSharePolicy"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"rulesData"))
   {
-    v19 = v8;
-    v20 = [(PHChangeRequest *)self helper];
-    v21 = [v20 mutations];
-    v22 = [v21 objectForKey:@"autoSharePolicy"];
+    v19 = objectCopy;
+    helper2 = [(PHChangeRequest *)self helper];
+    mutations = [helper2 mutations];
+    v22 = [mutations objectForKey:@"autoSharePolicy"];
 
     if (v22)
     {
-      v23 = [v22 intValue];
+      intValue = [v22 intValue];
     }
 
     else
     {
-      v23 = [v19 autoSharePolicy];
+      intValue = [v19 autoSharePolicy];
     }
 
-    if (v23 == 2 && v14)
+    if (intValue == 2 && v14)
     {
-      v25 = [(PHLibraryScopeChangeRequest *)self rulesData];
+      rulesData = [(PHLibraryScopeChangeRequest *)self rulesData];
 
-      if (!v25)
+      if (!rulesData)
       {
         v26 = MEMORY[0x1E696ABC0];
         v45 = *MEMORY[0x1E696A578];
@@ -832,14 +832,14 @@ LABEL_28:
 
     else
     {
-      if (v23 == 2 || !v14)
+      if (intValue == 2 || !v14)
       {
         goto LABEL_28;
       }
 
-      v31 = [(PHLibraryScopeChangeRequest *)self rulesData];
+      rulesData2 = [(PHLibraryScopeChangeRequest *)self rulesData];
 
-      if (v31)
+      if (rulesData2)
       {
         v26 = MEMORY[0x1E696ABC0];
         v43 = *MEMORY[0x1E696A578];
@@ -855,12 +855,12 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (![v9 isEqualToString:@"previewState"])
+  if (![keyCopy isEqualToString:@"previewState"])
   {
     goto LABEL_30;
   }
 
-  v36 = v8;
+  v36 = objectCopy;
   v37 = [v36 status] == 2 && objc_msgSend(v36, "localPublishState") == 2;
   v38 = [v36 status] == 1 && objc_msgSend(v36, "localPublishState") == 0;
   if (!v37 && v14 && !v38)
@@ -876,37 +876,37 @@ LABEL_28:
 LABEL_29:
 
 LABEL_30:
-  if (a5 && !v14)
+  if (error && !v14)
   {
     v34 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v14;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v6 = MEMORY[0x1E69BE4E8];
-  v7 = a3;
-  v8 = [(PHChangeRequest *)self uuid];
-  v9 = [(PHLibraryScopeChangeRequest *)self creationDate];
-  v10 = [(PHLibraryScopeChangeRequest *)self title];
-  v11 = [v6 createOwnedShareWithUUID:v8 creationDate:v9 title:v10 unitTestMode:self->_runningAsUnitTest inPhotoLibrary:v7];
+  libraryCopy = library;
+  uuid = [(PHChangeRequest *)self uuid];
+  creationDate = [(PHLibraryScopeChangeRequest *)self creationDate];
+  title = [(PHLibraryScopeChangeRequest *)self title];
+  v11 = [v6 createOwnedShareWithUUID:uuid creationDate:creationDate title:title unitTestMode:self->_runningAsUnitTest inPhotoLibrary:libraryCopy];
 
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
   }
 
   return v11;
 }
 
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  libraryCopy = library;
+  v7 = libraryCopy;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -920,7 +920,7 @@ LABEL_30:
   v21 = 1;
   if (!self->_runningAsUnitTest)
   {
-    if (([v6 isCloudPhotoLibraryEnabled] & 1) == 0 && (_os_feature_enabled_impl() & 1) == 0)
+    if (([libraryCopy isCloudPhotoLibraryEnabled] & 1) == 0 && (_os_feature_enabled_impl() & 1) == 0)
     {
       *(v19 + 24) = 0;
       v9 = MEMORY[0x1E696ABC0];
@@ -944,7 +944,7 @@ LABEL_30:
       [v15 performBlockAndWait:v14];
 
       v8 = *(v19 + 24);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -953,7 +953,7 @@ LABEL_30:
     else
     {
       v8 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -961,7 +961,7 @@ LABEL_30:
 
     if ((v8 & 1) == 0)
     {
-      *a4 = v23[5];
+      *error = v23[5];
       v8 = *(v19 + 24);
     }
   }
@@ -1030,12 +1030,12 @@ void __68__PHLibraryScopeChangeRequest_validateInsertIntoPhotoLibrary_error___bl
 LABEL_12:
 }
 
-- (void)updateWithCustomRules:(id)a3
+- (void)updateWithCustomRules:(id)rules
 {
-  v6 = a3;
-  if ([v6 count])
+  rulesCopy = rules;
+  if ([rulesCopy count])
   {
-    v4 = [v6 _pl_map:&__block_literal_global_30928];
+    v4 = [rulesCopy _pl_map:&__block_literal_global_30928];
     v5 = [MEMORY[0x1E69BE508] dataForLibraryScopeRules:v4];
     [(PHLibraryScopeChangeRequest *)self setRulesData:v5];
   }
@@ -1046,19 +1046,19 @@ LABEL_12:
   }
 }
 
-- (void)removeParticipants:(id)a3
+- (void)removeParticipants:(id)participants
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHLibraryScopeChangeRequest *)self participantsHelper];
-  [v5 removeParticipants:v4 toChangeRequest:self];
+  participantsCopy = participants;
+  participantsHelper = [(PHLibraryScopeChangeRequest *)self participantsHelper];
+  [participantsHelper removeParticipants:participantsCopy toChangeRequest:self];
 
   [(PHLibraryScopeChangeRequest *)self _updateParticipantCloudUpdateStateIfNecessary];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = participantsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1075,8 +1075,8 @@ LABEL_12:
         }
 
         participantsRemovedFromLibraryScope = self->_participantsRemovedFromLibraryScope;
-        v12 = [*(*(&v15 + 1) + 8 * v10) uuid];
-        v13 = [(NSArray *)participantsRemovedFromLibraryScope arrayByAddingObject:v12];
+        uuid = [*(*(&v15 + 1) + 8 * v10) uuid];
+        v13 = [(NSArray *)participantsRemovedFromLibraryScope arrayByAddingObject:uuid];
         v14 = self->_participantsRemovedFromLibraryScope;
         self->_participantsRemovedFromLibraryScope = v13;
 
@@ -1093,19 +1093,19 @@ LABEL_12:
   [PHShareParticipantChangeRequest deleteShareParticipants:v6];
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHLibraryScopeChangeRequest *)self participantsHelper];
-  [v5 addParticipants:v4 toChangeRequest:self];
+  participantsCopy = participants;
+  participantsHelper = [(PHLibraryScopeChangeRequest *)self participantsHelper];
+  [participantsHelper addParticipants:participantsCopy toChangeRequest:self];
 
   [(PHLibraryScopeChangeRequest *)self _updateParticipantCloudUpdateStateIfNecessary];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = participantsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1122,8 +1122,8 @@ LABEL_12:
         }
 
         participantsAddedToLibraryScope = self->_participantsAddedToLibraryScope;
-        v12 = [*(*(&v15 + 1) + 8 * v10) uuid];
-        v13 = [(NSArray *)participantsAddedToLibraryScope arrayByAddingObject:v12];
+        uuid = [*(*(&v15 + 1) + 8 * v10) uuid];
+        v13 = [(NSArray *)participantsAddedToLibraryScope arrayByAddingObject:uuid];
         v14 = self->_participantsAddedToLibraryScope;
         self->_participantsAddedToLibraryScope = v13;
 
@@ -1145,9 +1145,9 @@ LABEL_12:
   {
     v4 = WeakRetained;
     v5 = objc_loadWeakRetained(&self->_originalLibraryScope);
-    v6 = [v5 publishState];
+    publishState = [v5 publishState];
 
-    if (v6 == 2)
+    if (publishState == 2)
     {
 
       [(PHLibraryScopeChangeRequest *)self setParticipantCloudUpdateState:1];
@@ -1155,16 +1155,16 @@ LABEL_12:
   }
 }
 
-- (void)markAssetsAsRejectedByPhotosSuggester:(id)a3
+- (void)markAssetsAsRejectedByPhotosSuggester:(id)suggester
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggesterCopy = suggester;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = suggesterCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1180,8 +1180,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
-        v12 = [PHObject uuidFromLocalIdentifier:v11];
+        localIdentifier = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
+        v12 = [PHObject uuidFromLocalIdentifier:localIdentifier];
         [v5 addObject:v12];
 
         ++v10;
@@ -1204,16 +1204,16 @@ LABEL_12:
   }
 }
 
-- (void)unRejectPreviewAssetsSuggestedByPhotos:(id)a3
+- (void)unRejectPreviewAssetsSuggestedByPhotos:(id)photos
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  photosCopy = photos;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = photosCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1229,8 +1229,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
-        v12 = [PHObject uuidFromLocalIdentifier:v11];
+        localIdentifier = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
+        v12 = [PHObject uuidFromLocalIdentifier:localIdentifier];
         [v5 addObject:v12];
 
         ++v10;
@@ -1253,16 +1253,16 @@ LABEL_12:
   }
 }
 
-- (void)rejectPreviewAssetsSuggestedByPhotos:(id)a3
+- (void)rejectPreviewAssetsSuggestedByPhotos:(id)photos
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  photosCopy = photos;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = photosCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1278,8 +1278,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
-        v12 = [PHObject uuidFromLocalIdentifier:v11];
+        localIdentifier = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
+        v12 = [PHObject uuidFromLocalIdentifier:localIdentifier];
         [v5 addObject:v12];
 
         ++v10;
@@ -1302,16 +1302,16 @@ LABEL_12:
   }
 }
 
-- (void)removePreviewAssetsSuggestedByPhotos:(id)a3
+- (void)removePreviewAssetsSuggestedByPhotos:(id)photos
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  photosCopy = photos;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = photosCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1327,8 +1327,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
-        v12 = [PHObject uuidFromLocalIdentifier:v11];
+        localIdentifier = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
+        v12 = [PHObject uuidFromLocalIdentifier:localIdentifier];
         [v5 addObject:v12];
 
         ++v10;
@@ -1351,16 +1351,16 @@ LABEL_12:
   }
 }
 
-- (void)addPreviewAssetsSuggestedByPhotos:(id)a3
+- (void)addPreviewAssetsSuggestedByPhotos:(id)photos
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  photosCopy = photos;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = photosCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1376,8 +1376,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
-        v12 = [PHObject uuidFromLocalIdentifier:v11];
+        localIdentifier = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
+        v12 = [PHObject uuidFromLocalIdentifier:localIdentifier];
         [v5 addObject:v12];
 
         ++v10;
@@ -1400,16 +1400,16 @@ LABEL_12:
   }
 }
 
-- (void)moveToPersonalLibrary:(id)a3
+- (void)moveToPersonalLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = libraryCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1425,8 +1425,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
-        v12 = [PHObject uuidFromLocalIdentifier:v11];
+        localIdentifier = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
+        v12 = [PHObject uuidFromLocalIdentifier:localIdentifier];
         [v5 addObject:v12];
 
         ++v10;
@@ -1449,16 +1449,16 @@ LABEL_12:
   }
 }
 
-- (void)moveToSharedLibrary:(id)a3
+- (void)moveToSharedLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = libraryCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1474,8 +1474,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
-        v12 = [PHObject uuidFromLocalIdentifier:v11];
+        localIdentifier = [*(*(&v15 + 1) + 8 * v10) localIdentifier];
+        v12 = [PHObject uuidFromLocalIdentifier:localIdentifier];
         [v5 addObject:v12];
 
         ++v10;
@@ -1498,18 +1498,18 @@ LABEL_12:
   }
 }
 
-- (void)setAutoSharePolicy:(signed __int16)a3
+- (void)setAutoSharePolicy:(signed __int16)policy
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  policyCopy = policy;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v7 = [(PHChangeRequest *)self helper];
-  v8 = [v7 mutations];
-  [v8 setObject:v6 forKeyedSubscript:@"autoSharePolicy"];
+  v6 = [MEMORY[0x1E696AD98] numberWithShort:policyCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v6 forKeyedSubscript:@"autoSharePolicy"];
 
-  if (v3 != 2)
+  if (policyCopy != 2)
   {
 
     [(PHLibraryScopeChangeRequest *)self updateWithCustomRules:0];
@@ -1519,428 +1519,428 @@ LABEL_12:
 - (signed)autoSharePolicy
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"autoSharePolicy"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"autoSharePolicy"];
 
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_originalLibraryScope);
-    v6 = [WeakRetained autoSharePolicy];
+    intValue = [WeakRetained autoSharePolicy];
   }
 
-  return v6;
+  return intValue;
 }
 
-- (void)setExitState:(signed __int16)a3
+- (void)setExitState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"exitState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"exitState"];
 }
 
 - (signed)exitState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"exitState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"exitState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setLocalPublishState:(signed __int16)a3
+- (void)setLocalPublishState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"localPublishState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"localPublishState"];
 }
 
 - (signed)localPublishState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"localPublishState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"localPublishState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setScopeType:(int64_t)a3
+- (void)setScopeType:(int64_t)type
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"scopeType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"scopeType"];
 }
 
 - (int64_t)scopeType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"scopeType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"scopeType"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (void)setStatus:(signed __int16)a3
+- (void)setStatus:(signed __int16)status
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  statusCopy = status;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"status"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:statusCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"status"];
 }
 
 - (signed)status
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"status"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"status"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setScopeSyncingState:(signed __int16)a3
+- (void)setScopeSyncingState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"scopeSyncingState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"scopeSyncingState"];
 }
 
 - (signed)scopeSyncingState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"scopeSyncingState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"scopeSyncingState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setPreviewState:(signed __int16)a3
+- (void)setPreviewState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"previewState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"previewState"];
 }
 
 - (signed)previewState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"previewState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"previewState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setParticipantCloudUpdateState:(signed __int16)a3
+- (void)setParticipantCloudUpdateState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"participantCloudUpdateState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"participantCloudUpdateState"];
 }
 
 - (signed)participantCloudUpdateState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"participantCloudUpdateState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"participantCloudUpdateState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setLastParticipantAssetTrashNotificationDate:(id)a3
+- (void)setLastParticipantAssetTrashNotificationDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"lastParticipantAssetTrashNotificationDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"lastParticipantAssetTrashNotificationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"lastParticipantAssetTrashNotificationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"lastParticipantAssetTrashNotificationDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"lastParticipantAssetTrashNotificationDate"];
+    [mutations removeObjectForKey:@"lastParticipantAssetTrashNotificationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"lastParticipantAssetTrashNotificationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"lastParticipantAssetTrashNotificationDate"];
   }
 }
 
 - (id)lastParticipantAssetTrashNotificationDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"lastParticipantAssetTrashNotificationDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"lastParticipantAssetTrashNotificationDate"];
 
   return v5;
 }
 
-- (void)setTrashedDate:(id)a3
+- (void)setTrashedDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"trashedDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"trashedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"trashedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"trashedDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"trashedDate"];
+    [mutations removeObjectForKey:@"trashedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"trashedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"trashedDate"];
   }
 }
 
 - (id)trashedDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"trashedDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"trashedDate"];
 
   return v5;
 }
 
-- (void)setScopeIdentifier:(id)a3
+- (void)setScopeIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  identifierCopy = identifier;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (identifierCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"scopeIdentifier"];
+    [mutations setObject:identifierCopy forKeyedSubscript:@"scopeIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"scopeIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"scopeIdentifier"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"scopeIdentifier"];
+    [mutations removeObjectForKey:@"scopeIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"scopeIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"scopeIdentifier"];
   }
 }
 
 - (id)scopeIdentifier
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"scopeIdentifier"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"scopeIdentifier"];
 
   return v5;
 }
 
-- (void)setRulesData:(id)a3
+- (void)setRulesData:(id)data
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dataCopy = data;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dataCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"rulesData"];
+    [mutations setObject:dataCopy forKeyedSubscript:@"rulesData"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"rulesData"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"rulesData"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"rulesData"];
+    [mutations removeObjectForKey:@"rulesData"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"rulesData"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"rulesData"];
   }
 }
 
 - (id)rulesData
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"rulesData"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"rulesData"];
 
   return v5;
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"creationDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"creationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"creationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"creationDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"creationDate"];
+    [mutations removeObjectForKey:@"creationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"creationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"creationDate"];
   }
 }
 
 - (NSDate)creationDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"creationDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"creationDate"];
 
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  titleCopy = title;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (titleCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"title"];
+    [mutations setObject:titleCopy forKeyedSubscript:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"title"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"title"];
+    [mutations removeObjectForKey:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"title"];
   }
 }
 
 - (NSString)title
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"title"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"title"];
 
   return v5;
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedLibraryScope
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:xdict];
+  xdict = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:xdict];
 
-  v5 = [(PHLibraryScopeChangeRequest *)self participantsHelper];
-  [v5 encodeToXPCDict:xdict];
+  participantsHelper = [(PHLibraryScopeChangeRequest *)self participantsHelper];
+  [participantsHelper encodeToXPCDict:xdict];
 
   xpc_dictionary_set_BOOL(xdict, "runningAsUnitTest", self->_runningAsUnitTest);
   PLXPCDictionarySetArray();
@@ -1954,25 +1954,25 @@ LABEL_12:
   PLXPCDictionarySetArray();
 }
 
-- (PHLibraryScopeChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHLibraryScopeChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v34 = a4;
-  v33 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v35.receiver = self;
   v35.super_class = PHLibraryScopeChangeRequest;
   v9 = [(PHChangeRequest *)&v35 init];
   if (v9)
   {
-    v10 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v9 request:v34 clientAuthorization:v33];
+    v10 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v9 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v9->super._helper;
     v9->super._helper = v10;
 
-    v12 = [(PHRelationshipChangeRequestHelper *)[PHShareParticipantRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"participants" xpcDict:v8 changeRequestHelper:v9->super._helper];
+    v12 = [(PHRelationshipChangeRequestHelper *)[PHShareParticipantRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"participants" xpcDict:dictCopy changeRequestHelper:v9->super._helper];
     participantsHelper = v9->_participantsHelper;
     v9->_participantsHelper = v12;
 
-    v9->_runningAsUnitTest = xpc_dictionary_get_BOOL(v8, "runningAsUnitTest");
+    v9->_runningAsUnitTest = xpc_dictionary_get_BOOL(dictCopy, "runningAsUnitTest");
     v14 = PLArrayFromXPCDictionary();
     assetUUIDsManuallyAddedToLibraryScope = v9->_assetUUIDsManuallyAddedToLibraryScope;
     v9->_assetUUIDsManuallyAddedToLibraryScope = v14;
@@ -2012,23 +2012,23 @@ LABEL_12:
     if (v9->_runningAsUnitTest || v9->_assetUUIDsManuallyAddedToLibraryScope || v9->_assetUUIDsManuallyRemovedFromLibraryScope || v9->_assetUUIDsPhotosSuggestedAddedToLibraryScope || v9->_assetUUIDsPhotosSuggestedRemovedFromLibraryScope || v9->_assetUUIDsPhotosSuggestedRejectedFromLibraryScope || v9->_assetUUIDsPhotosSuggestedUnRejectedFromLibraryScope || v9->_assetUUIDsAssetsMarkedRejectedByPhotosSuggesterFromLibraryScope || v9->_participantsAddedToLibraryScope || v9->_participantsRemovedFromLibraryScope)
     {
       [(PHChangeRequestHelper *)v9->super._helper setMutated:1, 64];
-      [v34 recordUpdateRequest:v9];
+      [requestCopy recordUpdateRequest:v9];
     }
   }
 
   return v9;
 }
 
-- (PHLibraryScopeChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHLibraryScopeChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v24.receiver = self;
   v24.super_class = PHLibraryScopeChangeRequest;
   v8 = [(PHChangeRequest *)&v24 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -2117,16 +2117,16 @@ LABEL_12:
   return v2;
 }
 
-+ (void)_expungeLibraryScopes:(id)a3 ignorePhotosctlExpungeOverride:(BOOL)a4
++ (void)_expungeLibraryScopes:(id)scopes ignorePhotosctlExpungeOverride:(BOOL)override
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scopesCopy = scopes;
   +[PHPhotoLibrary assertTransaction];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v6;
+  v7 = scopesCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
@@ -2184,7 +2184,7 @@ LABEL_12:
 
         v18 = [(PHObjectDeleteRequest *)PHLibraryScopeDeleteRequest deleteRequestForObject:*(*(&v26 + 1) + 8 * j)];
         [v18 setOperation:2];
-        if (PLIsInternalTool() && !a4)
+        if (PLIsInternalTool() && !override)
         {
           [v18 setPhotosctlExpungeOverride:1];
         }
@@ -2197,16 +2197,16 @@ LABEL_12:
   }
 }
 
-+ (void)untrashLibraryScopes:(id)a3
++ (void)untrashLibraryScopes:(id)scopes
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scopesCopy = scopes;
   +[PHPhotoLibrary assertTransaction];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v4;
+  v5 = scopesCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
@@ -2273,16 +2273,16 @@ LABEL_12:
   }
 }
 
-+ (void)trashLibraryScopes:(id)a3
++ (void)trashLibraryScopes:(id)scopes
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scopesCopy = scopes;
   +[PHPhotoLibrary assertTransaction];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v4;
+  v5 = scopesCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
@@ -2349,34 +2349,34 @@ LABEL_12:
   }
 }
 
-+ (id)creationRequestForOwnedLibraryScopeInPreviewStateWithTitle:(id)a3
++ (id)creationRequestForOwnedLibraryScopeInPreviewStateWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[PHLibraryScopeChangeRequest alloc] initForNewObject];
-  [v4 setTitle:v3];
+  titleCopy = title;
+  initForNewObject = [[PHLibraryScopeChangeRequest alloc] initForNewObject];
+  [initForNewObject setTitle:titleCopy];
 
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v4 setCreationDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  [initForNewObject setCreationDate:date];
 
-  [v4 setPreviewState:1];
+  [initForNewObject setPreviewState:1];
 
-  return v4;
+  return initForNewObject;
 }
 
-+ (id)changeRequestForLibraryScope:(id)a3
++ (id)changeRequestForLibraryScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [PHLibraryScopeChangeRequest alloc];
-    v5 = [v3 uuid];
-    v6 = [v3 objectID];
-    v7 = [(PHLibraryScopeChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+    uuid = [scopeCopy uuid];
+    objectID = [scopeCopy objectID];
+    v7 = [(PHLibraryScopeChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
 
-    [(PHLibraryScopeChangeRequest *)v7 setOriginalLibraryScope:v3];
-    v8 = [(PHLibraryScopeChangeRequest *)v7 participantsHelper];
-    [v8 setOriginalShare:v3];
+    [(PHLibraryScopeChangeRequest *)v7 setOriginalLibraryScope:scopeCopy];
+    participantsHelper = [(PHLibraryScopeChangeRequest *)v7 participantsHelper];
+    [participantsHelper setOriginalShare:scopeCopy];
   }
 
   else

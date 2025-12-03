@@ -1,15 +1,15 @@
 @interface CHASActivitySetupContentSizedTableView
 - (CGSize)intrinsicContentSize;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation CHASActivitySetupContentSizedTableView
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = CHASActivitySetupContentSizedTableView;
-  [(CHASActivitySetupContentSizedTableView *)&v4 setContentSize:a3.width, a3.height];
+  [(CHASActivitySetupContentSizedTableView *)&v4 setContentSize:size.width, size.height];
   [(CHASActivitySetupContentSizedTableView *)self invalidateIntrinsicContentSize];
 }
 

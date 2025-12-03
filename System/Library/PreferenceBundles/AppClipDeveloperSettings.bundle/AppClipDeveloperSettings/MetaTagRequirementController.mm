@@ -1,56 +1,56 @@
 @interface MetaTagRequirementController
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation MetaTagRequirementController
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
+  _objc_retain(view);
+  _objc_retain(navigation);
   _objc_retain(self);
-  sub_79B4(a3, a4);
+  sub_79B4(view, navigation);
   _objc_release(self);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(navigation);
+  _objc_release(view);
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
-  _objc_retain(a5);
+  _objc_retain(view);
+  _objc_retain(navigation);
+  _objc_retain(error);
   _objc_retain(self);
-  sub_8874(a3, a4, a5);
+  sub_8874(view, navigation, error);
 
   _objc_release(self);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(navigation);
+  _objc_release(view);
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
-  _objc_retain(a5);
+  _objc_retain(view);
+  _objc_retain(navigation);
+  _objc_retain(error);
   _objc_retain(self);
-  sub_8D54(a3, a4, a5);
+  sub_8D54(view, navigation, error);
 
   _objc_release(self);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(navigation);
+  _objc_release(view);
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
-  _objc_retain(a3);
+  _objc_retain(terminate);
   _objc_retain(self);
-  sub_9158(a3);
+  sub_9158(terminate);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(terminate);
 }
 
 @end

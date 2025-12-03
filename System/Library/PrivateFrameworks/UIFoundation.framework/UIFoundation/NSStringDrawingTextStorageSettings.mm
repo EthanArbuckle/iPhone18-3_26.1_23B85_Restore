@@ -1,11 +1,11 @@
 @interface NSStringDrawingTextStorageSettings
-+ (NSStringDrawingTextStorageSettings)threadSpecificStringDrawingTextStorageSettings:(uint64_t)a1;
++ (NSStringDrawingTextStorageSettings)threadSpecificStringDrawingTextStorageSettings:(uint64_t)settings;
 - (NSStringDrawingTextStorageSettings)init;
 @end
 
 @implementation NSStringDrawingTextStorageSettings
 
-+ (NSStringDrawingTextStorageSettings)threadSpecificStringDrawingTextStorageSettings:(uint64_t)a1
++ (NSStringDrawingTextStorageSettings)threadSpecificStringDrawingTextStorageSettings:(uint64_t)settings
 {
   objc_opt_self();
   v3 = [objc_msgSend(objc_msgSend(MEMORY[0x1E696AF00] "currentThread")];

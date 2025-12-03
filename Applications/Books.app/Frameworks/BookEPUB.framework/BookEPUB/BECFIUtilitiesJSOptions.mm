@@ -1,5 +1,5 @@
 @interface BECFIUtilitiesJSOptions
-- (BECFIUtilitiesJSOptions)initWithManifestId:(id)a3 assetId:(id)a4 chapterIndex:(unint64_t)a5 spineIndex:(unint64_t)a6;
+- (BECFIUtilitiesJSOptions)initWithManifestId:(id)id assetId:(id)assetId chapterIndex:(unint64_t)index spineIndex:(unint64_t)spineIndex;
 - (NSString)jsonRepresentation;
 - (id)_dictionaryRepresentation;
 - (id)description;
@@ -7,25 +7,25 @@
 
 @implementation BECFIUtilitiesJSOptions
 
-- (BECFIUtilitiesJSOptions)initWithManifestId:(id)a3 assetId:(id)a4 chapterIndex:(unint64_t)a5 spineIndex:(unint64_t)a6
+- (BECFIUtilitiesJSOptions)initWithManifestId:(id)id assetId:(id)assetId chapterIndex:(unint64_t)index spineIndex:(unint64_t)spineIndex
 {
-  v10 = a3;
-  v11 = a4;
+  idCopy = id;
+  assetIdCopy = assetId;
   v18.receiver = self;
   v18.super_class = BECFIUtilitiesJSOptions;
   v12 = [(BECFIUtilitiesJSOptions *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [idCopy copy];
     manifestId = v12->_manifestId;
     v12->_manifestId = v13;
 
-    v15 = [v11 copy];
+    v15 = [assetIdCopy copy];
     assetId = v12->_assetId;
     v12->_assetId = v15;
 
-    v12->_chapterIndex = a5;
-    v12->_spineIndex = a6;
+    v12->_chapterIndex = index;
+    v12->_spineIndex = spineIndex;
   }
 
   return v12;
@@ -55,9 +55,9 @@
 
 - (NSString)jsonRepresentation
 {
-  v2 = [(BECFIUtilitiesJSOptions *)self _dictionaryRepresentation];
+  _dictionaryRepresentation = [(BECFIUtilitiesJSOptions *)self _dictionaryRepresentation];
   v6 = 0;
-  v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:&v6];
+  v3 = [NSJSONSerialization dataWithJSONObject:_dictionaryRepresentation options:0 error:&v6];
 
   if ([v3 length])
   {
@@ -78,11 +78,11 @@
   v4 = NSStringFromClass(v3);
   v5 = [NSNumber numberWithUnsignedInteger:[(BECFIUtilitiesJSOptions *)self spineIndex]];
   v6 = [NSNumber numberWithUnsignedInteger:[(BECFIUtilitiesJSOptions *)self chapterIndex]];
-  v7 = [(BECFIUtilitiesJSOptions *)self manifestId];
-  if ([v7 length])
+  manifestId = [(BECFIUtilitiesJSOptions *)self manifestId];
+  if ([manifestId length])
   {
-    v8 = [(BECFIUtilitiesJSOptions *)self manifestId];
-    v9 = [NSString stringWithFormat:@"<%@:%p spine:%@ chapterIndex:%@ manifestID:%@>", v4, self, v5, v6, v8];
+    manifestId2 = [(BECFIUtilitiesJSOptions *)self manifestId];
+    v9 = [NSString stringWithFormat:@"<%@:%p spine:%@ chapterIndex:%@ manifestID:%@>", v4, self, v5, v6, manifestId2];
   }
 
   else

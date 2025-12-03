@@ -1,11 +1,11 @@
 @interface VCMediaControlInfoFaceTimeVideo
 - (VCMediaControlInfoFaceTimeVideo)init;
-- (VCMediaControlInfoFaceTimeVideo)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6;
+- (VCMediaControlInfoFaceTimeVideo)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version;
 - (id)description;
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5;
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6;
-- (int)handleOptionalControlInfo:(id *)a3;
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5;
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info;
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type;
+- (int)handleOptionalControlInfo:(id *)info;
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type;
 @end
 
 @implementation VCMediaControlInfoFaceTimeVideo
@@ -25,12 +25,12 @@
   return result;
 }
 
-- (VCMediaControlInfoFaceTimeVideo)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6
+- (VCMediaControlInfoFaceTimeVideo)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VCMediaControlInfoFaceTimeVideo;
-  result = [(VCMediaControlInfo *)&v7 initWithBuffer:a3 length:a4 optionalControlInfo:a5 version:a6];
+  result = [(VCMediaControlInfo *)&v7 initWithBuffer:buffer length:length optionalControlInfo:info version:version];
   if (result)
   {
     result->super._vtableC.serializedSize = VCMediaControlInfoFaceTimeVideo_SerializedSize;
@@ -122,32 +122,32 @@ LABEL_8:
   return v3;
 }
 
-- (int)handleOptionalControlInfo:(id *)a3
+- (int)handleOptionalControlInfo:(id *)info
 {
-  if (a3)
+  if (info)
   {
-    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:a3 size:8 type:10];
-    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&a3->var1 size:4 type:16];
-    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&a3->var6 size:4 type:17];
-    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&a3->var5 size:4 type:12];
-    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&a3->var4 size:4 type:11];
+    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:info size:8 type:10];
+    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&info->var1 size:4 type:16];
+    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&info->var6 size:4 type:17];
+    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&info->var5 size:4 type:12];
+    [(VCMediaControlInfoFaceTimeVideo *)self setInfo:&info->var4 size:4 type:11];
   }
 
   return 0;
 }
 
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info
 {
-  v5 = a4;
-  if (a4 > 3)
+  lengthCopy = length;
+  if (length > 3)
   {
-    v8 = *a3;
+    v8 = *buffer;
     v9 = v8 >> 6;
     if (v9 == self->super._version)
     {
-      v10 = *(a3 + 1);
+      v10 = *(buffer + 1);
       v11 = bswap32(v10) >> 14;
-      if (v11 + 4 == a4)
+      if (v11 + 4 == length)
       {
         self->super._bitmap |= 0x10u;
         self->_controlInfoCameraStatus = v8 & 0x3F;
@@ -162,7 +162,7 @@ LABEL_8:
           }
 
           v11 -= 4;
-          v14 = *(a3 + 1);
+          v14 = *(buffer + 1);
           self->super._bitmap |= 2u;
           self->_controlInfoLTRTimestamp = v14;
           v13 = 8;
@@ -183,8 +183,8 @@ LABEL_8:
           }
 
           v11 -= 4;
-          self->_controlInfoFrameExtensionData.totalPacketsPerFrame = bswap32(*&a3[v13]) >> 16;
-          self->_controlInfoFrameExtensionData.frameSequenceNumber = bswap32(*&a3[v13 + 2]) >> 16;
+          self->_controlInfoFrameExtensionData.totalPacketsPerFrame = bswap32(*&buffer[v13]) >> 16;
+          self->_controlInfoFrameExtensionData.frameSequenceNumber = bswap32(*&buffer[v13 + 2]) >> 16;
           v13 += 4;
           self->super._bitmap |= 1u;
         }
@@ -198,15 +198,15 @@ LABEL_8:
           }
 
           v11 -= 4;
-          v16 = *&a3[a4 - 4];
+          v16 = *&buffer[length - 4];
           self->super._bitmap |= 8u;
           self->_controlInfoProbe = v16;
-          v5 = a4 - 4;
+          lengthCopy = length - 4;
         }
 
         if ((v15 & 4) != 0)
         {
-          v17 = v5 - v13;
+          v17 = lengthCopy - v13;
           v11 -= v17;
           if (v11 < 0)
           {
@@ -221,7 +221,7 @@ LABEL_8:
           }
 
           self->super._bitmap |= 4u;
-          memcpy(self->_controlInfoFEC, &a3[v13], v17);
+          memcpy(self->_controlInfoFEC, &buffer[v13], v17);
           self->_controlInfoFECLength = v17;
         }
 
@@ -232,7 +232,7 @@ LABEL_8:
 
         else
         {
-          v6 = [(VCMediaControlInfoFaceTimeVideo *)self handleOptionalControlInfo:a5];
+          v6 = [(VCMediaControlInfoFaceTimeVideo *)self handleOptionalControlInfo:info];
           if ((v6 & 0x80000000) == 0)
           {
             return v6;
@@ -269,9 +269,9 @@ LABEL_8:
   return v6;
 }
 
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type
 {
-  switch(a5)
+  switch(type)
   {
     case 0u:
     case 1u:
@@ -298,13 +298,13 @@ LABEL_8:
     case 3u:
       v5 = 0;
       self->super._bitmap |= 0x10u;
-      v6 = *a3;
+      v6 = *info;
       v7 = 64;
       goto LABEL_7;
     case 4u:
       v5 = 0;
       self->super._bitmap |= 0x100u;
-      v6 = *a3;
+      v6 = *info;
       v7 = 65;
 LABEL_7:
       *(&self->super.super.isa + v7) = v6;
@@ -312,62 +312,62 @@ LABEL_7:
     case 5u:
       v5 = 0;
       self->super._bitmap |= 2u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 68;
       goto LABEL_20;
     case 6u:
       self->super._bitmap |= 1u;
-      if (a4 != 4)
+      if (size != 4)
       {
         return -2144403413;
       }
 
       v5 = 0;
-      self->_controlInfoFrameExtensionData = *a3;
+      self->_controlInfoFrameExtensionData = *info;
       return v5;
     case 7u:
-      if (a4 > 0x24)
+      if (size > 0x24)
       {
         return -2144403413;
       }
 
       self->super._bitmap |= 4u;
-      self->_controlInfoFECLength = a4;
-      memcpy(self->_controlInfoFEC, a3, a4);
+      self->_controlInfoFECLength = size;
+      memcpy(self->_controlInfoFEC, info, size);
       return 0;
     case 8u:
       v5 = 0;
       self->super._bitmap |= 8u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 120;
       goto LABEL_20;
     case 0xAu:
       v5 = 0;
       self->super._bitmap |= 0x80u;
-      self->_controlInfoVideoArrivalTime = *a3;
+      self->_controlInfoVideoArrivalTime = *info;
       return v5;
     case 0xBu:
       v5 = 0;
       self->super._bitmap |= 0x20u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 128;
       goto LABEL_20;
     case 0xCu:
       v5 = 0;
       self->super._bitmap |= 0x10u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 124;
       goto LABEL_20;
     case 0x10u:
       v5 = 0;
       self->super._bitmap |= 0x40u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 132;
       goto LABEL_20;
     case 0x11u:
       v5 = 0;
       self->super._bitmap |= 0x20u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 136;
 LABEL_20:
       *(&self->super.super.isa + v9) = v8;
@@ -381,26 +381,26 @@ LABEL_20:
   return v5;
 }
 
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type
 {
   result = -2144403434;
-  if (!a3)
+  if (!info)
   {
     return -2144403455;
   }
 
-  if (a6 <= 7)
+  if (type <= 7)
   {
-    if (a6 <= 4)
+    if (type <= 4)
     {
-      if (a6 == 3)
+      if (type == 3)
       {
         if ((self->super._bitmap & 0x10) == 0)
         {
           return result;
         }
 
-        if (!a4)
+        if (!length)
         {
           return -2144403442;
         }
@@ -410,12 +410,12 @@ LABEL_20:
 
       else
       {
-        if (a6 != 4 || (self->super._bitmap & 0x100) == 0)
+        if (type != 4 || (self->super._bitmap & 0x100) == 0)
         {
           return result;
         }
 
-        if (!a4)
+        if (!length)
         {
           return -2144403442;
         }
@@ -423,8 +423,8 @@ LABEL_20:
         v11 = 65;
       }
 
-      *a3 = *(&self->super.super.isa + v11);
-      if (!a5)
+      *info = *(&self->super.super.isa + v11);
+      if (!size)
       {
         return 0;
       }
@@ -434,14 +434,14 @@ LABEL_20:
 
     else
     {
-      if (a6 == 5)
+      if (type == 5)
       {
         if ((self->super._bitmap & 2) == 0)
         {
           return result;
         }
 
-        if (a4 < 4)
+        if (length < 4)
         {
           return -2144403442;
         }
@@ -450,14 +450,14 @@ LABEL_20:
         goto LABEL_54;
       }
 
-      if (a6 == 6)
+      if (type == 6)
       {
         if ((self->super._bitmap & 1) == 0)
         {
           return result;
         }
 
-        if (a4 < 4)
+        if (length < 4)
         {
           return -2144403442;
         }
@@ -471,13 +471,13 @@ LABEL_20:
         return result;
       }
 
-      if (self->_controlInfoFECLength > a4)
+      if (self->_controlInfoFECLength > length)
       {
         return -2144403442;
       }
 
-      memcpy(a3, self->_controlInfoFEC, self->_controlInfoFECLength);
-      if (!a5)
+      memcpy(info, self->_controlInfoFEC, self->_controlInfoFECLength);
+      if (!size)
       {
         return 0;
       }
@@ -487,20 +487,20 @@ LABEL_20:
 
 LABEL_56:
     result = 0;
-    *a5 = controlInfoFECLength;
+    *size = controlInfoFECLength;
     return result;
   }
 
-  if (a6 > 11)
+  if (type > 11)
   {
-    if (a6 == 12)
+    if (type == 12)
     {
       if ((self->super._bitmap & 0x10) == 0)
       {
         return result;
       }
 
-      if (a4 < 4)
+      if (length < 4)
       {
         return -2144403442;
       }
@@ -508,14 +508,14 @@ LABEL_56:
       v9 = 124;
     }
 
-    else if (a6 == 16)
+    else if (type == 16)
     {
       if ((self->super._bitmap & 0x40) == 0)
       {
         return result;
       }
 
-      if (a4 < 4)
+      if (length < 4)
       {
         return -2144403442;
       }
@@ -525,12 +525,12 @@ LABEL_56:
 
     else
     {
-      if (a6 != 17 || (self->super._bitmap & 0x20) == 0)
+      if (type != 17 || (self->super._bitmap & 0x20) == 0)
       {
         return result;
       }
 
-      if (a4 < 4)
+      if (length < 4)
       {
         return -2144403442;
       }
@@ -539,8 +539,8 @@ LABEL_56:
     }
 
 LABEL_54:
-    *a3 = *(&self->super.super.isa + v9);
-    if (a5)
+    *info = *(&self->super.super.isa + v9);
+    if (size)
     {
       controlInfoFECLength = 4;
       goto LABEL_56;
@@ -549,14 +549,14 @@ LABEL_54:
     return 0;
   }
 
-  if (a6 == 8)
+  if (type == 8)
   {
     if ((self->super._bitmap & 8) == 0)
     {
       return result;
     }
 
-    if (a4 < 4)
+    if (length < 4)
     {
       return -2144403442;
     }
@@ -565,20 +565,20 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  if (a6 == 10)
+  if (type == 10)
   {
     if ((self->super._bitmap & 0x80) == 0)
     {
       return result;
     }
 
-    if (a4 < 8)
+    if (length < 8)
     {
       return -2144403442;
     }
 
-    *a3 = self->_controlInfoVideoArrivalTime;
-    if (a5)
+    *info = self->_controlInfoVideoArrivalTime;
+    if (size)
     {
       controlInfoFECLength = 8;
       goto LABEL_56;
@@ -587,9 +587,9 @@ LABEL_54:
     return 0;
   }
 
-  if (a6 == 11 && (self->super._bitmap & 0x20) != 0)
+  if (type == 11 && (self->super._bitmap & 0x20) != 0)
   {
-    if (a4 >= 4)
+    if (length >= 4)
     {
       v9 = 128;
       goto LABEL_54;

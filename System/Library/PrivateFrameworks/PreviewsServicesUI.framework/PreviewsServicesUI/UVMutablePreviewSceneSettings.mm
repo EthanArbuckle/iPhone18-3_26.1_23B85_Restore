@@ -1,21 +1,21 @@
 @interface UVMutablePreviewSceneSettings
 - (CGSize)previewMaximumSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (id)makeCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)previewSceneLayout;
-- (void)setPreviewMaximumSize:(CGSize)a3;
-- (void)setPreviewSceneLayout:(int64_t)a3;
+- (void)setPreviewMaximumSize:(CGSize)size;
+- (void)setPreviewSceneLayout:(int64_t)layout;
 @end
 
 @implementation UVMutablePreviewSceneSettings
 
 - (CGSize)previewMaximumSize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1100101];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1100101];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -27,34 +27,34 @@
   return result;
 }
 
-- (void)setPreviewMaximumSize:(CGSize)a3
+- (void)setPreviewMaximumSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(FBSSettings *)self otherSettings];
+  height = size.height;
+  width = size.width;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v7 = width;
   *&v7[1] = height;
   v6 = [MEMORY[0x277CCAE60] valueWithBytes:v7 objCType:"{CGSize=dd}"];
-  [v5 setObject:v6 forSetting:1100101];
+  [otherSettings setObject:v6 forSetting:1100101];
 }
 
 - (int64_t)previewSceneLayout
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1100102];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1100102];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setPreviewSceneLayout:(int64_t)a3
+- (void)setPreviewSceneLayout:(int64_t)layout
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:1100102];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:layout];
+  [otherSettings setObject:v4 forSetting:1100102];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UVPreviewSceneSettings alloc];
 
@@ -68,16 +68,16 @@
   return v2;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1100102)
+  if (setting == 1100102)
   {
     v5 = @"previewSceneLayout";
   }
@@ -87,7 +87,7 @@
     v5 = 0;
   }
 
-  if (a3 == 1100101)
+  if (setting == 1100101)
   {
     v6 = @"previewMaximumSize";
   }
@@ -108,7 +108,7 @@
   {
     v12.receiver = self;
     v12.super_class = UVMutablePreviewSceneSettings;
-    v9 = [(FBSSettings *)&v12 keyDescriptionForSetting:a3];
+    v9 = [(FBSSettings *)&v12 keyDescriptionForSetting:setting];
   }
 
   v10 = v9;
@@ -116,10 +116,10 @@
   return v10;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = _PreviewSceneSettingValueDescription(a5, v8);
+  objectCopy = object;
+  v9 = _PreviewSceneSettingValueDescription(setting, objectCopy);
   v10 = v9;
   if (v9)
   {
@@ -130,7 +130,7 @@
   {
     v14.receiver = self;
     v14.super_class = UVMutablePreviewSceneSettings;
-    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v12 = v11;

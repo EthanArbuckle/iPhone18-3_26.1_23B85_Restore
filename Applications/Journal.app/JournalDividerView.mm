@@ -1,26 +1,26 @@
 @interface JournalDividerView
 - (CGSize)intrinsicContentSize;
-- (_TtC7Journal18JournalDividerView)initWithCoder:(id)a3;
-- (_TtC7Journal18JournalDividerView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal18JournalDividerView)initWithCoder:(id)coder;
+- (_TtC7Journal18JournalDividerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation JournalDividerView
 
-- (_TtC7Journal18JournalDividerView)initWithFrame:(CGRect)a3
+- (_TtC7Journal18JournalDividerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC7Journal18JournalDividerView_dividerView;
   *(&self->super.super.super.isa + v8) = [objc_allocWithZone(UIView) init];
   v11.receiver = self;
   v11.super_class = type metadata accessor for JournalDividerView();
-  v9 = [(JournalDividerView *)&v11 initWithFrame:x, y, width, height];
+  height = [(JournalDividerView *)&v11 initWithFrame:x, y, width, height];
   sub_100054650();
 
-  return v9;
+  return height;
 }
 
 - (CGSize)intrinsicContentSize
@@ -34,19 +34,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009503C();
 }
 
-- (_TtC7Journal18JournalDividerView)initWithCoder:(id)a3
+- (_TtC7Journal18JournalDividerView)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC7Journal18JournalDividerView_dividerView;
   v6 = objc_allocWithZone(UIView);
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = [v6 init];
   v12.receiver = self;
   v12.super_class = type metadata accessor for JournalDividerView();
-  v8 = [(JournalDividerView *)&v12 initWithCoder:v7];
+  v8 = [(JournalDividerView *)&v12 initWithCoder:coderCopy];
   v9 = v8;
   if (v8)
   {

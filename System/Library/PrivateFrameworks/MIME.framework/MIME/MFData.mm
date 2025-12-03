@@ -1,53 +1,53 @@
 @interface MFData
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (MFData)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (MFData)initWithContentsOfFile:(id)a3;
-- (MFData)initWithContentsOfFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (MFData)initWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)_initWithData:(id)a3 maybeMutable:(BOOL)a4;
-- (id)_initWithFile:(id)a3;
-- (id)_initWithRange:(_NSRange)a3 from:(id)a4 retainingParent:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error;
+- (BOOL)writeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (MFData)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (MFData)initWithContentsOfFile:(id)file;
+- (MFData)initWithContentsOfFile:(id)file options:(unint64_t)options error:(id *)error;
+- (MFData)initWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)_initWithData:(id)data maybeMutable:(BOOL)mutable;
+- (id)_initWithFile:(id)file;
+- (id)_initWithRange:(_NSRange)range from:(id)from retainingParent:(BOOL)parent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)subdataWithRange:(_NSRange)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)subdataWithRange:(_NSRange)range;
 - (void)dealloc;
 @end
 
 @implementation MFData
 
-- (id)_initWithFile:(id)a3
+- (id)_initWithFile:(id)file
 {
   v6.receiver = self;
   v6.super_class = MFData;
   v4 = [(MFData *)&v6 init];
   if (v4)
   {
-    v4->_path = a3;
+    v4->_path = file;
     v4->_internal = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v4->_path options:1 error:0];
   }
 
   return v4;
 }
 
-- (MFData)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (MFData)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v13.receiver = self;
   v13.super_class = MFData;
   v6 = [(MFData *)&v13 init];
   if (v6)
   {
-    if ((a4 & 0x8000000000000000) != 0)
+    if ((length & 0x8000000000000000) != 0)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "length", a4, 0x7FFFFFFFFFFFFFFFLL}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "length", length, 0x7FFFFFFFFFFFFFFFLL}];
     }
 
-    if (sDefaultThreshold <= a4)
+    if (sDefaultThreshold <= length)
     {
       pthread_once(&sMFDataOnce, _MFDataInit);
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
-      v9 = [v8 mf_makeUniqueFileInDirectory:sMFDataPath];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v9 = [defaultManager mf_makeUniqueFileInDirectory:sMFDataPath];
       v6->_path = v9;
       v10 = open([(NSString *)v9 fileSystemRepresentation], 1537, 438);
       if (v10 == -1)
@@ -59,7 +59,7 @@
       {
         v11 = v10;
         MFProtectFileDescriptor(v10, 3);
-        if (write(v11, a3, a4) == -1)
+        if (write(v11, bytes, length) == -1)
         {
           [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Error occured in write: (%d)", *__error()}];
         }
@@ -72,7 +72,7 @@
 
     else
     {
-      v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3 length:a4];
+      v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:bytes length:length];
     }
 
     v6->_internal = v7;
@@ -86,13 +86,13 @@
   return v6;
 }
 
-- (MFData)initWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (MFData)initWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
-    v9 = [a3 path];
+    path = [l path];
 
-    return [(MFData *)self initWithContentsOfFile:v9 options:a4 error:a5];
+    return [(MFData *)self initWithContentsOfFile:path options:options error:error];
   }
 
   else
@@ -102,7 +102,7 @@
     v11 = [(MFData *)&v13 init];
     if (v11)
     {
-      v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:a3 options:a4 error:a5];
+      v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:l options:options error:error];
       v11->_internal = v12;
       if (!v12)
       {
@@ -115,7 +115,7 @@
   }
 }
 
-- (MFData)initWithContentsOfFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (MFData)initWithContentsOfFile:(id)file options:(unint64_t)options error:(id *)error
 {
   pthread_once(&sMFDataOnce, _MFDataInit);
   v18.receiver = self;
@@ -126,7 +126,7 @@
     return v9;
   }
 
-  if (a4)
+  if (options)
   {
     v13 = objc_alloc(MEMORY[0x1E695DEF0]);
   }
@@ -139,16 +139,16 @@
     v13 = objc_alloc(MEMORY[0x1E695DEF0]);
     if (v12 <= v11)
     {
-      v14 = a4 | 1;
-      v15 = a3;
+      optionsCopy = options | 1;
+      fileCopy2 = file;
       goto LABEL_7;
     }
   }
 
-  v15 = a3;
-  v14 = a4;
+  fileCopy2 = file;
+  optionsCopy = options;
 LABEL_7:
-  v16 = [v13 initWithContentsOfFile:v15 options:v14 error:a5];
+  v16 = [v13 initWithContentsOfFile:fileCopy2 options:optionsCopy error:error];
   v9->_internal = v16;
   if (!v16)
   {
@@ -159,14 +159,14 @@ LABEL_7:
   return v9;
 }
 
-- (MFData)initWithContentsOfFile:(id)a3
+- (MFData)initWithContentsOfFile:(id)file
 {
   v5 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
   v6 = [objc_msgSend(v5 objectForKey:{*MEMORY[0x1E696A3B8]), "unsignedIntegerValue"}];
   if (sDefaultThreshold <= v6)
   {
 
-    return [(MFData *)self initWithContentsOfFile:a3 options:0 error:0];
+    return [(MFData *)self initWithContentsOfFile:file options:0 error:0];
   }
 
   else
@@ -176,7 +176,7 @@ LABEL_7:
     v7 = [(MFData *)&v10 init];
     if (v7)
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:a3];
+      v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:file];
       v7->_internal = v8;
       if (!v8)
       {
@@ -189,35 +189,35 @@ LABEL_7:
   }
 }
 
-- (id)_initWithData:(id)a3 maybeMutable:(BOOL)a4
+- (id)_initWithData:(id)data maybeMutable:(BOOL)mutable
 {
-  v4 = a4;
+  mutableCopy = mutable;
   v10.receiver = self;
   v10.super_class = MFData;
   v6 = [(MFData *)&v10 init];
   if (v6)
   {
-    v7 = [a3 length];
+    v7 = [data length];
     if (v7 >= sDefaultThreshold)
     {
-      if (![a3 mf_immutable] && v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (![data mf_immutable] && mutableCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v8 = [objc_alloc(objc_opt_class()) initWithBytes:objc_msgSend(a3 length:{"bytes"), objc_msgSend(a3, "length")}];
+        dataCopy = [objc_alloc(objc_opt_class()) initWithBytes:objc_msgSend(data length:{"bytes"), objc_msgSend(data, "length")}];
       }
 
       else
       {
-        v8 = a3;
+        dataCopy = data;
       }
     }
 
     else
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithData:a3];
+      dataCopy = [objc_alloc(MEMORY[0x1E695DEF0]) initWithData:data];
     }
 
-    v6->_internal = v8;
-    if (!v8)
+    v6->_internal = dataCopy;
+    if (!dataCopy)
     {
 
       return 0;
@@ -227,16 +227,16 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithData:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [MFMutableData allocWithZone:a3];
+  v4 = [MFMutableData allocWithZone:zone];
 
   return [(MFMutableData *)v4 initWithData:self];
 }
@@ -266,22 +266,22 @@ LABEL_7:
   [(MFData *)&v6 dealloc];
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  v3 = [objc_alloc(objc_opt_class()) _initWithRange:a3.location from:a3.length retainingParent:{self, sDefaultThreshold <= a3.length}];
+  v3 = [objc_alloc(objc_opt_class()) _initWithRange:range.location from:range.length retainingParent:{self, sDefaultThreshold <= range.length}];
 
   return v3;
 }
 
-- (id)_initWithRange:(_NSRange)a3 from:(id)a4 retainingParent:(BOOL)a5
+- (id)_initWithRange:(_NSRange)range from:(id)from retainingParent:(BOOL)parent
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
+  parentCopy = parent;
+  length = range.length;
+  location = range.location;
   v25 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (from)
   {
-    if (([a4 mf_containsRange:{a3.location, a3.length}] & 1) == 0)
+    if (([from mf_containsRange:{range.location, range.length}] & 1) == 0)
     {
       v10 = MFLogGeneral();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -297,21 +297,21 @@ LABEL_7:
     }
   }
 
-  v11 = [a4 bytes];
-  if (v5)
+  bytes = [from bytes];
+  if (parentCopy)
   {
-    v12 = [(MFData *)self initWithBytesNoCopy:v11 + location length:length freeWhenDone:0];
+    v12 = [(MFData *)self initWithBytesNoCopy:bytes + location length:length freeWhenDone:0];
     if (!v12)
     {
       goto LABEL_18;
     }
 
-    v12->_parent = a4;
+    v12->_parent = from;
   }
 
   else
   {
-    v12 = [(MFData *)self initWithBytes:v11 + location length:length];
+    v12 = [(MFData *)self initWithBytes:bytes + location length:length];
     if (!v12)
     {
       goto LABEL_18;
@@ -362,14 +362,14 @@ LABEL_18:
   return v2;
 }
 
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  if (self->_path && (v9 = [MEMORY[0x1E696AC08] defaultManager], MFRemoveItemAtPath(a3), objc_msgSend(v9, "moveItemAtPath:toPath:error:", self->_path, a3, 0)))
+  if (self->_path && (v9 = [MEMORY[0x1E696AC08] defaultManager], MFRemoveItemAtPath(file), objc_msgSend(v9, "moveItemAtPath:toPath:error:", self->_path, file, 0)))
   {
-    v10 = (a4 & 0xF0000000) - 0x10000000;
+    v10 = (options & 0xF0000000) - 0x10000000;
     if (!(v10 >> 30))
     {
-      [v9 mf_protectFileAtPath:a3 withClass:*(&unk_1D36EFE18 + (v10 >> 25)) error:0];
+      [v9 mf_protectFileAtPath:file withClass:*(&unk_1D36EFE18 + (v10 >> 25)) error:0];
     }
 
     self->_path = 0;
@@ -380,24 +380,24 @@ LABEL_18:
   {
     v12.receiver = self;
     v12.super_class = MFData;
-    return [(MFData *)&v12 writeToFile:a3 options:a4 error:a5];
+    return [(MFData *)&v12 writeToFile:file options:options error:error];
   }
 }
 
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
-    v9 = [a3 path];
+    path = [l path];
 
-    return [(MFData *)self writeToFile:v9 options:a4 error:a5];
+    return [(MFData *)self writeToFile:path options:options error:error];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MFData;
-    return [(MFData *)&v11 writeToURL:a3 options:a4 error:a5];
+    return [(MFData *)&v11 writeToURL:l options:options error:error];
   }
 }
 

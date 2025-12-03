@@ -1,9 +1,9 @@
 @interface VenueCardFactory
-- (VenueCardFactory)initWithChangeNotifier:(id)a3;
+- (VenueCardFactory)initWithChangeNotifier:(id)notifier;
 - (VenueCardFactoryDelegate)delegate;
-- (id)existingViewControllerForCardItem:(id)a3;
-- (id)viewControllerForCardItem:(id)a3;
-- (void)cardStack:(id)a3 didChangeStack:(id)a4;
+- (id)existingViewControllerForCardItem:(id)item;
+- (id)viewControllerForCardItem:(id)item;
+- (void)cardStack:(id)stack didChangeStack:(id)changeStack;
 @end
 
 @implementation VenueCardFactory
@@ -15,16 +15,16 @@
   return WeakRetained;
 }
 
-- (void)cardStack:(id)a3 didChangeStack:(id)a4
+- (void)cardStack:(id)stack didChangeStack:(id)changeStack
 {
-  v5 = a4;
+  changeStackCopy = changeStack;
   v6 = +[NSMutableSet set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(NSMapTable *)self->_cardItemToViewControllerMapping keyEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  keyEnumerator = [(NSMapTable *)self->_cardItemToViewControllerMapping keyEnumerator];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -35,17 +35,17 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        if (([v5 containsObject:v12] & 1) == 0)
+        if (([changeStackCopy containsObject:v12] & 1) == 0)
         {
           [v6 addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v9);
@@ -80,20 +80,20 @@
   }
 }
 
-- (id)existingViewControllerForCardItem:(id)a3
+- (id)existingViewControllerForCardItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_cardItemToViewControllerMapping objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMapTable *)self->_cardItemToViewControllerMapping objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
     v7 = v5;
   }
 
-  else if ([v4 conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem])
+  else if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem])
   {
-    v8 = [(VenueCardFactory *)self delegate];
-    v9 = [v8 routePlanningOverviewViewControllerForCardFactory:self];
+    delegate = [(VenueCardFactory *)self delegate];
+    v9 = [delegate routePlanningOverviewViewControllerForCardFactory:self];
 LABEL_21:
     v7 = v9;
   }
@@ -104,8 +104,8 @@ LABEL_21:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(NSMapTable *)self->_cardItemToViewControllerMapping keyEnumerator];
-    v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    delegate = [(NSMapTable *)self->_cardItemToViewControllerMapping keyEnumerator];
+    v10 = [delegate countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -116,11 +116,11 @@ LABEL_21:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(delegate);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = v4;
+          v15 = itemCopy;
           v16 = v15;
           if (v14 == v15)
           {
@@ -133,9 +133,9 @@ LABEL_20:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && (v17 = [v14 venueCardID], v17 == objc_msgSend(v16, "venueCardID")))
           {
-            v18 = [v14 venueCardID];
+            venueCardID = [v14 venueCardID];
 
-            if (v18)
+            if (venueCardID)
             {
               goto LABEL_20;
             }
@@ -146,7 +146,7 @@ LABEL_20:
           }
         }
 
-        v11 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [delegate countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v11)
         {
           continue;
@@ -162,51 +162,51 @@ LABEL_20:
   return v7;
 }
 
-- (id)viewControllerForCardItem:(id)a3
+- (id)viewControllerForCardItem:(id)item
 {
-  v4 = a3;
-  if (![v4 isVenueItem])
+  itemCopy = item;
+  if (![itemCopy isVenueItem])
   {
     v6 = 0;
     goto LABEL_19;
   }
 
-  v5 = [(VenueCardFactory *)self existingViewControllerForCardItem:v4];
+  v5 = [(VenueCardFactory *)self existingViewControllerForCardItem:itemCopy];
   if (!v5)
   {
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem])
+    if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem])
     {
       v5 = objc_alloc_init(PlaceCardViewController);
 LABEL_17:
-      [(NSMapTable *)self->_cardItemToViewControllerMapping setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_cardItemToViewControllerMapping setObject:v5 forKey:itemCopy];
       goto LABEL_18;
     }
 
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
+    if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
     {
-      v7 = v4;
-      v8 = [[VenueCategoryViewController alloc] initWithCategoryCardItem:v7];
+      delegate2 = itemCopy;
+      v8 = [[VenueCategoryViewController alloc] initWithCategoryCardItem:delegate2];
     }
 
-    else if ([v4 conformsToProtocol:&OBJC_PROTOCOL___VenueAutoCompleteCategoryCardItem])
+    else if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueAutoCompleteCategoryCardItem])
     {
-      v7 = v4;
-      v8 = [[VenueCategoryViewController alloc] initWithAutoCompleteCategoryCardItem:v7];
+      delegate2 = itemCopy;
+      v8 = [[VenueCategoryViewController alloc] initWithAutoCompleteCategoryCardItem:delegate2];
     }
 
     else
     {
-      if ([v4 conformsToProtocol:&OBJC_PROTOCOL___VenueClusterCardItem])
+      if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueClusterCardItem])
       {
-        v9 = [v4 venueLabelMarker];
-        v10 = [v9 isCluster];
+        venueLabelMarker = [itemCopy venueLabelMarker];
+        isCluster = [venueLabelMarker isCluster];
 
-        if (v10)
+        if (isCluster)
         {
-          v11 = [(VenueCardFactory *)self delegate];
-          v7 = [v11 shareDelegateForCardFactory:self];
+          delegate = [(VenueCardFactory *)self delegate];
+          delegate2 = [delegate shareDelegateForCardFactory:self];
 
-          v5 = [[SimpleResultsViewController alloc] initWithShareDelegate:v7];
+          v5 = [[SimpleResultsViewController alloc] initWithShareDelegate:delegate2];
           [(PlaceCardViewController *)v5 setIsPresentingVenueClusterResults:1];
 LABEL_16:
 
@@ -214,14 +214,14 @@ LABEL_16:
         }
       }
 
-      if (![v4 conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem])
+      if (![itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem])
       {
         v5 = 0;
         goto LABEL_17;
       }
 
-      v7 = [(VenueCardFactory *)self delegate];
-      v8 = [v7 routePlanningOverviewViewControllerForCardFactory:self];
+      delegate2 = [(VenueCardFactory *)self delegate];
+      v8 = [delegate2 routePlanningOverviewViewControllerForCardFactory:self];
     }
 
     v5 = v8;
@@ -236,16 +236,16 @@ LABEL_19:
   return v6;
 }
 
-- (VenueCardFactory)initWithChangeNotifier:(id)a3
+- (VenueCardFactory)initWithChangeNotifier:(id)notifier
 {
-  v4 = a3;
+  notifierCopy = notifier;
   v10.receiver = self;
   v10.super_class = VenueCardFactory;
   v5 = [(VenueCardFactory *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_changeNotifier, v4);
+    objc_storeWeak(&v5->_changeNotifier, notifierCopy);
     v7 = +[NSMapTable weakToStrongObjectsMapTable];
     cardItemToViewControllerMapping = v6->_cardItemToViewControllerMapping;
     v6->_cardItemToViewControllerMapping = v7;

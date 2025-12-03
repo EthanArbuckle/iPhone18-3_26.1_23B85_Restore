@@ -1,21 +1,21 @@
 @interface PLManagedLegacyFace
 - (CGRect)relativeRect;
 - (void)delete;
-- (void)setRelativeRect:(CGRect)a3;
+- (void)setRelativeRect:(CGRect)rect;
 @end
 
 @implementation PLManagedLegacyFace
 
 - (void)delete
 {
-  v3 = [(PLManagedLegacyFace *)self managedObjectContext];
-  [v3 deleteObject:self];
+  managedObjectContext = [(PLManagedLegacyFace *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
-- (void)setRelativeRect:(CGRect)a3
+- (void)setRelativeRect:(CGRect)rect
 {
-  v5 = a3;
-  if (CGRectIsEmpty(a3))
+  rectCopy = rect;
+  if (CGRectIsEmpty(rect))
   {
 
     [(PLManagedLegacyFace *)self setRelativeRectValue:0];
@@ -23,16 +23,16 @@
 
   else
   {
-    v4 = [MEMORY[0x1E696B098] valueWithBytes:&v5 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-    [(PLManagedLegacyFace *)self setRelativeRectValue:v4, *&v5.origin.x, *&v5.origin.y, *&v5.size.width, *&v5.size.height];
+    v4 = [MEMORY[0x1E696B098] valueWithBytes:&rectCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+    [(PLManagedLegacyFace *)self setRelativeRectValue:v4, *&rectCopy.origin.x, *&rectCopy.origin.y, *&rectCopy.size.width, *&rectCopy.size.height];
   }
 }
 
 - (CGRect)relativeRect
 {
-  v2 = [(PLManagedLegacyFace *)self relativeRectValue];
-  v3 = v2;
-  if (v2 && !strncmp([v2 objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}", 0x32uLL))
+  relativeRectValue = [(PLManagedLegacyFace *)self relativeRectValue];
+  v3 = relativeRectValue;
+  if (relativeRectValue && !strncmp([relativeRectValue objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}", 0x32uLL))
   {
     v9 = 0u;
     v10 = 0u;

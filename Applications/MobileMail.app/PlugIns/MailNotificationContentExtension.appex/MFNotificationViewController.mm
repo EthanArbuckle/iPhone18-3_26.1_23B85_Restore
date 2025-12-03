@@ -1,25 +1,25 @@
 @interface MFNotificationViewController
 + (OS_os_log)signpostLog;
 - (UIEdgeInsets)minMargins;
-- (id)_configureMessageListAndPromiseForQuery:(id)a3 repository:(id)a4;
+- (id)_configureMessageListAndPromiseForQuery:(id)query repository:(id)repository;
 - (id)_errorLabel;
-- (id)_notificationActionIdentifierForSwipeAction:(int64_t)a3;
-- (id)userNotificationActionForSwipeAction:(int64_t)a3;
+- (id)_notificationActionIdentifierForSwipeAction:(int64_t)action;
+- (id)userNotificationActionForSwipeAction:(int64_t)action;
 - (unint64_t)signpostID;
-- (void)_configureMessageRequestWithSignPostID:(unint64_t)a3;
-- (void)_determineMessageToDisplayForCollection:(id)a3 itemIDs:(id)a4;
-- (void)_notificationPreviewFailedWithError:(id)a3 singpostID:(unint64_t)a4;
+- (void)_configureMessageRequestWithSignPostID:(unint64_t)d;
+- (void)_determineMessageToDisplayForCollection:(id)collection itemIDs:(id)ds;
+- (void)_notificationPreviewFailedWithError:(id)error singpostID:(unint64_t)d;
 - (void)_resetMessageListAndPromise;
-- (void)_setProgressUIVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5;
-- (void)didReceiveNotification:(id)a3;
-- (void)messageContentView:(id)a3 didFinishRenderingWithHeight:(double)a4;
-- (void)messageContentView:(id)a3 viewedRemoteURLs:(id)a4;
-- (void)setActionsForMessage:(id)a3;
-- (void)setError:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_setProgressUIVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD;
+- (void)didReceiveNotification:(id)notification;
+- (void)messageContentView:(id)view didFinishRenderingWithHeight:(double)height;
+- (void)messageContentView:(id)view viewedRemoteURLs:(id)ls;
+- (void)setActionsForMessage:(id)message;
+- (void)setError:(id)error;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000188C0;
   block[3] = &unk_1000389B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000425E0 != -1)
   {
     dispatch_once(&qword_1000425E0, block);
@@ -44,8 +44,8 @@
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -58,18 +58,18 @@
   v3 = objc_alloc_init(EMDaemonInterface);
   [(MFNotificationViewController *)self setDaemonInterface:v3];
 
-  v4 = [(MFNotificationViewController *)self daemonInterface];
-  [MFWKWebViewFactory setDaemonInterface:v4 URLCacheWithMemoryCapacity:0];
+  daemonInterface = [(MFNotificationViewController *)self daemonInterface];
+  [MFWKWebViewFactory setDaemonInterface:daemonInterface URLCacheWithMemoryCapacity:0];
 
-  v5 = [(MFNotificationViewController *)self daemonInterface];
-  v6 = [v5 vipManager];
-  [VIPManager setBackingManager:v6];
+  daemonInterface2 = [(MFNotificationViewController *)self daemonInterface];
+  vipManager = [daemonInterface2 vipManager];
+  [VIPManager setBackingManager:vipManager];
 
   v7 = objc_alloc_init(MUICachingSVGConverter);
   v8 = [MUIBrandIndicatorProvider alloc];
-  v9 = [(MFNotificationViewController *)self daemonInterface];
-  v10 = [v9 messageRepository];
-  v11 = [v8 initWithMessageRepository:v10 svgConverter:v7];
+  daemonInterface3 = [(MFNotificationViewController *)self daemonInterface];
+  messageRepository = [daemonInterface3 messageRepository];
+  v11 = [v8 initWithMessageRepository:messageRepository svgConverter:v7];
   [(MFNotificationViewController *)self setBrandIndicatorProvider:v11];
 
   v12 = objc_alloc_init(EMCachingContactStore);
@@ -78,22 +78,22 @@
   objc_initWeak(&location, self);
   v13 = [MUIAvatarImageGenerator alloc];
   brandIndicatorProvider = self->_brandIndicatorProvider;
-  v15 = [(MFNotificationViewController *)self daemonInterface];
-  v16 = [v15 messageRepository];
+  daemonInterface4 = [(MFNotificationViewController *)self daemonInterface];
+  messageRepository2 = [daemonInterface4 messageRepository];
   v30 = _NSConcreteStackBlock;
   v31 = 3221225472;
   v32 = sub_100018E04;
   v33 = &unk_1000390E0;
   objc_copyWeak(&v34, &location);
-  v17 = [v13 initWithBimiProvider:brandIndicatorProvider messageRepository:v16 contactsProviderHandler:&v30];
+  v17 = [v13 initWithBimiProvider:brandIndicatorProvider messageRepository:messageRepository2 contactsProviderHandler:&v30];
   [(MFNotificationViewController *)self setAvatarGenerator:v17, v30, v31, v32, v33];
 
-  v18 = [(MFNotificationViewController *)self avatarGenerator];
-  [v18 allowGeneratingAvatarImages];
+  avatarGenerator = [(MFNotificationViewController *)self avatarGenerator];
+  [avatarGenerator allowGeneratingAvatarImages];
 
   [(MFNotificationViewController *)self systemMinimumLayoutMargins];
-  v19 = [(MFNotificationViewController *)self view];
-  -[MFNotificationViewController setIsRTL:](self, "setIsRTL:", [v19 mf_prefersRightToLeftInterfaceLayout]);
+  view = [(MFNotificationViewController *)self view];
+  -[MFNotificationViewController setIsRTL:](self, "setIsRTL:", [view mf_prefersRightToLeftInterfaceLayout]);
 
   [(MFNotificationViewController *)self isRTL];
   MFEdgeInsetsFromDirectionalEdgeInsets();
@@ -126,38 +126,38 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = MFNotificationViewController;
-  [(MFNotificationViewController *)&v8 viewDidDisappear:a3];
+  [(MFNotificationViewController *)&v8 viewDidDisappear:disappear];
   v4 = MSUserNotificationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MFNotificationViewController *)self messageList];
-    v6 = [(MFNotificationViewController *)self messageReferenceURL];
+    messageList = [(MFNotificationViewController *)self messageList];
+    messageReferenceURL = [(MFNotificationViewController *)self messageReferenceURL];
     *buf = 134218242;
-    v10 = v5;
+    v10 = messageList;
     v11 = 2112;
-    v12 = v6;
+    v12 = messageReferenceURL;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "NotificationPreview: %p: canceling promise for URL %@", buf, 0x16u);
   }
 
-  v7 = [(MFNotificationViewController *)self messageDisplayPromise];
-  [v7 cancel];
+  messageDisplayPromise = [(MFNotificationViewController *)self messageDisplayPromise];
+  [messageDisplayPromise cancel];
 
   [(MFNotificationViewController *)self setIsDisplayingMessage:0];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (![(MFNotificationViewController *)self isDisplayingMessage])
   {
     [(MFNotificationViewController *)self setIsDisplayingMessage:1];
-    v5 = [(MFNotificationViewController *)self daemonInterface];
+    daemonInterface = [(MFNotificationViewController *)self daemonInterface];
 
-    if (v5)
+    if (daemonInterface)
     {
       v6 = +[MFNotificationViewController signpostLog];
       v7 = os_signpost_id_generate(v6);
@@ -171,30 +171,30 @@
       }
 
       [(MFNotificationViewController *)self _setProgressUIVisible:1 animated:0];
-      v10 = [v4 request];
-      v11 = [v10 content];
-      v12 = [v11 userInfo];
-      v13 = [v12 objectForKeyedSubscript:MSUserNotificationContentKeyMessageReference];
+      request = [notificationCopy request];
+      content = [request content];
+      userInfo = [content userInfo];
+      v13 = [userInfo objectForKeyedSubscript:MSUserNotificationContentKeyMessageReference];
 
       if (v13)
       {
-        v14 = [NSURL URLWithString:v13];
-        [(MFNotificationViewController *)self setMessageReferenceURL:v14];
+        identifier = [NSURL URLWithString:v13];
+        [(MFNotificationViewController *)self setMessageReferenceURL:identifier];
       }
 
       else
       {
-        v14 = [v10 identifier];
-        v16 = [NSURL URLWithString:v14];
+        identifier = [request identifier];
+        v16 = [NSURL URLWithString:identifier];
         [(MFNotificationViewController *)self setMessageReferenceURL:v16];
       }
 
       v17 = MSUserNotificationsLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(MFNotificationViewController *)self messageReferenceURL];
+        messageReferenceURL = [(MFNotificationViewController *)self messageReferenceURL];
         *buf = 138412290;
-        v28 = v18;
+        v28 = messageReferenceURL;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "NotificationPreview: handle longlook for message with URL %@", buf, 0xCu);
       }
 
@@ -222,12 +222,12 @@
   }
 }
 
-- (void)_configureMessageRequestWithSignPostID:(unint64_t)a3
+- (void)_configureMessageRequestWithSignPostID:(unint64_t)d
 {
-  v5 = [(MFNotificationViewController *)self daemonInterface];
-  v6 = [v5 messageRepository];
-  v7 = [(MFNotificationViewController *)self messageReferenceURL];
-  v8 = [v6 messageObjectIDForURL:v7];
+  daemonInterface = [(MFNotificationViewController *)self daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  messageReferenceURL = [(MFNotificationViewController *)self messageReferenceURL];
+  v8 = [messageRepository messageObjectIDForURL:messageReferenceURL];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -242,46 +242,46 @@
   v12[2] = sub_100019BBC;
   v12[3] = &unk_1000391D0;
   objc_copyWeak(v13, &location);
-  v13[1] = a3;
+  v13[1] = d;
   [v9 onScheduler:v10 addSuccessBlock:v12];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001A250;
   v11[3] = &unk_1000391F8;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = d;
   [v9 onScheduler:v10 addFailureBlock:v11];
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_notificationPreviewFailedWithError:(id)a3 singpostID:(unint64_t)a4
+- (void)_notificationPreviewFailedWithError:(id)error singpostID:(unint64_t)d
 {
-  v6 = a3;
-  [(MFNotificationViewController *)self setError:v6];
+  errorCopy = error;
+  [(MFNotificationViewController *)self setError:errorCopy];
   v7 = MSUserNotificationsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MFNotificationViewController *)self messageList];
-    v9 = [(MFNotificationViewController *)self messageReferenceURL];
-    v10 = [v6 ef_publicDescription];
+    messageList = [(MFNotificationViewController *)self messageList];
+    messageReferenceURL = [(MFNotificationViewController *)self messageReferenceURL];
+    ef_publicDescription = [errorCopy ef_publicDescription];
     v15 = 134218498;
-    v16 = v8;
+    v16 = messageList;
     v17 = 2112;
-    v18 = v9;
+    v18 = messageReferenceURL;
     v19 = 2048;
-    v20 = v10;
+    v20 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "NotificationPreview: %p: failed to display message for URL %@. Error: %lu", &v15, 0x20u);
   }
 
   v11 = +[MFNotificationViewController signpostLog];
   v12 = v11;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
-    v13 = [v6 code];
+    code = [errorCopy code];
     v15 = 134349056;
-    v16 = v13;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, a4, "MFNotificationPreview", "Failure %{public, name=errorCode}lu", &v15, 0xCu);
+    v16 = code;
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, d, "MFNotificationPreview", "Failure %{public, name=errorCode}lu", &v15, 0xCu);
   }
 
   [(MFNotificationViewController *)self _resetMessageListAndPromise];
@@ -289,22 +289,22 @@
   self->_context = 0;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
-  if (self->_error != v5)
+  errorCopy = error;
+  if (self->_error != errorCopy)
   {
-    objc_storeStrong(&self->_error, a3);
-    v6 = [(MFNotificationViewController *)self view];
-    v7 = [(MFNotificationViewController *)self _errorLabel];
-    [v6 addSubview:v7];
+    objc_storeStrong(&self->_error, error);
+    view = [(MFNotificationViewController *)self view];
+    _errorLabel = [(MFNotificationViewController *)self _errorLabel];
+    [view addSubview:_errorLabel];
 
     [(MFNotificationViewController *)self _setProgressUIVisible:0 animated:0];
     v8 = MSUserNotificationsLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(NSError *)v5 userInfo];
-      sub_10001D6B0(v9, v10, v8);
+      userInfo = [(NSError *)errorCopy userInfo];
+      sub_10001D6B0(userInfo, v10, v8);
     }
   }
 }
@@ -313,8 +313,8 @@
 {
   [(MFNotificationViewController *)self minMargins];
   v4 = v3;
-  v5 = [(MFNotificationViewController *)self view];
-  [v5 frame];
+  view = [(MFNotificationViewController *)self view];
+  [view frame];
   v18 = CGRectInset(v17, v4, v4);
   x = v18.origin.x;
   y = v18.origin.y;
@@ -338,82 +338,82 @@
   return v10;
 }
 
-- (id)_configureMessageListAndPromiseForQuery:(id)a3 repository:(id)a4
+- (id)_configureMessageListAndPromiseForQuery:(id)query repository:(id)repository
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  repositoryCopy = repository;
   [(MFNotificationViewController *)self _resetMessageListAndPromise];
   v8 = +[EFPromise promise];
   [(MFNotificationViewController *)self setMessageDisplayPromise:v8];
 
-  v9 = [[EMMessageList alloc] initWithQuery:v6 repository:v7];
+  v9 = [[EMMessageList alloc] initWithQuery:queryCopy repository:repositoryCopy];
   [(MFNotificationViewController *)self setMessageList:v9];
 
-  v10 = [(MFNotificationViewController *)self messageList];
-  [v10 beginObserving:self];
+  messageList = [(MFNotificationViewController *)self messageList];
+  [messageList beginObserving:self];
 
   v11 = MSUserNotificationsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(MFNotificationViewController *)self messageList];
-    v13 = [(MFNotificationViewController *)self messageReferenceURL];
+    messageList2 = [(MFNotificationViewController *)self messageList];
+    messageReferenceURL = [(MFNotificationViewController *)self messageReferenceURL];
     v16 = 134218242;
-    v17 = v12;
+    v17 = messageList2;
     v18 = 2112;
-    v19 = v13;
+    v19 = messageReferenceURL;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NotificationPreview: %p: configured message list for URL:%@", &v16, 0x16u);
   }
 
-  v14 = [(MFNotificationViewController *)self messageDisplayPromise];
+  messageDisplayPromise = [(MFNotificationViewController *)self messageDisplayPromise];
 
-  return v14;
+  return messageDisplayPromise;
 }
 
 - (void)_resetMessageListAndPromise
 {
-  v3 = [(MFNotificationViewController *)self messageList];
+  messageList = [(MFNotificationViewController *)self messageList];
 
-  if (v3)
+  if (messageList)
   {
-    v6 = [(MFNotificationViewController *)self messageList];
-    [v6 stopObserving:self];
+    messageList2 = [(MFNotificationViewController *)self messageList];
+    [messageList2 stopObserving:self];
 
     [(MFNotificationViewController *)self setMessageList:0];
   }
 
-  v4 = [(MFNotificationViewController *)self messageDisplayPromise];
+  messageDisplayPromise = [(MFNotificationViewController *)self messageDisplayPromise];
 
-  if (v4)
+  if (messageDisplayPromise)
   {
-    v5 = [(MFNotificationViewController *)self messageDisplayPromise];
-    v7 = [v5 future];
+    messageDisplayPromise2 = [(MFNotificationViewController *)self messageDisplayPromise];
+    future = [messageDisplayPromise2 future];
 
-    [v7 cancel];
+    [future cancel];
     [(MFNotificationViewController *)self setMessageDisplayPromise:0];
   }
 }
 
-- (void)_determineMessageToDisplayForCollection:(id)a3 itemIDs:(id)a4
+- (void)_determineMessageToDisplayForCollection:(id)collection itemIDs:(id)ds
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MFNotificationViewController *)self messageList];
-  if (v7 == v11)
+  collectionCopy = collection;
+  dsCopy = ds;
+  messageList = [(MFNotificationViewController *)self messageList];
+  if (messageList == collectionCopy)
   {
-    v8 = [v6 firstObject];
-    if (v8)
+    firstObject = [dsCopy firstObject];
+    if (firstObject)
     {
-      [v7 stopObserving:self];
-      v9 = [(MFNotificationViewController *)self messageDisplayPromise];
-      v10 = [v7 messageListItemForItemID:v8];
-      [v9 finishWithFuture:v10];
+      [messageList stopObserving:self];
+      messageDisplayPromise = [(MFNotificationViewController *)self messageDisplayPromise];
+      v10 = [messageList messageListItemForItemID:firstObject];
+      [messageDisplayPromise finishWithFuture:v10];
     }
   }
 }
 
-- (void)_setProgressUIVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setProgressUIVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a3;
+  visibleCopy = visible;
   if (pthread_main_np() != 1)
   {
     v26 = +[NSAssertionHandler currentHandler];
@@ -422,181 +422,181 @@
 
   v7 = MSUserNotificationsLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (visibleCopy)
   {
     if (v8)
     {
-      v9 = [(MFNotificationViewController *)self messageList];
-      v10 = [(MFNotificationViewController *)self messageReferenceURL];
+      messageList = [(MFNotificationViewController *)self messageList];
+      messageReferenceURL = [(MFNotificationViewController *)self messageReferenceURL];
       v27 = 134218242;
-      v28 = v9;
+      v28 = messageList;
       v29 = 2112;
-      v30 = v10;
+      v30 = messageReferenceURL;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "NotificationPreview: %p: showing loading spinner for message URL:%@", &v27, 0x16u);
     }
 
-    v11 = [(MFNotificationViewController *)self loadingView];
-    v12 = v11 == 0;
+    loadingView = [(MFNotificationViewController *)self loadingView];
+    v12 = loadingView == 0;
 
     if (v12)
     {
       v13 = [MFMessageContentLoadingView alloc];
-      v14 = [(MFNotificationViewController *)self view];
-      [v14 frame];
+      view = [(MFNotificationViewController *)self view];
+      [view frame];
       v15 = [v13 initWithFrame:?];
       [(MFNotificationViewController *)self setLoadingView:v15];
 
       v16 = [NSBundle bundleForClass:objc_opt_class()];
       v17 = [v16 localizedStringForKey:@"LOADING_ALL_CAPS" value:&stru_1000392E0 table:@"Main"];
-      v18 = [(MFNotificationViewController *)self loadingView];
-      [v18 setLoadingTitle:v17];
+      loadingView2 = [(MFNotificationViewController *)self loadingView];
+      [loadingView2 setLoadingTitle:v17];
 
-      v19 = [(MFNotificationViewController *)self view];
-      v20 = [(MFNotificationViewController *)self loadingView];
-      [v19 addSubview:v20];
+      view2 = [(MFNotificationViewController *)self view];
+      loadingView3 = [(MFNotificationViewController *)self loadingView];
+      [view2 addSubview:loadingView3];
     }
 
-    v21 = [(MFNotificationViewController *)self loadingView];
-    [v21 setLoadingIndicatorVisible:1];
+    loadingView4 = [(MFNotificationViewController *)self loadingView];
+    [loadingView4 setLoadingIndicatorVisible:1];
 
-    v22 = [(MFNotificationViewController *)self loadingView];
-    [v22 setAutoresizingMask:18];
+    loadingView5 = [(MFNotificationViewController *)self loadingView];
+    [loadingView5 setAutoresizingMask:18];
   }
 
   else
   {
     if (v8)
     {
-      v23 = [(MFNotificationViewController *)self messageList];
-      v24 = [(MFNotificationViewController *)self messageReferenceURL];
+      messageList2 = [(MFNotificationViewController *)self messageList];
+      messageReferenceURL2 = [(MFNotificationViewController *)self messageReferenceURL];
       v27 = 134218242;
-      v28 = v23;
+      v28 = messageList2;
       v29 = 2112;
-      v30 = v24;
+      v30 = messageReferenceURL2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "NotificationPreview: %p: hiding loading spinner for message URL:%@", &v27, 0x16u);
     }
 
-    v25 = [(MFNotificationViewController *)self loadingView];
-    [v25 setLoadingIndicatorVisible:0];
+    loadingView6 = [(MFNotificationViewController *)self loadingView];
+    [loadingView6 setLoadingIndicatorVisible:0];
 
-    v22 = [(MFNotificationViewController *)self loadingView];
-    [v22 removeFromSuperview];
+    loadingView5 = [(MFNotificationViewController *)self loadingView];
+    [loadingView5 removeFromSuperview];
   }
 }
 
-- (void)messageContentView:(id)a3 didFinishRenderingWithHeight:(double)a4
+- (void)messageContentView:(id)view didFinishRenderingWithHeight:(double)height
 {
-  v6 = a3;
+  viewCopy = view;
   [(MFNotificationViewController *)self _setProgressUIVisible:0 animated:0];
   [(MFNotificationViewController *)self screenHeight];
   v8 = v7;
-  v9 = [(MFNotificationViewController *)self view];
-  [v9 frame];
-  if (v8 + v8 <= a4)
+  view = [(MFNotificationViewController *)self view];
+  [view frame];
+  if (v8 + v8 <= height)
   {
-    v11 = v8 + v8;
+    heightCopy = v8 + v8;
   }
 
   else
   {
-    v11 = a4;
+    heightCopy = height;
   }
 
-  [(MFNotificationViewController *)self setPreferredContentSize:v10, v11];
+  [(MFNotificationViewController *)self setPreferredContentSize:v10, heightCopy];
 
   v12 = MSUserNotificationsLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(MFNotificationViewController *)self messageReferenceURL];
+    messageReferenceURL = [(MFNotificationViewController *)self messageReferenceURL];
     [(MFNotificationViewController *)self preferredContentSize];
     v14 = NSStringFromSize(v23);
     v15 = 134218754;
-    v16 = v6;
+    v16 = viewCopy;
     v17 = 2048;
-    v18 = a4;
+    heightCopy2 = height;
     v19 = 2112;
-    v20 = v13;
+    v20 = messageReferenceURL;
     v21 = 2114;
     v22 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "NotificationPreview: %p: messageHeight is %f for message URL:%@ preferredHeight:%{public}@", &v15, 0x2Au);
   }
 }
 
-- (void)messageContentView:(id)a3 viewedRemoteURLs:(id)a4
+- (void)messageContentView:(id)view viewedRemoteURLs:(id)ls
 {
-  v7 = a4;
-  v5 = [(MFNotificationViewController *)self daemonInterface];
-  v6 = [v5 messageRepository];
-  [v6 noteViewOfRemoteContentLinks:v7];
+  lsCopy = ls;
+  daemonInterface = [(MFNotificationViewController *)self daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  [messageRepository noteViewOfRemoteContentLinks:lsCopy];
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  afterCopy = after;
   v11 = MSUserNotificationsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218242;
-    v13 = [v9 count];
+    v13 = [dsCopy count];
     v14 = 2114;
-    v15 = v10;
+    v15 = afterCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NotificationPreview: adding %lu items after %{public}@", &v12, 0x16u);
   }
 
-  [(MFNotificationViewController *)self _determineMessageToDisplayForCollection:v8 itemIDs:v9];
+  [(MFNotificationViewController *)self _determineMessageToDisplayForCollection:collectionCopy itemIDs:dsCopy];
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  beforeCopy = before;
   v11 = MSUserNotificationsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218242;
-    v13 = [v9 count];
+    v13 = [dsCopy count];
     v14 = 2114;
-    v15 = v10;
+    v15 = beforeCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NotificationPreview: adding %lu items before %{public}@", &v12, 0x16u);
   }
 
-  [(MFNotificationViewController *)self _determineMessageToDisplayForCollection:v8 itemIDs:v9];
+  [(MFNotificationViewController *)self _determineMessageToDisplayForCollection:collectionCopy itemIDs:dsCopy];
 }
 
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  dCopy = d;
+  iDCopy = iD;
   v11 = MSUserNotificationsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v9;
+    v15 = dCopy;
     v16 = 2114;
-    v17 = v10;
+    v17 = iDCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NotificationPreview: item id changed from %{public}@ to %{public}@", buf, 0x16u);
   }
 
-  if (v10)
+  if (iDCopy)
   {
-    v13 = v10;
+    v13 = iDCopy;
     v12 = [NSArray arrayWithObjects:&v13 count:1];
-    [(MFNotificationViewController *)self _determineMessageToDisplayForCollection:v8 itemIDs:v12];
+    [(MFNotificationViewController *)self _determineMessageToDisplayForCollection:collectionCopy itemIDs:v12];
   }
 }
 
-- (void)setActionsForMessage:(id)a3
+- (void)setActionsForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 mailboxes];
-  v6 = [v5 firstObject];
-  v7 = [v6 account];
+  messageCopy = message;
+  mailboxes = [messageCopy mailboxes];
+  firstObject = [mailboxes firstObject];
+  account = [firstObject account];
 
-  if ([v7 shouldArchiveByDefault])
+  if ([account shouldArchiveByDefault])
   {
     v8 = 9;
   }
@@ -612,7 +612,7 @@
 
   if (v11 == 16)
   {
-    if ([v7 shouldArchiveByDefault])
+    if ([account shouldArchiveByDefault])
     {
       v11 = 8;
     }
@@ -627,11 +627,11 @@
   v15[0] = v9;
   v15[1] = v12;
   v13 = [NSArray arrayWithObjects:v15 count:2];
-  v14 = [(MFNotificationViewController *)self extensionContext];
-  [v14 setNotificationActions:v13];
+  extensionContext = [(MFNotificationViewController *)self extensionContext];
+  [extensionContext setNotificationActions:v13];
 }
 
-- (id)userNotificationActionForSwipeAction:(int64_t)a3
+- (id)userNotificationActionForSwipeAction:(int64_t)action
 {
   v5 = qword_1000425E8;
   if (!qword_1000425E8)
@@ -641,16 +641,16 @@
     v5 = &off_100039F60;
   }
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:action];
   v7 = [v5 containsObject:v6];
 
   if (!v7)
   {
-    a3 = 2;
+    action = 2;
   }
 
-  v8 = a3 - 6;
-  if ((a3 - 6) >= 4)
+  v8 = action - 6;
+  if ((action - 6) >= 4)
   {
     v10 = @"NOTIFICATION_READ";
     v9 = &MFImageGlyphRead;
@@ -666,8 +666,8 @@
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:v10 value:&stru_1000392E0 table:@"Main"];
 
-  v14 = [(MFNotificationViewController *)self _notificationActionIdentifierForSwipeAction:a3];
-  if ([MFTriageActionUtilities isActionDestructive:a3])
+  v14 = [(MFNotificationViewController *)self _notificationActionIdentifierForSwipeAction:action];
+  if ([MFTriageActionUtilities isActionDestructive:action])
   {
     v15 = 3;
   }
@@ -682,10 +682,10 @@
   return v16;
 }
 
-- (id)_notificationActionIdentifierForSwipeAction:(int64_t)a3
+- (id)_notificationActionIdentifierForSwipeAction:(int64_t)action
 {
   v3 = MSMailNotificationActionIdentifierPrefix;
-  v4 = [MFTriageActionUtilities actionKeyForTriageAction:a3];
+  v4 = [MFTriageActionUtilities actionKeyForTriageAction:action];
   v5 = [v3 stringByAppendingString:v4];
 
   return v5;

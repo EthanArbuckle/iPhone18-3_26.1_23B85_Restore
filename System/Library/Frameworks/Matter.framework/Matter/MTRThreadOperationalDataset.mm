@@ -1,5 +1,5 @@
 @interface MTRThreadOperationalDataset
-- (BOOL)_checkDataLength:(id)a3 expectedLength:(unint64_t)a4;
+- (BOOL)_checkDataLength:(id)length expectedLength:(unint64_t)expectedLength;
 - (BOOL)_populateCppOperationalDataset;
 - (MTRThreadOperationalDataset)initWithData:(NSData *)data;
 - (MTRThreadOperationalDataset)initWithNetworkName:(NSString *)networkName extendedPANID:(NSData *)extendedPANID masterKey:(NSData *)masterKey PSKc:(NSData *)PSKc channelNumber:(NSNumber *)channelNumber panID:(NSData *)panID;
@@ -74,11 +74,11 @@ LABEL_4:
   self->_cppThreadOperationalDataset.mData.mDataBuf = self->_cppThreadOperationalDataset.mBuffer;
   p_cppThreadOperationalDataset = &self->_cppThreadOperationalDataset;
   self->_cppThreadOperationalDataset.mData.mDataLen = 0;
-  v4 = [(MTRThreadOperationalDataset *)self networkName];
-  sub_2393D7F8C(p_cppThreadOperationalDataset, [v4 UTF8String]);
+  networkName = [(MTRThreadOperationalDataset *)self networkName];
+  sub_2393D7F8C(p_cppThreadOperationalDataset, [networkName UTF8String]);
 
-  v5 = [(MTRThreadOperationalDataset *)self extendedPANID];
-  v6 = [(MTRThreadOperationalDataset *)self _checkDataLength:v5 expectedLength:8];
+  extendedPANID = [(MTRThreadOperationalDataset *)self extendedPANID];
+  v6 = [(MTRThreadOperationalDataset *)self _checkDataLength:extendedPANID expectedLength:8];
 
   if (!v6)
   {
@@ -101,12 +101,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = [(MTRThreadOperationalDataset *)self extendedPANID];
-  [v7 getBytes:v29 length:8];
+  extendedPANID2 = [(MTRThreadOperationalDataset *)self extendedPANID];
+  [extendedPANID2 getBytes:v29 length:8];
 
   sub_2393D7E70(p_cppThreadOperationalDataset, v29);
-  v8 = [(MTRThreadOperationalDataset *)self masterKey];
-  v9 = [(MTRThreadOperationalDataset *)self _checkDataLength:v8 expectedLength:16];
+  masterKey = [(MTRThreadOperationalDataset *)self masterKey];
+  v9 = [(MTRThreadOperationalDataset *)self _checkDataLength:masterKey expectedLength:16];
 
   if (!v9)
   {
@@ -125,12 +125,12 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  v10 = [(MTRThreadOperationalDataset *)self masterKey];
-  [v10 getBytes:&buf length:16];
+  masterKey2 = [(MTRThreadOperationalDataset *)self masterKey];
+  [masterKey2 getBytes:&buf length:16];
 
   sub_2393D7ECC(p_cppThreadOperationalDataset, &buf);
-  v11 = [(MTRThreadOperationalDataset *)self PSKc];
-  v12 = [(MTRThreadOperationalDataset *)self _checkDataLength:v11 expectedLength:16];
+  pSKc = [(MTRThreadOperationalDataset *)self PSKc];
+  v12 = [(MTRThreadOperationalDataset *)self _checkDataLength:pSKc expectedLength:16];
 
   if (!v12)
   {
@@ -149,21 +149,21 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v13 = [(MTRThreadOperationalDataset *)self PSKc];
-  [v13 getBytes:&v27 length:16];
+  pSKc2 = [(MTRThreadOperationalDataset *)self PSKc];
+  [pSKc2 getBytes:&v27 length:16];
 
   sub_2393D80A4(p_cppThreadOperationalDataset, &v27);
-  v14 = [(MTRThreadOperationalDataset *)self channelNumber];
-  sub_2393D7E10(p_cppThreadOperationalDataset, [v14 unsignedShortValue]);
+  channelNumber = [(MTRThreadOperationalDataset *)self channelNumber];
+  sub_2393D7E10(p_cppThreadOperationalDataset, [channelNumber unsignedShortValue]);
 
-  v15 = [(MTRThreadOperationalDataset *)self panID];
-  v16 = [(MTRThreadOperationalDataset *)self _checkDataLength:v15 expectedLength:2];
+  panID = [(MTRThreadOperationalDataset *)self panID];
+  v16 = [(MTRThreadOperationalDataset *)self _checkDataLength:panID expectedLength:2];
 
   if (v16)
   {
-    v17 = [(MTRThreadOperationalDataset *)self panID];
-    v18 = v17;
-    v19 = *[v17 bytes];
+    panID2 = [(MTRThreadOperationalDataset *)self panID];
+    v18 = panID2;
+    v19 = *[panID2 bytes];
 
     sub_2393D8048(p_cppThreadOperationalDataset, __rev16(v19));
   }
@@ -188,32 +188,32 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)_checkDataLength:(id)a3 expectedLength:(unint64_t)a4
+- (BOOL)_checkDataLength:(id)length expectedLength:(unint64_t)expectedLength
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 length];
-  if (v6 != a4)
+  lengthCopy = length;
+  v6 = [lengthCopy length];
+  if (v6 != expectedLength)
   {
     v7 = sub_2393D9044(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v11 = [v5 length];
+      v11 = [lengthCopy length];
       v12 = 2048;
-      v13 = a4;
+      expectedLengthCopy = expectedLength;
       _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_ERROR, "Length Check Failed. Length:%lu is incorrect, must be %tu", buf, 0x16u);
     }
 
     if (sub_2393D5398(1u))
     {
-      [v5 length];
+      [lengthCopy length];
       sub_2393D5320(0, 1);
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v6 == a4;
+  return v6 == expectedLength;
 }
 
 - (MTRThreadOperationalDataset)initWithData:(NSData *)data
@@ -240,7 +240,7 @@ LABEL_19:
       sub_2393D5320(0, 1);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -261,11 +261,11 @@ LABEL_19:
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:&v16 + 2 length:2];
     self = [(MTRThreadOperationalDataset *)self initWithNetworkName:v8 extendedPANID:v9 masterKey:v10 PSKc:v11 channelNumber:v12 panID:v13];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
 - (id).cxx_construct
@@ -277,10 +277,10 @@ LABEL_19:
 
 - (uint16_t)channel
 {
-  v2 = [(MTRThreadOperationalDataset *)self channelNumber];
-  v3 = [v2 unsignedShortValue];
+  channelNumber = [(MTRThreadOperationalDataset *)self channelNumber];
+  unsignedShortValue = [channelNumber unsignedShortValue];
 
-  return v3;
+  return unsignedShortValue;
 }
 
 @end

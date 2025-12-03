@@ -1,16 +1,16 @@
 @interface SXVideoPlayerAdSlotVisibilityMonitor
-- (SXVideoPlayerAdSlotVisibilityMonitor)initWithVideoPlayerViewController:(id)a3 videoAdSlotVisiblePercentageProvider:(id)a4;
+- (SXVideoPlayerAdSlotVisibilityMonitor)initWithVideoPlayerViewController:(id)controller videoAdSlotVisiblePercentageProvider:(id)provider;
 @end
 
 @implementation SXVideoPlayerAdSlotVisibilityMonitor
 
-- (SXVideoPlayerAdSlotVisibilityMonitor)initWithVideoPlayerViewController:(id)a3 videoAdSlotVisiblePercentageProvider:(id)a4
+- (SXVideoPlayerAdSlotVisibilityMonitor)initWithVideoPlayerViewController:(id)controller videoAdSlotVisiblePercentageProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = SXVideoPlayerAdSlotVisibilityMonitor;
-  v8 = [(SXVisibilityMonitor *)&v16 initWithObject:v6 visiblePercentageProvider:v7];
+  v8 = [(SXVisibilityMonitor *)&v16 initWithObject:controllerCopy visiblePercentageProvider:providerCopy];
   if (v8)
   {
     objc_initWeak(&location, v8);
@@ -20,7 +20,7 @@
     v13[2] = __111__SXVideoPlayerAdSlotVisibilityMonitor_initWithVideoPlayerViewController_videoAdSlotVisiblePercentageProvider___block_invoke;
     v13[3] = &unk_1E85003C8;
     objc_copyWeak(&v14, &location);
-    v10 = [v9 initWithKeyPath:@"mode" ofObject:v6 withOptions:1 change:v13];
+    v10 = [v9 initWithKeyPath:@"mode" ofObject:controllerCopy withOptions:1 change:v13];
     observer = v8->_observer;
     v8->_observer = v10;
 

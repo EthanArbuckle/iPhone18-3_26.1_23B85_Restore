@@ -1,27 +1,27 @@
 @interface CALNNotificationRecordsDiffApplier
-+ (void)applyDiff:(id)a3 toNotificationManager:(id)a4;
-+ (void)refreshNotificationManager:(id)a3 withNotificationRecords:(id)a4 forSourceWithIdentifier:(id)a5 filteredBySourceClientIDs:(id)a6;
++ (void)applyDiff:(id)diff toNotificationManager:(id)manager;
++ (void)refreshNotificationManager:(id)manager withNotificationRecords:(id)records forSourceWithIdentifier:(id)identifier filteredBySourceClientIDs:(id)ds;
 @end
 
 @implementation CALNNotificationRecordsDiffApplier
 
-+ (void)applyDiff:(id)a3 toNotificationManager:(id)a4
++ (void)applyDiff:(id)diff toNotificationManager:(id)manager
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  diffCopy = diff;
+  managerCopy = manager;
   v7 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [v5 removedRecords];
-    v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+    removedRecords = [diffCopy removedRecords];
+    v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(removedRecords, "count")}];
     v11 = MEMORY[0x277CCABB0];
-    v12 = [v5 modifiedRecords];
-    v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+    modifiedRecords = [diffCopy modifiedRecords];
+    v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(modifiedRecords, "count")}];
     v14 = MEMORY[0x277CCABB0];
-    v15 = [v5 addedRecords];
-    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+    addedRecords = [diffCopy addedRecords];
+    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(addedRecords, "count")}];
     *buf = 138412802;
     v52 = v10;
     v53 = 2112;
@@ -35,8 +35,8 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v17 = [v5 removedRecords];
-  v18 = [v17 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  removedRecords2 = [diffCopy removedRecords];
+  v18 = [removedRecords2 countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v18)
   {
     v19 = v18;
@@ -47,16 +47,16 @@
       {
         if (*v45 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(removedRecords2);
         }
 
         v22 = *(*(&v44 + 1) + 8 * i);
-        v23 = [v22 sourceIdentifier];
-        v24 = [v22 sourceClientIdentifier];
-        [v6 removeRecordWithSourceIdentifier:v23 sourceClientIdentifier:v24];
+        sourceIdentifier = [v22 sourceIdentifier];
+        sourceClientIdentifier = [v22 sourceClientIdentifier];
+        [managerCopy removeRecordWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:sourceClientIdentifier];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v44 objects:v50 count:16];
+      v19 = [removedRecords2 countByEnumeratingWithState:&v44 objects:v50 count:16];
     }
 
     while (v19);
@@ -66,8 +66,8 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v25 = [v5 modifiedRecords];
-  v26 = [v25 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  modifiedRecords2 = [diffCopy modifiedRecords];
+  v26 = [modifiedRecords2 countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v26)
   {
     v27 = v26;
@@ -78,13 +78,13 @@
       {
         if (*v41 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(modifiedRecords2);
         }
 
-        [v6 updateRecord:*(*(&v40 + 1) + 8 * j)];
+        [managerCopy updateRecord:*(*(&v40 + 1) + 8 * j)];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v27 = [modifiedRecords2 countByEnumeratingWithState:&v40 objects:v49 count:16];
     }
 
     while (v27);
@@ -94,8 +94,8 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v30 = [v5 addedRecords];
-  v31 = [v30 countByEnumeratingWithState:&v36 objects:v48 count:16];
+  addedRecords2 = [diffCopy addedRecords];
+  v31 = [addedRecords2 countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v31)
   {
     v32 = v31;
@@ -106,13 +106,13 @@
       {
         if (*v37 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(addedRecords2);
         }
 
-        [v6 addRecord:*(*(&v36 + 1) + 8 * k)];
+        [managerCopy addRecord:*(*(&v36 + 1) + 8 * k)];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v36 objects:v48 count:16];
+      v32 = [addedRecords2 countByEnumeratingWithState:&v36 objects:v48 count:16];
     }
 
     while (v32);
@@ -121,15 +121,15 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)refreshNotificationManager:(id)a3 withNotificationRecords:(id)a4 forSourceWithIdentifier:(id)a5 filteredBySourceClientIDs:(id)a6
++ (void)refreshNotificationManager:(id)manager withNotificationRecords:(id)records forSourceWithIdentifier:(id)identifier filteredBySourceClientIDs:(id)ds
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v14 = [v12 fetchRecordsWithSourceIdentifier:a5];
-  v13 = [CALNNotificationRecordsDiffer diffOldRecords:v14 withNewRecords:v11 filteredBySourceClientIDs:v10];
+  dsCopy = ds;
+  recordsCopy = records;
+  managerCopy = manager;
+  v14 = [managerCopy fetchRecordsWithSourceIdentifier:identifier];
+  v13 = [CALNNotificationRecordsDiffer diffOldRecords:v14 withNewRecords:recordsCopy filteredBySourceClientIDs:dsCopy];
 
-  [a1 applyDiff:v13 toNotificationManager:v12];
+  [self applyDiff:v13 toNotificationManager:managerCopy];
 }
 
 @end

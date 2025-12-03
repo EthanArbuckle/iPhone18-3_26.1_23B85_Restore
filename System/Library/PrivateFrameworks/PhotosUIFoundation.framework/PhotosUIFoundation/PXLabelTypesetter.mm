@@ -1,14 +1,14 @@
 @interface PXLabelTypesetter
 + (double)_textAutoscalingPrecision;
-- (BOOL)_allowTextOverlapForFont:(id)a3;
+- (BOOL)_allowTextOverlapForFont:(id)font;
 - (CGRect)bounds;
-- (PXLabelTypesetter)initWithContext:(CGContext *)a3;
-- (unint64_t)_adjustCutoffLocation:(unint64_t)a3 forLineStartingAtIndex:(unint64_t)a4;
-- (void)_setLines:(id)a3;
+- (PXLabelTypesetter)initWithContext:(CGContext *)context;
+- (unint64_t)_adjustCutoffLocation:(unint64_t)location forLineStartingAtIndex:(unint64_t)index;
+- (void)_setLines:(id)lines;
 - (void)_updateLines;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)shiftLinesVerticallyToAvoidOverlap:(id)a3 referenceFont:(id)a4;
+- (void)performChanges:(id)changes;
+- (void)shiftLinesVerticallyToAvoidOverlap:(id)overlap referenceFont:(id)font;
 @end
 
 @implementation PXLabelTypesetter
@@ -26,24 +26,24 @@
   return result;
 }
 
-- (void)_setLines:(id)a3
+- (void)_setLines:(id)lines
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_lines != v5)
+  linesCopy = lines;
+  v6 = linesCopy;
+  if (self->_lines != linesCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = linesCopy;
+    linesCopy = [linesCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((linesCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_lines, a3);
-      v5 = [(PXObservable *)self signalChange:1];
+      objc_storeStrong(&self->_lines, lines);
+      linesCopy = [(PXObservable *)self signalChange:1];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](linesCopy, v6);
 }
 
 - (void)didPerformChanges
@@ -54,26 +54,26 @@
   [(PXLabelTypesetter *)self _updateLines];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXLabelTypesetter;
-  [(PXObservable *)&v3 performChanges:a3];
+  [(PXObservable *)&v3 performChanges:changes];
 }
 
-- (BOOL)_allowTextOverlapForFont:(id)a3
+- (BOOL)_allowTextOverlapForFont:(id)font
 {
   v3 = _allowTextOverlapForFont__onceToken;
-  v4 = a3;
+  fontCopy = font;
   if (v3 != -1)
   {
     dispatch_once(&_allowTextOverlapForFont__onceToken, &__block_literal_global_10546);
   }
 
   v5 = _allowTextOverlapForFont__handwritingFontFamilyNames;
-  v6 = [v4 familyName];
+  familyName = [fontCopy familyName];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:familyName];
   return v7;
 }
 
@@ -86,31 +86,31 @@ uint64_t __46__PXLabelTypesetter__allowTextOverlapForFont___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (unint64_t)_adjustCutoffLocation:(unint64_t)a3 forLineStartingAtIndex:(unint64_t)a4
+- (unint64_t)_adjustCutoffLocation:(unint64_t)location forLineStartingAtIndex:(unint64_t)index
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
-  v20 = a3;
-  v6 = [(PXLabelTypesetter *)self attributedString];
-  v7 = [v6 string];
+  locationCopy = location;
+  attributedString = [(PXLabelTypesetter *)self attributedString];
+  string = [attributedString string];
 
-  if (a3 && [v7 length] > a3)
+  if (location && [string length] > location)
   {
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x3010000000;
     v15[3] = "";
     v16 = xmmword_1B4074ED0;
-    v8 = [v7 length] - a4;
+    v8 = [string length] - index;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __66__PXLabelTypesetter__adjustCutoffLocation_forLineStartingAtIndex___block_invoke;
     v11[3] = &unk_1E7BB6D90;
     v13 = v15;
-    v12 = v7;
+    v12 = string;
     v14 = &v17;
-    [v12 enumerateSubstringsInRange:a4 options:v8 usingBlock:{3, v11}];
+    [v12 enumerateSubstringsInRange:index options:v8 usingBlock:{3, v11}];
 
     _Block_object_dispose(v15, 8);
   }
@@ -142,13 +142,13 @@ void __66__PXLabelTypesetter__adjustCutoffLocation_forLineStartingAtIndex___bloc
 - (void)_updateLines
 {
   v134 = *MEMORY[0x1E69E9840];
-  v4 = [(PXLabelTypesetter *)self attributedString];
+  attributedString = [(PXLabelTypesetter *)self attributedString];
   [(PXLabelTypesetter *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if ([v4 length])
+  if ([attributedString length])
   {
     v135.origin.x = v6;
     v135.origin.y = v8;
@@ -156,34 +156,34 @@ void __66__PXLabelTypesetter__adjustCutoffLocation_forLineStartingAtIndex___bloc
     v135.size.height = v12;
     if (!CGRectIsEmpty(v135))
     {
-      v14 = [(PXLabelTypesetter *)self context];
-      v15 = [(PXLabelTypesetter *)self maximumNumberOfLines];
-      v77 = [[PXCTFramesetter alloc] initWithAttributedString:v4 context:v14];
-      v16 = [(PXLabelTypesetter *)self typesettingMode];
-      if (v16 != 1)
+      context = [(PXLabelTypesetter *)self context];
+      maximumNumberOfLines = [(PXLabelTypesetter *)self maximumNumberOfLines];
+      v77 = [[PXCTFramesetter alloc] initWithAttributedString:attributedString context:context];
+      typesettingMode = [(PXLabelTypesetter *)self typesettingMode];
+      if (typesettingMode != 1)
       {
-        if (v16 == 2)
+        if (typesettingMode == 2)
         {
-          v17 = [(PXCTFramesetter *)v77 frameWithRect:v15 maximumLineCount:0 allowTruncation:v6, v8, v10, v12];
-          v13 = [v17 lines];
+          v17 = [(PXCTFramesetter *)v77 frameWithRect:maximumNumberOfLines maximumLineCount:0 allowTruncation:v6, v8, v10, v12];
+          lines = [v17 lines];
         }
 
         else
         {
-          if (!v16)
+          if (!typesettingMode)
           {
-            v73 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v73 handleFailureInMethod:a2 object:self file:@"PXLabelTypesetter.m" lineNumber:73 description:@"Code which should be unreachable has been reached"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PXLabelTypesetter.m" lineNumber:73 description:@"Code which should be unreachable has been reached"];
 
             abort();
           }
 
-          v13 = 0;
+          lines = 0;
         }
 
 LABEL_74:
-        v72 = [v4 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
-        [(PXLabelTypesetter *)self shiftLinesVerticallyToAvoidOverlap:v13 referenceFont:v72];
+        v72 = [attributedString attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
+        [(PXLabelTypesetter *)self shiftLinesVerticallyToAvoidOverlap:lines referenceFont:v72];
 
         goto LABEL_75;
       }
@@ -199,14 +199,14 @@ LABEL_74:
       v113 = 0;
       v114 = &v113;
       v115 = 0x2020000000;
-      v116 = v15;
-      if (v15 && -[PXLabelTypesetter allowTruncation](self, "allowTruncation") && [v4 length])
+      v116 = maximumNumberOfLines;
+      if (maximumNumberOfLines && -[PXLabelTypesetter allowTruncation](self, "allowTruncation") && [attributedString length])
       {
         [(PXLabelTypesetter *)self minimumTruncatedScaleFactor];
         if (v18 <= 0.0)
         {
-          v53 = [v4 length];
-          v54 = [v4 attribute:*MEMORY[0x1E69DB648] atIndex:v53 - 1 effectiveRange:0];
+          v53 = [attributedString length];
+          v54 = [attributedString attribute:*MEMORY[0x1E69DB648] atIndex:v53 - 1 effectiveRange:0];
           [v54 lineHeight];
           v118[1].size.height = v118[1].size.height + v55 * 2.0;
           ++v114[3];
@@ -283,8 +283,8 @@ LABEL_74:
       v75 = _Block_copy(v82);
       [(PXLabelTypesetter *)self minimumScaleFactor];
       v23 = v22;
-      v24 = [(PXLabelTypesetter *)self adjustsFontSizeToFitWidth];
-      if (v23 > 0.0 && v24)
+      adjustsFontSizeToFitWidth = [(PXLabelTypesetter *)self adjustsFontSizeToFitWidth];
+      if (v23 > 0.0 && adjustsFontSizeToFitWidth)
       {
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         v27 = v26;
@@ -297,12 +297,12 @@ LABEL_74:
         while (v28 < [v96[5] count] - 1)
         {
           v30 = [v96[5] objectAtIndexedSubscript:v28];
-          v31 = [v30 stringRange];
-          v33 = v31 + v32;
-          v34 = [(PXLabelTypesetter *)self _adjustCutoffLocation:v31 + v32 forLineStartingAtIndex:v31];
+          stringRange = [v30 stringRange];
+          v33 = stringRange + v32;
+          v34 = [(PXLabelTypesetter *)self _adjustCutoffLocation:stringRange + v32 forLineStartingAtIndex:stringRange];
           if (v34 != v33)
           {
-            v35 = [v4 attributedSubstringFromRange:{v31, v34 - v31}];
+            v35 = [attributedString attributedSubstringFromRange:{stringRange, v34 - stringRange}];
             v36 = CTLineCreateWithAttributedString(v35);
             v37 = v36;
             if (v36)
@@ -325,7 +325,7 @@ LABEL_74:
         {
           [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
           *buf = 138412546;
-          v127 = self;
+          selfCopy4 = self;
           v128 = 2048;
           v129 = (v42 - v27) * 1000.0;
           _os_log_impl(&dword_1B3F73000, v41, OS_LOG_TYPE_DEBUG, "[%@] adjusted line cutoffs in %0.3fms", buf, 0x16u);
@@ -374,7 +374,7 @@ LABEL_74:
                 {
                   v52 = v106[5];
                   *buf = 138412546;
-                  v127 = self;
+                  selfCopy4 = self;
                   v128 = 2112;
                   v129 = v52;
                   _os_log_impl(&dword_1B3F73000, v51, OS_LOG_TYPE_DEFAULT, "[%@] maximum number of iterations reached for autoscaling, failing gracefully (currentFrame = %@)", buf, 0x16u);
@@ -386,7 +386,7 @@ LABEL_74:
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138413058;
-              v127 = self;
+              selfCopy4 = self;
               v128 = 2048;
               v129 = v50;
               v130 = 2048;
@@ -405,7 +405,7 @@ LABEL_74:
         {
           [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
           *buf = 138412546;
-          v127 = self;
+          selfCopy4 = self;
           v128 = 2048;
           v129 = (v58 - v27) * 1000.0;
           _os_log_impl(&dword_1B3F73000, v57, OS_LOG_TYPE_DEBUG, "[%@] autoscaled text in %0.3fms", buf, 0x16u);
@@ -415,9 +415,9 @@ LABEL_74:
       if (v74 == 2)
       {
         v118[1].size.height = v12;
-        v114[3] = v15;
-        v59 = [*(v106 + 5) lines];
-        v60 = [v59 count] > v15;
+        v114[3] = maximumNumberOfLines;
+        lines2 = [*(v106 + 5) lines];
+        v60 = [lines2 count] > maximumNumberOfLines;
 
         if (!v60)
         {
@@ -474,7 +474,7 @@ LABEL_64:
             }
           }
 
-          v13 = v96[5];
+          lines = v96[5];
 
           _Block_object_dispose(&v95, 8);
           _Block_object_dispose(&v101, 8);
@@ -497,9 +497,9 @@ LABEL_64:
     }
   }
 
-  v13 = 0;
+  lines = 0;
 LABEL_75:
-  [(PXLabelTypesetter *)self _setLines:v13];
+  [(PXLabelTypesetter *)self _setLines:lines];
 }
 
 uint64_t __33__PXLabelTypesetter__updateLines__block_invoke(uint64_t a1)
@@ -549,24 +549,24 @@ void __33__PXLabelTypesetter__updateLines__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)shiftLinesVerticallyToAvoidOverlap:(id)a3 referenceFont:(id)a4
+- (void)shiftLinesVerticallyToAvoidOverlap:(id)overlap referenceFont:(id)font
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && !-[PXLabelTypesetter _allowTextOverlapForFont:](self, "_allowTextOverlapForFont:", v7) && [v6 count] >= 2)
+  overlapCopy = overlap;
+  fontCopy = font;
+  if (fontCopy && !-[PXLabelTypesetter _allowTextOverlapForFont:](self, "_allowTextOverlapForFont:", fontCopy) && [overlapCopy count] >= 2)
   {
-    [v7 ascender];
+    [fontCopy ascender];
     v9 = v8;
-    [v7 descender];
+    [fontCopy descender];
     v11 = v10;
-    [v7 leading];
+    [fontCopy leading];
     v13 = v12;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = v6;
+    v14 = overlapCopy;
     v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v15)
     {
@@ -603,14 +603,14 @@ void __33__PXLabelTypesetter__updateLines__block_invoke_3(uint64_t a1)
   }
 }
 
-- (PXLabelTypesetter)initWithContext:(CGContext *)a3
+- (PXLabelTypesetter)initWithContext:(CGContext *)context
 {
   v5.receiver = self;
   v5.super_class = PXLabelTypesetter;
   result = [(PXObservable *)&v5 init];
   if (result)
   {
-    result->_context = a3;
+    result->_context = context;
     result->_allowTruncation = 1;
   }
 
@@ -619,8 +619,8 @@ void __33__PXLabelTypesetter__updateLines__block_invoke_3(uint64_t a1)
 
 + (double)_textAutoscalingPrecision
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PXLabelTypesetterTextAutoscalingPrecision"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PXLabelTypesetterTextAutoscalingPrecision"];
   v4 = v3;
 
   result = 5.0;

@@ -1,24 +1,24 @@
 @interface RAPPrivacy
 + (BOOL)hasReceivedPrivacyConsent;
 + (id)callToActionMessage;
-+ (id)callToActionMessageForShortcutType:(int64_t)a3;
-+ (id)emailAnalyticsEventForEmailAddress:(id)a3 isValidEmail:(BOOL)a4 optedIn:(BOOL)a5;
-+ (id)informationalMessageWithEmailAddress:(id)a3 isUserEnteredEmailAddress:(BOOL)a4 isMac:(BOOL)a5;
-+ (id)macPreferencesInformationalMessageWithEmailAddress:(id)a3;
-+ (void)performPrivacyCheckWithAppearance:(int64_t)a3 completion:(id)a4;
-+ (void)performPrivacyCheckWithAppearance:(int64_t)a3 userEnteredEmailAddress:(id)a4 completion:(id)a5;
-+ (void)setPrivacyConsent:(BOOL)a3 allowEmail:(BOOL)a4;
-+ (void)showPrivacyScreenWithAppearance:(int64_t)a3 completion:(id)a4;
-+ (void)showPrivacyScreenWithAppearance:(int64_t)a3 userEnteredEmailAddress:(id)a4 completion:(id)a5;
++ (id)callToActionMessageForShortcutType:(int64_t)type;
++ (id)emailAnalyticsEventForEmailAddress:(id)address isValidEmail:(BOOL)email optedIn:(BOOL)in;
++ (id)informationalMessageWithEmailAddress:(id)address isUserEnteredEmailAddress:(BOOL)emailAddress isMac:(BOOL)mac;
++ (id)macPreferencesInformationalMessageWithEmailAddress:(id)address;
++ (void)performPrivacyCheckWithAppearance:(int64_t)appearance completion:(id)completion;
++ (void)performPrivacyCheckWithAppearance:(int64_t)appearance userEnteredEmailAddress:(id)address completion:(id)completion;
++ (void)setPrivacyConsent:(BOOL)consent allowEmail:(BOOL)email;
++ (void)showPrivacyScreenWithAppearance:(int64_t)appearance completion:(id)completion;
++ (void)showPrivacyScreenWithAppearance:(int64_t)appearance userEnteredEmailAddress:(id)address completion:(id)completion;
 @end
 
 @implementation RAPPrivacy
 
-+ (id)emailAnalyticsEventForEmailAddress:(id)a3 isValidEmail:(BOOL)a4 optedIn:(BOOL)a5
++ (id)emailAnalyticsEventForEmailAddress:(id)address isValidEmail:(BOOL)email optedIn:(BOOL)in
 {
-  if (a4)
+  if (email)
   {
-    if (a5)
+    if (in)
     {
       v7 = @"EMAIL_ON";
     }
@@ -31,7 +31,7 @@
 
   else
   {
-    v9 = [a3 length];
+    v9 = [address length];
     v10 = @"INVALID_EMAIL";
     if (!v9)
     {
@@ -44,44 +44,44 @@
   return v7;
 }
 
-+ (id)macPreferencesInformationalMessageWithEmailAddress:(id)a3
++ (id)macPreferencesInformationalMessageWithEmailAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 length];
+  addressCopy = address;
+  v4 = [addressCopy length];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
   if (v4)
   {
     v7 = [v5 localizedStringForKey:@"Report an Issue Preferences Mac [Privacy description w/ email]" value:@"localized string not found" table:0];
 
-    v8 = [NSString stringWithFormat:v7, v3];
+    addressCopy = [NSString stringWithFormat:v7, addressCopy];
     v6 = v7;
   }
 
   else
   {
-    v8 = [v5 localizedStringForKey:@"Report an Issue [Privacy description w/o email]" value:@"localized string not found" table:0];
+    addressCopy = [v5 localizedStringForKey:@"Report an Issue [Privacy description w/o email]" value:@"localized string not found" table:0];
   }
 
-  return v8;
+  return addressCopy;
 }
 
-+ (id)informationalMessageWithEmailAddress:(id)a3 isUserEnteredEmailAddress:(BOOL)a4 isMac:(BOOL)a5
++ (id)informationalMessageWithEmailAddress:(id)address isUserEnteredEmailAddress:(BOOL)emailAddress isMac:(BOOL)mac
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 length];
+  macCopy = mac;
+  emailAddressCopy = emailAddress;
+  addressCopy = address;
+  v8 = [addressCopy length];
   v9 = +[NSBundle mainBundle];
   v10 = v9;
   if (v8)
   {
-    if (v6)
+    if (emailAddressCopy)
     {
       v11 = @"Report an Issue [Privacy description w/ user entered email]";
     }
 
-    else if (v5)
+    else if (macCopy)
     {
       v11 = @"Report an Issue Mac [Privacy description w/ email]";
     }
@@ -93,29 +93,29 @@
 
     v13 = [v9 localizedStringForKey:v11 value:@"localized string not found" table:0];
 
-    v12 = [NSString stringWithFormat:v13, v7];
+    addressCopy = [NSString stringWithFormat:v13, addressCopy];
     v10 = v13;
   }
 
   else
   {
-    v12 = [v9 localizedStringForKey:@"Report an Issue [Privacy description w/o email]" value:@"localized string not found" table:0];
+    addressCopy = [v9 localizedStringForKey:@"Report an Issue [Privacy description w/o email]" value:@"localized string not found" table:0];
   }
 
-  return v12;
+  return addressCopy;
 }
 
-+ (id)callToActionMessageForShortcutType:(int64_t)a3
++ (id)callToActionMessageForShortcutType:(int64_t)type
 {
   v4 = +[NSBundle mainBundle];
   v5 = v4;
   v6 = @"Submit RAP Confirmation (Default Question)";
-  if (a3 == 3)
+  if (type == 3)
   {
     v6 = @"Submit RAP Confirmation (Work Question)";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v7 = @"Submit RAP Confirmation (Home Question)";
   }
@@ -138,14 +138,14 @@
   return v3;
 }
 
-+ (void)setPrivacyConsent:(BOOL)a3 allowEmail:(BOOL)a4
++ (void)setPrivacyConsent:(BOOL)consent allowEmail:(BOOL)email
 {
-  v4 = a4;
-  v5 = a3;
+  emailCopy = email;
+  consentCopy = consent;
   v6 = +[NSUserDefaults standardUserDefaults];
-  [v6 setBool:v5 forKey:@"RAPHasReceived2015PrivacyConsent"];
+  [v6 setBool:consentCopy forKey:@"RAPHasReceived2015PrivacyConsent"];
 
-  if (v4)
+  if (emailCopy)
   {
     v7 = 1;
   }
@@ -166,54 +166,54 @@
   return v3;
 }
 
-+ (void)showPrivacyScreenWithAppearance:(int64_t)a3 completion:(id)a4
++ (void)showPrivacyScreenWithAppearance:(int64_t)appearance completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = objc_alloc_init(RAPPrivacyViewController);
-  [(RAPPrivacyViewController *)v5 presentPrivacyScreen:v4];
+  [(RAPPrivacyViewController *)v5 presentPrivacyScreen:completionCopy];
 }
 
-+ (void)showPrivacyScreenWithAppearance:(int64_t)a3 userEnteredEmailAddress:(id)a4 completion:(id)a5
++ (void)showPrivacyScreenWithAppearance:(int64_t)appearance userEnteredEmailAddress:(id)address completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = [[RAPPrivacyViewController alloc] initWithUserEnteredEmailAddress:v7];
+  completionCopy = completion;
+  addressCopy = address;
+  v8 = [[RAPPrivacyViewController alloc] initWithUserEnteredEmailAddress:addressCopy];
 
-  [(RAPPrivacyViewController *)v8 presentPrivacyScreen:v6];
+  [(RAPPrivacyViewController *)v8 presentPrivacyScreen:completionCopy];
 }
 
-+ (void)performPrivacyCheckWithAppearance:(int64_t)a3 userEnteredEmailAddress:(id)a4 completion:(id)a5
++ (void)performPrivacyCheckWithAppearance:(int64_t)appearance userEnteredEmailAddress:(id)address completion:(id)completion
 {
-  v9 = a4;
-  v8 = a5;
-  if ([a1 hasReceivedPrivacyConsent])
+  addressCopy = address;
+  completionCopy = completion;
+  if ([self hasReceivedPrivacyConsent])
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 1, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0, 0);
     }
   }
 
   else
   {
-    [a1 showPrivacyScreenWithAppearance:a3 userEnteredEmailAddress:v9 completion:v8];
+    [self showPrivacyScreenWithAppearance:appearance userEnteredEmailAddress:addressCopy completion:completionCopy];
   }
 }
 
-+ (void)performPrivacyCheckWithAppearance:(int64_t)a3 completion:(id)a4
++ (void)performPrivacyCheckWithAppearance:(int64_t)appearance completion:(id)completion
 {
-  v6 = a4;
-  if ([a1 hasReceivedPrivacyConsent])
+  completionCopy = completion;
+  if ([self hasReceivedPrivacyConsent])
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 1, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0, 0);
     }
   }
 
   else
   {
-    [a1 showPrivacyScreenWithAppearance:a3 completion:v6];
+    [self showPrivacyScreenWithAppearance:appearance completion:completionCopy];
   }
 }
 

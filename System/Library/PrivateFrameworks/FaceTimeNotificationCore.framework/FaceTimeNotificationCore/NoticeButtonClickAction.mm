@@ -1,15 +1,15 @@
 @interface NoticeButtonClickAction
 - (_TtC24FaceTimeNotificationCore23NoticeButtonClickAction)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NoticeButtonClickAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NoticeButtonClickAction.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NoticeButtonClickAction.encode(with:)(coderCopy);
 }
 
 - (_TtC24FaceTimeNotificationCore23NoticeButtonClickAction)init

@@ -1,23 +1,23 @@
 @interface _UIFocusEnvironmentContainerTuple
-+ (id)tupleWithOwningEnvironment:(id)a3 itemContainer:(id)a4;
-+ (id)tupleWithRequiredContainerFromEnvironment:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEnvironmentContainerTuple:(id)a3;
-- (_UIFocusEnvironmentContainerTuple)initWithOwningEnvironment:(id)a3 itemContainer:(id)a4;
++ (id)tupleWithOwningEnvironment:(id)environment itemContainer:(id)container;
++ (id)tupleWithRequiredContainerFromEnvironment:(id)environment;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEnvironmentContainerTuple:(id)tuple;
+- (_UIFocusEnvironmentContainerTuple)initWithOwningEnvironment:(id)environment itemContainer:(id)container;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _UIFocusEnvironmentContainerTuple
 
-- (_UIFocusEnvironmentContainerTuple)initWithOwningEnvironment:(id)a3 itemContainer:(id)a4
+- (_UIFocusEnvironmentContainerTuple)initWithOwningEnvironment:(id)environment itemContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  environmentCopy = environment;
+  containerCopy = container;
+  v10 = containerCopy;
+  if (environmentCopy)
   {
-    if (v9)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
@@ -25,8 +25,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIFocusItemContainer.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusItemContainer.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment != nil"}];
 
     if (v10)
     {
@@ -34,16 +34,16 @@
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"UIFocusItemContainer.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"itemContainer != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIFocusItemContainer.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"itemContainer != nil"}];
 
 LABEL_3:
-  v11 = [v8 focusItemContainer];
+  focusItemContainer = [environmentCopy focusItemContainer];
 
-  if (v11 != v10)
+  if (focusItemContainer != v10)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIFocusItemContainer.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment.focusItemContainer == itemContainer"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIFocusItemContainer.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment.focusItemContainer == itemContainer"}];
   }
 
   v18.receiver = self;
@@ -52,40 +52,40 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_owningEnvironment, a3);
-    objc_storeStrong(&v13->_itemContainer, a4);
+    objc_storeStrong(&v12->_owningEnvironment, environment);
+    objc_storeStrong(&v13->_itemContainer, container);
     v13->_isScrollableContainer = _UIFocusItemContainerIsScrollableContainer(v10);
   }
 
   return v13;
 }
 
-+ (id)tupleWithOwningEnvironment:(id)a3 itemContainer:(id)a4
++ (id)tupleWithOwningEnvironment:(id)environment itemContainer:(id)container
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithOwningEnvironment:v7 itemContainer:v6];
+  containerCopy = container;
+  environmentCopy = environment;
+  v8 = [[self alloc] initWithOwningEnvironment:environmentCopy itemContainer:containerCopy];
 
   return v8;
 }
 
-+ (id)tupleWithRequiredContainerFromEnvironment:(id)a3
++ (id)tupleWithRequiredContainerFromEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 focusItemContainer];
-  v6 = [a1 tupleWithOwningEnvironment:v4 itemContainer:v5];
+  environmentCopy = environment;
+  focusItemContainer = [environmentCopy focusItemContainer];
+  v6 = [self tupleWithOwningEnvironment:environmentCopy itemContainer:focusItemContainer];
 
   return v6;
 }
 
-- (BOOL)isEqualToEnvironmentContainerTuple:(id)a3
+- (BOOL)isEqualToEnvironmentContainerTuple:(id)tuple
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tupleCopy = tuple;
   owningEnvironment = self->_owningEnvironment;
   itemContainer = self->_itemContainer;
-  v7 = v4[2];
-  v8 = v4[3];
+  v7 = tupleCopy[2];
+  v8 = tupleCopy[3];
   if ((*__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DCC8) & 1) != 0 && itemContainer == v8 && owningEnvironment != v7)
   {
     v13 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DCD0) + 8);
@@ -95,13 +95,13 @@ LABEL_3:
       v34 = v8;
       v31 = owningEnvironment;
       v32 = itemContainer;
-      v14 = [(_UIFocusEnvironmentContainerTuple *)self itemContainer];
-      if (v14)
+      itemContainer = [(_UIFocusEnvironmentContainerTuple *)self itemContainer];
+      if (itemContainer)
       {
         v15 = MEMORY[0x1E696AEC0];
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
-        v18 = [v15 stringWithFormat:@"<%@: %p>", v17, v14];
+        v18 = [v15 stringWithFormat:@"<%@: %p>", v17, itemContainer];
       }
 
       else
@@ -110,13 +110,13 @@ LABEL_3:
       }
 
       v19 = v18;
-      v20 = [(_UIFocusEnvironmentContainerTuple *)self owningEnvironment];
-      if (v20)
+      owningEnvironment = [(_UIFocusEnvironmentContainerTuple *)self owningEnvironment];
+      if (owningEnvironment)
       {
         v21 = MEMORY[0x1E696AEC0];
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
-        v24 = [v21 stringWithFormat:@"<%@: %p>", v23, v20];
+        v24 = [v21 stringWithFormat:@"<%@: %p>", v23, owningEnvironment];
       }
 
       else
@@ -125,13 +125,13 @@ LABEL_3:
       }
 
       v25 = v24;
-      v26 = [v4 owningEnvironment];
-      if (v26)
+      owningEnvironment2 = [tupleCopy owningEnvironment];
+      if (owningEnvironment2)
       {
         v27 = MEMORY[0x1E696AEC0];
         v28 = objc_opt_class();
         v29 = NSStringFromClass(v28);
-        v30 = [v27 stringWithFormat:@"<%@: %p>", v29, v26];
+        v30 = [v27 stringWithFormat:@"<%@: %p>", v29, owningEnvironment2];
       }
 
       else
@@ -159,20 +159,20 @@ LABEL_3:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()) && [(_UIFocusEnvironmentContainerTuple *)self isEqualToEnvironmentContainerTuple:v4];
+  equalCopy = equal;
+  v6 = equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()) && [(_UIFocusEnvironmentContainerTuple *)self isEqualToEnvironmentContainerTuple:equalCopy];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(_UIFocusEnvironmentContainerTuple *)self owningEnvironment];
-  v4 = [v3 hash];
-  v5 = [(_UIFocusEnvironmentContainerTuple *)self itemContainer];
-  v6 = [v5 hash];
+  owningEnvironment = [(_UIFocusEnvironmentContainerTuple *)self owningEnvironment];
+  v4 = [owningEnvironment hash];
+  itemContainer = [(_UIFocusEnvironmentContainerTuple *)self itemContainer];
+  v6 = [itemContainer hash];
 
   return v6 ^ v4;
 }

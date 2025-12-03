@@ -1,15 +1,15 @@
 @interface CWFEAPCredentials
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEAPCredentials:(id)a3;
-- (CWFEAPCredentials)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEAPCredentials:(id)credentials;
+- (CWFEAPCredentials)initWithCoder:(id)coder;
 - (__SecIdentity)TLSIdentity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)TLSIdentityHandle;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTLSIdentity:(__SecIdentity *)a3;
-- (void)setTLSIdentityHandle:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTLSIdentity:(__SecIdentity *)identity;
+- (void)setTLSIdentityHandle:(void *)handle;
 @end
 
 @implementation CWFEAPCredentials
@@ -49,7 +49,7 @@
   return result;
 }
 
-- (void)setTLSIdentity:(__SecIdentity *)a3
+- (void)setTLSIdentity:(__SecIdentity *)identity
 {
   TLSIdentityHandle = self->_TLSIdentityHandle;
   if (TLSIdentityHandle)
@@ -58,12 +58,12 @@
   }
 
   v6 = 0;
-  if (a3)
+  if (identity)
   {
     v6 = sub_1E0C57068();
     if (v6)
     {
-      sub_1E0C5691C(a3);
+      sub_1E0C5691C(identity);
     }
   }
 
@@ -72,13 +72,13 @@
 
 - (void)TLSIdentityHandle
 {
-  v2 = [(CWFEAPCredentials *)self TLSIdentity];
-  if (!v2)
+  tLSIdentity = [(CWFEAPCredentials *)self TLSIdentity];
+  if (!tLSIdentity)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = tLSIdentity;
   if (!sub_1E0C57068())
   {
     return 0;
@@ -93,17 +93,17 @@
   return CFAutorelease(v4);
 }
 
-- (void)setTLSIdentityHandle:(void *)a3
+- (void)setTLSIdentityHandle:(void *)handle
 {
   TLSIdentityHandle = self->_TLSIdentityHandle;
-  if (TLSIdentityHandle != a3)
+  if (TLSIdentityHandle != handle)
   {
     cf = 0;
-    if (a3)
+    if (handle)
     {
       if (sub_1E0C57068())
       {
-        sub_1E0C56764(a3, &cf);
+        sub_1E0C56764(handle, &cf);
         if (cf)
         {
           [(CWFEAPCredentials *)self setTLSIdentity:?];
@@ -125,34 +125,34 @@
   }
 }
 
-- (BOOL)isEqualToEAPCredentials:(id)a3
+- (BOOL)isEqualToEAPCredentials:(id)credentials
 {
-  v6 = a3;
-  v7 = [v6 TLSIdentity];
-  if (v7)
+  credentialsCopy = credentials;
+  tLSIdentity = [credentialsCopy TLSIdentity];
+  if (tLSIdentity)
   {
     if (sub_1E0C57068())
     {
-      sub_1E0C5691C(v7);
-      v7 = v8;
+      sub_1E0C5691C(tLSIdentity);
+      tLSIdentity = v8;
     }
 
     else
     {
-      v7 = 0;
+      tLSIdentity = 0;
     }
   }
 
   TLSIdentityHandle = self->_TLSIdentityHandle;
-  if (TLSIdentityHandle == v7)
+  if (TLSIdentityHandle == tLSIdentity)
   {
     goto LABEL_9;
   }
 
   v10 = 0;
-  if (v7 && TLSIdentityHandle)
+  if (tLSIdentity && TLSIdentityHandle)
   {
-    if (!CFEqual(TLSIdentityHandle, v7))
+    if (!CFEqual(TLSIdentityHandle, tLSIdentity))
     {
       v10 = 0;
       goto LABEL_24;
@@ -160,10 +160,10 @@
 
 LABEL_9:
     username = self->_username;
-    v12 = [v6 username];
-    if (username != v12)
+    username = [credentialsCopy username];
+    if (username != username)
     {
-      if (!self->_username || ([v6 username], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!self->_username || ([credentialsCopy username], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v10 = 0;
         goto LABEL_22;
@@ -171,8 +171,8 @@ LABEL_9:
 
       v3 = v13;
       v14 = self->_username;
-      v4 = [v6 username];
-      if (![(NSString *)v14 isEqual:v4])
+      username2 = [credentialsCopy username];
+      if (![(NSString *)v14 isEqual:username2])
       {
         v10 = 0;
 LABEL_21:
@@ -182,17 +182,17 @@ LABEL_21:
     }
 
     password = self->_password;
-    v16 = [v6 password];
-    v10 = password == v16;
+    password = [credentialsCopy password];
+    v10 = password == password;
     if (!v10 && self->_password)
     {
-      v17 = [v6 password];
-      if (!v17)
+      password2 = [credentialsCopy password];
+      if (!password2)
       {
 
         v10 = 0;
 LABEL_20:
-        if (username != v12)
+        if (username != username)
         {
           goto LABEL_21;
         }
@@ -202,40 +202,40 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v18 = v17;
+      v18 = password2;
       v19 = self->_password;
-      [v6 password];
-      v20 = v22 = v4;
+      [credentialsCopy password];
+      v20 = v22 = username2;
       v10 = [(NSString *)v19 isEqual:v20];
 
-      v4 = v22;
+      username2 = v22;
     }
 
     goto LABEL_20;
   }
 
 LABEL_23:
-  if (v7)
+  if (tLSIdentity)
   {
 LABEL_24:
-    CFRelease(v7);
+    CFRelease(tLSIdentity);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFEAPCredentials *)self isEqualToEAPCredentials:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFEAPCredentials *)self isEqualToEAPCredentials:v5];
   }
 
   return v6;
@@ -254,7 +254,7 @@ LABEL_24:
   return v4 ^ v3 ^ TLSIdentityHandle;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFEAPCredentials allocWithZone:?]];
   [(CWFEAPCredentials *)v4 setUsername:self->_username];
@@ -263,32 +263,32 @@ LABEL_24:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   username = self->_username;
-  v5 = a3;
-  [v5 encodeObject:username forKey:@"_username"];
-  [v5 encodeObject:self->_password forKey:@"_password"];
-  [v5 encodeObject:self->_TLSIdentityHandle forKey:@"_TLSIdentityHandle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:username forKey:@"_username"];
+  [coderCopy encodeObject:self->_password forKey:@"_password"];
+  [coderCopy encodeObject:self->_TLSIdentityHandle forKey:@"_TLSIdentityHandle"];
 }
 
-- (CWFEAPCredentials)initWithCoder:(id)a3
+- (CWFEAPCredentials)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CWFEAPCredentials;
   v5 = [(CWFEAPCredentials *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_username"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_username"];
     username = v5->_username;
     v5->_username = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
     password = v5->_password;
     v5->_password = v8;
 
-    v5->_TLSIdentityHandle = [v4 decodePropertyListForKey:@"_TLSIdentityHandle"];
+    v5->_TLSIdentityHandle = [coderCopy decodePropertyListForKey:@"_TLSIdentityHandle"];
   }
 
   return v5;

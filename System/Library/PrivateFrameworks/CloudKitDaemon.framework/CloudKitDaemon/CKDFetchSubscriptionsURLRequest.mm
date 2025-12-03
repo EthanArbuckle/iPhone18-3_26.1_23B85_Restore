@@ -1,25 +1,25 @@
 @interface CKDFetchSubscriptionsURLRequest
-- (CKDFetchSubscriptionsURLRequest)initWithOperation:(id)a3 subscriptionIDs:(id)a4;
+- (CKDFetchSubscriptionsURLRequest)initWithOperation:(id)operation subscriptionIDs:(id)ds;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchSubscriptionsURLRequest
 
-- (CKDFetchSubscriptionsURLRequest)initWithOperation:(id)a3 subscriptionIDs:(id)a4
+- (CKDFetchSubscriptionsURLRequest)initWithOperation:(id)operation subscriptionIDs:(id)ds
 {
-  v7 = a4;
+  dsCopy = ds;
   v17.receiver = self;
   v17.super_class = CKDFetchSubscriptionsURLRequest;
-  v8 = [(CKDURLRequest *)&v17 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v17 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_subscriptionIDs, a4);
+    objc_storeStrong(&v8->_subscriptionIDs, ds);
     v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11);
     subscriptions = v9->_subscriptions;
     v9->_subscriptions = v12;
@@ -32,17 +32,17 @@
   return v9;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v12.receiver = self;
   v12.super_class = CKDFetchSubscriptionsURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v12 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v12 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_subscriptionIDs(self, v6, v7, v12.receiver, v12.super_class);
   v10 = objc_msgSend_setWithArray_(v5, v9, v8);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v11, v10, @"ids");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v11, v10, @"ids");
 }
 
 - (id)zoneIDsToLock
@@ -135,18 +135,18 @@
   return v3;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_hasSubscriptionRetrieveResponse(v4, v5, v6))
+  objectCopy = object;
+  if (objc_msgSend_hasSubscriptionRetrieveResponse(objectCopy, v5, v6))
   {
     v88 = 0u;
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v84 = v4;
-    v9 = objc_msgSend_subscriptionRetrieveResponse(v4, v7, v8);
+    v84 = objectCopy;
+    v9 = objc_msgSend_subscriptionRetrieveResponse(objectCopy, v7, v8);
     v12 = objc_msgSend_subscriptions(v9, v10, v11);
 
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v86, v94, 16);
@@ -226,13 +226,13 @@ LABEL_14:
       {
 LABEL_25:
 
-        v4 = v84;
+        objectCopy = v84;
         goto LABEL_29;
       }
     }
   }
 
-  v44 = objc_msgSend_result(v4, v7, v8);
+  v44 = objc_msgSend_result(objectCopy, v7, v8);
   hasError = objc_msgSend_hasError(v44, v45, v46);
 
   if (hasError)
@@ -243,7 +243,7 @@ LABEL_25:
     if (v53)
     {
       v56 = objc_msgSend_subscriptionIDByRequestID(self, v54, v55);
-      v59 = objc_msgSend_response(v4, v57, v58);
+      v59 = objc_msgSend_response(objectCopy, v57, v58);
       v62 = objc_msgSend_operationUUID(v59, v60, v61);
       v64 = objc_msgSend_objectForKeyedSubscript_(v56, v63, v62);
 
@@ -252,7 +252,7 @@ LABEL_25:
       if (v67)
       {
         v70 = objc_msgSend_subscriptionFetchedBlock(self, v68, v69);
-        v73 = objc_msgSend_result(v4, v71, v72);
+        v73 = objc_msgSend_result(objectCopy, v71, v72);
         (v70)[2](v70, 0, v64, v73);
       }
     }
@@ -264,7 +264,7 @@ LABEL_25:
       if (v74)
       {
         v77 = objc_msgSend_errorFetchingAllSubscriptionsBlock(self, v75, v76);
-        v80 = objc_msgSend_result(v4, v78, v79);
+        v80 = objc_msgSend_result(objectCopy, v78, v79);
         (v77)[2](v77, v80);
       }
     }
@@ -278,9 +278,9 @@ LABEL_29:
   return v19;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v35 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_subscriptionIDs(self, v4, v5);
   v9 = objc_msgSend_count(v6, v7, v8);
 
@@ -294,13 +294,13 @@ LABEL_29:
     }
 
     v20 = objc_msgSend_errorFetchingAllSubscriptionsBlock(self, v31, v32);
-    v26 = objc_msgSend_result(v35, v33, v34);
+    v26 = objc_msgSend_result(failureCopy, v33, v34);
     v20[2](v20, v26);
     goto LABEL_6;
   }
 
   v12 = objc_msgSend_subscriptionIDByRequestID(self, v10, v11);
-  v15 = objc_msgSend_response(v35, v13, v14);
+  v15 = objc_msgSend_response(failureCopy, v13, v14);
   v18 = objc_msgSend_operationUUID(v15, v16, v17);
   v20 = objc_msgSend_objectForKeyedSubscript_(v12, v19, v18);
 
@@ -309,7 +309,7 @@ LABEL_29:
   if (v23)
   {
     v26 = objc_msgSend_subscriptionFetchedBlock(self, v24, v25);
-    v29 = objc_msgSend_result(v35, v27, v28);
+    v29 = objc_msgSend_result(failureCopy, v27, v28);
     (v26)[2](v26, 0, v20, v29);
 
 LABEL_6:

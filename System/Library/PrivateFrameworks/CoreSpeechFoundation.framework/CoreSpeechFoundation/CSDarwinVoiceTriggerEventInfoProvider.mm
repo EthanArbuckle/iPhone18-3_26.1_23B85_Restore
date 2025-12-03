@@ -1,24 +1,24 @@
 @interface CSDarwinVoiceTriggerEventInfoProvider
 + (id)sharedInstance;
-+ (id)voiceTriggerEventInfoWithAdjustedMachTime:(id)a3 deviceUUID:(id)a4 anchorHostMachTime:(unint64_t)a5 anchorDarwinMachTime:(unint64_t)a6;
++ (id)voiceTriggerEventInfoWithAdjustedMachTime:(id)time deviceUUID:(id)d anchorHostMachTime:(unint64_t)machTime anchorDarwinMachTime:(unint64_t)darwinMachTime;
 - (CSDarwinVoiceTriggerEventInfoProvider)init;
-- (id)getMachTimeAdjustedVoiceTriggerEventInfoForDeviceUUID:(id)a3;
-- (void)setRawVoiceTriggerEventInfo:(id)a3 fromDeviceUUID:(id)a4 anchorHostMachTime:(unint64_t)a5 anchorDarwinMachTime:(unint64_t)a6;
+- (id)getMachTimeAdjustedVoiceTriggerEventInfoForDeviceUUID:(id)d;
+- (void)setRawVoiceTriggerEventInfo:(id)info fromDeviceUUID:(id)d anchorHostMachTime:(unint64_t)time anchorDarwinMachTime:(unint64_t)machTime;
 @end
 
 @implementation CSDarwinVoiceTriggerEventInfoProvider
 
-- (id)getMachTimeAdjustedVoiceTriggerEventInfoForDeviceUUID:(id)a3
+- (id)getMachTimeAdjustedVoiceTriggerEventInfoForDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__4952;
   v17 = __Block_byref_object_dispose__4953;
   v18 = 0;
-  if (v4)
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -26,7 +26,7 @@
     block[2] = __95__CSDarwinVoiceTriggerEventInfoProvider_getMachTimeAdjustedVoiceTriggerEventInfoForDeviceUUID___block_invoke;
     block[3] = &unk_1E865CC08;
     block[4] = self;
-    v11 = v4;
+    v11 = dCopy;
     v12 = &v13;
     dispatch_async_and_wait(queue, block);
 
@@ -59,22 +59,22 @@ void __95__CSDarwinVoiceTriggerEventInfoProvider_getMachTimeAdjustedVoiceTrigger
   }
 }
 
-- (void)setRawVoiceTriggerEventInfo:(id)a3 fromDeviceUUID:(id)a4 anchorHostMachTime:(unint64_t)a5 anchorDarwinMachTime:(unint64_t)a6
+- (void)setRawVoiceTriggerEventInfo:(id)info fromDeviceUUID:(id)d anchorHostMachTime:(unint64_t)time anchorDarwinMachTime:(unint64_t)machTime
 {
-  v10 = a3;
-  v11 = a4;
-  if (v11)
+  infoCopy = info;
+  dCopy = d;
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __124__CSDarwinVoiceTriggerEventInfoProvider_setRawVoiceTriggerEventInfo_fromDeviceUUID_anchorHostMachTime_anchorDarwinMachTime___block_invoke;
     block[3] = &unk_1E865C378;
-    v14 = v10;
-    v17 = a5;
-    v18 = a6;
-    v15 = v11;
-    v16 = self;
+    v14 = infoCopy;
+    timeCopy = time;
+    machTimeCopy = machTime;
+    v15 = dCopy;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 }
@@ -96,110 +96,110 @@ void __124__CSDarwinVoiceTriggerEventInfoProvider_setRawVoiceTriggerEventInfo_fr
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     triggerInfos = v2->_triggerInfos;
-    v2->_triggerInfos = v5;
+    v2->_triggerInfos = dictionary;
   }
 
   return v2;
 }
 
-+ (id)voiceTriggerEventInfoWithAdjustedMachTime:(id)a3 deviceUUID:(id)a4 anchorHostMachTime:(unint64_t)a5 anchorDarwinMachTime:(unint64_t)a6
++ (id)voiceTriggerEventInfoWithAdjustedMachTime:(id)time deviceUUID:(id)d anchorHostMachTime:(unint64_t)machTime anchorDarwinMachTime:(unint64_t)darwinMachTime
 {
-  v8 = a3;
-  v9 = [v8 mutableCopy];
+  timeCopy = time;
+  v9 = [timeCopy mutableCopy];
   if (!+[CSUtils isExclaveHardware])
   {
     [v9 setObject:@"Darwin" forKey:@"firstPassTriggerSource"];
   }
 
-  if (v8)
+  if (timeCopy)
   {
-    if (a5)
+    if (machTime)
     {
-      if (a6)
+      if (darwinMachTime)
       {
-        v10 = [v8 objectForKeyedSubscript:@"earlyDetectFiredMachTime"];
+        v10 = [timeCopy objectForKeyedSubscript:@"earlyDetectFiredMachTime"];
         if (v10)
         {
           v11 = v10;
-          v12 = [v8 objectForKeyedSubscript:@"triggerStartMachTime"];
+          v12 = [timeCopy objectForKeyedSubscript:@"triggerStartMachTime"];
           if (v12)
           {
             v13 = v12;
-            v14 = [v8 objectForKeyedSubscript:@"triggerFireMachTime"];
+            v14 = [timeCopy objectForKeyedSubscript:@"triggerFireMachTime"];
             if (v14)
             {
               v15 = v14;
-              v16 = [v8 objectForKeyedSubscript:@"triggerEndMachTime"];
+              v16 = [timeCopy objectForKeyedSubscript:@"triggerEndMachTime"];
               if (v16)
               {
                 v17 = v16;
-                v18 = [v8 objectForKeyedSubscript:@"triggerFireSeconds"];
+                v18 = [timeCopy objectForKeyedSubscript:@"triggerFireSeconds"];
                 if (v18)
                 {
                   v19 = v18;
-                  v20 = [v8 objectForKeyedSubscript:@"triggerEndSeconds"];
+                  v20 = [timeCopy objectForKeyedSubscript:@"triggerEndSeconds"];
 
                   if (!v20)
                   {
                     goto LABEL_26;
                   }
 
-                  v21 = [v8 objectForKeyedSubscript:@"earlyDetectFiredMachTime"];
-                  v22 = [v21 unsignedLongLongValue];
+                  v21 = [timeCopy objectForKeyedSubscript:@"earlyDetectFiredMachTime"];
+                  unsignedLongLongValue = [v21 unsignedLongLongValue];
 
                   v23 = 0.0;
                   v24 = 0.0;
-                  if (v22 < a6)
+                  if (unsignedLongLongValue < darwinMachTime)
                   {
-                    v25 = [v8 objectForKeyedSubscript:@"earlyDetectFiredMachTime"];
-                    v24 = (a6 - [v25 unsignedLongLongValue]);
+                    v25 = [timeCopy objectForKeyedSubscript:@"earlyDetectFiredMachTime"];
+                    v24 = (darwinMachTime - [v25 unsignedLongLongValue]);
                   }
 
-                  v26 = [v8 objectForKeyedSubscript:@"triggerStartMachTime"];
-                  v27 = [v26 unsignedLongLongValue];
+                  v26 = [timeCopy objectForKeyedSubscript:@"triggerStartMachTime"];
+                  unsignedLongLongValue2 = [v26 unsignedLongLongValue];
 
-                  if (v27 < a6)
+                  if (unsignedLongLongValue2 < darwinMachTime)
                   {
-                    v28 = [v8 objectForKeyedSubscript:@"triggerStartMachTime"];
-                    v23 = (a6 - [v28 unsignedLongLongValue]);
+                    v28 = [timeCopy objectForKeyedSubscript:@"triggerStartMachTime"];
+                    v23 = (darwinMachTime - [v28 unsignedLongLongValue]);
                   }
 
-                  v29 = [v8 objectForKeyedSubscript:@"triggerEndMachTime"];
-                  v30 = [v29 unsignedLongLongValue];
+                  v29 = [timeCopy objectForKeyedSubscript:@"triggerEndMachTime"];
+                  unsignedLongLongValue3 = [v29 unsignedLongLongValue];
 
                   v31 = 0.0;
                   v32 = 0.0;
-                  if (v30 < a6)
+                  if (unsignedLongLongValue3 < darwinMachTime)
                   {
-                    v33 = [v8 objectForKeyedSubscript:@"triggerEndMachTime"];
-                    v32 = (a6 - [v33 unsignedLongLongValue]);
+                    v33 = [timeCopy objectForKeyedSubscript:@"triggerEndMachTime"];
+                    v32 = (darwinMachTime - [v33 unsignedLongLongValue]);
                   }
 
-                  v34 = [v8 objectForKeyedSubscript:@"triggerFireMachTime"];
-                  v35 = [v34 unsignedLongLongValue];
+                  v34 = [timeCopy objectForKeyedSubscript:@"triggerFireMachTime"];
+                  unsignedLongLongValue4 = [v34 unsignedLongLongValue];
 
-                  if (v35 < a6)
+                  if (unsignedLongLongValue4 < darwinMachTime)
                   {
-                    v36 = [v8 objectForKeyedSubscript:@"triggerFireMachTime"];
-                    v31 = (a6 - [v36 unsignedLongLongValue]);
+                    v36 = [timeCopy objectForKeyedSubscript:@"triggerFireMachTime"];
+                    v31 = (darwinMachTime - [v36 unsignedLongLongValue]);
                   }
 
-                  v37 = [v8 objectForKeyedSubscript:@"triggerFireMachTime"];
-                  v38 = [v37 unsignedLongLongValue];
-                  v39 = [v8 objectForKeyedSubscript:@"triggerEndMachTime"];
-                  v40 = (v38 - [v39 unsignedLongLongValue]);
-                  v41 = [v8 objectForKeyedSubscript:@"triggerFireSeconds"];
+                  v37 = [timeCopy objectForKeyedSubscript:@"triggerFireMachTime"];
+                  unsignedLongLongValue5 = [v37 unsignedLongLongValue];
+                  v39 = [timeCopy objectForKeyedSubscript:@"triggerEndMachTime"];
+                  v40 = (unsignedLongLongValue5 - [v39 unsignedLongLongValue]);
+                  v41 = [timeCopy objectForKeyedSubscript:@"triggerFireSeconds"];
                   [v41 floatValue];
                   v43 = v42;
-                  v44 = [v8 objectForKeyedSubscript:@"triggerEndSeconds"];
+                  v44 = [timeCopy objectForKeyedSubscript:@"triggerEndSeconds"];
                   [v44 floatValue];
                   v46 = v40 / (v43 - v45);
 
                   v47 = v24 / v46;
                   +[CSFTimeUtils getHostClockFrequency];
-                  if ((v47 * v48) >= a5)
+                  if ((v47 * v48) >= machTime)
                   {
                     v50 = 0;
                   }
@@ -207,12 +207,12 @@ void __124__CSDarwinVoiceTriggerEventInfoProvider_setRawVoiceTriggerEventInfo_fr
                   else
                   {
                     +[CSFTimeUtils getHostClockFrequency];
-                    v50 = a5 - (v47 * v49);
+                    v50 = machTime - (v47 * v49);
                   }
 
                   v53 = v23 / v46;
                   +[CSFTimeUtils getHostClockFrequency];
-                  if ((v53 * v54) >= a5)
+                  if ((v53 * v54) >= machTime)
                   {
                     v56 = 0;
                   }
@@ -220,11 +220,11 @@ void __124__CSDarwinVoiceTriggerEventInfoProvider_setRawVoiceTriggerEventInfo_fr
                   else
                   {
                     +[CSFTimeUtils getHostClockFrequency];
-                    v56 = a5 - (v53 * v55);
+                    v56 = machTime - (v53 * v55);
                   }
 
                   +[CSFTimeUtils getHostClockFrequency];
-                  if ((v32 / v46 * v57) >= a5)
+                  if ((v32 / v46 * v57) >= machTime)
                   {
                     v59 = 0;
                   }
@@ -232,12 +232,12 @@ void __124__CSDarwinVoiceTriggerEventInfoProvider_setRawVoiceTriggerEventInfo_fr
                   else
                   {
                     +[CSFTimeUtils getHostClockFrequency];
-                    v59 = a5 - (v32 / v46 * v58);
+                    v59 = machTime - (v32 / v46 * v58);
                   }
 
                   v60 = v31 / v46;
                   +[CSFTimeUtils getHostClockFrequency];
-                  if ((v60 * v61) >= a5)
+                  if ((v60 * v61) >= machTime)
                   {
                     v63 = 0;
                   }
@@ -245,7 +245,7 @@ void __124__CSDarwinVoiceTriggerEventInfoProvider_setRawVoiceTriggerEventInfo_fr
                   else
                   {
                     +[CSFTimeUtils getHostClockFrequency];
-                    v63 = a5 - (v60 * v62);
+                    v63 = machTime - (v60 * v62);
                   }
 
                   v64 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v50];

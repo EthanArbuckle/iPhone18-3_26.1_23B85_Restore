@@ -1,14 +1,14 @@
 @interface OKPresentationCouch
-+ (id)couchWithName:(id)a3 settings:(id)a4 steps:(id)a5 restartScript:(id)a6;
++ (id)couchWithName:(id)name settings:(id)settings steps:(id)steps restartScript:(id)script;
 - (OKPresentationCouch)init;
-- (OKPresentationCouch)initWithDictionary:(id)a3 andName:(id)a4 forPresentation:(id)a5;
+- (OKPresentationCouch)initWithDictionary:(id)dictionary andName:(id)name forPresentation:(id)presentation;
 - (double)duration;
-- (id)closestStepForPageName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)closestStepForPageName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (id)lastStepForPageName:(id)a3;
-- (id)nextStepAfterStep:(id)a3 canLoop:(BOOL)a4;
-- (void)addStep:(id)a3;
+- (id)lastStepForPageName:(id)name;
+- (id)nextStepAfterStep:(id)step canLoop:(BOOL)loop;
+- (void)addStep:(id)step;
 - (void)dealloc;
 - (void)resolveIfNeeded;
 @end
@@ -30,21 +30,21 @@
   return result;
 }
 
-- (OKPresentationCouch)initWithDictionary:(id)a3 andName:(id)a4 forPresentation:(id)a5
+- (OKPresentationCouch)initWithDictionary:(id)dictionary andName:(id)name forPresentation:(id)presentation
 {
   v22 = *MEMORY[0x277D85DE8];
   v8 = [(OKPresentationCouch *)self init];
   v9 = v8;
   if (v8)
   {
-    [(OKPresentationCanvas *)v8 setPresentation:a5];
-    [(OKPresentationCanvas *)v9 setName:a4];
+    [(OKPresentationCanvas *)v8 setPresentation:presentation];
+    [(OKPresentationCanvas *)v9 setName:name];
     v9->_steps = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [a3 objectForKey:{@"steps", 0}];
+    v10 = [dictionary objectForKey:{@"steps", 0}];
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -60,7 +60,7 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [[OKPresentationCouchStep alloc] initWithDictionary:*(*(&v17 + 1) + 8 * v14) forPresentation:a5 andCouch:v9];
+          v15 = [[OKPresentationCouchStep alloc] initWithDictionary:*(*(&v17 + 1) + 8 * v14) forPresentation:presentation andCouch:v9];
           [(NSMutableArray *)v9->_steps addObject:v15];
 
           ++v14;
@@ -73,8 +73,8 @@
       while (v12);
     }
 
-    v9->_restartScript = [objc_msgSend(a3 objectForKey:{@"restartScript", "copy"}];
-    v9->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(a3 copyItems:{"objectForKey:", @"settings", 1}];
+    v9->_restartScript = [objc_msgSend(dictionary objectForKey:{@"restartScript", "copy"}];
+    v9->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionary copyItems:{"objectForKey:", @"settings", 1}];
   }
 
   return v9;
@@ -115,23 +115,23 @@
   [(OKPresentationCanvas *)&v7 dealloc];
 }
 
-+ (id)couchWithName:(id)a3 settings:(id)a4 steps:(id)a5 restartScript:(id)a6
++ (id)couchWithName:(id)name settings:(id)settings steps:(id)steps restartScript:(id)script
 {
   v10 = objc_alloc_init(OKPresentationCouch);
-  [(OKPresentationCanvas *)v10 setName:a3];
-  v10->_steps = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a5 copyItems:1];
-  v10->_restartScript = [a6 copy];
-  v10->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a4 copyItems:1];
+  [(OKPresentationCanvas *)v10 setName:name];
+  v10->_steps = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:steps copyItems:1];
+  v10->_restartScript = [script copy];
+  v10->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:settings copyItems:1];
   [(NSMutableArray *)v10->_steps makeObjectsPerformSelector:sel_setParent_ withObject:v10];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKPresentationCouch;
-  v4 = [(OKPresentationCanvas *)&v7 copyWithZone:a3];
+  v4 = [(OKPresentationCanvas *)&v7 copyWithZone:zone];
   if (v4)
   {
     steps = self->_steps;
@@ -155,12 +155,12 @@
 - (id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   steps = self->_steps;
   objc_sync_enter(steps);
   if ([(NSMutableArray *)self->_steps count])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -179,7 +179,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [v5 addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "dictionary")}];
+          [array addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "dictionary")}];
         }
 
         v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -188,24 +188,24 @@
       while (v7);
     }
 
-    [v3 setObject:v5 forKey:@"steps"];
+    [dictionary setObject:array forKey:@"steps"];
     restartScript = self->_restartScript;
     if (restartScript)
     {
-      [v3 setObject:restartScript forKey:@"restartScript"];
+      [dictionary setObject:restartScript forKey:@"restartScript"];
     }
 
     if (self->_internalSettings)
     {
-      [v3 setObject:+[OKSettingsUtility normalizedObjectFromValue:](OKSettingsUtility forKey:{"normalizedObjectFromValue:"), @"settings"}];
+      [dictionary setObject:+[OKSettingsUtility normalizedObjectFromValue:](OKSettingsUtility forKey:{"normalizedObjectFromValue:"), @"settings"}];
     }
   }
 
   objc_sync_exit(steps);
-  return v3;
+  return dictionary;
 }
 
-- (id)closestStepForPageName:(id)a3
+- (id)closestStepForPageName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
   steps = self->_steps;
@@ -252,7 +252,7 @@ LABEL_11:
   return v11;
 }
 
-- (id)lastStepForPageName:(id)a3
+- (id)lastStepForPageName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
   steps = self->_steps;
@@ -311,15 +311,15 @@ LABEL_13:
   return v11;
 }
 
-- (id)nextStepAfterStep:(id)a3 canLoop:(BOOL)a4
+- (id)nextStepAfterStep:(id)step canLoop:(BOOL)loop
 {
-  v4 = a4;
+  loopCopy = loop;
   steps = self->_steps;
   objc_sync_enter(steps);
-  v8 = [(NSMutableArray *)self->_steps indexOfObject:a3];
+  v8 = [(NSMutableArray *)self->_steps indexOfObject:step];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (self->_loopStep == a3)
+    if (self->_loopStep == step)
     {
       loopStep = [(NSMutableArray *)self->_steps firstObject];
 LABEL_8:
@@ -336,7 +336,7 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    if (v4)
+    if (loopCopy)
     {
       loopStep = self->_loopStep;
       goto LABEL_8;
@@ -350,14 +350,14 @@ LABEL_10:
   return v10;
 }
 
-- (void)addStep:(id)a3
+- (void)addStep:(id)step
 {
   steps = self->_steps;
   objc_sync_enter(steps);
-  [a3 setParent:self];
-  [a3 setPresentation:{-[OKPresentationCanvas presentation](self, "presentation")}];
-  [a3 resolveIfNeeded];
-  [(NSMutableArray *)self->_steps addObject:a3];
+  [step setParent:self];
+  [step setPresentation:{-[OKPresentationCanvas presentation](self, "presentation")}];
+  [step resolveIfNeeded];
+  [(NSMutableArray *)self->_steps addObject:step];
 
   objc_sync_exit(steps);
 }
@@ -412,8 +412,8 @@ LABEL_10:
   {
     steps = self->_steps;
     objc_sync_enter(steps);
-    v4 = [(OKPresentationCanvas *)self isResolved];
-    if (!v4)
+    isResolved = [(OKPresentationCanvas *)self isResolved];
+    if (!isResolved)
     {
       [(NSMutableArray *)self->_steps makeObjectsPerformSelector:sel_setPresentation_ withObject:[(OKPresentationCanvas *)self presentation]];
       [(OKPresentationCanvas *)self setIsResolved:1];
@@ -425,7 +425,7 @@ LABEL_10:
     v20 = 0u;
     v5 = self->_steps;
     v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
-    v7 = !v4;
+    v7 = !isResolved;
     if (v6)
     {
       v8 = *v20;
@@ -459,8 +459,8 @@ LABEL_10:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v11 = [(NSMutableDictionary *)self->_internalSettings allKeys];
-      v12 = [v11 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      allKeys = [(NSMutableDictionary *)self->_internalSettings allKeys];
+      v12 = [allKeys countByEnumeratingWithState:&v15 objects:v23 count:16];
       if (v12)
       {
         v13 = *v16;
@@ -470,13 +470,13 @@ LABEL_10:
           {
             if (*v16 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allKeys);
             }
 
             [(OKPresentationCanvas *)self setSettingsObject:[(NSMutableDictionary *)self->_internalSettings objectForKey:*(*(&v15 + 1) + 8 * j)] forKeyPath:*(*(&v15 + 1) + 8 * j)];
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          v12 = [allKeys countByEnumeratingWithState:&v15 objects:v23 count:16];
         }
 
         while (v12);

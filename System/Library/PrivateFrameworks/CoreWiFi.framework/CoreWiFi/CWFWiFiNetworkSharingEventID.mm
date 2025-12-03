@@ -1,11 +1,11 @@
 @interface CWFWiFiNetworkSharingEventID
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWiFiNetworkSharingEventID:(id)a3;
-- (CWFWiFiNetworkSharingEventID)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWiFiNetworkSharingEventID:(id)d;
+- (CWFWiFiNetworkSharingEventID)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFWiFiNetworkSharingEventID
@@ -16,26 +16,26 @@
   v9.receiver = self;
   v9.super_class = CWFWiFiNetworkSharingEventID;
   v4 = [(CWFEventID *)&v9 description];
-  v5 = [(CWFWiFiNetworkSharingEventID *)self clientID];
-  v6 = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
-  v7 = [v3 stringWithFormat:@"%@, clientID=%@, hasPredicateData=%d", v4, v5, v6 != 0];
+  clientID = [(CWFWiFiNetworkSharingEventID *)self clientID];
+  networkListUpdateEventPredicateData = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
+  v7 = [v3 stringWithFormat:@"%@, clientID=%@, hasPredicateData=%d", v4, clientID, networkListUpdateEventPredicateData != 0];
 
   return v7;
 }
 
-- (BOOL)isEqualToWiFiNetworkSharingEventID:(id)a3
+- (BOOL)isEqualToWiFiNetworkSharingEventID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   v26.receiver = self;
   v26.super_class = CWFWiFiNetworkSharingEventID;
-  if ([(CWFEventID *)&v26 isEqual:v6])
+  if ([(CWFEventID *)&v26 isEqual:dCopy])
   {
-    v7 = [(CWFWiFiNetworkSharingEventID *)self clientID];
-    v8 = [v6 clientID];
-    if (v7 != v8)
+    clientID = [(CWFWiFiNetworkSharingEventID *)self clientID];
+    clientID2 = [dCopy clientID];
+    if (clientID != clientID2)
     {
-      v9 = [(CWFWiFiNetworkSharingEventID *)self clientID];
-      if (!v9)
+      clientID3 = [(CWFWiFiNetworkSharingEventID *)self clientID];
+      if (!clientID3)
       {
         v12 = 0;
 LABEL_22:
@@ -43,9 +43,9 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v3 = v9;
-      v4 = [v6 clientID];
-      if (!v4)
+      v3 = clientID3;
+      clientID4 = [dCopy clientID];
+      if (!clientID4)
       {
         v12 = 0;
 LABEL_21:
@@ -53,9 +53,9 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v10 = [(CWFWiFiNetworkSharingEventID *)self clientID];
-      v11 = [v6 clientID];
-      if (![v10 isEqual:v11])
+      clientID5 = [(CWFWiFiNetworkSharingEventID *)self clientID];
+      clientID6 = [dCopy clientID];
+      if (![clientID5 isEqual:clientID6])
       {
         v12 = 0;
 LABEL_20:
@@ -63,14 +63,14 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v24 = v11;
-      v25 = v10;
+      v24 = clientID6;
+      v25 = clientID5;
     }
 
-    v13 = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
-    v14 = [v6 networkListUpdateEventPredicateData];
-    v15 = v14;
-    if (v13 == v14)
+    networkListUpdateEventPredicateData = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
+    networkListUpdateEventPredicateData2 = [dCopy networkListUpdateEventPredicateData];
+    v15 = networkListUpdateEventPredicateData2;
+    if (networkListUpdateEventPredicateData == networkListUpdateEventPredicateData2)
     {
 
       v12 = 1;
@@ -78,21 +78,21 @@ LABEL_20:
 
     else
     {
-      v16 = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
-      if (v16)
+      networkListUpdateEventPredicateData3 = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
+      if (networkListUpdateEventPredicateData3)
       {
-        v17 = v16;
-        v18 = [v6 networkListUpdateEventPredicateData];
-        if (v18)
+        v17 = networkListUpdateEventPredicateData3;
+        networkListUpdateEventPredicateData4 = [dCopy networkListUpdateEventPredicateData];
+        if (networkListUpdateEventPredicateData4)
         {
           [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
-          v19 = v22 = v4;
-          [v6 networkListUpdateEventPredicateData];
+          v19 = v22 = clientID4;
+          [dCopy networkListUpdateEventPredicateData];
           v20 = v23 = v3;
           v12 = [v19 isEqual:v20];
 
           v3 = v23;
-          v4 = v22;
+          clientID4 = v22;
         }
 
         else
@@ -108,9 +108,9 @@ LABEL_20:
       }
     }
 
-    v11 = v24;
-    v10 = v25;
-    if (v7 == v8)
+    clientID6 = v24;
+    clientID5 = v25;
+    if (clientID == clientID2)
     {
       goto LABEL_22;
     }
@@ -124,18 +124,18 @@ LABEL_23:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFWiFiNetworkSharingEventID *)self isEqualToWiFiNetworkSharingEventID:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFWiFiNetworkSharingEventID *)self isEqualToWiFiNetworkSharingEventID:v5];
   }
 
   return v6;
@@ -146,53 +146,53 @@ LABEL_23:
   v9.receiver = self;
   v9.super_class = CWFWiFiNetworkSharingEventID;
   v3 = [(CWFEventID *)&v9 hash];
-  v4 = [(CWFWiFiNetworkSharingEventID *)self clientID];
-  v5 = [v4 hash];
-  v6 = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
-  v7 = v5 ^ [v6 hash];
+  clientID = [(CWFWiFiNetworkSharingEventID *)self clientID];
+  v5 = [clientID hash];
+  networkListUpdateEventPredicateData = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
+  v7 = v5 ^ [networkListUpdateEventPredicateData hash];
 
   return v7 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CWFWiFiNetworkSharingEventID;
-  v4 = [(CWFEventID *)&v8 copyWithZone:a3];
-  v5 = [(CWFWiFiNetworkSharingEventID *)self clientID];
-  [v4 setClientID:v5];
+  v4 = [(CWFEventID *)&v8 copyWithZone:zone];
+  clientID = [(CWFWiFiNetworkSharingEventID *)self clientID];
+  [v4 setClientID:clientID];
 
-  v6 = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
-  [v4 setNetworkListUpdateEventPredicateData:v6];
+  networkListUpdateEventPredicateData = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
+  [v4 setNetworkListUpdateEventPredicateData:networkListUpdateEventPredicateData];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CWFWiFiNetworkSharingEventID;
-  v4 = a3;
-  [(CWFEventID *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CWFEventID *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CWFWiFiNetworkSharingEventID *)self clientID:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"clientID"];
+  [coderCopy encodeObject:v5 forKey:@"clientID"];
 
-  v6 = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
-  [v4 encodeObject:v6 forKey:@"networkListUpdateEventPredicateData"];
+  networkListUpdateEventPredicateData = [(CWFWiFiNetworkSharingEventID *)self networkListUpdateEventPredicateData];
+  [coderCopy encodeObject:networkListUpdateEventPredicateData forKey:@"networkListUpdateEventPredicateData"];
 }
 
-- (CWFWiFiNetworkSharingEventID)initWithCoder:(id)a3
+- (CWFWiFiNetworkSharingEventID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CWFWiFiNetworkSharingEventID;
-  v5 = [(CWFEventID *)&v9 initWithCoder:v4];
+  v5 = [(CWFEventID *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
     [(CWFWiFiNetworkSharingEventID *)v5 setClientID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"networkListUpdateEventPredicateData"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"networkListUpdateEventPredicateData"];
     [(CWFWiFiNetworkSharingEventID *)v5 setNetworkListUpdateEventPredicateData:v7];
   }
 

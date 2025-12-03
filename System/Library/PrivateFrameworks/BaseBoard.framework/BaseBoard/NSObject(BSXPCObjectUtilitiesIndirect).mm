@@ -8,7 +8,7 @@
 {
   v2 = BSXPCObjectBaseClass();
 
-  return [a1 isSubclassOfClass:v2];
+  return [self isSubclassOfClass:v2];
 }
 
 @end

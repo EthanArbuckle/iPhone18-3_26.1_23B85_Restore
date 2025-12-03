@@ -27,9 +27,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
     v5 = NSStringFromSelector(sel_selectedPlaylists);
-    [v4 setObject:@"SelectedPlaylists" forKeyedSubscript:v5];
+    [preferenceKeysBySelectorName setObject:@"SelectedPlaylists" forKeyedSubscript:v5];
   }
 
   return v3;
@@ -38,7 +38,7 @@
 + (id)allPreferenceSelectorsAsStrings
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___CLFMusicSettings_GeneratedCode;
   v2 = objc_msgSendSuper2(&v8, sel_allPreferenceSelectorsAsStrings);
   v3 = NSStringFromSelector(sel_selectedPlaylists);

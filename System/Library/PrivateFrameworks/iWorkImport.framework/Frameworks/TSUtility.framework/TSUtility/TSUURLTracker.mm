@@ -3,9 +3,9 @@
 - (NSURL)URL;
 - (NSURL)URLIfAvailable;
 - (TSUURLTracker)init;
-- (TSUURLTracker)initWithSandboxedURL:(id)a3 bookmarkData:(id)a4 delegate:(id)a5;
-- (TSUURLTracker)initWithURLWrapper:(id)a3;
-- (TSUURLTracker)initWithURLWrapper:(id)a3 delegate:(id)a4;
+- (TSUURLTracker)initWithSandboxedURL:(id)l bookmarkData:(id)data delegate:(id)delegate;
+- (TSUURLTracker)initWithURLWrapper:(id)wrapper;
+- (TSUURLTracker)initWithURLWrapper:(id)wrapper delegate:(id)delegate;
 - (id)p_filePresenterQueue;
 - (void)dealloc;
 - (void)pause;
@@ -31,21 +31,21 @@
   objc_exception_throw(v7);
 }
 
-- (TSUURLTracker)initWithSandboxedURL:(id)a3 bookmarkData:(id)a4 delegate:(id)a5
+- (TSUURLTracker)initWithSandboxedURL:(id)l bookmarkData:(id)data delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  lCopy = l;
+  dataCopy = data;
+  delegateCopy = delegate;
+  if (lCopy)
   {
-    v11 = [v8 URL];
-    v12 = [v11 isFileURL];
+    v11 = [lCopy URL];
+    isFileURL = [v11 isFileURL];
 
-    if ((v12 & 1) == 0)
+    if ((isFileURL & 1) == 0)
     {
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUURLTracker initWithSandboxedURL:bookmarkData:delegate:]"];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUURLTracker.m"];
-      [TSUAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:101 isFatal:0 description:"URL tracker should not be initialized with a non-file URL. URL=%@", v8];
+      [TSUAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:101 isFatal:0 description:"URL tracker should not be initialized with a non-file URL. URL=%@", lCopy];
 
       +[TSUAssertionHandler logBacktraceThrottled];
     }
@@ -60,7 +60,7 @@
     logContext = v15->_logContext;
     v15->_logContext = v16;
 
-    v18 = [[TSUURLTrackerFilePresenter alloc] initWithSandboxedURL:v8 bookmarkData:v9 urlTracker:v15 logContext:v15->_logContext delegate:v10];
+    v18 = [[TSUURLTrackerFilePresenter alloc] initWithSandboxedURL:lCopy bookmarkData:dataCopy urlTracker:v15 logContext:v15->_logContext delegate:delegateCopy];
     filePresenter = v15->_filePresenter;
     v15->_filePresenter = v18;
 
@@ -70,9 +70,9 @@
     }
 
     [(TSUURLTracker *)v15 resume];
-    v20 = [(TSUURLTracker *)v15 bookmarkDataIfAvailable];
+    bookmarkDataIfAvailable = [(TSUURLTracker *)v15 bookmarkDataIfAvailable];
 
-    if (!v20)
+    if (!bookmarkDataIfAvailable)
     {
       [(TSUURLTracker *)v15 bookmarkData];
     }
@@ -81,19 +81,19 @@
   return v15;
 }
 
-- (TSUURLTracker)initWithURLWrapper:(id)a3
+- (TSUURLTracker)initWithURLWrapper:(id)wrapper
 {
-  v4 = [a3 sandboxedURL];
-  v5 = [(TSUURLTracker *)self initWithSandboxedURL:v4 bookmarkData:0 delegate:0];
+  sandboxedURL = [wrapper sandboxedURL];
+  v5 = [(TSUURLTracker *)self initWithSandboxedURL:sandboxedURL bookmarkData:0 delegate:0];
 
   return v5;
 }
 
-- (TSUURLTracker)initWithURLWrapper:(id)a3 delegate:(id)a4
+- (TSUURLTracker)initWithURLWrapper:(id)wrapper delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [a3 sandboxedURL];
-  v8 = [(TSUURLTracker *)self initWithSandboxedURL:v7 bookmarkData:0 delegate:v6];
+  delegateCopy = delegate;
+  sandboxedURL = [wrapper sandboxedURL];
+  v8 = [(TSUURLTracker *)self initWithSandboxedURL:sandboxedURL bookmarkData:0 delegate:delegateCopy];
 
   return v8;
 }
@@ -101,14 +101,14 @@
 - (void)dealloc
 {
   v3 = self->_filePresenter;
-  v4 = [(TSUURLTracker *)self p_filePresenterQueue];
+  p_filePresenterQueue = [(TSUURLTracker *)self p_filePresenterQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2770CB9DC;
   block[3] = &unk_27A7023D8;
   v8 = v3;
   v5 = v3;
-  dispatch_async(v4, block);
+  dispatch_async(p_filePresenterQueue, block);
 
   v6.receiver = self;
   v6.super_class = TSUURLTracker;
@@ -173,10 +173,10 @@
 
 - (NSURL)URLIfAvailable
 {
-  v2 = [(TSUURLTracker *)self sandboxedURLIfAvailable];
-  v3 = [v2 URLIfAvailable];
+  sandboxedURLIfAvailable = [(TSUURLTracker *)self sandboxedURLIfAvailable];
+  uRLIfAvailable = [sandboxedURLIfAvailable URLIfAvailable];
 
-  return v3;
+  return uRLIfAvailable;
 }
 
 - (NSString)description
@@ -184,8 +184,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [MEMORY[0x277CCA9E8] filePresenters];
-  v7 = [v6 containsObject:self->_filePresenter];
+  filePresenters = [MEMORY[0x277CCA9E8] filePresenters];
+  v7 = [filePresenters containsObject:self->_filePresenter];
   v8 = @"NO";
   if (v7)
   {

@@ -1,18 +1,18 @@
 @interface ABBufferQuery
-- (ABBufferQuery)initWithAddressBook:(void *)a3 predicate:(id)a4 requestedProperties:(__CFSet *)a5 includeLinkedContacts:(BOOL)a6 sortOrder:(unsigned int)a7 managedConfiguration:(id)a8 identifierAuditStyle:(int64_t)a9 authorizationContext:(id)a10;
-- (id)limitedAccessBundleIdentifierForAuthorizationContext:(id)a3;
-- (id)scopedStoresForManagedConfiguration:(id)a3;
-- (void)_initSetupPropertySet:(__CFSet *)a3 includeLinkedContacts:(BOOL)a4 hasLimitedAccess:(BOOL)a5;
-- (void)appendBindParameterMarkersToQueryString:(id)a3 count:(unint64_t)a4;
-- (void)appendCustomPropertySelectsToQueryString:(id)a3;
-- (void)appendFromClauseToQueryString:(id)a3;
-- (void)appendOrderByClauseToQueryString:(id)a3;
-- (void)appendWhereClauseToQueryString:(id)a3 hasLimitedAccess:(BOOL)a4;
-- (void)bindWhereClause:(id)a3 limitedAccessBundleIdentifier:(id)a4;
-- (void)bindWithClause:(id)a3;
+- (ABBufferQuery)initWithAddressBook:(void *)book predicate:(id)predicate requestedProperties:(__CFSet *)properties includeLinkedContacts:(BOOL)contacts sortOrder:(unsigned int)order managedConfiguration:(id)configuration identifierAuditStyle:(int64_t)style authorizationContext:(id)self0;
+- (id)limitedAccessBundleIdentifierForAuthorizationContext:(id)context;
+- (id)scopedStoresForManagedConfiguration:(id)configuration;
+- (void)_initSetupPropertySet:(__CFSet *)set includeLinkedContacts:(BOOL)contacts hasLimitedAccess:(BOOL)access;
+- (void)appendBindParameterMarkersToQueryString:(id)string count:(unint64_t)count;
+- (void)appendCustomPropertySelectsToQueryString:(id)string;
+- (void)appendFromClauseToQueryString:(id)string;
+- (void)appendOrderByClauseToQueryString:(id)string;
+- (void)appendWhereClauseToQueryString:(id)string hasLimitedAccess:(BOOL)access;
+- (void)bindWhereClause:(id)clause limitedAccessBundleIdentifier:(id)identifier;
+- (void)bindWithClause:(id)clause;
 - (void)dealloc;
-- (void)prependWithClauseToQueryString:(id)a3 whereClause:(id)a4;
-- (void)setPropertyIndices:(__CFDictionary *)a3;
+- (void)prependWithClauseToQueryString:(id)string whereClause:(id)clause;
+- (void)setPropertyIndices:(__CFDictionary *)indices;
 @end
 
 @implementation ABBufferQuery
@@ -41,22 +41,22 @@
   [(ABBufferQuery *)&v5 dealloc];
 }
 
-- (ABBufferQuery)initWithAddressBook:(void *)a3 predicate:(id)a4 requestedProperties:(__CFSet *)a5 includeLinkedContacts:(BOOL)a6 sortOrder:(unsigned int)a7 managedConfiguration:(id)a8 identifierAuditStyle:(int64_t)a9 authorizationContext:(id)a10
+- (ABBufferQuery)initWithAddressBook:(void *)book predicate:(id)predicate requestedProperties:(__CFSet *)properties includeLinkedContacts:(BOOL)contacts sortOrder:(unsigned int)order managedConfiguration:(id)configuration identifierAuditStyle:(int64_t)style authorizationContext:(id)self0
 {
-  v12 = a6;
+  contactsCopy = contacts;
   v47.receiver = self;
   v47.super_class = ABBufferQuery;
   v16 = [(ABBufferQuery *)&v47 init];
   if (v16)
   {
-    if (a3 && (CPRecordStoreGetDatabase(), CPSqliteDatabaseConnectionForWriting()))
+    if (book && (CPRecordStoreGetDatabase(), CPSqliteDatabaseConnectionForWriting()))
     {
-      v16->_contactidentifierAuditMode = a9;
-      v16->_managedConfiguration = a8;
-      v16->_predicate = a4;
-      MutableCopy = CFSetCreateMutableCopy(0, 0, a5);
+      v16->_contactidentifierAuditMode = style;
+      v16->_managedConfiguration = configuration;
+      v16->_predicate = predicate;
+      MutableCopy = CFSetCreateMutableCopy(0, 0, properties);
       v18 = MutableCopy;
-      if (v12)
+      if (contactsCopy)
       {
         CFSetAddValue(MutableCopy, kABPersonLinkProperty);
       }
@@ -65,10 +65,10 @@
       v45[1] = v45;
       v45[2] = 0x2020000000;
       v46 = 1;
-      v16->_sortOrder = a7;
-      CFRetain(a3);
-      v16->_addressBook = a3;
-      v19 = [(ABBufferQuery *)v16 limitedAccessBundleIdentifierForAuthorizationContext:a10];
+      v16->_sortOrder = order;
+      CFRetain(book);
+      v16->_addressBook = book;
+      v19 = [(ABBufferQuery *)v16 limitedAccessBundleIdentifierForAuthorizationContext:context];
       v20 = v19;
       if (v19)
       {
@@ -80,10 +80,10 @@
         v21 = 0;
       }
 
-      [(ABBufferQuery *)v16 _initSetupPropertySet:v18 includeLinkedContacts:v12 hasLimitedAccess:v21];
+      [(ABBufferQuery *)v16 _initSetupPropertySet:v18 includeLinkedContacts:contactsCopy hasLimitedAccess:v21];
       v38 = v20;
-      v16->_scopedStoreIdentifiers = [(ABBufferQuery *)v16 scopedStoresForManagedConfiguration:a8];
-      PersonRecordDescriptorForPrefetchQueries = ABCAddressBookGetPersonRecordDescriptorForPrefetchQueries(a3);
+      v16->_scopedStoreIdentifiers = [(ABBufferQuery *)v16 scopedStoresForManagedConfiguration:configuration];
+      PersonRecordDescriptorForPrefetchQueries = ABCAddressBookGetPersonRecordDescriptorForPrefetchQueries(book);
       v44 = 0;
       v23 = *(PersonRecordDescriptorForPrefetchQueries + 72);
       if (v23)
@@ -125,7 +125,7 @@ LABEL_26:
 
       ColumnListWithAliasAndExtraColumns = CPRecordStoreCreateColumnListWithAliasAndExtraColumns();
       v16->_propertyIndices = v44;
-      -[ABBufferQuery prependWithClauseToQueryString:whereClause:](v16, "prependWithClauseToQueryString:whereClause:", ColumnListWithAliasAndExtraColumns, [a4 query]);
+      -[ABBufferQuery prependWithClauseToQueryString:whereClause:](v16, "prependWithClauseToQueryString:whereClause:", ColumnListWithAliasAndExtraColumns, [predicate query]);
       [(ABBufferQuery *)v16 appendCustomPropertySelectsToQueryString:ColumnListWithAliasAndExtraColumns];
       [(ABBufferQuery *)v16 appendFromClauseToQueryString:ColumnListWithAliasAndExtraColumns];
       if (v21)
@@ -141,7 +141,7 @@ LABEL_26:
       {
         if (*(v31 + 8))
         {
-          ABRegulatoryLogReadContactsData(a3);
+          ABRegulatoryLogReadContactsData(book);
           v16->_statement = v32;
           v33 = objc_opt_new();
           v43[0] = MEMORY[0x1E69E9820];
@@ -172,10 +172,10 @@ LABEL_26:
           v40[4] = v45;
           v40[5] = v32;
           [v33 setPointerBinder:v40];
-          if ([a4 bindBlock])
+          if ([predicate bindBlock])
           {
-            v34 = [a4 bindBlock];
-            (*(v34 + 16))(v34, v33);
+            bindBlock = [predicate bindBlock];
+            (*(bindBlock + 16))(bindBlock, v33);
           }
 
           [(ABBufferQuery *)v16 bindWithClause:v33];
@@ -263,13 +263,13 @@ uint64_t __162__ABBufferQuery_initWithAddressBook_predicate_requestedProperties_
   return v1();
 }
 
-- (void)_initSetupPropertySet:(__CFSet *)a3 includeLinkedContacts:(BOOL)a4 hasLimitedAccess:(BOOL)a5
+- (void)_initSetupPropertySet:(__CFSet *)set includeLinkedContacts:(BOOL)contacts hasLimitedAccess:(BOOL)access
 {
-  v5 = a5;
+  accessCopy = access;
   v15[1] = *MEMORY[0x1E69E9840];
-  Count = CFSetGetCount(a3);
+  Count = CFSetGetCount(set);
   v10 = (v15 - ((8 * Count + 15) & 0xFFFFFFFFFFFFFFF0));
-  CFSetGetValues(a3, v10);
+  CFSetGetValues(set, v10);
   v11 = objc_opt_new();
   for (i = objc_opt_new(); Count; --Count)
   {
@@ -289,7 +289,7 @@ uint64_t __162__ABBufferQuery_initWithAddressBook_predicate_requestedProperties_
     ++v10;
   }
 
-  if (v5)
+  if (accessCopy)
   {
     [(NSIndexSet *)v11 addIndex:kABCPersonLinkUUIDProperty];
   }
@@ -315,70 +315,70 @@ uint64_t __162__ABBufferQuery_initWithAddressBook_predicate_requestedProperties_
   self->_requestedWatchWallpaperImageData = [(NSIndexSet *)v11 containsIndex:kABCPersonWatchWallpaperImageDataProperty];
   self->_requestedWallpaperMetadata = [(NSIndexSet *)v11 containsIndex:kABCPersonWallpaperMetadataProperty];
   self->_requestedAvatarRecipeData = [(NSIndexSet *)v11 containsIndex:kABCPersonAvatarRecipeDataProperty];
-  self->_fetchLinkedContacts = a4;
+  self->_fetchLinkedContacts = contacts;
   self->_requestedPropertyIdentifiers = v11;
   self->_requestedMultivalueIdentifiers = i;
 }
 
-- (id)scopedStoresForManagedConfiguration:(id)a3
+- (id)scopedStoresForManagedConfiguration:(id)configuration
 {
-  if (([a3 deviceHasManagementRestrictions] & 1) == 0 && !objc_msgSend(a3, "hasContactProviderRestrictions"))
+  if (([configuration deviceHasManagementRestrictions] & 1) == 0 && !objc_msgSend(configuration, "hasContactProviderRestrictions"))
   {
     return 0;
   }
 
-  v5 = [(ABBufferQuery *)self addressBook];
+  addressBook = [(ABBufferQuery *)self addressBook];
 
-  return ABAddressBookIndexSetOfAllowedSourceIdentifiersIncludingDisabledSources(v5, a3, 0);
+  return ABAddressBookIndexSetOfAllowedSourceIdentifiersIncludingDisabledSources(addressBook, configuration, 0);
 }
 
-- (void)setPropertyIndices:(__CFDictionary *)a3
+- (void)setPropertyIndices:(__CFDictionary *)indices
 {
   propertyIndices = self->_propertyIndices;
-  if (propertyIndices != a3)
+  if (propertyIndices != indices)
   {
     if (propertyIndices)
     {
       CFRelease(propertyIndices);
     }
 
-    if (a3)
+    if (indices)
     {
-      CFRetain(a3);
+      CFRetain(indices);
     }
 
-    self->_propertyIndices = a3;
+    self->_propertyIndices = indices;
   }
 }
 
-- (void)appendCustomPropertySelectsToQueryString:(id)a3
+- (void)appendCustomPropertySelectsToQueryString:(id)string
 {
-  v5 = [(ABBufferQuery *)self requestedPropertyIdentifiers];
-  if ([(NSIndexSet *)v5 containsIndex:kABCPersonLinkUUIDProperty])
+  requestedPropertyIdentifiers = [(ABBufferQuery *)self requestedPropertyIdentifiers];
+  if ([(NSIndexSet *)requestedPropertyIdentifiers containsIndex:kABCPersonLinkUUIDProperty])
   {
-    [a3 appendString:{@", abplink.guid"}];
+    [string appendString:{@", abplink.guid"}];
   }
 
-  v6 = [(ABBufferQuery *)self requestedPropertyIdentifiers];
-  if ([(NSIndexSet *)v6 containsIndex:kABCPersonIsPreferredImageProperty])
+  requestedPropertyIdentifiers2 = [(ABBufferQuery *)self requestedPropertyIdentifiers];
+  if ([(NSIndexSet *)requestedPropertyIdentifiers2 containsIndex:kABCPersonIsPreferredImageProperty])
   {
-    [a3 appendString:{@", (abplink.PreferredImagePersonID = abp.rowid)"}];
+    [string appendString:{@", (abplink.PreferredImagePersonID = abp.rowid)"}];
   }
 
   if ([(NSIndexSet *)[(ABBufferQuery *)self requestedMultivalueIdentifiers] count])
   {
-    [a3 appendString:{@", abmv.property, abmv.identifier, abmv.guid, abmv.value, abmvlabel.value"}];
+    [string appendString:{@", abmv.property, abmv.identifier, abmv.guid, abmv.value, abmvlabel.value"}];
     if ([(ABBufferQuery *)self needsMultivalueEntryTable])
     {
 
-      [a3 appendString:{@", abmvekey.value, abmve.value"}];
+      [string appendString:{@", abmvekey.value, abmve.value"}];
     }
   }
 }
 
-- (void)prependWithClauseToQueryString:(id)a3 whereClause:(id)a4
+- (void)prependWithClauseToQueryString:(id)string whereClause:(id)clause
 {
-  v7 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if ([(ABBufferQuery *)self sortOrder])
   {
     if ([(ABBufferQuery *)self sortOrder]== 1)
@@ -402,13 +402,13 @@ uint64_t __162__ABBufferQuery_initWithAddressBook_predicate_requestedProperties_
     v8 = @", FirstSortLanguageIndex, FirstSortSection, FirstSort ";
   }
 
-  objc_msgSend(v7, "appendFormat:", @"WITH preferredmatched(rowid %@) as("), v8;
+  objc_msgSend(string, "appendFormat:", @"WITH preferredmatched(rowid %@) as("), v8;
   if ([(ABBufferQuery *)self fetchLinkedContacts])
   {
-    objc_msgSend(v7, "appendString:", @"WITH matched(rowid, personlink) as(SELECT rowid, personlink from ABPerson ");
-    if ([a4 length])
+    objc_msgSend(string, "appendString:", @"WITH matched(rowid, personlink) as(SELECT rowid, personlink from ABPerson ");
+    if ([clause length])
     {
-      [v7 appendFormat:@"WHERE rowid in(%@) ", a4];
+      [string appendFormat:@"WHERE rowid in(%@) ", clause];
       v9 = @"AND ";
     }
 
@@ -419,12 +419,12 @@ uint64_t __162__ABBufferQuery_initWithAddressBook_predicate_requestedProperties_
 
     if ([(ABBufferQuery *)self scopedStoreIdentifiers])
     {
-      [v7 appendFormat:@"%@ StoreID IN", v9];
-      [(ABBufferQuery *)self appendBindParameterMarkersToQueryString:v7 count:[(NSIndexSet *)[(ABBufferQuery *)self scopedStoreIdentifiers] count]];
+      [string appendFormat:@"%@ StoreID IN", v9];
+      [(ABBufferQuery *)self appendBindParameterMarkersToQueryString:string count:[(NSIndexSet *)[(ABBufferQuery *)self scopedStoreIdentifiers] count]];
     }
 
-    [v7 appendString:@" "]);
-    objc_msgSend(v7, "appendFormat:", @"SELECT rowid %@ FROM ABPerson abp WHERE abp.rowid IN (SELECT rowid FROM matched WHERE matched.personlink = -1 UNION "), v8;
+    [string appendString:@" "]);
+    objc_msgSend(string, "appendFormat:", @"SELECT rowid %@ FROM ABPerson abp WHERE abp.rowid IN (SELECT rowid FROM matched WHERE matched.personlink = -1 UNION "), v8;
     if ([(ABBufferQuery *)self scopedStoreIdentifiers])
     {
       v11 = @"SELECT ab_allowed_preferred_contact(abp.rowid, abp.StoreID, abp.IsPreferredName, ?) FROM ABPerson abp JOIN ABPersonLink abpl on abpl.rowid = abp.PersonLink WHERE abpl.rowid in (select personlink from matched) GROUP BY abpl.rowid ");
@@ -435,51 +435,51 @@ uint64_t __162__ABBufferQuery_initWithAddressBook_predicate_requestedProperties_
       v11 = @"SELECT PreferredNamePersonID FROM ABPersonLink abpl WHERE abpl.rowid IN (SELECT personlink FROM matched) ");
     }
 
-    [v7 appendFormat:v11];
+    [string appendFormat:v11];
   }
 
   else
   {
-    objc_msgSend(v7, "appendFormat:", @"SELECT rowid %@ FROM ABPerson where rowid in("), v8;
-    if ([a4 length])
+    objc_msgSend(string, "appendFormat:", @"SELECT rowid %@ FROM ABPerson where rowid in("), v8;
+    if ([clause length])
     {
-      v10 = a4;
+      clauseCopy = clause;
     }
 
     else
     {
-      v10 = @"SELECT rowid FROM ABPerson ";
+      clauseCopy = @"SELECT rowid FROM ABPerson ";
     }
 
-    [v7 appendString:v10];
-    [v7 appendString:@" "]);
+    [string appendString:clauseCopy];
+    [string appendString:@" "]);
     if ([(ABBufferQuery *)self scopedStoreIdentifiers])
     {
-      [v7 appendString:@"AND StoreID IN"];
-      [(ABBufferQuery *)self appendBindParameterMarkersToQueryString:v7 count:[(NSIndexSet *)[(ABBufferQuery *)self scopedStoreIdentifiers] count]];
+      [string appendString:@"AND StoreID IN"];
+      [(ABBufferQuery *)self appendBindParameterMarkersToQueryString:string count:[(NSIndexSet *)[(ABBufferQuery *)self scopedStoreIdentifiers] count]];
     }
   }
 
-  [v7 appendString:@" "]);
+  [string appendString:@" "]);
 
-  [a3 insertString:v7 atIndex:0];
+  [string insertString:string atIndex:0];
 }
 
-- (void)bindWithClause:(id)a3
+- (void)bindWithClause:(id)clause
 {
   if ([(ABBufferQuery *)self scopedStoreIdentifiers])
   {
-    v5 = [(ABBufferQuery *)self scopedStoreIdentifiers];
+    scopedStoreIdentifiers = [(ABBufferQuery *)self scopedStoreIdentifiers];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __32__ABBufferQuery_bindWithClause___block_invoke;
     v7[3] = &unk_1E7CCD260;
-    v7[4] = a3;
-    [(NSIndexSet *)v5 enumerateIndexesUsingBlock:v7];
+    v7[4] = clause;
+    [(NSIndexSet *)scopedStoreIdentifiers enumerateIndexesUsingBlock:v7];
     if ([(ABBufferQuery *)self fetchLinkedContacts])
     {
-      v6 = [a3 blobBinder];
-      (*(v6 + 16))(v6, [(ABBufferQuery *)self scopedStoreIdentifiers], 8);
+      blobBinder = [clause blobBinder];
+      (*(blobBinder + 16))(blobBinder, [(ABBufferQuery *)self scopedStoreIdentifiers], 8);
     }
   }
 }
@@ -491,12 +491,12 @@ uint64_t __32__ABBufferQuery_bindWithClause___block_invoke(uint64_t a1)
   return v1();
 }
 
-- (void)appendFromClauseToQueryString:(id)a3
+- (void)appendFromClauseToQueryString:(id)string
 {
-  [a3 appendString:@" FROM preferredmatched "];
+  [string appendString:@" FROM preferredmatched "];
   if ([(ABBufferQuery *)self fetchLinkedContacts])
   {
-    [a3 appendString:@" LEFT JOIN ABPerson abp2 on (abp2.rowid = preferredmatched.rowid) "];
+    [string appendString:@" LEFT JOIN ABPerson abp2 on (abp2.rowid = preferredmatched.rowid) "];
     v5 = @" JOIN ABPerson abp on (abp2.personlink != -1 and abp2.personlink = abp.personlink) OR (abp.rowid = abp2.rowid) ";
   }
 
@@ -505,87 +505,87 @@ uint64_t __32__ABBufferQuery_bindWithClause___block_invoke(uint64_t a1)
     v5 = @" JOIN ABPerson abp on (abp.rowid = preferredmatched.rowid) ";
   }
 
-  [a3 appendString:v5];
+  [string appendString:v5];
   if ([(ABBufferQuery *)self needsPersonLinkTable])
   {
-    [a3 appendString:@" LEFT JOIN ABPersonLink abplink on abp.PersonLink = abplink.ROWID "];
+    [string appendString:@" LEFT JOIN ABPersonLink abplink on abp.PersonLink = abplink.ROWID "];
   }
 
   if ([(ABBufferQuery *)self needsMultivalueTable])
   {
-    [a3 appendString:@" LEFT JOIN ABMultivalue abmv ON abp.ROWID = abmv.record_id  AND +abmv.property IN "];
-    [(ABBufferQuery *)self appendBindParameterMarkersToQueryString:a3 count:[(NSIndexSet *)[(ABBufferQuery *)self requestedMultivalueIdentifiers] count]];
-    [a3 appendString:@" LEFT JOIN ABMultivalueLabel abmvlabel on abmv.label = abmvlabel.ROWID "];
+    [string appendString:@" LEFT JOIN ABMultivalue abmv ON abp.ROWID = abmv.record_id  AND +abmv.property IN "];
+    [(ABBufferQuery *)self appendBindParameterMarkersToQueryString:string count:[(NSIndexSet *)[(ABBufferQuery *)self requestedMultivalueIdentifiers] count]];
+    [string appendString:@" LEFT JOIN ABMultivalueLabel abmvlabel on abmv.label = abmvlabel.ROWID "];
     if ([(ABBufferQuery *)self needsMultivalueEntryTable])
     {
 
-      [a3 appendString:@" LEFT JOIN ABMultiValueEntry abmve on abmve.parent_id = abmv.UID LEFT JOIN ABMultiValueEntryKey abmvekey on abmve.key = abmvekey.rowid "];
+      [string appendString:@" LEFT JOIN ABMultiValueEntry abmve on abmve.parent_id = abmv.UID LEFT JOIN ABMultiValueEntryKey abmvekey on abmve.key = abmvekey.rowid "];
     }
   }
 }
 
-- (id)limitedAccessBundleIdentifierForAuthorizationContext:(id)a3
+- (id)limitedAccessBundleIdentifierForAuthorizationContext:(id)context
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (!+[ABLimitedAccess isLimitedAccessFF_Enabled](ABLimitedAccess, "isLimitedAccessFF_Enabled") || ![a3 isLimitedAccessGranted])
+  if (!+[ABLimitedAccess isLimitedAccessFF_Enabled](ABLimitedAccess, "isLimitedAccessFF_Enabled") || ![context isLimitedAccessGranted])
   {
     return 0;
   }
 
-  v4 = [a3 clientBundleIdentifier];
+  clientBundleIdentifier = [context clientBundleIdentifier];
   v5 = ABOSLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = clientBundleIdentifier;
     _os_log_impl(&dword_1B7EFB000, v5, OS_LOG_TYPE_DEFAULT, "ABBufferQuery limited access for bundleIdentifier: %{public}@", &v7, 0xCu);
   }
 
-  return v4;
+  return clientBundleIdentifier;
 }
 
-- (void)appendWhereClauseToQueryString:(id)a3 hasLimitedAccess:(BOOL)a4
+- (void)appendWhereClauseToQueryString:(id)string hasLimitedAccess:(BOOL)access
 {
-  v4 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if (v4)
+  accessCopy = access;
+  array = [MEMORY[0x1E695DF70] array];
+  if (accessCopy)
   {
-    [v7 addObject:{+[ABLimitedAccess limitedAccessLeftJoinWhereClause](ABLimitedAccess, "limitedAccessLeftJoinWhereClause")}];
+    [array addObject:{+[ABLimitedAccess limitedAccessLeftJoinWhereClause](ABLimitedAccess, "limitedAccessLeftJoinWhereClause")}];
   }
 
   if ([(ABBufferQuery *)self scopedStoreIdentifiers])
   {
     v8 = [MEMORY[0x1E696AD60] stringWithString:@" abp.StoreID IN "];
     [(ABBufferQuery *)self appendBindParameterMarkersToQueryString:v8 count:[(NSIndexSet *)[(ABBufferQuery *)self scopedStoreIdentifiers] count]];
-    [v7 addObject:v8];
+    [array addObject:v8];
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    [a3 appendString:@" WHERE "];
-    v9 = [v7 componentsJoinedByString:@" AND "];
+    [string appendString:@" WHERE "];
+    v9 = [array componentsJoinedByString:@" AND "];
 
-    [a3 appendString:v9];
+    [string appendString:v9];
   }
 }
 
-- (void)bindWhereClause:(id)a3 limitedAccessBundleIdentifier:(id)a4
+- (void)bindWhereClause:(id)clause limitedAccessBundleIdentifier:(id)identifier
 {
-  if (a4 && [a4 length])
+  if (identifier && [identifier length])
   {
-    v7 = [a3 stringBinder];
-    (*(v7 + 16))(v7, a4);
+    stringBinder = [clause stringBinder];
+    (*(stringBinder + 16))(stringBinder, identifier);
   }
 
   if ([(ABBufferQuery *)self scopedStoreIdentifiers])
   {
-    v8 = [(ABBufferQuery *)self scopedStoreIdentifiers];
+    scopedStoreIdentifiers = [(ABBufferQuery *)self scopedStoreIdentifiers];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __63__ABBufferQuery_bindWhereClause_limitedAccessBundleIdentifier___block_invoke;
     v9[3] = &unk_1E7CCD260;
-    v9[4] = a3;
-    [(NSIndexSet *)v8 enumerateIndexesUsingBlock:v9];
+    v9[4] = clause;
+    [(NSIndexSet *)scopedStoreIdentifiers enumerateIndexesUsingBlock:v9];
   }
 }
 
@@ -596,9 +596,9 @@ uint64_t __63__ABBufferQuery_bindWhereClause_limitedAccessBundleIdentifier___blo
   return v1();
 }
 
-- (void)appendOrderByClauseToQueryString:(id)a3
+- (void)appendOrderByClauseToQueryString:(id)string
 {
-  [a3 appendString:@" ORDER BY "];
+  [string appendString:@" ORDER BY "];
   if (![(ABBufferQuery *)self sortOrder])
   {
     v5 = @"preferredmatched.FirstSortLanguageIndex, preferredmatched.FirstSortSection, preferredmatched.FirstSort ";
@@ -609,17 +609,17 @@ uint64_t __63__ABBufferQuery_bindWhereClause_limitedAccessBundleIdentifier___blo
   {
     v5 = @"preferredmatched.LastSortLanguageIndex, preferredmatched.LastSortSection, preferredmatched.LastSort ";
 LABEL_5:
-    [a3 appendString:v5];
+    [string appendString:v5];
     if (![(ABBufferQuery *)self fetchLinkedContacts])
     {
 LABEL_11:
-      [a3 appendFormat:@", "];
+      [string appendFormat:@", "];
       goto LABEL_12;
     }
 
-    [a3 appendFormat:@", "];
+    [string appendFormat:@", "];
 LABEL_10:
-    [a3 appendString:@"abp.PersonLink "];
+    [string appendString:@"abp.PersonLink "];
     goto LABEL_11;
   }
 
@@ -634,18 +634,18 @@ LABEL_10:
   }
 
 LABEL_12:
-  [a3 appendString:@"abp.ROWID "];
+  [string appendString:@"abp.ROWID "];
   if ([(ABBufferQuery *)self needsMultivalueTable])
   {
 
-    [a3 appendString:{@", abmv.property, abmv.UID "}];
+    [string appendString:{@", abmv.property, abmv.UID "}];
   }
 }
 
-- (void)appendBindParameterMarkersToQueryString:(id)a3 count:(unint64_t)a4
+- (void)appendBindParameterMarkersToQueryString:(id)string count:(unint64_t)count
 {
-  objc_msgSend(a3, "appendString:", @" (");
-  if (a4)
+  objc_msgSend(string, "appendString:", @" (");
+  if (count)
   {
     v6 = 0;
     do
@@ -660,14 +660,14 @@ LABEL_12:
         v7 = @" ?";
       }
 
-      [a3 appendString:v7];
+      [string appendString:v7];
       ++v6;
     }
 
-    while (a4 != v6);
+    while (count != v6);
   }
 
-  [a3 appendString:@""]);
+  [string appendString:@""]);
 }
 
 - (void)initWithAddressBook:(uint64_t)a1 predicate:(NSObject *)a2 requestedProperties:includeLinkedContacts:sortOrder:managedConfiguration:identifierAuditStyle:authorizationContext:.cold.1(uint64_t a1, NSObject *a2)

@@ -1,27 +1,27 @@
 @interface TPSBaseTipCollectionViewCell
 + (id)attributedStringOperationQueue;
-- (BOOL)handleTipsURL:(id)a3;
-- (BOOL)setTip:(id)a3 withCellAppearance:(id)a4;
-- (BOOL)videoAssetViewCanDisplayAssets:(id)a3;
+- (BOOL)handleTipsURL:(id)l;
+- (BOOL)setTip:(id)tip withCellAppearance:(id)appearance;
+- (BOOL)videoAssetViewCanDisplayAssets:(id)assets;
 - (CGPoint)parallaxOffset;
 - (CGSize)cacheCellSize;
-- (TPSBaseTipCollectionViewCell)initWithFrame:(CGRect)a3;
+- (TPSBaseTipCollectionViewCell)initWithFrame:(CGRect)frame;
 - (TPSBaseTipCollectionViewCellDelegate)delegate;
 - (UIEdgeInsets)contentSafeAreaInsets;
 - (id)imagePath;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (id)uniqueIdentifierForCurrentTip;
 - (void)actionButtonTapped;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)commonInit;
-- (void)constellationContentParserAttributedStringUpdated:(id)a3;
-- (void)contentLayoutChanged:(id)a3 userInfo:(id)a4;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)constellationContentParserAttributedStringUpdated:(id)updated;
+- (void)contentLayoutChanged:(id)changed userInfo:(id)info;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)continuePlayVideo;
 - (void)dealloc;
-- (void)handleTripleTapInternalGesture:(id)a3;
-- (void)handleURL:(id)a3;
-- (void)imageAssetViewImageUpdated:(id)a3;
+- (void)handleTripleTapInternalGesture:(id)gesture;
+- (void)handleURL:(id)l;
+- (void)imageAssetViewImageUpdated:(id)updated;
 - (void)loadBodyContentIfNeeded;
 - (void)loadContentIfNeeded;
 - (void)logAnimationFinished;
@@ -33,8 +33,8 @@
 - (void)resetVideoPlayer;
 - (void)scrollToTop;
 - (void)scrubVideoToFirstFrame;
-- (void)setContentSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setParallaxOffset:(CGPoint)a3;
+- (void)setContentSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setParallaxOffset:(CGPoint)offset;
 - (void)setupActionButtonConfiguration;
 - (void)updateActionButton;
 - (void)updateAssetIfAllowed;
@@ -51,7 +51,7 @@
 - (void)updateImageView;
 - (void)updateLoadingStatus;
 - (void)updateVideoPath;
-- (void)videoAssetViewUpdateAssetLoadingFinished:(id)a3 error:(id)a4;
+- (void)videoAssetViewUpdateAssetLoadingFinished:(id)finished error:(id)error;
 @end
 
 @implementation TPSBaseTipCollectionViewCell
@@ -94,11 +94,11 @@
   self->_heroAssetHorizontalMargin = 0.0;
 }
 
-- (TPSBaseTipCollectionViewCell)initWithFrame:(CGRect)a3
+- (TPSBaseTipCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v47.receiver = self;
   v47.super_class = TPSBaseTipCollectionViewCell;
-  v3 = [(TPSBaseTipCollectionViewCell *)&v47 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPSBaseTipCollectionViewCell *)&v47 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -110,8 +110,8 @@
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v4 selector:"contentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-    v8 = [(TPSBaseTipCollectionViewCell *)v4 contentView];
-    [v8 setClipsToBounds:1];
+    contentView = [(TPSBaseTipCollectionViewCell *)v4 contentView];
+    [contentView setClipsToBounds:1];
     v9 = *&UIEdgeInsetsZero.bottom;
     *&v4->_contentSafeAreaInsets.top = *&UIEdgeInsetsZero.top;
     *&v4->_contentSafeAreaInsets.bottom = v9;
@@ -141,8 +141,8 @@
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:0];
     [(UILabel *)v4->_titleLabel setLineBreakMode:0];
-    v15 = [(TPSBaseTipCollectionViewCell *)v4 titleFont];
-    [(UILabel *)v4->_titleLabel setFont:v15];
+    titleFont = [(TPSBaseTipCollectionViewCell *)v4 titleFont];
+    [(UILabel *)v4->_titleLabel setFont:titleFont];
 
     [(UILabel *)v4->_titleLabel setAdjustsFontForContentSizeCategory:1];
     v16 = +[TPSAppearance defaultLabelColor];
@@ -160,29 +160,29 @@
     [(UIScrollView *)v4->_contentScrollView setDirectionalLockEnabled:1];
     [(UIScrollView *)v4->_contentScrollView setShowsHorizontalScrollIndicator:0];
     [(UIScrollView *)v4->_contentScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v8 addSubview:v4->_contentScrollView];
+    [contentView addSubview:v4->_contentScrollView];
     [(UIScrollView *)v4->_contentScrollView addSubview:v4->_heroAssetView];
     [(UIScrollView *)v4->_contentScrollView addSubview:v4->_titleLabel];
     [(TPSKVOManager *)v4->_KVOManager addKVOObject:v4->_contentScrollView forKeyPath:@"contentSize" options:3 context:"contentLayoutChanged:userInfo:"];
     [(TPSKVOManager *)v4->_KVOManager addKVOObject:v4->_contentScrollView forKeyPath:@"contentOffset" options:3 context:"contentLayoutChanged:userInfo:"];
-    v20 = [(UIScrollView *)v4->_contentScrollView topAnchor];
-    v21 = [v8 topAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    topAnchor = [(UIScrollView *)v4->_contentScrollView topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v22 setActive:1];
 
-    v23 = [(UIScrollView *)v4->_contentScrollView leadingAnchor];
-    v24 = [v8 leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    leadingAnchor = [(UIScrollView *)v4->_contentScrollView leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v25 setActive:1];
 
-    v26 = [(UIScrollView *)v4->_contentScrollView trailingAnchor];
-    v27 = [v8 trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor = [(UIScrollView *)v4->_contentScrollView trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v28 setActive:1];
 
-    v29 = [(UIScrollView *)v4->_contentScrollView bottomAnchor];
-    v30 = [v8 bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    bottomAnchor = [(UIScrollView *)v4->_contentScrollView bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v31 setActive:1];
 
     if (v4->_hasBodyContent)
@@ -223,15 +223,15 @@
       [(TPSTipContentTextView *)v4->_contentTextView setFont:v41];
 
       [(TPSTipContentTextView *)v4->_contentTextView setDataDetectorTypes:0];
-      v42 = [(TPSTipContentTextView *)v4->_contentTextView textContainer];
-      [v42 setHeightTracksTextView:1];
+      textContainer = [(TPSTipContentTextView *)v4->_contentTextView textContainer];
+      [textContainer setHeightTracksTextView:1];
 
       [(TPSTipContentTextView *)v4->_contentTextView setDelegate:v4];
       [(TPSTipContentTextView *)v4->_contentTextView setOpaque:1];
       [(TPSTipContentTextView *)v4->_contentTextView setHidden:1];
       [(TPSTipContentTextView *)v4->_contentTextView setTextContainerInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-      v43 = [(TPSTipContentTextView *)v4->_contentTextView textContainer];
-      [v43 setLineFragmentPadding:0.0];
+      textContainer2 = [(TPSTipContentTextView *)v4->_contentTextView textContainer];
+      [textContainer2 setLineFragmentPadding:0.0];
 
       [(UIScrollView *)v4->_contentScrollView addSubview:v4->_contentTextView];
     }
@@ -277,17 +277,17 @@
   }
 }
 
-- (void)setContentSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setContentSafeAreaInsets:(UIEdgeInsets)insets
 {
-  self->_contentSafeAreaInsets = a3;
-  if (a3.bottom == 0.0)
+  self->_contentSafeAreaInsets = insets;
+  if (insets.bottom == 0.0)
   {
     v3 = -30.0 - self->_additionalBottomOffset;
   }
 
   else
   {
-    v3 = -20.0 - a3.bottom;
+    v3 = -20.0 - insets.bottom;
   }
 
   if (self->_bottomPadding != v3)
@@ -297,16 +297,16 @@
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   [(TPSTipContentTextView *)self->_contentTextView setTipID:0];
   [(TPSTipContentLabel *)self->_contentLabel setTipID:0];
   [(TPSTipContentLabel *)self->_contentLabel setAttributedText:0];
   [(TPSTipContentTextView *)self->_contentTextView setAttributedText:0];
-  v4 = [(TPSBaseTipCollectionViewCell *)self appController];
+  appController = [(TPSBaseTipCollectionViewCell *)self appController];
   v5 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v6 = [v5 identifier];
-  [v4 updateAttributedString:0 forIdentifier:v6];
+  identifier = [v5 identifier];
+  [appController updateAttributedString:0 forIdentifier:identifier];
 
   [(TPSBaseTipCollectionViewCell *)self updateFonts];
   [(TPSBaseTipCollectionViewCell *)self updateContentLabel];
@@ -315,32 +315,32 @@
   [(TPSBaseTipCollectionViewCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)setParallaxOffset:(CGPoint)a3
+- (void)setParallaxOffset:(CGPoint)offset
 {
-  if (self->_parallaxOffset.x != a3.x || self->_parallaxOffset.y != a3.y)
+  if (self->_parallaxOffset.x != offset.x || self->_parallaxOffset.y != offset.y)
   {
-    self->_parallaxOffset = a3;
-    [(NSLayoutConstraint *)self->_assetViewLayoutGuideCenterXConstraint setConstant:a3.x * self->_imageParallaxMultiplier];
+    self->_parallaxOffset = offset;
+    [(NSLayoutConstraint *)self->_assetViewLayoutGuideCenterXConstraint setConstant:offset.x * self->_imageParallaxMultiplier];
   }
 }
 
-- (BOOL)setTip:(id)a3 withCellAppearance:(id)a4
+- (BOOL)setTip:(id)tip withCellAppearance:(id)appearance
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(TPSTip *)self->_tip isEqual:v7];
-  [v8 size];
+  tipCopy = tip;
+  appearanceCopy = appearance;
+  v9 = [(TPSTip *)self->_tip isEqual:tipCopy];
+  [appearanceCopy size];
   v11 = v10;
   v13 = v12;
   width = self->_cacheCellSize.width;
   height = self->_cacheCellSize.height;
-  objc_storeStrong(&self->_cellAppearance, a4);
-  objc_storeStrong(&self->_tip, a3);
+  objc_storeStrong(&self->_cellAppearance, appearance);
+  objc_storeStrong(&self->_tip, tip);
   if (([(TPSTip *)self->_tip hasImage]& 1) != 0)
   {
-    v16 = [(TPSVideoAssetView *)self->_heroAssetView imageView];
-    v17 = [v16 image];
-    [(TPSBaseTipCollectionViewCell *)self setHeroImageUpdated:v17 != 0];
+    imageView = [(TPSVideoAssetView *)self->_heroAssetView imageView];
+    image = [imageView image];
+    [(TPSBaseTipCollectionViewCell *)self setHeroImageUpdated:image != 0];
   }
 
   else
@@ -349,29 +349,29 @@
   }
 
   [(TPSBaseTipCollectionViewCell *)self setBodyContentProcessingCount:0];
-  v18 = [(TPSTip *)self->_tip bodyText];
+  bodyText = [(TPSTip *)self->_tip bodyText];
 
-  if (!v18)
+  if (!bodyText)
   {
-    v44 = v8;
-    v19 = v7;
-    v20 = [(TPSBaseTipCollectionViewCell *)self appController];
+    v44 = appearanceCopy;
+    v19 = tipCopy;
+    appController = [(TPSBaseTipCollectionViewCell *)self appController];
     v21 = [(TPSBaseTipCollectionViewCell *)self tip];
-    v22 = [v21 identifier];
-    v23 = [v20 attributedStringForIdentifier:v22];
+    identifier = [v21 identifier];
+    v23 = [appController attributedStringForIdentifier:identifier];
 
     if (!v23)
     {
-      v24 = [(TPSTip *)self->_tip bodyContent];
+      bodyContent = [(TPSTip *)self->_tip bodyContent];
 
-      if (v24)
+      if (bodyContent)
       {
         [(TPSBaseTipCollectionViewCell *)self setBodyContentProcessingCount:1];
       }
     }
 
-    v7 = v19;
-    v8 = v44;
+    tipCopy = v19;
+    appearanceCopy = v44;
   }
 
   [(TPSBaseTipCollectionViewCell *)self updateAssetsConfiguration];
@@ -405,8 +405,8 @@
     }
 
     [(TPSBaseTipCollectionViewCell *)self scrollToTop];
-    v27 = [(TPSTip *)self->_tip title];
-    [(UILabel *)self->_titleLabel setText:v27];
+    title = [(TPSTip *)self->_tip title];
+    [(UILabel *)self->_titleLabel setText:title];
 
     self->_hasNotifiedDelegateContentLoaded = 0;
     self->_contentFinishedLoading = 0;
@@ -421,7 +421,7 @@
     contentTextOperationID = self->_contentTextOperationID;
     self->_contentTextOperationID = 0;
 
-    [v8 size];
+    [appearanceCopy size];
     self->_cacheCellSize.width = v32;
     self->_cacheCellSize.height = v33;
     [(TPSBaseTipCollectionViewCell *)self updateAssetIfAllowed];
@@ -431,43 +431,43 @@
       [(TPSTipContentTextView *)self->_contentTextView setHidden:1];
       [(TPSTipContentTextView *)self->_contentTextView setAttributedText:0];
       [(UIButton *)self->_actionButton setHidden:1];
-      -[TPSBaseTipCollectionViewCell setNeedsTextView:](self, "setNeedsTextView:", [v7 containsLinks]);
+      -[TPSBaseTipCollectionViewCell setNeedsTextView:](self, "setNeedsTextView:", [tipCopy containsLinks]);
       v34 = [(TPSBaseTipCollectionViewCell *)self tip];
-      v35 = [v34 bodyText];
+      bodyText2 = [v34 bodyText];
 
-      if (v35)
+      if (bodyText2)
       {
         [(TPSBaseTipCollectionViewCell *)self updateContentLabel];
       }
 
       else
       {
-        v36 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
-        [v36 setTipID:0];
+        contentLabel = [(TPSBaseTipCollectionViewCell *)self contentLabel];
+        [contentLabel setTipID:0];
 
-        v37 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
-        [v37 setText:0];
+        contentLabel2 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
+        [contentLabel2 setText:0];
 
-        v38 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
-        [v38 setAttributedText:0];
+        contentLabel3 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
+        [contentLabel3 setAttributedText:0];
 
-        v39 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
-        [v39 setHidden:1];
+        contentLabel4 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
+        [contentLabel4 setHidden:1];
       }
     }
   }
 
   if ([(TPSBaseTipCollectionViewCell *)self bodyContentProcessingCount])
   {
-    v40 = 0;
+    heroImageUpdated = 0;
   }
 
   else
   {
-    v40 = [(TPSBaseTipCollectionViewCell *)self heroImageUpdated];
+    heroImageUpdated = [(TPSBaseTipCollectionViewCell *)self heroImageUpdated];
   }
 
-  [(TPSBaseTipCollectionViewCell *)self setImageLoadingFinished:v40];
+  [(TPSBaseTipCollectionViewCell *)self setImageLoadingFinished:heroImageUpdated];
   if (([(TPSTip *)self->_tip hasVideo]& 1) == 0)
   {
     [(TPSBaseTipCollectionViewCell *)self setVideoLoadingFinished:1];
@@ -477,12 +477,12 @@
     }
 
 LABEL_30:
-    v42 = [(TPSTip *)self->_tip hasVideo];
+    hasVideo = [(TPSTip *)self->_tip hasVideo];
     goto LABEL_31;
   }
 
-  v41 = [(TPSVideoAssetView *)self->_heroAssetView downloadedVideoPath];
-  [(TPSBaseTipCollectionViewCell *)self setVideoLoadingFinished:v41 != 0];
+  downloadedVideoPath = [(TPSVideoAssetView *)self->_heroAssetView downloadedVideoPath];
+  [(TPSBaseTipCollectionViewCell *)self setVideoLoadingFinished:downloadedVideoPath != 0];
 
   if (v26)
   {
@@ -490,29 +490,29 @@ LABEL_30:
   }
 
 LABEL_28:
-  v42 = 0;
+  hasVideo = 0;
 LABEL_31:
-  [(TPSBaseTipCollectionViewCell *)self setShouldLogAnimationFinished:v42];
+  [(TPSBaseTipCollectionViewCell *)self setShouldLogAnimationFinished:hasVideo];
 
   return v26;
 }
 
 - (id)imagePath
 {
-  v2 = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
-  v3 = [TPSContentURLController assetPathFromAssetConfiguration:v2 type:0];
+  assetsConfiguration = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
+  v3 = [TPSContentURLController assetPathFromAssetConfiguration:assetsConfiguration type:0];
 
   return v3;
 }
 
 - (void)updateVideoPath
 {
-  v3 = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
-  v4 = [v3 cacheIdentifierForType:1];
+  assetsConfiguration = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
+  v4 = [assetsConfiguration cacheIdentifierForType:1];
   [(TPSVideoAssetView *)self->_heroAssetView setCacheVideoIdentifier:v4];
 
-  v6 = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
-  v5 = [TPSContentURLController assetPathFromAssetConfiguration:v6 type:1];
+  assetsConfiguration2 = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
+  v5 = [TPSContentURLController assetPathFromAssetConfiguration:assetsConfiguration2 type:1];
   [(TPSVideoAssetView *)self->_heroAssetView setVideoPath:v5];
 }
 
@@ -544,8 +544,8 @@ LABEL_31:
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
-    v6 = [v5 cacheIdentifierForType:0];
+    assetsConfiguration = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
+    v6 = [assetsConfiguration cacheIdentifierForType:0];
 
     v7 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:v6];
     if (v7)
@@ -570,29 +570,29 @@ LABEL_31:
 {
   if (![(TPSBaseTipCollectionViewCell *)self videoHasDisplayed])
   {
-    v5 = [(TPSBaseTipCollectionViewCell *)self imagePath];
-    v3 = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
-    v4 = [v3 cacheIdentifierForType:0];
+    imagePath = [(TPSBaseTipCollectionViewCell *)self imagePath];
+    assetsConfiguration = [(TPSBaseTipCollectionViewCell *)self assetsConfiguration];
+    v4 = [assetsConfiguration cacheIdentifierForType:0];
 
-    [(TPSVideoAssetView *)self->_heroAssetView fetchImageWithIdentifier:v4 path:v5];
+    [(TPSVideoAssetView *)self->_heroAssetView fetchImageWithIdentifier:v4 path:imagePath];
   }
 }
 
 - (void)updateAssetsConfiguration
 {
-  v3 = [(TPSTip *)self->_tip isTip];
+  isTip = [(TPSTip *)self->_tip isTip];
   cellAppearance = self->_cellAppearance;
-  if (v3)
+  if (isTip)
   {
-    v5 = [(TPSTipCellAppearance *)cellAppearance isCompactLayout];
+    isCompactLayout = [(TPSTipCellAppearance *)cellAppearance isCompactLayout];
   }
 
   else
   {
-    v5 = [(TPSTipCellAppearance *)cellAppearance isBookendsCompactLayout];
+    isCompactLayout = [(TPSTipCellAppearance *)cellAppearance isBookendsCompactLayout];
   }
 
-  if (v5)
+  if (isCompactLayout)
   {
     v6 = 1;
   }
@@ -604,13 +604,13 @@ LABEL_31:
 
   v15 = [(TPSBaseTipCollectionViewCell *)self tip];
   v7 = +[TPSUIAppController sharedInstance];
-  v8 = [v15 fullContentAssets];
-  v9 = [v15 language];
-  v10 = [(TPSBaseTipCollectionViewCell *)self cellAppearance];
-  v11 = [v10 userInterfaceStyle];
+  fullContentAssets = [v15 fullContentAssets];
+  language = [v15 language];
+  cellAppearance = [(TPSBaseTipCollectionViewCell *)self cellAppearance];
+  userInterfaceStyle = [cellAppearance userInterfaceStyle];
   v12 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v13 = [v12 assetFileInfoManager];
-  v14 = [v7 assetConfigurationForAssets:v8 language:v9 sizeClass:v6 style:v11 assetFileInfoManager:v13];
+  assetFileInfoManager = [v12 assetFileInfoManager];
+  v14 = [v7 assetConfigurationForAssets:fullContentAssets language:language sizeClass:v6 style:userInterfaceStyle assetFileInfoManager:assetFileInfoManager];
 
   [(TPSBaseTipCollectionViewCell *)self setAssetsConfiguration:v14];
 }
@@ -649,24 +649,24 @@ LABEL_31:
   }
 }
 
-- (void)contentLayoutChanged:(id)a3 userInfo:(id)a4
+- (void)contentLayoutChanged:(id)changed userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:NSKeyValueChangeOldKey];
-  v7 = [v5 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
+  v7 = [infoCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
   if (v6 != v7)
   {
-    v8 = [(TPSBaseTipCollectionViewCell *)self delegate];
-    [v8 tipCollectionViewCellContentLayoutChanged:self];
+    delegate = [(TPSBaseTipCollectionViewCell *)self delegate];
+    [delegate tipCollectionViewCellContentLayoutChanged:self];
   }
 }
 
 - (void)loadContentIfNeeded
 {
-  v3 = [(TPSVideoAssetView *)self->_heroAssetView image];
+  image = [(TPSVideoAssetView *)self->_heroAssetView image];
 
-  if (!v3)
+  if (!image)
   {
     [(TPSBaseTipCollectionViewCell *)self updateImageView];
   }
@@ -679,15 +679,15 @@ LABEL_31:
   if ([(TPSBaseTipCollectionViewCell *)self shouldLogAnimationFinished]&& self->_contentFinishedLoading)
   {
     v12 = [(TPSBaseTipCollectionViewCell *)self tip];
-    v3 = [v12 identifier];
-    v4 = [(TPSBaseTipCollectionViewCell *)self videoHasFinished];
-    v5 = [(TPSBaseTipCollectionViewCell *)self animationSource];
+    identifier = [v12 identifier];
+    videoHasFinished = [(TPSBaseTipCollectionViewCell *)self videoHasFinished];
+    animationSource = [(TPSBaseTipCollectionViewCell *)self animationSource];
     v6 = [(TPSBaseTipCollectionViewCell *)self tip];
-    v7 = [v6 collectionIdentifiers];
-    v8 = [v7 firstObject];
+    collectionIdentifiers = [v6 collectionIdentifiers];
+    firstObject = [collectionIdentifiers firstObject];
     v9 = [(TPSBaseTipCollectionViewCell *)self tip];
-    v10 = [v9 correlationID];
-    v11 = [TPSAnalyticsEventAnimationFinished eventWithTipID:v3 animationFinished:v4 animationSource:v5 collectionID:v8 correlationID:v10];
+    correlationID = [v9 correlationID];
+    v11 = [TPSAnalyticsEventAnimationFinished eventWithTipID:identifier animationFinished:videoHasFinished animationSource:animationSource collectionID:firstObject correlationID:correlationID];
     [v11 log];
 
     [(TPSBaseTipCollectionViewCell *)self setShouldLogAnimationFinished:0];
@@ -696,26 +696,26 @@ LABEL_31:
 
 - (void)updateAttributedStringWithCache
 {
-  v3 = [(TPSBaseTipCollectionViewCell *)self appController];
+  appController = [(TPSBaseTipCollectionViewCell *)self appController];
   v4 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v5 = [v4 identifier];
-  v15 = [v3 attributedStringForIdentifier:v5];
+  identifier = [v4 identifier];
+  v15 = [appController attributedStringForIdentifier:identifier];
 
   if (v15)
   {
-    v6 = [(TPSBaseTipCollectionViewCell *)self uniqueIdentifierForCurrentTip];
+    uniqueIdentifierForCurrentTip = [(TPSBaseTipCollectionViewCell *)self uniqueIdentifierForCurrentTip];
     if ([(TPSTip *)self->_tip containsLinks])
     {
       p_contentTextView = &self->_contentTextView;
-      v8 = [(TPSTipContentTextView *)self->_contentTextView tipID];
-      v9 = [v8 isEqualToString:v6];
+      tipID = [(TPSTipContentTextView *)self->_contentTextView tipID];
+      v9 = [tipID isEqualToString:uniqueIdentifierForCurrentTip];
 
       if ((v9 & 1) == 0)
       {
-        v10 = [(TPSBaseTipCollectionViewCell *)self contentTextView];
-        [v10 setAttributedText:v15];
+        contentTextView = [(TPSBaseTipCollectionViewCell *)self contentTextView];
+        [contentTextView setAttributedText:v15];
 
-        [*p_contentTextView setTipID:v6];
+        [*p_contentTextView setTipID:uniqueIdentifierForCurrentTip];
       }
 
       if (([*p_contentTextView isHidden] & 1) == 0)
@@ -727,13 +727,13 @@ LABEL_31:
     else
     {
       p_contentTextView = &self->_contentLabel;
-      v11 = [(TPSTipContentLabel *)self->_contentLabel tipID];
-      v12 = [v11 isEqualToString:v6];
+      tipID2 = [(TPSTipContentLabel *)self->_contentLabel tipID];
+      v12 = [tipID2 isEqualToString:uniqueIdentifierForCurrentTip];
 
       if ((v12 & 1) == 0)
       {
         [*p_contentTextView setAttributedText:v15];
-        [*p_contentTextView setTipID:v6];
+        [*p_contentTextView setTipID:uniqueIdentifierForCurrentTip];
       }
 
       if (![*p_contentTextView isHidden])
@@ -762,8 +762,8 @@ LABEL_12:
 {
   if (self->_hasBodyContent)
   {
-    v3 = [(TPSTip *)self->_tip actions];
-    v4 = [v3 count];
+    actions = [(TPSTip *)self->_tip actions];
+    v4 = [actions count];
 
     actionButton = self->_actionButton;
     if (v4)
@@ -785,12 +785,12 @@ LABEL_12:
       }
 
       [(UIButton *)self->_actionButton setEnabled:!self->_isSharedVariant];
-      v8 = [(UIButton *)self->_actionButton configuration];
-      v9 = [v8 title];
-      v10 = [(TPSTip *)self->_tip actions];
-      v11 = [v10 firstObject];
-      v12 = [v11 text];
-      v13 = [v9 isEqualToString:v12];
+      configuration = [(UIButton *)self->_actionButton configuration];
+      title = [configuration title];
+      actions2 = [(TPSTip *)self->_tip actions];
+      firstObject = [actions2 firstObject];
+      text = [firstObject text];
+      v13 = [title isEqualToString:text];
 
       if (v13)
       {
@@ -802,38 +802,38 @@ LABEL_12:
         [(TPSBaseTipCollectionViewCell *)self setupActionButtonConfiguration];
       }
 
-      v15 = [(UIButton *)self->_actionButton superview];
+      superview = [(UIButton *)self->_actionButton superview];
 
       v16 = &selRef_collectionView_previewForDismissingContextMenuWithConfiguration_;
-      if (!v15)
+      if (!superview)
       {
         [(UIScrollView *)self->_contentScrollView addSubview:self->_actionButton];
-        v17 = [(UIScrollView *)self->_contentScrollView frameLayoutGuide];
-        v18 = [(UIButton *)self->_actionButton centerXAnchor];
-        v19 = [v17 centerXAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        frameLayoutGuide = [(UIScrollView *)self->_contentScrollView frameLayoutGuide];
+        centerXAnchor = [(UIButton *)self->_actionButton centerXAnchor];
+        centerXAnchor2 = [frameLayoutGuide centerXAnchor];
+        v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [v20 setActive:1];
 
-        v21 = [(UIButton *)self->_actionButton widthAnchor];
-        v22 = [v17 widthAnchor];
-        v23 = [v21 constraintLessThanOrEqualToAnchor:v22 multiplier:1.0 constant:0.0];
+        widthAnchor = [(UIButton *)self->_actionButton widthAnchor];
+        widthAnchor2 = [frameLayoutGuide widthAnchor];
+        v23 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 multiplier:1.0 constant:0.0];
         actionButtonWidthConstraint = self->_actionButtonWidthConstraint;
         self->_actionButtonWidthConstraint = v23;
 
         LODWORD(v25) = 1148846080;
         [(UIButton *)self->_actionButton setContentCompressionResistancePriority:1 forAxis:v25];
-        v26 = [(UIButton *)self->_actionButton topAnchor];
-        v27 = [(TPSTipContentLabel *)self->_contentLabel bottomAnchor];
-        v28 = [v26 constraintEqualToAnchor:v27 constant:16.0];
+        topAnchor = [(UIButton *)self->_actionButton topAnchor];
+        bottomAnchor = [(TPSTipContentLabel *)self->_contentLabel bottomAnchor];
+        v28 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:16.0];
         actionButtonTextLabelTopConstraint = self->_actionButtonTextLabelTopConstraint;
         self->_actionButtonTextLabelTopConstraint = v28;
 
         LODWORD(v30) = 1148829696;
         [(NSLayoutConstraint *)self->_actionButtonTextLabelTopConstraint setPriority:v30];
-        v31 = [(UIButton *)self->_actionButton bottomAnchor];
+        bottomAnchor2 = [(UIButton *)self->_actionButton bottomAnchor];
         v16 = &selRef_collectionView_previewForDismissingContextMenuWithConfiguration_;
-        v32 = [(UIScrollView *)self->_contentScrollView bottomAnchor];
-        v33 = [v31 constraintEqualToAnchor:v32 constant:self->_bottomPadding];
+        bottomAnchor3 = [(UIScrollView *)self->_contentScrollView bottomAnchor];
+        v33 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:self->_bottomPadding];
         actionButtonBottomConstraint = self->_actionButtonBottomConstraint;
         self->_actionButtonBottomConstraint = v33;
 
@@ -843,9 +843,9 @@ LABEL_12:
 
       if (self->_contentTextView && !self->_actionButtonTextViewTopConstraint)
       {
-        v36 = [(UIButton *)self->_actionButton topAnchor];
-        v37 = [(TPSTipContentTextView *)self->_contentTextView bottomAnchor];
-        v38 = [v36 constraintEqualToAnchor:v37 constant:16.0];
+        topAnchor2 = [(UIButton *)self->_actionButton topAnchor];
+        bottomAnchor4 = [(TPSTipContentTextView *)self->_contentTextView bottomAnchor];
+        v38 = [topAnchor2 constraintEqualToAnchor:bottomAnchor4 constant:16.0];
         actionButtonTextViewTopConstraint = self->_actionButtonTextViewTopConstraint;
         self->_actionButtonTextViewTopConstraint = v38;
 
@@ -855,8 +855,8 @@ LABEL_12:
 
       [(NSLayoutConstraint *)self->_actionButtonWidthConstraint setActive:1];
       v41 = [(TPSBaseTipCollectionViewCell *)self tip];
-      v42 = [v41 footnoteContent];
-      if (v42)
+      footnoteContent = [v41 footnoteContent];
+      if (footnoteContent)
       {
         v43 = 0;
       }
@@ -890,37 +890,37 @@ LABEL_12:
 
 - (void)actionButtonTapped
 {
-  v3 = [(TPSTip *)self->_tip actions];
-  v5 = [v3 firstObject];
+  actions = [(TPSTip *)self->_tip actions];
+  firstObject = [actions firstObject];
 
-  v4 = [v5 URL];
+  v4 = [firstObject URL];
   [(TPSBaseTipCollectionViewCell *)self handleTipsURL:v4];
 }
 
-- (BOOL)handleTipsURL:(id)a3
+- (BOOL)handleTipsURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v5 = +[TPSLogger default];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = lCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Links tapped inside content %@", &v19, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained tipCollectionViewCell:self linkTappedForURL:v4];
+    [WeakRetained tipCollectionViewCell:self linkTappedForURL:lCopy];
 
-    v7 = [TPSURLActionComponents componentsWithURL:v4];
-    v8 = [v7 actionType];
+    v7 = [TPSURLActionComponents componentsWithURL:lCopy];
+    actionType = [v7 actionType];
     v9 = [v7 URL];
-    v10 = [v7 bundleID];
-    v11 = v10;
-    if (v8 <= 4)
+    bundleID = [v7 bundleID];
+    v11 = bundleID;
+    if (actionType <= 4)
     {
-      if ((v8 - 2) < 3)
+      if ((actionType - 2) < 3)
       {
         if (v9)
         {
@@ -938,9 +938,9 @@ LABEL_12:
         goto LABEL_29;
       }
 
-      if (v8 == 1)
+      if (actionType == 1)
       {
-        if (!v10)
+        if (!bundleID)
         {
           goto LABEL_29;
         }
@@ -953,29 +953,29 @@ LABEL_28:
       }
     }
 
-    else if (v8 > 8)
+    else if (actionType > 8)
     {
-      if (v8 == 9)
+      if (actionType == 9)
       {
         v12 = objc_loadWeakRetained(&self->_delegate);
-        v15 = [v7 bundleID];
-        v16 = [v7 identifier];
-        [v12 tipCollectionViewCell:self showUserGuideWithIdentifier:v15 topicId:v16];
+        bundleID2 = [v7 bundleID];
+        identifier = [v7 identifier];
+        [v12 tipCollectionViewCell:self showUserGuideWithIdentifier:bundleID2 topicId:identifier];
 
         goto LABEL_24;
       }
 
-      if (v8 == 11)
+      if (actionType == 11)
       {
         v12 = objc_loadWeakRetained(&self->_delegate);
-        [v12 tipCollectionViewCell:self showTryItModeForURL:v4];
+        [v12 tipCollectionViewCell:self showTryItModeForURL:lCopy];
         goto LABEL_24;
       }
     }
 
     else
     {
-      if ((v8 - 5) < 2)
+      if ((actionType - 5) < 2)
       {
         if (v9)
         {
@@ -989,7 +989,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      if (v8 == 7)
+      if (actionType == 7)
       {
         if (v9)
         {
@@ -1006,12 +1006,12 @@ LABEL_29:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = lCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Open safari for URL %@", &v19, 0xCu);
     }
 
     v14 = +[UIApplication sharedApplication];
-    [v14 openURL:v4 options:&__NSDictionary0__struct completionHandler:0];
+    [v14 openURL:lCopy options:&__NSDictionary0__struct completionHandler:0];
     goto LABEL_28;
   }
 
@@ -1022,23 +1022,23 @@ LABEL_30:
 
 - (void)setupActionButtonConfiguration
 {
-  v3 = [(TPSTip *)self->_tip actions];
-  v15 = [v3 firstObject];
+  actions = [(TPSTip *)self->_tip actions];
+  firstObject = [actions firstObject];
 
   if ([(TPSTip *)self->_tip isChecklistTip]&& ([(TPSTip *)self->_tip isCompleted]& 1) == 0)
   {
     actionButton = self->_actionButton;
-    v12 = [(TPSTip *)self->_tip actions];
-    v13 = [v12 firstObject];
-    v14 = [v13 text];
-    [(UIButton *)actionButton configureWithTitle:v14];
+    actions2 = [(TPSTip *)self->_tip actions];
+    firstObject2 = [actions2 firstObject];
+    text = [firstObject2 text];
+    [(UIButton *)actionButton configureWithTitle:text];
   }
 
-  else if ([v15 type] == 11)
+  else if ([firstObject type] == 11)
   {
     v4 = self->_actionButton;
-    v5 = [v15 text];
-    [(UIButton *)v4 configureWithTitle:v5];
+    text2 = [firstObject text];
+    [(UIButton *)v4 configureWithTitle:text2];
 
     [(UIButton *)self->_actionButton configureImageWithSymbolName:@"hand.draw.fill" padding:2.0];
     [(UIButton *)self->_actionButton configureMediumFontStyle];
@@ -1054,36 +1054,36 @@ LABEL_30:
     [v6 setBaseBackgroundColor:v8];
 
     v9 = self->_actionButton;
-    v10 = [v15 text];
-    [(UIButton *)v9 configureWithTitle:v10 preferredConfiguration:v6];
+    text3 = [firstObject text];
+    [(UIButton *)v9 configureWithTitle:text3 preferredConfiguration:v6];
   }
 }
 
 - (id)uniqueIdentifierForCurrentTip
 {
   v3 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v4 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  v5 = [(TPSBaseTipCollectionViewCell *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(TPSBaseTipCollectionViewCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v7 = [v4 stringByAppendingString:@"-Dark"];
+    v7 = [identifier stringByAppendingString:@"-Dark"];
 
-    v4 = v7;
+    identifier = v7;
   }
 
-  return v4;
+  return identifier;
 }
 
 - (void)removeContentParser
 {
-  v3 = [(TPSBaseTipCollectionViewCell *)self contentParser];
-  [v3 setDelegate:0];
+  contentParser = [(TPSBaseTipCollectionViewCell *)self contentParser];
+  [contentParser setDelegate:0];
 
-  v4 = [(TPSBaseTipCollectionViewCell *)self contentParser];
-  [v4 cancelAssetFetches];
+  contentParser2 = [(TPSBaseTipCollectionViewCell *)self contentParser];
+  [contentParser2 cancelAssetFetches];
 
   [(TPSBaseTipCollectionViewCell *)self setContentParser:0];
 }
@@ -1092,10 +1092,10 @@ LABEL_30:
 {
   if (self->_hasBodyContent)
   {
-    v3 = [(TPSBaseTipCollectionViewCell *)self appController];
+    appController = [(TPSBaseTipCollectionViewCell *)self appController];
     v4 = [(TPSBaseTipCollectionViewCell *)self tip];
-    v5 = [v4 identifier];
-    v6 = [v3 attributedStringForIdentifier:v5];
+    identifier = [v4 identifier];
+    v6 = [appController attributedStringForIdentifier:identifier];
 
     if (v6)
     {
@@ -1104,13 +1104,13 @@ LABEL_30:
 
     else
     {
-      v7 = [(TPSBaseTipCollectionViewCell *)self uniqueIdentifierForCurrentTip];
+      uniqueIdentifierForCurrentTip = [(TPSBaseTipCollectionViewCell *)self uniqueIdentifierForCurrentTip];
       v8 = [(TPSBaseTipCollectionViewCell *)self tip];
-      v9 = [v8 bodyContent];
+      bodyContent = [v8 bodyContent];
 
-      if (v9)
+      if (bodyContent)
       {
-        if (([v7 isEqualToString:self->_contentTextOperationID] & 1) == 0)
+        if (([uniqueIdentifierForCurrentTip isEqualToString:self->_contentTextOperationID] & 1) == 0)
         {
           contentTextOperation = self->_contentTextOperation;
           if (contentTextOperation)
@@ -1121,11 +1121,11 @@ LABEL_30:
           }
 
           v12 = [(TPSBaseTipCollectionViewCell *)self tip];
-          v13 = [v12 containsLinks];
+          containsLinks = [v12 containsLinks];
 
-          if (v13)
+          if (containsLinks)
           {
-            v14 = [(TPSBaseTipCollectionViewCell *)self contentTextView];
+            contentTextView = [(TPSBaseTipCollectionViewCell *)self contentTextView];
             [(TPSBaseTipCollectionViewCell *)self setNeedsUpdateConstraints];
           }
 
@@ -1133,9 +1133,9 @@ LABEL_30:
           v16 = self->_contentTextOperation;
           self->_contentTextOperation = v15;
 
-          objc_storeStrong(&self->_contentTextOperationID, v7);
+          objc_storeStrong(&self->_contentTextOperationID, uniqueIdentifierForCurrentTip);
           objc_initWeak(&location, self);
-          objc_initWeak(&from, v7);
+          objc_initWeak(&from, uniqueIdentifierForCurrentTip);
           v39[0] = NSFontAttributeName;
           v17 = +[TPSAppearance defaultTextLabelFont];
           v40[0] = v17;
@@ -1148,9 +1148,9 @@ LABEL_30:
           v20 = objc_alloc_init(TPSConstellationContentParser);
           [(TPSBaseTipCollectionViewCell *)self setContentParser:v20];
 
-          v21 = [(TPSBaseTipCollectionViewCell *)self traitCollection];
-          v22 = [(TPSBaseTipCollectionViewCell *)self contentParser];
-          [v22 setTraitCollection:v21];
+          traitCollection = [(TPSBaseTipCollectionViewCell *)self traitCollection];
+          contentParser = [(TPSBaseTipCollectionViewCell *)self contentParser];
+          [contentParser setTraitCollection:traitCollection];
 
           v23 = self->_contentTextOperation;
           v30 = _NSConcreteStackBlock;
@@ -1175,18 +1175,18 @@ LABEL_30:
 
       else
       {
-        v26 = [(TPSTip *)self->_tip bodyText];
+        bodyText = [(TPSTip *)self->_tip bodyText];
 
-        if (v26)
+        if (bodyText)
         {
-          v27 = [(TPSTipContentLabel *)self->_contentLabel tipID];
-          v28 = [v27 isEqualToString:v7];
+          tipID = [(TPSTipContentLabel *)self->_contentLabel tipID];
+          v28 = [tipID isEqualToString:uniqueIdentifierForCurrentTip];
 
           if ((v28 & 1) == 0)
           {
-            [(TPSTipContentLabel *)self->_contentLabel setTipID:v7];
-            v29 = [(TPSTip *)self->_tip bodyText];
-            [(TPSTipContentLabel *)self->_contentLabel setText:v29];
+            [(TPSTipContentLabel *)self->_contentLabel setTipID:uniqueIdentifierForCurrentTip];
+            bodyText2 = [(TPSTip *)self->_tip bodyText];
+            [(TPSTipContentLabel *)self->_contentLabel setText:bodyText2];
           }
 
           if ([(TPSTipContentLabel *)self->_contentLabel isHidden])
@@ -1203,10 +1203,10 @@ LABEL_30:
 
 - (void)updateButtonFonts
 {
-  v3 = [(TPSTip *)self->_tip actions];
-  v4 = [v3 firstObject];
+  actions = [(TPSTip *)self->_tip actions];
+  firstObject = [actions firstObject];
 
-  if ([v4 type] == 11)
+  if ([firstObject type] == 11)
   {
     [(UIButton *)self->_actionButton configureMediumFontStyle];
   }
@@ -1214,16 +1214,16 @@ LABEL_30:
   [(UIButton *)self->_actionButton onConfigurationUpdated];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v7.receiver = self;
   v7.super_class = TPSBaseTipCollectionViewCell;
-  [(TPSBaseTipCollectionViewCell *)&v7 applyLayoutAttributes:v4];
+  [(TPSBaseTipCollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 parallaxOffset];
+    [attributesCopy parallaxOffset];
   }
 
   else
@@ -1259,12 +1259,12 @@ LABEL_30:
     heroAssetView = self->_heroAssetView;
     if (heroAssetView)
     {
-      v6 = [(TPSVideoAssetView *)heroAssetView image];
+      image = [(TPSVideoAssetView *)heroAssetView image];
 
-      if (v6)
+      if (image)
       {
-        v7 = [(TPSVideoAssetView *)self->_heroAssetView image];
-        [v7 size];
+        image2 = [(TPSVideoAssetView *)self->_heroAssetView image];
+        [image2 size];
         v9 = v8;
         v11 = v10;
 
@@ -1341,39 +1341,39 @@ LABEL_30:
   [(TPSBaseTipCollectionViewCell *)self setShouldLogAnimationFinished:1];
   [(TPSVideoAssetView *)self->_heroAssetView replayVideo];
   v10 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v3 = [v10 identifier];
+  identifier = [v10 identifier];
   v4 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v5 = [v4 collectionIdentifiers];
-  v6 = [v5 firstObject];
+  collectionIdentifiers = [v4 collectionIdentifiers];
+  firstObject = [collectionIdentifiers firstObject];
   v7 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v8 = [v7 correlationID];
-  v9 = [TPSAnalyticsEventReplayButtonTapped eventWithTipID:v3 collectionID:v6 correlationID:v8];
+  correlationID = [v7 correlationID];
+  v9 = [TPSAnalyticsEventReplayButtonTapped eventWithTipID:identifier collectionID:firstObject correlationID:correlationID];
   [v9 log];
 }
 
 - (void)loadBodyContentIfNeeded
 {
   v10 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v3 = [v10 bodyContent];
-  if (!v3)
+  bodyContent = [v10 bodyContent];
+  if (!bodyContent)
   {
 LABEL_4:
 
     return;
   }
 
-  v4 = v3;
-  v5 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
-  v6 = [v5 attributedText];
-  if ([v6 length])
+  v4 = bodyContent;
+  contentLabel = [(TPSBaseTipCollectionViewCell *)self contentLabel];
+  attributedText = [contentLabel attributedText];
+  if ([attributedText length])
   {
 
     goto LABEL_4;
   }
 
-  v7 = [(TPSBaseTipCollectionViewCell *)self contentTextView];
-  v8 = [v7 attributedText];
-  v9 = [v8 length];
+  contentTextView = [(TPSBaseTipCollectionViewCell *)self contentTextView];
+  attributedText2 = [contentTextView attributedText];
+  v9 = [attributedText2 length];
 
   if (!v9)
   {
@@ -1402,9 +1402,9 @@ LABEL_4:
   }
 }
 
-- (void)imageAssetViewImageUpdated:(id)a3
+- (void)imageAssetViewImageUpdated:(id)updated
 {
-  if (self->_heroAssetView == a3)
+  if (self->_heroAssetView == updated)
   {
     [(TPSBaseTipCollectionViewCell *)self setHeroImageUpdated:1];
     [(TPSBaseTipCollectionViewCell *)self updateImageReadyStatus];
@@ -1413,58 +1413,58 @@ LABEL_4:
   }
 }
 
-- (BOOL)videoAssetViewCanDisplayAssets:(id)a3
+- (BOOL)videoAssetViewCanDisplayAssets:(id)assets
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained tipCollectionViewCellCanDisplayAssets:v3];
+  LOBYTE(selfCopy) = [WeakRetained tipCollectionViewCellCanDisplayAssets:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)videoAssetViewUpdateAssetLoadingFinished:(id)a3 error:(id)a4
+- (void)videoAssetViewUpdateAssetLoadingFinished:(id)finished error:(id)error
 {
   [(TPSBaseTipCollectionViewCell *)self setVideoLoadingFinished:1];
   [(TPSBaseTipCollectionViewCell *)self updateLoadingStatus];
-  if (!a4)
+  if (!error)
   {
     v9 = [(TPSBaseTipCollectionViewCell *)self tip];
-    v6 = [v9 identifier];
+    identifier = [v9 identifier];
     v7 = +[NSDate now];
     [v7 timeIntervalSinceDate:self->_animationInitialLoadTime];
-    v8 = [TPSAnalyticsEventAnimationLoadTime eventWithTipID:v6 animationLoadTime:?];
+    v8 = [TPSAnalyticsEventAnimationLoadTime eventWithTipID:identifier animationLoadTime:?];
     [v8 log];
   }
 }
 
-- (void)constellationContentParserAttributedStringUpdated:(id)a3
+- (void)constellationContentParserAttributedStringUpdated:(id)updated
 {
-  v10 = a3;
-  v4 = [v10 identifier];
+  updatedCopy = updated;
+  identifier = [updatedCopy identifier];
   v5 = [(TPSBaseTipCollectionViewCell *)self tip];
-  v6 = [v5 identifier];
-  v7 = [v4 isEqualToString:v6];
+  identifier2 = [v5 identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (v7)
   {
-    v8 = [(TPSBaseTipCollectionViewCell *)self appController];
-    v9 = [v10 attributedString];
-    [v8 updateAttributedString:v9 forIdentifier:v4];
+    appController = [(TPSBaseTipCollectionViewCell *)self appController];
+    attributedString = [updatedCopy attributedString];
+    [appController updateAttributedString:attributedString forIdentifier:identifier];
 
     [(TPSTipContentTextView *)self->_contentTextView setTipID:0];
     [(TPSTipContentLabel *)self->_contentLabel setTipID:0];
     [(TPSTipContentTextView *)self->_contentTextView setAttributedText:0];
     [(TPSTipContentLabel *)self->_contentLabel setAttributedText:0];
-    -[TPSBaseTipCollectionViewCell setBodyContentProcessingCount:](self, "setBodyContentProcessingCount:", [v10 numOfActiveRemoteURLSessions]);
+    -[TPSBaseTipCollectionViewCell setBodyContentProcessingCount:](self, "setBodyContentProcessingCount:", [updatedCopy numOfActiveRemoteURLSessions]);
     [(TPSBaseTipCollectionViewCell *)self updateAttributedStringWithCache];
   }
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
   if (self->_isSharedVariant && (-[TPSBaseTipCollectionViewCell appController](self, "appController"), v11 = objc_claimAutoreleasedReturnValue(), -[TPSBaseTipCollectionViewCell tip](self, "tip"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v11 hasLocalVariant:v12], v12, v11, v13))
   {
     v19[0] = _NSConcreteStackBlock;
@@ -1473,13 +1473,13 @@ LABEL_4:
     v19[3] = &unk_1000A2EA8;
     v19[4] = self;
     v14 = [UIAction actionWithHandler:v19];
-    v15 = v10;
+    v15 = actionCopy;
   }
 
   else
   {
-    v14 = v10;
-    if ([v9 contentType])
+    v14 = actionCopy;
+    if ([itemCopy contentType])
     {
       goto LABEL_7;
     }
@@ -1489,7 +1489,7 @@ LABEL_4:
     v17[2] = sub_10000692C;
     v17[3] = &unk_1000A2ED0;
     v17[4] = self;
-    v18 = v9;
+    v18 = itemCopy;
     v14 = [UIAction actionWithHandler:v17];
 
     v15 = v18;
@@ -1500,7 +1500,7 @@ LABEL_7:
   return v14;
 }
 
-- (void)handleTripleTapInternalGesture:(id)a3
+- (void)handleTripleTapInternalGesture:(id)gesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tipCollectionViewCellHandleTripleTapInternalGesture:self];
@@ -1544,7 +1544,7 @@ LABEL_7:
   return result;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
   v3 = type metadata accessor for URL();
   v4 = *(v3 - 8);

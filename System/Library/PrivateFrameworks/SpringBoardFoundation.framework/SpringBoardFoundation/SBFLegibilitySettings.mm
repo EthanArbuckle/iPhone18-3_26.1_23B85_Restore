@@ -1,17 +1,17 @@
 @interface SBFLegibilitySettings
 + (id)settingsControllerModule;
-- (double)appIconGrabberStrengthForStyle:(int64_t)a3;
-- (double)dateStrengthForStyle:(int64_t)a3;
-- (double)folderTitleStrengthForStyle:(int64_t)a3;
-- (double)iconLabelStrengthForStyle:(int64_t)a3;
-- (double)logoutButtonGlyphStrengthForStyle:(int64_t)a3;
-- (double)logoutButtonTextStrengthForStyle:(int64_t)a3;
-- (double)slideToUnlockStrengthForStyle:(int64_t)a3;
-- (double)statusTextStrengthForStyle:(int64_t)a3;
-- (double)timeStrengthForStyle:(int64_t)a3;
-- (double)timerDialStrengthForStyle:(int64_t)a3;
-- (double)timerTextStrengthForStyle:(int64_t)a3;
-- (double)userPictureStrengthForStyle:(int64_t)a3;
+- (double)appIconGrabberStrengthForStyle:(int64_t)style;
+- (double)dateStrengthForStyle:(int64_t)style;
+- (double)folderTitleStrengthForStyle:(int64_t)style;
+- (double)iconLabelStrengthForStyle:(int64_t)style;
+- (double)logoutButtonGlyphStrengthForStyle:(int64_t)style;
+- (double)logoutButtonTextStrengthForStyle:(int64_t)style;
+- (double)slideToUnlockStrengthForStyle:(int64_t)style;
+- (double)statusTextStrengthForStyle:(int64_t)style;
+- (double)timeStrengthForStyle:(int64_t)style;
+- (double)timerDialStrengthForStyle:(int64_t)style;
+- (double)timerTextStrengthForStyle:(int64_t)style;
+- (double)userPictureStrengthForStyle:(int64_t)style;
 - (void)setDefaultValues;
 @end
 
@@ -120,14 +120,14 @@
   return v15;
 }
 
-- (double)slideToUnlockStrengthForStyle:(int64_t)a3
+- (double)slideToUnlockStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self slideToUnlockDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self slideToUnlockLightShadowStrength];
   }
@@ -140,14 +140,14 @@
   return result;
 }
 
-- (double)appIconGrabberStrengthForStyle:(int64_t)a3
+- (double)appIconGrabberStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self appIconGrabberDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self appIconGrabberLightShadowStrength];
   }
@@ -160,14 +160,14 @@
   return result;
 }
 
-- (double)timeStrengthForStyle:(int64_t)a3
+- (double)timeStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self timeDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self timeLightShadowStrength];
   }
@@ -180,14 +180,14 @@
   return result;
 }
 
-- (double)dateStrengthForStyle:(int64_t)a3
+- (double)dateStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self dateDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self dateLightShadowStrength];
   }
@@ -200,14 +200,14 @@
   return result;
 }
 
-- (double)statusTextStrengthForStyle:(int64_t)a3
+- (double)statusTextStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self statusTextDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self statusTextLightShadowStrength];
   }
@@ -220,14 +220,14 @@
   return result;
 }
 
-- (double)iconLabelStrengthForStyle:(int64_t)a3
+- (double)iconLabelStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self iconLabelDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self iconLabelLightShadowStrength];
   }
@@ -240,14 +240,14 @@
   return result;
 }
 
-- (double)folderTitleStrengthForStyle:(int64_t)a3
+- (double)folderTitleStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self folderTitleDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self folderTitleLightShadowStrength];
   }
@@ -260,14 +260,14 @@
   return result;
 }
 
-- (double)timerTextStrengthForStyle:(int64_t)a3
+- (double)timerTextStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self timerTextDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self timerTextLightShadowStrength];
   }
@@ -280,14 +280,14 @@
   return result;
 }
 
-- (double)timerDialStrengthForStyle:(int64_t)a3
+- (double)timerDialStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self timerDialDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self timerDialLightShadowStrength];
   }
@@ -300,14 +300,14 @@
   return result;
 }
 
-- (double)logoutButtonGlyphStrengthForStyle:(int64_t)a3
+- (double)logoutButtonGlyphStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self logoutButtonGlyphDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self logoutButtonGlyphLightShadowStrength];
   }
@@ -320,14 +320,14 @@
   return result;
 }
 
-- (double)logoutButtonTextStrengthForStyle:(int64_t)a3
+- (double)logoutButtonTextStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self logoutButtonTextDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self logoutButtonTextLightShadowStrength];
   }
@@ -340,14 +340,14 @@
   return result;
 }
 
-- (double)userPictureStrengthForStyle:(int64_t)a3
+- (double)userPictureStrengthForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(SBFLegibilitySettings *)self userPictureDarkShadowStrength];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     [(SBFLegibilitySettings *)self userPictureLightShadowStrength];
   }

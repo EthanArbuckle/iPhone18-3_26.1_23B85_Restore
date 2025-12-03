@@ -20,13 +20,13 @@
 - (NSURL)geoIndexResourcesURL;
 - (NSURL)geoPatternsResourcesURL;
 - (SKGSystemListener)init;
-- (SKGSystemListener)initWithPreferredLanguages:(id)a3 locale:(id)a4;
-- (id)pathsForContentType:(id)a3 locale:(id)a4;
+- (SKGSystemListener)initWithPreferredLanguages:(id)languages locale:(id)locale;
+- (id)pathsForContentType:(id)type locale:(id)locale;
 - (unint64_t)currentFirstWeekDay;
 - (void)dealloc;
-- (void)setAutoUpdatingLocale:(BOOL)a3;
+- (void)setAutoUpdatingLocale:(BOOL)locale;
 - (void)updateLocale;
-- (void)updateLocaleWithLocale:(id)a3 preferredLanguages:(id)a4 force:(BOOL)a5;
+- (void)updateLocaleWithLocale:(id)locale preferredLanguages:(id)languages force:(BOOL)force;
 - (void)updateResources;
 - (void)updateTimezone;
 @end
@@ -130,10 +130,10 @@ uint64_t __44__SKGSystemListener_sharedProcessorListener__block_invoke()
   return v6;
 }
 
-- (SKGSystemListener)initWithPreferredLanguages:(id)a3 locale:(id)a4
+- (SKGSystemListener)initWithPreferredLanguages:(id)languages locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  languagesCopy = languages;
+  localeCopy = locale;
   v20.receiver = self;
   v20.super_class = SKGSystemListener;
   v8 = [(SKGSystemListener *)&v20 init];
@@ -141,7 +141,7 @@ uint64_t __44__SKGSystemListener_sharedProcessorListener__block_invoke()
   if (v8)
   {
     v8->_force = 0;
-    [objc_opt_class() loadDefaultsForLocale:v7 force:v8->_force];
+    [objc_opt_class() loadDefaultsForLocale:localeCopy force:v8->_force];
     v9->_locked_hasDiskCapacity = 0;
     v9->_locked_lastDiskFlushDate = 0.0;
     v9->_autoUpdatingLocale = 0;
@@ -171,18 +171,18 @@ uint64_t __44__SKGSystemListener_sharedProcessorListener__block_invoke()
 
     [(SKGSystemListener *)v9 setAutoUpdatingTimezone:1];
     [(SKGSystemListener *)v9 updateTimezone];
-    [(SKGSystemListener *)v9 updateLocaleWithLocale:v7 preferredLanguages:v6 force:1];
+    [(SKGSystemListener *)v9 updateLocaleWithLocale:localeCopy preferredLanguages:languagesCopy force:1];
     [(SKGSystemListener *)v9 hasDiskCapacity];
   }
 
   return v9;
 }
 
-- (void)setAutoUpdatingLocale:(BOOL)a3
+- (void)setAutoUpdatingLocale:(BOOL)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   LocalCenter = CFNotificationCenterGetLocalCenter();
-  if (v3)
+  if (localeCopy)
   {
     if (!self->_autoUpdatingLocale)
     {
@@ -195,7 +195,7 @@ uint64_t __44__SKGSystemListener_sharedProcessorListener__block_invoke()
     CFNotificationCenterRemoveObserver(LocalCenter, self, *MEMORY[0x1E695E6E0], 0);
   }
 
-  self->_autoUpdatingLocale = v3;
+  self->_autoUpdatingLocale = localeCopy;
 }
 
 - (BOOL)hasDiskCapacity
@@ -307,7 +307,7 @@ uint64_t __37__SKGSystemListener_hasUpdatedLocale__block_invoke(uint64_t result)
 
 - (BOOL)hasUpdatedResources
 {
-  v3 = [(SKGSystemListener *)self currentLocale];
+  currentLocale = [(SKGSystemListener *)self currentLocale];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -317,10 +317,10 @@ uint64_t __37__SKGSystemListener_hasUpdatedLocale__block_invoke(uint64_t result)
   block[1] = 3221225472;
   block[2] = __40__SKGSystemListener_hasUpdatedResources__block_invoke;
   block[3] = &unk_1E74B80E8;
-  v8 = v3;
-  v9 = self;
+  v8 = currentLocale;
+  selfCopy = self;
   v10 = &v11;
-  v5 = v3;
+  v5 = currentLocale;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -799,22 +799,22 @@ void __39__SKGSystemListener_enableV2LanguageID__block_invoke(uint64_t a1)
   }
 }
 
-- (id)pathsForContentType:(id)a3 locale:(id)a4
+- (id)pathsForContentType:(id)type locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  typeCopy = type;
+  localeCopy = locale;
+  v8 = localeCopy;
+  if (localeCopy)
   {
-    v9 = v7;
+    currentLocale = localeCopy;
   }
 
   else
   {
-    v9 = [(SKGSystemListener *)self currentLocale];
+    currentLocale = [(SKGSystemListener *)self currentLocale];
   }
 
-  v10 = v9;
+  v10 = currentLocale;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -826,11 +826,11 @@ void __39__SKGSystemListener_enableV2LanguageID__block_invoke(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __48__SKGSystemListener_pathsForContentType_locale___block_invoke;
   v16[3] = &unk_1E74B8110;
-  v17 = v9;
-  v18 = self;
-  v19 = v6;
+  v17 = currentLocale;
+  selfCopy = self;
+  v19 = typeCopy;
   v20 = &v21;
-  v12 = v6;
+  v12 = typeCopy;
   v13 = v10;
   dispatch_sync(queue, v16);
   v14 = v22[5];
@@ -870,43 +870,43 @@ LABEL_6:
   }
 }
 
-- (void)updateLocaleWithLocale:(id)a3 preferredLanguages:(id)a4 force:(BOOL)a5
+- (void)updateLocaleWithLocale:(id)locale preferredLanguages:(id)languages force:(BOOL)force
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  localeCopy = locale;
+  languagesCopy = languages;
+  if (localeCopy)
   {
     if ([(SKGSystemListener *)self force])
     {
       goto LABEL_6;
     }
 
-    if (a5)
+    if (force)
     {
       goto LABEL_6;
     }
 
-    v10 = [(SKGSystemListener *)self currentLocale];
-    if (!v10)
+    currentLocale = [(SKGSystemListener *)self currentLocale];
+    if (!currentLocale)
     {
       goto LABEL_6;
     }
 
-    v11 = v10;
-    v12 = [v8 localeIdentifier];
-    v13 = [v11 localeIdentifier];
-    v14 = [v12 isEqualToString:v13];
+    v11 = currentLocale;
+    localeIdentifier = [localeCopy localeIdentifier];
+    localeIdentifier2 = [v11 localeIdentifier];
+    v14 = [localeIdentifier isEqualToString:localeIdentifier2];
 
     if ((v14 & 1) == 0)
     {
 LABEL_6:
-      v39 = self;
-      v15 = copyNormalizedLanguagesForIdentifiers(v9);
+      selfCopy = self;
+      v15 = copyNormalizedLanguagesForIdentifiers(languagesCopy);
       v16 = objc_alloc(MEMORY[0x1E695DF58]);
-      v40 = v8;
-      v17 = [v8 localeIdentifier];
-      v18 = [v16 initWithLocaleIdentifier:v17];
+      v40 = localeCopy;
+      localeIdentifier3 = [localeCopy localeIdentifier];
+      v18 = [v16 initWithLocaleIdentifier:localeIdentifier3];
 
       v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -950,13 +950,13 @@ LABEL_6:
         while (v24);
       }
 
-      queue = v39->_queue;
+      queue = selfCopy->_queue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __69__SKGSystemListener_updateLocaleWithLocale_preferredLanguages_force___block_invoke;
       block[3] = &unk_1E74B8138;
       v47 = IsCJK;
-      block[4] = v39;
+      block[4] = selfCopy;
       v42 = v38;
       v43 = v37;
       v44 = v19;
@@ -969,7 +969,7 @@ LABEL_6:
       v34 = v38;
       dispatch_sync(queue, block);
 
-      v8 = v40;
+      localeCopy = v40;
     }
   }
 
@@ -1035,7 +1035,7 @@ uint64_t __69__SKGSystemListener_updateLocaleWithLocale_preferredLanguages_force
   if (!v5 || (v6 = v5, [(SKGSystemListener *)self force]))
   {
 LABEL_6:
-    v7 = [MEMORY[0x1E69D3E28] sharedResourcesManager];
+    mEMORY[0x1E69D3E28] = [MEMORY[0x1E69D3E28] sharedResourcesManager];
     locked_currentLocale = self->_locked_currentLocale;
     v82[0] = @"SRResourcesOwner";
     v82[1] = @"forceLoad";
@@ -1043,7 +1043,7 @@ LABEL_6:
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[SKGSystemListener force](self, "force")}];
     v83[1] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:2];
-    v6 = [v7 resourcesForClient:@"SpotlightKnowledge" locale:locked_currentLocale options:v10];
+    v6 = [mEMORY[0x1E69D3E28] resourcesForClient:@"SpotlightKnowledge" locale:locked_currentLocale options:v10];
 
     [(NSMutableDictionary *)self->_locked_currentResources setObject:v6 forKey:v4];
     if (!v6)
@@ -1077,8 +1077,8 @@ LABEL_6:
       }
 
       v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:*(*(&v75 + 1) + 8 * i)];
-      v17 = [v16 lastPathComponent];
-      v18 = [v17 isEqualToString:@"defaults.plist"];
+      lastPathComponent = [v16 lastPathComponent];
+      v18 = [lastPathComponent isEqualToString:@"defaults.plist"];
 
       if (v18)
       {
@@ -1250,9 +1250,9 @@ LABEL_31:
             if (!self->_locked_geoIndexVersion || [v57 compare:?] != -1)
             {
               v59 = [MEMORY[0x1E695DFF8] fileURLWithPath:v54];
-              v60 = [v59 URLByDeletingLastPathComponent];
+              uRLByDeletingLastPathComponent = [v59 URLByDeletingLastPathComponent];
               locked_geoIndexPath = self->_locked_geoIndexPath;
-              self->_locked_geoIndexPath = v60;
+              self->_locked_geoIndexPath = uRLByDeletingLastPathComponent;
 
               objc_storeStrong(&self->_locked_geoIndexVersion, v58);
             }
@@ -1312,8 +1312,8 @@ uint64_t __35__SKGSystemListener_updateTimezone__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_autoUpdatingLocale)
   {

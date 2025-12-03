@@ -1,34 +1,34 @@
 @interface STEventRequest
-+ (id)requestWithUDID:(id)a3 withUserShortName:(id)a4 withMessages:(id)a5;
-- (BOOL)loadEventFromDictionary:(id)a3 error:(id *)a4;
-- (STEventRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)requestWithUDID:(id)d withUserShortName:(id)name withMessages:(id)messages;
+- (BOOL)loadEventFromDictionary:(id)dictionary error:(id *)error;
+- (STEventRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STEventRequest
 
-+ (id)requestWithUDID:(id)a3 withUserShortName:(id)a4 withMessages:(id)a5
++ (id)requestWithUDID:(id)d withUserShortName:(id)name withMessages:(id)messages
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  messagesCopy = messages;
+  nameCopy = name;
+  dCopy = d;
   v10 = objc_opt_new();
   [v10 setRequestType:@"Events"];
-  [v10 setUDID:v9];
+  [v10 setUDID:dCopy];
 
-  [v10 setUserShortName:v8];
-  [v10 setMessages:v7];
+  [v10 setUserShortName:nameCopy];
+  [v10 setMessages:messagesCopy];
 
   return v10;
 }
 
-- (BOOL)loadEventFromDictionary:(id)a3 error:(id *)a4
+- (BOOL)loadEventFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v21 = 0;
-  v7 = [(STEventRequest *)self loadStringFromDictionary:v6 withKey:@"RequestType" isRequired:1 defaultValue:0 error:&v21];
+  v7 = [(STEventRequest *)self loadStringFromDictionary:dictionaryCopy withKey:@"RequestType" isRequired:1 defaultValue:0 error:&v21];
   v8 = v21;
   requestType = self->_requestType;
   self->_requestType = v7;
@@ -36,7 +36,7 @@
   if (!v8)
   {
     v20 = 0;
-    v10 = [(STEventRequest *)self loadStringFromDictionary:v6 withKey:@"UDID" isRequired:0 defaultValue:0 error:&v20];
+    v10 = [(STEventRequest *)self loadStringFromDictionary:dictionaryCopy withKey:@"UDID" isRequired:0 defaultValue:0 error:&v20];
     v8 = v20;
     UDID = self->_UDID;
     self->_UDID = v10;
@@ -44,7 +44,7 @@
     if (!v8)
     {
       v19 = 0;
-      v12 = [(STEventRequest *)self loadStringFromDictionary:v6 withKey:@"UserShortName" isRequired:0 defaultValue:0 error:&v19];
+      v12 = [(STEventRequest *)self loadStringFromDictionary:dictionaryCopy withKey:@"UserShortName" isRequired:0 defaultValue:0 error:&v19];
       v8 = v19;
       userShortName = self->_userShortName;
       self->_userShortName = v12;
@@ -52,7 +52,7 @@
       if (!v8)
       {
         v18 = 0;
-        v14 = [(STEventRequest *)self loadArrayFromDictionary:v6 withKey:@"Messages" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 error:&v18];
+        v14 = [(STEventRequest *)self loadArrayFromDictionary:dictionaryCopy withKey:@"Messages" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 error:&v18];
         v8 = v18;
         messages = self->_messages;
         self->_messages = v14;
@@ -60,10 +60,10 @@
     }
   }
 
-  if (a4 && v8)
+  if (error && v8)
   {
     v16 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 == 0;
@@ -81,16 +81,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STEventRequest *)self serialize];
-  [v4 encodeObject:v5 forKey:@"payload"];
+  coderCopy = coder;
+  serialize = [(STEventRequest *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"payload"];
 }
 
-- (STEventRequest)initWithCoder:(id)a3
+- (STEventRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = STEventRequest;
   v5 = [(STEventRequest *)&v24 init];
@@ -101,7 +101,7 @@
 
   v22 = objc_opt_class();
   v21 = objc_opt_class();
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
@@ -111,7 +111,7 @@
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v20 = v7;
-  v4 = v6;
+  coderCopy = v6;
   v15 = [NSSet setWithObjects:v22, v21, v20, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0];
   v16 = [v6 decodeObjectOfClasses:v15 forKey:@"payload"];
   v23 = 0;
@@ -137,11 +137,11 @@ LABEL_8:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = STEventRequest;
-  v4 = [(STEventRequest *)&v14 copyWithZone:a3];
+  v4 = [(STEventRequest *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_requestType copy];
   v6 = v4[2];
   v4[2] = v5;

@@ -1,20 +1,20 @@
 @interface NavShareETACell
-- (NavShareETACell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NavShareETACell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NavShareETACellDelegate)delegate;
-- (double)heightForWidth:(double)a3;
+- (double)heightForWidth:(double)width;
 - (void)_updateCapabilityContent;
 - (void)_updateContactContent;
 - (void)_updateFonts;
 - (void)_updateSharingContent;
-- (void)_updateSharingRingAnimated:(BOOL)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_updateSharingRingAnimated:(BOOL)animated;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutSubviews;
-- (void)setCapabilityType:(unint64_t)a3 serviceName:(id)a4;
-- (void)setContact:(id)a3;
-- (void)setIsStandaloneSharingSuggestion:(BOOL)a3;
-- (void)setSharingState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setCapabilityType:(unint64_t)type serviceName:(id)name;
+- (void)setContact:(id)contact;
+- (void)setIsStandaloneSharingSuggestion:(BOOL)suggestion;
+- (void)setSharingState:(unint64_t)state animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation NavShareETACell
@@ -26,12 +26,12 @@
   return WeakRetained;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
-    v5 = [(NavShareETACell *)self delegate];
-    [v5 cellDidFinishRingAnimation:self];
+    delegate = [(NavShareETACell *)self delegate];
+    [delegate cellDidFinishRingAnimation:self];
   }
 
   circleLayer = self->_circleLayer;
@@ -39,11 +39,11 @@
   [(CAShapeLayer *)circleLayer setDelegate:0];
 }
 
-- (void)_updateSharingRingAnimated:(BOOL)a3
+- (void)_updateSharingRingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NavShareETACell *)self sharingState];
-  if (v5 - 2 < 2)
+  animatedCopy = animated;
+  sharingState = [(NavShareETACell *)self sharingState];
+  if (sharingState - 2 < 2)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
@@ -58,9 +58,9 @@ LABEL_6:
     return;
   }
 
-  if (v5 != 1)
+  if (sharingState != 1)
   {
-    if (v5)
+    if (sharingState)
     {
       return;
     }
@@ -79,7 +79,7 @@ LABEL_6:
   v9 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
   v12 = v9;
   v10 = 1.5;
-  if (!v3)
+  if (!animatedCopy)
   {
     v10 = 0.0;
   }
@@ -95,14 +95,14 @@ LABEL_6:
   [(CAShapeLayer *)self->_circleLayer addAnimation:v12 forKey:@"drawCircleAnimation"];
 }
 
-- (double)heightForWidth:(double)a3
+- (double)heightForWidth:(double)width
 {
-  v5 = [(UILabel *)self->_smsLabel text];
-  v6 = [v5 length];
+  text = [(UILabel *)self->_smsLabel text];
+  v6 = [text length];
 
   if (v6)
   {
-    [(UILabel *)self->_smsLabel sizeThatFits:a3, 78.0];
+    [(UILabel *)self->_smsLabel sizeThatFits:width, 78.0];
     v8 = v7 + 32.0;
   }
 
@@ -111,11 +111,11 @@ LABEL_6:
     v8 = 16.0;
   }
 
-  v9 = a3 + -76.0 - v8;
+  v9 = width + -76.0 - v8;
   [(UILabel *)self->_titleLabel sizeThatFits:v9, 78.0];
   v11 = v10;
-  v12 = [(UILabel *)self->_subtitleLabel text];
-  if ([v12 length])
+  text2 = [(UILabel *)self->_subtitleLabel text];
+  if ([text2 length])
   {
     [(UILabel *)self->_subtitleLabel sizeThatFits:v9, 78.0];
     v14 = ceil(v13);
@@ -129,18 +129,18 @@ LABEL_6:
   return fmax(ceil(v11) + v14 + 32.0, 78.0);
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v10 = a3;
-  v4 = [(NavShareETACell *)self backgroundConfiguration];
-  v5 = [v4 updatedConfigurationForState:v10];
+  stateCopy = state;
+  backgroundConfiguration = [(NavShareETACell *)self backgroundConfiguration];
+  v5 = [backgroundConfiguration updatedConfigurationForState:stateCopy];
 
-  v6 = [(NavShareETACell *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(NavShareETACell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (([v10 isHighlighted] & 1) != 0 || objc_msgSend(v10, "isSelected"))
+  if (([stateCopy isHighlighted] & 1) != 0 || objc_msgSend(stateCopy, "isSelected"))
   {
-    if (v7 == 2)
+    if (userInterfaceStyle == 2)
     {
       +[UIColor tertiarySystemGroupedBackgroundColor];
     }
@@ -165,8 +165,8 @@ LABEL_6:
 
 - (void)_updateSharingContent
 {
-  v3 = [(NavShareETACell *)self sharingState];
-  if (v3 - 2 < 2)
+  sharingState = [(NavShareETACell *)self sharingState];
+  if (sharingState - 2 < 2)
   {
     [(NSLayoutConstraint *)self->_titleCenterConstraint setActive:0];
     [(NSLayoutConstraint *)self->_textCenterConstraint setActive:1];
@@ -178,7 +178,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (v3 == 1)
+  if (sharingState == 1)
   {
     [(NSLayoutConstraint *)self->_titleCenterConstraint setActive:0];
     [(NSLayoutConstraint *)self->_textCenterConstraint setActive:1];
@@ -190,7 +190,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (v3)
+  if (sharingState)
   {
     return;
   }
@@ -226,8 +226,8 @@ LABEL_8:
     if (capabilityType == 4)
     {
       v6 = MapsAppBundleId;
-      v7 = [(NavShareETACell *)self traitCollection];
-      [v7 displayScale];
+      traitCollection = [(NavShareETACell *)self traitCollection];
+      [traitCollection displayScale];
       v8 = [UIImage _applicationIconImageForBundleIdentifier:v6 format:0 scale:?];
       [(UIImageView *)self->_badgeImageView setImage:v8];
     }
@@ -240,8 +240,8 @@ LABEL_8:
 
   else
   {
-    v4 = [(NavShareETACell *)self traitCollection];
-    [v4 displayScale];
+    traitCollection2 = [(NavShareETACell *)self traitCollection];
+    [traitCollection2 displayScale];
     v5 = [UIImage _applicationIconImageForBundleIdentifier:@"com.apple.MobileSMS" format:0 scale:?];
     [(UIImageView *)self->_badgeImageView setImage:v5];
   }
@@ -265,26 +265,26 @@ LABEL_8:
 
 - (void)_updateContactContent
 {
-  v3 = [(NavShareETACell *)self contact];
-  v4 = v3;
-  if (v3)
+  contact = [(NavShareETACell *)self contact];
+  v4 = contact;
+  if (contact)
   {
-    v5 = [v3 displayName];
-    [(UILabel *)self->_titleLabel setText:v5];
+    displayName = [contact displayName];
+    [(UILabel *)self->_titleLabel setText:displayName];
 
     v6 = +[UIColor labelColor];
     [(UILabel *)self->_titleLabel setTextColor:v6];
 
     objc_initWeak(&location, self);
     v7 = +[MapsUIImageCache sharedCache];
-    v8 = [v4 contact];
+    contact2 = [v4 contact];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100FF2CA0;
     v15[3] = &unk_1016612F0;
     objc_copyWeak(&v17, &location);
     v16 = v4;
-    [v7 getImageForContact:v8 size:v15 completion:54.0];
+    [v7 getImageForContact:contact2 size:v15 completion:54.0];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -310,63 +310,63 @@ LABEL_8:
 
 - (void)_updateFonts
 {
-  v3 = [(NavShareETACell *)self traitCollection];
-  v4 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+  traitCollection = [(NavShareETACell *)self traitCollection];
+  v4 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2 compatibleWithTraitCollection:v4];
   [(UILabel *)self->_titleLabel setFont:v5];
 
-  v6 = [(NavShareETACell *)self traitCollection];
-  v7 = [v6 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+  traitCollection2 = [(NavShareETACell *)self traitCollection];
+  v7 = [traitCollection2 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v7];
   [(UILabel *)self->_subtitleLabel setFont:v8];
 
-  v11 = [(NavShareETACell *)self traitCollection];
-  v9 = [v11 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
+  traitCollection3 = [(NavShareETACell *)self traitCollection];
+  v9 = [traitCollection3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
   v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline compatibleWithTraitCollection:v9];
   [(UILabel *)self->_smsLabel setFont:v10];
 }
 
-- (void)setIsStandaloneSharingSuggestion:(BOOL)a3
+- (void)setIsStandaloneSharingSuggestion:(BOOL)suggestion
 {
-  if (self->_isStandaloneSharingSuggestion != a3)
+  if (self->_isStandaloneSharingSuggestion != suggestion)
   {
-    self->_isStandaloneSharingSuggestion = a3;
+    self->_isStandaloneSharingSuggestion = suggestion;
     [(NavShareETACell *)self _updateSharingContent];
   }
 }
 
-- (void)setSharingState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setSharingState:(unint64_t)state animated:(BOOL)animated
 {
-  if (self->_sharingState != a3)
+  if (self->_sharingState != state)
   {
-    v5 = a4;
-    self->_sharingState = a3;
+    animatedCopy = animated;
+    self->_sharingState = state;
     [(NavShareETACell *)self _updateSharingContent];
 
-    [(NavShareETACell *)self _updateSharingRingAnimated:v5];
+    [(NavShareETACell *)self _updateSharingRingAnimated:animatedCopy];
   }
 }
 
-- (void)setCapabilityType:(unint64_t)a3 serviceName:(id)a4
+- (void)setCapabilityType:(unint64_t)type serviceName:(id)name
 {
-  v12 = a4;
-  if (self->_capabilityType != a3 || (v6 = self->_serviceName, v7 = v12, v8 = v12, v7 | v6) && (v9 = [v6 isEqual:v7], v7, v6, v8 = v12, (v9 & 1) == 0))
+  nameCopy = name;
+  if (self->_capabilityType != type || (v6 = self->_serviceName, v7 = nameCopy, v8 = nameCopy, v7 | v6) && (v9 = [v6 isEqual:v7], v7, v6, v8 = nameCopy, (v9 & 1) == 0))
   {
-    self->_capabilityType = a3;
+    self->_capabilityType = type;
     v10 = sub_100D12CE0();
     serviceName = self->_serviceName;
     self->_serviceName = v10;
 
     [(NavShareETACell *)self _updateCapabilityContent];
-    v8 = v12;
+    v8 = nameCopy;
   }
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v6 = self->_contact;
-  v7 = v5;
+  v7 = contactCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -375,7 +375,7 @@ LABEL_8:
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_contact, a3);
+      objc_storeStrong(&self->_contact, contact);
       [(NavShareETACell *)self _updateContactContent];
       v7 = v9;
     }
@@ -393,28 +393,28 @@ LABEL_8:
   [(CAShapeLayer *)self->_circleLayer setPosition:v4, v5 + -3.0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NavShareETACell;
-  v4 = a3;
-  [(NavShareETACell *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NavShareETACell *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NavShareETACell *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(NavShareETACell *)self _updateFonts];
     [(NavShareETACell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (NavShareETACell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NavShareETACell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v127.receiver = self;
   v127.super_class = NavShareETACell;
-  v4 = [(NavShareETACell *)&v127 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(NavShareETACell *)&v127 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_class();
@@ -424,8 +424,8 @@ LABEL_8:
     v126 = +[UIBackgroundConfiguration listCellConfiguration];
     [v126 setCornerRadius:10.0];
     [(NavShareETACell *)v4 setBackgroundConfiguration:v126];
-    v7 = [(NavShareETACell *)v4 contentView];
-    [v7 setAccessibilityIdentifier:@"NavShareETACellContent"];
+    contentView = [(NavShareETACell *)v4 contentView];
+    [contentView setAccessibilityIdentifier:@"NavShareETACellContent"];
 
     v8 = +[CAShapeLayer layer];
     circleLayer = v4->_circleLayer;
@@ -441,9 +441,9 @@ LABEL_8:
     -[CAShapeLayer setStrokeColor:](v4->_circleLayer, "setStrokeColor:", [v12 CGColor]);
 
     [(CAShapeLayer *)v4->_circleLayer setLineWidth:2.0];
-    v13 = [(NavShareETACell *)v4 contentView];
-    v14 = [v13 layer];
-    [v14 insertSublayer:v4->_circleLayer atIndex:0];
+    contentView2 = [(NavShareETACell *)v4 contentView];
+    layer = [contentView2 layer];
+    [layer insertSublayer:v4->_circleLayer atIndex:0];
 
     [(CAShapeLayer *)v4->_circleLayer setOpacity:0.0];
     [(CAShapeLayer *)v4->_circleLayer setStrokeEnd:0.0];
@@ -452,26 +452,26 @@ LABEL_8:
     v4->_imageBackgroundView = v15;
 
     [(UIView *)v4->_imageBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(UIView *)v4->_imageBackgroundView layer];
-    [v17 setCornerRadius:27.0];
+    layer2 = [(UIView *)v4->_imageBackgroundView layer];
+    [layer2 setCornerRadius:27.0];
 
-    v18 = [(UIView *)v4->_imageBackgroundView layer];
-    [v18 setMasksToBounds:1];
+    layer3 = [(UIView *)v4->_imageBackgroundView layer];
+    [layer3 setMasksToBounds:1];
 
     v19 = +[UIColor tertiarySystemFillColor];
     [(UIView *)v4->_imageBackgroundView setBackgroundColor:v19];
 
     [(UIView *)v4->_imageBackgroundView setAccessibilityIdentifier:@"ImageBackgroundView"];
-    v20 = [(NavShareETACell *)v4 contentView];
-    [v20 addSubview:v4->_imageBackgroundView];
+    contentView3 = [(NavShareETACell *)v4 contentView];
+    [contentView3 addSubview:v4->_imageBackgroundView];
 
     v21 = objc_opt_new();
     leadingImageView = v4->_leadingImageView;
     v4->_leadingImageView = v21;
 
     [(UIImageView *)v4->_leadingImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [(UIImageView *)v4->_leadingImageView layer];
-    [v23 setCornerRadius:27.0];
+    layer4 = [(UIImageView *)v4->_leadingImageView layer];
+    [layer4 setCornerRadius:27.0];
 
     v24 = +[UIColor systemBlueColor];
     [(UIImageView *)v4->_leadingImageView setTintColor:v24];
@@ -486,14 +486,14 @@ LABEL_8:
     [(UIImageView *)v4->_badgeImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v4->_badgeImageView setContentMode:1];
     [(UIImageView *)v4->_badgeImageView setAccessibilityIdentifier:@"BadgeImageView"];
-    v27 = [(NavShareETACell *)v4 contentView];
-    [v27 addSubview:v4->_badgeImageView];
+    contentView4 = [(NavShareETACell *)v4 contentView];
+    [contentView4 addSubview:v4->_badgeImageView];
 
     v28 = objc_opt_new();
     [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v28 setAccessibilityIdentifier:@"TextContainer"];
-    v29 = [(NavShareETACell *)v4 contentView];
-    [v29 addSubview:v28];
+    contentView5 = [(NavShareETACell *)v4 contentView];
+    [contentView5 addSubview:v28];
 
     v30 = objc_opt_new();
     titleLabel = v4->_titleLabel;
@@ -527,120 +527,120 @@ LABEL_8:
     LODWORD(v40) = 1148846080;
     [(UILabel *)v4->_smsLabel setContentHuggingPriority:0 forAxis:v40];
     [(UILabel *)v4->_smsLabel setAccessibilityIdentifier:@"SMSLabel"];
-    v41 = [(NavShareETACell *)v4 contentView];
-    [v41 addSubview:v4->_smsLabel];
+    contentView6 = [(NavShareETACell *)v4 contentView];
+    [contentView6 addSubview:v4->_smsLabel];
 
-    v42 = [v28 centerYAnchor];
-    v43 = [(NavShareETACell *)v4 contentView];
-    v44 = [v43 centerYAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
+    centerYAnchor = [v28 centerYAnchor];
+    contentView7 = [(NavShareETACell *)v4 contentView];
+    centerYAnchor2 = [contentView7 centerYAnchor];
+    v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     textCenterConstraint = v4->_textCenterConstraint;
     v4->_textCenterConstraint = v45;
 
-    v47 = [(UILabel *)v4->_titleLabel centerYAnchor];
-    v48 = [(NavShareETACell *)v4 contentView];
-    v49 = [v48 centerYAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49];
+    centerYAnchor3 = [(UILabel *)v4->_titleLabel centerYAnchor];
+    contentView8 = [(NavShareETACell *)v4 contentView];
+    centerYAnchor4 = [contentView8 centerYAnchor];
+    v50 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     titleCenterConstraint = v4->_titleCenterConstraint;
     v4->_titleCenterConstraint = v50;
 
-    v52 = [v28 trailingAnchor];
-    v53 = [(UILabel *)v4->_smsLabel leadingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:-16.0];
+    trailingAnchor = [v28 trailingAnchor];
+    leadingAnchor = [(UILabel *)v4->_smsLabel leadingAnchor];
+    v54 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-16.0];
     textTrailingConstrant = v4->_textTrailingConstrant;
     v4->_textTrailingConstrant = v54;
 
-    v124 = [(UIView *)v4->_imageBackgroundView leadingAnchor];
-    v125 = [(NavShareETACell *)v4 contentView];
-    v123 = [v125 leadingAnchor];
-    v122 = [v124 constraintEqualToAnchor:v123 constant:12.0];
+    leadingAnchor2 = [(UIView *)v4->_imageBackgroundView leadingAnchor];
+    contentView9 = [(NavShareETACell *)v4 contentView];
+    leadingAnchor3 = [contentView9 leadingAnchor];
+    v122 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:12.0];
     v128[0] = v122;
-    v121 = [(UIView *)v4->_imageBackgroundView widthAnchor];
-    v120 = [v121 constraintEqualToConstant:54.0];
+    widthAnchor = [(UIView *)v4->_imageBackgroundView widthAnchor];
+    v120 = [widthAnchor constraintEqualToConstant:54.0];
     v128[1] = v120;
-    v118 = [(UIView *)v4->_imageBackgroundView centerYAnchor];
-    v119 = [(NavShareETACell *)v4 contentView];
-    v117 = [v119 centerYAnchor];
-    v116 = [v118 constraintEqualToAnchor:v117];
+    centerYAnchor5 = [(UIView *)v4->_imageBackgroundView centerYAnchor];
+    contentView10 = [(NavShareETACell *)v4 contentView];
+    centerYAnchor6 = [contentView10 centerYAnchor];
+    v116 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v128[2] = v116;
-    v115 = [(UIView *)v4->_imageBackgroundView heightAnchor];
-    v114 = [v115 constraintEqualToConstant:54.0];
+    heightAnchor = [(UIView *)v4->_imageBackgroundView heightAnchor];
+    v114 = [heightAnchor constraintEqualToConstant:54.0];
     v128[3] = v114;
-    v113 = [(UIImageView *)v4->_leadingImageView leadingAnchor];
-    v112 = [(UIView *)v4->_imageBackgroundView leadingAnchor];
-    v111 = [v113 constraintEqualToAnchor:v112];
+    leadingAnchor4 = [(UIImageView *)v4->_leadingImageView leadingAnchor];
+    leadingAnchor5 = [(UIView *)v4->_imageBackgroundView leadingAnchor];
+    v111 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v128[4] = v111;
-    v110 = [(UIImageView *)v4->_leadingImageView trailingAnchor];
-    v109 = [(UIView *)v4->_imageBackgroundView trailingAnchor];
-    v108 = [v110 constraintEqualToAnchor:v109];
+    trailingAnchor2 = [(UIImageView *)v4->_leadingImageView trailingAnchor];
+    trailingAnchor3 = [(UIView *)v4->_imageBackgroundView trailingAnchor];
+    v108 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v128[5] = v108;
-    v107 = [(UIImageView *)v4->_leadingImageView topAnchor];
-    v106 = [(UIView *)v4->_imageBackgroundView topAnchor];
-    v105 = [v107 constraintEqualToAnchor:v106];
+    topAnchor = [(UIImageView *)v4->_leadingImageView topAnchor];
+    topAnchor2 = [(UIView *)v4->_imageBackgroundView topAnchor];
+    v105 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v128[6] = v105;
-    v104 = [(UIImageView *)v4->_leadingImageView bottomAnchor];
-    v103 = [(UIView *)v4->_imageBackgroundView bottomAnchor];
-    v102 = [v104 constraintEqualToAnchor:v103];
+    bottomAnchor = [(UIImageView *)v4->_leadingImageView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v4->_imageBackgroundView bottomAnchor];
+    v102 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v128[7] = v102;
-    v101 = [(UIImageView *)v4->_badgeImageView trailingAnchor];
-    v100 = [(UIView *)v4->_imageBackgroundView trailingAnchor];
-    v99 = [v101 constraintEqualToAnchor:v100 constant:2.0];
+    trailingAnchor4 = [(UIImageView *)v4->_badgeImageView trailingAnchor];
+    trailingAnchor5 = [(UIView *)v4->_imageBackgroundView trailingAnchor];
+    v99 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:2.0];
     v128[8] = v99;
-    v98 = [(UIImageView *)v4->_badgeImageView bottomAnchor];
-    v97 = [(UIView *)v4->_imageBackgroundView bottomAnchor];
-    v95 = [v98 constraintEqualToAnchor:v97 constant:2.0];
+    bottomAnchor3 = [(UIImageView *)v4->_badgeImageView bottomAnchor];
+    bottomAnchor4 = [(UIView *)v4->_imageBackgroundView bottomAnchor];
+    v95 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:2.0];
     v128[9] = v95;
-    v94 = [(UIImageView *)v4->_badgeImageView widthAnchor];
-    v93 = [v94 constraintEqualToConstant:20.0];
+    widthAnchor2 = [(UIImageView *)v4->_badgeImageView widthAnchor];
+    v93 = [widthAnchor2 constraintEqualToConstant:20.0];
     v128[10] = v93;
-    v92 = [(UIImageView *)v4->_badgeImageView heightAnchor];
-    v91 = [v92 constraintEqualToConstant:20.0];
+    heightAnchor2 = [(UIImageView *)v4->_badgeImageView heightAnchor];
+    v91 = [heightAnchor2 constraintEqualToConstant:20.0];
     v128[11] = v91;
-    v89 = [(UILabel *)v4->_smsLabel trailingAnchor];
-    v90 = [(NavShareETACell *)v4 contentView];
-    v88 = [v90 trailingAnchor];
-    v86 = [v89 constraintEqualToAnchor:v88 constant:-16.0];
+    trailingAnchor6 = [(UILabel *)v4->_smsLabel trailingAnchor];
+    contentView11 = [(NavShareETACell *)v4 contentView];
+    trailingAnchor7 = [contentView11 trailingAnchor];
+    v86 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-16.0];
     v128[12] = v86;
-    v84 = [(UILabel *)v4->_smsLabel centerYAnchor];
-    v85 = [(NavShareETACell *)v4 contentView];
-    v83 = [v85 centerYAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    centerYAnchor7 = [(UILabel *)v4->_smsLabel centerYAnchor];
+    contentView12 = [(NavShareETACell *)v4 contentView];
+    centerYAnchor8 = [contentView12 centerYAnchor];
+    v82 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v128[13] = v82;
-    v81 = [v28 leadingAnchor];
-    v80 = [(UIView *)v4->_imageBackgroundView trailingAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80 constant:10.0];
+    leadingAnchor6 = [v28 leadingAnchor];
+    trailingAnchor8 = [(UIView *)v4->_imageBackgroundView trailingAnchor];
+    v79 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor8 constant:10.0];
     v128[14] = v79;
     v128[15] = v4->_textTrailingConstrant;
-    v78 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v77 = [v28 leadingAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77];
+    leadingAnchor7 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    leadingAnchor8 = [v28 leadingAnchor];
+    v76 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v128[16] = v76;
-    v75 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v74 = [v28 trailingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    trailingAnchor9 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    trailingAnchor10 = [v28 trailingAnchor];
+    v73 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v128[17] = v73;
-    v72 = [(UILabel *)v4->_titleLabel topAnchor];
-    v71 = [v28 topAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    topAnchor3 = [(UILabel *)v4->_titleLabel topAnchor];
+    topAnchor4 = [v28 topAnchor];
+    v70 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v128[18] = v70;
     v128[19] = v4->_titleCenterConstraint;
-    v96 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
-    v69 = [v28 leadingAnchor];
-    v68 = [v96 constraintEqualToAnchor:v69];
+    leadingAnchor9 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
+    leadingAnchor10 = [v28 leadingAnchor];
+    v68 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v128[20] = v68;
-    v67 = [(UILabel *)v4->_subtitleLabel trailingAnchor];
+    trailingAnchor11 = [(UILabel *)v4->_subtitleLabel trailingAnchor];
     v56 = v28;
     v87 = v28;
-    v57 = [v28 trailingAnchor];
-    v58 = [v67 constraintEqualToAnchor:v57];
+    trailingAnchor12 = [v28 trailingAnchor];
+    v58 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
     v128[21] = v58;
-    v59 = [(UILabel *)v4->_subtitleLabel topAnchor];
-    v60 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    topAnchor5 = [(UILabel *)v4->_subtitleLabel topAnchor];
+    bottomAnchor5 = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v61 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5];
     v128[22] = v61;
-    v62 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
-    v63 = [v56 bottomAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    bottomAnchor6 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
+    bottomAnchor7 = [v56 bottomAnchor];
+    v64 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v128[23] = v64;
     v65 = [NSArray arrayWithObjects:v128 count:24];
     [NSLayoutConstraint activateConstraints:v65];

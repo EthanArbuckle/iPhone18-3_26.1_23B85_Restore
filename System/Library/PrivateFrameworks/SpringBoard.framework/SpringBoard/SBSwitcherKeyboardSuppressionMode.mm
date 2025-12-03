@@ -1,10 +1,10 @@
 @interface SBSwitcherKeyboardSuppressionMode
-+ (id)newSuppressionModeForSwitcherScenesFromAppLayouts:(id)a3;
++ (id)newSuppressionModeForSwitcherScenesFromAppLayouts:(id)layouts;
 + (id)suppressionModeForAllScenes;
 + (id)suppressionModeNone;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithAppLayouts:(id)a3 suppressionType:(int64_t)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithAppLayouts:(id)layouts suppressionType:(int64_t)type;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -35,31 +35,31 @@
   return v3;
 }
 
-- (id)_initWithAppLayouts:(id)a3 suppressionType:(int64_t)a4
+- (id)_initWithAppLayouts:(id)layouts suppressionType:(int64_t)type
 {
-  v7 = a3;
+  layoutsCopy = layouts;
   v11.receiver = self;
   v11.super_class = SBSwitcherKeyboardSuppressionMode;
   v8 = [(SBSwitcherKeyboardSuppressionMode *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appLayouts, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_appLayouts, layouts);
+    v9->_type = type;
   }
 
   return v9;
 }
 
-+ (id)newSuppressionModeForSwitcherScenesFromAppLayouts:(id)a3
++ (id)newSuppressionModeForSwitcherScenesFromAppLayouts:(id)layouts
 {
-  v5 = a3;
-  if (!v5)
+  layoutsCopy = layouts;
+  if (!layoutsCopy)
   {
-    [(SBSwitcherKeyboardSuppressionMode *)a2 newSuppressionModeForSwitcherScenesFromAppLayouts:a1];
+    [(SBSwitcherKeyboardSuppressionMode *)a2 newSuppressionModeForSwitcherScenesFromAppLayouts:self];
   }
 
-  v6 = [[SBSwitcherKeyboardSuppressionMode alloc] _initWithAppLayouts:v5 suppressionType:2];
+  v6 = [[SBSwitcherKeyboardSuppressionMode alloc] _initWithAppLayouts:layoutsCopy suppressionType:2];
 
   return v6;
 }
@@ -82,10 +82,10 @@ void __64__SBSwitcherKeyboardSuppressionMode_suppressionModeForAllScenes__block_
   suppressionModeForAllScenes___allScenesSuppressionMode = v1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -95,11 +95,11 @@ void __64__SBSwitcherKeyboardSuppressionMode_suppressionModeForAllScenes__block_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(SBSwitcherKeyboardSuppressionMode *)v5 type])
       {
-        v7 = [(SBSwitcherKeyboardSuppressionMode *)v5 appLayouts];
+        appLayouts = [(SBSwitcherKeyboardSuppressionMode *)v5 appLayouts];
         v8 = BSEqualSets();
       }
 
@@ -120,10 +120,10 @@ void __64__SBSwitcherKeyboardSuppressionMode_suppressionModeForAllScenes__block_
 
 - (id)succinctDescription
 {
-  v2 = [(SBSwitcherKeyboardSuppressionMode *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSwitcherKeyboardSuppressionMode *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -152,12 +152,12 @@ void __64__SBSwitcherKeyboardSuppressionMode_suppressionModeForAllScenes__block_
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSwitcherKeyboardSuppressionMode *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSwitcherKeyboardSuppressionMode *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 + (void)newSuppressionModeForSwitcherScenesFromAppLayouts:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

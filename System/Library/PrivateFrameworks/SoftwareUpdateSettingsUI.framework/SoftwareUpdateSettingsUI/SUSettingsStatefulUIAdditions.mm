@@ -1,23 +1,23 @@
 @interface SUSettingsStatefulUIAdditions
-+ (double)estimatedTimeRemainingForProgress:(id)a3 valid:(BOOL *)a4;
++ (double)estimatedTimeRemainingForProgress:(id)progress valid:(BOOL *)valid;
 + (id)buildVersionIncludingRSR;
 + (id)currentOSVersion;
 + (id)productVersionWithExtra;
-+ (id)stringWithTimeRemainingForDownload:(id)a3;
++ (id)stringWithTimeRemainingForDownload:(id)download;
 @end
 
 @implementation SUSettingsStatefulUIAdditions
 
 + (id)currentOSVersion
 {
-  v25[2] = a1;
+  v25[2] = self;
   v25[1] = a2;
   v25[0] = 0;
   v24 = 0;
-  v20 = [MEMORY[0x277D75418] currentDevice];
-  v21 = [v20 sf_isiPad];
-  MEMORY[0x277D82BD8](v20);
-  if (v21)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
+  MEMORY[0x277D82BD8](currentDevice);
+  if (sf_isiPad)
   {
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v2 = [v19 localizedStringForKey:@"iPadOS_VERSION" value:&stru_287B79370 table:@"Software Update"];
@@ -37,23 +37,23 @@
     MEMORY[0x277D82BD8](v18);
   }
 
-  v23 = +[SUSettingsStatefulUIAdditions productVersionWithExtra];
-  if (!v23)
+  systemVersion = +[SUSettingsStatefulUIAdditions productVersionWithExtra];
+  if (!systemVersion)
   {
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    v23 = [v17 systemVersion];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    systemVersion = [currentDevice2 systemVersion];
     MEMORY[0x277D82BD8](0);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](currentDevice2);
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v24 validFormatSpecifiers:@"%@" error:0, v23];
+  v6 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v24 validFormatSpecifiers:@"%@" error:0, systemVersion];
   v7 = v25[0];
   v25[0] = v6;
   MEMORY[0x277D82BD8](v7);
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 sf_isInternalInstall];
-  MEMORY[0x277D82BD8](v15);
-  if (v16)
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice3 sf_isInternalInstall];
+  MEMORY[0x277D82BD8](currentDevice3);
+  if (sf_isInternalInstall)
   {
     v22 = +[SUSettingsStatefulUIAdditions buildVersionIncludingRSR];
     v12 = MEMORY[0x277CCACA8];
@@ -69,23 +69,23 @@
   }
 
   v11 = MEMORY[0x277D82BE0](v25[0]);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&systemVersion, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(v25, 0);
 
   return v11;
 }
 
-+ (double)estimatedTimeRemainingForProgress:(id)a3 valid:(BOOL *)a4
++ (double)estimatedTimeRemainingForProgress:(id)progress valid:(BOOL *)valid
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, progress);
   v7 = -1.0;
-  if (a4)
+  if (valid)
   {
-    *a4 = 0;
+    *valid = 0;
   }
 
   if (!location[0])
@@ -107,9 +107,9 @@
 
   if (v7 < 0x93A80uLL && v7 > 0.0)
   {
-    if (a4)
+    if (valid)
     {
-      *a4 = 1;
+      *valid = 1;
     }
 
     v9 = v7;
@@ -125,40 +125,40 @@ LABEL_13:
   return v9;
 }
 
-+ (id)stringWithTimeRemainingForDownload:(id)a3
++ (id)stringWithTimeRemainingForDownload:(id)download
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v39 = [location[0] progress];
+  objc_storeStrong(location, download);
+  progress = [location[0] progress];
   v37 = 0;
   v15 = 0;
-  if (v39)
+  if (progress)
   {
-    v38 = [v39 phase];
+    phase = [progress phase];
     v37 = 1;
     v15 = 0;
-    if ([v38 isEqualToString:*MEMORY[0x277D64A00]])
+    if ([phase isEqualToString:*MEMORY[0x277D64A00]])
     {
-      [v39 percentComplete];
+      [progress percentComplete];
       v15 = v3 >= 1.0;
     }
   }
 
   if (v37)
   {
-    MEMORY[0x277D82BD8](v38);
+    MEMORY[0x277D82BD8](phase);
   }
 
   if (v15)
   {
-    v14 = [location[0] descriptor];
+    descriptor = [location[0] descriptor];
     v35 = 0;
     v33 = 0;
     v31 = 0;
     v29 = 0;
-    if ([v14 isSplatOnly])
+    if ([descriptor isSplatOnly])
     {
       v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v35 = 1;
@@ -197,18 +197,18 @@ LABEL_13:
       MEMORY[0x277D82BD8](v36);
     }
 
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](descriptor);
     v28 = 1;
   }
 
   else
   {
-    v13 = [location[0] descriptor];
+    descriptor2 = [location[0] descriptor];
     v25 = 0;
     v23 = 0;
     v21 = 0;
     v19 = 0;
-    if ([v13 isSplatOnly])
+    if ([descriptor2 isSplatOnly])
     {
       v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v25 = 1;
@@ -247,9 +247,9 @@ LABEL_13:
       MEMORY[0x277D82BD8](v26);
     }
 
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](descriptor2);
     v18 = 0;
-    [SUSettingsStatefulUIAdditions estimatedTimeRemainingForProgress:v39 valid:&v18];
+    [SUSettingsStatefulUIAdditions estimatedTimeRemainingForProgress:progress valid:&v18];
     v17 = v6;
     if (v18)
     {
@@ -276,7 +276,7 @@ LABEL_13:
     objc_storeStrong(&v27, 0);
   }
 
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&progress, 0);
   objc_storeStrong(location, 0);
   v11 = v41;
 
@@ -285,7 +285,7 @@ LABEL_13:
 
 + (id)productVersionWithExtra
 {
-  v7[2] = a1;
+  v7[2] = self;
   v7[1] = a2;
   v7[0] = 0;
   location = _CFCopySupplementalVersionDictionary();
@@ -306,7 +306,7 @@ LABEL_13:
 
 + (id)buildVersionIncludingRSR
 {
-  v7[2] = a1;
+  v7[2] = self;
   v7[1] = a2;
   v7[0] = 0;
   location = _CFCopySupplementalVersionDictionary();

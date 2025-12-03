@@ -1,14 +1,14 @@
 @interface CRLWPiOSStorageSpellChecker
 + (BOOL)canCheckSpelling;
-+ (id)newSpellCheckerForStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5;
++ (id)newSpellCheckerForStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate;
 + (id)p_determineLanguage;
 + (id)p_language;
 + (void)initialize;
-+ (void)p_inputLanguageDidChangeNotification:(id)a3;
-- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)a3 spellingResults:(id)a4 grammarResults:(id)a5 sync:(BOOL)a6;
-- (CRLWPiOSStorageSpellChecker)initWithStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5;
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3;
-- (id)suggestionsForRange:(_NSRange)a3;
++ (void)p_inputLanguageDidChangeNotification:(id)notification;
+- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)range spellingResults:(id)results grammarResults:(id)grammarResults sync:(BOOL)sync;
+- (CRLWPiOSStorageSpellChecker)initWithStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate;
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index;
+- (id)suggestionsForRange:(_NSRange)range;
 - (void)dealloc;
 @end
 
@@ -16,44 +16,44 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = +[NSNotificationCenter defaultCenter];
-    [v3 addObserver:a1 selector:"p_inputLanguageDidChangeNotification:" name:UITextInputCurrentInputModeDidChangeNotification object:0];
+    [v3 addObserver:self selector:"p_inputLanguageDidChangeNotification:" name:UITextInputCurrentInputModeDidChangeNotification object:0];
 
     v8 = +[UIApplication sharedApplication];
-    v4 = [v8 textInputMode];
-    v5 = [v4 primaryLanguage];
-    v6 = [v5 copy];
+    textInputMode = [v8 textInputMode];
+    primaryLanguage = [textInputMode primaryLanguage];
+    v6 = [primaryLanguage copy];
     v7 = qword_101A34850;
     qword_101A34850 = v6;
   }
 }
 
-+ (id)newSpellCheckerForStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5
++ (id)newSpellCheckerForStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CRLWPiOSStorageSpellChecker alloc] initWithStorage:v9 selectionPath:v8 orSearchCanvasDelegate:v7];
+  delegateCopy = delegate;
+  pathCopy = path;
+  storageCopy = storage;
+  v10 = [[CRLWPiOSStorageSpellChecker alloc] initWithStorage:storageCopy selectionPath:pathCopy orSearchCanvasDelegate:delegateCopy];
 
   return v10;
 }
 
-- (id)suggestionsForRange:(_NSRange)a3
+- (id)suggestionsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(CRLWPStorageSpellChecker *)self p_textSourceWithoutDeletionsWithSubRange:?];
   v7 = [v6 charRangeMappedFromStorage:{location, length}];
   if (v8)
   {
     v9 = v7;
     v10 = v8;
-    v11 = [(CRLWPiOSStorageSpellChecker *)self textChecker];
-    v12 = [v6 string];
+    textChecker = [(CRLWPiOSStorageSpellChecker *)self textChecker];
+    string = [v6 string];
     v13 = +[CRLWPiOSStorageSpellChecker p_language];
-    v14 = [v11 guessesForWordRange:v9 inString:v10 language:{v12, v13}];
+    v14 = [textChecker guessesForWordRange:v9 inString:v10 language:{string, v13}];
   }
 
   else
@@ -66,15 +66,15 @@
 
 + (BOOL)canCheckSpelling
 {
-  v2 = [a1 p_language];
-  v3 = v2 != 0;
+  p_language = [self p_language];
+  v3 = p_language != 0;
 
   return v3;
 }
 
-+ (void)p_inputLanguageDidChangeNotification:(id)a3
++ (void)p_inputLanguageDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   byte_101AD5C50 = 0;
   if (!+[NSThread isMainThread])
   {
@@ -106,20 +106,20 @@
   }
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 textInputMode];
-  v10 = [v9 primaryLanguage];
+  textInputMode = [v8 textInputMode];
+  primaryLanguage = [textInputMode primaryLanguage];
 
-  v11 = a1;
-  objc_sync_enter(v11);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = qword_101A34850;
-  objc_storeStrong(&qword_101A34850, v10);
-  objc_sync_exit(v11);
+  objc_storeStrong(&qword_101A34850, primaryLanguage);
+  objc_sync_exit(selfCopy);
 
-  if (!v12 || ([v10 isEqualToString:v12] & 1) == 0)
+  if (!v12 || ([primaryLanguage isEqualToString:v12] & 1) == 0)
   {
-    v13.receiver = v11;
+    v13.receiver = selfCopy;
     v13.super_class = &OBJC_METACLASS___CRLWPiOSStorageSpellChecker;
-    objc_msgSendSuper2(&v13, "p_inputLanguageDidChangeNotification:", v4);
+    objc_msgSendSuper2(&v13, "p_inputLanguageDidChangeNotification:", notificationCopy);
   }
 }
 
@@ -128,10 +128,10 @@
   v3 = +[UITextChecker availableLanguages];
   v4 = [v3 copy];
 
-  v5 = a1;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = qword_101A34850;
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   if (v6 && [v6 length])
   {
@@ -140,12 +140,12 @@
     if ([v4 containsObject:v7])
     {
       v7 = v7;
-      v8 = v7;
+      firstObject = v7;
     }
 
     else if ([v7 length] < 2)
     {
-      v8 = 0;
+      firstObject = 0;
     }
 
     else
@@ -156,13 +156,13 @@
       v19 = 0u;
       v20 = 0u;
       v11 = v4;
-      v8 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
-      if (v8)
+      firstObject = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      if (firstObject)
       {
         v12 = *v18;
         while (2)
         {
-          for (i = 0; i != v8; i = i + 1)
+          for (i = 0; i != firstObject; i = i + 1)
           {
             if (*v18 != v12)
             {
@@ -182,13 +182,13 @@
 
             if (v16)
             {
-              v8 = v14;
+              firstObject = v14;
               goto LABEL_24;
             }
           }
 
-          v8 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
-          if (v8)
+          firstObject = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          if (firstObject)
           {
             continue;
           }
@@ -203,19 +203,19 @@ LABEL_24:
 
   else
   {
-    v8 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v7 = v6;
   }
 
-  return v8;
+  return firstObject;
 }
 
 + (id)p_language
 {
   if ((byte_101AD5C50 & 1) == 0)
   {
-    v2 = [a1 p_determineLanguage];
-    v3 = [v2 copy];
+    p_determineLanguage = [self p_determineLanguage];
+    v3 = [p_determineLanguage copy];
     v4 = qword_101A34858;
     qword_101A34858 = v3;
 
@@ -227,12 +227,12 @@ LABEL_24:
   return v5;
 }
 
-- (CRLWPiOSStorageSpellChecker)initWithStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5
+- (CRLWPiOSStorageSpellChecker)initWithStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  storageCopy = storage;
+  pathCopy = path;
+  delegateCopy = delegate;
+  if (!storageCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -263,18 +263,18 @@ LABEL_24:
 
   v25.receiver = self;
   v25.super_class = CRLWPiOSStorageSpellChecker;
-  v14 = [(CRLWPStorageSpellChecker *)&v25 initWithStorage:v8 selectionPath:v9 orSearchCanvasDelegate:v10];
+  v14 = [(CRLWPStorageSpellChecker *)&v25 initWithStorage:storageCopy selectionPath:pathCopy orSearchCanvasDelegate:delegateCopy];
   v15 = v14;
   v16 = 0;
-  if (v8 && v14)
+  if (storageCopy && v14)
   {
     v17 = objc_alloc_init(UITextChecker);
     textChecker = v15->_textChecker;
     v15->_textChecker = v17;
 
-    v19 = [objc_opt_class() p_language];
+    p_language = [objc_opt_class() p_language];
     language = v15->_language;
-    v15->_language = v19;
+    v15->_language = p_language;
 
     v21 = objc_alloc_init(CRLWPSpellingResults);
     spellingResults = v15->super._spellingResults;
@@ -297,20 +297,20 @@ LABEL_24:
   [(CRLWPStorageSpellChecker *)&v3 dealloc];
 }
 
-- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)a3 spellingResults:(id)a4 grammarResults:(id)a5 sync:(BOOL)a6
+- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)range spellingResults:(id)results grammarResults:(id)grammarResults sync:(BOOL)sync
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  resultsCopy = results;
   if (location != 0x7FFFFFFFFFFFFFFFLL && length)
   {
     v10 = [(CRLWPStorageSpellChecker *)self p_textSourceWithoutDeletionsWithSubRange:location, length];
-    v11 = [v10 string];
+    string = [v10 string];
     v12 = [v10 charRangeMappedFromStorage:{location, length}];
     v14 = v13;
     v15 = &v12[v13];
     v39 = v13;
-    if (&v12[v13] > [v11 length])
+    if (&v12[v13] > [string length])
     {
       LODWORD(v37) = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -341,15 +341,15 @@ LABEL_24:
       v14 = v39;
     }
 
-    if (v15 <= [v11 length])
+    if (v15 <= [string length])
     {
       v19 = +[CRLWPiOSStorageSpellChecker p_language];
       [(CRLWPiOSStorageSpellChecker *)self textChecker];
-      v20 = v38 = v9;
+      v20 = v38 = resultsCopy;
       v21 = v19;
-      v22 = [v20 rangeOfMisspelledWordInString:v11 range:v12 startingAt:v14 wrap:v12 language:{0, v19}];
+      v22 = [v20 rangeOfMisspelledWordInString:string range:v12 startingAt:v14 wrap:v12 language:{0, v19}];
       v23 = v10;
-      v24 = self;
+      selfCopy = self;
       v25 = v22;
       v27 = v26;
 
@@ -358,18 +358,18 @@ LABEL_24:
         v28 = [v23 charRangeMappedToStorage:{v25, v27}];
         v30 = v29;
         [v23 substringWithRange:{v28, v29}];
-        v31 = v11;
+        v31 = string;
         v33 = v32 = v12;
-        [(CRLWPStorageSpellChecker *)v24 i_addMisspelledWord:v33 atIndex:0x7FFFFFFFFFFFFFFFLL ifValidForRange:v28 toResults:v30, v38];
+        [(CRLWPStorageSpellChecker *)selfCopy i_addMisspelledWord:v33 atIndex:0x7FFFFFFFFFFFFFFFLL ifValidForRange:v28 toResults:v30, v38];
 
         v12 = v32;
-        v11 = v31;
-        v34 = [(CRLWPiOSStorageSpellChecker *)v24 textChecker];
-        v25 = [v34 rangeOfMisspelledWordInString:v31 range:v12 startingAt:v39 wrap:&v25[v27] language:{0, v21}];
+        string = v31;
+        textChecker = [(CRLWPiOSStorageSpellChecker *)selfCopy textChecker];
+        v25 = [textChecker rangeOfMisspelledWordInString:v31 range:v12 startingAt:v39 wrap:&v25[v27] language:{0, v21}];
         v27 = v35;
       }
 
-      v9 = v38;
+      resultsCopy = v38;
       v10 = v23;
     }
   }
@@ -377,13 +377,13 @@ LABEL_24:
   return 1;
 }
 
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index
 {
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 textInputMode];
-  v7 = [v6 primaryLanguage];
+  textInputMode = [v5 textInputMode];
+  primaryLanguage = [textInputMode primaryLanguage];
 
-  v8 = [(CRLWPStorageSpellChecker *)self rangeOfNumericalSuffixPrecedingCharIndex:a3 forLocale:v7];
+  v8 = [(CRLWPStorageSpellChecker *)self rangeOfNumericalSuffixPrecedingCharIndex:index forLocale:primaryLanguage];
   v10 = v9;
 
   v11 = v8;

@@ -2,16 +2,16 @@
 + (id)_currentSettings;
 + (id)currentSettings;
 - (ATXHomeScreenLogUnlockSessionManager)init;
-- (ATXHomeScreenLogUnlockSessionManager)initWithCoder:(id)a3;
-- (ATXHomeScreenLogUnlockSessionManager)initWithIsInSession:(BOOL)a3 currentSession:(id)a4 completedSessions:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXHomeScreenLogUnlockSessionManager:(id)a3;
+- (ATXHomeScreenLogUnlockSessionManager)initWithCoder:(id)coder;
+- (ATXHomeScreenLogUnlockSessionManager)initWithIsInSession:(BOOL)session currentSession:(id)currentSession completedSessions:(id)sessions;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXHomeScreenLogUnlockSessionManager:(id)manager;
 - (id)removeCompletedSessions;
 - (id)summarizeCompletedSessions;
-- (int64_t)_eventStatusWithUIEvent:(id)a3;
-- (int64_t)updateSessionStateWithUIEvent:(id)a3;
-- (void)_updateCurrentSessionWithUIEvent:(id)a3 eventStatus:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_eventStatusWithUIEvent:(id)event;
+- (int64_t)updateSessionStateWithUIEvent:(id)event;
+- (void)_updateCurrentSessionWithUIEvent:(id)event eventStatus:(int64_t)status;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHomeScreenLogUnlockSessionManager
@@ -24,31 +24,31 @@
   return v4;
 }
 
-- (ATXHomeScreenLogUnlockSessionManager)initWithIsInSession:(BOOL)a3 currentSession:(id)a4 completedSessions:(id)a5
+- (ATXHomeScreenLogUnlockSessionManager)initWithIsInSession:(BOOL)session currentSession:(id)currentSession completedSessions:(id)sessions
 {
-  v9 = a4;
-  v10 = a5;
+  currentSessionCopy = currentSession;
+  sessionsCopy = sessions;
   v14.receiver = self;
   v14.super_class = ATXHomeScreenLogUnlockSessionManager;
   v11 = [(ATXHomeScreenLogUnlockSessionManager *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_isInSession = a3;
-    objc_storeStrong(&v11->_currentSession, a4);
-    objc_storeStrong(&v12->_completedSessions, a5);
+    v11->_isInSession = session;
+    objc_storeStrong(&v11->_currentSession, currentSession);
+    objc_storeStrong(&v12->_completedSessions, sessions);
   }
 
   return v12;
 }
 
-- (int64_t)_eventStatusWithUIEvent:(id)a3
+- (int64_t)_eventStatusWithUIEvent:(id)event
 {
-  v4 = [a3 homeScreenEvent];
-  v5 = [v4 eventTypeString];
-  if (([v5 isEqualToString:@"Unknown"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"HomeScreenPageShown") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"HomeScreenDisappeared") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackChanged") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"WidgetTapped") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"WidgetLongLook") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"WidgetUserFeedback") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"UserStackConfigChanged") & 1) == 0)
+  homeScreenEvent = [event homeScreenEvent];
+  eventTypeString = [homeScreenEvent eventTypeString];
+  if (([eventTypeString isEqualToString:@"Unknown"] & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"HomeScreenPageShown") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"HomeScreenDisappeared") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackChanged") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetTapped") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetLongLook") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetUserFeedback") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"UserStackConfigChanged") & 1) == 0)
   {
-    if ([v5 isEqualToString:@"DeviceLocked"])
+    if ([eventTypeString isEqualToString:@"DeviceLocked"])
     {
 
       self->_isInSession = 0;
@@ -56,7 +56,7 @@
       goto LABEL_12;
     }
 
-    if ([v5 isEqualToString:@"DeviceUnlocked"])
+    if ([eventTypeString isEqualToString:@"DeviceUnlocked"])
     {
 
       v6 = 1;
@@ -64,9 +64,9 @@
       goto LABEL_12;
     }
 
-    if (([v5 isEqualToString:@"PinnedWidgetAdded"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"PinnedWidgetDeleted") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"SpecialPageAppeared") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"SpecialPageDisappeared") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackShown") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackDisappeared") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackCreated") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackDeleted") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"WidgetAddedToStack") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"WidgetRemovedFromStack") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackVisibilityChanged") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"AppAdded") & 1) == 0)
+    if (([eventTypeString isEqualToString:@"PinnedWidgetAdded"] & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"PinnedWidgetDeleted") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"SpecialPageAppeared") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"SpecialPageDisappeared") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackShown") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackDisappeared") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackCreated") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackDeleted") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetAddedToStack") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetRemovedFromStack") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackVisibilityChanged") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"AppAdded") & 1) == 0)
     {
-      [v5 isEqualToString:@"AppRemoved"];
+      [eventTypeString isEqualToString:@"AppRemoved"];
     }
   }
 
@@ -85,29 +85,29 @@ LABEL_12:
   return v6;
 }
 
-- (void)_updateCurrentSessionWithUIEvent:(id)a3 eventStatus:(int64_t)a4
+- (void)_updateCurrentSessionWithUIEvent:(id)event eventStatus:(int64_t)status
 {
-  v15 = a3;
-  v6 = [v15 homeScreenEvent];
-  v7 = [objc_opt_class() currentSettings];
-  if (a4 <= 1)
+  eventCopy = event;
+  homeScreenEvent = [eventCopy homeScreenEvent];
+  currentSettings = [objc_opt_class() currentSettings];
+  if (status <= 1)
   {
-    if (a4)
+    if (status)
     {
-      if (a4 == 1)
+      if (status == 1)
       {
         v8 = [ATXScreenLogUnlockSession alloc];
-        v9 = [v6 date];
-        v10 = [(ATXScreenLogUnlockSession *)v8 initWithSessionStartDate:v9];
+        date = [homeScreenEvent date];
+        v10 = [(ATXScreenLogUnlockSession *)v8 initWithSessionStartDate:date];
         currentSession = self->_currentSession;
         self->_currentSession = v10;
 
-        -[ATXScreenLogUnlockSession setSpotlightEnabled:](self->_currentSession, "setSpotlightEnabled:", [v7 spotlightEnabled]);
-        -[ATXScreenLogUnlockSession setHasSuggestionsWidget:](self->_currentSession, "setHasSuggestionsWidget:", [v7 hasSuggestionsWidget]);
-        -[ATXScreenLogUnlockSession setHasSuggestionsWidgetInTodayPage:](self->_currentSession, "setHasSuggestionsWidgetInTodayPage:", [v7 hasSuggestionsWidgetToday]);
-        -[ATXScreenLogUnlockSession setHasAppPredictionPanel:](self->_currentSession, "setHasAppPredictionPanel:", [v7 hasAppPredictionPanel]);
-        -[ATXScreenLogUnlockSession setHasAppPredictionPanelInTodayPage:](self->_currentSession, "setHasAppPredictionPanelInTodayPage:", [v7 hasAppPredictionPanelToday]);
-        -[ATXScreenLogUnlockSession setAppLibraryEnabled:](self->_currentSession, "setAppLibraryEnabled:", [v7 appLibraryEnabled]);
+        -[ATXScreenLogUnlockSession setSpotlightEnabled:](self->_currentSession, "setSpotlightEnabled:", [currentSettings spotlightEnabled]);
+        -[ATXScreenLogUnlockSession setHasSuggestionsWidget:](self->_currentSession, "setHasSuggestionsWidget:", [currentSettings hasSuggestionsWidget]);
+        -[ATXScreenLogUnlockSession setHasSuggestionsWidgetInTodayPage:](self->_currentSession, "setHasSuggestionsWidgetInTodayPage:", [currentSettings hasSuggestionsWidgetToday]);
+        -[ATXScreenLogUnlockSession setHasAppPredictionPanel:](self->_currentSession, "setHasAppPredictionPanel:", [currentSettings hasAppPredictionPanel]);
+        -[ATXScreenLogUnlockSession setHasAppPredictionPanelInTodayPage:](self->_currentSession, "setHasAppPredictionPanelInTodayPage:", [currentSettings hasAppPredictionPanelToday]);
+        -[ATXScreenLogUnlockSession setAppLibraryEnabled:](self->_currentSession, "setAppLibraryEnabled:", [currentSettings appLibraryEnabled]);
       }
 
       goto LABEL_13;
@@ -116,7 +116,7 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  switch(a4)
+  switch(status)
   {
     case 2:
       v12 = self->_currentSession;
@@ -125,13 +125,13 @@ LABEL_12:
         break;
       }
 
-      v13 = [v6 date];
-      [(ATXScreenLogUnlockSession *)v12 finalizeWithSessionEndDate:v13];
+      date2 = [homeScreenEvent date];
+      [(ATXScreenLogUnlockSession *)v12 finalizeWithSessionEndDate:date2];
 
       [(NSMutableArray *)self->_completedSessions addObject:self->_currentSession];
       goto LABEL_11;
     case 3:
-      [(ATXScreenLogUnlockSession *)self->_currentSession updateWithUIEventIfPossible:v15];
+      [(ATXScreenLogUnlockSession *)self->_currentSession updateWithUIEventIfPossible:eventCopy];
       break;
     case 4:
 LABEL_11:
@@ -144,11 +144,11 @@ LABEL_11:
 LABEL_13:
 }
 
-- (int64_t)updateSessionStateWithUIEvent:(id)a3
+- (int64_t)updateSessionStateWithUIEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(ATXHomeScreenLogUnlockSessionManager *)self _eventStatusWithUIEvent:v4];
-  [(ATXHomeScreenLogUnlockSessionManager *)self _updateCurrentSessionWithUIEvent:v4 eventStatus:v5];
+  eventCopy = event;
+  v5 = [(ATXHomeScreenLogUnlockSessionManager *)self _eventStatusWithUIEvent:eventCopy];
+  [(ATXHomeScreenLogUnlockSessionManager *)self _updateCurrentSessionWithUIEvent:eventCopy eventStatus:v5];
 
   return v5;
 }
@@ -167,7 +167,7 @@ LABEL_13:
 
 - (id)summarizeCompletedSessions
 {
-  v2 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x277D85DE8];
   v30 = 0u;
   v31 = 0u;
@@ -179,7 +179,7 @@ LABEL_13:
   if (v3)
   {
     v5 = v3;
-    v27 = v2;
+    v27 = selfCopy;
     v6 = 0;
     v7 = 0;
     v8 = 0;
@@ -196,9 +196,9 @@ LABEL_13:
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v12 sessionEndDate];
-        v14 = [v12 sessionStartDate];
-        [v13 timeIntervalSinceDate:v14];
+        sessionEndDate = [v12 sessionEndDate];
+        sessionStartDate = [v12 sessionStartDate];
+        [sessionEndDate timeIntervalSinceDate:sessionStartDate];
         v10 = (v15 + v10);
 
         if ([v12 numEngagementsInAppLibrary])
@@ -235,7 +235,7 @@ LABEL_13:
 
     while (v5);
     v16 = v10;
-    v2 = v27;
+    selfCopy = v27;
   }
 
   else
@@ -247,13 +247,13 @@ LABEL_13:
     v16 = 0.0;
   }
 
-  if ([(NSMutableArray *)v2->_completedSessions count])
+  if ([(NSMutableArray *)selfCopy->_completedSessions count])
   {
-    v4 = v16 / [(NSMutableArray *)v2->_completedSessions count];
+    v4 = v16 / [(NSMutableArray *)selfCopy->_completedSessions count];
   }
 
   v34[0] = @"NumberOfLockUnlockSessions";
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](v2->_completedSessions, "count")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](selfCopy->_completedSessions, "count")}];
   v35[0] = v17;
   v34[1] = @"AverageSessionLength";
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
@@ -292,15 +292,15 @@ LABEL_13:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  [v2 setAppLibraryEnabled:v7];
+  [v2 setAppLibraryEnabled:bOOLValue];
   v8 = objc_opt_new();
   v9 = [v8 loadHomeScreenAndTodayPageConfigurationsWithError:0];
   v20 = 0u;
@@ -323,9 +323,9 @@ LABEL_13:
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 pageIndex];
+        pageIndex = [v15 pageIndex];
         v17 = [MEMORY[0x277CEB568] appPredictionPanelExistsInPage:v15];
-        if (v16 == v13)
+        if (pageIndex == v13)
         {
           if (v17)
           {
@@ -369,7 +369,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __55__ATXHomeScreenLogUnlockSessionManager_currentSettings__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentSettings__pasOnceToken7 != -1)
   {
     dispatch_once(&currentSettings__pasOnceToken7, block);
@@ -390,23 +390,23 @@ void __55__ATXHomeScreenLogUnlockSessionManager_currentSettings__block_invoke(ui
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isInSession = self->_isInSession;
-  v5 = a3;
-  [v5 encodeBool:isInSession forKey:@"isInSession"];
-  [v5 encodeObject:self->_currentSession forKey:@"currentSession"];
-  [v5 encodeObject:self->_completedSessions forKey:@"completedSessions"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isInSession forKey:@"isInSession"];
+  [coderCopy encodeObject:self->_currentSession forKey:@"currentSession"];
+  [coderCopy encodeObject:self->_completedSessions forKey:@"completedSessions"];
 }
 
-- (ATXHomeScreenLogUnlockSessionManager)initWithCoder:(id)a3
+- (ATXHomeScreenLogUnlockSessionManager)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isInSession"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isInSession"];
   v6 = MEMORY[0x277D42620];
   v7 = objc_opt_class();
   v8 = __atxlog_handle_metrics();
-  v9 = [v6 robustDecodeObjectOfClass:v7 forKey:@"currentSession" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXHomeScreenLogUnlockSessionManager" errorCode:-1 logHandle:v8];
+  v9 = [v6 robustDecodeObjectOfClass:v7 forKey:@"currentSession" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXHomeScreenLogUnlockSessionManager" errorCode:-1 logHandle:v8];
 
   v10 = objc_autoreleasePoolPush();
   v11 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -415,50 +415,50 @@ void __55__ATXHomeScreenLogUnlockSessionManager_currentSettings__block_invoke(ui
   objc_autoreleasePoolPop(v10);
   v14 = MEMORY[0x277D42620];
   v15 = __atxlog_handle_metrics();
-  v16 = [v14 robustDecodeObjectOfClasses:v13 forKey:@"completedSessions" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXHomeScreenLogUnlockSessionManager" errorCode:-1 logHandle:v15];
+  v16 = [v14 robustDecodeObjectOfClasses:v13 forKey:@"completedSessions" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXHomeScreenLogUnlockSessionManager" errorCode:-1 logHandle:v15];
 
   if (v16)
   {
     self = [(ATXHomeScreenLogUnlockSessionManager *)self initWithIsInSession:v5 currentSession:v9 completedSessions:v16];
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenLogUnlockSessionManager *)self isEqualToATXHomeScreenLogUnlockSessionManager:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenLogUnlockSessionManager *)self isEqualToATXHomeScreenLogUnlockSessionManager:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXHomeScreenLogUnlockSessionManager:(id)a3
+- (BOOL)isEqualToATXHomeScreenLogUnlockSessionManager:(id)manager
 {
-  v4 = a3;
-  if (self->_isInSession != *(v4 + 8))
+  managerCopy = manager;
+  if (self->_isInSession != *(managerCopy + 8))
   {
     goto LABEL_4;
   }
 
   v5 = self->_currentSession;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == managerCopy[2])
   {
   }
 
@@ -476,7 +476,7 @@ LABEL_4:
 
   v9 = self->_completedSessions;
   v10 = v9;
-  if (v9 == v4[3])
+  if (v9 == managerCopy[3])
   {
     v8 = 1;
   }

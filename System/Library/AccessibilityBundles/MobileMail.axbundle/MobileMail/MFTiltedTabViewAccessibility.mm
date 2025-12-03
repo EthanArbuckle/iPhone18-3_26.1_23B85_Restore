@@ -1,5 +1,5 @@
 @interface MFTiltedTabViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,15 +7,15 @@
 
 @implementation MFTiltedTabViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFTiltedTabView" hasInstanceVariable:@"_visibleItems" withType:"NSMutableArray"];
-  [v3 validateClass:@"_MFTiltedTabItemView"];
-  [v3 validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"borrowedContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFTiltedTabView" hasInstanceVariable:@"_presented" withType:"B"];
-  [v3 validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DockContainerViewController" hasInstanceMethod:@"popToRootViewControllerAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFTiltedTabView" hasInstanceVariable:@"_visibleItems" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"_MFTiltedTabItemView"];
+  [validationsCopy validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"borrowedContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFTiltedTabView" hasInstanceVariable:@"_presented" withType:"B"];
+  [validationsCopy validateClass:@"_MFTiltedTabItemView" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DockContainerViewController" hasInstanceMethod:@"popToRootViewControllerAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -115,15 +115,15 @@ void __74__MFTiltedTabViewAccessibility__accessibilityLoadAccessibilityInformati
   {
     v5.receiver = self;
     v5.super_class = MFTiltedTabViewAccessibility;
-    v3 = [(MFTiltedTabViewAccessibility *)&v5 accessibilityElements];
+    accessibilityElements = [(MFTiltedTabViewAccessibility *)&v5 accessibilityElements];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityElements = 0;
   }
 
-  return v3;
+  return accessibilityElements;
 }
 
 - (CGRect)accessibilityFrame

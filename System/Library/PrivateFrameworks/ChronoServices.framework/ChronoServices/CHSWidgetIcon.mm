@@ -3,10 +3,10 @@
 - (CGSize)pixelSize;
 - (CGSize)size;
 - (CHSWidgetIcon)init;
-- (CHSWidgetIcon)initWithImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5 pixelSize:(CGSize)a6;
+- (CHSWidgetIcon)initWithImage:(CGImage *)image size:(CGSize)size scale:(double)scale pixelSize:(CGSize)pixelSize;
 - (double)scale;
-- (void)setImage:(CGImage *)a3;
-- (void)setScale:(double)a3;
+- (void)setImage:(CGImage *)image;
+- (void)setScale:(double)scale;
 @end
 
 @implementation CHSWidgetIcon
@@ -26,11 +26,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   v5 = OBJC_IVAR___CHSWidgetIcon_scale;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = scale;
 }
 
 - (CGSize)pixelSize
@@ -48,24 +48,24 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setImage:(CGImage *)a3
+- (void)setImage:(CGImage *)image
 {
   v5 = OBJC_IVAR___CHSWidgetIcon_image;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = image;
+  imageCopy = image;
 }
 
-- (CHSWidgetIcon)initWithImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5 pixelSize:(CGSize)a6
+- (CHSWidgetIcon)initWithImage:(CGImage *)image size:(CGSize)size scale:(double)scale pixelSize:(CGSize)pixelSize
 {
-  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_image) = a3;
-  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_size) = a4;
-  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_scale) = a5;
-  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_pixelSize) = a6;
+  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_image) = image;
+  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_size) = size;
+  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_scale) = scale;
+  *(&self->super.isa + OBJC_IVAR___CHSWidgetIcon_pixelSize) = pixelSize;
   v8.receiver = self;
   v8.super_class = CHSWidgetIcon;
-  v6 = a3;
+  imageCopy = image;
   return [(CHSWidgetIcon *)&v8 init];
 }
 

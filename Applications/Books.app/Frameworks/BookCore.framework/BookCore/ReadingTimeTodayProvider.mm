@@ -1,20 +1,20 @@
 @interface ReadingTimeTodayProvider
 - (_TtC8BookCore24ReadingTimeTodayProvider)init;
-- (id)dynamicProgressForKind:(id)a3 instance:(id)a4 parameters:(id)a5;
+- (id)dynamicProgressForKind:(id)kind instance:(id)instance parameters:(id)parameters;
 @end
 
 @implementation ReadingTimeTodayProvider
 
-- (id)dynamicProgressForKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (id)dynamicProgressForKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  if (a4)
+  if (instance)
   {
     swift_unknownObjectRetain();
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1EF444();
     swift_unknownObjectRelease();
-    if (a5)
+    if (parameters)
     {
 LABEL_3:
       sub_1EF444();
@@ -28,8 +28,8 @@ LABEL_3:
   {
     memset(v12, 0, sizeof(v12));
     swift_unknownObjectRetain();
-    v8 = self;
-    if (a5)
+    selfCopy2 = self;
+    if (parameters)
     {
       goto LABEL_3;
     }

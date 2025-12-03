@@ -1,38 +1,38 @@
 @interface ApplyHairnetModel
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)apply:(id)a3 sdof:(id)a4 mask:(id)a5 alpha:(id)a6 chromaWeight:(float)a7 chromaBlurSigma:(float)a8 model:(id)a9;
-+ (int)formatForInputAtIndex:(int)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)apply:(id)apply sdof:(id)sdof mask:(id)mask alpha:(id)alpha chromaWeight:(float)weight chromaBlurSigma:(float)sigma model:(id)model;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation ApplyHairnetModel
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = objc_msgSend_objectForKeyedSubscript_(v9, v11, @"fullWidth");
+  inputsCopy = inputs;
+  argumentsCopy = arguments;
+  outputCopy = output;
+  v12 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v11, @"fullWidth");
   v15 = objc_msgSend_unsignedLongValue(v12, v13, v14);
 
-  v17 = objc_msgSend_objectForKeyedSubscript_(v9, v16, @"fullHeight");
+  v17 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v16, @"fullHeight");
   v20 = objc_msgSend_unsignedLongValue(v17, v18, v19);
 
-  v22 = objc_msgSend_objectForKeyedSubscript_(v9, v21, @"tileSize");
+  v22 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v21, @"tileSize");
   v25 = objc_msgSend_unsignedLongValue(v22, v23, v24);
 
-  v27 = objc_msgSend_objectForKeyedSubscript_(v9, v26, @"tileOverlap");
+  v27 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v26, @"tileOverlap");
   v30 = objc_msgSend_unsignedLongValue(v27, v28, v29);
 
-  v32 = objc_msgSend_objectForKeyedSubscript_(v9, v31, @"chromaWeight");
+  v32 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v31, @"chromaWeight");
   objc_msgSend_floatValue(v32, v33, v34);
   v495 = v35;
 
-  v37 = objc_msgSend_objectForKeyedSubscript_(v9, v36, @"chromaBlurSigma");
+  v37 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v36, @"chromaBlurSigma");
   objc_msgSend_floatValue(v37, v38, v39);
   v41 = v40;
 
-  v42 = v10;
+  v42 = outputCopy;
   v45 = objc_msgSend_metalTexture(v42, v43, v44);
   if (!v45)
   {
@@ -47,13 +47,13 @@
   v524 = v25 - 1 + v20;
   v484 = v524 / v25;
 
-  v474 = v9;
-  v494 = objc_msgSend_objectForKeyedSubscript_(v9, v48, @"model");
-  v50 = objc_msgSend_objectAtIndexedSubscript_(v8, v49, 0);
-  v52 = objc_msgSend_objectAtIndexedSubscript_(v8, v51, 1);
-  v54 = objc_msgSend_objectAtIndexedSubscript_(v8, v53, 2);
-  v475 = v8;
-  v56 = objc_msgSend_objectAtIndexedSubscript_(v8, v55, 3);
+  v474 = argumentsCopy;
+  v494 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v48, @"model");
+  v50 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v49, 0);
+  v52 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v51, 1);
+  v54 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v53, 2);
+  v475 = inputsCopy;
+  v56 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v55, 3);
   v473 = v50;
   v514 = sub_2956AA43C(v50);
   v472 = v52;
@@ -745,16 +745,16 @@ LABEL_7:
   return 1;
 }
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
   v3 = MEMORY[0x29EDB91E8];
   v4 = MEMORY[0x29EDB9208];
-  if (a3 >= 2)
+  if (index >= 2)
   {
     v4 = MEMORY[0x29EDB9218];
   }
 
-  if (a3 != 2)
+  if (index != 2)
   {
     v3 = v4;
   }
@@ -762,19 +762,19 @@ LABEL_7:
   return *v3;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v5 = a4;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"fullWidth");
+  argumentsCopy = arguments;
+  v7 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v6, @"fullWidth");
   v10 = objc_msgSend_unsignedLongValue(v7, v8, v9);
 
-  v12 = objc_msgSend_objectForKeyedSubscript_(v5, v11, @"fullHeight");
+  v12 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v11, @"fullHeight");
   v15 = objc_msgSend_unsignedLongValue(v12, v13, v14);
 
-  v17 = objc_msgSend_objectForKeyedSubscript_(v5, v16, @"tileSize");
+  v17 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v16, @"tileSize");
   v20 = objc_msgSend_unsignedLongValue(v17, v18, v19);
 
-  v22 = objc_msgSend_objectForKeyedSubscript_(v5, v21, @"tileOverlap");
+  v22 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v21, @"tileOverlap");
   v25 = objc_msgSend_unsignedLongValue(v22, v23, v24);
 
   v26 = v20 - 1;
@@ -803,7 +803,7 @@ LABEL_7:
           v49.origin.y = (v32 * v20) - v35;
           v49.size.width = v36;
           v49.size.height = v36;
-          if (CGRectIntersectsRect(v49, a5))
+          if (CGRectIntersectsRect(v49, rect))
           {
             v50.origin.x = x;
             v50.origin.y = y;
@@ -858,14 +858,14 @@ LABEL_7:
   return result;
 }
 
-+ (id)apply:(id)a3 sdof:(id)a4 mask:(id)a5 alpha:(id)a6 chromaWeight:(float)a7 chromaBlurSigma:(float)a8 model:(id)a9
++ (id)apply:(id)apply sdof:(id)sdof mask:(id)mask alpha:(id)alpha chromaWeight:(float)weight chromaBlurSigma:(float)sigma model:(id)model
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = v18;
+  applyCopy = apply;
+  sdofCopy = sdof;
+  maskCopy = mask;
+  alphaCopy = alpha;
+  modelCopy = model;
+  v21 = maskCopy;
   if (!v21)
   {
     sub_2956CC348();
@@ -879,8 +879,8 @@ LABEL_7:
   }
 
   v27 = v24;
-  v91 = a1;
-  v92 = v19;
+  selfCopy = self;
+  v92 = alphaCopy;
   objc_msgSend_extent(v23, v25, v26);
   v29 = v28;
   v31 = v30;
@@ -901,12 +901,12 @@ LABEL_7:
 
   v95[0] = @"fullWidth";
   v44 = MEMORY[0x29EDBA070];
-  objc_msgSend_extent(v16, v45, v46);
+  objc_msgSend_extent(applyCopy, v45, v46);
   v50 = objc_msgSend_numberWithDouble_(v44, v47, v48, v49);
   v96[0] = v50;
   v95[1] = @"fullHeight";
   v51 = MEMORY[0x29EDBA070];
-  objc_msgSend_extent(v16, v52, v53);
+  objc_msgSend_extent(applyCopy, v52, v53);
   v57 = objc_msgSend_numberWithDouble_(v51, v54, v55, v56);
   v96[1] = v57;
   v95[2] = @"tileSize";
@@ -916,33 +916,33 @@ LABEL_7:
   v61 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x29EDBA070], v60, 24);
   v96[3] = v61;
   v95[4] = @"chromaWeight";
-  *&v62 = a7;
+  *&v62 = weight;
   objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v63, v64, v62);
-  v65 = v20;
-  v90 = v20;
+  v65 = modelCopy;
+  v90 = modelCopy;
   v66 = v43;
-  v68 = v67 = v17;
+  v68 = v67 = sdofCopy;
   v96[4] = v68;
   v95[5] = @"chromaBlurSigma";
-  *&v69 = a8;
+  *&v69 = sigma;
   v72 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v70, v71, v69);
   v95[6] = @"model";
   v96[5] = v72;
   v96[6] = v65;
   v74 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v73, v96, v95, 7);
 
-  objc_msgSend_extent(v16, v75, v76);
+  objc_msgSend_extent(applyCopy, v75, v76);
   v78 = v77;
   v80 = v79;
   v82 = v81;
   v84 = v83;
-  v94[0] = v16;
+  v94[0] = applyCopy;
   v94[1] = v67;
   v94[2] = v66;
   v94[3] = v92;
   v86 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v85, v94, 4);
   v93 = 0;
-  v88 = objc_msgSend_applyWithExtent_inputs_arguments_error_(v91, v87, v86, v74, &v93, v78, v80, v82, v84);
+  v88 = objc_msgSend_applyWithExtent_inputs_arguments_error_(selfCopy, v87, v86, v74, &v93, v78, v80, v82, v84);
 
   return v88;
 }

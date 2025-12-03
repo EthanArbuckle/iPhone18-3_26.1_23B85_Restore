@@ -1,14 +1,14 @@
 @interface BLSDesiredFidelityResponse
-- (BLSDesiredFidelityResponse)initWithDesiredFidelity:(int64_t)a3;
+- (BLSDesiredFidelityResponse)initWithDesiredFidelity:(int64_t)fidelity;
 - (int64_t)desiredFidelity;
 @end
 
 @implementation BLSDesiredFidelityResponse
 
-- (BLSDesiredFidelityResponse)initWithDesiredFidelity:(int64_t)a3
+- (BLSDesiredFidelityResponse)initWithDesiredFidelity:(int64_t)fidelity
 {
   v5 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:fidelity];
   [v5 setObject:v6 forSetting:1];
 
   v9.receiver = self;
@@ -20,11 +20,11 @@
 
 - (int64_t)desiredFidelity
 {
-  v2 = [(BLSDesiredFidelityResponse *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(BLSDesiredFidelityResponse *)self info];
+  v3 = [info objectForSetting:1];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 @end

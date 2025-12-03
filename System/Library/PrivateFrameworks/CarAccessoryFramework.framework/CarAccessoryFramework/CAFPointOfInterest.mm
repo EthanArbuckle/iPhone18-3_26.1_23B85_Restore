@@ -1,22 +1,22 @@
 @interface CAFPointOfInterest
-- (CAFPointOfInterest)initWithDictionary:(id)a3;
-- (CAFPointOfInterest)initWithEntryPoints:(id)a3 location:(id)a4 locationThreshold:(unsigned int)a5 userVisibleAddress:(id)a6 userVisibleName:(id)a7;
+- (CAFPointOfInterest)initWithDictionary:(id)dictionary;
+- (CAFPointOfInterest)initWithEntryPoints:(id)points location:(id)location locationThreshold:(unsigned int)threshold userVisibleAddress:(id)address userVisibleName:(id)name;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFPointOfInterest
 
-- (CAFPointOfInterest)initWithDictionary:(id)a3
+- (CAFPointOfInterest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = CAFPointOfInterest;
   v5 = [(CAFPointOfInterest *)&v21 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"entryPoints"];
+    v6 = [dictionaryCopy objectForKey:@"entryPoints"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_entryPoints = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"location"];
+    v9 = [dictionaryCopy objectForKey:@"location"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
     v5->_location = v10;
 
     objc_opt_class();
-    v12 = [v4 objectForKey:@"locationThreshold"];
+    v12 = [dictionaryCopy objectForKey:@"locationThreshold"];
     if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v13 = v12;
@@ -59,7 +59,7 @@
 
     v5->_locationThreshold = [v13 unsignedIntValue];
     objc_opt_class();
-    v14 = [v4 objectForKey:@"userVisibleAddress"];
+    v14 = [dictionaryCopy objectForKey:@"userVisibleAddress"];
     if (v14 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v15 = v14;
@@ -74,7 +74,7 @@
     v5->_userVisibleAddress = v15;
 
     objc_opt_class();
-    v17 = [v4 objectForKey:@"userVisibleName"];
+    v17 = [dictionaryCopy objectForKey:@"userVisibleName"];
     if (v17 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v18 = v17;
@@ -92,23 +92,23 @@
   return v5;
 }
 
-- (CAFPointOfInterest)initWithEntryPoints:(id)a3 location:(id)a4 locationThreshold:(unsigned int)a5 userVisibleAddress:(id)a6 userVisibleName:(id)a7
+- (CAFPointOfInterest)initWithEntryPoints:(id)points location:(id)location locationThreshold:(unsigned int)threshold userVisibleAddress:(id)address userVisibleName:(id)name
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  pointsCopy = points;
+  locationCopy = location;
+  addressCopy = address;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = CAFPointOfInterest;
   v17 = [(CAFPointOfInterest *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_entryPoints, a3);
-    objc_storeStrong(&v18->_location, a4);
-    v18->_locationThreshold = a5;
-    objc_storeStrong(&v18->_userVisibleAddress, a6);
-    objc_storeStrong(&v18->_userVisibleName, a7);
+    objc_storeStrong(&v17->_entryPoints, points);
+    objc_storeStrong(&v18->_location, location);
+    v18->_locationThreshold = threshold;
+    objc_storeStrong(&v18->_userVisibleAddress, address);
+    objc_storeStrong(&v18->_userVisibleName, name);
   }
 
   return v18;
@@ -118,57 +118,57 @@
 {
   v19[5] = *MEMORY[0x277D85DE8];
   v18[0] = @"entryPoints";
-  v17 = [(CAFPointOfInterest *)self entryPoints];
-  v3 = [v17 arrayRepresentation];
-  v4 = v3;
-  if (!v3)
+  entryPoints = [(CAFPointOfInterest *)self entryPoints];
+  arrayRepresentation = [entryPoints arrayRepresentation];
+  v4 = arrayRepresentation;
+  if (!arrayRepresentation)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    arrayRepresentation = [MEMORY[0x277CBEB68] null];
   }
 
-  v16 = v3;
-  v19[0] = v3;
+  v16 = arrayRepresentation;
+  v19[0] = arrayRepresentation;
   v18[1] = @"location";
-  v5 = [(CAFPointOfInterest *)self location];
-  v6 = [v5 dictionaryRepresentation];
-  v7 = v6;
-  if (!v6)
+  location = [(CAFPointOfInterest *)self location];
+  dictionaryRepresentation = [location dictionaryRepresentation];
+  null = dictionaryRepresentation;
+  if (!dictionaryRepresentation)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v19[1] = v7;
+  v19[1] = null;
   v18[2] = @"locationThreshold";
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[CAFPointOfInterest locationThreshold](self, "locationThreshold")}];
   v19[2] = v8;
   v18[3] = @"userVisibleAddress";
-  v9 = [(CAFPointOfInterest *)self userVisibleAddress];
-  v10 = v9;
-  if (!v9)
+  userVisibleAddress = [(CAFPointOfInterest *)self userVisibleAddress];
+  null2 = userVisibleAddress;
+  if (!userVisibleAddress)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v19[3] = v10;
+  v19[3] = null2;
   v18[4] = @"userVisibleName";
-  v11 = [(CAFPointOfInterest *)self userVisibleName];
-  v12 = v11;
-  if (!v11)
+  userVisibleName = [(CAFPointOfInterest *)self userVisibleName];
+  null3 = userVisibleName;
+  if (!userVisibleName)
   {
-    v12 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v19[4] = v12;
+  v19[4] = null3;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
-  if (!v11)
+  if (!userVisibleName)
   {
   }
 
-  if (!v9)
+  if (!userVisibleAddress)
   {
   }
 
-  if (!v6)
+  if (!dictionaryRepresentation)
   {
   }
 
@@ -185,12 +185,12 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFPointOfInterest *)self entryPoints];
-  v6 = [(CAFPointOfInterest *)self location];
-  v7 = [(CAFPointOfInterest *)self locationThreshold];
-  v8 = [(CAFPointOfInterest *)self userVisibleAddress];
-  v9 = [(CAFPointOfInterest *)self userVisibleName];
-  v10 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %u, %@: %@, %@: %@ }>", v4, self, @"entryPoints", v5, @"location", v6, @"locationThreshold", v7, @"userVisibleAddress", v8, @"userVisibleName", v9];
+  entryPoints = [(CAFPointOfInterest *)self entryPoints];
+  location = [(CAFPointOfInterest *)self location];
+  locationThreshold = [(CAFPointOfInterest *)self locationThreshold];
+  userVisibleAddress = [(CAFPointOfInterest *)self userVisibleAddress];
+  userVisibleName = [(CAFPointOfInterest *)self userVisibleName];
+  v10 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %u, %@: %@, %@: %@ }>", v4, self, @"entryPoints", entryPoints, @"location", location, @"locationThreshold", locationThreshold, @"userVisibleAddress", userVisibleAddress, @"userVisibleName", userVisibleName];
 
   return v10;
 }

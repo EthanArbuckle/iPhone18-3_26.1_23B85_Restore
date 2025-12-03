@@ -206,7 +206,7 @@
   else
   {
     v20 = 0;
-    v9 = [a1 _br_createNSFileProviderManagerForDataSeparated:IsDataSeparated withDomainID:v4 didMatchedDomain:&v20];
+    v9 = [self _br_createNSFileProviderManagerForDataSeparated:IsDataSeparated withDomainID:v4 didMatchedDomain:&v20];
     v12 = brc_bread_crumbs("+[NSFileProviderManager(BRAdditions) br_sharedProviderManagerWithDomainID:]", 92);
     v13 = brc_default_log(1, 0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -260,12 +260,12 @@
 {
   if (a3)
   {
-    [a1 br_getEnterpriseProviderManager];
+    [self br_getEnterpriseProviderManager];
   }
 
   else
   {
-    [a1 br_getPrimaryProviderManager];
+    [self br_getPrimaryProviderManager];
   }
   v3 = ;
 
@@ -282,7 +282,7 @@
 + (id)_br_createNSFileProviderManagerForDataSeparated:()BRAdditions withDomainID:didMatchedDomain:
 {
   v14 = 0;
-  v7 = [a1 br_getDomainForDataSeparated:a3 withIdentifier:a4 withError:&v14];
+  v7 = [self br_getDomainForDataSeparated:a3 withIdentifier:a4 withError:&v14];
   v8 = v14;
   if (v8)
   {
@@ -309,7 +309,7 @@
 - (id)br_getFPDomainWithIdentifier:()BRAdditions withError:
 {
   v6 = a3;
-  v7 = [a1 br_getFPDomainsWithError:a4];
+  v7 = [self br_getFPDomainsWithError:a4];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__NSFileProviderManager_BRAdditions__br_getFPDomainWithIdentifier_withError___block_invoke;
@@ -324,33 +324,33 @@
 - (id)br_getFPDomainForAccount:()BRAdditions withError:
 {
   v6 = a3;
-  v7 = [v6 br_dsid];
-  v8 = [v6 identifier];
+  br_dsid = [v6 br_dsid];
+  identifier = [v6 identifier];
 
-  v9 = [BRAccountDescriptor accountDescriptorForAccountID:v8 mustBeLoggedIn:0];
-  v10 = [v9 domainIdentifier];
-  v11 = v10;
-  if (v10)
+  v9 = [BRAccountDescriptor accountDescriptorForAccountID:identifier mustBeLoggedIn:0];
+  domainIdentifier = [v9 domainIdentifier];
+  v11 = domainIdentifier;
+  if (domainIdentifier)
   {
-    v12 = v10;
+    v12 = domainIdentifier;
   }
 
   else
   {
-    v12 = v8;
+    v12 = identifier;
   }
 
   v13 = v12;
 
-  v14 = [a1 br_getFPDomainsWithError:a4];
+  v14 = [self br_getFPDomainsWithError:a4];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __73__NSFileProviderManager_BRAdditions__br_getFPDomainForAccount_withError___block_invoke;
   v19[3] = &unk_1E7A14720;
-  v20 = v7;
+  v20 = br_dsid;
   v21 = v13;
   v15 = v13;
-  v16 = v7;
+  v16 = br_dsid;
   v17 = [v14 br_firstItemOf:v19];
 
   return v17;
@@ -359,8 +359,8 @@
 - (id)br_getFPDomainsWithError:()BRAdditions
 {
   v5 = objc_opt_class();
-  v6 = [a1 providerIdentifier];
-  v7 = [v5 br_getFPDomainsForProviderIdentifier:v6 withError:a3];
+  providerIdentifier = [self providerIdentifier];
+  v7 = [v5 br_getFPDomainsForProviderIdentifier:providerIdentifier withError:a3];
 
   return v7;
 }

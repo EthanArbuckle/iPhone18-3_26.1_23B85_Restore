@@ -1,25 +1,25 @@
 @interface AXSBUIOnboardingRootViewController
 - (void)_setupRemoteProxy;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dismiss;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation AXSBUIOnboardingRootViewController
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = NSClassFromString(@"AXOnboardingObjC");
   if (v8)
   {
@@ -27,8 +27,8 @@
     if (objc_opt_respondsToSelector())
     {
       objc_initWeak(&location, self);
-      v10 = [v6 userInfo];
-      v11 = [v10 objectForKeyedSubscript:@"type"];
+      userInfo = [contextCopy userInfo];
+      v11 = [userInfo objectForKeyedSubscript:@"type"];
       v12 = [v11 isEqualToString:@"voicecontrol"];
 
       if (v12)
@@ -45,8 +45,8 @@
 
       else
       {
-        v15 = [v6 userInfo];
-        v16 = [v15 objectForKeyedSubscript:@"type"];
+        userInfo2 = [contextCopy userInfo];
+        v16 = [userInfo2 objectForKeyedSubscript:@"type"];
         v17 = [v16 isEqualToString:@"voiceover"];
 
         if (!v17)
@@ -72,9 +72,9 @@ LABEL_8:
   }
 
 LABEL_9:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -97,11 +97,11 @@ LABEL_9:
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(AXSBUIOnboardingRootViewController *)self _remoteViewControllerProxy];
-  [v2 setDismissalAnimationStyle:2];
-  [v2 setOrientationChangedEventsEnabled:0];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setWallpaperTunnelActive:0];
+  _remoteViewControllerProxy = [(AXSBUIOnboardingRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:2];
+  [_remoteViewControllerProxy setOrientationChangedEventsEnabled:0];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:0];
 }
 
 @end

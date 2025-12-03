@@ -2,7 +2,7 @@
 - (NSData)responseData;
 - (NSString)protocolString;
 - (WKIdentityDocumentPresentmentResponse)init;
-- (WKIdentityDocumentPresentmentResponse)initWithProtocolString:(id)a3 responseData:(id)a4;
+- (WKIdentityDocumentPresentmentResponse)initWithProtocolString:(id)string responseData:(id)data;
 @end
 
 @implementation WKIdentityDocumentPresentmentResponse
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (WKIdentityDocumentPresentmentResponse)initWithProtocolString:(id)a3 responseData:(id)a4
+- (WKIdentityDocumentPresentmentResponse)initWithProtocolString:(id)string responseData:(id)data
 {
   v6 = sub_23B59D820();
   v8 = v7;
-  v9 = a4;
+  dataCopy = data;
   v10 = sub_23B59D2F0();
   v12 = v11;
 

@@ -1,26 +1,26 @@
 @interface _TVProductInfoView
-+ (id)productInfoViewWithElement:(id)a3 existingView:(id)a4;
++ (id)productInfoViewWithElement:(id)element existingView:(id)view;
 - (BOOL)canBecomeFocused;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)impressionableElementsContainedInDocument:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (id)preferredFocusEnvironments;
 - (void)layoutSubviews;
-- (void)setInfoSectionViews:(id)a3;
-- (void)setViewsAboveInfoSection:(id)a3;
-- (void)setViewsBelowInfoSection:(id)a3;
+- (void)setInfoSectionViews:(id)views;
+- (void)setViewsAboveInfoSection:(id)section;
+- (void)setViewsBelowInfoSection:(id)section;
 @end
 
 @implementation _TVProductInfoView
 
-+ (id)productInfoViewWithElement:(id)a3 existingView:(id)a4
++ (id)productInfoViewWithElement:(id)element existingView:(id)view
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -35,9 +35,9 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v24 = v5;
-  v10 = [v5 children];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v24 = elementCopy;
+  children = [elementCopy children];
+  v11 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v11)
   {
     v12 = v11;
@@ -51,7 +51,7 @@
       {
         if (*v28 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(children);
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
@@ -127,7 +127,7 @@
 LABEL_27:
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v12 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (!v12)
       {
         goto LABEL_31;
@@ -149,14 +149,14 @@ LABEL_31:
   return v23;
 }
 
-- (void)setViewsAboveInfoSection:(id)a3
+- (void)setViewsAboveInfoSection:(id)section
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 && ![(NSArray *)self->_viewsAboveInfoSection isEqualToArray:v5])
+  sectionCopy = section;
+  if (sectionCopy && ![(NSArray *)self->_viewsAboveInfoSection isEqualToArray:sectionCopy])
   {
     [(NSArray *)self->_viewsAboveInfoSection makeObjectsPerformSelector:sel_removeFromSuperview];
-    objc_storeStrong(&self->_viewsAboveInfoSection, a3);
+    objc_storeStrong(&self->_viewsAboveInfoSection, section);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -191,14 +191,14 @@ LABEL_31:
   [(_TVProductInfoView *)self setNeedsLayout];
 }
 
-- (void)setInfoSectionViews:(id)a3
+- (void)setInfoSectionViews:(id)views
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSArray *)self->_infoSectionViews isEqualToArray:v5])
+  viewsCopy = views;
+  if (![(NSArray *)self->_infoSectionViews isEqualToArray:viewsCopy])
   {
     [(NSArray *)self->_infoSectionViews makeObjectsPerformSelector:sel_removeFromSuperview];
-    objc_storeStrong(&self->_infoSectionViews, a3);
+    objc_storeStrong(&self->_infoSectionViews, views);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -233,14 +233,14 @@ LABEL_31:
   [(_TVProductInfoView *)self setNeedsLayout];
 }
 
-- (void)setViewsBelowInfoSection:(id)a3
+- (void)setViewsBelowInfoSection:(id)section
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 && ![(NSArray *)self->_viewsBelowInfoSection isEqualToArray:v5])
+  sectionCopy = section;
+  if (sectionCopy && ![(NSArray *)self->_viewsBelowInfoSection isEqualToArray:sectionCopy])
   {
     [(NSArray *)self->_viewsBelowInfoSection makeObjectsPerformSelector:sel_removeFromSuperview];
-    objc_storeStrong(&self->_viewsBelowInfoSection, a3);
+    objc_storeStrong(&self->_viewsBelowInfoSection, section);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -277,13 +277,13 @@ LABEL_31:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 focusedView];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
 
-  v5 = [(_TVProductInfoView *)self defaultFocusView];
-  if (v5)
+  defaultFocusView = [(_TVProductInfoView *)self defaultFocusView];
+  if (defaultFocusView)
   {
-    v6 = [v4 isDescendantOfView:self] ^ 1;
+    v6 = [focusedView isDescendantOfView:self] ^ 1;
   }
 
   else
@@ -297,18 +297,18 @@ LABEL_31:
 - (id)preferredFocusEnvironments
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVProductInfoView *)self defaultFocusView];
+  defaultFocusView = [(_TVProductInfoView *)self defaultFocusView];
 
-  if (v3)
+  if (defaultFocusView)
   {
     [(_TVProductInfoView *)self layoutIfNeeded];
   }
 
-  v4 = [(_TVProductInfoView *)self defaultFocusView];
-  if (v4)
+  defaultFocusView2 = [(_TVProductInfoView *)self defaultFocusView];
+  if (defaultFocusView2)
   {
-    v5 = [(_TVProductInfoView *)self defaultFocusView];
-    v8[0] = v5;
+    defaultFocusView3 = [(_TVProductInfoView *)self defaultFocusView];
+    v8[0] = defaultFocusView3;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   }
 
@@ -320,10 +320,10 @@ LABEL_31:
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v86 = *MEMORY[0x277D85DE8];
   [(UIView *)self tv_padding];
   v7 = v6;
@@ -383,8 +383,8 @@ LABEL_31:
     while (v20);
   }
 
-  v29 = [(NSArray *)self->_infoSectionViews firstObject];
-  [v29 tv_margin];
+  firstObject = [(NSArray *)self->_infoSectionViews firstObject];
+  [firstObject tv_margin];
   v31 = v30;
   v33 = v32;
 
@@ -575,8 +575,8 @@ LABEL_31:
     while (v17);
   }
 
-  v32 = [(NSArray *)self->_infoSectionViews firstObject];
-  [v32 tv_margin];
+  firstObject = [(NSArray *)self->_infoSectionViews firstObject];
+  [firstObject tv_margin];
   v34 = v33;
   v82 = v35;
 
@@ -592,11 +592,11 @@ LABEL_31:
     v38 = v37;
   }
 
-  v39 = [(_TVProductInfoView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(_TVProductInfoView *)self effectiveUserInterfaceLayoutDirection];
   [(UIView *)self tv_interitemSpacing];
   v41 = v40;
   v88 = Width - v84;
-  if (v39 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v42 = Width - v84;
   }
@@ -633,13 +633,13 @@ LABEL_31:
         v52 = v51;
         v54 = v53;
         v55 = v48 - v51 < v5;
-        if (v39 != 1)
+        if (effectiveUserInterfaceLayoutDirection != 1)
         {
           v55 = v48 + v51 > v88;
         }
 
         v56 = v38 + v86 + v11;
-        if (v39 == 1)
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
           v57 = -(v41 + v52);
         }
@@ -657,7 +657,7 @@ LABEL_31:
         }
 
         v58 = v48 - v52;
-        if (v39 != 1)
+        if (effectiveUserInterfaceLayoutDirection != 1)
         {
           v58 = v48;
         }
@@ -705,7 +705,7 @@ LABEL_31:
         v74 = v63 + fmax(v66, v73);
         [v67 sizeThatFits:{v72, 0.0}];
         v76 = v75;
-        if (v39 == 1)
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
           v77 = v88 - v5 - v72;
         }
@@ -749,17 +749,17 @@ LABEL_31:
   }
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  documentCopy = document;
+  array = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = [(_TVProductInfoView *)self viewsAboveInfoSection];
-  v7 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  viewsAboveInfoSection = [(_TVProductInfoView *)self viewsAboveInfoSection];
+  v7 = [viewsAboveInfoSection countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -770,14 +770,14 @@ LABEL_31:
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewsAboveInfoSection);
         }
 
-        v11 = [*(*(&v34 + 1) + 8 * i) tv_impressionableElementsForDocument:v4];
-        [v5 addObjectsFromArray:v11];
+        v11 = [*(*(&v34 + 1) + 8 * i) tv_impressionableElementsForDocument:documentCopy];
+        [array addObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v8 = [viewsAboveInfoSection countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v8);
@@ -787,8 +787,8 @@ LABEL_31:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [(_TVProductInfoView *)self infoSectionViews];
-  v13 = [v12 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  infoSectionViews = [(_TVProductInfoView *)self infoSectionViews];
+  v13 = [infoSectionViews countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v13)
   {
     v14 = v13;
@@ -799,14 +799,14 @@ LABEL_31:
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(infoSectionViews);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * j) tv_impressionableElementsForDocument:v4];
-        [v5 addObjectsFromArray:v17];
+        v17 = [*(*(&v30 + 1) + 8 * j) tv_impressionableElementsForDocument:documentCopy];
+        [array addObjectsFromArray:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v30 objects:v39 count:16];
+      v14 = [infoSectionViews countByEnumeratingWithState:&v30 objects:v39 count:16];
     }
 
     while (v14);
@@ -816,8 +816,8 @@ LABEL_31:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = [(_TVProductInfoView *)self viewsAboveInfoSection];
-  v19 = [v18 countByEnumeratingWithState:&v26 objects:v38 count:16];
+  viewsAboveInfoSection2 = [(_TVProductInfoView *)self viewsAboveInfoSection];
+  v19 = [viewsAboveInfoSection2 countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v19)
   {
     v20 = v19;
@@ -828,22 +828,22 @@ LABEL_31:
       {
         if (*v27 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(viewsAboveInfoSection2);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * k) tv_impressionableElementsForDocument:v4];
-        [v5 addObjectsFromArray:v23];
+        v23 = [*(*(&v26 + 1) + 8 * k) tv_impressionableElementsForDocument:documentCopy];
+        [array addObjectsFromArray:v23];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v26 objects:v38 count:16];
+      v20 = [viewsAboveInfoSection2 countByEnumeratingWithState:&v26 objects:v38 count:16];
     }
 
     while (v20);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v24 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
+    v24 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   }
 
   else

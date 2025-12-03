@@ -1,19 +1,19 @@
 @interface ULPersistenceStore
-- (BOOL)_isMigrationRequired:(id)a3;
-- (BOOL)loadWithCoordinator:(id)a3 error:(id *)a4;
-- (ULPersistenceStore)initWithURL:(id)a3 useWal:(BOOL)a4;
-- (id)_getLoadedModelVersionNumber:(id)a3;
-- (id)_getStoreMetaData:(id *)a3;
+- (BOOL)_isMigrationRequired:(id)required;
+- (BOOL)loadWithCoordinator:(id)coordinator error:(id *)error;
+- (ULPersistenceStore)initWithURL:(id)l useWal:(BOOL)wal;
+- (id)_getLoadedModelVersionNumber:(id)number;
+- (id)_getStoreMetaData:(id *)data;
 - (id)_getStoreModelVersionNumber;
-- (id)_getVersionNumberFromModelVersion:(id)a3;
+- (id)_getVersionNumberFromModelVersion:(id)version;
 @end
 
 @implementation ULPersistenceStore
 
-- (ULPersistenceStore)initWithURL:(id)a3 useWal:(BOOL)a4
+- (ULPersistenceStore)initWithURL:(id)l useWal:(BOOL)wal
 {
-  v4 = a4;
-  v6 = a3;
+  walCopy = wal;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = ULPersistenceStore;
   v7 = [(ULPersistenceStore *)&v21 init];
@@ -22,45 +22,45 @@
     v8 = objc_opt_new();
     [(ULPersistenceStore *)v7 setStoreDescription:v8];
 
-    v9 = [(ULPersistenceStore *)v7 storeDescription];
-    [v9 setShouldAddStoreAsynchronously:0];
+    storeDescription = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription setShouldAddStoreAsynchronously:0];
 
-    v10 = [(ULPersistenceStore *)v7 storeDescription];
-    [v10 setShouldMigrateStoreAutomatically:1];
+    storeDescription2 = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription2 setShouldMigrateStoreAutomatically:1];
 
-    v11 = [(ULPersistenceStore *)v7 storeDescription];
-    [v11 setShouldInferMappingModelAutomatically:1];
+    storeDescription3 = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription3 setShouldInferMappingModelAutomatically:1];
 
-    v12 = [(ULPersistenceStore *)v7 storeDescription];
-    [v12 setURL:v6];
+    storeDescription4 = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription4 setURL:lCopy];
 
     v13 = *MEMORY[0x277CBE2E8];
-    v14 = [(ULPersistenceStore *)v7 storeDescription];
-    [v14 setType:v13];
+    storeDescription5 = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription5 setType:v13];
 
-    v15 = [(ULPersistenceStore *)v7 storeDescription];
-    [v15 setOption:*MEMORY[0x277CCA198] forKey:*MEMORY[0x277CBE240]];
+    storeDescription6 = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription6 setOption:*MEMORY[0x277CCA198] forKey:*MEMORY[0x277CBE240]];
 
     v16 = @"DELETE";
-    if (v4)
+    if (walCopy)
     {
       v16 = @"WAL";
     }
 
     v17 = v16;
-    v18 = [(ULPersistenceStore *)v7 storeDescription];
-    [v18 setValue:v17 forPragmaNamed:@"journal_mode"];
+    storeDescription7 = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription7 setValue:v17 forPragmaNamed:@"journal_mode"];
 
-    v19 = [(ULPersistenceStore *)v7 storeDescription];
-    [v19 setValue:&unk_286A71CE8 forPragmaNamed:@"cache_spill"];
+    storeDescription8 = [(ULPersistenceStore *)v7 storeDescription];
+    [storeDescription8 setValue:&unk_286A71CE8 forPragmaNamed:@"cache_spill"];
   }
 
   return v7;
 }
 
-- (BOOL)loadWithCoordinator:(id)a3 error:(id *)a4
+- (BOOL)loadWithCoordinator:(id)coordinator error:(id *)error
 {
-  v6 = a3;
+  coordinatorCopy = coordinator;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -71,21 +71,21 @@
   v15 = __Block_byref_object_copy__30;
   v16 = __Block_byref_object_dispose__30;
   v17 = 0;
-  v7 = [v6 managedObjectModel];
-  [(ULPersistenceStore *)self setIsMigrationToLatestModelRequired:[(ULPersistenceStore *)self _isMigrationRequired:v7]];
+  managedObjectModel = [coordinatorCopy managedObjectModel];
+  [(ULPersistenceStore *)self setIsMigrationToLatestModelRequired:[(ULPersistenceStore *)self _isMigrationRequired:managedObjectModel]];
 
-  v8 = [(ULPersistenceStore *)self storeDescription];
+  storeDescription = [(ULPersistenceStore *)self storeDescription];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__ULPersistenceStore_loadWithCoordinator_error___block_invoke;
   v11[3] = &unk_2798D4BD8;
   v11[4] = &v12;
   v11[5] = &v18;
-  [v6 addPersistentStoreWithDescription:v8 completionHandler:v11];
+  [coordinatorCopy addPersistentStoreWithDescription:storeDescription completionHandler:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v9 = *(v19 + 24);
@@ -121,36 +121,36 @@ void __48__ULPersistenceStore_loadWithCoordinator_error___block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isMigrationRequired:(id)a3
+- (BOOL)_isMigrationRequired:(id)required
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(ULPersistenceStore *)self storeDescription];
-  v7 = [v6 URL];
-  v8 = [v7 path];
-  v9 = [v5 fileExistsAtPath:v8];
+  requiredCopy = required;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  storeDescription = [(ULPersistenceStore *)self storeDescription];
+  v7 = [storeDescription URL];
+  path = [v7 path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
-    v10 = [(ULPersistenceStore *)self _getLoadedModelVersionNumber:v4];
-    v11 = [(ULPersistenceStore *)self _getStoreModelVersionNumber];
-    [(ULPersistenceStore *)self setStoreModelVersionBeforeMigration:v11];
+    v10 = [(ULPersistenceStore *)self _getLoadedModelVersionNumber:requiredCopy];
+    _getStoreModelVersionNumber = [(ULPersistenceStore *)self _getStoreModelVersionNumber];
+    [(ULPersistenceStore *)self setStoreModelVersionBeforeMigration:_getStoreModelVersionNumber];
 
     if (v10)
     {
-      v12 = [(ULPersistenceStore *)self storeModelVersionBeforeMigration];
+      storeModelVersionBeforeMigration = [(ULPersistenceStore *)self storeModelVersionBeforeMigration];
 
-      if (v12)
+      if (storeModelVersionBeforeMigration)
       {
-        v13 = [(ULPersistenceStore *)self storeModelVersionBeforeMigration];
-        LODWORD(v12) = v13 < v10;
+        storeModelVersionBeforeMigration2 = [(ULPersistenceStore *)self storeModelVersionBeforeMigration];
+        LODWORD(storeModelVersionBeforeMigration) = storeModelVersionBeforeMigration2 < v10;
       }
     }
 
     else
     {
-      LODWORD(v12) = 0;
+      LODWORD(storeModelVersionBeforeMigration) = 0;
     }
 
     if (onceToken_MicroLocation_Default != -1)
@@ -162,7 +162,7 @@ void __48__ULPersistenceStore_loadWithCoordinator_error___block_invoke(uint64_t 
     if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ULPersistenceStore *)self storeModelVersionBeforeMigration];
+      storeModelVersionBeforeMigration3 = [(ULPersistenceStore *)self storeModelVersionBeforeMigration];
       v19[0] = 68289794;
       v19[1] = 0;
       v20 = 2082;
@@ -170,26 +170,26 @@ void __48__ULPersistenceStore_loadWithCoordinator_error___block_invoke(uint64_t 
       v22 = 2114;
       v23 = v10;
       v24 = 2114;
-      v25 = v16;
+      v25 = storeModelVersionBeforeMigration3;
       v26 = 1026;
-      v27 = v12;
+      v27 = storeModelVersionBeforeMigration;
       _os_log_impl(&dword_258FE9000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Checking if migration to latest model is required, loaded model version:%{public, location:escape_only}@, store model version:%{public, location:escape_only}@, isMigrationRequired:%{public}hhd}", v19, 0x2Cu);
     }
   }
 
   else
   {
-    LOBYTE(v12) = 0;
+    LOBYTE(storeModelVersionBeforeMigration) = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v12;
+  return storeModelVersionBeforeMigration;
 }
 
-- (id)_getVersionNumberFromModelVersion:(id)a3
+- (id)_getVersionNumberFromModelVersion:(id)version
 {
-  v3 = a3;
-  if (!v3)
+  versionCopy = version;
+  if (!versionCopy)
   {
     goto LABEL_9;
   }
@@ -201,7 +201,7 @@ void __48__ULPersistenceStore_loadWithCoordinator_error___block_invoke(uint64_t 
 
   if (_getVersionNumberFromModelVersion__versionRegex)
   {
-    v4 = [_getVersionNumberFromModelVersion__versionRegex firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v4 = [_getVersionNumberFromModelVersion__versionRegex firstMatchInString:versionCopy options:0 range:{0, objc_msgSend(versionCopy, "length")}];
     v5 = v4;
     if (v4)
     {
@@ -228,7 +228,7 @@ void __48__ULPersistenceStore_loadWithCoordinator_error___block_invoke(uint64_t 
 
         else
         {
-          v10 = [v3 substringWithRange:{v6, v7}];
+          v10 = [versionCopy substringWithRange:{v6, v7}];
           v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "integerValue")}];
         }
       }
@@ -289,15 +289,15 @@ void __56__ULPersistenceStore__getVersionNumberFromModelVersion___block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getLoadedModelVersionNumber:(id)a3
+- (id)_getLoadedModelVersionNumber:(id)number
 {
-  v4 = [a3 versionIdentifiers];
-  v5 = [v4 allObjects];
+  versionIdentifiers = [number versionIdentifiers];
+  allObjects = [versionIdentifiers allObjects];
 
-  if ([v5 count])
+  if ([allObjects count])
   {
-    v6 = [v5 firstObject];
-    v7 = [(ULPersistenceStore *)self _getVersionNumberFromModelVersion:v6];
+    firstObject = [allObjects firstObject];
+    v7 = [(ULPersistenceStore *)self _getVersionNumberFromModelVersion:firstObject];
   }
 
   else
@@ -308,15 +308,15 @@ void __56__ULPersistenceStore__getVersionNumberFromModelVersion___block_invoke()
   return v7;
 }
 
-- (id)_getStoreMetaData:(id *)a3
+- (id)_getStoreMetaData:(id *)data
 {
   v5 = MEMORY[0x277CBE4D8];
   v6 = *MEMORY[0x277CBE2E8];
-  v7 = [(ULPersistenceStore *)self storeDescription];
-  v8 = [v7 URL];
-  v9 = [(ULPersistenceStore *)self storeDescription];
-  v10 = [v9 options];
-  v11 = [v5 metadataForPersistentStoreOfType:v6 URL:v8 options:v10 error:a3];
+  storeDescription = [(ULPersistenceStore *)self storeDescription];
+  v8 = [storeDescription URL];
+  storeDescription2 = [(ULPersistenceStore *)self storeDescription];
+  options = [storeDescription2 options];
+  v11 = [v5 metadataForPersistentStoreOfType:v6 URL:v8 options:options error:data];
 
   return v11;
 }

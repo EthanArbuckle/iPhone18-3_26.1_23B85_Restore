@@ -1,46 +1,46 @@
 @interface AFSiriActivationListener
-- (AFSiriActivationListener)initWithServicePort:(int64_t)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_activateWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_deactivateForReason:(int64_t)a3 options:(unint64_t)a4 context:(id)a5 completion:(id)a6;
-- (void)_deliverButtonEventFromContext:(id)a3 completion:(id)a4;
+- (AFSiriActivationListener)initWithServicePort:(int64_t)port;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_activateWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)_deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion;
+- (void)_deliverButtonEventFromContext:(id)context completion:(id)completion;
 - (void)_invalidate;
-- (void)_myriadEventWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_prewarmWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_startWithDelegate:(id)a3;
+- (void)_myriadEventWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)_prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)_startWithDelegate:(id)delegate;
 - (void)_stop;
-- (void)activateWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)deactivateForReason:(int64_t)a3 options:(unint64_t)a4 context:(id)a5 completion:(id)a6;
+- (void)activateWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)handleContext:(id)a3 completion:(id)a4;
-- (void)handleIntent:(id)a3 inBackgroundAppWithBundleId:(id)a4 reply:(id)a5;
-- (void)handleIntentForwardingAction:(id)a3 inBackgroundApplicationWithBundleIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)handleContext:(id)context completion:(id)completion;
+- (void)handleIntent:(id)intent inBackgroundAppWithBundleId:(id)id reply:(id)reply;
+- (void)handleIntentForwardingAction:(id)action inBackgroundApplicationWithBundleIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)invalidate;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
-- (void)prewarmWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)startWithDelegate:(id)a3;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
+- (void)prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)startWithDelegate:(id)delegate;
 - (void)stop;
 @end
 
 @implementation AFSiriActivationListener
 
-- (void)_myriadEventWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_myriadEventWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v25 = "[AFSiriActivationListener _myriadEventWithRequestInfo:context:completion:]";
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v8;
+    v29 = infoCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = contextCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %p requestInfo = %@, context = %@", buf, 0x2Au);
   }
 
@@ -50,7 +50,7 @@
   v22[2] = __75__AFSiriActivationListener__myriadEventWithRequestInfo_context_completion___block_invoke;
   v22[3] = &unk_1E7348AD0;
   v22[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v23 = v13;
   v14 = [AFError errorWithCode:2508];
   v15 = [(AFOneArgumentSafetyBlock *)v12 initWithBlock:v22 defaultValue:v14];
@@ -76,7 +76,7 @@ LABEL_8:
   v20[2] = __75__AFSiriActivationListener__myriadEventWithRequestInfo_context_completion___block_invoke_52;
   v20[3] = &unk_1E73493C0;
   v21 = v15;
-  [WeakRetained siriActivationListener:self myriadEventWithRequestInfo:v8 context:v9 completion:v20];
+  [WeakRetained siriActivationListener:self myriadEventWithRequestInfo:infoCopy context:contextCopy completion:v20];
   v17 = v21;
 LABEL_9:
 
@@ -122,20 +122,20 @@ void __75__AFSiriActivationListener__myriadEventWithRequestInfo_context_completi
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deliverButtonEventFromContext:(id)a3 completion:(id)a4
+- (void)_deliverButtonEventFromContext:(id)context completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[AFSiriActivationListener _deliverButtonEventFromContext:completion:]";
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v6;
+    v26 = contextCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s %p context = %@", buf, 0x20u);
   }
 
@@ -145,7 +145,7 @@ void __75__AFSiriActivationListener__myriadEventWithRequestInfo_context_completi
   v19[2] = __70__AFSiriActivationListener__deliverButtonEventFromContext_completion___block_invoke;
   v19[3] = &unk_1E7348AD0;
   v19[4] = self;
-  v10 = v7;
+  v10 = completionCopy;
   v20 = v10;
   v11 = [AFError errorWithCode:2508];
   v12 = [(AFOneArgumentSafetyBlock *)v9 initWithBlock:v19 defaultValue:v11];
@@ -171,7 +171,7 @@ LABEL_8:
   v17[2] = __70__AFSiriActivationListener__deliverButtonEventFromContext_completion___block_invoke_49;
   v17[3] = &unk_1E73493C0;
   v18 = v12;
-  [WeakRetained siriActivationListener:self handleButtonEventFromContext:v6 completion:v17];
+  [WeakRetained siriActivationListener:self handleButtonEventFromContext:contextCopy completion:v17];
   v14 = v18;
 LABEL_9:
 
@@ -217,37 +217,37 @@ void __70__AFSiriActivationListener__deliverButtonEventFromContext_completion___
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deactivateForReason:(int64_t)a3 options:(unint64_t)a4 context:(id)a5 completion:(id)a6
+- (void)_deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  contextCopy = context;
+  completionCopy = completion;
   v12 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    if (a3 > 0x14)
+    if (reason > 0x14)
     {
       v14 = @"(unknown)";
     }
 
     else
     {
-      v14 = off_1E7345920[a3];
+      v14 = off_1E7345920[reason];
     }
 
     v15 = v14;
-    v16 = AFSiriDeactivationOptionsGetNames(a4);
+    v16 = AFSiriDeactivationOptionsGetNames(options);
     *buf = 136316162;
     v30 = "[AFSiriActivationListener _deactivateForReason:options:context:completion:]";
     v31 = 2048;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v15;
     v35 = 2112;
     v36 = v16;
     v37 = 2112;
-    v38 = v10;
+    v38 = contextCopy;
     _os_log_impl(&dword_1912FE000, v13, OS_LOG_TYPE_INFO, "%s %p reason = %@, options = %@, context = %@", buf, 0x34u);
   }
 
@@ -257,7 +257,7 @@ void __70__AFSiriActivationListener__deliverButtonEventFromContext_completion___
   v27[2] = __76__AFSiriActivationListener__deactivateForReason_options_context_completion___block_invoke;
   v27[3] = &unk_1E7348AD0;
   v27[4] = self;
-  v18 = v11;
+  v18 = completionCopy;
   v28 = v18;
   v19 = [AFError errorWithCode:2508];
   v20 = [(AFOneArgumentSafetyBlock *)v17 initWithBlock:v27 defaultValue:v19];
@@ -283,7 +283,7 @@ LABEL_11:
   v25[2] = __76__AFSiriActivationListener__deactivateForReason_options_context_completion___block_invoke_46;
   v25[3] = &unk_1E73493C0;
   v26 = v20;
-  [WeakRetained siriActivationListener:self deactivateForReason:a3 options:a4 context:v10 completion:v25];
+  [WeakRetained siriActivationListener:self deactivateForReason:reason options:options context:contextCopy completion:v25];
   v22 = v26;
 LABEL_12:
 
@@ -329,23 +329,23 @@ void __76__AFSiriActivationListener__deactivateForReason_options_context_complet
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_activateWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_activateWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v25 = "[AFSiriActivationListener _activateWithRequestInfo:context:completion:]";
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v8;
+    v29 = infoCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = contextCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %p requestInfo = %@, context = %@", buf, 0x2Au);
   }
 
@@ -355,7 +355,7 @@ void __76__AFSiriActivationListener__deactivateForReason_options_context_complet
   v22[2] = __72__AFSiriActivationListener__activateWithRequestInfo_context_completion___block_invoke;
   v22[3] = &unk_1E7348AD0;
   v22[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v23 = v13;
   v14 = [AFError errorWithCode:2508];
   v15 = [(AFOneArgumentSafetyBlock *)v12 initWithBlock:v22 defaultValue:v14];
@@ -381,7 +381,7 @@ LABEL_8:
   v20[2] = __72__AFSiriActivationListener__activateWithRequestInfo_context_completion___block_invoke_43;
   v20[3] = &unk_1E73493C0;
   v21 = v15;
-  [WeakRetained siriActivationListener:self activateWithRequestInfo:v8 context:v9 completion:v20];
+  [WeakRetained siriActivationListener:self activateWithRequestInfo:infoCopy context:contextCopy completion:v20];
   v17 = v21;
 LABEL_9:
 
@@ -427,23 +427,23 @@ void __72__AFSiriActivationListener__activateWithRequestInfo_context_completion_
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_prewarmWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v25 = "[AFSiriActivationListener _prewarmWithRequestInfo:context:completion:]";
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v8;
+    v29 = infoCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = contextCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %p requestInfo = %@, context = %@", buf, 0x2Au);
   }
 
@@ -453,7 +453,7 @@ void __72__AFSiriActivationListener__activateWithRequestInfo_context_completion_
   v22[2] = __71__AFSiriActivationListener__prewarmWithRequestInfo_context_completion___block_invoke;
   v22[3] = &unk_1E7348AD0;
   v22[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v23 = v13;
   v14 = [AFError errorWithCode:2508];
   v15 = [(AFOneArgumentSafetyBlock *)v12 initWithBlock:v22 defaultValue:v14];
@@ -479,7 +479,7 @@ LABEL_8:
   v20[2] = __71__AFSiriActivationListener__prewarmWithRequestInfo_context_completion___block_invoke_40;
   v20[3] = &unk_1E73493C0;
   v21 = v15;
-  [WeakRetained siriActivationListener:self prewarmWithRequestInfo:v8 context:v9 completion:v20];
+  [WeakRetained siriActivationListener:self prewarmWithRequestInfo:infoCopy context:contextCopy completion:v20];
   v17 = v21;
 LABEL_9:
 
@@ -534,7 +534,7 @@ void __71__AFSiriActivationListener__prewarmWithRequestInfo_context_completion__
     v6 = 136315394;
     v7 = "[AFSiriActivationListener _invalidate]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v6, 0x16u);
   }
 
@@ -555,7 +555,7 @@ void __71__AFSiriActivationListener__prewarmWithRequestInfo_context_completion__
     v5 = 136315394;
     v6 = "[AFSiriActivationListener _stop]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v5, 0x16u);
   }
 
@@ -564,43 +564,43 @@ void __71__AFSiriActivationListener__prewarmWithRequestInfo_context_completion__
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startWithDelegate:(id)a3
+- (void)_startWithDelegate:(id)delegate
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v7 = 136315650;
     v8 = "[AFSiriActivationListener _startWithDelegate:]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = delegateCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p delegate = %@", &v7, 0x20u);
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   [(NSXPCListener *)self->_xpcListener resume];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIntentForwardingAction:(id)a3 inBackgroundApplicationWithBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)handleIntentForwardingAction:(id)action inBackgroundApplicationWithBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[AFSiriActivationListener handleIntentForwardingAction:inBackgroundApplicationWithBundleIdentifier:completionHandler:]";
     v23 = 2112;
-    v24 = v8;
+    v24 = actionCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = identifierCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s intentForwardingAction = %@, bundleIdentifier = %@", buf, 0x20u);
   }
 
@@ -610,12 +610,12 @@ void __71__AFSiriActivationListener__prewarmWithRequestInfo_context_completion__
   v17[2] = __119__AFSiriActivationListener_handleIntentForwardingAction_inBackgroundApplicationWithBundleIdentifier_completionHandler___block_invoke;
   v17[3] = &unk_1E73479F0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = actionCopy;
+  v19 = identifierCopy;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
+  v15 = actionCopy;
   dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -681,23 +681,23 @@ void __119__AFSiriActivationListener_handleIntentForwardingAction_inBackgroundAp
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIntent:(id)a3 inBackgroundAppWithBundleId:(id)a4 reply:(id)a5
+- (void)handleIntent:(id)intent inBackgroundAppWithBundleId:(id)id reply:(id)reply
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  idCopy = id;
+  replyCopy = reply;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v22 = "[AFSiriActivationListener handleIntent:inBackgroundAppWithBundleId:reply:]";
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v8;
+    v26 = intentCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = idCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %p intent = %@, bundleIdentifier = %@", buf, 0x2Au);
   }
 
@@ -707,12 +707,12 @@ void __119__AFSiriActivationListener_handleIntentForwardingAction_inBackgroundAp
   v17[2] = __75__AFSiriActivationListener_handleIntent_inBackgroundAppWithBundleId_reply___block_invoke;
   v17[3] = &unk_1E73479F0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = intentCopy;
+  v19 = idCopy;
+  v20 = replyCopy;
+  v13 = replyCopy;
+  v14 = idCopy;
+  v15 = intentCopy;
   dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -810,20 +810,20 @@ void __75__AFSiriActivationListener_handleIntent_inBackgroundAppWithBundleId_rep
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleContext:(id)a3 completion:(id)a4
+- (void)handleContext:(id)context completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v17 = "[AFSiriActivationListener handleContext:completion:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v6;
+    v21 = contextCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s %p context = %@", buf, 0x20u);
   }
 
@@ -833,10 +833,10 @@ void __75__AFSiriActivationListener_handleIntent_inBackgroundAppWithBundleId_rep
   block[2] = __53__AFSiriActivationListener_handleContext_completion___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = contextCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = contextCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1471,37 +1471,37 @@ void __53__AFSiriActivationListener_handleContext_completion___block_invoke_2_13
   [v3 setError:*(a1 + 32)];
 }
 
-- (void)deactivateForReason:(int64_t)a3 options:(unint64_t)a4 context:(id)a5 completion:(id)a6
+- (void)deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  contextCopy = context;
+  completionCopy = completion;
   v12 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    if (a3 > 0x14)
+    if (reason > 0x14)
     {
       v14 = @"(unknown)";
     }
 
     else
     {
-      v14 = off_1E7345920[a3];
+      v14 = off_1E7345920[reason];
     }
 
     v15 = v14;
-    v16 = AFSiriDeactivationOptionsGetNames(a4);
+    v16 = AFSiriDeactivationOptionsGetNames(options);
     *buf = 136316162;
     v27 = "[AFSiriActivationListener deactivateForReason:options:context:completion:]";
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v15;
     v32 = 2112;
     v33 = v16;
     v34 = 2112;
-    v35 = v10;
+    v35 = contextCopy;
     _os_log_impl(&dword_1912FE000, v13, OS_LOG_TYPE_INFO, "%s %p reason = %@, options = %@, context = %@", buf, 0x34u);
   }
 
@@ -1510,13 +1510,13 @@ void __53__AFSiriActivationListener_handleContext_completion___block_invoke_2_13
   block[1] = 3221225472;
   block[2] = __75__AFSiriActivationListener_deactivateForReason_options_context_completion___block_invoke;
   block[3] = &unk_1E7346668;
-  v24 = a3;
-  v25 = a4;
+  reasonCopy = reason;
+  optionsCopy = options;
   block[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v18 = v11;
-  v19 = v10;
+  v22 = contextCopy;
+  v23 = completionCopy;
+  v18 = completionCopy;
+  v19 = contextCopy;
   dispatch_async(queue, block);
 
   v20 = *MEMORY[0x1E69E9840];
@@ -1603,23 +1603,23 @@ void __75__AFSiriActivationListener_deactivateForReason_options_context_completi
   [v3 setError:*(a1 + 32)];
 }
 
-- (void)activateWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5
+- (void)activateWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v22 = "[AFSiriActivationListener activateWithRequestInfo:context:completion:]";
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v8;
+    v26 = infoCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = contextCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %p requestInfo = %@, context = %@", buf, 0x2Au);
   }
 
@@ -1629,12 +1629,12 @@ void __75__AFSiriActivationListener_deactivateForReason_options_context_completi
   v17[2] = __71__AFSiriActivationListener_activateWithRequestInfo_context_completion___block_invoke;
   v17[3] = &unk_1E73479F0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = infoCopy;
+  v19 = contextCopy;
+  v20 = completionCopy;
+  v13 = completionCopy;
+  v14 = contextCopy;
+  v15 = infoCopy;
   dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1720,23 +1720,23 @@ void __71__AFSiriActivationListener_activateWithRequestInfo_context_completion__
   [v3 setError:*(a1 + 32)];
 }
 
-- (void)prewarmWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5
+- (void)prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v22 = "[AFSiriActivationListener prewarmWithRequestInfo:context:completion:]";
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v8;
+    v26 = infoCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = contextCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %p requestInfo = %@, context = %@", buf, 0x2Au);
   }
 
@@ -1746,12 +1746,12 @@ void __71__AFSiriActivationListener_activateWithRequestInfo_context_completion__
   v17[2] = __70__AFSiriActivationListener_prewarmWithRequestInfo_context_completion___block_invoke;
   v17[3] = &unk_1E73479F0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = infoCopy;
+  v19 = contextCopy;
+  v20 = completionCopy;
+  v13 = completionCopy;
+  v14 = contextCopy;
+  v15 = infoCopy;
   dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1826,38 +1826,38 @@ void __70__AFSiriActivationListener_prewarmWithRequestInfo_context_completion___
   [v3 setError:*(a1 + 32)];
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  observerCopy = observer;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v10 = 136315906;
     v11 = "[AFSiriActivationListener notifyObserver:didChangeStateFrom:to:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = observerCopy;
     v14 = 2048;
-    v15 = a4;
+    fromCopy = from;
     v16 = 2048;
-    v17 = a5;
+    toCopy = to;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s notifyObserver = %@, fromState = %llu, toState = %llu", &v10, 0x2Au);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (self->_xpcListener != a3)
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (self->_xpcListener != listener)
   {
     goto LABEL_2;
   }
 
-  v9 = [v6 valueForEntitlement:@"com.apple.siri.activation"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.siri.activation"];
 
   if (v9)
   {
@@ -1871,9 +1871,9 @@ void __70__AFSiriActivationListener_prewarmWithRequestInfo_context_completion___
     v16 = 136315906;
     v17 = "[AFSiriActivationListener listener:shouldAcceptNewConnection:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 1026;
-    v21 = [v7 processIdentifier];
+    processIdentifier = [v7 processIdentifier];
     v22 = 2112;
     v23 = @"com.apple.siri.activation";
     _os_log_error_impl(&dword_1912FE000, v15, OS_LOG_TYPE_ERROR, "%s %p Client with pid %{public}d does not have entitlement %@.", &v16, 0x26u);
@@ -1926,17 +1926,17 @@ LABEL_2:
   dispatch_async(queue, block);
 }
 
-- (void)startWithDelegate:(id)a3
+- (void)startWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__AFSiriActivationListener_startWithDelegate___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1949,7 +1949,7 @@ LABEL_2:
     *buf = 136315394;
     v7 = "[AFSiriActivationListener dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -1960,7 +1960,7 @@ LABEL_2:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (AFSiriActivationListener)initWithServicePort:(int64_t)a3
+- (AFSiriActivationListener)initWithServicePort:(int64_t)port
 {
   v35 = *MEMORY[0x1E69E9840];
   v30.receiver = self;
@@ -1983,7 +1983,7 @@ LABEL_2:
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
     }
 
-    if ((a3 - 1) > 2)
+    if ((port - 1) > 2)
     {
       if (AFIsHorseman_onceToken != -1)
       {
@@ -2004,14 +2004,14 @@ LABEL_2:
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
       {
         v11 = v10;
-        if (a3 > 3)
+        if (port > 3)
         {
           v12 = @"(unknown)";
         }
 
         else
         {
-          v12 = off_1E73424C8[a3];
+          v12 = off_1E73424C8[port];
         }
 
         v13 = v12;
@@ -2035,7 +2035,7 @@ LABEL_2:
         _os_log_impl(&dword_1912FE000, v14, OS_LOG_TYPE_INFO, "%s servicePort = %@ (effective)", buf, 0x16u);
       }
 
-      a3 = v9;
+      port = v9;
     }
 
     else
@@ -2044,7 +2044,7 @@ LABEL_2:
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
       {
         v7 = v6;
-        v8 = off_1E73424C8[a3];
+        v8 = off_1E73424C8[port];
         *buf = 136315394;
         v32 = "[AFSiriActivationListener initWithServicePort:]";
         v33 = 2112;
@@ -2053,7 +2053,7 @@ LABEL_2:
       }
     }
 
-    v16 = AFSiriActivationServiceGetMachServiceName(a3);
+    v16 = AFSiriActivationServiceGetMachServiceName(port);
     v17 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {

@@ -1,65 +1,65 @@
 @interface ULInternalNotifyMonitor
-- (ULInternalNotifyMonitor)initWithNotificationHelper:(id)a3;
-- (id)_identifierFromEventName:(id)a3;
-- (void)_handleNotificationForEventName:(id)a3;
-- (void)_startMonitoringForEventName:(id)a3 identifier:(id)a4;
-- (void)_stopMonitoringForEventName:(id)a3 identifier:(id)a4;
-- (void)startMonitoring:(id)a3;
-- (void)stopMonitoring:(id)a3;
+- (ULInternalNotifyMonitor)initWithNotificationHelper:(id)helper;
+- (id)_identifierFromEventName:(id)name;
+- (void)_handleNotificationForEventName:(id)name;
+- (void)_startMonitoringForEventName:(id)name identifier:(id)identifier;
+- (void)_stopMonitoringForEventName:(id)name identifier:(id)identifier;
+- (void)startMonitoring:(id)monitoring;
+- (void)stopMonitoring:(id)monitoring;
 @end
 
 @implementation ULInternalNotifyMonitor
 
-- (ULInternalNotifyMonitor)initWithNotificationHelper:(id)a3
+- (ULInternalNotifyMonitor)initWithNotificationHelper:(id)helper
 {
-  v4 = a3;
+  helperCopy = helper;
   v8.receiver = self;
   v8.super_class = ULInternalNotifyMonitor;
   v5 = [(ULEventMonitor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ULInternalNotifyMonitor *)v5 setNotificationHelper:v4];
+    [(ULInternalNotifyMonitor *)v5 setNotificationHelper:helperCopy];
   }
 
   return v6;
 }
 
-- (void)startMonitoring:(id)a3
+- (void)startMonitoring:(id)monitoring
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ULInternalNotifyMonitor *)self _identifierFromEventName:v4];
-  [(ULInternalNotifyMonitor *)self _startMonitoringForEventName:v4 identifier:v6];
+  v6 = [(ULInternalNotifyMonitor *)self _identifierFromEventName:monitoringCopy];
+  [(ULInternalNotifyMonitor *)self _startMonitoringForEventName:monitoringCopy identifier:v6];
 }
 
-- (void)stopMonitoring:(id)a3
+- (void)stopMonitoring:(id)monitoring
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ULInternalNotifyMonitor *)self _identifierFromEventName:v4];
-  [(ULInternalNotifyMonitor *)self _stopMonitoringForEventName:v4 identifier:v6];
+  v6 = [(ULInternalNotifyMonitor *)self _identifierFromEventName:monitoringCopy];
+  [(ULInternalNotifyMonitor *)self _stopMonitoringForEventName:monitoringCopy identifier:v6];
 }
 
-- (void)_startMonitoringForEventName:(id)a3 identifier:(id)a4
+- (void)_startMonitoringForEventName:(id)name identifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v8 = [(ULInternalNotifyMonitor *)self notificationHelper];
+  notificationHelper = [(ULInternalNotifyMonitor *)self notificationHelper];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__ULInternalNotifyMonitor__startMonitoringForEventName_identifier___block_invoke;
   v12[3] = &unk_2798D42F8;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = nameCopy;
   v13 = v9;
-  [v8 addObserverForNotificationName:v7 handler:v12];
+  [notificationHelper addObserverForNotificationName:identifierCopy handler:v12];
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -91,11 +91,11 @@ void __67__ULInternalNotifyMonitor__startMonitoringForEventName_identifier___blo
   }
 }
 
-- (void)_stopMonitoringForEventName:(id)a3 identifier:(id)a4
+- (void)_stopMonitoringForEventName:(id)name identifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   if (onceToken_MicroLocation_Default != -1)
   {
     [ULInternalNotifyMonitor _stopMonitoringForEventName:identifier:];
@@ -105,28 +105,28 @@ void __67__ULInternalNotifyMonitor__startMonitoringForEventName_identifier___blo
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = nameCopy;
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "Stop monitoring: %@", &v11, 0xCu);
   }
 
-  v9 = [(ULInternalNotifyMonitor *)self notificationHelper];
-  [v9 removeObserverForNotificationName:v7];
+  notificationHelper = [(ULInternalNotifyMonitor *)self notificationHelper];
+  [notificationHelper removeObserverForNotificationName:identifierCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNotificationForEventName:(id)a3
+- (void)_handleNotificationForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
+  nameCopy = name;
+  queue = [(ULEventMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ULInternalNotifyMonitor__handleNotificationForEventName___block_invoke;
   v7[3] = &unk_2798D4280;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = nameCopy;
+  selfCopy = self;
+  v6 = nameCopy;
+  dispatch_async(queue, v7);
 }
 
 void __59__ULInternalNotifyMonitor__handleNotificationForEventName___block_invoke(uint64_t a1)
@@ -135,11 +135,11 @@ void __59__ULInternalNotifyMonitor__handleNotificationForEventName___block_invok
   [*(a1 + 40) postEvent:v2];
 }
 
-- (id)_identifierFromEventName:(id)a3
+- (id)_identifierFromEventName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(ULEvent *)ULInternalNotifyMonitorEventLocalize];
-  v5 = [v3 isEqual:v4];
+  v5 = [nameCopy isEqual:v4];
 
   if (v5)
   {
@@ -149,7 +149,7 @@ void __59__ULInternalNotifyMonitor__handleNotificationForEventName___block_invok
   else
   {
     v7 = +[(ULEvent *)ULInternalNotifyMonitorEventRecord];
-    v8 = [v3 isEqual:v7];
+    v8 = [nameCopy isEqual:v7];
 
     if (v8)
     {
@@ -159,7 +159,7 @@ void __59__ULInternalNotifyMonitor__handleNotificationForEventName___block_invok
     else
     {
       v9 = +[(ULEvent *)ULInternalNotifyMonitorEventPurge];
-      v10 = [v3 isEqual:v9];
+      v10 = [nameCopy isEqual:v9];
 
       if (v10)
       {
@@ -169,7 +169,7 @@ void __59__ULInternalNotifyMonitor__handleNotificationForEventName___block_invok
       else
       {
         v11 = +[(ULEvent *)ULInternalNotifyMonitorEventSettingsRefresh];
-        v12 = [v3 isEqual:v11];
+        v12 = [nameCopy isEqual:v11];
 
         if (v12)
         {

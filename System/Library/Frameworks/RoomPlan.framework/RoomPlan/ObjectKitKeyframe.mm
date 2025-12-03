@@ -1,16 +1,16 @@
 @interface ObjectKitKeyframe
 - (_TtC8RoomPlan17ObjectKitKeyframe)init;
 - (__n128)cameraPose;
-- (id)copyWithZone:(void *)a3;
-- (uint64_t)setCameraPose:(__n128)a3;
+- (id)copyWithZone:(void *)zone;
+- (uint64_t)setCameraPose:(__n128)pose;
 @end
 
 @implementation ObjectKitKeyframe
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  [(ObjectKitKeyframe *)v3 copy];
+  selfCopy = self;
+  [(ObjectKitKeyframe *)selfCopy copy];
   sub_23AA0D704();
 
   swift_unknownObjectRelease();
@@ -22,18 +22,18 @@
 
 - (__n128)cameraPose
 {
-  result = *(a1 + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose);
-  v2 = *(a1 + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose + 16);
-  v3 = *(a1 + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose + 32);
-  v4 = *(a1 + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose + 48);
+  result = *(self + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose);
+  v2 = *(self + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose + 16);
+  v3 = *(self + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose + 32);
+  v4 = *(self + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose + 48);
   return result;
 }
 
-- (uint64_t)setCameraPose:(__n128)a3
+- (uint64_t)setCameraPose:(__n128)pose
 {
   v5 = (result + OBJC_IVAR____TtC8RoomPlan17ObjectKitKeyframe_cameraPose);
   *v5 = a2;
-  v5[1] = a3;
+  v5[1] = pose;
   v5[2] = a4;
   v5[3] = a5;
   return result;

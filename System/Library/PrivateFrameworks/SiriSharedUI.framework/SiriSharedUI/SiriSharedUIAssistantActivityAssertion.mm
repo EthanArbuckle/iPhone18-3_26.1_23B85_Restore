@@ -1,14 +1,14 @@
 @interface SiriSharedUIAssistantActivityAssertion
-- (void)beginActivityWithReason:(id)a3;
-- (void)endActivityWithReason:(id)a3;
+- (void)beginActivityWithReason:(id)reason;
+- (void)endActivityWithReason:(id)reason;
 @end
 
 @implementation SiriSharedUIAssistantActivityAssertion
 
-- (void)beginActivityWithReason:(id)a3
+- (void)beginActivityWithReason:(id)reason
 {
-  v4 = a3;
-  v3 = v4;
+  reasonCopy = reason;
+  v3 = reasonCopy;
   SRUIFInvokeOnMainQueue();
 }
 
@@ -27,10 +27,10 @@ void __66__SiriSharedUIAssistantActivityAssertion_beginActivityWithReason___bloc
   [v5 setIdleTimerDisabled:1 forReason:*(a1 + 32)];
 }
 
-- (void)endActivityWithReason:(id)a3
+- (void)endActivityWithReason:(id)reason
 {
-  v4 = a3;
-  v3 = v4;
+  reasonCopy = reason;
+  v3 = reasonCopy;
   SRUIFInvokeOnMainQueue();
 }
 

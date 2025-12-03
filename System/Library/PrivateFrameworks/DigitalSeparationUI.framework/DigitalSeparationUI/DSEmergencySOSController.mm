@@ -1,23 +1,23 @@
 @interface DSEmergencySOSController
 - (BOOL)hasAppWithKappaApproved;
-- (BOOL)maybeRetryDueToError:(id)a3 withReason:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)maybeRetryDueToError:(id)error withReason:(id)reason;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (DSEmergencySOSController)init;
 - (DSNavigationDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_showMaxContactsAlert;
 - (void)chooseNewEmergencyContact;
-- (void)emergencyContactFlow:(id)a3 didSelectContact:(id)a4;
+- (void)emergencyContactFlow:(id)flow didSelectContact:(id)contact;
 - (void)gatherEmergencyContacts;
-- (void)removeEmergencyContact:(id)a3;
+- (void)removeEmergencyContact:(id)contact;
 - (void)revokeKappaPermission;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateKappaBundleID;
 - (void)viewDidLoad;
 @end
@@ -33,8 +33,8 @@
   v6 = DSUILocStringForKey(@"EMERGENCY_SOS_DETAIL");
   if ([MEMORY[0x277D495A8] isKappaUnmasked] && objc_msgSend(MEMORY[0x277D495A8], "isKappaDetectionSupportedOnCurrentDevice"))
   {
-    v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v8 = [v7 applicationIsInstalled:@"com.apple.MobileSMS"];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v8 = [defaultWorkspace applicationIsInstalled:@"com.apple.MobileSMS"];
 
     if (v8)
     {
@@ -91,27 +91,27 @@
   v4 = DSUILocStringForKey(@"BACK_TO_UPDATE_APPLEID");
   v5 = [v3 initWithTitle:v4 style:0 target:0 action:0];
 
-  v6 = [(DSEmergencySOSController *)self navigationController];
-  v7 = [v6 navigationBar];
-  v8 = [v7 topItem];
-  [v8 setBackBarButtonItem:v5];
+  navigationController = [(DSEmergencySOSController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  topItem = [navigationBar topItem];
+  [topItem setBackBarButtonItem:v5];
 
-  v9 = [(DSEmergencySOSController *)self delegate];
-  if (v9)
+  delegate = [(DSEmergencySOSController *)self delegate];
+  if (delegate)
   {
     v10 = DSUILocStringForKey(@"CONTINUE");
-    v11 = [DSUIUtilities setUpBoldButtonForController:self title:v10 target:v9 selector:sel_pushNextPane];
+    v11 = [DSUIUtilities setUpBoldButtonForController:self title:v10 target:delegate selector:sel_pushNextPane];
     [(DSTableWelcomeController *)self setBoldButton:v11];
   }
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setEditing:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setEditing:1];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setAllowsSelectionDuringEditing:1];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setAllowsSelectionDuringEditing:1];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setAllowsMultipleSelectionDuringEditing:0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setAllowsMultipleSelectionDuringEditing:0];
 
   self->_hasRetriedEmergencyContactFetch = 0;
   [(DSEmergencySOSController *)self gatherEmergencyContacts];
@@ -120,13 +120,13 @@
 
 - (void)updateKappaBundleID
 {
-  v3 = [(DSEmergencySOSController *)self appSharing];
+  appSharing = [(DSEmergencySOSController *)self appSharing];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__DSEmergencySOSController_updateKappaBundleID__block_invoke;
   v4[3] = &unk_278F75FC8;
   v4[4] = self;
-  [v3 approvedBundleIdForKappa:MEMORY[0x277D85CD0] handler:v4];
+  [appSharing approvedBundleIdForKappa:MEMORY[0x277D85CD0] handler:v4];
 }
 
 void __47__DSEmergencySOSController_updateKappaBundleID__block_invoke(uint64_t a1, void *a2)
@@ -148,34 +148,34 @@ void __47__DSEmergencySOSController_updateKappaBundleID__block_invoke(uint64_t a
   [v5 reloadData];
 }
 
-- (BOOL)maybeRetryDueToError:(id)a3 withReason:(id)a4
+- (BOOL)maybeRetryDueToError:(id)error withReason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  reasonCopy = reason;
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
-  v8 = [v6 domain];
-  if (![v8 isEqualToString:*MEMORY[0x277CCA050]] || objc_msgSend(v6, "code") != 4097)
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x277CCA050]] || objc_msgSend(errorCopy, "code") != 4097)
   {
 
     goto LABEL_8;
   }
 
-  v9 = [(DSEmergencySOSController *)self hasRetriedEmergencyContactFetch];
+  hasRetriedEmergencyContactFetch = [(DSEmergencySOSController *)self hasRetriedEmergencyContactFetch];
 
-  if (v9)
+  if (hasRetriedEmergencyContactFetch)
   {
 LABEL_8:
     v12 = 0;
     goto LABEL_9;
   }
 
-  v10 = [v7 stringByAppendingFormat:@" %@", v6];
+  errorCopy = [reasonCopy stringByAppendingFormat:@" %@", errorCopy];
   v11 = DSLog_18;
   if (os_log_type_enabled(DSLog_18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v10;
+    v19 = errorCopy;
     _os_log_impl(&dword_248C7E000, v11, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
@@ -206,8 +206,8 @@ void __60__DSEmergencySOSController_maybeRetryDueToError_withReason___block_invo
 
 - (void)gatherEmergencyContacts
 {
-  v3 = [(DSTableWelcomeController *)self boldButton];
-  [v3 showsBusyIndicator];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton showsBusyIndicator];
 
   objc_initWeak(&location, self);
   v4 = dispatch_group_create();
@@ -343,7 +343,7 @@ void __51__DSEmergencySOSController_gatherEmergencyContacts__block_invoke_2(uint
   [v3 reloadData];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(DSEmergencySOSController *)self hasAppWithKappaApproved])
   {
@@ -356,22 +356,22 @@ void __51__DSEmergencySOSController_gatherEmergencyContacts__block_invoke_2(uint
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     return 1;
   }
 
-  v5 = [(DSEmergencySOSController *)self emergencyContacts];
-  v4 = [v5 count] + 1;
+  emergencyContacts = [(DSEmergencySOSController *)self emergencyContacts];
+  v4 = [emergencyContacts count] + 1;
 
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     DSUILocStringForKeyInTable(@"CAR_CRASH_TABLE_TITLE", @"DigitalSeparationUI-SYDRO_FEATURES");
   }
@@ -385,9 +385,9 @@ void __51__DSEmergencySOSController_gatherEmergencyContacts__block_invoke_2(uint
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     v5 = DSUILocStringForKeyInTable(@"CAR_CRASH_TABLE_DETAIL", @"DigitalSeparationUI-SYDRO_FEATURES");
   }
@@ -400,88 +400,88 @@ void __51__DSEmergencySOSController_gatherEmergencyContacts__block_invoke_2(uint
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = objc_alloc_init(MEMORY[0x277D75B48]);
-  v7 = [MEMORY[0x277D756E0] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
   [v6 setIsAccessibilityElement:1];
-  v8 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [v6 setBackgroundColor:v8];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [v6 setBackgroundColor:tertiarySystemFillColor];
 
-  v9 = [v7 textProperties];
-  [v9 setNumberOfLines:0];
+  textProperties = [valueCellConfiguration textProperties];
+  [textProperties setNumberOfLines:0];
 
-  v10 = [v7 textProperties];
-  [v10 setLineBreakMode:0];
+  textProperties2 = [valueCellConfiguration textProperties];
+  [textProperties2 setLineBreakMode:0];
 
-  if ([v5 section])
+  if ([pathCopy section])
   {
     if ([(DSEmergencySOSController *)self hasAppWithKappaApproved])
     {
-      v11 = [(DSEmergencySOSController *)self kappaApprovedAppID];
+      kappaApprovedAppID = [(DSEmergencySOSController *)self kappaApprovedAppID];
       v12 = displayNameForApp();
-      [v7 setText:v12];
+      [valueCellConfiguration setText:v12];
 
-      v13 = [(DSEmergencySOSController *)self kappaApprovedAppID];
-      v14 = [DSUIUtilities appIconForAppID:v13 format:0];
-      [v7 setImage:v14];
+      kappaApprovedAppID2 = [(DSEmergencySOSController *)self kappaApprovedAppID];
+      v14 = [DSUIUtilities appIconForAppID:kappaApprovedAppID2 format:0];
+      [valueCellConfiguration setImage:v14];
     }
   }
 
   else
   {
-    v15 = [v5 row];
-    v16 = [(DSEmergencySOSController *)self emergencyContacts];
-    v17 = [v16 count];
+    v15 = [pathCopy row];
+    emergencyContacts = [(DSEmergencySOSController *)self emergencyContacts];
+    v17 = [emergencyContacts count];
 
     if (v15 >= v17)
     {
       v24 = DSUILocStringForKey(@"ADD_EMERGENCY_CONTACT");
-      [v7 setText:v24];
+      [valueCellConfiguration setText:v24];
 
-      v25 = [v7 textProperties];
-      v26 = [MEMORY[0x277D75348] systemBlueColor];
-      [v25 setColor:v26];
+      textProperties3 = [valueCellConfiguration textProperties];
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      [textProperties3 setColor:systemBlueColor];
 
-      v27 = [v6 accessibilityTraits];
-      [v6 setAccessibilityTraits:*MEMORY[0x277D76548] | v27];
+      accessibilityTraits = [v6 accessibilityTraits];
+      [v6 setAccessibilityTraits:*MEMORY[0x277D76548] | accessibilityTraits];
     }
 
     else
     {
-      v18 = [(DSEmergencySOSController *)self emergencyContacts];
-      v19 = [v18 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
-      v20 = [v19 name];
-      [v7 setText:v20];
+      emergencyContacts2 = [(DSEmergencySOSController *)self emergencyContacts];
+      v19 = [emergencyContacts2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+      name = [v19 name];
+      [valueCellConfiguration setText:name];
 
-      v21 = [(DSEmergencySOSController *)self emergencyContacts];
-      v22 = [v21 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
-      v23 = [v22 phoneNumber];
-      [v7 setSecondaryText:v23];
+      emergencyContacts3 = [(DSEmergencySOSController *)self emergencyContacts];
+      v22 = [emergencyContacts3 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+      phoneNumber = [v22 phoneNumber];
+      [valueCellConfiguration setSecondaryText:phoneNumber];
 
-      [v7 setPrefersSideBySideTextAndSecondaryText:0];
+      [valueCellConfiguration setPrefersSideBySideTextAndSecondaryText:0];
     }
   }
 
-  [v6 setContentConfiguration:v7];
+  [v6 setContentConfiguration:valueCellConfiguration];
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v5 row];
-    v8 = [(DSEmergencySOSController *)self emergencyContacts];
-    v9 = [v8 count];
+    v7 = [pathCopy row];
+    emergencyContacts = [(DSEmergencySOSController *)self emergencyContacts];
+    v9 = [emergencyContacts count];
 
     if (v7 == v9)
     {
@@ -497,36 +497,36 @@ void __51__DSEmergencySOSController_gatherEmergencyContacts__block_invoke_2(uint
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v5 row];
-    v8 = [(DSEmergencySOSController *)self emergencyContacts];
-    v6 = v7 == [v8 count];
+    v7 = [pathCopy row];
+    emergencyContacts = [(DSEmergencySOSController *)self emergencyContacts];
+    v6 = v7 == [emergencyContacts count];
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [v6 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+  [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
-  if (![v11 section])
+  if (![pathCopy section])
   {
-    v8 = [v11 row];
-    v9 = [(DSEmergencySOSController *)self emergencyContacts];
-    v10 = [v9 count];
+    v8 = [pathCopy row];
+    emergencyContacts = [(DSEmergencySOSController *)self emergencyContacts];
+    v10 = [emergencyContacts count];
 
     if (v8 == v10)
     {
@@ -535,23 +535,23 @@ void __51__DSEmergencySOSController_gatherEmergencyContacts__block_invoke_2(uint
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v9 = a5;
-  if ([v9 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     [(DSEmergencySOSController *)self revokeKappaPermission];
   }
 
-  else if (a4 == 2)
+  else if (style == 2)
   {
     [(DSEmergencySOSController *)self chooseNewEmergencyContact];
   }
 
-  else if (a4 == 1)
+  else if (style == 1)
   {
-    v7 = [(DSEmergencySOSController *)self emergencyContacts];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
+    emergencyContacts = [(DSEmergencySOSController *)self emergencyContacts];
+    v8 = [emergencyContacts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     [(DSEmergencySOSController *)self removeEmergencyContact:v8];
   }
@@ -571,17 +571,17 @@ void __51__DSEmergencySOSController_gatherEmergencyContacts__block_invoke_2(uint
   [(DSEmergencySOSController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)removeEmergencyContact:(id)a3
+- (void)removeEmergencyContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   objc_initWeak(&location, self);
-  v5 = [(DSEmergencySOSController *)self medicalIDStore];
+  medicalIDStore = [(DSEmergencySOSController *)self medicalIDStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__DSEmergencySOSController_removeEmergencyContact___block_invoke;
   v6[3] = &unk_278F75EB0;
   objc_copyWeak(&v7, &location);
-  [v5 removeEmergencyContact:v4 completion:v6];
+  [medicalIDStore removeEmergencyContact:contactCopy completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -635,55 +635,55 @@ void __51__DSEmergencySOSController_removeEmergencyContact___block_invoke_2(uint
   v4 = v3;
   _Block_object_dispose(&v12, 8);
   v5 = [v3 alloc];
-  v6 = [(DSEmergencySOSController *)self medicalIDData];
-  v7 = [v5 initWithPresentingViewController:self forMedicalIDData:v6];
+  medicalIDData = [(DSEmergencySOSController *)self medicalIDData];
+  v7 = [v5 initWithPresentingViewController:self forMedicalIDData:medicalIDData];
   contactFlow = self->_contactFlow;
   self->_contactFlow = v7;
 
-  v9 = [(DSEmergencySOSController *)self contactFlow];
-  [v9 setDelegate:self];
+  contactFlow = [(DSEmergencySOSController *)self contactFlow];
+  [contactFlow setDelegate:self];
 
-  v10 = [(DSEmergencySOSController *)self contactFlow];
-  [v10 presentEmergencyContactFlow];
+  contactFlow2 = [(DSEmergencySOSController *)self contactFlow];
+  [contactFlow2 presentEmergencyContactFlow];
 }
 
-- (void)emergencyContactFlow:(id)a3 didSelectContact:(id)a4
+- (void)emergencyContactFlow:(id)flow didSelectContact:(id)contact
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  contactCopy = contact;
   if (([MEMORY[0x277D495A8] isAllowedToMessageSOSContacts] & 1) == 0)
   {
     [MEMORY[0x277D495A8] setAllowedToMessageSOSContacts:1];
   }
 
-  v8 = [(DSEmergencySOSController *)self medicalIDData];
-  v9 = [v8 emergencyContacts];
-  if (v9)
+  medicalIDData = [(DSEmergencySOSController *)self medicalIDData];
+  emergencyContacts = [medicalIDData emergencyContacts];
+  if (emergencyContacts)
   {
-    v10 = [(DSEmergencySOSController *)self medicalIDData];
-    v11 = [v10 emergencyContacts];
-    v12 = [v11 arrayByAddingObject:v7];
+    medicalIDData2 = [(DSEmergencySOSController *)self medicalIDData];
+    emergencyContacts2 = [medicalIDData2 emergencyContacts];
+    v12 = [emergencyContacts2 arrayByAddingObject:contactCopy];
   }
 
   else
   {
-    v20[0] = v7;
+    v20[0] = contactCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   }
 
-  v13 = [(DSEmergencySOSController *)self medicalIDData];
-  [v13 setEmergencyContacts:v12];
+  medicalIDData3 = [(DSEmergencySOSController *)self medicalIDData];
+  [medicalIDData3 setEmergencyContacts:v12];
 
   objc_initWeak(&location, self);
-  v14 = [(DSEmergencySOSController *)self medicalIDStore];
-  v15 = [(DSEmergencySOSController *)self medicalIDData];
+  medicalIDStore = [(DSEmergencySOSController *)self medicalIDStore];
+  medicalIDData4 = [(DSEmergencySOSController *)self medicalIDData];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66__DSEmergencySOSController_emergencyContactFlow_didSelectContact___block_invoke;
   v17[3] = &unk_278F75EB0;
   objc_copyWeak(&v18, &location);
-  [v14 updateMedicalIDData:v15 completion:v17];
+  [medicalIDStore updateMedicalIDData:medicalIDData4 completion:v17];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -729,7 +729,7 @@ void __66__DSEmergencySOSController_emergencyContactFlow_didSelectContact___bloc
 - (void)revokeKappaPermission
 {
   v3 = *MEMORY[0x277D6C140];
-  v4 = [(DSEmergencySOSController *)self kappaApprovedAppID];
+  kappaApprovedAppID = [(DSEmergencySOSController *)self kappaApprovedAppID];
   TCCAccessResetForBundleId();
 
   [(DSEmergencySOSController *)self updateKappaBundleID];
@@ -737,8 +737,8 @@ void __66__DSEmergencySOSController_emergencyContactFlow_didSelectContact___bloc
 
 - (BOOL)hasAppWithKappaApproved
 {
-  v2 = [(DSEmergencySOSController *)self kappaApprovedAppID];
-  v3 = v2 != 0;
+  kappaApprovedAppID = [(DSEmergencySOSController *)self kappaApprovedAppID];
+  v3 = kappaApprovedAppID != 0;
 
   return v3;
 }

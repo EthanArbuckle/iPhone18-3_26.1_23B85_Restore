@@ -1,28 +1,28 @@
 @interface NWMessageConnection
-- (void)readMessageWithCompletionHandler:(id)a3;
-- (void)writeMessage:(id)a3 completionHandler:(id)a4;
+- (void)readMessageWithCompletionHandler:(id)handler;
+- (void)writeMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation NWMessageConnection
 
-- (void)writeMessage:(id)a3 completionHandler:(id)a4
+- (void)writeMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
   v8 = nw_content_context_create("NWMessageConnection");
-  [v7 relativePriority];
+  [messageCopy relativePriority];
   nw_content_context_set_relative_priority(v8, v9);
-  nw_content_context_set_expiration_milliseconds(v8, [v7 expirationMilliseconds]);
-  v10 = [(NWConnection *)self internalConnection];
-  v11 = [v7 internalContent];
+  nw_content_context_set_expiration_milliseconds(v8, [messageCopy expirationMilliseconds]);
+  internalConnection = [(NWConnection *)self internalConnection];
+  internalContent = [messageCopy internalContent];
 
   completion[0] = MEMORY[0x1E69E9820];
   completion[1] = 3221225472;
   completion[2] = __54__NWMessageConnection_writeMessage_completionHandler___block_invoke;
   completion[3] = &unk_1E6A39D90;
-  v14 = v6;
-  v12 = v6;
-  nw_connection_send(v10, v11, v8, 1, completion);
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  nw_connection_send(internalConnection, internalContent, v8, 1, completion);
 }
 
 void __54__NWMessageConnection_writeMessage_completionHandler___block_invoke(uint64_t a1, nw_error_t error)
@@ -32,17 +32,17 @@ void __54__NWMessageConnection_writeMessage_completionHandler___block_invoke(uin
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)readMessageWithCompletionHandler:(id)a3
+- (void)readMessageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NWConnection *)self internalConnection];
+  handlerCopy = handler;
+  internalConnection = [(NWConnection *)self internalConnection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__NWMessageConnection_readMessageWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E6A39D68;
-  v8 = v4;
-  v6 = v4;
-  nw_connection_receive_internal(v5, 0, 0xFFFFFFFF, 0xFFFFFFFF, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  nw_connection_receive_internal(internalConnection, 0, 0xFFFFFFFF, 0xFFFFFFFF, v7);
 }
 
 void __56__NWMessageConnection_readMessageWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, void *a5)

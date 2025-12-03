@@ -1,16 +1,16 @@
 @interface SRCompactLinkTappableTextView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SRCompactLinkTappableTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)setSelectable:(BOOL)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SRCompactLinkTappableTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)setSelectable:(BOOL)selectable;
 @end
 
 @implementation SRCompactLinkTappableTextView
 
-- (SRCompactLinkTappableTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (SRCompactLinkTappableTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   v7.receiver = self;
   v7.super_class = SRCompactLinkTappableTextView;
-  v4 = [(SRCompactLinkTappableTextView *)&v7 initWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SRCompactLinkTappableTextView *)&v7 initWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -20,9 +20,9 @@
   return v5;
 }
 
-- (void)setSelectable:(BOOL)a3
+- (void)setSelectable:(BOOL)selectable
 {
-  if (!a3)
+  if (!selectable)
   {
     v3 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"SRCompactLinkTappableTextView must be selectable" userInfo:0];
     objc_exception_throw(v3);
@@ -33,25 +33,25 @@
   [(SRCompactLinkTappableTextView *)&v4 setSelectable:1];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SRCompactLinkTappableTextView *)self attributedText];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  attributedText = [(SRCompactLinkTappableTextView *)self attributedText];
 
-  if (v8)
+  if (attributedText)
   {
     v9 = [(SRCompactLinkTappableTextView *)self closestPositionToPoint:x, y];
-    v10 = [(SRCompactLinkTappableTextView *)self tokenizer];
-    v11 = [v10 rangeEnclosingPosition:v9 withGranularity:0 inDirection:3];
+    tokenizer = [(SRCompactLinkTappableTextView *)self tokenizer];
+    v11 = [tokenizer rangeEnclosingPosition:v9 withGranularity:0 inDirection:3];
 
-    v12 = [(SRCompactLinkTappableTextView *)self beginningOfDocument];
-    v13 = [v11 start];
-    v14 = [(SRCompactLinkTappableTextView *)self offsetFromPosition:v12 toPosition:v13];
+    beginningOfDocument = [(SRCompactLinkTappableTextView *)self beginningOfDocument];
+    start = [v11 start];
+    v14 = [(SRCompactLinkTappableTextView *)self offsetFromPosition:beginningOfDocument toPosition:start];
 
-    v15 = [(SRCompactLinkTappableTextView *)self attributedText];
-    v16 = [v15 attribute:NSLinkAttributeName atIndex:v14 effectiveRange:0];
+    attributedText2 = [(SRCompactLinkTappableTextView *)self attributedText];
+    v16 = [attributedText2 attribute:NSLinkAttributeName atIndex:v14 effectiveRange:0];
     v17 = v16 != 0;
   }
 
@@ -59,7 +59,7 @@
   {
     v19.receiver = self;
     v19.super_class = SRCompactLinkTappableTextView;
-    v17 = [(SRCompactLinkTappableTextView *)&v19 pointInside:v7 withEvent:x, y];
+    v17 = [(SRCompactLinkTappableTextView *)&v19 pointInside:eventCopy withEvent:x, y];
   }
 
   return v17;

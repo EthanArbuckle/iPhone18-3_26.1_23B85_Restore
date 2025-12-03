@@ -1,27 +1,27 @@
 @interface HDMCSymptomHistoryBuilder
-- (HDMCSymptomHistoryBuilder)initWithCurrentDayIndex:(int64_t)a3;
+- (HDMCSymptomHistoryBuilder)initWithCurrentDayIndex:(int64_t)index;
 - (unint64_t)recentSymptoms;
-- (void)addSymptoms:(unint64_t)a3 forDayIndex:(int64_t)a4;
+- (void)addSymptoms:(unint64_t)symptoms forDayIndex:(int64_t)index;
 @end
 
 @implementation HDMCSymptomHistoryBuilder
 
-- (HDMCSymptomHistoryBuilder)initWithCurrentDayIndex:(int64_t)a3
+- (HDMCSymptomHistoryBuilder)initWithCurrentDayIndex:(int64_t)index
 {
   v7.receiver = self;
   v7.super_class = HDMCSymptomHistoryBuilder;
   v3 = [(HDMCSymptomHistoryBuilder *)&v7 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     mostRecentDayBySymptom = v3->_mostRecentDayBySymptom;
-    v3->_mostRecentDayBySymptom = v4;
+    v3->_mostRecentDayBySymptom = dictionary;
   }
 
   return v3;
 }
 
-- (void)addSymptoms:(unint64_t)a3 forDayIndex:(int64_t)a4
+- (void)addSymptoms:(unint64_t)symptoms forDayIndex:(int64_t)index
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = HKMCDaySummarySymptomArrayFromSymptoms();
@@ -46,9 +46,9 @@
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_mostRecentDayBySymptom objectForKeyedSubscript:v11];
         v13 = v12;
-        if (!v12 || [v12 integerValue] < a4)
+        if (!v12 || [v12 integerValue] < index)
         {
-          v14 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+          v14 = [MEMORY[0x277CCABB0] numberWithInteger:index];
           [(NSMutableDictionary *)self->_mostRecentDayBySymptom setObject:v14 forKeyedSubscript:v11];
         }
       }
@@ -66,10 +66,10 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v2 = [(NSMutableDictionary *)self->_mostRecentDayBySymptom keysSortedByValueUsingSelector:sel_compare_];
-  v3 = [v2 reverseObjectEnumerator];
-  v4 = [v3 allObjects];
+  reverseObjectEnumerator = [v2 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v5 = [v4 count];
+  v5 = [allObjects count];
   if (v5 >= 3)
   {
     v6 = 3;
@@ -80,7 +80,7 @@
     v6 = v5;
   }
 
-  v7 = [v4 subarrayWithRange:{0, v6}];
+  v7 = [allObjects subarrayWithRange:{0, v6}];
 
   v18 = 0u;
   v19 = 0u;

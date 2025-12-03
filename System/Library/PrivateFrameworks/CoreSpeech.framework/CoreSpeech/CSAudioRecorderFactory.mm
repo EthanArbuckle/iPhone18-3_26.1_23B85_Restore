@@ -1,16 +1,16 @@
 @interface CSAudioRecorderFactory
-+ (id)audioRecorderWithQueue:(id)a3 error:(id *)a4;
++ (id)audioRecorderWithQueue:(id)queue error:(id *)error;
 @end
 
 @implementation CSAudioRecorderFactory
 
-+ (id)audioRecorderWithQueue:(id)a3 error:(id *)a4
++ (id)audioRecorderWithQueue:(id)queue error:(id *)error
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = +[CSFPreferences sharedPreferences];
-  v7 = [v6 programmableAudioInjectionEnabled];
+  programmableAudioInjectionEnabled = [v6 programmableAudioInjectionEnabled];
 
-  if (v7)
+  if (programmableAudioInjectionEnabled)
   {
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -26,7 +26,7 @@
 
   else
   {
-    v9 = [[CSAudioRecorder alloc] initWithQueue:v5 error:a4];
+    v9 = [[CSAudioRecorder alloc] initWithQueue:queueCopy error:error];
   }
 
   return v9;

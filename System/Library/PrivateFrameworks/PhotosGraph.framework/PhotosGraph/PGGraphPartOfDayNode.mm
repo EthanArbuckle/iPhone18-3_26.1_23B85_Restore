@@ -1,12 +1,12 @@
 @interface PGGraphPartOfDayNode
 + (id)filter;
-+ (id)filterWithPartOfDay:(unint64_t)a3;
-+ (id)partOfDayNameForPartOfDay:(unint64_t)a3;
-+ (id)stringValueForPartOfDay:(unint64_t)a3;
-+ (unint64_t)partOfDayForPartOfDayName:(id)a3;
-- (BOOL)hasProperties:(id)a3;
++ (id)filterWithPartOfDay:(unint64_t)day;
++ (id)partOfDayNameForPartOfDay:(unint64_t)day;
++ (id)stringValueForPartOfDay:(unint64_t)day;
++ (unint64_t)partOfDayForPartOfDayName:(id)name;
+- (BOOL)hasProperties:(id)properties;
 - (NSString)name;
-- (PGGraphPartOfDayNode)initWithPartOfDay:(unint64_t)a3;
+- (PGGraphPartOfDayNode)initWithPartOfDay:(unint64_t)day;
 - (id)description;
 - (id)propertyDictionary;
 - (unint64_t)partOfDay;
@@ -17,8 +17,8 @@
 - (unint64_t)partOfDay
 {
   v3 = objc_opt_class();
-  v4 = [(PGGraphPartOfDayNode *)self name];
-  v5 = [v3 partOfDayForPartOfDayName:v4];
+  name = [(PGGraphPartOfDayNode *)self name];
+  v5 = [v3 partOfDayForPartOfDayName:name];
 
   return v5;
 }
@@ -52,11 +52,11 @@
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [objc_opt_class() partOfDayNameForPartOfDay:self->_partOfDay];
     v7 = [v5 objectForKeyedSubscript:@"name"];
@@ -72,32 +72,32 @@
   return v9;
 }
 
-- (PGGraphPartOfDayNode)initWithPartOfDay:(unint64_t)a3
+- (PGGraphPartOfDayNode)initWithPartOfDay:(unint64_t)day
 {
   v5.receiver = self;
   v5.super_class = PGGraphPartOfDayNode;
   result = [(PGGraphNode *)&v5 init];
   if (result)
   {
-    result->_partOfDay = a3;
+    result->_partOfDay = day;
   }
 
   return result;
 }
 
-+ (id)partOfDayNameForPartOfDay:(unint64_t)a3
++ (id)partOfDayNameForPartOfDay:(unint64_t)day
 {
-  v3 = a3;
+  dayCopy = day;
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 <= 7)
+  if (day <= 7)
   {
-    if (a3 == 2)
+    if (day == 2)
     {
       v4 = MEMORY[0x277D275D0];
       goto LABEL_12;
     }
 
-    if (a3 == 4)
+    if (day == 4)
     {
       v4 = MEMORY[0x277D275E0];
       goto LABEL_12;
@@ -106,7 +106,7 @@
 
   else
   {
-    switch(a3)
+    switch(day)
     {
       case 8uLL:
         v4 = MEMORY[0x277D275C0];
@@ -123,13 +123,13 @@ LABEL_12:
   }
 
   v8 = +[PGLogging sharedLogging];
-  v9 = [v8 loggingConnection];
+  loggingConnection = [v8 loggingConnection];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
-    _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "Unknown part of day %d", v10, 8u);
+    v10[1] = dayCopy;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unknown part of day %d", v10, 8u);
   }
 
   v5 = @"Unknown";
@@ -139,31 +139,31 @@ LABEL_13:
   return v5;
 }
 
-+ (unint64_t)partOfDayForPartOfDayName:(id)a3
++ (unint64_t)partOfDayForPartOfDayName:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D275D0]])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:*MEMORY[0x277D275D0]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D275E0]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x277D275E0]])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D275C0]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x277D275C0]])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D275C8]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x277D275C8]])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D275D8]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x277D275D8]])
   {
     v4 = 32;
   }
@@ -171,13 +171,13 @@ LABEL_13:
   else
   {
     v5 = +[PGLogging sharedLogging];
-    v6 = [v5 loggingConnection];
+    loggingConnection = [v5 loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v3;
-      _os_log_error_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_ERROR, "Unknown part of day name %@", &v9, 0xCu);
+      v10 = nameCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unknown part of day name %@", &v9, 0xCu);
     }
 
     v4 = 1;
@@ -187,25 +187,25 @@ LABEL_13:
   return v4;
 }
 
-+ (id)stringValueForPartOfDay:(unint64_t)a3
++ (id)stringValueForPartOfDay:(unint64_t)day
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
-  if (v3)
+  dayCopy = day;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
+  if (dayCopy)
   {
-    [v4 addObject:@"Unknown"];
+    [array addObject:@"Unknown"];
   }
 
-  if ((v3 & 2) != 0)
+  if ((dayCopy & 2) != 0)
   {
     v9 = +[PGPhotosGraphProfile partOfDayMorning];
     [v5 addObject:v9];
 
-    if ((v3 & 4) == 0)
+    if ((dayCopy & 4) == 0)
     {
 LABEL_5:
-      if ((v3 & 8) == 0)
+      if ((dayCopy & 8) == 0)
       {
         goto LABEL_6;
       }
@@ -214,7 +214,7 @@ LABEL_5:
     }
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((dayCopy & 4) == 0)
   {
     goto LABEL_5;
   }
@@ -222,10 +222,10 @@ LABEL_5:
   v10 = +[PGPhotosGraphProfile partOfDayNoon];
   [v5 addObject:v10];
 
-  if ((v3 & 8) == 0)
+  if ((dayCopy & 8) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x10) == 0)
+    if ((dayCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -237,10 +237,10 @@ LABEL_14:
   v11 = +[PGPhotosGraphProfile partOfDayAfternoon];
   [v5 addObject:v11];
 
-  if ((v3 & 0x10) == 0)
+  if ((dayCopy & 0x10) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x20) == 0)
+    if ((dayCopy & 0x20) == 0)
     {
       goto LABEL_9;
     }
@@ -252,7 +252,7 @@ LABEL_15:
   v12 = +[PGPhotosGraphProfile partOfDayEvening];
   [v5 addObject:v12];
 
-  if ((v3 & 0x20) != 0)
+  if ((dayCopy & 0x20) != 0)
   {
 LABEL_8:
     v6 = +[PGPhotosGraphProfile partOfDayNight];
@@ -265,15 +265,15 @@ LABEL_9:
   return v7;
 }
 
-+ (id)filterWithPartOfDay:(unint64_t)a3
++ (id)filterWithPartOfDay:(unint64_t)day
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [objc_opt_class() partOfDayNameForPartOfDay:a3];
-  v5 = [a1 filter];
+  v4 = [objc_opt_class() partOfDayNameForPartOfDay:day];
+  filter = [self filter];
   v10 = @"name";
   v11[0] = v4;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 

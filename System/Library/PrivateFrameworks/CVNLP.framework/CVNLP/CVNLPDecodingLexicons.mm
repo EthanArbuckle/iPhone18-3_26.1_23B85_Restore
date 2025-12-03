@@ -1,59 +1,59 @@
 @interface CVNLPDecodingLexicons
-- (CVNLPDecodingLexicons)initWithLexicons:(id)a3;
-- (CVNLPDecodingLexicons)initWithLexicons:(id)a3 decodingWeight:(id)a4;
-- (CVNLPDecodingLexicons)initWithLexicons:(id)a3 decodingWeight:(id)a4 lowerBoundLogProbability:(id)a5 inputNormalizationFunction:(void *)a6;
-- (id)lexiconsForPriority:(unint64_t)a3;
-- (id)packagedLexiconCursorsUsingTextDecodingContext:(id)a3;
-- (void)enumerateLexiconsSortedByPriorityWithBlock:(id)a3;
+- (CVNLPDecodingLexicons)initWithLexicons:(id)lexicons;
+- (CVNLPDecodingLexicons)initWithLexicons:(id)lexicons decodingWeight:(id)weight;
+- (CVNLPDecodingLexicons)initWithLexicons:(id)lexicons decodingWeight:(id)weight lowerBoundLogProbability:(id)probability inputNormalizationFunction:(void *)function;
+- (id)lexiconsForPriority:(unint64_t)priority;
+- (id)packagedLexiconCursorsUsingTextDecodingContext:(id)context;
+- (void)enumerateLexiconsSortedByPriorityWithBlock:(id)block;
 @end
 
 @implementation CVNLPDecodingLexicons
 
-- (CVNLPDecodingLexicons)initWithLexicons:(id)a3
+- (CVNLPDecodingLexicons)initWithLexicons:(id)lexicons
 {
-  v4 = a3;
+  lexiconsCopy = lexicons;
   v8 = objc_msgSend_defaultDecodingWeight(CVNLPInformationStream, v5, v6, v7);
   v12 = objc_msgSend_defaultLowerBoundLogProbability(CVNLPInformationStream, v9, v10, v11);
-  v14 = objc_msgSend_initWithLexicons_decodingWeight_lowerBoundLogProbability_(self, v13, v4, v8, v12);
+  v14 = objc_msgSend_initWithLexicons_decodingWeight_lowerBoundLogProbability_(self, v13, lexiconsCopy, v8, v12);
 
   return v14;
 }
 
-- (CVNLPDecodingLexicons)initWithLexicons:(id)a3 decodingWeight:(id)a4
+- (CVNLPDecodingLexicons)initWithLexicons:(id)lexicons decodingWeight:(id)weight
 {
-  v6 = a3;
-  v7 = a4;
+  lexiconsCopy = lexicons;
+  weightCopy = weight;
   v11 = objc_msgSend_defaultLowerBoundLogProbability(CVNLPInformationStream, v8, v9, v10);
-  v13 = objc_msgSend_initWithLexicons_decodingWeight_lowerBoundLogProbability_(self, v12, v6, v7, v11);
+  v13 = objc_msgSend_initWithLexicons_decodingWeight_lowerBoundLogProbability_(self, v12, lexiconsCopy, weightCopy, v11);
 
   return v13;
 }
 
-- (CVNLPDecodingLexicons)initWithLexicons:(id)a3 decodingWeight:(id)a4 lowerBoundLogProbability:(id)a5 inputNormalizationFunction:(void *)a6
+- (CVNLPDecodingLexicons)initWithLexicons:(id)lexicons decodingWeight:(id)weight lowerBoundLogProbability:(id)probability inputNormalizationFunction:(void *)function
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lexiconsCopy = lexicons;
+  weightCopy = weight;
+  probabilityCopy = probability;
   v23.receiver = self;
   v23.super_class = CVNLPDecodingLexicons;
-  v16 = [(CVNLPInformationStream *)&v23 initWithDecodingWeight:v11 lowerBoundLogProbability:v12];
+  v16 = [(CVNLPInformationStream *)&v23 initWithDecodingWeight:weightCopy lowerBoundLogProbability:probabilityCopy];
   if (v16)
   {
-    v17 = objc_msgSend_allObjects(v10, v13, v14, v15);
+    v17 = objc_msgSend_allObjects(lexiconsCopy, v13, v14, v15);
     v20 = objc_msgSend_sortedArrayUsingComparator_(v17, v18, &unk_1F554FD58, v19);
     sortedLexicons = v16->_sortedLexicons;
     v16->_sortedLexicons = v20;
 
-    v16->_inputNormalizationFunction = a6;
+    v16->_inputNormalizationFunction = function;
   }
 
   return v16;
 }
 
-- (void)enumerateLexiconsSortedByPriorityWithBlock:(id)a3
+- (void)enumerateLexiconsSortedByPriorityWithBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -74,7 +74,7 @@ LABEL_3:
 
       v10 = *(*(&v14 + 1) + 8 * v9);
       v13 = 0;
-      v4[2](v4, v10, &v13);
+      blockCopy[2](blockCopy, v10, &v13);
       if (v13)
       {
         break;
@@ -96,9 +96,9 @@ LABEL_3:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)lexiconsForPriority:(unint64_t)a3
+- (id)lexiconsForPriority:(unint64_t)priority
 {
-  v5 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], a2, @"priority == %lu", v3, a3);
+  v5 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], a2, @"priority == %lu", v3, priority);
   v8 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v6, self->_sortedLexicons, v7);
   v11 = objc_msgSend_filteredSetUsingPredicate_(v8, v9, v5, v10);
 
@@ -109,10 +109,10 @@ LABEL_3:
   return v18;
 }
 
-- (id)packagedLexiconCursorsUsingTextDecodingContext:(id)a3
+- (id)packagedLexiconCursorsUsingTextDecodingContext:(id)context
 {
-  v4 = a3;
-  v8 = v4;
+  contextCopy = context;
+  v8 = contextCopy;
   v24 = 0;
   v25 = &v24;
   v26 = 0x4812000000;
@@ -122,18 +122,18 @@ LABEL_3:
   v31 = 0;
   v32 = 0;
   __p = 0;
-  if (v4)
+  if (contextCopy)
   {
-    v4 = objc_msgSend_activeSubstring(v4, v5, v6, v7);
+    contextCopy = objc_msgSend_activeSubstring(contextCopy, v5, v6, v7);
   }
 
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = sub_1D9DD52C4;
   v20 = &unk_1E858E5E0;
-  v9 = v4;
+  v9 = contextCopy;
   v21 = v9;
-  v22 = self;
+  selfCopy = self;
   v23 = &v24;
   objc_msgSend_enumerateLexiconsSortedByPriorityWithBlock_(self, v10, &v17, v11);
   v12 = [CVNLPLexiconCursors alloc];

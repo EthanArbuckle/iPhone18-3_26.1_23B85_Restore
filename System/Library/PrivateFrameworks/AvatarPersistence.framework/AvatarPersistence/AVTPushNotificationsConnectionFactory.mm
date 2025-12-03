@@ -1,16 +1,16 @@
 @interface AVTPushNotificationsConnectionFactory
-- (id)connectionWithEnvironmentName:(id)a3 namedDelegatePort:(id)a4 queue:(id)a5;
+- (id)connectionWithEnvironmentName:(id)name namedDelegatePort:(id)port queue:(id)queue;
 @end
 
 @implementation AVTPushNotificationsConnectionFactory
 
-- (id)connectionWithEnvironmentName:(id)a3 namedDelegatePort:(id)a4 queue:(id)a5
+- (id)connectionWithEnvironmentName:(id)name namedDelegatePort:(id)port queue:(id)queue
 {
   v7 = MEMORY[0x277CEEA10];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithEnvironmentName:v10 namedDelegatePort:v9 queue:v8];
+  queueCopy = queue;
+  portCopy = port;
+  nameCopy = name;
+  v11 = [[v7 alloc] initWithEnvironmentName:nameCopy namedDelegatePort:portCopy queue:queueCopy];
 
   return v11;
 }

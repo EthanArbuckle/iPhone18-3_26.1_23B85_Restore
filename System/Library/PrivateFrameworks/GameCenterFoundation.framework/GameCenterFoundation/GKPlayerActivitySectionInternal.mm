@@ -1,29 +1,29 @@
 @interface GKPlayerActivitySectionInternal
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivitySectionInternal)initWithDictionary:(id)a3;
+- (GKPlayerActivitySectionInternal)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation GKPlayerActivitySectionInternal
 
-- (GKPlayerActivitySectionInternal)initWithDictionary:(id)a3
+- (GKPlayerActivitySectionInternal)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = GKPlayerActivitySectionInternal;
   v5 = [(GKPlayerActivitySectionInternal *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     [(GKPlayerActivitySectionInternal *)v5 setTitle:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"id"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     v21 = v5;
     [(GKPlayerActivitySectionInternal *)v5 setInstrumentationKey:v7];
 
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [v4 objectForKeyedSubscript:@"activity"];
+    array = [MEMORY[0x277CBEB18] array];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"activity"];
     v10 = v9;
     if (v9)
     {
@@ -59,7 +59,7 @@
             }
 
             v18 = [objc_alloc(*v17) initWithDictionary:v15];
-            [v8 addObject:v18];
+            [array addObject:v18];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -70,7 +70,7 @@
     }
 
     v5 = v21;
-    [(GKPlayerActivitySectionInternal *)v21 setItems:v8];
+    [(GKPlayerActivitySectionInternal *)v21 setItems:array];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -80,10 +80,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKPlayerActivitySectionInternal *)self title];
-  v5 = [(GKPlayerActivitySectionInternal *)self items];
-  v6 = [(GKPlayerActivitySectionInternal *)self instrumentationKey];
-  v7 = [v3 stringWithFormat:@"title: %@            \n items: %@            \n instrumentationKey: %@", v4, v5, v6];
+  title = [(GKPlayerActivitySectionInternal *)self title];
+  items = [(GKPlayerActivitySectionInternal *)self items];
+  instrumentationKey = [(GKPlayerActivitySectionInternal *)self instrumentationKey];
+  v7 = [v3 stringWithFormat:@"title: %@            \n items: %@            \n instrumentationKey: %@", title, items, instrumentationKey];
 
   return v7;
 }

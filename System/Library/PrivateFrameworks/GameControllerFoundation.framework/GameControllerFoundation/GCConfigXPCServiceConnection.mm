@@ -1,8 +1,8 @@
 @interface GCConfigXPCServiceConnection
 - (GCConfigXPCServiceClientInterface)client;
 - (GCConfigXPCServiceConnection)init;
-- (id)connectToService:(id)a3 withClient:(id)a4;
-- (void)setClient:(id)a3;
+- (id)connectToService:(id)service withClient:(id)client;
+- (void)setClient:(id)client;
 @end
 
 @implementation GCConfigXPCServiceConnection
@@ -25,26 +25,26 @@
 
 - (GCConfigXPCServiceClientInterface)client
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 exportedObject];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  exportedObject = [connection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  [v5 setExportedObject:v4];
+  clientCopy = client;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  [connection setExportedObject:clientCopy];
 }
 
-- (id)connectToService:(id)a3 withClient:(id)a4
+- (id)connectToService:(id)service withClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  clientCopy = client;
   v8 = [[GCOperation alloc] initOnQueue:0 withOptions:0];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = NSStringFromProtocol(v6);
+  v10 = NSStringFromProtocol(serviceCopy);
   v11 = [v9 stringWithFormat:@"Connect to '%@'.", v10];
   [v8 setLabel:v11];
 
@@ -53,9 +53,9 @@
   v21[2] = __60__GCConfigXPCServiceConnection_connectToService_withClient___block_invoke;
   v21[3] = &unk_1E8414EF8;
   v21[4] = self;
-  v12 = v6;
+  v12 = serviceCopy;
   v22 = v12;
-  v13 = v7;
+  v13 = clientCopy;
   v23 = v13;
   [v8 setSyncBlock:v21];
   v18[0] = MEMORY[0x1E69E9820];
@@ -68,9 +68,9 @@
   v14 = v13;
   v15 = v12;
   [v8 setAsyncBlock:v18];
-  v16 = [v8 activate];
+  activate = [v8 activate];
 
-  return v16;
+  return activate;
 }
 
 id __60__GCConfigXPCServiceConnection_connectToService_withClient___block_invoke(void *a1, uint64_t a2, void *a3)

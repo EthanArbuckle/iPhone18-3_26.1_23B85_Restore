@@ -1,25 +1,25 @@
 @interface IDSOffGridEntryMetric
-- (IDSOffGridEntryMetric)initWithService:(id)a3 source:(id)a4 date:(id)a5 success:(BOOL)a6;
+- (IDSOffGridEntryMetric)initWithService:(id)service source:(id)source date:(id)date success:(BOOL)success;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSOffGridEntryMetric
 
-- (IDSOffGridEntryMetric)initWithService:(id)a3 source:(id)a4 date:(id)a5 success:(BOOL)a6
+- (IDSOffGridEntryMetric)initWithService:(id)service source:(id)source date:(id)date success:(BOOL)success
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  serviceCopy = service;
+  sourceCopy = source;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = IDSOffGridEntryMetric;
   v14 = [(IDSOffGridEntryMetric *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_service, a3);
-    objc_storeStrong(&v15->_source, a4);
-    objc_storeStrong(&v15->_date, a5);
-    v15->_success = a6;
+    objc_storeStrong(&v14->_service, service);
+    objc_storeStrong(&v15->_source, source);
+    objc_storeStrong(&v15->_date, date);
+    v15->_success = success;
   }
 
   return v15;

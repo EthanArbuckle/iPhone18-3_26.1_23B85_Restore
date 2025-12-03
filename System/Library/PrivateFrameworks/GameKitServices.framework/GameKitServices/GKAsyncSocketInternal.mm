@@ -1,14 +1,14 @@
 @interface GKAsyncSocketInternal
-- (BOOL)setupSourcesWithSocket:(int)a3 receiveEventHandler:(id)a4 sendEventHandler:(id)a5;
+- (BOOL)setupSourcesWithSocket:(int)socket receiveEventHandler:(id)handler sendEventHandler:(id)eventHandler;
 - (GKAsyncSocketInternal)init;
 - (void)closeConnectionNow;
 - (void)dealloc;
 - (void)invalidate;
 - (void)receiveData;
 - (void)sendData;
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4;
-- (void)setTargetQueue:(id)a3;
-- (void)tcpConnectSockAddr:(const sockaddr *)a3 port:(unsigned __int16)a4;
+- (void)sendData:(id)data withCompletionHandler:(id)handler;
+- (void)setTargetQueue:(id)queue;
+- (void)tcpConnectSockAddr:(const sockaddr *)addr port:(unsigned __int16)port;
 @end
 
 @implementation GKAsyncSocketInternal
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   targetQueue = self->_targetQueue;
@@ -51,13 +51,13 @@
     dispatch_release(targetQueue);
   }
 
-  self->_targetQueue = a3;
+  self->_targetQueue = queue;
 }
 
-- (BOOL)setupSourcesWithSocket:(int)a3 receiveEventHandler:(id)a4 sendEventHandler:(id)a5
+- (BOOL)setupSourcesWithSocket:(int)socket receiveEventHandler:(id)handler sendEventHandler:(id)eventHandler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = fcntl(a3, 3, 0);
+  v9 = fcntl(socket, 3, 0);
   if (v9 == -1)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -77,7 +77,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (fcntl(a3, 4, v9 | 4u) == -1)
+  if (fcntl(socket, 4, v9 | 4u) == -1)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -95,7 +95,7 @@ LABEL_27:
   }
 
   v33 = 1;
-  if (setsockopt(a3, 0xFFFF, 4130, &v33, 4u) == -1)
+  if (setsockopt(socket, 0xFFFF, 4130, &v33, 4u) == -1)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -112,7 +112,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v10 = dispatch_source_create(MEMORY[0x277D85D28], a3, 0, self->_syncQueue);
+  v10 = dispatch_source_create(MEMORY[0x277D85D28], socket, 0, self->_syncQueue);
   self->_receiveSource = v10;
   if (!v10)
   {
@@ -125,12 +125,12 @@ LABEL_27:
         socketName = self->_socketName;
         if (socketName)
         {
-          v23 = [[(NSString *)socketName description] UTF8String];
+          uTF8String = [[(NSString *)socketName description] UTF8String];
         }
 
         else
         {
-          v23 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136316418;
@@ -140,11 +140,11 @@ LABEL_27:
         v38 = 1024;
         v39 = 148;
         v40 = 2048;
-        v41 = self;
+        selfCopy3 = self;
         v42 = 1024;
-        v43 = a3;
+        socketCopy2 = socket;
         v44 = 2080;
-        v45 = v23;
+        v45 = uTF8String;
         _os_log_error_impl(&dword_24E50C000, v21, OS_LOG_TYPE_ERROR, " [%s] %s:%d ptr [%p] sd [%d] name [%s] cannot create dispatch source for reading socket", buf, 0x36u);
       }
     }
@@ -152,7 +152,7 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  v11 = dispatch_source_create(MEMORY[0x277D85D50], a3, 0, self->_syncQueue);
+  v11 = dispatch_source_create(MEMORY[0x277D85D50], socket, 0, self->_syncQueue);
   self->_sendSource = v11;
   if (!v11)
   {
@@ -165,12 +165,12 @@ LABEL_27:
         v27 = self->_socketName;
         if (v27)
         {
-          v28 = [[(NSString *)v27 description] UTF8String];
+          uTF8String2 = [[(NSString *)v27 description] UTF8String];
         }
 
         else
         {
-          v28 = "<nil>";
+          uTF8String2 = "<nil>";
         }
 
         *buf = 136316418;
@@ -180,31 +180,31 @@ LABEL_27:
         v38 = 1024;
         v39 = 155;
         v40 = 2048;
-        v41 = self;
+        selfCopy3 = self;
         v42 = 1024;
-        v43 = a3;
+        socketCopy2 = socket;
         v44 = 2080;
-        v45 = v28;
+        v45 = uTF8String2;
         _os_log_error_impl(&dword_24E50C000, v25, OS_LOG_TYPE_ERROR, " [%s] %s:%d ptr [%p] sd [%d] name [%s] cannot create dispatch source for writing socket", buf, 0x36u);
       }
     }
 
     dispatch_release(self->_receiveSource);
 LABEL_26:
-    close(a3);
+    close(socket);
     goto LABEL_27;
   }
 
-  self->_connectionSocket = a3;
-  dispatch_source_set_event_handler(self->_receiveSource, a4);
+  self->_connectionSocket = socket;
+  dispatch_source_set_event_handler(self->_receiveSource, handler);
   receiveSource = self->_receiveSource;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __85__GKAsyncSocketInternal_setupSourcesWithSocket_receiveEventHandler_sendEventHandler___block_invoke;
   handler[3] = &__block_descriptor_36_e5_v8__0l;
-  v32 = a3;
+  socketCopy3 = socket;
   dispatch_source_set_cancel_handler(receiveSource, handler);
-  dispatch_source_set_event_handler(self->_sendSource, a5);
+  dispatch_source_set_event_handler(self->_sendSource, eventHandler);
   sendSource = self->_sendSource;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -222,12 +222,12 @@ LABEL_26:
       v17 = self->_socketName;
       if (v17)
       {
-        v18 = [[(NSString *)v17 description] UTF8String];
+        uTF8String3 = [[(NSString *)v17 description] UTF8String];
       }
 
       else
       {
-        v18 = "<nil>";
+        uTF8String3 = "<nil>";
       }
 
       *buf = 136316418;
@@ -237,11 +237,11 @@ LABEL_26:
       v38 = 1024;
       v39 = 172;
       v40 = 2048;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 1024;
-      v43 = connectionSocket;
+      socketCopy2 = connectionSocket;
       v44 = 2080;
-      v45 = v18;
+      v45 = uTF8String3;
       _os_log_impl(&dword_24E50C000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] sd [%d] name [%s] set up socket", buf, 0x36u);
     }
   }
@@ -277,9 +277,9 @@ uint64_t __51__GKAsyncSocketInternal_tcpAttachSocketDescriptor___block_invoke_40
   return result;
 }
 
-- (void)tcpConnectSockAddr:(const sockaddr *)a3 port:(unsigned __int16)a4
+- (void)tcpConnectSockAddr:(const sockaddr *)addr port:(unsigned __int16)port
 {
-  v4 = a4;
+  portCopy = port;
   v51 = *MEMORY[0x277D85DE8];
   *&v50.sa_len = 0xAAAAAAAAAAAAAAAALL;
   *&v50.sa_data[6] = 0xAAAAAAAAAAAAAAAALL;
@@ -289,12 +289,12 @@ uint64_t __51__GKAsyncSocketInternal_tcpAttachSocketDescriptor___block_invoke_40
   *(v49 + 14) = v6;
   *v48 = v6;
   v49[0] = v6;
-  sa_family = a3->sa_family;
+  sa_family = addr->sa_family;
   if (sa_family == 30)
   {
-    v31[0] = *a3;
-    *(v31 + 12) = *&a3->sa_data[10];
-    WORD1(v31[0]) = a4;
+    v31[0] = *addr;
+    *(v31 + 12) = *&addr->sa_data[10];
+    WORD1(v31[0]) = port;
     v9 = socket(30, 1, 0);
     inet_ntop(30, v31 + 8, v48, 0x2Eu);
     v10 = 28;
@@ -340,8 +340,8 @@ uint64_t __51__GKAsyncSocketInternal_tcpAttachSocketDescriptor___block_invoke_40
     }
 
     v8 = &v50;
-    v50 = *a3;
-    *v50.sa_data = a4;
+    v50 = *addr;
+    *v50.sa_data = port;
     v9 = socket(2, 1, 0);
     v10 = 16;
     inet_ntop(2, &v50.sa_data[2], v48, 0x10u);
@@ -394,12 +394,12 @@ uint64_t __51__GKAsyncSocketInternal_tcpAttachSocketDescriptor___block_invoke_40
         socketName = self->_socketName;
         if (socketName)
         {
-          v16 = [[(NSString *)socketName description] UTF8String];
+          uTF8String = [[(NSString *)socketName description] UTF8String];
         }
 
         else
         {
-          v16 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136316930;
@@ -409,15 +409,15 @@ uint64_t __51__GKAsyncSocketInternal_tcpAttachSocketDescriptor___block_invoke_40
         v36 = 1024;
         v37 = 258;
         v38 = 2048;
-        v39 = self;
+        selfCopy = self;
         v40 = 1024;
         v41 = connectionSocket;
         v42 = 2080;
-        v43 = v16;
+        v43 = uTF8String;
         v44 = 2080;
         v45 = v48;
         v46 = 1024;
-        v47 = __rev16(v4);
+        v47 = __rev16(portCopy);
         _os_log_impl(&dword_24E50C000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] sd [%d] name [%s] connecting to %s:%u", buf, 0x46u);
       }
     }
@@ -575,12 +575,12 @@ uint64_t __49__GKAsyncSocketInternal_tcpConnectSockAddr_port___block_invoke_58(u
       socketName = self->_socketName;
       if (socketName)
       {
-        v7 = [[(NSString *)socketName description] UTF8String];
+        uTF8String = [[(NSString *)socketName description] UTF8String];
       }
 
       else
       {
-        v7 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       *buf = 136316418;
@@ -590,11 +590,11 @@ uint64_t __49__GKAsyncSocketInternal_tcpConnectSockAddr_port___block_invoke_58(u
       v16 = 1024;
       v17 = 311;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 1024;
       v21 = connectionSocket;
       v22 = 2080;
-      v23 = v7;
+      v23 = uTF8String;
       _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] sd [%d] name [%s] dealloc", buf, 0x36u);
     }
   }
@@ -630,12 +630,12 @@ uint64_t __49__GKAsyncSocketInternal_tcpConnectSockAddr_port___block_invoke_58(u
       socketName = self->_socketName;
       if (socketName)
       {
-        v7 = [[(NSString *)socketName description] UTF8String];
+        uTF8String = [[(NSString *)socketName description] UTF8String];
       }
 
       else
       {
-        v7 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       *buf = 136316418;
@@ -645,11 +645,11 @@ uint64_t __49__GKAsyncSocketInternal_tcpConnectSockAddr_port___block_invoke_58(u
       v15 = 1024;
       v16 = 326;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 1024;
       v20 = connectionSocket;
       v21 = 2080;
-      v22 = v7;
+      v22 = uTF8String;
       _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] sd [%d] name [%s] invalidate", buf, 0x36u);
     }
   }
@@ -673,7 +673,7 @@ uint64_t __35__GKAsyncSocketInternal_invalidate__block_invoke(uint64_t a1)
   return [v2 closeConnectionNow];
 }
 
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4
+- (void)sendData:(id)data withCompletionHandler:(id)handler
 {
   if (self->_invalidated || self->_connectionSocket == -1)
   {
@@ -695,8 +695,8 @@ uint64_t __35__GKAsyncSocketInternal_invalidate__block_invoke(uint64_t a1)
     block[2] = __56__GKAsyncSocketInternal_sendData_withCompletionHandler___block_invoke;
     block[3] = &unk_2796833B0;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = data;
+    block[6] = handler;
     dispatch_async(syncQueue, block);
   }
 }
@@ -807,12 +807,12 @@ uint64_t __56__GKAsyncSocketInternal_sendData_withCompletionHandler___block_invo
       socketName = self->_socketName;
       if (socketName)
       {
-        v7 = [[(NSString *)socketName description] UTF8String];
+        uTF8String = [[(NSString *)socketName description] UTF8String];
       }
 
       else
       {
-        v7 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       *buf = 136316418;
@@ -822,11 +822,11 @@ uint64_t __56__GKAsyncSocketInternal_sendData_withCompletionHandler___block_invo
       v32 = 1024;
       v33 = 360;
       v34 = 2048;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 1024;
       v37 = connectionSocket;
       v38 = 2080;
-      v39 = v7;
+      v39 = uTF8String;
       _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] sd [%d] name [%s] closing down connections...", buf, 0x36u);
     }
   }
@@ -847,12 +847,12 @@ uint64_t __56__GKAsyncSocketInternal_sendData_withCompletionHandler___block_invo
           v12 = self->_socketName;
           if (v12)
           {
-            v13 = [[(NSString *)v12 description] UTF8String];
+            uTF8String2 = [[(NSString *)v12 description] UTF8String];
           }
 
           else
           {
-            v13 = "<nil>";
+            uTF8String2 = "<nil>";
           }
 
           *buf = 136316418;
@@ -862,11 +862,11 @@ uint64_t __56__GKAsyncSocketInternal_sendData_withCompletionHandler___block_invo
           v32 = 1024;
           v33 = 365;
           v34 = 2048;
-          v35 = self;
+          selfCopy3 = self;
           v36 = 1024;
           v37 = v11;
           v38 = 2080;
-          v39 = v13;
+          v39 = uTF8String2;
           _os_log_impl(&dword_24E50C000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] sd [%d] name [%s] resuming sendSource", buf, 0x36u);
         }
       }
@@ -903,12 +903,12 @@ uint64_t __56__GKAsyncSocketInternal_sendData_withCompletionHandler___block_invo
         v18 = self->_socketName;
         if (v18)
         {
-          v19 = [[(NSString *)v18 description] UTF8String];
+          uTF8String3 = [[(NSString *)v18 description] UTF8String];
         }
 
         else
         {
-          v19 = "<nil>";
+          uTF8String3 = "<nil>";
         }
 
         *buf = 136316418;
@@ -918,11 +918,11 @@ uint64_t __56__GKAsyncSocketInternal_sendData_withCompletionHandler___block_invo
         v32 = 1024;
         v33 = 373;
         v34 = 2048;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 1024;
         v37 = v17;
         v38 = 2080;
-        v39 = v19;
+        v39 = uTF8String3;
         _os_log_impl(&dword_24E50C000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] sd [%d] name [%s] closing socket", buf, 0x36u);
       }
     }

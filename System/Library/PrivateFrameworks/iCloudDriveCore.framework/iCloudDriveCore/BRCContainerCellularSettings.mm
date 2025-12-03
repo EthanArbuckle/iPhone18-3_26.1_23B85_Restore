@@ -2,8 +2,8 @@
 + (id)containerCellularSettings;
 - (BOOL)isCellularEnabled;
 - (BOOL)isUnlimitedCellularUpdatesEnabled;
-- (BRCContainerCellularSettings)initWithPersonaID:(id)a3;
-- (void)accountDidChangeForPersona:(id)a3;
+- (BRCContainerCellularSettings)initWithPersonaID:(id)d;
+- (void)accountDidChangeForPersona:(id)persona;
 - (void)dealloc;
 @end
 
@@ -16,16 +16,16 @@
     +[BRCContainerCellularSettings containerCellularSettings];
   }
 
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 br_currentPersonaID];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
   v4 = containerCellularSettings_cellularSettingsByPersonaID;
   objc_sync_enter(v4);
-  v5 = [containerCellularSettings_cellularSettingsByPersonaID objectForKeyedSubscript:v3];
+  v5 = [containerCellularSettings_cellularSettingsByPersonaID objectForKeyedSubscript:br_currentPersonaID];
   if (!v5)
   {
-    v5 = [[BRCContainerCellularSettings alloc] initWithPersonaID:v3];
-    [containerCellularSettings_cellularSettingsByPersonaID setObject:v5 forKeyedSubscript:v3];
+    v5 = [[BRCContainerCellularSettings alloc] initWithPersonaID:br_currentPersonaID];
+    [containerCellularSettings_cellularSettingsByPersonaID setObject:v5 forKeyedSubscript:br_currentPersonaID];
   }
 
   objc_sync_exit(v4);
@@ -77,17 +77,17 @@ void __49__BRCContainerCellularSettings_isCellularEnabled__block_invoke(uint64_t
   }
 }
 
-- (void)accountDidChangeForPersona:(id)a3
+- (void)accountDidChangeForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__BRCContainerCellularSettings_accountDidChangeForPersona___block_invoke;
   v7[3] = &unk_2784FF478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = personaCopy;
+  selfCopy = self;
+  v6 = personaCopy;
   dispatch_async(queue, v7);
 }
 
@@ -141,9 +141,9 @@ void __59__BRCContainerCellularSettings_accountDidChangeForPersona___block_invok
   }
 }
 
-- (BRCContainerCellularSettings)initWithPersonaID:(id)a3
+- (BRCContainerCellularSettings)initWithPersonaID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = BRCContainerCellularSettings;
   v5 = [(BRCContainerCellularSettings *)&v22 init];
@@ -162,7 +162,7 @@ void __59__BRCContainerCellularSettings_accountDidChangeForPersona___block_invok
 
     objc_initWeak(&location, v5);
     [MEMORY[0x277CFADF8] startAccountTokenChangeObserverIfNeeded];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = *MEMORY[0x277CFAB58];
     v14 = v5->_operationQueue;
     v18[0] = MEMORY[0x277D85DD0];
@@ -170,8 +170,8 @@ void __59__BRCContainerCellularSettings_accountDidChangeForPersona___block_invok
     v18[2] = __50__BRCContainerCellularSettings_initWithPersonaID___block_invoke;
     v18[3] = &unk_278507D78;
     objc_copyWeak(&v20, &location);
-    v19 = v4;
-    v15 = [v12 addObserverForName:v13 object:0 queue:v14 usingBlock:v18];
+    v19 = dCopy;
+    v15 = [defaultCenter addObserverForName:v13 object:0 queue:v14 usingBlock:v18];
     accountDidChangeNotificationObserver = v5->_accountDidChangeNotificationObserver;
     v5->_accountDidChangeNotificationObserver = v15;
 
@@ -190,8 +190,8 @@ void __50__BRCContainerCellularSettings_initWithPersonaID___block_invoke(uint64_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_accountDidChangeNotificationObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_accountDidChangeNotificationObserver];
 
   v4.receiver = self;
   v4.super_class = BRCContainerCellularSettings;

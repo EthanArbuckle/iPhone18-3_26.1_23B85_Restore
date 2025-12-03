@@ -1,9 +1,9 @@
 @interface _UIGroupCompletion
 - (void)_performAllCompletions;
-- (void)addCompletion:(id)a3;
-- (void)addNonIncrementingCompletion:(id)a3;
+- (void)addCompletion:(id)completion;
+- (void)addNonIncrementingCompletion:(id)completion;
 - (void)complete;
-- (void)replaceCompletion:(id)a3;
+- (void)replaceCompletion:(id)completion;
 @end
 
 @implementation _UIGroupCompletion
@@ -94,52 +94,52 @@
   }
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
-  v9 = v4;
+  completionCopy = completion;
+  v9 = completionCopy;
   if (self->_isCompleting)
   {
     scheduledCompletions = self->_scheduledCompletions;
     if (!scheduledCompletions)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v7 = self->_scheduledCompletions;
-      self->_scheduledCompletions = v6;
+      self->_scheduledCompletions = array;
 
-      v4 = v9;
+      completionCopy = v9;
       scheduledCompletions = self->_scheduledCompletions;
     }
 
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(completionCopy);
     [(NSMutableArray *)scheduledCompletions addObject:v8];
   }
 
   else
   {
-    [(_UIGroupCompletion *)self addNonIncrementingCompletion:v4];
+    [(_UIGroupCompletion *)self addNonIncrementingCompletion:completionCopy];
     [(_UIGroupCompletion *)self increment];
   }
 }
 
-- (void)replaceCompletion:(id)a3
+- (void)replaceCompletion:(id)completion
 {
-  v4 = a3;
-  aBlock = v4;
+  completionCopy = completion;
+  aBlock = completionCopy;
   if (self->_isCompleting)
   {
     scheduledCompletions = self->_scheduledCompletions;
     if (!scheduledCompletions)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v7 = self->_scheduledCompletions;
-      self->_scheduledCompletions = v6;
+      self->_scheduledCompletions = array;
 
-      v4 = aBlock;
+      completionCopy = aBlock;
       scheduledCompletions = self->_scheduledCompletions;
     }
 
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(completionCopy);
     [(NSMutableArray *)scheduledCompletions addObject:v8];
   }
 
@@ -153,22 +153,22 @@
   }
 }
 
-- (void)addNonIncrementingCompletion:(id)a3
+- (void)addNonIncrementingCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   completions = self->_completions;
-  aBlock = v4;
+  aBlock = completionCopy;
   if (!completions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_completions;
-    self->_completions = v6;
+    self->_completions = array;
 
-    v4 = aBlock;
+    completionCopy = aBlock;
     completions = self->_completions;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(completionCopy);
   [(NSMutableArray *)completions addObject:v8];
 }
 

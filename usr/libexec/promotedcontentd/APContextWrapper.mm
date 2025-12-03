@@ -6,16 +6,16 @@
 
 - (BOOL)canBeGarbageCollected
 {
-  v3 = [(APCacheableBaseObject *)self identifier];
-  v4 = sub_10037AAE0(APManagedContext, v3);
+  identifier = [(APCacheableBaseObject *)self identifier];
+  v4 = sub_10037AAE0(APManagedContext, identifier);
 
   if (v4)
   {
     return 0;
   }
 
-  v6 = [(APCacheableBaseObject *)self identifier];
-  v7 = sub_10037AC10(APManagedContext, v6);
+  identifier2 = [(APCacheableBaseObject *)self identifier];
+  v7 = sub_10037AC10(APManagedContext, identifier2);
 
   return v7 ^ 1;
 }

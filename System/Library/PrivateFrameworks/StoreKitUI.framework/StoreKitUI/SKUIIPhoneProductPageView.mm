@@ -1,19 +1,19 @@
 @interface SKUIIPhoneProductPageView
-- (SKUIIPhoneProductPageView)initWithFrame:(CGRect)a3;
-- (void)animateYPosition:(double)a3;
+- (SKUIIPhoneProductPageView)initWithFrame:(CGRect)frame;
+- (void)animateYPosition:(double)position;
 - (void)layoutSubviews;
-- (void)setBannerView:(id)a3;
-- (void)setView:(id)a3;
+- (void)setBannerView:(id)view;
+- (void)setView:(id)view;
 @end
 
 @implementation SKUIIPhoneProductPageView
 
-- (SKUIIPhoneProductPageView)initWithFrame:(CGRect)a3
+- (SKUIIPhoneProductPageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIPhoneProductPageView initWithFrame:];
@@ -21,60 +21,60 @@
 
   v12.receiver = self;
   v12.super_class = SKUIIPhoneProductPageView;
-  v8 = [(SKUIIPhoneProductPageView *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIIPhoneProductPageView *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
-    [(SKUIIPhoneProductPageView *)v8 setBackgroundColor:v9];
+    [(SKUIIPhoneProductPageView *)height setBackgroundColor:v9];
 
     v10 = objc_alloc_init(MEMORY[0x277D75D18]);
-    [(SKUIIPhoneProductPageView *)v8 addSubview:v10];
+    [(SKUIIPhoneProductPageView *)height addSubview:v10];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   view = self->_view;
-  if (view != v5)
+  if (view != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)view removeFromSuperview];
-    objc_storeStrong(&self->_view, a3);
+    objc_storeStrong(&self->_view, view);
     [(SKUIIPhoneProductPageView *)self addSubview:self->_view];
     view = [(SKUIIPhoneProductPageView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](view, v5);
+  MEMORY[0x2821F96F8](view, viewCopy);
 }
 
-- (void)setBannerView:(id)a3
+- (void)setBannerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bannerView = self->_bannerView;
-  if (bannerView != v5)
+  if (bannerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)bannerView removeFromSuperview];
-    objc_storeStrong(&self->_bannerView, a3);
+    objc_storeStrong(&self->_bannerView, view);
     [(SKUIIPhoneProductPageView *)self addSubview:self->_bannerView];
     bannerView = [(SKUIIPhoneProductPageView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](bannerView, v5);
+  MEMORY[0x2821F96F8](bannerView, viewCopy);
 }
 
-- (void)animateYPosition:(double)a3
+- (void)animateYPosition:(double)position
 {
-  if (a3 != 0.0 && self->_view != 0)
+  if (position != 0.0 && self->_view != 0)
   {
     [(SKUIIPhoneProductPageView *)self bounds];
     v7 = v6;
-    v9 = v8 - a3;
+    v9 = v8 - position;
     [(SKUIIPhoneProductPageView *)self bounds];
     v11 = v10;
     v13 = v12;
@@ -91,11 +91,11 @@
     [v19 setToValue:v16];
 
     [v19 setDuration:0.200000003];
-    v17 = [(UIView *)self->_view layer];
-    [v17 setAnchorPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    layer = [(UIView *)self->_view layer];
+    [layer setAnchorPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
-    v18 = [(UIView *)self->_view layer];
-    [v18 addAnimation:v19 forKey:@"ANIMATION_KEY"];
+    layer2 = [(UIView *)self->_view layer];
+    [layer2 addAnimation:v19 forKey:@"ANIMATION_KEY"];
   }
 }
 

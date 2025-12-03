@@ -1,16 +1,16 @@
 @interface MapScaleOverlayUIView
 - (CGRect)bounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)handleInvertColorsStatusDidChangeWithNotification:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)handleInvertColorsStatusDidChangeWithNotification:(id)notification;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation MapScaleOverlayUIView
 
 - (CGRect)bounds
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F75DDC();
   v4 = v3;
   v6 = v5;
@@ -28,25 +28,25 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_220F75E8C(x, y, width, height);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F76C2C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_220F753C4();
   v5 = v4;
   v7 = v6;
@@ -58,10 +58,10 @@
   return result;
 }
 
-- (void)handleInvertColorsStatusDidChangeWithNotification:(id)a3
+- (void)handleInvertColorsStatusDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_220F77164();
 }
 

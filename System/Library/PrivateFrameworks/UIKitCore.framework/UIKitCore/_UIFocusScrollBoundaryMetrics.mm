@@ -1,14 +1,14 @@
 @interface _UIFocusScrollBoundaryMetrics
 - (BOOL)_checkScrollableBounds;
-- (BOOL)checkOtherFocusItem:(id)a3;
-- (BOOL)checkOtherRect:(CGRect)a3;
-- (BOOL)consumeOtherMetrics:(id)a3;
+- (BOOL)checkOtherFocusItem:(id)item;
+- (BOOL)checkOtherRect:(CGRect)rect;
+- (BOOL)consumeOtherMetrics:(id)metrics;
 - (BOOL)hasDisprovedAllRelevantAssumptions;
 - (CGPoint)localFocusedCenter;
 - (CGPoint)maxContentOffset;
 - (CGPoint)minContentOffset;
 - (CGRect)localFocusedRect;
-- (_UIFocusScrollBoundaryMetrics)initWithFocusItem:(id)a3 owningEnvironment:(id)a4 scrollableContainer:(id)a5;
+- (_UIFocusScrollBoundaryMetrics)initWithFocusItem:(id)item owningEnvironment:(id)environment scrollableContainer:(id)container;
 @end
 
 @implementation _UIFocusScrollBoundaryMetrics
@@ -194,11 +194,11 @@
   return result;
 }
 
-- (_UIFocusScrollBoundaryMetrics)initWithFocusItem:(id)a3 owningEnvironment:(id)a4 scrollableContainer:(id)a5
+- (_UIFocusScrollBoundaryMetrics)initWithFocusItem:(id)item owningEnvironment:(id)environment scrollableContainer:(id)container
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  itemCopy = item;
+  environmentCopy = environment;
+  containerCopy = container;
   v31.receiver = self;
   v31.super_class = _UIFocusScrollBoundaryMetrics;
   v13 = [(_UIFocusScrollBoundaryMetrics *)&v31 init];
@@ -207,50 +207,50 @@
     goto LABEL_12;
   }
 
-  if (v10)
+  if (itemCopy)
   {
-    if (v11)
+    if (environmentCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_14:
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:v13 file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v13 file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment"}];
 
-    if (v12)
+    if (containerCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_15:
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:v13 file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"scrollableContainer"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v13 file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"scrollableContainer"}];
 
     goto LABEL_5;
   }
 
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:v13 file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"focusItem"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:v13 file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"focusItem"}];
 
-  if (!v11)
+  if (!environmentCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_4:
-  if (!v12)
+  if (!containerCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_5:
   *(v13 + 10) = 16843009;
-  objc_storeStrong(v13 + 2, a3);
-  objc_storeStrong(v13 + 3, a4);
-  objc_storeStrong(v13 + 4, a5);
-  v14 = [v12 coordinateSpace];
-  *(v13 + 11) = _UIFocusItemFrameInCoordinateSpace(v10, v14);
+  objc_storeStrong(v13 + 2, item);
+  objc_storeStrong(v13 + 3, environment);
+  objc_storeStrong(v13 + 4, container);
+  coordinateSpace = [containerCopy coordinateSpace];
+  *(v13 + 11) = _UIFocusItemFrameInCoordinateSpace(itemCopy, coordinateSpace);
   *(v13 + 12) = v15;
   *(v13 + 13) = v16;
   *(v13 + 14) = v17;
@@ -258,9 +258,9 @@ LABEL_5:
   __asm { FMOV            V2.2D, #0.5 }
 
   *(v13 + 40) = vaddq_f64(*(v13 + 88), vmulq_f64(*(v13 + 104), _Q2));
-  if ([v12 __isKindOfUICollectionView])
+  if ([containerCopy __isKindOfUICollectionView])
   {
-    v23 = v12;
+    v23 = containerCopy;
     if ([v23 _canDeriveVisibleBoundsFromContainingScrollView])
     {
       CanScrollY = 1;
@@ -278,13 +278,13 @@ LABEL_5:
 
   else
   {
-    v13[8] = _UIFocusItemScrollableContainerCanScrollX(v12);
-    v13[9] = _UIFocusItemScrollableContainerCanScrollY(v12);
+    v13[8] = _UIFocusItemScrollableContainerCanScrollX(containerCopy);
+    v13[9] = _UIFocusItemScrollableContainerCanScrollY(containerCopy);
   }
 
-  *(v13 + 7) = _UIFocusItemScrollableContainerMinimumContentOffset(v12);
+  *(v13 + 7) = _UIFocusItemScrollableContainerMinimumContentOffset(containerCopy);
   *(v13 + 8) = v25;
-  *(v13 + 9) = _UIFocusItemScrollableContainerMaximumContentOffset(v12);
+  *(v13 + 9) = _UIFocusItemScrollableContainerMaximumContentOffset(containerCopy);
   *(v13 + 10) = v26;
   [v13 _checkScrollableBounds];
 LABEL_12:
@@ -292,15 +292,15 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)consumeOtherMetrics:(id)a3
+- (BOOL)consumeOtherMetrics:(id)metrics
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  metricsCopy = metrics;
+  v6 = metricsCopy;
+  if (metricsCopy)
   {
-    if (v5 != self)
+    if (metricsCopy != self)
     {
-      [(_UIFocusScrollBoundaryMetrics *)self setIsMinX:[(_UIFocusScrollBoundaryMetrics *)v5 isMinX]& [(_UIFocusScrollBoundaryMetrics *)self isMinX]];
+      [(_UIFocusScrollBoundaryMetrics *)self setIsMinX:[(_UIFocusScrollBoundaryMetrics *)metricsCopy isMinX]& [(_UIFocusScrollBoundaryMetrics *)self isMinX]];
       [(_UIFocusScrollBoundaryMetrics *)self setIsMaxX:[(_UIFocusScrollBoundaryMetrics *)v6 isMaxX]& [(_UIFocusScrollBoundaryMetrics *)self isMaxX]];
       [(_UIFocusScrollBoundaryMetrics *)self setIsMinY:[(_UIFocusScrollBoundaryMetrics *)v6 isMinY]& [(_UIFocusScrollBoundaryMetrics *)self isMinY]];
       [(_UIFocusScrollBoundaryMetrics *)self setIsMaxY:[(_UIFocusScrollBoundaryMetrics *)v6 isMaxY]& [(_UIFocusScrollBoundaryMetrics *)self isMaxY]];
@@ -309,26 +309,26 @@ LABEL_12:
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"otherMetrics != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"otherMetrics != nil"}];
   }
 
-  v7 = [(_UIFocusScrollBoundaryMetrics *)self hasDisprovedAllRelevantAssumptions];
+  hasDisprovedAllRelevantAssumptions = [(_UIFocusScrollBoundaryMetrics *)self hasDisprovedAllRelevantAssumptions];
 
-  return v7;
+  return hasDisprovedAllRelevantAssumptions;
 }
 
-- (BOOL)checkOtherRect:(CGRect)a3
+- (BOOL)checkOtherRect:(CGRect)rect
 {
-  v3 = a3.origin.x + a3.size.width * 0.5;
-  v4 = a3.size.height * 0.5;
+  v3 = rect.origin.x + rect.size.width * 0.5;
+  v4 = rect.size.height * 0.5;
   x = self->_localFocusedCenter.x;
   if (v3 < x)
   {
     self->_isMinX = 0;
   }
 
-  v6 = a3.origin.y + v4;
+  v6 = rect.origin.y + v4;
   if (v3 > x)
   {
     self->_isMaxX = 0;
@@ -348,33 +348,33 @@ LABEL_12:
   return [(_UIFocusScrollBoundaryMetrics *)self hasDisprovedAllRelevantAssumptions];
 }
 
-- (BOOL)checkOtherFocusItem:(id)a3
+- (BOOL)checkOtherFocusItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"otherItem != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusScrollBoundaryMetrics.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"otherItem != nil"}];
 
     goto LABEL_5;
   }
 
-  v6 = [(_UIFocusScrollBoundaryMetrics *)self focusItem];
+  focusItem = [(_UIFocusScrollBoundaryMetrics *)self focusItem];
 
-  if (v6 == v5)
+  if (focusItem == itemCopy)
   {
 LABEL_5:
-    v9 = [(_UIFocusScrollBoundaryMetrics *)self hasDisprovedAllRelevantAssumptions];
+    hasDisprovedAllRelevantAssumptions = [(_UIFocusScrollBoundaryMetrics *)self hasDisprovedAllRelevantAssumptions];
     goto LABEL_6;
   }
 
-  v7 = [(_UIFocusScrollBoundaryMetrics *)self scrollableContainer];
-  v8 = [v7 coordinateSpace];
+  scrollableContainer = [(_UIFocusScrollBoundaryMetrics *)self scrollableContainer];
+  coordinateSpace = [scrollableContainer coordinateSpace];
 
-  v9 = [(_UIFocusScrollBoundaryMetrics *)self checkOtherRect:_UIFocusItemFrameInCoordinateSpace(v5, v8)];
+  hasDisprovedAllRelevantAssumptions = [(_UIFocusScrollBoundaryMetrics *)self checkOtherRect:_UIFocusItemFrameInCoordinateSpace(itemCopy, coordinateSpace)];
 LABEL_6:
 
-  return v9;
+  return hasDisprovedAllRelevantAssumptions;
 }
 
 - (CGRect)localFocusedRect

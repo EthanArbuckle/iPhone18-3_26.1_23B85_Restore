@@ -1,51 +1,51 @@
 @interface MRCryptoPairingSession
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)deleteIdentityWithError:(id *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)deleteIdentityWithError:(id *)error;
 - (BOOL)isPaired;
 - (BOOL)isValid;
 - (MRCryptoPairingSession)init;
-- (MRCryptoPairingSession)initWithRole:(unint64_t)a3 device:(id)a4;
+- (MRCryptoPairingSession)initWithRole:(unint64_t)role device:(id)device;
 - (MRCryptoPairingSessionDelegate)delegate;
 - (NSArray)pairedDevices;
-- (id)decryptData:(id)a3 withError:(id *)a4;
-- (id)encryptData:(id)a3 withError:(id *)a4;
+- (id)decryptData:(id)data withError:(id *)error;
+- (id)encryptData:(id)data withError:(id *)error;
 - (id)removePeer;
 - (id)updatePeer;
 - (void)close;
-- (void)handlePairingExchangeData:(id)a3 completion:(id)a4;
-- (void)handlePairingFailureWithStatus:(int)a3;
+- (void)handlePairingExchangeData:(id)data completion:(id)completion;
+- (void)handlePairingFailureWithStatus:(int)status;
 - (void)open;
 @end
 
 @implementation MRCryptoPairingSession
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(MRCryptoPairingSession *)MRCoreUtilsPairingSession allocWithZone:a3];
+    return [(MRCryptoPairingSession *)MRCoreUtilsPairingSession allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MRCryptoPairingSession;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (MRCryptoPairingSession)initWithRole:(unint64_t)a3 device:(id)a4
+- (MRCryptoPairingSession)initWithRole:(unint64_t)role device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = MRCryptoPairingSession;
   v8 = [(MRCryptoPairingSession *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_role = a3;
-    objc_storeStrong(&v8->_device, a4);
+    v8->_role = role;
+    objc_storeStrong(&v8->_device, device);
   }
 
   return v9;
@@ -138,10 +138,10 @@
   objc_exception_throw(v5);
 }
 
-- (void)handlePairingExchangeData:(id)a3 completion:(id)a4
+- (void)handlePairingExchangeData:(id)data completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRCryptoPairingSession handlePairingExchangeData:completion:]"];
@@ -151,7 +151,7 @@
   objc_exception_throw(v10);
 }
 
-- (void)handlePairingFailureWithStatus:(int)a3
+- (void)handlePairingFailureWithStatus:(int)status
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -162,9 +162,9 @@
   objc_exception_throw(v6);
 }
 
-- (id)encryptData:(id)a3 withError:(id *)a4
+- (id)encryptData:(id)data withError:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRCryptoPairingSession encryptData:withError:]"];
@@ -174,9 +174,9 @@
   objc_exception_throw(v8);
 }
 
-- (id)decryptData:(id)a3 withError:(id *)a4
+- (id)decryptData:(id)data withError:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRCryptoPairingSession decryptData:withError:]"];
@@ -186,7 +186,7 @@
   objc_exception_throw(v8);
 }
 
-- (BOOL)deleteIdentityWithError:(id *)a3
+- (BOOL)deleteIdentityWithError:(id *)error
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];

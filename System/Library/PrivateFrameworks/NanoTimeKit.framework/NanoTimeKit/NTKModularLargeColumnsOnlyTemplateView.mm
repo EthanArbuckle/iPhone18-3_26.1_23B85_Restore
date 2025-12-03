@@ -1,55 +1,55 @@
 @interface NTKModularLargeColumnsOnlyTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKModularLargeColumnsOnlyTemplateView)initWithFrame:(CGRect)a3;
-- (void)_enumerateColumnRowsWithBlock:(id)a3;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
-- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKModularLargeColumnsOnlyTemplateView)initWithFrame:(CGRect)frame;
+- (void)_enumerateColumnRowsWithBlock:(id)block;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
+- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)block;
 - (void)_layoutContentView;
 - (void)_update;
 @end
 
 @implementation NTKModularLargeColumnsOnlyTemplateView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (NTKModularLargeColumnsOnlyTemplateView)initWithFrame:(CGRect)a3
+- (NTKModularLargeColumnsOnlyTemplateView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = NTKModularLargeColumnsOnlyTemplateView;
-  v3 = [(NTKModuleView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKModuleView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKModularLargeColumnTemplateView *)v3 _newHeaderLabelSubview];
+    _newHeaderLabelSubview = [(NTKModularLargeColumnTemplateView *)v3 _newHeaderLabelSubview];
     row1Column1Label = v4->_row1Column1Label;
-    v4->_row1Column1Label = v5;
+    v4->_row1Column1Label = _newHeaderLabelSubview;
 
-    v7 = [(NTKModularLargeColumnTemplateView *)v4 _newHeaderLabelSubview];
+    _newHeaderLabelSubview2 = [(NTKModularLargeColumnTemplateView *)v4 _newHeaderLabelSubview];
     row2Column1Label = v4->_row2Column1Label;
-    v4->_row2Column1Label = v7;
+    v4->_row2Column1Label = _newHeaderLabelSubview2;
 
-    v9 = [(NTKModularLargeColumnTemplateView *)v4 _newHeaderLabelSubview];
+    _newHeaderLabelSubview3 = [(NTKModularLargeColumnTemplateView *)v4 _newHeaderLabelSubview];
     row3Column1Label = v4->_row3Column1Label;
-    v4->_row3Column1Label = v9;
+    v4->_row3Column1Label = _newHeaderLabelSubview3;
 
-    v11 = [(NTKModularLargeColumnTemplateView *)v4 _newBodyLabelSubview];
+    _newBodyLabelSubview = [(NTKModularLargeColumnTemplateView *)v4 _newBodyLabelSubview];
     row1Column2Label = v4->_row1Column2Label;
-    v4->_row1Column2Label = v11;
+    v4->_row1Column2Label = _newBodyLabelSubview;
 
-    v13 = [(NTKModularLargeColumnTemplateView *)v4 _newBodyLabelSubview];
+    _newBodyLabelSubview2 = [(NTKModularLargeColumnTemplateView *)v4 _newBodyLabelSubview];
     row2Column2Label = v4->_row2Column2Label;
-    v4->_row2Column2Label = v13;
+    v4->_row2Column2Label = _newBodyLabelSubview2;
 
-    v15 = [(NTKModularLargeColumnTemplateView *)v4 _newBodyLabelSubview];
+    _newBodyLabelSubview3 = [(NTKModularLargeColumnTemplateView *)v4 _newBodyLabelSubview];
     row3Column2Label = v4->_row3Column2Label;
-    v4->_row3Column2Label = v15;
+    v4->_row3Column2Label = _newBodyLabelSubview3;
   }
 
   return v4;
@@ -57,73 +57,73 @@
 
 - (void)_layoutContentView
 {
-  v3 = [(NTKModularTemplateView *)self complicationTemplate];
-  -[NTKModularLargeColumnTemplateView _layoutRowsOfColumnsWithAlignment:](self, "_layoutRowsOfColumnsWithAlignment:", [v3 column2Alignment]);
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  -[NTKModularLargeColumnTemplateView _layoutRowsOfColumnsWithAlignment:](self, "_layoutRowsOfColumnsWithAlignment:", [complicationTemplate column2Alignment]);
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_row2ImageView);
-  (*v4)(v6, self->_row3ImageView);
-  (*v4)(v6, self->_row1Column1Label);
-  (*v4)(v6, self->_row2Column1Label);
-  (*v4)(v6, self->_row3Column1Label);
+  (*v4)(blockCopy, self->_row2ImageView);
+  (*v4)(blockCopy, self->_row3ImageView);
+  (*v4)(blockCopy, self->_row1Column1Label);
+  (*v4)(blockCopy, self->_row2Column1Label);
+  (*v4)(blockCopy, self->_row3Column1Label);
 }
 
-- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_row2Column2Label);
-  (*v4)(v6, self->_row3Column2Label);
+  (*v4)(blockCopy, self->_row2Column2Label);
+  (*v4)(blockCopy, self->_row3Column2Label);
 }
 
-- (void)_enumerateColumnRowsWithBlock:(id)a3
+- (void)_enumerateColumnRowsWithBlock:(id)block
 {
-  v12 = a3;
-  v4 = [(NTKModuleView *)self device];
-  v5 = _LargeModularLayoutConstants(v4);
+  blockCopy = block;
+  device = [(NTKModuleView *)self device];
+  v5 = _LargeModularLayoutConstants(device);
 
-  v12[2](v12, self->_row1ImageView, self->_row1Column1Label, self->_row1Column2Label, v5);
-  v6 = [(NTKModuleView *)self device];
-  _LargeModularLayoutConstants(v6);
+  blockCopy[2](blockCopy, self->_row1ImageView, self->_row1Column1Label, self->_row1Column2Label, v5);
+  device2 = [(NTKModuleView *)self device];
+  _LargeModularLayoutConstants(device2);
   v8 = v5 + v7;
 
-  v12[2](v12, self->_row2ImageView, self->_row2Column1Label, self->_row2Column2Label, v8);
-  v9 = [(NTKModuleView *)self device];
-  _LargeModularLayoutConstants(v9);
+  blockCopy[2](blockCopy, self->_row2ImageView, self->_row2Column1Label, self->_row2Column2Label, v8);
+  device3 = [(NTKModuleView *)self device];
+  _LargeModularLayoutConstants(device3);
   v11 = v8 + v10;
 
-  v12[2](v12, self->_row3ImageView, self->_row3Column1Label, self->_row3Column2Label, v11);
+  blockCopy[2](blockCopy, self->_row3ImageView, self->_row3Column1Label, self->_row3Column2Label, v11);
 }
 
 - (void)_update
 {
-  v41 = [(NTKModularTemplateView *)self complicationTemplate];
-  v3 = [v41 row1ImageProvider];
-  v4 = [off_27877BE78 existingImageView:self->_row1ImageView supportsImageProvider:v3];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  row1ImageProvider = [complicationTemplate row1ImageProvider];
+  v4 = [off_27877BE78 existingImageView:self->_row1ImageView supportsImageProvider:row1ImageProvider];
   row1ImageView = self->_row1ImageView;
   if ((v4 & 1) == 0)
   {
     [(CDComplicationImageView *)self->_row1ImageView removeFromSuperview];
-    v6 = [off_27877BE78 viewForImageProvider:v3];
+    v6 = [off_27877BE78 viewForImageProvider:row1ImageProvider];
     v7 = self->_row1ImageView;
     self->_row1ImageView = v6;
 
     v8 = self->_row1ImageView;
-    v9 = [(NTKModuleView *)self foregroundColor];
-    [(CDComplicationImageView *)v8 setColor:v9];
+    foregroundColor = [(NTKModuleView *)self foregroundColor];
+    [(CDComplicationImageView *)v8 setColor:foregroundColor];
 
     if (self->_row1ImageView)
     {
-      v10 = [(NTKModuleView *)self contentView];
-      [v10 addSubview:self->_row1ImageView];
+      contentView = [(NTKModuleView *)self contentView];
+      [contentView addSubview:self->_row1ImageView];
 
       row1ImageView = self->_row1ImageView;
     }
@@ -134,28 +134,28 @@
     }
   }
 
-  v11 = [v41 row1ImageProvider];
-  [(CDComplicationImageView *)row1ImageView setImageProvider:v11];
+  row1ImageProvider2 = [complicationTemplate row1ImageProvider];
+  [(CDComplicationImageView *)row1ImageView setImageProvider:row1ImageProvider2];
 
-  [(CDComplicationImageView *)self->_row1ImageView setHidden:v3 == 0];
-  v12 = [v41 row2ImageProvider];
-  v13 = [off_27877BE78 existingImageView:self->_row2ImageView supportsImageProvider:v12];
+  [(CDComplicationImageView *)self->_row1ImageView setHidden:row1ImageProvider == 0];
+  row2ImageProvider = [complicationTemplate row2ImageProvider];
+  v13 = [off_27877BE78 existingImageView:self->_row2ImageView supportsImageProvider:row2ImageProvider];
   row2ImageView = self->_row2ImageView;
   if ((v13 & 1) == 0)
   {
     [(CDComplicationImageView *)row2ImageView removeFromSuperview];
-    v15 = [off_27877BE78 viewForImageProvider:v12];
+    v15 = [off_27877BE78 viewForImageProvider:row2ImageProvider];
     v16 = self->_row2ImageView;
     self->_row2ImageView = v15;
 
     v17 = self->_row2ImageView;
-    v18 = [(NTKModuleView *)self foregroundColor];
-    [(CDComplicationImageView *)v17 setColor:v18];
+    foregroundColor2 = [(NTKModuleView *)self foregroundColor];
+    [(CDComplicationImageView *)v17 setColor:foregroundColor2];
 
     if (self->_row2ImageView)
     {
-      v19 = [(NTKModuleView *)self contentView];
-      [v19 addSubview:self->_row2ImageView];
+      contentView2 = [(NTKModuleView *)self contentView];
+      [contentView2 addSubview:self->_row2ImageView];
 
       row2ImageView = self->_row2ImageView;
     }
@@ -166,26 +166,26 @@
     }
   }
 
-  [(CDComplicationImageView *)row2ImageView setImageProvider:v12];
-  [(CDComplicationImageView *)self->_row2ImageView setHidden:v12 == 0];
-  v20 = [v41 row3ImageProvider];
-  v21 = [off_27877BE78 existingImageView:self->_row3ImageView supportsImageProvider:v20];
+  [(CDComplicationImageView *)row2ImageView setImageProvider:row2ImageProvider];
+  [(CDComplicationImageView *)self->_row2ImageView setHidden:row2ImageProvider == 0];
+  row3ImageProvider = [complicationTemplate row3ImageProvider];
+  v21 = [off_27877BE78 existingImageView:self->_row3ImageView supportsImageProvider:row3ImageProvider];
   row3ImageView = self->_row3ImageView;
   if ((v21 & 1) == 0)
   {
     [(CDComplicationImageView *)row3ImageView removeFromSuperview];
-    v23 = [off_27877BE78 viewForImageProvider:v20];
+    v23 = [off_27877BE78 viewForImageProvider:row3ImageProvider];
     v24 = self->_row3ImageView;
     self->_row3ImageView = v23;
 
     v25 = self->_row3ImageView;
-    v26 = [(NTKModuleView *)self foregroundColor];
-    [(CDComplicationImageView *)v25 setColor:v26];
+    foregroundColor3 = [(NTKModuleView *)self foregroundColor];
+    [(CDComplicationImageView *)v25 setColor:foregroundColor3];
 
     if (self->_row3ImageView)
     {
-      v27 = [(NTKModuleView *)self contentView];
-      [v27 addSubview:self->_row3ImageView];
+      contentView3 = [(NTKModuleView *)self contentView];
+      [contentView3 addSubview:self->_row3ImageView];
 
       row3ImageView = self->_row3ImageView;
     }
@@ -196,35 +196,35 @@
     }
   }
 
-  [(CDComplicationImageView *)row3ImageView setImageProvider:v20];
-  [(CDComplicationImageView *)self->_row3ImageView setHidden:v20 == 0];
+  [(CDComplicationImageView *)row3ImageView setImageProvider:row3ImageProvider];
+  [(CDComplicationImageView *)self->_row3ImageView setHidden:row3ImageProvider == 0];
   row1Column1Label = self->_row1Column1Label;
-  v29 = [v41 row1Column1TextProvider];
-  [(CLKUIColoringLabel *)row1Column1Label setTextProvider:v29];
+  row1Column1TextProvider = [complicationTemplate row1Column1TextProvider];
+  [(CLKUIColoringLabel *)row1Column1Label setTextProvider:row1Column1TextProvider];
 
   row1Column2Label = self->_row1Column2Label;
-  v31 = [v41 row1Column2TextProvider];
-  [(CLKUIColoringLabel *)row1Column2Label setTextProvider:v31];
+  row1Column2TextProvider = [complicationTemplate row1Column2TextProvider];
+  [(CLKUIColoringLabel *)row1Column2Label setTextProvider:row1Column2TextProvider];
 
   row2Column1Label = self->_row2Column1Label;
-  v33 = [v41 row2Column1TextProvider];
-  [(CLKUIColoringLabel *)row2Column1Label setTextProvider:v33];
+  row2Column1TextProvider = [complicationTemplate row2Column1TextProvider];
+  [(CLKUIColoringLabel *)row2Column1Label setTextProvider:row2Column1TextProvider];
 
   row2Column2Label = self->_row2Column2Label;
-  v35 = [v41 row2Column2TextProvider];
-  [(CLKUIColoringLabel *)row2Column2Label setTextProvider:v35];
+  row2Column2TextProvider = [complicationTemplate row2Column2TextProvider];
+  [(CLKUIColoringLabel *)row2Column2Label setTextProvider:row2Column2TextProvider];
 
   row3Column1Label = self->_row3Column1Label;
-  v37 = [v41 row3Column1TextProvider];
-  [(CLKUIColoringLabel *)row3Column1Label setTextProvider:v37];
+  row3Column1TextProvider = [complicationTemplate row3Column1TextProvider];
+  [(CLKUIColoringLabel *)row3Column1Label setTextProvider:row3Column1TextProvider];
 
   row3Column2Label = self->_row3Column2Label;
-  v39 = [v41 row3Column2TextProvider];
-  [(CLKUIColoringLabel *)row3Column2Label setTextProvider:v39];
+  row3Column2TextProvider = [complicationTemplate row3Column2TextProvider];
+  [(CLKUIColoringLabel *)row3Column2Label setTextProvider:row3Column2TextProvider];
 
-  -[NTKModularLargeColumnTemplateView setUseNoColumnPadding:](self, "setUseNoColumnPadding:", [v41 useNoColumnPadding]);
-  v40 = [(NTKModuleView *)self contentView];
-  [v40 setNeedsLayout];
+  -[NTKModularLargeColumnTemplateView setUseNoColumnPadding:](self, "setUseNoColumnPadding:", [complicationTemplate useNoColumnPadding]);
+  contentView4 = [(NTKModuleView *)self contentView];
+  [contentView4 setNeedsLayout];
 }
 
 @end

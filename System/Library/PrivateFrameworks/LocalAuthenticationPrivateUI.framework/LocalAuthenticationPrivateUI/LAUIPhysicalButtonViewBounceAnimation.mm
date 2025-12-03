@@ -1,13 +1,13 @@
 @interface LAUIPhysicalButtonViewBounceAnimation
 - (double)_currentLength;
-- (void)_animateWithLength:(double)a3 delay:(double)a4;
-- (void)beginWithDelay:(double)a3;
+- (void)_animateWithLength:(double)length delay:(double)delay;
+- (void)beginWithDelay:(double)delay;
 - (void)update;
 @end
 
 @implementation LAUIPhysicalButtonViewBounceAnimation
 
-- (void)beginWithDelay:(double)a3
+- (void)beginWithDelay:(double)delay
 {
   if (![(LAUIPhysicalButtonViewAnimation *)self isRunning])
   {
@@ -49,29 +49,29 @@
   return v7;
 }
 
-- (void)_animateWithLength:(double)a3 delay:(double)a4
+- (void)_animateWithLength:(double)length delay:(double)delay
 {
   v25[7] = *MEMORY[0x277D85DE8];
   [(LAUIPhysicalButtonViewAnimation *)self end];
-  self->_lastLength = a3;
+  self->_lastLength = length;
   if (self->_forceMaxXEdge)
   {
     goto LABEL_2;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->super._physicalButtonView);
-  v10 = [WeakRetained edge];
+  edge = [WeakRetained edge];
 
   v7 = 0;
   v8 = 0;
-  if (v10 <= 1)
+  if (edge <= 1)
   {
-    if (!v10)
+    if (!edge)
     {
       goto LABEL_3;
     }
 
-    if (v10 != 1)
+    if (edge != 1)
     {
       goto LABEL_13;
     }
@@ -81,13 +81,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v10 == 3)
+  if (edge == 3)
   {
     v7 = 1;
     goto LABEL_12;
   }
 
-  if (v10 == 2)
+  if (edge == 2)
   {
 LABEL_2:
     v7 = 1;
@@ -99,7 +99,7 @@ LABEL_13:
   v11 = [MEMORY[0x277CD9EC8] animationWithKeyPath:v8];
   [v11 setAdditive:1];
   [v11 setBeginTimeMode:*MEMORY[0x277CDA080]];
-  [v11 setBeginTime:a4];
+  [v11 setBeginTime:delay];
   [(LAUIPhysicalButtonViewBounceAnimation *)self duration];
   [v11 setDuration:?];
   [v11 setCalculationMode:*MEMORY[0x277CDA070]];

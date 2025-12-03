@@ -1,29 +1,29 @@
 @interface VUIAMSMediaProxy
-- (VUIAMSMediaProxy)initWithDictionary:(id)a3;
-- (void)_initializeProperties:(id)a3;
+- (VUIAMSMediaProxy)initWithDictionary:(id)dictionary;
+- (void)_initializeProperties:(id)properties;
 @end
 
 @implementation VUIAMSMediaProxy
 
-- (VUIAMSMediaProxy)initWithDictionary:(id)a3
+- (VUIAMSMediaProxy)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = VUIAMSMediaProxy;
   v5 = [(VUIAMSMediaProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(VUIAMSMediaProxy *)v5 _initializeProperties:v4];
+    [(VUIAMSMediaProxy *)v5 _initializeProperties:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (void)_initializeProperties:(id)a3
+- (void)_initializeProperties:(id)properties
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = [a3 vui_arrayForKey:@"data"];
+  v4 = [properties vui_arrayForKey:@"data"];
   if ([v4 count])
   {
     v26 = v4;

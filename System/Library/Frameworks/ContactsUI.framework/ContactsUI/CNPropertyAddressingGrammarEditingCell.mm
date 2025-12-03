@@ -1,6 +1,6 @@
 @interface CNPropertyAddressingGrammarEditingCell
 - (void)updateConstraints;
-- (void)updateWithPropertyItem:(id)a3;
+- (void)updateWithPropertyItem:(id)item;
 @end
 
 @implementation CNPropertyAddressingGrammarEditingCell
@@ -10,23 +10,23 @@
   v4.receiver = self;
   v4.super_class = CNPropertyAddressingGrammarEditingCell;
   [(CNContactCell *)&v4 updateConstraints];
-  v3 = [(CNPropertySimpleCell *)self labelLabel];
-  [v3 setNumberOfLines:{objc_msgSend(MEMORY[0x1E69DB878], "ab_preferredContentSizeCategoryIsAccessibilityCategory") ^ 1}];
+  labelLabel = [(CNPropertySimpleCell *)self labelLabel];
+  [labelLabel setNumberOfLines:{objc_msgSend(MEMORY[0x1E69DB878], "ab_preferredContentSizeCategoryIsAccessibilityCategory") ^ 1}];
 }
 
-- (void)updateWithPropertyItem:(id)a3
+- (void)updateWithPropertyItem:(id)item
 {
   v11.receiver = self;
   v11.super_class = CNPropertyAddressingGrammarEditingCell;
-  v4 = a3;
-  [(CNPropertyCell *)&v11 updateWithPropertyItem:v4];
+  itemCopy = item;
+  [(CNPropertyCell *)&v11 updateWithPropertyItem:itemCopy];
   objc_opt_class();
-  v5 = [v4 labeledValue];
+  labeledValue = [itemCopy labeledValue];
 
-  v6 = [v5 value];
+  value = [labeledValue value];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = value;
   }
 
   else
@@ -36,9 +36,9 @@
 
   v8 = v7;
 
-  v9 = [v8 localizedShortDescription];
-  v10 = [(CNPropertySimpleCell *)self labelLabel];
-  [v10 setText:v9];
+  localizedShortDescription = [v8 localizedShortDescription];
+  labelLabel = [(CNPropertySimpleCell *)self labelLabel];
+  [labelLabel setText:localizedShortDescription];
 }
 
 @end

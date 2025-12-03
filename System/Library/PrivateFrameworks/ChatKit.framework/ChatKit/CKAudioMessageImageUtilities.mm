@@ -1,16 +1,16 @@
 @interface CKAudioMessageImageUtilities
-+ (id)audioMessageImageFor:(id)a3 with:(CGSize)a4;
++ (id)audioMessageImageFor:(id)for with:(CGSize)with;
 - (_TtC7ChatKit28CKAudioMessageImageUtilities)init;
 @end
 
 @implementation CKAudioMessageImageUtilities
 
-+ (id)audioMessageImageFor:(id)a3 with:(CGSize)a4
++ (id)audioMessageImageFor:(id)for with:(CGSize)with
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = _s7ChatKit28CKAudioMessageImageUtilitiesC05audiodE03for4withSo7UIImageCSo9IMMessageCSg_So6CGSizeVtFZ_0(a3, width, height);
+  height = with.height;
+  width = with.width;
+  forCopy = for;
+  v8 = _s7ChatKit28CKAudioMessageImageUtilitiesC05audiodE03for4withSo7UIImageCSo9IMMessageCSg_So6CGSizeVtFZ_0(for, width, height);
 
   return v8;
 }

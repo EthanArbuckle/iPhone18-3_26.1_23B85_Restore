@@ -1,58 +1,58 @@
 @interface AAFollowUpController
-- (BOOL)_shouldPostRenewFollowup:(id)a3;
-- (BOOL)dismissFollowUpWithIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)_shouldPostRenewFollowup:(id)followup;
+- (BOOL)dismissFollowUpWithIdentifier:(id)identifier error:(id *)error;
 - (BOOL)isRenewCredentialsCFUPosted;
-- (BOOL)postFollowUpWithIdentifier:(id)a3 userInfo:(id)a4 error:(id *)a5;
+- (BOOL)postFollowUpWithIdentifier:(id)identifier userInfo:(id)info error:(id *)error;
 - (double)ageOfOldestCustodianCFU;
 - (id)_addRecoveryContactAction;
-- (id)_addRecoveryKeyActionForIdentifier:(id)a3;
+- (id)_addRecoveryKeyActionForIdentifier:(id)identifier;
 - (id)_ageMigrationMigrationAction;
 - (id)_childOrTeenProtoConnectAction;
-- (id)_constructAnalyticsInforFromAccount:(id)a3 forIdentifier:(id)a4;
-- (id)_createNewRecoveryKeyActionWithUserInfo:(id)a3;
-- (id)_custodianReviewNotification:(id)a3;
-- (id)_filterFollowUpItems:(id)a3 byIdentifier:(id)a4 byAccount:(id)a5;
+- (id)_constructAnalyticsInforFromAccount:(id)account forIdentifier:(id)identifier;
+- (id)_createNewRecoveryKeyActionWithUserInfo:(id)info;
+- (id)_custodianReviewNotification:(id)notification;
+- (id)_filterFollowUpItems:(id)items byIdentifier:(id)identifier byAccount:(id)account;
 - (id)_followUpController;
-- (id)_followUpForAgeMigrationWithContext:(id)a3;
-- (id)_followUpForChildOrTeenProtoConnectWithContext:(id)a3;
-- (id)_followUpForOctagonDistrustedRecoveryKeyWithContext:(id)a3;
-- (id)_followUpForRecoveryKeyHealingWithContext:(id)a3;
-- (id)_followUpForRecoveryKeyMismatchWithContext:(id)a3;
-- (id)_followUpForWalrusRecoveryKeyMismatchWithContext:(id)a3;
-- (id)_followUpItemForBeneficiaryRemoved:(id)a3;
-- (id)_followUpItemForCustodianEmbargo:(id)a3;
-- (id)_followUpItemForCustodianInvitationReminder:(id)a3;
-- (id)_followUpItemForCustodianRemoved:(id)a3;
-- (id)_followUpItemForCustodianReview:(id)a3;
-- (id)_followUpItemForCustodianWalrusNoLiveness:(id)a3;
-- (id)_followUpItemForCustodianWalrusRemoved:(id)a3;
-- (id)_followUpItemForRenewCredentials:(id)a3;
-- (id)_followUpItemForStartUsing:(id)a3;
-- (id)_followUpItemForVerifyTerms:(id)a3;
-- (id)_followUpItemForWalrusUserRecoveryFactorsMissing:(id)a3;
-- (id)_pendingFollowUpItemsWithIdentifier:(id)a3 forAccount:(id)a4;
-- (id)_recoveryKeyMismatchOtherOptionsActionWithUserInfo:(id)a3;
-- (id)_recoveryNotificationWithInfo:(id)a3 type:(id)a4;
+- (id)_followUpForAgeMigrationWithContext:(id)context;
+- (id)_followUpForChildOrTeenProtoConnectWithContext:(id)context;
+- (id)_followUpForOctagonDistrustedRecoveryKeyWithContext:(id)context;
+- (id)_followUpForRecoveryKeyHealingWithContext:(id)context;
+- (id)_followUpForRecoveryKeyMismatchWithContext:(id)context;
+- (id)_followUpForWalrusRecoveryKeyMismatchWithContext:(id)context;
+- (id)_followUpItemForBeneficiaryRemoved:(id)removed;
+- (id)_followUpItemForCustodianEmbargo:(id)embargo;
+- (id)_followUpItemForCustodianInvitationReminder:(id)reminder;
+- (id)_followUpItemForCustodianRemoved:(id)removed;
+- (id)_followUpItemForCustodianReview:(id)review;
+- (id)_followUpItemForCustodianWalrusNoLiveness:(id)liveness;
+- (id)_followUpItemForCustodianWalrusRemoved:(id)removed;
+- (id)_followUpItemForRenewCredentials:(id)credentials;
+- (id)_followUpItemForStartUsing:(id)using;
+- (id)_followUpItemForVerifyTerms:(id)terms;
+- (id)_followUpItemForWalrusUserRecoveryFactorsMissing:(id)missing;
+- (id)_pendingFollowUpItemsWithIdentifier:(id)identifier forAccount:(id)account;
+- (id)_recoveryKeyMismatchOtherOptionsActionWithUserInfo:(id)info;
+- (id)_recoveryNotificationWithInfo:(id)info type:(id)type;
 - (id)_showAccountRecoveryPane;
-- (id)_turnOffRecoveryKeyActionWithUserInfo:(id)a3;
+- (id)_turnOffRecoveryKeyActionWithUserInfo:(id)info;
 - (id)_verifyRecoveryKeyAction;
 - (id)_walrusUserRecoveryFactorsMissingNotification;
-- (id)creationDateOfOldestFollowUpWithIdentifiers:(id)a3;
-- (id)followUpItemForIdentifier:(id)a3 userInfo:(id)a4;
+- (id)creationDateOfOldestFollowUpWithIdentifiers:(id)identifiers;
+- (id)followUpItemForIdentifier:(id)identifier userInfo:(id)info;
 - (id)pendingCFUTypes;
-- (id)pendingFollowUpItemUserInfosWithIdentifier:(id)a3;
-- (void)_dismissFollowUpWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)_pendingFollowUpItemsWithIdentifier:(id)a3 forAccount:(id)a4 completion:(id)a5;
-- (void)dismissFollowUpWithIdentifier:(id)a3 completion:(id)a4;
-- (void)dismissFollowUpWithIdentifier:(id)a3 forAccount:(id)a4 completion:(id)a5;
-- (void)dismissFollowUpsForAccount:(id)a3 identifiers:(id)a4 completion:(id)a5;
-- (void)dismissFollowUpsStartingWithIdentifierPrefix:(id)a3 account:(id)a4 completion:(id)a5;
-- (void)pendingFollowUpItemUserInfosWithIdentifier:(id)a3 completion:(id)a4;
-- (void)pendingFollowUpWithIdentifier:(id)a3 completion:(id)a4;
-- (void)pendingFollowUpsForAccount:(id)a3 completion:(id)a4;
-- (void)postFollowUpWithIdentifier:(id)a3 forAccount:(id)a4 userInfo:(id)a5 completion:(id)a6;
-- (void)postFollowUpWithIdentifier:(id)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)reportPostCFUEvent:(id)a3;
+- (id)pendingFollowUpItemUserInfosWithIdentifier:(id)identifier;
+- (void)_dismissFollowUpWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_pendingFollowUpItemsWithIdentifier:(id)identifier forAccount:(id)account completion:(id)completion;
+- (void)dismissFollowUpWithIdentifier:(id)identifier completion:(id)completion;
+- (void)dismissFollowUpWithIdentifier:(id)identifier forAccount:(id)account completion:(id)completion;
+- (void)dismissFollowUpsForAccount:(id)account identifiers:(id)identifiers completion:(id)completion;
+- (void)dismissFollowUpsStartingWithIdentifierPrefix:(id)prefix account:(id)account completion:(id)completion;
+- (void)pendingFollowUpItemUserInfosWithIdentifier:(id)identifier completion:(id)completion;
+- (void)pendingFollowUpWithIdentifier:(id)identifier completion:(id)completion;
+- (void)pendingFollowUpsForAccount:(id)account completion:(id)completion;
+- (void)postFollowUpWithIdentifier:(id)identifier forAccount:(id)account userInfo:(id)info completion:(id)completion;
+- (void)postFollowUpWithIdentifier:(id)identifier userInfo:(id)info completion:(id)completion;
+- (void)reportPostCFUEvent:(id)event;
 @end
 
 @implementation AAFollowUpController
@@ -64,10 +64,10 @@
   return v2;
 }
 
-- (id)_followUpItemForStartUsing:(id)a3
+- (id)_followUpItemForStartUsing:(id)using
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  usingCopy = using;
   v4 = objc_alloc_init(getFLFollowUpActionClass());
   [v4 setIdentifier:AAFollowUpActionPrimary[0]];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -99,17 +99,17 @@
   [v10 setTitle:v16];
 
   [v10 setUniqueIdentifier:AAFollowUpIdentifierStartUsing[0]];
-  [v10 setUserInfo:v3];
+  [v10 setUserInfo:usingCopy];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (id)_followUpItemForVerifyTerms:(id)a3
+- (id)_followUpItemForVerifyTerms:(id)terms
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  termsCopy = terms;
   v4 = objc_alloc_init(getFLFollowUpActionClass());
   [v4 setIdentifier:AAFollowUpActionPrimary[0]];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -137,7 +137,7 @@
     CFNotificationCenterAddObserver(DarwinNotifyCenter, @"com.apple.AppleAccount.FollowUp.SetupAssistantExited", _AAFollowUpControllerHandleSetupAssistantExited, *MEMORY[0x1E69CA9B8], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 
-  v14 = [v3 objectForKeyedSubscript:AAFollowUpUserInfoTermsNotificationTitle[0]];
+  v14 = [termsCopy objectForKeyedSubscript:AAFollowUpUserInfoTermsNotificationTitle[0]];
   v15 = v14;
   if (v14)
   {
@@ -150,7 +150,7 @@
     v16 = [v17 localizedStringForKey:@"FOLLOWUP_VERIFY_TERMS_NOTIFICATION_TITLE" value:&stru_1F2EF6280 table:@"Localizable"];
   }
 
-  v18 = [v3 objectForKeyedSubscript:AAFollowUpUserInfoTermsNotificationBody[0]];
+  v18 = [termsCopy objectForKeyedSubscript:AAFollowUpUserInfoTermsNotificationBody[0]];
   v19 = v18;
   if (v18)
   {
@@ -164,7 +164,7 @@
 
   v21 = v20;
 
-  v22 = [v3 objectForKeyedSubscript:AAFollowUpUserInfoTermsCFUTitle[0]];
+  v22 = [termsCopy objectForKeyedSubscript:AAFollowUpUserInfoTermsCFUTitle[0]];
   v23 = v22;
   if (v22)
   {
@@ -177,7 +177,7 @@
     v24 = [v25 localizedStringForKey:@"FOLLOWUP_VERIFY_TERMS_TITLE" value:&stru_1F2EF6280 table:@"Localizable"];
   }
 
-  v26 = [v3 objectForKeyedSubscript:AAFollowUpUserInfoTermsCFUBody[0]];
+  v26 = [termsCopy objectForKeyedSubscript:AAFollowUpUserInfoTermsCFUBody[0]];
   v27 = v26;
   if (v26)
   {
@@ -207,7 +207,7 @@
     v31 = MEMORY[0x1E695DFD8];
     getFLNotificationOptionForce();
     v46 = v29;
-    v32 = v3;
+    v32 = termsCopy;
     v33 = v24;
     v34 = v7;
     v35 = v4;
@@ -222,7 +222,7 @@
     v4 = v35;
     v7 = v34;
     v24 = v33;
-    v3 = v32;
+    termsCopy = v32;
     v29 = v46;
   }
 
@@ -240,18 +240,18 @@
   [v41 setNotification:v30];
   [v41 setTitle:v24];
   [v41 setUniqueIdentifier:AAFollowUpIdentifierVerifyTerms[0]];
-  [v41 setUserInfo:v3];
+  [v41 setUserInfo:termsCopy];
 
   v44 = *MEMORY[0x1E69E9840];
 
   return v41;
 }
 
-- (id)_followUpItemForRenewCredentials:(id)a3
+- (id)_followUpItemForRenewCredentials:(id)credentials
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(AAFollowUpController *)self _shouldPostRenewFollowup:v4])
+  credentialsCopy = credentials;
+  if ([(AAFollowUpController *)self _shouldPostRenewFollowup:credentialsCopy])
   {
     v5 = objc_alloc_init(getFLFollowUpActionClass());
     [v5 setIdentifier:AAFollowUpActionPrimary[0]];
@@ -264,7 +264,7 @@
 
     if ([MEMORY[0x1E6985E20] isInternalBuild])
     {
-      v10 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoClientName[0]];
+      v10 = [credentialsCopy objectForKeyedSubscript:AAFollowUpUserInfoClientName[0]];
       if (v10)
       {
         v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -291,9 +291,9 @@
 
     [v14 setInformativeText:v9];
     [v14 setTypeIdentifier:AAFollowUpIdentifierRenewCredentials[0]];
-    [v14 setUserInfo:v4];
+    [v14 setUserInfo:credentialsCopy];
     v19 = AAFollowUpIdentifierRenewCredentials[0];
-    v20 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+    v20 = [credentialsCopy objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
     if (v20)
     {
       [v14 setAccountIdentifier:v20];
@@ -312,13 +312,13 @@
   return v14;
 }
 
-- (id)_followUpItemForCustodianReview:(id)a3
+- (id)_followUpItemForCustodianReview:(id)review
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AAFollowUpController *)self _showAccountRecoveryPane];
+  reviewCopy = review;
+  _showAccountRecoveryPane = [(AAFollowUpController *)self _showAccountRecoveryPane];
   v6 = objc_alloc_init(getFLFollowUpItemClass());
-  v16[0] = v5;
+  v16[0] = _showAccountRecoveryPane;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   [v6 setActions:v7];
 
@@ -332,10 +332,10 @@
   [v6 setTitle:v11];
 
   [v6 setUniqueIdentifier:AAFollowUpIdentifierCustodianReview[0]];
-  [v6 setUserInfo:v4];
+  [v6 setUserInfo:reviewCopy];
 
   [v6 setDisplayStyle:2];
-  v12 = [(AAFollowUpController *)self _custodianReviewNotification:v5];
+  v12 = [(AAFollowUpController *)self _custodianReviewNotification:_showAccountRecoveryPane];
   [v6 setNotification:v12];
 
   v13 = getFLGroupIdentifierAccount();
@@ -346,11 +346,11 @@
   return v6;
 }
 
-- (id)_custodianReviewNotification:(id)a3
+- (id)_custodianReviewNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = objc_alloc_init(getFLFollowUpNotificationClass());
-  [v4 setActivateAction:v3];
+  [v4 setActivateAction:notificationCopy];
 
   [v4 setFirstNotificationDelay:0.0];
   [v4 setFrequency:86400.0];
@@ -382,18 +382,18 @@
   return v2;
 }
 
-- (id)_followUpItemForCustodianInvitationReminder:(id)a3
+- (id)_followUpItemForCustodianInvitationReminder:(id)reminder
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  reminderCopy = reminder;
   v4 = objc_alloc_init(getFLFollowUpActionClass());
   [v4 setIdentifier:AAFollowUpActionPrimary[0]];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"FOLLOWUP_CUSTODIAN_INVITATION_REMINDER_BUTTON_PRIMARY" value:&stru_1F2EF6280 table:@"Localizable"];
   [v4 setLabel:v6];
 
-  v22 = [v3 objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
-  v23 = [v3 objectForKeyedSubscript:AAFollowUpTrustedContactID[0]];
+  v22 = [reminderCopy objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
+  v23 = [reminderCopy objectForKeyedSubscript:AAFollowUpTrustedContactID[0]];
   v7 = _AALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -425,16 +425,16 @@
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", AAFollowUpIdentifierCustodianInvitationReminder[0], v23];
   [v8 setUniqueIdentifier:v19];
 
-  [v8 setUserInfo:v3];
+  [v8 setUserInfo:reminderCopy];
   v20 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)_followUpItemForCustodianWalrusRemoved:(id)a3
+- (id)_followUpItemForCustodianWalrusRemoved:(id)removed
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v44 = a3;
+  removedCopy = removed;
   v3 = objc_alloc_init(getFLFollowUpActionClass());
   [v3 setIdentifier:AAFollowUpActionPrimary[0]];
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
@@ -448,7 +448,7 @@
   v45 = v6;
   [v6 setLabel:v8];
 
-  v9 = [v44 objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
+  v9 = [removedCopy objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
   v10 = objc_alloc_init(getFLFollowUpNotificationClass());
   v46 = v3;
   [v10 setActivateAction:v3];
@@ -516,15 +516,15 @@
   [v31 setInformativeText:v39];
 
   [v31 setNotification:v10];
-  v40 = [v44 mutableCopy];
+  dictionary = [removedCopy mutableCopy];
 
-  if (!v40)
+  if (!dictionary)
   {
-    v40 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
   [v31 setUniqueIdentifier:AAFollowUpIdentifierCustodianWalrusRemoved[0]];
-  v41 = [v40 copy];
+  v41 = [dictionary copy];
   [v31 setUserInfo:v41];
 
   v42 = *MEMORY[0x1E69E9840];
@@ -587,7 +587,7 @@
   return v2;
 }
 
-- (id)_addRecoveryKeyActionForIdentifier:(id)a3
+- (id)_addRecoveryKeyActionForIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(getFLFollowUpActionClass());
@@ -663,7 +663,7 @@
   return v2;
 }
 
-- (id)_recoveryKeyMismatchOtherOptionsActionWithUserInfo:(id)a3
+- (id)_recoveryKeyMismatchOtherOptionsActionWithUserInfo:(id)info
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(getFLFollowUpActionClass());
@@ -682,14 +682,14 @@
   return v3;
 }
 
-- (id)_followUpItemForWalrusUserRecoveryFactorsMissing:(id)a3
+- (id)_followUpItemForWalrusUserRecoveryFactorsMissing:(id)missing
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AAFollowUpController *)self _walrusUserRecoveryFactorsMissingNotification];
+  missingCopy = missing;
+  _walrusUserRecoveryFactorsMissingNotification = [(AAFollowUpController *)self _walrusUserRecoveryFactorsMissingNotification];
   v6 = objc_alloc_init(getFLFollowUpItemClass());
-  v7 = [(AAFollowUpController *)self _addRecoveryContactAction];
-  v17[0] = v7;
+  _addRecoveryContactAction = [(AAFollowUpController *)self _addRecoveryContactAction];
+  v17[0] = _addRecoveryContactAction;
   v8 = [(AAFollowUpController *)self _addRecoveryKeyActionForIdentifier:AAFollowUpIdentifierWalrusUserRecoveryFactorsMissing[0]];
   v17[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
@@ -708,19 +708,19 @@
   v14 = [v13 localizedStringForKey:@"FOLLOWUP_RECOVERY_FACTORS_MISSING_MESSAGE" value:0 table:@"Localizable-Walrus"];
   [v6 setInformativeText:v14];
 
-  [v6 setNotification:v5];
+  [v6 setNotification:_walrusUserRecoveryFactorsMissingNotification];
   [v6 setUniqueIdentifier:AAFollowUpIdentifierWalrusUserRecoveryFactorsMissing[0]];
-  [v6 setUserInfo:v4];
+  [v6 setUserInfo:missingCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (id)_followUpItemForCustodianRemoved:(id)a3
+- (id)_followUpItemForCustodianRemoved:(id)removed
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  removedCopy = removed;
   v3 = objc_alloc_init(getFLFollowUpActionClass());
   [v3 setIdentifier:AAFollowUpActionPrimary[0]];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -728,7 +728,7 @@
   v38 = v3;
   [v3 setLabel:v5];
 
-  v6 = [v39 objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
+  v6 = [removedCopy objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
   v7 = objc_alloc_init(getFLFollowUpNotificationClass());
   [v7 setActivateAction:v3];
   [v7 setFirstNotificationDelay:0.0];
@@ -787,17 +787,17 @@
   [v26 setTitle:v34];
 
   [v26 setUniqueIdentifier:AAFollowUpIdentifierCustodianRemoved[0]];
-  [v26 setUserInfo:v39];
+  [v26 setUserInfo:removedCopy];
 
   v35 = *MEMORY[0x1E69E9840];
 
   return v26;
 }
 
-- (id)_followUpItemForCustodianWalrusNoLiveness:(id)a3
+- (id)_followUpItemForCustodianWalrusNoLiveness:(id)liveness
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v42 = a3;
+  livenessCopy = liveness;
   v3 = objc_alloc_init(getFLFollowUpActionClass());
   [v3 setIdentifier:AAFollowUpActionPrimary[0]];
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
@@ -811,7 +811,7 @@
   v43 = v6;
   [v6 setLabel:v8];
 
-  v9 = [v42 objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
+  v9 = [livenessCopy objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
   v10 = objc_alloc_init(getFLFollowUpNotificationClass());
   v44 = v3;
   [v10 setActivateAction:v3];
@@ -869,14 +869,14 @@
   v37 = [v36 localizedStringForKey:@"FOLLOWUP_LAST_CUSTODIAN_NO_LIVENESS_TITLE" value:0 table:@"Localizable-Walrus"];
   [v29 setTitle:v37];
 
-  v38 = [v42 mutableCopy];
-  if (!v38)
+  dictionary = [livenessCopy mutableCopy];
+  if (!dictionary)
   {
-    v38 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
   [v29 setUniqueIdentifier:AAFollowUpIdentifierCustodianWalrusNoLiveness[0]];
-  v39 = [v38 copy];
+  v39 = [dictionary copy];
   [v29 setUserInfo:v39];
 
   v40 = *MEMORY[0x1E69E9840];
@@ -884,17 +884,17 @@
   return v29;
 }
 
-- (id)_followUpItemForBeneficiaryRemoved:(id)a3
+- (id)_followUpItemForBeneficiaryRemoved:(id)removed
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v36 = a3;
+  removedCopy = removed;
   v3 = objc_alloc_init(getFLFollowUpActionClass());
   [v3 setIdentifier:AAFollowUpActionPrimary[0]];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"FOLLOWUP_BENEFICIARY_REMOVED_BUTTON_PRIMARY" value:? table:?];
   [v3 setLabel:v5];
 
-  v35 = [v36 objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
+  v35 = [removedCopy objectForKeyedSubscript:AAFollowUpTrustedContactName[0]];
   v6 = objc_alloc_init(getFLFollowUpNotificationClass());
   [v6 setActivateAction:v3];
   [v6 setFirstNotificationDelay:0.0];
@@ -950,7 +950,7 @@
   [v23 setTitle:v31];
 
   [v23 setUniqueIdentifier:AAFollowUpIdentifierBeneficiaryRemoved[0]];
-  [v23 setUserInfo:v36];
+  [v23 setUserInfo:removedCopy];
 
   v32 = _AALogSystem();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -963,18 +963,18 @@
   return v23;
 }
 
-- (id)_followUpItemForCustodianEmbargo:(id)a3
+- (id)_followUpItemForCustodianEmbargo:(id)embargo
 {
-  v4 = a3;
+  embargoCopy = embargo;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AAFollowUpController _followUpItemForCustodianEmbargo:];
   }
 
-  if (v4)
+  if (embargoCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoNotificationInfo[0]];
+    v6 = [embargoCopy objectForKeyedSubscript:AAFollowUpUserInfoNotificationInfo[0]];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = [v6 objectForKeyedSubscript:AAFollowUpUserInfoNotificationButtonTitle[0]];
     v9 = objc_alloc_init(getFLFollowUpActionClass());
@@ -982,7 +982,7 @@
     v19 = v8;
     [v9 setLabel:v8];
     [v7 addObject:v9];
-    v10 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoNotificationAltButtonTitle[0]];
+    v10 = [embargoCopy objectForKeyedSubscript:AAFollowUpUserInfoNotificationAltButtonTitle[0]];
     if ([v10 length] >= 2)
     {
       v11 = objc_alloc_init(getFLFollowUpActionClass());
@@ -991,7 +991,7 @@
       [v7 addObject:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoCFUType[0]];
+    v12 = [embargoCopy objectForKeyedSubscript:AAFollowUpUserInfoCFUType[0]];
     v13 = [(AAFollowUpController *)self _recoveryNotificationWithInfo:v6 type:v12];
     [v13 setActivateAction:v9];
     v14 = objc_alloc_init(getFLFollowUpItemClass());
@@ -1006,7 +1006,7 @@
     [v14 setNotification:v13];
     [v14 setActions:v7];
     [v14 setUniqueIdentifier:AAFollowUpIdentifierCustodianEmbargo[0]];
-    [v14 setUserInfo:v4];
+    [v14 setUserInfo:embargoCopy];
     [v14 setDisplayStyle:2];
   }
 
@@ -1024,13 +1024,13 @@
   return v14;
 }
 
-- (id)_followUpForRecoveryKeyHealingWithContext:(id)a3
+- (id)_followUpForRecoveryKeyHealingWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoHasWalrusEnabled[0]];
+    v6 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoHasWalrusEnabled[0]];
     v7 = [v5 objectForKeyedSubscript:AAFollowUpUserInfoHasDistrustedRK[0]];
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1074,13 +1074,13 @@
   return v10;
 }
 
-- (id)_followUpForOctagonDistrustedRecoveryKeyWithContext:(id)a3
+- (id)_followUpForOctagonDistrustedRecoveryKeyWithContext:(id)context
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(getFLFollowUpItemClass());
   [v5 setUniqueIdentifier:AAFollowUpIdentifierRecoveryKeyMismatch[0]];
-  v6 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  v6 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
   if (v6)
   {
     [v5 setAccountIdentifier:v6];
@@ -1088,7 +1088,7 @@
 
   [v5 setExtensionIdentifier:AAFollowUpExtensionIdentifier[0]];
   [v5 setTypeIdentifier:AAFollowUpIdentifierRecoveryKeyMismatch[0]];
-  [v5 setUserInfo:v4];
+  [v5 setUserInfo:contextCopy];
   v7 = objc_alloc_init(getFLFollowUpNotificationClass());
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"DISTRUSTED_RECOVERY_KEY_REPAIR_NOTIFICATION_TITLE" value:&stru_1F2EF6280 table:@"Localizable"];
@@ -1107,8 +1107,8 @@
   v15 = [v14 localizedStringForKey:@"DISTRUSTED_RECOVERY_KEY_REPAIR_INFORMATIVE" value:&stru_1F2EF6280 table:@"Localizable"];
   [v5 setInformativeText:v15];
 
-  v16 = [(AAFollowUpController *)self _turnOffRecoveryKeyActionWithUserInfo:v4];
-  v17 = [(AAFollowUpController *)self _createNewRecoveryKeyActionWithUserInfo:v4];
+  v16 = [(AAFollowUpController *)self _turnOffRecoveryKeyActionWithUserInfo:contextCopy];
+  v17 = [(AAFollowUpController *)self _createNewRecoveryKeyActionWithUserInfo:contextCopy];
   v21[0] = v16;
   v21[1] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
@@ -1119,7 +1119,7 @@
   return v5;
 }
 
-- (id)_turnOffRecoveryKeyActionWithUserInfo:(id)a3
+- (id)_turnOffRecoveryKeyActionWithUserInfo:(id)info
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(getFLFollowUpActionClass());
@@ -1137,7 +1137,7 @@
   return v3;
 }
 
-- (id)_createNewRecoveryKeyActionWithUserInfo:(id)a3
+- (id)_createNewRecoveryKeyActionWithUserInfo:(id)info
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(getFLFollowUpActionClass());
@@ -1155,14 +1155,14 @@
   return v3;
 }
 
-- (id)_followUpForRecoveryKeyMismatchWithContext:(id)a3
+- (id)_followUpForRecoveryKeyMismatchWithContext:(id)context
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v23 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoHasRecoveryContact[0]];
+  contextCopy = context;
+  v23 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoHasRecoveryContact[0]];
   v5 = objc_alloc_init(getFLFollowUpItemClass());
   [v5 setUniqueIdentifier:AAFollowUpIdentifierRecoveryKeyMismatch[0]];
-  v6 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  v6 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
   if (v6)
   {
     [v5 setAccountIdentifier:v6];
@@ -1170,15 +1170,15 @@
 
   [v5 setExtensionIdentifier:AAFollowUpExtensionIdentifier[0]];
   [v5 setTypeIdentifier:AAFollowUpIdentifierRecoveryKeyMismatch[0]];
-  [v5 setUserInfo:v4];
-  v7 = [v5 notification];
+  [v5 setUserInfo:contextCopy];
+  notification = [v5 notification];
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"RECOVERY_KEY_REPAIR_NOTIFICATION_TITLE" value:&stru_1F2EF6280 table:@"Localizable"];
-  [v7 setTitle:v9];
+  [notification setTitle:v9];
 
   v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"RECOVERY_KEY_REPAIR_FOLLOWUP_NOTIFICATION_INFORMATIVE" value:&stru_1F2EF6280 table:@"Localizable"];
-  [v7 setInformativeText:v11];
+  [notification setInformativeText:v11];
 
   v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"RECOVERY_KEY_REPAIR_TITLE" value:&stru_1F2EF6280 table:@"Localizable"];
@@ -1200,9 +1200,9 @@
   v17 = [v14 localizedStringForKey:v16 value:&stru_1F2EF6280 table:@"Localizable"];
   [v5 setInformativeText:v17];
 
-  v18 = [(AAFollowUpController *)self _verifyRecoveryKeyAction];
-  v19 = [(AAFollowUpController *)self _recoveryKeyMismatchOtherOptionsActionWithUserInfo:v4];
-  v24[0] = v18;
+  _verifyRecoveryKeyAction = [(AAFollowUpController *)self _verifyRecoveryKeyAction];
+  v19 = [(AAFollowUpController *)self _recoveryKeyMismatchOtherOptionsActionWithUserInfo:contextCopy];
+  v24[0] = _verifyRecoveryKeyAction;
   v24[1] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   [v5 setActions:v20];
@@ -1212,13 +1212,13 @@
   return v5;
 }
 
-- (id)_followUpForWalrusRecoveryKeyMismatchWithContext:(id)a3
+- (id)_followUpForWalrusRecoveryKeyMismatchWithContext:(id)context
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(getFLFollowUpItemClass());
   [v5 setUniqueIdentifier:AAFollowUpIdentifierRecoveryKeyMismatch[0]];
-  v6 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  v6 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
   if (v6)
   {
     [v5 setAccountIdentifier:v6];
@@ -1226,23 +1226,23 @@
 
   [v5 setExtensionIdentifier:AAFollowUpExtensionIdentifier[0]];
   [v5 setTypeIdentifier:AAFollowUpIdentifierRecoveryKeyMismatch[0]];
-  [v5 setUserInfo:v4];
+  [v5 setUserInfo:contextCopy];
   [v5 setDisplayStyle:4];
-  v7 = [(AAFollowUpController *)self _verifyRecoveryKeyAction];
+  _verifyRecoveryKeyAction = [(AAFollowUpController *)self _verifyRecoveryKeyAction];
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   [v8 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_VERIFY_RK_ACTION" value:0 table:@"Localizable-Walrus"];
-  v9 = self;
-  v42 = self;
-  v10 = v43 = v7;
-  [v7 setLabel:v10];
+  selfCopy = self;
+  selfCopy2 = self;
+  v10 = v43 = _verifyRecoveryKeyAction;
+  [_verifyRecoveryKeyAction setLabel:v10];
 
-  v46 = v4;
-  v11 = [(AAFollowUpController *)v9 _recoveryKeyMismatchOtherOptionsActionWithUserInfo:v4];
-  v45 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoHasRecoveryContact[0]];
-  v12 = [v45 BOOLValue];
+  v46 = contextCopy;
+  v11 = [(AAFollowUpController *)selfCopy _recoveryKeyMismatchOtherOptionsActionWithUserInfo:contextCopy];
+  v45 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoHasRecoveryContact[0]];
+  bOOLValue = [v45 BOOLValue];
   v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v14 = v13;
-  if (v12)
+  if (bOOLValue)
   {
     v15 = @"RECOVERY_KEY_REPAIR_ADP_HAS_RC_TITLE";
   }
@@ -1252,7 +1252,7 @@
     v15 = @"RECOVERY_KEY_REPAIR_ADP_NO_RC_TITLE";
   }
 
-  if (v12)
+  if (bOOLValue)
   {
     v16 = @"RECOVERY_KEY_REPAIR_ADP_INFORMATIVE_HAS_RC";
   }
@@ -1262,7 +1262,7 @@
     v16 = @"RECOVERY_KEY_REPAIR_ADP_INFORMATIVE_NO_RC";
   }
 
-  if (v12)
+  if (bOOLValue)
   {
     v17 = @"RECOVERY_KEY_REPAIR_ADP_OTHER_OPTIONS_ACTION";
   }
@@ -1284,52 +1284,52 @@
   v22 = [v21 localizedStringForKey:v17 value:0 table:@"Localizable-Walrus"];
   [v11 setLabel:v22];
 
-  v47[0] = v7;
+  v47[0] = _verifyRecoveryKeyAction;
   v47[1] = v11;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
   [v5 setActions:v23];
 
-  v24 = [v5 notification];
+  notification = [v5 notification];
   v25 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v26 = [v25 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_NOTIFICATION_TITLE" value:0 table:@"Localizable-Walrus"];
-  [v24 setTitle:v26];
+  [notification setTitle:v26];
 
   v27 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v28 = [v27 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_FOLLOWUP_NOTIFICATION_INFORMATIVE" value:0 table:@"Localizable-Walrus"];
-  [v24 setInformativeText:v28];
+  [notification setInformativeText:v28];
 
-  v29 = [(AAFollowUpController *)v42 _verifyRecoveryKeyAction];
+  _verifyRecoveryKeyAction2 = [(AAFollowUpController *)selfCopy2 _verifyRecoveryKeyAction];
   v30 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v31 = [v30 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_FOLLOWUP_NOTIFICATION_PRIMARY_ACTIVATE_LABEL" value:0 table:@"Localizable-Walrus"];
-  [v29 setLabel:v31];
+  [_verifyRecoveryKeyAction2 setLabel:v31];
 
-  [v24 setActivateAction:v29];
+  [notification setActivateAction:_verifyRecoveryKeyAction2];
   v32 = objc_alloc_init(getFLFollowUpActionClass());
   v33 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v34 = [v33 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_FOLLOWUP_NOTIFICATION_SECONDARY_ACTIVATE_LABEL" value:0 table:@"Localizable-Walrus"];
   [v32 setLabel:v34];
 
-  [v24 setClearAction:v32];
+  [notification setClearAction:v32];
   v35 = MEMORY[0x1E695DFD8];
   v36 = getFLNotificationOptionForce();
   v37 = getFLNotificationOptionSpringboardAlert();
   v38 = getFLNotificationOptionLockscreen();
   v39 = [v35 setWithObjects:{v36, v37, v38, 0}];
-  [v24 setOptions:v39];
+  [notification setOptions:v39];
 
-  [v24 setFirstNotificationDelay:0.0];
+  [notification setFirstNotificationDelay:0.0];
   v40 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (id)_followUpForChildOrTeenProtoConnectWithContext:(id)a3
+- (id)_followUpForChildOrTeenProtoConnectWithContext:(id)context
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(getFLFollowUpItemClass());
   [v5 setUniqueIdentifier:AAFollowUpIdentifierChildOrTeenProtoConnect[0]];
-  v6 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  v6 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
   if (v6)
   {
     [v5 setAccountIdentifier:v6];
@@ -1340,9 +1340,9 @@
   v7 = getFLGroupIdentifierAccount();
   [v5 setGroupIdentifier:v7];
 
-  [v5 setUserInfo:v4];
+  [v5 setUserInfo:contextCopy];
   [v5 setDisplayStyle:2];
-  v8 = [(AAFollowUpController *)self _childOrTeenProtoConnectAction];
+  _childOrTeenProtoConnectAction = [(AAFollowUpController *)self _childOrTeenProtoConnectAction];
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v10 = [v9 localizedStringForKey:@"CONNECT_TO_FAMILY" value:0 table:@"Localizable-AgeAttestation"];
   [v5 setTitle:v10];
@@ -1351,7 +1351,7 @@
   v12 = [v11 localizedStringForKey:@"CONNECT_TO_FAMILY_CFU_INFORMATIVE_TEXT" value:0 table:@"Localizable-AgeAttestation"];
   [v5 setInformativeText:v12];
 
-  v16[0] = v8;
+  v16[0] = _childOrTeenProtoConnectAction;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   [v5 setActions:v13];
 
@@ -1360,13 +1360,13 @@
   return v5;
 }
 
-- (id)_followUpForAgeMigrationWithContext:(id)a3
+- (id)_followUpForAgeMigrationWithContext:(id)context
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(getFLFollowUpItemClass());
   [v5 setUniqueIdentifier:AAFollowUpIdentifierAgeMigration[0]];
-  v6 = [v4 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  v6 = [contextCopy objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
   if (v6)
   {
     [v5 setAccountIdentifier:v6];
@@ -1377,9 +1377,9 @@
   v7 = getFLGroupIdentifierAccount();
   [v5 setGroupIdentifier:v7];
 
-  [v5 setUserInfo:v4];
+  [v5 setUserInfo:contextCopy];
   [v5 setDisplayStyle:2];
-  v8 = [(AAFollowUpController *)self _ageMigrationMigrationAction];
+  _ageMigrationMigrationAction = [(AAFollowUpController *)self _ageMigrationMigrationAction];
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v10 = [v9 localizedStringForKey:@"CONNECT_TO_FAMILY" value:0 table:@"Localizable-AgeMigration"];
   [v5 setTitle:v10];
@@ -1388,7 +1388,7 @@
   v12 = [v11 localizedStringForKey:@"CONNECT_TO_FAMILY_CFU_INFORMATIVE_TEXT" value:0 table:@"Localizable-AgeMigration"];
   [v5 setInformativeText:v12];
 
-  v16[0] = v8;
+  v16[0] = _ageMigrationMigrationAction;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   [v5 setActions:v13];
 
@@ -1397,11 +1397,11 @@
   return v5;
 }
 
-- (id)_recoveryNotificationWithInfo:(id)a3 type:(id)a4
+- (id)_recoveryNotificationWithInfo:(id)info type:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:AAFollowUpUserInfoNotificationTitle[0]];
+  infoCopy = info;
+  typeCopy = type;
+  v7 = [infoCopy objectForKeyedSubscript:AAFollowUpUserInfoNotificationTitle[0]];
   if (![v7 length])
   {
     v8 = _AALogSystem();
@@ -1413,7 +1413,7 @@
     goto LABEL_10;
   }
 
-  v8 = [v5 objectForKeyedSubscript:AAFollowUpUserInfoNotificationBody[0]];
+  v8 = [infoCopy objectForKeyedSubscript:AAFollowUpUserInfoNotificationBody[0]];
   if (![v8 length])
   {
     v13 = _AALogSystem();
@@ -1430,7 +1430,7 @@ LABEL_10:
   v9 = objc_alloc_init(getFLFollowUpNotificationClass());
   [v9 setTitle:v7];
   [v9 setInformativeText:v8];
-  v10 = [v5 objectForKeyedSubscript:AAFollowUpUserInfoNotificationDelay[0]];
+  v10 = [infoCopy objectForKeyedSubscript:AAFollowUpUserInfoNotificationDelay[0]];
   v11 = v10;
   if (v10)
   {
@@ -1443,7 +1443,7 @@ LABEL_10:
   }
 
   [v9 setFirstNotificationDelay:v12];
-  v14 = [v5 objectForKeyedSubscript:AAFollowUpUserInfoNotificationFrequency[0]];
+  v14 = [infoCopy objectForKeyedSubscript:AAFollowUpUserInfoNotificationFrequency[0]];
   v15 = v14;
   if (v14)
   {
@@ -1456,9 +1456,9 @@ LABEL_10:
   }
 
   [v9 setFrequency:v16];
-  if (v6 && [v6 intValue] != 1)
+  if (typeCopy && [typeCopy intValue] != 1)
   {
-    if ([v6 intValue] != 2)
+    if ([typeCopy intValue] != 2)
     {
       goto LABEL_19;
     }
@@ -1485,9 +1485,9 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)_shouldPostRenewFollowup:(id)a3
+- (BOOL)_shouldPostRenewFollowup:(id)followup
 {
-  v3 = [a3 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  v3 = [followup objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
 
   if (!v3)
   {
@@ -1501,13 +1501,13 @@ LABEL_20:
   return v3 != 0;
 }
 
-- (void)postFollowUpWithIdentifier:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)postFollowUpWithIdentifier:(id)identifier userInfo:(id)info completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  identifierCopy = identifier;
+  infoCopy = info;
+  completionCopy = completion;
+  if (!identifierCopy)
   {
     [AAFollowUpController postFollowUpWithIdentifier:userInfo:completion:];
   }
@@ -1516,19 +1516,19 @@ LABEL_20:
   aBlock[1] = 3221225472;
   aBlock[2] = __71__AAFollowUpController_postFollowUpWithIdentifier_userInfo_completion___block_invoke;
   aBlock[3] = &unk_1E7C9ABB8;
-  v11 = v10;
+  v11 = completionCopy;
   v25 = v11;
   v12 = _Block_copy(aBlock);
   v13 = _AALogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to post follow up item with identifier: %{public}@", &buf, 0xCu);
   }
 
-  v14 = [(AAFollowUpController *)self followUpItemForIdentifier:v8 userInfo:v9];
-  if ([v8 isEqualToString:AAFollowUpIdentifierRenewCredentials[0]] && !+[AAFollowUpUtilities hasValidIDMSAccountForUserInfo:](AAFollowUpUtilities, "hasValidIDMSAccountForUserInfo:", v9))
+  v14 = [(AAFollowUpController *)self followUpItemForIdentifier:identifierCopy userInfo:infoCopy];
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierRenewCredentials[0]] && !+[AAFollowUpUtilities hasValidIDMSAccountForUserInfo:](AAFollowUpUtilities, "hasValidIDMSAccountForUserInfo:", infoCopy))
   {
     v18 = _AALogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1547,7 +1547,7 @@ LABEL_20:
     v27 = 0x3032000000;
     v28 = __Block_byref_object_copy__11;
     v29 = __Block_byref_object_dispose__11;
-    v30 = [(AAFollowUpController *)self _followUpController];
+    _followUpController = [(AAFollowUpController *)self _followUpController];
     v15 = *(*(&buf + 1) + 40);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -1612,12 +1612,12 @@ void __71__AAFollowUpController_postFollowUpWithIdentifier_userInfo_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)postFollowUpWithIdentifier:(id)a3 userInfo:(id)a4 error:(id *)a5
+- (BOOL)postFollowUpWithIdentifier:(id)identifier userInfo:(id)info error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  infoCopy = info;
+  if (!identifierCopy)
   {
     [AAFollowUpController postFollowUpWithIdentifier:userInfo:error:];
   }
@@ -1626,12 +1626,12 @@ void __71__AAFollowUpController_postFollowUpWithIdentifier_userInfo_completion__
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138543362;
-    v24 = v8;
+    v24 = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "Attempting to post follow up item with identifier: %{public}@", &v23, 0xCu);
   }
 
-  v11 = [(AAFollowUpController *)self followUpItemForIdentifier:v8 userInfo:v9];
-  if ([v8 isEqualToString:AAFollowUpIdentifierRenewCredentials[0]] && !+[AAFollowUpUtilities hasValidIDMSAccountForUserInfo:](AAFollowUpUtilities, "hasValidIDMSAccountForUserInfo:", v9))
+  v11 = [(AAFollowUpController *)self followUpItemForIdentifier:identifierCopy userInfo:infoCopy];
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierRenewCredentials[0]] && !+[AAFollowUpUtilities hasValidIDMSAccountForUserInfo:](AAFollowUpUtilities, "hasValidIDMSAccountForUserInfo:", infoCopy))
   {
     v20 = _AALogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1639,7 +1639,7 @@ void __71__AAFollowUpController_postFollowUpWithIdentifier_userInfo_completion__
       [AAFollowUpController postFollowUpWithIdentifier:userInfo:completion:];
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -1657,7 +1657,7 @@ void __71__AAFollowUpController_postFollowUpWithIdentifier_userInfo_completion__
       [AAFollowUpController postFollowUpWithIdentifier:userInfo:completion:];
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -1666,20 +1666,20 @@ void __71__AAFollowUpController_postFollowUpWithIdentifier_userInfo_completion__
     v19 = -3;
 LABEL_21:
     [v18 errorWithDomain:@"com.apple.appleaccount" code:v19 userInfo:0];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_26;
   }
 
-  v12 = [(AAFollowUpController *)self _followUpController];
-  v13 = [v12 postFollowUpItem:v11 error:a5];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
+  v13 = [_followUpController postFollowUpItem:v11 error:error];
 
   v14 = _AALogSystem();
   v15 = v14;
-  if (a5 || !v13)
+  if (error || !v13)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [AAFollowUpController postFollowUpWithIdentifier:a5 userInfo:? error:?];
+      [AAFollowUpController postFollowUpWithIdentifier:error userInfo:? error:?];
     }
 
 LABEL_25:
@@ -1700,17 +1700,17 @@ LABEL_26:
   return v16;
 }
 
-- (void)pendingFollowUpWithIdentifier:(id)a3 completion:(id)a4
+- (void)pendingFollowUpWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!identifierCopy)
   {
     [AAFollowUpController pendingFollowUpWithIdentifier:completion:];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [AAFollowUpController pendingFollowUpWithIdentifier:completion:];
   }
@@ -1719,7 +1719,7 @@ LABEL_26:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "Attempting to fetch follow up item with identifier: %{public}@", &buf, 0xCu);
   }
 
@@ -1728,16 +1728,16 @@ LABEL_26:
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__11;
   v20 = __Block_byref_object_dispose__11;
-  v21 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v9 = *(*(&buf + 1) + 40);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__AAFollowUpController_pendingFollowUpWithIdentifier_completion___block_invoke;
   v13[3] = &unk_1E7C9CBC8;
   p_buf = &buf;
-  v10 = v7;
+  v10 = completionCopy;
   v15 = v10;
-  v11 = v6;
+  v11 = identifierCopy;
   v14 = v11;
   [v9 pendingFollowUpItemsWithCompletion:v13];
 
@@ -1813,12 +1813,12 @@ uint64_t __65__AAFollowUpController_pendingFollowUpWithIdentifier_completion___b
   return v4;
 }
 
-- (void)dismissFollowUpWithIdentifier:(id)a3 completion:(id)a4
+- (void)dismissFollowUpWithIdentifier:(id)identifier completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!identifierCopy)
   {
     [AAFollowUpController dismissFollowUpWithIdentifier:completion:];
   }
@@ -1827,14 +1827,14 @@ uint64_t __65__AAFollowUpController_pendingFollowUpWithIdentifier_completion___b
   aBlock[1] = 3221225472;
   aBlock[2] = __65__AAFollowUpController_dismissFollowUpWithIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E7C9ABB8;
-  v8 = v7;
+  v8 = completionCopy;
   v19 = v8;
   v9 = _Block_copy(aBlock);
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "Attempting to clear follow up item with identifier: %{public}@", &buf, 0xCu);
   }
 
@@ -1843,9 +1843,9 @@ uint64_t __65__AAFollowUpController_pendingFollowUpWithIdentifier_completion___b
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__11;
   v24 = __Block_byref_object_dispose__11;
-  v25 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v11 = *(*(&buf + 1) + 40);
-  v20 = v6;
+  v20 = identifierCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1897,11 +1897,11 @@ void __65__AAFollowUpController_dismissFollowUpWithIdentifier_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)dismissFollowUpWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)dismissFollowUpWithIdentifier:(id)identifier error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [AAFollowUpController dismissFollowUpWithIdentifier:error:];
   }
@@ -1910,16 +1910,16 @@ void __65__AAFollowUpController_dismissFollowUpWithIdentifier_completion___block
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to clear follow up item with identifier: %{public}@", buf, 0xCu);
   }
 
-  v8 = [(AAFollowUpController *)self _followUpController];
-  v16 = v6;
+  _followUpController = [(AAFollowUpController *)self _followUpController];
+  v16 = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-  v10 = [v8 clearPendingFollowUpItemsWithUniqueIdentifiers:v9 error:a4];
+  v10 = [_followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:v9 error:error];
 
-  if (a4)
+  if (error)
   {
     v11 = 0;
   }
@@ -1942,100 +1942,100 @@ void __65__AAFollowUpController_dismissFollowUpWithIdentifier_completion___block
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [AAFollowUpController dismissFollowUpWithIdentifier:a4 error:?];
+    [AAFollowUpController dismissFollowUpWithIdentifier:error error:?];
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (id)followUpItemForIdentifier:(id)a3 userInfo:(id)a4
+- (id)followUpItemForIdentifier:(id)identifier userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:AAFollowUpIdentifierStartUsing[0]])
+  identifierCopy = identifier;
+  infoCopy = info;
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierStartUsing[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForStartUsing:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForStartUsing:infoCopy];
 LABEL_29:
     v9 = v8;
     goto LABEL_30;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierVerifyTerms[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierVerifyTerms[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForVerifyTerms:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForVerifyTerms:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierRenewCredentials[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierRenewCredentials[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForRenewCredentials:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForRenewCredentials:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierCustodianReview[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierCustodianReview[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForCustodianReview:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForCustodianReview:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierCustodianInvitationReminder[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierCustodianInvitationReminder[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForCustodianInvitationReminder:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForCustodianInvitationReminder:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierCustodianRemoved[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierCustodianRemoved[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForCustodianRemoved:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForCustodianRemoved:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierCustodianWalrusNoLiveness[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierCustodianWalrusNoLiveness[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForCustodianWalrusNoLiveness:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForCustodianWalrusNoLiveness:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierCustodianWalrusRemoved[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierCustodianWalrusRemoved[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForCustodianWalrusRemoved:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForCustodianWalrusRemoved:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierWalrusUserRecoveryFactorsMissing[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierWalrusUserRecoveryFactorsMissing[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForWalrusUserRecoveryFactorsMissing:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForWalrusUserRecoveryFactorsMissing:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierBeneficiaryRemoved[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierBeneficiaryRemoved[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForBeneficiaryRemoved:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForBeneficiaryRemoved:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierCustodianEmbargo[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierCustodianEmbargo[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpItemForCustodianEmbargo:v7];
+    v8 = [(AAFollowUpController *)self _followUpItemForCustodianEmbargo:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierRecoveryKeyMismatch[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierRecoveryKeyMismatch[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpForRecoveryKeyHealingWithContext:v7];
+    v8 = [(AAFollowUpController *)self _followUpForRecoveryKeyHealingWithContext:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierChildOrTeenProtoConnect[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierChildOrTeenProtoConnect[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpForChildOrTeenProtoConnectWithContext:v7];
+    v8 = [(AAFollowUpController *)self _followUpForChildOrTeenProtoConnectWithContext:infoCopy];
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:AAFollowUpIdentifierAgeMigration[0]])
+  if ([identifierCopy isEqualToString:AAFollowUpIdentifierAgeMigration[0]])
   {
-    v8 = [(AAFollowUpController *)self _followUpForAgeMigrationWithContext:v7];
+    v8 = [(AAFollowUpController *)self _followUpForAgeMigrationWithContext:infoCopy];
     goto LABEL_29;
   }
 
@@ -2045,15 +2045,15 @@ LABEL_30:
   return v9;
 }
 
-- (void)postFollowUpWithIdentifier:(id)a3 forAccount:(id)a4 userInfo:(id)a5 completion:(id)a6
+- (void)postFollowUpWithIdentifier:(id)identifier forAccount:(id)account userInfo:(id)info completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  identifierCopy = identifier;
+  accountCopy = account;
+  infoCopy = info;
+  completionCopy = completion;
+  if (identifierCopy)
   {
-    if (v11)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -2062,7 +2062,7 @@ LABEL_30:
   else
   {
     [AAFollowUpController(Convenience) postFollowUpWithIdentifier:forAccount:userInfo:completion:];
-    if (v11)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -2075,17 +2075,17 @@ LABEL_3:
   aBlock[2] = __95__AAFollowUpController_Convenience__postFollowUpWithIdentifier_forAccount_userInfo_completion___block_invoke;
   aBlock[3] = &unk_1E7C9ABE0;
   aBlock[4] = self;
-  v27 = v11;
-  v28 = v10;
-  v29 = v13;
-  v14 = v13;
-  v15 = v10;
-  v16 = v11;
+  v27 = accountCopy;
+  v28 = identifierCopy;
+  v29 = completionCopy;
+  v14 = completionCopy;
+  v15 = identifierCopy;
+  v16 = accountCopy;
   v17 = _Block_copy(aBlock);
   v18 = objc_alloc(MEMORY[0x1E695DF90]);
-  if (v12)
+  if (infoCopy)
   {
-    v19 = v12;
+    v19 = infoCopy;
   }
 
   else
@@ -2094,11 +2094,11 @@ LABEL_3:
   }
 
   v20 = [v18 initWithDictionary:v19];
-  v21 = [v16 identifier];
-  [v20 setObject:v21 forKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  identifier = [v16 identifier];
+  [v20 setObject:identifier forKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
 
-  v22 = [v16 aa_altDSID];
-  [v20 setObject:v22 forKeyedSubscript:AAFollowUpUserInfoAltDSID[0]];
+  aa_altDSID = [v16 aa_altDSID];
+  [v20 setObject:aa_altDSID forKeyedSubscript:AAFollowUpUserInfoAltDSID[0]];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -2120,15 +2120,15 @@ void __95__AAFollowUpController_Convenience__postFollowUpWithIdentifier_forAccou
   }
 }
 
-- (void)dismissFollowUpWithIdentifier:(id)a3 forAccount:(id)a4 completion:(id)a5
+- (void)dismissFollowUpWithIdentifier:(id)identifier forAccount:(id)account completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  identifierCopy = identifier;
+  accountCopy = account;
+  completionCopy = completion;
+  if (identifierCopy)
   {
-    if (v9)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -2137,7 +2137,7 @@ void __95__AAFollowUpController_Convenience__postFollowUpWithIdentifier_forAccou
   else
   {
     [AAFollowUpController(Convenience) dismissFollowUpWithIdentifier:forAccount:completion:];
-    if (v9)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -2149,16 +2149,16 @@ LABEL_3:
   aBlock[1] = 3221225472;
   aBlock[2] = __89__AAFollowUpController_Convenience__dismissFollowUpWithIdentifier_forAccount_completion___block_invoke;
   aBlock[3] = &unk_1E7C9ABB8;
-  v24 = v10;
-  v11 = v10;
+  v24 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   v13 = _AALogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v8;
+    v26 = identifierCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = accountCopy;
     _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to teardown follow up with identifier: %@, account: %@", buf, 0x16u);
   }
 
@@ -2166,13 +2166,13 @@ LABEL_3:
   v18[1] = 3221225472;
   v18[2] = __89__AAFollowUpController_Convenience__dismissFollowUpWithIdentifier_forAccount_completion___block_invoke_379;
   v18[3] = &unk_1E7C9CBF0;
-  v19 = v8;
-  v20 = self;
-  v21 = v9;
+  v19 = identifierCopy;
+  selfCopy = self;
+  v21 = accountCopy;
   v22 = v12;
-  v14 = v9;
+  v14 = accountCopy;
   v15 = v12;
-  v16 = v8;
+  v16 = identifierCopy;
   [(AAFollowUpController *)self pendingFollowUpWithIdentifier:v16 completion:v18];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -2257,13 +2257,13 @@ LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dismissFollowUpsForAccount:(id)a3 identifiers:(id)a4 completion:(id)a5
+- (void)dismissFollowUpsForAccount:(id)account identifiers:(id)identifiers completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  accountCopy = account;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (!accountCopy)
   {
     [AAFollowUpController(Convenience) dismissFollowUpsForAccount:identifiers:completion:];
   }
@@ -2272,12 +2272,12 @@ LABEL_17:
   aBlock[1] = 3221225472;
   aBlock[2] = __87__AAFollowUpController_Convenience__dismissFollowUpsForAccount_identifiers_completion___block_invoke;
   aBlock[3] = &unk_1E7C9ABB8;
-  v11 = v10;
+  v11 = completionCopy;
   v19 = v11;
   v12 = _Block_copy(aBlock);
-  if ([v9 count])
+  if ([identifiersCopy count])
   {
-    [(AAFollowUpController *)self _dismissFollowUpWithIdentifiers:v9 completion:v12];
+    [(AAFollowUpController *)self _dismissFollowUpWithIdentifiers:identifiersCopy completion:v12];
   }
 
   else
@@ -2286,7 +2286,7 @@ LABEL_17:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v8;
+      v21 = accountCopy;
       _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to teardown all followups for account: %@", buf, 0xCu);
     }
 
@@ -2296,7 +2296,7 @@ LABEL_17:
     v15[3] = &unk_1E7C9CC18;
     v15[4] = self;
     v17 = v12;
-    v16 = v8;
+    v16 = accountCopy;
     [(AAFollowUpController *)self pendingFollowUpsForAccount:v16 completion:v15];
   }
 
@@ -2374,14 +2374,14 @@ void __87__AAFollowUpController_Convenience__dismissFollowUpsForAccount_identifi
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dismissFollowUpsStartingWithIdentifierPrefix:(id)a3 account:(id)a4 completion:(id)a5
+- (void)dismissFollowUpsStartingWithIdentifierPrefix:(id)prefix account:(id)account completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  prefixCopy = prefix;
+  accountCopy = account;
+  completionCopy = completion;
+  if (prefixCopy)
   {
-    if (v9)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -2390,7 +2390,7 @@ void __87__AAFollowUpController_Convenience__dismissFollowUpsForAccount_identifi
   else
   {
     [AAFollowUpController(Convenience) dismissFollowUpsStartingWithIdentifierPrefix:account:completion:];
-    if (v9)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -2402,8 +2402,8 @@ LABEL_3:
   aBlock[1] = 3221225472;
   aBlock[2] = __101__AAFollowUpController_Convenience__dismissFollowUpsStartingWithIdentifierPrefix_account_completion___block_invoke;
   aBlock[3] = &unk_1E7C9ABB8;
-  v23 = v10;
-  v11 = v10;
+  v23 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   v13 = _AALogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -2415,13 +2415,13 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = __101__AAFollowUpController_Convenience__dismissFollowUpsStartingWithIdentifierPrefix_account_completion___block_invoke_382;
   v17[3] = &unk_1E7C9CC40;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
+  v18 = prefixCopy;
+  selfCopy = self;
+  v20 = accountCopy;
   v21 = v12;
-  v14 = v9;
+  v14 = accountCopy;
   v15 = v12;
-  v16 = v8;
+  v16 = prefixCopy;
   [(AAFollowUpController *)self pendingFollowUpsForAccount:v14 completion:v17];
 }
 
@@ -2496,12 +2496,12 @@ void __101__AAFollowUpController_Convenience__dismissFollowUpsStartingWithIdenti
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pendingFollowUpsForAccount:(id)a3 completion:(id)a4
+- (void)pendingFollowUpsForAccount:(id)account completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  accountCopy = account;
+  completionCopy = completion;
+  if (!accountCopy)
   {
     [AAFollowUpController(Convenience) pendingFollowUpsForAccount:completion:];
   }
@@ -2510,7 +2510,7 @@ void __101__AAFollowUpController_Convenience__dismissFollowUpsStartingWithIdenti
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = accountCopy;
     _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "Attempting to fetch follow up item for account : %{public}@", &buf, 0xCu);
   }
 
@@ -2519,16 +2519,16 @@ void __101__AAFollowUpController_Convenience__dismissFollowUpsStartingWithIdenti
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__11;
   v20 = __Block_byref_object_dispose__11;
-  v21 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v9 = *(*(&buf + 1) + 40);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__AAFollowUpController_Convenience__pendingFollowUpsForAccount_completion___block_invoke;
   v13[3] = &unk_1E7C9CBC8;
   p_buf = &buf;
-  v10 = v7;
+  v10 = completionCopy;
   v15 = v10;
-  v11 = v6;
+  v11 = accountCopy;
   v14 = v11;
   [v9 pendingFollowUpItemsWithCompletion:v13];
 
@@ -2623,12 +2623,12 @@ uint64_t __75__AAFollowUpController_Convenience__pendingFollowUpsForAccount_comp
   return v6;
 }
 
-- (void)_dismissFollowUpWithIdentifiers:(id)a3 completion:(id)a4
+- (void)_dismissFollowUpWithIdentifiers:(id)identifiers completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (!identifiersCopy)
   {
     [AAFollowUpController(Convenience) _dismissFollowUpWithIdentifiers:completion:];
   }
@@ -2637,14 +2637,14 @@ uint64_t __75__AAFollowUpController_Convenience__pendingFollowUpsForAccount_comp
   aBlock[1] = 3221225472;
   aBlock[2] = __80__AAFollowUpController_Convenience___dismissFollowUpWithIdentifiers_completion___block_invoke;
   aBlock[3] = &unk_1E7C9ABB8;
-  v8 = v7;
+  v8 = completionCopy;
   v18 = v8;
   v9 = _Block_copy(aBlock);
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifiersCopy;
     _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "Attempting to clear follow up item with identifier: %{public}@", &buf, 0xCu);
   }
 
@@ -2653,7 +2653,7 @@ uint64_t __75__AAFollowUpController_Convenience__pendingFollowUpsForAccount_comp
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__11;
   v22 = __Block_byref_object_dispose__11;
-  v23 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v11 = *(*(&buf + 1) + 40);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -2662,7 +2662,7 @@ uint64_t __75__AAFollowUpController_Convenience__pendingFollowUpsForAccount_comp
   p_buf = &buf;
   v12 = v9;
   v15 = v12;
-  [v11 clearPendingFollowUpItemsWithUniqueIdentifiers:v6 completion:v14];
+  [v11 clearPendingFollowUpItemsWithUniqueIdentifiers:identifiersCopy completion:v14];
 
   _Block_object_dispose(&buf, 8);
   v13 = *MEMORY[0x1E69E9840];
@@ -2728,7 +2728,7 @@ void __80__AAFollowUpController_Convenience___dismissFollowUpWithIdentifiers_com
       [AAFollowUpController(Convenience) pendingCFUTypes];
     }
 
-    v15 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
   else
@@ -2754,12 +2754,12 @@ void __80__AAFollowUpController_Convenience___dismissFollowUpWithIdentifiers_com
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 uniqueIdentifier];
+          uniqueIdentifier = [v12 uniqueIdentifier];
 
-          if (v13)
+          if (uniqueIdentifier)
           {
-            v14 = [v12 uniqueIdentifier];
-            [v6 addObject:v14];
+            uniqueIdentifier2 = [v12 uniqueIdentifier];
+            [v6 addObject:uniqueIdentifier2];
           }
         }
 
@@ -2769,22 +2769,22 @@ void __80__AAFollowUpController_Convenience___dismissFollowUpWithIdentifiers_com
       while (v9);
     }
 
-    v15 = [v6 allObjects];
+    allObjects = [v6 allObjects];
     v16 = _AALogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 count];
+      v17 = [allObjects count];
       *buf = 134218243;
       v26 = v17;
       v27 = 2113;
-      v28 = v15;
+      v28 = allObjects;
       _os_log_impl(&dword_1B6F6A000, v16, OS_LOG_TYPE_DEFAULT, "Successfully fetched %lu CFU types: %{private}@", buf, 0x16u);
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return allObjects;
 }
 
 - (BOOL)isRenewCredentialsCFUPosted
@@ -2797,9 +2797,9 @@ void __80__AAFollowUpController_Convenience___dismissFollowUpWithIdentifiers_com
     _os_log_impl(&dword_1B6F6A000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to fetch pending RenewCredentials CFU", buf, 2u);
   }
 
-  v4 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v19 = 0;
-  v5 = [v4 pendingFollowUpItems:&v19];
+  v5 = [_followUpController pendingFollowUpItems:&v19];
   v6 = v19;
 
   if (!v5 || v6)
@@ -2834,8 +2834,8 @@ void __80__AAFollowUpController_Convenience___dismissFollowUpWithIdentifiers_com
           }
 
           v11 = AAFollowUpIdentifierRenewCredentials[0];
-          v12 = [*(*(&v15 + 1) + 8 * i) typeIdentifier];
-          LODWORD(v11) = [(__CFString *)v11 isEqualToString:v12];
+          typeIdentifier = [*(*(&v15 + 1) + 8 * i) typeIdentifier];
+          LODWORD(v11) = [(__CFString *)v11 isEqualToString:typeIdentifier];
 
           if (v11)
           {
@@ -2896,19 +2896,19 @@ LABEL_20:
   return v9;
 }
 
-- (id)creationDateOfOldestFollowUpWithIdentifiers:(id)a3
+- (id)creationDateOfOldestFollowUpWithIdentifiers:(id)identifiers
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AAFollowUpController(Convenience) creationDateOfOldestFollowUpWithIdentifiers:];
   }
 
-  v6 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v37 = 0;
-  v7 = [v6 pendingFollowUpItems:&v37];
+  v7 = [_followUpController pendingFollowUpItems:&v37];
   v8 = v37;
   v9 = v8;
   if (!v7 || v8)
@@ -2919,12 +2919,12 @@ LABEL_20:
       [AAFollowUpController(Convenience) creationDateOfOldestFollowUpWithIdentifiers:];
     }
 
-    v28 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v32 = v6;
+    v32 = _followUpController;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v33 = 0u;
@@ -2948,20 +2948,20 @@ LABEL_20:
           }
 
           v17 = *(*(&v33 + 1) + 8 * i);
-          v18 = [v17 uniqueIdentifier];
-          v19 = [v4 containsObject:v18];
+          uniqueIdentifier = [v17 uniqueIdentifier];
+          v19 = [identifiersCopy containsObject:uniqueIdentifier];
 
           if (v19)
           {
             [v10 addObject:v17];
-            v20 = [v17 notification];
-            v21 = [v20 creationDate];
+            notification = [v17 notification];
+            creationDate = [notification creationDate];
 
-            if (v21)
+            if (creationDate)
             {
-              v22 = [v17 notification];
-              v23 = [v22 creationDate];
-              [v11 addObject:v23];
+              notification2 = [v17 notification];
+              creationDate2 = [notification2 creationDate];
+              [v11 addObject:creationDate2];
             }
           }
         }
@@ -2977,7 +2977,7 @@ LABEL_20:
     v26 = v25;
     if (v24)
     {
-      v6 = v32;
+      _followUpController = v32;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v27 = [v10 count];
@@ -2991,18 +2991,18 @@ LABEL_20:
       }
 
       v26 = [v11 sortedArrayUsingSelector:sel_compare_];
-      v28 = [v26 firstObject];
+      firstObject = [v26 firstObject];
     }
 
     else
     {
-      v6 = v32;
+      _followUpController = v32;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         [AAFollowUpController(Convenience) creationDateOfOldestFollowUpWithIdentifiers:];
       }
 
-      v28 = 0;
+      firstObject = 0;
     }
 
     v9 = 0;
@@ -3011,18 +3011,18 @@ LABEL_20:
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return firstObject;
 }
 
-- (void)pendingFollowUpItemUserInfosWithIdentifier:(id)a3 completion:(id)a4
+- (void)pendingFollowUpItemUserInfosWithIdentifier:(id)identifier completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (identifierCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -3043,7 +3043,7 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v9, OS_LOG_TYPE_DEFAULT, "Attempting to fetch user info of follow up item with identifier: %{public}@", buf, 0xCu);
   }
 
@@ -3051,10 +3051,10 @@ LABEL_3:
   v13[1] = 3221225472;
   v13[2] = __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIdentifier_completion___block_invoke;
   v13[3] = &unk_1E7C9BA08;
-  v14 = v6;
+  v14 = identifierCopy;
   v15 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = identifierCopy;
   [(AAFollowUpController *)self _pendingFollowUpItemsWithIdentifier:v11 forAccount:0 completion:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3101,11 +3101,11 @@ void __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIde
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)pendingFollowUpItemUserInfosWithIdentifier:(id)a3
+- (id)pendingFollowUpItemUserInfosWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [AAFollowUpController(Convenience) pendingFollowUpItemUserInfosWithIdentifier:];
   }
@@ -3114,11 +3114,11 @@ void __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIde
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to fetch user info of follow up item with identifier: %{public}@", &v12, 0xCu);
   }
 
-  v6 = [(AAFollowUpController *)self _pendingFollowUpItemsWithIdentifier:v4 forAccount:0];
+  v6 = [(AAFollowUpController *)self _pendingFollowUpItemsWithIdentifier:identifierCopy forAccount:0];
   v7 = v6;
   if (v6 && [v6 count])
   {
@@ -3148,9 +3148,9 @@ void __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIde
   return v8;
 }
 
-- (void)reportPostCFUEvent:(id)a3
+- (void)reportPostCFUEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3159,36 +3159,36 @@ void __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIde
 
   v6 = +[AAAnalyticsRTCReporter reporter];
   v7 = v6;
-  if (v4)
+  if (eventCopy)
   {
-    [v6 sendEvent:v4];
+    [v6 sendEvent:eventCopy];
   }
 
   else
   {
-    v8 = [(AAFollowUpController *)self analyticsInfo];
-    v9 = [v8 cfuReasonAnalyticsEvent];
-    [v7 sendEvent:v9];
+    analyticsInfo = [(AAFollowUpController *)self analyticsInfo];
+    cfuReasonAnalyticsEvent = [analyticsInfo cfuReasonAnalyticsEvent];
+    [v7 sendEvent:cfuReasonAnalyticsEvent];
   }
 }
 
-- (id)_pendingFollowUpItemsWithIdentifier:(id)a3 forAccount:(id)a4
+- (id)_pendingFollowUpItemsWithIdentifier:(id)identifier forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  accountCopy = account;
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [AAFollowUpController(Convenience) _pendingFollowUpItemsWithIdentifier:forAccount:];
   }
 
-  v9 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v14 = 0;
-  v10 = [v9 pendingFollowUpItems:&v14];
+  v10 = [_followUpController pendingFollowUpItems:&v14];
 
   if (v10 && [v10 count])
   {
-    v11 = [(AAFollowUpController *)self _filterFollowUpItems:v10 byIdentifier:v6 byAccount:v7];
+    v11 = [(AAFollowUpController *)self _filterFollowUpItems:v10 byIdentifier:identifierCopy byAccount:accountCopy];
   }
 
   else
@@ -3205,13 +3205,13 @@ void __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIde
   return v11;
 }
 
-- (void)_pendingFollowUpItemsWithIdentifier:(id)a3 forAccount:(id)a4 completion:(id)a5
+- (void)_pendingFollowUpItemsWithIdentifier:(id)identifier forAccount:(id)account completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  identifierCopy = identifier;
+  accountCopy = account;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAFollowUpController(Convenience) _pendingFollowUpItemsWithIdentifier:forAccount:completion:];
   }
@@ -3220,7 +3220,7 @@ void __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIde
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_DEFAULT, "Attempting to fetch follow up items with identifier: %{public}@", &buf, 0xCu);
   }
 
@@ -3229,19 +3229,19 @@ void __91__AAFollowUpController_Convenience__pendingFollowUpItemUserInfosWithIde
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__11;
   v25 = __Block_byref_object_dispose__11;
-  v26 = [(AAFollowUpController *)self _followUpController];
+  _followUpController = [(AAFollowUpController *)self _followUpController];
   v12 = *(*(&buf + 1) + 40);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __95__AAFollowUpController_Convenience___pendingFollowUpItemsWithIdentifier_forAccount_completion___block_invoke;
   v17[3] = &unk_1E7C9CC88;
   p_buf = &buf;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
   v17[4] = self;
-  v14 = v8;
+  v14 = identifierCopy;
   v18 = v14;
-  v15 = v9;
+  v15 = accountCopy;
   v19 = v15;
   [v12 pendingFollowUpItemsWithCompletion:v17];
 
@@ -3289,12 +3289,12 @@ void __95__AAFollowUpController_Convenience___pendingFollowUpItemsWithIdentifier
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_filterFollowUpItems:(id)a3 byIdentifier:(id)a4 byAccount:(id)a5
+- (id)_filterFollowUpItems:(id)items byIdentifier:(id)identifier byAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7 || ![v7 count])
+  itemsCopy = items;
+  identifierCopy = identifier;
+  accountCopy = account;
+  if (!itemsCopy || ![itemsCopy count])
   {
     v11 = _AALogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3306,10 +3306,10 @@ void __95__AAFollowUpController_Convenience___pendingFollowUpItemsWithIdentifier
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     v10 = 0;
-    if (!v9)
+    if (!accountCopy)
     {
       goto LABEL_12;
     }
@@ -3321,17 +3321,17 @@ void __95__AAFollowUpController_Convenience___pendingFollowUpItemsWithIdentifier
   v16[1] = 3221225472;
   v16[2] = __81__AAFollowUpController_Convenience___filterFollowUpItems_byIdentifier_byAccount___block_invoke;
   v16[3] = &unk_1E7C9CCB0;
-  v17 = v8;
-  v10 = [v7 aaf_filter:v16];
+  v17 = identifierCopy;
+  v10 = [itemsCopy aaf_filter:v16];
 
-  if (v9)
+  if (accountCopy)
   {
 LABEL_10:
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __81__AAFollowUpController_Convenience___filterFollowUpItems_byIdentifier_byAccount___block_invoke_2;
     v14[3] = &unk_1E7C9CCB0;
-    v15 = v9;
+    v15 = accountCopy;
     v12 = [v10 aaf_filter:v14];
 
     v11 = v15;
@@ -3371,22 +3371,22 @@ uint64_t __81__AAFollowUpController_Convenience___filterFollowUpItems_byIdentifi
   return v6;
 }
 
-- (id)_constructAnalyticsInforFromAccount:(id)a3 forIdentifier:(id)a4
+- (id)_constructAnalyticsInforFromAccount:(id)account forIdentifier:(id)identifier
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = MEMORY[0x1E6985DA8];
-  v7 = a4;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(v6);
-  [v8 setCfuType:v7];
+  [v8 setCfuType:identifierCopy];
 
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  [v8 setFlowID:v10];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v8 setFlowID:uUIDString];
 
-  v11 = [MEMORY[0x1E698DC80] sharedInstance];
-  if ([v11 accountAccessTelemetryOptInForAccount:v5])
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  if ([mEMORY[0x1E698DC80] accountAccessTelemetryOptInForAccount:accountCopy])
   {
-    v12 = [v11 telemetryDeviceSessionIDForAccount:v5];
+    v12 = [mEMORY[0x1E698DC80] telemetryDeviceSessionIDForAccount:accountCopy];
     [v8 setDeviceSessionID:v12];
   }
 

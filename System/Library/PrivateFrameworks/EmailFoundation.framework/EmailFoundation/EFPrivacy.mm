@@ -1,58 +1,58 @@
 @interface EFPrivacy
-+ (id)dateByRemovingTimeComponentsFromDate:(id)a3;
-+ (id)fullyOrPartiallyRedactFields:(id)a3 inString:(id)a4;
-+ (id)fullyOrPartiallyRedactedStringForString:(id)a3;
-+ (id)fullyOrPartiallyRedactedStringForString:(id)a3 maximumUnredactedLength:(unint64_t)a4;
-+ (id)fullyRedactedStringForString:(id)a3;
-+ (id)partiallyRedactedDictionary:(id)a3;
-+ (id)partiallyRedactedStringForString:(id)a3;
-+ (id)partiallyRedactedStringForString:(id)a3 maximumUnredactedLength:(unint64_t)a4;
-+ (id)partiallyRedactedStringFromArray:(id)a3;
-+ (id)redactedQueryStringForQueryString:(id)a3;
-+ (int64_t)bucketedMessageAgeSinceDate:(id)a3 leadingDigits:(int64_t)a4;
-+ (int64_t)bucketedNumber:(int)a3 leadingDigits:(int64_t)a4;
-+ (int64_t)numberOfDigits:(int64_t)a3;
-+ (int64_t)roundedInteger:(int64_t)a3;
-+ (int64_t)weeksSinceDate:(id)a3;
-+ (unint64_t)_roundQueryLogCount:(unint64_t)a3 maxCount:(unint64_t)a4 queryCount:(unint64_t)a5;
-+ (unint64_t)bucketValueForQueryLogCount:(id)a3 bucketValues:(id)a4;
-+ (unsigned)bucketMessageCount:(unint64_t)a3;
++ (id)dateByRemovingTimeComponentsFromDate:(id)date;
++ (id)fullyOrPartiallyRedactFields:(id)fields inString:(id)string;
++ (id)fullyOrPartiallyRedactedStringForString:(id)string;
++ (id)fullyOrPartiallyRedactedStringForString:(id)string maximumUnredactedLength:(unint64_t)length;
++ (id)fullyRedactedStringForString:(id)string;
++ (id)partiallyRedactedDictionary:(id)dictionary;
++ (id)partiallyRedactedStringForString:(id)string;
++ (id)partiallyRedactedStringForString:(id)string maximumUnredactedLength:(unint64_t)length;
++ (id)partiallyRedactedStringFromArray:(id)array;
++ (id)redactedQueryStringForQueryString:(id)string;
++ (int64_t)bucketedMessageAgeSinceDate:(id)date leadingDigits:(int64_t)digits;
++ (int64_t)bucketedNumber:(int)number leadingDigits:(int64_t)digits;
++ (int64_t)numberOfDigits:(int64_t)digits;
++ (int64_t)roundedInteger:(int64_t)integer;
++ (int64_t)weeksSinceDate:(id)date;
++ (unint64_t)_roundQueryLogCount:(unint64_t)count maxCount:(unint64_t)maxCount queryCount:(unint64_t)queryCount;
++ (unint64_t)bucketValueForQueryLogCount:(id)count bucketValues:(id)values;
++ (unsigned)bucketMessageCount:(unint64_t)count;
 @end
 
 @implementation EFPrivacy
 
-+ (id)dateByRemovingTimeComponentsFromDate:(id)a3
++ (id)dateByRemovingTimeComponentsFromDate:(id)date
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v4 components:28 fromDate:v3];
-  v6 = [v4 dateFromComponents:v5];
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [currentCalendar components:28 fromDate:dateCopy];
+  v6 = [currentCalendar dateFromComponents:v5];
 
   return v6;
 }
 
-+ (int64_t)weeksSinceDate:(id)a3
++ (int64_t)weeksSinceDate:(id)date
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [MEMORY[0x1E695DF00] date];
-  if ([v5 compare:v3] == 1)
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  if ([date compare:dateCopy] == 1)
   {
-    v6 = [v4 components:0x2000 fromDate:v3 toDate:v5 options:0];
-    v7 = [v6 weekOfYear];
+    v6 = [currentCalendar components:0x2000 fromDate:dateCopy toDate:date options:0];
+    weekOfYear = [v6 weekOfYear];
   }
 
   else
   {
-    v7 = 0;
+    weekOfYear = 0;
   }
 
-  return v7;
+  return weekOfYear;
 }
 
-+ (int64_t)bucketedMessageAgeSinceDate:(id)a3 leadingDigits:(int64_t)a4
++ (int64_t)bucketedMessageAgeSinceDate:(id)date leadingDigits:(int64_t)digits
 {
-  [a3 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   if (!(v4 / 86400.0))
   {
     return 0;
@@ -61,21 +61,21 @@
   return [EFPrivacy bucketedNumber:"bucketedNumber:leadingDigits:" leadingDigits:?];
 }
 
-+ (int64_t)bucketedNumber:(int)a3 leadingDigits:(int64_t)a4
++ (int64_t)bucketedNumber:(int)number leadingDigits:(int64_t)digits
 {
-  if (a3 >= 0)
+  if (number >= 0)
   {
-    v6 = a3;
+    numberCopy = number;
   }
 
   else
   {
-    v6 = -a3;
+    numberCopy = -number;
   }
 
-  v7 = log10(v6);
-  v8 = __exp10(floor(v7) + 1.0 - a4);
-  v9 = (v8 * round(a3 / v8));
+  v7 = log10(numberCopy);
+  v8 = __exp10(floor(v7) + 1.0 - digits);
+  v9 = (v8 * round(number / v8));
   if (v9 >= 0)
   {
     return v9;
@@ -87,48 +87,48 @@
   }
 }
 
-+ (int64_t)roundedInteger:(int64_t)a3
++ (int64_t)roundedInteger:(int64_t)integer
 {
   v4 = objc_opt_class();
-  v5 = [objc_opt_class() numberOfDigits:a3] - 1;
+  v5 = [objc_opt_class() numberOfDigits:integer] - 1;
 
-  return [v4 roundedInteger:a3 placeValueDigits:v5];
+  return [v4 roundedInteger:integer placeValueDigits:v5];
 }
 
-+ (int64_t)numberOfDigits:(int64_t)a3
++ (int64_t)numberOfDigits:(int64_t)digits
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a3];
-  v4 = [v3 length];
+  digits = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", digits];
+  v4 = [digits length];
 
   return v4;
 }
 
-+ (id)partiallyRedactedStringForString:(id)a3 maximumUnredactedLength:(unint64_t)a4
++ (id)partiallyRedactedStringForString:(id)string maximumUnredactedLength:(unint64_t)length
 {
-  v5 = a3;
-  v6 = [v5 length];
+  stringCopy = string;
+  v6 = [stringCopy length];
   v7 = v6;
-  if (a4)
+  if (length)
   {
-    if (v6 <= a4 || (v8 = [v5 rangeOfComposedCharacterSequenceAtIndex:a4 - 1], v10 = v8 + v9, v7 <= v8 + v9))
+    if (v6 <= length || (v8 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:length - 1], v10 = v8 + v9, v7 <= v8 + v9))
     {
-      v15 = v5;
+      v15 = stringCopy;
       goto LABEL_8;
     }
 
-    v11 = [[EFStringHash alloc] initWithString:v5];
+    v11 = [[EFStringHash alloc] initWithString:stringCopy];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v5 substringToIndex:v10];
-    v14 = [(EFStringHash *)v11 redactedStringValue];
-    v15 = [v12 stringWithFormat:@"%@...<%lu chars, hash=%@>", v13, v7, v14];
+    redactedStringValue2 = [stringCopy substringToIndex:v10];
+    redactedStringValue = [(EFStringHash *)v11 redactedStringValue];
+    v15 = [v12 stringWithFormat:@"%@...<%lu chars, hash=%@>", redactedStringValue2, v7, redactedStringValue];
   }
 
   else
   {
-    v11 = [[EFStringHash alloc] initWithString:v5];
+    v11 = [[EFStringHash alloc] initWithString:stringCopy];
     v16 = MEMORY[0x1E696AEC0];
-    v13 = [(EFStringHash *)v11 redactedStringValue];
-    v15 = [v16 stringWithFormat:@"<%lu chars, hash=%@>", v7, v13];
+    redactedStringValue2 = [(EFStringHash *)v11 redactedStringValue];
+    v15 = [v16 stringWithFormat:@"<%lu chars, hash=%@>", v7, redactedStringValue2];
   }
 
 LABEL_8:
@@ -136,16 +136,16 @@ LABEL_8:
   return v15;
 }
 
-+ (id)partiallyRedactedStringForString:(id)a3
++ (id)partiallyRedactedStringForString:(id)string
 {
-  v3 = [a1 partiallyRedactedStringForString:a3 maximumUnredactedLength:2];
+  v3 = [self partiallyRedactedStringForString:string maximumUnredactedLength:2];
 
   return v3;
 }
 
-+ (id)partiallyRedactedStringFromArray:(id)a3
++ (id)partiallyRedactedStringFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -157,8 +157,8 @@ LABEL_8:
   v7[2] = __46__EFPrivacy_partiallyRedactedStringFromArray___block_invoke;
   v7[3] = &unk_1E8249968;
   v7[4] = &v8;
-  v7[5] = a1;
-  [v4 enumerateObjectsUsingBlock:v7];
+  v7[5] = self;
+  [arrayCopy enumerateObjectsUsingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -182,9 +182,9 @@ void __46__EFPrivacy_partiallyRedactedStringFromArray___block_invoke(uint64_t a1
   }
 }
 
-+ (id)partiallyRedactedDictionary:(id)a3
++ (id)partiallyRedactedDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -196,8 +196,8 @@ void __46__EFPrivacy_partiallyRedactedStringFromArray___block_invoke(uint64_t a1
   v7[2] = __41__EFPrivacy_partiallyRedactedDictionary___block_invoke;
   v7[3] = &unk_1E8249990;
   v7[4] = &v8;
-  v7[5] = a1;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  v7[5] = self;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -219,60 +219,60 @@ void __41__EFPrivacy_partiallyRedactedDictionary___block_invoke(uint64_t a1, voi
   [v7 appendString:v8];
 }
 
-+ (id)fullyRedactedStringForString:(id)a3
++ (id)fullyRedactedStringForString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [[EFStringHash alloc] initWithString:v3];
-    v5 = [(EFStringHash *)v4 redactedStringValue];
+    v4 = [[EFStringHash alloc] initWithString:stringCopy];
+    redactedStringValue = [(EFStringHash *)v4 redactedStringValue];
   }
 
   else
   {
-    v5 = v3;
+    redactedStringValue = stringCopy;
   }
 
-  return v5;
+  return redactedStringValue;
 }
 
-+ (id)fullyOrPartiallyRedactedStringForString:(id)a3
++ (id)fullyOrPartiallyRedactedStringForString:(id)string
 {
-  v3 = [EFPrivacy fullyOrPartiallyRedactedStringForString:a3 maximumUnredactedLength:2];
+  v3 = [EFPrivacy fullyOrPartiallyRedactedStringForString:string maximumUnredactedLength:2];
 
   return v3;
 }
 
-+ (id)fullyOrPartiallyRedactedStringForString:(id)a3 maximumUnredactedLength:(unint64_t)a4
++ (id)fullyOrPartiallyRedactedStringForString:(id)string maximumUnredactedLength:(unint64_t)length
 {
-  v5 = a3;
+  stringCopy = string;
   v6 = +[EFDevice currentDevice];
-  v7 = [v6 isInternal];
+  isInternal = [v6 isInternal];
 
-  if (v7)
+  if (isInternal)
   {
-    [EFPrivacy partiallyRedactedStringForString:v5 maximumUnredactedLength:a4];
+    [EFPrivacy partiallyRedactedStringForString:stringCopy maximumUnredactedLength:length];
   }
 
   else
   {
-    [EFPrivacy fullyRedactedStringForString:v5];
+    [EFPrivacy fullyRedactedStringForString:stringCopy];
   }
   v8 = ;
 
   return v8;
 }
 
-+ (id)fullyOrPartiallyRedactFields:(id)a3 inString:(id)a4
++ (id)fullyOrPartiallyRedactFields:(id)fields inString:(id)string
 {
   v32 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v5 = [a4 mutableCopy];
+  fieldsCopy = fields;
+  v5 = [string mutableCopy];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v23;
+  obj = fieldsCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -343,14 +343,14 @@ void __41__EFPrivacy_partiallyRedactedDictionary___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-+ (unsigned)bucketMessageCount:(unint64_t)a3
++ (unsigned)bucketMessageCount:(unint64_t)count
 {
-  result = a3;
-  if (a3 > 0xA)
+  result = count;
+  if (count > 0xA)
   {
-    if (a3 <= 0x63)
+    if (count <= 0x63)
     {
-      return (round(a3 / 10.0) * 10.0);
+      return (round(count / 10.0) * 10.0);
     }
 
     else
@@ -362,9 +362,9 @@ void __41__EFPrivacy_partiallyRedactedDictionary___block_invoke(uint64_t a1, voi
   return result;
 }
 
-+ (id)redactedQueryStringForQueryString:(id)a3
++ (id)redactedQueryStringForQueryString:(id)string
 {
-  v3 = [a3 mutableCopy];
+  v3 = [string mutableCopy];
   [v3 replaceOccurrencesOfString:@"'(.*?)'" withString:@"?" options:1024 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@"[0-9]+" withString:@"?" options:1024 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@"CAST\\(X\\? AS TEXT\\)" withString:@"?" options:1024 range:{0, objc_msgSend(v3, "length")}];
@@ -373,69 +373,69 @@ void __41__EFPrivacy_partiallyRedactedDictionary___block_invoke(uint64_t a1, voi
   return v3;
 }
 
-+ (unint64_t)_roundQueryLogCount:(unint64_t)a3 maxCount:(unint64_t)a4 queryCount:(unint64_t)a5
++ (unint64_t)_roundQueryLogCount:(unint64_t)count maxCount:(unint64_t)maxCount queryCount:(unint64_t)queryCount
 {
-  if (a5 >= (a4 + a3) >> 1)
+  if (queryCount >= (maxCount + count) >> 1)
   {
-    return a4;
+    return maxCount;
   }
 
   else
   {
-    return a3;
+    return count;
   }
 }
 
-+ (unint64_t)bucketValueForQueryLogCount:(id)a3 bucketValues:(id)a4
++ (unint64_t)bucketValueForQueryLogCount:(id)count bucketValues:(id)values
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count] <= 1)
+  countCopy = count;
+  valuesCopy = values;
+  if ([valuesCopy count] <= 1)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"EFPrivacy.m" lineNumber:239 description:@"Invalid number of values in queryBucketValues"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFPrivacy.m" lineNumber:239 description:@"Invalid number of values in queryBucketValues"];
   }
 
-  v9 = [v7 integerValue];
-  v10 = [v8 firstObject];
-  v11 = [v10 unsignedIntegerValue];
+  integerValue = [countCopy integerValue];
+  firstObject = [valuesCopy firstObject];
+  unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-  if (v9 >= v11)
+  if (integerValue >= unsignedIntegerValue)
   {
-    v12 = [v8 lastObject];
-    v13 = [v12 unsignedIntegerValue];
+    lastObject = [valuesCopy lastObject];
+    unsignedIntegerValue2 = [lastObject unsignedIntegerValue];
 
-    if (v9 <= v13)
+    if (integerValue <= unsignedIntegerValue2)
     {
       v15 = 0;
       do
       {
-        if (v15 >= [v8 count] - 1)
+        if (v15 >= [valuesCopy count] - 1)
         {
           __assert_rtn("+[EFPrivacy bucketValueForQueryLogCount:bucketValues:]", "EFPrivacy.m", 259, "0 && Fail to bucket query count value");
         }
 
-        v16 = [v8 objectAtIndexedSubscript:v15];
-        v17 = [v16 unsignedIntegerValue];
+        v16 = [valuesCopy objectAtIndexedSubscript:v15];
+        unsignedIntegerValue3 = [v16 unsignedIntegerValue];
 
-        v18 = [v8 objectAtIndexedSubscript:v15 + 1];
-        v19 = [v18 unsignedIntegerValue];
+        v18 = [valuesCopy objectAtIndexedSubscript:v15 + 1];
+        unsignedIntegerValue4 = [v18 unsignedIntegerValue];
 
         ++v15;
       }
 
-      while (v9 < v17 || v9 > v19);
-      v9 = [a1 _roundQueryLogCount:v17 maxCount:v19 queryCount:v9];
+      while (integerValue < unsignedIntegerValue3 || integerValue > unsignedIntegerValue4);
+      integerValue = [self _roundQueryLogCount:unsignedIntegerValue3 maxCount:unsignedIntegerValue4 queryCount:integerValue];
     }
 
     else
     {
-      v14 = [v8 lastObject];
-      v9 = [v14 unsignedIntegerValue];
+      lastObject2 = [valuesCopy lastObject];
+      integerValue = [lastObject2 unsignedIntegerValue];
     }
   }
 
-  return v9;
+  return integerValue;
 }
 
 @end

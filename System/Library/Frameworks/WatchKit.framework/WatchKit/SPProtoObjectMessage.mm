@@ -1,6 +1,6 @@
 @interface SPProtoObjectMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sockPuppetMessageForAssetDestroy;
@@ -12,7 +12,7 @@
 - (id)sockPuppetMessageForQueuePlayerAdvanceToNextItem;
 - (id)sockPuppetMessageForQueuePlayerDestroy;
 - (id)sockPuppetMessageForQueuePlayerRemoveAllItems;
-- (void)mergeFrom:(id)a3;
+- (void)mergeFrom:(id)from;
 @end
 
 @implementation SPProtoObjectMessage
@@ -23,42 +23,42 @@
   v8.receiver = self;
   v8.super_class = SPProtoObjectMessage;
   v4 = [(SPProtoObjectMessage *)&v8 description];
-  v5 = [(SPProtoObjectMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoObjectMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     identifier = self->_identifier;
-    if (identifier | v4[1])
+    if (identifier | equalCopy[1])
     {
       v6 = [(NSString *)identifier isEqual:?];
     }
@@ -77,9 +77,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(SPProtoObjectMessage *)self setIdentifier:?];
   }
@@ -89,81 +89,81 @@
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerAsset);
   [(SPProtoAudioFilePlayerAsset *)v3 setDestroy:self];
-  v4 = [(SPProtoAudioFilePlayerAsset *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerAsset *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForPlayerItemDestroy
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerItem);
   [(SPProtoAudioFilePlayerItem *)v3 setDestroy:self];
-  v4 = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForPlayerItemGetCurrentTime
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerItem);
   [(SPProtoAudioFilePlayerItem *)v3 setGetCurrentTime:self];
-  v4 = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForPlayerItemNotifyTimeJumped
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerItem);
   [(SPProtoAudioFilePlayerItem *)v3 setNotifyTimeJumped:self];
-  v4 = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForPlayerItemNotifyDidPlayToEndTime
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerItem);
   [(SPProtoAudioFilePlayerItem *)v3 setNotifyDidPlayToEndTime:self];
-  v4 = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForPlayerItemNotifyFailedToPlayToEndTime
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerItem);
   [(SPProtoAudioFilePlayerItem *)v3 setNotifyFailedToPlayToEndTime:self];
-  v4 = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerDestroy
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setDestroy:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerAdvanceToNextItem
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setAdvanceToNextItem:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerRemoveAllItems
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setRemoveAllItems:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 @end

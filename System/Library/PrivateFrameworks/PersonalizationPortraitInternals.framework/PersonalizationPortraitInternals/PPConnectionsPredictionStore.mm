@@ -1,45 +1,45 @@
 @interface PPConnectionsPredictionStore
 + (id)defaultStore;
 - (PPConnectionsPredictionStore)init;
-- (PPConnectionsPredictionStore)initWithParameters:(id)a3 pasteboardSource:(id)a4 calendarSource:(id)a5 duetSource:(id)a6 namedEntitySource:(id)a7 fiaSource:(id)a8 metricsTracker:(id)a9;
+- (PPConnectionsPredictionStore)initWithParameters:(id)parameters pasteboardSource:(id)source calendarSource:(id)calendarSource duetSource:(id)duetSource namedEntitySource:(id)entitySource fiaSource:(id)fiaSource metricsTracker:(id)tracker;
 - (id)cutoffNamedEntityTime;
-- (id)recentLocationsForConsumer:(unint64_t)a3 criteria:(id)a4 limit:(unint64_t)a5 explanationSet:(id)a6 timeout:(unint64_t)a7 error:(id *)a8;
-- (void)_asyncFillLocationData:(NSObject *)a3 group:(void *)a4 source:(uint64_t)a5 consumer:(void *)a6 criteria:(void *)a7 earliestDate:(void *)a8 latestDate:(uint64_t)a9 limit:(void *)a10 explanationSet:;
+- (id)recentLocationsForConsumer:(unint64_t)consumer criteria:(id)criteria limit:(unint64_t)limit explanationSet:(id)set timeout:(unint64_t)timeout error:(id *)error;
+- (void)_asyncFillLocationData:(NSObject *)data group:(void *)group source:(uint64_t)source consumer:(void *)consumer criteria:(void *)criteria earliestDate:(void *)date latestDate:(uint64_t)latestDate limit:(void *)self0 explanationSet:;
 @end
 
 @implementation PPConnectionsPredictionStore
 
 - (id)cutoffNamedEntityTime
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x277CBEAA8];
-    [a1[1] namedEntitySourceLookBackSeconds];
-    a1 = [v2 dateWithTimeIntervalSinceNow:-v3];
+    [self[1] namedEntitySourceLookBackSeconds];
+    self = [v2 dateWithTimeIntervalSinceNow:-v3];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)recentLocationsForConsumer:(unint64_t)a3 criteria:(id)a4 limit:(unint64_t)a5 explanationSet:(id)a6 timeout:(unint64_t)a7 error:(id *)a8
+- (id)recentLocationsForConsumer:(unint64_t)consumer criteria:(id)criteria limit:(unint64_t)limit explanationSet:(id)set timeout:(unint64_t)timeout error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a6;
+  criteriaCopy = criteria;
+  setCopy = set;
   context = objc_autoreleasePoolPush();
   v15 = pp_connections_log_handle();
-  v16 = a7 / 1000000000.0;
+  v16 = timeout / 1000000000.0;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    *&buf[4] = a3;
+    *&buf[4] = consumer;
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = criteriaCopy;
     *&buf[22] = 2048;
-    v48 = a5;
+    limitCopy = limit;
     LOWORD(v49) = 2048;
-    *(&v49 + 2) = a7 / 1000000000.0;
+    *(&v49 + 2) = timeout / 1000000000.0;
     _os_log_impl(&dword_23224A000, v15, OS_LOG_TYPE_DEFAULT, "PPConnectionsPredictionStore: recentLocationsForConsumer: c:%tu cr:%@ l:%tu t:%f", buf, 0x2Au);
   }
 
@@ -52,32 +52,32 @@
   v22 = MEMORY[0x277CBEAA8];
   [(PPConnectionsParameters *)self->_parameters userActivityExpirySeconds];
   v24 = [v22 dateWithTimeIntervalSinceNow:-v23];
-  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:duetSource consumer:a3 criteria:v13 earliestDate:v24 latestDate:0 limit:a5 explanationSet:v14];
+  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:duetSource consumer:consumer criteria:criteriaCopy earliestDate:v24 latestDate:0 limit:limit explanationSet:setCopy];
 
   calendarSource = self->_calendarSource;
   v26 = MEMORY[0x277CBEAA8];
   [(PPConnectionsParameters *)self->_parameters calendarEventLocationLookaheadTimeSeconds];
   v27 = [v26 dateWithTimeIntervalSinceNow:?];
-  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:calendarSource consumer:a3 criteria:v13 earliestDate:0 latestDate:v27 limit:a5 explanationSet:v14];
+  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:calendarSource consumer:consumer criteria:criteriaCopy earliestDate:0 latestDate:v27 limit:limit explanationSet:setCopy];
 
   namedEntitySource = self->_namedEntitySource;
-  v29 = [(PPConnectionsPredictionStore *)&self->super.isa cutoffNamedEntityTime];
-  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:namedEntitySource consumer:a3 criteria:v13 earliestDate:v29 latestDate:0 limit:a5 explanationSet:v14];
+  cutoffNamedEntityTime = [(PPConnectionsPredictionStore *)&self->super.isa cutoffNamedEntityTime];
+  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:namedEntitySource consumer:consumer criteria:criteriaCopy earliestDate:cutoffNamedEntityTime latestDate:0 limit:limit explanationSet:setCopy];
 
   fiaSource = self->_fiaSource;
-  v31 = [(PPConnectionsPredictionStore *)&self->super.isa cutoffNamedEntityTime];
-  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:fiaSource consumer:a3 criteria:v13 earliestDate:v31 latestDate:0 limit:a5 explanationSet:v14];
+  cutoffNamedEntityTime2 = [(PPConnectionsPredictionStore *)&self->super.isa cutoffNamedEntityTime];
+  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:fiaSource consumer:consumer criteria:criteriaCopy earliestDate:cutoffNamedEntityTime2 latestDate:0 limit:limit explanationSet:setCopy];
 
   pasteboardSource = self->_pasteboardSource;
   v33 = MEMORY[0x277CBEAA8];
   [(PPConnectionsParameters *)self->_parameters pasteboardItemExpirySeconds];
   v35 = [v33 dateWithTimeIntervalSinceNow:-v34];
-  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:pasteboardSource consumer:a3 criteria:v13 earliestDate:v35 latestDate:0 limit:a5 explanationSet:v14];
+  [(PPConnectionsPredictionStore *)self _asyncFillLocationData:v19 group:v20 source:pasteboardSource consumer:consumer criteria:criteriaCopy earliestDate:v35 latestDate:0 limit:limit explanationSet:setCopy];
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v48 = __Block_byref_object_copy__8842;
+  limitCopy = __Block_byref_object_copy__8842;
   *&v49 = __Block_byref_object_dispose__8843;
   *(&v49 + 1) = 0;
   if ([MEMORY[0x277D425A0] waitForGroup:v20 timeoutSeconds:v16] == 1)
@@ -95,8 +95,8 @@
   v44[2] = __103__PPConnectionsPredictionStore_recentLocationsForConsumer_criteria_limit_explanationSet_timeout_error___block_invoke;
   v44[3] = &unk_278974008;
   v44[4] = buf;
-  v44[5] = a3;
-  v44[6] = a5;
+  v44[5] = consumer;
+  v44[6] = limit;
   [v19 runWithLockAcquired:v44];
   v37 = [*(*&buf[8] + 40) _pas_mappedArrayWithTransform:&__block_literal_global_34];
   v38 = [v37 _pas_componentsJoinedByString:{@", "}];
@@ -118,30 +118,30 @@
   return v40;
 }
 
-- (void)_asyncFillLocationData:(NSObject *)a3 group:(void *)a4 source:(uint64_t)a5 consumer:(void *)a6 criteria:(void *)a7 earliestDate:(void *)a8 latestDate:(uint64_t)a9 limit:(void *)a10 explanationSet:
+- (void)_asyncFillLocationData:(NSObject *)data group:(void *)group source:(uint64_t)source consumer:(void *)consumer criteria:(void *)criteria earliestDate:(void *)date latestDate:(uint64_t)latestDate limit:(void *)self0 explanationSet:
 {
   v17 = a2;
-  v18 = a4;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
-  if (a1)
+  groupCopy = group;
+  consumerCopy = consumer;
+  criteriaCopy = criteria;
+  dateCopy = date;
+  limitCopy = limit;
+  if (self)
   {
-    v23 = *(a1 + 64);
+    v23 = *(self + 64);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __131__PPConnectionsPredictionStore__asyncFillLocationData_group_source_consumer_criteria_earliestDate_latestDate_limit_explanationSet___block_invoke;
     v24[3] = &unk_278973FE0;
-    v25 = v18;
-    v26 = v19;
-    v27 = v20;
-    v28 = v21;
-    v31 = a9;
-    v32 = a5;
-    v29 = v22;
+    v25 = groupCopy;
+    v26 = consumerCopy;
+    v27 = criteriaCopy;
+    v28 = dateCopy;
+    latestDateCopy = latestDate;
+    sourceCopy = source;
+    v29 = limitCopy;
     v30 = v17;
-    dispatch_group_async(a3, v23, v24);
+    dispatch_group_async(data, v23, v24);
   }
 }
 
@@ -481,28 +481,28 @@ LABEL_32:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (PPConnectionsPredictionStore)initWithParameters:(id)a3 pasteboardSource:(id)a4 calendarSource:(id)a5 duetSource:(id)a6 namedEntitySource:(id)a7 fiaSource:(id)a8 metricsTracker:(id)a9
+- (PPConnectionsPredictionStore)initWithParameters:(id)parameters pasteboardSource:(id)source calendarSource:(id)calendarSource duetSource:(id)duetSource namedEntitySource:(id)entitySource fiaSource:(id)fiaSource metricsTracker:(id)tracker
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v16 = a8;
-  v17 = a9;
+  parametersCopy = parameters;
+  sourceCopy = source;
+  calendarSourceCopy = calendarSource;
+  duetSourceCopy = duetSource;
+  entitySourceCopy = entitySource;
+  fiaSourceCopy = fiaSource;
+  trackerCopy = tracker;
   v28.receiver = self;
   v28.super_class = PPConnectionsPredictionStore;
   v18 = [(PPConnectionsPredictionStore *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_parameters, a3);
-    objc_storeStrong(&v19->_pasteboardSource, a4);
-    objc_storeStrong(&v19->_calendarSource, a5);
-    objc_storeStrong(&v19->_duetSource, a6);
-    objc_storeStrong(&v19->_namedEntitySource, a7);
-    objc_storeStrong(&v19->_fiaSource, a8);
-    objc_storeStrong(&v19->_metricsTracker, a9);
+    objc_storeStrong(&v18->_parameters, parameters);
+    objc_storeStrong(&v19->_pasteboardSource, source);
+    objc_storeStrong(&v19->_calendarSource, calendarSource);
+    objc_storeStrong(&v19->_duetSource, duetSource);
+    objc_storeStrong(&v19->_namedEntitySource, entitySource);
+    objc_storeStrong(&v19->_fiaSource, fiaSource);
+    objc_storeStrong(&v19->_metricsTracker, tracker);
     v20 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"PPConnectionsPredictionStore.prediction" qosClass:25];
     predictionQueue = v19->_predictionQueue;
     v19->_predictionQueue = v20;
@@ -521,14 +521,14 @@ LABEL_32:
   v8 = +[PPConnectionsFoundInAppsSource sharedInstance];
   v9 = +[PPConnectionsMetricsTracker sharedInstance];
   v10 = v9;
-  v11 = 0;
+  selfCopy = 0;
   if (v3 && v4 && v5 && v6 && v7 && v8 && v9)
   {
     self = [(PPConnectionsPredictionStore *)self initWithParameters:v3 pasteboardSource:v4 calendarSource:v5 duetSource:v6 namedEntitySource:v7 fiaSource:v8 metricsTracker:v9];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 + (id)defaultStore

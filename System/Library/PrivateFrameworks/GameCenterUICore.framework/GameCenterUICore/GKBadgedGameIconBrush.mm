@@ -1,9 +1,9 @@
 @interface GKBadgedGameIconBrush
-- (CGSize)sizeForInput:(id)a3;
+- (CGSize)sizeForInput:(id)input;
 - (GKBadgedGameIconBrush)init;
-- (double)scaleForInput:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5;
+- (double)scaleForInput:(id)input;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input;
 @end
 
 @implementation GKBadgedGameIconBrush
@@ -25,24 +25,24 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GKBadgedGameIconBrush;
-  v4 = [(GKThemeBrush *)&v7 copyWithZone:a3];
-  v5 = [(GKBadgedGameIconBrush *)self badgeBrush];
-  [v4 setBadgeBrush:v5];
+  v4 = [(GKThemeBrush *)&v7 copyWithZone:zone];
+  badgeBrush = [(GKBadgedGameIconBrush *)self badgeBrush];
+  [v4 setBadgeBrush:badgeBrush];
 
   return v4;
 }
 
-- (CGSize)sizeForInput:(id)a3
+- (CGSize)sizeForInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = inputCopy;
   }
 
   else
@@ -73,23 +73,23 @@
   return result;
 }
 
-- (double)scaleForInput:(id)a3
+- (double)scaleForInput:(id)input
 {
-  v4 = a3;
-  v5 = [(GKBadgedGameIconBrush *)self badgeBrush];
-  [v5 scaleForInput:v4];
+  inputCopy = input;
+  badgeBrush = [(GKBadgedGameIconBrush *)self badgeBrush];
+  [badgeBrush scaleForInput:inputCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input
 {
-  v25 = a5;
+  inputCopy = input;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v25;
+    v7 = inputCopy;
   }
 
   else
@@ -112,8 +112,8 @@
     [v11 size];
     v14 = v13;
     v16 = v15;
-    v17 = [(GKBadgedGameIconBrush *)self badgeBrush];
-    [v17 sizeForInput:v12];
+    badgeBrush = [(GKBadgedGameIconBrush *)self badgeBrush];
+    [badgeBrush sizeForInput:v12];
     v19 = v18;
     v21 = v20;
 
@@ -122,14 +122,14 @@
     v27.size.width = v14;
     v27.size.height = v16;
     v22 = CGRectGetMaxY(v27) - v21 + 6.0;
-    UIGraphicsPushContext(a4);
-    CGContextSaveGState(a4);
+    UIGraphicsPushContext(context);
+    CGContextSaveGState(context);
     [v11 drawInRect:{6.0, 6.0, v14, v16}];
-    v23 = [(GKBadgedGameIconBrush *)self badgeBrush];
-    v24 = [v23 drawnImageForSize:0 opaque:v12 input:{v19, v21}];
+    badgeBrush2 = [(GKBadgedGameIconBrush *)self badgeBrush];
+    v24 = [badgeBrush2 drawnImageForSize:0 opaque:v12 input:{v19, v21}];
 
     [v24 drawInRect:{0.0, v22, v19, v21}];
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
     UIGraphicsPopContext();
   }
 }

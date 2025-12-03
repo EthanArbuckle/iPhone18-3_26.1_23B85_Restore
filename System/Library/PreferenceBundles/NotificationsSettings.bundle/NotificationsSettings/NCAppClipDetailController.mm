@@ -1,10 +1,10 @@
 @interface NCAppClipDetailController
 - (NCAppClipDetailController)init;
 - (id)specifiers;
-- (void)_updateStoredSectionsWithSectionInfo:(id)a3;
-- (void)appDetailControllerWillDisappear:(id)a3;
+- (void)_updateStoredSectionsWithSectionInfo:(id)info;
+- (void)appDetailControllerWillDisappear:(id)disappear;
 - (void)dealloc;
-- (void)settingsGateway:(id)a3 didUpdateSectionInfo:(id)a4;
+- (void)settingsGateway:(id)gateway didUpdateSectionInfo:(id)info;
 @end
 
 @implementation NCAppClipDetailController
@@ -33,9 +33,9 @@
   [(NCAppClipDetailController *)&v4 dealloc];
 }
 
-- (void)_updateStoredSectionsWithSectionInfo:(id)a3
+- (void)_updateStoredSectionsWithSectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = OBJC_IVAR___PSViewController__specifier;
   v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"APP_CLIP_SECTION_INFOS"];
   v7 = [v6 mutableCopy];
@@ -43,8 +43,8 @@
   v9[1] = 3221225472;
   v9[2] = sub_67E4;
   v9[3] = &unk_4D1D0;
-  v10 = v4;
-  v8 = v4;
+  v10 = infoCopy;
+  v8 = infoCopy;
   [v7 setObject:v8 atIndexedSubscript:{objc_msgSend(v6, "indexOfObjectPassingTest:", v9)}];
   [*&self->PSListController_opaque[v5] setProperty:v7 forKey:@"APP_CLIP_SECTION_INFOS"];
 }
@@ -83,8 +83,8 @@
           v10 = PSApplicationSpecifierForBBSection();
           [v10 setProperty:self forKey:kNotificationsSettingsDetailControllerDelegate];
           v11 = +[MCProfileConnection sharedConnection];
-          v12 = [v9 sectionID];
-          v13 = [v11 isNotificationsModificationAllowedForBundleID:v12];
+          sectionID = [v9 sectionID];
+          v13 = [v11 isNotificationsModificationAllowedForBundleID:sectionID];
 
           if ((v13 & 1) == 0)
           {
@@ -114,21 +114,21 @@
   return v4;
 }
 
-- (void)appDetailControllerWillDisappear:(id)a3
+- (void)appDetailControllerWillDisappear:(id)disappear
 {
-  v4 = [a3 specifier];
-  [(NCAppClipDetailController *)self reloadSpecifier:v4];
+  specifier = [disappear specifier];
+  [(NCAppClipDetailController *)self reloadSpecifier:specifier];
 }
 
-- (void)settingsGateway:(id)a3 didUpdateSectionInfo:(id)a4
+- (void)settingsGateway:(id)gateway didUpdateSectionInfo:(id)info
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_6B78;
   v5[3] = &unk_4D0D8;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  infoCopy = info;
+  v4 = infoCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

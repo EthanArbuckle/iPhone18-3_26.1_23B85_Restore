@@ -1,21 +1,21 @@
 @interface VCPProtoImageCaptionResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoImageCaptionResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"attributes"];
+  v3 = [dictionary objectForKeyedSubscript:@"attributes"];
   v4 = v3;
   if (v3)
   {
@@ -71,20 +71,20 @@
 - (id)exportToLegacyDictionary
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = MEMORY[0x1E696AD98];
   [(VCPProtoImageCaptionResult *)self confidence];
   v5 = [v4 numberWithFloat:?];
-  [v3 setObject:v5 forKeyedSubscript:@"imageCaptionConfidence"];
+  [dictionary setObject:v5 forKeyedSubscript:@"imageCaptionConfidence"];
 
-  v6 = [(VCPProtoImageCaptionResult *)self text];
-  [v3 setObject:v6 forKeyedSubscript:@"imageCaptionText"];
+  text = [(VCPProtoImageCaptionResult *)self text];
+  [dictionary setObject:text forKeyedSubscript:@"imageCaptionText"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[VCPProtoImageCaptionResult unsafeContent](self, "unsafeContent")}];
-  [v3 setObject:v7 forKeyedSubscript:@"imageCaptionUnsafeContent"];
+  [dictionary setObject:v7 forKeyedSubscript:@"imageCaptionUnsafeContent"];
 
   v10 = @"attributes";
-  v11[0] = v3;
+  v11[0] = dictionary;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   return v8;
@@ -96,53 +96,53 @@
   v8.receiver = self;
   v8.super_class = VCPProtoImageCaptionResult;
   v4 = [(VCPProtoImageCaptionResult *)&v8 description];
-  v5 = [(VCPProtoImageCaptionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoImageCaptionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_confidence;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"confidence"];
+  [dictionary setObject:v5 forKey:@"confidence"];
 
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_unsafeContent];
-  [v3 setObject:v7 forKey:@"unsafeContent"];
+  [dictionary setObject:v7 forKey:@"unsafeContent"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteStringField();
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = LODWORD(self->_confidence);
+  *(to + 2) = LODWORD(self->_confidence);
   text = self->_text;
-  v5 = a3;
-  [v5 setText:text];
-  v5[24] = self->_unsafeContent;
+  toCopy = to;
+  [toCopy setText:text];
+  toCopy[24] = self->_unsafeContent;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_confidence;
-  v6 = [(NSString *)self->_text copyWithZone:a3];
+  v6 = [(NSString *)self->_text copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -150,10 +150,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && self->_confidence == *(v4 + 2) && ((text = self->_text, !(text | *(v4 + 2))) || -[NSString isEqual:](text, "isEqual:")) && self->_unsafeContent == v4[24];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_confidence == *(equalCopy + 2) && ((text = self->_text, !(text | *(equalCopy + 2))) || -[NSString isEqual:](text, "isEqual:")) && self->_unsafeContent == equalCopy[24];
 
   return v6;
 }
@@ -193,18 +193,18 @@
   return [(NSString *)self->_text hash]^ (2654435761 * self->_unsafeContent) ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_confidence = *(v4 + 2);
-  if (*(v4 + 2))
+  fromCopy = from;
+  self->_confidence = *(fromCopy + 2);
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(VCPProtoImageCaptionResult *)self setText:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_unsafeContent = *(v4 + 24);
+  self->_unsafeContent = *(fromCopy + 24);
 }
 
 @end

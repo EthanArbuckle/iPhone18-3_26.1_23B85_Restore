@@ -1,12 +1,12 @@
 @interface ConversationListContainerViewController
-- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation ConversationListContainerViewController
 
-- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator39ConversationListContainerViewController____lazy_storage___conversationListViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator39ConversationListContainerViewController_speakButtonMinimumBottomPadding) = 0x4040000000000000;
@@ -19,11 +19,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008EA48();
 }
 
-- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator39ConversationListContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

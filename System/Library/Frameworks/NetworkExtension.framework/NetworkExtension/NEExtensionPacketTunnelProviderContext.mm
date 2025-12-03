@@ -3,31 +3,31 @@
 + (id)_extensionAuxiliaryVendorProtocol;
 - (void)completeSession;
 - (void)dispose;
-- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)a3;
-- (void)setAppUUIDMap:(id)a3;
-- (void)setTunnelConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)setupVirtualInterface:(id)a3;
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)stopWithReason:(int)a3;
+- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)handler;
+- (void)setAppUUIDMap:(id)map;
+- (void)setTunnelConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)setupVirtualInterface:(id)interface;
+- (void)startWithOptions:(id)options completionHandler:(id)handler;
+- (void)stopWithReason:(int)reason;
 @end
 
 @implementation NEExtensionPacketTunnelProviderContext
 
-- (void)setTunnelConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setTunnelConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__NEExtensionPacketTunnelProviderContext_setTunnelConfiguration_completionHandler___block_invoke;
   v10[3] = &unk_1E7F07408;
   objc_copyWeak(&v12, &location);
-  v8 = v7;
+  v8 = handlerCopy;
   v11 = v8;
   v9.receiver = self;
   v9.super_class = NEExtensionPacketTunnelProviderContext;
-  [(NEExtensionTunnelProviderContext *)&v9 setTunnelConfiguration:v6 completionHandler:v10];
+  [(NEExtensionTunnelProviderContext *)&v9 setTunnelConfiguration:configurationCopy completionHandler:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -68,37 +68,37 @@ void __83__NEExtensionPacketTunnelProviderContext_setTunnelConfiguration_complet
   }
 }
 
-- (void)setAppUUIDMap:(id)a3
+- (void)setAppUUIDMap:(id)map
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEExtensionProviderContext *)self _principalObject];
+  mapCopy = map;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   v6 = ne_log_obj();
-  v7 = v6;
-  if (v5)
+  packetFlow = v6;
+  if (_principalObject)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = self;
-      _os_log_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_DEFAULT, "%@: Setting the app UUID map", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1BA83C000, packetFlow, OS_LOG_TYPE_DEFAULT, "%@: Setting the app UUID map", buf, 0xCu);
     }
 
-    v28 = v5;
-    v7 = [v5 packetFlow];
-    v29 = v4;
-    v8 = v4;
+    v28 = _principalObject;
+    packetFlow = [_principalObject packetFlow];
+    v29 = mapCopy;
+    v8 = mapCopy;
     v9 = v8;
-    if (v7)
+    if (packetFlow)
     {
-      selfa = v7;
-      v10 = [v8 allKeys];
+      selfa = packetFlow;
+      allKeys = [v8 allKeys];
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      obj = v10;
+      obj = allKeys;
       v12 = [obj countByEnumeratingWithState:&v31 objects:buf count:16];
       if (v12)
       {
@@ -144,33 +144,33 @@ void __83__NEExtensionPacketTunnelProviderContext_setTunnelConfiguration_complet
       }
 
       v24 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v11];
-      v7 = selfa;
+      packetFlow = selfa;
       objc_setProperty_atomic(selfa, v25, v24, 72);
     }
 
-    v5 = v28;
-    v4 = v29;
+    _principalObject = v28;
+    mapCopy = v29;
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v38 = self;
-    _os_log_error_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_ERROR, "%@: No provider when setting the app UUID map", buf, 0xCu);
+    selfCopy2 = self;
+    _os_log_error_impl(&dword_1BA83C000, packetFlow, OS_LOG_TYPE_ERROR, "%@: No provider when setting the app UUID map", buf, 0xCu);
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)a3
+- (void)fetchVirtualInterfaceTypeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
-  v5 = [v8 packetFlow];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  packetFlow = [_principalObject packetFlow];
+  v6 = packetFlow;
+  if (packetFlow)
   {
-    v7 = *(v5 + 80);
+    v7 = *(packetFlow + 80);
   }
 
   else
@@ -178,18 +178,18 @@ void __83__NEExtensionPacketTunnelProviderContext_setTunnelConfiguration_complet
     v7 = 0;
   }
 
-  v4[2](v4, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)setupVirtualInterface:(id)a3
+- (void)setupVirtualInterface:(id)interface
 {
-  v4 = a3;
-  v19 = [(NEExtensionProviderContext *)self _principalObject];
-  v5 = [v19 packetFlow];
-  v6 = v4;
-  if (v5)
+  interfaceCopy = interface;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  packetFlow = [_principalObject packetFlow];
+  v6 = interfaceCopy;
+  if (packetFlow)
   {
-    v7 = v5;
+    v7 = packetFlow;
     objc_sync_enter(v7);
     if (v7[11])
     {
@@ -198,8 +198,8 @@ void __83__NEExtensionPacketTunnelProviderContext_setTunnelConfiguration_complet
 
     if (dyld_get_program_sdk_version() < 0xF0000)
     {
-      v9 = [v6 controlSocket];
-      [v7 setSocket:v9];
+      controlSocket = [v6 controlSocket];
+      [v7 setSocket:controlSocket];
     }
 
     v10 = objc_getProperty(v7, v8, 24, 1);
@@ -229,23 +229,23 @@ void __83__NEExtensionPacketTunnelProviderContext_setTunnelConfiguration_complet
   }
 }
 
-- (void)stopWithReason:(int)a3
+- (void)stopWithReason:(int)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(NEExtensionProviderContext *)self _principalObject];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = ne_session_stop_reason_to_string();
     _os_log_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEFAULT, "%@: Calling stopTunnelWithReason because: %s", buf, 0x16u);
   }
 
-  if (self && (a3 - 1) <= 0x29)
+  if (self && (reason - 1) <= 0x29)
   {
-    v7 = qword_1BAA4E658[a3 - 1];
+    v7 = qword_1BAA4E658[reason - 1];
   }
 
   else
@@ -258,8 +258,8 @@ void __83__NEExtensionPacketTunnelProviderContext_setTunnelConfiguration_complet
   v9[2] = __57__NEExtensionPacketTunnelProviderContext_stopWithReason___block_invoke;
   v9[3] = &unk_1E7F086C0;
   v9[4] = self;
-  v10 = a3;
-  [v5 stopTunnelWithReason:v7 completionHandler:v9];
+  reasonCopy = reason;
+  [_principalObject stopTunnelWithReason:v7 completionHandler:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -279,35 +279,35 @@ id __57__NEExtensionPacketTunnelProviderContext_stopWithReason___block_invoke(ui
   return result;
 }
 
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startWithOptions:(id)options completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
+  optionsCopy = options;
+  handlerCopy = handler;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   v14.receiver = self;
   v14.super_class = NEExtensionPacketTunnelProviderContext;
-  [(NEExtensionProviderContext *)&v14 startWithOptions:v6 completionHandler:v7];
+  [(NEExtensionProviderContext *)&v14 startWithOptions:optionsCopy completionHandler:handlerCopy];
 
   v9 = ne_log_obj();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = v6;
+    v18 = optionsCopy;
     _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEFAULT, "%@: Calling startTunnelWithOptions with options %p", buf, 0x16u);
   }
 
-  if (isa_nsdictionary(v6))
+  if (isa_nsdictionary(optionsCopy))
   {
-    v10 = [v6 objectForKeyedSubscript:@"test-disconnect-dispose-timeout"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"test-disconnect-dispose-timeout"];
     if (isa_nsnumber(v10))
     {
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
       if (self)
       {
-        self->_testDisconnectAndDisposeTimeout = v11;
+        self->_testDisconnectAndDisposeTimeout = bOOLValue;
       }
     }
   }
@@ -317,7 +317,7 @@ id __57__NEExtensionPacketTunnelProviderContext_stopWithReason___block_invoke(ui
   v13[2] = __77__NEExtensionPacketTunnelProviderContext_startWithOptions_completionHandler___block_invoke;
   v13[3] = &unk_1E7F0B4A8;
   v13[4] = self;
-  [v8 startTunnelWithOptions:v6 completionHandler:v13];
+  [_principalObject startTunnelWithOptions:optionsCopy completionHandler:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -337,9 +337,9 @@ void __77__NEExtensionPacketTunnelProviderContext_startWithOptions_completionHan
 {
   if (!self || !self->super.super._isDisposed)
   {
-    v3 = [(NEExtensionProviderContext *)self _principalObject];
-    v4 = [v3 packetFlow];
-    [(NEPacketTunnelFlow *)v4 closeVirtualInterface];
+    _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+    packetFlow = [_principalObject packetFlow];
+    [(NEPacketTunnelFlow *)packetFlow closeVirtualInterface];
 
     v5.receiver = self;
     v5.super_class = NEExtensionPacketTunnelProviderContext;

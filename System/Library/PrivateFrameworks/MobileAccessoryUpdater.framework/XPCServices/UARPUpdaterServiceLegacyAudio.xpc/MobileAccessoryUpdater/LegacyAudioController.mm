@@ -2,16 +2,16 @@
 + (LegacyAudioController)sharedInstance;
 - (LegacyAudioController)init;
 - (NSArray)activeAccessories;
-- (id)accessorySeen:(id)a3;
+- (id)accessorySeen:(id)seen;
 - (id)cachedActiveFirmwareAccessories;
 - (id)loadMatchingAccessoriesList;
 - (id)loadMatchingBSDNotificationsList;
 - (id)loadMatchingDASActivityList;
-- (void)addActiveAccessory:(id)a3;
-- (void)addActiveFirmwareAnalytics:(id)a3;
-- (void)dasActivityReceived:(id)a3;
-- (void)removeAccessorySeen:(id)a3;
-- (void)removeActiveAccessory:(id)a3;
+- (void)addActiveAccessory:(id)accessory;
+- (void)addActiveFirmwareAnalytics:(id)analytics;
+- (void)dasActivityReceived:(id)received;
+- (void)removeAccessorySeen:(id)seen;
+- (void)removeActiveAccessory:(id)accessory;
 - (void)sendActiveFirmwareAnalyticsEvent;
 @end
 
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_100009E0C;
   block[3] = &unk_10002CAE0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100038F88 != -1)
   {
     dispatch_once(&qword_100038F88, block);
@@ -49,17 +49,17 @@
     internalAccessoriesSeen = v2->_internalAccessoriesSeen;
     v2->_internalAccessoriesSeen = v5;
 
-    v7 = [(LegacyAudioController *)v2 loadMatchingAccessoriesList];
+    loadMatchingAccessoriesList = [(LegacyAudioController *)v2 loadMatchingAccessoriesList];
     matchingAccessoriesList = v2->_matchingAccessoriesList;
-    v2->_matchingAccessoriesList = v7;
+    v2->_matchingAccessoriesList = loadMatchingAccessoriesList;
 
-    v9 = [(LegacyAudioController *)v2 loadMatchingBSDNotificationsList];
+    loadMatchingBSDNotificationsList = [(LegacyAudioController *)v2 loadMatchingBSDNotificationsList];
     matchingBSDNotificationsList = v2->_matchingBSDNotificationsList;
-    v2->_matchingBSDNotificationsList = v9;
+    v2->_matchingBSDNotificationsList = loadMatchingBSDNotificationsList;
 
-    v11 = [(LegacyAudioController *)v2 loadMatchingDASActivityList];
+    loadMatchingDASActivityList = [(LegacyAudioController *)v2 loadMatchingDASActivityList];
     matchingDASActivityList = v2->_matchingDASActivityList;
-    v2->_matchingDASActivityList = v11;
+    v2->_matchingDASActivityList = loadMatchingDASActivityList;
 
     v13 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.UARPUpdaterServiceLegacyAudioDatabase"];
     database = v2->_database;
@@ -73,9 +73,9 @@
   return v2;
 }
 
-- (id)accessorySeen:(id)a3
+- (id)accessorySeen:(id)seen
 {
-  v4 = a3;
+  seenCopy = seen;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -88,9 +88,9 @@
   block[2] = sub_10000A070;
   block[3] = &unk_10002CB08;
   block[4] = self;
-  v10 = v4;
+  v10 = seenCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = seenCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -99,45 +99,45 @@
   return v7;
 }
 
-- (void)removeAccessorySeen:(id)a3
+- (void)removeAccessorySeen:(id)seen
 {
-  v4 = a3;
+  seenCopy = seen;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A244;
   v7[3] = &unk_10002C920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = seenCopy;
+  v6 = seenCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addActiveAccessory:(id)a3
+- (void)addActiveAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A2E8;
   v7[3] = &unk_10002C920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeActiveAccessory:(id)a3
+- (void)removeActiveAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A3C4;
   v7[3] = &unk_10002C920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -163,31 +163,31 @@
   return v3;
 }
 
-- (void)dasActivityReceived:(id)a3
+- (void)dasActivityReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A5B0;
   v7[3] = &unk_10002C920;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = receivedCopy;
+  selfCopy = self;
+  v6 = receivedCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addActiveFirmwareAnalytics:(id)a3
+- (void)addActiveFirmwareAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A6BC;
   v7[3] = &unk_10002C920;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = analyticsCopy;
+  selfCopy = self;
+  v6 = analyticsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -273,8 +273,8 @@ LABEL_7:
   v29 = 0u;
   v30 = 0u;
   v25 = v31 = 0u;
-  v2 = [v25 allValues];
-  v3 = [v2 countByEnumeratingWithState:&v28 objects:v40 count:16];
+  allValues = [v25 allValues];
+  v3 = [allValues countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v3)
   {
     v4 = v3;
@@ -287,7 +287,7 @@ LABEL_7:
       {
         if (*v29 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v28 + 1) + 8 * v7);
@@ -298,27 +298,27 @@ LABEL_7:
         v12 = v27;
         if (v11)
         {
-          v13 = [v11 activeFirmwareVersion];
+          activeFirmwareVersion = [v11 activeFirmwareVersion];
 
-          if (v13)
+          if (activeFirmwareVersion)
           {
             v14 = objc_alloc_init(UARPActiveFirmwareAnalyticsEvent);
-            v15 = [v11 modelName];
-            [(UARPActiveFirmwareAnalyticsEvent *)v14 setModelName:v15];
+            modelName = [v11 modelName];
+            [(UARPActiveFirmwareAnalyticsEvent *)v14 setModelName:modelName];
 
-            v16 = [v11 activeFirmwareVersion];
-            [(UARPActiveFirmwareAnalyticsEvent *)v14 setActiveFirmwareVersion:v16];
+            activeFirmwareVersion2 = [v11 activeFirmwareVersion];
+            [(UARPActiveFirmwareAnalyticsEvent *)v14 setActiveFirmwareVersion:activeFirmwareVersion2];
 
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
-              v17 = [(UARPActiveFirmwareAnalyticsEvent *)v14 modelName];
-              v18 = [(UARPActiveFirmwareAnalyticsEvent *)v14 activeFirmwareVersion];
+              modelName2 = [(UARPActiveFirmwareAnalyticsEvent *)v14 modelName];
+              activeFirmwareVersion3 = [(UARPActiveFirmwareAnalyticsEvent *)v14 activeFirmwareVersion];
               *buf = 136315650;
               v33 = "[LegacyAudioController sendActiveFirmwareAnalyticsEvent]";
               v34 = 2112;
-              v35 = v17;
+              v35 = modelName2;
               v36 = 2112;
-              v37 = v18;
+              v37 = activeFirmwareVersion3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: sending active Firmware Event for %@, %@", buf, 0x20u);
 
               v6 = &AUDeveloperSettingsAccessoryFusingTypeToString_ptr;
@@ -327,27 +327,27 @@ LABEL_7:
             [(UARPActiveFirmwareAnalyticsEvent *)v14 send];
           }
 
-          v19 = [v11 activeANCVersion];
+          activeANCVersion = [v11 activeANCVersion];
 
-          if (v19)
+          if (activeANCVersion)
           {
             v20 = objc_alloc_init(UARPActiveFirmwareAnalyticsEvent);
-            v21 = [v11 modelName];
-            [(UARPActiveFirmwareAnalyticsEvent *)v20 setModelName:v21];
+            modelName3 = [v11 modelName];
+            [(UARPActiveFirmwareAnalyticsEvent *)v20 setModelName:modelName3];
 
-            v22 = [v11 activeANCVersion];
-            [(UARPActiveFirmwareAnalyticsEvent *)v20 setActiveFirmwareVersion:v22];
+            activeANCVersion2 = [v11 activeANCVersion];
+            [(UARPActiveFirmwareAnalyticsEvent *)v20 setActiveFirmwareVersion:activeANCVersion2];
 
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [(UARPActiveFirmwareAnalyticsEvent *)v20 modelName];
-              v24 = [(UARPActiveFirmwareAnalyticsEvent *)v20 activeFirmwareVersion];
+              modelName4 = [(UARPActiveFirmwareAnalyticsEvent *)v20 modelName];
+              activeFirmwareVersion4 = [(UARPActiveFirmwareAnalyticsEvent *)v20 activeFirmwareVersion];
               *buf = 136315650;
               v33 = "[LegacyAudioController sendActiveFirmwareAnalyticsEvent]";
               v34 = 2112;
-              v35 = v23;
+              v35 = modelName4;
               v36 = 2112;
-              v37 = v24;
+              v37 = activeFirmwareVersion4;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: sending active ANC Firmware Event for %@, %@", buf, 0x20u);
 
               v6 = &AUDeveloperSettingsAccessoryFusingTypeToString_ptr;
@@ -366,7 +366,7 @@ LABEL_7:
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v28 objects:v40 count:16];
     }
 
     while (v4);

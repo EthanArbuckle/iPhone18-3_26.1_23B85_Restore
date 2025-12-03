@@ -1,94 +1,94 @@
 @interface HKHealthQueryChartCacheDataSource
-- (HKHealthQueryChartCacheDataSource)initWithDataType:(id)a3 healthStore:(id)a4;
-- (HKHealthQueryChartCacheDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4;
-- (id)_buildDescriptionFromStartDate:(id)a3 endDate:(id)a4 statisticsInterval:(id)a5;
-- (id)_shiftedQueryIntervalIfNecessaryForStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)codableQueryDataWithType:(int)a3 startDate:(id)a4 endDate:(id)a5 statisticsInterval:(id)a6 queryDataObject:(id)a7;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)operationForIdentifier:(id)a3 priorityDelegate:(id)a4 completion:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (HKHealthQueryChartCacheDataSource)initWithDataType:(id)type healthStore:(id)store;
+- (HKHealthQueryChartCacheDataSource)initWithDisplayType:(id)type healthStore:(id)store;
+- (id)_buildDescriptionFromStartDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval;
+- (id)_shiftedQueryIntervalIfNecessaryForStartDate:(id)date endDate:(id)endDate calendar:(id)calendar;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)codableQueryDataWithType:(int)type startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval queryDataObject:(id)object;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)operationForIdentifier:(id)identifier priorityDelegate:(id)delegate completion:(id)completion;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryCalendar;
 - (id)queryDescription;
-- (id)statisticsIntervalForTimeScope:(int64_t)a3 resolution:(int64_t)a4 displayType:(id)a5;
-- (unint64_t)calendarUnitForTimeScope:(int64_t)a3 displayType:(id)a4;
-- (void)_setDataType:(id)a3 displayType:(id)a4 healthStore:(id)a5 queryAlignment:(int64_t)a6;
+- (id)statisticsIntervalForTimeScope:(int64_t)scope resolution:(int64_t)resolution displayType:(id)type;
+- (unint64_t)calendarUnitForTimeScope:(int64_t)scope displayType:(id)type;
+- (void)_setDataType:(id)type displayType:(id)displayType healthStore:(id)store queryAlignment:(int64_t)alignment;
 @end
 
 @implementation HKHealthQueryChartCacheDataSource
 
-- (HKHealthQueryChartCacheDataSource)initWithDataType:(id)a3 healthStore:(id)a4
+- (HKHealthQueryChartCacheDataSource)initWithDataType:(id)type healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = HKHealthQueryChartCacheDataSource;
   v8 = [(HKHealthQueryChartCacheDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(HKHealthQueryChartCacheDataSource *)v8 _setDataType:v6 displayType:0 healthStore:v7 queryAlignment:0];
+    [(HKHealthQueryChartCacheDataSource *)v8 _setDataType:typeCopy displayType:0 healthStore:storeCopy queryAlignment:0];
   }
 
   return v9;
 }
 
-- (HKHealthQueryChartCacheDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4
+- (HKHealthQueryChartCacheDataSource)initWithDisplayType:(id)type healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKHealthQueryChartCacheDataSource;
   v8 = [(HKHealthQueryChartCacheDataSource *)&v12 init];
   if (v8)
   {
-    v9 = [[HKChartableDataType alloc] initWithDisplayType:v6];
-    v10 = [v6 behavior];
-    -[HKHealthQueryChartCacheDataSource _setDataType:displayType:healthStore:queryAlignment:](v8, "_setDataType:displayType:healthStore:queryAlignment:", v9, v6, v7, [v10 preferredCalendarDayAlignment]);
+    v9 = [[HKChartableDataType alloc] initWithDisplayType:typeCopy];
+    behavior = [typeCopy behavior];
+    -[HKHealthQueryChartCacheDataSource _setDataType:displayType:healthStore:queryAlignment:](v8, "_setDataType:displayType:healthStore:queryAlignment:", v9, typeCopy, storeCopy, [behavior preferredCalendarDayAlignment]);
   }
 
   return v8;
 }
 
-- (void)_setDataType:(id)a3 displayType:(id)a4 healthStore:(id)a5 queryAlignment:(int64_t)a6
+- (void)_setDataType:(id)type displayType:(id)displayType healthStore:(id)store queryAlignment:(int64_t)alignment
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  storeCopy = store;
   dataType = self->_dataType;
-  self->_dataType = v10;
-  v14 = v10;
+  self->_dataType = typeCopy;
+  v14 = typeCopy;
 
   displayType = self->_displayType;
-  self->_displayType = v11;
-  v16 = v11;
+  self->_displayType = displayTypeCopy;
+  v16 = displayTypeCopy;
 
   healthStore = self->_healthStore;
-  self->_healthStore = v12;
-  v18 = v12;
+  self->_healthStore = storeCopy;
+  v18 = storeCopy;
 
-  v19 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithFirstWeekdayFromRegion];
+  hk_gregorianCalendarWithFirstWeekdayFromRegion = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithFirstWeekdayFromRegion];
   calendar = self->_calendar;
-  self->_calendar = v19;
+  self->_calendar = hk_gregorianCalendarWithFirstWeekdayFromRegion;
 
   calendarOverride = self->_calendarOverride;
   self->_calendarOverride = 0;
 
-  self->_queryAlignment = a6;
+  self->_queryAlignment = alignment;
 }
 
-- (id)operationForIdentifier:(id)a3 priorityDelegate:(id)a4 completion:(id)a5
+- (id)operationForIdentifier:(id)identifier priorityDelegate:(id)delegate completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v30 = v9;
-  v31 = a5;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  v10 = identifierCopy;
+  v30 = delegateCopy;
+  completionCopy = completion;
   v36 = 0uLL;
   v37 = 0;
-  if (v8)
+  if (identifierCopy)
   {
-    [v8 HKGraphSeriesDataBlockPathValue];
+    [identifierCopy HKGraphSeriesDataBlockPathValue];
     v11 = *(&v36 + 1);
   }
 
@@ -98,21 +98,21 @@
   }
 
   v12 = [(HKHealthQueryChartCacheDataSource *)self calendarUnitForTimeScope:v11 displayType:self->_displayType];
-  v13 = [(HKHealthQueryChartCacheDataSource *)self queryCalendar];
+  queryCalendar = [(HKHealthQueryChartCacheDataSource *)self queryCalendar];
   *location = v36;
   v35 = v37;
   v14 = HKGraphSeriesDataBlockPathMinimumX(location);
-  v15 = [v14 hk_dateBeforeDateForCalendar:v13 rangeUnit:v12];
+  v15 = [v14 hk_dateBeforeDateForCalendar:queryCalendar rangeUnit:v12];
 
   *location = v36;
   v35 = v37;
   v16 = HKGraphSeriesDataBlockPathMaximumX(location);
-  v17 = [v16 hk_dateBeforeDateForCalendar:v13 rangeUnit:v12];
+  v17 = [v16 hk_dateBeforeDateForCalendar:queryCalendar rangeUnit:v12];
 
-  v18 = [(HKHealthQueryChartCacheDataSource *)self _shiftedQueryIntervalIfNecessaryForStartDate:v15 endDate:v17 calendar:v13];
-  v19 = [v18 startDate];
+  v18 = [(HKHealthQueryChartCacheDataSource *)self _shiftedQueryIntervalIfNecessaryForStartDate:v15 endDate:v17 calendar:queryCalendar];
+  startDate = [v18 startDate];
 
-  v20 = [v18 endDate];
+  endDate = [v18 endDate];
 
   v21 = v37;
   v22 = [(HKHealthQueryChartCacheDataSource *)self statisticsIntervalForTimeScope:*(&v36 + 1) resolution:v37 displayType:self->_displayType];
@@ -122,17 +122,17 @@
     v22 = [v23 seriesPointIntervalComponentsAtResolution:v21];
   }
 
-  v24 = [(HKHealthQueryChartCacheDataSource *)self _buildDescriptionFromStartDate:v19 endDate:v20 statisticsInterval:v22];
+  v24 = [(HKHealthQueryChartCacheDataSource *)self _buildDescriptionFromStartDate:startDate endDate:endDate statisticsInterval:v22];
   if ([(HKHealthQueryChartCacheDataSource *)self supportsChartQueryDataGeneration])
   {
-    v25 = [[HKChartQueryDataGenerationOperation alloc] initWithHealthStore:self->_healthStore dataSource:self startDate:v19 endDate:v20 statisticsInterval:v22 operationDescription:v24 completion:v31];
+    v25 = [[HKChartQueryDataGenerationOperation alloc] initWithHealthStore:self->_healthStore dataSource:self startDate:startDate endDate:endDate statisticsInterval:v22 operationDescription:v24 completion:completionCopy];
   }
 
   else
   {
-    v25 = [[HKHealthQueryFetchOperation alloc] initWithHealthStore:self->_healthStore operationDescription:v24 completion:v31];
+    v25 = [[HKHealthQueryFetchOperation alloc] initWithHealthStore:self->_healthStore operationDescription:v24 completion:completionCopy];
     objc_initWeak(location, v25);
-    v26 = [[HKHealthQueryChartCacheQueryRequest alloc] initWithStartDate:v19 endDate:v20 statisticsInterval:v22];
+    v26 = [[HKHealthQueryChartCacheQueryRequest alloc] initWithStartDate:startDate endDate:endDate statisticsInterval:v22];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDelegate_completion___block_invoke;
@@ -147,7 +147,7 @@
 
   if (v30)
   {
-    v28 = [HKValueRange valueRangeWithMinValue:v19 maxValue:v20];
+    v28 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
     -[HKFetchOperation setHighPriority:](v25, "setHighPriority:", [v30 isRangeHighPriority:v28]);
   }
 
@@ -179,17 +179,17 @@ void __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDele
   [WeakRetained completedWithResults:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (id)_shiftedQueryIntervalIfNecessaryForStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5
+- (id)_shiftedQueryIntervalIfNecessaryForStartDate:(id)date endDate:(id)endDate calendar:(id)calendar
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HKHealthQueryChartCacheDataSource *)self queryAlignment];
-  v12 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v10 endDate:v9];
+  calendarCopy = calendar;
+  endDateCopy = endDate;
+  dateCopy = date;
+  queryAlignment = [(HKHealthQueryChartCacheDataSource *)self queryAlignment];
+  v12 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:dateCopy endDate:endDateCopy];
 
-  if (v11 == 1)
+  if (queryAlignment == 1)
   {
-    v13 = [v12 hk_dateIntervalShiftedToQueryAlignment:1 calendar:v8];
+    v13 = [v12 hk_dateIntervalShiftedToQueryAlignment:1 calendar:calendarCopy];
 
     v12 = v13;
   }
@@ -197,11 +197,11 @@ void __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDele
   return v12;
 }
 
-- (unint64_t)calendarUnitForTimeScope:(int64_t)a3 displayType:(id)a4
+- (unint64_t)calendarUnitForTimeScope:(int64_t)scope displayType:(id)type
 {
-  if (a4)
+  if (type)
   {
-    result = [a4 hk_chartCalendarUnitForTimeScope:a3];
+    result = [type hk_chartCalendarUnitForTimeScope:scope];
     if (!result)
     {
       return 32;
@@ -212,17 +212,17 @@ void __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDele
   {
     dataType = self->_dataType;
 
-    return [(HKChartableDataType *)dataType hk_chartCalendarUnitForTimeScope:a3];
+    return [(HKChartableDataType *)dataType hk_chartCalendarUnitForTimeScope:scope];
   }
 
   return result;
 }
 
-- (id)statisticsIntervalForTimeScope:(int64_t)a3 resolution:(int64_t)a4 displayType:(id)a5
+- (id)statisticsIntervalForTimeScope:(int64_t)scope resolution:(int64_t)resolution displayType:(id)type
 {
-  if (a5)
+  if (type)
   {
-    dataType = a5;
+    dataType = type;
   }
 
   else
@@ -230,7 +230,7 @@ void __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDele
     dataType = self->_dataType;
   }
 
-  v6 = [dataType hk_customSeriesPointIntervalComponentsForTimeScope:a3 resolution:a4];
+  v6 = [dataType hk_customSeriesPointIntervalComponentsForTimeScope:scope resolution:resolution];
 
   return v6;
 }
@@ -246,18 +246,18 @@ void __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDele
   return calendarOverride;
 }
 
-- (id)_buildDescriptionFromStartDate:(id)a3 endDate:(id)a4 statisticsInterval:(id)a5
+- (id)_buildDescriptionFromStartDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval
 {
-  v8 = a5;
+  intervalCopy = interval;
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a4;
-  v11 = a3;
-  v12 = [(HKHealthQueryChartCacheDataSource *)self queryDescription];
-  v13 = _DateForDescription(v11);
+  endDateCopy = endDate;
+  dateCopy = date;
+  queryDescription = [(HKHealthQueryChartCacheDataSource *)self queryDescription];
+  v13 = _DateForDescription(dateCopy);
 
-  v14 = _DateForDescription(v10);
+  v14 = _DateForDescription(endDateCopy);
 
-  v15 = v8;
+  v15 = intervalCopy;
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v15 year] != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -305,45 +305,45 @@ void __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDele
     v23 = @"NoDateComponents";
   }
 
-  v24 = [v9 stringWithFormat:@"%@: %@ -> %@ interval %@", v12, v13, v14, v23];
+  v24 = [v9 stringWithFormat:@"%@: %@ -> %@ interval %@", queryDescription, v13, v14, v23];
 
   return v24;
 }
 
-- (id)codableQueryDataWithType:(int)a3 startDate:(id)a4 endDate:(id)a5 statisticsInterval:(id)a6 queryDataObject:(id)a7
+- (id)codableQueryDataWithType:(int)type startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval queryDataObject:(id)object
 {
-  v10 = *&a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  v10 = *&type;
+  dateCopy = date;
+  endDateCopy = endDate;
+  intervalCopy = interval;
+  objectCopy = object;
   v16 = objc_alloc_init(HKCodableChartDataSourceQueryData);
   [(HKCodableChartDataSourceQueryData *)v16 setType:v10];
-  if (v12)
+  if (dateCopy)
   {
-    [v12 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     [(HKCodableChartDataSourceQueryData *)v16 setStartDate:?];
   }
 
-  if (v13)
+  if (endDateCopy)
   {
-    [v13 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     [(HKCodableChartDataSourceQueryData *)v16 setEndDate:?];
   }
 
-  if (v14)
+  if (intervalCopy)
   {
-    v17 = [v14 hkui_codableDateComponents];
-    [(HKCodableChartDataSourceQueryData *)v16 setStatisticsInterval:v17];
+    hkui_codableDateComponents = [intervalCopy hkui_codableDateComponents];
+    [(HKCodableChartDataSourceQueryData *)v16 setStatisticsInterval:hkui_codableDateComponents];
   }
 
-  [(HKCodableChartDataSourceQueryData *)v16 setQueryDataObject:v15];
-  v18 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v19 = [v18 name];
-  [(HKCodableChartDataSourceQueryData *)v16 setTimeZoneName:v19];
+  [(HKCodableChartDataSourceQueryData *)v16 setQueryDataObject:objectCopy];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  name = [localTimeZone name];
+  [(HKCodableChartDataSourceQueryData *)v16 setTimeZoneName:name];
 
-  v20 = [(HKHealthQueryChartCacheDataSource *)self queryCalendar];
-  -[HKCodableChartDataSourceQueryData setFirstWeekday:](v16, "setFirstWeekday:", [v20 firstWeekday]);
+  queryCalendar = [(HKHealthQueryChartCacheDataSource *)self queryCalendar];
+  -[HKCodableChartDataSourceQueryData setFirstWeekday:](v16, "setFirstWeekday:", [queryCalendar firstWeekday]);
 
   return v16;
 }
@@ -355,21 +355,21 @@ void __88__HKHealthQueryChartCacheDataSource_operationForIdentifier_priorityDele
   return @"UnknownQuery";
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   OUTLINED_FUNCTION_1_7();
   OUTLINED_FUNCTION_2_2();
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
   OUTLINED_FUNCTION_1_7();
   OUTLINED_FUNCTION_2_2();
   return 0;
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
   OUTLINED_FUNCTION_1_7();
   OUTLINED_FUNCTION_2_2();

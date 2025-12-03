@@ -3,18 +3,18 @@
 - (NPDCompanionMaintenanceService)init;
 - (NPDCompanionMaintenanceServiceDelegate)delegate;
 - (id)_fetchArchivedPendingTransactions;
-- (id)_notificationIdentifierForPendingTransactionWithPassUniqueID:(id)a3;
-- (void)_archivePendingTransactions:(id)a3;
-- (void)_handleBarcodeEventApplicationRedirectRequest:(id)a3;
-- (void)_handleBarcodeEventMetadataRequest:(id)a3;
-- (void)_handleInsertBridgeNotificationRequest:(id)a3;
-- (void)_sendBarcodeEventResponseWithData:(id)a3 incomingProtobuf:(id)a4;
-- (void)fetchPendingTransactionForPassWithUniqueID:(id)a3 completion:(id)a4;
-- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (id)_notificationIdentifierForPendingTransactionWithPassUniqueID:(id)d;
+- (void)_archivePendingTransactions:(id)transactions;
+- (void)_handleBarcodeEventApplicationRedirectRequest:(id)request;
+- (void)_handleBarcodeEventMetadataRequest:(id)request;
+- (void)_handleInsertBridgeNotificationRequest:(id)request;
+- (void)_sendBarcodeEventResponseWithData:(id)data incomingProtobuf:(id)protobuf;
+- (void)fetchPendingTransactionForPassWithUniqueID:(id)d completion:(id)completion;
+- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)d;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation NPDCompanionMaintenanceService
@@ -35,9 +35,9 @@
     [v6 setProtobufAction:"_handleInsertBridgeNotificationRequest:" forIncomingRequestsOfType:139];
     [v6 setProtobufAction:"_handleBarcodeEventMetadataRequest:" forIncomingRequestsOfType:84];
     [v6 setProtobufAction:"_handleBarcodeEventApplicationRedirectRequest:" forIncomingRequestsOfType:85];
-    v7 = [(NPDCompanionMaintenanceService *)v2 _fetchArchivedPendingTransactions];
+    _fetchArchivedPendingTransactions = [(NPDCompanionMaintenanceService *)v2 _fetchArchivedPendingTransactions];
     pendingAppRedirectRequests = v2->_pendingAppRedirectRequests;
-    v2->_pendingAppRedirectRequests = v7;
+    v2->_pendingAppRedirectRequests = _fetchArchivedPendingTransactions;
 
     [v6 addDelegate:v2 queue:v2->_idsServiceQueue];
     idsService = v2->_idsService;
@@ -47,33 +47,33 @@
   return v2;
 }
 
-- (void)fetchPendingTransactionForPassWithUniqueID:(id)a3 completion:(id)a4
+- (void)fetchPendingTransactionForPassWithUniqueID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  completionCopy = completion;
+  pendingAppRedirectRequests = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+  v9 = [pendingAppRedirectRequests objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    v10 = [v9 transactionData];
+    transactionData = [v9 transactionData];
     objc_opt_class();
     v11 = NPKSecureUnarchiveObject();
 
     v12 = +[NSDate date];
-    v13 = [v11 transactionDate];
-    [v12 timeIntervalSinceDate:v13];
+    transactionDate = [v11 transactionDate];
+    [v12 timeIntervalSinceDate:transactionDate];
     v15 = v14;
     v16 = PKPaymentTransactionAuthenticationValidPeriod;
 
     if (v15 < v16)
     {
-      v17 = [v9 passData];
+      passData = [v9 passData];
       objc_opt_class();
       v18 = NPKSecureUnarchiveObject();
 
       v11 = v11;
-      v19 = [v9 appLaunchToken];
+      appLaunchToken = [v9 appLaunchToken];
       v20 = v11;
       goto LABEL_13;
     }
@@ -92,11 +92,11 @@
       }
     }
 
-    v26 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-    [v26 setObject:0 forKeyedSubscript:v6];
+    pendingAppRedirectRequests2 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+    [pendingAppRedirectRequests2 setObject:0 forKeyedSubscript:dCopy];
 
-    v27 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-    [(NPDCompanionMaintenanceService *)self _archivePendingTransactions:v27];
+    pendingAppRedirectRequests3 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+    [(NPDCompanionMaintenanceService *)self _archivePendingTransactions:pendingAppRedirectRequests3];
   }
 
   else
@@ -106,10 +106,10 @@
 
     if (!v22)
     {
-      v19 = 0;
+      appLaunchToken = 0;
       v20 = 0;
       v18 = 0;
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_15;
       }
@@ -121,32 +121,32 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138412290;
-      v29 = v6;
+      v29 = dCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodeEvent] Pass %@ doesn't have cached pending app redirect transactions.", &v28, 0xCu);
     }
   }
 
-  v19 = 0;
+  appLaunchToken = 0;
   v20 = 0;
   v18 = 0;
 LABEL_13:
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_14:
-    v7[2](v7, v18, v20, v19);
+    completionCopy[2](completionCopy, v18, v20, appLaunchToken);
   }
 
 LABEL_15:
 }
 
-- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)a3
+- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    pendingAppRedirectRequests = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+    v6 = [pendingAppRedirectRequests objectForKeyedSubscript:dCopy];
 
     if (v6)
     {
@@ -159,38 +159,38 @@ LABEL_15:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v4;
+          v15 = dCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodeEvent] Marking pending transactions as processed for pass %@.", &v14, 0xCu);
         }
       }
 
-      v10 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-      [v10 setObject:0 forKeyedSubscript:v4];
+      pendingAppRedirectRequests2 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+      [pendingAppRedirectRequests2 setObject:0 forKeyedSubscript:dCopy];
 
-      v11 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-      [(NPDCompanionMaintenanceService *)self _archivePendingTransactions:v11];
+      pendingAppRedirectRequests3 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+      [(NPDCompanionMaintenanceService *)self _archivePendingTransactions:pendingAppRedirectRequests3];
 
-      v12 = [(NPDCompanionMaintenanceService *)self _notificationIdentifierForPendingTransactionWithPassUniqueID:v4];
-      v13 = [(NPDCompanionMaintenanceService *)self bulletinManager];
-      [v13 removeDeliveredBridgeBulletinsWithNotificationIdentifier:v12];
+      v12 = [(NPDCompanionMaintenanceService *)self _notificationIdentifierForPendingTransactionWithPassUniqueID:dCopy];
+      bulletinManager = [(NPDCompanionMaintenanceService *)self bulletinManager];
+      [bulletinManager removeDeliveredBridgeBulletinsWithNotificationIdentifier:v12];
     }
   }
 }
 
-- (void)_handleInsertBridgeNotificationRequest:(id)a3
+- (void)_handleInsertBridgeNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  idsServiceQueue = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
+  dispatch_assert_queue_V2(idsServiceQueue);
 
   v6 = [NPKProtoInsertBridgeNotificationRequest alloc];
-  v7 = [v4 data];
+  data = [requestCopy data];
 
-  v8 = [v6 initWithData:v7];
+  v8 = [v6 initWithData:data];
   v9 = pk_Payment_log();
-  LODWORD(v7) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
+  LODWORD(data) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
-  if (v7)
+  if (data)
   {
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -201,13 +201,13 @@ LABEL_15:
     }
   }
 
-  v27 = [v8 title];
-  v11 = [v8 message];
+  title = [v8 title];
+  message = [v8 message];
   if ([v8 hasActionURLString])
   {
     v12 = [NSURL alloc];
-    v13 = [v8 actionURLString];
-    v14 = [v12 initWithString:v13];
+    actionURLString = [v8 actionURLString];
+    v14 = [v12 initWithString:actionURLString];
   }
 
   else
@@ -215,14 +215,14 @@ LABEL_15:
     v14 = 0;
   }
 
-  v26 = self;
+  selfCopy = self;
   if ([v8 hasPassUniqueID])
   {
-    v15 = [v8 passUniqueID];
-    if (v15)
+    passUniqueID = [v8 passUniqueID];
+    if (passUniqueID)
     {
-      v16 = [(NPDCompanionMaintenanceService *)self delegate];
-      v17 = [v16 companionMaintenanceService:self paymentPassForUniqueID:v15];
+      delegate = [(NPDCompanionMaintenanceService *)self delegate];
+      v17 = [delegate companionMaintenanceService:self paymentPassForUniqueID:passUniqueID];
 
       goto LABEL_13;
     }
@@ -230,16 +230,16 @@ LABEL_15:
 
   else
   {
-    v15 = 0;
+    passUniqueID = 0;
   }
 
   v17 = 0;
 LABEL_13:
-  v18 = [v8 playSound];
-  v19 = [v8 notificationIdentifier];
+  playSound = [v8 playSound];
+  notificationIdentifier = [v8 notificationIdentifier];
   if ([v8 hasExpirationDateData])
   {
-    v20 = [v8 expirationDateData];
+    expirationDateData = [v8 expirationDateData];
     objc_opt_class();
     v21 = NPKSecureUnarchiveObject();
   }
@@ -258,26 +258,26 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v27;
+      v29 = title;
       v30 = 2112;
-      v31 = v11;
+      v31 = message;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Notice: Inserting Bridge bulletin with title: %@ message: %@.", buf, 0x16u);
     }
   }
 
-  v25 = [(NPDCompanionMaintenanceService *)v26 bulletinManager];
-  [v25 insertBridgeBulletinWithTitle:v27 message:v11 actionURL:v14 forPass:v17 playSound:v18 notificationIdentifier:v19 expirationDate:v21];
+  bulletinManager = [(NPDCompanionMaintenanceService *)selfCopy bulletinManager];
+  [bulletinManager insertBridgeBulletinWithTitle:title message:message actionURL:v14 forPass:v17 playSound:playSound notificationIdentifier:notificationIdentifier expirationDate:v21];
 }
 
-- (void)_handleBarcodeEventMetadataRequest:(id)a3
+- (void)_handleBarcodeEventMetadataRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  idsServiceQueue = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
+  dispatch_assert_queue_V2(idsServiceQueue);
 
   v6 = [NPKProtoBarcodeEventRequest alloc];
-  v7 = [v4 data];
-  v8 = [v6 initWithData:v7];
+  data = [requestCopy data];
+  v8 = [v6 initWithData:data];
 
   v9 = pk_General_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -293,7 +293,7 @@ LABEL_13:
     }
   }
 
-  v12 = [v8 requestData];
+  requestData = [v8 requestData];
   objc_opt_class();
   v13 = NPKSecureUnarchiveObject();
 
@@ -302,11 +302,11 @@ LABEL_13:
   v23[2] = sub_10003751C;
   v23[3] = &unk_1000726C0;
   v23[4] = self;
-  v24 = v4;
-  v14 = v4;
+  v24 = requestCopy;
+  v14 = requestCopy;
   v15 = objc_retainBlock(v23);
   v16 = [PKExtensionProvider providerForExtensionPoint:PKExtensionPaymentInformationEventExtensionPointName];
-  v17 = [v8 associatedApplicationIdentifiers];
+  associatedApplicationIdentifiers = [v8 associatedApplicationIdentifiers];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100037750;
@@ -315,30 +315,30 @@ LABEL_13:
   v22 = v15;
   v18 = v13;
   v19 = v15;
-  [v16 extensionsWithContainingApplicationIdentifiers:v17 completion:v20];
+  [v16 extensionsWithContainingApplicationIdentifiers:associatedApplicationIdentifiers completion:v20];
 }
 
-- (void)_sendBarcodeEventResponseWithData:(id)a3 incomingProtobuf:(id)a4
+- (void)_sendBarcodeEventResponseWithData:(id)data incomingProtobuf:(id)protobuf
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
-  dispatch_assert_queue_V2(v8);
+  dataCopy = data;
+  protobufCopy = protobuf;
+  idsServiceQueue = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
+  dispatch_assert_queue_V2(idsServiceQueue);
 
-  v9 = [[IDSProtobuf alloc] initWithProtobufData:v6 type:objc_msgSend(v7 isResponse:{"type"), 1}];
+  v9 = [[IDSProtobuf alloc] initWithProtobufData:dataCopy type:objc_msgSend(protobufCopy isResponse:{"type"), 1}];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_100037FB4;
   v23 = sub_100037FC4;
   v24 = 0;
-  v10 = [(NPDCompanionMaintenanceService *)self idsService];
+  idsService = [(NPDCompanionMaintenanceService *)self idsService];
   v30[0] = &off_100073F48;
   v29[0] = IDSSendMessageOptionTimeoutKey;
   v29[1] = IDSSendMessageOptionPeerResponseIdentifierKey;
-  v11 = [v7 context];
-  v12 = [v11 outgoingResponseIdentifier];
-  v30[1] = v12;
+  context = [protobufCopy context];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
+  v30[1] = outgoingResponseIdentifier;
   v13 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
   v14 = NPKProtoSendWithOptions();
 
@@ -365,20 +365,20 @@ LABEL_13:
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)_handleBarcodeEventApplicationRedirectRequest:(id)a3
+- (void)_handleBarcodeEventApplicationRedirectRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  idsServiceQueue = [(NPDCompanionMaintenanceService *)self idsServiceQueue];
+  dispatch_assert_queue_V2(idsServiceQueue);
 
   v6 = [NPKProtoBarcodeApplicationRedirectRequest alloc];
-  v7 = [v4 data];
+  data = [requestCopy data];
 
-  v8 = [v6 initWithData:v7];
+  v8 = [v6 initWithData:data];
   v9 = pk_General_log();
-  LODWORD(v7) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
+  LODWORD(data) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
-  if (v7)
+  if (data)
   {
     v10 = pk_General_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -389,39 +389,39 @@ LABEL_13:
     }
   }
 
-  v11 = [v8 passData];
+  passData = [v8 passData];
   objc_opt_class();
   v12 = NPKSecureUnarchiveObject();
 
-  v13 = [v8 transactionData];
+  transactionData = [v8 transactionData];
   objc_opt_class();
   v14 = NPKSecureUnarchiveObject();
 
-  v15 = [v12 uniqueID];
-  if (v15)
+  uniqueID = [v12 uniqueID];
+  if (uniqueID)
   {
-    v16 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-    v53 = v15;
+    pendingAppRedirectRequests = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+    v53 = uniqueID;
     v54 = v8;
-    [v16 setObject:v8 forKeyedSubscript:v15];
+    [pendingAppRedirectRequests setObject:v8 forKeyedSubscript:uniqueID];
 
-    v17 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
-    v49 = self;
-    [(NPDCompanionMaintenanceService *)self _archivePendingTransactions:v17];
+    pendingAppRedirectRequests2 = [(NPDCompanionMaintenanceService *)self pendingAppRedirectRequests];
+    selfCopy = self;
+    [(NPDCompanionMaintenanceService *)self _archivePendingTransactions:pendingAppRedirectRequests2];
 
-    v18 = [v12 passTypeIdentifier];
-    v19 = [v12 serialNumber];
+    passTypeIdentifier = [v12 passTypeIdentifier];
+    serialNumber = [v12 serialNumber];
     v20 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-    v52 = v18;
-    v21 = [v18 stringByAddingPercentEncodingWithAllowedCharacters:v20];
+    v52 = passTypeIdentifier;
+    v21 = [passTypeIdentifier stringByAddingPercentEncodingWithAllowedCharacters:v20];
     v22 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-    v51 = v19;
-    [v19 stringByAddingPercentEncodingWithAllowedCharacters:v22];
+    v51 = serialNumber;
+    [serialNumber stringByAddingPercentEncodingWithAllowedCharacters:v22];
     v23 = v55 = v14;
     v50 = [NSString stringWithFormat:@"bridge:root=com.apple.NanoPassbookBridgeSettings&action=HANDLE_PENDING_TRANSACTION&passTypeIdentifier=%@&passSerialNumber=%@", v21, v23];
 
-    v24 = [v55 transactionDate];
-    v25 = [v24 dateByAddingTimeInterval:PKPaymentTransactionAuthenticationValidPeriod];
+    transactionDate = [v55 transactionDate];
+    v25 = [transactionDate dateByAddingTimeInterval:PKPaymentTransactionAuthenticationValidPeriod];
 
     v26 = pk_General_log();
     LODWORD(v20) = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
@@ -444,20 +444,20 @@ LABEL_13:
 
     v29 = [NSBundle bundleWithIdentifier:@"com.apple.NanoPassKit"];
     v30 = [v29 localizedStringForKey:@"APP_REDIRECT_AUTHENTICATION_NOTIFICATION_MESSAGE" value:&stru_100073088 table:@"NanoPassKit"];
-    v31 = [v55 currencyAmount];
-    v32 = [v31 formattedStringValue];
+    currencyAmount = [v55 currencyAmount];
+    formattedStringValue = [currencyAmount formattedStringValue];
     [v55 merchant];
     v33 = v25;
     v34 = v47 = v25;
-    v35 = [v34 displayName];
-    v36 = [v12 organizationName];
-    v37 = [NSString stringWithFormat:v30, v32, v35, v36];
+    displayName = [v34 displayName];
+    organizationName = [v12 organizationName];
+    v37 = [NSString stringWithFormat:v30, formattedStringValue, displayName, organizationName];
 
-    v15 = v53;
-    v38 = [(NPDCompanionMaintenanceService *)v49 _notificationIdentifierForPendingTransactionWithPassUniqueID:v53];
-    v39 = [(NPDCompanionMaintenanceService *)v49 bulletinManager];
+    uniqueID = v53;
+    v38 = [(NPDCompanionMaintenanceService *)selfCopy _notificationIdentifierForPendingTransactionWithPassUniqueID:v53];
+    bulletinManager = [(NPDCompanionMaintenanceService *)selfCopy bulletinManager];
     v40 = [NSURL URLWithString:v50];
-    [v39 insertBridgeBulletinWithTitle:v48 message:v37 actionURL:v40 forPass:0 playSound:1 notificationIdentifier:v38 expirationDate:v33];
+    [bulletinManager insertBridgeBulletinWithTitle:v48 message:v37 actionURL:v40 forPass:0 playSound:1 notificationIdentifier:v38 expirationDate:v33];
 
     v41 = PKAnalyticsSubjectBridge;
     [PKAnalyticsReporter beginSubjectReporting:PKAnalyticsSubjectBridge];
@@ -564,9 +564,9 @@ LABEL_9:
   return v16;
 }
 
-- (void)_archivePendingTransactions:(id)a3
+- (void)_archivePendingTransactions:(id)transactions
 {
-  v3 = a3;
+  transactionsCopy = transactions;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -576,7 +576,7 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v3;
+      v16 = transactionsCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodeEvent] Archiving pending transactions %@", buf, 0xCu);
     }
   }
@@ -608,20 +608,20 @@ LABEL_9:
   [v7 invalidate];
 }
 
-- (id)_notificationIdentifierForPendingTransactionWithPassUniqueID:(id)a3
+- (id)_notificationIdentifierForPendingTransactionWithPassUniqueID:(id)d
 {
   v7 = @"Pending Barcode Transaction";
-  v8 = a3;
-  v3 = a3;
+  dCopy = d;
+  dCopy2 = d;
   v4 = [NSArray arrayWithObjects:&v7 count:2];
-  v5 = [NSString stringWithFormat:@"wallet-%ld", PKCombinedHash(), v7, v8];
+  dCopy = [NSString stringWithFormat:@"wallet-%ld", PKCombinedHash(), v7, dCopy];
 
-  return v5;
+  return dCopy;
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -631,15 +631,15 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = changedCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPDCompanionMaintenanceService IDS service accounts changed: %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -649,19 +649,19 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = changedCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPDCompanionMaintenanceService IDS service devices changed: %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
   v16 = pk_General_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
 
@@ -671,27 +671,27 @@ LABEL_9:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = 138413314;
-      v20 = v11;
+      v20 = serviceCopy;
       v21 = 2112;
-      v22 = v12;
+      v22 = accountCopy;
       v23 = 2112;
-      v24 = v13;
+      v24 = protobufCopy;
       v25 = 2112;
-      v26 = v14;
+      v26 = dCopy;
       v27 = 2112;
-      v28 = v15;
+      v28 = contextCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Error: NPDCompanionMaintenanceService IDS service incoming unhandled protobuf: %@ %@ %@ %@ %@", &v19, 0x34u);
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  successCopy = success;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v15 = pk_General_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
@@ -701,15 +701,15 @@ LABEL_9:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138413314;
-      v19 = v11;
+      v19 = serviceCopy;
       v20 = 2112;
-      v21 = v12;
+      v21 = accountCopy;
       v22 = 2112;
-      v23 = v13;
+      v23 = identifierCopy;
       v24 = 1024;
-      v25 = v8;
+      v25 = successCopy;
       v26 = 2112;
-      v27 = v14;
+      v27 = errorCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Notice: NPDCompanionMaintenanceService IDS service did send with success: %@ %@ %@ %d %@", &v18, 0x30u);
     }
   }

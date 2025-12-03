@@ -1,20 +1,20 @@
 @interface REPhaseSoundEventAssetStore
 - (id).cxx_construct;
-- (id)getAssetWithIdentifier:(id)a3 fromAssetID:(unint64_t)a4;
-- (void)addAsset:(id)a3 andMixerIdentifiers:(id)a4 forIdentifier:(id)a5 withAssetID:(unint64_t)a6;
-- (void)removeEntriesForAssetID:(unint64_t)a3 fromEngine:(id)a4;
+- (id)getAssetWithIdentifier:(id)identifier fromAssetID:(unint64_t)d;
+- (void)addAsset:(id)asset andMixerIdentifiers:(id)identifiers forIdentifier:(id)identifier withAssetID:(unint64_t)d;
+- (void)removeEntriesForAssetID:(unint64_t)d fromEngine:(id)engine;
 @end
 
 @implementation REPhaseSoundEventAssetStore
 
-- (id)getAssetWithIdentifier:(id)a3 fromAssetID:(unint64_t)a4
+- (id)getAssetWithIdentifier:(id)identifier fromAssetID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_assetRefMaps.__table_.__bucket_list_.__ptr_, a4);
+  identifierCopy = identifier;
+  v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_assetRefMaps.__table_.__bucket_list_.__ptr_, d);
   if (v7)
   {
     v8 = v7;
-    v9 = NSStringHash::operator()(v6);
+    v9 = NSStringHash::operator()(identifierCopy);
     v10 = v8[4];
     if (v10)
     {
@@ -44,7 +44,7 @@
           v17 = i[1];
           if (v17 == v11)
           {
-            if (NSStringEqual::operator()(i[2], v6))
+            if (NSStringEqual::operator()(i[2], identifierCopy))
             {
               v19 = i[3];
               goto LABEL_19;
@@ -82,26 +82,26 @@ LABEL_19:
   return v19;
 }
 
-- (void)removeEntriesForAssetID:(unint64_t)a3 fromEngine:(id)a4
+- (void)removeEntriesForAssetID:(unint64_t)d fromEngine:(id)engine
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  engineCopy = engine;
   p_assetRefMaps = &self->_assetRefMaps;
-  v8 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_assetRefMaps.__table_.__bucket_list_.__ptr_, a3);
+  v8 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_assetRefMaps.__table_.__bucket_list_.__ptr_, d);
   if (v8)
   {
     v9 = v8;
     for (i = *&v8->_assetRefMaps.__table_.__max_load_factor_; i; i = *i)
     {
-      v11 = [v6 assetRegistry];
-      [v11 unregisterAssetWithIdentifier:i[2] completion:0];
+      assetRegistry = [engineCopy assetRegistry];
+      [assetRegistry unregisterAssetWithIdentifier:i[2] completion:0];
     }
 
     v12 = *re::audioLogObjects(v8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v22) = 134217984;
-      *(&v22 + 4) = a3;
+      *(&v22 + 4) = d;
       _os_log_impl(&dword_1E1C61000, v12, OS_LOG_TYPE_DEFAULT, "[CoreRE] [REPhaseSoundEventAssetStore] Removing entries for assetID: %llu", &v22, 0xCu);
     }
 
@@ -213,26 +213,26 @@ LABEL_24:
   }
 }
 
-- (void)addAsset:(id)a3 andMixerIdentifiers:(id)a4 forIdentifier:(id)a5 withAssetID:(unint64_t)a6
+- (void)addAsset:(id)asset andMixerIdentifiers:(id)identifiers forIdentifier:(id)identifier withAssetID:(unint64_t)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v24 = v12;
+  assetCopy = asset;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  v24 = identifierCopy;
   v13 = objc_opt_new();
-  [v13 setAsset:v10];
-  [v13 setMixerIdentifiers:v11];
-  v14 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_assetRefMaps.__table_.__bucket_list_.__ptr_, a6);
+  [v13 setAsset:assetCopy];
+  [v13 setMixerIdentifiers:identifiersCopy];
+  v14 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_assetRefMaps.__table_.__bucket_list_.__ptr_, d);
   v15 = *re::audioLogObjects(v14);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v10;
+    *&buf[4] = assetCopy;
     v26 = 2048;
-    v27 = a6;
+    dCopy = d;
     v28 = 2112;
-    v29 = v12;
+    v29 = identifierCopy;
     _os_log_impl(&dword_1E1C61000, v15, OS_LOG_TYPE_DEFAULT, "[CoreRE] [REPhaseSoundEventAssetStore] Adding entry (%@) for assetID: %llu and identifier %@", buf, 0x20u);
   }
 
@@ -248,19 +248,19 @@ LABEL_24:
     v18.i16[0] = vaddlv_u8(v18);
     if (v18.u32[0] > 1uLL)
     {
-      v19 = a6;
-      if (size <= a6)
+      dCopy2 = d;
+      if (size <= d)
       {
-        v19 = a6 % size;
+        dCopy2 = d % size;
       }
     }
 
     else
     {
-      v19 = (size - 1) & a6;
+      dCopy2 = (size - 1) & d;
     }
 
-    v20 = self->_assetRefMaps.__table_.__bucket_list_.__ptr_[v19];
+    v20 = self->_assetRefMaps.__table_.__bucket_list_.__ptr_[dCopy2];
     if (!v20 || (v21 = *v20) == 0)
     {
 LABEL_22:
@@ -270,9 +270,9 @@ LABEL_22:
     while (1)
     {
       v22 = v21[1];
-      if (v22 == a6)
+      if (v22 == d)
       {
-        if (v21[2] == a6)
+        if (v21[2] == d)
         {
           *buf = &v24;
           v16 = std::__hash_table<std::__hash_value_type<NSString * {__strong},REPHASESoundEventAssetRef * {__strong}>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},REPHASESoundEventAssetRef * {__strong}>,NSStringHash,NSStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},REPHASESoundEventAssetRef * {__strong}>,NSStringEqual,NSStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},REPHASESoundEventAssetRef * {__strong}>>>::__emplace_unique_key_args<NSString * {__strong},std::piecewise_construct_t const&,std::tuple<NSString * const {__strong}&>,std::tuple<>>(v21 + 3, &v24);
@@ -295,7 +295,7 @@ LABEL_22:
           v22 &= size - 1;
         }
 
-        if (v22 != v19)
+        if (v22 != dCopy2)
         {
           goto LABEL_22;
         }

@@ -1,22 +1,22 @@
 @interface ATXHeroAppSingleSuggestionLogger
-- (ATXHeroAppSingleSuggestionLogger)initWithTracker:(id)a3;
-- (void)_logHeroAppEngagementMetric:(id)a3;
+- (ATXHeroAppSingleSuggestionLogger)initWithTracker:(id)tracker;
+- (void)_logHeroAppEngagementMetric:(id)metric;
 - (void)flushEventBuffers;
-- (void)handleSingleSuggestion:(id)a3;
+- (void)handleSingleSuggestion:(id)suggestion;
 @end
 
 @implementation ATXHeroAppSingleSuggestionLogger
 
-- (ATXHeroAppSingleSuggestionLogger)initWithTracker:(id)a3
+- (ATXHeroAppSingleSuggestionLogger)initWithTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v13.receiver = self;
   v13.super_class = ATXHeroAppSingleSuggestionLogger;
   v6 = [(ATXHeroAppSingleSuggestionLogger *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tracker, a3);
+    objc_storeStrong(&v6->_tracker, tracker);
     v8 = objc_opt_new();
     positiveEventBuffer = v7->_positiveEventBuffer;
     v7->_positiveEventBuffer = v8;
@@ -29,32 +29,32 @@
   return v7;
 }
 
-- (void)_logHeroAppEngagementMetric:(id)a3
+- (void)_logHeroAppEngagementMetric:(id)metric
 {
-  v4 = a3;
-  [(ATXPETEventTracker2Protocol *)self->_tracker trackScalarForMessage:v4];
+  metricCopy = metric;
+  [(ATXPETEventTracker2Protocol *)self->_tracker trackScalarForMessage:metricCopy];
   v5 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXHeroAppSingleSuggestionLogger *)self _logHeroAppEngagementMetric:v4, v5];
+    [(ATXHeroAppSingleSuggestionLogger *)self _logHeroAppEngagementMetric:metricCopy, v5];
   }
 }
 
-- (void)handleSingleSuggestion:(id)a3
+- (void)handleSingleSuggestion:(id)suggestion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 suggestion];
-  v6 = [v5 bundleIdExecutableObject];
+  suggestionCopy = suggestion;
+  suggestion = [suggestionCopy suggestion];
+  bundleIdExecutableObject = [suggestion bundleIdExecutableObject];
 
-  if (v6 && ([v4 feedbackMetadata], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (bundleIdExecutableObject && ([suggestionCopy feedbackMetadata], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = objc_autoreleasePoolPush();
     v9 = MEMORY[0x277CCAAC8];
     v10 = objc_opt_class();
-    v11 = [v4 feedbackMetadata];
+    feedbackMetadata = [suggestionCopy feedbackMetadata];
     v42 = 0;
-    v12 = [v9 unarchivedObjectOfClass:v10 fromData:v11 error:&v42];
+    v12 = [v9 unarchivedObjectOfClass:v10 fromData:feedbackMetadata error:&v42];
     v13 = v42;
 
     objc_autoreleasePoolPop(v8);
@@ -68,7 +68,7 @@
         *buf = 138412802;
         *&buf[4] = v25;
         *&buf[12] = 2112;
-        *&buf[14] = v4;
+        *&buf[14] = suggestionCopy;
         *&buf[22] = 2112;
         v44 = v13;
         _os_log_error_impl(&dword_2263AA000, v21, OS_LOG_TYPE_ERROR, "%@ - not logging because could not retrieve location from completed session: %@. Unarchive error: %@", buf, 0x20u);
@@ -101,10 +101,10 @@
       v31 = &v32;
       v29 = &v36;
       v26[4] = self;
-      v14 = v6;
+      v14 = bundleIdExecutableObject;
       v27 = v14;
       v28 = v12;
-      [v4 enumerateShownAndEngagedSessionStatusesAndConsumerSubTypesWithBlock:v26];
+      [suggestionCopy enumerateShownAndEngagedSessionStatusesAndConsumerSubTypesWithBlock:v26];
       if ([v37[5] isEqualToNumber:MEMORY[0x277CBEC38]])
       {
         v15 = [(ATXHeroAppSingleSuggestionLogger *)self _heroAppEngagementMetricWithBundleId:v14 interactionType:*(v33 + 6) consumerSubType:@"SingleSuggestionAnyConsumerSubType"];
@@ -112,20 +112,20 @@
       }
 
       v16 = +[_ATXAppPredictor sharedInstance];
-      v17 = [v16 cdnDownloaderTriggerManager];
-      v18 = [v17 heroAppManager];
-      v19 = [v18 heroFeedback];
+      cdnDownloaderTriggerManager = [v16 cdnDownloaderTriggerManager];
+      heroAppManager = [cdnDownloaderTriggerManager heroAppManager];
+      heroFeedback = [heroAppManager heroFeedback];
 
       if ([*(*&buf[8] + 40) isEqualToNumber:MEMORY[0x277CBEC38]])
       {
         LODWORD(v20) = 1.0;
-        [v19 addConfirmForHeroAppPredictionWithBundleId:v14 weight:v20];
+        [heroFeedback addConfirmForHeroAppPredictionWithBundleId:v14 weight:v20];
       }
 
       else if ([v37[5] isEqualToNumber:MEMORY[0x277CBEC38]])
       {
         LODWORD(v22) = 1.0;
-        [v19 addRejectForHeroAppPredictionWithBundleId:v14 weight:v22];
+        [heroFeedback addRejectForHeroAppPredictionWithBundleId:v14 weight:v22];
       }
 
       _Block_object_dispose(&v32, 8);
@@ -140,7 +140,7 @@
     v13 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(ATXHeroAppSingleSuggestionLogger *)self handleSingleSuggestion:v4, v13];
+      [(ATXHeroAppSingleSuggestionLogger *)self handleSingleSuggestion:suggestionCopy, v13];
     }
   }
 

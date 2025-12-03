@@ -2,7 +2,7 @@
 + (UNUserNotificationCenter)currentNotificationCenter;
 - (BOOL)supportsContentExtensions;
 - (UNUserNotificationCenter)init;
-- (UNUserNotificationCenter)initWithBundleIdentifier:(id)a3 queue:(id)a4;
+- (UNUserNotificationCenter)initWithBundleIdentifier:(id)identifier queue:(id)queue;
 - (UNUserNotificationCenterDelegatePrivate)privateDelegate;
 - (id)badgeNumber;
 - (id)clearedInfoForDataProviderMigration;
@@ -14,30 +14,30 @@
 - (id)notificationTopics;
 - (id)pendingNotificationRequests;
 - (void)addNotificationRequest:(UNNotificationRequest *)request withCompletionHandler:(void *)completionHandler;
-- (void)didChangeSettings:(id)a3;
-- (void)didOpenApplicationForResponse:(id)a3;
-- (void)didReceiveNotificationResponse:(id)a3 withCompletionHandler:(id)a4;
-- (void)getBadgeNumberWithCompletionHandler:(id)a3;
+- (void)didChangeSettings:(id)settings;
+- (void)didOpenApplicationForResponse:(id)response;
+- (void)didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)getBadgeNumberWithCompletionHandler:(id)handler;
 - (void)getDeliveredNotificationsWithCompletionHandler:(void *)completionHandler;
 - (void)getNotificationCategoriesWithCompletionHandler:(void *)completionHandler;
-- (void)getNotificationSettingsForTopicsWithCompletionHandler:(id)a3;
+- (void)getNotificationSettingsForTopicsWithCompletionHandler:(id)handler;
 - (void)getNotificationSettingsWithCompletionHandler:(void *)completionHandler;
-- (void)getNotificationTopicsWithCompletionHandler:(id)a3;
+- (void)getNotificationTopicsWithCompletionHandler:(id)handler;
 - (void)getPendingNotificationRequestsWithCompletionHandler:(void *)completionHandler;
 - (void)removeAllDeliveredNotifications;
 - (void)removeAllPendingNotificationRequests;
 - (void)removeDeliveredNotificationsWithIdentifiers:(NSArray *)identifiers;
 - (void)removePendingNotificationRequestsWithIdentifiers:(NSArray *)identifiers;
-- (void)removeSimilarNotificationRequests:(id)a3;
-- (void)replaceContentForRequestWithIdentifier:(id)a3 replacementContent:(id)a4 completionHandler:(id)a5;
+- (void)removeSimilarNotificationRequests:(id)requests;
+- (void)replaceContentForRequestWithIdentifier:(id)identifier replacementContent:(id)content completionHandler:(id)handler;
 - (void)requestAuthorizationWithOptions:(UNAuthorizationOptions)options completionHandler:(void *)completionHandler;
-- (void)requestRemoveAuthorizationWithCompletionHandler:(id)a3;
+- (void)requestRemoveAuthorizationWithCompletionHandler:(id)handler;
 - (void)setBadgeCount:(NSInteger)newBadgeCount withCompletionHandler:(void *)completionHandler;
-- (void)setBadgeNumber:(id)a3 withCompletionHandler:(id)a4;
-- (void)setBadgeString:(id)a3 withCompletionHandler:(id)a4;
+- (void)setBadgeNumber:(id)number withCompletionHandler:(id)handler;
+- (void)setBadgeString:(id)string withCompletionHandler:(id)handler;
 - (void)setNotificationCategories:(NSSet *)categories;
-- (void)setNotificationRequests:(id)a3 completionHandler:(id)a4;
-- (void)setNotificationTopics:(id)a3 withCompletionHandler:(id)a4;
+- (void)setNotificationRequests:(id)requests completionHandler:(id)handler;
+- (void)setNotificationTopics:(id)topics withCompletionHandler:(id)handler;
 - (void)setWantsNotificationResponsesDelivered;
 @end
 
@@ -50,7 +50,7 @@
   v4[2] = __53__UNUserNotificationCenter_currentNotificationCenter__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (currentNotificationCenter_onceToken != -1)
   {
     dispatch_once(&currentNotificationCenter_onceToken, v4);
@@ -155,18 +155,18 @@ LABEL_17:
 
 - (UNUserNotificationCenter)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UNUserNotificationCenter.m" lineNumber:92 description:@"use +currentNotificationCenter"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UNUserNotificationCenter.m" lineNumber:92 description:@"use +currentNotificationCenter"];
 
   return 0;
 }
 
-- (UNUserNotificationCenter)initWithBundleIdentifier:(id)a3 queue:(id)a4
+- (UNUserNotificationCenter)initWithBundleIdentifier:(id)identifier queue:(id)queue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  queueCopy = queue;
+  if (!identifierCopy)
   {
     [UNUserNotificationCenter initWithBundleIdentifier:queue:];
   }
@@ -181,15 +181,15 @@ LABEL_17:
     if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = v6;
+      v16 = identifierCopy;
       _os_log_impl(&dword_1B85E3000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating a user notification center", buf, 0xCu);
     }
 
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v10;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -209,11 +209,11 @@ LABEL_17:
   [v7 requestAuthorizationWithOptions:options forBundleIdentifier:self->_bundleIdentifier completionHandler:v6];
 }
 
-- (void)requestRemoveAuthorizationWithCompletionHandler:(id)a3
+- (void)requestRemoveAuthorizationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v5 requestRemoveAuthorizationForBundleIdentifier:self->_bundleIdentifier completionHandler:v4];
+  [v5 requestRemoveAuthorizationForBundleIdentifier:self->_bundleIdentifier completionHandler:handlerCopy];
 }
 
 - (void)getNotificationSettingsWithCompletionHandler:(void *)completionHandler
@@ -299,23 +299,23 @@ void __73__UNUserNotificationCenter_addNotificationRequest_withCompletionHandler
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceContentForRequestWithIdentifier:(id)a3 replacementContent:(id)a4 completionHandler:(id)a5
+- (void)replaceContentForRequestWithIdentifier:(id)identifier replacementContent:(id)content completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  contentCopy = content;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v11 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v8 addSecurityScope:@"com.apple.app-sandbox.read-write"];
+  [contentCopy addSecurityScope:@"com.apple.app-sandbox.read-write"];
   bundleIdentifier = self->_bundleIdentifier;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __104__UNUserNotificationCenter_replaceContentForRequestWithIdentifier_replacementContent_completionHandler___block_invoke;
   v18 = &unk_1E7CFFD20;
-  v19 = v8;
-  v20 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v11 replaceContentForRequestWithIdentifier:v10 bundleIdentifier:bundleIdentifier replacementContent:v14 completionHandler:&v15];
+  v19 = contentCopy;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = contentCopy;
+  [v11 replaceContentForRequestWithIdentifier:identifierCopy bundleIdentifier:bundleIdentifier replacementContent:v14 completionHandler:&v15];
 
   [v14 removeSecurityScope];
 }
@@ -340,21 +340,21 @@ void __104__UNUserNotificationCenter_replaceContentForRequestWithIdentifier_repl
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNotificationRequests:(id)a3 completionHandler:(id)a4
+- (void)setNotificationRequests:(id)requests completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  handlerCopy = handler;
   v8 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v6 enumerateObjectsUsingBlock:&__block_literal_global_11];
+  [requestsCopy enumerateObjectsUsingBlock:&__block_literal_global_11];
   bundleIdentifier = self->_bundleIdentifier;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __70__UNUserNotificationCenter_setNotificationRequests_completionHandler___block_invoke_2;
   v15 = &unk_1E7CFFD20;
-  v16 = v6;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  v16 = requestsCopy;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = requestsCopy;
   [v8 setNotificationRequests:v11 forBundleIdentifier:bundleIdentifier completionHandler:&v12];
   [v11 enumerateObjectsUsingBlock:{&__block_literal_global_42, v12, v13, v14, v15}];
 }
@@ -383,11 +383,11 @@ uint64_t __70__UNUserNotificationCenter_setNotificationRequests_completionHandle
   [v5 removePendingNotificationRequestsWithIdentifiers:v4 forBundleIdentifier:self->_bundleIdentifier completionHandler:0];
 }
 
-- (void)removeSimilarNotificationRequests:(id)a3
+- (void)removeSimilarNotificationRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v5 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v5 removeSimilarNotificationRequests:v4 forBundleIdentifier:self->_bundleIdentifier completionHandler:0];
+  [v5 removeSimilarNotificationRequests:requestsCopy forBundleIdentifier:self->_bundleIdentifier completionHandler:0];
 }
 
 - (void)removeAllPendingNotificationRequests
@@ -424,19 +424,19 @@ uint64_t __70__UNUserNotificationCenter_setNotificationRequests_completionHandle
   return v4;
 }
 
-- (void)getBadgeNumberWithCompletionHandler:(id)a3
+- (void)getBadgeNumberWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v5 getBadgeNumberForBundleIdentifier:self->_bundleIdentifier withCompletionHandler:v4];
+  [v5 getBadgeNumberForBundleIdentifier:self->_bundleIdentifier withCompletionHandler:handlerCopy];
 }
 
-- (void)setBadgeNumber:(id)a3 withCompletionHandler:(id)a4
+- (void)setBadgeNumber:(id)number withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  numberCopy = number;
   v8 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v8 setBadgeNumber:v7 forBundleIdentifier:self->_bundleIdentifier withCompletionHandler:v6];
+  [v8 setBadgeNumber:numberCopy forBundleIdentifier:self->_bundleIdentifier withCompletionHandler:handlerCopy];
 }
 
 - (void)setBadgeCount:(NSInteger)newBadgeCount withCompletionHandler:(void *)completionHandler
@@ -465,28 +465,28 @@ uint64_t __70__UNUserNotificationCenter_setNotificationRequests_completionHandle
 LABEL_6:
 }
 
-- (void)setBadgeString:(id)a3 withCompletionHandler:(id)a4
+- (void)setBadgeString:(id)string withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  stringCopy = string;
   v8 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v8 setBadgeString:v7 forBundleIdentifier:self->_bundleIdentifier withCompletionHandler:v6];
+  [v8 setBadgeString:stringCopy forBundleIdentifier:self->_bundleIdentifier withCompletionHandler:handlerCopy];
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 withCompletionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__UNUserNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = responseCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = responseCopy;
   dispatch_async(queue, block);
 }
 
@@ -509,17 +509,17 @@ void __81__UNUserNotificationCenter_didReceiveNotificationResponse_withCompletio
   }
 }
 
-- (void)didChangeSettings:(id)a3
+- (void)didChangeSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__UNUserNotificationCenter_didChangeSettings___block_invoke;
   v7[3] = &unk_1E7CFF910;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = settingsCopy;
+  v6 = settingsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -535,17 +535,17 @@ void __46__UNUserNotificationCenter_didChangeSettings___block_invoke(uint64_t a1
   }
 }
 
-- (void)didOpenApplicationForResponse:(id)a3
+- (void)didOpenApplicationForResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__UNUserNotificationCenter_didOpenApplicationForResponse___block_invoke;
   v7[3] = &unk_1E7CFF910;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = responseCopy;
+  v6 = responseCopy;
   dispatch_async(queue, v7);
 }
 
@@ -561,19 +561,19 @@ void __58__UNUserNotificationCenter_didOpenApplicationForResponse___block_invoke
   }
 }
 
-- (void)setNotificationTopics:(id)a3 withCompletionHandler:(id)a4
+- (void)setNotificationTopics:(id)topics withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  topicsCopy = topics;
   v8 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v8 setNotificationTopics:v7 forBundleIdentifier:self->_bundleIdentifier withCompletionHandler:v6];
+  [v8 setNotificationTopics:topicsCopy forBundleIdentifier:self->_bundleIdentifier withCompletionHandler:handlerCopy];
 }
 
-- (void)getNotificationTopicsWithCompletionHandler:(id)a3
+- (void)getNotificationTopicsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v5 getNotificationTopicsForBundleIdentifier:self->_bundleIdentifier withCompletionHandler:v4];
+  [v5 getNotificationTopicsForBundleIdentifier:self->_bundleIdentifier withCompletionHandler:handlerCopy];
 }
 
 - (id)notificationTopics
@@ -584,11 +584,11 @@ void __58__UNUserNotificationCenter_didOpenApplicationForResponse___block_invoke
   return v4;
 }
 
-- (void)getNotificationSettingsForTopicsWithCompletionHandler:(id)a3
+- (void)getNotificationSettingsForTopicsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[UNUserNotificationServiceConnection sharedInstance];
-  [v5 getNotificationSettingsForTopicsWithBundleIdentifier:self->_bundleIdentifier withCompletionHandler:v4];
+  [v5 getNotificationSettingsForTopicsWithBundleIdentifier:self->_bundleIdentifier withCompletionHandler:handlerCopy];
 }
 
 - (id)notificationSettingsForTopics

@@ -1,36 +1,36 @@
 @interface VIACacheHitContext
-+ (VIACacheHitContext)contextWithDictionary:(id)a3 error:(id *)a4;
-- (VIACacheHitContext)initWithQueryID:(unint64_t)a3 cachedResultQueryID:(unint64_t)a4 applicationIdentifier:(id)a5 engagementSuggestionType:(id)a6;
++ (VIACacheHitContext)contextWithDictionary:(id)dictionary error:(id *)error;
+- (VIACacheHitContext)initWithQueryID:(unint64_t)d cachedResultQueryID:(unint64_t)iD applicationIdentifier:(id)identifier engagementSuggestionType:(id)type;
 @end
 
 @implementation VIACacheHitContext
 
-- (VIACacheHitContext)initWithQueryID:(unint64_t)a3 cachedResultQueryID:(unint64_t)a4 applicationIdentifier:(id)a5 engagementSuggestionType:(id)a6
+- (VIACacheHitContext)initWithQueryID:(unint64_t)d cachedResultQueryID:(unint64_t)iD applicationIdentifier:(id)identifier engagementSuggestionType:(id)type
 {
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  typeCopy = type;
   v17.receiver = self;
   v17.super_class = VIACacheHitContext;
   v12 = [(VIACacheHitContext *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_queryID = a3;
-    v12->_cachedResultQueryID = a4;
-    v14 = [v10 copy];
+    v12->_queryID = d;
+    v12->_cachedResultQueryID = iD;
+    v14 = [identifierCopy copy];
     applicationIdentifier = v13->_applicationIdentifier;
     v13->_applicationIdentifier = v14;
 
-    objc_storeStrong(&v13->_engagementSuggestionType, a6);
+    objc_storeStrong(&v13->_engagementSuggestionType, type);
   }
 
   return v13;
 }
 
-+ (VIACacheHitContext)contextWithDictionary:(id)a3 error:(id *)a4
++ (VIACacheHitContext)contextWithDictionary:(id)dictionary error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v45[0] = @"com.apple.argos.cache_hit_context_key.query_id";
   v6 = objc_alloc_init(VIACacheHitContextQueryIDMapper);
   v46 = v6;
@@ -72,18 +72,18 @@
         }
 
         v19 = *(*(&v37 + 1) + 8 * i);
-        v20 = [v5 objectForKeyedSubscript:v19];
+        v20 = [dictionaryCopy objectForKeyedSubscript:v19];
 
         if (!v20)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = VIACacheHitContextMapperMissingValueError(v19);
+            *error = VIACacheHitContextMapperMissingValueError(v19);
           }
 
 LABEL_27:
 
-          v29 = 0;
+          build = 0;
           goto LABEL_28;
         }
       }
@@ -98,7 +98,7 @@ LABEL_27:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = v5;
+  v14 = dictionaryCopy;
   v21 = [v14 countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (!v21)
   {
@@ -121,7 +121,7 @@ LABEL_27:
 
       if (!v26)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_27;
         }
@@ -140,7 +140,7 @@ LABEL_27:
 
       if (v28)
       {
-        if (!a4)
+        if (!error)
         {
 LABEL_26:
 
@@ -149,7 +149,7 @@ LABEL_26:
 
         v31 = v28;
 LABEL_25:
-        *a4 = v31;
+        *error = v31;
         goto LABEL_26;
       }
     }
@@ -165,10 +165,10 @@ LABEL_25:
 
 LABEL_18:
 
-  v29 = [(VIACacheHitContextBuilder *)v11 build];
+  build = [(VIACacheHitContextBuilder *)v11 build];
 LABEL_28:
 
-  return v29;
+  return build;
 }
 
 @end

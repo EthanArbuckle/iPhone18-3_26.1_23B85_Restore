@@ -1,24 +1,24 @@
 @interface MapsDebugEmptySectionBannerRow
-- (void)configureCell:(id)a3;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation MapsDebugEmptySectionBannerRow
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
   v8.receiver = self;
   v8.super_class = MapsDebugEmptySectionBannerRow;
-  v3 = a3;
-  [(MapsDebugTableRow *)&v8 configureCell:v3];
-  v4 = [v3 contentConfiguration];
+  cellCopy = cell;
+  [(MapsDebugTableRow *)&v8 configureCell:cellCopy];
+  contentConfiguration = [cellCopy contentConfiguration];
   v5 = +[UIColor secondaryLabelColor];
-  v6 = [v4 textProperties];
-  [v6 setColor:v5];
+  textProperties = [contentConfiguration textProperties];
+  [textProperties setColor:v5];
 
-  v7 = [v4 textProperties];
-  [v7 setAlignment:1];
+  textProperties2 = [contentConfiguration textProperties];
+  [textProperties2 setAlignment:1];
 
-  [v3 setContentConfiguration:v4];
+  [cellCopy setContentConfiguration:contentConfiguration];
 }
 
 @end

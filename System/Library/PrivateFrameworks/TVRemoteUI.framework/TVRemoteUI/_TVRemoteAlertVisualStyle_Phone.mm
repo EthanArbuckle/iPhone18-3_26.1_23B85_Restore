@@ -1,12 +1,12 @@
 @interface _TVRemoteAlertVisualStyle_Phone
-- (CGRect)frameForParentView:(id)a3;
+- (CGRect)frameForParentView:(id)view;
 @end
 
 @implementation _TVRemoteAlertVisualStyle_Phone
 
-- (CGRect)frameForParentView:(id)a3
+- (CGRect)frameForParentView:(id)view
 {
-  [a3 bounds];
+  [view bounds];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

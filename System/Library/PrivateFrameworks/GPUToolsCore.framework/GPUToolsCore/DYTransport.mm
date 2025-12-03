@@ -1,19 +1,19 @@
 @interface DYTransport
-- (BOOL)_activateSource:(id)a3;
-- (BOOL)relayMessage:(id)a3 error:(id *)a4;
-- (BOOL)send:(id)a3 inReplyTo:(id)a4 error:(id *)a5 replyQueue:(id)a6 timeout:(unint64_t)a7 handler:(id)a8;
+- (BOOL)_activateSource:(id)source;
+- (BOOL)relayMessage:(id)message error:(id *)error;
+- (BOOL)send:(id)send inReplyTo:(id)to error:(id *)error replyQueue:(id)queue timeout:(unint64_t)timeout handler:(id)handler;
 - (DYTransport)init;
 - (NSURL)url;
 - (id)debugDescription;
-- (id)newSourceWithQueue:(id)a3;
-- (void)_cancelSource:(id)a3;
-- (void)_dispatchMessage:(id)a3;
-- (void)_handleReplyTimeout:(unsigned int)a3 count:(unsigned int)a4;
+- (id)newSourceWithQueue:(id)queue;
+- (void)_cancelSource:(id)source;
+- (void)_dispatchMessage:(id)message;
+- (void)_handleReplyTimeout:(unsigned int)timeout count:(unsigned int)count;
 - (void)_invalidate;
-- (void)_scheduleInvalidation:(id)a3;
+- (void)_scheduleInvalidation:(id)invalidation;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setSynchronous:(BOOL)a3;
+- (void)setSynchronous:(BOOL)synchronous;
 @end
 
 @implementation DYTransport
@@ -78,12 +78,12 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = [(DYTransport *)self description];
   v5 = [(DYTransport *)self url];
-  v6 = [(DYTransport *)self connected];
-  v7 = [(DYTransport *)self invalid];
-  v8 = [(DYTransport *)self error];
+  connected = [(DYTransport *)self connected];
+  invalid = [(DYTransport *)self invalid];
+  error = [(DYTransport *)self error];
   v9 = atomic_load(&self->_messageCounter);
   v10 = atomic_load(&self->_invalid);
-  return [v3 stringWithFormat:@"%@: url=%@, connected=%d, invalid=%d, error=%@, messageCounter=%u, messageSendQueueDepth=%u, sources=%@", v4, v5, v6, v7, v8, v9, v10, self->_error];
+  return [v3 stringWithFormat:@"%@: url=%@, connected=%d, invalid=%d, error=%@, messageCounter=%u, messageSendQueueDepth=%u, sources=%@", v4, v5, connected, invalid, error, v9, v10, self->_error];
 }
 
 - (NSURL)url
@@ -114,7 +114,7 @@ id __18__DYTransport_url__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)newSourceWithQueue:(id)a3
+- (id)newSourceWithQueue:(id)queue
 {
   v7 = 0;
   v8 = &v7;
@@ -127,7 +127,7 @@ id __18__DYTransport_url__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__DYTransport_newSourceWithQueue___block_invoke;
   block[3] = &unk_27930CA38;
-  block[5] = a3;
+  block[5] = queue;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(queue, block);
@@ -136,7 +136,7 @@ id __18__DYTransport_url__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)_activateSource:(id)a3
+- (BOOL)_activateSource:(id)source
 {
   v7 = 0;
   v8 = &v7;
@@ -148,7 +148,7 @@ id __18__DYTransport_url__block_invoke(uint64_t a1)
   block[2] = __31__DYTransport__activateSource___block_invoke;
   block[3] = &unk_27930CA60;
   block[4] = self;
-  block[5] = a3;
+  block[5] = source;
   block[6] = &v7;
   dispatch_sync(queue, block);
   v4 = *(v8 + 24);
@@ -156,7 +156,7 @@ id __18__DYTransport_url__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_cancelSource:(id)a3
+- (void)_cancelSource:(id)source
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -164,7 +164,7 @@ id __18__DYTransport_url__block_invoke(uint64_t a1)
   v4[2] = __29__DYTransport__cancelSource___block_invoke;
   v4[3] = &unk_27930C170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = source;
   dispatch_sync(queue, v4);
 }
 
@@ -182,15 +182,15 @@ id __18__DYTransport_url__block_invoke(uint64_t a1)
   [self->_dispatch_send removeAllObjects];
 }
 
-- (void)_handleReplyTimeout:(unsigned int)a3 count:(unsigned int)a4
+- (void)_handleReplyTimeout:(unsigned int)timeout count:(unsigned int)count
 {
-  v6 = a3;
-  v7 = [self->_dispatch_send objectForIntKey:a3];
-  if (v7 && v7[10] <= a4)
+  timeoutCopy = timeout;
+  v7 = [self->_dispatch_send objectForIntKey:timeout];
+  if (v7 && v7[10] <= count)
   {
     v9 = v7;
     v8 = v7;
-    [self->_dispatch_send removeObjectForIntKey:v6];
+    [self->_dispatch_send removeObjectForIntKey:timeoutCopy];
     [v9 dispatchError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", @"DYErrorDomain", 5, 0)}];
   }
 }
@@ -258,14 +258,14 @@ uint64_t __37__DYTransport__scheduleInvalidation___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setSynchronous:(BOOL)a3
+- (void)setSynchronous:(BOOL)synchronous
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __30__DYTransport_setSynchronous___block_invoke;
   v4[3] = &unk_27930C710;
-  v5 = a3;
+  synchronousCopy = synchronous;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -282,69 +282,69 @@ uint64_t __30__DYTransport_setSynchronous___block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)send:(id)a3 inReplyTo:(id)a4 error:(id *)a5 replyQueue:(id)a6 timeout:(unint64_t)a7 handler:(id)a8
+- (BOOL)send:(id)send inReplyTo:(id)to error:(id *)error replyQueue:(id)queue timeout:(unint64_t)timeout handler:(id)handler
 {
-  if ([a3 hasBeenSent])
+  if ([send hasBeenSent])
   {
-    [DYTransport send:a5 inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
+    [DYTransport send:error inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
 LABEL_26:
     LOBYTE(v15) = v33;
     return v15;
   }
 
-  if (a4 && ([a4 hasBeenSent] & 1) == 0)
+  if (to && ([to hasBeenSent] & 1) == 0)
   {
-    [DYTransport send:a5 inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
+    [DYTransport send:error inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
     goto LABEL_26;
   }
 
   if (![(DYTransport *)self connected])
   {
-    [DYTransport send:a5 inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
+    [DYTransport send:error inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
     goto LABEL_26;
   }
 
   if (LOBYTE(self->_interposerVersion) == 1)
   {
-    [DYTransport send:a5 inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
+    [DYTransport send:error inReplyTo:&v33 error:? replyQueue:? timeout:? handler:?];
     goto LABEL_26;
   }
 
-  v15 = [(DYTransport *)self _packMessage:a3 error:a5];
+  v15 = [(DYTransport *)self _packMessage:send error:error];
   if (v15)
   {
-    v16 = [(DYTransport *)self _nextMessageSerial];
-    if (a4)
+    _nextMessageSerial = [(DYTransport *)self _nextMessageSerial];
+    if (to)
     {
-      v17 = [a4 serial];
+      serial = [to serial];
     }
 
     else
     {
-      v17 = 0xFFFFFFFFLL;
+      serial = 0xFFFFFFFFLL;
     }
 
-    [a3 _setSerial:v16 replySerial:v17 transport:self];
-    if (a8)
+    [send _setSerial:_nextMessageSerial replySerial:serial transport:self];
+    if (handler)
     {
-      v18 = [(DYContinuation *)[DYTransportMessageReplyContinuation alloc] initWithQueue:a6 block:a8];
-      a8 = v18;
+      v18 = [(DYContinuation *)[DYTransportMessageReplyContinuation alloc] initWithQueue:queue block:handler];
+      handler = v18;
       atomic_fetch_add(&self->_invalid, 1u);
       sources = self->_sources;
       v20 = BYTE1(self->_interposerVersion);
       if (v18)
       {
-        if (a7)
+        if (timeout)
         {
-          v18->timeout = a7;
-          v21 = dispatch_time(0, a7);
+          v18->timeout = timeout;
+          v21 = dispatch_time(0, timeout);
           queue = self->_queue;
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __63__DYTransport_send_inReplyTo_error_replyQueue_timeout_handler___block_invoke;
           block[3] = &unk_27930C9B8;
           block[4] = self;
-          v32 = v16;
+          v32 = _nextMessageSerial;
           dispatch_after(v21, queue, block);
         }
 
@@ -354,8 +354,8 @@ LABEL_26:
         v29[2] = __63__DYTransport_send_inReplyTo_error_replyQueue_timeout_handler___block_invoke_2;
         v29[3] = &unk_27930C198;
         v29[4] = self;
-        v29[5] = a8;
-        v30 = v16;
+        v29[5] = handler;
+        v30 = _nextMessageSerial;
         dispatch_sync(v23, v29);
         if ((v20 & 1) == 0)
         {
@@ -389,9 +389,9 @@ LABEL_16:
     v26[3] = &unk_27930CB28;
     v28 = v20;
     v26[4] = self;
-    v26[5] = a8;
-    v26[6] = a3;
-    v27 = v16;
+    v26[5] = handler;
+    v26[6] = send;
+    v27 = _nextMessageSerial;
     (sources)(sendQueue, v26);
 
     LOBYTE(v15) = 1;
@@ -460,11 +460,11 @@ uint64_t __63__DYTransport_send_inReplyTo_error_replyQueue_timeout_handler___blo
   return [v2 dispatchError:v3];
 }
 
-- (BOOL)relayMessage:(id)a3 error:(id *)a4
+- (BOOL)relayMessage:(id)message error:(id *)error
 {
-  if ([a3 transport] == self)
+  if ([message transport] == self)
   {
-    [DYTransport relayMessage:a4 error:&v14];
+    [DYTransport relayMessage:error error:&v14];
 LABEL_12:
     LOBYTE(v7) = v14;
     return v7;
@@ -472,17 +472,17 @@ LABEL_12:
 
   if (![(DYTransport *)self connected])
   {
-    [DYTransport send:a4 inReplyTo:&v14 error:? replyQueue:? timeout:? handler:?];
+    [DYTransport send:error inReplyTo:&v14 error:? replyQueue:? timeout:? handler:?];
     goto LABEL_12;
   }
 
   if (LOBYTE(self->_interposerVersion) == 1)
   {
-    [DYTransport send:a4 inReplyTo:&v14 error:? replyQueue:? timeout:? handler:?];
+    [DYTransport send:error inReplyTo:&v14 error:? replyQueue:? timeout:? handler:?];
     goto LABEL_12;
   }
 
-  v7 = [(DYTransport *)self _packMessage:a3 error:a4];
+  v7 = [(DYTransport *)self _packMessage:message error:error];
   if (v7)
   {
     sources = self->_sources;
@@ -499,7 +499,7 @@ LABEL_12:
     v12[3] = &unk_27930CB50;
     v13 = v9;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = message;
     (sources)(sendQueue, v12);
     LOBYTE(v7) = 1;
   }
@@ -532,7 +532,7 @@ uint64_t __31__DYTransport__activateSource___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_dispatchMessage:(id)a3
+- (void)_dispatchMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
   if ((self->_interposerVersion & 1) == 0)
@@ -542,7 +542,7 @@ uint64_t __31__DYTransport__activateSource___block_invoke(uint64_t result)
     v37 = 0u;
     v38 = 0u;
     error = self->_error;
-    v11 = OUTLINED_FUNCTION_1_0(self, a2, a3, v3, v4, v5, v6, v7, v29, v30, v31, v32, v33, v34, v35, v36, 0, 0, 0, 0, 0, 0, 0, 0, v41, v42);
+    v11 = OUTLINED_FUNCTION_1_0(self, a2, message, v3, v4, v5, v6, v7, v29, v30, v31, v32, v33, messageCopy, selfCopy, v36, 0, 0, 0, 0, 0, 0, 0, 0, v41, v42);
     if (v11)
     {
       v12 = v11;
@@ -556,20 +556,20 @@ uint64_t __31__DYTransport__activateSource___block_invoke(uint64_t result)
             objc_enumerationMutation(error);
           }
 
-          v15 = [*(*(&v37 + 1) + 8 * i) _dispatch:a3];
+          v15 = [*(*(&v37 + 1) + 8 * i) _dispatch:message];
         }
 
-        v12 = OUTLINED_FUNCTION_1_0(v15, v16, v17, v18, v19, v20, v21, v22, v29, v30, v31, v32, v33, v34, v35, v36, v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), v40, *(&v40 + 1), v41, v42);
+        v12 = OUTLINED_FUNCTION_1_0(v15, v16, v17, v18, v19, v20, v21, v22, v29, v30, v31, v32, v33, messageCopy, selfCopy, v36, v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), v40, *(&v40 + 1), v41, v42);
       }
 
       while (v12);
     }
 
-    v23 = [a3 replySerial];
-    if (v23 != -1)
+    replySerial = [message replySerial];
+    if (replySerial != -1)
     {
-      v24 = v23;
-      v25 = [self->_dispatch_send objectForIntKey:v23];
+      v24 = replySerial;
+      v25 = [self->_dispatch_send objectForIntKey:replySerial];
       if (v25)
       {
         v26 = *(v25 + 40) + 1;
@@ -580,8 +580,8 @@ uint64_t __31__DYTransport__activateSource___block_invoke(uint64_t result)
         v31 = __32__DYTransport__dispatchMessage___block_invoke;
         v32 = &unk_27930CAD8;
         v33 = v25;
-        v34 = a3;
-        v35 = self;
+        messageCopy = message;
+        selfCopy = self;
         v36 = __PAIR64__(v26, v24);
         dispatch_async(v27, &v29);
       }
@@ -591,16 +591,16 @@ uint64_t __31__DYTransport__activateSource___block_invoke(uint64_t result)
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleInvalidation:(id)a3
+- (void)_scheduleInvalidation:(id)invalidation
 {
   if ((self->_interposerVersion & 1) == 0)
   {
-    if (a3)
+    if (invalidation)
     {
-      [objc_msgSend(a3 "localizedDescription")];
+      [objc_msgSend(invalidation "localizedDescription")];
     }
 
-    DYLog(5, "schedule invalidation <DYTransport %p, error: %s>", a3, v3, v4, v5, v6, v7, self);
+    DYLog(5, "schedule invalidation <DYTransport %p, error: %s>", invalidation, v3, v4, v5, v6, v7, self);
     LOBYTE(self->_interposerVersion) = 1;
     rootQueue = self->_rootQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -608,7 +608,7 @@ uint64_t __31__DYTransport__activateSource___block_invoke(uint64_t result)
     block[2] = __37__DYTransport__scheduleInvalidation___block_invoke;
     block[3] = &unk_27930C170;
     block[4] = self;
-    block[5] = a3;
+    block[5] = invalidation;
     dispatch_barrier_async(rootQueue, block);
   }
 }

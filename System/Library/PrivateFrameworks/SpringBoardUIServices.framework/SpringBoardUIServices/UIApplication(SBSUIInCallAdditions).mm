@@ -10,8 +10,8 @@
   v9 = a3;
   v10 = a5;
   v11 = a6;
-  v12 = [v9 scene];
-  v13 = [v12 _FBSScene];
+  scene = [v9 scene];
+  _FBSScene = [scene _FBSScene];
 
   v14 = SBLogInCallPresentation();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -21,7 +21,7 @@
     _os_log_impl(&dword_1A9A79000, v14, OS_LOG_TYPE_DEFAULT, "Client requested destruction of %{public}@", buf, 0xCu);
   }
 
-  if (v13)
+  if (_FBSScene)
   {
     v15 = [SBSUIInCallDestroySceneAction alloc];
     v18 = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@
     v23 = v11;
     v16 = [(SBSUIInCallDestroySceneAction *)v15 initWithDestructionReason:a4 analyticsSource:v10 timeout:&v18 withResponseHandler:5.0];
     v17 = [MEMORY[0x1E695DFD8] setWithObject:{v16, v18, v19, v20, v21}];
-    [v13 sendActions:v17];
+    [_FBSScene sendActions:v17];
 
 LABEL_7:
     goto LABEL_8;

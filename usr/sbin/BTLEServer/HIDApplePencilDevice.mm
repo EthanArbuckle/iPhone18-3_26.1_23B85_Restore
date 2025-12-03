@@ -1,26 +1,26 @@
 @interface HIDApplePencilDevice
-- (HIDApplePencilDevice)initWithProperties:(id)a3 reports:(id)a4 loggingIdentifier:(id)a5;
+- (HIDApplePencilDevice)initWithProperties:(id)properties reports:(id)reports loggingIdentifier:(id)identifier;
 - (id)desiredConnectionParameters;
-- (id)newUserDevices:(id)a3;
+- (id)newUserDevices:(id)devices;
 - (void)dealloc;
 - (void)mtWillPowerOn;
 - (void)notifyDidStart;
 - (void)notifyDidStop;
-- (void)piconetClockNotification:(id)a3;
-- (void)sendAnalyticsEvent:(id)a3 withPayload:(id)a4;
+- (void)piconetClockNotification:(id)notification;
+- (void)sendAnalyticsEvent:(id)event withPayload:(id)payload;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation HIDApplePencilDevice
 
-- (id)newUserDevices:(id)a3
+- (id)newUserDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(HIDApplePencilDevice *)self newDeviceMgntDevice:v4 keyholeID:240];
-  v6 = [(HIDApplePencilDevice *)self newInertialSensorDevice:v4 keyholeID:243];
-  v7 = [(HIDApplePencilDevice *)self newRadioDevice:v4 keyholeID:245];
-  v8 = [(HIDApplePencilDevice *)self newForceDevice:v4 keyholeID:248];
+  devicesCopy = devices;
+  v5 = [(HIDApplePencilDevice *)self newDeviceMgntDevice:devicesCopy keyholeID:240];
+  v6 = [(HIDApplePencilDevice *)self newInertialSensorDevice:devicesCopy keyholeID:243];
+  v7 = [(HIDApplePencilDevice *)self newRadioDevice:devicesCopy keyholeID:245];
+  v8 = [(HIDApplePencilDevice *)self newForceDevice:devicesCopy keyholeID:248];
 
   if (!v5)
   {
@@ -89,8 +89,8 @@ LABEL_6:
 
   [(HIDApplePencilDevice *)self setBtSyncPeriod:v6];
 
-  v7 = [(HIDBluetoothDevice *)self peripheral];
-  v8 = [v7 hasTag:@"A2538"];
+  peripheral = [(HIDBluetoothDevice *)self peripheral];
+  v8 = [peripheral hasTag:@"A2538"];
 
   if (v8)
   {
@@ -110,9 +110,9 @@ LABEL_6:
   }
 
   v12 = +[BTLEXpcServer instance];
-  v13 = [(HIDApplePencilDevice *)self btSyncPeriod];
-  v14 = [(HIDBluetoothDevice *)self peripheral];
-  [v12 sendEnableBTSyncMsg:v13 forPeer:v14];
+  btSyncPeriod = [(HIDApplePencilDevice *)self btSyncPeriod];
+  peripheral2 = [(HIDBluetoothDevice *)self peripheral];
+  [v12 sendEnableBTSyncMsg:btSyncPeriod forPeer:peripheral2];
 
   v15 = +[NSNotificationCenter defaultCenter];
   [v15 addObserver:self selector:"piconetClockNotification:" name:@"PiconetClockNotification" object:0];
@@ -149,29 +149,29 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = HIDApplePencilDevice;
-  v3 = [(HIDBluetoothDevice *)&v5 desiredConnectionParameters];
+  desiredConnectionParameters = [(HIDBluetoothDevice *)&v5 desiredConnectionParameters];
   [(HIDApplePencilDevice *)self preferredInterval];
-  [v3 setMinInterval:?];
+  [desiredConnectionParameters setMinInterval:?];
   [(HIDApplePencilDevice *)self preferredInterval];
-  [v3 setPreferredInterval:?];
-  [v3 setPreferredPeripheralLatency:{-[HIDApplePencilDevice preferredPeripheralLatency](self, "preferredPeripheralLatency")}];
-  [v3 setMaxPeripheralLatency:{-[HIDApplePencilDevice preferredPeripheralLatency](self, "preferredPeripheralLatency")}];
-  [v3 setMinCELength:4];
-  [v3 setMaxCELength:4];
-  [v3 setMaxDeferment:1];
+  [desiredConnectionParameters setPreferredInterval:?];
+  [desiredConnectionParameters setPreferredPeripheralLatency:{-[HIDApplePencilDevice preferredPeripheralLatency](self, "preferredPeripheralLatency")}];
+  [desiredConnectionParameters setMaxPeripheralLatency:{-[HIDApplePencilDevice preferredPeripheralLatency](self, "preferredPeripheralLatency")}];
+  [desiredConnectionParameters setMinCELength:4];
+  [desiredConnectionParameters setMaxCELength:4];
+  [desiredConnectionParameters setMaxDeferment:1];
 
-  return v3;
+  return desiredConnectionParameters;
 }
 
-- (HIDApplePencilDevice)initWithProperties:(id)a3 reports:(id)a4 loggingIdentifier:(id)a5
+- (HIDApplePencilDevice)initWithProperties:(id)properties reports:(id)reports loggingIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  reportsCopy = reports;
   kdebug_trace();
   v29.receiver = self;
   v29.super_class = HIDApplePencilDevice;
-  v11 = [(HIDBluetoothDevice *)&v29 initWithProperties:v8 reports:v10];
+  v11 = [(HIDBluetoothDevice *)&v29 initWithProperties:propertiesCopy reports:reportsCopy];
 
   if (!v11)
   {
@@ -191,9 +191,9 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v14 = [(HIDBluetoothDevice *)v11 allocHIDQueue];
+  allocHIDQueue = [(HIDBluetoothDevice *)v11 allocHIDQueue];
   queue = v11->_queue;
-  v11->_queue = v14;
+  v11->_queue = allocHIDQueue;
 
   if (!v11->_queue)
   {
@@ -225,7 +225,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v23 = [(HIDApplePencilDevice *)v11 newUserDevices:v8];
+  v23 = [(HIDApplePencilDevice *)v11 newUserDevices:propertiesCopy];
   userDevices = v11->_userDevices;
   v11->_userDevices = v23;
 
@@ -241,7 +241,7 @@ LABEL_14:
   LODWORD(v26) = 15.0;
   [(HIDApplePencilDevice *)v11 setPreferredInterval:v26];
   [(HIDApplePencilDevice *)v11 setPreferredPeripheralLatency:10];
-  objc_storeStrong(&v11->_loggingIdentifier, a5);
+  objc_storeStrong(&v11->_loggingIdentifier, identifier);
 
 LABEL_8:
   kdebug_trace();
@@ -276,38 +276,38 @@ LABEL_9:
   [(HIDBluetoothDevice *)&v4 dealloc];
 }
 
-- (void)sendAnalyticsEvent:(id)a3 withPayload:(id)a4
+- (void)sendAnalyticsEvent:(id)event withPayload:(id)payload
 {
-  v5 = a4;
-  v4 = v5;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)piconetClockNotification:(id)a3
+- (void)piconetClockNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 description];
+    v7 = [notificationCopy description];
     *v13 = 136315138;
     *&v13[4] = [v7 UTF8String];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Firefly] piconetClockNotification: %s", v13, 0xCu);
   }
 
   v13[0] = 119;
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"PiconetClockUserInfoKey"];
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"PiconetClockUserInfoKey"];
   *&v13[1] = [v9 unsignedIntegerValue];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"PiconetPhaseClockUserInfoKey"];
+  userInfo2 = [notificationCopy userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:@"PiconetPhaseClockUserInfoKey"];
   *&v13[5] = [v11 unsignedIntegerValue];
 
   kdebug_trace();
-  v12 = [(HIDApplePencilDevice *)self forceUserDevice];
-  [v12 handleInputReport:v13 reportLength:9];
+  forceUserDevice = [(HIDApplePencilDevice *)self forceUserDevice];
+  [forceUserDevice handleInputReport:v13 reportLength:9];
 }
 
 - (void)mtWillPowerOn

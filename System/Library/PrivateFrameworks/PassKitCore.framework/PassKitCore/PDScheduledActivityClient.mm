@@ -1,35 +1,35 @@
 @interface PDScheduledActivityClient
 - (BOOL)isValid;
 - (PDScheduledActivityClient)clientInstance;
-- (PDScheduledActivityClient)initWithClientInstance:(id)a3 activityQueue:(id)a4;
-- (PDScheduledActivityClient)initWithCoder:(id)a3;
+- (PDScheduledActivityClient)initWithClientInstance:(id)instance activityQueue:(id)queue;
+- (PDScheduledActivityClient)initWithCoder:(id)coder;
 @end
 
 @implementation PDScheduledActivityClient
 
-- (PDScheduledActivityClient)initWithClientInstance:(id)a3 activityQueue:(id)a4
+- (PDScheduledActivityClient)initWithClientInstance:(id)instance activityQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  instanceCopy = instance;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = PDScheduledActivityClient;
   v8 = [(PDScheduledActivityClient *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_clientInstance, v6);
-    objc_storeStrong(&v9->_activityQueue, a4);
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v8->_clientInstance, instanceCopy);
+    objc_storeStrong(&v9->_activityQueue, queue);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     activityRegistrations = v9->_activityRegistrations;
-    v9->_activityRegistrations = v10;
+    v9->_activityRegistrations = dictionary;
   }
 
   return v9;
 }
 
-- (PDScheduledActivityClient)initWithCoder:(id)a3
+- (PDScheduledActivityClient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PDScheduledActivityClient;
   v5 = [(PDScheduledActivityClient *)&v13 init];
@@ -39,7 +39,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"activityRegistrations"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"activityRegistrations"];
     activityRegistrations = v5->_activityRegistrations;
     v5->_activityRegistrations = v10;
   }

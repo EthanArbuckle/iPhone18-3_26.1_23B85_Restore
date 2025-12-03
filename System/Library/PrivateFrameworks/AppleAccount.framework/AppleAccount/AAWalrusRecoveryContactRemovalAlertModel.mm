@@ -1,10 +1,10 @@
 @interface AAWalrusRecoveryContactRemovalAlertModel
-- (id)initWhenAccountHasRecoveryContact:(BOOL)a3 hasRecoveryKey:(BOOL)a4;
+- (id)initWhenAccountHasRecoveryContact:(BOOL)contact hasRecoveryKey:(BOOL)key;
 @end
 
 @implementation AAWalrusRecoveryContactRemovalAlertModel
 
-- (id)initWhenAccountHasRecoveryContact:(BOOL)a3 hasRecoveryKey:(BOOL)a4
+- (id)initWhenAccountHasRecoveryContact:(BOOL)contact hasRecoveryKey:(BOOL)key
 {
   v20.receiver = self;
   v20.super_class = AAWalrusRecoveryContactRemovalAlertModel;
@@ -17,14 +17,14 @@
 
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v10 = v9;
-    if (a3)
+    if (contact)
     {
       v11 = @"REMOVE_RECOVERY_CONTACT_DETAIL_HAS_ANOTHER_RC";
     }
 
     else
     {
-      if (!a4)
+      if (!key)
       {
         v13 = [v9 localizedStringForKey:@"REMOVE_RECOVERY_CONTACT_DETAIL_DEFAULT" value:0 table:@"Localizable-Walrus"];
         [(AAAccountContactPromptModel *)v6 setDetailsSubtitle:v13];

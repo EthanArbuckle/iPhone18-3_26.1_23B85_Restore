@@ -1,53 +1,53 @@
 @interface PCSSyncing
 + (id)defaultPCSSyncing;
-- (BOOL)activityIsScheduled:(id)a3;
-- (BOOL)ensureMKExists:(_PCSIdentitySetData *)a3 error:(__CFError *)a4;
-- (BOOL)forceSyncNeeded:(id)a3 dsid:(id)a4;
-- (BOOL)getServicesToRoll:(id)a3 handler:(id)a4;
+- (BOOL)activityIsScheduled:(id)scheduled;
+- (BOOL)ensureMKExists:(_PCSIdentitySetData *)exists error:(__CFError *)error;
+- (BOOL)forceSyncNeeded:(id)needed dsid:(id)dsid;
+- (BOOL)getServicesToRoll:(id)roll handler:(id)handler;
 - (BOOL)shouldRoll;
 - (BOOL)shouldRollStingray;
-- (PCSSyncing)initWithPCSKeySyncing:(id)a3;
-- (_PCSIdentitySetData)identityCopySet:(id)a3;
+- (PCSSyncing)initWithPCSKeySyncing:(id)syncing;
+- (_PCSIdentitySetData)identityCopySet:(id)set;
 - (id)getRollEpoch;
 - (id)healthSummary;
 - (id)initForTesting;
 - (int64_t)attemptTimer;
 - (void)checkForBackupStateChange;
 - (void)clearNextSyncNegativeCache;
-- (void)disableWalrusForAccount:(id)a3 withParameters:(id)a4 complete:(id)a5;
-- (void)enableWalrusForAccount:(id)a3 withParameters:(id)a4 complete:(id)a5;
+- (void)disableWalrusForAccount:(id)account withParameters:(id)parameters complete:(id)complete;
+- (void)enableWalrusForAccount:(id)account withParameters:(id)parameters complete:(id)complete;
 - (void)ensureManateeIdentitiesExist;
-- (void)fetchAllDeviceKeys:(id)a3 withReply:(id)a4;
-- (void)fetchStats:(id)a3;
-- (void)getAllClients:(id)a3;
-- (void)getHealthSummary:(id)a3;
-- (void)keyRollPending:(id)a3 complete:(id)a4;
-- (void)manateeStatus:(id)a3 complete:(id)a4;
-- (void)migrateToiCDPForAccount:(id)a3 withParameters:(id)a4 complete:(id)a5;
-- (void)mobileBackupRecordIDsWithReply:(id)a3;
-- (void)mobileBackupStatus:(id)a3;
+- (void)fetchAllDeviceKeys:(id)keys withReply:(id)reply;
+- (void)fetchStats:(id)stats;
+- (void)getAllClients:(id)clients;
+- (void)getHealthSummary:(id)summary;
+- (void)keyRollPending:(id)pending complete:(id)complete;
+- (void)manateeStatus:(id)status complete:(id)complete;
+- (void)migrateToiCDPForAccount:(id)account withParameters:(id)parameters complete:(id)complete;
+- (void)mobileBackupRecordIDsWithReply:(id)reply;
+- (void)mobileBackupStatus:(id)status;
 - (void)notifyDailyEvent;
-- (void)notifyEvent:(id)a3;
-- (void)notifyInternalEvent:(id)a3;
+- (void)notifyEvent:(id)event;
+- (void)notifyInternalEvent:(id)event;
 - (void)notifyKeyRegistry;
-- (void)queuedCheckRegistry:(id)a3 withReply:(id)a4;
+- (void)queuedCheckRegistry:(id)registry withReply:(id)reply;
 - (void)recordEpochForKeyroll;
 - (void)repairWalrus;
-- (void)restoreMobileBackup:(BOOL)a3 dsid:(id)a4 withReply:(id)a5;
-- (void)rollingComplete:(BOOL)a3;
+- (void)restoreMobileBackup:(BOOL)backup dsid:(id)dsid withReply:(id)reply;
+- (void)rollingComplete:(BOOL)complete;
 - (void)scheduleRollAttempt;
-- (void)setupIdentitiesForAccount:(id)a3 withParameters:(id)a4 optional:(BOOL)a5;
-- (void)setupIdentitiesWithParameters:(id)a3 complete:(id)a4;
+- (void)setupIdentitiesForAccount:(id)account withParameters:(id)parameters optional:(BOOL)optional;
+- (void)setupIdentitiesWithParameters:(id)parameters complete:(id)complete;
 - (void)setupMetrics;
-- (void)syncKeys:(id)a3 withReply:(id)a4;
-- (void)triggerCKKSSyncForService:(id)a3 dsid:(id)a4 publicKeys:(id)a5 complete:(id)a6;
-- (void)triggerDaily:(id)a3 withReply:(id)a4;
-- (void)triggerEscrowSyncWithDSID:(id)a3 accountIdentifier:(id)a4 settingsKeyExpirationDate:(id)a5 settingsKeyIdentifier:(id)a6 complete:(id)a7;
+- (void)syncKeys:(id)keys withReply:(id)reply;
+- (void)triggerCKKSSyncForService:(id)service dsid:(id)dsid publicKeys:(id)keys complete:(id)complete;
+- (void)triggerDaily:(id)daily withReply:(id)reply;
+- (void)triggerEscrowSyncWithDSID:(id)d accountIdentifier:(id)identifier settingsKeyExpirationDate:(id)date settingsKeyIdentifier:(id)keyIdentifier complete:(id)complete;
 - (void)triggerKeyRolling;
-- (void)triggerSyncingWithEscrowProxy:(id)a3 dsid:(id)a4 publicKeys:(id)a5 accountIdentifier:(id)a6 settingsKeyExpirationDate:(id)a7 settingsKeyIdentifier:(id)a8 complete:(id)a9;
+- (void)triggerSyncingWithEscrowProxy:(id)proxy dsid:(id)dsid publicKeys:(id)keys accountIdentifier:(id)identifier settingsKeyExpirationDate:(id)date settingsKeyIdentifier:(id)keyIdentifier complete:(id)complete;
 - (void)triggerWatchSyncing;
-- (void)triggerWatchSyncing:(id)a3;
-- (void)userDBBackupRecordIDsWithReply:(id)a3;
+- (void)triggerWatchSyncing:(id)syncing;
+- (void)userDBBackupRecordIDsWithReply:(id)reply;
 - (void)wStateChanged;
 @end
 
@@ -94,9 +94,9 @@
   return v2;
 }
 
-- (PCSSyncing)initWithPCSKeySyncing:(id)a3
+- (PCSSyncing)initWithPCSKeySyncing:(id)syncing
 {
-  v4 = a3;
+  syncingCopy = syncing;
   v34.receiver = self;
   v34.super_class = PCSSyncing;
   v5 = [(PCSSyncing *)&v34 init];
@@ -116,10 +116,10 @@
     v5->_settings = v10;
 
     v12 = [PCSIDSTransport transportWithIDSServiceName:off_100040620];
-    v13 = [[PCSIDSSyncing alloc] initWithManager:v4 transport:v12 serialQueue:v5->_serialOperationQueue];
+    v13 = [[PCSIDSSyncing alloc] initWithManager:syncingCopy transport:v12 serialQueue:v5->_serialOperationQueue];
     [(PCSSyncing *)v5 setSyncing:v13];
 
-    [(PCSSyncing *)v5 setManager:v4];
+    [(PCSSyncing *)v5 setManager:syncingCopy];
     v14 = +[PCSAccountsModel defaultAccountsModel];
     [(PCSSyncing *)v5 setAccounts:v14];
 
@@ -129,34 +129,34 @@
     if ((_PCSIsMultiDevice() & 1) == 0)
     {
       v16 = [PCSUserRegistry alloc];
-      v17 = [(PCSSyncing *)v5 mobileBackup];
-      v18 = [(PCSUserRegistry *)v16 initWithBackup:v17];
+      mobileBackup = [(PCSSyncing *)v5 mobileBackup];
+      v18 = [(PCSUserRegistry *)v16 initWithBackup:mobileBackup];
       [(PCSSyncing *)v5 setRegistry:v18];
 
-      v19 = [(PCSSyncing *)v5 registry];
-      [v19 setupStatCache];
+      registry = [(PCSSyncing *)v5 registry];
+      [registry setupStatCache];
 
       v20 = dispatch_queue_create("PCSUserRegistry", 0);
       [(PCSSyncing *)v5 setRegistryQueue:v20];
 
-      v21 = [(PCSSyncing *)v5 registry];
-      [v21 setupCloudKitSyncing];
+      registry2 = [(PCSSyncing *)v5 registry];
+      [registry2 setupCloudKitSyncing];
 
-      v22 = [(PCSSyncing *)v5 registry];
-      [v22 registerCloudKitNotifications];
+      registry3 = [(PCSSyncing *)v5 registry];
+      [registry3 registerCloudKitNotifications];
     }
 
     objc_initWeak(&location, v5);
     v23 = [[PCSDelayedAction alloc] initWithLabel:@"triggerWatchSyncing" delay:30 operationQueue:v5->_serialOperationQueue];
     [(PCSSyncing *)v5 setTriggerWatchSyncingAction:v23];
 
-    v24 = [(PCSSyncing *)v5 triggerWatchSyncingAction];
+    triggerWatchSyncingAction = [(PCSSyncing *)v5 triggerWatchSyncingAction];
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_1000193C8;
     v31 = &unk_100038B28;
     objc_copyWeak(&v32, &location);
-    [v24 setAction:&v28];
+    [triggerWatchSyncingAction setAction:&v28];
 
     v25 = [(PCSSyncing *)v5 triggerWatchSyncingAction:v28];
     [v25 run];
@@ -186,11 +186,11 @@
   v3 = objc_alloc_init(NSMutableDictionary);
   [v3 setObject:&off_10003B330 forKeyedSubscript:@"version"];
   v4 = +[PCSAccountsModel accountForCurrentPersona];
-  v5 = [v4 aa_personID];
+  aa_personID = [v4 aa_personID];
 
-  if (v5)
+  if (aa_personID)
   {
-    v6 = [(PCSSyncing *)self identityCopySet:v5];
+    v6 = [(PCSSyncing *)self identityCopySet:aa_personID];
     if (v6)
     {
       v7 = v6;
@@ -211,12 +211,12 @@ LABEL_6:
   v9 = [NSNumber numberWithBool:[(PCSSyncing *)self shouldRoll]];
   [v3 setObject:v9 forKeyedSubscript:@"shouldRoll"];
 
-  v10 = [(PCSSyncing *)self getRollEpoch];
-  v11 = [NSNumber numberWithInteger:[PCSAnalytics fuzzyDaysSinceDate:v10]];
+  getRollEpoch = [(PCSSyncing *)self getRollEpoch];
+  v11 = [NSNumber numberWithInteger:[PCSAnalytics fuzzyDaysSinceDate:getRollEpoch]];
   [v3 setObject:v11 forKeyedSubscript:@"roll"];
 
-  v12 = [(PCSSyncing *)self scheduledKeyrollActivity];
-  v13 = [NSNumber numberWithBool:[(PCSSyncing *)self activityIsScheduled:v12]];
+  scheduledKeyrollActivity = [(PCSSyncing *)self scheduledKeyrollActivity];
+  v13 = [NSNumber numberWithBool:[(PCSSyncing *)self activityIsScheduled:scheduledKeyrollActivity]];
   [v3 setObject:v13 forKeyedSubscript:@"keyrollScheduled"];
 
   if ((v8 & 1) == 0)
@@ -232,15 +232,15 @@ LABEL_6:
 
 - (void)triggerWatchSyncing
 {
-  v2 = [(PCSSyncing *)self triggerWatchSyncingAction];
-  [v2 trigger];
+  triggerWatchSyncingAction = [(PCSSyncing *)self triggerWatchSyncingAction];
+  [triggerWatchSyncingAction trigger];
 }
 
 - (void)notifyKeyRegistry
 {
-  v3 = [(PCSSyncing *)self registry];
+  registry = [(PCSSyncing *)self registry];
 
-  if (v3)
+  if (registry)
   {
     v5[0] = 0;
     v5[1] = v5;
@@ -258,9 +258,9 @@ LABEL_6:
   }
 }
 
-- (void)triggerWatchSyncing:(id)a3
+- (void)triggerWatchSyncing:(id)syncing
 {
-  v4 = a3;
+  syncingCopy = syncing;
   objc_initWeak(&location, self);
   v14[0] = 0;
   v14[1] = v14;
@@ -275,12 +275,12 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Trigger syncing with watches", buf, 2u);
   }
 
-  v6 = [(PCSSyncing *)self syncing];
-  v7 = [v6 havePeers];
+  syncing = [(PCSSyncing *)self syncing];
+  havePeers = [syncing havePeers];
 
-  if (v7)
+  if (havePeers)
   {
-    v4[2](v4);
+    syncingCopy[2](syncingCopy);
     v8 = qword_1000407B8;
     if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
     {
@@ -309,7 +309,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No peers, not doing any syncing with watches", buf, 2u);
     }
 
-    v4[2](v4);
+    syncingCopy[2](syncingCopy);
   }
 
   _Block_object_dispose(v14, 8);
@@ -317,9 +317,9 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)notifyInternalEvent:(id)a3
+- (void)notifyInternalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (qword_100040788 != -1)
   {
     sub_100022CCC();
@@ -329,23 +329,23 @@ LABEL_6:
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Got darwin notification %@", buf, 0xCu);
   }
 
-  if ([v4 isEqualToString:@"_CDPWalrusStateChangeDarwinNotification"])
+  if ([eventCopy isEqualToString:@"_CDPWalrusStateChangeDarwinNotification"])
   {
     [(PCSSyncing *)self wStateChanged];
   }
 
   else
   {
-    if ([qword_100040790 containsObject:v4])
+    if ([qword_100040790 containsObject:eventCopy])
     {
       [(PCSSyncing *)self triggerWatchSyncing];
     }
 
-    if ([qword_1000407A0 containsObject:v4])
+    if ([qword_1000407A0 containsObject:eventCopy])
     {
       v6 = qword_1000407B8;
       if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
@@ -354,7 +354,7 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "MOBSTATE Got notification that mobile backup state changed.", buf, 2u);
       }
 
-      if ([v4 isEqualToString:@"com.apple.ProtectedCloudStorage.test.mobileBackupStateChange"])
+      if ([eventCopy isEqualToString:@"com.apple.ProtectedCloudStorage.test.mobileBackupStateChange"])
       {
         v7 = +[PCSAnalytics logger];
         v18 = 0;
@@ -376,8 +376,8 @@ LABEL_6:
         {
           if ([(PCSSyncing *)self shouldRoll])
           {
-            v11 = [(PCSSyncing *)self settings];
-            v12 = [v11 BOOLForKey:v8];
+            settings = [(PCSSyncing *)self settings];
+            v12 = [settings BOOLForKey:v8];
 
             if (v12)
             {
@@ -385,8 +385,8 @@ LABEL_6:
             }
           }
 
-          v13 = [(PCSSyncing *)self settings];
-          [v13 setBool:1 forKey:v8];
+          settings2 = [(PCSSyncing *)self settings];
+          [settings2 setBool:1 forKey:v8];
 
           [(PCSSyncing *)self recordEpochForKeyroll];
           [v7 logSuccessForEvent:PCSEventTestKeyRollStateChange];
@@ -399,7 +399,7 @@ LABEL_6:
       }
     }
 
-    if ([v4 isEqualToString:@"com.apple.security.view-ready.Manatee"])
+    if ([eventCopy isEqualToString:@"com.apple.security.view-ready.Manatee"])
     {
       [(PCSSyncing *)self ensureManateeIdentitiesExist];
     }
@@ -409,12 +409,12 @@ LABEL_6:
       [(PCSSyncing *)self triggerKeyRolling];
     }
 
-    if (([qword_100040798 containsObject:v4] & 1) != 0 || objc_msgSend(qword_1000407A0, "containsObject:", v4))
+    if (([qword_100040798 containsObject:eventCopy] & 1) != 0 || objc_msgSend(qword_1000407A0, "containsObject:", eventCopy))
     {
-      v15 = [(PCSSyncing *)self mobileBackup];
-      v16 = [v15 isBackupEnabled];
+      mobileBackup = [(PCSSyncing *)self mobileBackup];
+      isBackupEnabled = [mobileBackup isBackupEnabled];
 
-      if (v16)
+      if (isBackupEnabled)
       {
         v17 = qword_1000407B8;
         if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
@@ -432,11 +432,11 @@ LABEL_6:
 - (void)wStateChanged
 {
   v3 = +[PCSAccountsModel accountForCurrentPersona];
-  v7 = [v3 aa_personID];
+  aa_personID = [v3 aa_personID];
 
-  if (v7)
+  if (aa_personID)
   {
-    v4 = [(PCSSyncing *)self identityCopySet:v7];
+    v4 = [(PCSSyncing *)self identityCopySet:aa_personID];
     if (v4)
     {
       v5 = v4;
@@ -468,8 +468,8 @@ LABEL_6:
 
   if (v6)
   {
-    v8 = [(PCSSyncing *)self settings];
-    [v8 removeObjectForKey:v3];
+    settings = [(PCSSyncing *)self settings];
+    [settings removeObjectForKey:v3];
   }
 
   else
@@ -500,16 +500,16 @@ LABEL_6:
 
   else
   {
-    v12 = [(PCSSyncing *)self settings];
-    [v12 removeObjectForKey:v9];
+    settings2 = [(PCSSyncing *)self settings];
+    [settings2 removeObjectForKey:v9];
   }
 }
 
-- (void)mobileBackupStatus:(id)a3
+- (void)mobileBackupStatus:(id)status
 {
-  v5 = a3;
-  v6 = [(PCSSyncing *)self mobileBackup];
-  (*(a3 + 2))(v5, [v6 isBackupEnabled], 0);
+  statusCopy = status;
+  mobileBackup = [(PCSSyncing *)self mobileBackup];
+  (*(status + 2))(statusCopy, [mobileBackup isBackupEnabled], 0);
 }
 
 - (id)getRollEpoch
@@ -530,16 +530,16 @@ LABEL_6:
 
   if (v6)
   {
-    v9 = [(PCSSyncing *)self settings];
-    v10 = [v9 objectForKey:v3];
+    settings = [(PCSSyncing *)self settings];
+    v10 = [settings objectForKey:v3];
 
     if (v10)
     {
       v11 = +[NSDate date];
       if ([v10 compare:v11] == 1 || (objc_msgSend(v10, "timeIntervalSince1970"), v12 == 0.0))
       {
-        v13 = [(PCSSyncing *)self settings];
-        [v13 removeObjectForKey:v3];
+        settings2 = [(PCSSyncing *)self settings];
+        [settings2 removeObjectForKey:v3];
 
         v8 = 0;
       }
@@ -591,8 +591,8 @@ LABEL_6:
 
   if (v7)
   {
-    v9 = [(PCSSyncing *)self settings];
-    [v9 setObject:v3 forKey:v4];
+    settings = [(PCSSyncing *)self settings];
+    [settings setObject:v3 forKey:v4];
   }
 
   else
@@ -611,7 +611,7 @@ LABEL_6:
 {
   objc_initWeak(&location, self);
   v3 = dispatch_semaphore_create(0);
-  v4 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001A9AC;
@@ -619,8 +619,8 @@ LABEL_6:
   objc_copyWeak(&v9, &location);
   v5 = v3;
   v7 = v5;
-  v8 = self;
-  [v4 addOperationWithBlock:v6];
+  selfCopy = self;
+  [serialOperationQueue addOperationWithBlock:v6];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   objc_destroyWeak(&v9);
@@ -630,26 +630,26 @@ LABEL_6:
 
 - (BOOL)shouldRoll
 {
-  v3 = [(PCSSyncing *)self getRollEpoch];
-  if (v3)
+  getRollEpoch = [(PCSSyncing *)self getRollEpoch];
+  if (getRollEpoch)
   {
     v4 = qword_1000407B8;
     if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = getRollEpoch;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "There is a pending keyRoll for epoch %@", &v7, 0xCu);
     }
 
-    v5 = 1;
+    shouldRollStingray = 1;
   }
 
   else
   {
-    v5 = [(PCSSyncing *)self shouldRollStingray];
+    shouldRollStingray = [(PCSSyncing *)self shouldRollStingray];
   }
 
-  return v5;
+  return shouldRollStingray;
 }
 
 - (BOOL)shouldRollStingray
@@ -672,8 +672,8 @@ LABEL_6:
 
     if (v8)
     {
-      v10 = [(PCSSyncing *)self settings];
-      v11 = [v10 objectForKey:v5];
+      settings = [(PCSSyncing *)self settings];
+      v11 = [settings objectForKey:v5];
 
       if (v11)
       {
@@ -764,11 +764,11 @@ LABEL_26:
 
 - (int64_t)attemptTimer
 {
-  v3 = [(PCSSyncing *)self getRollEpoch];
-  v4 = v3;
-  if (v3)
+  getRollEpoch = [(PCSSyncing *)self getRollEpoch];
+  v4 = getRollEpoch;
+  if (getRollEpoch)
   {
-    [v3 timeIntervalSinceNow];
+    [getRollEpoch timeIntervalSinceNow];
     if (v5 <= 0.0)
     {
       v12 = -v5;
@@ -799,8 +799,8 @@ LABEL_26:
 
   else
   {
-    v7 = [(PCSSyncing *)self settings];
-    v8 = [v7 objectForKey:kPCSSettingStingrayRoll];
+    settings = [(PCSSyncing *)self settings];
+    v8 = [settings objectForKey:kPCSSettingStingrayRoll];
 
     v9 = _os_feature_enabled_impl();
     v10 = &XPC_ACTIVITY_INTERVAL_1_MIN;
@@ -824,14 +824,14 @@ LABEL_26:
   return v6;
 }
 
-- (BOOL)activityIsScheduled:(id)a3
+- (BOOL)activityIsScheduled:(id)scheduled
 {
-  if (!a3)
+  if (!scheduled)
   {
     return 0;
   }
 
-  v3 = xpc_activity_copy_criteria(a3);
+  v3 = xpc_activity_copy_criteria(scheduled);
   v4 = v3;
   if (v3)
   {
@@ -849,15 +849,15 @@ LABEL_26:
 
 - (void)scheduleRollAttempt
 {
-  v3 = [(PCSSyncing *)self attemptTimer];
-  if (v3)
+  attemptTimer = [(PCSSyncing *)self attemptTimer];
+  if (attemptTimer)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10001B484;
     v5[3] = &unk_100039728;
     v5[4] = self;
-    v5[5] = v3;
+    v5[5] = attemptTimer;
     xpc_activity_register("com.apple.ProtectedCloudStorage.scheduledKeyroll", XPC_ACTIVITY_CHECK_IN, v5);
   }
 
@@ -875,12 +875,12 @@ LABEL_26:
   }
 }
 
-- (BOOL)getServicesToRoll:(id)a3 handler:(id)a4
+- (BOOL)getServicesToRoll:(id)roll handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PCSSyncing *)self getRollEpoch];
-  v9 = [(PCSSyncing *)self identityCopySet:v6];
+  rollCopy = roll;
+  handlerCopy = handler;
+  getRollEpoch = [(PCSSyncing *)self getRollEpoch];
+  v9 = [(PCSSyncing *)self identityCopySet:rollCopy];
   if (v9)
   {
     v23 = 0;
@@ -893,10 +893,10 @@ LABEL_26:
     v20 = sub_1000194C8;
     v21 = sub_1000194D8;
     v22 = 0;
-    v13 = v8;
-    v16 = v7;
+    v13 = getRollEpoch;
+    v16 = handlerCopy;
     v14 = v10;
-    v15 = v6;
+    v15 = rollCopy;
     PCSServiceItemsInfoIteration();
     CFRelease(v9);
 
@@ -916,7 +916,7 @@ LABEL_26:
   return v9 != 0;
 }
 
-- (void)rollingComplete:(BOOL)a3
+- (void)rollingComplete:(BOOL)complete
 {
   v18 = 0;
   v5 = [PCSAccountsModel settingsKeyForKey:kPCSPendingRollEpoch error:&v18];
@@ -934,8 +934,8 @@ LABEL_26:
 
   if (v8)
   {
-    v10 = [(PCSSyncing *)self settings];
-    [v10 removeObjectForKey:v5];
+    settings = [(PCSSyncing *)self settings];
+    [settings removeObjectForKey:v5];
   }
 
   else
@@ -949,7 +949,7 @@ LABEL_26:
     }
   }
 
-  if (!a3)
+  if (!complete)
   {
     v17 = 0;
     v11 = [PCSAccountsModel settingsKeyForKey:kPCSSettingStingrayRoll error:&v17];
@@ -967,8 +967,8 @@ LABEL_26:
 
     if (v14)
     {
-      v16 = [(PCSSyncing *)self settings];
-      [v16 removeObjectForKey:v11];
+      settings2 = [(PCSSyncing *)self settings];
+      [settings2 removeObjectForKey:v11];
     }
 
     else
@@ -989,20 +989,20 @@ LABEL_26:
 - (void)triggerKeyRolling
 {
   objc_initWeak(&location, self);
-  v3 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001BEF8;
   v4[3] = &unk_100038F00;
   objc_copyWeak(&v5, &location);
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [serialOperationQueue addOperationWithBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)ensureMKExists:(_PCSIdentitySetData *)a3 error:(__CFError *)a4
+- (BOOL)ensureMKExists:(_PCSIdentitySetData *)exists error:(__CFError *)error
 {
   cf = 0;
   v5 = _PCSIdentitySetCopyCurrentIdentityInternal();
@@ -1042,9 +1042,9 @@ LABEL_15:
     v7 = 0;
 LABEL_4:
     v8 = cf;
-    if (a4 && cf)
+    if (error && cf)
     {
-      *a4 = CFRetain(cf);
+      *error = CFRetain(cf);
       v8 = cf;
     }
 
@@ -1078,56 +1078,56 @@ LABEL_4:
     goto LABEL_15;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
   return 0;
 }
 
-- (void)triggerEscrowSyncWithDSID:(id)a3 accountIdentifier:(id)a4 settingsKeyExpirationDate:(id)a5 settingsKeyIdentifier:(id)a6 complete:(id)a7
+- (void)triggerEscrowSyncWithDSID:(id)d accountIdentifier:(id)identifier settingsKeyExpirationDate:(id)date settingsKeyIdentifier:(id)keyIdentifier complete:(id)complete
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
+  dateCopy = date;
+  keyIdentifierCopy = keyIdentifier;
+  completeCopy = complete;
   objc_initWeak(&location, self);
-  v17 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10001CC70;
   v23[3] = &unk_1000397F0;
   objc_copyWeak(&v30, &location);
-  v18 = v16;
+  v18 = completeCopy;
   v29 = v18;
-  v19 = v12;
+  v19 = dCopy;
   v24 = v19;
-  v20 = v13;
+  v20 = identifierCopy;
   v25 = v20;
-  v26 = self;
-  v21 = v15;
+  selfCopy = self;
+  v21 = keyIdentifierCopy;
   v27 = v21;
-  v22 = v14;
+  v22 = dateCopy;
   v28 = v22;
-  [v17 addOperationWithBlock:v23];
+  [serialOperationQueue addOperationWithBlock:v23];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)forceSyncNeeded:(id)a3 dsid:(id)a4
+- (BOOL)forceSyncNeeded:(id)needed dsid:(id)dsid
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  neededCopy = needed;
+  dsidCopy = dsid;
+  if (!neededCopy)
   {
     LOBYTE(v11) = 0;
     goto LABEL_22;
   }
 
-  if (![v6 count])
+  if (![neededCopy count])
   {
     v16 = qword_1000407B8;
     if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
@@ -1143,7 +1143,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v8 = [(PCSSyncing *)self identityCopySet:v7];
+  v8 = [(PCSSyncing *)self identityCopySet:dsidCopy];
   if (!v8)
   {
     v16 = qword_1000407B8;
@@ -1162,7 +1162,7 @@ LABEL_21:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = neededCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v11)
   {
@@ -1205,12 +1205,12 @@ LABEL_22:
   return v11;
 }
 
-- (void)triggerCKKSSyncForService:(id)a3 dsid:(id)a4 publicKeys:(id)a5 complete:(id)a6
+- (void)triggerCKKSSyncForService:(id)service dsid:(id)dsid publicKeys:(id)keys complete:(id)complete
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  dsidCopy = dsid;
+  keysCopy = keys;
+  completeCopy = complete;
   objc_initWeak(&location, self);
   if ((PCSSupportsPersonaMultiuser() & 1) == 0)
   {
@@ -1220,41 +1220,41 @@ LABEL_22:
     v16 = v15;
     if ((v14 & 1) == 0)
     {
-      (*(v13 + 2))(v13, 0, 0, v15);
+      (*(completeCopy + 2))(completeCopy, 0, 0, v15);
 
       goto LABEL_6;
     }
   }
 
-  v17 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10001D660;
   v18[3] = &unk_100039840;
   objc_copyWeak(&v24, &location);
-  v23 = v13;
-  v19 = v10;
-  v20 = self;
-  v21 = v12;
-  v22 = v11;
-  [v17 addOperationWithBlock:v18];
+  v23 = completeCopy;
+  v19 = serviceCopy;
+  selfCopy = self;
+  v21 = keysCopy;
+  v22 = dsidCopy;
+  [serialOperationQueue addOperationWithBlock:v18];
 
   objc_destroyWeak(&v24);
 LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)triggerSyncingWithEscrowProxy:(id)a3 dsid:(id)a4 publicKeys:(id)a5 accountIdentifier:(id)a6 settingsKeyExpirationDate:(id)a7 settingsKeyIdentifier:(id)a8 complete:(id)a9
+- (void)triggerSyncingWithEscrowProxy:(id)proxy dsid:(id)dsid publicKeys:(id)keys accountIdentifier:(id)identifier settingsKeyExpirationDate:(id)date settingsKeyIdentifier:(id)keyIdentifier complete:(id)complete
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  proxyCopy = proxy;
+  dsidCopy = dsid;
+  keysCopy = keys;
+  identifierCopy = identifier;
+  dateCopy = date;
+  keyIdentifierCopy = keyIdentifier;
+  completeCopy = complete;
   cf = 0;
-  if (CFEqual(v15, kPCSServiceMaster) || (v23 = [(PCSSyncing *)self identityCopySet:v16]) == 0)
+  if (CFEqual(proxyCopy, kPCSServiceMaster) || (v23 = [(PCSSyncing *)self identityCopySet:dsidCopy]) == 0)
   {
     _PCSError();
   }
@@ -1262,7 +1262,7 @@ LABEL_6:
   else
   {
     v22 = v23;
-    if (v15)
+    if (proxyCopy)
     {
       IsManatee = PCSServiceItemTypeIsManatee();
     }
@@ -1276,7 +1276,7 @@ LABEL_6:
     {
       if (!IsManatee)
       {
-        [(PCSSyncing *)self triggerEscrowSyncWithDSID:v16 accountIdentifier:v18 settingsKeyExpirationDate:v19 settingsKeyIdentifier:v20 complete:v21];
+        [(PCSSyncing *)self triggerEscrowSyncWithDSID:dsidCopy accountIdentifier:identifierCopy settingsKeyExpirationDate:dateCopy settingsKeyIdentifier:keyIdentifierCopy complete:completeCopy];
         goto LABEL_5;
       }
 
@@ -1287,18 +1287,18 @@ LABEL_6:
     {
       if ((IsManatee & 1) == 0)
       {
-        [(PCSSyncing *)self triggerEscrowSyncWithDSID:v16 accountIdentifier:v18 settingsKeyExpirationDate:v19 settingsKeyIdentifier:v20 complete:&stru_100039880];
+        [(PCSSyncing *)self triggerEscrowSyncWithDSID:dsidCopy accountIdentifier:identifierCopy settingsKeyExpirationDate:dateCopy settingsKeyIdentifier:keyIdentifierCopy complete:&stru_100039880];
       }
 
 LABEL_17:
-      [(PCSSyncing *)self triggerCKKSSyncForService:v15 dsid:v16 publicKeys:v17 complete:v21];
+      [(PCSSyncing *)self triggerCKKSSyncForService:proxyCopy dsid:dsidCopy publicKeys:keysCopy complete:completeCopy];
       goto LABEL_5;
     }
 
     CFRelease(v22);
   }
 
-  (*(v21 + 2))(v21, 0, 0, cf);
+  (*(completeCopy + 2))(completeCopy, 0, 0, cf);
   v22 = cf;
   if (cf)
   {
@@ -1308,100 +1308,100 @@ LABEL_5:
   }
 }
 
-- (void)setupIdentitiesForAccount:(id)a3 withParameters:(id)a4 optional:(BOOL)a5
+- (void)setupIdentitiesForAccount:(id)account withParameters:(id)parameters optional:(BOOL)optional
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  parametersCopy = parameters;
   objc_initWeak(&location, self);
-  v10 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001DDE0;
   v13[3] = &unk_100039238;
   objc_copyWeak(&v16, &location);
-  v11 = v9;
+  v11 = parametersCopy;
   v14 = v11;
-  v17 = a5;
-  v12 = v8;
+  optionalCopy = optional;
+  v12 = accountCopy;
   v15 = v12;
-  [v10 addOperationWithBlock:v13];
+  [serialOperationQueue addOperationWithBlock:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)migrateToiCDPForAccount:(id)a3 withParameters:(id)a4 complete:(id)a5
+- (void)migrateToiCDPForAccount:(id)account withParameters:(id)parameters complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  parametersCopy = parameters;
+  completeCopy = complete;
   objc_initWeak(&location, self);
-  v11 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001E150;
   v14[3] = &unk_1000391C0;
   objc_copyWeak(&v17, &location);
-  v12 = v9;
+  v12 = parametersCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = completeCopy;
   v16 = v13;
-  [v11 addOperationWithBlock:v14];
+  [serialOperationQueue addOperationWithBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)enableWalrusForAccount:(id)a3 withParameters:(id)a4 complete:(id)a5
+- (void)enableWalrusForAccount:(id)account withParameters:(id)parameters complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  parametersCopy = parameters;
+  completeCopy = complete;
   objc_initWeak(&location, self);
-  v11 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001E2F8;
   v14[3] = &unk_1000391C0;
   objc_copyWeak(&v17, &location);
-  v12 = v9;
+  v12 = parametersCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = completeCopy;
   v16 = v13;
-  [v11 addOperationWithBlock:v14];
+  [serialOperationQueue addOperationWithBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)disableWalrusForAccount:(id)a3 withParameters:(id)a4 complete:(id)a5
+- (void)disableWalrusForAccount:(id)account withParameters:(id)parameters complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  parametersCopy = parameters;
+  completeCopy = complete;
   objc_initWeak(&location, self);
-  v11 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001E588;
   v14[3] = &unk_1000391C0;
   objc_copyWeak(&v17, &location);
-  v12 = v9;
+  v12 = parametersCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = completeCopy;
   v16 = v13;
-  [v11 addOperationWithBlock:v14];
+  [serialOperationQueue addOperationWithBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (_PCSIdentitySetData)identityCopySet:(id)a3
+- (_PCSIdentitySetData)identityCopySet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
+  setCopy = set;
+  v5 = setCopy;
   v17[1] = 0;
-  if (!v4)
+  if (!setCopy)
   {
     v17[0] = 0;
     v9 = [PCSAccountsModel currentPersonaSupportsPrimaryAccount:v17];
@@ -1413,10 +1413,10 @@ LABEL_5:
       if (v12)
       {
         v13 = v11;
-        v14 = [(PCSSyncing *)self accounts];
-        v15 = [v14 lastError];
+        accounts = [(PCSSyncing *)self accounts];
+        lastError = [accounts lastError];
         *buf = 138412290;
-        v21 = v15;
+        v21 = lastError;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Fail getting dsid: %@", buf, 0xCu);
       }
     }
@@ -1433,7 +1433,7 @@ LABEL_5:
   }
 
   v18 = kPCSSetupDSID;
-  v19 = v4;
+  v19 = setCopy;
   v6 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v7 = PCSIdentitySetCreate();
   if (!v7)
@@ -1451,13 +1451,13 @@ LABEL_12:
 
 - (void)repairWalrus
 {
-  v3 = [(PCSSyncing *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(PCSSyncing *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(PCSSyncing *)self accounts];
-  v5 = [v4 dsid];
+  accounts = [(PCSSyncing *)self accounts];
+  dsid = [accounts dsid];
 
-  v6 = [(PCSSyncing *)self identityCopySet:v5];
+  v6 = [(PCSSyncing *)self identityCopySet:dsid];
   if (v6)
   {
     v7 = v6;
@@ -1466,7 +1466,7 @@ LABEL_12:
     if (v8)
     {
       v11 = kPCSSetupDSID;
-      v12 = v5;
+      v12 = dsid;
       v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
       [(PCSSyncing *)self enableWalrusForAccount:0 withParameters:v10 complete:&stru_100039938];
     }
@@ -1485,43 +1485,43 @@ LABEL_12:
 
 - (void)notifyDailyEvent
 {
-  v3 = [(PCSSyncing *)self internalQueue];
+  internalQueue = [(PCSSyncing *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001FA70;
   block[3] = &unk_100038C58;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
-- (void)notifyEvent:(id)a3
+- (void)notifyEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PCSSyncing *)self internalQueue];
+  eventCopy = event;
+  internalQueue = [(PCSSyncing *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001FE18;
   v7[3] = &unk_100038CA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(internalQueue, v7);
 }
 
-- (void)queuedCheckRegistry:(id)a3 withReply:(id)a4
+- (void)queuedCheckRegistry:(id)registry withReply:(id)reply
 {
-  v5 = a4;
-  v6 = [(PCSSyncing *)self registry];
-  if (v6 && (v7 = v6, -[PCSSyncing mobileBackup](self, "mobileBackup"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isBackupEnabled], v8, v7, v9))
+  replyCopy = reply;
+  registry = [(PCSSyncing *)self registry];
+  if (registry && (v7 = registry, -[PCSSyncing mobileBackup](self, "mobileBackup"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isBackupEnabled], v8, v7, v9))
   {
-    v10 = [(PCSSyncing *)self registryQueue];
+    registryQueue = [(PCSSyncing *)self registryQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001FFC4;
     block[3] = &unk_100038F50;
     block[4] = self;
-    v15 = v5;
-    dispatch_async(v10, block);
+    v15 = replyCopy;
+    dispatch_async(registryQueue, block);
 
     v11 = v15;
   }
@@ -1533,47 +1533,47 @@ LABEL_12:
     v17 = @"Mobile backup is disabled";
     v11 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v13 = [NSError errorWithDomain:v12 code:137 userInfo:v11];
-    (*(v5 + 2))(v5, v13);
+    (*(replyCopy + 2))(replyCopy, v13);
   }
 }
 
-- (void)getAllClients:(id)a3
+- (void)getAllClients:(id)clients
 {
-  v4 = a3;
-  v5 = [(PCSSyncing *)self manager];
-  v6 = [v5 allClients];
+  clientsCopy = clients;
+  manager = [(PCSSyncing *)self manager];
+  allClients = [manager allClients];
 
   +[NSMutableDictionary dictionary];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000202E0;
   v9 = v8[3] = &unk_1000399E8;
-  v10 = self;
+  selfCopy = self;
   v7 = v9;
-  [v6 enumerateObjectsUsingBlock:v8];
-  v4[2](v4, v7, 0);
+  [allClients enumerateObjectsUsingBlock:v8];
+  clientsCopy[2](clientsCopy, v7, 0);
 }
 
-- (void)syncKeys:(id)a3 withReply:(id)a4
+- (void)syncKeys:(id)keys withReply:(id)reply
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(PCSSyncing *)self syncing];
-  [v7 triggerIDSSyncing:v6];
+  replyCopy = reply;
+  keysCopy = keys;
+  syncing = [(PCSSyncing *)self syncing];
+  [syncing triggerIDSSyncing:keysCopy];
 
-  v8[2](v8, &__NSDictionary0__struct, 0);
+  replyCopy[2](replyCopy, &__NSDictionary0__struct, 0);
 }
 
-- (void)triggerDaily:(id)a3 withReply:(id)a4
+- (void)triggerDaily:(id)daily withReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   [(PCSSyncing *)self notifyDailyEvent];
-  v5[2](v5, &__NSDictionary0__struct, 0);
+  replyCopy[2](replyCopy, &__NSDictionary0__struct, 0);
 }
 
-- (void)fetchAllDeviceKeys:(id)a3 withReply:(id)a4
+- (void)fetchAllDeviceKeys:(id)keys withReply:(id)reply
 {
-  v4 = a4;
+  replyCopy = reply;
   v5 = qword_1000407B8;
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1582,14 +1582,14 @@ LABEL_12:
   }
 
   v6 = PCSErrorCreate();
-  (*(v4 + 2))(v4, 0, 0, 0, 0, v6);
+  (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, v6);
 }
 
-- (void)restoreMobileBackup:(BOOL)a3 dsid:(id)a4 withReply:(id)a5
+- (void)restoreMobileBackup:(BOOL)backup dsid:(id)dsid withReply:(id)reply
 {
-  v74 = a3;
-  v7 = a4;
-  v8 = a5;
+  backupCopy = backup;
+  dsidCopy = dsid;
+  replyCopy = reply;
   if ((PCSSupportsPersonaMultiuser() & 1) == 0)
   {
     v84 = 0;
@@ -1598,7 +1598,7 @@ LABEL_12:
     if ((v9 & 1) == 0)
     {
       v76 = v10;
-      (*(v8 + 2))(v8, 0, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0);
       goto LABEL_24;
     }
   }
@@ -1607,7 +1607,7 @@ LABEL_12:
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = "restore";
-    if (v74)
+    if (backupCopy)
     {
       v12 = "test";
     }
@@ -1620,7 +1620,7 @@ LABEL_12:
   v13 = +[PCSAnalytics logger];
   v72 = PCSEventMobileRestore;
   v73 = PCSEventMBValidate;
-  if (v74)
+  if (backupCopy)
   {
     v14 = PCSEventMBValidate;
   }
@@ -1631,55 +1631,55 @@ LABEL_12:
   }
 
   v15 = v14;
-  v16 = [(PCSSyncing *)self registry];
+  registry = [(PCSSyncing *)self registry];
 
   v76 = v13;
-  if (!v16)
+  if (!registry)
   {
     v18 = PCSErrorCreate();
-    (*(v8 + 2))(v8, 0, 0, 0, v18);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v18);
     v27 = v13;
 LABEL_22:
     [v27 logRecoverableError:v18 forEvent:v15 withAttributes:0];
     goto LABEL_23;
   }
 
-  if (!v7)
+  if (!dsidCopy)
   {
     v18 = PCSErrorCreate();
     goto LABEL_21;
   }
 
   v83 = 0;
-  v17 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:v7 error:&v83];
+  v17 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:dsidCopy error:&v83];
   v18 = v83;
   if ((v17 & 1) == 0)
   {
 LABEL_21:
-    (*(v8 + 2))(v8, 0, 0, 0, v18);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v18);
     v27 = v13;
     goto LABEL_22;
   }
 
-  v19 = [(PCSSyncing *)self registry];
-  v20 = [v19 syncUserRegistry];
+  registry2 = [(PCSSyncing *)self registry];
+  syncUserRegistry = [registry2 syncUserRegistry];
 
-  [v20 waitUntilFinished];
+  [syncUserRegistry waitUntilFinished];
   v21 = qword_1000407B8;
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
-    v23 = [v20 error];
+    error = [syncUserRegistry error];
     *buf = 138412290;
-    *v86 = v23;
+    *v86 = error;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "restoreMobileBackup: sync finished with: %@", buf, 0xCu);
   }
 
-  v24 = [v20 error];
+  error2 = [syncUserRegistry error];
 
-  if (v24)
+  if (error2)
   {
-    v25 = [v20 error];
+    error3 = [syncUserRegistry error];
     v26 = CKXPCSuitableError();
   }
 
@@ -1688,12 +1688,12 @@ LABEL_21:
     v26 = 0;
   }
 
-  v28 = [(PCSSyncing *)self registry];
-  v29 = [v28 allMobileBackupKeys];
+  registry3 = [(PCSSyncing *)self registry];
+  allMobileBackupKeys = [registry3 allMobileBackupKeys];
 
-  v69 = v29;
+  v69 = allMobileBackupKeys;
   v70 = v26;
-  if (!v29)
+  if (!allMobileBackupKeys)
   {
     v44 = 0;
     v78 = 0;
@@ -1708,7 +1708,7 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "restoreMobileBackup: got reply from server", buf, 2u);
   }
 
-  v38 = sub_100020E40(kCFAllocatorDefault, v31, v32, v33, v34, v35, v36, v37, kPCSSetupDSID, v7);
+  v38 = sub_100020E40(kCFAllocatorDefault, v31, v32, v33, v34, v35, v36, v37, kPCSSetupDSID, dsidCopy);
   Keychain = PCSIdentitySetCreateKeychain();
   v77 = PCSIdentitySetCreateKeychain();
   if (v38)
@@ -1727,16 +1727,16 @@ LABEL_21:
     goto LABEL_69;
   }
 
-  v65 = v20;
+  v65 = syncUserRegistry;
   v66 = v18;
   v40 = v15;
-  v67 = v8;
-  v68 = v7;
+  v67 = replyCopy;
+  v68 = dsidCopy;
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v41 = v29;
+  v41 = allMobileBackupKeys;
   v42 = [v41 countByEnumeratingWithState:&v79 objects:v89 count:16];
   if (!v42)
   {
@@ -1752,7 +1752,7 @@ LABEL_21:
   v75 = 0;
   v45 = *v80;
   v46 = @"Would Be";
-  if (!v74)
+  if (!backupCopy)
   {
     v46 = &stru_100039CF8;
   }
@@ -1768,7 +1768,7 @@ LABEL_21:
         objc_enumerationMutation(v41);
       }
 
-      v49 = [*(*(&v79 + 1) + 8 * i) data];
+      data = [*(*(&v79 + 1) + 8 * i) data];
       v50 = PCSBackupCopyRecoveredKeyWithIdentitySet();
 
       if (v50)
@@ -1816,7 +1816,7 @@ LABEL_51:
                 _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "%@ Adding missing identity", buf, 0xCu);
               }
 
-              if (v74)
+              if (backupCopy)
               {
                 key = PCSIdentityGetServiceName();
                 v58 = PCSErrorCreate();
@@ -1876,10 +1876,10 @@ LABEL_66:
   }
 
   CFRelease(Keychain);
-  v8 = v67;
-  v7 = v68;
+  replyCopy = v67;
+  dsidCopy = v68;
   v15 = v40;
-  v20 = v65;
+  syncUserRegistry = v65;
   v18 = v66;
 LABEL_69:
   if (v77)
@@ -1891,7 +1891,7 @@ LABEL_71:
   v60 = [[NSNumber alloc] initWithInt:v44];
   v61 = [[NSNumber alloc] initWithInt:v75];
   v62 = [[NSNumber alloc] initWithInt:v78];
-  (*(v8 + 2))(v8, v60, v61, v62, v70);
+  (*(replyCopy + 2))(replyCopy, v60, v61, v62, v70);
 
   if (v70)
   {
@@ -1902,17 +1902,17 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)mobileBackupRecordIDsWithReply:(id)a3
+- (void)mobileBackupRecordIDsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PCSSyncing *)self registry];
+  replyCopy = reply;
+  registry = [(PCSSyncing *)self registry];
 
-  if (v5)
+  if (registry)
   {
-    v6 = [(PCSSyncing *)self registry];
+    registry2 = [(PCSSyncing *)self registry];
     v8 = 0;
-    v7 = [v6 fetchMobileBackupRecordIDsWithError:&v8];
-    v5 = v8;
+    v7 = [registry2 fetchMobileBackupRecordIDsWithError:&v8];
+    registry = v8;
   }
 
   else
@@ -1920,20 +1920,20 @@ LABEL_24:
     v7 = 0;
   }
 
-  v4[2](v4, v7, v5);
+  replyCopy[2](replyCopy, v7, registry);
 }
 
-- (void)userDBBackupRecordIDsWithReply:(id)a3
+- (void)userDBBackupRecordIDsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PCSSyncing *)self registry];
+  replyCopy = reply;
+  registry = [(PCSSyncing *)self registry];
 
-  if (v5)
+  if (registry)
   {
-    v6 = [(PCSSyncing *)self registry];
+    registry2 = [(PCSSyncing *)self registry];
     v8 = 0;
-    v7 = [v6 userDBBackupRecordIDsWithError:&v8];
-    v5 = v8;
+    v7 = [registry2 userDBBackupRecordIDsWithError:&v8];
+    registry = v8;
   }
 
   else
@@ -1941,38 +1941,38 @@ LABEL_24:
     v7 = 0;
   }
 
-  v4[2](v4, v7, v5);
+  replyCopy[2](replyCopy, v7, registry);
 }
 
-- (void)fetchStats:(id)a3
+- (void)fetchStats:(id)stats
 {
-  v4 = a3;
-  v5 = [(PCSSyncing *)self registry];
+  statsCopy = stats;
+  registry = [(PCSSyncing *)self registry];
 
-  if (v5)
+  if (registry)
   {
-    v7 = [(PCSSyncing *)self registry];
-    v6 = [v7 stats];
-    v4[2](v4, v6);
+    registry2 = [(PCSSyncing *)self registry];
+    stats = [registry2 stats];
+    statsCopy[2](statsCopy, stats);
 
-    v4 = v6;
+    statsCopy = stats;
   }
 
   else
   {
-    v7 = objc_alloc_init(UserRegistryStats);
-    (v4[2])(v4);
+    registry2 = objc_alloc_init(UserRegistryStats);
+    (statsCopy[2])(statsCopy);
   }
 }
 
-- (void)manateeStatus:(id)a3 complete:(id)a4
+- (void)manateeStatus:(id)status complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  statusCopy = status;
+  completeCopy = complete;
   v7 = +[PCSAccountsModel accountForCurrentPersona];
   v8 = objc_alloc_init(OTConfigurationContext);
-  v9 = [v7 aa_altDSID];
-  [v8 setAltDSID:v9];
+  aa_altDSID = [v7 aa_altDSID];
+  [v8 setAltDSID:aa_altDSID];
 
   [v8 setContext:OTDefaultContext];
   v10 = [[OTClique alloc] initWithContextData:v8];
@@ -2001,10 +2001,10 @@ LABEL_24:
       v15 = dword_100029B10[v12 + 1];
     }
 
-    v6[2](v6, v15);
+    completeCopy[2](completeCopy, v15);
   }
 
-  if (v5)
+  if (statusCopy)
   {
     v25 = 0;
     v16 = [CKKSControl controlObject:&v25];
@@ -2022,20 +2022,20 @@ LABEL_24:
       p_buf = &buf;
       v17 = dispatch_semaphore_create(0);
       v23 = v17;
-      [v16 rpcStatus:v5 reply:v22];
+      [v16 rpcStatus:statusCopy reply:v22];
       dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
       v18 = pcsLogObjForScope();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v19 = *(*(&buf + 1) + 24);
         *v27 = 138412546;
-        v28 = v5;
+        v28 = statusCopy;
         v29 = 1024;
         v30 = v19;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "PCSReportManateeStatus %@ rpcStatus: %d", v27, 0x12u);
       }
 
-      v6[2](v6, *(*(&buf + 1) + 24));
+      completeCopy[2](completeCopy, *(*(&buf + 1) + 24));
       _Block_object_dispose(&buf, 8);
     }
 
@@ -2049,20 +2049,20 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "PCSReportManateeStatus rpcStatus: %@", &buf, 0xCu);
       }
 
-      v6[2](v6, 10);
+      completeCopy[2](completeCopy, 10);
     }
   }
 
   else
   {
-    v6[2](v6, 0);
+    completeCopy[2](completeCopy, 0);
   }
 }
 
-- (void)keyRollPending:(id)a3 complete:(id)a4
+- (void)keyRollPending:(id)pending complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  pendingCopy = pending;
+  completeCopy = complete;
   if ((PCSSupportsPersonaMultiuser() & 1) == 0)
   {
     v14 = 0;
@@ -2071,18 +2071,18 @@ LABEL_24:
     v10 = v9;
     if ((v8 & 1) == 0)
     {
-      v7[2](v7, 0, v9);
+      completeCopy[2](completeCopy, 0, v9);
 LABEL_11:
 
       goto LABEL_12;
     }
   }
 
-  if (v6)
+  if (pendingCopy)
   {
     v10 = +[PCSAccountsModel defaultAccountsModel];
-    v11 = [v10 dsid];
-    v12 = [(PCSSyncing *)self identityCopySet:v11];
+    dsid = [v10 dsid];
+    v12 = [(PCSSyncing *)self identityCopySet:dsid];
 
     if (v12)
     {
@@ -2095,11 +2095,11 @@ LABEL_11:
       IsPending = 0;
     }
 
-    v7[2](v7, IsPending, 0);
+    completeCopy[2](completeCopy, IsPending, 0);
     goto LABEL_11;
   }
 
-  v7[2](v7, 0, 0);
+  completeCopy[2](completeCopy, 0, 0);
 LABEL_12:
 }
 
@@ -2121,34 +2121,34 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Services to be created: %@", &v8, 0xCu);
   }
 
-  v6 = [(PCSSyncing *)self accounts];
-  v7 = [v6 dsid];
-  [(PCSSyncing *)self createIdentities:v4 dsid:v7 roll:0 sync:1 forceSync:0 complete:&stru_100039A50];
+  accounts = [(PCSSyncing *)self accounts];
+  dsid = [accounts dsid];
+  [(PCSSyncing *)self createIdentities:v4 dsid:dsid roll:0 sync:1 forceSync:0 complete:&stru_100039A50];
 }
 
-- (void)getHealthSummary:(id)a3
+- (void)getHealthSummary:(id)summary
 {
-  v5 = a3;
-  v6 = [(PCSSyncing *)self healthSummary];
-  (*(a3 + 2))(v5, v6, 0);
+  summaryCopy = summary;
+  healthSummary = [(PCSSyncing *)self healthSummary];
+  (*(summary + 2))(summaryCopy, healthSummary, 0);
 }
 
-- (void)setupIdentitiesWithParameters:(id)a3 complete:(id)a4
+- (void)setupIdentitiesWithParameters:(id)parameters complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completeCopy = complete;
   objc_initWeak(&location, self);
-  v8 = [(PCSSyncing *)self serialOperationQueue];
+  serialOperationQueue = [(PCSSyncing *)self serialOperationQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100021F1C;
   v11[3] = &unk_1000391C0;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = parametersCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = completeCopy;
   v13 = v10;
-  [v8 addOperationWithBlock:v11];
+  [serialOperationQueue addOperationWithBlock:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

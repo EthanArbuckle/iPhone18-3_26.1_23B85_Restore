@@ -1,22 +1,22 @@
 @interface PKCreditActivityCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCreditActivityCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCreditActivityCell)initWithFrame:(CGRect)frame;
 - (void)_createSubviews;
 - (void)layoutSubviews;
-- (void)setRewardsSummary:(id)a3;
-- (void)setRewardsSummaryFont:(id)a3;
-- (void)setRewardsSummaryTextColor:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleFont:(id)a3;
+- (void)setRewardsSummary:(id)summary;
+- (void)setRewardsSummaryFont:(id)font;
+- (void)setRewardsSummaryTextColor:(id)color;
+- (void)setTitle:(id)title;
+- (void)setTitleFont:(id)font;
 @end
 
 @implementation PKCreditActivityCell
 
-- (PKCreditActivityCell)initWithFrame:(CGRect)a3
+- (PKCreditActivityCell)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PKCreditActivityCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_isCompactUI = PKUIGetMinScreenWidthType() == 0;
@@ -28,7 +28,7 @@
 
 - (void)_createSubviews
 {
-  v12 = [(PKCreditActivityCell *)self contentView];
+  contentView = [(PKCreditActivityCell *)self contentView];
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   labelTitle = self->_labelTitle;
   self->_labelTitle = v3;
@@ -36,11 +36,11 @@
   [(UILabel *)self->_labelTitle setNumberOfLines:1];
   [(UILabel *)self->_labelTitle setAdjustsFontSizeToFitWidth:1];
   v5 = self->_labelTitle;
-  v6 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)v5 setTextColor:v6];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)v5 setTextColor:labelColor];
 
   [(UILabel *)self->_labelTitle setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-  [v12 addSubview:self->_labelTitle];
+  [contentView addSubview:self->_labelTitle];
   v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   labelRewardsSummary = self->_labelRewardsSummary;
   self->_labelRewardsSummary = v7;
@@ -48,7 +48,7 @@
   [(UILabel *)self->_labelRewardsSummary setNumberOfLines:1];
   [(UILabel *)self->_labelRewardsSummary setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_labelRewardsSummary setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-  [v12 addSubview:self->_labelRewardsSummary];
+  [contentView addSubview:self->_labelRewardsSummary];
   v9 = [PKSpendingSummaryChartView alloc];
   v10 = [(PKSpendingSummaryChartView *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   chartView = self->_chartView;
@@ -57,32 +57,32 @@
   [(PKSpendingSummaryChartView *)self->_chartView setShowLegendGraph:0];
   [(PKSpendingSummaryChartView *)self->_chartView setShowPlaceholders:1];
   [(PKSpendingSummaryChartView *)self->_chartView setShowLegendLabels:0];
-  [v12 addSubview:self->_chartView];
+  [contentView addSubview:self->_chartView];
   [(PKCreditActivityCell *)self setAccessibilityIdentifier:*MEMORY[0x1E69B93E0]];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_labelTitle font];
+  fontCopy = font;
+  font = [(UILabel *)self->_labelTitle font];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_labelTitle setFont:v6];
+    [(UILabel *)self->_labelTitle setFont:fontCopy];
     [(PKCreditActivityCell *)self setNeedsLayout];
   }
 }
 
-- (void)setRewardsSummaryFont:(id)a3
+- (void)setRewardsSummaryFont:(id)font
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_labelRewardsSummary font];
+  fontCopy = font;
+  font = [(UILabel *)self->_labelRewardsSummary font];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_labelRewardsSummary setFont:v6];
+    [(UILabel *)self->_labelRewardsSummary setFont:fontCopy];
     [(PKCreditActivityCell *)self setNeedsLayout];
   }
 }
@@ -164,10 +164,10 @@
   [(PKSpendingSummaryChartView *)chartView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = 8.0;
   if (!self->_isCompactUI)
   {
@@ -217,30 +217,30 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   title = self->_title;
-  v9 = v5;
-  v7 = title;
-  if (v7 == v9)
+  v9 = titleCopy;
+  titleCopy2 = title;
+  if (titleCopy2 == v9)
   {
 
     goto LABEL_9;
   }
 
-  if (!v9 || !v7)
+  if (!v9 || !titleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(NSString *)v9 isEqualToString:v7];
+  v8 = [(NSString *)v9 isEqualToString:titleCopy2];
 
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(UILabel *)self->_labelTitle setText:self->_title];
     [(PKCreditActivityCell *)self setNeedsLayout];
   }
@@ -248,11 +248,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setRewardsSummary:(id)a3
+- (void)setRewardsSummary:(id)summary
 {
-  v5 = a3;
+  summaryCopy = summary;
   rewardsSummary = self->_rewardsSummary;
-  v9 = v5;
+  v9 = summaryCopy;
   v7 = rewardsSummary;
   if (v7 == v9)
   {
@@ -271,7 +271,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_rewardsSummary, a3);
+    objc_storeStrong(&self->_rewardsSummary, summary);
     [(UILabel *)self->_labelRewardsSummary setText:self->_rewardsSummary];
     [(PKCreditActivityCell *)self setNeedsLayout];
   }
@@ -279,15 +279,15 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setRewardsSummaryTextColor:(id)a3
+- (void)setRewardsSummaryTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_labelRewardsSummary textColor];
+  colorCopy = color;
+  textColor = [(UILabel *)self->_labelRewardsSummary textColor];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_labelRewardsSummary setTextColor:v6];
+    [(UILabel *)self->_labelRewardsSummary setTextColor:colorCopy];
   }
 }
 

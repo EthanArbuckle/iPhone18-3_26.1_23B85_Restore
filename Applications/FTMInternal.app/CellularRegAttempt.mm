@@ -1,45 +1,45 @@
 @interface CellularRegAttempt
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActiveRat:(id)a3;
-- (int)StringAsRegServiceDomain:(id)a3;
-- (int)StringAsServiceStatus:(id)a3;
+- (int)StringAsActiveRat:(id)rat;
+- (int)StringAsRegServiceDomain:(id)domain;
+- (int)StringAsServiceStatus:(id)status;
 - (int)activeRat;
 - (int)regServiceDomain;
 - (int)serviceStatus;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveRat:(BOOL)a3;
-- (void)setHasAttemptedPlmnCategory:(BOOL)a3;
-- (void)setHasCellId:(BOOL)a3;
-- (void)setHasDlFreq:(BOOL)a3;
-- (void)setHasFreqBandInd:(BOOL)a3;
-- (void)setHasHplmnScanAttemptsDisallowedDueToBl:(BOOL)a3;
-- (void)setHasHplmnScanDuration:(BOOL)a3;
-- (void)setHasHplmnScanNumOfAttempts:(BOOL)a3;
-- (void)setHasHplmnSearchPeriod:(BOOL)a3;
-- (void)setHasIsEhplmn:(BOOL)a3;
-- (void)setHasIsHplmn:(BOOL)a3;
-- (void)setHasIsHplmnScanTriggered:(BOOL)a3;
-- (void)setHasIsPlmnForbiden:(BOOL)a3;
-- (void)setHasIsRegAccepted:(BOOL)a3;
-- (void)setHasIsRoamingSteererPlmn:(BOOL)a3;
-- (void)setHasLac:(BOOL)a3;
-- (void)setHasRegServiceDomain:(BOOL)a3;
-- (void)setHasRejectCause:(BOOL)a3;
-- (void)setHasRoamingDuration:(BOOL)a3;
-- (void)setHasServiceStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveRat:(BOOL)rat;
+- (void)setHasAttemptedPlmnCategory:(BOOL)category;
+- (void)setHasCellId:(BOOL)id;
+- (void)setHasDlFreq:(BOOL)freq;
+- (void)setHasFreqBandInd:(BOOL)ind;
+- (void)setHasHplmnScanAttemptsDisallowedDueToBl:(BOOL)bl;
+- (void)setHasHplmnScanDuration:(BOOL)duration;
+- (void)setHasHplmnScanNumOfAttempts:(BOOL)attempts;
+- (void)setHasHplmnSearchPeriod:(BOOL)period;
+- (void)setHasIsEhplmn:(BOOL)ehplmn;
+- (void)setHasIsHplmn:(BOOL)hplmn;
+- (void)setHasIsHplmnScanTriggered:(BOOL)triggered;
+- (void)setHasIsPlmnForbiden:(BOOL)forbiden;
+- (void)setHasIsRegAccepted:(BOOL)accepted;
+- (void)setHasIsRoamingSteererPlmn:(BOOL)plmn;
+- (void)setHasLac:(BOOL)lac;
+- (void)setHasRegServiceDomain:(BOOL)domain;
+- (void)setHasRejectCause:(BOOL)cause;
+- (void)setHasRoamingDuration:(BOOL)duration;
+- (void)setHasServiceStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularRegAttempt
 
-- (void)setHasCellId:(BOOL)a3
+- (void)setHasCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -52,9 +52,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasAttemptedPlmnCategory:(BOOL)a3
+- (void)setHasAttemptedPlmnCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 4;
   }
@@ -80,9 +80,9 @@
   }
 }
 
-- (void)setHasRegServiceDomain:(BOOL)a3
+- (void)setHasRegServiceDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 2048;
   }
@@ -95,40 +95,40 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (int)StringAsRegServiceDomain:(id)a3
+- (int)StringAsRegServiceDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_NONE"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_NONE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_NO_SRV"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_CS_ONLY"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_CS_ONLY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_PS_ONLY"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_PS_ONLY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_CS_PS"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_CS_PS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_CAMPED"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_CAMPED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_MAX"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_MAX"])
   {
     v4 = 5;
   }
@@ -154,9 +154,9 @@
   }
 }
 
-- (void)setHasActiveRat:(BOOL)a3
+- (void)setHasActiveRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 2;
   }
@@ -169,30 +169,30 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (int)StringAsActiveRat:(id)a3
+- (int)StringAsActiveRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_RAT_GSM"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"SYS_RAT_GSM"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_UMTS"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_UMTS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_LTE"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_LTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_TDS"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_TDS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_NR5G"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_NR5G"])
   {
     v4 = 4;
   }
@@ -218,9 +218,9 @@
   }
 }
 
-- (void)setHasServiceStatus:(BOOL)a3
+- (void)setHasServiceStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x4000;
   }
@@ -233,50 +233,50 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (int)StringAsServiceStatus:(id)a3
+- (int)StringAsServiceStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_SRV_STATUS_NONE"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_NONE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_NO_SRV"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_LIMITED"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_LIMITED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_SRV"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_SRV"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_LIMITED_REGIONAL"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_LIMITED_REGIONAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_PWR_SAVE"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_PWR_SAVE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_MAX"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_MAX"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_LOW_POWER_MODE"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_LOW_POWER_MODE"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_CMAS_ONLY_MODE"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_CMAS_ONLY_MODE"])
   {
     v4 = 101;
   }
@@ -289,9 +289,9 @@
   return v4;
 }
 
-- (void)setHasRejectCause:(BOOL)a3
+- (void)setHasRejectCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 4096;
   }
@@ -304,9 +304,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasDlFreq:(BOOL)a3
+- (void)setHasDlFreq:(BOOL)freq
 {
-  if (a3)
+  if (freq)
   {
     v3 = 16;
   }
@@ -319,9 +319,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasFreqBandInd:(BOOL)a3
+- (void)setHasFreqBandInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 32;
   }
@@ -334,9 +334,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasLac:(BOOL)a3
+- (void)setHasLac:(BOOL)lac
 {
-  if (a3)
+  if (lac)
   {
     v3 = 1024;
   }
@@ -349,9 +349,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasIsRegAccepted:(BOOL)a3
+- (void)setHasIsRegAccepted:(BOOL)accepted
 {
-  if (a3)
+  if (accepted)
   {
     v3 = 0x80000;
   }
@@ -364,9 +364,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasIsHplmn:(BOOL)a3
+- (void)setHasIsHplmn:(BOOL)hplmn
 {
-  if (a3)
+  if (hplmn)
   {
     v3 = 0x10000;
   }
@@ -379,9 +379,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasIsEhplmn:(BOOL)a3
+- (void)setHasIsEhplmn:(BOOL)ehplmn
 {
-  if (a3)
+  if (ehplmn)
   {
     v3 = 0x8000;
   }
@@ -394,9 +394,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasIsPlmnForbiden:(BOOL)a3
+- (void)setHasIsPlmnForbiden:(BOOL)forbiden
 {
-  if (a3)
+  if (forbiden)
   {
     v3 = 0x40000;
   }
@@ -409,9 +409,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasIsRoamingSteererPlmn:(BOOL)a3
+- (void)setHasIsRoamingSteererPlmn:(BOOL)plmn
 {
-  if (a3)
+  if (plmn)
   {
     v3 = 0x100000;
   }
@@ -424,9 +424,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasIsHplmnScanTriggered:(BOOL)a3
+- (void)setHasIsHplmnScanTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 0x20000;
   }
@@ -439,9 +439,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasRoamingDuration:(BOOL)a3
+- (void)setHasRoamingDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x2000;
   }
@@ -454,9 +454,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasHplmnScanDuration:(BOOL)a3
+- (void)setHasHplmnScanDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 128;
   }
@@ -469,9 +469,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasHplmnScanNumOfAttempts:(BOOL)a3
+- (void)setHasHplmnScanNumOfAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 256;
   }
@@ -484,9 +484,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasHplmnSearchPeriod:(BOOL)a3
+- (void)setHasHplmnSearchPeriod:(BOOL)period
 {
-  if (a3)
+  if (period)
   {
     v3 = 512;
   }
@@ -499,9 +499,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasHplmnScanAttemptsDisallowedDueToBl:(BOOL)a3
+- (void)setHasHplmnScanAttemptsDisallowedDueToBl:(BOOL)bl
 {
-  if (a3)
+  if (bl)
   {
     v3 = 64;
   }
@@ -519,8 +519,8 @@
   v7.receiver = self;
   v7.super_class = CellularRegAttempt;
   v3 = [(CellularRegAttempt *)&v7 description];
-  v4 = [(CellularRegAttempt *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularRegAttempt *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -940,34 +940,34 @@ LABEL_28:
   bdStat = self->_bdStat;
   if (bdStat)
   {
-    v10 = [(BorderDbStat *)bdStat dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"bd_stat"];
+    dictionaryRepresentation = [(BorderDbStat *)bdStat dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"bd_stat"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v27 = v4;
+  toCopy = to;
+  v27 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_hplmn)
   {
     PBDataWriterWriteDataField();
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_attemptedPlmn)
   {
     PBDataWriterWriteDataField();
-    v4 = v27;
+    toCopy = v27;
   }
 
   has = self->_has;
@@ -975,7 +975,7 @@ LABEL_28:
   {
     cellId = self->_cellId;
     PBDataWriterWriteUint32Field();
-    v4 = v27;
+    toCopy = v27;
     has = self->_has;
     if ((*&has & 4) == 0)
     {
@@ -996,7 +996,7 @@ LABEL_9:
 
   attemptedPlmnCategory = self->_attemptedPlmnCategory;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1012,7 +1012,7 @@ LABEL_10:
 LABEL_35:
   regServiceDomain = self->_regServiceDomain;
   PBDataWriterWriteInt32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1028,7 +1028,7 @@ LABEL_11:
 LABEL_36:
   activeRat = self->_activeRat;
   PBDataWriterWriteInt32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1044,7 +1044,7 @@ LABEL_12:
 LABEL_37:
   serviceStatus = self->_serviceStatus;
   PBDataWriterWriteInt32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1060,7 +1060,7 @@ LABEL_13:
 LABEL_38:
   rejectCause = self->_rejectCause;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1076,7 +1076,7 @@ LABEL_14:
 LABEL_39:
   dlFreq = self->_dlFreq;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1092,7 +1092,7 @@ LABEL_15:
 LABEL_40:
   freqBandInd = self->_freqBandInd;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1108,7 +1108,7 @@ LABEL_16:
 LABEL_41:
   lac = self->_lac;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1124,7 +1124,7 @@ LABEL_17:
 LABEL_42:
   isRegAccepted = self->_isRegAccepted;
   PBDataWriterWriteBOOLField();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1140,7 +1140,7 @@ LABEL_18:
 LABEL_43:
   isHplmn = self->_isHplmn;
   PBDataWriterWriteBOOLField();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1156,7 +1156,7 @@ LABEL_19:
 LABEL_44:
   isEhplmn = self->_isEhplmn;
   PBDataWriterWriteBOOLField();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1172,7 +1172,7 @@ LABEL_20:
 LABEL_45:
   isPlmnForbiden = self->_isPlmnForbiden;
   PBDataWriterWriteBOOLField();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1188,7 +1188,7 @@ LABEL_21:
 LABEL_46:
   isRoamingSteererPlmn = self->_isRoamingSteererPlmn;
   PBDataWriterWriteBOOLField();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1204,7 +1204,7 @@ LABEL_22:
 LABEL_47:
   isHplmnScanTriggered = self->_isHplmnScanTriggered;
   PBDataWriterWriteBOOLField();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1220,7 +1220,7 @@ LABEL_23:
 LABEL_48:
   roamingDuration = self->_roamingDuration;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1236,7 +1236,7 @@ LABEL_24:
 LABEL_49:
   hplmnScanDuration = self->_hplmnScanDuration;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1252,7 +1252,7 @@ LABEL_25:
 LABEL_50:
   hplmnScanNumOfAttempts = self->_hplmnScanNumOfAttempts;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1268,50 +1268,50 @@ LABEL_26:
 LABEL_51:
   hplmnSearchPeriod = self->_hplmnSearchPeriod;
   PBDataWriterWriteUint32Field();
-  v4 = v27;
+  toCopy = v27;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_27:
     hplmnScanAttemptsDisallowedDueToBl = self->_hplmnScanAttemptsDisallowedDueToBl;
     PBDataWriterWriteUint32Field();
-    v4 = v27;
+    toCopy = v27;
   }
 
 LABEL_28:
   if (self->_bdStat)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v27;
+    toCopy = v27;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 29) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 29) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_hplmn)
   {
-    [v4 setHplmn:?];
-    v4 = v6;
+    [toCopy setHplmn:?];
+    toCopy = v6;
   }
 
   if (self->_attemptedPlmn)
   {
     [v6 setAttemptedPlmn:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((*&has & 8) != 0)
   {
-    *(v4 + 12) = self->_cellId;
-    *(v4 + 29) |= 8u;
+    *(toCopy + 12) = self->_cellId;
+    *(toCopy + 29) |= 8u;
     has = self->_has;
     if ((*&has & 4) == 0)
     {
@@ -1330,8 +1330,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 8) = self->_attemptedPlmnCategory;
-  *(v4 + 29) |= 4u;
+  *(toCopy + 8) = self->_attemptedPlmnCategory;
+  *(toCopy + 29) |= 4u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1345,8 +1345,8 @@ LABEL_10:
   }
 
 LABEL_35:
-  *(v4 + 23) = self->_regServiceDomain;
-  *(v4 + 29) |= 0x800u;
+  *(toCopy + 23) = self->_regServiceDomain;
+  *(toCopy + 29) |= 0x800u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1360,8 +1360,8 @@ LABEL_11:
   }
 
 LABEL_36:
-  *(v4 + 4) = self->_activeRat;
-  *(v4 + 29) |= 2u;
+  *(toCopy + 4) = self->_activeRat;
+  *(toCopy + 29) |= 2u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1375,8 +1375,8 @@ LABEL_12:
   }
 
 LABEL_37:
-  *(v4 + 26) = self->_serviceStatus;
-  *(v4 + 29) |= 0x4000u;
+  *(toCopy + 26) = self->_serviceStatus;
+  *(toCopy + 29) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1390,8 +1390,8 @@ LABEL_13:
   }
 
 LABEL_38:
-  *(v4 + 24) = self->_rejectCause;
-  *(v4 + 29) |= 0x1000u;
+  *(toCopy + 24) = self->_rejectCause;
+  *(toCopy + 29) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1405,8 +1405,8 @@ LABEL_14:
   }
 
 LABEL_39:
-  *(v4 + 13) = self->_dlFreq;
-  *(v4 + 29) |= 0x10u;
+  *(toCopy + 13) = self->_dlFreq;
+  *(toCopy + 29) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1420,8 +1420,8 @@ LABEL_15:
   }
 
 LABEL_40:
-  *(v4 + 14) = self->_freqBandInd;
-  *(v4 + 29) |= 0x20u;
+  *(toCopy + 14) = self->_freqBandInd;
+  *(toCopy + 29) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1435,8 +1435,8 @@ LABEL_16:
   }
 
 LABEL_41:
-  *(v4 + 22) = self->_lac;
-  *(v4 + 29) |= 0x400u;
+  *(toCopy + 22) = self->_lac;
+  *(toCopy + 29) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1450,8 +1450,8 @@ LABEL_17:
   }
 
 LABEL_42:
-  *(v4 + 112) = self->_isRegAccepted;
-  *(v4 + 29) |= 0x80000u;
+  *(toCopy + 112) = self->_isRegAccepted;
+  *(toCopy + 29) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1465,8 +1465,8 @@ LABEL_18:
   }
 
 LABEL_43:
-  *(v4 + 109) = self->_isHplmn;
-  *(v4 + 29) |= 0x10000u;
+  *(toCopy + 109) = self->_isHplmn;
+  *(toCopy + 29) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1480,8 +1480,8 @@ LABEL_19:
   }
 
 LABEL_44:
-  *(v4 + 108) = self->_isEhplmn;
-  *(v4 + 29) |= 0x8000u;
+  *(toCopy + 108) = self->_isEhplmn;
+  *(toCopy + 29) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1495,8 +1495,8 @@ LABEL_20:
   }
 
 LABEL_45:
-  *(v4 + 111) = self->_isPlmnForbiden;
-  *(v4 + 29) |= 0x40000u;
+  *(toCopy + 111) = self->_isPlmnForbiden;
+  *(toCopy + 29) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1510,8 +1510,8 @@ LABEL_21:
   }
 
 LABEL_46:
-  *(v4 + 113) = self->_isRoamingSteererPlmn;
-  *(v4 + 29) |= 0x100000u;
+  *(toCopy + 113) = self->_isRoamingSteererPlmn;
+  *(toCopy + 29) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1525,8 +1525,8 @@ LABEL_22:
   }
 
 LABEL_47:
-  *(v4 + 110) = self->_isHplmnScanTriggered;
-  *(v4 + 29) |= 0x20000u;
+  *(toCopy + 110) = self->_isHplmnScanTriggered;
+  *(toCopy + 29) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1540,8 +1540,8 @@ LABEL_23:
   }
 
 LABEL_48:
-  *(v4 + 25) = self->_roamingDuration;
-  *(v4 + 29) |= 0x2000u;
+  *(toCopy + 25) = self->_roamingDuration;
+  *(toCopy + 29) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1555,8 +1555,8 @@ LABEL_24:
   }
 
 LABEL_49:
-  *(v4 + 19) = self->_hplmnScanDuration;
-  *(v4 + 29) |= 0x80u;
+  *(toCopy + 19) = self->_hplmnScanDuration;
+  *(toCopy + 29) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1570,8 +1570,8 @@ LABEL_25:
   }
 
 LABEL_50:
-  *(v4 + 20) = self->_hplmnScanNumOfAttempts;
-  *(v4 + 29) |= 0x100u;
+  *(toCopy + 20) = self->_hplmnScanNumOfAttempts;
+  *(toCopy + 29) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1585,26 +1585,26 @@ LABEL_26:
   }
 
 LABEL_51:
-  *(v4 + 21) = self->_hplmnSearchPeriod;
-  *(v4 + 29) |= 0x200u;
+  *(toCopy + 21) = self->_hplmnSearchPeriod;
+  *(toCopy + 29) |= 0x200u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_27:
-    *(v4 + 18) = self->_hplmnScanAttemptsDisallowedDueToBl;
-    *(v4 + 29) |= 0x40u;
+    *(toCopy + 18) = self->_hplmnScanAttemptsDisallowedDueToBl;
+    *(toCopy + 29) |= 0x40u;
   }
 
 LABEL_28:
   if (self->_bdStat)
   {
     [v6 setBdStat:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -1612,11 +1612,11 @@ LABEL_28:
     *(v5 + 29) |= 1u;
   }
 
-  v7 = [(NSData *)self->_hplmn copyWithZone:a3];
+  v7 = [(NSData *)self->_hplmn copyWithZone:zone];
   v8 = v6[8];
   v6[8] = v7;
 
-  v9 = [(NSData *)self->_attemptedPlmn copyWithZone:a3];
+  v9 = [(NSData *)self->_attemptedPlmn copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
@@ -1908,25 +1908,25 @@ LABEL_23:
   }
 
 LABEL_24:
-  v12 = [(BorderDbStat *)self->_bdStat copyWithZone:a3];
+  v12 = [(BorderDbStat *)self->_bdStat copyWithZone:zone];
   v13 = v6[5];
   v6[5] = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_131;
   }
 
-  v5 = *(v4 + 29);
+  v5 = *(equalCopy + 29);
   if (*&self->_has)
   {
-    if ((v5 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v5 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_131;
     }
@@ -1938,13 +1938,13 @@ LABEL_24:
   }
 
   hplmn = self->_hplmn;
-  if (hplmn | *(v4 + 8) && ![(NSData *)hplmn isEqual:?])
+  if (hplmn | *(equalCopy + 8) && ![(NSData *)hplmn isEqual:?])
   {
     goto LABEL_131;
   }
 
   attemptedPlmn = self->_attemptedPlmn;
-  if (attemptedPlmn | *(v4 + 3))
+  if (attemptedPlmn | *(equalCopy + 3))
   {
     if (![(NSData *)attemptedPlmn isEqual:?])
     {
@@ -1953,10 +1953,10 @@ LABEL_24:
   }
 
   has = self->_has;
-  v9 = *(v4 + 29);
+  v9 = *(equalCopy + 29);
   if ((*&has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_cellId != *(v4 + 12))
+    if ((v9 & 8) == 0 || self->_cellId != *(equalCopy + 12))
     {
       goto LABEL_131;
     }
@@ -1969,7 +1969,7 @@ LABEL_24:
 
   if ((*&has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_attemptedPlmnCategory != *(v4 + 8))
+    if ((v9 & 4) == 0 || self->_attemptedPlmnCategory != *(equalCopy + 8))
     {
       goto LABEL_131;
     }
@@ -1982,7 +1982,7 @@ LABEL_24:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v9 & 0x800) == 0 || self->_regServiceDomain != *(v4 + 23))
+    if ((v9 & 0x800) == 0 || self->_regServiceDomain != *(equalCopy + 23))
     {
       goto LABEL_131;
     }
@@ -1995,7 +1995,7 @@ LABEL_24:
 
   if ((*&has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_activeRat != *(v4 + 4))
+    if ((v9 & 2) == 0 || self->_activeRat != *(equalCopy + 4))
     {
       goto LABEL_131;
     }
@@ -2008,7 +2008,7 @@ LABEL_24:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v9 & 0x4000) == 0 || self->_serviceStatus != *(v4 + 26))
+    if ((v9 & 0x4000) == 0 || self->_serviceStatus != *(equalCopy + 26))
     {
       goto LABEL_131;
     }
@@ -2021,7 +2021,7 @@ LABEL_24:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v9 & 0x1000) == 0 || self->_rejectCause != *(v4 + 24))
+    if ((v9 & 0x1000) == 0 || self->_rejectCause != *(equalCopy + 24))
     {
       goto LABEL_131;
     }
@@ -2034,7 +2034,7 @@ LABEL_24:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v9 & 0x10) == 0 || self->_dlFreq != *(v4 + 13))
+    if ((v9 & 0x10) == 0 || self->_dlFreq != *(equalCopy + 13))
     {
       goto LABEL_131;
     }
@@ -2047,7 +2047,7 @@ LABEL_24:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_freqBandInd != *(v4 + 14))
+    if ((v9 & 0x20) == 0 || self->_freqBandInd != *(equalCopy + 14))
     {
       goto LABEL_131;
     }
@@ -2060,7 +2060,7 @@ LABEL_24:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v9 & 0x400) == 0 || self->_lac != *(v4 + 22))
+    if ((v9 & 0x400) == 0 || self->_lac != *(equalCopy + 22))
     {
       goto LABEL_131;
     }
@@ -2078,16 +2078,16 @@ LABEL_24:
       goto LABEL_131;
     }
 
-    v10 = *(v4 + 112);
+    v10 = *(equalCopy + 112);
     if (self->_isRegAccepted)
     {
-      if ((*(v4 + 112) & 1) == 0)
+      if ((*(equalCopy + 112) & 1) == 0)
       {
         goto LABEL_131;
       }
     }
 
-    else if (*(v4 + 112))
+    else if (*(equalCopy + 112))
     {
       goto LABEL_131;
     }
@@ -2105,16 +2105,16 @@ LABEL_24:
       goto LABEL_131;
     }
 
-    v11 = *(v4 + 109);
+    v11 = *(equalCopy + 109);
     if (self->_isHplmn)
     {
-      if ((*(v4 + 109) & 1) == 0)
+      if ((*(equalCopy + 109) & 1) == 0)
       {
         goto LABEL_131;
       }
     }
 
-    else if (*(v4 + 109))
+    else if (*(equalCopy + 109))
     {
       goto LABEL_131;
     }
@@ -2132,16 +2132,16 @@ LABEL_24:
       goto LABEL_131;
     }
 
-    v12 = *(v4 + 108);
+    v12 = *(equalCopy + 108);
     if (self->_isEhplmn)
     {
-      if ((*(v4 + 108) & 1) == 0)
+      if ((*(equalCopy + 108) & 1) == 0)
       {
         goto LABEL_131;
       }
     }
 
-    else if (*(v4 + 108))
+    else if (*(equalCopy + 108))
     {
       goto LABEL_131;
     }
@@ -2159,16 +2159,16 @@ LABEL_24:
       goto LABEL_131;
     }
 
-    v13 = *(v4 + 111);
+    v13 = *(equalCopy + 111);
     if (self->_isPlmnForbiden)
     {
-      if ((*(v4 + 111) & 1) == 0)
+      if ((*(equalCopy + 111) & 1) == 0)
       {
         goto LABEL_131;
       }
     }
 
-    else if (*(v4 + 111))
+    else if (*(equalCopy + 111))
     {
       goto LABEL_131;
     }
@@ -2186,16 +2186,16 @@ LABEL_24:
       goto LABEL_131;
     }
 
-    v14 = *(v4 + 113);
+    v14 = *(equalCopy + 113);
     if (self->_isRoamingSteererPlmn)
     {
-      if ((*(v4 + 113) & 1) == 0)
+      if ((*(equalCopy + 113) & 1) == 0)
       {
         goto LABEL_131;
       }
     }
 
-    else if (*(v4 + 113))
+    else if (*(equalCopy + 113))
     {
       goto LABEL_131;
     }
@@ -2210,10 +2210,10 @@ LABEL_24:
   {
     if ((v9 & 0x20000) != 0)
     {
-      v15 = *(v4 + 110);
+      v15 = *(equalCopy + 110);
       if (self->_isHplmnScanTriggered)
       {
-        if ((*(v4 + 110) & 1) == 0)
+        if ((*(equalCopy + 110) & 1) == 0)
         {
           goto LABEL_131;
         }
@@ -2221,7 +2221,7 @@ LABEL_24:
         goto LABEL_104;
       }
 
-      if ((*(v4 + 110) & 1) == 0)
+      if ((*(equalCopy + 110) & 1) == 0)
       {
         goto LABEL_104;
       }
@@ -2240,7 +2240,7 @@ LABEL_131:
 LABEL_104:
   if ((*&has & 0x2000) != 0)
   {
-    if ((v9 & 0x2000) == 0 || self->_roamingDuration != *(v4 + 25))
+    if ((v9 & 0x2000) == 0 || self->_roamingDuration != *(equalCopy + 25))
     {
       goto LABEL_131;
     }
@@ -2253,7 +2253,7 @@ LABEL_104:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_hplmnScanDuration != *(v4 + 19))
+    if ((v9 & 0x80) == 0 || self->_hplmnScanDuration != *(equalCopy + 19))
     {
       goto LABEL_131;
     }
@@ -2266,7 +2266,7 @@ LABEL_104:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v9 & 0x100) == 0 || self->_hplmnScanNumOfAttempts != *(v4 + 20))
+    if ((v9 & 0x100) == 0 || self->_hplmnScanNumOfAttempts != *(equalCopy + 20))
     {
       goto LABEL_131;
     }
@@ -2279,7 +2279,7 @@ LABEL_104:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v9 & 0x200) == 0 || self->_hplmnSearchPeriod != *(v4 + 21))
+    if ((v9 & 0x200) == 0 || self->_hplmnSearchPeriod != *(equalCopy + 21))
     {
       goto LABEL_131;
     }
@@ -2292,7 +2292,7 @@ LABEL_104:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_hplmnScanAttemptsDisallowedDueToBl != *(v4 + 18))
+    if ((v9 & 0x40) == 0 || self->_hplmnScanAttemptsDisallowedDueToBl != *(equalCopy + 18))
     {
       goto LABEL_131;
     }
@@ -2304,7 +2304,7 @@ LABEL_104:
   }
 
   bdStat = self->_bdStat;
-  if (bdStat | *(v4 + 5))
+  if (bdStat | *(equalCopy + 5))
   {
     v17 = [(BorderDbStat *)bdStat isEqual:?];
   }
@@ -2610,18 +2610,18 @@ LABEL_24:
   return v4 ^ v3 ^ v5 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ [(BorderDbStat *)self->_bdStat hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 116))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 116))
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  v9 = v4;
-  if (v4[8])
+  v9 = fromCopy;
+  if (fromCopy[8])
   {
     [(CellularRegAttempt *)self setHplmn:?];
     v5 = v9;

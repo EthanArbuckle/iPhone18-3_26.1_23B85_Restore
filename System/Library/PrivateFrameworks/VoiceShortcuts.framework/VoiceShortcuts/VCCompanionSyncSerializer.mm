@@ -1,30 +1,30 @@
 @interface VCCompanionSyncSerializer
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)dataFromChange:(id)a3;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)dataFromChange:(id)change;
 @end
 
 @implementation VCCompanionSyncSerializer
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [[VCPBChange alloc] initWithData:v4];
+  v6 = [[VCPBChange alloc] initWithData:dataCopy];
   v7 = VCSYChangeClassFromMessageType([(VCPBChange *)v6 messageType]);
   if (v7)
   {
     v8 = v7;
     v9 = [v7 alloc];
-    v10 = [(VCPBChange *)v6 uniqueID];
-    v11 = [(VCPBChange *)v6 changeType];
+    uniqueID = [(VCPBChange *)v6 uniqueID];
+    changeType = [(VCPBChange *)v6 changeType];
     v12 = 1;
-    if (v11 == 2)
+    if (changeType == 2)
     {
       v12 = 2;
     }
 
-    if (v11 == 3)
+    if (changeType == 3)
     {
       v13 = 3;
     }
@@ -34,10 +34,10 @@
       v13 = v12;
     }
 
-    v14 = [v9 initWithObjectIdentifier:v10 changeType:v13];
+    v14 = [v9 initWithObjectIdentifier:uniqueID changeType:v13];
 
-    v15 = [(VCPBChange *)v6 message];
-    v16 = [v15 length];
+    message = [(VCPBChange *)v6 message];
+    v16 = [message length];
 
     if (!v16)
     {
@@ -45,8 +45,8 @@
     }
 
     v17 = objc_alloc(MEMORY[0x277D43170]);
-    v18 = [(VCPBChange *)v6 message];
-    v19 = [v17 initWithData:v18];
+    message2 = [(VCPBChange *)v6 message];
+    v19 = [v17 initWithData:message2];
 
     v28 = 0;
     v20 = [v14 readFrom:v19 error:&v28];
@@ -58,7 +58,7 @@
 LABEL_10:
       objc_autoreleasePoolPop(v5);
       v14 = v14;
-      v23 = v14;
+      degenerateChange = v14;
       goto LABEL_18;
     }
 
@@ -74,7 +74,7 @@ LABEL_10:
       _os_log_impl(&dword_23103C000, v25, OS_LOG_TYPE_FAULT, "%s Failed to deserialize %{public}@: %{public}@", buf, 0x20u);
     }
 
-    v23 = [MEMORY[0x277CFBA88] degenerateChange];
+    degenerateChange = [MEMORY[0x277CFBA88] degenerateChange];
   }
 
   else
@@ -89,7 +89,7 @@ LABEL_10:
       _os_log_impl(&dword_23103C000, v24, OS_LOG_TYPE_FAULT, "%s Unknown message type (%i) when deserializing, dropping change", buf, 0x12u);
     }
 
-    v23 = [MEMORY[0x277CFBA88] degenerateChange];
+    degenerateChange = [MEMORY[0x277CFBA88] degenerateChange];
     v14 = 0;
   }
 
@@ -98,23 +98,23 @@ LABEL_18:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return degenerateChange;
 }
 
-- (id)dataFromChange:(id)a3
+- (id)dataFromChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 conformsToProtocol:&unk_2845FED18]& 1) != 0)
+  changeCopy = change;
+  v4 = changeCopy;
+  if (changeCopy && ([changeCopy conformsToProtocol:&unk_2845FED18]& 1) != 0)
   {
     v5 = objc_alloc_init(VCPBChange);
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 objectIdentifier];
-    [(VCPBChange *)v5 setUniqueID:v7];
+    objectIdentifier = [v4 objectIdentifier];
+    [(VCPBChange *)v5 setUniqueID:objectIdentifier];
 
-    v8 = [v4 changeType];
-    if (v8 == 2)
+    changeType = [v4 changeType];
+    if (changeType == 2)
     {
       v9 = 2;
     }
@@ -124,7 +124,7 @@ LABEL_18:
       v9 = 1;
     }
 
-    if (v8 == 3)
+    if (changeType == 3)
     {
       v10 = 3;
     }
@@ -142,11 +142,11 @@ LABEL_18:
     v13 = v20;
     if (v12)
     {
-      v14 = [v11 immutableData];
-      [(VCPBChange *)v5 setMessage:v14];
+      immutableData = [v11 immutableData];
+      [(VCPBChange *)v5 setMessage:immutableData];
 
       objc_autoreleasePoolPop(v6);
-      v15 = [(VCPBChange *)v5 data];
+      data = [(VCPBChange *)v5 data];
     }
 
     else
@@ -164,7 +164,7 @@ LABEL_18:
       }
 
       objc_autoreleasePoolPop(v6);
-      v15 = 0;
+      data = 0;
     }
 
     v16 = v4;
@@ -183,12 +183,12 @@ LABEL_18:
       _os_log_impl(&dword_23103C000, v16, OS_LOG_TYPE_FAULT, "%s Cannot serialize %{public}@, it does not conform to VCSYChange", buf, 0x16u);
     }
 
-    v15 = 0;
+    data = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return data;
 }
 
 @end

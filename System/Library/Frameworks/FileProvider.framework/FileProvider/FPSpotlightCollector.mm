@@ -1,37 +1,37 @@
 @interface FPSpotlightCollector
 + (id)_recursiveDescription;
 + (id)processingQueue;
-- (BOOL)_shouldFilterUpdatesForObserver:(id)a3;
-- (BOOL)isQueryCancelled:(id)a3;
+- (BOOL)_shouldFilterUpdatesForObserver:(id)observer;
+- (BOOL)isQueryCancelled:(id)cancelled;
 - (BOOL)isSuspended;
 - (FPSpotlightCollector)init;
-- (FPSpotlightCollector)initWithDescriptor:(id)a3;
+- (FPSpotlightCollector)initWithDescriptor:(id)descriptor;
 - (FPSpotlightCollectorDelegate)delegate;
-- (id)_allItemsForMountPoint:(id)a3;
-- (id)_createQueriesForMountPoints:(id)a3;
-- (id)_createQueryForMountPoint:(id)a3;
-- (id)_mountPointForExistingSearchQuery:(id)a3;
+- (id)_allItemsForMountPoint:(id)point;
+- (id)_createQueriesForMountPoints:(id)points;
+- (id)_createQueryForMountPoint:(id)point;
+- (id)_mountPointForExistingSearchQuery:(id)query;
 - (id)_mountPointsForDescriptor;
 - (id)allItems;
-- (id)allItemsForObserver:(id)a3;
+- (id)allItemsForObserver:(id)observer;
 - (id)allObservers;
 - (id)description;
-- (id)filterItems:(id)a3 forObserver:(id)a4 excludedItemIDs:(id *)a5;
-- (unint64_t)_itemsOriginForItems:(id)a3;
-- (void)_addObserver:(id)a3;
+- (id)filterItems:(id)items forObserver:(id)observer excludedItemIDs:(id *)ds;
+- (unint64_t)_itemsOriginForItems:(id)items;
+- (void)_addObserver:(id)observer;
 - (void)_clear;
 - (void)_regather;
-- (void)_removeItemsForQuery:(id)a3 mountPoint:(id)a4;
-- (void)_removeObserver:(id)a3;
+- (void)_removeItemsForQuery:(id)query mountPoint:(id)point;
+- (void)_removeObserver:(id)observer;
 - (void)_start;
 - (void)_stop;
-- (void)addObserver:(id)a3;
-- (void)mountPointsDidChange:(id)a3;
-- (void)query:(id)a3 didFinishWithError:(id)a4;
-- (void)query:(id)a3 didRemoveItemsWithCSIdentifiers:(id)a4 inBundle:(id)a5;
-- (void)query:(id)a3 didUpdateItems:(id)a4;
-- (void)queryDidFinishGathering:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)mountPointsDidChange:(id)change;
+- (void)query:(id)query didFinishWithError:(id)error;
+- (void)query:(id)query didRemoveItemsWithCSIdentifiers:(id)identifiers inBundle:(id)bundle;
+- (void)query:(id)query didUpdateItems:(id)items;
+- (void)queryDidFinishGathering:(id)gathering;
+- (void)removeObserver:(id)observer;
 - (void)resume;
 - (void)setNeedsItemsOriginUpdate;
 - (void)suspend;
@@ -91,13 +91,13 @@ void __39__FPSpotlightCollector_processingQueue__block_invoke()
 
 - (id)_mountPointsForDescriptor
 {
-  v3 = [(FPSpotlightCollector *)self queryDescriptor];
-  v4 = [v3 supportsQueryingAllMountPoints];
+  queryDescriptor = [(FPSpotlightCollector *)self queryDescriptor];
+  supportsQueryingAllMountPoints = [queryDescriptor supportsQueryingAllMountPoints];
 
-  if (v4 && ([(FPSpotlightCollector *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (supportsQueryingAllMountPoints && ([(FPSpotlightCollector *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(FPSpotlightCollector *)self delegate];
-    v7 = [v6 mountPointsForCollector:self];
+    delegate = [(FPSpotlightCollector *)self delegate];
+    v7 = [delegate mountPointsForCollector:self];
   }
 
   else
@@ -118,8 +118,8 @@ void __39__FPSpotlightCollector_processingQueue__block_invoke()
 - (void)setNeedsItemsOriginUpdate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(FPSpotlightCollector *)self allItems];
-  v4 = [(FPSpotlightCollector *)self _itemsOriginForItems:v3];
+  allItems = [(FPSpotlightCollector *)self allItems];
+  v4 = [(FPSpotlightCollector *)self _itemsOriginForItems:allItems];
 
   if (v4 != [(FPSpotlightCollector *)self itemsOrigin])
   {
@@ -183,32 +183,32 @@ void __32__FPSpotlightCollector_allItems__block_invoke(uint64_t a1, uint64_t a2,
 + (id)_recursiveDescription
 {
   v2 = +[FPSpotlightCollectorManager sharedInstance];
-  v3 = [v2 _recursiveDescription];
+  _recursiveDescription = [v2 _recursiveDescription];
 
-  return v3;
+  return _recursiveDescription;
 }
 
 - (FPSpotlightCollector)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"FPSpotlightCollector.m" lineNumber:109 description:@"UNREACHABLE: call -initWithDescriptor: instead"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPSpotlightCollector.m" lineNumber:109 description:@"UNREACHABLE: call -initWithDescriptor: instead"];
 
   return [(FPSpotlightCollector *)self initWithDescriptor:0];
 }
 
-- (FPSpotlightCollector)initWithDescriptor:(id)a3
+- (FPSpotlightCollector)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v15.receiver = self;
   v15.super_class = FPSpotlightCollector;
   v6 = [(FPSpotlightCollector *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queryDescriptor, a3);
-    v8 = [objc_opt_class() processingQueue];
+    objc_storeStrong(&v6->_queryDescriptor, descriptor);
+    processingQueue = [objc_opt_class() processingQueue];
     processingQueue = v7->_processingQueue;
-    v7->_processingQueue = v8;
+    v7->_processingQueue = processingQueue;
 
     v10 = objc_opt_new();
     queries = v7->_queries;
@@ -229,9 +229,9 @@ void __32__FPSpotlightCollector_allItems__block_invoke(uint64_t a1, uint64_t a2,
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(FPSpotlightCollector *)self queryDescriptor];
-  v7 = [v6 name];
-  v8 = [v3 stringWithFormat:@"<%@:%p n:%@>", v5, self, v7];
+  queryDescriptor = [(FPSpotlightCollector *)self queryDescriptor];
+  name = [queryDescriptor name];
+  v8 = [v3 stringWithFormat:@"<%@:%p n:%@>", v5, self, name];
 
   return v8;
 }
@@ -255,14 +255,14 @@ void __32__FPSpotlightCollector_allItems__block_invoke(uint64_t a1, uint64_t a2,
   return v3;
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(self->_processingQueue);
-  if (([(NSMutableSet *)self->_observers containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_observers containsObject:observerCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_observers addObject:v4];
+    [(NSMutableSet *)self->_observers addObject:observerCopy];
   }
 
   if (self->_suspended)
@@ -278,7 +278,7 @@ void __32__FPSpotlightCollector_allItems__block_invoke(uint64_t a1, uint64_t a2,
   {
     if (!self->_gathering)
     {
-      v6 = [(FPSpotlightCollector *)self allItemsForObserver:v4];
+      v6 = [(FPSpotlightCollector *)self allItemsForObserver:observerCopy];
       v7 = fp_current_or_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
@@ -286,17 +286,17 @@ void __32__FPSpotlightCollector_allItems__block_invoke(uint64_t a1, uint64_t a2,
         v12 = 138412802;
         v13 = v11;
         v14 = 2112;
-        v15 = v4;
+        v15 = observerCopy;
         v16 = 2048;
         v17 = [v6 count];
         _os_log_debug_impl(&dword_1AAAE1000, v7, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Adding observer %@: gathering %ld items", &v12, 0x20u);
       }
 
-      [v4 collector:self didGatherItems:v6];
+      [observerCopy collector:self didGatherItems:v6];
     }
 
-    v8 = [(FPSpotlightCollector *)self queries];
-    v9 = [v8 count];
+    queries = [(FPSpotlightCollector *)self queries];
+    v9 = [queries count];
 
     if (!v9)
     {
@@ -307,9 +307,9 @@ void __32__FPSpotlightCollector_allItems__block_invoke(uint64_t a1, uint64_t a2,
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -317,8 +317,8 @@ void __32__FPSpotlightCollector_allItems__block_invoke(uint64_t a1, uint64_t a2,
   block[2] = __36__FPSpotlightCollector_addObserver___block_invoke;
   block[3] = &unk_1E793AA48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -331,9 +331,9 @@ void __36__FPSpotlightCollector_addObserver___block_invoke(uint64_t a1)
   [WeakRetained _addObserver:*(a1 + 32)];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(self->_processingQueue);
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -341,32 +341,32 @@ void __36__FPSpotlightCollector_addObserver___block_invoke(uint64_t a1)
     [FPSpotlightCollector _removeObserver:];
   }
 
-  [(NSMutableSet *)self->_observers removeObject:v4];
+  [(NSMutableSet *)self->_observers removeObject:observerCopy];
   if (![(NSMutableSet *)self->_observers count])
   {
-    v6 = [(FPSpotlightCollector *)self queryDescriptor];
-    v7 = [v6 keepCollectorsAlive];
+    queryDescriptor = [(FPSpotlightCollector *)self queryDescriptor];
+    keepCollectorsAlive = [queryDescriptor keepCollectorsAlive];
 
-    if ((v7 & 1) == 0)
+    if ((keepCollectorsAlive & 1) == 0)
     {
       [(FPSpotlightCollector *)self _stop];
-      v8 = [(FPSpotlightCollector *)self delegate];
-      [v8 collectorDidFinish:self];
+      delegate = [(FPSpotlightCollector *)self delegate];
+      [delegate collectorDidFinish:self];
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   processingQueue = self->_processingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__FPSpotlightCollector_removeObserver___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(processingQueue, v7);
 }
 
@@ -382,8 +382,8 @@ void __36__FPSpotlightCollector_addObserver___block_invoke(uint64_t a1)
   OUTLINED_FUNCTION_3();
   v12 = *MEMORY[0x1E69E9840];
   v3 = [v2 description];
-  v4 = [v1 queries];
-  [v4 count];
+  queries = [v1 queries];
+  [queries count];
   v5 = NSStringFromSelector(v0);
   OUTLINED_FUNCTION_9_2();
   OUTLINED_FUNCTION_20();
@@ -438,18 +438,18 @@ _BYTE *__30__FPSpotlightCollector_resume__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)mountPointsDidChange:(id)a3
+- (void)mountPointsDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__FPSpotlightCollector_mountPointsDidChange___block_invoke;
   block[3] = &unk_1E793AA70;
   block[4] = self;
-  v9 = v5;
+  v9 = changeCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = changeCopy;
   dispatch_async(processingQueue, block);
 }
 
@@ -636,41 +636,41 @@ void __45__FPSpotlightCollector_mountPointsDidChange___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_shouldFilterUpdatesForObserver:(id)a3
+- (BOOL)_shouldFilterUpdatesForObserver:(id)observer
 {
-  v4 = a3;
-  if ([(FPSpotlightCollector *)self _shouldRemoveItemsFromObserver:v4])
+  observerCopy = observer;
+  if ([(FPSpotlightCollector *)self _shouldRemoveItemsFromObserver:observerCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 itemPredicateForCollector:self];
+    v6 = [observerCopy itemPredicateForCollector:self];
     v5 = v6 != 0;
   }
 
   return v5;
 }
 
-- (id)_mountPointForExistingSearchQuery:(id)a3
+- (id)_mountPointForExistingSearchQuery:(id)query
 {
   processingQueue = self->_processingQueue;
-  v5 = a3;
+  queryCopy = query;
   dispatch_assert_queue_V2(processingQueue);
-  v6 = [(NSMapTable *)self->_queryToMountPoint objectForKey:v5];
+  v6 = [(NSMapTable *)self->_queryToMountPoint objectForKey:queryCopy];
 
   return v6;
 }
 
-- (id)filterItems:(id)a3 forObserver:(id)a4 excludedItemIDs:(id *)a5
+- (id)filterItems:(id)items forObserver:(id)observer excludedItemIDs:(id *)ds
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  itemsCopy = items;
+  observerCopy = observer;
+  if (ds)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    *a5 = v10;
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+    *ds = v10;
   }
 
   else
@@ -678,20 +678,20 @@ void __45__FPSpotlightCollector_mountPointsDidChange___block_invoke(uint64_t a1)
     v10 = 0;
   }
 
-  v11 = [v9 itemPredicateForCollector:self];
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v11 = [observerCopy itemPredicateForCollector:self];
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __64__FPSpotlightCollector_filterItems_forObserver_excludedItemIDs___block_invoke;
   v19[3] = &unk_1E793AA98;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v13 = v12;
   v22 = v13;
   v23 = v10;
   v14 = v10;
   v15 = v11;
-  [v8 enumerateObjectsUsingBlock:v19];
+  [itemsCopy enumerateObjectsUsingBlock:v19];
   v16 = v23;
   v17 = v13;
 
@@ -760,22 +760,22 @@ void __64__FPSpotlightCollector_filterItems_forObserver_excludedItemIDs___block_
   }
 }
 
-- (id)_allItemsForMountPoint:(id)a3
+- (id)_allItemsForMountPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = [(NSMutableDictionary *)self->_itemsByBundleAndCSID objectForKeyedSubscript:@"com.apple.filesystems.UserFS.FileProvider"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 allValues];
+    allValues = [v5 allValues];
     v8 = MEMORY[0x1E696AE18];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke;
     v12[3] = &unk_1E793AAE8;
-    v13 = v4;
+    v13 = pointCopy;
     v9 = [v8 predicateWithBlock:v12];
-    v10 = [v7 filteredArrayUsingPredicate:v9];
+    v10 = [allValues filteredArrayUsingPredicate:v9];
   }
 
   else
@@ -794,15 +794,15 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
   return v4;
 }
 
-- (id)allItemsForObserver:(id)a3
+- (id)allItemsForObserver:(id)observer
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FPSpotlightCollector *)self allItems];
-  v6 = [(FPSpotlightCollector *)self filterItems:v5 forObserver:v4 excludedItemIDs:0];
-  v7 = [v4 maximumNumberOfItems];
+  observerCopy = observer;
+  allItems = [(FPSpotlightCollector *)self allItems];
+  v6 = [(FPSpotlightCollector *)self filterItems:allItems forObserver:observerCopy excludedItemIDs:0];
+  maximumNumberOfItems = [observerCopy maximumNumberOfItems];
 
-  if ([v6 count] > v7)
+  if ([v6 count] > maximumNumberOfItems)
   {
     v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastUsedDate" ascending:0];
     v28[0] = v8;
@@ -813,13 +813,13 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
     [v6 sortUsingDescriptors:v11];
 
-    v12 = [v6 count] - v7;
+    v12 = [v6 count] - maximumNumberOfItems;
     v13 = fp_current_or_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v17 = [(FPSpotlightCollector *)self description];
       v18 = [v6 count];
-      v30.location = v7;
+      v30.location = maximumNumberOfItems;
       v30.length = v12;
       v19 = NSStringFromRange(v30);
       v20 = 138413058;
@@ -827,13 +827,13 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
       v22 = 2048;
       v23 = v18;
       v24 = 2048;
-      v25 = v7;
+      v25 = maximumNumberOfItems;
       v26 = 2112;
       v27 = v19;
       _os_log_debug_impl(&dword_1AAAE1000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Too many results (%ld > %ld), will cut off the items in range %@.", &v20, 0x2Au);
     }
 
-    v14 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v7, v12}];
+    v14 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{maximumNumberOfItems, v12}];
     [v6 removeObjectsAtIndexes:v14];
   }
 
@@ -842,34 +842,34 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
   return v6;
 }
 
-- (BOOL)isQueryCancelled:(id)a3
+- (BOOL)isQueryCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = [(FPSpotlightCollector *)self queries];
-  v6 = [v5 containsObject:v4];
+  cancelledCopy = cancelled;
+  queries = [(FPSpotlightCollector *)self queries];
+  v6 = [queries containsObject:cancelledCopy];
 
   return v6 ^ 1;
 }
 
-- (void)query:(id)a3 didRemoveItemsWithCSIdentifiers:(id)a4 inBundle:(id)a5
+- (void)query:(id)query didRemoveItemsWithCSIdentifiers:(id)identifiers inBundle:(id)bundle
 {
   v128 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  identifiersCopy = identifiers;
+  bundleCopy = bundle;
   dispatch_assert_queue_V2(self->_processingQueue);
-  if (![(FPSpotlightCollector *)self isQueryCancelled:v8])
+  if (![(FPSpotlightCollector *)self isQueryCancelled:queryCopy])
   {
     v11 = fp_current_or_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       [(FPSpotlightCollector *)self description];
-      v80 = self;
-      v82 = v81 = v9;
+      selfCopy = self;
+      v82 = v81 = identifiersCopy;
       *buf = 138413314;
       v119 = v82;
       v120 = 2112;
-      v121 = v8;
+      v121 = queryCopy;
       v122 = 2080;
       v123 = "removed";
       v124 = 2048;
@@ -878,26 +878,26 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
       v127 = v81;
       _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Did remove items for query:%@ (%s %ld items) %@", buf, 0x34u);
 
-      v9 = v81;
-      self = v80;
+      identifiersCopy = v81;
+      self = selfCopy;
     }
 
-    if (v10)
+    if (bundleCopy)
     {
       if (!self->_gathering)
       {
-        v84 = v8;
-        v85 = v10;
-        v92 = self;
-        v12 = [(NSMutableDictionary *)self->_itemsByBundleAndCSID objectForKeyedSubscript:v10];
+        v84 = queryCopy;
+        v85 = bundleCopy;
+        selfCopy2 = self;
+        v12 = [(NSMutableDictionary *)self->_itemsByBundleAndCSID objectForKeyedSubscript:bundleCopy];
         v91 = objc_opt_new();
         v90 = objc_opt_new();
         v109 = 0u;
         v110 = 0u;
         v111 = 0u;
         v112 = 0u;
-        v83 = v9;
-        obj = v9;
+        v83 = identifiersCopy;
+        obj = identifiersCopy;
         v13 = [obj countByEnumeratingWithState:&v109 objects:v117 count:16];
         v87 = v12;
         if (v13)
@@ -918,40 +918,40 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
               v19 = v18;
               if (v18)
               {
-                v20 = [v18 itemID];
-                [v91 addObject:v20];
+                itemID = [v18 itemID];
+                [v91 addObject:itemID];
 
                 [v90 addObject:v19];
-                v21 = [v19 providerIDForDeduplication];
-                v22 = [v19 collaborationIdentifier];
-                v23 = [v19 collaborationIdentifier];
-                if (v23)
+                providerIDForDeduplication = [v19 providerIDForDeduplication];
+                collaborationIdentifier = [v19 collaborationIdentifier];
+                collaborationIdentifier2 = [v19 collaborationIdentifier];
+                if (collaborationIdentifier2)
                 {
-                  v24 = v23;
-                  v25 = [(NSMutableDictionary *)v92->_itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:v21];
-                  v26 = [v25 objectForKeyedSubscript:v22];
+                  v24 = collaborationIdentifier2;
+                  v25 = [(NSMutableDictionary *)selfCopy2->_itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:providerIDForDeduplication];
+                  v26 = [v25 objectForKeyedSubscript:collaborationIdentifier];
                   v27 = [v26 isEqual:v19];
 
                   v12 = v87;
                   if (v27)
                   {
-                    v28 = [(NSMutableDictionary *)v92->_itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:v21];
-                    [v28 setObject:0 forKeyedSubscript:v22];
+                    v28 = [(NSMutableDictionary *)selfCopy2->_itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:providerIDForDeduplication];
+                    [v28 setObject:0 forKeyedSubscript:collaborationIdentifier];
                   }
                 }
               }
 
               else
               {
-                v21 = fp_current_or_default_log();
-                if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+                providerIDForDeduplication = fp_current_or_default_log();
+                if (os_log_type_enabled(providerIDForDeduplication, OS_LOG_TYPE_ERROR))
                 {
-                  v29 = [(FPSpotlightCollector *)v92 description];
+                  v29 = [(FPSpotlightCollector *)selfCopy2 description];
                   *buf = 138412546;
                   v119 = v29;
                   v120 = 2112;
                   v121 = v17;
-                  _os_log_error_impl(&dword_1AAAE1000, v21, OS_LOG_TYPE_ERROR, "[ERROR] %@: Unable to obtain item for identifier %@ when items have been removed from query results.", buf, 0x16u);
+                  _os_log_error_impl(&dword_1AAAE1000, providerIDForDeduplication, OS_LOG_TYPE_ERROR, "[ERROR] %@: Unable to obtain item for identifier %@ when items have been removed from query results.", buf, 0x16u);
                 }
               }
             }
@@ -968,7 +968,7 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
         v106 = 0u;
         v30 = obj;
         v31 = [v30 countByEnumeratingWithState:&v105 objects:v116 count:16];
-        v10 = v85;
+        bundleCopy = v85;
         if (v31)
         {
           v32 = v31;
@@ -983,7 +983,7 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
               }
 
               v35 = *(*(&v105 + 1) + 8 * j);
-              v36 = [(NSMutableDictionary *)v92->_itemsByBundleAndCSID objectForKeyedSubscript:v85];
+              v36 = [(NSMutableDictionary *)selfCopy2->_itemsByBundleAndCSID objectForKeyedSubscript:v85];
               [v36 setObject:0 forKeyedSubscript:v35];
             }
 
@@ -993,16 +993,16 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
           while (v32);
         }
 
-        v37 = v92;
+        v37 = selfCopy2;
         if ([v91 count])
         {
-          if (![(FPSpotlightCollector *)v92 _areItemsTransientFromBundleIdentifier:v85])
+          if (![(FPSpotlightCollector *)selfCopy2 _areItemsTransientFromBundleIdentifier:v85])
           {
             v103 = 0u;
             v104 = 0u;
             v101 = 0u;
             v102 = 0u;
-            v38 = v92->_observers;
+            v38 = selfCopy2->_observers;
             v39 = [(NSMutableSet *)v38 countByEnumeratingWithState:&v101 objects:v115 count:16];
             if (v39)
             {
@@ -1017,10 +1017,10 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
                     objc_enumerationMutation(v38);
                   }
 
-                  if (![(FPSpotlightCollector *)v92 _shouldRemoveItemsFromObserver:*(*(&v101 + 1) + 8 * k)])
+                  if (![(FPSpotlightCollector *)selfCopy2 _shouldRemoveItemsFromObserver:*(*(&v101 + 1) + 8 * k)])
                   {
 
-                    [(FPSpotlightCollector *)v92 _regather];
+                    [(FPSpotlightCollector *)selfCopy2 _regather];
                     goto LABEL_73;
                   }
                 }
@@ -1035,7 +1035,7 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
               }
             }
 
-            v37 = v92;
+            v37 = selfCopy2;
           }
 
           v43 = objc_opt_new();
@@ -1043,8 +1043,8 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
           v98 = 0u;
           v99 = 0u;
           v100 = 0u;
-          v44 = [(FPSpotlightCollector *)v37 allItems];
-          v45 = [v44 countByEnumeratingWithState:&v97 objects:v114 count:16];
+          allItems = [(FPSpotlightCollector *)v37 allItems];
+          v45 = [allItems countByEnumeratingWithState:&v97 objects:v114 count:16];
           if (v45)
           {
             v46 = v45;
@@ -1055,43 +1055,43 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
               {
                 if (*v98 != v47)
                 {
-                  objc_enumerationMutation(v44);
+                  objc_enumerationMutation(allItems);
                 }
 
                 v49 = *(*(&v97 + 1) + 8 * m);
-                v50 = [v49 collaborationIdentifier];
+                collaborationIdentifier3 = [v49 collaborationIdentifier];
 
-                if (v50)
+                if (collaborationIdentifier3)
                 {
-                  itemsByProviderAndCollaborationIdentifier = v92->_itemsByProviderAndCollaborationIdentifier;
-                  v52 = [v49 providerIDForDeduplication];
-                  v53 = [(NSMutableDictionary *)itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:v52];
-                  v54 = [v49 collaborationIdentifier];
-                  v55 = [v53 objectForKeyedSubscript:v54];
+                  itemsByProviderAndCollaborationIdentifier = selfCopy2->_itemsByProviderAndCollaborationIdentifier;
+                  providerIDForDeduplication2 = [v49 providerIDForDeduplication];
+                  v53 = [(NSMutableDictionary *)itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:providerIDForDeduplication2];
+                  collaborationIdentifier4 = [v49 collaborationIdentifier];
+                  v55 = [v53 objectForKeyedSubscript:collaborationIdentifier4];
 
                   if (!v55)
                   {
-                    v56 = v92->_itemsByProviderAndCollaborationIdentifier;
-                    v57 = [v49 providerIDForDeduplication];
-                    v58 = [(NSMutableDictionary *)v56 objectForKeyedSubscript:v57];
+                    v56 = selfCopy2->_itemsByProviderAndCollaborationIdentifier;
+                    providerIDForDeduplication3 = [v49 providerIDForDeduplication];
+                    v58 = [(NSMutableDictionary *)v56 objectForKeyedSubscript:providerIDForDeduplication3];
 
                     if (!v58)
                     {
                       v58 = objc_opt_new();
-                      v59 = v92->_itemsByProviderAndCollaborationIdentifier;
-                      v60 = [v49 providerIDForDeduplication];
-                      [(NSMutableDictionary *)v59 setObject:v58 forKeyedSubscript:v60];
+                      v59 = selfCopy2->_itemsByProviderAndCollaborationIdentifier;
+                      providerIDForDeduplication4 = [v49 providerIDForDeduplication];
+                      [(NSMutableDictionary *)v59 setObject:v58 forKeyedSubscript:providerIDForDeduplication4];
                     }
 
-                    v61 = [v49 collaborationIdentifier];
-                    [v58 setObject:v49 forKeyedSubscript:v61];
+                    collaborationIdentifier5 = [v49 collaborationIdentifier];
+                    [v58 setObject:v49 forKeyedSubscript:collaborationIdentifier5];
 
                     [v43 addObject:v49];
                   }
                 }
               }
 
-              v46 = [v44 countByEnumeratingWithState:&v97 objects:v114 count:16];
+              v46 = [allItems countByEnumeratingWithState:&v97 objects:v114 count:16];
             }
 
             while (v46);
@@ -1101,7 +1101,7 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
           v96 = 0u;
           v93 = 0u;
           v94 = 0u;
-          obja = v92->_observers;
+          obja = selfCopy2->_observers;
           v62 = [(NSMutableSet *)obja countByEnumeratingWithState:&v93 objects:v113 count:16];
           if (v62)
           {
@@ -1120,37 +1120,37 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
 
                 v66 = *(*(&v93 + 1) + 8 * v65);
                 v67 = objc_autoreleasePoolPush();
-                if ([(FPSpotlightCollector *)v92 _shouldFilterUpdatesForObserver:v66])
+                if ([(FPSpotlightCollector *)selfCopy2 _shouldFilterUpdatesForObserver:v66])
                 {
                   v68 = v43;
                   v69 = v64;
-                  v70 = [(FPSpotlightCollector *)v92 filterItems:v90 forObserver:v66 excludedItemIDs:0];
-                  v71 = [v70 fp_itemIDs];
-                  v72 = [v71 count];
+                  v70 = [(FPSpotlightCollector *)selfCopy2 filterItems:v90 forObserver:v66 excludedItemIDs:0];
+                  fp_itemIDs = [v70 fp_itemIDs];
+                  v72 = [fp_itemIDs count];
                   v73 = fp_current_or_default_log();
                   v74 = os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG);
                   if (v72)
                   {
                     if (v74)
                     {
-                      v77 = [(FPSpotlightCollector *)v92 description];
+                      v77 = [(FPSpotlightCollector *)selfCopy2 description];
                       *buf = 138412802;
                       v119 = v77;
                       v120 = 2112;
                       v121 = v66;
                       v122 = 2112;
-                      v123 = v71;
+                      v123 = fp_itemIDs;
                       _os_log_debug_impl(&dword_1AAAE1000, v73, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: → Observer:%@ to remove: %@", buf, 0x20u);
                     }
 
-                    [v66 collector:v92 didRemoveItemIDs:v71];
+                    [v66 collector:selfCopy2 didRemoveItemIDs:fp_itemIDs];
                   }
 
                   else
                   {
                     if (v74)
                     {
-                      v78 = [(FPSpotlightCollector *)v92 description];
+                      v78 = [(FPSpotlightCollector *)selfCopy2 description];
                       *buf = 138412546;
                       v119 = v78;
                       v120 = 2112;
@@ -1169,7 +1169,7 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
                   v75 = fp_current_or_default_log();
                   if (os_log_type_enabled(v75, OS_LOG_TYPE_DEBUG))
                   {
-                    v76 = [(FPSpotlightCollector *)v92 description];
+                    v76 = [(FPSpotlightCollector *)selfCopy2 description];
                     *buf = 138412802;
                     v119 = v76;
                     v120 = 2112;
@@ -1179,12 +1179,12 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
                     _os_log_debug_impl(&dword_1AAAE1000, v75, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: → Observer:%@ to receive delta deletion updates: %@", buf, 0x20u);
                   }
 
-                  [v66 collector:v92 didRemoveItemIDs:v91];
+                  [v66 collector:selfCopy2 didRemoveItemIDs:v91];
                 }
 
                 if ([v43 count])
                 {
-                  [v66 collector:v92 didUpdateItems:v43];
+                  [v66 collector:selfCopy2 didUpdateItems:v43];
                 }
 
                 objc_autoreleasePoolPop(v67);
@@ -1198,15 +1198,15 @@ uint64_t __47__FPSpotlightCollector__allItemsForMountPoint___block_invoke(uint64
             while (v63);
           }
 
-          [(FPSpotlightCollector *)v92 setNeedsItemsOriginUpdate];
-          v10 = v85;
+          [(FPSpotlightCollector *)selfCopy2 setNeedsItemsOriginUpdate];
+          bundleCopy = v85;
           v12 = v87;
         }
 
 LABEL_73:
 
-        v9 = v83;
-        v8 = v84;
+        identifiersCopy = v83;
+        queryCopy = v84;
       }
     }
   }
@@ -1214,20 +1214,20 @@ LABEL_73:
   v79 = *MEMORY[0x1E69E9840];
 }
 
-- (void)query:(id)a3 didUpdateItems:(id)a4
+- (void)query:(id)query didUpdateItems:(id)items
 {
   v93 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  itemsCopy = items;
   dispatch_assert_queue_V2(self->_processingQueue);
-  if (![(FPSpotlightCollector *)self isQueryCancelled:v6])
+  if (![(FPSpotlightCollector *)self isQueryCancelled:queryCopy])
   {
     v8 = fp_current_or_default_log();
-    v69 = self;
+    selfCopy = self;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v55 = [(FPSpotlightCollector *)self description];
-      v56 = [v7 count];
+      v56 = [itemsCopy count];
       if (self->_gathering)
       {
         v57 = "initially gathered";
@@ -1238,7 +1238,7 @@ LABEL_73:
         v57 = "updated";
       }
 
-      v58 = v7;
+      v58 = itemsCopy;
       v59 = [v58 count];
       v60 = MEMORY[0x1E696AEC0];
       if (v59 > 0xA)
@@ -1247,7 +1247,7 @@ LABEL_73:
 
         v61 = [v60 stringWithFormat:@"%@...", v62];
         v58 = v62;
-        self = v69;
+        self = selfCopy;
       }
 
       else
@@ -1262,13 +1262,13 @@ LABEL_73:
       v87 = 2080;
       v88 = v57;
       v89 = 2112;
-      v90 = v6;
+      v90 = queryCopy;
       v91 = 2112;
       v92 = v61;
       _os_log_debug_impl(&dword_1AAAE1000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Did receive %ld %s items from query:%@ -- %@", buf, 0x34u);
     }
 
-    v64 = v6;
+    v64 = queryCopy;
 
     v70 = objc_opt_new();
     v9 = objc_opt_new();
@@ -1277,8 +1277,8 @@ LABEL_73:
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v63 = v7;
-    v10 = v7;
+    v63 = itemsCopy;
+    v10 = itemsCopy;
     v11 = [v10 countByEnumeratingWithState:&v77 objects:v82 count:16];
     v68 = v9;
     if (v11)
@@ -1301,63 +1301,63 @@ LABEL_73:
           v17 = v16;
           if (v16)
           {
-            v18 = [(FPItem *)v16 itemIdentifier];
-            v19 = [v18 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
+            itemIdentifier = [(FPItem *)v16 itemIdentifier];
+            v19 = [itemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
 
             if ((v19 & 1) == 0)
             {
               [v9 addObject:v17];
-              v20 = [v15 bundleID];
-              if (v20)
+              bundleID = [v15 bundleID];
+              if (bundleID)
               {
-                v21 = [(NSMutableDictionary *)v67 objectForKeyedSubscript:v20];
+                v21 = [(NSMutableDictionary *)v67 objectForKeyedSubscript:bundleID];
                 if (!v21)
                 {
                   v21 = objc_opt_new();
-                  [(NSMutableDictionary *)v67 setObject:v21 forKeyedSubscript:v20];
+                  [(NSMutableDictionary *)v67 setObject:v21 forKeyedSubscript:bundleID];
                 }
 
-                v22 = [v15 uniqueIdentifier];
-                if (v22)
+                uniqueIdentifier = [v15 uniqueIdentifier];
+                if (uniqueIdentifier)
                 {
-                  [v21 setObject:v17 forKeyedSubscript:v22];
+                  [v21 setObject:v17 forKeyedSubscript:uniqueIdentifier];
                 }
 
-                v23 = [(FPItem *)v17 collaborationIdentifier];
+                collaborationIdentifier = [(FPItem *)v17 collaborationIdentifier];
 
-                if (v23)
+                if (collaborationIdentifier)
                 {
                   itemsByProviderAndCollaborationIdentifier = self->_itemsByProviderAndCollaborationIdentifier;
-                  v25 = [(FPItem *)v17 providerIDForDeduplication];
-                  v26 = [(NSMutableDictionary *)itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:v25];
-                  v27 = [(FPItem *)v17 collaborationIdentifier];
-                  v28 = [v26 objectForKeyedSubscript:v27];
+                  providerIDForDeduplication = [(FPItem *)v17 providerIDForDeduplication];
+                  v26 = [(NSMutableDictionary *)itemsByProviderAndCollaborationIdentifier objectForKeyedSubscript:providerIDForDeduplication];
+                  collaborationIdentifier2 = [(FPItem *)v17 collaborationIdentifier];
+                  v28 = [v26 objectForKeyedSubscript:collaborationIdentifier2];
 
-                  self = v69;
+                  self = selfCopy;
                   if (!v28 || ([v28 isEqual:v17] & 1) == 0 && !-[FPItem isCollaborationInvitation](v17, "isCollaborationInvitation"))
                   {
-                    v29 = v69->_itemsByProviderAndCollaborationIdentifier;
-                    v30 = [(FPItem *)v17 providerIDForDeduplication];
-                    v31 = [(NSMutableDictionary *)v29 objectForKeyedSubscript:v30];
+                    v29 = selfCopy->_itemsByProviderAndCollaborationIdentifier;
+                    providerIDForDeduplication2 = [(FPItem *)v17 providerIDForDeduplication];
+                    v31 = [(NSMutableDictionary *)v29 objectForKeyedSubscript:providerIDForDeduplication2];
 
                     if (!v31)
                     {
                       v31 = objc_opt_new();
-                      v32 = v69->_itemsByProviderAndCollaborationIdentifier;
-                      v33 = [(FPItem *)v17 providerIDForDeduplication];
-                      [(NSMutableDictionary *)v32 setObject:v31 forKeyedSubscript:v33];
+                      v32 = selfCopy->_itemsByProviderAndCollaborationIdentifier;
+                      providerIDForDeduplication3 = [(FPItem *)v17 providerIDForDeduplication];
+                      [(NSMutableDictionary *)v32 setObject:v31 forKeyedSubscript:providerIDForDeduplication3];
                     }
 
-                    v34 = [(FPItem *)v17 collaborationIdentifier];
-                    [v31 setObject:v17 forKeyedSubscript:v34];
+                    collaborationIdentifier3 = [(FPItem *)v17 collaborationIdentifier];
+                    [v31 setObject:v17 forKeyedSubscript:collaborationIdentifier3];
 
                     if (v28)
                     {
-                      v35 = [v28 itemID];
-                      [v70 addObject:v35];
+                      itemID = [v28 itemID];
+                      [v70 addObject:itemID];
                     }
 
-                    self = v69;
+                    self = selfCopy;
                   }
 
                   v9 = v68;
@@ -1412,10 +1412,10 @@ LABEL_73:
               v48 = os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG);
               if (v45 + v46)
               {
-                self = v69;
+                self = selfCopy;
                 if (v48)
                 {
-                  v53 = [(FPSpotlightCollector *)v69 description];
+                  v53 = [(FPSpotlightCollector *)selfCopy description];
                   *buf = 138413058;
                   v84 = v53;
                   v85 = 2112;
@@ -1429,27 +1429,27 @@ LABEL_73:
 
                 if ([v42 count])
                 {
-                  [v40 collector:v69 didUpdateItems:v42];
+                  [v40 collector:selfCopy didUpdateItems:v42];
                 }
 
                 v9 = v68;
                 if ([v43 count])
                 {
-                  [v40 collector:v69 didRemoveItemIDs:v43];
+                  [v40 collector:selfCopy didRemoveItemIDs:v43];
                 }
 
                 if ([v70 count])
                 {
-                  [v40 collector:v69 didRemoveItemIDs:v70];
+                  [v40 collector:selfCopy didRemoveItemIDs:v70];
                 }
               }
 
               else
               {
-                self = v69;
+                self = selfCopy;
                 if (v48)
                 {
-                  v52 = [(FPSpotlightCollector *)v69 description];
+                  v52 = [(FPSpotlightCollector *)selfCopy description];
                   *buf = 138412546;
                   v84 = v52;
                   v85 = 2112;
@@ -1496,19 +1496,19 @@ LABEL_73:
       [(FPSpotlightCollector *)self setNeedsItemsOriginUpdate];
     }
 
-    v7 = v63;
-    v6 = v64;
+    itemsCopy = v63;
+    queryCopy = v64;
   }
 
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryDidFinishGathering:(id)a3
+- (void)queryDidFinishGathering:(id)gathering
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  gatheringCopy = gathering;
   dispatch_assert_queue_V2(self->_processingQueue);
-  v5 = [(FPSpotlightCollector *)self isQueryCancelled:v4];
+  v5 = [(FPSpotlightCollector *)self isQueryCancelled:gatheringCopy];
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1524,7 +1524,7 @@ LABEL_73:
 
     v30 = v21;
     v31 = 2112;
-    v32 = v4;
+    v32 = gatheringCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Query did finish gathering (cancelled: %@): %@", buf, 0x20u);
   }
 
@@ -1538,7 +1538,7 @@ LABEL_73:
       [FPSpotlightCollector queryDidFinishGathering:];
     }
 
-    v22 = v4;
+    v22 = gatheringCopy;
 
     v25 = 0u;
     v26 = 0u;
@@ -1591,26 +1591,26 @@ LABEL_73:
       while (v10);
     }
 
-    v4 = v22;
+    gatheringCopy = v22;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)query:(id)a3 didFinishWithError:(id)a4
+- (void)query:(id)query didFinishWithError:(id)error
 {
   v55[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_processingQueue);
-  if (![(FPSpotlightCollector *)self isQueryCancelled:v6])
+  if (![(FPSpotlightCollector *)self isQueryCancelled:queryCopy])
   {
     if (!self->_gathering)
     {
-      [(FPSpotlightCollector *)self queryDidFinishGathering:v6];
+      [(FPSpotlightCollector *)self queryDidFinishGathering:queryCopy];
     }
 
-    v8 = [(FPSpotlightCollector *)self _mountPointForExistingSearchQuery:v6];
+    v8 = [(FPSpotlightCollector *)self _mountPointForExistingSearchQuery:queryCopy];
     v9 = v8;
     if (v8)
     {
@@ -1622,7 +1622,7 @@ LABEL_73:
       v10 = 1;
     }
 
-    v11 = [v7 domain];
+    domain = [errorCopy domain];
     v46 = 0;
     v47 = &v46;
     v48 = 0x2020000000;
@@ -1648,10 +1648,10 @@ LABEL_73:
       [FPSpotlightCollector query:didFinishWithError:];
     }
 
-    v15 = [v11 isEqualToString:*v12];
+    v15 = [domain isEqualToString:*v12];
 
-    v16 = [v7 domain];
-    v17 = [v16 isEqualToString:*MEMORY[0x1E696A250]];
+    domain2 = [errorCopy domain];
+    v17 = [domain2 isEqualToString:*MEMORY[0x1E696A250]];
 
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1660,15 +1660,15 @@ LABEL_73:
       *buf = 138412802;
       *&buf[4] = v38;
       *&buf[12] = 2048;
-      *&buf[14] = v6;
+      *&buf[14] = queryCopy;
       *&buf[22] = 2112;
-      v54 = v7;
+      v54 = errorCopy;
       _os_log_debug_impl(&dword_1AAAE1000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Did finish query:%p with error: %@", buf, 0x20u);
     }
 
     if (v15)
     {
-      if ([v7 code] == -2003)
+      if ([errorCopy code] == -2003)
       {
         v19 = fp_current_or_default_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1678,30 +1678,30 @@ LABEL_73:
 
 LABEL_32:
 
-        [(FPSpotlightCollector *)self _removeItemsForQuery:v6 mountPoint:v9];
-        v27 = [(FPSpotlightCollector *)self queries];
-        [v27 removeObject:v6];
+        [(FPSpotlightCollector *)self _removeItemsForQuery:queryCopy mountPoint:v9];
+        queries = [(FPSpotlightCollector *)self queries];
+        [queries removeObject:queryCopy];
 
 LABEL_33:
         goto LABEL_34;
       }
 
-      if ([v7 code] == -2002)
+      if ([errorCopy code] == -2002)
       {
         v19 = fp_current_or_default_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v39 = [(FPSpotlightCollector *)self description];
           v40 = [(FPSpotlightCollector *)self description];
-          v41 = [v6 queryString];
+          queryString = [queryCopy queryString];
           *buf = 138413058;
           *&buf[4] = v39;
           *&buf[12] = 2114;
           *&buf[14] = v40;
           *&buf[22] = 2114;
-          v54 = v7;
+          v54 = errorCopy;
           LOWORD(v55[0]) = 2114;
-          *(v55 + 2) = v41;
+          *(v55 + 2) = queryString;
           _os_log_debug_impl(&dword_1AAAE1000, v19, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Stopped searching for %{public}@: %{public}@, since query seems invalid: %{public}@", buf, 0x2Au);
         }
 
@@ -1709,7 +1709,7 @@ LABEL_24:
 
         v21 = MEMORY[0x1E696ABC0];
         v51 = *MEMORY[0x1E696AA08];
-        v52 = v7;
+        v52 = errorCopy;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
         v19 = [v21 errorWithDomain:@"com.apple.FileProvider.Spotlight" code:0 userInfo:v22];
 
@@ -1744,11 +1744,11 @@ LABEL_24:
       }
     }
 
-    else if (!v17 || [v7 code] != 4097)
+    else if (!v17 || [errorCopy code] != 4097)
     {
       v20 = fp_current_or_default_log();
       v19 = v20;
-      if (!v7)
+      if (!errorCopy)
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
@@ -1772,7 +1772,7 @@ LABEL_24:
       [FPSpotlightCollector query:didFinishWithError:];
     }
 
-    if (v15 && !(([v7 code] != -2000) | v10 & 1))
+    if (v15 && !(([errorCopy code] != -2000) | v10 & 1))
     {
       goto LABEL_33;
     }
@@ -1796,9 +1796,9 @@ LABEL_24:
 
     else
     {
-      v32 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v33 = self->_lastStartOfRecovery;
-      self->_lastStartOfRecovery = v32;
+      self->_lastStartOfRecovery = date;
 
       numberOfRecoveryAttempts = 0;
       self->_numberOfRecoveryAttempts = 0;
@@ -1812,9 +1812,9 @@ LABEL_24:
       [FPSpotlightCollector query:didFinishWithError:];
     }
 
-    [(FPSpotlightCollector *)self _removeItemsForQuery:v6 mountPoint:v9];
-    v37 = [(FPSpotlightCollector *)self queries];
-    [v37 removeObject:v6];
+    [(FPSpotlightCollector *)self _removeItemsForQuery:queryCopy mountPoint:v9];
+    queries2 = [(FPSpotlightCollector *)self queries];
+    [queries2 removeObject:queryCopy];
 
     [(FPSpotlightCollector *)self _regather];
     goto LABEL_33;
@@ -1825,16 +1825,16 @@ LABEL_34:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createQueriesForMountPoints:(id)a3
+- (id)_createQueriesForMountPoints:(id)points
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  pointsCopy = points;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(pointsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = pointsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1864,16 +1864,16 @@ LABEL_34:
   return v5;
 }
 
-- (id)_createQueryForMountPoint:(id)a3
+- (id)_createQueryForMountPoint:(id)point
 {
   v68 = *MEMORY[0x1E69E9840];
-  v37 = a3;
+  pointCopy = point;
   dispatch_assert_queue_V2(self->_processingQueue);
-  v4 = [(FPSpotlightCollector *)self queryDescriptor];
-  v36 = [v4 queryStringForMountPoint:v37];
+  queryDescriptor = [(FPSpotlightCollector *)self queryDescriptor];
+  v36 = [queryDescriptor queryStringForMountPoint:pointCopy];
   if (v36)
   {
-    if ([v4 supportsSemanticSearch])
+    if ([queryDescriptor supportsSemanticSearch])
     {
       from = 0;
       p_from = &from;
@@ -1924,24 +1924,24 @@ LABEL_34:
     [v7 setFetchAttributes:v11];
 
     [v7 setLive:1];
-    if ([v4 desiredCount] != -1)
+    if ([queryDescriptor desiredCount] != -1)
     {
-      [v7 setMaxCount:{objc_msgSend(v4, "desiredCount")}];
+      [v7 setMaxCount:{objc_msgSend(queryDescriptor, "desiredCount")}];
     }
 
-    if (([v37 isEqualToString:@"FPQueryCollectionDefaultMountPointIdentifier"] & 1) == 0)
+    if (([pointCopy isEqualToString:@"FPQueryCollectionDefaultMountPointIdentifier"] & 1) == 0)
     {
-      v64 = v37;
+      v64 = pointCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
       [v7 setMountPoints:v12];
     }
 
-    [v4 augmentQueryContext:v7];
-    if ([v4 supportsSemanticSearch])
+    [queryDescriptor augmentQueryContext:v7];
+    if ([queryDescriptor supportsSemanticSearch])
     {
-      v13 = [v4 settings];
-      v14 = [v13 searchQuery];
-      v15 = [v14 userQueryString];
+      settings = [queryDescriptor settings];
+      searchQuery = [settings searchQuery];
+      userQueryString = [searchQuery userQueryString];
 
       from = 0;
       p_from = &from;
@@ -1961,7 +1961,7 @@ LABEL_34:
 
       v17 = v16;
       _Block_object_dispose(&from, 8);
-      v18 = [[v16 alloc] initWithUserQueryString:v15 userQueryContext:v7];
+      v18 = [[v16 alloc] initWithUserQueryString:userQueryString userQueryContext:v7];
       v63 = v36;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
       [v18 setFilterQueries:v19];
@@ -2002,13 +2002,13 @@ LABEL_34:
       *location = 138412802;
       *&location[4] = v35;
       *&location[12] = 2112;
-      *&location[14] = v37;
+      *&location[14] = pointCopy;
       *&location[22] = 2112;
       v66 = v18;
       _os_log_debug_impl(&dword_1AAAE1000, v22, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Creating query for mount point '%@': %@", location, 0x20u);
     }
 
-    [(NSMapTable *)self->_queryToMountPoint setObject:v37 forKey:v18];
+    [(NSMapTable *)self->_queryToMountPoint setObject:pointCopy forKey:v18];
     v62 = *MEMORY[0x1E696A388];
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
     [v18 setProtectionClasses:v23];
@@ -2022,13 +2022,13 @@ LABEL_34:
     v53[3] = &unk_1E793AB38;
     v25 = v24;
     v54 = v25;
-    v26 = v37;
+    v26 = pointCopy;
     v55 = v26;
     objc_copyWeak(&v56, &from);
     objc_copyWeak(&v57, location);
     [v18 setFoundItemsHandler:v53];
-    v27 = [v18 foundItemsHandler];
-    [v18 setChangedItemsHandler:v27];
+    foundItemsHandler = [v18 foundItemsHandler];
+    [v18 setChangedItemsHandler:foundItemsHandler];
 
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
@@ -2195,16 +2195,16 @@ void __50__FPSpotlightCollector__createQueryForMountPoint___block_invoke_8(uint6
 - (void)_regather
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = [a1 description];
+  v7 = [self description];
   OUTLINED_FUNCTION_20();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_itemsOriginForItems:(id)a3
+- (unint64_t)_itemsOriginForItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -2221,7 +2221,7 @@ void __50__FPSpotlightCollector__createQueryForMountPoint___block_invoke_8(uint6
   v6[3] = &unk_1E793AC28;
   v6[4] = v11;
   v6[5] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [itemsCopy enumerateObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
   _Block_object_dispose(v11, 8);
@@ -2251,13 +2251,13 @@ void __45__FPSpotlightCollector__itemsOriginForItems___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_removeItemsForQuery:(id)a3 mountPoint:(id)a4
+- (void)_removeItemsForQuery:(id)query mountPoint:(id)point
 {
-  v6 = a3;
+  queryCopy = query;
   processingQueue = self->_processingQueue;
-  v8 = a4;
+  pointCopy = point;
   dispatch_assert_queue_V2(processingQueue);
-  v9 = [(FPSpotlightCollector *)self _allItemsForMountPoint:v8];
+  v9 = [(FPSpotlightCollector *)self _allItemsForMountPoint:pointCopy];
 
   v10 = objc_opt_new();
   v15[0] = MEMORY[0x1E69E9820];
@@ -2272,8 +2272,8 @@ void __45__FPSpotlightCollector__itemsOriginForItems___block_invoke(uint64_t a1,
   v13[2] = __56__FPSpotlightCollector__removeItemsForQuery_mountPoint___block_invoke_2;
   v13[3] = &unk_1E793AC78;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = queryCopy;
+  v12 = queryCopy;
   [v11 enumerateKeysAndObjectsUsingBlock:v13];
 }
 

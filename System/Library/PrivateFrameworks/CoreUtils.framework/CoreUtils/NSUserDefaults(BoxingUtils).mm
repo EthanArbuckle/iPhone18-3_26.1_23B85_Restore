@@ -13,7 +13,7 @@
 {
   v6 = a3;
   v12 = 0;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   v8 = v7;
   if (v7)
   {
@@ -52,7 +52,7 @@ LABEL_4:
 {
   v6 = a3;
   v13 = 0;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   v8 = v7;
   if (v7)
   {
@@ -87,7 +87,7 @@ LABEL_4:
 
 - (id)stringValueSafeForKey:()BoxingUtils
 {
-  v3 = [a1 stringValueSafeForKey:a3 status:0];
+  v3 = [self stringValueSafeForKey:a3 status:0];
 
   return v3;
 }
@@ -96,7 +96,7 @@ LABEL_4:
 {
   v6 = a3;
   v12 = 0;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   v8 = v7;
   if (!v7)
   {
@@ -127,7 +127,7 @@ LABEL_4:
 {
   v6 = a3;
   v11 = 0;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   v8 = v7;
   if (!v7)
   {
@@ -157,7 +157,7 @@ LABEL_4:
 {
   v6 = a3;
   v11 = 0;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   v8 = v7;
   if (!v7)
   {

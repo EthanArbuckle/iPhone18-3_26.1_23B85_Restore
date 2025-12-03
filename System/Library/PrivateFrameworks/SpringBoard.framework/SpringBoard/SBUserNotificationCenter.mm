@@ -1,18 +1,18 @@
 @interface SBUserNotificationCenter
-+ (void)_userNotificationDone:(id)a3;
-+ (void)dispatchUserNotification:(id)a3 flags:(int)a4 replyPort:(unsigned int)a5 auditToken:(id)a6;
++ (void)_userNotificationDone:(id)done;
++ (void)dispatchUserNotification:(id)notification flags:(int)flags replyPort:(unsigned int)port auditToken:(id)token;
 + (void)startUserNotificationCenter;
 @end
 
 @implementation SBUserNotificationCenter
 
-+ (void)_userNotificationDone:(id)a3
++ (void)_userNotificationDone:(id)done
 {
-  v6 = [a3 object];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:a1 name:@"SBUserNotificationDoneNotification" object:v6];
+  object = [done object];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBUserNotificationDoneNotification" object:object];
 
-  [__userNotifications removeObject:v6];
+  [__userNotifications removeObject:object];
   if (![__userNotifications count])
   {
     v5 = __userNotifications;
@@ -20,17 +20,17 @@
   }
 }
 
-+ (void)dispatchUserNotification:(id)a3 flags:(int)a4 replyPort:(unsigned int)a5 auditToken:(id)a6
++ (void)dispatchUserNotification:(id)notification flags:(int)flags replyPort:(unsigned int)port auditToken:(id)token
 {
-  v7 = *&a5;
-  v8 = *&a4;
+  v7 = *&port;
+  v8 = *&flags;
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  notificationCopy = notification;
+  tokenCopy = token;
   if ((v8 & 8) != 0)
   {
-    v19 = [v10 objectForKey:*MEMORY[0x277CBF248]];
-    v20 = [v19 intValue];
+    v19 = [notificationCopy objectForKey:*MEMORY[0x277CBF248]];
+    intValue = [v19 intValue];
 
     v41 = 0u;
     v42 = 0u;
@@ -52,7 +52,7 @@
           }
 
           v26 = *(*(&v39 + 1) + 8 * i);
-          if ([v26 token] == v20)
+          if ([v26 token] == intValue)
           {
             v14 = v26;
             goto LABEL_18;
@@ -77,8 +77,8 @@ LABEL_18:
 
   else if ((v8 & 0x10) != 0)
   {
-    v27 = [v10 objectForKey:*MEMORY[0x277CBF248]];
-    v28 = [v27 intValue];
+    v27 = [notificationCopy objectForKey:*MEMORY[0x277CBF248]];
+    intValue2 = [v27 intValue];
 
     v37 = 0u;
     v38 = 0u;
@@ -100,7 +100,7 @@ LABEL_23:
         }
 
         v33 = *(*(&v35 + 1) + 8 * v32);
-        if ([v33 token] == v28)
+        if ([v33 token] == intValue2)
         {
           break;
         }
@@ -124,7 +124,7 @@ LABEL_23:
         goto LABEL_20;
       }
 
-      [(SBUserNotificationAlert *)v34 updateWithMessage:v10 requestFlags:v8];
+      [(SBUserNotificationAlert *)v34 updateWithMessage:notificationCopy requestFlags:v8];
       v14 = v34;
     }
   }
@@ -134,7 +134,7 @@ LABEL_23:
     v12 = SBLogCFUserNotifications();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      [v11 pid];
+      [tokenCopy pid];
       v13 = BSProcessDescriptionForPID();
       *buf = 67109378;
       v44 = v7;
@@ -143,7 +143,7 @@ LABEL_23:
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Presenting a CFUserNotification with reply port: %u on behalf of: %{public}@", buf, 0x12u);
     }
 
-    v14 = [[SBUserNotificationAlert alloc] initWithMessage:v10 replyPort:v7 requestFlags:v8 auditToken:v11];
+    v14 = [[SBUserNotificationAlert alloc] initWithMessage:notificationCopy replyPort:v7 requestFlags:v8 auditToken:tokenCopy];
     v15 = __userNotifications;
     if (!__userNotifications)
     {
@@ -155,8 +155,8 @@ LABEL_23:
     }
 
     [v15 addObject:v14];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:a1 selector:sel__userNotificationDone_ name:@"SBUserNotificationDoneNotification" object:v14];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__userNotificationDone_ name:@"SBUserNotificationDoneNotification" object:v14];
   }
 
 LABEL_19:

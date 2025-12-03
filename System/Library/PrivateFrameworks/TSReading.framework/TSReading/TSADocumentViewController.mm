@@ -4,77 +4,77 @@
 - (BOOL)allowImagePickerToAppear;
 - (BOOL)navigatorHiddenDefault;
 - (BOOL)p_shouldZoomOutForCurrentSelection;
-- (BOOL)popoverController:(id)a3 shouldReceiveOutsideTouchAtLocation:(CGPoint)a4 inView:(id)a5;
-- (BOOL)tappedCanvasBackgroundAtPoint:(CGPoint)a3;
+- (BOOL)popoverController:(id)controller shouldReceiveOutsideTouchAtLocation:(CGPoint)location inView:(id)view;
+- (BOOL)tappedCanvasBackgroundAtPoint:(CGPoint)point;
 - (BOOL)willChangeContentOffsetIfKeyboardHidden;
-- (CGPoint)clampedUnscaledContentOffset:(CGPoint)a3;
+- (CGPoint)clampedUnscaledContentOffset:(CGPoint)offset;
 - (CGRect)contentFrame;
 - (CGRect)openCloseAnimationCanvasFrame;
-- (CGRect)rectForPopoverFromToolbarButton:(id)a3;
+- (CGRect)rectForPopoverFromToolbarButton:(id)button;
 - (CGRect)visibleScaledCanvasRectWithoutKeyboard;
 - (CGRect)visibleUnscaledCanvasRectWithoutKeyboard;
 - (CGSize)sizeOfScrollViewEnclosingCanvas;
 - (NSString)closeDocumentButtonTitle;
 - (TSADebugViewController)debugViewController;
 - (TSADocumentViewController)initWithDefaultView;
-- (TSADocumentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TSADocumentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_NSRange)visibleRootIndexRange;
-- (double)autoZoomAnimationDurationForInteractiveCanvasController:(id)a3;
+- (double)autoZoomAnimationDurationForInteractiveCanvasController:(id)controller;
 - (double)leftToolbarItemsInset;
 - (double)rightToolbarItemsInset;
 - (double)toolbarTextButtonSpaceWidth;
 - (id)closeDocumentButton;
 - (id)drawableFactory;
-- (id)p_arrayByAddingLanguage:(id)a3 toArray:(id)a4;
-- (id)rectanglesObscuringView:(id)a3;
-- (id)superviewForChartDataEditor:(id)a3;
+- (id)p_arrayByAddingLanguage:(id)language toArray:(id)array;
+- (id)rectanglesObscuringView:(id)view;
+- (id)superviewForChartDataEditor:(id)editor;
 - (id)title;
 - (int64_t)lastDocumentMode;
-- (int64_t)p_documentModeToRestoreFor:(int64_t)a3;
+- (int64_t)p_documentModeToRestoreFor:(int64_t)for;
 - (void)abandonDocument;
 - (void)adjustContentViewFrame;
 - (void)adjustScrollViewInsets;
-- (void)asyncProcessChanges:(id)a3 forChangeSource:(id)a4;
+- (void)asyncProcessChanges:(id)changes forChangeSource:(id)source;
 - (void)closeDocumentPressed;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)didReplaceDocument;
-- (void)didSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5;
+- (void)didSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated;
 - (void)documentWillClose;
-- (void)editorDidChangeSelection:(id)a3;
-- (void)interactiveCanvasController:(id)a3 willAnimateToViewScale:(double)a4 withDuration:(double)a5 unscaledContentOffset:(CGPoint)a6;
+- (void)editorDidChangeSelection:(id)selection;
+- (void)interactiveCanvasController:(id)controller willAnimateToViewScale:(double)scale withDuration:(double)duration unscaledContentOffset:(CGPoint)offset;
 - (void)keyboardShowCanceled;
-- (void)keyboardWillHideOrUndock:(id)a3;
-- (void)keyboardWillShowOrDock:(id)a3;
+- (void)keyboardWillHideOrUndock:(id)undock;
+- (void)keyboardWillShowOrDock:(id)dock;
 - (void)loadDocument;
-- (void)navigatePlay:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)navigatePlay:(id)play;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_backgroundInit;
 - (void)p_deregisterForNotifications;
 - (void)p_restoreTextSelectionAfterModalDismiss;
 - (void)p_scrollToCurrentSelection;
-- (void)p_scrollToRect:(CGRect)a3;
-- (void)p_setDocumentMode:(int64_t)a3 animated:(BOOL)a4 dismissOnTop:(BOOL)a5;
+- (void)p_scrollToRect:(CGRect)rect;
+- (void)p_setDocumentMode:(int64_t)mode animated:(BOOL)animated dismissOnTop:(BOOL)top;
 - (void)p_teardown;
 - (void)p_zoomOutForCurrentSelection;
-- (void)popoverControllerDidDismissPopoverBasedViewController:(id)a3;
-- (void)setCanvasScrollViewClipsToBoundsForKeyboardAnimation:(BOOL)a3;
-- (void)setDefaultInteractiveCanvasController:(id)a3;
-- (void)setDocument:(id)a3;
-- (void)setDocumentMode:(int64_t)a3 animated:(BOOL)a4 dismissOnTop:(BOOL)a5;
-- (void)setLastDocumentMode:(int64_t)a3;
-- (void)setNavigatorHiddenDefault:(BOOL)a3;
-- (void)setSelection:(id)a3 onModel:(id)a4 withFlags:(unint64_t)a5;
+- (void)popoverControllerDidDismissPopoverBasedViewController:(id)controller;
+- (void)setCanvasScrollViewClipsToBoundsForKeyboardAnimation:(BOOL)animation;
+- (void)setDefaultInteractiveCanvasController:(id)controller;
+- (void)setDocument:(id)document;
+- (void)setDocumentMode:(int64_t)mode animated:(BOOL)animated dismissOnTop:(BOOL)top;
+- (void)setLastDocumentMode:(int64_t)mode;
+- (void)setNavigatorHiddenDefault:(BOOL)default;
+- (void)setSelection:(id)selection onModel:(id)model withFlags:(unint64_t)flags;
 - (void)toolsFindReplace;
 - (void)unloadDocument;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willInsertDrawable;
 - (void)willReplaceDocument;
-- (void)willSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5;
-- (void)zoomOutAnimated:(BOOL)a3;
+- (void)willSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated;
+- (void)zoomOutAnimated:(BOOL)animated;
 @end
 
 @implementation TSADocumentViewController
@@ -93,19 +93,19 @@
 
 - (TSADocumentViewController)initWithDefaultView
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADocumentViewController initWithDefaultView]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 337, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 337, @"Abstract method"}];
   self->mSavedContentOffset = *MEMORY[0x277CBF348];
   self->mSavedCanvasViewScale = 0.0;
   return 0;
 }
 
-- (TSADocumentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TSADocumentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = TSADocumentViewController;
-  result = [(TSADocumentViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(TSADocumentViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_shouldShowInstructionalText = 1;
@@ -127,16 +127,16 @@
   [(TSAViewController *)&v3 dealloc];
 }
 
-- (id)p_arrayByAddingLanguage:(id)a3 toArray:(id)a4
+- (id)p_arrayByAddingLanguage:(id)language toArray:(id)array
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (array)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -147,17 +147,17 @@ LABEL_4:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(array);
         }
 
-        if ([*(*(&v12 + 1) + 8 * v9) hasPrefix:a3])
+        if ([*(*(&v12 + 1) + 8 * v9) hasPrefix:language])
         {
           break;
         }
 
         if (v7 == ++v9)
         {
-          v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v7 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -171,10 +171,10 @@ LABEL_4:
     else
     {
 LABEL_10:
-      [a4 addObject:a3];
+      [array addObject:language];
     }
 
-    return a4;
+    return array;
   }
 
   else
@@ -185,17 +185,17 @@ LABEL_10:
   }
 }
 
-- (void)setDefaultInteractiveCanvasController:(id)a3
+- (void)setDefaultInteractiveCanvasController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
 
-  self->_interactiveCanvasController = a3;
+  self->_interactiveCanvasController = controller;
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   document = self->_document;
-  if (document != a3)
+  if (document != document)
   {
     if (document)
     {
@@ -210,7 +210,7 @@ LABEL_10:
       }
     }
 
-    self->_document = a3;
+    self->_document = document;
     self->_isDocumentLoaded = 0;
   }
 }
@@ -244,29 +244,29 @@ LABEL_10:
   self->_isAbandoningDocument = 0;
 }
 
-- (void)setSelection:(id)a3 onModel:(id)a4 withFlags:(unint64_t)a5
+- (void)setSelection:(id)selection onModel:(id)model withFlags:(unint64_t)flags
 {
   if ([(TSADocumentViewController *)self documentMode]== 1)
   {
-    v9 = [(TSADocumentViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-    [(TSDInteractiveCanvasController *)v9 setSelection:a3 onModel:a4 withFlags:a5];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController setSelection:selection onModel:model withFlags:flags];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (TSAActiveCoachingTipSetObserverContext != a6 && TSACanvasCoachingTipsObserverContext != a6)
+  if (TSAActiveCoachingTipSetObserverContext != context && TSACanvasCoachingTipsObserverContext != context)
   {
     v10 = v6;
     v11 = v7;
     v9.receiver = self;
     v9.super_class = TSADocumentViewController;
-    [(TSADocumentViewController *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TSADocumentViewController *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)navigatePlay:(id)a3
+- (void)navigatePlay:(id)play
 {
   v3 = +[TSWPHyperlinkUIController sharedHyperlinkUIController];
 
@@ -292,7 +292,7 @@ LABEL_10:
   }
 }
 
-- (void)popoverControllerDidDismissPopoverBasedViewController:(id)a3
+- (void)popoverControllerDidDismissPopoverBasedViewController:(id)controller
 {
   if (TSUPhoneUI() && !self->_documentModeChangeInProgress)
   {
@@ -307,16 +307,16 @@ LABEL_10:
   }
 }
 
-- (BOOL)popoverController:(id)a3 shouldReceiveOutsideTouchAtLocation:(CGPoint)a4 inView:(id)a5
+- (BOOL)popoverController:(id)controller shouldReceiveOutsideTouchAtLocation:(CGPoint)location inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [(UIButton *)self->_closeButton bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(UIButton *)self->_closeButton convertPoint:a5 fromView:x, y];
+  [(UIButton *)self->_closeButton convertPoint:view fromView:x, y];
   v20.x = v17;
   v20.y = v18;
   v21.origin.x = v10;
@@ -328,25 +328,25 @@ LABEL_10:
 
 - (BOOL)navigatorHiddenDefault
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  return [v2 BOOLForKeyInCurrentRole:@"NavigatorHidden"];
+  return [standardUserDefaults BOOLForKeyInCurrentRole:@"NavigatorHidden"];
 }
 
-- (void)setNavigatorHiddenDefault:(BOOL)a3
+- (void)setNavigatorHiddenDefault:(BOOL)default
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  defaultCopy = default;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v4 setBool:v3 forKeyInCurrentRole:@"NavigatorHidden"];
+  [standardUserDefaults setBool:defaultCopy forKeyInCurrentRole:@"NavigatorHidden"];
 }
 
 - (void)closeDocumentPressed
 {
   [+[TSWPHyperlinkUIController sharedHyperlinkUIController](TSWPHyperlinkUIController "sharedHyperlinkUIController")];
-  v3 = [(TSADocumentViewController *)self defaultInteractiveCanvasController];
+  defaultInteractiveCanvasController = [(TSADocumentViewController *)self defaultInteractiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v3 teardownBackgroundRendering];
+  [(TSDInteractiveCanvasController *)defaultInteractiveCanvasController teardownBackgroundRendering];
 }
 
 - (BOOL)p_shouldZoomOutForCurrentSelection
@@ -364,23 +364,23 @@ LABEL_10:
   self->_isClosingDocument = 1;
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   [objc_msgSend(MEMORY[0x277D75718] "sharedMenuController")];
-  v3 = [(TSADocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v3 beginEditingRep:0];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController beginEditingRep:0];
 }
 
 - (void)loadDocument
 {
   if (!self->_isDocumentLoaded)
   {
-    v3 = [(TSADocumentViewController *)self defaultInteractiveCanvasController];
-    v4 = [(TSADocumentViewController *)self documentRoot];
-    [(TSDInteractiveCanvasController *)v3 setShowInvisibleObjects:1];
-    [(TSKChangeNotifier *)[(TSKDocumentRoot *)v4 changeNotifier] addObserver:self forChangeSource:v4];
-    [(TSAInteractiveCanvasController *)v3 loadDocument];
-    v5 = [(TSADocumentViewController *)self lastDocumentMode];
-    [(TSADocumentViewController *)self setLastDocumentMode:v5];
-    [(TSADocumentViewController *)self p_setDocumentMode:v5 animated:0 dismissOnTop:1];
+    defaultInteractiveCanvasController = [(TSADocumentViewController *)self defaultInteractiveCanvasController];
+    documentRoot = [(TSADocumentViewController *)self documentRoot];
+    [(TSDInteractiveCanvasController *)defaultInteractiveCanvasController setShowInvisibleObjects:1];
+    [(TSKChangeNotifier *)[(TSKDocumentRoot *)documentRoot changeNotifier] addObserver:self forChangeSource:documentRoot];
+    [(TSAInteractiveCanvasController *)defaultInteractiveCanvasController loadDocument];
+    lastDocumentMode = [(TSADocumentViewController *)self lastDocumentMode];
+    [(TSADocumentViewController *)self setLastDocumentMode:lastDocumentMode];
+    [(TSADocumentViewController *)self p_setDocumentMode:lastDocumentMode animated:0 dismissOnTop:1];
     [+[TSKPopoverUndoObserver sharedObserver](TSKPopoverUndoObserver "sharedObserver")];
     self->_isDocumentLoaded = 1;
   }
@@ -389,39 +389,39 @@ LABEL_10:
 - (void)p_teardown
 {
   [(TSAInteractiveCanvasController *)[(TSADocumentViewController *)self defaultInteractiveCanvasController] teardown];
-  v3 = [(TSADocumentViewController *)self documentRoot];
+  documentRoot = [(TSADocumentViewController *)self documentRoot];
   v4 = +[TSDImageProviderPool sharedPool];
-  v5 = [(TSPObject *)v3 context];
+  context = [(TSPObject *)documentRoot context];
 
-  [v4 willCloseDocumentContext:v5];
+  [v4 willCloseDocumentContext:context];
 }
 
 - (void)unloadDocument
 {
-  v3 = [(TSADocumentViewController *)self defaultInteractiveCanvasController];
+  defaultInteractiveCanvasController = [(TSADocumentViewController *)self defaultInteractiveCanvasController];
   [+[TSKPopoverUndoObserver sharedObserver](TSKPopoverUndoObserver "sharedObserver")];
   [(TSADocumentViewController *)self p_deregisterForNotifications];
-  v4 = [(TSADocumentViewController *)self documentRoot];
-  [(TSKChangeNotifier *)[(TSKDocumentRoot *)v4 changeNotifier] removeObserver:self forChangeSource:v4];
-  [(TSAInteractiveCanvasController *)v3 unloadDocument];
+  documentRoot = [(TSADocumentViewController *)self documentRoot];
+  [(TSKChangeNotifier *)[(TSKDocumentRoot *)documentRoot changeNotifier] removeObserver:self forChangeSource:documentRoot];
+  [(TSAInteractiveCanvasController *)defaultInteractiveCanvasController unloadDocument];
 
   [(TSADocumentViewController *)self p_teardown];
 }
 
-- (CGPoint)clampedUnscaledContentOffset:(CGPoint)a3
+- (CGPoint)clampedUnscaledContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSADocumentViewController *)self interactiveCanvasController];
+  y = offset.y;
+  x = offset.x;
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
   [(TSDScrollView *)self->_scrollView frame];
   MaxY = CGRectGetMaxY(v18);
-  [(TSDInteractiveCanvasController *)v6 convertUnscaledToBoundsPoint:x, y];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:x, y];
   v9 = v8;
   v11 = v10;
   [(TSDScrollView *)self->_scrollView contentSize];
   if (v12 - v11 < MaxY)
   {
-    [(TSDInteractiveCanvasController *)v6 convertBoundsToUnscaledPoint:v9, fmax(v11 - (MaxY - (v12 - v11)), 0.0)];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:v9, fmax(v11 - (MaxY - (v12 - v11)), 0.0)];
     x = v13;
     y = v14;
   }
@@ -454,16 +454,16 @@ LABEL_10:
     return &stru_287D36338;
   }
 
-  v3 = [(TIADocument *)self->_document documentRoot];
+  documentRoot = [(TIADocument *)self->_document documentRoot];
 
-  return [(TSADocumentRoot *)v3 name];
+  return [(TSADocumentRoot *)documentRoot name];
 }
 
 - (id)closeDocumentButton
 {
-  v3 = [(TSADocumentViewController *)self closeDocumentButtonTitle];
+  closeDocumentButtonTitle = [(TSADocumentViewController *)self closeDocumentButtonTitle];
 
-  return [(TSAViewController *)self toolbarButtonWithTitle:v3 target:self action:sel_closeDocumentPressed isModal:0];
+  return [(TSAViewController *)self toolbarButtonWithTitle:closeDocumentButtonTitle target:self action:sel_closeDocumentPressed isModal:0];
 }
 
 - (double)leftToolbarItemsInset
@@ -498,12 +498,12 @@ LABEL_10:
   return *v3;
 }
 
-- (CGRect)rectForPopoverFromToolbarButton:(id)a3
+- (CGRect)rectForPopoverFromToolbarButton:(id)button
 {
-  [a3 bounds];
+  [button bounds];
   v5 = v4;
   v7 = v6 + -6.0;
-  [objc_msgSend(a3 "imageView")];
+  [objc_msgSend(button "imageView")];
   v10 = v5;
   v11 = v7;
   result.size.height = v11;
@@ -513,16 +513,16 @@ LABEL_10:
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = TSADocumentViewController;
-  [(TSADocumentViewController *)&v6 viewWillAppear:a3];
+  [(TSADocumentViewController *)&v6 viewWillAppear:appear];
   if (!self->_document)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADocumentViewController viewWillAppear:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 2812, @"No document has been set"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 2812, @"No document has been set"}];
   }
 
   self->_keyboardHeight = 0.0;
@@ -553,16 +553,16 @@ LABEL_10:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = TSADocumentViewController;
-  [(TSAViewController *)&v6 viewDidAppear:a3];
+  [(TSAViewController *)&v6 viewDidAppear:appear];
   if (!self->_document)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADocumentViewController viewDidAppear:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 2872, @"No document has been set"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 2872, @"No document has been set"}];
   }
 
   if (!self->_scheduledBackgroundInit)
@@ -572,20 +572,20 @@ LABEL_10:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v15 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = TSADocumentViewController;
-  [(TSAViewController *)&v13 viewWillDisappear:a3];
+  [(TSAViewController *)&v13 viewWillDisappear:disappear];
   if ([(TSADocumentViewController *)self document])
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(TSDCanvas *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] canvas] topLevelReps];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+    topLevelReps = [(TSDCanvas *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] canvas] topLevelReps];
+    v5 = [topLevelReps countByEnumeratingWithState:&v9 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -596,13 +596,13 @@ LABEL_10:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(topLevelReps);
           }
 
           [*(*(&v9 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:sel_disableCaretAnimation];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+        v6 = [topLevelReps countByEnumeratingWithState:&v9 objects:v14 count:16];
       }
 
       while (v6);
@@ -634,9 +634,9 @@ LABEL_10:
 
 - (CGRect)openCloseAnimationCanvasFrame
 {
-  v2 = [(TSADocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v2 visibleBoundsRect];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController visibleBoundsRect];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -656,7 +656,7 @@ LABEL_10:
   return result;
 }
 
-- (void)interactiveCanvasController:(id)a3 willAnimateToViewScale:(double)a4 withDuration:(double)a5 unscaledContentOffset:(CGPoint)a6
+- (void)interactiveCanvasController:(id)controller willAnimateToViewScale:(double)scale withDuration:(double)duration unscaledContentOffset:(CGPoint)offset
 {
   if ((TSUSupportsTextInteraction() & 1) == 0)
   {
@@ -674,15 +674,15 @@ LABEL_10:
   return result;
 }
 
-- (void)setDocumentMode:(int64_t)a3 animated:(BOOL)a4 dismissOnTop:(BOOL)a5
+- (void)setDocumentMode:(int64_t)mode animated:(BOOL)animated dismissOnTop:(BOOL)top
 {
-  if (self->_documentMode != a3)
+  if (self->_documentMode != mode)
   {
     [TSADocumentViewController p_setDocumentMode:"p_setDocumentMode:animated:dismissOnTop:" animated:? dismissOnTop:?];
-    if (a3 != 2)
+    if (mode != 2)
     {
 
-      [(TSADocumentViewController *)self setLastDocumentMode:a3];
+      [(TSADocumentViewController *)self setLastDocumentMode:mode];
     }
   }
 }
@@ -703,39 +703,39 @@ LABEL_10:
   }
 }
 
-- (void)setLastDocumentMode:(int64_t)a3
+- (void)setLastDocumentMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v4 setInteger:a3 forKey:@"DocumentMode"];
+  [standardUserDefaults setInteger:mode forKey:@"DocumentMode"];
 }
 
 + (void)resetLastDocumentMode
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v2 removeObjectForKey:@"DocumentMode"];
+  [standardUserDefaults removeObjectForKey:@"DocumentMode"];
 }
 
-- (void)willSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5
+- (void)willSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = [(TSADocumentViewController *)self interactiveCanvasController];
+  animatedCopy = animated;
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-  [(TSAInteractiveCanvasController *)v8 willSetDocumentToMode:a3 fromMode:a4 animated:v5];
+  [(TSAInteractiveCanvasController *)interactiveCanvasController willSetDocumentToMode:mode fromMode:fromMode animated:animatedCopy];
 }
 
-- (void)didSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5
+- (void)didSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = [(TSADocumentViewController *)self interactiveCanvasController];
+  animatedCopy = animated;
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-  [(TSAInteractiveCanvasController *)v8 didSetDocumentToMode:a3 fromMode:a4 animated:v5];
+  [(TSAInteractiveCanvasController *)interactiveCanvasController didSetDocumentToMode:mode fromMode:fromMode animated:animatedCopy];
 }
 
-- (BOOL)tappedCanvasBackgroundAtPoint:(CGPoint)a3
+- (BOOL)tappedCanvasBackgroundAtPoint:(CGPoint)point
 {
-  if ([(TSADocumentViewController *)self documentMode:a3.x]&& [(TSADocumentViewController *)self documentMode]!= 2)
+  if ([(TSADocumentViewController *)self documentMode:point.x]&& [(TSADocumentViewController *)self documentMode]!= 2)
   {
     return 0;
   }
@@ -792,20 +792,20 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(TSDCanvasView *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] canvasView] enclosingScrollView];
-  [(TSKScrollView *)v3 contentSize];
+  enclosingScrollView = [(TSDCanvasView *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] canvasView] enclosingScrollView];
+  [(TSKScrollView *)enclosingScrollView contentSize];
   v5 = v4;
-  [(TSKScrollView *)v3 contentOffset];
+  [(TSKScrollView *)enclosingScrollView contentOffset];
   v7 = v6;
-  [(TSKScrollView *)v3 frame];
+  [(TSKScrollView *)enclosingScrollView frame];
   return v5 - v7 < CGRectGetMaxY(v9) - self->_keyboardHeight;
 }
 
 - (void)adjustScrollViewInsets
 {
-  v2 = [(TSADocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v2 unobscuredFrameDidChange];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController unobscuredFrameDidChange];
 }
 
 - (void)adjustContentViewFrame
@@ -836,25 +836,25 @@ LABEL_10:
   [(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] invalidateVisibleBounds];
   if (v10 != v12 && [(TSADocumentViewController *)self shouldAutoscrollToSelectionOnContentViewSizeChange]&& v10 < v12)
   {
-    v17 = [(TSADocumentViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-    [(TSDInteractiveCanvasController *)v17 setShouldAutoscrollToSelectionAfterLayout:1];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController setShouldAutoscrollToSelectionAfterLayout:1];
   }
 }
 
 - (CGRect)visibleScaledCanvasRectWithoutKeyboard
 {
-  v3 = [(TSADocumentViewController *)self interactiveCanvasController];
-  [(TSDInteractiveCanvasController *)v3 visibleBoundsRect];
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController visibleBoundsRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   if ([(TSADocumentViewController *)self isKeyboardUp])
   {
-    v12 = [(TSDInteractiveCanvasController *)v3 canvasView];
+    canvasView = [(TSDInteractiveCanvasController *)interactiveCanvasController canvasView];
     v11 = v11 + self->_keyboardHeight;
-    [(TSKScrollView *)[(TSDCanvasView *)v12 enclosingScrollView] contentSize];
+    [(TSKScrollView *)[(TSDCanvasView *)canvasView enclosingScrollView] contentSize];
     v14 = v13;
     v15 = v14;
     if (v11 >= v15)
@@ -876,10 +876,10 @@ LABEL_10:
 
 - (CGRect)visibleUnscaledCanvasRectWithoutKeyboard
 {
-  v3 = [(TSADocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
   [(TSADocumentViewController *)self visibleScaledCanvasRectWithoutKeyboard];
 
-  [(TSDInteractiveCanvasController *)v3 convertBoundsToUnscaledRect:?];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledRect:?];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -913,37 +913,37 @@ LABEL_10:
 
 - (BOOL)allowImagePickerToAppear
 {
-  v3 = [(TSADocumentViewController *)self allowEditMenuToAppear];
-  if (v3)
+  allowEditMenuToAppear = [(TSADocumentViewController *)self allowEditMenuToAppear];
+  if (allowEditMenuToAppear)
   {
-    LOBYTE(v3) = ![(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] inReadMode];
+    LOBYTE(allowEditMenuToAppear) = ![(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] inReadMode];
   }
 
-  return v3;
+  return allowEditMenuToAppear;
 }
 
-- (void)p_setDocumentMode:(int64_t)a3 animated:(BOOL)a4 dismissOnTop:(BOOL)a5
+- (void)p_setDocumentMode:(int64_t)mode animated:(BOOL)animated dismissOnTop:(BOOL)top
 {
   if (!self->_settingDocumentMode)
   {
-    v5 = a4;
+    animatedCopy = animated;
     self->_settingDocumentMode = 1;
     documentMode = self->_documentMode;
-    [(TSADocumentViewController *)self willSetDocumentToMode:a3 fromMode:documentMode animated:a4];
-    self->_documentMode = a3;
-    v9 = [(TSADocumentViewController *)self interactiveCanvasController];
-    v10 = v9;
-    if (!a3)
+    [(TSADocumentViewController *)self willSetDocumentToMode:mode fromMode:documentMode animated:animated];
+    self->_documentMode = mode;
+    interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
+    v10 = interactiveCanvasController;
+    if (!mode)
     {
-      [(TSDInteractiveCanvasController *)v9 setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:1];
+      [(TSDInteractiveCanvasController *)interactiveCanvasController setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:1];
       [(TSADocumentViewController *)self setSelection:+[TSDCanvasSelection onModel:"emptySelection"]withFlags:[(TSADocumentViewController *)self documentRoot], 0];
     }
 
-    [(TSDInteractiveCanvasController *)v10 setInReadMode:a3 == 0];
-    [(TSDInteractiveCanvasController *)v10 setShowInvisibleObjects:a3 != 0];
-    v11 = [MEMORY[0x277D75128] sharedApplication];
+    [(TSDInteractiveCanvasController *)v10 setInReadMode:mode == 0];
+    [(TSDInteractiveCanvasController *)v10 setShowInvisibleObjects:mode != 0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v12 = 0.2;
-    if (!v5)
+    if (!animatedCopy)
     {
       v12 = 0.0;
     }
@@ -952,17 +952,17 @@ LABEL_10:
     v14[1] = 3221225472;
     v14[2] = __69__TSADocumentViewController_p_setDocumentMode_animated_dismissOnTop___block_invoke;
     v14[3] = &unk_279D4AE88;
-    v14[4] = v11;
+    v14[4] = mEMORY[0x277D75128];
     v14[5] = self;
     v14[6] = v10;
     v14[7] = documentMode;
-    v14[8] = a3;
+    v14[8] = mode;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __69__TSADocumentViewController_p_setDocumentMode_animated_dismissOnTop___block_invoke_2;
     v13[3] = &unk_279D4AEB0;
     v13[4] = self;
-    v13[5] = v11;
+    v13[5] = mEMORY[0x277D75128];
     [MEMORY[0x277D75D18] animateWithDuration:196612 delay:v14 options:v13 animations:v12 completion:0.0];
     if (([+[TSWPHyperlinkUIController sharedHyperlinkUIController](TSWPHyperlinkUIController "sharedHyperlinkUIController")] & 1) == 0)
     {
@@ -1005,9 +1005,9 @@ uint64_t __69__TSADocumentViewController_p_setDocumentMode_animated_dismissOnTop
 
 - (NSString)closeDocumentButtonTitle
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADocumentViewController closeDocumentButtonTitle]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 3696, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 3696, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSADocumentViewController closeDocumentButtonTitle]"), 0}]);
 }
 
@@ -1037,43 +1037,43 @@ uint64_t __57__TSADocumentViewController_p_zoomOutForCurrentSelection__block_inv
   return result;
 }
 
-- (void)zoomOutAnimated:(BOOL)a3
+- (void)zoomOutAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController fitWidthViewScale];
   v6 = v5;
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController visibleUnscaledRect];
   interactiveCanvasController = self->_interactiveCanvasController;
 
-  [(TSDInteractiveCanvasController *)interactiveCanvasController setViewScale:1 contentOffset:v3 clampOffset:v6 animated:0.0, v7];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController setViewScale:1 contentOffset:animatedCopy clampOffset:v6 animated:0.0, v7];
 }
 
-- (void)setCanvasScrollViewClipsToBoundsForKeyboardAnimation:(BOOL)a3
+- (void)setCanvasScrollViewClipsToBoundsForKeyboardAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if (![(TSADocumentViewController *)self preserveScrollViewClipping])
   {
-    v5 = [(TSDCanvasView *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] canvasView] enclosingScrollView];
+    enclosingScrollView = [(TSDCanvasView *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] canvasView] enclosingScrollView];
 
-    [(TSKScrollView *)v5 setClipsToBounds:v3];
+    [(TSKScrollView *)enclosingScrollView setClipsToBounds:animationCopy];
   }
 }
 
-- (void)keyboardWillShowOrDock:(id)a3
+- (void)keyboardWillShowOrDock:(id)dock
 {
   if ([(TSADocumentViewController *)self contentView]&& self->_registered)
   {
-    v5 = [a3 userInfo];
-    if (!v5)
+    userInfo = [dock userInfo];
+    if (!userInfo)
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADocumentViewController keyboardWillShowOrDock:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 3969, @"invalid nil value for '%s'", "userInfo"}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 3969, @"invalid nil value for '%s'", "userInfo"}];
     }
 
     [+[TSKKeyboardMonitor sharedKeyboardMonitor](TSKKeyboardMonitor "sharedKeyboardMonitor")];
     self->_keyboardHeight = v8;
-    [objc_msgSend(v5 objectForKey:{*MEMORY[0x277D76B78]), "floatValue"}];
+    [objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D76B78]), "floatValue"}];
     v10 = v9;
     if ([+[TSAApplicationDelegate sharedDelegate](TSAApplicationDelegate "sharedDelegate")])
     {
@@ -1104,12 +1104,12 @@ uint64_t __57__TSADocumentViewController_p_zoomOutForCurrentSelection__block_inv
       }
     }
 
-    v13 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __52__TSADocumentViewController_keyboardWillShowOrDock___block_invoke;
     v15[3] = &unk_279D47668;
-    v15[4] = v13;
+    v15[4] = mEMORY[0x277D75128];
     v15[5] = self;
     *&v15[6] = v11;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1117,7 +1117,7 @@ uint64_t __57__TSADocumentViewController_p_zoomOutForCurrentSelection__block_inv
     v14[2] = __52__TSADocumentViewController_keyboardWillShowOrDock___block_invoke_2;
     v14[3] = &unk_279D4AEB0;
     v14[4] = self;
-    v14[5] = v13;
+    v14[5] = mEMORY[0x277D75128];
     [MEMORY[0x277D75D18] animateWithDuration:v12 delay:v15 options:v14 animations:v11 completion:0.0];
   }
 }
@@ -1140,7 +1140,7 @@ uint64_t __52__TSADocumentViewController_keyboardWillShowOrDock___block_invoke(u
   [(TSKScrollView *)scrollView setContentOffset:1 animated:?];
 }
 
-- (void)keyboardWillHideOrUndock:(id)a3
+- (void)keyboardWillHideOrUndock:(id)undock
 {
   self->_keyboardHeight = 0.0;
   if ([(TSADocumentViewController *)self contentView]&& self->_registered)
@@ -1157,8 +1157,8 @@ uint64_t __52__TSADocumentViewController_keyboardWillShowOrDock___block_invoke(u
 
     else
     {
-      v6 = [a3 userInfo];
-      [objc_msgSend(v6 objectForKey:{*MEMORY[0x277D76B78]), "floatValue"}];
+      userInfo = [undock userInfo];
+      [objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D76B78]), "floatValue"}];
       v8 = v7;
       if ([+[TSAApplicationDelegate sharedDelegate](TSAApplicationDelegate "sharedDelegate")])
       {
@@ -1189,12 +1189,12 @@ uint64_t __52__TSADocumentViewController_keyboardWillShowOrDock___block_invoke(u
         }
       }
 
-      v11 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __54__TSADocumentViewController_keyboardWillHideOrUndock___block_invoke;
       v13[3] = &unk_279D47668;
-      v13[4] = v11;
+      v13[4] = mEMORY[0x277D75128];
       v13[5] = self;
       *&v13[6] = v9;
       v12[0] = MEMORY[0x277D85DD0];
@@ -1202,7 +1202,7 @@ uint64_t __52__TSADocumentViewController_keyboardWillShowOrDock___block_invoke(u
       v12[2] = __54__TSADocumentViewController_keyboardWillHideOrUndock___block_invoke_2;
       v12[3] = &unk_279D4AEB0;
       v12[4] = self;
-      v12[5] = v11;
+      v12[5] = mEMORY[0x277D75128];
       [MEMORY[0x277D75D18] animateWithDuration:v10 delay:v13 options:v12 animations:v9 completion:0.0];
       if (self->_waitingToZoomOut)
       {
@@ -1222,16 +1222,16 @@ uint64_t __54__TSADocumentViewController_keyboardWillHideOrUndock___block_invoke
   return [v2 adjustScrollViewInsets];
 }
 
-- (void)asyncProcessChanges:(id)a3 forChangeSource:(id)a4
+- (void)asyncProcessChanges:(id)changes forChangeSource:(id)source
 {
   v26 = *MEMORY[0x277D85DE8];
-  if ([(TIADocument *)self->_document documentRoot]== a4)
+  if ([(TIADocument *)self->_document documentRoot]== source)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v4 = [changes countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1244,44 +1244,44 @@ uint64_t __54__TSADocumentViewController_keyboardWillHideOrUndock___block_invoke
         {
           if (*v22 != v6)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(changes);
           }
 
           v8 = *(*(&v21 + 1) + 8 * v7);
           if ([v8 kind] == 2)
           {
-            v9 = [v8 details];
-            v10 = [v9 objectForKey:@"model"];
+            details = [v8 details];
+            v10 = [details objectForKey:@"model"];
             objc_opt_class();
-            [v9 objectForKey:v18];
+            [details objectForKey:v18];
             v11 = TSUDynamicCast();
             objc_opt_class();
-            [v9 objectForKey:@"flags"];
-            v12 = [TSUDynamicCast() unsignedIntegerValue];
+            [details objectForKey:@"flags"];
+            unsignedIntegerValue = [TSUDynamicCast() unsignedIntegerValue];
             if (v10)
             {
               if (v11)
               {
 LABEL_10:
-                [(TSADocumentViewController *)self setSelection:v11 onModel:v10 withFlags:v12 | 0x40];
+                [(TSADocumentViewController *)self setSelection:v11 onModel:v10 withFlags:unsignedIntegerValue | 0x40];
                 goto LABEL_11;
               }
             }
 
             else
             {
-              v13 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler = [MEMORY[0x277D6C290] currentHandler];
               v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADocumentViewController asyncProcessChanges:forChangeSource:]"];
-              [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 4130, @"bad model in a selection change record"}];
+              [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 4130, @"bad model in a selection change record"}];
               if (v11)
               {
                 goto LABEL_10;
               }
             }
 
-            v15 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADocumentViewController asyncProcessChanges:forChangeSource:]"];
-            [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 4131, @"bad selection in a selection change record"}];
+            [currentHandler2 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADocumentViewController.m"), 4131, @"bad selection in a selection change record"}];
             goto LABEL_10;
           }
 
@@ -1290,7 +1290,7 @@ LABEL_11:
         }
 
         while (v5 != v7);
-        v17 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v17 = [changes countByEnumeratingWithState:&v21 objects:v25 count:16];
         v5 = v17;
       }
 
@@ -1299,11 +1299,11 @@ LABEL_11:
   }
 }
 
-- (double)autoZoomAnimationDurationForInteractiveCanvasController:(id)a3
+- (double)autoZoomAnimationDurationForInteractiveCanvasController:(id)controller
 {
-  v4 = [(TSADocumentViewController *)self presentedViewController];
+  presentedViewController = [(TSADocumentViewController *)self presentedViewController];
   result = 0.0;
-  if (!v4)
+  if (!presentedViewController)
   {
     result = self->_contentFrameAnimationDuration;
     if (result == 0.0)
@@ -1315,7 +1315,7 @@ LABEL_11:
   return result;
 }
 
-- (void)editorDidChangeSelection:(id)a3
+- (void)editorDidChangeSelection:(id)selection
 {
   if ([(TSADocumentViewController *)self documentMode]!= 2 && ![(TSADocumentViewController *)self preventDocumentModeChangesDuringSelectionChanges])
   {
@@ -1329,9 +1329,9 @@ LABEL_11:
   }
 }
 
-- (id)rectanglesObscuringView:(id)a3
+- (id)rectanglesObscuringView:(id)view
 {
-  v4 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
   [-[TSADocumentViewController view](self "view")];
   v8 = v5;
   v10 = v9;
@@ -1346,7 +1346,7 @@ LABEL_11:
   {
     v15 = v10;
     CGRectDivide(*&v5, &v18, &remainder, keyboardHeight, CGRectMaxYEdge);
-    v4 = [v4 arrayByAddingObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGRect:", *&v18.origin, *&v18.size)}];
+    array = [array arrayByAddingObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGRect:", *&v18.origin, *&v18.size)}];
   }
 
   footerHeightPadding = self->_footerHeightPadding;
@@ -1357,23 +1357,23 @@ LABEL_11:
     v20.size.width = v11;
     v20.size.height = v12;
     CGRectDivide(v20, &v18, &remainder, footerHeightPadding, CGRectMaxYEdge);
-    v4 = [v4 arrayByAddingObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGRect:", *&v18.origin, *&v18.size)}];
+    array = [array arrayByAddingObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGRect:", *&v18.origin, *&v18.size)}];
   }
 
   if ([(TSADocumentViewController *)self documentMode:*&v18.origin]== 2)
   {
     [-[TSAFindReplaceUIController view](-[TSADocumentViewController findReplaceUIController](self "findReplaceUIController")];
-    return [v4 arrayByAddingObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGRect:")}];
+    return [array arrayByAddingObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGRect:")}];
   }
 
-  return v4;
+  return array;
 }
 
 - (id)drawableFactory
 {
-  v2 = [(TSADocumentViewController *)self documentRoot];
+  documentRoot = [(TSADocumentViewController *)self documentRoot];
 
-  return [(TSADocumentRoot *)v2 drawableFactory];
+  return [(TSADocumentRoot *)documentRoot drawableFactory];
 }
 
 - (void)willInsertDrawable
@@ -1385,51 +1385,51 @@ LABEL_11:
   }
 }
 
-- (id)superviewForChartDataEditor:(id)a3
+- (id)superviewForChartDataEditor:(id)editor
 {
-  v3 = [(TSADocumentViewController *)self applicationViewController];
+  applicationViewController = [(TSADocumentViewController *)self applicationViewController];
 
-  return [v3 view];
+  return [applicationViewController view];
 }
 
-- (void)p_scrollToRect:(CGRect)a3
+- (void)p_scrollToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TSADocumentViewController *)self interactiveCanvasController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  interactiveCanvasController = [(TSADocumentViewController *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v7 scrollRectToVisibleCenter:1 animated:0 onlyScrollNecessaryAxes:x, y, width, height];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController scrollRectToVisibleCenter:1 animated:0 onlyScrollNecessaryAxes:x, y, width, height];
 }
 
 - (void)p_scrollToCurrentSelection
 {
-  v3 = [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] editorController] textInputEditor];
+  textInputEditor = [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSADocumentViewController *)self interactiveCanvasController] editorController] textInputEditor];
   if (objc_opt_respondsToSelector())
   {
     v7 = 1;
-    if (objc_opt_respondsToSelector() & 1) == 0 || ([v3 performSelector:sel_shouldScrollToCurrentSelection_ withObject:&v7], (v7))
+    if (objc_opt_respondsToSelector() & 1) == 0 || ([textInputEditor performSelector:sel_shouldScrollToCurrentSelection_ withObject:&v7], (v7))
     {
       v4 = *(MEMORY[0x277CBF3A0] + 16);
       v5 = *MEMORY[0x277CBF3A0];
       v6 = v4;
-      [v3 performSelector:sel_selectionRect_ withObject:&v5];
+      [textInputEditor performSelector:sel_selectionRect_ withObject:&v5];
       [(TSADocumentViewController *)self p_scrollToRect:v5, v6];
     }
   }
 }
 
-- (int64_t)p_documentModeToRestoreFor:(int64_t)a3
+- (int64_t)p_documentModeToRestoreFor:(int64_t)for
 {
-  if (a3 == 2)
+  if (for == 2)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return for;
   }
 }
 

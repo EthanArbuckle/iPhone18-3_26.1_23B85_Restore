@@ -1,10 +1,10 @@
 @interface UIKBHandwritingInputSpeedModel
 - (CGRect)handwritingFrame;
 - (UIKBHandwritingInputSpeedModel)init;
-- (double)smoothValueFromArray:(id)a3;
+- (double)smoothValueFromArray:(id)array;
 - (double)speedForCurrentStroke;
 - (double)timeoutForNextPage;
-- (void)addPoint:(CGPoint)a3 timestamp:(double)a4;
+- (void)addPoint:(CGPoint)point timestamp:(double)timestamp;
 - (void)beginStroke;
 - (void)endCharacter;
 - (void)updatePreferences;
@@ -19,13 +19,13 @@
   v2 = [(UIKBHandwritingInputSpeedModel *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     recordedIntervals = v2->_recordedIntervals;
-    v2->_recordedIntervals = v3;
+    v2->_recordedIntervals = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     recordedSpeeds = v2->_recordedSpeeds;
-    v2->_recordedSpeeds = v5;
+    v2->_recordedSpeeds = array2;
 
     [(UIKBHandwritingInputSpeedModel *)v2 updatePreferences];
   }
@@ -35,14 +35,14 @@
 
 - (void)beginStroke
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   pointsCurrentStroke = self->_pointsCurrentStroke;
-  self->_pointsCurrentStroke = v3;
+  self->_pointsCurrentStroke = array;
 
   if (self->_lastStrokeTimeStamp != 0.0)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    [v8 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v6 = v5 - self->_lastStrokeTimeStamp;
 
     recordedIntervals = self->_recordedIntervals;
@@ -51,13 +51,13 @@
   }
 }
 
-- (void)addPoint:(CGPoint)a3 timestamp:(double)a4
+- (void)addPoint:(CGPoint)point timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = objc_alloc_init(_UIKBHandwritingInputSpeedModelPoint);
   [(_UIKBHandwritingInputSpeedModelPoint *)v8 setLocation:x, y];
-  [(_UIKBHandwritingInputSpeedModelPoint *)v8 setTimestamp:a4];
+  [(_UIKBHandwritingInputSpeedModelPoint *)v8 setTimestamp:timestamp];
   [(NSMutableArray *)self->_pointsCurrentStroke addObject:v8];
 }
 
@@ -88,17 +88,17 @@
   v3 = 0.0;
   if ([(NSMutableArray *)self->_pointsCurrentStroke count]>= 2)
   {
-    v4 = [(NSMutableArray *)self->_pointsCurrentStroke lastObject];
-    [v4 timestamp];
+    lastObject = [(NSMutableArray *)self->_pointsCurrentStroke lastObject];
+    [lastObject timestamp];
     v6 = v5;
-    v7 = [(NSMutableArray *)self->_pointsCurrentStroke firstObject];
-    [v7 timestamp];
+    firstObject = [(NSMutableArray *)self->_pointsCurrentStroke firstObject];
+    [firstObject timestamp];
     v9 = v6 - v8;
 
     if (v9 > 0.0)
     {
-      v10 = [(NSMutableArray *)self->_pointsCurrentStroke firstObject];
-      [v10 location];
+      firstObject2 = [(NSMutableArray *)self->_pointsCurrentStroke firstObject];
+      [firstObject2 location];
       v12 = v11;
       v14 = v13;
 
@@ -152,10 +152,10 @@
   return v3;
 }
 
-- (double)smoothValueFromArray:(id)a3
+- (double)smoothValueFromArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   if (v4 >= 0x14)
   {
     v5 = 20;
@@ -175,7 +175,7 @@
     do
     {
       v10 = [UIKBHandwritingInputSpeedModel smoothValueFromArray:]::gaussian[v9];
-      v11 = [v3 objectAtIndex:v9];
+      v11 = [arrayCopy objectAtIndex:v9];
       [v11 doubleValue];
       v8 = v8 + v10;
       v7 = v7 + v10 * v12;
@@ -248,18 +248,18 @@
 - (void)updatePreferences
 {
   v10 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v10 preferencesActions];
-  self->_autoConfirmationEnabled = [v3 BOOLForPreferenceKey:@"HandwritingAutoConfirmationEnabled"];
+  preferencesActions = [v10 preferencesActions];
+  self->_autoConfirmationEnabled = [preferencesActions BOOLForPreferenceKey:@"HandwritingAutoConfirmationEnabled"];
 
   v11 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v4 = [v11 preferencesActions];
-  v5 = [v4 valueForPreferenceKey:@"HandwritingAutoConfirmationMinTimeout"];
+  preferencesActions2 = [v11 preferencesActions];
+  v5 = [preferencesActions2 valueForPreferenceKey:@"HandwritingAutoConfirmationMinTimeout"];
   [v5 doubleValue];
   self->_minTimeout = v6;
 
   v12 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v7 = [v12 preferencesActions];
-  v8 = [v7 valueForPreferenceKey:@"HandwritingAutoConfirmationMaxTimeout"];
+  preferencesActions3 = [v12 preferencesActions];
+  v8 = [preferencesActions3 valueForPreferenceKey:@"HandwritingAutoConfirmationMaxTimeout"];
   [v8 doubleValue];
   self->_maxTimeout = v9;
 }

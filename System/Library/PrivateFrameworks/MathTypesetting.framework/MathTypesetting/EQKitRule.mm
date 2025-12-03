@@ -1,17 +1,17 @@
 @interface EQKitRule
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (EQKitRule)initWithHeight:(double)a3 depth:(double)a4 width:(double)a5 cgColor:(CGColor *)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (EQKitRule)initWithHeight:(double)height depth:(double)depth width:(double)width cgColor:(CGColor *)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitRule
 
-- (EQKitRule)initWithHeight:(double)a3 depth:(double)a4 width:(double)a5 cgColor:(CGColor *)a6
+- (EQKitRule)initWithHeight:(double)height depth:(double)depth width:(double)width cgColor:(CGColor *)color
 {
   v14.receiver = self;
   v14.super_class = EQKitRule;
@@ -19,12 +19,12 @@
   v11 = v10;
   if (v10)
   {
-    v10->_height = a3;
-    v10->_depth = a4;
-    v10->_width = a5;
-    if (a6)
+    v10->_height = height;
+    v10->_depth = depth;
+    v10->_width = width;
+    if (color)
     {
-      v12 = CFRetain(a6);
+      v12 = CFRetain(color);
     }
 
     else
@@ -46,9 +46,9 @@
   [(EQKitRule *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(EQKitRule *)self height];
   v6 = v5;
   [(EQKitRule *)self depth];
@@ -59,17 +59,17 @@
   return [v4 initWithHeight:cgColor depth:v6 width:v8 cgColor:v9];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
 
-  else if ([(EQKitRule *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(EQKitRule *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(EQKitRule *)self height];
     v7 = v6;
     [(EQKitRule *)v5 height];
@@ -91,13 +91,13 @@
   return [(EQKitBox *)&v3 hash];
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v19 = a3;
-  v7 = [v19 cgContext];
-  if (v7)
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
+  cgContext = [contextCopy cgContext];
+  if (cgContext)
   {
     [(EQKitRule *)self width];
     v9 = v8;
@@ -109,11 +109,11 @@
       {
         if (self->_cgColor)
         {
-          CGContextSaveGState(v7);
-          CGContextSetFillColorWithColor(v7, self->_cgColor);
-          if ([v19 rendersDebugRects])
+          CGContextSaveGState(cgContext);
+          CGContextSetFillColorWithColor(cgContext, self->_cgColor);
+          if ([contextCopy rendersDebugRects])
           {
-            CGContextSetStrokeColorWithColor(v7, self->_cgColor);
+            CGContextSetStrokeColorWithColor(cgContext, self->_cgColor);
           }
         }
 
@@ -159,22 +159,22 @@
           v17 = v11 + v13;
         }
 
-        if ([v19 rendersDebugRects])
+        if ([contextCopy rendersDebugRects])
         {
-          CGContextSetAlpha(v7, 0.333);
+          CGContextSetAlpha(cgContext, 0.333);
           v21.origin.x = v15;
           v21.origin.y = v17;
           v21.size.width = v14;
           v21.size.height = v16;
-          CGContextFillRect(v7, v21);
-          CGContextSetAlpha(v7, 1.0);
-          v18 = EQKitBox_ContextScale(v7);
-          CGContextSetLineWidth(v7, 1.0 / v18);
+          CGContextFillRect(cgContext, v21);
+          CGContextSetAlpha(cgContext, 1.0);
+          v18 = EQKitBox_ContextScale(cgContext);
+          CGContextSetLineWidth(cgContext, 1.0 / v18);
           v22.origin.x = v15;
           v22.origin.y = v17;
           v22.size.width = v14;
           v22.size.height = v16;
-          CGContextStrokeRect(v7, v22);
+          CGContextStrokeRect(cgContext, v22);
         }
 
         else
@@ -183,24 +183,24 @@
           v23.origin.y = v17;
           v23.size.width = v14;
           v23.size.height = v16;
-          CGContextFillRect(v7, v23);
+          CGContextFillRect(cgContext, v23);
         }
 
         if (self->_cgColor)
         {
-          CGContextRestoreGState(v7);
+          CGContextRestoreGState(cgContext);
         }
       }
     }
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  v4 = *(a3 + 6);
+  v4 = *(spec + 6);
   if (v4 == 2)
   {
-    a4.x = a4.x + self->_width;
+    offset.x = offset.x + self->_width;
   }
 
   else if (v4)
@@ -208,7 +208,7 @@
     return 1;
   }
 
-  EQKit::OpticalKern::Spec::appendEntry(a3, a4, self->_height);
+  EQKit::OpticalKern::Spec::appendEntry(spec, offset, self->_height);
   return 1;
 }
 

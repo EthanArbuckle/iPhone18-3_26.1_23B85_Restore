@@ -1,13 +1,13 @@
 @interface ConversationFooterViewDisplayMetrics
-+ (id)displayMetricsWithSafeAreaInsets:(UIEdgeInsets)a3 interfaceOrientation:(int64_t)a4 traitCollection:(id)a5;
++ (id)displayMetricsWithSafeAreaInsets:(UIEdgeInsets)insets interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
 @end
 
 @implementation ConversationFooterViewDisplayMetrics
 
-+ (id)displayMetricsWithSafeAreaInsets:(UIEdgeInsets)a3 interfaceOrientation:(int64_t)a4 traitCollection:(id)a5
++ (id)displayMetricsWithSafeAreaInsets:(UIEdgeInsets)insets interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  bottom = a3.bottom;
-  if ([a5 mf_hasCompactDimension])
+  bottom = insets.bottom;
+  if ([collection mf_hasCompactDimension])
   {
     v7 = 0.0;
   }
@@ -31,7 +31,7 @@
     [(ConversationFooterViewDisplayMetrics *)v8 setToolbarHeight:v9];
   }
 
-  else if ((a4 - 3) > 1)
+  else if ((orientation - 3) > 1)
   {
     if (v7 <= 0.0)
     {
@@ -50,8 +50,8 @@
 
   else
   {
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v12 = v11;
     v14 = v13;
 

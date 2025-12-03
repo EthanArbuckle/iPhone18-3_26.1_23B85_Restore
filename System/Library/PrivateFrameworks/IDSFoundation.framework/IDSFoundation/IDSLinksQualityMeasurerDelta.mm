@@ -1,5 +1,5 @@
 @interface IDSLinksQualityMeasurerDelta
-+ (id)createWithJSON:(id)a3;
++ (id)createWithJSON:(id)n;
 - (IDSLinksQualityMeasurerSyncToken)syncToken;
 - (id)json;
 @end
@@ -10,7 +10,7 @@
 {
   v3 = *(*(&self->super.isa + OBJC_IVAR___IDSLinksQualityMeasurerDelta_delta) + OBJC_IVAR____TtC13IDSFoundation29_IDSLinksQualityMeasurerDelta_syncToken);
   v4 = objc_allocWithZone(IDSLinksQualityMeasurerSyncToken);
-  v5 = self;
+  selfCopy = self;
   v6 = v3;
   v7 = [v4 init];
   v8 = *&v7[OBJC_IVAR___IDSLinksQualityMeasurerSyncToken_syncToken];
@@ -19,9 +19,9 @@
   return v7;
 }
 
-+ (id)createWithJSON:(id)a3
++ (id)createWithJSON:(id)n
 {
-  v3 = a3;
+  nCopy = n;
   v4 = sub_1A7E21A10();
   v6 = v5;
 
@@ -48,7 +48,7 @@
 - (id)json
 {
   v2 = *(&self->super.isa + OBJC_IVAR___IDSLinksQualityMeasurerDelta_delta);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   v5 = _IDSLinksQualityMeasurerDelta.json()();
   v7 = v6;

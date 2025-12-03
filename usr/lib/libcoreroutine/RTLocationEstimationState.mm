@@ -1,10 +1,10 @@
 @interface RTLocationEstimationState
 - (RTLocationEstimationState)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)updateMotionX:(double)a3 motionY:(double)a4 dt:(double)a5 error:(double)a6;
-- (void)updateObservationX:(double)a3 observationY:(double)a4 sigmaX:(double)a5 sigmaY:(double)a6;
-- (void)updatePostObservationDeltaX:(double)a3 observationDeltaY:(double)a4 errProX:(double)a5 errProY:(double)a6 sigmaX:(double)a7 sigmaY:(double)a8;
+- (void)updateMotionX:(double)x motionY:(double)y dt:(double)dt error:(double)error;
+- (void)updateObservationX:(double)x observationY:(double)y sigmaX:(double)sigmaX sigmaY:(double)sigmaY;
+- (void)updatePostObservationDeltaX:(double)x observationDeltaY:(double)y errProX:(double)proX errProY:(double)proY sigmaX:(double)sigmaX sigmaY:(double)sigmaY;
 @end
 
 @implementation RTLocationEstimationState
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)updateMotionX:(double)a3 motionY:(double)a4 dt:(double)a5 error:(double)a6
+- (void)updateMotionX:(double)x motionY:(double)y dt:(double)dt error:(double)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  *self->X = vaddq_f64(*self->X, *&a3);
-  v7 = vsqrtq_f64(vaddq_f64(vdupq_lane_s64(COERCE__INT64(a6 * a6), 0), vmulq_f64(*self->errPro, *self->errPro)));
+  *self->X = vaddq_f64(*self->X, *&x);
+  v7 = vsqrtq_f64(vaddq_f64(vdupq_lane_s64(COERCE__INT64(error * error), 0), vmulq_f64(*self->errPro, *self->errPro)));
   *self->errPro = v7;
   *self->errEst = v7;
   v8 = self->i % 100;
@@ -42,24 +42,24 @@
       v14 = 134218498;
       v15 = i;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
-      v19 = a6;
+      errorCopy = error;
       _os_log_debug_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEBUG, "RTLocationSmootherKF, %lu, update motion, %@, qk, %f", &v14, 0x20u);
     }
   }
 }
 
-- (void)updateObservationX:(double)a3 observationY:(double)a4 sigmaX:(double)a5 sigmaY:(double)a6
+- (void)updateObservationX:(double)x observationY:(double)y sigmaX:(double)sigmaX sigmaY:(double)sigmaY
 {
   v60 = *MEMORY[0x277D85DE8];
   v9 = self->X[0];
   v8 = self->X[1];
-  v10 = a3 - v9;
-  _D10 = a4 - v8;
+  v10 = x - v9;
+  _D10 = y - v8;
   v12 = *self->errPro;
-  v13.f64[0] = a5;
-  v13.f64[1] = a6;
+  v13.f64[0] = sigmaX;
+  v13.f64[1] = sigmaY;
   _Q3 = vdivq_f64(v12, vaddq_f64(v12, v13));
   __asm { FMLA            D2, D10, V3.D[1] }
 
@@ -84,13 +84,13 @@
       *buf = 134221570;
       v31 = i;
       v32 = 2112;
-      v33 = self;
+      selfCopy = self;
       v34 = 2048;
       v35 = v9;
       v36 = 2048;
       v37 = v28.f64[0];
       v38 = 2048;
-      v39 = a3;
+      xCopy = x;
       v40 = 2048;
       v41 = v26;
       v42 = 2048;
@@ -102,7 +102,7 @@
       v48 = 2048;
       v49 = v28.f64[1];
       v50 = 2048;
-      v51 = a4;
+      yCopy = y;
       v52 = 2048;
       v53 = v27;
       v54 = 2048;
@@ -110,27 +110,27 @@
       v56 = 2048;
       v57 = v27 - v8;
       v58 = 2048;
-      v59 = a5;
+      sigmaXCopy = sigmaX;
       _os_log_debug_impl(&dword_2304B3000, v24, OS_LOG_TYPE_DEBUG, "RTLocationSmootherKF, %lu, update obs, %@, (%f+%f*%f->%f)(%f,%f), (%f+%f*%f->%f)(%f,%f), sigma, %f", buf, 0x98u);
     }
   }
 }
 
-- (void)updatePostObservationDeltaX:(double)a3 observationDeltaY:(double)a4 errProX:(double)a5 errProY:(double)a6 sigmaX:(double)a7 sigmaY:(double)a8
+- (void)updatePostObservationDeltaX:(double)x observationDeltaY:(double)y errProX:(double)proX errProY:(double)proY sigmaX:(double)sigmaX sigmaY:(double)sigmaY
 {
-  _D8 = a4;
-  v11.f64[0] = a7;
-  v11.f64[1] = a8;
+  _D8 = y;
+  v11.f64[0] = sigmaX;
+  v11.f64[1] = sigmaY;
   v58 = *MEMORY[0x277D85DE8];
-  v12 = vaddq_f64(*&a5, v11);
+  v12 = vaddq_f64(*&proX, v11);
   v14 = self->X[0];
   v13 = self->X[1];
-  v15 = vdivq_f64(*&a5, v12);
+  v15 = vdivq_f64(*&proX, v12);
   v16 = *self->errPro;
   _Q0 = vdivq_f64(v16, v12);
   __asm { FMLA            D3, D8, V0.D[1] }
 
-  self->X[0] = v14 + _Q0.f64[0] * a3;
+  self->X[0] = v14 + _Q0.f64[0] * x;
   self->X[1] = _D3;
   __asm { FMOV            V2.2D, #1.0 }
 
@@ -153,15 +153,15 @@
         *buf = 134221058;
         v33 = i;
         v34 = 2112;
-        v35 = self;
+        selfCopy = self;
         v36 = 2048;
-        v37 = a7;
+        sigmaXCopy = sigmaX;
         v38 = 2048;
         v39 = v14;
         v40 = 2048;
         v41 = v30.f64[0];
         v42 = 2048;
-        v43 = a3;
+        xCopy = x;
         v44 = 2048;
         v45 = v28;
         v46 = 2048;
@@ -182,7 +182,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_opt_new();
   *(result + 1) = self->i;

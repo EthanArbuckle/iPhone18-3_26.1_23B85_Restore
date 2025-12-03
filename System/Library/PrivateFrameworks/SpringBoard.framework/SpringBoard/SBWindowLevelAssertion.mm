@@ -1,6 +1,6 @@
 @interface SBWindowLevelAssertion
-- (SBWindowLevelAssertion)initWithPriority:(int64_t)a3 windowLevel:(double)a4 reason:(id)a5 invalidationHandler:(id)a6;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBWindowLevelAssertion)initWithPriority:(int64_t)priority windowLevel:(double)level reason:(id)reason invalidationHandler:(id)handler;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)invalidate;
@@ -8,23 +8,23 @@
 
 @implementation SBWindowLevelAssertion
 
-- (SBWindowLevelAssertion)initWithPriority:(int64_t)a3 windowLevel:(double)a4 reason:(id)a5 invalidationHandler:(id)a6
+- (SBWindowLevelAssertion)initWithPriority:(int64_t)priority windowLevel:(double)level reason:(id)reason invalidationHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = SBWindowLevelAssertion;
   v12 = [(SBWindowLevelAssertion *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_priority = a3;
-    v12->_windowLevel = a4;
-    v14 = [v10 copy];
+    v12->_priority = priority;
+    v12->_windowLevel = level;
+    v14 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v14;
 
-    v16 = [v11 copy];
+    v16 = [handlerCopy copy];
     invalidationHandler = v13->_invalidationHandler;
     v13->_invalidationHandler = v16;
   }
@@ -34,10 +34,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBWindowLevelAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWindowLevelAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -50,12 +50,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWindowLevelAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWindowLevelAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)invalidate

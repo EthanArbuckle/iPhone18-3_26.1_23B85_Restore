@@ -1,21 +1,21 @@
 @interface WFWorkflowParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (id)legacySerializedRepresentation;
-- (void)processValue:(id)a3 withContext:(id)a4 valueHandler:(id)a5;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processValue:(id)value withContext:(id)context valueHandler:(id)handler;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFWorkflowParameterState
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = representationCopy;
     v7 = [[WFWorkflowParameterStateDescriptor alloc] initWithWorkflowName:v6 workflowIdentifier:0 isSelf:0];
 LABEL_11:
     v12 = v7;
@@ -23,7 +23,7 @@ LABEL_11:
   }
 
   v8 = objc_opt_class();
-  v9 = v5;
+  v9 = representationCopy;
   if (v9 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v10 = getWFGeneralLogObject();
@@ -63,26 +63,26 @@ LABEL_12:
   return v12;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v5)
+    if (valueCopy)
     {
 LABEL_3:
-      v6 = [(MTLJSONAdapter *)WFPropertyListJSONAdapter JSONDictionaryFromModel:v5 error:0];
+      v6 = [(MTLJSONAdapter *)WFPropertyListJSONAdapter JSONDictionaryFromModel:valueCopy error:0];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"WFWorkflowParameterState.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFWorkflowParameterStateDescriptor class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowParameterState.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFWorkflowParameterStateDescriptor class]]"}];
 
-    if (v5)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -94,57 +94,57 @@ LABEL_6:
   return v6;
 }
 
-- (void)processValue:(id)a3 withContext:(id)a4 valueHandler:(id)a5
+- (void)processValue:(id)value withContext:(id)context valueHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v13 = [a4 parameter];
-  v9 = [v13 workflow];
-  v10 = [v9 reference];
+  handlerCopy = handler;
+  valueCopy = value;
+  parameter = [context parameter];
+  workflow = [parameter workflow];
+  reference = [workflow reference];
 
   v11 = +[WFDatabaseProxy defaultDatabase];
-  v12 = [v8 matchingWorkflowInDatabase:v11 containingWorkflow:v10];
+  v12 = [valueCopy matchingWorkflowInDatabase:v11 containingWorkflow:reference];
 
-  v7[2](v7, v12, 0);
+  handlerCopy[2](handlerCopy, v12, 0);
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
-    v12 = [(WFVariableSubstitutableParameterState *)self variable];
-    if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    if (variable2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v13 = [v12 prompt];
-      v9[2](v9, v13, 0);
+      prompt = [variable2 prompt];
+      handlerCopy[2](handlerCopy, prompt, 0);
     }
 
     else
     {
 
-      v14 = [(WFVariableSubstitutableParameterState *)self variable];
+      variable3 = [(WFVariableSubstitutableParameterState *)self variable];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __85__WFWorkflowParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
       v15[3] = &unk_1E837FF40;
-      v17 = v10;
+      v17 = valueHandlerCopy;
       v15[4] = self;
-      v16 = v8;
-      [v14 getContentWithContext:v16 completionHandler:v15];
+      v16 = contextCopy;
+      [variable3 getContentWithContext:v16 completionHandler:v15];
 
-      v12 = v17;
+      variable2 = v17;
     }
   }
 
   else
   {
-    v12 = [(WFVariableSubstitutableParameterState *)self value];
-    [(WFWorkflowParameterState *)self processValue:v12 withContext:v8 valueHandler:v10];
+    variable2 = [(WFVariableSubstitutableParameterState *)self value];
+    [(WFWorkflowParameterState *)self processValue:variable2 withContext:contextCopy valueHandler:valueHandlerCopy];
   }
 }
 
@@ -238,20 +238,20 @@ LABEL_14:
 
 - (id)legacySerializedRepresentation
 {
-  v3 = [(WFVariableSubstitutableParameterState *)self value];
+  value = [(WFVariableSubstitutableParameterState *)self value];
 
-  if (v3)
+  if (value)
   {
-    v4 = [(WFVariableSubstitutableParameterState *)self value];
-    v5 = [v4 workflowName];
+    value2 = [(WFVariableSubstitutableParameterState *)self value];
+    workflowName = [value2 workflowName];
   }
 
   else
   {
-    v5 = [(WFVariableSubstitutableParameterState *)self serializedRepresentation];
+    workflowName = [(WFVariableSubstitutableParameterState *)self serializedRepresentation];
   }
 
-  return v5;
+  return workflowName;
 }
 
 @end

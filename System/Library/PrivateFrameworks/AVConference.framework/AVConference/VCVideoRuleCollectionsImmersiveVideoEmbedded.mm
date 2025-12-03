@@ -1,12 +1,12 @@
 @interface VCVideoRuleCollectionsImmersiveVideoEmbedded
 + (id)sharedInstance;
 - (BOOL)initSupportedPayloads;
-- (VCVideoRuleCollectionsImmersiveVideoEmbedded)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsImmersiveVideoEmbedded)initWithHardwareSettings:(id)settings;
 @end
 
 @implementation VCVideoRuleCollectionsImmersiveVideoEmbedded
 
-- (VCVideoRuleCollectionsImmersiveVideoEmbedded)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsImmersiveVideoEmbedded)initWithHardwareSettings:(id)settings
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     if (![(VCVideoRuleCollectionsImmersiveVideoEmbedded *)v4 initSupportedPayloads]|| ![(VCVideoRuleCollectionsImmersiveVideo *)v5 setupMVHEVCRules])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -67,7 +67,7 @@ VCVideoRuleCollectionsImmersiveVideoEmbedded *__62__VCVideoRuleCollectionsImmers
     v5 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      v7 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+      deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
       v8 = 136316162;
       v9 = v4;
       v10 = 2080;
@@ -75,7 +75,7 @@ VCVideoRuleCollectionsImmersiveVideoEmbedded *__62__VCVideoRuleCollectionsImmers
       v12 = 1024;
       v13 = 52;
       v14 = 2048;
-      v15 = v7;
+      v15 = deviceClass;
       v16 = 1024;
       v17 = v3;
       _os_log_error_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_ERROR, " [%s] %s:%d Empty supported payload: device classType=%ld, supportsMVHEVCDecode=%d", &v8, 0x2Cu);

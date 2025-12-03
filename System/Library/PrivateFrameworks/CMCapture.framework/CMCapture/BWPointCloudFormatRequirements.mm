@@ -1,11 +1,11 @@
 @interface BWPointCloudFormatRequirements
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BWPointCloudFormatRequirements)init;
-- (BWPointCloudFormatRequirements)initWithCoder:(id)a3;
+- (BWPointCloudFormatRequirements)initWithCoder:(id)coder;
 - (NSDictionary)dataBufferAttributes;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWPointCloudFormatRequirements
@@ -31,30 +31,30 @@
   [(BWPointCloudFormatRequirements *)&v3 dealloc];
 }
 
-- (BWPointCloudFormatRequirements)initWithCoder:(id)a3
+- (BWPointCloudFormatRequirements)initWithCoder:(id)coder
 {
   v4 = [(BWPointCloudFormatRequirements *)self init];
   if (v4)
   {
-    v4->_maxPoints = [a3 decodeInt64ForKey:@"maxPoints"];
-    v4->_dataBufferSize = [a3 decodeInt64ForKey:@"dataBufferSize"];
+    v4->_maxPoints = [coder decodeInt64ForKey:@"maxPoints"];
+    v4->_dataBufferSize = [coder decodeInt64ForKey:@"dataBufferSize"];
     v5 = MEMORY[0x1E695DFD8];
     v8[0] = objc_opt_class();
     v8[1] = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
-    v4->_supportedDataFormats = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", v6, v8[0]), @"supportedDataFormats"}];
+    v4->_supportedDataFormats = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", v6, v8[0]), @"supportedDataFormats"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_maxPoints forKey:@"maxPoints"];
-  [a3 encodeInt64:self->_dataBufferSize forKey:@"dataBufferSize"];
+  [coder encodeInt64:self->_maxPoints forKey:@"maxPoints"];
+  [coder encodeInt64:self->_dataBufferSize forKey:@"dataBufferSize"];
   supportedDataFormats = self->_supportedDataFormats;
 
-  [a3 encodeObject:supportedDataFormats forKey:@"supportedDataFormats"];
+  [coder encodeObject:supportedDataFormats forKey:@"supportedDataFormats"];
 }
 
 - (id)description
@@ -131,15 +131,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && [a3 maxPoints] == self->_maxPoints && objc_msgSend(a3, "dataBufferSize") == self->_dataBufferSize && (objc_msgSend(a3, "supportedDataFormats") == self->_supportedDataFormats || (objc_msgSend(objc_msgSend(a3, "supportedDataFormats"), "isEqual:", self->_supportedDataFormats) & 1) != 0);
+  return (objc_opt_isKindOfClass() & 1) != 0 && [equal maxPoints] == self->_maxPoints && objc_msgSend(equal, "dataBufferSize") == self->_dataBufferSize && (objc_msgSend(equal, "supportedDataFormats") == self->_supportedDataFormats || (objc_msgSend(objc_msgSend(equal, "supportedDataFormats"), "isEqual:", self->_supportedDataFormats) & 1) != 0);
 }
 
 @end

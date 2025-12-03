@@ -1,27 +1,27 @@
 @interface ContaineeViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setContainerViewController:(id)a3;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)setContainerViewController:(id)controller;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation ContaineeViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ContaineeViewController" hasInstanceVariable:@"_cardPresentationController" withType:"CardPresentationController"];
-  [v3 validateClass:@"CardPresentationController" hasInstanceVariable:@"_cardView" withType:"CardView"];
-  [v3 validateClass:@"ContaineeViewController" hasInstanceMethod:@"willBecomeCurrent:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"ContaineeViewController" hasInstanceMethod:@"willResignCurrent:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ContaineeViewController" hasInstanceVariable:@"_cardPresentationController" withType:"CardPresentationController"];
+  [validationsCopy validateClass:@"CardPresentationController" hasInstanceVariable:@"_cardView" withType:"CardView"];
+  [validationsCopy validateClass:@"ContaineeViewController" hasInstanceMethod:@"willBecomeCurrent:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"ContaineeViewController" hasInstanceMethod:@"willResignCurrent:" withFullSignature:{"v", "B", 0}];
 }
 
-- (void)setContainerViewController:(id)a3
+- (void)setContainerViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = ContaineeViewControllerAccessibility;
-  [(ContaineeViewControllerAccessibility *)&v4 setContainerViewController:a3];
+  [(ContaineeViewControllerAccessibility *)&v4 setContainerViewController:controller];
   [(ContaineeViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -38,13 +38,13 @@
   [v5 setAccessibilityElementsHidden:0];
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v3 = [(ContaineeViewControllerAccessibility *)self safeUIViewForKey:@"view"];
   [v3 setAccessibilityElementsHidden:0];
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
   v3 = [(ContaineeViewControllerAccessibility *)self safeUIViewForKey:@"view"];
   [v3 setAccessibilityElementsHidden:1];

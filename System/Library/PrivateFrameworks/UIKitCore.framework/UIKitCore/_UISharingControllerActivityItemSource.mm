@@ -1,22 +1,22 @@
 @interface _UISharingControllerActivityItemSource
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 @end
 
 @implementation _UISharingControllerActivityItemSource
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if ([a4 isEqualToString:*MEMORY[0x1E69CDA88]])
+  if ([type isEqualToString:*MEMORY[0x1E69CDA88]])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

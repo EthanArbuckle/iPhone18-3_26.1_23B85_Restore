@@ -4,18 +4,18 @@
 + (id)_dynamicMultiselectSeparatorColor_UICollectionLayoutListAppearancePlain;
 + (id)_dynamicMultiselectSeparatorColor_UICollectionLayoutListAppearanceSidebar;
 + (id)_dynamicMultiselectSeparatorColor_UICollectionLayoutListAppearanceSidebarPlain;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)bottomSeparatorInsets;
 - (NSDirectionalEdgeInsets)topSeparatorInsets;
-- (UIListSeparatorConfiguration)initWithCoder:(id)a3;
+- (UIListSeparatorConfiguration)initWithCoder:(id)coder;
 - (UIListSeparatorConfiguration)initWithListAppearance:(UICollectionLayoutListAppearance)listAppearance;
-- (id)__copyWithSubclass:(Class)a3 inZone:(_NSZone *)a4;
-- (id)_multiselectSeparatorColorForListAppearance:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)__copyWithSubclass:(Class)subclass inZone:(_NSZone *)zone;
+- (id)_multiselectSeparatorColorForListAppearance:(int64_t)appearance;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_replaceAutomaticValuesWithValuesFromConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_replaceAutomaticValuesWithValuesFromConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIListSeparatorConfiguration
@@ -236,17 +236,17 @@ id __110__UIListSeparatorConfiguration__dynamicMultiselectSeparatorColor_UIColle
   return v6;
 }
 
-- (id)_multiselectSeparatorColorForListAppearance:(int64_t)a3
+- (id)_multiselectSeparatorColorForListAppearance:(int64_t)appearance
 {
-  if (a3 <= 1)
+  if (appearance <= 1)
   {
-    if (!a3)
+    if (!appearance)
     {
       v6 = +[UIListSeparatorConfiguration _dynamicMultiselectSeparatorColor_UICollectionLayoutListAppearancePlain];
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (appearance == 1)
     {
       v6 = +[UIListSeparatorConfiguration _dynamicMultiselectSeparatorColor_UICollectionLayoutListAppearanceGrouped];
       goto LABEL_13;
@@ -255,7 +255,7 @@ id __110__UIListSeparatorConfiguration__dynamicMultiselectSeparatorColor_UIColle
 
   else
   {
-    switch(a3)
+    switch(appearance)
     {
       case 2:
         v6 = +[UIListSeparatorConfiguration _dynamicMultiselectSeparatorColor_UICollectionLayoutListAppearanceInsetGrouped];
@@ -269,8 +269,8 @@ id __110__UIListSeparatorConfiguration__dynamicMultiselectSeparatorColor_UIColle
     }
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UIListSeparatorConfiguration.m" lineNumber:63 description:{@"UICollectionView internal inconsistency: unknown list appearance style (%ld)", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIListSeparatorConfiguration.m" lineNumber:63 description:{@"UICollectionView internal inconsistency: unknown list appearance style (%ld)", appearance}];
 
 LABEL_13:
 
@@ -328,19 +328,19 @@ LABEL_13:
   return v4;
 }
 
-- (void)_replaceAutomaticValuesWithValuesFromConfiguration:(id)a3
+- (void)_replaceAutomaticValuesWithValuesFromConfiguration:(id)configuration
 {
   if (!self->_topSeparatorVisibility)
   {
-    self->_topSeparatorVisibility = [a3 topSeparatorVisibility];
+    self->_topSeparatorVisibility = [configuration topSeparatorVisibility];
   }
 
   if (!self->_bottomSeparatorVisibility)
   {
-    self->_bottomSeparatorVisibility = [a3 bottomSeparatorVisibility];
+    self->_bottomSeparatorVisibility = [configuration bottomSeparatorVisibility];
   }
 
-  [a3 topSeparatorInsets];
+  [configuration topSeparatorInsets];
   leading = self->_topSeparatorInsets.leading;
   if (leading == 1.79769313e308)
   {
@@ -359,7 +359,7 @@ LABEL_13:
 
   self->_topSeparatorInsets.leading = leading;
   self->_topSeparatorInsets.trailing = trailing;
-  [a3 bottomSeparatorInsets];
+  [configuration bottomSeparatorInsets];
   v11 = self->_bottomSeparatorInsets.leading;
   if (v11 == 1.79769313e308)
   {
@@ -387,14 +387,14 @@ LABEL_13:
   return v4 ^ [(UIColor *)self->_multipleSelectionColor hash]^ (self->_bottomSeparatorInsets.trailing + self->_bottomSeparatorInsets.leading);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -405,9 +405,9 @@ LABEL_13:
     return 0;
   }
 
-  v5 = a3;
-  v6 = v5;
-  v7 = self->_topSeparatorVisibility == *(v5 + 2) && self->_bottomSeparatorVisibility == *(v5 + 3) && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_bottomSeparatorInsets.top, *(v5 + 88)), vceqq_f64(*&self->_bottomSeparatorInsets.bottom, *(v5 + 104))))) & 1) != 0 && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_topSeparatorInsets.top, *(v5 + 56)), vceqq_f64(*&self->_topSeparatorInsets.bottom, *(v5 + 72))))) & 1) != 0 && [(UIColor *)self->_color isEqual:*(v5 + 4)]&& [(UIColor *)self->_multipleSelectionColor isEqual:*(v6 + 5)]&& _deferringTokenEqualToToken(self->_visualEffect, *(v6 + 6)) && self->_ignoreTopSeparatorInsetsFromCell == v6[8] && self->_ignoreBottomSeparatorInsetsFromCell == v6[9];
+  equalCopy = equal;
+  v6 = equalCopy;
+  v7 = self->_topSeparatorVisibility == *(equalCopy + 2) && self->_bottomSeparatorVisibility == *(equalCopy + 3) && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_bottomSeparatorInsets.top, *(equalCopy + 88)), vceqq_f64(*&self->_bottomSeparatorInsets.bottom, *(equalCopy + 104))))) & 1) != 0 && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_topSeparatorInsets.top, *(equalCopy + 56)), vceqq_f64(*&self->_topSeparatorInsets.bottom, *(equalCopy + 72))))) & 1) != 0 && [(UIColor *)self->_color isEqual:*(equalCopy + 4)]&& [(UIColor *)self->_multipleSelectionColor isEqual:*(v6 + 5)]&& _deferringTokenEqualToToken(self->_visualEffect, *(v6 + 6)) && self->_ignoreTopSeparatorInsetsFromCell == v6[8] && self->_ignoreBottomSeparatorInsetsFromCell == v6[9];
 
   return v7;
 }
@@ -471,16 +471,16 @@ LABEL_13:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(UIListSeparatorConfiguration *)self __copyWithSubclass:v5 inZone:a3];
+  return [(UIListSeparatorConfiguration *)self __copyWithSubclass:v5 inZone:zone];
 }
 
-- (id)__copyWithSubclass:(Class)a3 inZone:(_NSZone *)a4
+- (id)__copyWithSubclass:(Class)subclass inZone:(_NSZone *)zone
 {
-  v5 = [[(objc_class *)a3 allocWithZone:a4] init];
+  v5 = [[(objc_class *)subclass allocWithZone:zone] init];
   v6 = v5;
   if (v5)
   {
@@ -505,32 +505,32 @@ LABEL_13:
   return v6;
 }
 
-- (UIListSeparatorConfiguration)initWithCoder:(id)a3
+- (UIListSeparatorConfiguration)initWithCoder:(id)coder
 {
   v4 = [(UIListSeparatorConfiguration *)self init];
   if (v4)
   {
-    v4->_topSeparatorVisibility = [a3 decodeIntegerForKey:@"topSepVisibility"];
-    v4->_bottomSeparatorVisibility = [a3 decodeIntegerForKey:@"bottomSepVisibility"];
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v4->_topSeparatorVisibility = [coder decodeIntegerForKey:@"topSepVisibility"];
+    v4->_bottomSeparatorVisibility = [coder decodeIntegerForKey:@"bottomSepVisibility"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     color = v4->_color;
     v4->_color = v5;
 
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"multiSelectColor"];
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"multiSelectColor"];
     multipleSelectionColor = v4->_multipleSelectionColor;
     v4->_multipleSelectionColor = v7;
 
-    [a3 decodeDirectionalEdgeInsetsForKey:@"topSepInsets"];
+    [coder decodeDirectionalEdgeInsetsForKey:@"topSepInsets"];
     v4->_topSeparatorInsets.top = v9;
     v4->_topSeparatorInsets.leading = v10;
     v4->_topSeparatorInsets.bottom = v11;
     v4->_topSeparatorInsets.trailing = v12;
-    [a3 decodeDirectionalEdgeInsetsForKey:@"insets"];
+    [coder decodeDirectionalEdgeInsetsForKey:@"insets"];
     v4->_bottomSeparatorInsets.top = v13;
     v4->_bottomSeparatorInsets.leading = v14;
     v4->_bottomSeparatorInsets.bottom = v15;
     v4->_bottomSeparatorInsets.trailing = v16;
-    v17 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"visualEffect"];
+    v17 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"visualEffect"];
     visualEffect = v4->_visualEffect;
     v4->_visualEffect = v17;
   }
@@ -538,17 +538,17 @@ LABEL_13:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_topSeparatorVisibility forKey:@"topSepVisibility"];
-  [a3 encodeInteger:self->_bottomSeparatorVisibility forKey:@"bottomSepVisibility"];
-  [a3 encodeDirectionalEdgeInsets:@"topSepInsets" forKey:{self->_topSeparatorInsets.top, self->_topSeparatorInsets.leading, self->_topSeparatorInsets.bottom, self->_topSeparatorInsets.trailing}];
-  [a3 encodeDirectionalEdgeInsets:@"insets" forKey:{self->_bottomSeparatorInsets.top, self->_bottomSeparatorInsets.leading, self->_bottomSeparatorInsets.bottom, self->_bottomSeparatorInsets.trailing}];
-  [a3 encodeObject:self->_color forKey:@"color"];
-  [a3 encodeObject:self->_multipleSelectionColor forKey:@"multiSelectColor"];
+  [coder encodeInteger:self->_topSeparatorVisibility forKey:@"topSepVisibility"];
+  [coder encodeInteger:self->_bottomSeparatorVisibility forKey:@"bottomSepVisibility"];
+  [coder encodeDirectionalEdgeInsets:@"topSepInsets" forKey:{self->_topSeparatorInsets.top, self->_topSeparatorInsets.leading, self->_topSeparatorInsets.bottom, self->_topSeparatorInsets.trailing}];
+  [coder encodeDirectionalEdgeInsets:@"insets" forKey:{self->_bottomSeparatorInsets.top, self->_bottomSeparatorInsets.leading, self->_bottomSeparatorInsets.bottom, self->_bottomSeparatorInsets.trailing}];
+  [coder encodeObject:self->_color forKey:@"color"];
+  [coder encodeObject:self->_multipleSelectionColor forKey:@"multiSelectColor"];
   visualEffect = self->_visualEffect;
 
-  [a3 encodeObject:visualEffect forKey:@"visualEffect"];
+  [coder encodeObject:visualEffect forKey:@"visualEffect"];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface AMUIOnboardingContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)onboardingViewRequestsDismissal:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)onboardingViewRequestsDismissal:(id)dismissal;
 @end
 
 @implementation AMUIOnboardingContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AMUIInfographViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AMUIDataLayerViewController" conformsToProtocol:@"AMUIInfographViewControllerDelegate"];
-  [v3 validateClass:@"AMUIDataLayerViewController" hasInstanceMethod:@"createUnlockRequestForViewController:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"AMUIDataLayerViewController" hasInstanceMethod:@"requestUnlockForViewController:withRequest:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
-  [v3 validateClass:@"AMUIConcreteUnlockRequest" conformsToProtocol:@"AMUnlockRequest"];
-  [v3 validateClass:@"AMUIConcreteUnlockRequest" hasProperty:@"unlockDestination" withType:"@"];
-  [v3 validateClass:@"AMUIOnboardingContainerView" hasInstanceMethod:@"onboardingViewRequestsDismissal:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AMUIInfographViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AMUIDataLayerViewController" conformsToProtocol:@"AMUIInfographViewControllerDelegate"];
+  [validationsCopy validateClass:@"AMUIDataLayerViewController" hasInstanceMethod:@"createUnlockRequestForViewController:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"AMUIDataLayerViewController" hasInstanceMethod:@"requestUnlockForViewController:withRequest:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"AMUIConcreteUnlockRequest" conformsToProtocol:@"AMUnlockRequest"];
+  [validationsCopy validateClass:@"AMUIConcreteUnlockRequest" hasProperty:@"unlockDestination" withType:"@"];
+  [validationsCopy validateClass:@"AMUIOnboardingContainerView" hasInstanceMethod:@"onboardingViewRequestsDismissal:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)onboardingViewRequestsDismissal:(id)a3
+- (void)onboardingViewRequestsDismissal:(id)dismissal
 {
   v3.receiver = self;
   v3.super_class = AMUIOnboardingContainerViewAccessibility;
-  [(AMUIOnboardingContainerViewAccessibility *)&v3 onboardingViewRequestsDismissal:a3];
+  [(AMUIOnboardingContainerViewAccessibility *)&v3 onboardingViewRequestsDismissal:dismissal];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

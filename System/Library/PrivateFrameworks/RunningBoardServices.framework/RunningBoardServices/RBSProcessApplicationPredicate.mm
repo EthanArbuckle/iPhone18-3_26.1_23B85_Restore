@@ -1,6 +1,6 @@
 @interface RBSProcessApplicationPredicate
 + (id)applicationPredicate;
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessApplicationPredicate
@@ -25,12 +25,12 @@ void __54__RBSProcessApplicationPredicate_applicationPredicate__block_invoke()
   applicationPredicate__predicate = v0;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v3 = [a3 identity];
-  v4 = [v3 isEmbeddedApplication];
+  identity = [process identity];
+  isEmbeddedApplication = [identity isEmbeddedApplication];
 
-  return v4;
+  return isEmbeddedApplication;
 }
 
 @end

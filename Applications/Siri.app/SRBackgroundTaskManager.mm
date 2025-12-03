@@ -50,7 +50,7 @@
     *buf = 136315394;
     v6 = "[SRBackgroundTaskManager dealloc]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -73,7 +73,7 @@
       v8 = 136315650;
       v9 = "[SRBackgroundTaskManager _endBackgroundTask]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@ - ending background task with id: %@", &v8, 0x20u);

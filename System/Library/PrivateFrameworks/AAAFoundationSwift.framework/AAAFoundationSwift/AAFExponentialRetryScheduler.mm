@@ -1,23 +1,23 @@
 @interface AAFExponentialRetryScheduler
 - (AAFExponentialRetryScheduler)init;
-- (AAFExponentialRetryScheduler)initWithMaxRetries:(int64_t)a3 power:(double)a4;
-- (void)scheduleTask:(AAFExponentialRetryScheduler *)self shouldRetry:(SEL)a2 completionHandler:(id)a3;
+- (AAFExponentialRetryScheduler)initWithMaxRetries:(int64_t)retries power:(double)power;
+- (void)scheduleTask:(AAFExponentialRetryScheduler *)self shouldRetry:(SEL)retry completionHandler:(id)handler;
 @end
 
 @implementation AAFExponentialRetryScheduler
 
-- (AAFExponentialRetryScheduler)initWithMaxRetries:(int64_t)a3 power:(double)a4
+- (AAFExponentialRetryScheduler)initWithMaxRetries:(int64_t)retries power:(double)power
 {
   v10 = 0;
   memset(v9, 0, sizeof(v9));
   v6 = objc_allocWithZone(swift_getObjectType());
-  v7 = ExponentialRetryScheduler.init(maxRetries:power:schedulerDelay:)(a3, v9, a4);
+  v7 = ExponentialRetryScheduler.init(maxRetries:power:schedulerDelay:)(retries, v9, power);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v7;
 }
 
-- (void)scheduleTask:(AAFExponentialRetryScheduler *)self shouldRetry:(SEL)a2 completionHandler:(id)a3
+- (void)scheduleTask:(AAFExponentialRetryScheduler *)self shouldRetry:(SEL)retry completionHandler:(id)handler
 {
   v5 = v4;
   v6 = v3;
@@ -25,7 +25,7 @@
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8, v11);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a3);
+  v14 = _Block_copy(handler);
   v15 = _Block_copy(v6);
   v16 = _Block_copy(v5);
   v17 = swift_allocObject();
@@ -45,7 +45,7 @@
   v20[3] = 0;
   v20[4] = &unk_1B99F8810;
   v20[5] = v19;
-  v21 = self;
+  selfCopy = self;
   sub_1B99DF280(0, 0, v13, &unk_1B99F8820, v20);
 }
 

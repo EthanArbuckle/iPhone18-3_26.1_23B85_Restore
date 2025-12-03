@@ -1,15 +1,15 @@
 @interface COSHeadphoneLevelLimitSliderCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation COSHeadphoneLevelLimitSliderCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"COSHeadphoneLevelLimitSliderCell" isKindOfClass:@"PSControlTableCell"];
-  [v3 validateClass:@"PSControlTableCell" hasInstanceMethod:@"controlValue" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"COSHeadphoneLevelLimitSliderCell" isKindOfClass:@"PSControlTableCell"];
+  [validationsCopy validateClass:@"PSControlTableCell" hasInstanceMethod:@"controlValue" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue

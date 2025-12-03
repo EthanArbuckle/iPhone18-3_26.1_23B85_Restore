@@ -4,17 +4,17 @@
 + (id)domainGroupName;
 + (id)domainName;
 + (id)rootSettings;
-+ (void)registerTestRecipe:(id)a3;
++ (void)registerTestRecipe:(id)recipe;
 - (id)_domainID;
 - (id)_domainInfo;
 - (id)_init;
-- (void)_applyArchive:(id)a3;
-- (void)_applyArchiveValue:(id)a3 forKeyPath:(id)a4;
+- (void)_applyArchive:(id)archive;
+- (void)_applyArchiveValue:(id)value forKeyPath:(id)path;
 - (void)_createConnection;
 - (void)_disableObservationIfNecessary;
 - (void)_handleConnectionInterrupted;
 - (void)_handleConnectionInvalidated;
-- (void)_registerTestRecipe:(id)a3;
+- (void)_registerTestRecipe:(id)recipe;
 - (void)_registerWithServerIfNecessary;
 - (void)_restoreDefaultSettings;
 - (void)_sendProxyDefinitionIfNecessary;
@@ -22,21 +22,21 @@
 - (void)_updateActiveTestRecipe;
 - (void)_updateServerConnectionStatusIfNecessary;
 - (void)dealloc;
-- (void)invokeOutletAtKeyPath:(id)a3;
+- (void)invokeOutletAtKeyPath:(id)path;
 - (void)restoreDefaultSettings;
-- (void)sendActiveTestRecipeEvent:(int64_t)a3;
-- (void)setArchiveValue:(id)a3 forKeyPath:(id)a4;
-- (void)updateSettingsFromArchive:(id)a3;
+- (void)sendActiveTestRecipeEvent:(int64_t)event;
+- (void)setArchiveValue:(id)value forKeyPath:(id)path;
+- (void)updateSettingsFromArchive:(id)archive;
 @end
 
 @implementation PTDomain
 
 + (id)rootSettings
 {
-  v2 = [a1 _sharedInstance];
-  v3 = [v2 _rootSettings];
+  _sharedInstance = [self _sharedInstance];
+  _rootSettings = [_sharedInstance _rootSettings];
 
-  return v3;
+  return _rootSettings;
 }
 
 + (id)_sharedInstance
@@ -47,17 +47,17 @@
   }
 
   os_unfair_lock_lock(&_sharedInstance___lock);
-  v3 = NSStringFromClass(a1);
-  v4 = [_sharedInstance___sharedInstancesByClassName objectForKey:v3];
-  if (!v4)
+  v3 = NSStringFromClass(self);
+  _init = [_sharedInstance___sharedInstancesByClassName objectForKey:v3];
+  if (!_init)
   {
-    v4 = [[a1 alloc] _init];
-    [_sharedInstance___sharedInstancesByClassName setObject:v4 forKey:v3];
+    _init = [[self alloc] _init];
+    [_sharedInstance___sharedInstancesByClassName setObject:_init forKey:v3];
   }
 
   os_unfair_lock_unlock(&_sharedInstance___lock);
 
-  return v4;
+  return _init;
 }
 
 void __27__PTDomain__sharedInstance__block_invoke()
@@ -140,10 +140,10 @@ void __27__PTDomain__sharedInstance__block_invoke()
 - (void)_updateServerConnectionStatusIfNecessary
 {
   v3 = +[PTDefaults sharedInstance];
-  v4 = [v3 prototypeSettingsEnabled];
+  prototypeSettingsEnabled = [v3 prototypeSettingsEnabled];
 
   serverConnection = self->_serverConnection;
-  if (v4)
+  if (prototypeSettingsEnabled)
   {
     if (!serverConnection)
     {
@@ -161,13 +161,13 @@ void __27__PTDomain__sharedInstance__block_invoke()
   }
 }
 
-+ (void)registerTestRecipe:(id)a3
++ (void)registerTestRecipe:(id)recipe
 {
-  v5 = a3;
+  recipeCopy = recipe;
   if (PTInstallIsAppleInternal())
   {
-    v4 = [a1 _sharedInstance];
-    [v4 _registerTestRecipe:v5];
+    _sharedInstance = [self _sharedInstance];
+    [_sharedInstance _registerTestRecipe:recipeCopy];
   }
 }
 
@@ -250,16 +250,16 @@ uint64_t __27__PTDomain__sharedInstance__block_invoke_2_16(uint64_t a1)
   [(PTDomain *)&v4 dealloc];
 }
 
-- (void)updateSettingsFromArchive:(id)a3
+- (void)updateSettingsFromArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__PTDomain_updateSettingsFromArchive___block_invoke;
   v6[3] = &unk_27835EC80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = archiveCopy;
+  v5 = archiveCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -289,32 +289,32 @@ uint64_t __34__PTDomain_restoreDefaultSettings__block_invoke(uint64_t a1)
   return [v2 _noteRegistrationCompleted];
 }
 
-- (void)setArchiveValue:(id)a3 forKeyPath:(id)a4
+- (void)setArchiveValue:(id)value forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__PTDomain_setArchiveValue_forKeyPath___block_invoke;
   block[3] = &unk_27835ED60;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = valueCopy;
+  v12 = pathCopy;
+  v8 = pathCopy;
+  v9 = valueCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)invokeOutletAtKeyPath:(id)a3
+- (void)invokeOutletAtKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__PTDomain_invokeOutletAtKeyPath___block_invoke;
   v6[3] = &unk_27835EC80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = pathCopy;
+  v5 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -338,14 +338,14 @@ void __34__PTDomain_invokeOutletAtKeyPath___block_invoke(uint64_t a1)
   [v1 _invokeActions];
 }
 
-- (void)sendActiveTestRecipeEvent:(int64_t)a3
+- (void)sendActiveTestRecipeEvent:(int64_t)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __38__PTDomain_sendActiveTestRecipeEvent___block_invoke;
   v3[3] = &unk_27835ED88;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = event;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -435,10 +435,10 @@ LABEL_12:
   domainID = self->_domainID;
   if (!domainID)
   {
-    v4 = [(PTDomain *)self _domainInfo];
-    v5 = [v4 uniqueIdentifier];
+    _domainInfo = [(PTDomain *)self _domainInfo];
+    uniqueIdentifier = [_domainInfo uniqueIdentifier];
     v6 = self->_domainID;
-    self->_domainID = v5;
+    self->_domainID = uniqueIdentifier;
 
     domainID = self->_domainID;
   }
@@ -446,69 +446,69 @@ LABEL_12:
   return domainID;
 }
 
-- (void)_registerTestRecipe:(id)a3
+- (void)_registerTestRecipe:(id)recipe
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recipeCopy = recipe;
   v5 = [PTTestRecipeInfo alloc];
-  v6 = [(PTDomain *)self _domainInfo];
-  v7 = [(PTTestRecipeInfo *)v5 initWithTestRecipe:v4 domainInfo:v6];
+  _domainInfo = [(PTDomain *)self _domainInfo];
+  v7 = [(PTTestRecipeInfo *)v5 initWithTestRecipe:recipeCopy domainInfo:_domainInfo];
 
-  [v4 setInfo:v7];
-  v8 = [(PTTestRecipeInfo *)v7 uniqueIdentifier];
-  v9 = [(NSMutableDictionary *)self->_testRecipesByIdentifier objectForKey:v8];
+  [recipeCopy setInfo:v7];
+  uniqueIdentifier = [(PTTestRecipeInfo *)v7 uniqueIdentifier];
+  v9 = [(NSMutableDictionary *)self->_testRecipesByIdentifier objectForKey:uniqueIdentifier];
   if (v9)
   {
     v10 = PTLogObjectForTopic(1);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PTDomain *)self _domainID];
-      v12 = [v4 title];
+      _domainID = [(PTDomain *)self _domainID];
+      title = [recipeCopy title];
       *buf = 138412546;
-      v25 = v11;
+      v25 = _domainID;
       v26 = 2112;
-      v27 = v12;
+      v27 = title;
       _os_log_impl(&dword_21E61D000, v10, OS_LOG_TYPE_DEFAULT, "Domain %@: replacing test recipe with title %@", buf, 0x16u);
     }
 
     [v9 invalidate];
   }
 
-  [(NSMutableDictionary *)self->_testRecipesByIdentifier setObject:v4 forKey:v8];
+  [(NSMutableDictionary *)self->_testRecipesByIdentifier setObject:recipeCopy forKey:uniqueIdentifier];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __32__PTDomain__registerTestRecipe___block_invoke;
   v21 = &unk_27835EC80;
-  v22 = self;
-  v13 = v8;
+  selfCopy = self;
+  v13 = uniqueIdentifier;
   v23 = v13;
-  [v4 setInvalidationHandler:&v18];
+  [recipeCopy setInvalidationHandler:&v18];
   [(PTDomain *)self _updateActiveTestRecipe:v18];
   if (self->_registrationRequested)
   {
     v14 = PTLogObjectForTopic(1);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(PTDomain *)self _domainID];
-      v16 = [v4 title];
+      _domainID2 = [(PTDomain *)self _domainID];
+      title2 = [recipeCopy title];
       *buf = 138412546;
-      v25 = v15;
+      v25 = _domainID2;
       v26 = 2112;
-      v27 = v16;
+      v27 = title2;
       _os_log_impl(&dword_21E61D000, v14, OS_LOG_TYPE_DEFAULT, "Domain %@: registering test recipe %@", buf, 0x16u);
     }
 
-    v17 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
-    [v17 registerTestRecipeWithInfo:v7];
+    remoteObjectProxy = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
+    [remoteObjectProxy registerTestRecipeWithInfo:v7];
   }
 }
 
 - (void)_updateActiveTestRecipe
 {
   v3 = +[PTDefaults sharedInstance];
-  v8 = [v3 activeTestRecipeIdentifier];
+  activeTestRecipeIdentifier = [v3 activeTestRecipeIdentifier];
 
-  if (v8)
+  if (activeTestRecipeIdentifier)
   {
     v4 = [(NSMutableDictionary *)self->_testRecipesByIdentifier objectForKey:?];
   }
@@ -536,46 +536,46 @@ LABEL_12:
   }
 }
 
-- (void)_applyArchive:(id)a3
+- (void)_applyArchive:(id)archive
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiveCopy = archive;
   v5 = PTLogObjectForTopic(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PTDomain *)self _domainID];
+    _domainID = [(PTDomain *)self _domainID];
     v7 = 138412290;
-    v8 = v6;
+    v8 = _domainID;
     _os_log_impl(&dword_21E61D000, v5, OS_LOG_TYPE_DEFAULT, "Domain %@: applying archive", &v7, 0xCu);
   }
 
   [(PTSettings *)self->_rootSettings _setObservationEnabled:1];
-  [(PTSettings *)self->_rootSettings restoreFromArchiveDictionary:v4];
+  [(PTSettings *)self->_rootSettings restoreFromArchiveDictionary:archiveCopy];
 
   self->_archiveIsApplied = 1;
   [(PTDomain *)self _disableObservationIfNecessary];
 }
 
-- (void)_applyArchiveValue:(id)a3 forKeyPath:(id)a4
+- (void)_applyArchiveValue:(id)value forKeyPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  valueCopy = value;
   v8 = PTLogObjectForTopic(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PTDomain *)self _domainID];
+    _domainID = [(PTDomain *)self _domainID];
     *buf = 138412546;
-    v16 = v9;
+    v16 = _domainID;
     v17 = 2112;
-    v18 = v6;
+    v18 = pathCopy;
     _os_log_impl(&dword_21E61D000, v8, OS_LOG_TYPE_DEFAULT, "Domain %@: applying archive value for keyPath %@", buf, 0x16u);
   }
 
   [(PTSettings *)self->_rootSettings _setObservationEnabled:1];
   rootSettings = self->_rootSettings;
   v14 = 0;
-  v11 = [(PTSettings *)rootSettings _applyArchiveValue:v7 forKeyPath:v6 error:&v14];
+  v11 = [(PTSettings *)rootSettings _applyArchiveValue:valueCopy forKeyPath:pathCopy error:&v14];
 
   v12 = v14;
   if (v11)
@@ -603,9 +603,9 @@ LABEL_12:
   v3 = PTLogObjectForTopic(1);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PTDomain *)self _domainID];
+    _domainID = [(PTDomain *)self _domainID];
     v5 = 138412290;
-    v6 = v4;
+    v6 = _domainID;
     _os_log_impl(&dword_21E61D000, v3, OS_LOG_TYPE_DEFAULT, "Domain %@: restoring default values", &v5, 0xCu);
   }
 
@@ -635,20 +635,20 @@ LABEL_12:
   {
     if (self->_serverConnection)
     {
-      v3 = [objc_opt_class() rootSettingsClass];
-      if (v3)
+      rootSettingsClass = [objc_opt_class() rootSettingsClass];
+      if (rootSettingsClass)
       {
-        v4 = v3;
+        v4 = rootSettingsClass;
         v13 = +[PTDefaults sharedInstance];
-        v5 = [(PTDomain *)self _domainInfo];
-        v6 = [v5 settingsFrameworkBundlePath];
+        _domainInfo = [(PTDomain *)self _domainInfo];
+        settingsFrameworkBundlePath = [_domainInfo settingsFrameworkBundlePath];
 
-        v7 = [v6 lastPathComponent];
-        v8 = [v7 pathExtension];
+        lastPathComponent = [settingsFrameworkBundlePath lastPathComponent];
+        pathExtension = [lastPathComponent pathExtension];
 
-        if (v8)
+        if (pathExtension)
         {
-          v9 = [v8 compare:@"framework" options:3] != 0;
+          v9 = [pathExtension compare:@"framework" options:3] != 0;
         }
 
         else
@@ -659,9 +659,9 @@ LABEL_12:
         if (([v13 remotePrototypingEnabled] & 1) != 0 || (objc_msgSend(v13, "activePrototypingEnabled") & v9) == 1)
         {
           v10 = [PTProxySettingsDefinition definitionForSettingsClass:v4];
-          v11 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
-          v12 = [(PTDomain *)self _domainID];
-          [v11 registerRootSettingsProxyDefinition:v10 forDomainID:v12];
+          remoteObjectProxy = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
+          _domainID = [(PTDomain *)self _domainID];
+          [remoteObjectProxy registerRootSettingsProxyDefinition:v10 forDomainID:_domainID];
 
           self->_haveSentProxyDefinition = 1;
         }
@@ -676,9 +676,9 @@ LABEL_12:
   v3 = PTLogObjectForTopic(1);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PTDomain *)self _domainID];
+    _domainID = [(PTDomain *)self _domainID];
     *buf = 138412290;
-    v21 = v4;
+    v21 = _domainID;
     _os_log_impl(&dword_21E61D000, v3, OS_LOG_TYPE_DEFAULT, "Domain %@: creating server connection", buf, 0xCu);
   }
 
@@ -756,9 +756,9 @@ void __29__PTDomain__createConnection__block_invoke_4(uint64_t a1)
   v3 = PTLogObjectForTopic(1);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PTDomain *)self _domainID];
+    _domainID = [(PTDomain *)self _domainID];
     v6 = 138412290;
-    v7 = v4;
+    v7 = _domainID;
     _os_log_impl(&dword_21E61D000, v3, OS_LOG_TYPE_DEFAULT, "Domain %@: tearing down server connection", &v6, 0xCu);
   }
 
@@ -779,9 +779,9 @@ void __29__PTDomain__createConnection__block_invoke_4(uint64_t a1)
   {
     if (v5)
     {
-      v6 = [(PTDomain *)self _domainID];
+      _domainID = [(PTDomain *)self _domainID];
       *buf = 138412290;
-      v12 = v6;
+      v12 = _domainID;
       _os_log_impl(&dword_21E61D000, v4, OS_LOG_TYPE_DEFAULT, "Domain %@: server connection interrupted, no need to reconnect", buf, 0xCu);
     }
   }
@@ -790,10 +790,10 @@ void __29__PTDomain__createConnection__block_invoke_4(uint64_t a1)
   {
     if (v5)
     {
-      v7 = [(PTDomain *)self _domainID];
+      _domainID2 = [(PTDomain *)self _domainID];
       delayBeforeRegisteringAfterInterruption = self->_delayBeforeRegisteringAfterInterruption;
       *buf = 138412546;
-      v12 = v7;
+      v12 = _domainID2;
       v13 = 2048;
       v14 = delayBeforeRegisteringAfterInterruption;
       _os_log_impl(&dword_21E61D000, v4, OS_LOG_TYPE_DEFAULT, "Domain %@: server connection interrupted, will reconnect after %.1gs", buf, 0x16u);
@@ -825,15 +825,15 @@ void __29__PTDomain__createConnection__block_invoke_4(uint64_t a1)
     v3 = PTLogObjectForTopic(1);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PTDomain *)self _domainID];
+      _domainID = [(PTDomain *)self _domainID];
       *buf = 138412290;
-      v10 = v4;
+      v10 = _domainID;
       _os_log_impl(&dword_21E61D000, v3, OS_LOG_TYPE_DEFAULT, "Domain %@: registering with server", buf, 0xCu);
     }
 
-    v5 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
-    v6 = [(PTDomain *)self _domainInfo];
-    [v5 registerDomainWithInfo:v6];
+    remoteObjectProxy = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
+    _domainInfo = [(PTDomain *)self _domainInfo];
+    [remoteObjectProxy registerDomainWithInfo:_domainInfo];
 
     testRecipesByIdentifier = self->_testRecipesByIdentifier;
     v8[0] = MEMORY[0x277D85DD0];

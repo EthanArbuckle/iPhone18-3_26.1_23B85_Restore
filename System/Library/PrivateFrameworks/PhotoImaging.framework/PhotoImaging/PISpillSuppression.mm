@@ -11,53 +11,53 @@
 - (id)outputImage
 {
   v164 = *MEMORY[0x1E69E9840];
-  v3 = [(PISpillSuppression *)self inputImage];
+  inputImage = [(PISpillSuppression *)self inputImage];
 
-  if (!v3)
+  if (!inputImage)
   {
-    v5 = 0;
+    inputImage2 = 0;
     goto LABEL_46;
   }
 
-  v4 = [(PISpillSuppression *)self inputMatteImage];
+  inputMatteImage = [(PISpillSuppression *)self inputMatteImage];
 
-  v5 = [(PISpillSuppression *)self inputImage];
-  if (!v4)
+  inputImage2 = [(PISpillSuppression *)self inputImage];
+  if (!inputMatteImage)
   {
     goto LABEL_46;
   }
 
-  v6 = [(PISpillSuppression *)self inputMatteImage];
-  v7 = [(PISpillSuppression *)self inputTargetBackgroundImage];
-  v8 = v7;
-  if (v7)
+  inputMatteImage2 = [(PISpillSuppression *)self inputMatteImage];
+  inputTargetBackgroundImage = [(PISpillSuppression *)self inputTargetBackgroundImage];
+  v8 = inputTargetBackgroundImage;
+  if (inputTargetBackgroundImage)
   {
-    v9 = v7;
+    v9 = inputTargetBackgroundImage;
   }
 
   else
   {
     v10 = MEMORY[0x1E695F658];
-    v11 = [MEMORY[0x1E695F610] blackColor];
-    v9 = [v10 imageWithColor:v11];
+    blackColor = [MEMORY[0x1E695F610] blackColor];
+    v9 = [v10 imageWithColor:blackColor];
   }
 
-  v12 = [(PISpillSuppression *)self inputExtent];
-  v13 = v12;
-  if (v12)
+  inputExtent = [(PISpillSuppression *)self inputExtent];
+  v13 = inputExtent;
+  if (inputExtent)
   {
-    [v12 CGRectValue];
-    v14 = [v5 imageByCroppingToRect:?];
+    [inputExtent CGRectValue];
+    v14 = [inputImage2 imageByCroppingToRect:?];
 
     [v13 CGRectValue];
     v15 = [v9 imageByCroppingToRect:?];
 
     v9 = v15;
-    v5 = v14;
+    inputImage2 = v14;
   }
 
-  [v6 extent];
-  if (CGRectIsEmpty(v166) || ([v6 extent], CGRectIsInfinite(v167)))
+  [inputMatteImage2 extent];
+  if (CGRectIsEmpty(v166) || ([inputMatteImage2 extent], CGRectIsInfinite(v167)))
   {
     v123 = NUAssertLogger_6081();
     if (os_log_type_enabled(v123, OS_LOG_TYPE_ERROR))
@@ -68,7 +68,7 @@
       _os_log_error_impl(&dword_1C7694000, v123, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v163, 0xCu);
     }
 
-    v82 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v126 = NUAssertLogger_6081();
     v127 = os_log_type_enabled(v126, OS_LOG_TYPE_ERROR);
@@ -76,11 +76,11 @@
     {
       if (v127)
       {
-        v134 = dispatch_get_specific(*v82);
+        v134 = dispatch_get_specific(*callStackSymbols);
         v135 = MEMORY[0x1E696AF00];
         v13 = v134;
-        v82 = [v135 callStackSymbols];
-        v136 = [v82 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v135 callStackSymbols];
+        v136 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v163.a) = 138543618;
         *(&v163.a + 4) = v134;
         WORD2(v163.b) = 2114;
@@ -91,10 +91,10 @@
 
     else if (v127)
     {
-      v128 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v82 = [v128 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v163.a) = 138543362;
-      *(&v163.a + 4) = v82;
+      *(&v163.a + 4) = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v126, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v163, 0xCu);
     }
 
@@ -102,8 +102,8 @@
     goto LABEL_62;
   }
 
-  [v5 extent];
-  if (CGRectIsEmpty(v168) || ([v5 extent], CGRectIsInfinite(v169)))
+  [inputImage2 extent];
+  if (CGRectIsEmpty(v168) || ([inputImage2 extent], CGRectIsInfinite(v169)))
   {
     v129 = NUAssertLogger_6081();
     if (os_log_type_enabled(v129, OS_LOG_TYPE_ERROR))
@@ -114,7 +114,7 @@
       _os_log_error_impl(&dword_1C7694000, v129, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v163, 0xCu);
     }
 
-    v82 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v131 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v126 = NUAssertLogger_6081();
     v132 = os_log_type_enabled(v126, OS_LOG_TYPE_ERROR);
@@ -122,10 +122,10 @@
     {
       if (v132)
       {
-        v133 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v82 = [v133 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(v163.a) = 138543362;
-        *(&v163.a + 4) = v82;
+        *(&v163.a + 4) = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v126, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v163, 0xCu);
       }
 
@@ -138,11 +138,11 @@ LABEL_64:
 LABEL_62:
     if (v132)
     {
-      v137 = dispatch_get_specific(*v82);
+      v137 = dispatch_get_specific(*callStackSymbols);
       v138 = MEMORY[0x1E696AF00];
       v13 = v137;
-      v82 = [v138 callStackSymbols];
-      v139 = [v82 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v138 callStackSymbols];
+      v139 = [callStackSymbols componentsJoinedByString:@"\n"];
       LODWORD(v163.a) = 138543618;
       *(&v163.a + 4) = v137;
       WORD2(v163.b) = 2114;
@@ -153,13 +153,13 @@ LABEL_62:
     goto LABEL_64;
   }
 
-  [v5 extent];
+  [inputImage2 extent];
   v17 = v16;
-  [v6 extent];
+  [inputMatteImage2 extent];
   v19 = v17 / v18;
-  [v5 extent];
+  [inputImage2 extent];
   v21 = v20;
-  [v6 extent];
+  [inputMatteImage2 extent];
   if (v19 >= v21 / v22)
   {
     v23 = v19;
@@ -172,54 +172,54 @@ LABEL_62:
 
   v24 = 1.0 / v23;
   CGAffineTransformMakeScale(&v163, 1.0 / v23, 1.0 / v23);
-  v25 = [v5 imageByApplyingTransform:&v163];
-  [v6 extent];
+  v25 = [inputImage2 imageByApplyingTransform:&v163];
+  [inputMatteImage2 extent];
   v26 = [v25 imageByCroppingToRect:?];
 
   CGAffineTransformMakeScale(&v163, 1.0 / v23, 1.0 / v23);
   v27 = [v9 imageByApplyingTransform:&v163];
-  [v6 extent];
+  [inputMatteImage2 extent];
   v28 = [v27 imageByCroppingToRect:?];
 
-  v29 = [(PISpillSuppression *)self inputAlphaThresholdLog10];
-  v30 = v29;
-  if (!v29)
+  inputAlphaThresholdLog10 = [(PISpillSuppression *)self inputAlphaThresholdLog10];
+  v30 = inputAlphaThresholdLog10;
+  if (!inputAlphaThresholdLog10)
   {
-    v29 = &unk_1F471F490;
+    inputAlphaThresholdLog10 = &unk_1F471F490;
   }
 
-  [v29 floatValue];
+  [inputAlphaThresholdLog10 floatValue];
   v151 = __exp10f(v31);
 
-  v32 = [(PISpillSuppression *)self inputEpsilonLog10];
-  v33 = v32;
-  if (!v32)
+  inputEpsilonLog10 = [(PISpillSuppression *)self inputEpsilonLog10];
+  v33 = inputEpsilonLog10;
+  if (!inputEpsilonLog10)
   {
-    v32 = &unk_1F471F4A0;
+    inputEpsilonLog10 = &unk_1F471F4A0;
   }
 
-  [v32 floatValue];
+  [inputEpsilonLog10 floatValue];
   v35 = __exp10f(v34);
 
-  v36 = [(PISpillSuppression *)self inputAlphaEdge];
-  v37 = v36;
-  if (!v36)
+  inputAlphaEdge = [(PISpillSuppression *)self inputAlphaEdge];
+  v37 = inputAlphaEdge;
+  if (!inputAlphaEdge)
   {
-    v36 = &unk_1F471F4C0;
+    inputAlphaEdge = &unk_1F471F4C0;
   }
 
-  [v36 floatValue];
+  [inputAlphaEdge floatValue];
   v39 = v38;
 
-  v40 = [(PISpillSuppression *)self inputEdgeRadius];
+  inputEdgeRadius = [(PISpillSuppression *)self inputEdgeRadius];
   v148 = v13;
-  v149 = v5;
+  v149 = inputImage2;
   v152 = v9;
   v142 = v39;
-  if (v40)
+  if (inputEdgeRadius)
   {
-    v41 = [(PISpillSuppression *)self inputEdgeRadius];
-    [v41 floatValue];
+    inputEdgeRadius2 = [(PISpillSuppression *)self inputEdgeRadius];
+    [inputEdgeRadius2 floatValue];
     v140 = v42;
   }
 
@@ -228,34 +228,34 @@ LABEL_62:
     v140 = 5.0;
   }
 
-  v43 = [(PISpillSuppression *)self inputErosionRadius];
-  v44 = v43;
-  if (!v43)
+  inputErosionRadius = [(PISpillSuppression *)self inputErosionRadius];
+  v44 = inputErosionRadius;
+  if (!inputErosionRadius)
   {
-    v43 = &unk_1F471F440;
+    inputErosionRadius = &unk_1F471F440;
   }
 
-  [v43 floatValue];
+  [inputErosionRadius floatValue];
   v46 = v45;
 
-  v47 = [(PISpillSuppression *)self inputRadius];
-  v48 = v47;
-  if (!v47)
+  inputRadius = [(PISpillSuppression *)self inputRadius];
+  v48 = inputRadius;
+  if (!inputRadius)
   {
-    v47 = &unk_1F471F4D0;
+    inputRadius = &unk_1F471F4D0;
   }
 
-  [v47 floatValue];
+  [inputRadius floatValue];
   v50 = v49;
 
   v161 = *MEMORY[0x1E695FB10];
   v51 = [MEMORY[0x1E696AD98] numberWithDouble:v24 * v46];
   v162 = v51;
   v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v162 forKeys:&v161 count:1];
-  v53 = [v6 imageByApplyingFilter:@"CIBoxBlur" withInputParameters:v52];
+  v53 = [inputMatteImage2 imageByApplyingFilter:@"CIBoxBlur" withInputParameters:v52];
 
   v54 = +[PISpillSuppression prepareSpillMatteKernel];
-  [v6 extent];
+  [inputMatteImage2 extent];
   v56 = v55;
   v58 = v57;
   v60 = v59;
@@ -272,7 +272,7 @@ LABEL_62:
   v144 = v54;
   v65 = [v54 applyWithExtent:v64 arguments:{v56, v58, v60, v62}];
 
-  [v6 extent];
+  [inputMatteImage2 extent];
   v67 = v66;
   v69 = v68;
   v71 = v70;
@@ -283,12 +283,12 @@ LABEL_62:
   v147 = v26;
   v74 = [MEMORY[0x1E695DEC8] arrayWithObjects:v159 count:2];
   v157[0] = @"channels";
-  v75 = [(PISpillSuppression *)self inputDebugChannels];
-  v76 = v75;
+  inputDebugChannels = [(PISpillSuppression *)self inputDebugChannels];
+  v76 = inputDebugChannels;
   v77 = @"RGB";
-  if (v75)
+  if (inputDebugChannels)
   {
-    v77 = v75;
+    v77 = inputDebugChannels;
   }
 
   v158[0] = v77;
@@ -300,23 +300,23 @@ LABEL_62:
   v80 = [MEMORY[0x1E696AD98] numberWithFloat:v79];
   v158[2] = v80;
   v157[3] = @"iterations";
-  v81 = [(PISpillSuppression *)self inputIterations];
-  v82 = v6;
-  v83 = v81;
+  inputIterations = [(PISpillSuppression *)self inputIterations];
+  callStackSymbols = inputMatteImage2;
+  v83 = inputIterations;
   v84 = &unk_1F471EAA8;
-  if (v81)
+  if (inputIterations)
   {
-    v84 = v81;
+    v84 = inputIterations;
   }
 
   v158[3] = v84;
   v157[4] = @"constrainToAlpha";
-  v85 = [(PISpillSuppression *)self inputConstrainToAlpha];
-  v86 = v85;
+  inputConstrainToAlpha = [(PISpillSuppression *)self inputConstrainToAlpha];
+  v86 = inputConstrainToAlpha;
   v87 = MEMORY[0x1E695E118];
-  if (v85)
+  if (inputConstrainToAlpha)
   {
-    v87 = v85;
+    v87 = inputConstrainToAlpha;
   }
 
   v158[4] = v87;
@@ -356,16 +356,16 @@ LABEL_65:
     goto LABEL_42;
   }
 
-  v91 = [v82 imageByClampingToExtent];
-  v92 = [v91 imageByApplyingGaussianBlurWithSigma:v140];
+  imageByClampingToExtent = [callStackSymbols imageByClampingToExtent];
+  v92 = [imageByClampingToExtent imageByApplyingGaussianBlurWithSigma:v140];
 
-  [v82 extent];
+  [callStackSymbols extent];
   v93 = [v92 imageByCroppingToRect:?];
 
   v155 = @"inputBackgroundImage";
   v156 = v93;
   v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v156 forKeys:&v155 count:1];
-  v95 = [v82 imageByApplyingFilter:@"CIMultiplyBlendMode" withInputParameters:v94];
+  v95 = [callStackSymbols imageByApplyingFilter:@"CIMultiplyBlendMode" withInputParameters:v94];
 
   v141 = v93;
   if (v23 > 1.0)
@@ -399,8 +399,8 @@ LABEL_65:
   v110 = [MEMORY[0x1E695DEC8] arrayWithObjects:v154 count:6];
   v111 = [v98 applyWithExtent:v110 arguments:{v100, v102, v104, v106}];
 
-  v112 = [(PISpillSuppression *)self inputDebugSpillOnly];
-  LODWORD(v109) = [v112 BOOLValue];
+  inputDebugSpillOnly = [(PISpillSuppression *)self inputDebugSpillOnly];
+  LODWORD(v109) = [inputDebugSpillOnly BOOLValue];
 
   if (v109)
   {
@@ -420,10 +420,10 @@ LABEL_65:
   v119 = v144;
 LABEL_45:
 
-  v5 = v111;
+  inputImage2 = v111;
 LABEL_46:
 
-  return v5;
+  return inputImage2;
 }
 
 + (id)customAttributes
@@ -549,16 +549,16 @@ LABEL_46:
 
 + (id)applySpillMatteKernel
 {
-  v2 = [a1 spillSuppressionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"applySpillMatte"];
+  spillSuppressionKernels = [self spillSuppressionKernels];
+  v3 = [spillSuppressionKernels objectForKeyedSubscript:@"applySpillMatte"];
 
   return v3;
 }
 
 + (id)prepareSpillMatteKernel
 {
-  v2 = [a1 spillSuppressionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"prepareSpillMatte"];
+  spillSuppressionKernels = [self spillSuppressionKernels];
+  v3 = [spillSuppressionKernels objectForKeyedSubscript:@"prepareSpillMatte"];
 
   return v3;
 }

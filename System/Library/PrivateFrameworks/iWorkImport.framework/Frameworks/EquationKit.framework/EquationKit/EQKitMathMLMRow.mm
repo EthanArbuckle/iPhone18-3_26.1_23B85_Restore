@@ -2,9 +2,9 @@
 - (BOOL)isBaseFontNameUsed;
 - (BOOL)isEmbellishedOperator;
 - (EQKitMathMLMRow)init;
-- (EQKitMathMLMRow)initWithChildren:(id)a3 node:(_xmlNode *)a4;
+- (EQKitMathMLMRow)initWithChildren:(id)children node:(_xmlNode *)node;
 - (NSString)description;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)operatorCore;
 - (void)dealloc;
 @end
@@ -18,7 +18,7 @@
   return objc_msgSend_initWithChildren_(self, v5, v6, v7);
 }
 
-- (EQKitMathMLMRow)initWithChildren:(id)a3 node:(_xmlNode *)a4
+- (EQKitMathMLMRow)initWithChildren:(id)children node:(_xmlNode *)node
 {
   v22 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
@@ -26,8 +26,8 @@
   v6 = [(EQKitMathMLMRow *)&v20 init];
   if (v6)
   {
-    v6->mChildren = a3;
-    v6->mFlags.mImplied = a4 == 0;
+    v6->mChildren = children;
+    v6->mFlags.mImplied = node == 0;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -60,11 +60,11 @@
   return v6;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v6 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, a2, a3, a4);
+  v6 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, a2, node, parser);
 
-  return MEMORY[0x2821F9670](self, sel_initWithChildren_node_, v6, a3);
+  return MEMORY[0x2821F9670](self, sel_initWithChildren_node_, v6, node);
 }
 
 - (void)dealloc

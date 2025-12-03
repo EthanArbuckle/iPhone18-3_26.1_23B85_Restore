@@ -1,6 +1,6 @@
 @interface RCPScreenRecorder
 + (id)takeScreenshot;
-+ (id)takeScreenshot:(double)a3;
++ (id)takeScreenshot:(double)screenshot;
 - (BOOL)isRecording;
 - (NSArray)snapshots;
 - (void)snapshot;
@@ -12,20 +12,20 @@
 
 + (id)takeScreenshot
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v3 = [RCPScreenRecorder takeScreenshot:?];
 
   return v3;
 }
 
-+ (id)takeScreenshot:(double)a3
++ (id)takeScreenshot:(double)screenshot
 {
   v26[6] = *MEMORY[0x277D85DE8];
   v25[0] = *MEMORY[0x277D77728];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
   v5 = *MEMORY[0x277D776F0];
-  v26[0] = v4;
+  v26[0] = mainScreen;
   v26[1] = &unk_2874269A0;
   v6 = *MEMORY[0x277D77700];
   v25[1] = v5;
@@ -33,7 +33,7 @@
   v7 = MEMORY[0x277CBEC38];
   v26[2] = MEMORY[0x277CBEC38];
   v25[3] = *MEMORY[0x277D77708];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:screenshot];
   v26[3] = v8;
   v9 = *MEMORY[0x277D77710];
   v25[4] = *MEMORY[0x277D77718];
@@ -62,15 +62,15 @@
   v13 = v12;
   _Block_object_dispose(&v21, 8);
   v14 = objc_alloc_init(v12);
-  v15 = [v14 activeInterfaceOrientation];
-  if ((v15 - 2) >= 3)
+  activeInterfaceOrientation = [v14 activeInterfaceOrientation];
+  if ((activeInterfaceOrientation - 2) >= 3)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v15 - 1;
+    v16 = activeInterfaceOrientation - 1;
   }
 
   [v14 invalidate];
@@ -180,14 +180,14 @@ uint64_t __30__RCPScreenRecorder_snapshots__block_invoke(uint64_t a1)
 
     else
     {
-      v5 = [v3 timestamp];
+      timestamp = [v3 timestamp];
       [(RCPScreenRecorder *)self maxDuration];
-      v7 = v5 - RCPMachTimestampFromTimeInterval(v6);
+      v7 = timestamp - RCPMachTimestampFromTimeInterval(v6);
     }
 
     v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
-    v9 = [(NSMutableArray *)self->_snapshots lastObject];
-    v10 = [v9 index];
+    lastObject = [(NSMutableArray *)self->_snapshots lastObject];
+    index = [lastObject index];
 
     if ([(NSMutableArray *)self->_snapshots count])
     {
@@ -195,7 +195,7 @@ uint64_t __30__RCPScreenRecorder_snapshots__block_invoke(uint64_t a1)
       do
       {
         v12 = [(NSMutableArray *)self->_snapshots objectAtIndexedSubscript:v11];
-        v13 = [v12 index];
+        index2 = [v12 index];
 
         if (!v7 || (-[NSMutableArray objectAtIndexedSubscript:](self->_snapshots, "objectAtIndexedSubscript:", v11), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 timestamp], v14, v15 >= v7))
         {
@@ -204,9 +204,9 @@ uint64_t __30__RCPScreenRecorder_snapshots__block_invoke(uint64_t a1)
           while (1)
           {
             v18 = v17;
-            if (v10 - v13 > *(&RCPScreenRecorderSnapshotDiscardRates + v16))
+            if (index - index2 > *(&RCPScreenRecorderSnapshotDiscardRates + v16))
             {
-              if (v13 % *(&RCPScreenRecorderSnapshotDiscardRates + v16 + 1))
+              if (index2 % *(&RCPScreenRecorderSnapshotDiscardRates + v16 + 1))
               {
                 break;
               }

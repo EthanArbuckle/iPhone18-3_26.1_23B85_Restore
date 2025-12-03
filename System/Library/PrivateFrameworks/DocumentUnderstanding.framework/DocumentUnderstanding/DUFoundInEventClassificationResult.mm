@@ -4,14 +4,14 @@
 - (NSNumber)isEventCandidate;
 - (NSNumber)isSupportedLocale;
 - (NSNumber)textLengthPass;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)serializedData;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContainsDataDetectors:(id)a3;
-- (void)setIsClassifiedAsEvent:(id)a3;
-- (void)setIsEventCandidate:(id)a3;
-- (void)setIsSupportedLocale:(id)a3;
-- (void)setTextLengthPass:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContainsDataDetectors:(id)detectors;
+- (void)setIsClassifiedAsEvent:(id)event;
+- (void)setIsEventCandidate:(id)candidate;
+- (void)setIsSupportedLocale:(id)locale;
+- (void)setTextLengthPass:(id)pass;
 @end
 
 @implementation DUFoundInEventClassificationResult
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)setIsSupportedLocale:(id)a3
+- (void)setIsSupportedLocale:(id)locale
 {
-  v4 = a3;
-  v5 = self;
+  localeCopy = locale;
+  selfCopy = self;
   sub_232BAE3D8();
 }
 
@@ -37,10 +37,10 @@
   return v2;
 }
 
-- (void)setContainsDataDetectors:(id)a3
+- (void)setContainsDataDetectors:(id)detectors
 {
-  v4 = a3;
-  v5 = self;
+  detectorsCopy = detectors;
+  selfCopy = self;
   sub_232BAE560();
 }
 
@@ -51,10 +51,10 @@
   return v2;
 }
 
-- (void)setIsClassifiedAsEvent:(id)a3
+- (void)setIsClassifiedAsEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_232BAE6E8();
 }
 
@@ -65,10 +65,10 @@
   return v2;
 }
 
-- (void)setTextLengthPass:(id)a3
+- (void)setTextLengthPass:(id)pass
 {
-  v4 = a3;
-  v5 = self;
+  passCopy = pass;
+  selfCopy = self;
   sub_232BAE870();
 }
 
@@ -79,16 +79,16 @@
   return v2;
 }
 
-- (void)setIsEventCandidate:(id)a3
+- (void)setIsEventCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = self;
+  candidateCopy = candidate;
+  selfCopy = self;
   sub_232BAE9F8();
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232BAF4B8(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -99,17 +99,17 @@
 
 - (id)serializedData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_232BAF5B0();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232BAF6EC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232BAF6EC(coderCopy);
 }
 
 @end

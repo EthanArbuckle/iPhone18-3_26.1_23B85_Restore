@@ -1,16 +1,16 @@
 @interface PXFilterFooterView
-- (CGSize)_performLayoutInRect:(CGRect)a3 updateSubviewFrames:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFitsCaption:(CGSize)a3;
-- (PXFilterFooterView)initWithFrame:(CGRect)a3;
+- (CGSize)_performLayoutInRect:(CGRect)rect updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFitsCaption:(CGSize)caption;
+- (PXFilterFooterView)initWithFrame:(CGRect)frame;
 - (PXFilterFooterViewDelegate)delegate;
-- (void)_showFilterUI:(id)a3;
+- (void)_showFilterUI:(id)i;
 - (void)_updateDisplay;
 - (void)layoutSubviews;
-- (void)setContentFilterState:(id)a3;
-- (void)setLibraryFilterState:(id)a3;
-- (void)setSharedLibraryStatusProvider:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentFilterState:(id)state;
+- (void)setLibraryFilterState:(id)state;
+- (void)setSharedLibraryStatusProvider:(id)provider;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXFilterFooterView
@@ -22,21 +22,21 @@
   return WeakRetained;
 }
 
-- (void)setContentFilterState:(id)a3
+- (void)setContentFilterState:(id)state
 {
-  v8 = a3;
+  stateCopy = state;
   v4 = self->_contentFilterState;
   contentFilterState = v4;
-  if (v4 != v8)
+  if (v4 != stateCopy)
   {
-    v6 = [(PXContentFilterState *)v4 isEqual:v8];
+    v6 = [(PXContentFilterState *)v4 isEqual:stateCopy];
 
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v7 = v8;
+    v7 = stateCopy;
     contentFilterState = self->_contentFilterState;
     self->_contentFilterState = v7;
   }
@@ -45,21 +45,21 @@ LABEL_5:
   [(PXFilterFooterView *)self _updateDisplay];
 }
 
-- (void)setLibraryFilterState:(id)a3
+- (void)setLibraryFilterState:(id)state
 {
-  v8 = a3;
+  stateCopy = state;
   v4 = self->_libraryFilterState;
   libraryFilterState = v4;
-  if (v4 != v8)
+  if (v4 != stateCopy)
   {
-    v6 = [(PXLibraryFilterState *)v4 isEqual:v8];
+    v6 = [(PXLibraryFilterState *)v4 isEqual:stateCopy];
 
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v7 = v8;
+    v7 = stateCopy;
     libraryFilterState = self->_libraryFilterState;
     self->_libraryFilterState = v7;
   }
@@ -68,22 +68,22 @@ LABEL_5:
   [(PXFilterFooterView *)self _updateDisplay];
 }
 
-- (void)setSharedLibraryStatusProvider:(id)a3
+- (void)setSharedLibraryStatusProvider:(id)provider
 {
-  v9 = a3;
+  providerCopy = provider;
   v5 = self->_sharedLibraryStatusProvider;
   libraryFilterState = v5;
-  if (v5 != v9)
+  if (v5 != providerCopy)
   {
-    v7 = [(PXSharedLibraryStatusProvider *)v5 isEqual:v9];
+    v7 = [(PXSharedLibraryStatusProvider *)v5 isEqual:providerCopy];
 
     if (v7)
     {
       goto LABEL_5;
     }
 
-    objc_storeStrong(&self->_sharedLibraryStatusProvider, a3);
-    v8 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v9];
+    objc_storeStrong(&self->_sharedLibraryStatusProvider, provider);
+    v8 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:providerCopy];
     libraryFilterState = self->_libraryFilterState;
     self->_libraryFilterState = v8;
   }
@@ -92,18 +92,18 @@ LABEL_5:
   [(PXFilterFooterView *)self _updateDisplay];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXFilterFooterView;
-  v4 = a3;
-  [(PXFilterFooterView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(PXFilterFooterView *)&v8 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(PXFilterFooterView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(PXFilterFooterView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(PXFilterFooterView *)self _updateDisplay];
   }
@@ -118,27 +118,27 @@ LABEL_5:
   [(PXFilterFooterView *)self _performLayoutInRect:1 updateSubviewFrames:?];
 }
 
-- (CGSize)sizeThatFitsCaption:(CGSize)a3
+- (CGSize)sizeThatFitsCaption:(CGSize)caption
 {
-  [(UILabel *)self->_captionLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_captionLabel sizeThatFits:caption.width, caption.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXFilterFooterView *)self _performLayoutInRect:0 updateSubviewFrames:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PXFilterFooterView *)self _performLayoutInRect:0 updateSubviewFrames:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (PXFilterFooterView)initWithFrame:(CGRect)a3
+- (PXFilterFooterView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PXFilterFooterView;
-  v3 = [(PXFilterFooterView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXFilterFooterView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -147,8 +147,8 @@ LABEL_5:
     [(UILabel *)v5 setFont:v6];
 
     [(UILabel *)v5 setLineBreakMode:4];
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v5 setTextColor:v7];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v5 setTextColor:secondaryLabelColor];
 
     [(PXFilterFooterView *)v3 addSubview:v5];
     captionLabel = v3->_captionLabel;
@@ -156,8 +156,8 @@ LABEL_5:
     v9 = v5;
 
     v10 = [MEMORY[0x1E69DC738] buttonWithType:0];
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIButton *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIButton *)v10 setBackgroundColor:clearColor];
 
     [(UIButton *)v10 setContentHorizontalAlignment:1];
     [(UIButton *)v10 addTarget:v3 action:sel__showFilterUI_ forControlEvents:64];
@@ -169,11 +169,11 @@ LABEL_5:
   return v3;
 }
 
-- (CGSize)_performLayoutInRect:(CGRect)a3 updateSubviewFrames:(BOOL)a4
+- (CGSize)_performLayoutInRect:(CGRect)rect updateSubviewFrames:(BOOL)frames
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
+  framesCopy = frames;
+  height = rect.size.height;
+  width = rect.size.width;
   v8 = self->_captionLabel;
   v9 = self->_filterButton;
   [(UILabel *)v8 sizeThatFits:width, height];
@@ -182,11 +182,11 @@ LABEL_5:
   v13 = v12;
   [(UIButton *)v9 sizeThatFits:width, height];
   UISizeRoundToViewScale();
-  v14 = [(UIButton *)v9 titleLabel];
-  [v14 sizeToFit];
-  [v14 frame];
+  titleLabel = [(UIButton *)v9 titleLabel];
+  [titleLabel sizeToFit];
+  [titleLabel frame];
   v16 = v15;
-  [v14 frame];
+  [titleLabel frame];
   if (v13 >= v17)
   {
     v18 = v13;
@@ -197,7 +197,7 @@ LABEL_5:
     v18 = v17;
   }
 
-  if (v4)
+  if (framesCopy)
   {
     v19 = v17;
     if (v16 >= width - v11 + -2.0)
@@ -207,9 +207,9 @@ LABEL_5:
 
     v27 = (v18 - v17) * 0.5;
     v20 = (width - (v11 + 2.0 + v16)) * 0.5;
-    v21 = [(PXFilterFooterView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(PXFilterFooterView *)self effectiveUserInterfaceLayoutDirection];
     v22 = v16 + v20 + 2.0;
-    if (v21 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v23 = (width - (v11 + 2.0 + v16)) * 0.5;
     }
@@ -219,7 +219,7 @@ LABEL_5:
       v23 = v11 + v20 + 2.0;
     }
 
-    if (v21 != 1)
+    if (effectiveUserInterfaceLayoutDirection != 1)
     {
       v22 = (width - (v11 + 2.0 + v16)) * 0.5;
     }
@@ -238,34 +238,34 @@ LABEL_5:
 - (void)_updateDisplay
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PXContentFilterState *)self->_contentFilterState isFiltering];
-  v4 = [(PXFilterFooterView *)self libraryFilterState];
-  if ([v4 isFiltering])
+  isFiltering = [(PXContentFilterState *)self->_contentFilterState isFiltering];
+  libraryFilterState = [(PXFilterFooterView *)self libraryFilterState];
+  if ([libraryFilterState isFiltering])
   {
-    v5 = [v4 localizedFooterDescription];
-    v6 = [(PXFilterFooterView *)self sharedLibraryStatusProvider];
-    if (!(v3 | (([v6 hasPreview] & 1) == 0)))
+    localizedFooterDescription = [libraryFilterState localizedFooterDescription];
+    sharedLibraryStatusProvider = [(PXFilterFooterView *)self sharedLibraryStatusProvider];
+    if (!(isFiltering | (([sharedLibraryStatusProvider hasPreview] & 1) == 0)))
     {
-      v7 = [v4 viewMode];
+      viewMode = [libraryFilterState viewMode];
 
-      if (v7 != 2)
+      if (viewMode != 2)
       {
         goto LABEL_7;
       }
 
       PXLocalizedSharedLibraryString(@"PXSharedLibrary_FilterFooter_Previewing");
-      v5 = v6 = v5;
+      localizedFooterDescription = sharedLibraryStatusProvider = localizedFooterDescription;
     }
   }
 
   else
   {
-    v5 = 0;
+    localizedFooterDescription = 0;
   }
 
 LABEL_7:
   [(UILabel *)self->_captionLabel setText:0];
-  if (v5 != 0 && v3)
+  if (localizedFooterDescription != 0 && isFiltering)
   {
     PXLocalizedStringFromTable(@"PXContentFilterFooterCaptionFilteredBy_Lowercase", @"PhotosUICore");
     objc_claimAutoreleasedReturnValue();
@@ -274,10 +274,10 @@ LABEL_7:
     PXStringWithValidatedFormat();
   }
 
-  if (v5)
+  if (localizedFooterDescription)
   {
-    [(UILabel *)self->_captionLabel setText:v5];
-    if (!v3)
+    [(UILabel *)self->_captionLabel setText:localizedFooterDescription];
+    if (!isFiltering)
     {
       goto LABEL_15;
     }
@@ -285,12 +285,12 @@ LABEL_7:
 
   else
   {
-    if (!v3)
+    if (!isFiltering)
     {
 LABEL_15:
       [(UIButton *)self->_filterButton setAttributedTitle:0 forState:0];
-      v9 = [(UIButton *)self->_filterButton titleLabel];
-      [v9 setText:0];
+      titleLabel = [(UIButton *)self->_filterButton titleLabel];
+      [titleLabel setText:0];
       goto LABEL_16;
     }
 
@@ -298,7 +298,7 @@ LABEL_15:
     [(UILabel *)self->_captionLabel setText:v8];
   }
 
-  v9 = [(PXContentFilterState *)self->_contentFilterState localizedFooterDescription];
+  titleLabel = [(PXContentFilterState *)self->_contentFilterState localizedFooterDescription];
   v10 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v10 setLineBreakMode:4];
   v17[0] = *MEMORY[0x1E69DB648];
@@ -309,24 +309,24 @@ LABEL_15:
   v13 = *MEMORY[0x1E69DB650];
   v17[1] = v12;
   v17[2] = v13;
-  v14 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v18[2] = v14;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v18[2] = systemBlueColor;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
-  v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v15];
+  v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleLabel attributes:v15];
   [(UIButton *)self->_filterButton setAttributedTitle:v16 forState:0];
 
 LABEL_16:
   [(PXFilterFooterView *)self setNeedsLayout];
 }
 
-- (void)_showFilterUI:(id)a3
+- (void)_showFilterUI:(id)i
 {
-  v5 = a3;
-  v4 = [(PXFilterFooterView *)self delegate];
+  iCopy = i;
+  delegate = [(PXFilterFooterView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 filterFooterViewDidTapShowFilter:self sender:v5];
+    [delegate filterFooterViewDidTapShowFilter:self sender:iCopy];
   }
 }
 

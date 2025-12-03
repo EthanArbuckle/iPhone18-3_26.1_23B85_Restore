@@ -1,6 +1,6 @@
 @interface OSICalendarMonitor
 - (OSICalendarMonitor)init;
-- (id)nextFlightEventWithEventIDs:(id)a3;
+- (id)nextFlightEventWithEventIDs:(id)ds;
 - (id)relevantEventDeadline;
 - (id)upcomingEventIDs;
 @end
@@ -9,8 +9,8 @@
 
 - (id)relevantEventDeadline
 {
-  v3 = [(OSICalendarMonitor *)self upcomingEventIDs];
-  v4 = [(OSICalendarMonitor *)self nextFlightEventWithEventIDs:v3];
+  upcomingEventIDs = [(OSICalendarMonitor *)self upcomingEventIDs];
+  v4 = [(OSICalendarMonitor *)self nextFlightEventWithEventIDs:upcomingEventIDs];
   if (v4)
   {
     log = self->_log;
@@ -20,15 +20,15 @@
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Upcoming or recent flight; forcing immediate charge", v9, 2u);
     }
 
-    v6 = [v4 startDate];
+    startDate = [v4 startDate];
   }
 
   else
   {
-    v6 = +[NSDate distantFuture];
+    startDate = +[NSDate distantFuture];
   }
 
-  v7 = v6;
+  v7 = startDate;
 
   return v7;
 }
@@ -39,8 +39,8 @@
   v4 = [v3 dateByAddingTimeInterval:-86400.0];
   v5 = [v3 dateByAddingTimeInterval:86400.0];
   v6 = [(EKEventStore *)self->_calendar predicateForEventsWithStartDate:v4 endDate:v5 calendars:0 loadDefaultProperties:1];
-  v7 = [(OSICalendarMonitor *)self calendar];
-  v8 = [v7 eventObjectIDsMatchingPredicate:v6];
+  calendar = [(OSICalendarMonitor *)self calendar];
+  v8 = [calendar eventObjectIDsMatchingPredicate:v6];
 
   return v8;
 }
@@ -61,15 +61,15 @@
   return self;
 }
 
-- (id)nextFlightEventWithEventIDs:(id)a3
+- (id)nextFlightEventWithEventIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSDate distantFuture];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v7)
   {
@@ -97,41 +97,41 @@
           v15 = v13;
           if (([v15 isAllDay] & 1) == 0)
           {
-            v16 = [v15 suggestionInfo];
+            suggestionInfo = [v15 suggestionInfo];
 
-            if (v16)
+            if (suggestionInfo)
             {
               v17 = [SGEventMetadata eventMetadataFromEKEvent:v15];
-              v18 = [v17 categoryDescription];
-              v19 = [v18 localizedCaseInsensitiveContainsString:@"flight"];
+              categoryDescription = [v17 categoryDescription];
+              v19 = [categoryDescription localizedCaseInsensitiveContainsString:@"flight"];
 
               if (v19 && ([v15 startDate], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "timeIntervalSinceDate:", v5), v22 = v21, v20, v22 < 0.0))
               {
                 v23 = v15;
 
-                v24 = [v23 startDate];
+                startDate = [v23 startDate];
 
                 v25 = self->_log;
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                 {
                   loga = v25;
-                  v29 = [v23 startDate];
-                  v28 = [v23 endDate];
+                  startDate2 = [v23 startDate];
+                  endDate = [v23 endDate];
                   *buf = v27;
-                  v38 = v29;
+                  v38 = startDate2;
                   v39 = 2112;
-                  v40 = v28;
+                  v40 = endDate;
                   _os_log_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEFAULT, "Found flight from %@-%@", buf, 0x16u);
                 }
               }
 
               else
               {
-                v24 = v5;
+                startDate = v5;
                 v23 = log;
               }
 
-              v5 = v24;
+              v5 = startDate;
               log = v23;
               v6 = v30;
               v11 = &MGGetBoolAnswer_ptr;

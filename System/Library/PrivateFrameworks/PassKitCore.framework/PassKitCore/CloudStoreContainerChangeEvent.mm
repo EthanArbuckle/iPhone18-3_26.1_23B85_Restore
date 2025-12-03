@@ -1,17 +1,17 @@
 @interface CloudStoreContainerChangeEvent
-+ (id)_commonDictionaryForEvent:(id)a3;
-+ (id)_eventsForQuery:(id)a3;
-+ (id)_predicateForContainerIdentifier:(id)a3;
-+ (id)_predicateForPID:(int64_t)a3;
-+ (id)_predicateForTimestamp:(id)a3;
++ (id)_commonDictionaryForEvent:(id)event;
++ (id)_eventsForQuery:(id)query;
++ (id)_predicateForContainerIdentifier:(id)identifier;
++ (id)_predicateForPID:(int64_t)d;
++ (id)_predicateForTimestamp:(id)timestamp;
 + (id)_propertySettersForCloudStoreContainerChangeEvent;
-+ (id)changeEventForPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)changeEventWithIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)changeEventsForContainerIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)insertContainerChangeEvent:(id)a3 inDatabase:(id)a4;
-+ (int64_t)changeEventPIDForIdentifier:(id)a3 inDatabase:(id)a4;
-+ (void)deleteAllEntriesInDatabase:(id)a3;
-+ (void)purgeOldEntriesIfNecessaryInDatabase:(id)a3;
++ (id)changeEventForPID:(int64_t)d inDatabase:(id)database;
++ (id)changeEventWithIdentifier:(id)identifier inDatabase:(id)database;
++ (id)changeEventsForContainerIdentifier:(id)identifier inDatabase:(id)database;
++ (id)insertContainerChangeEvent:(id)event inDatabase:(id)database;
++ (int64_t)changeEventPIDForIdentifier:(id)identifier inDatabase:(id)database;
++ (void)deleteAllEntriesInDatabase:(id)database;
++ (void)purgeOldEntriesIfNecessaryInDatabase:(id)database;
 - (id)event;
 - (id)timestamp;
 - (unint64_t)changeType;
@@ -20,89 +20,89 @@
 
 @implementation CloudStoreContainerChangeEvent
 
-+ (id)insertContainerChangeEvent:(id)a3 inDatabase:(id)a4
++ (id)insertContainerChangeEvent:(id)event inDatabase:(id)database
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  databaseCopy = database;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = eventCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PKCloudStoreContainerChangeEvent: Inserting change event %@", &v11, 0xCu);
   }
 
-  v8 = [objc_opt_class() _commonDictionaryForEvent:v5];
-  v9 = [(SQLiteEntity *)[CloudStoreContainerChangeEvent alloc] initWithPropertyValues:v8 inDatabase:v6];
+  v8 = [objc_opt_class() _commonDictionaryForEvent:eventCopy];
+  v9 = [(SQLiteEntity *)[CloudStoreContainerChangeEvent alloc] initWithPropertyValues:v8 inDatabase:databaseCopy];
 
   return v9;
 }
 
-+ (id)changeEventsForContainerIdentifier:(id)a3 inDatabase:(id)a4
++ (id)changeEventsForContainerIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForContainerIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForContainerIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _eventsForQuery:v8];
+  v9 = [self _eventsForQuery:v8];
 
   return v9;
 }
 
-+ (id)changeEventWithIdentifier:(id)a3 inDatabase:(id)a4
++ (id)changeEventWithIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForIdentifier:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForIdentifier:identifier];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 event];
+  event = [v8 event];
 
-  return v9;
+  return event;
 }
 
-+ (id)changeEventForPID:(int64_t)a3 inDatabase:(id)a4
++ (id)changeEventForPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 event];
+  event = [v8 event];
 
-  return v9;
+  return event;
 }
 
-+ (int64_t)changeEventPIDForIdentifier:(id)a3 inDatabase:(id)a4
++ (int64_t)changeEventPIDForIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForIdentifier:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForIdentifier:identifier];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 persistentID];
-  return v9;
+  persistentID = [v8 persistentID];
+  return persistentID;
 }
 
-+ (id)_eventsForQuery:(id)a3
++ (id)_eventsForQuery:(id)query
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_10004D1A0;
   v10 = &unk_10083ED50;
-  v11 = a3;
+  queryCopy = query;
   v12 = objc_alloc_init(NSMutableArray);
   v3 = v12;
-  v4 = v11;
+  v4 = queryCopy;
   [v4 enumeratePersistentIDsUsingBlock:&v7];
   v5 = [v3 copy];
 
   return v5;
 }
 
-+ (id)_predicateForContainerIdentifier:(id)a3
++ (id)_predicateForContainerIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    [SQLiteComparisonPredicate predicateWithProperty:@"container_identifier" equalToValue:v3];
+    [SQLiteComparisonPredicate predicateWithProperty:@"container_identifier" equalToValue:identifierCopy];
   }
 
   else
@@ -114,15 +114,15 @@
   return v4;
 }
 
-+ (id)_predicateForPID:(int64_t)a3
++ (id)_predicateForPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForTimestamp:(id)a3
++ (id)_predicateForTimestamp:(id)timestamp
 {
   v3 = _SQLValueForDate();
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"timestamp" lessThanValue:v3];
@@ -130,9 +130,9 @@
   return v4;
 }
 
-+ (void)deleteAllEntriesInDatabase:(id)a3
++ (void)deleteAllEntriesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -141,23 +141,23 @@
   }
 
   v6 = +[SQLiteBooleanPredicate truePredicate];
-  v7 = [a1 queryWithDatabase:v4 predicate:v6];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v6];
   [v7 deleteAllEntities];
 }
 
-+ (void)purgeOldEntriesIfNecessaryInDatabase:(id)a3
++ (void)purgeOldEntriesIfNecessaryInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = +[NSDate date];
   v6 = [v5 dateByAddingTimeInterval:-1728000.0];
 
-  v7 = [a1 _predicateForTimestamp:v6];
-  v8 = [a1 queryWithDatabase:v4 predicate:v7];
+  v7 = [self _predicateForTimestamp:v6];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 countOfEntities];
-  if (v9 >= 1)
+  countOfEntities = [v8 countOfEntities];
+  if (countOfEntities >= 1)
   {
-    v10 = v9;
+    v10 = countOfEntities;
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -175,25 +175,25 @@
 - (id)event
 {
   v3 = objc_alloc_init(PKCloudStoreContainerChangeEvent);
-  v4 = [objc_opt_class() _propertySettersForCloudStoreContainerChangeEvent];
-  v5 = [v4 allKeys];
+  _propertySettersForCloudStoreContainerChangeEvent = [objc_opt_class() _propertySettersForCloudStoreContainerChangeEvent];
+  allKeys = [_propertySettersForCloudStoreContainerChangeEvent allKeys];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10004D720;
   v14[3] = &unk_10083BEE0;
   v14[4] = self;
-  v6 = v4;
+  v6 = _propertySettersForCloudStoreContainerChangeEvent;
   v15 = v6;
   v7 = v3;
   v16 = v7;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v14];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v14];
 
-  v8 = [(CloudStoreContainerChangeEvent *)self beginIntervalEventIdentifier];
-  if ([v8 length])
+  beginIntervalEventIdentifier = [(CloudStoreContainerChangeEvent *)self beginIntervalEventIdentifier];
+  if ([beginIntervalEventIdentifier length])
   {
     v9 = objc_opt_class();
-    v10 = [(SQLiteEntity *)self database];
-    v11 = [v9 changeEventWithIdentifier:v8 inDatabase:v10];
+    database = [(SQLiteEntity *)self database];
+    v11 = [v9 changeEventWithIdentifier:beginIntervalEventIdentifier inDatabase:database];
 
     if (v11)
     {
@@ -217,62 +217,62 @@
 - (unint64_t)eventType
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"event_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (unint64_t)changeType
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"change_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-+ (id)_commonDictionaryForEvent:(id)a3
++ (id)_commonDictionaryForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 identifier];
-  [v4 setObjectOrNull:v5 forKey:@"identifier"];
+  identifier = [eventCopy identifier];
+  [v4 setObjectOrNull:identifier forKey:@"identifier"];
 
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 changeType]);
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy changeType]);
   [v4 setObjectOrNull:v6 forKey:@"change_type"];
 
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 eventType]);
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy eventType]);
   [v4 setObjectOrNull:v7 forKey:@"event_type"];
 
-  v8 = [v3 timestamp];
+  timestamp = [eventCopy timestamp];
   v9 = _SQLValueForDate();
   [v4 setObjectOrNull:v9 forKey:@"timestamp"];
 
-  v10 = [v3 containerIdentifier];
-  [v4 setObjectOrNull:v10 forKey:@"container_identifier"];
+  containerIdentifier = [eventCopy containerIdentifier];
+  [v4 setObjectOrNull:containerIdentifier forKey:@"container_identifier"];
 
-  v11 = [v3 beginIntervalEventIdentifier];
-  [v4 setObjectOrNull:v11 forKey:@"begin_interval_event_identifier"];
+  beginIntervalEventIdentifier = [eventCopy beginIntervalEventIdentifier];
+  [v4 setObjectOrNull:beginIntervalEventIdentifier forKey:@"begin_interval_event_identifier"];
 
-  v12 = [v3 operationGroupName];
-  [v4 setObjectOrNull:v12 forKey:@"operation_group_name"];
+  operationGroupName = [eventCopy operationGroupName];
+  [v4 setObjectOrNull:operationGroupName forKey:@"operation_group_name"];
 
-  v13 = [v3 operationGroupNameSuffix];
-  [v4 setObjectOrNull:v13 forKey:@"operation_group_name_suffix"];
+  operationGroupNameSuffix = [eventCopy operationGroupNameSuffix];
+  [v4 setObjectOrNull:operationGroupNameSuffix forKey:@"operation_group_name_suffix"];
 
-  v14 = [v3 errorDescription];
-  [v4 setObjectOrNull:v14 forKey:@"error_description"];
+  errorDescription = [eventCopy errorDescription];
+  [v4 setObjectOrNull:errorDescription forKey:@"error_description"];
 
-  v15 = [v3 changeToken];
-  [v4 setObjectOrNull:v15 forKey:@"change_token"];
+  changeToken = [eventCopy changeToken];
+  [v4 setObjectOrNull:changeToken forKey:@"change_token"];
 
-  v16 = [v3 stateName];
-  [v4 setObjectOrNull:v16 forKey:@"state_name"];
+  stateName = [eventCopy stateName];
+  [v4 setObjectOrNull:stateName forKey:@"state_name"];
 
-  v17 = [v3 objectNames];
-  v18 = [v17 componentsJoinedByString:{@", "}];
+  objectNames = [eventCopy objectNames];
+  v18 = [objectNames componentsJoinedByString:{@", "}];
   [v4 setObjectOrNull:v18 forKey:@"object_names"];
 
-  [v3 timeInterval];
+  [eventCopy timeInterval];
   v20 = v19;
 
   v21 = [NSNumber numberWithDouble:v20];

@@ -1,17 +1,17 @@
 @interface CATNotificationMessage
-- (CATNotificationMessage)initWithCoder:(id)a3;
-- (CATNotificationMessage)initWithName:(id)a3 userInfo:(id)a4;
-- (CATNotificationMessage)initWithTaskUUID:(id)a3 name:(id)a4 userInfo:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (CATNotificationMessage)initWithCoder:(id)coder;
+- (CATNotificationMessage)initWithName:(id)name userInfo:(id)info;
+- (CATNotificationMessage)initWithTaskUUID:(id)d name:(id)name userInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CATNotificationMessage
 
-- (CATNotificationMessage)initWithName:(id)a3 userInfo:(id)a4
+- (CATNotificationMessage)initWithName:(id)name userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  nameCopy = name;
+  infoCopy = info;
+  if (!nameCopy)
   {
     [CATNotificationMessage initWithName:a2 userInfo:self];
   }
@@ -21,11 +21,11 @@
   v9 = [(CATMessage *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
-    v12 = [v8 copy];
+    v12 = [infoCopy copy];
     userInfo = v9->_userInfo;
     v9->_userInfo = v12;
   }
@@ -33,36 +33,36 @@
   return v9;
 }
 
-- (CATNotificationMessage)initWithTaskUUID:(id)a3 name:(id)a4 userInfo:(id)a5
+- (CATNotificationMessage)initWithTaskUUID:(id)d name:(id)name userInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  dCopy = d;
+  nameCopy = name;
+  infoCopy = info;
+  if (!dCopy)
   {
     [CATNotificationMessage initWithTaskUUID:a2 name:self userInfo:?];
   }
 
-  v13 = [(CATNotificationMessage *)self initWithName:v11 userInfo:v12];
+  v13 = [(CATNotificationMessage *)self initWithName:nameCopy userInfo:infoCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_taskUUID, a3);
+    objc_storeStrong(&v13->_taskUUID, d);
   }
 
   return v14;
 }
 
-- (CATNotificationMessage)initWithCoder:(id)a3
+- (CATNotificationMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = CATNotificationMessage;
-  v5 = [(CATMessage *)&v27 initWithCoder:v4];
+  v5 = [(CATMessage *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"name"];
     name = v5->_name;
     v5->_name = v7;
 
@@ -78,12 +78,12 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v26 setWithObjects:{v25, v24, v9, v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"userInfo"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v18;
 
     v20 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"taskUUID"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"taskUUID"];
     taskUUID = v5->_taskUUID;
     v5->_taskUUID = v21;
   }
@@ -91,20 +91,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CATNotificationMessage;
-  v4 = a3;
-  [(CATMessage *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATMessage *)&v8 encodeWithCoder:coderCopy];
   v5 = [(CATNotificationMessage *)self name:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"name"];
+  [coderCopy encodeObject:v5 forKey:@"name"];
 
-  v6 = [(CATNotificationMessage *)self userInfo];
-  [v4 encodeObject:v6 forKey:@"userInfo"];
+  userInfo = [(CATNotificationMessage *)self userInfo];
+  [coderCopy encodeObject:userInfo forKey:@"userInfo"];
 
-  v7 = [(CATNotificationMessage *)self taskUUID];
-  [v4 encodeObject:v7 forKey:@"taskUUID"];
+  taskUUID = [(CATNotificationMessage *)self taskUUID];
+  [coderCopy encodeObject:taskUUID forKey:@"taskUUID"];
 }
 
 - (void)initWithName:(uint64_t)a1 userInfo:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

@@ -1,23 +1,23 @@
 @interface TKSmartCardTokenRegistrationServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (TKSmartCardTokenRegistrationServer)initWithSmartCardTokenRegistry:(id)a3 listener:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (TKSmartCardTokenRegistrationServer)initWithSmartCardTokenRegistry:(id)registry listener:(id)listener;
 - (void)dealloc;
 @end
 
 @implementation TKSmartCardTokenRegistrationServer
 
-- (TKSmartCardTokenRegistrationServer)initWithSmartCardTokenRegistry:(id)a3 listener:(id)a4
+- (TKSmartCardTokenRegistrationServer)initWithSmartCardTokenRegistry:(id)registry listener:(id)listener
 {
-  v7 = a3;
-  v8 = a4;
+  registryCopy = registry;
+  listenerCopy = listener;
   v12.receiver = self;
   v12.super_class = TKSmartCardTokenRegistrationServer;
   v9 = [(TKSmartCardTokenRegistrationServer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_smartCardTokenRegistrationRegistry, a3);
-    objc_storeStrong(&v10->_listener, a4);
+    objc_storeStrong(&v9->_smartCardTokenRegistrationRegistry, registry);
+    objc_storeStrong(&v10->_listener, listener);
     [(NSXPCListener *)v10->_listener setDelegate:v10];
   }
 
@@ -32,16 +32,16 @@
   [(TKSmartCardTokenRegistrationServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [TKXPCInterface interfaceForXPCProtocol:&OBJC_PROTOCOL___TKSmartCardTokenRegistrationXPC];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = [[TKSmartCardTokenRegistrationXPCHost alloc] initWithSmartCardTokenRegistrationRegistry:self->_smartCardTokenRegistrationRegistry];
-  [v5 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 

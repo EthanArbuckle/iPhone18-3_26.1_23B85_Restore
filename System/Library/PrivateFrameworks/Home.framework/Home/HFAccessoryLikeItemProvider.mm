@@ -1,17 +1,17 @@
 @interface HFAccessoryLikeItemProvider
-- (HFAccessoryLikeItemProvider)initWithAccessoryContainer:(id)a3 inHome:(id)a4;
-- (HFAccessoryLikeItemProvider)initWithRoom:(id)a3;
-- (id)buildItemForAccessoryRepresentable:(id)a3;
+- (HFAccessoryLikeItemProvider)initWithAccessoryContainer:(id)container inHome:(id)home;
+- (HFAccessoryLikeItemProvider)initWithRoom:(id)room;
+- (id)buildItemForAccessoryRepresentable:(id)representable;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFAccessoryLikeItemProvider
 
-- (HFAccessoryLikeItemProvider)initWithAccessoryContainer:(id)a3 inHome:(id)a4
+- (HFAccessoryLikeItemProvider)initWithAccessoryContainer:(id)container inHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HFAccessoryLikeItemProvider;
   v9 = [(HFItemProvider *)&v15 init];
@@ -21,21 +21,21 @@
     accessoryLikeItems = v9->_accessoryLikeItems;
     v9->_accessoryLikeItems = v10;
 
-    objc_storeStrong(&v9->_accessoryContainer, a3);
-    objc_storeStrong(&v9->_home, a4);
-    v12 = [v8 hf_characteristicValueManager];
+    objc_storeStrong(&v9->_accessoryContainer, container);
+    objc_storeStrong(&v9->_home, home);
+    hf_characteristicValueManager = [homeCopy hf_characteristicValueManager];
     valueSource = v9->_valueSource;
-    v9->_valueSource = v12;
+    v9->_valueSource = hf_characteristicValueManager;
   }
 
   return v9;
 }
 
-- (HFAccessoryLikeItemProvider)initWithRoom:(id)a3
+- (HFAccessoryLikeItemProvider)initWithRoom:(id)room
 {
-  v4 = a3;
-  v5 = [v4 home];
-  v6 = [(HFAccessoryLikeItemProvider *)self initWithAccessoryContainer:v4 inHome:v5];
+  roomCopy = room;
+  home = [roomCopy home];
+  v6 = [(HFAccessoryLikeItemProvider *)self initWithAccessoryContainer:roomCopy inHome:home];
 
   return v6;
 }
@@ -43,19 +43,19 @@
 - (id)reloadItems
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(HFAccessoryLikeItemProvider *)self accessoryContainer];
-  v4 = [v3 hf_accessoryLikeObjects];
+  accessoryContainer = [(HFAccessoryLikeItemProvider *)self accessoryContainer];
+  hf_accessoryLikeObjects = [accessoryContainer hf_accessoryLikeObjects];
 
-  v5 = [(HFAccessoryLikeItemProvider *)self objectLevel];
-  v6 = [(HFAccessoryLikeItemProvider *)self accessoryTypeGroups];
-  v7 = [HFAccessoryListUtilities accessoryRepresentableObjectsFromAccessoryLikeObjects:v4 objectLevel:v5 accessoryTypeGroups:v6];
+  objectLevel = [(HFAccessoryLikeItemProvider *)self objectLevel];
+  accessoryTypeGroups = [(HFAccessoryLikeItemProvider *)self accessoryTypeGroups];
+  v7 = [HFAccessoryListUtilities accessoryRepresentableObjectsFromAccessoryLikeObjects:hf_accessoryLikeObjects objectLevel:objectLevel accessoryTypeGroups:accessoryTypeGroups];
 
   if (+[HFUtilities isPressDemoModeEnabled])
   {
-    v8 = [(HFAccessoryLikeItemProvider *)self accessoryContainer];
-    if ([v8 conformsToProtocol:&unk_28257F920])
+    accessoryContainer2 = [(HFAccessoryLikeItemProvider *)self accessoryContainer];
+    if ([accessoryContainer2 conformsToProtocol:&unk_28257F920])
     {
-      v9 = v8;
+      v9 = accessoryContainer2;
     }
 
     else
@@ -64,33 +64,33 @@
     }
 
     v10 = v9;
-    v11 = [v10 hf_demoModeAccessories];
+    hf_demoModeAccessories = [v10 hf_demoModeAccessories];
 
     v12 = HFLogForCategory(0x21uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
-      v29 = v11;
+      v29 = hf_demoModeAccessories;
       _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "%@: including demo mode accessories: %@", buf, 0x16u);
     }
 
-    v13 = [v7 arrayByAddingObjectsFromArray:v11];
+    v13 = [v7 arrayByAddingObjectsFromArray:hf_demoModeAccessories];
 
     v7 = v13;
   }
 
-  v14 = [(HFAccessoryLikeItemProvider *)self accessoryContainerFilter];
+  accessoryContainerFilter = [(HFAccessoryLikeItemProvider *)self accessoryContainerFilter];
 
-  if (v14)
+  if (accessoryContainerFilter)
   {
-    v15 = [(HFAccessoryLikeItemProvider *)self accessoryContainerFilter];
+    accessoryContainerFilter2 = [(HFAccessoryLikeItemProvider *)self accessoryContainerFilter];
     v16 = [MEMORY[0x277CBEB98] setWithArray:v7];
-    v17 = [v15 filterAccessoryRepresentableObjects:v16];
-    v18 = [v17 allObjects];
+    v17 = [accessoryContainerFilter2 filterAccessoryRepresentableObjects:v16];
+    allObjects = [v17 allObjects];
 
-    v7 = v18;
+    v7 = allObjects;
   }
 
   v24[4] = self;
@@ -173,8 +173,8 @@ id __42__HFAccessoryLikeItemProvider_reloadItems__block_invoke_5(uint64_t a1, vo
 {
   v6.receiver = self;
   v6.super_class = HFAccessoryLikeItemProvider;
-  v2 = [(HFItemProvider *)&v6 invalidationReasons];
-  v3 = [v2 mutableCopy];
+  invalidationReasons = [(HFItemProvider *)&v6 invalidationReasons];
+  v3 = [invalidationReasons mutableCopy];
 
   [v3 addObject:@"accessory"];
   [v3 addObject:@"service"];
@@ -185,11 +185,11 @@ id __42__HFAccessoryLikeItemProvider_reloadItems__block_invoke_5(uint64_t a1, vo
   return v4;
 }
 
-- (id)buildItemForAccessoryRepresentable:(id)a3
+- (id)buildItemForAccessoryRepresentable:(id)representable
 {
-  v4 = a3;
-  v5 = [(HFAccessoryLikeItemProvider *)self valueSource];
-  v6 = [HFAccessoryListUtilities accessoryRepresentableItemForAccessoryRepresentable:v4 valueSource:v5];
+  representableCopy = representable;
+  valueSource = [(HFAccessoryLikeItemProvider *)self valueSource];
+  v6 = [HFAccessoryListUtilities accessoryRepresentableItemForAccessoryRepresentable:representableCopy valueSource:valueSource];
 
   return v6;
 }

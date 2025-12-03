@@ -1,35 +1,35 @@
 @interface SBSDispatch
-- (SBSDispatch)initWithQueue:(id)a3;
-- (void)async:(id)a3;
-- (void)sync:(id)a3;
+- (SBSDispatch)initWithQueue:(id)queue;
+- (void)async:(id)async;
+- (void)sync:(id)sync;
 @end
 
 @implementation SBSDispatch
 
-- (void)async:(id)a3
+- (void)async:(id)async
 {
-  v4 = a3;
-  v5 = [(SBSDispatch *)self queue];
-  dispatch_async(v5, v4);
+  asyncCopy = async;
+  queue = [(SBSDispatch *)self queue];
+  dispatch_async(queue, asyncCopy);
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v4 = a3;
-  v5 = [(SBSDispatch *)self queue];
-  dispatch_sync(v5, v4);
+  syncCopy = sync;
+  queue = [(SBSDispatch *)self queue];
+  dispatch_sync(queue, syncCopy);
 }
 
-- (SBSDispatch)initWithQueue:(id)a3
+- (SBSDispatch)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SBSDispatch;
   v6 = [(SBSDispatch *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

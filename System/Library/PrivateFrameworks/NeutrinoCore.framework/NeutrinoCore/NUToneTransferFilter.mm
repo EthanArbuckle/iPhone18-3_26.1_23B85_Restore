@@ -27,42 +27,42 @@ uint64_t __42__NUToneTransferFilter_toneTransferKernel__block_invoke()
 - (id)outputImage
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v3 = [(NUToneTransferFilter *)self inputImage];
-  if (v3)
+  inputImage = [(NUToneTransferFilter *)self inputImage];
+  if (inputImage)
   {
-    v4 = [(NUToneTransferFilter *)self inputSourceImage];
-    v5 = [(NUToneTransferFilter *)self inputTargetImage];
-    v6 = v5;
-    if (v4 && v5)
+    inputSourceImage = [(NUToneTransferFilter *)self inputSourceImage];
+    inputTargetImage = [(NUToneTransferFilter *)self inputTargetImage];
+    v6 = inputTargetImage;
+    if (inputSourceImage && inputTargetImage)
     {
-      v7 = [(NUToneTransferFilter *)self inputStrength];
-      v8 = v7;
+      inputStrength = [(NUToneTransferFilter *)self inputStrength];
+      v8 = inputStrength;
       v9 = &unk_1F3F82C20;
-      if (v7)
+      if (inputStrength)
       {
-        v9 = v7;
+        v9 = inputStrength;
       }
 
       v10 = v9;
 
-      v11 = [objc_opt_class() toneTransferKernel];
-      [v3 extent];
+      toneTransferKernel = [objc_opt_class() toneTransferKernel];
+      [inputImage extent];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v23[0] = v3;
-      v23[1] = v4;
+      v23[0] = inputImage;
+      v23[1] = inputSourceImage;
       v23[2] = v6;
       v23[3] = v10;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
 
-      v21 = [v11 applyWithExtent:v20 arguments:{v13, v15, v17, v19}];
+      v21 = [toneTransferKernel applyWithExtent:v20 arguments:{v13, v15, v17, v19}];
     }
 
     else
     {
-      v21 = v3;
+      v21 = inputImage;
     }
   }
 

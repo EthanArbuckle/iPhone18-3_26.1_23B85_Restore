@@ -1,54 +1,54 @@
 @interface _INPBPlayAudioMessageIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBPlayAudioMessageIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPlayAudioMessageIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMessageIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMessageIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPlayAudioMessageIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if (self->_messageIdentifier)
   {
-    v6 = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"messageIdentifier"];
+    messageIdentifier = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
+    v7 = [messageIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"messageIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -60,12 +60,12 @@
   {
   }
 
-  v5 = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
-  v6 = [v4 messageIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
+  intentMetadata2 = [equalCopy messageIdentifier];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v12 = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
-    if (!v12)
+    messageIdentifier = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
+    if (!messageIdentifier)
     {
 
 LABEL_15:
@@ -73,10 +73,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
-    v15 = [v4 messageIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = messageIdentifier;
+    messageIdentifier2 = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
+    messageIdentifier3 = [equalCopy messageIdentifier];
+    v16 = [messageIdentifier2 isEqual:messageIdentifier3];
 
     if (v16)
     {
@@ -96,65 +96,65 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPlayAudioMessageIntent allocWithZone:](_INPBPlayAudioMessageIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBPlayAudioMessageIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(NSString *)self->_messageIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_messageIdentifier copyWithZone:zone];
   [(_INPBPlayAudioMessageIntent *)v5 setMessageIdentifier:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPlayAudioMessageIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBPlayAudioMessageIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPlayAudioMessageIntent)initWithCoder:(id)a3
+- (_INPBPlayAudioMessageIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPlayAudioMessageIntent *)self initWithData:v6];
+    self = [(_INPBPlayAudioMessageIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
 
-  if (v4)
+  if (intentMetadata)
   {
-    v5 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBPlayAudioMessageIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
+  messageIdentifier = [(_INPBPlayAudioMessageIntent *)self messageIdentifier];
 
-  if (v6)
+  if (messageIdentifier)
   {
     messageIdentifier = self->_messageIdentifier;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setMessageIdentifier:(id)a3
+- (void)setMessageIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   messageIdentifier = self->_messageIdentifier;
   self->_messageIdentifier = v4;
 

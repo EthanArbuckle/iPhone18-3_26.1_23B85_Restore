@@ -1,34 +1,34 @@
 @interface PCDynamicsUtils
-+ (double)adjustedScaleFactorWithOriginalScaleFactor:(double)a3 timeUntilEntrySeconds:(double)a4;
-+ (double)directionFactorFromCosineSimilarity:(double)a3;
-+ (double)lateralDeviationToWeightWithLateralRatio:(double)a3 minWeight:(double)a4 penaltyStep:(double)a5 graceZoneRatio:(double)a6 gamma:(double)a7;
-+ (double)progressToWeightWithProgressRatio:(double)a3 minWeight:(double)a4 penaltyStep:(double)a5 graceZone:(double)a6 gamma:(double)a7;
-+ (double)smoothPenaltyForETAGrowth:(double)a3 graceRatio:(double)a4 penaltyRange:(double)a5 minScaleFactor:(double)a6;
-+ (id)buildLoiCoordinateMapFromCandidateDataMap:(id)a3;
-+ (id)candidateDataMapFromVisits:(id)a3;
-+ (id)computeProgressScaleFromCandidateDataMap:(id)a3 lastVisit:(id)a4 currentLocation:(id)a5;
-+ (id)computeProgressScaleWithLOIs:(id)a3 lastVisit:(id)a4 currentLocation:(id)a5;
-+ (id)computeTravelFeasibilityForCandidateDataMap:(id)a3 currentLocation:(id)a4 currentTime:(double)a5;
-+ (id)currentLocationWithLocationHistory:(id)a3 currentTime:(double)a4;
-+ (id)filterValidLocationPredictions:(id)a3;
-+ (id)locationOfLastVisitWithVisitHistory:(id)a3 currentTime:(double)a4 isInTransition:(BOOL *)a5 exitTime:(double *)a6;
-+ (id)neutralScaleFactorsForDataMap:(id)a3;
-+ (void)updateProbabilitiesForCandidateVisits:(id)a3 withCandidateDataMap:(id)a4 progressScaleByVisitMap:(id)a5 feasibilityByVisitMap:(id)a6 dirctionScaleByVisitMap:(id)a7 etaScaleByVisitMap:(id)a8 currentTime:(double)a9;
-+ (void)updateProbabilityForCandidateVisit:(id)a3 withCandidateDataMap:(id)a4 progressScaleByVisitMap:(id)a5 feasibilityByVisitMap:(id)a6 dirctionScaleByVisitMap:(id)a7 etaScaleByVisitMap:(id)a8 currentTime:(double)a9;
++ (double)adjustedScaleFactorWithOriginalScaleFactor:(double)factor timeUntilEntrySeconds:(double)seconds;
++ (double)directionFactorFromCosineSimilarity:(double)similarity;
++ (double)lateralDeviationToWeightWithLateralRatio:(double)ratio minWeight:(double)weight penaltyStep:(double)step graceZoneRatio:(double)zoneRatio gamma:(double)gamma;
++ (double)progressToWeightWithProgressRatio:(double)ratio minWeight:(double)weight penaltyStep:(double)step graceZone:(double)zone gamma:(double)gamma;
++ (double)smoothPenaltyForETAGrowth:(double)growth graceRatio:(double)ratio penaltyRange:(double)range minScaleFactor:(double)factor;
++ (id)buildLoiCoordinateMapFromCandidateDataMap:(id)map;
++ (id)candidateDataMapFromVisits:(id)visits;
++ (id)computeProgressScaleFromCandidateDataMap:(id)map lastVisit:(id)visit currentLocation:(id)location;
++ (id)computeProgressScaleWithLOIs:(id)is lastVisit:(id)visit currentLocation:(id)location;
++ (id)computeTravelFeasibilityForCandidateDataMap:(id)map currentLocation:(id)location currentTime:(double)time;
++ (id)currentLocationWithLocationHistory:(id)history currentTime:(double)time;
++ (id)filterValidLocationPredictions:(id)predictions;
++ (id)locationOfLastVisitWithVisitHistory:(id)history currentTime:(double)time isInTransition:(BOOL *)transition exitTime:(double *)exitTime;
++ (id)neutralScaleFactorsForDataMap:(id)map;
++ (void)updateProbabilitiesForCandidateVisits:(id)visits withCandidateDataMap:(id)map progressScaleByVisitMap:(id)visitMap feasibilityByVisitMap:(id)byVisitMap dirctionScaleByVisitMap:(id)scaleByVisitMap etaScaleByVisitMap:(id)etaScaleByVisitMap currentTime:(double)time;
++ (void)updateProbabilityForCandidateVisit:(id)visit withCandidateDataMap:(id)map progressScaleByVisitMap:(id)visitMap feasibilityByVisitMap:(id)byVisitMap dirctionScaleByVisitMap:(id)scaleByVisitMap etaScaleByVisitMap:(id)etaScaleByVisitMap currentTime:(double)time;
 @end
 
 @implementation PCDynamicsUtils
 
-+ (id)candidateDataMapFromVisits:(id)a3
++ (id)candidateDataMapFromVisits:(id)visits
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(v3, "count")}];
+  visitsCopy = visits;
+  v4 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(visitsCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = v3;
+  v5 = visitsCopy;
   v39 = [v5 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v39)
   {
@@ -44,24 +44,24 @@
         }
 
         v7 = *(*(&v41 + 1) + 8 * i);
-        v8 = [v7 locationOfInterest];
-        v9 = [v8 loiIdentifier];
+        locationOfInterest = [v7 locationOfInterest];
+        loiIdentifier = [locationOfInterest loiIdentifier];
 
-        v10 = [MEMORY[0x1E696AFB0] UUID];
-        v11 = [PCAlgorithmsCommonUtils dataFromUUID:v10];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        v11 = [PCAlgorithmsCommonUtils dataFromUUID:uUID];
 
-        v12 = [v7 locationOfInterest];
-        v13 = [v12 location];
+        locationOfInterest2 = [v7 locationOfInterest];
+        location = [locationOfInterest2 location];
 
-        if (v13)
+        if (location)
         {
-          v14 = [v7 locationOfInterest];
-          v15 = [v14 location];
+          locationOfInterest3 = [v7 locationOfInterest];
+          location2 = [locationOfInterest3 location];
 
           v16 = [PCLatLon alloc];
-          [v15 locationLatitudeDeg];
+          [location2 locationLatitudeDeg];
           v18 = v17;
-          [v15 locationLongitudeDeg];
+          [location2 locationLongitudeDeg];
           v20 = [(PCLatLon *)v16 initWithLatitude:v18 longitude:v19];
           v21 = [PCLocationUtils latLonToCartesianWithLatLon:v20];
         }
@@ -71,46 +71,46 @@
           v21 = 0;
         }
 
-        v22 = [v7 predictedContext];
+        predictedContext = [v7 predictedContext];
         v23 = 0.0;
-        if ([v22 hasDateInterval])
+        if ([predictedContext hasDateInterval])
         {
-          v40 = v9;
-          v24 = [v7 predictedContext];
-          v25 = [v24 dateInterval];
-          if ([v25 hasStartDate])
+          v40 = loiIdentifier;
+          predictedContext2 = [v7 predictedContext];
+          dateInterval = [predictedContext2 dateInterval];
+          if ([dateInterval hasStartDate])
           {
-            v26 = [v7 predictedContext];
-            v27 = [v26 dateInterval];
-            [v27 startDate];
+            predictedContext3 = [v7 predictedContext];
+            dateInterval2 = [predictedContext3 dateInterval];
+            [dateInterval2 startDate];
             v37 = v21;
             v28 = v11;
             v30 = v29 = v4;
-            v36 = [v30 hasDate];
+            hasDate = [v30 hasDate];
 
             v4 = v29;
             v11 = v28;
             v21 = v37;
 
             v5 = v35;
-            v9 = v40;
-            if (!v36)
+            loiIdentifier = v40;
+            if (!hasDate)
             {
               goto LABEL_15;
             }
 
-            v22 = [v7 predictedContext];
-            v24 = [v22 dateInterval];
-            v25 = [v24 startDate];
-            [v25 date];
+            predictedContext = [v7 predictedContext];
+            predictedContext2 = [predictedContext dateInterval];
+            dateInterval = [predictedContext2 startDate];
+            [dateInterval date];
             v23 = v31;
           }
 
-          v9 = v40;
+          loiIdentifier = v40;
         }
 
 LABEL_15:
-        v32 = [[PCCandidateVisitData alloc] initWithVisitIdentifier:v11 loiIdentifier:v9 coordinate:v21 entryTime:v23];
+        v32 = [[PCCandidateVisitData alloc] initWithVisitIdentifier:v11 loiIdentifier:loiIdentifier coordinate:v21 entryTime:v23];
         [v4 setObject:v32 forKey:v7];
       }
 
@@ -125,18 +125,18 @@ LABEL_15:
   return v4;
 }
 
-+ (id)buildLoiCoordinateMapFromCandidateDataMap:(id)a3
++ (id)buildLoiCoordinateMapFromCandidateDataMap:(id)map
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  mapCopy = map;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v21 = v3;
-  v5 = [v3 objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v21 = mapCopy;
+  objectEnumerator = [mapCopy objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -147,63 +147,63 @@ LABEL_15:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 loiIdentifier];
-        if (v11)
+        loiIdentifier = [v10 loiIdentifier];
+        if (loiIdentifier)
         {
-          v12 = v11;
-          v13 = [v10 coordinate];
-          if (v13)
+          coordinate2 = loiIdentifier;
+          coordinate = [v10 coordinate];
+          if (coordinate)
           {
-            v14 = v13;
-            v15 = [v10 loiIdentifier];
-            v16 = [v4 objectForKeyedSubscript:v15];
+            v14 = coordinate;
+            loiIdentifier2 = [v10 loiIdentifier];
+            v16 = [dictionary objectForKeyedSubscript:loiIdentifier2];
 
             if (v16)
             {
               continue;
             }
 
-            v12 = [v10 coordinate];
-            v17 = [v10 loiIdentifier];
-            [v4 setObject:v12 forKeyedSubscript:v17];
+            coordinate2 = [v10 coordinate];
+            loiIdentifier3 = [v10 loiIdentifier];
+            [dictionary setObject:coordinate2 forKeyedSubscript:loiIdentifier3];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v18 = [v4 copy];
+  v18 = [dictionary copy];
   v19 = *MEMORY[0x1E69E9840];
 
   return v18;
 }
 
-+ (id)computeProgressScaleFromCandidateDataMap:(id)a3 lastVisit:(id)a4 currentLocation:(id)a5
++ (id)computeProgressScaleFromCandidateDataMap:(id)map lastVisit:(id)visit currentLocation:(id)location
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v28 = [a1 buildLoiCoordinateMapFromCandidateDataMap:v8];
-  v29 = v10;
-  v30 = v9;
-  v11 = [a1 computeProgressScaleWithLOIs:? lastVisit:? currentLocation:?];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
+  mapCopy = map;
+  visitCopy = visit;
+  locationCopy = location;
+  v28 = [self buildLoiCoordinateMapFromCandidateDataMap:mapCopy];
+  v29 = locationCopy;
+  v30 = visitCopy;
+  v11 = [self computeProgressScaleWithLOIs:? lastVisit:? currentLocation:?];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v31 = v8;
-  v13 = [v8 objectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v31 = mapCopy;
+  objectEnumerator = [mapCopy objectEnumerator];
+  v14 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v14)
   {
     v15 = v14;
@@ -214,12 +214,12 @@ LABEL_15:
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v18 = *(*(&v32 + 1) + 8 * i);
-        v19 = [v18 loiIdentifier];
-        v20 = [v11 objectForKeyedSubscript:v19];
+        loiIdentifier = [v18 loiIdentifier];
+        v20 = [v11 objectForKeyedSubscript:loiIdentifier];
         v21 = v20;
         if (v20)
         {
@@ -233,26 +233,26 @@ LABEL_15:
 
         v23 = v22;
 
-        v24 = [v18 visitIdentifier];
-        [v12 setObject:v23 forKeyedSubscript:v24];
+        visitIdentifier = [v18 visitIdentifier];
+        [dictionary setObject:v23 forKeyedSubscript:visitIdentifier];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v15 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v15);
   }
 
-  v25 = [v12 copy];
+  v25 = [dictionary copy];
   v26 = *MEMORY[0x1E69E9840];
 
   return v25;
 }
 
-+ (id)locationOfLastVisitWithVisitHistory:(id)a3 currentTime:(double)a4 isInTransition:(BOOL *)a5 exitTime:(double *)a6
++ (id)locationOfLastVisitWithVisitHistory:(id)history currentTime:(double)time isInTransition:(BOOL *)transition exitTime:(double *)exitTime
 {
   v70 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  historyCopy = history;
   v11 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -260,11 +260,11 @@ LABEL_15:
     *buf = 138412546;
     v59 = v12;
     v60 = 2048;
-    v61 = COERCE_DOUBLE([v10 count]);
+    timeCopy = COERCE_DOUBLE([historyCopy count]);
     _os_log_impl(&dword_1CEE74000, v11, OS_LOG_TYPE_DEFAULT, "[%@] input visit history number %lu", buf, 0x16u);
   }
 
-  if (!v10 || ![v10 count])
+  if (!historyCopy || ![historyCopy count])
   {
     v16 = 0;
     goto LABEL_25;
@@ -290,11 +290,11 @@ LABEL_15:
   v44[1] = 3221225472;
   v44[2] = __91__PCDynamicsUtils_locationOfLastVisitWithVisitHistory_currentTime_isInTransition_exitTime___block_invoke;
   v44[3] = &unk_1E83B8778;
-  *&v44[7] = a4;
+  *&v44[7] = time;
   v44[4] = &v51;
   v44[5] = v57;
   v44[6] = &v45;
-  [v10 enumerateObjectsUsingBlock:v44];
+  [historyCopy enumerateObjectsUsingBlock:v44];
   v13 = v52;
   v14 = v52[5];
   if (v14)
@@ -307,9 +307,9 @@ LABEL_15:
     v15 = v46[5];
     if (!v15)
     {
-      if (a5)
+      if (transition)
       {
-        *a5 = 0;
+        *transition = 0;
       }
 
       v15 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
@@ -319,7 +319,7 @@ LABEL_15:
         *buf = 138412546;
         v59 = v43;
         v60 = 2048;
-        v61 = a4;
+        timeCopy = time;
         _os_log_impl(&dword_1CEE74000, v15, OS_LOG_TYPE_ERROR, "[%@] no valid visit found for dynamic weighting at current time: %.2f", buf, 0x16u);
       }
 
@@ -329,20 +329,20 @@ LABEL_15:
   }
 
   v17 = v13[5];
-  if (a5)
+  if (transition)
   {
-    *a5 = v15 != v17;
+    *transition = v15 != v17;
   }
 
-  if (a6 && v15 != v17)
+  if (exitTime && v15 != v17)
   {
     [v15 exitTimeCFAbsolute];
-    *a6 = v18;
+    *exitTime = v18;
   }
 
-  v19 = [v15 location];
-  v20 = v19;
-  if (v19 && [v19 hasLocationLatitudeDeg] && objc_msgSend(v20, "hasLocationLongitudeDeg"))
+  location = [v15 location];
+  v20 = location;
+  if (location && [location hasLocationLatitudeDeg] && objc_msgSend(v20, "hasLocationLongitudeDeg"))
   {
     v21 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -352,18 +352,18 @@ LABEL_15:
       v24 = v23;
       [v15 exitTimeCFAbsolute];
       v26 = v25;
-      v27 = [v15 location];
-      [v27 locationLatitudeDeg];
+      location2 = [v15 location];
+      [location2 locationLatitudeDeg];
       v29 = v28;
-      v30 = [v15 location];
-      [v30 locationLongitudeDeg];
+      location3 = [v15 location];
+      [location3 locationLongitudeDeg];
       v32 = v31;
-      v33 = [v15 loiIdentifier];
-      v34 = [PCAlgorithmsCommonUtils uuidStringFromData:v33];
+      loiIdentifier = [v15 loiIdentifier];
+      v34 = [PCAlgorithmsCommonUtils uuidStringFromData:loiIdentifier];
       *buf = 138413571;
       v59 = v22;
       v60 = 2048;
-      v61 = v24;
+      timeCopy = v24;
       v62 = 2048;
       v63 = v26;
       v64 = 2053;
@@ -470,10 +470,10 @@ LABEL_12:
   }
 }
 
-+ (id)currentLocationWithLocationHistory:(id)a3 currentTime:(double)a4
++ (id)currentLocationWithLocationHistory:(id)history currentTime:(double)time
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = [PCLocationUtils currentLocationWithLocationHistory:a3 currentTime:?];
+  v6 = [PCLocationUtils currentLocationWithLocationHistory:history currentTime:?];
   if (v6)
   {
     v7 = [PCLocationUtils latLonToCartesianWithLatLon:v6];
@@ -488,7 +488,7 @@ LABEL_12:
       v12 = 138412546;
       v13 = v9;
       v14 = 2048;
-      v15 = a4;
+      timeCopy = time;
       _os_log_impl(&dword_1CEE74000, v8, OS_LOG_TYPE_DEFAULT, "[%@] no valid current location found for dynamic weighting at current time: %.2f", &v12, 0x16u);
     }
 
@@ -500,24 +500,24 @@ LABEL_12:
   return v7;
 }
 
-+ (id)computeProgressScaleWithLOIs:(id)a3 lastVisit:(id)a4 currentLocation:(id)a5
++ (id)computeProgressScaleWithLOIs:(id)is lastVisit:(id)visit currentLocation:(id)location
 {
   v109 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  isCopy = is;
+  visitCopy = visit;
+  locationCopy = location;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v11 = v7;
+  v11 = isCopy;
   v12 = [v11 countByEnumeratingWithState:&v90 objects:v108 count:16];
   if (v12)
   {
     v14 = v12;
-    v15 = v8 != 0;
-    if (!v9)
+    v15 = visitCopy != 0;
+    if (!locationCopy)
     {
       v15 = 0;
     }
@@ -525,7 +525,7 @@ LABEL_12:
     v89 = v15;
     v88 = *v91;
     v16 = @"missing";
-    if (v9)
+    if (locationCopy)
     {
       v16 = @"present";
     }
@@ -533,7 +533,7 @@ LABEL_12:
     v85 = v16;
     *&v13 = 138413827;
     v83 = v13;
-    v86 = v10;
+    v86 = dictionary;
     do
     {
       for (i = 0; i != v14; ++i)
@@ -560,21 +560,21 @@ LABEL_12:
         {
           [v19 x];
           v23 = v22;
-          [v8 x];
+          [visitCopy x];
           v25 = v23 - v24;
           [v20 y];
           v27 = v26;
-          [v8 y];
+          [visitCopy y];
           v29 = v27 - v28;
           [v20 z];
           v31 = v30;
-          [v8 z];
+          [visitCopy z];
           v33 = v31 - v32;
           v34 = sqrt(v29 * v29 + v25 * v25 + v33 * v33);
           if (v34 < 250.0)
           {
             v35 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-            [v10 setObject:v35 forKeyedSubscript:v18];
+            [dictionary setObject:v35 forKeyedSubscript:v18];
 
             v36 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
             if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -593,26 +593,26 @@ LABEL_12:
 LABEL_25:
             _os_log_impl(&dword_1CEE74000, v39, OS_LOG_TYPE_DEBUG, v40, buf, 0x16u);
 
-            v10 = v86;
+            dictionary = v86;
             goto LABEL_28;
           }
 
-          [v9 x];
+          [locationCopy x];
           v47 = v46;
-          [v8 x];
+          [visitCopy x];
           v49 = v47 - v48;
-          [v9 y];
+          [locationCopy y];
           v51 = v50;
-          [v8 y];
+          [visitCopy y];
           v53 = v51 - v52;
-          [v9 z];
+          [locationCopy z];
           v55 = v54;
-          [v8 z];
+          [visitCopy z];
           v57 = v55 - v56;
           if (sqrt(v53 * v53 + v49 * v49 + v57 * v57) < 250.0)
           {
             v58 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-            [v10 setObject:v58 forKeyedSubscript:v18];
+            [dictionary setObject:v58 forKeyedSubscript:v18];
 
             v36 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
             if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -637,23 +637,23 @@ LABEL_25:
           v62 = v60 * v53 + v49 * (v25 / v34) + v57 * v61;
           [PCDynamicsUtils progressToWeightWithProgressRatio:v62 / v34 minWeight:0.1 penaltyStep:0.5 graceZone:0.2 gamma:2.0];
           v84 = v63;
-          [v8 x];
+          [visitCopy x];
           v65 = v64 + v59 * v62;
-          [v8 y];
+          [visitCopy y];
           v67 = v66 + v60 * v62;
-          [v8 z];
+          [visitCopy z];
           v69 = v68 + v61 * v62;
-          [v9 x];
+          [locationCopy x];
           v71 = (v70 - v65) * (v70 - v65);
-          [v9 y];
+          [locationCopy y];
           v73 = v71 + (v72 - v67) * (v72 - v67);
-          [v9 z];
+          [locationCopy z];
           v75 = sqrt(v73 + (v74 - v69) * (v74 - v69));
           [PCDynamicsUtils lateralDeviationToWeightWithLateralRatio:v75 / v34 minWeight:0.1 penaltyStep:0.6 graceZoneRatio:0.3 gamma:2.0];
           v77 = v76;
           [PCLocationUtils boundValue:v84 * v76 toMin:0.1 max:1.0];
           v78 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-          [v10 setObject:v78 forKeyedSubscript:v18];
+          [dictionary setObject:v78 forKeyedSubscript:v18];
 
           v36 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -676,7 +676,7 @@ LABEL_25:
             v107 = v77;
             _os_log_impl(&dword_1CEE74000, v36, OS_LOG_TYPE_DEBUG, "[%@] loi id: %{sensitive}@, total distance between last loi and predicted loi: %.2f, progress distance: %.2f, lateral deviation distance: %.2f, progress scale factor: %.2f, lateral scale factor: %.2f", buf, 0x48u);
 
-            v10 = v86;
+            dictionary = v86;
           }
         }
 
@@ -704,11 +704,11 @@ LABEL_25:
             v101 = *&v85;
             _os_log_impl(&dword_1CEE74000, v41, OS_LOG_TYPE_DEFAULT, "[%@] skipping Loi %@: missing required values - loiCoord: %@, currentLocation: %@", buf, 0x2Au);
 
-            v10 = v86;
+            dictionary = v86;
           }
 
           v36 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-          [v10 setObject:v36 forKeyedSubscript:v18];
+          [dictionary setObject:v36 forKeyedSubscript:v18];
         }
 
 LABEL_28:
@@ -722,26 +722,26 @@ LABEL_28:
 
   v81 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return dictionary;
 }
 
-+ (id)computeTravelFeasibilityForCandidateDataMap:(id)a3 currentLocation:(id)a4 currentTime:(double)a5
++ (id)computeTravelFeasibilityForCandidateDataMap:(id)map currentLocation:(id)location currentTime:(double)time
 {
   v88 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v64 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  mapCopy = map;
+  locationCopy = location;
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(mapCopy, "count")}];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = [v7 objectEnumerator];
+  obj = [mapCopy objectEnumerator];
   v9 = [obj countByEnumeratingWithState:&v71 objects:v87 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v72;
-    if (v64)
+    if (locationCopy)
     {
       v12 = @"present";
     }
@@ -762,18 +762,18 @@ LABEL_28:
         }
 
         v14 = *(*(&v71 + 1) + 8 * i);
-        v15 = [v14 coordinate];
-        if (!v15 || ([v14 entryTime], v16 == 0.0))
+        coordinate = [v14 coordinate];
+        if (!coordinate || ([v14 entryTime], v16 == 0.0))
         {
         }
 
         else
         {
 
-          if (v64)
+          if (locationCopy)
           {
             [v14 entryTime];
-            if (v17 <= a5)
+            if (v17 <= time)
             {
               v54 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
               if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
@@ -792,30 +792,30 @@ LABEL_28:
               }
 
               v42 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-              v58 = [v14 visitIdentifier];
-              [v8 setObject:v42 forKeyedSubscript:v58];
+              visitIdentifier = [v14 visitIdentifier];
+              [v8 setObject:v42 forKeyedSubscript:visitIdentifier];
             }
 
             else
             {
               [v14 entryTime];
-              v19 = v18 - a5;
-              v20 = [v14 coordinate];
-              [v20 x];
+              v19 = v18 - time;
+              coordinate2 = [v14 coordinate];
+              [coordinate2 x];
               v22 = v21;
-              [v64 x];
+              [locationCopy x];
               v24 = v22 - v23;
 
-              v25 = [v14 coordinate];
-              [v25 y];
+              coordinate3 = [v14 coordinate];
+              [coordinate3 y];
               v27 = v26;
-              [v64 y];
+              [locationCopy y];
               v29 = v27 - v28;
 
-              v30 = [v14 coordinate];
-              [v30 z];
+              coordinate4 = [v14 coordinate];
+              [coordinate4 z];
               v32 = v31;
-              [v64 z];
+              [locationCopy z];
               v34 = v32 - v33;
 
               v35 = sqrt(v29 * v29 + v24 * v24 + v34 * v34);
@@ -834,8 +834,8 @@ LABEL_28:
               }
 
               v40 = [MEMORY[0x1E696AD98] numberWithDouble:v38];
-              v41 = [v14 visitIdentifier];
-              [v8 setObject:v40 forKeyedSubscript:v41];
+              visitIdentifier2 = [v14 visitIdentifier];
+              [v8 setObject:v40 forKeyedSubscript:visitIdentifier2];
 
               v42 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
               if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
@@ -843,8 +843,8 @@ LABEL_28:
                 v66 = NSStringFromSelector(a2);
                 loga = [v14 visitIdentifier];
                 v43 = [PCAlgorithmsCommonUtils uuidStringFromData:loga];
-                v44 = [v14 loiIdentifier];
-                v45 = [PCAlgorithmsCommonUtils uuidStringFromData:v44];
+                loiIdentifier = [v14 loiIdentifier];
+                v45 = [PCAlgorithmsCommonUtils uuidStringFromData:loiIdentifier];
                 *buf = 138413570;
                 v76 = v66;
                 v77 = 2112;
@@ -866,8 +866,8 @@ LABEL_28:
         }
 
         v46 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-        v47 = [v14 visitIdentifier];
-        [v8 setObject:v46 forKeyedSubscript:v47];
+        visitIdentifier3 = [v14 visitIdentifier];
+        [v8 setObject:v46 forKeyedSubscript:visitIdentifier3];
 
         v42 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -875,8 +875,8 @@ LABEL_28:
           v67 = NSStringFromSelector(a2);
           [v14 visitIdentifier];
           v48 = log = v42;
-          v49 = [v14 coordinate];
-          if (v49)
+          coordinate5 = [v14 coordinate];
+          if (coordinate5)
           {
             v50 = @"present";
           }
@@ -923,20 +923,20 @@ LABEL_30:
   return v59;
 }
 
-+ (void)updateProbabilitiesForCandidateVisits:(id)a3 withCandidateDataMap:(id)a4 progressScaleByVisitMap:(id)a5 feasibilityByVisitMap:(id)a6 dirctionScaleByVisitMap:(id)a7 etaScaleByVisitMap:(id)a8 currentTime:(double)a9
++ (void)updateProbabilitiesForCandidateVisits:(id)visits withCandidateDataMap:(id)map progressScaleByVisitMap:(id)visitMap feasibilityByVisitMap:(id)byVisitMap dirctionScaleByVisitMap:(id)scaleByVisitMap etaScaleByVisitMap:(id)etaScaleByVisitMap currentTime:(double)time
 {
   v32 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  visitsCopy = visits;
+  mapCopy = map;
+  visitMapCopy = visitMap;
+  byVisitMapCopy = byVisitMap;
+  scaleByVisitMapCopy = scaleByVisitMap;
+  etaScaleByVisitMapCopy = etaScaleByVisitMap;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v22 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v22 = [visitsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v22)
   {
     v23 = v22;
@@ -948,14 +948,14 @@ LABEL_30:
       {
         if (*v28 != v24)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(visitsCopy);
         }
 
-        [a1 updateProbabilityForCandidateVisit:*(*(&v27 + 1) + 8 * v25++) withCandidateDataMap:v17 progressScaleByVisitMap:v18 feasibilityByVisitMap:v19 dirctionScaleByVisitMap:v20 etaScaleByVisitMap:v21 currentTime:a9];
+        [self updateProbabilityForCandidateVisit:*(*(&v27 + 1) + 8 * v25++) withCandidateDataMap:mapCopy progressScaleByVisitMap:visitMapCopy feasibilityByVisitMap:byVisitMapCopy dirctionScaleByVisitMap:scaleByVisitMapCopy etaScaleByVisitMap:etaScaleByVisitMapCopy currentTime:time];
       }
 
       while (v23 != v25);
-      v23 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v23 = [visitsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v23);
@@ -964,16 +964,16 @@ LABEL_30:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)filterValidLocationPredictions:(id)a3
++ (id)filterValidLocationPredictions:(id)predictions
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v29 = [MEMORY[0x1E695DF70] array];
+  predictionsCopy = predictions;
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v4;
+  v5 = predictionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v6)
   {
@@ -992,8 +992,8 @@ LABEL_30:
         v10 = *(*(&v30 + 1) + 8 * v9);
         if (![v10 hasPredictedContext] || (objc_msgSend(v10, "predictedContext"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hasContextType"), v11, (v12 & 1) == 0))
         {
-          v18 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
-          if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          predictedContext = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
+          if (!os_log_type_enabled(predictedContext, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_17;
           }
@@ -1001,7 +1001,7 @@ LABEL_30:
           v19 = NSStringFromSelector(a2);
           *buf = 138412290;
           v35 = v19;
-          v20 = v18;
+          v20 = predictedContext;
           v21 = OS_LOG_TYPE_ERROR;
           v22 = "%@ prediction missing predicted context or context type. Skipping.";
           goto LABEL_16;
@@ -1009,18 +1009,18 @@ LABEL_30:
 
         if ([v10 hasLocationOfInterest] && (objc_msgSend(v10, "locationOfInterest"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "hasLocation"), v13, (v14 & 1) != 0))
         {
-          v15 = [v10 locationOfInterest];
-          if ([v15 hasLoiIdentifier])
+          locationOfInterest = [v10 locationOfInterest];
+          if ([locationOfInterest hasLoiIdentifier])
           {
-            v16 = [v10 locationOfInterest];
-            v17 = [v16 loiIdentifier];
+            locationOfInterest2 = [v10 locationOfInterest];
+            loiIdentifier = [locationOfInterest2 loiIdentifier];
 
-            if (v17)
+            if (loiIdentifier)
             {
-              v18 = [v10 predictedContext];
-              if ([v18 contextType]== 1)
+              predictedContext = [v10 predictedContext];
+              if ([predictedContext contextType]== 1)
               {
-                [v29 addObject:v10];
+                [array addObject:v10];
               }
 
               else
@@ -1043,13 +1043,13 @@ LABEL_30:
           {
           }
 
-          v18 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          predictedContext = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
+          if (os_log_type_enabled(predictedContext, OS_LOG_TYPE_ERROR))
           {
             v19 = NSStringFromSelector(a2);
             *buf = 138412290;
             v35 = v19;
-            v20 = v18;
+            v20 = predictedContext;
             v21 = OS_LOG_TYPE_ERROR;
             v22 = "[%@] nil LOI identifier, skipping";
             goto LABEL_16;
@@ -1058,13 +1058,13 @@ LABEL_30:
 
         else
         {
-          v18 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+          predictedContext = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
+          if (os_log_type_enabled(predictedContext, OS_LOG_TYPE_DEFAULT))
           {
             v19 = NSStringFromSelector(a2);
             *buf = 138412290;
             v35 = v19;
-            v20 = v18;
+            v20 = predictedContext;
             v21 = OS_LOG_TYPE_DEFAULT;
             v22 = "%@ invalid LOI or location in predictedContextLocation, skipping";
 LABEL_16:
@@ -1085,71 +1085,71 @@ LABEL_17:
     while (v25);
   }
 
-  v26 = [v29 copy];
+  v26 = [array copy];
   v27 = *MEMORY[0x1E69E9840];
 
   return v26;
 }
 
-+ (double)progressToWeightWithProgressRatio:(double)a3 minWeight:(double)a4 penaltyStep:(double)a5 graceZone:(double)a6 gamma:(double)a7
++ (double)progressToWeightWithProgressRatio:(double)ratio minWeight:(double)weight penaltyStep:(double)step graceZone:(double)zone gamma:(double)gamma
 {
-  if (a3 >= 0.0 && a3 <= 1.0)
+  if (ratio >= 0.0 && ratio <= 1.0)
   {
     return 1.0;
   }
 
-  v10 = a3 <= 1.0 ? -a3 : a3 + -1.0;
-  if (v10 <= a6)
+  v10 = ratio <= 1.0 ? -ratio : ratio + -1.0;
+  if (v10 <= zone)
   {
     return 1.0;
   }
 
-  [PCLocationUtils boundValue:(v10 - a6) / a5 toMin:0.0 max:1.0];
-  v12 = 1.0 - (1.0 - pow(1.0 - v11, a7)) * (1.0 - a4);
+  [PCLocationUtils boundValue:(v10 - zone) / step toMin:0.0 max:1.0];
+  v12 = 1.0 - (1.0 - pow(1.0 - v11, gamma)) * (1.0 - weight);
 
-  [PCLocationUtils boundValue:v12 toMin:a4 max:1.0];
+  [PCLocationUtils boundValue:v12 toMin:weight max:1.0];
   return result;
 }
 
-+ (double)lateralDeviationToWeightWithLateralRatio:(double)a3 minWeight:(double)a4 penaltyStep:(double)a5 graceZoneRatio:(double)a6 gamma:(double)a7
++ (double)lateralDeviationToWeightWithLateralRatio:(double)ratio minWeight:(double)weight penaltyStep:(double)step graceZoneRatio:(double)zoneRatio gamma:(double)gamma
 {
-  if (a3 <= a6)
+  if (ratio <= zoneRatio)
   {
     return 1.0;
   }
 
-  [PCLocationUtils boundValue:(a3 - a6) / a5 toMin:0.0 max:1.0];
-  v11 = 1.0 - (1.0 - pow(1.0 - v10, a7)) * (1.0 - a4);
+  [PCLocationUtils boundValue:(ratio - zoneRatio) / step toMin:0.0 max:1.0];
+  v11 = 1.0 - (1.0 - pow(1.0 - v10, gamma)) * (1.0 - weight);
 
-  [PCLocationUtils boundValue:v11 toMin:a4 max:1.0];
+  [PCLocationUtils boundValue:v11 toMin:weight max:1.0];
   return result;
 }
 
-+ (void)updateProbabilityForCandidateVisit:(id)a3 withCandidateDataMap:(id)a4 progressScaleByVisitMap:(id)a5 feasibilityByVisitMap:(id)a6 dirctionScaleByVisitMap:(id)a7 etaScaleByVisitMap:(id)a8 currentTime:(double)a9
++ (void)updateProbabilityForCandidateVisit:(id)visit withCandidateDataMap:(id)map progressScaleByVisitMap:(id)visitMap feasibilityByVisitMap:(id)byVisitMap dirctionScaleByVisitMap:(id)scaleByVisitMap etaScaleByVisitMap:(id)etaScaleByVisitMap currentTime:(double)time
 {
   v100 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  if (![v16 hasLocationOfInterest])
+  visitCopy = visit;
+  mapCopy = map;
+  visitMapCopy = visitMap;
+  byVisitMapCopy = byVisitMap;
+  scaleByVisitMapCopy = scaleByVisitMap;
+  etaScaleByVisitMapCopy = etaScaleByVisitMap;
+  if (![visitCopy hasLocationOfInterest])
   {
     goto LABEL_11;
   }
 
-  v22 = [v16 locationOfInterest];
-  if (![v22 hasLoiIdentifier] || (objc_msgSend(v16, "hasPredictedContext") & 1) == 0)
+  locationOfInterest = [visitCopy locationOfInterest];
+  if (![locationOfInterest hasLoiIdentifier] || (objc_msgSend(visitCopy, "hasPredictedContext") & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v23 = [v16 predictedContext];
-  v24 = [v23 hasProbability];
+  predictedContext = [visitCopy predictedContext];
+  hasProbability = [predictedContext hasProbability];
 
-  if ((v24 & 1) == 0)
+  if ((hasProbability & 1) == 0)
   {
 LABEL_11:
     v29 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
@@ -1170,17 +1170,17 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v25 = [v16 predictedContext];
-  if (([v25 hasContextType] & 1) == 0)
+  predictedContext2 = [visitCopy predictedContext];
+  if (([predictedContext2 hasContextType] & 1) == 0)
   {
 
     goto LABEL_16;
   }
 
-  v26 = [v16 predictedContext];
-  v27 = [v26 contextType];
+  predictedContext3 = [visitCopy predictedContext];
+  contextType = [predictedContext3 contextType];
 
-  if (v27 != 1)
+  if (contextType != 1)
   {
 LABEL_16:
     v29 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
@@ -1198,12 +1198,12 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  v28 = [v17 objectForKey:v16];
+  v28 = [mapCopy objectForKey:visitCopy];
   v29 = v28;
   if (v28)
   {
-    v30 = [v28 visitIdentifier];
-    v31 = [v18 objectForKeyedSubscript:v30];
+    visitIdentifier = [v28 visitIdentifier];
+    v31 = [visitMapCopy objectForKeyedSubscript:visitIdentifier];
     v32 = v31;
     if (v31)
     {
@@ -1218,12 +1218,12 @@ LABEL_16:
     v81 = v33;
 
     [v29 entryTime];
-    v42 = v41 - a9;
+    v42 = v41 - time;
     [v81 doubleValue];
     [PCDynamicsUtils adjustedScaleFactorWithOriginalScaleFactor:"adjustedScaleFactorWithOriginalScaleFactor:timeUntilEntrySeconds:" timeUntilEntrySeconds:?];
     v44 = v43;
-    v45 = [v29 visitIdentifier];
-    v46 = [v19 objectForKeyedSubscript:v45];
+    visitIdentifier2 = [v29 visitIdentifier];
+    v46 = [byVisitMapCopy objectForKeyedSubscript:visitIdentifier2];
     v47 = v46;
     if (v46)
     {
@@ -1237,8 +1237,8 @@ LABEL_16:
 
     v78 = v48;
 
-    v49 = [v29 visitIdentifier];
-    v50 = [v20 objectForKeyedSubscript:v49];
+    visitIdentifier3 = [v29 visitIdentifier];
+    v50 = [scaleByVisitMapCopy objectForKeyedSubscript:visitIdentifier3];
     v51 = v50;
     if (v50)
     {
@@ -1252,8 +1252,8 @@ LABEL_16:
 
     v80 = v52;
 
-    v53 = [v29 visitIdentifier];
-    v54 = [v21 objectForKeyedSubscript:v53];
+    visitIdentifier4 = [v29 visitIdentifier];
+    v54 = [etaScaleByVisitMapCopy objectForKeyedSubscript:visitIdentifier4];
     v55 = v54;
     if (v54)
     {
@@ -1286,23 +1286,23 @@ LABEL_16:
     }
 
     [v29 entryTime];
-    if (v64 > 0.0 && ([v29 entryTime], v65 >= a9))
+    if (v64 > 0.0 && ([v29 entryTime], v65 >= time))
     {
-      v68 = [v16 predictedContext];
-      [v68 probability];
+      predictedContext4 = [visitCopy predictedContext];
+      [predictedContext4 probability];
       v70 = v69;
 
       [PCLocationUtils boundValue:v44 * v62 * v63 * v70 toMin:0.0 max:1.0];
       v72 = v71;
-      v73 = [v16 predictedContext];
-      [v73 setProbability:v72];
+      predictedContext5 = [visitCopy predictedContext];
+      [predictedContext5 setProbability:v72];
 
       v66 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
       {
         v77 = NSStringFromSelector(a2);
-        v76 = [v29 loiIdentifier];
-        v74 = [PCAlgorithmsCommonUtils uuidStringFromData:v76];
+        loiIdentifier = [v29 loiIdentifier];
+        v74 = [PCAlgorithmsCommonUtils uuidStringFromData:loiIdentifier];
         [v78 doubleValue];
         *buf = 138414338;
         v83 = v77;
@@ -1357,33 +1357,33 @@ LABEL_14:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-+ (double)adjustedScaleFactorWithOriginalScaleFactor:(double)a3 timeUntilEntrySeconds:(double)a4
++ (double)adjustedScaleFactorWithOriginalScaleFactor:(double)factor timeUntilEntrySeconds:(double)seconds
 {
-  if (a4 <= 3600.0)
+  if (seconds <= 3600.0)
   {
-    return a3;
+    return factor;
   }
 
   v4 = 1.0;
-  if (a4 < 4500.0)
+  if (seconds < 4500.0)
   {
-    return a3 + (a3 + -1.0) * ((a4 + -3600.0) / -900.0);
+    return factor + (factor + -1.0) * ((seconds + -3600.0) / -900.0);
   }
 
   return v4;
 }
 
-+ (id)neutralScaleFactorsForDataMap:(id)a3
++ (id)neutralScaleFactorsForDataMap:(id)map
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  mapCopy = map;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(mapCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  objectEnumerator = [mapCopy objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1394,16 +1394,16 @@ LABEL_14:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-        v12 = [v10 visitIdentifier];
-        [v4 setObject:v11 forKeyedSubscript:v12];
+        visitIdentifier = [v10 visitIdentifier];
+        [v4 setObject:v11 forKeyedSubscript:visitIdentifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -1415,15 +1415,15 @@ LABEL_14:
   return v13;
 }
 
-+ (double)directionFactorFromCosineSimilarity:(double)a3
++ (double)directionFactorFromCosineSimilarity:(double)similarity
 {
-  v3 = (a3 + 1.0) * 0.5;
+  v3 = (similarity + 1.0) * 0.5;
   if (v3 < 0.1)
   {
     v3 = 0.1;
   }
 
-  if (a3 >= 0.0)
+  if (similarity >= 0.0)
   {
     return 1.0;
   }
@@ -1434,21 +1434,21 @@ LABEL_14:
   }
 }
 
-+ (double)smoothPenaltyForETAGrowth:(double)a3 graceRatio:(double)a4 penaltyRange:(double)a5 minScaleFactor:(double)a6
++ (double)smoothPenaltyForETAGrowth:(double)growth graceRatio:(double)ratio penaltyRange:(double)range minScaleFactor:(double)factor
 {
   result = 1.0;
-  if (a3 > a4)
+  if (growth > ratio)
   {
-    v8 = a3 - a4;
-    if (a3 - a4 >= a5)
+    rangeCopy = growth - ratio;
+    if (growth - ratio >= range)
     {
-      v8 = a5;
+      rangeCopy = range;
     }
 
-    result = -v8 / a5 * (1.0 - a6) + 1.0;
-    if (result < a6)
+    result = -rangeCopy / range * (1.0 - factor) + 1.0;
+    if (result < factor)
     {
-      return a6;
+      return factor;
     }
   }
 

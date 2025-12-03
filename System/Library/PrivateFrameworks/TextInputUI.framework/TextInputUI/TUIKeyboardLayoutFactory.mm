@@ -4,13 +4,13 @@
 + (id)layoutsRequiringStaticFallback;
 + (id)sharedKeyboardFactory;
 - (TUIKeyboardLayoutFactory)init;
-- (id)keyboardPrefixForWidth:(double)a3 andEdge:(BOOL)a4;
-- (id)keyboardSuffixForScreenDimensions:(CGSize)a3;
-- (id)keyboardWithName:(id)a3 inCache:(id)a4;
-- (void)_createDecoderFromFilename:(id)a3;
+- (id)keyboardPrefixForWidth:(double)width andEdge:(BOOL)edge;
+- (id)keyboardSuffixForScreenDimensions:(CGSize)dimensions;
+- (id)keyboardWithName:(id)name inCache:(id)cache;
+- (void)_createDecoderFromFilename:(id)filename;
 - (void)_createDecoderIfNecessary;
 - (void)dealloc;
-- (void)setData:(id)a3 forKeyboard:(id)a4;
+- (void)setData:(id)data forKeyboard:(id)keyboard;
 @end
 
 @implementation TUIKeyboardLayoutFactory
@@ -20,12 +20,12 @@
   v2 = TIGetMoltoCrescendoValue();
   if (v2)
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
   result = crescendoLayouts___layouts;
@@ -33,7 +33,7 @@
   {
     v5 = [MEMORY[0x1E695DFD8] setWithObjects:{@"AZERTY-Arabic", @"Dvorak", @"QWERTY-Arabic", @"QWERTY-Chickasaw", @"QWERTY-Choctaw", @"QWERTY-Maori", @"QWERTY-Mikmaw", @"QWERTY-Mvskoke", @"QWERTY-Lushootseed", @"QWERTY-Nez-Perce", @"QWERTY-Shawnee", @"Shawnee", @"Sami-Inari", @"Sami-Julev", @"Sami-Julev-Norway", @"Sami-Kildin", @"Sami-Northern", @"Sami-Pite", @"Sami-Skolt", @"Sami-Southern", @"Sami-Ume", @"Osage-QWERTY", @"Coptic", @"Mandaic", @"Mandaic-QWERTY", @"Mandaic-Alphabetic", @"Tamazight-Tifinagh", @"Tamazight-Tifinagh-Alphabetic", @"Thai-24-Key", @"QWERTY-Kabyle", @"AZERTY-Kabyle", @"Ingush", @"NKo", @"Wancho", @"Wancho-QWERTY", @"Rejang", @"Pahawh-Hmong", @"Yi", @"Inuktitut", @"QWERTY-Wolastoqey", @"Chuvash", @"QWERTY-Akan", @"QWERTY-Hausa", @"QWERTY-Yoruba", @"Bengali-Alphabetic", @"Gujarati-Alphabetic", @"Hindi-Alphabetic", @"Kannada-Alphabetic", @"Malayalam-Alphabetic", @"Marathi-Alphabetic", @"Oriya-Alphabetic", @"Punjabi-Alphabetic", @"Tamil-Alphabetic", @"Telugu-Alphabetic", @"Urdu-Alphabetic", @"Zhuyin-Grid", @"Zhuyin-Grid-Extended", @"Arabic-With-QWERTY", @"QWERTY-Wixarika", @"QWERTY-Chochenyo", @"Iskonawa-Alphabetic"}];
     crescendoLayouts___layouts = v5;
-    if (v3)
+    if (bOOLValue)
     {
       crescendoLayouts___layouts = [v5 setByAddingObjectsFromArray:&unk_1F03D8FA8];
     }
@@ -143,11 +143,11 @@ TUIKeyboardLayoutFactory *__49__TUIKeyboardLayoutFactory_sharedKeyboardFactory__
   }
 }
 
-- (void)setData:(id)a3 forKeyboard:(id)a4
+- (void)setData:(id)data forKeyboard:(id)keyboard
 {
   if ([(TUIKeyboardLayoutFactory *)self overlayDecoders])
   {
-    if (!a4)
+    if (!keyboard)
     {
       return;
     }
@@ -156,82 +156,82 @@ TUIKeyboardLayoutFactory *__49__TUIKeyboardLayoutFactory_sharedKeyboardFactory__
   else
   {
     -[TUIKeyboardLayoutFactory setOverlayDecoders:](self, "setOverlayDecoders:", [MEMORY[0x1E695DF90] dictionary]);
-    if (!a4)
+    if (!keyboard)
     {
       return;
     }
   }
 
-  if (a3)
+  if (data)
   {
     v7 = objc_alloc_init(TUIKBGraphSerialization);
-    [(TUIKBGraphSerialization *)v7 setSerializedData:a3];
+    [(TUIKBGraphSerialization *)v7 setSerializedData:data];
     -[TUIKBGraphSerialization setDeserializationCache:](v7, "setDeserializationCache:", [MEMORY[0x1E695DF90] dictionary]);
-    v8 = [(TUIKeyboardLayoutFactory *)self overlayDecoders];
+    overlayDecoders = [(TUIKeyboardLayoutFactory *)self overlayDecoders];
 
-    [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)overlayDecoders setObject:v7 forKeyedSubscript:keyboard];
   }
 
   else
   {
-    v9 = [(TUIKeyboardLayoutFactory *)self overlayDecoders];
+    overlayDecoders2 = [(TUIKeyboardLayoutFactory *)self overlayDecoders];
 
-    [(NSMutableDictionary *)v9 removeObjectForKey:a4];
+    [(NSMutableDictionary *)overlayDecoders2 removeObjectForKey:keyboard];
   }
 }
 
-- (id)keyboardSuffixForScreenDimensions:(CGSize)a3
+- (id)keyboardSuffixForScreenDimensions:(CGSize)dimensions
 {
-  if (a3.height < a3.width)
+  if (dimensions.height < dimensions.width)
   {
-    a3.width = a3.height;
+    dimensions.width = dimensions.height;
   }
 
-  width = a3.width;
-  v4 = [(TUIKeyboardLayoutFactory *)self decoder];
+  width = dimensions.width;
+  decoder = [(TUIKeyboardLayoutFactory *)self decoder];
   *&v5 = width;
 
-  return [(TUIKBGraphSerialization *)v4 keyboardSuffixForPortraitWidth:v5];
+  return [(TUIKBGraphSerialization *)decoder keyboardSuffixForPortraitWidth:v5];
 }
 
-- (id)keyboardPrefixForWidth:(double)a3 andEdge:(BOOL)a4
+- (id)keyboardPrefixForWidth:(double)width andEdge:(BOOL)edge
 {
-  v4 = a4;
+  edgeCopy = edge;
   [(TUIKeyboardLayoutFactory *)self _createDecoderIfNecessary];
   result = [(TUIKeyboardLayoutFactory *)self decoder];
   if (result)
   {
-    v8 = [(TUIKeyboardLayoutFactory *)self decoder];
+    decoder = [(TUIKeyboardLayoutFactory *)self decoder];
 
-    *&v9 = a3;
-    return [(TUIKBGraphSerialization *)v8 keyboardPrefixForWidth:v4 andEdge:v9];
+    *&v9 = width;
+    return [(TUIKBGraphSerialization *)decoder keyboardPrefixForWidth:edgeCopy andEdge:v9];
   }
 
   return result;
 }
 
-- (id)keyboardWithName:(id)a3 inCache:(id)a4
+- (id)keyboardWithName:(id)name inCache:(id)cache
 {
   overlayDecoders = self->_overlayDecoders;
-  if (overlayDecoders && (v8 = [(NSMutableDictionary *)overlayDecoders objectForKeyedSubscript:a3]) != 0)
+  if (overlayDecoders && (v8 = [(NSMutableDictionary *)overlayDecoders objectForKeyedSubscript:name]) != 0)
   {
 
-    return [v8 keyboardForName:a3];
+    return [v8 keyboardForName:name];
   }
 
   else
   {
-    if (!a4)
+    if (!cache)
     {
       if (![(TUIKeyboardLayoutFactory *)self internalCache])
       {
         -[TUIKeyboardLayoutFactory setInternalCache:](self, "setInternalCache:", [MEMORY[0x1E695DF90] dictionaryWithCapacity:100]);
       }
 
-      a4 = [(TUIKeyboardLayoutFactory *)self internalCache];
+      cache = [(TUIKeyboardLayoutFactory *)self internalCache];
     }
 
-    if ([a3 hasPrefix:@"Dynamic"])
+    if ([name hasPrefix:@"Dynamic"])
     {
       [(TUIKeyboardLayoutFactory *)self _createDecoderFromFilename:@"KBLayouts_Dynamic.dat"];
     }
@@ -258,20 +258,20 @@ TUIKeyboardLayoutFactory *__49__TUIKeyboardLayoutFactory_sharedKeyboardFactory__
     result = [(TUIKeyboardLayoutFactory *)self decoder];
     if (result)
     {
-      [(TUIKBGraphSerialization *)[(TUIKeyboardLayoutFactory *)self decoder] setDeserializationCache:a4];
-      return [(TUIKBGraphSerialization *)[(TUIKeyboardLayoutFactory *)self decoder] keyboardForName:a3];
+      [(TUIKBGraphSerialization *)[(TUIKeyboardLayoutFactory *)self decoder] setDeserializationCache:cache];
+      return [(TUIKBGraphSerialization *)[(TUIKeyboardLayoutFactory *)self decoder] keyboardForName:name];
     }
   }
 
   return result;
 }
 
-- (void)_createDecoderFromFilename:(id)a3
+- (void)_createDecoderFromFilename:(id)filename
 {
   decoder = self->_decoder;
   if (!decoder || [(TUIKBGraphSerialization *)decoder currentFileType]!= 3)
   {
-    v6 = [@"/System/Library/PrivateFrameworks/TextInputUI.framework" stringByAppendingPathComponent:a3];
+    v6 = [@"/System/Library/PrivateFrameworks/TextInputUI.framework" stringByAppendingPathComponent:filename];
     [(TUIKeyboardLayoutFactory *)self setDecoder:objc_alloc_init(TUIKBGraphSerialization)];
     v10 = 0;
     v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v6 options:8 error:&v10];

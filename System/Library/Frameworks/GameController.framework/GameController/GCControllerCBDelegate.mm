@@ -1,20 +1,20 @@
 @interface GCControllerCBDelegate
 - (GCControllerCBDelegate)init;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didRetrieveConnectedPeripherals:(id)a4;
-- (void)centralManager:(id)a3 didRetrievePeripherals:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didRetrieveConnectedPeripherals:(id)peripherals;
+- (void)centralManager:(id)manager didRetrievePeripherals:(id)peripherals;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)fireCompletionHandler;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverIncludedServicesForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
-- (void)startScanWithTimeout:(double)a3;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverIncludedServicesForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
+- (void)startScanWithTimeout:(double)timeout;
 - (void)stopScan;
 @end
 
@@ -74,7 +74,7 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
   return [v2 fireCompletionHandler];
 }
 
-- (void)startScanWithTimeout:(double)a3
+- (void)startScanWithTimeout:(double)timeout
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DEC8];
@@ -124,9 +124,9 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
     }
   }
 
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
-    v21 = dispatch_time(0, (a3 * 1000000000.0));
+    v21 = dispatch_time(0, (timeout * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__GCControllerCBDelegate_startScanWithTimeout___block_invoke;
@@ -138,10 +138,10 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  if ([v4 state] == 2)
+  stateCopy = state;
+  if ([stateCopy state] == 2)
   {
     if (gc_isInternalBuild())
     {
@@ -157,7 +157,7 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
     v6 = v11;
   }
 
-  else if ([v4 state] == 3)
+  else if ([stateCopy state] == 3)
   {
     if (gc_isInternalBuild())
     {
@@ -175,9 +175,9 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [v4 state];
+    state = [stateCopy state];
     v5 = s_cbDelegateQueue;
-    if (v7 > 4)
+    if (state > 4)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -201,54 +201,54 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
   dispatch_async(v5, v6);
 }
 
-- (void)centralManager:(id)a3 didRetrievePeripherals:(id)a4
+- (void)centralManager:(id)manager didRetrievePeripherals:(id)peripherals
 {
-  v4 = a4;
+  peripheralsCopy = peripherals;
   if (gc_isInternalBuild())
   {
     [GCControllerCBDelegate centralManager:didRetrievePeripherals:];
   }
 }
 
-- (void)centralManager:(id)a3 didRetrieveConnectedPeripherals:(id)a4
+- (void)centralManager:(id)manager didRetrieveConnectedPeripherals:(id)peripherals
 {
-  v4 = a4;
+  peripheralsCopy = peripherals;
   if (gc_isInternalBuild())
   {
     [GCControllerCBDelegate centralManager:didRetrieveConnectedPeripherals:];
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  iCopy = i;
+  managerCopy = manager;
   if (gc_isInternalBuild())
   {
     [GCControllerCBDelegate centralManager:didDiscoverPeripheral:advertisementData:RSSI:];
   }
 
-  [(NSMutableArray *)self->_foundPeripherals addObject:v10];
+  [(NSMutableArray *)self->_foundPeripherals addObject:peripheralCopy];
   v14 = MEMORY[0x1E695DF20];
   v15 = [MEMORY[0x1E696AD98] numberWithBool:1];
   v16 = [v14 dictionaryWithObject:v15 forKey:*MEMORY[0x1E695D228]];
 
-  [v13 connectPeripheral:v10 options:v16];
+  [managerCopy connectPeripheral:peripheralCopy options:v16];
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  peripheralCopy = peripheral;
   if (gc_isInternalBuild())
   {
     [GCControllerCBDelegate centralManager:didConnectPeripheral:];
   }
 
-  [(NSMutableArray *)self->_connectedPeripherals addObject:v5];
-  [v5 setDelegate:self];
+  [(NSMutableArray *)self->_connectedPeripherals addObject:peripheralCopy];
+  [peripheralCopy setDelegate:self];
   v6 = [MEMORY[0x1E695D2A0] UUIDWithString:@"1812"];
   v12[0] = v6;
   v7 = [MEMORY[0x1E695D2A0] UUIDWithString:@"180A"];
@@ -259,25 +259,25 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
   v12[3] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:4];
 
-  [v5 discoverServices:v10];
+  [peripheralCopy discoverServices:v10];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  peripheralCopy = peripheral;
   if (gc_isInternalBuild())
   {
-    [GCControllerCBDelegate peripheral:v4 didDiscoverServices:?];
+    [GCControllerCBDelegate peripheral:peripheralCopy didDiscoverServices:?];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 services];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  services = [peripheralCopy services];
+  v6 = [services countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -288,15 +288,15 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        [v4 discoverIncludedServices:0 forService:v10];
-        [v4 discoverCharacteristics:0 forService:v10];
+        [peripheralCopy discoverIncludedServices:0 forService:v10];
+        [peripheralCopy discoverCharacteristics:0 forService:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [services countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -305,22 +305,22 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)peripheral:(id)a3 didDiscoverIncludedServicesForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverIncludedServicesForService:(id)service error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
   if (gc_isInternalBuild())
   {
-    [GCControllerCBDelegate peripheral:v7 didDiscoverIncludedServicesForService:? error:?];
+    [GCControllerCBDelegate peripheral:serviceCopy didDiscoverIncludedServicesForService:? error:?];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v7 includedServices];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  includedServices = [serviceCopy includedServices];
+  v9 = [includedServices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -332,14 +332,14 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(includedServices);
         }
 
-        [v6 discoverCharacteristics:0 forService:*(*(&v14 + 1) + 8 * v12++)];
+        [peripheralCopy discoverCharacteristics:0 forService:*(*(&v14 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [includedServices countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -348,21 +348,21 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
   if (gc_isInternalBuild())
   {
-    [GCControllerCBDelegate peripheral:v7 didDiscoverCharacteristicsForService:? error:?];
+    [GCControllerCBDelegate peripheral:serviceCopy didDiscoverCharacteristicsForService:? error:?];
   }
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = [v7 characteristics];
+  obj = [serviceCopy characteristics];
   v8 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v8)
   {
@@ -379,9 +379,9 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v42 + 1) + 8 * v11);
-        v13 = [v7 UUID];
+        uUID = [serviceCopy UUID];
         v14 = [MEMORY[0x1E695D2A0] UUIDWithString:@"180F"];
-        v15 = [v13 isEqual:v14];
+        v15 = [uUID isEqual:v14];
 
         if (v15)
         {
@@ -390,13 +390,13 @@ uint64_t __34__GCControllerCBDelegate_stopScan__block_invoke(uint64_t a1)
             v16 = getGCLogger();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
-              v38 = [v12 UUID];
-              v17 = [v38 data];
-              v18 = [v12 UUID];
+              uUID2 = [v12 UUID];
+              data = [uUID2 data];
+              uUID3 = [v12 UUID];
               *buf = 138412546;
-              v47 = v17;
+              v47 = data;
               v48 = 2112;
-              v49 = v18;
+              v49 = uUID3;
               v19 = v16;
               v20 = "=battery=: (%@) %@ ";
               goto LABEL_28;
@@ -406,13 +406,13 @@ LABEL_29:
           }
 
 LABEL_18:
-          [v6 readValueForCharacteristic:v12];
+          [peripheralCopy readValueForCharacteristic:v12];
           goto LABEL_19;
         }
 
-        v21 = [v7 UUID];
+        uUID4 = [serviceCopy UUID];
         v22 = [MEMORY[0x1E695D2A0] UUIDWithString:@"180A"];
-        v23 = [v21 isEqual:v22];
+        v23 = [uUID4 isEqual:v22];
 
         if (v23)
         {
@@ -427,13 +427,13 @@ LABEL_18:
             goto LABEL_29;
           }
 
-          v38 = [v12 UUID];
-          v17 = [v38 data];
-          v18 = [v12 UUID];
+          uUID2 = [v12 UUID];
+          data = [uUID2 data];
+          uUID3 = [v12 UUID];
           *buf = 138412546;
-          v47 = v17;
+          v47 = data;
           v48 = 2112;
-          v49 = v18;
+          v49 = uUID3;
           v19 = v16;
           v20 = "=device info=: (%@) %@ ";
 LABEL_28:
@@ -442,9 +442,9 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v24 = [v7 UUID];
+        uUID5 = [serviceCopy UUID];
         v25 = [MEMORY[0x1E695D2A0] UUIDWithString:@"1812"];
-        v26 = [v24 isEqual:v25];
+        v26 = [uUID5 isEqual:v25];
 
         isInternalBuild = gc_isInternalBuild();
         if (v26)
@@ -460,13 +460,13 @@ LABEL_28:
             goto LABEL_29;
           }
 
-          v38 = [v12 UUID];
-          v17 = [v38 data];
-          v18 = [v12 UUID];
+          uUID2 = [v12 UUID];
+          data = [uUID2 data];
+          uUID3 = [v12 UUID];
           *buf = 138412546;
-          v47 = v17;
+          v47 = data;
           v48 = 2112;
-          v49 = v18;
+          v49 = uUID3;
           v19 = v16;
           v20 = "=hid=: (%@) %@ ";
           goto LABEL_28;
@@ -477,16 +477,16 @@ LABEL_28:
           v32 = getGCLogger();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
-            v40 = [v12 UUID];
-            v33 = [v40 data];
-            v37 = [v12 properties];
-            v34 = [v12 UUID];
+            uUID6 = [v12 UUID];
+            data2 = [uUID6 data];
+            properties = [v12 properties];
+            uUID7 = [v12 UUID];
             *buf = 138412802;
-            v47 = v33;
+            v47 = data2;
             v48 = 2048;
-            v49 = v37;
+            v49 = properties;
             v50 = 2112;
-            v51 = v34;
+            v51 = uUID7;
             _os_log_impl(&dword_1D2CD5000, v32, OS_LOG_TYPE_DEFAULT, "=misc=: (%@:0x%lx) %@ ", buf, 0x20u);
           }
         }
@@ -496,12 +496,12 @@ LABEL_28:
           v28 = getGCLogger();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v12 value];
+            value = [v12 value];
             v30 = objc_alloc(MEMORY[0x1E696AEC0]);
-            v39 = [v12 value];
-            v31 = [v30 initWithData:v39 encoding:4];
+            value2 = [v12 value];
+            v31 = [v30 initWithData:value2 encoding:4];
             *buf = 138412546;
-            v47 = v29;
+            v47 = value;
             v48 = 2112;
             v49 = v31;
             _os_log_impl(&dword_1D2CD5000, v28, OS_LOG_TYPE_DEFAULT, "(%@) '%@'", buf, 0x16u);
@@ -509,7 +509,7 @@ LABEL_28:
         }
 
 LABEL_19:
-        [v6 discoverDescriptorsForCharacteristic:v12];
+        [peripheralCopy discoverDescriptorsForCharacteristic:v12];
         ++v11;
       }
 
@@ -524,22 +524,22 @@ LABEL_19:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
   if (gc_isInternalBuild())
   {
-    [GCControllerCBDelegate peripheral:v7 didDiscoverDescriptorsForCharacteristic:? error:?];
+    [GCControllerCBDelegate peripheral:characteristicCopy didDiscoverDescriptorsForCharacteristic:? error:?];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v7 descriptors];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  descriptors = [characteristicCopy descriptors];
+  v9 = [descriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -551,14 +551,14 @@ LABEL_19:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(descriptors);
         }
 
-        [v6 readValueForDescriptor:*(*(&v14 + 1) + 8 * v12++)];
+        [peripheralCopy readValueForDescriptor:*(*(&v14 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [descriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -567,25 +567,25 @@ LABEL_19:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v5 = a4;
+  characteristicCopy = characteristic;
   if (gc_isInternalBuild())
   {
-    [GCControllerCBDelegate peripheral:v5 didUpdateValueForCharacteristic:? error:?];
+    [GCControllerCBDelegate peripheral:characteristicCopy didUpdateValueForCharacteristic:? error:?];
   }
 
-  v6 = [v5 UUID];
+  uUID = [characteristicCopy UUID];
   v7 = [MEMORY[0x1E695D2A0] UUIDWithString:@"2A19"];
-  v8 = [v6 isEqual:v7];
+  v8 = [uUID isEqual:v7];
 
   if (v8)
   {
-    v9 = [v5 value];
-    v10 = [v9 bytes];
+    value = [characteristicCopy value];
+    bytes = [value bytes];
     if (gc_isInternalBuild())
     {
-      [GCControllerCBDelegate peripheral:v10 didUpdateValueForCharacteristic:? error:?];
+      [GCControllerCBDelegate peripheral:bytes didUpdateValueForCharacteristic:? error:?];
     }
 
     if (gc_isInternalBuild())
@@ -601,34 +601,34 @@ LABEL_19:
       goto LABEL_10;
     }
 
-    [GCControllerCBDelegate peripheral:v5 didUpdateValueForCharacteristic:&v11 error:?];
-    v9 = v11;
+    [GCControllerCBDelegate peripheral:characteristicCopy didUpdateValueForCharacteristic:&v11 error:?];
+    value = v11;
   }
 
 LABEL_10:
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  descriptorCopy = descriptor;
   if (gc_isInternalBuild())
   {
-    [GCControllerCBDelegate peripheral:v5 didUpdateValueForDescriptor:? error:?];
+    [GCControllerCBDelegate peripheral:descriptorCopy didUpdateValueForDescriptor:? error:?];
   }
 
-  v6 = [v5 UUID];
+  uUID = [descriptorCopy UUID];
   v7 = [MEMORY[0x1E695D2A0] UUIDWithString:@"2908"];
-  v8 = [v6 isEqual:v7];
+  v8 = [uUID isEqual:v7];
 
   if (v8)
   {
-    v9 = [v5 value];
-    v10 = [v9 bytes];
-    if ([v9 length])
+    value = [descriptorCopy value];
+    bytes = [value bytes];
+    if ([value length])
     {
       v11 = 0;
-      v12 = (v10 + 1);
+      v12 = (bytes + 1);
       do
       {
         if (gc_isInternalBuild())
@@ -638,14 +638,14 @@ LABEL_10:
           {
             v16 = *v12 - 1;
             v17 = *(v12 - 1);
-            v18 = [v5 characteristic];
-            v14 = [v18 UUID];
+            characteristic = [descriptorCopy characteristic];
+            uUID2 = [characteristic UUID];
             *buf = 67109634;
             *&buf[4] = v17;
             v20 = 1024;
             v21 = v16;
             v22 = 2112;
-            v23 = v14;
+            v23 = uUID2;
             _os_log_impl(&dword_1D2CD5000, v13, OS_LOG_TYPE_DEFAULT, "Found HID report 0x%02x of type %d on char %@", buf, 0x18u);
           }
         }
@@ -654,7 +654,7 @@ LABEL_10:
         v12 += 2;
       }
 
-      while ([v9 length] > v11);
+      while ([value length] > v11);
     }
 
     goto LABEL_14;
@@ -662,36 +662,36 @@ LABEL_10:
 
   if (gc_isInternalBuild())
   {
-    [GCControllerCBDelegate peripheral:v5 didUpdateValueForDescriptor:buf error:?];
-    v9 = *buf;
+    [GCControllerCBDelegate peripheral:descriptorCopy didUpdateValueForDescriptor:buf error:?];
+    value = *buf;
 LABEL_14:
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (gc_isInternalBuild())
   {
     [GCControllerCBDelegate centralManager:didFailToConnectPeripheral:error:];
   }
 
-  [(NSMutableArray *)self->_foundPeripherals removeObject:v7];
+  [(NSMutableArray *)self->_foundPeripherals removeObject:peripheralCopy];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (gc_isInternalBuild())
   {
     [GCControllerCBDelegate centralManager:didDisconnectPeripheral:error:];
   }
 
-  [(NSMutableArray *)self->_connectedPeripherals removeObject:v7];
+  [(NSMutableArray *)self->_connectedPeripherals removeObject:peripheralCopy];
 }
 
 - (void)centralManagerDidUpdateState:.cold.1()

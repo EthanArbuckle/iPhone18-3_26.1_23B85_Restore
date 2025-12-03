@@ -1,14 +1,14 @@
 @interface AppProtectionShield.Coordinator
 - (_TtCV12ClarityBoard19AppProtectionShield11Coordinator)init;
-- (void)shieldViewUnlockButtonPressed:(id)a3;
+- (void)shieldViewUnlockButtonPressed:(id)pressed;
 @end
 
 @implementation AppProtectionShield.Coordinator
 
-- (void)shieldViewUnlockButtonPressed:(id)a3
+- (void)shieldViewUnlockButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_10004A374();
 }
 

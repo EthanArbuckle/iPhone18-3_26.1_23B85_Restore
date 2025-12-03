@@ -1,21 +1,21 @@
 @interface CNPhotoPickerSectionHeader
-+ (double)heightNeededForAccessibilityLayoutIncludingActionButton:(BOOL)a3;
-- (CNPhotoPickerSectionHeader)initWithFrame:(CGRect)a3;
-- (void)actionButtonPressed:(id)a3;
++ (double)heightNeededForAccessibilityLayoutIncludingActionButton:(BOOL)button;
+- (CNPhotoPickerSectionHeader)initWithFrame:(CGRect)frame;
+- (void)actionButtonPressed:(id)pressed;
 - (void)prepareForReuse;
 - (void)setupConstraints;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateDynamicStackViewProperties;
-- (void)updateStyle:(id)a3;
+- (void)updateStyle:(id)style;
 @end
 
 @implementation CNPhotoPickerSectionHeader
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CNPhotoPickerSectionHeader;
-  [(CNPhotoPickerSectionHeader *)&v4 traitCollectionDidChange:a3];
+  [(CNPhotoPickerSectionHeader *)&v4 traitCollectionDidChange:change];
   [(CNPhotoPickerSectionHeader *)self updateDynamicStackViewProperties];
 }
 
@@ -24,60 +24,60 @@
   v5.receiver = self;
   v5.super_class = CNPhotoPickerSectionHeader;
   [(CNPhotoPickerSectionHeader *)&v5 prepareForReuse];
-  v3 = [(CNPhotoPickerSectionHeader *)self titleLabel];
-  [v3 setText:0];
+  titleLabel = [(CNPhotoPickerSectionHeader *)self titleLabel];
+  [titleLabel setText:0];
 
-  v4 = [(CNPhotoPickerSectionHeader *)self actionButton];
-  [v4 setTitle:0 forState:0];
+  actionButton = [(CNPhotoPickerSectionHeader *)self actionButton];
+  [actionButton setTitle:0 forState:0];
 }
 
-- (void)actionButtonPressed:(id)a3
+- (void)actionButtonPressed:(id)pressed
 {
-  v4 = [(CNPhotoPickerSectionHeader *)self actionBlock];
+  actionBlock = [(CNPhotoPickerSectionHeader *)self actionBlock];
 
-  if (v4)
+  if (actionBlock)
   {
-    v5 = [(CNPhotoPickerSectionHeader *)self actionBlock];
-    v5[2]();
+    actionBlock2 = [(CNPhotoPickerSectionHeader *)self actionBlock];
+    actionBlock2[2]();
   }
 }
 
 - (void)updateDynamicStackViewProperties
 {
-  v3 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
-  v4 = [(CNPhotoPickerSectionHeader *)self stackView];
-  [v4 setAxis:v3];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  stackView = [(CNPhotoPickerSectionHeader *)self stackView];
+  [stackView setAxis:ab_preferredContentSizeCategoryIsAccessibilityCategory];
 
-  v5 = [(CNPhotoPickerSectionHeader *)self stackView];
-  [v5 setAlignment:v3];
+  stackView2 = [(CNPhotoPickerSectionHeader *)self stackView];
+  [stackView2 setAlignment:ab_preferredContentSizeCategoryIsAccessibilityCategory];
 }
 
 - (void)setupConstraints
 {
   v23[4] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(CNPhotoPickerSectionHeader *)self safeAreaLayoutGuide];
-  v22 = [v4 leadingAnchor];
+  safeAreaLayoutGuide = [(CNPhotoPickerSectionHeader *)self safeAreaLayoutGuide];
+  leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
 
-  v21 = [(CNPhotoPickerSectionHeader *)self stackView];
-  v20 = [v21 leadingAnchor];
-  v19 = [v20 constraintEqualToAnchor:v22];
+  stackView = [(CNPhotoPickerSectionHeader *)self stackView];
+  leadingAnchor2 = [stackView leadingAnchor];
+  v19 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor];
   v23[0] = v19;
-  v18 = [(CNPhotoPickerSectionHeader *)self stackView];
-  v16 = [v18 trailingAnchor];
-  v17 = [(CNPhotoPickerSectionHeader *)self safeAreaLayoutGuide];
-  v15 = [v17 trailingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  stackView2 = [(CNPhotoPickerSectionHeader *)self stackView];
+  trailingAnchor = [stackView2 trailingAnchor];
+  safeAreaLayoutGuide2 = [(CNPhotoPickerSectionHeader *)self safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[1] = v14;
-  v5 = [(CNPhotoPickerSectionHeader *)self stackView];
-  v6 = [v5 topAnchor];
-  v7 = [(CNPhotoPickerSectionHeader *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  stackView3 = [(CNPhotoPickerSectionHeader *)self stackView];
+  topAnchor = [stackView3 topAnchor];
+  topAnchor2 = [(CNPhotoPickerSectionHeader *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[2] = v8;
-  v9 = [(CNPhotoPickerSectionHeader *)self stackView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(CNPhotoPickerSectionHeader *)self bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  stackView4 = [(CNPhotoPickerSectionHeader *)self stackView];
+  bottomAnchor = [stackView4 bottomAnchor];
+  bottomAnchor2 = [(CNPhotoPickerSectionHeader *)self bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[3] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
   [v3 addObjectsFromArray:v13];
@@ -85,13 +85,13 @@
   [MEMORY[0x1E696ACD8] activateConstraints:v3];
 }
 
-- (void)updateStyle:(id)a3
+- (void)updateStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 backgroundColor];
-  if (v5)
+  styleCopy = style;
+  backgroundColor = [styleCopy backgroundColor];
+  if (backgroundColor)
   {
-    [(CNPhotoPickerSectionHeader *)self setBackgroundColor:v5];
+    [(CNPhotoPickerSectionHeader *)self setBackgroundColor:backgroundColor];
   }
 
   else
@@ -100,18 +100,18 @@
     [(CNPhotoPickerSectionHeader *)self setBackgroundColor:v6];
   }
 
-  v8 = [v4 textColor];
+  textColor = [styleCopy textColor];
 
-  v7 = [(CNPhotoPickerSectionHeader *)self titleLabel];
-  [v7 setTextColor:v8];
+  titleLabel = [(CNPhotoPickerSectionHeader *)self titleLabel];
+  [titleLabel setTextColor:textColor];
 }
 
-- (CNPhotoPickerSectionHeader)initWithFrame:(CGRect)a3
+- (CNPhotoPickerSectionHeader)initWithFrame:(CGRect)frame
 {
   v22[2] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = CNPhotoPickerSectionHeader;
-  v3 = [(CNPhotoPickerSectionHeader *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNPhotoPickerSectionHeader *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -119,8 +119,8 @@
     v3->_titleLabel = v4;
 
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [objc_opt_class() titleLabelFont];
-    [(UILabel *)v3->_titleLabel setFont:v6];
+    titleLabelFont = [objc_opt_class() titleLabelFont];
+    [(UILabel *)v3->_titleLabel setFont:titleLabelFont];
 
     [(UILabel *)v3->_titleLabel setAdjustsFontForContentSizeCategory:1];
     LODWORD(v7) = 1148846080;
@@ -130,12 +130,12 @@
     v3->_actionButton = v8;
 
     [(UIButton *)v3->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [objc_opt_class() actionButtonFont];
-    v11 = [(UIButton *)v3->_actionButton titleLabel];
-    [v11 setFont:v10];
+    actionButtonFont = [objc_opt_class() actionButtonFont];
+    titleLabel = [(UIButton *)v3->_actionButton titleLabel];
+    [titleLabel setFont:actionButtonFont];
 
-    v12 = [(UIButton *)v3->_actionButton titleLabel];
-    [v12 setAdjustsFontForContentSizeCategory:1];
+    titleLabel2 = [(UIButton *)v3->_actionButton titleLabel];
+    [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
     LODWORD(v13) = 1148846080;
     [(UIButton *)v3->_actionButton setContentHuggingPriority:0 forAxis:v13];
@@ -162,21 +162,21 @@
   return v3;
 }
 
-+ (double)heightNeededForAccessibilityLayoutIncludingActionButton:(BOOL)a3
++ (double)heightNeededForAccessibilityLayoutIncludingActionButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 scale];
+  buttonCopy = button;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
 
-  v6 = [a1 titleLabelFont];
-  [v6 lineHeight];
+  titleLabelFont = [self titleLabelFont];
+  [titleLabelFont lineHeight];
   UIRoundToScale();
   v8 = v7;
 
-  if (v3)
+  if (buttonCopy)
   {
-    v9 = [a1 actionButtonFont];
-    [v9 lineHeight];
+    actionButtonFont = [self actionButtonFont];
+    [actionButtonFont lineHeight];
     UIRoundToScale();
     v8 = v8 + v10;
   }

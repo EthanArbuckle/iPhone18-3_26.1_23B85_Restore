@@ -2,10 +2,10 @@
 + (id)sharedSingleton;
 - (MRUINotificationHelper)init;
 - (id)_init;
-- (void)clearRepairFollowUpWithUniqueID:(id)a3;
-- (void)createRepairFollowUpWithNotification:(BOOL)a3 actionURL:(id)a4 repairTitle:(id)a5 infoText:(id)a6 itemID:(id)a7 timeInterval:(double)a8 componentName:(id)a9;
-- (void)popUpNotificationNowWithMessage:(id)a3 title:(id)a4 openSensitiveURL:(id)a5 componentName:(id)a6 legacyPopup:(BOOL)a7;
-- (void)removeRepairNotificationsWithUniqueID:(id)a3;
+- (void)clearRepairFollowUpWithUniqueID:(id)d;
+- (void)createRepairFollowUpWithNotification:(BOOL)notification actionURL:(id)l repairTitle:(id)title infoText:(id)text itemID:(id)d timeInterval:(double)interval componentName:(id)name;
+- (void)popUpNotificationNowWithMessage:(id)message title:(id)title openSensitiveURL:(id)l componentName:(id)name legacyPopup:(BOOL)popup;
+- (void)removeRepairNotificationsWithUniqueID:(id)d;
 @end
 
 @implementation MRUINotificationHelper
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000968C;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EB70 != -1)
   {
     dispatch_once(&qword_10001EB70, block);
@@ -59,42 +59,42 @@
   return v2;
 }
 
-- (void)createRepairFollowUpWithNotification:(BOOL)a3 actionURL:(id)a4 repairTitle:(id)a5 infoText:(id)a6 itemID:(id)a7 timeInterval:(double)a8 componentName:(id)a9
+- (void)createRepairFollowUpWithNotification:(BOOL)notification actionURL:(id)l repairTitle:(id)title infoText:(id)text itemID:(id)d timeInterval:(double)interval componentName:(id)name
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
+  lCopy = l;
+  titleCopy = title;
+  textCopy = text;
+  dCopy = d;
+  nameCopy = name;
   v20 = qword_10001EB60;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000980C;
   block[3] = &unk_100018768;
-  v33 = a3;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
-  v30 = v18;
-  v31 = v19;
-  v32 = self;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
+  notificationCopy = notification;
+  v27 = lCopy;
+  v28 = titleCopy;
+  v29 = textCopy;
+  v30 = dCopy;
+  v31 = nameCopy;
+  selfCopy = self;
+  v21 = nameCopy;
+  v22 = dCopy;
+  v23 = textCopy;
+  v24 = titleCopy;
+  v25 = lCopy;
   dispatch_sync(v20, block);
 }
 
-- (void)popUpNotificationNowWithMessage:(id)a3 title:(id)a4 openSensitiveURL:(id)a5 componentName:(id)a6 legacyPopup:(BOOL)a7
+- (void)popUpNotificationNowWithMessage:(id)message title:(id)title openSensitiveURL:(id)l componentName:(id)name legacyPopup:(BOOL)popup
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = self;
-  objc_sync_enter(v16);
+  popupCopy = popup;
+  messageCopy = message;
+  titleCopy = title;
+  lCopy = l;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = +[NSUserDefaults groupStandardUserDefaults];
   v18 = [v17 BOOLForKey:@"settingsView"];
 
@@ -106,13 +106,13 @@
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, " value is:%d", buf, 8u);
   }
 
-  if (!v18 || v7)
+  if (!v18 || popupCopy)
   {
-    v20 = [(MRUINotificationHelper *)v16 isSetupStillRunning];
-    while ((v20 & 1) != 0)
+    isSetupStillRunning = [(MRUINotificationHelper *)selfCopy isSetupStillRunning];
+    while ((isSetupStillRunning & 1) != 0)
     {
       v21 = objc_autoreleasePoolPush();
-      v20 = [(MRUINotificationHelper *)v16 isSetupStillRunning];
+      isSetupStillRunning = [(MRUINotificationHelper *)selfCopy isSetupStillRunning];
       objc_autoreleasePoolPop(v21);
       sleep(3u);
     }
@@ -120,58 +120,58 @@
     v22 = handleForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      delay = v16->delay;
+      delay = selfCopy->delay;
       *buf = 138412546;
-      v35 = v13;
+      v35 = titleCopy;
       v36 = 1024;
       v37 = delay;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Displaying %@ notification after %d delay", buf, 0x12u);
     }
 
     v24 = dispatch_semaphore_create(0);
-    v25 = dispatch_time(0, 1000000000 * v16->delay);
+    v25 = dispatch_time(0, 1000000000 * selfCopy->delay);
     v26 = qword_10001EB60;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100009F60;
     block[3] = &unk_100018790;
-    v33 = v7;
+    v33 = popupCopy;
     v29 = v24;
-    v30 = v13;
-    v31 = v12;
-    v32 = v14;
+    v30 = titleCopy;
+    v31 = messageCopy;
+    v32 = lCopy;
     v27 = v24;
     dispatch_after(v25, v26, block);
     dispatch_semaphore_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
-    v16->delay += 5;
+    selfCopy->delay += 5;
   }
 
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeRepairNotificationsWithUniqueID:(id)a3
+- (void)removeRepairNotificationsWithUniqueID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = qword_10001EB60;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A624;
   block[3] = &unk_1000187B8;
-  v7 = v3;
-  v5 = v3;
+  v7 = dCopy;
+  v5 = dCopy;
   dispatch_sync(v4, block);
 }
 
-- (void)clearRepairFollowUpWithUniqueID:(id)a3
+- (void)clearRepairFollowUpWithUniqueID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = qword_10001EB60;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000AA50;
   block[3] = &unk_1000187B8;
-  v7 = v3;
-  v5 = v3;
+  v7 = dCopy;
+  v5 = dCopy;
   dispatch_sync(v4, block);
 }
 

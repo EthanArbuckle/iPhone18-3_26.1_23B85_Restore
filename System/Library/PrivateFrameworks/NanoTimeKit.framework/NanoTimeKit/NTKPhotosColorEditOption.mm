@@ -1,21 +1,21 @@
 @interface NTKPhotosColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)pigmentEditOption;
 @end
 
 @implementation NTKPhotosColorEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__NTKPhotosColorEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __52__NTKPhotosColorEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __52__NTKPhotosColorEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -49,16 +49,16 @@ id __52__NTKPhotosColorEditOption__orderedValuesForDevice___block_invoke(uint64_
   return v8;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___NTKPhotosColorEditOption;
-  v6 = objc_msgSendSuper2(&v13, sel___orderedValuesForDevice_, v4);
+  v6 = objc_msgSendSuper2(&v13, sel___orderedValuesForDevice_, deviceCopy);
   [v5 addObjectsFromArray:v6];
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___NTKPhotosColorEditOption;
   v7 = objc_msgSendSuper2(&v12, sel__thirdPartyValues);
   [v5 removeObjectsInArray:v7];
@@ -102,15 +102,15 @@ LABEL_6:
   return v5;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3 - 3000;
+  deviceCopy = device;
+  v7 = value - 3000;
   v8 = @"dual-tone-01";
   switch(v7)
   {
     case 0uLL:
-      v9 = [a1 originalColorName];
+      originalColorName = [self originalColorName];
       goto LABEL_17;
     case 1uLL:
       break;
@@ -172,9 +172,9 @@ LABEL_6:
       v8 = @"dual-tone-20";
       break;
     default:
-      v9 = [NTKFaceColorEditOption _snapshotKeyForValue:@"dual-tone-01" forDevice:v6];
+      originalColorName = [NTKFaceColorEditOption _snapshotKeyForValue:@"dual-tone-01" forDevice:deviceCopy];
 LABEL_17:
-      v8 = v9;
+      v8 = originalColorName;
       break;
   }
 
@@ -432,16 +432,16 @@ LABEL_25:
 
   if (!v8)
   {
-    v9 = [[NTKPigmentEditOption alloc] initWithOptionName:v4 collectionName:v3];
+    pigmentEditOption = [[NTKPigmentEditOption alloc] initWithOptionName:v4 collectionName:v3];
     goto LABEL_34;
   }
 
 LABEL_33:
   v12.receiver = self;
   v12.super_class = NTKPhotosColorEditOption;
-  v9 = [(NTKFaceColorEditOption *)&v12 pigmentEditOption];
+  pigmentEditOption = [(NTKFaceColorEditOption *)&v12 pigmentEditOption];
 LABEL_34:
-  v10 = v9;
+  v10 = pigmentEditOption;
 
   return v10;
 }

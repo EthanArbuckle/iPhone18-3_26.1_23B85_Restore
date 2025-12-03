@@ -1,38 +1,38 @@
 @interface HKSecondaryPairedDeviceConfiguration
-+ (id)secondaryPairedDeviceConfigurationWithNanoRegistryDeviceUUID:(id)a3 setupType:(unint64_t)a4 firstName:(id)a5 lastName:(id)a6;
-- (HKSecondaryPairedDeviceConfiguration)initWithCoder:(id)a3;
-- (id)_initWithNanoRegistryDeviceUUID:(id)a3 setupType:(unint64_t)a4 firstName:(id)a5 lastName:(id)a6;
++ (id)secondaryPairedDeviceConfigurationWithNanoRegistryDeviceUUID:(id)d setupType:(unint64_t)type firstName:(id)name lastName:(id)lastName;
+- (HKSecondaryPairedDeviceConfiguration)initWithCoder:(id)coder;
+- (id)_initWithNanoRegistryDeviceUUID:(id)d setupType:(unint64_t)type firstName:(id)name lastName:(id)lastName;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSecondaryPairedDeviceConfiguration
 
-+ (id)secondaryPairedDeviceConfigurationWithNanoRegistryDeviceUUID:(id)a3 setupType:(unint64_t)a4 firstName:(id)a5 lastName:(id)a6
++ (id)secondaryPairedDeviceConfigurationWithNanoRegistryDeviceUUID:(id)d setupType:(unint64_t)type firstName:(id)name lastName:(id)lastName
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[a1 alloc] _initWithNanoRegistryDeviceUUID:v12 setupType:a4 firstName:v11 lastName:v10];
+  lastNameCopy = lastName;
+  nameCopy = name;
+  dCopy = d;
+  v13 = [[self alloc] _initWithNanoRegistryDeviceUUID:dCopy setupType:type firstName:nameCopy lastName:lastNameCopy];
 
   return v13;
 }
 
-- (id)_initWithNanoRegistryDeviceUUID:(id)a3 setupType:(unint64_t)a4 firstName:(id)a5 lastName:(id)a6
+- (id)_initWithNanoRegistryDeviceUUID:(id)d setupType:(unint64_t)type firstName:(id)name lastName:(id)lastName
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v17.receiver = self;
   v17.super_class = HKSecondaryPairedDeviceConfiguration;
   v14 = [(HKSecondaryPairedDeviceConfiguration *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_nanoRegistryDeviceUUID, a3);
-    v15->_setupType = a4;
-    objc_storeStrong(&v15->_firstName, a5);
-    objc_storeStrong(&v15->_lastName, a6);
+    objc_storeStrong(&v14->_nanoRegistryDeviceUUID, d);
+    v15->_setupType = type;
+    objc_storeStrong(&v15->_firstName, name);
+    objc_storeStrong(&v15->_lastName, lastName);
   }
 
   return v15;
@@ -50,44 +50,44 @@
   return v8;
 }
 
-- (HKSecondaryPairedDeviceConfiguration)initWithCoder:(id)a3
+- (HKSecondaryPairedDeviceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = HKSecondaryPairedDeviceConfiguration;
   v5 = [(HKSecondaryPairedDeviceConfiguration *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     nanoRegistryDeviceUUID = v5->_nanoRegistryDeviceUUID;
     v5->_nanoRegistryDeviceUUID = v6;
 
-    v5->_setupType = [v4 decodeIntegerForKey:@"setupType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateOfBirth"];
+    v5->_setupType = [coderCopy decodeIntegerForKey:@"setupType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateOfBirth"];
     dateOfBirth = v5->_dateOfBirth;
     v5->_dateOfBirth = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
     dsid = v5->_dsid;
     v5->_dsid = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guardianFirstName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guardianFirstName"];
     guardianFirstName = v5->_guardianFirstName;
     v5->_guardianFirstName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guardianLastName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guardianLastName"];
     guardianLastName = v5->_guardianLastName;
     v5->_guardianLastName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guardianDSID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guardianDSID"];
     guardianDSID = v5->_guardianDSID;
     v5->_guardianDSID = v20;
   }
@@ -95,19 +95,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nanoRegistryDeviceUUID = self->_nanoRegistryDeviceUUID;
-  v5 = a3;
-  [v5 encodeObject:nanoRegistryDeviceUUID forKey:@"uuid"];
-  [v5 encodeObject:self->_dateOfBirth forKey:@"dateOfBirth"];
-  [v5 encodeInteger:self->_setupType forKey:@"setupType"];
-  [v5 encodeObject:self->_firstName forKey:@"firstName"];
-  [v5 encodeObject:self->_lastName forKey:@"lastName"];
-  [v5 encodeObject:self->_dsid forKey:@"dsid"];
-  [v5 encodeObject:self->_guardianFirstName forKey:@"guardianFirstName"];
-  [v5 encodeObject:self->_guardianLastName forKey:@"guardianLastName"];
-  [v5 encodeObject:self->_guardianDSID forKey:@"guardianDSID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nanoRegistryDeviceUUID forKey:@"uuid"];
+  [coderCopy encodeObject:self->_dateOfBirth forKey:@"dateOfBirth"];
+  [coderCopy encodeInteger:self->_setupType forKey:@"setupType"];
+  [coderCopy encodeObject:self->_firstName forKey:@"firstName"];
+  [coderCopy encodeObject:self->_lastName forKey:@"lastName"];
+  [coderCopy encodeObject:self->_dsid forKey:@"dsid"];
+  [coderCopy encodeObject:self->_guardianFirstName forKey:@"guardianFirstName"];
+  [coderCopy encodeObject:self->_guardianLastName forKey:@"guardianLastName"];
+  [coderCopy encodeObject:self->_guardianDSID forKey:@"guardianDSID"];
 }
 
 @end

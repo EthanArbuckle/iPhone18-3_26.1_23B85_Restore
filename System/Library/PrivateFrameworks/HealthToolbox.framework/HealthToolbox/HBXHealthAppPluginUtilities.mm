@@ -1,6 +1,6 @@
 @interface HBXHealthAppPluginUtilities
 + (id)defaultUtilities;
-- (HBXHealthAppPluginUtilities)initWithConfigurationOverride:(int64_t)a3;
+- (HBXHealthAppPluginUtilities)initWithConfigurationOverride:(int64_t)override;
 - (NSString)feedItemPluginsPath;
 - (NSString)systemPath;
 - (id)_rootPath;
@@ -16,12 +16,12 @@
   return v2;
 }
 
-- (HBXHealthAppPluginUtilities)initWithConfigurationOverride:(int64_t)a3
+- (HBXHealthAppPluginUtilities)initWithConfigurationOverride:(int64_t)override
 {
   result = [(HBXHealthAppPluginUtilities *)self init];
   if (result)
   {
-    result->_configurationOverride = a3;
+    result->_configurationOverride = override;
   }
 
   return result;
@@ -29,8 +29,8 @@
 
 - (NSString)systemPath
 {
-  v2 = [(HBXHealthAppPluginUtilities *)self _rootPath];
-  v3 = [v2 stringByAppendingPathComponent:@"/System"];
+  _rootPath = [(HBXHealthAppPluginUtilities *)self _rootPath];
+  v3 = [_rootPath stringByAppendingPathComponent:@"/System"];
 
   return v3;
 }
@@ -44,10 +44,10 @@
 
   else
   {
-    v4 = [(HBXHealthAppPluginUtilities *)self _simulatorPath];
-    if ([v4 length])
+    _simulatorPath = [(HBXHealthAppPluginUtilities *)self _simulatorPath];
+    if ([_simulatorPath length])
     {
-      v3 = v4;
+      v3 = _simulatorPath;
     }
 
     else
@@ -66,29 +66,29 @@
   {
     if (configurationOverride == 2)
     {
-      v3 = [(HBXHealthAppPluginUtilities *)self simulatorPathOverride];
+      simulatorPathOverride = [(HBXHealthAppPluginUtilities *)self simulatorPathOverride];
     }
 
     else
     {
-      v3 = 0;
+      simulatorPathOverride = 0;
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v5 = [v4 environment];
-    v3 = [v5 objectForKeyedSubscript:@"SIMULATOR_ROOT"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    environment = [processInfo environment];
+    simulatorPathOverride = [environment objectForKeyedSubscript:@"SIMULATOR_ROOT"];
   }
 
-  return v3;
+  return simulatorPathOverride;
 }
 
 - (NSString)feedItemPluginsPath
 {
-  v2 = [(HBXHealthAppPluginUtilities *)self _rootPath];
-  v3 = [v2 stringByAppendingPathComponent:@"/System/Library/Health/FeedItemPlugins"];
+  _rootPath = [(HBXHealthAppPluginUtilities *)self _rootPath];
+  v3 = [_rootPath stringByAppendingPathComponent:@"/System/Library/Health/FeedItemPlugins"];
 
   return v3;
 }

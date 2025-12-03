@@ -1,32 +1,32 @@
 @interface _ATXFeedback
 + (_ATXFeedback)sharedInstance;
 - (_ATXFeedback)init;
-- (_ATXFeedback)initWithDataStore:(id)a3 histogramManager:(id)a4;
+- (_ATXFeedback)initWithDataStore:(id)store histogramManager:(id)manager;
 - (void)decayCounts;
-- (void)doDecayAtTime:(double)a3;
-- (void)feedbackLaunchedWithConsumerType:(unint64_t)a3 forBundleId:(id)a4 rejected:(id)a5 explicitlyRejected:(id)a6 context:(id)a7;
+- (void)doDecayAtTime:(double)time;
+- (void)feedbackLaunchedWithConsumerType:(unint64_t)type forBundleId:(id)id rejected:(id)rejected explicitlyRejected:(id)explicitlyRejected context:(id)context;
 - (void)loadHistogramsInMemoryIfNecessary;
-- (void)populateFeedbackForConsumerType:(unint64_t)a3 forBundleId:(id)a4 withContext:(id)a5 forFeedbackCategory:(int64_t)a6;
-- (void)putFeedbackScoresForApps:(id)a3 intoScores:(double *)a4 confirms:(double *)a5 rejects:(double *)a6;
-- (void)putNopScoresForApps:(id)a3 into:(double *)a4 atTime:(double)a5;
-- (void)removeFeedbackForBundles:(id)a3;
+- (void)populateFeedbackForConsumerType:(unint64_t)type forBundleId:(id)id withContext:(id)context forFeedbackCategory:(int64_t)category;
+- (void)putFeedbackScoresForApps:(id)apps intoScores:(double *)scores confirms:(double *)confirms rejects:(double *)rejects;
+- (void)putNopScoresForApps:(id)apps into:(double *)into atTime:(double)time;
+- (void)removeFeedbackForBundles:(id)bundles;
 - (void)unloadCachedHistograms;
 @end
 
 @implementation _ATXFeedback
 
-- (_ATXFeedback)initWithDataStore:(id)a3 histogramManager:(id)a4
+- (_ATXFeedback)initWithDataStore:(id)store histogramManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  managerCopy = manager;
   v25.receiver = self;
   v25.super_class = _ATXFeedback;
   v8 = [(_ATXFeedback *)&v25 init];
   if (v8)
   {
-    if (v6)
+    if (storeCopy)
     {
-      v9 = v6;
+      v9 = storeCopy;
     }
 
     else
@@ -49,7 +49,7 @@
     v22 = &unk_278596DA0;
     objc_copyWeak(&v23, &location);
     [(_ATXInternalUninstallNotification *)v13 registerForNotificationsWithUninstallBlock:&v19];
-    objc_storeStrong(&v8->_histogramManager, a4);
+    objc_storeStrong(&v8->_histogramManager, manager);
     v14 = objc_alloc(MEMORY[0x277D425F8]);
     v15 = objc_opt_new();
     v16 = [v14 initWithGuardedData:{v15, v19, v20, v21, v22}];
@@ -112,7 +112,7 @@
   [(_ATXFeedback *)self doDecayAtTime:Current];
 }
 
-- (void)doDecayAtTime:(double)a3
+- (void)doDecayAtTime:(double)time
 {
   v6[0] = 0;
   v6[1] = v6;
@@ -123,7 +123,7 @@
   v5[1] = 3221225472;
   v5[2] = __30___ATXFeedback_doDecayAtTime___block_invoke;
   v5[3] = &unk_27859DBD0;
-  *&v5[5] = a3;
+  *&v5[5] = time;
   v5[4] = v6;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -134,21 +134,21 @@
   _Block_object_dispose(v6, 8);
 }
 
-- (void)feedbackLaunchedWithConsumerType:(unint64_t)a3 forBundleId:(id)a4 rejected:(id)a5 explicitlyRejected:(id)a6 context:(id)a7
+- (void)feedbackLaunchedWithConsumerType:(unint64_t)type forBundleId:(id)id rejected:(id)rejected explicitlyRejected:(id)explicitlyRejected context:(id)context
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v23 = v13;
-  if (v12)
+  idCopy = id;
+  rejectedCopy = rejected;
+  explicitlyRejectedCopy = explicitlyRejected;
+  contextCopy = context;
+  v23 = rejectedCopy;
+  if (idCopy)
   {
-    v16 = [v13 arrayByAddingObject:v12];
+    v16 = [rejectedCopy arrayByAddingObject:idCopy];
   }
 
   else
   {
-    v16 = v13;
+    v16 = rejectedCopy;
   }
 
   v17 = v16;
@@ -167,19 +167,19 @@
   v25[1] = 3221225472;
   v25[2] = __97___ATXFeedback_feedbackLaunchedWithConsumerType_forBundleId_rejected_explicitlyRejected_context___block_invoke;
   v25[3] = &unk_27859DC20;
-  v22 = v12;
+  v22 = idCopy;
   v26 = v22;
-  v27 = self;
-  v32[1] = a3;
+  selfCopy = self;
+  v32[1] = type;
   v30 = v36;
   objc_copyWeak(v32, &location);
-  v19 = v15;
+  v19 = contextCopy;
   v28 = v19;
-  v20 = v14;
+  v20 = explicitlyRejectedCopy;
   v29 = v20;
   v31 = v34;
   [(_ATXDataStore *)store enumerateStateForApps:v17 withGlobalBlock:0 thenWithPerAppBlock:v25];
-  if ([objc_opt_class() isWidgetOrSpotlight:a3])
+  if ([objc_opt_class() isWidgetOrSpotlight:type])
   {
     v21 = self->_store;
     v24[0] = MEMORY[0x277D85DD0];
@@ -188,10 +188,10 @@
     v24[3] = &unk_27859DC48;
     v24[4] = v36;
     v24[5] = v34;
-    [(_ATXDataStore *)v21 enumerateStateForApps:MEMORY[0x277CBEBF8] withGlobalBlock:v24 thenWithPerAppBlock:0, v22, v13];
+    [(_ATXDataStore *)v21 enumerateStateForApps:MEMORY[0x277CBEBF8] withGlobalBlock:v24 thenWithPerAppBlock:0, v22, rejectedCopy];
   }
 
-  if (v12)
+  if (idCopy)
   {
     ATXUpdatePredictionsDefaultInterval(2);
   }
@@ -202,43 +202,43 @@
   _Block_object_dispose(v36, 8);
 }
 
-- (void)populateFeedbackForConsumerType:(unint64_t)a3 forBundleId:(id)a4 withContext:(id)a5 forFeedbackCategory:(int64_t)a6
+- (void)populateFeedbackForConsumerType:(unint64_t)type forBundleId:(id)id withContext:(id)context forFeedbackCategory:(int64_t)category
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 timeContext];
-  v10 = [v9 date];
-  v11 = [v8 locationMotionContext];
-  v12 = +[_ATXActionUtils stringForCoarseTimePOWLocation:timeZone:coarseGeohash:](_ATXActionUtils, "stringForCoarseTimePOWLocation:timeZone:coarseGeohash:", v10, 0, [v11 coarseGeohash]);
+  idCopy = id;
+  contextCopy = context;
+  timeContext = [contextCopy timeContext];
+  date = [timeContext date];
+  locationMotionContext = [contextCopy locationMotionContext];
+  v12 = +[_ATXActionUtils stringForCoarseTimePOWLocation:timeZone:coarseGeohash:](_ATXActionUtils, "stringForCoarseTimePOWLocation:timeZone:coarseGeohash:", date, 0, [locationMotionContext coarseGeohash]);
 
-  v13 = [v8 timeContext];
-  v14 = [v13 date];
-  v15 = [v8 locationMotionContext];
-  v16 = +[_ATXActionUtils stringForSpecificTimeDOWLocation:timeZone:geohash:](_ATXActionUtils, "stringForSpecificTimeDOWLocation:timeZone:geohash:", v14, 0, [v15 geohash]);
+  timeContext2 = [contextCopy timeContext];
+  date2 = [timeContext2 date];
+  locationMotionContext2 = [contextCopy locationMotionContext];
+  v16 = +[_ATXActionUtils stringForSpecificTimeDOWLocation:timeZone:geohash:](_ATXActionUtils, "stringForSpecificTimeDOWLocation:timeZone:geohash:", date2, 0, [locationMotionContext2 geohash]);
 
-  v17 = [v8 timeContext];
-  v18 = [v17 date];
-  v19 = [_ATXActionUtils stringForTwoHourTimeWindow:v18 timeZone:0];
+  timeContext3 = [contextCopy timeContext];
+  date3 = [timeContext3 date];
+  v19 = [_ATXActionUtils stringForTwoHourTimeWindow:date3 timeZone:0];
 
-  v20 = [v8 timeContext];
-  v21 = [v20 date];
-  v22 = [_ATXActionUtils stringForDayOfWeek:v21 timeZone:0];
+  timeContext4 = [contextCopy timeContext];
+  date4 = [timeContext4 date];
+  v22 = [_ATXActionUtils stringForDayOfWeek:date4 timeZone:0];
 
-  v23 = [v8 locationMotionContext];
-  v24 = +[_ATXActionUtils stringForSpecificGeohash:](_ATXActionUtils, "stringForSpecificGeohash:", [v23 geohash]);
+  locationMotionContext3 = [contextCopy locationMotionContext];
+  v24 = +[_ATXActionUtils stringForSpecificGeohash:](_ATXActionUtils, "stringForSpecificGeohash:", [locationMotionContext3 geohash]);
 
-  v25 = [v8 locationMotionContext];
-  v26 = +[_ATXActionUtils stringForCoarseGeohash:](_ATXActionUtils, "stringForCoarseGeohash:", [v25 coarseGeohash]);
+  locationMotionContext4 = [contextCopy locationMotionContext];
+  v26 = +[_ATXActionUtils stringForCoarseGeohash:](_ATXActionUtils, "stringForCoarseGeohash:", [locationMotionContext4 coarseGeohash]);
 
   histogramState = self->_histogramState;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __92___ATXFeedback_populateFeedbackForConsumerType_forBundleId_withContext_forFeedbackCategory___block_invoke;
   v39[3] = &unk_27859DC70;
-  v48 = a3;
-  v49 = a6;
-  v40 = v7;
-  v41 = v8;
+  typeCopy = type;
+  categoryCopy = category;
+  v40 = idCopy;
+  v41 = contextCopy;
   v42 = v12;
   v43 = v16;
   v44 = v19;
@@ -251,41 +251,41 @@
   v31 = v19;
   v32 = v16;
   v33 = v12;
-  v34 = v8;
-  v35 = v7;
+  v34 = contextCopy;
+  v35 = idCopy;
   [(_PASLock *)histogramState runWithLockAcquired:v39];
 }
 
-- (void)putNopScoresForApps:(id)a3 into:(double *)a4 atTime:(double)a5
+- (void)putNopScoresForApps:(id)apps into:(double *)into atTime:(double)time
 {
-  v7 = a3;
-  if ([v7 count])
+  appsCopy = apps;
+  if ([appsCopy count])
   {
     v6 = 0;
     do
     {
-      a4[v6++] = 1.0;
+      into[v6++] = 1.0;
     }
 
-    while (v6 < [v7 count]);
+    while (v6 < [appsCopy count]);
   }
 }
 
-- (void)putFeedbackScoresForApps:(id)a3 intoScores:(double *)a4 confirms:(double *)a5 rejects:(double *)a6
+- (void)putFeedbackScoresForApps:(id)apps intoScores:(double *)scores confirms:(double *)confirms rejects:(double *)rejects
 {
-  v10 = a3;
+  appsCopy = apps;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
-  v19[3] = a4;
+  v19[3] = scores;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
-  v18[3] = a5;
+  v18[3] = confirms;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
-  v17[3] = a6;
+  v17[3] = rejects;
   +[_ATXFeedbackConstants baseAlpha];
   v12 = v11;
   +[_ATXFeedbackConstants baseBeta];
@@ -303,26 +303,26 @@
   v15[3] = &unk_27859DCC0;
   v15[4] = self;
   v15[5] = v19;
-  v15[8] = a4;
-  v15[9] = a5;
-  v15[10] = a6;
+  v15[8] = scores;
+  v15[9] = confirms;
+  v15[10] = rejects;
   v15[6] = v18;
   v15[7] = v17;
-  [(_ATXDataStore *)store enumerateStateForAppsReadOnly:v10 withGlobalBlock:v16 thenWithPerAppBlock:v15];
+  [(_ATXDataStore *)store enumerateStateForAppsReadOnly:appsCopy withGlobalBlock:v16 thenWithPerAppBlock:v15];
   _Block_object_dispose(v17, 8);
   _Block_object_dispose(v18, 8);
   _Block_object_dispose(v19, 8);
 }
 
-- (void)removeFeedbackForBundles:(id)a3
+- (void)removeFeedbackForBundles:(id)bundles
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bundlesCopy = bundles;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [bundlesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -334,14 +334,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bundlesCopy);
         }
 
         [(_ATXFeedback *)self removeFeedbackForBundle:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [bundlesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

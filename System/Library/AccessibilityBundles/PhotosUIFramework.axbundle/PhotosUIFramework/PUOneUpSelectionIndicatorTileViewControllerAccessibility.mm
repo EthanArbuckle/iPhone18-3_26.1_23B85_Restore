@@ -1,16 +1,16 @@
 @interface PUOneUpSelectionIndicatorTileViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateIfNeeded;
 @end
 
 @implementation PUOneUpSelectionIndicatorTileViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUOneUpSelectionIndicatorTileViewController" hasInstanceMethod:@"_button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpSelectionIndicatorTileViewController" hasInstanceMethod:@"_updateIfNeeded" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUOneUpSelectionIndicatorTileViewController" hasInstanceMethod:@"_button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpSelectionIndicatorTileViewController" hasInstanceMethod:@"_updateIfNeeded" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,40 +1,40 @@
 @interface UniCombineYCbCr
-- (UniCombineYCbCr)initWithDevice:(id)a3;
+- (UniCombineYCbCr)initWithDevice:(id)device;
 - (id)inputNameArray;
-- (id)outputImage:(id)a3;
+- (id)outputImage:(id)image;
 - (id)outputNameArray;
-- (id)run:(id)a3;
+- (id)run:(id)run;
 @end
 
 @implementation UniCombineYCbCr
 
-- (UniCombineYCbCr)initWithDevice:(id)a3
+- (UniCombineYCbCr)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = UniCombineYCbCr;
   v5 = [(UniKernel *)&v9 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDevice_(v5, v6, v4);
+    objc_msgSend_setDevice_(v5, v6, deviceCopy);
   }
 
   return v7;
 }
 
-- (id)run:(id)a3
+- (id)run:(id)run
 {
-  v3 = objc_msgSend_null(MEMORY[0x29EDB8E28], a2, a3);
+  v3 = objc_msgSend_null(MEMORY[0x29EDB8E28], a2, run);
   v7 = v3;
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v4, &v7, 1);
 
   return v5;
 }
 
-- (id)outputImage:(id)a3
+- (id)outputImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v7 = objc_msgSend_copy(self, v5, v6);
   v10 = objc_msgSend_inputs(v7, v8, v9);
   v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, *MEMORY[0x29EDB9238]);

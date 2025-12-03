@@ -1,15 +1,15 @@
 @interface STLocalOrganization
-+ (id)fetchOrCreateLocalOrganizationWithContext:(id)a3 error:(id *)a4;
++ (id)fetchOrCreateLocalOrganizationWithContext:(id)context error:(id *)error;
 + (id)fetchRequest;
 @end
 
 @implementation STLocalOrganization
 
-+ (id)fetchOrCreateLocalOrganizationWithContext:(id)a3 error:(id *)a4
++ (id)fetchOrCreateLocalOrganizationWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 fetchRequest];
-  v8 = [v6 executeFetchRequest:v7 error:a4];
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  v8 = [contextCopy executeFetchRequest:fetchRequest error:error];
   v9 = v8;
   if (v8)
   {
@@ -22,31 +22,31 @@
       }
     }
 
-    v11 = [v9 firstObject];
-    if (!v11)
+    firstObject = [v9 firstObject];
+    if (!firstObject)
     {
-      v11 = [[STLocalOrganization alloc] initWithContext:v6];
+      firstObject = [[STLocalOrganization alloc] initWithContext:contextCopy];
     }
 
-    v12 = [(STLocalOrganization *)v11 settings];
-    if (!v12)
+    settings = [(STLocalOrganization *)firstObject settings];
+    if (!settings)
     {
-      v12 = [[STLocalOrganizationSettings alloc] initWithContext:v6];
-      [(STLocalOrganizationSettings *)v12 setOrganization:v11];
+      settings = [[STLocalOrganizationSettings alloc] initWithContext:contextCopy];
+      [(STLocalOrganizationSettings *)settings setOrganization:firstObject];
     }
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
 + (id)fetchRequest
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___STLocalOrganization;
   v2 = objc_msgSendSuper2(&v4, sel_fetchRequest);
 

@@ -1,15 +1,15 @@
 @interface PXViewControllerEventTracker
 - (PXAnonymousViewController)currentViewController;
 - (PXViewControllerEventTracker)init;
-- (PXViewControllerEventTracker)initWithViewName:(id)a3;
+- (PXViewControllerEventTracker)initWithViewName:(id)name;
 - (void)_invalidateIsViewVisible;
 - (void)_updateIsViewVisible;
 - (void)didPerformChanges;
-- (void)logViewControllerDidAppear:(id)a3;
-- (void)logViewControllerDidDisappear:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCurrentViewController:(id)a3;
-- (void)setIsViewVisible:(BOOL)a3;
+- (void)logViewControllerDidAppear:(id)appear;
+- (void)logViewControllerDidDisappear:(id)disappear;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCurrentViewController:(id)controller;
+- (void)setIsViewVisible:(BOOL)visible;
 @end
 
 @implementation PXViewControllerEventTracker
@@ -23,8 +23,8 @@
   if (v2)
   {
     [(PXViewControllerEventTracker *)v2 registerChangeObserver:v2 context:EventTrackerObserverContext_238383];
-    v4 = [(PXUserInterfaceElementEventTracker *)v3 updater];
-    [v4 addUpdateSelector:sel__updateIsViewVisible];
+    updater = [(PXUserInterfaceElementEventTracker *)v3 updater];
+    [updater addUpdateSelector:sel__updateIsViewVisible];
   }
 
   return v3;
@@ -35,8 +35,8 @@
   v4.receiver = self;
   v4.super_class = PXViewControllerEventTracker;
   [(PXUserInterfaceElementEventTracker *)&v4 didPerformChanges];
-  v3 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (PXAnonymousViewController)currentViewController
@@ -48,16 +48,16 @@
 
 - (void)_invalidateIsViewVisible
 {
-  v2 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsViewVisible];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsViewVisible];
 }
 
 - (void)_updateIsViewVisible
 {
   if ([(PXUserInterfaceElementEventTracker *)self isVisible])
   {
-    v3 = [(PXViewControllerEventTracker *)self currentViewController];
-    [(PXViewControllerEventTracker *)self setIsViewVisible:v3 != 0];
+    currentViewController = [(PXViewControllerEventTracker *)self currentViewController];
+    [(PXViewControllerEventTracker *)self setIsViewVisible:currentViewController != 0];
   }
 
   else
@@ -67,20 +67,20 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (EventTrackerObserverContext_238383 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (EventTrackerObserverContext_238383 != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXViewControllerEventTracker.m" lineNumber:134 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXViewControllerEventTracker.m" lineNumber:134 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -91,17 +91,17 @@
   }
 }
 
-- (void)logViewControllerDidDisappear:(id)a3
+- (void)logViewControllerDidDisappear:(id)disappear
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXViewControllerEventTracker *)self currentViewController];
-  if (v5)
+  disappearCopy = disappear;
+  currentViewController = [(PXViewControllerEventTracker *)self currentViewController];
+  if (currentViewController)
   {
-    v6 = v5;
-    v7 = [(PXViewControllerEventTracker *)self currentViewController];
+    v6 = currentViewController;
+    currentViewController2 = [(PXViewControllerEventTracker *)self currentViewController];
 
-    if (v7 != v4)
+    if (currentViewController2 != disappearCopy)
     {
       PXAssertGetLog();
     }
@@ -113,18 +113,18 @@
   v22[3] = &unk_1E774C5F8;
   v22[4] = self;
   [(PXViewControllerEventTracker *)self performChanges:v22];
-  v8 = [(PXViewControllerEventTracker *)self viewName];
-  if (v8)
+  viewName = [(PXViewControllerEventTracker *)self viewName];
+  if (viewName)
   {
-    v9 = [(PXViewControllerEventTracker *)self viewSignpost];
-    if (v9)
+    viewSignpost = [(PXViewControllerEventTracker *)self viewSignpost];
+    if (viewSignpost)
     {
-      v10 = v9;
+      v10 = viewSignpost;
       v11 = MEMORY[0x1E6991F28];
       v12 = *MEMORY[0x1E6991E90];
       v25 = *MEMORY[0x1E6991E20];
       v13 = v25;
-      v26 = v8;
+      v26 = viewName;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v15 = [(PXUserInterfaceElementEventTracker *)self finalPayloadWithPayload:v14];
       [v11 endSignpost:v10 forEventName:v12 withPayload:v15];
@@ -134,7 +134,7 @@
       v18 = *MEMORY[0x1E6991E58];
       v23[0] = v13;
       v23[1] = v18;
-      v24[0] = v8;
+      v24[0] = viewName;
       v19 = [MEMORY[0x1E696AD98] numberWithLongLong:v10];
       v24[1] = v19;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -154,17 +154,17 @@ uint64_t __62__PXViewControllerEventTracker_logViewControllerDidDisappear___bloc
   return [v2 setCurrentViewController:0];
 }
 
-- (void)logViewControllerDidAppear:(id)a3
+- (void)logViewControllerDidAppear:(id)appear
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXViewControllerEventTracker *)self currentViewController];
-  if (v5)
+  appearCopy = appear;
+  currentViewController = [(PXViewControllerEventTracker *)self currentViewController];
+  if (currentViewController)
   {
-    v6 = v5;
-    v7 = [(PXViewControllerEventTracker *)self currentViewController];
+    v6 = currentViewController;
+    currentViewController2 = [(PXViewControllerEventTracker *)self currentViewController];
 
-    if (v7 != v4)
+    if (currentViewController2 != appearCopy)
     {
       PXAssertGetLog();
     }
@@ -174,8 +174,8 @@ uint64_t __62__PXViewControllerEventTracker_logViewControllerDidDisappear___bloc
   v17 = 3221225472;
   v18 = __59__PXViewControllerEventTracker_logViewControllerDidAppear___block_invoke;
   v19 = &unk_1E77498F8;
-  v20 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = appearCopy;
   v21 = v8;
   [(PXViewControllerEventTracker *)self performChanges:&v16];
   v9 = [(PXViewControllerEventTracker *)self viewName:v16];
@@ -219,9 +219,9 @@ uint64_t __59__PXViewControllerEventTracker_logViewControllerDidAppear___block_i
   return [v2 setCurrentViewController:v3];
 }
 
-- (void)setCurrentViewController:(id)a3
+- (void)setCurrentViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_currentViewController);
 
   v5 = obj;
@@ -234,22 +234,22 @@ uint64_t __59__PXViewControllerEventTracker_logViewControllerDidAppear___block_i
   }
 }
 
-- (void)setIsViewVisible:(BOOL)a3
+- (void)setIsViewVisible:(BOOL)visible
 {
-  if (self->_isViewVisible != a3)
+  if (self->_isViewVisible != visible)
   {
-    self->_isViewVisible = a3;
+    self->_isViewVisible = visible;
     [(PXViewControllerEventTracker *)self signalChange:8];
   }
 }
 
-- (PXViewControllerEventTracker)initWithViewName:(id)a3
+- (PXViewControllerEventTracker)initWithViewName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(PXViewControllerEventTracker *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     viewName = v5->_viewName;
     v5->_viewName = v6;
   }

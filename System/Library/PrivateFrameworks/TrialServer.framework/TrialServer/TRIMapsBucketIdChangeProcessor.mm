@@ -1,41 +1,41 @@
 @interface TRIMapsBucketIdChangeProcessor
-+ (void)processMapsBucketIdChangeIfNecessaryForBucketId:(id)a3 withServerContext:(id)a4 withTaskQueue:(id)a5;
++ (void)processMapsBucketIdChangeIfNecessaryForBucketId:(id)id withServerContext:(id)context withTaskQueue:(id)queue;
 @end
 
 @implementation TRIMapsBucketIdChangeProcessor
 
-+ (void)processMapsBucketIdChangeIfNecessaryForBucketId:(id)a3 withServerContext:(id)a4 withTaskQueue:(id)a5
++ (void)processMapsBucketIdChangeIfNecessaryForBucketId:(id)id withServerContext:(id)context withTaskQueue:(id)queue
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  contextCopy = context;
+  queueCopy = queue;
   v10 = TRILogCategory_Server();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v20 = 138412290;
-    v21 = v7;
+    v21 = idCopy;
     _os_log_impl(&dword_26F567000, v10, OS_LOG_TYPE_INFO, "Maps: bucket id: %@", &v20, 0xCu);
   }
 
-  v11 = [v8 keyValueStore];
-  v12 = [TRIPersistentUserSettings settingsWithKeyValueStore:v11];
+  keyValueStore = [contextCopy keyValueStore];
+  v12 = [TRIPersistentUserSettings settingsWithKeyValueStore:keyValueStore];
 
-  v13 = [v12 persistedMapsBucketId];
+  persistedMapsBucketId = [v12 persistedMapsBucketId];
   v14 = TRILogCategory_Server();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v20 = 138412290;
-    v21 = v13;
+    v21 = persistedMapsBucketId;
     _os_log_debug_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEBUG, "Persisted Maps Bucket Id: %@", &v20, 0xCu);
   }
 
-  [v7 unsignedIntegerValue];
-  v15 = [v13 unsignedIntValue];
-  if (v15 != [v7 unsignedIntValue])
+  [idCopy unsignedIntegerValue];
+  unsignedIntValue = [persistedMapsBucketId unsignedIntValue];
+  if (unsignedIntValue != [idCopy unsignedIntValue])
   {
-    [v12 persistMapsBucketId:v7];
-    [TRISystemConfiguration updateSystemInfoUsingContext:v8];
+    [v12 persistMapsBucketId:idCopy];
+    [TRISystemConfiguration updateSystemInfoUsingContext:contextCopy];
     v16 = TRILogCategory_Server();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -45,7 +45,7 @@
 
     v17 = +[TRIRetargetAllTask task];
     v18 = +[TRITaskQueuingOptions defaultOptionsWithIgnoreDuplicates];
-    [v9 addTask:v17 options:v18];
+    [queueCopy addTask:v17 options:v18];
   }
 
   v19 = *MEMORY[0x277D85DE8];

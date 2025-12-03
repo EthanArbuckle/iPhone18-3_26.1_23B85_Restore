@@ -8,18 +8,18 @@
 
 - (id)primaryBrandColor
 {
-  v1 = [a1 brand];
-  v2 = [v1 primaryBrandColor];
+  brand = [self brand];
+  primaryBrandColor = [brand primaryBrandColor];
 
-  return v2;
+  return primaryBrandColor;
 }
 
 - (id)secondaryBrandColor
 {
-  v1 = [a1 brand];
-  v2 = [v1 secondaryBrandColor];
+  brand = [self brand];
+  secondaryBrandColor = [brand secondaryBrandColor];
 
-  return v2;
+  return secondaryBrandColor;
 }
 
 + (id)makeBrandPlacecardForIMBrand:()ChatKit
@@ -32,9 +32,9 @@
   }
 
   v5 = makeBrandPlacecardForIMBrand__BSBrandClass;
-  v6 = [v4 brand];
+  brand = [v4 brand];
 
-  v7 = [v5 makeBrandPlacecardForBrand:v6];
+  v7 = [v5 makeBrandPlacecardForBrand:brand];
 
   return v7;
 }

@@ -1,9 +1,9 @@
 @interface FMDPreferencesMgr
 + (BOOL)accessibilityFontSizeEnabled;
-+ (id)trackingInfoForType:(id)a3;
-+ (void)setFMIPWipeLostModeInfo:(id)a3;
-+ (void)setLostModeInfo:(id)a3;
-+ (void)setTrackingInfo:(id)a3 forType:(id)a4;
++ (id)trackingInfoForType:(id)type;
++ (void)setFMIPWipeLostModeInfo:(id)info;
++ (void)setLostModeInfo:(id)info;
++ (void)setTrackingInfo:(id)info forType:(id)type;
 @end
 
 @implementation FMDPreferencesMgr
@@ -25,41 +25,41 @@
   return v4;
 }
 
-+ (void)setLostModeInfo:(id)a3
++ (void)setLostModeInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   _CFPreferencesSetDaemonCacheEnabled();
-  [FMPreferencesUtil setDictionary:v3 forKey:@"FMIPLostModeInfo" inDomain:kFMDPublicNotBackedUpPrefDomain];
+  [FMPreferencesUtil setDictionary:infoCopy forKey:@"FMIPLostModeInfo" inDomain:kFMDPublicNotBackedUpPrefDomain];
 
   _CFPreferencesSetDaemonCacheEnabled();
 }
 
-+ (id)trackingInfoForType:(id)a3
++ (id)trackingInfoForType:(id)type
 {
-  v3 = [NSString stringWithFormat:@"%@%@", off_1003135D0, a3];
-  v4 = [FMPreferencesUtil dictionaryForKey:v3 inDomain:kFMDNotBackedUpPrefDomain];
+  type = [NSString stringWithFormat:@"%@%@", off_1003135D0, type];
+  v4 = [FMPreferencesUtil dictionaryForKey:type inDomain:kFMDNotBackedUpPrefDomain];
 
   return v4;
 }
 
-+ (void)setTrackingInfo:(id)a3 forType:(id)a4
++ (void)setTrackingInfo:(id)info forType:(id)type
 {
   v5 = off_1003135D0;
-  v6 = a3;
-  v7 = [NSString stringWithFormat:@"%@%@", v5, a4];
-  [FMPreferencesUtil setDictionary:v6 forKey:v7 inDomain:kFMDNotBackedUpPrefDomain];
+  infoCopy = info;
+  type = [NSString stringWithFormat:@"%@%@", v5, type];
+  [FMPreferencesUtil setDictionary:infoCopy forKey:type inDomain:kFMDNotBackedUpPrefDomain];
 }
 
-+ (void)setFMIPWipeLostModeInfo:(id)a3
++ (void)setFMIPWipeLostModeInfo:(id)info
 {
   v3 = kFMDPostWipePrefDomain;
-  v4 = a3;
+  infoCopy = info;
   [FMPreferencesUtil synchronizeDomain:v3];
   v7 = [FMPreferencesUtil dictionaryForKey:@"FMIPWipeLostModeInfo" inDomain:kFMDPostWipePrefDomain];
-  [FMPreferencesUtil setDictionary:v4 forKey:@"FMIPWipeLostModeInfo" inDomain:kFMDPostWipePrefDomain];
+  [FMPreferencesUtil setDictionary:infoCopy forKey:@"FMIPWipeLostModeInfo" inDomain:kFMDPostWipePrefDomain];
 
   v5 = v7;
-  if (!v4 && v7)
+  if (!infoCopy && v7)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, kLostModeChangedRestrictedNotification, 0, 0, 1u);

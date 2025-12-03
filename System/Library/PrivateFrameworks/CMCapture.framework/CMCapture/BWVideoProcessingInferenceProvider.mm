@@ -1,32 +1,32 @@
 @interface BWVideoProcessingInferenceProvider
-- (BWVideoProcessingInferenceProvider)initWithType:(int)a3 analysisType:(unint64_t)a4 executionTarget:(int)a5 schedulerPriority:(unsigned int)a6 preventionReasons:(id)a7 resourceProvider:(id)a8;
-- (id)bindOutputMetadataKeys:(id)a3;
-- (id)bindVideoInputFromAttachedMediaUsingKey:(id)a3 preparedByAttachedMediaKey:(id)a4 withVideoFormatProvider:(id)a5;
+- (BWVideoProcessingInferenceProvider)initWithType:(int)type analysisType:(unint64_t)analysisType executionTarget:(int)target schedulerPriority:(unsigned int)priority preventionReasons:(id)reasons resourceProvider:(id)provider;
+- (id)bindOutputMetadataKeys:(id)keys;
+- (id)bindVideoInputFromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider;
 - (id)newStorage;
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6;
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler;
 - (int)prepareForExecution;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)reconcileWithPlaceholderProvider:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)reconcileWithPlaceholderProvider:(id)provider;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
 - (void)dealloc;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWVideoProcessingInferenceProvider
 
-- (BWVideoProcessingInferenceProvider)initWithType:(int)a3 analysisType:(unint64_t)a4 executionTarget:(int)a5 schedulerPriority:(unsigned int)a6 preventionReasons:(id)a7 resourceProvider:(id)a8
+- (BWVideoProcessingInferenceProvider)initWithType:(int)type analysisType:(unint64_t)analysisType executionTarget:(int)target schedulerPriority:(unsigned int)priority preventionReasons:(id)reasons resourceProvider:(id)provider
 {
   v15.receiver = self;
   v15.super_class = BWVideoProcessingInferenceProvider;
-  v12 = [(BWVideoProcessingInferenceProvider *)&v15 init:*&a3];
+  v12 = [(BWVideoProcessingInferenceProvider *)&v15 init:*&type];
   v13 = v12;
   if (v12)
   {
-    v12->_type = a3;
-    v12->_executionTarget = a5;
-    v12->_preventionReasons = [a7 copy];
-    v13->_analysisType = a4;
+    v12->_type = type;
+    v12->_executionTarget = target;
+    v12->_preventionReasons = [reasons copy];
+    v13->_analysisType = analysisType;
     v13->_inputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v13->_outputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v13->_cloneVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -46,13 +46,13 @@
   [(BWVideoProcessingInferenceProvider *)&v3 dealloc];
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
@@ -65,23 +65,23 @@
   return [(BWVideoProcessingInferenceStorage *)v3 initWithRequirementsNeedingPixelBuffers:inputVideoRequirements requirementsNeedingPixelBufferPools:outputVideoRequirements];
 }
 
-- (id)bindVideoInputFromAttachedMediaUsingKey:(id)a3 preparedByAttachedMediaKey:(id)a4 withVideoFormatProvider:(id)a5
+- (id)bindVideoInputFromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider
 {
-  v6 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:a3 preparedByAttachedMediaKey:a3 videoFormatProvider:a5];
+  v6 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:key preparedByAttachedMediaKey:key videoFormatProvider:provider];
   [(NSMutableArray *)self->_inputVideoRequirements addObject:v6];
 
   return v6;
 }
 
-- (id)bindOutputMetadataKeys:(id)a3
+- (id)bindOutputMetadataKeys:(id)keys
 {
-  v4 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a3];
+  v4 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v4];
 
   return v4;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
   v21 = 0;
   v22 = &v21;
@@ -95,21 +95,21 @@
 
   if ([(NSMutableArray *)self->_inputVideoRequirements count]== 1)
   {
-    v12 = [a4 pixelBufferForRequirement:{-[NSMutableArray firstObject](self->_inputVideoRequirements, "firstObject")}];
+    v12 = [storage pixelBufferForRequirement:{-[NSMutableArray firstObject](self->_inputVideoRequirements, "firstObject")}];
     if (v12)
     {
       memset(&v20, 0, sizeof(v20));
-      CMSampleBufferGetPresentationTimeStamp(&v20, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v20, buffer);
       memset(&v19, 0, sizeof(v19));
-      CMSampleBufferGetDuration(&v19, a3);
+      CMSampleBufferGetDuration(&v19, buffer);
       vcpSession = self->_vcpSession;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler___block_invoke;
       v18[3] = &unk_1E799A048;
-      v18[4] = a4;
+      v18[4] = storage;
       v18[5] = self;
-      v18[6] = a7;
+      v18[6] = handler;
       v18[7] = &v21;
       v17 = v20;
       v16 = v19;
@@ -125,7 +125,7 @@
     goto LABEL_6;
   }
 
-  (*(a7 + 2))(a7);
+  (*(handler + 2))(handler);
   if (*v11 == 1)
   {
     kdebug_trace();
@@ -185,7 +185,7 @@ uint64_t __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingSt
   return result;
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   v9 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -213,8 +213,8 @@ uint64_t __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingSt
           objc_enumerationMutation(outputMetadataRequirements);
         }
 
-        v15 = [a4 newMetadataDictionarySatisfyingRequirement:*(*(&v17 + 1) + 8 * v14)];
-        [a3 addEntriesFromDictionary:v15];
+        v15 = [storage newMetadataDictionarySatisfyingRequirement:*(*(&v17 + 1) + 8 * v14)];
+        [dictionary addEntriesFromDictionary:v15];
 
         ++v14;
       }
@@ -276,7 +276,7 @@ uint64_t __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingSt
   return v8;
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -297,7 +297,7 @@ uint64_t __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingSt
   analysisType = self->_analysisType;
   v19[0] = getVCPCaptureAnalysisDispatchQueuePropertyKey();
   v19[1] = @"turboMode";
-  v20[0] = a3;
+  v20[0] = queue;
   v20[1] = MEMORY[0x1E695E118];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v10 = *(MEMORY[0x1E695EFD0] + 16);
@@ -325,38 +325,38 @@ uint64_t __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingSt
   return v14;
 }
 
-- (int)reconcileWithPlaceholderProvider:(id)a3
+- (int)reconcileWithPlaceholderProvider:(id)provider
 {
   type = self->_type;
-  if (type != [a3 type])
+  if (type != [provider type])
   {
     return -31783;
   }
 
-  [a3 customInferenceIdentifier];
+  [provider customInferenceIdentifier];
   if (![OUTLINED_FUNCTION_8() isEqualToString:?])
   {
     return -31783;
   }
 
   [(NSMutableArray *)self->_inputVideoRequirements removeAllObjects];
-  [a3 inputVideoRequirements];
+  [provider inputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_inputMetadataRequirements removeAllObjects];
-  [a3 inputMetadataRequirements];
+  [provider inputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputVideoRequirements removeAllObjects];
-  [a3 outputVideoRequirements];
+  [provider outputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputMetadataRequirements removeAllObjects];
-  [a3 outputMetadataRequirements];
+  [provider outputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_cloneVideoRequirements removeAllObjects];
-  -[NSMutableArray addObjectsFromArray:](self->_cloneVideoRequirements, "addObjectsFromArray:", [a3 cloneVideoRequirements]);
+  -[NSMutableArray addObjectsFromArray:](self->_cloneVideoRequirements, "addObjectsFromArray:", [provider cloneVideoRequirements]);
   return 0;
 }
 
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler
 {
   v10 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -376,9 +376,9 @@ uint64_t __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingSt
   {
     v12 = v11;
     memset(&v75, 0, sizeof(v75));
-    CMSampleBufferGetPresentationTimeStamp(&v75, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v75, buffer);
     memset(&v74, 0, sizeof(v74));
-    CMSampleBufferGetDuration(&v74, a3);
+    CMSampleBufferGetDuration(&v74, buffer);
     vcpSession = self->_vcpSession;
     v72 = v75;
     v73 = 0;
@@ -402,7 +402,7 @@ uint64_t __120__BWVideoProcessingInferenceProvider_submitForSampleBuffer_usingSt
               objc_enumerationMutation(outputMetadataRequirements);
             }
 
-            v28 = [a4 setDictionary:v22 forMetadataRequirement:*(8 * i)];
+            v28 = [storage setDictionary:v22 forMetadataRequirement:*(8 * i)];
           }
 
           v25 = OUTLINED_FUNCTION_2_90(v28, v29, v30, v31, v32, v33, v34, v35, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v70);
@@ -431,7 +431,7 @@ LABEL_14:
     kdebug_trace();
   }
 
-  (*(a6 + 2))(a6, v36, self);
+  (*(handler + 2))(handler, v36, self);
   return v36;
 }
 

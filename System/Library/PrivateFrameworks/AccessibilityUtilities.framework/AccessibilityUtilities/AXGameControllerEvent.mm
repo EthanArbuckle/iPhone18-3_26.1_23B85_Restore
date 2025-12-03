@@ -1,11 +1,11 @@
 @interface AXGameControllerEvent
-+ (id)axGameControllerInfoRepresentationFromEvent:(__IOHIDEvent *)a3;
-+ (unsigned)axGameControllerKeyCodeForEvent:(__IOHIDEvent *)a3;
++ (id)axGameControllerInfoRepresentationFromEvent:(__IOHIDEvent *)event;
++ (unsigned)axGameControllerKeyCodeForEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation AXGameControllerEvent
 
-+ (unsigned)axGameControllerKeyCodeForEvent:(__IOHIDEvent *)a3
++ (unsigned)axGameControllerKeyCodeForEvent:(__IOHIDEvent *)event
 {
   IOHIDEventGetFloatMultiple();
   if (v5 != 0.0)
@@ -122,7 +122,7 @@
   return 22;
 }
 
-+ (id)axGameControllerInfoRepresentationFromEvent:(__IOHIDEvent *)a3
++ (id)axGameControllerInfoRepresentationFromEvent:(__IOHIDEvent *)event
 {
   IOHIDEventGetFloatMultiple();
   v3 = objc_alloc_init(AXEventGameControllerInfoRepresentation);

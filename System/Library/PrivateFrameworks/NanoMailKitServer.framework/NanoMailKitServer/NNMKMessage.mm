@@ -1,23 +1,23 @@
 @interface NNMKMessage
-+ (BOOL)isMessageURL:(id)a3;
-+ (BOOL)messageHasMultipleRecipients:(id)a3;
-+ (id)URLForMessageId:(id)a3;
-+ (id)URLForMessageId:(id)a3 attachmentID:(id)a4;
-+ (id)attachmentIdForURL:(id)a3;
-+ (id)generateMessageHashForMessage:(id)a3;
-+ (id)messageIdForURL:(id)a3;
-+ (id)messageIdsFromMessages:(id)a3;
-+ (id)serverIdsFromMessages:(id)a3;
-+ (id)stringFromMailboxItemState:(unint64_t)a3;
-+ (unint64_t)removeState:(unint64_t)a3 fromStatus:(unint64_t)a4;
-- (BOOL)checkState:(unint64_t)a3;
-- (NNMKMessage)initWithCoder:(id)a3;
++ (BOOL)isMessageURL:(id)l;
++ (BOOL)messageHasMultipleRecipients:(id)recipients;
++ (id)URLForMessageId:(id)id;
++ (id)URLForMessageId:(id)id attachmentID:(id)d;
++ (id)attachmentIdForURL:(id)l;
++ (id)generateMessageHashForMessage:(id)message;
++ (id)messageIdForURL:(id)l;
++ (id)messageIdsFromMessages:(id)messages;
++ (id)serverIdsFromMessages:(id)messages;
++ (id)stringFromMailboxItemState:(unint64_t)state;
++ (unint64_t)removeState:(unint64_t)state fromStatus:(unint64_t)status;
+- (BOOL)checkState:(unint64_t)state;
+- (NNMKMessage)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSString)mailboxId;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addState:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeState:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addState:(unint64_t)state;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeState:(unint64_t)state;
 @end
 
 @implementation NNMKMessage
@@ -35,20 +35,20 @@
   return v3;
 }
 
-- (BOOL)checkState:(unint64_t)a3
+- (BOOL)checkState:(unint64_t)state
 {
   v5 = objc_opt_class();
-  v6 = [(NNMKMessage *)self status];
+  status = [(NNMKMessage *)self status];
 
-  return [v5 checkStatus:v6 stateToCheck:a3];
+  return [v5 checkStatus:status stateToCheck:state];
 }
 
-+ (id)stringFromMailboxItemState:(unint64_t)a3
++ (id)stringFromMailboxItemState:(unint64_t)state
 {
   v4 = objc_opt_new();
   for (i = 0; i != 2048; ++i)
   {
-    if (![NNMKMessage checkStatus:a3 stateToCheck:i])
+    if (![NNMKMessage checkStatus:state stateToCheck:i])
     {
       continue;
     }
@@ -147,113 +147,113 @@
   return v4;
 }
 
-- (void)addState:(unint64_t)a3
+- (void)addState:(unint64_t)state
 {
-  v4 = [(NNMKMessage *)self status]| a3;
+  v4 = [(NNMKMessage *)self status]| state;
 
   [(NNMKMessage *)self setStatus:v4];
 }
 
-- (void)removeState:(unint64_t)a3
+- (void)removeState:(unint64_t)state
 {
   if ([(NNMKMessage *)self checkState:?])
   {
-    v5 = [(NNMKMessage *)self status]^ a3;
+    v5 = [(NNMKMessage *)self status]^ state;
 
     [(NNMKMessage *)self setStatus:v5];
   }
 }
 
-+ (unint64_t)removeState:(unint64_t)a3 fromStatus:(unint64_t)a4
++ (unint64_t)removeState:(unint64_t)state fromStatus:(unint64_t)status
 {
-  if ([a1 checkStatus:a4 stateToCheck:a3])
+  if ([self checkStatus:status stateToCheck:state])
   {
-    v6 = a3;
+    stateCopy = state;
   }
 
   else
   {
-    v6 = 0;
+    stateCopy = 0;
   }
 
-  return v6 ^ a4;
+  return stateCopy ^ status;
 }
 
-+ (BOOL)messageHasMultipleRecipients:(id)a3
++ (BOOL)messageHasMultipleRecipients:(id)recipients
 {
-  v3 = a3;
-  v4 = [v3 to];
+  recipientsCopy = recipients;
+  v4 = [recipientsCopy to];
   v5 = [v4 count];
-  v6 = [v3 cc];
+  v6 = [recipientsCopy cc];
 
-  LOBYTE(v3) = ([v6 count] + v5) > 1;
-  return v3;
+  LOBYTE(recipientsCopy) = ([v6 count] + v5) > 1;
+  return recipientsCopy;
 }
 
-+ (BOOL)isMessageURL:(id)a3
++ (BOOL)isMessageURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"x-apple-mail"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"x-apple-mail"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 scheme];
-    v5 = [v6 isEqualToString:@"x-apple-mail-message-attachment"];
+    scheme2 = [lCopy scheme];
+    v5 = [scheme2 isEqualToString:@"x-apple-mail-message-attachment"];
   }
 
   return v5;
 }
 
-+ (id)URLForMessageId:(id)a3
++ (id)URLForMessageId:(id)id
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", @"x-apple-mail", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", @"x-apple-mail", id];
   v5 = [v3 URLWithString:v4];
 
   return v5;
 }
 
-+ (id)URLForMessageId:(id)a3 attachmentID:(id)a4
++ (id)URLForMessageId:(id)id attachmentID:(id)d
 {
   v5 = MEMORY[0x277CCACE0];
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  idCopy = id;
   v8 = objc_alloc_init(v5);
   [v8 setScheme:@"x-apple-mail-message-attachment"];
-  [v8 setHost:v7];
+  [v8 setHost:idCopy];
 
-  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"/%@", v6];
-  [v8 setPath:v9];
+  dCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"/%@", dCopy];
+  [v8 setPath:dCopy];
 
   v10 = [v8 URL];
 
   return v10;
 }
 
-+ (id)messageIdForURL:(id)a3
++ (id)messageIdForURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"x-apple-mail"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme isEqualToString:@"x-apple-mail"];
 
   if (v5)
   {
-    v6 = [v3 resourceSpecifier];
+    resourceSpecifier = [lCopy resourceSpecifier];
 LABEL_5:
-    v9 = v6;
+    v9 = resourceSpecifier;
     goto LABEL_7;
   }
 
-  v7 = [v3 scheme];
-  v8 = [v7 isEqualToString:@"x-apple-mail-message-attachment"];
+  scheme2 = [lCopy scheme];
+  v8 = [scheme2 isEqualToString:@"x-apple-mail-message-attachment"];
 
   if (v8)
   {
-    v6 = [v3 host];
+    resourceSpecifier = [lCopy host];
     goto LABEL_5;
   }
 
@@ -263,36 +263,36 @@ LABEL_7:
   return v9;
 }
 
-+ (id)attachmentIdForURL:(id)a3
++ (id)attachmentIdForURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"x-apple-mail-message-attachment"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme isEqualToString:@"x-apple-mail-message-attachment"];
 
   if (v5)
   {
-    v6 = [v3 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
   }
 
   else
   {
-    v6 = 0;
+    lastPathComponent = 0;
   }
 
-  return v6;
+  return lastPathComponent;
 }
 
-+ (id)generateMessageHashForMessage:(id)a3
++ (id)generateMessageHashForMessage:(id)message
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 to];
+  messageCopy = message;
+  v4 = [messageCopy to];
   if (v4)
   {
-    v5 = [v3 to];
+    v5 = [messageCopy to];
     if ([v5 count])
     {
-      v6 = [v3 to];
+      v6 = [messageCopy to];
       v7 = [v6 componentsJoinedByString:@"#"];
     }
 
@@ -307,13 +307,13 @@ LABEL_7:
     v7 = &stru_286C69F68;
   }
 
-  v8 = [v3 cc];
+  v8 = [messageCopy cc];
   if (v8)
   {
-    v9 = [v3 cc];
+    v9 = [messageCopy cc];
     if ([v9 count])
     {
-      v10 = [v3 cc];
+      v10 = [messageCopy cc];
       v11 = [v10 componentsJoinedByString:@"#"];
     }
 
@@ -328,13 +328,13 @@ LABEL_7:
     v11 = &stru_286C69F68;
   }
 
-  v12 = [v3 bcc];
+  v12 = [messageCopy bcc];
   if (v12)
   {
-    v13 = [v3 bcc];
+    v13 = [messageCopy bcc];
     if ([v13 count])
     {
-      v14 = [v3 bcc];
+      v14 = [messageCopy bcc];
       v15 = [v14 componentsJoinedByString:@"#"];
     }
 
@@ -350,18 +350,18 @@ LABEL_7:
   }
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v3 mailboxId];
-  v18 = [v3 from];
-  v19 = [v3 dateSent];
-  [v19 timeIntervalSinceReferenceDate];
+  mailboxId = [messageCopy mailboxId];
+  from = [messageCopy from];
+  dateSent = [messageCopy dateSent];
+  [dateSent timeIntervalSinceReferenceDate];
   v21 = v20;
-  v22 = [v3 dateReceived];
-  [v22 timeIntervalSinceReferenceDate];
-  v24 = [v16 stringWithFormat:@"%@#%@#%@#%@#%@#%lu#%lu", v17, v18, v7, v11, v15, v21, v23];
+  dateReceived = [messageCopy dateReceived];
+  [dateReceived timeIntervalSinceReferenceDate];
+  v24 = [v16 stringWithFormat:@"%@#%@#%@#%@#%@#%lu#%lu", mailboxId, from, v7, v11, v15, v21, v23];
 
-  v25 = [v24 UTF8String];
-  v26 = strlen(v25);
-  CC_SHA256(v25, v26, md);
+  uTF8String = [v24 UTF8String];
+  v26 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v26, md);
   v27 = objc_alloc_init(MEMORY[0x277CCAB68]);
   for (i = 0; i != 32; ++i)
   {
@@ -373,175 +373,175 @@ LABEL_7:
   return v27;
 }
 
-- (NNMKMessage)initWithCoder:(id)a3
+- (NNMKMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v52.receiver = self;
   v52.super_class = NNMKMessage;
   v5 = [(NNMKMessage *)&v52 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySubject"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySubject"];
     subject = v5->_subject;
     v5->_subject = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyDateReceived"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyDateReceived"];
     dateReceived = v5->_dateReceived;
     v5->_dateReceived = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyPreview"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyPreview"];
     preview = v5->_preview;
     v5->_preview = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyStatus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyStatus"];
     v5->_status = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyStatusVersion"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyStatusVersion"];
     v5->_statusVersion = [v13 unsignedIntegerValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySource"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySource"];
     v5->_source = [v14 unsignedIntegerValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMailboxId"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMailboxId"];
     mailboxId = v5->_mailboxId;
     v5->_mailboxId = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMessageId"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMessageId"];
     messageId = v5->_messageId;
     v5->_messageId = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyServerId"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyServerId"];
     serverId = v5->_serverId;
     v5->_serverId = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccountId"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccountId"];
     accountId = v5->_accountId;
     v5->_accountId = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyConversationId"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyConversationId"];
     conversationId = v5->_conversationId;
     v5->_conversationId = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyFrom"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyFrom"];
     from = v5->_from;
     v5->_from = v25;
 
     v27 = MEMORY[0x277CBEB98];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"kNSCodingKeyTo"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"kNSCodingKeyTo"];
     to = v5->_to;
     v5->_to = v30;
 
     v32 = MEMORY[0x277CBEB98];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"kNSCodingKeyCC"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"kNSCodingKeyCC"];
     cc = v5->_cc;
     v5->_cc = v35;
 
     v37 = MEMORY[0x277CBEB98];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"kNSCodingKeyBCC"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"kNSCodingKeyBCC"];
     bcc = v5->_bcc;
     v5->_bcc = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyDateSent"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyDateSent"];
     dateSent = v5->_dateSent;
     v5->_dateSent = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMessageIdHeader"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMessageIdHeader"];
     messageIdHeader = v5->_messageIdHeader;
     v5->_messageIdHeader = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyNotificationMessageId"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyNotificationMessageId"];
     notificationMessageId = v5->_notificationMessageId;
     v5->_notificationMessageId = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyPublishedBulletinId"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyPublishedBulletinId"];
     publisherBulletinId = v5->_publisherBulletinId;
     v5->_publisherBulletinId = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyReplaceStandaloneNotification"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyReplaceStandaloneNotification"];
     v5->_replaceStandaloneNotification = [v50 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subject = self->_subject;
-  v5 = a3;
-  [v5 encodeObject:subject forKey:@"kNSCodingKeySubject"];
-  [v5 encodeObject:self->_dateReceived forKey:@"kNSCodingKeyDateReceived"];
-  [v5 encodeObject:self->_preview forKey:@"kNSCodingKeyPreview"];
+  coderCopy = coder;
+  [coderCopy encodeObject:subject forKey:@"kNSCodingKeySubject"];
+  [coderCopy encodeObject:self->_dateReceived forKey:@"kNSCodingKeyDateReceived"];
+  [coderCopy encodeObject:self->_preview forKey:@"kNSCodingKeyPreview"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_status];
-  [v5 encodeObject:v6 forKey:@"kNSCodingKeyStatus"];
+  [coderCopy encodeObject:v6 forKey:@"kNSCodingKeyStatus"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_statusVersion];
-  [v5 encodeObject:v7 forKey:@"kNSCodingKeyStatusVersion"];
+  [coderCopy encodeObject:v7 forKey:@"kNSCodingKeyStatusVersion"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_source];
-  [v5 encodeObject:v8 forKey:@"kNSCodingKeySource"];
+  [coderCopy encodeObject:v8 forKey:@"kNSCodingKeySource"];
 
-  [v5 encodeObject:self->_messageId forKey:@"kNSCodingKeyMessageId"];
-  [v5 encodeObject:self->_serverId forKey:@"kNSCodingKeyServerId"];
-  [v5 encodeObject:self->_mailboxId forKey:@"kNSCodingKeyMailboxId"];
-  [v5 encodeObject:self->_accountId forKey:@"kNSCodingKeyAccountId"];
-  [v5 encodeObject:self->_conversationId forKey:@"kNSCodingKeyConversationId"];
-  [v5 encodeObject:self->_from forKey:@"kNSCodingKeyFrom"];
-  [v5 encodeObject:self->_to forKey:@"kNSCodingKeyTo"];
-  [v5 encodeObject:self->_cc forKey:@"kNSCodingKeyCC"];
-  [v5 encodeObject:self->_bcc forKey:@"kNSCodingKeyBCC"];
-  [v5 encodeObject:self->_dateSent forKey:@"kNSCodingKeyDateSent"];
-  [v5 encodeObject:self->_messageIdHeader forKey:@"kNSCodingKeyMessageIdHeader"];
-  [v5 encodeObject:self->_notificationMessageId forKey:@"kNSCodingKeyNotificationMessageId"];
-  [v5 encodeObject:self->_publisherBulletinId forKey:@"kNSCodingKeyPublishedBulletinId"];
+  [coderCopy encodeObject:self->_messageId forKey:@"kNSCodingKeyMessageId"];
+  [coderCopy encodeObject:self->_serverId forKey:@"kNSCodingKeyServerId"];
+  [coderCopy encodeObject:self->_mailboxId forKey:@"kNSCodingKeyMailboxId"];
+  [coderCopy encodeObject:self->_accountId forKey:@"kNSCodingKeyAccountId"];
+  [coderCopy encodeObject:self->_conversationId forKey:@"kNSCodingKeyConversationId"];
+  [coderCopy encodeObject:self->_from forKey:@"kNSCodingKeyFrom"];
+  [coderCopy encodeObject:self->_to forKey:@"kNSCodingKeyTo"];
+  [coderCopy encodeObject:self->_cc forKey:@"kNSCodingKeyCC"];
+  [coderCopy encodeObject:self->_bcc forKey:@"kNSCodingKeyBCC"];
+  [coderCopy encodeObject:self->_dateSent forKey:@"kNSCodingKeyDateSent"];
+  [coderCopy encodeObject:self->_messageIdHeader forKey:@"kNSCodingKeyMessageIdHeader"];
+  [coderCopy encodeObject:self->_notificationMessageId forKey:@"kNSCodingKeyNotificationMessageId"];
+  [coderCopy encodeObject:self->_publisherBulletinId forKey:@"kNSCodingKeyPublishedBulletinId"];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_replaceStandaloneNotification];
-  [v5 encodeObject:v9 forKey:@"kNSCodingKeyReplaceStandaloneNotification"];
+  [coderCopy encodeObject:v9 forKey:@"kNSCodingKeyReplaceStandaloneNotification"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NNMKMessage);
-  v5 = [(NNMKMessage *)self subject];
-  v6 = [v5 copy];
+  subject = [(NNMKMessage *)self subject];
+  v6 = [subject copy];
   [(NNMKMessage *)v4 setSubject:v6];
 
-  v7 = [(NNMKMessage *)self dateReceived];
-  v8 = [v7 copy];
+  dateReceived = [(NNMKMessage *)self dateReceived];
+  v8 = [dateReceived copy];
   [(NNMKMessage *)v4 setDateReceived:v8];
 
-  v9 = [(NNMKMessage *)self preview];
-  v10 = [v9 copy];
+  preview = [(NNMKMessage *)self preview];
+  v10 = [preview copy];
   [(NNMKMessage *)v4 setPreview:v10];
 
   [(NNMKMessage *)v4 setStatus:[(NNMKMessage *)self status]];
   [(NNMKMessage *)v4 setStatusVersion:[(NNMKMessage *)self statusVersion]];
-  v11 = [(NNMKMessage *)self messageId];
-  v12 = [v11 copy];
+  messageId = [(NNMKMessage *)self messageId];
+  v12 = [messageId copy];
   [(NNMKMessage *)v4 setMessageId:v12];
 
-  v13 = [(NNMKMessage *)self serverId];
-  v14 = [v13 copy];
+  serverId = [(NNMKMessage *)self serverId];
+  v14 = [serverId copy];
   [(NNMKMessage *)v4 setServerId:v14];
 
-  v15 = [(NNMKMessage *)self mailboxId];
-  v16 = [v15 copy];
+  mailboxId = [(NNMKMessage *)self mailboxId];
+  v16 = [mailboxId copy];
   [(NNMKMessage *)v4 setMailboxId:v16];
 
-  v17 = [(NNMKMessage *)self accountId];
-  v18 = [v17 copy];
+  accountId = [(NNMKMessage *)self accountId];
+  v18 = [accountId copy];
   [(NNMKMessage *)v4 setAccountId:v18];
 
-  v19 = [(NNMKMessage *)self conversationId];
-  v20 = [v19 copy];
+  conversationId = [(NNMKMessage *)self conversationId];
+  v20 = [conversationId copy];
   [(NNMKMessage *)v4 setConversationId:v20];
 
-  v21 = [(NNMKMessage *)self from];
-  v22 = [v21 copy];
+  from = [(NNMKMessage *)self from];
+  v22 = [from copy];
   [(NNMKMessage *)v4 setFrom:v22];
 
   v23 = [(NNMKMessage *)self to];
@@ -556,23 +556,23 @@ LABEL_7:
   v28 = [v27 copy];
   [(NNMKMessage *)v4 setBcc:v28];
 
-  v29 = [(NNMKMessage *)self dateSent];
-  v30 = [v29 copy];
+  dateSent = [(NNMKMessage *)self dateSent];
+  v30 = [dateSent copy];
   [(NNMKMessage *)v4 setDateSent:v30];
 
-  v31 = [(NNMKMessage *)self messageIdHeader];
-  v32 = [v31 copy];
+  messageIdHeader = [(NNMKMessage *)self messageIdHeader];
+  v32 = [messageIdHeader copy];
   [(NNMKMessage *)v4 setMessageIdHeader:v32];
 
-  v33 = [(NNMKMessage *)self notificationMessageId];
-  v34 = [v33 copy];
+  notificationMessageId = [(NNMKMessage *)self notificationMessageId];
+  v34 = [notificationMessageId copy];
   [(NNMKMessage *)v4 setNotificationMessageId:v34];
 
   [(NNMKMessage *)v4 setIsSpecialMailboxSpecific:[(NNMKMessage *)self isSpecialMailboxSpecific]];
   [(NNMKMessage *)v4 setIsThreadSpecific:[(NNMKMessage *)self isThreadSpecific]];
   [(NNMKMessage *)v4 setSource:[(NNMKMessage *)self source]];
-  v35 = [(NNMKMessage *)self publisherBulletinId];
-  [(NNMKMessage *)v4 setPublisherBulletinId:v35];
+  publisherBulletinId = [(NNMKMessage *)self publisherBulletinId];
+  [(NNMKMessage *)v4 setPublisherBulletinId:publisherBulletinId];
 
   [(NNMKMessage *)v4 setReplaceStandaloneNotification:[(NNMKMessage *)self replaceStandaloneNotification]];
   return v4;
@@ -593,16 +593,16 @@ LABEL_7:
   return v11;
 }
 
-+ (id)messageIdsFromMessages:(id)a3
++ (id)messageIdsFromMessages:(id)messages
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  messagesCopy = messages;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(messagesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -617,8 +617,8 @@ LABEL_7:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) messageId];
-        [v4 addObject:v10];
+        messageId = [*(*(&v13 + 1) + 8 * i) messageId];
+        [v4 addObject:messageId];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -632,16 +632,16 @@ LABEL_7:
   return v4;
 }
 
-+ (id)serverIdsFromMessages:(id)a3
++ (id)serverIdsFromMessages:(id)messages
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  messagesCopy = messages;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(messagesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -657,12 +657,12 @@ LABEL_7:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 serverId];
+        serverId = [v10 serverId];
 
-        if (v11)
+        if (serverId)
         {
-          v12 = [v10 serverId];
-          [v4 addObject:v12];
+          serverId2 = [v10 serverId];
+          [v4 addObject:serverId2];
         }
       }
 

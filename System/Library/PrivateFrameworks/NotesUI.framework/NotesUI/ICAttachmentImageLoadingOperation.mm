@@ -1,8 +1,8 @@
 @interface ICAttachmentImageLoadingOperation
-- (ICAttachmentImageLoadingOperation)initWithCache:(id)a3 attachment:(id)a4 attachmentType:(signed __int16)a5 forceFullSizeImage:(BOOL)a6 completionHandler:(id)a7;
-- (id)addCompletionHandler:(id)a3;
+- (ICAttachmentImageLoadingOperation)initWithCache:(id)cache attachment:(id)attachment attachmentType:(signed __int16)type forceFullSizeImage:(BOOL)image completionHandler:(id)handler;
+- (id)addCompletionHandler:(id)handler;
 - (void)main;
-- (void)removeCompletionHandler:(id)a3 cancelIfNoneLeft:(BOOL)a4;
+- (void)removeCompletionHandler:(id)handler cancelIfNoneLeft:(BOOL)left;
 @end
 
 @implementation ICAttachmentImageLoadingOperation
@@ -10,7 +10,7 @@
 - (void)main
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v3 = 138412290;
   v4 = v2;
   _os_log_debug_impl(&dword_1D4171000, a2, OS_LOG_TYPE_DEBUG, "Had to fall back to rotating media for attachment: %@", &v3, 0xCu);
@@ -105,41 +105,41 @@ void __41__ICAttachmentImageLoadingOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (ICAttachmentImageLoadingOperation)initWithCache:(id)a3 attachment:(id)a4 attachmentType:(signed __int16)a5 forceFullSizeImage:(BOOL)a6 completionHandler:(id)a7
+- (ICAttachmentImageLoadingOperation)initWithCache:(id)cache attachment:(id)attachment attachmentType:(signed __int16)type forceFullSizeImage:(BOOL)image completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  imageCopy = image;
+  typeCopy = type;
+  cacheCopy = cache;
+  attachmentCopy = attachment;
+  handlerCopy = handler;
   v30.receiver = self;
   v30.super_class = ICAttachmentImageLoadingOperation;
   v15 = [(ICAttachmentImageLoadingOperation *)&v30 init];
   v16 = v15;
   if (v15)
   {
-    [(ICAttachmentImageLoadingOperation *)v15 setCache:v12];
-    v17 = [v13 managedObjectContext];
+    [(ICAttachmentImageLoadingOperation *)v15 setCache:cacheCopy];
+    managedObjectContext = [attachmentCopy managedObjectContext];
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __114__ICAttachmentImageLoadingOperation_initWithCache_attachment_attachmentType_forceFullSizeImage_completionHandler___block_invoke;
     v27 = &unk_1E8468F80;
-    v28 = v13;
+    v28 = attachmentCopy;
     v18 = v16;
     v29 = v18;
-    [v17 performBlockAndWait:&v24];
+    [managedObjectContext performBlockAndWait:&v24];
 
-    [(ICAttachmentImageLoadingOperation *)v18 setAttachmentType:v9, v24, v25, v26, v27];
-    [(ICAttachmentImageLoadingOperation *)v18 setForceFullSizeImage:v8];
-    v19 = [MEMORY[0x1E695DF70] array];
-    [(ICAttachmentImageLoadingOperation *)v18 setCompletionHandlers:v19];
+    [(ICAttachmentImageLoadingOperation *)v18 setAttachmentType:typeCopy, v24, v25, v26, v27];
+    [(ICAttachmentImageLoadingOperation *)v18 setForceFullSizeImage:imageCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(ICAttachmentImageLoadingOperation *)v18 setCompletionHandlers:array];
 
-    if (v14)
+    if (handlerCopy)
     {
-      v20 = [(ICAttachmentImageLoadingOperation *)v18 completionHandlers];
-      v21 = [v14 copy];
+      completionHandlers = [(ICAttachmentImageLoadingOperation *)v18 completionHandlers];
+      v21 = [handlerCopy copy];
       v22 = _Block_copy(v21);
-      [v20 addObject:v22];
+      [completionHandlers addObject:v22];
     }
   }
 
@@ -159,36 +159,36 @@ void __114__ICAttachmentImageLoadingOperation_initWithCache_attachment_attachmen
   [*(a1 + 40) setCacheKey:v4];
 }
 
-- (id)addCompletionHandler:(id)a3
+- (id)addCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
-  objc_sync_enter(v6);
-  v7 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
+  handlerCopy = handler;
+  v5 = [handlerCopy copy];
+  completionHandlers = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
+  objc_sync_enter(completionHandlers);
+  completionHandlers2 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
   v8 = _Block_copy(v5);
-  [v7 addObject:v8];
+  [completionHandlers2 addObject:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(completionHandlers);
   v9 = _Block_copy(v5);
 
   return v9;
 }
 
-- (void)removeCompletionHandler:(id)a3 cancelIfNoneLeft:(BOOL)a4
+- (void)removeCompletionHandler:(id)handler cancelIfNoneLeft:(BOOL)left
 {
-  v4 = a4;
-  aBlock = a3;
-  v6 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
-  objc_sync_enter(v6);
-  v7 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
+  leftCopy = left;
+  aBlock = handler;
+  completionHandlers = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
+  objc_sync_enter(completionHandlers);
+  completionHandlers2 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
   v8 = _Block_copy(aBlock);
-  [v7 removeObject:v8];
+  [completionHandlers2 removeObject:v8];
 
-  if (v4)
+  if (leftCopy)
   {
-    v9 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
-    v10 = [v9 count];
+    completionHandlers3 = [(ICAttachmentImageLoadingOperation *)self completionHandlers];
+    v10 = [completionHandlers3 count];
 
     if (!v10)
     {
@@ -196,7 +196,7 @@ void __114__ICAttachmentImageLoadingOperation_initWithCache_attachment_attachmen
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(completionHandlers);
 }
 
 uint64_t __41__ICAttachmentImageLoadingOperation_main__block_invoke_2(uint64_t a1)

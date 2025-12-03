@@ -1,16 +1,16 @@
 @interface _TVStackRow
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TVRowMetrics)rowMetrics;
 - (unint64_t)hash;
-- (void)setRowMetrics:(TVRowMetrics *)a3;
+- (void)setRowMetrics:(TVRowMetrics *)metrics;
 @end
 
 @implementation _TVStackRow
 
 - (unint64_t)hash
 {
-  v3 = [(_TVStackRow *)self sectionIndex];
-  v4 = v3 ^ [(_TVStackRow *)self isHosted];
+  sectionIndex = [(_TVStackRow *)self sectionIndex];
+  v4 = sectionIndex ^ [(_TVStackRow *)self isHosted];
   v5 = v4 ^ [(_TVStackRow *)self isBounded];
   [(_TVStackRow *)self rowMetrics];
   v6 = v5 ^ v25;
@@ -34,13 +34,13 @@
   return v12 ^ v14 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -51,7 +51,7 @@
   v6 = v5;
   v14.receiver = self;
   v14.super_class = _TVStackRow;
-  if (![(_TVStackRow *)&v14 isEqual:v4])
+  if (![(_TVStackRow *)&v14 isEqual:equalCopy])
   {
     goto LABEL_11;
   }
@@ -69,8 +69,8 @@
 
   if (TVRowMetricsEqualToRowMetrics(v13, v12) && (v7 = -[_TVStackRow isHosted](self, "isHosted"), v7 == [v6 isHosted]) && (v8 = -[_TVStackRow isBounded](self, "isBounded"), v8 == objc_msgSend(v6, "isBounded")))
   {
-    v11 = [(_TVStackRow *)self sectionIndex];
-    v9 = v11 == [v6 sectionIndex];
+    sectionIndex = [(_TVStackRow *)self sectionIndex];
+    v9 = sectionIndex == [v6 sectionIndex];
   }
 
   else
@@ -94,13 +94,13 @@ LABEL_11:
   return self;
 }
 
-- (void)setRowMetrics:(TVRowMetrics *)a3
+- (void)setRowMetrics:(TVRowMetrics *)metrics
 {
-  *&self->_rowMetrics.rowType = *&a3->rowType;
-  rowPadding = a3->rowPadding;
-  rowInset = a3->rowInset;
-  rowInsetAlt = a3->rowInsetAlt;
-  self->_rowMetrics.rowMargin = a3->rowMargin;
+  *&self->_rowMetrics.rowType = *&metrics->rowType;
+  rowPadding = metrics->rowPadding;
+  rowInset = metrics->rowInset;
+  rowInsetAlt = metrics->rowInsetAlt;
+  self->_rowMetrics.rowMargin = metrics->rowMargin;
   self->_rowMetrics.rowInsetAlt = rowInsetAlt;
   self->_rowMetrics.rowInset = rowInset;
   self->_rowMetrics.rowPadding = rowPadding;

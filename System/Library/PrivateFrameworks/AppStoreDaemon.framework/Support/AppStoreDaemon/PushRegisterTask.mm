@@ -1,25 +1,25 @@
 @interface PushRegisterTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation PushRegisterTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (*(&self->super._finished + 1))
   {
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_1002DBBC8;
     v25 = &unk_100521CA8;
-    v26 = self;
-    v27 = v4;
+    selfCopy = self;
+    v27 = handlerCopy;
     v6 = &v22;
     v7 = objc_alloc_init(AMSURLRequestEncoder);
-    v8 = [*(&self->_environment + 2) amsBag];
-    [v7 setBag:v8];
+    amsBag = [*(&self->_environment + 2) amsBag];
+    [v7 setBag:amsBag];
 
     [v7 setAccount:*(&self->super._finished + 1)];
     [v7 setRequestEncoding:2];

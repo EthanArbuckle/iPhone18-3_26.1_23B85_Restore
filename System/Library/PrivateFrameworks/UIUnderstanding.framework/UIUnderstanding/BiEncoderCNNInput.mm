@@ -1,6 +1,6 @@
 @interface BiEncoderCNNInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation BiEncoderCNNInput
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   if (sub_2702B402C() == 0x68736E6565726373 && v4 == 0xEA0000000000746FLL)
   {
@@ -23,7 +23,7 @@ LABEL_5:
     v6 = *self->screenshot;
     v7 = objc_opt_self();
     v8 = v6;
-    v9 = [v7 featureValueWithPixelBuffer_];
+    featureValueWithPixelBuffer_ = [v7 featureValueWithPixelBuffer_];
 
     goto LABEL_7;
   }
@@ -35,10 +35,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = 0;
+  featureValueWithPixelBuffer_ = 0;
 LABEL_7:
 
-  return v9;
+  return featureValueWithPixelBuffer_;
 }
 
 @end

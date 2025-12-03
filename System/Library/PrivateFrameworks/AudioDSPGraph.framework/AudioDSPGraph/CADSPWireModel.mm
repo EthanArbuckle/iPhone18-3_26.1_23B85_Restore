@@ -1,10 +1,10 @@
 @interface CADSPWireModel
-- (BOOL)getAudioStreamConfiguration:(CADSPAudioStreamConfiguration *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getAudioStreamConfiguration:(CADSPAudioStreamConfiguration *)configuration;
+- (BOOL)isEqual:(id)equal;
 - (NSString)audioStreamConfigurationName;
 - (id).cxx_construct;
-- (id)copyBoxNameOfEndpoint:(unsigned int)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyBoxNameOfEndpoint:(unsigned int)endpoint;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CADSPWireModel
@@ -22,20 +22,20 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = AudioDSPGraph::IR::WireModel::operator==(&self->_this, &v4->_this);
+      v5 = AudioDSPGraph::IR::WireModel::operator==(&self->_this, &equalCopy->_this);
     }
   }
 
@@ -47,9 +47,9 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPMutableWireModel allocWithZone:a3];
+  v4 = [CADSPMutableWireModel allocWithZone:zone];
   std::string::operator=(&v4->super._this, &self->_this);
   v4->super._this.source.var0 = self->_this.source.var0;
   std::string::operator=(&v4->super._this.var0, &self->_this.var0);
@@ -58,9 +58,9 @@
   return v4;
 }
 
-- (id)copyBoxNameOfEndpoint:(unsigned int)a3
+- (id)copyBoxNameOfEndpoint:(unsigned int)endpoint
 {
-  v3 = self + 32 * (a3 != 0);
+  v3 = self + 32 * (endpoint != 0);
   v4 = v3 + 8;
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v6 = v3[31];
@@ -73,17 +73,17 @@
   return [v5 initWithBytes:v4 length:v6 encoding:4];
 }
 
-- (BOOL)getAudioStreamConfiguration:(CADSPAudioStreamConfiguration *)a3
+- (BOOL)getAudioStreamConfiguration:(CADSPAudioStreamConfiguration *)configuration
 {
   v3 = *(&self[2]._this.source.boxName.__rep_.__l + 4);
-  if (a3 && v3 == 1)
+  if (configuration && v3 == 1)
   {
     v4 = *(&self[1]._this.source.boxName.__rep_.__l + 1);
     v5 = *&self[1]._this.var0;
-    *&a3->var0.mBitsPerChannel = self[2]._this.source.boxName.__rep_.__l.__data_;
-    *&a3->var0.mSampleRate = v4;
-    *&a3->var0.mBytesPerPacket = v5;
-    a3->var1 = self[2]._this.source.boxName.__rep_.__l.__size_;
+    *&configuration->var0.mBitsPerChannel = self[2]._this.source.boxName.__rep_.__l.__data_;
+    *&configuration->var0.mSampleRate = v4;
+    *&configuration->var0.mBytesPerPacket = v5;
+    configuration->var1 = self[2]._this.source.boxName.__rep_.__l.__size_;
   }
 
   return v3 == 1;

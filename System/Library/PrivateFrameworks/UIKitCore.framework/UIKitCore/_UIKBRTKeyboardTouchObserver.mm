@@ -2,23 +2,23 @@
 - (CGPoint)fCenter;
 - (CGPoint)jCenter;
 - (CGSize)keySize;
-- (void)addTouchLocation:(CGPoint)a3 withRadius:(double)a4 withIdentifier:(id)a5;
-- (void)updateWithFCenter:(CGPoint)a3 jCenter:(CGPoint)a4 keySize:(CGSize)a5 rowOffsets:(id)a6 homeRowOffsetIndex:(int)a7;
+- (void)addTouchLocation:(CGPoint)location withRadius:(double)radius withIdentifier:(id)identifier;
+- (void)updateWithFCenter:(CGPoint)center jCenter:(CGPoint)jCenter keySize:(CGSize)size rowOffsets:(id)offsets homeRowOffsetIndex:(int)index;
 @end
 
 @implementation _UIKBRTKeyboardTouchObserver
 
-- (void)updateWithFCenter:(CGPoint)a3 jCenter:(CGPoint)a4 keySize:(CGSize)a5 rowOffsets:(id)a6 homeRowOffsetIndex:(int)a7
+- (void)updateWithFCenter:(CGPoint)center jCenter:(CGPoint)jCenter keySize:(CGSize)size rowOffsets:(id)offsets homeRowOffsetIndex:(int)index
 {
   v34[10] = *MEMORY[0x1E69E9840];
-  self->_fCenter = a3;
-  self->_jCenter = a4;
-  self->_keySize = a5;
-  v9 = [a6 copy];
+  self->_fCenter = center;
+  self->_jCenter = jCenter;
+  self->_keySize = size;
+  v9 = [offsets copy];
   rowOffsets = self->_rowOffsets;
   self->_rowOffsets = v9;
 
-  self->_homeRowOffsetIndex = a7;
+  self->_homeRowOffsetIndex = index;
   x = self->_fCenter.x;
   v12 = (x + self->_jCenter.x) * 0.5;
   v33 = [MEMORY[0x1E696AD98] numberWithDouble:x - self->_keySize.width * 2.5];
@@ -70,15 +70,15 @@
   self->_rowYEdgesRight = v24;
 }
 
-- (void)addTouchLocation:(CGPoint)a3 withRadius:(double)a4 withIdentifier:(id)a5
+- (void)addTouchLocation:(CGPoint)location withRadius:(double)radius withIdentifier:(id)identifier
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v9 = MEMORY[0x1E696AE30];
-  v10 = a5;
-  v12 = [v9 processInfo];
-  [v12 systemUptime];
-  [(_UIKBRTKeyboardTouchObserver *)self addTouchLocation:v10 withRadius:x withTouchTime:y withIdentifier:a4, v11];
+  identifierCopy = identifier;
+  processInfo = [v9 processInfo];
+  [processInfo systemUptime];
+  [(_UIKBRTKeyboardTouchObserver *)self addTouchLocation:identifierCopy withRadius:x withTouchTime:y withIdentifier:radius, v11];
 }
 
 - (CGPoint)fCenter

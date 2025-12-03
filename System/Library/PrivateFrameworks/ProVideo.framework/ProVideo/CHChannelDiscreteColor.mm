@@ -2,8 +2,8 @@
 - (int)colorIndex;
 - (int)defaultColorIndex;
 - (void)ozChannel;
-- (void)setColorIndex:(int)a3;
-- (void)setDefaultColorIndex:(int)a3;
+- (void)setColorIndex:(int)index;
+- (void)setDefaultColorIndex:(int)index;
 @end
 
 @implementation CHChannelDiscreteColor
@@ -18,14 +18,14 @@
   return result;
 }
 
-- (void)setColorIndex:(int)a3
+- (void)setColorIndex:(int)index
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelDiscreteColor::setColorIndex(pOZChannel, a3);
+  OZChannelDiscreteColor::setColorIndex(pOZChannel, index);
 }
 
 - (int)colorIndex
@@ -41,14 +41,14 @@
   return OZChannel::getValueAsInt(pOZChannel, v4, 0.0);
 }
 
-- (void)setDefaultColorIndex:(int)a3
+- (void)setDefaultColorIndex:(int)index
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelDiscreteColor::setDefaultColorIndex(pOZChannel, a3);
+  OZChannelDiscreteColor::setDefaultColorIndex(pOZChannel, index);
 }
 
 - (int)defaultColorIndex

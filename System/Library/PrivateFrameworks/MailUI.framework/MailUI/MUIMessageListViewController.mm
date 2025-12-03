@@ -5,126 +5,126 @@
 - (BOOL)_shouldDisplayHelpMailLearn;
 - (BOOL)_shouldDisplayOnboardingTip;
 - (BOOL)_shouldShimmer;
-- (BOOL)canMoveDragItem:(id)a3 toBucket:(int64_t)a4;
+- (BOOL)canMoveDragItem:(id)item toBucket:(int64_t)bucket;
 - (BOOL)canShowUnseenSection;
 - (BOOL)focusAllowed;
 - (BOOL)hasUpdatedAllVisibleSections;
 - (BOOL)isBucketBarHidden;
-- (BOOL)messageListDataSource:(id)a3 section:(id)a4 shouldSuspendUpdatesAfterChange:(id)a5;
-- (BOOL)messageListDataSource:(id)a3 shouldAnimateNextUpdateInSectionDataSource:(id)a4 change:(id)a5;
-- (BOOL)messageSelectionStrategy:(id)a3 anyExpandedThreadContainsItemID:(id)a4;
-- (BOOL)messageSelectionStrategy:(id)a3 isExpandedThreadWithItemID:(id)a4;
-- (BOOL)selectRowOfItemID:(id)a3 scrollToVisible:(BOOL)a4 scrollPosition:(int64_t)a5 animated:(BOOL)a6;
+- (BOOL)messageListDataSource:(id)source section:(id)section shouldSuspendUpdatesAfterChange:(id)change;
+- (BOOL)messageListDataSource:(id)source shouldAnimateNextUpdateInSectionDataSource:(id)dataSource change:(id)change;
+- (BOOL)messageSelectionStrategy:(id)strategy anyExpandedThreadContainsItemID:(id)d;
+- (BOOL)messageSelectionStrategy:(id)strategy isExpandedThreadWithItemID:(id)d;
+- (BOOL)selectRowOfItemID:(id)d scrollToVisible:(BOOL)visible scrollPosition:(int64_t)position animated:(BOOL)animated;
 - (BOOL)shouldDisplayGroupedSenders;
 - (BOOL)shouldIncludeMailCleanupFilter;
-- (Class)sectionListCellClassForMessageListSectionDataSource:(id)a3;
+- (Class)sectionListCellClassForMessageListSectionDataSource:(id)source;
 - (MUIMailboxFilterController)filterController;
 - (MUIMailboxFilterViewModel)filterViewModel;
-- (MUIMessageListViewController)initWithDaemonInterface:(id)a3 focusController:(id)a4 mailboxCategoryCloudStorage:(id)a5 avatarGenerator:(id)a6 bucketBarConfigurationController:(id)a7 mailboxes:(id)a8 contactStore:(id)a9 diagnosticsHelper:(id)a10;
+- (MUIMessageListViewController)initWithDaemonInterface:(id)interface focusController:(id)controller mailboxCategoryCloudStorage:(id)storage avatarGenerator:(id)generator bucketBarConfigurationController:(id)configurationController mailboxes:(id)mailboxes contactStore:(id)store diagnosticsHelper:(id)self0;
 - (MUIPriorityMessageListBackgroundDecorationView)shimmerView;
 - (MUIiCloudMailCleanupService)iCloudMailCleanupService;
 - (MessageListDataSource)dataSource;
 - (MessageListViewControllerState)state;
 - (NSPredicate)priorityPredicate;
 - (NSString)userQueryString;
-- (id)_configuredBucketsViewControllerWithMailboxes:(id)a3;
+- (id)_configuredBucketsViewControllerWithMailboxes:(id)mailboxes;
 - (id)_currentDataForItemIDsInPriority;
 - (id)_excludedMailboxesPredicate;
 - (id)_indexPathsForSelectedItems;
 - (id)_mailboxBucketBarConfigurationIdentifier;
-- (id)_predicateForFiltersEnabled:(void *)a1;
+- (id)_predicateForFiltersEnabled:(void *)enabled;
 - (id)_topHitsPredicate;
-- (id)_updatedPredicateForSelectedBucket:(id)a3;
+- (id)_updatedPredicateForSelectedBucket:(id)bucket;
 - (id)cellLayoutValuesForHighlightedMessages;
 - (id)createMessageListForReload;
-- (id)feedbackListViewModelForHelpMailLearnSectionDataSource:(id)a3;
-- (id)indexPathOfSelectedMessageForMessageSelectionStrategy:(id)a3;
-- (id)initialLoadCompletedPromiseForMessageListSectionDataSource:(id)a3;
-- (id)messageListDataSource:(id)a3 sectionDataSourceForSection:(id)a4 messageList:(id)a5;
-- (id)messageListItemsForDiagnosticsHelper:(id)a3;
-- (id)messageSelectionStrategy:(id)a3 indexPathOfItemID:(id)a4;
-- (id)messageSelectionStrategy:(id)a3 itemIDForIndexPath:(id)a4;
-- (id)messageSelectionStrategy:(id)a3 messageListItemForItemID:(id)a4;
-- (id)searchPredicateForMailboxes:(id)a3;
-- (id)sectionDataSourceConfigurationWithSection:(id)a3 messageList:(id)a4;
-- (id)updatedPredicateForFocusedAccounts:(id)a3;
+- (id)feedbackListViewModelForHelpMailLearnSectionDataSource:(id)source;
+- (id)indexPathOfSelectedMessageForMessageSelectionStrategy:(id)strategy;
+- (id)initialLoadCompletedPromiseForMessageListSectionDataSource:(id)source;
+- (id)messageListDataSource:(id)source sectionDataSourceForSection:(id)section messageList:(id)list;
+- (id)messageListItemsForDiagnosticsHelper:(id)helper;
+- (id)messageSelectionStrategy:(id)strategy indexPathOfItemID:(id)d;
+- (id)messageSelectionStrategy:(id)strategy itemIDForIndexPath:(id)path;
+- (id)messageSelectionStrategy:(id)strategy messageListItemForItemID:(id)d;
+- (id)searchPredicateForMailboxes:(id)mailboxes;
+- (id)sectionDataSourceConfigurationWithSection:(id)section messageList:(id)list;
+- (id)updatedPredicateForFocusedAccounts:(id)accounts;
 - (int64_t)_prioritySectionIndex;
-- (int64_t)numberOfItemsForMessageSelectionStrategy:(id)a3;
-- (int64_t)selectedBucketForMUIMessageListUnbundledSectionDataSource:(id)a3;
-- (uint64_t)_hasInitialLoadPromiseForSection:(uint64_t)a1;
-- (void)_bucketBarUserInteractionEnabled:(BOOL)a3;
+- (int64_t)numberOfItemsForMessageSelectionStrategy:(id)strategy;
+- (int64_t)selectedBucketForMUIMessageListUnbundledSectionDataSource:(id)source;
+- (uint64_t)_hasInitialLoadPromiseForSection:(uint64_t)section;
+- (void)_bucketBarUserInteractionEnabled:(BOOL)enabled;
 - (void)_disableFilters;
 - (void)_enableFilters;
-- (void)_highlightNextMessageAfterDeletingMessagesWithItemIdentifiers:(void *)a1;
+- (void)_highlightNextMessageAfterDeletingMessagesWithItemIdentifiers:(void *)identifiers;
 - (void)_mailboxBucketBarConfigurationIdentifier;
 - (void)_refreshBucketsSession;
 - (void)_reportFilterButtonTapped;
-- (void)_reportFilterChangeEvent:(void *)a3 filters:;
-- (void)_resetMailboxRepositoryForMailboxes:(id)a3;
+- (void)_reportFilterChangeEvent:(void *)event filters:;
+- (void)_resetMailboxRepositoryForMailboxes:(id)mailboxes;
 - (void)_selectAllMail;
-- (void)_selectBucket:(int64_t)a3;
+- (void)_selectBucket:(int64_t)bucket;
 - (void)_selectPrimary;
 - (void)_selectPromotions;
 - (void)_selectTransactions;
 - (void)_selectUpdates;
-- (void)_shimmerViewIfNeededForPriorityCellWillDisplay:(BOOL)a3;
-- (void)_shouldApplyFilterPredicate:(void *)a1;
-- (void)_updateBucketBarIsHidden:(BOOL)a3;
+- (void)_shimmerViewIfNeededForPriorityCellWillDisplay:(BOOL)display;
+- (void)_shouldApplyFilterPredicate:(void *)predicate;
+- (void)_updateBucketBarIsHidden:(BOOL)hidden;
 - (void)_updatePreviouslyHighlightedMessages;
 - (void)_updateUnseenCountQueries;
 - (void)_updateViewPrimaryWithNoOnboardingIfNeeded;
-- (void)applyFilterPredicate:(id)a3;
-- (void)bucketBarConfigurationController:(id)a3 isHidden:(BOOL)a4 forMailboxes:(id)a5;
-- (void)bucketBarConfigurationControllerRequiresReload:(id)a3;
+- (void)applyFilterPredicate:(id)predicate;
+- (void)bucketBarConfigurationController:(id)controller isHidden:(BOOL)hidden forMailboxes:(id)mailboxes;
+- (void)bucketBarConfigurationControllerRequiresReload:(id)reload;
 - (void)cancelQueueSuspensionTimeout;
-- (void)categoryGroupingPreferenceController:(id)a3 shouldDisableGrouping:(BOOL)a4 forBucket:(int64_t)a5;
-- (void)changeCategoryOfDragItem:(id)a3 toBucket:(int64_t)a4 completion:(id)a5;
-- (void)configureDelegatesForDataSource:(id)a3;
+- (void)categoryGroupingPreferenceController:(id)controller shouldDisableGrouping:(BOOL)grouping forBucket:(int64_t)bucket;
+- (void)changeCategoryOfDragItem:(id)item toBucket:(int64_t)bucket completion:(id)completion;
+- (void)configureDelegatesForDataSource:(id)source;
 - (void)createMessageListForReload;
-- (void)currentFocusChanged:(id)a3;
+- (void)currentFocusChanged:(id)changed;
 - (void)dataSource;
 - (void)dealloc;
-- (void)deselectAllItemsInCollectionView:(id)a3 animated:(BOOL)a4;
+- (void)deselectAllItemsInCollectionView:(id)view animated:(BOOL)animated;
 - (void)deselectSelectedItemsInCollectionView;
-- (void)dismissMailCleanupTipForMailCleanupTipId:(id)a3;
+- (void)dismissMailCleanupTipForMailCleanupTipId:(id)id;
 - (void)filterController;
-- (void)highlightedMessagesViewDidProvideFeedbackForMessage:(id)a3 feedbackType:(int64_t)a4 feedbackFeature:(int64_t)a5;
-- (void)highlightedMessagesViewDidSelectMessage:(id)a3;
-- (void)messageListDataSource:(id)a3 willUpdateWithChange:(id)a4 section:(id)a5 animated:(BOOL)a6 cleanSnapshot:(BOOL)a7;
-- (void)messageListDataSourcePrepareUpdate:(id)a3 section:(id)a4 cleanSnapshot:(BOOL)a5;
-- (void)messageListDataSourceUpdateFailed:(id)a3 section:(id)a4;
-- (void)messageListSectionDataSource:(id)a3 deletedMessagesWithItemIdentifiers:(id)a4;
-- (void)messageListSectionDataSource:(id)a3 didAddMessagesWithItemIdentifiers:(id)a4;
-- (void)messageListSectionDataSource:(id)a3 didConfigureCell:(id)a4 atIndexPath:(id)a5 item:(id)a6 itemWasCached:(BOOL)a7 duration:(double)a8;
-- (void)messageListSectionDataSource:(id)a3 didFailToConfigureCellAtIndexPath:(id)a4 error:(id)a5;
-- (void)messageListSectionDataSource:(id)a3 handleRowSelectionAfterMovingMessagesWithItemIdentifiers:(id)a4;
-- (void)messageListSectionDataSource:(id)a3 updatedOldestItemsForMailboxes:(id)a4;
-- (void)onAppearForMailCleanupTipId:(id)a3;
-- (void)presentMailCleanupViewForMailCleanupTipId:(id)a3;
+- (void)highlightedMessagesViewDidProvideFeedbackForMessage:(id)message feedbackType:(int64_t)type feedbackFeature:(int64_t)feature;
+- (void)highlightedMessagesViewDidSelectMessage:(id)message;
+- (void)messageListDataSource:(id)source willUpdateWithChange:(id)change section:(id)section animated:(BOOL)animated cleanSnapshot:(BOOL)snapshot;
+- (void)messageListDataSourcePrepareUpdate:(id)update section:(id)section cleanSnapshot:(BOOL)snapshot;
+- (void)messageListDataSourceUpdateFailed:(id)failed section:(id)section;
+- (void)messageListSectionDataSource:(id)source deletedMessagesWithItemIdentifiers:(id)identifiers;
+- (void)messageListSectionDataSource:(id)source didAddMessagesWithItemIdentifiers:(id)identifiers;
+- (void)messageListSectionDataSource:(id)source didConfigureCell:(id)cell atIndexPath:(id)path item:(id)item itemWasCached:(BOOL)cached duration:(double)duration;
+- (void)messageListSectionDataSource:(id)source didFailToConfigureCellAtIndexPath:(id)path error:(id)error;
+- (void)messageListSectionDataSource:(id)source handleRowSelectionAfterMovingMessagesWithItemIdentifiers:(id)identifiers;
+- (void)messageListSectionDataSource:(id)source updatedOldestItemsForMailboxes:(id)mailboxes;
+- (void)onAppearForMailCleanupTipId:(id)id;
+- (void)presentMailCleanupViewForMailCleanupTipId:(id)id;
 - (void)refreshHighlightedMessagesController;
-- (void)reloadDataSourceApplyEmptySnapshot:(BOOL)a3;
-- (void)reloadDataSourceWithMessageList:(id)a3 applyEmptySnapshot:(BOOL)a4;
-- (void)reloadDataSourceWithMessageList:(id)a3 sections:(id)a4 applyEmptySnapshot:(BOOL)a5;
-- (void)reloadDataSourceWithSearchPredicate:(id)a3;
+- (void)reloadDataSourceApplyEmptySnapshot:(BOOL)snapshot;
+- (void)reloadDataSourceWithMessageList:(id)list applyEmptySnapshot:(BOOL)snapshot;
+- (void)reloadDataSourceWithMessageList:(id)list sections:(id)sections applyEmptySnapshot:(BOOL)snapshot;
+- (void)reloadDataSourceWithSearchPredicate:(id)predicate;
 - (void)reloadFromMailboxes;
-- (void)selectNextMessageAfterRemovingAllVisibleMessageListItemsWithItemIDs:(id)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setFiltersEnabled:(BOOL)a3;
-- (void)setFocusFilterEnabled:(BOOL)a3;
-- (void)setInitialCellConfigurationCompleted:(BOOL)a3;
-- (void)setMessageRepository:(id)a3;
-- (void)setPrimitiveMailboxes:(id)a3;
-- (void)setReferenceMessageListItem:(id)a3 referenceMessageList:(id)a4 showAsConversation:(BOOL)a5 animated:(BOOL)a6;
-- (void)setSelectedBucket:(int64_t)a3;
-- (void)setSwipeActionVisible:(BOOL)a3;
-- (void)showBlankCellAlertForMessageListSectionDataSource:(id)a3 itemID:(id)a4 indexPath:(id)a5 reason:(id)a6;
+- (void)selectNextMessageAfterRemovingAllVisibleMessageListItemsWithItemIDs:(id)ds;
+- (void)setCollectionView:(id)view;
+- (void)setFiltersEnabled:(BOOL)enabled;
+- (void)setFocusFilterEnabled:(BOOL)enabled;
+- (void)setInitialCellConfigurationCompleted:(BOOL)completed;
+- (void)setMessageRepository:(id)repository;
+- (void)setPrimitiveMailboxes:(id)mailboxes;
+- (void)setReferenceMessageListItem:(id)item referenceMessageList:(id)list showAsConversation:(BOOL)conversation animated:(BOOL)animated;
+- (void)setSelectedBucket:(int64_t)bucket;
+- (void)setSwipeActionVisible:(BOOL)visible;
+- (void)showBlankCellAlertForMessageListSectionDataSource:(id)source itemID:(id)d indexPath:(id)path reason:(id)reason;
 - (void)toggleFilters;
-- (void)updateFilterContextForMailboxes:(id)a3 focus:(id)a4 applyFilters:(BOOL)a5;
-- (void)updateFilterControlWithFilterViewModel:(id)a3;
+- (void)updateFilterContextForMailboxes:(id)mailboxes focus:(id)focus applyFilters:(BOOL)filters;
+- (void)updateFilterControlWithFilterViewModel:(id)model;
 - (void)updateFilters;
 - (void)updateHighlightsVisibility;
-- (void)updateSelectedBucket:(int64_t)a3 unseenPredicate:(id)a4;
-- (void)updateState:(id)a3 withMailboxes:(id)a4;
+- (void)updateSelectedBucket:(int64_t)bucket unseenPredicate:(id)predicate;
+- (void)updateState:(id)state withMailboxes:(id)mailboxes;
 @end
 
 @implementation MUIMessageListViewController
@@ -142,10 +142,10 @@ uint64_t ___ef_log_MUIMessageListViewController_block_invoke()
   dataSource = self->_dataSource;
   if (!dataSource)
   {
-    v4 = [(MUIMessageListViewController *)self collectionView];
+    collectionView = [(MUIMessageListViewController *)self collectionView];
     v5 = _ef_log_MUIMessageListViewController();
     v6 = v5;
-    if (v4)
+    if (collectionView)
     {
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
@@ -154,13 +154,13 @@ uint64_t ___ef_log_MUIMessageListViewController_block_invoke()
         v11 = 138412802;
         v12 = v8;
         v13 = 2048;
-        v14 = self;
+        selfCopy = self;
         v15 = 2114;
-        v16 = v4;
+        v16 = collectionView;
         _os_log_impl(&dword_214A5E000, &v6->super, OS_LOG_TYPE_DEFAULT, "<%@: %p> Creating MessageListDataSource with collectionView: %{public}@", &v11, 0x20u);
       }
 
-      v9 = [[MessageListDataSource alloc] initWithCollectionView:v4];
+      v9 = [[MessageListDataSource alloc] initWithCollectionView:collectionView];
       [(MUIMessageListViewController *)self configureDelegatesForDataSource:v9];
       v6 = self->_dataSource;
       self->_dataSource = v9;
@@ -197,12 +197,12 @@ uint64_t ___ef_log_MUIMessageListViewController_block_invoke()
   v11 = *MEMORY[0x277D85DE8];
   if ([(MUIMessageListViewController *)self selectedBucket]== 1)
   {
-    v2 = [MEMORY[0x277CBEBD0] em_userDefaults];
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
     v3 = MUIOnboardingTipKeyForBucket(1);
-    if ([v2 integerForKey:v3] == 1 && !objc_msgSend(v2, "integerForKey:", *MEMORY[0x277D06C68]))
+    if ([em_userDefaults integerForKey:v3] == 1 && !objc_msgSend(em_userDefaults, "integerForKey:", *MEMORY[0x277D06C68]))
     {
       v4 = *MEMORY[0x277D06D18];
-      v5 = [v2 integerForKey:*MEMORY[0x277D06D18]];
+      v5 = [em_userDefaults integerForKey:*MEMORY[0x277D06D18]];
       v6 = 2;
       if (v5 < 2)
       {
@@ -218,7 +218,7 @@ uint64_t ___ef_log_MUIMessageListViewController_block_invoke()
         _os_log_impl(&dword_214A5E000, v8, OS_LOG_TYPE_INFO, "Updated viewedPrimaryWithNoOnboarding:%ld", &v9, 0xCu);
       }
 
-      [v2 setInteger:v7 forKey:v4];
+      [em_userDefaults setInteger:v7 forKey:v4];
     }
   }
 }
@@ -226,9 +226,9 @@ uint64_t ___ef_log_MUIMessageListViewController_block_invoke()
 - (void)reloadFromMailboxes
 {
   [(MUIMessageListViewController *)self setPrimitiveFocusFilterEnabled:1];
-  v3 = [(MUIMessageListViewController *)self mailboxes];
-  v4 = [(MUIMessageListViewController *)self currentFocus];
-  [(MUIMessageListViewController *)self updateFilterContextForMailboxes:v3 focus:v4 applyFilters:0];
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  currentFocus = [(MUIMessageListViewController *)self currentFocus];
+  [(MUIMessageListViewController *)self updateFilterContextForMailboxes:mailboxes focus:currentFocus applyFilters:0];
 
   [(MUIMessageListViewController *)self reloadDataSource];
 }
@@ -236,8 +236,8 @@ uint64_t ___ef_log_MUIMessageListViewController_block_invoke()
 - (id)createMessageListForReload
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [(MUIMessageListViewController *)self mailboxes];
-  if (![v3 count])
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  if (![mailboxes count])
   {
     v5 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -248,9 +248,9 @@ uint64_t ___ef_log_MUIMessageListViewController_block_invoke()
     goto LABEL_7;
   }
 
-  v4 = [(MUIMessageListViewController *)self messageRepository];
+  messageRepository = [(MUIMessageListViewController *)self messageRepository];
 
-  if (!v4)
+  if (!messageRepository)
   {
     v5 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -264,61 +264,61 @@ LABEL_7:
   }
 
   v8 = objc_alloc_init(MEMORY[0x277D07178]);
-  v9 = [(MUIMessageListViewController *)self shouldDisplayGroupedSenders];
-  v10 = [(MUIMessageListViewController *)self unseenPredicate];
-  if (v10)
+  shouldDisplayGroupedSenders = [(MUIMessageListViewController *)self shouldDisplayGroupedSenders];
+  unseenPredicate = [(MUIMessageListViewController *)self unseenPredicate];
+  if (unseenPredicate)
   {
-    [(MUIMessageListViewController *)self createMessageListForReload:v10];
+    [(MUIMessageListViewController *)self createMessageListForReload:unseenPredicate];
   }
 
-  v11 = [(MUIMessageListViewController *)self priorityPredicate];
-  v12 = [(MUIMessageListViewController *)self priorityPredicate];
+  priorityPredicate = [(MUIMessageListViewController *)self priorityPredicate];
+  priorityPredicate2 = [(MUIMessageListViewController *)self priorityPredicate];
 
-  if (v12)
+  if (priorityPredicate2)
   {
-    [v8 setOrAddObject:v11 forKey:@"MessageListSectionPriority"];
+    [v8 setOrAddObject:priorityPredicate forKey:@"MessageListSectionPriority"];
   }
 
-  if (v9)
+  if (shouldDisplayGroupedSenders)
   {
-    v13 = [MEMORY[0x277CBEBD0] em_userDefaults];
-    v14 = [v13 preferredGroupedSenderGrouping];
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+    preferredGroupedSenderGrouping = [em_userDefaults preferredGroupedSenderGrouping];
 
     v15 = MEMORY[0x277D06E00];
-    v16 = [(MUIMessageListViewController *)self messageRepository];
-    v17 = [v15 groupedCommerceSenderMessageListForMailboxes:v3 withRepository:v16 grouping:v14 sectionPredicates:v8 countOfItemsToPrecache:16];
+    messageRepository2 = [(MUIMessageListViewController *)self messageRepository];
+    v17 = [v15 groupedCommerceSenderMessageListForMailboxes:mailboxes withRepository:messageRepository2 grouping:preferredGroupedSenderGrouping sectionPredicates:v8 countOfItemsToPrecache:16];
 
-    v18 = _ef_log_MUIMessageListViewController();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    state = _ef_log_MUIMessageListViewController();
+    if (os_log_type_enabled(state, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [v17 query];
+      query = [v17 query];
       *buf = 138412802;
       v55 = v20;
       v56 = 2048;
-      v57 = self;
+      selfCopy3 = self;
       v58 = 2112;
-      v59 = v21;
-      _os_log_impl(&dword_214A5E000, v18, OS_LOG_TYPE_DEFAULT, "<%@: %p> Created new grouped sender message list for mailboxes with query %@", buf, 0x20u);
+      v59 = query;
+      _os_log_impl(&dword_214A5E000, state, OS_LOG_TYPE_DEFAULT, "<%@: %p> Created new grouped sender message list for mailboxes with query %@", buf, 0x20u);
     }
 
     goto LABEL_34;
   }
 
   v51 = v8;
-  v18 = [(MUIMessageListViewController *)self state];
-  v22 = [v18 containsInbox];
+  state = [(MUIMessageListViewController *)self state];
+  containsInbox = [state containsInbox];
   v23 = 0;
-  v48 = v12;
-  if (([v18 containsSent]& 1) == 0 && v22)
+  v48 = priorityPredicate2;
+  if (([state containsSent]& 1) == 0 && containsInbox)
   {
     v23 = [(MUIMessageListViewController *)self shouldHideFollowUp]^ 1;
   }
 
-  v49 = v22;
-  v50 = v11;
-  if ([v3 ef_any:&__block_literal_global_81_0])
+  v49 = containsInbox;
+  v50 = priorityPredicate;
+  if ([mailboxes ef_any:&__block_literal_global_81_0])
   {
     v24 = 32;
   }
@@ -328,39 +328,39 @@ LABEL_7:
     v24 = 0;
   }
 
-  v25 = v24 | [v18 isSearch]^ 1;
-  if ([v18 containsInbox]&& [(MUIMessageListViewController *)self isThreaded])
+  v25 = v24 | [state isSearch]^ 1;
+  if ([state containsInbox]&& [(MUIMessageListViewController *)self isThreaded])
   {
     v25 |= 0x1000uLL;
   }
 
   v26 = MEMORY[0x277D06E08];
-  v27 = [(MUIMessageListViewController *)self mailboxRepository];
-  v28 = [(MUIMessageListViewController *)self senderSpecificMessageListItem];
-  v29 = [v28 senderList];
-  v30 = [v29 firstObject];
-  v31 = [v26 transformPredicateWithMailboxes:v3 mailboxTypeResolver:v27 shouldIncludeFollowUps:v23 shouldIncludeReadLater:v49 limitToSender:v30];
+  mailboxRepository = [(MUIMessageListViewController *)self mailboxRepository];
+  senderSpecificMessageListItem = [(MUIMessageListViewController *)self senderSpecificMessageListItem];
+  senderList = [senderSpecificMessageListItem senderList];
+  firstObject = [senderList firstObject];
+  v31 = [v26 transformPredicateWithMailboxes:mailboxes mailboxTypeResolver:mailboxRepository shouldIncludeFollowUps:v23 shouldIncludeReadLater:v49 limitToSender:firstObject];
 
-  v32 = [v18 sortDescriptors];
-  LODWORD(v28) = [(MUIMessageListViewController *)self isThreaded];
+  sortDescriptors = [state sortDescriptors];
+  LODWORD(senderSpecificMessageListItem) = [(MUIMessageListViewController *)self isThreaded];
   v33 = MEMORY[0x277D06E00];
-  v34 = [(MUIMessageListViewController *)self messageRepository];
-  if (v28)
+  messageRepository3 = [(MUIMessageListViewController *)self messageRepository];
+  if (senderSpecificMessageListItem)
   {
-    v17 = [v33 threadedMessageListForMailboxes:v3 withRepository:v34 additionalQueryOptions:v25 countOfItemsToPrecache:16 shouldUpdateDisplayDate:1 sortDescriptors:v32 sectionPredicates:v51 transformPredicate:v31];
+    v17 = [v33 threadedMessageListForMailboxes:mailboxes withRepository:messageRepository3 additionalQueryOptions:v25 countOfItemsToPrecache:16 shouldUpdateDisplayDate:1 sortDescriptors:sortDescriptors sectionPredicates:v51 transformPredicate:v31];
 
     v35 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
-      v38 = [v17 query];
+      query2 = [v17 query];
       *buf = 138412802;
       v55 = v37;
       v56 = 2048;
-      v57 = self;
+      selfCopy3 = self;
       v58 = 2112;
-      v59 = v38;
+      v59 = query2;
       v39 = "<%@: %p> Created new threaded list for mailboxes with query %@";
 LABEL_32:
       _os_log_impl(&dword_214A5E000, v35, OS_LOG_TYPE_DEFAULT, v39, buf, 0x20u);
@@ -369,44 +369,44 @@ LABEL_32:
 
   else
   {
-    v17 = [v33 simpleMessageListForMailboxes:v3 withRepository:v34 additionalQueryOptions:v25 countOfItemsToPrecache:16 shouldUpdateDisplayDate:1 sortDescriptors:v32 sectionPredicates:v51 transformPredicate:v31];
+    v17 = [v33 simpleMessageListForMailboxes:mailboxes withRepository:messageRepository3 additionalQueryOptions:v25 countOfItemsToPrecache:16 shouldUpdateDisplayDate:1 sortDescriptors:sortDescriptors sectionPredicates:v51 transformPredicate:v31];
 
     v35 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       v40 = objc_opt_class();
       v37 = NSStringFromClass(v40);
-      v38 = [v17 query];
+      query2 = [v17 query];
       *buf = 138412802;
       v55 = v37;
       v56 = 2048;
-      v57 = self;
+      selfCopy3 = self;
       v58 = 2112;
-      v59 = v38;
+      v59 = query2;
       v39 = "<%@: %p> Created new non-threaded list for mailboxes with query %@";
       goto LABEL_32;
     }
   }
 
-  v12 = v48;
+  priorityPredicate2 = v48;
 
-  v11 = v50;
+  priorityPredicate = v50;
   v8 = v51;
 LABEL_34:
 
-  if (v12)
+  if (priorityPredicate2)
   {
-    v41 = [v17 query];
+    query3 = [v17 query];
     v52 = *MEMORY[0x277D06C10];
     v53 = MEMORY[0x277CBEC38];
     v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-    [v41 addTargetClassOptions:v42];
+    [query3 addTargetClassOptions:v42];
   }
 
-  v43 = [(MUIMessageListViewController *)self filterViewModel];
-  v44 = [v43 isFilterEnabled];
+  filterViewModel = [(MUIMessageListViewController *)self filterViewModel];
+  isFilterEnabled = [filterViewModel isFilterEnabled];
 
-  if (v44)
+  if (isFilterEnabled)
   {
     v45 = [(MUIMessageListViewController *)self shouldDisplayGroupedSenders]^ 1;
   }
@@ -445,14 +445,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v3 = [(MUIMessageListViewController *)self state];
-  if (([v3 containsInbox] & 1) == 0)
+  state = [(MUIMessageListViewController *)self state];
+  if (([state containsInbox] & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v4 = [(MUIMessageListViewController *)self showHighlights];
-  if (([v4 isEnabled] & 1) == 0)
+  showHighlights = [(MUIMessageListViewController *)self showHighlights];
+  if (([showHighlights isEnabled] & 1) == 0)
   {
 
 LABEL_8:
@@ -461,23 +461,23 @@ LABEL_8:
 
   if ([(MUIMessageListViewController *)self selectedBucket]!= 1)
   {
-    v7 = [(MUIMessageListViewController *)self selectedBucket];
+    selectedBucket = [(MUIMessageListViewController *)self selectedBucket];
 
-    if (!v7)
+    if (!selectedBucket)
     {
       goto LABEL_14;
     }
 
 LABEL_9:
-    v5 = 0;
+    predicateForUrgentMessages = 0;
     goto LABEL_10;
   }
 
 LABEL_14:
-  v5 = [MEMORY[0x277D06E08] predicateForUrgentMessages];
+  predicateForUrgentMessages = [MEMORY[0x277D06E08] predicateForUrgentMessages];
 LABEL_10:
 
-  return v5;
+  return predicateForUrgentMessages;
 }
 
 - (void)cancelQueueSuspensionTimeout
@@ -500,11 +500,11 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_queueSuspensionTimeoutTokenLock);
 }
 
-- (void)_selectBucket:(int64_t)a3
+- (void)_selectBucket:(int64_t)bucket
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
-  MUIMessageListViewController.selectBucket(_:)(a3);
+  MUIMessageListViewController.selectBucket(_:)(bucket);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -524,8 +524,8 @@ LABEL_10:
   {
     if (v3)
     {
-      v4 = [(MUIMessageListViewController *)self dataSource];
-      v5 = [v4 messageListSectionIsVisible:@"MessageListSectionPriority"];
+      dataSource = [(MUIMessageListViewController *)self dataSource];
+      v5 = [dataSource messageListSectionIsVisible:@"MessageListSectionPriority"];
 
       if (v5)
       {
@@ -537,76 +537,76 @@ LABEL_10:
 
   else if (_os_feature_enabled_impl() && EMIsGreymatterSupported())
   {
-    v8 = [(MUIMessageListViewController *)self highlightedMessagesController];
+    highlightedMessagesController = [(MUIMessageListViewController *)self highlightedMessagesController];
     if (v3)
     {
-      v6 = [(MUIMessageListViewController *)self mailboxes];
-      [v8 setMailboxes:v6];
+      mailboxes = [(MUIMessageListViewController *)self mailboxes];
+      [highlightedMessagesController setMailboxes:mailboxes];
 
-      v7 = [(MUIMessageListViewController *)self currentFilterPredicate];
-      [v8 setFilterPredicate:v7];
+      currentFilterPredicate = [(MUIMessageListViewController *)self currentFilterPredicate];
+      [highlightedMessagesController setFilterPredicate:currentFilterPredicate];
 
-      [v8 reloadApplyingEmptyUpdate:0];
+      [highlightedMessagesController reloadApplyingEmptyUpdate:0];
     }
 
     else
     {
-      [v8 setMailboxes:MEMORY[0x277CBEBF8]];
-      [v8 setFilterPredicate:0];
+      [highlightedMessagesController setMailboxes:MEMORY[0x277CBEBF8]];
+      [highlightedMessagesController setFilterPredicate:0];
     }
   }
 }
 
 - (BOOL)isBucketBarHidden
 {
-  v3 = [(MUIMessageListViewController *)self bucketBarConfigurationController];
+  bucketBarConfigurationController = [(MUIMessageListViewController *)self bucketBarConfigurationController];
 
-  if (!v3)
+  if (!bucketBarConfigurationController)
   {
     return 1;
   }
 
-  v4 = [(MUIMessageListViewController *)self bucketBarConfigurationController];
-  v5 = [(MUIMessageListViewController *)self mailboxes];
-  v6 = [v4 isBucketBarHiddenForMailboxes:v5];
+  bucketBarConfigurationController2 = [(MUIMessageListViewController *)self bucketBarConfigurationController];
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  v6 = [bucketBarConfigurationController2 isBucketBarHiddenForMailboxes:mailboxes];
 
   return v6;
 }
 
 - (BOOL)focusAllowed
 {
-  v3 = [(MUIMessageListViewController *)self currentFocus];
-  if (v3)
+  currentFocus = [(MUIMessageListViewController *)self currentFocus];
+  if (currentFocus)
   {
-    v4 = [(MUIMessageListViewController *)self state];
-    v5 = [v4 containsSmartMailbox];
+    state = [(MUIMessageListViewController *)self state];
+    containsSmartMailbox = [state containsSmartMailbox];
   }
 
   else
   {
-    v5 = 0;
+    containsSmartMailbox = 0;
   }
 
-  v6 = [(MUIMessageListViewController *)self senderSpecificMessageListItem];
+  senderSpecificMessageListItem = [(MUIMessageListViewController *)self senderSpecificMessageListItem];
 
-  return (v6 == 0) & v5;
+  return (senderSpecificMessageListItem == 0) & containsSmartMailbox;
 }
 
 - (BOOL)shouldDisplayGroupedSenders
 {
   if ([(MUIMessageListViewController *)self isBlackPearlEnabled])
   {
-    v3 = [(MUIMessageListViewController *)self bucketBarConfigurationController];
-    v4 = [(MUIMessageListViewController *)self mailboxes];
-    if ([v3 isBucketBarHiddenForMailboxes:v4] & 1) != 0 || !MUIBucketIsBusinessBucket(-[MUIMessageListViewController selectedBucket](self, "selectedBucket")) || (objc_msgSend(MEMORY[0x277D06DA0], "preferenceEnabled:", 38))
+    bucketBarConfigurationController = [(MUIMessageListViewController *)self bucketBarConfigurationController];
+    mailboxes = [(MUIMessageListViewController *)self mailboxes];
+    if ([bucketBarConfigurationController isBucketBarHiddenForMailboxes:mailboxes] & 1) != 0 || !MUIBucketIsBusinessBucket(-[MUIMessageListViewController selectedBucket](self, "selectedBucket")) || (objc_msgSend(MEMORY[0x277D06DA0], "preferenceEnabled:", 38))
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v7 = [(MUIMessageListViewController *)self categoryGroupingPreferenceController];
-      v5 = [v7 shouldDisableGroupingForBucket:{-[MUIMessageListViewController selectedBucket](self, "selectedBucket")}] ^ 1;
+      categoryGroupingPreferenceController = [(MUIMessageListViewController *)self categoryGroupingPreferenceController];
+      v5 = [categoryGroupingPreferenceController shouldDisableGroupingForBucket:{-[MUIMessageListViewController selectedBucket](self, "selectedBucket")}] ^ 1;
     }
   }
 
@@ -623,9 +623,9 @@ LABEL_10:
   filterController = self->_filterController;
   if (!filterController)
   {
-    v5 = [(MUIMessageListViewController *)self createMailboxFilterController];
+    createMailboxFilterController = [(MUIMessageListViewController *)self createMailboxFilterController];
     v6 = self->_filterController;
-    self->_filterController = v5;
+    self->_filterController = createMailboxFilterController;
 
     filterController = self->_filterController;
     if (!filterController)
@@ -640,10 +640,10 @@ LABEL_10:
 
 - (MUIMailboxFilterViewModel)filterViewModel
 {
-  v2 = [(MUIMessageListViewController *)self filterController];
-  v3 = [v2 viewModel];
+  filterController = [(MUIMessageListViewController *)self filterController];
+  viewModel = [filterController viewModel];
 
-  return v3;
+  return viewModel;
 }
 
 - (BOOL)_shouldDisplayOnboardingTip
@@ -654,21 +654,21 @@ LABEL_10:
     return 0;
   }
 
-  v6 = [(MUIMessageListViewController *)self selectedBucket];
-  v7 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  v8 = MUIOnboardingTipKeyForBucket(v6);
-  if (v8 && ![v7 integerForKey:v8])
+  selectedBucket = [(MUIMessageListViewController *)self selectedBucket];
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+  v8 = MUIOnboardingTipKeyForBucket(selectedBucket);
+  if (v8 && ![em_userDefaults integerForKey:v8])
   {
     v4 = 1;
   }
 
   else
   {
-    v9 = [v7 integerForKey:*MEMORY[0x277D06C68]];
+    v9 = [em_userDefaults integerForKey:*MEMORY[0x277D06C68]];
     v4 = 0;
-    if (v6 == 1 && !v9)
+    if (selectedBucket == 1 && !v9)
     {
-      v10 = [v7 integerForKey:*MEMORY[0x277D06D18]];
+      v10 = [em_userDefaults integerForKey:*MEMORY[0x277D06D18]];
       v4 = v10 > 2;
       v11 = _ef_log_MUIMessageListViewController();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -688,12 +688,12 @@ LABEL_10:
 
 - (BOOL)canShowUnseenSection
 {
-  v2 = [(MUIMessageListViewController *)self selectedBucket];
+  selectedBucket = [(MUIMessageListViewController *)self selectedBucket];
 
-  return MUIBucketIsBusinessBucket(v2);
+  return MUIBucketIsBusinessBucket(selectedBucket);
 }
 
-- (void)_bucketBarUserInteractionEnabled:(BOOL)a3
+- (void)_bucketBarUserInteractionEnabled:(BOOL)enabled
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
@@ -702,17 +702,17 @@ LABEL_10:
   MEMORY[0x277D82BD8](self);
 }
 
-- (id)_configuredBucketsViewControllerWithMailboxes:(id)a3
+- (id)_configuredBucketsViewControllerWithMailboxes:(id)mailboxes
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](mailboxes);
   MEMORY[0x277D82BE0](self);
   sub_214A63684();
   v7 = sub_214CCF7E4();
   MUIMessageListViewController.configuredBucketsViewController(withMailboxes:)(v4, v7);
   v10 = v5;
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](mailboxes);
   MEMORY[0x277D82BD8](self);
 
   return v10;
@@ -720,35 +720,35 @@ LABEL_10:
 
 - (BOOL)hasUpdatedAllVisibleSections
 {
-  v3 = [(MUIMessageListViewController *)self dataSource];
-  v4 = [v3 visibleMessageListSections];
-  v5 = [v4 count];
-  v6 = [(MUIMessageListViewController *)self configuredSections];
-  LOBYTE(v5) = v5 == [v6 count];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  visibleMessageListSections = [dataSource visibleMessageListSections];
+  v5 = [visibleMessageListSections count];
+  configuredSections = [(MUIMessageListViewController *)self configuredSections];
+  LOBYTE(v5) = v5 == [configuredSections count];
 
   return v5;
 }
 
-- (MUIMessageListViewController)initWithDaemonInterface:(id)a3 focusController:(id)a4 mailboxCategoryCloudStorage:(id)a5 avatarGenerator:(id)a6 bucketBarConfigurationController:(id)a7 mailboxes:(id)a8 contactStore:(id)a9 diagnosticsHelper:(id)a10
+- (MUIMessageListViewController)initWithDaemonInterface:(id)interface focusController:(id)controller mailboxCategoryCloudStorage:(id)storage avatarGenerator:(id)generator bucketBarConfigurationController:(id)configurationController mailboxes:(id)mailboxes contactStore:(id)store diagnosticsHelper:(id)self0
 {
-  v17 = a3;
-  v80 = a4;
-  v79 = a5;
-  v78 = a6;
-  v77 = a7;
-  v18 = a8;
-  v76 = a9;
-  v75 = a10;
+  interfaceCopy = interface;
+  controllerCopy = controller;
+  storageCopy = storage;
+  generatorCopy = generator;
+  configurationControllerCopy = configurationController;
+  mailboxesCopy = mailboxes;
+  storeCopy = store;
+  helperCopy = helper;
   v92.receiver = self;
   v92.super_class = MUIMessageListViewController;
   v19 = [(MUIMessageListViewController *)&v92 initWithNibName:0 bundle:0];
   if (v19)
   {
-    v20 = [v18 copy];
+    v20 = [mailboxesCopy copy];
     mailboxes = v19->_mailboxes;
     v19->_mailboxes = v20;
 
-    objc_storeStrong(&v19->_contactStore, a9);
+    objc_storeStrong(&v19->_contactStore, store);
     v22 = objc_alloc_init(MessageListViewControllerState);
     state = v19->_state;
     v19->_state = v22;
@@ -758,27 +758,27 @@ LABEL_10:
     v19->_messageSelectionStrategy = v24;
 
     [(MUIMessageListViewController *)v19 updateState:v19->_state withMailboxes:v19->_mailboxes];
-    objc_storeStrong(&v19->_daemonInterface, a3);
-    v26 = [v17 messageRepository];
+    objc_storeStrong(&v19->_daemonInterface, interface);
+    messageRepository = [interfaceCopy messageRepository];
     messageRepository = v19->_messageRepository;
-    v19->_messageRepository = v26;
+    v19->_messageRepository = messageRepository;
 
-    v28 = [v17 mailboxRepository];
+    mailboxRepository = [interfaceCopy mailboxRepository];
     mailboxRepository = v19->_mailboxRepository;
-    v19->_mailboxRepository = v28;
+    v19->_mailboxRepository = mailboxRepository;
 
-    v30 = [v17 accountRepository];
+    accountRepository = [interfaceCopy accountRepository];
     accountRepository = v19->_accountRepository;
-    v19->_accountRepository = v30;
+    v19->_accountRepository = accountRepository;
 
-    objc_storeStrong(&v19->_diagnosticsHelper, a10);
+    objc_storeStrong(&v19->_diagnosticsHelper, helper);
     v32 = [(EMDiagnosticsHelper *)v19->_diagnosticsHelper registerDiagnosticFileProvider:v19];
     diagnosticsHelperToken = v19->_diagnosticsHelperToken;
     v19->_diagnosticsHelperToken = v32;
 
     v34 = [MessageListFetchHelper alloc];
-    v35 = [v17 fetchController];
-    v36 = [(MessageListFetchHelper *)v34 initWithFetchController:v35 mailboxes:0];
+    fetchController = [interfaceCopy fetchController];
+    v36 = [(MessageListFetchHelper *)v34 initWithFetchController:fetchController mailboxes:0];
     messageListFetchHelper = v19->_messageListFetchHelper;
     v19->_messageListFetchHelper = v36;
 
@@ -786,9 +786,9 @@ LABEL_10:
     layoutValuesHelper = v19->_layoutValuesHelper;
     v19->_layoutValuesHelper = v38;
 
-    v40 = [MEMORY[0x277D071A8] promise];
+    promise = [MEMORY[0x277D071A8] promise];
     initialLoadCompletedPromise = v19->_initialLoadCompletedPromise;
-    v19->_initialLoadCompletedPromise = v40;
+    v19->_initialLoadCompletedPromise = promise;
 
     v42 = [MEMORY[0x277CBEB58] set];
     mailboxesPendingOldestItemsUpdates = v19->_mailboxesPendingOldestItemsUpdates;
@@ -807,25 +807,25 @@ LABEL_10:
     indexPathsForConfiguredCollectionViewCells = v19->_indexPathsForConfiguredCollectionViewCells;
     v19->_indexPathsForConfiguredCollectionViewCells = v48;
 
-    objc_storeStrong(&v19->_avatarGenerator, a6);
+    objc_storeStrong(&v19->_avatarGenerator, generator);
     v19->_isBlackPearlEnabled = EMBlackPearlIsFeatureEnabled();
-    objc_storeStrong(&v19->_bucketBarConfigurationController, a7);
-    objc_storeStrong(&v19->_mailboxCategoryCloudStorage, a5);
+    objc_storeStrong(&v19->_bucketBarConfigurationController, configurationController);
+    objc_storeStrong(&v19->_mailboxCategoryCloudStorage, storage);
     v50 = [[MUICategoryGroupingPreferenceController alloc] initWithDelegate:v19];
     categoryGroupingPreferenceController = v19->_categoryGroupingPreferenceController;
     v19->_categoryGroupingPreferenceController = v50;
 
     objc_storeWeak(&v19->_iCloudMailCleanupService, 0);
-    v52 = [MEMORY[0x277CBEBD0] em_userDefaults];
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
     v53 = *MEMORY[0x277D06C70];
-    -[MUIMessageListViewController setHideFollowUp:](v19, "setHideFollowUp:", [v52 BOOLForKey:*MEMORY[0x277D06C70]]);
+    -[MUIMessageListViewController setHideFollowUp:](v19, "setHideFollowUp:", [em_userDefaults BOOLForKey:*MEMORY[0x277D06C70]]);
     objc_initWeak(&location, v19);
     v88[0] = MEMORY[0x277D85DD0];
     v88[1] = 3221225472;
     v88[2] = __190__MUIMessageListViewController_initWithDaemonInterface_focusController_mailboxCategoryCloudStorage_avatarGenerator_bucketBarConfigurationController_mailboxes_contactStore_diagnosticsHelper___block_invoke;
     v88[3] = &unk_278188C80;
     objc_copyWeak(&v90, &location);
-    v54 = v52;
+    v54 = em_userDefaults;
     v89 = v54;
     v55 = [v54 ef_observeKeyPath:v53 options:1 autoCancelToken:1 usingBlock:v88];
     userDefaultsObserver = v19->_userDefaultsObserver;
@@ -843,9 +843,9 @@ LABEL_10:
     v59 = [v58 ef_observeKeyPath:v57 options:1 autoCancelToken:1 usingBlock:v85];
     [(MUIMessageListViewController *)v19 setPreferredDeleteOrMoveMessageActionToken:v59];
 
-    [(MUIMessageListViewController *)v19 _resetMailboxRepositoryForMailboxes:v18];
-    objc_storeStrong(&v19->_focusController, a4);
-    v60 = [v80 addObserver:v19 currentFocus:&v19->_currentFocus];
+    [(MUIMessageListViewController *)v19 _resetMailboxRepositoryForMailboxes:mailboxesCopy];
+    objc_storeStrong(&v19->_focusController, controller);
+    v60 = [controllerCopy addObserver:v19 currentFocus:&v19->_currentFocus];
     focusObservationToken = v19->_focusObservationToken;
     v19->_focusObservationToken = v60;
 
@@ -862,10 +862,10 @@ LABEL_10:
         highlightedMessagesController = v19->_highlightedMessagesController;
         v19->_highlightedMessagesController = v62;
 
-        [(MUIHighlightedMessagesController *)v19->_highlightedMessagesController setMailboxes:v18];
+        [(MUIHighlightedMessagesController *)v19->_highlightedMessagesController setMailboxes:mailboxesCopy];
       }
 
-      v64 = [MEMORY[0x277CBEBD0] em_userDefaults];
+      em_userDefaults2 = [MEMORY[0x277CBEBD0] em_userDefaults];
       v65 = objc_alloc(MEMORY[0x277D06E58]);
       v66 = *MEMORY[0x277D06CE0];
       v83[0] = MEMORY[0x277D85DD0];
@@ -873,7 +873,7 @@ LABEL_10:
       v83[2] = __190__MUIMessageListViewController_initWithDaemonInterface_focusController_mailboxCategoryCloudStorage_avatarGenerator_bucketBarConfigurationController_mailboxes_contactStore_diagnosticsHelper___block_invoke_3;
       v83[3] = &unk_278188BD8;
       objc_copyWeak(&v84, &location);
-      v67 = [v65 initWithUserDefaults:v64 keyPath:v66 keyRepresentsDisabled:1 handler:v83];
+      v67 = [v65 initWithUserDefaults:em_userDefaults2 keyPath:v66 keyRepresentsDisabled:1 handler:v83];
       showHighlights = v19->_showHighlights;
       v19->_showHighlights = v67;
 
@@ -884,12 +884,12 @@ LABEL_10:
       v81[2] = __190__MUIMessageListViewController_initWithDaemonInterface_focusController_mailboxCategoryCloudStorage_avatarGenerator_bucketBarConfigurationController_mailboxes_contactStore_diagnosticsHelper___block_invoke_4;
       v81[3] = &unk_278188BD8;
       objc_copyWeak(&v82, &location);
-      v71 = [v69 initWithUserDefaults:v64 keyPath:v70 keyRepresentsDisabled:0 handler:v81];
+      v71 = [v69 initWithUserDefaults:em_userDefaults2 keyPath:v70 keyRepresentsDisabled:0 handler:v81];
       hasCompletedAppleIntelligenceOnboarding = v19->_hasCompletedAppleIntelligenceOnboarding;
       v19->_hasCompletedAppleIntelligenceOnboarding = v71;
 
-      v73 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v73 addObserver:v19 selector:sel__generativeModelsAvailabilityDidChange_ name:*MEMORY[0x277D06BC8] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v19 selector:sel__generativeModelsAvailabilityDidChange_ name:*MEMORY[0x277D06BC8] object:0];
 
       objc_destroyWeak(&v82);
       objc_destroyWeak(&v84);
@@ -952,81 +952,81 @@ void __190__MUIMessageListViewController_initWithDaemonInterface_focusController
 - (void)dealloc
 {
   [(MSBucketBarConfigurationController *)self->_bucketBarConfigurationController removeConfigurationObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(MUIMessageListViewController *)self diagnosticsHelperToken];
-  [v4 cancel];
+  diagnosticsHelperToken = [(MUIMessageListViewController *)self diagnosticsHelperToken];
+  [diagnosticsHelperToken cancel];
 
   v5.receiver = self;
   v5.super_class = MUIMessageListViewController;
   [(MUIMessageListViewController *)&v5 dealloc];
 }
 
-- (void)setMessageRepository:(id)a3
+- (void)setMessageRepository:(id)repository
 {
-  v5 = a3;
-  if (self->_messageRepository != v5)
+  repositoryCopy = repository;
+  if (self->_messageRepository != repositoryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_messageRepository, a3);
+    v6 = repositoryCopy;
+    objc_storeStrong(&self->_messageRepository, repository);
     [(MUIMessageListViewController *)self reloadDataSource];
-    v5 = v6;
+    repositoryCopy = v6;
   }
 }
 
-- (void)setPrimitiveMailboxes:(id)a3
+- (void)setPrimitiveMailboxes:(id)mailboxes
 {
-  if (self->_mailboxes != a3)
+  if (self->_mailboxes != mailboxes)
   {
-    v4 = [a3 copy];
+    v4 = [mailboxes copy];
     mailboxes = self->_mailboxes;
     self->_mailboxes = v4;
 
-    v6 = [(MUIMessageListViewController *)self state];
-    [v6 setDidAlertOnBlankCell:0];
-    [v6 setDidRecordTailspin:0];
+    state = [(MUIMessageListViewController *)self state];
+    [state setDidAlertOnBlankCell:0];
+    [state setDidRecordTailspin:0];
     [(MUIMessageListViewController *)self _resetMailboxRepositoryForMailboxes:self->_mailboxes];
-    [(MUIMessageListViewController *)self updateState:v6 withMailboxes:self->_mailboxes];
+    [(MUIMessageListViewController *)self updateState:state withMailboxes:self->_mailboxes];
     [(MUIMessageListViewController *)self refreshHighlightedMessagesController];
   }
 }
 
-- (void)setSelectedBucket:(int64_t)a3
+- (void)setSelectedBucket:(int64_t)bucket
 {
-  if (self->_selectedBucket != a3)
+  if (self->_selectedBucket != bucket)
   {
-    self->_selectedBucket = a3;
+    self->_selectedBucket = bucket;
     [(MUIMessageListViewController *)self _updateViewPrimaryWithNoOnboardingIfNeeded];
     v6 = [MEMORY[0x277CCAB88] notificationWithName:@"SelectedBucketDidChangeNotification" object:self userInfo:0];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotification:v6];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:v6];
   }
 }
 
 - (BOOL)_shouldDisplayHelpMailLearn
 {
-  v3 = [(MUIMessageListViewController *)self _shouldDisplayOnboardingTip];
-  v4 = [MEMORY[0x277CBEBD0] em_userDefaults];
+  _shouldDisplayOnboardingTip = [(MUIMessageListViewController *)self _shouldDisplayOnboardingTip];
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
   v5 = *MEMORY[0x277D06CE8];
-  v6 = [v4 objectForKey:*MEMORY[0x277D06CE8]];
+  v6 = [em_userDefaults objectForKey:*MEMORY[0x277D06CE8]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    [v4 removeObjectForKey:v5];
+    [em_userDefaults removeObjectForKey:v5];
     v6 = 0;
   }
 
-  if ((([v6 ef_isLaterThanNow] | v3) & 1) != 0 || !EMBlackPearlIsFeatureEnabled())
+  if ((([v6 ef_isLaterThanNow] | _shouldDisplayOnboardingTip) & 1) != 0 || !EMBlackPearlIsFeatureEnabled())
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(MUIMessageListViewController *)self mailboxes];
-    v8 = [v7 ef_any:&__block_literal_global_29_0];
+    mailboxes = [(MUIMessageListViewController *)self mailboxes];
+    v8 = [mailboxes ef_any:&__block_literal_global_29_0];
   }
 
   return v8;
@@ -1050,9 +1050,9 @@ void __190__MUIMessageListViewController_initWithDaemonInterface_focusController
     return 0;
   }
 
-  v3 = [(MUIMessageListViewController *)self iCloudMailCleanupService];
+  iCloudMailCleanupService = [(MUIMessageListViewController *)self iCloudMailCleanupService];
 
-  if (!v3)
+  if (!iCloudMailCleanupService)
   {
     return 0;
   }
@@ -1061,8 +1061,8 @@ void __190__MUIMessageListViewController_initWithDaemonInterface_focusController
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MUIMessageListViewController *)self mailboxes];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  v5 = [mailboxes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1073,12 +1073,12 @@ void __190__MUIMessageListViewController_initWithDaemonInterface_focusController
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mailboxes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 account];
-        if (![v10 supportsiCloudCleanup])
+        account = [v9 account];
+        if (![account supportsiCloudCleanup])
         {
 
 LABEL_19:
@@ -1086,15 +1086,15 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v11 = [v9 type];
+        type = [v9 type];
 
-        if (v11 != 7)
+        if (type != 7)
         {
           goto LABEL_19;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [mailboxes countByEnumeratingWithState:&v14 objects:v18 count:16];
       v12 = 1;
       if (v6)
       {
@@ -1122,10 +1122,10 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(MUIMessageListViewController *)self iCloudMailCleanupService];
-  v4 = [v3 isConsentAccepted];
+  iCloudMailCleanupService = [(MUIMessageListViewController *)self iCloudMailCleanupService];
+  isConsentAccepted = [iCloudMailCleanupService isConsentAccepted];
 
-  if ((v4 & 1) == 0)
+  if ((isConsentAccepted & 1) == 0)
   {
     v9 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1136,32 +1136,32 @@ LABEL_20:
     return 0;
   }
 
-  v5 = [(MUIMessageListViewController *)self mailboxes];
-  v6 = [v5 firstObject];
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  firstObject = [mailboxes firstObject];
 
-  if ([v6 isTrashMailbox])
+  if ([firstObject isTrashMailbox])
   {
-    v7 = [v6 account];
-    v8 = [v7 supportsiCloudCleanup];
+    account = [firstObject account];
+    supportsiCloudCleanup = [account supportsiCloudCleanup];
   }
 
   else
   {
-    v8 = 0;
+    supportsiCloudCleanup = 0;
   }
 
-  return v8;
+  return supportsiCloudCleanup;
 }
 
-- (void)_resetMailboxRepositoryForMailboxes:(id)a3
+- (void)_resetMailboxRepositoryForMailboxes:(id)mailboxes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [mailboxesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1172,97 +1172,97 @@ LABEL_20:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mailboxesCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 repository];
+        repository = [v9 repository];
 
-        if (!v10)
+        if (!repository)
         {
-          v11 = [(MUIMessageListViewController *)self mailboxRepository];
-          [v9 setRepository:v11];
+          mailboxRepository = [(MUIMessageListViewController *)self mailboxRepository];
+          [v9 setRepository:mailboxRepository];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [mailboxesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)updateState:(id)a3 withMailboxes:(id)a4
+- (void)updateState:(id)state withMailboxes:(id)mailboxes
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUIMessageListViewController *)self senderSpecificMessageListItem];
-  [v6 updateWithMailboxes:v7 senderSpecificMessageListItem:v8];
+  stateCopy = state;
+  mailboxesCopy = mailboxes;
+  senderSpecificMessageListItem = [(MUIMessageListViewController *)self senderSpecificMessageListItem];
+  [stateCopy updateWithMailboxes:mailboxesCopy senderSpecificMessageListItem:senderSpecificMessageListItem];
 
-  [v6 setCanShowReadLaterDate:{objc_msgSend(v6, "containsOutbox") ^ 1}];
+  [stateCopy setCanShowReadLaterDate:{objc_msgSend(stateCopy, "containsOutbox") ^ 1}];
   v9 = _ef_log_MUIMessageListViewController();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 ef_publicDescription];
+    ef_publicDescription = [stateCopy ef_publicDescription];
     v11 = 138543362;
-    v12 = v10;
+    v12 = ef_publicDescription;
     _os_log_impl(&dword_214A5E000, v9, OS_LOG_TYPE_DEFAULT, "Updated state to %{public}@", &v11, 0xCu);
   }
 }
 
-- (void)setInitialCellConfigurationCompleted:(BOOL)a3
+- (void)setInitialCellConfigurationCompleted:(BOOL)completed
 {
-  if (self->_initialCellConfigurationCompleted != a3)
+  if (self->_initialCellConfigurationCompleted != completed)
   {
-    self->_initialCellConfigurationCompleted = a3;
+    self->_initialCellConfigurationCompleted = completed;
     [(MUIMessageListViewController *)self didFinishLoadViewController];
   }
 }
 
-- (void)setSwipeActionVisible:(BOOL)a3
+- (void)setSwipeActionVisible:(BOOL)visible
 {
-  if (self->_swipeActionVisible != a3)
+  if (self->_swipeActionVisible != visible)
   {
-    v4 = a3;
-    self->_swipeActionVisible = a3;
-    v5 = [(MUIMessageListViewController *)self dataSource];
-    v6 = v5;
-    if (v4)
+    visibleCopy = visible;
+    self->_swipeActionVisible = visible;
+    dataSource = [(MUIMessageListViewController *)self dataSource];
+    v6 = dataSource;
+    if (visibleCopy)
     {
-      [v5 suspendUpdates];
+      [dataSource suspendUpdates];
     }
 
     else
     {
-      [v5 resumeUpdates];
+      [dataSource resumeUpdates];
     }
   }
 }
 
-- (id)searchPredicateForMailboxes:(id)a3
+- (id)searchPredicateForMailboxes:(id)mailboxes
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(MUIMessageListViewController *)self currentSuggestion];
-  v7 = [v6 mui_messageListSearchPredicate];
-  [v5 ef_addOptionalObject:v7];
-  v8 = [(MUIMessageListViewController *)self userQueryString];
-  if ([v8 length])
+  currentSuggestion = [(MUIMessageListViewController *)self currentSuggestion];
+  mui_messageListSearchPredicate = [currentSuggestion mui_messageListSearchPredicate];
+  [v5 ef_addOptionalObject:mui_messageListSearchPredicate];
+  userQueryString = [(MUIMessageListViewController *)self userQueryString];
+  if ([userQueryString length])
   {
-    v9 = [MEMORY[0x277D06E10] spotlightSearchPredicateForValue:v8];
+    v9 = [MEMORY[0x277D06E10] spotlightSearchPredicateForValue:userQueryString];
     [v5 addObject:v9];
   }
 
   v10 = _ef_log_MUIMessageListViewController();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 ef_publicDescription];
-    v12 = [MEMORY[0x277D06D48] publicDescriptionForSuggestion:v6];
-    v13 = [MEMORY[0x277D07198] partiallyRedactedStringForString:v8];
+    ef_publicDescription = [mui_messageListSearchPredicate ef_publicDescription];
+    v12 = [MEMORY[0x277D06D48] publicDescriptionForSuggestion:currentSuggestion];
+    v13 = [MEMORY[0x277D07198] partiallyRedactedStringForString:userQueryString];
     v20 = 138412802;
-    v21 = v11;
+    v21 = ef_publicDescription;
     v22 = 2112;
     v23 = v12;
     v24 = 2112;
@@ -1270,38 +1270,38 @@ LABEL_20:
     _os_log_impl(&dword_214A5E000, v10, OS_LOG_TYPE_DEFAULT, "Generated remote search predicate:%@ for suggestion:%@ (%@)", &v20, 0x20u);
   }
 
-  if ([v4 count])
+  if ([mailboxesCopy count])
   {
-    v14 = [MEMORY[0x277D06E08] predicateForMessagesInMailboxes:v4];
-    [v5 ef_addOptionalObject:v14];
+    _excludedMailboxesPredicate = [MEMORY[0x277D06E08] predicateForMessagesInMailboxes:mailboxesCopy];
+    [v5 ef_addOptionalObject:_excludedMailboxesPredicate];
     v15 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412802;
-      v21 = v14;
+      v21 = _excludedMailboxesPredicate;
       v22 = 2112;
-      v23 = v6;
+      v23 = currentSuggestion;
       v24 = 2112;
-      v25 = v8;
+      v25 = userQueryString;
       _os_log_impl(&dword_214A5E000, v15, OS_LOG_TYPE_DEFAULT, "Generated localMailboxPredicate:%@ for suggestion:%@ (%@)", &v20, 0x20u);
     }
   }
 
   else
   {
-    v14 = [(MUIMessageListViewController *)self _excludedMailboxesPredicate];
-    if (v14)
+    _excludedMailboxesPredicate = [(MUIMessageListViewController *)self _excludedMailboxesPredicate];
+    if (_excludedMailboxesPredicate)
     {
-      [v5 addObject:v14];
+      [v5 addObject:_excludedMailboxesPredicate];
     }
 
     v15 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [MEMORY[0x277D06D48] publicDescriptionForSuggestion:v6];
-      v17 = [MEMORY[0x277D07198] partiallyRedactedStringForString:v8];
+      v16 = [MEMORY[0x277D06D48] publicDescriptionForSuggestion:currentSuggestion];
+      v17 = [MEMORY[0x277D07198] partiallyRedactedStringForString:userQueryString];
       v20 = 138412802;
-      v21 = v14;
+      v21 = _excludedMailboxesPredicate;
       v22 = 2112;
       v23 = v16;
       v24 = 2112;
@@ -1325,11 +1325,11 @@ LABEL_20:
 
 - (id)_excludedMailboxesPredicate
 {
-  v2 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  v3 = [v2 BOOLForKey:*MEMORY[0x277D06C90]];
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+  v3 = [em_userDefaults BOOLForKey:*MEMORY[0x277D06C90]];
 
-  v4 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  v5 = [v4 BOOLForKey:*MEMORY[0x277D06C98]];
+  em_userDefaults2 = [MEMORY[0x277CBEBD0] em_userDefaults];
+  v5 = [em_userDefaults2 BOOLForKey:*MEMORY[0x277D06C98]];
 
   if ((v3 & 1) == 0 && (v5 & 1) == 0)
   {
@@ -1363,76 +1363,76 @@ LABEL_10:
 
 - (NSString)userQueryString
 {
-  v2 = [(MUIMessageListViewController *)self currentSuggestion];
-  v3 = v2;
-  if (v2)
+  currentSuggestion = [(MUIMessageListViewController *)self currentSuggestion];
+  v3 = currentSuggestion;
+  if (currentSuggestion)
   {
-    v4 = [v2 userQueryString];
-    v5 = [v4 ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+    userQueryString = [currentSuggestion userQueryString];
+    ef_stringByTrimmingWhitespaceAndNewlineCharacters = [userQueryString ef_stringByTrimmingWhitespaceAndNewlineCharacters];
   }
 
   else
   {
-    v5 = 0;
+    ef_stringByTrimmingWhitespaceAndNewlineCharacters = 0;
   }
 
-  return v5;
+  return ef_stringByTrimmingWhitespaceAndNewlineCharacters;
 }
 
 - (id)_topHitsPredicate
 {
   if (_os_feature_enabled_impl())
   {
-    v2 = [MEMORY[0x277D06E08] predicateForTopHitsMessages];
+    predicateForTopHitsMessages = [MEMORY[0x277D06E08] predicateForTopHitsMessages];
   }
 
   else
   {
-    v2 = 0;
+    predicateForTopHitsMessages = 0;
   }
 
-  return v2;
+  return predicateForTopHitsMessages;
 }
 
-- (void)updateFilterControlWithFilterViewModel:(id)a3
+- (void)updateFilterControlWithFilterViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController updateFilterControlWithFilterViewModel:]", "MUIMessageListViewController.m", 534, "0");
 }
 
-- (id)updatedPredicateForFocusedAccounts:(id)a3
+- (id)updatedPredicateForFocusedAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   if ([(MUIMessageListViewController *)self isFocusFilterEnabled]&& [(MUIMessageListViewController *)self focusAllowed])
   {
     v5 = MEMORY[0x277D06D88];
-    v6 = [(MUIMessageListViewController *)self currentFocus];
-    v7 = [(MUIMessageListViewController *)self accountRepository];
-    v8 = [v5 updatedPredicateForFocus:v6 currentPredicate:v4 usingAccountRepository:v7];
+    currentFocus = [(MUIMessageListViewController *)self currentFocus];
+    accountRepository = [(MUIMessageListViewController *)self accountRepository];
+    v8 = [v5 updatedPredicateForFocus:currentFocus currentPredicate:accountsCopy usingAccountRepository:accountRepository];
   }
 
   else
   {
-    v8 = v4;
+    v8 = accountsCopy;
   }
 
   return v8;
 }
 
-- (void)applyFilterPredicate:(id)a3
+- (void)applyFilterPredicate:(id)predicate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(MUIMessageListViewController *)self setCurrentFilterPredicate:v4];
-  v5 = [(MUIMessageListViewController *)self dataSource];
-  v6 = [v5 visibleMessageListSections];
+  predicateCopy = predicate;
+  [(MUIMessageListViewController *)self setCurrentFilterPredicate:predicateCopy];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  visibleMessageListSections = [dataSource visibleMessageListSections];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v6;
+  v7 = visibleMessageListSections;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -1449,9 +1449,9 @@ LABEL_10:
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [(MUIMessageListViewController *)self dataSource];
-        v14 = [(MUIMessageListViewController *)self filterViewModel];
-        [v13 applyFilterPredicate:v4 userFiltered:objc_msgSend(v14 ignoreMessagesPredicate:"isFilterEnabled") section:{0, v12}];
+        dataSource2 = [(MUIMessageListViewController *)self dataSource];
+        filterViewModel = [(MUIMessageListViewController *)self filterViewModel];
+        [dataSource2 applyFilterPredicate:predicateCopy userFiltered:objc_msgSend(filterViewModel ignoreMessagesPredicate:"isFilterEnabled") section:{0, v12}];
 
         ++v11;
       }
@@ -1473,12 +1473,12 @@ LABEL_10:
   [(MUIMessageListViewController *)self setFiltersEnabled:v3];
 }
 
-- (void)setFiltersEnabled:(BOOL)a3
+- (void)setFiltersEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(MUIMessageListViewController *)self setFilterButtonEnabled:?];
   [(MUIMessageListViewController *)self updateFilters];
-  if (v3)
+  if (enabledCopy)
   {
 
     [(MUIMessageListViewController *)self _reportFilterButtonTapped];
@@ -1500,20 +1500,20 @@ LABEL_10:
   }
 }
 
-- (void)updateFilterContextForMailboxes:(id)a3 focus:(id)a4 applyFilters:(BOOL)a5
+- (void)updateFilterContextForMailboxes:(id)mailboxes focus:(id)focus applyFilters:(BOOL)filters
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v12 = [MUIMailboxFilterContext contextWithMailboxes:v9 focus:v8 isFilteringAvailable:[(MUIMessageListViewController *)self shouldDisplayGroupedSenders]^ 1];
+  filtersCopy = filters;
+  focusCopy = focus;
+  mailboxesCopy = mailboxes;
+  v12 = [MUIMailboxFilterContext contextWithMailboxes:mailboxesCopy focus:focusCopy isFilteringAvailable:[(MUIMessageListViewController *)self shouldDisplayGroupedSenders]^ 1];
 
-  v10 = [(MUIMessageListViewController *)self filterController];
-  [v10 updateWithFilterContext:v12];
+  filterController = [(MUIMessageListViewController *)self filterController];
+  [filterController updateWithFilterContext:v12];
 
-  v11 = [(MUIMessageListViewController *)self filterViewModel];
-  -[MUIMessageListViewController setFilterButtonEnabled:](self, "setFilterButtonEnabled:", [v11 isFilterEnabled]);
-  [(MUIMessageListViewController *)self updateFilterControlWithFilterViewModel:v11];
-  if (v5)
+  filterViewModel = [(MUIMessageListViewController *)self filterViewModel];
+  -[MUIMessageListViewController setFilterButtonEnabled:](self, "setFilterButtonEnabled:", [filterViewModel isFilterEnabled]);
+  [(MUIMessageListViewController *)self updateFilterControlWithFilterViewModel:filterViewModel];
+  if (filtersCopy)
   {
     [(MUIMessageListViewController *)self updateFilters];
   }
@@ -1521,8 +1521,8 @@ LABEL_10:
 
 - (void)_reportFilterButtonTapped
 {
-  v2 = [MEMORY[0x277D071B8] globalAsyncScheduler];
-  [v2 performBlock:&__block_literal_global_55];
+  globalAsyncScheduler = [MEMORY[0x277D071B8] globalAsyncScheduler];
+  [globalAsyncScheduler performBlock:&__block_literal_global_55];
 }
 
 id __57__MUIMessageListViewController__reportFilterButtonTapped__block_invoke_2()
@@ -1584,18 +1584,18 @@ id __65__MUIMessageListViewController__reportFilterChangeEvent_filters___block_i
   return v2;
 }
 
-- (void)reloadDataSourceApplyEmptySnapshot:(BOOL)a3
+- (void)reloadDataSourceApplyEmptySnapshot:(BOOL)snapshot
 {
-  v3 = a3;
-  v5 = [(MUIMessageListViewController *)self createMessageListForReload];
-  [(MUIMessageListViewController *)self reloadDataSourceWithMessageList:v5 applyEmptySnapshot:v3];
+  snapshotCopy = snapshot;
+  createMessageListForReload = [(MUIMessageListViewController *)self createMessageListForReload];
+  [(MUIMessageListViewController *)self reloadDataSourceWithMessageList:createMessageListForReload applyEmptySnapshot:snapshotCopy];
 }
 
-- (void)reloadDataSourceWithMessageList:(id)a3 applyEmptySnapshot:(BOOL)a4
+- (void)reloadDataSourceWithMessageList:(id)list applyEmptySnapshot:(BOOL)snapshot
 {
-  v4 = a4;
+  snapshotCopy = snapshot;
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  listCopy = list;
   if (pthread_main_np() != 1)
   {
     [MUIMessageListViewController reloadDataSourceWithMessageList:a2 applyEmptySnapshot:self];
@@ -1606,31 +1606,31 @@ id __65__MUIMessageListViewController__reportFilterChangeEvent_filters___block_i
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v7 ef_publicDescription];
+    ef_publicDescription = [listCopy ef_publicDescription];
     *buf = 138412802;
     v53 = v10;
     v54 = 2048;
-    v55 = self;
+    selfCopy = self;
     v56 = 2112;
-    v57 = v11;
+    v57 = ef_publicDescription;
     _os_log_impl(&dword_214A5E000, v8, OS_LOG_TYPE_DEFAULT, "<%@: %p> Reloading messageList:%@", buf, 0x20u);
   }
 
-  v12 = [(MUIMessageListViewController *)self configuredSections];
-  [v12 removeAllObjects];
+  configuredSections = [(MUIMessageListViewController *)self configuredSections];
+  [configuredSections removeAllObjects];
 
   [(MUIMessageListViewController *)self setIndexPathsForToBeConfiguredCells:0];
-  v13 = [(MUIMessageListViewController *)self indexPathsForConfiguredCollectionViewCells];
-  [v13 removeAllObjects];
+  indexPathsForConfiguredCollectionViewCells = [(MUIMessageListViewController *)self indexPathsForConfiguredCollectionViewCells];
+  [indexPathsForConfiguredCollectionViewCells removeAllObjects];
 
   [(MUIMessageListViewController *)self setFirstBatchCellConfigurationCompleted:0];
   [(MUIMessageListViewController *)self setOldestItemsIDsByMailboxObjectID:0];
-  v14 = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
-  [v14 removeAllObjects];
+  mailboxesPendingOldestItemsUpdates = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
+  [mailboxesPendingOldestItemsUpdates removeAllObjects];
 
   v15 = MFMessageListLoadingSignpostLog();
-  v16 = [v7 objectID];
-  v17 = os_signpost_id_make_with_pointer(v15, v16);
+  objectID = [listCopy objectID];
+  v17 = os_signpost_id_make_with_pointer(v15, objectID);
 
   v18 = MFMessageListLoadingSignpostLog();
   v19 = v18;
@@ -1641,49 +1641,49 @@ id __65__MUIMessageListViewController__reportFilterChangeEvent_filters___block_i
   }
 
   [(MUIMessageListViewController *)self cancelQueueSuspensionTimeout];
-  v20 = [(MUIMessageListViewController *)self mailboxes];
-  v21 = [v20 ef_all:&__block_literal_global_86];
-  v22 = [(MUIMessageListViewController *)self state];
-  [v22 setShouldDisplayUnreadAndVIP:v21];
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  v21 = [mailboxes ef_all:&__block_literal_global_86];
+  state = [(MUIMessageListViewController *)self state];
+  [state setShouldDisplayUnreadAndVIP:v21];
 
   [(MUIMessageListViewController *)self setSwipeActionVisible:0];
-  if (v7)
+  if (listCopy)
   {
-    v23 = [(MUIMessageListViewController *)self initialLoadCompletedPromise];
-    [v23 finishWithResult:MEMORY[0x277CBEC28]];
+    initialLoadCompletedPromise = [(MUIMessageListViewController *)self initialLoadCompletedPromise];
+    [initialLoadCompletedPromise finishWithResult:MEMORY[0x277CBEC28]];
 
-    v24 = [MEMORY[0x277D071A8] promise];
-    [(MUIMessageListViewController *)self setInitialLoadCompletedPromise:v24];
+    promise = [MEMORY[0x277D071A8] promise];
+    [(MUIMessageListViewController *)self setInitialLoadCompletedPromise:promise];
 
-    v25 = [MEMORY[0x277CBEB18] array];
-    v26 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     if (_os_feature_enabled_impl() && EMIsGreymatterAvailable() && MUIBucketAllowsPriorityMessageDisplay([(MUIMessageListViewController *)self selectedBucket]))
     {
-      v27 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionPriority" messageList:v7];
-      [v25 addObject:v27];
+      v27 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionPriority" messageList:listCopy];
+      [array addObject:v27];
     }
 
     else
     {
-      [v26 addObject:@"MessageListSectionPriority"];
+      [array2 addObject:@"MessageListSectionPriority"];
     }
 
-    v28 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionRecent" messageList:v7];
-    [v25 addObject:v28];
+    v28 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionRecent" messageList:listCopy];
+    [array addObject:v28];
 
     if ([(MUIMessageListViewController *)self shouldDisplayGroupedSenders])
     {
       v29 = MEMORY[0x277CBEB18];
-      v30 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionGroupedSenderUnseen" messageList:v7];
-      v31 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionGroupedSender" messageList:v7];
+      v30 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionGroupedSenderUnseen" messageList:listCopy];
+      v31 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionGroupedSender" messageList:listCopy];
       v32 = [v29 arrayWithObjects:{v30, v31, 0}];
 
       v51[0] = @"MessageListSectionRecentUnseen";
       v51[1] = @"MessageListSectionRecent";
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
-      [v26 addObjectsFromArray:v33];
+      [array2 addObjectsFromArray:v33];
 
-      v25 = v32;
+      array = v32;
     }
 
     else
@@ -1691,59 +1691,59 @@ id __65__MUIMessageListViewController__reportFilterChangeEvent_filters___block_i
       v50[0] = @"MessageListSectionGroupedSenderUnseen";
       v50[1] = @"MessageListSectionGroupedSender";
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
-      [v26 addObjectsFromArray:v34];
+      [array2 addObjectsFromArray:v34];
 
       if ([(MUIMessageListViewController *)self canShowUnseenSection])
       {
-        v35 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionRecentUnseen" messageList:v7];
-        [v25 insertObject:v35 atIndex:1];
+        v35 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionRecentUnseen" messageList:listCopy];
+        [array insertObject:v35 atIndex:1];
       }
 
       else
       {
-        [v26 addObject:@"MessageListSectionRecentUnseen"];
+        [array2 addObject:@"MessageListSectionRecentUnseen"];
       }
     }
 
-    v36 = [MEMORY[0x277D07148] currentDevice];
-    v37 = [v36 isInternal];
+    currentDevice = [MEMORY[0x277D07148] currentDevice];
+    isInternal = [currentDevice isInternal];
 
-    if (v37)
+    if (isInternal)
     {
       if ([(MUIMessageListViewController *)self _shouldDisplayHelpMailLearn])
       {
         v38 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionHelpMailLearn"];
-        [v25 insertObject:v38 atIndex:0];
+        [array insertObject:v38 atIndex:0];
       }
 
       else
       {
-        [v26 insertObject:@"MessageListSectionHelpMailLearn" atIndex:0];
+        [array2 insertObject:@"MessageListSectionHelpMailLearn" atIndex:0];
       }
     }
 
     if ([(MUIMessageListViewController *)self _shouldDisplayOnboardingTip])
     {
       v39 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionOnboardingTip"];
-      [v25 insertObject:v39 atIndex:0];
+      [array insertObject:v39 atIndex:0];
     }
 
     else
     {
-      [v26 insertObject:@"MessageListSectionOnboardingTip" atIndex:0];
+      [array2 insertObject:@"MessageListSectionOnboardingTip" atIndex:0];
     }
 
     if (EMBlackPearlIsFeatureEnabled())
     {
       if ([(MUIMessageListViewController *)self isBucketBarHidden])
       {
-        [v26 addObject:@"MessageListSectionBucketBar"];
+        [array2 addObject:@"MessageListSectionBucketBar"];
       }
 
       else
       {
-        v40 = [(MUIMessageListViewController *)self dataSource];
-        v41 = [v40 messageListSectionIsVisible:@"MessageListSectionBucketBar"];
+        dataSource = [(MUIMessageListViewController *)self dataSource];
+        v41 = [dataSource messageListSectionIsVisible:@"MessageListSectionBucketBar"];
 
         if (v41)
         {
@@ -1754,34 +1754,34 @@ LABEL_33:
             if ([(MUIMessageListViewController *)self _shouldAttachMailCleanupSection])
             {
               v44 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionMailCleanupTip"];
-              [v25 insertObject:v44 atIndex:0];
+              [array insertObject:v44 atIndex:0];
             }
 
             else
             {
-              [v26 insertObject:@"MessageListSectionMailCleanupTip" atIndex:0];
+              [array2 insertObject:@"MessageListSectionMailCleanupTip" atIndex:0];
             }
           }
 
-          v45 = [[MessageListDataSourceUpdateRequest alloc] initWithSectionUpdates:v25 sectionsToRemove:v26 startsWithEmptySnapshot:v4];
-          v46 = [(MUIMessageListViewController *)self dataSource];
-          [v46 applyMessageListDataSourceUpdate:v45];
+          v45 = [[MessageListDataSourceUpdateRequest alloc] initWithSectionUpdates:array sectionsToRemove:array2 startsWithEmptySnapshot:snapshotCopy];
+          dataSource2 = [(MUIMessageListViewController *)self dataSource];
+          [dataSource2 applyMessageListDataSourceUpdate:v45];
 
           if (v42)
           {
-            v47 = [(MUIMessageListViewController *)self bucketsViewController];
-            v48 = [(MUIMessageListViewController *)self mailboxes];
-            [v47 updateWithMailboxes:v48];
+            bucketsViewController = [(MUIMessageListViewController *)self bucketsViewController];
+            mailboxes2 = [(MUIMessageListViewController *)self mailboxes];
+            [bucketsViewController updateWithMailboxes:mailboxes2];
           }
 
-          v49 = [(MUIMessageListViewController *)self messageListFetchHelper];
-          [v49 fetchMailboxesIsUserInitiated:0];
+          messageListFetchHelper = [(MUIMessageListViewController *)self messageListFetchHelper];
+          [messageListFetchHelper fetchMailboxesIsUserInitiated:0];
 
           goto LABEL_40;
         }
 
         v43 = [[MessageListSectionDataSourceUpdateRequest alloc] initWithSection:@"MessageListSectionBucketBar" messageList:0 shouldClearSnapshot:0];
-        [v25 insertObject:v43 atIndex:0];
+        [array insertObject:v43 atIndex:0];
       }
     }
 
@@ -1800,12 +1800,12 @@ BOOL __83__MUIMessageListViewController_reloadDataSourceWithMessageList_applyEmp
   return v3;
 }
 
-- (void)reloadDataSourceWithMessageList:(id)a3 sections:(id)a4 applyEmptySnapshot:(BOOL)a5
+- (void)reloadDataSourceWithMessageList:(id)list sections:(id)sections applyEmptySnapshot:(BOOL)snapshot
 {
-  v5 = a5;
+  snapshotCopy = snapshot;
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  listCopy = list;
+  sectionsCopy = sections;
   v10 = _ef_log_MUIMessageListViewController();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1814,19 +1814,19 @@ BOOL __83__MUIMessageListViewController_reloadDataSourceWithMessageList_applyEmp
     *buf = 138412802;
     v30 = v12;
     v31 = 2048;
-    v32 = self;
+    selfCopy = self;
     v33 = 2114;
-    v34 = v9;
+    v34 = sectionsCopy;
     _os_log_impl(&dword_214A5E000, v10, OS_LOG_TYPE_DEFAULT, "<%@: %p> Reload message list in sections: %{public}@", buf, 0x20u);
   }
 
   [(MUIMessageListViewController *)self cancelQueueSuspensionTimeout];
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v9;
+  v14 = sectionsCopy;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -1844,8 +1844,8 @@ BOOL __83__MUIMessageListViewController_reloadDataSourceWithMessageList_applyEmp
 
         v19 = *(*(&v24 + 1) + 8 * v18);
         v20 = [MessageListSectionDataSourceUpdateRequest alloc];
-        v21 = [(MessageListSectionDataSourceUpdateRequest *)v20 initWithSection:v19 messageList:v8, v24];
-        [v13 addObject:v21];
+        v21 = [(MessageListSectionDataSourceUpdateRequest *)v20 initWithSection:v19 messageList:listCopy, v24];
+        [array addObject:v21];
 
         ++v18;
       }
@@ -1857,27 +1857,27 @@ BOOL __83__MUIMessageListViewController_reloadDataSourceWithMessageList_applyEmp
     while (v16);
   }
 
-  v22 = [[MessageListDataSourceUpdateRequest alloc] initWithSectionUpdates:v13 sectionsToRemove:0 startsWithEmptySnapshot:v5];
-  v23 = [(MUIMessageListViewController *)self dataSource];
-  [v23 applyMessageListDataSourceUpdate:v22];
+  v22 = [[MessageListDataSourceUpdateRequest alloc] initWithSectionUpdates:array sectionsToRemove:0 startsWithEmptySnapshot:snapshotCopy];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  [dataSource applyMessageListDataSourceUpdate:v22];
 }
 
-- (void)reloadDataSourceWithSearchPredicate:(id)a3
+- (void)reloadDataSourceWithSearchPredicate:(id)predicate
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = _ef_log_MUIMessageListViewController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 ef_publicDescription];
+    ef_publicDescription = [predicateCopy ef_publicDescription];
     *buf = 138412802;
     v36 = v7;
     v37 = 2048;
-    v38 = self;
+    selfCopy2 = self;
     v39 = 2114;
-    v40 = v8;
+    v40 = ef_publicDescription;
     _os_log_impl(&dword_214A5E000, v5, OS_LOG_TYPE_DEFAULT, "<%@: %p> Reload data source with search predicate: %{public}@", buf, 0x20u);
   }
 
@@ -1890,13 +1890,13 @@ BOOL __83__MUIMessageListViewController_reloadDataSourceWithMessageList_applyEmp
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v4 ef_publicDescription];
+      ef_publicDescription2 = [predicateCopy ef_publicDescription];
       *buf = 138412802;
       v36 = v11;
       v37 = 2048;
-      v38 = self;
+      selfCopy2 = self;
       v39 = 2114;
-      v40 = v12;
+      v40 = ef_publicDescription2;
       _os_log_impl(&dword_214A5E000, v9, OS_LOG_TYPE_DEFAULT, "<%@: %p> Disabling maild generated results: %{public}@", buf, 0x20u);
     }
 
@@ -1915,14 +1915,14 @@ BOOL __83__MUIMessageListViewController_reloadDataSourceWithMessageList_applyEmp
     v13 |= 0x2000uLL;
     [v15 addObject:@"MessageListSectionInstantAnswers"];
     [v15 addObject:@"MessageListSectionTopHits"];
-    v16 = [(MUIMessageListViewController *)self _topHitsPredicate];
-    [v14 setOrAddObject:v16 forKey:@"MessageListSectionTopHits"];
+    _topHitsPredicate = [(MUIMessageListViewController *)self _topHitsPredicate];
+    [v14 setOrAddObject:_topHitsPredicate forKey:@"MessageListSectionTopHits"];
   }
 
-  v17 = [(MUIMessageListViewController *)self _indexedMessagesPredicate];
-  [v14 setOrAddObject:v17 forKey:@"MessageListSectionIndexedSearch"];
+  _indexedMessagesPredicate = [(MUIMessageListViewController *)self _indexedMessagesPredicate];
+  [v14 setOrAddObject:_indexedMessagesPredicate forKey:@"MessageListSectionIndexedSearch"];
 
-  v18 = v4;
+  v18 = predicateCopy;
   if ([v14 count])
   {
     v19 = objc_alloc(MEMORY[0x277CBEB38]);
@@ -1938,53 +1938,53 @@ BOOL __83__MUIMessageListViewController_reloadDataSourceWithMessageList_applyEmp
   v22 = [MEMORY[0x277D06E08] sortDescriptorForDateAscending:0];
   v34 = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-  v24 = [(MUIMessageListViewController *)self currentSuggestion];
+  currentSuggestion = [(MUIMessageListViewController *)self currentSuggestion];
   v25 = v21;
   v26 = v18;
-  v27 = [v25 initWithTargetClass:v33 predicate:v18 sortDescriptors:v23 suggestion:v24 limit:0 queryOptions:v13 targetClassOptions:v20 label:@"message list search"];
+  v27 = [v25 initWithTargetClass:v33 predicate:v18 sortDescriptors:v23 suggestion:currentSuggestion limit:0 queryOptions:v13 targetClassOptions:v20 label:@"message list search"];
 
   [(MUIMessageListViewController *)self setOldestItemsIDsByMailboxObjectID:0];
-  v28 = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
-  [v28 removeAllObjects];
+  mailboxesPendingOldestItemsUpdates = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
+  [mailboxesPendingOldestItemsUpdates removeAllObjects];
 
   v29 = objc_alloc(MEMORY[0x277D06E00]);
-  v30 = [(MUIMessageListViewController *)self messageRepository];
-  v31 = [v29 initWithQuery:v27 repository:v30];
+  messageRepository = [(MUIMessageListViewController *)self messageRepository];
+  v31 = [v29 initWithQuery:v27 repository:messageRepository];
 
-  v32 = [(MUIMessageListViewController *)self state];
-  [v32 setShouldDisplayUnreadAndVIP:1];
+  state = [(MUIMessageListViewController *)self state];
+  [state setShouldDisplayUnreadAndVIP:1];
 
   [(MUIMessageListViewController *)self reloadDataSourceWithMessageList:v31 sections:v15 applyEmptySnapshot:_os_feature_enabled_impl() ^ 1];
 }
 
-- (void)configureDelegatesForDataSource:(id)a3
+- (void)configureDelegatesForDataSource:(id)source
 {
-  v4 = a3;
-  [v4 setProvider:self];
-  [v4 setDelegate:self];
+  sourceCopy = source;
+  [sourceCopy setProvider:self];
+  [sourceCopy setDelegate:self];
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
-  if (self->_collectionView != v5)
+  viewCopy = view;
+  if (self->_collectionView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_collectionView, a3);
+    v7 = viewCopy;
+    objc_storeStrong(&self->_collectionView, view);
     dataSource = self->_dataSource;
     self->_dataSource = 0;
 
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (BOOL)messageListDataSource:(id)a3 section:(id)a4 shouldSuspendUpdatesAfterChange:(id)a5
+- (BOOL)messageListDataSource:(id)source section:(id)section shouldSuspendUpdatesAfterChange:(id)change
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 section];
-  if (![v8 isMessagesSection:v11])
+  sourceCopy = source;
+  sectionCopy = section;
+  changeCopy = change;
+  section = [sectionCopy section];
+  if (![sourceCopy isMessagesSection:section])
   {
 
 LABEL_9:
@@ -1992,9 +1992,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [(MUIMessageListViewController *)self isInitialCellConfigurationCompleted];
+  isInitialCellConfigurationCompleted = [(MUIMessageListViewController *)self isInitialCellConfigurationCompleted];
 
-  if (v12 || ![v10 isFirstChange] || objc_msgSend(v10, "numberOfChanges") < 1)
+  if (isInitialCellConfigurationCompleted || ![changeCopy isFirstChange] || objc_msgSend(changeCopy, "numberOfChanges") < 1)
   {
     goto LABEL_9;
   }
@@ -2007,13 +2007,13 @@ LABEL_9:
   }
 
   objc_initWeak(&location, self);
-  v14 = [MEMORY[0x277D071B8] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __94__MUIMessageListViewController_messageListDataSource_section_shouldSuspendUpdatesAfterChange___block_invoke;
   v19[3] = &unk_278188CD0;
   objc_copyWeak(&v20, &location);
-  v15 = [v14 afterDelay:v19 performBlock:2.0];
+  v15 = [mainThreadScheduler afterDelay:v19 performBlock:2.0];
   v16 = self->_queueSuspensionTimeoutToken;
   self->_queueSuspensionTimeoutToken = v15;
 
@@ -2040,15 +2040,15 @@ void __94__MUIMessageListViewController_messageListDataSource_section_shouldSusp
   [v3 resumeUpdates];
 }
 
-- (void)messageListDataSource:(id)a3 willUpdateWithChange:(id)a4 section:(id)a5 animated:(BOOL)a6 cleanSnapshot:(BOOL)a7
+- (void)messageListDataSource:(id)source willUpdateWithChange:(id)change section:(id)section animated:(BOOL)animated cleanSnapshot:(BOOL)snapshot
 {
-  v10 = a5;
-  if ([a4 hasChanges] && !a6)
+  sectionCopy = section;
+  if ([change hasChanges] && !animated)
   {
     v12 = MEMORY[0x277D85DD0];
-    v13 = v10;
-    v11 = [MEMORY[0x277D071B8] mainThreadScheduler];
-    [v11 performBlock:&v12];
+    v13 = sectionCopy;
+    mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+    [mainThreadScheduler performBlock:&v12];
   }
 }
 
@@ -2081,28 +2081,28 @@ id __106__MUIMessageListViewController_messageListDataSource_willUpdateWithChang
   return v3;
 }
 
-- (void)messageListDataSourcePrepareUpdate:(id)a3 section:(id)a4 cleanSnapshot:(BOOL)a5
+- (void)messageListDataSourcePrepareUpdate:(id)update section:(id)section cleanSnapshot:(BOOL)snapshot
 {
-  v5 = a5;
-  v7 = [(MUIMessageListViewController *)self messageListSelectionModel:a3];
+  snapshotCopy = snapshot;
+  v7 = [(MUIMessageListViewController *)self messageListSelectionModel:update];
   [v7 setPerformingDataSourceUpdates:1];
 
-  if (v5)
+  if (snapshotCopy)
   {
-    v8 = [(MUIMessageListViewController *)self messageListPositionHelper];
-    [v8 reset];
+    messageListPositionHelper = [(MUIMessageListViewController *)self messageListPositionHelper];
+    [messageListPositionHelper reset];
   }
 }
 
-- (void)messageListDataSourceUpdateFailed:(id)a3 section:(id)a4
+- (void)messageListDataSourceUpdateFailed:(id)failed section:(id)section
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __74__MUIMessageListViewController_messageListDataSourceUpdateFailed_section___block_invoke;
   v5[3] = &unk_278188BB0;
   v5[4] = self;
-  v4 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v4 performBlock:v5];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performBlock:v5];
 }
 
 uint64_t __74__MUIMessageListViewController_messageListDataSourceUpdateFailed_section___block_invoke(uint64_t a1)
@@ -2115,11 +2115,11 @@ uint64_t __74__MUIMessageListViewController_messageListDataSourceUpdateFailed_se
   return [v3 reloadDataSource];
 }
 
-- (id)messageListDataSource:(id)a3 sectionDataSourceForSection:(id)a4 messageList:(id)a5
+- (id)messageListDataSource:(id)source sectionDataSourceForSection:(id)section messageList:(id)list
 {
-  v7 = a4;
-  v8 = [(MUIMessageListViewController *)self sectionDataSourceConfigurationWithSection:v7 messageList:a5];
-  if ([v7 isEqualToString:@"MessageListSectionPriority"])
+  sectionCopy = section;
+  v8 = [(MUIMessageListViewController *)self sectionDataSourceConfigurationWithSection:sectionCopy messageList:list];
+  if ([sectionCopy isEqualToString:@"MessageListSectionPriority"])
   {
     if (!_os_feature_enabled_impl() || !EMIsGreymatterSupported())
     {
@@ -2134,42 +2134,42 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (([v7 isEqualToString:@"MessageListSectionRecent"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"MessageListSectionRecentUnseen"))
+  if (([sectionCopy isEqualToString:@"MessageListSectionRecent"] & 1) != 0 || objc_msgSend(sectionCopy, "isEqualToString:", @"MessageListSectionRecentUnseen"))
   {
     goto LABEL_7;
   }
 
-  if (([v7 isEqualToString:@"MessageListSectionGroupedSenderUnseen"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"MessageListSectionGroupedSender"))
+  if (([sectionCopy isEqualToString:@"MessageListSectionGroupedSenderUnseen"] & 1) != 0 || objc_msgSend(sectionCopy, "isEqualToString:", @"MessageListSectionGroupedSender"))
   {
     v9 = MUIMessageListGroupedSenderSectionDataSource;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"MessageListSectionHelpMailLearn"])
+  if ([sectionCopy isEqualToString:@"MessageListSectionHelpMailLearn"])
   {
     v9 = MUIMessageListHelpMailLearnSectionDataSource;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"MessageListSectionOnboardingTip"])
+  if ([sectionCopy isEqualToString:@"MessageListSectionOnboardingTip"])
   {
     v12 = [MUIMessageListOnboardingTipDataSource alloc];
-    v13 = [(MUIMessageListViewController *)self selectedBucket];
+    selectedBucket = [(MUIMessageListViewController *)self selectedBucket];
     v14 = [MUICategoryMailboxCountHelper alloc];
-    v15 = [(MUIMessageListViewController *)self mailboxes];
-    v16 = [(MUIMessageListViewController *)self messageRepository];
-    v17 = [(MUICategoryMailboxCountHelper *)v14 initWithMailboxes:v15 messageRepository:v16];
-    v10 = [(MUIMessageListOnboardingTipDataSource *)v12 initWithConfiguration:v8 bucket:v13 countHelper:v17];
+    mailboxes = [(MUIMessageListViewController *)self mailboxes];
+    messageRepository = [(MUIMessageListViewController *)self messageRepository];
+    v17 = [(MUICategoryMailboxCountHelper *)v14 initWithMailboxes:mailboxes messageRepository:messageRepository];
+    v10 = [(MUIMessageListOnboardingTipDataSource *)v12 initWithConfiguration:v8 bucket:selectedBucket countHelper:v17];
   }
 
-  else if ([v7 isEqualToString:@"MessageListSectionBucketBar"])
+  else if ([sectionCopy isEqualToString:@"MessageListSectionBucketBar"])
   {
-    v18 = [(MUIMessageListViewController *)self mailboxes];
-    v19 = [(MUIMessageListViewController *)self _configuredBucketsViewControllerWithMailboxes:v18];
+    mailboxes2 = [(MUIMessageListViewController *)self mailboxes];
+    v19 = [(MUIMessageListViewController *)self _configuredBucketsViewControllerWithMailboxes:mailboxes2];
 
-    v20 = [v19 parentViewController];
+    parentViewController = [v19 parentViewController];
 
-    if (!v20)
+    if (!parentViewController)
     {
       [(MUIMessageListViewController *)self addChildViewController:v19];
     }
@@ -2177,12 +2177,12 @@ LABEL_7:
     v10 = [[MUIMessageListBucketBarSectionDataSource alloc] initWithConfiguration:v8 bucketsViewController:v19];
   }
 
-  else if ([v7 isEqualToString:@"MessageListSectionMailCleanupTip"])
+  else if ([sectionCopy isEqualToString:@"MessageListSectionMailCleanupTip"])
   {
     v21 = [MUIMessageListMailCleanupTipDataSource alloc];
-    v22 = [(MUIMessageListViewController *)self selectedBucket];
-    v23 = [(MUIMessageListViewController *)self iCloudMailCleanupService];
-    v10 = [(MUIMessageListMailCleanupTipDataSource *)v21 initWithConfiguration:v8 bucket:v22 iCloudMailCleanupService:v23];
+    selectedBucket2 = [(MUIMessageListViewController *)self selectedBucket];
+    iCloudMailCleanupService = [(MUIMessageListViewController *)self iCloudMailCleanupService];
+    v10 = [(MUIMessageListMailCleanupTipDataSource *)v21 initWithConfiguration:v8 bucket:selectedBucket2 iCloudMailCleanupService:iCloudMailCleanupService];
   }
 
   else
@@ -2195,14 +2195,14 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)messageListDataSource:(id)a3 shouldAnimateNextUpdateInSectionDataSource:(id)a4 change:(id)a5
+- (BOOL)messageListDataSource:(id)source shouldAnimateNextUpdateInSectionDataSource:(id)dataSource change:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  changeCopy = change;
   if ([(MUIMessageListViewController *)self didNotifyExtendedLaunchTracker])
   {
-    v7 = [(MUIMessageListViewController *)self messageToDisplayOnReload];
-    v8 = v7 == 0;
+    messageToDisplayOnReload = [(MUIMessageListViewController *)self messageToDisplayOnReload];
+    v8 = messageToDisplayOnReload == 0;
   }
 
   else
@@ -2212,13 +2212,13 @@ LABEL_9:
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v6 ef_publicDescription];
+      ef_publicDescription = [changeCopy ef_publicDescription];
       v14 = 138412802;
       v15 = v11;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v12;
+      v19 = ef_publicDescription;
       _os_log_impl(&dword_214A5E000, v9, OS_LOG_TYPE_DEFAULT, "<%@: %p> [Launch] Skip animation for message list change: %{public}@", &v14, 0x20u);
     }
 
@@ -2228,29 +2228,29 @@ LABEL_9:
   return v8;
 }
 
-- (id)sectionDataSourceConfigurationWithSection:(id)a3 messageList:(id)a4
+- (id)sectionDataSourceConfigurationWithSection:(id)section messageList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MUIMessageListViewController *)self _hasInitialLoadPromiseForSection:v6])
+  sectionCopy = section;
+  listCopy = list;
+  if ([(MUIMessageListViewController *)self _hasInitialLoadPromiseForSection:sectionCopy])
   {
-    v19 = [(MUIMessageListViewController *)self initialLoadCompletedPromise];
+    initialLoadCompletedPromise = [(MUIMessageListViewController *)self initialLoadCompletedPromise];
   }
 
   else
   {
-    v19 = 0;
+    initialLoadCompletedPromise = 0;
   }
 
-  if (_os_feature_enabled_impl() && EMIsGreymatterAvailable() && ([v6 isEqualToString:@"MessageListSectionPriority"] & 1) != 0)
+  if (_os_feature_enabled_impl() && EMIsGreymatterAvailable() && ([sectionCopy isEqualToString:@"MessageListSectionPriority"] & 1) != 0)
   {
     v8 = 1;
   }
 
   else if (MUIBucketAllowsNewAndOldSections([(MUIMessageListViewController *)self selectedBucket]))
   {
-    v9 = [(MUIMessageListViewController *)self dataSource];
-    v10 = [v9 isMessagesSection:v6];
+    dataSource = [(MUIMessageListViewController *)self dataSource];
+    v10 = [dataSource isMessagesSection:sectionCopy];
 
     if (v10)
     {
@@ -2269,49 +2269,49 @@ LABEL_9:
   }
 
   v11 = [MessageListSectionDataSourceConfiguration alloc];
-  v12 = [(MUIMessageListViewController *)self collectionView];
-  v13 = [(MUIMessageListViewController *)self layoutValuesHelper];
-  v14 = [(MUIMessageListViewController *)self state];
-  v15 = [(MUIMessageListViewController *)self avatarGenerator];
-  v16 = [(MUIMessageListViewController *)self contactStore];
-  v17 = [(MessageListSectionDataSourceConfiguration *)v11 initWithSection:v6 collectionView:v12 messageList:v7 layoutValuesHelper:v13 state:v14 delegate:self selectionModelProvider:self initialLoadCompletedPromise:v19 searchProgressView:0 headerType:v8 avatarGenerator:v15 contactStore:v16];
+  collectionView = [(MUIMessageListViewController *)self collectionView];
+  layoutValuesHelper = [(MUIMessageListViewController *)self layoutValuesHelper];
+  state = [(MUIMessageListViewController *)self state];
+  avatarGenerator = [(MUIMessageListViewController *)self avatarGenerator];
+  contactStore = [(MUIMessageListViewController *)self contactStore];
+  v17 = [(MessageListSectionDataSourceConfiguration *)v11 initWithSection:sectionCopy collectionView:collectionView messageList:listCopy layoutValuesHelper:layoutValuesHelper state:state delegate:self selectionModelProvider:self initialLoadCompletedPromise:initialLoadCompletedPromise searchProgressView:0 headerType:v8 avatarGenerator:avatarGenerator contactStore:contactStore];
 
   return v17;
 }
 
-- (id)initialLoadCompletedPromiseForMessageListSectionDataSource:(id)a3
+- (id)initialLoadCompletedPromiseForMessageListSectionDataSource:(id)source
 {
-  v4 = [a3 section];
-  v5 = [v4 isEqualToString:@"MessageListSectionRecent"];
+  section = [source section];
+  v5 = [section isEqualToString:@"MessageListSectionRecent"];
 
   if (v5)
   {
-    v6 = [(MUIMessageListViewController *)self initialLoadCompletedPromise];
-    [v6 finishWithResult:MEMORY[0x277CBEC28]];
+    initialLoadCompletedPromise = [(MUIMessageListViewController *)self initialLoadCompletedPromise];
+    [initialLoadCompletedPromise finishWithResult:MEMORY[0x277CBEC28]];
 
-    v7 = [MEMORY[0x277D071A8] promise];
-    [(MUIMessageListViewController *)self setInitialLoadCompletedPromise:v7];
+    promise = [MEMORY[0x277D071A8] promise];
+    [(MUIMessageListViewController *)self setInitialLoadCompletedPromise:promise];
   }
 
   else
   {
-    v7 = 0;
+    promise = 0;
   }
 
-  return v7;
+  return promise;
 }
 
-- (void)messageListSectionDataSource:(id)a3 updatedOldestItemsForMailboxes:(id)a4
+- (void)messageListSectionDataSource:(id)source updatedOldestItemsForMailboxes:(id)mailboxes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  mailboxesCopy = mailboxes;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  mailboxesPendingOldestItemsUpdates = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
+  v8 = [mailboxesPendingOldestItemsUpdates countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2323,50 +2323,50 @@ LABEL_9:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(mailboxesPendingOldestItemsUpdates);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v11);
-        v13 = [(MUIMessageListViewController *)self oldestItemsIDsByMailboxObjectID];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        oldestItemsIDsByMailboxObjectID = [(MUIMessageListViewController *)self oldestItemsIDsByMailboxObjectID];
+        v14 = [oldestItemsIDsByMailboxObjectID objectForKeyedSubscript:v12];
 
-        v15 = [v5 objectForKeyedSubscript:v12];
+        v15 = [mailboxesCopy objectForKeyedSubscript:v12];
         v16 = v15;
         if (v15 != v14 && ([v15 isEqual:v14] & 1) == 0)
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [mailboxesPendingOldestItemsUpdates countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 
-  v17 = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
-  [v17 ef_removeObjectsInArray:v6];
+  mailboxesPendingOldestItemsUpdates2 = [(MUIMessageListViewController *)self mailboxesPendingOldestItemsUpdates];
+  [mailboxesPendingOldestItemsUpdates2 ef_removeObjectsInArray:array];
 
-  v18 = [v5 copy];
+  v18 = [mailboxesCopy copy];
   [(MUIMessageListViewController *)self setOldestItemsIDsByMailboxObjectID:v18];
 }
 
-- (void)messageListSectionDataSource:(id)a3 deletedMessagesWithItemIdentifiers:(id)a4
+- (void)messageListSectionDataSource:(id)source deletedMessagesWithItemIdentifiers:(id)identifiers
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUIMessageListViewController *)self referenceMessageListItem];
-  v9 = [v8 itemID];
+  sourceCopy = source;
+  identifiersCopy = identifiers;
+  referenceMessageListItem = [(MUIMessageListViewController *)self referenceMessageListItem];
+  itemID = [referenceMessageListItem itemID];
 
-  if (v9)
+  if (itemID)
   {
-    v14[0] = v9;
+    v14[0] = itemID;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    if (![v7 containsObject:v9])
+    if (![identifiersCopy containsObject:itemID])
     {
       goto LABEL_9;
     }
@@ -2374,16 +2374,16 @@ LABEL_9:
 
   else
   {
-    v10 = v7;
+    v10 = identifiersCopy;
   }
 
-  v11 = [v6 messageList];
-  v12 = [v11 recentlyCollapsedThreadContainsItemID:v9];
+  messageList = [sourceCopy messageList];
+  v12 = [messageList recentlyCollapsedThreadContainsItemID:itemID];
 
   if (v12)
   {
-    v13 = [v6 messageList];
-    [v13 clearRecentlyCollapsedThread];
+    messageList2 = [sourceCopy messageList];
+    [messageList2 clearRecentlyCollapsedThread];
   }
 
   else if ([(MUIMessageListViewController *)self isPresentingSearchViewController])
@@ -2399,33 +2399,33 @@ LABEL_9:
 LABEL_9:
 }
 
-- (void)messageListSectionDataSource:(id)a3 didAddMessagesWithItemIdentifiers:(id)a4
+- (void)messageListSectionDataSource:(id)source didAddMessagesWithItemIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MUIMessageListViewController *)self initialScrollItemID];
-  if ([v8 containsObject:v9])
+  sourceCopy = source;
+  identifiersCopy = identifiers;
+  initialScrollItemID = [(MUIMessageListViewController *)self initialScrollItemID];
+  if ([identifiersCopy containsObject:initialScrollItemID])
   {
     [(MUIMessageListViewController *)self setInitialScrollItemID:0];
-    v10 = [(MUIMessageListViewController *)self dataSource];
-    v11 = [v10 indexPathForItemIdentifier:v9];
+    dataSource = [(MUIMessageListViewController *)self dataSource];
+    v11 = [dataSource indexPathForItemIdentifier:initialScrollItemID];
 
-    v12 = [(MUIMessageListViewController *)self collectionView];
-    [v12 mui_scrollToItemAtIndexPath:v11 atScrollPosition:1 animated:0];
+    collectionView = [(MUIMessageListViewController *)self collectionView];
+    [collectionView mui_scrollToItemAtIndexPath:v11 atScrollPosition:1 animated:0];
   }
 
-  v13 = [(MUIMessageListViewController *)self state];
-  if (([v13 containsDraftsOrOutbox] & 1) == 0)
+  state = [(MUIMessageListViewController *)self state];
+  if (([state containsDraftsOrOutbox] & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v14 = [(MUIMessageListViewController *)self referenceMessageListItem];
+  referenceMessageListItem = [(MUIMessageListViewController *)self referenceMessageListItem];
 
-  if (v14 && [v8 count] == 1)
+  if (referenceMessageListItem && [identifiersCopy count] == 1)
   {
-    v13 = [v8 firstObject];
+    state = [identifiersCopy firstObject];
     v15 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -2433,19 +2433,19 @@ LABEL_9:
       v26 = 138543618;
       v27 = v16;
       v28 = 2114;
-      v29 = v13;
+      v29 = state;
       _os_log_impl(&dword_214A5E000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Set reference message list item for first item from drafts or outbox: %{public}@", &v26, 0x16u);
     }
 
-    v17 = [(MUIMessageListViewController *)self dataSource];
-    v18 = [v17 messageListItemForItemID:v13];
-    v19 = [v18 result];
+    dataSource2 = [(MUIMessageListViewController *)self dataSource];
+    v18 = [dataSource2 messageListItemForItemID:state];
+    result = [v18 result];
 
-    v20 = [(MUIMessageListViewController *)self dataSource];
-    v21 = [v19 itemID];
-    v22 = [v20 messageListForMessageListItemWithIdentifier:v21];
+    dataSource3 = [(MUIMessageListViewController *)self dataSource];
+    itemID = [result itemID];
+    v22 = [dataSource3 messageListForMessageListItemWithIdentifier:itemID];
 
-    [(MUIMessageListViewController *)self setReferenceMessageListItem:v19 referenceMessageList:v22 showAsConversation:0 animated:1];
+    [(MUIMessageListViewController *)self setReferenceMessageListItem:result referenceMessageList:v22 showAsConversation:0 animated:1];
 LABEL_9:
   }
 
@@ -2453,8 +2453,8 @@ LABEL_9:
   {
     if (EMIsGreymatterSupported())
     {
-      v23 = [v7 section];
-      v24 = [v23 isEqualToString:@"MessageListSectionPriority"];
+      section = [sourceCopy section];
+      v24 = [section isEqualToString:@"MessageListSectionPriority"];
 
       if (v24)
       {
@@ -2470,67 +2470,67 @@ LABEL_9:
   }
 }
 
-- (void)messageListSectionDataSource:(id)a3 handleRowSelectionAfterMovingMessagesWithItemIdentifiers:(id)a4
+- (void)messageListSectionDataSource:(id)source handleRowSelectionAfterMovingMessagesWithItemIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  identifiersCopy = identifiers;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController messageListSectionDataSource:handleRowSelectionAfterMovingMessagesWithItemIdentifiers:]", "MUIMessageListViewController.m", 1293, "0");
 }
 
-- (void)showBlankCellAlertForMessageListSectionDataSource:(id)a3 itemID:(id)a4 indexPath:(id)a5 reason:(id)a6
+- (void)showBlankCellAlertForMessageListSectionDataSource:(id)source itemID:(id)d indexPath:(id)path reason:(id)reason
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  dCopy = d;
+  pathCopy = path;
+  reasonCopy = reason;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController showBlankCellAlertForMessageListSectionDataSource:itemID:indexPath:reason:]", "MUIMessageListViewController.m", 1298, "0");
 }
 
-- (void)messageListSectionDataSource:(id)a3 didConfigureCell:(id)a4 atIndexPath:(id)a5 item:(id)a6 itemWasCached:(BOOL)a7 duration:(double)a8
+- (void)messageListSectionDataSource:(id)source didConfigureCell:(id)cell atIndexPath:(id)path item:(id)item itemWasCached:(BOOL)cached duration:(double)duration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  sourceCopy = source;
+  cellCopy = cell;
+  pathCopy = path;
+  itemCopy = item;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController messageListSectionDataSource:didConfigureCell:atIndexPath:item:itemWasCached:duration:]", "MUIMessageListViewController.m", 1303, "0");
 }
 
-- (void)messageListSectionDataSource:(id)a3 didFailToConfigureCellAtIndexPath:(id)a4 error:(id)a5
+- (void)messageListSectionDataSource:(id)source didFailToConfigureCellAtIndexPath:(id)path error:(id)error
 {
-  v6 = a5;
-  v7 = [(MUIMessageListViewController *)self cellsController];
-  [v7 reportCellDidLoad:0 error:v6];
+  errorCopy = error;
+  cellsController = [(MUIMessageListViewController *)self cellsController];
+  [cellsController reportCellDidLoad:0 error:errorCopy];
 }
 
-- (Class)sectionListCellClassForMessageListSectionDataSource:(id)a3
+- (Class)sectionListCellClassForMessageListSectionDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController sectionListCellClassForMessageListSectionDataSource:]", "MUIMessageListViewController.m", 1316, "0");
 }
 
-- (int64_t)selectedBucketForMUIMessageListUnbundledSectionDataSource:(id)a3
+- (int64_t)selectedBucketForMUIMessageListUnbundledSectionDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController selectedBucketForMUIMessageListUnbundledSectionDataSource:]", "MUIMessageListViewController.m", 1345, "0");
 }
 
-- (id)feedbackListViewModelForHelpMailLearnSectionDataSource:(id)a3
+- (id)feedbackListViewModelForHelpMailLearnSectionDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [_TtC6MailUI23FeedbackViewModelHelper alloc];
-  v6 = [(MUIMessageListViewController *)self selectedBucket];
-  v7 = [(MUIMessageListViewController *)self mailboxes];
-  v8 = [(FeedbackViewModelHelper *)v5 initWithSelectedBucket:v6 selectedMailboxes:v7];
+  selectedBucket = [(MUIMessageListViewController *)self selectedBucket];
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  v8 = [(FeedbackViewModelHelper *)v5 initWithSelectedBucket:selectedBucket selectedMailboxes:mailboxes];
 
   v9 = [_TtC6MailUI21FeedbackListViewModel alloc];
-  v10 = [(MUIMessageListViewController *)self daemonInterface];
-  v11 = [(MUIMessageListViewController *)self diagnosticsHelper];
-  v12 = [(FeedbackListViewModel *)v9 initWithDaemonInterface:v10 diagnosticsHelper:v11 viewModelHelper:v8];
+  daemonInterface = [(MUIMessageListViewController *)self daemonInterface];
+  diagnosticsHelper = [(MUIMessageListViewController *)self diagnosticsHelper];
+  v12 = [(FeedbackListViewModel *)v9 initWithDaemonInterface:daemonInterface diagnosticsHelper:diagnosticsHelper viewModelHelper:v8];
 
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
@@ -2556,63 +2556,63 @@ void __87__MUIMessageListViewController_feedbackListViewModelForHelpMailLearnSec
   }
 }
 
-- (void)categoryGroupingPreferenceController:(id)a3 shouldDisableGrouping:(BOOL)a4 forBucket:(int64_t)a5
+- (void)categoryGroupingPreferenceController:(id)controller shouldDisableGrouping:(BOOL)grouping forBucket:(int64_t)bucket
 {
-  v5 = a4;
-  if ([(MUIMessageListViewController *)self selectedBucket]== a5)
+  groupingCopy = grouping;
+  if ([(MUIMessageListViewController *)self selectedBucket]== bucket)
   {
-    v7 = [(MUIMessageListViewController *)self filterViewModel];
-    [v7 setFilterAvailable:v5];
+    filterViewModel = [(MUIMessageListViewController *)self filterViewModel];
+    [filterViewModel setFilterAvailable:groupingCopy];
 
     [(MUIMessageListViewController *)self reloadDataSource];
   }
 }
 
-- (id)messageSelectionStrategy:(id)a3 indexPathOfItemID:(id)a4
+- (id)messageSelectionStrategy:(id)strategy indexPathOfItemID:(id)d
 {
-  v5 = a4;
-  v6 = [(MUIMessageListViewController *)self dataSource];
-  v7 = [v6 indexPathForItemIdentifier:v5];
+  dCopy = d;
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v7 = [dataSource indexPathForItemIdentifier:dCopy];
 
   return v7;
 }
 
-- (id)messageSelectionStrategy:(id)a3 itemIDForIndexPath:(id)a4
+- (id)messageSelectionStrategy:(id)strategy itemIDForIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MUIMessageListViewController *)self dataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v7 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   return v7;
 }
 
-- (int64_t)numberOfItemsForMessageSelectionStrategy:(id)a3
+- (int64_t)numberOfItemsForMessageSelectionStrategy:(id)strategy
 {
-  v3 = [(MUIMessageListViewController *)self dataSource];
-  v4 = [v3 numberOfItems];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  numberOfItems = [dataSource numberOfItems];
 
-  return v4;
+  return numberOfItems;
 }
 
-- (id)indexPathOfSelectedMessageForMessageSelectionStrategy:(id)a3
+- (id)indexPathOfSelectedMessageForMessageSelectionStrategy:(id)strategy
 {
-  v3 = [(MUIMessageListViewController *)self _indexPathsForSelectedItems];
-  v4 = [v3 firstObject];
+  _indexPathsForSelectedItems = [(MUIMessageListViewController *)self _indexPathsForSelectedItems];
+  firstObject = [_indexPathsForSelectedItems firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)messageSelectionStrategy:(id)a3 messageListItemForItemID:(id)a4
+- (id)messageSelectionStrategy:(id)strategy messageListItemForItemID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  strategyCopy = strategy;
+  dCopy = d;
+  if (!dCopy)
   {
     [MUIMessageListViewController messageSelectionStrategy:a2 messageListItemForItemID:self];
   }
 
-  v9 = [(MUIMessageListViewController *)self dataSource];
-  v10 = [v9 messageListItemForItemID:v8];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v10 = [dataSource messageListItemForItemID:dCopy];
 
   v16 = 0;
   v11 = [v10 resultWithTimeout:&v16 error:1.0];
@@ -2622,7 +2622,7 @@ void __87__MUIMessageListViewController_feedbackListViewModelForHelpMailLearnSec
     v13 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [MUIMessageListViewController messageSelectionStrategy:v8 messageListItemForItemID:v12];
+      [MUIMessageListViewController messageSelectionStrategy:dCopy messageListItemForItemID:v12];
     }
 
     v14 = _ef_log_MUIMessageListViewController();
@@ -2635,46 +2635,46 @@ void __87__MUIMessageListViewController_feedbackListViewModelForHelpMailLearnSec
   return v11;
 }
 
-- (BOOL)messageSelectionStrategy:(id)a3 anyExpandedThreadContainsItemID:(id)a4
+- (BOOL)messageSelectionStrategy:(id)strategy anyExpandedThreadContainsItemID:(id)d
 {
-  v5 = a4;
-  v6 = [(MUIMessageListViewController *)self dataSource];
-  v7 = [v6 anyExpandedThreadContainsItemID:v5];
+  dCopy = d;
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v7 = [dataSource anyExpandedThreadContainsItemID:dCopy];
 
   return v7;
 }
 
-- (BOOL)messageSelectionStrategy:(id)a3 isExpandedThreadWithItemID:(id)a4
+- (BOOL)messageSelectionStrategy:(id)strategy isExpandedThreadWithItemID:(id)d
 {
-  v5 = a4;
-  v6 = [(MUIMessageListViewController *)self dataSource];
-  v7 = [v6 isExpandedThread:v5];
+  dCopy = d;
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v7 = [dataSource isExpandedThread:dCopy];
 
   return v7;
 }
 
 - (id)_indexPathsForSelectedItems
 {
-  v2 = [(MUIMessageListViewController *)self collectionView];
-  v3 = [v2 indexPathsForSelectedItems];
+  collectionView = [(MUIMessageListViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  return v3;
+  return indexPathsForSelectedItems;
 }
 
-- (void)setReferenceMessageListItem:(id)a3 referenceMessageList:(id)a4 showAsConversation:(BOOL)a5 animated:(BOOL)a6
+- (void)setReferenceMessageListItem:(id)item referenceMessageList:(id)list showAsConversation:(BOOL)conversation animated:(BOOL)animated
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  listCopy = list;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController setReferenceMessageListItem:referenceMessageList:showAsConversation:animated:]", "MUIMessageListViewController.m", 1451, "0");
 }
 
-- (BOOL)selectRowOfItemID:(id)a3 scrollToVisible:(BOOL)a4 scrollPosition:(int64_t)a5 animated:(BOOL)a6
+- (BOOL)selectRowOfItemID:(id)d scrollToVisible:(BOOL)visible scrollPosition:(int64_t)position animated:(BOOL)animated
 {
-  v6 = a6;
-  v8 = a4;
+  animatedCopy = animated;
+  visibleCopy = visible;
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  dCopy = d;
   v12 = _ef_log_MUIMessageListViewController();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -2684,45 +2684,45 @@ void __87__MUIMessageListViewController_feedbackListViewModelForHelpMailLearnSec
     v24 = 138413826;
     v25 = v14;
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v15;
     v30 = 2112;
-    v31 = v11;
+    v31 = dCopy;
     v32 = 1024;
-    v33 = v8;
+    v33 = visibleCopy;
     v34 = 2048;
-    v35 = a5;
+    positionCopy = position;
     v36 = 1024;
-    v37 = v6;
+    v37 = animatedCopy;
     _os_log_impl(&dword_214A5E000, v12, OS_LOG_TYPE_DEFAULT, "<%@: %p> %@ - itemID:%@, scrollToVisible:%{BOOL}d, scrollPosition:%lu, animated:%{BOOL}d", &v24, 0x40u);
   }
 
-  v16 = [(MUIMessageListViewController *)self dataSource];
-  v17 = [v16 indexPathForItemIdentifier:v11];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v17 = [dataSource indexPathForItemIdentifier:dCopy];
 
-  v18 = [(MUIMessageListViewController *)self collectionView];
+  collectionView = [(MUIMessageListViewController *)self collectionView];
   if (v17)
   {
-    [(MUIMessageListViewController *)self setLastSelectedItemID:v11];
+    [(MUIMessageListViewController *)self setLastSelectedItemID:dCopy];
     if ([(MUIMessageListViewController *)self isInExpandedEnvironment])
     {
-      v19 = [(MUIMessageListViewController *)self _indexPathsForSelectedItems];
-      v20 = [v19 containsObject:v17];
+      _indexPathsForSelectedItems = [(MUIMessageListViewController *)self _indexPathsForSelectedItems];
+      v20 = [_indexPathsForSelectedItems containsObject:v17];
 
       if ((v20 & 1) == 0)
       {
         [(MUIMessageListViewController *)self deselectSelectedItemsInCollectionView];
-        [v18 mui_selectItemAtIndexPath:v17 animated:v6 & ~v8 scrollPosition:0];
+        [collectionView mui_selectItemAtIndexPath:v17 animated:animatedCopy & ~visibleCopy scrollPosition:0];
       }
     }
 
-    if (v8)
+    if (visibleCopy)
     {
-      v21 = [v17 item];
-      if (v21 < [v18 numberOfItemsInSection:{objc_msgSend(v17, "section")}] && (objc_msgSend(v18, "mui_isIndexPathVisible:", v17) & 1) == 0)
+      item = [v17 item];
+      if (item < [collectionView numberOfItemsInSection:{objc_msgSend(v17, "section")}] && (objc_msgSend(collectionView, "mui_isIndexPathVisible:", v17) & 1) == 0)
       {
-        [v18 mui_scrollToItemAtIndexPath:v17 atScrollPosition:a5 animated:v6];
+        [collectionView mui_scrollToItemAtIndexPath:v17 atScrollPosition:position animated:animatedCopy];
       }
     }
 
@@ -2741,7 +2741,7 @@ void __87__MUIMessageListViewController_feedbackListViewModelForHelpMailLearnSec
     }
 
     [(MUIMessageListViewController *)self setLastSelectedItemID:0];
-    [(MUIMessageListViewController *)self deselectAllItemsInCollectionView:v18 animated:v6];
+    [(MUIMessageListViewController *)self deselectAllItemsInCollectionView:collectionView animated:animatedCopy];
   }
 
   return v17 != 0;
@@ -2750,13 +2750,13 @@ void __87__MUIMessageListViewController_feedbackListViewModelForHelpMailLearnSec
 - (void)deselectSelectedItemsInCollectionView
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(MUIMessageListViewController *)self collectionView];
+  collectionView = [(MUIMessageListViewController *)self collectionView];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MUIMessageListViewController *)self _indexPathsForSelectedItems];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _indexPathsForSelectedItems = [(MUIMessageListViewController *)self _indexPathsForSelectedItems];
+  v5 = [_indexPathsForSelectedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2768,75 +2768,75 @@ void __87__MUIMessageListViewController_feedbackListViewModelForHelpMailLearnSec
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_indexPathsForSelectedItems);
         }
 
-        [v3 deselectItemAtIndexPath:*(*(&v9 + 1) + 8 * v8++) animated:0];
+        [collectionView deselectItemAtIndexPath:*(*(&v9 + 1) + 8 * v8++) animated:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_indexPathsForSelectedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)deselectAllItemsInCollectionView:(id)a3 animated:(BOOL)a4
+- (void)deselectAllItemsInCollectionView:(id)view animated:(BOOL)animated
 {
-  v6 = a3;
+  viewCopy = view;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController deselectAllItemsInCollectionView:animated:]", "MUIMessageListViewController.m", 1501, "0");
 }
 
-- (void)selectNextMessageAfterRemovingAllVisibleMessageListItemsWithItemIDs:(id)a3
+- (void)selectNextMessageAfterRemovingAllVisibleMessageListItemsWithItemIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController selectNextMessageAfterRemovingAllVisibleMessageListItemsWithItemIDs:]", "MUIMessageListViewController.m", 1512, "0");
 }
 
-- (id)messageListItemsForDiagnosticsHelper:(id)a3
+- (id)messageListItemsForDiagnosticsHelper:(id)helper
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 source] == 1)
+  helperCopy = helper;
+  if ([helperCopy source] == 1)
   {
-    v5 = [(MUIMessageListViewController *)self lastSelectedMessageListItems];
+    lastSelectedMessageListItems = [(MUIMessageListViewController *)self lastSelectedMessageListItems];
     [(MUIMessageListViewController *)self setLastSelectedMessageListItems:0];
     v6 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218242;
-      v9 = [v5 count];
+      v9 = [lastSelectedMessageListItems count];
       v10 = 2112;
-      v11 = v4;
+      v11 = helperCopy;
       _os_log_impl(&dword_214A5E000, v6, OS_LOG_TYPE_DEFAULT, "Providing %lu messages to %@", &v8, 0x16u);
     }
   }
 
   else
   {
-    v5 = 0;
+    lastSelectedMessageListItems = 0;
   }
 
-  return v5;
+  return lastSelectedMessageListItems;
 }
 
-- (void)currentFocusChanged:(id)a3
+- (void)currentFocusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__MUIMessageListViewController_currentFocusChanged___block_invoke;
   v9[3] = &unk_278188F78;
   v9[4] = self;
-  v10 = v4;
+  v10 = changedCopy;
   v5 = v9;
   v6 = MEMORY[0x277D071B8];
-  v7 = v4;
-  v8 = [v6 mainThreadScheduler];
-  [v8 performSyncBlock:v5];
+  v7 = changedCopy;
+  mainThreadScheduler = [v6 mainThreadScheduler];
+  [mainThreadScheduler performSyncBlock:v5];
 }
 
 void __52__MUIMessageListViewController_currentFocusChanged___block_invoke(uint64_t a1)
@@ -2856,17 +2856,17 @@ void __52__MUIMessageListViewController_currentFocusChanged___block_invoke(uint6
   }
 }
 
-- (void)setFocusFilterEnabled:(BOOL)a3
+- (void)setFocusFilterEnabled:(BOOL)enabled
 {
-  if (self->_focusFilterEnabled != a3)
+  if (self->_focusFilterEnabled != enabled)
   {
     v9 = v4;
     v10 = v3;
-    self->_focusFilterEnabled = a3;
-    if (a3)
+    self->_focusFilterEnabled = enabled;
+    if (enabled)
     {
-      v8 = [(MUIMessageListViewController *)self filterController];
-      [v8 reselectFocusedAccounts];
+      filterController = [(MUIMessageListViewController *)self filterController];
+      [filterController reselectFocusedAccounts];
     }
 
     [(MUIMessageListViewController *)self updateFilters:v9];
@@ -2884,36 +2884,36 @@ void __52__MUIMessageListViewController_currentFocusChanged___block_invoke(uint6
   }
 }
 
-- (void)highlightedMessagesViewDidSelectMessage:(id)a3
+- (void)highlightedMessagesViewDidSelectMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController highlightedMessagesViewDidSelectMessage:]", "MUIMessageListViewController.m", 1636, "0");
 }
 
-- (void)highlightedMessagesViewDidProvideFeedbackForMessage:(id)a3 feedbackType:(int64_t)a4 feedbackFeature:(int64_t)a5
+- (void)highlightedMessagesViewDidProvideFeedbackForMessage:(id)message feedbackType:(int64_t)type feedbackFeature:(int64_t)feature
 {
-  v7 = a3;
+  messageCopy = message;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController highlightedMessagesViewDidProvideFeedbackForMessage:feedbackType:feedbackFeature:]", "MUIMessageListViewController.m", 1640, "0");
 }
 
 - (id)cellLayoutValuesForHighlightedMessages
 {
-  v2 = [(MUIMessageListViewController *)self layoutValuesHelper];
-  v3 = [v2 layoutValuesForStyle:0];
+  layoutValuesHelper = [(MUIMessageListViewController *)self layoutValuesHelper];
+  v3 = [layoutValuesHelper layoutValuesForStyle:0];
 
   return v3;
 }
 
-- (void)updateSelectedBucket:(int64_t)a3 unseenPredicate:(id)a4
+- (void)updateSelectedBucket:(int64_t)bucket unseenPredicate:(id)predicate
 {
-  v9 = a4;
-  v6 = [(MUIMessageListViewController *)self unseenPredicate];
+  predicateCopy = predicate;
+  unseenPredicate = [(MUIMessageListViewController *)self unseenPredicate];
 
-  if (v6 == v9)
+  if (unseenPredicate == predicateCopy)
   {
-    if ([(MUIMessageListViewController *)self selectedBucket]== a3)
+    if ([(MUIMessageListViewController *)self selectedBucket]== bucket)
     {
       goto LABEL_7;
     }
@@ -2922,42 +2922,42 @@ void __52__MUIMessageListViewController_currentFocusChanged___block_invoke(uint6
   else
   {
     [(MUIMessageListViewController *)self setUnseenPredicate:?];
-    if ([(MUIMessageListViewController *)self selectedBucket]== a3)
+    if ([(MUIMessageListViewController *)self selectedBucket]== bucket)
     {
       goto LABEL_6;
     }
   }
 
-  [(MUIMessageListViewController *)self setSelectedBucket:a3];
+  [(MUIMessageListViewController *)self setSelectedBucket:bucket];
 LABEL_6:
-  v7 = [(MUIMessageListViewController *)self shouldDisplayGroupedSenders];
-  v8 = [(MUIMessageListViewController *)self filterViewModel];
-  [v8 setFilterAvailable:!v7];
+  shouldDisplayGroupedSenders = [(MUIMessageListViewController *)self shouldDisplayGroupedSenders];
+  filterViewModel = [(MUIMessageListViewController *)self filterViewModel];
+  [filterViewModel setFilterAvailable:!shouldDisplayGroupedSenders];
 
   [(MUIMessageListViewController *)self reloadDataSourceApplyEmptySnapshot:0];
 LABEL_7:
 }
 
-- (void)changeCategoryOfDragItem:(id)a3 toBucket:(int64_t)a4 completion:(id)a5
+- (void)changeCategoryOfDragItem:(id)item toBucket:(int64_t)bucket completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController changeCategoryOfDragItem:toBucket:completion:]", "MUIMessageListViewController.m", 1679, "0");
 }
 
-- (BOOL)canMoveDragItem:(id)a3 toBucket:(int64_t)a4
+- (BOOL)canMoveDragItem:(id)item toBucket:(int64_t)bucket
 {
-  v6 = a3;
+  itemCopy = item;
   [(MUIMessageListViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MUIMessageListViewController canMoveDragItem:toBucket:]", "MUIMessageListViewController.m", 1683, "0");
 }
 
-- (id)_updatedPredicateForSelectedBucket:(id)a3
+- (id)_updatedPredicateForSelectedBucket:(id)bucket
 {
-  v4 = a3;
+  bucketCopy = bucket;
   v5 = NSPredicateFromBucket([(MUIMessageListViewController *)self selectedBucket]);
-  v6 = [MEMORY[0x277CCA920] ef_andCompoundPredicateForOptionalPredicate:v4 second:v5];
+  v6 = [MEMORY[0x277CCA920] ef_andCompoundPredicateForOptionalPredicate:bucketCopy second:v5];
 
   return v6;
 }
@@ -2969,11 +2969,11 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(MUIMessageListViewController *)self showHighlights];
-  if ([v3 isEnabled])
+  showHighlights = [(MUIMessageListViewController *)self showHighlights];
+  if ([showHighlights isEnabled])
   {
-    v4 = [(MUIMessageListViewController *)self dataSource];
-    v5 = [v4 numberOfItemsAtSectionIndex:{-[MUIMessageListViewController _prioritySectionIndex](self, "_prioritySectionIndex")}] > 0;
+    dataSource = [(MUIMessageListViewController *)self dataSource];
+    v5 = [dataSource numberOfItemsAtSectionIndex:{-[MUIMessageListViewController _prioritySectionIndex](self, "_prioritySectionIndex")}] > 0;
   }
 
   else
@@ -2996,30 +2996,30 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(MUIMessageListViewController *)self showHighlights];
-  v4 = [v3 isEnabled];
+  showHighlights = [(MUIMessageListViewController *)self showHighlights];
+  isEnabled = [showHighlights isEnabled];
 
-  if (!v4)
+  if (!isEnabled)
   {
     return 0;
   }
 
-  v5 = [(MUIMessageListViewController *)self _prioritySectionIndex];
-  v6 = [(MUIMessageListViewController *)self collectionView];
-  v7 = [v6 indexPathsForVisibleItems];
+  _prioritySectionIndex = [(MUIMessageListViewController *)self _prioritySectionIndex];
+  collectionView = [(MUIMessageListViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__MUIMessageListViewController__hasHighlightedMessagesVisible__block_invoke;
   v11[3] = &__block_descriptor_40_e21_B16__0__NSIndexPath_8l;
-  v11[4] = v5;
-  v8 = [v7 ef_firstObjectPassingTest:v11];
+  v11[4] = _prioritySectionIndex;
+  v8 = [indexPathsForVisibleItems ef_firstObjectPassingTest:v11];
   v9 = v8 != 0;
 
   return v9;
 }
 
-- (void)_shimmerViewIfNeededForPriorityCellWillDisplay:(BOOL)a3
+- (void)_shimmerViewIfNeededForPriorityCellWillDisplay:(BOOL)display
 {
   if (![(MUIMessageListViewController *)self _shouldShimmer])
   {
@@ -3032,9 +3032,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v5 = [(MUIMessageListViewController *)self _prioritySectionVisibleAndActive];
-  v6 = v5;
-  if (!v5 || a3)
+  _prioritySectionVisibleAndActive = [(MUIMessageListViewController *)self _prioritySectionVisibleAndActive];
+  v6 = _prioritySectionVisibleAndActive;
+  if (!_prioritySectionVisibleAndActive || display)
   {
     [(MUIMessageListViewController *)self setHasPendingHighlightsShimmer:?];
     if (!v6)
@@ -3055,9 +3055,9 @@ LABEL_9:
 
   else
   {
-    v7 = [(MUIMessageListViewController *)self _hasHighlightedMessagesVisible];
-    v8 = v7;
-    [(MUIMessageListViewController *)self setHasPendingHighlightsShimmer:!v7];
+    _hasHighlightedMessagesVisible = [(MUIMessageListViewController *)self _hasHighlightedMessagesVisible];
+    v8 = _hasHighlightedMessagesVisible;
+    [(MUIMessageListViewController *)self setHasPendingHighlightsShimmer:!_hasHighlightedMessagesVisible];
     if (!v8)
     {
       goto LABEL_5;
@@ -3098,8 +3098,8 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
 
 - (int64_t)_prioritySectionIndex
 {
-  v2 = [(MUIMessageListViewController *)self dataSource];
-  v3 = [v2 sectionIndexForSection:@"MessageListSectionPriority"];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v3 = [dataSource sectionIndexForSection:@"MessageListSectionPriority"];
 
   return v3;
 }
@@ -3116,28 +3116,28 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
     return 0;
   }
 
-  v3 = [(MUIMessageListViewController *)self showHighlights];
-  v4 = [v3 isEnabled];
+  showHighlights = [(MUIMessageListViewController *)self showHighlights];
+  isEnabled = [showHighlights isEnabled];
 
-  if (!v4)
+  if (!isEnabled)
   {
     return 0;
   }
 
-  v5 = [(MUIMessageListViewController *)self _currentDataForItemIDsInPriority];
-  v6 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  v7 = [v6 valueForKey:*MEMORY[0x277D06CB0]];
+  _currentDataForItemIDsInPriority = [(MUIMessageListViewController *)self _currentDataForItemIDsInPriority];
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+  v7 = [em_userDefaults valueForKey:*MEMORY[0x277D06CB0]];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count])
   {
-    v8 = [(MUIMessageListViewController *)self _mailboxBucketBarConfigurationIdentifier];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    _mailboxBucketBarConfigurationIdentifier = [(MUIMessageListViewController *)self _mailboxBucketBarConfigurationIdentifier];
+    v9 = [v7 objectForKeyedSubscript:_mailboxBucketBarConfigurationIdentifier];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 count])
     {
-      v10 = [MEMORY[0x277CBEB58] setWithArray:v5];
+      v10 = [MEMORY[0x277CBEB58] setWithArray:_currentDataForItemIDsInPriority];
       v11 = [MEMORY[0x277CBEB98] setWithArray:v9];
       [v10 minusSet:v11];
       v12 = [v10 count];
@@ -3145,13 +3145,13 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
 
     else
     {
-      v12 = [v5 count];
+      v12 = [_currentDataForItemIDsInPriority count];
     }
   }
 
   else
   {
-    v12 = [v5 count];
+    v12 = [_currentDataForItemIDsInPriority count];
   }
 
   v13 = v12 != 0;
@@ -3161,44 +3161,44 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
 
 - (id)_mailboxBucketBarConfigurationIdentifier
 {
-  v2 = [(MUIMessageListViewController *)self mailboxes];
-  v3 = [v2 firstObject];
+  mailboxes = [(MUIMessageListViewController *)self mailboxes];
+  firstObject = [mailboxes firstObject];
 
-  v4 = [v3 bucketBarConfigurationIdentifier];
-  if (!v4)
+  bucketBarConfigurationIdentifier = [firstObject bucketBarConfigurationIdentifier];
+  if (!bucketBarConfigurationIdentifier)
   {
     v5 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(MUIMessageListViewController *)v3 _mailboxBucketBarConfigurationIdentifier];
+      [(MUIMessageListViewController *)firstObject _mailboxBucketBarConfigurationIdentifier];
     }
   }
 
-  return v4;
+  return bucketBarConfigurationIdentifier;
 }
 
 - (void)_updatePreviouslyHighlightedMessages
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(MUIMessageListViewController *)self _mailboxBucketBarConfigurationIdentifier];
-  v4 = [(MUIMessageListViewController *)self dataSource];
-  v5 = [v4 itemIdentifiersForSection:@"MessageListSectionPriority"];
+  _mailboxBucketBarConfigurationIdentifier = [(MUIMessageListViewController *)self _mailboxBucketBarConfigurationIdentifier];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v5 = [dataSource itemIdentifiersForSection:@"MessageListSectionPriority"];
 
   v6 = _ef_log_MUIMessageListViewController();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 ef_shortDescriptionString];
+    ef_shortDescriptionString = [v5 ef_shortDescriptionString];
     v15 = 138543618;
-    v16 = v7;
+    v16 = ef_shortDescriptionString;
     v17 = 2114;
-    v18 = v3;
+    v18 = _mailboxBucketBarConfigurationIdentifier;
     _os_log_impl(&dword_214A5E000, v6, OS_LOG_TYPE_DEFAULT, "Updating shimmered message itemIDs:%{public}@ for mailbox:%{public}@", &v15, 0x16u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [MEMORY[0x277CBEBD0] em_userDefaults];
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
   v10 = *MEMORY[0x277D06CB0];
-  v11 = [v9 valueForKey:*MEMORY[0x277D06CB0]];
+  v11 = [em_userDefaults valueForKey:*MEMORY[0x277D06CB0]];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 count])
@@ -3209,16 +3209,16 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
   }
 
   v13 = [v5 ef_compactMap:&__block_literal_global_122];
-  [v8 setObject:v13 forKeyedSubscript:v3];
+  [v8 setObject:v13 forKeyedSubscript:_mailboxBucketBarConfigurationIdentifier];
 
-  v14 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  [v14 setValue:v8 forKey:v10];
+  em_userDefaults2 = [MEMORY[0x277CBEBD0] em_userDefaults];
+  [em_userDefaults2 setValue:v8 forKey:v10];
 }
 
 - (id)_currentDataForItemIDsInPriority
 {
-  v2 = [(MUIMessageListViewController *)self dataSource];
-  v3 = [v2 itemIdentifiersForSection:@"MessageListSectionPriority"];
+  dataSource = [(MUIMessageListViewController *)self dataSource];
+  v3 = [dataSource itemIdentifiersForSection:@"MessageListSectionPriority"];
 
   v4 = [v3 ef_compactMap:&__block_literal_global_125];
 
@@ -3239,39 +3239,39 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
   return WeakRetained;
 }
 
-- (void)presentMailCleanupViewForMailCleanupTipId:(id)a3
+- (void)presentMailCleanupViewForMailCleanupTipId:(id)id
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](id);
   MEMORY[0x277D82BE0](self);
   v4._countAndFlagsBits = sub_214CCF564();
   MUIMessageListViewController.presentMailCleanupView(mailCleanupTipId:)(v4);
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](id);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)dismissMailCleanupTipForMailCleanupTipId:(id)a3
+- (void)dismissMailCleanupTipForMailCleanupTipId:(id)id
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](id);
   MEMORY[0x277D82BE0](self);
   v4._countAndFlagsBits = sub_214CCF564();
   MUIMessageListViewController.dismissMailCleanupTip(mailCleanupTipId:)(v4);
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](id);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)onAppearForMailCleanupTipId:(id)a3
+- (void)onAppearForMailCleanupTipId:(id)id
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](id);
   MEMORY[0x277D82BE0](self);
   v4._countAndFlagsBits = sub_214CCF564();
   MUIMessageListViewController.onAppear(mailCleanupTipId:)(v4);
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](id);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -3283,7 +3283,7 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)_updateBucketBarIsHidden:(BOOL)a3
+- (void)_updateBucketBarIsHidden:(BOOL)hidden
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
@@ -3340,87 +3340,87 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)bucketBarConfigurationController:(id)a3 isHidden:(BOOL)a4 forMailboxes:(id)a5
+- (void)bucketBarConfigurationController:(id)controller isHidden:(BOOL)hidden forMailboxes:(id)mailboxes
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a5);
+  MEMORY[0x277D82BE0](controller);
+  MEMORY[0x277D82BE0](mailboxes);
   MEMORY[0x277D82BE0](self);
   v6 = sub_214CCD394();
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA37B50);
   v7 = sub_214CCF7E4();
-  MUIMessageListViewController.bucketBarConfigurationController(_:isHidden:forMailboxes:)(a3, v6 & 1, v7);
+  MUIMessageListViewController.bucketBarConfigurationController(_:isHidden:forMailboxes:)(controller, v6 & 1, v7);
 
-  MEMORY[0x277D82BD8](a5);
+  MEMORY[0x277D82BD8](mailboxes);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](controller);
 }
 
-- (void)bucketBarConfigurationControllerRequiresReload:(id)a3
+- (void)bucketBarConfigurationControllerRequiresReload:(id)reload
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](reload);
   MEMORY[0x277D82BE0](self);
-  MUIMessageListViewController.bucketBarConfigurationControllerRequiresReload(_:)(a3);
+  MUIMessageListViewController.bucketBarConfigurationControllerRequiresReload(_:)(reload);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](reload);
 }
 
 - (void)_enableFilters
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a1 filterViewModel];
-    [v4 setFilterEnabled:1];
-    v2 = [(MUIMessageListViewController *)a1 _predicateForFiltersEnabled:?];
-    if ([(MUIMessageListViewController *)a1 _shouldApplyFilterPredicate:v2])
+    filterViewModel = [self filterViewModel];
+    [filterViewModel setFilterEnabled:1];
+    v2 = [(MUIMessageListViewController *)self _predicateForFiltersEnabled:?];
+    if ([(MUIMessageListViewController *)self _shouldApplyFilterPredicate:v2])
     {
-      [a1 applyFilterPredicate:v2];
-      [a1 updateFilterControlWithFilterViewModel:v4];
-      v3 = [v4 selectedFilters];
-      [(MUIMessageListViewController *)a1 _reportFilterChangeEvent:v3 filters:?];
+      [self applyFilterPredicate:v2];
+      [self updateFilterControlWithFilterViewModel:filterViewModel];
+      selectedFilters = [filterViewModel selectedFilters];
+      [(MUIMessageListViewController *)self _reportFilterChangeEvent:selectedFilters filters:?];
     }
   }
 }
 
 - (void)_disableFilters
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 filterViewModel];
-    [v2 setFilterEnabled:0];
+    filterViewModel = [self filterViewModel];
+    [filterViewModel setFilterEnabled:0];
 
-    v3 = [(MUIMessageListViewController *)a1 _predicateForFiltersEnabled:?];
-    if ([(MUIMessageListViewController *)a1 _shouldApplyFilterPredicate:v3])
+    v3 = [(MUIMessageListViewController *)self _predicateForFiltersEnabled:?];
+    if ([(MUIMessageListViewController *)self _shouldApplyFilterPredicate:v3])
     {
-      [a1 applyFilterPredicate:v3];
-      [(MUIMessageListViewController *)a1 _reportFilterChangeEvent:0 filters:?];
+      [self applyFilterPredicate:v3];
+      [(MUIMessageListViewController *)self _reportFilterChangeEvent:0 filters:?];
     }
   }
 }
 
-- (id)_predicateForFiltersEnabled:(void *)a1
+- (id)_predicateForFiltersEnabled:(void *)enabled
 {
-  if (a1)
+  if (enabled)
   {
     if (a2)
     {
-      v3 = [a1 filterViewModel];
-      v4 = [v3 predicateForSelectedFilters];
+      filterViewModel = [enabled filterViewModel];
+      predicateForSelectedFilters = [filterViewModel predicateForSelectedFilters];
     }
 
     else
     {
-      v4 = 0;
+      predicateForSelectedFilters = 0;
     }
 
-    v5 = [a1 updatedPredicateForFocusedAccounts:v4];
+    v5 = [enabled updatedPredicateForFocusedAccounts:predicateForSelectedFilters];
 
-    v6 = [a1 _updatedPredicateForReadLater:v5];
+    v6 = [enabled _updatedPredicateForReadLater:v5];
 
-    if (([a1 isBucketBarHidden] & 1) == 0)
+    if (([enabled isBucketBarHidden] & 1) == 0)
     {
-      v7 = [a1 _updatedPredicateForSelectedBucket:v6];
+      v7 = [enabled _updatedPredicateForSelectedBucket:v6];
 
       v6 = v7;
     }
@@ -3434,65 +3434,65 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
   return v6;
 }
 
-- (void)_shouldApplyFilterPredicate:(void *)a1
+- (void)_shouldApplyFilterPredicate:(void *)predicate
 {
-  v2 = a1;
-  if (a1)
+  predicateCopy = predicate;
+  if (predicate)
   {
     v3 = a2;
-    v4 = [v2 currentFilterPredicate];
+    currentFilterPredicate = [predicateCopy currentFilterPredicate];
     v5 = EFObjectsAreEqual();
 
-    v2 = (v5 ^ 1u);
+    predicateCopy = (v5 ^ 1u);
   }
 
-  return v2;
+  return predicateCopy;
 }
 
-- (void)_reportFilterChangeEvent:(void *)a3 filters:
+- (void)_reportFilterChangeEvent:(void *)event filters:
 {
-  v5 = a3;
-  if (a1)
+  eventCopy = event;
+  if (self)
   {
-    v6 = [MEMORY[0x277D071B8] globalAsyncScheduler];
+    globalAsyncScheduler = [MEMORY[0x277D071B8] globalAsyncScheduler];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __65__MUIMessageListViewController__reportFilterChangeEvent_filters___block_invoke;
     v7[3] = &unk_27818AD88;
     v9 = a2;
-    v8 = v5;
-    [v6 performBlock:v7];
+    v8 = eventCopy;
+    [globalAsyncScheduler performBlock:v7];
   }
 }
 
-- (uint64_t)_hasInitialLoadPromiseForSection:(uint64_t)a1
+- (uint64_t)_hasInitialLoadPromiseForSection:(uint64_t)section
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (section)
   {
     if ([v3 isEqualToString:@"MessageListSectionRecent"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"MessageListSectionIndexedSearch") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"MessageListSectionServerSearch") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"MessageListSectionTopHits") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"MessageListSectionInstantAnswers"))
     {
-      a1 = 1;
+      section = 1;
     }
 
     else
     {
-      a1 = [v4 isEqualToString:@"MessageListSectionGroupedSender"];
+      section = [v4 isEqualToString:@"MessageListSectionGroupedSender"];
     }
   }
 
-  return a1;
+  return section;
 }
 
-- (void)_highlightNextMessageAfterDeletingMessagesWithItemIdentifiers:(void *)a1
+- (void)_highlightNextMessageAfterDeletingMessagesWithItemIdentifiers:(void *)identifiers
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (identifiers)
   {
-    v4 = [a1 messageSelectionStrategy];
-    v5 = [v4 itemIDToSelectAfterDeletedMessageItemIDs:v3];
+    messageSelectionStrategy = [identifiers messageSelectionStrategy];
+    v5 = [messageSelectionStrategy itemIDToSelectAfterDeletedMessageItemIDs:v3];
 
     v6 = _ef_log_MUIMessageListViewController();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3500,7 +3500,7 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       OUTLINED_FUNCTION_0_9();
-      v10 = a1;
+      identifiersCopy = identifiers;
       v11 = 2114;
       v12 = v5;
       v13 = 2114;
@@ -3508,33 +3508,33 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
       _os_log_impl(&dword_214A5E000, v6, OS_LOG_TYPE_DEFAULT, "<%@: %p> Highlight next message with item id: %{public}@, after deleting messages with ids: %{public}@", v9, 0x2Au);
     }
 
-    [a1 selectRowOfItemID:v5 scrollToVisible:0 animated:0];
+    [identifiers selectRowOfItemID:v5 scrollToVisible:0 animated:0];
   }
 }
 
 - (void)filterController
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"MUIMessageListViewController.m" lineNumber:544 description:@"createMailboxFilterController did not return a valid instance"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"MUIMessageListViewController.m" lineNumber:544 description:@"createMailboxFilterController did not return a valid instance"];
 
   *a4 = *a3;
 }
 
 - (void)createMessageListForReload
 {
-  v8 = [a1 canShowUnseenSection];
+  canShowUnseenSection = [self canShowUnseenSection];
 
-  if (v8)
+  if (canShowUnseenSection)
   {
-    v9 = [a1 unseenPredicate];
-    v11 = v9;
+    unseenPredicate = [self unseenPredicate];
+    v11 = unseenPredicate;
     v10 = MessageListSectionGroupedSenderUnseen;
     if ((a3 & 1) == 0)
     {
       v10 = MessageListSectionRecentUnseen;
     }
 
-    [a4 setOrAddObject:v9 forKey:*v10];
+    [a4 setOrAddObject:unseenPredicate forKey:*v10];
   }
 }
 
@@ -3588,7 +3588,7 @@ void __79__MUIMessageListViewController__shimmerViewIfNeededForPriorityCellWillD
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_214A5E000, a2, OS_LOG_TYPE_ERROR, "Unable to update shimmered messages for mailbox:%{public}@", &v2, 0xCu);
 }
 

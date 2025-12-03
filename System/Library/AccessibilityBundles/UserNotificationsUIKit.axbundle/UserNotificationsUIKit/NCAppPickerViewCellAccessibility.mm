@@ -1,18 +1,18 @@
 @interface NCAppPickerViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation NCAppPickerViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCAppPickerViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"NCAppPickerViewCell" hasInstanceVariable:@"_frequencyLabel" withType:"UILabel"];
-  [v3 validateClass:@"NCAppPickerViewCell" hasInstanceVariable:@"_checkmarkButton" withType:"NCCheckmarkButton"];
-  [v3 validateClass:@"NCCheckmarkButton" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCAppPickerViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCAppPickerViewCell" hasInstanceVariable:@"_frequencyLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCAppPickerViewCell" hasInstanceVariable:@"_checkmarkButton" withType:"NCCheckmarkButton"];
+  [validationsCopy validateClass:@"NCCheckmarkButton" isKindOfClass:@"UIControl"];
 }
 
 - (id)accessibilityValue

@@ -1,47 +1,47 @@
 @interface HMMTRUARPAccessory
-+ (id)fromUARPSupportedAccessory:(id)a3;
-- (HMMTRUARPAccessory)initWithProductNumber:(id)a3 vendorID:(unsigned __int16)a4 productID:(unsigned __int16)a5 vendorName:(id)a6 accessoryCategoryNumber:(unint64_t)a7 accessoryMarketingName:(id)a8 accessoryProductLabel:(id)a9 accessoryInstallationGuideURL:(id)a10;
++ (id)fromUARPSupportedAccessory:(id)accessory;
+- (HMMTRUARPAccessory)initWithProductNumber:(id)number vendorID:(unsigned __int16)d productID:(unsigned __int16)iD vendorName:(id)name accessoryCategoryNumber:(unint64_t)categoryNumber accessoryMarketingName:(id)marketingName accessoryProductLabel:(id)label accessoryInstallationGuideURL:(id)self0;
 @end
 
 @implementation HMMTRUARPAccessory
 
-- (HMMTRUARPAccessory)initWithProductNumber:(id)a3 vendorID:(unsigned __int16)a4 productID:(unsigned __int16)a5 vendorName:(id)a6 accessoryCategoryNumber:(unint64_t)a7 accessoryMarketingName:(id)a8 accessoryProductLabel:(id)a9 accessoryInstallationGuideURL:(id)a10
+- (HMMTRUARPAccessory)initWithProductNumber:(id)number vendorID:(unsigned __int16)d productID:(unsigned __int16)iD vendorName:(id)name accessoryCategoryNumber:(unint64_t)categoryNumber accessoryMarketingName:(id)marketingName accessoryProductLabel:(id)label accessoryInstallationGuideURL:(id)self0
 {
-  v24 = a3;
-  v23 = a6;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
+  numberCopy = number;
+  nameCopy = name;
+  marketingNameCopy = marketingName;
+  labelCopy = label;
+  lCopy = l;
   v25.receiver = self;
   v25.super_class = HMMTRUARPAccessory;
   v18 = [(HMMTRUARPAccessory *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_productNumber, a3);
-    v19->_vendorID = a4;
-    v19->_productID = a5;
-    objc_storeStrong(&v19->_vendorName, a6);
-    v19->_accessoryCategoryNumber = a7;
-    objc_storeStrong(&v19->_accessoryMarketingName, a8);
-    objc_storeStrong(&v19->_accessoryProductLabel, a9);
-    objc_storeStrong(&v19->_accessoryInstallationGuideURL, a10);
+    objc_storeStrong(&v18->_productNumber, number);
+    v19->_vendorID = d;
+    v19->_productID = iD;
+    objc_storeStrong(&v19->_vendorName, name);
+    v19->_accessoryCategoryNumber = categoryNumber;
+    objc_storeStrong(&v19->_accessoryMarketingName, marketingName);
+    objc_storeStrong(&v19->_accessoryProductLabel, label);
+    objc_storeStrong(&v19->_accessoryInstallationGuideURL, l);
   }
 
   return v19;
 }
 
-+ (id)fromUARPSupportedAccessory:(id)a3
++ (id)fromUARPSupportedAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 productNumber], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  accessoryCopy = accessory;
+  v5 = accessoryCopy;
+  if (accessoryCopy && ([accessoryCopy productNumber], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 hardwareID];
+    hardwareID = [v5 hardwareID];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = hardwareID;
     }
 
     else
@@ -53,26 +53,26 @@
 
     if (v9)
     {
-      v10 = [v9 metadata];
-      v11 = [a1 alloc];
-      v21 = [v5 productNumber];
-      v20 = [v9 vendorID];
-      v12 = [v9 productID];
-      v13 = [v10 vendorName];
-      if (v10)
+      metadata = [v9 metadata];
+      v11 = [self alloc];
+      productNumber = [v5 productNumber];
+      vendorID = [v9 vendorID];
+      productID = [v9 productID];
+      vendorName = [metadata vendorName];
+      if (metadata)
       {
-        v14 = [v10 accessoryCategoryNumber];
+        accessoryCategoryNumber = [metadata accessoryCategoryNumber];
       }
 
       else
       {
-        v14 = 0;
+        accessoryCategoryNumber = 0;
       }
 
-      v16 = [v10 accessoryMarketingName];
-      v17 = [v10 accessoryProductLabel];
-      v18 = [v10 accessoryInstallationGuideURL];
-      v15 = [v11 initWithProductNumber:v21 vendorID:v20 productID:v12 vendorName:v13 accessoryCategoryNumber:v14 accessoryMarketingName:v16 accessoryProductLabel:v17 accessoryInstallationGuideURL:v18];
+      accessoryMarketingName = [metadata accessoryMarketingName];
+      accessoryProductLabel = [metadata accessoryProductLabel];
+      accessoryInstallationGuideURL = [metadata accessoryInstallationGuideURL];
+      v15 = [v11 initWithProductNumber:productNumber vendorID:vendorID productID:productID vendorName:vendorName accessoryCategoryNumber:accessoryCategoryNumber accessoryMarketingName:accessoryMarketingName accessoryProductLabel:accessoryProductLabel accessoryInstallationGuideURL:accessoryInstallationGuideURL];
     }
 
     else

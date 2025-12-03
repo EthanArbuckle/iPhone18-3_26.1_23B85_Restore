@@ -1,49 +1,49 @@
 @interface HDDatabaseTransactionContext
-+ (id)_cachedContextForOptions:(uint64_t)a1;
-+ (id)contextForAccessibilityAssertion:(id)a3;
++ (id)_cachedContextForOptions:(uint64_t)options;
++ (id)contextForAccessibilityAssertion:(id)assertion;
 + (id)highPriorityContext;
-- (BOOL)containsContext:(id)a3 error:(id *)a4;
+- (BOOL)containsContext:(id)context error:(id *)error;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)accessibilityAssertions;
-- (id)_initWithOptions:(void *)a3 journalType:(void *)a4 cacheScope:(void *)a5 assertions:(void *)a6 statistics:;
+- (id)_initWithOptions:(void *)options journalType:(void *)type cacheScope:(void *)scope assertions:(void *)assertions statistics:;
 - (id)copyForReadingProtectedData;
 - (id)copyForWriting;
 - (id)copyForWritingProtectedData;
 - (id)description;
-- (id)mergedContextWithContext:(id)a3 error:(id *)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mergedContextWithContext:(id)context error:(id *)error;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HDDatabaseTransactionContext
 
-- (id)_initWithOptions:(void *)a3 journalType:(void *)a4 cacheScope:(void *)a5 assertions:(void *)a6 statistics:
+- (id)_initWithOptions:(void *)options journalType:(void *)type cacheScope:(void *)scope assertions:(void *)assertions statistics:
 {
-  v11 = a5;
-  v12 = a6;
-  if (a1)
+  scopeCopy = scope;
+  assertionsCopy = assertions;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = HDDatabaseTransactionContext;
     v13 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v13;
+    self = v13;
     if (v13)
     {
-      v13[2] = a4;
+      v13[2] = type;
       v13[3] = a2;
-      v13[1] = a3;
-      if ([v11 count])
+      v13[1] = options;
+      if ([scopeCopy count])
       {
-        v14 = [v11 mutableCopy];
-        v15 = a1[4];
-        a1[4] = v14;
+        v14 = [scopeCopy mutableCopy];
+        v15 = self[4];
+        self[4] = v14;
       }
 
-      objc_storeStrong(a1 + 5, a6);
+      objc_storeStrong(self + 5, assertions);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)copyForWriting
@@ -95,7 +95,7 @@
   }
 }
 
-+ (id)_cachedContextForOptions:(uint64_t)a1
++ (id)_cachedContextForOptions:(uint64_t)options
 {
   objc_opt_self();
   if (qword_280D67C08 != -1)
@@ -134,19 +134,19 @@ void __57__HDDatabaseTransactionContext__cachedContextForOptions___block_invoke(
 
 + (id)highPriorityContext
 {
-  v2 = [[a1 alloc] _initWithOptions:16];
+  v2 = [[self alloc] _initWithOptions:16];
 
   return v2;
 }
 
-+ (id)contextForAccessibilityAssertion:(id)a3
++ (id)contextForAccessibilityAssertion:(id)assertion
 {
-  v3 = a3;
+  assertionCopy = assertion;
   v4 = [HDDatabaseTransactionContext alloc];
   p_isa = &v4->super.isa;
-  if (v3)
+  if (assertionCopy)
   {
-    v6 = [MEMORY[0x277CBEB58] setWithObject:v3];
+    v6 = [MEMORY[0x277CBEB58] setWithObject:assertionCopy];
     v7 = [(HDDatabaseTransactionContext *)p_isa _initWithOptions:0 journalType:0 cacheScope:v6 assertions:0 statistics:?];
   }
 
@@ -158,31 +158,31 @@ void __57__HDDatabaseTransactionContext__cachedContextForOptions___block_invoke(
   return v7;
 }
 
-- (id)mergedContextWithContext:(id)a3 error:(id *)a4
+- (id)mergedContextWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  if (!v6 || -[HDDatabaseTransactionContext isEqual:](self, "isEqual:", v6) || [v6 isEmpty])
+  contextCopy = context;
+  if (!contextCopy || -[HDDatabaseTransactionContext isEqual:](self, "isEqual:", contextCopy) || [contextCopy isEmpty])
   {
-    v7 = self;
+    selfCopy = self;
 LABEL_5:
-    p_isa = &v7->super.isa;
+    p_isa = &selfCopy->super.isa;
     goto LABEL_6;
   }
 
   if ([(HDDatabaseTransactionContext *)self isEmpty])
   {
-    v7 = v6;
+    selfCopy = contextCopy;
     goto LABEL_5;
   }
 
   journalType = self->_journalType;
-  v11 = [v6 journalType];
+  journalType = [contextCopy journalType];
   v12 = self->_journalType;
   if (v12)
   {
-    if (v11 && v11 != v12)
+    if (journalType && journalType != v12)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:107 format:{@"Outer transaction journal type %ld is incompatible with type %ld", self->_journalType, v11}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:107 format:{@"Outer transaction journal type %ld is incompatible with type %ld", self->_journalType, journalType}];
 LABEL_20:
       p_isa = 0;
       goto LABEL_6;
@@ -191,24 +191,24 @@ LABEL_20:
 
   else
   {
-    journalType = v11;
+    journalType = journalType;
   }
 
   cacheScope = self->_cacheScope;
-  v14 = [v6 cacheScope];
+  cacheScope = [contextCopy cacheScope];
   v15 = self->_cacheScope;
   if (v15)
   {
-    if (v14 && v14 != v15)
+    if (cacheScope && cacheScope != v15)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:107 format:{@"Outer transaction cache scope %ld is incompatible with %ld", self->_cacheScope, v14}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:107 format:{@"Outer transaction cache scope %ld is incompatible with %ld", self->_cacheScope, cacheScope}];
       goto LABEL_20;
     }
   }
 
   else
   {
-    cacheScope = v14;
+    cacheScope = cacheScope;
   }
 
   v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -217,13 +217,13 @@ LABEL_20:
     [v16 unionSet:self->_accessibilityAssertions];
   }
 
-  if ([*(v6 + 4) count])
+  if ([*(contextCopy + 4) count])
   {
-    [v16 unionSet:*(v6 + 4)];
+    [v16 unionSet:*(contextCopy + 4)];
   }
 
   v17 = self->_statistics;
-  v18 = *(v6 + 5);
+  v18 = *(contextCopy + 5);
   if (!v17)
   {
     v19 = v18;
@@ -238,7 +238,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a4 code:107 description:@"Transaction statistics are not mergeable"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:107 description:@"Transaction statistics are not mergeable"];
   p_isa = 0;
 LABEL_32:
 
@@ -247,91 +247,91 @@ LABEL_6:
   return p_isa;
 }
 
-- (BOOL)containsContext:(id)a3 error:(id *)a4
+- (BOOL)containsContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  if (!v6 || [(HDDatabaseTransactionContext *)self isEqual:v6])
+  contextCopy = context;
+  if (!contextCopy || [(HDDatabaseTransactionContext *)self isEqual:contextCopy])
   {
     goto LABEL_3;
   }
 
-  if ([v6 journalType])
+  if ([contextCopy journalType])
   {
-    v8 = [v6 journalType];
+    journalType = [contextCopy journalType];
     journalType = self->_journalType;
-    if (v8 != journalType)
+    if (journalType != journalType)
     {
       v15 = MEMORY[0x277CCA9B8];
       v23 = journalType;
-      v24 = [v6 journalType];
+      journalType2 = [contextCopy journalType];
       v16 = @"Outer transaction journal type %ld is incompatible with type %ld";
 LABEL_24:
       v17 = v15;
 LABEL_36:
-      [v17 hk_assignError:a4 code:107 format:{v16, v23, v24}];
+      [v17 hk_assignError:error code:107 format:{v16, v23, journalType2}];
 LABEL_37:
       v7 = 0;
       goto LABEL_38;
     }
   }
 
-  if ([v6 cacheScope] == 1)
+  if ([contextCopy cacheScope] == 1)
   {
-    v10 = [v6 cacheScope];
+    cacheScope = [contextCopy cacheScope];
     cacheScope = self->_cacheScope;
-    if (v10 != cacheScope)
+    if (cacheScope != cacheScope)
     {
       v15 = MEMORY[0x277CCA9B8];
       v23 = cacheScope;
-      v24 = [v6 cacheScope];
+      journalType2 = [contextCopy cacheScope];
       v16 = @"Outer transaction cache scope %ld is incompatible with %ld";
       goto LABEL_24;
     }
   }
 
-  if ([v6 requiresWrite] && !-[HDDatabaseTransactionContext requiresWrite](self, "requiresWrite"))
+  if ([contextCopy requiresWrite] && !-[HDDatabaseTransactionContext requiresWrite](self, "requiresWrite"))
   {
     v17 = MEMORY[0x277CCA9B8];
     v16 = @"Outer transaction must require write";
     goto LABEL_36;
   }
 
-  if ([v6 requiresProtectedData] && !-[HDDatabaseTransactionContext requiresProtectedData](self, "requiresProtectedData"))
+  if ([contextCopy requiresProtectedData] && !-[HDDatabaseTransactionContext requiresProtectedData](self, "requiresProtectedData"))
   {
     v17 = MEMORY[0x277CCA9B8];
     v16 = @"Outer transaction must require protected data";
     goto LABEL_36;
   }
 
-  if ([v6 skipJournalMerge] && !-[HDDatabaseTransactionContext skipJournalMerge](self, "skipJournalMerge"))
+  if ([contextCopy skipJournalMerge] && !-[HDDatabaseTransactionContext skipJournalMerge](self, "skipJournalMerge"))
   {
     v17 = MEMORY[0x277CCA9B8];
     v16 = @"Outer transaction must skip journal merge";
     goto LABEL_36;
   }
 
-  if ([v6 requiresNewDatabaseConnection] && !-[HDDatabaseTransactionContext requiresNewDatabaseConnection](self, "requiresNewDatabaseConnection"))
+  if ([contextCopy requiresNewDatabaseConnection] && !-[HDDatabaseTransactionContext requiresNewDatabaseConnection](self, "requiresNewDatabaseConnection"))
   {
     v17 = MEMORY[0x277CCA9B8];
     v16 = @"Outer transaction must require new database connection";
     goto LABEL_36;
   }
 
-  if ([v6 allowsJournalingDuringProtectedRead] && !-[HDDatabaseTransactionContext allowsJournalingDuringProtectedRead](self, "allowsJournalingDuringProtectedRead") && (!-[HDDatabaseTransactionContext requiresProtectedData](self, "requiresProtectedData") || !-[HDDatabaseTransactionContext requiresWrite](self, "requiresWrite")))
+  if ([contextCopy allowsJournalingDuringProtectedRead] && !-[HDDatabaseTransactionContext allowsJournalingDuringProtectedRead](self, "allowsJournalingDuringProtectedRead") && (!-[HDDatabaseTransactionContext requiresProtectedData](self, "requiresProtectedData") || !-[HDDatabaseTransactionContext requiresWrite](self, "requiresWrite")))
   {
     v17 = MEMORY[0x277CCA9B8];
     v16 = @"Outer transaction must allow journaling during protected read or allow writing protected data";
     goto LABEL_36;
   }
 
-  v12 = [v6 accessibilityAssertions];
-  if ([v12 count])
+  accessibilityAssertions = [contextCopy accessibilityAssertions];
+  if ([accessibilityAssertions count])
   {
     v13 = [(NSMutableSet *)self->_accessibilityAssertions count];
 
     if (!v13)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:107 format:@"Outer transaction must have database accessibility assertion"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:107 format:@"Outer transaction must have database accessibility assertion"];
       _HKInitializeLogging();
       v14 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
@@ -348,14 +348,14 @@ LABEL_37:
   {
   }
 
-  v18 = [v6 statistics];
-  if (v18)
+  statistics = [contextCopy statistics];
+  if (statistics)
   {
-    v19 = v18;
-    v20 = [(HDDatabaseTransactionContext *)self statistics];
-    v21 = [v6 statistics];
+    v19 = statistics;
+    statistics2 = [(HDDatabaseTransactionContext *)self statistics];
+    statistics3 = [contextCopy statistics];
 
-    if (v20 != v21)
+    if (statistics2 != statistics3)
     {
       v17 = MEMORY[0x277CCA9B8];
       v16 = @"Outer transaction must have the same statistics object";
@@ -404,10 +404,10 @@ LABEL_38:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
     goto LABEL_16;
@@ -420,7 +420,7 @@ LABEL_38:
     goto LABEL_16;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (self->_journalType != v5->_journalType || self->_options != v5->_options || self->_cacheScope != v5->_cacheScope)
   {
@@ -466,12 +466,12 @@ LABEL_16:
   journalType = self->_journalType;
   if (journalType)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@" journal=%ld", journalType];
+    journalType = [MEMORY[0x277CCACA8] stringWithFormat:@" journal=%ld", journalType];
   }
 
   else
   {
-    v4 = &stru_283BF39C8;
+    journalType = &stru_283BF39C8;
   }
 
   if (self->_cacheScope)
@@ -533,8 +533,8 @@ LABEL_16:
   if ([(NSMutableSet *)self->_accessibilityAssertions count])
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(NSMutableSet *)self->_accessibilityAssertions allObjects];
-    v10 = [v9 hk_map:&__block_literal_global_378];
+    allObjects = [(NSMutableSet *)self->_accessibilityAssertions allObjects];
+    v10 = [allObjects hk_map:&__block_literal_global_378];
     v11 = [v10 componentsJoinedByString:{@", "}];
     v12 = [v8 stringWithFormat:@" assertions={%@}", v11];
   }
@@ -544,12 +544,12 @@ LABEL_16:
     v12 = &stru_283BF39C8;
   }
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@%@%@ options=%@%@>", objc_opt_class(), v4, v5, v7, v12, 0];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@%@%@ options=%@%@>", objc_opt_class(), journalType, v5, v7, v12, 0];
 
   return v13;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HDMutableDatabaseTransactionContext alloc];
   journalType = self->_journalType;

@@ -1,23 +1,23 @@
 @interface KTDevice
-- (BOOL)active:(id)a3;
-- (BOOL)expired:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)marked:(id)a3;
+- (BOOL)active:(id)active;
+- (BOOL)expired:(id)expired;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)marked:(id)marked;
 - (BOOL)shouldRemove;
-- (KTDevice)initWithCoder:(id)a3;
-- (KTDevice)initWithIdsDevice:(id)a3;
-- (KTDevice)initWithMutation:(id)a3;
+- (KTDevice)initWithCoder:(id)coder;
+- (KTDevice)initWithIdsDevice:(id)device;
+- (KTDevice)initWithMutation:(id)mutation;
 - (NSDate)addedDate;
 - (NSDictionary)diagnosticsJsonDictionary;
-- (id)clientRecordForAppVersion:(unint64_t)a3 clientDataHash:(id)a4;
-- (id)clientRecordsForHash:(id)a3;
+- (id)clientRecordForAppVersion:(unint64_t)version clientDataHash:(id)hash;
+- (id)clientRecordsForHash:(id)hash;
 - (id)debugDescription;
-- (void)deleteMarkedEntries:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)markClientDatasForAppVersion:(unint64_t)a3 mutationMs:(unint64_t)a4 except:(id)a5;
-- (void)updateWithAddMutation:(id)a3 error:(id *)a4;
-- (void)updateWithDeviceStateArray:(id)a3;
-- (void)updateWithMarkDeleteMutation:(id)a3 error:(id *)a4;
+- (void)deleteMarkedEntries:(id)entries;
+- (void)encodeWithCoder:(id)coder;
+- (void)markClientDatasForAppVersion:(unint64_t)version mutationMs:(unint64_t)ms except:(id)except;
+- (void)updateWithAddMutation:(id)mutation error:(id *)error;
+- (void)updateWithDeviceStateArray:(id)array;
+- (void)updateWithMarkDeleteMutation:(id)mutation error:(id *)error;
 @end
 
 @implementation KTDevice
@@ -29,7 +29,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = self->_clientDatas;
   v4 = [(NSMutableArray *)obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
@@ -47,20 +47,20 @@
 
         v8 = *(*(&v23 + 1) + 8 * i);
         [v3 appendFormat:@"   {\n"];
-        v9 = [v8 clientData];
-        v10 = [v9 kt_hexString];
-        [v3 appendFormat:@"    clientData:%@\n", v10];
+        clientData = [v8 clientData];
+        kt_hexString = [clientData kt_hexString];
+        [v3 appendFormat:@"    clientData:%@\n", kt_hexString];
 
-        v11 = [v8 clientDataHash];
-        v12 = [v11 kt_hexString];
-        [v3 appendFormat:@"    clientDataHash:%@\n", v12];
+        clientDataHash = [v8 clientDataHash];
+        kt_hexString2 = [clientDataHash kt_hexString];
+        [v3 appendFormat:@"    clientDataHash:%@\n", kt_hexString2];
 
         [v3 appendFormat:@"    appVersion:%lu\n", objc_msgSend(v8, "applicationVersion")];
-        v13 = [v8 addedDate];
-        v14 = [v8 markedForDeletion];
-        v15 = [v8 expiry];
-        v16 = [v8 escrowExpiry];
-        [v3 appendFormat:@"    addedDate:%@ markDate:%@; expiryDate:%@; escrowDate:%@\n", v13, v14, v15, v16];
+        addedDate = [v8 addedDate];
+        markedForDeletion = [v8 markedForDeletion];
+        expiry = [v8 expiry];
+        escrowExpiry = [v8 escrowExpiry];
+        [v3 appendFormat:@"    addedDate:%@ markDate:%@; expiryDate:%@; escrowDate:%@\n", addedDate, markedForDeletion, expiry, escrowExpiry];
 
         [v3 appendFormat:@"   }, \n"];
       }
@@ -72,9 +72,9 @@
   }
 
   [v3 appendFormat:@"  ]"];
-  v17 = [(NSData *)v21->_deviceID kt_hexString];
-  v18 = [(NSData *)v21->_deviceIDHash kt_hexString];
-  v19 = [NSString stringWithFormat:@"{\n  deviceID:%@\n  deviceIDHash:%@\n  clientDatas: %@\n}", v17, v18, v3];
+  kt_hexString3 = [(NSData *)selfCopy->_deviceID kt_hexString];
+  kt_hexString4 = [(NSData *)selfCopy->_deviceIDHash kt_hexString];
+  v19 = [NSString stringWithFormat:@"{\n  deviceID:%@\n  deviceIDHash:%@\n  clientDatas: %@\n}", kt_hexString3, kt_hexString4, v3];
 
   return v19;
 }
@@ -82,26 +82,26 @@
 - (NSDictionary)diagnosticsJsonDictionary
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(KTDevice *)self deviceID];
+  deviceID = [(KTDevice *)self deviceID];
 
-  if (v4)
+  if (deviceID)
   {
-    v5 = [(KTDevice *)self deviceID];
-    v6 = [v5 kt_hexString];
-    [v3 setObject:v6 forKeyedSubscript:@"deviceID"];
+    deviceID2 = [(KTDevice *)self deviceID];
+    kt_hexString = [deviceID2 kt_hexString];
+    [v3 setObject:kt_hexString forKeyedSubscript:@"deviceID"];
   }
 
-  v7 = [(KTDevice *)self deviceIDHash];
-  v8 = [v7 kt_hexString];
-  [v3 setObject:v8 forKeyedSubscript:@"deviceIDHash"];
+  deviceIDHash = [(KTDevice *)self deviceIDHash];
+  kt_hexString2 = [deviceIDHash kt_hexString];
+  [v3 setObject:kt_hexString2 forKeyedSubscript:@"deviceIDHash"];
 
   v9 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(KTDevice *)self clientDatas];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  clientDatas = [(KTDevice *)self clientDatas];
+  v11 = [clientDatas countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -112,14 +112,14 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(clientDatas);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) diagnosticsJsonDictionary];
-        [v9 addObject:v15];
+        diagnosticsJsonDictionary = [*(*(&v17 + 1) + 8 * i) diagnosticsJsonDictionary];
+        [v9 addObject:diagnosticsJsonDictionary];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [clientDatas countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
@@ -130,27 +130,27 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(KTDevice *)self deviceID];
-  [v4 encodeObject:v5 forKey:@"deviceID"];
+  coderCopy = coder;
+  deviceID = [(KTDevice *)self deviceID];
+  [coderCopy encodeObject:deviceID forKey:@"deviceID"];
 
-  v6 = [(KTDevice *)self deviceIDHash];
-  [v4 encodeObject:v6 forKey:@"deviceIDHash"];
+  deviceIDHash = [(KTDevice *)self deviceIDHash];
+  [coderCopy encodeObject:deviceIDHash forKey:@"deviceIDHash"];
 
-  v7 = [(KTDevice *)self clientDatas];
-  [v4 encodeObject:v7 forKey:@"clientDataRecords"];
+  clientDatas = [(KTDevice *)self clientDatas];
+  [coderCopy encodeObject:clientDatas forKey:@"clientDataRecords"];
 }
 
-- (KTDevice)initWithCoder:(id)a3
+- (KTDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIDHash"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIDHash"];
   v7 = objc_opt_class();
   v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"clientDataRecords"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"clientDataRecords"];
 
   v10 = objc_alloc_init(KTDevice);
   v11 = v10;
@@ -165,16 +165,16 @@
   return v11;
 }
 
-- (KTDevice)initWithIdsDevice:(id)a3
+- (KTDevice)initWithIdsDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = KTDevice;
   v5 = [(KTDevice *)&v20 init];
   if (v5)
   {
-    v6 = [v4 deviceIdHash];
-    [(KTDevice *)v5 setDeviceIDHash:v6];
+    deviceIdHash = [deviceCopy deviceIdHash];
+    [(KTDevice *)v5 setDeviceIDHash:deviceIdHash];
 
     v7 = +[NSMutableArray array];
     [(KTDevice *)v5 setClientDatas:v7];
@@ -183,8 +183,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v4 clientDataArray];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    clientDataArray = [deviceCopy clientDataArray];
+    v9 = [clientDataArray countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -196,18 +196,18 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(clientDataArray);
           }
 
           v13 = [[KTClientDataRecord alloc] initWithSingleDataRecord:*(*(&v16 + 1) + 8 * v12)];
-          v14 = [(KTDevice *)v5 clientDatas];
-          [v14 addObject:v13];
+          clientDatas = [(KTDevice *)v5 clientDatas];
+          [clientDatas addObject:v13];
 
           v12 = v12 + 1;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v10 = [clientDataArray countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v10);
@@ -217,19 +217,19 @@
   return v5;
 }
 
-- (KTDevice)initWithMutation:(id)a3
+- (KTDevice)initWithMutation:(id)mutation
 {
-  v4 = a3;
+  mutationCopy = mutation;
   v12.receiver = self;
   v12.super_class = KTDevice;
   v5 = [(KTDevice *)&v12 init];
   if (v5)
   {
-    v6 = [v4 deviceIdHash];
+    deviceIdHash = [mutationCopy deviceIdHash];
     deviceIDHash = v5->_deviceIDHash;
-    v5->_deviceIDHash = v6;
+    v5->_deviceIDHash = deviceIdHash;
 
-    v8 = [[KTClientDataRecord alloc] initWithMutation:v4];
+    v8 = [[KTClientDataRecord alloc] initWithMutation:mutationCopy];
     v9 = [NSMutableArray arrayWithObject:v8];
     clientDatas = v5->_clientDatas;
     v5->_clientDatas = v9;
@@ -238,10 +238,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -251,19 +251,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTDevice *)self deviceID];
-      v7 = [(KTDevice *)v5 deviceID];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      deviceID = [(KTDevice *)self deviceID];
+      deviceID2 = [(KTDevice *)v5 deviceID];
+      v8 = deviceID2;
+      if (deviceID == deviceID2)
       {
       }
 
       else
       {
-        v9 = [(KTDevice *)self deviceID];
-        v10 = [(KTDevice *)v5 deviceID];
-        v11 = [v9 isEqual:v10];
+        deviceID3 = [(KTDevice *)self deviceID];
+        deviceID4 = [(KTDevice *)v5 deviceID];
+        v11 = [deviceID3 isEqual:deviceID4];
 
         if (!v11)
         {
@@ -271,18 +271,18 @@
         }
       }
 
-      v13 = [(KTDevice *)self deviceIDHash];
-      v14 = [(KTDevice *)v5 deviceIDHash];
-      v15 = v14;
-      if (v13 == v14)
+      deviceIDHash = [(KTDevice *)self deviceIDHash];
+      deviceIDHash2 = [(KTDevice *)v5 deviceIDHash];
+      v15 = deviceIDHash2;
+      if (deviceIDHash == deviceIDHash2)
       {
       }
 
       else
       {
-        v16 = [(KTDevice *)self deviceIDHash];
-        v17 = [(KTDevice *)v5 deviceIDHash];
-        v18 = [v16 isEqual:v17];
+        deviceIDHash3 = [(KTDevice *)self deviceIDHash];
+        deviceIDHash4 = [(KTDevice *)v5 deviceIDHash];
+        v18 = [deviceIDHash3 isEqual:deviceIDHash4];
 
         if (!v18)
         {
@@ -290,18 +290,18 @@
         }
       }
 
-      v19 = [(KTDevice *)self clientDatas];
-      v20 = [(KTDevice *)v5 clientDatas];
-      v21 = v20;
-      if (v19 == v20)
+      clientDatas = [(KTDevice *)self clientDatas];
+      clientDatas2 = [(KTDevice *)v5 clientDatas];
+      v21 = clientDatas2;
+      if (clientDatas == clientDatas2)
       {
       }
 
       else
       {
-        v22 = [(KTDevice *)self clientDatas];
-        v23 = [(KTDevice *)v5 clientDatas];
-        v24 = [v22 isEqual:v23];
+        clientDatas3 = [(KTDevice *)self clientDatas];
+        clientDatas4 = [(KTDevice *)v5 clientDatas];
+        v24 = [clientDatas3 isEqual:clientDatas4];
 
         if ((v24 & 1) == 0)
         {
@@ -325,9 +325,9 @@ LABEL_19:
   return v12;
 }
 
-- (id)clientRecordForAppVersion:(unint64_t)a3 clientDataHash:(id)a4
+- (id)clientRecordForAppVersion:(unint64_t)version clientDataHash:(id)hash
 {
-  v6 = a4;
+  hashCopy = hash;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -348,10 +348,10 @@ LABEL_19:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if ([v12 applicationVersion] == a3)
+        if ([v12 applicationVersion] == version)
         {
-          v13 = [v12 clientDataHash];
-          v14 = [v13 isEqualToData:v6];
+          clientDataHash = [v12 clientDataHash];
+          v14 = [clientDataHash isEqualToData:hashCopy];
 
           if (v14)
           {
@@ -377,9 +377,9 @@ LABEL_12:
   return v15;
 }
 
-- (id)clientRecordsForHash:(id)a3
+- (id)clientRecordsForHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
@@ -401,8 +401,8 @@ LABEL_12:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 clientDataHash];
-        v13 = [v12 isEqualToData:v4];
+        clientDataHash = [v11 clientDataHash];
+        v13 = [clientDataHash isEqualToData:hashCopy];
 
         if (v13)
         {
@@ -429,16 +429,16 @@ LABEL_12:
   return v14;
 }
 
-- (void)markClientDatasForAppVersion:(unint64_t)a3 mutationMs:(unint64_t)a4 except:(id)a5
+- (void)markClientDatasForAppVersion:(unint64_t)version mutationMs:(unint64_t)ms except:(id)except
 {
-  v8 = a5;
-  v9 = [NSDate dateWithTimeIntervalSince1970:a4 / 1000.0];
+  exceptCopy = except;
+  v9 = [NSDate dateWithTimeIntervalSince1970:ms / 1000.0];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(KTDevice *)self clientDatas];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  clientDatas = [(KTDevice *)self clientDatas];
+  v11 = [clientDatas countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -450,35 +450,35 @@ LABEL_12:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(clientDatas);
         }
 
         v15 = *(*(&v16 + 1) + 8 * v14);
-        if ((!v8 || ([*(*(&v16 + 1) + 8 * v14) isEqual:v8] & 1) == 0) && objc_msgSend(v15, "applicationVersion") == a3 && (objc_msgSend(v15, "marked:", v9) & 1) == 0 && (objc_msgSend(v15, "expired:", v9) & 1) == 0)
+        if ((!exceptCopy || ([*(*(&v16 + 1) + 8 * v14) isEqual:exceptCopy] & 1) == 0) && objc_msgSend(v15, "applicationVersion") == version && (objc_msgSend(v15, "marked:", v9) & 1) == 0 && (objc_msgSend(v15, "expired:", v9) & 1) == 0)
         {
-          [v15 markWithMutationMs:a4];
+          [v15 markWithMutationMs:ms];
         }
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [clientDatas countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
   }
 }
 
-- (BOOL)marked:(id)a3
+- (BOOL)marked:(id)marked
 {
-  v4 = a3;
+  markedCopy = marked;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(KTDevice *)self clientDatas];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  clientDatas = [(KTDevice *)self clientDatas];
+  v6 = [clientDatas countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -489,17 +489,17 @@ LABEL_12:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(clientDatas);
         }
 
-        if (![*(*(&v12 + 1) + 8 * i) marked:v4])
+        if (![*(*(&v12 + 1) + 8 * i) marked:markedCopy])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [clientDatas countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -515,15 +515,15 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)expired:(id)a3
+- (BOOL)expired:(id)expired
 {
-  v4 = a3;
+  expiredCopy = expired;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(KTDevice *)self clientDatas];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  clientDatas = [(KTDevice *)self clientDatas];
+  v6 = [clientDatas countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -534,17 +534,17 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(clientDatas);
         }
 
-        if (![*(*(&v12 + 1) + 8 * i) expired:v4])
+        if (![*(*(&v12 + 1) + 8 * i) expired:expiredCopy])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [clientDatas countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -560,15 +560,15 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)active:(id)a3
+- (BOOL)active:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(KTDevice *)self clientDatas];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  clientDatas = [(KTDevice *)self clientDatas];
+  v6 = [clientDatas countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -578,17 +578,17 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(clientDatas);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) active:v4])
+        if ([*(*(&v10 + 1) + 8 * i) active:activeCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [clientDatas countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -610,8 +610,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(KTDevice *)self clientDatas];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clientDatas = [(KTDevice *)self clientDatas];
+  v5 = [clientDatas countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -622,22 +622,22 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(clientDatas);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 addedDate];
-        v11 = [v10 compare:v3];
+        addedDate = [v9 addedDate];
+        v11 = [addedDate compare:v3];
 
         if (v11 == -1)
         {
-          v12 = [v9 addedDate];
+          addedDate2 = [v9 addedDate];
 
-          v3 = v12;
+          v3 = addedDate2;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [clientDatas countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -646,48 +646,48 @@ LABEL_11:
   return v3;
 }
 
-- (void)updateWithAddMutation:(id)a3 error:(id *)a4
+- (void)updateWithAddMutation:(id)mutation error:(id *)error
 {
-  v11 = a3;
-  v6 = [v11 appVersion];
-  v7 = [v11 clientDataHash];
-  v8 = [(KTDevice *)self clientRecordForAppVersion:v6 clientDataHash:v7];
+  mutationCopy = mutation;
+  appVersion = [mutationCopy appVersion];
+  clientDataHash = [mutationCopy clientDataHash];
+  v8 = [(KTDevice *)self clientRecordForAppVersion:appVersion clientDataHash:clientDataHash];
 
-  v9 = [v11 idsMutation];
-  v10 = [v9 mutationMs];
+  idsMutation = [mutationCopy idsMutation];
+  mutationMs = [idsMutation mutationMs];
 
-  -[KTDevice markClientDatasForAppVersion:mutationMs:except:](self, "markClientDatasForAppVersion:mutationMs:except:", [v11 appVersion], v10, v8);
+  -[KTDevice markClientDatasForAppVersion:mutationMs:except:](self, "markClientDatasForAppVersion:mutationMs:except:", [mutationCopy appVersion], mutationMs, v8);
   if (v8)
   {
-    [(KTClientDataRecord *)v8 updateWithAddMutation:v11 error:a4];
+    [(KTClientDataRecord *)v8 updateWithAddMutation:mutationCopy error:error];
   }
 
   else
   {
-    v8 = [[KTClientDataRecord alloc] initWithMutation:v11];
+    v8 = [[KTClientDataRecord alloc] initWithMutation:mutationCopy];
     [(KTDevice *)self addClientDatasObject:v8];
   }
 }
 
-- (void)updateWithMarkDeleteMutation:(id)a3 error:(id *)a4
+- (void)updateWithMarkDeleteMutation:(id)mutation error:(id *)error
 {
-  v9 = a3;
-  v6 = [v9 appVersion];
-  v7 = [v9 clientDataHash];
-  v8 = [(KTDevice *)self clientRecordForAppVersion:v6 clientDataHash:v7];
+  mutationCopy = mutation;
+  appVersion = [mutationCopy appVersion];
+  clientDataHash = [mutationCopy clientDataHash];
+  v8 = [(KTDevice *)self clientRecordForAppVersion:appVersion clientDataHash:clientDataHash];
 
   if (v8)
   {
-    [v8 updateWithMarkDeleteMutation:v9 error:a4];
+    [v8 updateWithMarkDeleteMutation:mutationCopy error:error];
   }
 }
 
-- (void)updateWithDeviceStateArray:(id)a3
+- (void)updateWithDeviceStateArray:(id)array
 {
-  v4 = a3;
-  v13 = self;
-  v5 = [(KTDevice *)self clientDatas];
-  v6 = [NSArray arrayWithArray:v5];
+  arrayCopy = array;
+  selfCopy = self;
+  clientDatas = [(KTDevice *)self clientDatas];
+  v6 = [NSArray arrayWithArray:clientDatas];
 
   v17 = 0u;
   v18 = 0u;
@@ -715,9 +715,9 @@ LABEL_11:
         v14[2] = sub_1001C9CF8;
         v14[3] = &unk_100327430;
         v14[4] = v12;
-        if ([v4 indexOfObjectPassingTest:v14] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([arrayCopy indexOfObjectPassingTest:v14] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [(KTDevice *)v13 removeClientDatasObject:v12];
+          [(KTDevice *)selfCopy removeClientDatasObject:v12];
         }
 
         v11 = v11 + 1;
@@ -733,17 +733,17 @@ LABEL_11:
 
 - (BOOL)shouldRemove
 {
-  v2 = [(KTDevice *)self clientDatas];
-  v3 = [v2 count] == 0;
+  clientDatas = [(KTDevice *)self clientDatas];
+  v3 = [clientDatas count] == 0;
 
   return v3;
 }
 
-- (void)deleteMarkedEntries:(id)a3
+- (void)deleteMarkedEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(KTDevice *)self clientDatas];
-  v6 = [NSArray arrayWithArray:v5];
+  entriesCopy = entries;
+  clientDatas = [(KTDevice *)self clientDatas];
+  v6 = [NSArray arrayWithArray:clientDatas];
 
   v15 = 0u;
   v16 = 0u;
@@ -765,7 +765,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if ([v12 marked:{v4, v13}])
+        if ([v12 marked:{entriesCopy, v13}])
         {
           [(KTDevice *)self removeClientDatasObject:v12];
         }

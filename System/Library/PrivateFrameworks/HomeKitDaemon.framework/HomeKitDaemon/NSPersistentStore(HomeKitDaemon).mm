@@ -12,7 +12,7 @@
   v11 = a5;
   v12 = objc_autoreleasePoolPush();
   v25 = 0;
-  v13 = [(NSPersistentStore *)a1 _deleteChangesWithDuration:v10 entity:v11 context:&v25 error:a2];
+  v13 = [(NSPersistentStore *)self _deleteChangesWithDuration:v10 entity:v11 context:&v25 error:a2];
   v14 = v25;
   if (v13)
   {
@@ -51,7 +51,7 @@
   v12 = a6;
   v13 = objc_autoreleasePoolPush();
   v28 = 0;
-  v14 = [(NSPersistentStore *)a1 _deleteChangesWithDuration:v10 entity:v12 context:&v28 error:a2];
+  v14 = [(NSPersistentStore *)self _deleteChangesWithDuration:v10 entity:v12 context:&v28 error:a2];
   v15 = v28;
   if (v14)
   {
@@ -72,7 +72,7 @@
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -107,7 +107,7 @@
   v36 = 0;
   v16 = objc_autoreleasePoolPush();
   v32 = 0;
-  v17 = [(NSPersistentStore *)a1 _deleteChangesWithDuration:v14 entity:v15 context:&v32 error:a2];
+  v17 = [(NSPersistentStore *)self _deleteChangesWithDuration:v14 entity:v15 context:&v32 error:a2];
   v18 = v32;
   if (v17)
   {
@@ -124,17 +124,17 @@
   else
   {
     context = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v26 = v16;
       v21 = HMFGetLogIdentifier();
-      v22 = [v14 name];
+      name = [v14 name];
       *buf = 138544130;
       v38 = v21;
       v39 = 2112;
-      v40 = v22;
+      v40 = name;
       v41 = 2112;
       v42 = v12;
       v43 = 2112;

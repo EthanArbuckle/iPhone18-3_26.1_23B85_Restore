@@ -8,8 +8,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MTUPPMetadata *)self metadataIdentifier];
-  v5 = [(MTUPPMetadata *)self _playheadToString];
+  metadataIdentifier = [(MTUPPMetadata *)self metadataIdentifier];
+  _playheadToString = [(MTUPPMetadata *)self _playheadToString];
   if ([(MTUPPMetadata *)self hasBeenPlayed])
   {
     v6 = @"Yes";
@@ -20,11 +20,11 @@
     v6 = @"No";
   }
 
-  v7 = [(MTUPPMetadata *)self playCount];
+  playCount = [(MTUPPMetadata *)self playCount];
   v8 = MEMORY[0x1E695DF00];
   [(MTUPPMetadata *)self timestamp];
   v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
-  v10 = [v3 stringWithFormat:@"Identifier <%@> Playhead <%@> Has been played <%@> Play count <%lld> Timestamp <%@>", v4, v5, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"Identifier <%@> Playhead <%@> Has been played <%@> Play count <%lld> Timestamp <%@>", metadataIdentifier, _playheadToString, v6, playCount, v9];
 
   return v10;
 }

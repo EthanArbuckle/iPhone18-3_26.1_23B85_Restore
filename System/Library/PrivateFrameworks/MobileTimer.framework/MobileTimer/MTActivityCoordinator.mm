@@ -1,40 +1,40 @@
 @interface MTActivityCoordinator
-- (MTActivityCoordinator)initWithStorage:(id)a3 alarmStorage:(id)a4 notificationCenter:(id)a5;
+- (MTActivityCoordinator)initWithStorage:(id)storage alarmStorage:(id)alarmStorage notificationCenter:(id)center;
 - (id)_takeOutAssertionIfNeeded;
-- (id)fireDateForId:(id)a3 isAlarm:(BOOL)a4;
-- (void)_dismissAlarmWithId:(id)a3;
-- (void)_dismissTimerWithId:(id)a3;
-- (void)_releaseAssertionIfNeeded:(id)a3;
+- (id)fireDateForId:(id)id isAlarm:(BOOL)alarm;
+- (void)_dismissAlarmWithId:(id)id;
+- (void)_dismissTimerWithId:(id)id;
+- (void)_releaseAssertionIfNeeded:(id)needed;
 - (void)_takeOutAssertionIfNeeded;
 - (void)clearLegacySessions;
 - (void)clearStaleAlarmSessions;
 - (void)clearStaleTimerSessions;
-- (void)didAlertNotificationWithID:(id)a3;
-- (void)didRestoreAlarmSessions:(id)a3;
-- (void)endAlertForIdentifier:(id)a3 isAlarm:(BOOL)a4;
+- (void)didAlertNotificationWithID:(id)d;
+- (void)didRestoreAlarmSessions:(id)sessions;
+- (void)endAlertForIdentifier:(id)identifier isAlarm:(BOOL)alarm;
 - (void)endAlertingSession;
 - (void)handleAlarmStorageReady;
 - (void)handleSystemReady;
 - (void)handleTimerStorageReady;
-- (void)nextTimerDidChange:(id)a3;
-- (void)processAlarmUpdate:(id)a3 fromAlarm:(id)a4;
-- (void)processTimerStateUpdate:(id)a3 fromTimer:(id)a4;
-- (void)processTimerUpdate:(id)a3 fromTimer:(id)a4 changeSet:(id)a5;
+- (void)nextTimerDidChange:(id)change;
+- (void)processAlarmUpdate:(id)update fromAlarm:(id)alarm;
+- (void)processTimerStateUpdate:(id)update fromTimer:(id)timer;
+- (void)processTimerUpdate:(id)update fromTimer:(id)timer changeSet:(id)set;
 - (void)restoreAlarmSnoozeSessions;
 - (void)restoreTimerCountdownSessions;
-- (void)source:(id)a3 didAddAlarms:(id)a4;
-- (void)source:(id)a3 didAddTimers:(id)a4;
-- (void)source:(id)a3 didChangeNextAlarm:(id)a4;
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5;
-- (void)source:(id)a3 didDismissTimer:(id)a4;
-- (void)source:(id)a3 didFireAlarm:(id)a4 triggerType:(unint64_t)a5;
-- (void)source:(id)a3 didFireTimer:(id)a4;
-- (void)source:(id)a3 didRemoveAlarms:(id)a4;
-- (void)source:(id)a3 didRemoveTimers:(id)a4;
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5;
-- (void)source:(id)a3 didUpdateAlarms:(id)a4;
-- (void)source:(id)a3 didUpdateAlarms:(id)a4 previousAlarms:(id)a5;
-- (void)source:(id)a3 didUpdateTimers:(id)a4 fromTimers:(id)a5;
+- (void)source:(id)source didAddAlarms:(id)alarms;
+- (void)source:(id)source didAddTimers:(id)timers;
+- (void)source:(id)source didChangeNextAlarm:(id)alarm;
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action;
+- (void)source:(id)source didDismissTimer:(id)timer;
+- (void)source:(id)source didFireAlarm:(id)alarm triggerType:(unint64_t)type;
+- (void)source:(id)source didFireTimer:(id)timer;
+- (void)source:(id)source didRemoveAlarms:(id)alarms;
+- (void)source:(id)source didRemoveTimers:(id)timers;
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action;
+- (void)source:(id)source didUpdateAlarms:(id)alarms;
+- (void)source:(id)source didUpdateAlarms:(id)alarms previousAlarms:(id)previousAlarms;
+- (void)source:(id)source didUpdateTimers:(id)timers fromTimers:(id)fromTimers;
 @end
 
 @implementation MTActivityCoordinator
@@ -46,7 +46,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: endAlertingSession", buf, 0xCu);
   }
 
@@ -105,12 +105,12 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (MTActivityCoordinator)initWithStorage:(id)a3 alarmStorage:(id)a4 notificationCenter:(id)a5
+- (MTActivityCoordinator)initWithStorage:(id)storage alarmStorage:(id)alarmStorage notificationCenter:(id)center
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  alarmStorageCopy = alarmStorage;
+  centerCopy = center;
   v30.receiver = self;
   v30.super_class = MTActivityCoordinator;
   v12 = [(MTActivityCoordinator *)&v30 init];
@@ -122,17 +122,17 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
       *buf = 138543874;
       *&buf[4] = v12;
       *&buf[12] = 2114;
-      *&buf[14] = v9;
+      *&buf[14] = storageCopy;
       *&buf[22] = 2114;
-      v36 = v10;
+      v36 = alarmStorageCopy;
       _os_log_impl(&dword_1B1F9F000, v13, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@ with timerStorage:%{public}@ alarmStorage:%{public}@", buf, 0x20u);
     }
 
-    objc_storeStrong(&v12->_timerStorage, a3);
-    objc_storeStrong(&v12->_alarmStorage, a4);
+    objc_storeStrong(&v12->_timerStorage, storage);
+    objc_storeStrong(&v12->_alarmStorage, alarmStorage);
     [(MTTimerStorage *)v12->_timerStorage registerObserver:v12];
     [(MTAlarmStorage *)v12->_alarmStorage registerObserver:v12];
-    objc_storeStrong(&v12->_notificationCenter, a5);
+    objc_storeStrong(&v12->_notificationCenter, center);
     v31 = 0;
     v32 = &v31;
     v33 = 0x2050000000;
@@ -164,8 +164,8 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
     [(MTActivityCoordinator *)v12 setSerializerQueue:v21];
 
     v22 = MEMORY[0x1E69B3790];
-    v23 = [(MTActivityCoordinator *)v12 serializerQueue];
-    v24 = [v22 schedulerWithDispatchQueue:v23];
+    serializerQueue = [(MTActivityCoordinator *)v12 serializerQueue];
+    v24 = [v22 schedulerWithDispatchQueue:serializerQueue];
     serializer = v12->_serializer;
     v12->_serializer = v24;
 
@@ -185,7 +185,7 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: handle system ready received", &v5, 0xCu);
   }
 
@@ -200,7 +200,7 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@: handle alarm storage ready received", &v5, 0xCu);
   }
 
@@ -216,7 +216,7 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@: handle timer storage ready received", &v5, 0xCu);
   }
 
@@ -232,7 +232,7 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: clearLegacySessions", buf, 0xCu);
   }
 
@@ -253,24 +253,24 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2(uint64_t a1,
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: clearStaleAlarmSessions", buf, 0xCu);
   }
 
-  v4 = [(MTAlarmStorage *)self->_alarmStorage allAlarms];
+  allAlarms = [(MTAlarmStorage *)self->_alarmStorage allAlarms];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __48__MTActivityCoordinator_clearStaleAlarmSessions__block_invoke;
   v13[3] = &unk_1E7B0C6B0;
   v13[4] = self;
-  v5 = [v4 na_filter:v13];
+  v5 = [allAlarms na_filter:v13];
   v6 = [v5 na_map:&__block_literal_global_30];
 
   v7 = MTLogForCategory(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2114;
     v17 = v6;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: retrieved active alarms: %{public}@", buf, 0x16u);
@@ -406,19 +406,19 @@ void __48__MTActivityCoordinator_clearStaleAlarmSessions__block_invoke_2_10(uint
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: clearStaleTimerSessions", buf, 0xCu);
   }
 
-  v4 = [(MTTimerStorage *)self->_timerStorage timers];
-  v5 = [v4 na_filter:&__block_literal_global_16];
+  timers = [(MTTimerStorage *)self->_timerStorage timers];
+  v5 = [timers na_filter:&__block_literal_global_16];
   v6 = [v5 na_map:&__block_literal_global_20];
 
   v7 = MTLogForCategory(4);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2114;
     v16 = v6;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: retrieved active timers: %{public}@", buf, 0x16u);
@@ -535,23 +535,23 @@ void __48__MTActivityCoordinator_clearStaleTimerSessions__block_invoke_2_24(uint
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: restoreAlarmSnoozeSessions", buf, 0xCu);
   }
 
-  v4 = [(MTAlarmStorage *)self->_alarmStorage allAlarms];
+  allAlarms = [(MTAlarmStorage *)self->_alarmStorage allAlarms];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__MTActivityCoordinator_restoreAlarmSnoozeSessions__block_invoke;
   v12[3] = &unk_1E7B0C6B0;
   v12[4] = self;
-  v5 = [v4 na_filter:v12];
+  v5 = [allAlarms na_filter:v12];
 
   v6 = MTLogForCategory(3);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2114;
     v16 = v5;
     _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: found active alarm ids: %{public}@", buf, 0x16u);
@@ -681,18 +681,18 @@ void __51__MTActivityCoordinator_restoreAlarmSnoozeSessions__block_invoke_3(uint
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: restoreTimerCountdownSessions", buf, 0xCu);
   }
 
-  v4 = [(MTTimerStorage *)self->_timerStorage timers];
-  v5 = [v4 na_filter:&__block_literal_global_29];
+  timers = [(MTTimerStorage *)self->_timerStorage timers];
+  v5 = [timers na_filter:&__block_literal_global_29];
 
   v6 = MTLogForCategory(4);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2114;
     v16 = v5;
     _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: retreived active timers: %{public}@", buf, 0x16u);
@@ -704,7 +704,7 @@ void __51__MTActivityCoordinator_restoreAlarmSnoozeSessions__block_invoke_3(uint
   v10[2] = __54__MTActivityCoordinator_restoreTimerCountdownSessions__block_invoke_30;
   v10[3] = &unk_1E7B0D7A8;
   v11 = v5;
-  v12 = self;
+  selfCopy3 = self;
   v8 = v5;
   [(MTActivitiesManager *)activitiesManager timerCountdownActivities:v10];
 
@@ -782,33 +782,33 @@ void __54__MTActivityCoordinator_restoreTimerCountdownSessions__block_invoke_4(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)nextTimerDidChange:(id)a3
+- (void)nextTimerDidChange:(id)change
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = MTLogForCategory(4);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: next timer did change", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didAddTimers:(id)a4
+- (void)source:(id)source didAddTimers:(id)timers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MTActivityCoordinator *)self useAlarmKitActivities];
+  timersCopy = timers;
+  useAlarmKitActivities = [(MTActivityCoordinator *)self useAlarmKitActivities];
   v7 = MTLogForCategory(4);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (useAlarmKitActivities)
   {
     if (v8)
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling new timer via AlarmKit!", buf, 0xCu);
     }
   }
@@ -818,7 +818,7 @@ void __54__MTActivityCoordinator_restoreTimerCountdownSessions__block_invoke_4(u
     if (v8)
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ did add timers, starting sessions", buf, 0xCu);
     }
 
@@ -827,8 +827,8 @@ void __54__MTActivityCoordinator_restoreTimerCountdownSessions__block_invoke_4(u
     v11[1] = 3221225472;
     v11[2] = __45__MTActivityCoordinator_source_didAddTimers___block_invoke;
     v11[3] = &unk_1E7B0C928;
-    v12 = v5;
-    v13 = self;
+    v12 = timersCopy;
+    selfCopy3 = self;
     [(NAScheduler *)serializer performBlock:v11];
     v7 = v12;
   }
@@ -876,17 +876,17 @@ void __45__MTActivityCoordinator_source_didAddTimers___block_invoke_3(uint64_t a
   }
 }
 
-- (void)source:(id)a3 didFireTimer:(id)a4
+- (void)source:(id)source didFireTimer:(id)timer
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([v5 sound], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isSilent"), v6, (v7 & 1) == 0))
+  timerCopy = timer;
+  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([timerCopy sound], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isSilent"), v6, (v7 & 1) == 0))
   {
     v10 = MTLogForCategory(4);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling firing timer via AlarmKit!", buf, 0xCu);
     }
   }
@@ -897,7 +897,7 @@ void __45__MTActivityCoordinator_source_didAddTimers___block_invoke_3(uint64_t a
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: didFireTimer", buf, 0xCu);
     }
 
@@ -906,8 +906,8 @@ void __45__MTActivityCoordinator_source_didAddTimers___block_invoke_3(uint64_t a
     v12[1] = 3221225472;
     v12[2] = __45__MTActivityCoordinator_source_didFireTimer___block_invoke;
     v12[3] = &unk_1E7B0C928;
-    v13 = v5;
-    v14 = self;
+    v13 = timerCopy;
+    selfCopy3 = self;
     [(NAScheduler *)serializer performBlock:v12];
     v10 = v13;
   }
@@ -994,19 +994,19 @@ void __45__MTActivityCoordinator_source_didFireTimer___block_invoke_32(uint64_t 
   }
 }
 
-- (void)source:(id)a3 didDismissTimer:(id)a4
+- (void)source:(id)source didDismissTimer:(id)timer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MTActivityCoordinator *)self useAlarmKitActivities];
+  timerCopy = timer;
+  useAlarmKitActivities = [(MTActivityCoordinator *)self useAlarmKitActivities];
   v7 = MTLogForCategory(4);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (useAlarmKitActivities)
   {
     if (v8)
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling timer dismiss via AlarmKit!", buf, 0xCu);
     }
   }
@@ -1016,7 +1016,7 @@ void __45__MTActivityCoordinator_source_didFireTimer___block_invoke_32(uint64_t 
     if (v8)
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: didDismissTimer", buf, 0xCu);
     }
 
@@ -1026,7 +1026,7 @@ void __45__MTActivityCoordinator_source_didFireTimer___block_invoke_32(uint64_t 
     v11[2] = __48__MTActivityCoordinator_source_didDismissTimer___block_invoke;
     v11[3] = &unk_1E7B0C928;
     v11[4] = self;
-    v12 = v5;
+    v12 = timerCopy;
     [(NAScheduler *)serializer performBlock:v11];
   }
 
@@ -1059,19 +1059,19 @@ void __48__MTActivityCoordinator_source_didDismissTimer___block_invoke_2(uint64_
   }
 }
 
-- (void)source:(id)a3 didRemoveTimers:(id)a4
+- (void)source:(id)source didRemoveTimers:(id)timers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MTActivityCoordinator *)self useAlarmKitActivities];
+  timersCopy = timers;
+  useAlarmKitActivities = [(MTActivityCoordinator *)self useAlarmKitActivities];
   v7 = MTLogForCategory(4);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (useAlarmKitActivities)
   {
     if (v8)
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling timer remove via AlarmKit!", buf, 0xCu);
     }
   }
@@ -1081,7 +1081,7 @@ void __48__MTActivityCoordinator_source_didDismissTimer___block_invoke_2(uint64_
     if (v8)
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: didRemoveTimers", buf, 0xCu);
     }
 
@@ -1090,8 +1090,8 @@ void __48__MTActivityCoordinator_source_didDismissTimer___block_invoke_2(uint64_
     v11[1] = 3221225472;
     v11[2] = __48__MTActivityCoordinator_source_didRemoveTimers___block_invoke;
     v11[3] = &unk_1E7B0C928;
-    v12 = v5;
-    v13 = self;
+    v12 = timersCopy;
+    selfCopy3 = self;
     [(NAScheduler *)serializer performBlock:v11];
     v7 = v12;
   }
@@ -1138,20 +1138,20 @@ void __48__MTActivityCoordinator_source_didRemoveTimers___block_invoke_3(uint64_
   }
 }
 
-- (void)source:(id)a3 didUpdateTimers:(id)a4 fromTimers:(id)a5
+- (void)source:(id)source didUpdateTimers:(id)timers fromTimers:(id)fromTimers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MTActivityCoordinator *)self useAlarmKitActivities];
+  timersCopy = timers;
+  fromTimersCopy = fromTimers;
+  useAlarmKitActivities = [(MTActivityCoordinator *)self useAlarmKitActivities];
   v10 = MTLogForCategory(4);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (useAlarmKitActivities)
   {
     if (v11)
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling timer update via AlarmKit!", buf, 0xCu);
     }
   }
@@ -1161,7 +1161,7 @@ void __48__MTActivityCoordinator_source_didRemoveTimers___block_invoke_3(uint64_
     if (v11)
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: didUpdateTimers", buf, 0xCu);
     }
 
@@ -1170,9 +1170,9 @@ void __48__MTActivityCoordinator_source_didRemoveTimers___block_invoke_3(uint64_
     v14[1] = 3221225472;
     v14[2] = __59__MTActivityCoordinator_source_didUpdateTimers_fromTimers___block_invoke;
     v14[3] = &unk_1E7B0C9A0;
-    v15 = v7;
-    v16 = v8;
-    v17 = self;
+    v15 = timersCopy;
+    v16 = fromTimersCopy;
+    selfCopy3 = self;
     [(NAScheduler *)serializer performBlock:v14];
 
     v10 = v15;
@@ -1241,35 +1241,35 @@ uint64_t __59__MTActivityCoordinator_source_didUpdateTimers_fromTimers___block_i
   return v6;
 }
 
-- (void)processTimerUpdate:(id)a3 fromTimer:(id)a4 changeSet:(id)a5
+- (void)processTimerUpdate:(id)update fromTimer:(id)timer changeSet:(id)set
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 state];
-  if (v11 == [v9 state])
+  updateCopy = update;
+  timerCopy = timer;
+  setCopy = set;
+  state = [updateCopy state];
+  if (state == [timerCopy state])
   {
-    v12 = [v8 fireTime];
-    v13 = [v9 fireTime];
-    v14 = [v12 isEqualToTime:v13];
+    fireTime = [updateCopy fireTime];
+    fireTime2 = [timerCopy fireTime];
+    v14 = [fireTime isEqualToTime:fireTime2];
 
     if ((v14 & 1) == 0)
     {
       v15 = MTLogForCategory(4);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v8 timerIDString];
-        v17 = [v9 fireDate];
-        v18 = [v8 fireDate];
+        timerIDString = [updateCopy timerIDString];
+        fireDate = [timerCopy fireDate];
+        fireDate2 = [updateCopy fireDate];
         *buf = 138544130;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2114;
-        v30 = v16;
+        v30 = timerIDString;
         v31 = 2114;
-        v32 = v17;
+        v32 = fireDate;
         v33 = 2114;
-        v34 = v18;
+        v34 = fireDate2;
         _os_log_impl(&dword_1B1F9F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ fire time changed for timer id: %{public}@ from: %{public}@ to: %{public}@, restarting", buf, 0x2Au);
       }
 
@@ -1279,17 +1279,17 @@ uint64_t __59__MTActivityCoordinator_source_didUpdateTimers_fromTimers___block_i
       v25[2] = __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_invoke;
       v25[3] = &unk_1E7B0C928;
       v25[4] = self;
-      v26 = v8;
+      v26 = updateCopy;
       [(NAScheduler *)serializer performBlock:v25];
     }
 
-    if ([v10 hasChangeForProperty:@"MTTimerTitle"])
+    if ([setCopy hasChangeForProperty:@"MTTimerTitle"])
     {
       v20 = MTLogForCategory(4);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v28 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B1F9F000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ updating session title", buf, 0xCu);
       }
 
@@ -1299,14 +1299,14 @@ uint64_t __59__MTActivityCoordinator_source_didUpdateTimers_fromTimers___block_i
       v23[2] = __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_invoke_34;
       v23[3] = &unk_1E7B0C928;
       v23[4] = self;
-      v24 = v8;
+      v24 = updateCopy;
       [(NAScheduler *)v21 performBlock:v23];
     }
   }
 
   else
   {
-    [(MTActivityCoordinator *)self processTimerStateUpdate:v8 fromTimer:v9];
+    [(MTActivityCoordinator *)self processTimerStateUpdate:updateCopy fromTimer:timerCopy];
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1366,28 +1366,28 @@ void __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_
   }
 }
 
-- (void)processTimerStateUpdate:(id)a3 fromTimer:(id)a4
+- (void)processTimerStateUpdate:(id)update fromTimer:(id)timer
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  timerCopy = timer;
   v8 = MTLogForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v27 = self;
+    selfCopy4 = self;
     v28 = 2114;
-    v29 = v6;
+    v29 = updateCopy;
     v30 = 2114;
-    v31 = v7;
+    v31 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ process timer state update: %{public}@, old timer: %{public}@", buf, 0x20u);
   }
 
-  v9 = [v6 state];
-  switch(v9)
+  state = [updateCopy state];
+  switch(state)
   {
     case 1:
-      if (([v6 isFiring] & 1) == 0)
+      if (([updateCopy isFiring] & 1) == 0)
       {
         serializer = self->_serializer;
         v20[0] = MEMORY[0x1E69E9820];
@@ -1395,7 +1395,7 @@ void __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_
         v20[2] = __59__MTActivityCoordinator_processTimerStateUpdate_fromTimer___block_invoke_42;
         v20[3] = &unk_1E7B0C928;
         v20[4] = self;
-        v21 = v6;
+        v21 = updateCopy;
         [(NAScheduler *)serializer performBlock:v20];
         v15 = v21;
         goto LABEL_22;
@@ -1409,7 +1409,7 @@ void __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_
       v22[2] = __59__MTActivityCoordinator_processTimerStateUpdate_fromTimer___block_invoke_40;
       v22[3] = &unk_1E7B0C928;
       v22[4] = self;
-      v23 = v6;
+      v23 = updateCopy;
       [(NAScheduler *)v16 performBlock:v22];
       v15 = v23;
       goto LABEL_22;
@@ -1418,17 +1418,17 @@ void __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ starting/resuming timer", buf, 0xCu);
       }
 
-      if ((_os_feature_enabled_impl() & 1) == 0 && [v7 state] == 1)
+      if ((_os_feature_enabled_impl() & 1) == 0 && [timerCopy state] == 1)
       {
         v11 = MTLogForCategory(4);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v27 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ repeating timer, stopping tone first", buf, 0xCu);
         }
 
@@ -1439,17 +1439,17 @@ void __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v27 = self;
+            selfCopy4 = self;
             v28 = 2114;
-            v29 = v7;
+            v29 = timerCopy;
             _os_log_impl(&dword_1B1F9F000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Dismissing notifications for timer: %{public}@", buf, 0x16u);
           }
 
-          [(MTNotificationCenter *)self->_notificationCenter dismissNotificationsForTimer:v7];
+          [(MTNotificationCenter *)self->_notificationCenter dismissNotificationsForTimer:timerCopy];
         }
       }
 
-      if ([v7 state] == 1 || objc_msgSend(v7, "state") == 2)
+      if ([timerCopy state] == 1 || objc_msgSend(timerCopy, "state") == 2)
       {
         v14 = self->_serializer;
         v24[0] = MEMORY[0x1E69E9820];
@@ -1457,7 +1457,7 @@ void __64__MTActivityCoordinator_processTimerUpdate_fromTimer_changeSet___block_
         v24[2] = __59__MTActivityCoordinator_processTimerStateUpdate_fromTimer___block_invoke;
         v24[3] = &unk_1E7B0C928;
         v24[4] = self;
-        v25 = v6;
+        v25 = updateCopy;
         [(NAScheduler *)v14 performBlock:v24];
         v15 = v25;
 LABEL_22:
@@ -1558,17 +1558,17 @@ void __59__MTActivityCoordinator_processTimerStateUpdate_fromTimer___block_invok
   }
 }
 
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([v6 isSleepAlarm] & 1) == 0)
+  alarmCopy = alarm;
+  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([alarmCopy isSleepAlarm] & 1) == 0)
   {
     v9 = MTLogForCategory(3);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling non-sleep alarm dismiss via AlarmKit!", buf, 0xCu);
     }
   }
@@ -1579,7 +1579,7 @@ void __59__MTActivityCoordinator_processTimerStateUpdate_fromTimer___block_invok
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: didDismissAlarm", buf, 0xCu);
     }
 
@@ -1589,7 +1589,7 @@ void __59__MTActivityCoordinator_processTimerStateUpdate_fromTimer___block_invok
     v11[2] = __62__MTActivityCoordinator_source_didDismissAlarm_dismissAction___block_invoke;
     v11[3] = &unk_1E7B0C928;
     v11[4] = self;
-    v12 = v6;
+    v12 = alarmCopy;
     [(NAScheduler *)serializer performBlock:v11];
   }
 
@@ -1623,17 +1623,17 @@ void __62__MTActivityCoordinator_source_didDismissAlarm_dismissAction___block_in
   }
 }
 
-- (void)source:(id)a3 didFireAlarm:(id)a4 triggerType:(unint64_t)a5
+- (void)source:(id)source didFireAlarm:(id)alarm triggerType:(unint64_t)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([v6 isSleepAlarm] & 1) == 0)
+  alarmCopy = alarm;
+  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([alarmCopy isSleepAlarm] & 1) == 0)
   {
     v9 = MTLogForCategory(3);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling non-sleep alarm fired via AlarmKit!", buf, 0xCu);
     }
   }
@@ -1644,7 +1644,7 @@ void __62__MTActivityCoordinator_source_didDismissAlarm_dismissAction___block_in
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: didFireAlarm", buf, 0xCu);
     }
 
@@ -1654,7 +1654,7 @@ void __62__MTActivityCoordinator_source_didDismissAlarm_dismissAction___block_in
     v11[2] = __57__MTActivityCoordinator_source_didFireAlarm_triggerType___block_invoke;
     v11[3] = &unk_1E7B0C928;
     v11[4] = self;
-    v12 = v6;
+    v12 = alarmCopy;
     [(NAScheduler *)serializer performBlock:v11];
   }
 
@@ -1810,15 +1810,15 @@ LABEL_6:
   return result;
 }
 
-- (void)source:(id)a3 didRemoveAlarms:(id)a4
+- (void)source:(id)source didRemoveAlarms:(id)alarms
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  alarmsCopy = alarms;
   v6 = MTLogForCategory(3);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: didRemoveAlarms", buf, 0xCu);
   }
 
@@ -1827,9 +1827,9 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __48__MTActivityCoordinator_source_didRemoveAlarms___block_invoke;
   v10[3] = &unk_1E7B0C928;
-  v11 = v5;
-  v12 = self;
-  v8 = v5;
+  v11 = alarmsCopy;
+  selfCopy2 = self;
+  v8 = alarmsCopy;
   [(NAScheduler *)serializer performBlock:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1906,17 +1906,17 @@ void __48__MTActivityCoordinator_source_didRemoveAlarms___block_invoke_48(uint64
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([v6 isSleepAlarm] & 1) == 0)
+  alarmCopy = alarm;
+  if (-[MTActivityCoordinator useAlarmKitActivities](self, "useAlarmKitActivities") && ([alarmCopy isSleepAlarm] & 1) == 0)
   {
     v9 = MTLogForCategory(3);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: NO-OP! handling non-sleep alarm snoozed via AlarmKit!", buf, 0xCu);
     }
   }
@@ -1927,7 +1927,7 @@ void __48__MTActivityCoordinator_source_didRemoveAlarms___block_invoke_48(uint64
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: didSnoozeAlarm", buf, 0xCu);
     }
 
@@ -1937,7 +1937,7 @@ void __48__MTActivityCoordinator_source_didRemoveAlarms___block_invoke_48(uint64
     v11[2] = __60__MTActivityCoordinator_source_didSnoozeAlarm_snoozeAction___block_invoke;
     v11[3] = &unk_1E7B0C928;
     v11[4] = self;
-    v12 = v6;
+    v12 = alarmCopy;
     [(NAScheduler *)serializer performBlock:v11];
   }
 
@@ -1986,20 +1986,20 @@ void __60__MTActivityCoordinator_source_didSnoozeAlarm_snoozeAction___block_invo
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didUpdateAlarms:(id)a4 previousAlarms:(id)a5
+- (void)source:(id)source didUpdateAlarms:(id)alarms previousAlarms:(id)previousAlarms
 {
-  v7 = a4;
-  v8 = a5;
+  alarmsCopy = alarms;
+  previousAlarmsCopy = previousAlarms;
   serializer = self->_serializer;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__MTActivityCoordinator_source_didUpdateAlarms_previousAlarms___block_invoke;
   v12[3] = &unk_1E7B0C9A0;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = alarmsCopy;
+  selfCopy = self;
+  v15 = previousAlarmsCopy;
+  v10 = previousAlarmsCopy;
+  v11 = alarmsCopy;
   [(NAScheduler *)serializer performBlock:v12];
 }
 
@@ -2068,20 +2068,20 @@ uint64_t __63__MTActivityCoordinator_source_didUpdateAlarms_previousAlarms___blo
   return v6;
 }
 
-- (void)processAlarmUpdate:(id)a3 fromAlarm:(id)a4
+- (void)processAlarmUpdate:(id)update fromAlarm:(id)alarm
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  alarmCopy = alarm;
   v8 = MTLogForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v6;
+    v20 = updateCopy;
     v21 = 2114;
-    v22 = v7;
+    v22 = alarmCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ processAlarmUpdate alarm:%{public}@ fromAlarm:%{public}@", buf, 0x20u);
   }
 
@@ -2090,11 +2090,11 @@ uint64_t __63__MTActivityCoordinator_source_didUpdateAlarms_previousAlarms___blo
   v13[1] = 3221225472;
   v13[2] = __54__MTActivityCoordinator_processAlarmUpdate_fromAlarm___block_invoke;
   v13[3] = &unk_1E7B0C9A0;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
-  v10 = v7;
-  v11 = v6;
+  v14 = updateCopy;
+  v15 = alarmCopy;
+  selfCopy2 = self;
+  v10 = alarmCopy;
+  v11 = updateCopy;
   [(NAScheduler *)serializer performBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -2162,29 +2162,29 @@ void __54__MTActivityCoordinator_processAlarmUpdate_fromAlarm___block_invoke_2(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didRestoreAlarmSessions:(id)a3
+- (void)didRestoreAlarmSessions:(id)sessions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionsCopy = sessions;
   v5 = MTLogForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2114;
-    v22 = v4;
+    v22 = sessionsCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_INFO, "%{public}@ didRestoreAlarmSessions with ids: %{public}@", buf, 0x16u);
   }
 
-  if ([v4 count])
+  if ([sessionsCopy count])
   {
-    v6 = [(MTAlarmStorage *)self->_alarmStorage allAlarms];
+    allAlarms = [(MTAlarmStorage *)self->_alarmStorage allAlarms];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __49__MTActivityCoordinator_didRestoreAlarmSessions___block_invoke;
     v18[3] = &unk_1E7B0C6B0;
     v18[4] = self;
-    v7 = [v6 na_filter:v18];
+    v7 = [allAlarms na_filter:v18];
     v8 = [v7 na_map:&__block_literal_global_53_0];
 
     v13 = MEMORY[0x1E69E9820];
@@ -2193,12 +2193,12 @@ void __54__MTActivityCoordinator_processAlarmUpdate_fromAlarm___block_invoke_2(u
     v16 = &unk_1E7B0C848;
     v17 = v8;
     v9 = v8;
-    v10 = [v4 na_filter:&v13];
+    v10 = [sessionsCopy na_filter:&v13];
     v11 = MTLogForCategory(1);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
       v22 = v10;
       _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_INFO, "%{public}@ removing inactive alarm sessions: %{public}@", buf, 0x16u);
@@ -2228,42 +2228,42 @@ uint64_t __49__MTActivityCoordinator_didRestoreAlarmSessions___block_invoke(uint
   return v6;
 }
 
-- (void)source:(id)a3 didUpdateAlarms:(id)a4
+- (void)source:(id)source didUpdateAlarms:(id)alarms
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: didUpdateAlarms", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didAddAlarms:(id)a4
+- (void)source:(id)source didAddAlarms:(id)alarms
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: didAddAlarms", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didChangeNextAlarm:(id)a4
+- (void)source:(id)source didChangeNextAlarm:(id)alarm
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: didChangeNextAlarm", &v7, 0xCu);
   }
 
@@ -2295,17 +2295,17 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2_59(uint64_t 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dismissAlarmWithId:(id)a3
+- (void)_dismissAlarmWithId:(id)id
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = idCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ received dismiss alarm action for id: %{public}@", buf, 0x16u);
   }
 
@@ -2315,8 +2315,8 @@ void __43__MTActivityCoordinator_endAlertingSession__block_invoke_2_59(uint64_t 
   v9[2] = __45__MTActivityCoordinator__dismissAlarmWithId___block_invoke;
   v9[3] = &unk_1E7B0CE10;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = idCopy;
+  v7 = idCopy;
   [(MTAlarmStorage *)alarmStorage alarmWithIdentifier:v7 withCompletion:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -2379,31 +2379,31 @@ void __45__MTActivityCoordinator__dismissAlarmWithId___block_invoke_2(uint64_t a
   }
 }
 
-- (void)_dismissTimerWithId:(id)a3
+- (void)_dismissTimerWithId:(id)id
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v4;
+    v20 = idCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ received dismiss timer action for id: %{public}@", buf, 0x16u);
   }
 
-  v6 = [(MTTimerStorage *)self->_timerStorage timers];
+  timers = [(MTTimerStorage *)self->_timerStorage timers];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __45__MTActivityCoordinator__dismissTimerWithId___block_invoke;
   v15[3] = &unk_1E7B0CC00;
-  v7 = v4;
+  v7 = idCopy;
   v16 = v7;
-  v8 = [v6 na_filter:v15];
-  v9 = [v8 firstObject];
+  v8 = [timers na_filter:v15];
+  firstObject = [v8 firstObject];
 
-  if ([v9 isFiring])
+  if ([firstObject isFiring])
   {
     timerStorage = self->_timerStorage;
     v13[0] = MEMORY[0x1E69E9820];
@@ -2411,7 +2411,7 @@ void __45__MTActivityCoordinator__dismissAlarmWithId___block_invoke_2(uint64_t a
     v13[2] = __45__MTActivityCoordinator__dismissTimerWithId___block_invoke_2;
     v13[3] = &unk_1E7B0D148;
     v13[4] = self;
-    v14 = v9;
+    v14 = firstObject;
     [(MTTimerStorage *)timerStorage dismissTimerWithIdentifier:v7 withCompletion:v13 source:self];
   }
 
@@ -2456,21 +2456,21 @@ void __45__MTActivityCoordinator__dismissTimerWithId___block_invoke_2(uint64_t a
   }
 }
 
-- (void)didAlertNotificationWithID:(id)a3
+- (void)didAlertNotificationWithID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_INFO, "%{public}@ didAlertNotificationWithID received %{public}@, forwarding to conductor", &v7, 0x16u);
   }
 
-  [(StringConductor *)self->_conductor send:v4];
+  [(StringConductor *)self->_conductor send:dCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
@@ -2482,8 +2482,8 @@ void __45__MTActivityCoordinator__dismissTimerWithId___block_invoke_2(uint64_t a
   v5 = [MEMORY[0x1E69C75D0] handleForPredicate:v4 error:0];
   v6 = objc_alloc(MEMORY[0x1E69C7548]);
   v7 = MEMORY[0x1E69C7640];
-  v8 = [v5 identity];
-  v9 = [v7 targetWithProcessIdentity:v8];
+  identity = [v5 identity];
+  v9 = [v7 targetWithProcessIdentity:identity];
   v20[0] = v3;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v11 = [v6 initWithExplanation:@"Guarantee ClockAngel receives the alerting activity" target:v9 attributes:v10];
@@ -2504,7 +2504,7 @@ void __45__MTActivityCoordinator__dismissTimerWithId___block_invoke_2(uint64_t a
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Acquired RBSAssertion", buf, 0xCu);
   }
 
@@ -2513,62 +2513,62 @@ void __45__MTActivityCoordinator__dismissTimerWithId___block_invoke_2(uint64_t a
   return v11;
 }
 
-- (void)_releaseAssertionIfNeeded:(id)a3
+- (void)_releaseAssertionIfNeeded:(id)needed
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (needed)
   {
-    v4 = a3;
+    neededCopy = needed;
     v5 = MTLogForCategory(3);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalidated RBSAssertion", &v7, 0xCu);
     }
 
-    [v4 invalidate];
+    [neededCopy invalidate];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fireDateForId:(id)a3 isAlarm:(BOOL)a4
+- (id)fireDateForId:(id)id isAlarm:(BOOL)alarm
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  alarmCopy = alarm;
+  idCopy = id;
+  if (alarmCopy)
   {
-    v7 = [(MTAlarmStorage *)self->_alarmStorage alarms];
+    alarms = [(MTAlarmStorage *)self->_alarmStorage alarms];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __47__MTActivityCoordinator_fireDateForId_isAlarm___block_invoke;
     v21[3] = &unk_1E7B0C6B0;
     v8 = &v22;
-    v22 = v6;
-    v9 = v6;
+    v22 = idCopy;
+    v9 = idCopy;
     v10 = v21;
   }
 
   else
   {
-    v7 = [(MTTimerStorage *)self->_timerStorage timers];
+    alarms = [(MTTimerStorage *)self->_timerStorage timers];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __47__MTActivityCoordinator_fireDateForId_isAlarm___block_invoke_2;
     v19 = &unk_1E7B0CC00;
     v8 = &v20;
-    v20 = v6;
-    v11 = v6;
+    v20 = idCopy;
+    v11 = idCopy;
     v10 = &v16;
   }
 
-  v12 = [v7 na_filter:{v10, v16, v17, v18, v19}];
-  v13 = [v12 firstObject];
+  v12 = [alarms na_filter:{v10, v16, v17, v18, v19}];
+  firstObject = [v12 firstObject];
 
-  v14 = [v13 firedDate];
+  firedDate = [firstObject firedDate];
 
-  return v14;
+  return firedDate;
 }
 
 uint64_t __47__MTActivityCoordinator_fireDateForId_isAlarm___block_invoke(uint64_t a1, void *a2)
@@ -2587,31 +2587,31 @@ uint64_t __47__MTActivityCoordinator_fireDateForId_isAlarm___block_invoke_2(uint
   return v4;
 }
 
-- (void)endAlertForIdentifier:(id)a3 isAlarm:(BOOL)a4
+- (void)endAlertForIdentifier:(id)identifier isAlarm:(BOOL)alarm
 {
-  v4 = a4;
+  alarmCopy = alarm;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MTLogForCategory(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v6;
+    v12 = identifierCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = alarmCopy;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_INFO, "%{public}@: endAlertForIdentifier: %{public}@ isAlarm: %i", &v9, 0x1Cu);
   }
 
-  if (v4)
+  if (alarmCopy)
   {
-    [(MTActivityCoordinator *)self _dismissAlarmWithId:v6];
+    [(MTActivityCoordinator *)self _dismissAlarmWithId:identifierCopy];
   }
 
   else
   {
-    [(MTActivityCoordinator *)self _dismissTimerWithId:v6];
+    [(MTActivityCoordinator *)self _dismissTimerWithId:identifierCopy];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -2860,7 +2860,7 @@ void __45__MTActivityCoordinator__dismissTimerWithId___block_invoke_2_cold_1(uin
 - (void)_takeOutAssertionIfNeeded
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [a2 localizedDescription];
+  localizedDescription = [a2 localizedDescription];
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x16u);

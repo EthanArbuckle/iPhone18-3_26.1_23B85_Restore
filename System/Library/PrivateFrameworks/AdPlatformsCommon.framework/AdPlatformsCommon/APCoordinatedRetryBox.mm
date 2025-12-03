@@ -1,29 +1,29 @@
 @interface APCoordinatedRetryBox
-- (APCoordinatedRetryBox)initWithType:(int64_t)a3 delegate:(id)a4;
+- (APCoordinatedRetryBox)initWithType:(int64_t)type delegate:(id)delegate;
 - (APRequestCoordinatorDelegate)requestDelegate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)diagnosticReportPayload;
 @end
 
 @implementation APCoordinatedRetryBox
 
-- (APCoordinatedRetryBox)initWithType:(int64_t)a3 delegate:(id)a4
+- (APCoordinatedRetryBox)initWithType:(int64_t)type delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = APCoordinatedRetryBox;
   v7 = [(APCoordinatedRetryBox *)&v26 init];
   v8 = v7;
   if (v7)
   {
-    v7->_requestType = a3;
-    objc_storeWeak(&v7->_requestDelegate, v6);
+    v7->_requestType = type;
+    objc_storeWeak(&v7->_requestDelegate, delegateCopy);
     v8->_canRetry = 1;
     v15 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v9, v10, v11, v12, v13, v14);
     requestID = v8->_requestID;
     v8->_requestID = v15;
 
-    v23 = objc_msgSend_requesterID(v6, v17, v18, v19, v20, v21, v22);
+    v23 = objc_msgSend_requesterID(delegateCopy, v17, v18, v19, v20, v21, v22);
     requesterID = v8->_requesterID;
     v8->_requesterID = v23;
   }
@@ -65,13 +65,13 @@
   return v70;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (objc_opt_respondsToSelector())
   {
     v11 = objc_msgSend_requestID(self, v5, v6, v7, v8, v9, v10);
-    v18 = objc_msgSend_requestID(v4, v12, v13, v14, v15, v16, v17);
+    v18 = objc_msgSend_requestID(equalCopy, v12, v13, v14, v15, v16, v17);
     isEqual = objc_msgSend_isEqual_(v11, v19, v18, v20, v21, v22, v23);
   }
 

@@ -1,19 +1,19 @@
 @interface SMCacheMO
-+ (id)getLocationMOFromLocation:(id)a3 context:(id)a4;
-+ (id)getLocationMOFromLocations:(id)a3 context:(id)a4;
-+ (id)managedObjectWithCache:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)getLocationMOFromLocation:(id)location context:(id)context;
++ (id)getLocationMOFromLocations:(id)locations context:(id)context;
++ (id)managedObjectWithCache:(id)cache managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation SMCacheMO
 
-+ (id)managedObjectWithCache:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithCache:(id)cache managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  cacheCopy = cache;
+  objectCopy = object;
+  contextCopy = context;
+  if (contextCopy)
   {
-    if (v7)
+    if (cacheCopy)
     {
       *buf = 0;
       v19 = buf;
@@ -26,9 +26,9 @@
       v13[2] = __73__SMCacheMO_managedObjectWithCache_managedObject_inManagedObjectContext___block_invoke;
       v13[3] = &unk_2788C5DA0;
       v17 = buf;
-      v14 = v8;
-      v15 = v9;
-      v16 = v7;
+      v14 = objectCopy;
+      v15 = contextCopy;
+      v16 = cacheCopy;
       [v15 performBlockAndWait:v13];
       v10 = *(v19 + 5);
 
@@ -37,7 +37,7 @@
 
     else
     {
-      v10 = v8;
+      v10 = objectCopy;
     }
   }
 
@@ -125,19 +125,19 @@ void __73__SMCacheMO_managedObjectWithCache_managedObject_inManagedObjectContext
   [*(*(*(a1 + 56) + 8) + 40) setWorkoutEvents:v32];
 }
 
-+ (id)getLocationMOFromLocations:(id)a3 context:(id)a4
++ (id)getLocationMOFromLocations:(id)locations context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  if (v5)
+  locationsCopy = locations;
+  contextCopy = context;
+  v7 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(locationsCopy, "count")}];
+  if (locationsCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v5;
+    v8 = locationsCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -152,7 +152,7 @@ void __73__SMCacheMO_managedObjectWithCache_managedObject_inManagedObjectContext
             objc_enumerationMutation(v8);
           }
 
-          v13 = [SMCacheMO getLocationMOFromLocation:*(*(&v15 + 1) + 8 * i) context:v6, v15];
+          v13 = [SMCacheMO getLocationMOFromLocation:*(*(&v15 + 1) + 8 * i) context:contextCopy, v15];
           if (v13)
           {
             [v7 addObject:v13];
@@ -169,22 +169,22 @@ void __73__SMCacheMO_managedObjectWithCache_managedObject_inManagedObjectContext
   return v7;
 }
 
-+ (id)getLocationMOFromLocation:(id)a3 context:(id)a4
++ (id)getLocationMOFromLocation:(id)location context:(id)context
 {
-  if (a3)
+  if (location)
   {
-    v5 = a4;
-    v6 = a3;
+    contextCopy = context;
+    locationCopy = location;
     v7 = +[SMLocationMO fetchRequest];
     v8 = MEMORY[0x277CCAC30];
-    v9 = [v6 identifier];
-    v10 = [v8 predicateWithFormat:@"%K == %@", @"identifier", v9];
+    identifier = [locationCopy identifier];
+    v10 = [v8 predicateWithFormat:@"%K == %@", @"identifier", identifier];
     [v7 setPredicate:v10];
 
     v15 = 0;
-    v11 = [v5 executeFetchRequest:v7 error:&v15];
-    v12 = [v11 firstObject];
-    v13 = [SMLocationMO managedObjectWithLocation:v6 managedObject:v12 inManagedObjectContext:v5];
+    v11 = [contextCopy executeFetchRequest:v7 error:&v15];
+    firstObject = [v11 firstObject];
+    v13 = [SMLocationMO managedObjectWithLocation:locationCopy managedObject:firstObject inManagedObjectContext:contextCopy];
   }
 
   else

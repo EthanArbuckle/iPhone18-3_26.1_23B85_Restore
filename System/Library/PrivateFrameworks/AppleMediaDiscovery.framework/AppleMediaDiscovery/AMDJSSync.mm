@@ -1,23 +1,23 @@
 @interface AMDJSSync
-+ (id)dailyDataUpdate:(id)a3 forStoreFrontId:(unsigned int)a4 error:(id *)a5;
-+ (id)runSync:(id)a3 withCallUUID:(id)a4 error:(id *)a5;
-+ (id)runSyncForUnsignedUser:(id)a3 withCallUUID:(id)a4 error:(id *)a5;
-+ (id)updateAMDSQLSchema:(id)a3 error:(id *)a4;
-+ (void)updateArcadeUsageFeature:(id *)a3;
++ (id)dailyDataUpdate:(id)update forStoreFrontId:(unsigned int)id error:(id *)error;
++ (id)runSync:(id)sync withCallUUID:(id)d error:(id *)error;
++ (id)runSyncForUnsignedUser:(id)user withCallUUID:(id)d error:(id *)error;
++ (id)updateAMDSQLSchema:(id)schema error:(id *)error;
++ (void)updateArcadeUsageFeature:(id *)feature;
 @end
 
 @implementation AMDJSSync
 
-+ (id)dailyDataUpdate:(id)a3 forStoreFrontId:(unsigned int)a4 error:(id *)a5
++ (id)dailyDataUpdate:(id)update forStoreFrontId:(unsigned int)id error:(id *)error
 {
   v85[1] = *MEMORY[0x277D85DE8];
-  v74 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v72 = a4;
-  v71 = a5;
-  *a5 = 0;
+  objc_storeStrong(location, update);
+  idCopy = id;
+  errorCopy = error;
+  *error = 0;
   v70 = [location[0] objectForKey:0x2852A86A8];
   v69 = [location[0] objectForKey:@"supportedDomains"];
   if (!v69)
@@ -34,43 +34,43 @@
     type = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_2_4_0_8_64(v84, v72, v68);
+      __os_log_helper_16_2_2_4_0_8_64(v84, idCopy, v68);
       _os_log_impl(&dword_240CB9000, v66, type, "Running daily data update for store: %u, dsId:%@", v84, 0x12u);
     }
 
     objc_storeStrong(&v66, 0);
     [AMDPerf startMonitoringEvent:@"dailyDataUpdate"];
     v64 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v63 = 365;
+    unsignedLongLongValue = 365;
     v41 = [location[0] objectForKey:0x2852B1968];
     MEMORY[0x277D82BD8](v41);
     if (v41)
     {
       v40 = [location[0] objectForKey:0x2852B1968];
-      v63 = [v40 unsignedLongLongValue];
+      unsignedLongLongValue = [v40 unsignedLongLongValue];
       MEMORY[0x277D82BD8](v40);
     }
 
-    v62 = [AMDAppEvent deleteAppEventsOlderThan:v63 forEventType:0 withPlatform:0 error:v71];
-    if (*v71)
+    v62 = [AMDAppEvent deleteAppEventsOlderThan:unsignedLongLongValue forEventType:0 withPlatform:0 error:errorCopy];
+    if (*errorCopy)
     {
       v61 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v60 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v83, *v71);
+        __os_log_helper_16_2_1_8_64(v83, *errorCopy);
         _os_log_error_impl(&dword_240CB9000, v61, v60, "error deletig events: %@", v83, 0xCu);
       }
 
       objc_storeStrong(&v61, 0);
       v37 = v64;
       v36 = MEMORY[0x277CCACA8];
-      v39 = [*v71 localizedDescription];
-      v38 = [v36 stringWithFormat:@"error: %@", v39];
+      localizedDescription = [*errorCopy localizedDescription];
+      v38 = [v36 stringWithFormat:@"error: %@", localizedDescription];
       [v37 setObject:? forKey:?];
       MEMORY[0x277D82BD8](v38);
-      MEMORY[0x277D82BD8](v39);
-      *v71 = 0;
+      MEMORY[0x277D82BD8](localizedDescription);
+      *errorCopy = 0;
     }
 
     else
@@ -78,36 +78,36 @@
       [v64 setObject:v62 forKey:@"deletedOldEvents"];
     }
 
-    v63 = 30;
+    unsignedLongLongValue = 30;
     v35 = [location[0] objectForKey:0x2852B1C48];
     MEMORY[0x277D82BD8](v35);
     if (v35)
     {
       v34 = [location[0] objectForKey:0x2852B1C48];
-      v63 = [v34 unsignedLongLongValue];
+      unsignedLongLongValue = [v34 unsignedLongLongValue];
       MEMORY[0x277D82BD8](v34);
     }
 
-    v59 = [AMDAppStoreEvent deleteEventsOlderThan:v63 error:v71];
-    if (*v71)
+    v59 = [AMDAppStoreEvent deleteEventsOlderThan:unsignedLongLongValue error:errorCopy];
+    if (*errorCopy)
     {
       v58 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v57 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v82, *v71);
+        __os_log_helper_16_2_1_8_64(v82, *errorCopy);
         _os_log_error_impl(&dword_240CB9000, v58, v57, "error deleting appstore events: %@", v82, 0xCu);
       }
 
       objc_storeStrong(&v58, 0);
       v31 = v64;
       v30 = MEMORY[0x277CCACA8];
-      v33 = [*v71 localizedDescription];
-      v32 = [v30 stringWithFormat:@"error: %@", v33];
+      localizedDescription2 = [*errorCopy localizedDescription];
+      v32 = [v30 stringWithFormat:@"error: %@", localizedDescription2];
       [v31 setObject:? forKey:?];
       MEMORY[0x277D82BD8](v32);
-      MEMORY[0x277D82BD8](v33);
-      *v71 = 0;
+      MEMORY[0x277D82BD8](localizedDescription2);
+      *errorCopy = 0;
     }
 
     else
@@ -135,17 +135,17 @@
         v55 = *(__b[1] + 8 * v26);
         if ([v55 isEqualToString:@"apps"])
         {
-          v53 = [AMDTasteProfile refreshAppInformationTasteProfile:v71];
-          if (*v71)
+          v53 = [AMDTasteProfile refreshAppInformationTasteProfile:errorCopy];
+          if (*errorCopy)
           {
             v21 = v56;
             v20 = MEMORY[0x277CCACA8];
-            v23 = [*v71 localizedDescription];
-            v22 = [v20 stringWithFormat:@"error: %@", v23];
+            localizedDescription3 = [*errorCopy localizedDescription];
+            v22 = [v20 stringWithFormat:@"error: %@", localizedDescription3];
             [v21 setObject:? forKey:?];
             MEMORY[0x277D82BD8](v22);
-            MEMORY[0x277D82BD8](v23);
-            *v71 = 0;
+            MEMORY[0x277D82BD8](localizedDescription3);
+            *errorCopy = 0;
           }
 
           else
@@ -156,27 +156,27 @@
           objc_storeStrong(&v53, 0);
         }
 
-        v52 = [AMDTasteProfile refreshAggregationTasteProfileForDomain:v55 forUser:v68 andStoreFrontId:v72 error:v71];
-        if (*v71)
+        v52 = [AMDTasteProfile refreshAggregationTasteProfileForDomain:v55 forUser:v68 andStoreFrontId:idCopy error:errorCopy];
+        if (*errorCopy)
         {
           oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v50 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
           {
             v19 = oslog;
-            __os_log_helper_16_2_2_8_64_8_64(v80, *v71, v55);
+            __os_log_helper_16_2_2_8_64_8_64(v80, *errorCopy, v55);
             _os_log_error_impl(&dword_240CB9000, v19, v50, "error refreshing on-device taste profile: %@ for domain: %@", v80, 0x16u);
           }
 
           objc_storeStrong(&oslog, 0);
           v16 = v56;
           v15 = MEMORY[0x277CCACA8];
-          v18 = [*v71 localizedDescription];
-          v17 = [v15 stringWithFormat:@"error: %@", v18];
+          localizedDescription4 = [*errorCopy localizedDescription];
+          v17 = [v15 stringWithFormat:@"error: %@", localizedDescription4];
           [v16 setObject:? forKey:?];
           MEMORY[0x277D82BD8](v17);
-          MEMORY[0x277D82BD8](v18);
-          *v71 = 0;
+          MEMORY[0x277D82BD8](localizedDescription4);
+          *errorCopy = 0;
         }
 
         else
@@ -200,28 +200,28 @@
 
     MEMORY[0x277D82BD8](obj);
     [v64 setObject:v56 forKey:@"savedAggregatedTPFeatures"];
-    v49 = [AMDAppSegment refreshSegmentsForAllTreatmentsForUser:v68 error:v71];
-    if (*v71)
+    v49 = [AMDAppSegment refreshSegmentsForAllTreatmentsForUser:v68 error:errorCopy];
+    if (*errorCopy)
     {
       v48 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v47 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
-        v14 = [*v71 localizedDescription];
-        __os_log_helper_16_2_1_8_64(v79, v14);
+        localizedDescription5 = [*errorCopy localizedDescription];
+        __os_log_helper_16_2_1_8_64(v79, localizedDescription5);
         _os_log_error_impl(&dword_240CB9000, v48, v47, "error updating in-app segment data: %@", v79, 0xCu);
-        MEMORY[0x277D82BD8](v14);
+        MEMORY[0x277D82BD8](localizedDescription5);
       }
 
       objc_storeStrong(&v48, 0);
       v11 = v64;
       v10 = MEMORY[0x277CCACA8];
-      v13 = [*v71 localizedDescription];
-      v12 = [v10 stringWithFormat:@"error: %@", v13];
+      localizedDescription6 = [*errorCopy localizedDescription];
+      v12 = [v10 stringWithFormat:@"error: %@", localizedDescription6];
       [v11 setObject:? forKey:?];
       MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
-      *v71 = 0;
+      MEMORY[0x277D82BD8](localizedDescription6);
+      *errorCopy = 0;
     }
 
     else
@@ -239,13 +239,13 @@
       [v64 setObject:v49 forKey:@"refreshSegments"];
     }
 
-    [v74 updateArcadeUsageFeature:v71];
-    if (*v71)
+    [selfCopy updateArcadeUsageFeature:errorCopy];
+    if (*errorCopy)
     {
       v8 = MEMORY[0x277CCACA8];
-      v9 = [*v71 localizedDescription];
-      v46 = [v8 stringWithFormat:@"Arcade Usage feature could not be updated. Error: %@", v9];
-      MEMORY[0x277D82BD8](v9);
+      localizedDescription7 = [*errorCopy localizedDescription];
+      v46 = [v8 stringWithFormat:@"Arcade Usage feature could not be updated. Error: %@", localizedDescription7];
+      MEMORY[0x277D82BD8](localizedDescription7);
       v45 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
@@ -259,7 +259,7 @@
     }
 
     [AMDPerf endMonitoringEvent:@"dailyDataUpdate"];
-    *v71 = 0;
+    *errorCopy = 0;
     v76 = @"summary";
     v77 = v64;
     v75 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
@@ -275,7 +275,7 @@
   {
     v42 = [AMDError allocError:15 withMessage:@"domain or userId missing"];
     v5 = v42;
-    *v71 = v42;
+    *errorCopy = v42;
     v75 = 0;
     v67 = 1;
   }
@@ -290,22 +290,22 @@
   return v6;
 }
 
-+ (id)runSyncForUnsignedUser:(id)a3 withCallUUID:(id)a4 error:(id *)a5
++ (id)runSyncForUnsignedUser:(id)user withCallUUID:(id)d error:(id *)error
 {
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, user);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13 = a5;
+  objc_storeStrong(&v14, d);
+  errorCopy = error;
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   +[AMDMiscHelpers setAppStoreDirAttributes];
   v11 = [location[0] objectForKey:0x2852B20E8];
   if (v11)
   {
-    v10 = [v16 updateAMDSQLSchema:v11 error:v13];
-    if (*v13)
+    v10 = [selfCopy updateAMDSQLSchema:v11 error:errorCopy];
+    if (*errorCopy)
     {
       v17 = 0;
       v9 = 1;
@@ -340,16 +340,16 @@ LABEL_8:
   return v5;
 }
 
-+ (id)runSync:(id)a3 withCallUUID:(id)a4 error:(id *)a5
++ (id)runSync:(id)sync withCallUUID:(id)d error:(id *)error
 {
   v114 = *MEMORY[0x277D85DE8];
-  v92 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sync);
   v90 = 0;
-  objc_storeStrong(&v90, a4);
-  v89 = a5;
+  objc_storeStrong(&v90, d);
+  errorCopy = error;
   v88 = objc_alloc_init(MEMORY[0x277CBEB38]);
   +[AMDMiscHelpers setAppStoreDirAttributes];
   v87 = [location[0] objectForKey:0x2852B20E8];
@@ -357,15 +357,15 @@ LABEL_8:
   {
     v86 = 0;
     v84 = 0;
-    v43 = [v92 updateAMDSQLSchema:v87 error:&v84];
+    v43 = [selfCopy updateAMDSQLSchema:v87 error:&v84];
     objc_storeStrong(&v86, v84);
     v85 = v43;
     if (v86)
     {
       v41 = v88;
-      v42 = [v86 localizedDescription];
+      localizedDescription = [v86 localizedDescription];
       [v41 setObject:? forKey:?];
-      MEMORY[0x277D82BD8](v42);
+      MEMORY[0x277D82BD8](localizedDescription);
     }
 
     else if (v85)
@@ -387,13 +387,13 @@ LABEL_8:
   MEMORY[0x277D82BD8](v40);
   if (v83)
   {
-    v81 = [AMDJSConfigProcessor processConfig:v83 withCallUUID:v90 error:v89];
-    if (*v89)
+    v81 = [AMDJSConfigProcessor processConfig:v83 withCallUUID:v90 error:errorCopy];
+    if (*errorCopy)
     {
       v38 = MEMORY[0x277CCACA8];
-      v39 = [*v89 localizedDescription];
-      v80 = [v38 stringWithFormat:@"Error processing config: %@", v39];
-      MEMORY[0x277D82BD8](v39);
+      localizedDescription2 = [*errorCopy localizedDescription];
+      v80 = [v38 stringWithFormat:@"Error processing config: %@", localizedDescription2];
+      MEMORY[0x277D82BD8](localizedDescription2);
       v79 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       type = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v79, OS_LOG_TYPE_INFO))
@@ -409,7 +409,7 @@ LABEL_8:
       v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
       [v36 setObject:? forKey:?];
       MEMORY[0x277D82BD8](v37);
-      *v89 = 0;
+      *errorCopy = 0;
       objc_storeStrong(&v80, 0);
     }
 
@@ -447,13 +447,13 @@ LABEL_8:
             v71 = [v73 objectForKey:0x2852A86A8];
             if (v71)
             {
-              v67 = [AMDTasteProfile refreshServerTasteProfile:v73 error:v89];
-              if (*v89)
+              v67 = [AMDTasteProfile refreshServerTasteProfile:v73 error:errorCopy];
+              if (*errorCopy)
               {
                 v26 = MEMORY[0x277CCACA8];
-                v27 = [*v89 localizedDescription];
-                v66 = [v26 stringWithFormat:@"Error refreshing server TP: %@", v27];
-                MEMORY[0x277D82BD8](v27);
+                localizedDescription3 = [*errorCopy localizedDescription];
+                v66 = [v26 stringWithFormat:@"Error refreshing server TP: %@", localizedDescription3];
+                MEMORY[0x277D82BD8](localizedDescription3);
                 v65 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                 v64 = OS_LOG_TYPE_INFO;
                 if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
@@ -470,7 +470,7 @@ LABEL_8:
                 v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
                 [v23 setObject:? forKey:?];
                 MEMORY[0x277D82BD8](v24);
-                *v89 = 0;
+                *errorCopy = 0;
                 objc_storeStrong(&v66, 0);
               }
 
@@ -548,13 +548,13 @@ LABEL_8:
       if (objc_opt_isKindOfClass())
       {
         v60 = MEMORY[0x277D82BE0](v77);
-        v59 = [AMDTasteProfile refreshServerTasteProfile:v60 error:v89];
-        if (*v89)
+        v59 = [AMDTasteProfile refreshServerTasteProfile:v60 error:errorCopy];
+        if (*errorCopy)
         {
           v19 = MEMORY[0x277CCACA8];
-          v20 = [*v89 localizedDescription];
-          v58 = [v19 stringWithFormat:@"Error refreshing server TP: %@", v20];
-          MEMORY[0x277D82BD8](v20);
+          localizedDescription4 = [*errorCopy localizedDescription];
+          v58 = [v19 stringWithFormat:@"Error refreshing server TP: %@", localizedDescription4];
+          MEMORY[0x277D82BD8](localizedDescription4);
           oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v56 = OS_LOG_TYPE_INFO;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
@@ -570,7 +570,7 @@ LABEL_8:
           v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
           [v17 setObject:? forKey:?];
           MEMORY[0x277D82BD8](v18);
-          *v89 = 0;
+          *errorCopy = 0;
           objc_storeStrong(&v58, 0);
         }
 
@@ -624,16 +624,16 @@ LABEL_8:
     v49 = [location[0] objectForKey:0x2852B1B48];
     if (v49)
     {
-      v13 = v92;
+      v13 = selfCopy;
       v14 = [location[0] objectForKey:0x2852AB2C8];
-      v48 = [v13 dailyDataUpdate:v49 forStoreFrontId:objc_msgSend(v14 error:{"intValue"), v89}];
+      v48 = [v13 dailyDataUpdate:v49 forStoreFrontId:objc_msgSend(v14 error:{"intValue"), errorCopy}];
       MEMORY[0x277D82BD8](v14);
-      if (*v89)
+      if (*errorCopy)
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = [*v89 localizedDescription];
-        v47 = [v11 stringWithFormat:@"Error performing daily data update: %@", v12];
-        MEMORY[0x277D82BD8](v12);
+        localizedDescription5 = [*errorCopy localizedDescription];
+        v47 = [v11 stringWithFormat:@"Error performing daily data update: %@", localizedDescription5];
+        MEMORY[0x277D82BD8](localizedDescription5);
         v46 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
         {
@@ -648,7 +648,7 @@ LABEL_8:
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
         [v9 setObject:? forKey:?];
         MEMORY[0x277D82BD8](v10);
-        *v89 = 0;
+        *errorCopy = 0;
         objc_storeStrong(&v47, 0);
       }
 
@@ -697,24 +697,24 @@ LABEL_8:
   return v5;
 }
 
-+ (void)updateArcadeUsageFeature:(id *)a3
++ (void)updateArcadeUsageFeature:(id *)feature
 {
   v29 = *MEMORY[0x277D85DE8];
-  v25 = a1;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  featureCopy = feature;
   v22 = 0;
   v21 = 0;
-  v20 = [AMDTasteProfile getPurchasedArcadeGamesSet:a3];
-  if (!*v23)
+  v20 = [AMDTasteProfile getPurchasedArcadeGamesSet:feature];
+  if (!*featureCopy)
   {
-    v3 = [AMDAppEvent fetchEvents:v23];
+    v3 = [AMDAppEvent fetchEvents:featureCopy];
     v4 = v21;
     v21 = v3;
     MEMORY[0x277D82BD8](v4);
   }
 
-  if (!*v23 && v20 && [v20 count] && v21 && objc_msgSend(v21, "count"))
+  if (!*featureCopy && v20 && [v20 count] && v21 && objc_msgSend(v21, "count"))
   {
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x277D82BE0](v21);
@@ -789,7 +789,7 @@ LABEL_19:
   v26 = @"contains_arcade_plays";
   v27 = v14;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-  v6 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v13 inDomain:@"apps" forSource:0x2852B1228 error:v23];
+  v6 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v13 inDomain:@"apps" forSource:0x2852B1228 error:featureCopy];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v20, 0);
@@ -797,18 +797,18 @@ LABEL_19:
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)updateAMDSQLSchema:(id)a3 error:(id *)a4
++ (id)updateAMDSQLSchema:(id)schema error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
+  objc_storeStrong(location, schema);
+  errorCopy = error;
   v11 = +[AMDSQLite getSharedInstance];
   if ([v11 getDb])
   {
-    v9 = [v11 updateSchema:location[0] error:v12];
-    if (*v12)
+    v9 = [v11 updateSchema:location[0] error:errorCopy];
+    if (*errorCopy)
     {
       v14 = 0;
     }
@@ -826,7 +826,7 @@ LABEL_19:
   {
     v7 = [AMDMiscHelpers logAndCreateError:22 errorMessage:@"SQL Database is not usable"];
     v4 = v7;
-    *v12 = v7;
+    *errorCopy = v7;
     v14 = 0;
     v10 = 1;
   }

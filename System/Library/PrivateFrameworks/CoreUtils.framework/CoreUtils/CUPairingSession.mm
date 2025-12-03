@@ -3,23 +3,23 @@
 - (CUPairingSession)init;
 - (NSDictionary)appInfoPeer;
 - (NSDictionary)groupInfoPeer;
-- (id)openStreamWithName:(id)a3 type:(int)a4 error:(id *)a5;
-- (int)deriveKeyWithSaltPtr:(const void *)a3 saltLen:(unint64_t)a4 infoPtr:(const void *)a5 infoLen:(unint64_t)a6 keyLen:(unint64_t)a7 outputKeyPtr:(void *)a8;
+- (id)openStreamWithName:(id)name type:(int)type error:(id *)error;
+- (int)deriveKeyWithSaltPtr:(const void *)ptr saltLen:(unint64_t)len infoPtr:(const void *)infoPtr infoLen:(unint64_t)infoLen keyLen:(unint64_t)keyLen outputKeyPtr:(void *)keyPtr;
 - (unint64_t)peerAppFlags;
 - (void)_activate;
 - (void)_cleanup;
-- (void)_completed:(id)a3;
-- (void)_receivedData:(id)a3 flags:(unsigned int)a4;
-- (void)_tryPIN:(id)a3;
+- (void)_completed:(id)_completed;
+- (void)_receivedData:(id)data flags:(unsigned int)flags;
+- (void)_tryPIN:(id)n;
 - (void)activate;
-- (void)closeStream:(id)a3;
+- (void)closeStream:(id)stream;
 - (void)dealloc;
 - (void)invalidate;
-- (void)receivedData:(id)a3;
-- (void)receivedMessageData:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setSelfAppFlags:(unint64_t)a3;
-- (void)tryPIN:(id)a3;
+- (void)receivedData:(id)data;
+- (void)receivedMessageData:(id)data;
+- (void)setLabel:(id)label;
+- (void)setSelfAppFlags:(unint64_t)flags;
+- (void)tryPIN:(id)n;
 @end
 
 @implementation CUPairingSession
@@ -150,7 +150,7 @@ LABEL_5:
   [(CUPairingSession *)&v4 dealloc];
 }
 
-- (int)deriveKeyWithSaltPtr:(const void *)a3 saltLen:(unint64_t)a4 infoPtr:(const void *)a5 infoLen:(unint64_t)a6 keyLen:(unint64_t)a7 outputKeyPtr:(void *)a8
+- (int)deriveKeyWithSaltPtr:(const void *)ptr saltLen:(unint64_t)len infoPtr:(const void *)infoPtr infoLen:(unint64_t)infoLen keyLen:(unint64_t)keyLen outputKeyPtr:(void *)keyPtr
 {
   pairingSession = self->_pairingSession;
   if (!pairingSession)
@@ -168,7 +168,7 @@ LABEL_5:
         ucat = self->_ucat;
       }
 
-      LogPrintF(ucat, "[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:]", 0x5Au, "### Derive key before activate\n", a5, a6, a7, a8, v18);
+      LogPrintF(ucat, "[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:]", 0x5Au, "### Derive key before activate\n", infoPtr, infoLen, keyLen, keyPtr, v18);
     }
 
 LABEL_11:
@@ -199,23 +199,23 @@ LABEL_11:
   return v14;
 }
 
-- (void)closeStream:(id)a3
+- (void)closeStream:(id)stream
 {
-  v4 = [a3 name];
+  name = [stream name];
   ucat = self->_ucat;
-  v11 = v4;
+  v11 = name;
   if (*ucat <= 30)
   {
     if (*ucat != -1)
     {
 LABEL_3:
-      ucat = LogPrintF(ucat, "[CUPairingSession closeStream:]", 0x1Eu, "Close stream '%@'\n", v5, v6, v7, v8, v4);
-      v4 = v11;
+      ucat = LogPrintF(ucat, "[CUPairingSession closeStream:]", 0x1Eu, "Close stream '%@'\n", v5, v6, v7, v8, name);
+      name = v11;
       goto LABEL_5;
     }
 
     ucat = _LogCategory_Initialize(ucat, 0x1Eu);
-    v4 = v11;
+    name = v11;
     if (ucat)
     {
       ucat = self->_ucat;
@@ -224,7 +224,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (v4)
+  if (name)
   {
     v10 = [(NSMutableDictionary *)self->_pairingStreams objectForKeyedSubscript:v11];
     [v10 _cleanup];
@@ -233,11 +233,11 @@ LABEL_5:
   MEMORY[0x1EEE66BE0](ucat);
 }
 
-- (id)openStreamWithName:(id)a3 type:(int)a4 error:(id *)a5
+- (id)openStreamWithName:(id)name type:(int)type error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&type;
   v66 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  nameCopy = name;
   v64 = 0;
   __s = 0;
   ucat = self->_ucat;
@@ -246,7 +246,7 @@ LABEL_5:
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUPairingSession openStreamWithName:type:error:]", 0x1Eu, "Open stream '%@'\n", v8, v9, v10, v11, v12);
+      LogPrintF(ucat, "[CUPairingSession openStreamWithName:type:error:]", 0x1Eu, "Open stream '%@'\n", v8, v9, v10, v11, nameCopy);
       goto LABEL_5;
     }
 
@@ -258,7 +258,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (![v12 length])
+  if (![nameCopy length])
   {
     v50 = "EmptyName";
     v51 = 4294960552;
@@ -269,11 +269,11 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  v20 = [(NSMutableDictionary *)self->_pairingStreams objectForKeyedSubscript:v12];
+  v20 = [(NSMutableDictionary *)self->_pairingStreams objectForKeyedSubscript:nameCopy];
 
   if (v20)
   {
-    NSErrorWithOSStatusF(4294960575, "Stream '%@' already used", v14, v15, v16, v17, v18, v19, v12);
+    NSErrorWithOSStatusF(4294960575, "Stream '%@' already used", v14, v15, v16, v17, v18, v19, nameCopy);
     goto LABEL_25;
   }
 
@@ -296,7 +296,7 @@ LABEL_11:
   v22 = *v21;
   v23 = objc_alloc_init(CUPairingStream);
   [(CUPairingStream *)v23 setAuthTagLength:16];
-  [(CUPairingStream *)v23 setName:v12];
+  [(CUPairingStream *)v23 setName:nameCopy];
   v30 = self->_sessionType - 1;
   if (v30 > 0xC)
   {
@@ -310,7 +310,7 @@ LABEL_11:
     v32 = off_1E73A3AA0[v30];
   }
 
-  ASPrintF(&__s, v31, v24, v25, v26, v27, v28, v29, v12);
+  ASPrintF(&__s, v31, v24, v25, v26, v27, v28, v29, nameCopy);
   v39 = __s;
   if (!__s)
   {
@@ -343,7 +343,7 @@ LABEL_26:
       if (v56->var0 != -1)
       {
 LABEL_29:
-        LogPrintF(v56, "[CUPairingSession openStreamWithName:type:error:]", 0x3Cu, "### Open stream '%@' failed: %{error}\n", v52, v53, v54, v55, v12);
+        LogPrintF(v56, "[CUPairingSession openStreamWithName:type:error:]", 0x3Cu, "### Open stream '%@' failed: %{error}\n", v52, v53, v54, v55, nameCopy);
         goto LABEL_31;
       }
 
@@ -355,11 +355,11 @@ LABEL_29:
     }
 
 LABEL_31:
-    if (a5)
+    if (error)
     {
       v57 = v49;
       v48 = 0;
-      *a5 = v49;
+      *error = v49;
       goto LABEL_34;
     }
 
@@ -386,7 +386,7 @@ LABEL_33:
     goto LABEL_50;
   }
 
-  ASPrintF(&__s, v32, v33, v34, v35, v36, v37, v38, v12);
+  ASPrintF(&__s, v32, v33, v34, v35, v36, v37, v38, nameCopy);
   v42 = __s;
   if (!__s)
   {
@@ -432,7 +432,7 @@ LABEL_33:
     pairingStreams = self->_pairingStreams;
   }
 
-  [(NSMutableDictionary *)pairingStreams setObject:v23 forKeyedSubscript:v12];
+  [(NSMutableDictionary *)pairingStreams setObject:v23 forKeyedSubscript:nameCopy];
   v48 = v23;
   memset_s(v65, 0x20uLL, 0, 0x20uLL);
   v49 = 0;
@@ -443,10 +443,10 @@ LABEL_34:
   return v48;
 }
 
-- (void)_tryPIN:(id)a3
+- (void)_tryPIN:(id)n
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  nCopy = n;
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
@@ -489,7 +489,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v11 = ReplaceString(pairingSession + 50, pairingSession + 51, [v8 UTF8String], 0xFFFFFFFFFFFFFFFFLL);
+  v11 = ReplaceString(pairingSession + 50, pairingSession + 51, [nCopy UTF8String], 0xFFFFFFFFFFFFFFFFLL);
   if (!v11)
   {
     [(CUPairingSession *)self _receivedData:0 flags:0];
@@ -534,26 +534,26 @@ LABEL_18:
 LABEL_8:
 }
 
-- (void)tryPIN:(id)a3
+- (void)tryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __27__CUPairingSession_tryPIN___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_receivedData:(id)a3 flags:(unsigned int)a4
+- (void)_receivedData:(id)data flags:(unsigned int)flags
 {
-  v4 = *&a4;
+  v4 = *&flags;
   v70[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v11 = v6;
+  dataCopy = data;
+  v11 = dataCopy;
   v66 = 0;
   v67 = 0;
   v65 = 0;
@@ -582,9 +582,9 @@ LABEL_8:
     goto LABEL_57;
   }
 
-  v13 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v14 = [v11 length];
-  v17 = PairingSessionExchange(pairingSession, v13, v14, &v67, &v66, &v65, v15, v16);
+  v17 = PairingSessionExchange(pairingSession, bytes, v14, &v67, &v66, &v65, v15, v16);
   v68 = v17;
   if (v17)
   {
@@ -680,18 +680,18 @@ LABEL_37:
     v22 = self->_languageCode;
     if (v22)
     {
-      v23 = v22;
+      firstObject = v22;
 LABEL_8:
-      [(__CFString *)v21 setObject:v23 forKeyedSubscript:@"_lc"];
+      [(__CFString *)v21 setObject:firstObject forKeyedSubscript:@"_lc"];
       goto LABEL_17;
     }
 
     if (self->_localize)
     {
-      v25 = [MEMORY[0x1E695DF58] preferredLanguages];
-      v23 = [v25 firstObject];
+      preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+      firstObject = [preferredLanguages firstObject];
 
-      if (v23)
+      if (firstObject)
       {
         goto LABEL_8;
       }
@@ -699,34 +699,34 @@ LABEL_8:
 
     else
     {
-      v23 = 0;
+      firstObject = 0;
     }
 
 LABEL_17:
     v26 = self->_localeIdentifier;
     if (v26)
     {
-      v27 = v26;
+      localeIdentifier = v26;
     }
 
     else
     {
       if (!self->_localize)
       {
-        v27 = 0;
+        localeIdentifier = 0;
         goto LABEL_24;
       }
 
-      v28 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-      v27 = [v28 localeIdentifier];
+      autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+      localeIdentifier = [autoupdatingCurrentLocale localeIdentifier];
 
-      if (!v27)
+      if (!localeIdentifier)
       {
         goto LABEL_24;
       }
     }
 
-    [(__CFString *)v21 setObject:v27 forKeyedSubscript:@"_li"];
+    [(__CFString *)v21 setObject:localeIdentifier forKeyedSubscript:@"_li"];
 LABEL_24:
     if (self->_pinType)
     {
@@ -836,31 +836,31 @@ LABEL_41:
   }
 }
 
-- (void)receivedData:(id)a3
+- (void)receivedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__CUPairingSession_receivedData___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)receivedMessageData:(id)a3
+- (void)receivedMessageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__CUPairingSession_receivedMessageData___block_invoke;
   v7[3] = &unk_1E73A49F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -964,11 +964,11 @@ LABEL_25:
 LABEL_19:
 }
 
-- (void)_completed:(id)a3
+- (void)_completed:(id)_completed
 {
-  v18 = a3;
+  _completedCopy = _completed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v18)
+  if (_completedCopy)
   {
     p_completionHandler = &self->_completionHandler;
     if (!self->_completionHandler)
@@ -992,7 +992,7 @@ LABEL_19:
       ucat = self->_ucat;
     }
 
-    LogPrintF(ucat, "[CUPairingSession _completed:]", 0x32u, "### Pairing failed: %{error}\n", v4, v5, v6, v7, v18);
+    LogPrintF(ucat, "[CUPairingSession _completed:]", 0x32u, "### Pairing failed: %{error}\n", v4, v5, v6, v7, _completedCopy);
 LABEL_18:
     (*(*p_completionHandler + 2))();
     v16 = *p_completionHandler;
@@ -1496,13 +1496,13 @@ uint64_t __29__CUPairingSession__activate__block_invoke_2(uint64_t a1, uint64_t 
   return v4;
 }
 
-- (void)setSelfAppFlags:(unint64_t)a3
+- (void)setSelfAppFlags:(unint64_t)flags
 {
-  self->_selfAppFlags = a3;
+  self->_selfAppFlags = flags;
   pairingSession = self->_pairingSession;
   if (pairingSession)
   {
-    *(pairingSession + 27) = a3;
+    *(pairingSession + 27) = flags;
   }
 }
 
@@ -1540,13 +1540,13 @@ uint64_t __29__CUPairingSession__activate__block_invoke_2(uint64_t a1, uint64_t 
   return v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE88F0;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

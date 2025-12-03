@@ -1,29 +1,29 @@
 @interface SBHIconViewContextMenuManager
-- (BOOL)iconViewShouldBeginContextMenuPresentation:(id)a3;
-- (BOOL)shouldAllowContextMenuInteractionForIconView:(id)a3 atLocation:(CGPoint)a4;
-- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)a3 atLocation:(CGPoint)a4;
-- (BOOL)shouldPreviewOverlapMenuForIconView:(id)a3;
-- (SBHIconViewContextMenuManager)initWithContextMenuActionProviders:(id)a3 previewProviders:(id)a4;
+- (BOOL)iconViewShouldBeginContextMenuPresentation:(id)presentation;
+- (BOOL)shouldAllowContextMenuInteractionForIconView:(id)view atLocation:(CGPoint)location;
+- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)view atLocation:(CGPoint)location;
+- (BOOL)shouldPreviewOverlapMenuForIconView:(id)view;
+- (SBHIconViewContextMenuManager)initWithContextMenuActionProviders:(id)providers previewProviders:(id)previewProviders;
 - (SBHIconViewContextMenuManagerDelegate)delegate;
-- (id)_contextMenuInteraction:(id)a3 previewForIconWithConfigurationOptions:(unint64_t)a4 highlighted:(BOOL)a5 forIconView:(id)a6;
+- (id)_contextMenuInteraction:(id)interaction previewForIconWithConfigurationOptions:(unint64_t)options highlighted:(BOOL)highlighted forIconView:(id)view;
 - (id)allOpenApplicationWindowsContextMenuProviders;
 - (id)allRecentDocumentsContextMenuProviders;
-- (id)containerViewForPresentingContextMenuForIconView:(id)a3;
-- (id)contextMenuConfigurationForIconView:(id)a3 atLocation:(CGPoint)a4;
-- (id)effectiveContextMenuPreviewProviderForIconView:(id)a3 atLocation:(CGPoint)a4;
-- (id)effectivePreviewViewControllerForIconView:(id)a3 atLocation:(CGPoint)a4;
-- (id)orderedActionContextMenuProvidersForIconView:(id)a3;
-- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)a3;
-- (void)addContextMenuActionProviders:(id)a3;
-- (void)addContextMenuPreviewProviders:(id)a3;
-- (void)iconView:(id)a3 willUseContextMenuStyle:(id)a4;
-- (void)iconViewContextMenuPresentationDidCancel:(id)a3;
-- (void)iconViewContextMenuPresentationDidFinish:(id)a3;
-- (void)iconViewContextMenuPresentationWillBegin:(id)a3;
-- (void)iconViewContextMenuPresentationWillFinish:(id)a3;
-- (void)refreshContextMenuForIconView:(id)a3;
-- (void)removeContextMenuActionProviders:(id)a3;
-- (void)removeContextMenuPreviewProviders:(id)a3;
+- (id)containerViewForPresentingContextMenuForIconView:(id)view;
+- (id)contextMenuConfigurationForIconView:(id)view atLocation:(CGPoint)location;
+- (id)effectiveContextMenuPreviewProviderForIconView:(id)view atLocation:(CGPoint)location;
+- (id)effectivePreviewViewControllerForIconView:(id)view atLocation:(CGPoint)location;
+- (id)orderedActionContextMenuProvidersForIconView:(id)view;
+- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)view;
+- (void)addContextMenuActionProviders:(id)providers;
+- (void)addContextMenuPreviewProviders:(id)providers;
+- (void)iconView:(id)view willUseContextMenuStyle:(id)style;
+- (void)iconViewContextMenuPresentationDidCancel:(id)cancel;
+- (void)iconViewContextMenuPresentationDidFinish:(id)finish;
+- (void)iconViewContextMenuPresentationWillBegin:(id)begin;
+- (void)iconViewContextMenuPresentationWillFinish:(id)finish;
+- (void)refreshContextMenuForIconView:(id)view;
+- (void)removeContextMenuActionProviders:(id)providers;
+- (void)removeContextMenuPreviewProviders:(id)providers;
 @end
 
 @implementation SBHIconViewContextMenuManager
@@ -35,10 +35,10 @@
   return WeakRetained;
 }
 
-- (SBHIconViewContextMenuManager)initWithContextMenuActionProviders:(id)a3 previewProviders:(id)a4
+- (SBHIconViewContextMenuManager)initWithContextMenuActionProviders:(id)providers previewProviders:(id)previewProviders
 {
-  v6 = a3;
-  v7 = a4;
+  providersCopy = providers;
+  previewProvidersCopy = previewProviders;
   v14.receiver = self;
   v14.super_class = SBHIconViewContextMenuManager;
   v8 = [(SBHIconViewContextMenuManager *)&v14 init];
@@ -52,36 +52,36 @@
     contextMenuPreviewProviders = v8->_contextMenuPreviewProviders;
     v8->_contextMenuPreviewProviders = v11;
 
-    if (v6)
+    if (providersCopy)
     {
-      [(NSMutableSet *)v8->_contextMenuActionProviders addObjectsFromArray:v6];
+      [(NSMutableSet *)v8->_contextMenuActionProviders addObjectsFromArray:providersCopy];
     }
 
-    if (v7)
+    if (previewProvidersCopy)
     {
-      [(NSMutableSet *)v8->_contextMenuPreviewProviders addObjectsFromArray:v7];
+      [(NSMutableSet *)v8->_contextMenuPreviewProviders addObjectsFromArray:previewProvidersCopy];
     }
   }
 
   return v8;
 }
 
-- (void)addContextMenuActionProviders:(id)a3
+- (void)addContextMenuActionProviders:(id)providers
 {
-  [(NSMutableSet *)self->_contextMenuActionProviders addObjectsFromArray:a3];
-  v4 = [(SBHIconViewContextMenuManager *)self delegate];
-  [v4 contextMenuActionProvidersChangedForContextMenuManager:self];
+  [(NSMutableSet *)self->_contextMenuActionProviders addObjectsFromArray:providers];
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
+  [delegate contextMenuActionProvidersChangedForContextMenuManager:self];
 }
 
-- (void)removeContextMenuActionProviders:(id)a3
+- (void)removeContextMenuActionProviders:(id)providers
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providersCopy = providers;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [providersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -93,39 +93,39 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(providersCopy);
         }
 
         [(NSMutableSet *)self->_contextMenuActionProviders removeObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [providersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(SBHIconViewContextMenuManager *)self delegate];
-  [v9 contextMenuActionProvidersChangedForContextMenuManager:self];
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
+  [delegate contextMenuActionProvidersChangedForContextMenuManager:self];
 }
 
-- (void)addContextMenuPreviewProviders:(id)a3
+- (void)addContextMenuPreviewProviders:(id)providers
 {
-  [(NSMutableSet *)self->_contextMenuPreviewProviders addObjectsFromArray:a3];
-  v4 = [(SBHIconViewContextMenuManager *)self delegate];
-  [v4 contextMenuPreviewProvidersChangedForContextMenuManager:self];
+  [(NSMutableSet *)self->_contextMenuPreviewProviders addObjectsFromArray:providers];
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
+  [delegate contextMenuPreviewProvidersChangedForContextMenuManager:self];
 }
 
-- (void)removeContextMenuPreviewProviders:(id)a3
+- (void)removeContextMenuPreviewProviders:(id)providers
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providersCopy = providers;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [providersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -137,29 +137,29 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(providersCopy);
         }
 
         [(NSMutableSet *)self->_contextMenuPreviewProviders removeObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [providersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(SBHIconViewContextMenuManager *)self delegate];
-  [v9 contextMenuPreviewProvidersChangedForContextMenuManager:self];
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
+  [delegate contextMenuPreviewProvidersChangedForContextMenuManager:self];
 }
 
-- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)a3 atLocation:(CGPoint)a4
+- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)view atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  viewCopy = view;
   [(SBHIconViewContextMenuManager *)self allOpenApplicationWindowsContextMenuProviders];
   v28 = 0u;
   v29 = 0u;
@@ -180,9 +180,9 @@
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) == 0 || [v13 canProvideContextMenuSectionsForIconView:v7])
+        if ((objc_opt_respondsToSelector() & 1) == 0 || [v13 canProvideContextMenuSectionsForIconView:viewCopy])
         {
-          v14 = [v13 contextMenuSectionsForIconView:v7 atLocation:{x, y}];
+          v14 = [v13 contextMenuSectionsForIconView:viewCopy atLocation:{x, y}];
           v15 = [v14 count];
 
           if (v15)
@@ -223,9 +223,9 @@
         }
 
         v20 = *(*(&v24 + 1) + 8 * j);
-        if ((objc_opt_respondsToSelector() & 1) == 0 || [v20 canProvideContextMenuSectionsForIconView:{v7, v24}])
+        if ((objc_opt_respondsToSelector() & 1) == 0 || [v20 canProvideContextMenuSectionsForIconView:{viewCopy, v24}])
         {
-          v21 = [v20 contextMenuSectionsForIconView:v7 atLocation:{x, y, v24}];
+          v21 = [v20 contextMenuSectionsForIconView:viewCopy atLocation:{x, y, v24}];
           v22 = [v21 count];
 
           if (v22)
@@ -252,17 +252,17 @@ LABEL_25:
   return v17;
 }
 
-- (id)contextMenuConfigurationForIconView:(id)a3 atLocation:(CGPoint)a4
+- (id)contextMenuConfigurationForIconView:(id)view atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  if ([(SBHIconViewContextMenuManager *)self shouldAllowContextMenuInteractionForIconView:v7 atLocation:x, y])
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  if ([(SBHIconViewContextMenuManager *)self shouldAllowContextMenuInteractionForIconView:viewCopy atLocation:x, y])
   {
-    v8 = [[SBIconViewContextMenuContext alloc] initWithIconView:v7 location:x, y];
+    v8 = [[SBIconViewContextMenuContext alloc] initWithIconView:viewCopy location:x, y];
     if ([(NSMutableSet *)self->_contextMenuActionProviders count]|| [(NSMutableSet *)self->_contextMenuPreviewProviders count])
     {
-      objc_initWeak(&location, v7);
+      objc_initWeak(&location, viewCopy);
       objc_initWeak(&from, self);
       v9 = MEMORY[0x1E69DC8D8];
       v23[0] = MEMORY[0x1E69E9820];
@@ -274,7 +274,7 @@ LABEL_25:
       v23[4] = self;
       v26[1] = *&x;
       v26[2] = *&y;
-      v10 = v7;
+      v10 = viewCopy;
       v24 = v10;
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
@@ -282,7 +282,7 @@ LABEL_25:
       v18 = &unk_1E808A488;
       objc_copyWeak(&v21, &from);
       objc_copyWeak(v22, &location);
-      v19 = self;
+      selfCopy = self;
       v22[1] = *&x;
       v22[2] = *&y;
       v20 = v10;
@@ -300,13 +300,13 @@ LABEL_25:
     else
     {
       v11 = [MEMORY[0x1E69DC8D8] configurationWithIdentifier:v8 previewProvider:0 actionProvider:&__block_literal_global_15];
-      [v7 setLastContextMenuInteractionFailedToLoad:1];
+      [viewCopy setLastContextMenuInteractionFailedToLoad:1];
     }
 
     v12 = [(SBHIconViewContextMenuManager *)self delegate:v15];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v12 contextMenuManager:self preferredMenuElementOrderForIconView:v7];
+      v13 = [v12 contextMenuManager:self preferredMenuElementOrderForIconView:viewCopy];
     }
 
     else
@@ -438,13 +438,13 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
   return v12;
 }
 
-- (BOOL)iconViewShouldBeginContextMenuPresentation:(id)a3
+- (BOOL)iconViewShouldBeginContextMenuPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(SBHIconViewContextMenuManager *)self delegate];
+  presentationCopy = presentation;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 contextMenuManager:self shouldBeginContextMenuPresentationForIconView:v4];
+    v6 = [delegate contextMenuManager:self shouldBeginContextMenuPresentationForIconView:presentationCopy];
   }
 
   else
@@ -455,53 +455,53 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
   return v6;
 }
 
-- (void)iconViewContextMenuPresentationWillBegin:(id)a3
+- (void)iconViewContextMenuPresentationWillBegin:(id)begin
 {
-  v5 = a3;
-  v4 = [(SBHIconViewContextMenuManager *)self delegate];
+  beginCopy = begin;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 contextMenuManager:self contextMenuPresentationWillBeginForIconView:v5];
+    [delegate contextMenuManager:self contextMenuPresentationWillBeginForIconView:beginCopy];
   }
 }
 
-- (void)iconViewContextMenuPresentationWillFinish:(id)a3
+- (void)iconViewContextMenuPresentationWillFinish:(id)finish
 {
-  v5 = a3;
-  v4 = [(SBHIconViewContextMenuManager *)self delegate];
+  finishCopy = finish;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 contextMenuManager:self contextMenuPresentationWillFinishForIconView:v5];
+    [delegate contextMenuManager:self contextMenuPresentationWillFinishForIconView:finishCopy];
   }
 }
 
-- (void)iconViewContextMenuPresentationDidFinish:(id)a3
+- (void)iconViewContextMenuPresentationDidFinish:(id)finish
 {
-  v5 = a3;
-  v4 = [(SBHIconViewContextMenuManager *)self delegate];
+  finishCopy = finish;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 contextMenuManager:self contextMenuPresentationDidFinishForIconView:v5];
+    [delegate contextMenuManager:self contextMenuPresentationDidFinishForIconView:finishCopy];
   }
 }
 
-- (void)iconViewContextMenuPresentationDidCancel:(id)a3
+- (void)iconViewContextMenuPresentationDidCancel:(id)cancel
 {
-  v5 = a3;
-  v4 = [(SBHIconViewContextMenuManager *)self delegate];
+  cancelCopy = cancel;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 contextMenuManager:self contextMenuPresentationDidCancelForIconView:v5];
+    [delegate contextMenuManager:self contextMenuPresentationDidCancelForIconView:cancelCopy];
   }
 }
 
-- (id)containerViewForPresentingContextMenuForIconView:(id)a3
+- (id)containerViewForPresentingContextMenuForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconViewContextMenuManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 contextMenuManager:self containerViewForPresentingContextMenuForIconView:v4];
+    v6 = [delegate contextMenuManager:self containerViewForPresentingContextMenuForIconView:viewCopy];
   }
 
   else
@@ -512,21 +512,21 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
   return v6;
 }
 
-- (void)iconView:(id)a3 willUseContextMenuStyle:(id)a4
+- (void)iconView:(id)view willUseContextMenuStyle:(id)style
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBHIconViewContextMenuManager *)self delegate];
+  viewCopy = view;
+  styleCopy = style;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 contextMenuManager:self iconView:v8 willUseContextMenuStyle:v6];
+    [delegate contextMenuManager:self iconView:viewCopy willUseContextMenuStyle:styleCopy];
   }
 }
 
-- (void)refreshContextMenuForIconView:(id)a3
+- (void)refreshContextMenuForIconView:(id)view
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -550,7 +550,7 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
         v10 = *(*(&v21 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 refreshContextMenuActionsForIconView:v4];
+          [v10 refreshContextMenuActionsForIconView:viewCopy];
         }
 
         ++v9;
@@ -586,7 +586,7 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 refreshContextMenuPreviewContentForIconView:{v4, v17}];
+          [v16 refreshContextMenuPreviewContentForIconView:{viewCopy, v17}];
         }
 
         ++v15;
@@ -600,13 +600,13 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
   }
 }
 
-- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)a3
+- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconViewContextMenuManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 contextMenuManager:self supportedMultitaskingShortcutActionsForIconView:v4];
+    v6 = [delegate contextMenuManager:self supportedMultitaskingShortcutActionsForIconView:viewCopy];
   }
 
   else
@@ -617,13 +617,13 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
   return v6;
 }
 
-- (BOOL)shouldPreviewOverlapMenuForIconView:(id)a3
+- (BOOL)shouldPreviewOverlapMenuForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconViewContextMenuManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 contextMenuManager:self shouldPreviewOverlapMenuForIconView:v4];
+    v6 = [delegate contextMenuManager:self shouldPreviewOverlapMenuForIconView:viewCopy];
   }
 
   else
@@ -634,15 +634,15 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
   return v6;
 }
 
-- (id)orderedActionContextMenuProvidersForIconView:(id)a3
+- (id)orderedActionContextMenuProvidersForIconView:(id)view
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconViewContextMenuManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 contextMenuManager:self orderedActionContextMenuProvidersForIconView:v4], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  viewCopy = view;
+  delegate = [(SBHIconViewContextMenuManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate contextMenuManager:self orderedActionContextMenuProvidersForIconView:viewCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v21 = v5;
-    v22 = v4;
+    v21 = delegate;
+    v22 = viewCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -652,8 +652,8 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [(SBHIconViewContextMenuManager *)self contextMenuActionProviders];
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    contextMenuActionProviders = [(SBHIconViewContextMenuManager *)self contextMenuActionProviders];
+    v12 = [contextMenuActionProviders countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -664,12 +664,12 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(contextMenuActionProviders);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = [v16 contextMenuActionSectionType];
-          if (v17 == 1)
+          contextMenuActionSectionType = [v16 contextMenuActionSectionType];
+          if (contextMenuActionSectionType == 1)
           {
             v18 = v8;
           }
@@ -679,12 +679,12 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
             v18 = v10;
           }
 
-          if (v17 == 2)
+          if (contextMenuActionSectionType == 2)
           {
             v18 = v9;
           }
 
-          if (v17 == 3)
+          if (contextMenuActionSectionType == 3)
           {
             v19 = v7;
           }
@@ -697,7 +697,7 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
           [v19 addObject:v16];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [contextMenuActionProviders countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v13);
@@ -708,19 +708,19 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
     [v6 addObjectsFromArray:v9];
     [v6 addObjectsFromArray:v10];
 
-    v5 = v21;
-    v4 = v22;
+    delegate = v21;
+    viewCopy = v22;
   }
 
   return v6;
 }
 
-- (id)effectivePreviewViewControllerForIconView:(id)a3 atLocation:(CGPoint)a4
+- (id)effectivePreviewViewControllerForIconView:(id)view atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  viewCopy = view;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -740,7 +740,7 @@ id __80__SBHIconViewContextMenuManager_contextMenuConfigurationForIconView_atLoc
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) previewContentForIconView:v7 atLocation:{x, y, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) previewContentForIconView:viewCopy atLocation:{x, y, v16}];
         if (v13)
         {
           v14 = v13;
@@ -764,12 +764,12 @@ LABEL_11:
   return v14;
 }
 
-- (id)effectiveContextMenuPreviewProviderForIconView:(id)a3 atLocation:(CGPoint)a4
+- (id)effectiveContextMenuPreviewProviderForIconView:(id)view atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  viewCopy = view;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -789,7 +789,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 previewContentForIconView:v7 atLocation:{x, y, v15}];
+        v13 = [v12 previewContentForIconView:viewCopy atLocation:{x, y, v15}];
 
         if (v13)
         {
@@ -813,29 +813,29 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)shouldAllowContextMenuInteractionForIconView:(id)a3 atLocation:(CGPoint)a4
+- (BOOL)shouldAllowContextMenuInteractionForIconView:(id)view atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([objc_opt_class() supportsPreviewInteraction] && objc_msgSend(v6, "allowsContextMenus"))
+  viewCopy = view;
+  if ([objc_opt_class() supportsPreviewInteraction] && objc_msgSend(viewCopy, "allowsContextMenus"))
   {
-    v7 = [v6 customIconImageViewController];
+    customIconImageViewController = [viewCopy customIconImageViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v7 willShowContextMenuAtLocation:{x, y}];
+      [customIconImageViewController willShowContextMenuAtLocation:{x, y}];
     }
 
-    v8 = [v6 contextMenuDelegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![v8 iconViewShouldBeginContextMenuPresentation:v6])
+    contextMenuDelegate = [viewCopy contextMenuDelegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![contextMenuDelegate iconViewShouldBeginContextMenuPresentation:viewCopy])
     {
       v10 = 0;
     }
 
     else
     {
-      if ([v6 isShowingContextMenu])
+      if ([viewCopy isShowingContextMenu])
       {
         v9 = SBLogIconContextMenu();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -860,14 +860,14 @@ LABEL_11:
   return v10;
 }
 
-- (id)_contextMenuInteraction:(id)a3 previewForIconWithConfigurationOptions:(unint64_t)a4 highlighted:(BOOL)a5 forIconView:(id)a6
+- (id)_contextMenuInteraction:(id)interaction previewForIconWithConfigurationOptions:(unint64_t)options highlighted:(BOOL)highlighted forIconView:(id)view
 {
-  v6 = a5;
+  highlightedCopy = highlighted;
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a6;
-  v9 = [a3 view];
+  viewCopy = view;
+  view = [interaction view];
 
-  if (v9 != v8)
+  if (view != viewCopy)
   {
     v10 = SBLogIcon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -880,9 +880,9 @@ LABEL_4:
     goto LABEL_19;
   }
 
-  v19 = [v8 window];
+  window = [viewCopy window];
 
-  if (!v19)
+  if (!window)
   {
     v10 = SBLogIcon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -893,19 +893,19 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  [v8 setHighlighted:v6];
+  [viewCopy setHighlighted:highlightedCopy];
   v10 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v20 = [MEMORY[0x1E69DC888] clearColor];
-  [v10 setBackgroundColor:v20];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v10 setBackgroundColor:clearColor];
 
-  [v8 iconImageCenter];
+  [viewCopy iconImageCenter];
   v22 = v21;
   v24 = v23;
-  v25 = v8;
-  v26 = [v25 imageContainerView];
+  v25 = viewCopy;
+  imageContainerView = [v25 imageContainerView];
   v27 = SBLogIcon();
   v28 = v27;
-  if (v26 == v25)
+  if (imageContainerView == v25)
   {
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -919,22 +919,22 @@ LABEL_4:
   {
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v25 icon];
+      icon = [v25 icon];
       LODWORD(v48[0]) = 138412802;
-      *(v48 + 4) = v29;
+      *(v48 + 4) = icon;
       WORD6(v48[0]) = 2112;
-      *(v48 + 14) = v26;
+      *(v48 + 14) = imageContainerView;
       WORD3(v48[1]) = 2112;
       *(&v48[1] + 1) = v25;
       _os_log_impl(&dword_1BEB18000, v28, OS_LOG_TYPE_DEFAULT, "Configuring preview for icon '%@' w/ currentImageView '%@' contentContainerView '%@'", v48, 0x20u);
     }
 
     v30 = objc_alloc(MEMORY[0x1E69DCE38]);
-    v31 = [v25 contentContainerView];
-    v32 = v31;
-    if (v31)
+    contentContainerView = [v25 contentContainerView];
+    v32 = contentContainerView;
+    if (contentContainerView)
     {
-      [v31 transform];
+      [contentContainerView transform];
     }
 
     else
@@ -944,7 +944,7 @@ LABEL_4:
 
     v28 = [v30 initWithContainer:v25 center:v48 transform:{v22, v24}];
 
-    v18 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v26 parameters:v10 target:v28];
+    v18 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:imageContainerView parameters:v10 target:v28];
     [v18 set_springboardPlatterStyle:1];
   }
 
@@ -961,8 +961,8 @@ LABEL_19:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SBHIconViewContextMenuManager *)self contextMenuActionProviders];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contextMenuActionProviders = [(SBHIconViewContextMenuManager *)self contextMenuActionProviders];
+  v5 = [contextMenuActionProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -973,7 +973,7 @@ LABEL_19:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contextMenuActionProviders);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -983,7 +983,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [contextMenuActionProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1000,8 +1000,8 @@ LABEL_19:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SBHIconViewContextMenuManager *)self contextMenuActionProviders];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contextMenuActionProviders = [(SBHIconViewContextMenuManager *)self contextMenuActionProviders];
+  v5 = [contextMenuActionProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1012,7 +1012,7 @@ LABEL_19:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contextMenuActionProviders);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1022,7 +1022,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [contextMenuActionProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

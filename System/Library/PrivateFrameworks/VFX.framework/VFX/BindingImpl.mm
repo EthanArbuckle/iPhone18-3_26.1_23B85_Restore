@@ -6,13 +6,13 @@
 - (NSString)identifier;
 - (NSString)objectName;
 - (NSString)userManual;
-- (void)setBindingName:(id)a3;
-- (void)setEnumCases:(id)a3;
-- (void)setEnumName:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setObjectName:(id)a3;
-- (void)setRawValue:(id)a3;
-- (void)setUserManual:(id)a3;
+- (void)setBindingName:(id)name;
+- (void)setEnumCases:(id)cases;
+- (void)setEnumName:(id)name;
+- (void)setIdentifier:(id)identifier;
+- (void)setObjectName:(id)name;
+- (void)setRawValue:(id)value;
+- (void)setUserManual:(id)manual;
 @end
 
 @implementation BindingImpl
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   *(self + 3) = sub_1AFDFCEF8();
   *(self + 4) = v4;
@@ -39,7 +39,7 @@
   return v2;
 }
 
-- (void)setObjectName:(id)a3
+- (void)setObjectName:(id)name
 {
   *(self + 6) = sub_1AFDFCEF8();
   *(self + 7) = v4;
@@ -53,7 +53,7 @@
   return v2;
 }
 
-- (void)setBindingName:(id)a3
+- (void)setBindingName:(id)name
 {
   *(self + 8) = sub_1AFDFCEF8();
   *(self + 9) = v4;
@@ -67,7 +67,7 @@
   return v2;
 }
 
-- (void)setUserManual:(id)a3
+- (void)setUserManual:(id)manual
 {
   *(self + 10) = sub_1AFDFCEF8();
   *(self + 11) = v4;
@@ -89,9 +89,9 @@
   return v2;
 }
 
-- (void)setEnumName:(id)a3
+- (void)setEnumName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1AFDFCEF8();
   }
@@ -122,9 +122,9 @@
   return v2;
 }
 
-- (void)setEnumCases:(id)a3
+- (void)setEnumCases:(id)cases
 {
-  if (a3)
+  if (cases)
   {
     v4 = sub_1AFDFD418();
   }
@@ -158,14 +158,14 @@
   return v5;
 }
 
-- (void)setRawValue:(id)a3
+- (void)setRawValue:(id)value
 {
-  v3 = a3;
-  if (a3)
+  valueCopy = value;
+  if (value)
   {
 
-    v4 = v3;
-    v3 = sub_1AFDFC1B8();
+    v4 = valueCopy;
+    valueCopy = sub_1AFDFC1B8();
     v6 = v5;
   }
 
@@ -175,7 +175,7 @@
     v6 = 0xF000000000000000;
   }
 
-  sub_1AFC4BB8C(v3, v6);
+  sub_1AFC4BB8C(valueCopy, v6);
 }
 
 @end

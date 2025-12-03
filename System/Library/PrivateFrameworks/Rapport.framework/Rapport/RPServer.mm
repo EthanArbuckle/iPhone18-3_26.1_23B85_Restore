@@ -1,23 +1,23 @@
 @interface RPServer
 - (RPServer)init;
-- (RPServer)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateWithReactivate:(BOOL)a3;
+- (RPServer)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateWithReactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_update;
-- (void)_updateIfNeededWithBlock:(id)a3;
+- (void)_updateIfNeededWithBlock:(id)block;
 - (void)activate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)setControlFlags:(unint64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setPasswordType:(int)a3;
-- (void)setServiceType:(id)a3;
-- (void)xpcServerAcceptSession:(id)a3 completion:(id)a4;
+- (void)setControlFlags:(unint64_t)flags;
+- (void)setLabel:(id)label;
+- (void)setPassword:(id)password;
+- (void)setPasswordType:(int)type;
+- (void)setServiceType:(id)type;
+- (void)xpcServerAcceptSession:(id)session completion:(id)completion;
 @end
 
 @implementation RPServer
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (RPServer)initWithCoder:(id)a3
+- (RPServer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = RPServer;
   v5 = [(RPServer *)&v16 init];
@@ -49,7 +49,7 @@
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
     v6->_ucat = &gLogCategory_RPServer;
-    v7 = v4;
+    v7 = coderCopy;
     if ([v7 containsValueForKey:@"devName"])
     {
       v6->_advertiseDeviceName = [v7 decodeBoolForKey:@"devName"];
@@ -103,70 +103,70 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   allowedMACAddresses = self->_allowedMACAddresses;
-  v13 = v4;
+  v13 = coderCopy;
   if (allowedMACAddresses)
   {
-    [v4 encodeObject:allowedMACAddresses forKey:@"MAcAddrs"];
-    v4 = v13;
+    [coderCopy encodeObject:allowedMACAddresses forKey:@"MAcAddrs"];
+    coderCopy = v13;
   }
 
   if (self->_advertiseDeviceName)
   {
     [v13 encodeBool:1 forKey:@"devName"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   controlFlags = self->_controlFlags;
   if (controlFlags)
   {
     [v13 encodeInt64:controlFlags forKey:@"cFl"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   internalAuthFlags = self->_internalAuthFlags;
   if (internalAuthFlags)
   {
     [v13 encodeInt64:internalAuthFlags forKey:@"iaf"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   label = self->_label;
   if (label)
   {
     [v13 encodeObject:label forKey:@"label"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   pairSetupACL = self->_pairSetupACL;
   if (pairSetupACL)
   {
     [v13 encodeObject:pairSetupACL forKey:@"acl"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   passwordType = self->_passwordType;
   if (passwordType)
   {
     [v13 encodeInteger:passwordType forKey:@"pwTy"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v13 encodeObject:serviceType forKey:@"st"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   password = self->_password;
   if (password)
   {
     [v13 encodeObject:password forKey:@"pw"];
-    v4 = v13;
+    coderCopy = v13;
   }
 }
 
@@ -184,7 +184,7 @@
   [(RPServer *)&v4 dealloc];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   serviceType = self->_serviceType;
   NSAppendPrintF();
@@ -246,14 +246,14 @@
   return v5;
 }
 
-- (void)setControlFlags:(unint64_t)a3
+- (void)setControlFlags:(unint64_t)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __28__RPServer_setControlFlags___block_invoke;
   v3[3] = &unk_1E7C94E40;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = flags;
   [(RPServer *)self _updateIfNeededWithBlock:v3];
 }
 
@@ -270,24 +270,24 @@ BOOL __28__RPServer_setControlFlags___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = [a3 copy];
+  v4 = [password copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__RPServer_setPassword___block_invoke;
   v6[3] = &unk_1E7C94CB0;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(RPServer *)self _updateIfNeededWithBlock:v6];
 }
@@ -328,15 +328,15 @@ LABEL_7:
   return 0;
 }
 
-- (void)setServiceType:(id)a3
+- (void)setServiceType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__RPServer_setServiceType___block_invoke;
   v6[3] = &unk_1E7C94CB0;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(RPServer *)self _updateIfNeededWithBlock:v6];
 }
@@ -377,13 +377,13 @@ LABEL_7:
   return 0;
 }
 
-- (void)setPasswordType:(int)a3
+- (void)setPasswordType:(int)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __28__RPServer_setPasswordType___block_invoke;
   v3[3] = &unk_1E7C94280;
-  v4 = a3;
+  typeCopy = type;
   v3[4] = self;
   [(RPServer *)self _updateIfNeededWithBlock:v3];
 }
@@ -403,19 +403,19 @@ BOOL __28__RPServer_setPasswordType___block_invoke(uint64_t a1)
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  activateCalled = v2->_activateCalled;
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activateCalled = selfCopy->_activateCalled;
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __20__RPServer_activate__block_invoke;
   v5[3] = &unk_1E7C94E68;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v6 = activateCalled;
   dispatch_async(dispatchQueue, v5);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 int *__20__RPServer_activate__block_invoke(uint64_t a1)
@@ -459,10 +459,10 @@ int *__20__RPServer_activate__block_invoke(uint64_t a1)
   return [v2 _activateWithReactivate:0];
 }
 
-- (void)_activateWithReactivate:(BOOL)a3
+- (void)_activateWithReactivate:(BOOL)reactivate
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (reactivate)
   {
     if (var0 <= 30)
     {
@@ -503,14 +503,14 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = __36__RPServer__activateWithReactivate___block_invoke;
   v12[3] = &unk_1E7C94CD8;
-  v13 = a3;
+  reactivateCopy = reactivate;
   v12[4] = self;
   v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __36__RPServer__activateWithReactivate___block_invoke_2;
   v10[3] = &unk_1E7C94CD8;
-  v11 = a3;
+  reactivateCopy2 = reactivate;
   v10[4] = self;
   [v8 xpcServerActivate:self completion:v10];
 }
@@ -857,24 +857,24 @@ LABEL_6:
   }
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled && !v5->_changesPending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled && !selfCopy->_changesPending)
   {
-    v5->_changesPending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_changesPending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __37__RPServer__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E7C92CE8;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_update
@@ -884,13 +884,13 @@ LABEL_6:
     return;
   }
 
-  v2 = self;
-  objc_sync_enter(v2);
-  changesPending = v2->_changesPending;
-  v2->_changesPending = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  changesPending = selfCopy->_changesPending;
+  selfCopy->_changesPending = 0;
+  objc_sync_exit(selfCopy);
 
-  var0 = v2->_ucat->var0;
+  var0 = selfCopy->_ucat->var0;
   if (!changesPending)
   {
     if (var0 > 10)
@@ -905,7 +905,7 @@ LABEL_6:
         return;
       }
 
-      ucat = v2->_ucat;
+      ucat = selfCopy->_ucat;
     }
 
     LogPrintF();
@@ -921,22 +921,22 @@ LABEL_6:
         goto LABEL_11;
       }
 
-      v6 = v2->_ucat;
+      v6 = selfCopy->_ucat;
     }
 
-    v7 = v2;
+    v7 = selfCopy;
     LogPrintF();
   }
 
 LABEL_11:
-  v8 = [(NSXPCConnection *)v2->_xpcCnx remoteObjectProxy];
-  [v8 xpcServerUpdate:v2];
+  remoteObjectProxy = [(NSXPCConnection *)selfCopy->_xpcCnx remoteObjectProxy];
+  [remoteObjectProxy xpcServerUpdate:selfCopy];
 }
 
-- (void)xpcServerAcceptSession:(id)a3 completion:(id)a4
+- (void)xpcServerAcceptSession:(id)session completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   var0 = self->_ucat->var0;
   if (var0 <= 30)
@@ -960,7 +960,7 @@ LABEL_5:
   v9 = v8;
   if (v8)
   {
-    (*(v8 + 2))(v8, v11, v6);
+    (*(v8 + 2))(v8, sessionCopy, completionCopy);
   }
 }
 

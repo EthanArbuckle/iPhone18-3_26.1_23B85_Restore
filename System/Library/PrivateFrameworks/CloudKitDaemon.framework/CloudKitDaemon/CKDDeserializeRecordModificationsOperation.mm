@@ -1,26 +1,26 @@
 @interface CKDDeserializeRecordModificationsOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (BOOL)validateAgainstLiveContainer:(id)a3 error:(id *)a4;
-- (CKDDeserializeRecordModificationsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (BOOL)validateAgainstLiveContainer:(id)container error:(id *)error;
+- (CKDDeserializeRecordModificationsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)_deserialize;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)_postflightRecords;
 - (void)_setupTranslator;
 @end
 
 @implementation CKDDeserializeRecordModificationsOperation
 
-- (CKDDeserializeRecordModificationsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDDeserializeRecordModificationsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKDDeserializeRecordModificationsOperation;
-  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_serializedModifications(v6, v7, v8);
+    v10 = objc_msgSend_serializedModifications(infoCopy, v7, v8);
     serializedModifications = v9->_serializedModifications;
     v9->_serializedModifications = v10;
   }
@@ -69,37 +69,37 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 3)
+  if (state - 2 >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDDeserializeRecordModificationsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_2785495A8[a3 - 2];
+    v5 = off_2785495A8[state - 2];
   }
 
   return v5;
 }
 
-- (BOOL)validateAgainstLiveContainer:(id)a3 error:(id *)a4
+- (BOOL)validateAgainstLiveContainer:(id)container error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  containerCopy = container;
   v24.receiver = self;
   v24.super_class = CKDDeserializeRecordModificationsOperation;
-  if (![(CKDOperation *)&v24 validateAgainstLiveContainer:v6 error:a4])
+  if (![(CKDOperation *)&v24 validateAgainstLiveContainer:containerCopy error:error])
   {
     goto LABEL_9;
   }
 
-  v9 = objc_msgSend_entitlements(v6, v7, v8);
+  v9 = objc_msgSend_entitlements(containerCopy, v7, v8);
   hasAllowRealTimeOperationsEntitlement = objc_msgSend_hasAllowRealTimeOperationsEntitlement(v9, v10, v11);
 
   if ((hasAllowRealTimeOperationsEntitlement & 1) == 0)
@@ -119,13 +119,13 @@
       v26 = v23;
       _os_log_error_impl(&dword_22506F000, v21, OS_LOG_TYPE_ERROR, "Operation %{public}@ is not allowed to run without an entitlement", buf, 0xCu);
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_10;
     }
@@ -134,32 +134,32 @@
     v15 = *MEMORY[0x277CBBF50];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    *a4 = objc_msgSend_errorWithDomain_code_format_(v14, v18, v15, 8, @"Operation %@ is not allowed to run without an entitlement", v17);
+    *error = objc_msgSend_errorWithDomain_code_format_(v14, v18, v15, 8, @"Operation %@ is not allowed to run without an entitlement", v17);
 
 LABEL_9:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_10;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_10:
 
   v19 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_msgSend_deserializeCompletionBlock(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_deserializeCompletionBlock(self, v8, v9);
     v13 = v10;
-    if (v4)
+    if (errorCopy)
     {
-      (*(v10 + 16))(v10, 0, 0, v4);
+      (*(v10 + 16))(v10, 0, 0, errorCopy);
     }
 
     else
@@ -174,7 +174,7 @@ LABEL_10:
 
   v19.receiver = self;
   v19.super_class = CKDDeserializeRecordModificationsOperation;
-  [(CKDOperation *)&v19 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v19 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)_setupTranslator

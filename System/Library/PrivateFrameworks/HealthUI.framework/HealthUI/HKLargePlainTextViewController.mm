@@ -1,35 +1,35 @@
 @interface HKLargePlainTextViewController
-- (BOOL)_updateMatchDisplayString:(unint64_t)a3 numMatches:(unint64_t)a4;
-- (HKLargePlainTextViewController)initWithData:(id)a3;
-- (id)_selectionAttributes:(BOOL)a3;
+- (BOOL)_updateMatchDisplayString:(unint64_t)string numMatches:(unint64_t)matches;
+- (HKLargePlainTextViewController)initWithData:(id)data;
+- (id)_selectionAttributes:(BOOL)attributes;
 - (id)searchBodyWithAttributes;
-- (void)_updateCurrentSearchItem:(unint64_t)a3 hitsChanged:(BOOL)a4 resetSearch:(BOOL)a5;
-- (void)addSearchResults:(IncrementalSearchResultsDefn *)a3;
+- (void)_updateCurrentSearchItem:(unint64_t)item hitsChanged:(BOOL)changed resetSearch:(BOOL)search;
+- (void)addSearchResults:(IncrementalSearchResultsDefn *)results;
 - (void)cancelCurrentSearch;
 - (void)endSearchResults;
 - (void)finishSearchResults;
-- (void)incrementalSearchOperation:(id)a3;
+- (void)incrementalSearchOperation:(id)operation;
 - (void)loadView;
 - (void)resetSearchResults;
-- (void)searchBarDoneAction:(id)a3;
-- (void)searchBarUpAction:(id)a3;
+- (void)searchBarDoneAction:(id)action;
+- (void)searchBarUpAction:(id)action;
 - (void)startIncrementalSearch;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HKLargePlainTextViewController
 
-- (HKLargePlainTextViewController)initWithData:(id)a3
+- (HKLargePlainTextViewController)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v30.receiver = self;
   v30.super_class = HKLargePlainTextViewController;
   v6 = [(HKLargePlainTextViewController *)&v30 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v5 encoding:4];
+    objc_storeStrong(&v6->_data, data);
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
     dataAsString = v7->_dataAsString;
     v7->_dataAsString = v8;
 
@@ -51,29 +51,29 @@
     v7->_currentRanges = v15;
 
     v7->_currentSearchItem = 0;
-    v17 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
     normalTextViewBackground = v7->_normalTextViewBackground;
-    v7->_normalTextViewBackground = v17;
+    v7->_normalTextViewBackground = systemBackgroundColor;
 
-    v19 = [MEMORY[0x1E69DC888] systemGray3Color];
+    systemGray3Color = [MEMORY[0x1E69DC888] systemGray3Color];
     selectedTextViewBackground = v7->_selectedTextViewBackground;
-    v7->_selectedTextViewBackground = v19;
+    v7->_selectedTextViewBackground = systemGray3Color;
 
-    v21 = [MEMORY[0x1E69DC888] systemBlackColor];
+    systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
     currentSelectionForeground = v7->_currentSelectionForeground;
-    v7->_currentSelectionForeground = v21;
+    v7->_currentSelectionForeground = systemBlackColor;
 
-    v23 = [MEMORY[0x1E69DC888] systemYellowColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
     currentSelectionBackground = v7->_currentSelectionBackground;
-    v7->_currentSelectionBackground = v23;
+    v7->_currentSelectionBackground = systemYellowColor;
 
-    v25 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     otherSelectionForeground = v7->_otherSelectionForeground;
-    v7->_otherSelectionForeground = v25;
+    v7->_otherSelectionForeground = labelColor;
 
-    v27 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
     otherSelectionBackground = v7->_otherSelectionBackground;
-    v7->_otherSelectionBackground = v27;
+    v7->_otherSelectionBackground = systemBackgroundColor2;
 
     v7->_currentKeyboardHeight = 0.0;
   }
@@ -84,8 +84,8 @@
 - (void)startIncrementalSearch
 {
   [(HKIncrementalSearchBar *)self->_incrementalSearchBar activateSearch:1];
-  v3 = [(HKLargePlainTextViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(HKLargePlainTextViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)loadView
@@ -99,8 +99,8 @@
   self->_textView = v5;
 
   [(UITextView *)self->_textView setEditable:0];
-  v7 = [(HKLargePlainTextViewController *)self searchBodyWithAttributes];
-  [(UITextView *)self->_textView setAttributedText:v7];
+  searchBodyWithAttributes = [(HKLargePlainTextViewController *)self searchBodyWithAttributes];
+  [(UITextView *)self->_textView setAttributedText:searchBodyWithAttributes];
   [v11 addArrangedSubview:self->_textView];
   v8 = objc_alloc_init(HKIncrementalSearchBar);
   incrementalSearchBar = self->_incrementalSearchBar;
@@ -113,29 +113,29 @@
   [(HKLargePlainTextViewController *)self setView:v11];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = HKLargePlainTextViewController;
-  [(HKLargePlainTextViewController *)&v4 viewWillDisappear:a3];
+  [(HKLargePlainTextViewController *)&v4 viewWillDisappear:disappear];
   [(HKLargePlainTextViewController *)self searchBarDoneAction:self];
 }
 
-- (id)_selectionAttributes:(BOOL)a3
+- (id)_selectionAttributes:(BOOL)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v18[3] = *MEMORY[0x1E69E9840];
-  v5 = [(HKLargePlainTextViewController *)self _standardPlainTextFont];
-  v6 = v5;
+  _standardPlainTextFont = [(HKLargePlainTextViewController *)self _standardPlainTextFont];
+  v6 = _standardPlainTextFont;
   v7 = &OBJC_IVAR___HKLargePlainTextViewController__otherSelectionForeground;
-  if (v3)
+  if (attributesCopy)
   {
     v7 = &OBJC_IVAR___HKLargePlainTextViewController__currentSelectionForeground;
   }
 
   v8 = *(&self->super.super.super.super.isa + *v7);
   v9 = &OBJC_IVAR___HKLargePlainTextViewController__otherSelectionBackground;
-  if (v3)
+  if (attributesCopy)
   {
     v9 = &OBJC_IVAR___HKLargePlainTextViewController__currentSelectionBackground;
   }
@@ -144,7 +144,7 @@
   v11 = *MEMORY[0x1E69DB650];
   v17[0] = *MEMORY[0x1E69DB648];
   v17[1] = v11;
-  v18[0] = v5;
+  v18[0] = _standardPlainTextFont;
   v18[1] = v8;
   v17[2] = *MEMORY[0x1E69DB600];
   v18[2] = v10;
@@ -159,13 +159,13 @@
 - (id)searchBodyWithAttributes
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v3 = [(HKLargePlainTextViewController *)self _standardPlainTextFont];
+  _standardPlainTextFont = [(HKLargePlainTextViewController *)self _standardPlainTextFont];
   v4 = *MEMORY[0x1E69DB650];
   v22[0] = *MEMORY[0x1E69DB648];
   v22[1] = v4;
-  v23[0] = v3;
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  v23[1] = v5;
+  v23[0] = _standardPlainTextFont;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v23[1] = labelColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
 
   v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:self->_dataAsString attributes:v6];
@@ -189,8 +189,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) rangeValue];
-        [v7 addAttributes:v8 range:{v14, v15}];
+        rangeValue = [*(*(&v17 + 1) + 8 * i) rangeValue];
+        [v7 addAttributes:v8 range:{rangeValue, v15}];
       }
 
       v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -205,8 +205,8 @@
 - (void)resetSearchResults
 {
   [(NSMutableArray *)self->_currentRanges removeAllObjects];
-  v3 = [(HKLargePlainTextViewController *)self searchBodyWithAttributes];
-  [(UITextView *)self->_textView setAttributedText:v3];
+  searchBodyWithAttributes = [(HKLargePlainTextViewController *)self searchBodyWithAttributes];
+  [(UITextView *)self->_textView setAttributedText:searchBodyWithAttributes];
 }
 
 - (void)endSearchResults
@@ -243,13 +243,13 @@
   }
 }
 
-- (void)addSearchResults:(IncrementalSearchResultsDefn *)a3
+- (void)addSearchResults:(IncrementalSearchResultsDefn *)results
 {
   v5 = [(NSMutableArray *)self->_currentRanges count];
   v6 = [(NSMutableArray *)self->_currentRanges count];
-  v7 = [(UITextView *)self->_textView textStorage];
+  textStorage = [(UITextView *)self->_textView textStorage];
   v12 = v5;
-  v13 = v7;
+  v13 = textStorage;
   if (v6 > 0x3FF)
   {
     v8 = 0;
@@ -257,14 +257,14 @@
 
   else
   {
-    [v7 beginEditing];
+    [textStorage beginEditing];
     v8 = [(HKLargePlainTextViewController *)self _selectionAttributes:0];
   }
 
-  if (a3->var0)
+  if (results->var0)
   {
     v9 = 0;
-    p_length = &a3->var1[0].length;
+    p_length = &results->var1[0].length;
     do
     {
       v11 = [MEMORY[0x1E696B098] valueWithRange:{*(p_length - 1), *p_length, v12}];
@@ -278,7 +278,7 @@
       p_length += 2;
     }
 
-    while (a3->var0 > v9);
+    while (results->var0 > v9);
   }
 
   if (v6 < 0x400)
@@ -298,9 +298,9 @@
   }
 }
 
-- (void)incrementalSearchOperation:(id)a3
+- (void)incrementalSearchOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   [(HKLargePlainTextViewController *)self cancelCurrentSearch];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -317,9 +317,9 @@
   v9[4] = self;
   objc_copyWeak(&v10, &location);
   v6 = _Block_copy(v9);
-  if (v4 && [v4 length])
+  if (operationCopy && [operationCopy length])
   {
-    v7 = [[_IncrementalSearchOperation alloc] initWithSearchString:v4 searchBody:self->_dataAsString resultsBlock:v5 finishedBlock:v6];
+    v7 = [[_IncrementalSearchOperation alloc] initWithSearchString:operationCopy searchBody:self->_dataAsString resultsBlock:v5 finishedBlock:v6];
     currentSearch = self->_currentSearch;
     self->_currentSearch = v7;
 
@@ -382,11 +382,11 @@ void __61__HKLargePlainTextViewController_incrementalSearchOperation___block_inv
   [WeakRetained finishSearchResults];
 }
 
-- (BOOL)_updateMatchDisplayString:(unint64_t)a3 numMatches:(unint64_t)a4
+- (BOOL)_updateMatchDisplayString:(unint64_t)string numMatches:(unint64_t)matches
 {
-  if (a4)
+  if (matches)
   {
-    if (a4 == 1)
+    if (matches == 1)
     {
       v6 = HKLocalizedStringForNumberWithTemplate(&unk_1F43845D0, 0);
       v7 = MEMORY[0x1E696AEC0];
@@ -397,10 +397,10 @@ void __61__HKLargePlainTextViewController_incrementalSearchOperation___block_inv
 
     else
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3 + 1];
+      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:string + 1];
       v6 = HKLocalizedStringForNumberWithTemplate(v13, 1);
 
-      if (a4 > 0x3FF)
+      if (matches > 0x3FF)
       {
         v8 = HKLocalizedStringForNumberWithTemplate(&unk_1F43845E8, 1);
         v15 = MEMORY[0x1E696AEC0];
@@ -411,7 +411,7 @@ void __61__HKLargePlainTextViewController_incrementalSearchOperation___block_inv
 
       else
       {
-        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:matches];
         v8 = HKLocalizedStringForNumberWithTemplate(v14, 1);
 
         v15 = MEMORY[0x1E696AEC0];
@@ -427,8 +427,8 @@ void __61__HKLargePlainTextViewController_incrementalSearchOperation___block_inv
     goto LABEL_11;
   }
 
-  v11 = [(HKIncrementalSearchBar *)self->_incrementalSearchBar searchText];
-  v12 = [v11 length];
+  searchText = [(HKIncrementalSearchBar *)self->_incrementalSearchBar searchText];
+  v12 = [searchText length];
 
   if (v12)
   {
@@ -443,13 +443,13 @@ LABEL_11:
   return 0;
 }
 
-- (void)_updateCurrentSearchItem:(unint64_t)a3 hitsChanged:(BOOL)a4 resetSearch:(BOOL)a5
+- (void)_updateCurrentSearchItem:(unint64_t)item hitsChanged:(BOOL)changed resetSearch:(BOOL)search
 {
-  v5 = a5;
-  v8 = [(NSMutableArray *)self->_currentRanges count:a3];
-  if (self->_currentSearchItem != a3 || v5)
+  searchCopy = search;
+  v8 = [(NSMutableArray *)self->_currentRanges count:item];
+  if (self->_currentSearchItem != item || searchCopy)
   {
-    v10 = [(UITextView *)self->_textView textStorage];
+    textStorage = [(UITextView *)self->_textView textStorage];
     if (self->_currentSearchItem >= v8)
     {
       v11 = 0;
@@ -461,45 +461,45 @@ LABEL_11:
     }
 
     v26 = v11;
-    v12 = [v11 rangeValue];
+    rangeValue = [v11 rangeValue];
     v22 = v13;
-    v24 = v12;
-    if (v8 <= a3)
+    v24 = rangeValue;
+    if (v8 <= item)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = [(NSMutableArray *)self->_currentRanges objectAtIndexedSubscript:a3];
+      v14 = [(NSMutableArray *)self->_currentRanges objectAtIndexedSubscript:item];
     }
 
-    v15 = [v14 rangeValue];
+    rangeValue2 = [v14 rangeValue];
     v17 = v16;
     v18 = [(HKLargePlainTextViewController *)self _selectionAttributes:0];
     v19 = [(HKLargePlainTextViewController *)self _selectionAttributes:1];
-    [v10 beginEditing];
+    [textStorage beginEditing];
     if (self->_currentSearchItem < v8)
     {
-      [v10 setAttributes:v18 range:{v25, v23}];
+      [textStorage setAttributes:v18 range:{v25, v23}];
     }
 
-    if (v8 <= a3)
+    if (v8 <= item)
     {
-      [v10 endEditing];
+      [textStorage endEditing];
     }
 
     else
     {
-      [v10 setAttributes:v19 range:{v15, v17}];
-      [v10 endEditing];
-      [(UITextView *)self->_textView scrollRangeToVisible:v15, v17];
+      [textStorage setAttributes:v19 range:{rangeValue2, v17}];
+      [textStorage endEditing];
+      [(UITextView *)self->_textView scrollRangeToVisible:rangeValue2, v17];
     }
   }
 
   if (v8)
   {
-    v20 = a3 != 0;
+    v20 = item != 0;
   }
 
   else
@@ -508,16 +508,16 @@ LABEL_11:
   }
 
   [(HKIncrementalSearchBar *)self->_incrementalSearchBar setUpEnabled:v20];
-  v21 = v8 - 1 > a3 && v8 != 0;
+  v21 = v8 - 1 > item && v8 != 0;
   [(HKIncrementalSearchBar *)self->_incrementalSearchBar setDownEnabled:v21];
-  [(HKIncrementalSearchBar *)self->_incrementalSearchBar setMatchDisplayVisible:[(HKLargePlainTextViewController *)self _updateMatchDisplayString:a3 numMatches:v8]];
-  if (v8 > a3)
+  [(HKIncrementalSearchBar *)self->_incrementalSearchBar setMatchDisplayVisible:[(HKLargePlainTextViewController *)self _updateMatchDisplayString:item numMatches:v8]];
+  if (v8 > item)
   {
-    self->_currentSearchItem = a3;
+    self->_currentSearchItem = item;
   }
 }
 
-- (void)searchBarUpAction:(id)a3
+- (void)searchBarUpAction:(id)action
 {
   currentSearchItem = self->_currentSearchItem;
   if (currentSearchItem >= 1)
@@ -526,7 +526,7 @@ LABEL_11:
   }
 }
 
-- (void)searchBarDoneAction:(id)a3
+- (void)searchBarDoneAction:(id)action
 {
   [(HKIncrementalSearchBar *)self->_incrementalSearchBar activateSearch:0];
 

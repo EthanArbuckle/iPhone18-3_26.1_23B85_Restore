@@ -1,20 +1,20 @@
 @interface NCNotificationListMigrationScheduler
-- (NCNotificationListMigrationScheduler)initWithDelegate:(id)a3;
+- (NCNotificationListMigrationScheduler)initWithDelegate:(id)delegate;
 - (NCNotificationListMigrationSchedulerDelegate)delegate;
 - (NSDate)upcomingScheduledMigrationDate;
 - (id)_nextScheduleDateForMigration;
-- (id)_notificationRequestMatchingRequest:(id)a3;
-- (void)_handleTimeOrLocaleChange:(id)a3;
-- (void)_migrationTimerFiredForTimer:(id)a3;
-- (void)_scheduleMigrationTimerForDate:(id)a3;
+- (id)_notificationRequestMatchingRequest:(id)request;
+- (void)_handleTimeOrLocaleChange:(id)change;
+- (void)_migrationTimerFiredForTimer:(id)timer;
+- (void)_scheduleMigrationTimerForDate:(id)date;
 - (void)_sendDigestMigrationSignalIfNecessary;
 - (void)_sendNotificationRequestMigrationSignalIfNecessary;
 - (void)_updateMigrationScheduleTimer;
-- (void)addMigratedTimeSensitiveNotificationRequests:(id)a3;
-- (void)addMigrationForNotificationRequests:(id)a3 forDate:(id)a4;
-- (void)removeMigratedTimeSensitiveNotificationRequests:(id)a3;
-- (void)removeMigrationForNotificationRequest:(id)a3;
-- (void)setMigrationDateForNotificationDigest:(id)a3;
+- (void)addMigratedTimeSensitiveNotificationRequests:(id)requests;
+- (void)addMigrationForNotificationRequests:(id)requests forDate:(id)date;
+- (void)removeMigratedTimeSensitiveNotificationRequests:(id)requests;
+- (void)removeMigrationForNotificationRequest:(id)request;
+- (void)setMigrationDateForNotificationDigest:(id)digest;
 @end
 
 @implementation NCNotificationListMigrationScheduler
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (NCNotificationListMigrationScheduler)initWithDelegate:(id)a3
+- (NCNotificationListMigrationScheduler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = NCNotificationListMigrationScheduler;
   v5 = [(NCNotificationListMigrationScheduler *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.usernotifications.NCNotificationListMigrationSchedulerTimerQueue", v7);
     scheduleTimerQueue = v6->_scheduleTimerQueue;
@@ -54,30 +54,30 @@
     v6->_migrationRequestCounterForNotificationRequests = v14;
 
     v16 = v6->_dateFormatter;
-    v17 = [MEMORY[0x277CBEAF8] currentLocale];
-    [(NSDateFormatter *)v16 setLocale:v17];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [(NSDateFormatter *)v16 setLocale:currentLocale];
 
     [(NSDateFormatter *)v6->_dateFormatter setDateStyle:1];
     [(NSDateFormatter *)v6->_dateFormatter setTimeStyle:3];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v6 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277D766F0] object:0];
-    [v18 addObserver:v6 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277D766F0] object:0];
+    [defaultCenter addObserver:v6 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v6;
 }
 
-- (void)addMigrationForNotificationRequests:(id)a3 forDate:(id)a4
+- (void)addMigrationForNotificationRequests:(id)requests forDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __84__NCNotificationListMigrationScheduler_addMigrationForNotificationRequests_forDate___block_invoke;
   v11 = &unk_2783705B0;
-  v12 = self;
-  v13 = v6;
-  v7 = v6;
-  [a3 enumerateObjectsUsingBlock:&v8];
+  selfCopy = self;
+  v13 = dateCopy;
+  v7 = dateCopy;
+  [requests enumerateObjectsUsingBlock:&v8];
   [(NCNotificationListMigrationScheduler *)self _updateMigrationScheduleTimer:v8];
 }
 
@@ -281,11 +281,11 @@ LABEL_11:
 LABEL_27:
 }
 
-- (void)removeMigrationForNotificationRequest:(id)a3
+- (void)removeMigrationForNotificationRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationListMigrationScheduler *)self _notificationRequestMatchingRequest:v4];
+  requestCopy = request;
+  v5 = [(NCNotificationListMigrationScheduler *)self _notificationRequestMatchingRequest:requestCopy];
   if (v5)
   {
     v6 = *MEMORY[0x277D77DD0];
@@ -294,12 +294,12 @@ LABEL_27:
       v7 = v6;
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v4 notificationIdentifier];
-      v11 = [v10 un_logDigest];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v14 = 138543618;
       v15 = v9;
       v16 = 2114;
-      v17 = v11;
+      v17 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ removing scheduled migration for request %{public}@", &v14, 0x16u);
     }
 
@@ -319,14 +319,14 @@ LABEL_27:
   }
 }
 
-- (void)setMigrationDateForNotificationDigest:(id)a3
+- (void)setMigrationDateForNotificationDigest:(id)digest
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(NCNotificationListMigrationScheduler *)self migrationDateForNotificationDigest];
-  if (([v6 isEqualToDate:v5] & 1) == 0)
+  digestCopy = digest;
+  migrationDateForNotificationDigest = [(NCNotificationListMigrationScheduler *)self migrationDateForNotificationDigest];
+  if (([migrationDateForNotificationDigest isEqualToDate:digestCopy] & 1) == 0)
   {
-    if (!v5 || ([v5 earlierDate:v6], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v5))
+    if (!digestCopy || ([digestCopy earlierDate:migrationDateForNotificationDigest], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == digestCopy))
     {
       v8 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -334,7 +334,7 @@ LABEL_27:
         v9 = v8;
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
-        v12 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v5];
+        v12 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:digestCopy];
         v13 = 138543618;
         v14 = v11;
         v15 = 2112;
@@ -342,17 +342,17 @@ LABEL_27:
         _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ scheduling migration for digest at %@", &v13, 0x16u);
       }
 
-      objc_storeStrong(&self->_migrationDateForNotificationDigest, a3);
+      objc_storeStrong(&self->_migrationDateForNotificationDigest, digest);
       [(NCNotificationListMigrationScheduler *)self _updateMigrationScheduleTimer];
     }
   }
 }
 
-- (void)addMigratedTimeSensitiveNotificationRequests:(id)a3
+- (void)addMigratedTimeSensitiveNotificationRequests:(id)requests
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 interruptionLevel] == 2)
+  requestsCopy = requests;
+  if ([requestsCopy interruptionLevel] == 2)
   {
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -360,24 +360,24 @@ LABEL_27:
       v6 = v5;
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 notificationIdentifier];
-      v10 = [v9 un_logDigest];
+      notificationIdentifier = [requestsCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v11 = 138543618;
       v12 = v8;
       v13 = 2114;
-      v14 = v10;
+      v14 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ add MigratedTimeSensitiveNotificationRequests %{public}@", &v11, 0x16u);
     }
 
-    [(NSMutableSet *)self->_migratedTimeSensitiveNotificationRequests addObject:v4];
+    [(NSMutableSet *)self->_migratedTimeSensitiveNotificationRequests addObject:requestsCopy];
   }
 }
 
-- (void)removeMigratedTimeSensitiveNotificationRequests:(id)a3
+- (void)removeMigratedTimeSensitiveNotificationRequests:(id)requests
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 interruptionLevel] == 2)
+  requestsCopy = requests;
+  if ([requestsCopy interruptionLevel] == 2)
   {
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -385,30 +385,30 @@ LABEL_27:
       v6 = v5;
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 notificationIdentifier];
-      v10 = [v9 un_logDigest];
+      notificationIdentifier = [requestsCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v11 = 138543618;
       v12 = v8;
       v13 = 2114;
-      v14 = v10;
+      v14 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ remove MigratedTimeSensitiveNotificationRequests %{public}@", &v11, 0x16u);
     }
 
-    [(NSMutableSet *)self->_migratedTimeSensitiveNotificationRequests removeObject:v4];
+    [(NSMutableSet *)self->_migratedTimeSensitiveNotificationRequests removeObject:requestsCopy];
   }
 }
 
-- (id)_notificationRequestMatchingRequest:(id)a3
+- (id)_notificationRequestMatchingRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_migrationDatesForNotificationRequests allKeys];
+  requestCopy = request;
+  allKeys = [(NSMutableDictionary *)self->_migrationDatesForNotificationRequests allKeys];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__NCNotificationListMigrationScheduler__notificationRequestMatchingRequest___block_invoke;
   v10[3] = &unk_278370180;
-  v6 = v4;
+  v6 = requestCopy;
   v11 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v10];
+  v7 = [allKeys indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -416,7 +416,7 @@ LABEL_27:
 
   else
   {
-    v8 = [v5 objectAtIndex:v7];
+    v8 = [allKeys objectAtIndex:v7];
   }
 
   return v8;
@@ -438,8 +438,8 @@ uint64_t __76__NCNotificationListMigrationScheduler__notificationRequestMatching
 - (void)_updateMigrationScheduleTimer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(NCNotificationListMigrationScheduler *)self _nextScheduleDateForMigration];
-  if ([(NSDate *)self->_currentlyScheduledDate isEqualToDate:v3])
+  _nextScheduleDateForMigration = [(NCNotificationListMigrationScheduler *)self _nextScheduleDateForMigration];
+  if ([(NSDate *)self->_currentlyScheduledDate isEqualToDate:_nextScheduleDateForMigration])
   {
     v4 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -458,7 +458,7 @@ uint64_t __76__NCNotificationListMigrationScheduler__notificationRequestMatching
 
   else
   {
-    objc_storeStrong(&self->_currentlyScheduledDate, v3);
+    objc_storeStrong(&self->_currentlyScheduledDate, _nextScheduleDateForMigration);
     currentlyScheduledDate = self->_currentlyScheduledDate;
     v10 = *MEMORY[0x277D77DD0];
     v11 = os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT);
@@ -469,7 +469,7 @@ uint64_t __76__NCNotificationListMigrationScheduler__notificationRequestMatching
         v12 = v10;
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v3];
+        v15 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:_nextScheduleDateForMigration];
         v20 = 138543618;
         v21 = v14;
         v22 = 2112;
@@ -502,10 +502,10 @@ uint64_t __76__NCNotificationListMigrationScheduler__notificationRequestMatching
   }
 }
 
-- (void)_scheduleMigrationTimerForDate:(id)a3
+- (void)_scheduleMigrationTimerForDate:(id)date
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   scheduleTimer = self->_scheduleTimer;
   if (scheduleTimer)
   {
@@ -514,19 +514,19 @@ uint64_t __76__NCNotificationListMigrationScheduler__notificationRequestMatching
     self->_scheduleTimer = 0;
   }
 
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v7 <= 0.0)
   {
     v16 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
     {
-      [(NCNotificationListMigrationScheduler *)v16 _scheduleMigrationTimerForDate:v4];
+      [(NCNotificationListMigrationScheduler *)v16 _scheduleMigrationTimerForDate:dateCopy];
     }
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277D3A180]) initWithFireDate:v4 serviceIdentifier:@"com.apple.usernotifications.listMigrationSchedulerTimer" target:self selector:sel__migrationTimerFiredForTimer_ userInfo:0];
+    v8 = [objc_alloc(MEMORY[0x277D3A180]) initWithFireDate:dateCopy serviceIdentifier:@"com.apple.usernotifications.listMigrationSchedulerTimer" target:self selector:sel__migrationTimerFiredForTimer_ userInfo:0];
     v9 = self->_scheduleTimer;
     self->_scheduleTimer = v8;
 
@@ -540,7 +540,7 @@ uint64_t __76__NCNotificationListMigrationScheduler__notificationRequestMatching
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = self->_scheduleTimer;
-      v15 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v4];
+      v15 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:dateCopy];
       v17 = 138543874;
       v18 = v13;
       v19 = 2112;
@@ -594,13 +594,13 @@ uint64_t __76__NCNotificationListMigrationScheduler__notificationRequestMatching
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v19[5] notificationIdentifier];
-      v10 = [v9 un_logDigest];
+      notificationIdentifier = [v19[5] notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v11 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v25[5]];
       *buf = 138543874;
       v31 = v8;
       v32 = 2114;
-      v33 = v10;
+      v33 = un_logDigest;
       v34 = 2112;
       v35 = v11;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ next scheduled migration timer for request %{public}@ for date %@", buf, 0x20u);
@@ -686,7 +686,7 @@ void __69__NCNotificationListMigrationScheduler__nextScheduleDateForMigration__b
   }
 }
 
-- (void)_migrationTimerFiredForTimer:(id)a3
+- (void)_migrationTimerFiredForTimer:(id)timer
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -729,8 +729,8 @@ uint64_t __69__NCNotificationListMigrationScheduler__migrationTimerFiredForTimer
         _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ sending signal for digest migration for scheduled date %@", &v12, 0x16u);
       }
 
-      v11 = [(NCNotificationListMigrationScheduler *)self delegate];
-      [v11 notificationListMigrationSchedulerRequestsMigratingNotificationDigest:self];
+      delegate = [(NCNotificationListMigrationScheduler *)self delegate];
+      [delegate notificationListMigrationSchedulerRequestsMigratingNotificationDigest:self];
     }
   }
 }
@@ -749,8 +749,8 @@ uint64_t __69__NCNotificationListMigrationScheduler__migrationTimerFiredForTimer
   [(NSMutableDictionary *)migrationDatesForNotificationRequests enumerateKeysAndObjectsUsingBlock:v8];
   if ([v5 count])
   {
-    v6 = [(NCNotificationListMigrationScheduler *)self delegate];
-    [v6 notificationListMigrationScheduler:self requestsMigratingNotificationRequests:v5];
+    delegate = [(NCNotificationListMigrationScheduler *)self delegate];
+    [delegate notificationListMigrationScheduler:self requestsMigratingNotificationRequests:v5];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __90__NCNotificationListMigrationScheduler__sendNotificationRequestMigrationSignalIfNecessary__block_invoke_19;
@@ -790,22 +790,22 @@ void __90__NCNotificationListMigrationScheduler__sendNotificationRequestMigratio
   }
 }
 
-- (void)_handleTimeOrLocaleChange:(id)a3
+- (void)_handleTimeOrLocaleChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = a3;
+    changeCopy = change;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 name];
+    name = [changeCopy name];
 
     v11 = 138543618;
     v12 = v9;
     v13 = 2112;
-    v14 = v10;
+    v14 = name;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ updating migration on time or locale change for notification %@", &v11, 0x16u);
   }
 

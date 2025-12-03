@@ -9,24 +9,24 @@
   v45 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v43 = 0;
-  v7 = [a1 attributesOfItemAtPath:v6 error:&v43];
+  v7 = [self attributesOfItemAtPath:v6 error:&v43];
   v8 = v43;
-  v9 = [v7 fileType];
+  fileType = [v7 fileType];
   v10 = *MEMORY[0x277CCA1E8];
-  if (([v9 isEqualToString:*MEMORY[0x277CCA1E8]] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277CCA1F0]) & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277CCA1F8]))
+  if (([fileType isEqualToString:*MEMORY[0x277CCA1E8]] & 1) != 0 || (objc_msgSend(fileType, "isEqualToString:", *MEMORY[0x277CCA1F0]) & 1) != 0 || objc_msgSend(fileType, "isEqualToString:", *MEMORY[0x277CCA1F8]))
   {
     v35 = a4;
-    v11 = [v7 filePosixPermissions];
+    filePosixPermissions = [v7 filePosixPermissions];
     v12 = MEMORY[0x277CBEAC0];
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11 | 0x80];
-    v14 = [v12 dictionaryWithObject:v13 forKey:*MEMORY[0x277CCA180]];
+    0x80 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:filePosixPermissions | 0x80];
+    v14 = [v12 dictionaryWithObject:0x80 forKey:*MEMORY[0x277CCA180]];
     v42 = v8;
-    v15 = [a1 setAttributes:v14 ofItemAtPath:v6 error:&v42];
+    v15 = [self setAttributes:v14 ofItemAtPath:v6 error:&v42];
     v16 = v42;
 
     if (v15)
     {
-      if (![v9 isEqualToString:v10])
+      if (![fileType isEqualToString:v10])
       {
         v27 = 1;
 LABEL_26:
@@ -34,14 +34,14 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v34 = v9;
+      v34 = fileType;
       v17 = objc_autoreleasePoolPush();
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
       v37 = 0;
-      v18 = [a1 contentsOfDirectoryAtPath:v6 error:&v37];
+      v18 = [self contentsOfDirectoryAtPath:v6 error:&v37];
       v19 = v37;
       v20 = [v18 countByEnumeratingWithState:&v38 objects:v44 count:16];
       if (v20)
@@ -64,7 +64,7 @@ LABEL_26:
 
             v25 = [v6 stringByAppendingPathComponent:*(*(&v38 + 1) + 8 * v23)];
             v36 = v24;
-            v26 = [a1 tsu_grantUserWritePosixPermissionAtPath:v25 error:&v36];
+            v26 = [self tsu_grantUserWritePosixPermissionAtPath:v25 error:&v36];
             v19 = v36;
 
             if ((v26 & 1) == 0)
@@ -104,7 +104,7 @@ LABEL_18:
       }
 
       objc_autoreleasePoolPop(v17);
-      v9 = v34;
+      fileType = v34;
     }
 
     else

@@ -1,21 +1,21 @@
 @interface HMDHomeData
 + (void)configureKeyedArchiverClassMappings;
-- (id)homeWithUUID:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)homeWithUUID:(id)d;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMDHomeData
 
-- (id)homeWithUUID:(id)a3
+- (id)homeWithUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HMDHomeData *)self homes];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  homes = [(HMDHomeData *)self homes];
+  v6 = [homes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -25,12 +25,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(homes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v10 isEqual:v4];
+        uuid = [v9 uuid];
+        v11 = [uuid isEqual:dCopy];
 
         if (v11)
         {
@@ -39,7 +39,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [homes countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -56,10 +56,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [+[HMDMutableHomeData allocWithZone:](HMDMutableHomeData init];
-  __HMDHomeDataCopyProperties(v5, self, a3);
+  __HMDHomeDataCopyProperties(v5, self, zone);
   return v5;
 }
 

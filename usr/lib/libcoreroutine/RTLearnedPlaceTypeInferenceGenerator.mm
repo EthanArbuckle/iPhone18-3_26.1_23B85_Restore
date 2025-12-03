@@ -1,50 +1,50 @@
 @interface RTLearnedPlaceTypeInferenceGenerator
 + (id)getCandidateGenerationParameters;
-+ (id)modelTypeToString:(unint64_t)a3;
-+ (id)placeTypeClassificationSourceToString:(unint64_t)a3;
-+ (id)placeTypeClassifierModelTargetClass:(unint64_t)a3;
-+ (id)placeTypeClassifierModelThresholdForPlatform:(id)a3 placeType:(unint64_t)a4;
-+ (id)sortPlaceStats:(id)a3;
++ (id)modelTypeToString:(unint64_t)string;
++ (id)placeTypeClassificationSourceToString:(unint64_t)string;
++ (id)placeTypeClassifierModelTargetClass:(unint64_t)class;
++ (id)placeTypeClassifierModelThresholdForPlatform:(id)platform placeType:(unint64_t)type;
++ (id)sortPlaceStats:(id)stats;
 - (BOOL)supportsModel;
-- (RTLearnedPlaceTypeInferenceGenerator)initWithBiomeManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 learnedLocationStore:(id)a6 placeTypeClassifierMetricsCalculator:(id)a7 platform:(id)a8;
-- (id)_getCandidatePlaceStatsFromPlaceStats:(id)a3;
+- (RTLearnedPlaceTypeInferenceGenerator)initWithBiomeManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator learnedLocationStore:(id)store placeTypeClassifierMetricsCalculator:(id)metricsCalculator platform:(id)platform;
+- (id)_getCandidatePlaceStatsFromPlaceStats:(id)stats;
 - (id)_getFullLocationHistoryDateInterval;
-- (id)_inferPlaceTypesFromMultiClassModelForPlaceType:(unint64_t)a3 placeStats:(id)a4 metricsData:(id)a5;
-- (id)_inferPlaceTypesFromRankerModelForPlaceType:(unint64_t)a3 placeStats:(id)a4 metricsData:(id)a5;
-- (id)filterPlaceStats:(id)a3 referenceLearnedPlace:(id)a4 minDistanceThreshold:(id)a5 maxDistanceThreshold:(id)a6;
-- (id)filteredPlaceStatsByWeeklyVisitThreshold:(double)a3 placeStats:(id)a4;
-- (id)fuseInferences:(id)a3;
+- (id)_inferPlaceTypesFromMultiClassModelForPlaceType:(unint64_t)type placeStats:(id)stats metricsData:(id)data;
+- (id)_inferPlaceTypesFromRankerModelForPlaceType:(unint64_t)type placeStats:(id)stats metricsData:(id)data;
+- (id)filterPlaceStats:(id)stats referenceLearnedPlace:(id)place minDistanceThreshold:(id)threshold maxDistanceThreshold:(id)distanceThreshold;
+- (id)filteredPlaceStatsByWeeklyVisitThreshold:(double)threshold placeStats:(id)stats;
+- (id)fuseInferences:(id)inferences;
 - (id)inferPlaceTypes;
-- (id)inferPlaceTypesFromDailyPatternsWithPlaceStats:(id)a3 dateInterval:(id)a4;
-- (id)inferPlaceTypesFromFallbackWithPlaceStats:(id)a3 dateInterval:(id)a4;
-- (id)inferPlaceTypesFromModelForModelType:(unint64_t)a3 placeType:(unint64_t)a4 placeStats:(id)a5 metricsData:(id)a6;
-- (id)inferPlaceTypesFromModelWithCandidateSelection:(BOOL)a3 homeModelType:(unint64_t)a4 workModelType:(unint64_t)a5 placeStats:(id)a6 dateInterval:(id)a7;
-- (id)inferPlaceTypesFromModelWithPlaceStats:(id)a3 dateInterval:(id)a4;
-- (id)inferPlaceTypesFromRuleEngineWithPlaceStats:(id)a3 dateInterval:(id)a4;
-- (id)inferPlaceTypesFromTopMedianDwellTimeWithPlaceStats:(id)a3 dateInterval:(id)a4;
-- (id)inferWorkFromHistoryAndPlaceStats:(id)a3;
-- (id)placeCandidateStatsForType:(unint64_t)a3 placeStats:(id)a4 dateInterval:(id)a5 excludingPlaces:(id)a6 parameters:(id)a7 distanceThreshold:(double)a8;
-- (id)placeCandidatesFromDailyPatternsForType:(unint64_t)a3 placeStats:(id)a4 parameters:(id)a5;
-- (id)placeCandidatesFromTopMedianDwellTimeForType:(unint64_t)a3 placeStats:(id)a4 parameters:(id)a5;
-- (void)_prepareMLFeaturesWithPlaceStats:(id)a3;
-- (void)_storeMetricsForNonFallbackPlacesWithHome:(id)a3 homeSource:(unint64_t)a4 work:(id)a5 workSource:(unint64_t)a6;
+- (id)inferPlaceTypesFromDailyPatternsWithPlaceStats:(id)stats dateInterval:(id)interval;
+- (id)inferPlaceTypesFromFallbackWithPlaceStats:(id)stats dateInterval:(id)interval;
+- (id)inferPlaceTypesFromModelForModelType:(unint64_t)type placeType:(unint64_t)placeType placeStats:(id)stats metricsData:(id)data;
+- (id)inferPlaceTypesFromModelWithCandidateSelection:(BOOL)selection homeModelType:(unint64_t)type workModelType:(unint64_t)modelType placeStats:(id)stats dateInterval:(id)interval;
+- (id)inferPlaceTypesFromModelWithPlaceStats:(id)stats dateInterval:(id)interval;
+- (id)inferPlaceTypesFromRuleEngineWithPlaceStats:(id)stats dateInterval:(id)interval;
+- (id)inferPlaceTypesFromTopMedianDwellTimeWithPlaceStats:(id)stats dateInterval:(id)interval;
+- (id)inferWorkFromHistoryAndPlaceStats:(id)stats;
+- (id)placeCandidateStatsForType:(unint64_t)type placeStats:(id)stats dateInterval:(id)interval excludingPlaces:(id)places parameters:(id)parameters distanceThreshold:(double)threshold;
+- (id)placeCandidatesFromDailyPatternsForType:(unint64_t)type placeStats:(id)stats parameters:(id)parameters;
+- (id)placeCandidatesFromTopMedianDwellTimeForType:(unint64_t)type placeStats:(id)stats parameters:(id)parameters;
+- (void)_prepareMLFeaturesWithPlaceStats:(id)stats;
+- (void)_storeMetricsForNonFallbackPlacesWithHome:(id)home homeSource:(unint64_t)source work:(id)work workSource:(unint64_t)workSource;
 - (void)log;
-- (void)submitVisits:(id)a3 place:(id)a4;
-- (void)updateTopCandidates:(id)a3 withPlaceStat:(id)a4 predictedProbability:(id)a5 placeType:(unint64_t)a6;
+- (void)submitVisits:(id)visits place:(id)place;
+- (void)updateTopCandidates:(id)candidates withPlaceStat:(id)stat predictedProbability:(id)probability placeType:(unint64_t)type;
 @end
 
 @implementation RTLearnedPlaceTypeInferenceGenerator
 
-- (RTLearnedPlaceTypeInferenceGenerator)initWithBiomeManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 learnedLocationStore:(id)a6 placeTypeClassifierMetricsCalculator:(id)a7 platform:(id)a8
+- (RTLearnedPlaceTypeInferenceGenerator)initWithBiomeManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator learnedLocationStore:(id)store placeTypeClassifierMetricsCalculator:(id)metricsCalculator platform:(id)platform
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v30 = a6;
-  v31 = a7;
-  v18 = a8;
-  v29 = v18;
-  if (!v15)
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  calculatorCopy = calculator;
+  storeCopy = store;
+  metricsCalculatorCopy = metricsCalculator;
+  platformCopy = platform;
+  v29 = platformCopy;
+  if (!managerCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -59,7 +59,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v16)
+  if (!defaultsManagerCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!calculatorCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v31)
+  if (!metricsCalculatorCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -98,7 +98,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v18)
+  if (!platformCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -110,7 +110,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -120,15 +120,15 @@ LABEL_20:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_biomeManager, a3);
-    objc_storeStrong(&v20->_defaultsManager, a4);
-    objc_storeStrong(&v20->_distanceCalculator, a5);
-    objc_storeStrong(&v20->_learnedLocationStore, a6);
-    objc_storeStrong(&v20->_placeTypeClassifierMetricsCalculator, a7);
-    objc_storeStrong(&v20->_platform, a8);
-    v21 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v19->_biomeManager, manager);
+    objc_storeStrong(&v20->_defaultsManager, defaultsManager);
+    objc_storeStrong(&v20->_distanceCalculator, calculator);
+    objc_storeStrong(&v20->_learnedLocationStore, store);
+    objc_storeStrong(&v20->_placeTypeClassifierMetricsCalculator, metricsCalculator);
+    objc_storeStrong(&v20->_platform, platform);
+    array = [MEMORY[0x277CBEB18] array];
     placeStats = v20->_placeStats;
-    v20->_placeStats = v21;
+    v20->_placeStats = array;
 
     v23 = objc_opt_new();
     placeStatsUUIDStringsToMLFeaturesMap = v20->_placeStatsUUIDStringsToMLFeaturesMap;
@@ -136,34 +136,34 @@ LABEL_20:
   }
 
   self = v20;
-  v25 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v25;
+  return selfCopy;
 }
 
-+ (id)placeTypeClassificationSourceToString:(unint64_t)a3
++ (id)placeTypeClassificationSourceToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788D2C50[a3 - 1];
+    return off_2788D2C50[string - 1];
   }
 }
 
-+ (id)modelTypeToString:(unint64_t)a3
++ (id)modelTypeToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"Ranker";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"MultiClass";
   }
@@ -174,15 +174,15 @@ LABEL_21:
   }
 }
 
-+ (id)placeTypeClassifierModelThresholdForPlatform:(id)a3 placeType:(unint64_t)a4
++ (id)placeTypeClassifierModelThresholdForPlatform:(id)platform placeType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 != 1)
+  platformCopy = platform;
+  v6 = platformCopy;
+  if (type != 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      if ([v5 iPhonePlatform])
+      if ([platformCopy iPhonePlatform])
       {
         [v6 iPhoneDevice];
 LABEL_7:
@@ -206,15 +206,15 @@ LABEL_9:
   return v7;
 }
 
-+ (id)placeTypeClassifierModelTargetClass:(unint64_t)a3
++ (id)placeTypeClassifierModelTargetClass:(unint64_t)class
 {
   v3 = &unk_2845A0590;
-  if (a3 == 2)
+  if (class == 2)
   {
     v3 = &unk_2845A0578;
   }
 
-  if (a3 == 1)
+  if (class == 1)
   {
     return &unk_2845A0560;
   }
@@ -225,83 +225,83 @@ LABEL_9:
   }
 }
 
-- (void)submitVisits:(id)a3 place:(id)a4
+- (void)submitVisits:(id)visits place:(id)place
 {
-  v48 = a3;
-  v6 = a4;
-  v7 = [v6 identifier];
+  visitsCopy = visits;
+  placeCopy = place;
+  identifier = [placeCopy identifier];
 
-  if (v7 && [v48 count])
+  if (identifier && [visitsCopy count])
   {
     v8 = [RTLearnedPlaceTypeInferencePlaceStats alloc];
-    v9 = [(RTLearnedPlaceTypeInferenceGenerator *)self learnedLocationStore];
-    v47 = v6;
-    v10 = [(RTLearnedPlaceTypeInferencePlaceStats *)v8 initWithLearnedLocationStore:v9 place:v6 visits:v48];
+    learnedLocationStore = [(RTLearnedPlaceTypeInferenceGenerator *)self learnedLocationStore];
+    v47 = placeCopy;
+    v10 = [(RTLearnedPlaceTypeInferencePlaceStats *)v8 initWithLearnedLocationStore:learnedLocationStore place:placeCopy visits:visitsCopy];
 
     v11 = [RTLearnedPlace alloc];
-    v44 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
-    v12 = [v44 identifier];
-    v43 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
-    v13 = [v43 mapItem];
-    v14 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
-    [v14 customLabel];
+    place = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
+    identifier2 = [place identifier];
+    place2 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
+    mapItem = [place2 mapItem];
+    place3 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
+    [place3 customLabel];
     v15 = v46 = self;
-    v16 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
-    v17 = [v16 creationDate];
-    v18 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
-    v19 = [v18 expirationDate];
+    place4 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
+    creationDate = [place4 creationDate];
+    place5 = [(RTLearnedPlaceTypeInferencePlaceStats *)v10 place];
+    expirationDate = [place5 expirationDate];
     v20 = v11;
-    v21 = v12;
-    v22 = [(RTLearnedPlace *)v20 initWithIdentifier:v12 type:1 typeSource:1 mapItem:v13 customLabel:v15 creationDate:v17 expirationDate:v19];
+    v21 = identifier2;
+    v22 = [(RTLearnedPlace *)v20 initWithIdentifier:identifier2 type:1 typeSource:1 mapItem:mapItem customLabel:v15 creationDate:creationDate expirationDate:expirationDate];
 
     v45 = v22;
     if (v22)
     {
-      v23 = [(RTLearnedPlaceTypeInferenceGenerator *)v46 placeStats];
+      placeStats = [(RTLearnedPlaceTypeInferenceGenerator *)v46 placeStats];
       v24 = v10;
-      [v23 addObject:v10];
+      [placeStats addObject:v10];
 
-      v25 = [v48 firstObject];
-      v26 = [v25 entryDate];
-      v27 = [(RTLearnedPlaceTypeInferenceGenerator *)v46 firstVisit];
-      v28 = [v27 entryDate];
-      v29 = [v26 earlierDate:v28];
-      v30 = [v48 firstObject];
-      v31 = [v30 entryDate];
-      v32 = [v29 isEqualToDate:v31];
+      firstObject = [visitsCopy firstObject];
+      entryDate = [firstObject entryDate];
+      firstVisit = [(RTLearnedPlaceTypeInferenceGenerator *)v46 firstVisit];
+      entryDate2 = [firstVisit entryDate];
+      v29 = [entryDate earlierDate:entryDate2];
+      firstObject2 = [visitsCopy firstObject];
+      entryDate3 = [firstObject2 entryDate];
+      v32 = [v29 isEqualToDate:entryDate3];
 
       if (v32)
       {
-        v33 = [v48 firstObject];
-        [(RTLearnedPlaceTypeInferenceGenerator *)v46 setFirstVisit:v33];
+        firstObject3 = [visitsCopy firstObject];
+        [(RTLearnedPlaceTypeInferenceGenerator *)v46 setFirstVisit:firstObject3];
       }
 
-      v34 = [v48 lastObject];
-      v35 = [v34 exitDate];
-      v36 = [(RTLearnedPlaceTypeInferenceGenerator *)v46 lastVisit];
-      v37 = [v36 exitDate];
-      v38 = [v35 laterDate:v37];
-      v39 = [v48 lastObject];
-      v40 = [v39 exitDate];
-      v41 = [v38 isEqualToDate:v40];
+      lastObject = [visitsCopy lastObject];
+      exitDate = [lastObject exitDate];
+      lastVisit = [(RTLearnedPlaceTypeInferenceGenerator *)v46 lastVisit];
+      exitDate2 = [lastVisit exitDate];
+      v38 = [exitDate laterDate:exitDate2];
+      lastObject2 = [visitsCopy lastObject];
+      exitDate3 = [lastObject2 exitDate];
+      v41 = [v38 isEqualToDate:exitDate3];
 
       v10 = v24;
       if (v41)
       {
-        v42 = [v48 lastObject];
-        [(RTLearnedPlaceTypeInferenceGenerator *)v46 setLastVisit:v42];
+        lastObject3 = [visitsCopy lastObject];
+        [(RTLearnedPlaceTypeInferenceGenerator *)v46 setLastVisit:lastObject3];
       }
     }
 
-    v6 = v47;
+    placeCopy = v47;
   }
 }
 
-- (id)inferPlaceTypesFromDailyPatternsWithPlaceStats:(id)a3 dateInterval:(id)a4
+- (id)inferPlaceTypesFromDailyPatternsWithPlaceStats:(id)stats dateInterval:(id)interval
 {
   v100[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
+  statsCopy = stats;
   v7 = [v5 stringWithFormat:@"%@.%@", @"stats", @"weeklyDaysWithNonZeroDwellTimeAverage"];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"stats", @"weeklyAggregateDwellTimeBetweenDateRangeAverage"];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"stats", @"weeklyTotalDailyVisitCountAverage"];
@@ -322,7 +322,7 @@ LABEL_9:
   v17 = v14;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:2];
 
-  v19 = [(RTLearnedPlaceTypeInferenceGenerator *)self filteredPlaceStatsByWeeklyVisitThreshold:v6 placeStats:0.6];
+  v19 = [(RTLearnedPlaceTypeInferenceGenerator *)self filteredPlaceStatsByWeeklyVisitThreshold:statsCopy placeStats:0.6];
 
   v20 = [v19 filteredArrayUsingPredicate:v14];
   v21 = [v20 sortedArrayUsingDescriptors:v18];
@@ -347,7 +347,7 @@ LABEL_9:
     v23 = [v21 objectAtIndex:1];
   }
 
-  v24 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -356,9 +356,9 @@ LABEL_9:
       v26 = objc_opt_class();
       NSStringFromClass(v26);
       v77 = v8;
-      v27 = v24;
+      v27 = array;
       v28 = v18;
-      v29 = self;
+      selfCopy = self;
       v31 = v30 = v23;
       v32 = NSStringFromSelector(a2);
       *buf = 138413827;
@@ -378,30 +378,30 @@ LABEL_9:
       _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_INFO, "%@, %@, theoreticalHome places stats, %{sensitive}@, required minDaysNonZeroDwellTime, %.2f, maxDaysNonZeroDwellTime, %.2f, minWeeklyAggregateDwellTimeBetweenDateRangeAverage, %.2f, totalWeeklyVisitCount, %.2f", buf, 0x48u);
 
       v23 = v30;
-      self = v29;
+      self = selfCopy;
       v18 = v28;
-      v24 = v27;
+      array = v27;
       v8 = v77;
     }
   }
 
-  v33 = [v22 stats];
-  [(RTLearnedPlace *)v33 weeklyDaysWithNonZeroDwellTimeAverage];
+  stats = [v22 stats];
+  [(RTLearnedPlace *)stats weeklyDaysWithNonZeroDwellTimeAverage];
   if (v34 < 5.0)
   {
     goto LABEL_26;
   }
 
-  v35 = [v22 stats];
-  [(RTLearnedPlace *)v35 weeklyDaysWithNonZeroDwellTimeAverage];
+  stats2 = [v22 stats];
+  [(RTLearnedPlace *)stats2 weeklyDaysWithNonZeroDwellTimeAverage];
   if (v36 > 7.0)
   {
     goto LABEL_25;
   }
 
   v79 = v23;
-  v37 = [v22 stats];
-  [v37 weeklyAggregateDwellTimeBetweenDateRangeAverage];
+  stats3 = [v22 stats];
+  [stats3 weeklyAggregateDwellTimeBetweenDateRangeAverage];
   if (v38 <= 21600.0)
   {
 
@@ -421,24 +421,24 @@ LABEL_9:
   }
 
   v64 = [RTLearnedPlace alloc];
-  v70 = [v22 place];
-  v74 = [v70 identifier];
-  v68 = [v22 place];
-  v72 = [v68 mapItem];
-  v66 = [v22 place];
-  v60 = [v66 customLabel];
-  v62 = [v22 place];
-  v42 = [v62 creationDate];
-  v43 = [v22 place];
-  v44 = [v43 expirationDate];
-  v33 = [(RTLearnedPlace *)v64 initWithIdentifier:v74 type:1 typeSource:1 mapItem:v72 customLabel:v60 creationDate:v42 expirationDate:v44];
+  place = [v22 place];
+  identifier = [place identifier];
+  place2 = [v22 place];
+  mapItem = [place2 mapItem];
+  place3 = [v22 place];
+  customLabel = [place3 customLabel];
+  place4 = [v22 place];
+  creationDate = [place4 creationDate];
+  place5 = [v22 place];
+  expirationDate = [place5 expirationDate];
+  stats = [(RTLearnedPlace *)v64 initWithIdentifier:identifier type:1 typeSource:1 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
-  if (!v33)
+  if (!stats)
   {
     goto LABEL_32;
   }
 
-  [v24 addObject:v33];
+  [array addObject:stats];
   v17 = v78;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -468,8 +468,8 @@ LABEL_9:
   }
 
   v23 = v79;
-  v35 = [v79 stats];
-  [(RTLearnedPlace *)v35 weeklyDaysWithNonZeroDwellTimeAverage];
+  stats2 = [v79 stats];
+  [(RTLearnedPlace *)stats2 weeklyDaysWithNonZeroDwellTimeAverage];
   if (v49 < 3.5)
   {
     goto LABEL_25;
@@ -479,16 +479,16 @@ LABEL_9:
   [aSelectora weeklyDaysWithNonZeroDwellTimeAverage];
   if (v50 <= 6.0)
   {
-    v53 = [v79 stats];
-    [v53 weeklyAggregateDwellTimeBetweenDateRangeAverage];
+    stats4 = [v79 stats];
+    [stats4 weeklyAggregateDwellTimeBetweenDateRangeAverage];
     if (v54 <= 16200.0)
     {
     }
 
     else
     {
-      v55 = [v79 stats];
-      [v55 weeklyTotalDailyVisitCountAverage];
+      stats5 = [v79 stats];
+      [stats5 weeklyTotalDailyVisitCountAverage];
       v57 = v56;
 
       if (v57 < 4.0)
@@ -500,21 +500,21 @@ LABEL_32:
       }
 
       v67 = [RTLearnedPlace alloc];
-      v73 = [v79 place];
-      aSelectorb = [v73 identifier];
-      v71 = [v79 place];
-      v76 = [v71 mapItem];
-      v69 = [v79 place];
-      v59 = [v69 customLabel];
-      v65 = [v79 place];
-      v61 = [v65 creationDate];
-      v63 = [v79 place];
-      v58 = [v63 expirationDate];
-      v35 = [(RTLearnedPlace *)v67 initWithIdentifier:aSelectorb type:2 typeSource:1 mapItem:v76 customLabel:v59 creationDate:v61 expirationDate:v58];
+      place6 = [v79 place];
+      aSelectorb = [place6 identifier];
+      place7 = [v79 place];
+      mapItem2 = [place7 mapItem];
+      place8 = [v79 place];
+      customLabel2 = [place8 customLabel];
+      place9 = [v79 place];
+      creationDate2 = [place9 creationDate];
+      place10 = [v79 place];
+      expirationDate2 = [place10 expirationDate];
+      stats2 = [(RTLearnedPlace *)v67 initWithIdentifier:aSelectorb type:2 typeSource:1 mapItem:mapItem2 customLabel:customLabel2 creationDate:creationDate2 expirationDate:expirationDate2];
 
-      if (v35)
+      if (stats2)
       {
-        [v24 addObject:v35];
+        [array addObject:stats2];
       }
 
       v17 = v78;
@@ -529,26 +529,26 @@ LABEL_25:
 LABEL_26:
 
 LABEL_27:
-  v51 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-  [v51 storeMetricsData:v24 source:12];
+  placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+  [placeTypeClassifierMetricsCalculator storeMetricsData:array source:12];
 
-  return v24;
+  return array;
 }
 
-- (id)inferPlaceTypesFromTopMedianDwellTimeWithPlaceStats:(id)a3 dateInterval:(id)a4
+- (id)inferPlaceTypesFromTopMedianDwellTimeWithPlaceStats:(id)stats dateInterval:(id)interval
 {
   v51[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
-  v8 = [v6 array];
-  v9 = [(RTLearnedPlaceTypeInferenceGenerator *)self filteredPlaceStatsByWeeklyVisitThreshold:v7 placeStats:0.6];
+  statsCopy = stats;
+  array = [v6 array];
+  v9 = [(RTLearnedPlaceTypeInferenceGenerator *)self filteredPlaceStatsByWeeklyVisitThreshold:statsCopy placeStats:0.6];
 
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"stats.topMedianDwellTime" ascending:0];
   v51[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
   v12 = [v9 sortedArrayUsingDescriptors:v11];
 
-  v13 = [v12 firstObject];
+  firstObject = [v12 firstObject];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -562,7 +562,7 @@ LABEL_27:
       v41 = 2112;
       v42 = v17;
       v43 = 2117;
-      v44 = v13;
+      v44 = firstObject;
       v45 = 2048;
       v46 = 0x4014000000000000;
       v47 = 2048;
@@ -573,16 +573,16 @@ LABEL_27:
     }
   }
 
-  v18 = [v13 stats];
-  [(RTLearnedPlace *)v18 weeklyDaysWithNonZeroDwellTimeAverage];
+  stats = [firstObject stats];
+  [(RTLearnedPlace *)stats weeklyDaysWithNonZeroDwellTimeAverage];
   if (v19 >= 5.0)
   {
-    v20 = [v13 stats];
-    [v20 weeklyTotalDailyVisitCountAverage];
+    stats2 = [firstObject stats];
+    [stats2 weeklyTotalDailyVisitCountAverage];
     if (v21 >= 5.0)
     {
-      v22 = [v13 stats];
-      [v22 topMedianDwellTime];
+      stats3 = [firstObject stats];
+      [stats3 topMedianDwellTime];
       v24 = v23;
 
       if (v24 <= 43200.0)
@@ -591,22 +591,22 @@ LABEL_27:
       }
 
       v34 = [RTLearnedPlace alloc];
-      v37 = [v13 place];
-      v38 = [v37 identifier];
-      v36 = [v13 place];
-      v33 = [v36 mapItem];
-      v35 = [v13 place];
-      v25 = [v35 customLabel];
-      v26 = [v13 place];
-      v27 = [v26 creationDate];
-      v28 = [v13 place];
-      v29 = [v28 expirationDate];
-      v30 = v25;
-      v18 = [(RTLearnedPlace *)v34 initWithIdentifier:v38 type:1 typeSource:1 mapItem:v33 customLabel:v25 creationDate:v27 expirationDate:v29];
+      place = [firstObject place];
+      identifier = [place identifier];
+      place2 = [firstObject place];
+      mapItem = [place2 mapItem];
+      place3 = [firstObject place];
+      customLabel = [place3 customLabel];
+      place4 = [firstObject place];
+      creationDate = [place4 creationDate];
+      place5 = [firstObject place];
+      expirationDate = [place5 expirationDate];
+      v30 = customLabel;
+      stats = [(RTLearnedPlace *)v34 initWithIdentifier:identifier type:1 typeSource:1 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
-      if (v18)
+      if (stats)
       {
-        [v8 addObject:v18];
+        [array addObject:stats];
       }
     }
 
@@ -616,34 +616,34 @@ LABEL_27:
   }
 
 LABEL_12:
-  v31 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-  [v31 storeMetricsData:v8 source:13];
+  placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+  [placeTypeClassifierMetricsCalculator storeMetricsData:array source:13];
 
-  return v8;
+  return array;
 }
 
 - (BOOL)supportsModel
 {
-  v3 = [(RTLearnedPlaceTypeInferenceGenerator *)self platform];
-  if ([v3 iPhonePlatform])
+  platform = [(RTLearnedPlaceTypeInferenceGenerator *)self platform];
+  if ([platform iPhonePlatform])
   {
-    v4 = 1;
+    watchPlatform = 1;
   }
 
   else
   {
-    v5 = [(RTLearnedPlaceTypeInferenceGenerator *)self platform];
-    v4 = [v5 watchPlatform];
+    platform2 = [(RTLearnedPlaceTypeInferenceGenerator *)self platform];
+    watchPlatform = [platform2 watchPlatform];
   }
 
-  return v4;
+  return watchPlatform;
 }
 
-+ (id)sortPlaceStats:(id)a3
++ (id)sortPlaceStats:(id)stats
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  statsCopy = stats;
+  if ([statsCopy count])
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"stats", @"topMedianDwellTime"];
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"stats", @"weeklyDaysWithNonZeroDwellTimeAverage"];
@@ -662,22 +662,22 @@ LABEL_12:
     v17[4] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:5];
 
-    v13 = [v3 sortedArrayUsingDescriptors:v12];
+    v13 = [statsCopy sortedArrayUsingDescriptors:v12];
   }
 
   else
   {
-    v13 = v3;
+    v13 = statsCopy;
   }
 
   return v13;
 }
 
-- (id)_inferPlaceTypesFromRankerModelForPlaceType:(unint64_t)a3 placeStats:(id)a4 metricsData:(id)a5
+- (id)_inferPlaceTypesFromRankerModelForPlaceType:(unint64_t)type placeStats:(id)stats metricsData:(id)data
 {
   v107 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  statsCopy = stats;
+  dataCopy = data;
   if (![(RTLearnedPlaceTypeInferenceGenerator *)self supportsModel])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -724,12 +724,12 @@ LABEL_12:
     goto LABEL_37;
   }
 
-  v11 = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
-  v12 = [v11 objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
-  v13 = [v12 BOOLValue];
+  defaultsManager = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
+  v12 = [defaultsManager objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (v13)
+  if (bOOLValue)
   {
     if (v14)
     {
@@ -764,8 +764,8 @@ LABEL_36:
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v28 = NSStringFromSelector(a2);
-      v29 = [v9 count];
-      v30 = [RTLearnedPlace placeTypeToString:a3];
+      v29 = [statsCopy count];
+      v30 = [RTLearnedPlace placeTypeToString:type];
       *buf = 138413058;
       *&buf[4] = v27;
       *&buf[12] = 2112;
@@ -778,7 +778,7 @@ LABEL_36:
     }
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -788,7 +788,7 @@ LABEL_36:
         v55 = objc_opt_class();
         v56 = NSStringFromClass(v55);
         v57 = NSStringFromSelector(a2);
-        v58 = [RTLearnedPlace placeTypeToString:a3];
+        v58 = [RTLearnedPlace placeTypeToString:type];
         *buf = 138412802;
         *&buf[4] = v56;
         *&buf[12] = 2112;
@@ -804,9 +804,9 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ([v9 count])
+  if ([statsCopy count])
   {
-    [(RTLearnedPlaceTypeInferenceGenerator *)self _prepareMLFeaturesWithPlaceStats:v9];
+    [(RTLearnedPlaceTypeInferenceGenerator *)self _prepareMLFeaturesWithPlaceStats:statsCopy];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -826,8 +826,8 @@ LABEL_36:
     v92 = __Block_byref_object_dispose__190;
     v93 = 0;
     context = objc_autoreleasePoolPush();
-    v31 = [MEMORY[0x277CCAA00] frameworkBundle];
-    v77 = [v31 pathForResource:@"RTPlaceTypeClassifierModelRanker" ofType:@"mlmodelc"];
+    frameworkBundle = [MEMORY[0x277CCAA00] frameworkBundle];
+    v77 = [frameworkBundle pathForResource:@"RTPlaceTypeClassifierModelRanker" ofType:@"mlmodelc"];
 
     v32 = [MEMORY[0x277CBEBC0] fileURLWithPath:v77];
     v33 = [RTPlaceTypeClassifierModelRanker alloc];
@@ -838,8 +838,8 @@ LABEL_36:
     objc_storeStrong(v34, obj);
     if (v78)
     {
-      v35 = [(RTPlaceTypeClassifierModelRanker *)v78 model];
-      v73 = [v35 modelDescription];
+      model = [(RTPlaceTypeClassifierModelRanker *)v78 model];
+      modelDescription = [model modelDescription];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -849,8 +849,8 @@ LABEL_36:
           v37 = objc_opt_class();
           v38 = NSStringFromClass(v37);
           v39 = NSStringFromSelector(a2);
-          v40 = [v73 metadata];
-          v41 = [v40 objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
+          metadata = [modelDescription metadata];
+          v41 = [metadata objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
           v42 = [v41 objectForKeyedSubscript:@"mldb_token"];
           *v96 = 138412802;
           v97 = v38;
@@ -862,9 +862,9 @@ LABEL_36:
         }
       }
 
-      v74 = [objc_opt_class() sortPlaceStats:v9];
+      v74 = [objc_opt_class() sortPlaceStats:statsCopy];
 
-      [v10 setObject:&unk_2845A0560 forKeyedSubscript:&unk_2845A05C0];
+      [dataCopy setObject:&unk_2845A0560 forKeyedSubscript:&unk_2845A05C0];
       v79[0] = MEMORY[0x277D85DD0];
       v79[1] = 3221225472;
       v79[2] = __107__RTLearnedPlaceTypeInferenceGenerator__inferPlaceTypesFromRankerModelForPlaceType_placeStats_metricsData___block_invoke;
@@ -876,22 +876,22 @@ LABEL_36:
       v82 = &v88;
       v83 = v94;
       v84 = buf;
-      v81 = v10;
+      v81 = dataCopy;
       [v74 enumerateObjectsUsingBlock:v79];
       if (*(*&buf[8] + 40))
       {
         v43 = [RTLearnedPlace alloc];
-        v72 = [*(*&buf[8] + 40) place];
-        v70 = [v72 identifier];
-        v71 = [*(*&buf[8] + 40) place];
-        v69 = [v71 mapItem];
-        v44 = [*(*&buf[8] + 40) place];
-        v45 = [v44 customLabel];
-        v46 = [*(*&buf[8] + 40) place];
-        v47 = [v46 creationDate];
-        v48 = [*(*&buf[8] + 40) place];
-        v49 = [v48 expirationDate];
-        v15 = [(RTLearnedPlace *)v43 initWithIdentifier:v70 type:1 typeSource:1 mapItem:v69 customLabel:v45 creationDate:v47 expirationDate:v49];
+        place = [*(*&buf[8] + 40) place];
+        identifier = [place identifier];
+        place2 = [*(*&buf[8] + 40) place];
+        mapItem = [place2 mapItem];
+        place3 = [*(*&buf[8] + 40) place];
+        customLabel = [place3 customLabel];
+        place4 = [*(*&buf[8] + 40) place];
+        creationDate = [place4 creationDate];
+        place5 = [*(*&buf[8] + 40) place];
+        expirationDate = [place5 expirationDate];
+        v15 = [(RTLearnedPlace *)v43 initWithIdentifier:identifier type:1 typeSource:1 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -920,8 +920,8 @@ LABEL_36:
         v15 = 0;
       }
 
-      v61 = v73;
-      v9 = v74;
+      v61 = modelDescription;
+      statsCopy = v74;
     }
 
     else
@@ -986,7 +986,7 @@ LABEL_48:
       *&buf[12] = 2112;
       *&buf[14] = v68;
       *&buf[22] = 2117;
-      v105 = v9;
+      v105 = statsCopy;
       _os_log_debug_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEBUG, "%@, %@, invalid placeStats, %{sensitive}@", buf, 0x20u);
     }
 
@@ -1241,11 +1241,11 @@ LABEL_28:
 LABEL_29:
 }
 
-- (id)_inferPlaceTypesFromMultiClassModelForPlaceType:(unint64_t)a3 placeStats:(id)a4 metricsData:(id)a5
+- (id)_inferPlaceTypesFromMultiClassModelForPlaceType:(unint64_t)type placeStats:(id)stats metricsData:(id)data
 {
   v139 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v97 = a5;
+  statsCopy = stats;
+  dataCopy = data;
   if (![(RTLearnedPlaceTypeInferenceGenerator *)self supportsModel])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1292,12 +1292,12 @@ LABEL_29:
     goto LABEL_44;
   }
 
-  v95 = a3;
-  v9 = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
-  v10 = [v9 objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
-  v11 = [v10 BOOLValue];
+  typeCopy = type;
+  defaultsManager = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
+  v10 = [defaultsManager objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1324,7 +1324,7 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  [(RTLearnedPlaceTypeInferenceGenerator *)self _prepareMLFeaturesWithPlaceStats:v8];
+  [(RTLearnedPlaceTypeInferenceGenerator *)self _prepareMLFeaturesWithPlaceStats:statsCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -1333,8 +1333,8 @@ LABEL_43:
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       v25 = NSStringFromSelector(a2);
-      v26 = [v8 count];
-      v27 = [RTLearnedPlace placeTypeToString:a3];
+      v26 = [statsCopy count];
+      v27 = [RTLearnedPlace placeTypeToString:type];
       *buf = 138413058;
       v128 = v24;
       v129 = 2112;
@@ -1347,9 +1347,9 @@ LABEL_43:
     }
   }
 
-  if (a3 - 3 > 0xFFFFFFFFFFFFFFFDLL)
+  if (type - 3 > 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (![v8 count])
+    if (![statsCopy count])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -1364,7 +1364,7 @@ LABEL_43:
           v129 = 2112;
           v130 = v83;
           v131 = 2117;
-          v132 = v8;
+          v132 = statsCopy;
           _os_log_debug_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEBUG, "%@, %@, invalid placeStats, %{sensitive}@", buf, 0x20u);
         }
 
@@ -1399,8 +1399,8 @@ LABEL_43:
     v115 = __Block_byref_object_dispose__190;
     v116 = 0;
     context = objc_autoreleasePoolPush();
-    v32 = [MEMORY[0x277CCAA00] frameworkBundle];
-    v92 = [v32 pathForResource:@"RTPlaceTypeClassifierModelMultiClass" ofType:@"mlmodelc"];
+    frameworkBundle = [MEMORY[0x277CCAA00] frameworkBundle];
+    v92 = [frameworkBundle pathForResource:@"RTPlaceTypeClassifierModelMultiClass" ofType:@"mlmodelc"];
 
     v33 = [MEMORY[0x277CBEBC0] fileURLWithPath:v92];
     v34 = [RTPlaceTypeClassifierModelMultiClass alloc];
@@ -1409,15 +1409,15 @@ LABEL_43:
     v93 = [(RTPlaceTypeClassifierModelMultiClass *)v34 initWithContentsOfURL:v33 error:&obj];
     v88 = v33;
     objc_storeStrong(v35, obj);
-    v91 = [objc_opt_class() placeTypeClassifierModelTargetClass:v95];
+    v91 = [objc_opt_class() placeTypeClassifierModelTargetClass:typeCopy];
     v36 = objc_opt_class();
-    v37 = [(RTLearnedPlaceTypeInferenceGenerator *)self platform];
-    v90 = [v36 placeTypeClassifierModelThresholdForPlatform:v37 placeType:v95];
+    platform = [(RTLearnedPlaceTypeInferenceGenerator *)self platform];
+    v90 = [v36 placeTypeClassifierModelThresholdForPlatform:platform placeType:typeCopy];
 
     if (v93)
     {
-      v38 = [(RTPlaceTypeClassifierModelMultiClass *)v93 model];
-      v86 = [v38 modelDescription];
+      model = [(RTPlaceTypeClassifierModelMultiClass *)v93 model];
+      modelDescription = [model modelDescription];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1427,8 +1427,8 @@ LABEL_43:
           v40 = objc_opt_class();
           v41 = NSStringFromClass(v40);
           v42 = NSStringFromSelector(a2);
-          v43 = [v86 metadata];
-          v44 = [v43 objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
+          metadata = [modelDescription metadata];
+          v44 = [metadata objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
           v45 = [v44 objectForKeyedSubscript:@"mldb_token"];
           *buf = 138412802;
           v128 = v41;
@@ -1440,17 +1440,17 @@ LABEL_43:
         }
       }
 
-      v87 = [objc_opt_class() sortPlaceStats:v8];
+      v87 = [objc_opt_class() sortPlaceStats:statsCopy];
 
-      [v97 setObject:&unk_2845A0560 forKeyedSubscript:&unk_2845A05C0];
-      v46 = [MEMORY[0x277CBEB18] array];
+      [dataCopy setObject:&unk_2845A0560 forKeyedSubscript:&unk_2845A05C0];
+      array = [MEMORY[0x277CBEB18] array];
       v98[0] = MEMORY[0x277D85DD0];
       v98[1] = 3221225472;
       v98[2] = __111__RTLearnedPlaceTypeInferenceGenerator__inferPlaceTypesFromMultiClassModelForPlaceType_placeStats_metricsData___block_invoke;
       v98[3] = &unk_2788D2B78;
       v98[4] = self;
       v108 = a2;
-      v109 = v95;
+      v109 = typeCopy;
       v99 = v93;
       v104 = &v111;
       v105 = v117;
@@ -1458,9 +1458,9 @@ LABEL_43:
       v101 = v91;
       v106 = v119;
       v107 = &v121;
-      v47 = v97;
+      v47 = dataCopy;
       v102 = v47;
-      v48 = v46;
+      v48 = array;
       v103 = v48;
       [v87 enumerateObjectsUsingBlock:v98];
       [v47 setObject:v48 forKeyedSubscript:&unk_2845A0638];
@@ -1469,11 +1469,11 @@ LABEL_43:
       while (v49 < [v48 count])
       {
         v51 = [v48 objectAtIndexedSubscript:v49];
-        v52 = [v51 firstObject];
-        [v52 doubleValue];
+        firstObject = [v51 firstObject];
+        [firstObject doubleValue];
         v54 = v53;
 
-        v55 = [v51 secondObject];
+        secondObject = [v51 secondObject];
         if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
         {
           v56 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -1494,7 +1494,7 @@ LABEL_43:
             v135 = 2048;
             v136 = v54;
             v137 = 2117;
-            v138 = v55;
+            v138 = secondObject;
             _os_log_impl(&dword_2304B3000, v56, OS_LOG_TYPE_INFO, "%@, %@, top candidates, rank %lu / %lu, probability %.4f, place: %{sensitive}@", buf, 0x3Eu);
           }
         }
@@ -1505,17 +1505,17 @@ LABEL_43:
       if (v122[5])
       {
         v61 = [RTLearnedPlace alloc];
-        v62 = [v122[5] place];
-        v85 = [v62 identifier];
-        v94 = [v122[5] place];
-        v84 = [v94 mapItem];
-        v63 = [v122[5] place];
-        v64 = [v63 customLabel];
-        v65 = [v122[5] place];
-        v66 = [v65 creationDate];
-        v67 = [v122[5] place];
-        v68 = [v67 expirationDate];
-        v12 = [(RTLearnedPlace *)v61 initWithIdentifier:v85 type:v95 typeSource:1 mapItem:v84 customLabel:v64 creationDate:v66 expirationDate:v68];
+        place = [v122[5] place];
+        identifier = [place identifier];
+        place2 = [v122[5] place];
+        mapItem = [place2 mapItem];
+        place3 = [v122[5] place];
+        customLabel = [place3 customLabel];
+        place4 = [v122[5] place];
+        creationDate = [place4 creationDate];
+        place5 = [v122[5] place];
+        expirationDate = [place5 expirationDate];
+        v12 = [(RTLearnedPlace *)v61 initWithIdentifier:identifier type:typeCopy typeSource:1 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -1525,7 +1525,7 @@ LABEL_43:
             v70 = objc_opt_class();
             v71 = NSStringFromClass(v70);
             v72 = NSStringFromSelector(a2);
-            v73 = [RTLearnedPlace placeTypeToString:v95];
+            v73 = [RTLearnedPlace placeTypeToString:typeCopy];
             *buf = 138413059;
             v128 = v71;
             v129 = 2112;
@@ -1544,8 +1544,8 @@ LABEL_43:
         v12 = 0;
       }
 
-      v76 = v86;
-      v8 = v87;
+      v76 = modelDescription;
+      statsCopy = v87;
     }
 
     else
@@ -1606,7 +1606,7 @@ LABEL_55:
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
       v30 = NSStringFromSelector(a2);
-      v31 = [RTLearnedPlace placeTypeToString:v95];
+      v31 = [RTLearnedPlace placeTypeToString:typeCopy];
       *buf = 138412802;
       v128 = v29;
       v129 = 2112;
@@ -1900,19 +1900,19 @@ LABEL_30:
 LABEL_25:
 }
 
-- (id)inferPlaceTypesFromModelForModelType:(unint64_t)a3 placeType:(unint64_t)a4 placeStats:(id)a5 metricsData:(id)a6
+- (id)inferPlaceTypesFromModelForModelType:(unint64_t)type placeType:(unint64_t)placeType placeStats:(id)stats metricsData:(id)data
 {
-  v10 = a5;
-  v11 = a6;
-  if (a3 == 1)
+  statsCopy = stats;
+  dataCopy = data;
+  if (type == 1)
   {
-    v12 = [(RTLearnedPlaceTypeInferenceGenerator *)self _inferPlaceTypesFromMultiClassModelForPlaceType:a4 placeStats:v10 metricsData:v11];
+    v12 = [(RTLearnedPlaceTypeInferenceGenerator *)self _inferPlaceTypesFromMultiClassModelForPlaceType:placeType placeStats:statsCopy metricsData:dataCopy];
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v12 = [(RTLearnedPlaceTypeInferenceGenerator *)self _inferPlaceTypesFromRankerModelForPlaceType:a4 placeStats:v10 metricsData:v11];
+    v12 = [(RTLearnedPlaceTypeInferenceGenerator *)self _inferPlaceTypesFromRankerModelForPlaceType:placeType placeStats:statsCopy metricsData:dataCopy];
 LABEL_5:
     v13 = v12;
     goto LABEL_7;
@@ -1924,12 +1924,12 @@ LABEL_7:
   return v13;
 }
 
-- (id)inferPlaceTypesFromModelWithCandidateSelection:(BOOL)a3 homeModelType:(unint64_t)a4 workModelType:(unint64_t)a5 placeStats:(id)a6 dateInterval:(id)a7
+- (id)inferPlaceTypesFromModelWithCandidateSelection:(BOOL)selection homeModelType:(unint64_t)type workModelType:(unint64_t)modelType placeStats:(id)stats dateInterval:(id)interval
 {
-  v10 = a3;
+  selectionCopy = selection;
   v112[1] = *MEMORY[0x277D85DE8];
-  v13 = a6;
-  v14 = a7;
+  statsCopy = stats;
+  intervalCopy = interval;
   if ([(RTLearnedPlaceTypeInferenceGenerator *)self supportsModel])
   {
     if ((_os_feature_enabled_impl() & 1) == 0)
@@ -1956,11 +1956,11 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    v15 = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
-    v16 = [v15 objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
-    v17 = [v16 BOOLValue];
+    defaultsManager = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
+    v16 = [defaultsManager objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
+    bOOLValue = [v16 BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1985,19 +1985,19 @@ LABEL_13:
       }
 
 LABEL_15:
-      v25 = 0;
+      array = 0;
       goto LABEL_82;
     }
 
     v18 = objc_opt_new();
     v95 = objc_opt_new();
-    v25 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v94 = +[RTLearnedPlaceTypeInferenceGenerator getCandidateGenerationParameters];
-    v92 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeCandidateStatsForType:1 placeStats:v13 dateInterval:v14 excludingPlaces:0 parameters:300.0 distanceThreshold:?];
+    v92 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeCandidateStatsForType:1 placeStats:statsCopy dateInterval:intervalCopy excludingPlaces:0 parameters:300.0 distanceThreshold:?];
     v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v92, "count")}];
     [v18 setObject:v26 forKeyedSubscript:&unk_2845A0650];
 
-    v93 = v10;
+    v93 = selectionCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v27 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2007,15 +2007,15 @@ LABEL_15:
         v89 = NSStringFromClass(v28);
         v29 = NSStringFromSelector(a2);
         v30 = @"NO";
-        if (v10)
+        if (selectionCopy)
         {
           v30 = @"YES";
         }
 
         v84 = v30;
         v87 = v29;
-        v81 = [v13 count];
-        aSelectorb = [objc_opt_class() modelTypeToString:a4];
+        v81 = [statsCopy count];
+        aSelectorb = [objc_opt_class() modelTypeToString:type];
         v79 = [v92 count];
         [RTRuntime objToString:v94 filterProperties:0];
         *buf = 138413826;
@@ -2034,15 +2034,15 @@ LABEL_15:
         v31 = v109;
         _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%@, %@, useCandidateSelection, %@, placeStats count, %lu, home model type, %@, home candidates from candidateSelection, count, %lu, parameters, %@", buf, 0x48u);
 
-        v10 = v93;
+        selectionCopy = v93;
       }
     }
 
-    if (v10)
+    if (selectionCopy)
     {
       if ([v92 count])
       {
-        v32 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:a4 placeType:1 placeStats:v92 metricsData:v18];
+        v32 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:type placeType:1 placeStats:v92 metricsData:v18];
         goto LABEL_30;
       }
 
@@ -2064,12 +2064,12 @@ LABEL_15:
       }
     }
 
-    v37 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
-    v32 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:a4 placeType:1 placeStats:v37 metricsData:v18];
+    placeStats = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
+    v32 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:type placeType:1 placeStats:placeStats metricsData:v18];
 
 LABEL_30:
     v88 = v32;
-    v91 = a5;
+    modelTypeCopy = modelType;
     if (!v32)
     {
       v46 = v93;
@@ -2091,8 +2091,8 @@ LABEL_30:
             v51 = @"NO";
           }
 
-          v86 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
-          v52 = [v86 count];
+          placeStats2 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
+          v52 = [placeStats2 count];
           *buf = 138413058;
           v97 = v83;
           v98 = 2112;
@@ -2109,9 +2109,9 @@ LABEL_30:
       }
 
 LABEL_56:
-      v60 = a4 == 2 && v91 == 1;
+      v60 = type == 2 && modelTypeCopy == 1;
       v61 = 9;
-      v62 = v91 == 1 && a4 == 1;
+      v62 = modelTypeCopy == 1 && type == 1;
       v63 = 16;
       if (!v62)
       {
@@ -2123,7 +2123,7 @@ LABEL_56:
         v61 = v63;
       }
 
-      v64 = v91 == 1 && a4 == 1;
+      v64 = modelTypeCopy == 1 && type == 1;
       v65 = 15;
       if (!v64)
       {
@@ -2150,21 +2150,21 @@ LABEL_56:
         v67 = v61;
       }
 
-      v68 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-      [v68 storeMetricsData:v18 source:v67 placeType:1];
+      placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+      [placeTypeClassifierMetricsCalculator storeMetricsData:v18 source:v67 placeType:1];
 
-      v69 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-      [v69 storeMetricsData:v95 source:v67 placeType:2];
+      placeTypeClassifierMetricsCalculator2 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+      [placeTypeClassifierMetricsCalculator2 storeMetricsData:v95 source:v67 placeType:2];
 
-      v70 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-      [v70 storeMetricsData:v25 source:v67];
+      placeTypeClassifierMetricsCalculator3 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+      [placeTypeClassifierMetricsCalculator3 storeMetricsData:array source:v67];
 
       goto LABEL_81;
     }
 
     v112[0] = v32;
     v82 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:1];
-    v80 = [RTLearnedPlaceTypeInferenceGenerator placeCandidateStatsForType:"placeCandidateStatsForType:placeStats:dateInterval:excludingPlaces:parameters:distanceThreshold:" placeStats:2 dateInterval:v13 excludingPlaces:v14 parameters:300.0 distanceThreshold:?];
+    v80 = [RTLearnedPlaceTypeInferenceGenerator placeCandidateStatsForType:"placeCandidateStatsForType:placeStats:dateInterval:excludingPlaces:parameters:distanceThreshold:" placeStats:2 dateInterval:statsCopy excludingPlaces:intervalCopy parameters:300.0 distanceThreshold:?];
     v85 = [RTLearnedPlaceTypeInferenceGenerator filterPlaceStats:"filterPlaceStats:referenceLearnedPlace:minDistanceThreshold:maxDistanceThreshold:" referenceLearnedPlace:? minDistanceThreshold:? maxDistanceThreshold:?];
     v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v85, "count")}];
     [v95 setObject:v38 forKeyedSubscript:&unk_2845A0650];
@@ -2185,8 +2185,8 @@ LABEL_56:
         }
 
         v74 = v42;
-        v73 = [v13 count];
-        v43 = [objc_opt_class() modelTypeToString:a5];
+        v73 = [statsCopy count];
+        v43 = [objc_opt_class() modelTypeToString:modelType];
         v72 = [v85 count];
         v44 = [RTRuntime objToString:v94 filterProperties:0];
         *buf = 138414082;
@@ -2210,7 +2210,7 @@ LABEL_56:
       }
 
       v32 = v88;
-      a5 = v91;
+      modelType = modelTypeCopy;
     }
 
     v46 = v93;
@@ -2220,7 +2220,7 @@ LABEL_56:
       v47 = v85;
       if ([v85 count])
       {
-        v48 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:a5 placeType:2 placeStats:v85 metricsData:v95];
+        v48 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:modelType placeType:2 placeStats:v85 metricsData:v95];
         goto LABEL_53;
       }
 
@@ -2248,20 +2248,20 @@ LABEL_56:
 
     else
     {
-      v53 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
-      v54 = [(RTLearnedPlaceTypeInferenceGenerator *)self filterPlaceStats:v53 referenceLearnedPlace:v32 minDistanceThreshold:&unk_2845A2348 maxDistanceThreshold:&unk_2845A2358];
+      placeStats3 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
+      v54 = [(RTLearnedPlaceTypeInferenceGenerator *)self filterPlaceStats:placeStats3 referenceLearnedPlace:v32 minDistanceThreshold:&unk_2845A2348 maxDistanceThreshold:&unk_2845A2358];
 
       v46 = 0;
-      v48 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:a5 placeType:2 placeStats:v54 metricsData:v95];
+      v48 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelForModelType:modelType placeType:2 placeStats:v54 metricsData:v95];
     }
 
     v47 = v85;
 LABEL_53:
 
-    [v25 addObject:v32];
+    [array addObject:v32];
     if (v48)
     {
-      [v25 addObject:v48];
+      [array addObject:v48];
 LABEL_55:
 
       goto LABEL_56;
@@ -2290,19 +2290,19 @@ LABEL_55:
   }
 
 LABEL_14:
-  v25 = 0;
+  array = 0;
 LABEL_81:
 
 LABEL_82:
 
-  return v25;
+  return array;
 }
 
-- (id)inferPlaceTypesFromModelWithPlaceStats:(id)a3 dateInterval:(id)a4
+- (id)inferPlaceTypesFromModelWithPlaceStats:(id)stats dateInterval:(id)interval
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  statsCopy = stats;
+  intervalCopy = interval;
   if (![(RTLearnedPlaceTypeInferenceGenerator *)self supportsModel])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2353,11 +2353,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9 = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
-  v10 = [v9 objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
-  v11 = [v10 BOOLValue];
+  defaultsManager = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
+  v10 = [defaultsManager objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableModel"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2384,26 +2384,26 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v19 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:1 homeModelType:2 workModelType:1 placeStats:v7 dateInterval:v8];
-  v21 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:1 homeModelType:1 workModelType:1 placeStats:v7 dateInterval:v8];
-  v22 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:0 homeModelType:2 workModelType:1 placeStats:v7 dateInterval:v8];
-  v23 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:0 homeModelType:1 workModelType:1 placeStats:v7 dateInterval:v8];
+  v19 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:1 homeModelType:2 workModelType:1 placeStats:statsCopy dateInterval:intervalCopy];
+  v21 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:1 homeModelType:1 workModelType:1 placeStats:statsCopy dateInterval:intervalCopy];
+  v22 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:0 homeModelType:2 workModelType:1 placeStats:statsCopy dateInterval:intervalCopy];
+  v23 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromModelWithCandidateSelection:0 homeModelType:1 workModelType:1 placeStats:statsCopy dateInterval:intervalCopy];
 LABEL_16:
 
   return v19;
 }
 
-- (id)filteredPlaceStatsByWeeklyVisitThreshold:(double)a3 placeStats:(id)a4
+- (id)filteredPlaceStatsByWeeklyVisitThreshold:(double)threshold placeStats:(id)stats
 {
   v4 = MEMORY[0x277CCAC30];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __92__RTLearnedPlaceTypeInferenceGenerator_filteredPlaceStatsByWeeklyVisitThreshold_placeStats___block_invoke;
   v9[3] = &__block_descriptor_40_e64_B24__0__RTLearnedPlaceTypeInferencePlaceStats_8__NSDictionary_16l;
-  *&v9[4] = a3;
-  v5 = a4;
+  *&v9[4] = threshold;
+  statsCopy = stats;
   v6 = [v4 predicateWithBlock:v9];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [statsCopy filteredArrayUsingPredicate:v6];
 
   return v7;
 }
@@ -2416,17 +2416,17 @@ BOOL __92__RTLearnedPlaceTypeInferenceGenerator_filteredPlaceStatsByWeeklyVisitT
   return v4;
 }
 
-- (id)inferPlaceTypesFromRuleEngineWithPlaceStats:(id)a3 dateInterval:(id)a4
+- (id)inferPlaceTypesFromRuleEngineWithPlaceStats:(id)stats dateInterval:(id)interval
 {
   v80 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v61 = v8;
+  statsCopy = stats;
+  intervalCopy = interval;
+  v61 = intervalCopy;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v12 = v7;
+      v12 = statsCopy;
       v13 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -2442,7 +2442,7 @@ BOOL __92__RTLearnedPlaceTypeInferenceGenerator_filteredPlaceStatsByWeeklyVisitT
       }
 
 LABEL_10:
-      v19 = 0;
+      array = 0;
 LABEL_11:
 
       goto LABEL_14;
@@ -2451,15 +2451,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v9 = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
-  v10 = [v9 objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableRuleEngine"];
-  v11 = [v10 BOOLValue];
+  defaultsManager = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
+  v10 = [defaultsManager objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableRuleEngine"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v12 = v7;
+      v12 = statsCopy;
       v13 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -2481,13 +2481,13 @@ LABEL_9:
     }
 
 LABEL_12:
-    v12 = v7;
+    v12 = statsCopy;
 LABEL_13:
-    v19 = 0;
+    array = 0;
     goto LABEL_14;
   }
 
-  [v8 duration];
+  [intervalCopy duration];
   v22 = *&v21;
   if (v21 < 1209600.0)
   {
@@ -2504,7 +2504,7 @@ LABEL_13:
       }
     }
 
-    v12 = v7;
+    v12 = statsCopy;
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
@@ -2524,9 +2524,9 @@ LABEL_13:
           }
 
           v28 = *(*(&v70 + 1) + 8 * i);
-          v29 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+          placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
           v30 = objc_opt_new();
-          [v29 storeMetricsData:v30 source:{objc_msgSend(v28, "unsignedIntValue")}];
+          [placeTypeClassifierMetricsCalculator storeMetricsData:v30 source:{objc_msgSend(v28, "unsignedIntValue")}];
         }
 
         v25 = [&unk_2845A1838 countByEnumeratingWithState:&v70 objects:v75 count:16];
@@ -2538,20 +2538,20 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v31 = [(RTLearnedPlaceTypeInferenceGenerator *)self filteredPlaceStatsByWeeklyVisitThreshold:v7 placeStats:0.6];
+  v31 = [(RTLearnedPlaceTypeInferenceGenerator *)self filteredPlaceStatsByWeeklyVisitThreshold:statsCopy placeStats:0.6];
   v32 = [v31 count];
 
   if (v32)
   {
-    v19 = [MEMORY[0x277CBEB18] array];
-    v33 = [MEMORY[0x277CBEB38] dictionary];
-    v34 = [MEMORY[0x277CBEB18] array];
-    [v33 setObject:v34 forKeyedSubscript:&unk_2845A0680];
+    array = [MEMORY[0x277CBEB18] array];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [dictionary setObject:array2 forKeyedSubscript:&unk_2845A0680];
 
-    v35 = [MEMORY[0x277CBEB18] array];
-    [v33 setObject:v35 forKeyedSubscript:&unk_2845A0698];
+    array3 = [MEMORY[0x277CBEB18] array];
+    [dictionary setObject:array3 forKeyedSubscript:&unk_2845A0698];
 
-    v36 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromDailyPatternsWithPlaceStats:v7 dateInterval:v8];
+    v36 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromDailyPatternsWithPlaceStats:statsCopy dateInterval:intervalCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2567,12 +2567,12 @@ LABEL_13:
     v64[1] = 3221225472;
     v64[2] = __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWithPlaceStats_dateInterval___block_invoke;
     v64[3] = &unk_2788C8AE8;
-    v38 = v33;
+    v38 = dictionary;
     v65 = v38;
     v60 = v36;
     [v36 enumerateObjectsUsingBlock:v64];
-    v12 = v7;
-    v39 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromTopMedianDwellTimeWithPlaceStats:v7 dateInterval:v8];
+    v12 = statsCopy;
+    v39 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferPlaceTypesFromTopMedianDwellTimeWithPlaceStats:statsCopy dateInterval:intervalCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v40 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2604,14 +2604,14 @@ LABEL_13:
       if (v46 != 1)
       {
 LABEL_44:
-        v51 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-        [v51 storeMetricsData:v19 source:11];
+        placeTypeClassifierMetricsCalculator2 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+        [placeTypeClassifierMetricsCalculator2 storeMetricsData:array source:11];
 
         goto LABEL_11;
       }
 
-      v47 = [v44 anyObject];
-      [v19 addObject:v47];
+      anyObject = [v44 anyObject];
+      [array addObject:anyObject];
 
       v48 = MEMORY[0x277CBEB98];
       v49 = [v13 objectForKeyedSubscript:&unk_2845A0698];
@@ -2619,8 +2619,8 @@ LABEL_44:
 
       if ([v45 count] == 1)
       {
-        v50 = [v45 anyObject];
-        [v19 addObject:v50];
+        anyObject2 = [v45 anyObject];
+        [array addObject:anyObject2];
       }
     }
 
@@ -2637,7 +2637,7 @@ LABEL_44:
     }
   }
 
-  v12 = v7;
+  v12 = statsCopy;
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
@@ -2660,19 +2660,19 @@ LABEL_44:
       }
 
       v57 = *(*(&v66 + 1) + 8 * j);
-      v58 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+      placeTypeClassifierMetricsCalculator3 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
       v59 = objc_opt_new();
-      [v58 storeMetricsData:v59 source:{objc_msgSend(v57, "unsignedIntValue")}];
+      [placeTypeClassifierMetricsCalculator3 storeMetricsData:v59 source:{objc_msgSend(v57, "unsignedIntValue")}];
     }
 
     v54 = [&unk_2845A1850 countByEnumeratingWithState:&v66 objects:v74 count:16];
-    v19 = 0;
+    array = 0;
   }
 
   while (v54);
 LABEL_14:
 
-  return v19;
+  return array;
 }
 
 void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWithPlaceStats_dateInterval___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2721,10 +2721,10 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
   [v9 addObject:v5];
 }
 
-- (id)fuseInferences:(id)a3
+- (id)fuseInferences:(id)inferences
 {
   v98 = *MEMORY[0x277D85DE8];
-  v50 = a3;
+  inferencesCopy = inferences;
   v84 = 0;
   v85 = &v84;
   v86 = 0x3032000000;
@@ -2761,7 +2761,7 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
   v57 = __Block_byref_object_copy__190;
   v58 = __Block_byref_object_dispose__190;
   v59 = 0;
-  v48 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2770,7 +2770,7 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
       v8 = NSStringFromSelector(a2);
-      v9 = [v50 objectForKeyedSubscript:&unk_2845A06B0];
+      v9 = [inferencesCopy objectForKeyedSubscript:&unk_2845A06B0];
       v10 = [v9 count];
       v11 = [objc_opt_class() placeTypeClassificationSourceToString:3];
       *buf = 138413058;
@@ -2785,7 +2785,7 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
     }
   }
 
-  v12 = [v50 objectForKeyedSubscript:{&unk_2845A06B0, v48}];
+  v12 = [inferencesCopy objectForKeyedSubscript:{&unk_2845A06B0, array}];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __55__RTLearnedPlaceTypeInferenceGenerator_fuseInferences___block_invoke;
@@ -2804,7 +2804,7 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = NSStringFromSelector(a2);
-      v17 = [v50 objectForKeyedSubscript:&unk_2845A0698];
+      v17 = [inferencesCopy objectForKeyedSubscript:&unk_2845A0698];
       v18 = [v17 count];
       v19 = [objc_opt_class() placeTypeClassificationSourceToString:2];
       *buf = 138413058;
@@ -2819,7 +2819,7 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
     }
   }
 
-  v20 = [v50 objectForKeyedSubscript:&unk_2845A0698];
+  v20 = [inferencesCopy objectForKeyedSubscript:&unk_2845A0698];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __55__RTLearnedPlaceTypeInferenceGenerator_fuseInferences___block_invoke_421;
@@ -2838,7 +2838,7 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
       v24 = NSStringFromSelector(a2);
-      v25 = [v50 objectForKeyedSubscript:&unk_2845A0680];
+      v25 = [inferencesCopy objectForKeyedSubscript:&unk_2845A0680];
       v26 = [v25 count];
       v27 = [objc_opt_class() placeTypeClassificationSourceToString:1];
       *buf = 138413058;
@@ -2853,7 +2853,7 @@ void __97__RTLearnedPlaceTypeInferenceGenerator_inferPlaceTypesFromRuleEngineWit
     }
   }
 
-  v28 = [v50 objectForKeyedSubscript:&unk_2845A0680];
+  v28 = [inferencesCopy objectForKeyedSubscript:&unk_2845A0680];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __55__RTLearnedPlaceTypeInferenceGenerator_fuseInferences___block_invoke_422;
@@ -3148,48 +3148,48 @@ LABEL_9:
   }
 }
 
-- (id)inferPlaceTypesFromFallbackWithPlaceStats:(id)a3 dateInterval:(id)a4
+- (id)inferPlaceTypesFromFallbackWithPlaceStats:(id)stats dateInterval:(id)interval
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  statsCopy = stats;
   if (_os_feature_enabled_impl())
   {
-    v7 = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
-    v8 = [v7 objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableFallback"];
-    v9 = [v8 BOOLValue];
+    defaultsManager = [(RTLearnedPlaceTypeInferenceGenerator *)self defaultsManager];
+    v8 = [defaultsManager objectForKey:@"RTDefaultsLearnedPlaceTypeInferenceGeneratorDisableFallback"];
+    bOOLValue = [v8 BOOLValue];
 
-    if (!v9)
+    if (!bOOLValue)
     {
-      v16 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v17 = objc_opt_class();
-      v18 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
-      v19 = [v17 sortPlaceStats:v18];
+      placeStats = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
+      v19 = [v17 sortPlaceStats:placeStats];
 
       if ([v19 count])
       {
         v47 = a2;
-        v48 = v6;
+        v48 = statsCopy;
         v46 = v19;
-        v20 = [v19 firstObject];
+        firstObject = [v19 firstObject];
         v42 = [RTLearnedPlace alloc];
-        v45 = [v20 place];
-        v41 = [v45 identifier];
-        v44 = [v20 place];
-        v21 = [v44 mapItem];
-        v22 = [v20 place];
-        v23 = [v22 customLabel];
-        v24 = [v20 place];
-        v25 = [v24 creationDate];
-        v43 = v20;
-        v26 = [v20 place];
-        v27 = [v26 expirationDate];
-        v10 = [(RTLearnedPlace *)v42 initWithIdentifier:v41 type:1 typeSource:1 mapItem:v21 customLabel:v23 creationDate:v25 expirationDate:v27];
+        place = [firstObject place];
+        identifier = [place identifier];
+        place2 = [firstObject place];
+        mapItem = [place2 mapItem];
+        place3 = [firstObject place];
+        customLabel = [place3 customLabel];
+        place4 = [firstObject place];
+        creationDate = [place4 creationDate];
+        v43 = firstObject;
+        place5 = [firstObject place];
+        expirationDate = [place5 expirationDate];
+        v10 = [(RTLearnedPlace *)v42 initWithIdentifier:identifier type:1 typeSource:1 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
         if (v10)
         {
-          [v16 addObject:v10];
+          [array addObject:v10];
           a2 = v47;
-          v6 = v48;
+          statsCopy = v48;
           v19 = v46;
           v28 = v43;
         }
@@ -3213,7 +3213,7 @@ LABEL_9:
             _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "%@, %@, failed to create home from placeStats object, %{sensitive}@", buf, 0x20u);
           }
 
-          v6 = v48;
+          statsCopy = v48;
           v19 = v46;
         }
       }
@@ -3223,8 +3223,8 @@ LABEL_9:
         v10 = 0;
       }
 
-      v30 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferWorkFromHistoryAndPlaceStats:v6];
-      [v16 addObjectsFromArray:v30];
+      v30 = [(RTLearnedPlaceTypeInferenceGenerator *)self inferWorkFromHistoryAndPlaceStats:statsCopy];
+      [array addObjectsFromArray:v30];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v31 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -3248,8 +3248,8 @@ LABEL_9:
         }
       }
 
-      v36 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-      [v36 storeMetricsData:v16 source:4];
+      placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+      [placeTypeClassifierMetricsCalculator storeMetricsData:array source:4];
 
       goto LABEL_25;
     }
@@ -3277,7 +3277,7 @@ LABEL_9:
     }
 
 LABEL_11:
-    v16 = 0;
+    array = 0;
     goto LABEL_26;
   }
 
@@ -3301,18 +3301,18 @@ LABEL_11:
   }
 
 LABEL_10:
-  v16 = 0;
+  array = 0;
 LABEL_25:
 
 LABEL_26:
 
-  return v16;
+  return array;
 }
 
-- (id)inferWorkFromHistoryAndPlaceStats:(id)a3
+- (id)inferWorkFromHistoryAndPlaceStats:(id)stats
 {
   v134[1] = *MEMORY[0x277D85DE8];
-  v82 = a3;
+  statsCopy = stats;
   v110 = 0;
   v111 = &v110;
   v112 = 0x3032000000;
@@ -3327,7 +3327,7 @@ LABEL_26:
   v109 = 0;
   v4 = dispatch_group_create();
   dispatch_group_enter(v4);
-  v5 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+  placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
   v100[0] = MEMORY[0x277D85DD0];
   v100[1] = 3221225472;
   v100[2] = __74__RTLearnedPlaceTypeInferenceGenerator_inferWorkFromHistoryAndPlaceStats___block_invoke;
@@ -3336,7 +3336,7 @@ LABEL_26:
   v103 = &v104;
   group = v4;
   v101 = group;
-  [v5 fetchWorkInferenceStatsForLookbackDays:14 handler:v100];
+  [placeTypeClassifierMetricsCalculator fetchWorkInferenceStatsForLookbackDays:14 handler:v100];
 
   v6 = dispatch_time(0, 10000000000);
   if (dispatch_group_wait(group, v6))
@@ -3391,7 +3391,7 @@ LABEL_26:
     }
   }
 
-  v91 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
@@ -3418,12 +3418,12 @@ LABEL_26:
       }
 
       v23 = *(*(&v96 + 1) + 8 * i);
-      v24 = [v23 workInferences];
-      v25 = [v23 totalInferences];
-      v26 = v25;
-      if (v25)
+      workInferences = [v23 workInferences];
+      totalInferences = [v23 totalInferences];
+      v26 = totalInferences;
+      if (totalInferences)
       {
-        v27 = v24 / v25;
+        v27 = workInferences / totalInferences;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v28 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -3432,22 +3432,22 @@ LABEL_26:
             v39 = objc_opt_class();
             v88 = NSStringFromClass(v39);
             v40 = NSStringFromSelector(a2);
-            v41 = [v23 learnedPlaceIdentifier];
-            v42 = [v23 lastDateInferred];
+            learnedPlaceIdentifier = [v23 learnedPlaceIdentifier];
+            lastDateInferred = [v23 lastDateInferred];
             *buf = 138413826;
             v119 = v88;
             v120 = 2112;
             v121 = v40;
             v122 = 2112;
-            v123 = v41;
+            v123 = learnedPlaceIdentifier;
             v124 = 2048;
-            v125 = *&v24;
+            v125 = *&workInferences;
             v126 = 2048;
             v127 = v26;
             v128 = 2048;
-            *&v129 = v24 / v26;
+            *&v129 = workInferences / v26;
             v130 = 2112;
-            v131 = v42;
+            v131 = lastDateInferred;
             _os_log_debug_impl(&dword_2304B3000, v28, OS_LOG_TYPE_DEBUG, "%@, %@, Processing history stats for identifier: %@, num inferences with yield: %lu, num total yield: %lu, ratio: %.3f, last inferred: %@", buf, 0x48u);
 
             v18 = v84;
@@ -3458,21 +3458,21 @@ LABEL_26:
         {
           if (v27 > v21)
           {
-            v29 = [v23 learnedPlaceIdentifier];
+            learnedPlaceIdentifier2 = [v23 learnedPlaceIdentifier];
 
-            v30 = [v23 lastDateInferred];
+            lastDateInferred2 = [v23 lastDateInferred];
 LABEL_31:
-            v90 = v29;
+            v90 = learnedPlaceIdentifier2;
 
-            v91 = v30;
+            distantPast = lastDateInferred2;
             v21 = v27;
             continue;
           }
 
           if (v27 == v21)
           {
-            v31 = [v23 lastDateInferred];
-            v32 = [v31 compare:v91] == 1;
+            lastDateInferred3 = [v23 lastDateInferred];
+            v32 = [lastDateInferred3 compare:distantPast] == 1;
 
             if (v32)
             {
@@ -3484,8 +3484,8 @@ LABEL_31:
                   v34 = objc_opt_class();
                   v35 = NSStringFromClass(v34);
                   v36 = NSStringFromSelector(a2);
-                  v37 = [v23 learnedPlaceIdentifier];
-                  v38 = [v23 lastDateInferred];
+                  learnedPlaceIdentifier3 = [v23 learnedPlaceIdentifier];
+                  lastDateInferred4 = [v23 lastDateInferred];
                   *buf = 138413826;
                   v119 = v35;
                   v120 = 2112;
@@ -3493,20 +3493,20 @@ LABEL_31:
                   v122 = 2048;
                   v123 = *&v21;
                   v124 = 2112;
-                  v125 = *&v37;
+                  v125 = *&learnedPlaceIdentifier3;
                   v126 = 2112;
-                  v127 = v38;
+                  v127 = lastDateInferred4;
                   v128 = 2112;
                   v129 = v90;
                   v130 = 2112;
-                  v131 = v91;
+                  v131 = distantPast;
                   _os_log_impl(&dword_2304B3000, v33, OS_LOG_TYPE_INFO, "%@, %@, Tie detected in fallback ratio (%.2f). Selecting candidate %@ with more recent inference date %@ over existing candidate %@ with date %@", buf, 0x48u);
                 }
               }
 
-              v29 = [v23 learnedPlaceIdentifier];
+              learnedPlaceIdentifier2 = [v23 learnedPlaceIdentifier];
 
-              v30 = [v23 lastDateInferred];
+              lastDateInferred2 = [v23 lastDateInferred];
               v27 = v21;
               goto LABEL_31;
             }
@@ -3553,7 +3553,7 @@ LABEL_49:
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v44 = v82;
+  v44 = statsCopy;
   v45 = [v44 countByEnumeratingWithState:&v92 objects:v117 count:16];
   if (!v45)
   {
@@ -3574,9 +3574,9 @@ LABEL_49:
       }
 
       v49 = *(*(&v92 + 1) + 8 * v48);
-      v50 = [v49 place];
-      v51 = [v50 identifier];
-      v52 = [v51 isEqual:v43];
+      place = [v49 place];
+      identifier = [place identifier];
+      v52 = [identifier isEqual:v43];
 
       if (v52)
       {
@@ -3604,17 +3604,17 @@ LABEL_49:
 
 LABEL_59:
         v85 = [RTLearnedPlace alloc];
-        v89 = [v46 place];
-        v57 = [v89 identifier];
-        v58 = [v46 place];
-        v59 = [v58 mapItem];
-        v60 = [v46 place];
-        v61 = [v60 customLabel];
-        v62 = [v46 place];
-        v63 = [v62 creationDate];
-        v64 = [v46 place];
-        v65 = [v64 expirationDate];
-        v86 = [(RTLearnedPlace *)v85 initWithIdentifier:v57 type:2 typeSource:1 mapItem:v59 customLabel:v61 creationDate:v63 expirationDate:v65];
+        place2 = [v46 place];
+        identifier2 = [place2 identifier];
+        place3 = [v46 place];
+        mapItem = [place3 mapItem];
+        place4 = [v46 place];
+        customLabel = [place4 customLabel];
+        place5 = [v46 place];
+        creationDate = [place5 creationDate];
+        place6 = [v46 place];
+        expirationDate = [place6 expirationDate];
+        v86 = [(RTLearnedPlace *)v85 initWithIdentifier:identifier2 type:2 typeSource:1 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -3624,7 +3624,7 @@ LABEL_59:
             v67 = objc_opt_class();
             v68 = NSStringFromClass(v67);
             v69 = NSStringFromSelector(a2);
-            v70 = [v91 stringFromDate];
+            stringFromDate = [distantPast stringFromDate];
             *buf = 138413314;
             v119 = v68;
             v120 = 2112;
@@ -3634,7 +3634,7 @@ LABEL_59:
             v124 = 2048;
             v125 = v21;
             v126 = 2112;
-            v127 = v70;
+            v127 = stringFromDate;
             _os_log_impl(&dword_2304B3000, v66, OS_LOG_TYPE_INFO, "%@, %@, Selected fallback work %@ with ratio %.2f and date %@", buf, 0x34u);
           }
         }
@@ -3723,18 +3723,18 @@ void __74__RTLearnedPlaceTypeInferenceGenerator_inferWorkFromHistoryAndPlaceStat
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)_getCandidatePlaceStatsFromPlaceStats:(id)a3
+- (id)_getCandidatePlaceStatsFromPlaceStats:(id)stats
 {
   v3 = MEMORY[0x277CCAC30];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __78__RTLearnedPlaceTypeInferenceGenerator__getCandidatePlaceStatsFromPlaceStats___block_invoke;
   v11 = &unk_2788D2BE8;
-  v12 = self;
+  selfCopy = self;
   v13 = a2;
-  v4 = a3;
+  statsCopy = stats;
   v5 = [v3 predicateWithBlock:&v8];
-  v6 = [v4 filteredArrayUsingPredicate:{v5, v8, v9, v10, v11, v12, v13}];
+  v6 = [statsCopy filteredArrayUsingPredicate:{v5, v8, v9, v10, v11, selfCopy, v13}];
 
   return v6;
 }
@@ -3830,21 +3830,21 @@ BOOL __78__RTLearnedPlaceTypeInferenceGenerator__getCandidatePlaceStatsFromPlace
 
 - (id)_getFullLocationHistoryDateInterval
 {
-  v3 = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
-  v4 = [v3 entryDate];
-  if (v4)
+  firstVisit = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
+  entryDate = [firstVisit entryDate];
+  if (entryDate)
   {
-    v5 = v4;
-    v6 = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
-    v7 = [v6 exitDate];
-    if (v7)
+    entryDate3 = entryDate;
+    lastVisit = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
+    exitDate = [lastVisit exitDate];
+    if (exitDate)
     {
-      v8 = v7;
-      v9 = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
-      v10 = [v9 entryDate];
-      v11 = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
-      v12 = [v11 exitDate];
-      v13 = [v10 compare:v12];
+      v8 = exitDate;
+      firstVisit2 = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
+      entryDate2 = [firstVisit2 entryDate];
+      lastVisit2 = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
+      exitDate2 = [lastVisit2 exitDate];
+      v13 = [entryDate2 compare:exitDate2];
 
       if (v13 != -1)
       {
@@ -3853,11 +3853,11 @@ BOOL __78__RTLearnedPlaceTypeInferenceGenerator__getCandidatePlaceStatsFromPlace
       }
 
       v15 = objc_alloc(MEMORY[0x277CCA970]);
-      v3 = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
-      v5 = [v3 entryDate];
-      v6 = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
-      v16 = [v6 exitDate];
-      v14 = [v15 initWithStartDate:v5 endDate:v16];
+      firstVisit = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
+      entryDate3 = [firstVisit entryDate];
+      lastVisit = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
+      exitDate3 = [lastVisit exitDate];
+      v14 = [v15 initWithStartDate:entryDate3 endDate:exitDate3];
     }
 
     else
@@ -3878,13 +3878,13 @@ LABEL_10:
 
 - (id)inferPlaceTypes
 {
-  v2 = self;
+  selfCopy = self;
   v114 = *MEMORY[0x277D85DE8];
   [(RTLearnedPlaceTypeInferenceGenerator *)self log];
-  v3 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 placeStats];
-  v4 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 _getCandidatePlaceStatsFromPlaceStats:v3];
+  placeStats = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy placeStats];
+  v4 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy _getCandidatePlaceStatsFromPlaceStats:placeStats];
 
-  v5 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 _getFullLocationHistoryDateInterval];
+  _getFullLocationHistoryDateInterval = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy _getFullLocationHistoryDateInterval];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -3893,24 +3893,24 @@ LABEL_10:
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
-      v10 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 placeStats];
+      placeStats2 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy placeStats];
       *buf = 138413314;
       v105 = v8;
       v106 = 2112;
       v107 = v9;
       v108 = 2048;
-      v109 = [v10 count];
+      v109 = [placeStats2 count];
       v110 = 2048;
       v111 = [v4 count];
       v112 = 2112;
-      v113 = v5;
+      v113 = _getFullLocationHistoryDateInterval;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, %@, placeStats count, %lu, candidate placeStats count, %lu, dateInterval, %@", buf, 0x34u);
     }
   }
 
-  v84 = v5;
+  v84 = _getFullLocationHistoryDateInterval;
   v85 = v4;
-  v89 = v2;
+  v89 = selfCopy;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v96 = 0u;
@@ -3962,22 +3962,22 @@ LABEL_10:
       while (v13);
     }
 
-    v5 = v84;
+    _getFullLocationHistoryDateInterval = v84;
     v4 = v85;
-    v2 = v89;
+    selfCopy = v89;
   }
 
-  v23 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 inferPlaceTypesFromRuleEngineWithPlaceStats:v4 dateInterval:v5];
-  aSelectora = [(RTLearnedPlaceTypeInferenceGenerator *)v2 inferPlaceTypesFromModelWithPlaceStats:v4 dateInterval:v5];
+  v23 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy inferPlaceTypesFromRuleEngineWithPlaceStats:v4 dateInterval:_getFullLocationHistoryDateInterval];
+  aSelectora = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy inferPlaceTypesFromModelWithPlaceStats:v4 dateInterval:_getFullLocationHistoryDateInterval];
   if ([v23 count] || objc_msgSend(aSelectora, "count"))
   {
-    v86 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 inferPlaceTypesFromFallbackWithPlaceStats:v4 dateInterval:v5];
+    v86 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy inferPlaceTypesFromFallbackWithPlaceStats:v4 dateInterval:_getFullLocationHistoryDateInterval];
   }
 
   else
   {
-    v66 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 placeStats];
-    v86 = [(RTLearnedPlaceTypeInferenceGenerator *)v2 inferPlaceTypesFromFallbackWithPlaceStats:v66 dateInterval:v5];
+    placeStats3 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy placeStats];
+    v86 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy inferPlaceTypesFromFallbackWithPlaceStats:placeStats3 dateInterval:_getFullLocationHistoryDateInterval];
   }
 
   v92 = 0u;
@@ -4002,8 +4002,8 @@ LABEL_10:
         }
 
         v31 = *(*(&v90 + 1) + 8 * j);
-        v32 = [v31 type];
-        if (v32 == 1)
+        type = [v31 type];
+        if (type == 1)
         {
           v33 = v28;
           v28 = v31;
@@ -4011,7 +4011,7 @@ LABEL_10:
 
         else
         {
-          if (v32 != 2)
+          if (type != 2)
           {
             continue;
           }
@@ -4083,11 +4083,11 @@ LABEL_35:
     }
 
     v43 = v89;
-    v71 = [(RTLearnedPlaceTypeInferenceGenerator *)v89 placeTypeClassifierMetricsCalculator];
-    [v71 storeMetricsData:v81 source:6 placeType:2];
+    placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)v89 placeTypeClassifierMetricsCalculator];
+    [placeTypeClassifierMetricsCalculator storeMetricsData:v81 source:6 placeType:2];
 
-    v72 = [(RTLearnedPlaceTypeInferenceGenerator *)v89 placeTypeClassifierMetricsCalculator];
-    [v72 storeMetricsData:v80 source:7 placeType:2];
+    placeTypeClassifierMetricsCalculator2 = [(RTLearnedPlaceTypeInferenceGenerator *)v89 placeTypeClassifierMetricsCalculator];
+    [placeTypeClassifierMetricsCalculator2 storeMetricsData:v80 source:7 placeType:2];
 
     v36 = v82;
     v35 = v78;
@@ -4103,31 +4103,31 @@ LABEL_35:
   [v44 setObject:aSelectora forKeyedSubscript:&unk_2845A0698];
   [v44 setObject:v86 forKeyedSubscript:&unk_2845A0680];
   v45 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 fuseInferences:v44];
-  v46 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeTypeClassifierMetricsCalculator];
+  placeTypeClassifierMetricsCalculator3 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeTypeClassifierMetricsCalculator];
   v79 = v35;
-  [v46 storeMetricsData:v35 source:6];
+  [placeTypeClassifierMetricsCalculator3 storeMetricsData:v35 source:6];
 
-  v47 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeTypeClassifierMetricsCalculator];
+  placeTypeClassifierMetricsCalculator4 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeTypeClassifierMetricsCalculator];
   v83 = v36;
-  [v47 storeMetricsData:v36 source:7];
+  [placeTypeClassifierMetricsCalculator4 storeMetricsData:v36 source:7];
 
-  v48 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeTypeClassifierMetricsCalculator];
+  placeTypeClassifierMetricsCalculator5 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeTypeClassifierMetricsCalculator];
   v77 = v45;
-  [v48 storeMetricsData:v45 source:5];
+  [placeTypeClassifierMetricsCalculator5 storeMetricsData:v45 source:5];
 
   v49 = objc_opt_new();
   v50 = MEMORY[0x277CCABB0];
-  v51 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeStats];
-  v52 = [v50 numberWithUnsignedInteger:{objc_msgSend(v51, "count")}];
+  placeStats4 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 placeStats];
+  v52 = [v50 numberWithUnsignedInteger:{objc_msgSend(placeStats4, "count")}];
   [v49 setObject:v52 forKeyedSubscript:&unk_2845A0698];
 
-  v53 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 firstVisit];
-  v54 = [v53 entryDate];
-  if (v54)
+  firstVisit = [(RTLearnedPlaceTypeInferenceGenerator *)v43 firstVisit];
+  entryDate = [firstVisit entryDate];
+  if (entryDate)
   {
-    v55 = v54;
-    v56 = [(RTLearnedPlaceTypeInferenceGenerator *)v43 lastVisit];
-    [v56 exitDate];
+    v55 = entryDate;
+    lastVisit = [(RTLearnedPlaceTypeInferenceGenerator *)v43 lastVisit];
+    [lastVisit exitDate];
     v58 = v57 = v43;
 
     if (!v58)
@@ -4135,12 +4135,12 @@ LABEL_35:
       goto LABEL_46;
     }
 
-    v53 = [MEMORY[0x277CBEA80] currentCalendar];
-    v59 = [(RTLearnedPlaceTypeInferenceGenerator *)v57 firstVisit];
-    v60 = [v59 entryDate];
-    v61 = [(RTLearnedPlaceTypeInferenceGenerator *)v57 lastVisit];
-    v62 = [v61 exitDate];
-    v75 = [v53 components:16 fromDate:v60 toDate:v62 options:0];
+    firstVisit = [MEMORY[0x277CBEA80] currentCalendar];
+    firstVisit2 = [(RTLearnedPlaceTypeInferenceGenerator *)v57 firstVisit];
+    entryDate2 = [firstVisit2 entryDate];
+    lastVisit2 = [(RTLearnedPlaceTypeInferenceGenerator *)v57 lastVisit];
+    exitDate = [lastVisit2 exitDate];
+    v75 = [firstVisit components:16 fromDate:entryDate2 toDate:exitDate options:0];
 
     v63 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v75, "day")}];
     [v49 setObject:v63 forKeyedSubscript:&unk_2845A06B0];
@@ -4148,8 +4148,8 @@ LABEL_35:
 
   v57 = v89;
 LABEL_46:
-  v64 = [(RTLearnedPlaceTypeInferenceGenerator *)v57 placeTypeClassifierMetricsCalculator];
-  [v64 storeMetricsData:v49 source:0 placeType:0];
+  placeTypeClassifierMetricsCalculator6 = [(RTLearnedPlaceTypeInferenceGenerator *)v57 placeTypeClassifierMetricsCalculator];
+  [placeTypeClassifierMetricsCalculator6 storeMetricsData:v49 source:0 placeType:0];
 
   return v77;
 }
@@ -4164,13 +4164,13 @@ LABEL_46:
     {
       v4 = objc_opt_class();
       v5 = NSStringFromClass(v4);
-      v6 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
-      v7 = [v6 count];
-      v8 = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
-      v9 = [v8 exitDate];
-      v10 = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
-      v11 = [v10 entryDate];
-      [v9 timeIntervalSinceDate:v11];
+      placeStats = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
+      v7 = [placeStats count];
+      lastVisit = [(RTLearnedPlaceTypeInferenceGenerator *)self lastVisit];
+      exitDate = [lastVisit exitDate];
+      firstVisit = [(RTLearnedPlaceTypeInferenceGenerator *)self firstVisit];
+      entryDate = [firstVisit entryDate];
+      [exitDate timeIntervalSinceDate:entryDate];
       v14 = 138412802;
       v15 = v5;
       v16 = 2048;
@@ -4181,8 +4181,8 @@ LABEL_46:
     }
   }
 
-  v13 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
-  [v13 enumerateObjectsUsingBlock:&__block_literal_global_432];
+  placeStats2 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
+  [placeStats2 enumerateObjectsUsingBlock:&__block_literal_global_432];
 }
 
 void __43__RTLearnedPlaceTypeInferenceGenerator_log__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -4203,16 +4203,16 @@ void __43__RTLearnedPlaceTypeInferenceGenerator_log__block_invoke(uint64_t a1, v
   }
 }
 
-- (id)placeCandidatesFromDailyPatternsForType:(unint64_t)a3 placeStats:(id)a4 parameters:(id)a5
+- (id)placeCandidatesFromDailyPatternsForType:(unint64_t)type placeStats:(id)stats parameters:(id)parameters
 {
   v82[4] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a3 == 1)
+  statsCopy = stats;
+  parametersCopy = parameters;
+  v11 = parametersCopy;
+  if (type == 1)
   {
-    v61 = self;
-    v62 = v9;
+    selfCopy2 = self;
+    v62 = statsCopy;
     v56 = @"home";
     aSelector = a2;
     v12 = @"sHomeTotalWeeklyVisitCountPlaceCandidates";
@@ -4223,14 +4223,14 @@ void __43__RTLearnedPlaceTypeInferenceGenerator_log__block_invoke(uint64_t a1, v
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       v50 = 0;
       goto LABEL_11;
     }
 
-    v61 = self;
-    v62 = v9;
+    selfCopy2 = self;
+    v62 = statsCopy;
     v56 = @"work";
     aSelector = a2;
     v12 = @"sWorkTotalWeeklyVisitCountPlaceCandidates";
@@ -4239,7 +4239,7 @@ void __43__RTLearnedPlaceTypeInferenceGenerator_log__block_invoke(uint64_t a1, v
     v15 = @"sWorkMinDaysNonZeroDwellTimePlaceCandidates";
   }
 
-  [v10 objectForKeyedSubscript:v15];
+  [parametersCopy objectForKeyedSubscript:v15];
   v16 = v64 = v11;
   [v16 doubleValue];
   v18 = v17;
@@ -4291,8 +4291,8 @@ void __43__RTLearnedPlaceTypeInferenceGenerator_log__block_invoke(uint64_t a1, v
 
   v47 = [v64 objectForKeyedSubscript:@"sWeeklyVisitThresholdPlaceCandidates"];
   [v47 doubleValue];
-  v9 = v62;
-  v48 = [(RTLearnedPlaceTypeInferenceGenerator *)v61 filteredPlaceStatsByWeeklyVisitThreshold:v62 placeStats:?];
+  statsCopy = v62;
+  v48 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy2 filteredPlaceStatsByWeeklyVisitThreshold:v62 placeStats:?];
   v49 = [v48 filteredArrayUsingPredicate:v42];
   v50 = [v49 sortedArrayUsingDescriptors:v46];
 
@@ -4329,16 +4329,16 @@ LABEL_11:
   return v50;
 }
 
-- (id)placeCandidatesFromTopMedianDwellTimeForType:(unint64_t)a3 placeStats:(id)a4 parameters:(id)a5
+- (id)placeCandidatesFromTopMedianDwellTimeForType:(unint64_t)type placeStats:(id)stats parameters:(id)parameters
 {
   v75[3] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a3 == 1)
+  statsCopy = stats;
+  parametersCopy = parameters;
+  v11 = parametersCopy;
+  if (type == 1)
   {
-    v58 = self;
-    v59 = v9;
+    selfCopy2 = self;
+    v59 = statsCopy;
     v51 = @"home";
     aSelector = a2;
     v12 = @"sHomeMinTopMedianDwellTimePlaceCandidates";
@@ -4348,14 +4348,14 @@ LABEL_11:
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       v44 = 0;
       goto LABEL_11;
     }
 
-    v58 = self;
-    v59 = v9;
+    selfCopy2 = self;
+    v59 = statsCopy;
     v51 = @"work";
     aSelector = a2;
     v12 = @"sWorkMinTopMedianDwellTimePlaceCandidates";
@@ -4363,7 +4363,7 @@ LABEL_11:
     v14 = @"sWorkMinDaysNonZeroDwellTimePlaceCandidates";
   }
 
-  v15 = [v10 objectForKeyedSubscript:v14];
+  v15 = [parametersCopy objectForKeyedSubscript:v14];
   [v15 doubleValue];
   v17 = v16;
 
@@ -4407,8 +4407,8 @@ LABEL_11:
 
   v41 = [v25 objectForKeyedSubscript:@"sWeeklyVisitThresholdPlaceCandidates"];
   [v41 doubleValue];
-  v9 = v59;
-  v42 = [(RTLearnedPlaceTypeInferenceGenerator *)v58 filteredPlaceStatsByWeeklyVisitThreshold:v59 placeStats:?];
+  statsCopy = v59;
+  v42 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy2 filteredPlaceStatsByWeeklyVisitThreshold:v59 placeStats:?];
   v43 = [v42 filteredArrayUsingPredicate:v38];
   v44 = [v43 sortedArrayUsingDescriptors:v40];
 
@@ -4443,23 +4443,23 @@ LABEL_11:
   return v44;
 }
 
-- (id)filterPlaceStats:(id)a3 referenceLearnedPlace:(id)a4 minDistanceThreshold:(id)a5 maxDistanceThreshold:(id)a6
+- (id)filterPlaceStats:(id)stats referenceLearnedPlace:(id)place minDistanceThreshold:(id)threshold maxDistanceThreshold:(id)distanceThreshold
 {
   v65 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v44 = a5;
-  v43 = a6;
-  if (v11 && v44 && v43)
+  statsCopy = stats;
+  placeCopy = place;
+  thresholdCopy = threshold;
+  distanceThresholdCopy = distanceThreshold;
+  if (placeCopy && thresholdCopy && distanceThresholdCopy)
   {
     aSelector = a2;
-    v41 = v10;
+    v41 = statsCopy;
     v42 = objc_opt_new();
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    obj = v10;
+    obj = statsCopy;
     v12 = [obj countByEnumeratingWithState:&v48 objects:v64 count:16];
     if (v12)
     {
@@ -4475,25 +4475,25 @@ LABEL_11:
           }
 
           v15 = *(*(&v48 + 1) + 8 * i);
-          v16 = [(RTLearnedPlaceTypeInferenceGenerator *)self distanceCalculator];
-          v17 = [v15 place];
-          v18 = [v17 mapItem];
-          v19 = [v18 location];
-          v20 = [v11 mapItem];
-          v21 = [v20 location];
-          [v16 distanceFromLocation:v19 toLocation:v21 error:0];
+          distanceCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self distanceCalculator];
+          place = [v15 place];
+          mapItem = [place mapItem];
+          location = [mapItem location];
+          mapItem2 = [placeCopy mapItem];
+          location2 = [mapItem2 location];
+          [distanceCalculator distanceFromLocation:location toLocation:location2 error:0];
           v23 = v22;
 
-          v24 = [v15 place];
-          v25 = [v24 identifier];
-          v26 = [v11 identifier];
-          if (([v25 isEqual:v26] & 1) != 0 || (objc_msgSend(v44, "doubleValue"), v23 <= v27))
+          place2 = [v15 place];
+          identifier = [place2 identifier];
+          identifier2 = [placeCopy identifier];
+          if (([identifier isEqual:identifier2] & 1) != 0 || (objc_msgSend(thresholdCopy, "doubleValue"), v23 <= v27))
           {
           }
 
           else
           {
-            [v43 doubleValue];
+            [distanceThresholdCopy doubleValue];
             v29 = v28;
 
             if (v23 < v29)
@@ -4519,9 +4519,9 @@ LABEL_11:
         v33 = NSStringFromSelector(aSelector);
         v34 = [obj count];
         v35 = [v42 count];
-        [v44 doubleValue];
+        [thresholdCopy doubleValue];
         v37 = v36;
-        [v43 doubleValue];
+        [distanceThresholdCopy doubleValue];
         *buf = 138413570;
         v53 = v32;
         v54 = 2112;
@@ -4538,28 +4538,28 @@ LABEL_11:
       }
     }
 
-    v10 = v41;
+    statsCopy = v41;
   }
 
   else
   {
-    v42 = v10;
+    v42 = statsCopy;
   }
 
   return v42;
 }
 
-- (id)placeCandidateStatsForType:(unint64_t)a3 placeStats:(id)a4 dateInterval:(id)a5 excludingPlaces:(id)a6 parameters:(id)a7 distanceThreshold:(double)a8
+- (id)placeCandidateStatsForType:(unint64_t)type placeStats:(id)stats dateInterval:(id)interval excludingPlaces:(id)places parameters:(id)parameters distanceThreshold:(double)threshold
 {
   v169[12] = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v132 = a5;
-  v137 = a6;
-  v15 = a7;
-  v131 = self;
-  v134 = v14;
-  v16 = v14;
-  v17 = v15;
+  statsCopy = stats;
+  intervalCopy = interval;
+  placesCopy = places;
+  parametersCopy = parameters;
+  selfCopy = self;
+  v134 = statsCopy;
+  v16 = statsCopy;
+  v17 = parametersCopy;
   [(RTLearnedPlaceTypeInferenceGenerator *)self _prepareMLFeaturesWithPlaceStats:v16];
   v18 = MEMORY[0x277CBEB98];
   v169[0] = @"sWeeklyVisitThresholdPlaceCandidates";
@@ -4578,8 +4578,8 @@ LABEL_11:
   v20 = [v18 setWithArray:v19];
 
   v21 = MEMORY[0x277CBEB98];
-  v22 = [v17 allKeys];
-  v23 = [v21 setWithArray:v22];
+  allKeys = [v17 allKeys];
+  v23 = [v21 setWithArray:allKeys];
 
   v129 = v23;
   v130 = v20;
@@ -4596,8 +4596,8 @@ LABEL_11:
     }
   }
 
-  v25 = v132;
-  [v132 duration];
+  v25 = intervalCopy;
+  [intervalCopy duration];
   v27 = v26;
   v28 = [v17 objectForKeyedSubscript:@"sMinimumDataSetIntervalForPlaceCandidates"];
   [v28 doubleValue];
@@ -4608,12 +4608,12 @@ LABEL_11:
   {
     v37 = [v17 objectForKeyedSubscript:@"sWeeklyVisitThresholdPlaceCandidates"];
     [v37 doubleValue];
-    v38 = [(RTLearnedPlaceTypeInferenceGenerator *)v131 filteredPlaceStatsByWeeklyVisitThreshold:v134 placeStats:?];
+    v38 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy filteredPlaceStatsByWeeklyVisitThreshold:v134 placeStats:?];
     v39 = [v38 count];
 
     if (v39)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v122 = @"home";
         v40 = @"sHomeMinTopMedianDwellTimePlaceCandidates";
@@ -4624,7 +4624,7 @@ LABEL_11:
         goto LABEL_22;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v122 = @"work";
         v40 = @"sWorkMinTopMedianDwellTimePlaceCandidates";
@@ -4653,8 +4653,8 @@ LABEL_22:
         [v58 doubleValue];
         v60 = v59;
 
-        v61 = [(RTLearnedPlaceTypeInferenceGenerator *)v131 placeCandidatesFromDailyPatternsForType:a3 placeStats:v134 parameters:v133];
-        v31 = v137;
+        v61 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy placeCandidatesFromDailyPatternsForType:type placeStats:v134 parameters:v133];
+        v31 = placesCopy;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v62 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -4669,7 +4669,7 @@ LABEL_22:
           }
         }
 
-        v64 = [(RTLearnedPlaceTypeInferenceGenerator *)v131 placeCandidatesFromTopMedianDwellTimeForType:a3 placeStats:v134 parameters:v133];
+        v64 = [(RTLearnedPlaceTypeInferenceGenerator *)selfCopy placeCandidatesFromTopMedianDwellTimeForType:type placeStats:v134 parameters:v133];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v65 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -4691,8 +4691,8 @@ LABEL_22:
         [v67 intersectSet:?];
         v68 = MEMORY[0x277CBEB18];
         v120 = v67;
-        v69 = [v67 allObjects];
-        v70 = [v68 arrayWithArray:v69];
+        allObjects = [v67 allObjects];
+        v70 = [v68 arrayWithArray:allObjects];
 
         v71 = [objc_opt_class() sortPlaceStats:v70];
 
@@ -4726,7 +4726,7 @@ LABEL_22:
           }
         }
 
-        v136 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v139 = objc_opt_new();
         if (![v71 count])
         {
@@ -4736,8 +4736,8 @@ LABEL_58:
           v143[1] = 3221225472;
           v143[2] = __136__RTLearnedPlaceTypeInferenceGenerator_placeCandidateStatsForType_placeStats_dateInterval_excludingPlaces_parameters_distanceThreshold___block_invoke;
           v143[3] = &unk_2788D2C30;
-          v144 = v136;
-          v111 = v136;
+          v144 = array;
+          v111 = array;
           v112 = [v110 predicateWithBlock:v143];
           v113 = [v134 filteredArrayUsingPredicate:v112];
 
@@ -4761,11 +4761,11 @@ LABEL_58:
               v158 = v36;
               _os_log_impl(&dword_2304B3000, v114, OS_LOG_TYPE_INFO, "%@, %@, candidate %@ places from dwell time and daily patterns after pruning: %{sensitive}@", buf, 0x2Au);
 
-              v31 = v137;
+              v31 = placesCopy;
             }
           }
 
-          v25 = v132;
+          v25 = intervalCopy;
           v33 = v130;
           goto LABEL_63;
         }
@@ -4782,10 +4782,10 @@ LABEL_58:
             do
             {
               v78 = [v31 objectAtIndexedSubscript:v77];
-              v79 = [v142 place];
-              v80 = [v79 identifier];
-              v81 = [v78 identifier];
-              v82 = [v80 isEqual:v81];
+              place = [v142 place];
+              identifier = [place identifier];
+              identifier2 = [v78 identifier];
+              v82 = [identifier isEqual:identifier2];
 
               if (v82)
               {
@@ -4807,7 +4807,7 @@ LABEL_58:
           v149 = 0u;
           v146 = 0u;
           v147 = 0u;
-          v83 = v136;
+          v83 = array;
           v84 = [v83 countByEnumeratingWithState:&v146 objects:v150 count:16];
           if (v84)
           {
@@ -4816,23 +4816,23 @@ LABEL_58:
 
 LABEL_54:
 
-          v31 = v137;
+          v31 = placesCopy;
           v71 = v135;
           if ((v82 & 1) == 0)
           {
             obja = v83;
             v126 = [RTLearnedPlace alloc];
-            v128 = [v142 place];
-            v125 = [v128 identifier];
-            v127 = [v142 place];
-            v102 = [v127 mapItem];
-            v103 = [v142 place];
-            v104 = [v103 customLabel];
-            v105 = [v142 place];
-            v106 = [v105 creationDate];
-            v107 = [v142 place];
-            v108 = [v107 expirationDate];
-            v109 = [(RTLearnedPlace *)v126 initWithIdentifier:v125 type:0 typeSource:0 mapItem:v102 customLabel:v104 creationDate:v106 expirationDate:v108];
+            place2 = [v142 place];
+            identifier3 = [place2 identifier];
+            place3 = [v142 place];
+            mapItem = [place3 mapItem];
+            place4 = [v142 place];
+            customLabel = [place4 customLabel];
+            place5 = [v142 place];
+            creationDate = [place5 creationDate];
+            place6 = [v142 place];
+            expirationDate = [place6 expirationDate];
+            v109 = [(RTLearnedPlace *)v126 initWithIdentifier:identifier3 type:0 typeSource:0 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
             [obja addObject:v109];
           }
@@ -4859,19 +4859,19 @@ LABEL_44:
           }
 
           v88 = *(*(&v146 + 1) + 8 * v87);
-          v89 = [v88 mapItem];
-          v90 = [v89 location];
-          if (!v90)
+          mapItem2 = [v88 mapItem];
+          location = [mapItem2 location];
+          if (!location)
           {
             goto LABEL_51;
           }
 
-          v91 = v90;
-          v92 = [v142 place];
-          v93 = [v92 mapItem];
-          v94 = [v93 location];
+          v91 = location;
+          place7 = [v142 place];
+          mapItem3 = [place7 mapItem];
+          location2 = [mapItem3 location];
 
-          if (v94)
+          if (location2)
           {
             break;
           }
@@ -4890,19 +4890,19 @@ LABEL_52:
           }
         }
 
-        v95 = [v142 place];
-        v96 = [v95 mapItem];
-        v97 = [v96 location];
-        v98 = [v88 mapItem];
-        v99 = [v98 location];
+        place8 = [v142 place];
+        mapItem4 = [place8 mapItem];
+        location3 = [mapItem4 location];
+        mapItem5 = [v88 mapItem];
+        location4 = [mapItem5 location];
         v145 = 0;
-        [v139 distanceFromLocation:v97 toLocation:v99 error:&v145];
+        [v139 distanceFromLocation:location3 toLocation:location4 error:&v145];
         v101 = v100;
-        v89 = v145;
+        mapItem2 = v145;
 
-        if (!v89 && v101 <= a8)
+        if (!mapItem2 && v101 <= threshold)
         {
-          v31 = v137;
+          v31 = placesCopy;
           v71 = v135;
 
           goto LABEL_57;
@@ -4917,7 +4917,7 @@ LABEL_51:
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v45 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
-      v31 = v137;
+      v31 = placesCopy;
       v33 = v20;
       v123 = v45;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
@@ -4927,17 +4927,17 @@ LABEL_51:
       }
 
       v36 = 0;
-      v25 = v132;
+      v25 = intervalCopy;
       goto LABEL_63;
     }
 
     v36 = 0;
-    v25 = v132;
-    v31 = v137;
+    v25 = intervalCopy;
+    v31 = placesCopy;
     goto LABEL_20;
   }
 
-  v31 = v137;
+  v31 = placesCopy;
   if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v36 = 0;
@@ -5087,32 +5087,32 @@ LABEL_18:
   return v2;
 }
 
-- (void)updateTopCandidates:(id)a3 withPlaceStat:(id)a4 predictedProbability:(id)a5 placeType:(unint64_t)a6
+- (void)updateTopCandidates:(id)candidates withPlaceStat:(id)stat predictedProbability:(id)probability placeType:(unint64_t)type
 {
-  v30 = a3;
-  v29 = a5;
-  v8 = a4;
+  candidatesCopy = candidates;
+  probabilityCopy = probability;
+  statCopy = stat;
   v9 = [RTLearnedPlace alloc];
-  v28 = [v8 place];
-  v10 = [v28 identifier];
-  v11 = [v8 place];
-  v12 = [v11 mapItem];
-  v13 = [v8 place];
-  v14 = [v13 customLabel];
-  v15 = [v8 place];
-  v16 = [v15 creationDate];
-  v17 = [v8 place];
+  place = [statCopy place];
+  identifier = [place identifier];
+  place2 = [statCopy place];
+  mapItem = [place2 mapItem];
+  place3 = [statCopy place];
+  customLabel = [place3 customLabel];
+  place4 = [statCopy place];
+  creationDate = [place4 creationDate];
+  place5 = [statCopy place];
 
-  v18 = [v17 expirationDate];
-  v19 = [(RTLearnedPlace *)v9 initWithIdentifier:v10 type:a6 typeSource:1 mapItem:v12 customLabel:v14 creationDate:v16 expirationDate:v18];
+  expirationDate = [place5 expirationDate];
+  v19 = [(RTLearnedPlace *)v9 initWithIdentifier:identifier type:type typeSource:1 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
-  v20 = [objc_alloc(MEMORY[0x277D011C0]) initWithFirstObject:v29 secondObject:v19];
-  if ([v30 count] < 5 || (objc_msgSend(v29, "doubleValue"), v22 = v21, objc_msgSend(v30, "lastObject"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "firstObject"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "doubleValue"), v26 = v25, v24, v23, v22 > v26))
+  v20 = [objc_alloc(MEMORY[0x277D011C0]) initWithFirstObject:probabilityCopy secondObject:v19];
+  if ([candidatesCopy count] < 5 || (objc_msgSend(probabilityCopy, "doubleValue"), v22 = v21, objc_msgSend(candidatesCopy, "lastObject"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "firstObject"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "doubleValue"), v26 = v25, v24, v23, v22 > v26))
   {
-    [v30 insertObject:v20 atIndex:{objc_msgSend(v30, "indexOfObject:inSortedRange:options:usingComparator:", v20, 0, objc_msgSend(v30, "count"), 1024, &__block_literal_global_456)}];
-    if ([v30 count] >= 6)
+    [candidatesCopy insertObject:v20 atIndex:{objc_msgSend(candidatesCopy, "indexOfObject:inSortedRange:options:usingComparator:", v20, 0, objc_msgSend(candidatesCopy, "count"), 1024, &__block_literal_global_456)}];
+    if ([candidatesCopy count] >= 6)
     {
-      [v30 removeLastObject];
+      [candidatesCopy removeLastObject];
     }
   }
 }
@@ -5127,20 +5127,20 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
   return v7;
 }
 
-- (void)_prepareMLFeaturesWithPlaceStats:(id)a3
+- (void)_prepareMLFeaturesWithPlaceStats:(id)stats
 {
   v103 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  statsCopy = stats;
   if ([(RTLearnedPlaceTypeInferenceGenerator *)self supportsModel])
   {
     if (_os_feature_enabled_impl())
     {
-      v6 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStatsUUIDStringsToMLFeaturesMap];
-      v7 = [v6 count];
+      placeStatsUUIDStringsToMLFeaturesMap = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStatsUUIDStringsToMLFeaturesMap];
+      v7 = [placeStatsUUIDStringsToMLFeaturesMap count];
 
       if (!v7)
       {
-        v15 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v16 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -5158,14 +5158,14 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
         }
 
         aSelector = a2;
-        v76 = v15;
+        v76 = date;
         v82 = objc_opt_new();
         v89 = 0u;
         v90 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v75 = v5;
-        v20 = v5;
+        v75 = statsCopy;
+        v20 = statsCopy;
         v21 = [v20 countByEnumeratingWithState:&v89 objects:v102 count:16];
         if (v21)
         {
@@ -5182,16 +5182,16 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
 
               v25 = *(*(&v89 + 1) + 8 * i);
               v26 = objc_autoreleasePoolPush();
-              v27 = [v25 visitIntervals];
-              v28 = [v27 count];
+              visitIntervals = [v25 visitIntervals];
+              v28 = [visitIntervals count];
 
               if (v28)
               {
-                v29 = [v25 visitIntervals];
-                v30 = [v25 place];
-                v31 = [v30 identifier];
-                v32 = [v31 UUIDString];
-                [v82 setObject:v29 forKeyedSubscript:v32];
+                visitIntervals2 = [v25 visitIntervals];
+                place = [v25 place];
+                identifier = [place identifier];
+                uUIDString = [identifier UUIDString];
+                [v82 setObject:visitIntervals2 forKeyedSubscript:uUIDString];
               }
 
               objc_autoreleasePoolPop(v26);
@@ -5206,12 +5206,12 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
         v33 = v82;
         if ([v82 count])
         {
-          v34 = [MEMORY[0x277CBEAA8] date];
-          v35 = [v34 dateByAddingTimeInterval:-3628800.0];
-          v36 = [(RTLearnedPlaceTypeInferenceGenerator *)self biomeManager];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          v35 = [date2 dateByAddingTimeInterval:-3628800.0];
+          biomeManager = [(RTLearnedPlaceTypeInferenceGenerator *)self biomeManager];
           v73 = v35;
-          v74 = v34;
-          v37 = [RTPlaceDataMetrics calculateMLFeaturesUsingBiomeManager:v36 intervalDictionary:v82 startDate:v35 endDate:v34 createBucketedFeatures:1];
+          v74 = date2;
+          v37 = [RTPlaceDataMetrics calculateMLFeaturesUsingBiomeManager:biomeManager intervalDictionary:v82 startDate:v35 endDate:date2 createBucketedFeatures:1];
           [(RTLearnedPlaceTypeInferenceGenerator *)self setPlaceStatsUUIDStringsToMLFeaturesMap:v37];
 
           v87 = 0u;
@@ -5235,21 +5235,21 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
 
                 v39 = *(*(&v85 + 1) + 8 * j);
                 v40 = objc_autoreleasePoolPush();
-                v41 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStatsUUIDStringsToMLFeaturesMap];
-                v42 = [v39 place];
-                v43 = [v42 identifier];
-                [v43 UUIDString];
+                placeStatsUUIDStringsToMLFeaturesMap2 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStatsUUIDStringsToMLFeaturesMap];
+                place2 = [v39 place];
+                identifier2 = [place2 identifier];
+                [identifier2 UUIDString];
                 v45 = v44 = self;
-                v46 = [v41 objectForKeyedSubscript:v45];
+                v46 = [placeStatsUUIDStringsToMLFeaturesMap2 objectForKeyedSubscript:v45];
 
                 if (v46)
                 {
                   v47 = v44;
-                  v48 = [(RTLearnedPlaceTypeInferenceGenerator *)v44 placeStatsUUIDStringsToMLFeaturesMap];
-                  v49 = [v39 place];
-                  v50 = [v49 identifier];
-                  v51 = [v50 UUIDString];
-                  v52 = [v48 objectForKeyedSubscript:v51];
+                  placeStatsUUIDStringsToMLFeaturesMap3 = [(RTLearnedPlaceTypeInferenceGenerator *)v44 placeStatsUUIDStringsToMLFeaturesMap];
+                  place3 = [v39 place];
+                  identifier3 = [place3 identifier];
+                  uUIDString2 = [identifier3 UUIDString];
+                  v52 = [placeStatsUUIDStringsToMLFeaturesMap3 objectForKeyedSubscript:uUIDString2];
                   [v39 setMlFeatures:v52];
 
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -5260,11 +5260,11 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
                       v55 = objc_opt_class();
                       v56 = NSStringFromClass(v55);
                       v57 = NSStringFromSelector(aSelector);
-                      v78 = [(RTLearnedPlaceTypeInferenceGenerator *)v47 placeStatsUUIDStringsToMLFeaturesMap];
-                      v79 = [v39 place];
-                      v58 = [v79 identifier];
-                      v59 = [v58 UUIDString];
-                      v60 = [v78 objectForKeyedSubscript:v59];
+                      placeStatsUUIDStringsToMLFeaturesMap4 = [(RTLearnedPlaceTypeInferenceGenerator *)v47 placeStatsUUIDStringsToMLFeaturesMap];
+                      place4 = [v39 place];
+                      identifier4 = [place4 identifier];
+                      uUIDString3 = [identifier4 UUIDString];
+                      v60 = [placeStatsUUIDStringsToMLFeaturesMap4 objectForKeyedSubscript:uUIDString3];
                       *buf = 138413059;
                       v94 = v56;
                       v95 = 2112;
@@ -5311,8 +5311,8 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
               v62 = objc_opt_class();
               v63 = NSStringFromClass(v62);
               v64 = NSStringFromSelector(aSelector);
-              v65 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
-              v66 = [v65 count];
+              placeStats = [(RTLearnedPlaceTypeInferenceGenerator *)self placeStats];
+              v66 = [placeStats count];
               *buf = 138413058;
               v94 = v63;
               v95 = 2112;
@@ -5334,8 +5334,8 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
               v68 = objc_opt_class();
               v69 = NSStringFromClass(v68);
               v70 = NSStringFromSelector(aSelector);
-              v71 = [MEMORY[0x277CBEAA8] date];
-              [v71 timeIntervalSinceDate:v76];
+              date3 = [MEMORY[0x277CBEAA8] date];
+              [date3 timeIntervalSinceDate:v76];
               *buf = 138412802;
               v94 = v69;
               v95 = 2112;
@@ -5349,7 +5349,7 @@ uint64_t __105__RTLearnedPlaceTypeInferenceGenerator_updateTopCandidates_withPla
           }
         }
 
-        v5 = v75;
+        statsCopy = v75;
         v8 = v76;
         goto LABEL_54;
       }
@@ -5417,23 +5417,23 @@ LABEL_54:
   }
 }
 
-- (void)_storeMetricsForNonFallbackPlacesWithHome:(id)a3 homeSource:(unint64_t)a4 work:(id)a5 workSource:(unint64_t)a6
+- (void)_storeMetricsForNonFallbackPlacesWithHome:(id)home homeSource:(unint64_t)source work:(id)work workSource:(unint64_t)workSource
 {
-  v13 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBEB18] array];
-  if (v13 && a4 != 1)
+  homeCopy = home;
+  workCopy = work;
+  array = [MEMORY[0x277CBEB18] array];
+  if (homeCopy && source != 1)
   {
-    [v11 addObject:v13];
+    [array addObject:homeCopy];
   }
 
-  if (v10 && a6 != 1)
+  if (workCopy && workSource != 1)
   {
-    [v11 addObject:v10];
+    [array addObject:workCopy];
   }
 
-  v12 = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
-  [v12 storeMetricsData:v11 source:20];
+  placeTypeClassifierMetricsCalculator = [(RTLearnedPlaceTypeInferenceGenerator *)self placeTypeClassifierMetricsCalculator];
+  [placeTypeClassifierMetricsCalculator storeMetricsData:array source:20];
 }
 
 @end

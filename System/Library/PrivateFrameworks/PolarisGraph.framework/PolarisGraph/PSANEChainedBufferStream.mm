@@ -1,15 +1,15 @@
 @interface PSANEChainedBufferStream
-+ (id)aneStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)aneStreamWithResourceKey:(id)key options:(ps_resource_options *)options;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (PSANEChainedBufferStream)init;
-- (PSANEChainedBufferStream)initWithCoder:(id)a3;
+- (PSANEChainedBufferStream)initWithCoder:(id)coder;
 - (__IOSurface)allocateIOSurfaceRefArray;
 - (void)dealloc;
 - (void)deallocateIOSurfaceRefArray;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAllocator:(id)a3;
-- (void)setNumberOfBufferSet:(unsigned int)a3 numberOfSurfaceInSet:(unsigned int)a4 metadataSurfaceIndex:(unsigned int)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAllocator:(id)allocator;
+- (void)setNumberOfBufferSet:(unsigned int)set numberOfSurfaceInSet:(unsigned int)inSet metadataSurfaceIndex:(unsigned int)index;
 @end
 
 @implementation PSANEChainedBufferStream
@@ -41,50 +41,50 @@
   [(PSANEChainedBufferStream *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = PSANEChainedBufferStream;
-  [(PSResourceStream *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_metadataSurfaceIndex forKey:@"metadataSurfaceIndex"];
-  [v4 encodeInt32:self->_firstEventValue forKey:@"firstEventValue"];
-  [v4 encodeInt32:self->_numberOfSurfaceInSet forKey:@"numberOfSurfaceInSet"];
-  [v4 encodeInt32:self->_numberOfBufferSet forKey:@"numberOfBufferSet"];
-  [v4 encodeInt32:self->_eventPort forKey:@"eventPort"];
+  [(PSResourceStream *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_metadataSurfaceIndex forKey:@"metadataSurfaceIndex"];
+  [coderCopy encodeInt32:self->_firstEventValue forKey:@"firstEventValue"];
+  [coderCopy encodeInt32:self->_numberOfSurfaceInSet forKey:@"numberOfSurfaceInSet"];
+  [coderCopy encodeInt32:self->_numberOfBufferSet forKey:@"numberOfBufferSet"];
+  [coderCopy encodeInt32:self->_eventPort forKey:@"eventPort"];
 }
 
-- (PSANEChainedBufferStream)initWithCoder:(id)a3
+- (PSANEChainedBufferStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PSANEChainedBufferStream;
-  v5 = [(PSResourceStream *)&v9 initWithCoder:v4];
+  v5 = [(PSResourceStream *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PSResourceStream *)v5 setResourceClass:10];
-    v6->_metadataSurfaceIndex = [v4 decodeInt32ForKey:@"metadataSurfaceIndex"];
-    v6->_firstEventValue = [v4 decodeInt32ForKey:@"firstEventValue"];
-    v6->_numberOfSurfaceInSet = [v4 decodeInt32ForKey:@"numberOfSurfaceInSet"];
-    v6->_numberOfBufferSet = [v4 decodeInt32ForKey:@"numberOfBufferSet"];
-    v6->_eventPort = [v4 decodeInt32ForKey:@"eventPort"];
+    v6->_metadataSurfaceIndex = [coderCopy decodeInt32ForKey:@"metadataSurfaceIndex"];
+    v6->_firstEventValue = [coderCopy decodeInt32ForKey:@"firstEventValue"];
+    v6->_numberOfSurfaceInSet = [coderCopy decodeInt32ForKey:@"numberOfSurfaceInSet"];
+    v6->_numberOfBufferSet = [coderCopy decodeInt32ForKey:@"numberOfBufferSet"];
+    v6->_eventPort = [coderCopy decodeInt32ForKey:@"eventPort"];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v10.receiver = self;
@@ -109,26 +109,26 @@
   return v8;
 }
 
-+ (id)aneStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4
++ (id)aneStreamWithResourceKey:(id)key options:(ps_resource_options *)options
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_alloc_init(PSANEChainedBufferStream);
-  [(PSResourceStream *)v6 setKey:v5];
-  [(PSResourceStream *)v6 setOptions:a4->storage_mode, a4->creation_mode];
+  [(PSResourceStream *)v6 setKey:keyCopy];
+  [(PSResourceStream *)v6 setOptions:options->storage_mode, options->creation_mode];
 
   return v6;
 }
 
-- (void)setNumberOfBufferSet:(unsigned int)a3 numberOfSurfaceInSet:(unsigned int)a4 metadataSurfaceIndex:(unsigned int)a5
+- (void)setNumberOfBufferSet:(unsigned int)set numberOfSurfaceInSet:(unsigned int)inSet metadataSurfaceIndex:(unsigned int)index
 {
-  self->_metadataSurfaceIndex = a5;
-  self->_numberOfSurfaceInSet = a4;
-  self->_numberOfBufferSet = a3;
+  self->_metadataSurfaceIndex = index;
+  self->_numberOfSurfaceInSet = inSet;
+  self->_numberOfBufferSet = set;
 }
 
-- (void)setAllocator:(id)a3
+- (void)setAllocator:(id)allocator
 {
-  v4 = MEMORY[0x25F8CC5B0](a3, a2);
+  v4 = MEMORY[0x25F8CC5B0](allocator, a2);
   allocator = self->_allocator;
   self->_allocator = v4;
 
@@ -238,18 +238,18 @@
   }
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   if ([(PSResourceStream *)self resourceClass]!= 10)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resource Class invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_23;
     }
 
 LABEL_22:
-    *a3 = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
+    *validate = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
     goto LABEL_23;
   }
 
@@ -258,7 +258,7 @@ LABEL_22:
   if (!v5)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream key invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_23;
     }
@@ -270,7 +270,7 @@ LABEL_22:
   if (!v6)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.creation_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_23;
     }
@@ -281,7 +281,7 @@ LABEL_22:
   if ([(PSResourceStream *)self options]== 0)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.storage_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_23;
     }
@@ -292,7 +292,7 @@ LABEL_22:
   if (![(PSANEChainedBufferStream *)self numberOfBufferSet])
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"numberOfBufferSet is zero for this stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_23;
     }
@@ -303,7 +303,7 @@ LABEL_22:
   if (![(PSANEChainedBufferStream *)self numberOfSurfaceInSet])
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"numberOfSurfaceInSet is zero for this stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_23;
     }
@@ -311,13 +311,13 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v7 = [(PSANEChainedBufferStream *)self metadataSurfaceIndex];
-  if (v7 < [(PSANEChainedBufferStream *)self numberOfSurfaceInSet])
+  metadataSurfaceIndex = [(PSANEChainedBufferStream *)self metadataSurfaceIndex];
+  if (metadataSurfaceIndex < [(PSANEChainedBufferStream *)self numberOfSurfaceInSet])
   {
     return 1;
   }
   v9 = ;
-  if (a3)
+  if (validate)
   {
     goto LABEL_22;
   }

@@ -5,8 +5,8 @@
 - (id)_initInternal;
 - (id)_internalPrintableState;
 - (id)printableState;
-- (void)clientInvalidateWithSessionRecord:(SessionRecord *)a3;
-- (void)setClient:(id)a3;
+- (void)clientInvalidateWithSessionRecord:(SessionRecord *)record;
+- (void)setClient:(id)client;
 @end
 
 @implementation NIServerDLTDOAService
@@ -23,17 +23,17 @@
   return v3;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10027342C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -59,7 +59,7 @@
   return v3;
 }
 
-- (void)clientInvalidateWithSessionRecord:(SessionRecord *)a3
+- (void)clientInvalidateWithSessionRecord:(SessionRecord *)record
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -68,19 +68,19 @@
   block[2] = sub_1002736A0;
   block[3] = &unk_1009A14C0;
   objc_copyWeak(&v8, &location);
-  v6 = *&a3->var3;
-  v9 = *&a3->var0;
+  v6 = *&record->var3;
+  v9 = *&record->var0;
   v10[0] = v6;
-  *(v10 + 9) = *(&a3->var5 + 1);
-  if (*(&a3->var7.__rep_.__l + 23) < 0)
+  *(v10 + 9) = *(&record->var5 + 1);
+  if (*(&record->var7.__rep_.__l + 23) < 0)
   {
-    sub_1000056BC(&__p, a3->var7.__rep_.__l.__data_, a3->var7.__rep_.__l.__size_);
+    sub_1000056BC(&__p, record->var7.__rep_.__l.__data_, record->var7.__rep_.__l.__size_);
   }
 
   else
   {
-    __p = *a3->var7.__rep_.__s.__data_;
-    v12 = *(&a3->var7.__rep_.__l + 2);
+    __p = *record->var7.__rep_.__s.__data_;
+    v12 = *(&record->var7.__rep_.__l + 2);
   }
 
   dispatch_async(queue, block);
@@ -150,8 +150,8 @@
     ++totalDLTDOASessions;
   }
 
-  v6 = [NSString stringWithFormat:@"Total session count: %zu", totalDLTDOASessions];
-  [v3 addObject:v6];
+  totalDLTDOASessions = [NSString stringWithFormat:@"Total session count: %zu", totalDLTDOASessions];
+  [v3 addObject:totalDLTDOASessions];
 
   v7 = [NSString stringWithFormat:@"Complete Sessions:"];
   [v3 addObject:v7];
@@ -186,8 +186,8 @@
 
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v19 = [WeakRetained sessionRecordPrintableState];
-    [v3 addObject:v19];
+    sessionRecordPrintableState = [WeakRetained sessionRecordPrintableState];
+    [v3 addObject:sessionRecordPrintableState];
   }
 
   objc_autoreleasePoolPop(context);

@@ -1,8 +1,8 @@
 @interface MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams);
   v5 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self pan];
   [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setPan:v5];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self tilt];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setTilt:v6];
+  tilt = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self tilt];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setTilt:tilt];
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self zoom];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setZoom:v7];
+  zoom = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self zoom];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setZoom:zoom];
 
-  v8 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self timedInvokeTimeoutMs];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self timedInvokeTimeoutMs];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self serverSideProcessingTimeout];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self serverSideProcessingTimeout];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,7 +66,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v27[0] = 0;
   v29 = 0;
@@ -79,28 +79,28 @@
   if (v5)
   {
     v27[0] = 1;
-    v28 = 0;
+    shortValue = 0;
     v6 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self pan];
-    v28 = [v6 shortValue];
+    shortValue = [v6 shortValue];
   }
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self tilt];
+  tilt = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self tilt];
 
-  if (v7)
+  if (tilt)
   {
     v29 = 1;
-    v30 = 0;
-    v8 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self tilt];
-    v30 = [v8 shortValue];
+    shortValue2 = 0;
+    tilt2 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self tilt];
+    shortValue2 = [tilt2 shortValue];
   }
 
-  v9 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self zoom];
+  zoom = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self zoom];
 
-  if (v9)
+  if (zoom)
   {
     v31 = 1;
-    v10 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self zoom];
-    HIBYTE(v31) = [v10 unsignedCharValue];
+    zoom2 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self zoom];
+    HIBYTE(v31) = [zoom2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v24);
@@ -122,8 +122,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v24);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v24);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v18;
       v13 = v11;
     }
@@ -151,19 +151,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSetPositionParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -174,7 +174,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x8A0D00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

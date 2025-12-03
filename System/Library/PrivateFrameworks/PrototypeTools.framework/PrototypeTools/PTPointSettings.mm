@@ -2,7 +2,7 @@
 + (id)settingsControllerModule;
 - (CGPoint)pointValue;
 - (id)drillDownSummary;
-- (void)setPointValue:(CGPoint)a3;
+- (void)setPointValue:(CGPoint)value;
 @end
 
 @implementation PTPointSettings
@@ -35,10 +35,10 @@
   return [v3 stringWithFormat:@"(%.3g, %.3g)", v5, v6];
 }
 
-- (void)setPointValue:(CGPoint)a3
+- (void)setPointValue:(CGPoint)value
 {
-  y = a3.y;
-  [(PTPointSettings *)self setX:a3.x];
+  y = value.y;
+  [(PTPointSettings *)self setX:value.x];
 
   [(PTPointSettings *)self setY:y];
 }

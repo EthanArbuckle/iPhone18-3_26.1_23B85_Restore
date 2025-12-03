@@ -1,7 +1,7 @@
 @interface SHCDNDataFetcher
 - (SHCDNDataFetcher)init;
-- (SHCDNDataFetcher)initWithNetworkRequester:(id)a3;
-- (void)clusterDataAtURL:(id)a3 forLocation:(id)a4 date:(id)a5 completionHandler:(id)a6;
+- (SHCDNDataFetcher)initWithNetworkRequester:(id)requester;
+- (void)clusterDataAtURL:(id)l forLocation:(id)location date:(id)date completionHandler:(id)handler;
 @end
 
 @implementation SHCDNDataFetcher
@@ -14,36 +14,36 @@
   return v4;
 }
 
-- (SHCDNDataFetcher)initWithNetworkRequester:(id)a3
+- (SHCDNDataFetcher)initWithNetworkRequester:(id)requester
 {
-  v5 = a3;
+  requesterCopy = requester;
   v9.receiver = self;
   v9.super_class = SHCDNDataFetcher;
   v6 = [(SHCDNDataFetcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_networkRequester, a3);
+    objc_storeStrong(&v6->_networkRequester, requester);
   }
 
   return v7;
 }
 
-- (void)clusterDataAtURL:(id)a3 forLocation:(id)a4 date:(id)a5 completionHandler:(id)a6
+- (void)clusterDataAtURL:(id)l forLocation:(id)location date:(id)date completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [MEMORY[0x277CCAB70] requestWithURL:a3];
-  v12 = [(SHCDNDataFetcher *)self networkRequester];
+  dateCopy = date;
+  handlerCopy = handler;
+  v11 = [MEMORY[0x277CCAB70] requestWithURL:l];
+  networkRequester = [(SHCDNDataFetcher *)self networkRequester];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__SHCDNDataFetcher_clusterDataAtURL_forLocation_date_completionHandler___block_invoke;
   v15[3] = &unk_279BBF0E8;
-  v16 = v9;
-  v17 = v10;
-  v13 = v10;
-  v14 = v9;
-  [v12 performRequest:v11 completionHandler:v15];
+  v16 = dateCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dateCopy;
+  [networkRequester performRequest:v11 completionHandler:v15];
 }
 
 void __72__SHCDNDataFetcher_clusterDataAtURL_forLocation_date_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)

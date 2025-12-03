@@ -1,22 +1,22 @@
 @interface MessageIndicatorView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC11TelephonyUI20MessageIndicatorView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC11TelephonyUI20MessageIndicatorView)initWithFrame:(CGRect)frame;
 - (void)handleTapGesture;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MessageIndicatorView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B48DC108();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC11TelephonyUI20MessageIndicatorView_titleLabel) sizeThatFits_];
   v5 = v4 + 26.0;
   v6 = width;
@@ -25,20 +25,20 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B48DC504(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1B48DC504(change);
 }
 
 - (void)handleTapGesture
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B48DCD24();
 }
 
-- (_TtC11TelephonyUI20MessageIndicatorView)initWithFrame:(CGRect)a3
+- (_TtC11TelephonyUI20MessageIndicatorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

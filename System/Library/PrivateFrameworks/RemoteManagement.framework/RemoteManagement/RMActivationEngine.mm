@@ -1,38 +1,38 @@
 @interface RMActivationEngine
-+ (BOOL)_isKeychainAsset:(id)a3;
-- (BOOL)_attachAssetReferences:(id)a3;
-- (BOOL)_attachConfigurationReferences:(id)a3;
-- (BOOL)_deleteDeclarationsThatAreNoLongerNeeded:(id)a3;
-- (BOOL)_processAllDeclarations:(id)a3;
-- (BOOL)_processManagementProperties:(id)a3;
-- (BOOL)_reconcile:(id)a3;
-- (BOOL)_remove:(id)a3;
-- (BOOL)_updateUnknownDeclarations:(id)a3;
-- (BOOL)removeReturningError:(id *)a3;
-- (RMActivationEngine)initWithManagementSourceObjectID:(id)a3 context:(id)a4;
-- (id)_checkPredicateStatusKeysForActivations:(id)a3 managementSource:(id)a4;
-- (id)getDeclarationsMarkedForRemovalFromFetchRequest:(id)a3 managementSource:(id)a4;
-- (void)_assetsRemoved:(id)a3 storeIdentifier:(id)a4 personaID:(id)a5;
-- (void)_predicateStatusItemDidChange:(id)a3;
-- (void)deleteObjects:(id)a3 managementSourceIdentifier:(id)a4 removeStatus:(BOOL)a5;
-- (void)syncWithCompletionHandler:(id)a3;
++ (BOOL)_isKeychainAsset:(id)asset;
+- (BOOL)_attachAssetReferences:(id)references;
+- (BOOL)_attachConfigurationReferences:(id)references;
+- (BOOL)_deleteDeclarationsThatAreNoLongerNeeded:(id)needed;
+- (BOOL)_processAllDeclarations:(id)declarations;
+- (BOOL)_processManagementProperties:(id)properties;
+- (BOOL)_reconcile:(id)_reconcile;
+- (BOOL)_remove:(id)_remove;
+- (BOOL)_updateUnknownDeclarations:(id)declarations;
+- (BOOL)removeReturningError:(id *)error;
+- (RMActivationEngine)initWithManagementSourceObjectID:(id)d context:(id)context;
+- (id)_checkPredicateStatusKeysForActivations:(id)activations managementSource:(id)source;
+- (id)getDeclarationsMarkedForRemovalFromFetchRequest:(id)request managementSource:(id)source;
+- (void)_assetsRemoved:(id)removed storeIdentifier:(id)identifier personaID:(id)d;
+- (void)_predicateStatusItemDidChange:(id)change;
+- (void)deleteObjects:(id)objects managementSourceIdentifier:(id)identifier removeStatus:(BOOL)status;
+- (void)syncWithCompletionHandler:(id)handler;
 - (void)triggerAggregatingTimerAction;
 @end
 
 @implementation RMActivationEngine
 
-- (RMActivationEngine)initWithManagementSourceObjectID:(id)a3 context:(id)a4
+- (RMActivationEngine)initWithManagementSourceObjectID:(id)d context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = RMActivationEngine;
   v9 = [(RMActivationEngine *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managementSourceObjectID, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_managementSourceObjectID, d);
+    objc_storeStrong(&v10->_context, context);
     v11 = [RMDebounceTimer debounceTimerWithMinimumInterval:v10 maximumInterval:@"RMActivationEngine" delegate:5.0 identifier:60.0];
     debouncer = v10->_debouncer;
     v10->_debouncer = v11;
@@ -55,20 +55,20 @@
   [(RMActivationEngine *)self syncWithCompletionHandler:&stru_1000D0E10];
 }
 
-- (void)_predicateStatusItemDidChange:(id)a3
+- (void)_predicateStatusItemDidChange:(id)change
 {
-  v8 = [a3 userInfo];
-  v4 = [v8 objectForKeyedSubscript:@"RMUserInfoKeyPredicateUpdatedManagementSourceObjectIDs"];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"RMUserInfoKeyPredicateUpdatedManagementSourceObjectIDs"];
   if (!v4 || (-[RMActivationEngine managementSourceObjectID](self, "managementSourceObjectID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 containsObject:v5], v5, v6))
   {
-    v7 = [(RMActivationEngine *)self debouncer];
-    [v7 trigger];
+    debouncer = [(RMActivationEngine *)self debouncer];
+    [debouncer trigger];
   }
 }
 
-- (void)syncWithCompletionHandler:(id)a3
+- (void)syncWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "ActivationEngine: syncing", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -91,16 +91,16 @@
   v8[2] = sub_100002670;
   v7 = v8[3] = &unk_1000D0E38;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [v7 performBlockAndWait:v8];
-  v4[2](v4, v13[5]);
+  handlerCopy[2](handlerCopy, v13[5]);
 
   _Block_object_dispose(&v12, 8);
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)removeReturningError:(id *)a3
+- (BOOL)removeReturningError:(id *)error
 {
   v5 = _os_activity_create(&_mh_execute_header, "ActivationEngine: removing", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -124,15 +124,15 @@
   v11[2] = sub_1000029F4;
   v7 = v11[3] = &unk_1000D0E38;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   [v7 performBlockAndWait:v11];
-  if (a3)
+  if (error)
   {
     v8 = v16[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -144,12 +144,12 @@
   return v9;
 }
 
-- (BOOL)_reconcile:(id)a3
+- (BOOL)_reconcile:(id)_reconcile
 {
-  v4 = a3;
-  if ([(RMActivationEngine *)self _deleteDeclarationsThatAreNoLongerNeeded:v4]&& [(RMActivationEngine *)self _updateUnknownDeclarations:v4]&& [(RMActivationEngine *)self _attachConfigurationReferences:v4]&& [(RMActivationEngine *)self _attachAssetReferences:v4]&& [(RMActivationEngine *)self _processManagementProperties:v4])
+  _reconcileCopy = _reconcile;
+  if ([(RMActivationEngine *)self _deleteDeclarationsThatAreNoLongerNeeded:_reconcileCopy]&& [(RMActivationEngine *)self _updateUnknownDeclarations:_reconcileCopy]&& [(RMActivationEngine *)self _attachConfigurationReferences:_reconcileCopy]&& [(RMActivationEngine *)self _attachAssetReferences:_reconcileCopy]&& [(RMActivationEngine *)self _processManagementProperties:_reconcileCopy])
   {
-    v5 = [(RMActivationEngine *)self _processAllDeclarations:v4];
+    v5 = [(RMActivationEngine *)self _processAllDeclarations:_reconcileCopy];
   }
 
   else
@@ -160,21 +160,21 @@
   return v5;
 }
 
-- (BOOL)_remove:(id)a3
+- (BOOL)_remove:(id)_remove
 {
-  v4 = a3;
-  v5 = [v4 assets];
-  v6 = [v5 allObjects];
-  v7 = [v4 identifier];
-  v8 = [v4 personaIdentifier];
+  _removeCopy = _remove;
+  assets = [_removeCopy assets];
+  allObjects = [assets allObjects];
+  identifier = [_removeCopy identifier];
+  personaIdentifier = [_removeCopy personaIdentifier];
 
-  [(RMActivationEngine *)self _assetsRemoved:v6 storeIdentifier:v7 personaID:v8];
+  [(RMActivationEngine *)self _assetsRemoved:allObjects storeIdentifier:identifier personaID:personaIdentifier];
   return 1;
 }
 
-- (BOOL)_deleteDeclarationsThatAreNoLongerNeeded:(id)a3
+- (BOOL)_deleteDeclarationsThatAreNoLongerNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = &DeviceIdentityIssueClientCertificateWithCompletion_ptr;
   v6 = +[RMLog activationEngine];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -183,25 +183,25 @@
   }
 
   v7 = +[RMConfigurationPayload fetchRequest];
-  v8 = [(RMActivationEngine *)self getDeclarationsMarkedForRemovalFromFetchRequest:v7 managementSource:v4];
+  v8 = [(RMActivationEngine *)self getDeclarationsMarkedForRemovalFromFetchRequest:v7 managementSource:neededCopy];
 
   if (v8)
   {
     v9 = +[RMActivationPayload fetchRequest];
-    v10 = [(RMActivationEngine *)self getDeclarationsMarkedForRemovalFromFetchRequest:v9 managementSource:v4];
+    v10 = [(RMActivationEngine *)self getDeclarationsMarkedForRemovalFromFetchRequest:v9 managementSource:neededCopy];
 
     if (v10)
     {
       v11 = +[RMAssetPayload fetchRequest];
-      v12 = [(RMActivationEngine *)self getDeclarationsMarkedForRemovalFromFetchRequest:v11 managementSource:v4];
+      v12 = [(RMActivationEngine *)self getDeclarationsMarkedForRemovalFromFetchRequest:v11 managementSource:neededCopy];
 
       v13 = v12 != 0;
       if (v12)
       {
-        v14 = [v4 identifier];
+        identifier = [neededCopy identifier];
         v15 = +[RMLog activationEngine];
         v56 = v8;
-        v55 = v14;
+        v55 = identifier;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v52 = [v10 count];
@@ -243,7 +243,7 @@
 
             v8 = v56;
             v13 = v12 != 0;
-            v14 = v55;
+            identifier = v55;
             v5 = &DeviceIdentityIssueClientCertificateWithCompletion_ptr;
             v15 = log;
           }
@@ -261,14 +261,14 @@
           }
         }
 
-        [(RMActivationEngine *)self deleteObjects:v10 managementSourceIdentifier:v14 removeStatus:0];
-        v25 = [v5[235] activationEngine];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+        [(RMActivationEngine *)self deleteObjects:v10 managementSourceIdentifier:identifier removeStatus:0];
+        activationEngine = [v5[235] activationEngine];
+        if (os_log_type_enabled(activationEngine, OS_LOG_TYPE_INFO))
         {
           v53 = [v8 count];
           if (v53)
           {
-            loga = v25;
+            loga = activationEngine;
             v26 = v8;
             v27 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v26 count]);
             v57 = 0u;
@@ -304,9 +304,9 @@
 
             v8 = v56;
             v13 = v12 != 0;
-            v14 = v55;
+            identifier = v55;
             v5 = &DeviceIdentityIssueClientCertificateWithCompletion_ptr;
-            v25 = loga;
+            activationEngine = loga;
           }
 
           else
@@ -316,22 +316,22 @@
 
           *buf = 138543362;
           v62 = v34;
-          _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Deleting configurations (and status): %{public}@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, activationEngine, OS_LOG_TYPE_INFO, "Deleting configurations (and status): %{public}@", buf, 0xCu);
           if (v53)
           {
           }
         }
 
-        [(RMActivationEngine *)self deleteObjects:v8 managementSourceIdentifier:v14 removeStatus:1];
-        v35 = [v5[235] activationEngine];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+        [(RMActivationEngine *)self deleteObjects:v8 managementSourceIdentifier:identifier removeStatus:1];
+        activationEngine2 = [v5[235] activationEngine];
+        if (os_log_type_enabled(activationEngine2, OS_LOG_TYPE_INFO))
         {
           v36 = [v12 count];
           v37 = v36;
           if (v36)
           {
             logb = v36;
-            v54 = v35;
+            v54 = activationEngine2;
             v38 = v12;
             v39 = [NSMutableArray arrayWithCapacity:[v38 count]];
             v57 = 0u;
@@ -367,8 +367,8 @@
 
             v8 = v56;
             v13 = v12 != 0;
-            v35 = v54;
-            v14 = v55;
+            activationEngine2 = v54;
+            identifier = v55;
             v37 = logb;
           }
 
@@ -379,25 +379,25 @@
 
           *buf = 138543362;
           v62 = v46;
-          _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Deleting assets (and status): %{public}@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, activationEngine2, OS_LOG_TYPE_INFO, "Deleting assets (and status): %{public}@", buf, 0xCu);
           if (v37)
           {
           }
         }
 
-        v47 = [v4 personaIdentifier];
-        [(RMActivationEngine *)self _assetsRemoved:v12 storeIdentifier:v14 personaID:v47];
+        personaIdentifier = [neededCopy personaIdentifier];
+        [(RMActivationEngine *)self _assetsRemoved:v12 storeIdentifier:identifier personaID:personaIdentifier];
 
-        [(RMActivationEngine *)self deleteObjects:v12 managementSourceIdentifier:v14 removeStatus:1];
+        [(RMActivationEngine *)self deleteObjects:v12 managementSourceIdentifier:identifier removeStatus:1];
       }
 
       else
       {
-        v14 = +[RMLog activationEngine];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+        identifier = +[RMLog activationEngine];
+        if (os_log_type_enabled(identifier, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Failed to delete assets.", buf, 2u);
+          _os_log_impl(&_mh_execute_header, identifier, OS_LOG_TYPE_INFO, "Failed to delete assets.", buf, 2u);
         }
       }
     }
@@ -430,22 +430,22 @@
   return v13;
 }
 
-- (id)getDeclarationsMarkedForRemovalFromFetchRequest:(id)a3 managementSource:(id)a4
+- (id)getDeclarationsMarkedForRemovalFromFetchRequest:(id)request managementSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 setIncludesPendingChanges:1];
-  v7 = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %d)", @"managementSource", v6, @"loadState", 3];
+  requestCopy = request;
+  sourceCopy = source;
+  [requestCopy setIncludesPendingChanges:1];
+  v7 = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %d)", @"managementSource", sourceCopy, @"loadState", 3];
 
-  [v5 setPredicate:v7];
+  [requestCopy setPredicate:v7];
   v14[0] = @"declarationType";
   v14[1] = @"identifier";
   v14[2] = @"serverToken";
   v8 = [NSArray arrayWithObjects:v14 count:3];
-  [v5 setPropertiesToFetch:v8];
+  [requestCopy setPropertiesToFetch:v8];
 
   v13 = 0;
-  v9 = [v5 execute:&v13];
+  v9 = [requestCopy execute:&v13];
   v10 = v13;
   if (!v9)
   {
@@ -459,16 +459,16 @@
   return v9;
 }
 
-- (void)deleteObjects:(id)a3 managementSourceIdentifier:(id)a4 removeStatus:(BOOL)a5
+- (void)deleteObjects:(id)objects managementSourceIdentifier:(id)identifier removeStatus:(BOOL)status
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  objectsCopy = objects;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [objectsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -480,38 +480,38 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectsCopy);
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        if (v5)
+        if (statusCopy)
         {
-          v14 = [*(*(&v17 + 1) + 8 * v12) identifier];
-          v15 = [v13 serverToken];
-          [RMConfigurationStatusArchiver removeStatusForStoreIdentifier:v8 declarationIdentifier:v14 declarationServerToken:v15 error:0];
+          identifier = [*(*(&v17 + 1) + 8 * v12) identifier];
+          serverToken = [v13 serverToken];
+          [RMConfigurationStatusArchiver removeStatusForStoreIdentifier:identifierCopy declarationIdentifier:identifier declarationServerToken:serverToken error:0];
         }
 
-        v16 = [v13 managedObjectContext];
-        [v16 deleteObject:v13];
+        managedObjectContext = [v13 managedObjectContext];
+        [managedObjectContext deleteObject:v13];
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [objectsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
   }
 }
 
-- (BOOL)_updateUnknownDeclarations:(id)a3
+- (BOOL)_updateUnknownDeclarations:(id)declarations
 {
-  v3 = a3;
-  v68 = [v3 managedObjectContext];
+  declarationsCopy = declarations;
+  managedObjectContext = [declarationsCopy managedObjectContext];
   v4 = +[RMActivationPayload fetchRequest];
-  v66 = v3;
-  v5 = [NSPredicate predicateWithFormat:@"(%K == %@) AND (%K == %d)", @"managementSource", v3, @"loadState", 4];
+  v66 = declarationsCopy;
+  v5 = [NSPredicate predicateWithFormat:@"(%K == %@) AND (%K == %d)", @"managementSource", declarationsCopy, @"loadState", 4];
   [v4 setPredicate:v5];
 
   [v4 setIncludesPendingChanges:1];
@@ -547,13 +547,13 @@
         }
 
         v13 = *(*(&v81 + 1) + 8 * i);
-        v14 = [v13 declarationType];
-        v15 = [v13 state];
-        if ([RMModelDeclarationBase isDeclarationTypeKnown:v14])
+        declarationType = [v13 declarationType];
+        state = [v13 state];
+        if ([RMModelDeclarationBase isDeclarationTypeKnown:declarationType])
         {
           if ([v13 reloadReturningError:0])
           {
-            v16 = v15 == 0;
+            v16 = state == 0;
           }
 
           else
@@ -563,20 +563,20 @@
 
           if (!v16)
           {
-            [(RMActivationPayloadState *)v15 setInactiveReasons:&__NSArray0__struct];
+            [(RMActivationPayloadState *)state setInactiveReasons:&__NSArray0__struct];
           }
         }
 
-        else if (!v15)
+        else if (!state)
         {
-          v15 = [[RMActivationPayloadState alloc] initWithContext:v68];
-          [(RMActivationPayloadState *)v15 setActivation:v13];
-          v17 = [RMModelStatusReason failedWithUnknownDeclarationType:v14];
+          state = [[RMActivationPayloadState alloc] initWithContext:managedObjectContext];
+          [(RMActivationPayloadState *)state setActivation:v13];
+          v17 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType];
           v95 = v17;
           v18 = [NSArray arrayWithObjects:&v95 count:1];
-          [(RMActivationPayloadState *)v15 setInactiveReasons:v18];
+          [(RMActivationPayloadState *)state setInactiveReasons:v18];
 
-          [v13 setState:v15];
+          [v13 setState:state];
         }
       }
 
@@ -623,13 +623,13 @@
         }
 
         v29 = *(*(&v77 + 1) + 8 * j);
-        v30 = [v29 declarationType];
-        v31 = [v29 state];
-        if ([RMModelDeclarationBase isDeclarationTypeKnown:v30])
+        declarationType2 = [v29 declarationType];
+        state2 = [v29 state];
+        if ([RMModelDeclarationBase isDeclarationTypeKnown:declarationType2])
         {
           if ([v29 reloadReturningError:0])
           {
-            v32 = v31 == 0;
+            v32 = state2 == 0;
           }
 
           else
@@ -639,21 +639,21 @@
 
           if (!v32)
           {
-            [(RMConfigurationPayloadState *)v31 setError:0];
+            [(RMConfigurationPayloadState *)state2 setError:0];
           }
         }
 
-        else if (!v31)
+        else if (!state2)
         {
-          v31 = [[RMConfigurationPayloadState alloc] initWithContext:v68];
-          [(RMConfigurationPayloadState *)v31 setConfiguration:v29];
-          [(RMConfigurationPayloadState *)v31 setActive:0];
+          state2 = [[RMConfigurationPayloadState alloc] initWithContext:managedObjectContext];
+          [(RMConfigurationPayloadState *)state2 setConfiguration:v29];
+          [(RMConfigurationPayloadState *)state2 setActive:0];
           v92 = @"Error.UnknownDeclarationType";
-          v93 = v30;
+          v93 = declarationType2;
           v33 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-          [(RMConfigurationPayloadState *)v31 setError:v33];
+          [(RMConfigurationPayloadState *)state2 setError:v33];
 
-          [v29 setState:v31];
+          [v29 setState:state2];
         }
       }
 
@@ -702,13 +702,13 @@
         }
 
         v44 = *(*(&v73 + 1) + 8 * k);
-        v45 = [v44 declarationType];
-        v46 = [v44 state];
-        if ([RMModelDeclarationBase isDeclarationTypeKnown:v45])
+        declarationType3 = [v44 declarationType];
+        state3 = [v44 state];
+        if ([RMModelDeclarationBase isDeclarationTypeKnown:declarationType3])
         {
           if ([v44 reloadReturningError:0])
           {
-            v47 = v46 == 0;
+            v47 = state3 == 0;
           }
 
           else
@@ -718,20 +718,20 @@
 
           if (!v47)
           {
-            [(RMAssetPayloadState *)v46 setError:0];
+            [(RMAssetPayloadState *)state3 setError:0];
           }
         }
 
-        else if (!v46)
+        else if (!state3)
         {
-          v46 = [[RMAssetPayloadState alloc] initWithContext:v68];
-          [(RMAssetPayloadState *)v46 setAsset:v44];
+          state3 = [[RMAssetPayloadState alloc] initWithContext:managedObjectContext];
+          [(RMAssetPayloadState *)state3 setAsset:v44];
           v89 = @"Error.UnknownDeclarationType";
-          v90 = v45;
+          v90 = declarationType3;
           v48 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
-          [(RMAssetPayloadState *)v46 setError:v48];
+          [(RMAssetPayloadState *)state3 setError:v48];
 
-          [v44 setState:v46];
+          [v44 setState:state3];
         }
       }
 
@@ -778,14 +778,14 @@
         }
 
         v59 = *(*(&v69 + 1) + 8 * m);
-        v60 = [v59 declarationType];
-        v61 = [v59 state];
-        if ([RMModelDeclarationBase isDeclarationTypeKnown:v60])
+        declarationType4 = [v59 declarationType];
+        state4 = [v59 state];
+        if ([RMModelDeclarationBase isDeclarationTypeKnown:declarationType4])
         {
           [v59 setLoadState:1];
           if ([v59 reloadReturningError:0])
           {
-            v62 = v61 == 0;
+            v62 = state4 == 0;
           }
 
           else
@@ -795,20 +795,20 @@
 
           if (!v62)
           {
-            [(RMManagementPayloadState *)v61 setError:0];
+            [(RMManagementPayloadState *)state4 setError:0];
           }
         }
 
-        else if (!v61)
+        else if (!state4)
         {
-          v61 = [[RMManagementPayloadState alloc] initWithContext:v68];
-          [(RMManagementPayloadState *)v61 setManagement:v59];
+          state4 = [[RMManagementPayloadState alloc] initWithContext:managedObjectContext];
+          [(RMManagementPayloadState *)state4 setManagement:v59];
           v86 = @"Error.UnknownDeclarationType";
-          v87 = v60;
+          v87 = declarationType4;
           v63 = [NSDictionary dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-          [(RMManagementPayloadState *)v61 setError:v63];
+          [(RMManagementPayloadState *)state4 setError:v63];
 
-          [v59 setState:v61];
+          [v59 setState:state4];
         }
       }
 
@@ -821,16 +821,16 @@
   return 1;
 }
 
-- (BOOL)_attachConfigurationReferences:(id)a3
+- (BOOL)_attachConfigurationReferences:(id)references
 {
-  v3 = a3;
+  referencesCopy = references;
   v4 = +[RMLog activationEngine];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_100007128();
   }
 
-  v5 = v3;
+  v5 = referencesCopy;
   v6 = +[RMConfigurationPayloadReference fetchRequest];
   [v6 setIncludesPendingChanges:1];
   v7 = [NSPredicate predicateWithFormat:@"(%K == %@) && ((%K == NULL) || (%K == %d))", @"activation.managementSource", v5, @"configuration", @"configuration.loadState", 3];
@@ -928,8 +928,8 @@ LABEL_43:
         }
 
         v27 = *(*(&v63 + 1) + 8 * i);
-        v28 = [v27 identifier];
-        [v21 setObject:v27 forKeyedSubscript:v28];
+        identifier = [v27 identifier];
+        [v21 setObject:v27 forKeyedSubscript:identifier];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v63 objects:buf count:16];
@@ -960,21 +960,21 @@ LABEL_43:
         }
 
         v35 = *(*(&v59 + 1) + 8 * v34);
-        v36 = [v35 configuration];
-        v37 = [v35 configurationIdentifier];
-        v38 = [v21 objectForKeyedSubscript:v37];
+        configuration = [v35 configuration];
+        configurationIdentifier = [v35 configurationIdentifier];
+        v38 = [v21 objectForKeyedSubscript:configurationIdentifier];
 
-        if (v36 != v38)
+        if (configuration != v38)
         {
-          v39 = [v31[235] activationEngine];
-          v40 = os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG);
-          if (v36)
+          activationEngine = [v31[235] activationEngine];
+          v40 = os_log_type_enabled(activationEngine, OS_LOG_TYPE_DEBUG);
+          if (configuration)
           {
             if (v40)
             {
-              v55 = [v35 activation];
-              v57 = [v55 description];
-              v54 = [v36 description];
+              activation = [v35 activation];
+              v57 = [activation description];
+              v54 = [configuration description];
               v41 = [v38 description];
               *buf = 138412802;
               *&buf[4] = v57;
@@ -983,28 +983,28 @@ LABEL_43:
               v72 = 2112;
               v73 = v41;
               v42 = v41;
-              _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "Reattaching configuration reference for %@ to from %@ to %@...", buf, 0x20u);
+              _os_log_debug_impl(&_mh_execute_header, activationEngine, OS_LOG_TYPE_DEBUG, "Reattaching configuration reference for %@ to from %@ to %@...", buf, 0x20u);
 
               v31 = &DeviceIdentityIssueClientCertificateWithCompletion_ptr;
-              v43 = v55;
+              v43 = activation;
               goto LABEL_34;
             }
           }
 
           else if (v40)
           {
-            v58 = [v35 activation];
-            v56 = [v58 description];
+            activation2 = [v35 activation];
+            v56 = [activation2 description];
             v44 = [v38 description];
             *buf = 138412546;
             *&buf[4] = v56;
             v70 = 2112;
             v71 = v44;
             v45 = v44;
-            _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "Attaching configuration reference for %@ to %@...", buf, 0x16u);
+            _os_log_debug_impl(&_mh_execute_header, activationEngine, OS_LOG_TYPE_DEBUG, "Attaching configuration reference for %@ to %@...", buf, 0x16u);
 
             v31 = &DeviceIdentityIssueClientCertificateWithCompletion_ptr;
-            v43 = v58;
+            v43 = activation2;
 LABEL_34:
           }
 
@@ -1022,11 +1022,11 @@ LABEL_34:
     while (v46);
   }
 
-  v47 = [v31[235] activationEngine];
-  if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
+  activationEngine2 = [v31[235] activationEngine];
+  if (os_log_type_enabled(activationEngine2, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "Attached configuration references.", buf, 2u);
+    _os_log_impl(&_mh_execute_header, activationEngine2, OS_LOG_TYPE_INFO, "Attached configuration references.", buf, 2u);
   }
 
   v5 = v51;
@@ -1037,16 +1037,16 @@ LABEL_44:
   return v9 != 0;
 }
 
-- (BOOL)_attachAssetReferences:(id)a3
+- (BOOL)_attachAssetReferences:(id)references
 {
-  v3 = a3;
+  referencesCopy = references;
   v4 = +[RMLog activationEngine];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_100007254();
   }
 
-  v5 = v3;
+  v5 = referencesCopy;
   v6 = +[RMAssetPayloadReference fetchRequest];
   [v6 setIncludesPendingChanges:1];
   v7 = [NSPredicate predicateWithFormat:@"(%K == %@) && ((%K == NULL) || (%K == %d))", @"configuration.managementSource", v5, @"asset", @"asset.loadState", 3];
@@ -1144,8 +1144,8 @@ LABEL_43:
         }
 
         v27 = *(*(&v61 + 1) + 8 * i);
-        v28 = [v27 identifier];
-        [v21 setObject:v27 forKeyedSubscript:v28];
+        identifier = [v27 identifier];
+        [v21 setObject:v27 forKeyedSubscript:identifier];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v61 objects:buf count:16];
@@ -1175,21 +1175,21 @@ LABEL_43:
         }
 
         v33 = *(*(&v57 + 1) + 8 * v32);
-        v34 = [v33 asset];
-        v35 = [v33 assetIdentifier];
-        v36 = [v21 objectForKeyedSubscript:v35];
+        asset = [v33 asset];
+        assetIdentifier = [v33 assetIdentifier];
+        v36 = [v21 objectForKeyedSubscript:assetIdentifier];
 
-        if (v34 != v36)
+        if (asset != v36)
         {
           v37 = +[RMLog activationEngine];
           v38 = os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG);
-          if (v34)
+          if (asset)
           {
             if (v38)
             {
-              v55 = [v33 configuration];
-              v54 = [v55 description];
-              v39 = [v34 description];
+              configuration = [v33 configuration];
+              v54 = [configuration description];
+              v39 = [asset description];
               v40 = [v36 description];
               *buf = 138412802;
               *&buf[4] = v54;
@@ -1206,8 +1206,8 @@ LABEL_43:
 
           else if (v38)
           {
-            v55 = [v33 configuration];
-            v44 = [v55 description];
+            configuration = [v33 configuration];
+            v44 = [configuration description];
             v45 = [v36 description];
             *buf = 138412546;
             *&buf[4] = v44;
@@ -1218,8 +1218,8 @@ LABEL_43:
 LABEL_34:
           }
 
-          v42 = [v33 assetIdentifier];
-          v43 = [v21 objectForKeyedSubscript:v42];
+          assetIdentifier2 = [v33 assetIdentifier];
+          v43 = [v21 objectForKeyedSubscript:assetIdentifier2];
           [v33 setAsset:v43];
         }
 
@@ -1249,12 +1249,12 @@ LABEL_44:
   return v9 != 0;
 }
 
-- (BOOL)_processManagementProperties:(id)a3
+- (BOOL)_processManagementProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v4 = +[RMManagementPayload fetchRequest];
   v5 = +[RMModelManagementPropertiesDeclaration registeredIdentifier];
-  v6 = [NSPredicate predicateWithFormat:@"(%K == %@) AND (%K == %d) AND (%K == %@)", @"managementSource", v3, @"loadState", 1, @"declarationType", v5];
+  v6 = [NSPredicate predicateWithFormat:@"(%K == %@) AND (%K == %d) AND (%K == %@)", @"managementSource", propertiesCopy, @"loadState", 1, @"declarationType", v5];
   [v4 setPredicate:v6];
 
   [v4 setIncludesPendingChanges:1];
@@ -1268,7 +1268,7 @@ LABEL_44:
   v10 = v9;
   if (v8)
   {
-    v29 = v3;
+    v29 = propertiesCopy;
 
     v11 = objc_opt_new();
     v33 = 0u;
@@ -1294,9 +1294,9 @@ LABEL_44:
             objc_enumerationMutation(v12);
           }
 
-          v19 = [*(*(&v33 + 1) + 8 * v17) payload];
+          payload = [*(*(&v33 + 1) + 8 * v17) payload];
           v32 = v18;
-          v20 = [RMModelManagementPropertiesDeclaration loadData:v19 serializationType:0 error:&v32];
+          v20 = [RMModelManagementPropertiesDeclaration loadData:payload serializationType:0 error:&v32];
           v15 = v32;
 
           if (!v20)
@@ -1307,12 +1307,12 @@ LABEL_44:
               sub_1000072F0();
             }
 
-            v3 = v29;
+            propertiesCopy = v29;
             goto LABEL_22;
           }
 
-          v21 = [v20 payloadANY];
-          [v11 addEntriesFromDictionary:v21];
+          payloadANY = [v20 payloadANY];
+          [v11 addEntriesFromDictionary:payloadANY];
 
           v17 = v17 + 1;
           v18 = v15;
@@ -1336,10 +1336,10 @@ LABEL_44:
 
     v25 = v15;
 
-    v3 = v29;
-    v26 = [v29 identifier];
+    propertiesCopy = v29;
+    identifier = [v29 identifier];
     v31 = v15;
-    v27 = [RMManagementPropertiesArchiver persistPropertiesWithStoreIdentifier:v26 properties:v11 error:&v31];
+    v27 = [RMManagementPropertiesArchiver persistPropertiesWithStoreIdentifier:identifier properties:v11 error:&v31];
     v15 = v31;
 
     if (v27)
@@ -1377,18 +1377,18 @@ LABEL_22:
   return v24;
 }
 
-- (BOOL)_processAllDeclarations:(id)a3
+- (BOOL)_processAllDeclarations:(id)declarations
 {
-  v3 = a3;
+  declarationsCopy = declarations;
   v4 = +[RMActivationPayload fetchRequest];
-  v120 = v3;
-  v5 = [NSPredicate predicateWithFormat:@"(%K == %@) AND ((%K == %d) OR ((%K != NULL) AND (%K.%K == YES)))", @"managementSource", v3, @"loadState", 1, @"state", @"state", @"active"];
+  v120 = declarationsCopy;
+  v5 = [NSPredicate predicateWithFormat:@"(%K == %@) AND ((%K == %d) OR ((%K != NULL) AND (%K.%K == YES)))", @"managementSource", declarationsCopy, @"loadState", 1, @"state", @"state", @"active"];
   [v4 setPredicate:v5];
 
   [v4 setIncludesPendingChanges:1];
-  v6 = [v4 entity];
+  entity = [v4 entity];
   v7 = +[RMActivationPayload entity];
-  v8 = [v6 isKindOfEntity:v7];
+  v8 = [entity isKindOfEntity:v7];
 
   if (v8)
   {
@@ -1405,7 +1405,7 @@ LABEL_22:
   else
   {
     v12 = +[RMConfigurationPayload entity];
-    v13 = [v6 isKindOfEntity:v12];
+    v13 = [entity isKindOfEntity:v12];
 
     if (!v13)
     {
@@ -1440,7 +1440,7 @@ LABEL_6:
       sub_100007428();
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(entity) = 0;
     goto LABEL_100;
   }
 
@@ -1449,9 +1449,9 @@ LABEL_6:
   [v19 setPredicate:v20];
 
   [v19 setIncludesPendingChanges:1];
-  v6 = [v19 entity];
+  entity = [v19 entity];
   v21 = +[RMActivationPayload entity];
-  v22 = [v6 isKindOfEntity:v21];
+  v22 = [entity isKindOfEntity:v21];
 
   if (v22)
   {
@@ -1471,7 +1471,7 @@ LABEL_14:
   }
 
   v29 = +[RMConfigurationPayload entity];
-  v30 = [v6 isKindOfEntity:v29];
+  v30 = [entity isKindOfEntity:v29];
 
   if (v30)
   {
@@ -1494,16 +1494,16 @@ LABEL_15:
   {
 
     v28 = v120;
-    v35 = [v120 identifier];
+    identifier = [v120 identifier];
     v150 = 0;
-    v6 = [RMManagementPropertiesArchiver propertiesWithStoreIdentifier:v35 error:&v150];
+    entity = [RMManagementPropertiesArchiver propertiesWithStoreIdentifier:identifier error:&v150];
     v36 = v150;
 
-    v125 = v6;
-    if (v6)
+    v125 = entity;
+    if (entity)
     {
       v37 = [(RMActivationEngine *)self _checkPredicateStatusKeysForActivations:v119 managementSource:v120];
-      LOBYTE(v6) = v37 != 0;
+      LOBYTE(entity) = v37 != 0;
       if (v37)
       {
         v118 = v36;
@@ -1515,12 +1515,12 @@ LABEL_15:
           v40 = [[RMManagementChannel alloc] initWithManagementSource:v39];
           v41 = objc_opt_new();
           v42 = [v41 queryForStatusWithKeyPaths:v38 onBehalfOfManagementChannel:v40];
-          v123 = [v42 statusByKeyPath];
+          statusByKeyPath = [v42 statusByKeyPath];
         }
 
         else
         {
-          v123 = &__NSDictionary0__struct;
+          statusByKeyPath = &__NSDictionary0__struct;
         }
 
         v127 = objc_opt_new();
@@ -1545,7 +1545,7 @@ LABEL_15:
               }
 
               v46 = *(*(&v146 + 1) + 8 * v45);
-              v47 = v123;
+              v47 = statusByKeyPath;
               v48 = v125;
               v49 = objc_opt_new();
               [v46 predicateDescription];
@@ -1555,9 +1555,9 @@ LABEL_15:
               v130 = v132 = v47;
               if (v130)
               {
-                v50 = [v46 predicateDescription];
+                predicateDescription = [v46 predicateDescription];
                 v151 = 0;
-                v51 = [v50 evaluateWithStatus:v47 properties:v48 error:&v151];
+                v51 = [predicateDescription evaluateWithStatus:v47 properties:v48 error:&v151];
                 v52 = v151;
 
                 v129 = v52;
@@ -1588,13 +1588,13 @@ LABEL_15:
 LABEL_36:
               v136 = objc_opt_new();
               v133 = v46;
-              v55 = [v46 configurationReferences];
-              v56 = [v55 allObjects];
+              configurationReferences = [v46 configurationReferences];
+              allObjects = [configurationReferences allObjects];
 
               v128 = [NSSortDescriptor sortDescriptorWithKey:@"configurationIdentifier" ascending:1];
               v169 = v128;
               v57 = [NSArray arrayWithObjects:&v169 count:1];
-              v58 = [v56 sortedArrayUsingDescriptors:v57];
+              v58 = [allObjects sortedArrayUsingDescriptors:v57];
 
               v167 = 0u;
               v168 = 0u;
@@ -1615,17 +1615,17 @@ LABEL_36:
                     }
 
                     v60 = *(*(&v165 + 1) + 8 * i);
-                    v61 = [v60 configuration];
-                    if (v61)
+                    configuration = [v60 configuration];
+                    if (configuration)
                     {
                       v62 = objc_autoreleasePoolPush();
                       v63 = objc_opt_new();
-                      v64 = [v61 assetReferences];
+                      assetReferences = [configuration assetReferences];
                       v160 = 0u;
                       v161 = 0u;
                       v162 = 0u;
                       v163 = 0u;
-                      v65 = [v64 countByEnumeratingWithState:&v160 objects:v159 count:16];
+                      v65 = [assetReferences countByEnumeratingWithState:&v160 objects:v159 count:16];
                       if (v65)
                       {
                         v66 = v65;
@@ -1636,20 +1636,20 @@ LABEL_36:
                           {
                             if (*v161 != v67)
                             {
-                              objc_enumerationMutation(v64);
+                              objc_enumerationMutation(assetReferences);
                             }
 
                             v69 = *(*(&v160 + 1) + 8 * j);
-                            v70 = [v69 asset];
+                            asset = [v69 asset];
 
-                            if (!v70)
+                            if (!asset)
                             {
-                              v71 = [v69 assetIdentifier];
-                              [v63 addObject:v71];
+                              assetIdentifier = [v69 assetIdentifier];
+                              [v63 addObject:assetIdentifier];
                             }
                           }
 
-                          v66 = [v64 countByEnumeratingWithState:&v160 objects:v159 count:16];
+                          v66 = [assetReferences countByEnumeratingWithState:&v160 objects:v159 count:16];
                         }
 
                         while (v66);
@@ -1660,22 +1660,22 @@ LABEL_36:
                         v72 = +[RMLog activationEngine];
                         if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
                         {
-                          v75 = [v61 identifier];
-                          v76 = [v61 serverToken];
-                          v135 = [v63 allObjects];
-                          v77 = [v135 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+                          identifier2 = [configuration identifier];
+                          serverToken = [configuration serverToken];
+                          allObjects2 = [v63 allObjects];
+                          v77 = [allObjects2 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
                           v78 = [v77 componentsJoinedByString:{@", "}];
 
                           *buf = 138412802;
-                          *&buf[4] = v75;
+                          *&buf[4] = identifier2;
                           v155 = 2112;
-                          v156 = v76;
+                          v156 = serverToken;
                           v157 = 2112;
                           v158 = v78;
                           _os_log_debug_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEBUG, "Configuration (%@:%@) is missing assets: %@", buf, 0x20u);
                         }
 
-                        v73 = [RMModelStatusReason missingAssetIdentifiers:v63 forConfiguration:v61];
+                        v73 = [RMModelStatusReason missingAssetIdentifiers:v63 forConfiguration:configuration];
                         [v137 addObject:v73];
                       }
 
@@ -1684,8 +1684,8 @@ LABEL_36:
 
                     else
                     {
-                      v74 = [v60 configurationIdentifier];
-                      [v136 addObject:v74];
+                      configurationIdentifier = [v60 configurationIdentifier];
+                      [v136 addObject:configurationIdentifier];
                     }
                   }
 
@@ -1701,16 +1701,16 @@ LABEL_36:
                 v79 = +[RMLog activationEngine];
                 if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
                 {
-                  v93 = [v133 identifier];
-                  v94 = [v133 serverToken];
-                  v95 = [v136 allObjects];
-                  v96 = [v95 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+                  identifier3 = [v133 identifier];
+                  serverToken2 = [v133 serverToken];
+                  allObjects3 = [v136 allObjects];
+                  v96 = [allObjects3 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
                   v97 = [v96 componentsJoinedByString:{@", "}];
 
                   *buf = 138412802;
-                  *&buf[4] = v93;
+                  *&buf[4] = identifier3;
                   v155 = 2112;
-                  v156 = v94;
+                  v156 = serverToken2;
                   v157 = 2112;
                   v158 = v97;
                   _os_log_debug_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEBUG, "Activation (%@:%@) is missing configurations: %@", buf, 0x20u);
@@ -1722,35 +1722,35 @@ LABEL_36:
 
               if (![v137 count])
               {
-                v81 = [v133 configurationReferences];
-                v82 = [v81 valueForKey:@"configuration"];
+                configurationReferences2 = [v133 configurationReferences];
+                v82 = [configurationReferences2 valueForKey:@"configuration"];
 
                 [v127 unionSet:v82];
               }
 
               v83 = v133;
               v84 = v137;
-              v85 = [v83 state];
-              if (!v85)
+              state = [v83 state];
+              if (!state)
               {
                 v86 = [RMActivationPayloadState alloc];
-                v87 = [v83 managedObjectContext];
-                v85 = [(RMActivationPayloadState *)v86 initWithContext:v87];
+                managedObjectContext = [v83 managedObjectContext];
+                state = [(RMActivationPayloadState *)v86 initWithContext:managedObjectContext];
 
-                [(RMActivationPayloadState *)v85 setActivation:v83];
+                [(RMActivationPayloadState *)state setActivation:v83];
               }
 
-              [(RMActivationPayloadState *)v85 setInactiveReasons:v84];
-              if (([(RMActivationPayloadState *)v85 isInserted]& 1) != 0 || [(RMActivationPayloadState *)v85 hasChanges])
+              [(RMActivationPayloadState *)state setInactiveReasons:v84];
+              if (([(RMActivationPayloadState *)state isInserted]& 1) != 0 || [(RMActivationPayloadState *)state hasChanges])
               {
                 v88 = +[RMLog activationEngine];
                 if (os_log_type_enabled(v88, OS_LOG_TYPE_DEBUG))
                 {
                   v89 = [v83 description];
-                  v90 = [(RMActivationPayloadState *)v85 active];
+                  active = [(RMActivationPayloadState *)state active];
                   *v164 = 138412546;
                   v91 = @"active";
-                  if (!v90)
+                  if (!active)
                   {
                     v91 = @"inactive";
                   }
@@ -1797,22 +1797,22 @@ LABEL_36:
               v104 = *(*(&v142 + 1) + 8 * v103);
               v105 = [v127 containsObject:v104];
               v106 = v104;
-              v107 = [v106 state];
-              if (!v107)
+              state2 = [v106 state];
+              if (!state2)
               {
                 v108 = [RMConfigurationPayloadState alloc];
-                v109 = [v106 managedObjectContext];
-                v107 = [(RMConfigurationPayloadState *)v108 initWithContext:v109];
+                managedObjectContext2 = [v106 managedObjectContext];
+                state2 = [(RMConfigurationPayloadState *)v108 initWithContext:managedObjectContext2];
 
-                [(RMConfigurationPayloadState *)v107 setConfiguration:v106];
+                [(RMConfigurationPayloadState *)state2 setConfiguration:v106];
               }
 
-              if (v105 != [(RMConfigurationPayloadState *)v107 active])
+              if (v105 != [(RMConfigurationPayloadState *)state2 active])
               {
-                [(RMConfigurationPayloadState *)v107 setActive:v105];
+                [(RMConfigurationPayloadState *)state2 setActive:v105];
               }
 
-              if (([(RMConfigurationPayloadState *)v107 isInserted]& 1) != 0 || [(RMConfigurationPayloadState *)v107 hasChanges])
+              if (([(RMConfigurationPayloadState *)state2 isInserted]& 1) != 0 || [(RMConfigurationPayloadState *)state2 hasChanges])
               {
                 v110 = +[RMLog activationEngine];
                 if (os_log_type_enabled(v110, OS_LOG_TYPE_DEBUG))
@@ -1848,7 +1848,7 @@ LABEL_36:
         v28 = v120;
         v26 = v124;
         v36 = v118;
-        LOBYTE(v6) = 1;
+        LOBYTE(entity) = 1;
         v37 = v117;
       }
     }
@@ -1864,19 +1864,19 @@ LABEL_36:
       sub_100007428();
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(entity) = 0;
     v36 = v43;
   }
 
 LABEL_100:
-  return v6;
+  return entity;
 }
 
-- (id)_checkPredicateStatusKeysForActivations:(id)a3 managementSource:(id)a4
+- (id)_checkPredicateStatusKeysForActivations:(id)activations managementSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  activationsCopy = activations;
+  sourceCopy = source;
+  v8 = activationsCopy;
   v9 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
@@ -1897,9 +1897,9 @@ LABEL_100:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v38 + 1) + 8 * i) predicateDescription];
-        v16 = [v15 statusKeyPaths];
-        [v9 addObjectsFromArray:v16];
+        predicateDescription = [*(*(&v38 + 1) + 8 * i) predicateDescription];
+        statusKeyPaths = [predicateDescription statusKeyPaths];
+        [v9 addObjectsFromArray:statusKeyPaths];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v38 objects:buf count:16];
@@ -1908,12 +1908,12 @@ LABEL_100:
     while (v12);
   }
 
-  v17 = [v9 allObjects];
-  v18 = [v17 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+  allObjects = [v9 allObjects];
+  v18 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
   v19 = [v18 componentsJoinedByString:{@", "}];
 
-  v20 = [v7 predicateStatusKeys];
-  LOBYTE(v18) = [v20 isEqualToString:v19];
+  predicateStatusKeys = [sourceCopy predicateStatusKeys];
+  LOBYTE(v18) = [predicateStatusKeys isEqualToString:v19];
 
   if (v18)
   {
@@ -1927,16 +1927,16 @@ LABEL_100:
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Activation predicate status key values have changed", buf, 2u);
   }
 
-  v22 = [v7 predicateStatusKeys];
-  v23 = [v22 componentsSeparatedByString:{@", "}];
+  predicateStatusKeys2 = [sourceCopy predicateStatusKeys];
+  v23 = [predicateStatusKeys2 componentsSeparatedByString:{@", "}];
   v24 = [NSSet setWithArray:v23];
 
   v25 = [v9 mutableCopy];
   [v25 minusSet:v24];
-  [v7 setPredicateStatusKeys:v19];
-  v26 = [(RMActivationEngine *)self context];
+  [sourceCopy setPredicateStatusKeys:v19];
+  context = [(RMActivationEngine *)self context];
   v37 = 0;
-  v27 = [v26 save:&v37];
+  v27 = [context save:&v37];
   v28 = v37;
 
   v29 = +[RMLog activationEngine];
@@ -1960,8 +1960,8 @@ LABEL_100:
       }
 
       v33 = +[RMExternalStatusPublisher sharedPublisher];
-      v34 = [v7 identifier];
-      [v33 publishStatusKeys:v25 storeIdentifier:v34];
+      identifier = [sourceCopy identifier];
+      [v33 publishStatusKeys:v25 storeIdentifier:identifier];
     }
 
 LABEL_19:
@@ -1980,32 +1980,32 @@ LABEL_23:
   return v35;
 }
 
-+ (BOOL)_isKeychainAsset:(id)a3
++ (BOOL)_isKeychainAsset:(id)asset
 {
   v3 = qword_1000E6690;
-  v4 = a3;
+  assetCopy = asset;
   if (v3 != -1)
   {
     sub_1000075C4();
   }
 
   v5 = qword_1000E6688;
-  v6 = [v4 declarationType];
+  declarationType = [assetCopy declarationType];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:declarationType];
   return v7;
 }
 
-- (void)_assetsRemoved:(id)a3 storeIdentifier:(id)a4 personaID:(id)a5
+- (void)_assetsRemoved:(id)removed storeIdentifier:(id)identifier personaID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  removedCopy = removed;
+  identifierCopy = identifier;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v11 = [removedCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2017,15 +2017,15 @@ LABEL_23:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(removedCopy);
         }
 
-        [(RMActivationEngine *)self _removedStoreAsset:*(*(&v15 + 1) + 8 * v14) storeIdentifier:v9 personaID:v10 isKeychain:[RMActivationEngine _isKeychainAsset:*(*(&v15 + 1) + 8 * v14)]];
+        [(RMActivationEngine *)self _removedStoreAsset:*(*(&v15 + 1) + 8 * v14) storeIdentifier:identifierCopy personaID:dCopy isKeychain:[RMActivationEngine _isKeychainAsset:*(*(&v15 + 1) + 8 * v14)]];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [removedCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);

@@ -1,5 +1,5 @@
 @interface CNUINavigationListViewCellHeightEstimator
-- (CNUINavigationListViewCellHeightEstimator)initWithNavigationListStyle:(id)a3;
+- (CNUINavigationListViewCellHeightEstimator)initWithNavigationListStyle:(id)style;
 - (double)estimatedCellHeight;
 - (double)estimatedDetailCellHeight;
 @end
@@ -12,8 +12,8 @@
   if (!estimatedDetailCellHeightNumber)
   {
     v4 = objc_alloc_init(CNUINavigationListViewDetailCell);
-    v5 = [(CNUINavigationListViewCellHeightEstimator *)self navigationListStyle];
-    [(CNUINavigationListViewCell *)v4 setNavigationListStyle:v5];
+    navigationListStyle = [(CNUINavigationListViewCellHeightEstimator *)self navigationListStyle];
+    [(CNUINavigationListViewCell *)v4 setNavigationListStyle:navigationListStyle];
 
     v6 = MEMORY[0x1E696AD98];
     [(CNUINavigationListViewDetailCell *)v4 minimumContentHeight];
@@ -34,8 +34,8 @@
   if (!estimatedCellHeightNumber)
   {
     v4 = objc_alloc_init(CNUINavigationListViewCell);
-    v5 = [(CNUINavigationListViewCellHeightEstimator *)self navigationListStyle];
-    [(CNUINavigationListViewCell *)v4 setNavigationListStyle:v5];
+    navigationListStyle = [(CNUINavigationListViewCellHeightEstimator *)self navigationListStyle];
+    [(CNUINavigationListViewCell *)v4 setNavigationListStyle:navigationListStyle];
 
     v6 = MEMORY[0x1E696AD98];
     [(CNUINavigationListViewCell *)v4 minimumContentHeight];
@@ -50,16 +50,16 @@
   return v9;
 }
 
-- (CNUINavigationListViewCellHeightEstimator)initWithNavigationListStyle:(id)a3
+- (CNUINavigationListViewCellHeightEstimator)initWithNavigationListStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = CNUINavigationListViewCellHeightEstimator;
   v6 = [(CNUINavigationListViewCellHeightEstimator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationListStyle, a3);
+    objc_storeStrong(&v6->_navigationListStyle, style);
     v8 = v7;
   }
 

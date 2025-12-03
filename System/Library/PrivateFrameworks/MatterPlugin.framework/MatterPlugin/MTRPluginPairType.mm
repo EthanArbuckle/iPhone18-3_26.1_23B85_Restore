@@ -1,33 +1,33 @@
 @interface MTRPluginPairType
-- (BOOL)isEqual:(id)a3;
-- (MTRPluginPairType)initWithFirst:(id)a3 second:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTRPluginPairType)initWithFirst:(id)first second:(id)second;
 - (unint64_t)hash;
 @end
 
 @implementation MTRPluginPairType
 
-- (MTRPluginPairType)initWithFirst:(id)a3 second:(id)a4
+- (MTRPluginPairType)initWithFirst:(id)first second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v12.receiver = self;
   v12.super_class = MTRPluginPairType;
   v8 = [(MTRPluginPairType *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(MTRPluginPairType *)v8 setFirst:v6];
-    [(MTRPluginPairType *)v9 setSecond:v7];
+    [(MTRPluginPairType *)v8 setFirst:firstCopy];
+    [(MTRPluginPairType *)v9 setSecond:secondCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -48,13 +48,13 @@
     v6 = v5;
     if ([(MTRPluginPairType *)v6 isMemberOfClass:objc_opt_class()])
     {
-      v7 = [(MTRPluginPairType *)self first];
-      v8 = [(MTRPluginPairType *)v6 first];
-      if (MTRPluginEqualObjects(v7, v8))
+      first = [(MTRPluginPairType *)self first];
+      first2 = [(MTRPluginPairType *)v6 first];
+      if (MTRPluginEqualObjects(first, first2))
       {
-        v9 = [(MTRPluginPairType *)self second];
-        v10 = [(MTRPluginPairType *)v6 second];
-        v11 = MTRPluginEqualObjects(v9, v10);
+        second = [(MTRPluginPairType *)self second];
+        second2 = [(MTRPluginPairType *)v6 second];
+        v11 = MTRPluginEqualObjects(second, second2);
       }
 
       else
@@ -74,10 +74,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MTRPluginPairType *)self first];
-  v4 = [v3 hash];
-  v5 = [(MTRPluginPairType *)self second];
-  v6 = [v5 hash];
+  first = [(MTRPluginPairType *)self first];
+  v4 = [first hash];
+  second = [(MTRPluginPairType *)self second];
+  v6 = [second hash];
 
   return v6 ^ v4;
 }

@@ -1,13 +1,13 @@
 @interface ISBehavior
-- (BOOL)prerollVideoAtRate:(float)a3 completionHandler:(id)a4;
-- (BOOL)seekVideoPlayerToTime:(id *)a3 completionHandler:(id)a4;
-- (BOOL)seekVideoPlayerToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6;
-- (ISBehavior)initWithInitialLayoutInfo:(id)a3;
+- (BOOL)prerollVideoAtRate:(float)rate completionHandler:(id)handler;
+- (BOOL)seekVideoPlayerToTime:(id *)time completionHandler:(id)handler;
+- (BOOL)seekVideoPlayerToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
+- (ISBehavior)initWithInitialLayoutInfo:(id)info;
 - (ISBehaviorDelegate)delegate;
-- (void)setOutputInfo:(id)a3 withTransitionOptions:(id)a4 completion:(id)a5;
-- (void)setVideoForwardPlaybackEndTime:(id *)a3;
-- (void)setVideoPlayRate:(float)a3;
-- (void)setVideoVolume:(float)a3;
+- (void)setOutputInfo:(id)info withTransitionOptions:(id)options completion:(id)completion;
+- (void)setVideoForwardPlaybackEndTime:(id *)time;
+- (void)setVideoPlayRate:(float)rate;
+- (void)setVideoVolume:(float)volume;
 @end
 
 @implementation ISBehavior
@@ -19,78 +19,78 @@
   return WeakRetained;
 }
 
-- (void)setVideoForwardPlaybackEndTime:(id *)a3
+- (void)setVideoForwardPlaybackEndTime:(id *)time
 {
-  v5 = [(ISBehavior *)self delegate];
-  v6 = *a3;
-  [v5 behavior:self setVideoForwardPlaybackEndTime:&v6];
+  delegate = [(ISBehavior *)self delegate];
+  v6 = *time;
+  [delegate behavior:self setVideoForwardPlaybackEndTime:&v6];
 }
 
-- (BOOL)prerollVideoAtRate:(float)a3 completionHandler:(id)a4
+- (BOOL)prerollVideoAtRate:(float)rate completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ISBehavior *)self delegate];
-  *&v8 = a3;
-  LOBYTE(self) = [v7 behavior:self prerollVideoAtRate:v6 completionHandler:v8];
+  handlerCopy = handler;
+  delegate = [(ISBehavior *)self delegate];
+  *&v8 = rate;
+  LOBYTE(self) = [delegate behavior:self prerollVideoAtRate:handlerCopy completionHandler:v8];
 
   return self;
 }
 
-- (BOOL)seekVideoPlayerToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6
+- (BOOL)seekVideoPlayerToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [(ISBehavior *)self delegate];
-  v15 = *a3;
-  v14 = *a4;
-  v13 = *a5;
-  LOBYTE(a5) = [v11 behavior:self seekVideoPlayerToTime:&v15 toleranceBefore:&v14 toleranceAfter:&v13 completionHandler:v10];
+  handlerCopy = handler;
+  delegate = [(ISBehavior *)self delegate];
+  v15 = *time;
+  v14 = *before;
+  v13 = *after;
+  LOBYTE(after) = [delegate behavior:self seekVideoPlayerToTime:&v15 toleranceBefore:&v14 toleranceAfter:&v13 completionHandler:handlerCopy];
 
-  return a5;
+  return after;
 }
 
-- (BOOL)seekVideoPlayerToTime:(id *)a3 completionHandler:(id)a4
+- (BOOL)seekVideoPlayerToTime:(id *)time completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ISBehavior *)self delegate];
-  v9 = *a3;
-  LOBYTE(a3) = [v7 behavior:self seekVideoPlayerToTime:&v9 completionHandler:v6];
+  handlerCopy = handler;
+  delegate = [(ISBehavior *)self delegate];
+  v9 = *time;
+  LOBYTE(time) = [delegate behavior:self seekVideoPlayerToTime:&v9 completionHandler:handlerCopy];
 
-  return a3;
+  return time;
 }
 
-- (void)setVideoVolume:(float)a3
+- (void)setVideoVolume:(float)volume
 {
-  v6 = [(ISBehavior *)self delegate];
-  *&v5 = a3;
-  [v6 behavior:self setVideoVolume:v5];
+  delegate = [(ISBehavior *)self delegate];
+  *&v5 = volume;
+  [delegate behavior:self setVideoVolume:v5];
 }
 
-- (void)setVideoPlayRate:(float)a3
+- (void)setVideoPlayRate:(float)rate
 {
-  v6 = [(ISBehavior *)self delegate];
-  *&v5 = a3;
-  [v6 behavior:self setVideoPlayRate:v5];
+  delegate = [(ISBehavior *)self delegate];
+  *&v5 = rate;
+  [delegate behavior:self setVideoPlayRate:v5];
 }
 
-- (void)setOutputInfo:(id)a3 withTransitionOptions:(id)a4 completion:(id)a5
+- (void)setOutputInfo:(id)info withTransitionOptions:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ISBehavior *)self delegate];
-  [v11 behavior:self didSetOutputInfo:v10 withTransitionOptions:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  infoCopy = info;
+  delegate = [(ISBehavior *)self delegate];
+  [delegate behavior:self didSetOutputInfo:infoCopy withTransitionOptions:optionsCopy completion:completionCopy];
 }
 
-- (ISBehavior)initWithInitialLayoutInfo:(id)a3
+- (ISBehavior)initWithInitialLayoutInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = ISBehavior;
   v6 = [(ISBehavior *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initialLayoutInfo, a3);
+    objc_storeStrong(&v6->_initialLayoutInfo, info);
   }
 
   return v7;

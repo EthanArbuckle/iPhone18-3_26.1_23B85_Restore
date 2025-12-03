@@ -6,23 +6,23 @@
 
 - (BOOL)supportsHomeKitAutomationBuilders
 {
-  v3 = [(HFTriggerBuilder *)self trigger];
-  if (v3)
+  trigger = [(HFTriggerBuilder *)self trigger];
+  if (trigger)
   {
-    v4 = v3;
-    v5 = [(HFTriggerBuilder *)self trigger];
-    v6 = [v5 hf_copyAsBuilder];
+    v4 = trigger;
+    trigger2 = [(HFTriggerBuilder *)self trigger];
+    hf_copyAsBuilder = [trigger2 hf_copyAsBuilder];
 
-    if (!v6)
+    if (!hf_copyAsBuilder)
     {
       return 0;
     }
   }
 
-  v7 = [(HFItemBuilder *)self home];
-  v8 = [v7 areAutomationBuildersSupported];
+  home = [(HFItemBuilder *)self home];
+  areAutomationBuildersSupported = [home areAutomationBuildersSupported];
 
-  return v8;
+  return areAutomationBuildersSupported;
 }
 
 @end

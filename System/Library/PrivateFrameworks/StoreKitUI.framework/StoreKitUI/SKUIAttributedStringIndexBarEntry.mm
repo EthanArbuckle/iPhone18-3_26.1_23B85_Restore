@@ -1,21 +1,21 @@
 @interface SKUIAttributedStringIndexBarEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_calculatedContentSize;
-- (SKUIAttributedStringIndexBarEntry)initWithAttributedString:(id)a3;
+- (SKUIAttributedStringIndexBarEntry)initWithAttributedString:(id)string;
 - (id)_synthesizedAttributedString;
 - (id)description;
 - (unint64_t)hash;
-- (void)_drawContentInRect:(CGRect)a3;
+- (void)_drawContentInRect:(CGRect)rect;
 - (void)_invalidateSynthesizedAttributedString;
 - (void)_tintColorDidChange;
-- (void)setDefaultTextAttributes:(id)a3;
+- (void)setDefaultTextAttributes:(id)attributes;
 @end
 
 @implementation SKUIAttributedStringIndexBarEntry
 
-- (SKUIAttributedStringIndexBarEntry)initWithAttributedString:(id)a3
+- (SKUIAttributedStringIndexBarEntry)initWithAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -33,7 +33,7 @@
   v13 = [(SKUIAttributedStringIndexBarEntry *)&v17 init];
   if (v13)
   {
-    v14 = [v4 copy];
+    v14 = [stringCopy copy];
     attributedString = v13->_attributedString;
     v13->_attributedString = v14;
 
@@ -61,22 +61,22 @@
   return [(NSAttributedString *)self->_attributedString hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_7;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v8.receiver = self, v8.super_class = SKUIAttributedStringIndexBarEntry, ![(SKUIIndexBarEntry *)&v8 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v8.receiver = self, v8.super_class = SKUIAttributedStringIndexBarEntry, ![(SKUIIndexBarEntry *)&v8 isEqual:equalCopy]))
   {
     v6 = 0;
     goto LABEL_8;
   }
 
-  attributedString = v4->_attributedString;
+  attributedString = equalCopy->_attributedString;
   if (attributedString == self->_attributedString)
   {
 LABEL_7:
@@ -92,8 +92,8 @@ LABEL_8:
 
 - (CGSize)_calculatedContentSize
 {
-  v2 = [(SKUIAttributedStringIndexBarEntry *)self _synthesizedAttributedString];
-  [v2 size];
+  _synthesizedAttributedString = [(SKUIAttributedStringIndexBarEntry *)self _synthesizedAttributedString];
+  [_synthesizedAttributedString size];
   v4 = v3;
   v6 = v5;
 
@@ -104,14 +104,14 @@ LABEL_8:
   return result;
 }
 
-- (void)_drawContentInRect:(CGRect)a3
+- (void)_drawContentInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SKUIAttributedStringIndexBarEntry *)self _synthesizedAttributedString];
-  [v7 drawInRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _synthesizedAttributedString = [(SKUIAttributedStringIndexBarEntry *)self _synthesizedAttributedString];
+  [_synthesizedAttributedString drawInRect:{x, y, width, height}];
 }
 
 - (void)_tintColorDidChange
@@ -122,15 +122,15 @@ LABEL_8:
   [(SKUIIndexBarEntry *)&v3 _tintColorDidChange];
 }
 
-- (void)setDefaultTextAttributes:(id)a3
+- (void)setDefaultTextAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   defaultTextAttributes = self->_defaultTextAttributes;
-  if (defaultTextAttributes != v4)
+  if (defaultTextAttributes != attributesCopy)
   {
-    v8 = v4;
-    defaultTextAttributes = [defaultTextAttributes isEqualToDictionary:v4];
-    v4 = v8;
+    v8 = attributesCopy;
+    defaultTextAttributes = [defaultTextAttributes isEqualToDictionary:attributesCopy];
+    attributesCopy = v8;
     if ((defaultTextAttributes & 1) == 0)
     {
       v6 = [v8 copy];
@@ -138,11 +138,11 @@ LABEL_8:
       self->_defaultTextAttributes = v6;
 
       defaultTextAttributes = [(SKUIAttributedStringIndexBarEntry *)self _invalidateSynthesizedAttributedString];
-      v4 = v8;
+      attributesCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](defaultTextAttributes, v4);
+  MEMORY[0x2821F96F8](defaultTextAttributes, attributesCopy);
 }
 
 - (void)_invalidateSynthesizedAttributedString
@@ -157,19 +157,19 @@ LABEL_8:
   if (!self->_hasValidSynthesizedAttributedString)
   {
     v3 = MEMORY[0x277CBEB38];
-    v4 = [(SKUIIndexBarEntry *)self tintColor];
+    tintColor = [(SKUIIndexBarEntry *)self tintColor];
     v5 = *MEMORY[0x277D740C0];
     v6 = [MEMORY[0x277D74300] boldSystemFontOfSize:11.0];
-    v7 = [v3 dictionaryWithObjectsAndKeys:{v4, v5, v6, *MEMORY[0x277D740A8], 0}];
+    v7 = [v3 dictionaryWithObjectsAndKeys:{tintColor, v5, v6, *MEMORY[0x277D740A8], 0}];
 
-    v8 = [(SKUIAttributedStringIndexBarEntry *)self defaultTextAttributes];
-    [v7 addEntriesFromDictionary:v8];
+    defaultTextAttributes = [(SKUIAttributedStringIndexBarEntry *)self defaultTextAttributes];
+    [v7 addEntriesFromDictionary:defaultTextAttributes];
 
     if (-[NSAttributedString length](self->_attributedString, "length") && [v7 count])
     {
       v9 = objc_alloc(MEMORY[0x277CCAB48]);
-      v10 = [(NSAttributedString *)self->_attributedString string];
-      v11 = [v9 initWithString:v10 attributes:v7];
+      string = [(NSAttributedString *)self->_attributedString string];
+      v11 = [v9 initWithString:string attributes:v7];
 
       attributedString = self->_attributedString;
       v13 = [(NSAttributedString *)attributedString length];

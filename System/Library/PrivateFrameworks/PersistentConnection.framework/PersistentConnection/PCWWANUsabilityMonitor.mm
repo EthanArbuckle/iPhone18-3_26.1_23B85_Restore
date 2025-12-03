@@ -1,5 +1,5 @@
 @interface PCWWANUsabilityMonitor
-- (BOOL)_isCurrentDataSimContextOnIvarQueue:(id)a3;
+- (BOOL)_isCurrentDataSimContextOnIvarQueue:(id)queue;
 - (BOOL)isBadLinkQuality;
 - (BOOL)isInterfaceHistoricallyUsable;
 - (BOOL)isInterfaceUsable;
@@ -10,32 +10,32 @@
 - (NSString)linkQualityString;
 - (NSString)networkCode;
 - (PCInterfaceUsabilityMonitorDelegate)delegate;
-- (PCWWANUsabilityMonitor)initWithDelegateQueue:(id)a3;
+- (PCWWANUsabilityMonitor)initWithDelegateQueue:(id)queue;
 - (__CFString)wwanInterfaceName;
 - (id)_currentDataSimContext;
 - (int)currentRAT;
 - (int)linkQuality;
 - (int64_t)interfaceConstraint;
 - (unint64_t)interface5GMode;
-- (void)_adjustInterfaceNameForWWANContextID:(int)a3 interfaceName:(id)a4 forContext:(id)a5;
-- (void)_callDelegateOnIvarQueueWithBlock:(id)a3;
+- (void)_adjustInterfaceNameForWWANContextID:(int)d interfaceName:(id)name forContext:(id)context;
+- (void)_callDelegateOnIvarQueueWithBlock:(id)block;
 - (void)_forwardConfigurationOnIvarQueue;
-- (void)_processCallStatusChanged:(id)a3;
-- (void)_processDataConnectionStatus:(id)a3 forContext:(id)a4;
-- (void)_processDataStatus:(id)a3 forContext:(id)a4;
+- (void)_processCallStatusChanged:(id)changed;
+- (void)_processDataConnectionStatus:(id)status forContext:(id)context;
+- (void)_processDataStatus:(id)status forContext:(id)context;
 - (void)_setupWWANMonitor;
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5;
-- (void)currentDataSimChanged:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info;
+- (void)currentDataSimChanged:(id)changed;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
-- (void)interfaceConstraintChanged:(id)a3;
-- (void)interfaceLinkQualityChanged:(id)a3 previousLinkQuality:(int)a4;
-- (void)interfaceReachabilityChanged:(id)a3;
+- (void)interfaceConstraintChanged:(id)changed;
+- (void)interfaceLinkQualityChanged:(id)changed previousLinkQuality:(int)quality;
+- (void)interfaceReachabilityChanged:(id)changed;
 - (void)networkCode;
-- (void)setDelegate:(id)a3;
-- (void)setThresholdOffTransitionCount:(unint64_t)a3;
-- (void)setTrackUsability:(BOOL)a3;
-- (void)setTrackedTimeInterval:(double)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setThresholdOffTransitionCount:(unint64_t)count;
+- (void)setTrackUsability:(BOOL)usability;
+- (void)setTrackedTimeInterval:(double)interval;
 @end
 
 @implementation PCWWANUsabilityMonitor
@@ -78,9 +78,9 @@ void *__43__PCWWANUsabilityMonitor_isInterfaceUsable__block_invoke(uint64_t a1)
 
 - (NSString)linkQualityString
 {
-  v2 = [(PCWWANUsabilityMonitor *)self linkQuality];
+  linkQuality = [(PCWWANUsabilityMonitor *)self linkQuality];
 
-  return [PCInterfaceUsabilityMonitor stringForLinkQuality:v2];
+  return [PCInterfaceUsabilityMonitor stringForLinkQuality:linkQuality];
 }
 
 - (int)linkQuality
@@ -264,14 +264,14 @@ LABEL_17:
 
 - (BOOL)isBadLinkQuality
 {
-  v2 = [(PCWWANUsabilityMonitor *)self linkQuality];
+  linkQuality = [(PCWWANUsabilityMonitor *)self linkQuality];
 
-  return [PCInterfaceUsabilityMonitor isBadLinkQuality:v2];
+  return [PCInterfaceUsabilityMonitor isBadLinkQuality:linkQuality];
 }
 
-- (PCWWANUsabilityMonitor)initWithDelegateQueue:(id)a3
+- (PCWWANUsabilityMonitor)initWithDelegateQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = PCWWANUsabilityMonitor;
   v6 = [(PCWWANUsabilityMonitor *)&v12 init];
@@ -285,7 +285,7 @@ LABEL_17:
     monitorDelegateQueue = v6->_monitorDelegateQueue;
     v6->_monitorDelegateQueue = v9;
 
-    objc_storeStrong(&v6->_delegateQueue, a3);
+    objc_storeStrong(&v6->_delegateQueue, queue);
     v6->_currentRAT = -1;
     notify_register_dispatch("com.apple.powerlog.BasebandHasCDRXCapability", &v6->_powerlogCDRXToken, MEMORY[0x277D85CD0], &__block_literal_global_6);
     [(PCWWANUsabilityMonitor *)v6 _setupWWANMonitor];
@@ -351,21 +351,21 @@ uint64_t __43__PCWWANUsabilityMonitor__setupWWANMonitor__block_invoke(uint64_t a
   return [v5 _forwardConfigurationOnIvarQueue];
 }
 
-- (void)_adjustInterfaceNameForWWANContextID:(int)a3 interfaceName:(id)a4 forContext:(id)a5
+- (void)_adjustInterfaceNameForWWANContextID:(int)d interfaceName:(id)name forContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  contextCopy = context;
   ivarQueue = self->_ivarQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __88__PCWWANUsabilityMonitor__adjustInterfaceNameForWWANContextID_interfaceName_forContext___block_invoke;
   v13[3] = &unk_279A1A238;
   v13[4] = self;
-  v14 = v9;
-  v16 = a3;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = contextCopy;
+  dCopy = d;
+  v15 = nameCopy;
+  v11 = nameCopy;
+  v12 = contextCopy;
   dispatch_async(ivarQueue, v13);
 }
 
@@ -418,62 +418,62 @@ void __88__PCWWANUsabilityMonitor__adjustInterfaceNameForWWANContextID_interface
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isCurrentDataSimContextOnIvarQueue:(id)a3
+- (BOOL)_isCurrentDataSimContextOnIvarQueue:(id)queue
 {
   result = 0;
-  if (a3)
+  if (queue)
   {
     currentDataSimContext = self->_currentDataSimContext;
     if (currentDataSimContext)
     {
-      v6 = a3;
-      v7 = [(CTXPCServiceSubscriptionContext *)currentDataSimContext slotID];
-      v8 = [v6 slotID];
+      queueCopy = queue;
+      slotID = [(CTXPCServiceSubscriptionContext *)currentDataSimContext slotID];
+      slotID2 = [queueCopy slotID];
 
-      return v7 == v8;
+      return slotID == slotID2;
     }
   }
 
   return result;
 }
 
-- (void)_processDataConnectionStatus:(id)a3 forContext:(id)a4
+- (void)_processDataConnectionStatus:(id)status forContext:(id)context
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 pdp];
+  statusCopy = status;
+  contextCopy = context;
+  v7 = [statusCopy pdp];
   if (v7)
   {
-    v8 = [v12 pdp];
-    v9 = [v8 intValue];
+    v8 = [statusCopy pdp];
+    intValue = [v8 intValue];
   }
 
   else
   {
-    v9 = -1;
+    intValue = -1;
   }
 
-  if (v9 < 0)
+  if (intValue < 0)
   {
     v10 = 0xFFFFFFFFLL;
   }
 
   else
   {
-    v10 = v9;
+    v10 = intValue;
   }
 
-  v11 = [v12 interfaceName];
-  [(PCWWANUsabilityMonitor *)self _adjustInterfaceNameForWWANContextID:v10 interfaceName:v11 forContext:v6];
+  interfaceName = [statusCopy interfaceName];
+  [(PCWWANUsabilityMonitor *)self _adjustInterfaceNameForWWANContextID:v10 interfaceName:interfaceName forContext:contextCopy];
 }
 
-- (void)_processDataStatus:(id)a3 forContext:(id)a4
+- (void)_processDataStatus:(id)status forContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 indicator] < 6;
-  v9 = [v7 radioTechnology];
-  v10 = [v7 dataBearerSoMask];
+  contextCopy = context;
+  statusCopy = status;
+  v8 = [statusCopy indicator] < 6;
+  radioTechnology = [statusCopy radioTechnology];
+  dataBearerSoMask = [statusCopy dataBearerSoMask];
 
   ivarQueue = self->_ivarQueue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -481,11 +481,11 @@ void __88__PCWWANUsabilityMonitor__adjustInterfaceNameForWWANContextID_interface
   v13[2] = __56__PCWWANUsabilityMonitor__processDataStatus_forContext___block_invoke;
   v13[3] = &unk_279A1A260;
   v13[4] = self;
-  v14 = v6;
+  v14 = contextCopy;
   v17 = v8;
-  v15 = v9;
-  v16 = v10;
-  v12 = v6;
+  v15 = radioTechnology;
+  v16 = dataBearerSoMask;
+  v12 = contextCopy;
   dispatch_async(ivarQueue, v13);
 }
 
@@ -535,53 +535,53 @@ void __56__PCWWANUsabilityMonitor__processDataStatus_forContext___block_invoke_2
   }
 }
 
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  changedCopy = changed;
+  infoCopy = info;
   v10 = +[PCLog usabilityMonitor];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v8;
+    v13 = changedCopy;
     _os_log_impl(&dword_25E3EF000, v10, OS_LOG_TYPE_DEFAULT, "connectionStateChanged - %@", &v12, 0xCu);
   }
 
-  if (!a4)
+  if (!connection)
   {
-    [(PCWWANUsabilityMonitor *)self _processDataConnectionStatus:v9 forContext:v8];
+    [(PCWWANUsabilityMonitor *)self _processDataConnectionStatus:infoCopy forContext:changedCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  infoCopy = info;
   v8 = +[PCLog usabilityMonitor];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = statusCopy;
     _os_log_impl(&dword_25E3EF000, v8, OS_LOG_TYPE_DEFAULT, "dataStatus changed - %@", &v10, 0xCu);
   }
 
-  [(PCWWANUsabilityMonitor *)self _processDataStatus:v7 forContext:v6];
+  [(PCWWANUsabilityMonitor *)self _processDataStatus:infoCopy forContext:statusCopy];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[PCLog usabilityMonitor];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_25E3EF000, v5, OS_LOG_TYPE_DEFAULT, "currentDataSimChanged - %@", buf, 0xCu);
   }
 
@@ -591,17 +591,17 @@ void __56__PCWWANUsabilityMonitor__processDataStatus_forContext___block_invoke_2
   v9[2] = __48__PCWWANUsabilityMonitor_currentDataSimChanged___block_invoke;
   v9[3] = &unk_279A19D48;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = changedCopy;
+  v7 = changedCopy;
   dispatch_async(ivarQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processCallStatusChanged:(id)a3
+- (void)_processCallStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x277CC37E0]];
+  changedCopy = changed;
+  v5 = [changedCopy objectForKey:*MEMORY[0x277CC37E0]];
   v6 = v5;
   if (v5)
   {
@@ -613,7 +613,7 @@ void __56__PCWWANUsabilityMonitor__processDataStatus_forContext___block_invoke_2
     v7 = 0;
   }
 
-  [v4 objectForKey:*MEMORY[0x277CC37C8]];
+  [changedCopy objectForKey:*MEMORY[0x277CC37C8]];
   v8 = CTCallGetCallSubType();
   v9 = CFEqual(v8, *MEMORY[0x277CC37F0]) == 0;
   ivarQueue = self->_ivarQueue;
@@ -774,8 +774,8 @@ void __41__PCWWANUsabilityMonitor_interface5GMode__block_invoke(uint64_t a1)
 
 - (NSString)networkCode
 {
-  v3 = [(PCWWANUsabilityMonitor *)self _currentDataSimContext];
-  v4 = [v3 copy];
+  _currentDataSimContext = [(PCWWANUsabilityMonitor *)self _currentDataSimContext];
+  v4 = [_currentDataSimContext copy];
 
   if (v4)
   {
@@ -886,7 +886,7 @@ uint64_t __43__PCWWANUsabilityMonitor_wwanInterfaceName__block_invoke(uint64_t a
   [(PCInterfaceUsabilityMonitor *)interfaceMonitor setThresholdOffTransitionCount:thresholdOffTransitionCount];
 }
 
-- (void)setTrackUsability:(BOOL)a3
+- (void)setTrackUsability:(BOOL)usability
 {
   ivarQueue = self->_ivarQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -894,7 +894,7 @@ uint64_t __43__PCWWANUsabilityMonitor_wwanInterfaceName__block_invoke(uint64_t a
   v4[2] = __44__PCWWANUsabilityMonitor_setTrackUsability___block_invoke;
   v4[3] = &unk_279A1A130;
   v4[4] = self;
-  v5 = a3;
+  usabilityCopy = usability;
   dispatch_async(ivarQueue, v4);
 }
 
@@ -927,7 +927,7 @@ uint64_t __44__PCWWANUsabilityMonitor_setTrackUsability___block_invoke(uint64_t 
   return result;
 }
 
-- (void)setThresholdOffTransitionCount:(unint64_t)a3
+- (void)setThresholdOffTransitionCount:(unint64_t)count
 {
   ivarQueue = self->_ivarQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -935,7 +935,7 @@ uint64_t __44__PCWWANUsabilityMonitor_setTrackUsability___block_invoke(uint64_t 
   v4[2] = __57__PCWWANUsabilityMonitor_setThresholdOffTransitionCount___block_invoke;
   v4[3] = &unk_279A1A158;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = count;
   dispatch_async(ivarQueue, v4);
 }
 
@@ -952,14 +952,14 @@ uint64_t __57__PCWWANUsabilityMonitor_setThresholdOffTransitionCount___block_inv
   return result;
 }
 
-- (void)setTrackedTimeInterval:(double)a3
+- (void)setTrackedTimeInterval:(double)interval
 {
   ivarQueue = self->_ivarQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__PCWWANUsabilityMonitor_setTrackedTimeInterval___block_invoke;
   v4[3] = &unk_279A1A158;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   v4[4] = self;
   dispatch_async(ivarQueue, v4);
 }
@@ -1061,9 +1061,9 @@ void *__45__PCWWANUsabilityMonitor_isInternetReachable__block_invoke(uint64_t a1
 
 - (BOOL)isPoorLinkQuality
 {
-  v2 = [(PCWWANUsabilityMonitor *)self linkQuality];
+  linkQuality = [(PCWWANUsabilityMonitor *)self linkQuality];
 
-  return [PCInterfaceUsabilityMonitor isPoorLinkQuality:v2];
+  return [PCInterfaceUsabilityMonitor isPoorLinkQuality:linkQuality];
 }
 
 - (BOOL)isRadioHot
@@ -1117,17 +1117,17 @@ uint64_t __34__PCWWANUsabilityMonitor_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__PCWWANUsabilityMonitor_setDelegate___block_invoke;
   v7[3] = &unk_279A19D48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(ivarQueue, v7);
 }
 
@@ -1148,9 +1148,9 @@ void __38__PCWWANUsabilityMonitor_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_callDelegateOnIvarQueueWithBlock:(id)a3
+- (void)_callDelegateOnIvarQueueWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   delegateReference = self->_delegateReference;
   if (delegateReference && self->_delegateQueue)
   {
@@ -1161,7 +1161,7 @@ void __38__PCWWANUsabilityMonitor_setDelegate___block_invoke(uint64_t a1)
     v9[2] = __60__PCWWANUsabilityMonitor__callDelegateOnIvarQueueWithBlock___block_invoke;
     v9[3] = &unk_279A1A090;
     v10 = v6;
-    v11 = v4;
+    v11 = blockCopy;
     v8 = v6;
     dispatch_async(delegateQueue, v9);
   }
@@ -1179,18 +1179,18 @@ void __60__PCWWANUsabilityMonitor__callDelegateOnIvarQueueWithBlock___block_invo
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)interfaceLinkQualityChanged:(id)a3 previousLinkQuality:(int)a4
+- (void)interfaceLinkQualityChanged:(id)changed previousLinkQuality:(int)quality
 {
-  v6 = a3;
+  changedCopy = changed;
   ivarQueue = self->_ivarQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__PCWWANUsabilityMonitor_interfaceLinkQualityChanged_previousLinkQuality___block_invoke;
   block[3] = &unk_279A1A288;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = changedCopy;
+  selfCopy = self;
+  qualityCopy = quality;
+  v8 = changedCopy;
   dispatch_async(ivarQueue, block);
 }
 
@@ -1223,17 +1223,17 @@ void __74__PCWWANUsabilityMonitor_interfaceLinkQualityChanged_previousLinkQualit
   }
 }
 
-- (void)interfaceReachabilityChanged:(id)a3
+- (void)interfaceReachabilityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__PCWWANUsabilityMonitor_interfaceReachabilityChanged___block_invoke;
   v7[3] = &unk_279A19D48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(ivarQueue, v7);
 }
 
@@ -1265,17 +1265,17 @@ void __55__PCWWANUsabilityMonitor_interfaceReachabilityChanged___block_invoke_2(
   }
 }
 
-- (void)interfaceConstraintChanged:(id)a3
+- (void)interfaceConstraintChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__PCWWANUsabilityMonitor_interfaceConstraintChanged___block_invoke;
   v7[3] = &unk_279A19D48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(ivarQueue, v7);
 }
 

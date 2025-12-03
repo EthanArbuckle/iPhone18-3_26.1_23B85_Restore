@@ -4,18 +4,18 @@
 - (CGVector)movementDirection;
 - (CGVector)rotation;
 - (CGVector)translation;
-- (UIFocusMovementHint)initWithMovementDirection:(CGVector)a3 itemSize:(CGSize)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIFocusMovementHint)initWithMovementDirection:(CGVector)direction itemSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIFocusMovementHint
 
-- (UIFocusMovementHint)initWithMovementDirection:(CGVector)a3 itemSize:(CGSize)a4
+- (UIFocusMovementHint)initWithMovementDirection:(CGVector)direction itemSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  dy = a3.dy;
-  dx = a3.dx;
+  height = size.height;
+  width = size.width;
+  dy = direction.dy;
+  dx = direction.dx;
   v18.receiver = self;
   v18.super_class = UIFocusMovementHint;
   result = [(UIFocusMovementHint *)&v18 init];
@@ -60,9 +60,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 24) = self->_movementDirection;

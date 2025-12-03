@@ -1,39 +1,39 @@
 @interface AXSDListenEngine
 + (AXSDListenEngine)sharedInstance;
-+ (id)_stringForState:(int64_t)a3;
++ (id)_stringForState:(int64_t)state;
 - (AVAudioFormat)audioFormat;
 - (AXSDListenEngine)init;
 - (BOOL)_shouldResumeListening;
-- (BOOL)_startListeningWithError:(id *)a3;
-- (BOOL)_stopListeningAndTransitionToState:(int64_t)a3;
-- (BOOL)containsListenDelegate:(id)a3;
+- (BOOL)_startListeningWithError:(id *)error;
+- (BOOL)_stopListeningAndTransitionToState:(int64_t)state;
+- (BOOL)containsListenDelegate:(id)delegate;
 - (BOOL)supportsVirtualAudioDevice;
 - (id)audioEngineInputNode;
 - (void)_activateNotifications;
-- (void)_carPlayIsConnectedDidChange:(id)a3;
+- (void)_carPlayIsConnectedDidChange:(id)change;
 - (void)_deactivateNotifications;
-- (void)_handleAudioSessionInterruption:(id)a3;
-- (void)_handleBuffer:(id)a3 atTime:(id)a4 isFile:(BOOL)a5;
-- (void)_handleConfigurationChangeNotification:(id)a3;
-- (void)_handleInterruptionRequestingState:(int64_t)a3;
-- (void)_interruptCarPlay:(id)a3;
-- (void)_mediaServicesWereReset:(id)a3;
+- (void)_handleAudioSessionInterruption:(id)interruption;
+- (void)_handleBuffer:(id)buffer atTime:(id)time isFile:(BOOL)file;
+- (void)_handleConfigurationChangeNotification:(id)notification;
+- (void)_handleInterruptionRequestingState:(int64_t)state;
+- (void)_interruptCarPlay:(id)play;
+- (void)_mediaServicesWereReset:(id)reset;
 - (void)_micDisabledUpdated;
-- (void)_notifyListeningStartedWithError:(id)a3;
+- (void)_notifyListeningStartedWithError:(id)error;
 - (void)_pipedInFileUpdated;
 - (void)_restartSoundRecognitionIfNecesary;
-- (void)_setState:(int64_t)a3;
-- (void)_setupAudioInputWithError:(id *)a3 shouldInterrupt:(BOOL)a4;
+- (void)_setState:(int64_t)state;
+- (void)_setupAudioInputWithError:(id *)error shouldInterrupt:(BOOL)interrupt;
 - (void)_startIfPossibleAndNotify;
-- (void)addListenDelegate:(id)a3;
+- (void)addListenDelegate:(id)delegate;
 - (void)audioEngineInputNode;
 - (void)dealloc;
-- (void)notifyListeningEncounteredError:(id)a3;
-- (void)notifyListeningFinishedAudioFile:(id)a3;
-- (void)notifyListeningReceivedAudioFile:(id)a3;
-- (void)notifyListeningStartedWithError:(id)a3;
-- (void)pipeInFile:(id)a3;
-- (void)removeListenDelegate:(id)a3;
+- (void)notifyListeningEncounteredError:(id)error;
+- (void)notifyListeningFinishedAudioFile:(id)file;
+- (void)notifyListeningReceivedAudioFile:(id)file;
+- (void)notifyListeningStartedWithError:(id)error;
+- (void)pipeInFile:(id)file;
+- (void)removeListenDelegate:(id)delegate;
 @end
 
 @implementation AXSDListenEngine
@@ -71,9 +71,9 @@ uint64_t __34__AXSDListenEngine_sharedInstance__block_invoke()
     audioSession = v3->_audioSession;
     v3->_audioSession = 0;
 
-    v6 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     delegates = v3->_delegates;
-    v3->_delegates = v6;
+    v3->_delegates = weakObjectsPointerArray;
 
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.accessibility.axhalistenengine.delegatequeue", v8);
@@ -94,8 +94,8 @@ uint64_t __34__AXSDListenEngine_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(AXSDListenEngine *)self audioEngineInputNode];
-  [v3 removeTapOnBus:0];
+  audioEngineInputNode = [(AXSDListenEngine *)self audioEngineInputNode];
+  [audioEngineInputNode removeTapOnBus:0];
 
   [(AXSDListenEngine *)self _deactivateNotifications];
   v4.receiver = self;
@@ -215,9 +215,9 @@ LABEL_19:
   return v2;
 }
 
-- (BOOL)containsListenDelegate:(id)a3
+- (BOOL)containsListenDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(NSPointerArray *)self->_delegates copy];
   if ([v5 count])
   {
@@ -226,7 +226,7 @@ LABEL_19:
     {
       v7 = [v5 pointerAtIndex:v6];
 
-      v8 = v7 == v4;
+      v8 = v7 == delegateCopy;
       if (v8)
       {
         break;
@@ -246,9 +246,9 @@ LABEL_19:
   return v8;
 }
 
-- (void)addListenDelegate:(id)a3
+- (void)addListenDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -261,8 +261,8 @@ LABEL_19:
   v8[2] = __38__AXSDListenEngine_addListenDelegate___block_invoke;
   v8[3] = &unk_278BDD2C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = delegateCopy;
+  v7 = delegateCopy;
   dispatch_async(delegateQueue, v8);
 }
 
@@ -328,9 +328,9 @@ void __38__AXSDListenEngine_addListenDelegate___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyListeningStartedWithError:(id)a3
+- (void)notifyListeningStartedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -343,15 +343,15 @@ void __38__AXSDListenEngine_addListenDelegate___block_invoke(uint64_t a1)
   v8[2] = __52__AXSDListenEngine_notifyListeningStartedWithError___block_invoke;
   v8[3] = &unk_278BDD2C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(delegateQueue, v8);
 }
 
-- (void)_notifyListeningStartedWithError:(id)a3
+- (void)_notifyListeningStartedWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = [(NSPointerArray *)self->_delegates copy];
   v6 = objc_autoreleasePoolPush();
   v16 = 0u;
@@ -375,9 +375,9 @@ void __38__AXSDListenEngine_addListenDelegate___block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
-        if (v4)
+        if (errorCopy)
         {
-          [v12 listenEngineFailedToStartWithError:v4];
+          [v12 listenEngineFailedToStartWithError:errorCopy];
         }
 
         else
@@ -414,9 +414,9 @@ void __53__AXSDListenEngine__notifyListeningStartedWithError___block_invoke(uint
   [v1 listenEngineDidStartWithInputFormat:v2];
 }
 
-- (void)notifyListeningEncounteredError:(id)a3
+- (void)notifyListeningEncounteredError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -430,8 +430,8 @@ void __53__AXSDListenEngine__notifyListeningStartedWithError___block_invoke(uint
   v10[2] = __52__AXSDListenEngine_notifyListeningEncounteredError___block_invoke;
   v10[3] = &unk_278BDD2C0;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = errorCopy;
+  v8 = errorCopy;
   v9 = v6;
   dispatch_async(delegateQueue, v10);
 }
@@ -480,10 +480,10 @@ void __52__AXSDListenEngine_notifyListeningEncounteredError___block_invoke(uint6
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyListeningReceivedAudioFile:(id)a3
+- (void)notifyListeningReceivedAudioFile:(id)file
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -513,7 +513,7 @@ void __52__AXSDListenEngine_notifyListeningEncounteredError___block_invoke(uint6
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 listenEngineReceivedAudioFile:{v4, v13}];
+          [v11 listenEngineReceivedAudioFile:{fileCopy, v13}];
         }
 
         ++v10;
@@ -529,10 +529,10 @@ void __52__AXSDListenEngine_notifyListeningEncounteredError___block_invoke(uint6
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyListeningFinishedAudioFile:(id)a3
+- (void)notifyListeningFinishedAudioFile:(id)file
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -562,7 +562,7 @@ void __52__AXSDListenEngine_notifyListeningEncounteredError___block_invoke(uint6
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 listenEngineFinishedAudioFile:{v4, v13}];
+          [v11 listenEngineFinishedAudioFile:{fileCopy, v13}];
         }
 
         ++v10;
@@ -578,17 +578,17 @@ void __52__AXSDListenEngine_notifyListeningEncounteredError___block_invoke(uint6
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeListenDelegate:(id)a3
+- (void)removeListenDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__AXSDListenEngine_removeListenDelegate___block_invoke;
   v7[3] = &unk_278BDD2C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(delegateQueue, v7);
 }
 
@@ -639,45 +639,45 @@ LABEL_10:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(AXSDListenEngine *)self _setState:a3, v5];
+    [(AXSDListenEngine *)self _setState:state, v5];
   }
 
-  self->_state = a3;
+  self->_state = state;
 }
 
-+ (id)_stringForState:(int64_t)a3
++ (id)_stringForState:(int64_t)state
 {
-  if (a3 > 6)
+  if (state > 6)
   {
     return @"StartingUp";
   }
 
   else
   {
-    return off_278BDD4D8[a3];
+    return off_278BDD4D8[state];
   }
 }
 
-- (void)_handleBuffer:(id)a3 atTime:(id)a4 isFile:(BOOL)a5
+- (void)_handleBuffer:(id)buffer atTime:(id)time isFile:(BOOL)file
 {
-  v8 = a3;
-  v9 = a4;
+  bufferCopy = buffer;
+  timeCopy = time;
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__AXSDListenEngine__handleBuffer_atTime_isFile___block_invoke;
   block[3] = &unk_278BDD440;
   block[4] = self;
-  v11 = v8;
+  v11 = bufferCopy;
   v17 = v11;
-  v18 = v9;
-  v19 = a5;
-  v12 = v9;
+  v18 = timeCopy;
+  fileCopy = file;
+  v12 = timeCopy;
   dispatch_async(delegateQueue, block);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -751,7 +751,7 @@ void __48__AXSDListenEngine__handleBuffer_atTime_isFile___block_invoke_3(uint64_
   audioEngine = self->_audioEngine;
   if (audioEngine)
   {
-    v3 = [(AVAudioEngine *)audioEngine inputNode];
+    inputNode = [(AVAudioEngine *)audioEngine inputNode];
   }
 
   else
@@ -762,21 +762,21 @@ void __48__AXSDListenEngine__handleBuffer_atTime_isFile___block_invoke_3(uint64_
       [AXSDListenEngine audioEngineInputNode];
     }
 
-    v3 = 0;
+    inputNode = 0;
   }
 
-  return v3;
+  return inputNode;
 }
 
-- (BOOL)_startListeningWithError:(id *)a3
+- (BOOL)_startListeningWithError:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D12B60] isInternalInstall])
   {
-    v5 = [MEMORY[0x277CE6F98] sharedInstance];
-    v6 = [v5 micDisabled];
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+    micDisabled = [mEMORY[0x277CE6F98] micDisabled];
 
-    if (v6)
+    if (micDisabled)
     {
       [(AXSDListenEngine *)self _setState:6];
 LABEL_11:
@@ -838,33 +838,33 @@ LABEL_11:
 
     if (v16)
     {
-      v19 = [objc_alloc(MEMORY[0x277CB83F8]) initSessionForIndependentInputRoute];
+      initSessionForIndependentInputRoute = [objc_alloc(MEMORY[0x277CB83F8]) initSessionForIndependentInputRoute];
       v20 = self->_audioSession;
-      self->_audioSession = v19;
+      self->_audioSession = initSessionForIndependentInputRoute;
 
       [(AVAudioEngine *)self->_audioEngine setAudioSession:self->_audioSession];
     }
 
     else
     {
-      v21 = [MEMORY[0x277CB83F8] sharedInstance];
+      mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
       v22 = self->_audioSession;
-      self->_audioSession = v21;
+      self->_audioSession = mEMORY[0x277CB83F8];
     }
   }
 
   if (![(AXSDListenEngine *)self supportsVirtualAudioDevice])
   {
-    v23 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    v24 = [v23 attributeForKey:*MEMORY[0x277D26B60]];
-    v25 = [v24 BOOLValue];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    v24 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26B60]];
+    bOOLValue = [v24 BOOLValue];
 
-    if (v25)
+    if (bOOLValue)
     {
-      if (a3)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"Ultron.CarPlay" description:@"_startListeningWithError called while CarPlay running - going into paused state and will resume when CarPlay disconnects"];
-        *a3 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_65;
       }
 
@@ -875,11 +875,11 @@ LABEL_64:
   }
 
   [(AXSDListenEngine *)self _setState:4];
-  v26 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v27 = [v26 attributeForKey:*MEMORY[0x277D26C30]];
-  v28 = [v27 BOOLValue];
+  mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v27 = [mEMORY[0x277D26E58]2 attributeForKey:*MEMORY[0x277D26C30]];
+  bOOLValue2 = [v27 BOOLValue];
 
-  if (v28)
+  if (bOOLValue2)
   {
     v29 = AXLogUltron();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -889,15 +889,15 @@ LABEL_64:
     }
   }
 
-  [(AXSDListenEngine *)self _setupAudioInputWithError:a3 shouldInterrupt:v28];
-  if (a3)
+  [(AXSDListenEngine *)self _setupAudioInputWithError:error shouldInterrupt:bOOLValue2];
+  if (error)
   {
-    if (*a3)
+    if (*error)
     {
       v30 = AXLogUltron();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        [(AXSDListenEngine *)v28 _startListeningWithError:a3, v30];
+        [(AXSDListenEngine *)bOOLValue2 _startListeningWithError:error, v30];
       }
 
 LABEL_63:
@@ -905,37 +905,37 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    [(AVAudioSession *)self->_audioSession setParticipatesInVolumePolicy:0 error:a3];
-    if (*a3)
+    [(AVAudioSession *)self->_audioSession setParticipatesInVolumePolicy:0 error:error];
+    if (*error)
     {
       v38 = AXLogUltron();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
-        [AXSDListenEngine _startListeningWithError:a3];
+        [AXSDListenEngine _startListeningWithError:error];
       }
 
-      *a3 = 0;
+      *error = 0;
     }
 
-    [(AVAudioSession *)self->_audioSession setEligibleForBTSmartRoutingConsideration:0 error:a3];
-    if (*a3)
+    [(AVAudioSession *)self->_audioSession setEligibleForBTSmartRoutingConsideration:0 error:error];
+    if (*error)
     {
       v39 = AXLogUltron();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
-        [AXSDListenEngine _startListeningWithError:a3];
+        [AXSDListenEngine _startListeningWithError:error];
       }
 
-      *a3 = 0;
+      *error = 0;
     }
 
-    [(AVAudioSession *)self->_audioSession setActive:1 error:a3];
-    if (*a3)
+    [(AVAudioSession *)self->_audioSession setActive:1 error:error];
+    if (*error)
     {
       v30 = AXLogUltron();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        [AXSDListenEngine _startListeningWithError:a3];
+        [AXSDListenEngine _startListeningWithError:error];
       }
 
       goto LABEL_63;
@@ -949,7 +949,7 @@ LABEL_63:
     [(AVAudioSession *)self->_audioSession setActive:1 error:0];
   }
 
-  if (v28)
+  if (bOOLValue2)
   {
     v31 = AXLogUltron();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -958,15 +958,15 @@ LABEL_63:
       _os_log_impl(&dword_23D62D000, v31, OS_LOG_TYPE_DEFAULT, "Reconfiguring audio session to be mixable.", buf, 2u);
     }
 
-    [(AXSDListenEngine *)self _setupAudioInputWithError:a3 shouldInterrupt:0];
-    if (a3)
+    [(AXSDListenEngine *)self _setupAudioInputWithError:error shouldInterrupt:0];
+    if (error)
     {
-      if (*a3)
+      if (*error)
       {
         v30 = AXLogUltron();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          [AXSDListenEngine _startListeningWithError:a3];
+          [AXSDListenEngine _startListeningWithError:error];
         }
 
         goto LABEL_63;
@@ -974,47 +974,47 @@ LABEL_63:
     }
   }
 
-  v32 = [(AVAudioEngine *)self->_audioEngine attachedNodes];
-  v33 = [v32 count] == 0;
+  attachedNodes = [(AVAudioEngine *)self->_audioEngine attachedNodes];
+  v33 = [attachedNodes count] == 0;
 
   if (!v33)
   {
-    v34 = [(AXSDListenEngine *)self audioEngineInputNode];
-    [v34 removeTapOnBus:0];
+    audioEngineInputNode = [(AXSDListenEngine *)self audioEngineInputNode];
+    [audioEngineInputNode removeTapOnBus:0];
   }
 
   [(AXSDListenEngine *)self audioEngineInputNode];
 
-  v35 = [(AXSDListenEngine *)self audioEngine];
-  [v35 prepare];
+  audioEngine = [(AXSDListenEngine *)self audioEngine];
+  [audioEngine prepare];
 
-  v36 = [(AXSDListenEngine *)self audioEngine];
-  v37 = [v36 startAndReturnError:a3];
+  audioEngine2 = [(AXSDListenEngine *)self audioEngine];
+  v37 = [audioEngine2 startAndReturnError:error];
 
-  if (!v37 || a3 && *a3)
+  if (!v37 || error && *error)
   {
     v30 = AXLogUltron();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      [AXSDListenEngine _startListeningWithError:a3];
+      [AXSDListenEngine _startListeningWithError:error];
     }
 
     goto LABEL_63;
   }
 
-  v42 = [(AXSDListenEngine *)self audioEngineInputNode];
-  v43 = [v42 inputFormatForBus:0];
+  audioEngineInputNode2 = [(AXSDListenEngine *)self audioEngineInputNode];
+  v43 = [audioEngineInputNode2 inputFormatForBus:0];
 
   if ([v43 channelCount] && (objc_msgSend(v43, "sampleRate"), v44 != 0.0))
   {
     objc_initWeak(buf, self);
-    v46 = [(AXSDListenEngine *)self audioEngineInputNode];
+    audioEngineInputNode3 = [(AXSDListenEngine *)self audioEngineInputNode];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __45__AXSDListenEngine__startListeningWithError___block_invoke;
     v49[3] = &unk_278BDD468;
     objc_copyWeak(&v50, buf);
-    [v46 installTapOnBus:0 bufferSize:4410 format:v43 block:v49];
+    [audioEngineInputNode3 installTapOnBus:0 bufferSize:4410 format:v43 block:v49];
 
     [(AXSDListenEngine *)self _setState:5];
     v47 = AXLogUltron();
@@ -1037,10 +1037,10 @@ LABEL_63:
       [AXSDListenEngine _startListeningWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"com.apple.accessibility.ultron" description:{@"Invalid input format: %@", v43}];
-      *a3 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -1062,7 +1062,7 @@ void __45__AXSDListenEngine__startListeningWithError___block_invoke(uint64_t a1,
   [WeakRetained _handleBuffer:v6 atTime:v5];
 }
 
-- (BOOL)_stopListeningAndTransitionToState:(int64_t)a3
+- (BOOL)_stopListeningAndTransitionToState:(int64_t)state
 {
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1071,7 +1071,7 @@ void __45__AXSDListenEngine__startListeningWithError___block_invoke(uint64_t a1,
     _os_log_impl(&dword_23D62D000, v5, OS_LOG_TYPE_DEFAULT, "AXHAListenEngine will stop listening.", buf, 2u);
   }
 
-  if (![AXSDListenEngine _stateIsNotListening:a3])
+  if (![AXSDListenEngine _stateIsNotListening:state])
   {
     v6 = AXLogUltron();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1079,12 +1079,12 @@ void __45__AXSDListenEngine__startListeningWithError___block_invoke(uint64_t a1,
       [AXSDListenEngine _stopListeningAndTransitionToState:];
     }
 
-    a3 = 1;
+    state = 1;
   }
 
   if ([(AXSDListenEngine *)self _notListeningForAnyReason])
   {
-    [(AXSDListenEngine *)self _setState:a3];
+    [(AXSDListenEngine *)self _setState:state];
     v7 = AXLogUltron();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -1097,11 +1097,11 @@ void __45__AXSDListenEngine__startListeningWithError___block_invoke(uint64_t a1,
   {
     if (self->_audioEngine)
     {
-      v8 = [(AXSDListenEngine *)self audioEngineInputNode];
-      [v8 removeTapOnBus:0];
+      audioEngineInputNode = [(AXSDListenEngine *)self audioEngineInputNode];
+      [audioEngineInputNode removeTapOnBus:0];
 
-      v9 = [(AXSDListenEngine *)self audioEngine];
-      [v9 stop];
+      audioEngine = [(AXSDListenEngine *)self audioEngine];
+      [audioEngine stop];
 
       audioEngine = self->_audioEngine;
       self->_audioEngine = 0;
@@ -1124,7 +1124,7 @@ void __45__AXSDListenEngine__startListeningWithError___block_invoke(uint64_t a1,
     v15 = self->_audioSession;
     self->_audioSession = 0;
 
-    [(AXSDListenEngine *)self _setState:a3];
+    [(AXSDListenEngine *)self _setState:state];
     v16 = AXLogUltron();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -1159,44 +1159,44 @@ void __45__AXSDListenEngine__startListeningWithError___block_invoke(uint64_t a1,
       _os_log_impl(&dword_23D62D000, v5, OS_LOG_TYPE_INFO, "Activating Notifications", buf, 2u);
     }
 
-    v6 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
     v7 = MEMORY[0x277D26B68];
     v23[0] = *MEMORY[0x277D26B68];
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-    [v6 setAttribute:v8 forKey:*MEMORY[0x277D26DD0] error:0];
+    [mEMORY[0x277D26E58] setAttribute:v8 forKey:*MEMORY[0x277D26DD0] error:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = *v7;
-    v11 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v9 addObserver:self selector:sel__carPlayIsConnectedDidChange_ name:v10 object:v11];
+    mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [defaultCenter addObserver:self selector:sel__carPlayIsConnectedDidChange_ name:v10 object:mEMORY[0x277D26E58]2];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:self selector:sel__handleAudioSessionInterruption_ name:*MEMORY[0x277CB8068] object:self->_audioSession];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__handleAudioSessionInterruption_ name:*MEMORY[0x277CB8068] object:self->_audioSession];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:self selector:sel__handleConfigurationChangeNotification_ name:*MEMORY[0x277CB8008] object:self->_audioEngine];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__handleConfigurationChangeNotification_ name:*MEMORY[0x277CB8008] object:self->_audioEngine];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:self selector:sel__mediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:self->_audioSession];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel__mediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:self->_audioSession];
 
     if ([MEMORY[0x277D12B60] isInternalInstall])
     {
       objc_initWeak(buf, self);
-      v15 = [MEMORY[0x277CE6F98] sharedInstance];
+      mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __42__AXSDListenEngine__activateNotifications__block_invoke;
       v20[3] = &unk_278BDD060;
       objc_copyWeak(&v21, buf);
-      [v15 registerUpdateBlock:v20 forRetrieveSelector:sel_micDisabled withListener:self];
+      [mEMORY[0x277CE6F98] registerUpdateBlock:v20 forRetrieveSelector:sel_micDisabled withListener:self];
 
-      v16 = [MEMORY[0x277CE6F98] sharedInstance];
+      mEMORY[0x277CE6F98]2 = [MEMORY[0x277CE6F98] sharedInstance];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __42__AXSDListenEngine__activateNotifications__block_invoke_2;
       v18[3] = &unk_278BDD060;
       objc_copyWeak(&v19, buf);
-      [v16 registerUpdateBlock:v18 forRetrieveSelector:sel_pipedInFile withListener:self];
+      [mEMORY[0x277CE6F98]2 registerUpdateBlock:v18 forRetrieveSelector:sel_pipedInFile withListener:self];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&v21);
@@ -1221,8 +1221,8 @@ void __42__AXSDListenEngine__activateNotifications__block_invoke_2(uint64_t a1)
 
 - (void)_deactivateNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_micDisabledUpdated
@@ -1230,10 +1230,10 @@ void __42__AXSDListenEngine__activateNotifications__block_invoke_2(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D12B60] isInternalInstall])
   {
-    v3 = [MEMORY[0x277CE6F98] sharedInstance];
-    v4 = [v3 micDisabled];
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+    micDisabled = [mEMORY[0x277CE6F98] micDisabled];
     v5 = @"enabled";
-    if (v4)
+    if (micDisabled)
     {
       v5 = @"disabled";
     }
@@ -1248,10 +1248,10 @@ void __42__AXSDListenEngine__activateNotifications__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_23D62D000, v7, OS_LOG_TYPE_DEFAULT, "AUTOMATION: Mic: %@", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x277CE6F98] sharedInstance];
-    v9 = [v8 micDisabled];
+    mEMORY[0x277CE6F98]2 = [MEMORY[0x277CE6F98] sharedInstance];
+    micDisabled2 = [mEMORY[0x277CE6F98]2 micDisabled];
 
-    if (v9)
+    if (micDisabled2)
     {
       if (![(AXSDListenEngine *)self isListening])
       {
@@ -1313,19 +1313,19 @@ uint64_t __39__AXSDListenEngine__micDisabledUpdated__block_invoke_2(uint64_t a1)
 - (void)_pipedInFileUpdated
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CE6F98] sharedInstance];
-  v3 = [v2 pipedInFile];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  pipedInFile = [mEMORY[0x277CE6F98] pipedInFile];
   OUTLINED_FUNCTION_0_0();
-  _os_log_error_impl(&dword_23D62D000, a1, OS_LOG_TYPE_ERROR, "Not processing piped in file: (%@)", v5, 0xCu);
+  _os_log_error_impl(&dword_23D62D000, self, OS_LOG_TYPE_ERROR, "Not processing piped in file: (%@)", v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pipeInFile:(id)a3
+- (void)pipeInFile:(id)file
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+  fileCopy = file;
+  v5 = [MEMORY[0x277CBEBC0] URLWithString:fileCopy];
   v25 = 0;
   v6 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:v5 error:&v25];
   v7 = v25;
@@ -1350,8 +1350,8 @@ uint64_t __39__AXSDListenEngine__micDisabledUpdated__block_invoke_2(uint64_t a1)
   if (v9)
   {
     [(AXSDListenEngine *)self notifyListeningReceivedAudioFile:v6];
-    v11 = [v6 framePosition];
-    if (v11 >= [v6 length])
+    framePosition = [v6 framePosition];
+    if (framePosition >= [v6 length])
     {
 LABEL_19:
       v22 = AXLogUltron();
@@ -1372,14 +1372,14 @@ LABEL_19:
       while (1)
       {
         v12 = MEMORY[0x277CB8428];
-        v13 = [v6 framePosition];
-        v14 = [v6 processingFormat];
-        [v14 sampleRate];
-        v15 = [v12 timeWithSampleTime:v13 atRate:?];
+        framePosition2 = [v6 framePosition];
+        processingFormat = [v6 processingFormat];
+        [processingFormat sampleRate];
+        v15 = [v12 timeWithSampleTime:framePosition2 atRate:?];
 
         v16 = objc_alloc(MEMORY[0x277CB83C8]);
-        v17 = [v6 processingFormat];
-        v18 = [v16 initWithPCMFormat:v17 frameCapacity:4410];
+        processingFormat2 = [v6 processingFormat];
+        v18 = [v16 initWithPCMFormat:processingFormat2 frameCapacity:4410];
 
         v24 = 0;
         [v6 readIntoBuffer:v18 error:&v24];
@@ -1397,8 +1397,8 @@ LABEL_19:
 
         [(AXSDListenEngine *)self _handleBuffer:v18 atTime:v15 isFile:1];
 
-        v20 = [v6 framePosition];
-        if (v20 >= [v6 length])
+        framePosition3 = [v6 framePosition];
+        if (framePosition3 >= [v6 length])
         {
           goto LABEL_19;
         }
@@ -1421,7 +1421,7 @@ LABEL_19:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v27 = v4;
+      v27 = fileCopy;
       v28 = 2112;
       v29 = v5;
       v30 = 2112;
@@ -1435,10 +1435,10 @@ LABEL_19:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupAudioInputWithError:(id *)a3 shouldInterrupt:(BOOL)a4
+- (void)_setupAudioInputWithError:(id *)error shouldInterrupt:(BOOL)interrupt
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (interrupt)
   {
     v7 = 40;
   }
@@ -1457,29 +1457,29 @@ LABEL_19:
       _os_log_impl(&dword_23D62D000, v8, OS_LOG_TYPE_INFO, "Disabling microphone usage indicator for AXSDListenEngine", v25, 2u);
     }
 
-    [(AVAudioSession *)self->_audioSession setPrefersNoMicrophoneUsageIndicator:1 error:a3];
-    if (a3 && *a3)
+    [(AVAudioSession *)self->_audioSession setPrefersNoMicrophoneUsageIndicator:1 error:error];
+    if (error && *error)
     {
       v9 = AXLogUltron();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [AXSDListenEngine _setupAudioInputWithError:a3 shouldInterrupt:?];
+        [AXSDListenEngine _setupAudioInputWithError:error shouldInterrupt:?];
       }
 
-      *a3 = 0;
+      *error = 0;
     }
   }
 
-  [(AVAudioSession *)self->_audioSession setMXSessionProperty:*MEMORY[0x277D27320] value:MEMORY[0x277CBEC38] error:a3];
-  if (a3 && *a3)
+  [(AVAudioSession *)self->_audioSession setMXSessionProperty:*MEMORY[0x277D27320] value:MEMORY[0x277CBEC38] error:error];
+  if (error && *error)
   {
     v10 = AXLogUltron();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [AXSDListenEngine _setupAudioInputWithError:a3 shouldInterrupt:?];
+      [AXSDListenEngine _setupAudioInputWithError:error shouldInterrupt:?];
     }
 
-    *a3 = 0;
+    *error = 0;
   }
 
   v11 = _os_feature_enabled_impl();
@@ -1490,10 +1490,10 @@ LABEL_19:
   }
 
   v13 = *v12;
-  v14 = [(AXSDListenEngine *)self supportsVirtualAudioDevice];
+  supportsVirtualAudioDevice = [(AXSDListenEngine *)self supportsVirtualAudioDevice];
   v15 = AXLogUltron();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v14)
+  if (supportsVirtualAudioDevice)
   {
     if (v11)
     {
@@ -1519,10 +1519,10 @@ LABEL_31:
       v19 = MEMORY[0x277CB80C8];
     }
 
-    [(AVAudioSession *)self->_audioSession setCategory:v13 mode:*v19 options:v7 error:a3, *v25];
-    if (a3)
+    [(AVAudioSession *)self->_audioSession setCategory:v13 mode:*v19 options:v7 error:error, *v25];
+    if (error)
     {
-      if (*a3)
+      if (*error)
       {
         v18 = AXLogUltron();
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1533,13 +1533,13 @@ LABEL_31:
         goto LABEL_28;
       }
 
-      [(AVAudioSession *)self->_audioSession setAllowHapticsAndSystemSoundsDuringRecording:1 error:a3];
-      if (*a3)
+      [(AVAudioSession *)self->_audioSession setAllowHapticsAndSystemSoundsDuringRecording:1 error:error];
+      if (*error)
       {
         v18 = AXLogUltron();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          [AXSDListenEngine _setupAudioInputWithError:a3 shouldInterrupt:?];
+          [AXSDListenEngine _setupAudioInputWithError:error shouldInterrupt:?];
         }
 
         goto LABEL_53;
@@ -1575,10 +1575,10 @@ LABEL_45:
     _os_log_impl(&dword_23D62D000, v15, OS_LOG_TYPE_DEFAULT, "Using legacy Default Audio Session.", v25, 2u);
   }
 
-  [(AVAudioSession *)self->_audioSession setCategory:v13 mode:*MEMORY[0x277CB80A8] options:v7 error:a3];
-  if (a3)
+  [(AVAudioSession *)self->_audioSession setCategory:v13 mode:*MEMORY[0x277CB80A8] options:v7 error:error];
+  if (error)
   {
-    if (*a3)
+    if (*error)
     {
       v18 = AXLogUltron();
       if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1589,38 +1589,38 @@ LABEL_53:
       }
 
 LABEL_28:
-      [AXSDListenEngine _setupAudioInputWithError:a3 shouldInterrupt:?];
+      [AXSDListenEngine _setupAudioInputWithError:error shouldInterrupt:?];
       goto LABEL_53;
     }
 
-    if (!a4)
+    if (!interrupt)
     {
-      [(AVAudioSession *)self->_audioSession setAudioHardwareControlFlags:2 error:a3];
-      if (*a3)
+      [(AVAudioSession *)self->_audioSession setAudioHardwareControlFlags:2 error:error];
+      if (*error)
       {
         v18 = AXLogUltron();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          [AXSDListenEngine _setupAudioInputWithError:a3 shouldInterrupt:?];
+          [AXSDListenEngine _setupAudioInputWithError:error shouldInterrupt:?];
         }
 
         goto LABEL_53;
       }
 
-      [(AVAudioSession *)self->_audioSession preferDecoupledIO:1 error:a3];
-      if (*a3)
+      [(AVAudioSession *)self->_audioSession preferDecoupledIO:1 error:error];
+      if (*error)
       {
         v18 = AXLogUltron();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          [AXSDListenEngine _setupAudioInputWithError:a3 shouldInterrupt:?];
+          [AXSDListenEngine _setupAudioInputWithError:error shouldInterrupt:?];
         }
 
         goto LABEL_53;
       }
 
-      [(AVAudioSession *)self->_audioSession setAllowHapticsAndSystemSoundsDuringRecording:1 error:a3];
-      if (*a3)
+      [(AVAudioSession *)self->_audioSession setAllowHapticsAndSystemSoundsDuringRecording:1 error:error];
+      if (*error)
       {
         v18 = AXLogUltron();
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1629,12 +1629,12 @@ LABEL_28:
         }
 
 LABEL_60:
-        [AXSDListenEngine _setupAudioInputWithError:a3 shouldInterrupt:?];
+        [AXSDListenEngine _setupAudioInputWithError:error shouldInterrupt:?];
         goto LABEL_53;
       }
 
-      [(AVAudioSession *)self->_audioSession setParticipatesInVolumePolicy:0 error:a3];
-      if (*a3)
+      [(AVAudioSession *)self->_audioSession setParticipatesInVolumePolicy:0 error:error];
+      if (*error)
       {
         v18 = AXLogUltron();
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1662,7 +1662,7 @@ LABEL_40:
     }
   }
 
-  else if (!a4)
+  else if (!interrupt)
   {
     [(AVAudioSession *)self->_audioSession setAudioHardwareControlFlags:2 error:0];
     [(AVAudioSession *)self->_audioSession preferDecoupledIO:1 error:0];
@@ -1684,22 +1684,22 @@ LABEL_54:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAudioSessionInterruption:(id)a3
+- (void)_handleAudioSessionInterruption:(id)interruption
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptionCopy = interruption;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = interruptionCopy;
     _os_log_impl(&dword_23D62D000, v5, OS_LOG_TYPE_DEFAULT, "Audio Session received Audio Interruption: %@", buf, 0xCu);
   }
 
   if (AXIsSoundDetectionMedinaSupportEnabled())
   {
-    v6 = AXLogUltron();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    userInfo = AXLogUltron();
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_ERROR))
     {
       [AXSDListenEngine _handleAudioSessionInterruption:];
     }
@@ -1707,9 +1707,9 @@ LABEL_54:
 
   else
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x277CB8080]];
-    v8 = [v7 unsignedIntegerValue];
+    userInfo = [interruptionCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x277CB8080]];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
     audioProcessingQueue = self->_audioProcessingQueue;
     v11[0] = MEMORY[0x277D85DD0];
@@ -1717,7 +1717,7 @@ LABEL_54:
     v11[2] = __52__AXSDListenEngine__handleAudioSessionInterruption___block_invoke;
     v11[3] = &unk_278BDD490;
     v11[4] = self;
-    v11[5] = v8;
+    v11[5] = unsignedIntegerValue;
     dispatch_async(audioProcessingQueue, v11);
   }
 
@@ -1808,20 +1808,20 @@ LABEL_11:
   return v3;
 }
 
-- (void)_handleInterruptionRequestingState:(int64_t)a3
+- (void)_handleInterruptionRequestingState:(int64_t)state
 {
   p_state = &self->_state;
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
     v6 = state & 0xFFFFFFFFFFFFFFFELL;
-    if (a3 == 2 && v6 == 4)
+    if (state == 2 && v6 == 4)
     {
 
       [(AXSDListenEngine *)self _stopListeningAndTransitionToState:2];
     }
 
-    else if (a3 == 5 && v6 == 2 && [(AXSDListenEngine *)self _shouldResumeListening])
+    else if (state == 5 && v6 == 2 && [(AXSDListenEngine *)self _shouldResumeListening])
     {
 
       [(AXSDListenEngine *)self _startIfPossibleAndNotify];
@@ -1838,15 +1838,15 @@ LABEL_11:
   }
 }
 
-- (void)_carPlayIsConnectedDidChange:(id)a3
+- (void)_carPlayIsConnectedDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_23D62D000, v5, OS_LOG_TYPE_DEFAULT, "CarPlay is Connected Changed: %@", &v9, 0xCu);
   }
 
@@ -1868,24 +1868,24 @@ LABEL_11:
       _os_log_impl(&dword_23D62D000, v7, OS_LOG_TYPE_DEFAULT, "CarPlay is not supported on this device. Interrupting audio session.", &v9, 2u);
     }
 
-    [(AXSDListenEngine *)self _interruptCarPlay:v4];
+    [(AXSDListenEngine *)self _interruptCarPlay:changeCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_interruptCarPlay:(id)a3
+- (void)_interruptCarPlay:(id)play
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D26B70]];
-  v6 = [v5 BOOLValue];
+  userInfo = [play userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D26B70]];
+  bOOLValue = [v5 BOOLValue];
 
   audioProcessingQueue = self->_audioProcessingQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__AXSDListenEngine__interruptCarPlay___block_invoke;
   v8[3] = &unk_278BDD4B8;
-  v9 = v6;
+  v9 = bOOLValue;
   v8[4] = self;
   dispatch_async(audioProcessingQueue, v8);
 }
@@ -1970,15 +1970,15 @@ void __38__AXSDListenEngine__interruptCarPlay___block_invoke_105(uint64_t a1)
   }
 }
 
-- (void)_handleConfigurationChangeNotification:(id)a3
+- (void)_handleConfigurationChangeNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = notificationCopy;
     _os_log_impl(&dword_23D62D000, v5, OS_LOG_TYPE_DEFAULT, "Audio Config Changed: %@", buf, 0xCu);
   }
 
@@ -2034,15 +2034,15 @@ LABEL_14:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mediaServicesWereReset:(id)a3
+- (void)_mediaServicesWereReset:(id)reset
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resetCopy = reset;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = resetCopy;
     _os_log_impl(&dword_23D62D000, v5, OS_LOG_TYPE_DEFAULT, "Media reset: %@", buf, 0xCu);
   }
 
@@ -2107,25 +2107,25 @@ uint64_t __44__AXSDListenEngine__mediaServicesWereReset___block_invoke(uint64_t 
 - (void)_restartSoundRecognitionIfNecesary
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(AXSDListenEngine *)self _notListeningForAnyReason];
+  _notListeningForAnyReason = [(AXSDListenEngine *)self _notListeningForAnyReason];
   if (self->_state == 2)
   {
-    v4 = [MEMORY[0x277CE6F98] sharedInstance];
-    v5 = [v4 soundDetectionEnabled];
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+    soundDetectionEnabled = [mEMORY[0x277CE6F98] soundDetectionEnabled];
   }
 
   else
   {
-    v5 = 0;
+    soundDetectionEnabled = 0;
   }
 
   v6 = AXLogUltron();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109376;
-    v9[1] = !v3;
+    v9[1] = !_notListeningForAnyReason;
     v10 = 1024;
-    v11 = v5;
+    v11 = soundDetectionEnabled;
     _os_log_impl(&dword_23D62D000, v6, OS_LOG_TYPE_DEFAULT, "Restarting SR if necessary. wasListening = %i, shouldRestartAnyway: %i", v9, 0xEu);
   }
 
@@ -2140,12 +2140,12 @@ uint64_t __44__AXSDListenEngine__mediaServicesWereReset___block_invoke(uint64_t 
 
   else
   {
-    if (!v3)
+    if (!_notListeningForAnyReason)
     {
       [(AXSDListenEngine *)self _stopListeningAndTransitionToState:1];
     }
 
-    if (v5)
+    if (soundDetectionEnabled)
     {
       [(AXSDListenEngine *)self _startIfPossibleAndNotify];
     }

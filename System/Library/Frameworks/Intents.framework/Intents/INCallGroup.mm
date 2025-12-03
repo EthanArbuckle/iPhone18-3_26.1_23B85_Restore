@@ -1,12 +1,12 @@
 @interface INCallGroup
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INCallGroup)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INCallGroup)initWithCoder:(id)coder;
 - (INCallGroup)initWithGroupName:(NSString *)groupName groupId:(NSString *)groupId;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INCallGroup
@@ -16,22 +16,22 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"groupName";
   groupName = self->_groupName;
-  v4 = groupName;
+  null = groupName;
   if (!groupName)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"groupId";
-  v11[0] = v4;
+  v11[0] = null;
   groupId = self->_groupId;
-  v6 = groupId;
+  null2 = groupId;
   if (!groupId)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (groupId)
   {
@@ -56,56 +56,56 @@ LABEL_7:
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INCallGroup;
   v6 = [(INCallGroup *)&v11 description];
-  v7 = [(INCallGroup *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INCallGroup *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_groupName];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"groupName"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_groupName];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"groupName"];
 
-  v9 = [v6 encodeObject:self->_groupId];
+  v9 = [encoderCopy encodeObject:self->_groupId];
 
-  [v7 if_setObjectIfNonNil:v9 forKey:@"groupId"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"groupId"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupName = self->_groupName;
-  v5 = a3;
-  [v5 encodeObject:groupName forKey:@"groupName"];
-  [v5 encodeObject:self->_groupId forKey:@"groupId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupName forKey:@"groupName"];
+  [coderCopy encodeObject:self->_groupId forKey:@"groupId"];
 }
 
-- (INCallGroup)initWithCoder:(id)a3
+- (INCallGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupId"];
 
   v7 = [(INCallGroup *)self initWithGroupName:v5 groupId:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -115,7 +115,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       groupName = self->_groupName;
       v8 = 0;
       if (groupName == v5->_groupName || [(NSString *)groupName isEqual:?])
@@ -158,22 +158,22 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"groupName"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"groupName"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"groupId"];
-    v14 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"groupId"];
+    v14 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
-    v15 = [[a1 alloc] initWithGroupName:v11 groupId:v14];
+    v15 = [[self alloc] initWithGroupName:v11 groupId:v14];
   }
 
   else

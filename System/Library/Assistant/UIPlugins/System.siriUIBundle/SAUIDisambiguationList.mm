@@ -1,18 +1,18 @@
 @interface SAUIDisambiguationList
-- (id)_systemPlugin_failureCommandsForCode:(int64_t)a3;
+- (id)_systemPlugin_failureCommandsForCode:(int64_t)code;
 @end
 
 @implementation SAUIDisambiguationList
 
-- (id)_systemPlugin_failureCommandsForCode:(int64_t)a3
+- (id)_systemPlugin_failureCommandsForCode:(int64_t)code
 {
   v5 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(SAUIDisambiguationList *)self fallbackCommands];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  fallbackCommands = [(SAUIDisambiguationList *)self fallbackCommands];
+  v7 = [fallbackCommands countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -23,21 +23,21 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(fallbackCommands);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        if ([v11 code] == a3)
+        if ([v11 code] == code)
         {
-          v12 = [v11 commands];
-          if (v12)
+          commands = [v11 commands];
+          if (commands)
           {
-            [v5 addObjectsFromArray:v12];
+            [v5 addObjectsFromArray:commands];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [fallbackCommands countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);

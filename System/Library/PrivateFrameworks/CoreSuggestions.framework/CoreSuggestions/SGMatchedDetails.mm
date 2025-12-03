@@ -1,16 +1,16 @@
 @interface SGMatchedDetails
-+ (id)matchedDetailsWithContact:(id)a3 matchinfoData:(id)a4 tokens:(id)a5;
-+ (int64_t)tokenMatchedDetailTypeForContact:(id)a3 matchedDetailReader:(id)a4 phraseNumber:(unsigned int)a5 token:(id)a6;
-+ (int64_t)tokensMatchedDetailTypeForContact:(id)a3 contactEntityId:(id)a4 detailEntityId:(id)a5 matchinfoData:(id)a6 tokens:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (SGMatchedDetails)initWithCoder:(id)a3;
-- (SGMatchedDetails)initWithContact:(id)a3 matchinfoData:(id)a4 tokens:(id)a5;
++ (id)matchedDetailsWithContact:(id)contact matchinfoData:(id)data tokens:(id)tokens;
++ (int64_t)tokenMatchedDetailTypeForContact:(id)contact matchedDetailReader:(id)reader phraseNumber:(unsigned int)number token:(id)token;
++ (int64_t)tokensMatchedDetailTypeForContact:(id)contact contactEntityId:(id)id detailEntityId:(id)entityId matchinfoData:(id)data tokens:(id)tokens;
+- (BOOL)isEqual:(id)equal;
+- (SGMatchedDetails)initWithCoder:(id)coder;
+- (SGMatchedDetails)initWithContact:(id)contact matchinfoData:(id)data tokens:(id)tokens;
 - (id)description;
-- (id)matchedDetailsForToken:(id)a3;
-- (id)tokensForDetail:(id)a3;
-- (void)_addToTokenDetailMap:(id)a3 token:(id)a4 detail:(id)a5;
-- (void)_initilizeDictionariesFromTokenDetailMap:(id)a3;
-- (void)_processRawData:(id)a3 tokens:(id)a4 contact:(id)a5 tokenDetailMap:(id)a6;
+- (id)matchedDetailsForToken:(id)token;
+- (id)tokensForDetail:(id)detail;
+- (void)_addToTokenDetailMap:(id)map token:(id)token detail:(id)detail;
+- (void)_initilizeDictionariesFromTokenDetailMap:(id)map;
+- (void)_processRawData:(id)data tokens:(id)tokens contact:(id)contact tokenDetailMap:(id)map;
 @end
 
 @implementation SGMatchedDetails
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (SGMatchedDetails)initWithCoder:(id)a3
+- (SGMatchedDetails)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = SGMatchedDetails;
   v6 = [(SGMatchedDetails *)&v23 init];
@@ -44,11 +44,11 @@
     v14 = objc_opt_class();
     v15 = [v21 initWithObjects:{v20, v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(context);
-    v16 = [v5 decodeObjectOfClasses:v15 forKey:@"tokenDetailMap"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"tokenDetailMap"];
     if (!v16)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:v19 object:v6 file:@"SGMatchedDetails.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"tokenDetailMap"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:v19 object:v6 file:@"SGMatchedDetails.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"tokenDetailMap"}];
     }
 
     [(SGMatchedDetails *)v6 _initilizeDictionariesFromTokenDetailMap:v16];
@@ -57,50 +57,50 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGMatchedDetails *)self isEqualToMatchedDetails:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGMatchedDetails *)self isEqualToMatchedDetails:v5];
   }
 
   return v6;
 }
 
-- (void)_processRawData:(id)a3 tokens:(id)a4 contact:(id)a5 tokenDetailMap:(id)a6
+- (void)_processRawData:(id)data tokens:(id)tokens contact:(id)contact tokenDetailMap:(id)map
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v38 = v11;
-  v39 = a6;
-  if ([v11 count] == 1 && (objc_msgSend(v10, "matchinfoData"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, !v14))
+  dataCopy = data;
+  tokensCopy = tokens;
+  contactCopy = contact;
+  v38 = tokensCopy;
+  mapCopy = map;
+  if ([tokensCopy count] == 1 && (objc_msgSend(dataCopy, "matchinfoData"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, !v14))
   {
-    v34 = [v10 detailEntityId];
-    v35 = +[SGRecordId recordIdWithNumericValue:](SGRecordId, "recordIdWithNumericValue:", [v34 longLongValue]);
-    v36 = [v12 detailForRecordId:v35];
+    detailEntityId = [dataCopy detailEntityId];
+    v35 = +[SGRecordId recordIdWithNumericValue:](SGRecordId, "recordIdWithNumericValue:", [detailEntityId longLongValue]);
+    v36 = [contactCopy detailForRecordId:v35];
 
-    v37 = [v11 objectAtIndexedSubscript:0];
-    [(SGMatchedDetails *)self _addToTokenDetailMap:v39 token:v37 detail:v36];
+    v37 = [tokensCopy objectAtIndexedSubscript:0];
+    [(SGMatchedDetails *)self _addToTokenDetailMap:mapCopy token:v37 detail:v36];
   }
 
   else
   {
     v15 = [SGMatchedDetailsReader alloc];
-    v16 = [v10 matchinfoData];
-    v17 = [(SGMatchedDetailsReader *)v15 initWithMatchedDetails:v16];
+    matchinfoData = [dataCopy matchinfoData];
+    v17 = [(SGMatchedDetailsReader *)v15 initWithMatchedDetails:matchinfoData];
 
     if ([(SGMatchedDetailsReader *)v17 phraseCount]>= 1)
     {
-      v18 = [v11 count];
+      v18 = [tokensCopy count];
       if (v18 == [(SGMatchedDetailsReader *)v17 phraseCount])
       {
         if ([(SGMatchedDetailsReader *)v17 phraseCount]>= 1)
@@ -111,17 +111,17 @@
           {
             v21 = [v38 objectAtIndexedSubscript:v19];
             v22 = objc_opt_class();
-            v23 = [v10 entityId];
-            v24 = [v10 detailEntityId];
-            v25 = [v22 tokenMatchedDetailTypeForContact:v12 contactEntityId:v23 detailEntityId:v24 matchedDetailReader:v17 phraseNumber:v20 - 1 token:v21];
+            entityId = [dataCopy entityId];
+            detailEntityId2 = [dataCopy detailEntityId];
+            v25 = [v22 tokenMatchedDetailTypeForContact:contactCopy contactEntityId:entityId detailEntityId:detailEntityId2 matchedDetailReader:v17 phraseNumber:v20 - 1 token:v21];
 
-            if (v25 == 1 || ([v12 name], v26 = objc_claimAutoreleasedReturnValue(), -[SGMatchedDetails _addToTokenDetailMap:token:detail:](self, "_addToTokenDetailMap:token:detail:", v39, v21, v26), v26, v25))
+            if (v25 == 1 || ([contactCopy name], v26 = objc_claimAutoreleasedReturnValue(), -[SGMatchedDetails _addToTokenDetailMap:token:detail:](self, "_addToTokenDetailMap:token:detail:", mapCopy, v21, v26), v26, v25))
             {
-              v27 = [v10 detailEntityId];
-              v28 = +[SGRecordId recordIdWithInternalEntityId:](SGRecordId, "recordIdWithInternalEntityId:", [v27 longLongValue]);
+              detailEntityId3 = [dataCopy detailEntityId];
+              v28 = +[SGRecordId recordIdWithInternalEntityId:](SGRecordId, "recordIdWithInternalEntityId:", [detailEntityId3 longLongValue]);
 
-              v29 = [v12 detailForRecordId:v28];
-              [(SGMatchedDetails *)self _addToTokenDetailMap:v39 token:v21 detail:v29];
+              v29 = [contactCopy detailForRecordId:v28];
+              [(SGMatchedDetails *)self _addToTokenDetailMap:mapCopy token:v21 detail:v29];
             }
 
             v19 = v20;
@@ -137,7 +137,7 @@
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138739971;
-          v41 = v11;
+          v41 = tokensCopy;
           _os_log_debug_impl(&dword_1BA729000, v31, OS_LOG_TYPE_DEBUG, "tokens.count != phraseCount: %{sensitive}@", buf, 0xCu);
         }
 
@@ -159,45 +159,45 @@
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addToTokenDetailMap:(id)a3 token:(id)a4 detail:(id)a5
+- (void)_addToTokenDetailMap:(id)map token:(id)token detail:(id)detail
 {
-  v12 = a3;
-  v7 = a4;
-  if (a5)
+  mapCopy = map;
+  tokenCopy = token;
+  if (detail)
   {
-    v8 = a5;
-    v9 = [v12 objectForKeyedSubscript:v7];
+    detailCopy = detail;
+    v9 = [mapCopy objectForKeyedSubscript:tokenCopy];
 
     if (!v9)
     {
       v10 = objc_opt_new();
-      [v12 setObject:v10 forKeyedSubscript:v7];
+      [mapCopy setObject:v10 forKeyedSubscript:tokenCopy];
     }
 
-    v11 = [v12 objectForKeyedSubscript:v7];
-    [v11 addObject:v8];
+    v11 = [mapCopy objectForKeyedSubscript:tokenCopy];
+    [v11 addObject:detailCopy];
   }
 }
 
-- (id)tokensForDetail:(id)a3
+- (id)tokensForDetail:(id)detail
 {
-  v3 = [(NSDictionary *)self->_detailTokenMap objectForKeyedSubscript:a3];
-  v4 = [v3 allObjects];
+  v3 = [(NSDictionary *)self->_detailTokenMap objectForKeyedSubscript:detail];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (id)matchedDetailsForToken:(id)a3
+- (id)matchedDetailsForToken:(id)token
 {
-  v3 = [(NSDictionary *)self->_tokenDetailMap objectForKeyedSubscript:a3];
-  v4 = [v3 allObjects];
+  v3 = [(NSDictionary *)self->_tokenDetailMap objectForKeyedSubscript:token];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (void)_initilizeDictionariesFromTokenDetailMap:(id)a3
+- (void)_initilizeDictionariesFromTokenDetailMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_opt_new();
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -205,12 +205,12 @@
   v11[3] = &unk_1E7EFC608;
   v12 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v11];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v11];
   v7 = [v6 copy];
   detailTokenMap = self->_detailTokenMap;
   self->_detailTokenMap = v7;
 
-  v9 = [v4 copy];
+  v9 = [mapCopy copy];
   tokenDetailMap = self->_tokenDetailMap;
   self->_tokenDetailMap = v9;
 }
@@ -260,12 +260,12 @@ void __61__SGMatchedDetails__initilizeDictionariesFromTokenDetailMap___block_inv
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (SGMatchedDetails)initWithContact:(id)a3 matchinfoData:(id)a4 tokens:(id)a5
+- (SGMatchedDetails)initWithContact:(id)contact matchinfoData:(id)data tokens:(id)tokens
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactCopy = contact;
+  dataCopy = data;
+  tokensCopy = tokens;
   v24.receiver = self;
   v24.super_class = SGMatchedDetails;
   v11 = [(SGMatchedDetails *)&v24 init];
@@ -276,7 +276,7 @@ void __61__SGMatchedDetails__initilizeDictionariesFromTokenDetailMap___block_inv
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v9;
+    v13 = dataCopy;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v14)
     {
@@ -292,7 +292,7 @@ void __61__SGMatchedDetails__initilizeDictionariesFromTokenDetailMap___block_inv
             objc_enumerationMutation(v13);
           }
 
-          [(SGMatchedDetails *)v11 _processRawData:*(*(&v20 + 1) + 8 * v17++) tokens:v10 contact:v8 tokenDetailMap:v12, v20];
+          [(SGMatchedDetails *)v11 _processRawData:*(*(&v20 + 1) + 8 * v17++) tokens:tokensCopy contact:contactCopy tokenDetailMap:v12, v20];
         }
 
         while (v15 != v17);
@@ -309,27 +309,27 @@ void __61__SGMatchedDetails__initilizeDictionariesFromTokenDetailMap___block_inv
   return v11;
 }
 
-+ (int64_t)tokenMatchedDetailTypeForContact:(id)a3 matchedDetailReader:(id)a4 phraseNumber:(unsigned int)a5 token:(id)a6
++ (int64_t)tokenMatchedDetailTypeForContact:(id)contact matchedDetailReader:(id)reader phraseNumber:(unsigned int)number token:(id)token
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v12 matchAtPhraseIndex:a5 columnIndex:2];
+  contactCopy = contact;
+  tokenCopy = token;
+  numberCopy = number;
+  readerCopy = reader;
+  v13 = [readerCopy matchAtPhraseIndex:number columnIndex:2];
   v14 = 1;
-  LODWORD(v11) = [v12 matchAtPhraseIndex:v11 columnIndex:1];
+  LODWORD(numberCopy) = [readerCopy matchAtPhraseIndex:numberCopy columnIndex:1];
 
-  if (v11)
+  if (numberCopy)
   {
     v15 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"0123456789+-()"];
-    v16 = [v15 invertedSet];
+    invertedSet = [v15 invertedSet];
 
-    if ([v10 rangeOfCharacterFromSet:v16] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([tokenCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v17 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"0123456789+-"];
-      v18 = [v9 name];
-      v19 = [v18 fullName];
-      v20 = [v19 rangeOfCharacterFromSet:v17] == 0x7FFFFFFFFFFFFFFFLL;
+      name = [contactCopy name];
+      fullName = [name fullName];
+      v20 = [fullName rangeOfCharacterFromSet:v17] == 0x7FFFFFFFFFFFFFFFLL;
 
       v13 |= v20;
     }
@@ -348,26 +348,26 @@ void __61__SGMatchedDetails__initilizeDictionariesFromTokenDetailMap___block_inv
   return v14;
 }
 
-+ (int64_t)tokensMatchedDetailTypeForContact:(id)a3 contactEntityId:(id)a4 detailEntityId:(id)a5 matchinfoData:(id)a6 tokens:(id)a7
++ (int64_t)tokensMatchedDetailTypeForContact:(id)contact contactEntityId:(id)id detailEntityId:(id)entityId matchinfoData:(id)data tokens:(id)tokens
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if ([a4 isEqual:a5])
+  contactCopy = contact;
+  dataCopy = data;
+  tokensCopy = tokens;
+  if ([id isEqual:entityId])
   {
-    v16 = [[SGMatchedDetailsReader alloc] initWithMatchedDetails:v14];
+    v16 = [[SGMatchedDetailsReader alloc] initWithMatchedDetails:dataCopy];
     if ([(SGMatchedDetailsReader *)v16 phraseCount])
     {
-      v17 = [v15 count];
+      v17 = [tokensCopy count];
       if (v17 != [(SGMatchedDetailsReader *)v16 phraseCount])
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v32 handleFailureInMethod:a2 object:a1 file:@"SGMatchedDetails.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"tokens.count == matchedDetailReader.phraseCount"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGMatchedDetails.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"tokens.count == matchedDetailReader.phraseCount"}];
       }
 
       if ([(SGMatchedDetailsReader *)v16 phraseCount]>= 1)
       {
-        v33 = v14;
+        v33 = dataCopy;
         v18 = 0;
         v19 = 0;
         v20 = 0;
@@ -381,8 +381,8 @@ void __61__SGMatchedDetails__initilizeDictionariesFromTokenDetailMap___block_inv
           while (1)
           {
             v24 = objc_opt_class();
-            v25 = [v15 objectAtIndexedSubscript:v18];
-            v26 = [v24 tokenMatchedDetailTypeForContact:v13 matchedDetailReader:v16 phraseNumber:v19 token:v25];
+            v25 = [tokensCopy objectAtIndexedSubscript:v18];
+            v26 = [v24 tokenMatchedDetailTypeForContact:contactCopy matchedDetailReader:v16 phraseNumber:v19 token:v25];
 
             if (v26 != 1)
             {
@@ -414,7 +414,7 @@ LABEL_31:
                 v29 = 5;
               }
 
-              v14 = v33;
+              dataCopy = v33;
               goto LABEL_37;
             }
           }
@@ -476,7 +476,7 @@ LABEL_31:
           v29 = 0;
         }
 
-        v14 = v33;
+        dataCopy = v33;
         if ((v22 & 1) == 0)
         {
           goto LABEL_37;
@@ -502,12 +502,12 @@ LABEL_37:
   return v29;
 }
 
-+ (id)matchedDetailsWithContact:(id)a3 matchinfoData:(id)a4 tokens:(id)a5
++ (id)matchedDetailsWithContact:(id)contact matchinfoData:(id)data tokens:(id)tokens
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithContact:v10 matchinfoData:v9 tokens:v8];
+  tokensCopy = tokens;
+  dataCopy = data;
+  contactCopy = contact;
+  v11 = [[self alloc] initWithContact:contactCopy matchinfoData:dataCopy tokens:tokensCopy];
 
   return v11;
 }

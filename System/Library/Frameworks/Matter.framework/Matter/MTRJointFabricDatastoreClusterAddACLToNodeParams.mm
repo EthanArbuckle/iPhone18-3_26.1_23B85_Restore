@@ -1,8 +1,8 @@
 @interface MTRJointFabricDatastoreClusterAddACLToNodeParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRJointFabricDatastoreClusterAddACLToNodeParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterAddACLToNodeParams);
-  v5 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self nodeID];
-  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self nodeID];
+  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
-  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setAclEntry:v6];
+  aclEntry = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
+  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setAclEntry:aclEntry];
 
-  v7 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self timedInvokeTimeoutMs];
-  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self timedInvokeTimeoutMs];
+  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self serverSideProcessingTimeout];
-  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self serverSideProcessingTimeout];
+  [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,11 +61,11 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v47 = *MEMORY[0x277D85DE8];
   v33[1] = 0;
-  v34 = 0;
+  unsignedLongLongValue = 0;
   v35 = 0;
   LOBYTE(v36) = 0;
   v38 = 0;
@@ -73,29 +73,29 @@
   v41 = 0;
   v32 = v33;
   v33[0] = 0;
-  v4 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self nodeID];
-  v34 = [v4 unsignedLongLongValue];
+  nodeID = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self nodeID];
+  unsignedLongLongValue = [nodeID unsignedLongLongValue];
 
-  v5 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
-  v6 = [v5 privilege];
-  LOBYTE(v35) = [v6 unsignedCharValue];
+  aclEntry = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
+  privilege = [aclEntry privilege];
+  LOBYTE(v35) = [privilege unsignedCharValue];
 
-  v7 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
-  v8 = [v7 authMode];
-  HIBYTE(v35) = [v8 unsignedCharValue];
+  aclEntry2 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
+  authMode = [aclEntry2 authMode];
+  HIBYTE(v35) = [authMode unsignedCharValue];
 
-  v9 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
-  v10 = [v9 subjects];
-  v11 = v10 == 0;
+  aclEntry3 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
+  subjects = [aclEntry3 subjects];
+  v11 = subjects == 0;
 
   if (!v11)
   {
     v36 = 0;
     v37 = 0;
     v38 = 1;
-    v12 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
-    v13 = [v12 subjects];
-    v14 = [v13 count] == 0;
+    aclEntry4 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
+    subjects2 = [aclEntry4 subjects];
+    v14 = [subjects2 count] == 0;
 
     if (!v14)
     {
@@ -106,18 +106,18 @@
     v37 = 0;
   }
 
-  v15 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
-  v16 = [v15 targets];
-  v17 = v16 == 0;
+  aclEntry5 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
+  targets = [aclEntry5 targets];
+  v17 = targets == 0;
 
   if (!v17)
   {
     v39 = 0;
     v40 = 0;
     v41 = 1;
-    v18 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
-    v19 = [v18 targets];
-    v20 = [v19 count] == 0;
+    aclEntry6 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self aclEntry];
+    targets2 = [aclEntry6 targets];
+    v20 = [targets2 count] == 0;
 
     if (!v20)
     {
@@ -138,7 +138,7 @@
     v46 = 0;
     sub_238EA16C4(&v43, &v31, 0);
     sub_2393C7BF0(buf, &v43, 0xFFFFFFFF);
-    v21 = sub_238F1BCA4(&v34, buf, 0x100uLL);
+    v21 = sub_238F1BCA4(&unsignedLongLongValue, buf, 0x100uLL);
     v23 = v21;
     if (v21 || (v21 = sub_238DD2EFC(buf, &v31), v23 = v21, v21))
     {
@@ -147,8 +147,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v31);
-      v21 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v31);
+      v21 = sub_2393C7114(reader, 21, 256);
       v24 = v29;
       v23 = v21;
     }
@@ -177,19 +177,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRJointFabricDatastoreClusterAddACLToNodeParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -200,7 +200,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xA0EF00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

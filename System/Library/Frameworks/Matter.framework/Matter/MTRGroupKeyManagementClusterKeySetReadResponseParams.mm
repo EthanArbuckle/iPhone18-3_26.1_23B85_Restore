@@ -1,9 +1,9 @@
 @interface MTRGroupKeyManagementClusterKeySetReadResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRGroupKeyManagementClusterKeySetReadResponseParams)init;
-- (MTRGroupKeyManagementClusterKeySetReadResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRGroupKeyManagementClusterKeySetReadResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRGroupKeyManagementClusterKeySetReadResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupKeyManagementClusterKeySetReadResponseParams);
-  v5 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-  [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)v4 setGroupKeySet:v5];
+  groupKeySet = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+  [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)v4 setGroupKeySet:groupKeySet];
 
-  v6 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -106,7 +106,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGroupKeyManagementClusterKeySetReadResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRGroupKeyManagementClusterKeySetReadResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGroupKeyManagementClusterKeySetReadResponseParams;
@@ -114,7 +114,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -130,95 +130,95 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self setGroupKeySet:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*a3];
-  v7 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-  [v7 setGroupKeySetID:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*struct];
+  groupKeySet = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+  [groupKeySet setGroupKeySetID:v6];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 2)];
-  v9 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-  [v9 setGroupKeySecurityPolicy:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 2)];
+  groupKeySet2 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+  [groupKeySet2 setGroupKeySecurityPolicy:v8];
 
-  if (*(a3 + 24))
+  if (*(struct + 24))
   {
-    v10 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 1) length:*(a3 + 2)];
-    v11 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v11 setEpochKey0:v10];
+    groupKeySet4 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 1) length:*(struct + 2)];
+    groupKeySet3 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet3 setEpochKey0:groupKeySet4];
   }
 
   else
   {
-    v10 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v10 setEpochKey0:0];
+    groupKeySet4 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet4 setEpochKey0:0];
   }
 
-  if (*(a3 + 40))
+  if (*(struct + 40))
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(a3 + 4)];
-    v13 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v13 setEpochStartTime0:v12];
-  }
-
-  else
-  {
-    v12 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v12 setEpochStartTime0:0];
-  }
-
-  if (*(a3 + 64))
-  {
-    v14 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 6) length:*(a3 + 7)];
-    v15 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v15 setEpochKey1:v14];
+    groupKeySet6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(struct + 4)];
+    groupKeySet5 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet5 setEpochStartTime0:groupKeySet6];
   }
 
   else
   {
-    v14 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v14 setEpochKey1:0];
+    groupKeySet6 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet6 setEpochStartTime0:0];
   }
 
-  if (*(a3 + 80))
+  if (*(struct + 64))
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(a3 + 9)];
-    v17 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v17 setEpochStartTime1:v16];
-  }
-
-  else
-  {
-    v16 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v16 setEpochStartTime1:0];
-  }
-
-  if (*(a3 + 104))
-  {
-    v18 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 11) length:*(a3 + 12)];
-    v19 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v19 setEpochKey2:v18];
+    groupKeySet8 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 6) length:*(struct + 7)];
+    groupKeySet7 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet7 setEpochKey1:groupKeySet8];
   }
 
   else
   {
-    v18 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v18 setEpochKey2:0];
+    groupKeySet8 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet8 setEpochKey1:0];
   }
 
-  if (*(a3 + 120))
+  if (*(struct + 80))
   {
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(a3 + 14)];
-    v21 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v21 setEpochStartTime2:v20];
+    groupKeySet10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(struct + 9)];
+    groupKeySet9 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet9 setEpochStartTime1:groupKeySet10];
   }
 
   else
   {
-    v20 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
-    [v20 setEpochStartTime2:0];
+    groupKeySet10 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet10 setEpochStartTime1:0];
+  }
+
+  if (*(struct + 104))
+  {
+    groupKeySet12 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 11) length:*(struct + 12)];
+    groupKeySet11 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet11 setEpochKey2:groupKeySet12];
+  }
+
+  else
+  {
+    groupKeySet12 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet12 setEpochKey2:0];
+  }
+
+  if (*(struct + 120))
+  {
+    groupKeySet14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(struct + 14)];
+    groupKeySet13 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet13 setEpochStartTime2:groupKeySet14];
+  }
+
+  else
+  {
+    groupKeySet14 = [(MTRGroupKeyManagementClusterKeySetReadResponseParams *)self groupKeySet];
+    [groupKeySet14 setEpochStartTime2:0];
   }
 
   v22 = 0;

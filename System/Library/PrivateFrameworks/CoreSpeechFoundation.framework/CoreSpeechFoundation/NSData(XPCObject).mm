@@ -7,7 +7,7 @@
 
 - (id)_cs_xpcObject
 {
-  v1 = xpc_data_create([a1 bytes], objc_msgSend(a1, "length"));
+  v1 = xpc_data_create([self bytes], objc_msgSend(self, "length"));
 
   return v1;
 }
@@ -55,7 +55,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v7 = [a1 initWithBytes:xpc_data_get_bytes_ptr(v5) length:length];
+  v7 = [self initWithBytes:xpc_data_get_bytes_ptr(v5) length:length];
 LABEL_5:
 
   v8 = *MEMORY[0x1E69E9840];

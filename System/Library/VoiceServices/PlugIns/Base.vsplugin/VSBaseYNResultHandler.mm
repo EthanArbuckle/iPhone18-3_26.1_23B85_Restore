@@ -1,24 +1,24 @@
 @interface VSBaseYNResultHandler
-- (id)actionForRecognitionResult:(id)a3;
+- (id)actionForRecognitionResult:(id)result;
 @end
 
 @implementation VSBaseYNResultHandler
 
-- (id)actionForRecognitionResult:(id)a3
+- (id)actionForRecognitionResult:(id)result
 {
-  v4 = [a3 recognitionAction];
-  v5 = [a3 elementCount];
+  recognitionAction = [result recognitionAction];
+  elementCount = [result elementCount];
   v12 = 0;
   objc_opt_class();
   v6 = 0;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = 0;
+    recognitionAction = 0;
   }
 
-  if (v4)
+  if (recognitionAction)
   {
-    v7 = v5 < 1;
+    v7 = elementCount < 1;
   }
 
   else
@@ -31,7 +31,7 @@
     v8 = 1;
     while (1)
     {
-      [a3 getElementClassIdentifier:&v12 value:0 atIndex:v8 - 1];
+      [result getElementClassIdentifier:&v12 value:0 atIndex:v8 - 1];
       v9 = [v12 isEqualToString:@"yes"];
       if (v9)
       {
@@ -40,13 +40,13 @@
 
       if ([v12 isEqualToString:@"no"])
       {
-        v10 = [v4 deniedAction];
+        deniedAction = [recognitionAction deniedAction];
         goto LABEL_12;
       }
 
       v6 = 0;
 LABEL_14:
-      if (v8 < v5)
+      if (v8 < elementCount)
       {
         ++v8;
         if (!v6)
@@ -58,10 +58,10 @@ LABEL_14:
       return v6;
     }
 
-    v10 = [v4 confirmedAction];
+    deniedAction = [recognitionAction confirmedAction];
 LABEL_12:
-    v6 = v10;
-    [v4 _setConfirmed:v9];
+    v6 = deniedAction;
+    [recognitionAction _setConfirmed:v9];
     goto LABEL_14;
   }
 

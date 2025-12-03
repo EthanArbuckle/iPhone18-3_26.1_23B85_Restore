@@ -1,19 +1,19 @@
 @interface _TUIElementLinkEntityBuilder
-- (id)finalizeLinkEntityWithContext:(id)a3;
-- (void)addLinkEntityAction:(id)a3;
+- (id)finalizeLinkEntityWithContext:(id)context;
+- (void)addLinkEntityAction:(id)action;
 @end
 
 @implementation _TUIElementLinkEntityBuilder
 
-- (void)addLinkEntityAction:(id)a3
+- (void)addLinkEntityAction:(id)action
 {
-  v10 = a3;
-  v4 = [v10 name];
-  v5 = [v4 length];
+  actionCopy = action;
+  name = [actionCopy name];
+  v5 = [name length];
 
   if (v5)
   {
-    v6 = [v10 name];
+    name2 = [actionCopy name];
     actions = self->_actions;
     if (!actions)
     {
@@ -24,14 +24,14 @@
       actions = self->_actions;
     }
 
-    [(NSMutableDictionary *)actions setObject:v10 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)actions setObject:actionCopy forKeyedSubscript:name2];
   }
 }
 
-- (id)finalizeLinkEntityWithContext:(id)a3
+- (id)finalizeLinkEntityWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   if (self->_type && self->_identifier && self->_title)
   {
     v6 = [[TUILinkEntityModel alloc] initWithType:self->_type identifier:self->_identifier title:self->_title actionsMap:self->_actions];
@@ -39,7 +39,7 @@
 
   else
   {
-    [v4 reportError:1016];
+    [contextCopy reportError:1016];
     v6 = 0;
   }
 

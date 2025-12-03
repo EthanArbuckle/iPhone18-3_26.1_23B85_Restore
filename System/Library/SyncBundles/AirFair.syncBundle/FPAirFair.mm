@@ -1,17 +1,17 @@
 @interface FPAirFair
 - (BOOL)Jaz0t2BPNjwE;
-- (BOOL)prepareForSyncWithHostAnchor:(id)a3 progressCallback:(id)a4 grappaID:(unsigned int)a5 hostVersion:(id)a6 error:(id *)a7;
-- (BOOL)reconcileSync:(unsigned int)a3 withNewAnchor:(id)a4 progressCallback:(id)a5 error:(id *)a6;
+- (BOOL)prepareForSyncWithHostAnchor:(id)anchor progressCallback:(id)callback grappaID:(unsigned int)d hostVersion:(id)version error:(id *)error;
+- (BOOL)reconcileSync:(unsigned int)sync withNewAnchor:(id)anchor progressCallback:(id)callback error:(id *)error;
 - (FPAirFair)init;
-- (int)DrFjYlmSKahjfJzgmaPvs:(FairPlayHWInfo_ *)a3;
+- (int)DrFjYlmSKahjfJzgmaPvs:(FairPlayHWInfo_ *)pvs;
 - (int)ENaUvadPgTNQtAOA;
 - (int)FVxWQcJol3R;
-- (int)MvKgJWHiyPi9jHcCD1zBrVK7F:(id)a3 bytes:(char *)a4 size:(unsigned int *)a5;
-- (int)U0DV0QxFFjyMatlbDyqSZ4s3d:(id)a3;
+- (int)MvKgJWHiyPi9jHcCD1zBrVK7F:(id)f bytes:(char *)bytes size:(unsigned int *)size;
+- (int)U0DV0QxFFjyMatlbDyqSZ4s3d:(id)z4s3d;
 - (int)cIjYbQiRD8mj9H;
-- (int)wkiHcH3uUYkLWEOOs:(char *)a3 reqSize:(unsigned int)a4 fileName:(id)a5;
+- (int)wkiHcH3uUYkLWEOOs:(char *)os reqSize:(unsigned int)size fileName:(id)name;
 - (void)dealloc;
-- (void)syncEndedWithSuccess:(BOOL)a3;
+- (void)syncEndedWithSuccess:(BOOL)success;
 @end
 
 @implementation FPAirFair
@@ -44,36 +44,36 @@
   [(FPAirFair *)&v4 dealloc];
 }
 
-- (BOOL)prepareForSyncWithHostAnchor:(id)a3 progressCallback:(id)a4 grappaID:(unsigned int)a5 hostVersion:(id)a6 error:(id *)a7
+- (BOOL)prepareForSyncWithHostAnchor:(id)anchor progressCallback:(id)callback grappaID:(unsigned int)d hostVersion:(id)version error:(id *)error
 {
   v20 = 0;
   v19 = 0;
   v18 = 0;
-  self->LnGBbUJQLDA = a5;
+  self->LnGBbUJQLDA = d;
   df35957c4e0();
-  if (!v10 || (v11 = [(FPAirFair *)self ENaUvadPgTNQtAOA], !v11))
+  if (!v10 || (fVxWQcJol3R = [(FPAirFair *)self ENaUvadPgTNQtAOA], !fVxWQcJol3R))
   {
-    v12 = a6 && ([@"11.0.2.0" compare:a6 options:64] == -1 || !objc_msgSend(@"11.0.2.0", "compare:options:", a6, 64)) ? 110103 : 0;
+    v12 = version && ([@"11.0.2.0" compare:version options:64] == -1 || !objc_msgSend(@"11.0.2.0", "compare:options:", version, 64)) ? 110103 : 0;
     Mt76Vq80ux(self->HPD8FhhtYi5OC5SPY, 0, v12, 7, &v20, &v19);
-    if (!v11)
+    if (!fVxWQcJol3R)
     {
-      v11 = [(FPAirFair *)self FVxWQcJol3R];
-      if (!v11)
+      fVxWQcJol3R = [(FPAirFair *)self FVxWQcJol3R];
+      if (!fVxWQcJol3R)
       {
-        v11 = [(FPAirFair *)self wkiHcH3uUYkLWEOOs:v20 reqSize:v19 fileName:@"/var/mobile/Media/AirFair/sync/afsync.rq"];
-        if (!v11)
+        fVxWQcJol3R = [(FPAirFair *)self wkiHcH3uUYkLWEOOs:v20 reqSize:v19 fileName:@"/var/mobile/Media/AirFair/sync/afsync.rq"];
+        if (!fVxWQcJol3R)
         {
           jumT7rcoieclCtxS2rgJ(self->LnGBbUJQLDA, v20, v19, &v18);
-          if (!v11)
+          if (!fVxWQcJol3R)
           {
-            v11 = [(FPAirFair *)self wkiHcH3uUYkLWEOOs:v18 reqSize:0 fileName:@"/var/mobile/Media/AirFair/sync/afsync.rq.sig"];
+            fVxWQcJol3R = [(FPAirFair *)self wkiHcH3uUYkLWEOOs:v18 reqSize:0 fileName:@"/var/mobile/Media/AirFair/sync/afsync.rq.sig"];
           }
         }
       }
     }
   }
 
-  v13 = v11;
+  v13 = fVxWQcJol3R;
   if (v20)
   {
     jEHf8Xzsv8K(v20);
@@ -98,20 +98,20 @@
     v16 = [[NSError alloc] initWithDomain:@"AirFair" code:v13 userInfo:0];
     if (v16)
     {
-      *a7 = v16;
+      *error = v16;
     }
   }
 
   return v13 == 0;
 }
 
-- (BOOL)reconcileSync:(unsigned int)a3 withNewAnchor:(id)a4 progressCallback:(id)a5 error:(id *)a6
+- (BOOL)reconcileSync:(unsigned int)sync withNewAnchor:(id)anchor progressCallback:(id)callback error:(id *)error
 {
   v18 = 0;
   v17 = 0;
   v16 = 0;
   v15 = 0;
-  if (![(FPAirFair *)self Jaz0t2BPNjwE:*&a3])
+  if (![(FPAirFair *)self Jaz0t2BPNjwE:*&sync])
   {
     goto LABEL_15;
   }
@@ -157,7 +157,7 @@
     {
       v13 = v12;
       LOBYTE(v12) = 0;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -170,12 +170,12 @@ LABEL_15:
   return v12;
 }
 
-- (void)syncEndedWithSuccess:(BOOL)a3
+- (void)syncEndedWithSuccess:(BOOL)success
 {
-  v3 = [(FPAirFair *)self cIjYbQiRD8mj9H];
-  if (v3 != -42112 && v3)
+  cIjYbQiRD8mj9H = [(FPAirFair *)self cIjYbQiRD8mj9H];
+  if (cIjYbQiRD8mj9H != -42112 && cIjYbQiRD8mj9H)
   {
-    v4 = [NSString stringWithFormat:@"AirFair:syncEndedWithSuccess failed with error %d", v3];
+    v4 = [NSString stringWithFormat:@"AirFair:syncEndedWithSuccess failed with error %d", cIjYbQiRD8mj9H];
     v5 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -229,11 +229,11 @@ LABEL_15:
   return v3;
 }
 
-- (int)wkiHcH3uUYkLWEOOs:(char *)a3 reqSize:(unsigned int)a4 fileName:(id)a5
+- (int)wkiHcH3uUYkLWEOOs:(char *)os reqSize:(unsigned int)size fileName:(id)name
 {
-  v7 = [a5 UTF8String];
+  uTF8String = [name UTF8String];
   v8 = umask(0);
-  v9 = open(v7, 1825, 420);
+  v9 = open(uTF8String, 1825, 420);
   if (v9 < 0)
   {
     if (*__error() == 2)
@@ -250,7 +250,7 @@ LABEL_15:
   else
   {
     v10 = v9;
-    if (write(v9, a3, a4) == a4)
+    if (write(v9, os, size) == size)
     {
       v11 = 0;
     }
@@ -267,10 +267,10 @@ LABEL_15:
   return v11;
 }
 
-- (int)MvKgJWHiyPi9jHcCD1zBrVK7F:(id)a3 bytes:(char *)a4 size:(unsigned int *)a5
+- (int)MvKgJWHiyPi9jHcCD1zBrVK7F:(id)f bytes:(char *)bytes size:(unsigned int *)size
 {
   memset(&v14, 0, sizeof(v14));
-  v7 = open([a3 UTF8String], 272, 0);
+  v7 = open([f UTF8String], 272, 0);
   if (v7 < 0)
   {
     v9 = 0;
@@ -329,15 +329,15 @@ LABEL_15:
     }
   }
 
-  *a4 = v9;
-  *a5 = st_size;
+  *bytes = v9;
+  *size = st_size;
   return v11;
 }
 
-- (int)U0DV0QxFFjyMatlbDyqSZ4s3d:(id)a3
+- (int)U0DV0QxFFjyMatlbDyqSZ4s3d:(id)z4s3d
 {
-  v3 = [a3 UTF8String];
-  if (lstat(v3, &v6))
+  uTF8String = [z4s3d UTF8String];
+  if (lstat(uTF8String, &v6))
   {
     if (*__error() == 2)
     {
@@ -355,7 +355,7 @@ LABEL_15:
     v4 = -42110;
     if ((v6.st_mode & 0xF000) != 0xA000)
     {
-      if (unlink(v3))
+      if (unlink(uTF8String))
       {
         return -42110;
       }
@@ -379,9 +379,9 @@ LABEL_15:
   return [(FPAirFair *)self U0DV0QxFFjyMatlbDyqSZ4s3d:@"/var/mobile/Media/AirFair/sync/afsync.rs.sig"];
 }
 
-- (int)DrFjYlmSKahjfJzgmaPvs:(FairPlayHWInfo_ *)a3
+- (int)DrFjYlmSKahjfJzgmaPvs:(FairPlayHWInfo_ *)pvs
 {
-  if (!a3)
+  if (!pvs)
   {
     return -42023;
   }
@@ -402,7 +402,7 @@ LABEL_15:
   if (CFStringGetCString(v5, buffer, 41, 0x8000100u))
   {
     v7 = strlen(buffer);
-    zxcm2Qme0x(buffer, v7, a3);
+    zxcm2Qme0x(buffer, v7, pvs);
     v9 = v8;
   }
 
@@ -428,12 +428,12 @@ LABEL_15:
       if (v5 == -42180)
       {
         v3 = -42180;
-        v6 = [NSString stringWithFormat:@"AirFair plugin failed to initialize %d - to be expected on boot before SpringBoard (rdar://9874159)", 4294925116];
+        4294925116 = [NSString stringWithFormat:@"AirFair plugin failed to initialize %d - to be expected on boot before SpringBoard (rdar://9874159)", 4294925116];
         v7 = _ATLogCategorySyncBundle();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v11 = v6;
+          v11 = 4294925116;
           _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           return -42180;
         }

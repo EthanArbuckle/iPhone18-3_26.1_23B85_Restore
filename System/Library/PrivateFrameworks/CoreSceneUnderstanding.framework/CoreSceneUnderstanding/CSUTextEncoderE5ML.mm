@@ -1,31 +1,31 @@
 @interface CSUTextEncoderE5ML
-- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)a3;
-- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)a3;
-- (BOOL)loadModelCatalogResourcesWithAssetLock:(id)a3 Error:(id *)a4;
-- (BOOL)loadResources:(id *)a3;
-- (BOOL)loadResourcesInternal:(id *)a3;
-- (BOOL)reLoadResources:(id *)a3;
-- (CSUTextEncoderE5ML)initWithConfiguration:(id)a3;
-- (id)getTokenEmbeddingsforChunks:(vector<std:(std:(id *)a4 :allocator<std::vector<unsigned int>>> *)a3 :vector<unsigned)int> error:;
-- (vector<unsigned)getTokensOnText:(CSUTextEncoderE5ML *)self withBOS:(SEL)a3 withEOS:(id)a4 withError:(BOOL)a5;
-- (void)_unsafeRunOnInput:(id)a3 completion:(id)a4;
-- (void)_unsafeRunOnInputText:(id)a3 completion:(id)a4;
-- (void)runOnInput:(id)a3 completion:(id)a4;
-- (void)runOnInputText:(id)a3 completion:(id)a4;
+- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)contiguous;
+- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)contiguous;
+- (BOOL)loadModelCatalogResourcesWithAssetLock:(id)lock Error:(id *)error;
+- (BOOL)loadResources:(id *)resources;
+- (BOOL)loadResourcesInternal:(id *)internal;
+- (BOOL)reLoadResources:(id *)resources;
+- (CSUTextEncoderE5ML)initWithConfiguration:(id)configuration;
+- (id)getTokenEmbeddingsforChunks:(vector<std:(std:(id *)chunks :allocator<std::vector<unsigned int>>> *)a3 :vector<unsigned)int> error:;
+- (vector<unsigned)getTokensOnText:(CSUTextEncoderE5ML *)self withBOS:(SEL)s withEOS:(id)oS withError:(BOOL)error;
+- (void)_unsafeRunOnInput:(id)input completion:(id)completion;
+- (void)_unsafeRunOnInputText:(id)text completion:(id)completion;
+- (void)runOnInput:(id)input completion:(id)completion;
+- (void)runOnInputText:(id)text completion:(id)completion;
 @end
 
 @implementation CSUTextEncoderE5ML
 
-- (CSUTextEncoderE5ML)initWithConfiguration:(id)a3
+- (CSUTextEncoderE5ML)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = CSUTextEncoderE5ML;
   v6 = [(CSUTextEncoderE5ML *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     tokenEmbedder = v7->_tokenEmbedder;
     v7->_tokenEmbedder = 0;
 
@@ -41,11 +41,11 @@
   return v7;
 }
 
-- (vector<unsigned)getTokensOnText:(CSUTextEncoderE5ML *)self withBOS:(SEL)a3 withEOS:(id)a4 withError:(BOOL)a5
+- (vector<unsigned)getTokensOnText:(CSUTextEncoderE5ML *)self withBOS:(SEL)s withEOS:(id)oS withError:(BOOL)error
 {
   v8 = a6;
-  v9 = a5;
-  v12 = a4;
+  errorCopy = error;
+  oSCopy = oS;
   if ((objc_msgSend_loadResources_(self, v13, a7, v14, v15) & 1) == 0)
   {
     retstr->var0 = 0;
@@ -56,18 +56,18 @@
 
   if (objc_msgSend_inputIsLowerCase(self->_configuration, v16, v17, v18, v19))
   {
-    v24 = objc_msgSend_lowercaseString(v12, v20, v21, v22, v23);
+    v24 = objc_msgSend_lowercaseString(oSCopy, v20, v21, v22, v23);
 
-    v12 = v24;
+    oSCopy = v24;
   }
 
-  v25 = v12;
+  v25 = oSCopy;
   if (!objc_msgSend_UTF8String(v25, v26, v27, v28, v29))
   {
     v40 = sub_1AC090E50();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
-      sub_1AC11F6F4(v12, v40);
+      sub_1AC11F6F4(oSCopy, v40);
 
       if (!a7)
       {
@@ -92,7 +92,7 @@
   }
 
 LABEL_5:
-  v30 = v12;
+  v30 = oSCopy;
   v35 = objc_msgSend_UTF8String(v30, v31, v32, v33, v34);
   v36 = strlen(v35);
   if (v36 >= 0x7FFFFFFFFFFFFFF8)
@@ -114,7 +114,7 @@ LABEL_5:
 
   *(&__dst + v37) = 0;
   (*(*self->_vocabulary.__ptr_ + 16))(&__src);
-  if (v9)
+  if (errorCopy)
   {
     v45 = 1;
     sub_1AC071660(&__src, __src, &v45);
@@ -156,7 +156,7 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   v52 = *MEMORY[0x1E69E9840];
   v6 = sub_1AC090E50();
@@ -228,7 +228,7 @@ LABEL_20:
   }
 
   v39 = objc_opt_new();
-  if ((objc_msgSend_loadModelCatalogResourcesWithAssetLock_Error_(self, v40, v39, a3, v41) & 1) == 0)
+  if ((objc_msgSend_loadModelCatalogResourcesWithAssetLock_Error_(self, v40, v39, resources, v41) & 1) == 0)
   {
     ResourcesInternal = 0;
     goto LABEL_22;
@@ -236,7 +236,7 @@ LABEL_20:
 
   v42 = v39;
 LABEL_21:
-  ResourcesInternal = objc_msgSend_loadResourcesInternal_(self, v36, a3, v37, v38);
+  ResourcesInternal = objc_msgSend_loadResourcesInternal_(self, v36, resources, v37, v38);
   v39 = v42;
 LABEL_22:
 
@@ -260,18 +260,18 @@ LABEL_22:
   return ResourcesInternal;
 }
 
-- (BOOL)loadResourcesInternal:(id *)a3
+- (BOOL)loadResourcesInternal:(id *)internal
 {
   if (self->_textEncoder)
   {
     if (self->_tokenEmbedder)
     {
-      v6 = self;
-      v7 = a3;
-      v8 = objc_msgSend_updated(self->_configuration, a2, a3, v3, v4);
-      a3 = v7;
+      selfCopy = self;
+      internalCopy = internal;
+      v8 = objc_msgSend_updated(self->_configuration, a2, internal, v3, v4);
+      internal = internalCopy;
       v9 = v8;
-      self = v6;
+      self = selfCopy;
       v5 = vars8;
       if (!v9)
       {
@@ -280,10 +280,10 @@ LABEL_22:
     }
   }
 
-  return objc_msgSend_reLoadResources_(self, a2, a3, v3, v4);
+  return objc_msgSend_reLoadResources_(self, a2, internal, v3, v4);
 }
 
-- (BOOL)reLoadResources:(id *)a3
+- (BOOL)reLoadResources:(id *)resources
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = sub_1AC090E50();
@@ -325,10 +325,10 @@ LABEL_22:
   sub_1AC060A04();
 }
 
-- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)a3
+- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)contiguous
 {
-  v4 = *(a3 + 2);
-  v3 = *(a3 + 3);
+  v4 = *(contiguous + 2);
+  v3 = *(contiguous + 3);
   if (v3 != v4)
   {
     if (((v3 - v4) & 0x8000000000000000) == 0)
@@ -339,7 +339,7 @@ LABEL_22:
     sub_1AC060AAC();
   }
 
-  (*(**(a3 + 5) + 32))(__p);
+  (*(**(contiguous + 5) + 32))(__p);
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -349,11 +349,11 @@ LABEL_22:
   return 0;
 }
 
-- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)a3
+- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)contiguous
 {
-  v4 = a3;
-  v9 = objc_msgSend_strides(v4, v5, v6, v7, v8);
-  v18 = objc_msgSend_shape(v4, v10, v11, v12, v13);
+  contiguousCopy = contiguous;
+  v9 = objc_msgSend_strides(contiguousCopy, v5, v6, v7, v8);
+  v18 = objc_msgSend_shape(contiguousCopy, v10, v11, v12, v13);
   for (i = 0; ; ++i)
   {
     if (i >= objc_msgSend_count(v18, v14, v15, v16, v17))
@@ -379,13 +379,13 @@ LABEL_7:
   return v34;
 }
 
-- (id)getTokenEmbeddingsforChunks:(vector<std:(std:(id *)a4 :allocator<std::vector<unsigned int>>> *)a3 :vector<unsigned)int> error:
+- (id)getTokenEmbeddingsforChunks:(vector<std:(std:(id *)chunks :allocator<std::vector<unsigned int>>> *)a3 :vector<unsigned)int> error:
 {
   v90[2] = *MEMORY[0x1E69E9840];
-  v10 = objc_msgSend_contextLength(self->_configuration, a2, a3, a4, v4);
-  v82 = a4;
+  v10 = objc_msgSend_contextLength(self->_configuration, a2, a3, chunks, v4);
+  chunksCopy = chunks;
   __p = 0;
-  *a4 = 0;
+  *chunks = 0;
   __dst = 0;
   v85 = 0;
   var0 = a3->var0;
@@ -402,7 +402,7 @@ LABEL_7:
     if (v10 < (__dst - __p) >> 2)
     {
       v13 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"Maximum input token sequence length exceeds %zu", v8, v9, v10);
-      *v82 = objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, v14, v13, v15, v16);
+      *chunksCopy = objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, v14, v13, v15, v16);
     }
   }
 
@@ -411,7 +411,7 @@ LABEL_7:
   v18 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v7, v10, v8, v9);
   v90[1] = v18;
   v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v19, v90, 2, v20);
-  v23 = objc_msgSend_getInputMLMutliArrayFor_WithShape_error_(tokenEmbedder, v22, @"text_ids", v21, v82);
+  v23 = objc_msgSend_getInputMLMutliArrayFor_WithShape_error_(tokenEmbedder, v22, @"text_ids", v21, chunksCopy);
 
   if (v23)
   {
@@ -457,11 +457,11 @@ LABEL_7:
     v86 = @"text_ids";
     v87 = v23;
     v53 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v24, &v87, &v86, 1);
-    v56 = objc_msgSend_setInputFeatures_error_(v52, v54, v53, v82, v55);
+    v56 = objc_msgSend_setInputFeatures_error_(v52, v54, v53, chunksCopy, v55);
 
     if (v56)
     {
-      if (objc_msgSend_predict_(self->_tokenEmbedder, v57, v82, v58, v59))
+      if (objc_msgSend_predict_(self->_tokenEmbedder, v57, chunksCopy, v58, v59))
       {
         v63 = objc_msgSend_getOutputFor_(self->_tokenEmbedder, v60, @"token_embed", v61, v62);
         goto LABEL_23;
@@ -498,9 +498,9 @@ LABEL_23:
   return v63;
 }
 
-- (BOOL)loadModelCatalogResourcesWithAssetLock:(id)a3 Error:(id *)a4
+- (BOOL)loadModelCatalogResourcesWithAssetLock:(id)lock Error:(id *)error
 {
-  v8 = a3;
+  lockCopy = lock;
   v13 = objc_msgSend_configuration(self, v9, v10, v11, v12);
   v22 = objc_msgSend_revision(v13, v14, v15, v16, v17);
   if (v22 == 2)
@@ -567,13 +567,13 @@ LABEL_9:
 
 LABEL_13:
   v13 = objc_opt_new();
-  v4 = objc_msgSend_fetchWithAssetLock_error_(v13, v38, v8, a4, v39);
+  v4 = objc_msgSend_fetchWithAssetLock_error_(v13, v38, lockCopy, error, v39);
   if (!v4)
   {
-    if (a4)
+    if (error)
     {
-      objc_msgSend_errorForInternalErrorWithLocalizedDescription_underlyingError_(CSUError, v40, @"Model Catalog asset base url for text and token encoders is nil!", *a4, v43);
-      *a4 = v75 = 0;
+      objc_msgSend_errorForInternalErrorWithLocalizedDescription_underlyingError_(CSUError, v40, @"Model Catalog asset base url for text and token encoders is nil!", *error, v43);
+      *error = v75 = 0;
       goto LABEL_22;
     }
 
@@ -603,7 +603,7 @@ LABEL_21:
   v62 = objc_msgSend_configuration(self, v58, v59, v60, v61);
   objc_msgSend_setTokenEmbeddingNetworkURL_(v62, v63, v4, v64, v65);
 
-  if (!objc_msgSend_reLoadResources_(self, v66, a4, v67, v68))
+  if (!objc_msgSend_reLoadResources_(self, v66, error, v67, v68))
   {
     goto LABEL_21;
   }
@@ -619,11 +619,11 @@ LABEL_26:
   return v75;
 }
 
-- (void)_unsafeRunOnInput:(id)a3 completion:(id)a4
+- (void)_unsafeRunOnInput:(id)input completion:(id)completion
 {
   v70 = *MEMORY[0x1E69E9840];
-  v58 = a3;
-  v61 = a4;
+  inputCopy = input;
+  completionCopy = completion;
   v59 = objc_msgSend_date(MEMORY[0x1E695DF00], v8, v9, v10, v11);
   v16 = objc_msgSend_configuration(self, v12, v13, v14, v15);
   v25 = objc_msgSend_revision(v16, v17, v18, v19, v20);
@@ -692,7 +692,7 @@ LABEL_13:
   v48 = v64;
   if ((ModelCatalogResourcesWithAssetLock_Error & 1) == 0)
   {
-    v61[2](v61, 0, v48);
+    completionCopy[2](completionCopy, 0, v48);
     goto LABEL_23;
   }
 
@@ -723,36 +723,36 @@ LABEL_18:
   }
 
   v48 = v62;
-  (v61[2])(v61, 0);
+  (completionCopy[2])(completionCopy, 0);
   v44 = v60;
 LABEL_23:
 
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_unsafeRunOnInputText:(id)a3 completion:(id)a4
+- (void)_unsafeRunOnInputText:(id)text completion:(id)completion
 {
-  v17 = a3;
-  v6 = a4;
+  textCopy = text;
+  completionCopy = completion;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  objc_msgSend_setString_(v8, v9, v17, v10, v11);
+  objc_msgSend_setString_(v8, v9, textCopy, v10, v11);
   objc_msgSend_addObject_(v7, v12, v8, v13, v14);
-  objc_msgSend_runOnInput_completion_(self, v15, v7, v6, v16);
+  objc_msgSend_runOnInput_completion_(self, v15, v7, completionCopy, v16);
 }
 
-- (void)runOnInput:(id)a3 completion:(id)a4
+- (void)runOnInput:(id)input completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__unsafeRunOnInput_completion_(self, v8, v6, v7, v9);
+  inputCopy = input;
+  completionCopy = completion;
+  objc_msgSend__unsafeRunOnInput_completion_(self, v8, inputCopy, completionCopy, v9);
 }
 
-- (void)runOnInputText:(id)a3 completion:(id)a4
+- (void)runOnInputText:(id)text completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__unsafeRunOnInputText_completion_(self, v8, v6, v7, v9);
+  textCopy = text;
+  completionCopy = completion;
+  objc_msgSend__unsafeRunOnInputText_completion_(self, v8, textCopy, completionCopy, v9);
 }
 
 @end

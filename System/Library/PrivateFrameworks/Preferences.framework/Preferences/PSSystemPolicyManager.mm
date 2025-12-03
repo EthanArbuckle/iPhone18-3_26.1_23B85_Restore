@@ -1,33 +1,33 @@
 @interface PSSystemPolicyManager
-+ (BOOL)_backgroundAppRefreshSettingsNeededForProxy:(id)a3;
-+ (BOOL)_cellularDataSettingsNeededForBundleID:(id)a3;
-+ (BOOL)_defaultAppSettingsNeededForBundleID:(id)a3;
-+ (BOOL)_documentSettingsNeededForBundleID:(id)a3;
-+ (BOOL)_familyControlsSettingNeededForBundleID:(id)a3;
-+ (BOOL)_journalingSuggestionsSettingsNeededForBundleID:(id)a3;
-+ (BOOL)_languageSettingNeededForBundleID:(id)a3;
-+ (BOOL)_liveActivitiesSettingsNeededForBundleID:(id)a3;
-+ (BOOL)_notificationSettingsNeededForBundleID:(id)a3;
-+ (BOOL)_pasteboardSettingsNeededForBundleID:(id)a3;
-+ (BOOL)_photosSettingsNeededForProxy:(id)a3;
-+ (BOOL)_privacySettingsNeededForProxy:(id)a3;
-+ (BOOL)_shouldIncludeProxy:(id)a3;
-+ (BOOL)_systemSettingsNeededForProxy:(id)a3;
-+ (BOOL)_tapToPaySettingsNeededForBundleID:(id)a3;
++ (BOOL)_backgroundAppRefreshSettingsNeededForProxy:(id)proxy;
++ (BOOL)_cellularDataSettingsNeededForBundleID:(id)d;
++ (BOOL)_defaultAppSettingsNeededForBundleID:(id)d;
++ (BOOL)_documentSettingsNeededForBundleID:(id)d;
++ (BOOL)_familyControlsSettingNeededForBundleID:(id)d;
++ (BOOL)_journalingSuggestionsSettingsNeededForBundleID:(id)d;
++ (BOOL)_languageSettingNeededForBundleID:(id)d;
++ (BOOL)_liveActivitiesSettingsNeededForBundleID:(id)d;
++ (BOOL)_notificationSettingsNeededForBundleID:(id)d;
++ (BOOL)_pasteboardSettingsNeededForBundleID:(id)d;
++ (BOOL)_photosSettingsNeededForProxy:(id)proxy;
++ (BOOL)_privacySettingsNeededForProxy:(id)proxy;
++ (BOOL)_shouldIncludeProxy:(id)proxy;
++ (BOOL)_systemSettingsNeededForProxy:(id)proxy;
++ (BOOL)_tapToPaySettingsNeededForBundleID:(id)d;
 + (BOOL)hasAnyAppClip;
-+ (BOOL)isInstalledByThirdPartyMarketplace:(id)a3;
++ (BOOL)isInstalledByThirdPartyMarketplace:(id)marketplace;
 + (id)_dataUsageWorkspaceInfo;
 + (id)_thirdPartyApplicationProxies;
-+ (id)_thirdPartyApplicationProxyForBundleID:(id)a3;
-+ (id)specifiersForThirdPartyApps:(id)a3;
-+ (id)thirdPartyApplicationForBundleID:(id)a3;
-+ (id)thirdPartyApplicationsIncludingAppClips:(BOOL)a3;
++ (id)_thirdPartyApplicationProxyForBundleID:(id)d;
++ (id)specifiersForThirdPartyApps:(id)apps;
++ (id)thirdPartyApplicationForBundleID:(id)d;
++ (id)thirdPartyApplicationsIncludingAppClips:(BOOL)clips;
 + (void)_populateBBSectionIDs;
 @end
 
 @implementation PSSystemPolicyManager
 
-+ (id)thirdPartyApplicationsIncludingAppClips:(BOOL)a3
++ (id)thirdPartyApplicationsIncludingAppClips:(BOOL)clips
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -35,8 +35,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a1 _thirdPartyApplicationProxies];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _thirdPartyApplicationProxies = [self _thirdPartyApplicationProxies];
+  v7 = [_thirdPartyApplicationProxies countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -47,15 +47,15 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_thirdPartyApplicationProxies);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (!a3)
+        if (!clips)
         {
-          v12 = [*(*(&v15 + 1) + 8 * i) appClipMetadata];
+          appClipMetadata = [*(*(&v15 + 1) + 8 * i) appClipMetadata];
 
-          if (v12)
+          if (appClipMetadata)
           {
             continue;
           }
@@ -66,7 +66,7 @@
         [v5 addObject:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [_thirdPartyApplicationProxies countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -75,9 +75,9 @@
   return v5;
 }
 
-+ (id)thirdPartyApplicationForBundleID:(id)a3
++ (id)thirdPartyApplicationForBundleID:(id)d
 {
-  v3 = [a1 _thirdPartyApplicationProxyForBundleID:a3];
+  v3 = [self _thirdPartyApplicationProxyForBundleID:d];
   v4 = [[PSThirdPartyApp alloc] initWithApplicationRecord:v3];
   [(PSThirdPartyApp *)v4 load];
 
@@ -91,8 +91,8 @@
   v9 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_7];
   [v8 setPredicate:v9];
 
-  v10 = [v8 nextObject];
-  LOBYTE(v9) = v10 != 0;
+  nextObject = [v8 nextObject];
+  LOBYTE(v9) = nextObject != 0;
 
   return v9;
 }
@@ -135,8 +135,8 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v41 + 1) + 8 * i) compatibilityObject];
-        [v2 addObject:v15];
+        compatibilityObject = [*(*(&v41 + 1) + 8 * i) compatibilityObject];
+        [v2 addObject:compatibilityObject];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -166,8 +166,8 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v37 + 1) + 8 * j) compatibilityObject];
-        [v2 addObject:v22];
+        compatibilityObject2 = [*(*(&v37 + 1) + 8 * j) compatibilityObject];
+        [v2 addObject:compatibilityObject2];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v37 objects:v46 count:16];
@@ -176,9 +176,9 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
     while (v19);
   }
 
-  v23 = [MEMORY[0x1E695DF70] array];
-  v24 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v25 = [v24 BOOLForKey:@"kInternalPreferencesLoadsAllSettingsBundles"];
+  array = [MEMORY[0x1E695DF70] array];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v25 = [standardUserDefaults BOOLForKey:@"kInternalPreferencesLoadsAllSettingsBundles"];
 
   +[PSSystemPolicyManager _populateBBSectionIDs];
   v35 = 0u;
@@ -203,7 +203,7 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
         v31 = *(*(&v33 + 1) + 8 * k);
         if (v25 && ([*(*(&v33 + 1) + 8 * k) hasSettingsBundle] & 1) != 0 || (objc_msgSend(v31, "isManagedAppDistributor", v33) & 1) != 0 || +[PSSystemPolicyManager isInstalledByThirdPartyMarketplace:](PSSystemPolicyManager, "isInstalledByThirdPartyMarketplace:", v31) || +[PSSystemPolicyManager _shouldIncludeProxy:](PSSystemPolicyManager, "_shouldIncludeProxy:", v31))
         {
-          [v23 addObject:v31];
+          [array addObject:v31];
         }
       }
 
@@ -213,14 +213,14 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
     while (v28);
   }
 
-  return v23;
+  return array;
 }
 
-+ (id)_thirdPartyApplicationProxyForBundleID:(id)a3
++ (id)_thirdPartyApplicationProxyForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   +[PSSystemPolicyManager _populateBBSectionIDs];
-  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:0];
+  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:0];
 
   if (v4 && +[PSSystemPolicyManager _shouldIncludeProxy:](PSSystemPolicyManager, "_shouldIncludeProxy:", v4) || ([v4 isManagedAppDistributor] & 1) != 0 || +[PSSystemPolicyManager isInstalledByThirdPartyMarketplace:](PSSystemPolicyManager, "isInstalledByThirdPartyMarketplace:", v4))
   {
@@ -235,17 +235,17 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (BOOL)isInstalledByThirdPartyMarketplace:(id)a3
++ (BOOL)isInstalledByThirdPartyMarketplace:(id)marketplace
 {
-  v3 = a3;
-  v4 = [v3 iTunesMetadata];
-  v5 = [v4 distributorInfo];
-  v6 = [v5 distributorID];
-  if (v6)
+  marketplaceCopy = marketplace;
+  iTunesMetadata = [marketplaceCopy iTunesMetadata];
+  distributorInfo = [iTunesMetadata distributorInfo];
+  distributorID = [distributorInfo distributorID];
+  if (distributorID)
   {
-    v7 = [v3 iTunesMetadata];
-    v8 = [v7 distributorInfo];
-    v9 = [v8 distributorIsFirstPartyApple] ^ 1;
+    iTunesMetadata2 = [marketplaceCopy iTunesMetadata];
+    distributorInfo2 = [iTunesMetadata2 distributorInfo];
+    v9 = [distributorInfo2 distributorIsFirstPartyApple] ^ 1;
   }
 
   else
@@ -256,22 +256,22 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
   return v9;
 }
 
-+ (BOOL)_shouldIncludeProxy:(id)a3
++ (BOOL)_shouldIncludeProxy:(id)proxy
 {
-  v3 = a3;
-  v4 = [v3 compatibilityObject];
-  v5 = [v4 applicationType];
-  if ([v5 isEqualToString:*MEMORY[0x1E69635B8]])
+  proxyCopy = proxy;
+  compatibilityObject = [proxyCopy compatibilityObject];
+  applicationType = [compatibilityObject applicationType];
+  if ([applicationType isEqualToString:*MEMORY[0x1E69635B8]])
   {
-    v6 = ([v3 hasSettingsBundle] & 1) != 0 || +[PSSystemPolicyManager _systemSettingsNeededForProxy:](PSSystemPolicyManager, "_systemSettingsNeededForProxy:", v3);
+    v6 = ([proxyCopy hasSettingsBundle] & 1) != 0 || +[PSSystemPolicyManager _systemSettingsNeededForProxy:](PSSystemPolicyManager, "_systemSettingsNeededForProxy:", proxyCopy);
   }
 
   else
   {
-    v7 = [v3 bundleIdentifier];
-    if ([v7 isEqualToString:@"com.apple.PlaygroundsBeta"])
+    bundleIdentifier = [proxyCopy bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.PlaygroundsBeta"])
     {
-      v6 = ([v3 hasSettingsBundle] & 1) != 0 || +[PSSystemPolicyManager _systemSettingsNeededForProxy:](PSSystemPolicyManager, "_systemSettingsNeededForProxy:", v3);
+      v6 = ([proxyCopy hasSettingsBundle] & 1) != 0 || +[PSSystemPolicyManager _systemSettingsNeededForProxy:](PSSystemPolicyManager, "_systemSettingsNeededForProxy:", proxyCopy);
     }
 
     else
@@ -283,73 +283,73 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
   return v6;
 }
 
-+ (BOOL)_systemSettingsNeededForProxy:(id)a3
++ (BOOL)_systemSettingsNeededForProxy:(id)proxy
 {
-  v3 = a3;
-  if ([PSSystemPolicyManager _privacySettingsNeededForProxy:v3]|| [PSSystemPolicyManager _photosSettingsNeededForProxy:v3]|| [PSSystemPolicyManager _backgroundAppRefreshSettingsNeededForProxy:v3])
+  proxyCopy = proxy;
+  if ([PSSystemPolicyManager _privacySettingsNeededForProxy:proxyCopy]|| [PSSystemPolicyManager _photosSettingsNeededForProxy:proxyCopy]|| [PSSystemPolicyManager _backgroundAppRefreshSettingsNeededForProxy:proxyCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v3 bundleIdentifier];
-    if ([PSSystemPolicyManager _cellularDataSettingsNeededForBundleID:v6])
+    bundleIdentifier = [proxyCopy bundleIdentifier];
+    if ([PSSystemPolicyManager _cellularDataSettingsNeededForBundleID:bundleIdentifier])
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [v3 bundleIdentifier];
-      if ([PSSystemPolicyManager _notificationSettingsNeededForBundleID:v7])
+      bundleIdentifier2 = [proxyCopy bundleIdentifier];
+      if ([PSSystemPolicyManager _notificationSettingsNeededForBundleID:bundleIdentifier2])
       {
         v4 = 1;
       }
 
       else
       {
-        v8 = [v3 bundleIdentifier];
-        if ([PSSystemPolicyManager _documentSettingsNeededForBundleID:v8])
+        bundleIdentifier3 = [proxyCopy bundleIdentifier];
+        if ([PSSystemPolicyManager _documentSettingsNeededForBundleID:bundleIdentifier3])
         {
           v4 = 1;
         }
 
         else
         {
-          v9 = [v3 bundleIdentifier];
-          if ([PSSystemPolicyManager _defaultAppSettingsNeededForBundleID:v9])
+          bundleIdentifier4 = [proxyCopy bundleIdentifier];
+          if ([PSSystemPolicyManager _defaultAppSettingsNeededForBundleID:bundleIdentifier4])
           {
             v4 = 1;
           }
 
           else
           {
-            v10 = [v3 bundleIdentifier];
-            if ([PSSystemPolicyManager _languageSettingNeededForBundleID:v10])
+            bundleIdentifier5 = [proxyCopy bundleIdentifier];
+            if ([PSSystemPolicyManager _languageSettingNeededForBundleID:bundleIdentifier5])
             {
               v4 = 1;
             }
 
             else
             {
-              v11 = [v3 bundleIdentifier];
-              if ([PSSystemPolicyManager _familyControlsSettingNeededForBundleID:v11])
+              bundleIdentifier6 = [proxyCopy bundleIdentifier];
+              if ([PSSystemPolicyManager _familyControlsSettingNeededForBundleID:bundleIdentifier6])
               {
                 v4 = 1;
               }
 
               else
               {
-                v12 = [v3 bundleIdentifier];
-                if ([PSSystemPolicyManager _liveActivitiesSettingsNeededForBundleID:v12])
+                bundleIdentifier7 = [proxyCopy bundleIdentifier];
+                if ([PSSystemPolicyManager _liveActivitiesSettingsNeededForBundleID:bundleIdentifier7])
                 {
                   v4 = 1;
                 }
 
                 else
                 {
-                  v14 = [v3 bundleIdentifier];
+                  bundleIdentifier8 = [proxyCopy bundleIdentifier];
                   if ([PSSystemPolicyManager _tapToPaySettingsNeededForBundleID:?])
                   {
                     v4 = 1;
@@ -357,8 +357,8 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
 
                   else
                   {
-                    v13 = [v3 bundleIdentifier];
-                    v4 = [PSSystemPolicyManager _pasteboardSettingsNeededForBundleID:v13];
+                    bundleIdentifier9 = [proxyCopy bundleIdentifier];
+                    v4 = [PSSystemPolicyManager _pasteboardSettingsNeededForBundleID:bundleIdentifier9];
                   }
                 }
               }
@@ -372,12 +372,12 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (BOOL)_privacySettingsNeededForProxy:(id)a3
++ (BOOL)_privacySettingsNeededForProxy:(id)proxy
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  proxyCopy = proxy;
   Default = CFAllocatorGetDefault();
-  v5 = [v3 URL];
+  v5 = [proxyCopy URL];
   v6 = CFBundleCreate(Default, v5);
 
   if (v6)
@@ -407,11 +407,11 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
         v10 = @"NO";
       }
 
-      v11 = [v3 bundleIdentifier];
+      bundleIdentifier = [proxyCopy bundleIdentifier];
       v13 = 138412546;
       v14 = v10;
       v15 = 2112;
-      v16 = v11;
+      v16 = bundleIdentifier;
       _os_log_impl(&dword_18B008000, v9, OS_LOG_TYPE_INFO, "privacy == %@ for '%@'", &v13, 0x16u);
     }
   }
@@ -419,13 +419,13 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
   return v8 != 0;
 }
 
-+ (BOOL)_photosSettingsNeededForProxy:(id)a3
++ (BOOL)_photosSettingsNeededForProxy:(id)proxy
 {
-  v3 = [a3 bundleIdentifier];
-  if ([v3 length])
+  bundleIdentifier = [proxy bundleIdentifier];
+  if ([bundleIdentifier length])
   {
     v4 = PSPhotosPolicyBundleIdentifiersWithRecentPickerUsage();
-    v5 = [v4 containsObject:v3];
+    v5 = [v4 containsObject:bundleIdentifier];
   }
 
   else
@@ -436,16 +436,16 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (BOOL)_backgroundAppRefreshSettingsNeededForProxy:(id)a3
++ (BOOL)_backgroundAppRefreshSettingsNeededForProxy:(id)proxy
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  proxyCopy = proxy;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 UIBackgroundModes];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  uIBackgroundModes = [proxyCopy UIBackgroundModes];
+  v5 = [uIBackgroundModes countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -456,7 +456,7 @@ uint64_t __38__PSSystemPolicyManager_hasAnyAppClip__block_invoke(uint64_t a1, vo
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uIBackgroundModes);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -469,9 +469,9 @@ LABEL_16:
             v13 = PKLogForCategory(2);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
-              v14 = [v3 bundleIdentifier];
+              bundleIdentifier = [proxyCopy bundleIdentifier];
               *buf = 138412290;
-              v21 = v14;
+              v21 = bundleIdentifier;
               _os_log_impl(&dword_18B008000, v13, OS_LOG_TYPE_INFO, "backgroundAppRefresh == YES for '%@'", buf, 0xCu);
             }
           }
@@ -487,7 +487,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v6 = [uIBackgroundModes countByEnumeratingWithState:&v16 objects:v22 count:16];
       if (v6)
       {
         continue;
@@ -499,13 +499,13 @@ LABEL_16:
 
   if (_os_feature_enabled_impl())
   {
-    v4 = PKLogForCategory(2);
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    uIBackgroundModes = PKLogForCategory(2);
+    if (os_log_type_enabled(uIBackgroundModes, OS_LOG_TYPE_INFO))
     {
-      v11 = [v3 bundleIdentifier];
+      bundleIdentifier2 = [proxyCopy bundleIdentifier];
       *buf = 138412290;
-      v21 = v11;
-      _os_log_impl(&dword_18B008000, v4, OS_LOG_TYPE_INFO, "backgroundAppRefresh == NO for '%@'", buf, 0xCu);
+      v21 = bundleIdentifier2;
+      _os_log_impl(&dword_18B008000, uIBackgroundModes, OS_LOG_TYPE_INFO, "backgroundAppRefresh == NO for '%@'", buf, 0xCu);
     }
 
     v12 = 0;
@@ -526,7 +526,7 @@ LABEL_21:
   v8 = 0;
   v10 = 0u;
   v11 = 0;
-  v9 = a1;
+  selfCopy = self;
   v2 = _CTServerConnectionCreate();
   if (v2)
   {
@@ -547,10 +547,10 @@ LABEL_21:
   return v5;
 }
 
-+ (BOOL)_cellularDataSettingsNeededForBundleID:(id)a3
++ (BOOL)_cellularDataSettingsNeededForBundleID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   if (MGGetBoolAnswer())
   {
     if (_cellularDataSettingsNeededForBundleID__onceToken != -1)
@@ -562,15 +562,15 @@ LABEL_21:
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v4 = [_cellularDataSettingsNeededForBundleID__workspace persistentStoreCoordinator];
+    persistentStoreCoordinator = [_cellularDataSettingsNeededForBundleID__workspace persistentStoreCoordinator];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __64__PSSystemPolicyManager__cellularDataSettingsNeededForBundleID___block_invoke_2;
     v10[3] = &unk_1E71DC400;
-    v5 = v3;
+    v5 = dCopy;
     v11 = v5;
     v12 = &v13;
-    [v4 performBlockAndWait:v10];
+    [persistentStoreCoordinator performBlockAndWait:v10];
 
     if (_os_feature_enabled_impl())
     {
@@ -749,9 +749,9 @@ void __64__PSSystemPolicyManager__cellularDataSettingsNeededForBundleID___block_
 LABEL_11:
 }
 
-+ (BOOL)_tapToPaySettingsNeededForBundleID:(id)a3
++ (BOOL)_tapToPaySettingsNeededForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -770,14 +770,14 @@ LABEL_11:
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 isProximityReaderSupported:v3];
+  v6 = [v4 isProximityReaderSupported:dCopy];
 
   return v6;
 }
 
-+ (BOOL)_pasteboardSettingsNeededForBundleID:(id)a3
++ (BOOL)_pasteboardSettingsNeededForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = *MEMORY[0x1E69D55C0];
   v11 = 0;
   v12 = 0;
@@ -786,29 +786,29 @@ LABEL_11:
   v5 = v12;
   v6 = v11;
   v7 = v10;
-  if ([v5 containsObject:v3] & 1) != 0 || (objc_msgSend(v6, "containsObject:", v3))
+  if ([v5 containsObject:dCopy] & 1) != 0 || (objc_msgSend(v6, "containsObject:", dCopy))
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v7 containsObject:v3];
+    v8 = [v7 containsObject:dCopy];
   }
 
   return v8;
 }
 
-+ (id)specifiersForThirdPartyApps:(id)a3
++ (id)specifiersForThirdPartyApps:(id)apps
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  appsCopy = apps;
   v18 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = appsCopy;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v4)
   {
@@ -824,24 +824,24 @@ LABEL_11:
         }
 
         v7 = *(*(&v22 + 1) + 8 * i);
-        v8 = [v7 record];
-        v9 = [v8 URL];
-        v10 = [v8 bundleIdentifier];
+        record = [v7 record];
+        v9 = [record URL];
+        bundleIdentifier = [record bundleIdentifier];
         v11 = [v9 URLByAppendingPathComponent:@"Settings.bundle"];
         if (v11)
         {
           v12 = [MEMORY[0x1E696AAE8] bundleWithURL:v11];
-          v13 = [v7 localizedName];
-          v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:a1 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+          localizedName = [v7 localizedName];
+          v14 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
           [v14 setProperty:@"Root" forKey:@"File"];
           v15 = [MEMORY[0x1E696AD98] numberWithBool:1];
           [v14 setProperty:v15 forKey:@"useLazyIcons"];
 
-          [v14 setProperty:v10 forKey:@"appIDForLazyIcon"];
+          [v14 setProperty:bundleIdentifier forKey:@"appIDForLazyIcon"];
           [v14 setProperty:v12 forKey:@"AppSettingsBundle"];
-          [v14 setProperty:v10 forKey:@"AppBundleID"];
-          [v14 setProperty:v10 forKey:@"id"];
-          [v14 setProperty:v10 forKey:@"restrictByID"];
+          [v14 setProperty:bundleIdentifier forKey:@"AppBundleID"];
+          [v14 setProperty:bundleIdentifier forKey:@"id"];
+          [v14 setProperty:bundleIdentifier forKey:@"restrictByID"];
           if (!PSIsSpecifierHiddenDueToRestrictions(v14))
           {
             [v18 addObject:v14];
@@ -856,13 +856,13 @@ LABEL_11:
             goto LABEL_13;
           }
 
-          v13 = [v8 localizedName];
+          localizedName = [record localizedName];
           *buf = 136315650;
           v27 = "+[PSSystemPolicyManager specifiersForThirdPartyApps:]";
           v28 = 2112;
-          v29 = v13;
+          v29 = localizedName;
           v30 = 2112;
-          v31 = v8;
+          v31 = record;
           _os_log_impl(&dword_18B008000, v12, OS_LOG_TYPE_DEFAULT, "%s - settingsBundleURL is nil for (%@) %@ ", buf, 0x20u);
         }
 
@@ -882,52 +882,52 @@ LABEL_13:
 
 + (void)_populateBBSectionIDs
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = +[PSNotificationSettingsController sharedInstance];
-  v3 = [v2 allSectionInfoIdentifiers];
+  allSectionInfoIdentifiers = [v2 allSectionInfoIdentifiers];
   v4 = gBBSectionIDs;
-  gBBSectionIDs = v3;
+  gBBSectionIDs = allSectionInfoIdentifiers;
 
   objc_sync_exit(obj);
 }
 
-+ (BOOL)_journalingSuggestionsSettingsNeededForBundleID:(id)a3
++ (BOOL)_journalingSuggestionsSettingsNeededForBundleID:(id)d
 {
   v3 = MEMORY[0x1E69635F8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
 
-  LOBYTE(v4) = [v5 supportsJournalingSuggestions];
-  return v4;
+  LOBYTE(dCopy) = [v5 supportsJournalingSuggestions];
+  return dCopy;
 }
 
-+ (BOOL)_liveActivitiesSettingsNeededForBundleID:(id)a3
++ (BOOL)_liveActivitiesSettingsNeededForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
     v7 = 0;
-    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v7];
-    v5 = [v4 supportsLiveActivities];
+    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v7];
+    supportsLiveActivities = [v4 supportsLiveActivities];
   }
 
   else
   {
-    v5 = 0;
+    supportsLiveActivities = 0;
   }
 
-  return v5;
+  return supportsLiveActivities;
 }
 
-+ (BOOL)_notificationSettingsNeededForBundleID:(id)a3
++ (BOOL)_notificationSettingsNeededForBundleID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [gBBSectionIDs containsObject:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [gBBSectionIDs containsObject:dCopy];
+  objc_sync_exit(selfCopy);
 
   if (_os_feature_enabled_impl())
   {
@@ -943,7 +943,7 @@ LABEL_13:
       v10 = 138412546;
       v11 = v8;
       v12 = 2112;
-      v13 = v4;
+      v13 = dCopy;
       _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_INFO, "notification == %@ for '%@'", &v10, 0x16u);
     }
   }
@@ -951,15 +951,15 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)_documentSettingsNeededForBundleID:(id)a3
++ (BOOL)_documentSettingsNeededForBundleID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:v3];
-  v5 = [v4 infoDictionary];
+  dCopy = d;
+  v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:dCopy];
+  infoDictionary = [v4 infoDictionary];
 
-  v6 = [v5 objectForKeyedSubscript:@"UISupportsDocumentBrowser"];
-  v7 = [v6 BOOLValue];
+  v6 = [infoDictionary objectForKeyedSubscript:@"UISupportsDocumentBrowser"];
+  bOOLValue = [v6 BOOLValue];
 
   if (_os_feature_enabled_impl())
   {
@@ -967,7 +967,7 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = @"NO";
-      if (v7)
+      if (bOOLValue)
       {
         v9 = @"YES";
       }
@@ -975,29 +975,29 @@ LABEL_13:
       v11 = 138412546;
       v12 = v9;
       v13 = 2112;
-      v14 = v3;
+      v14 = dCopy;
       _os_log_impl(&dword_18B008000, v8, OS_LOG_TYPE_INFO, "document == %@ for '%@'", &v11, 0x16u);
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (BOOL)_defaultAppSettingsNeededForBundleID:(id)a3
++ (BOOL)_defaultAppSettingsNeededForBundleID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v10 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v10];
+  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v10];
   v5 = v10;
   if ([v4 isEligibleWebBrowser])
   {
-    v6 = 1;
+    isEligibleMailClient = 1;
   }
 
   else
   {
-    v6 = [v4 isEligibleMailClient];
+    isEligibleMailClient = [v4 isEligibleMailClient];
   }
 
   if (_os_feature_enabled_impl())
@@ -1006,7 +1006,7 @@ LABEL_13:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v6)
+      if (isEligibleMailClient)
       {
         v8 = @"YES";
       }
@@ -1014,27 +1014,27 @@ LABEL_13:
       *buf = 138412546;
       v12 = v8;
       v13 = 2112;
-      v14 = v3;
+      v14 = dCopy;
       _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_INFO, "defaultApp == %@ for '%@'", buf, 0x16u);
     }
   }
 
-  return v6;
+  return isEligibleMailClient;
 }
 
-+ (BOOL)_languageSettingNeededForBundleID:(id)a3
++ (BOOL)_languageSettingNeededForBundleID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v18 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v18];
+  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v18];
   v5 = v18;
   v6 = [v4 URL];
   if (v6)
   {
     v7 = [MEMORY[0x1E696AAE8] bundleWithURL:v6];
-    v8 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v9 = [v8 count];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    v9 = [preferredLanguages count];
 
     if (v9 >= 2)
     {
@@ -1044,16 +1044,16 @@ LABEL_13:
     else
     {
       v10 = [v7 objectForInfoDictionaryKey:@"UIPrefersShowingLanguageSettings"];
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
 
-      if (_os_feature_enabled_impl() && (v11 & 1) == 0)
+      if (_os_feature_enabled_impl() && (bOOLValue & 1) == 0)
       {
-        v12 = PKLogForCategory(2);
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+        normalizedLocalizations = PKLogForCategory(2);
+        if (os_log_type_enabled(normalizedLocalizations, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v20 = v3;
-          _os_log_impl(&dword_18B008000, v12, OS_LOG_TYPE_INFO, "language == NO for '%@'", buf, 0xCu);
+          v20 = dCopy;
+          _os_log_impl(&dword_18B008000, normalizedLocalizations, OS_LOG_TYPE_INFO, "language == NO for '%@'", buf, 0xCu);
         }
 
         v13 = 0;
@@ -1063,15 +1063,15 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      if (!v11)
+      if (!bOOLValue)
       {
         v13 = 0;
         goto LABEL_17;
       }
     }
 
-    v12 = [v7 normalizedLocalizations];
-    v14 = [v12 count];
+    normalizedLocalizations = [v7 normalizedLocalizations];
+    v14 = [normalizedLocalizations count];
     v13 = v14 > 1;
     if (_os_feature_enabled_impl())
     {
@@ -1087,7 +1087,7 @@ LABEL_17:
         *buf = 138412546;
         v20 = v16;
         v21 = 2112;
-        v22 = v3;
+        v22 = dCopy;
         _os_log_impl(&dword_18B008000, v15, OS_LOG_TYPE_INFO, "language == %@ for '%@'", buf, 0x16u);
       }
     }
@@ -1101,10 +1101,10 @@ LABEL_18:
   return v13;
 }
 
-+ (BOOL)_familyControlsSettingNeededForBundleID:(id)a3
++ (BOOL)_familyControlsSettingNeededForBundleID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1127,10 +1127,10 @@ LABEL_18:
 
   v5 = v4;
   _Block_object_dispose(&v20, 8);
-  v6 = [v4 sharedCenter];
-  v7 = [v6 authorizationRecords];
+  sharedCenter = [v4 sharedCenter];
+  authorizationRecords = [sharedCenter authorizationRecords];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  v8 = [authorizationRecords countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -1140,11 +1140,11 @@ LABEL_18:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(authorizationRecords);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
-        v12 = [v11 isEqualToString:v3];
+        bundleIdentifier = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -1154,7 +1154,7 @@ LABEL_18:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v3;
+              *(&buf + 4) = dCopy;
               _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_INFO, "familyControls == YES for '%@'", &buf, 0xCu);
             }
           }
@@ -1164,7 +1164,7 @@ LABEL_18:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v8 = [authorizationRecords countByEnumeratingWithState:&v16 objects:v24 count:16];
       if (v8)
       {
         continue;
@@ -1176,12 +1176,12 @@ LABEL_18:
 
   if (_os_feature_enabled_impl())
   {
-    v7 = PKLogForCategory(2);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    authorizationRecords = PKLogForCategory(2);
+    if (os_log_type_enabled(authorizationRecords, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v3;
-      _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_INFO, "familyControls == NO for '%@'", &buf, 0xCu);
+      *(&buf + 4) = dCopy;
+      _os_log_impl(&dword_18B008000, authorizationRecords, OS_LOG_TYPE_INFO, "familyControls == NO for '%@'", &buf, 0xCu);
     }
 
     v13 = 0;

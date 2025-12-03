@@ -5,9 +5,9 @@
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (BOOL)isRunning;
-- (id)performBinaryTaskWithBlock:(id)a3;
-- (id)performTaskWithBlock:(id)a3;
-- (id)performTaskWithPromiseBlock:(id)a3;
+- (id)performBinaryTaskWithBlock:(id)block;
+- (id)performTaskWithBlock:(id)block;
+- (id)performTaskWithPromiseBlock:(id)block;
 @end
 
 @implementation AMSTask
@@ -47,21 +47,21 @@ uint64_t __20__AMSTask_taskCache__block_invoke()
 - (BOOL)isFinished
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(AMSTask *)self promise];
-  v4 = [v3 isFinished];
+  promise = [(AMSTask *)self promise];
+  isFinished = [promise isFinished];
 
   os_unfair_lock_unlock(&self->_promiseAccessLock);
-  return v4;
+  return isFinished;
 }
 
 - (BOOL)isRunning
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(AMSTask *)self promise];
-  if (v3)
+  promise = [(AMSTask *)self promise];
+  if (promise)
   {
-    v4 = [(AMSTask *)self promise];
-    v5 = [v4 isFinished] ^ 1;
+    promise2 = [(AMSTask *)self promise];
+    v5 = [promise2 isFinished] ^ 1;
   }
 
   else
@@ -76,11 +76,11 @@ uint64_t __20__AMSTask_taskCache__block_invoke()
 - (BOOL)isCancelled
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(AMSTask *)self promise];
-  v4 = [v3 isCancelled];
+  promise = [(AMSTask *)self promise];
+  isCancelled = [promise isCancelled];
 
   os_unfair_lock_unlock(&self->_promiseAccessLock);
-  return v4;
+  return isCancelled;
 }
 
 - (BOOL)cancel
@@ -93,8 +93,8 @@ uint64_t __20__AMSTask_taskCache__block_invoke()
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  v6 = os_signpost_enabled(v5);
+  oSLogObject = [v4 OSLogObject];
+  v6 = os_signpost_enabled(oSLogObject);
 
   if (!v3)
   {
@@ -109,8 +109,8 @@ uint64_t __20__AMSTask_taskCache__block_invoke()
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    v10 = os_signpost_id_make_with_pointer(v9, self);
+    oSLogObject2 = [v8 OSLogObject];
+    v10 = os_signpost_id_make_with_pointer(oSLogObject2, self);
 
     if (!v7)
     {
@@ -120,42 +120,42 @@ uint64_t __20__AMSTask_taskCache__block_invoke()
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 OSLogObject];
+      oSLogObject3 = [v11 OSLogObject];
     }
 
     else
     {
       v14 = +[AMSLogConfig sharedConfig];
-      v13 = [v14 OSLogObject];
+      oSLogObject3 = [v14 OSLogObject];
     }
 
-    if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
+    if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(oSLogObject3))
     {
       *v18 = 0;
-      _os_signpost_emit_with_name_impl(&dword_192869000, v13, OS_SIGNPOST_EVENT, v10, "Task Cancel", "Cancelling task", v18, 2u);
+      _os_signpost_emit_with_name_impl(&dword_192869000, oSLogObject3, OS_SIGNPOST_EVENT, v10, "Task Cancel", "Cancelling task", v18, 2u);
     }
   }
 
-  v15 = [(AMSTask *)self promise];
-  v16 = [v15 cancel];
+  promise = [(AMSTask *)self promise];
+  cancel = [promise cancel];
 
   os_unfair_lock_unlock(&self->_promiseAccessLock);
-  return v16;
+  return cancel;
 }
 
-- (id)performBinaryTaskWithBlock:(id)a3
+- (id)performBinaryTaskWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__AMSTask_performBinaryTaskWithBlock___block_invoke;
   v9[3] = &unk_1E73BC920;
-  v10 = v4;
-  v5 = v4;
+  v10 = blockCopy;
+  v5 = blockCopy;
   v6 = [(AMSTask *)self performTaskWithBlock:v9];
-  v7 = [v6 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v6 binaryPromiseAdapter];
 
-  return v7;
+  return binaryPromiseAdapter;
 }
 
 id __38__AMSTask_performBinaryTaskWithBlock___block_invoke(uint64_t a1)
@@ -173,15 +173,15 @@ id __38__AMSTask_performBinaryTaskWithBlock___block_invoke(uint64_t a1)
   return v1;
 }
 
-- (id)performTaskWithBlock:(id)a3
+- (id)performTaskWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__AMSTask_performTaskWithBlock___block_invoke;
   v8[3] = &unk_1E73BC948;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = [(AMSTask *)self performTaskWithPromiseBlock:v8];
 
   return v6;
@@ -205,17 +205,17 @@ id __32__AMSTask_performTaskWithBlock___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)performTaskWithPromiseBlock:(id)a3
+- (id)performTaskWithPromiseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = AMSLogKey();
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
   v30[3] = 0;
   os_unfair_lock_lock_with_options();
-  v6 = [(AMSTask *)self promise];
-  if (v6)
+  promise = [(AMSTask *)self promise];
+  if (promise)
   {
     os_unfair_lock_unlock(&self->_promiseAccessLock);
   }
@@ -225,8 +225,8 @@ id __32__AMSTask_performTaskWithBlock___block_invoke(uint64_t a1)
     v7 = objc_alloc_init(AMSMutablePromise);
     [(AMSTask *)self setPromise:v7];
     os_unfair_lock_unlock(&self->_promiseAccessLock);
-    v8 = [objc_opt_class() taskCache];
-    [v8 addObject:self];
+    taskCache = [objc_opt_class() taskCache];
+    [taskCache addObject:self];
 
     aBlock = MEMORY[0x1E69E9820];
     v22 = 3221225472;
@@ -234,10 +234,10 @@ id __32__AMSTask_performTaskWithBlock___block_invoke(uint64_t a1)
     v24 = &unk_1E73BC998;
     v29 = v30;
     v25 = v5;
-    v26 = self;
-    v6 = v7;
-    v27 = v6;
-    v28 = v4;
+    selfCopy = self;
+    promise = v7;
+    v27 = promise;
+    v28 = blockCopy;
     v9 = _Block_copy(&aBlock);
     if ([(AMSTask *)self runMode]== 1)
     {
@@ -246,15 +246,15 @@ id __32__AMSTask_performTaskWithBlock___block_invoke(uint64_t a1)
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.AppleMediaServices.%@.performTask", objc_opt_class(), aBlock, v22, v23, v24, v25, v26, v27];
-      v11 = [v10 UTF8String];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.AppleMediaServices.%@.performTask", objc_opt_class(), aBlock, v22, v23, v24, v25, selfCopy, v27];
+      uTF8String = [v10 UTF8String];
       v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v13 = dispatch_queue_create(v11, v12);
+      v13 = dispatch_queue_create(uTF8String, v12);
       [(AMSTask *)self setPerformTaskQueue:v13];
 
-      v14 = [(AMSTask *)self performTaskQueue];
+      performTaskQueue = [(AMSTask *)self performTaskQueue];
       v15 = v9;
-      v16 = v14;
+      v16 = performTaskQueue;
       v17 = AMSLogKey();
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -270,7 +270,7 @@ id __32__AMSTask_performTaskWithBlock___block_invoke(uint64_t a1)
 
   _Block_object_dispose(v30, 8);
 
-  return v6;
+  return promise;
 }
 
 void __39__AMSTask_performTaskWithPromiseBlock___block_invoke(uint64_t a1)

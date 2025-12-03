@@ -1,22 +1,22 @@
 @interface SeparatorView
-- (_TtC7Measure13SeparatorView)initWithFrame:(CGRect)a3;
+- (_TtC7Measure13SeparatorView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SeparatorView
 
-- (_TtC7Measure13SeparatorView)initWithFrame:(CGRect)a3
+- (_TtC7Measure13SeparatorView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure13SeparatorView_targetAlpha) = 0x3FF0000000000000;
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v9 = [(SeparatorView *)&v15 initWithFrame:x, y, width, height];
+  height = [(SeparatorView *)&v15 initWithFrame:x, y, width, height];
   v10 = qword_1004A0558;
-  v11 = v9;
+  v11 = height;
   if (v10 != -1)
   {
     v14 = v11;

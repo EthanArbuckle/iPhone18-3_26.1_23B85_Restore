@@ -1,6 +1,6 @@
 @interface HMDBackingStoreOperation
 + (id)logCategory;
-- (HMDBackingStoreOperation)initWithResultBlock:(id)a3;
+- (HMDBackingStoreOperation)initWithResultBlock:(id)block;
 - (NSString)description;
 - (id)logIdentifier;
 - (void)main;
@@ -10,10 +10,10 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackingStoreOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackingStoreOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSString)description
@@ -21,40 +21,40 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HMDBackingStoreOperation *)self operationUUID];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"<%@: %@>", v5, v7];
+  operationUUID = [(HMDBackingStoreOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
+  v8 = [v3 stringWithFormat:@"<%@: %@>", v5, uUIDString];
 
   return v8;
 }
 
 - (void)main
 {
-  v5 = [(HMDBackingStoreOperation *)self mainReturningError];
-  v3 = [(HMDBackingStoreOperation *)self resultBlock];
+  mainReturningError = [(HMDBackingStoreOperation *)self mainReturningError];
+  resultBlock = [(HMDBackingStoreOperation *)self resultBlock];
 
-  if (v3)
+  if (resultBlock)
   {
-    v4 = [(HMDBackingStoreOperation *)self resultBlock];
-    (v4)[2](v4, v5);
+    resultBlock2 = [(HMDBackingStoreOperation *)self resultBlock];
+    (resultBlock2)[2](resultBlock2, mainReturningError);
   }
 }
 
-- (HMDBackingStoreOperation)initWithResultBlock:(id)a3
+- (HMDBackingStoreOperation)initWithResultBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = HMDBackingStoreOperation;
   v5 = [(HMDBackingStoreOperation *)&v13 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     resultBlock = v5->_resultBlock;
     v5->_resultBlock = v6;
 
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     operationUUID = v5->_operationUUID;
-    v5->_operationUUID = v8;
+    v5->_operationUUID = uUID;
 
     operationFinishBlock = v5->_operationFinishBlock;
     v5->_operationFinishBlock = &__block_literal_global_199717;

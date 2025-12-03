@@ -1,26 +1,26 @@
 @interface MADSpotlightMovieAssetBatch
-+ (id)batchWithCancelBlock:(id)a3;
-- (MADSpotlightMovieAssetBatch)initWithCancelBlock:(id)a3;
-- (id)createSearchableItemForAssetEntry:(id)a3 andImageAssetEntry:(id)a4;
-- (id)mergeVideoScenes:(id)a3 withExistingResult:(id)a4;
-- (id)truncateTimeRangeResults:(id)a3 withTimeCap:(double)a4;
++ (id)batchWithCancelBlock:(id)block;
+- (MADSpotlightMovieAssetBatch)initWithCancelBlock:(id)block;
+- (id)createSearchableItemForAssetEntry:(id)entry andImageAssetEntry:(id)assetEntry;
+- (id)mergeVideoScenes:(id)scenes withExistingResult:(id)result;
+- (id)truncateTimeRangeResults:(id)results withTimeCap:(double)cap;
 - (int)prepare;
 - (int)process;
 - (int)publish;
-- (void)_processActionResults:(id)a3 andTimeRangeResults:(id)a4 withAssetDuration:(double)a5 forAssetEntry:(id)a6;
-- (void)_processEmbeddingResults:(id)a3 andSummarizedEmbeddingResults:(id)a4 forAssetEntry:(id)a5;
-- (void)_processSafetyResults:(id)a3 forAssetEntry:(id)a4;
-- (void)_processSceneResults:(id)a3 andTimeRangeResults:(id)a4 forAssetEntry:(id)a5;
-- (void)_processTimeRangeResults:(id)a3 forAssetEntry:(id)a4;
-- (void)addAsset:(id)a3;
-- (void)processAssetEntry:(id)a3;
+- (void)_processActionResults:(id)results andTimeRangeResults:(id)rangeResults withAssetDuration:(double)duration forAssetEntry:(id)entry;
+- (void)_processEmbeddingResults:(id)results andSummarizedEmbeddingResults:(id)embeddingResults forAssetEntry:(id)entry;
+- (void)_processSafetyResults:(id)results forAssetEntry:(id)entry;
+- (void)_processSceneResults:(id)results andTimeRangeResults:(id)rangeResults forAssetEntry:(id)entry;
+- (void)_processTimeRangeResults:(id)results forAssetEntry:(id)entry;
+- (void)addAsset:(id)asset;
+- (void)processAssetEntry:(id)entry;
 @end
 
 @implementation MADSpotlightMovieAssetBatch
 
-- (MADSpotlightMovieAssetBatch)initWithCancelBlock:(id)a3
+- (MADSpotlightMovieAssetBatch)initWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v30.receiver = self;
   v30.super_class = MADSpotlightMovieAssetBatch;
   v5 = [(MADSpotlightMovieAssetBatch *)&v30 init];
@@ -42,7 +42,7 @@
   computeQueue = v5->_computeQueue;
   v5->_computeQueue = v11;
 
-  v13 = objc_retainBlock(v4);
+  v13 = objc_retainBlock(blockCopy);
   cancelBlock = v5->_cancelBlock;
   v5->_cancelBlock = v13;
 
@@ -75,11 +75,11 @@ LABEL_5:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
-    v26 = [(MADSpotlightMovieAssetBatch *)v5 logPrefix];
+    logPrefix = [(MADSpotlightMovieAssetBatch *)v5 logPrefix];
     v27 = objc_opt_class();
     v28 = [v18 description];
     *buf = 138412802;
-    v32 = v26;
+    v32 = logPrefix;
     v33 = 2112;
     v34 = v27;
     v35 = 2112;
@@ -93,17 +93,17 @@ LABEL_9:
   return v24;
 }
 
-+ (id)batchWithCancelBlock:(id)a3
++ (id)batchWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCancelBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithCancelBlock:blockCopy];
 
   return v5;
 }
 
-- (void)addAsset:(id)a3
+- (void)addAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -122,10 +122,10 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v19 + 1) + 8 * i) asset];
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v4 uniqueIdentifier];
-        v12 = [v10 isEqual:v11];
+        asset = [*(*(&v19 + 1) + 8 * i) asset];
+        uniqueIdentifier = [asset uniqueIdentifier];
+        uniqueIdentifier2 = [assetCopy uniqueIdentifier];
+        v12 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
         if (v12)
         {
@@ -134,12 +134,12 @@ LABEL_9:
             v16 = VCPLogToOSLogType[4];
             if (os_log_type_enabled(&_os_log_default, v16))
             {
-              v17 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-              v18 = [v4 uniqueIdentifier];
+              logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+              uniqueIdentifier3 = [assetCopy uniqueIdentifier];
               *buf = 138412546;
-              v24 = v17;
+              v24 = logPrefix;
               v25 = 2112;
-              v26 = v18;
+              v26 = uniqueIdentifier3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "[%@][%@] Batch already contains asset; ignoring", buf, 0x16u);
             }
           }
@@ -158,14 +158,14 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (assetCopy)
   {
     assetEntries = self->_assetEntries;
-    v14 = [MADSpotlightMovieAssetEntry entryWithAsset:v4];
+    v14 = [MADSpotlightMovieAssetEntry entryWithAsset:assetCopy];
     [(NSMutableArray *)assetEntries addObject:v14];
 
     imageAssetEntries = self->_imageAssetEntries;
-    v5 = [MADSpotlightImageAssetEntry entryWithAsset:v4];
+    v5 = [MADSpotlightImageAssetEntry entryWithAsset:assetCopy];
     [(NSMutableArray *)imageAssetEntries addObject:v5];
 LABEL_14:
   }
@@ -197,30 +197,30 @@ LABEL_14:
         v7 = *(*(&v29 + 1) + 8 * i);
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v5))
         {
-          v8 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-          v9 = [v7 asset];
-          v10 = [v9 uniqueIdentifier];
+          logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+          asset = [v7 asset];
+          uniqueIdentifier = [asset uniqueIdentifier];
           *buf = v25;
-          v34 = v8;
+          v34 = logPrefix;
           v35 = 2112;
-          v36 = v10;
+          v36 = uniqueIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[%@][Prepare] %@", buf, 0x16u);
         }
 
-        v11 = [v7 asset];
-        [v11 setStatus:1];
+        asset2 = [v7 asset];
+        [asset2 setStatus:1];
 
-        v12 = [v7 asset];
-        [v12 setAttemptCount:{objc_msgSend(v12, "attemptCount") + 1}];
+        asset3 = [v7 asset];
+        [asset3 setAttemptCount:{objc_msgSend(asset3, "attemptCount") + 1}];
 
-        v13 = [v7 asset];
-        [v13 attemptCount];
+        asset4 = [v7 asset];
+        [asset4 attemptCount];
         MADRetryBackoffTime();
         v15 = v14;
 
         v16 = [NSDate dateWithTimeIntervalSinceNow:v15];
-        v17 = [v7 asset];
-        [v17 setNextAttemptDate:v16];
+        asset5 = [v7 asset];
+        [asset5 setNextAttemptDate:v16];
       }
 
       v2 = [(NSMutableArray *)obj countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -236,7 +236,7 @@ LABEL_14:
 
   if (v19)
   {
-    v21 = 0;
+    code = 0;
   }
 
   else
@@ -246,19 +246,19 @@ LABEL_14:
       v22 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v22))
       {
-        v23 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        logPrefix2 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
         *buf = 138412546;
-        v34 = v23;
+        v34 = logPrefix2;
         v35 = 2112;
         v36 = v20;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[%@][Prepare] Failed during commit changes (%@)", buf, 0x16u);
       }
     }
 
-    v21 = [v20 code];
+    code = [v20 code];
   }
 
-  return v21;
+  return code;
 }
 
 - (int)process
@@ -277,30 +277,30 @@ LABEL_14:
       v31 = [(NSMutableArray *)self->_imageAssetEntries objectAtIndexedSubscript:v3];
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
       {
-        v5 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-        v6 = [v4 asset];
-        v7 = [v6 uniqueIdentifier];
+        logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        asset = [v4 asset];
+        uniqueIdentifier = [asset uniqueIdentifier];
         *buf = 138412546;
-        v37 = v5;
+        v37 = logPrefix;
         v38 = 2112;
-        v39 = v7;
+        v39 = uniqueIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][Process] %@", buf, 0x16u);
       }
 
       [v4 setStatus:{objc_msgSend(v4, "consumeSandboxExtension", v27)}];
-      v8 = [v4 asset];
-      v9 = [v8 url];
-      v10 = [v9 path];
-      if (!v10)
+      asset2 = [v4 asset];
+      v9 = [asset2 url];
+      path = [v9 path];
+      if (!path)
       {
         break;
       }
 
       v11 = +[NSFileManager defaultManager];
-      v12 = [v4 asset];
-      v13 = [v12 url];
-      v14 = [v13 path];
-      v15 = [v11 fileExistsAtPath:v14];
+      asset3 = [v4 asset];
+      v13 = [asset3 url];
+      path2 = [v13 path];
+      v15 = [v11 fileExistsAtPath:path2];
 
       if (!v15)
       {
@@ -329,18 +329,18 @@ LABEL_14:
 LABEL_10:
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v28))
     {
-      v18 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-      v19 = [v4 asset];
-      v20 = [v19 uniqueIdentifier];
-      v21 = [v4 asset];
-      v22 = [v21 url];
-      v23 = [v22 path];
+      logPrefix2 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+      asset4 = [v4 asset];
+      uniqueIdentifier2 = [asset4 uniqueIdentifier];
+      asset5 = [v4 asset];
+      v22 = [asset5 url];
+      path3 = [v22 path];
       *buf = v27;
-      v37 = v18;
+      v37 = logPrefix2;
       v38 = 2112;
-      v39 = v20;
+      v39 = uniqueIdentifier2;
       v40 = 2112;
-      v41 = v23;
+      v41 = path3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v28, "[%@][Process][%@] File does not exist (%@)", buf, 0x20u);
     }
 
@@ -354,9 +354,9 @@ LABEL_15:
     v24 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v24))
     {
-      v25 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+      logPrefix3 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
       *buf = 138412290;
-      v37 = v25;
+      v37 = logPrefix3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[%@][Process] Waiting for compute to complete", buf, 0xCu);
     }
   }
@@ -365,15 +365,15 @@ LABEL_15:
   return 0;
 }
 
-- (void)_processSceneResults:(id)a3 andTimeRangeResults:(id)a4 forAssetEntry:(id)a5
+- (void)_processSceneResults:(id)results andTimeRangeResults:(id)rangeResults forAssetEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
-  v36 = v8;
-  v37 = a5;
-  if (v7)
+  resultsCopy = results;
+  rangeResultsCopy = rangeResults;
+  v36 = rangeResultsCopy;
+  entryCopy = entry;
+  if (resultsCopy)
   {
-    [v8 setObject:v7 forKey:MediaAnalysisClassificationResultsKey];
+    [rangeResultsCopy setObject:resultsCopy forKey:MediaAnalysisClassificationResultsKey];
   }
 
   v9 = +[NSMutableDictionary dictionary];
@@ -381,7 +381,7 @@ LABEL_15:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v7;
+  obj = resultsCopy;
   type = [obj countByEnumeratingWithState:&v53 objects:v61 count:16];
   if (type)
   {
@@ -456,8 +456,8 @@ LABEL_15:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v25 = [v9 allKeys];
-  v26 = [v25 countByEnumeratingWithState:&v45 objects:v59 count:16];
+  allKeys = [v9 allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v45 objects:v59 count:16];
   if (v26)
   {
     v27 = *v46;
@@ -468,7 +468,7 @@ LABEL_15:
       {
         if (*v46 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = *(*(&v45 + 1) + 8 * k);
@@ -496,23 +496,23 @@ LABEL_15:
         }
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v45 objects:v59 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v45 objects:v59 count:16];
     }
 
     while (v26);
   }
 
-  [v37 setSceneClassifications:v44];
+  [entryCopy setSceneClassifications:v44];
 }
 
-- (void)_processSafetyResults:(id)a3 forAssetEntry:(id)a4
+- (void)_processSafetyResults:(id)results forAssetEntry:(id)entry
 {
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  entryCopy = entry;
   v7 = +[NSMutableSet set];
-  if ([v5 count])
+  if ([resultsCopy count])
   {
-    v8 = [v5 objectAtIndexedSubscript:0];
+    v8 = [resultsCopy objectAtIndexedSubscript:0];
     v9 = [v8 objectForKeyedSubscript:MediaAnalysisResultAttributesKey];
     v10 = [v9 objectForKeyedSubscript:MediaAnalysisResultSensitivitySceneResultsKey];
 
@@ -524,22 +524,22 @@ LABEL_15:
     [v10 enumerateKeysAndObjectsUsingBlock:v11];
   }
 
-  [v6 setNsfwClassifications:v7];
+  [entryCopy setNsfwClassifications:v7];
 }
 
-- (void)_processActionResults:(id)a3 andTimeRangeResults:(id)a4 withAssetDuration:(double)a5 forAssetEntry:(id)a6
+- (void)_processActionResults:(id)results andTimeRangeResults:(id)rangeResults withAssetDuration:(double)duration forAssetEntry:(id)entry
 {
-  v47 = self;
-  v51 = a3;
-  v49 = a4;
-  v50 = a6;
+  selfCopy = self;
+  resultsCopy = results;
+  rangeResultsCopy = rangeResults;
+  entryCopy = entry;
   v53 = +[NSMutableArray array];
   v61 = +[NSMutableDictionary dictionary];
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v51;
+  obj = resultsCopy;
   v55 = [obj countByEnumeratingWithState:&v70 objects:v80 count:16];
   if (v55)
   {
@@ -567,8 +567,8 @@ LABEL_15:
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v13 = [v11 allKeys];
-        v14 = [v13 countByEnumeratingWithState:&v66 objects:v79 count:16];
+        allKeys = [v11 allKeys];
+        v14 = [allKeys countByEnumeratingWithState:&v66 objects:v79 count:16];
         if (v14)
         {
           v15 = *v67;
@@ -578,7 +578,7 @@ LABEL_15:
             {
               if (*v67 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allKeys);
               }
 
               v17 = *(*(&v66 + 1) + 8 * j);
@@ -610,7 +610,7 @@ LABEL_15:
               }
             }
 
-            v14 = [v13 countByEnumeratingWithState:&v66 objects:v79 count:16];
+            v14 = [allKeys countByEnumeratingWithState:&v66 objects:v79 count:16];
           }
 
           while (v14);
@@ -633,7 +633,7 @@ LABEL_15:
 
   if (v53)
   {
-    [v49 setObject:v53 forKey:MediaAnalysisHumanActionClassificationResultsKey];
+    [rangeResultsCopy setObject:v53 forKey:MediaAnalysisHumanActionClassificationResultsKey];
   }
 
   v33 = +[NSMutableSet set];
@@ -641,8 +641,8 @@ LABEL_15:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v34 = [v61 allKeys];
-  v35 = [v34 countByEnumeratingWithState:&v62 objects:v78 count:16];
+  allKeys2 = [v61 allKeys];
+  v35 = [allKeys2 countByEnumeratingWithState:&v62 objects:v78 count:16];
   if (v35)
   {
     v36 = *v63;
@@ -652,7 +652,7 @@ LABEL_15:
       {
         if (*v63 != v36)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(allKeys2);
         }
 
         v38 = *(*(&v62 + 1) + 8 * k);
@@ -660,7 +660,7 @@ LABEL_15:
         [v39 floatValue];
         v41 = v40;
 
-        v42 = [[PHDetectionTrait alloc] initWithType:1 value:objc_msgSend(v38 score:"intValue") startTime:v41 duration:{0.0, a5}];
+        v42 = [[PHDetectionTrait alloc] initWithType:1 value:objc_msgSend(v38 score:"intValue") startTime:v41 duration:{0.0, duration}];
         if (!v42)
         {
           if (MediaAnalysisLogLevel() >= 3)
@@ -668,18 +668,18 @@ LABEL_15:
             v43 = VCPLogToOSLogType[3];
             if (os_log_type_enabled(&_os_log_default, v43))
             {
-              v44 = [v48 logPrefix];
-              v45 = [v50 asset];
-              v46 = [v45 uniqueIdentifier];
+              logPrefix = [v48 logPrefix];
+              asset = [entryCopy asset];
+              uniqueIdentifier = [asset uniqueIdentifier];
               *buf = 138412546;
-              v75 = v44;
+              v75 = logPrefix;
               v76 = 2112;
-              v77 = v46;
+              v77 = uniqueIdentifier;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v43, "[%@][%@] Failed to generate PHDetectionTrait for human action", buf, 0x16u);
             }
           }
 
-          [v50 setStatus:4294967278];
+          [entryCopy setStatus:4294967278];
 
           goto LABEL_43;
         }
@@ -687,7 +687,7 @@ LABEL_15:
         [v33 addObject:v42];
       }
 
-      v35 = [v34 countByEnumeratingWithState:&v62 objects:v78 count:16];
+      v35 = [allKeys2 countByEnumeratingWithState:&v62 objects:v78 count:16];
       if (v35)
       {
         continue;
@@ -697,15 +697,15 @@ LABEL_15:
     }
   }
 
-  [v50 setActionClassifications:v33];
+  [entryCopy setActionClassifications:v33];
 LABEL_43:
 }
 
-- (void)_processTimeRangeResults:(id)a3 forAssetEntry:(id)a4
+- (void)_processTimeRangeResults:(id)results forAssetEntry:(id)entry
 {
-  v5 = a3;
-  v46 = a4;
-  v6 = v5;
+  resultsCopy = results;
+  entryCopy = entry;
+  v6 = resultsCopy;
   v45 = v6;
   v48 = +[VCPDataCompressor compressor];
   v7 = 0;
@@ -727,49 +727,49 @@ LABEL_43:
         v24 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v24))
         {
-          v25 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-          v26 = [v46 asset];
-          v27 = [v26 uniqueIdentifier];
+          logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+          asset = [entryCopy asset];
+          uniqueIdentifier = [asset uniqueIdentifier];
           *buf = 138412546;
-          v51 = v25;
+          v51 = logPrefix;
           v52 = 2112;
-          v53 = v27;
+          v53 = uniqueIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[%@][Process][%@] Failed to convert asset analysis; skipping", buf, 0x16u);
         }
       }
 
-      [v46 setStatus:4294967278];
+      [entryCopy setStatus:4294967278];
       goto LABEL_21;
     }
 
-    v13 = [v12 data];
+    data = [v12 data];
 
-    if (!v13)
+    if (!data)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
         v28 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v28))
         {
-          v29 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-          v30 = [v46 asset];
-          v31 = [v30 uniqueIdentifier];
+          logPrefix2 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+          asset2 = [entryCopy asset];
+          uniqueIdentifier2 = [asset2 uniqueIdentifier];
           *buf = 138412546;
-          v51 = v29;
+          v51 = logPrefix2;
           v52 = 2112;
-          v53 = v31;
+          v53 = uniqueIdentifier2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v28, "[%@][Process][%@] Failed to serialize asset analysis; skipping", buf, 0x16u);
         }
       }
 
       v7 = 0;
-      [v46 setStatus:4294967278];
+      [entryCopy setStatus:4294967278];
 LABEL_21:
-      v13 = v7;
+      data = v7;
       goto LABEL_35;
     }
 
-    v14 = [v48 compressData:v13];
+    v14 = [v48 compressData:data];
     v15 = v14;
     if (!v14)
     {
@@ -778,41 +778,41 @@ LABEL_21:
         v32 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v32))
         {
-          v33 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-          v34 = [v46 asset];
-          v35 = [v34 uniqueIdentifier];
+          logPrefix3 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+          asset3 = [entryCopy asset];
+          uniqueIdentifier3 = [asset3 uniqueIdentifier];
           *buf = 138412546;
-          v51 = v33;
+          v51 = logPrefix3;
           v52 = 2112;
-          v53 = v35;
+          v53 = uniqueIdentifier3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[%@][Process][%@] Failed to compress serialized asset analysis", buf, 0x16u);
         }
       }
 
-      [v46 setStatus:4294967278];
+      [entryCopy setStatus:4294967278];
       goto LABEL_34;
     }
 
     v16 = [v14 length];
-    if (v16 <= [v13 length])
+    if (v16 <= [data length])
     {
       v17 = v15;
 
-      v13 = v17;
+      data = v17;
     }
 
-    if ([v13 length] <= 0x1000)
+    if ([data length] <= 0x1000)
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, type))
       {
-        v36 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-        v37 = [v46 asset];
-        v38 = [v37 uniqueIdentifier];
-        v39 = [v13 length];
+        logPrefix4 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        asset4 = [entryCopy asset];
+        uniqueIdentifier4 = [asset4 uniqueIdentifier];
+        v39 = [data length];
         *buf = 138413058;
-        v51 = v36;
+        v51 = logPrefix4;
         v52 = 2112;
-        v53 = v38;
+        v53 = uniqueIdentifier4;
         v54 = 2048;
         v55 = v39;
         v56 = 1024;
@@ -820,8 +820,8 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][Process][%@] Serialized analysis %lu bytes within %d bytes cap", buf, 0x26u);
       }
 
-      v15 = [v13 copy];
-      [v46 setTimeRangeResults:v15];
+      v15 = [data copy];
+      [entryCopy setTimeRangeResults:v15];
       goto LABEL_34;
     }
 
@@ -835,14 +835,14 @@ LABEL_21:
 
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, type))
     {
-      v20 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-      v21 = [v46 asset];
-      v22 = [v21 uniqueIdentifier];
-      v23 = [v13 length];
+      logPrefix5 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+      asset5 = [entryCopy asset];
+      uniqueIdentifier5 = [asset5 uniqueIdentifier];
+      v23 = [data length];
       *buf = 138413314;
-      v51 = v20;
+      v51 = logPrefix5;
       v52 = 2112;
-      v53 = v22;
+      v53 = uniqueIdentifier5;
       v54 = 2048;
       v55 = v23;
       v56 = 1024;
@@ -853,7 +853,7 @@ LABEL_21:
     }
 
     ++v8;
-    v7 = v13;
+    v7 = data;
     v6 = v19;
     v9 = v12;
   }
@@ -863,37 +863,37 @@ LABEL_21:
     v40 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v40))
     {
-      v41 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-      v42 = [v46 asset];
-      v43 = [v42 uniqueIdentifier];
-      v44 = [v13 length];
+      logPrefix6 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+      asset6 = [entryCopy asset];
+      uniqueIdentifier6 = [asset6 uniqueIdentifier];
+      v44 = [data length];
       *buf = 138412802;
-      v51 = v41;
+      v51 = logPrefix6;
       v52 = 2112;
-      v53 = v43;
+      v53 = uniqueIdentifier6;
       v54 = 2048;
       v55 = v44;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v40, "[%@][Process][%@] Serialized analysis size %lu bytes;exceeds size limit and hit truncation retry limit, skipping the asset", buf, 0x20u);
     }
   }
 
-  [v46 setStatus:4294967278];
+  [entryCopy setStatus:4294967278];
   v6 = v19;
 LABEL_34:
 
 LABEL_35:
 }
 
-- (id)truncateTimeRangeResults:(id)a3 withTimeCap:(double)a4
+- (id)truncateTimeRangeResults:(id)results withTimeCap:(double)cap
 {
-  v5 = a3;
+  resultsCopy = results;
   v6 = +[NSMutableDictionary dictionary];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [resultsCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = *v20;
@@ -903,11 +903,11 @@ LABEL_35:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
+        v12 = [resultsCopy objectForKeyedSubscript:v11];
         for (j = 0; ; ++j)
         {
           if ([v12 count] <= j)
@@ -920,7 +920,7 @@ LABEL_35:
           memset(&v18, 0, sizeof(v18));
           CMTimeRangeMakeFromDictionary(&v18, v14);
           start = v18.start;
-          if (CMTimeGetSeconds(&start) > a4)
+          if (CMTimeGetSeconds(&start) > cap)
           {
             break;
           }
@@ -932,7 +932,7 @@ LABEL_12:
         [v6 setObject:v15 forKey:v11];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -941,17 +941,17 @@ LABEL_12:
   return v6;
 }
 
-- (void)_processEmbeddingResults:(id)a3 andSummarizedEmbeddingResults:(id)a4 forAssetEntry:(id)a5
+- (void)_processEmbeddingResults:(id)results andSummarizedEmbeddingResults:(id)embeddingResults forAssetEntry:(id)entry
 {
-  v7 = a3;
-  v36 = a4;
-  v39 = a5;
+  resultsCopy = results;
+  embeddingResultsCopy = embeddingResults;
+  entryCopy = entry;
   v40 = +[NSMutableArray array];
-  if ([v7 count])
+  if ([resultsCopy count])
   {
-    if ([v36 count])
+    if ([embeddingResultsCopy count])
     {
-      v8 = [v36 objectAtIndexedSubscript:0];
+      v8 = [embeddingResultsCopy objectAtIndexedSubscript:0];
       v42 = MediaAnalysisResultAttributesKey;
       v9 = [v8 objectForKeyedSubscript:?];
       v10 = [v9 objectForKeyedSubscript:MediaAnalysisResultEmbeddingIdsAttributeKey];
@@ -978,25 +978,25 @@ LABEL_12:
             }
 
             v15 = *(*(&v45 + 1) + 8 * i);
-            v16 = [v15 integerValue];
-            if (v16 >= [v7 count])
+            integerValue = [v15 integerValue];
+            if (integerValue >= [resultsCopy count])
             {
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
               {
-                v20 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-                v21 = [v39 asset];
-                v22 = [v21 uniqueIdentifier];
+                logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+                asset = [entryCopy asset];
+                uniqueIdentifier = [asset uniqueIdentifier];
                 *buf = 138412546;
-                v50 = v20;
+                v50 = logPrefix;
                 v51 = 2112;
-                v52 = v22;
+                v52 = uniqueIdentifier;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][Process][%@] Summarized video embedding ID out of bound", buf, 0x16u);
               }
             }
 
             else
             {
-              v17 = [v7 objectAtIndexedSubscript:{objc_msgSend(v15, "integerValue")}];
+              v17 = [resultsCopy objectAtIndexedSubscript:{objc_msgSend(v15, "integerValue")}];
               v18 = [v17 objectForKeyedSubscript:v42];
               v19 = [v18 objectForKeyedSubscript:v13];
 
@@ -1007,13 +1007,13 @@ LABEL_12:
 
               else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v37))
               {
-                v23 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-                v24 = [v39 asset];
-                v25 = [v24 uniqueIdentifier];
+                logPrefix2 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+                asset2 = [entryCopy asset];
+                uniqueIdentifier2 = [asset2 uniqueIdentifier];
                 *buf = 138412546;
-                v50 = v23;
+                v50 = logPrefix2;
                 v51 = 2112;
-                v52 = v25;
+                v52 = uniqueIdentifier2;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v37, "[%@][Process][%@] No video summarized embedding in results", buf, 0x16u);
               }
             }
@@ -1031,19 +1031,19 @@ LABEL_12:
       v26 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v26))
       {
-        v27 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-        v28 = [v39 asset];
-        v29 = [v28 uniqueIdentifier];
+        logPrefix3 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        asset3 = [entryCopy asset];
+        uniqueIdentifier3 = [asset3 uniqueIdentifier];
         *buf = 138412546;
-        v50 = v27;
+        v50 = logPrefix3;
         v51 = 2112;
-        v52 = v29;
+        v52 = uniqueIdentifier3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v26, "[%@][Process][%@] No video summarized embedding results", buf, 0x16u);
       }
     }
 
     v44 = 0;
-    v30 = [NSPropertyListSerialization dataWithPropertyList:v7 format:200 options:0 error:&v44, v36];
+    embeddingResultsCopy = [NSPropertyListSerialization dataWithPropertyList:resultsCopy format:200 options:0 error:&v44, embeddingResultsCopy];
     v31 = v44;
     if (v31)
     {
@@ -1052,51 +1052,51 @@ LABEL_12:
         v32 = VCPLogToOSLogType[4];
         if (os_log_type_enabled(&_os_log_default, v32))
         {
-          v33 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-          v34 = [v39 asset];
-          v35 = [v34 uniqueIdentifier];
+          logPrefix4 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+          asset4 = [entryCopy asset];
+          uniqueIdentifier4 = [asset4 uniqueIdentifier];
           *buf = 138412802;
-          v50 = v33;
+          v50 = logPrefix4;
           v51 = 2112;
-          v52 = v35;
+          v52 = uniqueIdentifier4;
           v53 = 2112;
           v54 = v31;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[%@][Process][%@] Failed to convert timeRangeEmbeddings (%@)", buf, 0x20u);
         }
       }
 
-      [v39 setStatus:4294967278];
+      [entryCopy setStatus:4294967278];
     }
 
     else
     {
-      [v39 setTimerangeEmbeddings:v30];
-      [v39 setSummarizedEmbeddings:v40];
-      [v39 setEmbeddingVersion:{+[VCPMediaAnalyzer getUnifiedEmbeddingVersion](VCPMediaAnalyzer, "getUnifiedEmbeddingVersion")}];
+      [entryCopy setTimerangeEmbeddings:embeddingResultsCopy];
+      [entryCopy setSummarizedEmbeddings:v40];
+      [entryCopy setEmbeddingVersion:{+[VCPMediaAnalyzer getUnifiedEmbeddingVersion](VCPMediaAnalyzer, "getUnifiedEmbeddingVersion")}];
     }
   }
 }
 
-- (void)processAssetEntry:(id)a3
+- (void)processAssetEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-      v7 = [v4 asset];
-      v8 = [v7 uniqueIdentifier];
-      v9 = [v4 asset];
-      v10 = [v9 url];
-      v11 = [v10 path];
+      logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+      asset = [entryCopy asset];
+      uniqueIdentifier = [asset uniqueIdentifier];
+      asset2 = [entryCopy asset];
+      v10 = [asset2 url];
+      path = [v10 path];
       LODWORD(buf[0].value) = 138412802;
-      *(&buf[0].value + 4) = v6;
+      *(&buf[0].value + 4) = logPrefix;
       LOWORD(buf[0].flags) = 2112;
-      *(&buf[0].flags + 2) = v8;
+      *(&buf[0].flags + 2) = uniqueIdentifier;
       HIWORD(buf[0].epoch) = 2112;
-      buf[1].value = v11;
+      buf[1].value = path;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[%@][Process][%@] Processing asset: %@", buf, 0x20u);
     }
   }
@@ -1109,18 +1109,18 @@ LABEL_12:
       v13 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v13))
       {
-        v14 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-        v15 = [v4 asset];
-        v16 = [v15 uniqueIdentifier];
+        logPrefix2 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        asset3 = [entryCopy asset];
+        uniqueIdentifier2 = [asset3 uniqueIdentifier];
         LODWORD(buf[0].value) = 138412546;
-        *(&buf[0].value + 4) = v14;
+        *(&buf[0].value + 4) = logPrefix2;
         LOWORD(buf[0].flags) = 2112;
-        *(&buf[0].flags + 2) = v16;
+        *(&buf[0].flags + 2) = uniqueIdentifier2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[%@][Process][%@] Processing canceled; skipping asset", buf, 0x16u);
       }
     }
 
-    [v4 setStatus:4294967168];
+    [entryCopy setStatus:4294967168];
   }
 
   else
@@ -1132,8 +1132,8 @@ LABEL_12:
     }
 
     v18 = [MADMovieBlastDoorAnalyzer alloc];
-    v19 = [v4 asset];
-    v20 = [v19 url];
+    asset4 = [entryCopy asset];
+    v20 = [asset4 url];
     v21 = [v18 initWithMovieURL:v20 analysisTypes:v17 cancelBlock:self->_cancelBlock];
 
     v42 = 0;
@@ -1144,14 +1144,14 @@ LABEL_12:
       v24 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v24))
       {
-        v25 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-        v26 = [v4 asset];
-        v27 = [v26 uniqueIdentifier];
+        logPrefix3 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        asset5 = [entryCopy asset];
+        uniqueIdentifier3 = [asset5 uniqueIdentifier];
         v28 = [v23 description];
         LODWORD(buf[0].value) = 138412802;
-        *(&buf[0].value + 4) = v25;
+        *(&buf[0].value + 4) = logPrefix3;
         LOWORD(buf[0].flags) = 2112;
-        *(&buf[0].flags + 2) = v27;
+        *(&buf[0].flags + 2) = uniqueIdentifier3;
         HIWORD(buf[0].epoch) = 2112;
         buf[1].value = v28;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[%@][Process][%@] Movie blastdoor analysis failed to complete: %@", buf, 0x20u);
@@ -1160,10 +1160,10 @@ LABEL_12:
 
     v29 = +[NSMutableDictionary dictionary];
     v30 = [v22 objectForKeyedSubscript:MediaAnalysisClassificationResultsKey];
-    [(MADSpotlightMovieAssetBatch *)self _processSceneResults:v30 andTimeRangeResults:v29 forAssetEntry:v4];
+    [(MADSpotlightMovieAssetBatch *)self _processSceneResults:v30 andTimeRangeResults:v29 forAssetEntry:entryCopy];
 
     v31 = [v22 objectForKeyedSubscript:MediaAnalysisSafetyResultsKey];
-    [(MADSpotlightMovieAssetBatch *)self _processSafetyResults:v31 forAssetEntry:v4];
+    [(MADSpotlightMovieAssetBatch *)self _processSafetyResults:v31 forAssetEntry:entryCopy];
 
     if (v21)
     {
@@ -1178,10 +1178,10 @@ LABEL_12:
     v41 = buf[1];
     Seconds = CMTimeGetSeconds(&v41);
     v33 = [v22 objectForKeyedSubscript:MediaAnalysisHumanActionClassificationResultsKey];
-    [(MADSpotlightMovieAssetBatch *)self _processActionResults:v33 andTimeRangeResults:v29 withAssetDuration:v4 forAssetEntry:Seconds];
+    [(MADSpotlightMovieAssetBatch *)self _processActionResults:v33 andTimeRangeResults:v29 withAssetDuration:entryCopy forAssetEntry:Seconds];
 
-    v34 = [v4 actionClassifications];
-    LODWORD(v33) = v34 == 0;
+    actionClassifications = [entryCopy actionClassifications];
+    LODWORD(v33) = actionClassifications == 0;
 
     if (v33)
     {
@@ -1190,43 +1190,43 @@ LABEL_12:
         v37 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v37))
         {
-          v38 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-          v39 = [v4 asset];
-          v40 = [v39 uniqueIdentifier];
+          logPrefix4 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+          asset6 = [entryCopy asset];
+          uniqueIdentifier4 = [asset6 uniqueIdentifier];
           LODWORD(buf[0].value) = 138412546;
-          *(&buf[0].value + 4) = v38;
+          *(&buf[0].value + 4) = logPrefix4;
           LOWORD(buf[0].flags) = 2112;
-          *(&buf[0].flags + 2) = v40;
+          *(&buf[0].flags + 2) = uniqueIdentifier4;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v37, "[%@][Process][%@] Failed to generate PHDetectionTrait for human action", buf, 0x16u);
         }
       }
 
-      [v4 setStatus:4294967278];
+      [entryCopy setStatus:4294967278];
     }
 
     else
     {
       v35 = [v22 objectForKeyedSubscript:MediaAnalysisVideoEmbeddingResultsKey];
       v36 = [v22 objectForKeyedSubscript:MediaAnalysisSummarizedEmbeddingResultsKey];
-      [(MADSpotlightMovieAssetBatch *)self _processEmbeddingResults:v35 andSummarizedEmbeddingResults:v36 forAssetEntry:v4];
+      [(MADSpotlightMovieAssetBatch *)self _processEmbeddingResults:v35 andSummarizedEmbeddingResults:v36 forAssetEntry:entryCopy];
 
-      [(MADSpotlightMovieAssetBatch *)self _processTimeRangeResults:v29 forAssetEntry:v4];
-      [v4 setMediaAnalysisVersion:MediaAnalysisVersion];
+      [(MADSpotlightMovieAssetBatch *)self _processTimeRangeResults:v29 forAssetEntry:entryCopy];
+      [entryCopy setMediaAnalysisVersion:MediaAnalysisVersion];
     }
   }
 }
 
-- (id)mergeVideoScenes:(id)a3 withExistingResult:(id)a4
+- (id)mergeVideoScenes:(id)scenes withExistingResult:(id)result
 {
-  v28 = a3;
-  v32 = a4;
+  scenesCopy = scenes;
+  resultCopy = result;
   v29 = +[NSMutableArray array];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = [v32 photosSceneClassifications];
-  v6 = [v5 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  photosSceneClassifications = [resultCopy photosSceneClassifications];
+  v6 = [photosSceneClassifications countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v6)
   {
     v7 = *v42;
@@ -1236,7 +1236,7 @@ LABEL_12:
       {
         if (*v42 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(photosSceneClassifications);
         }
 
         v9 = *(*(&v41 + 1) + 8 * i);
@@ -1246,7 +1246,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v6 = [photosSceneClassifications countByEnumeratingWithState:&v41 objects:v47 count:16];
     }
 
     while (v6);
@@ -1286,7 +1286,7 @@ LABEL_12:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = v28;
+  v30 = scenesCopy;
   v16 = [v30 countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v16)
   {
@@ -1305,7 +1305,7 @@ LABEL_12:
         v21 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v20 sceneIdentifier]);
         v22 = [v10 objectForKey:v21];
 
-        if (!v22 || ([v32 photosSceneAnalysisVersion], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "intValue") == v18, v23, !v24))
+        if (!v22 || ([resultCopy photosSceneAnalysisVersion], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "intValue") == v18, v23, !v24))
         {
           v25 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v20 sceneIdentifier]);
           [v10 setObject:v20 forKey:v25];
@@ -1318,62 +1318,62 @@ LABEL_12:
     while (v16);
   }
 
-  v26 = [v10 allValues];
+  allValues = [v10 allValues];
 
-  return v26;
+  return allValues;
 }
 
-- (id)createSearchableItemForAssetEntry:(id)a3 andImageAssetEntry:(id)a4
+- (id)createSearchableItemForAssetEntry:(id)entry andImageAssetEntry:(id)assetEntry
 {
-  v5 = a3;
-  v6 = a4;
-  v63 = v6;
-  v7 = [v5 asset];
-  v8 = [v7 typeIdentifier];
-  v9 = [UTType typeWithIdentifier:v8];
+  entryCopy = entry;
+  assetEntryCopy = assetEntry;
+  v63 = assetEntryCopy;
+  asset = [entryCopy asset];
+  typeIdentifier = [asset typeIdentifier];
+  v9 = [UTType typeWithIdentifier:typeIdentifier];
 
   v64 = v9;
   if (v9)
   {
     v10 = [[CSSearchableItemAttributeSet alloc] initWithContentType:v9];
-    v11 = [v5 asset];
-    v12 = [v11 url];
+    asset2 = [entryCopy asset];
+    v12 = [asset2 url];
     [v10 setContentURL:v12];
 
-    v13 = [v5 asset];
-    v14 = [v13 bundleIdentifier];
-    [v10 setBundleID:v14];
+    asset3 = [entryCopy asset];
+    bundleIdentifier = [asset3 bundleIdentifier];
+    [v10 setBundleID:bundleIdentifier];
 
-    if (v6)
+    if (assetEntryCopy)
     {
-      v15 = [v6 attributeSet];
-      v16 = v15;
-      if (v15)
+      attributeSet = [assetEntryCopy attributeSet];
+      v16 = attributeSet;
+      if (attributeSet)
       {
-        v17 = [v15 photosSceneAnalysisVersion];
-        [v10 setPhotosSceneAnalysisVersion:v17];
+        photosSceneAnalysisVersion = [attributeSet photosSceneAnalysisVersion];
+        [v10 setPhotosSceneAnalysisVersion:photosSceneAnalysisVersion];
 
-        v18 = [v16 photosSceneClassifications];
-        [v10 setPhotosSceneClassifications:v18];
+        photosSceneClassifications = [v16 photosSceneClassifications];
+        [v10 setPhotosSceneClassifications:photosSceneClassifications];
 
-        v19 = [v16 aestheticScore];
-        [v10 setAestheticScore:v19];
+        aestheticScore = [v16 aestheticScore];
+        [v10 setAestheticScore:aestheticScore];
 
-        v20 = [v16 contentRating];
-        [v10 setContentRating:v20];
+        contentRating = [v16 contentRating];
+        [v10 setContentRating:contentRating];
 
-        v21 = [v16 textContentPieces];
-        [v10 setTextContentPieces:v21];
+        textContentPieces = [v16 textContentPieces];
+        [v10 setTextContentPieces:textContentPieces];
 
-        v22 = [v16 photosCharacterRecognitionAnalysisVersion];
-        [v10 setPhotosCharacterRecognitionAnalysisVersion:v22];
+        photosCharacterRecognitionAnalysisVersion = [v16 photosCharacterRecognitionAnalysisVersion];
+        [v10 setPhotosCharacterRecognitionAnalysisVersion:photosCharacterRecognitionAnalysisVersion];
       }
     }
 
     v65 = +[NSMutableArray array];
-    v23 = [v5 sceneClassifications];
+    sceneClassifications = [entryCopy sceneClassifications];
     v24 = VCPPhotosSceneProcessingVersion;
-    v25 = [PHSearch spotlightSceneClassificationsFromPhotosSceneClassifications:v23 algorithmVersion:VCPPhotosSceneProcessingVersion];
+    v25 = [PHSearch spotlightSceneClassificationsFromPhotosSceneClassifications:sceneClassifications algorithmVersion:VCPPhotosSceneProcessingVersion];
 
     v72 = 0u;
     v73 = 0u;
@@ -1404,8 +1404,8 @@ LABEL_12:
       while (v27);
     }
 
-    v31 = [v10 photosSceneAnalysisVersion];
-    v32 = v31 == 0;
+    photosSceneAnalysisVersion2 = [v10 photosSceneAnalysisVersion];
+    v32 = photosSceneAnalysisVersion2 == 0;
 
     if (v32)
     {
@@ -1424,8 +1424,8 @@ LABEL_12:
     }
 
     v61 = v35;
-    v36 = [v5 actionClassifications];
-    v37 = [PHSearch spotlightSceneClassificationsFromDetectionTraits:v36];
+    actionClassifications = [entryCopy actionClassifications];
+    v37 = [PHSearch spotlightSceneClassificationsFromDetectionTraits:actionClassifications];
 
     v68 = 0u;
     v69 = 0u;
@@ -1464,29 +1464,29 @@ LABEL_12:
     v43 = [v65 copy];
     [v10 setPhotosSceneClassifications:v43];
 
-    v44 = [v5 nsfwClassifications];
-    v45 = [PHSearch spotlightContentRatingFromPhotosSceneClassifications:v44 algorithmVersion:v24];
+    nsfwClassifications = [entryCopy nsfwClassifications];
+    v45 = [PHSearch spotlightContentRatingFromPhotosSceneClassifications:nsfwClassifications algorithmVersion:v24];
     [v10 setContentRating:v45];
 
-    v46 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 mediaAnalysisVersion]);
+    v46 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [entryCopy mediaAnalysisVersion]);
     [v10 setPhotosMediaAnalysisVersion:v46];
 
-    v47 = [v5 timeRangeResults];
-    [v10 setMediaAnalysisTimeRangeData:v47];
+    timeRangeResults = [entryCopy timeRangeResults];
+    [v10 setMediaAnalysisTimeRangeData:timeRangeResults];
 
-    if ([v5 embeddingVersion] == 9 || objc_msgSend(v5, "embeddingVersion") == 8 || objc_msgSend(v5, "embeddingVersion") == 7 || objc_msgSend(v5, "embeddingVersion") == 5)
+    if ([entryCopy embeddingVersion] == 9 || objc_msgSend(entryCopy, "embeddingVersion") == 8 || objc_msgSend(entryCopy, "embeddingVersion") == 7 || objc_msgSend(entryCopy, "embeddingVersion") == 5)
     {
       v48 = [_CSEmbedding alloc];
-      v49 = [v5 embeddingVersion];
-      v50 = [v5 summarizedEmbeddings];
-      v51 = [v48 initWithFormat:1 dimension:1 version:v49 vectors:v50];
+      embeddingVersion = [entryCopy embeddingVersion];
+      summarizedEmbeddings = [entryCopy summarizedEmbeddings];
+      v51 = [v48 initWithFormat:1 dimension:1 version:embeddingVersion vectors:summarizedEmbeddings];
       [v10 setPhotoEmbedding:v51];
 
-      v52 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 embeddingVersion]);
+      v52 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [entryCopy embeddingVersion]);
       [v10 setMediaEmbeddingVersion:v52];
 
-      v53 = [v5 timerangeEmbeddings];
-      [v10 setMediaAnalysisTimeRangeEmbeddings:v53];
+      timerangeEmbeddings = [entryCopy timerangeEmbeddings];
+      [v10 setMediaAnalysisTimeRangeEmbeddings:timerangeEmbeddings];
     }
 
     else if (MediaAnalysisLogLevel() >= 3)
@@ -1494,20 +1494,20 @@ LABEL_12:
       v58 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v58))
       {
-        v59 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-        v60 = [v5 embeddingVersion];
+        logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        embeddingVersion2 = [entryCopy embeddingVersion];
         *buf = 138412546;
-        v75 = v59;
+        v75 = logPrefix;
         v76 = 2048;
-        v77 = v60;
+        v77 = embeddingVersion2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v58, "[%@][Publish] Embedding version: %ld not supported, skip embedding publishing", buf, 0x16u);
       }
     }
 
     v54 = [CSSearchableItem alloc];
-    v55 = [v5 asset];
-    v56 = [v55 uniqueIdentifier];
-    v34 = [v54 initWithUniqueIdentifier:v56 domainIdentifier:0 attributeSet:v10];
+    asset4 = [entryCopy asset];
+    uniqueIdentifier = [asset4 uniqueIdentifier];
+    v34 = [v54 initWithUniqueIdentifier:uniqueIdentifier domainIdentifier:0 attributeSet:v10];
 
     [v34 setIsUpdate:1];
   }
@@ -1532,11 +1532,11 @@ LABEL_12:
   while (v2 < [(NSMutableArray *)self->_assetEntries count])
   {
     v4 = [(NSMutableArray *)self->_assetEntries objectAtIndexedSubscript:v2];
-    v5 = [v4 asset];
-    v6 = [v5 uniqueIdentifier];
+    asset = [v4 asset];
+    uniqueIdentifier = [asset uniqueIdentifier];
     v7 = [(NSMutableArray *)self->_imageAssetEntries objectAtIndexedSubscript:v2];
-    v8 = [v7 uniqueIdentifier];
-    if ([v6 isEqualToString:v8])
+    uniqueIdentifier2 = [v7 uniqueIdentifier];
+    if ([uniqueIdentifier isEqualToString:uniqueIdentifier2])
     {
       v9 = [(NSMutableArray *)self->_imageAssetEntries objectAtIndexedSubscript:v2];
     }
@@ -1548,13 +1548,13 @@ LABEL_12:
 
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v3))
     {
-      v10 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-      v11 = [v4 asset];
-      v12 = [v11 uniqueIdentifier];
+      logPrefix = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+      asset2 = [v4 asset];
+      uniqueIdentifier3 = [asset2 uniqueIdentifier];
       *buf = 138412546;
-      v95 = v10;
+      v95 = logPrefix;
       v96 = 2112;
-      v97 = v12;
+      v97 = uniqueIdentifier3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "[%@][Publish] %@", buf, 0x16u);
     }
 
@@ -1562,49 +1562,49 @@ LABEL_12:
     {
       if ([v4 status] != -128)
       {
-        v16 = [v4 asset];
-        [v16 setStatus:3];
+        asset3 = [v4 asset];
+        [asset3 setStatus:3];
         goto LABEL_19;
       }
 
-      v13 = [v4 previousStatus];
-      v14 = [v4 asset];
-      [v14 setStatus:v13];
+      previousStatus = [v4 previousStatus];
+      asset4 = [v4 asset];
+      [asset4 setStatus:previousStatus];
 
-      v15 = [v4 asset];
-      [v15 setAttemptCount:{objc_msgSend(v15, "attemptCount") - 1}];
+      asset5 = [v4 asset];
+      [asset5 setAttemptCount:{objc_msgSend(asset5, "attemptCount") - 1}];
 
-      v16 = +[NSDate date];
-      v17 = [v4 asset];
-      [v17 setNextAttemptDate:v16];
+      asset3 = +[NSDate date];
+      asset6 = [v4 asset];
+      [asset6 setNextAttemptDate:asset3];
     }
 
     else
     {
       v18 = [(MADSpotlightMovieAssetBatch *)self createSearchableItemForAssetEntry:v4 andImageAssetEntry:v9];
-      v16 = v18;
+      asset3 = v18;
       if (v18)
       {
-        v19 = [v18 bundleID];
-        v20 = [v66 objectForKeyedSubscript:v19];
+        bundleID = [v18 bundleID];
+        v20 = [v66 objectForKeyedSubscript:bundleID];
         v21 = v20 == 0;
 
         if (v21)
         {
           v22 = +[NSMutableArray array];
-          v23 = [v16 bundleID];
-          [v66 setObject:v22 forKeyedSubscript:v23];
+          bundleID2 = [asset3 bundleID];
+          [v66 setObject:v22 forKeyedSubscript:bundleID2];
         }
 
-        v17 = [v16 bundleID];
-        v24 = [v66 objectForKeyedSubscript:v17];
-        [v24 addObject:v16];
+        asset6 = [asset3 bundleID];
+        v24 = [v66 objectForKeyedSubscript:asset6];
+        [v24 addObject:asset3];
       }
 
       else
       {
-        v17 = [v4 asset];
-        [v17 setStatus:3];
+        asset6 = [v4 asset];
+        [asset6 setStatus:3];
       }
     }
 
@@ -1683,61 +1683,61 @@ LABEL_19:
         }
 
         v38 = *(*(&v75 + 1) + 8 * j);
-        v39 = [v38 asset];
-        v40 = [v39 uniqueIdentifier];
-        v41 = [v70 containsObject:v40];
+        asset7 = [v38 asset];
+        uniqueIdentifier4 = [asset7 uniqueIdentifier];
+        v41 = [v70 containsObject:uniqueIdentifier4];
 
         if (v41)
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v36))
           {
-            v42 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-            v43 = [v38 asset];
-            v44 = [v43 uniqueIdentifier];
+            logPrefix2 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+            asset8 = [v38 asset];
+            uniqueIdentifier5 = [asset8 uniqueIdentifier];
             *buf = 138412546;
-            v95 = v42;
+            v95 = logPrefix2;
             v96 = 2112;
-            v97 = v44;
+            v97 = uniqueIdentifier5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v36, "[%@][Publish] Mark %@ as soft failure", buf, 0x16u);
           }
 
-          v45 = [v38 asset];
-          [v45 setStatus:3];
+          asset9 = [v38 asset];
+          [asset9 setStatus:3];
         }
 
-        v46 = [v38 asset];
-        v47 = [v46 uniqueIdentifier];
-        v48 = [v69 containsObject:v47];
+        asset10 = [v38 asset];
+        uniqueIdentifier6 = [asset10 uniqueIdentifier];
+        v48 = [v69 containsObject:uniqueIdentifier6];
 
         if (v48)
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v36))
           {
-            v49 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-            v50 = [v38 asset];
-            v51 = [v50 uniqueIdentifier];
+            logPrefix3 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+            asset11 = [v38 asset];
+            uniqueIdentifier7 = [asset11 uniqueIdentifier];
             *buf = 138412546;
-            v95 = v49;
+            v95 = logPrefix3;
             v96 = 2112;
-            v97 = v51;
+            v97 = uniqueIdentifier7;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v36, "[%@][Publish] Delete entry %@.", buf, 0x16u);
           }
 
-          v52 = [v38 asset];
-          v53 = [v52 uniqueIdentifier];
+          asset12 = [v38 asset];
+          uniqueIdentifier8 = [asset12 uniqueIdentifier];
           v74 = 0;
-          v54 = [MADManagedSpotlightEntry deleteEntryWithUniqueIdentifier:v53 error:&v74];
+          v54 = [MADManagedSpotlightEntry deleteEntryWithUniqueIdentifier:uniqueIdentifier8 error:&v74];
           v55 = v74;
 
           if ((v54 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
           {
-            v56 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
-            v57 = [v38 asset];
-            v58 = [v57 uniqueIdentifier];
+            logPrefix4 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+            asset13 = [v38 asset];
+            uniqueIdentifier9 = [asset13 uniqueIdentifier];
             *buf = 138412802;
-            v95 = v56;
+            v95 = logPrefix4;
             v96 = 2112;
-            v97 = v58;
+            v97 = uniqueIdentifier9;
             v98 = 2112;
             v99 = v55;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][Publish] %@ Failed to delete entry (%@)", buf, 0x20u);
@@ -1758,7 +1758,7 @@ LABEL_19:
 
   if (v60)
   {
-    v62 = *(v91 + 6);
+    code = *(v91 + 6);
   }
 
   else
@@ -1768,21 +1768,21 @@ LABEL_19:
       v63 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v63))
       {
-        v64 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
+        logPrefix5 = [(MADSpotlightMovieAssetBatch *)self logPrefix];
         *buf = 138412546;
-        v95 = v64;
+        v95 = logPrefix5;
         v96 = 2112;
         v97 = v61;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v63, "[%@] Publish failed during commit changes (%@)", buf, 0x16u);
       }
     }
 
-    v62 = [v61 code];
-    *(v91 + 6) = v62;
+    code = [v61 code];
+    *(v91 + 6) = code;
   }
 
   _Block_object_dispose(&v90, 8);
-  return v62;
+  return code;
 }
 
 @end

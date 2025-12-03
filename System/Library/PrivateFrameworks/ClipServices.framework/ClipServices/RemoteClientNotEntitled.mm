@@ -1,20 +1,20 @@
 @interface RemoteClientNotEntitled
 - (BOOL)_connectionClientHasReadAllWebClipsEntitlement;
 - (BOOL)_connectionClientIsWebBrowser;
-- (BOOL)_connectionIsAuthorizedForClientBundleID:(id)a3;
-- (RemoteClientNotEntitled)initWithConnection:(id)a3;
-- (void)_requestLocationConsentWithRegion:(id)a3 clipBundleID:(id)a4 appName:(id)a5 record:(id)a6 completion:(id)a7;
-- (void)confirmLocationWithURL:(id)a3 inRegion:(id)a4 reply:(id)a5;
-- (void)fetchWebClipsURLStringForClientBundleID:(id)a3 reply:(id)a4;
-- (void)fetchWebClipsUUIDStringForClientBundleID:(id)a3 reply:(id)a4;
-- (void)getWebClipDictionaryWithIdentifier:(id)a3 reply:(id)a4;
+- (BOOL)_connectionIsAuthorizedForClientBundleID:(id)d;
+- (RemoteClientNotEntitled)initWithConnection:(id)connection;
+- (void)_requestLocationConsentWithRegion:(id)region clipBundleID:(id)d appName:(id)name record:(id)record completion:(id)completion;
+- (void)confirmLocationWithURL:(id)l inRegion:(id)region reply:(id)reply;
+- (void)fetchWebClipsURLStringForClientBundleID:(id)d reply:(id)reply;
+- (void)fetchWebClipsUUIDStringForClientBundleID:(id)d reply:(id)reply;
+- (void)getWebClipDictionaryWithIdentifier:(id)identifier reply:(id)reply;
 @end
 
 @implementation RemoteClientNotEntitled
 
-- (RemoteClientNotEntitled)initWithConnection:(id)a3
+- (RemoteClientNotEntitled)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = RemoteClientNotEntitled;
   v6 = [(RemoteClientNotEntitled *)&v17 init];
@@ -25,25 +25,25 @@
       sub_10000B414();
     }
 
-    [v5 setExportedInterface:qword_100019DD8];
-    [v5 setExportedObject:v6];
+    [connectionCopy setExportedInterface:qword_100019DD8];
+    [connectionCopy setExportedObject:v6];
     objc_initWeak(&location, v6);
-    objc_initWeak(&from, v5);
+    objc_initWeak(&from, connectionCopy);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100009DB0;
     v12[3] = &unk_100014778;
     objc_copyWeak(&v13, &location);
     objc_copyWeak(&v14, &from);
-    [v5 setInterruptionHandler:v12];
+    [connectionCopy setInterruptionHandler:v12];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100009E8C;
     v9[3] = &unk_100014778;
     objc_copyWeak(&v10, &location);
     objc_copyWeak(&v11, &from);
-    [v5 setInvalidationHandler:v9];
-    objc_storeStrong(&v6->_connection, a3);
+    [connectionCopy setInvalidationHandler:v9];
+    objc_storeStrong(&v6->_connection, connection);
     v7 = v6;
     objc_destroyWeak(&v11);
     objc_destroyWeak(&v10);
@@ -56,18 +56,18 @@
   return v6;
 }
 
-- (void)confirmLocationWithURL:(id)a3 inRegion:(id)a4 reply:(id)a5
+- (void)confirmLocationWithURL:(id)l inRegion:(id)region reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  regionCopy = region;
+  replyCopy = reply;
   if ((+[CPSLocationProvider locationServiceEnabled]& 1) != 0)
   {
-    v11 = [(RemoteClientNotEntitled *)self connection];
-    v12 = v11;
-    if (v11)
+    connection = [(RemoteClientNotEntitled *)self connection];
+    v12 = connection;
+    if (connection)
     {
-      [v11 auditToken];
+      [connection auditToken];
     }
 
     else
@@ -80,20 +80,20 @@
     v15 = [LSBundleProxy bundleProxyWithAuditToken:buf error:&v26];
     v14 = v26;
 
-    v16 = [v15 bundleIdentifier];
-    if (v16)
+    bundleIdentifier = [v15 bundleIdentifier];
+    if (bundleIdentifier)
     {
       v17 = +[CPSWebClipStore sharedStore];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10000A1DC;
       v20[3] = &unk_100014CB0;
-      v21 = v16;
-      v25 = v10;
-      v22 = self;
-      v23 = v9;
+      v21 = bundleIdentifier;
+      v25 = replyCopy;
+      selfCopy = self;
+      v23 = regionCopy;
       v24 = v15;
-      [v17 getWebClipWithURL:v8 completionHandler:v20];
+      [v17 getWebClipWithURL:lCopy completionHandler:v20];
 
       v18 = v21;
     }
@@ -107,7 +107,7 @@
       }
 
       v18 = [NSError cps_errorWithCode:10];
-      (*(v10 + 2))(v10, 0, v18);
+      (*(replyCopy + 2))(replyCopy, 0, v18);
     }
   }
 
@@ -121,23 +121,23 @@
     }
 
     v14 = [NSError cps_errorWithCode:15];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(replyCopy + 2))(replyCopy, 0, v14);
   }
 }
 
-- (void)_requestLocationConsentWithRegion:(id)a3 clipBundleID:(id)a4 appName:(id)a5 record:(id)a6 completion:(id)a7
+- (void)_requestLocationConsentWithRegion:(id)region clipBundleID:(id)d appName:(id)name record:(id)record completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  regionCopy = region;
+  dCopy = d;
+  nameCopy = name;
+  recordCopy = record;
+  completionCopy = completion;
   v16 = +[NSUserDefaults cps_clipServicesDefaults];
-  v17 = [v16 cps_didShowFirstTimeLocationConsent];
+  cps_didShowFirstTimeLocationConsent = [v16 cps_didShowFirstTimeLocationConsent];
 
-  if (v17)
+  if (cps_didShowFirstTimeLocationConsent)
   {
-    v15[2](v15, +[CPSLocationProvider locationServiceEnabled]);
+    completionCopy[2](completionCopy, +[CPSLocationProvider locationServiceEnabled]);
   }
 
   else
@@ -147,63 +147,63 @@
     v19[1] = 3221225472;
     v19[2] = sub_10000AC50;
     v19[3] = &unk_100014D00;
-    v24 = v15;
-    v20 = v14;
-    v21 = v12;
-    v22 = v13;
-    v23 = v11;
+    v24 = completionCopy;
+    v20 = recordCopy;
+    v21 = dCopy;
+    v22 = nameCopy;
+    v23 = regionCopy;
     [v18 getCurrentLocationWithCompletion:v19];
   }
 }
 
-- (void)fetchWebClipsUUIDStringForClientBundleID:(id)a3 reply:(id)a4
+- (void)fetchWebClipsUUIDStringForClientBundleID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(RemoteClientNotEntitled *)self _connectionIsAuthorizedForClientBundleID:v6])
+  dCopy = d;
+  replyCopy = reply;
+  if ([(RemoteClientNotEntitled *)self _connectionIsAuthorizedForClientBundleID:dCopy])
   {
     v8 = +[CPSWebClipStore sharedStore];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000AFB8;
     v10[3] = &unk_100014868;
-    v11 = v7;
-    [v8 fetchWebClipsUUIDStringForClientBundleID:v6 completionHandler:v10];
+    v11 = replyCopy;
+    [v8 fetchWebClipsUUIDStringForClientBundleID:dCopy completionHandler:v10];
   }
 
   else
   {
     v9 = [NSError cps_errorWithCode:20];
-    (*(v7 + 2))(v7, v9, 0);
+    (*(replyCopy + 2))(replyCopy, v9, 0);
   }
 }
 
-- (void)fetchWebClipsURLStringForClientBundleID:(id)a3 reply:(id)a4
+- (void)fetchWebClipsURLStringForClientBundleID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(RemoteClientNotEntitled *)self _connectionIsAuthorizedForClientBundleID:v6])
+  dCopy = d;
+  replyCopy = reply;
+  if ([(RemoteClientNotEntitled *)self _connectionIsAuthorizedForClientBundleID:dCopy])
   {
     v8 = +[CPSWebClipStore sharedStore];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000B0E0;
     v10[3] = &unk_100014868;
-    v11 = v7;
-    [v8 fetchWebClipsURLStringForClientBundleID:v6 completionHandler:v10];
+    v11 = replyCopy;
+    [v8 fetchWebClipsURLStringForClientBundleID:dCopy completionHandler:v10];
   }
 
   else
   {
     v9 = [NSError cps_errorWithCode:20];
-    (*(v7 + 2))(v7, v9, 0);
+    (*(replyCopy + 2))(replyCopy, v9, 0);
   }
 }
 
-- (void)getWebClipDictionaryWithIdentifier:(id)a3 reply:(id)a4
+- (void)getWebClipDictionaryWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   if ([(RemoteClientNotEntitled *)self _connectionClientHasReadAllWebClipsEntitlement]|| [(RemoteClientNotEntitled *)self _connectionClientIsWebBrowser])
   {
     v8 = +[CPSWebClipStore sharedStore];
@@ -211,20 +211,20 @@
     v10[1] = 3221225472;
     v10[2] = sub_10000B210;
     v10[3] = &unk_100014D28;
-    v11 = v7;
-    [v8 getWebClipDictionaryWithIdentifier:v6 completionHandler:v10];
+    v11 = replyCopy;
+    [v8 getWebClipDictionaryWithIdentifier:identifierCopy completionHandler:v10];
   }
 
   else
   {
     v9 = [NSError cps_errorWithCode:20];
-    (*(v7 + 2))(v7, v9, 0);
+    (*(replyCopy + 2))(replyCopy, v9, 0);
   }
 }
 
-- (BOOL)_connectionIsAuthorizedForClientBundleID:(id)a3
+- (BOOL)_connectionIsAuthorizedForClientBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(RemoteClientNotEntitled *)self _connectionClientHasReadAllWebClipsEntitlement])
   {
     v5 = 1;
@@ -232,11 +232,11 @@
 
   else if ([(RemoteClientNotEntitled *)self _connectionClientIsWebBrowser])
   {
-    v6 = [(RemoteClientNotEntitled *)self connection];
-    v7 = v6;
-    if (v6)
+    connection = [(RemoteClientNotEntitled *)self connection];
+    v7 = connection;
+    if (connection)
     {
-      [v6 auditToken];
+      [connection auditToken];
     }
 
     else
@@ -246,8 +246,8 @@
 
     v8 = [LSBundleProxy bundleProxyWithAuditToken:v11 error:0];
 
-    v9 = [v8 bundleIdentifier];
-    v5 = [v9 isEqualToString:v4];
+    bundleIdentifier = [v8 bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:dCopy];
   }
 
   else
@@ -260,40 +260,40 @@
 
 - (BOOL)_connectionClientHasReadAllWebClipsEntitlement
 {
-  v2 = [(RemoteClientNotEntitled *)self connection];
-  v3 = [v2 valueForEntitlement:@"com.apple.private.ClipServices.read-all-web-clips"];
+  connection = [(RemoteClientNotEntitled *)self connection];
+  v3 = [connection valueForEntitlement:@"com.apple.private.ClipServices.read-all-web-clips"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)_connectionClientIsWebBrowser
 {
-  v2 = [(RemoteClientNotEntitled *)self connection];
-  v3 = [v2 valueForEntitlement:@"com.apple.developer.web-browser"];
+  connection = [(RemoteClientNotEntitled *)self connection];
+  v3 = [connection valueForEntitlement:@"com.apple.developer.web-browser"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

@@ -13,17 +13,17 @@
   {
     v4 = MEMORY[0x277CCD5C0];
     v5 = v3;
-    v6 = [v5 comparatorCoding];
-    v7 = [v4 createWithCodable:v6];
+    comparatorCoding = [v5 comparatorCoding];
+    v7 = [v4 createWithCodable:comparatorCoding];
 
     v8 = MEMORY[0x277CCD5C0];
-    v9 = [v5 unitCoding];
-    v10 = [v8 createWithCodable:v9];
+    unitCoding = [v5 unitCoding];
+    v10 = [v8 createWithCodable:unitCoding];
 
     v11 = MEMORY[0x277CCD198];
-    v12 = [v5 rawValue];
+    rawValue = [v5 rawValue];
 
-    v13 = [v11 codedQuantityWithValue:v12 comparatorCoding:v7 unitCoding:v10];
+    v13 = [v11 codedQuantityWithValue:rawValue comparatorCoding:v7 unitCoding:v10];
   }
 
   else
@@ -37,16 +37,16 @@
 - (HDCodableCodedQuantity)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableCodedQuantity);
-  v3 = [a1 rawValue];
-  [(HDCodableCodedQuantity *)v2 setRawValue:v3];
+  rawValue = [self rawValue];
+  [(HDCodableCodedQuantity *)v2 setRawValue:rawValue];
 
-  v4 = [a1 comparatorCoding];
-  v5 = [v4 codableRepresentationForSync];
-  [(HDCodableCodedQuantity *)v2 setComparatorCoding:v5];
+  comparatorCoding = [self comparatorCoding];
+  codableRepresentationForSync = [comparatorCoding codableRepresentationForSync];
+  [(HDCodableCodedQuantity *)v2 setComparatorCoding:codableRepresentationForSync];
 
-  v6 = [a1 unitCoding];
-  v7 = [v6 codableRepresentationForSync];
-  [(HDCodableCodedQuantity *)v2 setUnitCoding:v7];
+  unitCoding = [self unitCoding];
+  codableRepresentationForSync2 = [unitCoding codableRepresentationForSync];
+  [(HDCodableCodedQuantity *)v2 setUnitCoding:codableRepresentationForSync2];
 
   return v2;
 }

@@ -1,26 +1,26 @@
 @interface PKPassPersonalizationTermsViewController
-- (PKPassPersonalizationTermsViewController)initWithTermsAndConditions:(id)a3;
+- (PKPassPersonalizationTermsViewController)initWithTermsAndConditions:(id)conditions;
 - (PKPassPersonalizationTermsViewControllerDelegate)delegate;
-- (void)_acceptButtonPressed:(id)a3;
+- (void)_acceptButtonPressed:(id)pressed;
 - (void)_applyTermsAndConditions;
-- (void)_declineButtonPressed:(id)a3;
+- (void)_declineButtonPressed:(id)pressed;
 - (void)dealloc;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPassPersonalizationTermsViewController
 
-- (PKPassPersonalizationTermsViewController)initWithTermsAndConditions:(id)a3
+- (PKPassPersonalizationTermsViewController)initWithTermsAndConditions:(id)conditions
 {
-  v4 = a3;
+  conditionsCopy = conditions;
   v9.receiver = self;
   v9.super_class = PKPassPersonalizationTermsViewController;
   v5 = [(PKPassPersonalizationTermsViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [conditionsCopy copy];
     termsAndConditions = v5->_termsAndConditions;
     v5->_termsAndConditions = v6;
   }
@@ -73,35 +73,35 @@
   [(UITextView *)self->_textView setEditable:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPassPersonalizationTermsViewController;
-  [(PKPassPersonalizationTermsViewController *)&v5 viewWillAppear:a3];
+  [(PKPassPersonalizationTermsViewController *)&v5 viewWillAppear:appear];
   [(PKPassPersonalizationTermsViewController *)self _applyTermsAndConditions];
-  v4 = [(PKPassPersonalizationTermsViewController *)self navigationController];
-  [v4 setToolbarHidden:0 animated:0];
+  navigationController = [(PKPassPersonalizationTermsViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:0];
 }
 
 - (void)_applyTermsAndConditions
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E69DB650];
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  v7[0] = v3;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v7[0] = labelColor;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v5 = PKAttributedStringByParsingLinksInString();
   [(UITextView *)self->_textView setAttributedText:v5];
 }
 
-- (void)_declineButtonPressed:(id)a3
+- (void)_declineButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained passPersonalizationTermsViewControllerDidDeclineTerms:self];
 }
 
-- (void)_acceptButtonPressed:(id)a3
+- (void)_acceptButtonPressed:(id)pressed
 {
   v4 = MEMORY[0x1E69DC650];
   v5 = PKLocalizedString(&cfstr_Personalizatio_14.isa);

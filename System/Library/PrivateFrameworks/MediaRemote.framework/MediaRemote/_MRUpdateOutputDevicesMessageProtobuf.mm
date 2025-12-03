@@ -1,52 +1,52 @@
 @interface _MRUpdateOutputDevicesMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addClusterAwareOutputDevices:(id)a3;
-- (void)addOutputDevices:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClusterAwareOutputDevices:(id)devices;
+- (void)addOutputDevices:(id)devices;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRUpdateOutputDevicesMessageProtobuf
 
-- (void)addOutputDevices:(id)a3
+- (void)addOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   outputDevices = self->_outputDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!outputDevices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_outputDevices;
     self->_outputDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     outputDevices = self->_outputDevices;
   }
 
-  [(NSMutableArray *)outputDevices addObject:v4];
+  [(NSMutableArray *)outputDevices addObject:devicesCopy];
 }
 
-- (void)addClusterAwareOutputDevices:(id)a3
+- (void)addClusterAwareOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   clusterAwareOutputDevices = self->_clusterAwareOutputDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!clusterAwareOutputDevices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_clusterAwareOutputDevices;
     self->_clusterAwareOutputDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     clusterAwareOutputDevices = self->_clusterAwareOutputDevices;
   }
 
-  [(NSMutableArray *)clusterAwareOutputDevices addObject:v4];
+  [(NSMutableArray *)clusterAwareOutputDevices addObject:devicesCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = _MRUpdateOutputDevicesMessageProtobuf;
   v4 = [(_MRUpdateOutputDevicesMessageProtobuf *)&v8 description];
-  v5 = [(_MRUpdateOutputDevicesMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRUpdateOutputDevicesMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,7 +64,7 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_outputDevices count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_outputDevices, "count")}];
@@ -87,8 +87,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -97,13 +97,13 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"outputDevices"];
+    [dictionary setObject:v4 forKey:@"outputDevices"];
   }
 
   endpointUID = self->_endpointUID;
   if (endpointUID)
   {
-    [v3 setObject:endpointUID forKey:@"endpointUID"];
+    [dictionary setObject:endpointUID forKey:@"endpointUID"];
   }
 
   if ([(NSMutableArray *)self->_clusterAwareOutputDevices count])
@@ -128,8 +128,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -138,18 +138,18 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"clusterAwareOutputDevices"];
+    [dictionary setObject:v12 forKey:@"clusterAwareOutputDevices"];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -222,49 +222,49 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(_MRUpdateOutputDevicesMessageProtobuf *)self outputDevicesCount])
   {
-    [v12 clearOutputDevices];
-    v4 = [(_MRUpdateOutputDevicesMessageProtobuf *)self outputDevicesCount];
-    if (v4)
+    [toCopy clearOutputDevices];
+    outputDevicesCount = [(_MRUpdateOutputDevicesMessageProtobuf *)self outputDevicesCount];
+    if (outputDevicesCount)
     {
-      v5 = v4;
+      v5 = outputDevicesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRUpdateOutputDevicesMessageProtobuf *)self outputDevicesAtIndex:i];
-        [v12 addOutputDevices:v7];
+        [toCopy addOutputDevices:v7];
       }
     }
   }
 
   if (self->_endpointUID)
   {
-    [v12 setEndpointUID:?];
+    [toCopy setEndpointUID:?];
   }
 
   if ([(_MRUpdateOutputDevicesMessageProtobuf *)self clusterAwareOutputDevicesCount])
   {
-    [v12 clearClusterAwareOutputDevices];
-    v8 = [(_MRUpdateOutputDevicesMessageProtobuf *)self clusterAwareOutputDevicesCount];
-    if (v8)
+    [toCopy clearClusterAwareOutputDevices];
+    clusterAwareOutputDevicesCount = [(_MRUpdateOutputDevicesMessageProtobuf *)self clusterAwareOutputDevicesCount];
+    if (clusterAwareOutputDevicesCount)
     {
-      v9 = v8;
+      v9 = clusterAwareOutputDevicesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(_MRUpdateOutputDevicesMessageProtobuf *)self clusterAwareOutputDevicesAtIndex:j];
-        [v12 addClusterAwareOutputDevices:v11];
+        [toCopy addClusterAwareOutputDevices:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -285,7 +285,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addOutputDevices:v11];
 
         ++v10;
@@ -298,7 +298,7 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_endpointUID copyWithZone:a3];
+  v12 = [(NSString *)self->_endpointUID copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -322,7 +322,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addClusterAwareOutputDevices:v19];
 
         ++v18;
@@ -339,13 +339,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((outputDevices = self->_outputDevices, !(outputDevices | v4[3])) || -[NSMutableArray isEqual:](outputDevices, "isEqual:")) && ((endpointUID = self->_endpointUID, !(endpointUID | v4[2])) || -[NSString isEqual:](endpointUID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((outputDevices = self->_outputDevices, !(outputDevices | equalCopy[3])) || -[NSMutableArray isEqual:](outputDevices, "isEqual:")) && ((endpointUID = self->_endpointUID, !(endpointUID | equalCopy[2])) || -[NSString isEqual:](endpointUID, "isEqual:")))
   {
     clusterAwareOutputDevices = self->_clusterAwareOutputDevices;
-    if (clusterAwareOutputDevices | v4[1])
+    if (clusterAwareOutputDevices | equalCopy[1])
     {
       v8 = [(NSMutableArray *)clusterAwareOutputDevices isEqual:?];
     }
@@ -371,15 +371,15 @@
   return v4 ^ [(NSMutableArray *)self->_clusterAwareOutputDevices hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[3];
+  v5 = fromCopy[3];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -403,7 +403,7 @@
     while (v7);
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(_MRUpdateOutputDevicesMessageProtobuf *)self setEndpointUID:?];
   }
@@ -412,7 +412,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

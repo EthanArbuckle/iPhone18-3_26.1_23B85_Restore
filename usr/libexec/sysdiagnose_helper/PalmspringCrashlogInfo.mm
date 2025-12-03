@@ -1,12 +1,12 @@
 @interface PalmspringCrashlogInfo
-- (PalmspringCrashlogInfo)initWithData:(id)a3;
+- (PalmspringCrashlogInfo)initWithData:(id)data;
 @end
 
 @implementation PalmspringCrashlogInfo
 
-- (PalmspringCrashlogInfo)initWithData:(id)a3
+- (PalmspringCrashlogInfo)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v27.receiver = self;
   v27.super_class = PalmspringCrashlogInfo;
   v6 = [(PalmspringCrashlogInfo *)&v27 init];
@@ -29,23 +29,23 @@ LABEL_16:
     sub_10003ADDC(v11, a2);
   }
 
-  if ([v5 length] <= 4)
+  if ([dataCopy length] <= 4)
   {
     v12 = v6->_log;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_10003AF30(v12, v5);
+      sub_10003AF30(v12, dataCopy);
     }
 
     goto LABEL_16;
   }
 
-  v13 = [v5 bytes];
+  bytes = [dataCopy bytes];
   v14 = v6->_log;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = v13[1];
-    v16 = v13[2];
+    v15 = bytes[1];
+    v16 = bytes[2];
     *buf = 67109376;
     v29 = v15;
     v30 = 1024;
@@ -53,27 +53,27 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Crashlog info report header extracted: version %d, # of crashlogs %d", buf, 0xEu);
   }
 
-  v17 = ((32 * v13[2]) | 5);
-  if ([v5 length] != v17)
+  v17 = ((32 * bytes[2]) | 5);
+  if ([dataCopy length] != v17)
   {
     v25 = v6->_log;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      sub_10003AE80(v25, v5, v17);
+      sub_10003AE80(v25, dataCopy, v17);
     }
 
     goto LABEL_16;
   }
 
-  v6->_version = v13[1];
+  v6->_version = bytes[1];
   v18 = objc_alloc_init(NSMutableArray);
   entries = v6->_entries;
   v6->_entries = v18;
 
-  if (v13[2])
+  if (bytes[2])
   {
     v20 = 0;
-    v21 = (v13 + 11);
+    v21 = (bytes + 11);
     do
     {
       __strlcpy_chk();
@@ -85,7 +85,7 @@ LABEL_16:
       v21 += 32;
     }
 
-    while (v20 < v13[2]);
+    while (v20 < bytes[2]);
   }
 
   v24 = v6;

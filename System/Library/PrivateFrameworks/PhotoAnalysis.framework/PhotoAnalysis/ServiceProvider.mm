@@ -1,10 +1,10 @@
 @interface ServiceProvider
-- (void)notifyLibraryAvailableAtURL:(id)a3;
+- (void)notifyLibraryAvailableAtURL:(id)l;
 @end
 
 @implementation ServiceProvider
 
-- (void)notifyLibraryAvailableAtURL:(id)a3
+- (void)notifyLibraryAvailableAtURL:(id)l
 {
   v3 = sub_22FCC65F4();
   v4 = *(v3 - 8);

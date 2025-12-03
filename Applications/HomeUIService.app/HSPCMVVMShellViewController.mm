@@ -1,20 +1,20 @@
 @interface HSPCMVVMShellViewController
-- (HSPCMVVMShellViewController)initWithTableViewStyle:(int64_t)a3 moduleCreator:(id)a4 moduleControllerBuilder:(id)a5;
+- (HSPCMVVMShellViewController)initWithTableViewStyle:(int64_t)style moduleCreator:(id)creator moduleControllerBuilder:(id)builder;
 - (void)performPRXLayoutPass;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCMVVMShellViewController
 
-- (HSPCMVVMShellViewController)initWithTableViewStyle:(int64_t)a3 moduleCreator:(id)a4 moduleControllerBuilder:(id)a5
+- (HSPCMVVMShellViewController)initWithTableViewStyle:(int64_t)style moduleCreator:(id)creator moduleControllerBuilder:(id)builder
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[HUPRXItemModuleTableViewController alloc] initWithTableViewStyle:a3 moduleCreator:v9 moduleControllerBuilder:v8];
+  builderCopy = builder;
+  creatorCopy = creator;
+  v10 = [[HUPRXItemModuleTableViewController alloc] initWithTableViewStyle:style moduleCreator:creatorCopy moduleControllerBuilder:builderCopy];
 
   v11 = [PRXScrollableContentView alloc];
-  v12 = [(HUPRXItemModuleTableViewController *)v10 tableView];
-  v13 = [v11 initWithCardStyle:0 scrollView:v12];
+  tableView = [(HUPRXItemModuleTableViewController *)v10 tableView];
+  v13 = [v11 initWithCardStyle:0 scrollView:tableView];
 
   v17.receiver = self;
   v17.super_class = HSPCMVVMShellViewController;
@@ -33,24 +33,24 @@
   v5.receiver = self;
   v5.super_class = HSPCMVVMShellViewController;
   [(HSPCMVVMShellViewController *)&v5 viewDidLoad];
-  v3 = [(HSPCMVVMShellViewController *)self mvvmController];
-  [(HSPCMVVMShellViewController *)self addChildViewController:v3];
+  mvvmController = [(HSPCMVVMShellViewController *)self mvvmController];
+  [(HSPCMVVMShellViewController *)self addChildViewController:mvvmController];
 
-  v4 = [(HSPCMVVMShellViewController *)self mvvmController];
-  [v4 didMoveToParentViewController:self];
+  mvvmController2 = [(HSPCMVVMShellViewController *)self mvvmController];
+  [mvvmController2 didMoveToParentViewController:self];
 }
 
 - (void)performPRXLayoutPass
 {
-  v3 = [(HSPCMVVMShellViewController *)self mvvmController];
-  v4 = [v3 tableView];
-  [v4 layoutIfNeeded];
+  mvvmController = [(HSPCMVVMShellViewController *)self mvvmController];
+  tableView = [mvvmController tableView];
+  [tableView layoutIfNeeded];
 
-  v5 = [(HSPCMVVMShellViewController *)self contentView];
-  [v5 setNeedsUpdateConstraints];
+  contentView = [(HSPCMVVMShellViewController *)self contentView];
+  [contentView setNeedsUpdateConstraints];
 
-  v7 = [(HSPCMVVMShellViewController *)self view];
-  [v7 bounds];
+  view = [(HSPCMVVMShellViewController *)self view];
+  [view bounds];
   [(HSPCMVVMShellViewController *)self updatePreferredContentSizeForCardWidth:v6];
 }
 

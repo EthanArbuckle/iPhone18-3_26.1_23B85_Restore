@@ -1,27 +1,27 @@
 @interface MigratorPromotionTask
-- (MigratorPromotionTask)initWithConfiguration:(id)a3;
+- (MigratorPromotionTask)initWithConfiguration:(id)configuration;
 - (id)copyConfiguration;
 - (void)main;
 @end
 
 @implementation MigratorPromotionTask
 
-- (MigratorPromotionTask)initWithConfiguration:(id)a3
+- (MigratorPromotionTask)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MigratorPromotionTask;
-  v5 = [(MigratorTask *)&v9 initWithConfiguration:v4];
+  v5 = [(MigratorTask *)&v9 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = sub_1002C0C50(v4, @"bundleIDs");
+    v6 = sub_1002C0C50(configurationCopy, @"bundleIDs");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_bundleIDs, v6);
     }
 
-    v7 = sub_1002C0C50(v4, @"options");
+    v7 = sub_1002C0C50(configurationCopy, @"options");
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

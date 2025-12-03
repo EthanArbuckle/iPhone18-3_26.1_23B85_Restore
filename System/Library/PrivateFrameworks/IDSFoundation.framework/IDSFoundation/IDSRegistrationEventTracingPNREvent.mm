@@ -1,11 +1,11 @@
 @interface IDSRegistrationEventTracingPNREvent
 - (IDSRegistrationEventTracingPNREvent)init;
-- (IDSRegistrationEventTracingPNREvent)initWithSimUniqueIdentifier:(id)a3;
+- (IDSRegistrationEventTracingPNREvent)initWithSimUniqueIdentifier:(id)identifier;
 @end
 
 @implementation IDSRegistrationEventTracingPNREvent
 
-- (IDSRegistrationEventTracingPNREvent)initWithSimUniqueIdentifier:(id)a3
+- (IDSRegistrationEventTracingPNREvent)initWithSimUniqueIdentifier:(id)identifier
 {
   v4 = sub_1A7E22290();
   v5 = (self + OBJC_IVAR___IDSRegistrationEventTracingPNREvent_name);

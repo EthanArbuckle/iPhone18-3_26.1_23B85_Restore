@@ -1,62 +1,62 @@
 @interface DOCTagEditorViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
 - (BOOL)commitNewTag;
-- (BOOL)tagEditorCellShouldBeginEditing:(id)a3;
-- (BOOL)tagEditorCellShouldEndEditing:(id)a3;
+- (BOOL)tagEditorCellShouldBeginEditing:(id)editing;
+- (BOOL)tagEditorCellShouldEndEditing:(id)editing;
 - (DOCTagEditorDelegate)delegate;
 - (DOCTagEditorViewController)init;
-- (DOCTagEditorViewController)initWithCoder:(id)a3;
-- (DOCTagEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DOCTagEditorViewController)initWithCoder:(id)coder;
+- (DOCTagEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSArray)combinedTags;
 - (NSOrderedSet)userTags;
 - (double)bottomEdgeSpacing;
 - (double)maxListPresentationHeight;
 - (double)topEdgeSpacing;
 - (id)_panelAppearance;
-- (id)_tagForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3 dequeueCell:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_tagForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path dequeueCell:(id)cell;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)effectiveNavigationItem;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_updateMixedSelectionForCell:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_updateMixedSelectionForCell:(id)cell;
 - (void)_updateNavigationItem;
-- (void)_updatePreferredContentSize:(BOOL)a3;
+- (void)_updatePreferredContentSize:(BOOL)size;
 - (void)_updateSelection;
-- (void)_updateSelectionForSection:(unint64_t)a3 withTags:(id)a4;
-- (void)cancelButtonTapped:(id)a3;
+- (void)_updateSelectionForSection:(unint64_t)section withTags:(id)tags;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)cleanUpAfterNewTag;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)deselectTag:(id)a3;
-- (void)doneButtonTapped:(id)a3;
-- (void)registerCells:(id)a3;
-- (void)scheduleSetTagsOperationWithTag:(id)a3 adding:(BOOL)a4;
-- (void)selectTag:(id)a3;
-- (void)setAddingTag:(BOOL)a3;
-- (void)setItems:(id)a3;
-- (void)setSelectedTags:(id)a3;
-- (void)setTagsWithItems:(id)a3;
+- (void)deselectTag:(id)tag;
+- (void)doneButtonTapped:(id)tapped;
+- (void)registerCells:(id)cells;
+- (void)scheduleSetTagsOperationWithTag:(id)tag adding:(BOOL)adding;
+- (void)selectTag:(id)tag;
+- (void)setAddingTag:(BOOL)tag;
+- (void)setItems:(id)items;
+- (void)setSelectedTags:(id)tags;
+- (void)setTagsWithItems:(id)items;
 - (void)startNewTag;
-- (void)tagEditorCell:(id)a3 didEndEditingWithText:(id)a4;
-- (void)tagEditorCell:(id)a3 didUpdateText:(id)a4;
+- (void)tagEditorCell:(id)cell didEndEditingWithText:(id)text;
+- (void)tagEditorCell:(id)cell didUpdateText:(id)text;
 - (void)tagRegistryDidUpdate;
 - (void)updateDiscoveredTags;
 - (void)updateSelectedTags;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DOCTagEditorViewController
 
-- (DOCTagEditorViewController)initWithCoder:(id)a3
+- (DOCTagEditorViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DOCTagEditorViewController;
-  v3 = [(DOCTagEditorViewController *)&v6 initWithCoder:a3];
+  v3 = [(DOCTagEditorViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -66,11 +66,11 @@
   return v4;
 }
 
-- (DOCTagEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DOCTagEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = DOCTagEditorViewController;
-  v4 = [(DOCTagEditorViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(DOCTagEditorViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -80,15 +80,15 @@
   return v5;
 }
 
-- (void)registerCells:(id)a3
+- (void)registerCells:(id)cells
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cellsCopy = cells;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [cellsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -99,16 +99,16 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cellsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
-        v11 = [(DOCTagEditorViewController *)self collectionView];
-        [v11 registerClass:v10 forCellWithReuseIdentifier:v9];
+        v10 = [cellsCopy objectForKeyedSubscript:v9];
+        collectionView = [(DOCTagEditorViewController *)self collectionView];
+        [collectionView registerClass:v10 forCellWithReuseIdentifier:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [cellsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -160,8 +160,8 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
   [(DOCTagEditorViewController *)self registerCells:v3];
 
-  v4 = [(DOCTagEditorViewController *)self collectionView];
-  [v4 setAllowsMultipleSelection:1];
+  collectionView = [(DOCTagEditorViewController *)self collectionView];
+  [collectionView setAllowsMultipleSelection:1];
 
   if (_UISolariumEnabled())
   {
@@ -173,8 +173,8 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
     [MEMORY[0x277D75348] systemBackgroundColor];
   }
   v5 = ;
-  v6 = [(DOCTagEditorViewController *)self collectionView];
-  [v6 setBackgroundColor:v5];
+  collectionView2 = [(DOCTagEditorViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:v5];
 
   v7 = _DocumentManagerBundle();
   v8 = [v7 localizedStringForKey:@"Tags [Navigation Bar]" value:@"Tags" table:@"Localizable"];
@@ -199,9 +199,9 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
 
   [(DOCTagEditorViewController *)self _updateSelection];
   [(DOCTagEditorViewController *)self _updateNavigationItem];
-  v16 = [(DOCTagEditorViewController *)self collectionView];
-  v17 = [v16 heightAnchor];
-  v18 = [v17 constraintEqualToConstant:0.0];
+  collectionView3 = [(DOCTagEditorViewController *)self collectionView];
+  heightAnchor = [collectionView3 heightAnchor];
+  v18 = [heightAnchor constraintEqualToConstant:0.0];
   v19 = DOCConstraintWithPriority();
   collectionViewHeightConstraint = self->_collectionViewHeightConstraint;
   self->_collectionViewHeightConstraint = v19;
@@ -211,8 +211,8 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
   [v21 activateConstraints:v22];
 
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v23 addObserver:self selector:sel_tagRegistryDidUpdate name:*MEMORY[0x277D061D0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_tagRegistryDidUpdate name:*MEMORY[0x277D061D0] object:0];
 
   if ([(DOCTagEditorViewController *)self modalTransitionStyle]== 2)
   {
@@ -220,11 +220,11 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DOCTagEditorViewController;
-  [(DOCTagEditorViewController *)&v4 viewWillAppear:a3];
+  [(DOCTagEditorViewController *)&v4 viewWillAppear:appear];
   [(DOCTagEditorViewController *)self _updateNavigationItem];
   if (![(DOCTagEditorViewController *)self delayResizingUntilAppeared])
   {
@@ -232,24 +232,24 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = DOCTagEditorViewController;
-  [(DOCTagEditorViewController *)&v5 viewWillDisappear:a3];
+  [(DOCTagEditorViewController *)&v5 viewWillDisappear:disappear];
   if ([(DOCTagEditorViewController *)self userChangedTags])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"DOCTagEditorTagsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"DOCTagEditorTagsDidChangeNotification" object:self];
 
     [(DOCTagEditorViewController *)self scheduleSetTagsOperationWithTag:0 adding:1];
     [(DOCTagEditorViewController *)self setUserChangedTags:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ([(DOCTagEditorViewController *)self delayResizingUntilAppeared])
   {
     [(DOCTagEditorViewController *)self _updatePreferredContentSize:0];
@@ -257,29 +257,29 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
 
   v5.receiver = self;
   v5.super_class = DOCTagEditorViewController;
-  [(DOCTagEditorViewController *)&v5 viewDidAppear:v3];
+  [(DOCTagEditorViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = DOCTagEditorViewController;
-  v7 = a4;
-  [(DOCTagEditorViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(DOCTagEditorViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__DOCTagEditorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_278FA23F8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DOCTagEditorViewController;
@@ -291,9 +291,9 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   userTags = self->_userTags;
   if (!userTags)
   {
-    v4 = [MEMORY[0x277D06268] sharedInstance];
-    v5 = [v4 userTags];
-    v6 = [v5 copy];
+    mEMORY[0x277D06268] = [MEMORY[0x277D06268] sharedInstance];
+    userTags = [mEMORY[0x277D06268] userTags];
+    v6 = [userTags copy];
     v7 = self->_userTags;
     self->_userTags = v6;
 
@@ -305,11 +305,11 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
 
 - (NSArray)combinedTags
 {
-  v3 = [(DOCTagEditorViewController *)self userTags];
-  v4 = [v3 array];
-  v5 = [(DOCTagEditorViewController *)self discoveredTags];
-  v6 = [v5 array];
-  v7 = [v4 arrayByAddingObjectsFromArray:v6];
+  userTags = [(DOCTagEditorViewController *)self userTags];
+  array = [userTags array];
+  discoveredTags = [(DOCTagEditorViewController *)self discoveredTags];
+  array2 = [discoveredTags array];
+  v7 = [array arrayByAddingObjectsFromArray:array2];
 
   return v7;
 }
@@ -320,22 +320,22 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   self->_userTags = 0;
 
   [(DOCTagEditorViewController *)self updateDiscoveredTags];
-  v5 = [MEMORY[0x277CCAB58] indexSet];
-  [v5 addIndex:0];
-  v4 = [(DOCTagEditorViewController *)self collectionView];
-  [v4 reloadSections:v5];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  [indexSet addIndex:0];
+  collectionView = [(DOCTagEditorViewController *)self collectionView];
+  [collectionView reloadSections:indexSet];
 
   [(DOCTagEditorViewController *)self _updateSelection];
   [(DOCTagEditorViewController *)self _updatePreferredContentSize:0];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   if ([(DOCTagEditorViewController *)self isAddingTag])
   {
-    v4 = [(DOCTagEditorViewController *)self commitNewTag];
+    commitNewTag = [(DOCTagEditorViewController *)self commitNewTag];
     [(DOCTagEditorViewController *)self setAddingTag:0];
-    if (v4)
+    if (commitNewTag)
     {
 
       [(DOCTagEditorViewController *)self cleanUpAfterNewTag];
@@ -349,7 +349,7 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   }
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   [(DOCTagEditorViewController *)self setAddTagCurrentTextValue:0];
   [(DOCTagEditorViewController *)self setAddTagCurrentColor:0];
@@ -369,15 +369,15 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
     +[DOCTagAppearance pickerList];
   }
   v2 = ;
-  v3 = [v2 container];
+  container = [v2 container];
 
-  return v3;
+  return container;
 }
 
 - (double)topEdgeSpacing
 {
-  v2 = [(DOCTagEditorViewController *)self _panelAppearance];
-  [v2 topMargin];
+  _panelAppearance = [(DOCTagEditorViewController *)self _panelAppearance];
+  [_panelAppearance topMargin];
   v4 = v3;
 
   return v4;
@@ -385,8 +385,8 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
 
 - (double)bottomEdgeSpacing
 {
-  v2 = [(DOCTagEditorViewController *)self _panelAppearance];
-  [v2 bottomMargin];
+  _panelAppearance = [(DOCTagEditorViewController *)self _panelAppearance];
+  [_panelAppearance bottomMargin];
   v4 = v3;
 
   return v4;
@@ -398,20 +398,20 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   discoveredTags = self->_discoveredTags;
   if (!discoveredTags)
   {
-    v4 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v5 = self->_discoveredTags;
-    self->_discoveredTags = v4;
+    self->_discoveredTags = orderedSet;
 
     discoveredTags = self->_discoveredTags;
   }
 
-  v6 = [(DOCTagEditorViewController *)self unionSelectedTags];
-  v7 = [v6 set];
+  unionSelectedTags = [(DOCTagEditorViewController *)self unionSelectedTags];
+  v7 = [unionSelectedTags set];
   [(NSMutableOrderedSet *)discoveredTags unionSet:v7];
 
   v8 = self->_discoveredTags;
-  v9 = [(DOCTagEditorViewController *)self userTags];
-  [(NSMutableOrderedSet *)v8 minusOrderedSet:v9];
+  userTags = [(DOCTagEditorViewController *)self userTags];
+  [(NSMutableOrderedSet *)v8 minusOrderedSet:userTags];
 
   v10 = self->_discoveredTags;
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"displayName" ascending:1 selector:sel_localizedStandardCompare_];
@@ -420,30 +420,30 @@ id __34__DOCTagEditorViewController_init__block_invoke(uint64_t a1, uint64_t a2,
   [(NSMutableOrderedSet *)v10 sortUsingDescriptors:v12];
 }
 
-- (void)_updatePreferredContentSize:(BOOL)a3
+- (void)_updatePreferredContentSize:(BOOL)size
 {
-  v3 = a3;
+  sizeCopy = size;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__DOCTagEditorViewController__updatePreferredContentSize___block_invoke;
   aBlock[3] = &unk_278FA2420;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(DOCTagEditorViewController *)self collectionView];
-  v7 = v6;
-  if (v3)
+  collectionView = [(DOCTagEditorViewController *)self collectionView];
+  v7 = collectionView;
+  if (sizeCopy)
   {
-    [v6 setNeedsLayout];
+    [collectionView setNeedsLayout];
 
-    v8 = [(DOCTagEditorViewController *)self collectionView];
-    [v8 layoutIfNeeded];
+    collectionView2 = [(DOCTagEditorViewController *)self collectionView];
+    [collectionView2 layoutIfNeeded];
 
     v5[2](v5, 1);
   }
 
   else
   {
-    [v6 performBatchUpdates:&__block_literal_global_79 completion:v5];
+    [collectionView performBatchUpdates:&__block_literal_global_79 completion:v5];
   }
 }
 
@@ -518,61 +518,61 @@ void __58__DOCTagEditorViewController__updatePreferredContentSize___block_invoke
   [v22 setPreferredContentSize:{Width, v11}];
 }
 
-- (void)_updateSelectionForSection:(unint64_t)a3 withTags:(id)a4
+- (void)_updateSelectionForSection:(unint64_t)section withTags:(id)tags
 {
-  v15 = a4;
-  v6 = [v15 count];
+  tagsCopy = tags;
+  v6 = [tagsCopy count];
   if (v6)
   {
     v7 = v6;
     for (i = 0; i != v7; ++i)
     {
-      v9 = [v15 objectAtIndexedSubscript:i];
-      v10 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:a3];
-      v11 = [(DOCTagEditorViewController *)self intersectionSelectedTags];
-      v12 = [v11 containsObject:v9];
+      v9 = [tagsCopy objectAtIndexedSubscript:i];
+      v10 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:section];
+      intersectionSelectedTags = [(DOCTagEditorViewController *)self intersectionSelectedTags];
+      v12 = [intersectionSelectedTags containsObject:v9];
 
-      v13 = [(DOCTagEditorViewController *)self collectionView];
-      v14 = v13;
+      collectionView = [(DOCTagEditorViewController *)self collectionView];
+      v14 = collectionView;
       if (v12)
       {
-        [v13 selectItemAtIndexPath:v10 animated:0 scrollPosition:0];
+        [collectionView selectItemAtIndexPath:v10 animated:0 scrollPosition:0];
       }
 
       else
       {
-        [v13 deselectItemAtIndexPath:v10 animated:0];
+        [collectionView deselectItemAtIndexPath:v10 animated:0];
       }
     }
   }
 }
 
-- (void)_updateMixedSelectionForCell:(id)a3
+- (void)_updateMixedSelectionForCell:(id)cell
 {
-  v7 = a3;
-  v4 = [v7 tagValue];
-  v5 = [(DOCTagEditorViewController *)self intersectionSelectedTags];
-  if ([v5 containsObject:v4])
+  cellCopy = cell;
+  tagValue = [cellCopy tagValue];
+  intersectionSelectedTags = [(DOCTagEditorViewController *)self intersectionSelectedTags];
+  if ([intersectionSelectedTags containsObject:tagValue])
   {
-    [v7 setMixedSelection:0];
+    [cellCopy setMixedSelection:0];
   }
 
   else
   {
-    v6 = [(DOCTagEditorViewController *)self unionSelectedTags];
-    [v7 setMixedSelection:{objc_msgSend(v6, "containsObject:", v4)}];
+    unionSelectedTags = [(DOCTagEditorViewController *)self unionSelectedTags];
+    [cellCopy setMixedSelection:{objc_msgSend(unionSelectedTags, "containsObject:", tagValue)}];
   }
 }
 
 - (void)_updateSelection
 {
-  v3 = [(DOCTagEditorViewController *)self collectionView];
+  collectionView = [(DOCTagEditorViewController *)self collectionView];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__DOCTagEditorViewController__updateSelection__block_invoke_2;
   v4[3] = &unk_278FA2420;
   v4[4] = self;
-  [v3 performBatchUpdates:&__block_literal_global_82 completion:v4];
+  [collectionView performBatchUpdates:&__block_literal_global_82 completion:v4];
 }
 
 void __46__DOCTagEditorViewController__updateSelection__block_invoke_2(uint64_t a1)
@@ -620,19 +620,19 @@ void __46__DOCTagEditorViewController__updateSelection__block_invoke_2(uint64_t 
 
 - (id)effectiveNavigationItem
 {
-  if (!self->_useParentNavigationItem || (-[DOCTagEditorViewController parentViewController](self, "parentViewController"), v3 = objc_claimAutoreleasedReturnValue(), [v3 navigationItem], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  if (!self->_useParentNavigationItem || (-[DOCTagEditorViewController parentViewController](self, "parentViewController"), v3 = objc_claimAutoreleasedReturnValue(), [v3 navigationItem], navigationItem = objc_claimAutoreleasedReturnValue(), v3, !navigationItem))
   {
-    v4 = [(DOCTagEditorViewController *)self navigationItem];
+    navigationItem = [(DOCTagEditorViewController *)self navigationItem];
   }
 
-  return v4;
+  return navigationItem;
 }
 
 - (void)_updateNavigationItem
 {
   if ([(DOCTagEditorViewController *)self isAddingTag])
   {
-    v3 = [(DOCTagEditorViewController *)self navigationTitleForTagMaker];
+    navigationTitleForTagMaker = [(DOCTagEditorViewController *)self navigationTitleForTagMaker];
   }
 
   else
@@ -646,90 +646,90 @@ void __46__DOCTagEditorViewController__updateSelection__block_invoke_2(uint64_t 
     {
       [(DOCTagEditorViewController *)self navigationTitleForTagListInInfoPanel];
     }
-    v3 = ;
+    navigationTitleForTagMaker = ;
   }
 
-  v4 = v3;
-  [(DOCTagEditorViewController *)self setTitle:v3];
+  v4 = navigationTitleForTagMaker;
+  [(DOCTagEditorViewController *)self setTitle:navigationTitleForTagMaker];
 
-  v26 = [(DOCTagEditorViewController *)self effectiveNavigationItem];
+  effectiveNavigationItem = [(DOCTagEditorViewController *)self effectiveNavigationItem];
   if (self->_useParentNavigationItem)
   {
-    v5 = [(DOCTagEditorViewController *)self title];
-    v6 = [(DOCTagEditorViewController *)self parentViewController];
-    [v6 setTitle:v5];
+    title = [(DOCTagEditorViewController *)self title];
+    parentViewController = [(DOCTagEditorViewController *)self parentViewController];
+    [parentViewController setTitle:title];
 
-    v7 = [(DOCTagEditorViewController *)self isAddingTag];
+    isAddingTag = [(DOCTagEditorViewController *)self isAddingTag];
   }
 
   else
   {
-    v7 = [(DOCTagEditorViewController *)self inTagListMode];
+    isAddingTag = [(DOCTagEditorViewController *)self inTagListMode];
   }
 
-  [v26 setHidesBackButton:v7];
+  [effectiveNavigationItem setHidesBackButton:isAddingTag];
   v8 = _DocumentManagerBundle();
   v9 = [v8 localizedStringForKey:@"Back" value:@"Back" table:@"Localizable"];
-  [v26 setBackButtonTitle:v9];
+  [effectiveNavigationItem setBackButtonTitle:v9];
 
   if ([(DOCTagEditorViewController *)self isAddingTag])
   {
-    v10 = [(DOCTagEditorViewController *)self cancelButton];
-    [v26 setLeftBarButtonItem:v10];
+    cancelButton = [(DOCTagEditorViewController *)self cancelButton];
+    [effectiveNavigationItem setLeftBarButtonItem:cancelButton];
 
-    v11 = [MEMORY[0x277D06268] sharedInstance];
-    v12 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
-    v13 = [v11 isValidNewTagName:v12];
-    v14 = [(DOCTagEditorViewController *)self doneButton];
-    [v14 setEnabled:v13];
+    mEMORY[0x277D06268] = [MEMORY[0x277D06268] sharedInstance];
+    addTagCurrentTextValue = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+    v13 = [mEMORY[0x277D06268] isValidNewTagName:addTagCurrentTextValue];
+    doneButton = [(DOCTagEditorViewController *)self doneButton];
+    [doneButton setEnabled:v13];
 
-    v15 = [(DOCTagEditorViewController *)self doneButton];
-    v16 = v26;
-    v17 = v15;
+    doneButton2 = [(DOCTagEditorViewController *)self doneButton];
+    v16 = effectiveNavigationItem;
+    v17 = doneButton2;
   }
 
   else
   {
     if ([(DOCTagEditorViewController *)self isInfoInPopoverMode]|| ([(DOCTagEditorViewController *)self _isInPopoverPresentation]& 1) != 0)
     {
-      v15 = 0;
+      doneButton2 = 0;
     }
 
     else
     {
-      v15 = [(DOCTagEditorViewController *)self closeButton];
+      doneButton2 = [(DOCTagEditorViewController *)self closeButton];
     }
 
-    v18 = [(DOCTagEditorViewController *)self closeButton];
-    [v18 setEnabled:1];
+    closeButton = [(DOCTagEditorViewController *)self closeButton];
+    [closeButton setEnabled:1];
 
-    v19 = [(DOCTagEditorViewController *)self navigationController];
-    if (v19)
+    navigationController = [(DOCTagEditorViewController *)self navigationController];
+    if (navigationController)
     {
-      v20 = v19;
-      v21 = [(DOCTagEditorViewController *)self navigationController];
-      v22 = [v21 viewControllers];
-      v23 = [v22 firstObject];
-      v24 = v23;
-      if (v23 == self)
+      v20 = navigationController;
+      navigationController2 = [(DOCTagEditorViewController *)self navigationController];
+      viewControllers = [navigationController2 viewControllers];
+      firstObject = [viewControllers firstObject];
+      v24 = firstObject;
+      if (firstObject == self)
       {
       }
 
       else
       {
-        v25 = [v26 hidesBackButton];
+        hidesBackButton = [effectiveNavigationItem hidesBackButton];
 
-        if ((v25 & 1) == 0)
+        if ((hidesBackButton & 1) == 0)
         {
-          [v26 setRightBarButtonItem:v15];
-          [v26 setLeftBarButtonItem:0];
+          [effectiveNavigationItem setRightBarButtonItem:doneButton2];
+          [effectiveNavigationItem setLeftBarButtonItem:0];
           goto LABEL_23;
         }
       }
     }
 
-    [v26 setLeftBarButtonItem:v15];
-    v16 = v26;
+    [effectiveNavigationItem setLeftBarButtonItem:doneButton2];
+    v16 = effectiveNavigationItem;
     v17 = 0;
   }
 
@@ -737,44 +737,44 @@ void __46__DOCTagEditorViewController__updateSelection__block_invoke_2(uint64_t 
 LABEL_23:
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v6 = a3;
-  if (self->_items != v6)
+  itemsCopy = items;
+  if (self->_items != itemsCopy)
   {
-    v7 = v6;
-    if (![(NSArray *)v6 count])
+    v7 = itemsCopy;
+    if (![(NSArray *)itemsCopy count])
     {
       [(DOCTagEditorViewController *)a2 setItems:?];
     }
 
-    objc_storeStrong(&self->_items, a3);
+    objc_storeStrong(&self->_items, items);
     [(DOCTagEditorViewController *)self setUserChangedTags:0];
     [(DOCTagEditorViewController *)self setTagsWithItems:v7];
-    v6 = v7;
+    itemsCopy = v7;
   }
 }
 
-- (void)setTagsWithItems:(id)a3
+- (void)setTagsWithItems:(id)items
 {
-  v4 = [(DOCTagEditorViewController *)self items];
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 tags];
+  items = [(DOCTagEditorViewController *)self items];
+  v5 = [items objectAtIndexedSubscript:0];
+  tags = [v5 tags];
   v18 = DOCTagsFromFPTags();
 
   v7 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v18];
   v8 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v18];
-  v9 = [(DOCTagEditorViewController *)self items];
-  v10 = [v9 count];
+  items2 = [(DOCTagEditorViewController *)self items];
+  v10 = [items2 count];
 
   if (v10 >= 2)
   {
     for (i = 1; i != v10; ++i)
     {
       v12 = MEMORY[0x277CBEB98];
-      v13 = [(DOCTagEditorViewController *)self items];
-      v14 = [v13 objectAtIndexedSubscript:i];
-      v15 = [v14 tags];
+      items3 = [(DOCTagEditorViewController *)self items];
+      v14 = [items3 objectAtIndexedSubscript:i];
+      tags2 = [v14 tags];
       v16 = DOCTagsFromFPTags();
       v17 = [v12 setWithArray:v16];
 
@@ -788,14 +788,14 @@ LABEL_23:
   [(DOCTagEditorViewController *)self updateSelectedTags];
 }
 
-- (void)setSelectedTags:(id)a3
+- (void)setSelectedTags:(id)tags
 {
   v4 = MEMORY[0x277CBEB40];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  tagsCopy = tags;
+  v6 = [[v4 alloc] initWithArray:tagsCopy];
   [(DOCTagEditorViewController *)self setIntersectionSelectedTags:v6];
 
-  v7 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v5];
+  v7 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:tagsCopy];
   [(DOCTagEditorViewController *)self setUnionSelectedTags:v7];
 
   [(DOCTagEditorViewController *)self updateSelectedTags];
@@ -804,23 +804,23 @@ LABEL_23:
 - (void)updateSelectedTags
 {
   [(DOCTagEditorViewController *)self updateDiscoveredTags];
-  v4 = [MEMORY[0x277CCAB58] indexSet];
-  [v4 addIndex:0];
-  v3 = [(DOCTagEditorViewController *)self collectionView];
-  [v3 reloadSections:v4];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  [indexSet addIndex:0];
+  collectionView = [(DOCTagEditorViewController *)self collectionView];
+  [collectionView reloadSections:indexSet];
 
   [(DOCTagEditorViewController *)self _updateSelection];
 }
 
-- (void)setAddingTag:(BOOL)a3
+- (void)setAddingTag:(BOOL)tag
 {
-  if (self->_addingTag != a3)
+  if (self->_addingTag != tag)
   {
-    self->_addingTag = a3;
-    v5 = [MEMORY[0x277CCAB58] indexSet];
-    [v5 addIndex:0];
-    v4 = [(DOCTagEditorViewController *)self collectionView];
-    [v4 reloadSections:v5];
+    self->_addingTag = tag;
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    [indexSet addIndex:0];
+    collectionView = [(DOCTagEditorViewController *)self collectionView];
+    [collectionView reloadSections:indexSet];
 
     if (!self->_addingTag)
     {
@@ -835,31 +835,31 @@ LABEL_23:
 - (double)maxListPresentationHeight
 {
   v2 = +[DOCTagAppearance pickerList];
-  v3 = [v2 container];
-  [v3 maxHeight];
+  container = [v2 container];
+  [container maxHeight];
   v5 = v4;
 
   return v5;
 }
 
-- (void)scheduleSetTagsOperationWithTag:(id)a3 adding:(BOOL)a4
+- (void)scheduleSetTagsOperationWithTag:(id)tag adding:(BOOL)adding
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tagCopy = tag;
   items = self->_items;
   if (items)
   {
-    v37 = v5;
+    v37 = tagCopy;
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](items, "count")}];
     v8 = MEMORY[0x277CBEB70];
-    v9 = [(DOCTagEditorViewController *)self intersectionSelectedTags];
-    v10 = [v9 array];
+    intersectionSelectedTags = [(DOCTagEditorViewController *)self intersectionSelectedTags];
+    array = [intersectionSelectedTags array];
     v11 = FPTagsFromDOCTags();
     v12 = [v8 orderedSetWithArray:v11];
 
     v13 = MEMORY[0x277CBEB70];
-    v14 = [(DOCTagEditorViewController *)self unionSelectedTags];
-    v15 = [v14 array];
+    unionSelectedTags = [(DOCTagEditorViewController *)self unionSelectedTags];
+    array2 = [unionSelectedTags array];
     v16 = FPTagsFromDOCTags();
     v17 = [v13 orderedSetWithArray:v16];
 
@@ -867,7 +867,7 @@ LABEL_23:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v36 = self;
+    selfCopy = self;
     v18 = self->_items;
     v19 = [(NSArray *)v18 countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v19)
@@ -884,8 +884,8 @@ LABEL_23:
           }
 
           v23 = MEMORY[0x277CBEB40];
-          v24 = [*(*(&v41 + 1) + 8 * i) tags];
-          v25 = [v23 orderedSetWithArray:v24];
+          tags = [*(*(&v41 + 1) + 8 * i) tags];
+          v25 = [v23 orderedSetWithArray:tags];
 
           v26 = [v12 set];
           [v25 unionSet:v26];
@@ -893,8 +893,8 @@ LABEL_23:
           v27 = [v17 set];
           [v25 intersectSet:v27];
 
-          v28 = [v25 array];
-          [v7 addObject:v28];
+          array3 = [v25 array];
+          [v7 addObject:array3];
         }
 
         v20 = [(NSArray *)v18 countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -904,22 +904,22 @@ LABEL_23:
     }
 
     v29 = objc_alloc(MEMORY[0x277D06258]);
-    v30 = v36->_items;
-    v31 = [MEMORY[0x277D06278] shared];
-    v32 = [v29 initWithItems:v30 tagsLists:v7 isUndoable:1 shouldClearUndoStack:0 undoManager:v31];
+    v30 = selfCopy->_items;
+    mEMORY[0x277D06278] = [MEMORY[0x277D06278] shared];
+    v32 = [v29 initWithItems:v30 tagsLists:v7 isUndoable:1 shouldClearUndoStack:0 undoManager:mEMORY[0x277D06278]];
 
-    v33 = v36->_items;
+    v33 = selfCopy->_items;
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __69__DOCTagEditorViewController_scheduleSetTagsOperationWithTag_adding___block_invoke;
     v38[3] = &unk_278FA2380;
-    v5 = v37;
+    tagCopy = v37;
     v39 = v37;
     v40 = v33;
     v34 = v33;
     [v32 setActionCompletionBlock:v38];
-    v35 = [MEMORY[0x277CC6408] defaultManager];
-    [v35 scheduleAction:v32];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
+    [defaultManager scheduleAction:v32];
   }
 }
 
@@ -957,12 +957,12 @@ void __69__DOCTagEditorViewController_scheduleSetTagsOperationWithTag_adding___b
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = a4;
-  if ([v4 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v5 = [v4 section] == 1;
+    v5 = [pathCopy section] == 1;
   }
 
   else
@@ -973,33 +973,33 @@ void __69__DOCTagEditorViewController_scheduleSetTagsOperationWithTag_adding___b
   return v5;
 }
 
-- (id)_tagForIndexPath:(id)a3
+- (id)_tagForIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section] || (v5 = objc_msgSend(v4, "item"), -[DOCTagEditorViewController combinedTags](self, "combinedTags"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
+  pathCopy = path;
+  if ([pathCopy section] || (v5 = objc_msgSend(pathCopy, "item"), -[DOCTagEditorViewController combinedTags](self, "combinedTags"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(DOCTagEditorViewController *)self combinedTags];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+    combinedTags = [(DOCTagEditorViewController *)self combinedTags];
+    v9 = [combinedTags objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
   }
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v14 = a3;
-  v6 = a4;
-  if ([v6 section] != 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] != 1)
   {
-    v13 = [(DOCTagEditorViewController *)self collectionView];
-    v9 = [v13 cellForItemAtIndexPath:v6];
+    collectionView = [(DOCTagEditorViewController *)self collectionView];
+    v9 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-    v11 = [(DOCTagEditorViewController *)self _tagForIndexPath:v6];
+    v11 = [(DOCTagEditorViewController *)self _tagForIndexPath:pathCopy];
     if (v11)
     {
       [v9 setMixedSelection:0];
@@ -1009,18 +1009,18 @@ void __69__DOCTagEditorViewController_scheduleSetTagsOperationWithTag_adding___b
     goto LABEL_6;
   }
 
-  [v14 deselectItemAtIndexPath:v6 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
   if ([(DOCTagEditorViewController *)self isAddingTag])
   {
     v7 = MEMORY[0x277CCAA70];
-    v8 = [(DOCTagEditorViewController *)self combinedTags];
-    v9 = [v7 indexPathForItem:objc_msgSend(v8 inSection:{"count"), 0}];
+    combinedTags = [(DOCTagEditorViewController *)self combinedTags];
+    v9 = [v7 indexPathForItem:objc_msgSend(combinedTags inSection:{"count"), 0}];
 
-    v10 = [(DOCTagEditorViewController *)self collectionView];
-    v11 = [v10 cellForItemAtIndexPath:v9];
+    collectionView2 = [(DOCTagEditorViewController *)self collectionView];
+    v11 = [collectionView2 cellForItemAtIndexPath:v9];
 
-    v12 = [v11 contentView];
-    [v12 becomeFirstResponder];
+    contentView = [v11 contentView];
+    [contentView becomeFirstResponder];
 
 LABEL_6:
     goto LABEL_8;
@@ -1030,59 +1030,59 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   v5 = [(DOCTagEditorViewController *)self _tagForIndexPath:?];
   if (v5)
   {
-    v6 = [(DOCTagEditorViewController *)self collectionView];
-    v7 = [v6 cellForItemAtIndexPath:v8];
+    collectionView = [(DOCTagEditorViewController *)self collectionView];
+    v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     [v7 setMixedSelection:0];
     [(DOCTagEditorViewController *)self deselectTag:v5];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = a4;
-  if (a4 != 1)
+  sectionCopy = section;
+  if (section != 1)
   {
-    if (a4)
+    if (section)
     {
       return 0;
     }
 
     else
     {
-      v6 = [(DOCTagEditorViewController *)self combinedTags];
-      v7 = [(DOCTagEditorViewController *)self isAddingTag];
-      v4 = [v6 count] + v7;
+      combinedTags = [(DOCTagEditorViewController *)self combinedTags];
+      isAddingTag = [(DOCTagEditorViewController *)self isAddingTag];
+      sectionCopy = [combinedTags count] + isAddingTag;
     }
   }
 
-  return v4;
+  return sectionCopy;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __68__DOCTagEditorViewController_collectionView_cellForItemAtIndexPath___block_invoke;
   v23[3] = &unk_278FA2448;
-  v9 = v7;
+  v9 = viewCopy;
   v24 = v9;
-  v10 = v8;
+  v10 = pathCopy;
   v25 = v10;
   v11 = [(DOCTagEditorViewController *)self cellForIndexPath:v10 dequeueCell:v23];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"DOCTagEditorViewController.m" lineNumber:620 description:{@"Unexpected class type of cell: %@", v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DOCTagEditorViewController.m" lineNumber:620 description:{@"Unexpected class type of cell: %@", v11}];
   }
 
   if ([v10 section] != 1 && !objc_msgSend(v10, "section"))
@@ -1090,9 +1090,9 @@ LABEL_8:
     v13 = v11;
     if ([(DOCTagEditorViewController *)self isAddingTag])
     {
-      v14 = [v10 item];
-      v15 = [(DOCTagEditorViewController *)self combinedTags];
-      if (v14 != [v15 count])
+      item = [v10 item];
+      combinedTags = [(DOCTagEditorViewController *)self combinedTags];
+      if (item != [combinedTags count])
       {
 LABEL_10:
 
@@ -1104,20 +1104,20 @@ LABEL_10:
 
       if (isKindOfClass)
       {
-        v15 = v13;
-        [v15 layoutIfNeeded];
-        [v15 setTextEditingDelegate:self];
-        [v15 setTagValue:0];
-        [v15 updateContentConfiguration];
-        v17 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
-        v18 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v19 = [v17 stringByTrimmingCharactersInSet:v18];
+        combinedTags = v13;
+        [combinedTags layoutIfNeeded];
+        [combinedTags setTextEditingDelegate:self];
+        [combinedTags setTagValue:0];
+        [combinedTags updateContentConfiguration];
+        addTagCurrentTextValue = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v19 = [addTagCurrentTextValue stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
         v20 = [v19 length];
 
         if (v20)
         {
-          v21 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
-          [v15 updateTextFieldLayoutWithText:v21];
+          addTagCurrentTextValue2 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+          [combinedTags updateTextFieldLayoutWithText:addTagCurrentTextValue2];
         }
 
         goto LABEL_10;
@@ -1130,16 +1130,16 @@ LABEL_11:
   return v11;
 }
 
-- (id)cellForIndexPath:(id)a3 dequeueCell:(id)a4
+- (id)cellForIndexPath:(id)path dequeueCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 section];
-  if (v8)
+  pathCopy = path;
+  cellCopy = cell;
+  section = [pathCopy section];
+  if (section)
   {
-    if (v8 == 1)
+    if (section == 1)
     {
-      v9 = v7[2](v7, @"DOCTagEditorAddTagCell");
+      v9 = cellCopy[2](cellCopy, @"DOCTagEditorAddTagCell");
     }
 
     else
@@ -1150,7 +1150,7 @@ LABEL_11:
 
   else
   {
-    if (-[DOCTagEditorViewController isAddingTag](self, "isAddingTag") && (v10 = [v6 item], -[DOCTagEditorViewController combinedTags](self, "combinedTags"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 == v12))
+    if (-[DOCTagEditorViewController isAddingTag](self, "isAddingTag") && (v10 = [pathCopy item], -[DOCTagEditorViewController combinedTags](self, "combinedTags"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 == v12))
     {
       v13 = @"DOCTagEditorNewTagCell";
     }
@@ -1160,8 +1160,8 @@ LABEL_11:
       v13 = @"DOCTagEditorTagCell";
     }
 
-    v9 = v7[2](v7, v13);
-    v14 = [(DOCTagEditorViewController *)self _tagForIndexPath:v6];
+    v9 = cellCopy[2](cellCopy, v13);
+    v14 = [(DOCTagEditorViewController *)self _tagForIndexPath:pathCopy];
     [v9 setTagValue:v14];
 
     [(DOCTagEditorViewController *)self _updateMixedSelectionForCell:v9];
@@ -1175,45 +1175,45 @@ LABEL_11:
   [(DOCTagEditorViewController *)self setAddingTag:1];
   [(DOCTagEditorViewController *)self tagRegistryDidUpdate];
   v3 = MEMORY[0x277CCAA70];
-  v4 = [(DOCTagEditorViewController *)self combinedTags];
-  v9 = [v3 indexPathForItem:objc_msgSend(v4 inSection:{"count"), 0}];
+  combinedTags = [(DOCTagEditorViewController *)self combinedTags];
+  v9 = [v3 indexPathForItem:objc_msgSend(combinedTags inSection:{"count"), 0}];
 
-  v5 = [(DOCTagEditorViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v9];
+  collectionView = [(DOCTagEditorViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:v9];
 
-  v7 = [v6 contentView];
-  [v7 becomeFirstResponder];
+  contentView = [v6 contentView];
+  [contentView becomeFirstResponder];
 
   [v6 updateTextFieldLayoutWithText:0];
   [v6 setCurrentNewTagInputText:0];
-  v8 = [(DOCTagEditorViewController *)self collectionView];
-  [v8 selectItemAtIndexPath:v9 animated:1 scrollPosition:0];
+  collectionView2 = [(DOCTagEditorViewController *)self collectionView];
+  [collectionView2 selectItemAtIndexPath:v9 animated:1 scrollPosition:0];
 }
 
 - (BOOL)commitNewTag
 {
   v3 = MEMORY[0x277D06268];
-  v4 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
-  v5 = [v3 sanitizedTagName:v4];
+  addTagCurrentTextValue = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+  v5 = [v3 sanitizedTagName:addTagCurrentTextValue];
 
   if ([(DOCTagEditorViewController *)self isAddingTag]|| !v5)
   {
-    v7 = [(DOCTagEditorViewController *)self collectionView];
+    collectionView = [(DOCTagEditorViewController *)self collectionView];
     v8 = MEMORY[0x277CCAA70];
-    v9 = [(DOCTagEditorViewController *)self combinedTags];
-    v10 = [v8 indexPathForRow:objc_msgSend(v9 inSection:{"count"), 0}];
-    v11 = [v7 cellForItemAtIndexPath:v10];
+    combinedTags = [(DOCTagEditorViewController *)self combinedTags];
+    v10 = [v8 indexPathForRow:objc_msgSend(combinedTags inSection:{"count"), 0}];
+    v11 = [collectionView cellForItemAtIndexPath:v10];
 
     [v11 setCurrentNewTagInputText:0];
     -[DOCTagEditorViewController setAddTagCurrentColor:](self, "setAddTagCurrentColor:", [v11 newTagColor]);
     v12 = [objc_alloc(MEMORY[0x277D06260]) initWithDisplayName:v5 labelIndex:-[DOCTagEditorViewController addTagCurrentColor](self type:{"addTagCurrentColor"), 1}];
-    v13 = [MEMORY[0x277D06268] sharedInstance];
-    v6 = [v13 insertTag:v12 atIndex:0];
+    mEMORY[0x277D06268] = [MEMORY[0x277D06268] sharedInstance];
+    v6 = [mEMORY[0x277D06268] insertTag:v12 atIndex:0];
 
     if (v6)
     {
-      v14 = [(DOCTagEditorViewController *)self delegate];
-      [v14 tagEditor:self userDidCreateTag:v12];
+      delegate = [(DOCTagEditorViewController *)self delegate];
+      [delegate tagEditor:self userDidCreateTag:v12];
 
       [(DOCTagEditorViewController *)self selectTag:v12];
     }
@@ -1230,17 +1230,17 @@ LABEL_11:
 - (void)cleanUpAfterNewTag
 {
   v4 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
-  v3 = [(DOCTagEditorViewController *)self collectionView];
-  [v3 scrollToItemAtIndexPath:v4 atScrollPosition:1 animated:1];
+  collectionView = [(DOCTagEditorViewController *)self collectionView];
+  [collectionView scrollToItemAtIndexPath:v4 atScrollPosition:1 animated:1];
 }
 
-- (void)tagEditorCell:(id)a3 didEndEditingWithText:(id)a4
+- (void)tagEditorCell:(id)cell didEndEditingWithText:(id)text
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v7 copy];
+  cellCopy = cell;
+  textCopy = text;
+  v8 = cellCopy;
+  v9 = [textCopy copy];
   [(DOCTagEditorViewController *)self setAddTagCurrentTextValue:v9];
 
   -[DOCTagEditorViewController setAddTagCurrentColor:](self, "setAddTagCurrentColor:", [v8 newTagColor]);
@@ -1255,28 +1255,28 @@ LABEL_11:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v8 recursiveDescription];
-    v14 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+    recursiveDescription = [v8 recursiveDescription];
+    addTagCurrentTextValue = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
     v15 = 136316162;
     v16 = "[DOCTagEditorViewController tagEditorCell:didEndEditingWithText:]";
     v17 = 2112;
-    v18 = v7;
+    v18 = textCopy;
     v19 = 2112;
-    v20 = v13;
+    v20 = recursiveDescription;
     v21 = 2112;
-    v22 = v14;
+    v22 = addTagCurrentTextValue;
     v23 = 2048;
-    v24 = [(DOCTagEditorViewController *)self addTagCurrentColor];
+    addTagCurrentColor = [(DOCTagEditorViewController *)self addTagCurrentColor];
     _os_log_impl(&dword_2493AC000, v12, OS_LOG_TYPE_INFO, "%s User did end editing with text: %@, cell: %@, addTagCurrentTextValue: %@, addTagCurrentColor: %ld", &v15, 0x34u);
   }
 }
 
-- (void)tagEditorCell:(id)a3 didUpdateText:(id)a4
+- (void)tagEditorCell:(id)cell didUpdateText:(id)text
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 copy];
+  cellCopy = cell;
+  textCopy = text;
+  v8 = [textCopy copy];
   [(DOCTagEditorViewController *)self setAddTagCurrentTextValue:v8];
 
   v9 = MEMORY[0x277D062B8];
@@ -1290,28 +1290,28 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v6 recursiveDescription];
-    v13 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+    recursiveDescription = [cellCopy recursiveDescription];
+    addTagCurrentTextValue = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
     v14 = 136316162;
     v15 = "[DOCTagEditorViewController tagEditorCell:didUpdateText:]";
     v16 = 2112;
-    v17 = v7;
+    v17 = textCopy;
     v18 = 2112;
-    v19 = v12;
+    v19 = recursiveDescription;
     v20 = 2112;
-    v21 = v13;
+    v21 = addTagCurrentTextValue;
     v22 = 2048;
-    v23 = [(DOCTagEditorViewController *)self addTagCurrentColor];
+    addTagCurrentColor = [(DOCTagEditorViewController *)self addTagCurrentColor];
     _os_log_impl(&dword_2493AC000, v11, OS_LOG_TYPE_INFO, "%s User did update text: %@, cell: %@, addTagCurrentTextValue: %@, addTagCurrentColor: %ld", &v14, 0x34u);
   }
 
   [(DOCTagEditorViewController *)self _updateNavigationItem];
 }
 
-- (BOOL)tagEditorCellShouldBeginEditing:(id)a3
+- (BOOL)tagEditorCellShouldBeginEditing:(id)editing
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  editingCopy = editing;
   v5 = MEMORY[0x277D062B8];
   v6 = *MEMORY[0x277D062B8];
   if (!*MEMORY[0x277D062B8])
@@ -1323,26 +1323,26 @@ LABEL_11:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v4 recursiveDescription];
-    v9 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+    recursiveDescription = [editingCopy recursiveDescription];
+    addTagCurrentTextValue = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
     v11 = 136315906;
     v12 = "[DOCTagEditorViewController tagEditorCellShouldBeginEditing:]";
     v13 = 2112;
-    v14 = v8;
+    v14 = recursiveDescription;
     v15 = 2112;
-    v16 = v9;
+    v16 = addTagCurrentTextValue;
     v17 = 2048;
-    v18 = [(DOCTagEditorViewController *)self addTagCurrentColor];
+    addTagCurrentColor = [(DOCTagEditorViewController *)self addTagCurrentColor];
     _os_log_impl(&dword_2493AC000, v7, OS_LOG_TYPE_INFO, "%s Cell should begin editing, cell: %@, addTagCurrentTextValue: %@, addTagCurrentColor: %ld", &v11, 0x2Au);
   }
 
   return 1;
 }
 
-- (BOOL)tagEditorCellShouldEndEditing:(id)a3
+- (BOOL)tagEditorCellShouldEndEditing:(id)editing
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  editingCopy = editing;
   v5 = MEMORY[0x277D062B8];
   v6 = *MEMORY[0x277D062B8];
   if (!*MEMORY[0x277D062B8])
@@ -1354,25 +1354,25 @@ LABEL_11:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v4 recursiveDescription];
-    v9 = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
+    recursiveDescription = [editingCopy recursiveDescription];
+    addTagCurrentTextValue = [(DOCTagEditorViewController *)self addTagCurrentTextValue];
     v14 = 136315906;
     v15 = "[DOCTagEditorViewController tagEditorCellShouldEndEditing:]";
     v16 = 2112;
-    v17 = v8;
+    v17 = recursiveDescription;
     v18 = 2112;
-    v19 = v9;
+    v19 = addTagCurrentTextValue;
     v20 = 2048;
-    v21 = [(DOCTagEditorViewController *)self addTagCurrentColor];
+    addTagCurrentColor = [(DOCTagEditorViewController *)self addTagCurrentColor];
     _os_log_impl(&dword_2493AC000, v7, OS_LOG_TYPE_INFO, "%s Cell should end editing, cell: %@, addTagCurrentTextValue: %@, addTagCurrentColor: %ld", &v14, 0x2Au);
   }
 
   if ([(DOCTagEditorViewController *)self isAddingTag])
   {
     v10 = [(DOCTagEditorViewController *)self _existingPresentationControllerImmediate:0 effective:0];
-    v11 = [v10 dismissing];
+    dismissing = [v10 dismissing];
 
-    v12 = v11 ^ 1;
+    v12 = dismissing ^ 1;
   }
 
   else
@@ -1383,32 +1383,32 @@ LABEL_11:
   return v12;
 }
 
-- (void)selectTag:(id)a3
+- (void)selectTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(DOCTagEditorViewController *)self intersectionSelectedTags];
-  [v5 addObject:v4];
+  tagCopy = tag;
+  intersectionSelectedTags = [(DOCTagEditorViewController *)self intersectionSelectedTags];
+  [intersectionSelectedTags addObject:tagCopy];
 
-  v6 = [(DOCTagEditorViewController *)self unionSelectedTags];
-  [v6 addObject:v4];
+  unionSelectedTags = [(DOCTagEditorViewController *)self unionSelectedTags];
+  [unionSelectedTags addObject:tagCopy];
 
   [(DOCTagEditorViewController *)self setUserChangedTags:1];
-  v7 = [(DOCTagEditorViewController *)self delegate];
-  [v7 tagEditor:self userDidSelectTag:v4];
+  delegate = [(DOCTagEditorViewController *)self delegate];
+  [delegate tagEditor:self userDidSelectTag:tagCopy];
 }
 
-- (void)deselectTag:(id)a3
+- (void)deselectTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(DOCTagEditorViewController *)self intersectionSelectedTags];
-  [v5 removeObject:v4];
+  tagCopy = tag;
+  intersectionSelectedTags = [(DOCTagEditorViewController *)self intersectionSelectedTags];
+  [intersectionSelectedTags removeObject:tagCopy];
 
-  v6 = [(DOCTagEditorViewController *)self unionSelectedTags];
-  [v6 removeObject:v4];
+  unionSelectedTags = [(DOCTagEditorViewController *)self unionSelectedTags];
+  [unionSelectedTags removeObject:tagCopy];
 
   [(DOCTagEditorViewController *)self setUserChangedTags:1];
-  v7 = [(DOCTagEditorViewController *)self delegate];
-  [v7 tagEditor:self userDidDeselectTag:v4];
+  delegate = [(DOCTagEditorViewController *)self delegate];
+  [delegate tagEditor:self userDidDeselectTag:tagCopy];
 }
 
 - (DOCTagEditorDelegate)delegate

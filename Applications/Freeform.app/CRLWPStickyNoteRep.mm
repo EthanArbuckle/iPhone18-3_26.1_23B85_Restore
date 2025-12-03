@@ -1,6 +1,6 @@
 @interface CRLWPStickyNoteRep
-- (CGImage)newShadowImageWithSize:(CGSize)a3 shadow:(id)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6;
-- (_TtC8Freeform18CRLWPStickyNoteRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CGImage)newShadowImageWithSize:(CGSize)size shadow:(id)shadow drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (_TtC8Freeform18CRLWPStickyNoteRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (void)becameNotSelected;
 - (void)becameSelected;
 @end
@@ -9,37 +9,37 @@
 
 - (void)becameSelected
 {
-  v2 = self;
+  selfCopy = self;
   sub_100689C20();
 }
 
 - (void)becameNotSelected
 {
-  v2 = self;
+  selfCopy = self;
   sub_100689E6C();
 }
 
-- (CGImage)newShadowImageWithSize:(CGSize)a3 shadow:(id)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageWithSize:(CGSize)size shadow:(id)shadow drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a4;
-  v12 = self;
-  v13 = [(CRLCanvasRep *)v12 layout];
-  v14 = [(CRLCanvasAbstractLayout *)v13 geometryInRoot];
+  height = size.height;
+  width = size.width;
+  shadowCopy = shadow;
+  selfCopy = self;
+  layout = [(CRLCanvasRep *)selfCopy layout];
+  geometryInRoot = [(CRLCanvasAbstractLayout *)layout geometryInRoot];
 
-  v15 = v11;
-  v16 = v12;
-  v17 = sub_10068A810(v14, v15, a5, a6, v16, v15, a5, a6, width, height);
+  v15 = shadowCopy;
+  v16 = selfCopy;
+  v17 = sub_10068A810(geometryInRoot, v15, selector, unflipped, v16, v15, selector, unflipped, width, height);
 
   return v17;
 }
 
-- (_TtC8Freeform18CRLWPStickyNoteRep)initWithLayout:(id)a3 canvas:(id)a4
+- (_TtC8Freeform18CRLWPStickyNoteRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRLWPStickyNoteRep();
-  return [(CRLWPShapeRep *)&v7 initWithLayout:a3 canvas:a4];
+  return [(CRLWPShapeRep *)&v7 initWithLayout:layout canvas:canvas];
 }
 
 @end

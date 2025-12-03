@@ -2,7 +2,7 @@
 - (NSString)id;
 - (NSString)value;
 - (_TtCV8RemoteUI14PinViewElement15ScriptInterface)init;
-- (id)getAttribute:(id)a3;
+- (id)getAttribute:(id)attribute;
 @end
 
 @implementation PinViewElement.ScriptInterface
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (id)getAttribute:(id)a3
+- (id)getAttribute:(id)attribute
 {
   v4 = sub_21BA87CBC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_21B9F4914(v4, v6);
   v9 = v8;
 

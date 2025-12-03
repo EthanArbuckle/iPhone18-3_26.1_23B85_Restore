@@ -1,18 +1,18 @@
 @interface AVStreamDataAssetInspector
-- (AVStreamDataAssetInspector)initWithTrackIDs:(id)a3;
+- (AVStreamDataAssetInspector)initWithTrackIDs:(id)ds;
 - (void)dealloc;
 @end
 
 @implementation AVStreamDataAssetInspector
 
-- (AVStreamDataAssetInspector)initWithTrackIDs:(id)a3
+- (AVStreamDataAssetInspector)initWithTrackIDs:(id)ds
 {
   v6.receiver = self;
   v6.super_class = AVStreamDataAssetInspector;
   v4 = [(AVStreamDataAssetInspector *)&v6 init];
   if (v4)
   {
-    v4->_trackIDs = [a3 copy];
+    v4->_trackIDs = [ds copy];
   }
 
   return v4;

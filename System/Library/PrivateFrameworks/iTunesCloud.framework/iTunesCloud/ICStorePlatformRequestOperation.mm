@@ -1,38 +1,38 @@
 @interface ICStorePlatformRequestOperation
-- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)a3;
-- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)a3 usingURLSession:(id)a4;
-- (id)_URLRequestWithBaseURL:(id)a3;
+- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)request;
+- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)request usingURLSession:(id)session;
+- (id)_URLRequestWithBaseURL:(id)l;
 - (id)_requestContext;
-- (void)_enqueueDataRequest:(id)a3;
+- (void)_enqueueDataRequest:(id)request;
 - (void)_executePersonalized;
 - (void)_executeUnpersonalized;
-- (void)_finishWithResponse:(id)a3 error:(id)a4;
+- (void)_finishWithResponse:(id)response error:(id)error;
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ICStorePlatformRequestOperation
 
-- (id)_URLRequestWithBaseURL:(id)a3
+- (id)_URLRequestWithBaseURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICStorePlatformRequest *)self->_platformRequest queryItems];
-  v6 = [v5 mutableCopy];
+  lCopy = l;
+  queryItems = [(ICStorePlatformRequest *)self->_platformRequest queryItems];
+  v6 = [queryItems mutableCopy];
 
   if ([(ICStorePlatformRequest *)self->_platformRequest shouldIgnoreCache])
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"buster" value:v8];
+    v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"buster" value:uUIDString];
     [v6 addObject:v9];
   }
 
-  v10 = [v4 ic_URLByAppendingQueryItems:v6];
+  v10 = [lCopy ic_URLByAppendingQueryItems:v6];
   v11 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:v10];
-  v12 = [(ICStorePlatformRequest *)self->_platformRequest HTTPHeaders];
-  [v11 setAllHTTPHeaderFields:v12];
+  hTTPHeaders = [(ICStorePlatformRequest *)self->_platformRequest HTTPHeaders];
+  [v11 setAllHTTPHeaderFields:hTTPHeaders];
 
   [(ICStorePlatformRequest *)self->_platformRequest timeoutInterval];
   [v11 setTimeoutInterval:?];
@@ -42,8 +42,8 @@
 
 - (id)_requestContext
 {
-  v3 = [(ICStorePlatformRequest *)self->_platformRequest personalizationStyle];
-  switch(v3)
+  personalizationStyle = [(ICStorePlatformRequest *)self->_platformRequest personalizationStyle];
+  switch(personalizationStyle)
   {
     case 0:
       v6 = objc_alloc_init(ICURLResponseAuthenticationProvider);
@@ -64,47 +64,47 @@ LABEL_8:
 
   v7 = 0;
 LABEL_10:
-  v8 = [(ICStorePlatformRequest *)self->_platformRequest requestContext];
+  requestContext = [(ICStorePlatformRequest *)self->_platformRequest requestContext];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__ICStorePlatformRequestOperation__requestContext__block_invoke;
   v12[3] = &unk_1E7BF91F0;
   v13 = v7;
   v9 = v7;
-  v10 = [v8 copyWithBlock:v12];
+  v10 = [requestContext copyWithBlock:v12];
 
   return v10;
 }
 
-- (void)_finishWithResponse:(id)a3 error:(id)a4
+- (void)_finishWithResponse:(id)response error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   responseHandler = self->_responseHandler;
-  v9 = v6;
+  v9 = errorCopy;
   if (responseHandler)
   {
-    responseHandler[2](responseHandler, a3, v6);
+    responseHandler[2](responseHandler, response, errorCopy);
     v8 = self->_responseHandler;
     self->_responseHandler = 0;
 
-    v6 = v9;
+    errorCopy = v9;
   }
 
-  [(ICStorePlatformRequestOperation *)self finishWithError:v6];
+  [(ICStorePlatformRequestOperation *)self finishWithError:errorCopy];
 }
 
 - (void)_executeUnpersonalized
 {
-  v3 = [(ICStorePlatformRequestOperation *)self _requestContext];
+  _requestContext = [(ICStorePlatformRequestOperation *)self _requestContext];
   v4 = +[ICURLBagProvider sharedBagProvider];
-  v5 = [(ICStorePlatformRequestOperation *)self qualityOfService];
+  qualityOfService = [(ICStorePlatformRequestOperation *)self qualityOfService];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__ICStorePlatformRequestOperation__executeUnpersonalized__block_invoke;
   v6[3] = &unk_1E7BF7AF8;
   v6[4] = self;
-  v6[5] = v3;
-  [v4 getBagForRequestContext:v3 qualityOfService:v5 forceRefetch:0 withCompletionHandler:v6];
+  v6[5] = _requestContext;
+  [v4 getBagForRequestContext:_requestContext qualityOfService:qualityOfService forceRefetch:0 withCompletionHandler:v6];
 }
 
 void __57__ICStorePlatformRequestOperation__executeUnpersonalized__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -150,16 +150,16 @@ void __57__ICStorePlatformRequestOperation__executeUnpersonalized__block_invoke(
 
 - (void)_executePersonalized
 {
-  v3 = [(ICStorePlatformRequestOperation *)self _requestContext];
+  _requestContext = [(ICStorePlatformRequestOperation *)self _requestContext];
   v4 = +[ICURLBagProvider sharedBagProvider];
-  v5 = [(ICStorePlatformRequestOperation *)self qualityOfService];
+  qualityOfService = [(ICStorePlatformRequestOperation *)self qualityOfService];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__ICStorePlatformRequestOperation__executePersonalized__block_invoke;
   v6[3] = &unk_1E7BF7AF8;
   v6[4] = self;
-  v6[5] = v3;
-  [v4 getBagForRequestContext:v3 qualityOfService:v5 forceRefetch:0 withCompletionHandler:v6];
+  v6[5] = _requestContext;
+  [v4 getBagForRequestContext:_requestContext qualityOfService:qualityOfService forceRefetch:0 withCompletionHandler:v6];
 }
 
 void __55__ICStorePlatformRequestOperation__executePersonalized__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -193,18 +193,18 @@ void __55__ICStorePlatformRequestOperation__executePersonalized__block_invoke(ui
   }
 }
 
-- (void)_enqueueDataRequest:(id)a3
+- (void)_enqueueDataRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(ICStorePlatformRequest *)self->_platformRequest retryDelay];
-  [v4 setRetryDelay:?];
+  [requestCopy setRetryDelay:?];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__ICStorePlatformRequestOperation__enqueueDataRequest___block_invoke;
   block[3] = &unk_1E7BFA078;
   block[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   v12 = v6;
   dispatch_barrier_async(accessQueue, block);
   urlSession = self->_urlSession;
@@ -269,11 +269,11 @@ void __55__ICStorePlatformRequestOperation__enqueueDataRequest___block_invoke_3(
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v5.receiver = self;
   v5.super_class = ICStorePlatformRequestOperation;
-  [(ICAsyncOperation *)&v5 finishWithError:a3];
+  [(ICAsyncOperation *)&v5 finishWithError:error];
   strongSelf = self->_strongSelf;
   self->_strongSelf = 0;
 }
@@ -289,10 +289,10 @@ void __55__ICStorePlatformRequestOperation__enqueueDataRequest___block_invoke_3(
   else
   {
     objc_storeStrong(&self->_strongSelf, self);
-    v3 = [(ICStorePlatformRequest *)self->_platformRequest personalizationStyle];
-    if ((v3 - 1) >= 2)
+    personalizationStyle = [(ICStorePlatformRequest *)self->_platformRequest personalizationStyle];
+    if ((personalizationStyle - 1) >= 2)
     {
-      if (!v3)
+      if (!personalizationStyle)
       {
 
         [(ICStorePlatformRequestOperation *)self _executeUnpersonalized];
@@ -332,10 +332,10 @@ uint64_t __41__ICStorePlatformRequestOperation_cancel__block_invoke(uint64_t res
   return result;
 }
 
-- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)a3 usingURLSession:(id)a4
+- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)request usingURLSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = ICStorePlatformRequestOperation;
   v8 = [(ICAsyncOperation *)&v14 init];
@@ -345,22 +345,22 @@ uint64_t __41__ICStorePlatformRequestOperation_cancel__block_invoke(uint64_t res
     accessQueue = v8->_accessQueue;
     v8->_accessQueue = v9;
 
-    v11 = [v6 copy];
+    v11 = [requestCopy copy];
     platformRequest = v8->_platformRequest;
     v8->_platformRequest = v11;
 
-    objc_storeStrong(&v8->_urlSession, a4);
-    -[ICStorePlatformRequestOperation setQualityOfService:](v8, "setQualityOfService:", [v6 qualityOfService]);
+    objc_storeStrong(&v8->_urlSession, session);
+    -[ICStorePlatformRequestOperation setQualityOfService:](v8, "setQualityOfService:", [requestCopy qualityOfService]);
   }
 
   return v8;
 }
 
-- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)a3
+- (ICStorePlatformRequestOperation)initWithPlatformRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[ICURLSessionManager defaultSession];
-  v6 = [(ICStorePlatformRequestOperation *)self initWithPlatformRequest:v4 usingURLSession:v5];
+  v6 = [(ICStorePlatformRequestOperation *)self initWithPlatformRequest:requestCopy usingURLSession:v5];
 
   return v6;
 }

@@ -10,9 +10,9 @@
   v6.receiver = self;
   v6.super_class = MPSGraphRegion;
   v2 = [(MPSGraphRegion *)&v6 init];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   blocks = v2->_blocks;
-  v2->_blocks = v3;
+  v2->_blocks = array;
 
   return v2;
 }

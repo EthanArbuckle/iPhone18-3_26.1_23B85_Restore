@@ -1,71 +1,71 @@
 @interface CSMagSafeAccessory
-+ (CSMagSafeAccessory)accessoryWithType:(int64_t)a3 primaryColor:(id)a4 secondoryColor:(id)a5;
-- (BOOL)_isSupportedFromDictionary:(id)a3;
++ (CSMagSafeAccessory)accessoryWithType:(int64_t)type primaryColor:(id)color secondoryColor:(id)secondoryColor;
+- (BOOL)_isSupportedFromDictionary:(id)dictionary;
 - (CGRect)visibleScreenCoordinates;
-- (CSMagSafeAccessory)initWithDictionary:(id)a3 endpointUUID:(id)a4;
-- (double)_delayFromDictionary:(id)a3;
+- (CSMagSafeAccessory)initWithDictionary:(id)dictionary endpointUUID:(id)d;
+- (double)_delayFromDictionary:(id)dictionary;
 - (id)accessoryTypeString;
-- (id)colorForP3ColorData:(id)a3;
+- (id)colorForP3ColorData:(id)data;
 - (id)description;
-- (int64_t)_accessoryTypeForFamily:(unsigned __int8)a3;
-- (int64_t)_accessoryTypeForNFCtype:(unsigned __int8)a3;
-- (unsigned)_accessoryTypeFromDictionary:(id)a3;
+- (int64_t)_accessoryTypeForFamily:(unsigned __int8)family;
+- (int64_t)_accessoryTypeForNFCtype:(unsigned __int8)ctype;
+- (unsigned)_accessoryTypeFromDictionary:(id)dictionary;
 @end
 
 @implementation CSMagSafeAccessory
 
-+ (CSMagSafeAccessory)accessoryWithType:(int64_t)a3 primaryColor:(id)a4 secondoryColor:(id)a5
++ (CSMagSafeAccessory)accessoryWithType:(int64_t)type primaryColor:(id)color secondoryColor:(id)secondoryColor
 {
-  v7 = a5;
-  v8 = a4;
+  secondoryColorCopy = secondoryColor;
+  colorCopy = color;
   v9 = objc_opt_new();
-  [v9 setType:a3];
-  [v9 setPrimaryColor:v8];
+  [v9 setType:type];
+  [v9 setPrimaryColor:colorCopy];
 
-  [v9 setSecondaryColor:v7];
+  [v9 setSecondaryColor:secondoryColorCopy];
 
   return v9;
 }
 
-- (CSMagSafeAccessory)initWithDictionary:(id)a3 endpointUUID:(id)a4
+- (CSMagSafeAccessory)initWithDictionary:(id)dictionary endpointUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = CSMagSafeAccessory;
   v8 = [(CSMagSafeAccessory *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_endpointUUID, a4);
-    v10 = [(CSMagSafeAccessory *)v9 _accessoryTypeFromDictionary:v6];
+    objc_storeStrong(&v8->_endpointUUID, d);
+    v10 = [(CSMagSafeAccessory *)v9 _accessoryTypeFromDictionary:dictionaryCopy];
     v9->_type = [(CSMagSafeAccessory *)v9 _accessoryTypeForNFCtype:v10];
-    v9->_isSupported = [(CSMagSafeAccessory *)v9 _isSupportedFromDictionary:v6];
+    v9->_isSupported = [(CSMagSafeAccessory *)v9 _isSupportedFromDictionary:dictionaryCopy];
     v9->_blocksWallet = [(CSMagSafeAccessory *)v9 _blocksWalletAnimationForNFCtype:v10];
-    v11 = [v6 objectForKeyedSubscript:*MEMORY[0x277CFD2E8]];
+    v11 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CFD2E8]];
     v12 = [(CSMagSafeAccessory *)v9 colorForP3ColorData:v11];
     primaryColor = v9->_primaryColor;
     v9->_primaryColor = v12;
 
-    v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277CFD2F0]];
+    v14 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CFD2F0]];
     v15 = [(CSMagSafeAccessory *)v9 colorForP3ColorData:v14];
     secondaryColor = v9->_secondaryColor;
     v9->_secondaryColor = v15;
 
-    [(CSMagSafeAccessory *)v9 _delayFromDictionary:v6];
+    [(CSMagSafeAccessory *)v9 _delayFromDictionary:dictionaryCopy];
     v9->_attachAnimationDelay = v17;
   }
 
   return v9;
 }
 
-- (id)colorForP3ColorData:(id)a3
+- (id)colorForP3ColorData:(id)data
 {
-  v3 = a3;
-  if (([v3 length] & 0xFFFFFFFFFFFFFFF8) == 0x20)
+  dataCopy = data;
+  if (([dataCopy length] & 0xFFFFFFFFFFFFFFF8) == 0x20)
   {
-    v4 = [v3 bytes];
-    v5 = [MEMORY[0x277D75348] colorWithDisplayP3Red:*v4 green:v4[1] blue:v4[2] alpha:v4[3]];
+    bytes = [dataCopy bytes];
+    v5 = [MEMORY[0x277D75348] colorWithDisplayP3Red:*bytes green:bytes[1] blue:bytes[2] alpha:bytes[3]];
   }
 
   else
@@ -76,25 +76,25 @@
   return v5;
 }
 
-- (int64_t)_accessoryTypeForNFCtype:(unsigned __int8)a3
+- (int64_t)_accessoryTypeForNFCtype:(unsigned __int8)ctype
 {
-  v3 = a3;
+  ctypeCopy = ctype;
   result = 1;
-  if (a3 <= 86)
+  if (ctype <= 86)
   {
-    if (a3 > 75)
+    if (ctype > 75)
     {
-      if ((a3 - 76) < 3)
+      if ((ctype - 76) < 3)
       {
         return 3;
       }
 
-      if ((a3 - 83) < 3)
+      if ((ctype - 83) < 3)
       {
         return 5;
       }
 
-      if (a3 != 86)
+      if (ctype != 86)
       {
         goto LABEL_51;
       }
@@ -102,11 +102,11 @@
 
     else
     {
-      if (a3 > 65)
+      if (ctype > 65)
       {
-        if ((a3 - 67) >= 3)
+        if ((ctype - 67) >= 3)
         {
-          if (a3 == 66)
+          if (ctype == 66)
           {
             return result;
           }
@@ -117,7 +117,7 @@
         return 2;
       }
 
-      if (!a3)
+      if (!ctype)
       {
         v5 = SBLogCommon();
         v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -130,12 +130,12 @@
         return 0;
       }
 
-      if (a3 == 57)
+      if (ctype == 57)
       {
         return 10;
       }
 
-      if (a3 != 65)
+      if (ctype != 65)
       {
         goto LABEL_51;
       }
@@ -144,21 +144,21 @@
     return 6;
   }
 
-  if (a3 <= 127)
+  if (ctype <= 127)
   {
-    if (a3 <= 96)
+    if (ctype <= 96)
     {
-      if ((a3 - 87) < 2)
+      if ((ctype - 87) < 2)
       {
         return 8;
       }
 
-      if (a3 == 89)
+      if (ctype == 89)
       {
         return 11;
       }
 
-      if (a3 != 96)
+      if (ctype != 96)
       {
         goto LABEL_51;
       }
@@ -166,14 +166,14 @@
       return 7;
     }
 
-    if (a3 > 113)
+    if (ctype > 113)
     {
-      if (a3 == 114)
+      if (ctype == 114)
       {
         return 4;
       }
 
-      if (a3 == 115)
+      if (ctype == 115)
       {
         return result;
       }
@@ -181,9 +181,9 @@
       goto LABEL_51;
     }
 
-    if (a3 != 97)
+    if (ctype != 97)
     {
-      if (a3 != 101)
+      if (ctype != 101)
       {
         goto LABEL_51;
       }
@@ -194,16 +194,16 @@
     return 5;
   }
 
-  if (a3 > 143)
+  if (ctype > 143)
   {
-    if (a3 <= 146)
+    if (ctype <= 146)
     {
-      if (a3 == 144)
+      if (ctype == 144)
       {
         return 7;
       }
 
-      if (a3 == 145)
+      if (ctype == 145)
       {
         return 5;
       }
@@ -211,9 +211,9 @@
       goto LABEL_51;
     }
 
-    if (a3 != 147)
+    if (ctype != 147)
     {
-      if (a3 != 149)
+      if (ctype != 149)
       {
         goto LABEL_51;
       }
@@ -224,11 +224,11 @@
     return 10;
   }
 
-  if (a3 > 132)
+  if (ctype > 132)
   {
-    if (a3 != 133)
+    if (ctype != 133)
     {
-      if (a3 == 136)
+      if (ctype == 136)
       {
         return 9;
       }
@@ -239,12 +239,12 @@
     return 2;
   }
 
-  if (a3 == 128)
+  if (ctype == 128)
   {
     return 7;
   }
 
-  if (a3 == 129)
+  if (ctype == 129)
   {
     return 5;
   }
@@ -255,20 +255,20 @@ LABEL_51:
 
   if (v8)
   {
-    NSLog(&cfstr_NotAnImplement.isa, v3);
+    NSLog(&cfstr_NotAnImplement.isa, ctypeCopy);
   }
 
   return 0;
 }
 
-- (int64_t)_accessoryTypeForFamily:(unsigned __int8)a3
+- (int64_t)_accessoryTypeForFamily:(unsigned __int8)family
 {
-  v3 = a3;
-  if (a3 > 5)
+  familyCopy = family;
+  if (family > 5)
   {
-    if (a3 > 8)
+    if (family > 8)
     {
-      switch(a3)
+      switch(family)
       {
         case 9u:
           return 9;
@@ -284,18 +284,18 @@ LABEL_26:
 
       if (v7)
       {
-        NSLog(&cfstr_NotAnImplement_0.isa, v3);
+        NSLog(&cfstr_NotAnImplement_0.isa, familyCopy);
       }
 
       return 0;
     }
 
-    if (a3 == 6)
+    if (family == 6)
     {
       return 6;
     }
 
-    else if (a3 == 7)
+    else if (family == 7)
     {
       return 7;
     }
@@ -306,14 +306,14 @@ LABEL_26:
     }
   }
 
-  else if (a3 > 2)
+  else if (family > 2)
   {
-    if (a3 == 3)
+    if (family == 3)
     {
       return 3;
     }
 
-    else if (a3 == 4)
+    else if (family == 4)
     {
       return 4;
     }
@@ -326,7 +326,7 @@ LABEL_26:
 
   else
   {
-    if (!a3)
+    if (!family)
     {
       v4 = SBLogCommon();
       v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -339,9 +339,9 @@ LABEL_26:
       return 0;
     }
 
-    if (a3 != 1)
+    if (family != 1)
     {
-      if (a3 == 2)
+      if (family == 2)
       {
         return 2;
       }
@@ -350,28 +350,28 @@ LABEL_26:
     }
   }
 
-  return v3;
+  return familyCopy;
 }
 
-- (unsigned)_accessoryTypeFromDictionary:(id)a3
+- (unsigned)_accessoryTypeFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CFD330]];
-  v4 = [v3 charValue];
+  v3 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CFD330]];
+  charValue = [v3 charValue];
 
-  return v4;
+  return charValue;
 }
 
-- (BOOL)_isSupportedFromDictionary:(id)a3
+- (BOOL)_isSupportedFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CFD2F8]];
-  v4 = [v3 BOOLValue];
+  v3 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CFD2F8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (double)_delayFromDictionary:(id)a3
+- (double)_delayFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CFD338]];
+  v3 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CFD338]];
   v4 = [v3 intValue] / 1000.0;
 
   return v4;
@@ -395,8 +395,8 @@ LABEL_26:
 {
   v3 = MEMORY[0x277CCACA8];
   endpointUUID = self->_endpointUUID;
-  v5 = [(CSMagSafeAccessory *)self accessoryTypeString];
-  v6 = v5;
+  accessoryTypeString = [(CSMagSafeAccessory *)self accessoryTypeString];
+  v6 = accessoryTypeString;
   secondaryColor = @"N/A";
   primaryColor = self->_primaryColor;
   if (!primaryColor)
@@ -409,9 +409,9 @@ LABEL_26:
     secondaryColor = self->_secondaryColor;
   }
 
-  v9 = [v3 stringWithFormat:@"Accessory endpointUUID: %@, type: %@, allows: %d, primary color: %@, secondary color: %@", endpointUUID, v5, self->_isSupported, primaryColor, secondaryColor];
+  secondaryColor = [v3 stringWithFormat:@"Accessory endpointUUID: %@, type: %@, allows: %d, primary color: %@, secondary color: %@", endpointUUID, accessoryTypeString, self->_isSupported, primaryColor, secondaryColor];
 
-  return v9;
+  return secondaryColor;
 }
 
 - (CGRect)visibleScreenCoordinates

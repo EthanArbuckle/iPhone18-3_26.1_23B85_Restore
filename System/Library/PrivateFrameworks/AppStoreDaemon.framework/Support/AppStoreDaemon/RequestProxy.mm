@@ -1,13 +1,13 @@
 @interface RequestProxy
-- (void)cancelWithErrorHandler:(id)a3;
-- (void)startWithErrorHandler:(id)a3;
+- (void)cancelWithErrorHandler:(id)handler;
+- (void)startWithErrorHandler:(id)handler;
 @end
 
 @implementation RequestProxy
 
-- (void)cancelWithErrorHandler:(id)a3
+- (void)cancelWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
@@ -30,14 +30,14 @@
   v8[1] = 3221225472;
   v8[2] = sub_1002319A4;
   v8[3] = &unk_10051B548;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(RequestController *)request cancelUsingProxy:self withErrorHandler:v8];
 }
 
-- (void)startWithErrorHandler:(id)a3
+- (void)startWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
@@ -60,8 +60,8 @@
   v8[1] = 3221225472;
   v8[2] = sub_100231AFC;
   v8[3] = &unk_10051B548;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(RequestController *)request startUsingProxy:self withErrorHandler:v8];
 }
 

@@ -1,10 +1,10 @@
 @interface NWPBAgent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NWPBAgent
@@ -80,16 +80,16 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ [(NSData *)self->_agentData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
   agentClass = self->_agentClass;
-  if (agentClass | *(v4 + 1))
+  if (agentClass | *(equalCopy + 1))
   {
     if (![(NWPBAgentClass *)agentClass isEqual:?])
     {
@@ -98,7 +98,7 @@ LABEL_6:
   }
 
   agentIdentifier = self->_agentIdentifier;
-  if (agentIdentifier | *(v4 + 4))
+  if (agentIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)agentIdentifier isEqual:?])
     {
@@ -107,7 +107,7 @@ LABEL_6:
   }
 
   agentDescription = self->_agentDescription;
-  if (agentDescription | *(v4 + 3))
+  if (agentDescription | *(equalCopy + 3))
   {
     if (![(NSString *)agentDescription isEqual:?])
     {
@@ -117,111 +117,111 @@ LABEL_6:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_50;
     }
 
     if (self->_active)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_50;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_50;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0)
+    if ((*(equalCopy + 48) & 8) == 0)
     {
       goto LABEL_50;
     }
 
     if (self->_userActivated)
     {
-      if ((*(v4 + 43) & 1) == 0)
+      if ((*(equalCopy + 43) & 1) == 0)
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(v4 + 43))
+    else if (*(equalCopy + 43))
     {
       goto LABEL_50;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_50;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 48) & 0x10) == 0)
+    if ((*(equalCopy + 48) & 0x10) == 0)
     {
       goto LABEL_50;
     }
 
     if (self->_voluntary)
     {
-      if ((*(v4 + 44) & 1) == 0)
+      if ((*(equalCopy + 44) & 1) == 0)
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(v4 + 44))
+    else if (*(equalCopy + 44))
     {
       goto LABEL_50;
     }
   }
 
-  else if ((*(v4 + 48) & 0x10) != 0)
+  else if ((*(equalCopy + 48) & 0x10) != 0)
   {
     goto LABEL_50;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0)
+    if ((*(equalCopy + 48) & 2) == 0)
     {
       goto LABEL_50;
     }
 
     if (self->_networkProvider)
     {
-      if ((*(v4 + 41) & 1) == 0)
+      if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(v4 + 41))
+    else if (*(equalCopy + 41))
     {
       goto LABEL_50;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_50;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 48) & 4) == 0)
+    if ((*(equalCopy + 48) & 4) == 0)
     {
       goto LABEL_18;
     }
@@ -231,27 +231,27 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  if ((*(v4 + 48) & 4) == 0)
+  if ((*(equalCopy + 48) & 4) == 0)
   {
     goto LABEL_50;
   }
 
   if (self->_nexusProvider)
   {
-    if ((*(v4 + 42) & 1) == 0)
+    if ((*(equalCopy + 42) & 1) == 0)
     {
       goto LABEL_50;
     }
   }
 
-  else if (*(v4 + 42))
+  else if (*(equalCopy + 42))
   {
     goto LABEL_50;
   }
 
 LABEL_18:
   agentData = self->_agentData;
-  if (agentData | *(v4 + 2))
+  if (agentData | *(equalCopy + 2))
   {
     v9 = [(NSData *)agentData isEqual:?];
   }
@@ -266,18 +266,18 @@ LABEL_51:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NWPBAgentClass *)self->_agentClass copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NWPBAgentClass *)self->_agentClass copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_agentIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_agentIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_agentDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_agentDescription copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -344,40 +344,40 @@ LABEL_6:
   }
 
 LABEL_7:
-  v13 = [(NSData *)self->_agentData copyWithZone:a3];
+  v13 = [(NSData *)self->_agentData copyWithZone:zone];
   v14 = *(v5 + 16);
   *(v5 + 16) = v13;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_agentClass)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_agentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_agentDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -397,7 +397,7 @@ LABEL_9:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -412,7 +412,7 @@ LABEL_10:
 
 LABEL_20:
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -427,49 +427,49 @@ LABEL_11:
 
 LABEL_21:
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_13:
   if (self->_agentData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   agentClass = self->_agentClass;
   if (agentClass)
   {
-    v5 = [(NWPBAgentClass *)agentClass dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"agentClass"];
+    dictionaryRepresentation = [(NWPBAgentClass *)agentClass dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"agentClass"];
   }
 
   agentIdentifier = self->_agentIdentifier;
   if (agentIdentifier)
   {
-    [v3 setObject:agentIdentifier forKey:@"agentIdentifier"];
+    [dictionary setObject:agentIdentifier forKey:@"agentIdentifier"];
   }
 
   agentDescription = self->_agentDescription;
   if (agentDescription)
   {
-    [v3 setObject:agentDescription forKey:@"agentDescription"];
+    [dictionary setObject:agentDescription forKey:@"agentDescription"];
   }
 
   has = self->_has;
   if (has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_active];
-    [v3 setObject:v12 forKey:@"active"];
+    [dictionary setObject:v12 forKey:@"active"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -490,7 +490,7 @@ LABEL_9:
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_userActivated];
-  [v3 setObject:v13 forKey:@"userActivated"];
+  [dictionary setObject:v13 forKey:@"userActivated"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -506,7 +506,7 @@ LABEL_10:
 
 LABEL_20:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_voluntary];
-  [v3 setObject:v14 forKey:@"voluntary"];
+  [dictionary setObject:v14 forKey:@"voluntary"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -522,23 +522,23 @@ LABEL_11:
 
 LABEL_21:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_networkProvider];
-  [v3 setObject:v15 forKey:@"networkProvider"];
+  [dictionary setObject:v15 forKey:@"networkProvider"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_nexusProvider];
-    [v3 setObject:v9 forKey:@"nexusProvider"];
+    [dictionary setObject:v9 forKey:@"nexusProvider"];
   }
 
 LABEL_13:
   agentData = self->_agentData;
   if (agentData)
   {
-    [v3 setObject:agentData forKey:@"agentData"];
+    [dictionary setObject:agentData forKey:@"agentData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -547,8 +547,8 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = NWPBAgent;
   v4 = [(NWPBAgent *)&v8 description];
-  v5 = [(NWPBAgent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NWPBAgent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

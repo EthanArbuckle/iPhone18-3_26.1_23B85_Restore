@@ -1,35 +1,35 @@
 @interface MCPasscodeUtilities
-+ (id)defaultPublicDictionaryForUMUserPasscodeType:(unint64_t)a3;
-+ (int)unlockScreenTypeForPasscode:(id)a3 outSimplePasscodeType:(int *)a4;
-+ (int)unlockScreenTypeForPasscodeContext:(id)a3 outSimplePasscodeType:(int *)a4;
-+ (int)unlockScreenTypeForUMUserPasscodeType:(unint64_t)a3 outSimplePasscodeType:(int *)a4;
++ (id)defaultPublicDictionaryForUMUserPasscodeType:(unint64_t)type;
++ (int)unlockScreenTypeForPasscode:(id)passcode outSimplePasscodeType:(int *)type;
++ (int)unlockScreenTypeForPasscodeContext:(id)context outSimplePasscodeType:(int *)type;
++ (int)unlockScreenTypeForUMUserPasscodeType:(unint64_t)type outSimplePasscodeType:(int *)passcodeType;
 @end
 
 @implementation MCPasscodeUtilities
 
-+ (int)unlockScreenTypeForPasscode:(id)a3 outSimplePasscodeType:(int *)a4
++ (int)unlockScreenTypeForPasscode:(id)passcode outSimplePasscodeType:(int *)type
 {
-  v5 = [MCPasscodeManager characteristicsDictionaryFromPasscode:a3];
-  LODWORD(a4) = [MCPasscodeManager unlockScreenTypeForPasscodeCharacteristics:v5 outSimplePasscodeType:a4];
+  v5 = [MCPasscodeManager characteristicsDictionaryFromPasscode:passcode];
+  LODWORD(type) = [MCPasscodeManager unlockScreenTypeForPasscodeCharacteristics:v5 outSimplePasscodeType:type];
 
-  return a4;
+  return type;
 }
 
-+ (int)unlockScreenTypeForPasscodeContext:(id)a3 outSimplePasscodeType:(int *)a4
++ (int)unlockScreenTypeForPasscodeContext:(id)context outSimplePasscodeType:(int *)type
 {
-  v5 = [MCPasscodeManager characteristicsDictionaryFromPasscodeContext:a3];
-  LODWORD(a4) = [MCPasscodeManager unlockScreenTypeForPasscodeCharacteristics:v5 outSimplePasscodeType:a4];
+  v5 = [MCPasscodeManager characteristicsDictionaryFromPasscodeContext:context];
+  LODWORD(type) = [MCPasscodeManager unlockScreenTypeForPasscodeCharacteristics:v5 outSimplePasscodeType:type];
 
-  return a4;
+  return type;
 }
 
-+ (int)unlockScreenTypeForUMUserPasscodeType:(unint64_t)a3 outSimplePasscodeType:(int *)a4
++ (int)unlockScreenTypeForUMUserPasscodeType:(unint64_t)type outSimplePasscodeType:(int *)passcodeType
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     result = 2;
     v4 = -1;
-    if (!a4)
+    if (!passcodeType)
     {
       return result;
     }
@@ -37,22 +37,22 @@
     goto LABEL_5;
   }
 
-  v4 = dword_1A7A62178[a3];
-  result = dword_1A7A62184[a3];
-  if (a4)
+  v4 = dword_1A7A62178[type];
+  result = dword_1A7A62184[type];
+  if (passcodeType)
   {
 LABEL_5:
-    *a4 = v4;
+    *passcodeType = v4;
   }
 
   return result;
 }
 
-+ (id)defaultPublicDictionaryForUMUserPasscodeType:(unint64_t)a3
++ (id)defaultPublicDictionaryForUMUserPasscodeType:(unint64_t)type
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v3 = [a1 unlockScreenTypeForUMUserPasscodeType:a3 outSimplePasscodeType:&v9];
+  v3 = [self unlockScreenTypeForUMUserPasscodeType:type outSimplePasscodeType:&v9];
   v10[0] = @"simpleType";
   v4 = [MEMORY[0x1E696AD98] numberWithInt:v9];
   v11[0] = v4;

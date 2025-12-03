@@ -1,28 +1,28 @@
 @interface VCRecordZoneParser
-+ (BOOL)parseZoneID:(id)a3 intoIndex:(int64_t *)a4;
-+ (BOOL)shouldIgnoreZoneID:(id)a3;
-+ (id)activeRecordZone:(id)a3;
-+ (id)sortedVoiceShortcutZoneIDsFromZoneIDs:(id)a3;
++ (BOOL)parseZoneID:(id)d intoIndex:(int64_t *)index;
++ (BOOL)shouldIgnoreZoneID:(id)d;
++ (id)activeRecordZone:(id)zone;
++ (id)sortedVoiceShortcutZoneIDsFromZoneIDs:(id)ds;
 @end
 
 @implementation VCRecordZoneParser
 
-+ (id)activeRecordZone:(id)a3
++ (id)activeRecordZone:(id)zone
 {
-  v5 = a3;
-  if (!v5)
+  zoneCopy = zone;
+  if (!zoneCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"VCRecordZoneParser.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCRecordZoneParser.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __39__VCRecordZoneParser_activeRecordZone___block_invoke;
   aBlock[3] = &unk_1E837F140;
-  v11 = v5;
-  v12 = a1;
-  v6 = v5;
+  v11 = zoneCopy;
+  selfCopy = self;
+  v6 = zoneCopy;
   v7 = _Block_copy(aBlock);
 
   return v7;
@@ -71,18 +71,18 @@ void __39__VCRecordZoneParser_activeRecordZone___block_invoke(uint64_t a1, void 
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)sortedVoiceShortcutZoneIDsFromZoneIDs:(id)a3
++ (id)sortedVoiceShortcutZoneIDsFromZoneIDs:(id)ds
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dsCopy = ds;
+  if (dsCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = v4;
+    v6 = dsCopy;
     v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (!v7)
     {
@@ -103,7 +103,7 @@ void __39__VCRecordZoneParser_activeRecordZone___block_invoke(uint64_t a1, void 
 
         v11 = *(*(&v24 + 1) + 8 * v10);
         v23 = 0;
-        if ([a1 parseZoneID:v11 intoIndex:&v23])
+        if ([self parseZoneID:v11 intoIndex:&v23])
         {
           v12 = [MEMORY[0x1E696AD98] numberWithInteger:v23];
           [v5 setObject:v11 forKeyedSubscript:v12];
@@ -112,16 +112,16 @@ LABEL_9:
           goto LABEL_11;
         }
 
-        if (([a1 shouldIgnoreZoneID:v11] & 1) == 0)
+        if (([self shouldIgnoreZoneID:v11] & 1) == 0)
         {
           v12 = getWFPeaceMigrationLogObject();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v13 = [v11 zoneName];
+            zoneName = [v11 zoneName];
             *buf = 136315394;
             v29 = "+[VCRecordZoneParser sortedVoiceShortcutZoneIDsFromZoneIDs:]";
             v30 = 2112;
-            v31 = v13;
+            v31 = zoneName;
             _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_ERROR, "%s Ignoring zone with unexpected name: (%@)", buf, 0x16u);
           }
 
@@ -139,8 +139,8 @@ LABEL_11:
       {
 LABEL_16:
 
-        v15 = [v5 allKeys];
-        v16 = [v15 sortedArrayUsingSelector:sel_compare_];
+        allKeys = [v5 allKeys];
+        v16 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
@@ -163,28 +163,28 @@ LABEL_18:
   return v18;
 }
 
-+ (BOOL)parseZoneID:(id)a3 intoIndex:(int64_t *)a4
++ (BOOL)parseZoneID:(id)d intoIndex:(int64_t *)index
 {
-  v6 = a3;
-  v7 = [v6 zoneName];
-  if ([v7 length] && (objc_msgSend(a1, "shouldIgnoreZoneID:", v6) & 1) == 0)
+  dCopy = d;
+  zoneName = [dCopy zoneName];
+  if ([zoneName length] && (objc_msgSend(self, "shouldIgnoreZoneID:", dCopy) & 1) == 0)
   {
-    if ([v7 isEqualToString:@"VoiceShortcuts"])
+    if ([zoneName isEqualToString:@"VoiceShortcuts"])
     {
-      *a4 = 0;
+      *index = 0;
       v8 = 1;
     }
 
     else
     {
-      v10 = [v7 componentsSeparatedByString:@"-"];
+      v10 = [zoneName componentsSeparatedByString:@"-"];
       if ([v10 count] >= 2)
       {
-        v11 = [v10 lastObject];
-        if ([v11 length] && (objc_msgSend(MEMORY[0x1E696AB08], "decimalDigitCharacterSet"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "invertedSet"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v11, "rangeOfCharacterFromSet:", v13), v13, v12, v14 == 0x7FFFFFFFFFFFFFFFLL))
+        lastObject = [v10 lastObject];
+        if ([lastObject length] && (objc_msgSend(MEMORY[0x1E696AB08], "decimalDigitCharacterSet"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "invertedSet"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(lastObject, "rangeOfCharacterFromSet:", v13), v13, v12, v14 == 0x7FFFFFFFFFFFFFFFLL))
         {
-          v15 = [v10 lastObject];
-          *a4 = [v15 integerValue];
+          lastObject2 = [v10 lastObject];
+          *index = [lastObject2 integerValue];
 
           v8 = 1;
         }
@@ -210,18 +210,18 @@ LABEL_18:
   return v8;
 }
 
-+ (BOOL)shouldIgnoreZoneID:(id)a3
++ (BOOL)shouldIgnoreZoneID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"VCRecordZoneParser.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCRecordZoneParser.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
   }
 
-  v6 = [v5 zoneName];
+  zoneName = [dCopy zoneName];
   v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"_defaultZone", @"metadata_zone", 0}];
-  v8 = [v7 containsObject:v6];
+  v8 = [v7 containsObject:zoneName];
 
   return v8;
 }

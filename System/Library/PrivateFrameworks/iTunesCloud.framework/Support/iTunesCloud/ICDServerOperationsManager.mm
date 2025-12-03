@@ -1,42 +1,42 @@
 @interface ICDServerOperationsManager
-- (BOOL)cancelOperationsByClass:(Class)a3;
-- (BOOL)hasOperationsOfClass:(Class)a3;
+- (BOOL)cancelOperationsByClass:(Class)class;
+- (BOOL)hasOperationsOfClass:(Class)class;
 - (BOOL)isNetworkActivityIndicatorVisible;
 - (ICDServerOperationsManager)init;
 - (id)listCloudServerOperations;
 - (void)_setupInternalQueues;
 - (void)_setupKVO;
 - (void)_tearDownKVO;
-- (void)addBackgroundOperation:(id)a3 priority:(int)a4;
-- (void)addOperation:(id)a3 priority:(int)a4;
+- (void)addBackgroundOperation:(id)operation priority:(int)priority;
+- (void)addOperation:(id)operation priority:(int)priority;
 - (void)dealloc;
-- (void)enumerateBackgroundOperationsUsingBlock:(id)a3;
-- (void)enumerateOperationsUsingBlock:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setNetworkActivityIndicatorVisible:(BOOL)a3;
+- (void)enumerateBackgroundOperationsUsingBlock:(id)block;
+- (void)enumerateOperationsUsingBlock:(id)block;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setNetworkActivityIndicatorVisible:(BOOL)visible;
 @end
 
 @implementation ICDServerOperationsManager
 
 - (BOOL)isNetworkActivityIndicatorVisible
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICDServerOperationsManager *)self serialQueue];
+  serialQueue = [(ICDServerOperationsManager *)self serialQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000366C;
   v5[3] = &unk_1001DEF50;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)_tearDownKVO
@@ -79,65 +79,65 @@
   [(NSOperationQueue *)v9 setMaxConcurrentOperationCount:1];
 }
 
-- (void)setNetworkActivityIndicatorVisible:(BOOL)a3
+- (void)setNetworkActivityIndicatorVisible:(BOOL)visible
 {
-  v5 = [(ICDServerOperationsManager *)self serialQueue];
+  serialQueue = [(ICDServerOperationsManager *)self serialQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10007B5CC;
   v6[3] = &unk_1001DE650;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  visibleCopy = visible;
+  dispatch_sync(serialQueue, v6);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_100212D70 != a6)
+  if (off_100212D70 != context)
   {
     v12.receiver = self;
     v12.super_class = ICDServerOperationsManager;
-    [(ICDServerOperationsManager *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(ICDServerOperationsManager *)&v12 observeValueForKeyPath:path ofObject:object change:change context:?];
     return;
   }
 
-  v7 = [(NSOperationQueue *)self->_operationQueue operationCount:a3];
-  v8 = [(NSOperationQueue *)self->_backgroundOperationQueue operationCount];
-  v9 = [(ICDServerOperationsManager *)self isNetworkActivityIndicatorVisible];
-  if (v7 + v8)
+  v7 = [(NSOperationQueue *)self->_operationQueue operationCount:path];
+  operationCount = [(NSOperationQueue *)self->_backgroundOperationQueue operationCount];
+  isNetworkActivityIndicatorVisible = [(ICDServerOperationsManager *)self isNetworkActivityIndicatorVisible];
+  if (v7 + operationCount)
   {
-    if (v9)
+    if (isNetworkActivityIndicatorVisible)
     {
       return;
     }
 
     sub_100003528(1);
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1;
   }
 
   else
   {
-    if (!v9)
+    if (!isNetworkActivityIndicatorVisible)
     {
       return;
     }
 
     sub_100003528(0);
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
   }
 
-  [(ICDServerOperationsManager *)v10 setNetworkActivityIndicatorVisible:v11];
+  [(ICDServerOperationsManager *)selfCopy2 setNetworkActivityIndicatorVisible:v11];
 }
 
 - (id)listCloudServerOperations
 {
-  v3 = [(NSOperationQueue *)self->_operationQueue operations];
-  v4 = [v3 copy];
+  operations = [(NSOperationQueue *)self->_operationQueue operations];
+  v4 = [operations copy];
 
-  v5 = [(NSOperationQueue *)self->_backgroundOperationQueue operations];
-  v6 = [v5 copy];
+  operations2 = [(NSOperationQueue *)self->_backgroundOperationQueue operations];
+  v6 = [operations2 copy];
 
   v7 = +[NSMutableDictionary dictionary];
   v8 = os_log_create("com.apple.amp.itunescloudd", "Default");
@@ -175,11 +175,11 @@
           }
 
           v15 = *(*(&v43 + 1) + 8 * i);
-          v16 = [v15 name];
-          v17 = v16;
-          if (v16)
+          name = [v15 name];
+          v17 = name;
+          if (name)
           {
-            v18 = v16;
+            v18 = name;
           }
 
           else
@@ -229,11 +229,11 @@
           }
 
           v28 = *(*(&v39 + 1) + 8 * j);
-          v29 = [v28 name];
-          v30 = v29;
-          if (v29)
+          name2 = [v28 name];
+          v30 = name2;
+          if (name2)
           {
-            v31 = v29;
+            v31 = name2;
           }
 
           else
@@ -271,14 +271,14 @@
   return v7;
 }
 
-- (BOOL)cancelOperationsByClass:(Class)a3
+- (BOOL)cancelOperationsByClass:(Class)class
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSOperationQueue *)self->_operationQueue operations];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  operations = [(NSOperationQueue *)self->_operationQueue operations];
+  v4 = [operations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -290,7 +290,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(operations);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -301,7 +301,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [operations countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -315,14 +315,14 @@
   return v6 & 1;
 }
 
-- (BOOL)hasOperationsOfClass:(Class)a3
+- (BOOL)hasOperationsOfClass:(Class)class
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSOperationQueue *)self->_operationQueue operations];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  operations = [(NSOperationQueue *)self->_operationQueue operations];
+  v4 = [operations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -333,7 +333,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(operations);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -344,7 +344,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [operations countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -360,17 +360,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)enumerateBackgroundOperationsUsingBlock:(id)a3
+- (void)enumerateBackgroundOperationsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSOperationQueue *)self->_backgroundOperationQueue operations];
-    v6 = [v5 copy];
+    operations = [(NSOperationQueue *)self->_backgroundOperationQueue operations];
+    v6 = [operations copy];
 
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
@@ -388,7 +388,7 @@ LABEL_4:
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         v12 = 0;
-        v4[2](v4, v11, &v12);
+        blockCopy[2](blockCopy, v11, &v12);
         if (v12)
         {
           break;
@@ -409,17 +409,17 @@ LABEL_4:
   }
 }
 
-- (void)enumerateOperationsUsingBlock:(id)a3
+- (void)enumerateOperationsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSOperationQueue *)self->_operationQueue operations];
-    v6 = [v5 copy];
+    operations = [(NSOperationQueue *)self->_operationQueue operations];
+    v6 = [operations copy];
 
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
@@ -437,7 +437,7 @@ LABEL_4:
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         v12 = 0;
-        v4[2](v4, v11, &v12);
+        blockCopy[2](blockCopy, v11, &v12);
         if (v12)
         {
           break;
@@ -458,12 +458,12 @@ LABEL_4:
   }
 }
 
-- (void)addBackgroundOperation:(id)a3 priority:(int)a4
+- (void)addBackgroundOperation:(id)operation priority:(int)priority
 {
-  v6 = a4 == 2;
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  v6 = priority == 2;
+  operationCopy = operation;
+  v8 = operationCopy;
+  if (priority)
   {
     v9 = 4 * v6;
   }
@@ -473,18 +473,18 @@ LABEL_4:
     v9 = -4;
   }
 
-  [v7 setQueuePriority:v9];
+  [operationCopy setQueuePriority:v9];
   [v8 setQualityOfService:9];
   v10 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 name];
+    name = [v8 name];
     v12 = 138544130;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = v8;
     v16 = 2114;
-    v17 = v11;
+    v17 = name;
     v18 = 1024;
     v19 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding background operation %p (name=%{public}@) with priority %d", &v12, 0x26u);
@@ -493,12 +493,12 @@ LABEL_4:
   [(NSOperationQueue *)self->_backgroundOperationQueue addOperation:v8];
 }
 
-- (void)addOperation:(id)a3 priority:(int)a4
+- (void)addOperation:(id)operation priority:(int)priority
 {
-  v6 = a4 == 2;
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  v6 = priority == 2;
+  operationCopy = operation;
+  v8 = operationCopy;
+  if (priority)
   {
     v9 = 4 * v6;
   }
@@ -508,18 +508,18 @@ LABEL_4:
     v9 = -4;
   }
 
-  [v7 setQueuePriority:v9];
+  [operationCopy setQueuePriority:v9];
   [v8 setQualityOfService:17];
   v10 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 name];
+    name = [v8 name];
     v12 = 138544130;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = v8;
     v16 = 2114;
-    v17 = v11;
+    v17 = name;
     v18 = 1024;
     v19 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding operation %p (name=%{public}@) with priority %d", &v12, 0x26u);

@@ -1,12 +1,12 @@
 @interface ActionList
-- (void)workflowConnectorStateDidChange:(id)a3;
+- (void)workflowConnectorStateDidChange:(id)change;
 @end
 
 @implementation ActionList
 
-- (void)workflowConnectorStateDidChange:(id)a3
+- (void)workflowConnectorStateDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   sub_27451EF40();
 }

@@ -1,6 +1,6 @@
 @interface COMessageConsumedSession
-- (BOOL)isEqual:(id)a3;
-- (COMessageConsumedSession)initWithMember:(id)a3 consumer:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (COMessageConsumedSession)initWithMember:(id)member consumer:(id)consumer;
 - (COMessageSessionConsumer)consumer;
 - (id)description;
 - (unint64_t)hash;
@@ -8,16 +8,16 @@
 
 @implementation COMessageConsumedSession
 
-- (COMessageConsumedSession)initWithMember:(id)a3 consumer:(id)a4
+- (COMessageConsumedSession)initWithMember:(id)member consumer:(id)consumer
 {
-  v6 = a4;
+  consumerCopy = consumer;
   v10.receiver = self;
   v10.super_class = COMessageConsumedSession;
-  v7 = [(COMessageSession *)&v10 initWithMember:a3];
+  v7 = [(COMessageSession *)&v10 initWithMember:member];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_consumer, v6);
+    objc_storeWeak(&v7->_consumer, consumerCopy);
   }
 
   return v8;
@@ -28,9 +28,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COMessageConsumedSession *)self consumer];
-  v7 = [(COMessageSession *)self member];
-  v8 = [v3 stringWithFormat:@"<%@: %p, consumer = %@>, member = %@", v5, self, v6, v7];
+  consumer = [(COMessageConsumedSession *)self consumer];
+  member = [(COMessageSession *)self member];
+  v8 = [v3 stringWithFormat:@"<%@: %p, consumer = %@>, member = %@", v5, self, consumer, member];
 
   return v8;
 }
@@ -42,11 +42,11 @@
   return [(COMessageSession *)&v3 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = COMessageConsumedSession;
-  return [(COMessageSession *)&v4 isEqual:a3];
+  return [(COMessageSession *)&v4 isEqual:equal];
 }
 
 - (COMessageSessionConsumer)consumer

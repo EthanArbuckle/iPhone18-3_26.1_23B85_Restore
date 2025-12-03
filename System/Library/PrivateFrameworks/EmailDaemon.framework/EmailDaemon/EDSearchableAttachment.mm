@@ -1,59 +1,59 @@
 @interface EDSearchableAttachment
 - (EDSearchableAttachment)init;
-- (EDSearchableAttachment)initWithContentURL:(id)a3 contentType:(id)a4 name:(id)a5 accountIdentifier:(id)a6 mailboxIdentifiers:(id)a7 messageID:(id)a8 messageIDHeader:(id)a9 dateSent:(id)a10 dateReceived:(id)a11 sender:(id)a12 recipients:(id)a13 downloadDate:(id)a14;
+- (EDSearchableAttachment)initWithContentURL:(id)l contentType:(id)type name:(id)name accountIdentifier:(id)identifier mailboxIdentifiers:(id)identifiers messageID:(id)d messageIDHeader:(id)header dateSent:(id)self0 dateReceived:(id)self1 sender:(id)self2 recipients:(id)self3 downloadDate:(id)self4;
 - (NSString)displayName;
 - (NSURL)contentURL;
-- (void)addToAttributes:(id)a3;
+- (void)addToAttributes:(id)attributes;
 @end
 
 @implementation EDSearchableAttachment
 
-- (EDSearchableAttachment)initWithContentURL:(id)a3 contentType:(id)a4 name:(id)a5 accountIdentifier:(id)a6 mailboxIdentifiers:(id)a7 messageID:(id)a8 messageIDHeader:(id)a9 dateSent:(id)a10 dateReceived:(id)a11 sender:(id)a12 recipients:(id)a13 downloadDate:(id)a14
+- (EDSearchableAttachment)initWithContentURL:(id)l contentType:(id)type name:(id)name accountIdentifier:(id)identifier mailboxIdentifiers:(id)identifiers messageID:(id)d messageIDHeader:(id)header dateSent:(id)self0 dateReceived:(id)self1 sender:(id)self2 recipients:(id)self3 downloadDate:(id)self4
 {
-  v73 = a6;
-  v79 = self;
-  v80 = a14;
-  v69 = a11;
-  v70 = a13;
+  identifierCopy = identifier;
+  selfCopy = self;
+  dateCopy = date;
+  receivedCopy = received;
+  recipientsCopy = recipients;
   v18 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1C4050, &unk_1C6472830);
   v19 = *(*(v18 - 8) + 64);
   MEMORY[0x1EEE9AC00](v18 - 8);
-  v78 = &v64 - v20;
+  v78 = &senderCopy - v20;
   v21 = sub_1C645C674();
   v76 = *(v21 - 8);
   v77 = v21;
   v22 = *(v76 + 64);
   v23 = MEMORY[0x1EEE9AC00](v21);
-  v75 = &v64 - ((v24 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v75 = &senderCopy - ((v24 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v23);
-  v74 = &v64 - v25;
+  v74 = &senderCopy - v25;
   v26 = sub_1C645C794();
   v27 = *(*(v26 - 8) + 64);
   MEMORY[0x1EEE9AC00](v26 - 8);
-  v29 = &v64 - ((v28 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v29 = &senderCopy - ((v28 + 15) & 0xFFFFFFFFFFFFFFF0);
   v30 = sub_1C645C514();
   v31 = *(*(v30 - 8) + 64);
   MEMORY[0x1EEE9AC00](v30 - 8);
-  v72 = &v64 - ((v32 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v72 = &senderCopy - ((v32 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C645C474();
-  v33 = a4;
-  v34 = a5;
-  v35 = a7;
-  v71 = a8;
-  v36 = a9;
-  v37 = a10;
-  v38 = v69;
-  v66 = v70;
-  v39 = v73;
-  v64 = a12;
-  v40 = a12;
-  v65 = v80;
-  v73 = v29;
+  typeCopy = type;
+  nameCopy = name;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  headerCopy = header;
+  sentCopy = sent;
+  v38 = receivedCopy;
+  v66 = recipientsCopy;
+  v39 = identifierCopy;
+  senderCopy = sender;
+  senderCopy2 = sender;
+  v65 = dateCopy;
+  identifierCopy = v29;
   sub_1C645C784();
 
   v41 = sub_1C645C874();
-  v69 = v42;
-  v70 = v41;
+  receivedCopy = v42;
+  recipientsCopy = v41;
 
   if (v39)
   {
@@ -79,7 +79,7 @@
   v50 = v75;
   sub_1C645C654();
 
-  if (v40)
+  if (senderCopy2)
   {
     v51 = sub_1C645C874();
     v53 = v52;
@@ -113,8 +113,8 @@
   v63 = v57;
   commentedAddress._countAndFlagsBits = v51;
   commentedAddress._object = v53;
-  v59 = v71;
-  v60 = sub_1C64230E8(v72, v73, v70, v69, v68, v67, v45, v71, v46, v48, v49, v50, commentedAddress, v55, v63);
+  v59 = dCopy;
+  v60 = sub_1C64230E8(v72, identifierCopy, recipientsCopy, receivedCopy, v68, v67, v45, dCopy, v46, v48, v49, v50, commentedAddress, v55, v63);
 
   return v60;
 }
@@ -158,17 +158,17 @@
   return v10;
 }
 
-- (void)addToAttributes:(id)a3
+- (void)addToAttributes:(id)attributes
 {
   v5 = type metadata accessor for SearchableAttachment();
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v11[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_1C640DBAC(self + OBJC_IVAR___EDSearchableAttachment__underlying, v11);
-  v9 = a3;
-  v10 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   swift_dynamicCast();
-  sub_1C6438E80(v9);
+  sub_1C6438E80(attributesCopy);
 
   sub_1C642308C(v8);
 }

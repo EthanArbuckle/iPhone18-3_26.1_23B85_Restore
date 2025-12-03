@@ -1,11 +1,11 @@
 @interface HFPowerStateTargetValueTuple
 + (NAIdentity)na_identity;
 + (id)fanStateTargetValueTuple;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFPowerStateTargetValueTuple)init;
-- (HFPowerStateTargetValueTuple)initWithCharacteristicType:(id)a3 onTargetValue:(id)a4 offTargetValue:(id)a5;
-- (id)targetValueForPrimaryState:(int64_t)a3;
-- (int64_t)primaryStateForTargetValue:(id)a3;
+- (HFPowerStateTargetValueTuple)initWithCharacteristicType:(id)type onTargetValue:(id)value offTargetValue:(id)targetValue;
+- (id)targetValueForPrimaryState:(int64_t)state;
+- (int64_t)primaryStateForTargetValue:(id)value;
 - (unint64_t)hash;
 @end
 
@@ -20,35 +20,35 @@
 
 - (HFPowerStateTargetValueTuple)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithCharacteristicType_onTargetValue_offTargetValue_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFPowerStateControlItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFPowerStateTargetValueTuple init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPowerStateControlItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFPowerStateTargetValueTuple init]", v5}];
 
   return 0;
 }
 
-- (HFPowerStateTargetValueTuple)initWithCharacteristicType:(id)a3 onTargetValue:(id)a4 offTargetValue:(id)a5
+- (HFPowerStateTargetValueTuple)initWithCharacteristicType:(id)type onTargetValue:(id)value offTargetValue:(id)targetValue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  valueCopy = value;
+  targetValueCopy = targetValue;
   v15.receiver = self;
   v15.super_class = HFPowerStateTargetValueTuple;
   v12 = [(HFPowerStateTargetValueTuple *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_characteristicType, a3);
-    objc_storeStrong(&v13->_onTargetValue, a4);
-    objc_storeStrong(&v13->_offTargetValue, a5);
+    objc_storeStrong(&v12->_characteristicType, type);
+    objc_storeStrong(&v13->_onTargetValue, value);
+    objc_storeStrong(&v13->_offTargetValue, targetValue);
   }
 
   return v13;
 }
 
-- (id)targetValueForPrimaryState:(int64_t)a3
+- (id)targetValueForPrimaryState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     [(HFPowerStateTargetValueTuple *)self onTargetValue];
   }
@@ -62,11 +62,11 @@
   return v3;
 }
 
-- (int64_t)primaryStateForTargetValue:(id)a3
+- (int64_t)primaryStateForTargetValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HFPowerStateTargetValueTuple *)self onTargetValue];
-  v6 = [v4 isEqual:v5];
+  valueCopy = value;
+  onTargetValue = [(HFPowerStateTargetValueTuple *)self onTargetValue];
+  v6 = [valueCopy isEqual:onTargetValue];
 
   if (v6)
   {
@@ -106,19 +106,19 @@ void __43__HFPowerStateTargetValueTuple_na_identity__block_invoke_2()
   qword_27C84C438 = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

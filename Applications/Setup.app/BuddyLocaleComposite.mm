@@ -1,29 +1,29 @@
 @interface BuddyLocaleComposite
-- (void)setLanguage:(id)a3;
+- (void)setLanguage:(id)language;
 @end
 
 @implementation BuddyLocaleComposite
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v8->_language, location[0]);
-  v3 = [(BuddyLocaleComposite *)v8 dataSource];
+  objc_storeStrong(location, language);
+  objc_storeStrong(&selfCopy->_language, location[0]);
+  dataSource = [(BuddyLocaleComposite *)selfCopy dataSource];
 
-  if (v3)
+  if (dataSource)
   {
     v5 = location[0];
-    v6 = [(BuddyLocaleComposite *)v8 dataSource];
-    [(BYLocaleDataSource *)v6 setLanguage:v5];
+    dataSource2 = [(BuddyLocaleComposite *)selfCopy dataSource];
+    [(BYLocaleDataSource *)dataSource2 setLanguage:v5];
   }
 
   else
   {
     v4 = [BYLocaleDataSource newWithLanguage:location[0]];
-    [(BuddyLocaleComposite *)v8 setDataSource:v4];
+    [(BuddyLocaleComposite *)selfCopy setDataSource:v4];
   }
 
   objc_storeStrong(location, 0);

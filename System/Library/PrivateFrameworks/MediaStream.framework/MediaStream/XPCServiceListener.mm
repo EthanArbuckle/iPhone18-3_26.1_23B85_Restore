@@ -1,37 +1,37 @@
 @interface XPCServiceListener
-- (XPCServiceListener)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5;
+- (XPCServiceListener)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate;
 - (id)debugDescription;
-- (void)_workQueueShutDownServiceConnections:(id)a3 index:(unint64_t)a4 completionBlock:(id)a5;
-- (void)serviceConnectionDidDisconnect:(id)a3;
-- (void)shutDownCompletionBlock:(id)a3;
+- (void)_workQueueShutDownServiceConnections:(id)connections index:(unint64_t)index completionBlock:(id)block;
+- (void)serviceConnectionDidDisconnect:(id)disconnect;
+- (void)shutDownCompletionBlock:(id)block;
 - (void)start;
-- (void)workQueueHandleIncomingConnection:(id)a3;
+- (void)workQueueHandleIncomingConnection:(id)connection;
 @end
 
 @implementation XPCServiceListener
 
-- (void)serviceConnectionDidDisconnect:(id)a3
+- (void)serviceConnectionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   if (_shouldLogBlock && (*(_shouldLogBlock + 16))())
   {
     _XPCLog(6, @"%@: Service connection disconnected.", v5, v6, v7, v8, v9, v10, self);
   }
 
-  v11 = [(XPCServiceListener *)self workQueue];
+  workQueue = [(XPCServiceListener *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__XPCServiceListener_serviceConnectionDidDisconnect___block_invoke;
   block[3] = &unk_2798A5260;
   block[4] = self;
-  v14 = v4;
-  v12 = v4;
-  dispatch_async(v11, block);
+  v14 = disconnectCopy;
+  v12 = disconnectCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)workQueueHandleIncomingConnection:(id)a3
+- (void)workQueueHandleIncomingConnection:(id)connection
 {
-  connection = a3;
+  connection = connection;
   if (_shouldLogBlock && (*(_shouldLogBlock + 16))())
   {
     _XPCLog(6, @"%@: Client connected: %p", v4, v5, v6, v7, v8, v9, self);
@@ -68,24 +68,24 @@
   }
 }
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (_shouldLogBlock && (*(_shouldLogBlock + 16))())
   {
     serviceName = self->_serviceName;
     _XPCLog(6, @"%@: Shutting down service listener for service name “%@”.", v5, v6, v7, v8, v9, v10, self);
   }
 
-  v11 = [(XPCServiceListener *)self workQueue];
+  workQueue = [(XPCServiceListener *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__XPCServiceListener_shutDownCompletionBlock___block_invoke;
   block[3] = &unk_2798A5170;
   block[4] = self;
-  v15 = v4;
-  v12 = v4;
-  dispatch_async(v11, block);
+  v15 = blockCopy;
+  v12 = blockCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __46__XPCServiceListener_shutDownCompletionBlock___block_invoke(uint64_t a1)
@@ -131,29 +131,29 @@ uint64_t __46__XPCServiceListener_shutDownCompletionBlock___block_invoke_2(uint6
   return result;
 }
 
-- (void)_workQueueShutDownServiceConnections:(id)a3 index:(unint64_t)a4 completionBlock:(id)a5
+- (void)_workQueueShutDownServiceConnections:(id)connections index:(unint64_t)index completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count] <= a4)
+  connectionsCopy = connections;
+  blockCopy = block;
+  if ([connectionsCopy count] <= index)
   {
-    if (v9)
+    if (blockCopy)
     {
-      v9[2](v9);
+      blockCopy[2](blockCopy);
     }
   }
 
   else
   {
-    v10 = [v8 objectAtIndex:a4];
+    v10 = [connectionsCopy objectAtIndex:index];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __81__XPCServiceListener__workQueueShutDownServiceConnections_index_completionBlock___block_invoke;
     v11[3] = &unk_2798A5238;
     v11[4] = self;
-    v12 = v8;
-    v14 = a4;
-    v13 = v9;
+    v12 = connectionsCopy;
+    indexCopy = index;
+    v13 = blockCopy;
     [v10 shutDownCompletionBlock:v11];
   }
 }
@@ -178,8 +178,8 @@ void __81__XPCServiceListener__workQueueShutDownServiceConnections_index_complet
 
 - (void)start
 {
-  v3 = [(XPCServiceListener *)self listener];
-  xpc_connection_resume(v3);
+  listener = [(XPCServiceListener *)self listener];
+  xpc_connection_resume(listener);
 
   if (_shouldLogBlock)
   {
@@ -191,11 +191,11 @@ void __81__XPCServiceListener__workQueueShutDownServiceConnections_index_complet
   }
 }
 
-- (XPCServiceListener)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5
+- (XPCServiceListener)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = XPCServiceListener;
   v12 = [(XPCServiceListener *)&v31 init];
@@ -203,17 +203,17 @@ void __81__XPCServiceListener__workQueueShutDownServiceConnections_index_complet
   {
     if (_shouldLogBlock && (*(_shouldLogBlock + 16))())
     {
-      _XPCLog(6, @"Creating service listener for service name %@.", v13, v14, v15, v16, v17, v18, v9);
+      _XPCLog(6, @"Creating service listener for service name %@.", v13, v14, v15, v16, v17, v18, nameCopy);
     }
 
     v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
     serviceConnections = v12->_serviceConnections;
     v12->_serviceConnections = v19;
 
-    objc_storeStrong(&v12->_workQueue, a4);
-    v12->_delegate = v11;
-    objc_storeStrong(&v12->_serviceName, a3);
-    mach_service = xpc_connection_create_mach_service([v9 UTF8String], v12->_workQueue, 1uLL);
+    objc_storeStrong(&v12->_workQueue, queue);
+    v12->_delegate = delegateCopy;
+    objc_storeStrong(&v12->_serviceName, name);
+    mach_service = xpc_connection_create_mach_service([nameCopy UTF8String], v12->_workQueue, 1uLL);
     listener = v12->_listener;
     v12->_listener = mach_service;
 

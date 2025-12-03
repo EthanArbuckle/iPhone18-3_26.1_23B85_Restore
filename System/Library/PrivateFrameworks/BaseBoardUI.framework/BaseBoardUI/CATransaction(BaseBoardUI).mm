@@ -22,7 +22,7 @@
       v27 = 2114;
       v28 = v11;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"CATransaction+BaseBoardUI.m";
       v33 = 1024;
@@ -51,8 +51,8 @@
   if (([v6 addCommitHandler:&v20 forPhase:5] & 1) == 0)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [MEMORY[0x1E6979518] currentPhase];
-    v15 = [v13 stringWithFormat:@"failed to register commit handler for phase = kCATransactionPhasePostSynchronize (current is %i)", v14, v20, v21, v22, v23];
+    currentPhase = [MEMORY[0x1E6979518] currentPhase];
+    v15 = [v13 stringWithFormat:@"failed to register commit handler for phase = kCATransactionPhasePostSynchronize (current is %i)", currentPhase, v20, v21, v22, v23];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v16 = NSStringFromSelector(a2);
@@ -63,7 +63,7 @@
       v27 = 2114;
       v28 = v18;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"CATransaction+BaseBoardUI.m";
       v33 = 1024;
@@ -98,7 +98,7 @@
       v27 = 2114;
       v28 = v11;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"CATransaction+BaseBoardUI.m";
       v33 = 1024;
@@ -127,8 +127,8 @@
   if (([v6 addCommitHandler:&v20 forPhase:2] & 1) == 0)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [MEMORY[0x1E6979518] currentPhase];
-    v15 = [v13 stringWithFormat:@"failed to register commit handler for phase = kCATransactionPhasePostCommit (current is %i)", v14, v20, v21, v22, v23];
+    currentPhase = [MEMORY[0x1E6979518] currentPhase];
+    v15 = [v13 stringWithFormat:@"failed to register commit handler for phase = kCATransactionPhasePostCommit (current is %i)", currentPhase, v20, v21, v22, v23];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v16 = NSStringFromSelector(a2);
@@ -139,7 +139,7 @@
       v27 = 2114;
       v28 = v18;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"CATransaction+BaseBoardUI.m";
       v33 = 1024;

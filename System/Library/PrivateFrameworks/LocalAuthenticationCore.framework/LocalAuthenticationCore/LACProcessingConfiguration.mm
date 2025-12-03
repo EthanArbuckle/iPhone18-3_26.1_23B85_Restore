@@ -1,6 +1,6 @@
 @interface LACProcessingConfiguration
 + (id)defaultConfiguration;
-- (LACProcessingConfiguration)initWithNextProcessor:(id)a3;
+- (LACProcessingConfiguration)initWithNextProcessor:(id)processor;
 @end
 
 @implementation LACProcessingConfiguration
@@ -14,16 +14,16 @@
   return v4;
 }
 
-- (LACProcessingConfiguration)initWithNextProcessor:(id)a3
+- (LACProcessingConfiguration)initWithNextProcessor:(id)processor
 {
-  v5 = a3;
+  processorCopy = processor;
   v9.receiver = self;
   v9.super_class = LACProcessingConfiguration;
   v6 = [(LACProcessingConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nextProcessor, a3);
+    objc_storeStrong(&v6->_nextProcessor, processor);
   }
 
   return v7;

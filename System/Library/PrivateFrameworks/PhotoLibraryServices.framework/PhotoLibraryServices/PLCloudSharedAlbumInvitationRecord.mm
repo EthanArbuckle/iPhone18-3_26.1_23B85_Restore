@@ -1,16 +1,16 @@
 @interface PLCloudSharedAlbumInvitationRecord
-+ (id)cloudSharedAlbumInvitationRecordsWithAlbumGUID:(id)a3 inLibrary:(id)a4;
-+ (id)cloudSharedAlbumInvitationRecordsWithGUIDs:(id)a3 inLibrary:(id)a4;
-+ (id)insertNewInvitationRecordIntoAlbum:(id)a3 withFirstName:(id)a4 lastName:(id)a5 fullName:(id)a6 emails:(id)a7 phones:(id)a8 inLibrary:(id)a9;
++ (id)cloudSharedAlbumInvitationRecordsWithAlbumGUID:(id)d inLibrary:(id)library;
++ (id)cloudSharedAlbumInvitationRecordsWithGUIDs:(id)ds inLibrary:(id)library;
++ (id)insertNewInvitationRecordIntoAlbum:(id)album withFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emails:(id)emails phones:(id)phones inLibrary:(id)library;
 - (NSArray)inviteeEmails;
 - (NSArray)inviteePhones;
 - (PLCloudSharedAlbumInvitationRecord)init;
 - (id)invitationStateDescription;
-- (id)inviteeDisplayNameIncludingEmail:(BOOL)a3;
+- (id)inviteeDisplayNameIncludingEmail:(BOOL)email;
 - (void)awakeFromInsert;
 - (void)delete;
 - (void)prepareForDeletion;
-- (void)setInviteeEmails:(id)a3 phones:(id)a4;
+- (void)setInviteeEmails:(id)emails phones:(id)phones;
 - (void)willSave;
 @end
 
@@ -18,25 +18,25 @@
 
 - (id)invitationStateDescription
 {
-  v3 = [(PLCloudSharedAlbumInvitationRecord *)self invitationState];
-  v4 = [v3 integerValue];
+  invitationState = [(PLCloudSharedAlbumInvitationRecord *)self invitationState];
+  integerValue = [invitationState integerValue];
 
   v5 = 0;
-  if (v4 <= 1)
+  if (integerValue <= 1)
   {
-    if (!v4)
+    if (!integerValue)
     {
       goto LABEL_8;
     }
 
-    if (v4 == 1)
+    if (integerValue == 1)
     {
-      v6 = [(PLCloudSharedAlbumInvitationRecord *)self invitationStateLocal];
-      [v6 integerValue];
+      invitationStateLocal = [(PLCloudSharedAlbumInvitationRecord *)self invitationStateLocal];
+      [invitationStateLocal integerValue];
     }
   }
 
-  else if (v4 == 2)
+  else if (integerValue == 2)
   {
     goto LABEL_8;
   }
@@ -47,71 +47,71 @@ LABEL_8:
   return v5;
 }
 
-- (void)setInviteeEmails:(id)a3 phones:(id)a4
+- (void)setInviteeEmails:(id)emails phones:(id)phones
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(PLManagedObject *)self photoLibrary];
-  v8 = [v10 personInfoManager];
-  v9 = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
-  [v8 setEmails:v7 phones:v6 forInvitationRecordGUID:v9];
+  phonesCopy = phones;
+  emailsCopy = emails;
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  personInfoManager = [photoLibrary personInfoManager];
+  cloudGUID = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
+  [personInfoManager setEmails:emailsCopy phones:phonesCopy forInvitationRecordGUID:cloudGUID];
 }
 
 - (NSArray)inviteePhones
 {
-  v3 = [(PLManagedObject *)self photoLibrary];
-  v4 = [v3 personInfoManager];
-  v5 = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
-  v6 = [v4 phonesForInvitationRecordGUID:v5];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  personInfoManager = [photoLibrary personInfoManager];
+  cloudGUID = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
+  v6 = [personInfoManager phonesForInvitationRecordGUID:cloudGUID];
 
   return v6;
 }
 
 - (NSArray)inviteeEmails
 {
-  v3 = [(PLManagedObject *)self photoLibrary];
-  v4 = [v3 personInfoManager];
-  v5 = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
-  v6 = [v4 emailsForInvitationRecordGUID:v5];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  personInfoManager = [photoLibrary personInfoManager];
+  cloudGUID = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
+  v6 = [personInfoManager emailsForInvitationRecordGUID:cloudGUID];
 
   return v6;
 }
 
-- (id)inviteeDisplayNameIncludingEmail:(BOOL)a3
+- (id)inviteeDisplayNameIncludingEmail:(BOOL)email
 {
-  v3 = a3;
+  emailCopy = email;
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [(PLCloudSharedAlbumInvitationRecord *)self inviteeFirstName];
-  v6 = [(PLCloudSharedAlbumInvitationRecord *)self inviteeLastName];
-  v7 = [(PLCloudSharedAlbumInvitationRecord *)self inviteeFullName];
-  v8 = [(PLCloudSharedAlbumInvitationRecord *)self inviteeEmails];
-  v9 = [v8 firstObject];
+  inviteeFirstName = [(PLCloudSharedAlbumInvitationRecord *)self inviteeFirstName];
+  inviteeLastName = [(PLCloudSharedAlbumInvitationRecord *)self inviteeLastName];
+  inviteeFullName = [(PLCloudSharedAlbumInvitationRecord *)self inviteeFullName];
+  inviteeEmails = [(PLCloudSharedAlbumInvitationRecord *)self inviteeEmails];
+  firstObject = [inviteeEmails firstObject];
 
-  v10 = [(PLCloudSharedAlbumInvitationRecord *)self inviteePhones];
-  if ([v7 length])
+  inviteePhones = [(PLCloudSharedAlbumInvitationRecord *)self inviteePhones];
+  if ([inviteeFullName length])
   {
-    v11 = v7;
+    v11 = inviteeFullName;
     goto LABEL_3;
   }
 
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  if ([inviteeFirstName length] && objc_msgSend(inviteeLastName, "length"))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v5, v6];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", inviteeFirstName, inviteeLastName];
     goto LABEL_3;
   }
 
-  if ([v5 length])
+  if ([inviteeFirstName length])
   {
-    v11 = v5;
+    v11 = inviteeFirstName;
     goto LABEL_3;
   }
 
-  if ([v6 length])
+  if ([inviteeLastName length])
   {
-    v11 = v6;
+    v11 = inviteeLastName;
 LABEL_3:
     v12 = v11;
-    if (!v3)
+    if (!emailCopy)
     {
       goto LABEL_6;
     }
@@ -119,22 +119,22 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if ([v9 length])
+  if ([firstObject length])
   {
-    v12 = v9;
+    v12 = firstObject;
     goto LABEL_6;
   }
 
-  if (v10 && [v10 count])
+  if (inviteePhones && [inviteePhones count])
   {
-    v21 = v3;
-    v22 = v10;
-    v23 = v6;
+    v21 = emailCopy;
+    v22 = inviteePhones;
+    v23 = inviteeLastName;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = v10;
+    v15 = inviteePhones;
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v16)
     {
@@ -174,8 +174,8 @@ LABEL_3:
       v12 = 0;
     }
 
-    v10 = v22;
-    v6 = v23;
+    inviteePhones = v22;
+    inviteeLastName = v23;
     if (!v21)
     {
 LABEL_6:
@@ -188,9 +188,9 @@ LABEL_6:
     }
 
 LABEL_4:
-    if ([v9 length])
+    if ([firstObject length])
     {
-      v13 = [(__CFString *)v12 stringByAppendingFormat:@" (%@)", v9];
+      v13 = [(__CFString *)v12 stringByAppendingFormat:@" (%@)", firstObject];
 
       v12 = v13;
     }
@@ -198,7 +198,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  if (v3)
+  if (emailCopy)
   {
     v12 = 0;
     goto LABEL_4;
@@ -213,13 +213,13 @@ LABEL_8:
 
 - (void)delete
 {
-  v3 = [(PLManagedObject *)self photoLibrary];
-  v4 = [v3 personInfoManager];
-  v5 = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
-  [v4 deleteEmailsAndPhonesForInvitationRecordGUID:v5];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  personInfoManager = [photoLibrary personInfoManager];
+  cloudGUID = [(PLCloudSharedAlbumInvitationRecord *)self cloudGUID];
+  [personInfoManager deleteEmailsAndPhonesForInvitationRecordGUID:cloudGUID];
 
-  v6 = [(PLCloudSharedAlbumInvitationRecord *)self managedObjectContext];
-  [v6 deleteObject:self];
+  managedObjectContext = [(PLCloudSharedAlbumInvitationRecord *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
 - (void)prepareForDeletion
@@ -227,12 +227,12 @@ LABEL_8:
   v5.receiver = self;
   v5.super_class = PLCloudSharedAlbumInvitationRecord;
   [(PLCloudSharedAlbumInvitationRecord *)&v5 prepareForDeletion];
-  v3 = [(PLCloudSharedAlbumInvitationRecord *)self managedObjectContext];
+  managedObjectContext = [(PLCloudSharedAlbumInvitationRecord *)self managedObjectContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 mergingChanges] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([managedObjectContext mergingChanges] & 1) == 0)
   {
-    v4 = [v3 delayedSaveActions];
-    [v4 recordInvitationRecordForCloudFeedUpdate:self];
+    delayedSaveActions = [managedObjectContext delayedSaveActions];
+    [delayedSaveActions recordInvitationRecordForCloudFeedUpdate:self];
   }
 }
 
@@ -241,12 +241,12 @@ LABEL_8:
   v5.receiver = self;
   v5.super_class = PLCloudSharedAlbumInvitationRecord;
   [(PLManagedObject *)&v5 willSave];
-  v3 = [(PLCloudSharedAlbumInvitationRecord *)self managedObjectContext];
+  managedObjectContext = [(PLCloudSharedAlbumInvitationRecord *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 delayedSaveActions];
-    [v4 recordInvitationRecordForCloudFeedUpdate:self];
+    delayedSaveActions = [managedObjectContext delayedSaveActions];
+    [delayedSaveActions recordInvitationRecordForCloudFeedUpdate:self];
   }
 }
 
@@ -255,11 +255,11 @@ LABEL_8:
   v6.receiver = self;
   v6.super_class = PLCloudSharedAlbumInvitationRecord;
   [(PLCloudSharedAlbumInvitationRecord *)&v6 awakeFromInsert];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLCloudSharedAlbumInvitationRecord *)self setUuid:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLCloudSharedAlbumInvitationRecord *)self setUuid:uUIDString];
 
-  v4 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLCloudSharedAlbumInvitationRecord *)self setCloudGUID:v4];
+  uUIDString2 = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLCloudSharedAlbumInvitationRecord *)self setCloudGUID:uUIDString2];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:1];
   [(PLCloudSharedAlbumInvitationRecord *)self setInvitationState:v5];
@@ -272,64 +272,64 @@ LABEL_8:
   return [(PLCloudSharedAlbumInvitationRecord *)&v3 init];
 }
 
-+ (id)cloudSharedAlbumInvitationRecordsWithAlbumGUID:(id)a3 inLibrary:(id)a4
++ (id)cloudSharedAlbumInvitationRecordsWithAlbumGUID:(id)d inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  libraryCopy = library;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 managedObjectContext];
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"albumGUID == %@", v6];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"albumGUID == %@", dCopy];
   v11 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  v12 = [a1 entityInManagedObjectContext:v9];
+  v12 = [self entityInManagedObjectContext:managedObjectContext];
   [v11 setEntity:v12];
 
-  [v11 setPredicate:v10];
+  [v11 setPredicate:dCopy];
   v15 = 0;
-  v13 = [v9 executeFetchRequest:v11 error:&v15];
+  v13 = [managedObjectContext executeFetchRequest:v11 error:&v15];
 
   objc_autoreleasePoolPop(v8);
 
   return v13;
 }
 
-+ (id)cloudSharedAlbumInvitationRecordsWithGUIDs:(id)a3 inLibrary:(id)a4
++ (id)cloudSharedAlbumInvitationRecordsWithGUIDs:(id)ds inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  libraryCopy = library;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 managedObjectContext];
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudGUID in %@", v6];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudGUID in %@", dsCopy];
   v11 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  v12 = [a1 entityInManagedObjectContext:v9];
+  v12 = [self entityInManagedObjectContext:managedObjectContext];
   [v11 setEntity:v12];
 
-  [v11 setPredicate:v10];
+  [v11 setPredicate:dsCopy];
   v15 = 0;
-  v13 = [v9 executeFetchRequest:v11 error:&v15];
+  v13 = [managedObjectContext executeFetchRequest:v11 error:&v15];
 
   objc_autoreleasePoolPop(v8);
 
   return v13;
 }
 
-+ (id)insertNewInvitationRecordIntoAlbum:(id)a3 withFirstName:(id)a4 lastName:(id)a5 fullName:(id)a6 emails:(id)a7 phones:(id)a8 inLibrary:(id)a9
++ (id)insertNewInvitationRecordIntoAlbum:(id)album withFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emails:(id)emails phones:(id)phones inLibrary:(id)library
 {
   v48 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v42 = a4;
-  v41 = a5;
-  v40 = a6;
-  v15 = a7;
-  v16 = a8;
-  v39 = a9;
-  v17 = [v14 cloudAlbumSubscriberRecords];
-  v18 = [v17 array];
+  albumCopy = album;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  fullNameCopy = fullName;
+  emailsCopy = emails;
+  phonesCopy = phones;
+  libraryCopy = library;
+  cloudAlbumSubscriberRecords = [albumCopy cloudAlbumSubscriberRecords];
+  array = [cloudAlbumSubscriberRecords array];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v19 = v18;
+  v19 = array;
   v20 = [v19 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v20)
   {
@@ -345,20 +345,20 @@ LABEL_8:
         }
 
         v24 = *(*(&v43 + 1) + 8 * i);
-        v25 = [v24 inviteeEmails];
+        inviteeEmails = [v24 inviteeEmails];
         IsEqual = PLObjectIsEqual();
 
-        v27 = [v24 inviteePhones];
+        inviteePhones = [v24 inviteePhones];
         v28 = PLObjectIsEqual();
 
         if (IsEqual && (v28 & 1) != 0)
         {
           v32 = 0;
-          v36 = v19;
-          v34 = v41;
-          v33 = v42;
-          v30 = v39;
-          v35 = v40;
+          cloudGUID = v19;
+          v34 = lastNameCopy;
+          v33 = nameCopy;
+          v30 = libraryCopy;
+          v35 = fullNameCopy;
           goto LABEL_13;
         }
       }
@@ -373,23 +373,23 @@ LABEL_8:
     }
   }
 
-  v29 = [a1 entityName];
-  v30 = v39;
-  v31 = [v39 managedObjectContext];
-  v32 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v29, v31, 0);
+  entityName = [self entityName];
+  v30 = libraryCopy;
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v32 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, managedObjectContext, 0);
 
-  [v32 setInviteeEmails:v15 phones:v16];
-  v33 = v42;
-  [v32 setInviteeFirstName:v42];
-  v34 = v41;
-  [v32 setInviteeLastName:v41];
-  v35 = v40;
-  [v32 setInviteeFullName:v40];
-  if (v14)
+  [v32 setInviteeEmails:emailsCopy phones:phonesCopy];
+  v33 = nameCopy;
+  [v32 setInviteeFirstName:nameCopy];
+  v34 = lastNameCopy;
+  [v32 setInviteeLastName:lastNameCopy];
+  v35 = fullNameCopy;
+  [v32 setInviteeFullName:fullNameCopy];
+  if (albumCopy)
   {
-    [v32 setAlbum:v14];
-    v36 = [v14 cloudGUID];
-    [v32 setAlbumGUID:v36];
+    [v32 setAlbum:albumCopy];
+    cloudGUID = [albumCopy cloudGUID];
+    [v32 setAlbumGUID:cloudGUID];
 LABEL_13:
   }
 

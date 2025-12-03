@@ -3,8 +3,8 @@
 - (BOOL)isAppRunning;
 - (BOOL)supportsChallenges;
 - (GKChallengeBulletin)init;
-- (GKChallengeBulletin)initWithCoder:(id)a3;
-- (id)customChallengeSoundPathForBundleID:(id)a3;
+- (GKChallengeBulletin)initWithCoder:(id)coder;
+- (id)customChallengeSoundPathForBundleID:(id)d;
 - (id)gameDescriptor;
 - (id)gameName;
 - (id)originatorPlayer;
@@ -13,17 +13,17 @@
 - (id)receiverPlayerID;
 - (unint64_t)launchEventType;
 - (void)assembleBulletin;
-- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 - (void)handleAcceptAction;
 - (void)notifyApp;
-- (void)notifyClient:(id)a3;
+- (void)notifyClient:(id)client;
 - (void)refreshData;
-- (void)setGameName:(id)a3;
-- (void)setOriginatorPlayer:(id)a3;
-- (void)setOriginatorPlayerID:(id)a3;
-- (void)setReceiverPlayer:(id)a3;
-- (void)setReceiverPlayerID:(id)a3;
+- (void)setGameName:(id)name;
+- (void)setOriginatorPlayer:(id)player;
+- (void)setOriginatorPlayerID:(id)d;
+- (void)setReceiverPlayer:(id)player;
+- (void)setReceiverPlayerID:(id)d;
 @end
 
 @implementation GKChallengeBulletin
@@ -35,15 +35,15 @@
   return [(GKChallengeBulletin *)&v3 init];
 }
 
-- (GKChallengeBulletin)initWithCoder:(id)a3
+- (GKChallengeBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GKChallengeBulletin;
-  v5 = [(GKGameplayBulletin *)&v9 initWithCoder:v4];
+  v5 = [(GKGameplayBulletin *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
     challenge = v5->_challenge;
     v5->_challenge = v6;
   }
@@ -51,14 +51,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GKChallengeBulletin;
-  v4 = a3;
-  [(GKGameplayBulletin *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GKGameplayBulletin *)&v6 encodeWithCoder:coderCopy];
   v5 = [(GKChallengeBulletin *)self challenge:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"challenge"];
+  [coderCopy encodeObject:v5 forKey:@"challenge"];
 }
 
 + (void)expireChallengeList
@@ -79,16 +79,16 @@
   v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d %s", "GKChallengeBulletin.m", 91, "+[GKChallengeBulletin expireChallengeList]");
   v6 = +[GKPlayerCredentialController sharedController];
   v7 = [v6 pushCredentialForEnvironment:{objc_msgSend(v4, "environment")}];
-  v8 = [v7 playerInternal];
-  v9 = [v8 playerID];
-  v10 = [v4 transactionGroupWithName:v5 forPlayerID:v9];
+  playerInternal = [v7 playerInternal];
+  playerID = [playerInternal playerID];
+  v10 = [v4 transactionGroupWithName:v5 forPlayerID:playerID];
 
   [v10 performOnManagedObjectContext:&stru_10036A280];
 }
 
-- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)a3
+- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -110,10 +110,10 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = [(GKChallengeBulletin *)self challenge];
-  v11 = [v10 compatibleBundleIDs];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  compatibleBundleIDs = [challenge compatibleBundleIDs];
 
-  v12 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v12 = [compatibleBundleIDs countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v12)
   {
     v13 = v12;
@@ -124,30 +124,30 @@
       {
         if (*v31 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(compatibleBundleIDs);
         }
 
         v16 = *(*(&v30 + 1) + 8 * i);
         v17 = [v9 applicationProxyForBundleID:v16];
         if ([v17 isInstalled] && (objc_msgSend(v17, "isRestricted") & 1) == 0)
         {
-          v18 = [(GKChallengeBulletin *)self gameDescriptor];
-          [v18 setBundleIdentifier:v16];
+          gameDescriptor = [(GKChallengeBulletin *)self gameDescriptor];
+          [gameDescriptor setBundleIdentifier:v16];
 
-          v19 = [v17 bundleVersion];
-          v20 = [(GKChallengeBulletin *)self gameDescriptor];
-          [v20 setBundleVersion:v19];
+          bundleVersion = [v17 bundleVersion];
+          gameDescriptor2 = [(GKChallengeBulletin *)self gameDescriptor];
+          [gameDescriptor2 setBundleVersion:bundleVersion];
 
-          v21 = [v17 bundleShortVersion];
-          v22 = [(GKChallengeBulletin *)self gameDescriptor];
-          [v22 setShortBundleVersion:v21];
+          bundleShortVersion = [v17 bundleShortVersion];
+          gameDescriptor3 = [(GKChallengeBulletin *)self gameDescriptor];
+          [gameDescriptor3 setShortBundleVersion:bundleShortVersion];
 
           [(GKGameplayBulletin *)self setGameLocation:1];
           goto LABEL_16;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v13 = [compatibleBundleIDs countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v13)
       {
         continue;
@@ -170,16 +170,16 @@ LABEL_16:
     [v29 perform:v28];
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v23 = [v24 replyQueue];
+    replyQueue = [v24 replyQueue];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100196BE4;
     v25[3] = &unk_100360EB0;
-    v27 = v4;
+    v27 = handlerCopy;
     v26 = v8;
-    [v26 notifyOnQueue:v23 block:v25];
+    [v26 notifyOnQueue:replyQueue block:v25];
   }
 }
 
@@ -202,18 +202,18 @@ LABEL_16:
   {
     if (self->_challenge)
     {
-      v19 = [(GKChallengeBulletin *)self challenge];
-      v6 = [v19 bundleID];
-      v18 = [(GKChallengeBulletin *)self challenge];
-      v17 = [v18 game];
-      v7 = [v17 bundleVersion];
-      v8 = [(GKChallengeBulletin *)self challenge];
-      v9 = [v8 game];
-      v10 = [v9 shortBundleVersion];
-      v11 = [(GKChallengeBulletin *)self challenge];
-      v12 = [v11 game];
-      v13 = [v12 adamID];
-      v14 = [GKGameDescriptor gameDescriptorWithBundleID:v6 bundleVersion:v7 shortBundleVersion:v10 adamID:v13];
+      challenge = [(GKChallengeBulletin *)self challenge];
+      bundleID = [challenge bundleID];
+      challenge2 = [(GKChallengeBulletin *)self challenge];
+      game = [challenge2 game];
+      bundleVersion = [game bundleVersion];
+      challenge3 = [(GKChallengeBulletin *)self challenge];
+      game2 = [challenge3 game];
+      shortBundleVersion = [game2 shortBundleVersion];
+      challenge4 = [(GKChallengeBulletin *)self challenge];
+      game3 = [challenge4 game];
+      adamID = [game3 adamID];
+      v14 = [GKGameDescriptor gameDescriptorWithBundleID:bundleID bundleVersion:bundleVersion shortBundleVersion:shortBundleVersion adamID:adamID];
       v15 = self->super.super._gameDescriptor;
       self->super.super._gameDescriptor = v14;
 
@@ -231,14 +231,14 @@ LABEL_16:
 
 - (id)receiverPlayerID
 {
-  v2 = [(GKChallengeBulletin *)self challenge];
-  v3 = [v2 receivingPlayer];
-  v4 = [v3 playerID];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  receivingPlayer = [challenge receivingPlayer];
+  playerID = [receivingPlayer playerID];
 
-  return v4;
+  return playerID;
 }
 
-- (void)setReceiverPlayerID:(id)a3
+- (void)setReceiverPlayerID:(id)d
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -247,13 +247,13 @@ LABEL_16:
 
 - (id)receiverPlayer
 {
-  v2 = [(GKChallengeBulletin *)self challenge];
-  v3 = [v2 receivingPlayer];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  receivingPlayer = [challenge receivingPlayer];
 
-  return v3;
+  return receivingPlayer;
 }
 
-- (void)setReceiverPlayer:(id)a3
+- (void)setReceiverPlayer:(id)player
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -262,14 +262,14 @@ LABEL_16:
 
 - (id)originatorPlayerID
 {
-  v2 = [(GKChallengeBulletin *)self challenge];
-  v3 = [v2 issuingPlayer];
-  v4 = [v3 playerID];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  issuingPlayer = [challenge issuingPlayer];
+  playerID = [issuingPlayer playerID];
 
-  return v4;
+  return playerID;
 }
 
-- (void)setOriginatorPlayerID:(id)a3
+- (void)setOriginatorPlayerID:(id)d
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -278,13 +278,13 @@ LABEL_16:
 
 - (id)originatorPlayer
 {
-  v2 = [(GKChallengeBulletin *)self challenge];
-  v3 = [v2 issuingPlayer];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  issuingPlayer = [challenge issuingPlayer];
 
-  return v3;
+  return issuingPlayer;
 }
 
-- (void)setOriginatorPlayer:(id)a3
+- (void)setOriginatorPlayer:(id)player
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -293,23 +293,23 @@ LABEL_16:
 
 - (id)gameName
 {
-  v2 = [(GKChallengeBulletin *)self challenge];
-  v3 = [v2 game];
-  v4 = [v3 name];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  game = [challenge game];
+  name = [game name];
 
-  return v4;
+  return name;
 }
 
 - (BOOL)supportsChallenges
 {
-  v2 = [(GKChallengeBulletin *)self challenge];
-  v3 = [v2 game];
-  v4 = [v3 supportsChallenges];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  game = [challenge game];
+  supportsChallenges = [game supportsChallenges];
 
-  return v4;
+  return supportsChallenges;
 }
 
-- (void)setGameName:(id)a3
+- (void)setGameName:(id)name
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -337,9 +337,9 @@ LABEL_16:
   v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   [v5 refreshContentsForDataType:1 userInfo:v7];
 
-  v8 = [(GKChallengeBulletin *)self challenge];
-  v9 = [v8 bundleID];
-  v10 = [GKClientProxy clientForBundleID:v9];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  bundleID = [challenge bundleID];
+  v10 = [GKClientProxy clientForBundleID:bundleID];
 
   [v10 refreshContentsForDataType:1 userInfo:0];
 }
@@ -358,17 +358,17 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKChallengeBulletin isAppRunning", v16, 2u);
   }
 
-  v5 = [(GKChallengeBulletin *)self challenge];
-  v6 = [v5 bundleID];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  bundleID = [challenge bundleID];
 
-  if (!v6)
+  if (!bundleID)
   {
     return 0;
   }
 
-  v7 = [(GKChallengeBulletin *)self challenge];
-  v8 = [v7 bundleID];
-  v9 = GKGetApplicationStateForBundleID(v8);
+  challenge2 = [(GKChallengeBulletin *)self challenge];
+  bundleID2 = [challenge2 bundleID];
+  v9 = GKGetApplicationStateForBundleID(bundleID2);
 
   if (!os_log_GKGeneral)
   {
@@ -379,12 +379,12 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [(GKChallengeBulletin *)self challenge];
-    v14 = [v13 bundleID];
+    challenge3 = [(GKChallengeBulletin *)self challenge];
+    bundleID3 = [challenge3 bundleID];
     v16[0] = 67109378;
     v16[1] = v9;
     v17 = 2112;
-    v18 = v14;
+    v18 = bundleID3;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "presentChallengeReceived: got appState of %d for %@", v16, 0x12u);
   }
 
@@ -405,9 +405,9 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKChallengeBulletin notifyApp", &v12, 2u);
   }
 
-  v5 = [(GKChallengeBulletin *)self challenge];
-  v6 = [v5 bundleID];
-  v7 = [GKClientProxy clientForBundleID:v6];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  bundleID = [challenge bundleID];
+  v7 = [GKClientProxy clientForBundleID:bundleID];
 
   if (!os_log_GKGeneral)
   {
@@ -418,11 +418,11 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [(GKChallengeBulletin *)self challenge];
+    challenge2 = [(GKChallengeBulletin *)self challenge];
     v12 = 138412546;
     v13 = v7;
     v14 = 2112;
-    v15 = v11;
+    v15 = challenge2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "telling the client %@ about challenge %@", &v12, 0x16u);
   }
 
@@ -430,9 +430,9 @@ LABEL_16:
   [v7 refreshContentsForDataType:1 userInfo:0];
 }
 
-- (void)notifyClient:(id)a3
+- (void)notifyClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -465,23 +465,23 @@ LABEL_16:
   }
 
   v5 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings KETTLE_GAME_INVITE_NOTIFICATION_TITLE];
-  v6 = [(GKChallengeBulletin *)self gameName];
-  v7 = [NSString localizedStringWithFormat:v5, v6];
+  gameName = [(GKChallengeBulletin *)self gameName];
+  v7 = [NSString localizedStringWithFormat:v5, gameName];
   [(GKBulletin *)self setTitle:v7];
 
   [(GKBulletin *)self setHasSound:1];
-  v8 = [(GKChallengeBulletin *)self gameDescriptor];
-  v9 = [v8 bundleIdentifier];
-  v10 = [(GKChallengeBulletin *)self customChallengeSoundPathForBundleID:v9];
+  gameDescriptor = [(GKChallengeBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor bundleIdentifier];
+  v10 = [(GKChallengeBulletin *)self customChallengeSoundPathForBundleID:bundleIdentifier];
   [(GKBulletin *)self setSoundPath:v10];
 
   v11 = +[NSDate date];
   [(GKBulletin *)self setDate:v11];
 }
 
-- (id)customChallengeSoundPathForBundleID:(id)a3
+- (id)customChallengeSoundPathForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -496,11 +496,11 @@ LABEL_16:
 
   v6 = GKGetBundlePathForIdentifier();
   v7 = [NSBundle bundleWithPath:v6];
-  v8 = [v7 _gkPathForChallengeSound];
-  v9 = v8;
-  if (v8)
+  _gkPathForChallengeSound = [v7 _gkPathForChallengeSound];
+  v9 = _gkPathForChallengeSound;
+  if (_gkPathForChallengeSound)
   {
-    v10 = v8;
+    v10 = _gkPathForChallengeSound;
   }
 
   else
@@ -552,7 +552,7 @@ LABEL_16:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKChallenge Notification: challenge received handling accept action %@", &v17, 0xCu);
   }
 
@@ -567,20 +567,20 @@ LABEL_16:
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [(GKChallengeBulletin *)self gameDescriptor];
-      v11 = [v10 bundleIdentifier];
+      gameDescriptor = [(GKChallengeBulletin *)self gameDescriptor];
+      bundleIdentifier = [gameDescriptor bundleIdentifier];
       v17 = 138412290;
-      v18 = v11;
+      selfCopy = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "GKChallenge Notification: set launch event for client %@", &v17, 0xCu);
     }
 
-    v12 = [(GKChallengeBulletin *)self gameDescriptor];
-    v13 = [v12 bundleIdentifier];
-    v14 = [GKClientProxy clientForBundleID:v13];
+    gameDescriptor2 = [(GKChallengeBulletin *)self gameDescriptor];
+    bundleIdentifier2 = [gameDescriptor2 bundleIdentifier];
+    v14 = [GKClientProxy clientForBundleID:bundleIdentifier2];
 
-    v15 = [(GKChallengeBulletin *)self launchEventType];
-    v16 = [(GKChallengeBulletin *)self challenge];
-    [v14 setLaunchEvent:v15 withContext:v16];
+    launchEventType = [(GKChallengeBulletin *)self launchEventType];
+    challenge = [(GKChallengeBulletin *)self challenge];
+    [v14 setLaunchEvent:launchEventType withContext:challenge];
   }
 }
 

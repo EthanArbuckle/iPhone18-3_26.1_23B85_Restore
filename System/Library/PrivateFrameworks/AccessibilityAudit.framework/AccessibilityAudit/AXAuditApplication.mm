@@ -1,15 +1,15 @@
 @interface AXAuditApplication
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation AXAuditApplication
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v9 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditApplication_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v9 addPropertyEntry:v4];
@@ -36,7 +36,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v8 setTransportKey:@"PsnValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v8 setLocalValueToTransportValue:&__block_literal_global_44];
   [(AXAuditObjectTransportPropertyEntry *)v8 setPopulateLocalObjectWithTransportValue:&__block_literal_global_47_0];
-  [v3 registerTransportInfoPropertyBased:v9];
+  [managerCopy registerTransportInfoPropertyBased:v9];
 }
 
 id __61__AXAuditApplication_registerTransportableObjectWithManager___block_invoke(uint64_t a1, void *a2)
@@ -111,40 +111,40 @@ void __61__AXAuditApplication_registerTransportableObjectWithManager___block_inv
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(AXAuditApplication *)self psnObj];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  psnObj = [(AXAuditApplication *)self psnObj];
+  v6 = [psnObj copy];
   [v4 setPsnObj:v6];
 
   [v4 setPid:{-[AXAuditApplication pid](self, "pid")}];
-  v7 = [(AXAuditApplication *)self displayName];
-  [v4 setDisplayName:v7];
+  displayName = [(AXAuditApplication *)self displayName];
+  [v4 setDisplayName:displayName];
 
-  v8 = [(AXAuditApplication *)self bundleIdentifier];
-  [v4 setBundleIdentifier:v8];
+  bundleIdentifier = [(AXAuditApplication *)self bundleIdentifier];
+  [v4 setBundleIdentifier:bundleIdentifier];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditApplication *)self psnObj];
-  v4 = [v3 hash];
+  psnObj = [(AXAuditApplication *)self psnObj];
+  v4 = [psnObj hash];
   v5 = v4 ^ [(AXAuditApplication *)self pid];
-  v6 = [(AXAuditApplication *)self displayName];
-  v7 = [v6 hash];
-  v8 = [(AXAuditApplication *)self bundleIdentifier];
-  v9 = v7 ^ [v8 hash];
+  displayName = [(AXAuditApplication *)self displayName];
+  v7 = [displayName hash];
+  bundleIdentifier = [(AXAuditApplication *)self bundleIdentifier];
+  v9 = v7 ^ [bundleIdentifier hash];
 
   return v5 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -154,24 +154,24 @@ void __61__AXAuditApplication_registerTransportableObjectWithManager___block_inv
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditApplication *)self psnObj];
-      v7 = [(AXAuditApplication *)v5 psnObj];
+      v5 = equalCopy;
+      psnObj = [(AXAuditApplication *)self psnObj];
+      psnObj2 = [(AXAuditApplication *)v5 psnObj];
       v8 = [(AXAuditApplication *)v5 pid];
-      if (v8 == -[AXAuditApplication pid](self, "pid") && (!(v6 | v7) || [v6 isEqual:v7]))
+      if (v8 == -[AXAuditApplication pid](self, "pid") && (!(psnObj | psnObj2) || [psnObj isEqual:psnObj2]))
       {
-        v9 = [(AXAuditApplication *)self displayName];
-        v10 = [(AXAuditApplication *)v5 displayName];
-        if (v9 | v10 && ![v9 isEqual:v10])
+        displayName = [(AXAuditApplication *)self displayName];
+        displayName2 = [(AXAuditApplication *)v5 displayName];
+        if (displayName | displayName2 && ![displayName isEqual:displayName2])
         {
           v13 = 0;
         }
 
         else
         {
-          v11 = [(AXAuditApplication *)self bundleIdentifier];
-          v12 = [(AXAuditApplication *)v5 bundleIdentifier];
-          v13 = !(v11 | v12) || [v11 isEqual:v12];
+          bundleIdentifier = [(AXAuditApplication *)self bundleIdentifier];
+          bundleIdentifier2 = [(AXAuditApplication *)v5 bundleIdentifier];
+          v13 = !(bundleIdentifier | bundleIdentifier2) || [bundleIdentifier isEqual:bundleIdentifier2];
         }
       }
 

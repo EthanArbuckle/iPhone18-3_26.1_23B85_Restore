@@ -1,20 +1,20 @@
 @interface ACHDatabaseSchemaProvider
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation ACHDatabaseSchemaProvider
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
   v3 = 23;
-  if (a3 != 2)
+  if (class != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (class == 1)
   {
     return 3;
   }
@@ -25,10 +25,10 @@
   }
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (class == 2)
   {
     v6[0] = objc_opt_class();
     v6[1] = objc_opt_class();
@@ -45,14 +45,14 @@
   return v3;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 2)
+  migratorCopy = migrator;
+  v7 = migratorCopy;
+  if (class == 2)
   {
-    v8 = v6;
-    [(ACHDatabaseSchemaProvider *)self _addAddAvailableCountryCodesColumnMigrationToMigrator:v6];
+    v8 = migratorCopy;
+    [(ACHDatabaseSchemaProvider *)self _addAddAvailableCountryCodesColumnMigrationToMigrator:migratorCopy];
     [(ACHDatabaseSchemaProvider *)self _addVersion5MigratorToMigrator:v8];
     [(ACHDatabaseSchemaProvider *)self _addValidateEarnedInstanceRowStepToMigrator:v8];
     [(ACHDatabaseSchemaProvider *)self _addDropSyncAnchorSaveOffTableIfNecessaryToMigrator:v8];
@@ -71,25 +71,25 @@
     [(ACHDatabaseSchemaProvider *)self _addSyncIdentityColumnToTemplateEntityToMigrator:v8];
     [(ACHDatabaseSchemaProvider *)self _addPrereqisiteTemplateNameFieldToTemplates:v8];
     [(ACHDatabaseSchemaProvider *)self _removeMoveGoalMultiplierEarnedInstances:v8];
-    v6 = [(ACHDatabaseSchemaProvider *)self _removePerfectMonthEarnedInstances:v8];
+    migratorCopy = [(ACHDatabaseSchemaProvider *)self _removePerfectMonthEarnedInstances:v8];
   }
 
   else
   {
-    if (a3 != 1)
+    if (class != 1)
     {
       goto LABEL_6;
     }
 
-    v8 = v6;
-    [(ACHDatabaseSchemaProvider *)self _addResetSyncAnchorsMigrationStepToMigrator:v6];
-    v6 = [(ACHDatabaseSchemaProvider *)self _addSyncAnchorSaveOffMigrationStepToMigrator:v8];
+    v8 = migratorCopy;
+    [(ACHDatabaseSchemaProvider *)self _addResetSyncAnchorsMigrationStepToMigrator:migratorCopy];
+    migratorCopy = [(ACHDatabaseSchemaProvider *)self _addSyncAnchorSaveOffMigrationStepToMigrator:v8];
   }
 
   v7 = v8;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](migratorCopy, v7);
 }
 
 uint64_t __73__ACHDatabaseSchemaProvider__addResetSyncAnchorsMigrationStepToMigrator___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, uint64_t *a5)

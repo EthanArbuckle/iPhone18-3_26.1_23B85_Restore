@@ -1,24 +1,24 @@
 @interface MOVStreamVideoEncoderInterface
-+ (__CVBuffer)createHEVCCompatiblePixelBuffer:(__CVBuffer *)a3;
-- (BOOL)configureSessionOverride:(OpaqueVTCompressionSession *)a3;
++ (__CVBuffer)createHEVCCompatiblePixelBuffer:(__CVBuffer *)buffer;
+- (BOOL)configureSessionOverride:(OpaqueVTCompressionSession *)override;
 - (BOOL)frameReorderingEnabled;
-- (BOOL)preSetupWithFormatDescription:(opaqueCMFormatDescription *)a3;
-- (BOOL)processFrame:(__CVBuffer *)a3 pts:(id *)a4 frameProperties:(__CFDictionary *)a5 metadata:(id)a6;
+- (BOOL)preSetupWithFormatDescription:(opaqueCMFormatDescription *)description;
+- (BOOL)processFrame:(__CVBuffer *)frame pts:(id *)pts frameProperties:(__CFDictionary *)properties metadata:(id)metadata;
 - (BOOL)shouldEnableInProcessEncoding;
 - (MOVStreamVideoEncoderInterface)init;
-- (MOVStreamVideoEncoderInterface)initWithExpectedFrameRate:(double)a3 forStream:(id)a4 delegate:(id)a5 enableAVEHighPerformanceProfile:(BOOL)a6;
-- (id)initForStream:(id)a3 configuration:(id)a4 delegate:(id)a5;
-- (id)initForVCPEncodingStream:(id)a3 videoEncoderSpec:(id)a4 sessionProperties:(id)a5 delegate:(id)a6;
+- (MOVStreamVideoEncoderInterface)initWithExpectedFrameRate:(double)rate forStream:(id)stream delegate:(id)delegate enableAVEHighPerformanceProfile:(BOOL)profile;
+- (id)initForStream:(id)stream configuration:(id)configuration delegate:(id)delegate;
+- (id)initForVCPEncodingStream:(id)stream videoEncoderSpec:(id)spec sessionProperties:(id)properties delegate:(id)delegate;
 - (id)overrideVideoEncoderSpecification;
 - (unsigned)codecTypeOverride;
 - (void)awaitEncoderClosed;
 - (void)closeEncoder;
-- (void)closeEncoderInDispatchGroup:(id)a3;
+- (void)closeEncoderInDispatchGroup:(id)group;
 - (void)dealloc;
-- (void)encodeFrame:(__CVBuffer *)a3 pts:(id *)a4 frameProperties:(__CFDictionary *)a5 metadata:(id)a6;
-- (void)setupEncoderWithWidth:(int)a3 andHeight:(int)a4 imageFormat:(int)a5 formatDescription:(opaqueCMFormatDescription *)a6 andFramerate:(double)a7;
-- (void)skipFrameWithStatus:(int)a3 andFlags:(unsigned int)a4;
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 pts:(id *)a4 metadata:(id)a5 withStatus:(int)a6 andFlags:(unsigned int)a7;
+- (void)encodeFrame:(__CVBuffer *)frame pts:(id *)pts frameProperties:(__CFDictionary *)properties metadata:(id)metadata;
+- (void)setupEncoderWithWidth:(int)width andHeight:(int)height imageFormat:(int)format formatDescription:(opaqueCMFormatDescription *)description andFramerate:(double)framerate;
+- (void)skipFrameWithStatus:(int)status andFlags:(unsigned int)flags;
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer pts:(id *)pts metadata:(id)metadata withStatus:(int)status andFlags:(unsigned int)flags;
 @end
 
 @implementation MOVStreamVideoEncoderInterface
@@ -35,56 +35,56 @@
   return 0;
 }
 
-- (MOVStreamVideoEncoderInterface)initWithExpectedFrameRate:(double)a3 forStream:(id)a4 delegate:(id)a5 enableAVEHighPerformanceProfile:(BOOL)a6
+- (MOVStreamVideoEncoderInterface)initWithExpectedFrameRate:(double)rate forStream:(id)stream delegate:(id)delegate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v11 = a4;
-  v12 = a5;
+  streamCopy = stream;
+  delegateCopy = delegate;
   v13 = [(MOVStreamVideoEncoderInterface *)self init];
   v14 = v13;
   if (v13)
   {
-    v13->m_expectedFrameRate = a3;
-    objc_storeStrong(&v13->m_stream, a4);
-    objc_storeWeak(&v14->m_delegate, v12);
-    v14->m_enableAVEHighPerformanceProfile = a6;
+    v13->m_expectedFrameRate = rate;
+    objc_storeStrong(&v13->m_stream, stream);
+    objc_storeWeak(&v14->m_delegate, delegateCopy);
+    v14->m_enableAVEHighPerformanceProfile = profile;
   }
 
   return v14;
 }
 
-- (id)initForStream:(id)a3 configuration:(id)a4 delegate:(id)a5
+- (id)initForStream:(id)stream configuration:(id)configuration delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  streamCopy = stream;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v12 = [(MOVStreamVideoEncoderInterface *)self init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->m_config, a4);
-    objc_storeStrong(p_isa + 4, a3);
-    objc_storeWeak(p_isa + 5, v11);
+    objc_storeStrong(&v12->m_config, configuration);
+    objc_storeStrong(p_isa + 4, stream);
+    objc_storeWeak(p_isa + 5, delegateCopy);
   }
 
   return p_isa;
 }
 
-- (id)initForVCPEncodingStream:(id)a3 videoEncoderSpec:(id)a4 sessionProperties:(id)a5 delegate:(id)a6
+- (id)initForVCPEncodingStream:(id)stream videoEncoderSpec:(id)spec sessionProperties:(id)properties delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  streamCopy = stream;
+  specCopy = spec;
+  propertiesCopy = properties;
+  delegateCopy = delegate;
   v15 = [(MOVStreamVideoEncoderInterface *)self init];
   v16 = v15;
   if (v15)
   {
     [(MOVStreamVideoEncoderInterface *)v15 setUseLegacyVTController:0];
     v16->m_requireVCPEncoding = 1;
-    objc_storeStrong(&v16->m_videoEncoderSpecVCP, a4);
-    objc_storeStrong(&v16->m_sessionPropertiesVCP, a5);
-    objc_storeStrong(&v16->m_stream, a3);
-    objc_storeWeak(&v16->m_delegate, v14);
+    objc_storeStrong(&v16->m_videoEncoderSpecVCP, spec);
+    objc_storeStrong(&v16->m_sessionPropertiesVCP, properties);
+    objc_storeStrong(&v16->m_stream, stream);
+    objc_storeWeak(&v16->m_delegate, delegateCopy);
   }
 
   return v16;
@@ -121,19 +121,19 @@
   }
 
   v5 = objc_loadWeakRetained(&self->m_delegate);
-  v6 = [v5 shouldEnableInProcessEncoding];
+  shouldEnableInProcessEncoding = [v5 shouldEnableInProcessEncoding];
 
-  return v6;
+  return shouldEnableInProcessEncoding;
 }
 
-- (void)setupEncoderWithWidth:(int)a3 andHeight:(int)a4 imageFormat:(int)a5 formatDescription:(opaqueCMFormatDescription *)a6 andFramerate:(double)a7
+- (void)setupEncoderWithWidth:(int)width andHeight:(int)height imageFormat:(int)format formatDescription:(opaqueCMFormatDescription *)description andFramerate:(double)framerate
 {
   v31 = *MEMORY[0x277D85DE8];
   if ([(MOVStreamVideoEncoderInterface *)self useLegacyVTController])
   {
     m_encoder = self->m_encoder;
     m_encoder->var0 = self->m_enableAVEHighPerformanceProfile;
-    if (MOVStreamHEVCLosslessEncoder::Open(m_encoder, a3, a4, a5, [(MOVStreamVideoEncoderInterface *)self shouldEnableInProcessEncoding], a6, VTCompressionOutputCallbackImpl, self, a7))
+    if (MOVStreamHEVCLosslessEncoder::Open(m_encoder, width, height, format, [(MOVStreamVideoEncoderInterface *)self shouldEnableInProcessEncoding], description, VTCompressionOutputCallbackImpl, self, framerate))
     {
       self->m_failedState = 1;
       self->m_encoderInitialized = 0;
@@ -148,12 +148,12 @@
 
   if (self->m_requireVCPEncoding)
   {
-    v15 = [[MIOVCPEncoderController alloc] initWithFormtDescription:a6 videoEncoderSpec:self->m_videoEncoderSpecVCP sessionProperties:self->m_sessionPropertiesVCP outputCallback:VTCompressionOutputCallbackImpl delegate:self];
+    v15 = [[MIOVCPEncoderController alloc] initWithFormtDescription:description videoEncoderSpec:self->m_videoEncoderSpecVCP sessionProperties:self->m_sessionPropertiesVCP outputCallback:VTCompressionOutputCallbackImpl delegate:self];
   }
 
   else
   {
-    v15 = [[MIOVideoEncoderController alloc] initWithEncoderConfig:self->m_config formtDescription:a6 inProcessEncoding:[(MOVStreamVideoEncoderInterface *)self shouldEnableInProcessEncoding] frameRate:self->m_enableAVEHighPerformanceProfile aveHighPerfMode:VTCompressionOutputCallbackImpl outputCallback:self delegate:a7];
+    v15 = [[MIOVideoEncoderController alloc] initWithEncoderConfig:self->m_config formtDescription:description inProcessEncoding:[(MOVStreamVideoEncoderInterface *)self shouldEnableInProcessEncoding] frameRate:self->m_enableAVEHighPerformanceProfile aveHighPerfMode:VTCompressionOutputCallbackImpl outputCallback:self delegate:framerate];
   }
 
   encoderCtrl = self->_encoderCtrl;
@@ -200,12 +200,12 @@ LABEL_11:
   MOVStreamHEVCLosslessEncoder::invalidateSession(self->m_encoder);
 }
 
-- (BOOL)preSetupWithFormatDescription:(opaqueCMFormatDescription *)a3
+- (BOOL)preSetupWithFormatDescription:(opaqueCMFormatDescription *)description
 {
-  if (a3)
+  if (description)
   {
-    MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
+    MediaSubType = CMFormatDescriptionGetMediaSubType(description);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     v7 = 11;
     if (MediaSubType <= 1278226487)
     {
@@ -248,12 +248,12 @@ LABEL_11:
       }
     }
 
-    [(MOVStreamVideoEncoderInterface *)self setupEncoderWithWidth:Dimensions andHeight:HIDWORD(Dimensions) imageFormat:v7 formatDescription:a3 andFramerate:self->m_expectedFrameRate];
+    [(MOVStreamVideoEncoderInterface *)self setupEncoderWithWidth:Dimensions andHeight:HIDWORD(Dimensions) imageFormat:v7 formatDescription:description andFramerate:self->m_expectedFrameRate];
     self->m_failedState = 0;
     if (self->m_encoderInitialized)
     {
-      self->m_preSetupFormatDescription = a3;
-      CFRetain(a3);
+      self->m_preSetupFormatDescription = description;
+      CFRetain(description);
       return self->m_encoderInitialized;
     }
 
@@ -269,13 +269,13 @@ LABEL_11:
   }
 }
 
-- (BOOL)processFrame:(__CVBuffer *)a3 pts:(id *)a4 frameProperties:(__CFDictionary *)a5 metadata:(id)a6
+- (BOOL)processFrame:(__CVBuffer *)frame pts:(id *)pts frameProperties:(__CFDictionary *)properties metadata:(id)metadata
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a6;
+  metadataCopy = metadata;
   if (self->m_preSetupFormatDescription && self->m_encoderInitialized)
   {
-    v9 = [MOVStreamIOUtility createFormatDescriptionFromPixelBuffer:a3];
+    v9 = [MOVStreamIOUtility createFormatDescriptionFromPixelBuffer:frame];
     if ([(MOVStreamVideoEncoderInterface *)self formatDescriptionHasChanged:v9])
     {
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Orig fd: %@  New fd: %@", v9, self->m_preSetupFormatDescription];
@@ -299,22 +299,22 @@ LABEL_11:
     self->m_preSetupFormatDescription = 0;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(frame);
   if (self->m_encoderInitialized)
   {
 LABEL_9:
     if (self->m_convertL016toL010)
     {
-      [MOVStreamVideoEncoderInterface createHEVCCompatiblePixelBuffer:a3];
+      [MOVStreamVideoEncoderInterface createHEVCCompatiblePixelBuffer:frame];
     }
 
     operator new();
   }
 
   v14 = PixelFormatType;
-  v15 = [MOVStreamIOUtility createFormatDescriptionFromPixelBuffer:a3];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  v15 = [MOVStreamIOUtility createFormatDescriptionFromPixelBuffer:frame];
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
   if (v14 <= 1278226487)
   {
     v18 = 0;
@@ -341,9 +341,9 @@ LABEL_23:
     }
   }
 
-  v19 = [(MOVStreamVideoEncoderInterface *)self customEncoderConfig];
+  customEncoderConfig = [(MOVStreamVideoEncoderInterface *)self customEncoderConfig];
   m_expectedFrameRate = 0.0;
-  if (v19 || self->m_config)
+  if (customEncoderConfig || self->m_config)
   {
     v18 = 11;
 LABEL_24:
@@ -359,8 +359,8 @@ LABEL_24:
   {
     if (v14 == 1278226742)
     {
-      v21 = [(MOVStreamEncoderConfig *)self->m_config codecType];
-      if (v21 == 1752589105 || !v21)
+      codecType = [(MOVStreamEncoderConfig *)self->m_config codecType];
+      if (codecType == 1752589105 || !codecType)
       {
         self->m_convertL016toL010 = 1;
       }
@@ -372,12 +372,12 @@ LABEL_24:
   return 0;
 }
 
-- (void)encodeFrame:(__CVBuffer *)a3 pts:(id *)a4 frameProperties:(__CFDictionary *)a5 metadata:(id)a6
+- (void)encodeFrame:(__CVBuffer *)frame pts:(id *)pts frameProperties:(__CFDictionary *)properties metadata:(id)metadata
 {
-  v10 = a6;
+  metadataCopy = metadata;
   if (!self->m_failedState)
   {
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(frame);
     objc_initWeak(&location, self);
     m_encodingQueue = self->m_encodingQueue;
     v12[0] = MEMORY[0x277D85DD0];
@@ -385,11 +385,11 @@ LABEL_24:
     v12[2] = __75__MOVStreamVideoEncoderInterface_encodeFrame_pts_frameProperties_metadata___block_invoke;
     v12[3] = &unk_279848460;
     objc_copyWeak(v14, &location);
-    v15 = *&a4->var0;
-    var3 = a4->var3;
-    v14[1] = a3;
-    v14[2] = a5;
-    v13 = v10;
+    v15 = *&pts->var0;
+    var3 = pts->var3;
+    v14[1] = frame;
+    v14[2] = properties;
+    v13 = metadataCopy;
     dispatch_async(m_encodingQueue, v12);
 
     objc_destroyWeak(v14);
@@ -420,21 +420,21 @@ void __75__MOVStreamVideoEncoderInterface_encodeFrame_pts_frameProperties_metada
   objc_autoreleasePoolPop(v2);
 }
 
-+ (__CVBuffer)createHEVCCompatiblePixelBuffer:(__CVBuffer *)a3
++ (__CVBuffer)createHEVCCompatiblePixelBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v6 = [MIOPixelBufferUtility createRawPixelBufferWithWidth:Width height:Height extendedRows:0 extendedPixelsPerRow:(CVPixelBufferGetBytesPerRow(a3) >> 1) - Width pixelFormat:1278226736 bytesPerRowAlignment:1 planeAlignment:1 bufferCacheMode:?];
-  if (![MIOPixelBufferUtility copyFromPixelBuffer:a3 toPixelBuffer:v6 andShiftBits:2])
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v6 = [MIOPixelBufferUtility createRawPixelBufferWithWidth:Width height:Height extendedRows:0 extendedPixelsPerRow:(CVPixelBufferGetBytesPerRow(buffer) >> 1) - Width pixelFormat:1278226736 bytesPerRowAlignment:1 planeAlignment:1 bufferCacheMode:?];
+  if (![MIOPixelBufferUtility copyFromPixelBuffer:buffer toPixelBuffer:v6 andShiftBits:2])
   {
     return 0;
   }
 
-  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4CC0] fromBuffer:a3 toBuffer:v6];
-  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4D10] fromBuffer:a3 toBuffer:v6];
-  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4C00] fromBuffer:a3 toBuffer:v6];
-  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4B80] fromBuffer:a3 toBuffer:v6];
-  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4B88] fromBuffer:a3 toBuffer:v6];
+  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4CC0] fromBuffer:buffer toBuffer:v6];
+  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4D10] fromBuffer:buffer toBuffer:v6];
+  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4C00] fromBuffer:buffer toBuffer:v6];
+  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4B80] fromBuffer:buffer toBuffer:v6];
+  [MIOPixelBufferUtility transferAttachmentForKey:*MEMORY[0x277CC4B88] fromBuffer:buffer toBuffer:v6];
   return v6;
 }
 
@@ -475,12 +475,12 @@ void __75__MOVStreamVideoEncoderInterface_encodeFrame_pts_frameProperties_metada
 {
   v18 = *MEMORY[0x277D85DE8];
   self->m_encoderInitialized = 0;
-  v3 = [(MOVStreamVideoEncoderInterface *)self useLegacyVTController];
+  useLegacyVTController = [(MOVStreamVideoEncoderInterface *)self useLegacyVTController];
   m_encoder = self->m_encoder;
   var2 = m_encoder->var2;
   m_encoder->var2 = 0;
 
-  if (v3)
+  if (useLegacyVTController)
   {
     v6 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -516,10 +516,10 @@ void __75__MOVStreamVideoEncoderInterface_encodeFrame_pts_frameProperties_metada
   }
 }
 
-- (void)closeEncoderInDispatchGroup:(id)a3
+- (void)closeEncoderInDispatchGroup:(id)group
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v5 = +[MIOLog defaultLog];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -529,15 +529,15 @@ void __75__MOVStreamVideoEncoderInterface_encodeFrame_pts_frameProperties_metada
     _os_log_impl(&dword_257883000, v5, OS_LOG_TYPE_INFO, "[FINISH] %{public}@: Encoder close...", buf, 0xCu);
   }
 
-  dispatch_group_enter(v4);
+  dispatch_group_enter(groupCopy);
   m_encodingQueue = self->m_encodingQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__MOVStreamVideoEncoderInterface_closeEncoderInDispatchGroup___block_invoke;
   v9[3] = &unk_279847E68;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = groupCopy;
+  v8 = groupCopy;
   dispatch_async(m_encodingQueue, v9);
 }
 
@@ -559,30 +559,30 @@ void __62__MOVStreamVideoEncoderInterface_closeEncoderInDispatchGroup___block_in
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)skipFrameWithStatus:(int)a3 andFlags:(unsigned int)a4
+- (void)skipFrameWithStatus:(int)status andFlags:(unsigned int)flags
 {
   [(MOVStreamVideoEncoderInterface *)self setPendingFrames:[(MOVStreamVideoEncoderInterface *)self pendingFrames]- 1];
-  self->_lastEncodingStatus = a3;
-  self->_lastEncodingInfoFlags = a4;
+  self->_lastEncodingStatus = status;
+  self->_lastEncodingInfoFlags = flags;
   self->m_failedState = 1;
   MOVStreamHEVCLosslessEncoder::invalidateSession(self->m_encoder);
   WeakRetained = objc_loadWeakRetained(&self->m_delegate);
   [WeakRetained encoder:self encodingFailedForStream:self->m_stream];
 }
 
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 pts:(id *)a4 metadata:(id)a5 withStatus:(int)a6 andFlags:(unsigned int)a7
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer pts:(id *)pts metadata:(id)metadata withStatus:(int)status andFlags:(unsigned int)flags
 {
-  v12 = a5;
+  metadataCopy = metadata;
   [(MOVStreamVideoEncoderInterface *)self setPendingFrames:[(MOVStreamVideoEncoderInterface *)self pendingFrames]- 1];
-  CFRetain(a3);
-  self->_lastEncodingStatus = a6;
-  self->_lastEncodingInfoFlags = a7;
+  CFRetain(buffer);
+  self->_lastEncodingStatus = status;
+  self->_lastEncodingInfoFlags = flags;
   WeakRetained = objc_loadWeakRetained(&self->m_delegate);
-  v14 = *a4;
-  [WeakRetained encoder:self encodedSampleBuffer:a3 metadata:v12 presentationTime:&v14 streamId:self->m_stream];
+  v14 = *pts;
+  [WeakRetained encoder:self encodedSampleBuffer:buffer metadata:metadataCopy presentationTime:&v14 streamId:self->m_stream];
 }
 
-- (BOOL)configureSessionOverride:(OpaqueVTCompressionSession *)a3
+- (BOOL)configureSessionOverride:(OpaqueVTCompressionSession *)override
 {
   if (![(MOVStreamVideoEncoderInterface *)self customEncoderConfig])
   {
@@ -593,12 +593,12 @@ void __62__MOVStreamVideoEncoderInterface_closeEncoderInDispatchGroup___block_in
   if (!m_config)
   {
     WeakRetained = objc_loadWeakRetained(&self->m_delegate);
-    v7 = [WeakRetained encoder:self configureSessionOverride:a3 streamId:self->m_stream];
+    v7 = [WeakRetained encoder:self configureSessionOverride:override streamId:self->m_stream];
 
     return v7;
   }
 
-  return [(MOVStreamEncoderConfig *)m_config applySessionProperties:a3];
+  return [(MOVStreamEncoderConfig *)m_config applySessionProperties:override];
 }
 
 - (id)overrideVideoEncoderSpecification
@@ -608,22 +608,22 @@ void __62__MOVStreamVideoEncoderInterface_closeEncoderInDispatchGroup___block_in
     m_config = self->m_config;
     if (m_config)
     {
-      v4 = [(MOVStreamEncoderConfig *)m_config encoderSpecification];
+      encoderSpecification = [(MOVStreamEncoderConfig *)m_config encoderSpecification];
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->m_delegate);
-      v4 = [WeakRetained encoder:self overrideVideoEncoderSpecificationForStreamId:self->m_stream];
+      encoderSpecification = [WeakRetained encoder:self overrideVideoEncoderSpecificationForStreamId:self->m_stream];
     }
   }
 
   else
   {
-    v4 = 0;
+    encoderSpecification = 0;
   }
 
-  return v4;
+  return encoderSpecification;
 }
 
 - (unsigned)codecTypeOverride

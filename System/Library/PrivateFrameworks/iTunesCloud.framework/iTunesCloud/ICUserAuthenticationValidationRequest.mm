@@ -1,23 +1,23 @@
 @interface ICUserAuthenticationValidationRequest
-- (ICUserAuthenticationValidationRequest)initWithRequestContext:(id)a3;
-- (ICUserAuthenticationValidationRequest)initWithUserIdentity:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (ICUserAuthenticationValidationRequest)initWithRequestContext:(id)context;
+- (ICUserAuthenticationValidationRequest)initWithUserIdentity:(id)identity;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation ICUserAuthenticationValidationRequest
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICStoreRequestContext *)self->_requestContext identity];
+    identity = [(ICStoreRequestContext *)self->_requestContext identity];
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = identity;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ performing authentication validation for user identity %{public}@", buf, 0x16u);
   }
 
@@ -28,8 +28,8 @@
   v10[2] = __63__ICUserAuthenticationValidationRequest_performWithCompletion___block_invoke;
   v10[3] = &unk_1E7BF68D8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v7 getBagForRequestContext:requestContext withCompletionHandler:v10];
 }
 
@@ -217,13 +217,13 @@ void __63__ICUserAuthenticationValidationRequest_performWithCompletion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICUserAuthenticationValidationRequest)initWithRequestContext:(id)a3
+- (ICUserAuthenticationValidationRequest)initWithRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(ICUserAuthenticationValidationRequest *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     requestContext = v5->_requestContext;
     v5->_requestContext = v6;
   }
@@ -231,16 +231,16 @@ void __63__ICUserAuthenticationValidationRequest_performWithCompletion___block_i
   return v5;
 }
 
-- (ICUserAuthenticationValidationRequest)initWithUserIdentity:(id)a3
+- (ICUserAuthenticationValidationRequest)initWithUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = [ICStoreRequestContext alloc];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__ICUserAuthenticationValidationRequest_initWithUserIdentity___block_invoke;
   v10[3] = &unk_1E7BF91F0;
-  v11 = v4;
-  v6 = v4;
+  v11 = identityCopy;
+  v6 = identityCopy;
   v7 = [(ICStoreRequestContext *)v5 initWithBlock:v10];
   v8 = [(ICUserAuthenticationValidationRequest *)self initWithRequestContext:v7];
 

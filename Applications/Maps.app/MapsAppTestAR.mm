@@ -1,7 +1,7 @@
 @interface MapsAppTestAR
 + (id)pptRecordingFileLocation;
 - (BOOL)runTest;
-- (MapsAppTestAR)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (MapsAppTestAR)initWithApplication:(id)application testName:(id)name options:(id)options;
 - (PedestrianARSessionTask)task;
 - (PedestrianARSessionTileAvailabilityMonitor)tileAvailabilityMonitor;
 - (void)_dismissARUI;
@@ -10,7 +10,7 @@
 - (void)_showARUI;
 - (void)_waitForTileAvailability;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation MapsAppTestAR
@@ -29,38 +29,38 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
-  v14 = v13;
-  if (v13 != v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  tileAvailabilityMonitor = [(MapsAppTestAR *)self tileAvailabilityMonitor];
+  v14 = tileAvailabilityMonitor;
+  if (tileAvailabilityMonitor != objectCopy)
   {
 
 LABEL_6:
     v20.receiver = self;
     v20.super_class = MapsAppTestAR;
-    [(MapsAppTestAR *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MapsAppTestAR *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_7;
   }
 
-  v15 = [v10 isEqualToString:@"tileObserver"];
+  v15 = [pathCopy isEqualToString:@"tileObserver"];
 
   if (!v15)
   {
     goto LABEL_6;
   }
 
-  v16 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
-  v17 = [v16 tileObserver];
-  v18 = [v17 areTilesAvailable];
+  tileAvailabilityMonitor2 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
+  tileObserver = [tileAvailabilityMonitor2 tileObserver];
+  areTilesAvailable = [tileObserver areTilesAvailable];
 
-  if (v18)
+  if (areTilesAvailable)
   {
-    v19 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
-    [v19 removeObserver:self forKeyPath:@"tileObserver"];
+    tileAvailabilityMonitor3 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
+    [tileAvailabilityMonitor3 removeObserver:self forKeyPath:@"tileObserver"];
 
     [(MapsAppTestAR *)self setWaitingForTileAvailability:0];
     [(MapsAppTest *)self finishedSubTest:@"tileAvailability"];
@@ -119,10 +119,10 @@ LABEL_7:
   v10[4] = self;
   [PPTNotificationCenter addOnceObserverForName:@"PedestrianARViewControllerDidAppearNotification" object:0 usingBlock:v10];
   v3 = +[NSFileManager defaultManager];
-  v4 = [objc_opt_class() pptRecordingFileLocation];
-  v5 = [v3 fileExistsAtPath:v4];
+  pptRecordingFileLocation = [objc_opt_class() pptRecordingFileLocation];
+  v5 = [v3 fileExistsAtPath:pptRecordingFileLocation];
 
-  v6 = [objc_opt_class() pptRecordingFileLocation];
+  pptRecordingFileLocation2 = [objc_opt_class() pptRecordingFileLocation];
   if (v5)
   {
     GEOConfigSetString();
@@ -133,13 +133,13 @@ LABEL_7:
     v8 = +[NSUserDefaults standardUserDefaults];
     [v8 setBool:0 forKey:@"MapsARSessionRecordingEnabledKey"];
 
-    v6 = [(MapsAppTest *)self testCoordinator];
-    [v6 pptTestEnterAR];
+    pptRecordingFileLocation2 = [(MapsAppTest *)self testCoordinator];
+    [pptRecordingFileLocation2 pptTestEnterAR];
   }
 
   else
   {
-    v9 = [NSString stringWithFormat:@"PPT recording file is not present at expected location: %@", v6];
+    v9 = [NSString stringWithFormat:@"PPT recording file is not present at expected location: %@", pptRecordingFileLocation2];
     [(MapsAppTest *)self failedTestWithReason:v9];
   }
 }
@@ -151,11 +151,11 @@ LABEL_7:
 
   [(MapsAppTest *)self startedTest];
   [(MapsAppTest *)self startedSubTest:@"tileAvailability"];
-  v4 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
-  v5 = [v4 tileObserver];
-  v6 = [v5 areTilesAvailable];
+  tileAvailabilityMonitor = [(MapsAppTestAR *)self tileAvailabilityMonitor];
+  tileObserver = [tileAvailabilityMonitor tileObserver];
+  areTilesAvailable = [tileObserver areTilesAvailable];
 
-  if (v6)
+  if (areTilesAvailable)
   {
     [(MapsAppTest *)self finishedSubTest:@"tileAvailability"];
 
@@ -165,24 +165,24 @@ LABEL_7:
   else
   {
     [(MapsAppTestAR *)self setWaitingForTileAvailability:1];
-    v7 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
-    [v7 addObserver:self forKeyPath:@"state" options:1 context:0];
+    tileAvailabilityMonitor2 = [(MapsAppTestAR *)self tileAvailabilityMonitor];
+    [tileAvailabilityMonitor2 addObserver:self forKeyPath:@"state" options:1 context:0];
   }
 }
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestResetForLaunchURL];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestResetForLaunchURL];
 
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 _mapstest_directionsPlan];
+  options = [(MapsAppTest *)self options];
+  _mapstest_directionsPlan = [options _mapstest_directionsPlan];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"_waitForTileAvailability" name:@"MapsRoutePlanningShowingRoutesNotification" object:0];
 
-  v7 = [(MapsAppTest *)self testCoordinator];
-  [v7 setPPTTestDirectionsPlan:v5];
+  testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator2 setPPTTestDirectionsPlan:_mapstest_directionsPlan];
 
   return 1;
 }
@@ -200,28 +200,28 @@ LABEL_7:
   [(MapsAppTestAR *)&v4 dealloc];
 }
 
-- (MapsAppTestAR)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestAR)initWithApplication:(id)application testName:(id)name options:(id)options
 {
   v23.receiver = self;
   v23.super_class = MapsAppTestAR;
-  v5 = [(MapsAppTest *)&v23 initWithApplication:a3 testName:a4 options:a5];
+  v5 = [(MapsAppTest *)&v23 initWithApplication:application testName:name options:options];
   if (v5)
   {
     v6 = +[UIApplication _maps_keyMapsSceneDelegate];
-    v7 = [v6 platformController];
-    v8 = [v7 auxiliaryTasksManager];
-    v9 = [v8 auxilaryTaskForClass:objc_opt_class()];
+    platformController = [v6 platformController];
+    auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+    v9 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
     objc_storeWeak(&v5->_task, v9);
 
     WeakRetained = objc_loadWeakRetained(&v5->_task);
-    v11 = [WeakRetained stateManager];
+    stateManager = [WeakRetained stateManager];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [v11 monitors];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    monitors = [stateManager monitors];
+    v13 = [monitors countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v13)
     {
       v14 = v13;
@@ -232,7 +232,7 @@ LABEL_7:
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(monitors);
           }
 
           v17 = *(*(&v19 + 1) + 8 * i);
@@ -244,7 +244,7 @@ LABEL_7:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v14 = [monitors countByEnumeratingWithState:&v19 objects:v24 count:16];
         if (v14)
         {
           continue;

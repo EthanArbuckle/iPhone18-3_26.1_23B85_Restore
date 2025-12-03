@@ -1,29 +1,29 @@
 @interface ICURLRequest
-+ (id)_nameForRequestType:(int64_t)a3;
-+ (unint64_t)_defaultMaxRetryCountForReason:(id)a3;
-- (ICURLRequest)initWithURL:(id)a3 requestContext:(id)a4;
-- (ICURLRequest)initWithURL:(id)a3 requestContext:(id)a4 resumeData:(id)a5;
-- (ICURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4 resumeData:(id)a5;
++ (id)_nameForRequestType:(int64_t)type;
++ (unint64_t)_defaultMaxRetryCountForReason:(id)reason;
+- (ICURLRequest)initWithURL:(id)l requestContext:(id)context;
+- (ICURLRequest)initWithURL:(id)l requestContext:(id)context resumeData:(id)data;
+- (ICURLRequest)initWithURLRequest:(id)request requestContext:(id)context resumeData:(id)data;
 - (NSString)description;
 - (id)_analyticSignature;
 - (id)_sanitizedURLString;
 - (id)observers;
-- (unint64_t)_maxRetryCountForReason:(id)a3;
-- (unint64_t)_retryCountForReason:(id)a3;
-- (void)_ensureValidRetryReason:(id)a3;
-- (void)_incrementRetryCountForReason:(id)a3;
-- (void)_requestWasEnqueuedAt:(id)a3;
-- (void)_setMaxRetryCount:(unint64_t)a3 forReason:(id)a4;
-- (void)_task:(id)a3 didCompleteWithError:(id)a4 at:(id)a5;
-- (void)_task:(id)a3 didReceiveInitialResponse:(id)a4 at:(id)a5;
-- (void)_task:(id)a3 didResumeAt:(id)a4;
-- (void)_updateSignpostsForNewState:(int64_t)a3;
-- (void)buildURLRequestWithCompletionHandler:(id)a3;
+- (unint64_t)_maxRetryCountForReason:(id)reason;
+- (unint64_t)_retryCountForReason:(id)reason;
+- (void)_ensureValidRetryReason:(id)reason;
+- (void)_incrementRetryCountForReason:(id)reason;
+- (void)_requestWasEnqueuedAt:(id)at;
+- (void)_setMaxRetryCount:(unint64_t)count forReason:(id)reason;
+- (void)_task:(id)_task didCompleteWithError:(id)error at:(id)at;
+- (void)_task:(id)_task didReceiveInitialResponse:(id)response at:(id)at;
+- (void)_task:(id)_task didResumeAt:(id)at;
+- (void)_updateSignpostsForNewState:(int64_t)state;
+- (void)buildURLRequestWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)setRequestState:(int64_t)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateState:(int64_t)a3;
+- (void)registerObserver:(id)observer;
+- (void)setRequestState:(int64_t)state;
+- (void)unregisterObserver:(id)observer;
+- (void)updateState:(int64_t)state;
 @end
 
 @implementation ICURLRequest
@@ -43,30 +43,30 @@
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  v7 = [(ICRequestContext *)self->_requestContext clientInfo];
-  v8 = [v7 _clientIdentifierForUserAgent];
-  v9 = [(ICRequestContext *)self->_requestContext clientInfo];
-  v10 = [v9 clientVersion];
-  v11 = [v5 stringWithFormat:@"<%@ %p (%@) [%@/%@]>", v6, self, v4, v8, v10];
+  clientInfo = [(ICRequestContext *)self->_requestContext clientInfo];
+  _clientIdentifierForUserAgent = [clientInfo _clientIdentifierForUserAgent];
+  clientInfo2 = [(ICRequestContext *)self->_requestContext clientInfo];
+  clientVersion = [clientInfo2 clientVersion];
+  v11 = [v5 stringWithFormat:@"<%@ %p (%@) [%@/%@]>", v6, self, v4, _clientIdentifierForUserAgent, clientVersion];
 
   return v11;
 }
 
 - (id)_analyticSignature
 {
-  v2 = [(ICURLRequest *)self urlRequest];
-  v3 = [v2 URL];
+  urlRequest = [(ICURLRequest *)self urlRequest];
+  v3 = [urlRequest URL];
 
-  v4 = [v3 host];
-  v5 = [v3 path];
-  if ([v5 hasPrefix:@"/WebObjects/"])
+  host = [v3 host];
+  path = [v3 path];
+  if ([path hasPrefix:@"/WebObjects/"])
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v4, v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", host, path];
   }
 
   else
   {
-    v6 = v4;
+    v6 = host;
   }
 
   v7 = v6;
@@ -90,19 +90,19 @@
   {
     v3 = [MEMORY[0x1E696AF20] componentsWithURL:v2 resolvingAgainstBaseURL:0];
     [v3 setFragment:0];
-    v4 = [v3 queryItems];
-    v5 = [v4 msv_filter:&__block_literal_global_15009];
+    queryItems = [v3 queryItems];
+    v5 = [queryItems msv_filter:&__block_literal_global_15009];
     [v3 setQueryItems:v5];
 
-    v6 = [v3 string];
+    string = [v3 string];
   }
 
   else
   {
-    v6 = 0;
+    string = 0;
   }
 
-  return v6;
+  return string;
 }
 
 uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void *a2)
@@ -123,18 +123,18 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (void)_task:(id)a3 didCompleteWithError:(id)a4 at:(id)a5
+- (void)_task:(id)_task didCompleteWithError:(id)error at:(id)at
 {
   v33 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v23 = a4;
-  v8 = a5;
+  _taskCopy = _task;
+  errorCopy = error;
+  atCopy = at;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [(ICURLRequest *)self observers];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  observers = [(ICURLRequest *)self observers];
+  v10 = [observers countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -146,7 +146,7 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
@@ -159,9 +159,9 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
           block[3] = &unk_1E7BF5908;
           block[4] = v14;
           block[5] = self;
-          v25 = v22;
-          v26 = v23;
-          v27 = v8;
+          v25 = _taskCopy;
+          v26 = errorCopy;
+          v27 = atCopy;
           dispatch_async(observerQueue, block);
         }
 
@@ -169,39 +169,39 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v11 = [observers countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v11);
   }
 
-  v16 = [(ICURLRequest *)self requestContext];
-  v17 = [v16 _requestNotificationsEnabled];
+  requestContext = [(ICURLRequest *)self requestContext];
+  _requestNotificationsEnabled = [requestContext _requestNotificationsEnabled];
 
-  if (v17)
+  if (_requestNotificationsEnabled)
   {
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [v18 setObject:v8 forKeyedSubscript:@"time"];
-    [v18 setObject:v23 forKeyedSubscript:@"error"];
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:atCopy forKeyedSubscript:@"time"];
+    [dictionary setObject:errorCopy forKeyedSubscript:@"error"];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v20 = ICURLRequestTaskDidCompleteNotification;
-    v21 = [v18 copy];
-    [v19 postNotificationName:v20 object:self userInfo:v21];
+    v21 = [dictionary copy];
+    [defaultCenter postNotificationName:v20 object:self userInfo:v21];
   }
 }
 
-- (void)_task:(id)a3 didReceiveInitialResponse:(id)a4 at:(id)a5
+- (void)_task:(id)_task didReceiveInitialResponse:(id)response at:(id)at
 {
   v37 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v27 = a4;
-  v26 = a5;
+  _taskCopy = _task;
+  responseCopy = response;
+  atCopy = at;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = [(ICURLRequest *)self observers];
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  observers = [(ICURLRequest *)self observers];
+  v9 = [observers countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
@@ -213,7 +213,7 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
       {
         if (*v33 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v32 + 1) + 8 * v12);
@@ -226,9 +226,9 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
           block[3] = &unk_1E7BF5908;
           block[4] = v13;
           block[5] = self;
-          v29 = v25;
-          v30 = v27;
-          v31 = v26;
+          v29 = _taskCopy;
+          v30 = responseCopy;
+          v31 = atCopy;
           dispatch_async(observerQueue, block);
         }
 
@@ -236,50 +236,50 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v10 = [observers countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v10);
   }
 
-  v15 = [(ICURLRequest *)self requestContext];
-  v16 = [v15 _requestNotificationsEnabled];
+  requestContext = [(ICURLRequest *)self requestContext];
+  _requestNotificationsEnabled = [requestContext _requestNotificationsEnabled];
 
-  if (v16)
+  if (_requestNotificationsEnabled)
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    [v17 setObject:v26 forKeyedSubscript:@"time"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:atCopy forKeyedSubscript:@"time"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v18 = MEMORY[0x1E696AD98];
-      v19 = v27;
+      v19 = responseCopy;
       v20 = [v18 numberWithInteger:{objc_msgSend(v19, "statusCode")}];
-      [v17 setObject:v20 forKeyedSubscript:@"statusCode"];
+      [dictionary setObject:v20 forKeyedSubscript:@"statusCode"];
 
-      v21 = [v19 allHeaderFields];
+      allHeaderFields = [v19 allHeaderFields];
 
-      [v17 setObject:v21 forKeyedSubscript:@"responseHeaders"];
+      [dictionary setObject:allHeaderFields forKeyedSubscript:@"responseHeaders"];
     }
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v23 = ICURLRequestTaskDidReceiveResponseNotification;
-    v24 = [v17 copy];
-    [v22 postNotificationName:v23 object:self userInfo:v24];
+    v24 = [dictionary copy];
+    [defaultCenter postNotificationName:v23 object:self userInfo:v24];
   }
 }
 
-- (void)_task:(id)a3 didResumeAt:(id)a4
+- (void)_task:(id)_task didResumeAt:(id)at
 {
   v30 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v20 = a4;
+  _taskCopy = _task;
+  atCopy = at;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(ICURLRequest *)self observers];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  observers = [(ICURLRequest *)self observers];
+  v7 = [observers countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -291,7 +291,7 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
@@ -304,8 +304,8 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
           block[3] = &unk_1E7BFA1F0;
           block[4] = v11;
           block[5] = self;
-          v23 = v21;
-          v24 = v20;
+          v23 = _taskCopy;
+          v24 = atCopy;
           dispatch_async(observerQueue, block);
         }
 
@@ -313,54 +313,54 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v8 = [observers countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(ICURLRequest *)self requestContext];
-  v14 = [v13 _requestNotificationsEnabled];
+  requestContext = [(ICURLRequest *)self requestContext];
+  _requestNotificationsEnabled = [requestContext _requestNotificationsEnabled];
 
-  if (v14)
+  if (_requestNotificationsEnabled)
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    [v15 setObject:v20 forKeyedSubscript:@"time"];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v21];
-    [v15 setObject:v16 forKeyedSubscript:@"networkTaskID"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:atCopy forKeyedSubscript:@"time"];
+    _taskCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", _taskCopy];
+    [dictionary setObject:_taskCopy forKeyedSubscript:@"networkTaskID"];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v18 = ICURLRequestTaskDidResumeNotification;
-    v19 = [v15 copy];
-    [v17 postNotificationName:v18 object:self userInfo:v19];
+    v19 = [dictionary copy];
+    [defaultCenter postNotificationName:v18 object:self userInfo:v19];
   }
 }
 
-- (void)_requestWasEnqueuedAt:(id)a3
+- (void)_requestWasEnqueuedAt:(id)at
 {
-  v4 = [(ICURLRequest *)self requestContext];
-  v5 = [v4 _requestNotificationsEnabled];
+  requestContext = [(ICURLRequest *)self requestContext];
+  _requestNotificationsEnabled = [requestContext _requestNotificationsEnabled];
 
-  if (v5)
+  if (_requestNotificationsEnabled)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    v6 = [MEMORY[0x1E695DF00] date];
-    [v12 setObject:v6 forKeyedSubscript:@"time"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    date = [MEMORY[0x1E695DF00] date];
+    [dictionary setObject:date forKeyedSubscript:@"time"];
 
-    v7 = [(ICURLRequest *)self _sanitizedURLString];
-    [v12 setObject:v7 forKeyedSubscript:@"requestURL"];
+    _sanitizedURLString = [(ICURLRequest *)self _sanitizedURLString];
+    [dictionary setObject:_sanitizedURLString forKeyedSubscript:@"requestURL"];
 
-    v8 = [(ICURLRequest *)self requestName];
-    [v12 setObject:v8 forKeyedSubscript:@"requestName"];
+    requestName = [(ICURLRequest *)self requestName];
+    [dictionary setObject:requestName forKeyedSubscript:@"requestName"];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = ICURLRequestDidStartNotification;
-    v11 = [v12 copy];
-    [v9 postNotificationName:v10 object:self userInfo:v11];
+    v11 = [dictionary copy];
+    [defaultCenter postNotificationName:v10 object:self userInfo:v11];
   }
 }
 
-- (void)_updateSignpostsForNewState:(int64_t)a3
+- (void)_updateSignpostsForNewState:(int64_t)state
 {
   v30 = *MEMORY[0x1E69E9840];
   signpostIdentifier = self->_signpostIdentifier;
@@ -374,9 +374,9 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
     v9 = self->_signpostIdentifier;
     if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
-      v10 = [(ICURLRequest *)self _analyticSignature];
+      _analyticSignature = [(ICURLRequest *)self _analyticSignature];
       *buf = 136446210;
-      v29 = [v10 UTF8String];
+      uTF8String = [_analyticSignature UTF8String];
       _os_signpost_emit_with_name_impl(&dword_1B4491000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v9, "ICURLRequestWaiting", " enableTelemetry=YES request=%{public, signpost.telemetry:string1}s", buf, 0xCu);
     }
 
@@ -385,7 +385,7 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
 
   if (signpostIdentifier + 1 >= 2)
   {
-    if (a3 == 1 && !self->_requestState)
+    if (state == 1 && !self->_requestState)
     {
       v11 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
       v12 = v11;
@@ -396,15 +396,15 @@ uint64_t __35__ICURLRequest__sanitizedURLString__block_invoke(uint64_t a1, void 
         _os_signpost_emit_with_name_impl(&dword_1B4491000, v12, OS_SIGNPOST_INTERVAL_END, v13, "ICURLRequestWaiting", &unk_1B477EA4E, buf, 2u);
       }
 
-      v14 = [(ICURLRequest *)self _analyticSignature];
+      _analyticSignature2 = [(ICURLRequest *)self _analyticSignature];
       v15 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
       v16 = v15;
       v17 = self->_signpostIdentifier;
       if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
       {
-        v18 = [(__CFString *)v14 UTF8String];
+        uTF8String2 = [(__CFString *)_analyticSignature2 UTF8String];
         *buf = 136446210;
-        v29 = v18;
+        uTF8String = uTF8String2;
         _os_signpost_emit_with_name_impl(&dword_1B4491000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v17, "ICURLRequest", " enableTelemetry=YES request=%{public, signpost.telemetry:string1}s", buf, 0xCu);
       }
 
@@ -412,37 +412,37 @@ LABEL_25:
       return;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       return;
     }
 
-    v19 = [(ICURLRequest *)self error];
+    error = [(ICURLRequest *)self error];
 
-    if (v19)
+    if (error)
     {
-      v20 = [(ICURLRequest *)self error];
-      v21 = [v20 msv_analyticSignature];
+      error2 = [(ICURLRequest *)self error];
+      msv_analyticSignature = [error2 msv_analyticSignature];
     }
 
     else
     {
-      v26 = [(ICURLRequest *)self urlResponse];
+      urlResponse = [(ICURLRequest *)self urlResponse];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v14 = @"OK";
+        _analyticSignature2 = @"OK";
 LABEL_21:
         v22 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
         v23 = v22;
         v24 = self->_signpostIdentifier;
         if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
         {
-          v25 = [(__CFString *)v14 UTF8String];
+          uTF8String3 = [(__CFString *)_analyticSignature2 UTF8String];
           *buf = 136446210;
-          v29 = v25;
+          uTF8String = uTF8String3;
           _os_signpost_emit_with_name_impl(&dword_1B4491000, v23, OS_SIGNPOST_INTERVAL_END, v24, "ICURLRequest", "result=%{public, signpost.telemetry:string2}s", buf, 0xCu);
         }
 
@@ -450,31 +450,31 @@ LABEL_21:
         goto LABEL_25;
       }
 
-      v20 = [(ICURLRequest *)self urlResponse];
-      if ([v20 statusCode] == 200)
+      error2 = [(ICURLRequest *)self urlResponse];
+      if ([error2 statusCode] == 200)
       {
-        v14 = @"OK";
+        _analyticSignature2 = @"OK";
         goto LABEL_20;
       }
 
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"HTTP-%ld", objc_msgSend(v20, "statusCode")];
+      msv_analyticSignature = [MEMORY[0x1E696AEC0] stringWithFormat:@"HTTP-%ld", objc_msgSend(error2, "statusCode")];
     }
 
-    v14 = v21;
+    _analyticSignature2 = msv_analyticSignature;
 LABEL_20:
 
     goto LABEL_21;
   }
 }
 
-- (void)_ensureValidRetryReason:(id)a3
+- (void)_ensureValidRetryReason:(id)reason
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5 || (v6 = [v5 isEqual:0], v7 = v9, v6))
+  reasonCopy = reason;
+  v9 = reasonCopy;
+  if (!reasonCopy || (v6 = [reasonCopy isEqual:0], v7 = v9, v6))
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICURLRequest.m" lineNumber:279 description:@"There is no retry count for ICURLResponseHandlingRetryReasonNone."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICURLRequest.m" lineNumber:279 description:@"There is no retry count for ICURLResponseHandlingRetryReasonNone."];
 
     v7 = v9;
   }
@@ -482,14 +482,14 @@ LABEL_20:
   MEMORY[0x1EEE66BB8](v6, v7);
 }
 
-- (void)_incrementRetryCountForReason:(id)a3
+- (void)_incrementRetryCountForReason:(id)reason
 {
-  v10 = a3;
-  [(ICURLRequest *)self _ensureValidRetryReason:v10];
+  reasonCopy = reason;
+  [(ICURLRequest *)self _ensureValidRetryReason:reasonCopy];
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_retryCounts objectForKey:v10];
-  v5 = [v4 unsignedIntegerValue];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5 + 1];
+  v4 = [(NSMutableDictionary *)self->_retryCounts objectForKey:reasonCopy];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
 
   retryCounts = self->_retryCounts;
   if (!retryCounts)
@@ -501,29 +501,29 @@ LABEL_20:
     retryCounts = self->_retryCounts;
   }
 
-  [(NSMutableDictionary *)retryCounts setObject:v6 forKey:v10];
+  [(NSMutableDictionary *)retryCounts setObject:v6 forKey:reasonCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (unint64_t)_retryCountForReason:(id)a3
+- (unint64_t)_retryCountForReason:(id)reason
 {
-  v4 = a3;
-  [(ICURLRequest *)self _ensureValidRetryReason:v4];
+  reasonCopy = reason;
+  [(ICURLRequest *)self _ensureValidRetryReason:reasonCopy];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_retryCounts objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_retryCounts objectForKey:reasonCopy];
 
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
   os_unfair_lock_unlock(&self->_lock);
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)_setMaxRetryCount:(unint64_t)a3 forReason:(id)a4
+- (void)_setMaxRetryCount:(unint64_t)count forReason:(id)reason
 {
-  v10 = a4;
+  reasonCopy = reason;
   [(ICURLRequest *)self _ensureValidRetryReason:?];
   os_unfair_lock_lock(&self->_lock);
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   maxRetryCounts = self->_maxRetryCounts;
   if (!maxRetryCounts)
   {
@@ -534,51 +534,51 @@ LABEL_20:
     maxRetryCounts = self->_maxRetryCounts;
   }
 
-  [(NSMutableDictionary *)maxRetryCounts setObject:v6 forKey:v10];
+  [(NSMutableDictionary *)maxRetryCounts setObject:v6 forKey:reasonCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (unint64_t)_maxRetryCountForReason:(id)a3
+- (unint64_t)_maxRetryCountForReason:(id)reason
 {
-  v4 = a3;
-  [(ICURLRequest *)self _ensureValidRetryReason:v4];
+  reasonCopy = reason;
+  [(ICURLRequest *)self _ensureValidRetryReason:reasonCopy];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_maxRetryCounts objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_maxRetryCounts objectForKey:reasonCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [objc_opt_class() _defaultMaxRetryCountForReason:v4];
+    unsignedIntegerValue = [objc_opt_class() _defaultMaxRetryCountForReason:reasonCopy];
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)setRequestState:(int64_t)a3
+- (void)setRequestState:(int64_t)state
 {
   [(ICURLRequest *)self _updateSignpostsForNewState:?];
   [(ICURLRequest *)self willChangeValueForKey:@"requestState"];
-  self->_requestState = a3;
+  self->_requestState = state;
 
   [(ICURLRequest *)self didChangeValueForKey:@"requestState"];
 }
 
-- (void)updateState:(int64_t)a3
+- (void)updateState:(int64_t)state
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  [(ICURLRequest *)self setRequestState:a3];
+  [(ICURLRequest *)self setRequestState:state];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -609,7 +609,7 @@ LABEL_20:
           block[3] = &unk_1E7BF58E0;
           block[4] = v10;
           block[5] = self;
-          block[6] = a3;
+          block[6] = state;
           dispatch_async(observerQueue, block);
         }
 
@@ -626,27 +626,27 @@ LABEL_20:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_observers removeObject:v4];
+  [(NSMutableArray *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_observers addObject:v4];
+  [(NSMutableArray *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)buildURLRequestWithCompletionHandler:(id)a3
+- (void)buildURLRequestWithCompletionHandler:(id)handler
 {
-  v13 = a3;
+  handlerCopy = handler;
   currentURLRequest = self->_currentURLRequest;
   if (!currentURLRequest)
   {
@@ -654,21 +654,21 @@ LABEL_20:
   }
 
   v5 = [(NSURLRequest *)currentURLRequest mutableCopy];
-  v6 = [(ICURLRequest *)self requestContext];
+  requestContext = [(ICURLRequest *)self requestContext];
   v7 = [v5 valueForHTTPHeaderField:@"User-Agent"];
 
   if (!v7)
   {
-    v8 = [v6 userAgent];
-    [v5 setValue:v8 forHTTPHeaderField:@"User-Agent"];
+    userAgent = [requestContext userAgent];
+    [v5 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
   }
 
   v9 = [v5 valueForHTTPHeaderField:@"Accept-Language"];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v11 = [v10 objectForKey:@"AppleLanguages"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v11 = [standardUserDefaults objectForKey:@"AppleLanguages"];
 
     if ([v11 count])
     {
@@ -683,7 +683,7 @@ LABEL_20:
     [v5 setValue:v12 forHTTPHeaderField:@"Accept-Language"];
   }
 
-  v13[2](v13, v5, 0);
+  handlerCopy[2](handlerCopy, v5, 0);
 }
 
 - (void)dealloc
@@ -694,11 +694,11 @@ LABEL_20:
   [(ICURLRequest *)&v3 dealloc];
 }
 
-- (ICURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4 resumeData:(id)a5
+- (ICURLRequest)initWithURLRequest:(id)request requestContext:(id)context resumeData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  contextCopy = context;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = ICURLRequest;
   v12 = [(ICURLRequest *)&v31 init];
@@ -708,7 +708,7 @@ LABEL_20:
     responseHandler = v12->_responseHandler;
     v12->_responseHandler = v13;
 
-    objc_storeStrong(&v12->_urlRequest, a3);
+    objc_storeStrong(&v12->_urlRequest, request);
     *&v12->_prioritize = 256;
     v12->_handlingType = 0;
     objc_storeStrong(&v12->_retryReason, 0);
@@ -721,17 +721,17 @@ LABEL_20:
     responseData = v12->_responseData;
     v12->_responseData = v17;
 
-    v19 = [v10 copy];
+    v19 = [contextCopy copy];
     requestContext = v12->_requestContext;
     v12->_requestContext = v19;
 
-    v21 = [v11 copy];
+    v21 = [dataCopy copy];
     resumeData = v12->_resumeData;
     v12->_resumeData = v21;
 
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     observers = v12->_observers;
-    v12->_observers = v23;
+    v12->_observers = array;
 
     v12->_lock._os_unfair_lock_opaque = 0;
     v25 = dispatch_queue_create("com.apple.itunescloud.ICURLRequest.observer", MEMORY[0x1E69E96A8]);
@@ -749,45 +749,45 @@ LABEL_20:
   return v12;
 }
 
-- (ICURLRequest)initWithURL:(id)a3 requestContext:(id)a4 resumeData:(id)a5
+- (ICURLRequest)initWithURL:(id)l requestContext:(id)context resumeData:(id)data
 {
   v8 = MEMORY[0x1E695AC68];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 requestWithURL:a3];
-  v12 = [(ICURLRequest *)self initWithURLRequest:v11 requestContext:v10 resumeData:v9];
+  dataCopy = data;
+  contextCopy = context;
+  v11 = [v8 requestWithURL:l];
+  v12 = [(ICURLRequest *)self initWithURLRequest:v11 requestContext:contextCopy resumeData:dataCopy];
 
   return v12;
 }
 
-- (ICURLRequest)initWithURL:(id)a3 requestContext:(id)a4
+- (ICURLRequest)initWithURL:(id)l requestContext:(id)context
 {
   v6 = MEMORY[0x1E695AC68];
-  v7 = a4;
-  v8 = [v6 requestWithURL:a3];
-  v9 = [(ICURLRequest *)self initWithURLRequest:v8 requestContext:v7 resumeData:0];
+  contextCopy = context;
+  v8 = [v6 requestWithURL:l];
+  v9 = [(ICURLRequest *)self initWithURLRequest:v8 requestContext:contextCopy resumeData:0];
 
   return v9;
 }
 
-+ (id)_nameForRequestType:(int64_t)a3
++ (id)_nameForRequestType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return @"<unknown>";
   }
 
   else
   {
-    return off_1E7BF5968[a3];
+    return off_1E7BF5968[type];
   }
 }
 
-+ (unint64_t)_defaultMaxRetryCountForReason:(id)a3
++ (unint64_t)_defaultMaxRetryCountForReason:(id)reason
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 == @"authentication-performed" || ([(__CFString *)v3 isEqual:@"authentication-performed"]& 1) != 0)
+  reasonCopy = reason;
+  v4 = reasonCopy;
+  if (reasonCopy == @"authentication-performed" || ([(__CFString *)reasonCopy isEqual:@"authentication-performed"]& 1) != 0)
   {
     v5 = 1;
   }

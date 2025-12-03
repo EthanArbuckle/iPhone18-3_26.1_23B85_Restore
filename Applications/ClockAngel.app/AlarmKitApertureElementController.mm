@@ -1,58 +1,58 @@
 @interface AlarmKitApertureElementController
 - (NSString)associatedAppBundleIdentifier;
 - (NSURL)launchURL;
-- (_TtC10ClockAngel33AlarmKitApertureElementController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10ClockAngel33AlarmKitApertureElementController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)preferredHeightForBottomSafeArea;
 - (void)collapse;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setElementIdentifier:(id)a3;
-- (void)setLaunchURL:(id)a3;
-- (void)setPresentationBehaviors:(unint64_t)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setElementIdentifier:(id)identifier;
+- (void)setLaunchURL:(id)l;
+- (void)setPresentationBehaviors:(unint64_t)behaviors;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AlarmKitApertureElementController
 
-- (void)setPresentationBehaviors:(unint64_t)a3
+- (void)setPresentationBehaviors:(unint64_t)behaviors
 {
   v4 = *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_presentationBehaviors);
-  *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_presentationBehaviors) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_presentationBehaviors) = behaviors;
+  if (v4 != behaviors)
   {
-    v5 = self;
-    [-[AlarmKitApertureElementController systemApertureElementContext](v5 "systemApertureElementContext")];
+    selfCopy = self;
+    [-[AlarmKitApertureElementController systemApertureElementContext](selfCopy "systemApertureElementContext")];
     swift_unknownObjectRelease();
   }
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
   v3 = *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_activeLayoutMode);
-  *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_activeLayoutMode) = a3;
-  v4 = self;
+  *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_activeLayoutMode) = mode;
+  selfCopy = self;
   sub_10008CA74(v3);
 }
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_elementIdentifier);
-  *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_elementIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_elementIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (double)preferredHeightForBottomSafeArea
 {
-  v2 = self;
-  v3 = [(AlarmKitApertureElementController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(AlarmKitApertureElementController *)selfCopy view];
+  if (view)
   {
-    v5 = v3;
-    v6 = [v3 SBUISA_systemApertureObstructedAreaLayoutGuide];
+    v5 = view;
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [view SBUISA_systemApertureObstructedAreaLayoutGuide];
 
-    [v6 layoutFrame];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -93,9 +93,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -136,13 +136,13 @@
   return v11;
 }
 
-- (void)setLaunchURL:(id)a3
+- (void)setLaunchURL:(id)l
 {
   v5 = sub_1000032D4(&unk_100119A20, &qword_1000D1DC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -157,14 +157,14 @@
 
   v11 = OBJC_IVAR____TtC10ClockAngel33AlarmKitApertureElementController_launchURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_10004EC60(v8, self + v11, &unk_100119A20, &qword_1000D1DC0);
   swift_endAccess();
 }
 
-- (_TtC10ClockAngel33AlarmKitApertureElementController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10ClockAngel33AlarmKitApertureElementController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -176,38 +176,38 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10008ECB0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10008ECB0(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008F4C8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10008F614(a3);
+  selfCopy = self;
+  sub_10008F614(appear);
 }
 
 - (void)collapse
 {
-  v2 = self;
-  [-[AlarmKitApertureElementController systemApertureElementContext](v2 "systemApertureElementContext")];
+  selfCopy = self;
+  [-[AlarmKitApertureElementController systemApertureElementContext](selfCopy "systemApertureElementContext")];
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = type metadata accessor for AlarmKitApertureElementController(0);
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(AlarmKitApertureElementController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(AlarmKitApertureElementController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v11[4] = sub_100096874;
@@ -219,7 +219,7 @@
   v9 = _Block_copy(v11);
   v10 = v7;
 
-  [a4 animateAlongsideTransition:v9 completion:0];
+  [coordinator animateAlongsideTransition:v9 completion:0];
   swift_unknownObjectRelease();
 
   _Block_release(v9);

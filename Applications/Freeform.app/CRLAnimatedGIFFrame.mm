@@ -1,22 +1,22 @@
 @interface CRLAnimatedGIFFrame
 - (CGImage)image;
-- (CRLAnimatedGIFFrame)initWithImageSource:(CGImageSource *)a3 index:(unint64_t)a4 time:(double)a5 preloadImage:(BOOL)a6;
+- (CRLAnimatedGIFFrame)initWithImageSource:(CGImageSource *)source index:(unint64_t)index time:(double)time preloadImage:(BOOL)image;
 - (void)dealloc;
 @end
 
 @implementation CRLAnimatedGIFFrame
 
-- (CRLAnimatedGIFFrame)initWithImageSource:(CGImageSource *)a3 index:(unint64_t)a4 time:(double)a5 preloadImage:(BOOL)a6
+- (CRLAnimatedGIFFrame)initWithImageSource:(CGImageSource *)source index:(unint64_t)index time:(double)time preloadImage:(BOOL)image
 {
-  v6 = a6;
+  imageCopy = image;
   v15.receiver = self;
   v15.super_class = CRLAnimatedGIFFrame;
   v10 = [(CRLAnimatedGIFFrame *)&v15 init];
   if (v10)
   {
-    if (a3)
+    if (source)
     {
-      v10->_imageSource = CFRetain(a3);
+      v10->_imageSource = CFRetain(source);
     }
 
     else
@@ -48,11 +48,11 @@
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:56 isFatal:0 description:"invalid nil value for '%{public}s'", "imageSource"];
     }
 
-    v10->_index = a4;
-    v10->_time = a5;
-    if (a4 != -1 && v6)
+    v10->_index = index;
+    v10->_time = time;
+    if (index != -1 && imageCopy)
     {
-      v10->_preloadedImage = CGImageSourceCreateImageAtIndex(v10->_imageSource, a4, 0);
+      v10->_preloadedImage = CGImageSourceCreateImageAtIndex(v10->_imageSource, index, 0);
     }
 
     v10->_imageLock._os_unfair_lock_opaque = 0;

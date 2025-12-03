@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneSearchConstantScoreQuery_$1_$1
-- (OrgApacheLuceneSearchConstantScoreQuery_$1_$1)initWithFloat:(float)a3 withOrgApacheLuceneSearchScorer:(id)a4 withOrgApacheLuceneSearchScorer:(id)a5;
+- (OrgApacheLuceneSearchConstantScoreQuery_$1_$1)initWithFloat:(float)float withOrgApacheLuceneSearchScorer:(id)scorer withOrgApacheLuceneSearchScorer:(id)searchScorer;
 - (id)getChildren;
 - (void)dealloc;
 @end
@@ -13,11 +13,11 @@
   return JavaUtilCollections_singletonWithId_(v2);
 }
 
-- (OrgApacheLuceneSearchConstantScoreQuery_$1_$1)initWithFloat:(float)a3 withOrgApacheLuceneSearchScorer:(id)a4 withOrgApacheLuceneSearchScorer:(id)a5
+- (OrgApacheLuceneSearchConstantScoreQuery_$1_$1)initWithFloat:(float)float withOrgApacheLuceneSearchScorer:(id)scorer withOrgApacheLuceneSearchScorer:(id)searchScorer
 {
-  self->val$score_ = a3;
-  JreStrongAssign(&self->val$innerScorer_, a4);
-  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(self, a5);
+  self->val$score_ = float;
+  JreStrongAssign(&self->val$innerScorer_, scorer);
+  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(self, searchScorer);
   return self;
 }
 

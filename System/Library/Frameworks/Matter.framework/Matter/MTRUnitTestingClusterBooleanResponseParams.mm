@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterBooleanResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterBooleanResponseParams)init;
-- (MTRUnitTestingClusterBooleanResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
+- (MTRUnitTestingClusterBooleanResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterBooleanResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterBooleanResponseParams);
-  v5 = [(MTRUnitTestingClusterBooleanResponseParams *)self value];
-  [(MTRUnitTestingClusterBooleanResponseParams *)v4 setValue:v5];
+  value = [(MTRUnitTestingClusterBooleanResponseParams *)self value];
+  [(MTRUnitTestingClusterBooleanResponseParams *)v4 setValue:value];
 
-  v6 = [(MTRUnitTestingClusterBooleanResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterBooleanResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterBooleanResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterBooleanResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -93,7 +93,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRUnitTestingClusterBooleanResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRUnitTestingClusterBooleanResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterBooleanResponseParams;
@@ -101,7 +101,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterBooleanResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterBooleanResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -117,9 +117,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3->var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:struct->var0];
   [(MTRUnitTestingClusterBooleanResponseParams *)self setValue:v4];
 
   v5 = 0;

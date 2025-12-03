@@ -1,18 +1,18 @@
 @interface ILClassificationAndReportingSettingsBundleController
 - (BOOL)isHidden;
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
 - (id)parentListController;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
 @end
 
 @implementation ILClassificationAndReportingSettingsBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = [(ILClassificationAndReportingSettingsBundleController *)self specifiersArray];
-  if (v4)
+  specifiersArray = [(ILClassificationAndReportingSettingsBundleController *)self specifiersArray];
+  if (specifiersArray)
   {
     goto LABEL_9;
   }
@@ -22,9 +22,9 @@
     goto LABEL_10;
   }
 
-  v4 = [NSMutableArray arrayWithCapacity:1];
-  v5 = [(ILClassificationAndReportingSettingsBundleController *)self parentListController];
-  v6 = [(ILClassificationAndReportingSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:v5];
+  specifiersArray = [NSMutableArray arrayWithCapacity:1];
+  parentListController = [(ILClassificationAndReportingSettingsBundleController *)self parentListController];
+  v6 = [(ILClassificationAndReportingSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
   v7 = [ILClassificationSettingsStrings localizedStringForKey:@"REPORTING_MARKETING_NAME"];
   if (v6)
@@ -44,8 +44,8 @@
   {
 LABEL_7:
     [v8 setIdentifier:@"CLASSIFICATION_AND_REPORTING"];
-    [v4 addObject:v8];
-    [(ILClassificationAndReportingSettingsBundleController *)self setSpecifiersArray:v4];
+    [specifiersArray addObject:v8];
+    [(ILClassificationAndReportingSettingsBundleController *)self setSpecifiersArray:specifiersArray];
   }
 
 LABEL_8:
@@ -66,9 +66,9 @@ LABEL_10:
 - (BOOL)isHidden
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v4 = ILDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -78,17 +78,17 @@ LABEL_10:
     }
   }
 
-  return v3 == &dword_0 + 1;
+  return userInterfaceIdiom == &dword_0 + 1;
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ILClassificationAndReportingSettingsBundleController *)self parentListController];
-  [(ILClassificationAndReportingSettingsBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(ILClassificationAndReportingSettingsBundleController *)self parentListController];
+  [(ILClassificationAndReportingSettingsBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_3624();
   v5 = *(v4 - 8);
@@ -103,17 +103,17 @@ LABEL_10:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_3674();
 
-  LOBYTE(v10) = sub_3604();
+  LOBYTE(traitCollection) = sub_3604();
   (*(v5 + 8))(v8, v4);
 
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v18 = sub_3624();
   v5 = *(v18 - 8);
@@ -135,10 +135,10 @@ LABEL_10:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v15 = a4;
+  controllerCopy = controller;
   sub_3684();
   sub_35E4();
-  v16 = [v15 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_3674();
 
   sub_2CF4();

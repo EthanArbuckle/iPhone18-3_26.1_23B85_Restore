@@ -1,7 +1,7 @@
 @interface CRKInternetDateServiceProxy
 - (CRKInternetDateServiceProxy)init;
-- (void)_fetchInternetDateWithCompletion:(id)a3;
-- (void)fetchInternetDateWithCompletion:(id)a3;
+- (void)_fetchInternetDateWithCompletion:(id)completion;
+- (void)fetchInternetDateWithCompletion:(id)completion;
 @end
 
 @implementation CRKInternetDateServiceProxy
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (void)fetchInternetDateWithCompletion:(id)a3
+- (void)fetchInternetDateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__CRKInternetDateServiceProxy_fetchInternetDateWithCompletion___block_invoke;
   v6[3] = &unk_278DC34E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CRKInternetDateServiceProxy *)self _fetchInternetDateWithCompletion:v6];
 }
 
@@ -43,18 +43,18 @@ void __63__CRKInternetDateServiceProxy_fetchInternetDateWithCompletion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchInternetDateWithCompletion:(id)a3
+- (void)_fetchInternetDateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKInternetDateServiceProxy *)self connectionProvider];
-  v6 = [v5 connection];
+  completionCopy = completion;
+  connectionProvider = [(CRKInternetDateServiceProxy *)self connectionProvider];
+  connection = [connectionProvider connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__CRKInternetDateServiceProxy__fetchInternetDateWithCompletion___block_invoke;
   v12[3] = &unk_278DC0FE0;
-  v7 = v4;
+  v7 = completionCopy;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v12];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v12];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;

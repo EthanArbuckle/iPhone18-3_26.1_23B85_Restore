@@ -1,66 +1,66 @@
 @interface INRideStatus
-- (INRideStatus)initWithCoder:(id)a3;
+- (INRideStatus)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 - (void)setWaypoints:(NSArray *)waypoints;
 @end
 
 @implementation INRideStatus
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(INRideStatus *)self vehicle];
-  [v5 _intents_updateContainerWithCache:v4];
+  cacheCopy = cache;
+  vehicle = [(INRideStatus *)self vehicle];
+  [vehicle _intents_updateContainerWithCache:cacheCopy];
 
-  v6 = [(INRideStatus *)self driver];
-  [v6 _intents_updateContainerWithCache:v4];
+  driver = [(INRideStatus *)self driver];
+  [driver _intents_updateContainerWithCache:cacheCopy];
 
-  v7 = [(INRideStatus *)self rideOption];
-  [v7 _intents_updateContainerWithCache:v4];
+  rideOption = [(INRideStatus *)self rideOption];
+  [rideOption _intents_updateContainerWithCache:cacheCopy];
 
-  v8 = [(INRideStatus *)self completionStatus];
-  [v8 _intents_updateContainerWithCache:v4];
+  completionStatus = [(INRideStatus *)self completionStatus];
+  [completionStatus _intents_updateContainerWithCache:cacheCopy];
 }
 
 - (id)_intents_cacheableObjects
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INRideStatus *)self vehicle];
-  v5 = [v4 _intents_cacheableObjects];
-  [v3 unionSet:v5];
+  vehicle = [(INRideStatus *)self vehicle];
+  _intents_cacheableObjects = [vehicle _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects];
 
-  v6 = [(INRideStatus *)self driver];
-  v7 = [v6 _intents_cacheableObjects];
-  [v3 unionSet:v7];
+  driver = [(INRideStatus *)self driver];
+  _intents_cacheableObjects2 = [driver _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects2];
 
-  v8 = [(INRideStatus *)self rideOption];
-  v9 = [v8 _intents_cacheableObjects];
-  [v3 unionSet:v9];
+  rideOption = [(INRideStatus *)self rideOption];
+  _intents_cacheableObjects3 = [rideOption _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects3];
 
-  v10 = [(INRideStatus *)self userActivityForCancelingInApplication];
+  userActivityForCancelingInApplication = [(INRideStatus *)self userActivityForCancelingInApplication];
 
-  if (v10)
+  if (userActivityForCancelingInApplication)
   {
-    v11 = [(INRideStatus *)self userActivityForCancelingInApplication];
-    [v3 addObject:v11];
+    userActivityForCancelingInApplication2 = [(INRideStatus *)self userActivityForCancelingInApplication];
+    [v3 addObject:userActivityForCancelingInApplication2];
   }
 
-  v12 = [(INRideStatus *)self completionStatus];
-  v13 = [v12 _intents_cacheableObjects];
-  [v3 unionSet:v13];
+  completionStatus = [(INRideStatus *)self completionStatus];
+  _intents_cacheableObjects4 = [completionStatus _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects4];
 
-  v14 = [(INRideStatus *)self additionalActionActivities];
+  additionalActionActivities = [(INRideStatus *)self additionalActionActivities];
 
-  if (v14)
+  if (additionalActionActivities)
   {
-    v15 = [(INRideStatus *)self additionalActionActivities];
-    [v3 addObjectsFromArray:v15];
+    additionalActionActivities2 = [(INRideStatus *)self additionalActionActivities];
+    [v3 addObjectsFromArray:additionalActionActivities2];
   }
 
   if ([v3 count])
@@ -81,15 +81,15 @@
 - (id)_dictionaryRepresentation
 {
   v50[15] = *MEMORY[0x1E69E9840];
-  v3 = [(INRideStatus *)self phase];
-  if ((v3 - 1) > 5)
+  phase = [(INRideStatus *)self phase];
+  if ((phase - 1) > 5)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = off_1E727F968[v3 - 1];
+    v4 = off_1E727F968[phase - 1];
   }
 
   v5 = v4;
@@ -107,131 +107,131 @@
   v49[1] = @"phase";
   v49[2] = @"completionStatus";
   completionStatus = self->_completionStatus;
-  v7 = completionStatus;
+  null = completionStatus;
   if (!completionStatus)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[2] = v7;
+  v50[2] = null;
   v49[3] = @"vehicle";
   vehicle = self->_vehicle;
-  v8 = vehicle;
+  null2 = vehicle;
   if (!vehicle)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[3] = v8;
+  v50[3] = null2;
   v49[4] = @"driver";
   driver = self->_driver;
-  v9 = driver;
+  null3 = driver;
   if (!driver)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[4] = v9;
+  v50[4] = null3;
   v49[5] = @"estimatedPickupDate";
   estimatedPickupDate = self->_estimatedPickupDate;
-  v10 = estimatedPickupDate;
+  null4 = estimatedPickupDate;
   if (!estimatedPickupDate)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[5] = v10;
+  v50[5] = null4;
   v49[6] = @"estimatedDropOffDate";
   estimatedDropOffDate = self->_estimatedDropOffDate;
-  v11 = estimatedDropOffDate;
+  null5 = estimatedDropOffDate;
   if (!estimatedDropOffDate)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[6] = v11;
+  v50[6] = null5;
   v49[7] = @"estimatedPickupEndDate";
   estimatedPickupEndDate = self->_estimatedPickupEndDate;
-  v12 = estimatedPickupEndDate;
+  null6 = estimatedPickupEndDate;
   if (!estimatedPickupEndDate)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45 = v7;
-  v50[7] = v12;
+  v45 = null;
+  v50[7] = null6;
   v49[8] = @"scheduledPickupTime";
   scheduledPickupTime = self->_scheduledPickupTime;
-  v13 = scheduledPickupTime;
+  null7 = scheduledPickupTime;
   if (!scheduledPickupTime)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v48 = v5;
-  v32 = v13;
-  v50[8] = v13;
+  v32 = null7;
+  v50[8] = null7;
   v49[9] = @"pickupLocation";
   pickupLocation = self->_pickupLocation;
-  v15 = pickupLocation;
+  null8 = pickupLocation;
   if (!pickupLocation)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43 = v8;
-  v31 = v15;
-  v50[9] = v15;
+  v43 = null2;
+  v31 = null8;
+  v50[9] = null8;
   v49[10] = @"waypoints";
   waypoints = self->_waypoints;
-  v17 = waypoints;
+  null9 = waypoints;
   if (!waypoints)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v9;
-  v30 = v17;
-  v50[10] = v17;
+  v41 = null3;
+  v30 = null9;
+  v50[10] = null9;
   v49[11] = @"dropOffLocation";
   dropOffLocation = self->_dropOffLocation;
-  v19 = dropOffLocation;
+  null10 = dropOffLocation;
   if (!dropOffLocation)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v12;
-  v39 = v10;
-  v28 = v19;
-  v50[11] = v19;
+  v33 = null6;
+  v39 = null4;
+  v28 = null10;
+  v50[11] = null10;
   v49[12] = @"rideOption";
   rideOption = self->_rideOption;
-  v21 = rideOption;
+  null11 = rideOption;
   if (!rideOption)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[12] = v21;
+  v50[12] = null11;
   v49[13] = @"userActivityForCancelingInApplication";
   userActivityForCancelingInApplication = self->_userActivityForCancelingInApplication;
-  v23 = userActivityForCancelingInApplication;
+  null12 = userActivityForCancelingInApplication;
   if (!userActivityForCancelingInApplication)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[13] = v23;
+  v50[13] = null12;
   v49[14] = @"additionalActionActivities";
   additionalActionActivities = self->_additionalActionActivities;
-  v25 = additionalActionActivities;
+  null13 = additionalActionActivities;
   if (!additionalActionActivities)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[14] = v25;
+  v50[14] = null13;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:{15, v28}];
   if (additionalActionActivities)
   {
@@ -313,38 +313,38 @@ LABEL_35:
   return v35;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRideStatus;
   v6 = [(INRideStatus *)&v11 description];
-  v7 = [(INRideStatus *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRideStatus *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeObject:self->_rideIdentifier forKey:@"rideIdentifier"];
-  [v4 encodeInteger:self->_phase forKey:@"phase"];
-  [v4 encodeObject:self->_vehicle forKey:@"vehicle"];
-  [v4 encodeObject:self->_driver forKey:@"driver"];
-  [v4 encodeObject:self->_estimatedPickupDate forKey:@"estimatedPickupDate"];
-  [v4 encodeObject:self->_estimatedDropOffDate forKey:@"estimatedDropOffDate"];
-  [v4 encodeObject:self->_estimatedPickupEndDate forKey:@"estimatedPickupEndDate"];
-  [v4 encodeObject:self->_pickupLocation forKey:@"pickupLocation"];
-  [v4 encodeObject:self->_waypoints forKey:@"waypoints"];
-  [v4 encodeObject:self->_dropOffLocation forKey:@"dropOffLocation"];
-  [v4 encodeObject:self->_rideOption forKey:@"rideOption"];
-  [v4 encodeObject:self->_completionStatus forKey:@"completionStatus"];
-  [v4 encodeObject:self->_scheduledPickupTime forKey:@"scheduledPickupTime"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_rideIdentifier forKey:@"rideIdentifier"];
+  [coderCopy encodeInteger:self->_phase forKey:@"phase"];
+  [coderCopy encodeObject:self->_vehicle forKey:@"vehicle"];
+  [coderCopy encodeObject:self->_driver forKey:@"driver"];
+  [coderCopy encodeObject:self->_estimatedPickupDate forKey:@"estimatedPickupDate"];
+  [coderCopy encodeObject:self->_estimatedDropOffDate forKey:@"estimatedDropOffDate"];
+  [coderCopy encodeObject:self->_estimatedPickupEndDate forKey:@"estimatedPickupEndDate"];
+  [coderCopy encodeObject:self->_pickupLocation forKey:@"pickupLocation"];
+  [coderCopy encodeObject:self->_waypoints forKey:@"waypoints"];
+  [coderCopy encodeObject:self->_dropOffLocation forKey:@"dropOffLocation"];
+  [coderCopy encodeObject:self->_rideOption forKey:@"rideOption"];
+  [coderCopy encodeObject:self->_completionStatus forKey:@"completionStatus"];
+  [coderCopy encodeObject:self->_scheduledPickupTime forKey:@"scheduledPickupTime"];
   v5 = INUserActivitySerializeToData(self->_userActivityForCancelingInApplication);
-  [v4 encodeObject:v5 forKey:@"userActivityForCancelingInApplication"];
+  [coderCopy encodeObject:v5 forKey:@"userActivityForCancelingInApplication"];
 
   v17 = 0u;
   v18 = 0u;
@@ -390,46 +390,46 @@ LABEL_35:
   }
 
   v13 = [v9 copy];
-  [v4 encodeObject:v13 forKey:@"additionalActionActivities"];
+  [coderCopy encodeObject:v13 forKey:@"additionalActionActivities"];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (INRideStatus)initWithCoder:(id)a3
+- (INRideStatus)initWithCoder:(id)coder
 {
   v59[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v56.receiver = self;
   v56.super_class = INRideStatus;
   v5 = [(INRideStatus *)&v56 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rideIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rideIdentifier"];
     rideIdentifier = v5->_rideIdentifier;
     v5->_rideIdentifier = v6;
 
-    v5->_phase = [v4 decodeIntegerForKey:@"phase"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicle"];
+    v5->_phase = [coderCopy decodeIntegerForKey:@"phase"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicle"];
     vehicle = v5->_vehicle;
     v5->_vehicle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"driver"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"driver"];
     driver = v5->_driver;
     v5->_driver = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedPickupDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedPickupDate"];
     estimatedPickupDate = v5->_estimatedPickupDate;
     v5->_estimatedPickupDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedDropOffDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedDropOffDate"];
     estimatedDropOffDate = v5->_estimatedDropOffDate;
     v5->_estimatedDropOffDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedPickupEndDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedPickupEndDate"];
     estimatedPickupEndDate = v5->_estimatedPickupEndDate;
     v5->_estimatedPickupEndDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pickupLocation"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pickupLocation"];
     pickupLocation = v5->_pickupLocation;
     v5->_pickupLocation = v18;
 
@@ -438,27 +438,27 @@ LABEL_35:
     v59[1] = objc_opt_class();
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:2];
     v22 = [v20 setWithArray:v21];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"waypoints"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"waypoints"];
     waypoints = v5->_waypoints;
     v5->_waypoints = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dropOffLocation"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dropOffLocation"];
     dropOffLocation = v5->_dropOffLocation;
     v5->_dropOffLocation = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rideOption"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rideOption"];
     rideOption = v5->_rideOption;
     v5->_rideOption = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completionStatus"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completionStatus"];
     completionStatus = v5->_completionStatus;
     v5->_completionStatus = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledPickupTime"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledPickupTime"];
     scheduledPickupTime = v5->_scheduledPickupTime;
     v5->_scheduledPickupTime = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivityForCancelingInApplication"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivityForCancelingInApplication"];
     v34 = INUserActivityDeserializeFromData(v33);
     userActivityForCancelingInApplication = v5->_userActivityForCancelingInApplication;
     v5->_userActivityForCancelingInApplication = v34;
@@ -468,7 +468,7 @@ LABEL_35:
     v58[1] = objc_opt_class();
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
     v38 = [v36 setWithArray:v37];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"additionalActionActivities"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"additionalActionActivities"];
 
     v54 = 0u;
     v55 = 0u;
@@ -523,9 +523,9 @@ LABEL_35:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setRideIdentifier:self->_rideIdentifier];
   [v4 setPhase:self->_phase];
   [v4 setVehicle:self->_vehicle];
@@ -565,11 +565,11 @@ LABEL_35:
   self->_waypoints = v4;
 }
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [(INRideStatus *)self copy];
     v9 = objc_alloc_init(MEMORY[0x1E696ADC8]);
@@ -584,14 +584,14 @@ LABEL_35:
     v19[2] = __74__INRideStatus_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
     v19[3] = &unk_1E7287140;
     v19[4] = v8;
-    v20 = v7;
+    v20 = completionCopy;
     v12 = [v11 blockOperationWithBlock:v19];
-    v13 = [(INRideStatus *)self vehicle];
-    if (v13)
+    vehicle = [(INRideStatus *)self vehicle];
+    if (vehicle)
     {
       v14 = objc_alloc_init(INImageProxyInjectionOperation);
-      [(INImageProxyInjectionOperation *)v14 setInjector:v13];
-      [(INImageProxyInjectionOperation *)v14 setImageProxyRequestBlock:v6];
+      [(INImageProxyInjectionOperation *)v14 setInjector:vehicle];
+      [(INImageProxyInjectionOperation *)v14 setImageProxyRequestBlock:imagesCopy];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __74__INRideStatus_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke_2;
@@ -602,12 +602,12 @@ LABEL_35:
       [v9 addOperation:v14];
     }
 
-    v15 = [(INRideStatus *)self driver];
-    if (v15)
+    driver = [(INRideStatus *)self driver];
+    if (driver)
     {
       v16 = objc_alloc_init(INImageProxyInjectionOperation);
-      [(INImageProxyInjectionOperation *)v16 setInjector:v15];
-      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:v6];
+      [(INImageProxyInjectionOperation *)v16 setInjector:driver];
+      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:imagesCopy];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __74__INRideStatus_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke_3;

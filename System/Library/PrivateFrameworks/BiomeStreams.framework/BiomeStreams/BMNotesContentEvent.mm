@@ -1,32 +1,32 @@
 @interface BMNotesContentEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMNotesContentEvent)initWithCoder:(id)a3;
-- (BMNotesContentEvent)initWithProto:(id)a3;
-- (BMNotesContentEvent)initWithProtoData:(id)a3;
-- (BMNotesContentEvent)initWithUniqueId:(id)a3 domainId:(id)a4 personaId:(id)a5 absoluteTimestamp:(double)a6 title:(id)a7 content:(id)a8 contentProtection:(id)a9;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMNotesContentEvent)initWithCoder:(id)coder;
+- (BMNotesContentEvent)initWithProto:(id)proto;
+- (BMNotesContentEvent)initWithProtoData:(id)data;
+- (BMNotesContentEvent)initWithUniqueId:(id)id domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp title:(id)title content:(id)content contentProtection:(id)protection;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMNotesContentEvent
 
-- (BMNotesContentEvent)initWithUniqueId:(id)a3 domainId:(id)a4 personaId:(id)a5 absoluteTimestamp:(double)a6 title:(id)a7 content:(id)a8 contentProtection:(id)a9
+- (BMNotesContentEvent)initWithUniqueId:(id)id domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp title:(id)title content:(id)content contentProtection:(id)protection
 {
-  v17 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (v17)
+  idCopy = id;
+  domainIdCopy = domainId;
+  personaIdCopy = personaId;
+  titleCopy = title;
+  contentCopy = content;
+  protectionCopy = protection;
+  if (idCopy)
   {
-    if (v18)
+    if (contentCopy)
     {
       goto LABEL_3;
     }
@@ -35,7 +35,7 @@
   else
   {
     [BMNotesContentEvent initWithUniqueId:a2 domainId:self personaId:? absoluteTimestamp:? title:? content:? contentProtection:?];
-    if (v18)
+    if (contentCopy)
     {
       goto LABEL_3;
     }
@@ -49,24 +49,24 @@ LABEL_3:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_uniqueId, a3);
-    objc_storeStrong(&v21->_domainId, a4);
-    objc_storeStrong(&v21->_personaId, a5);
-    v21->_absoluteTimestamp = a6;
-    objc_storeStrong(&v21->_title, a7);
-    objc_storeStrong(&v21->_content, a8);
-    objc_storeStrong(&v21->_contentProtection, a9);
+    objc_storeStrong(&v20->_uniqueId, id);
+    objc_storeStrong(&v21->_domainId, domainId);
+    objc_storeStrong(&v21->_personaId, personaId);
+    v21->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v21->_title, title);
+    objc_storeStrong(&v21->_content, content);
+    objc_storeStrong(&v21->_contentProtection, protection);
   }
 
   return v21;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -74,7 +74,7 @@ LABEL_3:
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMNotesContentEvent eventWithData:a4 dataVersion:v8];
+      [BMNotesContentEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -85,18 +85,18 @@ LABEL_3:
 
 - (id)jsonDict
 {
-  v2 = [(BMNotesContentEvent *)self proto];
-  v3 = [v2 dictionaryRepresentation];
+  proto = [(BMNotesContentEvent *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMNotesContentEvent *)self jsonDict];
+  jsonDict = [(BMNotesContentEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -111,63 +111,63 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMNotesContentEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMNotesContentEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMNotesContentEvent)initWithCoder:(id)a3
+- (BMNotesContentEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMNotesContentEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMNotesContentEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMNotesContentEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMNotesContentEvent)initWithProto:(id)a3
+- (BMNotesContentEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasUniqueId]&& [v5 hasAbsoluteTimestamp]&& ([v5 hasContent]& 1) != 0)
       {
-        v6 = [v5 uniqueId];
-        v7 = [v5 domainId];
-        v8 = [v5 personaId];
+        uniqueId = [v5 uniqueId];
+        domainId = [v5 domainId];
+        personaId = [v5 personaId];
         [v5 absoluteTimestamp];
         v10 = v9;
-        v11 = [v5 title];
-        v12 = [v5 content];
-        v13 = [v5 contentProtection];
-        self = [(BMNotesContentEvent *)self initWithUniqueId:v6 domainId:v7 personaId:v8 absoluteTimestamp:v11 title:v12 content:v13 contentProtection:v10];
+        title = [v5 title];
+        content = [v5 content];
+        contentProtection = [v5 contentProtection];
+        self = [(BMNotesContentEvent *)self initWithUniqueId:uniqueId domainId:domainId personaId:personaId absoluteTimestamp:title title:content content:contentProtection contentProtection:v10];
 
-        v14 = self;
+        selfCopy = self;
 LABEL_14:
 
         goto LABEL_15;
@@ -189,57 +189,57 @@ LABEL_14:
       }
     }
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v14;
+  return selfCopy;
 }
 
-- (BMNotesContentEvent)initWithProtoData:(id)a3
+- (BMNotesContentEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBNotesContentEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBNotesContentEvent alloc] initWithData:dataCopy];
 
     self = [(BMNotesContentEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMNotesContentEvent *)self uniqueId];
-  [v3 setUniqueId:v4];
+  uniqueId = [(BMNotesContentEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
-  v5 = [(BMNotesContentEvent *)self domainId];
-  [v3 setDomainId:v5];
+  domainId = [(BMNotesContentEvent *)self domainId];
+  [v3 setDomainId:domainId];
 
-  v6 = [(BMNotesContentEvent *)self personaId];
-  [v3 setPersonaId:v6];
+  personaId = [(BMNotesContentEvent *)self personaId];
+  [v3 setPersonaId:personaId];
 
   [(BMNotesContentEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v7 = [(BMNotesContentEvent *)self title];
-  [v3 setTitle:v7];
+  title = [(BMNotesContentEvent *)self title];
+  [v3 setTitle:title];
 
-  v8 = [(BMNotesContentEvent *)self content];
-  [v3 setContent:v8];
+  content = [(BMNotesContentEvent *)self content];
+  [v3 setContent:content];
 
-  v9 = [(BMNotesContentEvent *)self contentProtection];
-  [v3 setContentProtection:v9];
+  contentProtection = [(BMNotesContentEvent *)self contentProtection];
+  [v3 setContentProtection:contentProtection];
 
   return v3;
 }
@@ -253,17 +253,17 @@ LABEL_15:
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMNotesContentEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMNotesContentEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -274,18 +274,18 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_uniqueId && self->_content)
   {
     v7 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

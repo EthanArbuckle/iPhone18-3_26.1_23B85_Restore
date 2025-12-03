@@ -1,16 +1,16 @@
 @interface VignetteLayer
 - (UIEdgeInsets)insets;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation VignetteLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(VignetteLayer *)self setMasksToBounds:0];
   v32.receiver = self;
   v32.super_class = VignetteLayer;
-  [(VignetteLayer *)&v32 drawInContext:a3];
+  [(VignetteLayer *)&v32 drawInContext:context];
   [(VignetteLayer *)self insets];
   v6 = v5;
   v8 = v7;
@@ -35,30 +35,30 @@
   UIGraphicsBeginImageContext(v33);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextAddPath(CurrentContext, [v21 CGPath]);
-  v23 = [MEMORY[0x277D75348] blackColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v23 CGColor]);
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  CGContextSetFillColorWithColor(CurrentContext, [blackColor CGColor]);
 
   CGContextFillPath(CurrentContext);
   v24 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v25 = [MEMORY[0x277CBF750] gaussianBlurFilter];
+  gaussianBlurFilter = [MEMORY[0x277CBF750] gaussianBlurFilter];
   v26 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(v24, "CGImage")}];
-  [v25 setValue:v26 forKey:*MEMORY[0x277CBFAF0]];
+  [gaussianBlurFilter setValue:v26 forKey:*MEMORY[0x277CBFAF0]];
 
   v27 = MEMORY[0x277CCABB0];
   [(VignetteLayer *)self blurRadius];
   v28 = [v27 numberWithDouble:?];
-  [v25 setValue:v28 forKey:*MEMORY[0x277CBFB08]];
+  [gaussianBlurFilter setValue:v28 forKey:*MEMORY[0x277CBFB08]];
 
-  v29 = [v25 outputImage];
+  outputImage = [gaussianBlurFilter outputImage];
   v30 = objc_alloc_init(MEMORY[0x277CBF740]);
-  [v29 extent];
-  v31 = [v30 createCGImage:v29 fromRect:?];
+  [outputImage extent];
+  v31 = [v30 createCGImage:outputImage fromRect:?];
   v36.origin.x = x;
   v36.origin.y = y;
   v36.size.width = width;
   v36.size.height = height;
-  CGContextDrawImage(a3, v36, v31);
+  CGContextDrawImage(context, v36, v31);
 }
 
 - (UIEdgeInsets)insets

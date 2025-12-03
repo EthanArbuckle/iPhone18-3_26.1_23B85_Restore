@@ -4,8 +4,8 @@
 + (id)prewarmedContactStoreDataSource;
 + (id)resourcesPrewarmingQueue;
 + (void)disableCompatiblityWorkaround;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)contactNavigationController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 dismissingPresentedController:(BOOL)a6 shouldHideContactListIfNeeded:(BOOL)a7;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)contactNavigationController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated dismissingPresentedController:(BOOL)presentedController shouldHideContactListIfNeeded:(BOOL)needed;
 - (BOOL)groupsPanelIsHidden;
 - (BOOL)isShowingGroups;
 - (BOOL)isShowingListView;
@@ -14,28 +14,28 @@
 - (CNContactListCollectionView)contactsList;
 - (CNContactStore)store;
 - (CNContactViewController)presentedContactViewController;
-- (ContactsSplitViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (ContactsSplitViewController)initWithStyle:(int64_t)a3;
+- (ContactsSplitViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (ContactsSplitViewController)initWithStyle:(int64_t)style;
 - (id)_multitaskingDragExclusionRects;
 - (id)navigationControllerForPPT;
-- (id)navigationControllerForPotentiallyWrappedViewController:(id)a3;
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4;
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4;
+- (id)navigationControllerForPotentiallyWrappedViewController:(id)controller;
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode;
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column;
 - (void)_cancelOutstandingSearch;
-- (void)addContact:(id)a3;
-- (void)beginSearch:(id)a3;
-- (void)contactNavigationController:(id)a3 didDeleteContact:(id)a4;
+- (void)addContact:(id)contact;
+- (void)beginSearch:(id)search;
+- (void)contactNavigationController:(id)controller didDeleteContact:(id)contact;
 - (void)createNewContact;
 - (void)dealloc;
-- (void)deleteContact:(id)a3;
-- (void)deselectContactAndSelectNext:(BOOL)a3;
+- (void)deleteContact:(id)contact;
+- (void)deselectContactAndSelectNext:(BOOL)next;
 - (void)removeContactViewController;
 - (void)resetContactViewController;
-- (void)saveEditingViewControllersAndDismissViewController:(id)a3;
-- (void)searchForString:(id)a3;
-- (void)selectNextContact:(id)a3;
-- (void)selectPreviousContact:(id)a3;
-- (void)setRestoredContact:(id)a3;
+- (void)saveEditingViewControllersAndDismissViewController:(id)controller;
+- (void)searchForString:(id)string;
+- (void)selectNextContact:(id)contact;
+- (void)selectPreviousContact:(id)contact;
+- (void)setRestoredContact:(id)contact;
 - (void)setup;
 - (void)setupColumns;
 - (void)setupContainerController;
@@ -44,14 +44,14 @@
 - (void)setupNavigationController;
 - (void)setupPrimaryColumnViewController;
 - (void)setupSplitViewControllerProperties;
-- (void)showDetailTargetDidChange:(id)a3;
-- (void)showEditingCardForContact:(id)a3;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
-- (void)toggleEditContact:(id)a3;
+- (void)showDetailTargetDidChange:(id)change;
+- (void)showEditingCardForContact:(id)contact;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
+- (void)toggleEditContact:(id)contact;
 - (void)toggleGroupsPanel;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateModeOnSplitViewControllerForDisplayMode:(int64_t)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateModeOnSplitViewControllerForDisplayMode:(int64_t)mode;
 - (void)viewDidLoad;
 @end
 
@@ -64,7 +64,7 @@
   v4[1] = 3221225472;
   v4[2] = sub_100001734;
   v4[3] = &unk_1000205A0;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = objc_retainBlock(v4);
 
   return v2;
@@ -97,8 +97,8 @@
   }
 
   v3 = +[CNEnvironment currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:19];
+  featureFlags = [v3 featureFlags];
+  v5 = [featureFlags isFeatureEnabled:19];
 
   if (v5)
   {
@@ -123,8 +123,8 @@
   if (![(ContactsSplitViewController *)self isSetupFinished])
   {
     v3 = +[CNEnvironment currentEnvironment];
-    v4 = [v3 featureFlags];
-    v5 = [v4 isFeatureEnabled:29];
+    featureFlags = [v3 featureFlags];
+    v5 = [featureFlags isFeatureEnabled:29];
 
     if (v5)
     {
@@ -132,11 +132,11 @@
       sharedNavigationBar = self->_sharedNavigationBar;
       self->_sharedNavigationBar = v6;
 
-      v8 = [(CNContactViewSharedNavigationBar *)self->_sharedNavigationBar addContactButton];
-      [v8 setTarget:self];
+      addContactButton = [(CNContactViewSharedNavigationBar *)self->_sharedNavigationBar addContactButton];
+      [addContactButton setTarget:self];
 
-      v9 = [(CNContactViewSharedNavigationBar *)self->_sharedNavigationBar addContactButton];
-      [v9 setAction:"addContact:"];
+      addContactButton2 = [(CNContactViewSharedNavigationBar *)self->_sharedNavigationBar addContactButton];
+      [addContactButton2 setAction:"addContact:"];
     }
 
     [(ContactsSplitViewController *)self setupNavigationController];
@@ -154,34 +154,34 @@
 
 - (void)setupNavigationController
 {
-  v13 = [objc_opt_class() prewarmedContactStoreDataSource];
+  prewarmedContactStoreDataSource = [objc_opt_class() prewarmedContactStoreDataSource];
   v3 = +[CNEnvironment currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  featureFlags = [v3 featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
-  if (v13)
+  if (prewarmedContactStoreDataSource)
   {
     v6 = [CNContactNavigationController alloc];
-    v7 = [v13 contactFormatter];
+    contactFormatter = [prewarmedContactStoreDataSource contactFormatter];
     v8 = +[CNUIContactsEnvironment currentEnvironment];
-    v9 = [v6 initWithDataSource:v13 contactFormatter:v7 applyGroupFilterFromPreferences:0 environment:v8 allowsLargeTitles:v5 ^ 1 allowsSearch:1];
+    v9 = [v6 initWithDataSource:prewarmedContactStoreDataSource contactFormatter:contactFormatter applyGroupFilterFromPreferences:0 environment:v8 allowsLargeTitles:v5 ^ 1 allowsSearch:1];
     contactNavigationController = self->_contactNavigationController;
     self->_contactNavigationController = v9;
   }
 
   else
   {
-    v13 = [objc_opt_class() newContactStoreDataSourceForSplitViewController];
-    v11 = [[CNContactNavigationController alloc] initWithDataSource:v13 allowsLargeTitles:v5 ^ 1];
-    v7 = self->_contactNavigationController;
+    prewarmedContactStoreDataSource = [objc_opt_class() newContactStoreDataSourceForSplitViewController];
+    v11 = [[CNContactNavigationController alloc] initWithDataSource:prewarmedContactStoreDataSource allowsLargeTitles:v5 ^ 1];
+    contactFormatter = self->_contactNavigationController;
     self->_contactNavigationController = v11;
   }
 
   [(CNContactNavigationController *)self->_contactNavigationController setAllowsCardEditing:1];
   [(CNContactNavigationController *)self->_contactNavigationController setAllowsCardDeletion:1];
   [(CNContactNavigationController *)self->_contactNavigationController setAllowsContactBlocking:1];
-  v12 = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
-  [v12 setShouldDisplayMeContactBanner:1];
+  contactListViewController = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
+  [contactListViewController setShouldDisplayMeContactBanner:1];
 
   [(CNContactNavigationController *)self->_contactNavigationController setDelegate:self];
   [(CNContactNavigationController *)self->_contactNavigationController setSharedNavigationBar:self->_sharedNavigationBar];
@@ -194,18 +194,18 @@
     v14 = v2;
     v15 = v3;
     kdebug_trace();
-    v5 = [a1 resourcesPrewarmingQueue];
-    dispatch_async_and_wait(v5, &stru_1000205E0);
+    resourcesPrewarmingQueue = [self resourcesPrewarmingQueue];
+    dispatch_async_and_wait(resourcesPrewarmingQueue, &stru_1000205E0);
 
-    v6 = [objc_opt_class() prewarmContactStoreDataSourceSnapshotBlock];
-    v7 = [a1 resourcesPrewarmingQueue];
+    prewarmContactStoreDataSourceSnapshotBlock = [objc_opt_class() prewarmContactStoreDataSourceSnapshotBlock];
+    resourcesPrewarmingQueue2 = [self resourcesPrewarmingQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100001FA0;
     block[3] = &unk_100020608;
-    v13 = v6;
-    v8 = v6;
-    dispatch_async(v7, block);
+    v13 = prewarmContactStoreDataSourceSnapshotBlock;
+    v8 = prewarmContactStoreDataSourceSnapshotBlock;
+    dispatch_async(resourcesPrewarmingQueue2, block);
 
     kdebug_trace();
     v9 = qword_1000292B0;
@@ -230,20 +230,20 @@
 
 - (void)setupGroupsNavigationController
 {
-  v3 = [(ContactsSplitViewController *)self contactNavigationController];
-  v4 = [v3 shouldShowAccountsAndGroups];
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  shouldShowAccountsAndGroups = [contactNavigationController shouldShowAccountsAndGroups];
 
-  if (v4)
+  if (shouldShowAccountsAndGroups)
   {
     v5 = [UINavigationController alloc];
-    v6 = [(ContactsSplitViewController *)self contactNavigationController];
-    v7 = [v6 accountsAndGroupsViewController];
-    v8 = [v5 initWithRootViewController:v7];
+    contactNavigationController2 = [(ContactsSplitViewController *)self contactNavigationController];
+    accountsAndGroupsViewController = [contactNavigationController2 accountsAndGroupsViewController];
+    v8 = [v5 initWithRootViewController:accountsAndGroupsViewController];
     groupsNavigationController = self->_groupsNavigationController;
     self->_groupsNavigationController = v8;
 
-    v10 = [(UINavigationController *)self->_groupsNavigationController navigationBar];
-    [v10 setPrefersLargeTitles:1];
+    navigationBar = [(UINavigationController *)self->_groupsNavigationController navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
   }
 }
 
@@ -272,13 +272,13 @@
   [(ContactsSplitViewController *)self setViewController:self->_contactNavigationController forColumn:1];
   [(ContactsSplitViewController *)self setViewController:self->_contactContainer forColumn:2];
   v3 = +[CNEnvironment currentEnvironment];
-  v4 = [v3 featureFlags];
-  if ([v4 isFeatureEnabled:29])
+  featureFlags = [v3 featureFlags];
+  if ([featureFlags isFeatureEnabled:29])
   {
     v5 = +[CNUIContactsEnvironment currentEnvironment];
-    v6 = [v5 runningInContactsAppOniPad];
+    runningInContactsAppOniPad = [v5 runningInContactsAppOniPad];
 
-    if (v6)
+    if (runningInContactsAppOniPad)
     {
 
       [(ContactsSplitViewController *)self setPreferredSupplementaryColumnWidthFraction:0.5];
@@ -296,10 +296,10 @@
 - (void)setupPrimaryColumnViewController
 {
   v7 = [(ContactsSplitViewController *)self viewControllerForColumn:0];
-  v3 = [(ContactsSplitViewController *)self contactNavigationController];
-  v4 = [v3 shouldShowAccountsAndGroups];
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  shouldShowAccountsAndGroups = [contactNavigationController shouldShowAccountsAndGroups];
   groupsNavigationController = 0;
-  if (v4)
+  if (shouldShowAccountsAndGroups)
   {
     groupsNavigationController = self->_groupsNavigationController;
   }
@@ -314,10 +314,10 @@
 
 - (CNContactStore)store
 {
-  v2 = [(ContactsSplitViewController *)self dataSource];
-  v3 = [v2 store];
+  dataSource = [(ContactsSplitViewController *)self dataSource];
+  store = [dataSource store];
 
-  return v3;
+  return store;
 }
 
 - (void)viewDidLoad
@@ -331,12 +331,12 @@
 
 - (BOOL)isShowingListView
 {
-  v3 = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
-  if ([v3 isViewLoaded])
+  contactListViewController = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
+  if ([contactListViewController isViewLoaded])
   {
-    v4 = [(ContactsSplitViewController *)self contactsList];
-    v5 = [v4 window];
-    v6 = v5 != 0;
+    contactsList = [(ContactsSplitViewController *)self contactsList];
+    window = [contactsList window];
+    v6 = window != 0;
   }
 
   else
@@ -352,9 +352,9 @@
   v3 = self->_displayedContact;
   if ([(ContactsSplitViewController *)self _isCollapsed])
   {
-    v4 = [(ContactsSplitViewController *)self presentedContactViewController];
+    presentedContactViewController = [(ContactsSplitViewController *)self presentedContactViewController];
 
-    if (!v4)
+    if (!presentedContactViewController)
     {
 
       v3 = 0;
@@ -367,19 +367,19 @@
 - (CNContactViewController)presentedContactViewController
 {
   v3 = +[CNEnvironment currentEnvironment];
-  v4 = [v3 featureFlags];
-  if ([v4 isFeatureEnabled:29])
+  featureFlags = [v3 featureFlags];
+  if ([featureFlags isFeatureEnabled:29])
   {
     v5 = +[CNUIContactsEnvironment currentEnvironment];
-    v6 = [v5 runningInContactsAppOniPad];
+    runningInContactsAppOniPad = [v5 runningInContactsAppOniPad];
 
-    if (v6)
+    if (runningInContactsAppOniPad)
     {
       objc_opt_class();
-      v7 = [(ContactsSplitViewController *)self potentiallyPresentedDetailViewController];
+      potentiallyPresentedDetailViewController = [(ContactsSplitViewController *)self potentiallyPresentedDetailViewController];
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = potentiallyPresentedDetailViewController;
       }
 
       else
@@ -397,12 +397,12 @@
   }
 
   objc_opt_class();
-  v7 = [(ContactsSplitViewController *)self potentiallyPresentedDetailViewController];
-  v10 = [v7 childViewControllers];
-  v11 = [v10 firstObject];
+  potentiallyPresentedDetailViewController = [(ContactsSplitViewController *)self potentiallyPresentedDetailViewController];
+  childViewControllers = [potentiallyPresentedDetailViewController childViewControllers];
+  firstObject = [childViewControllers firstObject];
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = firstObject;
   }
 
   else
@@ -413,9 +413,9 @@
   v9 = v12;
 
 LABEL_12:
-  v13 = [(CNContactViewController *)v9 view];
-  v14 = [v13 window];
-  if (v14)
+  view = [(CNContactViewController *)v9 view];
+  window = [view window];
+  if (window)
   {
     v15 = v9;
   }
@@ -430,12 +430,12 @@ LABEL_12:
   return v15;
 }
 
-- (ContactsSplitViewController)initWithStyle:(int64_t)a3
+- (ContactsSplitViewController)initWithStyle:(int64_t)style
 {
   [objc_opt_class() disableCompatiblityWorkaround];
   v9.receiver = self;
   v9.super_class = ContactsSplitViewController;
-  v5 = [(ContactsSplitViewController *)&v9 initWithStyle:a3];
+  v5 = [(ContactsSplitViewController *)&v9 initWithStyle:style];
   v6 = v5;
   if (v5)
   {
@@ -446,14 +446,14 @@ LABEL_12:
   return v6;
 }
 
-- (ContactsSplitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ContactsSplitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   [objc_opt_class() disableCompatiblityWorkaround];
   v11.receiver = self;
   v11.super_class = ContactsSplitViewController;
-  v8 = [(ContactsSplitViewController *)&v11 initWithNibName:v7 bundle:v6];
+  v8 = [(ContactsSplitViewController *)&v11 initWithNibName:nameCopy bundle:bundleCopy];
 
   if (v8)
   {
@@ -474,35 +474,35 @@ LABEL_12:
   [(ContactsSplitViewController *)&v4 dealloc];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(ContactsSplitViewController *)self contactNavigationController];
-  LOBYTE(a3) = [v7 canPerformAction:a3 withSender:v6];
+  senderCopy = sender;
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  LOBYTE(action) = [contactNavigationController canPerformAction:action withSender:senderCopy];
 
-  return a3;
+  return action;
 }
 
-- (void)showDetailTargetDidChange:(id)a3
+- (void)showDetailTargetDidChange:(id)change
 {
   if (([(ContactsSplitViewController *)self isCollapsed]& 1) == 0)
   {
     v7 = self->_displayedContact;
     if (v7)
     {
-      v4 = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
-      [v4 selectContact:v7 animated:1 scrollPosition:0];
+      contactListViewController = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
+      [contactListViewController selectContact:v7 animated:1 scrollPosition:0];
     }
 
     else
     {
-      v4 = [(ContactsSplitViewController *)self contactContainer];
-      v5 = [v4 popToRootViewControllerAnimated:0];
-      v6 = [(ContactsSplitViewController *)self detailViewController];
+      contactListViewController = [(ContactsSplitViewController *)self contactContainer];
+      v5 = [contactListViewController popToRootViewControllerAnimated:0];
+      detailViewController = [(ContactsSplitViewController *)self detailViewController];
 
-      if (v6 != v4)
+      if (detailViewController != contactListViewController)
       {
-        [(ContactsSplitViewController *)self setViewController:v4 forColumn:2];
+        [(ContactsSplitViewController *)self setViewController:contactListViewController forColumn:2];
       }
     }
   }
@@ -514,19 +514,19 @@ LABEL_12:
   if ([(ContactsSplitViewController *)self isCollapsed])
   {
     v10 = [(ContactsSplitViewController *)self viewControllerForColumn:2];
-    v3 = [v10 navigationController];
-    v4 = [v3 popViewControllerAnimated:1];
+    navigationController = [v10 navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 
   else
   {
-    v5 = [(ContactsSplitViewController *)self contactContainer];
-    v6 = [v5 popToRootViewControllerAnimated:0];
+    contactContainer = [(ContactsSplitViewController *)self contactContainer];
+    v6 = [contactContainer popToRootViewControllerAnimated:0];
 
-    v7 = [(ContactsSplitViewController *)self detailViewController];
-    v8 = [(ContactsSplitViewController *)self contactContainer];
+    detailViewController = [(ContactsSplitViewController *)self detailViewController];
+    contactContainer2 = [(ContactsSplitViewController *)self contactContainer];
 
-    if (v7 != v8)
+    if (detailViewController != contactContainer2)
     {
       contactContainer = self->_contactContainer;
 
@@ -543,9 +543,9 @@ LABEL_12:
   [(ContactsSplitViewController *)self setViewController:contactContainer forColumn:2];
 }
 
-- (void)showEditingCardForContact:(id)a3
+- (void)showEditingCardForContact:(id)contact
 {
-  [(CNContactNavigationController *)self->_contactNavigationController showCardForContact:a3 resetFilter:0 resetSearch:1 fallbackToFirstContact:0 scrollToContact:1 animated:0];
+  [(CNContactNavigationController *)self->_contactNavigationController showCardForContact:contact resetFilter:0 resetSearch:1 fallbackToFirstContact:0 scrollToContact:1 animated:0];
   contactNavigationController = self->_contactNavigationController;
 
   [(CNContactNavigationController *)contactNavigationController startEditingPresentedContact];
@@ -568,56 +568,56 @@ LABEL_12:
 
 - (void)_cancelOutstandingSearch
 {
-  v3 = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
-  v4 = [v3 isSearching];
+  contactListViewController = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
+  isSearching = [contactListViewController isSearching];
 
-  if (v4)
+  if (isSearching)
   {
-    v5 = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
-    [v5 cancelSearch:0];
+    contactListViewController2 = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
+    [contactListViewController2 cancelSearch:0];
   }
 }
 
 - (CNContactListCollectionView)contactsList
 {
-  v2 = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
-  v3 = [v2 collectionView];
+  contactListViewController = [(CNContactNavigationController *)self->_contactNavigationController contactListViewController];
+  collectionView = [contactListViewController collectionView];
 
-  return v3;
+  return collectionView;
 }
 
 - (CNContact)unsavedContact
 {
-  v3 = [(ContactsSplitViewController *)self presentedContactViewController];
+  presentedContactViewController = [(ContactsSplitViewController *)self presentedContactViewController];
 
-  if (v3)
+  if (presentedContactViewController)
   {
-    v4 = [(ContactsSplitViewController *)self presentedContactViewController];
-    v5 = [v4 contentViewController];
-    [v5 saveModelChangesToContact];
+    presentedContactViewController2 = [(ContactsSplitViewController *)self presentedContactViewController];
+    contentViewController = [presentedContactViewController2 contentViewController];
+    [contentViewController saveModelChangesToContact];
 
-    v6 = [v4 contact];
+    contact = [presentedContactViewController2 contact];
   }
 
   else
   {
-    v6 = 0;
+    contact = 0;
   }
 
-  return v6;
+  return contact;
 }
 
 - (BOOL)isShowingGroups
 {
-  v3 = [(ContactsSplitViewController *)self contactNavigationController];
-  v4 = [v3 accountsAndGroupsViewController];
-  if ([v4 isViewLoaded])
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  accountsAndGroupsViewController = [contactNavigationController accountsAndGroupsViewController];
+  if ([accountsAndGroupsViewController isViewLoaded])
   {
-    v5 = [(ContactsSplitViewController *)self contactNavigationController];
-    v6 = [v5 accountsAndGroupsViewController];
-    v7 = [v6 view];
-    v8 = [v7 window];
-    v9 = v8 != 0;
+    contactNavigationController2 = [(ContactsSplitViewController *)self contactNavigationController];
+    accountsAndGroupsViewController2 = [contactNavigationController2 accountsAndGroupsViewController];
+    view = [accountsAndGroupsViewController2 view];
+    window = [view window];
+    v9 = window != 0;
   }
 
   else
@@ -628,10 +628,10 @@ LABEL_12:
   return v9;
 }
 
-- (void)setRestoredContact:(id)a3
+- (void)setRestoredContact:(id)contact
 {
-  v12 = a3;
-  objc_storeStrong(&self->_restoredContact, a3);
+  contactCopy = contact;
+  objc_storeStrong(&self->_restoredContact, contact);
   restoredContact = self->_restoredContact;
   if (restoredContact)
   {
@@ -640,13 +640,13 @@ LABEL_12:
 
   if (([(ContactsSplitViewController *)self _isCollapsed]& 1) == 0)
   {
-    v6 = [(ContactsSplitViewController *)self contactNavigationController];
-    v7 = [v6 dataSource];
-    v8 = [v7 contacts];
+    contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+    dataSource = [contactNavigationController dataSource];
+    contacts = [dataSource contacts];
 
-    if ([v8 count])
+    if ([contacts count])
     {
-      v9 = [v8 objectAtIndexedSubscript:0];
+      v9 = [contacts objectAtIndexedSubscript:0];
       v10 = self->_restoredContact;
       self->_restoredContact = v9;
     }
@@ -668,18 +668,18 @@ LABEL_7:
   self->_restoredContact = 0;
 }
 
-- (void)updateModeOnSplitViewControllerForDisplayMode:(int64_t)a3
+- (void)updateModeOnSplitViewControllerForDisplayMode:(int64_t)mode
 {
   v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 featureFlags];
-  if ([v6 isFeatureEnabled:29])
+  featureFlags = [v5 featureFlags];
+  if ([featureFlags isFeatureEnabled:29])
   {
     v7 = +[CNUIContactsEnvironment currentEnvironment];
-    v8 = [v7 runningInContactsAppOniPad];
+    runningInContactsAppOniPad = [v7 runningInContactsAppOniPad];
 
-    if (v8)
+    if (runningInContactsAppOniPad)
     {
-      if (a3 <= 5 && ((1 << a3) & 0x2C) != 0)
+      if (mode <= 5 && ((1 << mode) & 0x2C) != 0)
       {
         v9 = 0.5;
       }
@@ -700,56 +700,56 @@ LABEL_7:
   if ([(ContactsSplitViewController *)self _isCollapsed])
   {
     v10 = +[CNEnvironment currentEnvironment];
-    v11 = [v10 featureFlags];
-    v12 = [v11 isFeatureEnabled:29];
+    featureFlags2 = [v10 featureFlags];
+    v12 = [featureFlags2 isFeatureEnabled:29];
 
     if ((v12 & 1) == 0)
     {
       [(ContactsSplitViewController *)self setPresentsWithGesture:0];
     }
 
-    v13 = [(ContactsSplitViewController *)self contactNavigationController];
-    [v13 setHideGroupsButton:0];
+    contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+    [contactNavigationController setHideGroupsButton:0];
 
     if ([(ContactsSplitViewController *)self isShowingListView])
     {
-      v23 = [(ContactsSplitViewController *)self contactNavigationController];
-      v14 = [v23 contactListViewController];
-      [v14 deselectAllSelectedIndexPathsAnimated:0];
+      contactNavigationController2 = [(ContactsSplitViewController *)self contactNavigationController];
+      contactListViewController = [contactNavigationController2 contactListViewController];
+      [contactListViewController deselectAllSelectedIndexPathsAnimated:0];
     }
   }
 
   else
   {
-    v15 = [(ContactsSplitViewController *)self contactNavigationController];
-    [v15 setHideGroupsButton:1];
+    contactNavigationController3 = [(ContactsSplitViewController *)self contactNavigationController];
+    [contactNavigationController3 setHideGroupsButton:1];
 
     v16 = +[CNEnvironment currentEnvironment];
-    v17 = [v16 featureFlags];
-    v18 = [v17 isFeatureEnabled:29];
+    featureFlags3 = [v16 featureFlags];
+    v18 = [featureFlags3 isFeatureEnabled:29];
 
     if ((v18 & 1) == 0)
     {
-      if (a3 == 2 && (-[ContactsSplitViewController contactNavigationController](self, "contactNavigationController"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 shouldShowAccountsAndGroups], v19, !v20))
+      if (mode == 2 && (-[ContactsSplitViewController contactNavigationController](self, "contactNavigationController"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 shouldShowAccountsAndGroups], v19, !v20))
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = 0;
       }
 
       else
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = 1;
       }
 
-      [(ContactsSplitViewController *)v21 setPresentsWithGesture:v22];
+      [(ContactsSplitViewController *)selfCopy2 setPresentsWithGesture:v22];
     }
   }
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  [(ContactsSplitViewController *)self updateModeOnSplitViewControllerForDisplayMode:a4];
+  [(ContactsSplitViewController *)self updateModeOnSplitViewControllerForDisplayMode:mode];
   v5 = dispatch_time(0, 200000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -759,12 +759,12 @@ LABEL_7:
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column
 {
-  -[ContactsSplitViewController updateModeOnSplitViewControllerForDisplayMode:](self, "updateModeOnSplitViewControllerForDisplayMode:", [a3 displayMode]);
-  v5 = [(ContactsSplitViewController *)self displayedContact];
+  -[ContactsSplitViewController updateModeOnSplitViewControllerForDisplayMode:](self, "updateModeOnSplitViewControllerForDisplayMode:", [controller displayMode]);
+  displayedContact = [(ContactsSplitViewController *)self displayedContact];
 
-  if (v5)
+  if (displayedContact)
   {
     return 2;
   }
@@ -775,58 +775,58 @@ LABEL_7:
   }
 }
 
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode
 {
-  v6 = [(ContactsSplitViewController *)self presentedContactViewController];
+  presentedContactViewController = [(ContactsSplitViewController *)self presentedContactViewController];
 
-  if (v6)
+  if (presentedContactViewController)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = a4 == 1;
+    v7 = mode == 1;
   }
 
   if (v7)
   {
-    a4 = 3;
+    mode = 3;
   }
 
-  if (a4 == 3)
+  if (mode == 3)
   {
-    v8 = [(ContactsSplitViewController *)self contactNavigationController];
-    v9 = [v8 contactListViewController];
-    v10 = [(ContactsSplitViewController *)self selectedIndexPath];
-    v11 = [v9 isValidIndexPath:v10];
+    contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+    contactListViewController = [contactNavigationController contactListViewController];
+    selectedIndexPath = [(ContactsSplitViewController *)self selectedIndexPath];
+    v11 = [contactListViewController isValidIndexPath:selectedIndexPath];
 
     if ((v11 & 1) == 0)
     {
       [(ContactsSplitViewController *)self setSelectedIndexPath:0];
     }
 
-    v12 = [(ContactsSplitViewController *)self selectedIndexPath];
+    selectedIndexPath2 = [(ContactsSplitViewController *)self selectedIndexPath];
 
-    v13 = [(ContactsSplitViewController *)self contactsList];
-    if (v12)
+    contactsList = [(ContactsSplitViewController *)self contactsList];
+    if (selectedIndexPath2)
     {
-      v14 = [(ContactsSplitViewController *)self selectedIndexPath];
-      [v13 selectItemAtIndexPath:v14 animated:1 scrollPosition:2];
+      selectedIndexPath3 = [(ContactsSplitViewController *)self selectedIndexPath];
+      [contactsList selectItemAtIndexPath:selectedIndexPath3 animated:1 scrollPosition:2];
     }
 
     else
     {
-      v14 = [(ContactsSplitViewController *)self contactsList];
-      v15 = [v14 indexPathsForSelectedItems];
-      v16 = [v15 firstObject];
-      [v13 deselectItemAtIndexPath:v16 animated:1];
+      selectedIndexPath3 = [(ContactsSplitViewController *)self contactsList];
+      indexPathsForSelectedItems = [selectedIndexPath3 indexPathsForSelectedItems];
+      firstObject = [indexPathsForSelectedItems firstObject];
+      [contactsList deselectItemAtIndexPath:firstObject animated:1];
     }
   }
 
-  v17 = [(ContactsSplitViewController *)self presentedContactViewController];
+  presentedContactViewController2 = [(ContactsSplitViewController *)self presentedContactViewController];
 
-  if (!v17)
+  if (!presentedContactViewController2)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -836,66 +836,66 @@ LABEL_7:
     [(ContactsSplitViewController *)self _allowingMutationsInDelegateCallback:v19];
   }
 
-  return a4;
+  return mode;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = ContactsSplitViewController;
-  [(ContactsSplitViewController *)&v9 traitCollectionDidChange:v4];
-  v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 featureFlags];
-  if (([v6 isFeatureEnabled:29] & 1) == 0)
+  [(ContactsSplitViewController *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = +[CNEnvironment currentEnvironment];
+  featureFlags = [traitCollection featureFlags];
+  if (([featureFlags isFeatureEnabled:29] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
   v7 = +[CNUIContactsEnvironment currentEnvironment];
-  v8 = [v7 runningInContactsAppOniPad];
+  runningInContactsAppOniPad = [v7 runningInContactsAppOniPad];
 
-  if (v8)
+  if (runningInContactsAppOniPad)
   {
-    [v4 horizontalSizeClass];
-    v5 = [(ContactsSplitViewController *)self traitCollection];
-    [v5 horizontalSizeClass];
+    [changeCopy horizontalSizeClass];
+    traitCollection = [(ContactsSplitViewController *)self traitCollection];
+    [traitCollection horizontalSizeClass];
 LABEL_5:
   }
 }
 
-- (void)saveEditingViewControllersAndDismissViewController:(id)a3
+- (void)saveEditingViewControllersAndDismissViewController:(id)controller
 {
-  v6 = a3;
-  v3 = [v6 childViewControllers];
-  v4 = [v3 _cn_flatMap:&stru_100020648];
+  controllerCopy = controller;
+  childViewControllers = [controllerCopy childViewControllers];
+  v4 = [childViewControllers _cn_flatMap:&stru_100020648];
   v5 = [v4 _cn_filter:&stru_100020688];
   [v5 _cn_each:&stru_1000206C8];
 
-  [v6 dismissViewControllerAnimated:0 completion:0];
+  [controllerCopy dismissViewControllerAnimated:0 completion:0];
 }
 
-- (BOOL)contactNavigationController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 dismissingPresentedController:(BOOL)a6 shouldHideContactListIfNeeded:(BOOL)a7
+- (BOOL)contactNavigationController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated dismissingPresentedController:(BOOL)presentedController shouldHideContactListIfNeeded:(BOOL)needed
 {
-  v27 = a6;
-  v28 = a7;
-  v26 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [(ContactsSplitViewController *)self presentedContactViewController];
-  v12 = v11;
-  if (v11)
+  presentedControllerCopy = presentedController;
+  neededCopy = needed;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  presentedContactViewController = [(ContactsSplitViewController *)self presentedContactViewController];
+  v12 = presentedContactViewController;
+  if (presentedContactViewController)
   {
-    v13 = [v11 isEditing];
-    v14 = v12 == v10;
-    if (v12 != v10 && v13)
+    isEditing = [presentedContactViewController isEditing];
+    v14 = v12 == viewControllerCopy;
+    if (v12 != viewControllerCopy && isEditing)
     {
-      v15 = [v12 contentViewController];
-      [v15 saveChanges];
+      contentViewController = [v12 contentViewController];
+      [contentViewController saveChanges];
 
-      v16 = [v12 contentViewController];
-      [v16 setEditing:0 animated:0];
+      contentViewController2 = [v12 contentViewController];
+      [contentViewController2 setEditing:0 animated:0];
 
       v14 = 0;
     }
@@ -903,18 +903,18 @@ LABEL_5:
 
   else
   {
-    v14 = v10 == 0;
+    v14 = viewControllerCopy == 0;
   }
 
-  v17 = [v10 contact];
-  v18 = [(ContactsSplitViewController *)self contactNavigationController];
-  v19 = [v18 contactListViewController];
+  contact = [viewControllerCopy contact];
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  contactListViewController = [contactNavigationController contactListViewController];
 
-  v20 = [v19 shouldDisplayListHeaderView];
-  v21 = [(ContactsSplitViewController *)self dataSource];
-  v22 = [v21 indexPathForContact:v17];
+  shouldDisplayListHeaderView = [contactListViewController shouldDisplayListHeaderView];
+  dataSource = [(ContactsSplitViewController *)self dataSource];
+  v22 = [dataSource indexPathForContact:contact];
   v23 = v22;
-  if (v20)
+  if (shouldDisplayListHeaderView)
   {
 
     v24 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", [v23 item], objc_msgSend(v23, "section") + 1);
@@ -923,7 +923,7 @@ LABEL_5:
   else
   {
     v24 = v22;
-    v23 = v21;
+    v23 = dataSource;
   }
 
   [(ContactsSplitViewController *)self setSelectedIndexPath:v24];
@@ -931,11 +931,11 @@ LABEL_5:
   if (!v14)
   {
     [(ContactsSplitViewController *)self removeContactViewController];
-    [(ContactsSplitViewController *)self showContactDetailViewController:v10 sender:v9 animated:v26 dismissingPresentedController:v27];
+    [(ContactsSplitViewController *)self showContactDetailViewController:viewControllerCopy sender:controllerCopy animated:animatedCopy dismissingPresentedController:presentedControllerCopy];
   }
 
-  [(ContactsSplitViewController *)self setDisplayedContact:v17];
-  if ([(ContactsSplitViewController *)self contactViewIsCovered]&& v28)
+  [(ContactsSplitViewController *)self setDisplayedContact:contact];
+  if ([(ContactsSplitViewController *)self contactViewIsCovered]&& neededCopy)
   {
     [(ContactsSplitViewController *)self hideColumn:1];
   }
@@ -945,13 +945,13 @@ LABEL_5:
 
 - (BOOL)groupsPanelIsHidden
 {
-  v3 = [(ContactsSplitViewController *)self displayMode];
-  if (v3 != 1)
+  displayMode = [(ContactsSplitViewController *)self displayMode];
+  if (displayMode != 1)
   {
-    LOBYTE(v3) = [(ContactsSplitViewController *)self displayMode]== 2 || [(ContactsSplitViewController *)self displayMode]== 3;
+    LOBYTE(displayMode) = [(ContactsSplitViewController *)self displayMode]== 2 || [(ContactsSplitViewController *)self displayMode]== 3;
   }
 
-  return v3;
+  return displayMode;
 }
 
 - (void)toggleGroupsPanel
@@ -972,18 +972,18 @@ LABEL_5:
   }
 }
 
-- (void)contactNavigationController:(id)a3 didDeleteContact:(id)a4
+- (void)contactNavigationController:(id)controller didDeleteContact:(id)contact
 {
-  v8 = a4;
-  v5 = [(ContactsSplitViewController *)self displayedContact];
-  if (v5 == v8)
+  contactCopy = contact;
+  displayedContact = [(ContactsSplitViewController *)self displayedContact];
+  if (displayedContact == contactCopy)
   {
 
     goto LABEL_5;
   }
 
-  v6 = [(ContactsSplitViewController *)self displayedContact];
-  v7 = [v8 isEqual:v6];
+  displayedContact2 = [(ContactsSplitViewController *)self displayedContact];
+  v7 = [contactCopy isEqual:displayedContact2];
 
   if (v7)
   {
@@ -994,49 +994,49 @@ LABEL_5:
   [(ContactsSplitViewController *)self deselectContactAndSelectNext:1];
 }
 
-- (void)deselectContactAndSelectNext:(BOOL)a3
+- (void)deselectContactAndSelectNext:(BOOL)next
 {
-  v3 = a3;
+  nextCopy = next;
   if ([(ContactsSplitViewController *)self isCollapsed])
   {
     [(ContactsSplitViewController *)self removeContactViewController];
     [(ContactsSplitViewController *)self setSelectedIndexPath:0];
   }
 
-  else if (v3)
+  else if (nextCopy)
   {
-    v5 = [(ContactsSplitViewController *)self selectedIndexPath];
-    v6 = [(ContactsSplitViewController *)self contactsList];
-    v7 = [v6 globalIndexForItemAtIndexPath:v5];
+    selectedIndexPath = [(ContactsSplitViewController *)self selectedIndexPath];
+    contactsList = [(ContactsSplitViewController *)self contactsList];
+    v7 = [contactsList globalIndexForItemAtIndexPath:selectedIndexPath];
 
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_10;
     }
 
-    v8 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, [v5 section] + 1);
+    v8 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, [selectedIndexPath section] + 1);
     [(ContactsSplitViewController *)self setSelectedIndexPath:v8];
 
-    v9 = [(ContactsSplitViewController *)self contactsList];
-    v10 = [(ContactsSplitViewController *)self selectedIndexPath];
-    v7 = [v9 globalIndexForItemAtIndexPath:v10];
+    contactsList2 = [(ContactsSplitViewController *)self contactsList];
+    selectedIndexPath2 = [(ContactsSplitViewController *)self selectedIndexPath];
+    v7 = [contactsList2 globalIndexForItemAtIndexPath:selectedIndexPath2];
 
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_10;
     }
 
-    if ([v5 row] < 1)
+    if ([selectedIndexPath row] < 1)
     {
       goto LABEL_8;
     }
 
-    v11 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v5 row] - 1, objc_msgSend(v5, "section"));
+    v11 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [selectedIndexPath row] - 1, objc_msgSend(selectedIndexPath, "section"));
     [(ContactsSplitViewController *)self setSelectedIndexPath:v11];
 
-    v12 = [(ContactsSplitViewController *)self contactsList];
-    v13 = [(ContactsSplitViewController *)self selectedIndexPath];
-    v7 = [v12 globalIndexForItemAtIndexPath:v13];
+    contactsList3 = [(ContactsSplitViewController *)self contactsList];
+    selectedIndexPath3 = [(ContactsSplitViewController *)self selectedIndexPath];
+    v7 = [contactsList3 globalIndexForItemAtIndexPath:selectedIndexPath3];
 
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1048,9 +1048,9 @@ LABEL_8:
     else
     {
 LABEL_10:
-      v16 = [(ContactsSplitViewController *)self dataSource];
-      v17 = [v16 contacts];
-      v18 = [v17 objectAtIndexedSubscript:v7];
+      dataSource = [(ContactsSplitViewController *)self dataSource];
+      contacts = [dataSource contacts];
+      v18 = [contacts objectAtIndexedSubscript:v7];
       [(ContactsSplitViewController *)self showCardForContact:v18 fallbackToFirstContact:1];
     }
   }
@@ -1058,9 +1058,9 @@ LABEL_10:
   else
   {
     [(ContactsSplitViewController *)self setDisplayedContact:0];
-    v14 = [(ContactsSplitViewController *)self contactNavigationController];
-    v15 = [v14 contactListViewController];
-    [v15 deselectAllSelectedIndexPathsAnimated:1];
+    contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+    contactListViewController = [contactNavigationController contactListViewController];
+    [contactListViewController deselectAllSelectedIndexPathsAnimated:1];
 
     [(ContactsSplitViewController *)self setSelectedIndexPath:0];
     [(ContactsSplitViewController *)self removeContactViewController];
@@ -1073,63 +1073,63 @@ LABEL_10:
   }
 }
 
-- (void)searchForString:(id)a3
+- (void)searchForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(ContactsSplitViewController *)self showContactList];
-  v5 = [(ContactsSplitViewController *)self contactNavigationController];
-  [v5 searchForString:v4];
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  [contactNavigationController searchForString:stringCopy];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = ContactsSplitViewController;
-  [(ContactsSplitViewController *)&v6 touchesBegan:a3 withEvent:a4];
-  v5 = [(ContactsSplitViewController *)self view];
-  [v5 endEditing:1];
+  [(ContactsSplitViewController *)&v6 touchesBegan:began withEvent:event];
+  view = [(ContactsSplitViewController *)self view];
+  [view endEditing:1];
 }
 
-- (void)beginSearch:(id)a3
+- (void)beginSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(ContactsSplitViewController *)self contactNavigationController];
-  [v5 beginSearch:v4];
+  searchCopy = search;
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  [contactNavigationController beginSearch:searchCopy];
 }
 
-- (void)addContact:(id)a3
+- (void)addContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(ContactsSplitViewController *)self contactNavigationController];
-  [v5 addContact:v4];
+  contactCopy = contact;
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  [contactNavigationController addContact:contactCopy];
 }
 
-- (void)deleteContact:(id)a3
+- (void)deleteContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(ContactsSplitViewController *)self contactNavigationController];
-  [v5 deleteContact:v4];
+  contactCopy = contact;
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  [contactNavigationController deleteContact:contactCopy];
 }
 
-- (void)selectNextContact:(id)a3
+- (void)selectNextContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(ContactsSplitViewController *)self contactNavigationController];
-  [v5 selectNextContact:v4];
+  contactCopy = contact;
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  [contactNavigationController selectNextContact:contactCopy];
 }
 
-- (void)selectPreviousContact:(id)a3
+- (void)selectPreviousContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(ContactsSplitViewController *)self contactNavigationController];
-  [v5 selectPreviousContact:v4];
+  contactCopy = contact;
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  [contactNavigationController selectPreviousContact:contactCopy];
 }
 
-- (void)toggleEditContact:(id)a3
+- (void)toggleEditContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(ContactsSplitViewController *)self contactNavigationController];
-  [v5 toggleEditContact:v4];
+  contactCopy = contact;
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  [contactNavigationController toggleEditContact:contactCopy];
 }
 
 - (id)navigationControllerForPPT
@@ -1142,17 +1142,17 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    v4 = self;
+    selfCopy2 = self;
     v5 = 1;
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
     v5 = 2;
   }
 
-  v3 = [(ContactsSplitViewController *)v4 viewControllerForColumn:v5];
+  v3 = [(ContactsSplitViewController *)selfCopy2 viewControllerForColumn:v5];
 LABEL_6:
   v6 = v3;
   v7 = [(ContactsSplitViewController *)self navigationControllerForPotentiallyWrappedViewController:v3];
@@ -1160,51 +1160,51 @@ LABEL_6:
   return v7;
 }
 
-- (id)navigationControllerForPotentiallyWrappedViewController:(id)a3
+- (id)navigationControllerForPotentiallyWrappedViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    navigationController = controllerCopy;
   }
 
   else
   {
-    v4 = [v3 navigationController];
+    navigationController = [controllerCopy navigationController];
   }
 
-  v5 = v4;
+  v5 = navigationController;
 
   return v5;
 }
 
 - (id)_multitaskingDragExclusionRects
 {
-  v3 = [(ContactsSplitViewController *)self contactNavigationController];
-  v4 = [v3 accountsAndGroupsViewController];
-  if (v4)
+  contactNavigationController = [(ContactsSplitViewController *)self contactNavigationController];
+  accountsAndGroupsViewController = [contactNavigationController accountsAndGroupsViewController];
+  if (accountsAndGroupsViewController)
   {
-    v5 = v4;
-    v6 = [(ContactsSplitViewController *)self groupsPanelIsHidden];
+    v5 = accountsAndGroupsViewController;
+    groupsPanelIsHidden = [(ContactsSplitViewController *)self groupsPanelIsHidden];
 
-    if ((v6 & 1) == 0)
+    if ((groupsPanelIsHidden & 1) == 0)
     {
-      v7 = [(ContactsSplitViewController *)self contactNavigationController];
-      v8 = [v7 accountsAndGroupsViewController];
-      v9 = [v8 multitaskingDragExclusionRects];
-      v10 = [v9 firstObject];
-      [v10 CGRectValue];
+      contactNavigationController2 = [(ContactsSplitViewController *)self contactNavigationController];
+      accountsAndGroupsViewController2 = [contactNavigationController2 accountsAndGroupsViewController];
+      multitaskingDragExclusionRects = [accountsAndGroupsViewController2 multitaskingDragExclusionRects];
+      firstObject = [multitaskingDragExclusionRects firstObject];
+      [firstObject CGRectValue];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
 
-      v19 = [(ContactsSplitViewController *)self view];
-      v20 = [(ContactsSplitViewController *)self contactNavigationController];
-      v21 = [v20 accountsAndGroupsViewController];
-      v22 = [v21 view];
-      [v19 convertRect:v22 fromView:{v12, v14, v16, v18}];
+      view = [(ContactsSplitViewController *)self view];
+      contactNavigationController3 = [(ContactsSplitViewController *)self contactNavigationController];
+      accountsAndGroupsViewController3 = [contactNavigationController3 accountsAndGroupsViewController];
+      view2 = [accountsAndGroupsViewController3 view];
+      [view convertRect:view2 fromView:{v12, v14, v16, v18}];
       v24 = v23;
       v26 = v25;
       v28 = v27;

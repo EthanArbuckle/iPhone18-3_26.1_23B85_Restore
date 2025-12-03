@@ -1,10 +1,10 @@
 @interface _TVSymbolImageLoader
 + (id)sharedInstance;
 - (_TVSymbolImageLoader)init;
-- (id)URLForObject:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8;
-- (void)cancelLoad:(id)a3;
+- (id)URLForObject:(id)object;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _TVSymbolImageLoader
@@ -36,44 +36,44 @@
   return v2;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 symbolName];
-    v6 = [v4 imageSymbolConfiguration];
-    if (v6)
+    v4 = objectCopy;
+    symbolName = [v4 symbolName];
+    imageSymbolConfiguration = [v4 imageSymbolConfiguration];
+    if (imageSymbolConfiguration)
     {
-      v7 = [v5 stringByAppendingString:@"_"];
+      v7 = [symbolName stringByAppendingString:@"_"];
 
       v8 = _UIImageSymbolConfigurationTextualSummary();
-      v9 = [v8 tv_MD5String];
-      v5 = [v7 stringByAppendingString:v9];
+      tv_MD5String = [v8 tv_MD5String];
+      symbolName = [v7 stringByAppendingString:tv_MD5String];
     }
   }
 
   else
   {
-    v5 = 0;
+    symbolName = 0;
   }
 
-  return v5;
+  return symbolName;
 }
 
-- (id)URLForObject:(id)a3
+- (id)URLForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 symbolName];
-    if (v4)
+    symbolName = [objectCopy symbolName];
+    if (symbolName)
     {
       v5 = MEMORY[0x277CBEBC0];
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"symbol://%@", v4];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"symbol://%@", symbolName];
       v7 = [v5 URLWithString:v6];
     }
 
@@ -91,19 +91,19 @@
   return v7;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a8;
+  objectCopy = object;
+  loaderCopy = loader;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v11;
-    v15 = [v14 symbolName];
-    v16 = [v14 imageSymbolConfiguration];
+    v14 = objectCopy;
+    symbolName = [v14 symbolName];
+    imageSymbolConfiguration = [v14 imageSymbolConfiguration];
 
-    if (v15)
+    if (symbolName)
     {
       v17 = [(_TVSymbolImageLoader *)self URLForObject:v14];
       v18 = v17;
@@ -121,7 +121,7 @@
         v19 = [v29 URLWithString:v23];
       }
 
-      v24 = [v12 recordForResource:3 withInitiator:2];
+      v24 = [loaderCopy recordForResource:3 withInitiator:2];
       v25 = [MEMORY[0x277CCAD20] requestWithURL:v19];
       [v24 willSendRequest:v25];
 
@@ -130,12 +130,12 @@
       v30[1] = 3221225472;
       v30[2] = __112___TVSymbolImageLoader_loadImageForObject_scaleToSize_cropToFit_imageDirection_requestLoader_completionHandler___block_invoke;
       v30[3] = &unk_279D6E348;
-      v15 = v15;
-      v31 = v15;
-      v16 = v16;
-      v32 = v16;
+      symbolName = symbolName;
+      v31 = symbolName;
+      imageSymbolConfiguration = imageSymbolConfiguration;
+      v32 = imageSymbolConfiguration;
       v33 = v24;
-      v34 = v13;
+      v34 = handlerCopy;
       v27 = v24;
       v20 = [v26 blockOperationWithBlock:v30];
       [(NSOperationQueue *)self->_imageLoaderQueue addOperation:v20];
@@ -146,8 +146,8 @@
 
   else
   {
-    v15 = 0;
-    v16 = 0;
+    symbolName = 0;
+    imageSymbolConfiguration = 0;
   }
 
   v20 = 0;
@@ -156,13 +156,13 @@ LABEL_9:
   return v20;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 cancel];
+    [loadCopy cancel];
   }
 }
 

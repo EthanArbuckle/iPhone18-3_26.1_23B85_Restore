@@ -1,7 +1,7 @@
 @interface HFCameraRecordingEventManagerObserver
 - (HFCameraRecordingEventManagerObserver)init;
 - (NSArray)recordingEvents;
-- (void)recordingEventManager:(id)a3 didUpdateRecordingEvents:(id)a4;
+- (void)recordingEventManager:(id)manager didUpdateRecordingEvents:(id)events;
 @end
 
 @implementation HFCameraRecordingEventManagerObserver
@@ -9,7 +9,7 @@
 - (NSArray)recordingEvents
 {
   v2 = (self + OBJC_IVAR___HFCameraRecordingEventManagerObserver_recordingEventsByUUID);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v4 = *&v2[2]._os_unfair_lock_opaque;
 
@@ -24,11 +24,11 @@
   return v6;
 }
 
-- (void)recordingEventManager:(id)a3 didUpdateRecordingEvents:(id)a4
+- (void)recordingEventManager:(id)manager didUpdateRecordingEvents:(id)events
 {
   v6 = sub_20DD651E4();
-  v7 = a3;
-  v8 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_20DA62158(v6);
 }
 

@@ -1,11 +1,11 @@
 @interface MOPersistenceUtilities
-+ (BOOL)isAllowedKeyPathForEventBundle:(id)a3;
-+ (BOOL)isValidPredicate:(id)a3;
-+ (BOOL)validateComparisonPredicate:(id)a3;
-+ (BOOL)validateCompoundPredicate:(id)a3;
-+ (id)getBundlingJSONURLWithDirectorySuffix:(id)a3;
++ (BOOL)isAllowedKeyPathForEventBundle:(id)bundle;
++ (BOOL)isValidPredicate:(id)predicate;
++ (BOOL)validateComparisonPredicate:(id)predicate;
++ (BOOL)validateCompoundPredicate:(id)predicate;
++ (id)getBundlingJSONURLWithDirectorySuffix:(id)suffix;
 + (id)userCacheDirectoryPath;
-+ (id)userDataDumpDirectoryPathWithSuffix:(id)a3;
++ (id)userDataDumpDirectoryPathWithSuffix:(id)suffix;
 + (void)userCacheDirectoryPath;
 @end
 
@@ -16,8 +16,8 @@
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 stringByAppendingPathComponent:@"com.apple.momentsd"];
+    firstObject = [v2 firstObject];
+    v4 = [firstObject stringByAppendingPathComponent:@"com.apple.momentsd"];
 
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 fileExistsAtPath:v4];
@@ -53,16 +53,16 @@
   return v11;
 }
 
-+ (id)userDataDumpDirectoryPathWithSuffix:(id)a3
++ (id)userDataDumpDirectoryPathWithSuffix:(id)suffix
 {
-  v3 = a3;
+  suffixCopy = suffix;
   v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   if ([v4 count])
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 stringByAppendingPathComponent:@"com.apple.momentsd"];
+    firstObject = [v4 firstObject];
+    v6 = [firstObject stringByAppendingPathComponent:@"com.apple.momentsd"];
     v7 = [v6 stringByAppendingPathComponent:@"Temp"];
-    v8 = [v7 stringByAppendingPathComponent:v3];
+    v8 = [v7 stringByAppendingPathComponent:suffixCopy];
 
     if (!v8)
     {
@@ -108,9 +108,9 @@ LABEL_6:
   return v14;
 }
 
-+ (id)getBundlingJSONURLWithDirectorySuffix:(id)a3
++ (id)getBundlingJSONURLWithDirectorySuffix:(id)suffix
 {
-  v3 = [MOPersistenceUtilities userDataDumpDirectoryPathWithSuffix:a3];
+  v3 = [MOPersistenceUtilities userDataDumpDirectoryPathWithSuffix:suffix];
   if (v3)
   {
     v4 = [NSURL fileURLWithPath:v3 isDirectory:1];
@@ -130,10 +130,10 @@ LABEL_6:
   return v4;
 }
 
-+ (BOOL)isValidPredicate:(id)a3
++ (BOOL)isValidPredicate:(id)predicate
 {
-  v4 = a3;
-  if (!v4)
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -150,7 +150,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a1 validateCompoundPredicate:v4];
+      v5 = [self validateCompoundPredicate:predicateCopy];
       goto LABEL_8;
     }
 
@@ -166,7 +166,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v5 = [a1 validateComparisonPredicate:v4];
+  v5 = [self validateComparisonPredicate:predicateCopy];
 LABEL_8:
   v14 = v5;
 LABEL_12:
@@ -174,24 +174,24 @@ LABEL_12:
   return v14;
 }
 
-+ (BOOL)validateComparisonPredicate:(id)a3
++ (BOOL)validateComparisonPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [v4 leftExpression];
-  v6 = [v5 keyPath];
+  predicateCopy = predicate;
+  leftExpression = [predicateCopy leftExpression];
+  keyPath = [leftExpression keyPath];
 
-  if ([a1 isAllowedKeyPathForEventBundle:v6])
+  if ([self isAllowedKeyPathForEventBundle:keyPath])
   {
-    v7 = [v4 rightExpression];
-    v8 = [v7 constantValue];
+    rightExpression = [predicateCopy rightExpression];
+    constantValue = [rightExpression constantValue];
 
-    v9 = [v4 rightExpression];
-    v10 = [v9 expressionType];
+    rightExpression2 = [predicateCopy rightExpression];
+    expressionType = [rightExpression2 expressionType];
 
     v11 = 0;
-    if (v10 > 2)
+    if (expressionType > 2)
     {
-      if (v10 == 3)
+      if (expressionType == 3)
       {
 LABEL_10:
         objc_opt_class();
@@ -204,15 +204,15 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      if (v10 != 4)
+      if (expressionType != 4)
       {
         goto LABEL_12;
       }
     }
 
-    else if ((v10 - 1) >= 2)
+    else if ((expressionType - 1) >= 2)
     {
-      if (v10)
+      if (expressionType)
       {
 LABEL_12:
 
@@ -233,14 +233,14 @@ LABEL_13:
   return v11;
 }
 
-+ (BOOL)validateCompoundPredicate:(id)a3
++ (BOOL)validateCompoundPredicate:(id)predicate
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 subpredicates];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subpredicates = [predicate subpredicates];
+  v5 = [subpredicates countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -251,17 +251,17 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subpredicates);
         }
 
-        if (![a1 isValidPredicate:*(*(&v11 + 1) + 8 * i)])
+        if (![self isValidPredicate:*(*(&v11 + 1) + 8 * i)])
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subpredicates countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -277,11 +277,11 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)isAllowedKeyPathForEventBundle:(id)a3
++ (BOOL)isAllowedKeyPathForEventBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = [NSSet setWithArray:&off_10036DAA0];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:bundleCopy];
 
   return v5;
 }
@@ -289,7 +289,7 @@ LABEL_11:
 + (void)userCacheDirectoryPath
 {
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&_mh_execute_header, a2, OS_LOG_TYPE_DEBUG, "cache directory path, %@", &v2, 0xCu);
 }
 

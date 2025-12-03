@@ -1,30 +1,30 @@
 @interface SBExternalDisplayWallpaperEffectView
 - (BOOL)enableBlurEffects;
 - (SBExternalDisplayWallpaperConfigurations)delegate;
-- (id)initExternalDisplayWithDelegate:(id)a3 wallpaperVariant:(int64_t)a4 transformOptions:(unint64_t)a5;
+- (id)initExternalDisplayWithDelegate:(id)delegate wallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options;
 @end
 
 @implementation SBExternalDisplayWallpaperEffectView
 
-- (id)initExternalDisplayWithDelegate:(id)a3 wallpaperVariant:(int64_t)a4 transformOptions:(unint64_t)a5
+- (id)initExternalDisplayWithDelegate:(id)delegate wallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = SBExternalDisplayWallpaperEffectView;
   v9 = [(SBExternalDisplayWallpaperEffectView *)&v19 init];
   p_isa = &v9->super.super.super.isa;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v11 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:a4 transformOptions:a5];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v11 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:variant transformOptions:options];
     v12 = p_isa[53];
     p_isa[53] = v11;
 
     [p_isa[53] setClipsToBounds:1];
     [p_isa[53] setForcesOpaque:1];
     v13 = p_isa[53];
-    v14 = [MEMORY[0x277D37C58] defaultConfiguration];
-    [v13 setExternalDisplayConfiguration:v14];
+    defaultConfiguration = [MEMORY[0x277D37C58] defaultConfiguration];
+    [v13 setExternalDisplayConfiguration:defaultConfiguration];
 
     [p_isa[53] setStyle:0];
     [p_isa[53] setFullscreen:1];
@@ -48,18 +48,18 @@
 
 - (BOOL)enableBlurEffects
 {
-  v2 = [(SBExternalDisplayWallpaperEffectView *)self delegate];
-  if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SBExternalDisplayWallpaperEffectView *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 enableBlurEffects];
+    enableBlurEffects = [delegate enableBlurEffects];
   }
 
   else
   {
-    v3 = 0;
+    enableBlurEffects = 0;
   }
 
-  return v3;
+  return enableBlurEffects;
 }
 
 - (SBExternalDisplayWallpaperConfigurations)delegate

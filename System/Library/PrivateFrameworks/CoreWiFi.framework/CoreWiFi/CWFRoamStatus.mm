@@ -1,15 +1,15 @@
 @interface CWFRoamStatus
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRoamStatus:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRoamStatus:(id)status;
 - (CWFRoamStatus)init;
-- (CWFRoamStatus)initWithCoder:(id)a3;
+- (CWFRoamStatus)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSString)networkName;
 - (double)duration;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFRoamStatus
@@ -21,9 +21,9 @@
   v2 = [(CWFRoamStatus *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v3;
+    v2->_UUID = uUID;
   }
 
   return v2;
@@ -38,8 +38,8 @@
 
   [(CWFRoamStatus *)self timeEnded];
   [(CWFRoamStatus *)self timeStarted];
-  v3 = [(CWFRoamStatus *)self timeEnded];
-  return (v3 - [(CWFRoamStatus *)self timeStarted]) / 1000.0;
+  timeEnded = [(CWFRoamStatus *)self timeEnded];
+  return (timeEnded - [(CWFRoamStatus *)self timeStarted]) / 1000.0;
 }
 
 - (NSString)networkName
@@ -52,14 +52,14 @@
 - (NSString)description
 {
   v22 = MEMORY[0x1E696AEC0];
-  v25 = [(NSUUID *)self->_UUID UUIDString];
-  v3 = [v25 substringToIndex:5];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v3 = [uUIDString substringToIndex:5];
   interfaceName = self->_interfaceName;
   v21 = v3;
-  v24 = [(CWFRoamStatus *)self networkName];
-  v19 = [v24 redactedForWiFi];
+  networkName = [(CWFRoamStatus *)self networkName];
+  redactedForWiFi = [networkName redactedForWiFi];
   v23 = CWFHexadecimalStringFromData(self->_SSID);
-  v18 = [v23 redactedForWiFi];
+  redactedForWiFi2 = [v23 redactedForWiFi];
   v17 = sub_1E0BCC248(self->_startedAt);
   v16 = sub_1E0BCC248(self->_endedAt);
   [(CWFRoamStatus *)self duration];
@@ -67,24 +67,24 @@
   v6 = sub_1E0BEEF44(self->_reason);
   v7 = sub_1E0BEEF44(self->_status);
   originOUI = self->_originOUI;
-  v9 = [(NSString *)self->_fromBSSID redactedForWiFi];
+  redactedForWiFi3 = [(NSString *)self->_fromBSSID redactedForWiFi];
   fromRSSI = self->_fromRSSI;
   targetOUI = self->_targetOUI;
   fromChannel = self->_fromChannel;
-  v13 = [(NSString *)self->_toBSSID redactedForWiFi];
-  v14 = [v22 stringWithFormat:@"uuid=%@, intf=%@, ssid='%@' (%@), start=%@, end=%@ (%lums), reason=%@, status=%@, from=[oui=%@ bssid=%@ ch=%lu rssi=%ld] to=[oui=%@ bssid=%@ ch=%lu rssi=%ld]", v21, interfaceName, v19, v18, v17, v16, v5, v6, v7, originOUI, v9, fromChannel, fromRSSI, targetOUI, v13, self->_toChannel, self->_toRSSI];
+  redactedForWiFi4 = [(NSString *)self->_toBSSID redactedForWiFi];
+  v14 = [v22 stringWithFormat:@"uuid=%@, intf=%@, ssid='%@' (%@), start=%@, end=%@ (%lums), reason=%@, status=%@, from=[oui=%@ bssid=%@ ch=%lu rssi=%ld] to=[oui=%@ bssid=%@ ch=%lu rssi=%ld]", v21, interfaceName, redactedForWiFi, redactedForWiFi2, v17, v16, v5, v6, v7, originOUI, redactedForWiFi3, fromChannel, fromRSSI, targetOUI, redactedForWiFi4, self->_toChannel, self->_toRSSI];
 
   return v14;
 }
 
-- (BOOL)isEqualToRoamStatus:(id)a3
+- (BOOL)isEqualToRoamStatus:(id)status
 {
-  v6 = a3;
+  statusCopy = status;
   UUID = self->_UUID;
-  v8 = [v6 UUID];
-  if (UUID != v8)
+  uUID = [statusCopy UUID];
+  if (UUID != uUID)
   {
-    if (!self->_UUID || ([v6 UUID], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_UUID || ([statusCopy UUID], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_78;
@@ -92,8 +92,8 @@
 
     v3 = v9;
     v10 = self->_UUID;
-    v4 = [v6 UUID];
-    if (![(NSUUID *)v10 isEqual:v4])
+    uUID2 = [statusCopy UUID];
+    if (![(NSUUID *)v10 isEqual:uUID2])
     {
       v11 = 0;
 LABEL_77:
@@ -103,8 +103,8 @@ LABEL_77:
   }
 
   interfaceName = self->_interfaceName;
-  v13 = [v6 interfaceName];
-  if (interfaceName != v13)
+  interfaceName = [statusCopy interfaceName];
+  if (interfaceName != interfaceName)
   {
     if (!self->_interfaceName)
     {
@@ -114,18 +114,18 @@ LABEL_60:
       goto LABEL_76;
     }
 
-    v14 = [v6 interfaceName];
-    if (!v14)
+    interfaceName2 = [statusCopy interfaceName];
+    if (!interfaceName2)
     {
       goto LABEL_75;
     }
 
-    v115 = v14;
+    v115 = interfaceName2;
     v15 = self->_interfaceName;
-    v16 = [v6 interfaceName];
+    interfaceName3 = [statusCopy interfaceName];
     v17 = v15;
-    v18 = v16;
-    if (([(NSString *)v17 isEqual:v16]& 1) == 0)
+    v18 = interfaceName3;
+    if (([(NSString *)v17 isEqual:interfaceName3]& 1) == 0)
     {
 
 LABEL_74:
@@ -136,8 +136,8 @@ LABEL_74:
   }
 
   SSID = self->_SSID;
-  v20 = [v6 SSID];
-  if (SSID == v20)
+  sSID = [statusCopy SSID];
+  if (SSID == sSID)
   {
     v114 = SSID;
     goto LABEL_19;
@@ -149,16 +149,16 @@ LABEL_74:
     goto LABEL_58;
   }
 
-  v21 = [v6 SSID];
-  if (v21)
+  sSID2 = [statusCopy SSID];
+  if (sSID2)
   {
     v114 = SSID;
-    v110 = v21;
+    v110 = sSID2;
     v22 = self->_SSID;
-    v23 = [v6 SSID];
+    sSID3 = [statusCopy SSID];
     v24 = v22;
-    v25 = v23;
-    if (([(NSData *)v24 isEqual:v23]& 1) == 0)
+    v25 = sSID3;
+    if (([(NSData *)v24 isEqual:sSID3]& 1) == 0)
     {
 
 LABEL_71:
@@ -168,8 +168,8 @@ LABEL_71:
     v111 = v25;
 LABEL_19:
     originOUI = self->_originOUI;
-    v27 = [v6 originOUI];
-    if (originOUI != v27)
+    originOUI = [statusCopy originOUI];
+    if (originOUI != originOUI)
     {
       if (!self->_originOUI)
       {
@@ -177,43 +177,43 @@ LABEL_19:
         goto LABEL_56;
       }
 
-      v112 = v27;
-      v28 = [v6 originOUI];
-      if (v28)
+      v112 = originOUI;
+      originOUI2 = [statusCopy originOUI];
+      if (originOUI2)
       {
         v104 = interfaceName;
         v29 = originOUI;
-        v107 = v28;
-        v30 = v4;
+        v107 = originOUI2;
+        v30 = uUID2;
         v31 = self->_originOUI;
-        v32 = [v6 originOUI];
+        originOUI3 = [statusCopy originOUI];
         v33 = v31;
-        v34 = v32;
-        if (([(NSString *)v33 isEqual:v32]& 1) != 0)
+        v34 = originOUI3;
+        if (([(NSString *)v33 isEqual:originOUI3]& 1) != 0)
         {
           v103 = v34;
-          v4 = v30;
+          uUID2 = v30;
           v109 = v29;
           interfaceName = v104;
           goto LABEL_27;
         }
 
-        v4 = v30;
-        if (v114 != v20)
+        uUID2 = v30;
+        if (v114 != sSID)
         {
         }
 
-        v52 = v104 == v13;
+        v52 = v104 == interfaceName;
       }
 
       else
       {
 
-        if (v114 != v20)
+        if (v114 != sSID)
         {
         }
 
-        v52 = interfaceName == v13;
+        v52 = interfaceName == interfaceName;
       }
 
       if (v52)
@@ -225,14 +225,14 @@ LABEL_19:
     }
 
     v109 = originOUI;
-    v112 = v27;
+    v112 = originOUI;
 LABEL_27:
     fromBSSID = self->_fromBSSID;
-    v36 = [v6 fromBSSID];
-    if (fromBSSID == v36)
+    fromBSSID = [statusCopy fromBSSID];
+    if (fromBSSID == fromBSSID)
     {
-      v108 = v36;
-      v106 = v4;
+      v108 = fromBSSID;
+      v106 = uUID2;
     }
 
     else
@@ -243,21 +243,21 @@ LABEL_27:
         goto LABEL_54;
       }
 
-      v108 = v36;
-      v37 = [v6 fromBSSID];
-      if (!v37)
+      v108 = fromBSSID;
+      fromBSSID2 = [statusCopy fromBSSID];
+      if (!fromBSSID2)
       {
         v53 = v108;
         goto LABEL_62;
       }
 
-      v102 = v37;
-      v106 = v4;
+      v102 = fromBSSID2;
+      v106 = uUID2;
       v38 = self->_fromBSSID;
-      v39 = [v6 fromBSSID];
+      fromBSSID3 = [statusCopy fromBSSID];
       v40 = v38;
-      v41 = v39;
-      if (([(NSString *)v40 isEqual:v39]& 1) == 0)
+      v41 = fromBSSID3;
+      if (([(NSString *)v40 isEqual:fromBSSID3]& 1) == 0)
       {
 
         v56 = v108;
@@ -268,11 +268,11 @@ LABEL_27:
     }
 
     fromChannel = self->_fromChannel;
-    if (fromChannel != [v6 fromChannel] || (fromRSSI = self->_fromRSSI, fromRSSI != objc_msgSend(v6, "fromRSSI")))
+    if (fromChannel != [statusCopy fromChannel] || (fromRSSI = self->_fromRSSI, fromRSSI != objc_msgSend(statusCopy, "fromRSSI")))
     {
       v11 = 0;
-      v36 = v108;
-      v4 = v106;
+      fromBSSID = v108;
+      uUID2 = v106;
       if (fromBSSID == v108)
       {
         goto LABEL_54;
@@ -282,11 +282,11 @@ LABEL_27:
     }
 
     targetOUI = self->_targetOUI;
-    v45 = [v6 targetOUI];
-    if (targetOUI == v45)
+    targetOUI = [statusCopy targetOUI];
+    if (targetOUI == targetOUI)
     {
       v96 = fromBSSID;
-      v99 = v45;
+      v99 = targetOUI;
       goto LABEL_80;
     }
 
@@ -296,21 +296,21 @@ LABEL_27:
       goto LABEL_108;
     }
 
-    v99 = v45;
-    v46 = [v6 targetOUI];
-    if (v46)
+    v99 = targetOUI;
+    targetOUI2 = [statusCopy targetOUI];
+    if (targetOUI2)
     {
       v97 = targetOUI;
-      v93 = v46;
+      v93 = targetOUI2;
       v47 = self->_targetOUI;
-      v48 = [v6 targetOUI];
+      targetOUI3 = [statusCopy targetOUI];
       v49 = v47;
-      v50 = v48;
-      if (([(NSString *)v49 isEqual:v48]& 1) == 0)
+      v50 = targetOUI3;
+      if (([(NSString *)v49 isEqual:targetOUI3]& 1) == 0)
       {
 
         v53 = v108;
-        v4 = v106;
+        uUID2 = v106;
         if (fromBSSID != v108)
         {
 LABEL_122:
@@ -324,7 +324,7 @@ LABEL_64:
             v55 = v54;
 
 LABEL_69:
-            if (v114 == v20)
+            if (v114 == sSID)
             {
               goto LABEL_72;
             }
@@ -347,12 +347,12 @@ LABEL_62:
       targetOUI = v97;
 LABEL_80:
       toBSSID = self->_toBSSID;
-      v59 = [v6 toBSSID];
+      toBSSID = [statusCopy toBSSID];
       v94 = toBSSID;
       v98 = targetOUI;
-      if (toBSSID == v59)
+      if (toBSSID == toBSSID)
       {
-        v95 = v59;
+        v95 = toBSSID;
         goto LABEL_87;
       }
 
@@ -362,31 +362,31 @@ LABEL_80:
         fromBSSID = v96;
 LABEL_106:
 
-        v45 = v99;
+        targetOUI = v99;
         if (v98 != v99)
         {
 
-          v45 = v99;
+          targetOUI = v99;
         }
 
 LABEL_108:
-        v4 = v106;
+        uUID2 = v106;
 
-        v36 = v108;
+        fromBSSID = v108;
         if (fromBSSID == v108)
         {
 LABEL_54:
 
-          v27 = v112;
+          originOUI = v112;
           if (v109 != v112)
           {
 
-            v27 = v112;
+            originOUI = v112;
           }
 
 LABEL_56:
 
-          if (v114 == v20)
+          if (v114 == sSID)
           {
             goto LABEL_58;
           }
@@ -395,49 +395,49 @@ LABEL_56:
         }
 
 LABEL_43:
-        v51 = v36;
+        v51 = fromBSSID;
 
-        v36 = v51;
+        fromBSSID = v51;
         goto LABEL_54;
       }
 
-      v95 = v59;
-      v60 = [v6 toBSSID];
+      v95 = toBSSID;
+      toBSSID2 = [statusCopy toBSSID];
       v61 = v96;
-      if (!v60)
+      if (!toBSSID2)
       {
         v11 = 0;
-        v4 = v106;
+        uUID2 = v106;
         goto LABEL_111;
       }
 
-      v91 = v60;
+      v91 = toBSSID2;
       v62 = self->_toBSSID;
-      v63 = [v6 toBSSID];
+      toBSSID3 = [statusCopy toBSSID];
       v64 = v62;
-      v65 = v63;
-      if (([(NSString *)v64 isEqual:v63]& 1) != 0)
+      v65 = toBSSID3;
+      if (([(NSString *)v64 isEqual:toBSSID3]& 1) != 0)
       {
         v90 = v65;
 LABEL_87:
         toChannel = self->_toChannel;
-        if (toChannel != [v6 toChannel] || (toRSSI = self->_toRSSI, toRSSI != objc_msgSend(v6, "toRSSI")) || (status = self->_status, status != objc_msgSend(v6, "status")) || (reason = self->_reason, reason != objc_msgSend(v6, "reason")) || (timeStarted = self->_timeStarted, timeStarted != objc_msgSend(v6, "timeStarted")) || (timeEnded = self->_timeEnded, timeEnded != objc_msgSend(v6, "timeEnded")))
+        if (toChannel != [statusCopy toChannel] || (toRSSI = self->_toRSSI, toRSSI != objc_msgSend(statusCopy, "toRSSI")) || (status = self->_status, status != objc_msgSend(statusCopy, "status")) || (reason = self->_reason, reason != objc_msgSend(statusCopy, "reason")) || (timeStarted = self->_timeStarted, timeStarted != objc_msgSend(statusCopy, "timeStarted")) || (timeEnded = self->_timeEnded, timeEnded != objc_msgSend(statusCopy, "timeEnded")))
         {
           v76 = 0;
           v11 = 0;
-          v59 = v95;
+          toBSSID = v95;
           v77 = v94 == v95;
           goto LABEL_99;
         }
 
         v105 = interfaceName;
-        v89 = v20;
+        v89 = sSID;
         startedAt = self->_startedAt;
-        v73 = [v6 startedAt];
+        startedAt = [statusCopy startedAt];
         v74 = startedAt;
-        if (startedAt != v73)
+        if (startedAt != startedAt)
         {
-          if (!self->_startedAt || ([v6 startedAt], (v88 = objc_claimAutoreleasedReturnValue()) == 0))
+          if (!self->_startedAt || ([statusCopy startedAt], (v88 = objc_claimAutoreleasedReturnValue()) == 0))
           {
 LABEL_136:
             v76 = 0;
@@ -445,7 +445,7 @@ LABEL_136:
           }
 
           v75 = self->_startedAt;
-          v87 = [v6 startedAt];
+          startedAt2 = [statusCopy startedAt];
           if (([(NSDate *)v75 isEqual:?]& 1) == 0)
           {
 
@@ -456,8 +456,8 @@ LABEL_129:
 
               v79 = v99;
               interfaceName = v105;
-              v4 = v106;
-              v20 = v89;
+              uUID2 = v106;
+              sSID = v89;
               v61 = v96;
               if (v98 == v99)
               {
@@ -471,7 +471,7 @@ LABEL_113:
                 {
                 }
 
-                if (v114 == v20)
+                if (v114 == sSID)
                 {
                   goto LABEL_58;
                 }
@@ -479,7 +479,7 @@ LABEL_113:
 LABEL_57:
 
 LABEL_58:
-                if (interfaceName != v13)
+                if (interfaceName != interfaceName)
                 {
                 }
 
@@ -494,8 +494,8 @@ LABEL_112:
             }
 
             interfaceName = v105;
-            v4 = v106;
-            v20 = v89;
+            uUID2 = v106;
+            sSID = v89;
             v61 = v96;
 LABEL_111:
 
@@ -510,28 +510,28 @@ LABEL_111:
         }
 
         endedAt = self->_endedAt;
-        v82 = [v6 endedAt];
-        v83 = v82;
-        v76 = endedAt == v82;
+        endedAt = [statusCopy endedAt];
+        v83 = endedAt;
+        v76 = endedAt == endedAt;
         if (v76 || !self->_endedAt)
         {
 
-          if (v74 == v73)
+          if (v74 == startedAt)
           {
 LABEL_137:
 
             v11 = v76;
-            v59 = v95;
+            toBSSID = v95;
             v77 = v94 == v95;
-            v20 = v89;
+            sSID = v89;
             interfaceName = v105;
 LABEL_99:
             fromBSSID = v96;
             if (!v77)
             {
-              v78 = v59;
+              v78 = toBSSID;
 
-              v59 = v78;
+              toBSSID = v78;
               v11 = v76;
             }
 
@@ -541,21 +541,21 @@ LABEL_99:
 
         else
         {
-          v86 = [v6 endedAt];
-          if (v86)
+          endedAt2 = [statusCopy endedAt];
+          if (endedAt2)
           {
             v84 = self->_endedAt;
-            v85 = [v6 endedAt];
-            v11 = [(NSDate *)v84 isEqual:v85];
+            endedAt3 = [statusCopy endedAt];
+            v11 = [(NSDate *)v84 isEqual:endedAt3];
 
-            if (v74 != v73)
+            if (v74 != startedAt)
             {
             }
 
             goto LABEL_129;
           }
 
-          if (v74 == v73)
+          if (v74 == startedAt)
           {
             goto LABEL_136;
           }
@@ -564,7 +564,7 @@ LABEL_99:
         goto LABEL_137;
       }
 
-      v4 = v106;
+      uUID2 = v106;
       if (v98 != v99)
       {
       }
@@ -584,7 +584,7 @@ LABEL_99:
 
 LABEL_67:
       v54 = v112;
-      v4 = v106;
+      uUID2 = v106;
       if (v109 != v112)
       {
         goto LABEL_64;
@@ -600,7 +600,7 @@ LABEL_66:
 
 LABEL_72:
 
-  if (interfaceName != v13)
+  if (interfaceName != interfaceName)
   {
 LABEL_73:
 
@@ -611,7 +611,7 @@ LABEL_75:
 
   v11 = 0;
 LABEL_76:
-  if (UUID != v8)
+  if (UUID != uUID)
   {
     goto LABEL_77;
   }
@@ -621,18 +621,18 @@ LABEL_78:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRoamStatus *)self isEqualToRoamStatus:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRoamStatus *)self isEqualToRoamStatus:v5];
   }
 
   return v6;
@@ -659,7 +659,7 @@ LABEL_78:
   return *&veor_s8(*v13.i8, *&vextq_s8(v13, v13, 8uLL)) ^ self->_timeStarted ^ self->_timeEnded ^ self->_status ^ v10 ^ self->_reason ^ v9 ^ v8 ^ v7 ^ v6 ^ v5 ^ v4 ^ v17 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFRoamStatus allocWithZone:?]];
   [(CWFRoamStatus *)v4 setUUID:self->_UUID];
@@ -682,102 +682,102 @@ LABEL_78:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"_UUID"];
-  [v5 encodeObject:self->_interfaceName forKey:@"_interfaceName"];
-  [v5 encodeObject:self->_startedAt forKey:@"_startedAt"];
-  [v5 encodeObject:self->_endedAt forKey:@"_endedAt"];
-  [v5 encodeObject:self->_SSID forKey:@"_SSID"];
-  [v5 encodeObject:self->_originOUI forKey:@"_originOUI"];
-  [v5 encodeObject:self->_fromBSSID forKey:@"_fromBSSID"];
-  [v5 encodeInteger:self->_fromRSSI forKey:@"_fromRSSI"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"_UUID"];
+  [coderCopy encodeObject:self->_interfaceName forKey:@"_interfaceName"];
+  [coderCopy encodeObject:self->_startedAt forKey:@"_startedAt"];
+  [coderCopy encodeObject:self->_endedAt forKey:@"_endedAt"];
+  [coderCopy encodeObject:self->_SSID forKey:@"_SSID"];
+  [coderCopy encodeObject:self->_originOUI forKey:@"_originOUI"];
+  [coderCopy encodeObject:self->_fromBSSID forKey:@"_fromBSSID"];
+  [coderCopy encodeInteger:self->_fromRSSI forKey:@"_fromRSSI"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_fromChannel];
-  [v5 encodeObject:v6 forKey:@"_fromChannel"];
+  [coderCopy encodeObject:v6 forKey:@"_fromChannel"];
 
-  [v5 encodeObject:self->_targetOUI forKey:@"_targetOUI"];
-  [v5 encodeObject:self->_toBSSID forKey:@"_toBSSID"];
-  [v5 encodeInteger:self->_toRSSI forKey:@"_toRSSI"];
+  [coderCopy encodeObject:self->_targetOUI forKey:@"_targetOUI"];
+  [coderCopy encodeObject:self->_toBSSID forKey:@"_toBSSID"];
+  [coderCopy encodeInteger:self->_toRSSI forKey:@"_toRSSI"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_toChannel];
-  [v5 encodeObject:v7 forKey:@"_toChannel"];
+  [coderCopy encodeObject:v7 forKey:@"_toChannel"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_reason];
-  [v5 encodeObject:v8 forKey:@"_reason"];
+  [coderCopy encodeObject:v8 forKey:@"_reason"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_status];
-  [v5 encodeObject:v9 forKey:@"_status"];
+  [coderCopy encodeObject:v9 forKey:@"_status"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timeStarted];
-  [v5 encodeObject:v10 forKey:@"_timeStarted"];
+  [coderCopy encodeObject:v10 forKey:@"_timeStarted"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timeEnded];
-  [v5 encodeObject:v11 forKey:@"_timeEnded"];
+  [coderCopy encodeObject:v11 forKey:@"_timeEnded"];
 }
 
-- (CWFRoamStatus)initWithCoder:(id)a3
+- (CWFRoamStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = CWFRoamStatus;
   v5 = [(CWFRoamStatus *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
     interfaceName = v5->_interfaceName;
     v5->_interfaceName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startedAt"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startedAt"];
     startedAt = v5->_startedAt;
     v5->_startedAt = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endedAt"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_endedAt"];
     endedAt = v5->_endedAt;
     v5->_endedAt = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_SSID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_SSID"];
     SSID = v5->_SSID;
     v5->_SSID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_originOUI"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_originOUI"];
     originOUI = v5->_originOUI;
     v5->_originOUI = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fromBSSID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fromBSSID"];
     fromBSSID = v5->_fromBSSID;
     v5->_fromBSSID = v18;
 
-    v5->_fromRSSI = [v4 decodeIntegerForKey:@"_fromRSSI"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fromChannel"];
+    v5->_fromRSSI = [coderCopy decodeIntegerForKey:@"_fromRSSI"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fromChannel"];
     v5->_fromChannel = [v20 unsignedIntegerValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_targetOUI"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_targetOUI"];
     targetOUI = v5->_targetOUI;
     v5->_targetOUI = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_toBSSID"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_toBSSID"];
     toBSSID = v5->_toBSSID;
     v5->_toBSSID = v23;
 
-    v5->_toRSSI = [v4 decodeIntegerForKey:@"_toRSSI"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_toChannel"];
+    v5->_toRSSI = [coderCopy decodeIntegerForKey:@"_toRSSI"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_toChannel"];
     v5->_toChannel = [v25 unsignedIntegerValue];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_reason"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_reason"];
     v5->_reason = [v26 unsignedIntegerValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
     v5->_status = [v27 unsignedIntegerValue];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeStarted"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeStarted"];
     v5->_timeStarted = [v28 unsignedLongLongValue];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeEnded"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeEnded"];
     v5->_timeEnded = [v29 unsignedLongLongValue];
   }
 
@@ -787,38 +787,38 @@ LABEL_78:
 - (id)JSONCompatibleKeyValueMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CWFRoamStatus *)self UUID];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"uuid"];
+  uUID = [(CWFRoamStatus *)self UUID];
+  uUIDString = [uUID UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"uuid"];
 
-  v6 = [(CWFRoamStatus *)self interfaceName];
-  [v3 setObject:v6 forKeyedSubscript:@"interface_name"];
+  interfaceName = [(CWFRoamStatus *)self interfaceName];
+  [v3 setObject:interfaceName forKeyedSubscript:@"interface_name"];
 
-  v7 = [(CWFRoamStatus *)self startedAt];
-  [v3 setObject:v7 forKeyedSubscript:@"started_at"];
+  startedAt = [(CWFRoamStatus *)self startedAt];
+  [v3 setObject:startedAt forKeyedSubscript:@"started_at"];
 
-  v8 = [(CWFRoamStatus *)self endedAt];
-  [v3 setObject:v8 forKeyedSubscript:@"ended_at"];
+  endedAt = [(CWFRoamStatus *)self endedAt];
+  [v3 setObject:endedAt forKeyedSubscript:@"ended_at"];
 
   v9 = MEMORY[0x1E696AD98];
   [(CWFRoamStatus *)self duration];
   v10 = [v9 numberWithDouble:?];
   [v3 setObject:v10 forKeyedSubscript:@"duration"];
 
-  v11 = [(CWFRoamStatus *)self networkName];
-  [v3 setObject:v11 forKeyedSubscript:@"network_name"];
+  networkName = [(CWFRoamStatus *)self networkName];
+  [v3 setObject:networkName forKeyedSubscript:@"network_name"];
 
-  v12 = [(CWFRoamStatus *)self originOUI];
-  [v3 setObject:v12 forKeyedSubscript:@"origin_oui"];
+  originOUI = [(CWFRoamStatus *)self originOUI];
+  [v3 setObject:originOUI forKeyedSubscript:@"origin_oui"];
 
-  v13 = [(CWFRoamStatus *)self targetOUI];
-  [v3 setObject:v13 forKeyedSubscript:@"target_oui"];
+  targetOUI = [(CWFRoamStatus *)self targetOUI];
+  [v3 setObject:targetOUI forKeyedSubscript:@"target_oui"];
 
-  v14 = [(CWFRoamStatus *)self fromBSSID];
-  [v3 setObject:v14 forKeyedSubscript:@"from_bssid"];
+  fromBSSID = [(CWFRoamStatus *)self fromBSSID];
+  [v3 setObject:fromBSSID forKeyedSubscript:@"from_bssid"];
 
-  v15 = [(CWFRoamStatus *)self toBSSID];
-  [v3 setObject:v15 forKeyedSubscript:@"to_bssid"];
+  toBSSID = [(CWFRoamStatus *)self toBSSID];
+  [v3 setObject:toBSSID forKeyedSubscript:@"to_bssid"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFRoamStatus fromChannel](self, "fromChannel")}];
   [v3 setObject:v16 forKeyedSubscript:@"from_channel"];

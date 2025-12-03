@@ -1,11 +1,11 @@
 @interface NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry;
   v4 = [(NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   type = self->_type;
   if (type)
   {
-    [v3 setObject:type forKey:@"type"];
+    [dictionary setObject:type forKey:@"type"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v7 = [(NPKProtoStandalonePaymentProvisioningMethodMetadata *)metadata dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"metadata"];
+    dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningMethodMetadata *)metadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_type)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_metadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_type)
   {
-    [v4 setType:?];
-    v4 = v5;
+    [toCopy setType:?];
+    toCopy = v5;
   }
 
   if (self->_metadata)
   {
     [v5 setMetadata:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_type copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_type copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NPKProtoStandalonePaymentProvisioningMethodMetadata *)self->_metadata copyWithZone:a3];
+  v8 = [(NPKProtoStandalonePaymentProvisioningMethodMetadata *)self->_metadata copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((type = self->_type, !(type | v4[2])) || -[NSString isEqual:](type, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((type = self->_type, !(type | equalCopy[2])) || -[NSString isEqual:](type, "isEqual:")))
   {
     metadata = self->_metadata;
-    if (metadata | v4[1])
+    if (metadata | equalCopy[1])
     {
       v7 = [(NPKProtoStandalonePaymentProvisioningMethodMetadata *)metadata isEqual:?];
     }
@@ -115,18 +115,18 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[2])
   {
     [(NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry *)self setType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   metadata = self->_metadata;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (metadata)
   {
     if (!v6)
@@ -147,7 +147,7 @@
     [(NPKProtoStandalonePaymentProvisioningMethodMetadataDictionaryEntry *)self setMetadata:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_9:
 }
 

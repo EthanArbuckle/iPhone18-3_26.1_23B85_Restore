@@ -1,5 +1,5 @@
 @interface WFIPMonitor
-- (BOOL)__isIPConfigurationPrimaryForProperty:(__CFString *)a3;
+- (BOOL)__isIPConfigurationPrimaryForProperty:(__CFString *)property;
 - (BOOL)globalProxyIsEnabled;
 - (BOOL)hasValidIPAddress;
 - (BOOL)hasValidIPv4Address;
@@ -8,11 +8,11 @@
 - (BOOL)httpProxyIsAuthenticated;
 - (BOOL)isUsingCustomDNSSettings;
 - (BOOL)isUsingCustomProxySetting;
-- (BOOL)monitorNetworkServiceID:(id)a3;
+- (BOOL)monitorNetworkServiceID:(id)d;
 - (BOOL)personalHotspotHasClients;
 - (BOOL)renewLease;
 - (WFIPMonitor)init;
-- (WFIPMonitor)initWithInterfaceName:(id)a3;
+- (WFIPMonitor)initWithInterfaceName:(id)name;
 - (id)DHCPLeaseExpirationDate;
 - (id)__dhcpInfo;
 - (id)__dnsSetupConfig;
@@ -40,20 +40,20 @@
 - (id)ipv6Router;
 - (int64_t)ipv4ConfigMethod;
 - (int64_t)ipv6ConfigMethod;
-- (void)_postChangesNotification:(id)a3;
+- (void)_postChangesNotification:(id)notification;
 - (void)dealloc;
 @end
 
 @implementation WFIPMonitor
 
-- (WFIPMonitor)initWithInterfaceName:(id)a3
+- (WFIPMonitor)initWithInterfaceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   location = 0;
   v26.receiver = self;
   v26.super_class = WFIPMonitor;
   v6 = [(WFIPMonitor *)&v26 init];
-  if (!v6 || (objc_storeWeak(&location, v6), !v5))
+  if (!v6 || (objc_storeWeak(&location, v6), !nameCopy))
   {
     v8 = 0;
 LABEL_10:
@@ -61,15 +61,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  objc_storeStrong(v6 + 4, a3);
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WiFiKit.ipmonitor-%@", v5];
-  v8 = v7;
-  if (!v7)
+  objc_storeStrong(v6 + 4, name);
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WiFiKit.ipmonitor-%@", nameCopy];
+  v8 = nameCopy;
+  if (!nameCopy)
   {
     goto LABEL_10;
   }
 
-  v9 = dispatch_queue_create([v7 UTF8String], 0);
+  v9 = dispatch_queue_create([nameCopy UTF8String], 0);
   v10 = *(v6 + 8);
   *(v6 + 8) = v9;
 
@@ -116,8 +116,8 @@ LABEL_11:
   }
 
   SCDynamicStoreSetDispatchQueue(*(v6 + 7), *(v6 + 8));
-  v21 = [v6 __wifiServiceID];
-  v22 = [v21 copy];
+  __wifiServiceID = [v6 __wifiServiceID];
+  v22 = [__wifiServiceID copy];
 
   objc_storeStrong(v6 + 3, v22);
   [v6 monitorNetworkServiceID:*(v6 + 3)];
@@ -176,16 +176,16 @@ LABEL_8:
   [(WFIPMonitor *)&v8 dealloc];
 }
 
-- (void)_postChangesNotification:(id)a3
+- (void)_postChangesNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__WFIPMonitor__postChangesNotification___block_invoke;
   v6[3] = &unk_279EBD290;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -208,9 +208,9 @@ void __40__WFIPMonitor__postChangesNotification___block_invoke(uint64_t a1)
 - (id)__wifiServiceID
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v42 = [MEMORY[0x277CBEB18] array];
-  v41 = self;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
   v4 = SCPreferencesCreateWithAuthorization(*MEMORY[0x277CBECE8], self->_bundleIdentifier, 0, 0);
   v5 = v4;
   if (!v4)
@@ -218,21 +218,21 @@ void __40__WFIPMonitor__postChangesNotification___block_invoke(uint64_t a1)
     v8 = 0;
     v7 = 0;
 LABEL_42:
-    if ([(__CFString *)v3 count])
+    if ([(__CFString *)array count])
     {
       v31 = WFLogForCategory(0);
       v32 = OSLogForWFLogLevel(1uLL);
       if (WFCurrentLogLevel() && v31 && os_log_type_enabled(v31, v32))
       {
-        interfaceName = v41->_interfaceName;
+        interfaceName = selfCopy->_interfaceName;
         *buf = 136315906;
         v44 = "[WFIPMonitor __wifiServiceID]";
         v45 = 2114;
         v46 = interfaceName;
         v47 = 2114;
-        v48 = v3;
+        v48 = array;
         v49 = 2114;
-        v50 = v42;
+        v50 = array2;
         _os_log_impl(&dword_273ECD000, v31, v32, "%s Failed to return a service ID. None of the available SCNetworkInterfaceRefs matched the IEEE80211 type. _interfaceName: %{public}@, BSD names compared: %{public}@, types: %{public}@", buf, 0x2Au);
       }
     }
@@ -273,7 +273,7 @@ LABEL_42:
   cf2 = *MEMORY[0x277CE16D8];
   *&v11 = 136315906;
   v36 = v11;
-  v39 = v3;
+  v39 = array;
   do
   {
     ValueAtIndex = CFArrayGetValueAtIndex(v10, v12);
@@ -327,9 +327,9 @@ LABEL_42:
           if (BSDName)
           {
             v24 = [(__CFString *)BSDName copy];
-            [(__CFString *)v3 addObject:v24];
+            [(__CFString *)array addObject:v24];
 
-            v25 = [(__CFString *)v23 isEqualToString:v41->_interfaceName]^ 1;
+            v25 = [(__CFString *)v23 isEqualToString:selfCopy->_interfaceName]^ 1;
           }
 
           else
@@ -343,7 +343,7 @@ LABEL_42:
             goto LABEL_22;
           }
 
-          [(NSString *)v42 addObject:InterfaceType];
+          [(NSString *)array2 addObject:InterfaceType];
           if ((CFEqual(InterfaceType, cf2) == 0) | v25 & 1)
           {
 LABEL_21:
@@ -363,7 +363,7 @@ LABEL_21:
             v29 = OSLogForWFLogLevel(3uLL);
             if (WFCurrentLogLevel() >= 3 && v27 && os_log_type_enabled(v27, v29))
             {
-              v30 = v41->_interfaceName;
+              v30 = selfCopy->_interfaceName;
               *buf = v36;
               v44 = "[WFIPMonitor __wifiServiceID]";
               v45 = 2112;
@@ -404,7 +404,7 @@ LABEL_22:
           InterfaceType = 0;
         }
 
-        v3 = v39;
+        array = v39;
 LABEL_32:
 
         goto LABEL_22;
@@ -449,9 +449,9 @@ LABEL_49:
 {
   if ([(WFIPMonitor *)self ipv4ConfigMethod]== 4)
   {
-    v3 = [(WFIPMonitor *)self ipv4Router];
+    ipv4Router = [(WFIPMonitor *)self ipv4Router];
 
-    if (v3)
+    if (ipv4Router)
     {
       return 1;
     }
@@ -609,7 +609,7 @@ void __31__WFIPMonitor_ipv4ConfigMethod__block_invoke(uint64_t a1)
   *(v3 + 24) = v4;
 }
 
-- (BOOL)__isIPConfigurationPrimaryForProperty:(__CFString *)a3
+- (BOOL)__isIPConfigurationPrimaryForProperty:(__CFString *)property
 {
   v18 = 0;
   v19 = &v18;
@@ -641,7 +641,7 @@ void __31__WFIPMonitor_ipv4ConfigMethod__block_invoke(uint64_t a1)
       v8[6] = &v10;
       v8[7] = v9;
       v8[8] = &v18;
-      v8[9] = a3;
+      v8[9] = property;
       dispatch_sync(queue, v8);
       v4 = v11[3];
       if (v4)
@@ -868,9 +868,9 @@ void __31__WFIPMonitor_ipv4DHCPClientID__block_invoke(uint64_t a1)
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v3 = [(WFIPMonitor *)self __dhcpInfo];
-  v4 = v3;
-  if (v3)
+  __dhcpInfo = [(WFIPMonitor *)self __dhcpInfo];
+  v4 = __dhcpInfo;
+  if (__dhcpInfo)
   {
     queue = self->_queue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -878,7 +878,7 @@ void __31__WFIPMonitor_ipv4DHCPClientID__block_invoke(uint64_t a1)
     v8[2] = __38__WFIPMonitor_DHCPLeaseExpirationDate__block_invoke;
     v8[3] = &unk_279EBD9D0;
     v10 = &v11;
-    v9 = v3;
+    v9 = __dhcpInfo;
     dispatch_sync(queue, v8);
   }
 
@@ -1032,8 +1032,8 @@ void __32__WFIPMonitor_ipv6PrefixLengths__block_invoke(uint64_t a1)
   v15 = 0;
   if ([(WFIPMonitor *)self isUsingCustomDNSSettings])
   {
-    v3 = [(WFIPMonitor *)self __dnsSetupConfig];
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE1700]];
+    __dnsSetupConfig = [(WFIPMonitor *)self __dnsSetupConfig];
+    v4 = [__dnsSetupConfig objectForKeyedSubscript:*MEMORY[0x277CE1700]];
     v5 = v11[5];
     v11[5] = v4;
   }
@@ -1084,8 +1084,8 @@ void __28__WFIPMonitor_dnsDomainName__block_invoke(uint64_t a1)
   v15 = 0;
   if ([(WFIPMonitor *)self isUsingCustomDNSSettings])
   {
-    v3 = [(WFIPMonitor *)self __dnsSetupConfig];
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE1708]];
+    __dnsSetupConfig = [(WFIPMonitor *)self __dnsSetupConfig];
+    v4 = [__dnsSetupConfig objectForKeyedSubscript:*MEMORY[0x277CE1708]];
     v5 = v11[5];
     v11[5] = v4;
   }
@@ -1136,8 +1136,8 @@ void __31__WFIPMonitor_dnsSearchDomains__block_invoke(uint64_t a1)
   v15 = 0;
   if ([(WFIPMonitor *)self isUsingCustomDNSSettings])
   {
-    v3 = [(WFIPMonitor *)self __dnsSetupConfig];
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE1710]];
+    __dnsSetupConfig = [(WFIPMonitor *)self __dnsSetupConfig];
+    v4 = [__dnsSetupConfig objectForKeyedSubscript:*MEMORY[0x277CE1710]];
     v5 = v11[5];
     v11[5] = v4;
   }
@@ -1294,10 +1294,10 @@ void __25__WFIPMonitor___dhcpInfo__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)monitorNetworkServiceID:(id)a3
+- (BOOL)monitorNetworkServiceID:(id)d
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dCopy = d;
   storeRef = self->_storeRef;
   if (storeRef)
   {
@@ -1310,7 +1310,7 @@ void __25__WFIPMonitor___dhcpInfo__block_invoke(uint64_t a1)
     }
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = objc_opt_new();
   dynamicStoreInfo = self->_dynamicStoreInfo;
   self->_dynamicStoreInfo = v11;
@@ -1322,7 +1322,7 @@ void __25__WFIPMonitor___dhcpInfo__block_invoke(uint64_t a1)
   context.retain = MEMORY[0x277CBE558];
   context.release = MEMORY[0x277CBE550];
   context.copyDescription = 0;
-  if (!v7 || (v14 = WFCopyProcessIdentifier()) == 0)
+  if (!dCopy || (v14 = WFCopyProcessIdentifier()) == 0)
   {
     v63 = 0;
     goto LABEL_30;
@@ -1350,31 +1350,31 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v20 = [v10 addObject:v19];
+  v20 = [array addObject:v19];
   v5 = *MEMORY[0x277CE1648];
   v23 = OUTLINED_FUNCTION_2_5(v20, v21, v22, *MEMORY[0x277CE1688]);
   v67 = v19;
   if (v23)
   {
     v68 = v23;
-    v24 = [v10 addObject:v23];
+    v24 = [array addObject:v23];
     v19 = OUTLINED_FUNCTION_2_5(v24, v25, v26, *MEMORY[0x277CE1690]);
     if (v19)
     {
-      v27 = [v10 addObject:v19];
+      v27 = [array addObject:v19];
       v3 = OUTLINED_FUNCTION_2_5(v27, v28, v29, *MEMORY[0x277CE1670]);
       if (v3)
       {
-        v30 = [v10 addObject:v3];
+        v30 = [array addObject:v3];
         v4 = OUTLINED_FUNCTION_2_5(v30, v31, v32, *MEMORY[0x277CE1678]);
         if (v4)
         {
-          v33 = [v10 addObject:v4];
+          v33 = [array addObject:v4];
           v5 = OUTLINED_FUNCTION_2_5(v33, v34, v35, *MEMORY[0x277CE16B8]);
           if (v5)
           {
-            [v10 addObject:v5];
-            NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(v16, v18, v7, *MEMORY[0x277CE1628]);
+            [array addObject:v5];
+            NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(v16, v18, dCopy, *MEMORY[0x277CE1628]);
             v16 = NetworkServiceEntity;
             if (NetworkServiceEntity)
             {
@@ -1382,7 +1382,7 @@ LABEL_34:
               v37 = self->_storeRef;
               v71[0] = NetworkServiceEntity;
               v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
-              LODWORD(v37) = SCDynamicStoreSetNotificationKeys(v37, v10, v38);
+              LODWORD(v37) = SCDynamicStoreSetNotificationKeys(v37, array, v38);
 
               if (v37)
               {
@@ -1391,7 +1391,7 @@ LABEL_34:
                 v40 = OSLogForWFLogLevel(4uLL);
                 if (WFCurrentLogLevel() >= 4 && v39 && os_log_type_enabled(v39, v40))
                 {
-                  HIDWORD(v70) = HIDWORD(v7);
+                  HIDWORD(v70) = HIDWORD(dCopy);
                   OUTLINED_FUNCTION_3_2(&dword_273ECD000, v41, v42, "Monitoring service ID %@", v43, v44, v45, v46, cf, v67, v68, context.version, context.info, context.retain, context.release, context.copyDescription, 2u);
                 }
 
@@ -1399,7 +1399,7 @@ LABEL_34:
                 v48 = OSLogForWFLogLevel(4uLL);
                 if (WFCurrentLogLevel() >= 4 && v47 && os_log_type_enabled(v47, v48))
                 {
-                  HIDWORD(v70) = HIDWORD(v10);
+                  HIDWORD(v70) = HIDWORD(array);
                   OUTLINED_FUNCTION_3_2(&dword_273ECD000, v49, v50, "SC Keys: %@", v51, v52, v53, v54, cf, v67, v68, context.version, context.info, context.retain, context.release, context.copyDescription, 2u);
                 }
 
@@ -1470,15 +1470,15 @@ LABEL_30:
 
 - (BOOL)hasValidIPv4Address
 {
-  v3 = [(WFIPMonitor *)self ipv4Addresses];
-  v4 = v3;
-  if (v3 && [v3 count])
+  ipv4Addresses = [(WFIPMonitor *)self ipv4Addresses];
+  v4 = ipv4Addresses;
+  if (ipv4Addresses && [ipv4Addresses count])
   {
-    v5 = [(WFIPMonitor *)self ipv4SubnetMasks];
-    if (v5)
+    ipv4SubnetMasks = [(WFIPMonitor *)self ipv4SubnetMasks];
+    if (ipv4SubnetMasks)
     {
       v6 = [v4 objectAtIndex:0];
-      v7 = [v5 objectAtIndex:0];
+      v7 = [ipv4SubnetMasks objectAtIndex:0];
       valid = WFIsValidIPv4Address(v6, v7);
     }
 
@@ -1499,15 +1499,15 @@ LABEL_30:
 - (BOOL)hasValidIPv6Address
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(WFIPMonitor *)self ipv6Addresses];
-  v3 = v2;
-  if (v2)
+  ipv6Addresses = [(WFIPMonitor *)self ipv6Addresses];
+  v3 = ipv6Addresses;
+  if (ipv6Addresses)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = v2;
+    v4 = ipv6Addresses;
     v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
@@ -1869,11 +1869,11 @@ LABEL_25:
 
 - (id)httpProxyServer
 {
-  v2 = [(WFIPMonitor *)self __proxiesSetupConfig];
-  v3 = v2;
-  if (v2)
+  __proxiesSetupConfig = [(WFIPMonitor *)self __proxiesSetupConfig];
+  v3 = __proxiesSetupConfig;
+  if (__proxiesSetupConfig)
   {
-    v4 = [v2 objectForKey:*MEMORY[0x277CE17C8]];
+    v4 = [__proxiesSetupConfig objectForKey:*MEMORY[0x277CE17C8]];
   }
 
   else
@@ -1886,15 +1886,15 @@ LABEL_25:
 
 - (id)httpProxyPort
 {
-  v2 = [(WFIPMonitor *)self __proxiesSetupConfig];
-  v3 = v2;
-  if (!v2)
+  __proxiesSetupConfig = [(WFIPMonitor *)self __proxiesSetupConfig];
+  v3 = __proxiesSetupConfig;
+  if (!__proxiesSetupConfig)
   {
     v4 = 0;
     goto LABEL_8;
   }
 
-  v4 = [v2 objectForKey:*MEMORY[0x277CE17C0]];
+  v4 = [__proxiesSetupConfig objectForKey:*MEMORY[0x277CE17C0]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1922,29 +1922,29 @@ LABEL_9:
 
 - (BOOL)httpProxyIsAuthenticated
 {
-  v2 = [(WFIPMonitor *)self __proxiesSetupConfig];
-  v3 = v2;
-  if (v2)
+  __proxiesSetupConfig = [(WFIPMonitor *)self __proxiesSetupConfig];
+  v3 = __proxiesSetupConfig;
+  if (__proxiesSetupConfig)
   {
-    v4 = [v2 objectForKey:@"HTTPProxyAuthenticated"];
-    v5 = [v4 BOOLValue];
+    v4 = [__proxiesSetupConfig objectForKey:@"HTTPProxyAuthenticated"];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)httpProxyUsername
 {
-  v2 = [(WFIPMonitor *)self __proxiesSetupConfig];
-  v3 = v2;
-  if (v2)
+  __proxiesSetupConfig = [(WFIPMonitor *)self __proxiesSetupConfig];
+  v3 = __proxiesSetupConfig;
+  if (__proxiesSetupConfig)
   {
-    v4 = [v2 objectForKey:@"HTTPProxyUsername"];
+    v4 = [__proxiesSetupConfig objectForKey:@"HTTPProxyUsername"];
   }
 
   else
@@ -1957,29 +1957,29 @@ LABEL_9:
 
 - (BOOL)httpProxyAutoConfigured
 {
-  v2 = [(WFIPMonitor *)self __proxiesSetupConfig];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:*MEMORY[0x277CE17E8]], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  __proxiesSetupConfig = [(WFIPMonitor *)self __proxiesSetupConfig];
+  v3 = __proxiesSetupConfig;
+  if (__proxiesSetupConfig && ([__proxiesSetupConfig objectForKey:*MEMORY[0x277CE17E8]], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)httpProxyAutoConfigURL
 {
-  v2 = [(WFIPMonitor *)self __proxiesSetupConfig];
-  v3 = v2;
-  if (v2)
+  __proxiesSetupConfig = [(WFIPMonitor *)self __proxiesSetupConfig];
+  v3 = __proxiesSetupConfig;
+  if (__proxiesSetupConfig)
   {
-    v4 = [v2 objectForKey:*MEMORY[0x277CE17F0]];
+    v4 = [__proxiesSetupConfig objectForKey:*MEMORY[0x277CE17F0]];
   }
 
   else
@@ -2036,29 +2036,29 @@ LABEL_9:
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 intValue];
+      intValue = [v8 intValue];
     }
 
     else
     {
-      v10 = 0;
+      intValue = 0;
     }
 
     v11 = [v7 objectForKey:@"Wifi-NAN"];
     v12 = v11;
     if (v11)
     {
-      v10 += [v11 intValue];
+      intValue += [v11 intValue];
     }
 
     v13 = [v7 objectForKey:@"Bluetooth"];
     v14 = v13;
     if (v13)
     {
-      v10 += [v13 intValue];
+      intValue += [v13 intValue];
     }
 
-    v15 = v10 != 0;
+    v15 = intValue != 0;
   }
 
   else

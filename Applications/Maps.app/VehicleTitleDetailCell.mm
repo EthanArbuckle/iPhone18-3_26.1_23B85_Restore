@@ -1,15 +1,15 @@
 @interface VehicleTitleDetailCell
-- (VehicleTitleDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (double)cellHeightWithWidth:(double)a3;
+- (VehicleTitleDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (double)cellHeightWithWidth:(double)width;
 - (void)_commonInit;
 @end
 
 @implementation VehicleTitleDetailCell
 
-- (double)cellHeightWithWidth:(double)a3
+- (double)cellHeightWithWidth:(double)width
 {
-  v4 = a3 * 0.449999988;
-  [(UILabel *)self->_titleLabel sizeThatFits:a3 * 0.550000012 + -50.0, 1.79769313e308];
+  v4 = width * 0.449999988;
+  [(UILabel *)self->_titleLabel sizeThatFits:width * 0.550000012 + -50.0, 1.79769313e308];
   v6 = v5;
   [(UILabel *)self->_detailLabel sizeThatFits:v4, 1.79769313e308];
   return fmax(fmax(v6, v7) + 20.0, 44.0);
@@ -46,50 +46,50 @@
 
   [(UILabel *)self->_detailLabel setNumberOfLines:0];
   [(UILabel *)self->_detailLabel setTextAlignment:2 * ([(VehicleTitleDetailCell *)self effectiveUserInterfaceLayoutDirection]!= 1)];
-  v11 = [(VehicleTitleDetailCell *)self contentView];
-  [v11 addSubview:self->_titleLabel];
+  contentView = [(VehicleTitleDetailCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 
-  v12 = [(VehicleTitleDetailCell *)self contentView];
-  [v12 addSubview:self->_detailLabel];
+  contentView2 = [(VehicleTitleDetailCell *)self contentView];
+  [contentView2 addSubview:self->_detailLabel];
 
-  v35 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v36 = [(VehicleTitleDetailCell *)self contentView];
-  v34 = [v36 leadingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:20.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView3 = [(VehicleTitleDetailCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v37[0] = v33;
-  v32 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v31 = [(UILabel *)self->_detailLabel leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31 constant:-10.0];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  leadingAnchor3 = [(UILabel *)self->_detailLabel leadingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-10.0];
   v37[1] = v30;
-  v28 = [(UILabel *)self->_titleLabel centerYAnchor];
-  v29 = [(VehicleTitleDetailCell *)self contentView];
-  v27 = [v29 centerYAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerYAnchor = [(UILabel *)self->_titleLabel centerYAnchor];
+  contentView4 = [(VehicleTitleDetailCell *)self contentView];
+  centerYAnchor2 = [contentView4 centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v37[2] = v26;
-  v24 = [(UILabel *)self->_detailLabel trailingAnchor];
-  v25 = [(VehicleTitleDetailCell *)self contentView];
-  v23 = [v25 trailingAnchor];
-  v13 = [v24 constraintEqualToAnchor:v23 constant:-20.0];
+  trailingAnchor2 = [(UILabel *)self->_detailLabel trailingAnchor];
+  contentView5 = [(VehicleTitleDetailCell *)self contentView];
+  trailingAnchor3 = [contentView5 trailingAnchor];
+  v13 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-20.0];
   v37[3] = v13;
-  v14 = [(UILabel *)self->_detailLabel widthAnchor];
-  v15 = [(VehicleTitleDetailCell *)self contentView];
-  v16 = [v15 widthAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 multiplier:0.449999988];
+  widthAnchor = [(UILabel *)self->_detailLabel widthAnchor];
+  contentView6 = [(VehicleTitleDetailCell *)self contentView];
+  widthAnchor2 = [contentView6 widthAnchor];
+  v17 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.449999988];
   v37[4] = v17;
-  v18 = [(UILabel *)self->_detailLabel centerYAnchor];
-  v19 = [(VehicleTitleDetailCell *)self contentView];
-  v20 = [v19 centerYAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  centerYAnchor3 = [(UILabel *)self->_detailLabel centerYAnchor];
+  contentView7 = [(VehicleTitleDetailCell *)self contentView];
+  centerYAnchor4 = [contentView7 centerYAnchor];
+  v21 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v37[5] = v21;
   v22 = [NSArray arrayWithObjects:v37 count:6];
   [NSLayoutConstraint activateConstraints:v22];
 }
 
-- (VehicleTitleDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VehicleTitleDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = VehicleTitleDetailCell;
-  v4 = [(VehicleTitleDetailCell *)&v7 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(VehicleTitleDetailCell *)&v7 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

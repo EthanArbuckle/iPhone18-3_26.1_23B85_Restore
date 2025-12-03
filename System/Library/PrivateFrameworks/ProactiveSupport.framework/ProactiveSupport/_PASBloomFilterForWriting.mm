@@ -1,18 +1,18 @@
 @interface _PASBloomFilterForWriting
-+ (id)bloomFilterInMemoryWithNumberOfValuesN:(unint64_t)a3 errorRateP:(float)a4;
-- (void)setWithHashes:(id)a3;
++ (id)bloomFilterInMemoryWithNumberOfValuesN:(unint64_t)n errorRateP:(float)p;
+- (void)setWithHashes:(id)hashes;
 @end
 
 @implementation _PASBloomFilterForWriting
 
-- (void)setWithHashes:(id)a3
+- (void)setWithHashes:(id)hashes
 {
   v5 = self->super._data;
-  v6 = [a3 hashes];
+  hashes = [hashes hashes];
   v13 = 0;
   if (self->super._numHashFunctions >= 1)
   {
-    v7 = v6;
+    v7 = hashes;
     v8 = 0;
     do
     {
@@ -35,21 +35,21 @@
   }
 }
 
-+ (id)bloomFilterInMemoryWithNumberOfValuesN:(unint64_t)a3 errorRateP:(float)a4
++ (id)bloomFilterInMemoryWithNumberOfValuesN:(unint64_t)n errorRateP:(float)p
 {
-  v9 = 1000;
-  if (a3 > 0x3E8)
+  nCopy = 1000;
+  if (n > 0x3E8)
   {
-    v9 = a3;
+    nCopy = n;
   }
 
-  v10 = 0.00001;
-  if (a4 >= 0.00001)
+  pCopy = 0.00001;
+  if (p >= 0.00001)
   {
-    v10 = a4;
-    if (a4 > 0.99999)
+    pCopy = p;
+    if (p > 0.99999)
     {
-      v10 = 0.99999;
+      pCopy = 0.99999;
     }
   }
 
@@ -57,8 +57,8 @@
   v21 = v7;
   v22 = v5;
   v23 = v6;
-  v11 = v9;
-  v12 = ceil(log(v10) * v9 / -0.480453014);
+  v11 = nCopy;
+  v12 = ceil(log(pCopy) * nCopy / -0.480453014);
   LODWORD(v4) = vcvtad_u64_f64(v12 * 0.693147181 / v11);
   if (v4 <= 0x40 && (v13 = vcvtps_u32_f32(vcvts_n_f32_u64(vcvtpd_u64_f64(v12 * 0.125) + 16, 0xEuLL)), v13 << 14 <= 0x40000000))
   {

@@ -1,46 +1,46 @@
 @interface TSTransferOneTimeCodeViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSTransferOneTimeCodeViewController)initWithSourceIccid:(id)a3 phoneNumber:(id)a4 carrierName:(id)a5 usePin:(BOOL)a6;
-- (void)_cancelButtonTapped:(id)a3;
-- (void)_changeOtpTextFieldState:(BOOL)a3;
-- (void)_continueButtonTapped:(id)a3;
+- (TSTransferOneTimeCodeViewController)initWithSourceIccid:(id)iccid phoneNumber:(id)number carrierName:(id)name usePin:(BOOL)pin;
+- (void)_cancelButtonTapped:(id)tapped;
+- (void)_changeOtpTextFieldState:(BOOL)state;
+- (void)_continueButtonTapped:(id)tapped;
 - (void)_hideKeyboard;
-- (void)_installStateChanged:(id)a3;
+- (void)_installStateChanged:(id)changed;
 - (void)_resendOTP;
 - (void)_setupLayoutConstraint;
 - (void)_startObserver;
 - (void)_textFieldDidChange;
 - (void)disableButtonsAndHideSpinnerText;
-- (void)updateOtpState:(int64_t)a3;
+- (void)updateOtpState:(int64_t)state;
 - (void)viewDidLoad;
 @end
 
 @implementation TSTransferOneTimeCodeViewController
 
-- (TSTransferOneTimeCodeViewController)initWithSourceIccid:(id)a3 phoneNumber:(id)a4 carrierName:(id)a5 usePin:(BOOL)a6
+- (TSTransferOneTimeCodeViewController)initWithSourceIccid:(id)iccid phoneNumber:(id)number carrierName:(id)name usePin:(BOOL)pin
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  pinCopy = pin;
+  iccidCopy = iccid;
+  numberCopy = number;
+  nameCopy = name;
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = v14;
-  if (!v6)
+  if (!pinCopy)
   {
     v16 = [v14 localizedStringForKey:@"ENTER_ONE_TIME_PASSCODE" value:&stru_28753DF48 table:@"Localizable"];
 
-    v36 = v11;
-    if ([v12 length] && (v21 = MEMORY[0x277CCACA8], objc_msgSend(v12, "formattedPhoneNumber"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "stringWithFormat:", @"%@%@", @"****", v22), v18 = objc_claimAutoreleasedReturnValue(), v22, v18))
+    v36 = iccidCopy;
+    if ([numberCopy length] && (v21 = MEMORY[0x277CCACA8], objc_msgSend(numberCopy, "formattedPhoneNumber"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "stringWithFormat:", @"%@%@", @"****", v22), v18 = objc_claimAutoreleasedReturnValue(), v22, v18))
     {
-      v23 = [v13 length];
+      v23 = [nameCopy length];
       v24 = MEMORY[0x277CCACA8];
       v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v26 = v25;
       if (v23)
       {
         v27 = [v25 localizedStringForKey:@"ONE_TIME_PASSCODE_DETAILS_%@_%@" value:&stru_28753DF48 table:@"Localizable"];
-        [v24 stringWithFormat:v27, v18, v13];
+        [v24 stringWithFormat:v27, v18, nameCopy];
       }
 
       else
@@ -48,25 +48,25 @@
         v27 = [v25 localizedStringForKey:@"ONE_TIME_PASSCODE_DETAILS_NO_CARRIER_%@" value:&stru_28753DF48 table:@"Localizable"];
         [v24 stringWithFormat:v27, v18, v35];
       }
-      v20 = ;
+      nameCopy = ;
     }
 
     else
     {
-      if (![v13 length])
+      if (![nameCopy length])
       {
         v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v20 = [v18 localizedStringForKey:@"ONE_TIME_PASSCODE_DETAILS_NO_CARRIER_NO_PHONE_NUMBER" value:&stru_28753DF48 table:@"Localizable"];
+        nameCopy = [v18 localizedStringForKey:@"ONE_TIME_PASSCODE_DETAILS_NO_CARRIER_NO_PHONE_NUMBER" value:&stru_28753DF48 table:@"Localizable"];
 LABEL_15:
-        v11 = v36;
-        LOBYTE(v6) = 0;
+        iccidCopy = v36;
+        LOBYTE(pinCopy) = 0;
         goto LABEL_16;
       }
 
       v28 = MEMORY[0x277CCACA8];
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v26 = [v18 localizedStringForKey:@"ONE_TIME_PASSCODE_DETAILS_NO_PHONE_NUMBER_%@" value:&stru_28753DF48 table:@"Localizable"];
-      v20 = [v28 stringWithFormat:v26, v13];
+      nameCopy = [v28 stringWithFormat:v26, nameCopy];
     }
 
     goto LABEL_15;
@@ -74,31 +74,31 @@ LABEL_15:
 
   v16 = [v14 localizedStringForKey:@"ENTER_ACCOUNT_PIN" value:&stru_28753DF48 table:@"Localizable"];
 
-  if ([v13 length])
+  if ([nameCopy length])
   {
     v17 = MEMORY[0x277CCACA8];
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"ENTER_PIN_DETAILS_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v20 = [v17 stringWithFormat:v19, v13];
+    nameCopy = [v17 stringWithFormat:v19, nameCopy];
   }
 
   else
   {
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v20 = [v18 localizedStringForKey:@"ENTER_PIN_DETAILS_NO_CARRIER" value:&stru_28753DF48 table:@"Localizable"];
+    nameCopy = [v18 localizedStringForKey:@"ENTER_PIN_DETAILS_NO_CARRIER" value:&stru_28753DF48 table:@"Localizable"];
   }
 
 LABEL_16:
 
   v37.receiver = self;
   v37.super_class = TSTransferOneTimeCodeViewController;
-  v29 = [(TSTransferOneTimeCodeViewController *)&v37 initWithTitle:v16 detailText:v20 icon:0];
+  v29 = [(TSTransferOneTimeCodeViewController *)&v37 initWithTitle:v16 detailText:nameCopy icon:0];
   v30 = v29;
   if (v29)
   {
-    objc_storeStrong(&v29->_details, v20);
-    objc_storeStrong(&v30->_sourceIccid, a3);
-    v30->_usePin = v6;
+    objc_storeStrong(&v29->_details, nameCopy);
+    objc_storeStrong(&v30->_sourceIccid, iccid);
+    v30->_usePin = pinCopy;
     v31 = objc_alloc(MEMORY[0x277CC37B0]);
     v32 = [v31 initWithQueue:MEMORY[0x277D85CD0]];
     client = v30->_client;
@@ -116,9 +116,9 @@ LABEL_16:
   [(TSOBWelcomeController *)&v41 viewDidLoad];
   [(TSTransferOneTimeCodeViewController *)self _startObserver];
   [(TSTransferOneTimeCodeViewController *)self setModalInPresentation:1];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(TSTransferOneTimeCodeViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(TSTransferOneTimeCodeViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc(MEMORY[0x277D75BB8]);
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -151,8 +151,8 @@ LABEL_16:
 
   [v8 sizeToFit];
   [(UITextField *)self->_otpEditor setInputAccessoryView:v8];
-  v15 = [(TSTransferOneTimeCodeViewController *)self view];
-  [v15 addSubview:self->_otpEditor];
+  view2 = [(TSTransferOneTimeCodeViewController *)self view];
+  [view2 addSubview:self->_otpEditor];
 
   if (!self->_usePin)
   {
@@ -166,8 +166,8 @@ LABEL_16:
     [(SSOBLinkTrayButton *)v18 setTitle:v20 forState:0];
 
     [(SSOBLinkTrayButton *)self->_resendOTPButton addTarget:self action:sel__resendOTP forControlEvents:64];
-    v21 = [(TSTransferOneTimeCodeViewController *)self view];
-    [v21 addSubview:self->_resendOTPButton];
+    view3 = [(TSTransferOneTimeCodeViewController *)self view];
+    [view3 addSubview:self->_resendOTPButton];
   }
 
   v22 = +[SSOBBoldTrayButton boldButton];
@@ -181,14 +181,14 @@ LABEL_16:
 
   [(SSOBBoldTrayButton *)self->_continueButton addTarget:self action:sel__continueButtonTapped_ forControlEvents:64];
   [(OBBoldTrayButton *)self->_continueButton setEnabled:0];
-  v27 = [(TSTransferOneTimeCodeViewController *)self buttonTray];
-  [v27 addButton:self->_continueButton];
+  buttonTray = [(TSTransferOneTimeCodeViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   if (+[TSUtilities inBuddy])
   {
-    v28 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     skipButton = self->_skipButton;
-    self->_skipButton = v28;
+    self->_skipButton = linkButton;
 
     [(OBLinkTrayButton *)self->_skipButton setRole:2];
     v30 = self->_skipButton;
@@ -197,11 +197,11 @@ LABEL_16:
     [(OBLinkTrayButton *)v30 setTitle:v32 forState:0];
 
     [(OBLinkTrayButton *)self->_skipButton addTarget:self action:sel__cancelButtonTapped_ forControlEvents:64];
-    v33 = [(TSTransferOneTimeCodeViewController *)self buttonTray];
-    [v33 addButton:self->_skipButton];
+    buttonTray2 = [(TSTransferOneTimeCodeViewController *)self buttonTray];
+    [buttonTray2 addButton:self->_skipButton];
 
-    v34 = [(TSTransferOneTimeCodeViewController *)self buttonTray];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+    buttonTray3 = [(TSTransferOneTimeCodeViewController *)self buttonTray];
+    [buttonTray3 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
@@ -210,98 +210,98 @@ LABEL_16:
     cancelButton = self->_cancelButton;
     self->_cancelButton = v35;
 
-    v34 = [(OBBaseWelcomeController *)self navigationItem];
-    [v34 setLeftBarButtonItem:self->_cancelButton];
+    buttonTray3 = [(OBBaseWelcomeController *)self navigationItem];
+    [buttonTray3 setLeftBarButtonItem:self->_cancelButton];
   }
 
   [(TSTransferOneTimeCodeViewController *)self _setupLayoutConstraint];
-  v37 = [(OBBaseWelcomeController *)self navigationItem];
-  [v37 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   v38 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__hideKeyboard];
-  v39 = [(TSTransferOneTimeCodeViewController *)self view];
-  [v39 addGestureRecognizer:v38];
+  view4 = [(TSTransferOneTimeCodeViewController *)self view];
+  [view4 addGestureRecognizer:v38];
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   otpEditor = self->_otpEditor;
-  if (otpEditor == a3)
+  if (otpEditor == return)
   {
     [(TSTransferOneTimeCodeViewController *)self _hideKeyboard];
   }
 
-  return otpEditor != a3;
+  return otpEditor != return;
 }
 
 - (void)_hideKeyboard
 {
   if ([(UITextField *)self->_otpEditor isFirstResponder])
   {
-    v3 = [(TSTransferOneTimeCodeViewController *)self view];
-    [v3 endEditing:1];
+    view = [(TSTransferOneTimeCodeViewController *)self view];
+    [view endEditing:1];
   }
 }
 
 - (void)_setupLayoutConstraint
 {
-  v3 = [(UITextField *)self->_otpEditor topAnchor];
-  v4 = [(TSTransferOneTimeCodeViewController *)self headerView];
-  v5 = [v4 bottomAnchor];
-  v6 = [v3 constraintGreaterThanOrEqualToAnchor:v5 constant:20.0];
+  topAnchor = [(UITextField *)self->_otpEditor topAnchor];
+  headerView = [(TSTransferOneTimeCodeViewController *)self headerView];
+  bottomAnchor = [headerView bottomAnchor];
+  v6 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:20.0];
   [v6 setActive:1];
 
-  v7 = [(UITextField *)self->_otpEditor leadingAnchor];
-  v8 = [(TSTransferOneTimeCodeViewController *)self contentView];
-  v9 = [v8 layoutMarginsGuide];
-  v10 = [v9 leadingAnchor];
-  v11 = [v7 constraintGreaterThanOrEqualToAnchor:v10];
+  leadingAnchor = [(UITextField *)self->_otpEditor leadingAnchor];
+  contentView = [(TSTransferOneTimeCodeViewController *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v11 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UITextField *)self->_otpEditor trailingAnchor];
-  v13 = [(TSTransferOneTimeCodeViewController *)self contentView];
-  v14 = [v13 layoutMarginsGuide];
-  v15 = [v14 trailingAnchor];
-  v16 = [v12 constraintGreaterThanOrEqualToAnchor:v15];
+  trailingAnchor = [(UITextField *)self->_otpEditor trailingAnchor];
+  contentView2 = [(TSTransferOneTimeCodeViewController *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v16 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   [v16 setActive:1];
 
-  v17 = [(UITextField *)self->_otpEditor centerXAnchor];
-  v18 = [(TSTransferOneTimeCodeViewController *)self view];
-  v19 = [v18 centerXAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  centerXAnchor = [(UITextField *)self->_otpEditor centerXAnchor];
+  view = [(TSTransferOneTimeCodeViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v20 setActive:1];
 
   if (!self->_usePin)
   {
-    v21 = [(SSOBLinkTrayButton *)self->_resendOTPButton topAnchor];
-    v22 = [(UITextField *)self->_otpEditor bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:20.0];
+    topAnchor2 = [(SSOBLinkTrayButton *)self->_resendOTPButton topAnchor];
+    bottomAnchor2 = [(UITextField *)self->_otpEditor bottomAnchor];
+    v23 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:20.0];
     [v23 setActive:1];
 
-    v27 = [(SSOBLinkTrayButton *)self->_resendOTPButton centerXAnchor];
-    v24 = [(TSTransferOneTimeCodeViewController *)self view];
-    v25 = [v24 centerXAnchor];
-    v26 = [v27 constraintEqualToAnchor:v25];
+    centerXAnchor3 = [(SSOBLinkTrayButton *)self->_resendOTPButton centerXAnchor];
+    view2 = [(TSTransferOneTimeCodeViewController *)self view];
+    centerXAnchor4 = [view2 centerXAnchor];
+    v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v26 setActive:1];
   }
 }
 
-- (void)updateOtpState:(int64_t)a3
+- (void)updateOtpState:(int64_t)state
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v25 = a3;
+    stateCopy = state;
     v26 = 2080;
     v27 = "[TSTransferOneTimeCodeViewController updateOtpState:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "updating otpState to %ld @%s", buf, 0x16u);
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     usePin = self->_usePin;
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -351,7 +351,7 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
 LABEL_13:
     [(OBWelcomeController *)self _hideButtonTraySpinner];
@@ -415,14 +415,14 @@ uint64_t __71__TSTransferOneTimeCodeViewController_disableButtonsAndHideSpinnerT
   return [v2 setEnabled:0];
 }
 
-- (void)_continueButtonTapped:(id)a3
+- (void)_continueButtonTapped:(id)tapped
 {
-  v5 = [(UITextField *)self->_otpEditor text];
+  text = [(UITextField *)self->_otpEditor text];
   [(TSTransferOneTimeCodeViewController *)self disableButtonsAndHideSpinnerText];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained startTimer:1];
 
-  [(CoreTelephonyClient *)self->_client handleUserEnteredOtp:self->_sourceIccid otp:v5 completion:&__block_literal_global_9];
+  [(CoreTelephonyClient *)self->_client handleUserEnteredOtp:self->_sourceIccid otp:text completion:&__block_literal_global_9];
 }
 
 void __61__TSTransferOneTimeCodeViewController__continueButtonTapped___block_invoke(uint64_t a1, void *a2)
@@ -438,7 +438,7 @@ void __61__TSTransferOneTimeCodeViewController__continueButtonTapped___block_inv
   }
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _TSLogDomain();
@@ -474,11 +474,11 @@ void __59__TSTransferOneTimeCodeViewController__cancelButtonTapped___block_invok
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_changeOtpTextFieldState:(BOOL)a3
+- (void)_changeOtpTextFieldState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   [(UITextField *)self->_otpEditor setEnabled:?];
-  if (v3)
+  if (stateCopy)
   {
     otpEditor = self->_otpEditor;
 
@@ -487,20 +487,20 @@ void __59__TSTransferOneTimeCodeViewController__cancelButtonTapped___block_invok
 
   else
   {
-    v6 = [MEMORY[0x277D75348] grayColor];
-    [(UITextField *)self->_otpEditor setTextColor:v6];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UITextField *)self->_otpEditor setTextColor:grayColor];
   }
 }
 
-- (void)_installStateChanged:(id)a3
+- (void)_installStateChanged:(id)changed
 {
-  v6 = a3;
-  v4 = [v6 userInfo];
-  v5 = [v4 objectForKey:@"PlanId"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v5 = [userInfo objectForKey:@"PlanId"];
 
   if ([v5 isEqualToString:self->_sourceIccid])
   {
-    [(OBWelcomeController *)self _updateTrayButtonText:v6];
+    [(OBWelcomeController *)self _updateTrayButtonText:changedCopy];
   }
 }
 
@@ -541,14 +541,14 @@ void __49__TSTransferOneTimeCodeViewController__resendOTP__block_invoke(uint64_t
 
 - (void)_startObserver
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__installStateChanged_ name:@"esim.install.state.changed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__installStateChanged_ name:@"esim.install.state.changed" object:0];
 }
 
 - (void)_textFieldDidChange
 {
-  v3 = [(UITextField *)self->_otpEditor text];
-  -[OBBoldTrayButton setEnabled:](self->_continueButton, "setEnabled:", [v3 length] != 0);
+  text = [(UITextField *)self->_otpEditor text];
+  -[OBBoldTrayButton setEnabled:](self->_continueButton, "setEnabled:", [text length] != 0);
 }
 
 - (TSSIMSetupFlowDelegate)delegate

@@ -1,12 +1,12 @@
 @interface SBCoverSheetSceneManager
-- (SBCoverSheetSceneManager)initWithCoverSheetWindow:(id)a3;
+- (SBCoverSheetSceneManager)initWithCoverSheetWindow:(id)window;
 - (UIWindow)coverSheetWindow;
 - (void)_performNextSceneUpdateBlock;
-- (void)_performSceneUpdateBlock:(id)a3;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3;
-- (void)_setSceneBackgrounded:(BOOL)a3 suspendUnderLockEnvironment:(BOOL)a4;
-- (void)_updateForegroundScenesForNotificationCenter:(BOOL)a3;
-- (void)updateForegroundScenesForCoverSheetAnimationActive:(BOOL)a3;
+- (void)_performSceneUpdateBlock:(id)block;
+- (void)_setDisplayLayoutElementActive:(BOOL)active;
+- (void)_setSceneBackgrounded:(BOOL)backgrounded suspendUnderLockEnvironment:(BOOL)environment;
+- (void)_updateForegroundScenesForNotificationCenter:(BOOL)center;
+- (void)updateForegroundScenesForCoverSheetAnimationActive:(BOOL)active;
 @end
 
 @implementation SBCoverSheetSceneManager
@@ -15,8 +15,8 @@
 {
   if (!self->_performingSceneUpdate)
   {
-    v3 = [(NSMutableArray *)self->_pendingSceneUpdateBlocks firstObject];
-    if (v3)
+    firstObject = [(NSMutableArray *)self->_pendingSceneUpdateBlocks firstObject];
+    if (firstObject)
     {
       self->_performingSceneUpdate = 1;
       [(NSMutableArray *)self->_pendingSceneUpdateBlocks removeObjectAtIndex:0];
@@ -25,29 +25,29 @@
       v4[2] = __56__SBCoverSheetSceneManager__performNextSceneUpdateBlock__block_invoke;
       v4[3] = &unk_2783A8C18;
       v4[4] = self;
-      (v3)[2](v3, v4);
+      (firstObject)[2](firstObject, v4);
     }
   }
 }
 
-- (SBCoverSheetSceneManager)initWithCoverSheetWindow:(id)a3
+- (SBCoverSheetSceneManager)initWithCoverSheetWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v19.receiver = self;
   v19.super_class = SBCoverSheetSceneManager;
   v5 = [(SBCoverSheetSceneManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_coverSheetWindow, v4);
+    objc_storeWeak(&v5->_coverSheetWindow, windowCopy);
     v7 = +[SBSceneManagerCoordinator sharedInstance];
-    v8 = [v7 sceneDeactivationManager];
+    sceneDeactivationManager = [v7 sceneDeactivationManager];
 
-    v9 = [v8 newAssertionWithReason:1];
+    v9 = [sceneDeactivationManager newAssertionWithReason:1];
     notificationCenterAssertion = v6->_notificationCenterAssertion;
     v6->_notificationCenterAssertion = v9;
 
-    v11 = [v8 newAssertionWithReason:5];
+    v11 = [sceneDeactivationManager newAssertionWithReason:5];
     systemAnimationAssertion = v6->_systemAnimationAssertion;
     v6->_systemAnimationAssertion = v11;
 
@@ -89,31 +89,31 @@ id __53__SBCoverSheetSceneManager_initWithCoverSheetWindow___block_invoke(uint64
   return v7;
 }
 
-- (void)updateForegroundScenesForCoverSheetAnimationActive:(BOOL)a3
+- (void)updateForegroundScenesForCoverSheetAnimationActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(UIApplicationSceneDeactivationAssertion *)self->_systemAnimationAssertion isAcquired];
-  if (v3)
+  activeCopy = active;
+  isAcquired = [(UIApplicationSceneDeactivationAssertion *)self->_systemAnimationAssertion isAcquired];
+  if (activeCopy)
   {
-    if ((v5 & 1) == 0)
+    if ((isAcquired & 1) == 0)
     {
       v6 = +[SBSpotlightMultiplexingViewController sharedRemoteSearchViewController];
-      v7 = [v6 sceneIdentifier];
+      sceneIdentifier = [v6 sceneIdentifier];
 
       systemAnimationAssertion = self->_systemAnimationAssertion;
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __79__SBCoverSheetSceneManager_updateForegroundScenesForCoverSheetAnimationActive___block_invoke;
       v13[3] = &unk_2783ADD00;
-      v14 = v7;
-      v9 = v7;
+      v14 = sceneIdentifier;
+      v9 = sceneIdentifier;
       WeakRetained = objc_loadWeakRetained(&self->_coverSheetWindow);
-      v11 = [WeakRetained _fbsDisplayIdentity];
-      [(UIApplicationSceneDeactivationAssertion *)systemAnimationAssertion sb_acquireWithPredicate:v13 transitionContext:0 displayIdentity:v11];
+      _fbsDisplayIdentity = [WeakRetained _fbsDisplayIdentity];
+      [(UIApplicationSceneDeactivationAssertion *)systemAnimationAssertion sb_acquireWithPredicate:v13 transitionContext:0 displayIdentity:_fbsDisplayIdentity];
     }
   }
 
-  else if (v5)
+  else if (isAcquired)
   {
     v12 = self->_systemAnimationAssertion;
 
@@ -129,11 +129,11 @@ uint64_t __79__SBCoverSheetSceneManager_updateForegroundScenesForCoverSheetAnima
   return a1 ^ 1;
 }
 
-- (void)_performSceneUpdateBlock:(id)a3
+- (void)_performSceneUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   pendingSceneUpdateBlocks = self->_pendingSceneUpdateBlocks;
-  v9 = v4;
+  v9 = blockCopy;
   if (!pendingSceneUpdateBlocks)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
@@ -152,10 +152,10 @@ uint64_t __79__SBCoverSheetSceneManager_updateForegroundScenesForCoverSheetAnima
   }
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3
+- (void)_setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutAssertion = self->_displayLayoutAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutAssertion)
     {
@@ -170,8 +170,8 @@ uint64_t __79__SBCoverSheetSceneManager_updateForegroundScenesForCoverSheetAnima
 
     [v12 setFillsDisplayBounds:1];
     [v12 setLayoutRole:3];
-    v8 = [MEMORY[0x277D0AAA0] sharedInstance];
-    v9 = [v8 addElement:v12];
+    mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
+    v9 = [mEMORY[0x277D0AAA0] addElement:v12];
     v10 = self->_displayLayoutAssertion;
     self->_displayLayoutAssertion = v9;
 
@@ -191,15 +191,15 @@ uint64_t __79__SBCoverSheetSceneManager_updateForegroundScenesForCoverSheetAnima
   }
 }
 
-- (void)_setSceneBackgrounded:(BOOL)a3 suspendUnderLockEnvironment:(BOOL)a4
+- (void)_setSceneBackgrounded:(BOOL)backgrounded suspendUnderLockEnvironment:(BOOL)environment
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __78__SBCoverSheetSceneManager__setSceneBackgrounded_suspendUnderLockEnvironment___block_invoke;
   v4[3] = &unk_2783BB1F8;
-  v5 = a3;
+  backgroundedCopy = backgrounded;
   v4[4] = self;
-  v6 = a4;
+  environmentCopy = environment;
   [(SBCoverSheetSceneManager *)self _performSceneUpdateBlock:v4];
 }
 
@@ -263,13 +263,13 @@ uint64_t __78__SBCoverSheetSceneManager__setSceneBackgrounded_suspendUnderLockEn
   return v2();
 }
 
-- (void)_updateForegroundScenesForNotificationCenter:(BOOL)a3
+- (void)_updateForegroundScenesForNotificationCenter:(BOOL)center
 {
-  v3 = a3;
-  v5 = [(UIApplicationSceneDeactivationAssertion *)self->_notificationCenterAssertion isAcquired];
-  if (v3)
+  centerCopy = center;
+  isAcquired = [(UIApplicationSceneDeactivationAssertion *)self->_notificationCenterAssertion isAcquired];
+  if (centerCopy)
   {
-    if ((v5 & 1) == 0)
+    if ((isAcquired & 1) == 0)
     {
       notificationCenterAssertion = self->_notificationCenterAssertion;
 
@@ -277,7 +277,7 @@ uint64_t __78__SBCoverSheetSceneManager__setSceneBackgrounded_suspendUnderLockEn
     }
   }
 
-  else if (v5)
+  else if (isAcquired)
   {
     v7 = self->_notificationCenterAssertion;
 

@@ -2,7 +2,7 @@
 - (MUActionRowItemViewModel)init;
 - (MUPlaceActionBarItem)leadingActionBarItem;
 - (id)analyticsButtonValues;
-- (void)setFeatureDiscoveryView:(id)a3;
+- (void)setFeatureDiscoveryView:(id)view;
 @end
 
 @implementation MUActionRowItemViewModel
@@ -10,21 +10,21 @@
 - (MUPlaceActionBarItem)leadingActionBarItem
 {
   v3 = [MUPlaceActionBarTypeCustom alloc];
-  v4 = [(MUActionRowItemViewModel *)self actionBarSymbolName];
-  if (v4)
+  actionBarSymbolName = [(MUActionRowItemViewModel *)self actionBarSymbolName];
+  if (actionBarSymbolName)
   {
-    v5 = [(MUPlaceActionBarTypeCustom *)v3 initWithSymbolName:v4 text:0];
+    v5 = [(MUPlaceActionBarTypeCustom *)v3 initWithSymbolName:actionBarSymbolName text:0];
   }
 
   else
   {
-    v6 = [(MUActionRowItemViewModel *)self symbolName];
-    v5 = [(MUPlaceActionBarTypeCustom *)v3 initWithSymbolName:v6 text:0];
+    symbolName = [(MUActionRowItemViewModel *)self symbolName];
+    v5 = [(MUPlaceActionBarTypeCustom *)v3 initWithSymbolName:symbolName text:0];
   }
 
   v7 = [MUPlaceActionBarItem alloc];
-  v8 = [(MUActionRowItemViewModel *)self accessibilityIdentifier];
-  v9 = [(MUPlaceActionBarItem *)v7 initWithType:v5 axID:v8];
+  accessibilityIdentifier = [(MUActionRowItemViewModel *)self accessibilityIdentifier];
+  v9 = [(MUPlaceActionBarItem *)v7 initWithType:v5 axID:accessibilityIdentifier];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -53,11 +53,11 @@ void __48__MUActionRowItemViewModel_leadingActionBarItem__block_invoke(uint64_t 
 - (id)analyticsButtonValues
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(MUActionRowItemViewModel *)self analyticsButtonValue];
-  v3 = v2;
-  if (v2)
+  analyticsButtonValue = [(MUActionRowItemViewModel *)self analyticsButtonValue];
+  v3 = analyticsButtonValue;
+  if (analyticsButtonValue)
   {
-    v7[0] = v2;
+    v7[0] = analyticsButtonValue;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -71,19 +71,19 @@ void __48__MUActionRowItemViewModel_leadingActionBarItem__block_invoke(uint64_t 
   return v4;
 }
 
-- (void)setFeatureDiscoveryView:(id)a3
+- (void)setFeatureDiscoveryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_featureDiscoveryView = &self->_featureDiscoveryView;
-  if (self->_featureDiscoveryView != v5)
+  if (self->_featureDiscoveryView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_featureDiscoveryView, a3);
+    v7 = viewCopy;
+    objc_storeStrong(p_featureDiscoveryView, view);
     p_featureDiscoveryView = [(GEOObserverHashTable *)self->_observers didUpdateFeatureDiscoveryStatus:self];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_featureDiscoveryView, v5);
+  MEMORY[0x1EEE66BB8](p_featureDiscoveryView, viewCopy);
 }
 
 - (MUActionRowItemViewModel)init

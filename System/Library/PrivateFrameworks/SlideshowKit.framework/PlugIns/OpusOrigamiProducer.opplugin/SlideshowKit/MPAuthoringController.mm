@@ -1,96 +1,96 @@
 @interface MPAuthoringController
 + (id)sharedController;
 + (void)releaseSharedController;
-- (BOOL)canDocumentFitToAudio:(id)a3 withOptions:(id)a4 requiredAudioDuration:(double *)a5;
-- (BOOL)canLayerGroupFitToAudio:(id)a3 inDocument:(id)a4 withOptions:(id)a5 requiredAudioDuration:(double *)a6;
-- (BOOL)determineIfSlideDisplayesForTheWholeDurationForEffect:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5 inStyleID:(id)a6;
-- (BOOL)imagesHaveMovie:(id)a3 start:(int64_t)a4 count:(int64_t)a5;
-- (BOOL)prepareDocumentForExport:(id)a3 withOptions:(id)a4;
+- (BOOL)canDocumentFitToAudio:(id)audio withOptions:(id)options requiredAudioDuration:(double *)duration;
+- (BOOL)canLayerGroupFitToAudio:(id)audio inDocument:(id)document withOptions:(id)options requiredAudioDuration:(double *)duration;
+- (BOOL)determineIfSlideDisplayesForTheWholeDurationForEffect:(id)effect presetID:(id)d atIndex:(int64_t)index inStyleID:(id)iD;
+- (BOOL)imagesHaveMovie:(id)movie start:(int64_t)start count:(int64_t)count;
+- (BOOL)prepareDocumentForExport:(id)export withOptions:(id)options;
 - (MPAuthoringController)init;
-- (double)maximumDurationForLayer:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (double)minimumDurationForLayer:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (id)_addVideoPaths:(id)a3 toEndOfLayer:(id)a4 inDocument:(id)a5 withOptions:(id)a6;
-- (id)_collectVersionInformationFromStyle:(id)a3;
-- (id)_grabAndRemoveTitleEffectFromDocument:(id)a3 withOptions:(id)a4;
-- (id)createAudioPlayListFromAudioPaths:(id)a3 andOptions:(id)a4;
-- (id)createEffectToTransitionMapWithOptions:(id)a3;
-- (id)createLayerWithImages:(id)a3 effects:(id)a4 andOptions:(id)a5;
-- (id)dynamicLayerWithImages:(id)a3 withOptions:(id)a4;
-- (id)effectAuthoredLayerWithImages:(id)a3 withOptions:(id)a4;
-- (id)effectContainersWithImages:(id)a3 effects:(id)a4 andOptions:(id)a5;
-- (id)effectContainersWithPaths:(id)a3 forDocument:(id)a4 withOptions:(id)a5;
-- (id)effectsForImages:(id)a3 withOptions:(id)a4;
-- (id)exportTransitionFromOptions:(id)a3;
-- (id)filtersForEffectFromOptions:(id)a3;
-- (id)filtersForLayerFromOptions:(id)a3;
-- (id)filtersForSlideFromOptions:(id)a3;
-- (id)findEffectIDInPresetArray:(id)a3 forImages:(id)a4 withOptions:(id)a5;
-- (id)findEffectIDInWeighter:(id)a3 images:(id)a4 startingIndex:(int64_t)a5 count:(int64_t)a6 triesToFind:(int64_t *)a7 constraints:(id)a8 previousTags:(id)a9;
-- (id)frameFromOptions:(id)a3;
-- (id)loopTransitionFromOptions:(id)a3;
-- (id)orderImages:(id)a3 withOptions:(id)a4;
-- (id)pickRandomPathsInArray:(id)a3 excludingPaths:(id)a4 count:(int64_t)a5;
-- (id)shuffleImagesByRating:(id)a3 withOptions:(id)a4;
-- (id)slidesWithImages:(id)a3 andOptions:(id)a4;
-- (id)sortImagePaths:(id)a3 toAspectRatiosInEffectPresetID:(id)a4 withOptions:(id)a5;
-- (id)titleEffectsForImages:(id)a3 withOptions:(id)a4;
-- (id)transitionFromOptions:(id)a3 firstEffectContainer:(id)a4 nextEffectContainer:(id)a5;
-- (int64_t)_countOfEmptyContainersInIntroOfLayer:(id)a3 withOptions:(id)a4;
-- (int64_t)_numberOfSlidesForOutroInLayer:(id)a3 withOptions:(id)a4;
-- (int64_t)bestCountFromClusterForEffectWithImages:(id)a3 atStartIndex:(int64_t)a4 withWeighter:(id)a5 usedIndex:(int64_t *)a6;
-- (unint64_t)authorDocument:(id)a3 withOptions:(id)a4;
-- (unint64_t)authorLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)_checkForEmptyLayersInDocument:(id)a3;
-- (void)_readdTitleEffect:(id)a3 toDocument:(id)a4 withOptions:(id)a5;
-- (void)_reorderImagesInDocument:(id)a3 withOptions:(id)a4;
-- (void)addStyledCaptionToSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)authorPlacesWithImages:(id)a3 forLayerGroup:(id)a4 inDocument:(id)a5 withOptions:(id)a6;
-- (void)beatAlignEffectContainers:(id)a3 toBeats:(id)a4 withOptions:(id)a5;
-- (void)beatAlignLayer:(id)a3 toBeats:(id)a4 withOptions:(id)a5;
-- (void)beatAlignLayers:(id)a3 toAudioPlaylist:(id)a4 forDocument:(id)a5 withOptions:(id)a6;
-- (void)cacheROIInformationForImages:(id)a3 withOptions:(id)a4;
-- (void)checkForOffsetsForLayers:(id)a3 withOptions:(id)a4;
-- (void)cleanup:(BOOL)a3;
+- (double)maximumDurationForLayer:(id)layer inDocument:(id)document withOptions:(id)options;
+- (double)minimumDurationForLayer:(id)layer inDocument:(id)document withOptions:(id)options;
+- (id)_addVideoPaths:(id)paths toEndOfLayer:(id)layer inDocument:(id)document withOptions:(id)options;
+- (id)_collectVersionInformationFromStyle:(id)style;
+- (id)_grabAndRemoveTitleEffectFromDocument:(id)document withOptions:(id)options;
+- (id)createAudioPlayListFromAudioPaths:(id)paths andOptions:(id)options;
+- (id)createEffectToTransitionMapWithOptions:(id)options;
+- (id)createLayerWithImages:(id)images effects:(id)effects andOptions:(id)options;
+- (id)dynamicLayerWithImages:(id)images withOptions:(id)options;
+- (id)effectAuthoredLayerWithImages:(id)images withOptions:(id)options;
+- (id)effectContainersWithImages:(id)images effects:(id)effects andOptions:(id)options;
+- (id)effectContainersWithPaths:(id)paths forDocument:(id)document withOptions:(id)options;
+- (id)effectsForImages:(id)images withOptions:(id)options;
+- (id)exportTransitionFromOptions:(id)options;
+- (id)filtersForEffectFromOptions:(id)options;
+- (id)filtersForLayerFromOptions:(id)options;
+- (id)filtersForSlideFromOptions:(id)options;
+- (id)findEffectIDInPresetArray:(id)array forImages:(id)images withOptions:(id)options;
+- (id)findEffectIDInWeighter:(id)weighter images:(id)images startingIndex:(int64_t)index count:(int64_t)count triesToFind:(int64_t *)find constraints:(id)constraints previousTags:(id)tags;
+- (id)frameFromOptions:(id)options;
+- (id)loopTransitionFromOptions:(id)options;
+- (id)orderImages:(id)images withOptions:(id)options;
+- (id)pickRandomPathsInArray:(id)array excludingPaths:(id)paths count:(int64_t)count;
+- (id)shuffleImagesByRating:(id)rating withOptions:(id)options;
+- (id)slidesWithImages:(id)images andOptions:(id)options;
+- (id)sortImagePaths:(id)paths toAspectRatiosInEffectPresetID:(id)d withOptions:(id)options;
+- (id)titleEffectsForImages:(id)images withOptions:(id)options;
+- (id)transitionFromOptions:(id)options firstEffectContainer:(id)container nextEffectContainer:(id)effectContainer;
+- (int64_t)_countOfEmptyContainersInIntroOfLayer:(id)layer withOptions:(id)options;
+- (int64_t)_numberOfSlidesForOutroInLayer:(id)layer withOptions:(id)options;
+- (int64_t)bestCountFromClusterForEffectWithImages:(id)images atStartIndex:(int64_t)index withWeighter:(id)weighter usedIndex:(int64_t *)usedIndex;
+- (unint64_t)authorDocument:(id)document withOptions:(id)options;
+- (unint64_t)authorLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
+- (void)_checkForEmptyLayersInDocument:(id)document;
+- (void)_readdTitleEffect:(id)effect toDocument:(id)document withOptions:(id)options;
+- (void)_reorderImagesInDocument:(id)document withOptions:(id)options;
+- (void)addStyledCaptionToSlide:(id)slide inDocument:(id)document withOptions:(id)options;
+- (void)authorPlacesWithImages:(id)images forLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
+- (void)beatAlignEffectContainers:(id)containers toBeats:(id)beats withOptions:(id)options;
+- (void)beatAlignLayer:(id)layer toBeats:(id)beats withOptions:(id)options;
+- (void)beatAlignLayers:(id)layers toAudioPlaylist:(id)playlist forDocument:(id)document withOptions:(id)options;
+- (void)cacheROIInformationForImages:(id)images withOptions:(id)options;
+- (void)checkForOffsetsForLayers:(id)layers withOptions:(id)options;
+- (void)cleanup:(BOOL)cleanup;
 - (void)clearROICache;
-- (void)combineEffectsNearSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)combineSlides:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)configureFiltersInDocument:(id)a3 withOptions:(id)a4;
-- (void)configureIntroInDocument:(id)a3 withOptions:(id)a4;
-- (void)configureOutroInDocument:(id)a3 withOptions:(id)a4;
-- (void)configurePanoramaInformationToEffect:(id)a3 inDocument:(id)a4 startingIndex:(int64_t)a5 count:(int64_t)a6 removeOldIndex:(int64_t)a7;
-- (void)configureTransitionsInDocument:(id)a3 withOptions:(id)a4;
+- (void)combineEffectsNearSlide:(id)slide inDocument:(id)document withOptions:(id)options;
+- (void)combineSlides:(id)slides inDocument:(id)document withOptions:(id)options;
+- (void)configureFiltersInDocument:(id)document withOptions:(id)options;
+- (void)configureIntroInDocument:(id)document withOptions:(id)options;
+- (void)configureOutroInDocument:(id)document withOptions:(id)options;
+- (void)configurePanoramaInformationToEffect:(id)effect inDocument:(id)document startingIndex:(int64_t)index count:(int64_t)count removeOldIndex:(int64_t)oldIndex;
+- (void)configureTransitionsInDocument:(id)document withOptions:(id)options;
 - (void)dealloc;
-- (void)fillDurationsForLayers:(id)a3 withOptions:(id)a4;
-- (void)findUsableClustersForUserDefinedSlideOrderPresentation:(id)a3 inClusters:(id)a4;
+- (void)fillDurationsForLayers:(id)layers withOptions:(id)options;
+- (void)findUsableClustersForUserDefinedSlideOrderPresentation:(id)presentation inClusters:(id)clusters;
 - (void)finishLogging;
-- (void)insertVideoPaths:(id)a3 atIndex:(int64_t)a4 inDocument:(id)a5 withOptions:(id)a6;
-- (void)matchDurationsForLayers:(id)a3 withOptions:(id)a4;
-- (void)moveSlidesFromIndicies:(id)a3 toIndex:(int64_t)a4 inDocument:(id)a5 withOptions:(id)a6;
-- (void)performInitialFaceDetectionInGroup:(id)a3 withOptions:(id)a4;
-- (void)populateWeighter:(id)a3 withEffects:(id)a4 andOptions:(id)a5;
-- (void)populateWeighter:(id)a3 withTransitions:(id)a4 andOptions:(id)a5;
-- (void)prepareDocumentForPlayback:(id)a3 withOptions:(id)a4;
-- (void)reconfigureColorSchemeForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)reconfigureColorSchemeInDocument:(id)a3 withOptions:(id)a4;
-- (void)reconfigureImagesInDocument:(id)a3 withOptions:(id)a4;
-- (void)reconfigureTitleEffectForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)reconfigureTitleEffectInDocument:(id)a3 withOptions:(id)a4;
-- (void)removeSlidesAtIndicies:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)removeStyledCaptionFromSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)scaleDurationsForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)scaleDurationsInDocument:(id)a3 withOptions:(id)a4;
-- (void)scaleDurationsInEffectContainers:(id)a3 withOptions:(id)a4;
-- (void)scaleDurationsInLayer:(id)a3 withMutableOptions:(id)a4;
-- (void)scaleDurationsInLayer:(id)a3 withOptions:(id)a4;
-- (void)scaleLayerToMatchAudio:(id)a3 withBeats:(id)a4 withOptions:(id)a5;
-- (void)scaleLayerToMatchAudio:(id)a3 withOptions:(id)a4;
-- (void)setAuthoredDocument:(id)a3;
-- (void)setTitleTextToColor:(CGColor *)a3 forLayerGroup:(id)a4 inDocument:(id)a5 withOptions:(id)a6;
-- (void)setTitleTextToColor:(CGColor *)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)setupClustersWithPaths:(id)a3 withOptions:(id)a4;
+- (void)insertVideoPaths:(id)paths atIndex:(int64_t)index inDocument:(id)document withOptions:(id)options;
+- (void)matchDurationsForLayers:(id)layers withOptions:(id)options;
+- (void)moveSlidesFromIndicies:(id)indicies toIndex:(int64_t)index inDocument:(id)document withOptions:(id)options;
+- (void)performInitialFaceDetectionInGroup:(id)group withOptions:(id)options;
+- (void)populateWeighter:(id)weighter withEffects:(id)effects andOptions:(id)options;
+- (void)populateWeighter:(id)weighter withTransitions:(id)transitions andOptions:(id)options;
+- (void)prepareDocumentForPlayback:(id)playback withOptions:(id)options;
+- (void)reconfigureColorSchemeForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
+- (void)reconfigureColorSchemeInDocument:(id)document withOptions:(id)options;
+- (void)reconfigureImagesInDocument:(id)document withOptions:(id)options;
+- (void)reconfigureTitleEffectForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
+- (void)reconfigureTitleEffectInDocument:(id)document withOptions:(id)options;
+- (void)removeSlidesAtIndicies:(id)indicies inDocument:(id)document withOptions:(id)options;
+- (void)removeStyledCaptionFromSlide:(id)slide inDocument:(id)document withOptions:(id)options;
+- (void)scaleDurationsForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
+- (void)scaleDurationsInDocument:(id)document withOptions:(id)options;
+- (void)scaleDurationsInEffectContainers:(id)containers withOptions:(id)options;
+- (void)scaleDurationsInLayer:(id)layer withMutableOptions:(id)options;
+- (void)scaleDurationsInLayer:(id)layer withOptions:(id)options;
+- (void)scaleLayerToMatchAudio:(id)audio withBeats:(id)beats withOptions:(id)options;
+- (void)scaleLayerToMatchAudio:(id)audio withOptions:(id)options;
+- (void)setAuthoredDocument:(id)document;
+- (void)setTitleTextToColor:(CGColor *)color forLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
+- (void)setTitleTextToColor:(CGColor *)color inDocument:(id)document withOptions:(id)options;
+- (void)setupClustersWithPaths:(id)paths withOptions:(id)options;
 - (void)startLogging;
-- (void)upgradeDocument:(id)a3 withOptions:(id)a4;
-- (void)upgradeLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
+- (void)upgradeDocument:(id)document withOptions:(id)options;
+- (void)upgradeLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
 @end
 
 @implementation MPAuthoringController
@@ -100,13 +100,13 @@
   result = qword_1EF358;
   if (!qword_1EF358)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF358)
     {
       qword_1EF358 = objc_alloc_init(MPAuthoringController);
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF358;
   }
 
@@ -117,10 +117,10 @@
 {
   if (qword_1EF358)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF358 = 0;
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 
   +[MPClusterController releaseSharedController];
@@ -175,31 +175,31 @@
   [(MPAuthoringController *)&v3 dealloc];
 }
 
-- (unint64_t)authorDocument:(id)a3 withOptions:(id)a4
+- (unint64_t)authorDocument:(id)document withOptions:(id)options
 {
-  v7 = [a3 documentLayerGroup];
+  documentLayerGroup = [document documentLayerGroup];
 
-  return [(MPAuthoringController *)self authorLayerGroup:v7 inDocument:a3 withOptions:a4];
+  return [(MPAuthoringController *)self authorLayerGroup:documentLayerGroup inDocument:document withOptions:options];
 }
 
-- (unint64_t)authorLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (unint64_t)authorLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
   v176 = objc_autoreleasePoolPush();
   [(NSLock *)self->_authorLock lock];
   [(MPAuthoringController *)self startLogging];
   self->_cancelAuthoring = 0;
-  if (!a5)
+  if (!options)
   {
-    a5 = [a3 authoringOptions];
+    options = [group authoringOptions];
   }
 
-  [(MPAuthoringController *)self setAuthoredDocument:a4];
+  [(MPAuthoringController *)self setAuthoredDocument:document];
   self->_isAuthoring = 1;
   p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-  v10 = [MPAuthoringUtilities randomSeedFromOptions:a5];
+  v10 = [MPAuthoringUtilities randomSeedFromOptions:options];
   self->_seed = v10;
   srandom(v10);
-  v11 = [[NSMutableDictionary alloc] initWithDictionary:a5];
+  v11 = [[NSMutableDictionary alloc] initWithDictionary:options];
   v12 = [NSNumber numberWithInteger:self->_seed];
   [v11 setObject:v12 forKey:kMPAuthoringSeed];
   v13 = [v11 objectForKey:kMPAuthoringStyleID];
@@ -219,7 +219,7 @@
 
   v169 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   v184 = [objc_msgSend(v11 objectForKey:{kMPAuthoringLive), "BOOLValue"}];
-  if ([a3 countOfLayers])
+  if ([group countOfLayers])
   {
     if ([v11 objectForKey:kMPAuthoringLiveReset])
     {
@@ -259,7 +259,7 @@
   v181 = v14;
   if ([+[MPStyleManager sharedManager](MPStyleManager "sharedManager")])
   {
-    v19 = [a3 copy];
+    v19 = [group copy];
   }
 
   else
@@ -267,13 +267,13 @@
     v19 = 0;
   }
 
-  v187 = a5;
-  v20 = [MPAuthoringUtilities presentationOrderFromOptions:a5];
-  v21 = [a3 videoPaths];
+  optionsCopy = options;
+  v20 = [MPAuthoringUtilities presentationOrderFromOptions:options];
+  videoPaths = [group videoPaths];
   v22 = [MPAuthoringUtilities videoPathsRangeFromOptions:v11];
-  v180 = a4;
+  documentCopy = document;
   v188 = v11;
-  v189 = a3;
+  groupCopy = group;
   v190 = v23;
   v168 = v19;
   v164 = v22;
@@ -282,14 +282,14 @@
     v25 = v22;
     v171 = v23;
     v24 = v176;
-    if (&v23[v22] > [(NSMutableArray *)v21 count])
+    if (&v23[v22] > [(NSMutableArray *)videoPaths count])
     {
-      v171 = [(NSMutableArray *)v21 count]- v25;
+      v171 = [(NSMutableArray *)videoPaths count]- v25;
     }
 
     if (v20 == 4)
     {
-      v21 = [NSMutableArray arrayWithArray:[(MPAuthoringController *)self shuffleImagesByRating:v21 withOptions:v11]];
+      videoPaths = [NSMutableArray arrayWithArray:[(MPAuthoringController *)self shuffleImagesByRating:videoPaths withOptions:v11]];
     }
 
     else
@@ -297,7 +297,7 @@
       v26 = [[NSIndexSet alloc] initWithIndexesInRange:{v25, v171}];
       if (v171)
       {
-        v27 = [NSMutableArray arrayWithArray:[(NSMutableArray *)v21 objectsAtIndexes:v26]];
+        v27 = [NSMutableArray arrayWithArray:[(NSMutableArray *)videoPaths objectsAtIndexes:v26]];
       }
 
       else
@@ -305,7 +305,7 @@
         v27 = +[NSMutableArray array];
       }
 
-      v21 = v27;
+      videoPaths = v27;
     }
 
     v28 = [v11 objectForKey:kMPAuthoringLiveMissedImages];
@@ -317,7 +317,7 @@
       if ([v30 count])
       {
         v31 = [[NSIndexSet alloc] initWithIndexesInRange:{0, objc_msgSend(v30, "count")}];
-        [(NSMutableArray *)v21 insertObjects:v30 atIndexes:v31];
+        [(NSMutableArray *)videoPaths insertObjects:v30 atIndexes:v31];
       }
 
       v32 = +[NSMutableArray array];
@@ -326,7 +326,7 @@
       v205 = 0u;
       v206 = 0u;
       v207 = 0u;
-      v34 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v204 objects:v211 count:16];
+      v34 = [(NSMutableArray *)videoPaths countByEnumeratingWithState:&v204 objects:v211 count:16];
       if (v34)
       {
         v35 = v34;
@@ -337,7 +337,7 @@
           {
             if (*v205 != v36)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(videoPaths);
             }
 
             v38 = *(*(&v204 + 1) + 8 * i);
@@ -354,7 +354,7 @@
             [(NSMutableArray *)v39 addObject:v38];
           }
 
-          v35 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v204 objects:v211 count:16];
+          v35 = [(NSMutableArray *)videoPaths countByEnumeratingWithState:&v204 objects:v211 count:16];
         }
 
         while (v35);
@@ -394,8 +394,8 @@
       [(MPDocument *)self->_authoredDocument setAuthoringOption:v33 forKey:kMPAuthoringLiveMissedImages];
       v29 = [(NSMutableArray *)v33 count]!= 0;
 
-      v21 = v32;
-      a4 = v180;
+      videoPaths = v32;
+      document = documentCopy;
       v11 = v188;
     }
 
@@ -403,7 +403,7 @@
     {
       v45 = [v11 objectForKey:kMPAuthoringLiveUseOutro];
       v46 = v45 ? [v45 BOOLValue] ^ 1 : 0;
-      if (&v171[v164] < [objc_msgSend(v189 "videoPaths")] || v29 || v46)
+      if (&v171[v164] < [objc_msgSend(groupCopy "videoPaths")] || v29 || v46)
       {
         v47 = [NSNumber numberWithBool:0];
         [v11 setObject:v47 forKey:kMPAuthoringUseLoopTransition];
@@ -412,7 +412,7 @@
       }
     }
 
-    a3 = v189;
+    group = groupCopy;
   }
 
   else
@@ -421,10 +421,10 @@
     v24 = v176;
   }
 
-  v48 = [(NSMutableArray *)v21 count];
+  v48 = [(NSMutableArray *)videoPaths count];
   v174 = v48 != 0;
   v49 = [MPAuthoringUtilities minimumNumberOfDynamicSlidesToAddFromOptions:v11];
-  if ([a3 loopingMode] == &dword_4 + 1)
+  if ([group loopingMode] == &dword_4 + 1)
   {
     if (v169)
     {
@@ -440,10 +440,10 @@
 
   else
   {
-    v50 = [a3 loopingMode];
+    loopingMode = [group loopingMode];
     v51 = v169;
     v166 = v169 ^ 1;
-    if (v50 != &dword_0 + 2)
+    if (loopingMode != &dword_0 + 2)
     {
       v51 = 0;
     }
@@ -454,15 +454,15 @@
       goto LABEL_74;
     }
 
-    v161 = v50 == &dword_0 + 2;
+    v161 = loopingMode == &dword_0 + 2;
     v52 = v190;
-    if (v50 != &dword_0 + 2)
+    if (loopingMode != &dword_0 + 2)
     {
       v52 = v171;
     }
   }
 
-  v53 = [objc_msgSend(a3 "videoPaths")];
+  v53 = [objc_msgSend(group "videoPaths")];
   if (v52 >= v53)
   {
     v49 = v53;
@@ -475,10 +475,10 @@
 
 LABEL_74:
   v54 = v48 != 0;
-  v55 = v49 - [(NSMutableArray *)v21 count];
-  v56 = [(NSMutableArray *)v21 count];
+  v55 = v49 - [(NSMutableArray *)videoPaths count];
+  v56 = [(NSMutableArray *)videoPaths count];
   v177 = v55;
-  v162 = [objc_msgSend(a3 "videoPaths")];
+  v162 = [objc_msgSend(group "videoPaths")];
   v163 = v56;
   if ((v54 | v178))
   {
@@ -494,31 +494,31 @@ LABEL_74:
 
     if (v57 == 1)
     {
-      v58 = [a3 videoPaths];
+      videoPaths2 = [group videoPaths];
       v59 = objc_alloc_init(NSMutableArray);
       v60 = [v11 objectForKey:kMPAuthoringLivePlaceholderIndex];
       if (v60)
       {
-        v191 = [v60 integerValue];
+        integerValue = [v60 integerValue];
       }
 
       else
       {
-        v191 = 0;
+        integerValue = 0;
       }
 
-      v62 = [v58 count];
+      v62 = [videoPaths2 count];
       if (v62 >= 1)
       {
         v63 = v62;
         v64 = 0;
-        v65 = v191;
-        if (v191 >= v62)
+        v65 = integerValue;
+        if (integerValue >= v62)
         {
           v65 = 0;
         }
 
-        v191 = v65;
+        integerValue = v65;
         do
         {
           if ([v59 count] >= v177)
@@ -526,7 +526,7 @@ LABEL_74:
             break;
           }
 
-          v66 = [v58 objectAtIndex:v191];
+          v66 = [videoPaths2 objectAtIndex:integerValue];
           if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
           {
             [v59 addObject:v66];
@@ -537,10 +537,10 @@ LABEL_74:
             ++v64;
           }
 
-          a4 = v180;
+          document = documentCopy;
           v11 = v188;
-          v67 = v191 + 1 < v63 ? v191 + 1 : 0;
-          v191 = v67;
+          v67 = integerValue + 1 < v63 ? integerValue + 1 : 0;
+          integerValue = v67;
         }
 
         while (v64 < v63);
@@ -548,25 +548,25 @@ LABEL_74:
         p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
         if ([v59 count])
         {
-          [(NSMutableArray *)v21 addObjectsFromArray:v59];
+          [(NSMutableArray *)videoPaths addObjectsFromArray:v59];
           v174 = 1;
         }
 
         authoredDocument = self->_authoredDocument;
-        v69 = [NSNumber numberWithInteger:v191];
+        v69 = [NSNumber numberWithInteger:integerValue];
         [(MPDocument *)authoredDocument setAuthoringOption:v69 forKey:kMPAuthoringLivePlaceholderIndex];
       }
     }
 
     else
     {
-      v191 = -1;
+      integerValue = -1;
     }
   }
 
   else
   {
-    v191 = -1;
+    integerValue = -1;
     self->_seed = -1;
     v61 = +[NSNotificationCenter defaultCenter];
     [(NSNotificationCenter *)v61 postNotificationName:kMPAuthoringNoImagesAvailableNotification object:self->_authoredDocument userInfo:0];
@@ -580,7 +580,7 @@ LABEL_74:
   v199 = 0u;
   v196 = 0u;
   v197 = 0u;
-  v71 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v196 objects:v209 count:16];
+  v71 = [(NSMutableArray *)videoPaths countByEnumeratingWithState:&v196 objects:v209 count:16];
   if (v71)
   {
     v72 = v71;
@@ -591,23 +591,23 @@ LABEL_74:
       {
         if (*v197 != v73)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(videoPaths);
         }
 
         [(MPDocument *)self->_authoredDocument absolutePathForAssetAtPath:*(*(&v196 + 1) + 8 * k)];
       }
 
-      v72 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v196 objects:v209 count:16];
+      v72 = [(NSMutableArray *)videoPaths countByEnumeratingWithState:&v196 objects:v209 count:16];
     }
 
     while (v72);
   }
 
-  [a4 setTemporarilyCacheAbsolutePaths:1];
-  [(MPAuthoringController *)self cacheROIInformationForImages:v21 withOptions:v11];
-  v75 = v189;
-  v76 = [objc_msgSend(v189 "audioPaths")];
-  v186 = [MPAuthoringUtilities ignoreClusteringForImages:v21 withOptions:v11];
+  [document setTemporarilyCacheAbsolutePaths:1];
+  [(MPAuthoringController *)self cacheROIInformationForImages:videoPaths withOptions:v11];
+  v75 = groupCopy;
+  v76 = [objc_msgSend(groupCopy "audioPaths")];
+  v186 = [MPAuthoringUtilities ignoreClusteringForImages:videoPaths withOptions:v11];
   v165 = v178 ^ 1;
   v170 = v175 | v178 ^ 1;
   v173 = v76;
@@ -621,7 +621,7 @@ LABEL_74:
   v77 = [MPAuthoringUtilities replaceAudioPlaylistFromOptions:v11];
   if (v77)
   {
-    [objc_msgSend(v189 "audioPlaylist")];
+    [objc_msgSend(groupCopy "audioPlaylist")];
     if ([v76 count])
     {
       v78 = v77;
@@ -639,14 +639,14 @@ LABEL_74:
     }
 
 LABEL_123:
-    [v189 setAudioPlaylist:{-[MPAuthoringController createAudioPlayListFromAudioPaths:andOptions:](self, "createAudioPlayListFromAudioPaths:andOptions:", v76, v11)}];
+    [groupCopy setAudioPlaylist:{-[MPAuthoringController createAudioPlayListFromAudioPaths:andOptions:](self, "createAudioPlayListFromAudioPaths:andOptions:", v76, v11)}];
     goto LABEL_124;
   }
 
   [v76 count];
   if ([v76 count])
   {
-    v79 = [objc_msgSend(v189 "audioPlaylist")];
+    v79 = [objc_msgSend(groupCopy "audioPlaylist")];
     if (v79 != [v76 count])
     {
       goto LABEL_123;
@@ -657,10 +657,10 @@ LABEL_117:
   if (![v76 count] && +[MPAuthoringUtilities useDefaultAudioFromOptions:](MPAuthoringUtilities, "useDefaultAudioFromOptions:", v11))
   {
     v80 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-    [v189 setAudioPaths:v80];
+    [groupCopy setAudioPaths:v80];
     if (v80 && [v80 count])
     {
-      [v189 setAudioPlaylist:{-[MPAuthoringController createAudioPlayListFromAudioPaths:andOptions:](self, "createAudioPlayListFromAudioPaths:andOptions:", v80, v11)}];
+      [groupCopy setAudioPlaylist:{-[MPAuthoringController createAudioPlayListFromAudioPaths:andOptions:](self, "createAudioPlayListFromAudioPaths:andOptions:", v80, v11)}];
     }
 
     [v76 addObjectsFromArray:v80];
@@ -679,10 +679,10 @@ LABEL_125:
     [NSThread detachNewThreadSelector:"createBeatsThreaded:" toTarget:self withObject:[NSArray arrayWithObjects:v11, v173, 0]];
   }
 
-  [objc_msgSend(v189 "audioPlaylist")];
+  [objc_msgSend(groupCopy "audioPlaylist")];
   if (v83 > 0.0 && +[MPAuthoringUtilities audioScalingModeFromOptions:](MPAuthoringUtilities, "audioScalingModeFromOptions:", v11) == &dword_0 + 1 && ![v11 objectForKey:kMPAuthoringAudioDuration])
   {
-    [objc_msgSend(v189 "audioPlaylist")];
+    [objc_msgSend(groupCopy "audioPlaylist")];
     v84 = [NSNumber numberWithDouble:?];
     [v11 setObject:v84 forKey:kMPAuthoringAudioDuration];
   }
@@ -719,14 +719,14 @@ LABEL_134:
         v100 = [NSNumber numberWithInteger:v96];
         [v11 setObject:v100 forKey:kMPAuthoringLayerIndex];
         v101 = p_vtable;
-        v102 = [p_vtable + 172 isLayerEffectAuthoredFromOptions:v187];
-        if ((v186 & 1) == 0 && [(NSMutableArray *)v21 count]>= 3)
+        v102 = [p_vtable + 172 isLayerEffectAuthoredFromOptions:optionsCopy];
+        if ((v186 & 1) == 0 && [(NSMutableArray *)videoPaths count]>= 3)
         {
-          [(MPAuthoringController *)self setupClustersWithPaths:v21 withOptions:v11];
+          [(MPAuthoringController *)self setupClustersWithPaths:videoPaths withOptions:v11];
         }
 
         v103 = v11;
-        v104 = [(MPAuthoringController *)self orderImages:v21 withOptions:v11];
+        v104 = [(MPAuthoringController *)self orderImages:videoPaths withOptions:v11];
         if (((v166 | v165) & 1) == 0)
         {
           v183 = [(MPAuthoringController *)self slidesWithImages:v104 andOptions:v103];
@@ -789,10 +789,10 @@ LABEL_134:
               v11 = v188;
               if (v167)
               {
-                v75 = v189;
+                v75 = groupCopy;
                 if ([v173 count])
                 {
-                  v117 = -[MPAuthoringController beatsForAudioPlaylist:withOptions:](self, "beatsForAudioPlaylist:withOptions:", [v189 audioPlaylist], v188);
+                  v117 = -[MPAuthoringController beatsForAudioPlaylist:withOptions:](self, "beatsForAudioPlaylist:withOptions:", [groupCopy audioPlaylist], v188);
                   if (v117)
                   {
                     [(MPAuthoringController *)self beatAlignLayer:v112 toBeats:v117 withOptions:v188];
@@ -814,18 +814,18 @@ LABEL_172:
         }
 
         p_vtable = v101;
-        if ([v101 + 172 useTitleEffectFromOptions:v187])
+        if ([v101 + 172 useTitleEffectFromOptions:optionsCopy])
         {
           v105 = +[NSArray arrayWithObject:](NSArray, "arrayWithObject:", [v104 objectAtIndex:0]);
-          v106 = [(MPAuthoringController *)self titleEffectsForImages:v105 withOptions:v187];
+          v106 = [(MPAuthoringController *)self titleEffectsForImages:v105 withOptions:optionsCopy];
           if (v106)
           {
-            v107 = [-[MPAuthoringController effectContainersWithImages:effects:andOptions:](self effectContainersWithImages:v105 effects:v106 andOptions:{v187), "mutableCopy"}];
+            v107 = [-[MPAuthoringController effectContainersWithImages:effects:andOptions:](self effectContainersWithImages:v105 effects:v106 andOptions:{optionsCopy), "mutableCopy"}];
             v108 = [(MPAuthoringController *)self effectAuthoredLayerWithImages:v104 withOptions:v188];
             v109 = v108;
             if (v107)
             {
-              v75 = v189;
+              v75 = groupCopy;
               if ([v108 countOfEffectContainers] >= 1)
               {
                 [v109 insertEffectContainers:v107 atIndex:0];
@@ -841,7 +841,7 @@ LABEL_172:
             v107 = 0;
           }
 
-          v75 = v189;
+          v75 = groupCopy;
 LABEL_200:
 
           [v182 addObject:v109];
@@ -855,7 +855,7 @@ LABEL_201:
         v11 = v188;
         [v182 addObject:{-[MPAuthoringController effectAuthoredLayerWithImages:withOptions:](self, "effectAuthoredLayerWithImages:withOptions:", v118, v188)}];
 LABEL_173:
-        v75 = v189;
+        v75 = groupCopy;
 LABEL_174:
         objc_autoreleasePoolPop(v99);
         p_cancelAuthoring = &self->_cancelAuthoring;
@@ -899,26 +899,26 @@ LABEL_203:
     {
       [-[MPDocument montage](self->_authoredDocument "montage")];
       [v75 removeAllLayers];
-      v86 = v182;
+      layers2 = v182;
       [v75 addLayers:v182];
       [-[MPDocument montage](self->_authoredDocument "montage")];
       v24 = v176;
-      a4 = v180;
+      document = documentCopy;
       goto LABEL_208;
     }
 
     v24 = v176;
-    a4 = v180;
+    document = documentCopy;
     if ((v166 | v165))
     {
-      v86 = v182;
+      layers2 = v182;
       if (v170)
       {
         [-[MPDocument montage](self->_authoredDocument "montage")];
         [v75 removeAllLayers];
         [v75 addLayers:v182];
         [-[MPDocument montage](self->_authoredDocument "montage")];
-        [(MPAuthoringController *)self performInitialFaceDetectionInGroup:v75 withOptions:v187];
+        [(MPAuthoringController *)self performInitialFaceDetectionInGroup:v75 withOptions:optionsCopy];
         goto LABEL_254;
       }
 
@@ -931,19 +931,19 @@ LABEL_203:
         {
           v145 = [v182 objectAtIndex:m];
           v146 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-          v147 = [v75 layers];
-          v148 = [v75 countOfLayers];
-          if ((v148 - 1) >= m)
+          layers = [v75 layers];
+          countOfLayers = [v75 countOfLayers];
+          if ((countOfLayers - 1) >= m)
           {
             v149 = m;
           }
 
           else
           {
-            v149 = v148 - 1;
+            v149 = countOfLayers - 1;
           }
 
-          v150 = [v147 objectAtIndex:v149];
+          v150 = [layers objectAtIndex:v149];
           if (v146)
           {
             v151 = v150;
@@ -967,7 +967,7 @@ LABEL_203:
       {
       }
 
-      v86 = [v75 layers];
+      layers2 = [v75 layers];
       v11 = v188;
       p_vtable = v141;
     }
@@ -983,8 +983,8 @@ LABEL_203:
       {
         v135 = p_vtable;
         v136 = [NSIndexSet alloc];
-        v137 = [v134 integerValue];
-        v138 = v137 - [v132 liveIndex];
+        integerValue2 = [v134 integerValue];
+        v138 = integerValue2 - [v132 liveIndex];
         v11 = v188;
         if (v138 >= v133)
         {
@@ -998,12 +998,12 @@ LABEL_203:
         [v132 removeSlidesAtIndices:v140];
       }
 
-      -[MPAuthoringController configurePanoramaInformationToEffect:inDocument:startingIndex:count:removeOldIndex:](self, "configurePanoramaInformationToEffect:inDocument:startingIndex:count:removeOldIndex:", v132, v180, [objc_msgSend(v132 "slides")] - objc_msgSend(v183, "count"), -1, objc_msgSend(v134, "integerValue"));
+      -[MPAuthoringController configurePanoramaInformationToEffect:inDocument:startingIndex:count:removeOldIndex:](self, "configurePanoramaInformationToEffect:inDocument:startingIndex:count:removeOldIndex:", v132, documentCopy, [objc_msgSend(v132 "slides")] - objc_msgSend(v183, "count"), -1, objc_msgSend(v134, "integerValue"));
       if (v182)
       {
       }
 
-      v86 = [v75 layers];
+      layers2 = [v75 layers];
       [-[MPDocument montage](self->_authoredDocument "montage")];
     }
 
@@ -1025,9 +1025,9 @@ LABEL_261:
 
     if (v169)
     {
-      v154 = v191;
+      v154 = integerValue;
       v155 = v161;
-      if (v191 == -1)
+      if (integerValue == -1)
       {
         goto LABEL_259;
       }
@@ -1035,19 +1035,19 @@ LABEL_261:
 
     else
     {
-      v154 = v191;
+      v154 = integerValue;
       v155 = v161;
-      if (v191 == -1 || !v161)
+      if (integerValue == -1 || !v161)
       {
 LABEL_259:
         if (v155)
         {
           [v75 setUsedAllPaths:1];
-          v156 = v86;
+          v156 = layers2;
           v157 = self->_authoredDocument;
           v158 = [NSNumber numberWithInteger:0];
           v159 = v157;
-          v86 = v156;
+          layers2 = v156;
           v85 = v181;
           [(MPDocument *)v159 setAuthoringOption:v158 forKey:kMPAuthoringLivePlaceholderIndex];
         }
@@ -1061,8 +1061,8 @@ LABEL_259:
   }
 
   [-[MPDocument montage](self->_authoredDocument "montage")];
-  [(MPAuthoringController *)self authorPlacesWithImages:v21 forLayerGroup:v189 inDocument:a4 withOptions:v11];
-  v86 = [[NSMutableArray alloc] initWithArray:{objc_msgSend(v189, "layers")}];
+  [(MPAuthoringController *)self authorPlacesWithImages:videoPaths forLayerGroup:groupCopy inDocument:document withOptions:v11];
+  layers2 = [[NSMutableArray alloc] initWithArray:{objc_msgSend(groupCopy, "layers")}];
   [-[MPDocument montage](self->_authoredDocument "montage")];
   v183 = 0;
 LABEL_139:
@@ -1074,7 +1074,7 @@ LABEL_139:
       v88 = v87;
       if ([v87 count])
       {
-        v89 = v86;
+        v89 = layers2;
         [-[MPDocument montage](self->_authoredDocument "montage")];
         v194 = 0u;
         v195 = 0u;
@@ -1094,7 +1094,7 @@ LABEL_139:
                 objc_enumerationMutation(v88);
               }
 
-              [(MPAuthoringController *)self addStyledCaptionToSlide:[MPUtilities slideForPath:a4 inDocument:?], a4, v11];
+              [(MPAuthoringController *)self addStyledCaptionToSlide:[MPUtilities slideForPath:document inDocument:?], document, v11];
             }
 
             v91 = [v88 countByEnumeratingWithState:&v192 objects:v208 count:16];
@@ -1103,30 +1103,30 @@ LABEL_139:
           while (v91);
         }
 
-        [(MPAuthoringController *)self configureFiltersInDocument:a4 withOptions:v11];
-        [(MPAuthoringController *)self configureTransitionsInDocument:a4 withOptions:v11];
-        [(MPAuthoringController *)self scaleDurationsInDocument:a4 withOptions:v11];
+        [(MPAuthoringController *)self configureFiltersInDocument:document withOptions:v11];
+        [(MPAuthoringController *)self configureTransitionsInDocument:document withOptions:v11];
+        [(MPAuthoringController *)self scaleDurationsInDocument:document withOptions:v11];
         [-[MPDocument montage](self->_authoredDocument "montage")];
         p_cancelAuthoring = &self->_cancelAuthoring;
-        v75 = v189;
+        v75 = groupCopy;
         v85 = v181;
-        v86 = v89;
+        layers2 = v89;
         v24 = v176;
       }
     }
 
-    if ([v86 count] >= 2)
+    if ([layers2 count] >= 2)
     {
       [-[MPDocument montage](self->_authoredDocument "montage")];
-      [(MPAuthoringController *)self matchDurationsForLayers:v86 withOptions:v11];
-      [(MPAuthoringController *)self fillDurationsForLayers:v86 withOptions:v11];
-      [(MPAuthoringController *)self checkForOffsetsForLayers:v86 withOptions:v11];
+      [(MPAuthoringController *)self matchDurationsForLayers:layers2 withOptions:v11];
+      [(MPAuthoringController *)self fillDurationsForLayers:layers2 withOptions:v11];
+      [(MPAuthoringController *)self checkForOffsetsForLayers:layers2 withOptions:v11];
       [-[MPDocument montage](self->_authoredDocument "montage")];
     }
 
     if ((v170 & 1) == 0)
     {
-      v126 = [[NSDictionary alloc] initWithObjectsAndKeys:{v172, @"effectContainers", a4, @"document", v11, @"options", 0}];
+      v126 = [[NSDictionary alloc] initWithObjectsAndKeys:{v172, @"effectContainers", document, @"document", v11, @"options", 0}];
       v85 = v181;
       p_cancelAuthoring = &self->_cancelAuthoring;
       +[NSThread detachNewThreadSelector:toTarget:withObject:](NSThread, "detachNewThreadSelector:toTarget:withObject:", "_applyCropToSlidesInEffectContainersWithArguments:", +[MPCropController sharedController], v126);
@@ -1136,7 +1136,7 @@ LABEL_139:
     }
 
     [-[MPDocument montage](self->_authoredDocument "montage")];
-    [(MPAuthoringController *)self reconfigureColorSchemeForLayerGroup:v75 inDocument:a4 withOptions:v11];
+    [(MPAuthoringController *)self reconfigureColorSchemeForLayerGroup:v75 inDocument:document withOptions:v11];
     [-[MPDocument montage](self->_authoredDocument "montage")];
     [+[MPCropController sharedController](MPCropController "sharedController")];
 
@@ -1160,15 +1160,15 @@ LABEL_211:
 
   if (*p_cancelAuthoring && v168)
   {
-    v127 = [v75 navigatorKey];
-    if (v127)
+    navigatorKey = [v75 navigatorKey];
+    if (navigatorKey)
     {
-      [a4 setLayer:v168 forKey:v127];
+      [document setLayer:v168 forKey:navigatorKey];
     }
 
     else
     {
-      [a4 setDocumentLayerGroup:v168];
+      [document setDocumentLayerGroup:v168];
     }
   }
 
@@ -1193,7 +1193,7 @@ LABEL_211:
     [(MPAuthoringController *)self finishLogging];
   }
 
-  [a4 setTemporarilyCacheAbsolutePaths:0];
+  [document setTemporarilyCacheAbsolutePaths:0];
   v130 = +[NSNotificationCenter defaultCenter];
   [(NSNotificationCenter *)v130 postNotificationName:kMPAuthoringDidFinishApplyingStyleNotification object:self->_authoredDocument userInfo:0];
   [(MPAuthoringController *)self cleanup:v175];
@@ -1210,59 +1210,59 @@ LABEL_211:
   }
 }
 
-- (void)upgradeDocument:(id)a3 withOptions:(id)a4
+- (void)upgradeDocument:(id)document withOptions:(id)options
 {
-  v7 = [a3 documentLayerGroup];
+  documentLayerGroup = [document documentLayerGroup];
 
-  [(MPAuthoringController *)self upgradeLayerGroup:v7 inDocument:a3 withOptions:a4];
+  [(MPAuthoringController *)self upgradeLayerGroup:documentLayerGroup inDocument:document withOptions:options];
 }
 
-- (void)upgradeLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)upgradeLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
-  [objc_msgSend(a4 "montage")];
-  v7 = [objc_msgSend(a3 "authoredVersionInfo")];
+  [objc_msgSend(document "montage")];
+  v7 = [objc_msgSend(group "authoredVersionInfo")];
   LODWORD(v8) = 1032805417;
   [v7 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", v8), @"authoringVersion"}];
-  [a3 setAuthoredVersionInfo:v7];
+  [group setAuthoredVersionInfo:v7];
 
   if (v7)
   {
-    [a4 setDocumentAttribute:v7 forKey:kMPDocumentAuthoringVersions];
+    [document setDocumentAttribute:v7 forKey:kMPDocumentAuthoringVersions];
   }
 
-  v9 = [a4 montage];
+  montage = [document montage];
 
-  [v9 unlock];
+  [montage unlock];
 }
 
-- (id)effectContainersWithPaths:(id)a3 forDocument:(id)a4 withOptions:(id)a5
+- (id)effectContainersWithPaths:(id)paths forDocument:(id)document withOptions:(id)options
 {
-  v5 = a5;
-  if (!a5)
+  optionsCopy = options;
+  if (!options)
   {
-    v5 = [a4 documentAttributeForKey:kMPDocumentAuthoringOptions];
+    optionsCopy = [document documentAttributeForKey:kMPDocumentAuthoringOptions];
   }
 
-  [(MPAuthoringController *)self setAuthoredDocument:a4];
-  v9 = [(MPAuthoringController *)self orderImages:a3 withOptions:v5];
-  v10 = [(MPAuthoringController *)self effectContainersWithImages:v9 effects:[(MPAuthoringController *)self effectsForImages:v9 withOptions:v5] andOptions:v5];
-  [(MPAuthoringController *)self scaleDurationsInEffectContainers:v10 withOptions:v5];
+  [(MPAuthoringController *)self setAuthoredDocument:document];
+  v9 = [(MPAuthoringController *)self orderImages:paths withOptions:optionsCopy];
+  v10 = [(MPAuthoringController *)self effectContainersWithImages:v9 effects:[(MPAuthoringController *)self effectsForImages:v9 withOptions:optionsCopy] andOptions:optionsCopy];
+  [(MPAuthoringController *)self scaleDurationsInEffectContainers:v10 withOptions:optionsCopy];
   [+[MPCropController sharedController](MPCropController "sharedController")];
   [(MPWeighter *)self->_weighter clearAllItems];
   [(MPAuthoringController *)self cleanup];
   return v10;
 }
 
-- (void)beatAlignLayers:(id)a3 toAudioPlaylist:(id)a4 forDocument:(id)a5 withOptions:(id)a6
+- (void)beatAlignLayers:(id)layers toAudioPlaylist:(id)playlist forDocument:(id)document withOptions:(id)options
 {
-  v6 = a6;
-  if (!a6)
+  optionsCopy = options;
+  if (!options)
   {
-    v6 = [a5 documentAttributeForKey:kMPDocumentAuthoringOptions];
+    optionsCopy = [document documentAttributeForKey:kMPDocumentAuthoringOptions];
   }
 
-  [(MPAuthoringController *)self setAuthoredDocument:a5];
-  v11 = [(MPAuthoringController *)self beatsForAudioPlaylist:a4 withOptions:v6];
+  [(MPAuthoringController *)self setAuthoredDocument:document];
+  v11 = [(MPAuthoringController *)self beatsForAudioPlaylist:playlist withOptions:optionsCopy];
   if (v11)
   {
     v12 = v11;
@@ -1272,7 +1272,7 @@ LABEL_211:
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v13 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [layers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1284,15 +1284,15 @@ LABEL_211:
           {
             if (*v18 != v15)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(layers);
             }
 
-            [(MPAuthoringController *)self beatAlignLayer:*(*(&v17 + 1) + 8 * v16) toBeats:v12 withOptions:v6];
+            [(MPAuthoringController *)self beatAlignLayer:*(*(&v17 + 1) + 8 * v16) toBeats:v12 withOptions:optionsCopy];
             v16 = v16 + 1;
           }
 
           while (v14 != v16);
-          v14 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v14 = [layers countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v14);
@@ -1303,20 +1303,20 @@ LABEL_211:
   [(MPAuthoringController *)self cleanup];
 }
 
-- (void)scaleDurationsInDocument:(id)a3 withOptions:(id)a4
+- (void)scaleDurationsInDocument:(id)document withOptions:(id)options
 {
-  v7 = [a3 documentLayerGroup];
+  documentLayerGroup = [document documentLayerGroup];
 
-  [(MPAuthoringController *)self scaleDurationsForLayerGroup:v7 inDocument:a3 withOptions:a4];
+  [(MPAuthoringController *)self scaleDurationsForLayerGroup:documentLayerGroup inDocument:document withOptions:options];
 }
 
-- (void)scaleDurationsForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)scaleDurationsForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
-  v5 = a5;
-  if ([objc_msgSend(a5 objectForKey:{kMPAuthoringStyleID), "isEqualToString:", @"Places"}])
+  optionsCopy = options;
+  if ([objc_msgSend(options objectForKey:{kMPAuthoringStyleID), "isEqualToString:", @"Places"}])
   {
 
-    [(MPAuthoringController *)self scaleDurationsInPlacesForDocument:a4 withOptions:v5];
+    [(MPAuthoringController *)self scaleDurationsInPlacesForDocument:document withOptions:optionsCopy];
   }
 
   else
@@ -1324,36 +1324,36 @@ LABEL_211:
     context = objc_autoreleasePoolPush();
     if (!self->_isAuthoring)
     {
-      [objc_msgSend(a4 montage];
-      [a3 reconnectAll];
+      [objc_msgSend(document montage];
+      [group reconnectAll];
     }
 
-    if (!v5)
+    if (!optionsCopy)
     {
-      v5 = [a3 authoringOptions];
+      optionsCopy = [group authoringOptions];
     }
 
     if (!self->_isAuthoring)
     {
-      [(MPAuthoringController *)self setAuthoredDocument:a4];
+      [(MPAuthoringController *)self setAuthoredDocument:document];
     }
 
-    v7 = [[NSMutableDictionary alloc] initWithDictionary:v5];
+    v7 = [[NSMutableDictionary alloc] initWithDictionary:optionsCopy];
     if (![v7 objectForKey:kMPAuthoringAudioDuration])
     {
-      [objc_msgSend(a3 "audioPlaylist")];
+      [objc_msgSend(group "audioPlaylist")];
       v8 = [NSNumber numberWithDouble:?];
       [v7 setObject:v8 forKey:kMPAuthoringAudioDuration];
     }
 
-    v32 = [MPAuthoringUtilities alignToBeatsFromOptions:v7, context];
+    context = [MPAuthoringUtilities alignToBeatsFromOptions:v7, context];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = [a3 layers];
+    obj = [group layers];
     v9 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
-    v33 = self;
+    selfCopy = self;
     if (v9)
     {
       v10 = v9;
@@ -1370,7 +1370,7 @@ LABEL_211:
           }
 
           v15 = *(*(&v35 + 1) + 8 * i);
-          if (![MPAuthoringUtilities isLayerEffectAuthoredFromOptions:v5])
+          if (![MPAuthoringUtilities isLayerEffectAuthoredFromOptions:optionsCopy])
           {
             v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v15 zIndex]);
             [v7 setObject:v16 forKey:kMPAuthoringLayerIndex];
@@ -1410,11 +1410,11 @@ LABEL_211:
               v12 = v20;
             }
 
-            if (v32)
+            if (context)
             {
-              if ([objc_msgSend(a4 "audioPlaylist")] >= 1)
+              if ([objc_msgSend(document "audioPlaylist")] >= 1)
               {
-                v21 = -[MPAuthoringController beatsForAudioPlaylist:withOptions:](self, "beatsForAudioPlaylist:withOptions:", [a3 audioPlaylist], v7);
+                v21 = -[MPAuthoringController beatsForAudioPlaylist:withOptions:](self, "beatsForAudioPlaylist:withOptions:", [group audioPlaylist], v7);
                 if (v21)
                 {
                   [(MPAuthoringController *)self beatAlignLayer:v15 toBeats:v21 withOptions:v7];
@@ -1439,104 +1439,104 @@ LABEL_211:
     authoredDocument = self->_authoredDocument;
     v23 = [NSNumber numberWithDouble:v13];
     [(MPDocument *)authoredDocument setAuthoringOption:v23 forKey:kMPAuthoringMinimumDuration];
-    v24 = v33->_authoredDocument;
+    v24 = selfCopy->_authoredDocument;
     v25 = [NSNumber numberWithDouble:v12];
     [(MPDocument *)v24 setAuthoringOption:v25 forKey:kMPAuthoringMaximumDuration];
     v26 = [NSNumber numberWithDouble:v13];
     [v7 setObject:v26 forKeyedSubscript:kMPAuthoringMinimumDuration];
     v27 = [NSNumber numberWithDouble:v12];
     [v7 setObject:v27 forKeyedSubscript:kMPAuthoringMaximumDuration];
-    [(MPAuthoringController *)v33 matchDurationsForLayers:obj withOptions:v7];
-    [(MPAuthoringController *)v33 fillDurationsForLayers:obj withOptions:v7];
-    [(MPAuthoringController *)v33 checkForOffsetsForLayers:obj withOptions:v7];
+    [(MPAuthoringController *)selfCopy matchDurationsForLayers:obj withOptions:v7];
+    [(MPAuthoringController *)selfCopy fillDurationsForLayers:obj withOptions:v7];
+    [(MPAuthoringController *)selfCopy checkForOffsetsForLayers:obj withOptions:v7];
 
-    [a3 reconfigureLoopingMode];
-    if (!v33->_isAuthoring)
+    [group reconfigureLoopingMode];
+    if (!selfCopy->_isAuthoring)
     {
-      [(MPAuthoringController *)v33 cleanup];
-      [objc_msgSend(a4 "montage")];
+      [(MPAuthoringController *)selfCopy cleanup];
+      [objc_msgSend(document "montage")];
     }
 
     objc_autoreleasePoolPop(contexta);
   }
 }
 
-- (void)reconfigureImagesInDocument:(id)a3 withOptions:(id)a4
+- (void)reconfigureImagesInDocument:(id)document withOptions:(id)options
 {
-  if ([objc_msgSend(objc_msgSend(a3 "documentLayerGroup")])
+  if ([objc_msgSend(objc_msgSend(document "documentLayerGroup")])
   {
 
-    [(MPAuthoringController *)self authorDocument:a3 withOptions:a4];
+    [(MPAuthoringController *)self authorDocument:document withOptions:options];
   }
 
   else
   {
 
-    [(MPAuthoringController *)self _reorderImagesInDocument:a3 withOptions:a4];
+    [(MPAuthoringController *)self _reorderImagesInDocument:document withOptions:options];
   }
 }
 
-- (void)reconfigureTitleEffectInDocument:(id)a3 withOptions:(id)a4
+- (void)reconfigureTitleEffectInDocument:(id)document withOptions:(id)options
 {
-  v7 = [a3 documentLayerGroup];
+  documentLayerGroup = [document documentLayerGroup];
 
-  [(MPAuthoringController *)self reconfigureTitleEffectForLayerGroup:v7 inDocument:a3 withOptions:a4];
+  [(MPAuthoringController *)self reconfigureTitleEffectForLayerGroup:documentLayerGroup inDocument:document withOptions:options];
 }
 
-- (void)reconfigureTitleEffectForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)reconfigureTitleEffectForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
-  if ([a3 countOfLayers] >= 1)
+  if ([group countOfLayers] >= 1)
   {
-    [objc_msgSend(a4 "montage")];
-    if (!a5)
+    [objc_msgSend(document "montage")];
+    if (!options)
     {
-      a5 = [a3 authoringOptions];
+      options = [group authoringOptions];
     }
 
-    v8 = [MPAuthoringUtilities styleFromOptions:a5];
+    v8 = [MPAuthoringUtilities styleFromOptions:options];
     v9 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
     v10 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-    v11 = [a3 layers];
-    if (v10 < [v11 count])
+    layers = [group layers];
+    if (v10 < [layers count])
     {
-      v12 = [objc_msgSend(objc_msgSend(v11 objectAtIndex:{v10), "effectContainers"), "objectAtIndex:", 0}];
+      v12 = [objc_msgSend(objc_msgSend(layers objectAtIndex:{v10), "effectContainers"), "objectAtIndex:", 0}];
       v13 = [v9 objectForKey:@"backgroundEffect"];
       v14 = v13 ? 2 : 1;
       if (v14 <= [v12 countOfEffects])
       {
         v15 = [objc_msgSend(v12 "effects")];
-        [v15 replaceTextsWitStrings:{objc_msgSend(a5, "objectForKey:", kMPAuthoringTitleStrings)}];
+        [v15 replaceTextsWitStrings:{objc_msgSend(options, "objectForKey:", kMPAuthoringTitleStrings)}];
       }
     }
 
-    v16 = [a4 montage];
+    montage = [document montage];
 
-    [v16 unlock];
+    [montage unlock];
   }
 }
 
-- (void)reconfigureColorSchemeInDocument:(id)a3 withOptions:(id)a4
+- (void)reconfigureColorSchemeInDocument:(id)document withOptions:(id)options
 {
-  v7 = [a3 documentLayerGroup];
+  documentLayerGroup = [document documentLayerGroup];
 
-  [(MPAuthoringController *)self reconfigureColorSchemeForLayerGroup:v7 inDocument:a3 withOptions:a4];
+  [(MPAuthoringController *)self reconfigureColorSchemeForLayerGroup:documentLayerGroup inDocument:document withOptions:options];
 }
 
-- (void)reconfigureColorSchemeForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)reconfigureColorSchemeForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
-  [objc_msgSend(a4 "montage")];
-  if (!a5)
+  [objc_msgSend(document "montage")];
+  if (!options)
   {
-    a5 = [a3 authoringOptions];
+    options = [group authoringOptions];
   }
 
-  v9 = [MPAuthoringUtilities colorSchemeFromOptions:a5];
+  v9 = [MPAuthoringUtilities colorSchemeFromOptions:options];
   if (v9)
   {
     v10 = v9;
-    if ([a5 objectForKey:kMPAuthoringBackgroundColor] || (v14 = objc_msgSend(v10, "objectForKey:", @"background")) == 0)
+    if ([options objectForKey:kMPAuthoringBackgroundColor] || (v14 = objc_msgSend(v10, "objectForKey:", @"background")) == 0)
     {
-      v11 = [MPAuthoringUtilities backgroundColorFromOptions:a5];
+      v11 = [MPAuthoringUtilities backgroundColorFromOptions:options];
     }
 
     else
@@ -1544,24 +1544,24 @@ LABEL_211:
       v11 = [MPUtilities CGColorFromString:v14];
     }
 
-    [a3 setBackgroundCGColor:v11];
+    [group setBackgroundCGColor:v11];
     v15 = [v10 objectForKey:@"titleText"];
     if (v15)
     {
       v16 = v15;
-      if ([a5 objectForKeyedSubscript:kMPAuthoringColorScheme])
+      if ([options objectForKeyedSubscript:kMPAuthoringColorScheme])
       {
         v13 = [MPUtilities CGColorFromString:v16];
 LABEL_14:
-        [(MPAuthoringController *)self setTitleTextToColor:v13 forLayerGroup:a3 inDocument:a4 withOptions:a5];
+        [(MPAuthoringController *)self setTitleTextToColor:v13 forLayerGroup:group inDocument:document withOptions:options];
       }
     }
   }
 
   else
   {
-    [a3 setBackgroundCGColor:{+[MPAuthoringUtilities backgroundColorFromOptions:](MPAuthoringUtilities, "backgroundColorFromOptions:", a5)}];
-    v12 = [a5 objectForKey:kMPAuthoringTitleColor];
+    [group setBackgroundCGColor:{+[MPAuthoringUtilities backgroundColorFromOptions:](MPAuthoringUtilities, "backgroundColorFromOptions:", options)}];
+    v12 = [options objectForKey:kMPAuthoringTitleColor];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1573,24 +1573,24 @@ LABEL_14:
     }
   }
 
-  v17 = [a4 montage];
+  montage = [document montage];
 
-  [v17 unlock];
+  [montage unlock];
 }
 
-- (BOOL)prepareDocumentForExport:(id)a3 withOptions:(id)a4
+- (BOOL)prepareDocumentForExport:(id)export withOptions:(id)options
 {
-  v4 = a4;
-  if (!a4)
+  optionsCopy = options;
+  if (!options)
   {
-    v4 = [a3 documentAttributeForKey:kMPDocumentAuthoringOptions];
+    optionsCopy = [export documentAttributeForKey:kMPDocumentAuthoringOptions];
   }
 
   v7 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-  v8 = [a3 countOfLayers];
-  if (v7 >= v8)
+  countOfLayers = [export countOfLayers];
+  if (v7 >= countOfLayers)
   {
-    v9 = v8 - 1;
+    v9 = countOfLayers - 1;
   }
 
   else
@@ -1600,10 +1600,10 @@ LABEL_14:
 
   if ((v9 & 0x8000000000000000) == 0)
   {
-    [objc_msgSend(a3 "montage")];
-    v10 = [objc_msgSend(a3 "layers")];
+    [objc_msgSend(export "montage")];
+    v10 = [objc_msgSend(export "layers")];
     v11 = [objc_msgSend(v10 "effectContainers")];
-    v12 = [NSMutableDictionary dictionaryWithDictionary:v4];
+    v12 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
     v13 = [NSNumber numberWithInteger:v9];
     [(NSMutableDictionary *)v12 setObject:v13 forKey:kMPAuthoringLayerIndex];
     if ([MPAuthoringUtilities exportTransitionIDFromOptions:v12])
@@ -1640,35 +1640,35 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v27 = [v11 countOfEffects];
-    v28 = [v11 transition];
-    if (v27)
+    countOfEffects = [v11 countOfEffects];
+    transition = [v11 transition];
+    if (countOfEffects)
     {
-      if (v28)
+      if (transition)
       {
         v29 = v11;
         v30 = 0;
 LABEL_16:
         [v29 setTransition:v30];
 LABEL_17:
-        if ([MPAuthoringUtilities audioScalingModeFromOptions:v4]== &dword_0 + 1)
+        if ([MPAuthoringUtilities audioScalingModeFromOptions:optionsCopy]== &dword_0 + 1)
         {
-          [a3 setDocumentAttribute:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", objc_msgSend(a3, "loopingMode")), @"exportLoopingMode"}];
-          [a3 setLoopingMode:0];
+          [export setDocumentAttribute:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", objc_msgSend(export, "loopingMode")), @"exportLoopingMode"}];
+          [export setLoopingMode:0];
         }
 
         v26 = 1;
         v31 = [NSNumber numberWithBool:1];
-        [a3 setDocumentAttribute:v31 forKey:kMPDocumentPreparedForExport];
-        -[MPAuthoringController matchDurationsForLayers:withOptions:](self, "matchDurationsForLayers:withOptions:", [a3 layers], v12);
-        -[MPAuthoringController fillDurationsForLayers:withOptions:](self, "fillDurationsForLayers:withOptions:", [a3 layers], v12);
+        [export setDocumentAttribute:v31 forKey:kMPDocumentPreparedForExport];
+        -[MPAuthoringController matchDurationsForLayers:withOptions:](self, "matchDurationsForLayers:withOptions:", [export layers], v12);
+        -[MPAuthoringController fillDurationsForLayers:withOptions:](self, "fillDurationsForLayers:withOptions:", [export layers], v12);
         goto LABEL_20;
       }
     }
 
-    else if (v28)
+    else if (transition)
     {
-      [v28 duration];
+      [transition duration];
       v34 = v33;
       [v11 setTransition:0];
       [v11 duration];
@@ -1680,26 +1680,26 @@ LABEL_17:
 
     v26 = 0;
 LABEL_20:
-    [objc_msgSend(a3 "montage")];
+    [objc_msgSend(export "montage")];
     return v26;
   }
 
   return 0;
 }
 
-- (void)prepareDocumentForPlayback:(id)a3 withOptions:(id)a4
+- (void)prepareDocumentForPlayback:(id)playback withOptions:(id)options
 {
-  v4 = a4;
-  if (!a4)
+  optionsCopy = options;
+  if (!options)
   {
-    v4 = [a3 documentAttributeForKey:kMPDocumentAuthoringOptions];
+    optionsCopy = [playback documentAttributeForKey:kMPDocumentAuthoringOptions];
   }
 
   v7 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-  v8 = [a3 countOfLayers];
-  if (v7 >= v8)
+  countOfLayers = [playback countOfLayers];
+  if (v7 >= countOfLayers)
   {
-    v9 = v8 - 1;
+    v9 = countOfLayers - 1;
   }
 
   else
@@ -1709,19 +1709,19 @@ LABEL_20:
 
   if ((v9 & 0x8000000000000000) == 0)
   {
-    [objc_msgSend(a3 "montage")];
-    v10 = [a3 objectInLayersAtIndex:v9];
+    [objc_msgSend(playback "montage")];
+    v10 = [playback objectInLayersAtIndex:v9];
     if ([v10 countOfEffectContainers])
     {
-      v11 = [NSMutableDictionary dictionaryWithDictionary:v4];
+      v11 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
       v12 = &kCTUnderlineColorAttributeName_ptr;
       v13 = [NSNumber numberWithInteger:v9];
       [(NSMutableDictionary *)v11 setObject:v13 forKey:kMPAuthoringLayerIndex];
       v14 = [objc_msgSend(v10 "effectContainers")];
-      if ([a3 documentAttributeForKey:@"exportLoopingMode"])
+      if ([playback documentAttributeForKey:@"exportLoopingMode"])
       {
-        [a3 setLoopingMode:{objc_msgSend(objc_msgSend(a3, "documentAttributeForKey:", @"exportLoopingMode", "integerValue")}];
-        [a3 setDocumentAttribute:0 forKey:@"exportLoopingMode"];
+        [playback setLoopingMode:{objc_msgSend(objc_msgSend(playback, "documentAttributeForKey:", @"exportLoopingMode", "integerValue")}];
+        [playback setDocumentAttribute:0 forKey:@"exportLoopingMode"];
       }
 
       v15 = [MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:v11];
@@ -1731,12 +1731,12 @@ LABEL_20:
         goto LABEL_45;
       }
 
-      v17 = [v14 index];
-      v18 = [a3 documentAttributeForKey:kMPDocumentPreparedForExport];
+      index = [v14 index];
+      v18 = [playback documentAttributeForKey:kMPDocumentPreparedForExport];
       if (v16 && v18 && [v18 BOOLValue])
       {
         v19 = [objc_msgSend(v10 "effectContainers")];
-        [v10 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v17)}];
+        [v10 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", index)}];
       }
 
       else
@@ -1749,13 +1749,13 @@ LABEL_20:
       if (v20)
       {
         v22 = v21;
-        v23 = [self->_delegate document:a3 shouldUseDefaultTransitionForEffectContainer:v19 containerIndex:objc_msgSend(v19 layerIndex:{"index"), v9}];
+        v23 = [self->_delegate document:playback shouldUseDefaultTransitionForEffectContainer:v19 containerIndex:objc_msgSend(v19 layerIndex:{"index"), v9}];
         if ((v23 & 1) == 0)
         {
           v12 = &kCTUnderlineColorAttributeName_ptr;
           if (((v22 ^ 1) & 1) == 0)
           {
-            v24 = [self->_delegate document:a3 needsTransitionForEffectContainer:v19 containerIndex:objc_msgSend(v19 layerIndex:{"index"), v9}];
+            v24 = [self->_delegate document:playback needsTransitionForEffectContainer:v19 containerIndex:objc_msgSend(v19 layerIndex:{"index"), v9}];
             if (!v24)
             {
               goto LABEL_30;
@@ -1792,19 +1792,19 @@ LABEL_41:
             }
 
 LABEL_42:
-            if ([objc_msgSend(v4 objectForKey:{kMPAuthoringAudioScalingMode), "integerValue"}] == &dword_0 + 1)
+            if ([objc_msgSend(optionsCopy objectForKey:{kMPAuthoringAudioScalingMode), "integerValue"}] == &dword_0 + 1)
             {
-              [(MPAuthoringController *)self scaleDurationsInDocument:a3 withOptions:v11];
+              [(MPAuthoringController *)self scaleDurationsInDocument:playback withOptions:v11];
             }
 
-            -[MPAuthoringController matchDurationsForLayers:withOptions:](self, "matchDurationsForLayers:withOptions:", [a3 layers], v11);
-            -[MPAuthoringController fillDurationsForLayers:withOptions:](self, "fillDurationsForLayers:withOptions:", [a3 layers], v11);
+            -[MPAuthoringController matchDurationsForLayers:withOptions:](self, "matchDurationsForLayers:withOptions:", [playback layers], v11);
+            -[MPAuthoringController fillDurationsForLayers:withOptions:](self, "fillDurationsForLayers:withOptions:", [playback layers], v11);
 LABEL_45:
             v39 = [(CFStringRef *)v12[26] numberWithBool:0];
-            [a3 setDocumentAttribute:v39 forKey:kMPDocumentPreparedForExport];
-            v40 = [a3 montage];
+            [playback setDocumentAttribute:v39 forKey:kMPDocumentPreparedForExport];
+            montage = [playback montage];
 
-            [v40 unlock];
+            [montage unlock];
             return;
           }
 
@@ -1856,37 +1856,37 @@ LABEL_38:
   }
 }
 
-- (BOOL)canDocumentFitToAudio:(id)a3 withOptions:(id)a4 requiredAudioDuration:(double *)a5
+- (BOOL)canDocumentFitToAudio:(id)audio withOptions:(id)options requiredAudioDuration:(double *)duration
 {
-  v9 = [a3 documentLayerGroup];
+  documentLayerGroup = [audio documentLayerGroup];
 
-  return [(MPAuthoringController *)self canLayerGroupFitToAudio:v9 inDocument:a3 withOptions:a4 requiredAudioDuration:a5];
+  return [(MPAuthoringController *)self canLayerGroupFitToAudio:documentLayerGroup inDocument:audio withOptions:options requiredAudioDuration:duration];
 }
 
-- (BOOL)canLayerGroupFitToAudio:(id)a3 inDocument:(id)a4 withOptions:(id)a5 requiredAudioDuration:(double *)a6
+- (BOOL)canLayerGroupFitToAudio:(id)audio inDocument:(id)document withOptions:(id)options requiredAudioDuration:(double *)duration
 {
-  v7 = a5;
-  if (!a5)
+  optionsCopy = options;
+  if (!options)
   {
-    v7 = [a3 authoringOptions];
+    optionsCopy = [audio authoringOptions];
   }
 
   v10 = objc_alloc_init(MPDocument);
-  v11 = [NSMutableDictionary dictionaryWithDictionary:v7];
+  v11 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
   v12 = [NSNumber numberWithInteger:1];
   [(NSMutableDictionary *)v11 setObject:v12 forKey:kMPAuthoringAudioScalingMode];
   v13 = [NSNumber numberWithBool:0];
   [(NSMutableDictionary *)v11 setObject:v13 forKey:kMPAuthoringRequestGeneratedImages];
   [(NSMutableDictionary *)v11 removeObjectForKey:kMPAuthoringLayerTimeScale];
-  -[MPDocument setVideoPaths:](v10, "setVideoPaths:", [a3 videoPaths]);
-  -[MPDocument setAudioPaths:](v10, "setAudioPaths:", [a3 audioPaths]);
-  -[MPDocument _setMediaProperties:](v10, "_setMediaProperties:", [a4 mediaProperties]);
+  -[MPDocument setVideoPaths:](v10, "setVideoPaths:", [audio videoPaths]);
+  -[MPDocument setAudioPaths:](v10, "setAudioPaths:", [audio audioPaths]);
+  -[MPDocument _setMediaProperties:](v10, "_setMediaProperties:", [document mediaProperties]);
   [(MPDocument *)v10 setDocumentAttribute:v11 forKey:kMPDocumentAuthoringOptions];
-  -[MPDocument setAssetKeyDelegate:](v10, "setAssetKeyDelegate:", [a4 assetKeyDelegate]);
+  -[MPDocument setAssetKeyDelegate:](v10, "setAssetKeyDelegate:", [document assetKeyDelegate]);
   v14 = objc_alloc_init(MPAuthoringController);
   [(MPAuthoringController *)v14 authorLayerGroup:[(MPDocument *)v10 documentLayerGroup] inDocument:v10 withOptions:v11];
 
-  v15 = [v7 objectForKey:kMPAuthoringAudioDuration];
+  v15 = [optionsCopy objectForKey:kMPAuthoringAudioDuration];
   if (v15)
   {
     [v15 doubleValue];
@@ -1899,9 +1899,9 @@ LABEL_38:
 
   v17 = v16;
   [(MPDocument *)v10 videoDuration];
-  if (a6)
+  if (duration)
   {
-    *a6 = v18;
+    *duration = v18;
   }
 
   v19 = vabdd_f64(v18, v17) < 1.0;
@@ -1909,11 +1909,11 @@ LABEL_38:
   return v19;
 }
 
-- (void)cleanup:(BOOL)a3
+- (void)cleanup:(BOOL)cleanup
 {
-  v3 = a3;
+  cleanupCopy = cleanup;
   [(MPAuthoringController *)self cleanupClusters];
-  if (v3)
+  if (cleanupCopy)
   {
     [(MPWeighter *)self->_weighter clearAllItems];
     [(MPWeighter *)self->_transitionWeighter clearAllItems];
@@ -1946,34 +1946,34 @@ LABEL_38:
   }
 }
 
-- (void)configureIntroInDocument:(id)a3 withOptions:(id)a4
+- (void)configureIntroInDocument:(id)document withOptions:(id)options
 {
-  v4 = a4;
-  if (![objc_msgSend(a4 objectForKey:{kMPAuthoringLive), "BOOLValue"}] || !MRIsAppleTV())
+  optionsCopy = options;
+  if (![objc_msgSend(options objectForKey:{kMPAuthoringLive), "BOOLValue"}] || !MRIsAppleTV())
   {
 LABEL_20:
-    v17 = [MPAuthoringUtilities introEffectIDFromOptions:v4, v19, v20];
-    if (v17 && [v17 isEqualToString:kMPFadeInEffect])
+    documentCopy = [MPAuthoringUtilities introEffectIDFromOptions:optionsCopy, v19, documentCopy];
+    if (documentCopy && [documentCopy isEqualToString:kMPFadeInEffect])
     {
-      [MPAuthoringUtilities introDurationFromOptions:v4];
+      [MPAuthoringUtilities introDurationFromOptions:optionsCopy];
       if (v18 == -1.0)
       {
         v18 = 0.5;
       }
 
-      [a3 setFadeInDuration:v18];
+      [document setFadeInDuration:v18];
     }
 
     return;
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [optionsCopy mutableCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [a3 layers];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  layers = [document layers];
+  v8 = [layers countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v8)
   {
 
@@ -1981,8 +1981,8 @@ LABEL_20:
   }
 
   v9 = v8;
-  v19 = v4;
-  v20 = a3;
+  v19 = optionsCopy;
+  documentCopy = document;
   v10 = 0;
   v21 = 0;
   v11 = *v24;
@@ -1992,7 +1992,7 @@ LABEL_20:
     {
       if (*v24 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(layers);
       }
 
       v13 = *(*(&v23 + 1) + 8 * i);
@@ -2004,10 +2004,10 @@ LABEL_20:
         if ([MPAuthoringUtilities useIntroTransition:v6])
         {
           v15 = [v13 countOfEffectContainers] < 1 ? 0 : objc_msgSend(v13, "objectInEffectContainersAtIndex:", 0);
-          v16 = [(MPAuthoringController *)self transitionFromOptions:v6 firstEffectContainer:v15 nextEffectContainer:v15, v19, v20];
-          if (([objc_msgSend(v16 "transitionID")] & 1) == 0)
+          documentCopy2 = [(MPAuthoringController *)self transitionFromOptions:v6 firstEffectContainer:v15 nextEffectContainer:v15, v19, documentCopy];
+          if (([objc_msgSend(documentCopy2 "transitionID")] & 1) == 0)
           {
-            [v13 setIntroTransition:v16];
+            [v13 setIntroTransition:documentCopy2];
             v21 = 1;
           }
         }
@@ -2016,48 +2016,48 @@ LABEL_20:
       ++v10;
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v9 = [layers countByEnumeratingWithState:&v23 objects:v27 count:16];
   }
 
   while (v9);
 
-  v4 = v19;
-  a3 = v20;
+  optionsCopy = v19;
+  document = documentCopy;
   if ((v21 & 1) == 0)
   {
     goto LABEL_20;
   }
 }
 
-- (void)configureOutroInDocument:(id)a3 withOptions:(id)a4
+- (void)configureOutroInDocument:(id)document withOptions:(id)options
 {
-  v7 = [MPAuthoringUtilities outroEffectIDFromOptions:a4];
+  v7 = [MPAuthoringUtilities outroEffectIDFromOptions:options];
   if (v7 && [v7 isEqualToString:kMPFadeOutEffect])
   {
-    [MPAuthoringUtilities outroDurationFromOptions:a4];
+    [MPAuthoringUtilities outroDurationFromOptions:options];
     if (v8 == -1.0)
     {
-      [-[MPAuthoringController transitionFromOptions:](self transitionFromOptions:{a4), "duration"}];
+      [-[MPAuthoringController transitionFromOptions:](self transitionFromOptions:{options), "duration"}];
     }
 
-    [a3 setFadeOutDuration:?];
+    [document setFadeOutDuration:?];
   }
 }
 
-- (void)setTitleTextToColor:(CGColor *)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)setTitleTextToColor:(CGColor *)color inDocument:(id)document withOptions:(id)options
 {
-  v9 = [a4 documentLayerGroup];
+  documentLayerGroup = [document documentLayerGroup];
 
-  [(MPAuthoringController *)self setTitleTextToColor:a3 forLayerGroup:v9 inDocument:a4 withOptions:a5];
+  [(MPAuthoringController *)self setTitleTextToColor:color forLayerGroup:documentLayerGroup inDocument:document withOptions:options];
 }
 
-- (void)setTitleTextToColor:(CGColor *)a3 forLayerGroup:(id)a4 inDocument:(id)a5 withOptions:(id)a6
+- (void)setTitleTextToColor:(CGColor *)color forLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
-  v23 = [+[MPStyleManager sharedManager](MPStyleManager sharedManager];
-  v8 = [a4 layers];
-  if ([v8 count])
+  sharedManager = [+[MPStyleManager sharedManager](MPStyleManager sharedManager];
+  layers = [group layers];
+  if ([layers count])
   {
-    obj = [objc_msgSend(v8 objectAtIndex:{0), "effectContainers"}];
+    obj = [objc_msgSend(layers objectAtIndex:{0), "effectContainers"}];
     if ([obj count])
     {
       v32 = 0u;
@@ -2080,7 +2080,7 @@ LABEL_20:
 
             v25 = v9;
             v10 = *(*(&v30 + 1) + 8 * v9);
-            v11 = [v23 objectForKey:@"backgroundEffect"];
+            v11 = [sharedManager objectForKey:@"backgroundEffect"];
             if (v11)
             {
               v12 = 2;
@@ -2098,8 +2098,8 @@ LABEL_20:
               v27 = 0u;
               v28 = 0u;
               v29 = 0u;
-              v14 = [v13 texts];
-              v15 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              texts = [v13 texts];
+              v15 = [texts countByEnumeratingWithState:&v26 objects:v34 count:16];
               if (v15)
               {
                 v16 = v15;
@@ -2110,16 +2110,16 @@ LABEL_20:
                   {
                     if (*v27 != v17)
                     {
-                      objc_enumerationMutation(v14);
+                      objc_enumerationMutation(texts);
                     }
 
                     v19 = *(*(&v26 + 1) + 8 * i);
                     v20 = [[NSMutableAttributedString alloc] initWithAttributedString:{objc_msgSend(v19, "attributedString")}];
-                    [v20 addAttributes:+[NSDictionary dictionaryWithObject:forKey:](NSDictionary range:{"dictionaryWithObject:forKey:", a3, kCTForegroundColorAttributeName), 0, objc_msgSend(v20, "length")}];
+                    [v20 addAttributes:+[NSDictionary dictionaryWithObject:forKey:](NSDictionary range:{"dictionaryWithObject:forKey:", color, kCTForegroundColorAttributeName), 0, objc_msgSend(v20, "length")}];
                     [v19 setAttributedString:v20];
                   }
 
-                  v16 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+                  v16 = [texts countByEnumeratingWithState:&v26 objects:v34 count:16];
                 }
 
                 while (v16);
@@ -2139,7 +2139,7 @@ LABEL_20:
   }
 }
 
-- (void)setAuthoredDocument:(id)a3
+- (void)setAuthoredDocument:(id)document
 {
   authoredDocument = self->_authoredDocument;
   if (authoredDocument)
@@ -2148,13 +2148,13 @@ LABEL_20:
     self->_authoredDocument = 0;
   }
 
-  if (a3)
+  if (document)
   {
-    self->_authoredDocument = a3;
+    self->_authoredDocument = document;
   }
 }
 
-- (id)_collectVersionInformationFromStyle:(id)a3
+- (id)_collectVersionInformationFromStyle:(id)style
 {
   v4 = +[NSMutableDictionary dictionary];
   v5 = objc_alloc_init(NSMutableDictionary);
@@ -2288,11 +2288,11 @@ LABEL_20:
   return v4;
 }
 
-- (id)shuffleImagesByRating:(id)a3 withOptions:(id)a4
+- (id)shuffleImagesByRating:(id)rating withOptions:(id)options
 {
-  [MPAuthoringUtilities videoPathsRangeFromOptions:a4];
+  [MPAuthoringUtilities videoPathsRangeFromOptions:options];
   v7 = v6;
-  v8 = [a3 count];
+  v8 = [rating count];
   if (v7 >= v8)
   {
     v9 = v8;
@@ -2310,7 +2310,7 @@ LABEL_20:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v10 = [rating countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2321,7 +2321,7 @@ LABEL_20:
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(rating);
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
@@ -2330,7 +2330,7 @@ LABEL_20:
           [(MPWeighter *)self->_shuffleWeighter addItem:v14 withWeight:(v16 * 100.0) andContraints:0];
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [rating countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v11);
@@ -2343,10 +2343,10 @@ LABEL_20:
   {
     do
     {
-      v19 = [(MPWeighter *)self->_shuffleWeighter getRandomIndex];
-      [v18 addObject:{objc_msgSend(-[MPWeighter allItems](self->_weighter, "allItems"), "objectAtIndex:", v19)}];
-      [v17 addIndex:v19];
-      [(MPWeighter *)self->_shuffleWeighter addIndexToIgnore:v19];
+      getRandomIndex = [(MPWeighter *)self->_shuffleWeighter getRandomIndex];
+      [v18 addObject:{objc_msgSend(-[MPWeighter allItems](self->_weighter, "allItems"), "objectAtIndex:", getRandomIndex)}];
+      [v17 addIndex:getRandomIndex];
+      [(MPWeighter *)self->_shuffleWeighter addIndexToIgnore:getRandomIndex];
       --v9;
     }
 
@@ -2358,17 +2358,17 @@ LABEL_20:
   return v18;
 }
 
-- (id)orderImages:(id)a3 withOptions:(id)a4
+- (id)orderImages:(id)images withOptions:(id)options
 {
-  if ([MPAuthoringUtilities layerHasImagesFromOptions:a4])
+  if ([MPAuthoringUtilities layerHasImagesFromOptions:options])
   {
-    v7 = [MPAuthoringUtilities presentationOrderFromOptions:a4];
+    v7 = [MPAuthoringUtilities presentationOrderFromOptions:options];
     if (v7 > 2)
     {
       if (v7 == 3)
       {
         v8 = +[NSMutableArray array];
-        v24 = [a3 mutableCopy];
+        v24 = [images mutableCopy];
         v25 = v24;
         while ([v24 count])
         {
@@ -2384,7 +2384,7 @@ LABEL_20:
 
       if (v7 != 6)
       {
-        return a3;
+        return images;
       }
     }
 
@@ -2394,11 +2394,11 @@ LABEL_20:
       {
         if (!self->_isAuthoring)
         {
-          [(MPAuthoringController *)self setupClustersWithPaths:a3 withOptions:a4];
+          [(MPAuthoringController *)self setupClustersWithPaths:images withOptions:options];
         }
 
         v10 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", [+[MPClusterController sharedController](MPClusterController "sharedController")]);
-        v11 = [NSMutableArray arrayWithArray:a3];
+        v11 = [NSMutableArray arrayWithArray:images];
         v8 = +[NSMutableArray array];
         while ([(NSMutableArray *)v11 count])
         {
@@ -2410,12 +2410,12 @@ LABEL_20:
           }
 
           v13 = v12;
-          v14 = [v12 allSlides];
+          allSlides = [v12 allSlides];
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v15 = [v14 countByEnumeratingWithState:&v32 objects:v38 count:16];
+          v15 = [allSlides countByEnumeratingWithState:&v32 objects:v38 count:16];
           if (v15)
           {
             v16 = v15;
@@ -2426,7 +2426,7 @@ LABEL_20:
             {
               if (*v33 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(allSlides);
               }
 
               if (!-[NSMutableArray containsObject:](v11, "containsObject:", [*(*(&v32 + 1) + 8 * v18) path]))
@@ -2436,7 +2436,7 @@ LABEL_20:
 
               if (v16 == ++v18)
               {
-                v16 = [v14 countByEnumeratingWithState:&v32 objects:v38 count:16];
+                v16 = [allSlides countByEnumeratingWithState:&v32 objects:v38 count:16];
                 if (v16)
                 {
                   goto LABEL_20;
@@ -2454,7 +2454,7 @@ LABEL_26:
             v31 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v19 = [v14 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            v19 = [allSlides countByEnumeratingWithState:&v28 objects:v37 count:16];
             if (v19)
             {
               v20 = v19;
@@ -2465,7 +2465,7 @@ LABEL_26:
                 {
                   if (*v29 != v21)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(allSlides);
                   }
 
                   v23 = *(*(&v28 + 1) + 8 * i);
@@ -2473,7 +2473,7 @@ LABEL_26:
                   -[NSMutableArray removeObject:](v11, "removeObject:", [v23 path]);
                 }
 
-                v20 = [v14 countByEnumeratingWithState:&v28 objects:v37 count:16];
+                v20 = [allSlides countByEnumeratingWithState:&v28 objects:v37 count:16];
               }
 
               while (v20);
@@ -2493,7 +2493,7 @@ LABEL_26:
 
       if (v7 != 1)
       {
-        return a3;
+        return images;
       }
     }
 
@@ -2502,19 +2502,19 @@ LABEL_26:
     v36[2] = sub_9E9C4;
     v36[3] = &unk_1AB390;
     v36[4] = self;
-    return [a3 sortedArrayUsingComparator:v36];
+    return [images sortedArrayUsingComparator:v36];
   }
 
   return +[NSArray array];
 }
 
-- (void)authorPlacesWithImages:(id)a3 forLayerGroup:(id)a4 inDocument:(id)a5 withOptions:(id)a6
+- (void)authorPlacesWithImages:(id)images forLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
   v11 = objc_autoreleasePoolPush();
-  v12 = [(MPAuthoringController *)self orderImages:a3 withOptions:a6];
+  v12 = [(MPAuthoringController *)self orderImages:images withOptions:options];
   if ([v12 count])
   {
-    v13 = [(MPAuthoringController *)self createLayersForPlacesForImages:v12 forDocument:a5 withOptions:a6];
+    v13 = [(MPAuthoringController *)self createLayersForPlacesForImages:v12 forDocument:document withOptions:options];
     if (!self->_cancelAuthoring)
     {
       v14 = v13;
@@ -2550,26 +2550,26 @@ LABEL_26:
         while (v16);
       }
 
-      [a4 removeAllLayers];
-      [a4 addLayers:v14];
-      [(MPAuthoringController *)self scaleDurationsInDocument:a5 withOptions:a6];
+      [group removeAllLayers];
+      [group addLayers:v14];
+      [(MPAuthoringController *)self scaleDurationsInDocument:document withOptions:options];
     }
   }
 
   else
   {
-    [a4 removeAllLayers];
+    [group removeAllLayers];
   }
 
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)cacheROIInformationForImages:(id)a3 withOptions:(id)a4
+- (void)cacheROIInformationForImages:(id)images withOptions:(id)options
 {
   if (!self->_cachedROIInformation)
   {
     self->_cachedROIInformation = objc_alloc_init(NSMutableDictionary);
-    if ([a3 count])
+    if ([images count])
     {
       v8 = 0;
       v9 = &v8;
@@ -2582,31 +2582,31 @@ LABEL_26:
       v7 = 0;
       v6[4] = self;
       v6[5] = &v8;
-      [a3 enumerateObjectsWithOptions:1 usingBlock:v6];
+      [images enumerateObjectsWithOptions:1 usingBlock:v6];
       [(NSMutableDictionary *)self->_cachedROIInformation setObject:[NSNumber forKey:"numberWithBool:" numberWithBool:?], @"movieExists"];
       _Block_object_dispose(&v8, 8);
     }
   }
 }
 
-- (id)effectsForImages:(id)a3 withOptions:(id)a4
+- (id)effectsForImages:(id)images withOptions:(id)options
 {
   v7 = +[NSMutableArray array];
   v8 = +[MPClusterController sharedController];
   v9 = +[MPEffectManager sharedManager];
-  v10 = [MPAuthoringUtilities styleFromOptions:a4];
-  v164 = [MPAuthoringUtilities layerIndexFromOptions:a4];
-  v173 = [MPAuthoringUtilities effectListFromOptions:a4];
-  v11 = [MPAuthoringUtilities layerHasImagesFromOptions:a4];
-  v162 = [MPAuthoringUtilities canRepeatEffectWithPreset:a4];
-  v155 = [MPAuthoringUtilities canRepeatPreset:a4];
-  v167 = [MPAuthoringUtilities useLargestEffectsFromOptions:a4];
-  v157 = [MPAuthoringUtilities matchEffectsUsingTagsFromOptions:a4];
-  v12 = [MPAuthoringUtilities outroEffectIDFromOptions:a4];
-  v13 = [a3 count];
+  v10 = [MPAuthoringUtilities styleFromOptions:options];
+  v164 = [MPAuthoringUtilities layerIndexFromOptions:options];
+  v173 = [MPAuthoringUtilities effectListFromOptions:options];
+  v11 = [MPAuthoringUtilities layerHasImagesFromOptions:options];
+  v162 = [MPAuthoringUtilities canRepeatEffectWithPreset:options];
+  v155 = [MPAuthoringUtilities canRepeatPreset:options];
+  v167 = [MPAuthoringUtilities useLargestEffectsFromOptions:options];
+  v157 = [MPAuthoringUtilities matchEffectsUsingTagsFromOptions:options];
+  v12 = [MPAuthoringUtilities outroEffectIDFromOptions:options];
+  v13 = [images count];
   v168 = v9;
   v14 = v13 - [v9 numberOfSlidesForEffectID:v12];
-  v170 = self;
+  selfCopy = self;
   v153 = v12;
   if ([(NSMutableDictionary *)self->_cachedROIInformation objectForKey:@"movieExists"])
   {
@@ -2619,11 +2619,11 @@ LABEL_26:
   }
 
   v15 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-  obj = [objc_msgSend(a4 objectForKey:{@"isSetup", "BOOLValue"}];
+  obj = [objc_msgSend(options objectForKey:{@"isSetup", "BOOLValue"}];
   if (v14 < 0)
   {
 LABEL_7:
-    v16 = [a3 count];
+    v16 = [images count];
     v153 = 0;
     goto LABEL_8;
   }
@@ -2631,7 +2631,7 @@ LABEL_7:
   v16 = v14;
   if (!v14)
   {
-    if (![a3 count])
+    if (![images count])
     {
       v16 = 0;
       goto LABEL_8;
@@ -2641,26 +2641,26 @@ LABEL_7:
   }
 
 LABEL_8:
-  v158 = [MPAuthoringUtilities ignoreClusteringForImages:a3 withOptions:a4]| v15 ^ 1;
+  v158 = [MPAuthoringUtilities ignoreClusteringForImages:images withOptions:options]| v15 ^ 1;
   if ((v158 & 1) == 0 && ((v11 ^ 1) & 1) == 0)
   {
     [v8 updateClusterRatings];
-    v17 = [a4 objectForKey:kMPAuthoringCachedAbsolutePaths];
+    v17 = [options objectForKey:kMPAuthoringCachedAbsolutePaths];
     if (v17)
     {
-      v18 = v17;
+      imagesCopy = v17;
     }
 
     else
     {
-      v18 = a3;
+      imagesCopy = images;
     }
 
-    v19 = [v8 clustersBasedOnOrderedPaths:v18];
-    v20 = [v8 allSlidesSortedByPaths:v18];
+    v19 = [v8 clustersBasedOnOrderedPaths:imagesCopy];
+    v20 = [v8 allSlidesSortedByPaths:imagesCopy];
     if (v20)
     {
-      [(MPAuthoringController *)v170 findUsableClustersForUserDefinedSlideOrderPresentation:v20 inClusters:v19];
+      [(MPAuthoringController *)selfCopy findUsableClustersForUserDefinedSlideOrderPresentation:v20 inClusters:v19];
       LOBYTE(v158) = 0;
     }
 
@@ -2670,16 +2670,16 @@ LABEL_8:
     }
   }
 
-  [(MPAuthoringController *)v170 cacheROIInformationForImages:a3 withOptions:a4];
+  [(MPAuthoringController *)selfCopy cacheROIInformationForImages:images withOptions:options];
   v161 = v7;
-  v154 = a4;
-  v169 = a3;
+  optionsCopy = options;
+  imagesCopy2 = images;
   if (obj)
   {
     goto LABEL_17;
   }
 
-  if ([MPAuthoringUtilities useTitleEffectFromOptions:a4])
+  if ([MPAuthoringUtilities useTitleEffectFromOptions:options])
   {
     v24 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
     v25 = objc_alloc_init(NSMutableArray);
@@ -2687,8 +2687,8 @@ LABEL_8:
     v206 = 0u;
     v207 = 0u;
     v208 = 0u;
-    v26 = [v24 objectEnumerator];
-    v27 = [v26 countByEnumeratingWithState:&v205 objects:v215 count:16];
+    objectEnumerator = [v24 objectEnumerator];
+    v27 = [objectEnumerator countByEnumeratingWithState:&v205 objects:v215 count:16];
     if (v27)
     {
       v28 = v27;
@@ -2699,7 +2699,7 @@ LABEL_8:
         {
           if (*v206 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v31 = *(*(&v205 + 1) + 8 * i);
@@ -2709,20 +2709,20 @@ LABEL_8:
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v205 objects:v215 count:16];
+        v28 = [objectEnumerator countByEnumeratingWithState:&v205 objects:v215 count:16];
       }
 
       while (v28);
     }
 
-    a3 = v169;
-    v32 = [(MPAuthoringController *)v170 findEffectIDInPresetArray:v25 forImages:v169 withOptions:v154];
+    images = imagesCopy2;
+    v32 = [(MPAuthoringController *)selfCopy findEffectIDInPresetArray:v25 forImages:imagesCopy2 withOptions:optionsCopy];
 
     v7 = v161;
     v23 = v173;
     if (!v32)
     {
-      v32 = [MPAuthoringUtilities titleEffectFromOptions:v154];
+      v32 = [MPAuthoringUtilities titleEffectFromOptions:optionsCopy];
       if (!v32)
       {
         goto LABEL_51;
@@ -2732,11 +2732,11 @@ LABEL_8:
 
   else
   {
-    if (![MPAuthoringUtilities useImageOnlyTitleEffectFromOptions:a4])
+    if (![MPAuthoringUtilities useImageOnlyTitleEffectFromOptions:options])
     {
 LABEL_17:
       v21 = 0;
-      p_isa = &v170->super.isa;
+      p_isa = &selfCopy->super.isa;
 LABEL_18:
       v23 = v173;
       goto LABEL_52;
@@ -2748,8 +2748,8 @@ LABEL_18:
     v202 = 0u;
     v203 = 0u;
     v204 = 0u;
-    v35 = [v33 objectEnumerator];
-    v36 = [v35 countByEnumeratingWithState:&v201 objects:v214 count:16];
+    objectEnumerator2 = [v33 objectEnumerator];
+    v36 = [objectEnumerator2 countByEnumeratingWithState:&v201 objects:v214 count:16];
     if (v36)
     {
       v37 = v36;
@@ -2760,7 +2760,7 @@ LABEL_18:
         {
           if (*v202 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
           v40 = *(*(&v201 + 1) + 8 * j);
@@ -2770,7 +2770,7 @@ LABEL_18:
           }
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v201 objects:v214 count:16];
+        v37 = [objectEnumerator2 countByEnumeratingWithState:&v201 objects:v214 count:16];
       }
 
       while (v37);
@@ -2778,8 +2778,8 @@ LABEL_18:
 
     if ([v34 count])
     {
-      a3 = v169;
-      v32 = [(MPAuthoringController *)v170 findEffectIDInPresetArray:v34 forImages:v169 withOptions:v154];
+      images = imagesCopy2;
+      v32 = [(MPAuthoringController *)selfCopy findEffectIDInPresetArray:v34 forImages:imagesCopy2 withOptions:optionsCopy];
       v7 = v161;
     }
 
@@ -2787,7 +2787,7 @@ LABEL_18:
     {
       v32 = 0;
       v7 = v161;
-      a3 = v169;
+      images = imagesCopy2;
     }
 
     v23 = v173;
@@ -2803,7 +2803,7 @@ LABEL_18:
     v42 = [v32 objectForKey:@"backgroundEffect"];
     v43 = [v9 numberOfSlidesForEffectID:{+[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", v41)}];
     v21 = v43;
-    p_isa = &v170->super.isa;
+    p_isa = &selfCopy->super.isa;
     if (v42)
     {
       v21 = &v43[[v9 numberOfSlidesForEffectID:{+[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", v42)}]];
@@ -2827,7 +2827,7 @@ LABEL_248:
 
 LABEL_51:
   v21 = 0;
-  p_isa = &v170->super.isa;
+  p_isa = &selfCopy->super.isa;
 LABEL_52:
   if ((([(NSArray *)v23 count]== 0) & v11) == 1)
   {
@@ -2877,11 +2877,11 @@ LABEL_52:
   {
     v171 = v21;
     v156 = v16;
-    [p_isa populateWeighter:p_isa[8] withEffects:v23 andOptions:v154];
-    v152 = [p_isa[8] imageCounts];
-    v159 = [v152 lastIndex];
-    [p_isa[8] setEvenlyPickByID:{+[MPAuthoringUtilities pickEffectsEvenlyByIDWithOptions:](MPAuthoringUtilities, "pickEffectsEvenlyByIDWithOptions:", v154)}];
-    v49 = [v154 objectForKey:kMPAuthoringInitiallyIgnoreEffect];
+    [p_isa populateWeighter:p_isa[8] withEffects:v23 andOptions:optionsCopy];
+    imageCounts = [p_isa[8] imageCounts];
+    lastIndex = [imageCounts lastIndex];
+    [p_isa[8] setEvenlyPickByID:{+[MPAuthoringUtilities pickEffectsEvenlyByIDWithOptions:](MPAuthoringUtilities, "pickEffectsEvenlyByIDWithOptions:", optionsCopy)}];
+    v49 = [optionsCopy objectForKey:kMPAuthoringInitiallyIgnoreEffect];
     if (v49)
     {
       v50 = [objc_msgSend(p_isa[8] "allItems")];
@@ -2920,15 +2920,15 @@ LABEL_52:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0 || (!MRIsAppleTV() ? (v58 = @"Desktop") : (v58 = @"AppleTV"), (v57 = [v57 objectForKey:v58]) != 0))
               {
-                v59 = [v57 integerValue];
-                if (v59 >= [v174 count])
+                integerValue = [v57 integerValue];
+                if (integerValue >= [v174 count])
                 {
                   [v174 addObject:v55];
                 }
 
                 else
                 {
-                  [v174 insertObject:v55 atIndex:v59];
+                  [v174 insertObject:v55 atIndex:integerValue];
                 }
               }
             }
@@ -2945,7 +2945,7 @@ LABEL_52:
     if ([v174 count])
     {
       v61 = objc_alloc_init(MPWeighter);
-      [(MPAuthoringController *)v170 populateWeighter:v61 withEffects:v174 andOptions:v154];
+      [(MPAuthoringController *)selfCopy populateWeighter:v61 withEffects:v174 andOptions:optionsCopy];
       v195 = 0u;
       v196 = 0u;
       v193 = 0u;
@@ -2967,7 +2967,7 @@ LABEL_52:
 
             v66 = *(*(&v193 + 1) + 8 * m);
             v67 = [MPUtilities idOfCombinedID:v66];
-            v68 = -[MPAuthoringController findEffectIDInWeighter:images:startingIndex:count:triesToFind:constraints:previousTags:](v170, "findEffectIDInWeighter:images:startingIndex:count:triesToFind:constraints:previousTags:", v61, v169, v171, [v168 numberOfSlidesForEffectID:v66], 0, 0, 0);
+            v68 = -[MPAuthoringController findEffectIDInWeighter:images:startingIndex:count:triesToFind:constraints:previousTags:](selfCopy, "findEffectIDInWeighter:images:startingIndex:count:triesToFind:constraints:previousTags:", v61, imagesCopy2, v171, [v168 numberOfSlidesForEffectID:v66], 0, 0, 0);
             if (v68)
             {
               v69 = v68;
@@ -2984,24 +2984,24 @@ LABEL_52:
 
       if ([v161 count])
       {
-        v70 = v170;
-        v71 = [-[MPWeighter allItems](v170->_weighter "allItems")];
-        v72 = v154;
-        a3 = v169;
+        v70 = selfCopy;
+        v71 = [-[MPWeighter allItems](selfCopy->_weighter "allItems")];
+        v72 = optionsCopy;
+        images = imagesCopy2;
         v73 = v156;
         v74 = v164;
         v60 = v174;
         if (v71 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [(MPWeighter *)v170->_weighter ignoreIndex:v71];
+          [(MPWeighter *)selfCopy->_weighter ignoreIndex:v71];
         }
       }
 
       else
       {
-        v72 = v154;
-        a3 = v169;
-        v70 = v170;
+        v72 = optionsCopy;
+        images = imagesCopy2;
+        v70 = selfCopy;
         v73 = v156;
         v74 = v164;
         v60 = v174;
@@ -3010,8 +3010,8 @@ LABEL_52:
 
     else
     {
-      v72 = v154;
-      v70 = v170;
+      v72 = optionsCopy;
+      v70 = selfCopy;
       v73 = v156;
       v74 = v164;
     }
@@ -3038,18 +3038,18 @@ LABEL_52:
         v79 = 0x7FFFFFFFFFFFFFFFLL;
         if ((v158 & 1) == 0)
         {
-          v79 = [(MPAuthoringController *)v70 bestCountFromClusterForEffectWithImages:a3 atStartIndex:v78 withWeighter:v70->_weighter usedIndex:&v192];
+          v79 = [(MPAuthoringController *)v70 bestCountFromClusterForEffectWithImages:images atStartIndex:v78 withWeighter:v70->_weighter usedIndex:&v192];
         }
 
         v80 = v79;
         v81 = v172;
         v163 = v73 - v172;
-        v82 = v73 - v172 >= v159 ? v159 : v73 - v172;
+        v82 = v73 - v172 >= lastIndex ? lastIndex : v73 - v172;
         v83 = v82 > 0 ? v160 : 0;
         if (v83 == 1)
         {
           v84 = -1;
-          while (([objc_msgSend(-[NSMutableDictionary objectForKey:](v70->_cachedROIInformation objectForKey:{objc_msgSend(a3, "objectAtIndex:", v81)), "objectForKey:", @"isMovie", "BOOLValue"}] & 1) == 0)
+          while (([objc_msgSend(-[NSMutableDictionary objectForKey:](v70->_cachedROIInformation objectForKey:{objc_msgSend(images, "objectAtIndex:", v81)), "objectForKey:", @"isMovie", "BOOLValue"}] & 1) == 0)
           {
             --v84;
             ++v81;
@@ -3070,7 +3070,7 @@ LABEL_123:
           v85 = v167;
         }
 
-        v86 = v80;
+        lastIndex3 = v80;
         if (v80 == 0x7FFFFFFFFFFFFFFFLL)
         {
           break;
@@ -3078,16 +3078,16 @@ LABEL_123:
 
 LABEL_141:
         v94 = objc_alloc_init(NSMutableIndexSet);
-        v95 = [(MPWeighter *)v70->_weighter ignoredIndices];
+        ignoredIndices = [(MPWeighter *)v70->_weighter ignoredIndices];
         if ((v85 & 1) == 0)
         {
-          v165 = v86;
+          v165 = lastIndex3;
           v190 = 0u;
           v191 = 0u;
           v188 = 0u;
           v189 = 0u;
-          v96 = [(MPWeighter *)v170->_weighter allConstraints];
-          v97 = [v96 countByEnumeratingWithState:&v188 objects:v211 count:16];
+          allConstraints = [(MPWeighter *)selfCopy->_weighter allConstraints];
+          v97 = [allConstraints countByEnumeratingWithState:&v188 objects:v211 count:16];
           if (v97)
           {
             v98 = v97;
@@ -3099,11 +3099,11 @@ LABEL_141:
               {
                 if (*v189 != v100)
                 {
-                  objc_enumerationMutation(v96);
+                  objc_enumerationMutation(allConstraints);
                 }
 
                 v102 = *(*(*(&v188 + 1) + 8 * n) + 8);
-                if (v102 <= v82 && ([v95 containsIndex:v99] & 1) == 0)
+                if (v102 <= v82 && ([ignoredIndices containsIndex:v99] & 1) == 0)
                 {
                   [v94 addIndex:v102];
                 }
@@ -3111,15 +3111,15 @@ LABEL_141:
                 ++v99;
               }
 
-              v98 = [v96 countByEnumeratingWithState:&v188 objects:v211 count:16];
+              v98 = [allConstraints countByEnumeratingWithState:&v188 objects:v211 count:16];
             }
 
             while (v98);
           }
 
-          v86 = v165;
+          lastIndex3 = v165;
           [v94 removeIndex:v165];
-          a3 = v169;
+          images = imagesCopy2;
           v85 = v167;
         }
 
@@ -3131,24 +3131,24 @@ LABEL_141:
 LABEL_166:
           if (v85)
           {
-            v112 = v170;
-            v113 = [(MPWeighter *)v170->_weighter numberOfItemsWithImageCount:v86];
+            v112 = selfCopy;
+            v113 = [(MPWeighter *)selfCopy->_weighter numberOfItemsWithImageCount:lastIndex3];
             v114 = (v113 & ~(v113 >> 63)) + 1;
             while (--v114)
             {
-              v115 = a3;
-              v116 = a3;
-              v117 = v86;
-              v93 = [(MPAuthoringController *)v170 findEffectIDInWeighter:v170->_weighter images:v116 startingIndex:v172 count:v86 triesToFind:&v187 constraints:0 previousTags:v175];
-              v118 = [-[MPWeighter allItems](v170->_weighter "allItems")];
-              if (![(MPWeighter *)v170->_weighter itemAtIndex:v118 meetsContraints:objb])
+              imagesCopy3 = images;
+              imagesCopy4 = images;
+              v117 = lastIndex3;
+              v93 = [(MPAuthoringController *)selfCopy findEffectIDInWeighter:selfCopy->_weighter images:imagesCopy4 startingIndex:v172 count:lastIndex3 triesToFind:&v187 constraints:0 previousTags:v175];
+              v118 = [-[MPWeighter allItems](selfCopy->_weighter "allItems")];
+              if (![(MPWeighter *)selfCopy->_weighter itemAtIndex:v118 meetsContraints:objb])
               {
-                [(MPWeighter *)v170->_weighter addIndexToIgnore:v118];
+                [(MPWeighter *)selfCopy->_weighter addIndexToIgnore:v118];
                 v93 = 0;
               }
 
-              v86 = v117;
-              a3 = v115;
+              lastIndex3 = v117;
+              images = imagesCopy3;
               if (v93)
               {
                 goto LABEL_177;
@@ -3158,16 +3158,16 @@ LABEL_166:
             v93 = 0;
           }
 
-          else if (v86 == v103)
+          else if (lastIndex3 == v103)
           {
             v93 = 0;
-            v112 = v170;
+            v112 = selfCopy;
           }
 
           else
           {
-            v112 = v170;
-            v93 = [(MPAuthoringController *)v170 findEffectIDInWeighter:v170->_weighter images:a3 startingIndex:v172 count:v86 triesToFind:&v187 constraints:objb previousTags:v175];
+            v112 = selfCopy;
+            v93 = [(MPAuthoringController *)selfCopy findEffectIDInWeighter:selfCopy->_weighter images:images startingIndex:v172 count:lastIndex3 triesToFind:&v187 constraints:objb previousTags:v175];
           }
 
 LABEL_177:
@@ -3179,7 +3179,7 @@ LABEL_177:
           else
           {
             v119 = v163;
-            if ([v95 containsIndex:{objc_msgSend(-[MPWeighter allItems](v112->_weighter, "allItems"), "indexOfObject:", v93)}] && objc_msgSend(v94, "count"))
+            if ([ignoredIndices containsIndex:{objc_msgSend(-[MPWeighter allItems](v112->_weighter, "allItems"), "indexOfObject:", v93)}] && objc_msgSend(v94, "count"))
             {
               v93 = 0;
             }
@@ -3187,13 +3187,13 @@ LABEL_177:
 
           if (([v94 count] | v93) == 0 && !v166)
           {
-            v120 = a3;
-            v121 = v86;
+            imagesCopy5 = images;
+            v121 = lastIndex3;
             [v94 addIndex:1];
-            v122 = [v95 firstIndex];
-            if (v122 != 0x7FFFFFFFFFFFFFFFLL)
+            firstIndex = [ignoredIndices firstIndex];
+            if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
             {
-              for (ii = v122; ii != 0x7FFFFFFFFFFFFFFFLL; ii = [v95 indexGreaterThanIndex:ii])
+              for (ii = firstIndex; ii != 0x7FFFFFFFFFFFFFFFLL; ii = [ignoredIndices indexGreaterThanIndex:ii])
               {
                 if (*([-[MPWeighter allConstraints](v112->_weighter "allConstraints")] + 1) <= v119)
                 {
@@ -3203,13 +3203,13 @@ LABEL_177:
             }
 
             v166 = [v94 count] != 0;
-            v86 = v121;
-            a3 = v120;
+            lastIndex3 = v121;
+            images = imagesCopy5;
           }
 
           if ([v94 count])
           {
-            v103 = v86;
+            v103 = lastIndex3;
             v85 = v167;
             if (!v93)
             {
@@ -3227,8 +3227,8 @@ LABEL_177:
           v184 = 0u;
           v185 = 0u;
           v186 = 0u;
-          v105 = [(MPWeighter *)v170->_weighter allConstraints];
-          v106 = [v105 countByEnumeratingWithState:&v183 objects:v210 count:16];
+          allConstraints2 = [(MPWeighter *)selfCopy->_weighter allConstraints];
+          v106 = [allConstraints2 countByEnumeratingWithState:&v183 objects:v210 count:16];
           if (v106)
           {
             v107 = v106;
@@ -3240,7 +3240,7 @@ LABEL_177:
               {
                 if (*v184 != v109)
                 {
-                  objc_enumerationMutation(v105);
+                  objc_enumerationMutation(allConstraints2);
                 }
 
                 if ([v94 containsIndex:*(*(*(&v183 + 1) + 8 * jj) + 8)])
@@ -3251,33 +3251,33 @@ LABEL_177:
                 ++v108;
               }
 
-              v107 = [v105 countByEnumeratingWithState:&v183 objects:v210 count:16];
+              v107 = [allConstraints2 countByEnumeratingWithState:&v183 objects:v210 count:16];
             }
 
             while (v107);
           }
 
-          v111 = [(MPWeighter *)v170->_weighter getRandomIndexInSubset:v104];
+          v111 = [(MPWeighter *)selfCopy->_weighter getRandomIndexInSubset:v104];
 
-          v86 = *([-[MPWeighter allConstraints](v170->_weighter "allConstraints")] + 1);
-          [v94 removeIndex:v86];
-          a3 = v169;
+          lastIndex3 = *([-[MPWeighter allConstraints](selfCopy->_weighter "allConstraints")] + 1);
+          [v94 removeIndex:lastIndex3];
+          images = imagesCopy2;
           v85 = v167;
           goto LABEL_166;
         }
 
         v93 = 0;
 LABEL_193:
-        v124 = v187 < 1 || v86 < 1;
-        v70 = v170;
+        v124 = v187 < 1 || lastIndex3 < 1;
+        v70 = selfCopy;
         if (!v124)
         {
           v125 = 0;
           v126 = v172;
-          v127 = &v172[v86];
+          v127 = &v172[lastIndex3];
           do
           {
-            v128 = -[NSMutableDictionary objectForKey:](v170->_cachedROIInformation, "objectForKey:", [a3 objectAtIndex:v126]);
+            v128 = -[NSMutableDictionary objectForKey:](selfCopy->_cachedROIInformation, "objectForKey:", [images objectAtIndex:v126]);
             if ([objc_msgSend(v128 objectForKey:{@"canSwitch", "BOOLValue"}])
             {
               if ((v187 & v125) != 0)
@@ -3296,22 +3296,22 @@ LABEL_193:
 
         if (((v93 == 0) & v160) == 1)
         {
-          if ([(MPAuthoringController *)v170 imagesHaveMovie:a3 start:v172 count:v159])
+          if ([(MPAuthoringController *)selfCopy imagesHaveMovie:images start:v172 count:lastIndex])
           {
             v129 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", 1), @"numOfImages", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 0), @"ignoreMovies", 0}];
-            v130 = [(MPWeighter *)v170->_weighter indicesMeetingConstraints:v129];
+            v130 = [(MPWeighter *)selfCopy->_weighter indicesMeetingConstraints:v129];
 
             if ([v130 count])
             {
-              v131 = [v130 firstIndex];
-              if (v131 != 0x7FFFFFFFFFFFFFFFLL)
+              firstIndex2 = [v130 firstIndex];
+              if (firstIndex2 != 0x7FFFFFFFFFFFFFFFLL)
               {
-                v132 = v131;
+                v132 = firstIndex2;
                 do
                 {
-                  if (-[MPAuthoringController imagesHaveMovie:start:count:](v170, "imagesHaveMovie:start:count:", a3, v172, *([-[MPWeighter allConstraints](v170->_weighter "allConstraints")] + 1)))
+                  if (-[MPAuthoringController imagesHaveMovie:start:count:](selfCopy, "imagesHaveMovie:start:count:", images, v172, *([-[MPWeighter allConstraints](selfCopy->_weighter "allConstraints")] + 1)))
                   {
-                    v93 = [-[MPWeighter allItems](v170->_weighter "allItems")];
+                    v93 = [-[MPWeighter allItems](selfCopy->_weighter "allItems")];
                   }
 
                   else
@@ -3335,8 +3335,8 @@ LABEL_193:
           }
 
 LABEL_214:
-          v134 = [(MPWeighter *)v170->_weighter allItems];
-          v93 = [v134 objectAtIndex:v192];
+          allItems = [(MPWeighter *)selfCopy->_weighter allItems];
+          v93 = [allItems objectAtIndex:v192];
         }
 
         else
@@ -3370,8 +3370,8 @@ LABEL_216:
             v180 = 0u;
             v181 = 0u;
             v182 = 0u;
-            v138 = [(MPWeighter *)v70->_weighter allItems];
-            v139 = [v138 countByEnumeratingWithState:&v179 objects:v209 count:16];
+            allItems2 = [(MPWeighter *)v70->_weighter allItems];
+            v139 = [allItems2 countByEnumeratingWithState:&v179 objects:v209 count:16];
             if (v139)
             {
               v140 = v139;
@@ -3383,7 +3383,7 @@ LABEL_216:
                 {
                   if (*v180 != v142)
                   {
-                    objc_enumerationMutation(v138);
+                    objc_enumerationMutation(allItems2);
                   }
 
                   if ([*(*(&v179 + 1) + 8 * kk) hasSuffix:v137])
@@ -3394,7 +3394,7 @@ LABEL_216:
                   ++v141;
                 }
 
-                v140 = [v138 countByEnumeratingWithState:&v179 objects:v209 count:16];
+                v140 = [allItems2 countByEnumeratingWithState:&v179 objects:v209 count:16];
               }
 
               while (v140);
@@ -3424,7 +3424,7 @@ LABEL_216:
           objb = 0;
         }
 
-        a3 = v169;
+        images = imagesCopy2;
         if (v157)
         {
           v175 = [objc_msgSend(v168 attributesForEffectID:+[MPUtilities idOfCombinedID:](MPUtilities andPresetID:{"idOfCombinedID:", v93), +[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", v93)), "objectForKey:", @"endLayoutTags"}];
@@ -3456,40 +3456,40 @@ LABEL_216:
         if (v85)
         {
 LABEL_127:
-          v88 = [v152 lastIndex];
+          lastIndex2 = [imageCounts lastIndex];
           if (v151)
           {
             v89 = vcvtpd_s64_f64(vcvtd_n_f64_s64(v163, 1uLL));
-            if (v163 <= v88)
+            if (v163 <= lastIndex2)
             {
-              v86 = v82;
+              lastIndex3 = v82;
             }
 
             else
             {
-              v86 = v89;
+              lastIndex3 = v89;
             }
           }
 
           else
           {
-            v86 = v82;
-            if (v82 > v88)
+            lastIndex3 = v82;
+            if (v82 > lastIndex2)
             {
-              if (v82 >= (2 * [v152 lastIndex]))
+              if (v82 >= (2 * [imageCounts lastIndex]))
               {
-                v86 = [v152 lastIndex];
+                lastIndex3 = [imageCounts lastIndex];
               }
 
               else
               {
-                v86 = vcvtpd_s64_f64(vcvtd_n_f64_s64(v82, 1uLL));
+                lastIndex3 = vcvtpd_s64_f64(vcvtd_n_f64_s64(v82, 1uLL));
               }
             }
           }
 
 LABEL_138:
-          if (v86 == 0x7FFFFFFFFFFFFFFFLL)
+          if (lastIndex3 == 0x7FFFFFFFFFFFFFFFLL)
           {
 LABEL_139:
             [(MPWeighter *)v70->_weighter clearIgnoreIndices];
@@ -3514,18 +3514,18 @@ LABEL_139:
         goto LABEL_139;
       }
 
-      v90 = [(MPWeighter *)v70->_weighter allConstraints];
-      v86 = *([v90 objectAtIndex:v192] + 1);
+      allConstraints3 = [(MPWeighter *)v70->_weighter allConstraints];
+      lastIndex3 = *([allConstraints3 objectAtIndex:v192] + 1);
       goto LABEL_138;
     }
   }
 
 LABEL_239:
-  v147 = [MPAuthoringUtilities lastPresetFromOptions:v154];
+  v147 = [MPAuthoringUtilities lastPresetFromOptions:optionsCopy];
   if (v147)
   {
     v148 = v147;
-    if (([objc_msgSend(v154 objectForKey:{@"hasMoreImages", "BOOLValue"}] & 1) == 0)
+    if (([objc_msgSend(optionsCopy objectForKey:{@"hasMoreImages", "BOOLValue"}] & 1) == 0)
     {
       v149 = +[MPAuthoringUtilities idFromPresetID:](MPAuthoringUtilities, "idFromPresetID:", [v161 lastObject]);
       [v161 removeObjectAtIndex:{objc_msgSend(v161, "count") - 1}];
@@ -3541,19 +3541,19 @@ LABEL_239:
   return v161;
 }
 
-- (BOOL)imagesHaveMovie:(id)a3 start:(int64_t)a4 count:(int64_t)a5
+- (BOOL)imagesHaveMovie:(id)movie start:(int64_t)start count:(int64_t)count
 {
-  v9 = [a3 count];
-  if (a5 < 1)
+  v9 = [movie count];
+  if (count < 1)
   {
     return 0;
   }
 
   v10 = v9;
-  v11 = a5 + a4;
-  while (a4 >= v10 || ([objc_msgSend(-[NSMutableDictionary objectForKey:](self->_cachedROIInformation objectForKey:{objc_msgSend(a3, "objectAtIndex:", a4)), "objectForKey:", @"isMovie", "BOOLValue"}] & 1) == 0)
+  v11 = count + start;
+  while (start >= v10 || ([objc_msgSend(-[NSMutableDictionary objectForKey:](self->_cachedROIInformation objectForKey:{objc_msgSend(movie, "objectAtIndex:", start)), "objectForKey:", @"isMovie", "BOOLValue"}] & 1) == 0)
   {
-    if (++a4 >= v11)
+    if (++start >= v11)
     {
       return 0;
     }
@@ -3562,7 +3562,7 @@ LABEL_239:
   return 1;
 }
 
-- (int64_t)bestCountFromClusterForEffectWithImages:(id)a3 atStartIndex:(int64_t)a4 withWeighter:(id)a5 usedIndex:(int64_t *)a6
+- (int64_t)bestCountFromClusterForEffectWithImages:(id)images atStartIndex:(int64_t)index withWeighter:(id)weighter usedIndex:(int64_t *)usedIndex
 {
   v9 = [+[MPClusterController sharedController](MPClusterController "sharedController")];
   v10 = [+[MPClusterController sharedController](MPClusterController "sharedController")];
@@ -3571,68 +3571,68 @@ LABEL_239:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = [v10 allSlides];
-  v12 = [v11 count];
-  v13 = v12 - [v11 indexOfObject:v9];
+  allSlides = [v10 allSlides];
+  v12 = [allSlides count];
+  v13 = v12 - [allSlides indexOfObject:v9];
   [(MPWeighter *)self->_weighter clearIgnoreIndices];
   v14 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v13), @"numOfImages", 0}];
-  v15 = [a5 indicesEqualingConstraints:v14];
+  v15 = [weighter indicesEqualingConstraints:v14];
   if ([v15 count])
   {
-    v16 = [a5 getRandomIndexInSubset:v15];
+    v16 = [weighter getRandomIndexInSubset:v15];
   }
 
   else
   {
-    v16 = [a5 getRandomIndexMeetingContraints:v14];
+    v16 = [weighter getRandomIndexMeetingContraints:v14];
   }
 
-  v17 = *([objc_msgSend(a5 "allConstraints")] + 1);
+  v17 = *([objc_msgSend(weighter "allConstraints")] + 1);
 
-  if (a6)
+  if (usedIndex)
   {
-    *a6 = v17;
+    *usedIndex = v17;
   }
 
   return v17;
 }
 
-- (id)findEffectIDInPresetArray:(id)a3 forImages:(id)a4 withOptions:(id)a5
+- (id)findEffectIDInPresetArray:(id)array forImages:(id)images withOptions:(id)options
 {
   v9 = objc_alloc_init(MPWeighter);
-  [(MPAuthoringController *)self populateWeighter:v9 withEffects:a3 andOptions:a5];
-  v10 = [(MPWeighter *)v9 imageCounts];
-  if (![v10 lastIndex])
+  [(MPAuthoringController *)self populateWeighter:v9 withEffects:array andOptions:options];
+  imageCounts = [(MPWeighter *)v9 imageCounts];
+  if (![imageCounts lastIndex])
   {
     goto LABEL_26;
   }
 
-  if ([MPAuthoringUtilities ignoreClusteringForImages:a4 withOptions:a5])
+  if ([MPAuthoringUtilities ignoreClusteringForImages:images withOptions:options])
   {
     goto LABEL_14;
   }
 
-  v11 = [(MPAuthoringController *)self bestCountFromClusterForEffectWithImages:a4 atStartIndex:0 withWeighter:v9 usedIndex:0];
-  if (([v10 containsIndex:v11] & 1) == 0)
+  v11 = [(MPAuthoringController *)self bestCountFromClusterForEffectWithImages:images atStartIndex:0 withWeighter:v9 usedIndex:0];
+  if (([imageCounts containsIndex:v11] & 1) == 0)
   {
-    v11 = [v10 indexLessThanIndex:v11];
+    v11 = [imageCounts indexLessThanIndex:v11];
   }
 
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL || (v12 = [(MPAuthoringController *)self findEffectIDInWeighter:v9 images:a4 startingIndex:0 count:v11 triesToFind:0 constraints:0 previousTags:0]) == 0)
+  if (v11 == 0x7FFFFFFFFFFFFFFFLL || (v12 = [(MPAuthoringController *)self findEffectIDInWeighter:v9 images:images startingIndex:0 count:v11 triesToFind:0 constraints:0 previousTags:0]) == 0)
   {
 LABEL_14:
-    v13 = [v10 lastIndex];
-    if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex = [imageCounts lastIndex];
+    if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_26;
     }
 
-    v14 = v13;
+    v14 = lastIndex;
     do
     {
-      if ([a4 count] >= v14)
+      if ([images count] >= v14)
       {
-        v12 = [(MPAuthoringController *)self findEffectIDInWeighter:v9 images:a4 startingIndex:0 count:v14 triesToFind:0 constraints:0 previousTags:0];
+        v12 = [(MPAuthoringController *)self findEffectIDInWeighter:v9 images:images startingIndex:0 count:v14 triesToFind:0 constraints:0 previousTags:0];
       }
 
       else
@@ -3640,7 +3640,7 @@ LABEL_14:
         v12 = 0;
       }
 
-      v15 = [v10 indexLessThanIndex:v14];
+      v15 = [imageCounts indexLessThanIndex:v14];
       if (v15 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -3660,7 +3660,7 @@ LABEL_14:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v16 = [array countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
     v17 = v16;
@@ -3671,7 +3671,7 @@ LABEL_17:
     {
       if (*v25 != v18)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(array);
       }
 
       v20 = *(*(&v24 + 1) + 8 * v19);
@@ -3689,7 +3689,7 @@ LABEL_17:
 
       if (v17 == ++v19)
       {
-        v17 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v17 = [array countByEnumeratingWithState:&v24 objects:v28 count:16];
         v20 = 0;
         if (v17)
         {
@@ -3710,33 +3710,33 @@ LABEL_26:
   return v20;
 }
 
-- (void)populateWeighter:(id)a3 withEffects:(id)a4 andOptions:(id)a5
+- (void)populateWeighter:(id)weighter withEffects:(id)effects andOptions:(id)options
 {
-  if ([a3 count])
+  if ([weighter count])
   {
-    if ([objc_msgSend(a5 objectForKey:{kMPAuthoringLive), "BOOLValue"}])
+    if ([objc_msgSend(options objectForKey:{kMPAuthoringLive), "BOOLValue"}])
     {
       return;
     }
 
-    [a3 clearAllItems];
+    [weighter clearAllItems];
   }
 
   v102 = +[MPEffectManager sharedManager];
-  [MPAuthoringUtilities aspectRatioFromOptions:a5];
+  [MPAuthoringUtilities aspectRatioFromOptions:options];
   v8 = v7;
-  v9 = [MPAuthoringUtilities screenSizeFromOptions:a5];
-  v91 = [MPAuthoringUtilities matchEffectsUsingTagsFromOptions:a5];
-  v10 = [MPAuthoringUtilities styleFromOptions:a5];
+  v9 = [MPAuthoringUtilities screenSizeFromOptions:options];
+  v91 = [MPAuthoringUtilities matchEffectsUsingTagsFromOptions:options];
+  v10 = [MPAuthoringUtilities styleFromOptions:options];
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v11 = [a4 countByEnumeratingWithState:&v139 objects:v149 count:16];
+  v11 = [effects countByEnumeratingWithState:&v139 objects:v149 count:16];
   if (v11)
   {
     v12 = v11;
-    v89 = self;
+    selfCopy = self;
     v99 = 0;
     v103 = *v140;
     v88 = v10;
@@ -3749,7 +3749,7 @@ LABEL_26:
       {
         if (*v140 != v103)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(effects);
         }
 
         v14 = *(*(&v139 + 1) + 8 * v13);
@@ -4132,7 +4132,7 @@ LABEL_26:
                   v76 = 0;
                   do
                   {
-                    v79 = [(MPAuthoringController *)v89 determineIfSlideDisplayesForTheWholeDurationForEffect:v45 presetID:v48 atIndex:v78 inStyleID:v88];
+                    v79 = [(MPAuthoringController *)selfCopy determineIfSlideDisplayesForTheWholeDurationForEffect:v45 presetID:v48 atIndex:v78 inStyleID:v88];
                     v73 = v105;
                     if (v105 == 1)
                     {
@@ -4182,7 +4182,7 @@ LABEL_26:
               }
 
               v99 |= v43->hasPanorama;
-              [a3 addItem:v97 withWeight:objc_msgSend(v104 andContraints:{"integerValue"), v43}];
+              [weighter addItem:v97 withWeight:objc_msgSend(v104 andContraints:{"integerValue"), v43}];
               v9 = v90;
             }
 
@@ -4194,7 +4194,7 @@ LABEL_26:
       }
 
       while (v13 != v12);
-      v12 = [a4 countByEnumeratingWithState:&v139 objects:v149 count:16];
+      v12 = [effects countByEnumeratingWithState:&v139 objects:v149 count:16];
     }
 
     while (v12);
@@ -4206,27 +4206,27 @@ LABEL_26:
     v87 = 1;
   }
 
-  [a3 setIgnorePanoramas:v87 & 1];
+  [weighter setIgnorePanoramas:v87 & 1];
 }
 
-- (void)populateWeighter:(id)a3 withTransitions:(id)a4 andOptions:(id)a5
+- (void)populateWeighter:(id)weighter withTransitions:(id)transitions andOptions:(id)options
 {
-  if ([a3 count])
+  if ([weighter count])
   {
-    if ([objc_msgSend(a5 objectForKey:{kMPAuthoringLive), "BOOLValue"}])
+    if ([objc_msgSend(options objectForKey:{kMPAuthoringLive), "BOOLValue"}])
     {
       return;
     }
 
-    [a3 clearAllItems];
+    [weighter clearAllItems];
   }
 
-  v7 = [MPAuthoringUtilities useTransitionLayoutTagsWithOptions:a5];
+  v7 = [MPAuthoringUtilities useTransitionLayoutTagsWithOptions:options];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [a4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v8 = [transitions countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4237,7 +4237,7 @@ LABEL_26:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(transitions);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
@@ -4252,9 +4252,9 @@ LABEL_26:
             v17->tagsOnSourceOnly = [objc_msgSend(v22 objectForKey:{@"tagsOnSourceOnly", "BOOLValue"}];
           }
 
-          v20 = a3;
+          weighterCopy2 = weighter;
           v21 = v12;
-          v19 = &dword_0 + 1;
+          integerValue = &dword_0 + 1;
           goto LABEL_22;
         }
 
@@ -4286,30 +4286,30 @@ LABEL_26:
             -[MPWeighterConstraint setPresetID:](v17, "setPresetID:", [v18 objectForKey:@"presetID"]);
           }
 
-          v19 = [v13 integerValue];
-          v20 = a3;
+          integerValue = [v13 integerValue];
+          weighterCopy2 = weighter;
           v21 = v16;
 LABEL_22:
-          [v20 addItem:v21 withWeight:v19 andContraints:v17];
+          [weighterCopy2 addItem:v21 withWeight:integerValue andContraints:v17];
 
           continue;
         }
       }
 
-      v9 = [a4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [transitions countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v9);
   }
 }
 
-- (id)findEffectIDInWeighter:(id)a3 images:(id)a4 startingIndex:(int64_t)a5 count:(int64_t)a6 triesToFind:(int64_t *)a7 constraints:(id)a8 previousTags:(id)a9
+- (id)findEffectIDInWeighter:(id)weighter images:(id)images startingIndex:(int64_t)index count:(int64_t)count triesToFind:(int64_t *)find constraints:(id)constraints previousTags:(id)tags
 {
-  v12 = [a4 count];
-  v13 = a6 + a5;
-  v41 = a6;
-  v42 = a5;
-  if (a6 < 1)
+  v12 = [images count];
+  v13 = count + index;
+  countCopy = count;
+  indexCopy = index;
+  if (count < 1)
   {
     v45 = 0;
     v17 = 0.0;
@@ -4317,24 +4317,24 @@ LABEL_22:
 
   else
   {
-    v14 = a5;
+    indexCopy2 = index;
     v15 = 0;
     v45 = 0;
     do
     {
-      if (v14 < v12)
+      if (indexCopy2 < v12)
       {
-        v16 = -[NSMutableDictionary objectForKey:](self->_cachedROIInformation, "objectForKey:", [a4 objectAtIndex:v14]);
+        v16 = -[NSMutableDictionary objectForKey:](self->_cachedROIInformation, "objectForKey:", [images objectAtIndex:indexCopy2]);
         v15 += [objc_msgSend(v16 objectForKey:{@"canSwitch", "BOOLValue"}];
         v45 += [objc_msgSend(v16 objectForKey:{@"isMovie", "BOOLValue"}];
       }
 
-      ++v14;
+      ++indexCopy2;
     }
 
-    while (v14 < v13);
+    while (indexCopy2 < v13);
     v17 = v15;
-    a5 = v42;
+    index = indexCopy;
   }
 
   v18 = 0;
@@ -4344,7 +4344,7 @@ LABEL_22:
   {
     v46 = v18;
     v51 = +[NSMutableArray array];
-    if (v41 < 1)
+    if (countCopy < 1)
     {
       v23 = 0;
       v22 = 0;
@@ -4366,22 +4366,22 @@ LABEL_22:
       v23 = 0;
       do
       {
-        if (a5 < v12)
+        if (index < v12)
         {
           v52 = v22;
           v24 = v13;
-          v25 = [a4 objectAtIndex:a5];
+          v25 = [images objectAtIndex:index];
           v26 = [(NSMutableDictionary *)self->_cachedROIInformation objectForKey:v25];
           [objc_msgSend(v26 objectForKey:{@"aspectRatio", "floatValue"}];
           v27 = [v26 objectForKey:@"imageAspectRatio"];
-          v28 = self;
+          selfCopy = self;
           if (v27)
           {
             v29 = v27;
             [v27 floatValue];
             v31 = v30;
             [v51 addObject:v29];
-            self = v28;
+            self = selfCopy;
           }
 
           else
@@ -4433,19 +4433,19 @@ LABEL_22:
           v12 = v49;
         }
 
-        ++a5;
+        ++index;
       }
 
-      while (a5 < v13);
+      while (index < v13);
     }
 
-    v36 = [a3 getRandomItemMeetingNumberOfFaceLandscapes:v19 facePortraits:v20 imageLandscapes:v23 imagePortraits:v22 vPanoramas:v47 hPanoramas:v48 movies:v45 fitsInExtraWide:v21 aspectRatios:v51 previousTags:a9];
+    v36 = [weighter getRandomItemMeetingNumberOfFaceLandscapes:v19 facePortraits:v20 imageLandscapes:v23 imagePortraits:v22 vPanoramas:v47 hPanoramas:v48 movies:v45 fitsInExtraWide:v21 aspectRatios:v51 previousTags:tags];
     v37 = v36;
-    if (a8)
+    if (constraints)
     {
-      a5 = v42;
+      index = indexCopy;
       v18 = v46;
-      if (v36 && ![a3 itemAtIndex:objc_msgSend(-[MPWeighter allItems](self->_weighter meetsContraints:{"allItems"), "indexOfObject:", v36), a8}])
+      if (v36 && ![weighter itemAtIndex:objc_msgSend(-[MPWeighter allItems](self->_weighter meetsContraints:{"allItems"), "indexOfObject:", v36), constraints}])
       {
         v37 = 0;
       }
@@ -4453,7 +4453,7 @@ LABEL_22:
 
     else
     {
-      a5 = v42;
+      index = indexCopy;
       v18 = v46;
     }
 
@@ -4466,15 +4466,15 @@ LABEL_22:
   }
 
   while (v18 < v40);
-  if (a7)
+  if (find)
   {
-    *a7 = v18;
+    *find = v18;
   }
 
   return v37;
 }
 
-- (BOOL)determineIfSlideDisplayesForTheWholeDurationForEffect:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5 inStyleID:(id)a6
+- (BOOL)determineIfSlideDisplayesForTheWholeDurationForEffect:(id)effect presetID:(id)d atIndex:(int64_t)index inStyleID:(id)iD
 {
   if ([+[MREffectManager sharedManager](MREffectManager "sharedManager")])
   {
@@ -4523,124 +4523,124 @@ LABEL_22:
   return 0;
 }
 
-- (void)scaleDurationsInLayer:(id)a3 withOptions:(id)a4
+- (void)scaleDurationsInLayer:(id)layer withOptions:(id)options
 {
   if (![MPAuthoringUtilities layerCanSkipScaleCalculation:"layerCanSkipScaleCalculation:withOptions:" withOptions:?])
   {
     v7 = objc_autoreleasePoolPush();
-    [MPAuthoringUtilities audioDurationFromOptions:a4];
+    [MPAuthoringUtilities audioDurationFromOptions:options];
     v9 = v8;
-    [MPAuthoringUtilities audioDurationFactorFromOptions:a4];
+    [MPAuthoringUtilities audioDurationFactorFromOptions:options];
     v11 = v10;
-    v12 = [MPAuthoringUtilities audioScalingModeFromOptions:a4];
-    v13 = [a4 mutableCopy];
+    v12 = [MPAuthoringUtilities audioScalingModeFromOptions:options];
+    v13 = [options mutableCopy];
     v14 = v13;
     if ((v11 > -1.0 || v9 > 0.0) && v12 == 1)
     {
       [v13 removeObjectForKey:kMPAuthoringLayerTimeScale];
-      [a3 setSkipTimeCalculations:1];
-      -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [a3 effectContainers], v14);
-      [a3 setSkipTimeCalculations:0];
-      [(MPAuthoringController *)self scaleLayerToMatchAudio:a3 withOptions:v14];
+      [layer setSkipTimeCalculations:1];
+      -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [layer effectContainers], v14);
+      [layer setSkipTimeCalculations:0];
+      [(MPAuthoringController *)self scaleLayerToMatchAudio:layer withOptions:v14];
     }
 
     else
     {
-      [a3 setSkipTimeCalculations:1];
-      -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [a3 effectContainers], v14);
-      [a3 setSkipTimeCalculations:0];
+      [layer setSkipTimeCalculations:1];
+      -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [layer effectContainers], v14);
+      [layer setSkipTimeCalculations:0];
     }
 
     objc_autoreleasePoolPop(v7);
   }
 }
 
-- (void)scaleDurationsInLayer:(id)a3 withMutableOptions:(id)a4
+- (void)scaleDurationsInLayer:(id)layer withMutableOptions:(id)options
 {
   if (![MPAuthoringUtilities layerCanSkipScaleCalculation:"layerCanSkipScaleCalculation:withOptions:" withOptions:?])
   {
     v7 = objc_autoreleasePoolPush();
-    [MPAuthoringUtilities audioDurationFromOptions:a4];
+    [MPAuthoringUtilities audioDurationFromOptions:options];
     v9 = v8;
-    [MPAuthoringUtilities audioDurationFactorFromOptions:a4];
+    [MPAuthoringUtilities audioDurationFactorFromOptions:options];
     v11 = v10;
-    v12 = [MPAuthoringUtilities audioScalingModeFromOptions:a4];
+    v12 = [MPAuthoringUtilities audioScalingModeFromOptions:options];
     v13 = v11 > -1.0 || v9 > 0.0;
     v14 = v12 == 1 && v13;
-    v15 = [a4 mutableCopy];
+    v15 = [options mutableCopy];
     v16 = v15;
     if (v14)
     {
       [v15 removeObjectForKey:kMPAuthoringLayerTimeScale];
     }
 
-    [a3 setSkipTimeCalculations:1];
-    -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [a3 effectContainers], v16);
+    [layer setSkipTimeCalculations:1];
+    -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [layer effectContainers], v16);
 
-    [a3 setSkipTimeCalculations:0];
-    [objc_msgSend(a4 objectForKeyedSubscript:{kMPAuthoringMinimumDuration), "doubleValue"}];
+    [layer setSkipTimeCalculations:0];
+    [objc_msgSend(options objectForKeyedSubscript:{kMPAuthoringMinimumDuration), "doubleValue"}];
     if (v17 == 0.0)
     {
-      [(MPAuthoringController *)self minimumDurationForLayer:a3 inDocument:self->_authoredDocument withOptions:a4];
+      [(MPAuthoringController *)self minimumDurationForLayer:layer inDocument:self->_authoredDocument withOptions:options];
       v18 = [NSNumber numberWithDouble:?];
-      [a4 setObject:v18 forKeyedSubscript:kMPAuthoringMinimumDuration];
+      [options setObject:v18 forKeyedSubscript:kMPAuthoringMinimumDuration];
     }
 
-    [objc_msgSend(a4 objectForKeyedSubscript:{kMPAuthoringMaximumDuration), "doubleValue"}];
+    [objc_msgSend(options objectForKeyedSubscript:{kMPAuthoringMaximumDuration), "doubleValue"}];
     if (v19 == 0.0)
     {
-      [(MPAuthoringController *)self maximumDurationForLayer:a3 inDocument:self->_authoredDocument withOptions:a4];
+      [(MPAuthoringController *)self maximumDurationForLayer:layer inDocument:self->_authoredDocument withOptions:options];
       v20 = [NSNumber numberWithDouble:?];
-      [a4 setObject:v20 forKeyedSubscript:kMPAuthoringMaximumDuration];
+      [options setObject:v20 forKeyedSubscript:kMPAuthoringMaximumDuration];
     }
 
     if (v14)
     {
-      [(MPAuthoringController *)self scaleLayerToMatchAudio:a3 withOptions:a4];
+      [(MPAuthoringController *)self scaleLayerToMatchAudio:layer withOptions:options];
     }
 
     objc_autoreleasePoolPop(v7);
   }
 }
 
-- (void)scaleDurationsInEffectContainers:(id)a3 withOptions:(id)a4
+- (void)scaleDurationsInEffectContainers:(id)containers withOptions:(id)options
 {
   v123 = +[MPEffectManager sharedManager];
-  [MPAuthoringUtilities durationPerEffectFromOptions:a4];
+  [MPAuthoringUtilities durationPerEffectFromOptions:options];
   v8 = v7;
-  [-[MPAuthoringController transitionFromOptions:](self transitionFromOptions:{a4), "duration"}];
+  [-[MPAuthoringController transitionFromOptions:](self transitionFromOptions:{options), "duration"}];
   v103 = v9;
-  [MPAuthoringUtilities layerTimeScaleFromOptions:a4];
+  [MPAuthoringUtilities layerTimeScaleFromOptions:options];
   v107 = v10;
-  [MPAuthoringUtilities minimumTransitionDurationFromOptions:a4];
+  [MPAuthoringUtilities minimumTransitionDurationFromOptions:options];
   v12 = v11;
-  [MPAuthoringUtilities minimumEffectDurationFromOptions:a4];
+  [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
   v115 = v13;
-  v114 = [MPAuthoringUtilities matchPhasesWithTransitionFromOptions:a4];
-  v102 = [MPAuthoringUtilities useUniformDurations:a4];
-  v112 = [MPAuthoringUtilities idFromPresetID:[MPAuthoringUtilities outroEffectIDFromOptions:a4]];
-  v111 = [MPAuthoringUtilities scaleOutroEffectFromOptions:a4];
-  [objc_msgSend(a3 "lastObject")];
+  v114 = [MPAuthoringUtilities matchPhasesWithTransitionFromOptions:options];
+  v102 = [MPAuthoringUtilities useUniformDurations:options];
+  v112 = [MPAuthoringUtilities idFromPresetID:[MPAuthoringUtilities outroEffectIDFromOptions:options]];
+  v111 = [MPAuthoringUtilities scaleOutroEffectFromOptions:options];
+  [objc_msgSend(containers "lastObject")];
   v15 = v14;
-  v104 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:a4];
-  [MPAuthoringUtilities breakDurationScaleFromOptions:a4];
+  v104 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:options];
+  [MPAuthoringUtilities breakDurationScaleFromOptions:options];
   v110 = v16;
-  [MPAuthoringUtilities portraitBreakDurationScaleFromOptions:a4];
+  [MPAuthoringUtilities portraitBreakDurationScaleFromOptions:options];
   v109 = v17;
   [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   v108 = v18;
-  v133 = [MPAuthoringUtilities customDurationsFromOptions:a4];
-  [MPAuthoringUtilities baseBreakAspectRatioFromOptions:a4];
+  v133 = [MPAuthoringUtilities customDurationsFromOptions:options];
+  [MPAuthoringUtilities baseBreakAspectRatioFromOptions:options];
   v20 = v19;
-  [MPAuthoringUtilities basePortraitBreakAspectRatioFromOptions:a4];
+  [MPAuthoringUtilities basePortraitBreakAspectRatioFromOptions:options];
   v22 = v21;
-  [MPAuthoringUtilities aspectRatioFromOptions:a4];
+  [MPAuthoringUtilities aspectRatioFromOptions:options];
   v131 = v23;
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
-  v116 = [a3 countByEnumeratingWithState:&v154 objects:v162 count:16];
+  v116 = [containers countByEnumeratingWithState:&v154 objects:v162 count:16];
   if (v116)
   {
     v113 = *v155;
@@ -4658,7 +4658,7 @@ LABEL_22:
     }
 
     v117 = v25;
-    v106 = a3;
+    containersCopy = containers;
     v130 = v20;
     do
     {
@@ -4668,7 +4668,7 @@ LABEL_22:
         v119 = v15;
         if (*v155 != v113)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(containers);
         }
 
         v27 = *(*(&v154 + 1) + 8 * v26);
@@ -4711,7 +4711,7 @@ LABEL_22:
             v39 = 0;
             v40 = 0;
             LOBYTE(v41) = 0;
-            v129 = 0;
+            effectID = 0;
             v134 = 0;
             v121 = *v151;
             v122 = v27;
@@ -4738,8 +4738,8 @@ LABEL_22:
                 v148 = 0u;
                 v149 = 0u;
                 v135 = v43;
-                v46 = [v43 slides];
-                v137 = [v46 countByEnumeratingWithState:&v146 objects:v160 count:16];
+                slides = [v43 slides];
+                v137 = [slides countByEnumeratingWithState:&v146 objects:v160 count:16];
                 if (v137)
                 {
                   v47 = 0;
@@ -4751,7 +4751,7 @@ LABEL_22:
                     {
                       if (*v147 != v48)
                       {
-                        objc_enumerationMutation(v46);
+                        objc_enumerationMutation(slides);
                       }
 
                       v50 = *(*(&v146 + 1) + 8 * j);
@@ -4864,9 +4864,9 @@ LABEL_22:
 
                             else
                             {
-                              if (!v129)
+                              if (!effectID)
                               {
-                                v129 = [v135 effectID];
+                                effectID = [v135 effectID];
                               }
 
                               v134 = 1;
@@ -4881,7 +4881,7 @@ LABEL_74:
                       ++v47;
                     }
 
-                    v137 = [v46 countByEnumeratingWithState:&v146 objects:v160 count:16];
+                    v137 = [slides countByEnumeratingWithState:&v146 objects:v160 count:16];
                   }
 
                   while (v137);
@@ -4934,18 +4934,18 @@ LABEL_81:
             }
           }
 
-          v129 = 0;
+          effectID = 0;
           v32 = 0;
           v33 = 0;
           v34 = 0.0;
           v36 = v115;
 LABEL_87:
-          a3 = v106;
+          containers = containersCopy;
         }
 
         else
         {
-          v129 = 0;
+          effectID = 0;
           v32 = 0;
           v33 = 0;
           v34 = 0.0;
@@ -4953,8 +4953,8 @@ LABEL_87:
           v36 = v115;
         }
 
-        v72 = [v27 transition];
-        if (v72)
+        transition = [v27 transition];
+        if (transition)
         {
           v73 = v117;
         }
@@ -4992,7 +4992,7 @@ LABEL_87:
           if (v76 > 1.1)
           {
             v78 = v74 * v76;
-            [v123 panoramaScaleOffsetForEffectID:v129];
+            [v123 panoramaScaleOffsetForEffectID:effectID];
             v35 = v79 + v78 * (v35 - v79);
           }
         }
@@ -5023,7 +5023,7 @@ LABEL_87:
           }
         }
 
-        if (v72)
+        if (transition)
         {
           [objc_msgSend(v27 "transition")];
         }
@@ -5034,8 +5034,8 @@ LABEL_87:
           v145 = 0u;
           v142 = 0u;
           v143 = 0u;
-          v84 = [v27 effects];
-          v85 = [v84 countByEnumeratingWithState:&v142 objects:v159 count:16];
+          effects = [v27 effects];
+          v85 = [effects countByEnumeratingWithState:&v142 objects:v159 count:16];
           if (v85)
           {
             v86 = v85;
@@ -5046,7 +5046,7 @@ LABEL_87:
               {
                 if (*v143 != v87)
                 {
-                  objc_enumerationMutation(v84);
+                  objc_enumerationMutation(effects);
                 }
 
                 v89 = *(*(&v142 + 1) + 8 * k);
@@ -5055,7 +5055,7 @@ LABEL_87:
                 [v89 setPhaseOutDuration:?];
               }
 
-              v86 = [v84 countByEnumeratingWithState:&v142 objects:v159 count:16];
+              v86 = [effects countByEnumeratingWithState:&v142 objects:v159 count:16];
             }
 
             while (v86);
@@ -5068,7 +5068,7 @@ LABEL_87:
       }
 
       while ((v118 + 1) != v116);
-      v116 = [a3 countByEnumeratingWithState:&v154 objects:v162 count:16];
+      v116 = [containers countByEnumeratingWithState:&v154 objects:v162 count:16];
     }
 
     while (v116);
@@ -5076,13 +5076,13 @@ LABEL_87:
 
   if (v102)
   {
-    [objc_msgSend(a3 "lastObject")];
+    [objc_msgSend(containers "lastObject")];
     v92 = v91;
     v138 = 0u;
     v139 = 0u;
     v140 = 0u;
     v141 = 0u;
-    v93 = [a3 countByEnumeratingWithState:&v138 objects:v158 count:16];
+    v93 = [containers countByEnumeratingWithState:&v138 objects:v158 count:16];
     if (v93)
     {
       v94 = v93;
@@ -5093,7 +5093,7 @@ LABEL_87:
         {
           if (*v139 != v95)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(containers);
           }
 
           v97 = *(*(&v138 + 1) + 8 * m);
@@ -5109,7 +5109,7 @@ LABEL_87:
           v92 = v101;
         }
 
-        v94 = [a3 countByEnumeratingWithState:&v138 objects:v158 count:16];
+        v94 = [containers countByEnumeratingWithState:&v138 objects:v158 count:16];
       }
 
       while (v94);
@@ -5117,13 +5117,13 @@ LABEL_87:
   }
 }
 
-- (void)matchDurationsForLayers:(id)a3 withOptions:(id)a4
+- (void)matchDurationsForLayers:(id)layers withOptions:(id)options
 {
   p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-  v6 = [MPAuthoringUtilities styleFromOptions:a4];
+  v6 = [MPAuthoringUtilities styleFromOptions:options];
   p_superclass = MCGenericAction.superclass;
   v8 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-  v9 = [a3 count];
+  v9 = [layers count];
   if (v9 >= 1)
   {
     v10 = v9;
@@ -5135,15 +5135,15 @@ LABEL_87:
       if (v12)
       {
         v13 = v12;
-        v14 = [a3 objectAtIndex:v11];
+        v14 = [layers objectAtIndex:v11];
         v15 = [objc_msgSend(p_superclass + 414 "sharedManager")];
         if (![v14 layerID] || objc_msgSend(v15, "isEqualToString:", objc_msgSend(v14, "layerID")))
         {
           v16 = [objc_msgSend(objc_msgSend(v8 objectForKey:{v13), "objectForKey:", @"zIndex", "integerValue"}];
           if (v16 < v10)
           {
-            v17 = a3;
-            [objc_msgSend(a3 objectAtIndex:{v16), "duration"}];
+            layersCopy = layers;
+            [objc_msgSend(layers objectAtIndex:{v16), "duration"}];
             v19 = v18;
             [v14 duration];
             v21 = v20;
@@ -5151,8 +5151,8 @@ LABEL_87:
             v37 = 0u;
             v38 = 0u;
             v39 = 0u;
-            v22 = [v14 effectContainers];
-            v23 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
+            effectContainers = [v14 effectContainers];
+            v23 = [effectContainers countByEnumeratingWithState:&v36 objects:v40 count:16];
             if (v23)
             {
               v24 = v23;
@@ -5164,7 +5164,7 @@ LABEL_87:
                 {
                   if (*v37 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(effectContainers);
                   }
 
                   v28 = *(*(&v36 + 1) + 8 * i);
@@ -5175,7 +5175,7 @@ LABEL_87:
                   }
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
+                v24 = [effectContainers countByEnumeratingWithState:&v36 objects:v40 count:16];
               }
 
               while (v24);
@@ -5183,7 +5183,7 @@ LABEL_87:
 
             [v14 duration];
             p_vtable = (&OBJC_METACLASS___MPDocumentInternal + 24);
-            a3 = v17;
+            layers = layersCopy;
             p_superclass = (MCGenericAction + 8);
             v8 = v35;
             if (v19 != v30)
@@ -5205,11 +5205,11 @@ LABEL_87:
   }
 }
 
-- (void)fillDurationsForLayers:(id)a3 withOptions:(id)a4
+- (void)fillDurationsForLayers:(id)layers withOptions:(id)options
 {
-  v5 = [MPAuthoringUtilities styleFromOptions:a4];
+  v5 = [MPAuthoringUtilities styleFromOptions:options];
   v6 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-  v7 = [a3 count];
+  v7 = [layers count];
   if (v7 >= 1)
   {
     v8 = v7;
@@ -5219,14 +5219,14 @@ LABEL_87:
       if (v10)
       {
         v11 = v10;
-        v12 = [a3 objectAtIndex:i];
+        v12 = [layers objectAtIndex:i];
         v13 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
         if (![v12 layerID] || objc_msgSend(v13, "isEqualToString:", objc_msgSend(v12, "layerID")))
         {
           v14 = [objc_msgSend(objc_msgSend(v6 objectForKey:{v11), "objectForKey:", @"zIndex", "integerValue"}];
           if (v14 < v8)
           {
-            [objc_msgSend(a3 objectAtIndex:{v14), "duration"}];
+            [objc_msgSend(layers objectAtIndex:{v14), "duration"}];
             v16 = v15;
             [v12 duration];
             v18 = v17;
@@ -5250,51 +5250,51 @@ LABEL_87:
   }
 }
 
-- (void)checkForOffsetsForLayers:(id)a3 withOptions:(id)a4
+- (void)checkForOffsetsForLayers:(id)layers withOptions:(id)options
 {
-  if ([a3 count] == &dword_0 + 1)
+  if ([layers count] == &dword_0 + 1)
   {
-    v5 = [a3 lastObject];
-    if ([objc_msgSend(v5 "effectContainers")])
+    lastObject = [layers lastObject];
+    if ([objc_msgSend(lastObject "effectContainers")])
     {
-      v6 = [objc_msgSend(v5 "effectContainers")];
+      v6 = [objc_msgSend(lastObject "effectContainers")];
       if (![objc_msgSend(v6 "effects")] && !objc_msgSend(v6, "transition"))
       {
         v7 = [NSIndexSet indexSetWithIndex:0];
 
-        [v5 removeEffectContainersAtIndices:v7];
+        [lastObject removeEffectContainersAtIndices:v7];
       }
     }
   }
 }
 
-- (void)beatAlignLayer:(id)a3 toBeats:(id)a4 withOptions:(id)a5
+- (void)beatAlignLayer:(id)layer toBeats:(id)beats withOptions:(id)options
 {
-  -[MPAuthoringController beatAlignEffectContainers:toBeats:withOptions:](self, "beatAlignEffectContainers:toBeats:withOptions:", [a3 effectContainers], a4, a5);
-  [MPAuthoringUtilities audioDurationFromOptions:a5];
+  -[MPAuthoringController beatAlignEffectContainers:toBeats:withOptions:](self, "beatAlignEffectContainers:toBeats:withOptions:", [layer effectContainers], beats, options);
+  [MPAuthoringUtilities audioDurationFromOptions:options];
   v10 = v9;
-  if (![MPAuthoringUtilities layerCanSkipScaleCalculation:a3 withOptions:a5]&& v10 > 0.0 && [MPAuthoringUtilities audioScalingModeFromOptions:a5]== &dword_0 + 1)
+  if (![MPAuthoringUtilities layerCanSkipScaleCalculation:layer withOptions:options]&& v10 > 0.0 && [MPAuthoringUtilities audioScalingModeFromOptions:options]== &dword_0 + 1)
   {
-    v11 = [a4 count];
-    [MPAuthoringUtilities minimumEffectDurationFromOptions:a5];
+    v11 = [beats count];
+    [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
     v13 = v12;
-    [MPAuthoringUtilities minimumTransitionDurationFromOptions:a5];
+    [MPAuthoringUtilities minimumTransitionDurationFromOptions:options];
     v15 = v14;
-    if (vcvtd_n_f64_u64([a4 count], 1uLL) > objc_msgSend(a3, "countOfEffectContainers") && v11 / v10 > v13 - v15)
+    if (vcvtd_n_f64_u64([beats count], 1uLL) > objc_msgSend(layer, "countOfEffectContainers") && v11 / v10 > v13 - v15)
     {
-      [(MPAuthoringController *)self scaleLayerToMatchAudio:a3 withBeats:a4 withOptions:a5];
-      [a3 duration];
+      [(MPAuthoringController *)self scaleLayerToMatchAudio:layer withBeats:beats withOptions:options];
+      [layer duration];
       if (vabdd_f64(v16, v10) > 1.0)
       {
-        -[MPAuthoringController beatAlignEffectContainers:toBeats:withOptions:](self, "beatAlignEffectContainers:toBeats:withOptions:", [a3 effectContainers], a4, a5);
-        [(MPAuthoringController *)self scaleLayerToMatchAudio:a3 withBeats:a4 withOptions:a5];
-        [a3 duration];
+        -[MPAuthoringController beatAlignEffectContainers:toBeats:withOptions:](self, "beatAlignEffectContainers:toBeats:withOptions:", [layer effectContainers], beats, options);
+        [(MPAuthoringController *)self scaleLayerToMatchAudio:layer withBeats:beats withOptions:options];
+        [layer duration];
         if (vabdd_f64(v17, v10) > 1.0)
         {
           v18 = v17 - v10;
-          [MPAuthoringUtilities minimumEffectDurationFromOptions:a5];
+          [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
           v20 = v19;
-          v21 = [objc_msgSend(a3 "effectContainers")];
+          v21 = [objc_msgSend(layer "effectContainers")];
           [v21 duration];
           if (v22 - v18 >= v20)
           {
@@ -5304,40 +5304,40 @@ LABEL_87:
       }
     }
 
-    [a3 duration];
+    [layer duration];
     if (vabdd_f64(v23, v10) > 1.0)
     {
-      [a3 setSkipTimeCalculations:1];
-      -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [a3 effectContainers], a5);
-      [a3 setSkipTimeCalculations:0];
+      [layer setSkipTimeCalculations:1];
+      -[MPAuthoringController scaleDurationsInEffectContainers:withOptions:](self, "scaleDurationsInEffectContainers:withOptions:", [layer effectContainers], options);
+      [layer setSkipTimeCalculations:0];
 
-      [(MPAuthoringController *)self scaleLayerToMatchAudio:a3 withOptions:a5];
+      [(MPAuthoringController *)self scaleLayerToMatchAudio:layer withOptions:options];
     }
   }
 }
 
-- (void)scaleLayerToMatchAudio:(id)a3 withOptions:(id)a4
+- (void)scaleLayerToMatchAudio:(id)audio withOptions:(id)options
 {
-  [MPAuthoringUtilities minimumEffectDurationFromOptions:a4];
+  [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
   v7 = v6;
-  [MPAuthoringUtilities minimumTransitionDurationFromOptions:a4];
+  [MPAuthoringUtilities minimumTransitionDurationFromOptions:options];
   v9 = v8;
-  [MPAuthoringUtilities maximumTransitionDurationFromOptions:a4];
+  [MPAuthoringUtilities maximumTransitionDurationFromOptions:options];
   v11 = v10;
-  [MPAuthoringUtilities audioDurationFromOptions:a4];
+  [MPAuthoringUtilities audioDurationFromOptions:options];
   v13 = v12;
-  [MPAuthoringUtilities audioDurationFactorFromOptions:a4];
+  [MPAuthoringUtilities audioDurationFactorFromOptions:options];
   v15 = v14;
-  v127 = a3;
-  [a3 duration];
+  audioCopy = audio;
+  [audio duration];
   v17 = v16;
   v142 = +[MPEffectManager sharedManager];
-  v132 = [MPAuthoringUtilities matchPhasesWithTransitionFromOptions:a4];
-  v143 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:a4];
-  v18 = [MPAuthoringUtilities customDurationsFromOptions:a4];
-  [objc_msgSend(a4 objectForKeyedSubscript:{kMPAuthoringMinimumDuration), "doubleValue"}];
+  v132 = [MPAuthoringUtilities matchPhasesWithTransitionFromOptions:options];
+  v143 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:options];
+  v18 = [MPAuthoringUtilities customDurationsFromOptions:options];
+  [objc_msgSend(options objectForKeyedSubscript:{kMPAuthoringMinimumDuration), "doubleValue"}];
   v20 = v19;
-  [objc_msgSend(a4 objectForKeyedSubscript:{kMPAuthoringMaximumDuration), "doubleValue"}];
+  [objc_msgSend(options objectForKeyedSubscript:{kMPAuthoringMaximumDuration), "doubleValue"}];
   if (v15 <= -1.0 || v21 <= 0.0)
   {
     if (v13 >= v20)
@@ -5363,8 +5363,8 @@ LABEL_87:
   v187 = 0u;
   v184 = 0u;
   v185 = 0u;
-  v23 = [a3 effectContainers];
-  v24 = [v23 countByEnumeratingWithState:&v184 objects:v198 count:16];
+  effectContainers = [audio effectContainers];
+  v24 = [effectContainers countByEnumeratingWithState:&v184 objects:v198 count:16];
   if (v24)
   {
     v25 = v24;
@@ -5376,14 +5376,14 @@ LABEL_87:
       {
         if (*v185 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(effectContainers);
         }
 
         [*(*(&v184 + 1) + 8 * i) outroTransitionDuration];
         v27 = v27 + v29;
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v184 objects:v198 count:16];
+      v25 = [effectContainers countByEnumeratingWithState:&v184 objects:v198 count:16];
     }
 
     while (v25);
@@ -5396,7 +5396,7 @@ LABEL_87:
 
   if (v27 <= v20)
   {
-    obja = [v127 effectContainers];
+    obja = [audioCopy effectContainers];
     v57 = [obja objectAtIndex:0];
     if ([v57 countOfEffects])
     {
@@ -5411,17 +5411,17 @@ LABEL_87:
       v58 = v59;
     }
 
-    v60 = [obja lastObject];
-    if ([v60 countOfEffects] >= 1 && ((v61 = +[MPAuthoringUtilities outroEffectIDFromOptions:](MPAuthoringUtilities, "outroEffectIDFromOptions:", a4), v62 = +[MPAuthoringUtilities scaleOutroEffectFromOptions:](MPAuthoringUtilities, "scaleOutroEffectFromOptions:", a4), !objc_msgSend(v61, "hasPrefix:", objc_msgSend(objc_msgSend(objc_msgSend(v60, "effects"), "lastObject"), "effectID"))) || (v62 & 1) != 0))
+    lastObject = [obja lastObject];
+    if ([lastObject countOfEffects] >= 1 && ((v61 = +[MPAuthoringUtilities outroEffectIDFromOptions:](MPAuthoringUtilities, "outroEffectIDFromOptions:", options), v62 = +[MPAuthoringUtilities scaleOutroEffectFromOptions:](MPAuthoringUtilities, "scaleOutroEffectFromOptions:", options), !objc_msgSend(v61, "hasPrefix:", objc_msgSend(objc_msgSend(objc_msgSend(lastObject, "effects"), "lastObject"), "effectID"))) || (v62 & 1) != 0))
     {
       v64 = 0;
     }
 
     else
     {
-      [v60 duration];
+      [lastObject duration];
       v58 = v58 + v63;
-      v64 = v60;
+      v64 = lastObject;
     }
 
     v170 = 0u;
@@ -5462,8 +5462,8 @@ LABEL_87:
           v164 = 0u;
           v165 = 0u;
           v128 = v72;
-          v140 = [v72 effects];
-          v74 = [v140 countByEnumeratingWithState:&v164 objects:v193 count:16];
+          effects = [v72 effects];
+          v74 = [effects countByEnumeratingWithState:&v164 objects:v193 count:16];
           if (v74)
           {
             v75 = v74;
@@ -5476,7 +5476,7 @@ LABEL_87:
               {
                 if (*v165 != v77)
                 {
-                  objc_enumerationMutation(v140);
+                  objc_enumerationMutation(effects);
                 }
 
                 v79 = *(*(&v164 + 1) + 8 * j);
@@ -5484,8 +5484,8 @@ LABEL_87:
                 v161 = 0u;
                 v162 = 0u;
                 v163 = 0u;
-                v80 = [v79 slides];
-                v81 = [v80 countByEnumeratingWithState:&v160 objects:v192 count:16];
+                slides = [v79 slides];
+                v81 = [slides countByEnumeratingWithState:&v160 objects:v192 count:16];
                 if (!v81)
                 {
 LABEL_103:
@@ -5506,7 +5506,7 @@ LABEL_97:
                 {
                   if (*v161 != v83)
                   {
-                    objc_enumerationMutation(v80);
+                    objc_enumerationMutation(slides);
                   }
 
                   if ([v18 objectForKeyedSubscript:{objc_msgSend(*(*(&v160 + 1) + 8 * v84), "path")}])
@@ -5516,7 +5516,7 @@ LABEL_97:
 
                   if (v82 == ++v84)
                   {
-                    v82 = [v80 countByEnumeratingWithState:&v160 objects:v192 count:16];
+                    v82 = [slides countByEnumeratingWithState:&v160 objects:v192 count:16];
                     if (!v82)
                     {
                       goto LABEL_103;
@@ -5556,7 +5556,7 @@ LABEL_108:
                 }
               }
 
-              v75 = [v140 countByEnumeratingWithState:&v164 objects:v193 count:16];
+              v75 = [effects countByEnumeratingWithState:&v164 objects:v193 count:16];
             }
 
             while (v75);
@@ -5636,8 +5636,8 @@ LABEL_134:
                 v153 = 0u;
                 v154 = 0u;
                 v155 = 0u;
-                v141 = [v91 effects];
-                v92 = [v141 countByEnumeratingWithState:&v152 objects:v190 count:16];
+                effects2 = [v91 effects];
+                v92 = [effects2 countByEnumeratingWithState:&v152 objects:v190 count:16];
                 if (v92)
                 {
                   v93 = v92;
@@ -5651,7 +5651,7 @@ LABEL_134:
                     {
                       if (*v153 != v95)
                       {
-                        objc_enumerationMutation(v141);
+                        objc_enumerationMutation(effects2);
                       }
 
                       v97 = *(*(&v152 + 1) + 8 * m);
@@ -5659,8 +5659,8 @@ LABEL_134:
                       v149 = 0u;
                       v150 = 0u;
                       v151 = 0u;
-                      v98 = [v97 slides];
-                      v99 = [v98 countByEnumeratingWithState:&v148 objects:v189 count:16];
+                      slides2 = [v97 slides];
+                      v99 = [slides2 countByEnumeratingWithState:&v148 objects:v189 count:16];
                       if (!v99)
                       {
 LABEL_152:
@@ -5681,7 +5681,7 @@ LABEL_146:
                       {
                         if (*v149 != v101)
                         {
-                          objc_enumerationMutation(v98);
+                          objc_enumerationMutation(slides2);
                         }
 
                         if ([v18 objectForKeyedSubscript:{objc_msgSend(*(*(&v148 + 1) + 8 * v102), "path")}])
@@ -5691,7 +5691,7 @@ LABEL_146:
 
                         if (v100 == ++v102)
                         {
-                          v100 = [v98 countByEnumeratingWithState:&v148 objects:v189 count:16];
+                          v100 = [slides2 countByEnumeratingWithState:&v148 objects:v189 count:16];
                           if (!v100)
                           {
                             goto LABEL_152;
@@ -5734,7 +5734,7 @@ LABEL_157:
                       }
                     }
 
-                    v93 = [v141 countByEnumeratingWithState:&v152 objects:v190 count:16];
+                    v93 = [effects2 countByEnumeratingWithState:&v152 objects:v190 count:16];
                   }
 
                   while (v93);
@@ -5755,8 +5755,8 @@ LABEL_157:
                     v147 = 0u;
                     v144 = 0u;
                     v145 = 0u;
-                    v106 = [v134 effects];
-                    v107 = [v106 countByEnumeratingWithState:&v144 objects:v188 count:16];
+                    effects3 = [v134 effects];
+                    v107 = [effects3 countByEnumeratingWithState:&v144 objects:v188 count:16];
                     v108 = v7;
                     if (v107)
                     {
@@ -5769,7 +5769,7 @@ LABEL_157:
                         {
                           if (*v145 != v110)
                           {
-                            objc_enumerationMutation(v106);
+                            objc_enumerationMutation(effects3);
                           }
 
                           [v142 minimumEffectDurationForEffectID:{objc_msgSend(*(*(&v144 + 1) + 8 * n), "effectID")}];
@@ -5779,7 +5779,7 @@ LABEL_157:
                           }
                         }
 
-                        v109 = [v106 countByEnumeratingWithState:&v144 objects:v188 count:16];
+                        v109 = [effects3 countByEnumeratingWithState:&v144 objects:v188 count:16];
                       }
 
                       while (v109);
@@ -5843,7 +5843,7 @@ LABEL_157:
   v183 = 0u;
   v180 = 0u;
   v181 = 0u;
-  obj = [v127 effectContainers];
+  obj = [audioCopy effectContainers];
   v139 = [obj countByEnumeratingWithState:&v180 objects:v197 count:16];
   if (!v139)
   {
@@ -5866,8 +5866,8 @@ LABEL_157:
       v177 = 0u;
       v178 = 0u;
       v179 = 0u;
-      v33 = [v32 effects];
-      v34 = [v33 countByEnumeratingWithState:&v176 objects:v196 count:16];
+      effects4 = [v32 effects];
+      v34 = [effects4 countByEnumeratingWithState:&v176 objects:v196 count:16];
       if (!v34)
       {
         v36 = 0;
@@ -5885,7 +5885,7 @@ LABEL_157:
         {
           if (*v177 != v37)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(effects4);
           }
 
           v40 = *(*(&v176 + 1) + 8 * jj);
@@ -5925,7 +5925,7 @@ LABEL_157:
           }
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v176 objects:v196 count:16];
+        v35 = [effects4 countByEnumeratingWithState:&v176 objects:v196 count:16];
       }
 
       while (v35);
@@ -5957,8 +5957,8 @@ LABEL_46:
           v175 = 0u;
           v172 = 0u;
           v173 = 0u;
-          v46 = [v32 effects];
-          v47 = [v46 countByEnumeratingWithState:&v172 objects:v195 count:16];
+          effects5 = [v32 effects];
+          v47 = [effects5 countByEnumeratingWithState:&v172 objects:v195 count:16];
           if (v47)
           {
             v48 = v47;
@@ -5969,7 +5969,7 @@ LABEL_46:
               {
                 if (*v173 != v49)
                 {
-                  objc_enumerationMutation(v46);
+                  objc_enumerationMutation(effects5);
                 }
 
                 v51 = *(*(&v172 + 1) + 8 * kk);
@@ -5977,7 +5977,7 @@ LABEL_46:
                 [v51 setPhaseOutDuration:v9];
               }
 
-              v48 = [v46 countByEnumeratingWithState:&v172 objects:v195 count:16];
+              v48 = [effects5 countByEnumeratingWithState:&v172 objects:v195 count:16];
             }
 
             while (v48);
@@ -5988,7 +5988,7 @@ LABEL_46:
         {
           [v32 introTransitionDuration];
           v53 = v52;
-          if ([objc_msgSend(objc_msgSend(v127 "effectContainers")] && !objc_msgSend(v32, "index"))
+          if ([objc_msgSend(objc_msgSend(audioCopy "effectContainers")] && !objc_msgSend(v32, "index"))
           {
             [v32 outroTransitionDuration];
             v53 = v54;
@@ -6022,22 +6022,22 @@ LABEL_67:
   while (v139);
 }
 
-- (void)scaleLayerToMatchAudio:(id)a3 withBeats:(id)a4 withOptions:(id)a5
+- (void)scaleLayerToMatchAudio:(id)audio withBeats:(id)beats withOptions:(id)options
 {
-  [MPAuthoringUtilities audioDurationFromOptions:a5];
+  [MPAuthoringUtilities audioDurationFromOptions:options];
   v10 = v9;
-  [MPAuthoringUtilities minimumEffectDurationFromOptions:a5];
+  [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
   v12 = v11;
   v113 = +[MPEffectManager sharedManager];
-  v13 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:a5];
-  [a3 duration];
-  v102 = a4;
+  v13 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:options];
+  [audio duration];
+  beatsCopy = beats;
   if (v14 < v10)
   {
-    v100 = [a4 count];
+    v100 = [beats count];
     v138 = 0x7FFFFFFFFFFFFFFFLL;
-    [a3 duration];
-    [(MPAuthoringController *)self findClosestBeatForTime:a4 inBeats:&v138 atIndex:?];
+    [audio duration];
+    [(MPAuthoringController *)self findClosestBeatForTime:beats inBeats:&v138 atIndex:?];
     v97 = v138;
     v99 = [[NSSortDescriptor alloc] initWithKey:@"duration" ascending:1];
     v103 = objc_alloc_init(NSMutableArray);
@@ -6045,7 +6045,7 @@ LABEL_67:
     v135 = 0u;
     v136 = 0u;
     v137 = 0u;
-    obj = [a3 effectContainers];
+    obj = [audio effectContainers];
     v109 = [obj countByEnumeratingWithState:&v134 objects:v144 count:16];
     if (!v109)
     {
@@ -6067,8 +6067,8 @@ LABEL_67:
         v131 = 0u;
         v132 = 0u;
         v133 = 0u;
-        v17 = [v16 effects];
-        v18 = [v17 countByEnumeratingWithState:&v130 objects:v143 count:16];
+        effects = [v16 effects];
+        v18 = [effects countByEnumeratingWithState:&v130 objects:v143 count:16];
         if (v18)
         {
           v19 = v18;
@@ -6081,7 +6081,7 @@ LABEL_67:
             {
               if (*v131 != v21)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(effects);
               }
 
               v23 = *(*(&v130 + 1) + 8 * j);
@@ -6115,7 +6115,7 @@ LABEL_67:
               }
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v130 objects:v143 count:16];
+            v19 = [effects countByEnumeratingWithState:&v130 objects:v143 count:16];
             if (!v19)
             {
               if (v20)
@@ -6152,8 +6152,8 @@ LABEL_27:
             v127 = 0u;
             v128 = 0u;
             v129 = 0u;
-            v29 = [v28 effects];
-            v30 = [v29 countByEnumeratingWithState:&v126 objects:v142 count:16];
+            effects2 = [v28 effects];
+            v30 = [effects2 countByEnumeratingWithState:&v126 objects:v142 count:16];
             v31 = v12;
             if (v30)
             {
@@ -6166,7 +6166,7 @@ LABEL_27:
                 {
                   if (*v127 != v33)
                   {
-                    objc_enumerationMutation(v29);
+                    objc_enumerationMutation(effects2);
                   }
 
                   [v113 minimumEffectDurationForEffectID:{objc_msgSend(*(*(&v126 + 1) + 8 * k), "effectID")}];
@@ -6176,7 +6176,7 @@ LABEL_27:
                   }
                 }
 
-                v32 = [v29 countByEnumeratingWithState:&v126 objects:v142 count:16];
+                v32 = [effects2 countByEnumeratingWithState:&v126 objects:v142 count:16];
               }
 
               while (v32);
@@ -6185,12 +6185,12 @@ LABEL_27:
             [v28 startTime];
             v37 = v36;
             [v28 duration];
-            [(MPAuthoringController *)self findClosestBeatForTime:v102 inBeats:&v138 atIndex:v37 + v38];
+            [(MPAuthoringController *)self findClosestBeatForTime:beatsCopy inBeats:&v138 atIndex:v37 + v38];
             if (v138 != v100 - 1)
             {
-              [objc_msgSend(v102 objectAtIndex:{v138 + 1), "doubleValue"}];
+              [objc_msgSend(beatsCopy objectAtIndex:{v138 + 1), "doubleValue"}];
               v40 = v39;
-              [objc_msgSend(v102 objectAtIndex:{v138), "doubleValue"}];
+              [objc_msgSend(beatsCopy objectAtIndex:{v138), "doubleValue"}];
               v42 = v40 - v41;
               [v28 duration];
               v44 = v43 + v42;
@@ -6227,10 +6227,10 @@ LABEL_27:
   if (v14 > v10)
   {
     v49 = v14;
-    [objc_msgSend(a4 objectAtIndex:{0), "doubleValue"}];
+    [objc_msgSend(beats objectAtIndex:{0), "doubleValue"}];
     v51 = v50;
     v52 = v49 - v10 + v50;
-    v53 = [a4 count];
+    v53 = [beats count];
     v54 = 0;
     if (v51 < v52 && v53 >= 2)
     {
@@ -6238,7 +6238,7 @@ LABEL_27:
       v56 = v53 - 1;
       do
       {
-        [objc_msgSend(a4 objectAtIndex:{++v54), "doubleValue"}];
+        [objc_msgSend(beats objectAtIndex:{++v54), "doubleValue"}];
       }
 
       while (v57 < v52 && v54 < v56);
@@ -6252,8 +6252,8 @@ LABEL_27:
     v123 = 0u;
     v124 = 0u;
     v125 = 0u;
-    v108 = [a3 effectContainers];
-    v112 = [v108 countByEnumeratingWithState:&v122 objects:v141 count:16];
+    effectContainers = [audio effectContainers];
+    v112 = [effectContainers countByEnumeratingWithState:&v122 objects:v141 count:16];
     if (v112)
     {
       v110 = *v123;
@@ -6263,7 +6263,7 @@ LABEL_27:
         {
           if (*v123 != v110)
           {
-            objc_enumerationMutation(v108);
+            objc_enumerationMutation(effectContainers);
           }
 
           v60 = *(*(&v122 + 1) + 8 * m);
@@ -6271,8 +6271,8 @@ LABEL_27:
           v119 = 0u;
           v120 = 0u;
           v121 = 0u;
-          v61 = [v60 effects];
-          v62 = [v61 countByEnumeratingWithState:&v118 objects:v140 count:16];
+          effects3 = [v60 effects];
+          v62 = [effects3 countByEnumeratingWithState:&v118 objects:v140 count:16];
           if (v62)
           {
             v63 = v62;
@@ -6284,7 +6284,7 @@ LABEL_27:
               {
                 if (*v119 != v65)
                 {
-                  objc_enumerationMutation(v61);
+                  objc_enumerationMutation(effects3);
                 }
 
                 if (v64)
@@ -6317,7 +6317,7 @@ LABEL_27:
                 }
               }
 
-              v63 = [v61 countByEnumeratingWithState:&v118 objects:v140 count:16];
+              v63 = [effects3 countByEnumeratingWithState:&v118 objects:v140 count:16];
             }
 
             while (v63);
@@ -6328,7 +6328,7 @@ LABEL_27:
           }
         }
 
-        v112 = [v108 countByEnumeratingWithState:&v122 objects:v141 count:16];
+        v112 = [effectContainers countByEnumeratingWithState:&v122 objects:v141 count:16];
       }
 
       while (v112);
@@ -6372,8 +6372,8 @@ LABEL_27:
         v115 = 0u;
         v116 = 0u;
         v117 = 0u;
-        v75 = [v74 effects];
-        v76 = [v75 countByEnumeratingWithState:&v114 objects:v139 count:16];
+        effects4 = [v74 effects];
+        v76 = [effects4 countByEnumeratingWithState:&v114 objects:v139 count:16];
         v77 = v12;
         if (v76)
         {
@@ -6386,7 +6386,7 @@ LABEL_27:
             {
               if (*v115 != v79)
               {
-                objc_enumerationMutation(v75);
+                objc_enumerationMutation(effects4);
               }
 
               [v113 minimumEffectDurationForEffectID:{objc_msgSend(*(*(&v114 + 1) + 8 * ii), "effectID")}];
@@ -6396,7 +6396,7 @@ LABEL_27:
               }
             }
 
-            v78 = [v75 countByEnumeratingWithState:&v114 objects:v139 count:16];
+            v78 = [effects4 countByEnumeratingWithState:&v114 objects:v139 count:16];
           }
 
           while (v78);
@@ -6405,12 +6405,12 @@ LABEL_27:
         [v74 startTime];
         v83 = v82;
         [v74 duration];
-        [(MPAuthoringController *)self findClosestBeatForTime:v102 inBeats:&v138 atIndex:v83 + v84];
+        [(MPAuthoringController *)self findClosestBeatForTime:beatsCopy inBeats:&v138 atIndex:v83 + v84];
         if (v138)
         {
-          [objc_msgSend(v102 "objectAtIndex:"doubleValue"")];
+          [objc_msgSend(beatsCopy "objectAtIndex:"doubleValue"")];
           v86 = v85;
-          [objc_msgSend(v102 objectAtIndex:{v138 - 1), "doubleValue"}];
+          [objc_msgSend(beatsCopy objectAtIndex:{v138 - 1), "doubleValue"}];
           v88 = v86 - v87;
           [v74 duration];
           v90 = v89;
@@ -6439,27 +6439,27 @@ LABEL_27:
   }
 }
 
-- (void)beatAlignEffectContainers:(id)a3 toBeats:(id)a4 withOptions:(id)a5
+- (void)beatAlignEffectContainers:(id)containers toBeats:(id)beats withOptions:(id)options
 {
   v81 = +[MPEffectManager sharedManager];
-  v79 = [MPAuthoringUtilities lockTransitionDurationFromOptions:a5];
-  [MPAuthoringUtilities minimumTransitionDurationFromOptions:a5];
+  v79 = [MPAuthoringUtilities lockTransitionDurationFromOptions:options];
+  [MPAuthoringUtilities minimumTransitionDurationFromOptions:options];
   v76 = v9;
-  [MPAuthoringUtilities maximumTransitionDurationFromOptions:a5];
+  [MPAuthoringUtilities maximumTransitionDurationFromOptions:options];
   v75 = v10;
-  [MPAuthoringUtilities minimumEffectDurationFromOptions:a5];
+  [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
   v88 = v11;
-  v78 = [MPAuthoringUtilities matchPhasesWithTransitionFromOptions:a5];
-  v80 = [MPAuthoringUtilities canAdjustPhaseDurations:a5];
-  v12 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:a5];
-  v77 = [a4 count];
+  v78 = [MPAuthoringUtilities matchPhasesWithTransitionFromOptions:options];
+  v80 = [MPAuthoringUtilities canAdjustPhaseDurations:options];
+  v12 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:options];
+  v77 = [beats count];
   v97 = 0;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  obj = a3;
-  v87 = [a3 countByEnumeratingWithState:&v93 objects:v99 count:16];
+  obj = containers;
+  v87 = [containers countByEnumeratingWithState:&v93 objects:v99 count:16];
   if (v87)
   {
     v85 = 0;
@@ -6478,8 +6478,8 @@ LABEL_27:
         v90 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v15 = [v14 effects];
-        v16 = [v15 countByEnumeratingWithState:&v89 objects:v98 count:16];
+        effects = [v14 effects];
+        v16 = [effects countByEnumeratingWithState:&v89 objects:v98 count:16];
         if (v16)
         {
           v17 = v16;
@@ -6490,7 +6490,7 @@ LABEL_27:
             {
               if (*v90 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(effects);
               }
 
               v20 = *(*(&v89 + 1) + 8 * j);
@@ -6501,7 +6501,7 @@ LABEL_27:
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v89 objects:v98 count:16];
+            v17 = [effects countByEnumeratingWithState:&v89 objects:v98 count:16];
             if (v17)
             {
               continue;
@@ -6538,16 +6538,16 @@ LABEL_27:
           v82 = v33;
           if (((v29 != 0.0) & v80) == 1)
           {
-            [(MPAuthoringController *)self findClosestBeatForTime:a4 inBeats:&v97 atIndex:v25 + v29];
+            [(MPAuthoringController *)self findClosestBeatForTime:beats inBeats:&v97 atIndex:v25 + v29];
             v32 = v34;
           }
 
-          [(MPAuthoringController *)self findClosestBeatForTime:a4 inBeats:&v97 atIndex:v27 + v32];
+          [(MPAuthoringController *)self findClosestBeatForTime:beats inBeats:&v97 atIndex:v27 + v32];
           v36 = v35;
           v37 = v31 + v35;
           if (((v31 != 0.0) & v80) == 1)
           {
-            [(MPAuthoringController *)self findClosestBeatForTime:a4 inBeats:&v97 atIndex:v31 + v35];
+            [(MPAuthoringController *)self findClosestBeatForTime:beats inBeats:&v97 atIndex:v31 + v35];
             v37 = v38;
           }
 
@@ -6587,9 +6587,9 @@ LABEL_27:
               v44 = v97 + 2;
               do
               {
-                [objc_msgSend(a4 objectAtIndex:{v44 - 1), "doubleValue"}];
+                [objc_msgSend(beats objectAtIndex:{v44 - 1), "doubleValue"}];
                 v46 = v45;
-                [objc_msgSend(a4 objectAtIndex:{v97), "doubleValue"}];
+                [objc_msgSend(beats objectAtIndex:{v97), "doubleValue"}];
                 v48 = v46 - v47;
                 v49 = v36 + v48;
                 v50 = v41 + v48;
@@ -6632,7 +6632,7 @@ LABEL_27:
 
             if (v31 != 0.0)
             {
-              [(MPAuthoringController *)self findClosestBeatForTime:a4 inBeats:&v97 atIndex:v31 + v36];
+              [(MPAuthoringController *)self findClosestBeatForTime:beats inBeats:&v97 atIndex:v31 + v36];
               v36 = v55;
             }
 
@@ -6651,14 +6651,14 @@ LABEL_27:
             v37 = v36;
           }
 
-          [objc_msgSend(a4 "lastObject")];
+          [objc_msgSend(beats "lastObject")];
           if (v37 >= v57)
           {
             return;
           }
 
-          v58 = [v14 transition];
-          if (v58)
+          transition = [v14 transition];
+          if (transition)
           {
             v59 = v79;
           }
@@ -6670,8 +6670,8 @@ LABEL_27:
 
           if ((v59 & 1) == 0)
           {
-            v60 = v58;
-            [(MPAuthoringController *)self findClosestBeatForTime:a4 inBeats:&v97 atIndex:v37 - v82];
+            v60 = transition;
+            [(MPAuthoringController *)self findClosestBeatForTime:beats inBeats:&v97 atIndex:v37 - v82];
             v62 = vabdd_f64(v37, v61);
             [+[MPTransitionManager sharedManager](MPTransitionManager "sharedManager")];
             v64 = vabdd_f64(v82, v62) > v63 * 0.4 + 0.1 || v62 < v76;
@@ -6709,7 +6709,7 @@ LABEL_27:
           }
 
           [v21 setPhaseOutDuration:v42];
-          if (v85 == [a4 count] - 1)
+          if (v85 == [beats count] - 1)
           {
             return;
           }
@@ -6734,18 +6734,18 @@ LABEL_77:
   }
 }
 
-- (double)minimumDurationForLayer:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (double)minimumDurationForLayer:(id)layer inDocument:(id)document withOptions:(id)options
 {
-  [MPAuthoringUtilities minimumEffectDurationFromOptions:a5];
+  [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
   v8 = v7;
-  v42 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:a5];
+  v42 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:options];
   v41 = +[MPEffectManager sharedManager];
-  v9 = [MPAuthoringUtilities customDurationsFromOptions:a5];
+  v9 = [MPAuthoringUtilities customDurationsFromOptions:options];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = [a3 effectContainers];
+  obj = [layer effectContainers];
   v36 = [obj countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v36)
   {
@@ -6768,8 +6768,8 @@ LABEL_77:
         v50 = 0u;
         v37 = v11;
         v38 = v12;
-        v40 = [v12 effects];
-        v13 = [v40 countByEnumeratingWithState:&v47 objects:v56 count:16];
+        effects = [v12 effects];
+        v13 = [effects countByEnumeratingWithState:&v47 objects:v56 count:16];
         if (v13)
         {
           v14 = v13;
@@ -6782,7 +6782,7 @@ LABEL_77:
             {
               if (*v48 != v16)
               {
-                objc_enumerationMutation(v40);
+                objc_enumerationMutation(effects);
               }
 
               v19 = *(*(&v47 + 1) + 8 * i);
@@ -6790,8 +6790,8 @@ LABEL_77:
               v44 = 0u;
               v45 = 0u;
               v46 = 0u;
-              v20 = [v19 slides];
-              v21 = [v20 countByEnumeratingWithState:&v43 objects:v55 count:16];
+              slides = [v19 slides];
+              v21 = [slides countByEnumeratingWithState:&v43 objects:v55 count:16];
               if (v21)
               {
                 v22 = v21;
@@ -6802,7 +6802,7 @@ LABEL_13:
                 {
                   if (*v44 != v23)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(slides);
                   }
 
                   if ([v9 objectForKeyedSubscript:{objc_msgSend(*(*(&v43 + 1) + 8 * v24), "path")}])
@@ -6812,7 +6812,7 @@ LABEL_13:
 
                   if (v22 == ++v24)
                   {
-                    v22 = [v20 countByEnumeratingWithState:&v43 objects:v55 count:16];
+                    v22 = [slides countByEnumeratingWithState:&v43 objects:v55 count:16];
                     if (v22)
                     {
                       goto LABEL_13;
@@ -6850,7 +6850,7 @@ LABEL_20:
 LABEL_24:
               if ((v42 & v26) == 1 && ([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")] & 1) == 0)
               {
-                if ([v19 hasPanoramasInDocument:a4])
+                if ([v19 hasPanoramasInDocument:document])
                 {
                   goto LABEL_34;
                 }
@@ -6870,7 +6870,7 @@ LABEL_24:
               v15 = 1;
             }
 
-            v14 = [v40 countByEnumeratingWithState:&v47 objects:v56 count:16];
+            v14 = [effects countByEnumeratingWithState:&v47 objects:v56 count:16];
             if (!v14)
             {
               [v38 outroTransitionDuration];
@@ -6902,23 +6902,23 @@ LABEL_35:
   return 0.0;
 }
 
-- (double)maximumDurationForLayer:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (double)maximumDurationForLayer:(id)layer inDocument:(id)document withOptions:(id)options
 {
-  [MPAuthoringUtilities audioDurationFromOptions:a5];
+  [MPAuthoringUtilities audioDurationFromOptions:options];
   v8 = v7;
-  [MPAuthoringUtilities audioDurationFactorFromOptions:a5];
+  [MPAuthoringUtilities audioDurationFactorFromOptions:options];
   v10 = v9;
-  [MPAuthoringUtilities minimumEffectDurationFromOptions:a5];
+  [MPAuthoringUtilities minimumEffectDurationFromOptions:options];
   v12 = v11;
-  v53 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:a5];
+  v53 = [MPAuthoringUtilities scaleEffectsForPanoramasFromOptions:options];
   v52 = +[MPEffectManager sharedManager];
-  v13 = [MPAuthoringUtilities customDurationsFromOptions:a5];
+  v13 = [MPAuthoringUtilities customDurationsFromOptions:options];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v14 = [a3 effectContainers];
-  v15 = [v14 countByEnumeratingWithState:&v66 objects:v73 count:16];
+  effectContainers = [layer effectContainers];
+  v15 = [effectContainers countByEnumeratingWithState:&v66 objects:v73 count:16];
   v16 = 0.0;
   v17 = 0.0;
   if (v15)
@@ -6931,14 +6931,14 @@ LABEL_35:
       {
         if (*v67 != v19)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(effectContainers);
         }
 
         [*(*(&v66 + 1) + 8 * i) outroTransitionDuration];
         v17 = v17 + v21;
       }
 
-      v18 = [v14 countByEnumeratingWithState:&v66 objects:v73 count:16];
+      v18 = [effectContainers countByEnumeratingWithState:&v66 objects:v73 count:16];
     }
 
     while (v18);
@@ -6948,7 +6948,7 @@ LABEL_35:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [a3 effectContainers];
+  obj = [layer effectContainers];
   v47 = [obj countByEnumeratingWithState:&v62 objects:v72 count:16];
   if (v47)
   {
@@ -6971,8 +6971,8 @@ LABEL_35:
         v61 = 0u;
         v48 = v23;
         v49 = v22;
-        v51 = [v23 effects];
-        v24 = [v51 countByEnumeratingWithState:&v58 objects:v71 count:16];
+        effects = [v23 effects];
+        v24 = [effects countByEnumeratingWithState:&v58 objects:v71 count:16];
         if (!v24)
         {
           goto LABEL_45;
@@ -6988,7 +6988,7 @@ LABEL_35:
           {
             if (*v59 != v27)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(effects);
             }
 
             v30 = *(*(&v58 + 1) + 8 * j);
@@ -6996,8 +6996,8 @@ LABEL_35:
             v55 = 0u;
             v56 = 0u;
             v57 = 0u;
-            v31 = [v30 slides];
-            v32 = [v31 countByEnumeratingWithState:&v54 objects:v70 count:16];
+            slides = [v30 slides];
+            v32 = [slides countByEnumeratingWithState:&v54 objects:v70 count:16];
             if (v32)
             {
               v33 = v32;
@@ -7008,7 +7008,7 @@ LABEL_20:
               {
                 if (*v55 != v34)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(slides);
                 }
 
                 if ([v13 objectForKeyedSubscript:{objc_msgSend(*(*(&v54 + 1) + 8 * v35), "path")}])
@@ -7018,7 +7018,7 @@ LABEL_20:
 
                 if (v33 == ++v35)
                 {
-                  v33 = [v31 countByEnumeratingWithState:&v54 objects:v70 count:16];
+                  v33 = [slides countByEnumeratingWithState:&v54 objects:v70 count:16];
                   if (v33)
                   {
                     goto LABEL_20;
@@ -7056,7 +7056,7 @@ LABEL_27:
 LABEL_31:
             if ((v53 & v26) == 1 && ([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")] & 1) == 0)
             {
-              v37 = [v30 hasPanoramasInDocument:a4];
+              v37 = [v30 hasPanoramasInDocument:document];
             }
 
             else
@@ -7088,7 +7088,7 @@ LABEL_31:
             }
           }
 
-          v25 = [v51 countByEnumeratingWithState:&v58 objects:v71 count:16];
+          v25 = [effects countByEnumeratingWithState:&v58 objects:v71 count:16];
           if (v25)
           {
             continue;
@@ -7128,20 +7128,20 @@ LABEL_46:
   return result;
 }
 
-- (void)configureFiltersInDocument:(id)a3 withOptions:(id)a4
+- (void)configureFiltersInDocument:(id)document withOptions:(id)options
 {
   v50 = objc_opt_respondsToSelector();
   v7 = objc_opt_respondsToSelector();
-  v32 = [[NSMutableDictionary alloc] initWithDictionary:a4];
-  v47 = a4;
-  v40 = [MPAuthoringUtilities reconfigureRangeFromOptions:a4];
+  v32 = [[NSMutableDictionary alloc] initWithDictionary:options];
+  optionsCopy = options;
+  v40 = [MPAuthoringUtilities reconfigureRangeFromOptions:options];
   range1 = v8;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v49 = a3;
-  obj = [a3 layers];
+  documentCopy = document;
+  obj = [document layers];
   v33 = [obj countByEnumeratingWithState:&v63 objects:v70 count:16];
   if (v33)
   {
@@ -7167,13 +7167,13 @@ LABEL_46:
         if ((v12 | v50))
         {
           v13 = v12;
-          v14 = [v10 effectContainers];
+          effectContainers = [v10 effectContainers];
           v59 = 0u;
           v60 = 0u;
           v61 = 0u;
           v62 = 0u;
-          v35 = v14;
-          v37 = [v14 countByEnumeratingWithState:&v59 objects:v69 count:16];
+          v35 = effectContainers;
+          v37 = [effectContainers countByEnumeratingWithState:&v59 objects:v69 count:16];
           if (v37)
           {
             v15 = 0;
@@ -7194,8 +7194,8 @@ LABEL_46:
                 v56 = 0u;
                 v57 = 0u;
                 v58 = 0u;
-                v39 = [v17 effects];
-                v42 = [v39 countByEnumeratingWithState:&v55 objects:v68 count:16];
+                effects = [v17 effects];
+                v42 = [effects countByEnumeratingWithState:&v55 objects:v68 count:16];
                 if (v42)
                 {
                   v18 = 0;
@@ -7207,7 +7207,7 @@ LABEL_46:
                     {
                       if (*v56 != v41)
                       {
-                        objc_enumerationMutation(v39);
+                        objc_enumerationMutation(effects);
                       }
 
                       v44 = v19;
@@ -7219,8 +7219,8 @@ LABEL_46:
                         v54 = 0u;
                         v51 = 0u;
                         v52 = 0u;
-                        v21 = [v20 slides];
-                        v22 = [v21 countByEnumeratingWithState:&v51 objects:v67 count:16];
+                        slides = [v20 slides];
+                        v22 = [slides countByEnumeratingWithState:&v51 objects:v67 count:16];
                         if (v22)
                         {
                           v23 = v22;
@@ -7231,16 +7231,16 @@ LABEL_46:
                             {
                               if (*v52 != v24)
                               {
-                                objc_enumerationMutation(v21);
+                                objc_enumerationMutation(slides);
                               }
 
                               v26 = *(*(&v51 + 1) + 8 * i);
                               if (v50)
                               {
-                                v27 = [self->_delegate document:v49 shouldUseDefaultFiltersForSlide:*(*(&v51 + 1) + 8 * i) effectIndex:v18 containerIndex:v15 layerIndex:*&v48[4]];
+                                v27 = [self->_delegate document:documentCopy shouldUseDefaultFiltersForSlide:*(*(&v51 + 1) + 8 * i) effectIndex:v18 containerIndex:v15 layerIndex:*&v48[4]];
                                 if (((v27 | *v48) & 1) == 0)
                                 {
-                                  v28 = [self->_delegate document:v49 needsFiltersForSlide:v26 effectIndex:v18 containerIndex:v15 layerIndex:*&v48[4]];
+                                  v28 = [self->_delegate document:documentCopy needsFiltersForSlide:v26 effectIndex:v18 containerIndex:v15 layerIndex:*&v48[4]];
                                   goto LABEL_30;
                                 }
                               }
@@ -7255,7 +7255,7 @@ LABEL_46:
                                 continue;
                               }
 
-                              v28 = [(MPAuthoringController *)self filtersForSlideFromOptions:v47];
+                              v28 = [(MPAuthoringController *)self filtersForSlideFromOptions:optionsCopy];
 LABEL_30:
                               v29 = v28;
                               if (v28 && [v28 count])
@@ -7264,7 +7264,7 @@ LABEL_30:
                               }
                             }
 
-                            v23 = [v21 countByEnumeratingWithState:&v51 objects:v67 count:16];
+                            v23 = [slides countByEnumeratingWithState:&v51 objects:v67 count:16];
                           }
 
                           while (v23);
@@ -7277,7 +7277,7 @@ LABEL_30:
                     }
 
                     while ((v44 + 1) != v42);
-                    v42 = [v39 countByEnumeratingWithState:&v55 objects:v68 count:16];
+                    v42 = [effects countByEnumeratingWithState:&v55 objects:v68 count:16];
                   }
 
                   while (v42);
@@ -7307,24 +7307,24 @@ LABEL_30:
   }
 }
 
-- (void)configureTransitionsInDocument:(id)a3 withOptions:(id)a4
+- (void)configureTransitionsInDocument:(id)document withOptions:(id)options
 {
   v7 = objc_opt_respondsToSelector();
   v8 = objc_opt_respondsToSelector();
-  v41 = a4;
-  v35 = [MPAuthoringUtilities shouldComputeTransitionsFromOptions:a4];
+  optionsCopy = options;
+  v35 = [MPAuthoringUtilities shouldComputeTransitionsFromOptions:options];
   if (v35 & 1) != 0 || (v7)
   {
-    v9 = [[NSMutableDictionary alloc] initWithDictionary:a4];
-    v42 = [MPAuthoringUtilities reconfigureRangeFromOptions:a4];
+    v9 = [[NSMutableDictionary alloc] initWithDictionary:options];
+    v42 = [MPAuthoringUtilities reconfigureRangeFromOptions:options];
     v39 = v10;
-    v11 = [objc_msgSend(a4 objectForKey:{@"keepTransitions", "BOOLValue"}];
+    v11 = [objc_msgSend(options objectForKey:{@"keepTransitions", "BOOLValue"}];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v37 = a3;
-    obj = [a3 layers];
+    documentCopy = document;
+    obj = [document layers];
     v12 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (!v12)
     {
@@ -7359,12 +7359,12 @@ LABEL_30:
         if ([MPAuthoringUtilities canHaveTransitionsFromOptions:v9])
         {
           v40 = v15;
-          v22 = [v20 effectContainers];
+          effectContainers = [v20 effectContainers];
           v45 = 0u;
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v44 = [v22 countByEnumeratingWithState:&v45 objects:v53 count:16];
+          v44 = [effectContainers countByEnumeratingWithState:&v45 objects:v53 count:16];
           if (!v44)
           {
             goto LABEL_37;
@@ -7374,14 +7374,14 @@ LABEL_30:
           v24 = 0;
           v43 = *v46;
           v25 = v39;
-          v38 = v22;
+          v38 = effectContainers;
           while (1)
           {
             for (i = 0; i != v44; i = i + 1)
             {
               if (*v46 != v43)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(effectContainers);
               }
 
               v27 = *(*(&v45 + 1) + 8 * i);
@@ -7394,10 +7394,10 @@ LABEL_30:
 
                 if (v7)
                 {
-                  v28 = [self->_delegate document:v37 shouldUseDefaultTransitionForEffectContainer:v27 containerIndex:v24 layerIndex:v40];
+                  v28 = [self->_delegate document:documentCopy shouldUseDefaultTransitionForEffectContainer:v27 containerIndex:v24 layerIndex:v40];
                   if ((v28 | v36))
                   {
-                    v22 = v38;
+                    effectContainers = v38;
                     v25 = v39;
                     if (v28)
                     {
@@ -7410,9 +7410,9 @@ LABEL_34:
                     continue;
                   }
 
-                  v22 = v38;
+                  effectContainers = v38;
                   v25 = v39;
-                  if (![self->_delegate document:v37 needsTransitionForEffectContainer:v27 containerIndex:v24 layerIndex:v40])
+                  if (![self->_delegate document:documentCopy needsTransitionForEffectContainer:v27 containerIndex:v24 layerIndex:v40])
                   {
                     goto LABEL_34;
                   }
@@ -7421,16 +7421,16 @@ LABEL_34:
                 else
                 {
 LABEL_21:
-                  if (v24 == [objc_msgSend(v23 "effectContainers")] - 1 && +[MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:](MPAuthoringUtilities, "shouldComputeLoopTransitionFromOptions:", v41))
+                  if (v24 == [objc_msgSend(v23 "effectContainers")] - 1 && +[MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:](MPAuthoringUtilities, "shouldComputeLoopTransitionFromOptions:", optionsCopy))
                   {
-                    v29 = [(MPAuthoringController *)self loopTransitionFromOptions:v41];
+                    v29 = [(MPAuthoringController *)self loopTransitionFromOptions:optionsCopy];
                   }
 
                   else
                   {
                     if (v24 == [objc_msgSend(v23 "effectContainers")] - 1)
                     {
-                      if ((v35 & [MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:v41]& 1) == 0)
+                      if ((v35 & [MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:optionsCopy]& 1) == 0)
                       {
                         goto LABEL_34;
                       }
@@ -7446,7 +7446,7 @@ LABEL_21:
                       goto LABEL_34;
                     }
 
-                    v29 = [(MPAuthoringController *)self transitionFromOptions:v41];
+                    v29 = [(MPAuthoringController *)self transitionFromOptions:optionsCopy];
                   }
 
                   if (!v29)
@@ -7460,7 +7460,7 @@ LABEL_21:
               }
             }
 
-            v44 = [v22 countByEnumeratingWithState:&v45 objects:v53 count:16];
+            v44 = [effectContainers countByEnumeratingWithState:&v45 objects:v53 count:16];
             if (!v44)
             {
 LABEL_37:
@@ -7489,13 +7489,13 @@ LABEL_40:
   }
 }
 
-- (id)createLayerWithImages:(id)a3 effects:(id)a4 andOptions:(id)a5
+- (id)createLayerWithImages:(id)images effects:(id)effects andOptions:(id)options
 {
-  v9 = [MPAuthoringUtilities styleFromOptions:a5];
-  v10 = [MPAuthoringUtilities layerIndexFromOptions:a5];
+  v9 = [MPAuthoringUtilities styleFromOptions:options];
+  v10 = [MPAuthoringUtilities layerIndexFromOptions:options];
   v11 = +[MPLayer layer];
-  v12 = [-[MPAuthoringController effectContainersWithImages:effects:andOptions:](self effectContainersWithImages:a3 effects:a4 andOptions:{a5), "mutableCopy"}];
-  [MPAuthoringUtilities layerOffsetFromOptions:a5];
+  v12 = [-[MPAuthoringController effectContainersWithImages:effects:andOptions:](self effectContainersWithImages:images effects:effects andOptions:{options), "mutableCopy"}];
+  [MPAuthoringUtilities layerOffsetFromOptions:options];
   if (v13 != 0.0)
   {
     v14 = v13;
@@ -7506,7 +7506,7 @@ LABEL_40:
 
   [v11 addEffectContainers:v12];
 
-  v16 = [(MPAuthoringController *)self filtersForLayerFromOptions:a5];
+  v16 = [(MPAuthoringController *)self filtersForLayerFromOptions:options];
   if ([v16 count])
   {
     [v11 addFilters:v16];
@@ -7518,16 +7518,16 @@ LABEL_40:
   return v11;
 }
 
-- (id)slidesWithImages:(id)a3 andOptions:(id)a4
+- (id)slidesWithImages:(id)images andOptions:(id)options
 {
-  v7 = [a3 count];
-  v8 = [MPAuthoringUtilities shouldComputeFramesFromOptions:a4];
-  v9 = [MPAuthoringUtilities shouldComputeSlideFiltersFromOptions:a4];
-  v25 = [MPAuthoringUtilities layerIndexFromOptions:a4];
-  [MPAuthoringUtilities movieVolumeFromOptions:a4];
+  v7 = [images count];
+  v8 = [MPAuthoringUtilities shouldComputeFramesFromOptions:options];
+  v9 = [MPAuthoringUtilities shouldComputeSlideFiltersFromOptions:options];
+  v25 = [MPAuthoringUtilities layerIndexFromOptions:options];
+  [MPAuthoringUtilities movieVolumeFromOptions:options];
   v11 = v10;
-  v26 = [MPAuthoringUtilities shouldDuckMoviesFromOptions:a4];
-  v28 = [[NSMutableDictionary alloc] initWithDictionary:a4];
+  v26 = [MPAuthoringUtilities shouldDuckMoviesFromOptions:options];
+  v28 = [[NSMutableDictionary alloc] initWithDictionary:options];
   if (self->_delegate)
   {
     v12 = objc_opt_respondsToSelector();
@@ -7541,7 +7541,7 @@ LABEL_40:
   }
 
   v13 = +[NSMutableArray array];
-  v14 = [a4 objectForKey:kMPAuthoringCachedAbsolutePaths];
+  v14 = [options objectForKey:kMPAuthoringCachedAbsolutePaths];
   if (v7 >= 1)
   {
     v15 = v14;
@@ -7549,7 +7549,7 @@ LABEL_40:
     v17 = v9 | v12;
     while (1)
     {
-      v18 = -[MPSlide initWithPath:]([MPSlide alloc], "initWithPath:", [a3 objectAtIndex:v16]);
+      v18 = -[MPSlide initWithPath:]([MPSlide alloc], "initWithPath:", [images objectAtIndex:v16]);
       if (v15)
       {
         -[MPSlide setAbsolutePath:](v18, "setAbsolutePath:", [v15 objectAtIndex:v16]);
@@ -7639,26 +7639,26 @@ LABEL_29:
   return v13;
 }
 
-- (id)dynamicLayerWithImages:(id)a3 withOptions:(id)a4
+- (id)dynamicLayerWithImages:(id)images withOptions:(id)options
 {
-  v7 = [MPAuthoringUtilities effectListFromOptions:a4];
-  v8 = [MPAuthoringUtilities layerHasImagesFromOptions:a4];
-  if ([v7 count] && (v9 = objc_msgSend(objc_msgSend(v7, "lastObject"), "objectForKey:", @"presetID"), v10 = objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectPresetID:", v9), v11 = objc_msgSend(+[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", a4), "isEqualToString:", @"Dateline"), ((v10 == 0x7FFFFFFFFFFFFFFFLL) & v8) == 1))
+  v7 = [MPAuthoringUtilities effectListFromOptions:options];
+  v8 = [MPAuthoringUtilities layerHasImagesFromOptions:options];
+  if ([v7 count] && (v9 = objc_msgSend(objc_msgSend(v7, "lastObject"), "objectForKey:", @"presetID"), v10 = objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectPresetID:", v9), v11 = objc_msgSend(+[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", options), "isEqualToString:", @"Dateline"), ((v10 == 0x7FFFFFFFFFFFFFFFLL) & v8) == 1))
   {
     v12 = v11;
-    v13 = [[MPLayerEffect alloc] initWithEffectID:[MPUtilities andPaths:"idOfCombinedID:" idOfCombinedID:v9], a3];
+    images = [[MPLayerEffect alloc] initWithEffectID:[MPUtilities andPaths:"idOfCombinedID:" idOfCombinedID:v9], images];
     if (v12)
     {
-      -[MPLayerEffect setEffectAttribute:forKey:](v13, "setEffectAttribute:forKey:", [a4 objectForKey:kMPAuthoringJournalRepresentation], @"journal");
+      -[MPLayerEffect setEffectAttribute:forKey:](images, "setEffectAttribute:forKey:", [options objectForKey:kMPAuthoringJournalRepresentation], @"journal");
     }
 
-    [(MPAuthoringController *)self configurePanoramaInformationToEffect:v13 inDocument:self->_authoredDocument startingIndex:0 count:-1 removeOldIndex:-1];
+    [(MPAuthoringController *)self configurePanoramaInformationToEffect:images inDocument:self->_authoredDocument startingIndex:0 count:-1 removeOldIndex:-1];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = [(MPLayerEffect *)v13 slides];
-    v15 = [(NSArray *)v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    slides = [(MPLayerEffect *)images slides];
+    v15 = [(NSArray *)slides countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v15)
     {
       v16 = v15;
@@ -7669,7 +7669,7 @@ LABEL_29:
         {
           if (*v33 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(slides);
           }
 
           v19 = *(*(&v32 + 1) + 8 * i);
@@ -7686,7 +7686,7 @@ LABEL_29:
           [v19 setMediaType:v20];
         }
 
-        v16 = [(NSArray *)v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v16 = [(NSArray *)slides countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v16);
@@ -7696,8 +7696,8 @@ LABEL_29:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v21 = [(MPLayerEffect *)v13 slides];
-    v22 = [(NSArray *)v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    slides2 = [(MPLayerEffect *)images slides];
+    v22 = [(NSArray *)slides2 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v22)
     {
       v23 = v22;
@@ -7708,7 +7708,7 @@ LABEL_29:
         {
           if (*v29 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(slides2);
           }
 
           v26 = *(*(&v28 + 1) + 8 * j);
@@ -7719,7 +7719,7 @@ LABEL_29:
           }
         }
 
-        v23 = [(NSArray *)v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v23 = [(NSArray *)slides2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       }
 
       while (v23);
@@ -7728,24 +7728,24 @@ LABEL_29:
 
   else
   {
-    v13 = 0;
+    images = 0;
   }
 
-  return v13;
+  return images;
 }
 
-- (id)titleEffectsForImages:(id)a3 withOptions:(id)a4
+- (id)titleEffectsForImages:(id)images withOptions:(id)options
 {
   v30 = +[NSMutableArray array];
-  v6 = [MPAuthoringUtilities styleFromOptions:a4];
+  v6 = [MPAuthoringUtilities styleFromOptions:options];
   v7 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   v8 = objc_alloc_init(NSMutableArray);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = [v7 objectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  objectEnumerator = [v7 objectEnumerator];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -7756,7 +7756,7 @@ LABEL_29:
       {
         if (*v32 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
@@ -7766,13 +7766,13 @@ LABEL_29:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v11 = [objectEnumerator countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(MPAuthoringController *)self findEffectIDInPresetArray:v8 forImages:a3 withOptions:a4];
+  v15 = [(MPAuthoringController *)self findEffectIDInPresetArray:v8 forImages:images withOptions:options];
 
   if (v15)
   {
@@ -7783,7 +7783,7 @@ LABEL_29:
   else
   {
     p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-    v18 = [MPAuthoringUtilities titleEffectFromOptions:a4];
+    v18 = [MPAuthoringUtilities titleEffectFromOptions:options];
     v16 = v30;
     if (!v18)
     {
@@ -7794,7 +7794,7 @@ LABEL_29:
   }
 
   v19 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-  if ([p_vtable + 172 layerIndexFromOptions:a4] == v19)
+  if ([p_vtable + 172 layerIndexFromOptions:options] == v19)
   {
     v20 = [v15 objectForKey:@"presetID"];
     v21 = [v15 objectForKey:@"backgroundEffect"];
@@ -7805,10 +7805,10 @@ LABEL_29:
       v23 = &v23[[v22 numberOfSlidesForEffectID:{+[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", v21)}]];
     }
 
-    v24 = [p_vtable + 172 outroEffectIDFromOptions:a4];
-    v25 = [a3 count];
+    v24 = [p_vtable + 172 outroEffectIDFromOptions:options];
+    v25 = [images count];
     v26 = v25 - [v22 numberOfSlidesForEffectID:v24];
-    v27 = [p_vtable + 172 layerHasImagesFromOptions:a4];
+    v27 = [p_vtable + 172 layerHasImagesFromOptions:options];
     if (v23 <= v26 || (v27 & 1) == 0)
     {
       if (v21)
@@ -7823,29 +7823,29 @@ LABEL_29:
   return v16;
 }
 
-- (id)effectAuthoredLayerWithImages:(id)a3 withOptions:(id)a4
+- (id)effectAuthoredLayerWithImages:(id)images withOptions:(id)options
 {
-  v7 = [MPAuthoringUtilities shouldDuckMoviesFromOptions:a4];
-  [MPAuthoringUtilities movieVolumeFromOptions:a4];
+  v7 = [MPAuthoringUtilities shouldDuckMoviesFromOptions:options];
+  [MPAuthoringUtilities movieVolumeFromOptions:options];
   v9 = v8;
-  v10 = [objc_msgSend(+[MPAuthoringUtilities effectListFromOptions:](MPAuthoringUtilities effectListFromOptions:{a4), "lastObject"), "objectForKey:", @"presetID"}];
+  v10 = [objc_msgSend(+[MPAuthoringUtilities effectListFromOptions:](MPAuthoringUtilities effectListFromOptions:{options), "lastObject"), "objectForKey:", @"presetID"}];
   v79 = [MPUtilities idOfCombinedID:v10];
   v77 = [MPUtilities presetIDOfCombinedID:v10];
-  v11 = [MPAuthoringUtilities styleFromOptions:a4];
-  v12 = [MPAuthoringUtilities layerIndexFromOptions:a4];
-  v73 = a4;
-  [MPAuthoringUtilities aspectRatioFromOptions:a4];
+  v11 = [MPAuthoringUtilities styleFromOptions:options];
+  v12 = [MPAuthoringUtilities layerIndexFromOptions:options];
+  optionsCopy = options;
+  [MPAuthoringUtilities aspectRatioFromOptions:options];
   v14 = v13;
   v74 = +[MPLayer layer];
   [v74 setLayerID:{objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "layerIDForLayerIndex:ofStyle:", v12, v11)}];
-  v81 = [a3 mutableCopy];
+  v81 = [images mutableCopy];
   v87 = +[NSMutableArray array];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v15 = a3;
-  v16 = [a3 countByEnumeratingWithState:&v105 objects:v113 count:16];
+  imagesCopy = images;
+  v16 = [images countByEnumeratingWithState:&v105 objects:v113 count:16];
   if (v16)
   {
     v17 = v16;
@@ -7856,7 +7856,7 @@ LABEL_29:
       {
         if (*v106 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(imagesCopy);
         }
 
         v20 = *(*(&v105 + 1) + 8 * i);
@@ -7875,13 +7875,13 @@ LABEL_29:
         [v87 addObject:v21];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v105 objects:v113 count:16];
+      v17 = [imagesCopy countByEnumeratingWithState:&v105 objects:v113 count:16];
     }
 
     while (v17);
   }
 
-  v25 = [objc_msgSend(v73 objectForKey:{kMPAuthoringTellEffectsToSyncToMusic), "BOOLValue"}];
+  v25 = [objc_msgSend(optionsCopy objectForKey:{kMPAuthoringTellEffectsToSyncToMusic), "BOOLValue"}];
   v26 = &off_1BBE90;
   if (!v25)
   {
@@ -7894,20 +7894,20 @@ LABEL_29:
   while ([v81 count])
   {
     v29 = [+[MREffectManager sharedManager](MREffectManager "sharedManager")];
-    v30 = [v29 effectAuthoredSlideCount];
-    v31 = [v29 effectAuthoredAttributes];
-    v85 = [NSIndexSet indexSetWithIndexesInRange:0, v30];
+    effectAuthoredSlideCount = [v29 effectAuthoredSlideCount];
+    effectAuthoredAttributes = [v29 effectAuthoredAttributes];
+    v85 = [NSIndexSet indexSetWithIndexesInRange:0, effectAuthoredSlideCount];
     v32 = [v27 objectsAtIndexes:?];
     v83 = +[MPEffectContainer effectContainer];
     v33 = [MPEffect effectWithEffectID:v79 andPaths:v32];
     [(MPEffect *)v33 setPresetID:v77];
-    [(MPEffect *)v33 setEffectAttributes:v31];
+    [(MPEffect *)v33 setEffectAttributes:effectAuthoredAttributes];
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v34 = [(MPEffect *)v33 slides];
-    v35 = [(NSArray *)v34 countByEnumeratingWithState:&v101 objects:v112 count:16];
+    slides = [(MPEffect *)v33 slides];
+    v35 = [(NSArray *)slides countByEnumeratingWithState:&v101 objects:v112 count:16];
     if (v35)
     {
       v36 = v35;
@@ -7918,7 +7918,7 @@ LABEL_29:
         {
           if (*v102 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(slides);
           }
 
           v39 = *(*(&v101 + 1) + 8 * j);
@@ -7952,7 +7952,7 @@ LABEL_29:
           }
         }
 
-        v36 = [(NSArray *)v34 countByEnumeratingWithState:&v101 objects:v112 count:16];
+        v36 = [(NSArray *)slides countByEnumeratingWithState:&v101 objects:v112 count:16];
       }
 
       while (v36);
@@ -7965,8 +7965,8 @@ LABEL_29:
     v100 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v43 = [(MPEffect *)v33 slides];
-    v44 = [(NSArray *)v43 countByEnumeratingWithState:&v97 objects:v111 count:16];
+    slides2 = [(MPEffect *)v33 slides];
+    v44 = [(NSArray *)slides2 countByEnumeratingWithState:&v97 objects:v111 count:16];
     if (v44)
     {
       v45 = v44;
@@ -7977,7 +7977,7 @@ LABEL_29:
         {
           if (*v98 != v46)
           {
-            objc_enumerationMutation(v43);
+            objc_enumerationMutation(slides2);
           }
 
           v48 = *(*(&v97 + 1) + 8 * k);
@@ -7994,7 +7994,7 @@ LABEL_29:
           [v48 setMediaType:v49];
         }
 
-        v45 = [(NSArray *)v43 countByEnumeratingWithState:&v97 objects:v111 count:16];
+        v45 = [(NSArray *)slides2 countByEnumeratingWithState:&v97 objects:v111 count:16];
       }
 
       while (v45);
@@ -8004,8 +8004,8 @@ LABEL_29:
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v50 = [(MPEffect *)v33 slides];
-    v51 = [(NSArray *)v50 countByEnumeratingWithState:&v93 objects:v110 count:16];
+    slides3 = [(MPEffect *)v33 slides];
+    v51 = [(NSArray *)slides3 countByEnumeratingWithState:&v93 objects:v110 count:16];
     if (v51)
     {
       v52 = v51;
@@ -8016,7 +8016,7 @@ LABEL_29:
         {
           if (*v94 != v53)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(slides3);
           }
 
           v55 = *(*(&v93 + 1) + 8 * m);
@@ -8027,7 +8027,7 @@ LABEL_29:
           }
         }
 
-        v52 = [(NSArray *)v50 countByEnumeratingWithState:&v93 objects:v110 count:16];
+        v52 = [(NSArray *)slides3 countByEnumeratingWithState:&v93 objects:v110 count:16];
       }
 
       while (v52);
@@ -8039,18 +8039,18 @@ LABEL_29:
     [v81 removeObjectsAtIndexes:v85];
   }
 
-  v56 = [v74 effectContainers];
-  v57 = [v56 count];
-  v58 = [MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:v73];
-  v59 = [MPAuthoringUtilities shouldComputeTransitionsFromOptions:v73];
-  v86 = [v73 mutableCopy];
-  v76 = [MPAuthoringUtilities repeatTransitionsFromOptions:v73];
+  effectContainers = [v74 effectContainers];
+  v57 = [effectContainers count];
+  v58 = [MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:optionsCopy];
+  v59 = [MPAuthoringUtilities shouldComputeTransitionsFromOptions:optionsCopy];
+  v86 = [optionsCopy mutableCopy];
+  v76 = [MPAuthoringUtilities repeatTransitionsFromOptions:optionsCopy];
   v88 = objc_alloc_init(NSAutoreleasePool);
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v60 = [v56 countByEnumeratingWithState:&v89 objects:v109 count:16];
+  v60 = [effectContainers countByEnumeratingWithState:&v89 objects:v109 count:16];
   if (!v60)
   {
     v78 = 0;
@@ -8060,7 +8060,7 @@ LABEL_29:
   v61 = v60;
   v62 = 0;
   v78 = 0;
-  v80 = v56;
+  v80 = effectContainers;
   v63 = *v90;
   v84 = v58;
   v64 = v59 | v58;
@@ -8071,7 +8071,7 @@ LABEL_29:
     {
       if (*v90 != v63)
       {
-        objc_enumerationMutation(v56);
+        objc_enumerationMutation(effectContainers);
       }
 
       if ((v64 & (v62 < v57)) == 1)
@@ -8087,7 +8087,7 @@ LABEL_29:
 
           if (v82 != v62)
           {
-            v68 = [v56 objectAtIndex:v62 + 1];
+            v68 = [effectContainers objectAtIndex:v62 + 1];
 LABEL_63:
             v67 = [(MPAuthoringController *)self transitionFromOptions:v86 firstEffectContainer:v66 nextEffectContainer:v68];
 LABEL_64:
@@ -8095,17 +8095,17 @@ LABEL_64:
             if (!v67)
             {
 LABEL_71:
-              v56 = v80;
+              effectContainers = v80;
               goto LABEL_72;
             }
 
             [v66 setTransition:v67];
             if (v76)
             {
-              v70 = [v69 transitionPresetID];
+              transitionPresetID = [v69 transitionPresetID];
               if (v78)
               {
-                if ([v78 isEqualToString:v70])
+                if ([v78 isEqualToString:transitionPresetID])
                 {
                   goto LABEL_68;
                 }
@@ -8113,7 +8113,7 @@ LABEL_71:
                 [v86 removeObjectForKey:kMPAuthoringIgnoreTransitionList];
               }
 
-              v78 = v70;
+              v78 = transitionPresetID;
               goto LABEL_71;
             }
 
@@ -8141,7 +8141,7 @@ LABEL_72:
       }
     }
 
-    v61 = [v56 countByEnumeratingWithState:&v89 objects:v109 count:16];
+    v61 = [effectContainers countByEnumeratingWithState:&v89 objects:v109 count:16];
   }
 
   while (v61);
@@ -8155,32 +8155,32 @@ LABEL_78:
   return v74;
 }
 
-- (id)effectContainersWithImages:(id)a3 effects:(id)a4 andOptions:(id)a5
+- (id)effectContainersWithImages:(id)images effects:(id)effects andOptions:(id)options
 {
   v201 = +[MPEffectManager sharedManager];
-  v193 = a3;
-  v198 = [a3 count];
+  imagesCopy = images;
+  v198 = [images count];
   p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-  v188 = [MPAuthoringUtilities shouldComputeFramesFromOptions:a5];
-  v165 = [MPAuthoringUtilities shouldComputeTransitionsFromOptions:a5];
-  v9 = [MPAuthoringUtilities shouldComputeSlideFiltersFromOptions:a5];
-  v169 = [MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:a5];
-  v196 = [MPAuthoringUtilities useBestAspectRatioFromOptions:a5];
-  v190 = [MPAuthoringUtilities layerIndexFromOptions:a5];
-  [MPAuthoringUtilities movieVolumeFromOptions:a5];
+  v188 = [MPAuthoringUtilities shouldComputeFramesFromOptions:options];
+  v165 = [MPAuthoringUtilities shouldComputeTransitionsFromOptions:options];
+  v9 = [MPAuthoringUtilities shouldComputeSlideFiltersFromOptions:options];
+  v169 = [MPAuthoringUtilities shouldComputeLoopTransitionFromOptions:options];
+  v196 = [MPAuthoringUtilities useBestAspectRatioFromOptions:options];
+  v190 = [MPAuthoringUtilities layerIndexFromOptions:options];
+  [MPAuthoringUtilities movieVolumeFromOptions:options];
   v11 = v10;
-  v167 = [MPAuthoringUtilities repeatTransitionsFromOptions:a5];
-  [MPAuthoringUtilities effectPadding:a5];
+  v167 = [MPAuthoringUtilities repeatTransitionsFromOptions:options];
+  [MPAuthoringUtilities effectPadding:options];
   v13 = v12;
-  v187 = [MPAuthoringUtilities padTextOnlyEffects:a5];
-  v14 = [(MPAuthoringController *)self filtersForEffectFromOptions:a5];
-  v182 = [MPAuthoringUtilities outroEffectIDFromOptions:a5];
-  v175 = [(MPAuthoringController *)self createEffectToTransitionMapWithOptions:a5];
-  v186 = [MPAuthoringUtilities shouldDuckMoviesFromOptions:a5];
-  v181 = [+[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities styleFromOptions:{a5), "isEqualToString:", @"Dateline"}];
-  if ([MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:a5])
+  v187 = [MPAuthoringUtilities padTextOnlyEffects:options];
+  v14 = [(MPAuthoringController *)self filtersForEffectFromOptions:options];
+  v182 = [MPAuthoringUtilities outroEffectIDFromOptions:options];
+  v175 = [(MPAuthoringController *)self createEffectToTransitionMapWithOptions:options];
+  v186 = [MPAuthoringUtilities shouldDuckMoviesFromOptions:options];
+  v181 = [+[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities styleFromOptions:{options), "isEqualToString:", @"Dateline"}];
+  if ([MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:options])
   {
-    v15 = ![MPAuthoringUtilities needsFitMovieAttributeFromOptions:a5];
+    v15 = ![MPAuthoringUtilities needsFitMovieAttributeFromOptions:options];
   }
 
   else
@@ -8190,8 +8190,8 @@ LABEL_78:
 
   v180 = v15;
   v173 = v14;
-  v184 = [MPAuthoringUtilities effectNeedsPreviousAttributesFromOptions:a5];
-  v209 = [[NSMutableDictionary alloc] initWithDictionary:a5];
+  v184 = [MPAuthoringUtilities effectNeedsPreviousAttributesFromOptions:options];
+  v209 = [[NSMutableDictionary alloc] initWithDictionary:options];
   if (self->_delegate)
   {
     v170 = objc_opt_respondsToSelector();
@@ -8210,23 +8210,23 @@ LABEL_78:
   }
 
   v166 = v18;
-  if ((([+[MPAuthoringUtilities transitionListFromOptions:](MPAuthoringUtilities transitionListFromOptions:{a5), "count"}] == &dword_0 + 1) & v165) == 1)
+  if ((([+[MPAuthoringUtilities transitionListFromOptions:](MPAuthoringUtilities transitionListFromOptions:{options), "count"}] == &dword_0 + 1) & v165) == 1)
   {
-    v168 = [(MPAuthoringController *)self transitionFromOptions:a5];
+    v168 = [(MPAuthoringController *)self transitionFromOptions:options];
   }
 
   else
   {
     if (v165)
     {
-      v19 = [MPAuthoringUtilities pickTransitionsEvenlyByIDWithOptions:a5];
-      v20 = [MPAuthoringUtilities matchEffectsUsingTagsFromOptions:a5];
-      v21 = [MPAuthoringUtilities transitionListFromOptions:a5];
+      v19 = [MPAuthoringUtilities pickTransitionsEvenlyByIDWithOptions:options];
+      v20 = [MPAuthoringUtilities matchEffectsUsingTagsFromOptions:options];
+      v21 = [MPAuthoringUtilities transitionListFromOptions:options];
       [v21 lastObject];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 || v19 || v20)
       {
-        [(MPAuthoringController *)self populateWeighter:self->_transitionWeighter withTransitions:v21 andOptions:a5];
+        [(MPAuthoringController *)self populateWeighter:self->_transitionWeighter withTransitions:v21 andOptions:options];
         [(MPWeighter *)self->_transitionWeighter setEvenlyPickByID:v19];
       }
     }
@@ -8251,8 +8251,8 @@ LABEL_78:
   v260 = 0u;
   v261 = 0u;
   v22 = &kCTUnderlineColorAttributeName_ptr;
-  v197 = a5;
-  v174 = [a4 countByEnumeratingWithState:&v258 objects:v274 count:16];
+  optionsCopy = options;
+  v174 = [effects countByEnumeratingWithState:&v258 objects:v274 count:16];
   if (v174)
   {
     v23 = 0;
@@ -8267,7 +8267,7 @@ LABEL_78:
       {
         if (*v259 != v172)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(effects);
         }
 
         v178 = v27;
@@ -8338,9 +8338,9 @@ LABEL_78:
 
               v40 = [v38 initWithIndexesInRange:{v24, v39}];
               v41 = v24;
-              v42 = [v193 objectsAtIndexes:v40];
+              v42 = [imagesCopy objectsAtIndexes:v40];
 
-              v43 = [a5 objectForKey:kMPAuthoringCachedAbsolutePaths];
+              v43 = [options objectForKey:kMPAuthoringCachedAbsolutePaths];
               if (v43)
               {
                 v44 = v43;
@@ -8434,11 +8434,11 @@ LABEL_59:
                         objc_enumerationMutation(v61);
                       }
 
-                      v67 = [*(*(&v246 + 1) + 8 * j) integerValue];
-                      if ((v67 & 0x8000000000000000) == 0)
+                      integerValue = [*(*(&v246 + 1) + 8 * j) integerValue];
+                      if ((integerValue & 0x8000000000000000) == 0)
                       {
-                        v68 = v67;
-                        [v60 addObject:{objc_msgSend(v42, "objectAtIndex:", v67)}];
+                        v68 = integerValue;
+                        [v60 addObject:{objc_msgSend(v42, "objectAtIndex:", integerValue)}];
                         if (v50)
                         {
                           [v62 addObject:{objc_msgSend(v50, "objectAtIndex:", v68)}];
@@ -8462,7 +8462,7 @@ LABEL_59:
                   v50 = 0;
                 }
 
-                a5 = v197;
+                options = optionsCopy;
                 goto LABEL_73;
               }
 
@@ -8494,7 +8494,7 @@ LABEL_73:
 
               if (v181)
               {
-                -[MPEffect setEffectAttribute:forKey:](v70, "setEffectAttribute:forKey:", [a5 objectForKey:kMPAuthoringJournalRepresentation], @"journal");
+                -[MPEffect setEffectAttribute:forKey:](v70, "setEffectAttribute:forKey:", [options objectForKey:kMPAuthoringJournalRepresentation], @"journal");
               }
 
               if ((v180 & 1) == 0)
@@ -8507,7 +8507,7 @@ LABEL_73:
               if (v73 >= 1)
               {
                 v74 = v73;
-                v75 = [a5 objectForKey:kMPAuthoringSecondaryPaths];
+                v75 = [options objectForKey:kMPAuthoringSecondaryPaths];
                 if (v75)
                 {
                   v76 = v75;
@@ -8515,7 +8515,7 @@ LABEL_73:
 
                 else
                 {
-                  v76 = v193;
+                  v76 = imagesCopy;
                 }
 
                 [(MPEffect *)v70 createSecondarySlidesWithPaths:[(MPAuthoringController *)self pickRandomPathsInArray:v76 excludingPaths:v60 count:v74]];
@@ -8526,8 +8526,8 @@ LABEL_73:
               v242 = 0u;
               v243 = 0u;
               v51 = v70;
-              v77 = [(MPEffect *)v70 slides];
-              v78 = [(NSArray *)v77 countByEnumeratingWithState:&v242 objects:v270 count:16];
+              slides = [(MPEffect *)v70 slides];
+              v78 = [(NSArray *)slides countByEnumeratingWithState:&v242 objects:v270 count:16];
               if (v78)
               {
                 v79 = v78;
@@ -8538,7 +8538,7 @@ LABEL_73:
                   {
                     if (*v243 != v80)
                     {
-                      objc_enumerationMutation(v77);
+                      objc_enumerationMutation(slides);
                     }
 
                     v82 = *(*(&v242 + 1) + 8 * k);
@@ -8555,7 +8555,7 @@ LABEL_73:
                     [v82 setMediaType:v83];
                   }
 
-                  v79 = [(NSArray *)v77 countByEnumeratingWithState:&v242 objects:v270 count:16];
+                  v79 = [(NSArray *)slides countByEnumeratingWithState:&v242 objects:v270 count:16];
                 }
 
                 while (v79);
@@ -8565,8 +8565,8 @@ LABEL_73:
               v241 = 0u;
               v238 = 0u;
               v239 = 0u;
-              v84 = [(MPEffect *)v51 slides];
-              v85 = [(NSArray *)v84 countByEnumeratingWithState:&v238 objects:v269 count:16];
+              slides2 = [(MPEffect *)v51 slides];
+              v85 = [(NSArray *)slides2 countByEnumeratingWithState:&v238 objects:v269 count:16];
               if (v85)
               {
                 v86 = v85;
@@ -8577,7 +8577,7 @@ LABEL_73:
                   {
                     if (*v239 != v87)
                     {
-                      objc_enumerationMutation(v84);
+                      objc_enumerationMutation(slides2);
                     }
 
                     v89 = *(*(&v238 + 1) + 8 * m);
@@ -8588,7 +8588,7 @@ LABEL_73:
                     }
                   }
 
-                  v86 = [(NSArray *)v84 countByEnumeratingWithState:&v238 objects:v269 count:16];
+                  v86 = [(NSArray *)slides2 countByEnumeratingWithState:&v238 objects:v269 count:16];
                 }
 
                 while (v86);
@@ -8600,8 +8600,8 @@ LABEL_73:
                 v237 = 0u;
                 v234 = 0u;
                 v235 = 0u;
-                v90 = [(MPEffect *)v51 slides];
-                v91 = [(NSArray *)v90 countByEnumeratingWithState:&v234 objects:v268 count:16];
+                slides3 = [(MPEffect *)v51 slides];
+                v91 = [(NSArray *)slides3 countByEnumeratingWithState:&v234 objects:v268 count:16];
                 if (v91)
                 {
                   v92 = v91;
@@ -8613,13 +8613,13 @@ LABEL_73:
                     {
                       if (*v235 != v94)
                       {
-                        objc_enumerationMutation(v90);
+                        objc_enumerationMutation(slides3);
                       }
 
                       [*(*(&v234 + 1) + 8 * n) setAbsolutePath:{objc_msgSend(v50, "objectAtIndex:", v93++)}];
                     }
 
-                    v92 = [(NSArray *)v90 countByEnumeratingWithState:&v234 objects:v268 count:16];
+                    v92 = [(NSArray *)slides3 countByEnumeratingWithState:&v234 objects:v268 count:16];
                   }
 
                   while (v92);
@@ -8632,8 +8632,8 @@ LABEL_73:
 LABEL_115:
               if ([v201 numOfTextsForEffectID:v52] >= 1)
               {
-                v96 = [a5 objectForKey:kMPAuthoringTitleStrings];
-                v97 = [a5 objectForKey:kMPAuthoringOutroTitleStrings];
+                v96 = [options objectForKey:kMPAuthoringTitleStrings];
+                v97 = [options objectForKey:kMPAuthoringOutroTitleStrings];
                 if ([v182 hasPrefix:v52])
                 {
                   v98 = v97 == 0;
@@ -8646,7 +8646,7 @@ LABEL_115:
 
                 if (v98 || ![v97 count])
                 {
-                  [MPAuthoringUtilities multilineSizeFactorFromOptions:a5];
+                  [MPAuthoringUtilities multilineSizeFactorFromOptions:options];
                   if (!v96)
                   {
                     goto LABEL_126;
@@ -8658,7 +8658,7 @@ LABEL_115:
 
                 else
                 {
-                  [MPAuthoringUtilities multilineSizeFactorFromOptions:a5];
+                  [MPAuthoringUtilities multilineSizeFactorFromOptions:options];
                   v100 = v99;
                 }
 
@@ -8679,8 +8679,8 @@ LABEL_127:
                 v233 = 0u;
                 v230 = 0u;
                 v231 = 0u;
-                v102 = [(MPEffect *)v51 slides];
-                v103 = [(NSArray *)v102 countByEnumeratingWithState:&v230 objects:v267 count:16];
+                slides4 = [(MPEffect *)v51 slides];
+                v103 = [(NSArray *)slides4 countByEnumeratingWithState:&v230 objects:v267 count:16];
                 if (v103)
                 {
                   v104 = v103;
@@ -8691,7 +8691,7 @@ LABEL_127:
                     {
                       if (*v231 != v105)
                       {
-                        objc_enumerationMutation(v102);
+                        objc_enumerationMutation(slides4);
                       }
 
                       v107 = *(*(&v230 + 1) + 8 * ii);
@@ -8702,7 +8702,7 @@ LABEL_127:
                       }
                     }
 
-                    v104 = [(NSArray *)v102 countByEnumeratingWithState:&v230 objects:v267 count:16];
+                    v104 = [(NSArray *)slides4 countByEnumeratingWithState:&v230 objects:v267 count:16];
                   }
 
                   while (v104);
@@ -8715,8 +8715,8 @@ LABEL_127:
                 v229 = 0u;
                 v226 = 0u;
                 v227 = 0u;
-                v109 = [(MPEffect *)v51 slides];
-                v110 = [(NSArray *)v109 countByEnumeratingWithState:&v226 objects:v266 count:16];
+                slides5 = [(MPEffect *)v51 slides];
+                v110 = [(NSArray *)slides5 countByEnumeratingWithState:&v226 objects:v266 count:16];
                 if (v110)
                 {
                   v111 = v110;
@@ -8727,7 +8727,7 @@ LABEL_127:
                     {
                       if (*v227 != v112)
                       {
-                        objc_enumerationMutation(v109);
+                        objc_enumerationMutation(slides5);
                       }
 
                       v114 = *(*(&v226 + 1) + 8 * jj);
@@ -8755,7 +8755,7 @@ LABEL_148:
                       }
                     }
 
-                    v111 = [(NSArray *)v109 countByEnumeratingWithState:&v226 objects:v266 count:16];
+                    v111 = [(NSArray *)slides5 countByEnumeratingWithState:&v226 objects:v266 count:16];
                   }
 
                   while (v111);
@@ -8786,8 +8786,8 @@ LABEL_148:
                 v225 = 0u;
                 v222 = 0u;
                 v223 = 0u;
-                v119 = [(MPEffect *)v51 slides];
-                v120 = [(NSArray *)v119 countByEnumeratingWithState:&v222 objects:v265 count:16];
+                slides6 = [(MPEffect *)v51 slides];
+                v120 = [(NSArray *)slides6 countByEnumeratingWithState:&v222 objects:v265 count:16];
                 if (v120)
                 {
                   v121 = v120;
@@ -8798,7 +8798,7 @@ LABEL_148:
                     {
                       if (*v223 != v122)
                       {
-                        objc_enumerationMutation(v119);
+                        objc_enumerationMutation(slides6);
                       }
 
                       v124 = *(*(&v222 + 1) + 8 * kk);
@@ -8808,22 +8808,22 @@ LABEL_148:
                       }
                     }
 
-                    v121 = [(NSArray *)v119 countByEnumeratingWithState:&v222 objects:v265 count:16];
+                    v121 = [(NSArray *)slides6 countByEnumeratingWithState:&v222 objects:v265 count:16];
                   }
 
                   while (v121);
                 }
               }
 
-              a5 = v197;
+              options = optionsCopy;
               if (v186)
               {
                 v220 = 0u;
                 v221 = 0u;
                 v218 = 0u;
                 v219 = 0u;
-                v125 = [(MPEffect *)v51 slides];
-                v126 = [(NSArray *)v125 countByEnumeratingWithState:&v218 objects:v264 count:16];
+                slides7 = [(MPEffect *)v51 slides];
+                v126 = [(NSArray *)slides7 countByEnumeratingWithState:&v218 objects:v264 count:16];
                 if (v126)
                 {
                   v127 = v126;
@@ -8834,7 +8834,7 @@ LABEL_148:
                     {
                       if (*v219 != v128)
                       {
-                        objc_enumerationMutation(v125);
+                        objc_enumerationMutation(slides7);
                       }
 
                       v130 = *(*(&v218 + 1) + 8 * mm);
@@ -8846,7 +8846,7 @@ LABEL_148:
                       }
                     }
 
-                    v127 = [(NSArray *)v125 countByEnumeratingWithState:&v218 objects:v264 count:16];
+                    v127 = [(NSArray *)slides7 countByEnumeratingWithState:&v218 objects:v264 count:16];
                   }
 
                   while (v127);
@@ -8897,7 +8897,7 @@ LABEL_148:
       }
 
       while ((v178 + 1) != v174);
-      v174 = [a4 countByEnumeratingWithState:&v258 objects:v274 count:16];
+      v174 = [effects countByEnumeratingWithState:&v258 objects:v274 count:16];
     }
 
     while (v174);
@@ -8939,11 +8939,11 @@ LABEL_148:
       v139 = v209;
       if (v175)
       {
-        v140 = [*(*(&v214 + 1) + 8 * v137) effects];
+        effects = [*(*(&v214 + 1) + 8 * v137) effects];
         v139 = v209;
-        if ([v140 count])
+        if ([effects count])
         {
-          v141 = [v175 objectForKey:{objc_msgSend(objc_msgSend(v140, "objectAtIndex:", 0), "effectPresetID")}];
+          v141 = [v175 objectForKey:{objc_msgSend(objc_msgSend(effects, "objectAtIndex:", 0), "effectPresetID")}];
           v139 = v209;
           if (v141)
           {
@@ -8991,7 +8991,7 @@ LABEL_209:
         {
           if (v205 == v135)
           {
-            if ([v197 objectForKey:kMPAuthoringUseLoopTransition] && !objc_msgSend(v138, "countOfEffects") && (objc_msgSend(objc_msgSend(v197, "objectForKey:", kMPAuthoringUseLoopTransition), "BOOLValue") & 1) == 0)
+            if ([optionsCopy objectForKey:kMPAuthoringUseLoopTransition] && !objc_msgSend(v138, "countOfEffects") && (objc_msgSend(objc_msgSend(optionsCopy, "objectForKey:", kMPAuthoringUseLoopTransition), "BOOLValue") & 1) == 0)
             {
               goto LABEL_229;
             }
@@ -9043,10 +9043,10 @@ LABEL_224:
         goto LABEL_229;
       }
 
-      v148 = [v147 transitionPresetID];
+      transitionPresetID = [v147 transitionPresetID];
       if (v204)
       {
-        if ([v204 isEqualToString:v148])
+        if ([v204 isEqualToString:transitionPresetID])
         {
 LABEL_228:
           v149 = [[NSArray alloc] initWithObjects:{objc_msgSend(v147, "transitionPresetID"), 0}];
@@ -9058,7 +9058,7 @@ LABEL_228:
         [v209 removeObjectForKey:kMPAuthoringIgnoreTransitionList];
       }
 
-      v204 = v148;
+      v204 = transitionPresetID;
 LABEL_229:
       ++v135;
       if (__ROR8__(0x888888888888888 - 0x1111111111111111 * v135, 1) <= 0x888888888888888uLL)
@@ -9077,14 +9077,14 @@ LABEL_229:
 
   while (v150);
   [v176 drain];
-  a5 = v197;
+  options = optionsCopy;
   p_vtable = (&OBJC_METACLASS___MPDocumentInternal + 24);
   if (v204)
   {
   }
 
 LABEL_239:
-  v151 = [p_vtable + 172 gapInformationFromOptions:a5];
+  v151 = [p_vtable + 172 gapInformationFromOptions:options];
   if (v151)
   {
     v152 = v151;
@@ -9134,13 +9134,13 @@ LABEL_239:
   return v177;
 }
 
-- (id)createEffectToTransitionMapWithOptions:(id)a3
+- (id)createEffectToTransitionMapWithOptions:(id)options
 {
   v4 = [MPAuthoringUtilities styleFromOptions:?];
   v5 = +[NSMutableDictionary dictionary];
   v6 = objc_alloc_init(NSMutableArray);
   [v6 addObjectsFromArray:{objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "titleEffectLayoutsForStyleID:", v4)}];
-  [v6 addObjectsFromArray:{+[MPAuthoringUtilities effectListFromOptions:](MPAuthoringUtilities, "effectListFromOptions:", a3)}];
+  [v6 addObjectsFromArray:{+[MPAuthoringUtilities effectListFromOptions:](MPAuthoringUtilities, "effectListFromOptions:", options)}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -9184,13 +9184,13 @@ LABEL_239:
   }
 }
 
-- (id)loopTransitionFromOptions:(id)a3
+- (id)loopTransitionFromOptions:(id)options
 {
   v5 = [MPAuthoringUtilities loopTransitionIDFromOptions:?];
   if ([v5 isEqualToString:@"Use Default"])
   {
 
-    return [(MPAuthoringController *)self transitionFromOptions:a3];
+    return [(MPAuthoringController *)self transitionFromOptions:options];
   }
 
   else
@@ -9208,9 +9208,9 @@ LABEL_239:
   }
 }
 
-- (id)exportTransitionFromOptions:(id)a3
+- (id)exportTransitionFromOptions:(id)options
 {
-  v3 = [MPAuthoringUtilities exportTransitionIDFromOptions:a3];
+  v3 = [MPAuthoringUtilities exportTransitionIDFromOptions:options];
   v4 = [MPAuthoringUtilities idFromPresetID:v3];
   v5 = [MPAuthoringUtilities presetIDFromPresetID:v3];
   v6 = [MPTransition transitionWithTransitionID:v4];
@@ -9218,13 +9218,13 @@ LABEL_239:
   return v6;
 }
 
-- (id)sortImagePaths:(id)a3 toAspectRatiosInEffectPresetID:(id)a4 withOptions:(id)a5
+- (id)sortImagePaths:(id)paths toAspectRatiosInEffectPresetID:(id)d withOptions:(id)options
 {
-  v7 = a3;
-  if ([a3 count] == &dword_0 + 1 || objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectPresetID:", a4) == 0x7FFFFFFFFFFFFFFFLL)
+  pathsCopy = paths;
+  if ([paths count] == &dword_0 + 1 || objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager, "sharedManager"), "numOfImagesForEffectPresetID:", d) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = +[NSMutableArray array];
-    if ([v7 count])
+    if ([pathsCopy count])
     {
       v9 = 0;
       do
@@ -9232,15 +9232,15 @@ LABEL_239:
         [v8 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v9++)}];
       }
 
-      while (v9 < [v7 count]);
+      while (v9 < [pathsCopy count]);
     }
 
     return v8;
   }
 
-  v10 = [MPUtilities idOfCombinedID:a4];
-  v11 = [MPUtilities presetIDOfCombinedID:a4];
-  [MPAuthoringUtilities aspectRatioFromOptions:a5];
+  v10 = [MPUtilities idOfCombinedID:d];
+  v11 = [MPUtilities presetIDOfCombinedID:d];
+  [MPAuthoringUtilities aspectRatioFromOptions:options];
   v13 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   v129 = +[NSMutableArray array];
   v14 = [v13 count];
@@ -9357,10 +9357,10 @@ LABEL_33:
   v35 = [v127 count];
   v36 = [v120 count];
   v37 = [v129 count];
-  if (v37 != [v7 count] || (v38 = &v34[v35 + v36], v122 >= 1) && !v17 && !v124 && !v18 && !v38 || !v122 && v17 >= 1 && !v124 && !v18 && !v38 || !v122 && !v17 && v124 >= 1 && !v18 && !v38 || v28 == v124 + v18 + v17 + v122)
+  if (v37 != [pathsCopy count] || (v38 = &v34[v35 + v36], v122 >= 1) && !v17 && !v124 && !v18 && !v38 || !v122 && v17 >= 1 && !v124 && !v18 && !v38 || !v122 && !v17 && v124 >= 1 && !v18 && !v38 || v28 == v124 + v18 + v17 + v122)
   {
     v8 = +[NSMutableArray array];
-    if ([v7 count])
+    if ([pathsCopy count])
     {
       v39 = 0;
       do
@@ -9368,7 +9368,7 @@ LABEL_33:
         [v8 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v39++)}];
       }
 
-      while (v39 < [v7 count]);
+      while (v39 < [pathsCopy count]);
     }
 
     return v8;
@@ -9386,7 +9386,7 @@ LABEL_33:
   v145 = 0u;
   v114 = v41;
   v117 = v42;
-  v125 = [v7 countByEnumeratingWithState:&v142 objects:v149 count:16];
+  v125 = [pathsCopy countByEnumeratingWithState:&v142 objects:v149 count:16];
   if (!v125)
   {
     goto LABEL_95;
@@ -9400,7 +9400,7 @@ LABEL_33:
   v112 = 0;
   v113 = 0;
   v123 = *v143;
-  obj = v7;
+  obj = pathsCopy;
   do
   {
     v46 = 0;
@@ -9499,7 +9499,7 @@ LABEL_68:
     }
 
     while (v125 != v46);
-    v7 = obj;
+    pathsCopy = obj;
     v67 = [obj countByEnumeratingWithState:&v142 objects:v149 count:16];
     v125 = v67;
   }
@@ -9523,7 +9523,7 @@ LABEL_102:
     }
 
     v8 = +[NSMutableArray array];
-    v68 = [v7 count];
+    v68 = [pathsCopy count];
     if (v68 >= 1)
     {
       v69 = v68;
@@ -9820,7 +9820,7 @@ LABEL_147:
   else
   {
     v8 = +[NSMutableArray array];
-    if ([v7 count])
+    if ([pathsCopy count])
     {
       v108 = 0;
       do
@@ -9828,17 +9828,17 @@ LABEL_147:
         [v8 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v108++)}];
       }
 
-      while (v108 < [v7 count]);
+      while (v108 < [pathsCopy count]);
     }
   }
 
   return v8;
 }
 
-- (id)filtersForLayerFromOptions:(id)a3
+- (id)filtersForLayerFromOptions:(id)options
 {
   v4 = [MPAuthoringUtilities styleFromOptions:?];
-  v5 = [MPAuthoringUtilities layerIndexFromOptions:a3];
+  v5 = [MPAuthoringUtilities layerIndexFromOptions:options];
   v6 = +[NSMutableArray array];
   v7 = [+[MPAuthoringUtilities layerDescriptionForLayerWithZIndex:forStyle:](MPAuthoringUtilities layerDescriptionForLayerWithZIndex:v5 forStyle:{v4), "objectForKey:", @"layerFilterPresets"}];
   v15 = 0u;
@@ -9874,10 +9874,10 @@ LABEL_147:
   return v6;
 }
 
-- (id)filtersForEffectFromOptions:(id)a3
+- (id)filtersForEffectFromOptions:(id)options
 {
   v4 = [MPAuthoringUtilities layerIndexFromOptions:?];
-  v5 = [MPAuthoringUtilities styleFromOptions:a3];
+  v5 = [MPAuthoringUtilities styleFromOptions:options];
   v6 = +[NSMutableArray array];
   [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   v8 = v7;
@@ -9913,10 +9913,10 @@ LABEL_147:
   return v6;
 }
 
-- (id)filtersForSlideFromOptions:(id)a3
+- (id)filtersForSlideFromOptions:(id)options
 {
   v4 = +[NSMutableArray array];
-  v5 = [+[MPAuthoringUtilities layerDescriptionForLayerWithZIndex:forStyle:](MPAuthoringUtilities layerDescriptionForLayerWithZIndex:+[MPAuthoringUtilities layerIndexFromOptions:](MPAuthoringUtilities forStyle:{"layerIndexFromOptions:", a3), +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", a3)), "objectForKey:", @"filterPresets"}];
+  v5 = [+[MPAuthoringUtilities layerDescriptionForLayerWithZIndex:forStyle:](MPAuthoringUtilities layerDescriptionForLayerWithZIndex:+[MPAuthoringUtilities layerIndexFromOptions:](MPAuthoringUtilities forStyle:{"layerIndexFromOptions:", options), +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", options)), "objectForKey:", @"filterPresets"}];
   if (v5)
   {
     v6 = v5;
@@ -9936,9 +9936,9 @@ LABEL_147:
   return v4;
 }
 
-- (id)frameFromOptions:(id)a3
+- (id)frameFromOptions:(id)options
 {
-  v3 = [+[MPAuthoringUtilities layerDescriptionForLayerWithZIndex:forStyle:](MPAuthoringUtilities layerDescriptionForLayerWithZIndex:+[MPAuthoringUtilities layerIndexFromOptions:](MPAuthoringUtilities forStyle:{"layerIndexFromOptions:"), +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", a3)), "objectForKey:", @"frames"}];
+  v3 = [+[MPAuthoringUtilities layerDescriptionForLayerWithZIndex:forStyle:](MPAuthoringUtilities layerDescriptionForLayerWithZIndex:+[MPAuthoringUtilities layerIndexFromOptions:](MPAuthoringUtilities forStyle:{"layerIndexFromOptions:"), +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", options)), "objectForKey:", @"frames"}];
   if (!v3)
   {
     return 0;
@@ -9959,7 +9959,7 @@ LABEL_147:
   return [MPFrame frameWithFrameID:v5];
 }
 
-- (id)createAudioPlayListFromAudioPaths:(id)a3 andOptions:(id)a4
+- (id)createAudioPlayListFromAudioPaths:(id)paths andOptions:(id)options
 {
   v6 = +[MPAudioPlaylist audioPlaylist];
   v7 = objc_alloc_init(NSMutableArray);
@@ -9967,7 +9967,7 @@ LABEL_147:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [paths countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -9979,7 +9979,7 @@ LABEL_147:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         [v7 addObject:{+[MPSong songWithPath:](MPSong, "songWithPath:", *(*(&v13 + 1) + 8 * v11))}];
@@ -9987,14 +9987,14 @@ LABEL_147:
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [paths countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 
   [v6 addSongs:v7];
-  if ([MPAuthoringUtilities fadeOutAudioFromOptions:a4])
+  if ([MPAuthoringUtilities fadeOutAudioFromOptions:options])
   {
     [v6 setFadeOutDuration:1.0];
   }
@@ -10002,33 +10002,33 @@ LABEL_147:
   return v6;
 }
 
-- (id)pickRandomPathsInArray:(id)a3 excludingPaths:(id)a4 count:(int64_t)a5
+- (id)pickRandomPathsInArray:(id)array excludingPaths:(id)paths count:(int64_t)count
 {
   v8 = +[NSMutableArray array];
-  for (i = [a3 mutableCopy]; objc_msgSend(v8, "count") < a5 && objc_msgSend(i, "count"); objc_msgSend(i, "removeObjectAtIndex:", v11))
+  for (i = [array mutableCopy]; objc_msgSend(v8, "count") < count && objc_msgSend(i, "count"); objc_msgSend(i, "removeObjectAtIndex:", v11))
   {
     v10 = random();
     v11 = v10 % [i count];
     v12 = [i objectAtIndex:v11];
-    if (([a4 containsObject:v12] & 1) == 0)
+    if (([paths containsObject:v12] & 1) == 0)
     {
       [v8 addObject:v12];
     }
   }
 
-  while ([v8 count] < a5)
+  while ([v8 count] < count)
   {
-    [v8 addObject:{objc_msgSend(a3, "objectAtIndex:", random() % objc_msgSend(a3, "count"))}];
+    [v8 addObject:{objc_msgSend(array, "objectAtIndex:", random() % objc_msgSend(array, "count"))}];
   }
 
   return v8;
 }
 
-- (id)transitionFromOptions:(id)a3 firstEffectContainer:(id)a4 nextEffectContainer:(id)a5
+- (id)transitionFromOptions:(id)options firstEffectContainer:(id)container nextEffectContainer:(id)effectContainer
 {
   v9 = +[MPTransitionManager sharedManager];
   p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-  v11 = [MPAuthoringUtilities transitionListFromOptions:a3];
+  v11 = [MPAuthoringUtilities transitionListFromOptions:options];
   if (![v11 count])
   {
     return 0;
@@ -10036,16 +10036,16 @@ LABEL_147:
 
   if ([(MPWeighter *)self->_transitionWeighter count]>= 1)
   {
-    if ([MPAuthoringUtilities effectDecidesTransitionFromOptions:a3])
+    if ([MPAuthoringUtilities effectDecidesTransitionFromOptions:options])
     {
-      v12 = -[MPWeighter getRandomIndexMeetingContraints:](self->_transitionWeighter, "getRandomIndexMeetingContraints:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [objc_msgSend(a4 objectInEffectsAtIndex:{0), "presetID"}], @"presetID", 0));
-      if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+      getRandomIndex = -[MPWeighter getRandomIndexMeetingContraints:](self->_transitionWeighter, "getRandomIndexMeetingContraints:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [objc_msgSend(container objectInEffectsAtIndex:{0), "presetID"}], @"presetID", 0));
+      if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndex];
+        getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndex];
       }
 
 LABEL_149:
-      v15 = [v11 objectAtIndex:v12];
+      v15 = [v11 objectAtIndex:getRandomIndex];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -10055,10 +10055,10 @@ LABEL_149:
       goto LABEL_151;
     }
 
-    v92 = a5;
+    effectContainerCopy = effectContainer;
     v95 = v11;
-    v96 = a3;
-    v16 = [MPAuthoringUtilities ignoreTransitionListFromOptions:a3];
+    optionsCopy = options;
+    v16 = [MPAuthoringUtilities ignoreTransitionListFromOptions:options];
     v17 = +[NSMutableIndexSet indexSet];
     v123 = 0u;
     v124 = 0u;
@@ -10093,17 +10093,17 @@ LABEL_149:
 
     [(MPWeighter *)self->_transitionWeighter ignoreIndices:v17];
     p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-    a3 = v96;
-    if (![MPAuthoringUtilities useTransitionLayoutTagsWithOptions:v96])
+    options = optionsCopy;
+    if (![MPAuthoringUtilities useTransitionLayoutTagsWithOptions:optionsCopy])
     {
       goto LABEL_61;
     }
 
-    v23 = [a4 objectInEffectsAtIndex:0];
-    v24 = [v23 effectID];
+    v23 = [container objectInEffectsAtIndex:0];
+    effectID = [v23 effectID];
     v25 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-    v26 = +[MPAuthoringUtilities aspectRatioMatchesDefault:withOptions:](MPAuthoringUtilities, "aspectRatioMatchesDefault:withOptions:", [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")], v96);
-    v89 = v24;
+    v26 = +[MPAuthoringUtilities aspectRatioMatchesDefault:withOptions:](MPAuthoringUtilities, "aspectRatioMatchesDefault:withOptions:", [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")], optionsCopy);
+    v89 = effectID;
     v27 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     v28 = [v27 isEqualToString:@"landscape"];
     v29 = [v27 isEqualToString:@"portrait"];
@@ -10144,26 +10144,26 @@ LABEL_149:
       }
 
       v9 = v91;
-      a3 = v96;
+      options = optionsCopy;
     }
 
     v36 = +[NSMutableSet set];
     obj = +[NSMutableSet set];
-    if (v92)
+    if (effectContainerCopy)
     {
       v88 = v36;
-      v37 = [v92 objectInEffectsAtIndex:0];
-      v38 = [v37 effectID];
+      v37 = [effectContainerCopy objectInEffectsAtIndex:0];
+      effectID2 = [v37 effectID];
       v39 = [objc_msgSend(objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
       p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-      v40 = +[MPAuthoringUtilities aspectRatioMatchesDefault:withOptions:](MPAuthoringUtilities, "aspectRatioMatchesDefault:withOptions:", [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")], a3);
+      v40 = +[MPAuthoringUtilities aspectRatioMatchesDefault:withOptions:](MPAuthoringUtilities, "aspectRatioMatchesDefault:withOptions:", [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")], options);
       v41 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
       v42 = [v41 isEqualToString:@"landscape"];
       v43 = [v41 isEqualToString:@"portrait"];
       if ((v40 & 1) == 0)
       {
         v44 = v43;
-        v93 = v38;
+        v93 = effectID2;
         v45 = v39;
         v46 = [v39 copy];
         v115 = 0u;
@@ -10198,13 +10198,13 @@ LABEL_149:
         }
 
         v9 = v91;
-        v38 = v93;
-        a3 = v96;
+        effectID2 = v93;
+        options = optionsCopy;
         p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
         v39 = v45;
       }
 
-      v52 = [v38 isEqualToString:@"JustASlide"];
+      v52 = [effectID2 isEqualToString:@"JustASlide"];
       v53 = &kCTUnderlineColorAttributeName_ptr;
       v36 = v88;
       if (v52)
@@ -10226,12 +10226,12 @@ LABEL_56:
         v94 = [v54 count];
         if ([v36 count])
         {
-          v12 = -[MPWeighter getRandomIndexMeetingContraints:oneMatch:](self->_transitionWeighter, "getRandomIndexMeetingContraints:oneMatch:", -[CFStringRef dictionaryWithObjectsAndKeys:](v53[50], "dictionaryWithObjectsAndKeys:", [v36 allObjects], @"tags", 0), 0);
+          getRandomIndex = -[MPWeighter getRandomIndexMeetingContraints:oneMatch:](self->_transitionWeighter, "getRandomIndexMeetingContraints:oneMatch:", -[CFStringRef dictionaryWithObjectsAndKeys:](v53[50], "dictionaryWithObjectsAndKeys:", [v36 allObjects], @"tags", 0), 0);
         }
 
         else
         {
-          v12 = 0x7FFFFFFFFFFFFFFFLL;
+          getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
         }
 
         if (([0 isEqualToString:@"JustASlide"] & 1) == 0)
@@ -10301,19 +10301,19 @@ LABEL_56:
             while (v64);
           }
 
-          if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+          if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL)
           {
             v68 = obj;
             if (v94)
             {
               if ([v56 count])
               {
-                v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v56, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0], 0];
+                getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v56, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0], 0];
               }
 
               else
               {
-                v12 = 0x7FFFFFFFFFFFFFFFLL;
+                getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
               }
             }
           }
@@ -10356,41 +10356,41 @@ LABEL_56:
             while (v71);
           }
 
-          if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+          if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL)
           {
             if ([v69 count])
             {
-              v12 = -[MPWeighter getRandomIndexMeetingContraints:oneMatch:](self->_transitionWeighter, "getRandomIndexMeetingContraints:oneMatch:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [v69 allObjects], @"tags", 0), 0);
+              getRandomIndex = -[MPWeighter getRandomIndexMeetingContraints:oneMatch:](self->_transitionWeighter, "getRandomIndexMeetingContraints:oneMatch:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [v69 allObjects], @"tags", 0), 0);
             }
 
             else
             {
-              v12 = 0x7FFFFFFFFFFFFFFFLL;
+              getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
             }
 
-            if (v12 == 0x7FFFFFFFFFFFFFFFLL && v94)
+            if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL && v94)
             {
               if ([v56 count])
               {
-                v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v56, @"tags", 0], 0];
+                getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v56, @"tags", 0], 0];
               }
 
               else
               {
-                v12 = 0x7FFFFFFFFFFFFFFFLL;
+                getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
               }
             }
 
-            if (v12 == 0x7FFFFFFFFFFFFFFFLL && v94)
+            if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL && v94)
             {
               if ([v62 count])
               {
-                v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v62, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0], 0];
+                getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v62, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0], 0];
               }
 
               else
               {
-                v12 = 0x7FFFFFFFFFFFFFFFLL;
+                getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
               }
             }
           }
@@ -10427,115 +10427,115 @@ LABEL_56:
             while (v77);
           }
 
-          a3 = v96;
+          options = optionsCopy;
           p_vtable = (&OBJC_METACLASS___MPDocumentInternal + 24);
-          if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+          if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL)
           {
             if ([v75 count])
             {
-              v12 = -[MPWeighter getRandomIndexMeetingContraints:oneMatch:](self->_transitionWeighter, "getRandomIndexMeetingContraints:oneMatch:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [v75 allObjects], @"tags", 0), 0);
+              getRandomIndex = -[MPWeighter getRandomIndexMeetingContraints:oneMatch:](self->_transitionWeighter, "getRandomIndexMeetingContraints:oneMatch:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [v75 allObjects], @"tags", 0), 0);
             }
 
             else
             {
-              v12 = 0x7FFFFFFFFFFFFFFFLL;
+              getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
             }
 
-            if (v12 == 0x7FFFFFFFFFFFFFFFLL && v94)
+            if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL && v94)
             {
               if ([v62 count])
               {
-                v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v62, @"tags", 0], 0];
+                getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:v62, @"tags", 0], 0];
               }
 
               else
               {
-                v12 = 0x7FFFFFFFFFFFFFFFLL;
+                getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
               }
             }
 
-            if (v12 == 0x7FFFFFFFFFFFFFFFLL && v94)
+            if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL && v94)
             {
               if ([v56 count])
               {
-                v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v56, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0]];
+                getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v56, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0]];
               }
 
               else
               {
-                v12 = 0x7FFFFFFFFFFFFFFFLL;
+                getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
               }
             }
 
-            if (v12 == 0x7FFFFFFFFFFFFFFFLL && v94)
+            if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL && v94)
             {
               if ([v62 count])
               {
-                v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v62, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0]];
+                getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v62, @"tags", [NSNumber numberWithBool:1], @"tagsOnSourceOnly", 0]];
               }
 
               else
               {
-                v12 = 0x7FFFFFFFFFFFFFFFLL;
+                getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
               }
             }
           }
 
           if ([obj count])
           {
-            v12 = -[MPWeighter getRandomIndexMeetingContraints:](self->_transitionWeighter, "getRandomIndexMeetingContraints:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [obj allObjects], @"tags", 0));
+            getRandomIndex = -[MPWeighter getRandomIndexMeetingContraints:](self->_transitionWeighter, "getRandomIndexMeetingContraints:", +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", [obj allObjects], @"tags", 0));
           }
 
           v9 = v91;
-          if (v12 == 0x7FFFFFFFFFFFFFFFLL && v94)
+          if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL && v94)
           {
-            v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v97, @"tags", 0]];
+            getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v97, @"tags", 0]];
           }
 
-          if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+          if (getRandomIndex != 0x7FFFFFFFFFFFFFFFLL)
           {
             goto LABEL_147;
           }
 
           if (v94)
           {
-            v12 = 0x7FFFFFFFFFFFFFFFLL;
+            getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
           }
 
           else
           {
-            v12 = 0x7FFFFFFFFFFFFFFFLL;
+            getRandomIndex = 0x7FFFFFFFFFFFFFFFLL;
             if (v90)
             {
-              v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v90, @"tags", [NSNumber numberWithBool:0], @"tagsOnSourceOnly", 0]];
+              getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v90, @"tags", [NSNumber numberWithBool:0], @"tagsOnSourceOnly", 0]];
             }
           }
 
-          if (v12 == 0x7FFFFFFFFFFFFFFFLL && v90)
+          if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL && v90)
           {
-            v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v90, @"tags", 0]];
+            getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndexMeetingContraints:[NSDictionary dictionaryWithObjectsAndKeys:v90, @"tags", 0]];
           }
         }
 
-        if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+        if (getRandomIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_147:
           v11 = v95;
-          if (v12 >= [v95 count])
+          if (getRandomIndex >= [v95 count])
           {
             v81 = random();
-            v12 = v81 % [v95 count];
+            getRandomIndex = v81 % [v95 count];
           }
 
           goto LABEL_149;
         }
 
 LABEL_61:
-        v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndex];
-        if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+        getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndex];
+        if (getRandomIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
           [(MPWeighter *)self->_transitionWeighter clearIgnoreIndices];
-          v12 = [(MPWeighter *)self->_transitionWeighter getRandomIndex];
+          getRandomIndex = [(MPWeighter *)self->_transitionWeighter getRandomIndex];
         }
 
         goto LABEL_147;
@@ -10554,7 +10554,7 @@ LABEL_61:
   }
 
   v13 = [v11 mutableCopy];
-  v14 = [MPAuthoringUtilities ignoreTransitionListFromOptions:a3];
+  v14 = [MPAuthoringUtilities ignoreTransitionListFromOptions:options];
   if (([v13 isEqualToArray:v14] & 1) == 0)
   {
     [v13 removeObjectsInArray:v14];
@@ -10581,7 +10581,7 @@ LABEL_151:
 
   v82 = [p_vtable + 172 idFromPresetID:v15];
   v83 = [MPTransition transitionWithTransitionID:v82];
-  [p_vtable + 172 transitionDurationFromOptions:a3];
+  [p_vtable + 172 transitionDurationFromOptions:options];
   v85 = v84;
   if (v84 == -1.0)
   {
@@ -10598,25 +10598,25 @@ LABEL_151:
   return v83;
 }
 
-- (void)performInitialFaceDetectionInGroup:(id)a3 withOptions:(id)a4
+- (void)performInitialFaceDetectionInGroup:(id)group withOptions:(id)options
 {
-  v35 = [a3 layers];
-  v36 = [MPAuthoringUtilities styleFromOptions:a4];
-  if (([objc_msgSend(a4 objectForKey:{kMPAuthoringSkipFaceDetectionAtStart), "BOOLValue"}] & 1) == 0)
+  layers = [group layers];
+  v36 = [MPAuthoringUtilities styleFromOptions:options];
+  if (([objc_msgSend(options objectForKey:{kMPAuthoringSkipFaceDetectionAtStart), "BOOLValue"}] & 1) == 0)
   {
     v7 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-    if ([a3 detectFacesInBackground])
+    if ([group detectFacesInBackground])
     {
       if (v7)
       {
-        v34 = [v35 count];
+        v34 = [layers count];
         if (v34 >= 1)
         {
           v8 = 0;
           while (1)
           {
             v38 = v8;
-            v9 = [v35 objectAtIndex:?];
+            v9 = [layers objectAtIndex:?];
             v10 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -10628,8 +10628,8 @@ LABEL_151:
             v60 = 0u;
             v57 = 0u;
             v58 = 0u;
-            v11 = [v9 slides];
-            v12 = [v11 countByEnumeratingWithState:&v57 objects:v64 count:16];
+            slides = [v9 slides];
+            v12 = [slides countByEnumeratingWithState:&v57 objects:v64 count:16];
             if (!v12)
             {
               goto LABEL_47;
@@ -10644,7 +10644,7 @@ LABEL_151:
               {
                 if (*v58 != v15)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(slides);
                 }
 
                 if (v14 <= 4)
@@ -10659,7 +10659,7 @@ LABEL_151:
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v57 objects:v64 count:16];
+              v13 = [slides countByEnumeratingWithState:&v57 objects:v64 count:16];
             }
 
             while (v13);
@@ -10707,8 +10707,8 @@ LABEL_23:
                   v52 = 0u;
                   v41 = v21;
                   v42 = v22;
-                  v43 = [v22 effects];
-                  v23 = [v43 countByEnumeratingWithState:&v49 objects:v62 count:16];
+                  effects = [v22 effects];
+                  v23 = [effects countByEnumeratingWithState:&v49 objects:v62 count:16];
                   if (v23)
                   {
                     v24 = v23;
@@ -10719,7 +10719,7 @@ LABEL_28:
                     {
                       if (*v50 != v44)
                       {
-                        objc_enumerationMutation(v43);
+                        objc_enumerationMutation(effects);
                       }
 
                       v26 = *(*(&v49 + 1) + 8 * v25);
@@ -10727,8 +10727,8 @@ LABEL_28:
                       v46 = 0u;
                       v47 = 0u;
                       v48 = 0u;
-                      v27 = [v26 slides];
-                      v28 = [v27 countByEnumeratingWithState:&v45 objects:v61 count:16];
+                      slides2 = [v26 slides];
+                      v28 = [slides2 countByEnumeratingWithState:&v45 objects:v61 count:16];
                       if (v28)
                       {
                         v29 = v28;
@@ -10739,7 +10739,7 @@ LABEL_28:
                           {
                             if (*v46 != v30)
                             {
-                              objc_enumerationMutation(v27);
+                              objc_enumerationMutation(slides2);
                             }
 
                             if (v20 <= 4)
@@ -10754,7 +10754,7 @@ LABEL_28:
                             }
                           }
 
-                          v29 = [v27 countByEnumeratingWithState:&v45 objects:v61 count:16];
+                          v29 = [slides2 countByEnumeratingWithState:&v45 objects:v61 count:16];
                         }
 
                         while (v29);
@@ -10767,7 +10767,7 @@ LABEL_28:
 
                       if (++v25 == v24)
                       {
-                        v24 = [v43 countByEnumeratingWithState:&v49 objects:v62 count:16];
+                        v24 = [effects countByEnumeratingWithState:&v49 objects:v62 count:16];
                         if (v24)
                         {
                           goto LABEL_28;
@@ -10808,27 +10808,27 @@ LABEL_47:
   }
 }
 
-- (void)configurePanoramaInformationToEffect:(id)a3 inDocument:(id)a4 startingIndex:(int64_t)a5 count:(int64_t)a6 removeOldIndex:(int64_t)a7
+- (void)configurePanoramaInformationToEffect:(id)effect inDocument:(id)document startingIndex:(int64_t)index count:(int64_t)count removeOldIndex:(int64_t)oldIndex
 {
   if ([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")])
   {
-    v12 = [a3 slides];
-    if (a6 <= 0)
+    slides = [effect slides];
+    if (count <= 0)
     {
-      a6 = [v12 count] - a5;
+      count = [slides count] - index;
     }
 
-    v51 = a7;
-    v13 = [objc_msgSend(a3 "slides")];
-    v14 = [a3 effectAttributeForKey:@"breakInformation"];
+    oldIndexCopy = oldIndex;
+    v13 = [objc_msgSend(effect "slides")];
+    v14 = [effect effectAttributeForKey:@"breakInformation"];
     if (!v14)
     {
       v14 = +[NSMutableDictionary dictionary];
     }
 
     v52 = v14;
-    v50 = a3;
-    v15 = [a3 liveIndex];
+    effectCopy = effect;
+    liveIndex = [effect liveIndex];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
@@ -10837,7 +10837,7 @@ LABEL_47:
     if (v16)
     {
       v17 = v16;
-      v18 = v15 + a5;
+      v18 = liveIndex + index;
       v19 = *v70;
       v53 = *v70;
       v54 = v13;
@@ -10853,12 +10853,12 @@ LABEL_47:
           }
 
           v21 = *(*(&v69 + 1) + 8 * v20);
-          [a4 resolutionForPath:{objc_msgSend(v21, "path")}];
+          [document resolutionForPath:{objc_msgSend(v21, "path")}];
           v24 = v22 / v23;
           if (v22 / v23 < 0.5 || v24 > 2.0)
           {
             v26 = ImageKey(v18);
-            v27 = [a4 regionsOfInterestForPath:{objc_msgSend(v21, "path")}];
+            v27 = [document regionsOfInterestForPath:{objc_msgSend(v21, "path")}];
             v28 = v27;
             if (v24 >= 1.0)
             {
@@ -10977,17 +10977,17 @@ LABEL_36:
 
     if ([v52 count])
     {
-      [v50 setEffectAttribute:v52 forKey:@"breakInformation"];
+      [effectCopy setEffectAttribute:v52 forKey:@"breakInformation"];
     }
 
-    if (a7 >= 1)
+    if (oldIndex >= 1)
     {
-      v44 = [v52 allKeys];
+      allKeys = [v52 allKeys];
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v45 = [v44 countByEnumeratingWithState:&v57 objects:v73 count:16];
+      v45 = [allKeys countByEnumeratingWithState:&v57 objects:v73 count:16];
       if (v45)
       {
         v46 = v45;
@@ -10998,17 +10998,17 @@ LABEL_36:
           {
             if (*v58 != v47)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(allKeys);
             }
 
             v49 = *(*(&v57 + 1) + 8 * k);
-            if ([objc_msgSend(v49 substringFromIndex:{5), "integerValue"}] < v51)
+            if ([objc_msgSend(v49 substringFromIndex:{5), "integerValue"}] < oldIndexCopy)
             {
               [v52 removeObjectForKey:v49];
             }
           }
 
-          v46 = [v44 countByEnumeratingWithState:&v57 objects:v73 count:16];
+          v46 = [allKeys countByEnumeratingWithState:&v57 objects:v73 count:16];
         }
 
         while (v46);
@@ -11040,31 +11040,31 @@ LABEL_36:
 {
   if (self->_logLevel >= 1)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = MRGetCurrentTime();
-    authoredDocument = v2->_authoredDocument;
+    authoredDocument = selfCopy->_authoredDocument;
     v5 = authoredDocument ? [(MPDocument *)authoredDocument styleID]: @"None";
-    NSLog(@"iLifeSlideshow Authoring: Seed #: %d, Style ID: %@, Time Taken: %.5f", v2->_seed, v5, v3 - v2->_logTiming);
-    if (v2->_logLevel >= 2)
+    NSLog(@"iLifeSlideshow Authoring: Seed #: %d, Style ID: %@, Time Taken: %.5f", selfCopy->_seed, v5, v3 - selfCopy->_logTiming);
+    if (selfCopy->_logLevel >= 2)
     {
       NSLog(@"Quick Stats:");
-      v6 = [-[NSMutableDictionary objectForKey:](v2->_stats objectForKey:{@"numOfLandscapes", "integerValue"}];
-      v7 = [-[NSMutableDictionary objectForKey:](v2->_stats objectForKey:{@"numOfPortraits", "integerValue"}];
-      NSLog(@" - Images: %d Count, %d Landscapes, %d Portraits, Including %d Movies", &v6[v7], v6, v7, [-[NSMutableDictionary objectForKey:](v2->_stats objectForKey:{@"movieCount", "integerValue"}]);
-      NSLog(@" - Drop Zones: %d Landscapes, %d Portraits, %d Squares", [-[NSMutableDictionary objectForKey:](v2->_stats objectForKey:{@"numOfDZLandscapes", "integerValue"}], objc_msgSend(-[NSMutableDictionary objectForKey:](v2->_stats, "objectForKey:", @"numOfDZPortraits"), "integerValue"), objc_msgSend(-[NSMutableDictionary objectForKey:](v2->_stats, "objectForKey:", @"numOfDZSquares"), "integerValue"));
-      NSLog(@" - Wrong Aspect Ratio Placement: %d Landscapes, %d Portraits", [-[NSMutableDictionary objectForKey:](v2->_stats objectForKey:{@"misplacedLandscapes", "integerValue"}], objc_msgSend(-[NSMutableDictionary objectForKey:](v2->_stats, "objectForKey:", @"misplacedPortraits"), "integerValue"));
-      if (v2->_logLevel >= 3)
+      v6 = [-[NSMutableDictionary objectForKey:](selfCopy->_stats objectForKey:{@"numOfLandscapes", "integerValue"}];
+      v7 = [-[NSMutableDictionary objectForKey:](selfCopy->_stats objectForKey:{@"numOfPortraits", "integerValue"}];
+      NSLog(@" - Images: %d Count, %d Landscapes, %d Portraits, Including %d Movies", &v6[v7], v6, v7, [-[NSMutableDictionary objectForKey:](selfCopy->_stats objectForKey:{@"movieCount", "integerValue"}]);
+      NSLog(@" - Drop Zones: %d Landscapes, %d Portraits, %d Squares", [-[NSMutableDictionary objectForKey:](selfCopy->_stats objectForKey:{@"numOfDZLandscapes", "integerValue"}], objc_msgSend(-[NSMutableDictionary objectForKey:](selfCopy->_stats, "objectForKey:", @"numOfDZPortraits"), "integerValue"), objc_msgSend(-[NSMutableDictionary objectForKey:](selfCopy->_stats, "objectForKey:", @"numOfDZSquares"), "integerValue"));
+      NSLog(@" - Wrong Aspect Ratio Placement: %d Landscapes, %d Portraits", [-[NSMutableDictionary objectForKey:](selfCopy->_stats objectForKey:{@"misplacedLandscapes", "integerValue"}], objc_msgSend(-[NSMutableDictionary objectForKey:](selfCopy->_stats, "objectForKey:", @"misplacedPortraits"), "integerValue"));
+      if (selfCopy->_logLevel >= 3)
       {
         v30 = 0u;
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v8 = [(MPWeighter *)v2->_weighter allConstraints];
-        v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        allConstraints = [(MPWeighter *)selfCopy->_weighter allConstraints];
+        v9 = [allConstraints countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v9)
         {
           v10 = v9;
-          v23 = v2;
+          v23 = selfCopy;
           v11 = 0;
           v12 = 0;
           v13 = 0;
@@ -11075,7 +11075,7 @@ LABEL_36:
             {
               if (*v29 != v14)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allConstraints);
               }
 
               v16 = *(*(&v28 + 1) + 8 * i);
@@ -11084,11 +11084,11 @@ LABEL_36:
               v12 += v16[7];
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+            v10 = [allConstraints countByEnumeratingWithState:&v28 objects:v33 count:16];
           }
 
           while (v10);
-          v2 = v23;
+          selfCopy = v23;
         }
 
         else
@@ -11103,8 +11103,8 @@ LABEL_36:
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v17 = [(MPWeighter *)v2->_weighter allUsageCounts];
-        v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        allUsageCounts = [(MPWeighter *)selfCopy->_weighter allUsageCounts];
+        v18 = [allUsageCounts countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v18)
         {
           v19 = v18;
@@ -11116,13 +11116,13 @@ LABEL_36:
             {
               if (*v25 != v21)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(allUsageCounts);
               }
 
-              NSLog(@" - %@ : %d", [-[MPWeighter allItems](v2->_weighter "allItems")], objc_msgSend(*(*(&v24 + 1) + 8 * j), "integerValue"));
+              NSLog(@" - %@ : %d", [-[MPWeighter allItems](selfCopy->_weighter "allItems")], objc_msgSend(*(*(&v24 + 1) + 8 * j), "integerValue"));
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v19 = [allUsageCounts countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v19);
@@ -11132,35 +11132,35 @@ LABEL_36:
   }
 }
 
-- (void)moveSlidesFromIndicies:(id)a3 toIndex:(int64_t)a4 inDocument:(id)a5 withOptions:(id)a6
+- (void)moveSlidesFromIndicies:(id)indicies toIndex:(int64_t)index inDocument:(id)document withOptions:(id)options
 {
-  v6 = a6;
-  if (!a6)
+  optionsCopy = options;
+  if (!options)
   {
-    v6 = [a5 documentAttributeForKey:kMPDocumentAuthoringOptions];
+    optionsCopy = [document documentAttributeForKey:kMPDocumentAuthoringOptions];
   }
 
-  v11 = [MPAuthoringUtilities reorderModeFromOptions:v6];
+  v11 = [MPAuthoringUtilities reorderModeFromOptions:optionsCopy];
   switch(v11)
   {
     case 1uLL:
       v18 = objc_autoreleasePoolPush();
-      [(MPAuthoringController *)self setAuthoredDocument:a5];
-      [objc_msgSend(a5 "montage")];
-      v19 = [a5 mainLayers];
-      if ([v19 count])
+      [(MPAuthoringController *)self setAuthoredDocument:document];
+      [objc_msgSend(document "montage")];
+      mainLayers = [document mainLayers];
+      if ([mainLayers count])
       {
-        v20 = [v19 lastObject];
-        if ([v20 countOfEffectContainers] >= 1)
+        lastObject = [mainLayers lastObject];
+        if ([lastObject countOfEffectContainers] >= 1)
         {
-          v21 = [a3 containsIndex:0];
-          if (!a4 || (v22 = 0, v21))
+          v21 = [indicies containsIndex:0];
+          if (!index || (v22 = 0, v21))
           {
-            v22 = [(MPAuthoringController *)self _grabAndRemoveTitleEffectFromDocument:a5 withOptions:v6];
+            v22 = [(MPAuthoringController *)self _grabAndRemoveTitleEffectFromDocument:document withOptions:optionsCopy];
           }
 
           v23 = 0;
-          if (![objc_msgSend(v20 objectInEffectContainersAtIndex:{0), "countOfEffects"}])
+          if (![objc_msgSend(lastObject objectInEffectContainersAtIndex:{0), "countOfEffects"}])
           {
             v23 = 0;
             do
@@ -11168,66 +11168,66 @@ LABEL_36:
               ++v23;
             }
 
-            while (![objc_msgSend(v20 objectInEffectContainersAtIndex:{v23), "countOfEffects"}]);
+            while (![objc_msgSend(lastObject objectInEffectContainersAtIndex:{v23), "countOfEffects"}]);
           }
 
-          v24 = [a3 indexSetWithOffset:v23];
-          v25 = v23 + a4;
-          if (v25 >= [v20 countOfEffectContainers] - 1)
+          v24 = [indicies indexSetWithOffset:v23];
+          v25 = v23 + index;
+          if (v25 >= [lastObject countOfEffectContainers] - 1)
           {
-            v26 = [objc_msgSend(objc_msgSend(v20 "effectContainers")] < 1 || -[MPAuthoringController _numberOfSlidesForOutroInLayer:withOptions:](self, "_numberOfSlidesForOutroInLayer:withOptions:", v20, v6) == 0;
-            if (v25 >= [v20 countOfEffectContainers] - v26)
+            v26 = [objc_msgSend(objc_msgSend(lastObject "effectContainers")] < 1 || -[MPAuthoringController _numberOfSlidesForOutroInLayer:withOptions:](self, "_numberOfSlidesForOutroInLayer:withOptions:", lastObject, optionsCopy) == 0;
+            if (v25 >= [lastObject countOfEffectContainers] - v26)
             {
-              v38 = [v20 countOfEffectContainers];
-              v25 = v38 - [v24 count];
+              countOfEffectContainers = [lastObject countOfEffectContainers];
+              v25 = countOfEffectContainers - [v24 count];
             }
 
             v25 -= v26;
           }
 
-          [v20 moveEffectContainersFromIndices:v24 toIndex:v25];
+          [lastObject moveEffectContainersFromIndices:v24 toIndex:v25];
           if (v22)
           {
-            [(MPAuthoringController *)self _readdTitleEffect:v22 toDocument:a5 withOptions:v6];
+            [(MPAuthoringController *)self _readdTitleEffect:v22 toDocument:document withOptions:optionsCopy];
           }
         }
       }
 
-      v39 = [objc_msgSend(a5 "orderedVideoPaths")];
-      [a5 setVideoPaths:v39];
+      v39 = [objc_msgSend(document "orderedVideoPaths")];
+      [document setVideoPaths:v39];
 
-      [objc_msgSend(a5 "montage")];
+      [objc_msgSend(document "montage")];
       [(MPAuthoringController *)self cleanup];
 
       objc_autoreleasePoolPop(v18);
       break;
     case 2uLL:
-      v40 = [objc_msgSend(a5 "orderedVideoPaths")];
-      v17 = [v40 objectsAtIndexes:a3];
-      [(MPAuthoringController *)self removeSlidesAtIndicies:a3 inDocument:a5 withOptions:v6];
-      [(MPAuthoringController *)self insertVideoPaths:v17 atIndex:a4 inDocument:a5 withOptions:v6];
+      v40 = [objc_msgSend(document "orderedVideoPaths")];
+      v17 = [v40 objectsAtIndexes:indicies];
+      [(MPAuthoringController *)self removeSlidesAtIndicies:indicies inDocument:document withOptions:optionsCopy];
+      [(MPAuthoringController *)self insertVideoPaths:v17 atIndex:index inDocument:document withOptions:optionsCopy];
 
       break;
     case 3uLL:
-      v12 = [objc_msgSend(a5 "orderedVideoPaths")];
-      v13 = [v12 objectsAtIndexes:a3];
-      [v12 removeObjectsAtIndexes:a3];
-      if ([v12 count] < a4)
+      v12 = [objc_msgSend(document "orderedVideoPaths")];
+      v13 = [v12 objectsAtIndexes:indicies];
+      [v12 removeObjectsAtIndexes:indicies];
+      if ([v12 count] < index)
       {
-        a4 = [v12 count];
+        index = [v12 count];
       }
 
-      [v12 insertObjects:v13 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", a4, objc_msgSend(v13, "count"))}];
-      [a5 setVideoPaths:v12];
+      [v12 insertObjects:v13 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", index, objc_msgSend(v13, "count"))}];
+      [document setVideoPaths:v12];
 
-      v14 = [v6 objectForKey:kMPAuthoringUseBestAspectRatio];
+      v14 = [optionsCopy objectForKey:kMPAuthoringUseBestAspectRatio];
       if (v14)
       {
-        v15 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
         v16 = [NSNumber numberWithBool:0];
-        [a5 setAuthoringOption:v16 forKey:kMPAuthoringUseBestAspectRatio];
-        [(MPAuthoringController *)self authorDocument:a5 withOptions:v6];
-        if ((v15 & 1) == 0)
+        [document setAuthoringOption:v16 forKey:kMPAuthoringUseBestAspectRatio];
+        [(MPAuthoringController *)self authorDocument:document withOptions:optionsCopy];
+        if ((bOOLValue & 1) == 0)
         {
           return;
         }
@@ -11236,28 +11236,28 @@ LABEL_36:
       else
       {
         v35 = [NSNumber numberWithBool:0];
-        [a5 setAuthoringOption:v35 forKey:kMPAuthoringUseBestAspectRatio];
-        [(MPAuthoringController *)self authorDocument:a5 withOptions:v6];
+        [document setAuthoringOption:v35 forKey:kMPAuthoringUseBestAspectRatio];
+        [(MPAuthoringController *)self authorDocument:document withOptions:optionsCopy];
       }
 
       v36 = [NSNumber numberWithBool:1];
       v37 = kMPAuthoringUseBestAspectRatio;
 
-      [a5 setAuthoringOption:v36 forKey:v37];
+      [document setAuthoringOption:v36 forKey:v37];
       break;
     default:
-      v27 = [objc_msgSend(a5 "orderedVideoPaths")];
-      v28 = [v27 objectsAtIndexes:a3];
-      [v27 removeObjectsAtIndexes:a3];
-      if ([v27 count] < a4)
+      v27 = [objc_msgSend(document "orderedVideoPaths")];
+      v28 = [v27 objectsAtIndexes:indicies];
+      [v27 removeObjectsAtIndexes:indicies];
+      if ([v27 count] < index)
       {
-        a4 = [v27 count];
+        index = [v27 count];
       }
 
-      [v27 insertObjects:v28 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", a4, objc_msgSend(v28, "count"))}];
-      [a5 setVideoPaths:v27];
+      [v27 insertObjects:v28 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", index, objc_msgSend(v28, "count"))}];
+      [document setVideoPaths:v27];
 
-      v29 = [MPAuthoringUtilities subtitlesFromOptions:v6];
+      v29 = [MPAuthoringUtilities subtitlesFromOptions:optionsCopy];
       if (v29)
       {
         v30 = v29;
@@ -11281,7 +11281,7 @@ LABEL_36:
                   objc_enumerationMutation(v30);
                 }
 
-                [(MPAuthoringController *)self removeStyledCaptionFromSlide:[MPUtilities slideForPath:a5 inDocument:?], a5, v6];
+                [(MPAuthoringController *)self removeStyledCaptionFromSlide:[MPUtilities slideForPath:document inDocument:?], document, optionsCopy];
               }
 
               v32 = [v30 countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -11292,25 +11292,25 @@ LABEL_36:
         }
       }
 
-      [(MPAuthoringController *)self _reorderImagesInDocument:a5 withOptions:v6];
+      [(MPAuthoringController *)self _reorderImagesInDocument:document withOptions:optionsCopy];
       break;
   }
 }
 
-- (void)insertVideoPaths:(id)a3 atIndex:(int64_t)a4 inDocument:(id)a5 withOptions:(id)a6
+- (void)insertVideoPaths:(id)paths atIndex:(int64_t)index inDocument:(id)document withOptions:(id)options
 {
-  v6 = a6;
-  if (!a6)
+  optionsCopy = options;
+  if (!options)
   {
-    v6 = [a5 documentAttributeForKey:kMPDocumentAuthoringOptions];
+    optionsCopy = [document documentAttributeForKey:kMPDocumentAuthoringOptions];
   }
 
-  v101 = [MPAuthoringUtilities reorderModeFromOptions:v6];
+  v101 = [MPAuthoringUtilities reorderModeFromOptions:optionsCopy];
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v135 objects:v147 count:16];
+  v10 = [paths countByEnumeratingWithState:&v135 objects:v147 count:16];
   if (v10)
   {
     v11 = v10;
@@ -11321,51 +11321,51 @@ LABEL_36:
       {
         if (*v136 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v14 = *(*(&v135 + 1) + 8 * i);
         if (([v14 hasPrefix:@"iphoto://"] & 1) != 0 || objc_msgSend(v14, "hasPrefix:", @"aperture://"))
         {
-          [a5 absolutePathForAssetAtPath:v14];
+          [document absolutePathForAssetAtPath:v14];
         }
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v135 objects:v147 count:16];
+      v11 = [paths countByEnumeratingWithState:&v135 objects:v147 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [NSMutableArray arrayWithArray:a3];
+  v15 = [NSMutableArray arrayWithArray:paths];
   v16 = v101;
   if (v101 == &dword_0 + 2)
   {
-    v17 = [a5 allSlides];
-    if ([v17 count] <= a4 || (v18 = objc_msgSend(v17, "objectAtIndex:", a4)) == 0)
+    allSlides = [document allSlides];
+    if ([allSlides count] <= index || (v18 = objc_msgSend(allSlides, "objectAtIndex:", index)) == 0)
     {
-      v30 = [a5 mainLayers];
-      v29 = self;
-      if ([v30 count])
+      mainLayers = [document mainLayers];
+      selfCopy4 = self;
+      if ([mainLayers count])
       {
-        a4 = [objc_msgSend(v30 "lastObject")];
+        index = [objc_msgSend(mainLayers "lastObject")];
       }
 
       goto LABEL_31;
     }
 
     v19 = v18;
-    v20 = [v18 parentEffect];
-    v21 = [v19 index];
-    if (v21 >= [objc_msgSend(v20 "slides")] || objc_msgSend(objc_msgSend(v20, "slides"), "count") < 2)
+    parentEffect = [v18 parentEffect];
+    index = [v19 index];
+    if (index >= [objc_msgSend(parentEffect "slides")] || objc_msgSend(objc_msgSend(parentEffect, "slides"), "count") < 2)
     {
-      a4 = [objc_msgSend(v20 "parentContainer")];
-      v29 = self;
+      index = [objc_msgSend(parentEffect "parentContainer")];
+      selfCopy4 = self;
       goto LABEL_31;
     }
 
-    v97 = v20;
-    v22 = [objc_msgSend(v20 "slides")];
+    v97 = parentEffect;
+    v22 = [objc_msgSend(parentEffect "slides")];
     v131 = 0u;
     v132 = 0u;
     v133 = 0u;
@@ -11397,31 +11397,31 @@ LABEL_36:
       while (v24);
     }
 
-    a4 = [objc_msgSend(v97 "parentContainer")] + 1;
+    index = [objc_msgSend(v97 "parentContainer")] + 1;
     v16 = 2;
   }
 
-  v29 = self;
+  selfCopy4 = self;
   if (v16 == 3)
   {
 LABEL_42:
-    v36 = [objc_msgSend(a5 "orderedVideoPaths")];
-    if (a4 >= [v36 count])
+    v36 = [objc_msgSend(document "orderedVideoPaths")];
+    if (index >= [v36 count])
     {
-      a4 = [v36 count];
+      index = [v36 count];
     }
 
-    [v36 insertObjects:v15 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", a4, -[NSMutableArray count](v15, "count"))}];
-    [a5 setVideoPaths:v36];
+    [v36 insertObjects:v15 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", index, -[NSMutableArray count](v15, "count"))}];
+    [document setVideoPaths:v36];
 
-    v37 = [v6 objectForKey:kMPAuthoringUseBestAspectRatio];
+    v37 = [optionsCopy objectForKey:kMPAuthoringUseBestAspectRatio];
     if (v37)
     {
-      v38 = [v37 BOOLValue];
+      bOOLValue = [v37 BOOLValue];
       v39 = [NSNumber numberWithBool:0];
-      [a5 setAuthoringOption:v39 forKey:kMPAuthoringUseBestAspectRatio];
-      [(MPAuthoringController *)v29 authorDocument:a5 withOptions:v6];
-      if ((v38 & 1) == 0)
+      [document setAuthoringOption:v39 forKey:kMPAuthoringUseBestAspectRatio];
+      [(MPAuthoringController *)selfCopy4 authorDocument:document withOptions:optionsCopy];
+      if ((bOOLValue & 1) == 0)
       {
         return;
       }
@@ -11430,50 +11430,50 @@ LABEL_42:
     else
     {
       v41 = [NSNumber numberWithBool:0];
-      [a5 setAuthoringOption:v41 forKey:kMPAuthoringUseBestAspectRatio];
-      [(MPAuthoringController *)v29 authorDocument:a5 withOptions:v6];
+      [document setAuthoringOption:v41 forKey:kMPAuthoringUseBestAspectRatio];
+      [(MPAuthoringController *)selfCopy4 authorDocument:document withOptions:optionsCopy];
     }
 
     v42 = [NSNumber numberWithBool:1];
-    [a5 setAuthoringOption:v42 forKey:kMPAuthoringUseBestAspectRatio];
+    [document setAuthoringOption:v42 forKey:kMPAuthoringUseBestAspectRatio];
     return;
   }
 
 LABEL_31:
-  if (![objc_msgSend(a5 "allSlides")])
+  if (![objc_msgSend(document "allSlides")])
   {
     goto LABEL_42;
   }
 
   if ((v16 - 1) > 1)
   {
-    v40 = [objc_msgSend(a5 "orderedVideoPaths")];
-    if (a4 >= [v40 count])
+    v40 = [objc_msgSend(document "orderedVideoPaths")];
+    if (index >= [v40 count])
     {
-      a4 = [v40 count];
+      index = [v40 count];
     }
 
-    [v40 insertObjects:v15 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", a4, -[NSMutableArray count](v15, "count"))}];
-    [a5 setVideoPaths:v40];
+    [v40 insertObjects:v15 atIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", index, -[NSMutableArray count](v15, "count"))}];
+    [document setVideoPaths:v40];
 
-    [(MPAuthoringController *)v29 _reorderImagesInDocument:a5 withOptions:v6];
+    [(MPAuthoringController *)selfCopy4 _reorderImagesInDocument:document withOptions:optionsCopy];
   }
 
   else
   {
-    v31 = a4;
+    indexCopy = index;
     v32 = objc_autoreleasePoolPush();
-    [(MPAuthoringController *)v29 setAuthoredDocument:a5];
-    [objc_msgSend(a5 "montage")];
-    v33 = [a5 mainLayers];
-    if ([v33 count])
+    [(MPAuthoringController *)selfCopy4 setAuthoredDocument:document];
+    [objc_msgSend(document "montage")];
+    mainLayers2 = [document mainLayers];
+    if ([mainLayers2 count])
     {
       v98 = v32;
-      v34 = [v33 lastObject];
-      if ([v34 countOfEffectContainers] >= 1)
+      lastObject = [mainLayers2 lastObject];
+      if ([lastObject countOfEffectContainers] >= 1)
       {
         v35 = 0;
-        if (![objc_msgSend(v34 objectInEffectContainersAtIndex:{0), "countOfEffects"}])
+        if (![objc_msgSend(lastObject objectInEffectContainersAtIndex:{0), "countOfEffects"}])
         {
           v35 = 0;
           do
@@ -11481,63 +11481,63 @@ LABEL_31:
             ++v35;
           }
 
-          while (![objc_msgSend(v34 objectInEffectContainersAtIndex:{v35), "countOfEffects"}]);
+          while (![objc_msgSend(lastObject objectInEffectContainersAtIndex:{v35), "countOfEffects"}]);
         }
 
-        v31 += v35;
-        if (v31 >= [v34 countOfEffectContainers])
+        indexCopy += v35;
+        if (indexCopy >= [lastObject countOfEffectContainers])
         {
-          if ([objc_msgSend(objc_msgSend(v34 "effectContainers")] < 1)
+          if ([objc_msgSend(objc_msgSend(lastObject "effectContainers")] < 1)
           {
-            v31 = [v34 countOfEffectContainers];
+            indexCopy = [lastObject countOfEffectContainers];
           }
 
-          else if (![(MPAuthoringController *)v29 _numberOfSlidesForOutroInLayer:v34 withOptions:v6])
+          else if (![(MPAuthoringController *)selfCopy4 _numberOfSlidesForOutroInLayer:lastObject withOptions:optionsCopy])
           {
-            v31 = [v34 countOfEffectContainers] - 1;
+            indexCopy = [lastObject countOfEffectContainers] - 1;
           }
         }
       }
 
-      if (v31 || [v34 countOfEffectContainers] < 1)
+      if (indexCopy || [lastObject countOfEffectContainers] < 1)
       {
         v93 = 0;
       }
 
       else
       {
-        v93 = [(MPAuthoringController *)v29 _grabAndRemoveTitleEffectFromDocument:a5 withOptions:v6];
+        v93 = [(MPAuthoringController *)selfCopy4 _grabAndRemoveTitleEffectFromDocument:document withOptions:optionsCopy];
       }
 
-      v43 = [NSMutableDictionary dictionaryWithDictionary:v6];
+      v43 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
       v44 = [NSNumber numberWithBool:0];
       [(NSMutableDictionary *)v43 setObject:v44 forKey:kMPAuthoringUseTitleEffect];
       v45 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")]);
       [(NSMutableDictionary *)v43 setObject:v45 forKey:kMPAuthoringLayerIndex];
-      v46 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", [a5 videoPaths]);
+      v46 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", [document videoPaths]);
       [(NSMutableArray *)v46 addObjectsFromArray:v15];
       [(NSMutableDictionary *)v43 setObject:v46 forKey:kMPAuthoringSecondaryPaths];
       v47 = [NSNumber numberWithBool:1];
       [(NSMutableDictionary *)v43 setObject:v47 forKey:kMPAuthoringAlwaysIncludeLastTransition];
-      if (v31 >= [v34 countOfEffectContainers])
+      if (indexCopy >= [lastObject countOfEffectContainers])
       {
-        [(MPAuthoringController *)v29 _addVideoPaths:v15 toEndOfLayer:v34 inDocument:a5 withOptions:v43];
+        [(MPAuthoringController *)selfCopy4 _addVideoPaths:v15 toEndOfLayer:lastObject inDocument:document withOptions:v43];
       }
 
       else
       {
         [(NSMutableDictionary *)v43 setObject:&stru_1AC858 forKey:kMPAuthoringOutroEffectID];
-        [v34 insertEffectContainers:-[MPAuthoringController effectContainersWithImages:effects:andOptions:](v29 atIndex:{"effectContainersWithImages:effects:andOptions:", v15, -[MPAuthoringController effectsForImages:withOptions:](v29, "effectsForImages:withOptions:", v15, v43), v43), v31}];
+        [lastObject insertEffectContainers:-[MPAuthoringController effectContainersWithImages:effects:andOptions:](selfCopy4 atIndex:{"effectContainersWithImages:effects:andOptions:", v15, -[MPAuthoringController effectsForImages:withOptions:](selfCopy4, "effectsForImages:withOptions:", v15, v43), v43), indexCopy}];
       }
 
       v95 = v43;
       if (v93)
       {
-        [(MPAuthoringController *)v29 _readdTitleEffect:v93 toDocument:a5 withOptions:v6];
+        [(MPAuthoringController *)selfCopy4 _readdTitleEffect:v93 toDocument:document withOptions:optionsCopy];
       }
 
-      v29->_skipApplyingSettings = 1;
-      v48 = [MPAuthoringUtilities subtitlesFromOptions:v6];
+      selfCopy4->_skipApplyingSettings = 1;
+      v48 = [MPAuthoringUtilities subtitlesFromOptions:optionsCopy];
       if (v48)
       {
         v49 = v48;
@@ -11562,9 +11562,9 @@ LABEL_31:
                 }
 
                 v54 = *(*(&v127 + 1) + 8 * k);
-                if ([a3 containsObject:v54])
+                if ([paths containsObject:v54])
                 {
-                  [(MPAuthoringController *)self addStyledCaptionToSlide:[MPUtilities slideForPath:a5 inDocument:?], a5, v6];
+                  [(MPAuthoringController *)self addStyledCaptionToSlide:[MPUtilities slideForPath:document inDocument:?], document, optionsCopy];
                 }
               }
 
@@ -11576,38 +11576,38 @@ LABEL_31:
         }
       }
 
-      v29 = self;
+      selfCopy4 = self;
       self->_skipApplyingSettings = 0;
-      v55 = [NSValue valueWithRange:v31, [(NSMutableArray *)v15 count]];
+      v55 = [NSValue valueWithRange:indexCopy, [(NSMutableArray *)v15 count]];
       [(NSMutableDictionary *)v95 setObject:v55 forKey:kMPAuthoringReconfigureIndices];
-      if (([objc_msgSend(v6 objectForKey:{@"fastInsert", "BOOLValue"}] & 1) == 0)
+      if (([objc_msgSend(optionsCopy objectForKey:{@"fastInsert", "BOOLValue"}] & 1) == 0)
       {
-        [(MPAuthoringController *)self configureFiltersInDocument:a5 withOptions:v95];
-        [(MPAuthoringController *)self reconfigureColorSchemeInDocument:a5 withOptions:v95];
+        [(MPAuthoringController *)self configureFiltersInDocument:document withOptions:v95];
+        [(MPAuthoringController *)self reconfigureColorSchemeInDocument:document withOptions:v95];
       }
 
-      [(MPAuthoringController *)self configureTransitionsInDocument:a5 withOptions:v95];
-      [(MPAuthoringController *)self scaleDurationsInDocument:a5 withOptions:v95];
+      [(MPAuthoringController *)self configureTransitionsInDocument:document withOptions:v95];
+      [(MPAuthoringController *)self scaleDurationsInDocument:document withOptions:v95];
       [+[MPCropController sharedController](MPCropController "sharedController")];
       v32 = v98;
     }
 
-    v56 = [objc_msgSend(a5 "orderedVideoPaths")];
-    [a5 setVideoPaths:v56];
+    v56 = [objc_msgSend(document "orderedVideoPaths")];
+    [document setVideoPaths:v56];
 
-    [objc_msgSend(a5 "montage")];
-    [(MPAuthoringController *)v29 cleanup];
+    [objc_msgSend(document "montage")];
+    [(MPAuthoringController *)selfCopy4 cleanup];
     objc_autoreleasePoolPop(v32);
   }
 
-  v99 = [objc_msgSend(a5 "orderedVideoPaths")];
+  v99 = [objc_msgSend(document "orderedVideoPaths")];
   if ([v99 count] >= 1)
   {
     v125 = 0u;
     v126 = 0u;
     v123 = 0u;
     v124 = 0u;
-    obj = [a5 layers];
+    obj = [document layers];
     v89 = [obj countByEnumeratingWithState:&v123 objects:v144 count:16];
     if (v89)
     {
@@ -11630,8 +11630,8 @@ LABEL_31:
             v122 = 0u;
             v119 = 0u;
             v120 = 0u;
-            v91 = [v58 effectContainers];
-            v94 = [v91 countByEnumeratingWithState:&v119 objects:v143 count:16];
+            effectContainers = [v58 effectContainers];
+            v94 = [effectContainers countByEnumeratingWithState:&v119 objects:v143 count:16];
             if (v94)
             {
               v92 = *v120;
@@ -11642,7 +11642,7 @@ LABEL_31:
                 {
                   if (*v120 != v92)
                   {
-                    objc_enumerationMutation(v91);
+                    objc_enumerationMutation(effectContainers);
                   }
 
                   v96 = v59;
@@ -11651,8 +11651,8 @@ LABEL_31:
                   v116 = 0u;
                   v117 = 0u;
                   v118 = 0u;
-                  v102 = [v60 effects];
-                  v61 = [v102 countByEnumeratingWithState:&v115 objects:v142 count:16];
+                  effects = [v60 effects];
+                  v61 = [effects countByEnumeratingWithState:&v115 objects:v142 count:16];
                   if (v61)
                   {
                     v62 = v61;
@@ -11663,7 +11663,7 @@ LABEL_31:
                       {
                         if (*v116 != v63)
                         {
-                          objc_enumerationMutation(v102);
+                          objc_enumerationMutation(effects);
                         }
 
                         v65 = *(*(&v115 + 1) + 8 * m);
@@ -11676,8 +11676,8 @@ LABEL_31:
                           v112 = 0u;
                           v113 = 0u;
                           v114 = 0u;
-                          v69 = [v65 secondarySlides];
-                          v70 = [v69 countByEnumeratingWithState:&v111 objects:v141 count:16];
+                          secondarySlides = [v65 secondarySlides];
+                          v70 = [secondarySlides countByEnumeratingWithState:&v111 objects:v141 count:16];
                           if (v70)
                           {
                             v71 = v70;
@@ -11688,13 +11688,13 @@ LABEL_31:
                               {
                                 if (*v112 != v72)
                                 {
-                                  objc_enumerationMutation(v69);
+                                  objc_enumerationMutation(secondarySlides);
                                 }
 
                                 [v68 addObject:{objc_msgSend(*(*(&v111 + 1) + 8 * n), "path")}];
                               }
 
-                              v71 = [v69 countByEnumeratingWithState:&v111 objects:v141 count:16];
+                              v71 = [secondarySlides countByEnumeratingWithState:&v111 objects:v141 count:16];
                             }
 
                             while (v71);
@@ -11707,8 +11707,8 @@ LABEL_31:
                             v108 = 0u;
                             v109 = 0u;
                             v110 = 0u;
-                            v75 = [v65 slides];
-                            v76 = [v75 countByEnumeratingWithState:&v107 objects:v140 count:16];
+                            slides = [v65 slides];
+                            v76 = [slides countByEnumeratingWithState:&v107 objects:v140 count:16];
                             if (v76)
                             {
                               v77 = v76;
@@ -11719,13 +11719,13 @@ LABEL_31:
                                 {
                                   if (*v108 != v78)
                                   {
-                                    objc_enumerationMutation(v75);
+                                    objc_enumerationMutation(slides);
                                   }
 
                                   [v74 addObject:{objc_msgSend(*(*(&v107 + 1) + 8 * ii), "path")}];
                                 }
 
-                                v77 = [v75 countByEnumeratingWithState:&v107 objects:v140 count:16];
+                                v77 = [slides countByEnumeratingWithState:&v107 objects:v140 count:16];
                               }
 
                               while (v77);
@@ -11736,8 +11736,8 @@ LABEL_31:
                             v104 = 0u;
                             v105 = 0u;
                             v106 = 0u;
-                            v81 = [v65 secondarySlides];
-                            v82 = [v81 countByEnumeratingWithState:&v103 objects:v139 count:16];
+                            secondarySlides2 = [v65 secondarySlides];
+                            v82 = [secondarySlides2 countByEnumeratingWithState:&v103 objects:v139 count:16];
                             if (v82)
                             {
                               v83 = v82;
@@ -11749,13 +11749,13 @@ LABEL_31:
                                 {
                                   if (*v104 != v85)
                                   {
-                                    objc_enumerationMutation(v81);
+                                    objc_enumerationMutation(secondarySlides2);
                                   }
 
                                   [*(*(&v103 + 1) + 8 * jj) setPath:{objc_msgSend(v80, "objectAtIndex:", v84++)}];
                                 }
 
-                                v83 = [v81 countByEnumeratingWithState:&v103 objects:v139 count:16];
+                                v83 = [secondarySlides2 countByEnumeratingWithState:&v103 objects:v139 count:16];
                               }
 
                               while (v83);
@@ -11764,7 +11764,7 @@ LABEL_31:
                         }
                       }
 
-                      v62 = [v102 countByEnumeratingWithState:&v115 objects:v142 count:16];
+                      v62 = [effects countByEnumeratingWithState:&v115 objects:v142 count:16];
                     }
 
                     while (v62);
@@ -11774,7 +11774,7 @@ LABEL_31:
                 }
 
                 while ((v96 + 1) != v94);
-                v94 = [v91 countByEnumeratingWithState:&v119 objects:v143 count:16];
+                v94 = [effectContainers countByEnumeratingWithState:&v119 objects:v143 count:16];
               }
 
               while (v94);
@@ -11793,38 +11793,38 @@ LABEL_31:
   }
 }
 
-- (void)removeSlidesAtIndicies:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)removeSlidesAtIndicies:(id)indicies inDocument:(id)document withOptions:(id)options
 {
-  v7 = a3;
-  if (![a3 count])
+  indiciesCopy = indicies;
+  if (![indicies count])
   {
     return;
   }
 
-  if (!a5)
+  if (!options)
   {
-    a5 = [a4 documentAttributeForKey:kMPDocumentAuthoringOptions];
+    options = [document documentAttributeForKey:kMPDocumentAuthoringOptions];
   }
 
-  v162 = a5;
-  v9 = [MPAuthoringUtilities reorderModeFromOptions:a5];
-  v141 = a4;
-  v146 = self;
+  optionsCopy = options;
+  v9 = [MPAuthoringUtilities reorderModeFromOptions:options];
+  documentCopy = document;
+  selfCopy = self;
   if (v9 <= 2)
   {
     if (v9 == 1)
     {
       v49 = objc_autoreleasePoolPush();
-      [(MPAuthoringController *)self setAuthoredDocument:a4];
-      [objc_msgSend(a4 "montage")];
-      v50 = [a4 mainLayers];
-      if ([v50 count])
+      [(MPAuthoringController *)self setAuthoredDocument:document];
+      [objc_msgSend(document "montage")];
+      mainLayers = [document mainLayers];
+      if ([mainLayers count])
       {
-        v51 = [v50 lastObject];
-        if (([objc_msgSend(v162 objectForKey:{@"skipEmptyContainerCheck", "BOOLValue"}] & 1) == 0)
+        lastObject = [mainLayers lastObject];
+        if (([objc_msgSend(optionsCopy objectForKey:{@"skipEmptyContainerCheck", "BOOLValue"}] & 1) == 0)
         {
           v52 = 0;
-          if (![objc_msgSend(v51 objectInEffectContainersAtIndex:{0), "countOfEffects"}])
+          if (![objc_msgSend(lastObject objectInEffectContainersAtIndex:{0), "countOfEffects"}])
           {
             v52 = 0;
             do
@@ -11832,37 +11832,37 @@ LABEL_31:
               ++v52;
             }
 
-            while (![objc_msgSend(v51 objectInEffectContainersAtIndex:{v52), "countOfEffects"}]);
+            while (![objc_msgSend(lastObject objectInEffectContainersAtIndex:{v52), "countOfEffects"}]);
           }
 
-          v7 = [objc_msgSend(v7 indexSetWithOffset:{v52), "indexSetWithMaximum:", objc_msgSend(v51, "countOfEffectContainers") - 1}];
+          indiciesCopy = [objc_msgSend(indiciesCopy indexSetWithOffset:{v52), "indexSetWithMaximum:", objc_msgSend(lastObject, "countOfEffectContainers") - 1}];
         }
 
-        if ([v7 containsIndex:0] && objc_msgSend(v51, "countOfEffectContainers") > 0)
+        if ([indiciesCopy containsIndex:0] && objc_msgSend(lastObject, "countOfEffectContainers") > 0)
         {
-          v53 = v162;
-          v54 = [(MPAuthoringController *)self _grabAndRemoveTitleEffectFromDocument:a4 withOptions:v162];
-          [v51 removeEffectContainersAtIndices:v7];
+          v53 = optionsCopy;
+          v54 = [(MPAuthoringController *)self _grabAndRemoveTitleEffectFromDocument:document withOptions:optionsCopy];
+          [lastObject removeEffectContainersAtIndices:indiciesCopy];
           if (v54)
           {
-            [(MPAuthoringController *)self _readdTitleEffect:v54 toDocument:a4 withOptions:v162];
+            [(MPAuthoringController *)self _readdTitleEffect:v54 toDocument:document withOptions:optionsCopy];
           }
         }
 
         else
         {
-          [v51 removeEffectContainersAtIndices:v7];
-          v53 = v162;
+          [lastObject removeEffectContainersAtIndices:indiciesCopy];
+          v53 = optionsCopy;
         }
 
-        [(MPAuthoringController *)self _checkForEmptyLayersInDocument:a4];
-        [(MPAuthoringController *)self scaleDurationsInDocument:a4 withOptions:v53];
+        [(MPAuthoringController *)self _checkForEmptyLayersInDocument:document];
+        [(MPAuthoringController *)self scaleDurationsInDocument:document withOptions:v53];
       }
 
-      v135 = [objc_msgSend(a4 "orderedVideoPaths")];
-      [a4 setVideoPaths:v135];
+      v135 = [objc_msgSend(document "orderedVideoPaths")];
+      [document setVideoPaths:v135];
 
-      [objc_msgSend(a4 "montage")];
+      [objc_msgSend(document "montage")];
       [(MPAuthoringController *)self cleanup];
 
       objc_autoreleasePoolPop(v49);
@@ -11872,14 +11872,14 @@ LABEL_31:
     if (v9 == 2)
     {
       context = objc_autoreleasePoolPush();
-      [(MPAuthoringController *)self setAuthoredDocument:a4];
-      [objc_msgSend(a4 "montage")];
+      [(MPAuthoringController *)self setAuthoredDocument:document];
+      [objc_msgSend(document "montage")];
       v175 = +[NSMutableArray array];
-      v10 = [a4 mainLayers];
-      if ([v10 count])
+      mainLayers2 = [document mainLayers];
+      if ([mainLayers2 count])
       {
-        v171 = [v10 lastObject];
-        v11 = [objc_msgSend(a4 "allSlides")];
+        lastObject2 = [mainLayers2 lastObject];
+        v11 = [objc_msgSend(document "allSlides")];
         v198 = 0u;
         v199 = 0u;
         v200 = 0u;
@@ -11899,13 +11899,13 @@ LABEL_31:
               }
 
               v16 = *(*(&v198 + 1) + 8 * i);
-              v17 = [v16 parentEffect];
-              if ([objc_msgSend(v17 "slides")] == &dword_0 + 1)
+              parentEffect = [v16 parentEffect];
+              if ([objc_msgSend(parentEffect "slides")] == &dword_0 + 1)
               {
-                v18 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [objc_msgSend(v17 "parentContainer")]);
-                if (-[NSIndexSet containsIndex:](v18, "containsIndex:", 0) && [v171 countOfEffectContainers] >= 1)
+                v18 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [objc_msgSend(parentEffect "parentContainer")]);
+                if (-[NSIndexSet containsIndex:](v18, "containsIndex:", 0) && [lastObject2 countOfEffectContainers] >= 1)
                 {
-                  v19 = [(MPAuthoringController *)self _grabAndRemoveTitleEffectFromDocument:v141 withOptions:v162];
+                  v19 = [(MPAuthoringController *)self _grabAndRemoveTitleEffectFromDocument:documentCopy withOptions:optionsCopy];
                 }
 
                 else
@@ -11913,29 +11913,29 @@ LABEL_31:
                   v19 = 0;
                 }
 
-                [objc_msgSend(objc_msgSend(v17 "parentContainer")];
+                [objc_msgSend(objc_msgSend(parentEffect "parentContainer")];
                 if (v19)
                 {
-                  [(MPAuthoringController *)self _readdTitleEffect:v19 toDocument:v141 withOptions:v162];
+                  [(MPAuthoringController *)self _readdTitleEffect:v19 toDocument:documentCopy withOptions:optionsCopy];
                 }
               }
 
               else
               {
-                [v17 setReplaceSlides:0];
-                [v17 removeSlidesAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", objc_msgSend(v16, "index"))}];
-                [v17 setReplaceSlides:1];
-                v20 = [v162 mutableCopy];
+                [parentEffect setReplaceSlides:0];
+                [parentEffect removeSlidesAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", objc_msgSend(v16, "index"))}];
+                [parentEffect setReplaceSlides:1];
+                v20 = [optionsCopy mutableCopy];
                 v21 = [NSNumber numberWithBool:0];
                 [v20 setObject:v21 forKey:kMPAuthoringUseTitleEffect];
                 [v20 setObject:kMPFadeNone forKey:kMPAuthoringOutroEffectID];
-                v22 = -[MPAuthoringController effectsForImages:withOptions:](self, "effectsForImages:withOptions:", [v17 videoPaths], v20);
+                v22 = -[MPAuthoringController effectsForImages:withOptions:](self, "effectsForImages:withOptions:", [parentEffect videoPaths], v20);
 
                 if ([v22 count] == &dword_0 + 1)
                 {
-                  v23 = [v22 lastObject];
-                  [v17 setEffectID:{+[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", v23)}];
-                  [v17 setPresetID:{+[MPUtilities presetIDOfCombinedID:](MPUtilities, "presetIDOfCombinedID:", v23)}];
+                  lastObject3 = [v22 lastObject];
+                  [parentEffect setEffectID:{+[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", lastObject3)}];
+                  [parentEffect setPresetID:{+[MPUtilities presetIDOfCombinedID:](MPUtilities, "presetIDOfCombinedID:", lastObject3)}];
                 }
               }
 
@@ -11948,13 +11948,13 @@ LABEL_31:
           while (v13);
         }
 
-        a4 = v141;
-        [(MPAuthoringController *)self _checkForEmptyLayersInDocument:v141];
-        [(MPAuthoringController *)self scaleDurationsInDocument:v141 withOptions:v162];
+        document = documentCopy;
+        [(MPAuthoringController *)self _checkForEmptyLayersInDocument:documentCopy];
+        [(MPAuthoringController *)self scaleDurationsInDocument:documentCopy withOptions:optionsCopy];
       }
 
-      v24 = [objc_msgSend(a4 "orderedVideoPaths")];
-      [a4 setVideoPaths:v24];
+      v24 = [objc_msgSend(document "orderedVideoPaths")];
+      [document setVideoPaths:v24];
       v25 = [v24 count];
       if (v25 >= 1)
       {
@@ -11963,7 +11963,7 @@ LABEL_31:
         v197 = 0u;
         v194 = 0u;
         v195 = 0u;
-        obj = [v141 layers];
+        obj = [documentCopy layers];
         v144 = [obj countByEnumeratingWithState:&v194 objects:v246 count:16];
         if (v144)
         {
@@ -11986,8 +11986,8 @@ LABEL_31:
                 v193 = 0u;
                 v190 = 0u;
                 v191 = 0u;
-                v150 = [v28 effectContainers];
-                v156 = [v150 countByEnumeratingWithState:&v190 objects:v245 count:16];
+                effectContainers = [v28 effectContainers];
+                v156 = [effectContainers countByEnumeratingWithState:&v190 objects:v245 count:16];
                 if (v156)
                 {
                   v153 = *v191;
@@ -11998,7 +11998,7 @@ LABEL_31:
                     {
                       if (*v191 != v153)
                       {
-                        objc_enumerationMutation(v150);
+                        objc_enumerationMutation(effectContainers);
                       }
 
                       v159 = v29;
@@ -12007,8 +12007,8 @@ LABEL_31:
                       v187 = 0u;
                       v188 = 0u;
                       v189 = 0u;
-                      v163 = [v30 effects];
-                      v168 = [v163 countByEnumeratingWithState:&v186 objects:v244 count:16];
+                      effects = [v30 effects];
+                      v168 = [effects countByEnumeratingWithState:&v186 objects:v244 count:16];
                       if (v168)
                       {
                         v165 = *v187;
@@ -12019,7 +12019,7 @@ LABEL_31:
                           {
                             if (*v187 != v165)
                             {
-                              objc_enumerationMutation(v163);
+                              objc_enumerationMutation(effects);
                             }
 
                             v172 = v31;
@@ -12029,8 +12029,8 @@ LABEL_31:
                             v183 = 0u;
                             v184 = 0u;
                             v185 = 0u;
-                            v34 = [v32 secondarySlides];
-                            v35 = [v34 countByEnumeratingWithState:&v182 objects:v243 count:16];
+                            secondarySlides = [v32 secondarySlides];
+                            v35 = [secondarySlides countByEnumeratingWithState:&v182 objects:v243 count:16];
                             if (v35)
                             {
                               v36 = v35;
@@ -12041,13 +12041,13 @@ LABEL_31:
                                 {
                                   if (*v183 != v37)
                                   {
-                                    objc_enumerationMutation(v34);
+                                    objc_enumerationMutation(secondarySlides);
                                   }
 
                                   [v33 addObject:{objc_msgSend(*(*(&v182 + 1) + 8 * j), "path")}];
                                 }
 
-                                v36 = [v34 countByEnumeratingWithState:&v182 objects:v243 count:16];
+                                v36 = [secondarySlides countByEnumeratingWithState:&v182 objects:v243 count:16];
                               }
 
                               while (v36);
@@ -12057,8 +12057,8 @@ LABEL_31:
                             v181 = 0u;
                             v178 = 0u;
                             v179 = 0u;
-                            v39 = [v32 secondarySlides];
-                            v40 = [v39 countByEnumeratingWithState:&v178 objects:v242 count:16];
+                            secondarySlides2 = [v32 secondarySlides];
+                            v40 = [secondarySlides2 countByEnumeratingWithState:&v178 objects:v242 count:16];
                             if (v40)
                             {
                               v41 = v40;
@@ -12069,7 +12069,7 @@ LABEL_31:
                                 {
                                   if (*v179 != v42)
                                   {
-                                    objc_enumerationMutation(v39);
+                                    objc_enumerationMutation(secondarySlides2);
                                   }
 
                                   v44 = *(*(&v178 + 1) + 8 * k);
@@ -12085,7 +12085,7 @@ LABEL_31:
                                   }
                                 }
 
-                                v41 = [v39 countByEnumeratingWithState:&v178 objects:v242 count:16];
+                                v41 = [secondarySlides2 countByEnumeratingWithState:&v178 objects:v242 count:16];
                               }
 
                               while (v41);
@@ -12095,7 +12095,7 @@ LABEL_31:
                           }
 
                           while (v172 + 1 != v168);
-                          v168 = [v163 countByEnumeratingWithState:&v186 objects:v244 count:16];
+                          v168 = [effects countByEnumeratingWithState:&v186 objects:v244 count:16];
                         }
 
                         while (v168);
@@ -12105,7 +12105,7 @@ LABEL_31:
                     }
 
                     while ((v159 + 1) != v156);
-                    v156 = [v150 countByEnumeratingWithState:&v190 objects:v245 count:16];
+                    v156 = [effectContainers countByEnumeratingWithState:&v190 objects:v245 count:16];
                   }
 
                   while (v156);
@@ -12123,24 +12123,24 @@ LABEL_31:
         }
       }
 
-      [objc_msgSend(v141 "montage")];
-      [(MPAuthoringController *)v146 cleanup];
+      [objc_msgSend(documentCopy "montage")];
+      [(MPAuthoringController *)selfCopy cleanup];
       objc_autoreleasePoolPop(context);
       return;
     }
 
 LABEL_207:
-    v177 = [objc_msgSend(a4 "orderedVideoPaths")];
-    [v177 removeObjectsAtIndexes:v7];
-    [a4 setVideoPaths:v177];
-    [(MPAuthoringController *)self _reorderImagesInDocument:a4 withOptions:a5];
+    v177 = [objc_msgSend(document "orderedVideoPaths")];
+    [v177 removeObjectsAtIndexes:indiciesCopy];
+    [document setVideoPaths:v177];
+    [(MPAuthoringController *)self _reorderImagesInDocument:document withOptions:options];
 
     return;
   }
 
   if (v9 == 4)
   {
-    v55 = [objc_msgSend(a4 "allSlides")];
+    v55 = [objc_msgSend(document "allSlides")];
     v173 = +[NSMutableDictionary dictionary];
     v176 = +[NSMutableArray array];
     v238 = 0u;
@@ -12180,21 +12180,21 @@ LABEL_207:
       while (v57);
     }
 
-    v63 = [a4 mainLayers];
-    v64 = v146;
-    v65 = v162;
-    if (![v63 count])
+    mainLayers3 = [document mainLayers];
+    v64 = selfCopy;
+    v65 = optionsCopy;
+    if (![mainLayers3 count])
     {
       return;
     }
 
-    v66 = [v63 lastObject];
-    v67 = [NSMutableDictionary dictionaryWithDictionary:v162];
-    v68 = [v162 objectForKey:kMPAuthoringStyleID];
+    lastObject4 = [mainLayers3 lastObject];
+    v67 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
+    v68 = [optionsCopy objectForKey:kMPAuthoringStyleID];
     v69 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
     v70 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")]);
     [(NSMutableDictionary *)v67 setObject:v70 forKey:kMPAuthoringLayerIndex];
-    v71 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", [a4 videoPaths]);
+    v71 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", [document videoPaths]);
     [(NSMutableDictionary *)v67 setObject:v71 forKey:kMPAuthoringSecondaryPaths];
     v237 = 0u;
     v236 = 0u;
@@ -12206,11 +12206,11 @@ LABEL_207:
       goto LABEL_165;
     }
 
-    v151 = 0;
+    bOOLValue = 0;
     v169 = v69 - 1;
     v72 = *v235;
     v157 = v67;
-    v160 = v66;
+    v160 = lastObject4;
     v154 = *v235;
     while (1)
     {
@@ -12224,10 +12224,10 @@ LABEL_207:
         v74 = [v173 objectForKey:*(*(&v234 + 1) + 8 * n)];
         v75 = [objc_msgSend(v74 "lastObject")];
         v76 = [objc_msgSend(v75 "parentContainer")];
-        v77 = [v75 countOfSlides];
+        countOfSlides = [v75 countOfSlides];
         v78 = [v74 count];
         v80 = v169 < 2 || v76 > 0;
-        if (v77 == v78 && v80)
+        if (countOfSlides == v78 && v80)
         {
           if (v76)
           {
@@ -12237,16 +12237,16 @@ LABEL_207:
           else
           {
             v91 = 0;
-            if ([v66 countOfEffectContainers] >= 1 && v169 <= 1)
+            if ([lastObject4 countOfEffectContainers] >= 1 && v169 <= 1)
             {
-              v91 = [(MPAuthoringController *)v64 _grabAndRemoveTitleEffectFromDocument:a4 withOptions:v162];
+              v91 = [(MPAuthoringController *)v64 _grabAndRemoveTitleEffectFromDocument:document withOptions:optionsCopy];
             }
           }
 
-          [v66 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v76)}];
+          [lastObject4 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v76)}];
           if (v91)
           {
-            [(MPAuthoringController *)v64 _readdTitleEffect:v91 toDocument:a4 withOptions:v162];
+            [(MPAuthoringController *)v64 _readdTitleEffect:v91 toDocument:document withOptions:optionsCopy];
           }
 
           continue;
@@ -12257,8 +12257,8 @@ LABEL_207:
         v231 = 0u;
         v232 = 0u;
         v233 = 0u;
-        v83 = [v75 slides];
-        v84 = [v83 countByEnumeratingWithState:&v230 objects:v255 count:16];
+        slides = [v75 slides];
+        v84 = [slides countByEnumeratingWithState:&v230 objects:v255 count:16];
         if (v84)
         {
           v85 = v84;
@@ -12269,7 +12269,7 @@ LABEL_207:
             {
               if (*v231 != v86)
               {
-                objc_enumerationMutation(v83);
+                objc_enumerationMutation(slides);
               }
 
               v88 = *(*(&v230 + 1) + 8 * ii);
@@ -12279,30 +12279,30 @@ LABEL_207:
               }
             }
 
-            v85 = [v83 countByEnumeratingWithState:&v230 objects:v255 count:16];
+            v85 = [slides countByEnumeratingWithState:&v230 objects:v255 count:16];
           }
 
           while (v85);
         }
 
-        v66 = v160;
+        lastObject4 = v160;
         if (!v76 && v169 >= 2)
         {
-          v89 = [v75 countOfSlides];
-          a4 = v141;
-          v64 = v146;
+          countOfSlides2 = [v75 countOfSlides];
+          document = documentCopy;
+          v64 = selfCopy;
           v67 = v157;
-          if (v89 == [v74 count])
+          if (countOfSlides2 == [v74 count])
           {
-            v90 = [v162 objectForKey:kMPAuthoringUseTitleEffect];
+            v90 = [optionsCopy objectForKey:kMPAuthoringUseTitleEffect];
             if (v90)
             {
-              v151 = [v90 BOOLValue];
+              bOOLValue = [v90 BOOLValue];
             }
 
             else
             {
-              v151 = 1;
+              bOOLValue = 1;
             }
           }
 
@@ -12312,8 +12312,8 @@ LABEL_134:
           goto LABEL_135;
         }
 
-        a4 = v141;
-        v64 = v146;
+        document = documentCopy;
+        v64 = selfCopy;
         v67 = v157;
         if (v76)
         {
@@ -12323,7 +12323,7 @@ LABEL_134:
         v92 = 0;
         if ([v160 countOfEffectContainers] >= 1 && v169 <= 1)
         {
-          v92 = [(MPAuthoringController *)v146 _grabAndRemoveTitleEffectFromDocument:v141 withOptions:v162];
+          v92 = [(MPAuthoringController *)selfCopy _grabAndRemoveTitleEffectFromDocument:documentCopy withOptions:optionsCopy];
         }
 
 LABEL_135:
@@ -12334,14 +12334,14 @@ LABEL_135:
         [(NSMutableDictionary *)v67 setObject:v93 forKey:kMPAuthoringUseTitleEffect];
         if (v76 >= [v160 countOfEffectContainers])
         {
-          v94 = [(MPAuthoringController *)v64 _addVideoPaths:v82 toEndOfLayer:v160 inDocument:a4 withOptions:v67];
+          v94 = [(MPAuthoringController *)v64 _addVideoPaths:v82 toEndOfLayer:v160 inDocument:document withOptions:v67];
           if (!v92)
           {
             goto LABEL_140;
           }
 
 LABEL_139:
-          [(MPAuthoringController *)v64 _readdTitleEffect:v92 toDocument:a4 withOptions:v162];
+          [(MPAuthoringController *)v64 _readdTitleEffect:v92 toDocument:document withOptions:optionsCopy];
           goto LABEL_140;
         }
 
@@ -12360,10 +12360,10 @@ LABEL_140:
           v95 = [objc_msgSend(v94 objectAtIndex:{0), "allSlides"}];
           if ([v95 count])
           {
-            v96 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", [objc_msgSend(a4 "allSlides")], objc_msgSend(v82, "count"));
+            v96 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", [objc_msgSend(document "allSlides")], objc_msgSend(v82, "count"));
             [(NSMutableDictionary *)v67 setObject:v96 forKey:kMPAuthoringReconfigureIndices];
-            [(MPAuthoringController *)v64 configureFiltersInDocument:a4 withOptions:v67];
-            [(MPAuthoringController *)v64 configureTransitionsInDocument:a4 withOptions:v67];
+            [(MPAuthoringController *)v64 configureFiltersInDocument:document withOptions:v67];
+            [(MPAuthoringController *)v64 configureTransitionsInDocument:document withOptions:v67];
           }
         }
 
@@ -12373,8 +12373,8 @@ LABEL_140:
       v166 = [v173 countByEnumeratingWithState:&v234 objects:v256 count:16];
       if (!v166)
       {
-        v65 = v162;
-        if ((v151 & 1) != 0 && [v66 countOfEffectContainers] >= 1)
+        v65 = optionsCopy;
+        if ((bOOLValue & 1) != 0 && [lastObject4 countOfEffectContainers] >= 1)
         {
           [(NSMutableDictionary *)v67 removeObjectForKey:kMPAuthoringOutroEffectID];
           [(NSMutableDictionary *)v67 removeObjectForKey:kMPAuthoringReconfigureIndices];
@@ -12386,7 +12386,7 @@ LABEL_140:
           v227 = 0u;
           v228 = 0u;
           v229 = 0u;
-          v99 = [objc_msgSend(objc_msgSend(v66 "effectContainers")];
+          v99 = [objc_msgSend(objc_msgSend(lastObject4 "effectContainers")];
           v100 = [v99 countByEnumeratingWithState:&v226 objects:v254 count:16];
           if (v100)
           {
@@ -12406,8 +12406,8 @@ LABEL_140:
                 v223 = 0u;
                 v224 = 0u;
                 v225 = 0u;
-                v105 = [v104 slides];
-                v106 = [v105 countByEnumeratingWithState:&v222 objects:v253 count:16];
+                slides2 = [v104 slides];
+                v106 = [slides2 countByEnumeratingWithState:&v222 objects:v253 count:16];
                 if (v106)
                 {
                   v107 = v106;
@@ -12418,13 +12418,13 @@ LABEL_140:
                     {
                       if (*v223 != v108)
                       {
-                        objc_enumerationMutation(v105);
+                        objc_enumerationMutation(slides2);
                       }
 
                       [v98 addObject:{objc_msgSend(*(*(&v222 + 1) + 8 * kk), "path")}];
                     }
 
-                    v107 = [v105 countByEnumeratingWithState:&v222 objects:v253 count:16];
+                    v107 = [slides2 countByEnumeratingWithState:&v222 objects:v253 count:16];
                   }
 
                   while (v107);
@@ -12438,29 +12438,29 @@ LABEL_140:
           }
 
           [v160 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", 0)}];
-          v64 = v146;
-          v110 = [(MPAuthoringController *)v146 effectContainersWithImages:v98 effects:[(MPAuthoringController *)v146 effectsForImages:v98 withOptions:v157] andOptions:v157];
+          v64 = selfCopy;
+          v110 = [(MPAuthoringController *)selfCopy effectContainersWithImages:v98 effects:[(MPAuthoringController *)selfCopy effectsForImages:v98 withOptions:v157] andOptions:v157];
           [v160 insertEffectContainers:v110 atIndex:0];
-          a4 = v141;
-          v65 = v162;
+          document = documentCopy;
+          v65 = optionsCopy;
           if ([v110 count])
           {
             [+[MPCropController sharedController](MPCropController "sharedController")];
             v111 = [objc_msgSend(v110 objectAtIndex:{0), "allSlides"}];
             if ([v111 count])
             {
-              v112 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", [objc_msgSend(v141 "allSlides")], objc_msgSend(v98, "count"));
+              v112 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", [objc_msgSend(documentCopy "allSlides")], objc_msgSend(v98, "count"));
               [(NSMutableDictionary *)v157 setObject:v112 forKey:kMPAuthoringReconfigureIndices];
-              [(MPAuthoringController *)v146 configureFiltersInDocument:v141 withOptions:v157];
-              [(MPAuthoringController *)v146 configureTransitionsInDocument:v141 withOptions:v157];
+              [(MPAuthoringController *)selfCopy configureFiltersInDocument:documentCopy withOptions:v157];
+              [(MPAuthoringController *)selfCopy configureTransitionsInDocument:documentCopy withOptions:v157];
             }
           }
         }
 
 LABEL_165:
-        [(MPAuthoringController *)v64 scaleDurationsInDocument:a4 withOptions:v65];
-        v113 = [objc_msgSend(a4 "orderedVideoPaths")];
-        [a4 setVideoPaths:v113];
+        [(MPAuthoringController *)v64 scaleDurationsInDocument:document withOptions:v65];
+        v113 = [objc_msgSend(document "orderedVideoPaths")];
+        [document setVideoPaths:v113];
         v114 = [v113 count];
         if (v114 >= 1)
         {
@@ -12469,8 +12469,8 @@ LABEL_165:
           v221 = 0u;
           v218 = 0u;
           v219 = 0u;
-          v143 = [a4 layers];
-          v147 = [v143 countByEnumeratingWithState:&v218 objects:v252 count:16];
+          layers = [document layers];
+          v147 = [layers countByEnumeratingWithState:&v218 objects:v252 count:16];
           if (v147)
           {
             v145 = *v219;
@@ -12481,7 +12481,7 @@ LABEL_165:
               {
                 if (*v219 != v145)
                 {
-                  objc_enumerationMutation(v143);
+                  objc_enumerationMutation(layers);
                 }
 
                 v149 = v116;
@@ -12492,8 +12492,8 @@ LABEL_165:
                   v217 = 0u;
                   v214 = 0u;
                   v215 = 0u;
-                  v152 = [v117 effectContainers];
-                  v158 = [v152 countByEnumeratingWithState:&v214 objects:v251 count:16];
+                  effectContainers2 = [v117 effectContainers];
+                  v158 = [effectContainers2 countByEnumeratingWithState:&v214 objects:v251 count:16];
                   if (v158)
                   {
                     v155 = *v215;
@@ -12504,7 +12504,7 @@ LABEL_165:
                       {
                         if (*v215 != v155)
                         {
-                          objc_enumerationMutation(v152);
+                          objc_enumerationMutation(effectContainers2);
                         }
 
                         v161 = v118;
@@ -12513,8 +12513,8 @@ LABEL_165:
                         v211 = 0u;
                         v212 = 0u;
                         v213 = 0u;
-                        v164 = [v119 effects];
-                        v170 = [v164 countByEnumeratingWithState:&v210 objects:v250 count:16];
+                        effects2 = [v119 effects];
+                        v170 = [effects2 countByEnumeratingWithState:&v210 objects:v250 count:16];
                         if (v170)
                         {
                           v167 = *v211;
@@ -12525,7 +12525,7 @@ LABEL_165:
                             {
                               if (*v211 != v167)
                               {
-                                objc_enumerationMutation(v164);
+                                objc_enumerationMutation(effects2);
                               }
 
                               v174 = v120;
@@ -12535,8 +12535,8 @@ LABEL_165:
                               v207 = 0u;
                               v208 = 0u;
                               v209 = 0u;
-                              v123 = [v121 secondarySlides];
-                              v124 = [v123 countByEnumeratingWithState:&v206 objects:v249 count:16];
+                              secondarySlides3 = [v121 secondarySlides];
+                              v124 = [secondarySlides3 countByEnumeratingWithState:&v206 objects:v249 count:16];
                               if (v124)
                               {
                                 v125 = v124;
@@ -12547,13 +12547,13 @@ LABEL_165:
                                   {
                                     if (*v207 != v126)
                                     {
-                                      objc_enumerationMutation(v123);
+                                      objc_enumerationMutation(secondarySlides3);
                                     }
 
                                     [v122 addObject:{objc_msgSend(*(*(&v206 + 1) + 8 * mm), "path")}];
                                   }
 
-                                  v125 = [v123 countByEnumeratingWithState:&v206 objects:v249 count:16];
+                                  v125 = [secondarySlides3 countByEnumeratingWithState:&v206 objects:v249 count:16];
                                 }
 
                                 while (v125);
@@ -12563,8 +12563,8 @@ LABEL_165:
                               v205 = 0u;
                               v202 = 0u;
                               v203 = 0u;
-                              v128 = [v121 secondarySlides];
-                              v129 = [v128 countByEnumeratingWithState:&v202 objects:v248 count:16];
+                              secondarySlides4 = [v121 secondarySlides];
+                              v129 = [secondarySlides4 countByEnumeratingWithState:&v202 objects:v248 count:16];
                               if (v129)
                               {
                                 v130 = v129;
@@ -12575,7 +12575,7 @@ LABEL_165:
                                   {
                                     if (*v203 != v131)
                                     {
-                                      objc_enumerationMutation(v128);
+                                      objc_enumerationMutation(secondarySlides4);
                                     }
 
                                     v133 = *(*(&v202 + 1) + 8 * nn);
@@ -12583,15 +12583,15 @@ LABEL_165:
                                     {
                                       do
                                       {
-                                        v134 = [v113 objectAtIndex:random() % v115];
+                                        v115 = [v113 objectAtIndex:random() % v115];
                                       }
 
-                                      while ([v122 indexOfObject:v134] != 0x7FFFFFFFFFFFFFFFLL && v115 > objc_msgSend(v122, "count"));
-                                      [v133 setPath:v134];
+                                      while ([v122 indexOfObject:v115] != 0x7FFFFFFFFFFFFFFFLL && v115 > objc_msgSend(v122, "count"));
+                                      [v133 setPath:v115];
                                     }
                                   }
 
-                                  v130 = [v128 countByEnumeratingWithState:&v202 objects:v248 count:16];
+                                  v130 = [secondarySlides4 countByEnumeratingWithState:&v202 objects:v248 count:16];
                                 }
 
                                 while (v130);
@@ -12601,7 +12601,7 @@ LABEL_165:
                             }
 
                             while (v174 + 1 != v170);
-                            v170 = [v164 countByEnumeratingWithState:&v210 objects:v250 count:16];
+                            v170 = [effects2 countByEnumeratingWithState:&v210 objects:v250 count:16];
                           }
 
                           while (v170);
@@ -12611,7 +12611,7 @@ LABEL_165:
                       }
 
                       while ((v161 + 1) != v158);
-                      v158 = [v152 countByEnumeratingWithState:&v214 objects:v251 count:16];
+                      v158 = [effectContainers2 countByEnumeratingWithState:&v214 objects:v251 count:16];
                     }
 
                     while (v158);
@@ -12622,7 +12622,7 @@ LABEL_165:
               }
 
               while ((v149 + 1) != v147);
-              v147 = [v143 countByEnumeratingWithState:&v218 objects:v252 count:16];
+              v147 = [layers countByEnumeratingWithState:&v218 objects:v252 count:16];
             }
 
             while (v147);
@@ -12639,27 +12639,27 @@ LABEL_165:
     goto LABEL_207;
   }
 
-  v46 = [objc_msgSend(a4 "orderedVideoPaths")];
-  [v46 removeObjectsAtIndexes:v7];
-  [a4 setVideoPaths:v46];
+  v46 = [objc_msgSend(document "orderedVideoPaths")];
+  [v46 removeObjectsAtIndexes:indiciesCopy];
+  [document setVideoPaths:v46];
 
-  v47 = [v162 objectForKey:kMPAuthoringUseBestAspectRatio];
+  v47 = [optionsCopy objectForKey:kMPAuthoringUseBestAspectRatio];
   if (v47)
   {
-    v48 = [v47 BOOLValue];
+    bOOLValue2 = [v47 BOOLValue];
   }
 
   else
   {
-    v48 = 1;
+    bOOLValue2 = 1;
   }
 
   v136 = [NSNumber numberWithBool:0];
-  [a4 setAuthoringOption:v136 forKey:kMPAuthoringUseBestAspectRatio];
-  if ([objc_msgSend(a4 "videoPaths")])
+  [document setAuthoringOption:v136 forKey:kMPAuthoringUseBestAspectRatio];
+  if ([objc_msgSend(document "videoPaths")])
   {
-    [(MPAuthoringController *)self authorDocument:a4 withOptions:v162];
-    if (!v48)
+    [(MPAuthoringController *)self authorDocument:document withOptions:optionsCopy];
+    if (!bOOLValue2)
     {
       return;
     }
@@ -12667,8 +12667,8 @@ LABEL_165:
 
   else
   {
-    [a4 removeAllLayers];
-    if (!v48)
+    [document removeAllLayers];
+    if (!bOOLValue2)
     {
       return;
     }
@@ -12677,20 +12677,20 @@ LABEL_165:
   v137 = [NSNumber numberWithBool:1];
   v138 = kMPAuthoringUseBestAspectRatio;
 
-  [a4 setAuthoringOption:v137 forKey:v138];
+  [document setAuthoringOption:v137 forKey:v138];
 }
 
-- (void)addStyledCaptionToSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)addStyledCaptionToSlide:(id)slide inDocument:(id)document withOptions:(id)options
 {
-  if ([objc_msgSend(a3 userInfoAttributeForKey:{@"hasSubtitle", "BOOLValue"}])
+  if ([objc_msgSend(slide userInfoAttributeForKey:{@"hasSubtitle", "BOOLValue"}])
   {
     return;
   }
 
-  v9 = a5 ? a5 : [objc_msgSend(a4 "documentLayerGroup")];
+  v9 = options ? options : [objc_msgSend(document "documentLayerGroup")];
   v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
-  v11 = [a4 videoPaths];
-  [(NSMutableDictionary *)v10 setObject:v11 forKey:kMPAuthoringSecondaryPaths];
+  videoPaths = [document videoPaths];
+  [(NSMutableDictionary *)v10 setObject:videoPaths forKey:kMPAuthoringSecondaryPaths];
   v12 = [NSNumber numberWithBool:1];
   [(NSMutableDictionary *)v10 setObject:v12 forKey:kMPAuthoringAlwaysIncludeLastTransition];
   [(NSMutableDictionary *)v10 setObject:kMPFadeNone forKey:kMPAuthoringOutroEffectID];
@@ -12709,35 +12709,35 @@ LABEL_165:
     return;
   }
 
-  v82 = self;
-  v74 = [objc_msgSend(a3 "path")];
-  v80 = [a3 parentEffect];
+  selfCopy = self;
+  v74 = [objc_msgSend(slide "path")];
+  parentEffect = [slide parentEffect];
   v17 = v14;
-  v18 = [v80 parentContainer];
-  v78 = [v18 index];
-  v75 = [v18 parentLayer];
+  parentContainer = [parentEffect parentContainer];
+  index = [parentContainer index];
+  parentLayer = [parentContainer parentLayer];
   v72 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   v19 = [NSNumber numberWithInteger:?];
   v81 = v10;
   [(NSMutableDictionary *)v10 setObject:v19 forKey:kMPAuthoringLayerIndex];
   v71 = v17;
   v20 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
-  v21 = [a3 index];
-  v76 = a5;
-  v77 = a4;
-  v73 = a3;
+  index2 = [slide index];
+  optionsCopy = options;
+  documentCopy = document;
+  slideCopy = slide;
   if (v20 == &dword_0 + 1)
   {
-    v22 = [a3 index] + 1;
+    v22 = [slide index] + 1;
   }
 
   else
   {
-    v22 = v21;
+    v22 = index2;
   }
 
   v23 = +[NSMutableArray array];
-  v24 = [objc_msgSend(v80 "slides")];
+  v24 = [objc_msgSend(parentEffect "slides")];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
@@ -12766,7 +12766,7 @@ LABEL_165:
   }
 
   v29 = +[NSMutableArray array];
-  v30 = [objc_msgSend(v80 "slides")];
+  v30 = [objc_msgSend(parentEffect "slides")];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
@@ -12794,7 +12794,7 @@ LABEL_165:
     while (v32);
   }
 
-  if (v82->_isAuthoring)
+  if (selfCopy->_isAuthoring)
   {
     v35 = [NSNumber numberWithInteger:v72];
     v36 = v81;
@@ -12803,15 +12803,15 @@ LABEL_165:
 
   else
   {
-    [(MPAuthoringController *)v82 setAuthoredDocument:v77];
+    [(MPAuthoringController *)selfCopy setAuthoredDocument:documentCopy];
     v37 = [NSMutableArray arrayWithArray:v23];
     [(NSMutableArray *)v37 addObjectsFromArray:v29];
     v38 = v37;
     v36 = v81;
-    [(MPAuthoringController *)v82 cacheROIInformationForImages:v38 withOptions:v81];
+    [(MPAuthoringController *)selfCopy cacheROIInformationForImages:v38 withOptions:v81];
   }
 
-  v39 = [(MPAuthoringController *)v82 findEffectIDInPresetArray:v16 forImages:v29 withOptions:v36];
+  v39 = [(MPAuthoringController *)selfCopy findEffectIDInPresetArray:v16 forImages:v29 withOptions:v36];
   if (v39)
   {
     v40 = v39;
@@ -12848,15 +12848,15 @@ LABEL_34:
   }
 
 LABEL_35:
-  v46 = v82;
+  v46 = selfCopy;
   if ([v41 count])
   {
     if ([v23 count])
     {
-      if ([MPAuthoringUtilities useTitleEffectFromOptions:a5])
+      if ([MPAuthoringUtilities useTitleEffectFromOptions:options])
       {
-        v47 = [-[MPDocument titleEffect](v82->_authoredDocument "titleEffect")];
-        if (!v23 || (v48 = v47, ![objc_msgSend(v23 objectAtIndex:{0), "isEqualToString:", objc_msgSend(objc_msgSend(v77, "orderedVideoPaths"), "objectAtIndex:", 0)}]) || !v48)
+        v47 = [-[MPDocument titleEffect](selfCopy->_authoredDocument "titleEffect")];
+        if (!v23 || (v48 = v47, ![objc_msgSend(v23 objectAtIndex:{0), "isEqualToString:", objc_msgSend(objc_msgSend(documentCopy, "orderedVideoPaths"), "objectAtIndex:", 0)}]) || !v48)
         {
           v49 = [NSNumber numberWithBool:0];
           [(NSMutableDictionary *)v81 setObject:v49 forKey:kMPAuthoringUseTitleEffect];
@@ -12864,27 +12864,27 @@ LABEL_35:
       }
     }
 
-    v50 = v78;
-    [v75 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v78)}];
+    v50 = index;
+    [parentLayer removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", index)}];
     if ([v23 count])
     {
-      v51 = [(MPAuthoringController *)v82 effectContainersWithImages:v23 effects:[(MPAuthoringController *)v82 effectsForImages:v23 withOptions:v81] andOptions:v81];
-      [v75 insertEffectContainers:v51 atIndex:v78];
-      v50 = &v78[[v51 count]];
+      v51 = [(MPAuthoringController *)selfCopy effectContainersWithImages:v23 effects:[(MPAuthoringController *)selfCopy effectsForImages:v23 withOptions:v81] andOptions:v81];
+      [parentLayer insertEffectContainers:v51 atIndex:index];
+      v50 = &index[[v51 count]];
     }
 
-    v52 = [v73 path];
+    path = [slideCopy path];
     v53 = [(NSMutableDictionary *)v81 objectForKey:kMPAuthoringSubtitles];
-    if (!v53 || (v54 = [v53 objectForKey:v52]) == 0)
+    if (!v53 || (v54 = [v53 objectForKey:path]) == 0)
     {
       v54 = @"Subtitle Text Here";
     }
 
     v55 = [NSArray arrayWithObject:v54];
     [(NSMutableDictionary *)v81 setObject:v55 forKey:kMPAuthoringTitleStrings];
-    v56 = [(MPAuthoringController *)v82 effectContainersWithImages:v29 effects:v41 andOptions:v81];
+    v56 = [(MPAuthoringController *)selfCopy effectContainersWithImages:v29 effects:v41 andOptions:v81];
     v79 = v50;
-    [v75 insertEffectContainers:v56 atIndex:v50];
+    [parentLayer insertEffectContainers:v56 atIndex:v50];
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
@@ -12909,8 +12909,8 @@ LABEL_35:
           v84 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v63 = [v62 effects];
-          v64 = [v63 countByEnumeratingWithState:&v83 objects:v99 count:16];
+          effects = [v62 effects];
+          v64 = [effects countByEnumeratingWithState:&v83 objects:v99 count:16];
           if (v64)
           {
             v65 = v64;
@@ -12921,13 +12921,13 @@ LABEL_35:
               {
                 if (*v84 != v66)
                 {
-                  objc_enumerationMutation(v63);
+                  objc_enumerationMutation(effects);
                 }
 
                 v59 += [*(*(&v83 + 1) + 8 * m) countOfSlides];
               }
 
-              v65 = [v63 countByEnumeratingWithState:&v83 objects:v99 count:16];
+              v65 = [effects countByEnumeratingWithState:&v83 objects:v99 count:16];
             }
 
             while (v65);
@@ -12947,65 +12947,65 @@ LABEL_35:
 
     [v29 removeObjectsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, v59)}];
     v68 = [v56 count];
-    v46 = v82;
+    v46 = selfCopy;
     if ([v29 count])
     {
       v69 = [NSNumber numberWithBool:0];
       [(NSMutableDictionary *)v81 setObject:v69 forKey:kMPAuthoringUseTitleEffect];
-      [v75 insertEffectContainers:-[MPAuthoringController effectContainersWithImages:effects:andOptions:](v82 atIndex:{"effectContainersWithImages:effects:andOptions:", v29, -[MPAuthoringController effectsForImages:withOptions:](v82, "effectsForImages:withOptions:", v29, v81), v81), &v79[v68]}];
+      [parentLayer insertEffectContainers:-[MPAuthoringController effectContainersWithImages:effects:andOptions:](selfCopy atIndex:{"effectContainersWithImages:effects:andOptions:", v29, -[MPAuthoringController effectsForImages:withOptions:](selfCopy, "effectsForImages:withOptions:", v29, v81), v81), &v79[v68]}];
     }
   }
 
-  [+[MPUtilities slideForPath:inDocument:](MPUtilities slideForPath:v74 inDocument:{v77), "setUserInfoAttribute:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 1), @"hasSubtitle"}];
+  [+[MPUtilities slideForPath:inDocument:](MPUtilities slideForPath:v74 inDocument:{documentCopy), "setUserInfoAttribute:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 1), @"hasSubtitle"}];
 
-  v70 = v76;
+  v70 = optionsCopy;
   if (!v46->_isAuthoring && !v46->_skipApplyingSettings)
   {
     [(MPAuthoringController *)v46 cleanup];
-    if (!v76)
+    if (!optionsCopy)
     {
-      v70 = +[NSDictionary dictionaryWithDictionary:](NSDictionary, "dictionaryWithDictionary:", [objc_msgSend(v77 "documentLayerGroup")]);
+      v70 = +[NSDictionary dictionaryWithDictionary:](NSDictionary, "dictionaryWithDictionary:", [objc_msgSend(documentCopy "documentLayerGroup")]);
     }
 
-    [(MPAuthoringController *)v46 reconfigureColorSchemeInDocument:v77 withOptions:v70];
-    [(MPAuthoringController *)v46 configureFiltersInDocument:v77 withOptions:v70];
-    [(MPAuthoringController *)v46 configureTransitionsInDocument:v77 withOptions:v70];
-    [(MPAuthoringController *)v46 scaleDurationsInDocument:v77 withOptions:v70];
+    [(MPAuthoringController *)v46 reconfigureColorSchemeInDocument:documentCopy withOptions:v70];
+    [(MPAuthoringController *)v46 configureFiltersInDocument:documentCopy withOptions:v70];
+    [(MPAuthoringController *)v46 configureTransitionsInDocument:documentCopy withOptions:v70];
+    [(MPAuthoringController *)v46 scaleDurationsInDocument:documentCopy withOptions:v70];
     [+[MPCropController sharedController](MPCropController "sharedController")];
   }
 }
 
-- (void)removeStyledCaptionFromSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)removeStyledCaptionFromSlide:(id)slide inDocument:(id)document withOptions:(id)options
 {
-  if ([objc_msgSend(a3 userInfoAttributeForKey:{@"hasSubtitle", "BOOLValue"}])
+  if ([objc_msgSend(slide userInfoAttributeForKey:{@"hasSubtitle", "BOOLValue"}])
   {
-    if (!a5)
+    if (!options)
     {
-      a5 = [objc_msgSend(a4 "documentLayerGroup")];
+      options = [objc_msgSend(document "documentLayerGroup")];
     }
 
-    v7 = [MPAuthoringUtilities styleFromOptions:a5];
+    v7 = [MPAuthoringUtilities styleFromOptions:options];
     v8 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
     if (v8)
     {
       v9 = v8;
       if ([v8 count])
       {
-        v10 = [objc_msgSend(a3 "parentEffect")];
-        v59 = [objc_msgSend(a3 "path")];
-        v11 = [a5 mutableCopy];
+        v10 = [objc_msgSend(slide "parentEffect")];
+        v59 = [objc_msgSend(slide "path")];
+        v11 = [options mutableCopy];
         v12 = [NSNumber numberWithBool:0];
         [v11 setObject:v12 forKey:kMPAuthoringUseTitleEffect];
         v13 = [NSNumber numberWithBool:1];
         [v11 setObject:v13 forKey:kMPAuthoringAlwaysIncludeLastTransition];
         v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")]);
         [v11 setObject:v14 forKey:kMPAuthoringLayerIndex];
-        v15 = [a4 videoPaths];
+        videoPaths = [document videoPaths];
         v60 = v11;
-        [v11 setObject:v15 forKey:kMPAuthoringSecondaryPaths];
-        v16 = [v10 parentLayer];
-        v17 = [objc_msgSend(v16 "effectContainers")];
-        v18 = [v16 countOfEffectContainers] - 2;
+        [v11 setObject:videoPaths forKey:kMPAuthoringSecondaryPaths];
+        parentLayer = [v10 parentLayer];
+        v17 = [objc_msgSend(parentLayer "effectContainers")];
+        v18 = [parentLayer countOfEffectContainers] - 2;
         if (v18 == [v10 index] && !objc_msgSend(v17, "countOfEffects"))
         {
           v20 = 1;
@@ -13021,14 +13021,14 @@ LABEL_35:
 
         if (!self->_isAuthoring)
         {
-          [(MPAuthoringController *)self setAuthoredDocument:a4];
+          [(MPAuthoringController *)self setAuthoredDocument:document];
         }
 
         v21 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
         if (v21 == &dword_0 + 2)
         {
-          v25 = [objc_msgSend(a3 "parentEffect")];
-          v23 = [v25 parentLayer];
+          v25 = [objc_msgSend(slide "parentEffect")];
+          parentLayer2 = [v25 parentLayer];
           v24 = [v25 index] - 1;
         }
 
@@ -13041,8 +13041,8 @@ LABEL_35:
             v94 = 0u;
             v91 = 0u;
             v92 = 0u;
-            v29 = [v10 effects];
-            v30 = [v29 countByEnumeratingWithState:&v91 objects:v100 count:16];
+            effects = [v10 effects];
+            v30 = [effects countByEnumeratingWithState:&v91 objects:v100 count:16];
             if (v30)
             {
               v31 = v30;
@@ -13053,7 +13053,7 @@ LABEL_35:
                 {
                   if (*v92 != v67)
                   {
-                    objc_enumerationMutation(v29);
+                    objc_enumerationMutation(effects);
                   }
 
                   v33 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@/%@", [*(*(&v91 + 1) + 8 * i) effectID], objc_msgSend(*(*(&v91 + 1) + 8 * i), "presetID"));
@@ -13094,7 +13094,7 @@ LABEL_23:
                   }
                 }
 
-                v31 = [v29 countByEnumeratingWithState:&v91 objects:v100 count:16];
+                v31 = [effects countByEnumeratingWithState:&v91 objects:v100 count:16];
                 if (v31)
                 {
                   continue;
@@ -13110,8 +13110,8 @@ LABEL_31:
             v84 = 0u;
             v85 = 0u;
             v86 = 0u;
-            v39 = [v10 effects];
-            v40 = [v39 countByEnumeratingWithState:&v83 objects:v98 count:16];
+            effects2 = [v10 effects];
+            v40 = [effects2 countByEnumeratingWithState:&v83 objects:v98 count:16];
             if (v40)
             {
               v41 = v40;
@@ -13122,28 +13122,28 @@ LABEL_31:
                 {
                   if (*v84 != v42)
                   {
-                    objc_enumerationMutation(v39);
+                    objc_enumerationMutation(effects2);
                   }
 
                   [v38 addObjectsFromArray:{objc_msgSend(*(*(&v83 + 1) + 8 * j), "videoPaths")}];
                 }
 
-                v41 = [v39 countByEnumeratingWithState:&v83 objects:v98 count:16];
+                v41 = [effects2 countByEnumeratingWithState:&v83 objects:v98 count:16];
               }
 
               while (v41);
             }
 
             obj = [(MPAuthoringController *)self effectContainersWithImages:v38 effects:[(MPAuthoringController *)self effectsForImages:v38 withOptions:v60] andOptions:v60];
-            v44 = [v10 parentLayer];
-            v45 = [v10 index];
+            parentLayer3 = [v10 parentLayer];
+            index = [v10 index];
             if (v69)
             {
-              [v44 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v45 + 1)}];
+              [parentLayer3 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", index + 1)}];
             }
 
-            [v44 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v45)}];
-            [v44 insertEffectContainers:obj atIndex:v45];
+            [parentLayer3 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", index)}];
+            [parentLayer3 insertEffectContainers:obj atIndex:index];
             v81 = 0u;
             v82 = 0u;
             v79 = 0u;
@@ -13169,8 +13169,8 @@ LABEL_31:
                   v76 = 0u;
                   v77 = 0u;
                   v78 = 0u;
-                  v68 = [v47 effects];
-                  v48 = [v68 countByEnumeratingWithState:&v75 objects:v96 count:16];
+                  effects3 = [v47 effects];
+                  v48 = [effects3 countByEnumeratingWithState:&v75 objects:v96 count:16];
                   if (v48)
                   {
                     v49 = v48;
@@ -13181,7 +13181,7 @@ LABEL_31:
                       {
                         if (*v76 != v50)
                         {
-                          objc_enumerationMutation(v68);
+                          objc_enumerationMutation(effects3);
                         }
 
                         v52 = *(*(&v75 + 1) + 8 * k);
@@ -13189,8 +13189,8 @@ LABEL_31:
                         v72 = 0u;
                         v73 = 0u;
                         v74 = 0u;
-                        v53 = [v52 slides];
-                        v54 = [v53 countByEnumeratingWithState:&v71 objects:v95 count:16];
+                        slides = [v52 slides];
+                        v54 = [slides countByEnumeratingWithState:&v71 objects:v95 count:16];
                         if (v54)
                         {
                           v55 = v54;
@@ -13201,7 +13201,7 @@ LABEL_31:
                             {
                               if (*v72 != v56)
                               {
-                                objc_enumerationMutation(v53);
+                                objc_enumerationMutation(slides);
                               }
 
                               v58 = *(*(&v71 + 1) + 8 * m);
@@ -13212,7 +13212,7 @@ LABEL_31:
                               }
                             }
 
-                            v55 = [v53 countByEnumeratingWithState:&v71 objects:v95 count:16];
+                            v55 = [slides countByEnumeratingWithState:&v71 objects:v95 count:16];
                             if (v55)
                             {
                               continue;
@@ -13226,7 +13226,7 @@ LABEL_60:
                         ;
                       }
 
-                      v49 = [v68 countByEnumeratingWithState:&v75 objects:v96 count:16];
+                      v49 = [effects3 countByEnumeratingWithState:&v75 objects:v96 count:16];
                     }
 
                     while (v49);
@@ -13247,30 +13247,30 @@ LABEL_60:
               v70 = 0;
             }
 
-            v26 = self;
+            selfCopy3 = self;
             [(MPAuthoringController *)self clearROICache];
-            v27 = self;
-            v28 = v70;
+            selfCopy4 = self;
+            slideCopy = v70;
             goto LABEL_68;
           }
 
-          v22 = [objc_msgSend(a3 "parentEffect")];
-          v23 = [v22 parentLayer];
+          v22 = [objc_msgSend(slide "parentEffect")];
+          parentLayer2 = [v22 parentLayer];
           v24 = [v22 index] + 1;
         }
 
-        [v23 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v24)}];
-        v26 = self;
-        v27 = self;
-        v28 = a3;
+        [parentLayer2 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v24)}];
+        selfCopy3 = self;
+        selfCopy4 = self;
+        slideCopy = slide;
 LABEL_68:
-        [(MPAuthoringController *)v27 combineEffectsNearSlide:v28 inDocument:a4 withOptions:v60];
-        [+[MPUtilities slideForPath:inDocument:](MPUtilities slideForPath:v59 inDocument:{a4), "setUserInfoAttribute:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 0), @"hasSubtitle"}];
+        [(MPAuthoringController *)selfCopy4 combineEffectsNearSlide:slideCopy inDocument:document withOptions:v60];
+        [+[MPUtilities slideForPath:inDocument:](MPUtilities slideForPath:v59 inDocument:{document), "setUserInfoAttribute:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 0), @"hasSubtitle"}];
 
-        if (!v26->_isAuthoring)
+        if (!selfCopy3->_isAuthoring)
         {
-          [(MPAuthoringController *)v26 cleanup];
-          [(MPAuthoringController *)v26 scaleDurationsInDocument:a4 withOptions:v60];
+          [(MPAuthoringController *)selfCopy3 cleanup];
+          [(MPAuthoringController *)selfCopy3 scaleDurationsInDocument:document withOptions:v60];
           [+[MPCropController sharedController](MPCropController "sharedController")];
         }
       }
@@ -13278,7 +13278,7 @@ LABEL_68:
   }
 }
 
-- (void)combineSlides:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)combineSlides:(id)slides inDocument:(id)document withOptions:(id)options
 {
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableSet set];
@@ -13286,7 +13286,7 @@ LABEL_68:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v10 = [slides countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -13297,7 +13297,7 @@ LABEL_68:
       {
         if (*v28 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(slides);
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
@@ -13305,7 +13305,7 @@ LABEL_68:
         [v9 addObject:{objc_msgSend(objc_msgSend(v14, "parentEffect"), "parentContainer")}];
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v11 = [slides countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v11);
@@ -13331,13 +13331,13 @@ LABEL_68:
           objc_enumerationMutation(v9);
         }
 
-        v21 = [*(*(&v23 + 1) + 8 * j) index];
-        if (v21 < v19)
+        index = [*(*(&v23 + 1) + 8 * j) index];
+        if (index < v19)
         {
-          v19 = v21;
+          v19 = index;
         }
 
-        [v15 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v21)}];
+        [v15 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", index)}];
       }
 
       v17 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -13351,12 +13351,12 @@ LABEL_68:
     v19 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v15 insertEffectContainers:-[MPAuthoringController effectContainersWithPaths:forDocument:withOptions:](self atIndex:{"effectContainersWithPaths:forDocument:withOptions:", v8, a4, a5), v19}];
+  [v15 insertEffectContainers:-[MPAuthoringController effectContainersWithPaths:forDocument:withOptions:](self atIndex:{"effectContainersWithPaths:forDocument:withOptions:", v8, document, options), v19}];
 }
 
-- (void)combineEffectsNearSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)combineEffectsNearSlide:(id)slide inDocument:(id)document withOptions:(id)options
 {
-  v8 = [MPAuthoringUtilities effectListFromOptions:a5];
+  v8 = [MPAuthoringUtilities effectListFromOptions:options];
   v9 = +[NSMutableArray array];
   v74 = 0u;
   v75 = 0u;
@@ -13390,8 +13390,8 @@ LABEL_68:
     return;
   }
 
-  v14 = [objc_msgSend(a3 "parentEffect")];
-  v15 = [v14 parentLayer];
+  v14 = [objc_msgSend(slide "parentEffect")];
+  parentLayer = [v14 parentLayer];
   v16 = 0;
   while (1)
   {
@@ -13404,7 +13404,7 @@ LABEL_68:
 LABEL_13:
     if ([v17 index] >= 2)
     {
-      v18 = [v15 objectInEffectContainersAtIndex:{objc_msgSend(v17, "index") - 1}];
+      v18 = [parentLayer objectInEffectContainersAtIndex:{objc_msgSend(v17, "index") - 1}];
       if (v18)
       {
         v16 = v18;
@@ -13438,13 +13438,13 @@ LABEL_19:
     if (!v19)
     {
 LABEL_23:
-      v22 = [v20 index];
-      if (v22 >= ([v15 countOfEffectContainers] - 1))
+      index = [v20 index];
+      if (index >= ([parentLayer countOfEffectContainers] - 1))
       {
         goto LABEL_28;
       }
 
-      v23 = [v15 objectInEffectContainersAtIndex:{objc_msgSend(v20, "index") + 1}];
+      v23 = [parentLayer objectInEffectContainersAtIndex:{objc_msgSend(v20, "index") + 1}];
       if (!v23)
       {
         goto LABEL_28;
@@ -13464,9 +13464,9 @@ LABEL_23:
 
   if ([v19 slideCount] == &dword_0 + 1)
   {
-    v21 = [v19 index];
+    index2 = [v19 index];
     v20 = v19;
-    if (v21 >= [v15 countOfEffectContainers])
+    if (index2 >= [parentLayer countOfEffectContainers])
     {
       goto LABEL_28;
     }
@@ -13479,21 +13479,21 @@ LABEL_28:
   if (v17 != v20)
   {
     v24 = +[NSMutableArray array];
-    v50 = self;
-    if ([v20 countOfEffects] || (v25 = objc_msgSend(v15, "countOfEffectContainers") - 1, v25 != objc_msgSend(v20, "index")))
+    selfCopy = self;
+    if ([v20 countOfEffects] || (v25 = objc_msgSend(parentLayer, "countOfEffectContainers") - 1, v25 != objc_msgSend(v20, "index")))
     {
       v27 = 0;
     }
 
     else
     {
-      v26 = [a5 objectForKey:kMPAuthoringOutroEffectID];
+      v26 = [options objectForKey:kMPAuthoringOutroEffectID];
       v27 = [v26 isEqualToString:kMPFadeNone] ^ 1;
     }
 
-    v49 = v15;
+    v49 = parentLayer;
     v48 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", [v17 index], objc_msgSend(v20, "index") + v27 - objc_msgSend(v17, "index"));
-    v28 = [objc_msgSend(v15 "effectContainers")];
+    v28 = [objc_msgSend(parentLayer "effectContainers")];
     v29 = +[NSMutableArray array];
     v70 = 0u;
     v71 = 0u;
@@ -13520,8 +13520,8 @@ LABEL_28:
           v67 = 0u;
           v68 = 0u;
           v69 = 0u;
-          v56 = [v31 effects];
-          v32 = [v56 countByEnumeratingWithState:&v66 objects:v80 count:16];
+          effects = [v31 effects];
+          v32 = [effects countByEnumeratingWithState:&v66 objects:v80 count:16];
           if (v32)
           {
             v33 = v32;
@@ -13532,7 +13532,7 @@ LABEL_28:
               {
                 if (*v67 != v57)
                 {
-                  objc_enumerationMutation(v56);
+                  objc_enumerationMutation(effects);
                 }
 
                 v35 = *(*(&v66 + 1) + 8 * j);
@@ -13540,8 +13540,8 @@ LABEL_28:
                 v63 = 0u;
                 v64 = 0u;
                 v65 = 0u;
-                v36 = [v35 slides];
-                v37 = [v36 countByEnumeratingWithState:&v62 objects:v79 count:16];
+                slides = [v35 slides];
+                v37 = [slides countByEnumeratingWithState:&v62 objects:v79 count:16];
                 if (v37)
                 {
                   v38 = v37;
@@ -13552,7 +13552,7 @@ LABEL_28:
                     {
                       if (*v63 != v39)
                       {
-                        objc_enumerationMutation(v36);
+                        objc_enumerationMutation(slides);
                       }
 
                       v41 = *(*(&v62 + 1) + 8 * k);
@@ -13564,14 +13564,14 @@ LABEL_28:
                       [v24 addObject:{objc_msgSend(v41, "path")}];
                     }
 
-                    v38 = [v36 countByEnumeratingWithState:&v62 objects:v79 count:16];
+                    v38 = [slides countByEnumeratingWithState:&v62 objects:v79 count:16];
                   }
 
                   while (v38);
                 }
               }
 
-              v33 = [v56 countByEnumeratingWithState:&v66 objects:v80 count:16];
+              v33 = [effects countByEnumeratingWithState:&v66 objects:v80 count:16];
             }
 
             while (v33);
@@ -13588,10 +13588,10 @@ LABEL_28:
     }
 
     [v49 removeEffectContainersAtIndices:v48];
-    v42 = [a5 mutableCopy];
+    v42 = [options mutableCopy];
     v43 = [NSNumber numberWithBool:0];
     [v42 setObject:v43 forKey:kMPAuthoringUseTitleEffect];
-    [v49 insertEffectContainers:-[MPAuthoringController effectContainersWithImages:effects:andOptions:](v50 atIndex:{"effectContainersWithImages:effects:andOptions:", v24, -[MPAuthoringController effectsForImages:withOptions:](v50, "effectsForImages:withOptions:", v24, v42), v42), -[NSIndexSet firstIndex](v48, "firstIndex")}];
+    [v49 insertEffectContainers:-[MPAuthoringController effectContainersWithImages:effects:andOptions:](selfCopy atIndex:{"effectContainersWithImages:effects:andOptions:", v24, -[MPAuthoringController effectsForImages:withOptions:](selfCopy, "effectsForImages:withOptions:", v24, v42), v42), -[NSIndexSet firstIndex](v48, "firstIndex")}];
     if ([v29 count])
     {
       v60 = 0u;
@@ -13612,7 +13612,7 @@ LABEL_28:
               objc_enumerationMutation(v29);
             }
 
-            [+[MPUtilities slideForPath:inDocument:](MPUtilities slideForPath:*(*(&v58 + 1) + 8 * m) inDocument:{a4), "setUserInfoAttribute:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 1), @"hasSubtitle"}];
+            [+[MPUtilities slideForPath:inDocument:](MPUtilities slideForPath:*(*(&v58 + 1) + 8 * m) inDocument:{document), "setUserInfoAttribute:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 1), @"hasSubtitle"}];
           }
 
           v45 = [v29 countByEnumeratingWithState:&v58 objects:v78 count:16];
@@ -13624,31 +13624,31 @@ LABEL_28:
   }
 }
 
-- (void)_reorderImagesInDocument:(id)a3 withOptions:(id)a4
+- (void)_reorderImagesInDocument:(id)document withOptions:(id)options
 {
-  v4 = a3;
-  if ([objc_msgSend(a3 "videoPaths")])
+  documentCopy = document;
+  if ([objc_msgSend(document "videoPaths")])
   {
-    if ([v4 countOfLayers])
+    if ([documentCopy countOfLayers])
     {
       context = objc_autoreleasePoolPush();
-      [(MPAuthoringController *)self setAuthoredDocument:v4];
-      [objc_msgSend(v4 "montage")];
-      v6 = [v4 mainLayers];
+      [(MPAuthoringController *)self setAuthoredDocument:documentCopy];
+      [objc_msgSend(documentCopy "montage")];
+      mainLayers = [documentCopy mainLayers];
       v84 = +[NSMutableSet set];
-      v7 = [NSMutableDictionary dictionaryWithDictionary:a4];
+      v7 = [NSMutableDictionary dictionaryWithDictionary:options];
       v71 = +[NSMutableArray array];
-      v86.location = [MPAuthoringUtilities reconfigureRangeFromOptions:a4];
+      v86.location = [MPAuthoringUtilities reconfigureRangeFromOptions:options];
       v86.length = v8;
-      v70 = [a4 objectForKey:kMPAuthoringStyleID];
+      v70 = [options objectForKey:kMPAuthoringStyleID];
       v115 = 0u;
       v116 = 0u;
       v117 = 0u;
       v118 = 0u;
-      obj = v6;
-      v9 = [v6 countByEnumeratingWithState:&v115 objects:v126 count:16];
-      v75 = self;
-      v76 = v4;
+      obj = mainLayers;
+      v9 = [mainLayers countByEnumeratingWithState:&v115 objects:v126 count:16];
+      selfCopy = self;
+      v76 = documentCopy;
       v72 = v7;
       if (v9)
       {
@@ -13672,7 +13672,7 @@ LABEL_28:
               v79 = v13;
               v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")]);
               [(NSMutableDictionary *)v7 setObject:v14 forKey:kMPAuthoringLayerIndex];
-              v15 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", -[MPAuthoringController orderImages:withOptions:](self, "orderImages:withOptions:", [v4 videoPaths], v7));
+              v15 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", -[MPAuthoringController orderImages:withOptions:](self, "orderImages:withOptions:", [documentCopy videoPaths], v7));
               v16 = [MPAuthoringUtilities effectListFromOptions:v7];
               v17 = +[NSMutableArray array];
               v111 = 0u;
@@ -13704,13 +13704,13 @@ LABEL_28:
 
               v78 = v12;
               v77 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-              v22 = [v13 effectContainers];
+              effectContainers = [v13 effectContainers];
               v107 = 0u;
               v108 = 0u;
               v109 = 0u;
               v110 = 0u;
-              v80 = v22;
-              v82 = [v22 countByEnumeratingWithState:&v107 objects:v124 count:16];
+              v80 = effectContainers;
+              v82 = [effectContainers countByEnumeratingWithState:&v107 objects:v124 count:16];
               if (v82)
               {
                 v23 = 0;
@@ -13731,8 +13731,8 @@ LABEL_28:
                     v104 = 0u;
                     v105 = 0u;
                     v106 = 0u;
-                    v85 = [v25 effects];
-                    v26 = [v85 countByEnumeratingWithState:&v103 objects:v123 count:16];
+                    effects = [v25 effects];
+                    v26 = [effects countByEnumeratingWithState:&v103 objects:v123 count:16];
                     if (v26)
                     {
                       v27 = v26;
@@ -13743,20 +13743,20 @@ LABEL_28:
                         {
                           if (*v104 != v28)
                           {
-                            objc_enumerationMutation(v85);
+                            objc_enumerationMutation(effects);
                           }
 
                           v30 = *(*(&v103 + 1) + 8 * j);
-                          v31 = [v30 countOfSlides];
-                          if (v86.length && (v128.location = v23, v128.length = v31, !NSIntersectionRange(v86, v128).length) && [(NSMutableArray *)v15 count]>= v31)
+                          countOfSlides = [v30 countOfSlides];
+                          if (v86.length && (v128.location = v23, v128.length = countOfSlides, !NSIntersectionRange(v86, v128).length) && [(NSMutableArray *)v15 count]>= countOfSlides)
                           {
                             if ([(NSMutableArray *)v15 count])
                             {
-                              [(NSMutableArray *)v15 removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:0, v31]];
+                              [(NSMutableArray *)v15 removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:0, countOfSlides]];
                             }
                           }
 
-                          else if (v31 >= 1)
+                          else if (countOfSlides >= 1)
                           {
                             v32 = 0;
                             while ([(NSMutableArray *)v15 count])
@@ -13769,23 +13769,23 @@ LABEL_28:
                               }
 
                               [(NSMutableArray *)v15 removeObjectAtIndex:0];
-                              if (v31 == ++v32)
+                              if (countOfSlides == ++v32)
                               {
                                 goto LABEL_39;
                               }
                             }
 
                             [v30 setReplaceSlides:0];
-                            [v30 removeSlidesAtIndices:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v32, v31 - v32)}];
+                            [v30 removeSlidesAtIndices:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v32, countOfSlides - v32)}];
                             [v30 setReplaceSlides:1];
                             [v84 addObject:v30];
                           }
 
 LABEL_39:
-                          v23 += v31;
+                          v23 += countOfSlides;
                         }
 
-                        v27 = [v85 countByEnumeratingWithState:&v103 objects:v123 count:16];
+                        v27 = [effects countByEnumeratingWithState:&v103 objects:v123 count:16];
                       }
 
                       while (v27);
@@ -13806,8 +13806,8 @@ LABEL_39:
                 v35 = [objc_msgSend(v79 "effectContainers")];
                 for (k = v35; ; v35 = k)
                 {
-                  v37 = [v35 nextObject];
-                  if (!v37)
+                  nextObject = [v35 nextObject];
+                  if (!nextObject)
                   {
                     break;
                   }
@@ -13816,8 +13816,8 @@ LABEL_39:
                   v102 = 0u;
                   v99 = 0u;
                   v100 = 0u;
-                  v38 = [v37 effects];
-                  v39 = [v38 countByEnumeratingWithState:&v99 objects:v122 count:16];
+                  effects2 = [nextObject effects];
+                  v39 = [effects2 countByEnumeratingWithState:&v99 objects:v122 count:16];
                   if (v39)
                   {
                     v40 = v39;
@@ -13828,7 +13828,7 @@ LABEL_51:
                     {
                       if (*v100 != v41)
                       {
-                        objc_enumerationMutation(v38);
+                        objc_enumerationMutation(effects2);
                       }
 
                       v43 = *(*(&v99 + 1) + 8 * v42);
@@ -13840,7 +13840,7 @@ LABEL_51:
                       [v84 addObject:v43];
                       if (v40 == ++v42)
                       {
-                        v40 = [v38 countByEnumeratingWithState:&v99 objects:v122 count:16];
+                        v40 = [effects2 countByEnumeratingWithState:&v99 objects:v122 count:16];
                         if (v40)
                         {
                           goto LABEL_51;
@@ -13855,8 +13855,8 @@ LABEL_51:
 
 LABEL_44:
               [v71 addObjectsFromArray:v15];
-              self = v75;
-              v4 = v76;
+              self = selfCopy;
+              documentCopy = v76;
               v7 = v72;
               v10 = v73;
               v11 = v69;
@@ -13903,8 +13903,8 @@ LABEL_44:
               v92 = 0u;
               v93 = 0u;
               v94 = 0u;
-              v53 = [v52 slides];
-              v54 = [v53 countByEnumeratingWithState:&v91 objects:v120 count:16];
+              slides = [v52 slides];
+              v54 = [slides countByEnumeratingWithState:&v91 objects:v120 count:16];
               if (v54)
               {
                 v55 = v54;
@@ -13915,23 +13915,23 @@ LABEL_44:
                   {
                     if (*v92 != v56)
                     {
-                      objc_enumerationMutation(v53);
+                      objc_enumerationMutation(slides);
                     }
 
                     [v45 addObject:{objc_msgSend(*(*(&v91 + 1) + 8 * n), "path")}];
                   }
 
-                  v55 = [v53 countByEnumeratingWithState:&v91 objects:v120 count:16];
+                  v55 = [slides countByEnumeratingWithState:&v91 objects:v120 count:16];
                 }
 
                 while (v55);
               }
 
-              v58 = [v52 parentContainer];
-              [v58 removeEffectsAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", objc_msgSend(v52, "zIndex"))}];
-              if (![v58 slideCount])
+              parentContainer = [v52 parentContainer];
+              [parentContainer removeEffectsAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", objc_msgSend(v52, "zIndex"))}];
+              if (![parentContainer slideCount])
               {
-                [objc_msgSend(v58 "parentLayer")];
+                [objc_msgSend(parentContainer "parentLayer")];
               }
             }
 
@@ -13948,12 +13948,12 @@ LABEL_44:
       [v45 addObjectsFromArray:v71];
       if ([v45 count])
       {
-        [(MPAuthoringController *)v75 _addVideoPaths:v45 toEndOfLayer:v59 inDocument:v76 withOptions:v72];
+        [(MPAuthoringController *)selfCopy _addVideoPaths:v45 toEndOfLayer:v59 inDocument:v76 withOptions:v72];
       }
 
-      [(MPAuthoringController *)v75 _checkForEmptyLayersInDocument:v76];
-      v75->_skipApplyingSettings = 1;
-      v61 = [MPAuthoringUtilities subtitlesFromOptions:a4];
+      [(MPAuthoringController *)selfCopy _checkForEmptyLayersInDocument:v76];
+      selfCopy->_skipApplyingSettings = 1;
+      v61 = [MPAuthoringUtilities subtitlesFromOptions:options];
       if (v61)
       {
         v62 = v61;
@@ -13977,7 +13977,7 @@ LABEL_44:
                   objc_enumerationMutation(v62);
                 }
 
-                [(MPAuthoringController *)v75 addStyledCaptionToSlide:[MPUtilities slideForPath:v76 inDocument:?], v76, a4];
+                [(MPAuthoringController *)selfCopy addStyledCaptionToSlide:[MPUtilities slideForPath:v76 inDocument:?], v76, options];
               }
 
               v64 = [v62 countByEnumeratingWithState:&v87 objects:v119 count:16];
@@ -13988,65 +13988,65 @@ LABEL_44:
         }
       }
 
-      v75->_skipApplyingSettings = 0;
-      [(MPAuthoringController *)v75 configureFiltersInDocument:v76 withOptions:v72];
-      [(MPAuthoringController *)v75 configureTransitionsInDocument:v76 withOptions:v72];
-      [(MPAuthoringController *)v75 reconfigureColorSchemeInDocument:v76 withOptions:v72];
-      [(MPAuthoringController *)v75 scaleDurationsInDocument:v76 withOptions:v72];
+      selfCopy->_skipApplyingSettings = 0;
+      [(MPAuthoringController *)selfCopy configureFiltersInDocument:v76 withOptions:v72];
+      [(MPAuthoringController *)selfCopy configureTransitionsInDocument:v76 withOptions:v72];
+      [(MPAuthoringController *)selfCopy reconfigureColorSchemeInDocument:v76 withOptions:v72];
+      [(MPAuthoringController *)selfCopy scaleDurationsInDocument:v76 withOptions:v72];
       [+[MPCropController sharedController](MPCropController "sharedController")];
       [objc_msgSend(v76 "montage")];
-      [(MPAuthoringController *)v75 cleanup];
+      [(MPAuthoringController *)selfCopy cleanup];
       objc_autoreleasePoolPop(context);
     }
 
     else
     {
 
-      [(MPAuthoringController *)self authorDocument:v4 withOptions:a4];
+      [(MPAuthoringController *)self authorDocument:documentCopy withOptions:options];
     }
   }
 
   else
   {
 
-    [v4 removeAllLayers];
+    [documentCopy removeAllLayers];
   }
 }
 
-- (id)_addVideoPaths:(id)a3 toEndOfLayer:(id)a4 inDocument:(id)a5 withOptions:(id)a6
+- (id)_addVideoPaths:(id)paths toEndOfLayer:(id)layer inDocument:(id)document withOptions:(id)options
 {
-  v9 = [NSMutableDictionary dictionaryWithDictionary:a6];
-  v38 = [a4 zIndex];
+  v9 = [NSMutableDictionary dictionaryWithDictionary:options];
+  zIndex = [layer zIndex];
   v10 = [MPAuthoringUtilities outroEffectIDFromOptions:v9];
-  if ([a4 countOfEffectContainers] < 1)
+  if ([layer countOfEffectContainers] < 1)
   {
 LABEL_9:
     v11 = 0;
     goto LABEL_10;
   }
 
-  v11 = [objc_msgSend(a4 "effectContainers")];
+  v11 = [objc_msgSend(layer "effectContainers")];
   if ([objc_msgSend(v11 "effects")])
   {
     v12 = [v10 hasPrefix:{objc_msgSend(objc_msgSend(v11, "objectInEffectsAtIndex:", 0), "effectID")}];
-    if (!v12 || (v13 = [v11 index], objc_msgSend(a4, "removeEffectContainersAtIndices:", +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v13)), v14 = v13 < 1, v15 = v13 - 1, v14))
+    if (!v12 || (v13 = [v11 index], objc_msgSend(layer, "removeEffectContainersAtIndices:", +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v13)), v14 = v13 < 1, v15 = v13 - 1, v14))
     {
-      v16 = a3;
+      pathsCopy2 = paths;
     }
 
     else
     {
-      v16 = a3;
-      if ([a4 countOfEffectContainers] >= 1)
+      pathsCopy2 = paths;
+      if ([layer countOfEffectContainers] >= 1)
       {
-        v11 = [a4 objectInEffectContainersAtIndex:v15];
+        v11 = [layer objectInEffectContainersAtIndex:v15];
       }
     }
 
     v17 = [objc_msgSend(v11 "effects")];
     v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@/%@", [v17 effectID], objc_msgSend(v17, "presetID"));
     [(NSMutableDictionary *)v9 setObject:v18 forKey:kMPAuthoringInitiallyIgnoreEffect];
-    a3 = v16;
+    paths = pathsCopy2;
     if (v12)
     {
       goto LABEL_9;
@@ -14055,20 +14055,20 @@ LABEL_9:
 
   else if ([v10 isEqualToString:kMPFadeOutEffect])
   {
-    v28 = [v11 index];
-    [a4 removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", v28)}];
-    v14 = v28 < 1;
-    v29 = v28 - 1;
-    if (!v14 && [a4 countOfEffectContainers] >= 1)
+    index = [v11 index];
+    [layer removeEffectContainersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", index)}];
+    v14 = index < 1;
+    v29 = index - 1;
+    if (!v14 && [layer countOfEffectContainers] >= 1)
     {
-      [a4 objectInEffectContainersAtIndex:v29];
+      [layer objectInEffectContainersAtIndex:v29];
     }
 
     goto LABEL_9;
   }
 
 LABEL_10:
-  if ([a4 countOfEffectContainers])
+  if ([layer countOfEffectContainers])
   {
     v19 = 0;
   }
@@ -14080,7 +14080,7 @@ LABEL_10:
 
   v20 = [NSNumber numberWithBool:v19];
   [(NSMutableDictionary *)v9 setObject:v20 forKey:kMPAuthoringUseTitleEffect];
-  v21 = [(MPAuthoringController *)self orderImages:a3 withOptions:v9];
+  v21 = [(MPAuthoringController *)self orderImages:paths withOptions:v9];
   v22 = [(MPAuthoringController *)self effectContainersWithImages:v21 effects:[(MPAuthoringController *)self effectsForImages:v21 withOptions:v9] andOptions:v9];
   if (v11)
   {
@@ -14089,14 +14089,14 @@ LABEL_10:
     if (v23)
     {
       v25 = v24;
-      v26 = [self->_delegate document:a5 shouldUseDefaultTransitionForEffectContainer:v11 containerIndex:objc_msgSend(v11 layerIndex:{"index"), v38}];
+      v26 = [self->_delegate document:document shouldUseDefaultTransitionForEffectContainer:v11 containerIndex:objc_msgSend(v11 layerIndex:{"index"), zIndex}];
       if ((v26 & 1) == 0 && ((v25 ^ 1) & 1) == 0)
       {
-        v27 = [self->_delegate document:a5 needsTransitionForEffectContainer:v11 containerIndex:objc_msgSend(v11 layerIndex:{"index"), v38}];
+        v27 = [self->_delegate document:document needsTransitionForEffectContainer:v11 containerIndex:objc_msgSend(v11 layerIndex:{"index"), zIndex}];
 LABEL_25:
         v30 = v27;
 LABEL_26:
-        [a4 addEffectContainers:v22];
+        [layer addEffectContainers:v22];
         [v11 setTransition:v30];
         goto LABEL_27;
       }
@@ -14108,22 +14108,22 @@ LABEL_26:
       }
     }
 
-    v27 = [(MPAuthoringController *)self transitionFromOptions:a6];
+    v27 = [(MPAuthoringController *)self transitionFromOptions:options];
     goto LABEL_25;
   }
 
-  [a4 addEffectContainers:v22];
+  [layer addEffectContainers:v22];
 LABEL_27:
   if ([v10 isEqualToString:kMPFadeOutEffect])
   {
-    v31 = [a4 countOfEffectContainers];
-    if (v31 >= 3)
+    countOfEffectContainers = [layer countOfEffectContainers];
+    if (countOfEffectContainers >= 3)
     {
-      v32 = [objc_msgSend(a4 "effectContainers")];
-      v33 = [v32 transition];
-      if (v33)
+      v32 = [objc_msgSend(layer "effectContainers")];
+      transition = [v32 transition];
+      if (transition)
       {
-        [v33 setTransitionID:@"Dissolve"];
+        [transition setTransitionID:@"Dissolve"];
       }
 
       else
@@ -14143,10 +14143,10 @@ LABEL_27:
   return v22;
 }
 
-- (id)_grabAndRemoveTitleEffectFromDocument:(id)a3 withOptions:(id)a4
+- (id)_grabAndRemoveTitleEffectFromDocument:(id)document withOptions:(id)options
 {
-  v6 = [MPAuthoringUtilities titleEffectFromOptions:a4];
-  if (v6 && (v7 = v6, v8 = +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", a4), v9 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")], v9 == objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "indexOfMainLayerForStyleID:", v8)) && (v10 = objc_msgSend(a3, "objectInLayersAtIndex:", v9), objc_msgSend(v10, "countOfEffectContainers") >= 1) && (v11 = +[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", objc_msgSend(v7, "objectForKey:", @"presetID")), v12 = objc_msgSend(v10, "objectInEffectContainersAtIndex:", 0), v22 = 0u, v23 = 0u, v24 = 0u, v25 = 0u, v13 = objc_msgSend(v12, "effects", 0), (v14 = objc_msgSend(v13, "countByEnumeratingWithState:objects:count:", &v22, v26, 16)) != 0))
+  v6 = [MPAuthoringUtilities titleEffectFromOptions:options];
+  if (v6 && (v7 = v6, v8 = +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", options), v9 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")], v9 == objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "indexOfMainLayerForStyleID:", v8)) && (v10 = objc_msgSend(document, "objectInLayersAtIndex:", v9), objc_msgSend(v10, "countOfEffectContainers") >= 1) && (v11 = +[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", objc_msgSend(v7, "objectForKey:", @"presetID")), v12 = objc_msgSend(v10, "objectInEffectContainersAtIndex:", 0), v22 = 0u, v23 = 0u, v24 = 0u, v25 = 0u, v13 = objc_msgSend(v12, "effects", 0), (v14 = objc_msgSend(v13, "countByEnumeratingWithState:objects:count:", &v22, v26, 16)) != 0))
   {
     v15 = v14;
     v16 = *v23;
@@ -14192,30 +14192,30 @@ LABEL_27:
   return v19;
 }
 
-- (void)_readdTitleEffect:(id)a3 toDocument:(id)a4 withOptions:(id)a5
+- (void)_readdTitleEffect:(id)effect toDocument:(id)document withOptions:(id)options
 {
-  v6 = [a4 objectInLayersAtIndex:{objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "indexOfTitleEffectLayerForStyleID:", +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", a5))}];
+  v6 = [document objectInLayersAtIndex:{objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "indexOfTitleEffectLayerForStyleID:", +[MPAuthoringUtilities styleFromOptions:](MPAuthoringUtilities, "styleFromOptions:", options))}];
   if ([v6 countOfEffectContainers] >= 1)
   {
     v7 = [v6 objectInEffectContainersAtIndex:0];
 
-    [v7 addEffect:a3];
+    [v7 addEffect:effect];
   }
 }
 
-- (void)_checkForEmptyLayersInDocument:(id)a3
+- (void)_checkForEmptyLayersInDocument:(id)document
 {
-  if ([objc_msgSend(a3 "allSlides")])
+  if ([objc_msgSend(document "allSlides")])
   {
-    v4 = [a3 countOfLayers];
-    if (v4 >= 1)
+    countOfLayers = [document countOfLayers];
+    if (countOfLayers >= 1)
     {
-      v5 = v4;
+      v5 = countOfLayers;
       for (i = 0; i != v5; ++i)
       {
-        if (![objc_msgSend(a3 objectInLayersAtIndex:{i), "countOfEffectContainers"}])
+        if (![objc_msgSend(document objectInLayersAtIndex:{i), "countOfEffectContainers"}])
         {
-          [a3 removeLayersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", i)}];
+          [document removeLayersAtIndices:{+[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", i)}];
         }
       }
     }
@@ -14224,13 +14224,13 @@ LABEL_27:
   else
   {
 
-    [a3 removeAllLayers];
+    [document removeAllLayers];
   }
 }
 
-- (int64_t)_numberOfSlidesForOutroInLayer:(id)a3 withOptions:(id)a4
+- (int64_t)_numberOfSlidesForOutroInLayer:(id)layer withOptions:(id)options
 {
-  v6 = [NSMutableDictionary dictionaryWithDictionary:a4];
+  v6 = [NSMutableDictionary dictionaryWithDictionary:options];
   v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")]);
   [(NSMutableDictionary *)v6 setObject:v7 forKey:kMPAuthoringLayerIndex];
   v8 = [MPAuthoringUtilities outroEffectIDFromOptions:v6];
@@ -14240,7 +14240,7 @@ LABEL_27:
   }
 
   v9 = v8;
-  v10 = [objc_msgSend(a3 "effectContainers")];
+  v10 = [objc_msgSend(layer "effectContainers")];
   if ([v10 countOfEffects] < 1)
   {
     return -1;
@@ -14255,10 +14255,10 @@ LABEL_27:
   return [v11 countOfSlides];
 }
 
-- (int64_t)_countOfEmptyContainersInIntroOfLayer:(id)a3 withOptions:(id)a4
+- (int64_t)_countOfEmptyContainersInIntroOfLayer:(id)layer withOptions:(id)options
 {
   v5 = 0;
-  if (![objc_msgSend(a3 objectInEffectContainersAtIndex:{0, a4), "countOfEffects"}])
+  if (![objc_msgSend(layer objectInEffectContainersAtIndex:{0, options), "countOfEffects"}])
   {
     v5 = 0;
     do
@@ -14266,22 +14266,22 @@ LABEL_27:
       ++v5;
     }
 
-    while (![objc_msgSend(a3 objectInEffectContainersAtIndex:{v5), "countOfEffects"}]);
+    while (![objc_msgSend(layer objectInEffectContainersAtIndex:{v5), "countOfEffects"}]);
   }
 
   return v5;
 }
 
-- (void)setupClustersWithPaths:(id)a3 withOptions:(id)a4
+- (void)setupClustersWithPaths:(id)paths withOptions:(id)options
 {
-  v6 = [MPClusterController sharedController:a3];
+  v6 = [MPClusterController sharedController:paths];
   [v6 setAuthoredDocument:self->_authoredDocument];
   [v6 flush];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [paths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -14294,7 +14294,7 @@ LABEL_27:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         [v6 addSlideForPath:*(*(&v12 + 1) + 8 * v11) withIndex:v9++];
@@ -14302,22 +14302,22 @@ LABEL_27:
       }
 
       while (v8 != v11);
-      v8 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [paths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)findUsableClustersForUserDefinedSlideOrderPresentation:(id)a3 inClusters:(id)a4
+- (void)findUsableClustersForUserDefinedSlideOrderPresentation:(id)presentation inClusters:(id)clusters
 {
   v6 = +[MPClusterController sharedController];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = a4;
-  v22 = [a4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  obj = clusters;
+  v22 = [clusters countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v22)
   {
     v25 = 0;
@@ -14356,10 +14356,10 @@ LABEL_27:
               }
 
               v13 = *(*(&v27 + 1) + 8 * v12);
-              v14 = [v6 clusterSlidesSortedByUserDefinedSortOrder:v13 userDefinedSlideOrder:a3];
+              v14 = [v6 clusterSlidesSortedByUserDefinedSortOrder:v13 userDefinedSlideOrder:presentation];
               if ([v14 count])
               {
-                v15 = [a3 indexOfObject:{objc_msgSend(v14, "objectAtIndex:", 0)}];
+                v15 = [presentation indexOfObject:{objc_msgSend(v14, "objectAtIndex:", 0)}];
                 if (![v14 count])
                 {
                   goto LABEL_20;
@@ -14370,7 +14370,7 @@ LABEL_27:
                 do
                 {
                   v18 = [v14 objectAtIndex:v17];
-                  v19 = &v15[v17] < [a3 count] && v18 == objc_msgSend(a3, "objectAtIndex:", &v15[v17]);
+                  v19 = &v15[v17] < [presentation count] && v18 == objc_msgSend(presentation, "objectAtIndex:", &v15[v17]);
                   ++v17;
                 }
 
@@ -14380,7 +14380,7 @@ LABEL_27:
                 if (v19)
                 {
 LABEL_20:
-                  [objc_msgSend(objc_msgSend(a3 objectAtIndex:{v25), "usableSlideClusters"), "addObject:", v13}];
+                  [objc_msgSend(objc_msgSend(presentation objectAtIndex:{v25), "usableSlideClusters"), "addObject:", v13}];
                 }
               }
 

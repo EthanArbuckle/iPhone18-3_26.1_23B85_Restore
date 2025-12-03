@@ -1,123 +1,123 @@
 @interface VCPDatabaseWriter
 + (BOOL)isLegacyPersistEnabled;
-+ (id)assetTypePredicatesStringWithMediaType:(int64_t)a3 mediaSubtypes:(unint64_t)a4 imageOnlyAnalysis:(BOOL)a5;
-+ (id)databaseForPhotoLibrary:(id)a3;
-+ (id)databaseWithFilepath:(id)a3;
-+ (id)initializationCommand:(int)a3;
-+ (void)deprecatedExceptionForMethodName:(id)a3 replacedByMethodName:(id)a4;
++ (id)assetTypePredicatesStringWithMediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes imageOnlyAnalysis:(BOOL)analysis;
++ (id)databaseForPhotoLibrary:(id)library;
++ (id)databaseWithFilepath:(id)filepath;
++ (id)initializationCommand:(int)command;
++ (void)deprecatedExceptionForMethodName:(id)name replacedByMethodName:(id)methodName;
 - (BOOL)exists;
 - (BOOL)hasOutstandingTransactions;
-- (BOOL)keyExistsInKeyValueStore:(id)a3;
-- (BOOL)shouldPropagateError:(int *)a3 finalAttempt:(BOOL)a4;
-- (VCPDatabaseWriter)initWithFilepath:(id)a3;
-- (VCPDatabaseWriter)initWithPhotoLibrary:(id)a3;
+- (BOOL)keyExistsInKeyValueStore:(id)store;
+- (BOOL)shouldPropagateError:(int *)error finalAttempt:(BOOL)attempt;
+- (VCPDatabaseWriter)initWithFilepath:(id)filepath;
+- (VCPDatabaseWriter)initWithPhotoLibrary:(id)library;
 - (id)creationDate;
 - (id)photoLibrary;
-- (int)_deleteAsset:(id)a3;
-- (int)_deleteResult:(id)a3 forAssetId:(int64_t)a4;
-- (int)_getBlacklistCountForLocalIdentifier:(id)a3 count:(int *)a4;
-- (int)_getBlacklistExpiredCount:(id)a3 count:(int *)a4;
-- (int)_queryPropertiesForAsset:(id)a3 assetId:(int64_t *)a4 analysis:(id *)a5;
-- (int)_queryResultsForAssetId:(int64_t)a3 analysis:(id)a4;
-- (int)_queryValue:(int64_t *)a3 forKey:(id)a4;
-- (int)_removeAllProcessingStatusForTaskID:(unint64_t)a3;
-- (int)_removeKey:(id)a3;
-- (int)_removeProgressRecordsBeforeDate:(id)a3;
-- (int)_removeProgressRecordsBeyondMaximum:(unint64_t)a3;
-- (int)_removeSchedulingHistoryForStartTimeBefore:(id)a3;
-- (int)_setValue:(int64_t)a3 forKey:(id)a4;
-- (int)_storeAnalysis:(id)a3 forLocalIdentifier:(id)a4;
-- (int)_storeProgressForActivityID:(unint64_t)a3 withAnalysisSubtype:(unint64_t)a4 version:(unint64_t)a5 processedAssetCount:(unint64_t)a6 totalAssetCount:(unint64_t)a7 storeDate:(id)a8;
-- (int)_storeProperties:(id)a3 forLocalIdentifier:(id)a4 assetId:(int64_t *)a5;
-- (int)_storeResult:(id)a3 withKey:(id)a4 forAssetId:(int64_t)a5;
-- (int)_storeSchedulingHistoryForActivityID:(unint64_t)a3 andStartTime:(id)a4;
-- (int)_updateAnalysis:(id)a3 withAnalysis:(id)a4 forAsset:(id)a5 withAssetId:(int64_t)a6;
+- (int)_deleteAsset:(id)asset;
+- (int)_deleteResult:(id)result forAssetId:(int64_t)id;
+- (int)_getBlacklistCountForLocalIdentifier:(id)identifier count:(int *)count;
+- (int)_getBlacklistExpiredCount:(id)count count:(int *)a4;
+- (int)_queryPropertiesForAsset:(id)asset assetId:(int64_t *)id analysis:(id *)analysis;
+- (int)_queryResultsForAssetId:(int64_t)id analysis:(id)analysis;
+- (int)_queryValue:(int64_t *)value forKey:(id)key;
+- (int)_removeAllProcessingStatusForTaskID:(unint64_t)d;
+- (int)_removeKey:(id)key;
+- (int)_removeProgressRecordsBeforeDate:(id)date;
+- (int)_removeProgressRecordsBeyondMaximum:(unint64_t)maximum;
+- (int)_removeSchedulingHistoryForStartTimeBefore:(id)before;
+- (int)_setValue:(int64_t)value forKey:(id)key;
+- (int)_storeAnalysis:(id)analysis forLocalIdentifier:(id)identifier;
+- (int)_storeProgressForActivityID:(unint64_t)d withAnalysisSubtype:(unint64_t)subtype version:(unint64_t)version processedAssetCount:(unint64_t)count totalAssetCount:(unint64_t)assetCount storeDate:(id)date;
+- (int)_storeProperties:(id)properties forLocalIdentifier:(id)identifier assetId:(int64_t *)id;
+- (int)_storeResult:(id)result withKey:(id)key forAssetId:(int64_t)id;
+- (int)_storeSchedulingHistoryForActivityID:(unint64_t)d andStartTime:(id)time;
+- (int)_updateAnalysis:(id)analysis withAnalysis:(id)withAnalysis forAsset:(id)asset withAssetId:(int64_t)id;
 - (int)_updateAnalysisInfoOnAnalysisVersionChange;
-- (int)_updateAnalysisInfoWithCurrentVersion:(int)a3 andTimestamp:(int64_t)a4 forTaskID:(unint64_t)a5;
+- (int)_updateAnalysisInfoWithCurrentVersion:(int)version andTimestamp:(int64_t)timestamp forTaskID:(unint64_t)d;
 - (int)_updateOperatingSystemVersion;
-- (int)_updateProperties:(id)a3 forAssetId:(int64_t)a4;
-- (int)addAssetToBlacklist:(id)a3;
-- (int)ageOutBlacklistBefore:(id)a3 count:(int *)a4;
-- (int)analysisForAsset:(id)a3 analysis:(id *)a4;
+- (int)_updateProperties:(id)properties forAssetId:(int64_t)id;
+- (int)addAssetToBlacklist:(id)blacklist;
+- (int)ageOutBlacklistBefore:(id)before count:(int *)count;
+- (int)analysisForAsset:(id)asset analysis:(id *)analysis;
 - (int)beginTransaction;
-- (int)bumpAnalysisVersionForAsset:(id)a3;
+- (int)bumpAnalysisVersionForAsset:(id)asset;
 - (int)commit;
 - (int)commitTransaction;
-- (int)containsAsset:(id)a3 result:(BOOL *)a4;
-- (int)countAssetsForTaskID:(unint64_t)a3 totalAssets:(unint64_t *)a4 processedAssets:(unint64_t *)a5;
-- (int)decrementBlacklistCountForLocalIdentifier:(id)a3;
-- (int)deleteAnalysisForAsset:(id)a3;
-- (int)deleteAnalysisResultsWithType:(unint64_t)a3;
-- (int)executeDatabaseBlock:(id)a3 fallbackBlock:(id)a4 write:(BOOL)a5;
-- (int)fetchAllMomentsScheduledAssets:(id *)a3;
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7;
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 withProcessingStatus:(unint64_t)a4 andTaskID:(unint64_t)a5 andFetchLimit:(unint64_t)a6;
-- (int)fetchLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 attempts:(int)a6 fetchLimit:(unint64_t)a7 additionalPredicates:(id)a8;
-- (int)fetchLocalIdentifiers:(id *)a3 taskID:(unint64_t)a4 processingStatus:(unint64_t)a5 additionalPredicates:(id)a6;
-- (int)fetchLocalIdentifiers:(id *)a3 withProcessingStatus:(unint64_t)a4 andTaskID:(unint64_t)a5 andAttempts:(int)a6 andFetchLimit:(unint64_t)a7;
-- (int)fetchLocalIdentifiers:(id *)a3 withTaskID:(unint64_t)a4 andProcessingStatus:(unint64_t)a5;
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 excludingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7;
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 includingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7;
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 withTaskID:(unint64_t)a4 andFetchLimit:(unint64_t)a5;
-- (int)fetchMomentsScheduledAssetEntries:(id *)a3 forTaskID:(unint64_t)a4;
-- (int)fetchProcessingErrorCode:(unint64_t *)a3 errorLine:(unint64_t *)a4 taskID:(unint64_t)a5 localIdentifier:(id)a6;
-- (int)fetchProcessingErrorCodeCounts:(id *)a3 withTaskID:(unint64_t)a4 sinceDate:(id)a5 additionalPredicates:(id)a6;
+- (int)containsAsset:(id)asset result:(BOOL *)result;
+- (int)countAssetsForTaskID:(unint64_t)d totalAssets:(unint64_t *)assets processedAssets:(unint64_t *)processedAssets;
+- (int)decrementBlacklistCountForLocalIdentifier:(id)identifier;
+- (int)deleteAnalysisForAsset:(id)asset;
+- (int)deleteAnalysisResultsWithType:(unint64_t)type;
+- (int)executeDatabaseBlock:(id)block fallbackBlock:(id)fallbackBlock write:(BOOL)write;
+- (int)fetchAllMomentsScheduledAssets:(id *)assets;
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers withProcessingStatus:(unint64_t)status andTaskID:(unint64_t)d andFetchLimit:(unint64_t)limit;
+- (int)fetchLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d attempts:(int)attempts fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiers:(id *)identifiers taskID:(unint64_t)d processingStatus:(unint64_t)status additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiers:(id *)identifiers withProcessingStatus:(unint64_t)status andTaskID:(unint64_t)d andAttempts:(int)attempts andFetchLimit:(unint64_t)limit;
+- (int)fetchLocalIdentifiers:(id *)identifiers withTaskID:(unint64_t)d andProcessingStatus:(unint64_t)status;
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d excludingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d includingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry withTaskID:(unint64_t)d andFetchLimit:(unint64_t)limit;
+- (int)fetchMomentsScheduledAssetEntries:(id *)entries forTaskID:(unint64_t)d;
+- (int)fetchProcessingErrorCode:(unint64_t *)code errorLine:(unint64_t *)line taskID:(unint64_t)d localIdentifier:(id)identifier;
+- (int)fetchProcessingErrorCodeCounts:(id *)counts withTaskID:(unint64_t)d sinceDate:(id)date additionalPredicates:(id)predicates;
 - (int)flushWAL;
-- (int)getUserVersion:(int *)a3;
-- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3;
-- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3 additionalPredicates:(id)a4;
-- (int)loadAllKeyValuePairs:(id)a3;
-- (int)migration_deleteAnalysisForAssets:(id)a3;
-- (int)migration_queryHeadersForAssets:(id)a3 analyses:(id)a4;
-- (int)migration_restoreAnalysis:(id)a3 forLocalIdentifier:(id)a4;
+- (int)getUserVersion:(int *)version;
+- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d;
+- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d additionalPredicates:(id)predicates;
+- (int)loadAllKeyValuePairs:(id)pairs;
+- (int)migration_deleteAnalysisForAssets:(id)assets;
+- (int)migration_queryHeadersForAssets:(id)assets analyses:(id)analyses;
+- (int)migration_restoreAnalysis:(id)analysis forLocalIdentifier:(id)identifier;
 - (int)openDatabase;
-- (int)parseHeader:(sqlite3_stmt *)a3 startColumn:(int)a4 analysis:(id)a5;
-- (int)purgeExcessiveSchedulingRecordsForActivityID:(unint64_t)a3;
-- (int)queryAnalysisResultsForAssets:(id)a3 results:(id *)a4;
-- (int)queryAssetCountForTaskID:(unint64_t)a3;
-- (int)queryAssetCountForTaskID:(unint64_t)a3 minimumAttempts:(unint64_t)a4;
-- (int)queryAssetCountForTaskID:(unint64_t)a3 withStatus:(unint64_t)a4 andAttempts:(int)a5;
-- (int)queryAssetWithLocalIdentifier:(id)a3 forMediaAnalysisVersion:(id *)a4;
-- (int)queryChangeToken:(id *)a3 forTaskID:(unint64_t)a4 andChangeTokenType:(unint64_t)a5;
-- (int)queryHeadersForAssets:(id)a3 analyses:(id)a4;
-- (int)queryProcessingStatus:(unint64_t *)a3 attempts:(int *)a4 lastAttemptDate:(id *)a5 andNextAttemptDate:(id *)a6 forLocalIdentifier:(id)a7 andTaskID:(unint64_t)a8;
-- (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 sinceDate:(id)a5;
-- (int)removeAllChangeTokensForTaskID:(unint64_t)a3;
-- (int)removeAllProcessingStatusForTaskID:(unint64_t)a3;
-- (int)removeChangeTokenForTaskID:(unint64_t)a3 andChangeTokenType:(unint64_t)a4;
-- (int)removeKey:(id)a3;
-- (int)removeLocalIdentifierFromBlacklist:(id)a3;
-- (int)removeMomentsScheduledAssetWithLocalIdentifier:(id)a3 andTaskID:(unint64_t)a4;
-- (int)removeProcessingStatusForLocalIdentifier:(id)a3 andTaskID:(unint64_t)a4;
-- (int)removeProcessingStatusForTaskID:(unint64_t)a3 mediaType:(int64_t)a4 mediaSubtypes:(unint64_t)a5;
+- (int)parseHeader:(sqlite3_stmt *)header startColumn:(int)column analysis:(id)analysis;
+- (int)purgeExcessiveSchedulingRecordsForActivityID:(unint64_t)d;
+- (int)queryAnalysisResultsForAssets:(id)assets results:(id *)results;
+- (int)queryAssetCountForTaskID:(unint64_t)d;
+- (int)queryAssetCountForTaskID:(unint64_t)d minimumAttempts:(unint64_t)attempts;
+- (int)queryAssetCountForTaskID:(unint64_t)d withStatus:(unint64_t)status andAttempts:(int)attempts;
+- (int)queryAssetWithLocalIdentifier:(id)identifier forMediaAnalysisVersion:(id *)version;
+- (int)queryChangeToken:(id *)token forTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type;
+- (int)queryHeadersForAssets:(id)assets analyses:(id)analyses;
+- (int)queryProcessingStatus:(unint64_t *)status attempts:(int *)attempts lastAttemptDate:(id *)date andNextAttemptDate:(id *)attemptDate forLocalIdentifier:(id)identifier andTaskID:(unint64_t)d;
+- (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d sinceDate:(id)date;
+- (int)removeAllChangeTokensForTaskID:(unint64_t)d;
+- (int)removeAllProcessingStatusForTaskID:(unint64_t)d;
+- (int)removeChangeTokenForTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type;
+- (int)removeKey:(id)key;
+- (int)removeLocalIdentifierFromBlacklist:(id)blacklist;
+- (int)removeMomentsScheduledAssetWithLocalIdentifier:(id)identifier andTaskID:(unint64_t)d;
+- (int)removeProcessingStatusForLocalIdentifier:(id)identifier andTaskID:(unint64_t)d;
+- (int)removeProcessingStatusForTaskID:(unint64_t)d mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes;
 - (int)removeProgressEntriesBeyondLimits;
-- (int)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7;
-- (int)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9;
-- (int)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9 errorCode:(unint64_t)a10 errorLine:(unint64_t)a11;
-- (int)setChangeToken:(id)a3 forTaskID:(unint64_t)a4 andChangeTokenType:(unint64_t)a5 date:(id)a6;
-- (int)setDeletePendingFlag:(BOOL)a3 localIdentifier:(id)a4;
-- (int)setMomentsScheduledAssetWithLocalIdentifier:(id)a3 taskID:(unint64_t)a4 andRequestDate:(id)a5;
-- (int)setValue:(int64_t)a3 forKey:(id)a4;
-- (int)storeAnalysisForAsset:(id)a3 analysis:(id)a4;
-- (int)storeProgressForActivityID:(unint64_t)a3 withAnalysisSubtype:(unint64_t)a4 version:(unint64_t)a5 processedAssetCount:(unint64_t)a6 totalAssetCount:(unint64_t)a7 storeDate:(id)a8;
-- (int)storeSchedulingHistoryForActivityID:(unint64_t)a3 andStartTime:(id)a4;
-- (int)storeStatsFlags:(unint64_t)a3 forLocalIdentifier:(id)a4;
-- (int)updateChangeToken:(id)a3 forTaskID:(unint64_t)a4 andChangeTokenType:(unint64_t)a5;
-- (int)updateDateModifiedForAsset:(id)a3;
-- (int)updateFingerprint:(id)a3 forAsset:(id)a4;
-- (int)updateLocalIdentifer:(id)a3 to:(id)a4;
-- (int)updateProcessingStatus:(unint64_t)a3 andNextAttemptDate:(id)a4 andErrorCode:(unint64_t)a5 andErrorLine:(unint64_t)a6 forLocalIdentifier:(id)a7 andTaskID:(unint64_t)a8;
-- (int)updateProcessingStatus:(unint64_t)a3 andNextAttemptDate:(id)a4 forLocalIdentifier:(id)a5 andTaskID:(unint64_t)a6;
-- (int)updateResultsForAsset:(id)a3 results:(id)a4;
-- (int)updateSchedulingHistoryForActivityID:(unint64_t)a3 startTime:(id)a4 duration:(double)a5 exitStatus:(int)a6 sessionLog:(id)a7;
-- (int64_t)backup_valueForKey:(id)a3;
-- (int64_t)compareExistingAnalysis:(id)a3 toNewAnalysis:(id)a4 forAsset:(id)a5;
-- (int64_t)valueForKey:(id)a3;
+- (int)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date;
+- (int)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes;
+- (int)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes errorCode:(unint64_t)self0 errorLine:(unint64_t)self1;
+- (int)setChangeToken:(id)token forTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type date:(id)date;
+- (int)setDeletePendingFlag:(BOOL)flag localIdentifier:(id)identifier;
+- (int)setMomentsScheduledAssetWithLocalIdentifier:(id)identifier taskID:(unint64_t)d andRequestDate:(id)date;
+- (int)setValue:(int64_t)value forKey:(id)key;
+- (int)storeAnalysisForAsset:(id)asset analysis:(id)analysis;
+- (int)storeProgressForActivityID:(unint64_t)d withAnalysisSubtype:(unint64_t)subtype version:(unint64_t)version processedAssetCount:(unint64_t)count totalAssetCount:(unint64_t)assetCount storeDate:(id)date;
+- (int)storeSchedulingHistoryForActivityID:(unint64_t)d andStartTime:(id)time;
+- (int)storeStatsFlags:(unint64_t)flags forLocalIdentifier:(id)identifier;
+- (int)updateChangeToken:(id)token forTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type;
+- (int)updateDateModifiedForAsset:(id)asset;
+- (int)updateFingerprint:(id)fingerprint forAsset:(id)asset;
+- (int)updateLocalIdentifer:(id)identifer to:(id)to;
+- (int)updateProcessingStatus:(unint64_t)status andNextAttemptDate:(id)date andErrorCode:(unint64_t)code andErrorLine:(unint64_t)line forLocalIdentifier:(id)identifier andTaskID:(unint64_t)d;
+- (int)updateProcessingStatus:(unint64_t)status andNextAttemptDate:(id)date forLocalIdentifier:(id)identifier andTaskID:(unint64_t)d;
+- (int)updateResultsForAsset:(id)asset results:(id)results;
+- (int)updateSchedulingHistoryForActivityID:(unint64_t)d startTime:(id)time duration:(double)duration exitStatus:(int)status sessionLog:(id)log;
+- (int64_t)backup_valueForKey:(id)key;
+- (int64_t)compareExistingAnalysis:(id)analysis toNewAnalysis:(id)newAnalysis forAsset:(id)asset;
+- (int64_t)valueForKey:(id)key;
 - (unint64_t)_sizeBytes;
-- (unint64_t)backup_analysisRecordsModifiedSinceDate:(id)a3;
-- (unint64_t)countOfAssetsWithMediaAnalysisResultsType:(unint64_t)a3;
-- (unint64_t)queryEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)a3 andTaskID:(unint64_t)a4;
-- (unint64_t)queryEligibleToRetryAssetCountWithTaskID:(unint64_t)a3;
+- (unint64_t)backup_analysisRecordsModifiedSinceDate:(id)date;
+- (unint64_t)countOfAssetsWithMediaAnalysisResultsType:(unint64_t)type;
+- (unint64_t)queryEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)status andTaskID:(unint64_t)d;
+- (unint64_t)queryEligibleToRetryAssetCountWithTaskID:(unint64_t)d;
 - (void)closeDatabase;
 - (void)dealloc;
 - (void)flush;
@@ -125,15 +125,15 @@
 
 @implementation VCPDatabaseWriter
 
-+ (void)deprecatedExceptionForMethodName:(id)a3 replacedByMethodName:(id)a4
++ (void)deprecatedExceptionForMethodName:(id)name replacedByMethodName:(id)methodName
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  methodNameCopy = methodName;
   v7 = +[NSMutableString string];
-  [v7 appendFormat:@"[VCPDatabaseWriter %@] is deprecated. ", v5];
-  if (v6)
+  [v7 appendFormat:@"[VCPDatabaseWriter %@] is deprecated. ", nameCopy];
+  if (methodNameCopy)
   {
-    [v7 appendFormat:@"Use [MAD[Change|Fetch]Request %@] instead.", v6];
+    [v7 appendFormat:@"Use [MAD[Change|Fetch]Request %@] instead.", methodNameCopy];
   }
 
   v8 = [NSException exceptionWithName:@"DeprecatedMethodException" reason:v7 userInfo:0];
@@ -152,16 +152,16 @@
   return [v2 _isLegacyPersistEnabledForValidation];
 }
 
-- (VCPDatabaseWriter)initWithFilepath:(id)a3
+- (VCPDatabaseWriter)initWithFilepath:(id)filepath
 {
-  v5 = a3;
+  filepathCopy = filepath;
   v12.receiver = self;
   v12.super_class = VCPDatabaseWriter;
   v6 = [(VCPDatabaseWriter *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filepath, a3);
+    objc_storeStrong(&v6->_filepath, filepath);
     v8 = dispatch_queue_create("com.apple.mediaanalysisd.sql", 0);
     sqlSerialQueue = v7->_sqlSerialQueue;
     v7->_sqlSerialQueue = v8;
@@ -174,19 +174,19 @@
   return v7;
 }
 
-- (VCPDatabaseWriter)initWithPhotoLibrary:(id)a3
+- (VCPDatabaseWriter)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = VCPDatabaseWriter;
   v6 = [(VCPDatabaseWriter *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    v8 = [v5 vcp_mediaAnalysisDatabaseFilepath];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    vcp_mediaAnalysisDatabaseFilepath = [libraryCopy vcp_mediaAnalysisDatabaseFilepath];
     filepath = v7->_filepath;
-    v7->_filepath = v8;
+    v7->_filepath = vcp_mediaAnalysisDatabaseFilepath;
 
     v10 = dispatch_queue_create("com.apple.mediaanalysisd.sql", 0);
     sqlSerialQueue = v7->_sqlSerialQueue;
@@ -207,10 +207,10 @@
   [(VCPDatabaseWriter *)&v3 dealloc];
 }
 
-+ (id)databaseForPhotoLibrary:(id)a3
++ (id)databaseForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v4;
 }
@@ -264,7 +264,7 @@
   self->_database = 0;
 }
 
-- (int)getUserVersion:(int *)a3
+- (int)getUserVersion:(int *)version
 {
   ppStmt = 0;
   v4 = sqlite3_prepare_v2(self->_database, "PRAGMA user_version;", -1, &ppStmt, 0);
@@ -276,28 +276,28 @@
   else
   {
     v5 = 0;
-    *a3 = sqlite3_column_int(ppStmt, 0);
+    *version = sqlite3_column_int(ppStmt, 0);
   }
 
   sqlite3_finalize(ppStmt);
   return v5;
 }
 
-+ (id)initializationCommand:(int)a3
++ (id)initializationCommand:(int)command
 {
-  if (a3 > 0xB)
+  if (command > 0xB)
   {
     v3 = 0;
     goto LABEL_39;
   }
 
-  if (a3 != 11 && MediaAnalysisLogLevel() >= 5)
+  if (command != 11 && MediaAnalysisLogLevel() >= 5)
   {
     v5 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       *buf = 67109376;
-      v9 = a3;
+      commandCopy = command;
       v10 = 1024;
       v11 = 11;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[VCPDatabaseWriter] Upgrading database schema user_version (%d -> %d)", buf, 0xEu);
@@ -306,31 +306,31 @@
 
   v3 = +[NSMutableString string];
   objc_msgSend(v3, "appendString:", @"PRAGMA foreign_keys=ON;CREATE TABLE IF NOT EXISTS Assets(   id                  INTEGER PRIMARY KEY AUTOINCREMENT,    localIdentifier     TEXT,    version             INTEGER,    dateModified        REAL,    dateAnalyzed        REAL,    analysisTypes       INTEGER,    flags               INTEGER,    quality             REAL,");
-  if (a3)
+  if (command)
   {
     [v3 appendString:{@"    masterFingerprint   TEXT, adjustedFingerprint TEXT, "}];
-    if (a3 != 1)
+    if (command != 1)
     {
       [v3 appendString:{@"  statsFlags   INTEGER, "}];
     }
   }
 
   [v3 appendString:{@"    UNIQUE (localIdentifier);CREATE TABLE IF NOT EXISTS Results(   assetId          INTEGER, resultsType      INTEGER, results          BLOB, FOREIGN KEY(assetId) REFERENCES Assets(id) ON DELETE CASCADE, UNIQUE (assetId, resultsType));CREATE TABLE IF NOT EXISTS Blacklist(   id               INTEGER PRIMARY KEY AUTOINCREMENT, localIdentifier  TEXT, date             REAL, count            INTEGER, UNIQUE (localIdentifier));CREATE TABLE IF NOT EXISTS KeyValueStore(   id               INTEGER PRIMARY KEY AUTOINCREMENT, key              TEXT, value            INTEGER, UNIQUE (key));"}]);
-  if (a3 <= 4)
+  if (command <= 4)
   {
     [v3 appendString:@"DROP TABLE IF EXISTS ChangeTokens;"];
   }
 
   objc_msgSend(v3, "appendString:", @"CREATE TABLE IF NOT EXISTS ChangeTokens(   id               INTEGER PRIMARY KEY AUTOINCREMENT,    tokenID          INTEGER,    tokenType        INTEGER,    tokenData        BLOB,    date             REAL,    version          INTEGER,    UNIQUE (tokenID, tokenType));CREATE TABLE IF NOT EXISTS ProcessingStatus(   id               INTEGER PRIMARY KEY AUTOINCREMENT,    taskID           INTEGER,    localIdentifier  TEXT,");
-  if (a3 >= 3)
+  if (command >= 3)
   {
     [v3 appendString:{@"    lastAttemptDate  REAL, nextAttemptDate  REAL, "}];
-    if (a3 == 11)
+    if (command == 11)
     {
       [v3 appendString:{@"    errorCode   INTEGER, errorLine   INTEGER, "}];
     }
 
-    else if (a3 < 9)
+    else if (command < 9)
     {
       goto LABEL_19;
     }
@@ -346,33 +346,33 @@
   [v3 appendString:v6];
 LABEL_19:
   [v3 appendString:{@"    attempts         INTEGER, status           INTEGER, UNIQUE (taskID, localIdentifier);CREATE TABLE IF NOT EXISTS BackgroundActivitySchedulingHistory(   id               INTEGER PRIMARY KEY AUTOINCREMENT, activityID       INTEGER, startTime        REAL, duration         REAL, exitStatus       INTEGER, ")}];
-  if (a3 >= 0xA)
+  if (command >= 0xA)
   {
     [v3 appendString:{@"sessionLog       TEXT, "}];
   }
 
   [v3 appendString:{@"    UNIQUE (activityID, startTime);CREATE TABLE IF NOT EXISTS BackgroundAnalysisProgressHistory(   id                  INTEGER PRIMARY KEY AUTOINCREMENT, activityID          INTEGER, analysisSubtype     INTEGER, storeDate           REAL, version             INTEGER, processedAssetCount INTEGER, totalAssetCount     INTEGER);"}]);
   objc_msgSend(v3, "appendString:", @"CREATE TABLE IF NOT EXISTS MomentsScheduledAssets(   id               INTEGER PRIMARY KEY AUTOINCREMENT,    taskID           INTEGER,    localIdentifier  TEXT,");
-  if (a3 >= 7)
+  if (command >= 7)
   {
     [v3 appendString:{@"    requestDate      REAL, "}];
   }
 
   [v3 appendString:{@"    UNIQUE (taskID, localIdentifier);"}]);
-  if (!a3)
+  if (!command)
   {
     [v3 appendString:@"ALTER TABLE Assets ADD COLUMN masterFingerprint TEXT;ALTER TABLE Assets ADD COLUMN adjustedFingerprint TEXT;"];
     goto LABEL_32;
   }
 
-  if (a3 == 1)
+  if (command == 1)
   {
 LABEL_32:
     [v3 appendString:@"ALTER TABLE Assets ADD COLUMN statsFlags INTEGER;"];
     goto LABEL_33;
   }
 
-  if (a3 <= 2)
+  if (command <= 2)
   {
 LABEL_33:
     [v3 appendString:@"ALTER TABLE ProcessingStatus RENAME COLUMN date TO lastAttemptDate;"];
@@ -380,23 +380,23 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (a3 <= 6)
+  if (command <= 6)
   {
 LABEL_34:
     [v3 appendString:@"ALTER TABLE MomentsScheduledAssets ADD COLUMN requestDate REAL DEFAULT 0.0;"];
     goto LABEL_35;
   }
 
-  if (a3 <= 8)
+  if (command <= 8)
   {
 LABEL_35:
     [v3 appendString:@"ALTER TABLE ProcessingStatus ADD COLUMN mediaType INTEGER DEFAULT 0;ALTER TABLE ProcessingStatus ADD COLUMN mediaSubtypes INTEGER DEFAULT 0;"];
     goto LABEL_36;
   }
 
-  if (a3 != 9)
+  if (command != 9)
   {
-    if (a3 == 11)
+    if (command == 11)
     {
       goto LABEL_38;
     }
@@ -420,14 +420,14 @@ LABEL_39:
 {
   v34 = 0;
   v3 = +[NSFileManager defaultManager];
-  v4 = [(NSString *)self->_filepath stringByDeletingLastPathComponent];
-  if (([v3 fileExistsAtPath:v4 isDirectory:&v34] & 1) == 0)
+  stringByDeletingLastPathComponent = [(NSString *)self->_filepath stringByDeletingLastPathComponent];
+  if (([v3 fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v34] & 1) == 0)
   {
     v39 = NSFilePosixPermissions;
     v5 = [NSNumber numberWithShort:493];
     v40 = v5;
     v6 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-    v7 = [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:v6 error:0];
+    v7 = [v3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v6 error:0];
 
     if ((v7 & 1) == 0)
     {
@@ -765,7 +765,7 @@ LABEL_31:
   return busy;
 }
 
-- (int)_updateAnalysisInfoWithCurrentVersion:(int)a3 andTimestamp:(int64_t)a4 forTaskID:(unint64_t)a5
+- (int)_updateAnalysisInfoWithCurrentVersion:(int)version andTimestamp:(int64_t)timestamp forTaskID:(unint64_t)d
 {
   v9 = VCPVersionKeyForTask();
   v10 = VCPStartTimestampKeyForTask();
@@ -786,7 +786,7 @@ LABEL_31:
       if (os_log_type_enabled(&_os_log_default, v20))
       {
         *buf = 134217984;
-        *v64 = a5;
+        *v64 = d;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v20, "No corresponding keys found for taskID %lu", buf, 0xCu);
       }
     }
@@ -819,7 +819,7 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  if (v62 == a3)
+  if (v62 == version)
   {
     v15 = 0;
     goto LABEL_19;
@@ -834,13 +834,13 @@ LABEL_14:
       *buf = 134218240;
       *v64 = v62;
       *&v64[8] = 1024;
-      *&v64[10] = a3;
+      *&v64[10] = version;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "Analysis version changed from %lld to %d", buf, 0x12u);
     }
   }
 
   v10 = v54;
-  v15 = [(VCPDatabaseWriter *)self _setValue:a3 forKey:v9];
+  v15 = [(VCPDatabaseWriter *)self _setValue:version forKey:v9];
   if (v15)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -849,7 +849,7 @@ LABEL_14:
       if (os_log_type_enabled(&_os_log_default, v23))
       {
         *buf = 67109378;
-        *v64 = a3;
+        *v64 = version;
         *&v64[4] = 2112;
         *&v64[6] = v9;
         v17 = "[VCPDatabaseWriter] Failed to set analysis version %d for %@";
@@ -862,7 +862,7 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v15 = [(VCPDatabaseWriter *)self _setValue:a4 forKey:v54];
+  v15 = [(VCPDatabaseWriter *)self _setValue:timestamp forKey:v54];
   if (v15)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -871,7 +871,7 @@ LABEL_14:
       if (os_log_type_enabled(&_os_log_default, v24))
       {
         *buf = 134218242;
-        *v64 = a4;
+        *v64 = timestamp;
         *&v64[8] = 2112;
         *&v64[10] = v54;
         v17 = "[VCPDatabaseWriter] Failed to set timestamp %lld for %@";
@@ -1019,9 +1019,9 @@ LABEL_14:
       goto LABEL_65;
     }
 
-    if (a5 != 1)
+    if (d != 1)
     {
-      if (a5 == 3)
+      if (d == 3)
       {
         v28 = VCPKeyValuePrioritizedFaceAnalysisCompleteTimestamp;
         v15 = [(VCPDatabaseWriter *)self _removeKey:VCPKeyValuePrioritizedFaceAnalysisCompleteTimestamp];
@@ -1137,14 +1137,14 @@ LABEL_114:
           *buf = 138412802;
           *v64 = v9;
           *&v64[8] = 1024;
-          *&v64[10] = a3;
+          *&v64[10] = version;
           *&v64[14] = 2048;
-          *&v64[16] = a4;
+          *&v64[16] = timestamp;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v38, "Updated %@ with %d (timestamp: %lld)", buf, 0x1Cu);
         }
       }
 
-      v15 = [(VCPDatabaseWriter *)self _removeAllProcessingStatusForTaskID:a5];
+      v15 = [(VCPDatabaseWriter *)self _removeAllProcessingStatusForTaskID:d];
       if (v15)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -1161,9 +1161,9 @@ LABEL_114:
 
       else
       {
-        if (a5 != 1 || (v15 = [(VCPDatabaseWriter *)self _removeAllProcessingStatusForTaskID:255]) == 0)
+        if (d != 1 || (v15 = [(VCPDatabaseWriter *)self _removeAllProcessingStatusForTaskID:255]) == 0)
         {
-          [MADProgressManager resetProcessingCheckpointForTask:a5];
+          [MADProgressManager resetProcessingCheckpointForTask:d];
           v60 = 0;
           v61 = 0;
           v41 = MajorOSVersionNumberKey;
@@ -1456,8 +1456,8 @@ LABEL_19:
   [v4 timeIntervalSinceReferenceDate];
   v6 = v5;
 
-  v7 = [(VCPDatabaseWriter *)self beginTransaction];
-  if (v7)
+  beginTransaction = [(VCPDatabaseWriter *)self beginTransaction];
+  if (beginTransaction)
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
@@ -1489,8 +1489,8 @@ LABEL_19:
             objc_enumerationMutation(&off_100296068);
           }
 
-          v7 = -[VCPDatabaseWriter _updateAnalysisInfoWithCurrentVersion:andTimestamp:forTaskID:](self, "_updateAnalysisInfoWithCurrentVersion:andTimestamp:forTaskID:", VCPVersionForTask(), v6, [*(*(&v15 + 1) + 8 * i) intValue]);
-          if (v7)
+          beginTransaction = -[VCPDatabaseWriter _updateAnalysisInfoWithCurrentVersion:andTimestamp:forTaskID:](self, "_updateAnalysisInfoWithCurrentVersion:andTimestamp:forTaskID:", VCPVersionForTask(), v6, [*(*(&v15 + 1) + 8 * i) intValue]);
+          if (beginTransaction)
           {
             if (MediaAnalysisLogLevel() >= 3)
             {
@@ -1504,7 +1504,7 @@ LABEL_19:
               }
             }
 
-            return v7;
+            return beginTransaction;
           }
         }
 
@@ -1521,7 +1521,7 @@ LABEL_19:
     return [(VCPDatabaseWriter *)self commitTransaction];
   }
 
-  return v7;
+  return beginTransaction;
 }
 
 - (int)_updateOperatingSystemVersion
@@ -1547,18 +1547,18 @@ LABEL_19:
   v5 = v41;
   v39 = 0;
   v7 = MajorOSVersionNumberKey;
-  v8 = [(VCPDatabaseWriter *)self _queryValue:&v39 forKey:MajorOSVersionNumberKey];
-  if (v8)
+  beginTransaction = [(VCPDatabaseWriter *)self _queryValue:&v39 forKey:MajorOSVersionNumberKey];
+  if (beginTransaction)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
-      return v8;
+      return beginTransaction;
     }
 
     v9 = VCPLogToOSLogType[3];
     if (!os_log_type_enabled(&_os_log_default, v9))
     {
-      return v8;
+      return beginTransaction;
     }
 
     *buf = 138412290;
@@ -1572,18 +1572,18 @@ LABEL_12:
 
   v38 = 0;
   v11 = MinorOSVersionNumberKey;
-  v8 = [(VCPDatabaseWriter *)self _queryValue:&v38 forKey:MinorOSVersionNumberKey];
-  if (v8)
+  beginTransaction = [(VCPDatabaseWriter *)self _queryValue:&v38 forKey:MinorOSVersionNumberKey];
+  if (beginTransaction)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
-      return v8;
+      return beginTransaction;
     }
 
     v9 = VCPLogToOSLogType[3];
     if (!os_log_type_enabled(&_os_log_default, v9))
     {
-      return v8;
+      return beginTransaction;
     }
 
     *buf = 138412290;
@@ -1614,18 +1614,18 @@ LABEL_12:
     }
   }
 
-  v8 = [(VCPDatabaseWriter *)self beginTransaction];
-  if (v8)
+  beginTransaction = [(VCPDatabaseWriter *)self beginTransaction];
+  if (beginTransaction)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
-      return v8;
+      return beginTransaction;
     }
 
     v15 = VCPLogToOSLogType[3];
     if (!os_log_type_enabled(&_os_log_default, v15))
     {
-      return v8;
+      return beginTransaction;
     }
 
     *buf = 0;
@@ -1634,21 +1634,21 @@ LABEL_12:
     v13 = 2;
 LABEL_13:
     _os_log_impl(&_mh_execute_header, &_os_log_default, v12, v10, buf, v13);
-    return v8;
+    return beginTransaction;
   }
 
-  v8 = [(VCPDatabaseWriter *)self _setValue:v6 forKey:v7];
-  if (v8)
+  beginTransaction = [(VCPDatabaseWriter *)self _setValue:v6 forKey:v7];
+  if (beginTransaction)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
-      return v8;
+      return beginTransaction;
     }
 
     v9 = VCPLogToOSLogType[3];
     if (!os_log_type_enabled(&_os_log_default, v9))
     {
-      return v8;
+      return beginTransaction;
     }
 
     *buf = 138412290;
@@ -1657,18 +1657,18 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v8 = [(VCPDatabaseWriter *)self _setValue:v5 forKey:v11];
-  if (v8)
+  beginTransaction = [(VCPDatabaseWriter *)self _setValue:v5 forKey:v11];
+  if (beginTransaction)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
-      return v8;
+      return beginTransaction;
     }
 
     v9 = VCPLogToOSLogType[3];
     if (!os_log_type_enabled(&_os_log_default, v9))
     {
-      return v8;
+      return beginTransaction;
     }
 
     *buf = 138412290;
@@ -1680,19 +1680,19 @@ LABEL_13:
   v16 = +[NSDate now];
   [v16 timeIntervalSinceReferenceDate];
   v18 = OSVersionUpdateTimestampKey;
-  v8 = [(VCPDatabaseWriter *)self _setValue:v17 forKey:OSVersionUpdateTimestampKey];
+  beginTransaction = [(VCPDatabaseWriter *)self _setValue:v17 forKey:OSVersionUpdateTimestampKey];
 
-  if (v8)
+  if (beginTransaction)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
-      return v8;
+      return beginTransaction;
     }
 
     v9 = VCPLogToOSLogType[3];
     if (!os_log_type_enabled(&_os_log_default, v9))
     {
-      return v8;
+      return beginTransaction;
     }
 
     *buf = 138412290;
@@ -1727,17 +1727,17 @@ LABEL_13:
         objc_enumerationMutation(&off_100296080);
       }
 
-      v23 = [*(*(&v34 + 1) + 8 * i) intValue];
+      intValue = [*(*(&v34 + 1) + 8 * i) intValue];
       v24 = VCPBGSTCheckpointTimestampKeyForTask();
       if (!v24 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
       {
         *buf = v29;
-        v45 = v23;
+        v45 = intValue;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "No corresponding checkpoint key found for taskID %lu", buf, 0xCu);
       }
 
-      v8 = [(VCPDatabaseWriter *)self _removeKey:v24];
-      if (v8)
+      beginTransaction = [(VCPDatabaseWriter *)self _removeKey:v24];
+      if (beginTransaction)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
         {
@@ -1753,12 +1753,12 @@ LABEL_13:
       if (!v25 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
       {
         *buf = v29;
-        v45 = v23;
+        v45 = intValue;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "No corresponding checkpoint_with_failure key found for taskID %lu", buf, 0xCu);
       }
 
-      v8 = [(VCPDatabaseWriter *)self _removeKey:v25];
-      if (v8)
+      beginTransaction = [(VCPDatabaseWriter *)self _removeKey:v25];
+      if (beginTransaction)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
         {
@@ -1772,13 +1772,13 @@ LABEL_13:
 LABEL_76:
 
 LABEL_77:
-        return v8;
+        return beginTransaction;
       }
 
-      if (v23 == 3)
+      if (intValue == 3)
       {
-        v8 = [(VCPDatabaseWriter *)self _removeKey:v32];
-        if (v8)
+        beginTransaction = [(VCPDatabaseWriter *)self _removeKey:v32];
+        if (beginTransaction)
         {
           if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(&_os_log_default, type))
           {
@@ -1792,8 +1792,8 @@ LABEL_77:
 
         else
         {
-          v8 = [(VCPDatabaseWriter *)self _removeKey:v31];
-          if (v8)
+          beginTransaction = [(VCPDatabaseWriter *)self _removeKey:v31];
+          if (beginTransaction)
           {
             if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(&_os_log_default, type))
             {
@@ -1807,8 +1807,8 @@ LABEL_77:
 
           else
           {
-            v8 = [(VCPDatabaseWriter *)self _removeKey:v30];
-            if (!v8)
+            beginTransaction = [(VCPDatabaseWriter *)self _removeKey:v30];
+            if (!beginTransaction)
             {
               goto LABEL_55;
             }
@@ -1843,20 +1843,20 @@ LABEL_55:
   }
 
 LABEL_57:
-  v8 = [(VCPDatabaseWriter *)self commitTransaction];
-  if (!v8)
+  beginTransaction = [(VCPDatabaseWriter *)self commitTransaction];
+  if (!beginTransaction)
   {
     return 0;
   }
 
-  return v8;
+  return beginTransaction;
 }
 
-- (int)_queryValue:(int64_t *)a3 forKey:(id)a4
+- (int)_queryValue:(int64_t *)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   ppStmt = 0;
-  *a3 = 0;
+  *value = 0;
   v7 = sqlite3_prepare_v2(self->_database, "SELECT value FROM KeyValueStore WHERE key = (?);", -1, &ppStmt, 0);
   if (v7)
   {
@@ -1864,7 +1864,7 @@ LABEL_57:
   }
 
   v8 = ppStmt;
-  v9 = v6;
+  v9 = keyCopy;
   v10 = v9;
   if (v9)
   {
@@ -1904,7 +1904,7 @@ LABEL_57:
   v7 = sqlite3_step(ppStmt);
   if (v7 == 100)
   {
-    *a3 = sqlite3_column_int64(ppStmt, 0);
+    *value = sqlite3_column_int64(ppStmt, 0);
     v7 = sqlite3_step(ppStmt);
   }
 
@@ -1933,10 +1933,10 @@ LABEL_23:
   return v14;
 }
 
-- (int)_setValue:(int64_t)a3 forKey:(id)a4
+- (int)_setValue:(int64_t)value forKey:(id)key
 {
-  v6 = a4;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
     ppStmt = 0;
     v7 = sqlite3_prepare_v2(self->_database, "REPLACE INTO KeyValueStore (key, value) VALUES ((?), (?));", -1, &ppStmt, 0);
@@ -1946,7 +1946,7 @@ LABEL_23:
     }
 
     v8 = ppStmt;
-    v9 = v6;
+    v9 = keyCopy;
     v10 = v9;
     v7 = sqlite3_bind_text(v8, 1, [v9 UTF8String], -1, 0);
 
@@ -1955,7 +1955,7 @@ LABEL_23:
       goto LABEL_22;
     }
 
-    v7 = sqlite3_bind_int64(ppStmt, 2, a3);
+    v7 = sqlite3_bind_int64(ppStmt, 2, value);
     if (v7)
     {
       goto LABEL_22;
@@ -2011,17 +2011,17 @@ LABEL_22:
   return v12;
 }
 
-- (int)_removeKey:(id)a3
+- (int)_removeKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     ppStmt = 0;
     v5 = sqlite3_prepare_v2(self->_database, "DELETE FROM KeyValueStore WHERE key=(?);", -1, &ppStmt, 0);
     if (!v5)
     {
       v6 = ppStmt;
-      v7 = v4;
+      v7 = keyCopy;
       v8 = v7;
       v5 = sqlite3_bind_text(v6, 1, [v7 UTF8String], -1, 0);
 
@@ -2068,11 +2068,11 @@ LABEL_22:
   return v5;
 }
 
-- (int)_removeAllProcessingStatusForTaskID:(unint64_t)a3
+- (int)_removeAllProcessingStatusForTaskID:(unint64_t)d
 {
   ppStmt = 0;
   v4 = sqlite3_prepare_v2(self->_database, "DELETE FROM ProcessingStatus WHERE taskID=(?);", -1, &ppStmt, 0);
-  if (v4 || (v4 = sqlite3_bind_int64(ppStmt, 1, a3)) != 0)
+  if (v4 || (v4 = sqlite3_bind_int64(ppStmt, 1, d)) != 0)
   {
     v5 = v4;
   }
@@ -2113,10 +2113,10 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)shouldPropagateError:(int *)a3 finalAttempt:(BOOL)a4
+- (BOOL)shouldPropagateError:(int *)error finalAttempt:(BOOL)attempt
 {
-  v6 = *a3;
-  if (*a3 > 10)
+  v6 = *error;
+  if (*error > 10)
   {
     if (v6 > 13)
     {
@@ -2134,8 +2134,8 @@ LABEL_22:
 
         v10 = -23;
 LABEL_38:
-        *a3 = v10;
-        return a4;
+        *error = v10;
+        return attempt;
       }
 
       if (v6 != 18)
@@ -2155,7 +2155,7 @@ LABEL_38:
 
       v12 = -50;
 LABEL_32:
-      *a3 = v12;
+      *error = v12;
       return 1;
     }
 
@@ -2193,7 +2193,7 @@ LABEL_39:
         return 0;
       }
 
-      v19 = *a3;
+      v19 = *error;
       v21[0] = 67109120;
       v21[1] = v19;
       v14 = "Unexpected database error (%d)";
@@ -2267,13 +2267,13 @@ LABEL_30:
     goto LABEL_39;
   }
 
-  return a4;
+  return attempt;
 }
 
-- (int)executeDatabaseBlock:(id)a3 fallbackBlock:(id)a4 write:(BOOL)a5
+- (int)executeDatabaseBlock:(id)block fallbackBlock:(id)fallbackBlock write:(BOOL)write
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  fallbackBlockCopy = fallbackBlock;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -2283,13 +2283,13 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = sub_10003F160;
   block[3] = &unk_100283B30;
-  v18 = a5;
+  writeCopy = write;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = blockCopy;
+  v16 = fallbackBlockCopy;
   v17 = &v19;
-  v11 = v9;
-  v12 = v8;
+  v11 = fallbackBlockCopy;
+  v12 = blockCopy;
   dispatch_sync(sqlSerialQueue, block);
   LODWORD(sqlSerialQueue) = *(v20 + 6);
 
@@ -2322,9 +2322,9 @@ LABEL_30:
 {
   v3 = +[NSFileManager defaultManager];
   v4 = [v3 attributesOfItemAtPath:self->_filepath error:0];
-  v5 = [v4 fileSize];
+  fileSize = [v4 fileSize];
 
-  return v5;
+  return fileSize;
 }
 
 - (id)creationDate
@@ -2364,8 +2364,8 @@ LABEL_30:
     else
     {
       v5 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
-      v6 = [v5 vcp_mediaAnalysisBackupFilepath];
-      v3 = [v4 fileExistsAtPath:v6];
+      vcp_mediaAnalysisBackupFilepath = [v5 vcp_mediaAnalysisBackupFilepath];
+      v3 = [v4 fileExistsAtPath:vcp_mediaAnalysisBackupFilepath];
     }
   }
 
@@ -2402,10 +2402,10 @@ LABEL_30:
   return v3;
 }
 
-- (int)setChangeToken:(id)a3 forTaskID:(unint64_t)a4 andChangeTokenType:(unint64_t)a5 date:(id)a6
+- (int)setChangeToken:(id)token forTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type date:(id)date
 {
-  v10 = a3;
-  v11 = a6;
+  tokenCopy = token;
+  dateCopy = date;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"setChangeToken:forTokenID:andChangeTokenType:date:" replacedByMethodName:@"setChangeToken:tokenID:changeTokenType:date:"];
@@ -2426,7 +2426,7 @@ LABEL_30:
     }
 
     v22 = 0;
-    v13 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v22];
+    v13 = [NSKeyedArchiver archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v22];
     v14 = v22;
     if (v13)
     {
@@ -2435,10 +2435,10 @@ LABEL_30:
       v17[2] = sub_100040004;
       v17[3] = &unk_100283B80;
       v17[4] = self;
-      v20 = a4;
-      v21 = a5;
+      dCopy = d;
+      typeCopy = type;
       v18 = v13;
-      v19 = v11;
+      v19 = dateCopy;
       v12 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v17 fallbackBlock:0 write:1];
     }
 
@@ -2462,9 +2462,9 @@ LABEL_30:
   return v12;
 }
 
-- (int)updateChangeToken:(id)a3 forTaskID:(unint64_t)a4 andChangeTokenType:(unint64_t)a5
+- (int)updateChangeToken:(id)token forTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type
 {
-  v8 = a3;
+  tokenCopy = token;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"updateChangeToken:forTaskID:andChangeTokenType:" replacedByMethodName:@"updateChangeToken:taskID:changeTokenType:"];
@@ -2485,7 +2485,7 @@ LABEL_30:
     }
 
     v18 = 0;
-    v10 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v18];
+    v10 = [NSKeyedArchiver archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v18];
     v11 = v18;
     if (v10)
     {
@@ -2495,8 +2495,8 @@ LABEL_30:
       v14[3] = &unk_100283BA8;
       v14[4] = self;
       v15 = v10;
-      v16 = a4;
-      v17 = a5;
+      dCopy = d;
+      typeCopy = type;
       v9 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v14 fallbackBlock:0 write:1];
     }
 
@@ -2520,7 +2520,7 @@ LABEL_30:
   return v9;
 }
 
-- (int)queryChangeToken:(id *)a3 forTaskID:(unint64_t)a4 andChangeTokenType:(unint64_t)a5
+- (int)queryChangeToken:(id *)token forTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type
 {
   if (_os_feature_enabled_impl())
   {
@@ -2544,20 +2544,20 @@ LABEL_30:
       }
     }
 
-    *a3 = 0;
+    *token = 0;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10004088C;
     v10[3] = &unk_100283BD0;
     v10[4] = self;
-    v10[5] = a4;
-    v10[6] = a5;
-    v10[7] = a3;
+    v10[5] = d;
+    v10[6] = type;
+    v10[7] = token;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:0 write:0];
   }
 }
 
-- (int)removeChangeTokenForTaskID:(unint64_t)a3 andChangeTokenType:(unint64_t)a4
+- (int)removeChangeTokenForTaskID:(unint64_t)d andChangeTokenType:(unint64_t)type
 {
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
@@ -2586,13 +2586,13 @@ LABEL_30:
     v8[2] = sub_100040F28;
     v8[3] = &unk_100283BF8;
     v8[4] = self;
-    v8[5] = a3;
-    v8[6] = a4;
+    v8[5] = d;
+    v8[6] = type;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v8 fallbackBlock:0 write:1];
   }
 }
 
-- (int)removeAllChangeTokensForTaskID:(unint64_t)a3
+- (int)removeAllChangeTokensForTaskID:(unint64_t)d
 {
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
@@ -2621,14 +2621,14 @@ LABEL_30:
     v6[2] = sub_1000411E4;
     v6[3] = &unk_100283C20;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = d;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v6 fallbackBlock:0 write:1];
   }
 }
 
-- (int)setDeletePendingFlag:(BOOL)a3 localIdentifier:(id)a4
+- (int)setDeletePendingFlag:(BOOL)flag localIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"setDeletePendingFlag:localIdentifier:" replacedByMethodName:0];
@@ -2652,19 +2652,19 @@ LABEL_30:
     v9[1] = 3221225472;
     v9[2] = sub_1000414E4;
     v9[3] = &unk_100283C48;
-    v11 = a3;
+    flagCopy = flag;
     v9[4] = self;
-    v10 = v6;
+    v10 = identifierCopy;
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:1];
   }
 
   return v7;
 }
 
-- (int)updateFingerprint:(id)a3 forAsset:(id)a4
+- (int)updateFingerprint:(id)fingerprint forAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  fingerprintCopy = fingerprint;
+  assetCopy = asset;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -2681,19 +2681,19 @@ LABEL_30:
   v12[2] = sub_1000418EC;
   v12[3] = &unk_100283C70;
   v12[4] = self;
-  v8 = v6;
+  v8 = fingerprintCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = assetCopy;
   v14 = v9;
   v10 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v12 fallbackBlock:0 write:1];
 
   return v10;
 }
 
-- (int)updateLocalIdentifer:(id)a3 to:(id)a4
+- (int)updateLocalIdentifer:(id)identifer to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  identiferCopy = identifer;
+  toCopy = to;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"updateLocalIdentifer:to:" replacedByMethodName:0];
@@ -2718,17 +2718,17 @@ LABEL_30:
     v10[2] = sub_100041D50;
     v10[3] = &unk_100283C70;
     v10[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = toCopy;
+    v12 = identiferCopy;
     v8 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:0 write:1];
   }
 
   return v8;
 }
 
-- (int)updateDateModifiedForAsset:(id)a3
+- (int)updateDateModifiedForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"updateDateModifiedForAsset:" replacedByMethodName:0];
@@ -2753,16 +2753,16 @@ LABEL_30:
     v7[2] = sub_100042198;
     v7[3] = &unk_100283C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = assetCopy;
     v5 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:1];
   }
 
   return v5;
 }
 
-- (int)containsAsset:(id)a3 result:(BOOL *)a4
+- (int)containsAsset:(id)asset result:(BOOL *)result
 {
-  v6 = a3;
+  assetCopy = asset;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"containsAsset:result:" replacedByMethodName:@"fetchAnalysisWithLocalIdentifier:predicate:"];
@@ -2787,22 +2787,22 @@ LABEL_30:
     v10[2] = sub_100042640;
     v10[3] = &unk_100283CC0;
     v10[4] = self;
-    v11 = v6;
-    v12 = a4;
+    v11 = assetCopy;
+    resultCopy = result;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100042808;
     v9[3] = &unk_100283CE0;
-    v9[4] = a4;
+    v9[4] = result;
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:v9 write:0];
   }
 
   return v7;
 }
 
-- (int)queryAssetWithLocalIdentifier:(id)a3 forMediaAnalysisVersion:(id *)a4
+- (int)queryAssetWithLocalIdentifier:(id)identifier forMediaAnalysisVersion:(id *)version
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryAssetWithLocalIdentifier:forMediaAnalysisVersion:" replacedByMethodName:@"fetchAnalysisWithLocalIdentifier:predicate:"];
@@ -2833,13 +2833,13 @@ LABEL_30:
     v10[2] = sub_100042A7C;
     v10[3] = &unk_100283D08;
     v10[4] = self;
-    v11 = v6;
+    v11 = identifierCopy;
     v12 = buf;
     v8 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:&stru_100283D48 write:0];
     v7 = v8;
-    if (a4 && !v8)
+    if (version && !v8)
     {
-      *a4 = *(*&buf[8] + 40);
+      *version = *(*&buf[8] + 40);
     }
 
     _Block_object_dispose(buf, 8);
@@ -2848,7 +2848,7 @@ LABEL_30:
   return v7;
 }
 
-- (int)deleteAnalysisResultsWithType:(unint64_t)a3
+- (int)deleteAnalysisResultsWithType:(unint64_t)type
 {
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
@@ -2877,20 +2877,20 @@ LABEL_30:
     v6[2] = sub_100042DD4;
     v6[3] = &unk_100283C20;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = type;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v6 fallbackBlock:0 write:1];
   }
 }
 
-- (int64_t)compareExistingAnalysis:(id)a3 toNewAnalysis:(id)a4 forAsset:(id)a5
+- (int64_t)compareExistingAnalysis:(id)analysis toNewAnalysis:(id)newAnalysis forAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 vcp_isAnalysisValid:v7])
+  analysisCopy = analysis;
+  newAnalysisCopy = newAnalysis;
+  assetCopy = asset;
+  if ([assetCopy vcp_isAnalysisValid:analysisCopy])
   {
-    v10 = [v7 vcp_version];
-    if (v10 <= [v8 vcp_version])
+    vcp_version = [analysisCopy vcp_version];
+    if (vcp_version <= [newAnalysisCopy vcp_version])
     {
       v13 = 0;
     }
@@ -2902,13 +2902,13 @@ LABEL_30:
         v11 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v11))
         {
-          v12 = [v9 localIdentifier];
+          localIdentifier = [assetCopy localIdentifier];
           v19 = 138412802;
-          v20 = v12;
+          v20 = localIdentifier;
           v21 = 1024;
-          *v22 = [v7 vcp_version];
+          *v22 = [analysisCopy vcp_version];
           *&v22[4] = 1024;
-          *&v22[6] = [v8 vcp_version];
+          *&v22[6] = [newAnalysisCopy vcp_version];
           _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[%@] New analysis version outdated (%d vs %d); discarding", &v19, 0x18u);
         }
       }
@@ -2924,15 +2924,15 @@ LABEL_30:
       v14 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v14))
       {
-        v15 = [v9 localIdentifier];
-        v16 = [v7 vcp_dateModified];
-        v17 = [v8 vcp_dateModified];
+        localIdentifier2 = [assetCopy localIdentifier];
+        vcp_dateModified = [analysisCopy vcp_dateModified];
+        vcp_dateModified2 = [newAnalysisCopy vcp_dateModified];
         v19 = 138412802;
-        v20 = v15;
+        v20 = localIdentifier2;
         v21 = 2112;
-        *v22 = v16;
+        *v22 = vcp_dateModified;
         *&v22[8] = 2112;
-        v23 = v17;
+        v23 = vcp_dateModified2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[%@] Existing analysis from previous modification (%@ vs %@); discarding", &v19, 0x20u);
       }
     }
@@ -2943,15 +2943,15 @@ LABEL_30:
   return v13;
 }
 
-- (int)_deleteAsset:(id)a3
+- (int)_deleteAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   ppStmt = 0;
   v5 = sqlite3_prepare_v2(self->_database, "DELETE FROM Assets WHERE localIdentifier=(?);", -1, &ppStmt, 0);
   if (!v5)
   {
     v6 = ppStmt;
-    v7 = v4;
+    v7 = assetCopy;
     v8 = v7;
     if (v7)
     {
@@ -3003,17 +3003,17 @@ LABEL_30:
   return v5;
 }
 
-- (int)_storeProperties:(id)a3 forLocalIdentifier:(id)a4 assetId:(int64_t *)a5
+- (int)_storeProperties:(id)properties forLocalIdentifier:(id)identifier assetId:(int64_t *)id
 {
-  v8 = a3;
-  v9 = a4;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
   ppStmt = 0;
-  v10 = [v8 vcp_fingerprint];
+  vcp_fingerprint = [propertiesCopy vcp_fingerprint];
   v11 = sqlite3_prepare_v2(self->_database, "REPLACE INTO Assets (localIdentifier, version, dateModified, dateAnalyzed, analysisTypes, flags, quality, masterFingerprint, adjustedFingerprint, statsFlags) VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?));", -1, &ppStmt, 0);
   if (!v11)
   {
     v12 = ppStmt;
-    v13 = v9;
+    v13 = identifierCopy;
     v14 = v13;
     if (v13)
     {
@@ -3030,15 +3030,15 @@ LABEL_30:
 
     if (!v11)
     {
-      v11 = sqlite3_bind_int(ppStmt, 2, [v8 vcp_version]);
+      v11 = sqlite3_bind_int(ppStmt, 2, [propertiesCopy vcp_version]);
       if (!v11)
       {
         v17 = ppStmt;
-        v18 = [v8 vcp_dateModified];
-        v19 = v18;
-        if (v18)
+        vcp_dateModified = [propertiesCopy vcp_dateModified];
+        v19 = vcp_dateModified;
+        if (vcp_dateModified)
         {
-          [v18 timeIntervalSinceReferenceDate];
+          [vcp_dateModified timeIntervalSinceReferenceDate];
           v21 = sqlite3_bind_double(v17, 3, v20);
         }
 
@@ -3052,35 +3052,35 @@ LABEL_30:
         if (!v11)
         {
           v22 = ppStmt;
-          v23 = [v8 vcp_dateAnalyzed];
-          v11 = sub_100040220(v22, 4, v23);
+          vcp_dateAnalyzed = [propertiesCopy vcp_dateAnalyzed];
+          v11 = sub_100040220(v22, 4, vcp_dateAnalyzed);
 
           if (!v11)
           {
-            v11 = sqlite3_bind_int64(ppStmt, 5, [v8 vcp_types]);
+            v11 = sqlite3_bind_int64(ppStmt, 5, [propertiesCopy vcp_types]);
             if (!v11)
             {
-              v11 = sqlite3_bind_int(ppStmt, 6, [v8 vcp_flags]);
+              v11 = sqlite3_bind_int(ppStmt, 6, [propertiesCopy vcp_flags]);
               if (!v11)
               {
                 v24 = ppStmt;
-                [v8 vcp_quality];
+                [propertiesCopy vcp_quality];
                 v11 = sqlite3_bind_double(v24, 7, v25);
                 if (!v11)
                 {
                   v26 = ppStmt;
-                  v27 = [v10 master];
-                  v11 = sub_10003E748(v26, 8, v27);
+                  master = [vcp_fingerprint master];
+                  v11 = sub_10003E748(v26, 8, master);
 
                   if (!v11)
                   {
                     v28 = ppStmt;
-                    v29 = [v10 adjusted];
-                    v11 = sub_10003E748(v28, 9, v29);
+                    adjusted = [vcp_fingerprint adjusted];
+                    v11 = sub_10003E748(v28, 9, adjusted);
 
                     if (!v11)
                     {
-                      v11 = sqlite3_bind_int64(ppStmt, 10, [v8 vcp_statsFlags]);
+                      v11 = sqlite3_bind_int64(ppStmt, 10, [propertiesCopy vcp_statsFlags]);
                       if (!v11)
                       {
                         v30 = sqlite3_expanded_sql(ppStmt);
@@ -3111,9 +3111,9 @@ LABEL_30:
                           v11 = v31;
                         }
 
-                        if (a5 && v31 == 101)
+                        if (id && v31 == 101)
                         {
-                          *a5 = sqlite3_last_insert_rowid(self->_database);
+                          *id = sqlite3_last_insert_rowid(self->_database);
                         }
                       }
                     }
@@ -3132,11 +3132,11 @@ LABEL_30:
   return v11;
 }
 
-- (int)_storeResult:(id)a3 withKey:(id)a4 forAssetId:(int64_t)a5
+- (int)_storeResult:(id)result withKey:(id)key forAssetId:(int64_t)id
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isEqualToString:MediaAnalysisKeyFrameResourceResultsKey])
+  resultCopy = result;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:MediaAnalysisKeyFrameResourceResultsKey])
   {
     if (MediaAnalysisLogLevel() < 3)
     {
@@ -3154,7 +3154,7 @@ LABEL_30:
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:MediaAnalysisImageEmbeddingResultsKey])
+  if ([keyCopy isEqualToString:MediaAnalysisImageEmbeddingResultsKey])
   {
     if (MediaAnalysisLogLevel() < 3)
     {
@@ -3172,7 +3172,7 @@ LABEL_30:
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:MediaAnalysisVideoThumbnailResourcesResultsKey])
+  if ([keyCopy isEqualToString:MediaAnalysisVideoThumbnailResourcesResultsKey])
   {
     if (MediaAnalysisLogLevel() < 3)
     {
@@ -3213,26 +3213,26 @@ LABEL_15:
     }
 
     *buf = 138412290;
-    v24 = v9;
+    v24 = keyCopy;
     v11 = "No results type for %@; dropping result";
     v12 = v20;
     v13 = 12;
     goto LABEL_14;
   }
 
-  if (v8)
+  if (resultCopy)
   {
     ppStmt = 0;
     v14 = sqlite3_prepare_v2(self->_database, "REPLACE INTO Results (assetId, resultsType, results) VALUES ((?), (?), (?));", -1, &ppStmt, 0);
     if (!v14)
     {
-      v14 = sqlite3_bind_int64(ppStmt, 1, a5);
+      v14 = sqlite3_bind_int64(ppStmt, 1, id);
       if (!v14)
       {
         v14 = sqlite3_bind_int(ppStmt, 2, v17);
         if (!v14)
         {
-          v14 = sub_100043B5C(ppStmt, v8);
+          v14 = sub_100043B5C(ppStmt, resultCopy);
           if (!v14)
           {
             v18 = sqlite3_expanded_sql(ppStmt);
@@ -3278,7 +3278,7 @@ LABEL_15:
       if (os_log_type_enabled(&_os_log_default, v21))
       {
         *buf = 138412290;
-        v24 = v9;
+        v24 = keyCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "[VCPDatabaseWriter] Skip storing nil result for key %@", buf, 0xCu);
       }
     }
@@ -3291,11 +3291,11 @@ LABEL_16:
   return v14;
 }
 
-- (int)_storeAnalysis:(id)a3 forLocalIdentifier:(id)a4
+- (int)_storeAnalysis:(id)analysis forLocalIdentifier:(id)identifier
 {
-  v6 = a3;
-  v19 = a4;
-  v7 = [v6 vcp_results];
+  analysisCopy = analysis;
+  identifierCopy = identifier;
+  vcp_results = [analysisCopy vcp_results];
   v24 = 0;
   v8 = sqlite3_exec(self->_database, "SAVEPOINT Analysis;", 0, 0, 0);
   if (v8)
@@ -3303,7 +3303,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v8 = [(VCPDatabaseWriter *)self _storeProperties:v6 forLocalIdentifier:v19 assetId:&v24];
+  v8 = [(VCPDatabaseWriter *)self _storeProperties:analysisCopy forLocalIdentifier:identifierCopy assetId:&v24];
   if (v8)
   {
     goto LABEL_17;
@@ -3313,8 +3313,8 @@ LABEL_16:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v7 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v29 count:16];
+  allKeys = [vcp_results allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v10)
   {
     v12 = *v21;
@@ -3327,20 +3327,20 @@ LABEL_16:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v13))
         {
           *buf = v18;
-          v26 = v19;
+          v26 = identifierCopy;
           v27 = 2112;
           v28 = v15;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[VCPDatabaseWriter][%@] Storing result for key %@", buf, 0x16u);
         }
 
-        v16 = [v7 objectForKey:{v15, v18}];
+        v16 = [vcp_results objectForKey:{v15, v18}];
         v8 = [(VCPDatabaseWriter *)self _storeResult:v16 withKey:v15 forAssetId:v24];
 
         if (v8)
@@ -3350,7 +3350,7 @@ LABEL_16:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v29 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v20 objects:v29 count:16];
       if (v10)
       {
         continue;
@@ -3370,9 +3370,9 @@ LABEL_17:
   return v8;
 }
 
-- (int)_deleteResult:(id)a3 forAssetId:(int64_t)a4
+- (int)_deleteResult:(id)result forAssetId:(int64_t)id
 {
-  v6 = a3;
+  resultCopy = result;
   v7 = MediaAnalysisResultsKeyToType();
   v8 = v7;
   if (v7)
@@ -3381,7 +3381,7 @@ LABEL_17:
     v9 = sqlite3_prepare_v2(self->_database, "DELETE FROM Results WHERE assetId=(?) AND resultsType=(?);", -1, &ppStmt, 0);
     if (!v9)
     {
-      v9 = sqlite3_bind_int64(ppStmt, 1, a4);
+      v9 = sqlite3_bind_int64(ppStmt, 1, id);
       if (!v9)
       {
         v9 = sqlite3_bind_int(ppStmt, 2, v8);
@@ -3429,7 +3429,7 @@ LABEL_17:
       if (os_log_type_enabled(&_os_log_default, v12))
       {
         *buf = 138412290;
-        v16 = v6;
+        v16 = resultCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "No results type for %@; can't delete", buf, 0xCu);
       }
     }
@@ -3440,22 +3440,22 @@ LABEL_17:
   return v9;
 }
 
-- (int)_updateProperties:(id)a3 forAssetId:(int64_t)a4
+- (int)_updateProperties:(id)properties forAssetId:(int64_t)id
 {
-  v6 = a3;
+  propertiesCopy = properties;
   ppStmt = 0;
   v7 = sqlite3_prepare_v2(self->_database, "UPDATE Assets SET version=(?), dateModified=(?), dateAnalyzed=(?), analysisTypes=(?), flags=(?), quality=(?), statsFlags=(?) WHERE id=(?);", -1, &ppStmt, 0);
   if (!v7)
   {
-    v7 = sqlite3_bind_int(ppStmt, 1, [v6 vcp_version]);
+    v7 = sqlite3_bind_int(ppStmt, 1, [propertiesCopy vcp_version]);
     if (!v7)
     {
       v8 = ppStmt;
-      v9 = [v6 vcp_dateModified];
-      v10 = v9;
-      if (v9)
+      vcp_dateModified = [propertiesCopy vcp_dateModified];
+      v10 = vcp_dateModified;
+      if (vcp_dateModified)
       {
-        [v9 timeIntervalSinceReferenceDate];
+        [vcp_dateModified timeIntervalSinceReferenceDate];
         v12 = sqlite3_bind_double(v8, 2, v11);
       }
 
@@ -3469,11 +3469,11 @@ LABEL_17:
       if (!v7)
       {
         v13 = ppStmt;
-        v14 = [v6 vcp_dateAnalyzed];
-        v15 = v14;
-        if (v14)
+        vcp_dateAnalyzed = [propertiesCopy vcp_dateAnalyzed];
+        v15 = vcp_dateAnalyzed;
+        if (vcp_dateAnalyzed)
         {
-          [v14 timeIntervalSinceReferenceDate];
+          [vcp_dateAnalyzed timeIntervalSinceReferenceDate];
           v17 = sqlite3_bind_double(v13, 3, v16);
         }
 
@@ -3486,21 +3486,21 @@ LABEL_17:
 
         if (!v7)
         {
-          v7 = sqlite3_bind_int64(ppStmt, 4, [v6 vcp_types]);
+          v7 = sqlite3_bind_int64(ppStmt, 4, [propertiesCopy vcp_types]);
           if (!v7)
           {
-            v7 = sqlite3_bind_int(ppStmt, 5, [v6 vcp_flags]);
+            v7 = sqlite3_bind_int(ppStmt, 5, [propertiesCopy vcp_flags]);
             if (!v7)
             {
               v18 = ppStmt;
-              [v6 vcp_quality];
+              [propertiesCopy vcp_quality];
               v7 = sqlite3_bind_double(v18, 6, v19);
               if (!v7)
               {
-                v7 = sqlite3_bind_int64(ppStmt, 7, [v6 vcp_statsFlags]);
+                v7 = sqlite3_bind_int64(ppStmt, 7, [propertiesCopy vcp_statsFlags]);
                 if (!v7)
                 {
-                  v7 = sqlite3_bind_int64(ppStmt, 8, a4);
+                  v7 = sqlite3_bind_int64(ppStmt, 8, id);
                   if (!v7)
                   {
                     v20 = sqlite3_expanded_sql(ppStmt);
@@ -3545,34 +3545,34 @@ LABEL_17:
   return v7;
 }
 
-- (int)_updateAnalysis:(id)a3 withAnalysis:(id)a4 forAsset:(id)a5 withAssetId:(int64_t)a6
+- (int)_updateAnalysis:(id)analysis withAnalysis:(id)withAnalysis forAsset:(id)asset withAssetId:(int64_t)id
 {
-  v10 = a3;
-  v68 = a4;
-  v65 = v10;
-  v66 = a5;
-  [v10 vcp_version];
+  analysisCopy = analysis;
+  withAnalysisCopy = withAnalysis;
+  v65 = analysisCopy;
+  assetCopy = asset;
+  [analysisCopy vcp_version];
   v64 = MediaAnalysisTypesUpdatedSince();
-  [v10 vcp_types];
-  [v68 vcp_types];
-  v11 = [v10 vcp_types];
-  v12 = [v68 vcp_types];
-  v13 = [v68 vcp_types];
-  v14 = [v10 vcp_types];
-  v60 = [v68 vcp_types];
-  v59 = [v65 vcp_types];
-  v15 = v13 & ~v14 | v64;
+  [analysisCopy vcp_types];
+  [withAnalysisCopy vcp_types];
+  vcp_types = [analysisCopy vcp_types];
+  vcp_types2 = [withAnalysisCopy vcp_types];
+  vcp_types3 = [withAnalysisCopy vcp_types];
+  vcp_types4 = [analysisCopy vcp_types];
+  vcp_types5 = [withAnalysisCopy vcp_types];
+  vcp_types6 = [v65 vcp_types];
+  v15 = vcp_types3 & ~vcp_types4 | v64;
   v63 = MediaAnalysisFlagsForTypes();
-  if ([v66 vcp_isLivePhoto] && (VCPMAFullAnalysisTypesLivePhoto & v15) != 0 || objc_msgSend(v66, "isVideo") && (VCPMAFullAnalysisTypesMovie & v15) != 0)
+  if ([assetCopy vcp_isLivePhoto] && (VCPMAFullAnalysisTypesLivePhoto & v15) != 0 || objc_msgSend(assetCopy, "isVideo") && (VCPMAFullAnalysisTypesMovie & v15) != 0)
   {
     v63 |= 0x20000000uLL;
   }
 
-  v58 = [v65 vcp_flags];
-  v57 = [v68 vcp_flags];
+  vcp_flags = [v65 vcp_flags];
+  vcp_flags2 = [withAnalysisCopy vcp_flags];
   if ((v15 & 0x100000) != 0)
   {
-    v16 = v68;
+    v16 = withAnalysisCopy;
   }
 
   else
@@ -3580,20 +3580,20 @@ LABEL_17:
     v16 = v65;
   }
 
-  v56 = [v16 vcp_statsFlags];
-  [v68 vcp_quality];
-  v17 = v68;
+  vcp_statsFlags = [v16 vcp_statsFlags];
+  [withAnalysisCopy vcp_quality];
+  v17 = withAnalysisCopy;
   if (v18 == MediaAnalysisQualityUnknown)
   {
-    v19 = [v65 vcp_version];
-    if (v19 >= MediaAnalysisChangedVersion3)
+    vcp_version = [v65 vcp_version];
+    if (vcp_version >= MediaAnalysisChangedVersion3)
     {
       v17 = v65;
     }
 
     else
     {
-      v17 = v68;
+      v17 = withAnalysisCopy;
     }
   }
 
@@ -3612,7 +3612,7 @@ LABEL_17:
   v77 = 0u;
   v78 = 0u;
   v23 = MediaAnalysisResultsKeysForAnalysisTypes();
-  v24 = [v23 countByEnumeratingWithState:&v77 objects:v89 count:{16, v12, v11}];
+  v24 = [v23 countByEnumeratingWithState:&v77 objects:v89 count:{16, vcp_types2, vcp_types}];
   if (v24)
   {
     v25 = *v78;
@@ -3629,15 +3629,15 @@ LABEL_16:
       v28 = *(*(&v77 + 1) + 8 * v27);
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v26))
       {
-        v29 = [v66 localIdentifier];
+        localIdentifier = [assetCopy localIdentifier];
         *buf = 138412546;
-        v86 = v29;
+        v86 = localIdentifier;
         v87 = 2112;
         v88 = v28;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v26, "[VCPDatabaseWriter][%@] Deleting updated result analyzed in existing analysis but not in new analysis - %@", buf, 0x16u);
       }
 
-      v22 = [(VCPDatabaseWriter *)self _deleteResult:v28 forAssetId:a6];
+      v22 = [(VCPDatabaseWriter *)self _deleteResult:v28 forAssetId:id];
       if (v22)
       {
         goto LABEL_65;
@@ -3678,37 +3678,37 @@ LABEL_16:
         v34 = *(*(&v73 + 1) + 8 * i);
         if ([v67 containsObject:v34])
         {
-          v35 = [v68 vcp_results];
-          v36 = [v35 objectForKey:v34];
+          vcp_results = [withAnalysisCopy vcp_results];
+          v36 = [vcp_results objectForKey:v34];
 
           if (v36)
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v32))
             {
-              v37 = [v66 localIdentifier];
+              localIdentifier2 = [assetCopy localIdentifier];
               *buf = 138412546;
-              v86 = v37;
+              v86 = localIdentifier2;
               v87 = 2112;
               v88 = v34;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[VCPDatabaseWriter][%@] Overwriting updated result analyzed in both existing analysis and new analysis - %@", buf, 0x16u);
             }
 
-            v38 = [(VCPDatabaseWriter *)self _storeResult:v36 withKey:v34 forAssetId:a6];
+            v38 = [(VCPDatabaseWriter *)self _storeResult:v36 withKey:v34 forAssetId:id];
           }
 
           else
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v32))
             {
-              v39 = [v66 localIdentifier];
+              localIdentifier3 = [assetCopy localIdentifier];
               *buf = 138412546;
-              v86 = v39;
+              v86 = localIdentifier3;
               v87 = 2112;
               v88 = v34;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[VCPDatabaseWriter][%@] Deleting updated result analyzed in both existing analysis and new analysis - %@", buf, 0x16u);
             }
 
-            v38 = [(VCPDatabaseWriter *)self _deleteResult:v34 forAssetId:a6];
+            v38 = [(VCPDatabaseWriter *)self _deleteResult:v34 forAssetId:id];
           }
 
           v22 = v38;
@@ -3745,37 +3745,37 @@ LABEL_46:
       }
 
       v44 = *(*(&v69 + 1) + 8 * v43);
-      v45 = [v68 vcp_results];
-      v36 = [v45 objectForKey:v44];
+      vcp_results2 = [withAnalysisCopy vcp_results];
+      v36 = [vcp_results2 objectForKey:v44];
 
       if (v36)
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v42))
         {
-          v46 = [v66 localIdentifier];
+          localIdentifier4 = [assetCopy localIdentifier];
           *buf = 138412546;
-          v86 = v46;
+          v86 = localIdentifier4;
           v87 = 2112;
           v88 = v44;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v42, "[VCPDatabaseWriter][%@] Storing result analyzed in new analysis but not in existing analysis - %@", buf, 0x16u);
         }
 
-        v47 = [(VCPDatabaseWriter *)self _storeResult:v36 withKey:v44 forAssetId:a6];
+        v47 = [(VCPDatabaseWriter *)self _storeResult:v36 withKey:v44 forAssetId:id];
       }
 
       else
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v42))
         {
-          v48 = [v66 localIdentifier];
+          localIdentifier5 = [assetCopy localIdentifier];
           *buf = 138412546;
-          v86 = v48;
+          v86 = localIdentifier5;
           v87 = 2112;
           v88 = v44;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v42, "[VCPDatabaseWriter][%@] Deleting result analyzed in new analysis but not in existing analysis - %@", buf, 0x16u);
         }
 
-        v47 = [(VCPDatabaseWriter *)self _deleteResult:v44 forAssetId:a6];
+        v47 = [(VCPDatabaseWriter *)self _deleteResult:v44 forAssetId:id];
       }
 
       v22 = v47;
@@ -3807,28 +3807,28 @@ LABEL_66:
 LABEL_61:
 
   v81[0] = MediaAnalysisVersionKey;
-  v62 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v68 vcp_version]);
+  v62 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [withAnalysisCopy vcp_version]);
   v82[0] = v62;
   v81[1] = MediaAnalysisDateModifiedKey;
-  v61 = [v68 vcp_dateModified];
-  v82[1] = v61;
+  vcp_dateModified = [withAnalysisCopy vcp_dateModified];
+  v82[1] = vcp_dateModified;
   v81[2] = MediaAnalysisDateAnalyzedKey;
-  v49 = [v68 vcp_dateAnalyzed];
-  v82[2] = v49;
+  vcp_dateAnalyzed = [withAnalysisCopy vcp_dateAnalyzed];
+  v82[2] = vcp_dateAnalyzed;
   v81[3] = MediaAnalysisAnalysisTypesKey;
-  v50 = [NSNumber numberWithUnsignedLongLong:v59 & ~v64 | v60];
+  v50 = [NSNumber numberWithUnsignedLongLong:vcp_types6 & ~v64 | vcp_types5];
   v82[3] = v50;
   v81[4] = MediaAnalysisFlagsKey;
-  v51 = [NSNumber numberWithUnsignedLongLong:v57 | v58 & ~v63];
+  v51 = [NSNumber numberWithUnsignedLongLong:vcp_flags2 | vcp_flags & ~v63];
   v82[4] = v51;
   v81[5] = MediaAnalysisStatsFlagsKey;
-  v52 = [NSNumber numberWithUnsignedInteger:v56];
+  v52 = [NSNumber numberWithUnsignedInteger:vcp_statsFlags];
   v82[5] = v52;
   v81[6] = MediaAnalysisQualityKey;
   v53 = [NSNumber numberWithDouble:v21];
   v82[6] = v53;
   v54 = [NSDictionary dictionaryWithObjects:v82 forKeys:v81 count:7];
-  v22 = [(VCPDatabaseWriter *)self _updateProperties:v54 forAssetId:a6];
+  v22 = [(VCPDatabaseWriter *)self _updateProperties:v54 forAssetId:id];
 
   if (v22)
   {
@@ -3846,18 +3846,18 @@ LABEL_67:
   return v22;
 }
 
-- (int)updateResultsForAsset:(id)a3 results:(id)a4
+- (int)updateResultsForAsset:(id)asset results:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 localIdentifier];
+  assetCopy = asset;
+  resultsCopy = results;
+  localIdentifier = [assetCopy localIdentifier];
   ppStmt = 0;
   v9 = [NSMutableString stringWithString:@"SELECT id FROM Assets WHERE localIdentifier=?"];
   v10 = sqlite3_prepare_v2(self->_database, [v9 UTF8String], -1, &ppStmt, 0);
   if (!v10)
   {
     v11 = ppStmt;
-    v12 = v8;
+    v12 = localIdentifier;
     v13 = v12;
     if (v12)
     {
@@ -3911,7 +3911,7 @@ LABEL_67:
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        obj = [v7 allKeys];
+        obj = [resultsCopy allKeys];
         v18 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
         if (v18)
         {
@@ -3927,7 +3927,7 @@ LABEL_67:
               }
 
               v20 = *(*(&v27 + 1) + 8 * i);
-              v21 = [v7 objectForKey:v20];
+              v21 = [resultsCopy objectForKey:v20];
               v10 = [(VCPDatabaseWriter *)self _storeResult:v21 withKey:v20 forAssetId:v25];
 
               if (v10)
@@ -3965,7 +3965,7 @@ LABEL_24:
     if (os_log_type_enabled(&_os_log_default, v22))
     {
       *buf = 138412290;
-      v34 = v8;
+      v34 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "Failed to update results for asset %@", buf, 0xCu);
     }
   }
@@ -3975,10 +3975,10 @@ LABEL_27:
   return v10;
 }
 
-- (int)storeAnalysisForAsset:(id)a3 analysis:(id)a4
+- (int)storeAnalysisForAsset:(id)asset analysis:(id)analysis
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  analysisCopy = analysis;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"storeAnalysisForAsset:analysis:" replacedByMethodName:@"assetWithPhotosAsset:newAnalysis:existingAnalysis:"];
@@ -3998,17 +3998,17 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
     }
 
-    v9 = [v6 localIdentifier];
-    if ([v6 vcp_isAnalysisValid:v7])
+    localIdentifier = [assetCopy localIdentifier];
+    if ([assetCopy vcp_isAnalysisValid:analysisCopy])
     {
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1000457D8;
       v18[3] = &unk_100283D70;
       v18[4] = self;
-      v19 = v9;
-      v20 = v7;
-      v21 = v6;
+      v19 = localIdentifier;
+      v20 = analysisCopy;
+      v21 = assetCopy;
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_100045A88;
@@ -4027,14 +4027,14 @@ LABEL_27:
         v10 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v10))
         {
-          v11 = [v7 vcp_version];
-          v12 = [v7 vcp_dateModified];
+          vcp_version = [analysisCopy vcp_version];
+          vcp_dateModified = [analysisCopy vcp_dateModified];
           *buf = 138412802;
-          v23 = v9;
+          v23 = localIdentifier;
           v24 = 1024;
-          v25 = v11;
+          v25 = vcp_version;
           v26 = 2112;
-          v27 = v12;
+          v27 = vcp_dateModified;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[%@] Cannot store invalid analysis (v%d) with %@", buf, 0x1Cu);
         }
       }
@@ -4046,9 +4046,9 @@ LABEL_27:
   return v8;
 }
 
-- (int)bumpAnalysisVersionForAsset:(id)a3
+- (int)bumpAnalysisVersionForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"bumpAnalysisVersionForAsset:" replacedByMethodName:@"bumpAnalysisVersionForAsset:"];
@@ -4073,16 +4073,16 @@ LABEL_27:
     v7[2] = sub_100045D44;
     v7[3] = &unk_100283C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = assetCopy;
     v5 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:1];
   }
 
   return v5;
 }
 
-- (int)_queryPropertiesForAsset:(id)a3 assetId:(int64_t *)a4 analysis:(id *)a5
+- (int)_queryPropertiesForAsset:(id)asset assetId:(int64_t *)id analysis:(id *)analysis
 {
-  v8 = a3;
+  assetCopy = asset;
   ppStmt = 0;
   v9 = sqlite3_prepare_v2(self->_database, "SELECT id, version, dateModified, dateAnalyzed, analysisTypes, flags, quality, masterFingerprint, adjustedFingerprint, statsFlags FROM Assets WHERE localIdentifier=(?);", -1, &ppStmt, 0);
   if (v9)
@@ -4091,7 +4091,7 @@ LABEL_27:
   }
 
   v10 = ppStmt;
-  v11 = v8;
+  v11 = assetCopy;
   v12 = v11;
   if (v11)
   {
@@ -4155,32 +4155,32 @@ LABEL_27:
       goto LABEL_17;
     }
 
-    *a4 = sqlite3_column_int(ppStmt, 0);
+    *id = sqlite3_column_int(ppStmt, 0);
     v23 = +[NSMutableDictionary dictionary];
     v24 = v23;
-    *a5 = v23;
+    *analysis = v23;
     v25 = [NSNumber numberWithInt:sqlite3_column_int(ppStmt, 1)];
     [v23 setObject:v25 forKey:MediaAnalysisVersionKey];
 
-    [*a5 setObject:v18 forKey:MediaAnalysisDateModifiedKey];
-    [*a5 setObject:v20 forKey:MediaAnalysisDateAnalyzedKey];
-    v26 = *a5;
+    [*analysis setObject:v18 forKey:MediaAnalysisDateModifiedKey];
+    [*analysis setObject:v20 forKey:MediaAnalysisDateAnalyzedKey];
+    v26 = *analysis;
     v27 = [NSNumber numberWithLongLong:sqlite3_column_int64(ppStmt, 4)];
     v28 = MediaAnalysisAnalysisTypesKey;
     [v26 setObject:v27 forKey:MediaAnalysisAnalysisTypesKey];
 
-    v29 = *a5;
+    v29 = *analysis;
     v30 = [NSNumber numberWithInt:sqlite3_column_int(ppStmt, 5)];
     [v29 setObject:v30 forKey:MediaAnalysisFlagsKey];
 
     if (sqlite3_column_double(ppStmt, 6) != MediaAnalysisQualityUnknown)
     {
-      v31 = *a5;
+      v31 = *analysis;
       v32 = [NSNumber numberWithDouble:?];
       [v31 setObject:v32 forKey:MediaAnalysisQualityKey];
     }
 
-    v33 = *a5;
+    v33 = *analysis;
     v34 = ppStmt;
     if (sqlite3_column_type(ppStmt, 7) == 5)
     {
@@ -4206,15 +4206,15 @@ LABEL_27:
     v38 = [VCPFingerprint fingerprintWithMaster:v35 adjusted:v37];
     [v33 vcp_setFingerprint:v38];
 
-    v39 = *a5;
+    v39 = *analysis;
     v40 = [NSNumber numberWithLongLong:sqlite3_column_int64(ppStmt, 9)];
     [v39 setObject:v40 forKey:MediaAnalysisStatsFlagsKey];
 
-    v41 = [*a5 vcp_version];
-    if (v41 < MediaAnalysisChangedVersion3 && ([*a5 vcp_types] & 4) != 0)
+    vcp_version = [*analysis vcp_version];
+    if (vcp_version < MediaAnalysisChangedVersion3 && ([*analysis vcp_types] & 4) != 0)
     {
-      v42 = *a5;
-      v43 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [*a5 vcp_types] | 8);
+      v42 = *analysis;
+      v43 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [*analysis vcp_types] | 8);
       [v42 setObject:v43 forKey:v28];
     }
 
@@ -4252,21 +4252,21 @@ LABEL_38:
   sqlite3_finalize(ppStmt);
   if (v9)
   {
-    *a5 = 0;
+    *analysis = 0;
   }
 
   return v9;
 }
 
-- (int)_queryResultsForAssetId:(int64_t)a3 analysis:(id)a4
+- (int)_queryResultsForAssetId:(int64_t)id analysis:(id)analysis
 {
-  v6 = a4;
+  analysisCopy = analysis;
   v7 = +[NSMutableDictionary dictionary];
   ppStmt = 0;
   v8 = sqlite3_prepare_v2(self->_database, "SELECT resultsType, results FROM Results WHERE assetId=(?);", -1, &ppStmt, 0);
   if (!v8)
   {
-    v8 = sqlite3_bind_int64(ppStmt, 1, a3);
+    v8 = sqlite3_bind_int64(ppStmt, 1, id);
     if (!v8)
     {
       v10 = sqlite3_expanded_sql(ppStmt);
@@ -4322,7 +4322,7 @@ LABEL_38:
       {
         if ([v7 count])
         {
-          [v6 setObject:v7 forKey:MediaAnalysisResultsKey];
+          [analysisCopy setObject:v7 forKey:MediaAnalysisResultsKey];
         }
 
         v8 = 0;
@@ -4336,9 +4336,9 @@ LABEL_3:
   return v8;
 }
 
-- (int)analysisForAsset:(id)a3 analysis:(id *)a4
+- (int)analysisForAsset:(id)asset analysis:(id *)analysis
 {
-  v6 = a3;
+  assetCopy = asset;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"analysisForAsset:analysis:" replacedByMethodName:@"fetchAnalysisWithLocalIdentifier:predicate:"];
@@ -4362,18 +4362,18 @@ LABEL_3:
     v9[1] = 3221225472;
     v9[2] = sub_100046C94;
     v9[3] = &unk_100283CC0;
-    v11 = a4;
+    analysisCopy = analysis;
     v9[4] = self;
-    v10 = v6;
+    v10 = assetCopy;
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:0];
   }
 
   return v7;
 }
 
-- (int)deleteAnalysisForAsset:(id)a3
+- (int)deleteAnalysisForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"deleteAnalysisForAsset:" replacedByMethodName:@"removeAssetsWithLocalIdentifiers:predicate:"];
@@ -4398,16 +4398,16 @@ LABEL_3:
     v7[2] = sub_100046F64;
     v7[3] = &unk_100283C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = assetCopy;
     v5 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:1];
   }
 
   return v5;
 }
 
-- (int)migration_deleteAnalysisForAssets:(id)a3
+- (int)migration_deleteAnalysisForAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -4419,14 +4419,14 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if ([v4 count])
+  if ([assetsCopy count])
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100047224;
     v8[3] = &unk_100283C98;
-    v9 = v4;
-    v10 = self;
+    v9 = assetsCopy;
+    selfCopy = self;
     v5 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v8 fallbackBlock:0 write:1];
   }
 
@@ -4448,9 +4448,9 @@ LABEL_3:
   return v5;
 }
 
-- (int)queryAnalysisResultsForAssets:(id)a3 results:(id *)a4
+- (int)queryAnalysisResultsForAssets:(id)assets results:(id *)results
 {
-  v6 = a3;
+  assetsCopy = assets;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryAnalysisResultsForAssets:results:" replacedByMethodName:@"fetchAnalysesWithLocalIdentifiers:predicate:"];
@@ -4470,15 +4470,15 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
     }
 
-    if ([v6 count])
+    if ([assetsCopy count])
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000476F4;
       v10[3] = &unk_100283CC0;
-      v11 = v6;
-      v12 = self;
-      v13 = a4;
+      v11 = assetsCopy;
+      selfCopy = self;
+      resultsCopy = results;
       v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:0 write:0];
     }
 
@@ -4501,15 +4501,15 @@ LABEL_3:
   return v7;
 }
 
-- (int)_getBlacklistExpiredCount:(id)a3 count:(int *)a4
+- (int)_getBlacklistExpiredCount:(id)count count:(int *)a4
 {
-  v6 = a3;
+  countCopy = count;
   ppStmt = 0;
   v7 = sqlite3_prepare_v2(self->_database, "SELECT count(*) FROM Blacklist WHERE date<=(?);", -1, &ppStmt, 0);
   if (!v7)
   {
     v8 = ppStmt;
-    v9 = v6;
+    v9 = countCopy;
     v10 = v9;
     if (v9)
     {
@@ -4557,9 +4557,9 @@ LABEL_3:
   return v7;
 }
 
-- (int)ageOutBlacklistBefore:(id)a3 count:(int *)a4
+- (int)ageOutBlacklistBefore:(id)before count:(int *)count
 {
-  v6 = a3;
+  beforeCopy = before;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"ageOutBlacklistBefore:count:" replacedByMethodName:0];
@@ -4584,23 +4584,23 @@ LABEL_3:
     v9[2] = sub_100048048;
     v9[3] = &unk_100283CC0;
     v9[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = beforeCopy;
+    countCopy = count;
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:1];
   }
 
   return v7;
 }
 
-- (int)_getBlacklistCountForLocalIdentifier:(id)a3 count:(int *)a4
+- (int)_getBlacklistCountForLocalIdentifier:(id)identifier count:(int *)count
 {
-  v6 = a3;
+  identifierCopy = identifier;
   ppStmt = 0;
   v7 = sqlite3_prepare_v2(self->_database, "SELECT count FROM Blacklist WHERE localIdentifier=(?);", -1, &ppStmt, 0);
   if (!v7)
   {
     v8 = ppStmt;
-    v9 = v6;
+    v9 = identifierCopy;
     v10 = v9;
     if (v9)
     {
@@ -4638,7 +4638,7 @@ LABEL_3:
       v7 = v14;
       if (v14 == 101)
       {
-        *a4 = 0;
+        *count = 0;
       }
 
       else
@@ -4648,7 +4648,7 @@ LABEL_3:
           goto LABEL_17;
         }
 
-        *a4 = sqlite3_column_int(ppStmt, 0);
+        *count = sqlite3_column_int(ppStmt, 0);
         v7 = sqlite3_step(ppStmt);
         if (v7 != 101)
         {
@@ -4666,9 +4666,9 @@ LABEL_17:
   return v7;
 }
 
-- (int)addAssetToBlacklist:(id)a3
+- (int)addAssetToBlacklist:(id)blacklist
 {
-  v4 = a3;
+  blacklistCopy = blacklist;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -4684,18 +4684,18 @@ LABEL_17:
   v10 = 3221225472;
   v11 = sub_100048590;
   v12 = &unk_100283C98;
-  v13 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = blacklistCopy;
   v14 = v5;
   v6 = objc_retainBlock(&v9);
-  v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v6 fallbackBlock:v6 write:1, v9, v10, v11, v12, v13];
+  selfCopy = [(VCPDatabaseWriter *)self executeDatabaseBlock:v6 fallbackBlock:v6 write:1, v9, v10, v11, v12, selfCopy];
 
-  return v7;
+  return selfCopy;
 }
 
-- (int)decrementBlacklistCountForLocalIdentifier:(id)a3
+- (int)decrementBlacklistCountForLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -4712,16 +4712,16 @@ LABEL_17:
   v8[2] = sub_100048988;
   v8[3] = &unk_100283C98;
   v8[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v6 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v8 fallbackBlock:0 write:1];
 
   return v6;
 }
 
-- (int)removeLocalIdentifierFromBlacklist:(id)a3
+- (int)removeLocalIdentifierFromBlacklist:(id)blacklist
 {
-  v4 = a3;
+  blacklistCopy = blacklist;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -4738,16 +4738,16 @@ LABEL_17:
   v8[2] = sub_100048E6C;
   v8[3] = &unk_100283C98;
   v8[4] = self;
-  v5 = v4;
+  v5 = blacklistCopy;
   v9 = v5;
   v6 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v8 fallbackBlock:0 write:1];
 
   return v6;
 }
 
-+ (id)assetTypePredicatesStringWithMediaType:(int64_t)a3 mediaSubtypes:(unint64_t)a4 imageOnlyAnalysis:(BOOL)a5
++ (id)assetTypePredicatesStringWithMediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes imageOnlyAnalysis:(BOOL)analysis
 {
-  v6 = a4;
+  subtypesCopy = subtypes;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"assetTypePredicatesStringWithMediaType:mediaSubtypes:imageOnlyAnalysis:" replacedByMethodName:@"assetTypePredicatesStringWithMediaType:mediaSubtypes:"];
@@ -4757,14 +4757,14 @@ LABEL_17:
   else
   {
     v8 = 0;
-    if ((a3 - 3) >= 0xFFFFFFFFFFFFFFFELL && !a5)
+    if ((type - 3) >= 0xFFFFFFFFFFFFFFFELL && !analysis)
     {
-      v10 = [NSMutableString stringWithFormat:@"AND mediaType=(%ld) ", a3];
-      v8 = v10;
-      if (a3 == 1)
+      type = [NSMutableString stringWithFormat:@"AND mediaType=(%ld) ", type];
+      v8 = type;
+      if (type == 1)
       {
-        [v10 appendString:@"AND "];
-        if ((v6 & 8) == 0)
+        [type appendString:@"AND "];
+        if ((subtypesCopy & 8) == 0)
         {
           [v8 appendString:@"NOT "];
         }
@@ -4777,7 +4777,7 @@ LABEL_17:
   return v8;
 }
 
-- (int)queryAssetCountForTaskID:(unint64_t)a3
+- (int)queryAssetCountForTaskID:(unint64_t)d
 {
   if (_os_feature_enabled_impl())
   {
@@ -4807,7 +4807,7 @@ LABEL_17:
     v7[2] = sub_1000492D4;
     v7[3] = &unk_100283D98;
     v7[5] = buf;
-    v7[6] = a3;
+    v7[6] = d;
     v7[4] = self;
     [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:0];
     v5 = *(*&buf[8] + 24);
@@ -4817,7 +4817,7 @@ LABEL_17:
   return v5;
 }
 
-- (int)queryAssetCountForTaskID:(unint64_t)a3 minimumAttempts:(unint64_t)a4
+- (int)queryAssetCountForTaskID:(unint64_t)d minimumAttempts:(unint64_t)attempts
 {
   if (_os_feature_enabled_impl())
   {
@@ -4846,8 +4846,8 @@ LABEL_17:
     v9[1] = 3221225472;
     v9[2] = sub_100049604;
     v9[3] = &unk_100283DC0;
-    v9[6] = a3;
-    v9[7] = a4;
+    v9[6] = d;
+    v9[7] = attempts;
     v9[4] = self;
     v9[5] = buf;
     [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:0];
@@ -4858,7 +4858,7 @@ LABEL_17:
   return v7;
 }
 
-- (int)queryAssetCountForTaskID:(unint64_t)a3 withStatus:(unint64_t)a4 andAttempts:(int)a5
+- (int)queryAssetCountForTaskID:(unint64_t)d withStatus:(unint64_t)status andAttempts:(int)attempts
 {
   if (_os_feature_enabled_impl())
   {
@@ -4887,9 +4887,9 @@ LABEL_17:
     v11[1] = 3221225472;
     v11[2] = sub_100049954;
     v11[3] = &unk_100283DE8;
-    v11[6] = a3;
-    v11[7] = a4;
-    v12 = a5;
+    v11[6] = d;
+    v11[7] = status;
+    attemptsCopy = attempts;
     v11[4] = self;
     v11[5] = buf;
     [(VCPDatabaseWriter *)self executeDatabaseBlock:v11 fallbackBlock:0 write:0];
@@ -4900,9 +4900,9 @@ LABEL_17:
   return v9;
 }
 
-- (int)queryProcessingStatus:(unint64_t *)a3 attempts:(int *)a4 lastAttemptDate:(id *)a5 andNextAttemptDate:(id *)a6 forLocalIdentifier:(id)a7 andTaskID:(unint64_t)a8
+- (int)queryProcessingStatus:(unint64_t *)status attempts:(int *)attempts lastAttemptDate:(id *)date andNextAttemptDate:(id *)attemptDate forLocalIdentifier:(id)identifier andTaskID:(unint64_t)d
 {
-  v14 = a7;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryProcessingStatus:andAttempts:lastAttemptDate:andNextAttemptDate:forLocalIdentifier:andTaskID:" replacedByMethodName:@"fetchProcessingStatus:attempts:lastAttemptDate:nextAttemptDate:localIdentifier:taskID:"];
@@ -4927,19 +4927,19 @@ LABEL_17:
     v17[2] = sub_100049CD8;
     v17[3] = &unk_100283E10;
     v17[4] = self;
-    v19 = a8;
-    v18 = v14;
-    v20 = a3;
-    v21 = a4;
-    v22 = a5;
-    v23 = a6;
+    dCopy = d;
+    v18 = identifierCopy;
+    statusCopy = status;
+    attemptsCopy = attempts;
+    dateCopy = date;
+    attemptDateCopy = attemptDate;
     v15 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v17 fallbackBlock:0 write:0];
   }
 
   return v15;
 }
 
-- (unint64_t)queryEligibleToRetryAssetCountWithTaskID:(unint64_t)a3
+- (unint64_t)queryEligibleToRetryAssetCountWithTaskID:(unint64_t)d
 {
   if (_os_feature_enabled_impl())
   {
@@ -4963,18 +4963,18 @@ LABEL_17:
       }
     }
 
-    v6 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:0 andTaskID:a3];
-    v7 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:1 andTaskID:a3]+ v6;
-    v8 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:2 andTaskID:a3];
-    v9 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:3 andTaskID:a3]+ v8 + v7;
-    v10 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:4 andTaskID:a3];
-    v11 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:5 andTaskID:a3]+ v10;
-    v12 = &v9[[(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:6 andTaskID:a3]+ v11];
-    return [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:7 andTaskID:a3]+ v12;
+    v6 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:0 andTaskID:d];
+    v7 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:1 andTaskID:d]+ v6;
+    v8 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:2 andTaskID:d];
+    v9 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:3 andTaskID:d]+ v8 + v7;
+    v10 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:4 andTaskID:d];
+    v11 = [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:5 andTaskID:d]+ v10;
+    v12 = &v9[[(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:6 andTaskID:d]+ v11];
+    return [(VCPDatabaseWriter *)self queryEligibleToRetryAssetCountWithProcessingStatus:7 andTaskID:d]+ v12;
   }
 }
 
-- (unint64_t)queryEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)a3 andTaskID:(unint64_t)a4
+- (unint64_t)queryEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)status andTaskID:(unint64_t)d
 {
   if (_os_feature_enabled_impl())
   {
@@ -5003,8 +5003,8 @@ LABEL_17:
     v9[1] = 3221225472;
     v9[2] = sub_10004A320;
     v9[3] = &unk_100283DC0;
-    v9[6] = a4;
-    v9[7] = a3;
+    v9[6] = d;
+    v9[7] = status;
     v9[4] = self;
     v9[5] = buf;
     [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:0];
@@ -5015,9 +5015,9 @@ LABEL_17:
   return v7;
 }
 
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v12 = a7;
+  predicatesCopy = predicates;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchEligibleToRetryLocalIdentifiers:processingStatus:taskID:fetchLimit:additionalPredicates:" replacedByMethodName:@"fetchEligibleToRetryLocalIdentifiers:processingStatus:taskID:fetchLimit:additionalPredicates:"];
@@ -5026,7 +5026,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!identifiers)
   {
     goto LABEL_8;
   }
@@ -5046,19 +5046,19 @@ LABEL_8:
   v15[1] = 3221225472;
   v15[2] = sub_10004A760;
   v15[3] = &unk_100283E38;
-  v16 = v12;
-  v17 = self;
-  v18 = a5;
-  v19 = a4;
-  v20 = a6;
-  v21 = a3;
+  v16 = predicatesCopy;
+  selfCopy = self;
+  dCopy = d;
+  statusCopy = status;
+  limitCopy = limit;
+  identifiersCopy = identifiers;
   v13 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v15 fallbackBlock:0 write:0];
 
 LABEL_9:
   return v13;
 }
 
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 withProcessingStatus:(unint64_t)a4 andTaskID:(unint64_t)a5 andFetchLimit:(unint64_t)a6
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers withProcessingStatus:(unint64_t)status andTaskID:(unint64_t)d andFetchLimit:(unint64_t)limit
 {
   if (_os_feature_enabled_impl())
   {
@@ -5069,11 +5069,11 @@ LABEL_9:
   else
   {
 
-    return [(VCPDatabaseWriter *)self fetchEligibleToRetryLocalIdentifiers:a3 processingStatus:a4 taskID:a5 fetchLimit:a6 additionalPredicates:0];
+    return [(VCPDatabaseWriter *)self fetchEligibleToRetryLocalIdentifiers:identifiers processingStatus:status taskID:d fetchLimit:limit additionalPredicates:0];
   }
 }
 
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 withTaskID:(unint64_t)a4 andFetchLimit:(unint64_t)a5
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry withTaskID:(unint64_t)d andFetchLimit:(unint64_t)limit
 {
   if (_os_feature_enabled_impl())
   {
@@ -5102,17 +5102,17 @@ LABEL_9:
     v10[2] = sub_10004AD70;
     v10[3] = &unk_100283BD0;
     v10[4] = self;
-    v10[5] = a4;
-    v10[6] = a5;
-    v10[7] = a3;
+    v10[5] = d;
+    v10[6] = limit;
+    v10[7] = retry;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:0 write:0];
   }
 }
 
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 includingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d includingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v12 = a5;
-  v13 = a7;
+  statusesCopy = statuses;
+  predicatesCopy = predicates;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchLocalIdentifiersEligibleForRetry:taskID:includingStatuses:fetchLimit:additionalPredicates:" replacedByMethodName:@"fetchLocalIdentifiersEligibleForRetry:taskID:includingStatuses:fetchLimit:additionalPredicates:"];
@@ -5121,7 +5121,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!retry)
   {
     goto LABEL_8;
   }
@@ -5141,22 +5141,22 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_10004B2D8;
   v16[3] = &unk_100283E60;
-  v17 = v12;
-  v18 = v13;
-  v19 = self;
-  v20 = a4;
-  v21 = a6;
-  v22 = a3;
+  v17 = statusesCopy;
+  v18 = predicatesCopy;
+  selfCopy = self;
+  dCopy = d;
+  limitCopy = limit;
+  retryCopy = retry;
   v14 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v16 fallbackBlock:0 write:0];
 
 LABEL_9:
   return v14;
 }
 
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 excludingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d excludingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v12 = a5;
-  v13 = a7;
+  statusesCopy = statuses;
+  predicatesCopy = predicates;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchLocalIdentifiersEligibleForRetry:taskID:includingStatuses:fetchLimit:additionalPredicates:" replacedByMethodName:@"fetchLocalIdentifiersEligibleForRetry:taskID:includingStatuses:fetchLimit:additionalPredicates:"];
@@ -5165,7 +5165,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!retry)
   {
     goto LABEL_8;
   }
@@ -5185,21 +5185,21 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_10004B9BC;
   v16[3] = &unk_100283E60;
-  v17 = v12;
-  v18 = v13;
-  v19 = self;
-  v20 = a4;
-  v21 = a6;
-  v22 = a3;
+  v17 = statusesCopy;
+  v18 = predicatesCopy;
+  selfCopy = self;
+  dCopy = d;
+  limitCopy = limit;
+  retryCopy = retry;
   v14 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v16 fallbackBlock:0 write:0];
 
 LABEL_9:
   return v14;
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 attempts:(int)a6 fetchLimit:(unint64_t)a7 additionalPredicates:(id)a8
+- (int)fetchLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d attempts:(int)attempts fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v14 = a8;
+  predicatesCopy = predicates;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchLocalIdentifiers:processingStatus:taskID:attempts:fetchLimit:additionalPredicates:" replacedByMethodName:@"fetchLocalIdentifiers:processingStatus:taskID:attempts:fetchLimit:additionalPredicates:"];
@@ -5208,7 +5208,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!identifiers)
   {
     goto LABEL_8;
   }
@@ -5228,22 +5228,22 @@ LABEL_8:
   v17[1] = 3221225472;
   v17[2] = sub_10004C088;
   v17[3] = &unk_100283E88;
-  v18 = v14;
-  v19 = self;
-  v20 = a5;
-  v21 = a4;
-  v24 = a6;
-  v22 = a7;
-  v23 = a3;
+  v18 = predicatesCopy;
+  selfCopy = self;
+  dCopy = d;
+  statusCopy = status;
+  attemptsCopy = attempts;
+  limitCopy = limit;
+  identifiersCopy = identifiers;
   v15 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v17 fallbackBlock:0 write:0];
 
 LABEL_9:
   return v15;
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 withProcessingStatus:(unint64_t)a4 andTaskID:(unint64_t)a5 andAttempts:(int)a6 andFetchLimit:(unint64_t)a7
+- (int)fetchLocalIdentifiers:(id *)identifiers withProcessingStatus:(unint64_t)status andTaskID:(unint64_t)d andAttempts:(int)attempts andFetchLimit:(unint64_t)limit
 {
-  v8 = *&a6;
+  v8 = *&attempts;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchLocalIdentifiers:withProcessingStatus:andTaskID:andAttempts:andFetchLimit:" replacedByMethodName:@"fetchLocalIdentifiers:processingStatus:taskID:attempts:fetchLimit:"];
@@ -5253,13 +5253,13 @@ LABEL_9:
   else
   {
 
-    return [(VCPDatabaseWriter *)self fetchLocalIdentifiers:a3 processingStatus:a4 taskID:a5 attempts:v8 fetchLimit:a7 additionalPredicates:0];
+    return [(VCPDatabaseWriter *)self fetchLocalIdentifiers:identifiers processingStatus:status taskID:d attempts:v8 fetchLimit:limit additionalPredicates:0];
   }
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 taskID:(unint64_t)a4 processingStatus:(unint64_t)a5 additionalPredicates:(id)a6
+- (int)fetchLocalIdentifiers:(id *)identifiers taskID:(unint64_t)d processingStatus:(unint64_t)status additionalPredicates:(id)predicates
 {
-  v10 = a6;
+  predicatesCopy = predicates;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchLocalIdentifiers:taskID:processingStatus:additionalPredicates:" replacedByMethodName:@"fetchLocalIdentifiers:taskID:processingStatus:additionalPredicates:"];
@@ -5268,7 +5268,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!identifiers)
   {
     goto LABEL_8;
   }
@@ -5288,18 +5288,18 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = sub_10004C6A8;
   v13[3] = &unk_100283EB0;
-  v14 = v10;
-  v15 = self;
-  v16 = a4;
-  v17 = a5;
-  v18 = a3;
+  v14 = predicatesCopy;
+  selfCopy = self;
+  dCopy = d;
+  statusCopy = status;
+  identifiersCopy = identifiers;
   v11 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v13 fallbackBlock:0 write:0];
 
 LABEL_9:
   return v11;
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 withTaskID:(unint64_t)a4 andProcessingStatus:(unint64_t)a5
+- (int)fetchLocalIdentifiers:(id *)identifiers withTaskID:(unint64_t)d andProcessingStatus:(unint64_t)status
 {
   if (_os_feature_enabled_impl())
   {
@@ -5310,13 +5310,13 @@ LABEL_9:
   else
   {
 
-    return [(VCPDatabaseWriter *)self fetchLocalIdentifiers:a3 taskID:a4 processingStatus:a5 additionalPredicates:0];
+    return [(VCPDatabaseWriter *)self fetchLocalIdentifiers:identifiers taskID:d processingStatus:status additionalPredicates:0];
   }
 }
 
-- (int)fetchProcessingErrorCode:(unint64_t *)a3 errorLine:(unint64_t *)a4 taskID:(unint64_t)a5 localIdentifier:(id)a6
+- (int)fetchProcessingErrorCode:(unint64_t *)code errorLine:(unint64_t *)line taskID:(unint64_t)d localIdentifier:(id)identifier
 {
-  v10 = a6;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchProcessingErrorCode:errorLine:taskID:localIdentifier:" replacedByMethodName:@"fetchProcessingErrorCode:errorLine:taskID:localIdentifier:"];
@@ -5326,7 +5326,7 @@ LABEL_9:
   else
   {
     v11 = -50;
-    if (a3 && a4)
+    if (code && line)
     {
       if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
@@ -5344,10 +5344,10 @@ LABEL_9:
       v13[2] = sub_10004CC7C;
       v13[3] = &unk_100283EB0;
       v13[4] = self;
-      v15 = a5;
-      v14 = v10;
-      v16 = a3;
-      v17 = a4;
+      dCopy = d;
+      v14 = identifierCopy;
+      codeCopy = code;
+      lineCopy = line;
       v11 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v13 fallbackBlock:0 write:0];
     }
   }
@@ -5355,10 +5355,10 @@ LABEL_9:
   return v11;
 }
 
-- (int)fetchProcessingErrorCodeCounts:(id *)a3 withTaskID:(unint64_t)a4 sinceDate:(id)a5 additionalPredicates:(id)a6
+- (int)fetchProcessingErrorCodeCounts:(id *)counts withTaskID:(unint64_t)d sinceDate:(id)date additionalPredicates:(id)predicates
 {
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  predicatesCopy = predicates;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"fetchProcessingErrorCodeCounts:withTaskID:sinceDate:additionalPredicates:" replacedByMethodName:@"fetchProcessingErrorCodeCounts:taskID:sinceDate:additionalPredicates:"];
@@ -5367,7 +5367,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!counts)
   {
     goto LABEL_8;
   }
@@ -5387,21 +5387,21 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = sub_10004D084;
   v14[3] = &unk_100283B80;
-  v15 = v11;
-  v16 = self;
-  v18 = a4;
-  v17 = v10;
-  v19 = a3;
+  v15 = predicatesCopy;
+  selfCopy = self;
+  dCopy = d;
+  v17 = dateCopy;
+  countsCopy = counts;
   v12 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v14 fallbackBlock:0 write:0];
 
 LABEL_9:
   return v12;
 }
 
-- (int)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9 errorCode:(unint64_t)a10 errorLine:(unint64_t)a11
+- (int)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes errorCode:(unint64_t)self0 errorLine:(unint64_t)self1
 {
-  v17 = a4;
-  v18 = a7;
+  assetCopy = asset;
+  dateCopy = date;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"setAttempts:localIdentifier:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:" replacedByMethodName:@"setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:"];
@@ -5410,7 +5410,7 @@ LABEL_9:
 
   else
   {
-    v23 = [v17 mad_nextAttemptDateForStatus:a6 currentAttemptDate:v18 attemptCount:a3];
+    v23 = [assetCopy mad_nextAttemptDateForStatus:status currentAttemptDate:dateCopy attemptCount:attempts];
     if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315650;
@@ -5427,17 +5427,17 @@ LABEL_9:
     v24[2] = sub_10004D6DC;
     v24[3] = &unk_100283ED8;
     v24[4] = self;
-    v28 = a5;
-    v25 = v17;
-    v26 = v18;
+    dCopy = d;
+    v25 = assetCopy;
+    v26 = dateCopy;
     v20 = v23;
     v27 = v20;
-    v29 = a10;
-    v30 = a11;
-    v31 = a8;
-    v32 = a9;
-    v33 = a3;
-    v34 = a6;
+    codeCopy = code;
+    lineCopy = line;
+    typeCopy = type;
+    subtypesCopy = subtypes;
+    attemptsCopy = attempts;
+    statusCopy = status;
     v21 = objc_retainBlock(v24);
     v19 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v21 fallbackBlock:v21 write:1];
   }
@@ -5445,10 +5445,10 @@ LABEL_9:
   return v19;
 }
 
-- (int)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9
+- (int)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes
 {
-  v15 = a4;
-  v16 = a7;
+  assetCopy = asset;
+  dateCopy = date;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"setAttempts:localIdentifier:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:" replacedByMethodName:0];
@@ -5457,16 +5457,16 @@ LABEL_9:
 
   else
   {
-    v17 = [(VCPDatabaseWriter *)self setAttempts:a3 asset:v15 taskID:a5 status:a6 lastAttemptDate:v16 mediaType:a8 mediaSubtypes:a9 errorCode:1 errorLine:0];
+    v17 = [(VCPDatabaseWriter *)self setAttempts:attempts asset:assetCopy taskID:d status:status lastAttemptDate:dateCopy mediaType:type mediaSubtypes:subtypes errorCode:1 errorLine:0];
   }
 
   return v17;
 }
 
-- (int)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7
+- (int)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date
 {
-  v12 = a4;
-  v13 = a7;
+  assetCopy = asset;
+  dateCopy = date;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"setAttempts:asset:taskID:status:lastAttemptDate:" replacedByMethodName:@"setAttempts:asset:taskID:status:lastAttemptDate:"];
@@ -5475,15 +5475,15 @@ LABEL_9:
 
   else
   {
-    v14 = [(VCPDatabaseWriter *)self setAttempts:a3 asset:v12 taskID:a5 status:a6 lastAttemptDate:v13 mediaType:0 mediaSubtypes:0 errorCode:1 errorLine:0];
+    v14 = [(VCPDatabaseWriter *)self setAttempts:attempts asset:assetCopy taskID:d status:status lastAttemptDate:dateCopy mediaType:0 mediaSubtypes:0 errorCode:1 errorLine:0];
   }
 
   return v14;
 }
 
-- (int)removeProcessingStatusForLocalIdentifier:(id)a3 andTaskID:(unint64_t)a4
+- (int)removeProcessingStatusForLocalIdentifier:(id)identifier andTaskID:(unint64_t)d
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"removeProcessingStatusForLocalIdentifier:andTaskID:" replacedByMethodName:@"removeProcessingStatusForLocalIdentifier:taskID:"];
@@ -5508,15 +5508,15 @@ LABEL_9:
     v9[2] = sub_10004DD20;
     v9[3] = &unk_100283CC0;
     v9[4] = self;
-    v11 = a4;
-    v10 = v6;
+    dCopy = d;
+    v10 = identifierCopy;
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:1];
   }
 
   return v7;
 }
 
-- (int)removeAllProcessingStatusForTaskID:(unint64_t)a3
+- (int)removeAllProcessingStatusForTaskID:(unint64_t)d
 {
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
@@ -5545,12 +5545,12 @@ LABEL_9:
     v6[2] = sub_10004E038;
     v6[3] = &unk_100283C20;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = d;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v6 fallbackBlock:0 write:1];
   }
 }
 
-- (int)removeProcessingStatusForTaskID:(unint64_t)a3 mediaType:(int64_t)a4 mediaSubtypes:(unint64_t)a5
+- (int)removeProcessingStatusForTaskID:(unint64_t)d mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes
 {
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
@@ -5579,17 +5579,17 @@ LABEL_9:
     v10[2] = sub_10004E1BC;
     v10[3] = &unk_100283BD0;
     v10[4] = self;
-    v10[5] = a3;
-    v10[6] = a4;
-    v10[7] = a5;
+    v10[5] = d;
+    v10[6] = type;
+    v10[7] = subtypes;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:0 write:1];
   }
 }
 
-- (int)updateProcessingStatus:(unint64_t)a3 andNextAttemptDate:(id)a4 andErrorCode:(unint64_t)a5 andErrorLine:(unint64_t)a6 forLocalIdentifier:(id)a7 andTaskID:(unint64_t)a8
+- (int)updateProcessingStatus:(unint64_t)status andNextAttemptDate:(id)date andErrorCode:(unint64_t)code andErrorLine:(unint64_t)line forLocalIdentifier:(id)identifier andTaskID:(unint64_t)d
 {
-  v14 = a4;
-  v15 = a7;
+  dateCopy = date;
+  identifierCopy = identifier;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"updateProcessingStatus:andNextAttemptDate:andErrorCode:andErrorLine:forLocaldentifier:andTaskID:" replacedByMethodName:@"updateProcessingStatus:nextAttemptDate:errorCode:errorLine:localIdentifier:taskID:"];
@@ -5614,12 +5614,12 @@ LABEL_9:
     v19[2] = sub_10004E54C;
     v19[3] = &unk_100283F00;
     v19[4] = self;
-    v22 = a3;
-    v20 = v14;
-    v23 = a5;
-    v24 = a6;
-    v25 = a8;
-    v21 = v15;
+    statusCopy = status;
+    v20 = dateCopy;
+    codeCopy = code;
+    lineCopy = line;
+    dCopy = d;
+    v21 = identifierCopy;
     v17 = objc_retainBlock(v19);
     v16 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v17 fallbackBlock:v17 write:1];
   }
@@ -5627,10 +5627,10 @@ LABEL_9:
   return v16;
 }
 
-- (int)updateProcessingStatus:(unint64_t)a3 andNextAttemptDate:(id)a4 forLocalIdentifier:(id)a5 andTaskID:(unint64_t)a6
+- (int)updateProcessingStatus:(unint64_t)status andNextAttemptDate:(id)date forLocalIdentifier:(id)identifier andTaskID:(unint64_t)d
 {
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  identifierCopy = identifier;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"updateProcessingStatus:andNextAttemptDate:forLocaldentifier:andTaskID:" replacedByMethodName:@"updateProcessingStatus:andNextAttemptDate:forLocaldentifier:andTaskID:"];
@@ -5639,15 +5639,15 @@ LABEL_9:
 
   else
   {
-    v12 = [(VCPDatabaseWriter *)self updateProcessingStatus:a3 andNextAttemptDate:v10 andErrorCode:1 andErrorLine:0 forLocalIdentifier:v11 andTaskID:a6];
+    v12 = [(VCPDatabaseWriter *)self updateProcessingStatus:status andNextAttemptDate:dateCopy andErrorCode:1 andErrorLine:0 forLocalIdentifier:identifierCopy andTaskID:d];
   }
 
   return v12;
 }
 
-- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3 additionalPredicates:(id)a4
+- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d additionalPredicates:(id)predicates
 {
-  v6 = a4;
+  predicatesCopy = predicates;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"hardFailAllRunningProcessingStatusForTaskID:additionalPredicates:" replacedByMethodName:@"hardFailAllRunningProcessingStatusForTaskID:additionalPredicates:"];
@@ -5671,9 +5671,9 @@ LABEL_9:
     v10[1] = 3221225472;
     v10[2] = sub_10004E9E0;
     v10[3] = &unk_100283CC0;
-    v11 = v6;
-    v12 = self;
-    v13 = a3;
+    v11 = predicatesCopy;
+    selfCopy = self;
+    dCopy = d;
     v8 = objc_retainBlock(v10);
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v8 fallbackBlock:v8 write:1];
   }
@@ -5681,7 +5681,7 @@ LABEL_9:
   return v7;
 }
 
-- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3
+- (int)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d
 {
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
@@ -5692,13 +5692,13 @@ LABEL_9:
   else
   {
 
-    return [(VCPDatabaseWriter *)self hardFailAllRunningProcessingStatusForTaskID:a3 additionalPredicates:0];
+    return [(VCPDatabaseWriter *)self hardFailAllRunningProcessingStatusForTaskID:d additionalPredicates:0];
   }
 }
 
-- (int)_removeSchedulingHistoryForStartTimeBefore:(id)a3
+- (int)_removeSchedulingHistoryForStartTimeBefore:(id)before
 {
-  v4 = a3;
+  beforeCopy = before;
   ppStmt = 0;
   v5 = sqlite3_prepare_v2(self->_database, "DELETE FROM BackgroundActivitySchedulingHistory WHERE startTime<(?);", -1, &ppStmt, 0);
   if (v5)
@@ -5707,7 +5707,7 @@ LABEL_9:
   }
 
   v6 = ppStmt;
-  v7 = v4;
+  v7 = beforeCopy;
   v8 = v7;
   if (v7)
   {
@@ -5758,7 +5758,7 @@ LABEL_21:
         if (os_log_type_enabled(&_os_log_default, v11))
         {
           *buf = 138412290;
-          v18 = v4;
+          v18 = beforeCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "Failed to remove background activity scheduling history with start time before %@", buf, 0xCu);
         }
       }
@@ -5772,9 +5772,9 @@ LABEL_21:
   return v12;
 }
 
-- (int)_storeSchedulingHistoryForActivityID:(unint64_t)a3 andStartTime:(id)a4
+- (int)_storeSchedulingHistoryForActivityID:(unint64_t)d andStartTime:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   ppStmt = 0;
   v7 = sqlite3_prepare_v2(self->_database, "REPLACE INTO BackgroundActivitySchedulingHistory (activityID, startTime, duration, exitStatus) VALUES ((?), (?), (?), (?));", -1, &ppStmt, 0);
   if (v7)
@@ -5782,14 +5782,14 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v7 = sqlite3_bind_int64(ppStmt, 1, a3);
+  v7 = sqlite3_bind_int64(ppStmt, 1, d);
   if (v7)
   {
     goto LABEL_24;
   }
 
   v8 = ppStmt;
-  v9 = v6;
+  v9 = timeCopy;
   v10 = v9;
   if (v9)
   {
@@ -5855,7 +5855,7 @@ LABEL_24:
           *buf = 138412546;
           v21 = v14;
           v22 = 2112;
-          v23[0] = v6;
+          v23[0] = timeCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "Failed to store history for background activity %@ and start time %@", buf, 0x16u);
         }
       }
@@ -5869,9 +5869,9 @@ LABEL_24:
   return v15;
 }
 
-- (int)storeSchedulingHistoryForActivityID:(unint64_t)a3 andStartTime:(id)a4
+- (int)storeSchedulingHistoryForActivityID:(unint64_t)d andStartTime:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"storeSchedulingHistoryForActivityID:andStartTime:" replacedByMethodName:@"updateSessionLogWithTaskID:startTime:duration:exitStatus:sessionLog:"];
@@ -5896,14 +5896,14 @@ LABEL_24:
     v12[2] = sub_10004F360;
     v12[3] = &unk_100283CC0;
     v12[4] = self;
-    v14 = a3;
-    v13 = v6;
+    dCopy = d;
+    v13 = timeCopy;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10004F3E4;
     v9[3] = &unk_100283CC0;
     v9[4] = self;
-    v11 = a3;
+    dCopy2 = d;
     v10 = v13;
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v12 fallbackBlock:v9 write:1];
   }
@@ -5911,14 +5911,14 @@ LABEL_24:
   return v7;
 }
 
-- (int)updateSchedulingHistoryForActivityID:(unint64_t)a3 startTime:(id)a4 duration:(double)a5 exitStatus:(int)a6 sessionLog:(id)a7
+- (int)updateSchedulingHistoryForActivityID:(unint64_t)d startTime:(id)time duration:(double)duration exitStatus:(int)status sessionLog:(id)log
 {
-  v12 = a4;
-  v13 = a7;
+  timeCopy = time;
+  logCopy = log;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"updateSchedulingHistoryForActivityID:startTime:duration:exitStatus:sessionLog:" replacedByMethodName:@"updateSessionLogWithTaskID:startTime:duration:exitStatus:sessionLog:"];
-    v14 = -50;
+    selfCopy = -50;
   }
 
   else
@@ -5938,22 +5938,22 @@ LABEL_24:
     v18 = 3221225472;
     v19 = sub_10004F614;
     v20 = &unk_100283F28;
-    v21 = self;
-    v24 = a3;
-    v22 = v12;
-    v25 = a5;
-    v26 = a6;
-    v23 = v13;
+    selfCopy = self;
+    dCopy = d;
+    v22 = timeCopy;
+    durationCopy = duration;
+    statusCopy = status;
+    v23 = logCopy;
     v15 = objc_retainBlock(&v17);
-    v14 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v15 fallbackBlock:v15 write:1, v17, v18, v19, v20, v21];
+    selfCopy = [(VCPDatabaseWriter *)self executeDatabaseBlock:v15 fallbackBlock:v15 write:1, v17, v18, v19, v20, selfCopy];
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 sinceDate:(id)a5
+- (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d sinceDate:(id)date
 {
-  v8 = a5;
+  dateCopy = date;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"querySchedulingHistoryRecords:forActivityID:sinceDate:" replacedByMethodName:@"querySchedulingHistoryRecords:forActivityID:sinceDate:"];
@@ -5984,11 +5984,11 @@ LABEL_24:
     v11[2] = sub_10004FB1C;
     v11[3] = &unk_100283F50;
     v11[4] = self;
-    v14 = a4;
-    v12 = v8;
+    dCopy = d;
+    v12 = dateCopy;
     v13 = buf;
     v9 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v11 fallbackBlock:0 write:0];
-    *a3 = *(*&buf[8] + 40);
+    *records = *(*&buf[8] + 40);
 
     _Block_object_dispose(buf, 8);
   }
@@ -5996,7 +5996,7 @@ LABEL_24:
   return v9;
 }
 
-- (int)purgeExcessiveSchedulingRecordsForActivityID:(unint64_t)a3
+- (int)purgeExcessiveSchedulingRecordsForActivityID:(unint64_t)d
 {
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
@@ -6025,14 +6025,14 @@ LABEL_24:
     v6[2] = sub_100050028;
     v6[3] = &unk_100283C20;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = d;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v6 fallbackBlock:0 write:1];
   }
 }
 
-- (int)_storeProgressForActivityID:(unint64_t)a3 withAnalysisSubtype:(unint64_t)a4 version:(unint64_t)a5 processedAssetCount:(unint64_t)a6 totalAssetCount:(unint64_t)a7 storeDate:(id)a8
+- (int)_storeProgressForActivityID:(unint64_t)d withAnalysisSubtype:(unint64_t)subtype version:(unint64_t)version processedAssetCount:(unint64_t)count totalAssetCount:(unint64_t)assetCount storeDate:(id)date
 {
-  v14 = a8;
+  dateCopy = date;
   ppStmt = 0;
   v15 = sqlite3_prepare_v2(self->_database, "REPLACE INTO BackgroundAnalysisProgressHistory (activityID, analysisSubtype, storeDate, version, processedAssetCount, totalAssetCount) VALUES ((?), (?), (?), (?), (?), (?));", -1, &ppStmt, 0);
   if (v15)
@@ -6040,20 +6040,20 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  v15 = sqlite3_bind_int64(ppStmt, 1, a3);
+  v15 = sqlite3_bind_int64(ppStmt, 1, d);
   if (v15)
   {
     goto LABEL_26;
   }
 
-  v15 = sqlite3_bind_int64(ppStmt, 2, a4);
+  v15 = sqlite3_bind_int64(ppStmt, 2, subtype);
   if (v15)
   {
     goto LABEL_26;
   }
 
   v16 = ppStmt;
-  v17 = v14;
+  v17 = dateCopy;
   v18 = v17;
   if (v17)
   {
@@ -6073,19 +6073,19 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  v15 = sqlite3_bind_int64(ppStmt, 4, a5);
+  v15 = sqlite3_bind_int64(ppStmt, 4, version);
   if (v15)
   {
     goto LABEL_26;
   }
 
-  v15 = sqlite3_bind_int64(ppStmt, 5, a6);
+  v15 = sqlite3_bind_int64(ppStmt, 5, count);
   if (v15)
   {
     goto LABEL_26;
   }
 
-  v15 = sqlite3_bind_int64(ppStmt, 6, a7);
+  v15 = sqlite3_bind_int64(ppStmt, 6, assetCount);
   if (v15)
   {
     goto LABEL_26;
@@ -6124,17 +6124,17 @@ LABEL_26:
           *buf = 67110658;
           *v28 = v15;
           *&v28[4] = 1024;
-          *&v28[6] = a3;
+          *&v28[6] = d;
           *v29 = 1024;
-          *&v29[2] = a4;
+          *&v29[2] = subtype;
           LOWORD(v30) = 1024;
-          *(&v30 + 2) = a5;
+          *(&v30 + 2) = version;
           HIWORD(v30) = 1024;
-          v31 = a6;
+          countCopy = count;
           v32 = 1024;
-          v33 = a7;
+          assetCountCopy = assetCount;
           v34 = 2112;
-          v35 = v14;
+          v35 = dateCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "Error: %d -- Failed to store progress for activity %d subtype %d version %d processed asset count %d total asset count %d on datetime %@. ", buf, 0x30u);
         }
       }
@@ -6148,9 +6148,9 @@ LABEL_26:
   return v22;
 }
 
-- (int)_removeProgressRecordsBeforeDate:(id)a3
+- (int)_removeProgressRecordsBeforeDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   ppStmt = 0;
   v5 = sqlite3_prepare_v2(self->_database, "DELETE FROM BackgroundAnalysisProgressHistory WHERE storeDate<(?);", -1, &ppStmt, 0);
   if (v5)
@@ -6159,7 +6159,7 @@ LABEL_26:
   }
 
   v6 = ppStmt;
-  v7 = v4;
+  v7 = dateCopy;
   v8 = v7;
   if (v7)
   {
@@ -6210,7 +6210,7 @@ LABEL_21:
         if (os_log_type_enabled(&_os_log_default, v11))
         {
           *buf = 138412290;
-          v18 = v4;
+          v18 = dateCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "Failed to remove background analysis progress history with storage date before %@", buf, 0xCu);
         }
       }
@@ -6224,7 +6224,7 @@ LABEL_21:
   return v12;
 }
 
-- (int)_removeProgressRecordsBeyondMaximum:(unint64_t)a3
+- (int)_removeProgressRecordsBeyondMaximum:(unint64_t)maximum
 {
   ppStmt = 0;
   v4 = sqlite3_prepare_v2(self->_database, "DELETE FROM BackgroundAnalysisProgressHistory WHERE id NOT IN(    SELECT id FROM BackgroundAnalysisProgressHistory      ORDER BY storeDate DESC LIMIT (?));", -1, &ppStmt, 0);
@@ -6233,7 +6233,7 @@ LABEL_21:
     goto LABEL_3;
   }
 
-  v4 = sqlite3_bind_int64(ppStmt, 1, a3);
+  v4 = sqlite3_bind_int64(ppStmt, 1, maximum);
   if (v4)
   {
     goto LABEL_3;
@@ -6271,7 +6271,7 @@ LABEL_3:
         if (os_log_type_enabled(&_os_log_default, v6))
         {
           *buf = 67109120;
-          LODWORD(v12) = a3;
+          LODWORD(v12) = maximum;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "Failed to remove background analysis progress history past max count %d", buf, 8u);
         }
       }
@@ -6282,9 +6282,9 @@ LABEL_3:
   return v5;
 }
 
-- (int)storeProgressForActivityID:(unint64_t)a3 withAnalysisSubtype:(unint64_t)a4 version:(unint64_t)a5 processedAssetCount:(unint64_t)a6 totalAssetCount:(unint64_t)a7 storeDate:(id)a8
+- (int)storeProgressForActivityID:(unint64_t)d withAnalysisSubtype:(unint64_t)subtype version:(unint64_t)version processedAssetCount:(unint64_t)count totalAssetCount:(unint64_t)assetCount storeDate:(id)date
 {
-  v14 = a8;
+  dateCopy = date;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"storeProgressForActivityID:withAnalysisSubtype:version:processedAssetCount:totalAssetCount:storeDate:" replacedByMethodName:@"storeProgressForActivityID:withAnalysisSubtype:version:processedAssetCount:totalAssetCount:storeDate:"];
@@ -6309,22 +6309,22 @@ LABEL_3:
     v24[2] = sub_100050B54;
     v24[3] = &unk_100283E10;
     v24[4] = self;
-    v26 = a3;
-    v27 = a4;
-    v28 = a5;
-    v29 = a6;
-    v30 = a7;
-    v25 = v14;
+    dCopy = d;
+    subtypeCopy = subtype;
+    versionCopy = version;
+    countCopy = count;
+    assetCountCopy = assetCount;
+    v25 = dateCopy;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100050B6C;
     v17[3] = &unk_100283E10;
     v17[4] = self;
-    v19 = a3;
-    v20 = a4;
-    v21 = a5;
-    v22 = a6;
-    v23 = a7;
+    dCopy2 = d;
+    subtypeCopy2 = subtype;
+    versionCopy2 = version;
+    countCopy2 = count;
+    assetCountCopy2 = assetCount;
     v18 = v25;
     v15 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v24 fallbackBlock:v17 write:1];
   }
@@ -6365,7 +6365,7 @@ LABEL_3:
   }
 }
 
-- (int)countAssetsForTaskID:(unint64_t)a3 totalAssets:(unint64_t *)a4 processedAssets:(unint64_t *)a5
+- (int)countAssetsForTaskID:(unint64_t)d totalAssets:(unint64_t *)assets processedAssets:(unint64_t *)processedAssets
 {
   if (_os_feature_enabled_impl())
   {
@@ -6376,7 +6376,7 @@ LABEL_3:
   else
   {
     result = -50;
-    if (a4 && a5)
+    if (assets && processedAssets)
     {
       if (MediaAnalysisEnableDatabaseLog())
       {
@@ -6397,9 +6397,9 @@ LABEL_3:
       v10[2] = sub_100050EFC;
       v10[3] = &unk_100283BD0;
       v10[4] = self;
-      v10[5] = a3;
-      v10[6] = a4;
-      v10[7] = a5;
+      v10[5] = d;
+      v10[6] = assets;
+      v10[7] = processedAssets;
       [(VCPDatabaseWriter *)self executeDatabaseBlock:v10 fallbackBlock:0 write:0];
       return 0;
     }
@@ -6408,89 +6408,89 @@ LABEL_3:
   return result;
 }
 
-- (int)parseHeader:(sqlite3_stmt *)a3 startColumn:(int)a4 analysis:(id)a5
+- (int)parseHeader:(sqlite3_stmt *)header startColumn:(int)column analysis:(id)analysis
 {
-  v7 = a5;
-  v8 = [NSNumber numberWithInt:sqlite3_column_int(a3, a4)];
-  [v7 setObject:v8 forKeyedSubscript:MediaAnalysisVersionKey];
+  analysisCopy = analysis;
+  v8 = [NSNumber numberWithInt:sqlite3_column_int(header, column)];
+  [analysisCopy setObject:v8 forKeyedSubscript:MediaAnalysisVersionKey];
 
-  if (sqlite3_column_type(a3, a4 + 1) == 5)
+  if (sqlite3_column_type(header, column + 1) == 5)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [NSDate dateWithTimeIntervalSinceReferenceDate:sqlite3_column_double(a3, a4 + 1)];
+    v9 = [NSDate dateWithTimeIntervalSinceReferenceDate:sqlite3_column_double(header, column + 1)];
   }
 
-  [v7 setObject:v9 forKeyedSubscript:MediaAnalysisDateModifiedKey];
+  [analysisCopy setObject:v9 forKeyedSubscript:MediaAnalysisDateModifiedKey];
 
-  if (sqlite3_column_type(a3, a4 + 2) == 5)
+  if (sqlite3_column_type(header, column + 2) == 5)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [NSDate dateWithTimeIntervalSinceReferenceDate:sqlite3_column_double(a3, a4 + 2)];
+    v10 = [NSDate dateWithTimeIntervalSinceReferenceDate:sqlite3_column_double(header, column + 2)];
   }
 
-  [v7 setObject:v10 forKeyedSubscript:MediaAnalysisDateAnalyzedKey];
+  [analysisCopy setObject:v10 forKeyedSubscript:MediaAnalysisDateAnalyzedKey];
 
-  v11 = [NSNumber numberWithLongLong:sqlite3_column_int64(a3, a4 + 3)];
+  v11 = [NSNumber numberWithLongLong:sqlite3_column_int64(header, column + 3)];
   v12 = MediaAnalysisAnalysisTypesKey;
-  [v7 setObject:v11 forKeyedSubscript:MediaAnalysisAnalysisTypesKey];
+  [analysisCopy setObject:v11 forKeyedSubscript:MediaAnalysisAnalysisTypesKey];
 
-  v13 = [NSNumber numberWithInt:sqlite3_column_int(a3, a4 + 4)];
-  [v7 setObject:v13 forKeyedSubscript:MediaAnalysisFlagsKey];
+  v13 = [NSNumber numberWithInt:sqlite3_column_int(header, column + 4)];
+  [analysisCopy setObject:v13 forKeyedSubscript:MediaAnalysisFlagsKey];
 
-  v14 = [NSNumber numberWithLongLong:sqlite3_column_int64(a3, a4 + 5)];
-  [v7 setObject:v14 forKeyedSubscript:MediaAnalysisStatsFlagsKey];
+  v14 = [NSNumber numberWithLongLong:sqlite3_column_int64(header, column + 5)];
+  [analysisCopy setObject:v14 forKeyedSubscript:MediaAnalysisStatsFlagsKey];
 
-  if (sqlite3_column_double(a3, a4 + 6) != MediaAnalysisQualityUnknown)
+  if (sqlite3_column_double(header, column + 6) != MediaAnalysisQualityUnknown)
   {
     v15 = [NSNumber numberWithDouble:?];
-    [v7 setObject:v15 forKeyedSubscript:MediaAnalysisQualityKey];
+    [analysisCopy setObject:v15 forKeyedSubscript:MediaAnalysisQualityKey];
   }
 
-  if (sqlite3_column_type(a3, a4 + 7) == 5)
+  if (sqlite3_column_type(header, column + 7) == 5)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [NSString stringWithUTF8String:sqlite3_column_text(a3, a4 + 7)];
+    v16 = [NSString stringWithUTF8String:sqlite3_column_text(header, column + 7)];
   }
 
-  if (sqlite3_column_type(a3, a4 + 8) == 5)
+  if (sqlite3_column_type(header, column + 8) == 5)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = [NSString stringWithUTF8String:sqlite3_column_text(a3, a4 + 8)];
+    v17 = [NSString stringWithUTF8String:sqlite3_column_text(header, column + 8)];
   }
 
   v18 = [VCPFingerprint fingerprintWithMaster:v16 adjusted:v17];
-  [v7 vcp_setFingerprint:v18];
+  [analysisCopy vcp_setFingerprint:v18];
 
-  v19 = [v7 vcp_version];
-  if (v19 < MediaAnalysisChangedVersion3 && ([v7 vcp_types] & 4) != 0)
+  vcp_version = [analysisCopy vcp_version];
+  if (vcp_version < MediaAnalysisChangedVersion3 && ([analysisCopy vcp_types] & 4) != 0)
   {
-    v20 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v7 vcp_types] | 8);
-    [v7 setObject:v20 forKeyedSubscript:v12];
+    v20 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [analysisCopy vcp_types] | 8);
+    [analysisCopy setObject:v20 forKeyedSubscript:v12];
   }
 
   return 0;
 }
 
-- (int)queryHeadersForAssets:(id)a3 analyses:(id)a4
+- (int)queryHeadersForAssets:(id)assets analyses:(id)analyses
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  analysesCopy = analyses;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryHeadersForAssets:analyses:" replacedByMethodName:@"fetchAnalysesWithLocalIdentifiers:predicate:"];
@@ -6499,16 +6499,16 @@ LABEL_3:
 
   else
   {
-    v8 = [(VCPDatabaseWriter *)self migration_queryHeadersForAssets:v6 analyses:v7];
+    v8 = [(VCPDatabaseWriter *)self migration_queryHeadersForAssets:assetsCopy analyses:analysesCopy];
   }
 
   return v8;
 }
 
-- (int)migration_queryHeadersForAssets:(id)a3 analyses:(id)a4
+- (int)migration_queryHeadersForAssets:(id)assets analyses:(id)analyses
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  analysesCopy = analyses;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -6520,15 +6520,15 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if ([v6 count])
+  if ([assetsCopy count])
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100051714;
     v11[3] = &unk_100283C70;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = assetsCopy;
+    selfCopy = self;
+    v14 = analysesCopy;
     v8 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v11 fallbackBlock:0 write:0];
   }
 
@@ -6550,9 +6550,9 @@ LABEL_3:
   return v8;
 }
 
-- (int)loadAllKeyValuePairs:(id)a3
+- (int)loadAllKeyValuePairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"loadAllKeyValuePairs:" replacedByMethodName:@"fetchAllDataStoreKeyValuePairs:"];
@@ -6577,16 +6577,16 @@ LABEL_3:
     v7[2] = sub_100051C90;
     v7[3] = &unk_100283C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = pairsCopy;
     v5 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:0];
   }
 
   return v5;
 }
 
-- (BOOL)keyExistsInKeyValueStore:(id)a3
+- (BOOL)keyExistsInKeyValueStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"keyExistsInKeyValueStore:" replacedByMethodName:@"keyExistsInKeyValueStore:"];
@@ -6606,7 +6606,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (!v4)
+  if (!storeCopy)
   {
     goto LABEL_8;
   }
@@ -6620,7 +6620,7 @@ LABEL_8:
   v7[2] = sub_100052168;
   v7[3] = &unk_100283D08;
   v7[4] = self;
-  v8 = v4;
+  v8 = storeCopy;
   v9 = buf;
   [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:0];
   v5 = *(*&buf[8] + 24);
@@ -6631,9 +6631,9 @@ LABEL_9:
   return v5 & 1;
 }
 
-- (int64_t)valueForKey:(id)a3
+- (int64_t)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"valueForKey:" replacedByMethodName:@"dataStoreValueForKey:"];
@@ -6653,7 +6653,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (!v4)
+  if (!keyCopy)
   {
     goto LABEL_8;
   }
@@ -6668,7 +6668,7 @@ LABEL_8:
   v7[3] = &unk_100283F78;
   v7[4] = self;
   v9 = buf;
-  v8 = v4;
+  v8 = keyCopy;
   [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:0];
   v5 = *(*&buf[8] + 24);
 
@@ -6678,9 +6678,9 @@ LABEL_9:
   return v5;
 }
 
-- (int64_t)backup_valueForKey:(id)a3
+- (int64_t)backup_valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -6692,7 +6692,7 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (v4)
+  if (keyCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -6704,7 +6704,7 @@ LABEL_9:
     v7[3] = &unk_100283F78;
     v7[4] = self;
     v9 = buf;
-    v8 = v4;
+    v8 = keyCopy;
     [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:0];
     v5 = *(*&buf[8] + 24);
 
@@ -6719,9 +6719,9 @@ LABEL_9:
   return v5;
 }
 
-- (int)setValue:(int64_t)a3 forKey:(id)a4
+- (int)setValue:(int64_t)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"setValue:forKey:" replacedByMethodName:@"setDataStoreValue:forKey:"];
@@ -6741,7 +6741,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (!v6)
+  if (!keyCopy)
   {
     goto LABEL_8;
   }
@@ -6751,17 +6751,17 @@ LABEL_8:
   v9[2] = sub_10005295C;
   v9[3] = &unk_100283CC0;
   v9[4] = self;
-  v11 = a3;
-  v10 = v6;
+  valueCopy = value;
+  v10 = keyCopy;
   v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:1];
 
 LABEL_9:
   return v7;
 }
 
-- (int)removeKey:(id)a3
+- (int)removeKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"removeKey:" replacedByMethodName:@"removeDataStoreKey:"];
@@ -6781,7 +6781,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (!v4)
+  if (!keyCopy)
   {
     goto LABEL_8;
   }
@@ -6791,16 +6791,16 @@ LABEL_8:
   v7[2] = sub_100052B24;
   v7[3] = &unk_100283C98;
   v7[4] = self;
-  v8 = v4;
+  v8 = keyCopy;
   v5 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v7 fallbackBlock:0 write:1];
 
 LABEL_9:
   return v5;
 }
 
-- (int)storeStatsFlags:(unint64_t)a3 forLocalIdentifier:(id)a4
+- (int)storeStatsFlags:(unint64_t)flags forLocalIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"storeStatsFlags:forLocalIdentifier:" replacedByMethodName:0];
@@ -6820,7 +6820,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (!v6)
+  if (!identifierCopy)
   {
     goto LABEL_8;
   }
@@ -6830,15 +6830,15 @@ LABEL_8:
   v9[2] = sub_100052CF4;
   v9[3] = &unk_100283CC0;
   v9[4] = self;
-  v11 = a3;
-  v10 = v6;
+  flagsCopy = flags;
+  v10 = identifierCopy;
   v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:1];
 
 LABEL_9:
   return v7;
 }
 
-- (unint64_t)countOfAssetsWithMediaAnalysisResultsType:(unint64_t)a3
+- (unint64_t)countOfAssetsWithMediaAnalysisResultsType:(unint64_t)type
 {
   if (_os_feature_enabled_impl())
   {
@@ -6868,7 +6868,7 @@ LABEL_9:
     v9[2] = sub_1000530DC;
     v9[3] = &unk_100283D98;
     v9[5] = buf;
-    v9[6] = a3;
+    v9[6] = type;
     v9[4] = self;
     v6 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:0];
     if (v6)
@@ -6898,18 +6898,18 @@ LABEL_9:
   return v5;
 }
 
-+ (id)databaseWithFilepath:(id)a3
++ (id)databaseWithFilepath:(id)filepath
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithFilepath:v3];
+  filepathCopy = filepath;
+  v4 = [objc_alloc(objc_opt_class()) initWithFilepath:filepathCopy];
 
   return v4;
 }
 
-- (int)migration_restoreAnalysis:(id)a3 forLocalIdentifier:(id)a4
+- (int)migration_restoreAnalysis:(id)analysis forLocalIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  analysisCopy = analysis;
+  identifierCopy = identifier;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -6926,9 +6926,9 @@ LABEL_9:
   v12[2] = sub_10005346C;
   v12[3] = &unk_100283C70;
   v12[4] = self;
-  v8 = v6;
+  v8 = analysisCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = identifierCopy;
   v14 = v9;
   v10 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v12 fallbackBlock:&stru_100283F98 write:1];
 
@@ -6948,8 +6948,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  v3 = [(VCPDatabaseWriter *)self commit];
-  if (!v3)
+  commit = [(VCPDatabaseWriter *)self commit];
+  if (!commit)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -6962,16 +6962,16 @@ LABEL_9:
     v5[4] = self;
     v5[5] = buf;
     [(VCPDatabaseWriter *)self executeDatabaseBlock:v5 fallbackBlock:0 write:0];
-    v3 = *(*&buf[8] + 24);
+    commit = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
   }
 
-  return v3;
+  return commit;
 }
 
-- (unint64_t)backup_analysisRecordsModifiedSinceDate:(id)a3
+- (unint64_t)backup_analysisRecordsModifiedSinceDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -6992,7 +6992,7 @@ LABEL_9:
   v8[2] = sub_100053818;
   v8[3] = &unk_100283D08;
   v8[4] = self;
-  v5 = v4;
+  v5 = dateCopy;
   v9 = v5;
   v10 = buf;
   [(VCPDatabaseWriter *)self executeDatabaseBlock:v8 fallbackBlock:0 write:0];
@@ -7002,7 +7002,7 @@ LABEL_9:
   return v6;
 }
 
-- (int)fetchMomentsScheduledAssetEntries:(id *)a3 forTaskID:(unint64_t)a4
+- (int)fetchMomentsScheduledAssetEntries:(id *)entries forTaskID:(unint64_t)d
 {
   if (_os_feature_enabled_impl())
   {
@@ -7031,13 +7031,13 @@ LABEL_9:
     v8[2] = sub_100053BB0;
     v8[3] = &unk_100283BF8;
     v8[4] = self;
-    v8[5] = a4;
-    v8[6] = a3;
+    v8[5] = d;
+    v8[6] = entries;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v8 fallbackBlock:0 write:0];
   }
 }
 
-- (int)fetchAllMomentsScheduledAssets:(id *)a3
+- (int)fetchAllMomentsScheduledAssets:(id *)assets
 {
   if (_os_feature_enabled_impl())
   {
@@ -7066,19 +7066,19 @@ LABEL_9:
     v6[2] = sub_100054078;
     v6[3] = &unk_100283C20;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = assets;
     return [(VCPDatabaseWriter *)self executeDatabaseBlock:v6 fallbackBlock:0 write:0];
   }
 }
 
-- (int)setMomentsScheduledAssetWithLocalIdentifier:(id)a3 taskID:(unint64_t)a4 andRequestDate:(id)a5
+- (int)setMomentsScheduledAssetWithLocalIdentifier:(id)identifier taskID:(unint64_t)d andRequestDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"setMomentsScheduledAssetWithLocalIdentifier:taskID:andRequestDate:" replacedByMethodName:@"setMomentsScheduledAssetWithLocalIdentifier:taskID:requestDate:"];
-    v10 = -50;
+    selfCopy = -50;
   }
 
   else
@@ -7098,20 +7098,20 @@ LABEL_9:
     v14 = 3221225472;
     v15 = sub_1000545A4;
     v16 = &unk_100283FE8;
-    v17 = self;
-    v20 = a4;
-    v18 = v8;
-    v19 = v9;
+    selfCopy = self;
+    dCopy = d;
+    v18 = identifierCopy;
+    v19 = dateCopy;
     v11 = objc_retainBlock(&v13);
-    v10 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v11 fallbackBlock:v11 write:1, v13, v14, v15, v16, v17];
+    selfCopy = [(VCPDatabaseWriter *)self executeDatabaseBlock:v11 fallbackBlock:v11 write:1, v13, v14, v15, v16, selfCopy];
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (int)removeMomentsScheduledAssetWithLocalIdentifier:(id)a3 andTaskID:(unint64_t)a4
+- (int)removeMomentsScheduledAssetWithLocalIdentifier:(id)identifier andTaskID:(unint64_t)d
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([objc_opt_class() runtimeAssertEnabledForDatabaseWriter])
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"removeMomentsScheduledAssetWithLocalIdentifier:andTaskID:" replacedByMethodName:@"removeMomentsScheduledAssetWithLocalIdentifier:taskID:"];
@@ -7136,8 +7136,8 @@ LABEL_9:
     v9[2] = sub_100054968;
     v9[3] = &unk_100283CC0;
     v9[4] = self;
-    v11 = a4;
-    v10 = v6;
+    dCopy = d;
+    v10 = identifierCopy;
     v7 = [(VCPDatabaseWriter *)self executeDatabaseBlock:v9 fallbackBlock:0 write:1];
   }
 

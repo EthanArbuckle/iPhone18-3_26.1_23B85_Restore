@@ -1,12 +1,12 @@
 @interface MIOq8q2ToL010FrameProcessor
-- (MIOq8q2ToL010FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3;
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5;
+- (MIOq8q2ToL010FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description;
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MIOq8q2ToL010FrameProcessor
 
-- (MIOq8q2ToL010FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3
+- (MIOq8q2ToL010FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -14,7 +14,7 @@
   v4 = [(MIOFrameProcessor *)&v10 initWithInputFormatDescription:?];
   if (v4)
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     texture = 0;
     v11 = *MEMORY[0x277CC4DE8];
     v12[0] = MEMORY[0x277CBEC10];
@@ -43,12 +43,12 @@
   [(MIOFrameProcessor *)&v4 dealloc];
 }
 
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error
 {
   v34[6] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  attachmentsCopy = attachments;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   pool = self->_pool;
   if (!pool)
   {
@@ -57,7 +57,7 @@
     v34[0] = v26;
     v33[1] = *MEMORY[0x277CC4DD8];
     [MEMORY[0x277CCABB0] numberWithUnsignedLong:Height];
-    v27 = v28 = a5;
+    v27 = v28 = error;
     v34[1] = v27;
     v33[2] = *MEMORY[0x277CC4DE8];
     v31 = *MEMORY[0x277CD2970];
@@ -97,37 +97,37 @@
     }
 
     pool = self->_pool;
-    a5 = v28;
+    error = v28;
   }
 
   [(MIOPixelBufferPool *)pool flush];
-  v22 = [(MIOPixelBufferPool *)self->_pool getPixelBuffer];
-  if (!v22)
+  getPixelBuffer = [(MIOPixelBufferPool *)self->_pool getPixelBuffer];
+  if (!getPixelBuffer)
   {
     NSLog(&cfstr_RunningOutOfBu.isa);
     __assert_rtn("[MIOq8q2ToL010FrameProcessor processPixelBuffer:preserveAttachments:error:]", "MIOq8q2ToL010FrameProcessor.mm", 107, "0");
   }
 
-  if (![MIOPixelBufferUtility transferq8q2PixelBuffer:a3 toL010PixelBuffer:v22])
+  if (![MIOPixelBufferUtility transferq8q2PixelBuffer:buffer toL010PixelBuffer:getPixelBuffer])
   {
-    CVPixelBufferRelease(v22);
-    CVPixelBufferRelease(a3);
+    CVPixelBufferRelease(getPixelBuffer);
+    CVPixelBufferRelease(buffer);
     v23 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot convert q8q2 to L010 buffer." code:20];
-    if (a5)
+    if (error)
     {
       v23 = v23;
-      *a5 = v23;
+      *error = v23;
     }
 
 LABEL_13:
-    v22 = 0;
+    getPixelBuffer = 0;
     goto LABEL_14;
   }
 
-  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:v22 currentFormatDescription:self->_formatDescForEncoding];
+  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:getPixelBuffer currentFormatDescription:self->_formatDescForEncoding];
 LABEL_14:
 
-  return v22;
+  return getPixelBuffer;
 }
 
 @end

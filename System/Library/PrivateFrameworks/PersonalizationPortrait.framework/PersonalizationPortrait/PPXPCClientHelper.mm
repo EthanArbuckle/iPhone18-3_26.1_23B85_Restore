@@ -1,7 +1,7 @@
 @interface PPXPCClientHelper
-- (PPXPCClientHelper)initWithServiceName:(id)a3 allowedServerInterface:(id)a4 allowedClientInterface:(id)a5 clientExportedObject:(id)a6 interruptionHandler:(id)a7 invalidationHandler:(id)a8;
+- (PPXPCClientHelper)initWithServiceName:(id)name allowedServerInterface:(id)interface allowedClientInterface:(id)clientInterface clientExportedObject:(id)object interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler;
 - (id)remoteObjectProxy;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_locked_establishConnection;
 - (void)dealloc;
 @end
@@ -12,10 +12,10 @@
 {
   pthread_mutex_lock(&self->_connLock);
   [(PPXPCClientHelper *)self _locked_establishConnection];
-  v3 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
   pthread_mutex_unlock(&self->_connLock);
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)_locked_establishConnection
@@ -67,12 +67,12 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_connLock);
   [(PPXPCClientHelper *)self _locked_establishConnection];
-  v5 = [(NSXPCConnection *)self->_conn synchronousRemoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_conn synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   pthread_mutex_unlock(&self->_connLock);
 
@@ -135,14 +135,14 @@ void __48__PPXPCClientHelper__locked_establishConnection__block_invoke_7(uint64_
   [(PPXPCClientHelper *)&v3 dealloc];
 }
 
-- (PPXPCClientHelper)initWithServiceName:(id)a3 allowedServerInterface:(id)a4 allowedClientInterface:(id)a5 clientExportedObject:(id)a6 interruptionHandler:(id)a7 invalidationHandler:(id)a8
+- (PPXPCClientHelper)initWithServiceName:(id)name allowedServerInterface:(id)interface allowedClientInterface:(id)clientInterface clientExportedObject:(id)object interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v27 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  interfaceCopy = interface;
+  clientInterfaceCopy = clientInterface;
+  objectCopy = object;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
   v28.receiver = self;
   v28.super_class = PPXPCClientHelper;
   v20 = [(PPXPCClientHelper *)&v28 init];
@@ -150,15 +150,15 @@ void __48__PPXPCClientHelper__locked_establishConnection__block_invoke_7(uint64_
   if (v20)
   {
     pthread_mutex_init(&v20->_connLock, 0);
-    objc_storeStrong(&v21->_serviceName, a3);
-    objc_storeStrong(&v21->_allowedServerInterface, a4);
-    objc_storeStrong(&v21->_allowedClientInterface, a5);
-    objc_storeWeak(&v21->_clientExportedObject, v17);
-    v22 = MEMORY[0x1AC568040](v18);
+    objc_storeStrong(&v21->_serviceName, name);
+    objc_storeStrong(&v21->_allowedServerInterface, interface);
+    objc_storeStrong(&v21->_allowedClientInterface, clientInterface);
+    objc_storeWeak(&v21->_clientExportedObject, objectCopy);
+    v22 = MEMORY[0x1AC568040](handlerCopy);
     interruptionHandler = v21->_interruptionHandler;
     v21->_interruptionHandler = v22;
 
-    v24 = MEMORY[0x1AC568040](v19);
+    v24 = MEMORY[0x1AC568040](invalidationHandlerCopy);
     invalidationHandler = v21->_invalidationHandler;
     v21->_invalidationHandler = v24;
   }

@@ -1,8 +1,8 @@
 @interface EMSMIMEUtilities
-+ (BOOL)_isICloudAddress:(id)a3;
-+ (unint64_t)_encryptionLevelForSender:(id)a3;
++ (BOOL)_isICloudAddress:(id)address;
++ (unint64_t)_encryptionLevelForSender:(id)sender;
 + (unint64_t)_messageSecurityLevelViaOtherDevices;
-+ (unint64_t)encryptionLevelForSender:(id)a3 forAdvertisement:(BOOL)a4 useGCM:(BOOL *)a5 encryptSubject:(BOOL *)a6;
++ (unint64_t)encryptionLevelForSender:(id)sender forAdvertisement:(BOOL)advertisement useGCM:(BOOL *)m encryptSubject:(BOOL *)subject;
 @end
 
 @implementation EMSMIMEUtilities
@@ -25,18 +25,18 @@ void ___ef_log_EMSMIMEUtilities_block_invoke()
       goto LABEL_16;
     }
 
-    v36 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     v49[0] = *MEMORY[0x1E69597F8];
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
     v44 = 0;
-    v4 = [v36 accountsWithAccountTypeIdentifiers:v3 error:&v44];
+    v4 = [defaultStore accountsWithAccountTypeIdentifiers:v3 error:&v44];
     v5 = v44;
-    v35 = [v4 firstObject];
+    firstObject = [v4 firstObject];
 
     if (v5)
     {
       v6 = _ef_log_EMSMIMEUtilities();
-      v34 = v6;
+      mEMORY[0x1E698DC80] = v6;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
@@ -48,13 +48,13 @@ void ___ef_log_EMSMIMEUtilities_block_invoke()
       goto LABEL_15;
     }
 
-    v34 = [MEMORY[0x1E698DC80] sharedInstance];
-    v32 = [v34 altDSIDForAccount:v35];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    v32 = [mEMORY[0x1E698DC80] altDSIDForAccount:firstObject];
     v31 = objc_alloc_init(MEMORY[0x1E698DCC0]);
     [v31 setAppleIDWithAltDSID:v32 inUse:1 forService:1];
     v33 = objc_alloc_init(MEMORY[0x1E698DD68]);
-    v7 = [v35 aa_altDSID];
-    [v33 setAltDSID:v7];
+    aa_altDSID = [firstObject aa_altDSID];
+    [v33 setAltDSID:aa_altDSID];
 
     [v33 setIncludeUntrustedDevices:1];
     v48 = *MEMORY[0x1E698DC58];
@@ -62,18 +62,18 @@ void ___ef_log_EMSMIMEUtilities_block_invoke()
     [v33 setServices:v8];
 
     [v33 setOperatingSystems:&unk_1F461CED0];
-    v9 = [MEMORY[0x1E699B868] promise];
+    promise = [MEMORY[0x1E699B868] promise];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __56__EMSMIMEUtilities__messageSecurityLevelViaOtherDevices__block_invoke;
     v42[3] = &unk_1E826C5B0;
-    v10 = v9;
+    v10 = promise;
     v43 = v10;
     v29 = v10;
     [v31 fetchDeviceListWithContext:v33 completion:v42];
-    v11 = [v10 future];
+    future = [v10 future];
     v41 = 0;
-    v30 = [v11 result:&v41];
+    v30 = [future result:&v41];
     v5 = v41;
 
     if (v5)
@@ -131,21 +131,21 @@ LABEL_20:
       }
 
       v19 = *(*(&v37 + 1) + 8 * v18);
-      v20 = [v19 operatingSystemName];
-      v21 = [v20 isEqualToString:@"macOS"];
+      operatingSystemName = [v19 operatingSystemName];
+      v21 = [operatingSystemName isEqualToString:@"macOS"];
 
       if (v21)
       {
         break;
       }
 
-      v25 = [v19 operatingSystemName];
-      v26 = [v25 isEqualToString:@"iOS"];
+      operatingSystemName2 = [v19 operatingSystemName];
+      v26 = [operatingSystemName2 isEqualToString:@"iOS"];
 
       if (v26)
       {
-        v27 = [v19 operatingSystemVersion];
-        [v27 floatValue];
+        operatingSystemVersion = [v19 operatingSystemVersion];
+        [operatingSystemVersion floatValue];
         v24 = v28 < 17.0;
 
 LABEL_27:
@@ -167,8 +167,8 @@ LABEL_27:
       }
     }
 
-    v22 = [v19 operatingSystemVersion];
-    [v22 floatValue];
+    operatingSystemVersion2 = [v19 operatingSystemVersion];
+    [operatingSystemVersion2 floatValue];
     v24 = v23 < 14.0;
 
     goto LABEL_27;
@@ -180,45 +180,45 @@ LABEL_16:
   return v2;
 }
 
-+ (BOOL)_isICloudAddress:(id)a3
++ (BOOL)_isICloudAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
+  addressCopy = address;
+  lowercaseString = [addressCopy lowercaseString];
 
-  v5 = ([v4 hasSuffix:@"@icloud.com"] & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @"@mac.com") & 1) != 0 || objc_msgSend(v4, "hasSuffix:", @"@me.com");
+  v5 = ([lowercaseString hasSuffix:@"@icloud.com"] & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @"@mac.com") & 1) != 0 || objc_msgSend(lowercaseString, "hasSuffix:", @"@me.com");
   return v5;
 }
 
-+ (unint64_t)_encryptionLevelForSender:(id)a3
++ (unint64_t)_encryptionLevelForSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   if ((_os_feature_enabled_impl() & 1) != 0 && [EMInternalPreferences preferenceEnabled:24])
   {
-    if (v4 && [a1 _isICloudAddress:v4])
+    if (senderCopy && [self _isICloudAddress:senderCopy])
     {
-      v5 = [a1 _messageSecurityLevelViaOtherDevices];
+      _messageSecurityLevelViaOtherDevices = [self _messageSecurityLevelViaOtherDevices];
     }
 
     else
     {
-      v5 = 200;
+      _messageSecurityLevelViaOtherDevices = 200;
     }
   }
 
   else
   {
-    v5 = 100;
+    _messageSecurityLevelViaOtherDevices = 100;
   }
 
-  return v5;
+  return _messageSecurityLevelViaOtherDevices;
 }
 
-+ (unint64_t)encryptionLevelForSender:(id)a3 forAdvertisement:(BOOL)a4 useGCM:(BOOL *)a5 encryptSubject:(BOOL *)a6
++ (unint64_t)encryptionLevelForSender:(id)sender forAdvertisement:(BOOL)advertisement useGCM:(BOOL *)m encryptSubject:(BOOL *)subject
 {
-  v8 = a4;
-  v9 = [a1 _encryptionLevelForSender:a3];
+  advertisementCopy = advertisement;
+  v9 = [self _encryptionLevelForSender:sender];
   v10 = v9;
-  if (a5)
+  if (m)
   {
     if (v9 == 200)
     {
@@ -227,7 +227,7 @@ LABEL_16:
 
     else
     {
-      if (v8)
+      if (advertisementCopy)
       {
         v12 = 27;
       }
@@ -240,10 +240,10 @@ LABEL_16:
       v11 = [EMInternalPreferences preferenceEnabled:v12];
     }
 
-    *a5 = v11;
+    *m = v11;
   }
 
-  if (a6)
+  if (subject)
   {
     if (v10 == 200)
     {
@@ -252,7 +252,7 @@ LABEL_16:
 
     else
     {
-      if (v8)
+      if (advertisementCopy)
       {
         v14 = 28;
       }
@@ -265,7 +265,7 @@ LABEL_16:
       v13 = [EMInternalPreferences preferenceEnabled:v14];
     }
 
-    *a6 = v13;
+    *subject = v13;
   }
 
   return v10;

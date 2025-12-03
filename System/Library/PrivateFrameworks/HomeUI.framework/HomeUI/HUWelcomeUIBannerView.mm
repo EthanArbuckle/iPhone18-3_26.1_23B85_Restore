@@ -1,17 +1,17 @@
 @interface HUWelcomeUIBannerView
-- (HUWelcomeUIBannerView)initWithFrame:(CGRect)a3;
+- (HUWelcomeUIBannerView)initWithFrame:(CGRect)frame;
 - (void)_subclass_updateConstraints;
 - (void)layoutOptionsDidChange;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUWelcomeUIBannerView
 
-- (HUWelcomeUIBannerView)initWithFrame:(CGRect)a3
+- (HUWelcomeUIBannerView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = HUWelcomeUIBannerView;
-  v3 = [(HUBannerView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUBannerView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
@@ -46,8 +46,8 @@
     [(UIImageView *)v3->_backgroundImageView setClipsToBounds:1];
     [(HUWelcomeUIBannerView *)v3 addSubview:v3->_backgroundImageView];
     [(HUWelcomeUIBannerView *)v3 sendSubviewToBack:v3->_backgroundImageView];
-    v10 = [(HUBannerView *)v3 footerView];
-    [(HUWelcomeUIBannerView *)v3 willRemoveSubview:v10];
+    footerView = [(HUBannerView *)v3 footerView];
+    [(HUWelcomeUIBannerView *)v3 willRemoveSubview:footerView];
 
     v11 = [MEMORY[0x277D75210] effectWithStyle:9];
     v12 = [MEMORY[0x277D75D00] effectForBlurEffect:v11 style:4];
@@ -58,15 +58,15 @@
     welcomeFooterView = v3->_welcomeFooterView;
     v3->_welcomeFooterView = v16;
 
-    v18 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v3->_welcomeFooterView setBackgroundColor:v18];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v3->_welcomeFooterView setBackgroundColor:clearColor];
 
     [(UIView *)v3->_welcomeFooterView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v3->_welcomeFooterView setClipsToBounds:1];
     [(HUWelcomeUIBannerView *)v3 addSubview:v3->_welcomeFooterView];
     [(HUWelcomeUIBannerView *)v3 sendSubviewToBack:v3->_welcomeFooterView];
-    v19 = [MEMORY[0x277D75348] clearColor];
-    [(HUWelcomeUIBannerView *)v3 setBackgroundColor:v19];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(HUWelcomeUIBannerView *)v3 setBackgroundColor:clearColor2];
   }
 
   return v3;
@@ -75,10 +75,10 @@
 - (void)layoutOptionsDidChange
 {
   objc_opt_class();
-  v3 = [(HUBannerView *)self layoutOptions];
+  layoutOptions = [(HUBannerView *)self layoutOptions];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = layoutOptions;
   }
 
   else
@@ -90,30 +90,30 @@
 
   if (v5)
   {
-    v6 = [(HUBannerView *)self titleLabel];
-    v7 = [v5 titleLabelColor];
-    [v6 setTextColor:v7];
+    titleLabel = [(HUBannerView *)self titleLabel];
+    titleLabelColor = [v5 titleLabelColor];
+    [titleLabel setTextColor:titleLabelColor];
 
-    v8 = [(HUBannerView *)self descriptionLabel];
-    v9 = [v5 descriptionLabelColor];
-    [v8 setTextColor:v9];
+    descriptionLabel = [(HUBannerView *)self descriptionLabel];
+    descriptionLabelColor = [v5 descriptionLabelColor];
+    [descriptionLabel setTextColor:descriptionLabelColor];
 
-    v10 = [(HUBannerView *)self footerViewLabel];
-    v11 = [v5 footerLabelColor];
-    [v10 setTextColor:v11];
+    footerViewLabel = [(HUBannerView *)self footerViewLabel];
+    footerLabelColor = [v5 footerLabelColor];
+    [footerViewLabel setTextColor:footerLabelColor];
 
-    v12 = [(HUBannerView *)self continueButton];
-    v13 = [v5 continueButtonColor];
-    [v12 setTitleColor:v13 forState:0];
+    continueButton = [(HUBannerView *)self continueButton];
+    continueButtonColor = [v5 continueButtonColor];
+    [continueButton setTitleColor:continueButtonColor forState:0];
   }
 
-  v14 = [(HUWelcomeUIBannerView *)self layoutConstraints];
+  layoutConstraints = [(HUWelcomeUIBannerView *)self layoutConstraints];
 
-  if (v14)
+  if (layoutConstraints)
   {
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [(HUWelcomeUIBannerView *)self layoutConstraints];
-    [v15 deactivateConstraints:v16];
+    layoutConstraints2 = [(HUWelcomeUIBannerView *)self layoutConstraints];
+    [v15 deactivateConstraints:layoutConstraints2];
   }
 
   [(HUWelcomeUIBannerView *)self setLayoutConstraints:0];
@@ -122,16 +122,16 @@
   [(HUBannerView *)&v17 layoutOptionsDidChange];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v22.receiver = self;
   v22.super_class = HUWelcomeUIBannerView;
-  [(HUBannerView *)&v22 updateUIWithAnimation:a3];
+  [(HUBannerView *)&v22 updateUIWithAnimation:animation];
   objc_opt_class();
-  v4 = [(HUBannerView *)self layoutOptions];
+  layoutOptions = [(HUBannerView *)self layoutOptions];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = layoutOptions;
   }
 
   else
@@ -143,49 +143,49 @@
 
   [v6 cellCornerRadius];
   v8 = v7;
-  v9 = [(HUWelcomeUIBannerView *)self backgroundImageView];
-  v10 = [v9 layer];
-  [v10 setCornerRadius:v8];
+  backgroundImageView = [(HUWelcomeUIBannerView *)self backgroundImageView];
+  layer = [backgroundImageView layer];
+  [layer setCornerRadius:v8];
 
-  v11 = [(HUWelcomeUIBannerView *)self backgroundImageView];
-  v12 = [v11 layer];
-  [v12 setMaskedCorners:3];
+  backgroundImageView2 = [(HUWelcomeUIBannerView *)self backgroundImageView];
+  layer2 = [backgroundImageView2 layer];
+  [layer2 setMaskedCorners:3];
 
   [v6 cellCornerRadius];
   v14 = v13;
 
-  v15 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-  v16 = [v15 layer];
-  [v16 setCornerRadius:v14];
+  welcomeFooterView = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+  layer3 = [welcomeFooterView layer];
+  [layer3 setCornerRadius:v14];
 
-  v17 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-  v18 = [v17 layer];
-  [v18 setMaskedCorners:12];
+  welcomeFooterView2 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+  layer4 = [welcomeFooterView2 layer];
+  [layer4 setMaskedCorners:12];
 
-  v19 = [(HUBannerView *)self lineView];
-  [v19 setHidden:1];
+  lineView = [(HUBannerView *)self lineView];
+  [lineView setHidden:1];
 
-  v20 = [(HUBannerView *)self continueButton];
-  [v20 setHidden:0];
+  continueButton = [(HUBannerView *)self continueButton];
+  [continueButton setHidden:0];
 
-  v21 = [(HUBannerView *)self dismissButton];
-  [v21 setHidden:0];
+  dismissButton = [(HUBannerView *)self dismissButton];
+  [dismissButton setHidden:0];
 
   [(HUWelcomeUIBannerView *)self setNeedsUpdateConstraints];
 }
 
 - (void)_subclass_updateConstraints
 {
-  v3 = [(HUWelcomeUIBannerView *)self layoutConstraints];
+  layoutConstraints = [(HUWelcomeUIBannerView *)self layoutConstraints];
 
-  if (!v3)
+  if (!layoutConstraints)
   {
-    v183 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     objc_opt_class();
-    v4 = [(HUBannerView *)self layoutOptions];
+    layoutOptions = [(HUBannerView *)self layoutOptions];
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = layoutOptions;
     }
 
     else
@@ -195,104 +195,104 @@
 
     v6 = v5;
 
-    v7 = [(HUBannerView *)self dismissButton];
-    v8 = [v7 topAnchor];
-    v9 = [(HUWelcomeUIBannerView *)self topAnchor];
+    dismissButton = [(HUBannerView *)self dismissButton];
+    topAnchor = [dismissButton topAnchor];
+    topAnchor2 = [(HUWelcomeUIBannerView *)self topAnchor];
     if (v6)
     {
       [v6 dismissButtonTopInset];
-      v10 = [v8 constraintEqualToAnchor:v9 constant:?];
-      [v183 addObject:v10];
+      v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
+      [array addObject:v10];
 
-      v11 = [(HUBannerView *)self dismissButton];
-      v12 = [v11 trailingAnchor];
-      v13 = [(HUWelcomeUIBannerView *)self trailingAnchor];
+      dismissButton2 = [(HUBannerView *)self dismissButton];
+      trailingAnchor = [dismissButton2 trailingAnchor];
+      trailingAnchor2 = [(HUWelcomeUIBannerView *)self trailingAnchor];
       [v6 dismissButtonTrailingInset];
-      v15 = [v12 constraintEqualToAnchor:v13 constant:-v14];
-      [v183 addObject:v15];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v14];
+      [array addObject:v15];
 
-      v16 = [(HUBannerView *)self dismissButton];
-      v17 = [v16 heightAnchor];
+      dismissButton3 = [(HUBannerView *)self dismissButton];
+      heightAnchor = [dismissButton3 heightAnchor];
       [v6 dismissButtonHeightAndWidth];
-      v18 = [v17 constraintEqualToConstant:?];
-      [v183 addObject:v18];
+      v18 = [heightAnchor constraintEqualToConstant:?];
+      [array addObject:v18];
 
-      v19 = [(HUBannerView *)self dismissButton];
-      v20 = [v19 widthAnchor];
+      dismissButton4 = [(HUBannerView *)self dismissButton];
+      widthAnchor = [dismissButton4 widthAnchor];
       [v6 dismissButtonHeightAndWidth];
-      v22 = v20;
+      widthAnchor2 = widthAnchor;
     }
 
     else
     {
-      v23 = [v8 constraintEqualToAnchor:v9];
-      [v183 addObject:v23];
+      v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
+      [array addObject:v23];
 
-      v24 = [(HUBannerView *)self dismissButton];
-      v25 = [v24 trailingAnchor];
-      v26 = [(HUWelcomeUIBannerView *)self trailingAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
-      [v183 addObject:v27];
+      dismissButton5 = [(HUBannerView *)self dismissButton];
+      trailingAnchor3 = [dismissButton5 trailingAnchor];
+      trailingAnchor4 = [(HUWelcomeUIBannerView *)self trailingAnchor];
+      v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+      [array addObject:v27];
 
-      v28 = [(HUBannerView *)self dismissButton];
-      v29 = [v28 heightAnchor];
-      v30 = [v29 constraintEqualToConstant:0.0];
-      [v183 addObject:v30];
+      dismissButton6 = [(HUBannerView *)self dismissButton];
+      heightAnchor2 = [dismissButton6 heightAnchor];
+      v30 = [heightAnchor2 constraintEqualToConstant:0.0];
+      [array addObject:v30];
 
-      v19 = [(HUBannerView *)self dismissButton];
-      v22 = [v19 widthAnchor];
-      v20 = v22;
+      dismissButton4 = [(HUBannerView *)self dismissButton];
+      widthAnchor2 = [dismissButton4 widthAnchor];
+      widthAnchor = widthAnchor2;
       v21 = 0.0;
     }
 
-    v31 = [v22 constraintEqualToConstant:v21];
-    [v183 addObject:v31];
+    v31 = [widthAnchor2 constraintEqualToConstant:v21];
+    [array addObject:v31];
 
-    v32 = [(HUBannerView *)self iconImageView];
-    v33 = [v32 leadingAnchor];
-    v34 = [(HUWelcomeUIBannerView *)self leadingAnchor];
+    iconImageView = [(HUBannerView *)self iconImageView];
+    leadingAnchor = [iconImageView leadingAnchor];
+    leadingAnchor2 = [(HUWelcomeUIBannerView *)self leadingAnchor];
     [v6 leadingInset];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:?];
-    [v183 addObject:v35];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
+    [array addObject:v35];
 
-    v36 = [(HUWelcomeUIBannerView *)self traitCollection];
-    v37 = [v36 preferredContentSizeCategory];
+    traitCollection = [(HUWelcomeUIBannerView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
     v38 = *MEMORY[0x277D767F8];
 
-    v39 = [(HUBannerView *)self iconImageView];
-    v40 = [v39 topAnchor];
-    if (v37 >= v38)
+    iconImageView2 = [(HUBannerView *)self iconImageView];
+    topAnchor3 = [iconImageView2 topAnchor];
+    if (preferredContentSizeCategory >= v38)
     {
-      v41 = [(HUWelcomeUIBannerView *)self topAnchor];
+      topAnchor4 = [(HUWelcomeUIBannerView *)self topAnchor];
       [v6 titleTopInset];
-      v42 = [v40 constraintEqualToAnchor:v41 constant:?];
-      [v183 addObject:v42];
+      firstBaselineAnchor = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
+      [array addObject:firstBaselineAnchor];
     }
 
     else
     {
-      v41 = [(HUBannerView *)self titleLabel];
-      v42 = [v41 firstBaselineAnchor];
-      v43 = [v6 font];
-      [v43 lineHeight];
+      topAnchor4 = [(HUBannerView *)self titleLabel];
+      firstBaselineAnchor = [topAnchor4 firstBaselineAnchor];
+      font = [v6 font];
+      [font lineHeight];
       v45 = v44;
       [v6 font];
       v46 = v182 = v38;
       [v46 ascender];
       v48 = v45 - v47;
-      v49 = [v6 font];
-      [v49 descender];
-      v51 = [v40 constraintEqualToAnchor:v42 constant:-(v48 - v50)];
-      [v183 addObject:v51];
+      font2 = [v6 font];
+      [font2 descender];
+      v51 = [topAnchor3 constraintEqualToAnchor:firstBaselineAnchor constant:-(v48 - v50)];
+      [array addObject:v51];
 
       v38 = v182;
     }
 
-    v52 = [(HUBannerView *)self iconImageView];
-    v53 = [v52 heightAnchor];
-    v54 = [(HUBannerView *)self iconImageView];
-    v55 = [v54 image];
-    if (v55)
+    iconImageView3 = [(HUBannerView *)self iconImageView];
+    heightAnchor3 = [iconImageView3 heightAnchor];
+    iconImageView4 = [(HUBannerView *)self iconImageView];
+    image = [iconImageView4 image];
+    if (image)
     {
       [v6 iconHeight];
     }
@@ -302,208 +302,208 @@
       v56 = 0.0;
     }
 
-    v57 = [v53 constraintEqualToConstant:v56];
-    [v183 addObject:v57];
+    v57 = [heightAnchor3 constraintEqualToConstant:v56];
+    [array addObject:v57];
 
-    v58 = [(HUBannerView *)self iconImageView];
-    v59 = [v58 widthAnchor];
-    v60 = [(HUBannerView *)self iconImageView];
-    v61 = [v60 heightAnchor];
-    v62 = [v59 constraintEqualToAnchor:v61];
-    [v183 addObject:v62];
+    iconImageView5 = [(HUBannerView *)self iconImageView];
+    widthAnchor3 = [iconImageView5 widthAnchor];
+    iconImageView6 = [(HUBannerView *)self iconImageView];
+    heightAnchor4 = [iconImageView6 heightAnchor];
+    v62 = [widthAnchor3 constraintEqualToAnchor:heightAnchor4];
+    [array addObject:v62];
 
-    v63 = [(HUWelcomeUIBannerView *)self traitCollection];
-    v64 = [v63 preferredContentSizeCategory];
+    traitCollection2 = [(HUWelcomeUIBannerView *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
 
-    v65 = [(HUBannerView *)self titleLabel];
-    v66 = [v65 topAnchor];
-    if (v64 >= v38)
+    titleLabel = [(HUBannerView *)self titleLabel];
+    topAnchor5 = [titleLabel topAnchor];
+    if (preferredContentSizeCategory2 >= v38)
     {
-      v67 = [(HUBannerView *)self iconImageView];
-      v68 = [v67 bottomAnchor];
+      iconImageView7 = [(HUBannerView *)self iconImageView];
+      bottomAnchor = [iconImageView7 bottomAnchor];
       [v6 verticalSpacingForLipElements];
-      v69 = [v66 constraintEqualToAnchor:v68 constant:?];
-      [v183 addObject:v69];
+      v69 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:?];
+      [array addObject:v69];
     }
 
     else
     {
-      v67 = [(HUWelcomeUIBannerView *)self topAnchor];
+      iconImageView7 = [(HUWelcomeUIBannerView *)self topAnchor];
       [v6 titleTopInset];
-      v68 = [v66 constraintEqualToAnchor:v67 constant:?];
-      [v183 addObject:v68];
+      bottomAnchor = [topAnchor5 constraintEqualToAnchor:iconImageView7 constant:?];
+      [array addObject:bottomAnchor];
     }
 
-    v70 = [(HUBannerView *)self titleLabel];
-    v71 = [v70 leadingAnchor];
-    v72 = [(HUWelcomeUIBannerView *)self leadingAnchor];
+    titleLabel2 = [(HUBannerView *)self titleLabel];
+    leadingAnchor3 = [titleLabel2 leadingAnchor];
+    leadingAnchor4 = [(HUWelcomeUIBannerView *)self leadingAnchor];
     [v6 leadingInset];
-    v73 = [v71 constraintEqualToAnchor:v72 constant:?];
-    [v183 addObject:v73];
+    v73 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
+    [array addObject:v73];
 
-    v74 = [(HUBannerView *)self titleLabel];
-    v75 = [v74 trailingAnchor];
-    v76 = [(HUBannerView *)self dismissButton];
-    v77 = [v76 leadingAnchor];
-    v78 = [v75 constraintEqualToAnchor:v77];
-    [v183 addObject:v78];
+    titleLabel3 = [(HUBannerView *)self titleLabel];
+    trailingAnchor5 = [titleLabel3 trailingAnchor];
+    dismissButton7 = [(HUBannerView *)self dismissButton];
+    leadingAnchor5 = [dismissButton7 leadingAnchor];
+    v78 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor5];
+    [array addObject:v78];
 
-    v79 = [(HUBannerView *)self descriptionLabel];
-    v80 = [v79 topAnchor];
-    v81 = [(HUBannerView *)self titleLabel];
-    v82 = [v81 bottomAnchor];
+    descriptionLabel = [(HUBannerView *)self descriptionLabel];
+    topAnchor6 = [descriptionLabel topAnchor];
+    titleLabel4 = [(HUBannerView *)self titleLabel];
+    bottomAnchor2 = [titleLabel4 bottomAnchor];
     [v6 verticalLabelSpacing];
-    v83 = [v80 constraintEqualToAnchor:v82 constant:?];
-    [v183 addObject:v83];
+    v83 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:?];
+    [array addObject:v83];
 
-    v84 = [(HUBannerView *)self descriptionLabel];
-    v85 = [v84 leadingAnchor];
-    v86 = [(HUWelcomeUIBannerView *)self leadingAnchor];
+    descriptionLabel2 = [(HUBannerView *)self descriptionLabel];
+    leadingAnchor6 = [descriptionLabel2 leadingAnchor];
+    leadingAnchor7 = [(HUWelcomeUIBannerView *)self leadingAnchor];
     [v6 leadingInset];
-    v87 = [v85 constraintEqualToAnchor:v86 constant:?];
-    [v183 addObject:v87];
+    v87 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:?];
+    [array addObject:v87];
 
-    v88 = [(HUBannerView *)self descriptionLabel];
-    v89 = [v88 trailingAnchor];
-    v90 = [(HUWelcomeUIBannerView *)self trailingAnchor];
+    descriptionLabel3 = [(HUBannerView *)self descriptionLabel];
+    trailingAnchor6 = [descriptionLabel3 trailingAnchor];
+    trailingAnchor7 = [(HUWelcomeUIBannerView *)self trailingAnchor];
     [v6 trailingInset];
-    v92 = [v89 constraintEqualToAnchor:v90 constant:-v91];
-    [v183 addObject:v92];
+    v92 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-v91];
+    [array addObject:v92];
 
-    v93 = [(HUBannerView *)self lineView];
-    v94 = [v93 topAnchor];
-    v95 = [(HUBannerView *)self descriptionLabel];
-    v96 = [v95 bottomAnchor];
+    lineView = [(HUBannerView *)self lineView];
+    topAnchor7 = [lineView topAnchor];
+    descriptionLabel4 = [(HUBannerView *)self descriptionLabel];
+    bottomAnchor3 = [descriptionLabel4 bottomAnchor];
     [v6 verticalSpacingForLineView];
-    v97 = [v94 constraintEqualToAnchor:v96 constant:?];
-    [v183 addObject:v97];
+    v97 = [topAnchor7 constraintEqualToAnchor:bottomAnchor3 constant:?];
+    [array addObject:v97];
 
-    v98 = [(HUBannerView *)self lineView];
-    v99 = [v98 leadingAnchor];
-    v100 = [(HUWelcomeUIBannerView *)self leadingAnchor];
+    lineView2 = [(HUBannerView *)self lineView];
+    leadingAnchor8 = [lineView2 leadingAnchor];
+    leadingAnchor9 = [(HUWelcomeUIBannerView *)self leadingAnchor];
     [v6 leadingInset];
-    v101 = [v99 constraintEqualToAnchor:v100 constant:?];
-    [v183 addObject:v101];
+    v101 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:?];
+    [array addObject:v101];
 
-    v102 = [(HUBannerView *)self lineView];
-    v103 = [v102 trailingAnchor];
-    v104 = [(HUWelcomeUIBannerView *)self trailingAnchor];
-    v105 = [v103 constraintEqualToAnchor:v104];
-    [v183 addObject:v105];
+    lineView3 = [(HUBannerView *)self lineView];
+    trailingAnchor8 = [lineView3 trailingAnchor];
+    trailingAnchor9 = [(HUWelcomeUIBannerView *)self trailingAnchor];
+    v105 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
+    [array addObject:v105];
 
-    v106 = [(HUBannerView *)self lineView];
-    v107 = [v106 heightAnchor];
-    v108 = [v107 constraintEqualToConstant:1.0];
-    [v183 addObject:v108];
+    lineView4 = [(HUBannerView *)self lineView];
+    heightAnchor5 = [lineView4 heightAnchor];
+    v108 = [heightAnchor5 constraintEqualToConstant:1.0];
+    [array addObject:v108];
 
-    v109 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v110 = [v109 bottomAnchor];
-    v111 = [(HUWelcomeUIBannerView *)self bottomAnchor];
-    v112 = [v110 constraintEqualToAnchor:v111];
-    [v183 addObject:v112];
+    welcomeFooterView = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    bottomAnchor4 = [welcomeFooterView bottomAnchor];
+    bottomAnchor5 = [(HUWelcomeUIBannerView *)self bottomAnchor];
+    v112 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
+    [array addObject:v112];
 
-    v113 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v114 = [v113 leadingAnchor];
-    v115 = [(HUWelcomeUIBannerView *)self leadingAnchor];
-    v116 = [v114 constraintEqualToAnchor:v115];
-    [v183 addObject:v116];
+    welcomeFooterView2 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    leadingAnchor10 = [welcomeFooterView2 leadingAnchor];
+    leadingAnchor11 = [(HUWelcomeUIBannerView *)self leadingAnchor];
+    v116 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
+    [array addObject:v116];
 
-    v117 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v118 = [v117 trailingAnchor];
-    v119 = [(HUWelcomeUIBannerView *)self trailingAnchor];
-    v120 = [v118 constraintEqualToAnchor:v119];
-    [v183 addObject:v120];
+    welcomeFooterView3 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    trailingAnchor10 = [welcomeFooterView3 trailingAnchor];
+    trailingAnchor11 = [(HUWelcomeUIBannerView *)self trailingAnchor];
+    v120 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
+    [array addObject:v120];
 
-    v121 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v122 = [v121 heightAnchor];
-    v123 = [v6 footerViewLabelFont];
-    [v123 lineHeight];
+    welcomeFooterView4 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    heightAnchor6 = [welcomeFooterView4 heightAnchor];
+    footerViewLabelFont = [v6 footerViewLabelFont];
+    [footerViewLabelFont lineHeight];
     v125 = v124;
     [v6 verticalSpacingForLipElements];
-    v127 = [v122 constraintEqualToConstant:v125 + v126 * 2.0];
-    [v183 addObject:v127];
+    v127 = [heightAnchor6 constraintEqualToConstant:v125 + v126 * 2.0];
+    [array addObject:v127];
 
-    v128 = [(HUBannerView *)self footerViewLabel];
-    v129 = [v128 topAnchor];
-    v130 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v131 = [v130 topAnchor];
+    footerViewLabel = [(HUBannerView *)self footerViewLabel];
+    topAnchor8 = [footerViewLabel topAnchor];
+    welcomeFooterView5 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    topAnchor9 = [welcomeFooterView5 topAnchor];
     [v6 verticalSpacingForLipElements];
-    v132 = [v129 constraintEqualToAnchor:v131 constant:?];
-    [v183 addObject:v132];
+    v132 = [topAnchor8 constraintEqualToAnchor:topAnchor9 constant:?];
+    [array addObject:v132];
 
-    v133 = [(HUBannerView *)self footerViewLabel];
-    v134 = [v133 leadingAnchor];
-    v135 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v136 = [v135 leadingAnchor];
+    footerViewLabel2 = [(HUBannerView *)self footerViewLabel];
+    leadingAnchor12 = [footerViewLabel2 leadingAnchor];
+    welcomeFooterView6 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    leadingAnchor13 = [welcomeFooterView6 leadingAnchor];
     [v6 leadingInset];
-    v137 = [v134 constraintEqualToAnchor:v136 constant:?];
-    [v183 addObject:v137];
+    v137 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13 constant:?];
+    [array addObject:v137];
 
-    v138 = [(HUBannerView *)self footerViewLabel];
-    v139 = [v138 trailingAnchor];
-    v140 = [(HUBannerView *)self continueButton];
-    v141 = [v140 leadingAnchor];
+    footerViewLabel3 = [(HUBannerView *)self footerViewLabel];
+    trailingAnchor12 = [footerViewLabel3 trailingAnchor];
+    continueButton = [(HUBannerView *)self continueButton];
+    leadingAnchor14 = [continueButton leadingAnchor];
     [v6 trailingInset];
-    v143 = [v139 constraintLessThanOrEqualToAnchor:v141 constant:-v142];
-    [v183 addObject:v143];
+    v143 = [trailingAnchor12 constraintLessThanOrEqualToAnchor:leadingAnchor14 constant:-v142];
+    [array addObject:v143];
 
-    v144 = [(HUBannerView *)self footerViewLabel];
-    v145 = [v144 bottomAnchor];
-    v146 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v147 = [v146 bottomAnchor];
+    footerViewLabel4 = [(HUBannerView *)self footerViewLabel];
+    bottomAnchor6 = [footerViewLabel4 bottomAnchor];
+    welcomeFooterView7 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    bottomAnchor7 = [welcomeFooterView7 bottomAnchor];
     [v6 verticalSpacingForLipElements];
-    v149 = [v145 constraintEqualToAnchor:v147 constant:-v148];
-    [v183 addObject:v149];
+    v149 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-v148];
+    [array addObject:v149];
 
-    v150 = [(HUBannerView *)self continueButton];
-    v151 = [v150 topAnchor];
-    v152 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v153 = [v152 topAnchor];
+    continueButton2 = [(HUBannerView *)self continueButton];
+    topAnchor10 = [continueButton2 topAnchor];
+    welcomeFooterView8 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    topAnchor11 = [welcomeFooterView8 topAnchor];
     [v6 verticalSpacingForLipElements];
-    v154 = [v151 constraintEqualToAnchor:v153 constant:?];
-    [v183 addObject:v154];
+    v154 = [topAnchor10 constraintEqualToAnchor:topAnchor11 constant:?];
+    [array addObject:v154];
 
-    v155 = [(HUBannerView *)self continueButton];
-    v156 = [v155 centerXAnchor];
-    v157 = [(HUBannerView *)self dismissButton];
-    v158 = [v157 centerXAnchor];
-    v159 = [v156 constraintEqualToAnchor:v158];
-    [v183 addObject:v159];
+    continueButton3 = [(HUBannerView *)self continueButton];
+    centerXAnchor = [continueButton3 centerXAnchor];
+    dismissButton8 = [(HUBannerView *)self dismissButton];
+    centerXAnchor2 = [dismissButton8 centerXAnchor];
+    v159 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v159];
 
-    v160 = [(HUBannerView *)self continueButton];
-    v161 = [v160 centerYAnchor];
-    v162 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v163 = [v162 centerYAnchor];
-    v164 = [v161 constraintEqualToAnchor:v163];
-    [v183 addObject:v164];
+    continueButton4 = [(HUBannerView *)self continueButton];
+    centerYAnchor = [continueButton4 centerYAnchor];
+    welcomeFooterView9 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    centerYAnchor2 = [welcomeFooterView9 centerYAnchor];
+    v164 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v164];
 
-    v165 = [(HUWelcomeUIBannerView *)self backgroundImageView];
-    v166 = [v165 topAnchor];
-    v167 = [(HUWelcomeUIBannerView *)self topAnchor];
-    v168 = [v166 constraintEqualToAnchor:v167];
-    [v183 addObject:v168];
+    backgroundImageView = [(HUWelcomeUIBannerView *)self backgroundImageView];
+    topAnchor12 = [backgroundImageView topAnchor];
+    topAnchor13 = [(HUWelcomeUIBannerView *)self topAnchor];
+    v168 = [topAnchor12 constraintEqualToAnchor:topAnchor13];
+    [array addObject:v168];
 
-    v169 = [(HUWelcomeUIBannerView *)self backgroundImageView];
-    v170 = [v169 trailingAnchor];
-    v171 = [(HUWelcomeUIBannerView *)self trailingAnchor];
-    v172 = [v170 constraintEqualToAnchor:v171];
-    [v183 addObject:v172];
+    backgroundImageView2 = [(HUWelcomeUIBannerView *)self backgroundImageView];
+    trailingAnchor13 = [backgroundImageView2 trailingAnchor];
+    trailingAnchor14 = [(HUWelcomeUIBannerView *)self trailingAnchor];
+    v172 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
+    [array addObject:v172];
 
-    v173 = [(HUWelcomeUIBannerView *)self backgroundImageView];
-    v174 = [v173 leadingAnchor];
-    v175 = [(HUWelcomeUIBannerView *)self leadingAnchor];
-    v176 = [v174 constraintEqualToAnchor:v175];
-    [v183 addObject:v176];
+    backgroundImageView3 = [(HUWelcomeUIBannerView *)self backgroundImageView];
+    leadingAnchor15 = [backgroundImageView3 leadingAnchor];
+    leadingAnchor16 = [(HUWelcomeUIBannerView *)self leadingAnchor];
+    v176 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16];
+    [array addObject:v176];
 
-    v177 = [(HUWelcomeUIBannerView *)self backgroundImageView];
-    v178 = [v177 bottomAnchor];
-    v179 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
-    v180 = [v179 topAnchor];
-    v181 = [v178 constraintEqualToAnchor:v180];
-    [v183 addObject:v181];
+    backgroundImageView4 = [(HUWelcomeUIBannerView *)self backgroundImageView];
+    bottomAnchor8 = [backgroundImageView4 bottomAnchor];
+    welcomeFooterView10 = [(HUWelcomeUIBannerView *)self welcomeFooterView];
+    topAnchor14 = [welcomeFooterView10 topAnchor];
+    v181 = [bottomAnchor8 constraintEqualToAnchor:topAnchor14];
+    [array addObject:v181];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v183];
-    [(HUWelcomeUIBannerView *)self setLayoutConstraints:v183];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
+    [(HUWelcomeUIBannerView *)self setLayoutConstraints:array];
   }
 }
 

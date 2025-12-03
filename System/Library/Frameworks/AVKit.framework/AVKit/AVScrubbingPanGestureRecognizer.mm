@@ -1,27 +1,27 @@
 @interface AVScrubbingPanGestureRecognizer
 - (CGPoint)translation;
 - (CGPoint)velocity;
-- (id)_getPanGestureIncrementForTouches:(id *)a1;
-- (void)_debugLogGestureIncrements:(id)a3 withPrefix:(id)a4;
+- (id)_getPanGestureIncrementForTouches:(id *)touches;
+- (void)_debugLogGestureIncrements:(id)increments withPrefix:(id)prefix;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation AVScrubbingPanGestureRecognizer
 
-- (void)_debugLogGestureIncrements:(id)a3 withPrefix:(id)a4
+- (void)_debugLogGestureIncrements:(id)increments withPrefix:(id)prefix
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ {\n", a4];
+  incrementsCopy = increments;
+  prefix = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ {\n", prefix];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = incrementsCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -31,7 +31,7 @@
     do
     {
       v12 = 0;
-      v13 = v6;
+      v13 = prefix;
       do
       {
         if (*v19 != v11)
@@ -42,11 +42,11 @@
         v14 = MEMORY[0x1E696AEC0];
         v15 = [*(*(&v18 + 1) + 8 * v12) debugDescription];
         v16 = [v14 stringWithFormat:@"%ld %@\n", v10, v15, v18];
-        v6 = [v13 stringByAppendingString:v16];
+        prefix = [v13 stringByAppendingString:v16];
 
         ++v10;
         ++v12;
-        v13 = v6;
+        v13 = prefix;
       }
 
       while (v9 != v12);
@@ -56,7 +56,7 @@
     while (v9);
   }
 
-  v17 = [v6 stringByAppendingString:@"}"];
+  v17 = [prefix stringByAppendingString:@"}"];
 
   NSLog(&stru_1EFED6778.isa, v17);
 }
@@ -70,9 +70,9 @@
   self->_lastPanGestureIncrement = 0;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:a3];
+  v5 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:cancelled];
   lastPanGestureIncrement = self->_lastPanGestureIncrement;
   self->_lastPanGestureIncrement = v5;
 
@@ -89,29 +89,29 @@
   [(AVScrubbingPanGestureRecognizer *)self setState:v7];
 }
 
-- (id)_getPanGestureIncrementForTouches:(id *)a1
+- (id)_getPanGestureIncrementForTouches:(id *)touches
 {
-  v2 = a1;
-  if (a1)
+  touchesCopy = touches;
+  if (touches)
   {
     v3 = a2;
-    v4 = [v3 anyObject];
-    v5 = [v2 view];
-    [v4 locationInView:v5];
+    anyObject = [v3 anyObject];
+    view = [touchesCopy view];
+    [anyObject locationInView:view];
     v7 = v6;
     v9 = v8;
-    [v4 timestamp];
+    [anyObject timestamp];
     v11 = v10;
     v12 = [v3 count];
 
-    v13 = v12 > 1 || [v2 numberOfTouches] > 1;
-    v14 = v2[36];
+    v13 = v12 > 1 || [touchesCopy numberOfTouches] > 1;
+    v14 = touchesCopy[36];
     if (v14)
     {
       [v14 translation];
       v16 = v15;
       v18 = v17;
-      [v2[36] timestamp];
+      [touchesCopy[36] timestamp];
       v20 = v11 - v19;
       v21 = (v7 - v16) / v20;
       v22 = (v9 - v18) / v20;
@@ -123,15 +123,15 @@
       v22 = *(MEMORY[0x1E695EFF8] + 8);
     }
 
-    v2 = [AVPanGestureIncrement gestureIncrementWithTranslation:v13 velocity:v7 timestamp:v9 hasMultipleTouches:v21, v22, v11];
+    touchesCopy = [AVPanGestureIncrement gestureIncrementWithTranslation:v13 velocity:v7 timestamp:v9 hasMultipleTouches:v21, v22, v11];
   }
 
-  return v2;
+  return touchesCopy;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:a3];
+  v5 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:ended];
   lastPanGestureIncrement = self->_lastPanGestureIncrement;
   self->_lastPanGestureIncrement = v5;
 
@@ -148,26 +148,26 @@
   [(AVScrubbingPanGestureRecognizer *)self setState:v7];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:a3];
+  v5 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:moved];
   objc_storeStrong(&self->_lastPanGestureIncrement, v5);
   if (([(AVScrubbingPanGestureRecognizer *)self state]- 1) > 1)
   {
     [(NSMutableArray *)self->_candidateGestureIncrements addObject:v5];
     candidateGestureIncrements = self->_candidateGestureIncrements;
-    v9 = [(AVScrubbingPanGestureRecognizer *)self view];
+    view = [(AVScrubbingPanGestureRecognizer *)self view];
     v10 = candidateGestureIncrements;
     objc_opt_self();
     if ([(NSMutableArray *)v10 count]> 1)
     {
-      v11 = [(NSMutableArray *)v10 lastObject];
-      v12 = [(NSMutableArray *)v10 firstObject];
-      [v12 translation];
+      lastObject = [(NSMutableArray *)v10 lastObject];
+      firstObject = [(NSMutableArray *)v10 firstObject];
+      [firstObject translation];
       v14 = v13;
       v16 = v15;
-      [v11 translation];
+      [lastObject translation];
       v18 = v17 - v14;
       v20 = v19 - v16;
       *&v17 = v17 - v14;
@@ -182,8 +182,8 @@
       if (v22)
       {
         v23 = v22;
-        v36 = v11;
-        v37 = v9;
+        v36 = lastObject;
+        v37 = view;
         v24 = 0;
         v25 = *v39;
         while (2)
@@ -202,8 +202,8 @@
             if ([v27 hasMultipleTouches])
             {
 
-              v11 = v36;
-              v9 = v37;
+              lastObject = v36;
+              view = v37;
 LABEL_22:
 
               v35 = self->_candidateGestureIncrements;
@@ -227,8 +227,8 @@ LABEL_22:
         }
 
         v33 = v24 < 3 || v21 <= 15.0;
-        v11 = v36;
-        v9 = v37;
+        lastObject = v36;
+        view = v37;
         if (!v33)
         {
           if (fabs(v18) > fabs(v20))
@@ -252,27 +252,27 @@ LABEL_22:
 
     v7 = 0;
 LABEL_26:
-    v6 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 2;
   }
 
-  [(AVScrubbingPanGestureRecognizer *)v6 setState:v7];
+  [(AVScrubbingPanGestureRecognizer *)selfCopy2 setState:v7];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 array];
+  beganCopy = began;
+  array = [v5 array];
   candidateGestureIncrements = self->_candidateGestureIncrements;
-  self->_candidateGestureIncrements = v7;
+  self->_candidateGestureIncrements = array;
 
-  v9 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:v6];
+  v9 = [(AVScrubbingPanGestureRecognizer *)&self->super.super.isa _getPanGestureIncrementForTouches:beganCopy];
 
   lastPanGestureIncrement = self->_lastPanGestureIncrement;
   self->_lastPanGestureIncrement = v9;

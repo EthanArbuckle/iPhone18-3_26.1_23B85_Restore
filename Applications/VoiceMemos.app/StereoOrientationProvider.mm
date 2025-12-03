@@ -1,19 +1,19 @@
 @interface StereoOrientationProvider
 - (id)preferredDataSourceOrientation;
-- (int64_t)preferredInputOrientationFor:(id)a3;
-- (void)deviceOrientationDidUpdate:(id)a3;
+- (int64_t)preferredInputOrientationFor:(id)for;
+- (void)deviceOrientationDidUpdate:(id)update;
 @end
 
 @implementation StereoOrientationProvider
 
-- (void)deviceOrientationDidUpdate:(id)a3
+- (void)deviceOrientationDidUpdate:(id)update
 {
   v4 = objc_opt_self();
-  v7 = self;
-  v5 = [v4 currentDevice];
-  v6 = [v5 orientation];
+  selfCopy = self;
+  currentDevice = [v4 currentDevice];
+  orientation = [currentDevice orientation];
 
-  *(&v7->super.isa + OBJC_IVAR____TtC10VoiceMemos25StereoOrientationProvider_deviceOrientation) = v6;
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC10VoiceMemos25StereoOrientationProvider_deviceOrientation) = orientation;
 }
 
 - (id)preferredDataSourceOrientation
@@ -31,11 +31,11 @@
   return *v2;
 }
 
-- (int64_t)preferredInputOrientationFor:(id)a3
+- (int64_t)preferredInputOrientationFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100176A38(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_100176A38(forCopy);
 
   return v6;
 }

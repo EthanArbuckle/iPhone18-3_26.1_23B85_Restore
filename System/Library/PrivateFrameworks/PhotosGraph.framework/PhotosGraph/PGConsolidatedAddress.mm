@@ -1,9 +1,9 @@
 @interface PGConsolidatedAddress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)centerCoordinates;
 - (CLLocationCoordinate2D)coordinates;
 - (NSString)description;
-- (PGConsolidatedAddress)initWithAddressNode:(id)a3 addressEdgesSortedByTime:(id)a4 centerCoordinates:(CLLocationCoordinate2D)a5;
+- (PGConsolidatedAddress)initWithAddressNode:(id)node addressEdgesSortedByTime:(id)time centerCoordinates:(CLLocationCoordinate2D)coordinates;
 @end
 
 @implementation PGConsolidatedAddress
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -30,14 +30,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       timeLocationIdentifier = self->_timeLocationIdentifier;
-      v7 = [(PGConsolidatedAddress *)v5 timeLocationIdentifier];
-      if ([(NSString *)timeLocationIdentifier isEqual:v7])
+      timeLocationIdentifier = [(PGConsolidatedAddress *)v5 timeLocationIdentifier];
+      if ([(NSString *)timeLocationIdentifier isEqual:timeLocationIdentifier])
       {
         startDate = self->_startDate;
-        v9 = [(PGConsolidatedAddress *)v5 startDate];
-        if ([(NSDate *)startDate isEqual:v9])
+        startDate = [(PGConsolidatedAddress *)v5 startDate];
+        if ([(NSDate *)startDate isEqual:startDate])
         {
           duration = self->_duration;
           [(PGConsolidatedAddress *)v5 duration];
@@ -73,9 +73,9 @@
   v4 = [(PGConsolidatedAddress *)&v11 description];
   timeLocationIdentifier = self->_timeLocationIdentifier;
   startDate = self->_startDate;
-  v7 = [(PGConsolidatedAddress *)self endDate];
+  endDate = [(PGConsolidatedAddress *)self endDate];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%.8f, %.8f}", *&self->_centerCoordinates.latitude, *&self->_centerCoordinates.longitude];
-  v9 = [v3 stringWithFormat:@"%@ identifier %@, startDate %@, endDate %@, coordinates %@", v4, timeLocationIdentifier, startDate, v7, v8];
+  v9 = [v3 stringWithFormat:@"%@ identifier %@, startDate %@, endDate %@, coordinates %@", v4, timeLocationIdentifier, startDate, endDate, v8];
 
   return v9;
 }
@@ -89,28 +89,28 @@
   return result;
 }
 
-- (PGConsolidatedAddress)initWithAddressNode:(id)a3 addressEdgesSortedByTime:(id)a4 centerCoordinates:(CLLocationCoordinate2D)a5
+- (PGConsolidatedAddress)initWithAddressNode:(id)node addressEdgesSortedByTime:(id)time centerCoordinates:(CLLocationCoordinate2D)coordinates
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
+  longitude = coordinates.longitude;
+  latitude = coordinates.latitude;
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  nodeCopy = node;
+  timeCopy = time;
   v39.receiver = self;
   v39.super_class = PGConsolidatedAddress;
   v12 = [(PGConsolidatedAddress *)&v39 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_addressNode, a3);
-    objc_storeStrong(&v13->_addressEdgesSortedByTime, a4);
+    objc_storeStrong(&v12->_addressNode, node);
+    objc_storeStrong(&v13->_addressEdgesSortedByTime, time);
     v13->_centerCoordinates.latitude = latitude;
     v13->_centerCoordinates.longitude = longitude;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v14 = v11;
+    v14 = timeCopy;
     v15 = [v14 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v15)
     {
@@ -159,11 +159,11 @@
     v13->_startDate = v25;
 
     v13->_duration = v19 - v18;
-    v27 = [v14 firstObject];
-    v28 = [v27 sourceNode];
+    firstObject = [v14 firstObject];
+    sourceNode = [firstObject sourceNode];
     v29 = MEMORY[0x277CCACA8];
-    v30 = [v28 localIdentifier];
-    v31 = [v29 stringWithFormat:@"%@-%f-%f", v30, *&latitude, *&longitude];
+    localIdentifier = [sourceNode localIdentifier];
+    v31 = [v29 stringWithFormat:@"%@-%f-%f", localIdentifier, *&latitude, *&longitude];
     timeLocationIdentifier = v13->_timeLocationIdentifier;
     v13->_timeLocationIdentifier = v31;
   }

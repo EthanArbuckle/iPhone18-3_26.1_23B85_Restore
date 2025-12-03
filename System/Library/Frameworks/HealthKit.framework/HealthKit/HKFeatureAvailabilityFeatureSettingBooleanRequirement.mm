@@ -1,42 +1,42 @@
 @interface HKFeatureAvailabilityFeatureSettingBooleanRequirement
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithFeatureIdentifier:(id)a3 settingsKey:(id)a4 settingsValue:(BOOL)a5 isSatisfiedWhenSettingIsAbsent:(BOOL)a6;
-- (id)isSatisfiedWithOnboardingRecord:(id)a3 dataSource:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithFeatureIdentifier:(id)identifier settingsKey:(id)key settingsValue:(BOOL)value isSatisfiedWhenSettingIsAbsent:(BOOL)absent;
+- (id)isSatisfiedWithOnboardingRecord:(id)record dataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFeatureAvailabilityFeatureSettingBooleanRequirement
 
-- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithFeatureIdentifier:(id)a3 settingsKey:(id)a4 settingsValue:(BOOL)a5 isSatisfiedWhenSettingIsAbsent:(BOOL)a6
+- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithFeatureIdentifier:(id)identifier settingsKey:(id)key settingsValue:(BOOL)value isSatisfiedWhenSettingIsAbsent:(BOOL)absent
 {
-  v10 = a4;
+  keyCopy = key;
   v15.receiver = self;
   v15.super_class = HKFeatureAvailabilityFeatureSettingBooleanRequirement;
-  v11 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v15 initWithFeatureIdentifier:a3];
+  v11 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v15 initWithFeatureIdentifier:identifier];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [keyCopy copy];
     settingsKey = v11->_settingsKey;
     v11->_settingsKey = v12;
 
-    v11->_settingsValue = a5;
-    v11->_isSatisfiedWhenSettingIsAbsent = a6;
+    v11->_settingsValue = value;
+    v11->_isSatisfiedWhenSettingIsAbsent = absent;
   }
 
   return v11;
 }
 
-- (id)isSatisfiedWithOnboardingRecord:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (id)isSatisfiedWithOnboardingRecord:(id)record dataSource:(id)source error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 featureSettings];
+  recordCopy = record;
+  featureSettings = [recordCopy featureSettings];
 
-  if (v7)
+  if (featureSettings)
   {
-    v8 = [v6 featureSettings];
-    v9 = [v8 numberForKey:self->_settingsKey];
+    featureSettings2 = [recordCopy featureSettings];
+    v9 = [featureSettings2 numberForKey:self->_settingsKey];
 
     if (v9)
     {
@@ -58,14 +58,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = HKFeatureAvailabilityFeatureSettingBooleanRequirement;
-  if ([(HKFeatureAvailabilityOnboardingRecordRequirement *)&v8 isEqual:v4])
+  if ([(HKFeatureAvailabilityOnboardingRecordRequirement *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSString *)self->_settingsKey isEqualToString:v5[3]]&& self->_settingsValue == *(v5 + 16) && self->_isSatisfiedWhenSettingIsAbsent == *(v5 + 17);
   }
 
@@ -85,33 +85,33 @@
   return [(NSString *)self->_settingsKey hash]^ v3 ^ self->_settingsValue ^ self->_isSatisfiedWhenSettingIsAbsent;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HKFeatureAvailabilityFeatureSettingBooleanRequirement;
-  v4 = a3;
-  [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HKFeatureAvailabilityFeatureSettingBooleanRequirement *)self settingsKey:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"settingsKey"];
+  [coderCopy encodeObject:v5 forKey:@"settingsKey"];
 
-  [v4 encodeBool:-[HKFeatureAvailabilityFeatureSettingBooleanRequirement settingsValue](self forKey:{"settingsValue"), @"settingsValueKey"}];
-  [v4 encodeBool:-[HKFeatureAvailabilityFeatureSettingBooleanRequirement isSatisfiedWhenSettingIsAbsent](self forKey:{"isSatisfiedWhenSettingIsAbsent"), @"isSatisfiedWhenSettingIsAbsent"}];
+  [coderCopy encodeBool:-[HKFeatureAvailabilityFeatureSettingBooleanRequirement settingsValue](self forKey:{"settingsValue"), @"settingsValueKey"}];
+  [coderCopy encodeBool:-[HKFeatureAvailabilityFeatureSettingBooleanRequirement isSatisfiedWhenSettingIsAbsent](self forKey:{"isSatisfiedWhenSettingIsAbsent"), @"isSatisfiedWhenSettingIsAbsent"}];
 }
 
-- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithCoder:(id)a3
+- (HKFeatureAvailabilityFeatureSettingBooleanRequirement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityFeatureSettingBooleanRequirement;
-  v5 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v9 initWithCoder:v4];
+  v5 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settingsKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settingsKey"];
     settingsKey = v5->_settingsKey;
     v5->_settingsKey = v6;
 
-    v5->_settingsValue = [v4 decodeBoolForKey:@"settingsValueKey"];
-    v5->_isSatisfiedWhenSettingIsAbsent = [v4 decodeBoolForKey:@"isSatisfiedWhenSettingIsAbsent"];
+    v5->_settingsValue = [coderCopy decodeBoolForKey:@"settingsValueKey"];
+    v5->_isSatisfiedWhenSettingIsAbsent = [coderCopy decodeBoolForKey:@"isSatisfiedWhenSettingIsAbsent"];
   }
 
   return v5;

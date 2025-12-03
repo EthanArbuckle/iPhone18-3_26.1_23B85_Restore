@@ -1,9 +1,9 @@
 @interface NRParameters
 - (NRParameters)init;
-- (NRParameters)initWithParameters:(id)a3;
+- (NRParameters)initWithParameters:(id)parameters;
 - (id)copyParameters;
 - (id)description;
-- (void)setServiceClass:(unsigned __int8)a3;
+- (void)setServiceClass:(unsigned __int8)class;
 @end
 
 @implementation NRParameters
@@ -18,18 +18,18 @@
   JUMPOUT(0x25F873CE0);
 }
 
-- (void)setServiceClass:(unsigned __int8)a3
+- (void)setServiceClass:(unsigned __int8)class
 {
-  self->_serviceClass = a3;
+  self->_serviceClass = class;
   parameters = self->_parameters;
-  if ((a3 - 1) > 4)
+  if ((class - 1) > 4)
   {
     v4 = nw_service_class_best_effort;
   }
 
   else
   {
-    v4 = dword_25B9FC460[(a3 - 1)];
+    v4 = dword_25B9FC460[(class - 1)];
   }
 
   nw_parameters_set_service_class(parameters, v4);
@@ -48,15 +48,15 @@
     parameters = 0;
   }
 
-  v5 = [v3 initWithFormat:@"NRParameters<%@>", parameters];
+  parameters = [v3 initWithFormat:@"NRParameters<%@>", parameters];
 
-  return v5;
+  return parameters;
 }
 
-- (NRParameters)initWithParameters:(id)a3
+- (NRParameters)initWithParameters:(id)parameters
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   v24.receiver = self;
   v24.super_class = NRParameters;
   v5 = [(NRParameters *)&v24 init];
@@ -94,7 +94,7 @@ LABEL_7:
 
   v6 = v5;
   parameters = v5->_parameters;
-  v5->_parameters = v4;
+  v5->_parameters = parametersCopy;
 
   v8 = *MEMORY[0x277D85DE8];
   return v6;

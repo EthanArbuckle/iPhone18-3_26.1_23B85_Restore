@@ -1,9 +1,9 @@
 @interface AXPhotosGroupAccessibilityElement
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AXPhotosGroupAccessibilityElement)initWithAccessibilityContainer:(id)a3 forGroup:(id)a4 inView:(id)a5 withAdditionalScrollViewElements:(id)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AXPhotosGroupAccessibilityElement)initWithAccessibilityContainer:(id)container forGroup:(id)group inView:(id)view withAdditionalScrollViewElements:(id)elements;
 - (BOOL)_accessibilityHasVisibleFrame;
 - (BOOL)_accessibilityInStoryViewController;
-- (BOOL)_axInZoomLevel:(int64_t)a3;
+- (BOOL)_axInZoomLevel:(int64_t)level;
 - (BOOL)_axIsAssetSection;
 - (BOOL)_axIsCardSectionBody;
 - (BOOL)_axIsChapterHeader;
@@ -23,7 +23,7 @@
 - (BOOL)_axIsStoryStyleSwitchingFullsizeLayout;
 - (BOOL)_axIsStoryThumbnailChromeLayout;
 - (BOOL)_axIsStoryTransitionLayout;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
 - (CGRect)accessibilityFrameForScrolling;
@@ -35,14 +35,14 @@
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axCardSectionBodyInSubgroups;
 - (id)_axCurrentLeafInStory;
-- (id)_axFilterLeafsByContentKind:(int64_t)a3;
-- (id)_axFilterStaleKeys:(id)a3 usingIndexSet:(id)a4;
-- (id)_axFilterSubgroupsByInfoSourceType:(id)a3;
+- (id)_axFilterLeafsByContentKind:(int64_t)kind;
+- (id)_axFilterStaleKeys:(id)keys usingIndexSet:(id)set;
+- (id)_axFilterSubgroupsByInfoSourceType:(id)type;
 - (id)_axGroupsAccessibilityElements;
 - (id)_axLeafAccessibilityElements;
 - (id)_axMoreButtonInMonthsView;
 - (id)_axStoryColorGradeLeafElement;
-- (id)_axUniqueIdentifierForLeaf:(id)a3;
+- (id)_axUniqueIdentifierForLeaf:(id)leaf;
 - (id)_axUnsortedGroupsAccessibilityElements;
 - (id)_axUnsortedLeafAccessibilityElements;
 - (id)accessibilityCustomActions;
@@ -54,18 +54,18 @@
 - (id)automationElements;
 - (id)group;
 - (id)view;
-- (int64_t)_axCompareAXPhotoElement:(id)a3 toElement:(id)a4;
+- (int64_t)_axCompareAXPhotoElement:(id)element toElement:(id)toElement;
 - (unint64_t)accessibilityTraits;
-- (void)_axCleanupAccessibilityElements:(id)a3 withUpdatedKeys:(id)a4;
-- (void)_axContainingGroup:(id)a3 performedAction:(int64_t)a4 withUserInfo:(id)a5;
-- (void)_axMoveStoryForInfoSource:(id)a3 inDirection:(unint64_t)a4;
-- (void)_axMoveToNextInfoInDirection:(unint64_t)a3;
-- (void)_axRefreshGridGroupData:(id)a3;
-- (void)_axShouldShowAlternateUI:(BOOL)a3;
+- (void)_axCleanupAccessibilityElements:(id)elements withUpdatedKeys:(id)keys;
+- (void)_axContainingGroup:(id)group performedAction:(int64_t)action withUserInfo:(id)info;
+- (void)_axMoveStoryForInfoSource:(id)source inDirection:(unint64_t)direction;
+- (void)_axMoveToNextInfoInDirection:(unint64_t)direction;
+- (void)_axRefreshGridGroupData:(id)data;
+- (void)_axShouldShowAlternateUI:(BOOL)i;
 - (void)_axUnloadStaleLeafObjects;
 - (void)_cleanupStaleGroupAccessibilityElements;
 - (void)_updateGroupAccessibilityElements;
-- (void)_updateLeafAccessibilityElements:(id)a3 forVisibleSpriteIndexes:(id)a4;
+- (void)_updateLeafAccessibilityElements:(id)elements forVisibleSpriteIndexes:(id)indexes;
 - (void)_updateLeafAccessibilityElementsIfNeeded;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
@@ -73,111 +73,111 @@
 
 @implementation AXPhotosGroupAccessibilityElement
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXGBasicAXGroup"];
-  [v3 validateClass:@"PXCuratedLibraryChapterHeaderLayout"];
-  [v3 validateClass:@"PXCuratedLibrarySectionHeaderLayout"];
-  [v3 validateClass:@"PXGDecoratingLayout"];
-  [v3 validateClass:@"PXCuratedLibraryCardSectionBodyLayout"];
-  [v3 validateClass:@"PXInlineHeadersSpriteLayout"];
-  [v3 validateClass:@"PXAssetsSectionLayout"];
-  [v3 validateClass:@"PXGReusableAXInfo"];
-  [v3 validateClass:@"PXGView"];
-  [v3 validateClass:@"PXGEngine"];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController"];
-  [v3 validateClass:@"PhotosUIApps.PUStoryColorGradeEditorItemLayout"];
-  [v3 validateClass:@"PUStoryColorGradeEditorItemOverlayLayout"];
-  [v3 validateClass:@"PXFeedViewController"];
-  [v3 validateClass:@"PXStoryLayout"];
-  [v3 validateClass:@"PXStoryThumbnailChromeLayout"];
-  [v3 validateClass:@"PXStoryFullsizeLayout"];
-  [v3 validateClass:@"PXStoryClipLayout"];
-  [v3 validateClass:@"PXStoryTransitionLayout"];
-  [v3 validateClass:@"PXFeedContentLayout"];
-  [v3 validateClass:@"PXStoryChromeButton"];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceVariable:@"_axInfoSource" withType:"id<PXGAXInfoSource>"];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axRole" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axSubgroups" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axLeafs" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"subgroupIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"loadedSubgroupIndexes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axNextResponder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"_axInfoSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axIsVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXAssetsSectionLayout" hasInstanceMethod:@"zoomLevel" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PHObject" hasInstanceMethod:@"localIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAsset" isKindOfClass:@"PHObject"];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axAsset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axSubtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axImageName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"spriteIndex" withFullSignature:{"I", 0}];
-  [v3 validateClass:@"PXGAXInfo" hasInstanceMethod:@"axContentKind" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axContainingGroup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGView" hasInstanceMethod:@"engine" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGEngine" hasInstanceMethod:@"ensureUpdatedLayout" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"viewProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryViewProvider" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"zoomablePhotosViewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXZoomablePhotosViewModel" hasInstanceMethod:@"isDisplayingIndividualItems" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXGAXInfoSource" hasMethod:@"axVisibleSpriteIndexes" isInstanceMethod:1 isRequired:1];
-  [v3 validateProtocol:@"PXGAXInfoSource" hasMethod:@"axSpriteIndexClosestToSpriteIndex:inDirection:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"loadLeafAtSpriteIndexIfNeeded:usingOptions:" withFullSignature:{"@", "I", "Q", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"loadedLeafAtSpriteIndex:" withFullSignature:{"@", "I", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"unloadLeafAtSpriteIndex:usingOptions:" withFullSignature:{"@", "I", "Q", 0}];
-  [v3 validateProtocol:@"PXGAXResponder" hasMethod:@"axGroup:didRequestToPerformAction:userInfo:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"PXFeedViewController" hasInstanceMethod:@"configuration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXFeedConfiguration" hasInstanceMethod:@"gadgetSpec" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGadgetSpec" hasInstanceMethod:@"interItemSpacing" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PXStoryChromeButton" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXStoryChromeButtonConfiguration" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"UIButton" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXStoryScrubberContentLayout"];
-  [v3 validateClass:@"PUStoryViewController"];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceVariable:@"_content" withType:"@"];
-  [v3 validateClass:@"PXStoryScrubberContentLayout" hasInstanceMethod:@"_axScrubberFractionNumerator" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PXStoryScrubberContentLayout" hasInstanceMethod:@"_axScrubberFractionDenominator" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PXStoryStyleSwitchingFullsizeLayout"];
-  [v3 validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axSwitcherFractionNumerator" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axSwitcherFractionDenominator" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axStyleTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axScrollParent" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXGAXResponder" hasMethod:@"axContainingScrollViewForAXGroup:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityHasVisibleFrame" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAssetCollection" hasInstanceMethod:@"kind" withFullSignature:{"S", 0}];
-  [v3 validateClass:@"PHAssetCollection" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAssetCollection" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXGBasicAXGroup"];
+  [validationsCopy validateClass:@"PXCuratedLibraryChapterHeaderLayout"];
+  [validationsCopy validateClass:@"PXCuratedLibrarySectionHeaderLayout"];
+  [validationsCopy validateClass:@"PXGDecoratingLayout"];
+  [validationsCopy validateClass:@"PXCuratedLibraryCardSectionBodyLayout"];
+  [validationsCopy validateClass:@"PXInlineHeadersSpriteLayout"];
+  [validationsCopy validateClass:@"PXAssetsSectionLayout"];
+  [validationsCopy validateClass:@"PXGReusableAXInfo"];
+  [validationsCopy validateClass:@"PXGView"];
+  [validationsCopy validateClass:@"PXGEngine"];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController"];
+  [validationsCopy validateClass:@"PhotosUIApps.PUStoryColorGradeEditorItemLayout"];
+  [validationsCopy validateClass:@"PUStoryColorGradeEditorItemOverlayLayout"];
+  [validationsCopy validateClass:@"PXFeedViewController"];
+  [validationsCopy validateClass:@"PXStoryLayout"];
+  [validationsCopy validateClass:@"PXStoryThumbnailChromeLayout"];
+  [validationsCopy validateClass:@"PXStoryFullsizeLayout"];
+  [validationsCopy validateClass:@"PXStoryClipLayout"];
+  [validationsCopy validateClass:@"PXStoryTransitionLayout"];
+  [validationsCopy validateClass:@"PXFeedContentLayout"];
+  [validationsCopy validateClass:@"PXStoryChromeButton"];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceVariable:@"_axInfoSource" withType:"id<PXGAXInfoSource>"];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axRole" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axSubgroups" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axLeafs" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"subgroupIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"loadedSubgroupIndexes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axNextResponder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"_axInfoSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axIsVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXAssetsSectionLayout" hasInstanceMethod:@"zoomLevel" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PHObject" hasInstanceMethod:@"localIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAsset" isKindOfClass:@"PHObject"];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axAsset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axSubtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axImageName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"spriteIndex" withFullSignature:{"I", 0}];
+  [validationsCopy validateClass:@"PXGAXInfo" hasInstanceMethod:@"axContentKind" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axContainingGroup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGView" hasInstanceMethod:@"engine" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGEngine" hasInstanceMethod:@"ensureUpdatedLayout" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"viewProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryViewProvider" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"zoomablePhotosViewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXZoomablePhotosViewModel" hasInstanceMethod:@"isDisplayingIndividualItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXGAXInfoSource" hasMethod:@"axVisibleSpriteIndexes" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateProtocol:@"PXGAXInfoSource" hasMethod:@"axSpriteIndexClosestToSpriteIndex:inDirection:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"loadLeafAtSpriteIndexIfNeeded:usingOptions:" withFullSignature:{"@", "I", "Q", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"loadedLeafAtSpriteIndex:" withFullSignature:{"@", "I", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"unloadLeafAtSpriteIndex:usingOptions:" withFullSignature:{"@", "I", "Q", 0}];
+  [validationsCopy validateProtocol:@"PXGAXResponder" hasMethod:@"axGroup:didRequestToPerformAction:userInfo:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"PXFeedViewController" hasInstanceMethod:@"configuration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXFeedConfiguration" hasInstanceMethod:@"gadgetSpec" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGadgetSpec" hasInstanceMethod:@"interItemSpacing" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PXStoryChromeButton" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXStoryChromeButtonConfiguration" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"UIButton" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXStoryScrubberContentLayout"];
+  [validationsCopy validateClass:@"PUStoryViewController"];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceVariable:@"_content" withType:"@"];
+  [validationsCopy validateClass:@"PXStoryScrubberContentLayout" hasInstanceMethod:@"_axScrubberFractionNumerator" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PXStoryScrubberContentLayout" hasInstanceMethod:@"_axScrubberFractionDenominator" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PXStoryStyleSwitchingFullsizeLayout"];
+  [validationsCopy validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axSwitcherFractionNumerator" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axSwitcherFractionDenominator" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axStyleTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axScrollParent" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXGAXResponder" hasMethod:@"axContainingScrollViewForAXGroup:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityHasVisibleFrame" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAssetCollection" hasInstanceMethod:@"kind" withFullSignature:{"S", 0}];
+  [validationsCopy validateClass:@"PHAssetCollection" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAssetCollection" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axIdentifier" withFullSignature:{"@", 0}];
 }
 
-- (AXPhotosGroupAccessibilityElement)initWithAccessibilityContainer:(id)a3 forGroup:(id)a4 inView:(id)a5 withAdditionalScrollViewElements:(id)a6
+- (AXPhotosGroupAccessibilityElement)initWithAccessibilityContainer:(id)container forGroup:(id)group inView:(id)view withAdditionalScrollViewElements:(id)elements
 {
   v15.receiver = self;
   v15.super_class = AXPhotosGroupAccessibilityElement;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(AXPhotosGroupAccessibilityElement *)&v15 initWithAccessibilityContainer:a3];
-  [(AXPhotosGroupAccessibilityElement *)v12 setGroup:v11, v15.receiver, v15.super_class];
+  elementsCopy = elements;
+  viewCopy = view;
+  groupCopy = group;
+  v12 = [(AXPhotosGroupAccessibilityElement *)&v15 initWithAccessibilityContainer:container];
+  [(AXPhotosGroupAccessibilityElement *)v12 setGroup:groupCopy, v15.receiver, v15.super_class];
 
-  [(AXPhotosGroupAccessibilityElement *)v12 setView:v10];
-  [(AXPhotosGroupAccessibilityElement *)v12 setAdditionalScrollViewElements:v9];
+  [(AXPhotosGroupAccessibilityElement *)v12 setView:viewCopy];
+  [(AXPhotosGroupAccessibilityElement *)v12 setAdditionalScrollViewElements:elementsCopy];
 
-  v13 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v13 addObserver:v12 selector:sel__axRefreshGridGroupData_ name:@"AXPhotosGridGroupDataChanged" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:v12 selector:sel__axRefreshGridGroupData_ name:@"AXPhotosGridGroupDataChanged" object:0];
 
   return v12;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self group];
-  v4 = [v3 safeIntegerForKey:@"axRole"];
+  group = [(AXPhotosGroupAccessibilityElement *)self group];
+  v4 = [group safeIntegerForKey:@"axRole"];
 
   if ((v4 - 3) < 2)
   {
@@ -217,22 +217,22 @@
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy_;
   v46 = __Block_byref_object_dispose_;
-  v47 = [MEMORY[0x29EDBA0F8] string];
+  string = [MEMORY[0x29EDBA0F8] string];
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsStoryColorGradeEditorItem])
   {
-    v4 = [(AXPhotosGroupAccessibilityElement *)self _axStoryColorGradeLeafElement];
-    v5 = v4;
-    if (v4)
+    _axStoryColorGradeLeafElement = [(AXPhotosGroupAccessibilityElement *)self _axStoryColorGradeLeafElement];
+    v5 = _axStoryColorGradeLeafElement;
+    if (_axStoryColorGradeLeafElement)
     {
-      v6 = [v4 accessibilityLabel];
+      accessibilityLabel = [_axStoryColorGradeLeafElement accessibilityLabel];
     }
 
     else
     {
-      v6 = 0;
+      accessibilityLabel = 0;
     }
 
-    objc_storeStrong(v43 + 5, v6);
+    objc_storeStrong(v43 + 5, accessibilityLabel);
     if (v5)
     {
     }
@@ -240,45 +240,45 @@
 
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMonthsView]|| [(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
   {
-    v7 = [(AXPhotosGroupAccessibilityElement *)self group];
-    v8 = [v7 safeValueForKey:@"_axInfoSource"];
+    group = [(AXPhotosGroupAccessibilityElement *)self group];
+    v8 = [group safeValueForKey:@"_axInfoSource"];
     v9 = [v8 safeValueForKey:@"assetCollection"];
 
     if ([v9 safeIntForKey:@"kind"] == 1)
     {
-      v10 = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
-      v11 = [v10 count];
+      _axSectionHeadersInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
+      v11 = [_axSectionHeadersInSubgroups count];
       if (v11)
       {
-        v2 = [v10 firstObject];
-        v12 = [v2 accessibilityLabel];
+        firstObject = [_axSectionHeadersInSubgroups firstObject];
+        accessibilityLabel2 = [firstObject accessibilityLabel];
       }
 
       else
       {
-        v12 = 0;
+        accessibilityLabel2 = 0;
       }
 
-      objc_storeStrong(v43 + 5, v12);
+      objc_storeStrong(v43 + 5, accessibilityLabel2);
       if (v11)
       {
       }
 
-      v13 = [(AXPhotosGroupAccessibilityElement *)self _axChapterHeadersInSubgroups];
+      _axChapterHeadersInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axChapterHeadersInSubgroups];
       v15 = v43[5];
-      v16 = [v13 count];
+      v16 = [_axChapterHeadersInSubgroups count];
       if (v16)
       {
-        v2 = [v13 firstObject];
-        v17 = [v2 accessibilityLabel];
+        firstObject = [_axChapterHeadersInSubgroups firstObject];
+        accessibilityLabel3 = [firstObject accessibilityLabel];
       }
 
       else
       {
-        v17 = 0;
+        accessibilityLabel3 = 0;
       }
 
-      v36 = v17;
+      v36 = accessibilityLabel3;
       v37 = @"__AXStringForVariablesSentinel";
       v18 = __UIAXStringForVariables();
       v19 = v43[5];
@@ -292,12 +292,12 @@
 
     else
     {
-      v10 = [v9 safeStringForKey:@"title"];
-      v13 = [v9 safeStringForKey:@"subtitle"];
-      v36 = v13;
+      _axSectionHeadersInSubgroups = [v9 safeStringForKey:@"title"];
+      _axChapterHeadersInSubgroups = [v9 safeStringForKey:@"subtitle"];
+      v36 = _axChapterHeadersInSubgroups;
       v37 = @"__AXStringForVariablesSentinel";
       v14 = __UIAXStringForVariables();
-      v2 = v43[5];
+      firstObject = v43[5];
       v43[5] = v14;
     }
 
@@ -306,13 +306,13 @@ LABEL_23:
 
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsStoryLayout:v36])
   {
-    v20 = [(AXPhotosGroupAccessibilityElement *)self _axStoryFullsizeLayoutInSubgroups];
-    if ([v20 count])
+    _axStoryFullsizeLayoutInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axStoryFullsizeLayoutInSubgroups];
+    if ([_axStoryFullsizeLayoutInSubgroups count])
     {
-      v21 = [v20 firstObject];
-      v22 = [v21 _axStoryClipLayoutInSubgroups];
+      firstObject2 = [_axStoryFullsizeLayoutInSubgroups firstObject];
+      _axStoryClipLayoutInSubgroups = [firstObject2 _axStoryClipLayoutInSubgroups];
 
-      v23 = MEMORY[0x29C2E6A40](v22);
+      v23 = MEMORY[0x29C2E6A40](_axStoryClipLayoutInSubgroups);
       v24 = v43[5];
       v43[5] = v23;
     }
@@ -360,17 +360,17 @@ LABEL_23:
   v32 = v43[5];
   if (v32 && [v32 length])
   {
-    v33 = v43[5];
+    accessibilityLabel4 = v43[5];
   }
 
   else
   {
     v38.receiver = self;
     v38.super_class = AXPhotosGroupAccessibilityElement;
-    v33 = [(AXPhotosGroupAccessibilityElement *)&v38 accessibilityLabel];
+    accessibilityLabel4 = [(AXPhotosGroupAccessibilityElement *)&v38 accessibilityLabel];
   }
 
-  v34 = v33;
+  v34 = accessibilityLabel4;
   _Block_object_dispose(&v42, 8);
 
   return v34;
@@ -413,7 +413,7 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityLabel__block_invoke_3(
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy_;
   v49 = __Block_byref_object_dispose_;
-  v50 = [MEMORY[0x29EDBA0F8] string];
+  string = [MEMORY[0x29EDBA0F8] string];
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMonthsView]|| [(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
   {
     if ([(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
@@ -421,36 +421,36 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityLabel__block_invoke_3(
       [(AXPhotosGroupAccessibilityElement *)self _axShouldShowAlternateUI:1];
     }
 
-    v4 = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
-    v5 = [v4 count];
+    _axSectionHeadersInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
+    v5 = [_axSectionHeadersInSubgroups count];
     if (v5)
     {
-      v2 = [v4 firstObject];
-      v6 = [v2 accessibilityValue];
+      firstObject = [_axSectionHeadersInSubgroups firstObject];
+      accessibilityValue = [firstObject accessibilityValue];
     }
 
     else
     {
-      v6 = 0;
+      accessibilityValue = 0;
     }
 
-    objc_storeStrong(v46 + 5, v6);
+    objc_storeStrong(v46 + 5, accessibilityValue);
     if (v5)
     {
     }
 
-    v7 = [(AXPhotosGroupAccessibilityElement *)self _axChapterHeadersInSubgroups];
+    _axChapterHeadersInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axChapterHeadersInSubgroups];
     v8 = v46[5];
-    v9 = [v7 count];
+    v9 = [_axChapterHeadersInSubgroups count];
     if (v9)
     {
-      v6 = [v7 firstObject];
-      v10 = [v6 accessibilityValue];
+      accessibilityValue = [_axChapterHeadersInSubgroups firstObject];
+      v6AccessibilityValue = [accessibilityValue accessibilityValue];
     }
 
     else
     {
-      v10 = 0;
+      v6AccessibilityValue = 0;
     }
 
     v11 = __UIAXStringForVariables();
@@ -461,7 +461,7 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityLabel__block_invoke_3(
     {
     }
 
-    if ([(AXPhotosGroupAccessibilityElement *)self _axIsYearsView:v10])
+    if ([(AXPhotosGroupAccessibilityElement *)self _axIsYearsView:v6AccessibilityValue])
     {
       [(AXPhotosGroupAccessibilityElement *)self _axShouldShowAlternateUI:0];
     }
@@ -469,27 +469,27 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityLabel__block_invoke_3(
 
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMemoriesScrubberInStoryViewController])
   {
-    v13 = [(AXPhotosGroupAccessibilityElement *)self group];
-    v14 = [v13 safeValueForKey:@"_axInfoSource"];
+    group = [(AXPhotosGroupAccessibilityElement *)self group];
+    v14 = [group safeValueForKey:@"_axInfoSource"];
 
     v15 = [v14 safeUnsignedIntegerForKey:@"_axScrubberFractionNumerator"];
     v16 = [v14 safeUnsignedIntegerForKey:@"_axScrubberFractionDenominator"];
-    v17 = [(AXPhotosGroupAccessibilityElement *)self _axCurrentLeafInStory];
-    v18 = [v17 safeValueForKey:@"_content"];
+    _axCurrentLeafInStory = [(AXPhotosGroupAccessibilityElement *)self _axCurrentLeafInStory];
+    v18 = [_axCurrentLeafInStory safeValueForKey:@"_content"];
     v19 = MEMORY[0x29EDBA0F8];
     v20 = accessibilityPhotosUICoreLocalizedString(@"memories.scrubber.choice");
     v21 = [v19 localizedStringWithFormat:v20, v15, v16];
-    v39 = [v18 accessibilityLabel];
+    accessibilityLabel = [v18 accessibilityLabel];
     v41 = @"__AXStringForVariablesSentinel";
     v22 = __UIAXStringForVariables();
     v23 = v46[5];
     v46[5] = v22;
   }
 
-  if ([(AXPhotosGroupAccessibilityElement *)self _axIsMemoriesStyleSwitcherInStoryViewController:v39])
+  if ([(AXPhotosGroupAccessibilityElement *)self _axIsMemoriesStyleSwitcherInStoryViewController:accessibilityLabel])
   {
-    v24 = [(AXPhotosGroupAccessibilityElement *)self group];
-    v25 = [v24 safeValueForKey:@"_axInfoSource"];
+    group2 = [(AXPhotosGroupAccessibilityElement *)self group];
+    v25 = [group2 safeValueForKey:@"_axInfoSource"];
 
     v26 = [v25 safeUnsignedIntegerForKey:@"_axSwitcherFractionNumerator"];
     v27 = [v25 safeUnsignedIntegerForKey:@"_axSwitcherFractionDenominator"];
@@ -518,17 +518,17 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityLabel__block_invoke_3(
   v35 = v46[5];
   if (v35 && [v35 length])
   {
-    v36 = v46[5];
+    accessibilityValue2 = v46[5];
   }
 
   else
   {
     v43.receiver = self;
     v43.super_class = AXPhotosGroupAccessibilityElement;
-    v36 = [(AXPhotosGroupAccessibilityElement *)&v43 accessibilityValue];
+    accessibilityValue2 = [(AXPhotosGroupAccessibilityElement *)&v43 accessibilityValue];
   }
 
-  v37 = v36;
+  v37 = accessibilityValue2;
   _Block_object_dispose(&v45, 8);
 
   return v37;
@@ -546,35 +546,35 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityValue__block_invoke(ui
 
 - (id)_accessibilityScrollStatus
 {
-  v3 = [MEMORY[0x29EDBA0F8] string];
+  string = [MEMORY[0x29EDBA0F8] string];
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMonthsView]|| [(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
   {
-    v4 = [(AXPhotosGroupAccessibilityElement *)self _axCardSectionBodyInSubgroups];
-    if ([v4 count])
+    _axCardSectionBodyInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axCardSectionBodyInSubgroups];
+    if ([_axCardSectionBodyInSubgroups count])
     {
-      v5 = [v4 firstObject];
-      v6 = [v5 _axFilterLeafsByContentKind:6];
+      firstObject = [_axCardSectionBodyInSubgroups firstObject];
+      v6 = [firstObject _axFilterLeafsByContentKind:6];
 
       if ([v6 count])
       {
-        v7 = [v6 firstObject];
-        v8 = [v7 accessibilityLabel];
+        firstObject2 = [v6 firstObject];
+        accessibilityLabel = [firstObject2 accessibilityLabel];
 
-        v3 = v7;
+        string = firstObject2;
       }
 
       else
       {
-        v8 = 0;
+        accessibilityLabel = 0;
       }
 
-      v3 = v8;
+      string = accessibilityLabel;
     }
   }
 
   v12.receiver = self;
   v12.super_class = AXPhotosGroupAccessibilityElement;
-  v11 = [(AXPhotosGroupAccessibilityElement *)&v12 _accessibilityScrollStatus];
+  _accessibilityScrollStatus = [(AXPhotosGroupAccessibilityElement *)&v12 _accessibilityScrollStatus];
   v9 = __UIAXStringForVariables();
 
   return v9;
@@ -582,8 +582,8 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityValue__block_invoke(ui
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self group];
-  [v3 accessibilityFrame];
+  group = [(AXPhotosGroupAccessibilityElement *)self group];
+  [group accessibilityFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -609,35 +609,35 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityValue__block_invoke(ui
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self group];
+  group = [(AXPhotosGroupAccessibilityElement *)self group];
 
-  if (!v3 || (-[AXPhotosGroupAccessibilityElement group](self, "group"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeStringForKey:@"axIdentifier"], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!group || (-[AXPhotosGroupAccessibilityElement group](self, "group"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeStringForKey:@"axIdentifier"], accessibilityIdentifier = objc_claimAutoreleasedReturnValue(), v4, !accessibilityIdentifier))
   {
-    v6 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
-    if (v6)
+    _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+    if (_accessibilityInfoSource)
     {
-      v7 = v6;
+      v7 = _accessibilityInfoSource;
       v8 = MEMORY[0x29EDBA0F8];
-      v9 = [v6 className];
-      v5 = [v8 stringWithFormat:@"%@-Group", v9];
+      className = [_accessibilityInfoSource className];
+      accessibilityIdentifier = [v8 stringWithFormat:@"%@-Group", className];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = AXPhotosGroupAccessibilityElement;
-      v5 = [(AXPhotosGroupAccessibilityElement *)&v11 accessibilityIdentifier];
+      accessibilityIdentifier = [(AXPhotosGroupAccessibilityElement *)&v11 accessibilityIdentifier];
     }
   }
 
-  return v5;
+  return accessibilityIdentifier;
 }
 
 - (BOOL)_accessibilityHasVisibleFrame
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityFeedViewController];
+  _accessibilityFeedViewController = [(AXPhotosGroupAccessibilityElement *)self _accessibilityFeedViewController];
 
-  if (v3 && ([(AXPhotosGroupAccessibilityElement *)self _axIsStoryTransitionLayout]|| [(AXPhotosGroupAccessibilityElement *)self _axIsFeedContentLayout]))
+  if (_accessibilityFeedViewController && ([(AXPhotosGroupAccessibilityElement *)self _axIsStoryTransitionLayout]|| [(AXPhotosGroupAccessibilityElement *)self _axIsFeedContentLayout]))
   {
     return 1;
   }
@@ -651,26 +651,26 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityValue__block_invoke(ui
 {
   v13.receiver = self;
   v13.super_class = AXPhotosGroupAccessibilityElement;
-  v3 = [(AXPhotosGroupAccessibilityElement *)&v13 accessibilityTraits];
+  accessibilityTraits = [(AXPhotosGroupAccessibilityElement *)&v13 accessibilityTraits];
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
   {
-    v3 |= *MEMORY[0x29EDC7F88] | *MEMORY[0x29EDC7F70] | *MEMORY[0x29EDC7F60];
-    return v3;
+    accessibilityTraits |= *MEMORY[0x29EDC7F88] | *MEMORY[0x29EDC7F70] | *MEMORY[0x29EDC7F60];
+    return accessibilityTraits;
   }
 
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMonthsView])
   {
-    v4 = [(AXPhotosGroupAccessibilityElement *)self _axChapterHeadersInSubgroups];
-    v5 = [v4 count];
+    _axChapterHeadersInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axChapterHeadersInSubgroups];
+    v5 = [_axChapterHeadersInSubgroups count];
 
     if (!v5)
     {
-      v11 = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
-      v12 = [v11 count];
+      _axSectionHeadersInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
+      v12 = [_axSectionHeadersInSubgroups count];
 
       if (!v12)
       {
-        return v3;
+        return accessibilityTraits;
       }
 
       v9 = *MEMORY[0x29EDC7F88] | *MEMORY[0x29EDC7F70];
@@ -681,17 +681,17 @@ void __55__AXPhotosGroupAccessibilityElement_accessibilityValue__block_invoke(ui
 LABEL_12:
     v9 = *v6;
 LABEL_13:
-    v3 |= v9;
-    return v3;
+    accessibilityTraits |= v9;
+    return accessibilityTraits;
   }
 
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsStoryColorGradeEditorItem])
   {
-    v7 = [(AXPhotosGroupAccessibilityElement *)self _axStoryColorGradeLeafElement];
-    v8 = v7;
-    if (v7)
+    _axStoryColorGradeLeafElement = [(AXPhotosGroupAccessibilityElement *)self _axStoryColorGradeLeafElement];
+    v8 = _axStoryColorGradeLeafElement;
+    if (_axStoryColorGradeLeafElement)
     {
-      v3 |= [v7 accessibilityTraits];
+      accessibilityTraits |= [_axStoryColorGradeLeafElement accessibilityTraits];
     }
   }
 
@@ -705,7 +705,7 @@ LABEL_13:
 
     if ([(AXPhotosGroupAccessibilityElement *)self _axIsStoryLayout])
     {
-      v3 |= *MEMORY[0x29EDC7F88];
+      accessibilityTraits |= *MEMORY[0x29EDC7F88];
       if ([(AXPhotosGroupAccessibilityElement *)self _axIsFeedContentLayout])
       {
         v6 = MEMORY[0x29EDC7F70];
@@ -714,20 +714,20 @@ LABEL_13:
     }
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)automationElements
 {
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMonthsView])
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
-    v4 = [(AXPhotosGroupAccessibilityElement *)self _axMoreButtonInMonthsView];
-    v5 = [v4 accessibilityLabel];
-    v6 = v5;
-    if (v5 && [v5 length])
+    array = [MEMORY[0x29EDB8DE8] array];
+    _axMoreButtonInMonthsView = [(AXPhotosGroupAccessibilityElement *)self _axMoreButtonInMonthsView];
+    accessibilityLabel = [_axMoreButtonInMonthsView accessibilityLabel];
+    v6 = accessibilityLabel;
+    if (accessibilityLabel && [accessibilityLabel length])
     {
-      [v3 axSafelyAddObject:v4];
+      [array axSafelyAddObject:_axMoreButtonInMonthsView];
     }
   }
 
@@ -735,10 +735,10 @@ LABEL_13:
   {
     v8.receiver = self;
     v8.super_class = AXPhotosGroupAccessibilityElement;
-    v3 = [(AXPhotosGroupAccessibilityElement *)&v8 automationElements];
+    array = [(AXPhotosGroupAccessibilityElement *)&v8 automationElements];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)accessibilityCustomActions
@@ -750,26 +750,26 @@ LABEL_13:
     {
       v32.receiver = self;
       v32.super_class = AXPhotosGroupAccessibilityElement;
-      v31 = [(AXPhotosGroupAccessibilityElement *)&v32 accessibilityCustomActions];
+      accessibilityCustomActions = [(AXPhotosGroupAccessibilityElement *)&v32 accessibilityCustomActions];
       goto LABEL_31;
     }
 
-    v31 = [MEMORY[0x29EDB8DE8] array];
-    v4 = [(AXPhotosGroupAccessibilityElement *)self _axStoryThumbnailChromeLayoutInSubgroups];
-    if (![v4 count])
+    accessibilityCustomActions = [MEMORY[0x29EDB8DE8] array];
+    _axStoryThumbnailChromeLayoutInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axStoryThumbnailChromeLayoutInSubgroups];
+    if (![_axStoryThumbnailChromeLayoutInSubgroups count])
     {
       goto LABEL_29;
     }
 
-    v30 = v4;
-    v11 = [v4 firstObject];
-    v12 = [v11 _axLeafAccessibilityElements];
+    v30 = _axStoryThumbnailChromeLayoutInSubgroups;
+    firstObject = [_axStoryThumbnailChromeLayoutInSubgroups firstObject];
+    _axLeafAccessibilityElements = [firstObject _axLeafAccessibilityElements];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v13 = v12;
+    v13 = _axLeafAccessibilityElements;
     v14 = [v13 countByEnumeratingWithState:&v37 objects:v44 count:16];
     if (!v14)
     {
@@ -788,8 +788,8 @@ LABEL_14:
       }
 
       v18 = *(*(&v37 + 1) + 8 * v17);
-      v19 = [v18 leaf];
-      v20 = [v19 safeValueForKey:@"axView"];
+      leaf = [v18 leaf];
+      v20 = [leaf safeValueForKey:@"axView"];
 
       if ([(AXPhotosGroupAccessibilityElement *)self _axStoryChromeButtonClass])
       {
@@ -813,30 +813,30 @@ LABEL_21:
             v22 = objc_alloc(MEMORY[0x29EDC78E0]);
             if (v21)
             {
-              v23 = [v20 accessibilityLabel];
+              accessibilityLabel = [v20 accessibilityLabel];
               v35[0] = MEMORY[0x29EDCA5F8];
               v35[1] = 3221225472;
               v35[2] = __63__AXPhotosGroupAccessibilityElement_accessibilityCustomActions__block_invoke_2;
               v35[3] = &unk_29F2E5E30;
               v36[0] = v20;
               v36[1] = v18;
-              v24 = [v22 initWithName:v23 actionHandler:v35];
+              v24 = [v22 initWithName:accessibilityLabel actionHandler:v35];
 
-              [v31 addObject:v24];
+              [accessibilityCustomActions addObject:v24];
               v25 = v36;
             }
 
             else
             {
-              v26 = [v18 accessibilityLabel];
+              accessibilityLabel2 = [v18 accessibilityLabel];
               v33[0] = MEMORY[0x29EDCA5F8];
               v33[1] = 3221225472;
               v33[2] = __63__AXPhotosGroupAccessibilityElement_accessibilityCustomActions__block_invoke_3;
               v33[3] = &unk_29F2E5E58;
               v34 = v20;
-              v27 = [v22 initWithName:v26 actionHandler:v33];
+              v27 = [v22 initWithName:accessibilityLabel2 actionHandler:v33];
 
-              [v31 addObject:v27];
+              [accessibilityCustomActions addObject:v27];
               v25 = &v34;
             }
           }
@@ -850,7 +850,7 @@ LABEL_21:
         {
 LABEL_28:
 
-          v4 = v30;
+          _axStoryThumbnailChromeLayoutInSubgroups = v30;
           goto LABEL_29;
         }
 
@@ -859,13 +859,13 @@ LABEL_28:
     }
   }
 
-  v31 = [MEMORY[0x29EDB8DE8] array];
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _axMoreButtonInMonthsView];
-  v4 = v3;
-  if (v3)
+  accessibilityCustomActions = [MEMORY[0x29EDB8DE8] array];
+  _axMoreButtonInMonthsView = [(AXPhotosGroupAccessibilityElement *)self _axMoreButtonInMonthsView];
+  _axStoryThumbnailChromeLayoutInSubgroups = _axMoreButtonInMonthsView;
+  if (_axMoreButtonInMonthsView)
   {
-    v5 = [v3 leaf];
-    v6 = [v5 safeUIViewForKey:@"axView"];
+    leaf2 = [_axMoreButtonInMonthsView leaf];
+    v6 = [leaf2 safeUIViewForKey:@"axView"];
 
     if ([v6 _accessibilityViewIsVisible])
     {
@@ -882,16 +882,16 @@ LABEL_28:
         if (v7)
         {
           v8 = objc_alloc(MEMORY[0x29EDC78E0]);
-          v9 = [v6 accessibilityLabel];
+          accessibilityLabel3 = [v6 accessibilityLabel];
           v41[0] = MEMORY[0x29EDCA5F8];
           v41[1] = 3221225472;
           v41[2] = __63__AXPhotosGroupAccessibilityElement_accessibilityCustomActions__block_invoke;
           v41[3] = &unk_29F2E5E30;
           v42 = v6;
-          v43 = v4;
-          v10 = [v8 initWithName:v9 actionHandler:v41];
+          v43 = _axStoryThumbnailChromeLayoutInSubgroups;
+          v10 = [v8 initWithName:accessibilityLabel3 actionHandler:v41];
 
-          [v31 addObject:v10];
+          [accessibilityCustomActions addObject:v10];
         }
       }
     }
@@ -902,39 +902,39 @@ LABEL_29:
 LABEL_31:
   v28 = *MEMORY[0x29EDCA608];
 
-  return v31;
+  return accessibilityCustomActions;
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedGroupsAccessibilityElements];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axUnsortedGroupsAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedGroupsAccessibilityElements];
   v14[0] = MEMORY[0x29EDCA5F8];
   v14[1] = 3221225472;
   v14[2] = __58__AXPhotosGroupAccessibilityElement_accessibilityElements__block_invoke;
   v14[3] = &unk_29F2E5E80;
-  v5 = v3;
+  v5 = array;
   v15 = v5;
-  [v4 enumerateObjectsUsingBlock:v14];
-  v6 = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedLeafAccessibilityElements];
-  if ([v6 count])
+  [_axUnsortedGroupsAccessibilityElements enumerateObjectsUsingBlock:v14];
+  _axUnsortedLeafAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedLeafAccessibilityElements];
+  if ([_axUnsortedLeafAccessibilityElements count])
   {
-    [v5 axSafelyAddObjectsFromArray:v6];
+    [v5 axSafelyAddObjectsFromArray:_axUnsortedLeafAccessibilityElements];
   }
 
-  v7 = [(AXPhotosGroupAccessibilityElement *)self additionalScrollViewElements];
-  if (v7)
+  additionalScrollViewElements = [(AXPhotosGroupAccessibilityElement *)self additionalScrollViewElements];
+  if (additionalScrollViewElements)
   {
-    v8 = [(AXPhotosGroupAccessibilityElement *)self additionalScrollViewElements];
-    v9 = v8[2]();
+    additionalScrollViewElements2 = [(AXPhotosGroupAccessibilityElement *)self additionalScrollViewElements];
+    array2 = additionalScrollViewElements2[2]();
   }
 
   else
   {
-    v9 = [MEMORY[0x29EDB8D80] array];
+    array2 = [MEMORY[0x29EDB8D80] array];
   }
 
-  [v5 axSafelyAddObjectsFromArray:v9];
+  [v5 axSafelyAddObjectsFromArray:array2];
   v13[0] = MEMORY[0x29EDCA5F8];
   v13[1] = 3221225472;
   v13[2] = __58__AXPhotosGroupAccessibilityElement_accessibilityElements__block_invoke_2;
@@ -965,8 +965,8 @@ void __58__AXPhotosGroupAccessibilityElement_accessibilityElements__block_invoke
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
-  if (v11)
+  _accessibilityCuratedLibraryUIViewController = [(AXPhotosGroupAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
+  if (_accessibilityCuratedLibraryUIViewController)
   {
     v22.origin.x = x;
     v22.origin.y = y;
@@ -981,11 +981,11 @@ void __58__AXPhotosGroupAccessibilityElement_accessibilityElements__block_invoke
 
   else
   {
-    v12 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityFeedViewController];
-    v13 = v12;
-    if (v12)
+    _accessibilityFeedViewController = [(AXPhotosGroupAccessibilityElement *)self _accessibilityFeedViewController];
+    v13 = _accessibilityFeedViewController;
+    if (_accessibilityFeedViewController)
     {
-      v14 = [v12 safeValueForKeyPath:@"configuration.gadgetSpec"];
+      v14 = [_accessibilityFeedViewController safeValueForKeyPath:@"configuration.gadgetSpec"];
       [v14 safeCGFloatForKey:@"interItemSpacing"];
       if (v14)
       {
@@ -1026,20 +1026,20 @@ void __58__AXPhotosGroupAccessibilityElement_accessibilityElements__block_invoke
 {
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsStoryLayout]&& ([(AXPhotosGroupAccessibilityElement *)self _accessibilityFeedViewController], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(AXPhotosGroupAccessibilityElement *)self group];
-    v5 = [v4 safeValueForKey:@"axScrollParent"];
+    group = [(AXPhotosGroupAccessibilityElement *)self group];
+    v5 = [group safeValueForKey:@"axScrollParent"];
 
     v6 = [v5 safeValueForKey:@"axNextResponder"];
-    v7 = [(AXPhotosGroupAccessibilityElement *)self group];
-    v8 = [v6 axContainingScrollViewForAXGroup:v7];
+    group2 = [(AXPhotosGroupAccessibilityElement *)self group];
+    accessibilityContainer = [v6 axContainingScrollViewForAXGroup:group2];
   }
 
   else
   {
-    v8 = [(AXPhotosGroupAccessibilityElement *)self accessibilityContainer];
+    accessibilityContainer = [(AXPhotosGroupAccessibilityElement *)self accessibilityContainer];
   }
 
-  return v8;
+  return accessibilityContainer;
 }
 
 - (void)accessibilityIncrement
@@ -1072,25 +1072,25 @@ void __58__AXPhotosGroupAccessibilityElement_accessibilityElements__block_invoke
   }
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   if (![(AXPhotosGroupAccessibilityElement *)self _axIsMemoriesStyleSwitcherInStoryViewController])
   {
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (scroll == 2)
   {
     v5 = 5;
     goto LABEL_7;
   }
 
-  if (a3 != 1)
+  if (scroll != 1)
   {
 LABEL_5:
     v7.receiver = self;
     v7.super_class = AXPhotosGroupAccessibilityElement;
-    return [(AXPhotosGroupAccessibilityElement *)&v7 accessibilityScroll:a3];
+    return [(AXPhotosGroupAccessibilityElement *)&v7 accessibilityScroll:scroll];
   }
 
   v5 = 6;
@@ -1103,61 +1103,61 @@ LABEL_7:
 {
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
   {
-    v3 = accessibilityPhotosUICoreLocalizedString(@"years.adjustment.instructions");
+    accessibilityHint = accessibilityPhotosUICoreLocalizedString(@"years.adjustment.instructions");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = AXPhotosGroupAccessibilityElement;
-    v3 = [(AXPhotosGroupAccessibilityElement *)&v5 accessibilityHint];
+    accessibilityHint = [(AXPhotosGroupAccessibilityElement *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMemoriesStyleSwitcherInStoryViewController])
   {
-    v3 = [(AXPhotosGroupAccessibilityElement *)self _axLeafAccessibilityElements];
-    v4 = [v3 mutableCopy];
+    _axLeafAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axLeafAccessibilityElements];
+    _accessibilitySupplementaryFooterViews = [_axLeafAccessibilityElements mutableCopy];
 
-    [v4 sortUsingSelector:sel_accessibilityCompareGeometry_];
+    [_accessibilitySupplementaryFooterViews sortUsingSelector:sel_accessibilityCompareGeometry_];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = AXPhotosGroupAccessibilityElement;
-    v4 = [(AXPhotosGroupAccessibilityElement *)&v6 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(AXPhotosGroupAccessibilityElement *)&v6 _accessibilitySupplementaryFooterViews];
   }
 
-  return v4;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 - (void)_updateGroupAccessibilityElements
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
-  v4 = [(AXPhotosGroupAccessibilityElement *)self group];
-  v5 = [v4 safeArrayForKey:@"axSubgroups"];
+  _axCachedSubgroupElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
+  group = [(AXPhotosGroupAccessibilityElement *)self group];
+  v5 = [group safeArrayForKey:@"axSubgroups"];
 
   if ([v5 count])
   {
-    if (!v3)
+    if (!_axCachedSubgroupElements)
     {
-      v3 = [MEMORY[0x29EDB8E00] dictionary];
+      _axCachedSubgroupElements = [MEMORY[0x29EDB8E00] dictionary];
     }
 
     v6 = MEMORY[0x29EDCA5F8];
     v7 = 3221225472;
     v8 = __70__AXPhotosGroupAccessibilityElement__updateGroupAccessibilityElements__block_invoke;
     v9 = &unk_29F2E5ED0;
-    v3 = v3;
-    v10 = v3;
-    v11 = self;
+    _axCachedSubgroupElements = _axCachedSubgroupElements;
+    v10 = _axCachedSubgroupElements;
+    selfCopy = self;
     [v5 enumerateObjectsUsingBlock:&v6];
-    [(AXPhotosGroupAccessibilityElement *)self _setAxCachedSubgroupElements:v3, v6, v7, v8, v9];
+    [(AXPhotosGroupAccessibilityElement *)self _setAxCachedSubgroupElements:_axCachedSubgroupElements, v6, v7, v8, v9];
   }
 
   else
@@ -1192,23 +1192,23 @@ void __70__AXPhotosGroupAccessibilityElement__updateGroupAccessibilityElements__
 
 - (void)_cleanupStaleGroupAccessibilityElements
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
-  if (v3)
+  _axCachedSubgroupElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
+  if (_axCachedSubgroupElements)
   {
     v11 = 0;
     objc_opt_class();
-    v4 = [(AXPhotosGroupAccessibilityElement *)self group];
-    v5 = [v4 safeValueForKey:@"loadedSubgroupIndexes"];
+    group = [(AXPhotosGroupAccessibilityElement *)self group];
+    v5 = [group safeValueForKey:@"loadedSubgroupIndexes"];
     v6 = __UIAccessibilityCastAsClass();
 
-    v7 = [v3 allKeys];
-    v8 = [(AXPhotosGroupAccessibilityElement *)self _axFilterStaleKeys:v7 usingIndexSet:v6];
+    allKeys = [_axCachedSubgroupElements allKeys];
+    v8 = [(AXPhotosGroupAccessibilityElement *)self _axFilterStaleKeys:allKeys usingIndexSet:v6];
 
     v9[0] = MEMORY[0x29EDCA5F8];
     v9[1] = 3221225472;
     v9[2] = __76__AXPhotosGroupAccessibilityElement__cleanupStaleGroupAccessibilityElements__block_invoke;
     v9[3] = &unk_29F2E5EF8;
-    v10 = v3;
+    v10 = _axCachedSubgroupElements;
     [v8 enumerateIndexesUsingBlock:v9];
   }
 }
@@ -1222,43 +1222,43 @@ void __76__AXPhotosGroupAccessibilityElement__cleanupStaleGroupAccessibilityElem
 
 - (id)_axUnsortedGroupsAccessibilityElements
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
-  if (!v3)
+  _axCachedSubgroupElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
+  if (!_axCachedSubgroupElements)
   {
     [(AXPhotosGroupAccessibilityElement *)self _updateGroupAccessibilityElements];
-    v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
+    _axCachedSubgroupElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedSubgroupElements];
   }
 
-  v4 = [v3 allValues];
+  allValues = [_axCachedSubgroupElements allValues];
 
-  return v4;
+  return allValues;
 }
 
 - (id)_axGroupsAccessibilityElements
 {
   v8[1] = *MEMORY[0x29EDCA608];
-  v2 = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedGroupsAccessibilityElements];
+  _axUnsortedGroupsAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedGroupsAccessibilityElements];
   v3 = [MEMORY[0x29EDBA0F0] sortDescriptorWithKey:@"group.subgroupIndex" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [_axUnsortedGroupsAccessibilityElements sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x29EDCA608];
 
   return v5;
 }
 
-- (id)_axFilterSubgroupsByInfoSourceType:(id)a3
+- (id)_axFilterSubgroupsByInfoSourceType:(id)type
 {
-  v4 = a3;
-  v5 = [(AXPhotosGroupAccessibilityElement *)self _axGroupsAccessibilityElements];
+  typeCopy = type;
+  _axGroupsAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axGroupsAccessibilityElements];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __72__AXPhotosGroupAccessibilityElement__axFilterSubgroupsByInfoSourceType___block_invoke;
   v9[3] = &unk_29F2E5F20;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 axFilterObjectsUsingBlock:v9];
+  v10 = typeCopy;
+  v6 = typeCopy;
+  v7 = [_axGroupsAccessibilityElements axFilterObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -1320,11 +1320,11 @@ LABEL_18:
 
 - (id)_axCardSectionBodyInSubgroups
 {
-  v2 = [(AXPhotosGroupAccessibilityElement *)self _axDecoratingInSubgroups];
-  if ([v2 count])
+  _axDecoratingInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axDecoratingInSubgroups];
+  if ([_axDecoratingInSubgroups count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 _axFilterSubgroupsByInfoSourceType:@"AXPhotosGridCardSectionBody"];
+    firstObject = [_axDecoratingInSubgroups firstObject];
+    v4 = [firstObject _axFilterSubgroupsByInfoSourceType:@"AXPhotosGridCardSectionBody"];
   }
 
   else
@@ -1335,10 +1335,10 @@ LABEL_18:
   return v4;
 }
 
-- (id)_axUniqueIdentifierForLeaf:(id)a3
+- (id)_axUniqueIdentifierForLeaf:(id)leaf
 {
-  v3 = a3;
-  v4 = [v3 safeIntegerForKey:@"axContentKind"];
+  leafCopy = leaf;
+  v4 = [leafCopy safeIntegerForKey:@"axContentKind"];
   v5 = 0;
   if (v4 > 3)
   {
@@ -1355,7 +1355,7 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v7 = [v3 safeValueForKey:@"axAsset"];
+      v7 = [leafCopy safeValueForKey:@"axAsset"];
       v8 = [v7 safeValueForKey:@"localIdentifier"];
       if (!v8)
       {
@@ -1373,7 +1373,7 @@ LABEL_18:
     }
 
     v10 = MEMORY[0x29EDBA0F8];
-    v7 = [v3 safeValueForKey:@"axView"];
+    v7 = [leafCopy safeValueForKey:@"axView"];
     v9 = [v10 stringWithFormat:@"%p", v7];
 LABEL_16:
     v5 = __UIAXStringForVariables();
@@ -1388,14 +1388,14 @@ LABEL_16:
       goto LABEL_18;
     }
 
-    v7 = [v3 safeValueForKey:@"axTitle"];
-    v9 = [v3 safeValueForKey:@"axSubtitle"];
+    v7 = [leafCopy safeValueForKey:@"axTitle"];
+    v9 = [leafCopy safeValueForKey:@"axSubtitle"];
     goto LABEL_16;
   }
 
   v6 = @"axText";
 LABEL_13:
-  v7 = [v3 safeValueForKey:v6];
+  v7 = [leafCopy safeValueForKey:v6];
   v8 = __UIAXStringForVariables();
 LABEL_14:
   v5 = v8;
@@ -1408,10 +1408,10 @@ LABEL_18:
 
 - (void)_updateLeafAccessibilityElementsIfNeeded
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
-  v4 = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafSpriteIndexes];
-  v5 = [(AXPhotosGroupAccessibilityElement *)self group];
-  v6 = [v5 safeArrayForKey:@"axLeafs"];
+  _axCachedLeafElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
+  _axCachedLeafSpriteIndexes = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafSpriteIndexes];
+  group = [(AXPhotosGroupAccessibilityElement *)self group];
+  v6 = [group safeArrayForKey:@"axLeafs"];
 
   if (![v6 count])
   {
@@ -1419,9 +1419,9 @@ LABEL_18:
     goto LABEL_11;
   }
 
-  if (v3)
+  if (_axCachedLeafElements)
   {
-    if (v4)
+    if (_axCachedLeafSpriteIndexes)
     {
       goto LABEL_4;
     }
@@ -1429,37 +1429,37 @@ LABEL_18:
 
   else
   {
-    v3 = [MEMORY[0x29EDB8E00] dictionary];
-    if (v4)
+    _axCachedLeafElements = [MEMORY[0x29EDB8E00] dictionary];
+    if (_axCachedLeafSpriteIndexes)
     {
       goto LABEL_4;
     }
   }
 
-  v4 = [MEMORY[0x29EDBA048] indexSet];
+  _axCachedLeafSpriteIndexes = [MEMORY[0x29EDBA048] indexSet];
 LABEL_4:
-  v7 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
-  v8 = [v7 safeValueForKey:@"viewProvider"];
+  _accessibilityCuratedLibraryUIViewController = [(AXPhotosGroupAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
+  v8 = [_accessibilityCuratedLibraryUIViewController safeValueForKey:@"viewProvider"];
   v9 = [v8 safeValueForKey:@"viewModel"];
   v10 = [v9 safeValueForKey:@"zoomablePhotosViewModel"];
   v11 = [v10 safeBoolForKey:@"isDisplayingIndividualItems"];
 
-  if (!v7 || v11)
+  if (!_accessibilityCuratedLibraryUIViewController || v11)
   {
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x29EDCA5F8];
     v16[1] = 3221225472;
     v16[2] = __77__AXPhotosGroupAccessibilityElement__updateLeafAccessibilityElementsIfNeeded__block_invoke;
     v16[3] = &unk_29F2E5F48;
-    v17 = v4;
+    v17 = _axCachedLeafSpriteIndexes;
     objc_copyWeak(&v20, &location);
-    v18 = self;
-    v12 = v3;
+    selfCopy = self;
+    v12 = _axCachedLeafElements;
     v19 = v12;
     [v6 enumerateObjectsUsingBlock:v16];
     objc_opt_class();
-    v13 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
-    v14 = [v13 safeValueForKey:@"axVisibleSpriteIndexes"];
+    _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+    v14 = [_accessibilityInfoSource safeValueForKey:@"axVisibleSpriteIndexes"];
     v15 = __UIAccessibilityCastAsClass();
 
     if ([v15 count])
@@ -1488,22 +1488,22 @@ void __77__AXPhotosGroupAccessibilityElement__updateLeafAccessibilityElementsIfN
   }
 }
 
-- (void)_updateLeafAccessibilityElements:(id)a3 forVisibleSpriteIndexes:(id)a4
+- (void)_updateLeafAccessibilityElements:(id)elements forVisibleSpriteIndexes:(id)indexes
 {
-  v6 = a3;
+  elementsCopy = elements;
   v7 = MEMORY[0x29EDB8E20];
-  v8 = a4;
+  indexesCopy = indexes;
   v9 = [v7 set];
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
   v12[2] = __94__AXPhotosGroupAccessibilityElement__updateLeafAccessibilityElements_forVisibleSpriteIndexes___block_invoke;
   v12[3] = &unk_29F2E5F98;
   v12[4] = self;
-  v13 = v6;
+  v13 = elementsCopy;
   v14 = v9;
   v10 = v9;
-  v11 = v6;
-  [v8 enumerateIndexesUsingBlock:v12];
+  v11 = elementsCopy;
+  [indexesCopy enumerateIndexesUsingBlock:v12];
 
   [(AXPhotosGroupAccessibilityElement *)self _axUnloadStaleLeafObjects];
   [(AXPhotosGroupAccessibilityElement *)self _axCleanupAccessibilityElements:v11 withUpdatedKeys:v10];
@@ -1596,11 +1596,11 @@ void __94__AXPhotosGroupAccessibilityElement__updateLeafAccessibilityElements_fo
 
 - (void)_axUnloadStaleLeafObjects
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafSpriteIndexes];
+  _axCachedLeafSpriteIndexes = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafSpriteIndexes];
   v12 = 0;
   objc_opt_class();
-  v4 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
-  v5 = [v4 safeValueForKey:@"axVisibleSpriteIndexes"];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  v5 = [_accessibilityInfoSource safeValueForKey:@"axVisibleSpriteIndexes"];
   v6 = __UIAccessibilityCastAsClass();
 
   v9[0] = MEMORY[0x29EDCA5F8];
@@ -1608,9 +1608,9 @@ void __94__AXPhotosGroupAccessibilityElement__updateLeafAccessibilityElements_fo
   v9[2] = __62__AXPhotosGroupAccessibilityElement__axUnloadStaleLeafObjects__block_invoke;
   v9[3] = &unk_29F2E5FE8;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v7 = v6;
-  [v3 enumerateIndexesUsingBlock:v9];
+  [_axCachedLeafSpriteIndexes enumerateIndexesUsingBlock:v9];
   v8 = [v7 mutableCopy];
   [(AXPhotosGroupAccessibilityElement *)self _setAxCachedLeafSpriteIndexes:v8];
 }
@@ -1633,65 +1633,65 @@ void __62__AXPhotosGroupAccessibilityElement__axUnloadStaleLeafObjects__block_in
   [v2 unloadLeafAtSpriteIndex:*(a1 + 40) usingOptions:3];
 }
 
-- (void)_axCleanupAccessibilityElements:(id)a3 withUpdatedKeys:(id)a4
+- (void)_axCleanupAccessibilityElements:(id)elements withUpdatedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  elementsCopy = elements;
+  keysCopy = keys;
+  if ([elementsCopy count])
   {
     v8 = MEMORY[0x29EDB8E20];
-    v9 = [v6 allKeys];
-    v10 = [v8 setWithArray:v9];
+    allKeys = [elementsCopy allKeys];
+    v10 = [v8 setWithArray:allKeys];
 
-    [v10 minusSet:v7];
+    [v10 minusSet:keysCopy];
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
     v11[2] = __85__AXPhotosGroupAccessibilityElement__axCleanupAccessibilityElements_withUpdatedKeys___block_invoke;
     v11[3] = &unk_29F2E6010;
-    v12 = v6;
+    v12 = elementsCopy;
     [v10 enumerateObjectsUsingBlock:v11];
   }
 
-  [(AXPhotosGroupAccessibilityElement *)self _setAxCachedLeafElements:v6];
+  [(AXPhotosGroupAccessibilityElement *)self _setAxCachedLeafElements:elementsCopy];
 }
 
 - (id)_axUnsortedLeafAccessibilityElements
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
-  if (!v3)
+  _axCachedLeafElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
+  if (!_axCachedLeafElements)
   {
     [(AXPhotosGroupAccessibilityElement *)self _updateLeafAccessibilityElementsIfNeeded];
-    v3 = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
+    _axCachedLeafElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
   }
 
-  v4 = [v3 allValues];
+  allValues = [_axCachedLeafElements allValues];
 
-  return v4;
+  return allValues;
 }
 
 - (id)_axLeafAccessibilityElements
 {
   v8[1] = *MEMORY[0x29EDCA608];
-  v2 = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedLeafAccessibilityElements];
+  _axUnsortedLeafAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axUnsortedLeafAccessibilityElements];
   v3 = [MEMORY[0x29EDBA0F0] sortDescriptorWithKey:@"leaf.spriteIndex" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [_axUnsortedLeafAccessibilityElements sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x29EDCA608];
 
   return v5;
 }
 
-- (id)_axFilterLeafsByContentKind:(int64_t)a3
+- (id)_axFilterLeafsByContentKind:(int64_t)kind
 {
-  v4 = [(AXPhotosGroupAccessibilityElement *)self _axLeafAccessibilityElements];
+  _axLeafAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axLeafAccessibilityElements];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __65__AXPhotosGroupAccessibilityElement__axFilterLeafsByContentKind___block_invoke;
   v7[3] = &__block_descriptor_40_e45_B24__0__AXPhotosLeafAccessibilityElement_8Q16l;
-  v7[4] = a3;
-  v5 = [v4 axFilterObjectsUsingBlock:v7];
+  v7[4] = kind;
+  v5 = [_axLeafAccessibilityElements axFilterObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1704,17 +1704,17 @@ BOOL __65__AXPhotosGroupAccessibilityElement__axFilterLeafsByContentKind___block
   return v4 == *(a1 + 32);
 }
 
-- (void)_axContainingGroup:(id)a3 performedAction:(int64_t)a4 withUserInfo:(id)a5
+- (void)_axContainingGroup:(id)group performedAction:(int64_t)action withUserInfo:(id)info
 {
-  v7 = a3;
-  v8 = a5;
+  groupCopy = group;
+  infoCopy = info;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
   v16 = 0;
   v12 = MEMORY[0x29EDCA5F8];
-  v13 = v7;
-  v14 = v8;
+  v13 = groupCopy;
+  v14 = infoCopy;
   AXPerformSafeBlock();
 
   _Block_object_dispose(v15, 8);
@@ -1730,25 +1730,25 @@ void __85__AXPhotosGroupAccessibilityElement__axContainingGroup_performedAction_
   *(*(*(a1 + 48) + 8) + 24) = [v2 axGroup:*(a1 + 32) didRequestToPerformAction:*(a1 + 56) userInfo:*(a1 + 40)];
 }
 
-- (void)_axShouldShowAlternateUI:(BOOL)a3
+- (void)_axShouldShowAlternateUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
   {
-    v5 = [(AXPhotosGroupAccessibilityElement *)self _axCardSectionBodyInSubgroups];
-    if ([v5 count])
+    _axCardSectionBodyInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axCardSectionBodyInSubgroups];
+    if ([_axCardSectionBodyInSubgroups count])
     {
-      v6 = [v5 firstObject];
-      v7 = [v6 group];
-      v8 = [v7 safeArrayForKey:@"axLeafs"];
+      firstObject = [_axCardSectionBodyInSubgroups firstObject];
+      group = [firstObject group];
+      v8 = [group safeArrayForKey:@"axLeafs"];
 
       if ([v8 count])
       {
-        v9 = [v8 firstObject];
-        if (v9)
+        firstObject2 = [v8 firstObject];
+        if (firstObject2)
         {
-          v10 = v9;
-          v11 = [v9 safeValueForKey:@"axContainingGroup"];
+          v10 = firstObject2;
+          v11 = [firstObject2 safeValueForKey:@"axContainingGroup"];
           if (v11)
           {
             v16 = 0;
@@ -1763,7 +1763,7 @@ void __85__AXPhotosGroupAccessibilityElement__axContainingGroup_performedAction_
             v12 = v17[5];
 
             _Block_object_dispose(&v16, 8);
-            if (v3)
+            if (iCopy)
             {
               v13 = 2;
             }
@@ -1795,36 +1795,36 @@ void __62__AXPhotosGroupAccessibilityElement__axShouldShowAlternateUI___block_in
 {
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsMonthsView])
   {
-    v3 = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
-    if ([v3 count])
+    _axSectionHeadersInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axSectionHeadersInSubgroups];
+    if ([_axSectionHeadersInSubgroups count])
     {
-      v4 = [v3 firstObject];
-      v5 = [v4 _axLeafAccessibilityElements];
+      firstObject = [_axSectionHeadersInSubgroups firstObject];
+      _axLeafAccessibilityElements = [firstObject _axLeafAccessibilityElements];
 
-      v6 = [v5 axFilterObjectsUsingBlock:&__block_literal_global];
+      v6 = [_axLeafAccessibilityElements axFilterObjectsUsingBlock:&__block_literal_global];
       if ([v6 count])
       {
-        v7 = [v6 firstObject];
+        firstObject2 = [v6 firstObject];
       }
 
       else
       {
-        v7 = 0;
+        firstObject2 = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      firstObject2 = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    firstObject2 = 0;
   }
 
-  return v7;
+  return firstObject2;
 }
 
 BOOL __62__AXPhotosGroupAccessibilityElement__axMoreButtonInMonthsView__block_invoke(uint64_t a1, void *a2)
@@ -1835,29 +1835,29 @@ BOOL __62__AXPhotosGroupAccessibilityElement__axMoreButtonInMonthsView__block_in
   return v3;
 }
 
-- (void)_axMoveToNextInfoInDirection:(unint64_t)a3
+- (void)_axMoveToNextInfoInDirection:(unint64_t)direction
 {
   if ([(AXPhotosGroupAccessibilityElement *)self _axIsYearsView])
   {
-    v4 = [(AXPhotosGroupAccessibilityElement *)self _axCardSectionBodyInSubgroups];
-    if ([v4 count])
+    _axCardSectionBodyInSubgroups = [(AXPhotosGroupAccessibilityElement *)self _axCardSectionBodyInSubgroups];
+    if ([_axCardSectionBodyInSubgroups count])
     {
-      v5 = [v4 firstObject];
-      v6 = [v5 _axLeafAccessibilityElements];
-      if ([v6 count])
+      firstObject = [_axCardSectionBodyInSubgroups firstObject];
+      _axLeafAccessibilityElements = [firstObject _axLeafAccessibilityElements];
+      if ([_axLeafAccessibilityElements count])
       {
-        v7 = [v6 firstObject];
-        if (v7)
+        firstObject2 = [_axLeafAccessibilityElements firstObject];
+        if (firstObject2)
         {
-          v8 = v7;
-          v9 = [v7 leaf];
-          v10 = [v9 safeValueForKey:@"axContainingGroup"];
+          v8 = firstObject2;
+          leaf = [firstObject2 leaf];
+          v10 = [leaf safeValueForKey:@"axContainingGroup"];
 
           if (v10)
           {
             v24 = [v10 safeValueForKey:@"axInfoSource"];
-            v11 = [v8 leaf];
-            [v11 safeUnsignedIntForKey:@"spriteIndex"];
+            leaf2 = [v8 leaf];
+            [leaf2 safeUnsignedIntForKey:@"spriteIndex"];
 
             v29 = 0;
             v30 = &v29;
@@ -1884,9 +1884,9 @@ BOOL __62__AXPhotosGroupAccessibilityElement__axMoreButtonInMonthsView__block_in
             if (v12 == -1)
             {
               UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDA40]);
-              v20 = self;
+              selfCopy = self;
               v19 = v23;
-              [(AXPhotosGroupAccessibilityElement *)v20 _axContainingGroup:v10 performedAction:3 withUserInfo:v23];
+              [(AXPhotosGroupAccessibilityElement *)selfCopy _axContainingGroup:v10 performedAction:3 withUserInfo:v23];
             }
 
             else
@@ -1928,12 +1928,12 @@ BOOL __62__AXPhotosGroupAccessibilityElement__axMoreButtonInMonthsView__block_in
 
                 _Block_object_dispose(&v29, 8);
                 [(AXPhotosGroupAccessibilityElement *)self _axContainingGroup:v14 performedAction:4 withUserInfo:v16];
-                v17 = [(AXPhotosGroupAccessibilityElement *)self accessibilityValue];
-                v21 = [(AXPhotosGroupAccessibilityElement *)self accessibilityLabel];
+                accessibilityValue = [(AXPhotosGroupAccessibilityElement *)self accessibilityValue];
+                accessibilityLabel = [(AXPhotosGroupAccessibilityElement *)self accessibilityLabel];
                 v18 = __UIAXStringForVariables();
 
                 UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v18);
-                [(AXPhotosGroupAccessibilityElement *)self _axContainingGroup:v14 performedAction:3 withUserInfo:v16, v21, @"__AXStringForVariablesSentinel"];
+                [(AXPhotosGroupAccessibilityElement *)self _axContainingGroup:v14 performedAction:3 withUserInfo:v16, accessibilityLabel, @"__AXStringForVariablesSentinel"];
 
                 v15 = v22;
               }
@@ -1995,8 +1995,8 @@ void __66__AXPhotosGroupAccessibilityElement__axMoveToNextInfoInDirection___bloc
 
 - (id)_axCurrentLeafInStory
 {
-  v2 = [(AXPhotosGroupAccessibilityElement *)self group];
-  v3 = [v2 safeArrayForKey:@"axLeafs"];
+  group = [(AXPhotosGroupAccessibilityElement *)self group];
+  v3 = [group safeArrayForKey:@"axLeafs"];
 
   v4 = [v3 axFilterObjectsUsingBlock:&__block_literal_global_933];
   if ([v4 count])
@@ -2012,19 +2012,19 @@ void __66__AXPhotosGroupAccessibilityElement__axMoveToNextInfoInDirection___bloc
   return v5;
 }
 
-- (void)_axMoveStoryForInfoSource:(id)a3 inDirection:(unint64_t)a4
+- (void)_axMoveStoryForInfoSource:(id)source inDirection:(unint64_t)direction
 {
-  v6 = a3;
-  v7 = [(AXPhotosGroupAccessibilityElement *)self _axCurrentLeafInStory];
-  if (v7)
+  sourceCopy = source;
+  _axCurrentLeafInStory = [(AXPhotosGroupAccessibilityElement *)self _axCurrentLeafInStory];
+  if (_axCurrentLeafInStory)
   {
-    v8 = [(AXPhotosGroupAccessibilityElement *)self group];
-    v9 = [v8 safeValueForKey:@"axInfoSource"];
+    group = [(AXPhotosGroupAccessibilityElement *)self group];
+    v9 = [group safeValueForKey:@"axInfoSource"];
 
-    MEMORY[0x29C2E6930](v6);
+    MEMORY[0x29C2E6930](sourceCopy);
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 safeUnsignedIntForKey:@"spriteIndex"];
+      v10 = [_axCurrentLeafInStory safeUnsignedIntForKey:@"spriteIndex"];
       v19 = 0;
       v20 = &v19;
       v21 = 0x2020000000;
@@ -2037,7 +2037,7 @@ void __66__AXPhotosGroupAccessibilityElement__axMoveToNextInfoInDirection___bloc
       v11 = v9;
       v32 = v10;
       v29 = v11;
-      v31 = a4;
+      directionCopy = direction;
       AXPerformSafeBlock();
       v12 = *(v20 + 6);
 
@@ -2126,32 +2126,32 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
   *(v5 + 40) = v4;
 }
 
-- (void)_axRefreshGridGroupData:(id)a3
+- (void)_axRefreshGridGroupData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 valueForKey:@"AXPhotosGridUpdateKey"];
-  v7 = [v6 integerValue];
+  dataCopy = data;
+  userInfo = [dataCopy userInfo];
+  v6 = [userInfo valueForKey:@"AXPhotosGridUpdateKey"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 valueForKey:@"AXPhotosGridGroupKey"];
+  userInfo2 = [dataCopy userInfo];
+  v9 = [userInfo2 valueForKey:@"AXPhotosGridGroupKey"];
 
-  if (v7 == 8)
+  if (integerValue == 8)
   {
-    v10 = [(AXPhotosGroupAccessibilityElement *)self group];
+    group = [(AXPhotosGroupAccessibilityElement *)self group];
 
-    if (v9 == v10)
+    if (v9 == group)
     {
       [(AXPhotosGroupAccessibilityElement *)self _updateGroupAccessibilityElements];
       objc_opt_class();
-      v11 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
-      v12 = [v11 safeValueForKey:@"axVisibleSpriteIndexes"];
+      _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+      v12 = [_accessibilityInfoSource safeValueForKey:@"axVisibleSpriteIndexes"];
       v13 = __UIAccessibilityCastAsClass();
 
       if ([v13 count])
       {
-        v14 = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
-        v15 = [v14 mutableCopy];
+        _axCachedLeafElements = [(AXPhotosGroupAccessibilityElement *)self _axCachedLeafElements];
+        v15 = [_axCachedLeafElements mutableCopy];
 
         [(AXPhotosGroupAccessibilityElement *)self _updateLeafAccessibilityElements:v15 forVisibleSpriteIndexes:v13];
       }
@@ -2163,8 +2163,8 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
 
 - (id)_accessibilityInfoSource
 {
-  v2 = [(AXPhotosGroupAccessibilityElement *)self group];
-  v3 = [v2 safeValueForKey:@"_axInfoSource"];
+  group = [(AXPhotosGroupAccessibilityElement *)self group];
+  v3 = [group safeValueForKey:@"_axInfoSource"];
 
   return v3;
 }
@@ -2176,7 +2176,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxAssetsSectionLayoutClass:MEMORY[0x29C2E6930](@"PXAssetsSectionLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axAssetsSectionLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2190,7 +2190,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxCuratedLibraryChapterHeaderLayoutClass:MEMORY[0x29C2E6930](@"PXCuratedLibraryChapterHeaderLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axCuratedLibraryChapterHeaderLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2204,7 +2204,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxCuratedLibrarySectionHeaderLayoutClass:MEMORY[0x29C2E6930](@"PXCuratedLibrarySectionHeaderLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axCuratedLibrarySectionHeaderLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2218,7 +2218,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxDecoratingLayoutClass:MEMORY[0x29C2E6930](@"PXGDecoratingLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axDecoratingLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2232,7 +2232,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxCuratedLibraryCardSectionBodyLayoutClass:MEMORY[0x29C2E6930](@"PXCuratedLibraryCardSectionBodyLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axCuratedLibraryCardSectionBodyLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2246,7 +2246,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxInlineHeadersSpriteLayoutClass:MEMORY[0x29C2E6930](@"PXInlineHeadersSpriteLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axInlineHeadersSpriteLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2260,7 +2260,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxGridLayoutClass:MEMORY[0x29C2E6930](@"PXGGridLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axGridLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2274,7 +2274,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryColorGradeEditorItemLayoutClass:MEMORY[0x29C2E6930](@"PhotosUIApps.PUStoryColorGradeEditorItemLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryColorGradeEditorItemLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2288,7 +2288,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryColorGradeEditorItemOverlayLayoutClass:MEMORY[0x29C2E6930](@"PUStoryColorGradeEditorItemOverlayLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryColorGradeEditorItemOverlayLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2302,7 +2302,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryLayoutClass:MEMORY[0x29C2E6930](@"PXStoryLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2316,7 +2316,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryThumbnailChromeLayoutClass:MEMORY[0x29C2E6930](@"PXStoryThumbnailChromeLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryThumbnailChromeLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2330,7 +2330,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryFullsizeLayoutClass:MEMORY[0x29C2E6930](@"PXStoryFullsizeLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryFullsizeLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2344,7 +2344,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryClipLayoutClass:MEMORY[0x29C2E6930](@"PXStoryClipLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryClipLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2358,7 +2358,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryTransitionLayoutClass:MEMORY[0x29C2E6930](@"PXStoryTransitionLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryTransitionLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2372,7 +2372,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxFeedContentLayoutClass:MEMORY[0x29C2E6930](@"PXFeedContentLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axFeedContentLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2386,7 +2386,7 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryScrubberContentLayoutClass:MEMORY[0x29C2E6930](@"PXStoryScrubberContentLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryScrubberContentLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2400,45 +2400,45 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     [(AXPhotosGroupAccessibilityElement *)self _setAxStoryStyleSwitchingFullsizeLayoutClass:MEMORY[0x29C2E6930](@"PXStoryStyleSwitchingFullsizeLayout")];
   }
 
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
   [(AXPhotosGroupAccessibilityElement *)self _axStoryStyleSwitchingFullsizeLayoutClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)_axInZoomLevel:(int64_t)a3
+- (BOOL)_axInZoomLevel:(int64_t)level
 {
   if (![(AXPhotosGroupAccessibilityElement *)self _axIsAssetSection])
   {
     return 0;
   }
 
-  v5 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
-  v6 = [v5 safeIntegerForKey:@"zoomLevel"] == a3;
+  _accessibilityInfoSource = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInfoSource];
+  v6 = [_accessibilityInfoSource safeIntegerForKey:@"zoomLevel"] == level;
 
   return v6;
 }
 
 - (id)_axStoryColorGradeLeafElement
 {
-  v2 = [(AXPhotosGroupAccessibilityElement *)self _axGroupsAccessibilityElements];
-  v3 = [v2 axFilterObjectsUsingBlock:&__block_literal_global_945];
+  _axGroupsAccessibilityElements = [(AXPhotosGroupAccessibilityElement *)self _axGroupsAccessibilityElements];
+  v3 = [_axGroupsAccessibilityElements axFilterObjectsUsingBlock:&__block_literal_global_945];
   if ([v3 count])
   {
-    v4 = [v3 firstObject];
-    v5 = v4;
-    if (v4)
+    firstObject = [v3 firstObject];
+    v5 = firstObject;
+    if (firstObject)
     {
-      v6 = [v4 _axLeafAccessibilityElements];
-      if ([v6 count])
+      _axLeafAccessibilityElements = [firstObject _axLeafAccessibilityElements];
+      if ([_axLeafAccessibilityElements count])
       {
-        v7 = [v6 firstObject];
+        firstObject2 = [_axLeafAccessibilityElements firstObject];
       }
 
       else
       {
-        v7 = 0;
+        firstObject2 = 0;
       }
 
       goto LABEL_9;
@@ -2450,10 +2450,10 @@ void __75__AXPhotosGroupAccessibilityElement__axMoveStoryForInfoSource_inDirecti
     v5 = 0;
   }
 
-  v7 = 0;
+  firstObject2 = 0;
 LABEL_9:
 
-  return v7;
+  return firstObject2;
 }
 
 - (id)_accessibilityCuratedLibraryUIViewController
@@ -2471,15 +2471,15 @@ LABEL_9:
     v6[3] = &unk_29F2E6158;
     v6[4] = self;
     v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityFindAncestor:v6 startWithSelf:1];
-    v4 = [v3 _accessibilityViewController];
+    _accessibilityViewController = [v3 _accessibilityViewController];
   }
 
   else
   {
-    v4 = 0;
+    _accessibilityViewController = 0;
   }
 
-  return v4;
+  return _accessibilityViewController;
 }
 
 uint64_t __81__AXPhotosGroupAccessibilityElement__accessibilityCuratedLibraryUIViewController__block_invoke(uint64_t a1, void *a2)
@@ -2506,15 +2506,15 @@ uint64_t __81__AXPhotosGroupAccessibilityElement__accessibilityCuratedLibraryUIV
     v6[3] = &unk_29F2E6158;
     v6[4] = self;
     v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityFindAncestor:v6 startWithSelf:1];
-    v4 = [v3 _accessibilityViewController];
+    _accessibilityViewController = [v3 _accessibilityViewController];
   }
 
   else
   {
-    v4 = 0;
+    _accessibilityViewController = 0;
   }
 
-  return v4;
+  return _accessibilityViewController;
 }
 
 uint64_t __69__AXPhotosGroupAccessibilityElement__accessibilityFeedViewController__block_invoke(uint64_t a1, void *a2)
@@ -2544,8 +2544,8 @@ uint64_t __69__AXPhotosGroupAccessibilityElement__accessibilityFeedViewControlle
   v7[3] = &unk_29F2E6158;
   v7[4] = self;
   v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityFindAncestor:v7 startWithSelf:1];
-  v4 = [v3 _accessibilityViewController];
-  v5 = v4 != 0;
+  _accessibilityViewController = [v3 _accessibilityViewController];
+  v5 = _accessibilityViewController != 0;
 
   return v5;
 }
@@ -2561,39 +2561,39 @@ uint64_t __72__AXPhotosGroupAccessibilityElement__accessibilityInStoryViewContro
 
 - (BOOL)_axIsMemoriesScrubberInStoryViewController
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInStoryViewController];
-  if (v3)
+  _accessibilityInStoryViewController = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInStoryViewController];
+  if (_accessibilityInStoryViewController)
   {
 
-    LOBYTE(v3) = [(AXPhotosGroupAccessibilityElement *)self _axIsStoryScrubberContentLayout];
+    LOBYTE(_accessibilityInStoryViewController) = [(AXPhotosGroupAccessibilityElement *)self _axIsStoryScrubberContentLayout];
   }
 
-  return v3;
+  return _accessibilityInStoryViewController;
 }
 
 - (BOOL)_axIsMemoriesStyleSwitcherInStoryViewController
 {
-  v3 = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInStoryViewController];
-  if (v3)
+  _accessibilityInStoryViewController = [(AXPhotosGroupAccessibilityElement *)self _accessibilityInStoryViewController];
+  if (_accessibilityInStoryViewController)
   {
 
-    LOBYTE(v3) = [(AXPhotosGroupAccessibilityElement *)self _axIsStoryStyleSwitchingFullsizeLayout];
+    LOBYTE(_accessibilityInStoryViewController) = [(AXPhotosGroupAccessibilityElement *)self _axIsStoryStyleSwitchingFullsizeLayout];
   }
 
-  return v3;
+  return _accessibilityInStoryViewController;
 }
 
-- (id)_axFilterStaleKeys:(id)a3 usingIndexSet:(id)a4
+- (id)_axFilterStaleKeys:(id)keys usingIndexSet:(id)set
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x29EDBA048] indexSet];
+  keysCopy = keys;
+  setCopy = set;
+  indexSet = [MEMORY[0x29EDBA048] indexSet];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -2608,7 +2608,7 @@ uint64_t __72__AXPhotosGroupAccessibilityElement__accessibilityInStoryViewContro
           objc_enumerationMutation(v8);
         }
 
-        [v7 addIndex:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "integerValue", v15)}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "integerValue", v15)}];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -2617,16 +2617,16 @@ uint64_t __72__AXPhotosGroupAccessibilityElement__accessibilityInStoryViewContro
     while (v10);
   }
 
-  [v7 removeIndexes:v6];
+  [indexSet removeIndexes:setCopy];
   v13 = *MEMORY[0x29EDCA608];
 
-  return v7;
+  return indexSet;
 }
 
-- (int64_t)_axCompareAXPhotoElement:(id)a3 toElement:(id)a4
+- (int64_t)_axCompareAXPhotoElement:(id)element toElement:(id)toElement
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  toElementCopy = toElement;
   objc_opt_class();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass()) && ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass()))
@@ -2643,11 +2643,11 @@ uint64_t __72__AXPhotosGroupAccessibilityElement__accessibilityInStoryViewContro
 
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_isKindOfClass())
     {
-      v7 = [v5 leaf];
-      v8 = [v7 safeUnsignedIntForKey:@"spriteIndex"];
+      leaf = [elementCopy leaf];
+      v8 = [leaf safeUnsignedIntForKey:@"spriteIndex"];
 
-      v9 = [v6 leaf];
-      v10 = [v9 safeUnsignedIntForKey:@"spriteIndex"];
+      leaf2 = [toElementCopy leaf];
+      v10 = [leaf2 safeUnsignedIntForKey:@"spriteIndex"];
 
       if (v8 == v10)
       {
@@ -2662,12 +2662,12 @@ LABEL_17:
       if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_22:
-        [v5 accessibilityFrame];
+        [elementCopy accessibilityFrame];
         v15 = v14;
         v17 = v16;
         v19 = v18;
         v21 = v20;
-        [v6 accessibilityFrame];
+        [toElementCopy accessibilityFrame];
         v23 = v22;
         v25 = v24;
         v27 = v26;
@@ -2717,11 +2717,11 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v12 = [v5 group];
-      v8 = [v12 safeUnsignedIntForKey:@"subgroupIndex"];
+      group = [elementCopy group];
+      v8 = [group safeUnsignedIntForKey:@"subgroupIndex"];
 
-      v13 = [v6 group];
-      v10 = [v13 safeUnsignedIntForKey:@"subgroupIndex"];
+      group2 = [toElementCopy group];
+      v10 = [group2 safeUnsignedIntForKey:@"subgroupIndex"];
 
       if (v8 == v10)
       {
@@ -2745,7 +2745,7 @@ LABEL_26:
     goto LABEL_22;
   }
 
-  v11 = [v5 accessibilityCompareGeometry:v6];
+  v11 = [elementCopy accessibilityCompareGeometry:toElementCopy];
 LABEL_29:
 
   return v11;

@@ -8,15 +8,15 @@
 - (NSString)deviceId;
 - (NSString)deviceName;
 - (NSString)icloudEmail;
-- (void)setAltDSID:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setDeviceId:(id)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setDuration:(id)a3;
-- (void)setEndTime:(id)a3;
-- (void)setIcloudEmail:(id)a3;
-- (void)setIsApplication:(id)a3;
-- (void)setStartTime:(id)a3;
+- (void)setAltDSID:(id)d;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setDeviceId:(id)id;
+- (void)setDeviceName:(id)name;
+- (void)setDuration:(id)duration;
+- (void)setEndTime:(id)time;
+- (void)setIcloudEmail:(id)email;
+- (void)setIsApplication:(id)application;
+- (void)setStartTime:(id)time;
 @end
 
 @implementation ActivitySegment
@@ -28,10 +28,10 @@
   return v2;
 }
 
-- (void)setDeviceId:(id)a3
+- (void)setDeviceId:(id)id
 {
-  v4 = a3;
-  v5 = self;
+  idCopy = id;
+  selfCopy = self;
   sub_254FCFF68();
 }
 
@@ -42,10 +42,10 @@
   return v2;
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  v4 = a3;
-  v5 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_254FD00F0();
 }
 
@@ -56,10 +56,10 @@
   return v2;
 }
 
-- (void)setAltDSID:(id)a3
+- (void)setAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_254FD027C();
 }
 
@@ -70,10 +70,10 @@
   return v2;
 }
 
-- (void)setIcloudEmail:(id)a3
+- (void)setIcloudEmail:(id)email
 {
-  v4 = a3;
-  v5 = self;
+  emailCopy = email;
+  selfCopy = self;
   sub_254FD0404();
 }
 
@@ -84,10 +84,10 @@
   return v2;
 }
 
-- (void)setStartTime:(id)a3
+- (void)setStartTime:(id)time
 {
-  v4 = a3;
-  v5 = self;
+  timeCopy = time;
+  selfCopy = self;
   sub_254FD058C();
 }
 
@@ -98,10 +98,10 @@
   return v2;
 }
 
-- (void)setEndTime:(id)a3
+- (void)setEndTime:(id)time
 {
-  v4 = a3;
-  v5 = self;
+  timeCopy = time;
+  selfCopy = self;
   sub_254FD0714();
 }
 
@@ -112,10 +112,10 @@
   return v2;
 }
 
-- (void)setDuration:(id)a3
+- (void)setDuration:(id)duration
 {
-  v4 = a3;
-  v5 = self;
+  durationCopy = duration;
+  selfCopy = self;
   sub_254FD089C();
 }
 
@@ -126,10 +126,10 @@
   return v2;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_254FD0A24();
 }
 
@@ -140,10 +140,10 @@
   return v2;
 }
 
-- (void)setIsApplication:(id)a3
+- (void)setIsApplication:(id)application
 {
-  v4 = a3;
-  v5 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_254FD0BAC();
 }
 

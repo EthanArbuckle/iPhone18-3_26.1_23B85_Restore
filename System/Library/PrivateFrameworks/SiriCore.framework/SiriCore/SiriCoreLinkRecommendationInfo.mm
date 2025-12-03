@@ -1,17 +1,17 @@
 @interface SiriCoreLinkRecommendationInfo
-- (SiriCoreLinkRecommendationInfo)initWithPreferences:(BOOL)a3 wifiPreference:(BOOL)a4 timeTaken:(double)a5 metrics:(id)a6;
-- (SiriCoreLinkRecommendationInfo)initWithQueue:(id)a3;
-- (void)fetchLinkMetrics:(id)a3;
+- (SiriCoreLinkRecommendationInfo)initWithPreferences:(BOOL)preferences wifiPreference:(BOOL)preference timeTaken:(double)taken metrics:(id)metrics;
+- (SiriCoreLinkRecommendationInfo)initWithQueue:(id)queue;
+- (void)fetchLinkMetrics:(id)metrics;
 - (void)resetLinkMetrics;
 @end
 
 @implementation SiriCoreLinkRecommendationInfo
 
-- (void)fetchLinkMetrics:(id)a3
+- (void)fetchLinkMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(metrics + 2))(metrics, 0);
   }
 }
 
@@ -24,10 +24,10 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (SiriCoreLinkRecommendationInfo)initWithQueue:(id)a3
+- (SiriCoreLinkRecommendationInfo)initWithQueue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = SiriCoreLinkRecommendationInfo;
   v5 = [(SiriCoreLinkRecommendationInfo *)&v14 init];
@@ -43,7 +43,7 @@
       iRATClient = v6->_iRATClient;
       v6->_iRATClient = v8;
 
-      [(WRM_iRATInterface *)v6->_iRATClient registerClient:22 queue:v4];
+      [(WRM_iRATInterface *)v6->_iRATClient registerClient:22 queue:queueCopy];
       v10 = *MEMORY[0x277CEF0E0];
       if (os_log_type_enabled(*MEMORY[0x277CEF0E0], OS_LOG_TYPE_DEFAULT))
       {
@@ -72,19 +72,19 @@ LABEL_7:
   return v6;
 }
 
-- (SiriCoreLinkRecommendationInfo)initWithPreferences:(BOOL)a3 wifiPreference:(BOOL)a4 timeTaken:(double)a5 metrics:(id)a6
+- (SiriCoreLinkRecommendationInfo)initWithPreferences:(BOOL)preferences wifiPreference:(BOOL)preference timeTaken:(double)taken metrics:(id)metrics
 {
-  v11 = a6;
+  metricsCopy = metrics;
   v15.receiver = self;
   v15.super_class = SiriCoreLinkRecommendationInfo;
   v12 = [(SiriCoreLinkRecommendationInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_btPreference = a3;
-    v12->_wifiPreference = a4;
-    v12->_timeTaken = a5;
-    objc_storeStrong(&v12->_linkRecommendationMetrics, a6);
+    v12->_btPreference = preferences;
+    v12->_wifiPreference = preference;
+    v12->_timeTaken = taken;
+    objc_storeStrong(&v12->_linkRecommendationMetrics, metrics);
   }
 
   return v13;

@@ -1,19 +1,19 @@
 @interface CMCaptureFrameSenderEndpoint
-- (CMCaptureFrameSenderEndpoint)initWithDictionary:(id)a3;
+- (CMCaptureFrameSenderEndpoint)initWithDictionary:(id)dictionary;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CMCaptureFrameSenderEndpoint
 
-- (CMCaptureFrameSenderEndpoint)initWithDictionary:(id)a3
+- (CMCaptureFrameSenderEndpoint)initWithDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKeyedSubscript:@"endpoint"];
-  v6 = [a3 objectForKeyedSubscript:@"endpoint-uid"];
-  v7 = [a3 objectForKeyedSubscript:@"endpoint-type"];
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"endpoint-pid", "intValue"}];
-  v9 = [a3 objectForKeyedSubscript:@"endpoint-audit-token"];
-  v10 = [a3 objectForKeyedSubscript:@"endpoint-camera-uid"];
+  v5 = [dictionary objectForKeyedSubscript:@"endpoint"];
+  v6 = [dictionary objectForKeyedSubscript:@"endpoint-uid"];
+  v7 = [dictionary objectForKeyedSubscript:@"endpoint-type"];
+  v8 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"endpoint-pid", "intValue"}];
+  v9 = [dictionary objectForKeyedSubscript:@"endpoint-audit-token"];
+  v10 = [dictionary objectForKeyedSubscript:@"endpoint-camera-uid"];
   if (v5)
   {
     v11 = v6 == 0;
@@ -43,9 +43,9 @@
       v15->_endpointUniqueID = v6;
       v15->_endpointType = v7;
       v15->_endpointPID = v8;
-      v15->_endpointProxyPID = [objc_msgSend(a3 objectForKeyedSubscript:{@"endpoint-proxy-pid", "intValue"}];
+      v15->_endpointProxyPID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"endpoint-proxy-pid", "intValue"}];
       v15->_endpointAuditToken = v9;
-      v15->_endpointProxyAuditToken = [a3 objectForKeyedSubscript:@"endpoint-proxy-audit-token"];
+      v15->_endpointProxyAuditToken = [dictionary objectForKeyedSubscript:@"endpoint-proxy-audit-token"];
       v15->_endpointCameraUniqueID = v16;
     }
   }

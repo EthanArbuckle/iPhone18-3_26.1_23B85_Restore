@@ -1,16 +1,16 @@
 @interface FCPrivateZoneFeedDescriptor
-- (FCPrivateZoneFeedDescriptor)initWithIdentifier:(id)a3;
-- (FCPrivateZoneFeedDescriptor)initWithPrivateDataController:(id)a3 identifier:(id)a4 feedType:(int64_t)a5;
+- (FCPrivateZoneFeedDescriptor)initWithIdentifier:(id)identifier;
+- (FCPrivateZoneFeedDescriptor)initWithPrivateDataController:(id)controller identifier:(id)identifier feedType:(int64_t)type;
 - (id)backingHeadlineIDs;
-- (id)streamOfLatestHeadlinesWithContext:(id)a3;
+- (id)streamOfLatestHeadlinesWithContext:(id)context;
 @end
 
 @implementation FCPrivateZoneFeedDescriptor
 
-- (FCPrivateZoneFeedDescriptor)initWithIdentifier:(id)a3
+- (FCPrivateZoneFeedDescriptor)initWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Do not call method"];
@@ -34,12 +34,12 @@
   objc_exception_throw(v8);
 }
 
-- (FCPrivateZoneFeedDescriptor)initWithPrivateDataController:(id)a3 identifier:(id)a4 feedType:(int64_t)a5
+- (FCPrivateZoneFeedDescriptor)initWithPrivateDataController:(id)controller identifier:(id)identifier feedType:(int64_t)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  if (!controllerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateDataController"];
     *buf = 136315906;
@@ -52,13 +52,13 @@
     v25 = v15;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (identifierCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (identifierCopy)
   {
     goto LABEL_6;
   }
@@ -80,25 +80,25 @@
 LABEL_6:
   v17.receiver = self;
   v17.super_class = FCPrivateZoneFeedDescriptor;
-  v11 = [(FCFeedDescriptor *)&v17 initWithIdentifier:v10];
+  v11 = [(FCFeedDescriptor *)&v17 initWithIdentifier:identifierCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_privateDataController, a3);
-    v12->_feedType = a5;
+    objc_storeStrong(&v11->_privateDataController, controller);
+    v12->_feedType = type;
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (id)streamOfLatestHeadlinesWithContext:(id)a3
+- (id)streamOfLatestHeadlinesWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 networkReachability];
-  v6 = [v5 isCloudKitReachable];
+  contextCopy = context;
+  networkReachability = [contextCopy networkReachability];
+  isCloudKitReachable = [networkReachability isCloudKitReachable];
 
-  if (v6)
+  if (isCloudKitReachable)
   {
     v7 = NewsCoreUserDefaults();
     if ([v7 BOOLForKey:@"update_headlines_immediately"])
@@ -117,8 +117,8 @@ LABEL_6:
     v8 = 1.79769313e308;
   }
 
-  v9 = [(FCPrivateZoneFeedDescriptor *)self backingHeadlineIDs];
-  v10 = [(FCFeedDescriptor *)self streamOfHeadlinesWithIDs:v9 context:v4 cachedOnly:v6 ^ 1u maxCachedAge:v8];
+  backingHeadlineIDs = [(FCPrivateZoneFeedDescriptor *)self backingHeadlineIDs];
+  v10 = [(FCFeedDescriptor *)self streamOfHeadlinesWithIDs:backingHeadlineIDs context:contextCopy cachedOnly:isCloudKitReachable ^ 1u maxCachedAge:v8];
 
   return v10;
 }

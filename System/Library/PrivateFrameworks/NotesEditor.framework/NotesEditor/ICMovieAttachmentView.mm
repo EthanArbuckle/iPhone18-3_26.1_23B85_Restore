@@ -6,9 +6,9 @@
 - (id)icaxHintString;
 - (void)didChangeAttachment;
 - (void)didChangeMedia;
-- (void)didTapAttachment:(id)a3;
-- (void)setShowLoadingImage:(BOOL)a3;
-- (void)sharedInit:(BOOL)a3;
+- (void)didTapAttachment:(id)attachment;
+- (void)setShowLoadingImage:(BOOL)image;
+- (void)sharedInit:(BOOL)init;
 - (void)updateImageSize;
 @end
 
@@ -16,10 +16,10 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"movie attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"movie attachment" value:&stru_282757698 table:0];
 
-  v7 = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
+  icaxAttachmentViewTypeDescription = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
   v5 = __ICAccessibilityStringForVariables();
 
   return v5;
@@ -27,8 +27,8 @@
 
 - (id)icaxHintString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Double tap to play movie" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Double tap to play movie" value:&stru_282757698 table:0];
 
   return v3;
 }
@@ -36,21 +36,21 @@
 - (id)accessibilityUserInputLabels
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"Movie" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"Movie" value:&stru_282757698 table:0];
   v8[0] = v4;
-  v5 = [(ICMovieAttachmentView *)self accessibilityLabel];
-  v8[1] = v5;
+  accessibilityLabel = [(ICMovieAttachmentView *)self accessibilityLabel];
+  v8[1] = accessibilityLabel;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
   return v6;
 }
 
-- (void)sharedInit:(BOOL)a3
+- (void)sharedInit:(BOOL)init
 {
   v37.receiver = self;
   v37.super_class = ICMovieAttachmentView;
-  [(ICImageAttachmentView *)&v37 sharedInit:a3];
+  [(ICImageAttachmentView *)&v37 sharedInit:init];
   v4 = [MEMORY[0x277D755B8] imageNamed:@"attachment_video_play"];
   [(ICMovieAttachmentView *)self setPlayButtonImage:v4];
 
@@ -61,8 +61,8 @@
   v7 = v6;
   [(ICMovieAttachmentView *)self bounds];
   v9 = v8;
-  v10 = [(ICMovieAttachmentView *)self playButtonImage];
-  [v10 size];
+  playButtonImage = [(ICMovieAttachmentView *)self playButtonImage];
+  [playButtonImage size];
   v12 = v7 + (v9 - v11) * 0.5;
 
   v13 = fmax(v12, 0.0);
@@ -70,43 +70,43 @@
   v15 = v14;
   [(ICMovieAttachmentView *)self bounds];
   v17 = v16;
-  v18 = [(ICMovieAttachmentView *)self playButtonImage];
-  [v18 size];
+  playButtonImage2 = [(ICMovieAttachmentView *)self playButtonImage];
+  [playButtonImage2 size];
   v20 = v15 + (v17 - v19) * 0.5;
 
   v21 = fmax(v20, 0.0);
-  v22 = [(ICMovieAttachmentView *)self playButtonImage];
-  [v22 size];
+  playButtonImage3 = [(ICMovieAttachmentView *)self playButtonImage];
+  [playButtonImage3 size];
   v24 = v23;
   v26 = v25;
 
   [(ICMovieAttachmentView *)self setPlayButtonFrame:v13, v21, v24, v26];
-  v27 = [(ICMovieAttachmentView *)self playButtonLayer];
-  [v27 setFrame:{v13, v21, v24, v26}];
+  playButtonLayer = [(ICMovieAttachmentView *)self playButtonLayer];
+  [playButtonLayer setFrame:{v13, v21, v24, v26}];
 
   v28 = *MEMORY[0x277CDA700];
-  v29 = [(ICMovieAttachmentView *)self playButtonLayer];
-  [v29 setContentsGravity:v28];
+  playButtonLayer2 = [(ICMovieAttachmentView *)self playButtonLayer];
+  [playButtonLayer2 setContentsGravity:v28];
 
   [(ICMovieAttachmentView *)self setClipsToBounds:1];
-  v30 = [(ICMovieAttachmentView *)self playButtonImage];
-  v31 = [v30 ic_CGImage];
-  v32 = [(ICMovieAttachmentView *)self playButtonLayer];
-  [v32 setContents:v31];
+  playButtonImage4 = [(ICMovieAttachmentView *)self playButtonImage];
+  ic_CGImage = [playButtonImage4 ic_CGImage];
+  playButtonLayer3 = [(ICMovieAttachmentView *)self playButtonLayer];
+  [playButtonLayer3 setContents:ic_CGImage];
 
-  v33 = [(ICMovieAttachmentView *)self playButtonLayer];
-  [v33 setOpacity:0.0];
+  playButtonLayer4 = [(ICMovieAttachmentView *)self playButtonLayer];
+  [playButtonLayer4 setOpacity:0.0];
 
-  v34 = [(ICMovieAttachmentView *)self layer];
-  v35 = [(ICMovieAttachmentView *)self playButtonLayer];
-  v36 = [(ICImageAttachmentView *)self imageLayer];
-  [v34 insertSublayer:v35 above:v36];
+  layer = [(ICMovieAttachmentView *)self layer];
+  playButtonLayer5 = [(ICMovieAttachmentView *)self playButtonLayer];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  [layer insertSublayer:playButtonLayer5 above:imageLayer];
 }
 
 - (BOOL)allowsPictureInPicture
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
@@ -116,42 +116,42 @@
         break;
       }
 
-      v3 = [(ICMovieAttachmentView *)v2 nextResponder];
+      nextResponder = [(ICMovieAttachmentView *)selfCopy nextResponder];
 
-      v2 = v3;
-      if (!v3)
+      selfCopy = nextResponder;
+      if (!nextResponder)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    selfCopy = selfCopy;
   }
 
 LABEL_6:
-  v4 = [(ICMovieAttachmentView *)v2 isEditingOnSystemPaper];
+  isEditingOnSystemPaper = [(ICMovieAttachmentView *)selfCopy isEditingOnSystemPaper];
 
-  return v4 ^ 1;
+  return isEditingOnSystemPaper ^ 1;
 }
 
 - (void)updateImageSize
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setAnimationDuration:0.0];
-  v3 = [(ICImageAttachmentView *)self imageLayer];
-  [v3 frame];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  [imageLayer frame];
   v5 = v4;
   v7 = v6;
 
   [(ICImageAttachmentView *)self imageSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(ICImageAttachmentView *)self imageLayer];
-  [v12 frame];
+  imageLayer2 = [(ICImageAttachmentView *)self imageLayer];
+  [imageLayer2 frame];
   if (TSDNearlyEqualSizes())
   {
-    v13 = [(ICImageAttachmentView *)self imageLayer];
-    [v13 frame];
+    imageLayer3 = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer3 frame];
     v16 = v15 == *(MEMORY[0x277CBF3A8] + 8) && v14 == *MEMORY[0x277CBF3A8];
   }
 
@@ -160,15 +160,15 @@ LABEL_6:
     v16 = 1;
   }
 
-  v17 = [(ICImageAttachmentView *)self imageLayer];
-  [v17 setFrame:{v5, v7, v9, v11}];
+  imageLayer4 = [(ICImageAttachmentView *)self imageLayer];
+  [imageLayer4 setFrame:{v5, v7, v9, v11}];
 
   [(ICMovieAttachmentView *)self bounds];
   v19 = v18;
   [(ICMovieAttachmentView *)self bounds];
   v21 = v20;
-  v22 = [(ICMovieAttachmentView *)self playButtonImage];
-  [v22 size];
+  playButtonImage = [(ICMovieAttachmentView *)self playButtonImage];
+  [playButtonImage size];
   v24 = v19 + (v21 - v23) * 0.5;
 
   v25 = fmax(v24, 0.0);
@@ -176,23 +176,23 @@ LABEL_6:
   v27 = v26;
   [(ICMovieAttachmentView *)self bounds];
   v29 = v28;
-  v30 = [(ICMovieAttachmentView *)self playButtonImage];
-  [v30 size];
+  playButtonImage2 = [(ICMovieAttachmentView *)self playButtonImage];
+  [playButtonImage2 size];
   v32 = v27 + (v29 - v31) * 0.5;
 
   v33 = fmax(v32, 0.0);
-  v34 = [(ICMovieAttachmentView *)self playButtonImage];
-  [v34 size];
+  playButtonImage3 = [(ICMovieAttachmentView *)self playButtonImage];
+  [playButtonImage3 size];
   v36 = v35;
   v38 = v37;
 
   [(ICMovieAttachmentView *)self setPlayButtonFrame:v25, v33, v36, v38];
-  v39 = [(ICMovieAttachmentView *)self playButtonLayer];
-  [v39 setFrame:{v25, v33, v36, v38}];
+  playButtonLayer = [(ICMovieAttachmentView *)self playButtonLayer];
+  [playButtonLayer setFrame:{v25, v33, v36, v38}];
 
-  v40 = [(ICMovieAttachmentView *)self playButtonLayer];
+  playButtonLayer2 = [(ICMovieAttachmentView *)self playButtonLayer];
   LODWORD(v41) = 1.0;
-  [v40 setOpacity:v41];
+  [playButtonLayer2 setOpacity:v41];
 
   [MEMORY[0x277CD9FF0] commit];
   if (v16)
@@ -212,9 +212,9 @@ LABEL_6:
   v6.super_class = ICMovieAttachmentView;
   [(ICImageAttachmentView *)&v6 didChangeAttachment];
   v3 = +[ICMovieController sharedController];
-  v4 = [v3 activeMovieAttachmentView];
+  activeMovieAttachmentView = [v3 activeMovieAttachmentView];
 
-  if (v4 == self)
+  if (activeMovieAttachmentView == self)
   {
     v5 = +[ICMovieController sharedController];
     [v5 updatePlayer];
@@ -227,29 +227,29 @@ LABEL_6:
   v6.super_class = ICMovieAttachmentView;
   [(ICImageAttachmentView *)&v6 didChangeMedia];
   v3 = +[ICMovieController sharedController];
-  v4 = [v3 activeMovieAttachmentView];
+  activeMovieAttachmentView = [v3 activeMovieAttachmentView];
 
-  if (v4 == self)
+  if (activeMovieAttachmentView == self)
   {
     v5 = +[ICMovieController sharedController];
     [v5 updatePlayer];
   }
 }
 
-- (void)didTapAttachment:(id)a3
+- (void)didTapAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   if ([(ICMovieAttachmentView *)self ic_isInSecureWindow])
   {
     v9.receiver = self;
     v9.super_class = ICMovieAttachmentView;
-    [(ICAttachmentView *)&v9 didTapAttachment:v4];
+    [(ICAttachmentView *)&v9 didTapAttachment:attachmentCopy];
   }
 
   else
   {
-    v5 = [(ICAttachmentView *)self textView];
-    [v5 resignFirstResponder];
+    textView = [(ICAttachmentView *)self textView];
+    [textView resignFirstResponder];
 
     v6 = +[ICMovieController sharedController];
     [v6 setActiveMovieAttachmentView:self];
@@ -262,14 +262,14 @@ LABEL_6:
   }
 }
 
-- (void)setShowLoadingImage:(BOOL)a3
+- (void)setShowLoadingImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   v6.receiver = self;
   v6.super_class = ICMovieAttachmentView;
   [(ICImageAttachmentView *)&v6 setShowLoadingImage:?];
-  v5 = [(ICMovieAttachmentView *)self playButtonLayer];
-  [v5 setHidden:v3];
+  playButtonLayer = [(ICMovieAttachmentView *)self playButtonLayer];
+  [playButtonLayer setHidden:imageCopy];
 }
 
 - (CGRect)playButtonFrame

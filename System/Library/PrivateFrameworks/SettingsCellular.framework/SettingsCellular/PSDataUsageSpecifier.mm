@@ -1,45 +1,45 @@
 @interface PSDataUsageSpecifier
 - (PSBillingPeriodSource)billingPeriodSource;
-- (PSDataUsageSpecifier)initWithAppType:(unint64_t)a3 bundleID:(id)a4 name:(id)a5 statisticsCache:(id)a6 usageType:(unint64_t)a7;
+- (PSDataUsageSpecifier)initWithAppType:(unint64_t)type bundleID:(id)d name:(id)name statisticsCache:(id)cache usageType:(unint64_t)usageType;
 - (id)dataUsageString;
 - (unint64_t)dataUsage;
 @end
 
 @implementation PSDataUsageSpecifier
 
-- (PSDataUsageSpecifier)initWithAppType:(unint64_t)a3 bundleID:(id)a4 name:(id)a5 statisticsCache:(id)a6 usageType:(unint64_t)a7
+- (PSDataUsageSpecifier)initWithAppType:(unint64_t)type bundleID:(id)d name:(id)name statisticsCache:(id)cache usageType:(unint64_t)usageType
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a3 == 4 && [v14 isEqualToString:@"Others"])
+  dCopy = d;
+  nameCopy = name;
+  cacheCopy = cache;
+  if (type == 4 && [nameCopy isEqualToString:@"Others"])
   {
-    v24 = v13;
+    v24 = dCopy;
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v17 = SFLocalizableWAPIStringKeyForKey();
     v18 = [v16 localizedStringForKey:v17 value:&stru_287730CE8 table:@"WirelessData"];
 
-    v13 = v24;
-    v14 = v18;
+    dCopy = v24;
+    nameCopy = v18;
   }
 
   v25.receiver = self;
   v25.super_class = PSDataUsageSpecifier;
-  v19 = [(PSDataUsageSpecifier *)&v25 initWithName:v14 target:0 set:0 get:0 detail:0 cell:4 edit:0];
+  v19 = [(PSDataUsageSpecifier *)&v25 initWithName:nameCopy target:0 set:0 get:0 detail:0 cell:4 edit:0];
   v20 = v19;
   if (v19)
   {
     [(PSDataUsageSpecifier *)v19 setTarget:v19];
     *(&v20->super.super.isa + *MEMORY[0x277D3FCA8]) = sel_dataUsageString;
-    objc_storeStrong(&v20->_statisticsCache, a6);
-    objc_storeStrong(&v20->_bundleID, a4);
-    v20->_appType = a3;
-    v20->_usageType = a7;
+    objc_storeStrong(&v20->_statisticsCache, cache);
+    objc_storeStrong(&v20->_bundleID, d);
+    v20->_appType = type;
+    v20->_usageType = usageType;
     [(PSDataUsageSpecifier *)v20 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40088]];
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    v22 = [v21 sf_isChinaRegionCellularDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
 
-    if (v22)
+    if (sf_isChinaRegionCellularDevice)
     {
       [(PSDataUsageSpecifier *)v20 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     }
@@ -50,21 +50,21 @@
 
 - (unint64_t)dataUsage
 {
-  v3 = [(PSDataUsageSpecifier *)self billingPeriodSource];
-  v4 = v3;
+  billingPeriodSource = [(PSDataUsageSpecifier *)self billingPeriodSource];
+  v4 = billingPeriodSource;
   statisticsCache = self->_statisticsCache;
   bundleID = self->_bundleID;
-  if (v3)
+  if (billingPeriodSource)
   {
-    v7 = [v3 selectedPeriod];
+    selectedPeriod = [billingPeriodSource selectedPeriod];
   }
 
   else
   {
-    v7 = 0;
+    selectedPeriod = 0;
   }
 
-  v8 = [(PSDataUsageStatisticsCache *)statisticsCache usageForBundleID:bundleID inPeriod:v7];
+  v8 = [(PSDataUsageStatisticsCache *)statisticsCache usageForBundleID:bundleID inPeriod:selectedPeriod];
   v9 = v8;
   if (self->_appType == 4)
   {
@@ -72,38 +72,38 @@
     v11 = self->_bundleID;
     if (v4)
     {
-      v12 = [v4 selectedPeriod];
+      selectedPeriod2 = [v4 selectedPeriod];
     }
 
     else
     {
-      v12 = 0;
+      selectedPeriod2 = 0;
     }
 
-    v18 = [(PSDataUsageStatisticsCache *)v10 usageForHotspotClientID:v11 inPeriod:v12];
+    v18 = [(PSDataUsageStatisticsCache *)v10 usageForHotspotClientID:v11 inPeriod:selectedPeriod2];
   }
 
   else
   {
     usageType = self->_usageType;
-    v14 = [v8 native];
-    v15 = v14;
+    native = [v8 native];
+    v15 = native;
     if (usageType == 1)
     {
-      v16 = [v14 satellite];
-      v17 = [v9 proxied];
-      v18 = [v17 satellite] + v16;
+      satellite = [native satellite];
+      proxied = [v9 proxied];
+      v18 = [proxied satellite] + satellite;
     }
 
     else
     {
-      v19 = [v14 cellularHome];
-      v17 = [v9 native];
-      v20 = [v17 cellularRoaming] + v19;
-      v21 = [v9 proxied];
-      v22 = [v21 cellularHome];
-      v23 = [v9 proxied];
-      v18 = v20 + v22 + [v23 cellularRoaming];
+      cellularHome = [native cellularHome];
+      proxied = [v9 native];
+      v20 = [proxied cellularRoaming] + cellularHome;
+      proxied2 = [v9 proxied];
+      cellularHome2 = [proxied2 cellularHome];
+      proxied3 = [v9 proxied];
+      v18 = v20 + cellularHome2 + [proxied3 cellularRoaming];
     }
   }
 
@@ -112,10 +112,10 @@
 
 - (id)dataUsageString
 {
-  v3 = [(PSDataUsageSpecifier *)self dataUsage];
-  if (v3)
+  dataUsage = [(PSDataUsageSpecifier *)self dataUsage];
+  if (dataUsage)
   {
-    v4 = [SettingsCellularSharedUtils usageSizeString:v3];
+    v4 = [SettingsCellularSharedUtils usageSizeString:dataUsage];
   }
 
   else

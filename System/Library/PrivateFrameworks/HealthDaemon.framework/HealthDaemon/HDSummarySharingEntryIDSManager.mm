@@ -1,42 +1,42 @@
 @interface HDSummarySharingEntryIDSManager
-- (HDSummarySharingEntryIDSManager)initWithProfile:(id)a3;
-- (id)_finishHandlerForOperation:(void *)a3 completion:;
-- (id)_profileForEntry:(uint64_t)a3 errorOut:;
-- (uint64_t)_deleteProfile:(uint64_t)a3 errorOut:;
-- (uint64_t)_queue_insertOrReplaceCodableEntry:(uint64_t)a3 ignoreIfExists:(uint64_t)a4 shouldResolveCNContact:(uint64_t)a5 error:;
-- (uint64_t)_queue_updateEntryWithInvitationUUID:(uint64_t)a3 newStatus:(void *)a4 dateAccepted:(void *)a5 ownerParticipant:(uint64_t)a6 error:;
+- (HDSummarySharingEntryIDSManager)initWithProfile:(id)profile;
+- (id)_finishHandlerForOperation:(void *)operation completion:;
+- (id)_profileForEntry:(uint64_t)entry errorOut:;
+- (uint64_t)_deleteProfile:(uint64_t)profile errorOut:;
+- (uint64_t)_queue_insertOrReplaceCodableEntry:(uint64_t)entry ignoreIfExists:(uint64_t)exists shouldResolveCNContact:(uint64_t)contact error:;
+- (uint64_t)_queue_updateEntryWithInvitationUUID:(uint64_t)d newStatus:(void *)status dateAccepted:(void *)accepted ownerParticipant:(uint64_t)participant error:;
 - (void)_attemptBestEffortCloudSynchronization;
-- (void)acceptInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)beginObservingReachabilityStatusForIdentifiers:(id)a3 isInitialQuery:(BOOL)a4;
-- (void)declineInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)invitationManager:(id)a3 didAcceptInvitation:(id)a4;
-- (void)invitationManager:(id)a3 didDeclineInvitation:(id)a4;
-- (void)invitationManager:(id)a3 didReceiveInvitation:(id)a4;
-- (void)invitationManager:(id)a3 didRescindInvitation:(id)a4;
-- (void)inviteSharingDataWithIdentifier:(id)a3 firstName:(id)a4 lastName:(id)a5 sharingAuthorizations:(id)a6 userWheelchairMode:(int64_t)a7 completion:(id)a8;
-- (void)leaveInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)revokeInvitationWithUUID:(id)a3 completion:(id)a4;
+- (void)acceptInvitationWithUUID:(id)d completion:(id)completion;
+- (void)beginObservingReachabilityStatusForIdentifiers:(id)identifiers isInitialQuery:(BOOL)query;
+- (void)declineInvitationWithUUID:(id)d completion:(id)completion;
+- (void)invitationManager:(id)manager didAcceptInvitation:(id)invitation;
+- (void)invitationManager:(id)manager didDeclineInvitation:(id)invitation;
+- (void)invitationManager:(id)manager didReceiveInvitation:(id)invitation;
+- (void)invitationManager:(id)manager didRescindInvitation:(id)invitation;
+- (void)inviteSharingDataWithIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName sharingAuthorizations:(id)authorizations userWheelchairMode:(int64_t)mode completion:(id)completion;
+- (void)leaveInvitationWithUUID:(id)d completion:(id)completion;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)removeObserver:(id)observer;
+- (void)revokeInvitationWithUUID:(id)d completion:(id)completion;
 @end
 
 @implementation HDSummarySharingEntryIDSManager
 
-- (HDSummarySharingEntryIDSManager)initWithProfile:(id)a3
+- (HDSummarySharingEntryIDSManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = HDSummarySharingEntryIDSManager;
   v5 = [(HDSummarySharingEntryIDSManager *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
-    [v4 registerProfileReadyObserver:v6 queue:v6->_queue];
+    [profileCopy registerProfileReadyObserver:v6 queue:v6->_queue];
     v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
     operationQueue = v6->_operationQueue;
     v6->_operationQueue = v9;
@@ -54,17 +54,17 @@
   return v6;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
+  database = [WeakRetained database];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HDSummarySharingEntryIDSManager_profileDidBecomeReady___block_invoke;
   v7[3] = &unk_278613968;
   v7[4] = self;
-  [v5 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v7];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v7];
 }
 
 void __57__HDSummarySharingEntryIDSManager_profileDidBecomeReady___block_invoke(uint64_t a1)
@@ -86,9 +86,9 @@ void __57__HDSummarySharingEntryIDSManager_profileDidBecomeReady___block_invoke(
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(HKObserverSet *)self->_observers unregisterObserver:a3];
+  [(HKObserverSet *)self->_observers unregisterObserver:observer];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -111,18 +111,18 @@ uint64_t __50__HDSummarySharingEntryIDSManager_removeObserver___block_invoke(uin
   return result;
 }
 
-- (void)beginObservingReachabilityStatusForIdentifiers:(id)a3 isInitialQuery:(BOOL)a4
+- (void)beginObservingReachabilityStatusForIdentifiers:(id)identifiers isInitialQuery:(BOOL)query
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__HDSummarySharingEntryIDSManager_beginObservingReachabilityStatusForIdentifiers_isInitialQuery___block_invoke;
   block[3] = &unk_27861F830;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = identifiersCopy;
+  selfCopy = self;
+  queryCopy = query;
+  v8 = identifiersCopy;
   dispatch_sync(queue, block);
 }
 
@@ -231,22 +231,22 @@ void __97__HDSummarySharingEntryIDSManager_beginObservingReachabilityStatusForId
   }
 }
 
-- (void)inviteSharingDataWithIdentifier:(id)a3 firstName:(id)a4 lastName:(id)a5 sharingAuthorizations:(id)a6 userWheelchairMode:(int64_t)a7 completion:(id)a8
+- (void)inviteSharingDataWithIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName sharingAuthorizations:(id)authorizations userWheelchairMode:(int64_t)mode completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:a8 completion:?];
+  identifierCopy = identifier;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  authorizationsCopy = authorizations;
+  v19 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:completion completion:?];
   _HKInitializeLogging();
   v20 = HKLogSharing();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543619;
-    v38 = self;
+    selfCopy = self;
     v39 = 2113;
-    v40 = v15;
+    v40 = identifierCopy;
     _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Inviting to share data with contact identifier %{private}@", buf, 0x16u);
   }
 
@@ -260,46 +260,46 @@ void __97__HDSummarySharingEntryIDSManager_beginObservingReachabilityStatusForId
     WeakRetained = 0;
   }
 
-  v22 = [WeakRetained cloudSyncManager];
+  cloudSyncManager = [WeakRetained cloudSyncManager];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firstName_lastName_sharingAuthorizations_userWheelchairMode_completion___block_invoke;
   v29[3] = &unk_27861F8D0;
   v29[4] = self;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
+  v30 = identifierCopy;
+  v31 = nameCopy;
+  v32 = lastNameCopy;
+  v33 = authorizationsCopy;
   v34 = v19;
   v35 = a2;
-  v36 = a7;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
+  modeCopy = mode;
+  v23 = authorizationsCopy;
+  v24 = lastNameCopy;
+  v25 = nameCopy;
+  v26 = identifierCopy;
   v27 = v19;
-  [v22 fetchCloudKitAccountInfoWithCompletion:v29];
+  [cloudSyncManager fetchCloudKitAccountInfoWithCompletion:v29];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_finishHandlerForOperation:(void *)a3 completion:
+- (id)_finishHandlerForOperation:(void *)operation completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  operationCopy = operation;
+  if (self)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __73__HDSummarySharingEntryIDSManager__finishHandlerForOperation_completion___block_invoke;
     aBlock[3] = &unk_278613150;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v9 = v5;
-    v10 = v6;
-    a1 = _Block_copy(aBlock);
+    v10 = operationCopy;
+    self = _Block_copy(aBlock);
   }
 
-  return a1;
+  return self;
 }
 
 void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firstName_lastName_sharingAuthorizations_userWheelchairMode_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -735,20 +735,20 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_queue_insertOrReplaceCodableEntry:(uint64_t)a3 ignoreIfExists:(uint64_t)a4 shouldResolveCNContact:(uint64_t)a5 error:
+- (uint64_t)_queue_insertOrReplaceCodableEntry:(uint64_t)entry ignoreIfExists:(uint64_t)exists shouldResolveCNContact:(uint64_t)contact error:
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v9 = *(a1 + 16);
+    v9 = *(self + 16);
     v10 = a2;
     dispatch_assert_queue_V2(v9);
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v12 = [WeakRetained sharingEntryManager];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    sharingEntryManager = [WeakRetained sharingEntryManager];
     v17[0] = v10;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
 
-    v14 = [v12 insertOrReplaceCodableEntries:v13 ignoreIfExists:a3 shouldResolveCNContact:a4 syncProvenance:0 error:a5];
+    v14 = [sharingEntryManager insertOrReplaceCodableEntries:v13 ignoreIfExists:entry shouldResolveCNContact:exists syncProvenance:0 error:contact];
   }
 
   else
@@ -934,20 +934,20 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)acceptInvitationWithUUID:(id)d completion:(id)completion
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:a4 completion:?];
+  dCopy = d;
+  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:completion completion:?];
   _HKInitializeLogging();
   v8 = HKLogSharing();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543618;
-    v54 = self;
+    selfCopy7 = self;
     v55 = 2114;
-    v56 = v9;
+    v56 = uUIDString;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Accepting invitation with UUID %{public}@", buf, 0x16u);
   }
 
@@ -961,9 +961,9 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
     WeakRetained = 0;
   }
 
-  v11 = [WeakRetained sharingEntryManager];
+  sharingEntryManager = [WeakRetained sharingEntryManager];
   v52 = 0;
-  v12 = [v11 codableEntryWithUUID:v6 errorOut:&v52];
+  v12 = [sharingEntryManager codableEntryWithUUID:dCopy errorOut:&v52];
   v13 = v52;
 
   if (v12)
@@ -977,16 +977,16 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
       {
         [v12 status];
         v35 = HKStringForSharingStatus();
-        v36 = [v12 primaryContactIdentifier];
-        v37 = [v12 uuid];
+        primaryContactIdentifier = [v12 primaryContactIdentifier];
+        uuid = [v12 uuid];
         *buf = 138544131;
-        v54 = self;
+        selfCopy7 = self;
         v55 = 2114;
         v56 = v35;
         v57 = 2113;
-        v58 = v36;
+        v58 = primaryContactIdentifier;
         v59 = 2114;
-        v60 = v37;
+        v60 = uuid;
         _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Error incorrect status %{public}@ for entry with identifier %{private}@ and UUID %{public}@", buf, 0x2Au);
       }
 
@@ -994,11 +994,11 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
       v16 = HKLogSharing();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v12 sharingEntry];
+        sharingEntry = [v12 sharingEntry];
         *buf = 138543619;
-        v54 = self;
+        selfCopy7 = self;
         v55 = 2113;
-        v56 = v17;
+        v56 = sharingEntry;
         _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Found entry: %{private}@", buf, 0x16u);
       }
 
@@ -1007,9 +1007,9 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
 
     else
     {
-      v19 = [v12 sharingSetupMetadata];
+      sharingSetupMetadata = [v12 sharingSetupMetadata];
       v51 = v13;
-      v20 = [HDCloudSyncShareSetupMetadata cloudSyncShareSetupMetadataWithCodableSharingSetupMetadata:v19 error:&v51];
+      v20 = [HDCloudSyncShareSetupMetadata cloudSyncShareSetupMetadataWithCodableSharingSetupMetadata:sharingSetupMetadata error:&v51];
       v21 = v51;
 
       if (v20)
@@ -1024,8 +1024,8 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
         v23 = v7;
         v50 = v23;
         v40 = _Block_copy(aBlock);
-        v24 = [v20 shareURLs];
-        v25 = [v24 count];
+        shareURLs = [v20 shareURLs];
+        v25 = [shareURLs count];
 
         if (v25)
         {
@@ -1035,7 +1035,7 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
 
           if (v26)
           {
-            v28 = [v26 cloudSyncManager];
+            cloudSyncManager = [v26 cloudSyncManager];
             v41[0] = MEMORY[0x277D85DD0];
             v41[1] = 3221225472;
             v41[2] = __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion___block_invoke_362;
@@ -1048,7 +1048,7 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
             v43 = v20;
             v46 = v23;
             v44 = v22;
-            [v28 acceptShare:v43 completion:v41];
+            [cloudSyncManager acceptShare:v43 completion:v41];
 
             v21 = v27;
           }
@@ -1060,7 +1060,7 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v54 = self;
+              selfCopy7 = self;
               v55 = 2114;
               v56 = v27;
               _os_log_error_impl(&dword_228986000, v33, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Unable to create profile. %{public}@", buf, 0x16u);
@@ -1079,11 +1079,11 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
           v32 = HKLogSharing();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v39 = [v6 UUIDString];
+            uUIDString2 = [dCopy UUIDString];
             *buf = 138543618;
-            v54 = self;
+            selfCopy7 = self;
             v55 = 2114;
-            v56 = v39;
+            v56 = uUIDString2;
             _os_log_error_impl(&dword_228986000, v32, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: No share URLs found on invitation with UUID %{public}@", buf, 0x16u);
           }
 
@@ -1099,11 +1099,11 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
         v31 = HKLogSharing();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v38 = [v12 sharingSetupMetadata];
+          sharingSetupMetadata2 = [v12 sharingSetupMetadata];
           *buf = 138543875;
-          v54 = self;
+          selfCopy7 = self;
           v55 = 2113;
-          v56 = v38;
+          v56 = sharingSetupMetadata2;
           v57 = 2114;
           v58 = v21;
           _os_log_error_impl(&dword_228986000, v31, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Failed to decode codable sharing setup metadata %{private}@: %{public}@", buf, 0x20u);
@@ -1123,7 +1123,7 @@ void __138__HDSummarySharingEntryIDSManager_inviteSharingDataWithIdentifier_firs
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v54 = self;
+      selfCopy7 = self;
       v55 = 2114;
       v56 = v13;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Codable entry not found. %{public}@", buf, 0x16u);
@@ -1223,46 +1223,46 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
   }
 }
 
-- (id)_profileForEntry:(uint64_t)a3 errorOut:
+- (id)_profileForEntry:(uint64_t)entry errorOut:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v7 = [WeakRetained daemon];
-    v8 = [v7 profileManager];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    daemon = [WeakRetained daemon];
+    profileManager = [daemon profileManager];
 
     v9 = objc_alloc(MEMORY[0x277CCAD78]);
-    v10 = [v5 uuid];
-    v11 = [v9 initWithUUIDString:v10];
+    uuid = [v5 uuid];
+    v11 = [v9 initWithUUIDString:uuid];
 
-    v12 = [v8 profileIdentifierForUUID:v11];
+    v12 = [profileManager profileIdentifierForUUID:v11];
     if (v12)
     {
       v13 = v12;
-      v14 = [v8 profileForIdentifier:v12];
+      v14 = [profileManager profileForIdentifier:v12];
     }
 
     else
     {
       v13 = [MEMORY[0x277CCD7C8] _profileWithUUID:v11 type:2];
-      v15 = [v5 firstName];
-      v16 = [v5 lastName];
-      v17 = v16;
-      if (!v15)
+      firstName = [v5 firstName];
+      lastName = [v5 lastName];
+      v17 = lastName;
+      if (!firstName)
       {
-        if (v16)
+        if (lastName)
         {
-          v15 = &stru_283BF39C8;
+          firstName = &stru_283BF39C8;
         }
 
         else
         {
-          v15 = [v5 primaryContactIdentifier];
+          firstName = [v5 primaryContactIdentifier];
         }
       }
 
-      v14 = [v8 createProfileForIdentifier:v13 firstName:v15 lastName:v17 error:a3];
+      v14 = [profileManager createProfileForIdentifier:v13 firstName:firstName lastName:v17 error:entry];
     }
   }
 
@@ -1352,18 +1352,18 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_deleteProfile:(uint64_t)a3 errorOut:
+- (uint64_t)_deleteProfile:(uint64_t)profile errorOut:
 {
   if (result)
   {
     v4 = result;
     v5 = a2;
     WeakRetained = objc_loadWeakRetained((v4 + 8));
-    v7 = [WeakRetained daemon];
-    v8 = [v7 profileManager];
-    v9 = [v5 profileIdentifier];
+    daemon = [WeakRetained daemon];
+    profileManager = [daemon profileManager];
+    profileIdentifier = [v5 profileIdentifier];
 
-    v10 = [v8 deleteProfile:v9 error:a3];
+    v10 = [profileManager deleteProfile:profileIdentifier error:profile];
     return v10;
   }
 
@@ -1582,19 +1582,19 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_queue_updateEntryWithInvitationUUID:(uint64_t)a3 newStatus:(void *)a4 dateAccepted:(void *)a5 ownerParticipant:(uint64_t)a6 error:
+- (uint64_t)_queue_updateEntryWithInvitationUUID:(uint64_t)d newStatus:(void *)status dateAccepted:(void *)accepted ownerParticipant:(uint64_t)participant error:
 {
   if (result)
   {
     v10 = result;
     v11 = *(result + 16);
-    v12 = a5;
-    v13 = a4;
+    acceptedCopy = accepted;
+    statusCopy = status;
     v14 = a2;
     dispatch_assert_queue_V2(v11);
     WeakRetained = objc_loadWeakRetained((v10 + 8));
-    v16 = [WeakRetained sharingEntryManager];
-    v17 = [v16 updateEntryWithInvitationUUID:v14 newStatus:a3 dateAccepted:v13 ownerParticipant:v12 error:a6];
+    sharingEntryManager = [WeakRetained sharingEntryManager];
+    v17 = [sharingEntryManager updateEntryWithInvitationUUID:v14 newStatus:d dateAccepted:statusCopy ownerParticipant:acceptedCopy error:participant];
 
     return v17;
   }
@@ -1648,37 +1648,37 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
 
 - (void)_attemptBestEffortCloudSynchronization
 {
-  if (a1)
+  if (self)
   {
     if (!_HDIsUnitTesting)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v3 = [WeakRetained cloudSyncManager];
-      v4 = [v3 sharedSummaryManager];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      cloudSyncManager = [WeakRetained cloudSyncManager];
+      sharedSummaryManager = [cloudSyncManager sharedSummaryManager];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __73__HDSummarySharingEntryIDSManager__attemptBestEffortCloudSynchronization__block_invoke;
       v6[3] = &unk_2786130B0;
-      v6[4] = a1;
-      v5 = [v4 synchronizeWithCompletion:v6];
+      v6[4] = self;
+      v5 = [sharedSummaryManager synchronizeWithCompletion:v6];
     }
   }
 }
 
-- (void)declineInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)declineInvitationWithUUID:(id)d completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:a4 completion:?];
+  dCopy = d;
+  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:completion completion:?];
   _HKInitializeLogging();
   v8 = HKLogSharing();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543618;
-    v34 = self;
+    selfCopy4 = self;
     v35 = 2114;
-    v36 = v9;
+    v36 = uUIDString;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Declining invitation with UUID %{public}@", buf, 0x16u);
   }
 
@@ -1692,9 +1692,9 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
     WeakRetained = 0;
   }
 
-  v11 = [WeakRetained sharingEntryManager];
+  sharingEntryManager = [WeakRetained sharingEntryManager];
   v32 = 0;
-  v12 = [v11 codableEntryWithUUID:v6 errorOut:&v32];
+  v12 = [sharingEntryManager codableEntryWithUUID:dCopy errorOut:&v32];
   v13 = v32;
 
   if (v12)
@@ -1708,16 +1708,16 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
       {
         [v12 status];
         v25 = HKStringForSharingStatus();
-        v26 = [v12 primaryContactIdentifier];
-        v27 = [v12 uuid];
+        primaryContactIdentifier = [v12 primaryContactIdentifier];
+        uuid = [v12 uuid];
         *buf = 138544131;
-        v34 = self;
+        selfCopy4 = self;
         v35 = 2114;
         v36 = v25;
         v37 = 2113;
-        v38 = v26;
+        v38 = primaryContactIdentifier;
         v39 = 2114;
-        v40 = v27;
+        v40 = uuid;
         _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Error incorrect status %{public}@ for entry with identifier %{private}@ and UUID %{public}@", buf, 0x2Au);
       }
 
@@ -1725,11 +1725,11 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
       v16 = HKLogSharing();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v12 sharingEntry];
+        sharingEntry = [v12 sharingEntry];
         *buf = 138543619;
-        v34 = self;
+        selfCopy4 = self;
         v35 = 2113;
-        v36 = v17;
+        v36 = sharingEntry;
         _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Found entry: %{private}@", buf, 0x16u);
       }
 
@@ -1739,10 +1739,10 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
     else
     {
       v19 = objc_alloc(MEMORY[0x277CCAD78]);
-      v20 = [v12 invitationUUID];
-      v21 = [v19 initWithUUIDString:v20];
+      invitationUUID = [v12 invitationUUID];
+      v21 = [v19 initWithUUIDString:invitationUUID];
 
-      v22 = [(HDSummarySharingEntryIDSManager *)self invitationManager];
+      invitationManager = [(HDSummarySharingEntryIDSManager *)self invitationManager];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __72__HDSummarySharingEntryIDSManager_declineInvitationWithUUID_completion___block_invoke;
@@ -1752,7 +1752,7 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
       v29 = v21;
       v30 = v12;
       v23 = v21;
-      [v22 declineInvitationWithUUID:v23 serverAcknowledgedBlock:v28];
+      [invitationManager declineInvitationWithUUID:v23 serverAcknowledgedBlock:v28];
     }
   }
 
@@ -1763,7 +1763,7 @@ void __71__HDSummarySharingEntryIDSManager_acceptInvitationWithUUID_completion__
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v34 = self;
+      selfCopy4 = self;
       v35 = 2114;
       v36 = v13;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Codable entry not found. %{public}@", buf, 0x16u);
@@ -1854,20 +1854,20 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revokeInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)revokeInvitationWithUUID:(id)d completion:(id)completion
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:a4 completion:?];
+  dCopy = d;
+  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:completion completion:?];
   _HKInitializeLogging();
   v8 = HKLogSharing();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543618;
-    v56 = self;
+    selfCopy4 = self;
     v57 = 2114;
-    v58 = v9;
+    v58 = uUIDString;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Revoking invitation with UUID %{public}@", buf, 0x16u);
   }
 
@@ -1881,9 +1881,9 @@ LABEL_8:
     WeakRetained = 0;
   }
 
-  v11 = [WeakRetained sharingEntryManager];
+  sharingEntryManager = [WeakRetained sharingEntryManager];
   v54 = 0;
-  v12 = [v11 codableEntryWithUUID:v6 errorOut:&v54];
+  v12 = [sharingEntryManager codableEntryWithUUID:dCopy errorOut:&v54];
   v13 = v54;
 
   if (v12)
@@ -1891,16 +1891,16 @@ LABEL_8:
     if ([v12 status] == 1 || !objc_msgSend(v12, "status"))
     {
       v19 = objc_alloc(MEMORY[0x277CCAD78]);
-      v20 = [v12 invitationUUID];
-      v21 = [v19 initWithUUIDString:v20];
+      invitationUUID = [v12 invitationUUID];
+      v21 = [v19 initWithUUIDString:invitationUUID];
 
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion___block_invoke;
       aBlock[3] = &unk_27861FA10;
       aBlock[4] = self;
-      v41 = v6;
-      v49 = v6;
+      v41 = dCopy;
+      v49 = dCopy;
       v22 = v21;
       v50 = v22;
       v23 = v12;
@@ -1933,8 +1933,8 @@ LABEL_8:
         v28 = 0;
       }
 
-      v29 = [v28 cloudSyncManager];
-      v30 = [v29 sharedSummaryManager];
+      cloudSyncManager = [v28 cloudSyncManager];
+      sharedSummaryManager = [cloudSyncManager sharedSummaryManager];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion___block_invoke_370;
@@ -1946,10 +1946,10 @@ LABEL_8:
       v47 = v25;
       v31 = v25;
       v32 = v22;
-      v33 = [v30 revokeParticipantWithOutgoingSummarySharingEntry:v26 completion:v43];
+      v33 = [sharedSummaryManager revokeParticipantWithOutgoingSummarySharingEntry:v26 completion:v43];
 
       v7 = v40;
-      v6 = v41;
+      dCopy = v41;
       v13 = v39;
     }
 
@@ -1963,17 +1963,17 @@ LABEL_8:
       {
         [v12 status];
         v42 = HKStringForSharingStatus();
-        v36 = [v12 primaryContactIdentifier];
-        v37 = [v12 uuid];
+        primaryContactIdentifier = [v12 primaryContactIdentifier];
+        uuid = [v12 uuid];
         *buf = 138544131;
-        v56 = self;
+        selfCopy4 = self;
         v57 = 2114;
         v58 = v42;
         v59 = 2113;
-        v60 = v36;
+        v60 = primaryContactIdentifier;
         v61 = 2114;
-        v62 = v37;
-        v38 = v37;
+        v62 = uuid;
+        v38 = uuid;
         _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Error incorrect status %{public}@ for entry with identifier %{private}@ and UUID %{public}@", buf, 0x2Au);
       }
 
@@ -1981,11 +1981,11 @@ LABEL_8:
       v17 = HKLogSharing();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v12 sharingEntry];
+        sharingEntry = [v12 sharingEntry];
         *buf = 138543619;
-        v56 = self;
+        selfCopy4 = self;
         v57 = 2113;
-        v58 = v18;
+        v58 = sharingEntry;
         _os_log_impl(&dword_228986000, v17, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Found entry: %{private}@", buf, 0x16u);
       }
 
@@ -2001,7 +2001,7 @@ LABEL_8:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v56 = self;
+      selfCopy4 = self;
       v57 = 2114;
       v58 = v13;
       _os_log_error_impl(&dword_228986000, v34, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Codable entry not found. %{public}@", buf, 0x16u);
@@ -2177,20 +2177,20 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
   }
 }
 
-- (void)leaveInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)leaveInvitationWithUUID:(id)d completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:a4 completion:?];
+  dCopy = d;
+  v7 = [(HDSummarySharingEntryIDSManager *)self _finishHandlerForOperation:completion completion:?];
   _HKInitializeLogging();
   v8 = HKLogSharing();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543618;
-    v35 = self;
+    selfCopy5 = self;
     v36 = 2114;
-    v37 = v9;
+    v37 = uUIDString;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Leaving invitation with UUID %{public}@", buf, 0x16u);
   }
 
@@ -2204,9 +2204,9 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
     WeakRetained = 0;
   }
 
-  v11 = [WeakRetained sharingEntryManager];
+  sharingEntryManager = [WeakRetained sharingEntryManager];
   v33 = 0;
-  v12 = [v11 codableEntryWithUUID:v6 errorOut:&v33];
+  v12 = [sharingEntryManager codableEntryWithUUID:dCopy errorOut:&v33];
   v13 = v33;
 
   if (v12)
@@ -2219,7 +2219,7 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
 
       if (v14)
       {
-        v16 = [v14 cloudSyncManager];
+        cloudSyncManager = [v14 cloudSyncManager];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __70__HDSummarySharingEntryIDSManager_leaveInvitationWithUUID_completion___block_invoke;
@@ -2228,7 +2228,7 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
         v29 = v12;
         v31 = v7;
         v30 = v14;
-        v17 = [v16 leaveSharesWithCompletion:v28];
+        v17 = [cloudSyncManager leaveSharesWithCompletion:v28];
       }
 
       else
@@ -2238,7 +2238,7 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v35 = self;
+          selfCopy5 = self;
           v36 = 2114;
           v37 = v15;
           _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Unable to create profile. %{public}@", buf, 0x16u);
@@ -2259,16 +2259,16 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
       {
         [v12 status];
         v25 = HKStringForSharingStatus();
-        v26 = [v12 primaryContactIdentifier];
-        v27 = [v12 uuid];
+        primaryContactIdentifier = [v12 primaryContactIdentifier];
+        uuid = [v12 uuid];
         *buf = 138544131;
-        v35 = self;
+        selfCopy5 = self;
         v36 = 2114;
         v37 = v25;
         v38 = 2113;
-        v39 = v26;
+        v39 = primaryContactIdentifier;
         v40 = 2114;
-        v41 = v27;
+        v41 = uuid;
         _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Error incorrect status %{public}@ for entry with identifier %{private}@ and UUID %{public}@", buf, 0x2Au);
       }
 
@@ -2276,11 +2276,11 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
       v21 = HKLogSharing();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v12 sharingEntry];
+        sharingEntry = [v12 sharingEntry];
         *buf = 138543619;
-        v35 = self;
+        selfCopy5 = self;
         v36 = 2113;
-        v37 = v22;
+        v37 = sharingEntry;
         _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Found entry: %{private}@", buf, 0x16u);
       }
 
@@ -2295,7 +2295,7 @@ void __71__HDSummarySharingEntryIDSManager_revokeInvitationWithUUID_completion__
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v35 = self;
+      selfCopy5 = self;
       v36 = 2114;
       v37 = v13;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Codable entry not found. %{public}@", buf, 0x16u);
@@ -2583,27 +2583,27 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invitationManager:(id)a3 didReceiveInvitation:(id)a4
+- (void)invitationManager:(id)manager didReceiveInvitation:(id)invitation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 codableObject];
+  invitationCopy = invitation;
+  codableObject = [invitationCopy codableObject];
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
-    v9 = [v5 UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v6 primaryContactIdentifier];
+    uuid = [codableObject uuid];
+    uUID = [invitationCopy UUID];
+    uUIDString = [uUID UUIDString];
+    primaryContactIdentifier = [codableObject primaryContactIdentifier];
     *buf = 138544131;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v8;
+    v23 = uuid;
     v24 = 2114;
-    v25 = v10;
+    v25 = uUIDString;
     v26 = 2113;
-    v27 = v11;
+    v27 = primaryContactIdentifier;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Received invitation with UUID %{public}@, invitation UUID %{public}@ and identifier %{private}@.", buf, 0x2Au);
   }
 
@@ -2612,11 +2612,11 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __74__HDSummarySharingEntryIDSManager_invitationManager_didReceiveInvitation___block_invoke;
   block[3] = &unk_278613830;
-  v17 = v6;
-  v18 = v5;
-  v19 = self;
-  v13 = v5;
-  v14 = v6;
+  v17 = codableObject;
+  v18 = invitationCopy;
+  selfCopy2 = self;
+  v13 = invitationCopy;
+  v14 = codableObject;
   dispatch_sync(queue, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2697,27 +2697,27 @@ id __74__HDSummarySharingEntryIDSManager_invitationManager_didReceiveInvitation_
   return v4;
 }
 
-- (void)invitationManager:(id)a3 didRescindInvitation:(id)a4
+- (void)invitationManager:(id)manager didRescindInvitation:(id)invitation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 codableObject];
+  invitationCopy = invitation;
+  codableObject = [invitationCopy codableObject];
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
-    v9 = [v5 UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v6 primaryContactIdentifier];
+    uuid = [codableObject uuid];
+    uUID = [invitationCopy UUID];
+    uUIDString = [uUID UUIDString];
+    primaryContactIdentifier = [codableObject primaryContactIdentifier];
     *buf = 138544131;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v8;
+    v22 = uuid;
     v23 = 2114;
-    v24 = v10;
+    v24 = uUIDString;
     v25 = 2113;
-    v26 = v11;
+    v26 = primaryContactIdentifier;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Received rescind invitation with UUID %{public}@, invitation UUID %{public}@ and identifier %{private}@.", buf, 0x2Au);
   }
 
@@ -2727,10 +2727,10 @@ id __74__HDSummarySharingEntryIDSManager_invitationManager_didReceiveInvitation_
   block[2] = __74__HDSummarySharingEntryIDSManager_invitationManager_didRescindInvitation___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v17 = v5;
-  v18 = v6;
-  v13 = v6;
-  v14 = v5;
+  v17 = invitationCopy;
+  v18 = codableObject;
+  v13 = codableObject;
+  v14 = invitationCopy;
   dispatch_sync(queue, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2788,27 +2788,27 @@ LABEL_7:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invitationManager:(id)a3 didAcceptInvitation:(id)a4
+- (void)invitationManager:(id)manager didAcceptInvitation:(id)invitation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 codableObject];
+  invitationCopy = invitation;
+  codableObject = [invitationCopy codableObject];
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
-    v9 = [v5 UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v6 primaryContactIdentifier];
+    uuid = [codableObject uuid];
+    uUID = [invitationCopy UUID];
+    uUIDString = [uUID UUIDString];
+    primaryContactIdentifier = [codableObject primaryContactIdentifier];
     *buf = 138544131;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v8;
+    v22 = uuid;
     v23 = 2114;
-    v24 = v10;
+    v24 = uUIDString;
     v25 = 2113;
-    v26 = v11;
+    v26 = primaryContactIdentifier;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Received accept invitation with UUID %{public}@, invitation UUID %{public}@ and identifier %{private}@.", buf, 0x2Au);
   }
 
@@ -2818,10 +2818,10 @@ LABEL_7:
   block[2] = __73__HDSummarySharingEntryIDSManager_invitationManager_didAcceptInvitation___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v17 = v5;
-  v18 = v6;
-  v13 = v6;
-  v14 = v5;
+  v17 = invitationCopy;
+  v18 = codableObject;
+  v13 = codableObject;
+  v14 = invitationCopy;
   dispatch_sync(queue, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2874,27 +2874,27 @@ void __73__HDSummarySharingEntryIDSManager_invitationManager_didAcceptInvitation
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invitationManager:(id)a3 didDeclineInvitation:(id)a4
+- (void)invitationManager:(id)manager didDeclineInvitation:(id)invitation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 codableObject];
+  invitationCopy = invitation;
+  codableObject = [invitationCopy codableObject];
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
-    v9 = [v5 UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v6 primaryContactIdentifier];
+    uuid = [codableObject uuid];
+    uUID = [invitationCopy UUID];
+    uUIDString = [uUID UUIDString];
+    primaryContactIdentifier = [codableObject primaryContactIdentifier];
     *buf = 138544131;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v8;
+    v22 = uuid;
     v23 = 2114;
-    v24 = v10;
+    v24 = uUIDString;
     v25 = 2113;
-    v26 = v11;
+    v26 = primaryContactIdentifier;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Received decline invitation with UUID %{public}@, invitation UUID %{public}@ and identifier %{private}@.", buf, 0x2Au);
   }
 
@@ -2904,10 +2904,10 @@ void __73__HDSummarySharingEntryIDSManager_invitationManager_didAcceptInvitation
   block[2] = __74__HDSummarySharingEntryIDSManager_invitationManager_didDeclineInvitation___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v17 = v5;
-  v18 = v6;
-  v13 = v6;
-  v14 = v5;
+  v17 = invitationCopy;
+  v18 = codableObject;
+  v13 = codableObject;
+  v14 = invitationCopy;
   dispatch_sync(queue, block);
 
   v15 = *MEMORY[0x277D85DE8];

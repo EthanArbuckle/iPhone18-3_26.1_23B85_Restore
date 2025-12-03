@@ -7,101 +7,101 @@
 - (RefTypeHolder<TSCECellRef,)viewCellRefForChromeCellRef:()RefTypeHolder<TSCECellRef;
 - (RefTypeHolder<TSCERangeRef,)chromeRangeRefForViewRangeRef:()RefTypeHolder<TSCERangeRef;
 - (RefTypeHolder<TSCERangeRef,)viewRangeRefForChromeRangeRef:()RefTypeHolder<TSCERangeRef;
-- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)a3;
-- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)a3 summaryColumns:(id)a4 summaryRows:(id)a5 labelRows:(id)a6;
-- (TSUChromeCellCoord)chromeCellCoordForBaseCellCoord:(TSUModelCellCoord)a3;
-- (TSUChromeCellCoord)chromeCellCoordForViewCellCoord:(TSUViewCellCoord)a3;
-- (TSUChromeColumnIndex)chromeColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)a3;
-- (TSUChromeColumnIndex)chromeColumnIndexForViewColumnIndex:(TSUViewColumnIndex)a3;
-- (TSUChromeRowIndex)chromeRowIndexForBaseRowIndex:(TSUModelRowIndex)a3;
-- (TSUChromeRowIndex)chromeRowIndexForViewRowIndex:(TSUViewRowIndex)a3;
-- (TSUModelCellCoord)baseCellCoordForChromeCellCoord:(TSUChromeCellCoord)a3;
-- (TSUModelCellCoord)baseCellCoordForViewCellCoord:(TSUViewCellCoord)a3;
-- (TSUModelCellCoord)summaryCellCoordForViewCellCoord:(TSUViewCellCoord)a3;
-- (TSUModelColumnIndex)baseColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)a3;
-- (TSUModelColumnIndex)baseColumnIndexForViewColumnIndex:(TSUViewColumnIndex)a3;
-- (TSUModelColumnIndex)summaryColumnIndexForViewColumnIndex:(TSUViewColumnIndex)a3;
-- (TSUModelRowIndex)baseRowIndexForChromeRowIndex:(TSUChromeRowIndex)a3;
-- (TSUModelRowIndex)baseRowIndexForViewRowIndex:(TSUViewRowIndex)a3;
-- (TSUModelRowIndex)summaryRowIndexForViewRowIndex:(TSUViewRowIndex)a3;
-- (TSUViewCellCoord)viewCellCoordForBaseCellCoord:(TSUModelCellCoord)a3;
-- (TSUViewCellCoord)viewCellCoordForChromeCellCoord:(TSUChromeCellCoord)a3;
-- (TSUViewCellCoord)viewCellCoordForSummaryCellCoord:(TSUModelCellCoord)a3;
-- (TSUViewColumnIndex)viewColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)a3;
-- (TSUViewColumnIndex)viewColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)a3;
-- (TSUViewColumnIndex)viewColumnIndexForSummaryColumnIndex:(TSUModelColumnIndex)a3;
-- (TSUViewRowIndex)viewRowIndexForBaseRowIndex:(TSUModelRowIndex)a3;
-- (TSUViewRowIndex)viewRowIndexForChromeRowIndex:(TSUChromeRowIndex)a3;
-- (TSUViewRowIndex)viewRowIndexForSummaryRowIndex:(TSUModelRowIndex)a3;
+- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)d;
+- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)d summaryColumns:(id)columns summaryRows:(id)rows labelRows:(id)labelRows;
+- (TSUChromeCellCoord)chromeCellCoordForBaseCellCoord:(TSUModelCellCoord)coord;
+- (TSUChromeCellCoord)chromeCellCoordForViewCellCoord:(TSUViewCellCoord)coord;
+- (TSUChromeColumnIndex)chromeColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)index;
+- (TSUChromeColumnIndex)chromeColumnIndexForViewColumnIndex:(TSUViewColumnIndex)index;
+- (TSUChromeRowIndex)chromeRowIndexForBaseRowIndex:(TSUModelRowIndex)index;
+- (TSUChromeRowIndex)chromeRowIndexForViewRowIndex:(TSUViewRowIndex)index;
+- (TSUModelCellCoord)baseCellCoordForChromeCellCoord:(TSUChromeCellCoord)coord;
+- (TSUModelCellCoord)baseCellCoordForViewCellCoord:(TSUViewCellCoord)coord;
+- (TSUModelCellCoord)summaryCellCoordForViewCellCoord:(TSUViewCellCoord)coord;
+- (TSUModelColumnIndex)baseColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)index;
+- (TSUModelColumnIndex)baseColumnIndexForViewColumnIndex:(TSUViewColumnIndex)index;
+- (TSUModelColumnIndex)summaryColumnIndexForViewColumnIndex:(TSUViewColumnIndex)index;
+- (TSUModelRowIndex)baseRowIndexForChromeRowIndex:(TSUChromeRowIndex)index;
+- (TSUModelRowIndex)baseRowIndexForViewRowIndex:(TSUViewRowIndex)index;
+- (TSUModelRowIndex)summaryRowIndexForViewRowIndex:(TSUViewRowIndex)index;
+- (TSUViewCellCoord)viewCellCoordForBaseCellCoord:(TSUModelCellCoord)coord;
+- (TSUViewCellCoord)viewCellCoordForChromeCellCoord:(TSUChromeCellCoord)coord;
+- (TSUViewCellCoord)viewCellCoordForSummaryCellCoord:(TSUModelCellCoord)coord;
+- (TSUViewColumnIndex)viewColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)index;
+- (TSUViewColumnIndex)viewColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)index;
+- (TSUViewColumnIndex)viewColumnIndexForSummaryColumnIndex:(TSUModelColumnIndex)index;
+- (TSUViewRowIndex)viewRowIndexForBaseRowIndex:(TSUModelRowIndex)index;
+- (TSUViewRowIndex)viewRowIndexForChromeRowIndex:(TSUChromeRowIndex)index;
+- (TSUViewRowIndex)viewRowIndexForSummaryRowIndex:(TSUModelRowIndex)index;
 - (id).cxx_construct;
-- (id)baseColumnIndexesForChromeColumnIndexes:(id)a3;
-- (id)baseColumnIndexesForViewColumnIndexes:(id)a3;
-- (id)baseRowIndexesForChromeRowIndexes:(id)a3;
-- (id)baseRowIndexesForViewRowIndexes:(id)a3;
-- (id)baseShuffleMapForViewShuffleMap:(id)a3;
-- (id)baseTractRefForChromeTractRef:(id)a3;
-- (id)baseTractRefForViewTractRef:(id)a3;
-- (id)chromeColumnIndexesForViewColumnIndexes:(id)a3;
-- (id)chromeRowIndexesForViewRowIndexes:(id)a3;
-- (id)chromeTractRefForBaseTractRef:(id)a3;
-- (id)chromeTractRefForViewTractRef:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromArchive:(const void *)a3;
-- (id)viewColumnIndexesForBaseColumnIndexes:(id)a3;
-- (id)viewColumnIndexesForChromeColumnIndexes:(id)a3;
-- (id)viewRowIndexesForBaseRowIndexes:(id)a3;
-- (id)viewRowIndexesForChromeRowIndexes:(id)a3;
-- (id)viewTractRefForBaseTractRef:(id)a3;
-- (id)viewTractRefForChromeTractRef:(id)a3;
-- (void)encodeToArchive:(void *)a3;
-- (void)mapBaseColumn:(unsigned __int16)a3 toViewColumn:(unsigned __int16)a4;
-- (void)mapBaseRow:(unsigned int)a3 toViewRow:(unsigned int)a4;
-- (void)mapSummaryColumn:(unsigned __int16)a3 toViewColumn:(unsigned __int16)a4;
-- (void)mapSummaryRow:(unsigned int)a3 toViewRow:(unsigned int)a4;
+- (id)baseColumnIndexesForChromeColumnIndexes:(id)indexes;
+- (id)baseColumnIndexesForViewColumnIndexes:(id)indexes;
+- (id)baseRowIndexesForChromeRowIndexes:(id)indexes;
+- (id)baseRowIndexesForViewRowIndexes:(id)indexes;
+- (id)baseShuffleMapForViewShuffleMap:(id)map;
+- (id)baseTractRefForChromeTractRef:(id)ref;
+- (id)baseTractRefForViewTractRef:(id)ref;
+- (id)chromeColumnIndexesForViewColumnIndexes:(id)indexes;
+- (id)chromeRowIndexesForViewRowIndexes:(id)indexes;
+- (id)chromeTractRefForBaseTractRef:(id)ref;
+- (id)chromeTractRefForViewTractRef:(id)ref;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromArchive:(const void *)archive;
+- (id)viewColumnIndexesForBaseColumnIndexes:(id)indexes;
+- (id)viewColumnIndexesForChromeColumnIndexes:(id)indexes;
+- (id)viewRowIndexesForBaseRowIndexes:(id)indexes;
+- (id)viewRowIndexesForChromeRowIndexes:(id)indexes;
+- (id)viewTractRefForBaseTractRef:(id)ref;
+- (id)viewTractRefForChromeTractRef:(id)ref;
+- (void)encodeToArchive:(void *)archive;
+- (void)mapBaseColumn:(unsigned __int16)column toViewColumn:(unsigned __int16)viewColumn;
+- (void)mapBaseRow:(unsigned int)row toViewRow:(unsigned int)viewRow;
+- (void)mapSummaryColumn:(unsigned __int16)column toViewColumn:(unsigned __int16)viewColumn;
+- (void)mapSummaryRow:(unsigned int)row toViewRow:(unsigned int)viewRow;
 @end
 
 @implementation TSCECoordMapper
 
-- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)a3
+- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)d
 {
   v5.receiver = self;
   v5.super_class = TSCECoordMapper;
   result = [(TSCECoordMapper *)&v5 init];
   if (result)
   {
-    result->_tableUID = *a3;
+    result->_tableUID = *d;
     result->_isIdentityMapping = 1;
   }
 
   return result;
 }
 
-- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)a3 summaryColumns:(id)a4 summaryRows:(id)a5 labelRows:(id)a6
+- (TSCECoordMapper)initWithTableUID:(const TSKUIDStruct *)d summaryColumns:(id)columns summaryRows:(id)rows labelRows:(id)labelRows
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  columnsCopy = columns;
+  rowsCopy = rows;
+  labelRowsCopy = labelRows;
   v31.receiver = self;
   v31.super_class = TSCECoordMapper;
   v14 = [(TSCECoordMapper *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    v14->_tableUID = *a3;
-    objc_storeStrong(&v14->_summaryColumnIndexes, a4);
-    objc_storeStrong(&v15->_summaryRowIndexes, a5);
-    objc_storeStrong(&v15->_labelRowIndexes, a6);
+    v14->_tableUID = *d;
+    objc_storeStrong(&v14->_summaryColumnIndexes, columns);
+    objc_storeStrong(&v15->_summaryRowIndexes, rows);
+    objc_storeStrong(&v15->_labelRowIndexes, labelRows);
     if (objc_msgSend_count(v15->_labelRowIndexes, v16, v17, v18, v19))
     {
-      v24 = objc_msgSend_mutableCopy(v12, v20, v21, v22, v23);
-      objc_msgSend_addIndexes_(v24, v25, v13, v26, v27);
+      v24 = objc_msgSend_mutableCopy(rowsCopy, v20, v21, v22, v23);
+      objc_msgSend_addIndexes_(v24, v25, labelRowsCopy, v26, v27);
       summaryAndLabelRowIndexes = v15->_summaryAndLabelRowIndexes;
       v15->_summaryAndLabelRowIndexes = v24;
     }
 
     else
     {
-      v29 = v12;
+      v29 = rowsCopy;
       summaryAndLabelRowIndexes = v15->_summaryAndLabelRowIndexes;
       v15->_summaryAndLabelRowIndexes = v29;
     }
@@ -110,11 +110,11 @@
   return v15;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  if (*(a3 + 15))
+  if (*(archive + 15))
   {
-    v5 = *(a3 + 15);
+    v5 = *(archive + 15);
   }
 
   else
@@ -124,25 +124,25 @@
 
   v29[0] = TSKUIDStruct::loadFromMessage(v5, a2);
   v29[1] = v6;
-  if ((*(a3 + 16) & 2) == 0)
+  if ((*(archive + 16) & 2) == 0)
   {
     return objc_msgSend_initWithTableUID_(self, v6, v29, v7, v8);
   }
 
-  sub_22126A778(*(a3 + 16), &v28);
+  sub_22126A778(*(archive + 16), &v28);
   TSUIndexSet::TSUIndexSet(&v27);
-  v10 = *(a3 + 4);
+  v10 = *(archive + 4);
   if ((v10 & 8) != 0)
   {
-    sub_22126A778(*(a3 + 18), &v26);
+    sub_22126A778(*(archive + 18), &v26);
     TSUIndexSet::operator=();
     TSUIndexSet::~TSUIndexSet(&v26);
-    v10 = *(a3 + 4);
+    v10 = *(archive + 4);
   }
 
   if ((v10 & 4) != 0)
   {
-    sub_22126A778(*(a3 + 17), &v26);
+    sub_22126A778(*(archive + 17), &v26);
     v11 = TSUIndexSet::asNSIndexSet(&v26);
     TSUIndexSet::~TSUIndexSet(&v26);
   }
@@ -158,13 +158,13 @@
 
   if (v9)
   {
-    v17 = *(a3 + 8);
+    v17 = *(archive + 8);
     if (v17 >= 1)
     {
       v18 = 8;
       do
       {
-        objc_msgSend_mapBaseRow_toViewRow_(v9, v15, *(*(*(a3 + 5) + v18) + 24), *(*(*(a3 + 5) + v18) + 28), v16);
+        objc_msgSend_mapBaseRow_toViewRow_(v9, v15, *(*(*(archive + 5) + v18) + 24), *(*(*(archive + 5) + v18) + 28), v16);
         v18 += 8;
         --v17;
       }
@@ -172,13 +172,13 @@
       while (v17);
     }
 
-    v19 = *(a3 + 20);
+    v19 = *(archive + 20);
     if (v19 >= 1)
     {
       v20 = 8;
       do
       {
-        objc_msgSend_mapSummaryRow_toViewRow_(v9, v15, *(*(*(a3 + 11) + v20) + 24), *(*(*(a3 + 11) + v20) + 28), v16);
+        objc_msgSend_mapSummaryRow_toViewRow_(v9, v15, *(*(*(archive + 11) + v20) + 24), *(*(*(archive + 11) + v20) + 28), v16);
         v20 += 8;
         --v19;
       }
@@ -188,13 +188,13 @@
 
     if (v11)
     {
-      v21 = *(a3 + 14);
+      v21 = *(archive + 14);
       if (v21 >= 1)
       {
         v22 = 8;
         do
         {
-          objc_msgSend_mapBaseColumn_toViewColumn_(v9, v15, *(*(*(a3 + 8) + v22) + 24), *(*(*(a3 + 8) + v22) + 28), v16);
+          objc_msgSend_mapBaseColumn_toViewColumn_(v9, v15, *(*(*(archive + 8) + v22) + 24), *(*(*(archive + 8) + v22) + 28), v16);
           v22 += 8;
           --v21;
         }
@@ -202,13 +202,13 @@
         while (v21);
       }
 
-      v23 = *(a3 + 26);
+      v23 = *(archive + 26);
       if (v23 >= 1)
       {
         v24 = 8;
         do
         {
-          objc_msgSend_mapSummaryColumn_toViewColumn_(v9, v15, *(*(*(a3 + 14) + v24) + 24), *(*(*(a3 + 14) + v24) + 28), v16);
+          objc_msgSend_mapSummaryColumn_toViewColumn_(v9, v15, *(*(*(archive + 14) + v24) + 24), *(*(*(archive + 14) + v24) + 28), v16);
           v24 += 8;
           --v23;
         }
@@ -223,52 +223,52 @@
   return v9;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
-  *(a3 + 4) |= 1u;
-  v5 = *(a3 + 15);
+  *(archive + 4) |= 1u;
+  v5 = *(archive + 15);
   if (!v5)
   {
-    v6 = *(a3 + 1);
+    v6 = *(archive + 1);
     if (v6)
     {
       v6 = *(v6 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v5 = MEMORY[0x223DA0360](v6);
-    *(a3 + 15) = v5;
+    *(archive + 15) = v5;
   }
 
   TSKUIDStruct::saveToMessage(&self->_tableUID, v5);
   if ((objc_msgSend_isIdentityMapping(self, v7, v8, v9, v10) & 1) == 0)
   {
     MEMORY[0x223D9F7A0](&v57, self->_summaryRowIndexes);
-    *(a3 + 4) |= 2u;
-    if (!*(a3 + 16))
+    *(archive + 4) |= 2u;
+    if (!*(archive + 16))
     {
-      v11 = *(a3 + 1);
+      v11 = *(archive + 1);
       if (v11)
       {
         v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      *(a3 + 16) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v11);
+      *(archive + 16) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v11);
     }
 
     sub_22126A644();
     if (objc_msgSend_count(self->_labelRowIndexes, v12, v13, v14, v15))
     {
       MEMORY[0x223D9F7A0](&v56, self->_labelRowIndexes);
-      *(a3 + 4) |= 8u;
-      if (!*(a3 + 18))
+      *(archive + 4) |= 8u;
+      if (!*(archive + 18))
       {
-        v16 = *(a3 + 1);
+        v16 = *(archive + 1);
         if (v16)
         {
           v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
         }
 
-        *(a3 + 18) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v16);
+        *(archive + 18) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v16);
       }
 
       sub_22126A644();
@@ -280,20 +280,20 @@
     {
       while (1)
       {
-        v18 = *(a3 + 5);
+        v18 = *(archive + 5);
         if (!v18)
         {
           goto LABEL_22;
         }
 
-        v19 = *(a3 + 8);
+        v19 = *(archive + 8);
         v20 = *v18;
         if (v19 >= *v18)
         {
           break;
         }
 
-        *(a3 + 8) = v19 + 1;
+        *(archive + 8) = v19 + 1;
         v21 = *&v18[2 * v19 + 2];
 LABEL_24:
         v24 = next[4];
@@ -310,19 +310,19 @@ LABEL_24:
         }
       }
 
-      if (v20 == *(a3 + 9))
+      if (v20 == *(archive + 9))
       {
 LABEL_22:
-        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-        v18 = *(a3 + 5);
+        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+        v18 = *(archive + 5);
         v20 = *v18;
       }
 
       *v18 = v20 + 1;
-      v21 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_BaseToViewEntry>(*(a3 + 3));
-      v22 = *(a3 + 8);
-      v23 = *(a3 + 5) + 8 * v22;
-      *(a3 + 8) = v22 + 1;
+      v21 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_BaseToViewEntry>(*(archive + 3));
+      v22 = *(archive + 8);
+      v23 = *(archive + 5) + 8 * v22;
+      *(archive + 8) = v22 + 1;
       *(v23 + 8) = v21;
       goto LABEL_24;
     }
@@ -333,20 +333,20 @@ LABEL_25:
     {
       while (1)
       {
-        v28 = *(a3 + 11);
+        v28 = *(archive + 11);
         if (!v28)
         {
           goto LABEL_31;
         }
 
-        v29 = *(a3 + 20);
+        v29 = *(archive + 20);
         v30 = *v28;
         if (v29 >= *v28)
         {
           break;
         }
 
-        *(a3 + 20) = v29 + 1;
+        *(archive + 20) = v29 + 1;
         v31 = *&v28[2 * v29 + 2];
 LABEL_33:
         v34 = v27[4];
@@ -363,19 +363,19 @@ LABEL_33:
         }
       }
 
-      if (v30 == *(a3 + 21))
+      if (v30 == *(archive + 21))
       {
 LABEL_31:
-        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 72));
-        v28 = *(a3 + 11);
+        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 72));
+        v28 = *(archive + 11);
         v30 = *v28;
       }
 
       *v28 = v30 + 1;
-      v31 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_SummaryToViewEntry>(*(a3 + 9));
-      v32 = *(a3 + 20);
-      v33 = *(a3 + 11) + 8 * v32;
-      *(a3 + 20) = v32 + 1;
+      v31 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_SummaryToViewEntry>(*(archive + 9));
+      v32 = *(archive + 20);
+      v33 = *(archive + 11) + 8 * v32;
+      *(archive + 20) = v32 + 1;
       *(v33 + 8) = v31;
       goto LABEL_33;
     }
@@ -384,16 +384,16 @@ LABEL_34:
     if (self->_summaryColumnIndexes)
     {
       MEMORY[0x223D9F7A0](&v56);
-      *(a3 + 4) |= 4u;
-      if (!*(a3 + 17))
+      *(archive + 4) |= 4u;
+      if (!*(archive + 17))
       {
-        v37 = *(a3 + 1);
+        v37 = *(archive + 1);
         if (v37)
         {
           v37 = *(v37 & 0xFFFFFFFFFFFFFFFELL);
         }
 
-        *(a3 + 17) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v37);
+        *(archive + 17) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v37);
       }
 
       sub_22126A644();
@@ -402,20 +402,20 @@ LABEL_34:
       {
         while (1)
         {
-          v39 = *(a3 + 8);
+          v39 = *(archive + 8);
           if (!v39)
           {
             goto LABEL_45;
           }
 
-          v40 = *(a3 + 14);
+          v40 = *(archive + 14);
           v41 = *v39;
           if (v40 >= *v39)
           {
             break;
           }
 
-          *(a3 + 14) = v40 + 1;
+          *(archive + 14) = v40 + 1;
           v42 = *&v39[2 * v40 + 2];
 LABEL_47:
           v45 = v42[4];
@@ -430,19 +430,19 @@ LABEL_47:
           }
         }
 
-        if (v41 == *(a3 + 15))
+        if (v41 == *(archive + 15))
         {
 LABEL_45:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 48));
-          v39 = *(a3 + 8);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 48));
+          v39 = *(archive + 8);
           v41 = *v39;
         }
 
         *v39 = v41 + 1;
-        v42 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_BaseToViewEntry>(*(a3 + 6));
-        v43 = *(a3 + 14);
-        v44 = *(a3 + 8) + 8 * v43;
-        *(a3 + 14) = v43 + 1;
+        v42 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_BaseToViewEntry>(*(archive + 6));
+        v43 = *(archive + 14);
+        v44 = *(archive + 8) + 8 * v43;
+        *(archive + 14) = v43 + 1;
         *(v44 + 8) = v42;
         goto LABEL_47;
       }
@@ -453,20 +453,20 @@ LABEL_48:
       {
         while (1)
         {
-          v48 = *(a3 + 14);
+          v48 = *(archive + 14);
           if (!v48)
           {
             goto LABEL_54;
           }
 
-          v49 = *(a3 + 26);
+          v49 = *(archive + 26);
           v50 = *v48;
           if (v49 >= *v48)
           {
             break;
           }
 
-          *(a3 + 26) = v49 + 1;
+          *(archive + 26) = v49 + 1;
           v51 = *&v48[2 * v49 + 2];
 LABEL_56:
           v54 = v51[4];
@@ -481,19 +481,19 @@ LABEL_56:
           }
         }
 
-        if (v50 == *(a3 + 27))
+        if (v50 == *(archive + 27))
         {
 LABEL_54:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 96));
-          v48 = *(a3 + 14);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 96));
+          v48 = *(archive + 14);
           v50 = *v48;
         }
 
         *v48 = v50 + 1;
-        v51 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_SummaryToViewEntry>(*(a3 + 12));
-        v52 = *(a3 + 26);
-        v53 = *(a3 + 14) + 8 * v52;
-        *(a3 + 26) = v52 + 1;
+        v51 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CoordMapperArchive_SummaryToViewEntry>(*(archive + 12));
+        v52 = *(archive + 26);
+        v53 = *(archive + 14) + 8 * v52;
+        *(archive + 26) = v52 + 1;
         *(v53 + 8) = v51;
         goto LABEL_56;
       }
@@ -506,63 +506,63 @@ LABEL_57:
   }
 }
 
-- (void)mapBaseRow:(unsigned int)a3 toViewRow:(unsigned int)a4
+- (void)mapBaseRow:(unsigned int)row toViewRow:(unsigned int)viewRow
 {
-  v6 = a4;
-  v7 = a3;
-  if (a3 != 0x7FFFFFFF)
+  viewRowCopy = viewRow;
+  rowCopy = row;
+  if (row != 0x7FFFFFFF)
   {
-    v8 = &v7;
-    *(sub_2211DB9B8(&self->_baseRowToViewRow.__table_.__bucket_list_.__ptr_, &v7) + 5) = a4;
-    v5 = v7;
-    v8 = &v6;
-    *(sub_2211DB9B8(&self->_viewRowToBaseRow.__table_.__bucket_list_.__ptr_, &v6) + 5) = v5;
+    v8 = &rowCopy;
+    *(sub_2211DB9B8(&self->_baseRowToViewRow.__table_.__bucket_list_.__ptr_, &rowCopy) + 5) = viewRow;
+    v5 = rowCopy;
+    v8 = &viewRowCopy;
+    *(sub_2211DB9B8(&self->_viewRowToBaseRow.__table_.__bucket_list_.__ptr_, &viewRowCopy) + 5) = v5;
   }
 }
 
-- (void)mapBaseColumn:(unsigned __int16)a3 toViewColumn:(unsigned __int16)a4
+- (void)mapBaseColumn:(unsigned __int16)column toViewColumn:(unsigned __int16)viewColumn
 {
-  v7 = a3;
-  v6 = a4;
-  if (a3 != 0x7FFF)
+  columnCopy = column;
+  viewColumnCopy = viewColumn;
+  if (column != 0x7FFF)
   {
-    v8 = &v7;
-    *(sub_2211DBBEC(&self->_baseColumnToViewColumn.__table_.__bucket_list_.__ptr_, &v7) + 9) = a4;
-    v5 = v7;
-    v8 = &v6;
-    *(sub_2211DBBEC(&self->_viewColumnToBaseColumn.__table_.__bucket_list_.__ptr_, &v6) + 9) = v5;
+    v8 = &columnCopy;
+    *(sub_2211DBBEC(&self->_baseColumnToViewColumn.__table_.__bucket_list_.__ptr_, &columnCopy) + 9) = viewColumn;
+    v5 = columnCopy;
+    v8 = &viewColumnCopy;
+    *(sub_2211DBBEC(&self->_viewColumnToBaseColumn.__table_.__bucket_list_.__ptr_, &viewColumnCopy) + 9) = v5;
   }
 }
 
-- (void)mapSummaryRow:(unsigned int)a3 toViewRow:(unsigned int)a4
+- (void)mapSummaryRow:(unsigned int)row toViewRow:(unsigned int)viewRow
 {
-  v6 = a4;
-  v7 = a3;
-  if (a3 != 0x7FFFFFFF)
+  viewRowCopy = viewRow;
+  rowCopy = row;
+  if (row != 0x7FFFFFFF)
   {
-    v8 = &v7;
-    *(sub_2211DB9B8(&self->_summaryRowToViewRow.__table_.__bucket_list_.__ptr_, &v7) + 5) = a4;
-    v5 = v7;
-    v8 = &v6;
-    *(sub_2211DB9B8(&self->_viewRowToSummaryRow.__table_.__bucket_list_.__ptr_, &v6) + 5) = v5;
+    v8 = &rowCopy;
+    *(sub_2211DB9B8(&self->_summaryRowToViewRow.__table_.__bucket_list_.__ptr_, &rowCopy) + 5) = viewRow;
+    v5 = rowCopy;
+    v8 = &viewRowCopy;
+    *(sub_2211DB9B8(&self->_viewRowToSummaryRow.__table_.__bucket_list_.__ptr_, &viewRowCopy) + 5) = v5;
   }
 }
 
-- (void)mapSummaryColumn:(unsigned __int16)a3 toViewColumn:(unsigned __int16)a4
+- (void)mapSummaryColumn:(unsigned __int16)column toViewColumn:(unsigned __int16)viewColumn
 {
-  v7 = a3;
-  v6 = a4;
-  if (a3 != 0x7FFF)
+  columnCopy = column;
+  viewColumnCopy = viewColumn;
+  if (column != 0x7FFF)
   {
-    v8 = &v7;
-    *(sub_2211DBBEC(&self->_summaryColumnToViewColumn.__table_.__bucket_list_.__ptr_, &v7) + 9) = a4;
-    v5 = v7;
-    v8 = &v6;
-    *(sub_2211DBBEC(&self->_viewColumnToSummaryColumn.__table_.__bucket_list_.__ptr_, &v6) + 9) = v5;
+    v8 = &columnCopy;
+    *(sub_2211DBBEC(&self->_summaryColumnToViewColumn.__table_.__bucket_list_.__ptr_, &columnCopy) + 9) = viewColumn;
+    v5 = columnCopy;
+    v8 = &viewColumnCopy;
+    *(sub_2211DBBEC(&self->_viewColumnToSummaryColumn.__table_.__bucket_list_.__ptr_, &viewColumnCopy) + 9) = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v4->_isIdentityMapping = self->_isIdentityMapping;
@@ -594,14 +594,14 @@ LABEL_57:
   return v4;
 }
 
-- (TSUModelColumnIndex)baseColumnIndexForViewColumnIndex:(TSUViewColumnIndex)a3
+- (TSUModelColumnIndex)baseColumnIndexForViewColumnIndex:(TSUViewColumnIndex)index
 {
   v5._column = 0x7FFF;
-  if (a3.var0 != 0x7FFF)
+  if (index.var0 != 0x7FFF)
   {
     v9 = v3;
     v10 = v4;
-    var0 = a3.var0;
+    var0 = index.var0;
     if (!self->_isIdentityMapping)
     {
       if (self->_summaryColumnIndexes)
@@ -615,9 +615,9 @@ LABEL_57:
         return *(v6 + 18);
       }
 
-      else if (a3.var0)
+      else if (index.var0)
       {
-        --a3.var0;
+        --index.var0;
       }
 
       else
@@ -626,20 +626,20 @@ LABEL_57:
       }
     }
 
-    return a3.var0;
+    return index.var0;
   }
 
   return v5;
 }
 
-- (TSUModelRowIndex)baseRowIndexForViewRowIndex:(TSUViewRowIndex)a3
+- (TSUModelRowIndex)baseRowIndexForViewRowIndex:(TSUViewRowIndex)index
 {
   v5._row = 0x7FFFFFFF;
-  if (a3.var0 != 0x7FFFFFFF)
+  if (index.var0 != 0x7FFFFFFF)
   {
     v9 = v3;
     v10 = v4;
-    var0 = a3.var0;
+    var0 = index.var0;
     if (!self->_isIdentityMapping)
     {
       v6 = sub_2211DC534(&self->_viewRowToBaseRow.__table_.__bucket_list_.__ptr_, &var0);
@@ -651,64 +651,64 @@ LABEL_57:
       return *(v6 + 20);
     }
 
-    return a3.var0;
+    return index.var0;
   }
 
   return v5;
 }
 
-- (TSUModelColumnIndex)baseColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)a3
+- (TSUModelColumnIndex)baseColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)index
 {
   if (self->_summaryColumnIndexes)
   {
-    v7 = objc_msgSend_viewColumnIndexForChromeColumnIndex_(self, a2, a3.var0, v3, v4);
+    v7 = objc_msgSend_viewColumnIndexForChromeColumnIndex_(self, a2, index.var0, v3, v4);
 
     return objc_msgSend_baseColumnIndexForViewColumnIndex_(self, v6, v7, v8, v9);
   }
 
   else
   {
-    return a3.var0;
+    return index.var0;
   }
 }
 
-- (TSUModelRowIndex)baseRowIndexForChromeRowIndex:(TSUChromeRowIndex)a3
+- (TSUModelRowIndex)baseRowIndexForChromeRowIndex:(TSUChromeRowIndex)index
 {
-  v7 = objc_msgSend_viewRowIndexForChromeRowIndex_(self, a2, a3.var0, v3, v4);
+  v7 = objc_msgSend_viewRowIndexForChromeRowIndex_(self, a2, index.var0, v3, v4);
 
   return objc_msgSend_baseRowIndexForViewRowIndex_(self, v6, v7, v8, v9);
 }
 
-- (TSUChromeColumnIndex)chromeColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)a3
+- (TSUChromeColumnIndex)chromeColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)index
 {
   if (self->_summaryColumnIndexes)
   {
-    v7 = objc_msgSend_viewColumnIndexForBaseColumnIndex_(self, a2, a3._column, v3, v4);
+    v7 = objc_msgSend_viewColumnIndexForBaseColumnIndex_(self, a2, index._column, v3, v4);
 
     return objc_msgSend_chromeColumnIndexForViewColumnIndex_(self, v6, v7, v8, v9);
   }
 
   else
   {
-    return a3._column;
+    return index._column;
   }
 }
 
-- (TSUChromeRowIndex)chromeRowIndexForBaseRowIndex:(TSUModelRowIndex)a3
+- (TSUChromeRowIndex)chromeRowIndexForBaseRowIndex:(TSUModelRowIndex)index
 {
-  v7 = objc_msgSend_viewRowIndexForBaseRowIndex_(self, a2, a3._row, v3, v4);
+  v7 = objc_msgSend_viewRowIndexForBaseRowIndex_(self, a2, index._row, v3, v4);
 
   return objc_msgSend_chromeRowIndexForViewRowIndex_(self, v6, v7, v8, v9);
 }
 
-- (TSUViewColumnIndex)viewColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)a3
+- (TSUViewColumnIndex)viewColumnIndexForBaseColumnIndex:(TSUModelColumnIndex)index
 {
   v5.var0 = 0x7FFF;
-  if (a3._column != 0x7FFF)
+  if (index._column != 0x7FFF)
   {
     v9 = v3;
     v10 = v4;
-    column = a3._column;
+    column = index._column;
     if (!self->_isIdentityMapping)
     {
       if (self->_summaryColumnIndexes)
@@ -727,24 +727,24 @@ LABEL_57:
 
       else
       {
-        ++a3._column;
+        ++index._column;
       }
     }
 
-    return a3._column;
+    return index._column;
   }
 
   return v5;
 }
 
-- (TSUViewRowIndex)viewRowIndexForBaseRowIndex:(TSUModelRowIndex)a3
+- (TSUViewRowIndex)viewRowIndexForBaseRowIndex:(TSUModelRowIndex)index
 {
   v5.var0 = 0x7FFFFFFF;
-  if (a3._row != 0x7FFFFFFF)
+  if (index._row != 0x7FFFFFFF)
   {
     v9 = v3;
     v10 = v4;
-    row = a3._row;
+    row = index._row;
     if (!self->_isIdentityMapping)
     {
       v6 = sub_2211DC534(&self->_baseRowToViewRow.__table_.__bucket_list_.__ptr_, &row);
@@ -759,27 +759,27 @@ LABEL_57:
       }
     }
 
-    return a3._row;
+    return index._row;
   }
 
   return v5;
 }
 
-- (TSUChromeColumnIndex)chromeColumnIndexForViewColumnIndex:(TSUViewColumnIndex)a3
+- (TSUChromeColumnIndex)chromeColumnIndexForViewColumnIndex:(TSUViewColumnIndex)index
 {
-  v5 = *&a3.var0;
+  v5 = *&index.var0;
   summaryColumnIndexes = self->_summaryColumnIndexes;
   if (summaryColumnIndexes)
   {
     LOWORD(v8) = 0x7FFF;
-    if (a3.var0 != 0x7FFF)
+    if (index.var0 != 0x7FFF)
     {
       if (self->_chromeCoordsAreViewCoords)
       {
-        LOWORD(v8) = a3;
+        LOWORD(v8) = index;
       }
 
-      else if (objc_msgSend_containsIndex_(summaryColumnIndexes, a2, a3.var0, v3, v4))
+      else if (objc_msgSend_containsIndex_(summaryColumnIndexes, a2, index.var0, v3, v4))
       {
         LOWORD(v8) = 0x7FFF;
       }
@@ -796,45 +796,45 @@ LABEL_57:
   else
   {
 
-    return objc_msgSend_baseColumnIndexForViewColumnIndex_(self, a2, a3.var0, v3, v4);
+    return objc_msgSend_baseColumnIndexForViewColumnIndex_(self, a2, index.var0, v3, v4);
   }
 }
 
-- (TSUChromeRowIndex)chromeRowIndexForViewRowIndex:(TSUViewRowIndex)a3
+- (TSUChromeRowIndex)chromeRowIndexForViewRowIndex:(TSUViewRowIndex)index
 {
   v7.var0 = 0x7FFFFFFF;
-  if (a3.var0 != 0x7FFFFFFF)
+  if (index.var0 != 0x7FFFFFFF)
   {
     if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
     {
-      return a3.var0;
+      return index.var0;
     }
 
-    else if (objc_msgSend_containsIndex_(self->_summaryAndLabelRowIndexes, a2, a3.var0, v3, v4))
+    else if (objc_msgSend_containsIndex_(self->_summaryAndLabelRowIndexes, a2, index.var0, v3, v4))
     {
       return 0x7FFFFFFF;
     }
 
     else
     {
-      return (a3.var0 - objc_msgSend_countOfIndexesInRange_(self->_summaryAndLabelRowIndexes, v8, 0, a3.var0, v9));
+      return (index.var0 - objc_msgSend_countOfIndexesInRange_(self->_summaryAndLabelRowIndexes, v8, 0, index.var0, v9));
     }
   }
 
   return v7;
 }
 
-- (TSUViewColumnIndex)viewColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)a3
+- (TSUViewColumnIndex)viewColumnIndexForChromeColumnIndex:(TSUChromeColumnIndex)index
 {
   summaryColumnIndexes = self->_summaryColumnIndexes;
   if (summaryColumnIndexes)
   {
     v7.var0 = 0x7FFF;
-    if (a3.var0 != 0x7FFF)
+    if (index.var0 != 0x7FFF)
     {
       if (self->_chromeCoordsAreViewCoords)
       {
-        return a3.var0;
+        return index.var0;
       }
 
       else
@@ -842,7 +842,7 @@ LABEL_57:
         v14 = 0;
         v15 = &v14;
         v16 = 0x2020000000;
-        var0 = a3.var0;
+        var0 = index.var0;
         v10 = 0;
         v11 = &v10;
         v12 = 0x2020000000;
@@ -867,18 +867,18 @@ LABEL_57:
   else
   {
 
-    return objc_msgSend_viewColumnIndexForBaseColumnIndex_(self, a2, a3.var0, v3, v4);
+    return objc_msgSend_viewColumnIndexForBaseColumnIndex_(self, a2, index.var0, v3, v4);
   }
 }
 
-- (TSUViewRowIndex)viewRowIndexForChromeRowIndex:(TSUChromeRowIndex)a3
+- (TSUViewRowIndex)viewRowIndexForChromeRowIndex:(TSUChromeRowIndex)index
 {
   v5 = 0x7FFFFFFF;
-  if (a3.var0 != 0x7FFFFFFF)
+  if (index.var0 != 0x7FFFFFFF)
   {
     if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
     {
-      return a3.var0;
+      return index.var0;
     }
 
     else
@@ -886,7 +886,7 @@ LABEL_57:
       v13 = 0;
       v14 = &v13;
       v15 = 0x2020000000;
-      var0 = a3.var0;
+      var0 = index.var0;
       v9 = 0;
       v10 = &v9;
       v11 = 0x2020000000;
@@ -909,14 +909,14 @@ LABEL_57:
   return v5;
 }
 
-- (TSUModelColumnIndex)summaryColumnIndexForViewColumnIndex:(TSUViewColumnIndex)a3
+- (TSUModelColumnIndex)summaryColumnIndexForViewColumnIndex:(TSUViewColumnIndex)index
 {
   v6._column = 0x7FFF;
-  if (a3.var0 != 0x7FFF && !self->_isIdentityMapping)
+  if (index.var0 != 0x7FFF && !self->_isIdentityMapping)
   {
     v9 = v3;
     v10 = v4;
-    var0 = a3.var0;
+    var0 = index.var0;
     v7 = sub_2210C3024(&self->_viewColumnToSummaryColumn.__table_.__bucket_list_.__ptr_, &var0);
     if (v7)
     {
@@ -932,14 +932,14 @@ LABEL_57:
   return v6;
 }
 
-- (TSUModelRowIndex)summaryRowIndexForViewRowIndex:(TSUViewRowIndex)a3
+- (TSUModelRowIndex)summaryRowIndexForViewRowIndex:(TSUViewRowIndex)index
 {
   v6._row = 0x7FFFFFFF;
-  if (a3.var0 != 0x7FFFFFFF && !self->_isIdentityMapping)
+  if (index.var0 != 0x7FFFFFFF && !self->_isIdentityMapping)
   {
     v9 = v3;
     v10 = v4;
-    var0 = a3.var0;
+    var0 = index.var0;
     v7 = sub_2211DC534(&self->_viewRowToSummaryRow.__table_.__bucket_list_.__ptr_, &var0);
     if (v7)
     {
@@ -955,14 +955,14 @@ LABEL_57:
   return v6;
 }
 
-- (TSUViewColumnIndex)viewColumnIndexForSummaryColumnIndex:(TSUModelColumnIndex)a3
+- (TSUViewColumnIndex)viewColumnIndexForSummaryColumnIndex:(TSUModelColumnIndex)index
 {
   v6.var0 = 0x7FFF;
-  if (a3._column != 0x7FFF && !self->_isIdentityMapping)
+  if (index._column != 0x7FFF && !self->_isIdentityMapping)
   {
     v9 = v3;
     v10 = v4;
-    column = a3._column;
+    column = index._column;
     v7 = sub_2210C3024(&self->_summaryColumnToViewColumn.__table_.__bucket_list_.__ptr_, &column);
     if (v7)
     {
@@ -978,14 +978,14 @@ LABEL_57:
   return v6;
 }
 
-- (TSUViewRowIndex)viewRowIndexForSummaryRowIndex:(TSUModelRowIndex)a3
+- (TSUViewRowIndex)viewRowIndexForSummaryRowIndex:(TSUModelRowIndex)index
 {
   v6.var0 = 0x7FFFFFFF;
-  if (a3._row != 0x7FFFFFFF && !self->_isIdentityMapping)
+  if (index._row != 0x7FFFFFFF && !self->_isIdentityMapping)
   {
     v9 = v3;
     v10 = v4;
-    row = a3._row;
+    row = index._row;
     v7 = sub_2211DC534(&self->_summaryRowToViewRow.__table_.__bucket_list_.__ptr_, &row);
     if (v7)
     {
@@ -1001,13 +1001,13 @@ LABEL_57:
   return v6;
 }
 
-- (id)baseColumnIndexesForViewColumnIndexes:(id)a3
+- (id)baseColumnIndexesForViewColumnIndexes:(id)indexes
 {
-  v4 = a3;
-  v9 = v4;
+  indexesCopy = indexes;
+  v9 = indexesCopy;
   if (self->_isIdentityMapping)
   {
-    v10 = v4;
+    v10 = indexesCopy;
   }
 
   else if (self->_summaryColumnIndexes)
@@ -1027,7 +1027,7 @@ LABEL_57:
 
   else
   {
-    v10 = objc_msgSend_mutableCopy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_mutableCopy(indexesCopy, v5, v6, v7, v8);
     objc_msgSend_removeIndex_(v10, v17, 0, v18, v19);
     objc_msgSend_shiftIndexesStartingAtIndex_by_(v10, v20, 1, -1, v21);
   }
@@ -1035,13 +1035,13 @@ LABEL_57:
   return v10;
 }
 
-- (id)baseRowIndexesForViewRowIndexes:(id)a3
+- (id)baseRowIndexesForViewRowIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = v4;
+  indexesCopy = indexes;
+  v5 = indexesCopy;
   if (self->_isIdentityMapping)
   {
-    v6 = v4;
+    v6 = indexesCopy;
   }
 
   else
@@ -1062,29 +1062,29 @@ LABEL_57:
   return v6;
 }
 
-- (id)baseColumnIndexesForChromeColumnIndexes:(id)a3
+- (id)baseColumnIndexesForChromeColumnIndexes:(id)indexes
 {
-  v6 = objc_msgSend_viewColumnIndexesForChromeColumnIndexes_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_viewColumnIndexesForChromeColumnIndexes_(self, a2, indexes, v3, v4);
   v10 = objc_msgSend_baseColumnIndexesForViewColumnIndexes_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-- (id)baseRowIndexesForChromeRowIndexes:(id)a3
+- (id)baseRowIndexesForChromeRowIndexes:(id)indexes
 {
-  v6 = objc_msgSend_viewRowIndexesForChromeRowIndexes_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_viewRowIndexesForChromeRowIndexes_(self, a2, indexes, v3, v4);
   v10 = objc_msgSend_baseRowIndexesForViewRowIndexes_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-- (id)viewColumnIndexesForBaseColumnIndexes:(id)a3
+- (id)viewColumnIndexesForBaseColumnIndexes:(id)indexes
 {
-  v4 = a3;
-  v9 = v4;
+  indexesCopy = indexes;
+  v9 = indexesCopy;
   if (self->_isIdentityMapping)
   {
-    v10 = v4;
+    v10 = indexesCopy;
   }
 
   else if (self->_summaryColumnIndexes)
@@ -1104,20 +1104,20 @@ LABEL_57:
 
   else
   {
-    v10 = objc_msgSend_mutableCopy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_mutableCopy(indexesCopy, v5, v6, v7, v8);
     objc_msgSend_shiftIndexesStartingAtIndex_by_(v10, v17, 0, 1, v18);
   }
 
   return v10;
 }
 
-- (id)viewRowIndexesForBaseRowIndexes:(id)a3
+- (id)viewRowIndexesForBaseRowIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = v4;
+  indexesCopy = indexes;
+  v5 = indexesCopy;
   if (self->_isIdentityMapping)
   {
-    v6 = v4;
+    v6 = indexesCopy;
   }
 
   else
@@ -1138,13 +1138,13 @@ LABEL_57:
   return v6;
 }
 
-- (id)chromeColumnIndexesForViewColumnIndexes:(id)a3
+- (id)chromeColumnIndexesForViewColumnIndexes:(id)indexes
 {
-  v4 = a3;
-  v8 = v4;
+  indexesCopy = indexes;
+  v8 = indexesCopy;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v9 = v4;
+    v9 = indexesCopy;
   }
 
   else if (self->_summaryColumnIndexes)
@@ -1162,9 +1162,9 @@ LABEL_57:
     v9 = v12;
   }
 
-  else if (v4)
+  else if (indexesCopy)
   {
-    if (objc_msgSend_containsIndex_(v4, v5, 0, v6, v7))
+    if (objc_msgSend_containsIndex_(indexesCopy, v5, 0, v6, v7))
     {
       v21 = 1;
     }
@@ -1197,13 +1197,13 @@ LABEL_57:
   return v9;
 }
 
-- (id)chromeRowIndexesForViewRowIndexes:(id)a3
+- (id)chromeRowIndexesForViewRowIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = v4;
+  indexesCopy = indexes;
+  v5 = indexesCopy;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v6 = v4;
+    v6 = indexesCopy;
   }
 
   else
@@ -1224,13 +1224,13 @@ LABEL_57:
   return v6;
 }
 
-- (id)viewColumnIndexesForChromeColumnIndexes:(id)a3
+- (id)viewColumnIndexesForChromeColumnIndexes:(id)indexes
 {
-  v4 = a3;
-  v8 = v4;
+  indexesCopy = indexes;
+  v8 = indexesCopy;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v9 = v4;
+    v9 = indexesCopy;
 LABEL_4:
     v10 = v9;
     goto LABEL_5;
@@ -1238,7 +1238,7 @@ LABEL_4:
 
   if (!self->_summaryColumnIndexes)
   {
-    v9 = objc_msgSend_viewColumnIndexesForBaseColumnIndexes_(self, v5, v4, v6, v7);
+    v9 = objc_msgSend_viewColumnIndexesForBaseColumnIndexes_(self, v5, indexesCopy, v6, v7);
     goto LABEL_4;
   }
 
@@ -1259,13 +1259,13 @@ LABEL_5:
   return v10;
 }
 
-- (id)viewRowIndexesForChromeRowIndexes:(id)a3
+- (id)viewRowIndexesForChromeRowIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = v4;
+  indexesCopy = indexes;
+  v5 = indexesCopy;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v6 = v4;
+    v6 = indexesCopy;
   }
 
   else
@@ -1286,166 +1286,166 @@ LABEL_5:
   return v6;
 }
 
-- (TSUModelCellCoord)baseCellCoordForViewCellCoord:(TSUViewCellCoord)a3
+- (TSUModelCellCoord)baseCellCoordForViewCellCoord:(TSUViewCellCoord)coord
 {
-  v5 = a3;
+  coordCopy = coord;
   if (self->_isIdentityMapping)
   {
-    v6 = *&a3 & 0xFF00000000000000;
-    v7 = *&a3 & 0xFF000000000000;
+    v6 = *&coord & 0xFF00000000000000;
+    v7 = *&coord & 0xFF000000000000;
   }
 
-  else if ((*&a3 & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_baseColumnIndexForViewColumnIndex_(self, a2, a3._coord.column, v3, v4), v13 = objc_msgSend_baseRowIndexForViewRowIndex_(self, v10, v5, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (v5 != 0x7FFFFFFFLL ? (v14 = WORD2(v5) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), v5 == 0x7FFFFFFFLL ? (v20 = WORD2(v5) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
+  else if ((*&coord & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_baseColumnIndexForViewColumnIndex_(self, a2, coord._coord.column, v3, v4), v13 = objc_msgSend_baseRowIndexForViewRowIndex_(self, v10, coordCopy, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (coordCopy != 0x7FFFFFFFLL ? (v14 = WORD2(coordCopy) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), coordCopy == 0x7FFFFFFFLL ? (v20 = WORD2(coordCopy) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
   {
-    v6 = v5 & 0x100000000000000;
-    v7 = v5 & 0x1000000000000;
-    v5 = v13 | (v9 << 32);
+    v6 = coordCopy & 0x100000000000000;
+    v7 = coordCopy & 0x1000000000000;
+    coordCopy = v13 | (v9 << 32);
   }
 
   else
   {
     v7 = 0;
     v6 = 0;
-    v5 = 0x7FFF7FFFFFFFLL;
+    coordCopy = 0x7FFF7FFFFFFFLL;
   }
 
-  return (v6 | v7 | v5 & 0xFFFFFFFFFFFFLL);
+  return (v6 | v7 | coordCopy & 0xFFFFFFFFFFFFLL);
 }
 
-- (TSUModelCellCoord)baseCellCoordForChromeCellCoord:(TSUChromeCellCoord)a3
+- (TSUModelCellCoord)baseCellCoordForChromeCellCoord:(TSUChromeCellCoord)coord
 {
-  v5 = a3;
+  coordCopy = coord;
   if (self->_isIdentityMapping)
   {
-    v6 = *&a3 & 0xFF00000000000000;
-    v7 = *&a3 & 0xFF000000000000;
+    v6 = *&coord & 0xFF00000000000000;
+    v7 = *&coord & 0xFF000000000000;
   }
 
-  else if ((*&a3 & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_baseColumnIndexForChromeColumnIndex_(self, a2, a3._coord.column, v3, v4), v13 = objc_msgSend_baseRowIndexForChromeRowIndex_(self, v10, v5, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (v5 != 0x7FFFFFFFLL ? (v14 = WORD2(v5) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), v5 == 0x7FFFFFFFLL ? (v20 = WORD2(v5) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
+  else if ((*&coord & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_baseColumnIndexForChromeColumnIndex_(self, a2, coord._coord.column, v3, v4), v13 = objc_msgSend_baseRowIndexForChromeRowIndex_(self, v10, coordCopy, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (coordCopy != 0x7FFFFFFFLL ? (v14 = WORD2(coordCopy) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), coordCopy == 0x7FFFFFFFLL ? (v20 = WORD2(coordCopy) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
   {
-    v6 = v5 & 0x100000000000000;
-    v7 = v5 & 0x1000000000000;
-    v5 = v13 | (v9 << 32);
+    v6 = coordCopy & 0x100000000000000;
+    v7 = coordCopy & 0x1000000000000;
+    coordCopy = v13 | (v9 << 32);
   }
 
   else
   {
     v7 = 0;
     v6 = 0;
-    v5 = 0x7FFF7FFFFFFFLL;
+    coordCopy = 0x7FFF7FFFFFFFLL;
   }
 
-  return (v6 | v7 | v5 & 0xFFFFFFFFFFFFLL);
+  return (v6 | v7 | coordCopy & 0xFFFFFFFFFFFFLL);
 }
 
-- (TSUChromeCellCoord)chromeCellCoordForBaseCellCoord:(TSUModelCellCoord)a3
+- (TSUChromeCellCoord)chromeCellCoordForBaseCellCoord:(TSUModelCellCoord)coord
 {
-  v5 = a3;
+  coordCopy = coord;
   if (self->_isIdentityMapping)
   {
-    v6 = *&a3 & 0xFF00000000000000;
-    v7 = *&a3 & 0xFF000000000000;
+    v6 = *&coord & 0xFF00000000000000;
+    v7 = *&coord & 0xFF000000000000;
   }
 
-  else if ((*&a3 & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_chromeColumnIndexForBaseColumnIndex_(self, a2, a3._coord.column, v3, v4), v13 = objc_msgSend_chromeRowIndexForBaseRowIndex_(self, v10, v5, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (v5 != 0x7FFFFFFFLL ? (v14 = WORD2(v5) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), v5 == 0x7FFFFFFFLL ? (v20 = WORD2(v5) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
+  else if ((*&coord & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_chromeColumnIndexForBaseColumnIndex_(self, a2, coord._coord.column, v3, v4), v13 = objc_msgSend_chromeRowIndexForBaseRowIndex_(self, v10, coordCopy, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (coordCopy != 0x7FFFFFFFLL ? (v14 = WORD2(coordCopy) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), coordCopy == 0x7FFFFFFFLL ? (v20 = WORD2(coordCopy) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
   {
-    v6 = v5 & 0x100000000000000;
-    v7 = v5 & 0x1000000000000;
-    v5 = v13 | (v9 << 32);
+    v6 = coordCopy & 0x100000000000000;
+    v7 = coordCopy & 0x1000000000000;
+    coordCopy = v13 | (v9 << 32);
   }
 
   else
   {
     v7 = 0;
     v6 = 0;
-    v5 = 0x7FFF7FFFFFFFLL;
+    coordCopy = 0x7FFF7FFFFFFFLL;
   }
 
-  return (v6 | v7 | v5 & 0xFFFFFFFFFFFFLL);
+  return (v6 | v7 | coordCopy & 0xFFFFFFFFFFFFLL);
 }
 
-- (TSUChromeCellCoord)chromeCellCoordForViewCellCoord:(TSUViewCellCoord)a3
+- (TSUChromeCellCoord)chromeCellCoordForViewCellCoord:(TSUViewCellCoord)coord
 {
-  v5 = a3;
+  coordCopy = coord;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v7 = *&a3 & 0xFF00000000000000;
-    v8 = *&a3 & 0xFF000000000000;
+    v7 = *&coord & 0xFF00000000000000;
+    v8 = *&coord & 0xFF000000000000;
   }
 
-  else if ((*&a3 & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_chromeColumnIndexForViewColumnIndex_(self, a2, a3._coord.column, v3, v4), v13 = objc_msgSend_chromeRowIndexForViewRowIndex_(self, v10, v5, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (v5 != 0x7FFFFFFFLL ? (v14 = WORD2(v5) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), v5 == 0x7FFFFFFFLL ? (v20 = WORD2(v5) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
+  else if ((*&coord & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_chromeColumnIndexForViewColumnIndex_(self, a2, coord._coord.column, v3, v4), v13 = objc_msgSend_chromeRowIndexForViewRowIndex_(self, v10, coordCopy, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (coordCopy != 0x7FFFFFFFLL ? (v14 = WORD2(coordCopy) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), coordCopy == 0x7FFFFFFFLL ? (v20 = WORD2(coordCopy) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
   {
-    v7 = v5 & 0x100000000000000;
-    v8 = v5 & 0x1000000000000;
-    v5 = v13 | (v9 << 32);
+    v7 = coordCopy & 0x100000000000000;
+    v8 = coordCopy & 0x1000000000000;
+    coordCopy = v13 | (v9 << 32);
   }
 
   else
   {
     v8 = 0;
     v7 = 0;
-    v5 = 0x7FFF7FFFFFFFLL;
+    coordCopy = 0x7FFF7FFFFFFFLL;
   }
 
-  return (v7 | v8 | v5 & 0xFFFFFFFFFFFFLL);
+  return (v7 | v8 | coordCopy & 0xFFFFFFFFFFFFLL);
 }
 
-- (TSUViewCellCoord)viewCellCoordForBaseCellCoord:(TSUModelCellCoord)a3
+- (TSUViewCellCoord)viewCellCoordForBaseCellCoord:(TSUModelCellCoord)coord
 {
-  v5 = a3;
+  coordCopy = coord;
   if (self->_isIdentityMapping)
   {
-    v6 = *&a3 & 0xFF00000000000000;
-    v7 = *&a3 & 0xFF000000000000;
+    v6 = *&coord & 0xFF00000000000000;
+    v7 = *&coord & 0xFF000000000000;
   }
 
-  else if ((*&a3 & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_viewColumnIndexForBaseColumnIndex_(self, a2, a3._coord.column, v3, v4), v13 = objc_msgSend_viewRowIndexForBaseRowIndex_(self, v10, v5, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (v5 != 0x7FFFFFFFLL ? (v14 = WORD2(v5) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), v5 == 0x7FFFFFFFLL ? (v20 = WORD2(v5) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
+  else if ((*&coord & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_viewColumnIndexForBaseColumnIndex_(self, a2, coord._coord.column, v3, v4), v13 = objc_msgSend_viewRowIndexForBaseRowIndex_(self, v10, coordCopy, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (coordCopy != 0x7FFFFFFFLL ? (v14 = WORD2(coordCopy) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), coordCopy == 0x7FFFFFFFLL ? (v20 = WORD2(coordCopy) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
   {
-    v6 = v5 & 0x100000000000000;
-    v7 = v5 & 0x1000000000000;
-    v5 = v13 | (v9 << 32);
+    v6 = coordCopy & 0x100000000000000;
+    v7 = coordCopy & 0x1000000000000;
+    coordCopy = v13 | (v9 << 32);
   }
 
   else
   {
     v7 = 0;
     v6 = 0;
-    v5 = 0x7FFF7FFFFFFFLL;
+    coordCopy = 0x7FFF7FFFFFFFLL;
   }
 
-  return (v6 | v7 | v5 & 0xFFFFFFFFFFFFLL);
+  return (v6 | v7 | coordCopy & 0xFFFFFFFFFFFFLL);
 }
 
-- (TSUViewCellCoord)viewCellCoordForChromeCellCoord:(TSUChromeCellCoord)a3
+- (TSUViewCellCoord)viewCellCoordForChromeCellCoord:(TSUChromeCellCoord)coord
 {
-  v5 = a3;
+  coordCopy = coord;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v7 = *&a3 & 0xFF00000000000000;
-    v8 = *&a3 & 0xFF000000000000;
+    v7 = *&coord & 0xFF00000000000000;
+    v8 = *&coord & 0xFF000000000000;
   }
 
-  else if ((*&a3 & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_viewColumnIndexForChromeColumnIndex_(self, a2, a3._coord.column, v3, v4), v13 = objc_msgSend_viewRowIndexForChromeRowIndex_(self, v10, v5, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (v5 != 0x7FFFFFFFLL ? (v14 = WORD2(v5) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), v5 == 0x7FFFFFFFLL ? (v20 = WORD2(v5) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
+  else if ((*&coord & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && (v9 = objc_msgSend_viewColumnIndexForChromeColumnIndex_(self, a2, coord._coord.column, v3, v4), v13 = objc_msgSend_viewRowIndexForChromeRowIndex_(self, v10, coordCopy, v11, v12), (v13 | (v9 << 32)) != 0x7FFF7FFFFFFFLL) && (coordCopy != 0x7FFFFFFFLL ? (v14 = WORD2(coordCopy) == 0x7FFFLL) : (v14 = 0), !v14 ? (v15 = 0) : (v15 = 1), v9 == 0x7FFF ? (v16 = v13 == 0x7FFFFFFF) : (v16 = 1), v16 ? (v17 = 0) : (v17 = 1), v15 == v17 && (v9 != 0x7FFF ? (v18 = v13 == 0x7FFFFFFF) : (v18 = 0), v18 ? (v19 = 0) : (v19 = 1), coordCopy == 0x7FFFFFFFLL ? (v20 = WORD2(coordCopy) == 0x7FFFLL) : (v20 = 1), !v20 ? (v21 = 0) : (v21 = 1), v21 == v19)))
   {
-    v7 = v5 & 0x100000000000000;
-    v8 = v5 & 0x1000000000000;
-    v5 = v13 | (v9 << 32);
+    v7 = coordCopy & 0x100000000000000;
+    v8 = coordCopy & 0x1000000000000;
+    coordCopy = v13 | (v9 << 32);
   }
 
   else
   {
     v8 = 0;
     v7 = 0;
-    v5 = 0x7FFF7FFFFFFFLL;
+    coordCopy = 0x7FFF7FFFFFFFLL;
   }
 
-  return (v7 | v8 | v5 & 0xFFFFFFFFFFFFLL);
+  return (v7 | v8 | coordCopy & 0xFFFFFFFFFFFFLL);
 }
 
-- (TSUModelCellCoord)summaryCellCoordForViewCellCoord:(TSUViewCellCoord)a3
+- (TSUModelCellCoord)summaryCellCoordForViewCellCoord:(TSUViewCellCoord)coord
 {
   v5 = 0x7FFF7FFFFFFFLL;
-  if (self->_isIdentityMapping || (*&a3 & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL || (v8 = objc_msgSend_summaryColumnIndexForViewColumnIndex_(self, a2, a3._coord.column, v3, v4), v12 = objc_msgSend_summaryRowIndexForViewRowIndex_(self, v9, a3._coord.row, v10, v11), (v12 | (v8 << 32)) == 0x7FFF7FFFFFFFLL) || (a3._coord.row != 0x7FFFFFFFLL ? (v13 = a3._coord.column == 0x7FFFLL) : (v13 = 0), !v13 ? (v14 = 0) : (v14 = 1), v8 == 0x7FFF ? (v15 = v12 == 0x7FFFFFFF) : (v15 = 1), v15 ? (v16 = 0) : (v16 = 1), v14 != v16 || (v8 != 0x7FFF ? (v17 = v12 == 0x7FFFFFFF) : (v17 = 0), v17 ? (v18 = 0) : (v18 = 1), a3._coord.row == 0x7FFFFFFFLL ? (v19 = a3._coord.column == 0x7FFFLL) : (v19 = 1), !v19 ? (v20 = 0) : (v20 = 1), v20 != v18)))
+  if (self->_isIdentityMapping || (*&coord & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL || (v8 = objc_msgSend_summaryColumnIndexForViewColumnIndex_(self, a2, coord._coord.column, v3, v4), v12 = objc_msgSend_summaryRowIndexForViewRowIndex_(self, v9, coord._coord.row, v10, v11), (v12 | (v8 << 32)) == 0x7FFF7FFFFFFFLL) || (coord._coord.row != 0x7FFFFFFFLL ? (v13 = coord._coord.column == 0x7FFFLL) : (v13 = 0), !v13 ? (v14 = 0) : (v14 = 1), v8 == 0x7FFF ? (v15 = v12 == 0x7FFFFFFF) : (v15 = 1), v15 ? (v16 = 0) : (v16 = 1), v14 != v16 || (v8 != 0x7FFF ? (v17 = v12 == 0x7FFFFFFF) : (v17 = 0), v17 ? (v18 = 0) : (v18 = 1), coord._coord.row == 0x7FFFFFFFLL ? (v19 = coord._coord.column == 0x7FFFLL) : (v19 = 1), !v19 ? (v20 = 0) : (v20 = 1), v20 != v18)))
   {
     v21 = 0;
     v22 = 0;
@@ -1453,18 +1453,18 @@ LABEL_5:
 
   else
   {
-    v22 = *&a3 & 0x100000000000000;
-    v21 = *&a3 & 0x1000000000000;
+    v22 = *&coord & 0x100000000000000;
+    v21 = *&coord & 0x1000000000000;
     v5 = v12 | (v8 << 32);
   }
 
   return (v22 | v21 | v5);
 }
 
-- (TSUViewCellCoord)viewCellCoordForSummaryCellCoord:(TSUModelCellCoord)a3
+- (TSUViewCellCoord)viewCellCoordForSummaryCellCoord:(TSUModelCellCoord)coord
 {
   v5 = 0x7FFF7FFFFFFFLL;
-  if (self->_isIdentityMapping || (*&a3 & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL || (v8 = objc_msgSend_viewColumnIndexForSummaryColumnIndex_(self, a2, a3._coord.column, v3, v4), v12 = objc_msgSend_viewRowIndexForSummaryRowIndex_(self, v9, a3._coord.row, v10, v11), (v12 | (v8 << 32)) == 0x7FFF7FFFFFFFLL) || (a3._coord.row != 0x7FFFFFFFLL ? (v13 = a3._coord.column == 0x7FFFLL) : (v13 = 0), !v13 ? (v14 = 0) : (v14 = 1), v8 == 0x7FFF ? (v15 = v12 == 0x7FFFFFFF) : (v15 = 1), v15 ? (v16 = 0) : (v16 = 1), v14 != v16 || (v8 != 0x7FFF ? (v17 = v12 == 0x7FFFFFFF) : (v17 = 0), v17 ? (v18 = 0) : (v18 = 1), a3._coord.row == 0x7FFFFFFFLL ? (v19 = a3._coord.column == 0x7FFFLL) : (v19 = 1), !v19 ? (v20 = 0) : (v20 = 1), v20 != v18)))
+  if (self->_isIdentityMapping || (*&coord & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL || (v8 = objc_msgSend_viewColumnIndexForSummaryColumnIndex_(self, a2, coord._coord.column, v3, v4), v12 = objc_msgSend_viewRowIndexForSummaryRowIndex_(self, v9, coord._coord.row, v10, v11), (v12 | (v8 << 32)) == 0x7FFF7FFFFFFFLL) || (coord._coord.row != 0x7FFFFFFFLL ? (v13 = coord._coord.column == 0x7FFFLL) : (v13 = 0), !v13 ? (v14 = 0) : (v14 = 1), v8 == 0x7FFF ? (v15 = v12 == 0x7FFFFFFF) : (v15 = 1), v15 ? (v16 = 0) : (v16 = 1), v14 != v16 || (v8 != 0x7FFF ? (v17 = v12 == 0x7FFFFFFF) : (v17 = 0), v17 ? (v18 = 0) : (v18 = 1), coord._coord.row == 0x7FFFFFFFLL ? (v19 = coord._coord.column == 0x7FFFLL) : (v19 = 1), !v19 ? (v20 = 0) : (v20 = 1), v20 != v18)))
   {
     v21 = 0;
     v22 = 0;
@@ -1472,8 +1472,8 @@ LABEL_5:
 
   else
   {
-    v22 = *&a3 & 0x100000000000000;
-    v21 = *&a3 & 0x1000000000000;
+    v22 = *&coord & 0x100000000000000;
+    v21 = *&coord & 0x1000000000000;
     v5 = v12 | (v8 << 32);
   }
 
@@ -1676,17 +1676,17 @@ LABEL_4:
   return self;
 }
 
-- (id)baseTractRefForChromeTractRef:(id)a3
+- (id)baseTractRefForChromeTractRef:(id)ref
 {
-  v4 = a3;
-  v9 = v4;
+  refCopy = ref;
+  v9 = refCopy;
   if (self->_isIdentityMapping)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(refCopy, v5, v6, v7, v8);
     goto LABEL_19;
   }
 
-  if (objc_msgSend_isValid(v4, v5, v6, v7, v8))
+  if (objc_msgSend_isValid(refCopy, v5, v6, v7, v8))
   {
     v15 = objc_msgSend_columns(v9, v11, v12, v13, v14);
     v16 = TSUIndexSet::asNSIndexSet(v15);
@@ -1767,17 +1767,17 @@ LABEL_19:
   return v10;
 }
 
-- (id)baseTractRefForViewTractRef:(id)a3
+- (id)baseTractRefForViewTractRef:(id)ref
 {
-  v4 = a3;
-  v9 = v4;
+  refCopy = ref;
+  v9 = refCopy;
   if (self->_isIdentityMapping)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(refCopy, v5, v6, v7, v8);
     goto LABEL_19;
   }
 
-  if (objc_msgSend_isValid(v4, v5, v6, v7, v8))
+  if (objc_msgSend_isValid(refCopy, v5, v6, v7, v8))
   {
     v15 = objc_msgSend_columns(v9, v11, v12, v13, v14);
     v16 = TSUIndexSet::asNSIndexSet(v15);
@@ -1858,35 +1858,35 @@ LABEL_19:
   return v10;
 }
 
-- (id)chromeTractRefForBaseTractRef:(id)a3
+- (id)chromeTractRefForBaseTractRef:(id)ref
 {
-  v4 = a3;
-  v9 = v4;
+  refCopy = ref;
+  v9 = refCopy;
   if (self->_isIdentityMapping)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(refCopy, v5, v6, v7, v8);
   }
 
   else
   {
-    v11 = objc_msgSend_viewTractRefForBaseTractRef_(self, v5, v4, v7, v8);
+    v11 = objc_msgSend_viewTractRefForBaseTractRef_(self, v5, refCopy, v7, v8);
     v10 = objc_msgSend_chromeTractRefForViewTractRef_(self, v12, v11, v13, v14);
   }
 
   return v10;
 }
 
-- (id)chromeTractRefForViewTractRef:(id)a3
+- (id)chromeTractRefForViewTractRef:(id)ref
 {
-  v4 = a3;
-  v9 = v4;
+  refCopy = ref;
+  v9 = refCopy;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(refCopy, v5, v6, v7, v8);
     goto LABEL_4;
   }
 
-  if (!objc_msgSend_isValid(v4, v5, v6, v7, v8))
+  if (!objc_msgSend_isValid(refCopy, v5, v6, v7, v8))
   {
     v10 = 0;
     goto LABEL_4;
@@ -1967,17 +1967,17 @@ LABEL_4:
   return v10;
 }
 
-- (id)viewTractRefForBaseTractRef:(id)a3
+- (id)viewTractRefForBaseTractRef:(id)ref
 {
-  v4 = a3;
-  v9 = v4;
+  refCopy = ref;
+  v9 = refCopy;
   if (self->_isIdentityMapping)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(refCopy, v5, v6, v7, v8);
     goto LABEL_19;
   }
 
-  if (objc_msgSend_isValid(v4, v5, v6, v7, v8))
+  if (objc_msgSend_isValid(refCopy, v5, v6, v7, v8))
   {
     v15 = objc_msgSend_columns(v9, v11, v12, v13, v14);
     v16 = TSUIndexSet::asNSIndexSet(v15);
@@ -2058,17 +2058,17 @@ LABEL_19:
   return v10;
 }
 
-- (id)viewTractRefForChromeTractRef:(id)a3
+- (id)viewTractRefForChromeTractRef:(id)ref
 {
-  v4 = a3;
-  v9 = v4;
+  refCopy = ref;
+  v9 = refCopy;
   if (self->_isIdentityMapping || self->_chromeCoordsAreViewCoords)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(refCopy, v5, v6, v7, v8);
     goto LABEL_4;
   }
 
-  if (!objc_msgSend_isValid(v4, v5, v6, v7, v8))
+  if (!objc_msgSend_isValid(refCopy, v5, v6, v7, v8))
   {
     v10 = 0;
     goto LABEL_4;
@@ -2131,20 +2131,20 @@ LABEL_4:
   return v10;
 }
 
-- (id)baseShuffleMapForViewShuffleMap:(id)a3
+- (id)baseShuffleMapForViewShuffleMap:(id)map
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  mapCopy = map;
+  v9 = mapCopy;
+  if (mapCopy)
   {
     if (self->_isIdentityMapping)
     {
-      v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+      v10 = objc_msgSend_copy(mapCopy, v5, v6, v7, v8);
     }
 
     else
     {
-      v11 = objc_msgSend_sourceIndexes(v4, v5, v6, v7, v8);
+      v11 = objc_msgSend_sourceIndexes(mapCopy, v5, v6, v7, v8);
       v15 = objc_msgSend_baseRowIndexesForViewRowIndexes_(self, v12, v11, v13, v14);
       v16 = objc_alloc(MEMORY[0x277D806D0]);
       Index = objc_msgSend_firstIndex(v15, v17, v18, v19, v20);

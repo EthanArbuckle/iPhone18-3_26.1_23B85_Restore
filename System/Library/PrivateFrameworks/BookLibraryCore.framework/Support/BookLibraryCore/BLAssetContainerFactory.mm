@@ -1,49 +1,49 @@
 @interface BLAssetContainerFactory
-+ (id)assetContainerForDownloadKind:(id)a3 isPermlink:(BOOL)a4;
-+ (void)_overrideAssetContainersForTestingWithEbookAssetContainer:(id)a3 audiobookAssetContainer:(id)a4 pdfAssetContainer:(id)a5;
++ (id)assetContainerForDownloadKind:(id)kind isPermlink:(BOOL)permlink;
++ (void)_overrideAssetContainersForTestingWithEbookAssetContainer:(id)container audiobookAssetContainer:(id)assetContainer pdfAssetContainer:(id)pdfAssetContainer;
 @end
 
 @implementation BLAssetContainerFactory
 
-+ (void)_overrideAssetContainersForTestingWithEbookAssetContainer:(id)a3 audiobookAssetContainer:(id)a4 pdfAssetContainer:(id)a5
++ (void)_overrideAssetContainersForTestingWithEbookAssetContainer:(id)container audiobookAssetContainer:(id)assetContainer pdfAssetContainer:(id)pdfAssetContainer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 assetContainerForDownloadKind:&stru_100125DB0 isPermlink:0];
+  containerCopy = container;
+  assetContainerCopy = assetContainer;
+  pdfAssetContainerCopy = pdfAssetContainer;
+  v11 = [self assetContainerForDownloadKind:&stru_100125DB0 isPermlink:0];
   v12 = qword_10013EBB0;
-  qword_10013EBB0 = v8;
-  v16 = v8;
+  qword_10013EBB0 = containerCopy;
+  v16 = containerCopy;
 
   v13 = qword_10013EBC0;
-  qword_10013EBC0 = v9;
-  v14 = v9;
+  qword_10013EBC0 = assetContainerCopy;
+  v14 = assetContainerCopy;
 
   v15 = qword_10013EBC8;
-  qword_10013EBC8 = v10;
+  qword_10013EBC8 = pdfAssetContainerCopy;
 }
 
-+ (id)assetContainerForDownloadKind:(id)a3 isPermlink:(BOOL)a4
++ (id)assetContainerForDownloadKind:(id)kind isPermlink:(BOOL)permlink
 {
-  v4 = a4;
-  v5 = a3;
+  permlinkCopy = permlink;
+  kindCopy = kind;
   if (qword_10013EBD0 != -1)
   {
     sub_1000CB3B0();
   }
 
-  if ([BLDownloadKindEBook isEqual:v5])
+  if ([BLDownloadKindEBook isEqual:kindCopy])
   {
     goto LABEL_4;
   }
 
-  if ([BLDownloadKindAudiobook isEqual:v5])
+  if ([BLDownloadKindAudiobook isEqual:kindCopy])
   {
     v6 = qword_10013EBC0;
     goto LABEL_9;
   }
 
-  if ([BLDownloadKindPDF isEqual:v5])
+  if ([BLDownloadKindPDF isEqual:kindCopy])
   {
     v6 = qword_10013EBC8;
     goto LABEL_9;
@@ -51,7 +51,7 @@
 
   v9 = BLUtilitiesLog();
   v10 = v9;
-  if (v4)
+  if (permlinkCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -69,7 +69,7 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = kindCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[BLAssetContainerFactory] unexpected download kind %@, returning nil asset container.", &v11, 0xCu);
   }
 

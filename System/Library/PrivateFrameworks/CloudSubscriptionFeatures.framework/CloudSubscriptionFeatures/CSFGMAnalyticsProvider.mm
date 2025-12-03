@@ -1,18 +1,18 @@
 @interface CSFGMAnalyticsProvider
-- (void)sendAction:(int64_t)a3 completionHandler:(id)a4;
+- (void)sendAction:(int64_t)action completionHandler:(id)handler;
 @end
 
 @implementation CSFGMAnalyticsProvider
 
-- (void)sendAction:(int64_t)a3 completionHandler:(id)a4
+- (void)sendAction:(int64_t)action completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = action;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1DF564B44();
@@ -27,7 +27,7 @@
   v15[3] = 0;
   v15[4] = &unk_1DF5692D0;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_1DF51CC08(0, 0, v10, &unk_1DF56A700, v15);
 }
 

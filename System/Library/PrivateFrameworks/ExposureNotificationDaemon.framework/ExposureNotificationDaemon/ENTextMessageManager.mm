@@ -1,8 +1,8 @@
 @interface ENTextMessageManager
-- (BOOL)_readIfNecessaryWithError:(id *)a3;
-- (BOOL)_verifyTextMessage:(id)a3 phoneNumber:(id)a4 verificationDate:(id)a5 publicKey:(id)a6 publicKeyVersion:(id)a7 reportType:(id)a8 outError:(id *)a9;
-- (BOOL)verifyTextMessage:(id)a3 phoneNumber:(id)a4 verificationDate:(id)a5 publicKey:(id)a6 publicKeyVersion:(id)a7 userReport:(BOOL *)a8 outError:(id *)a9;
-- (ENTextMessageManager)initWithDirectoryURL:(id)a3;
+- (BOOL)_readIfNecessaryWithError:(id *)error;
+- (BOOL)_verifyTextMessage:(id)message phoneNumber:(id)number verificationDate:(id)date publicKey:(id)key publicKeyVersion:(id)version reportType:(id)type outError:(id *)error;
+- (BOOL)verifyTextMessage:(id)message phoneNumber:(id)number verificationDate:(id)date publicKey:(id)key publicKeyVersion:(id)version userReport:(BOOL *)report outError:(id *)error;
+- (ENTextMessageManager)initWithDirectoryURL:(id)l;
 - (ENTextMessageManagerDelegate)delegate;
 - (uint64_t)activateIfNeeded;
 - (void)_purgeOldHashes;
@@ -14,35 +14,35 @@
 
 @implementation ENTextMessageManager
 
-- (ENTextMessageManager)initWithDirectoryURL:(id)a3
+- (ENTextMessageManager)initWithDirectoryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = ENTextMessageManager;
   v6 = [(ENTextMessageManager *)&v23 init];
   if (v6)
   {
-    v7 = [v5 path];
-    if (!v7)
+    path = [lCopy path];
+    if (!path)
     {
       [(ENTextMessageManager *)a2 initWithDirectoryURL:v6];
     }
 
-    v8 = [v5 URLByAppendingPathComponent:@"verificationHashes.dat"];
-    v9 = [v8 path];
+    v8 = [lCopy URLByAppendingPathComponent:@"verificationHashes.dat"];
+    path2 = [v8 path];
 
-    if (v9)
+    if (path2)
     {
       v10 = objc_alloc_init(MEMORY[0x277CCAA08]);
       v22 = 0;
-      v11 = [v10 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v22];
+      v11 = [v10 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v22];
       v12 = v22;
       v13 = v12;
       if (v11)
       {
         v14 = *MEMORY[0x277CBE870];
         v21 = v12;
-        v15 = [v5 setResourceValue:MEMORY[0x277CBEC20] forKey:v14 error:&v21];
+        v15 = [lCopy setResourceValue:MEMORY[0x277CBEC20] forKey:v14 error:&v21];
         v16 = v21;
 
         if ((v15 & 1) == 0 && gLogCategory_ENTextMessageManager <= 90 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
@@ -50,7 +50,7 @@
           [ENTextMessageManager initWithDirectoryURL:];
         }
 
-        v17 = [[ENSecureArchiveFileWrapper alloc] initWithPath:v9];
+        v17 = [[ENSecureArchiveFileWrapper alloc] initWithPath:path2];
         textMessageHistoryFileWrapper = v6->_textMessageHistoryFileWrapper;
         v6->_textMessageHistoryFileWrapper = v17;
 
@@ -103,10 +103,10 @@ LABEL_20:
 
 - (void)purgeAllHashes
 {
-  v3 = [MEMORY[0x277CCAA08] defaultManager];
-  v4 = [(ENSecureArchiveFileWrapper *)self->_textMessageHistoryFileWrapper path];
+  defaultManager = [MEMORY[0x277CCAA08] defaultManager];
+  path = [(ENSecureArchiveFileWrapper *)self->_textMessageHistoryFileWrapper path];
   v7 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v7];
+  v5 = [defaultManager removeItemAtPath:path error:&v7];
   v6 = v7;
 
   if ((v5 & 1) == 0 && gLogCategory__ENTextMessageManager <= 90 && (gLogCategory__ENTextMessageManager != -1 || _LogCategory_Initialize()))
@@ -131,8 +131,8 @@ LABEL_20:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(NSMutableDictionary *)v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [(NSMutableDictionary *)v3 allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,7 +143,7 @@ LABEL_20:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
@@ -151,8 +151,8 @@ LABEL_20:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [MEMORY[0x277CBEAA0] date];
-          [v11 timeIntervalSinceDate:v10];
+          date = [MEMORY[0x277CBEAA0] date];
+          [date timeIntervalSinceDate:v10];
           v13 = v12;
 
           if (v13 > 172800.0)
@@ -162,7 +162,7 @@ LABEL_20:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -189,55 +189,55 @@ LABEL_20:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_verifyTextMessage:(id)a3 phoneNumber:(id)a4 verificationDate:(id)a5 publicKey:(id)a6 publicKeyVersion:(id)a7 reportType:(id)a8 outError:(id *)a9
+- (BOOL)_verifyTextMessage:(id)message phoneNumber:(id)number verificationDate:(id)date publicKey:(id)key publicKeyVersion:(id)version reportType:(id)type outError:(id *)error
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  messageCopy = message;
+  keyCopy = key;
+  versionCopy = version;
   v17 = MEMORY[0x277CBEA88];
   v18 = *MEMORY[0x277CBE5B8];
-  v19 = a8;
-  v20 = a5;
-  v21 = a4;
+  typeCopy = type;
+  dateCopy = date;
+  numberCopy = number;
   v22 = [v17 calendarWithIdentifier:v18];
   v23 = [MEMORY[0x277CBEBA8] timeZoneForSecondsFromGMT:0];
   [v22 setTimeZone:v23];
   v24 = objc_alloc_init(MEMORY[0x277CCA960]);
   [v24 setDateFormat:@"yyyy-MM-dd"];
   [v24 setCalendar:v22];
-  v25 = [v24 stringFromDate:v20];
+  v25 = [v24 stringFromDate:dateCopy];
 
   v66 = v25;
-  v69 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@.%@.%@", v19, v21, v25];
+  v69 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@.%@.%@", typeCopy, numberCopy, v25];
 
   v26 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  LODWORD(v21) = [v26 isSensitiveLoggingAllowed];
+  LODWORD(numberCopy) = [v26 isSensitiveLoggingAllowed];
 
-  if (v21 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+  if (numberCopy && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
   {
     [ENTextMessageManager _verifyTextMessage:phoneNumber:verificationDate:publicKey:publicKeyVersion:reportType:outError:];
   }
 
   v27 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v28 = [v27 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v27 isSensitiveLoggingAllowed];
 
-  if (v28 && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v67 = v15;
-  if (v15 && v16)
+  v67 = keyCopy;
+  if (keyCopy && versionCopy)
   {
-    v29 = [v14 verificationString];
-    v30 = v29;
-    if (!v29)
+    verificationString = [messageCopy verificationString];
+    v30 = verificationString;
+    if (!verificationString)
     {
       v55 = v23;
-      if (a9)
+      if (error)
       {
         ENErrorF();
-        *a9 = v57 = 0;
+        *error = v57 = 0;
       }
 
       else
@@ -249,36 +249,36 @@ LABEL_20:
       goto LABEL_41;
     }
 
-    v65 = v29;
+    v65 = verificationString;
     v31 = MEMORY[0x277CCACA0];
-    v32 = [v14 verificationString];
-    v33 = [v31 stringWithFormat:@"%@.%@", v69, v32];
+    verificationString2 = [messageCopy verificationString];
+    v33 = [v31 stringWithFormat:@"%@.%@", v69, verificationString2];
 
     v34 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    LODWORD(v32) = [v34 isSensitiveLoggingAllowed];
+    LODWORD(verificationString2) = [v34 isSensitiveLoggingAllowed];
 
-    if (v32 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+    if (verificationString2 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
     {
       [ENTextMessageManager _verifyTextMessage:phoneNumber:verificationDate:publicKey:publicKeyVersion:reportType:outError:];
     }
 
-    v68 = [v14 signature];
+    signature = [messageCopy signature];
     v35 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v36 = [v35 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed2 = [v35 isSensitiveLoggingAllowed];
 
-    if (v36 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed2 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
     {
       [ENTextMessageManager _verifyTextMessage:phoneNumber:verificationDate:publicKey:publicKeyVersion:reportType:outError:];
     }
 
-    if (!v68)
+    if (!signature)
     {
       v55 = v23;
       v56 = v25;
-      if (a9)
+      if (error)
       {
         ENErrorF();
-        *a9 = v57 = 0;
+        *error = v57 = 0;
       }
 
       else
@@ -290,14 +290,14 @@ LABEL_20:
       goto LABEL_40;
     }
 
-    v37 = [v14 message];
-    if (([v37 containsString:v16] & 1) == 0)
+    message = [messageCopy message];
+    if (([message containsString:versionCopy] & 1) == 0)
     {
       v55 = v23;
-      if (a9)
+      if (error)
       {
         ENErrorF();
-        *a9 = v50 = 0;
+        *error = v50 = 0;
       }
 
       else
@@ -316,19 +316,19 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v62 = v37;
+    v62 = message;
     v63 = v23;
-    v64 = v16;
+    v64 = versionCopy;
     v38 = [v33 dataUsingEncoding:4];
-    v39 = [v14 signature];
-    v40 = [v39 en_base64PaddedString];
+    signature2 = [messageCopy signature];
+    en_base64PaddedString = [signature2 en_base64PaddedString];
 
-    v61 = v40;
-    v41 = [objc_alloc(MEMORY[0x277CBEA98]) initWithBase64EncodedString:v40 options:1];
+    v61 = en_base64PaddedString;
+    v41 = [objc_alloc(MEMORY[0x277CBEA98]) initWithBase64EncodedString:en_base64PaddedString options:1];
     error = 0;
-    v42 = [v15 keyRef];
-    v43 = SecKeyVerifySignature(v42, *MEMORY[0x277CDC2F8], v38, v41, &error);
-    v44 = error;
+    keyRef = [keyCopy keyRef];
+    v43 = SecKeyVerifySignature(keyRef, *MEMORY[0x277CDC2F8], v38, v41, &error);
+    errorCopy = error;
     if (!error)
     {
 LABEL_34:
@@ -337,15 +337,15 @@ LABEL_34:
       {
         v59 = v41;
         v51 = v38;
-        v52 = [v14 testVerificationCode];
+        testVerificationCode = [messageCopy testVerificationCode];
         textMessageHashes = self->_textMessageHashes;
-        v54 = [MEMORY[0x277CBEAA0] date];
-        [(NSMutableDictionary *)textMessageHashes setObject:v54 forKey:v52];
+        date = [MEMORY[0x277CBEAA0] date];
+        [(NSMutableDictionary *)textMessageHashes setObject:date forKey:testVerificationCode];
 
         [(ENTextMessageManager *)self purgeOldHashes];
-        if (a9)
+        if (error)
         {
-          *a9 = 0;
+          *error = 0;
         }
 
         v38 = v51;
@@ -353,28 +353,28 @@ LABEL_34:
       }
 
       v55 = v63;
-      v16 = v64;
+      versionCopy = v64;
       v30 = v65;
       v56 = v66;
-      v37 = v62;
+      message = v62;
       goto LABEL_39;
     }
 
-    v45 = [(__CFError *)error domain];
-    if ([v45 isEqualToString:*MEMORY[0x277CCA598]])
+    domain = [(__CFError *)error domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA598]])
     {
       v46 = v38;
-      v47 = [(__CFError *)v44 code];
+      code = [(__CFError *)errorCopy code];
 
-      v48 = v47 + 0x10000;
+      v48 = code + 0x10000;
       v38 = v46;
       if (v48 == -2272)
       {
 LABEL_31:
-        if (a9)
+        if (error)
         {
-          v49 = v44;
-          *a9 = v44;
+          v49 = errorCopy;
+          *error = errorCopy;
         }
 
         goto LABEL_34;
@@ -395,10 +395,10 @@ LABEL_31:
 
   v55 = v23;
   v56 = v25;
-  if (a9)
+  if (error)
   {
     ENErrorF();
-    *a9 = v57 = 0;
+    *error = v57 = 0;
   }
 
   else
@@ -418,7 +418,7 @@ LABEL_42:
   return WeakRetained;
 }
 
-- (BOOL)_readIfNecessaryWithError:(id *)a3
+- (BOOL)_readIfNecessaryWithError:(id *)error
 {
   v24[3] = *MEMORY[0x277D85DE8];
   v5 = [(ENSecureArchiveFileWrapper *)self->_textMessageHistoryFileWrapper openWithError:?];
@@ -435,7 +435,7 @@ LABEL_42:
 
       textMessageHistoryFileWrapper = self->_textMessageHistoryFileWrapper;
       v23 = 0;
-      v10 = [(ENSecureArchiveFileWrapper *)textMessageHistoryFileWrapper readObject:&v23 ofClasses:v8 error:a3];
+      v10 = [(ENSecureArchiveFileWrapper *)textMessageHistoryFileWrapper readObject:&v23 ofClasses:v8 error:error];
       v11 = v23;
       if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -444,13 +444,13 @@ LABEL_42:
 
       else
       {
-        v13 = *a3;
-        v14 = [v13 domain];
-        if ([v14 isEqualToString:*MEMORY[0x277CC5BD0]])
+        v13 = *error;
+        domain = [v13 domain];
+        if ([domain isEqualToString:*MEMORY[0x277CC5BD0]])
         {
-          v15 = [v13 code];
+          code = [v13 code];
 
-          if (v15 == 16)
+          if (code == 16)
           {
 
             LOBYTE(v5) = 0;
@@ -470,12 +470,12 @@ LABEL_42:
     }
 
     v17 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v18 = [v17 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v17 isSensitiveLoggingAllowed];
 
-    if (v18 && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
     {
       v21 = self->_textMessageHashes;
-      v22 = *a3;
+      v22 = *error;
       LogPrintF();
     }
 
@@ -487,48 +487,48 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)verifyTextMessage:(id)a3 phoneNumber:(id)a4 verificationDate:(id)a5 publicKey:(id)a6 publicKeyVersion:(id)a7 userReport:(BOOL *)a8 outError:(id *)a9
+- (BOOL)verifyTextMessage:(id)message phoneNumber:(id)number verificationDate:(id)date publicKey:(id)key publicKeyVersion:(id)version userReport:(BOOL *)report outError:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v64 = a4;
-  v16 = a5;
-  v63 = a6;
-  v17 = a7;
-  if (!self->_textMessageHashes && ![(ENTextMessageManager *)self _readIfNecessaryWithError:a9])
+  messageCopy = message;
+  numberCopy = number;
+  dateCopy = date;
+  keyCopy = key;
+  versionCopy = version;
+  if (!self->_textMessageHashes && ![(ENTextMessageManager *)self _readIfNecessaryWithError:error])
   {
     v44 = 0;
     goto LABEL_58;
   }
 
   v18 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v19 = [v18 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v18 isSensitiveLoggingAllowed];
 
-  if (v19 && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
   {
     textMessageHashes = self->_textMessageHashes;
     LogPrintF();
   }
 
-  v20 = [v15 testVerificationCode];
-  if (v20)
+  testVerificationCode = [messageCopy testVerificationCode];
+  if (testVerificationCode)
   {
-    v21 = [(NSMutableDictionary *)self->_textMessageHashes objectForKey:v20];
+    v21 = [(NSMutableDictionary *)self->_textMessageHashes objectForKey:testVerificationCode];
 
     if (!v21)
     {
-      v60 = v20;
-      v22 = v16;
+      v60 = testVerificationCode;
+      v22 = dateCopy;
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
       v23 = [&unk_285D6E108 countByEnumeratingWithState:&v65 objects:v69 count:16];
-      v62 = v15;
+      v62 = messageCopy;
       if (v23)
       {
         v24 = v23;
-        v59 = a8;
+        reportCopy = report;
         v25 = 0;
         v61 = *v66;
         while (2)
@@ -542,16 +542,16 @@ LABEL_18:
 
             v27 = *(*(&v65 + 1) + 8 * i);
             v28 = +[ENLoggingPrefs sharedENLoggingPrefs];
-            v29 = [v28 isSensitiveLoggingAllowed];
+            isSensitiveLoggingAllowed2 = [v28 isSensitiveLoggingAllowed];
 
-            if (v29 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+            if (isSensitiveLoggingAllowed2 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
             {
-              v57 = v63;
-              v58 = v17;
-              v55 = v64;
+              v57 = keyCopy;
+              v58 = versionCopy;
+              v55 = numberCopy;
               v56 = v22;
               v52 = v27;
-              v54 = v15;
+              v54 = messageCopy;
               LogPrintF();
             }
 
@@ -565,9 +565,9 @@ LABEL_18:
 
             v32 = [v22 dateByAddingTimeInterval:-86400.0];
             v33 = +[ENLoggingPrefs sharedENLoggingPrefs];
-            v34 = [v33 isSensitiveLoggingAllowed];
+            isSensitiveLoggingAllowed3 = [v33 isSensitiveLoggingAllowed];
 
-            if (v34 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+            if (isSensitiveLoggingAllowed3 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
             {
               v52 = v32;
               LogPrintF();
@@ -587,9 +587,9 @@ LABEL_27:
 
               v37 = [v22 dateByAddingTimeInterval:86400.0];
               v38 = +[ENLoggingPrefs sharedENLoggingPrefs];
-              v39 = [v38 isSensitiveLoggingAllowed];
+              isSensitiveLoggingAllowed4 = [v38 isSensitiveLoggingAllowed];
 
-              if (v39 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+              if (isSensitiveLoggingAllowed4 && gLogCategory_ENTextMessageManager <= 30 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
               {
                 v52 = v37;
                 LogPrintF();
@@ -600,9 +600,9 @@ LABEL_27:
             }
 
             v40 = [ENLoggingPrefs sharedENLoggingPrefs:v52];
-            v41 = [v40 isSensitiveLoggingAllowed];
+            isSensitiveLoggingAllowed5 = [v40 isSensitiveLoggingAllowed];
 
-            if (v41 && gLogCategory_ENTextMessageManager <= 40 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+            if (isSensitiveLoggingAllowed5 && gLogCategory_ENTextMessageManager <= 40 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
             {
               v42 = "no";
               if (v36)
@@ -621,13 +621,13 @@ LABEL_27:
               v44 = 1;
               if (v43)
               {
-                *v59 = 1;
+                *reportCopy = 1;
               }
 
               goto LABEL_51;
             }
 
-            v15 = v62;
+            messageCopy = v62;
           }
 
           v24 = [&unk_285D6E108 countByEnumeratingWithState:&v65 objects:v69 count:16];
@@ -645,11 +645,11 @@ LABEL_27:
         v25 = 0;
       }
 
-      if (a9)
+      if (error)
       {
         v45 = v25;
         v44 = 0;
-        *a9 = v25;
+        *error = v25;
       }
 
       else
@@ -658,22 +658,22 @@ LABEL_27:
       }
 
 LABEL_51:
-      v16 = v22;
-      v20 = v60;
+      dateCopy = v22;
+      testVerificationCode = v60;
       v46 = +[ENLoggingPrefs sharedENLoggingPrefs];
-      v47 = [v46 isSensitiveLoggingAllowed];
+      isSensitiveLoggingAllowed6 = [v46 isSensitiveLoggingAllowed];
 
-      if (v47 && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
+      if (isSensitiveLoggingAllowed6 && gLogCategory_ENTextMessageManager <= 10 && (gLogCategory_ENTextMessageManager != -1 || _LogCategory_Initialize()))
       {
         v53 = self->_textMessageHashes;
         LogPrintF();
       }
 
-      v15 = v62;
+      messageCopy = v62;
       goto LABEL_57;
     }
 
-    if (a9)
+    if (error)
     {
       goto LABEL_62;
     }
@@ -683,14 +683,14 @@ LABEL_63:
     goto LABEL_57;
   }
 
-  if (!a9)
+  if (!error)
   {
     goto LABEL_63;
   }
 
 LABEL_62:
   ENErrorF();
-  *a9 = v44 = 0;
+  *error = v44 = 0;
 LABEL_57:
 
 LABEL_58:

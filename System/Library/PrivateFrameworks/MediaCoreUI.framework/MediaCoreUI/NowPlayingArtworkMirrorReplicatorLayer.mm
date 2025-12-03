@@ -1,7 +1,7 @@
 @interface NowPlayingArtworkMirrorReplicatorLayer
 - (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)init;
-- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithCoder:(id)a3;
-- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithLayer:(id)a3;
+- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithCoder:(id)coder;
+- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5BB9D40();
 }
 
@@ -22,7 +22,7 @@
   return [(CAReplicatorLayer *)&v3 init];
 }
 
-- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithLayer:(id)a3
+- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1C5BCB8D4();
@@ -39,14 +39,14 @@
   return v5;
 }
 
-- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithCoder:(id)a3
+- (_TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer_image) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MediaCoreUI38NowPlayingArtworkMirrorReplicatorLayer_imageLayer) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for NowPlayingArtworkMirrorReplicatorLayer();
-  v4 = a3;
-  v5 = [(NowPlayingArtworkMirrorReplicatorLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NowPlayingArtworkMirrorReplicatorLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

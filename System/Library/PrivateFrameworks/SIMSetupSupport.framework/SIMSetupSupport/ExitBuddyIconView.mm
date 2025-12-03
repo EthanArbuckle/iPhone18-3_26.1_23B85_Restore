@@ -1,14 +1,14 @@
 @interface ExitBuddyIconView
-- (ExitBuddyIconView)initWithFrame:(CGRect)a3;
+- (ExitBuddyIconView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ExitBuddyIconView
 
-- (ExitBuddyIconView)initWithFrame:(CGRect)a3
+- (ExitBuddyIconView)initWithFrame:(CGRect)frame
 {
   v42.receiver = self;
   v42.super_class = ExitBuddyIconView;
-  v3 = [(ExitBuddyIconView *)&v42 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ExitBuddyIconView *)&v42 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D755D0] configurationWithPointSize:50.0];
@@ -30,49 +30,49 @@
     [(ExitBuddyIconView *)v3 addSubview:v7];
     [(ExitBuddyIconView *)v3 addSubview:v10];
     [(ExitBuddyIconView *)v3 addSubview:v13];
-    v14 = [v7 topAnchor];
-    v15 = [(ExitBuddyIconView *)v3 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [(ExitBuddyIconView *)v3 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v16 setActive:1];
 
-    v17 = [v10 topAnchor];
-    v18 = [v7 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    topAnchor3 = [v10 topAnchor];
+    bottomAnchor = [v7 bottomAnchor];
+    v19 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     [v19 setActive:1];
 
-    v20 = [v10 leftAnchor];
-    v21 = [(ExitBuddyIconView *)v3 leftAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    leftAnchor = [v10 leftAnchor];
+    leftAnchor2 = [(ExitBuddyIconView *)v3 leftAnchor];
+    v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v22 setActive:1];
 
-    v23 = [v10 centerXAnchor];
-    v24 = [v7 leftAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor = [v10 centerXAnchor];
+    leftAnchor3 = [v7 leftAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:leftAnchor3];
     [v25 setActive:1];
 
-    v26 = [v10 bottomAnchor];
-    v27 = [(ExitBuddyIconView *)v3 bottomAnchor];
-    v28 = [v26 constraintLessThanOrEqualToAnchor:v27];
+    bottomAnchor2 = [v10 bottomAnchor];
+    bottomAnchor3 = [(ExitBuddyIconView *)v3 bottomAnchor];
+    v28 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
     [v28 setActive:1];
 
-    v29 = [v13 rightAnchor];
-    v30 = [(ExitBuddyIconView *)v3 rightAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    rightAnchor = [v13 rightAnchor];
+    rightAnchor2 = [(ExitBuddyIconView *)v3 rightAnchor];
+    v31 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v31 setActive:1];
 
-    v32 = [v13 centerXAnchor];
-    v33 = [v7 rightAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    centerXAnchor2 = [v13 centerXAnchor];
+    rightAnchor3 = [v7 rightAnchor];
+    v34 = [centerXAnchor2 constraintEqualToAnchor:rightAnchor3];
     [v34 setActive:1];
 
-    v35 = [v13 firstBaselineAnchor];
-    v36 = [v10 firstBaselineAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    firstBaselineAnchor = [v13 firstBaselineAnchor];
+    firstBaselineAnchor2 = [v10 firstBaselineAnchor];
+    v37 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     [v37 setActive:1];
 
-    v38 = [v13 bottomAnchor];
-    v39 = [(ExitBuddyIconView *)v3 bottomAnchor];
-    v40 = [v38 constraintLessThanOrEqualToAnchor:v39];
+    bottomAnchor4 = [v13 bottomAnchor];
+    bottomAnchor5 = [(ExitBuddyIconView *)v3 bottomAnchor];
+    v40 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5];
     [v40 setActive:1];
   }
 

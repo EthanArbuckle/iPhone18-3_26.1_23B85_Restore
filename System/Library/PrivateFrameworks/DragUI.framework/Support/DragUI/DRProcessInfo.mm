@@ -1,15 +1,15 @@
 @interface DRProcessInfo
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (BOOL)isAppleProcess;
-- (BOOL)isSameProcessAsSource:(id)a3;
-- (BOOL)isSameTeamAsSource:(id)a3;
-- (DRProcessInfo)initWithAuditToken:(id *)a3;
-- (void)setAuditToken:(id *)a3;
+- (BOOL)isSameProcessAsSource:(id)source;
+- (BOOL)isSameTeamAsSource:(id)source;
+- (DRProcessInfo)initWithAuditToken:(id *)token;
+- (void)setAuditToken:(id *)token;
 @end
 
 @implementation DRProcessInfo
 
-- (DRProcessInfo)initWithAuditToken:(id *)a3
+- (DRProcessInfo)initWithAuditToken:(id *)token
 {
   v16.receiver = self;
   v16.super_class = DRProcessInfo;
@@ -17,12 +17,12 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0[4];
-    v14 = *a3->var0;
+    v6 = *&token->var0[4];
+    v14 = *token->var0;
     v15 = v6;
     [(DRProcessInfo *)v4 setAuditToken:&v14];
-    v7 = *&a3->var0[4];
-    v14 = *a3->var0;
+    v7 = *&token->var0[4];
+    v14 = *token->var0;
     v15 = v7;
     if (CPCopyBundleIdentifierAndTeamFromAuditToken())
     {
@@ -54,14 +54,14 @@
   return v5;
 }
 
-- (BOOL)isSameTeamAsSource:(id)a3
+- (BOOL)isSameTeamAsSource:(id)source
 {
-  v5 = a3;
-  v6 = [v5 teamID];
-  if (!v6)
+  sourceCopy = source;
+  teamID = [sourceCopy teamID];
+  if (!teamID)
   {
-    v3 = [(DRProcessInfo *)self teamID];
-    if (!v3)
+    teamID2 = [(DRProcessInfo *)self teamID];
+    if (!teamID2)
     {
       v9 = 1;
 LABEL_6:
@@ -70,11 +70,11 @@ LABEL_6:
     }
   }
 
-  v7 = [v5 teamID];
-  v8 = [(DRProcessInfo *)self teamID];
-  v9 = [v7 isEqualToString:v8];
+  teamID3 = [sourceCopy teamID];
+  teamID4 = [(DRProcessInfo *)self teamID];
+  v9 = [teamID3 isEqualToString:teamID4];
 
-  if (!v6)
+  if (!teamID)
   {
     goto LABEL_6;
   }
@@ -84,14 +84,14 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isSameProcessAsSource:(id)a3
+- (BOOL)isSameProcessAsSource:(id)source
 {
-  v4 = a3;
-  if ([(DRProcessInfo *)self isSameTeamAsSource:v4])
+  sourceCopy = source;
+  if ([(DRProcessInfo *)self isSameTeamAsSource:sourceCopy])
   {
-    v5 = [v4 bundleID];
-    v6 = [(DRProcessInfo *)self bundleID];
-    v7 = [v5 isEqualToString:v6];
+    bundleID = [sourceCopy bundleID];
+    bundleID2 = [(DRProcessInfo *)self bundleID];
+    v7 = [bundleID isEqualToString:bundleID2];
   }
 
   else
@@ -104,8 +104,8 @@ LABEL_7:
 
 - (BOOL)isAppleProcess
 {
-  v2 = [(DRProcessInfo *)self teamID];
-  v3 = v2 == 0;
+  teamID = [(DRProcessInfo *)self teamID];
+  v3 = teamID == 0;
 
   return v3;
 }
@@ -118,10 +118,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setAuditToken:(id *)a3
+- (void)setAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_auditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_auditToken.val = *token->var0;
   *&self->_auditToken.val[4] = v3;
 }
 

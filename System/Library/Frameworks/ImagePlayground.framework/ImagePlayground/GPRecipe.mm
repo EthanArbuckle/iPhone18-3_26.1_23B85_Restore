@@ -1,61 +1,61 @@
 @interface GPRecipe
-- (GPRecipe)initWithEncodedRecipe:(id)a3 prompt:(id)a4 contextElements:(id)a5;
-- (GPRecipe)initWithEncodedRecipe:(id)a3 prompts:(id)a4 contextElements:(id)a5;
-- (GPRecipe)initWithPromptElements:(id)a3;
+- (GPRecipe)initWithEncodedRecipe:(id)recipe prompt:(id)prompt contextElements:(id)elements;
+- (GPRecipe)initWithEncodedRecipe:(id)recipe prompts:(id)prompts contextElements:(id)elements;
+- (GPRecipe)initWithPromptElements:(id)elements;
 @end
 
 @implementation GPRecipe
 
-- (GPRecipe)initWithPromptElements:(id)a3
+- (GPRecipe)initWithPromptElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v8.receiver = self;
   v8.super_class = GPRecipe;
   v5 = [(GPRecipe *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GPRecipe *)v5 setPromptElements:v4];
+    [(GPRecipe *)v5 setPromptElements:elementsCopy];
   }
 
   return v6;
 }
 
-- (GPRecipe)initWithEncodedRecipe:(id)a3 prompt:(id)a4 contextElements:(id)a5
+- (GPRecipe)initWithEncodedRecipe:(id)recipe prompt:(id)prompt contextElements:(id)elements
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recipeCopy = recipe;
+  promptCopy = prompt;
+  elementsCopy = elements;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v9 length])
+  if ([promptCopy length])
   {
-    v12 = [[GPPromptElement alloc] initWithText:v9];
+    v12 = [[GPPromptElement alloc] initWithText:promptCopy];
     [v11 addObject:v12];
   }
 
-  [v11 addObjectsFromArray:v10];
+  [v11 addObjectsFromArray:elementsCopy];
   v13 = [(GPRecipe *)self initWithPromptElements:v11];
   v14 = v13;
   if (v13)
   {
-    [(GPRecipe *)v13 setAdditionalMetadata:v8];
+    [(GPRecipe *)v13 setAdditionalMetadata:recipeCopy];
   }
 
   return v14;
 }
 
-- (GPRecipe)initWithEncodedRecipe:(id)a3 prompts:(id)a4 contextElements:(id)a5
+- (GPRecipe)initWithEncodedRecipe:(id)recipe prompts:(id)prompts contextElements:(id)elements
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recipeCopy = recipe;
+  promptsCopy = prompts;
+  elementsCopy = elements;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = v9;
+  v12 = promptsCopy;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
@@ -84,12 +84,12 @@
     while (v14);
   }
 
-  [v11 addObjectsFromArray:v10];
+  [v11 addObjectsFromArray:elementsCopy];
   v19 = [(GPRecipe *)self initWithPromptElements:v11];
   v20 = v19;
   if (v19)
   {
-    [(GPRecipe *)v19 setAdditionalMetadata:v8];
+    [(GPRecipe *)v19 setAdditionalMetadata:recipeCopy];
   }
 
   v21 = *MEMORY[0x1E69E9840];

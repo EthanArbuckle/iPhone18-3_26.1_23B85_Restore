@@ -1,18 +1,18 @@
 @interface PKPaymentPassDetailAutoReloadSectionController
-+ (id)autoReloadAmountForPass:(id)a3 action:(id)a4;
-+ (id)autoReloadThresholdForPass:(id)a3 action:(id)a4;
-+ (id)autoTopUpActionForPass:(id)a3;
-+ (id)enteredValueActionForPass:(id)a3;
-+ (id)externalActionContentForPass:(id)a3;
++ (id)autoReloadAmountForPass:(id)pass action:(id)action;
++ (id)autoReloadThresholdForPass:(id)pass action:(id)action;
++ (id)autoTopUpActionForPass:(id)pass;
++ (id)enteredValueActionForPass:(id)pass;
++ (id)externalActionContentForPass:(id)pass;
 @end
 
 @implementation PKPaymentPassDetailAutoReloadSectionController
 
-+ (id)autoTopUpActionForPass:(id)a3
++ (id)autoTopUpActionForPass:(id)pass
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 activationState] && objc_msgSend(v3, "activationState") != 2)
+  passCopy = pass;
+  if ([passCopy activationState] && objc_msgSend(passCopy, "activationState") != 2)
   {
     v31 = 0;
   }
@@ -23,15 +23,15 @@
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v4 = [v3 balanceFields];
-    v5 = [v4 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    balanceFields = [passCopy balanceFields];
+    v5 = [balanceFields countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v5)
     {
       v6 = v5;
       v7 = *v52;
       v42 = *MEMORY[0x1E69BC060];
-      v39 = v4;
-      v40 = v3;
+      v39 = balanceFields;
+      v40 = passCopy;
       v33 = *v52;
       do
       {
@@ -39,15 +39,15 @@
         {
           if (*v52 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(balanceFields);
           }
 
-          v9 = [*(*(&v51 + 1) + 8 * i) foreignReferenceIdentifiers];
+          foreignReferenceIdentifiers = [*(*(&v51 + 1) + 8 * i) foreignReferenceIdentifiers];
           v47 = 0u;
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v10 = v9;
+          v10 = foreignReferenceIdentifiers;
           v11 = [v10 countByEnumeratingWithState:&v47 objects:v56 count:16];
           if (v11)
           {
@@ -73,8 +73,8 @@
                 v44 = 0u;
                 v45 = 0u;
                 v46 = 0u;
-                v15 = [v3 availableActions];
-                v16 = [v15 countByEnumeratingWithState:&v43 objects:v55 count:16];
+                availableActions = [passCopy availableActions];
+                v16 = [availableActions countByEnumeratingWithState:&v43 objects:v55 count:16];
                 if (v16)
                 {
                   v17 = v16;
@@ -96,14 +96,14 @@
                     {
                       if (*v44 != v18)
                       {
-                        objc_enumerationMutation(v15);
+                        objc_enumerationMutation(availableActions);
                       }
 
                       v22 = *(*(&v43 + 1) + 8 * j);
                       if ([v22 type] == 6)
                       {
                         v23 = v14;
-                        v24 = v23;
+                        associatedAutoTopUpIdentifier = v23;
                         if (v42 == v14)
                         {
                           goto LABEL_49;
@@ -124,24 +124,24 @@
                         }
                       }
 
-                      v24 = [v22 associatedAutoTopUpIdentifier];
+                      associatedAutoTopUpIdentifier = [v22 associatedAutoTopUpIdentifier];
                       v26 = v14;
                       v27 = v26;
-                      if (v24 == v26)
+                      if (associatedAutoTopUpIdentifier == v26)
                       {
 
 LABEL_49:
 LABEL_50:
                         v31 = v22;
 
-                        v4 = v39;
-                        v3 = v40;
+                        balanceFields = v39;
+                        passCopy = v40;
                         goto LABEL_51;
                       }
 
-                      if (v14 && v24)
+                      if (v14 && associatedAutoTopUpIdentifier)
                       {
-                        v28 = [v24 caseInsensitiveCompare:v26];
+                        v28 = [associatedAutoTopUpIdentifier caseInsensitiveCompare:v26];
 
                         if (!v28)
                         {
@@ -155,16 +155,16 @@ LABEL_50:
 
                       if ([v22 type] == 6)
                       {
-                        v29 = [v22 relevantPropertyIdentifier];
-                        if (v29)
+                        relevantPropertyIdentifier = [v22 relevantPropertyIdentifier];
+                        if (relevantPropertyIdentifier)
                         {
                         }
 
                         else
                         {
-                          v30 = [v22 associatedAutoTopUpIdentifier];
+                          associatedAutoTopUpIdentifier2 = [v22 associatedAutoTopUpIdentifier];
 
-                          if (!v30)
+                          if (!associatedAutoTopUpIdentifier2)
                           {
                             goto LABEL_50;
                           }
@@ -172,9 +172,9 @@ LABEL_50:
                       }
                     }
 
-                    v17 = [v15 countByEnumeratingWithState:&v43 objects:v55 count:16];
-                    v4 = v39;
-                    v3 = v40;
+                    v17 = [availableActions countByEnumeratingWithState:&v43 objects:v55 count:16];
+                    balanceFields = v39;
+                    passCopy = v40;
                     v7 = v33;
                     i = v34;
                     v6 = v35;
@@ -200,7 +200,7 @@ LABEL_50:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v51 objects:v57 count:16];
+        v6 = [balanceFields countByEnumeratingWithState:&v51 objects:v57 count:16];
         v31 = 0;
       }
 
@@ -218,11 +218,11 @@ LABEL_51:
   return v31;
 }
 
-+ (id)enteredValueActionForPass:(id)a3
++ (id)enteredValueActionForPass:(id)pass
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 activationState])
+  passCopy = pass;
+  if ([passCopy activationState])
   {
     v4 = 0;
   }
@@ -233,8 +233,8 @@ LABEL_51:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v3 availableActions];
-    v4 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    availableActions = [passCopy availableActions];
+    v4 = [availableActions countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v6 = *v11;
@@ -244,7 +244,7 @@ LABEL_51:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(availableActions);
           }
 
           v8 = *(*(&v10 + 1) + 8 * i);
@@ -255,7 +255,7 @@ LABEL_51:
           }
         }
 
-        v4 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [availableActions countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           continue;
@@ -271,16 +271,16 @@ LABEL_15:
   return v4;
 }
 
-+ (id)externalActionContentForPass:(id)a3
++ (id)externalActionContentForPass:(id)pass
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  passCopy = pass;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 actionGroups];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  actionGroups = [passCopy actionGroups];
+  v5 = [actionGroups countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -291,7 +291,7 @@ LABEL_3:
     {
       if (*v19 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(actionGroups);
       }
 
       v9 = *(*(&v18 + 1) + 8 * v8);
@@ -302,7 +302,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v6 = [actionGroups countByEnumeratingWithState:&v18 objects:v23 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -321,9 +321,9 @@ LABEL_9:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 availableActions];
-    v10 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
-    if (!v10)
+    actionGroups = [passCopy availableActions];
+    externalActionContent = [actionGroups countByEnumeratingWithState:&v14 objects:v22 count:16];
+    if (!externalActionContent)
     {
       goto LABEL_19;
     }
@@ -335,7 +335,7 @@ LABEL_11:
     {
       if (*v15 != v11)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(actionGroups);
       }
 
       v9 = *(*(&v14 + 1) + 8 * v12);
@@ -344,10 +344,10 @@ LABEL_11:
         break;
       }
 
-      if (v10 == ++v12)
+      if (externalActionContent == ++v12)
       {
-        v10 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
-        if (v10)
+        externalActionContent = [actionGroups countByEnumeratingWithState:&v14 objects:v22 count:16];
+        if (externalActionContent)
         {
           goto LABEL_11;
         }
@@ -357,22 +357,22 @@ LABEL_11:
     }
   }
 
-  v10 = [v9 externalActionContent];
+  externalActionContent = [v9 externalActionContent];
 LABEL_19:
 
-  return v10;
+  return externalActionContent;
 }
 
-+ (id)autoReloadThresholdForPass:(id)a3 action:(id)a4
++ (id)autoReloadThresholdForPass:(id)pass action:(id)action
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  actionCopy = action;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [a3 autoTopUpFields];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  autoTopUpFields = [pass autoTopUpFields];
+  v7 = [autoTopUpFields countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -384,7 +384,7 @@ LABEL_19:
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(autoTopUpFields);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -396,10 +396,10 @@ LABEL_19:
           v16 = MEMORY[0x1E696AD98];
           [v12 threshold];
           v17 = [v16 numberWithDouble:?];
-          v18 = [v5 autoTopUpItem];
-          v19 = [v18 currency];
+          autoTopUpItem = [actionCopy autoTopUpItem];
+          currency = [autoTopUpItem currency];
 
-          if (v19)
+          if (currency)
           {
             v20 = objc_alloc(MEMORY[0x1E69B8780]);
             v21 = MEMORY[0x1E696AB90];
@@ -416,21 +416,21 @@ LABEL_19:
             }
 
             v22 = [v21 decimalNumberWithDecimal:v25];
-            v23 = [v20 initWithAmount:v22 currency:v19 exponent:0];
+            v23 = [v20 initWithAmount:v22 currency:currency exponent:0];
 
-            v15 = [v23 formattedStringValue];
+            formattedStringValue = [v23 formattedStringValue];
           }
 
           else
           {
-            v15 = PKFormattedStringMinimalFractionDigitsFromNumber();
+            formattedStringValue = PKFormattedStringMinimalFractionDigitsFromNumber();
           }
 
           goto LABEL_17;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [autoTopUpFields countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v8)
       {
         continue;
@@ -440,22 +440,22 @@ LABEL_19:
     }
   }
 
-  v15 = 0;
+  formattedStringValue = 0;
 LABEL_17:
 
-  return v15;
+  return formattedStringValue;
 }
 
-+ (id)autoReloadAmountForPass:(id)a3 action:(id)a4
++ (id)autoReloadAmountForPass:(id)pass action:(id)action
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  actionCopy = action;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [a3 autoTopUpFields];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  autoTopUpFields = [pass autoTopUpFields];
+  v7 = [autoTopUpFields countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -467,7 +467,7 @@ LABEL_17:
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(autoTopUpFields);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -479,10 +479,10 @@ LABEL_17:
           v16 = MEMORY[0x1E696AD98];
           [v12 amount];
           v17 = [v16 numberWithDouble:?];
-          v18 = [v5 autoTopUpItem];
-          v19 = [v18 currency];
+          autoTopUpItem = [actionCopy autoTopUpItem];
+          currency = [autoTopUpItem currency];
 
-          if (v19)
+          if (currency)
           {
             v20 = objc_alloc(MEMORY[0x1E69B8780]);
             v21 = MEMORY[0x1E696AB90];
@@ -499,21 +499,21 @@ LABEL_17:
             }
 
             v22 = [v21 decimalNumberWithDecimal:v25];
-            v23 = [v20 initWithAmount:v22 currency:v19 exponent:0];
+            v23 = [v20 initWithAmount:v22 currency:currency exponent:0];
 
-            v15 = [v23 formattedStringValue];
+            formattedStringValue = [v23 formattedStringValue];
           }
 
           else
           {
-            v15 = PKFormattedStringMinimalFractionDigitsFromNumber();
+            formattedStringValue = PKFormattedStringMinimalFractionDigitsFromNumber();
           }
 
           goto LABEL_17;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [autoTopUpFields countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v8)
       {
         continue;
@@ -523,10 +523,10 @@ LABEL_17:
     }
   }
 
-  v15 = 0;
+  formattedStringValue = 0;
 LABEL_17:
 
-  return v15;
+  return formattedStringValue;
 }
 
 @end

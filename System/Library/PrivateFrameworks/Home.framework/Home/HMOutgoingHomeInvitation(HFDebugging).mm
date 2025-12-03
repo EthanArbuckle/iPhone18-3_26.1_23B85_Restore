@@ -6,14 +6,14 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_282590110;
   v2 = objc_msgSendSuper2(&v6, sel_hf_stateDumpBuilderWithContext_);
-  v3 = [a1 invitee];
-  [v2 setObject:v3 forKeyedSubscript:@"invitee"];
+  invitee = [self invitee];
+  [v2 setObject:invitee forKeyedSubscript:@"invitee"];
 
-  v4 = [a1 accessoryInvitations];
-  [v2 appendObject:v4 withName:@"accessoryInvitations" options:1];
+  accessoryInvitations = [self accessoryInvitations];
+  [v2 appendObject:accessoryInvitations withName:@"accessoryInvitations" options:1];
 
   return v2;
 }

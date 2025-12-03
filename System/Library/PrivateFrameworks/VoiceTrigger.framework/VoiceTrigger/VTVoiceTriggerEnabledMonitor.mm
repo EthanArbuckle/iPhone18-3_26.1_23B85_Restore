@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (BOOL)_checkVoiceTriggerEnabled;
 - (VTVoiceTriggerEnabledMonitor)init;
-- (void)_didReceiveVoiceTriggerSettingChanged:(BOOL)a3;
-- (void)_didReceiveVoiceTriggerSettingChangedInQueue:(BOOL)a3;
-- (void)_notifyObserver:(id)a3 withEnabled:(BOOL)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveVoiceTriggerSettingChanged:(BOOL)changed;
+- (void)_didReceiveVoiceTriggerSettingChangedInQueue:(BOOL)queue;
+- (void)_notifyObserver:(id)observer withEnabled:(BOOL)enabled;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -27,13 +27,13 @@
 {
   v9 = *MEMORY[0x277D85DE8];
   v2 = +[VTPreferences sharedPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  voiceTriggerEnabled = [v2 voiceTriggerEnabled];
 
   v4 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (voiceTriggerEnabled)
     {
       v5 = @"YES";
     }
@@ -43,39 +43,39 @@
     _os_log_impl(&dword_223A31000, v4, OS_LOG_TYPE_DEFAULT, "VoiceTrigger enabled = %{public}@", &v7, 0xCu);
   }
 
-  return v3;
+  return voiceTriggerEnabled;
 }
 
-- (void)_notifyObserver:(id)a3 withEnabled:(BOOL)a4
+- (void)_notifyObserver:(id)observer withEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  enabledCopy = enabled;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTVoiceTriggerEnabledMonitor:self didReceiveEnabled:v4];
+    [observerCopy VTVoiceTriggerEnabledMonitor:self didReceiveEnabled:enabledCopy];
   }
 }
 
-- (void)_didReceiveVoiceTriggerSettingChanged:(BOOL)a3
+- (void)_didReceiveVoiceTriggerSettingChanged:(BOOL)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __70__VTVoiceTriggerEnabledMonitor__didReceiveVoiceTriggerSettingChanged___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(VTEventMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveVoiceTriggerSettingChangedInQueue:(BOOL)a3
+- (void)_didReceiveVoiceTriggerSettingChangedInQueue:(BOOL)queue
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __77__VTVoiceTriggerEnabledMonitor__didReceiveVoiceTriggerSettingChangedInQueue___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -97,9 +97,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x277D85DD0];
@@ -107,7 +107,7 @@
     handler[2] = __58__VTVoiceTriggerEnabledMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_2784ECD80;
     handler[4] = self;
-    notify_register_dispatch("com.apple.coreaudio.BorealisToggled", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.coreaudio.BorealisToggled", &self->_notifyToken, queueCopy, handler);
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {

@@ -1,27 +1,27 @@
 @interface WDVideoURLManager
-+ (id)_baseURLForIdentifier:(id)a3;
-+ (id)_parseJSON:(id)a3;
-+ (id)preferredLanguageFromLanguages:(id)a3 languagePreferences:(id)a4;
-+ (void)_fetchPreferredURLForIdentifier:(id)a3 completion:(id)a4;
-+ (void)_fetchRawManifestForIdentifier:(id)a3 completion:(id)a4;
-+ (void)fetchURLForVideoWithIdentifier:(id)a3 handler:(id)a4;
++ (id)_baseURLForIdentifier:(id)identifier;
++ (id)_parseJSON:(id)n;
++ (id)preferredLanguageFromLanguages:(id)languages languagePreferences:(id)preferences;
++ (void)_fetchPreferredURLForIdentifier:(id)identifier completion:(id)completion;
++ (void)_fetchRawManifestForIdentifier:(id)identifier completion:(id)completion;
++ (void)fetchURLForVideoWithIdentifier:(id)identifier handler:(id)handler;
 @end
 
 @implementation WDVideoURLManager
 
-+ (void)fetchURLForVideoWithIdentifier:(id)a3 handler:(id)a4
++ (void)fetchURLForVideoWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__WDVideoURLManager_fetchURLForVideoWithIdentifier_handler___block_invoke;
   v10[3] = &unk_2796E7B70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
-  [a1 _fetchPreferredURLForIdentifier:v9 completion:v10];
+  v11 = identifierCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = identifierCopy;
+  [self _fetchPreferredURLForIdentifier:v9 completion:v10];
 }
 
 void __60__WDVideoURLManager_fetchURLForVideoWithIdentifier_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -65,20 +65,20 @@ uint64_t __60__WDVideoURLManager_fetchURLForVideoWithIdentifier_handler___block_
   return result;
 }
 
-+ (void)_fetchPreferredURLForIdentifier:(id)a3 completion:(id)a4
++ (void)_fetchPreferredURLForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__WDVideoURLManager__fetchPreferredURLForIdentifier_completion___block_invoke;
   v10[3] = &unk_2796E7B98;
-  v12 = v7;
-  v13 = a1;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
-  [a1 _fetchRawManifestForIdentifier:v9 completion:v10];
+  v12 = completionCopy;
+  selfCopy = self;
+  v11 = identifierCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
+  [self _fetchRawManifestForIdentifier:v9 completion:v10];
 }
 
 void __64__WDVideoURLManager__fetchPreferredURLForIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -131,15 +131,15 @@ void __64__WDVideoURLManager__fetchPreferredURLForIdentifier_completion___block_
   }
 }
 
-+ (id)preferredLanguageFromLanguages:(id)a3 languagePreferences:(id)a4
++ (id)preferredLanguageFromLanguages:(id)languages languagePreferences:(id)preferences
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  languagesCopy = languages;
+  preferencesCopy = preferences;
+  if ([languagesCopy count] && objc_msgSend(preferencesCopy, "count"))
   {
-    v7 = [MEMORY[0x277CCA8D8] preferredLocalizationsFromArray:v5 forPreferences:v6];
-    v8 = [v7 firstObject];
+    v7 = [MEMORY[0x277CCA8D8] preferredLocalizationsFromArray:languagesCopy forPreferences:preferencesCopy];
+    firstObject = [v7 firstObject];
   }
 
   else
@@ -153,36 +153,36 @@ void __64__WDVideoURLManager__fetchPreferredURLForIdentifier_completion___block_
       _os_log_impl(&dword_251E85000, v9, OS_LOG_TYPE_DEFAULT, "Received empty array of languages, returning %{public}@", &v12, 0xCu);
     }
 
-    v8 = @"en";
+    firstObject = @"en";
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
-+ (id)_parseJSON:(id)a3
++ (id)_parseJSON:(id)n
 {
   v5 = 0;
-  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v5];
+  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:n options:0 error:&v5];
 
   return v3;
 }
 
-+ (void)_fetchRawManifestForIdentifier:(id)a3 completion:(id)a4
++ (void)_fetchRawManifestForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a1 _baseURLForIdentifier:a3];
+  completionCopy = completion;
+  v7 = [self _baseURLForIdentifier:identifier];
   v8 = [v7 URLByAppendingPathComponent:@"manifest.json"];
 
-  v9 = [MEMORY[0x277CCAD30] sharedSession];
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__WDVideoURLManager__fetchRawManifestForIdentifier_completion___block_invoke;
   v12[3] = &unk_2796E7BC0;
-  v13 = v6;
-  v10 = v6;
-  v11 = [v9 dataTaskWithURL:v8 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  v11 = [mEMORY[0x277CCAD30] dataTaskWithURL:v8 completionHandler:v12];
 
   [v11 resume];
 }
@@ -195,20 +195,20 @@ void __63__WDVideoURLManager__fetchRawManifestForIdentifier_completion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)_baseURLForIdentifier:(id)a3
++ (id)_baseURLForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 stringForKey:*MEMORY[0x277CCE498]];
+  identifierCopy = identifier;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults stringForKey:*MEMORY[0x277CCE498]];
 
-  v7 = [v6 hk_stripLeadingTrailingWhitespace];
-  v8 = [v7 hk_copyNonEmptyString];
+  hk_stripLeadingTrailingWhitespace = [v6 hk_stripLeadingTrailingWhitespace];
+  hk_copyNonEmptyString = [hk_stripLeadingTrailingWhitespace hk_copyNonEmptyString];
 
-  if (v8)
+  if (hk_copyNonEmptyString)
   {
-    v9 = v8;
+    v9 = hk_copyNonEmptyString;
   }
 
   else
@@ -217,15 +217,15 @@ void __63__WDVideoURLManager__fetchRawManifestForIdentifier_completion___block_i
   }
 
   v10 = [MEMORY[0x277CBEBC0] URLWithString:v9];
-  v11 = [v10 URLByAppendingPathComponent:v4];
+  v11 = [v10 URLByAppendingPathComponent:identifierCopy];
 
   _HKInitializeLogging();
   v12 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 absoluteString];
+    absoluteString = [v11 absoluteString];
     v16 = 138412290;
-    v17 = v13;
+    v17 = absoluteString;
     _os_log_impl(&dword_251E85000, v12, OS_LOG_TYPE_DEFAULT, "Server base URL: %@", &v16, 0xCu);
   }
 

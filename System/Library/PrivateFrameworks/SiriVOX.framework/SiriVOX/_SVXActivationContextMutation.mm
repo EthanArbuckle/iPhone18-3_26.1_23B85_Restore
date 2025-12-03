@@ -1,5 +1,5 @@
 @interface _SVXActivationContextMutation
-- (_SVXActivationContextMutation)initWithBaseModel:(id)a3;
+- (_SVXActivationContextMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -27,60 +27,60 @@ LABEL_8:
         if ((mutationFlags & 8) != 0)
         {
 LABEL_9:
-          v9 = self->_buttonEvent;
+          buttonEvent = self->_buttonEvent;
 LABEL_13:
-          v10 = v9;
+          v10 = buttonEvent;
           if ((*&self->_mutationFlags & 0x10) != 0)
           {
-            v11 = self->_systemEvent;
+            systemEvent = self->_systemEvent;
           }
 
           else
           {
-            v11 = [(SVXActivationContext *)self->_baseModel systemEvent];
+            systemEvent = [(SVXActivationContext *)self->_baseModel systemEvent];
           }
 
-          v12 = v11;
+          v12 = systemEvent;
           if ((*&self->_mutationFlags & 0x20) != 0)
           {
-            v13 = self->_clientInfo;
+            clientInfo = self->_clientInfo;
           }
 
           else
           {
-            v13 = [(SVXActivationContext *)self->_baseModel clientInfo];
+            clientInfo = [(SVXActivationContext *)self->_baseModel clientInfo];
           }
 
-          v14 = v13;
+          v14 = clientInfo;
           if ((*&self->_mutationFlags & 0x40) != 0)
           {
-            v15 = self->_requestInfo;
+            requestInfo = self->_requestInfo;
           }
 
           else
           {
-            v15 = [(SVXActivationContext *)self->_baseModel requestInfo];
+            requestInfo = [(SVXActivationContext *)self->_baseModel requestInfo];
           }
 
-          v16 = v15;
+          v16 = requestInfo;
           if ((*&self->_mutationFlags & 0x80000000) != 0)
           {
-            v17 = self->_userInfo;
+            userInfo = self->_userInfo;
           }
 
           else
           {
-            v17 = [(SVXActivationContext *)self->_baseModel userInfo];
+            userInfo = [(SVXActivationContext *)self->_baseModel userInfo];
           }
 
-          v18 = v17;
-          v6 = [[SVXActivationContext alloc] initWithSource:source timestamp:timestamp buttonEvent:v10 systemEvent:v12 clientInfo:v14 requestInfo:v16 userInfo:v17];
+          v18 = userInfo;
+          v6 = [[SVXActivationContext alloc] initWithSource:source timestamp:timestamp buttonEvent:v10 systemEvent:v12 clientInfo:v14 requestInfo:v16 userInfo:userInfo];
 
           goto LABEL_26;
         }
 
 LABEL_12:
-        v9 = [(SVXActivationContext *)self->_baseModel buttonEvent];
+        buttonEvent = [(SVXActivationContext *)self->_baseModel buttonEvent];
         goto LABEL_13;
       }
     }
@@ -112,16 +112,16 @@ LABEL_26:
   return v6;
 }
 
-- (_SVXActivationContextMutation)initWithBaseModel:(id)a3
+- (_SVXActivationContextMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXActivationContextMutation;
   v6 = [(_SVXActivationContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

@@ -1,17 +1,17 @@
 @interface WiFiTimeDeferredNetworksAJManager
-- (BOOL)canDeferNetwork:(__WiFiNetwork *)a3 withUsageRank:(unint64_t)a4 andMotionState:(unsigned __int16)a5;
-- (BOOL)deferNetwork:(__WiFiNetwork *)a3;
-- (WiFiTimeDeferredNetworksAJManager)initWithArgs:(__WiFiDeviceManager *)a3;
+- (BOOL)canDeferNetwork:(__WiFiNetwork *)network withUsageRank:(unint64_t)rank andMotionState:(unsigned __int16)state;
+- (BOOL)deferNetwork:(__WiFiNetwork *)network;
+- (WiFiTimeDeferredNetworksAJManager)initWithArgs:(__WiFiDeviceManager *)args;
 - (void)dealloc;
 - (void)printDeferredNetworks;
 - (void)setLinkDown;
-- (void)setLinkUpForNetwork:(__WiFiNetwork *)a3;
-- (void)setScanResultsWithAutoJoinSessionCompletion:(id)a3 complete:(BOOL)a4;
+- (void)setLinkUpForNetwork:(__WiFiNetwork *)network;
+- (void)setScanResultsWithAutoJoinSessionCompletion:(id)completion complete:(BOOL)complete;
 @end
 
 @implementation WiFiTimeDeferredNetworksAJManager
 
-- (WiFiTimeDeferredNetworksAJManager)initWithArgs:(__WiFiDeviceManager *)a3
+- (WiFiTimeDeferredNetworksAJManager)initWithArgs:(__WiFiDeviceManager *)args
 {
   v5 = objc_autoreleasePoolPush();
   v10.receiver = self;
@@ -28,7 +28,7 @@
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!args)
   {
     v9 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -45,7 +45,7 @@ LABEL_11:
 
   v6->_networks = objc_alloc_init(NSMutableArray);
   v6->_cumulativeAutoJoinScanResults = objc_alloc_init(NSMutableArray);
-  v6->_deviceManager = a3;
+  v6->_deviceManager = args;
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -77,9 +77,9 @@ LABEL_6:
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)canDeferNetwork:(__WiFiNetwork *)a3 withUsageRank:(unint64_t)a4 andMotionState:(unsigned __int16)a5
+- (BOOL)canDeferNetwork:(__WiFiNetwork *)network withUsageRank:(unint64_t)rank andMotionState:(unsigned __int16)state
 {
-  v5 = a5;
+  stateCopy = state;
   v8 = objc_autoreleasePoolPush();
   v39 = 0;
   v40 = &v39;
@@ -96,7 +96,7 @@ LABEL_6:
     goto LABEL_56;
   }
 
-  if (!a3)
+  if (!network)
   {
     v27 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -143,10 +143,10 @@ LABEL_56:
     goto LABEL_34;
   }
 
-  v10 = sub_1000C3F40(self->_deviceManager, a3);
+  v10 = sub_1000C3F40(self->_deviceManager, network);
   if (v10)
   {
-    if (sub_10017764C(a3))
+    if (sub_10017764C(network))
     {
       v28 = 1;
     }
@@ -156,7 +156,7 @@ LABEL_56:
       v28 = [+[WiFiAnalyticsManager sharedWiFiAnalyticsManager](WiFiAnalyticsManager "sharedWiFiAnalyticsManager")];
     }
 
-    if (sub_1001775F0(a3))
+    if (sub_1001775F0(network))
     {
       v11 = 1;
     }
@@ -166,7 +166,7 @@ LABEL_56:
       v11 = [+[WiFiAnalyticsManager sharedWiFiAnalyticsManager](WiFiAnalyticsManager "sharedWiFiAnalyticsManager")];
     }
 
-    v12 = sub_1000C58A4(self->_deviceManager, a3);
+    v12 = sub_1000C58A4(self->_deviceManager, network);
     if (!v12)
     {
       goto LABEL_23;
@@ -185,14 +185,14 @@ LABEL_56:
       v15 = 0;
     }
 
-    if ((v14 & 0xFFFFFFFFFFFFFFFDLL) == 1 || v15 == 1 || (v11 & 1) == 0 && ([(WiFiTimeDeferredNetworksAJManager *)self usageRankForDeferral]> a4 || (v28 & 1) == 0 && (v5 > 6 || ((1 << v5) & 0x58) == 0)))
+    if ((v14 & 0xFFFFFFFFFFFFFFFDLL) == 1 || v15 == 1 || (v11 & 1) == 0 && ([(WiFiTimeDeferredNetworksAJManager *)self usageRankForDeferral]> rank || (v28 & 1) == 0 && (stateCopy > 6 || ((1 << stateCopy) & 0x58) == 0)))
     {
 LABEL_33:
       CFRelease(v10);
       goto LABEL_34;
     }
 
-    if (sub_10009E718(a3) || sub_10000D9C8(a3) || sub_10000AFE4(a3) || (v24 = sub_10000DC20(v10)) == 0 || ([+[NSDate timeIntervalSinceDate:"timeIntervalSinceDate:"])
+    if (sub_10009E718(network) || sub_10000D9C8(network) || sub_10000AFE4(network) || (v24 = sub_10000DC20(v10)) == 0 || ([+[NSDate timeIntervalSinceDate:"timeIntervalSinceDate:"])
     {
 LABEL_23:
       *(v40 + 24) = 1;
@@ -227,14 +227,14 @@ LABEL_23:
     v30[2] = sub_1001162E4;
     v30[3] = &unk_100263118;
     v30[7] = &v31;
-    v30[8] = a3;
+    v30[8] = network;
     v30[4] = self;
     v30[5] = &v35;
     v30[6] = &v39;
     [(NSMutableArray *)networks enumerateObjectsUsingBlock:v30];
     if (*(v40 + 24) == 1)
     {
-      v17 = [(WiFiTimeDeferredNetworksAJManager *)self deferNetwork:a3];
+      v17 = [(WiFiTimeDeferredNetworksAJManager *)self deferNetwork:network];
       *(v40 + 24) = v17;
       if (v17 && v36[3] != 0.0)
       {
@@ -242,9 +242,9 @@ LABEL_23:
         v19 = off_100298C40;
         if (off_100298C40)
         {
-          v20 = sub_10000A878(a3);
+          v20 = sub_10000A878(network);
           [(WiFiTimeDeferredNetworksAJManager *)self deferIntervalSecs];
-          [v19 WFLog:4 message:{"%s: time-deferring %@ (isMoving:%d isOmnipresent:%d usageRank:%lu isSuitableAfterTd:%d) from auto join for another %2.1f seconds", "-[WiFiTimeDeferredNetworksAJManager canDeferNetwork:withUsageRank:andMotionState:]", v20, v28, v11, a4, v12, v21 - v36[3]}];
+          [v19 WFLog:4 message:{"%s: time-deferring %@ (isMoving:%d isOmnipresent:%d usageRank:%lu isSuitableAfterTd:%d) from auto join for another %2.1f seconds", "-[WiFiTimeDeferredNetworksAJManager canDeferNetwork:withUsageRank:andMotionState:]", v20, v28, v11, rank, v12, v21 - v36[3]}];
         }
 
         objc_autoreleasePoolPop(v18);
@@ -269,7 +269,7 @@ LABEL_34:
   return v22;
 }
 
-- (BOOL)deferNetwork:(__WiFiNetwork *)a3
+- (BOOL)deferNetwork:(__WiFiNetwork *)network
 {
   v5 = objc_autoreleasePoolPush();
   v17 = 0u;
@@ -296,9 +296,9 @@ LABEL_34:
       }
 
       v12 = *(*(&v17 + 1) + 8 * i);
-      if ([v12 doesContain:a3])
+      if ([v12 doesContain:network])
       {
-        [v12 setDeferredNetwork:a3];
+        [v12 setDeferredNetwork:network];
         v9 = 1;
       }
     }
@@ -319,7 +319,7 @@ LABEL_12:
     if (v14)
     {
       v15 = v14;
-      v13 = [(DeferredNetwork *)v14 setDeferredNetwork:a3];
+      v13 = [(DeferredNetwork *)v14 setDeferredNetwork:network];
       if (v13)
       {
         [(NSMutableArray *)self->_networks addObject:v15];
@@ -336,16 +336,16 @@ LABEL_12:
   return v13;
 }
 
-- (void)setScanResultsWithAutoJoinSessionCompletion:(id)a3 complete:(BOOL)a4
+- (void)setScanResultsWithAutoJoinSessionCompletion:(id)completion complete:(BOOL)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   v7 = objc_autoreleasePoolPush();
-  if (a3)
+  if (completion)
   {
-    if ([a3 count])
+    if ([completion count])
     {
-      [(NSMutableArray *)self->_cumulativeAutoJoinScanResults addObjectsFromArray:a3];
-      if (v4)
+      [(NSMutableArray *)self->_cumulativeAutoJoinScanResults addObjectsFromArray:completion];
+      if (completeCopy)
       {
         v19 = 0;
         v20 = &v19;
@@ -404,7 +404,7 @@ LABEL_12:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setLinkUpForNetwork:(__WiFiNetwork *)a3
+- (void)setLinkUpForNetwork:(__WiFiNetwork *)network
 {
   v5 = objc_autoreleasePoolPush();
   v9 = 0;
@@ -417,7 +417,7 @@ LABEL_12:
   v8[2] = sub_100116AB0;
   v8[3] = &unk_100260B60;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = network;
   [(NSMutableArray *)networks enumerateObjectsUsingBlock:v8];
   if (v10[3] != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -432,7 +432,7 @@ LABEL_12:
     self->_currentNetwork = 0;
   }
 
-  self->_currentNetwork = sub_10000C580(kCFAllocatorDefault, a3);
+  self->_currentNetwork = sub_10000C580(kCFAllocatorDefault, network);
   _Block_object_dispose(&v9, 8);
   objc_autoreleasePoolPop(v5);
 }

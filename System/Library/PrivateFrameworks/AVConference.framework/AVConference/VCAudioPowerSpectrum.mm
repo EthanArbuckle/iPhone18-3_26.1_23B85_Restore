@@ -1,28 +1,28 @@
 @interface VCAudioPowerSpectrum
 - (NSString)description;
-- (VCAudioPowerSpectrum)initWithBinCount:(unsigned int)a3 streamToken:(int64_t)a4 sinkContext:(void *)a5 sinkCallback:(void *)a6;
+- (VCAudioPowerSpectrum)initWithBinCount:(unsigned int)count streamToken:(int64_t)token sinkContext:(void *)context sinkCallback:(void *)callback;
 - (_VCRange)frequencyRange;
 - (void)dealloc;
 @end
 
 @implementation VCAudioPowerSpectrum
 
-- (VCAudioPowerSpectrum)initWithBinCount:(unsigned int)a3 streamToken:(int64_t)a4 sinkContext:(void *)a5 sinkCallback:(void *)a6
+- (VCAudioPowerSpectrum)initWithBinCount:(unsigned int)count streamToken:(int64_t)token sinkContext:(void *)context sinkCallback:(void *)callback
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 && a5 && a6)
+  if (count && context && callback)
   {
     v13.receiver = self;
     v13.super_class = VCAudioPowerSpectrum;
     result = [(VCAudioPowerSpectrum *)&v13 init];
     if (result)
     {
-      result->_realtimeContext.outputBinCount = a3;
-      result->_streamToken = a4;
-      result->_realtimeContext.sinkContext = a5;
-      result->_realtimeContext.sinkCallback = a6;
+      result->_realtimeContext.outputBinCount = count;
+      result->_streamToken = token;
+      result->_realtimeContext.sinkContext = context;
+      result->_realtimeContext.sinkCallback = callback;
       result->_realtimeContext.averageLevel = -120.0;
-      result->_realtimeContext.streamToken = a4;
+      result->_realtimeContext.streamToken = token;
     }
   }
 
@@ -42,11 +42,11 @@
         v18 = 1024;
         v19 = 35;
         v20 = 1024;
-        v21 = a3;
+        countCopy = count;
         v22 = 2048;
-        v23 = a5;
+        contextCopy = context;
         v24 = 2048;
-        v25 = a6;
+        callbackCopy = callback;
         _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, " [%s] %s:%d Power spectrum initialzed with incorrect arguments: binCount[%d] sinkContext[%p] sinkCallback[%p]!", buf, 0x36u);
       }
     }

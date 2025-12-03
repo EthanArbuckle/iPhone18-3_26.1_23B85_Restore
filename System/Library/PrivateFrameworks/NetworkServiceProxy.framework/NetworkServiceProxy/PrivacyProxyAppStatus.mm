@@ -1,77 +1,77 @@
 @interface PrivacyProxyAppStatus
-- (PrivacyProxyAppStatus)initWithCoder:(id)a3;
-- (PrivacyProxyAppStatus)initWithStatus:(unint64_t)a3 bundleID:(id)a4 path:(id)a5 activeDate:(id)a6;
+- (PrivacyProxyAppStatus)initWithCoder:(id)coder;
+- (PrivacyProxyAppStatus)initWithStatus:(unint64_t)status bundleID:(id)d path:(id)path activeDate:(id)date;
 - (id)appStatusString;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PrivacyProxyAppStatus
 
 - (id)appStatusString
 {
-  v2 = [(PrivacyProxyAppStatus *)self appStatus];
-  if (v2 > 2)
+  appStatus = [(PrivacyProxyAppStatus *)self appStatus];
+  if (appStatus > 2)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7A306D8[v2];
+    return off_1E7A306D8[appStatus];
   }
 }
 
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options
 {
   v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
-  v8 = [(PrivacyProxyAppStatus *)self appStatusString];
-  [(NSMutableString *)v7 appendPrettyObject:v8 withName:@"App Status" andIndent:a3 options:a4];
+  appStatusString = [(PrivacyProxyAppStatus *)self appStatusString];
+  [(NSMutableString *)v7 appendPrettyObject:appStatusString withName:@"App Status" andIndent:indent options:options];
 
-  v9 = [(PrivacyProxyAppStatus *)self bundleIdentifier];
-  [(NSMutableString *)v7 appendPrettyObject:v9 withName:@"Bundle ID" andIndent:a3 options:a4];
+  bundleIdentifier = [(PrivacyProxyAppStatus *)self bundleIdentifier];
+  [(NSMutableString *)v7 appendPrettyObject:bundleIdentifier withName:@"Bundle ID" andIndent:indent options:options];
 
-  v10 = [(PrivacyProxyAppStatus *)self path];
-  [(NSMutableString *)v7 appendPrettyObject:v10 withName:@"Path" andIndent:a3 options:a4];
+  path = [(PrivacyProxyAppStatus *)self path];
+  [(NSMutableString *)v7 appendPrettyObject:path withName:@"Path" andIndent:indent options:options];
 
-  v11 = [(PrivacyProxyAppStatus *)self activeDate];
-  [(NSMutableString *)v7 appendPrettyObject:v11 withName:@"Active Date" andIndent:a3 options:a4];
+  activeDate = [(PrivacyProxyAppStatus *)self activeDate];
+  [(NSMutableString *)v7 appendPrettyObject:activeDate withName:@"Active Date" andIndent:indent options:options];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PrivacyProxyAppStatus allocWithZone:?]];
   [(PrivacyProxyAppStatus *)v4 setAppStatus:[(PrivacyProxyAppStatus *)self appStatus]];
-  v5 = [(PrivacyProxyAppStatus *)self bundleIdentifier];
-  [(PrivacyProxyAppStatus *)v4 setBundleIdentifier:v5];
+  bundleIdentifier = [(PrivacyProxyAppStatus *)self bundleIdentifier];
+  [(PrivacyProxyAppStatus *)v4 setBundleIdentifier:bundleIdentifier];
 
-  v6 = [(PrivacyProxyAppStatus *)self path];
-  [(PrivacyProxyAppStatus *)v4 setPath:v6];
+  path = [(PrivacyProxyAppStatus *)self path];
+  [(PrivacyProxyAppStatus *)v4 setPath:path];
 
-  v7 = [(PrivacyProxyAppStatus *)self activeDate];
-  [(PrivacyProxyAppStatus *)v4 setActiveDate:v7];
+  activeDate = [(PrivacyProxyAppStatus *)self activeDate];
+  [(PrivacyProxyAppStatus *)v4 setActiveDate:activeDate];
 
   return v4;
 }
 
-- (PrivacyProxyAppStatus)initWithStatus:(unint64_t)a3 bundleID:(id)a4 path:(id)a5 activeDate:(id)a6
+- (PrivacyProxyAppStatus)initWithStatus:(unint64_t)status bundleID:(id)d path:(id)path activeDate:(id)date
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  pathCopy = path;
+  dateCopy = date;
   v20.receiver = self;
   v20.super_class = PrivacyProxyAppStatus;
   v14 = [(PrivacyProxyAppStatus *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    v14->_appStatus = a3;
-    objc_storeStrong(&v14->_bundleIdentifier, a4);
-    objc_storeStrong(&v15->_path, a5);
-    objc_storeStrong(&v15->_activeDate, a6);
+    v14->_appStatus = status;
+    objc_storeStrong(&v14->_bundleIdentifier, d);
+    objc_storeStrong(&v15->_path, path);
+    objc_storeStrong(&v15->_activeDate, date);
     v16 = v15;
   }
 
@@ -88,24 +88,24 @@
   return v15;
 }
 
-- (PrivacyProxyAppStatus)initWithCoder:(id)a3
+- (PrivacyProxyAppStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PrivacyProxyAppStatus;
   v5 = [(PrivacyProxyAppStatus *)&v16 init];
   if (v5)
   {
-    v5->_appStatus = [v4 decodeIntForKey:@"PrivacyProxyAppStatus"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyAppBundleID"];
+    v5->_appStatus = [coderCopy decodeIntForKey:@"PrivacyProxyAppStatus"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyAppBundleID"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyAppPath"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyAppPath"];
     path = v5->_path;
     v5->_path = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyAppActiveDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyAppActiveDate"];
     activeDate = v5->_activeDate;
     v5->_activeDate = v10;
 
@@ -125,18 +125,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[PrivacyProxyAppStatus appStatus](self forKey:{"appStatus"), @"PrivacyProxyAppStatus"}];
-  v5 = [(PrivacyProxyAppStatus *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"PrivacyProxyAppBundleID"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[PrivacyProxyAppStatus appStatus](self forKey:{"appStatus"), @"PrivacyProxyAppStatus"}];
+  bundleIdentifier = [(PrivacyProxyAppStatus *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"PrivacyProxyAppBundleID"];
 
-  v6 = [(PrivacyProxyAppStatus *)self path];
-  [v4 encodeObject:v6 forKey:@"PrivacyProxyAppPath"];
+  path = [(PrivacyProxyAppStatus *)self path];
+  [coderCopy encodeObject:path forKey:@"PrivacyProxyAppPath"];
 
-  v7 = [(PrivacyProxyAppStatus *)self activeDate];
-  [v4 encodeObject:v7 forKey:@"PrivacyProxyAppActiveDate"];
+  activeDate = [(PrivacyProxyAppStatus *)self activeDate];
+  [coderCopy encodeObject:activeDate forKey:@"PrivacyProxyAppActiveDate"];
 }
 
 @end

@@ -2,9 +2,9 @@
 - (NSArray)items;
 - (NSDate)endDate;
 - (NSDate)startDate;
-- (id)_initWithTaggedRangeMetadataDictionary:(id)a3 items:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithTaggedRangeMetadataDictionary:(id)dictionary items:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)setEndDate:(NSDate *)endDate;
 - (void)setItems:(NSArray *)items;
 - (void)setStartDate:(NSDate *)startDate;
@@ -12,11 +12,11 @@
 
 @implementation AVMutableDateRangeMetadataGroup
 
-- (id)_initWithTaggedRangeMetadataDictionary:(id)a3 items:(id)a4
+- (id)_initWithTaggedRangeMetadataDictionary:(id)dictionary items:(id)items
 {
   v7.receiver = self;
   v7.super_class = AVMutableDateRangeMetadataGroup;
-  v4 = [(AVDateRangeMetadataGroup *)&v7 _initWithTaggedRangeMetadataDictionary:a3 items:a4];
+  v4 = [(AVDateRangeMetadataGroup *)&v7 _initWithTaggedRangeMetadataDictionary:dictionary items:items];
   v5 = v4;
   if (v4)
   {
@@ -73,20 +73,20 @@
   self->_mutablePriv->metadataItems = v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVDateRangeMetadataGroup alloc];
-  v5 = [(AVDateRangeMetadataGroup *)self _taggedRangeMetadataDictionary];
-  v6 = [(AVMutableDateRangeMetadataGroup *)self items];
+  _taggedRangeMetadataDictionary = [(AVDateRangeMetadataGroup *)self _taggedRangeMetadataDictionary];
+  items = [(AVMutableDateRangeMetadataGroup *)self items];
 
-  return [(AVDateRangeMetadataGroup *)v4 _initWithTaggedRangeMetadataDictionary:v5 items:v6];
+  return [(AVDateRangeMetadataGroup *)v4 _initWithTaggedRangeMetadataDictionary:_taggedRangeMetadataDictionary items:items];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = AVMutableDateRangeMetadataGroup;
-  return [(AVDateRangeMetadataGroup *)&v4 mutableCopyWithZone:a3];
+  return [(AVDateRangeMetadataGroup *)&v4 mutableCopyWithZone:zone];
 }
 
 @end

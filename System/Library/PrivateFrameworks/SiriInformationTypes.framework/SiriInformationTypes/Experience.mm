@@ -1,15 +1,15 @@
 @interface Experience
 - (_TtC21SiriInformationSearch10Experience)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Experience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  Experience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  Experience.encode(with:)(coderCopy);
 }
 
 - (_TtC21SiriInformationSearch10Experience)init

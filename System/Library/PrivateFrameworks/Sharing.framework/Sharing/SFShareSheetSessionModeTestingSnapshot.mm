@@ -1,32 +1,32 @@
 @interface SFShareSheetSessionModeTestingSnapshot
-- (BOOL)canTestFinalItemsForActivityType:(id)a3;
-- (BOOL)hasSameDiscoveredActivities:(id)a3;
-- (BOOL)hasSameFinalItems:(id)a3 forActivityType:(id)a4;
-- (BOOL)hasSamePlaceholderItems:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SFShareSheetSessionModeTestingSnapshot)initWithCoder:(id)a3;
-- (SFShareSheetSessionModeTestingSnapshot)initWithJSONInfo:(id)a3;
-- (SFShareSheetSessionModeTestingSnapshot)initWithPlaceholderItems:(id)a3;
-- (id)_removeShortcutsFromDiscoveredActivities:(id)a3;
+- (BOOL)canTestFinalItemsForActivityType:(id)type;
+- (BOOL)hasSameDiscoveredActivities:(id)activities;
+- (BOOL)hasSameFinalItems:(id)items forActivityType:(id)type;
+- (BOOL)hasSamePlaceholderItems:(id)items;
+- (BOOL)isEqual:(id)equal;
+- (SFShareSheetSessionModeTestingSnapshot)initWithCoder:(id)coder;
+- (SFShareSheetSessionModeTestingSnapshot)initWithJSONInfo:(id)info;
+- (SFShareSheetSessionModeTestingSnapshot)initWithPlaceholderItems:(id)items;
+- (id)_removeShortcutsFromDiscoveredActivities:(id)activities;
 - (id)jsonInfo;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateFromSnapshot:(id)a3;
-- (void)updateWithDiscoveredShareActivities:(id)a3 visibleShareActivities:(id)a4 actionActivities:(id)a5 visibleActionActivities:(id)a6;
-- (void)updateWithFinalItems:(id)a3 forActivityType:(id)a4;
-- (void)updateWithPeopleSuggestionActivityTypes:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateFromSnapshot:(id)snapshot;
+- (void)updateWithDiscoveredShareActivities:(id)activities visibleShareActivities:(id)shareActivities actionActivities:(id)actionActivities visibleActionActivities:(id)visibleActionActivities;
+- (void)updateWithFinalItems:(id)items forActivityType:(id)type;
+- (void)updateWithPeopleSuggestionActivityTypes:(id)types;
 @end
 
 @implementation SFShareSheetSessionModeTestingSnapshot
 
-- (SFShareSheetSessionModeTestingSnapshot)initWithPlaceholderItems:(id)a3
+- (SFShareSheetSessionModeTestingSnapshot)initWithPlaceholderItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = SFShareSheetSessionModeTestingSnapshot;
   v5 = [(SFShareSheetSessionModeTestingSnapshot *)&v10 init];
   if (v5)
   {
-    v6 = [SFShareSheetSessionTestingSnapshot _jsonifyItems:v4];
+    v6 = [SFShareSheetSessionTestingSnapshot _jsonifyItems:itemsCopy];
     placeholderItemDescriptions = v5->_placeholderItemDescriptions;
     v5->_placeholderItemDescriptions = v6;
 
@@ -36,18 +36,18 @@
   return v5;
 }
 
-- (void)updateWithPeopleSuggestionActivityTypes:(id)a3
+- (void)updateWithPeopleSuggestionActivityTypes:(id)types
 {
-  v4 = [a3 copy];
+  v4 = [types copy];
   [(SFShareSheetSessionModeTestingSnapshot *)self setPeopleSuggestionActivityTypes:v4];
 }
 
-- (void)updateWithDiscoveredShareActivities:(id)a3 visibleShareActivities:(id)a4 actionActivities:(id)a5 visibleActionActivities:(id)a6
+- (void)updateWithDiscoveredShareActivities:(id)activities visibleShareActivities:(id)shareActivities actionActivities:(id)actionActivities visibleActionActivities:(id)visibleActionActivities
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  visibleActionActivitiesCopy = visibleActionActivities;
+  actionActivitiesCopy = actionActivities;
+  shareActivitiesCopy = shareActivities;
+  activitiesCopy = activities;
   v14 = objc_opt_new();
   v15 = objc_opt_new();
   v16 = objc_opt_new();
@@ -58,7 +58,7 @@
   v32[3] = &unk_1E788C828;
   v33 = v14;
   v18 = v14;
-  [v13 enumerateObjectsUsingBlock:v32];
+  [activitiesCopy enumerateObjectsUsingBlock:v32];
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -66,7 +66,7 @@
   v30[3] = &unk_1E788C828;
   v31 = v15;
   v19 = v15;
-  [v12 enumerateObjectsUsingBlock:v30];
+  [shareActivitiesCopy enumerateObjectsUsingBlock:v30];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -74,7 +74,7 @@
   v28[3] = &unk_1E788C828;
   v29 = v16;
   v20 = v16;
-  [v11 enumerateObjectsUsingBlock:v28];
+  [actionActivitiesCopy enumerateObjectsUsingBlock:v28];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -82,7 +82,7 @@
   v26[3] = &unk_1E788C828;
   v27 = v17;
   v21 = v17;
-  [v10 enumerateObjectsUsingBlock:v26];
+  [visibleActionActivitiesCopy enumerateObjectsUsingBlock:v26];
 
   v22 = [v18 copy];
   [(SFShareSheetSessionModeTestingSnapshot *)self setShareActivities:v22];
@@ -125,16 +125,16 @@ void __142__SFShareSheetSessionModeTestingSnapshot_updateWithDiscoveredShareActi
   [v2 addObject:v3];
 }
 
-- (void)updateWithFinalItems:(id)a3 forActivityType:(id)a4
+- (void)updateWithFinalItems:(id)items forActivityType:(id)type
 {
-  v6 = a4;
-  v11 = [SFShareSheetSessionTestingSnapshot _jsonifyItems:a3];
-  v7 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+  typeCopy = type;
+  v11 = [SFShareSheetSessionTestingSnapshot _jsonifyItems:items];
+  finalItemsByActivity = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
 
-  if (v7)
+  if (finalItemsByActivity)
   {
-    v8 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
-    v9 = [v8 mutableCopy];
+    finalItemsByActivity2 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+    v9 = [finalItemsByActivity2 mutableCopy];
   }
 
   else
@@ -142,82 +142,82 @@ void __142__SFShareSheetSessionModeTestingSnapshot_updateWithDiscoveredShareActi
     v9 = objc_opt_new();
   }
 
-  [v9 setObject:v11 forKey:v6];
+  [v9 setObject:v11 forKey:typeCopy];
 
   v10 = [v9 copy];
   [(SFShareSheetSessionModeTestingSnapshot *)self setFinalItemsByActivity:v10];
 }
 
-- (void)updateFromSnapshot:(id)a3
+- (void)updateFromSnapshot:(id)snapshot
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
+  snapshotCopy = snapshot;
+  placeholderItemDescriptions = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
 
-  if (!v5)
+  if (!placeholderItemDescriptions)
   {
-    v6 = [v4 placeholderItemDescriptions];
-    [(SFShareSheetSessionModeTestingSnapshot *)self setPlaceholderItemDescriptions:v6];
+    placeholderItemDescriptions2 = [snapshotCopy placeholderItemDescriptions];
+    [(SFShareSheetSessionModeTestingSnapshot *)self setPlaceholderItemDescriptions:placeholderItemDescriptions2];
   }
 
-  v7 = [(SFShareSheetSessionModeTestingSnapshot *)self peopleSuggestionActivityTypes];
+  peopleSuggestionActivityTypes = [(SFShareSheetSessionModeTestingSnapshot *)self peopleSuggestionActivityTypes];
 
-  if (!v7)
+  if (!peopleSuggestionActivityTypes)
   {
-    v8 = [v4 peopleSuggestionActivityTypes];
-    [(SFShareSheetSessionModeTestingSnapshot *)self setPeopleSuggestionActivityTypes:v8];
+    peopleSuggestionActivityTypes2 = [snapshotCopy peopleSuggestionActivityTypes];
+    [(SFShareSheetSessionModeTestingSnapshot *)self setPeopleSuggestionActivityTypes:peopleSuggestionActivityTypes2];
   }
 
-  v9 = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
+  shareActivities = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
 
-  if (!v9)
+  if (!shareActivities)
   {
-    v10 = [v4 shareActivities];
-    [(SFShareSheetSessionModeTestingSnapshot *)self setShareActivities:v10];
+    shareActivities2 = [snapshotCopy shareActivities];
+    [(SFShareSheetSessionModeTestingSnapshot *)self setShareActivities:shareActivities2];
   }
 
-  v11 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleShareActivities];
+  visibleShareActivities = [(SFShareSheetSessionModeTestingSnapshot *)self visibleShareActivities];
 
-  if (!v11)
+  if (!visibleShareActivities)
   {
-    v12 = [v4 visibleShareActivities];
-    [(SFShareSheetSessionModeTestingSnapshot *)self setVisibleShareActivities:v12];
+    visibleShareActivities2 = [snapshotCopy visibleShareActivities];
+    [(SFShareSheetSessionModeTestingSnapshot *)self setVisibleShareActivities:visibleShareActivities2];
   }
 
-  v13 = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
+  actionActivities = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
 
-  if (!v13)
+  if (!actionActivities)
   {
-    v14 = [v4 actionActivities];
-    [(SFShareSheetSessionModeTestingSnapshot *)self setActionActivities:v14];
+    actionActivities2 = [snapshotCopy actionActivities];
+    [(SFShareSheetSessionModeTestingSnapshot *)self setActionActivities:actionActivities2];
   }
 
-  v15 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleActionActivities];
+  visibleActionActivities = [(SFShareSheetSessionModeTestingSnapshot *)self visibleActionActivities];
 
-  if (!v15)
+  if (!visibleActionActivities)
   {
-    v16 = [v4 visibleActionActivities];
-    [(SFShareSheetSessionModeTestingSnapshot *)self setVisibleActionActivities:v16];
+    visibleActionActivities2 = [snapshotCopy visibleActionActivities];
+    [(SFShareSheetSessionModeTestingSnapshot *)self setVisibleActionActivities:visibleActionActivities2];
   }
 
-  v17 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+  finalItemsByActivity = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
 
-  v18 = [v4 finalItemsByActivity];
-  v19 = v18;
-  if (!v17)
+  finalItemsByActivity2 = [snapshotCopy finalItemsByActivity];
+  v19 = finalItemsByActivity2;
+  if (!finalItemsByActivity)
   {
-    [(SFShareSheetSessionModeTestingSnapshot *)self setFinalItemsByActivity:v18];
+    [(SFShareSheetSessionModeTestingSnapshot *)self setFinalItemsByActivity:finalItemsByActivity2];
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  if (v18)
+  if (finalItemsByActivity2)
   {
-    v20 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
-    v21 = [v4 finalItemsByActivity];
-    v22 = v20;
-    v23 = v21;
+    finalItemsByActivity3 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+    finalItemsByActivity4 = [snapshotCopy finalItemsByActivity];
+    v22 = finalItemsByActivity3;
+    v23 = finalItemsByActivity4;
     v24 = v23;
     if (v22 == v23)
     {
@@ -239,17 +239,17 @@ LABEL_33:
         }
       }
 
-      v26 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
-      v19 = [v26 mutableCopy];
+      finalItemsByActivity5 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+      v19 = [finalItemsByActivity5 mutableCopy];
 
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v27 = [v4 finalItemsByActivity];
-      v28 = [v27 allKeys];
+      finalItemsByActivity6 = [snapshotCopy finalItemsByActivity];
+      allKeys = [finalItemsByActivity6 allKeys];
 
-      v29 = [v28 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v29 = [allKeys countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v29)
       {
         v30 = v29;
@@ -260,22 +260,22 @@ LABEL_33:
           {
             if (*v40 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(allKeys);
             }
 
             v33 = *(*(&v39 + 1) + 8 * i);
-            v34 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
-            v35 = [v34 objectForKeyedSubscript:v33];
+            finalItemsByActivity7 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+            v35 = [finalItemsByActivity7 objectForKeyedSubscript:v33];
 
             if (!v35)
             {
-              v36 = [v4 finalItemsByActivity];
-              v37 = [v36 objectForKeyedSubscript:v33];
+              finalItemsByActivity8 = [snapshotCopy finalItemsByActivity];
+              v37 = [finalItemsByActivity8 objectForKeyedSubscript:v33];
               [v19 setObject:v37 forKey:v33];
             }
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v39 objects:v43 count:16];
+          v30 = [allKeys countByEnumeratingWithState:&v39 objects:v43 count:16];
         }
 
         while (v30);
@@ -293,39 +293,39 @@ LABEL_34:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (SFShareSheetSessionModeTestingSnapshot)initWithJSONInfo:(id)a3
+- (SFShareSheetSessionModeTestingSnapshot)initWithJSONInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = SFShareSheetSessionModeTestingSnapshot;
   v5 = [(SFShareSheetSessionModeTestingSnapshot *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"placeholderItemDescriptions"];
+    v6 = [infoCopy objectForKeyedSubscript:@"placeholderItemDescriptions"];
     placeholderItemDescriptions = v5->_placeholderItemDescriptions;
     v5->_placeholderItemDescriptions = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"peopleSuggestionActivityTypes"];
+    v8 = [infoCopy objectForKeyedSubscript:@"peopleSuggestionActivityTypes"];
     peopleSuggestionActivityTypes = v5->_peopleSuggestionActivityTypes;
     v5->_peopleSuggestionActivityTypes = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"shareActivities"];
+    v10 = [infoCopy objectForKeyedSubscript:@"shareActivities"];
     shareActivities = v5->_shareActivities;
     v5->_shareActivities = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"visibleShareActivities"];
+    v12 = [infoCopy objectForKeyedSubscript:@"visibleShareActivities"];
     visibleShareActivities = v5->_visibleShareActivities;
     v5->_visibleShareActivities = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"actionActivities"];
+    v14 = [infoCopy objectForKeyedSubscript:@"actionActivities"];
     actionActivities = v5->_actionActivities;
     v5->_actionActivities = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"visibleActionActivities"];
+    v16 = [infoCopy objectForKeyedSubscript:@"visibleActionActivities"];
     visibleActionActivities = v5->_visibleActionActivities;
     v5->_visibleActionActivities = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"finalItemsByActivity"];
+    v18 = [infoCopy objectForKeyedSubscript:@"finalItemsByActivity"];
     finalItemsByActivity = v5->_finalItemsByActivity;
     v5->_finalItemsByActivity = v18;
 
@@ -338,34 +338,34 @@ LABEL_34:
 - (id)jsonInfo
 {
   v3 = objc_opt_new();
-  v4 = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
-  [v3 setObject:v4 forKeyedSubscript:@"placeholderItemDescriptions"];
+  placeholderItemDescriptions = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
+  [v3 setObject:placeholderItemDescriptions forKeyedSubscript:@"placeholderItemDescriptions"];
 
-  v5 = [(SFShareSheetSessionModeTestingSnapshot *)self peopleSuggestionActivityTypes];
-  [v3 setObject:v5 forKeyedSubscript:@"peopleSuggestionActivityTypes"];
+  peopleSuggestionActivityTypes = [(SFShareSheetSessionModeTestingSnapshot *)self peopleSuggestionActivityTypes];
+  [v3 setObject:peopleSuggestionActivityTypes forKeyedSubscript:@"peopleSuggestionActivityTypes"];
 
-  v6 = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
-  [v3 setObject:v6 forKeyedSubscript:@"shareActivities"];
+  shareActivities = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
+  [v3 setObject:shareActivities forKeyedSubscript:@"shareActivities"];
 
-  v7 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleShareActivities];
-  [v3 setObject:v7 forKeyedSubscript:@"visibleShareActivities"];
+  visibleShareActivities = [(SFShareSheetSessionModeTestingSnapshot *)self visibleShareActivities];
+  [v3 setObject:visibleShareActivities forKeyedSubscript:@"visibleShareActivities"];
 
-  v8 = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
-  [v3 setObject:v8 forKeyedSubscript:@"actionActivities"];
+  actionActivities = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
+  [v3 setObject:actionActivities forKeyedSubscript:@"actionActivities"];
 
-  v9 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleActionActivities];
-  [v3 setObject:v9 forKeyedSubscript:@"visibleActionActivities"];
+  visibleActionActivities = [(SFShareSheetSessionModeTestingSnapshot *)self visibleActionActivities];
+  [v3 setObject:visibleActionActivities forKeyedSubscript:@"visibleActionActivities"];
 
-  v10 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
-  [v3 setObject:v10 forKeyedSubscript:@"finalItemsByActivity"];
+  finalItemsByActivity = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+  [v3 setObject:finalItemsByActivity forKeyedSubscript:@"finalItemsByActivity"];
 
   return v3;
 }
 
-- (SFShareSheetSessionModeTestingSnapshot)initWithCoder:(id)a3
+- (SFShareSheetSessionModeTestingSnapshot)initWithCoder:(id)coder
 {
   v51[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = SFShareSheetSessionModeTestingSnapshot;
   v5 = [(SFShareSheetSessionModeTestingSnapshot *)&v44 init];
@@ -377,7 +377,7 @@ LABEL_34:
     v51[2] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:3];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"placeholderItemDescriptions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"placeholderItemDescriptions"];
     placeholderItemDescriptions = v5->_placeholderItemDescriptions;
     v5->_placeholderItemDescriptions = v9;
 
@@ -386,7 +386,7 @@ LABEL_34:
     v50[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"peopleSuggestionActivityTypes"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"peopleSuggestionActivityTypes"];
     peopleSuggestionActivityTypes = v5->_peopleSuggestionActivityTypes;
     v5->_peopleSuggestionActivityTypes = v14;
 
@@ -395,7 +395,7 @@ LABEL_34:
     v49[1] = objc_opt_class();
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"shareActivities"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"shareActivities"];
     shareActivities = v5->_shareActivities;
     v5->_shareActivities = v19;
 
@@ -404,7 +404,7 @@ LABEL_34:
     v48[1] = objc_opt_class();
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
     v23 = [v21 setWithArray:v22];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"visibleShareActivities"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"visibleShareActivities"];
     visibleShareActivities = v5->_visibleShareActivities;
     v5->_visibleShareActivities = v24;
 
@@ -413,7 +413,7 @@ LABEL_34:
     v47[1] = objc_opt_class();
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
     v28 = [v26 setWithArray:v27];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"actionActivities"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"actionActivities"];
     actionActivities = v5->_actionActivities;
     v5->_actionActivities = v29;
 
@@ -422,7 +422,7 @@ LABEL_34:
     v46[1] = objc_opt_class();
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
     v33 = [v31 setWithArray:v32];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"visibleActionActivities"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"visibleActionActivities"];
     visibleActionActivities = v5->_visibleActionActivities;
     v5->_visibleActionActivities = v34;
 
@@ -433,7 +433,7 @@ LABEL_34:
     v45[3] = objc_opt_class();
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:4];
     v38 = [v36 setWithArray:v37];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"finalItemsByActivity"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"finalItemsByActivity"];
     finalItemsByActivity = v5->_finalItemsByActivity;
     v5->_finalItemsByActivity = v39;
 
@@ -444,23 +444,23 @@ LABEL_34:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   placeholderItemDescriptions = self->_placeholderItemDescriptions;
-  v5 = a3;
-  [v5 encodeObject:placeholderItemDescriptions forKey:@"placeholderItemDescriptions"];
-  [v5 encodeObject:self->_peopleSuggestionActivityTypes forKey:@"peopleSuggestionActivityTypes"];
-  [v5 encodeObject:self->_shareActivities forKey:@"shareActivities"];
-  [v5 encodeObject:self->_visibleShareActivities forKey:@"visibleShareActivities"];
-  [v5 encodeObject:self->_actionActivities forKey:@"actionActivities"];
-  [v5 encodeObject:self->_visibleActionActivities forKey:@"visibleActionActivities"];
-  [v5 encodeObject:self->_finalItemsByActivity forKey:@"finalItemsByActivity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:placeholderItemDescriptions forKey:@"placeholderItemDescriptions"];
+  [coderCopy encodeObject:self->_peopleSuggestionActivityTypes forKey:@"peopleSuggestionActivityTypes"];
+  [coderCopy encodeObject:self->_shareActivities forKey:@"shareActivities"];
+  [coderCopy encodeObject:self->_visibleShareActivities forKey:@"visibleShareActivities"];
+  [coderCopy encodeObject:self->_actionActivities forKey:@"actionActivities"];
+  [coderCopy encodeObject:self->_visibleActionActivities forKey:@"visibleActionActivities"];
+  [coderCopy encodeObject:self->_finalItemsByActivity forKey:@"finalItemsByActivity"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -470,11 +470,11 @@ LABEL_34:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SFShareSheetSessionModeTestingSnapshot *)v5 placeholderItemDescriptions];
-      v7 = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      placeholderItemDescriptions = [(SFShareSheetSessionModeTestingSnapshot *)v5 placeholderItemDescriptions];
+      placeholderItemDescriptions2 = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
+      v8 = placeholderItemDescriptions;
+      v9 = placeholderItemDescriptions2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -501,10 +501,10 @@ LABEL_56:
         }
       }
 
-      v13 = [(SFShareSheetSessionModeTestingSnapshot *)v5 peopleSuggestionActivityTypes];
-      v14 = [(SFShareSheetSessionModeTestingSnapshot *)self peopleSuggestionActivityTypes];
-      v15 = v13;
-      v16 = v14;
+      peopleSuggestionActivityTypes = [(SFShareSheetSessionModeTestingSnapshot *)v5 peopleSuggestionActivityTypes];
+      peopleSuggestionActivityTypes2 = [(SFShareSheetSessionModeTestingSnapshot *)self peopleSuggestionActivityTypes];
+      v15 = peopleSuggestionActivityTypes;
+      v16 = peopleSuggestionActivityTypes2;
       v17 = v16;
       if (v15 == v16)
       {
@@ -531,10 +531,10 @@ LABEL_55:
         }
       }
 
-      v19 = [(SFShareSheetSessionModeTestingSnapshot *)v5 shareActivities];
-      v20 = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
-      v21 = v19;
-      v22 = v20;
+      shareActivities = [(SFShareSheetSessionModeTestingSnapshot *)v5 shareActivities];
+      shareActivities2 = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
+      v21 = shareActivities;
+      v22 = shareActivities2;
       v23 = v22;
       if (v21 == v22)
       {
@@ -567,10 +567,10 @@ LABEL_54:
 
       v63 = v21;
       v64 = v23;
-      v25 = [(SFShareSheetSessionModeTestingSnapshot *)v5 visibleShareActivities];
-      v26 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleShareActivities];
-      v27 = v25;
-      v28 = v26;
+      visibleShareActivities = [(SFShareSheetSessionModeTestingSnapshot *)v5 visibleShareActivities];
+      visibleShareActivities2 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleShareActivities];
+      v27 = visibleShareActivities;
+      v28 = visibleShareActivities2;
       v29 = v28;
       v62 = v28;
       if (v27 == v28)
@@ -603,10 +603,10 @@ LABEL_52:
       }
 
       v59 = v27;
-      v33 = [(SFShareSheetSessionModeTestingSnapshot *)v5 actionActivities];
-      v34 = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
-      v35 = v33;
-      v36 = v34;
+      actionActivities = [(SFShareSheetSessionModeTestingSnapshot *)v5 actionActivities];
+      actionActivities2 = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
+      v35 = actionActivities;
+      v36 = actionActivities2;
       v37 = v36;
       v57 = v36;
       v58 = v35;
@@ -642,10 +642,10 @@ LABEL_50:
         }
       }
 
-      v42 = [(SFShareSheetSessionModeTestingSnapshot *)v5 visibleActionActivities];
-      v43 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleActionActivities];
-      v44 = v42;
-      v45 = v43;
+      visibleActionActivities = [(SFShareSheetSessionModeTestingSnapshot *)v5 visibleActionActivities];
+      visibleActionActivities2 = [(SFShareSheetSessionModeTestingSnapshot *)self visibleActionActivities];
+      v44 = visibleActionActivities;
+      v45 = visibleActionActivities2;
       v46 = v45;
       v61 = v44;
       v56 = v45;
@@ -682,10 +682,10 @@ LABEL_48:
         }
       }
 
-      v49 = [(SFShareSheetSessionModeTestingSnapshot *)v5 finalItemsByActivity];
-      v50 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
-      v51 = v49;
-      v52 = v50;
+      finalItemsByActivity = [(SFShareSheetSessionModeTestingSnapshot *)v5 finalItemsByActivity];
+      finalItemsByActivity2 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+      v51 = finalItemsByActivity;
+      v52 = finalItemsByActivity2;
       v60 = v52;
       v55 = v51;
       if (v51 == v52)
@@ -718,12 +718,12 @@ LABEL_57:
   return v12;
 }
 
-- (BOOL)hasSamePlaceholderItems:(id)a3
+- (BOOL)hasSamePlaceholderItems:(id)items
 {
-  v4 = [a3 placeholderItemDescriptions];
-  v5 = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
-  v6 = v4;
-  v7 = v5;
+  placeholderItemDescriptions = [items placeholderItemDescriptions];
+  placeholderItemDescriptions2 = [(SFShareSheetSessionModeTestingSnapshot *)self placeholderItemDescriptions];
+  v6 = placeholderItemDescriptions;
+  v7 = placeholderItemDescriptions2;
   v8 = v7;
   if (v6 == v7)
   {
@@ -743,19 +743,19 @@ LABEL_57:
   return v9;
 }
 
-- (BOOL)hasSameDiscoveredActivities:(id)a3
+- (BOOL)hasSameDiscoveredActivities:(id)activities
 {
-  v4 = a3;
-  v5 = [v4 shareActivities];
-  v6 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:v5];
-  v7 = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
-  v8 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:v7];
+  activitiesCopy = activities;
+  shareActivities = [activitiesCopy shareActivities];
+  v6 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:shareActivities];
+  shareActivities2 = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
+  v8 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:shareActivities2];
   if ([v6 isEqualToSet:v8])
   {
-    v9 = [v4 actionActivities];
-    v10 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:v9];
-    v11 = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
-    v12 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:v11];
+    actionActivities = [activitiesCopy actionActivities];
+    v10 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:actionActivities];
+    actionActivities2 = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
+    v12 = [(SFShareSheetSessionModeTestingSnapshot *)self _removeShortcutsFromDiscoveredActivities:actionActivities2];
     v13 = [v10 isEqualToSet:v12];
   }
 
@@ -767,14 +767,14 @@ LABEL_57:
   return v13;
 }
 
-- (BOOL)hasSameFinalItems:(id)a3 forActivityType:(id)a4
+- (BOOL)hasSameFinalItems:(id)items forActivityType:(id)type
 {
-  v6 = a4;
-  v7 = [a3 finalItemsByActivity];
-  v8 = [v7 objectForKey:v6];
+  typeCopy = type;
+  finalItemsByActivity = [items finalItemsByActivity];
+  v8 = [finalItemsByActivity objectForKey:typeCopy];
 
-  v9 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
-  v10 = [v9 objectForKey:v6];
+  finalItemsByActivity2 = [(SFShareSheetSessionModeTestingSnapshot *)self finalItemsByActivity];
+  v10 = [finalItemsByActivity2 objectForKey:typeCopy];
 
   v11 = v8;
   v12 = v10;
@@ -797,30 +797,30 @@ LABEL_57:
   return v14;
 }
 
-- (BOOL)canTestFinalItemsForActivityType:(id)a3
+- (BOOL)canTestFinalItemsForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
-  if ([v5 containsObject:v4])
+  typeCopy = type;
+  shareActivities = [(SFShareSheetSessionModeTestingSnapshot *)self shareActivities];
+  if ([shareActivities containsObject:typeCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
-    v6 = [v7 containsObject:v4];
+    actionActivities = [(SFShareSheetSessionModeTestingSnapshot *)self actionActivities];
+    v6 = [actionActivities containsObject:typeCopy];
   }
 
   return v6;
 }
 
-- (id)_removeShortcutsFromDiscoveredActivities:(id)a3
+- (id)_removeShortcutsFromDiscoveredActivities:(id)activities
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  activitiesCopy = activities;
   v5 = [v3 predicateWithFormat:@"NOT SELF BEGINSWITH 'com.apple.shortcuts.Run-Workflow'"];
-  v6 = [v4 mutableCopy];
+  v6 = [activitiesCopy mutableCopy];
 
   [v6 filterUsingPredicate:v5];
   v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];

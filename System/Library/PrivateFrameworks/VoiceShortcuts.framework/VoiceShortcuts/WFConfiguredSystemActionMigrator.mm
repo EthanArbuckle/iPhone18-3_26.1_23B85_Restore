@@ -1,11 +1,11 @@
 @interface WFConfiguredSystemActionMigrator
 - (BOOL)completedSystemAppMigration;
-- (BOOL)hasSystemActionForBundleIdentifier:(id)a3;
-- (BOOL)isConfiguredSystemActionValid:(id)a3;
-- (WFConfiguredSystemActionMigrator)initWithDatabaseProvider:(id)a3 actionProvider:(id)a4;
-- (id)updatedConfiguredSystemActionFrom:(id)a3;
+- (BOOL)hasSystemActionForBundleIdentifier:(id)identifier;
+- (BOOL)isConfiguredSystemActionValid:(id)valid;
+- (WFConfiguredSystemActionMigrator)initWithDatabaseProvider:(id)provider actionProvider:(id)actionProvider;
+- (id)updatedConfiguredSystemActionFrom:(id)from;
 - (void)updateActionsIfNeeded;
-- (void)updateConfiguredSystemActionOfType:(id)a3;
+- (void)updateConfiguredSystemActionOfType:(id)type;
 @end
 
 @implementation WFConfiguredSystemActionMigrator
@@ -49,21 +49,21 @@ LABEL_6:
   return 0;
 }
 
-- (id)updatedConfiguredSystemActionFrom:(id)a3
+- (id)updatedConfiguredSystemActionFrom:(id)from
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFConfiguredSystemActionMigrator *)self databaseProvider];
+    databaseProvider = [(WFConfiguredSystemActionMigrator *)self databaseProvider];
     v19 = 0;
-    v6 = [v5 databaseWithError:&v19];
+    v6 = [databaseProvider databaseWithError:&v19];
     v7 = v19;
 
     if (v6)
     {
-      v8 = v4;
+      v8 = fromCopy;
       if (v8)
       {
         objc_opt_class();
@@ -85,14 +85,14 @@ LABEL_6:
 
       v12 = v9;
 
-      v13 = [v12 workflowIdentifier];
-      v14 = [v6 referenceForWorkflowID:v13];
+      workflowIdentifier = [v12 workflowIdentifier];
+      v14 = [v6 referenceForWorkflowID:workflowIdentifier];
 
       if (v14)
       {
         v15 = objc_alloc(MEMORY[0x277D79E78]);
-        v16 = [v8 shortcutsMetadata];
-        v10 = [v15 initWithWorkflow:v14 shortcutsMetadata:v16];
+        shortcutsMetadata = [v8 shortcutsMetadata];
+        v10 = [v15 initWithWorkflow:v14 shortcutsMetadata:shortcutsMetadata];
       }
 
       else
@@ -113,7 +113,7 @@ LABEL_6:
         _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Failed to fetch current workflow state due to: %@", buf, 0x16u);
       }
 
-      v10 = v4;
+      v10 = fromCopy;
     }
   }
 
@@ -127,10 +127,10 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)isConfiguredSystemActionValid:(id)a3
+- (BOOL)isConfiguredSystemActionValid:(id)valid
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  validCopy = valid;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -142,7 +142,7 @@ LABEL_6:
         v17 = 136315394;
         v18 = "[WFConfiguredSystemActionMigrator isConfiguredSystemActionValid:]";
         v19 = 2112;
-        v20 = v4;
+        v20 = validCopy;
         _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Can't determine validity of action right now, will try again later: %@", &v17, 0x16u);
       }
 
@@ -151,8 +151,8 @@ LABEL_6:
     }
 
     v5 = objc_alloc(MEMORY[0x277CC1E70]);
-    v6 = [v4 associatedBundleIdentifier];
-    v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
+    associatedBundleIdentifier = [validCopy associatedBundleIdentifier];
+    v7 = [v5 initWithBundleIdentifier:associatedBundleIdentifier allowPlaceholder:1 error:0];
 
     if (!v7)
     {
@@ -162,7 +162,7 @@ LABEL_6:
         v17 = 136315394;
         v18 = "[WFConfiguredSystemActionMigrator isConfiguredSystemActionValid:]";
         v19 = 2112;
-        v20 = v4;
+        v20 = validCopy;
         _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Current action for system action %@ needs updating due to source app being uninstalled.", &v17, 0x16u);
       }
 
@@ -174,7 +174,7 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = validCopy;
     if (v8)
     {
       objc_opt_class();
@@ -223,12 +223,12 @@ LABEL_24:
   return v10;
 }
 
-- (void)updateConfiguredSystemActionOfType:(id)a3
+- (void)updateConfiguredSystemActionOfType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFConfiguredSystemActionMigrator *)self actionProvider];
-  v6 = [v5 configuredSystemActionForActionType:v4];
+  typeCopy = type;
+  actionProvider = [(WFConfiguredSystemActionMigrator *)self actionProvider];
+  v6 = [actionProvider configuredSystemActionForActionType:typeCopy];
 
   v7 = getWFStaccatoLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -236,7 +236,7 @@ LABEL_24:
     v15 = 136315650;
     v16 = "[WFConfiguredSystemActionMigrator updateConfiguredSystemActionOfType:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = typeCopy;
     v19 = 2112;
     v20 = v6;
     _os_log_impl(&dword_23103C000, v7, OS_LOG_TYPE_DEFAULT, "%s Checking whether current action for system action type: %@ needs updating: %@", &v15, 0x20u);
@@ -250,7 +250,7 @@ LABEL_24:
       v15 = 136315650;
       v16 = "[WFConfiguredSystemActionMigrator updateConfiguredSystemActionOfType:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = typeCopy;
       v19 = 2112;
       v20 = v6;
       _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEFAULT, "%s Current action for system action type: %@ needs updating: %@", &v15, 0x20u);
@@ -263,14 +263,14 @@ LABEL_24:
       v15 = 136315650;
       v16 = "[WFConfiguredSystemActionMigrator updateConfiguredSystemActionOfType:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = typeCopy;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_DEFAULT, "%s Updated action for system action type: %@ is: %@", &v15, 0x20u);
     }
 
-    v11 = [(WFConfiguredSystemActionMigrator *)self actionProvider];
-    v12 = [v11 saveUpdatedAction:v8 forActionType:v4];
+    actionProvider2 = [(WFConfiguredSystemActionMigrator *)self actionProvider];
+    v12 = [actionProvider2 saveUpdatedAction:v8 forActionType:typeCopy];
 
     v13 = getWFStaccatoLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -278,7 +278,7 @@ LABEL_24:
       v15 = 136315650;
       v16 = "[WFConfiguredSystemActionMigrator updateConfiguredSystemActionOfType:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = typeCopy;
       v19 = 1024;
       LODWORD(v20) = v12;
       _os_log_impl(&dword_23103C000, v13, OS_LOG_TYPE_DEFAULT, "%s Completed updating system action type: %@, success: %i", &v15, 0x1Cu);
@@ -293,7 +293,7 @@ LABEL_24:
       v15 = 136315650;
       v16 = "[WFConfiguredSystemActionMigrator updateConfiguredSystemActionOfType:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = typeCopy;
       v19 = 2112;
       v20 = v6;
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_DEFAULT, "%s Current action for system action type: %@ does not need updating: %@", &v15, 0x20u);
@@ -303,18 +303,18 @@ LABEL_24:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasSystemActionForBundleIdentifier:(id)a3
+- (BOOL)hasSystemActionForBundleIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFConfiguredSystemActionMigrator *)self actionProvider];
-  v6 = [v5 availableActionTypes];
+  identifierCopy = identifier;
+  actionProvider = [(WFConfiguredSystemActionMigrator *)self actionProvider];
+  availableActionTypes = [actionProvider availableActionTypes];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v6;
+  v7 = availableActionTypes;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -330,11 +330,11 @@ LABEL_24:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [(WFConfiguredSystemActionMigrator *)self actionProvider];
-        v14 = [v13 configuredSystemActionForActionType:v12];
+        actionProvider2 = [(WFConfiguredSystemActionMigrator *)self actionProvider];
+        v14 = [actionProvider2 configuredSystemActionForActionType:v12];
 
-        v15 = [v14 associatedBundleIdentifier];
-        v16 = [v15 isEqualToString:v4];
+        associatedBundleIdentifier = [v14 associatedBundleIdentifier];
+        v16 = [associatedBundleIdentifier isEqualToString:identifierCopy];
 
         if (v16)
         {
@@ -363,14 +363,14 @@ LABEL_11:
 - (void)updateActionsIfNeeded
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(WFConfiguredSystemActionMigrator *)self actionProvider];
-  v4 = [v3 availableActionTypes];
+  actionProvider = [(WFConfiguredSystemActionMigrator *)self actionProvider];
+  availableActionTypes = [actionProvider availableActionTypes];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = availableActionTypes;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -399,18 +399,18 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (WFConfiguredSystemActionMigrator)initWithDatabaseProvider:(id)a3 actionProvider:(id)a4
+- (WFConfiguredSystemActionMigrator)initWithDatabaseProvider:(id)provider actionProvider:(id)actionProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  actionProviderCopy = actionProvider;
   v13.receiver = self;
   v13.super_class = WFConfiguredSystemActionMigrator;
   v9 = [(WFConfiguredSystemActionMigrator *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_databaseProvider, a3);
-    objc_storeStrong(&v10->_actionProvider, a4);
+    objc_storeStrong(&v9->_databaseProvider, provider);
+    objc_storeStrong(&v10->_actionProvider, actionProvider);
     v11 = v10;
   }
 

@@ -1,33 +1,33 @@
 @interface BKTestDriver
-+ (BOOL)createPath:(id)a3 errorLabel:(id)a4;
++ (BOOL)createPath:(id)path errorLabel:(id)label;
 + (void)prewarm;
 - (BKTestDriver)init;
 - (BOOL)bookDidAppear;
-- (BOOL)createFile:(id)a3 content:(id)a4 errorLabel:(id)a5;
-- (BOOL)createJsonFile:(id)a3 content:(id)a4 errorLabel:(id)a5;
+- (BOOL)createFile:(id)file content:(id)content errorLabel:(id)label;
+- (BOOL)createJsonFile:(id)file content:(id)content errorLabel:(id)label;
 - (BOOL)hasPendingBook;
 - (BOOL)isInLibrary;
 - (BOOL)paginationDidEnd;
-- (id)createBookDirectory:(id)a3;
+- (id)createBookDirectory:(id)directory;
 - (id)createResultsJsonFile;
-- (id)getBookInfo:(id)a3 errorLabel:(id)a4;
-- (id)getJsonFrom:(id)a3 errorLabel:(id)a4;
-- (void)bookViewDidAppear:(id)a3;
-- (void)bookViewWillDisappear:(id)a3;
+- (id)getBookInfo:(id)info errorLabel:(id)label;
+- (id)getJsonFrom:(id)from errorLabel:(id)label;
+- (void)bookViewDidAppear:(id)appear;
+- (void)bookViewWillDisappear:(id)disappear;
 - (void)clear;
-- (void)deleteFile:(id)a3;
-- (void)dispatchInQueue:(id)a3 async:(id)a4;
+- (void)deleteFile:(id)file;
+- (void)dispatchInQueue:(id)queue async:(id)async;
 - (void)goToFirstPage;
 - (void)goToNextPage;
-- (void)libraryViewDidAppear:(id)a3;
-- (void)libraryViewWillDisappear:(id)a3;
+- (void)libraryViewDidAppear:(id)appear;
+- (void)libraryViewWillDisappear:(id)disappear;
 - (void)openNextBook;
-- (void)paginationControllerFinishedBookPagination:(id)a3;
-- (void)paginationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5;
-- (void)presentationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5;
-- (void)processPageTurnResult:(BOOL)a3;
-- (void)recordPaginationInfo:(id)a3 info:(id)a4 renderTree:(id)a5 pageCount:(unint64_t)a6 errorLabel:(id)a7;
-- (void)setLibraryViewController:(id)a3;
+- (void)paginationControllerFinishedBookPagination:(id)pagination;
+- (void)paginationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count;
+- (void)presentationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count;
+- (void)processPageTurnResult:(BOOL)result;
+- (void)recordPaginationInfo:(id)info info:(id)a4 renderTree:(id)tree pageCount:(unint64_t)count errorLabel:(id)label;
+- (void)setLibraryViewController:(id)controller;
 - (void)takeSnapshot;
 - (void)terminateBookTest;
 - (void)terminateTest;
@@ -82,9 +82,9 @@
 
       v14 = +[NSURL bu_booksRepositoryURL];
       v15 = [v14 URLByAppendingPathComponent:@"Tests"];
-      v16 = [v15 path];
+      path = [v15 path];
 
-      v17 = [v16 stringByAppendingPathComponent:@"Books"];
+      v17 = [path stringByAppendingPathComponent:@"Books"];
       booksTestRoot = v3->_booksTestRoot;
       v3->_booksTestRoot = v17;
 
@@ -107,7 +107,7 @@
       v24 = v3->_booksTestRoot;
       v3->_booksTestRoot = 0;
 
-      v16 = v3->_machine;
+      path = v3->_machine;
       v3->_machine = 0;
     }
 
@@ -117,12 +117,12 @@
       [v25 setLayoutDelegate:v3];
     }
 
-    v26 = [(BKTestDriver *)v3 machine];
+    machine = [(BKTestDriver *)v3 machine];
 
-    if (v26)
+    if (machine)
     {
-      v27 = [(BKTestDriver *)v3 machine];
-      [v27 start];
+      machine2 = [(BKTestDriver *)v3 machine];
+      [machine2 start];
     }
   }
 
@@ -139,31 +139,31 @@
   [(BKTestDriver *)self setPaginationEnded:0];
 }
 
-+ (BOOL)createPath:(id)a3 errorLabel:(id)a4
++ (BOOL)createPath:(id)path errorLabel:(id)label
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSFileManager defaultManager];
   v8 = 0;
-  v6 = [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v8];
+  v6 = [v5 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v8];
 
   return v6;
 }
 
-- (BOOL)createFile:(id)a3 content:(id)a4 errorLabel:(id)a5
+- (BOOL)createFile:(id)file content:(id)content errorLabel:(id)label
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(BKTestDriver *)self booksTestRoot];
-  v10 = [NSString stringWithFormat:@"%@/%@", v9, v8];
+  contentCopy = content;
+  fileCopy = file;
+  booksTestRoot = [(BKTestDriver *)self booksTestRoot];
+  fileCopy = [NSString stringWithFormat:@"%@/%@", booksTestRoot, fileCopy];
 
-  v11 = [v10 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
   v12 = +[NSFileManager defaultManager];
   v15 = 0;
-  LODWORD(v8) = [v12 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v15];
+  LODWORD(fileCopy) = [v12 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v15];
 
-  if (v8)
+  if (fileCopy)
   {
-    v13 = [v7 writeToFile:v10 atomically:1];
+    v13 = [contentCopy writeToFile:fileCopy atomically:1];
   }
 
   else
@@ -174,33 +174,33 @@
   return v13;
 }
 
-- (void)deleteFile:(id)a3
+- (void)deleteFile:(id)file
 {
-  v4 = a3;
-  v5 = [(BKTestDriver *)self booksTestRoot];
-  v6 = [NSString stringWithFormat:@"%@/%@", v5, v4];
+  fileCopy = file;
+  booksTestRoot = [(BKTestDriver *)self booksTestRoot];
+  fileCopy = [NSString stringWithFormat:@"%@/%@", booksTestRoot, fileCopy];
 
   v7 = +[NSFileManager defaultManager];
   v8 = 0;
-  [v7 removeItemAtPath:v6 error:&v8];
+  [v7 removeItemAtPath:fileCopy error:&v8];
 }
 
-- (id)getJsonFrom:(id)a3 errorLabel:(id)a4
+- (id)getJsonFrom:(id)from errorLabel:(id)label
 {
   v6 = 0;
-  v4 = [NSJSONSerialization dataWithJSONObject:a3 options:1 error:&v6];
+  v4 = [NSJSONSerialization dataWithJSONObject:from options:1 error:&v6];
 
   return v4;
 }
 
-- (BOOL)createJsonFile:(id)a3 content:(id)a4 errorLabel:(id)a5
+- (BOOL)createJsonFile:(id)file content:(id)content errorLabel:(id)label
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(BKTestDriver *)self getJsonFrom:a4 errorLabel:v9];
+  fileCopy = file;
+  labelCopy = label;
+  v10 = [(BKTestDriver *)self getJsonFrom:content errorLabel:labelCopy];
   if (v10)
   {
-    v11 = [(BKTestDriver *)self createFile:v8 content:v10 errorLabel:v9];
+    v11 = [(BKTestDriver *)self createFile:fileCopy content:v10 errorLabel:labelCopy];
   }
 
   else
@@ -211,20 +211,20 @@
   return v11;
 }
 
-- (id)createBookDirectory:(id)a3
+- (id)createBookDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(BKTestDriver *)self booksTestRoot];
-  v6 = [BKTestDriver createPath:v5 errorLabel:v4];
+  directoryCopy = directory;
+  booksTestRoot = [(BKTestDriver *)self booksTestRoot];
+  v6 = [BKTestDriver createPath:booksTestRoot errorLabel:directoryCopy];
 
   if (v6)
   {
     do
     {
-      v7 = [(BKTestDriver *)self booksTestRoot];
+      booksTestRoot2 = [(BKTestDriver *)self booksTestRoot];
       v8 = [(BKTestDriver *)self idSeq]+ 1;
       [(BKTestDriver *)self setIdSeq:v8];
-      v9 = [NSString stringWithFormat:@"%@/%d", v7, v8];
+      v9 = [NSString stringWithFormat:@"%@/%d", booksTestRoot2, v8];
 
       v10 = +[NSFileManager defaultManager];
       LODWORD(v8) = [v10 createDirectoryAtPath:v9 withIntermediateDirectories:0 attributes:0 error:0];
@@ -247,22 +247,22 @@
   return v11;
 }
 
-- (id)getBookInfo:(id)a3 errorLabel:(id)a4
+- (id)getBookInfo:(id)info errorLabel:(id)label
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKTestDriver *)self bookMap];
-  v9 = [v8 objectForKey:v6];
+  infoCopy = info;
+  labelCopy = label;
+  bookMap = [(BKTestDriver *)self bookMap];
+  v9 = [bookMap objectForKey:infoCopy];
 
   if (!v9)
   {
     v9 = +[NSMutableDictionary dictionary];
-    v10 = [(BKTestDriver *)self createBookDirectory:v7];
+    v10 = [(BKTestDriver *)self createBookDirectory:labelCopy];
     [v9 setObject:v10 forKey:@"path"];
     v20 = [NSString stringWithFormat:@"%@/info.json", v10];
     [v9 setObject:v20 forKey:@"info-path"];
-    [(BKTestDriver *)self createJsonFile:v20 content:v6 errorLabel:v7];
-    [v9 setObject:v6 forKey:@"info"];
+    [(BKTestDriver *)self createJsonFile:v20 content:infoCopy errorLabel:labelCopy];
+    [v9 setObject:infoCopy forKey:@"info"];
     v19 = [NSString stringWithFormat:@"%@/pages", v10];
     [v9 setObject:v19 forKey:@"pages-path"];
     v11 = [NSString stringWithFormat:@"%@/pagination", v10];
@@ -280,36 +280,36 @@
     v16 = +[NSMutableArray array];
     [v9 setObject:v16 forKey:@"pages"];
 
-    v17 = [(BKTestDriver *)self bookMap];
-    [v17 setObject:v9 forKey:v6];
+    bookMap2 = [(BKTestDriver *)self bookMap];
+    [bookMap2 setObject:v9 forKey:infoCopy];
   }
 
   return v9;
 }
 
-- (void)recordPaginationInfo:(id)a3 info:(id)a4 renderTree:(id)a5 pageCount:(unint64_t)a6 errorLabel:(id)a7
+- (void)recordPaginationInfo:(id)info info:(id)a4 renderTree:(id)tree pageCount:(unint64_t)count errorLabel:(id)label
 {
-  v42 = a3;
+  infoCopy = info;
   v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(BKTestDriver *)self getValueForKey:@"fail" from:v13 errorLabel:v15];
+  treeCopy = tree;
+  labelCopy = label;
+  v16 = [(BKTestDriver *)self getValueForKey:@"fail" from:v13 errorLabel:labelCopy];
   v17 = v16;
   if (v16 && ([v16 BOOLValue] & 1) == 0)
   {
-    v18 = [(BKTestDriver *)self getValueForKey:@"book" from:v13 errorLabel:v15];
+    v18 = [(BKTestDriver *)self getValueForKey:@"book" from:v13 errorLabel:labelCopy];
     if (v18)
     {
-      v41 = [(BKTestDriver *)self getValueForKey:@"job.documentOrdinal" from:v13 errorLabel:v15];
+      v41 = [(BKTestDriver *)self getValueForKey:@"job.documentOrdinal" from:v13 errorLabel:labelCopy];
       if (v41)
       {
-        v19 = [(BKTestDriver *)self getBookInfo:v18 errorLabel:v15];
+        v19 = [(BKTestDriver *)self getBookInfo:v18 errorLabel:labelCopy];
         if (v19)
         {
           v20 = v19;
-          v21 = [NSString stringWithFormat:@"%@-path", v42];
+          infoCopy = [NSString stringWithFormat:@"%@-path", infoCopy];
           v40 = v20;
-          v22 = [(BKTestDriver *)self getValueForKey:v21 from:v20 errorLabel:v15];
+          v22 = [(BKTestDriver *)self getValueForKey:infoCopy from:v20 errorLabel:labelCopy];
 
           v23 = [NSString stringWithFormat:@"%@/result.json", v22];
           if (v23)
@@ -318,23 +318,23 @@
             [(BKTestDriver *)self deleteFile:v23];
             v39 = v22;
             v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@/rt_%d.txt", v22, [v41 intValue]);
-            v25 = [v14 dataUsingEncoding:4];
+            v25 = [treeCopy dataUsingEncoding:4];
             v26 = NSStringFromSelector(a2);
             v27 = [(BKTestDriver *)self createFile:v24 content:v25 errorLabel:v26];
 
             if (v27)
             {
-              v28 = [NSString stringWithFormat:@"%@-items", v42];
+              infoCopy2 = [NSString stringWithFormat:@"%@-items", infoCopy];
 
-              v37 = v28;
-              v43 = [v40 objectForKey:v28];
+              v37 = infoCopy2;
+              v43 = [v40 objectForKey:infoCopy2];
               if ([v43 count] >= 1 && (objc_msgSend(v43, "lastObject"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "objectForKeyedSubscript:", @"path"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqualToString:", v24), v30, v29, v31))
               {
                 v32 = v24;
-                v33 = [NSNumber numberWithUnsignedLong:a6];
+                v33 = [NSNumber numberWithUnsignedLong:count];
                 v34 = v43;
-                v35 = [v43 lastObject];
-                [v35 setObject:v33 forKeyedSubscript:@"page-count"];
+                lastObject = [v43 lastObject];
+                [lastObject setObject:v33 forKeyedSubscript:@"page-count"];
               }
 
               else
@@ -342,14 +342,14 @@
                 v33 = +[NSMutableDictionary dictionary];
                 v32 = v24;
                 [v33 setObject:v24 forKeyedSubscript:@"path"];
-                v36 = [NSNumber numberWithUnsignedLong:a6];
+                v36 = [NSNumber numberWithUnsignedLong:count];
                 [v33 setObject:v36 forKeyedSubscript:@"page-count"];
 
                 v34 = v43;
                 [v43 addObject:v33];
               }
 
-              v42 = v37;
+              infoCopy = v37;
             }
 
             else
@@ -369,153 +369,153 @@
   }
 }
 
-- (void)presentationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5
+- (void)presentationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(BKTestDriver *)self queue];
+  renderingCopy = rendering;
+  treeCopy = tree;
+  queue = [(BKTestDriver *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001C30F8;
   v14[3] = &unk_100A0AAD8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a5;
+  v15 = renderingCopy;
+  v16 = treeCopy;
+  countCopy = count;
   v18 = a2;
-  v12 = v10;
-  v13 = v9;
-  [(BKTestDriver *)self dispatchInQueue:v11 async:v14];
+  v12 = treeCopy;
+  v13 = renderingCopy;
+  [(BKTestDriver *)self dispatchInQueue:queue async:v14];
 }
 
-- (void)paginationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5
+- (void)paginationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(BKTestDriver *)self queue];
+  renderingCopy = rendering;
+  treeCopy = tree;
+  queue = [(BKTestDriver *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001C3260;
   v14[3] = &unk_100A0AAD8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a5;
+  v15 = renderingCopy;
+  v16 = treeCopy;
+  countCopy = count;
   v18 = a2;
-  v12 = v10;
-  v13 = v9;
-  [(BKTestDriver *)self dispatchInQueue:v11 async:v14];
+  v12 = treeCopy;
+  v13 = renderingCopy;
+  [(BKTestDriver *)self dispatchInQueue:queue async:v14];
 }
 
-- (void)paginationControllerFinishedBookPagination:(id)a3
+- (void)paginationControllerFinishedBookPagination:(id)pagination
 {
-  v5 = a3;
-  v6 = [(BKTestDriver *)self queue];
+  paginationCopy = pagination;
+  queue = [(BKTestDriver *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C3398;
   v8[3] = &unk_100A04CF0;
   v8[4] = self;
-  v9 = v5;
+  v9 = paginationCopy;
   v10 = a2;
-  v7 = v5;
-  [(BKTestDriver *)self dispatchInQueue:v6 async:v8];
+  v7 = paginationCopy;
+  [(BKTestDriver *)self dispatchInQueue:queue async:v8];
 }
 
-- (void)bookViewDidAppear:(id)a3
+- (void)bookViewDidAppear:(id)appear
 {
-  v4 = a3;
-  v5 = [(BKTestDriver *)self queue];
+  appearCopy = appear;
+  queue = [(BKTestDriver *)self queue];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1001C35E0;
   v11 = &unk_100A03440;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  [(BKTestDriver *)self dispatchInQueue:v5 async:&v8];
+  selfCopy = self;
+  v13 = appearCopy;
+  v6 = appearCopy;
+  [(BKTestDriver *)self dispatchInQueue:queue async:&v8];
 
   v7 = [(BKTestDriver *)self machine:v8];
   [v7 bookDidAppear];
 }
 
-- (void)bookViewWillDisappear:(id)a3
+- (void)bookViewWillDisappear:(id)disappear
 {
-  v4 = [(BKTestDriver *)self queue];
+  queue = [(BKTestDriver *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001C3678;
   v5[3] = &unk_100A033C8;
   v5[4] = self;
-  [(BKTestDriver *)self dispatchInQueue:v4 async:v5];
+  [(BKTestDriver *)self dispatchInQueue:queue async:v5];
 }
 
-- (void)setLibraryViewController:(id)a3
+- (void)setLibraryViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKTestDriver *)self queue];
+  controllerCopy = controller;
+  queue = [(BKTestDriver *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001C373C;
   v7[3] = &unk_100A03440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(BKTestDriver *)self dispatchInQueue:v5 async:v7];
+  v8 = controllerCopy;
+  v6 = controllerCopy;
+  [(BKTestDriver *)self dispatchInQueue:queue async:v7];
 }
 
-- (void)libraryViewWillDisappear:(id)a3
+- (void)libraryViewWillDisappear:(id)disappear
 {
-  v4 = [(BKTestDriver *)self machine];
+  machine = [(BKTestDriver *)self machine];
 
-  if (v4)
+  if (machine)
   {
     [(BKTestDriver *)self setLibraryViewController:0];
   }
 
-  v5 = [(BKTestDriver *)self eventDispatcher];
+  eventDispatcher = [(BKTestDriver *)self eventDispatcher];
 
-  if (v5)
+  if (eventDispatcher)
   {
-    v6 = [(BKTestDriver *)self eventDispatcher];
-    [v6 notifyLibraryController:0];
+    eventDispatcher2 = [(BKTestDriver *)self eventDispatcher];
+    [eventDispatcher2 notifyLibraryController:0];
   }
 }
 
-- (void)libraryViewDidAppear:(id)a3
+- (void)libraryViewDidAppear:(id)appear
 {
-  v8 = a3;
-  v4 = [(BKTestDriver *)self eventDispatcher];
+  appearCopy = appear;
+  eventDispatcher = [(BKTestDriver *)self eventDispatcher];
 
-  if (v4)
+  if (eventDispatcher)
   {
-    v5 = [(BKTestDriver *)self eventDispatcher];
-    [v5 notifyLibraryController:v8];
+    eventDispatcher2 = [(BKTestDriver *)self eventDispatcher];
+    [eventDispatcher2 notifyLibraryController:appearCopy];
   }
 
-  v6 = [(BKTestDriver *)self machine];
+  machine = [(BKTestDriver *)self machine];
 
-  if (v6)
+  if (machine)
   {
-    [(BKTestDriver *)self setLibraryViewController:v8];
-    v7 = [(BKTestDriver *)self machine];
-    [v7 libraryDidAppear];
+    [(BKTestDriver *)self setLibraryViewController:appearCopy];
+    machine2 = [(BKTestDriver *)self machine];
+    [machine2 libraryDidAppear];
   }
 }
 
-- (void)dispatchInQueue:(id)a3 async:(id)a4
+- (void)dispatchInQueue:(id)queue async:(id)async
 {
-  v6 = a4;
-  v7 = a3;
+  asyncCopy = async;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C3A74;
   block[3] = &unk_100A04058;
   objc_copyWeak(&v11, &location);
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = asyncCopy;
+  v8 = asyncCopy;
+  dispatch_async(queueCopy, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -533,16 +533,16 @@
   [(BKTestDriver *)self dispatchInQueue:&_dispatch_main_q async:v3];
 }
 
-- (void)processPageTurnResult:(BOOL)a3
+- (void)processPageTurnResult:(BOOL)result
 {
-  v5 = [(BKTestDriver *)self queue];
+  queue = [(BKTestDriver *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001C3DC4;
   v6[3] = &unk_100A044C8;
-  v7 = a3;
+  resultCopy = result;
   v6[4] = self;
-  [(BKTestDriver *)self dispatchInQueue:v5 async:v6];
+  [(BKTestDriver *)self dispatchInQueue:queue async:v6];
 }
 
 - (void)goToNextPage
@@ -568,9 +568,9 @@
 - (void)takeSnapshot
 {
   v4 = +[AETestDriver shared];
-  v5 = [v4 testingLayout];
+  testingLayout = [v4 testingLayout];
 
-  if (v5)
+  if (testingLayout)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -586,21 +586,21 @@
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[NSMutableArray array];
-  v5 = [(BKTestDriver *)self bookMap];
-  v6 = [v5 allValues];
+  bookMap = [(BKTestDriver *)self bookMap];
+  allValues = [bookMap allValues];
 
-  if ([v6 count])
+  if ([allValues count])
   {
     v7 = 0;
     do
     {
-      v8 = [v6 objectAtIndexedSubscript:v7];
+      v8 = [allValues objectAtIndexedSubscript:v7];
       [v4 addObject:v8];
 
       ++v7;
     }
 
-    while ([v6 count] > v7);
+    while ([allValues count] > v7);
   }
 
   [v3 setObject:v4 forKey:@"info"];
@@ -610,12 +610,12 @@
 
 - (void)terminateBookTest
 {
-  v4 = [(BKTestDriver *)self bookController];
+  bookController = [(BKTestDriver *)self bookController];
 
-  if (v4)
+  if (bookController)
   {
-    v5 = [(BKTestDriver *)self bookController];
-    v13 = [AETestDriver getBookKeyWithBookController:v5];
+    bookController2 = [(BKTestDriver *)self bookController];
+    v13 = [AETestDriver getBookKeyWithBookController:bookController2];
 
     v6 = v13;
     if (v13)
@@ -643,17 +643,17 @@
 
 - (void)terminateTest
 {
-  v4 = [(BKTestDriver *)self createResultsJsonFile];
+  createResultsJsonFile = [(BKTestDriver *)self createResultsJsonFile];
   v5 = NSStringFromSelector(a2);
-  [(BKTestDriver *)self createJsonFile:@"result.json" content:v4 errorLabel:v5];
+  [(BKTestDriver *)self createJsonFile:@"result.json" content:createResultsJsonFile errorLabel:v5];
 
   [(BKTestDriver *)self clear];
 }
 
 - (BOOL)isInLibrary
 {
-  v2 = [(BKTestDriver *)self libraryController];
-  v3 = v2 != 0;
+  libraryController = [(BKTestDriver *)self libraryController];
+  v3 = libraryController != 0;
 
   return v3;
 }
@@ -675,21 +675,21 @@
   v3 = +[AETestDriver shared];
   if ([v3 testingLayout])
   {
-    v4 = [(BKTestDriver *)self paginationEnded];
+    paginationEnded = [(BKTestDriver *)self paginationEnded];
   }
 
   else
   {
-    v4 = 1;
+    paginationEnded = 1;
   }
 
-  return v4;
+  return paginationEnded;
 }
 
 - (BOOL)bookDidAppear
 {
-  v2 = [(BKTestDriver *)self bookController];
-  v3 = v2 != 0;
+  bookController = [(BKTestDriver *)self bookController];
+  v3 = bookController != 0;
 
   return v3;
 }

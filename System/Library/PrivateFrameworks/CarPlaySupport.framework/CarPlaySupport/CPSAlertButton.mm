@@ -1,32 +1,32 @@
 @interface CPSAlertButton
-+ (id)buttonWithCPAlertAction:(id)a3;
++ (id)buttonWithCPAlertAction:(id)action;
 - (id)_buttonFont;
 - (id)_externalUnfocusedBorderColor;
 - (id)buttonTitleColor;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPSAlertButton
 
-+ (id)buttonWithCPAlertAction:(id)a3
++ (id)buttonWithCPAlertAction:(id)action
 {
-  v18 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = [v18 buttonWithType:0];
+  objc_storeStrong(location, action);
+  v16 = [selfCopy buttonWithType:0];
   if (v16)
   {
-    v9 = [location[0] title];
+    title = [location[0] title];
     [v16 setTitle:? forState:?];
-    *&v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-    v10 = [location[0] identifier];
+    *&v3 = MEMORY[0x277D82BD8](title).n128_u64[0];
+    identifier = [location[0] identifier];
     [v16 setIdentifier:?];
-    v11 = [v16 layer];
-    [v11 setCornerCurve:*MEMORY[0x277CDA138]];
-    v12 = [v16 layer];
+    layer = [v16 layer];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [v16 layer];
     v4 = _UISolariumEnabled();
     v5 = 20.0;
     if ((v4 & 1) == 0)
@@ -34,15 +34,15 @@
       v5 = 8.0;
     }
 
-    [v12 setCornerRadius:v5];
-    MEMORY[0x277D82BD8](v12);
+    [layer2 setCornerRadius:v5];
+    MEMORY[0x277D82BD8](layer2);
     v13 = _CPSAlertBackgroundColorForAction(location[0]);
     [v16 setBackgroundColor:?];
-    v15 = [v16 titleLabel];
-    v14 = [v16 _buttonFont];
-    [v15 setFont:?];
-    MEMORY[0x277D82BD8](v14);
-    *&v6 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+    titleLabel = [v16 titleLabel];
+    _buttonFont = [v16 _buttonFont];
+    [titleLabel setFont:?];
+    MEMORY[0x277D82BD8](_buttonFont);
+    *&v6 = MEMORY[0x277D82BD8](titleLabel).n128_u64[0];
     [v16 setAlertAction:{location[0], v6}];
   }
 
@@ -57,102 +57,102 @@
 {
   if (([(CPSAlertButton *)self isHighlighted]& 1) != 0)
   {
-    v12 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else if (([(CPSAlertButton *)self isFocused]& 1) != 0)
   {
-    v12 = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
+    labelColor = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
   }
 
   else
   {
-    v7 = [(CPSAlertButton *)self traitCollection];
+    traitCollection = [(CPSAlertButton *)self traitCollection];
     v9 = 0;
     v8 = 0;
-    if ([v7 userInterfaceStyle] == 1)
+    if ([traitCollection userInterfaceStyle] == 1)
     {
-      v10 = [(CPSAlertButton *)self alertAction];
+      alertAction = [(CPSAlertButton *)self alertAction];
       v9 = 1;
-      v8 = [(CPAlertAction *)v10 style]== CPAlertActionStyleCancel;
+      v8 = [(CPAlertAction *)alertAction style]== CPAlertActionStyleCancel;
     }
 
     if (v9)
     {
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](alertAction);
     }
 
-    *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+    *&v2 = MEMORY[0x277D82BD8](traitCollection).n128_u64[0];
     if (v8)
     {
-      v12 = [MEMORY[0x277D75348] labelColor];
+      labelColor = [MEMORY[0x277D75348] labelColor];
     }
 
     else
     {
       v5 = MEMORY[0x277D75348];
-      v6 = [MEMORY[0x277D75348] whiteColor];
-      v3 = v6;
-      v12 = [v5 colorWithCGColor:{objc_msgSend(v6, "CGColor")}];
-      MEMORY[0x277D82BD8](v6);
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v3 = whiteColor;
+      labelColor = [v5 colorWithCGColor:{objc_msgSend(whiteColor, "CGColor")}];
+      MEMORY[0x277D82BD8](whiteColor);
     }
   }
 
-  return v12;
+  return labelColor;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8.receiver = v10;
+  objc_storeStrong(location, change);
+  v8.receiver = selfCopy;
   v8.super_class = CPSAlertButton;
   [(CPUIButton *)&v8 traitCollectionDidChange:location[0]];
-  v5 = [(CPSAlertButton *)v10 titleLabel];
-  v4 = [(CPSAlertButton *)v10 _buttonFont];
-  [v5 setFont:?];
-  MEMORY[0x277D82BD8](v4);
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  v6 = v10;
-  v7 = [(CPSAlertButton *)v10 buttonTitleColor];
+  titleLabel = [(CPSAlertButton *)selfCopy titleLabel];
+  _buttonFont = [(CPSAlertButton *)selfCopy _buttonFont];
+  [titleLabel setFont:?];
+  MEMORY[0x277D82BD8](_buttonFont);
+  *&v3 = MEMORY[0x277D82BD8](titleLabel).n128_u64[0];
+  v6 = selfCopy;
+  buttonTitleColor = [(CPSAlertButton *)selfCopy buttonTitleColor];
   [CPSAlertButton setTitleColor:v6 forState:"setTitleColor:forState:"];
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](buttonTitleColor);
   objc_storeStrong(location, 0);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v4 = [location[0] nextFocusedItem];
-  v9 = v4 == v21;
-  *&v5 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  v10 = v21;
-  v11 = [(CPSAlertButton *)v21 buttonTitleColor];
+  objc_storeStrong(&v19, coordinator);
+  nextFocusedItem = [location[0] nextFocusedItem];
+  v9 = nextFocusedItem == selfCopy;
+  *&v5 = MEMORY[0x277D82BD8](nextFocusedItem).n128_u64[0];
+  v10 = selfCopy;
+  buttonTitleColor = [(CPSAlertButton *)selfCopy buttonTitleColor];
   [CPSAlertButton setTitleColor:v10 forState:"setTitleColor:forState:"];
-  *&v6 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  v12 = v21;
+  *&v6 = MEMORY[0x277D82BD8](buttonTitleColor).n128_u64[0];
+  v12 = selfCopy;
   v17 = 0;
   v15 = 0;
   v13 = 0;
   if (v9)
   {
-    v18 = [MEMORY[0x277D75348] _carSystemFocusColor];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
     v17 = 1;
-    v7 = v18;
+    v7 = _carSystemFocusColor;
   }
 
   else
   {
-    v16 = [(CPSAlertButton *)v21 alertAction];
+    alertAction = [(CPSAlertButton *)selfCopy alertAction];
     v15 = 1;
-    v14 = _CPSAlertBackgroundColorForAction(v16);
+    v14 = _CPSAlertBackgroundColorForAction(alertAction);
     v13 = 1;
     v7 = v14;
   }
@@ -165,46 +165,46 @@
 
   if (v15)
   {
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](alertAction);
   }
 
   if (v17)
   {
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](_carSystemFocusColor);
   }
 
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  highlightedCopy = highlighted;
   v14.receiver = self;
   v14.super_class = CPSAlertButton;
-  [(CPSAlertButton *)&v14 setHighlighted:a3];
-  v5 = v17;
-  v6 = [(CPSAlertButton *)v17 buttonTitleColor];
+  [(CPSAlertButton *)&v14 setHighlighted:highlighted];
+  v5 = selfCopy;
+  buttonTitleColor = [(CPSAlertButton *)selfCopy buttonTitleColor];
   [CPSAlertButton setTitleColor:v5 forState:"setTitleColor:forState:"];
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v7 = v17;
+  *&v3 = MEMORY[0x277D82BD8](buttonTitleColor).n128_u64[0];
+  v7 = selfCopy;
   v12 = 0;
   v10 = 0;
   v8 = 0;
-  if (v15)
+  if (highlightedCopy)
   {
-    v13 = [MEMORY[0x277D75348] _carSystemFocusPrimaryColor];
+    _carSystemFocusPrimaryColor = [MEMORY[0x277D75348] _carSystemFocusPrimaryColor];
     v12 = 1;
-    v4 = v13;
+    v4 = _carSystemFocusPrimaryColor;
   }
 
   else
   {
-    v11 = [(CPSAlertButton *)v17 alertAction];
+    alertAction = [(CPSAlertButton *)selfCopy alertAction];
     v10 = 1;
-    v9 = _CPSAlertBackgroundColorForAction(v11);
+    v9 = _CPSAlertBackgroundColorForAction(alertAction);
     v8 = 1;
     v4 = v9;
   }
@@ -217,12 +217,12 @@
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](alertAction);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](_carSystemFocusPrimaryColor);
   }
 }
 
@@ -233,9 +233,9 @@
   v14[1] = a2;
   v7 = MEMORY[0x277D74310];
   v6 = *MEMORY[0x277D76920];
-  v8 = [(CPSAlertButton *)self traitCollection];
+  traitCollection = [(CPSAlertButton *)self traitCollection];
   v14[0] = [v7 preferredFontDescriptorWithTextStyle:v6 compatibleWithTraitCollection:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](traitCollection);
   v17 = *MEMORY[0x277D74430];
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D743F8]];
   v18[0] = v9;
@@ -259,9 +259,9 @@
 
 - (id)_externalUnfocusedBorderColor
 {
-  v3 = [(CPSAlertButton *)self alertAction];
-  v4 = _CPSAlertBackgroundColorForAction(v3);
-  MEMORY[0x277D82BD8](v3);
+  alertAction = [(CPSAlertButton *)self alertAction];
+  v4 = _CPSAlertBackgroundColorForAction(alertAction);
+  MEMORY[0x277D82BD8](alertAction);
 
   return v4;
 }

@@ -1,34 +1,34 @@
 @interface AMSBadgeRequest
-- (AMSBadgeRequest)initWithCoder:(id)a3;
-- (AMSBadgeRequest)initWithPushPayload:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSBadgeRequest)initWithCoder:(id)coder;
+- (AMSBadgeRequest)initWithPushPayload:(id)payload;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSBadgeRequest
 
-- (AMSBadgeRequest)initWithPushPayload:(id)a3
+- (AMSBadgeRequest)initWithPushPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v23.receiver = self;
   v23.super_class = AMSBadgeRequest;
   v5 = [(AMSBadgeRequest *)&v23 init];
   if (v5)
   {
-    v6 = [v4 aps];
+    v6 = [payloadCopy aps];
     v7 = [v6 objectForKeyedSubscript:@"actionMetricsEvent"];
     actionMetricsEvent = v5->_actionMetricsEvent;
     v5->_actionMetricsEvent = v7;
 
-    v9 = [v4 clientIdentifier];
+    clientIdentifier = [payloadCopy clientIdentifier];
     bundleIdentifier = v5->_bundleIdentifier;
-    v5->_bundleIdentifier = v9;
+    v5->_bundleIdentifier = clientIdentifier;
 
-    v11 = [v4 aps];
+    v11 = [payloadCopy aps];
     v12 = [v11 objectForKeyedSubscript:@"badgeId"];
     badgeIdentifier = v5->_badgeIdentifier;
     v5->_badgeIdentifier = v12;
 
-    v14 = [v4 aps];
+    v14 = [payloadCopy aps];
     v15 = [v14 objectForKeyedSubscript:@"metrics"];
 
     objc_opt_class();
@@ -45,11 +45,11 @@
     metrics = v5->_metrics;
     v5->_metrics = v16;
 
-    v18 = [v4 aps];
+    v18 = [payloadCopy aps];
     v19 = [v18 objectForKeyedSubscript:@"enabled"];
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v4 aps];
+      v20 = [payloadCopy aps];
       v21 = [v20 objectForKeyedSubscript:@"enabled"];
       v5->_enabled = [v21 BOOLValue];
     }
@@ -63,71 +63,71 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(AMSBadgeRequest *)self actionMetricsEvent];
+  coderCopy = coder;
+  actionMetricsEvent = [(AMSBadgeRequest *)self actionMetricsEvent];
 
-  if (v4)
+  if (actionMetricsEvent)
   {
-    v5 = [(AMSBadgeRequest *)self actionMetricsEvent];
-    [v12 encodeObject:v5 forKey:@"actionMetricsEvent"];
+    actionMetricsEvent2 = [(AMSBadgeRequest *)self actionMetricsEvent];
+    [coderCopy encodeObject:actionMetricsEvent2 forKey:@"actionMetricsEvent"];
   }
 
-  v6 = [(AMSBadgeRequest *)self badgeIdentifier];
+  badgeIdentifier = [(AMSBadgeRequest *)self badgeIdentifier];
 
-  if (v6)
+  if (badgeIdentifier)
   {
-    v7 = [(AMSBadgeRequest *)self badgeIdentifier];
-    [v12 encodeObject:v7 forKey:@"badgeIdentifier"];
+    badgeIdentifier2 = [(AMSBadgeRequest *)self badgeIdentifier];
+    [coderCopy encodeObject:badgeIdentifier2 forKey:@"badgeIdentifier"];
   }
 
-  v8 = [(AMSBadgeRequest *)self bundleIdentifier];
+  bundleIdentifier = [(AMSBadgeRequest *)self bundleIdentifier];
 
-  if (v8)
+  if (bundleIdentifier)
   {
-    v9 = [(AMSBadgeRequest *)self bundleIdentifier];
-    [v12 encodeObject:v9 forKey:@"bundleIdentifier"];
+    bundleIdentifier2 = [(AMSBadgeRequest *)self bundleIdentifier];
+    [coderCopy encodeObject:bundleIdentifier2 forKey:@"bundleIdentifier"];
   }
 
-  v10 = [(AMSBadgeRequest *)self metrics];
+  metrics = [(AMSBadgeRequest *)self metrics];
 
-  if (v10)
+  if (metrics)
   {
-    v11 = [(AMSBadgeRequest *)self metrics];
-    [v12 encodeObject:v11 forKey:@"metrics"];
+    metrics2 = [(AMSBadgeRequest *)self metrics];
+    [coderCopy encodeObject:metrics2 forKey:@"metrics"];
   }
 
-  [v12 encodeBool:-[AMSBadgeRequest enabled](self forKey:{"enabled"), @"enabled"}];
+  [coderCopy encodeBool:-[AMSBadgeRequest enabled](self forKey:{"enabled"), @"enabled"}];
 }
 
-- (AMSBadgeRequest)initWithCoder:(id)a3
+- (AMSBadgeRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = AMSBadgeRequest;
   v5 = [(AMSBadgeRequest *)&v17 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"actionMetricsEvent"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v7 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"actionMetricsEvent"];
     actionMetricsEvent = v5->_actionMetricsEvent;
     v5->_actionMetricsEvent = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"badgeIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"badgeIdentifier"];
     badgeIdentifier = v5->_badgeIdentifier;
     v5->_badgeIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v11;
 
-    v13 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"metrics"];
+    ams_JSONClasses2 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v14 = [coderCopy decodeObjectOfClasses:ams_JSONClasses2 forKey:@"metrics"];
     metrics = v5->_metrics;
     v5->_metrics = v14;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
   }
 
   return v5;

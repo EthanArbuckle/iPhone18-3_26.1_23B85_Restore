@@ -1,8 +1,8 @@
 @interface CPGameCenterUtilities
 + (id)shared;
 - (CPGameCenterUtilities)init;
-- (void)fetchGameCenterMultiplayerGameStatusForBundleID:(id)a3 handler:(id)a4;
-- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)a3;
+- (void)fetchGameCenterMultiplayerGameStatusForBundleID:(id)d handler:(id)handler;
+- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)handler;
 @end
 
 @implementation CPGameCenterUtilities
@@ -41,19 +41,19 @@ uint64_t __31__CPGameCenterUtilities_shared__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)a3
+- (void)fetchOnDeviceMultiplayerBundleIDsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [getGKDaemonProxyClass() daemonProxy];
-  v6 = [v5 multiplayerService];
+  handlerCopy = handler;
+  daemonProxy = [getGKDaemonProxyClass() daemonProxy];
+  multiplayerService = [daemonProxy multiplayerService];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__CPGameCenterUtilities_fetchOnDeviceMultiplayerBundleIDsWithHandler___block_invoke;
   v8[3] = &unk_1E7A45C20;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchOnDeviceMultiplayerBundleIDsWithHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [multiplayerService fetchOnDeviceMultiplayerBundleIDsWithHandler:v8];
 }
 
 void __70__CPGameCenterUtilities_fetchOnDeviceMultiplayerBundleIDsWithHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -93,22 +93,22 @@ void __70__CPGameCenterUtilities_fetchOnDeviceMultiplayerBundleIDsWithHandler___
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchGameCenterMultiplayerGameStatusForBundleID:(id)a3 handler:(id)a4
+- (void)fetchGameCenterMultiplayerGameStatusForBundleID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [getGKDaemonProxyClass() daemonProxy];
-  v9 = [v8 multiplayerService];
+  dCopy = d;
+  handlerCopy = handler;
+  daemonProxy = [getGKDaemonProxyClass() daemonProxy];
+  multiplayerService = [daemonProxy multiplayerService];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__CPGameCenterUtilities_fetchGameCenterMultiplayerGameStatusForBundleID_handler___block_invoke;
   v12[3] = &unk_1E7A45C48;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 isGameCenterMultiplayerGameForBundleID:v11 handler:v12];
+  v13 = dCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dCopy;
+  [multiplayerService isGameCenterMultiplayerGameForBundleID:v11 handler:v12];
 }
 
 void __81__CPGameCenterUtilities_fetchGameCenterMultiplayerGameStatusForBundleID_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3)

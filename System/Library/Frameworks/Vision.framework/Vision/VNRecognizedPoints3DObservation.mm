@@ -1,10 +1,10 @@
 @interface VNRecognizedPoints3DObservation
-- (BOOL)isEqual:(id)a3;
-- (VNRecognizedPoints3DObservation)initWithCoder:(id)a3;
-- (VNRecognizedPoints3DObservation)initWithOriginatingRequestSpecifier:(id)a3 keypointsReturningObject:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNRecognizedPoints3DObservation)initWithCoder:(id)coder;
+- (VNRecognizedPoints3DObservation)initWithOriginatingRequestSpecifier:(id)specifier keypointsReturningObject:(id)object;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedPoints3DObservation
@@ -16,12 +16,12 @@
   return [(VNRecognizedPoints3DSpecifier *)self->_specifier hash]^ __ROR8__([(VNObservation *)&v3 hash], 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = VNRecognizedPoints3DObservation;
-  if ([(VNObservation *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(VNObservation *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = self->_specifier;
     v6 = VisionCoreEqualOrNilObjects();
@@ -39,37 +39,37 @@
 {
   v7.receiver = self;
   v7.super_class = VNRecognizedPoints3DObservation;
-  v3 = [(VNObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(VNRecognizedPoints3DSpecifier *)self->_specifier copy];
-    v5 = v3[12];
-    v3[12] = v4;
+    v5 = vn_cloneObject[12];
+    vn_cloneObject[12] = v4;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6.receiver = self;
   v6.super_class = VNRecognizedPoints3DObservation;
-  [(VNObservation *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_specifier forKey:@"3DPtSpec"];
+  [(VNObservation *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_specifier forKey:@"3DPtSpec"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (VNRecognizedPoints3DObservation)initWithCoder:(id)a3
+- (VNRecognizedPoints3DObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = VNRecognizedPoints3DObservation;
-  v5 = [(VNObservation *)&v9 initWithCoder:v4];
+  v5 = [(VNObservation *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"3DPtSpec"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"3DPtSpec"];
     specifier = v5->_specifier;
     v5->_specifier = v6;
   }
@@ -77,18 +77,18 @@
   return v5;
 }
 
-- (VNRecognizedPoints3DObservation)initWithOriginatingRequestSpecifier:(id)a3 keypointsReturningObject:(id)a4
+- (VNRecognizedPoints3DObservation)initWithOriginatingRequestSpecifier:(id)specifier keypointsReturningObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = VNRecognizedPoints3DObservation;
-  v8 = [(VNObservation *)&v13 initWithOriginatingRequestSpecifier:v6];
+  v8 = [(VNObservation *)&v13 initWithOriginatingRequestSpecifier:specifierCopy];
   if (v8)
   {
-    if ([v7 isMemberOfClass:objc_opt_class()])
+    if ([objectCopy isMemberOfClass:objc_opt_class()])
     {
-      v9 = [[VNHumanBodyPose3DSpecifier alloc] initWithHumanBody3DOutput:v7 originatingRequestSpecifier:v6];
+      v9 = [[VNHumanBodyPose3DSpecifier alloc] initWithHumanBody3DOutput:objectCopy originatingRequestSpecifier:specifierCopy];
       specifier = v8->_specifier;
       v8->_specifier = &v9->super;
     }

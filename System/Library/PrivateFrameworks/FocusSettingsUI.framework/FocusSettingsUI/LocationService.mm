@@ -1,12 +1,12 @@
 @interface LocationService
-- (void)completerDidUpdateResults:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)completerDidUpdateResults:(id)results;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation LocationService
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_24B8F37E8(0, &qword_27F064520);
   v5 = sub_24BAAA12C();
@@ -34,8 +34,8 @@ LABEL_3:
         else if (v7 < *((v5 & 0xFFFFFFFFFFFFFF8) + 0x10))
         {
           v8 = *(v5 + 8 * v7 + 32);
-          v9 = a3;
-          v10 = self;
+          managerCopy = manager;
+          selfCopy = self;
           v11 = v8;
 LABEL_8:
           v12 = v11;
@@ -43,7 +43,7 @@ LABEL_8:
           [v12 coordinate];
           v14 = v13;
           v16 = v15;
-          [a3 stopUpdatingLocation];
+          [manager stopUpdatingLocation];
           v22[0] = v14;
           v22[1] = v16;
           v23 = vdupq_n_s64(0x3FB999999999999AuLL);
@@ -58,8 +58,8 @@ LABEL_8:
       }
 
       v18 = v5;
-      v19 = a3;
-      v20 = self;
+      managerCopy2 = manager;
+      selfCopy2 = self;
       v11 = MEMORY[0x24C2506E0](v7, v18);
       goto LABEL_8;
     }
@@ -75,19 +75,19 @@ LABEL_8:
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_24B911D04(v6, v8);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_24B911D04(managerCopy, errorCopy);
 }
 
-- (void)completerDidUpdateResults:(id)a3
+- (void)completerDidUpdateResults:(id)results
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 results];
+  resultsCopy = results;
+  selfCopy = self;
+  results = [resultsCopy results];
   sub_24B8F37E8(0, &qword_27F064518);
   sub_24BAAA12C();
 

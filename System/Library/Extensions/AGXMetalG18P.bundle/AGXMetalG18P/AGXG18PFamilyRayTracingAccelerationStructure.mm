@@ -1,6 +1,6 @@
 @interface AGXG18PFamilyRayTracingAccelerationStructure
-- (AGXG18PFamilyRayTracingAccelerationStructure)initWithBuffer:(id)a3 device:(id)a4 length:(unint64_t)a5 resourceIndex:(unint64_t)a6;
-- (AGXG18PFamilyRayTracingAccelerationStructure)initWithDevice:(id)a3 length:(unint64_t)a4 resourceIndex:(unint64_t)a5 storageMode:(unint64_t)a6;
+- (AGXG18PFamilyRayTracingAccelerationStructure)initWithBuffer:(id)buffer device:(id)device length:(unint64_t)length resourceIndex:(unint64_t)index;
+- (AGXG18PFamilyRayTracingAccelerationStructure)initWithDevice:(id)device length:(unint64_t)length resourceIndex:(unint64_t)index storageMode:(unint64_t)mode;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
@@ -22,14 +22,14 @@
   [(IOGPUMetalAccelerationStructure *)&v2 dealloc];
 }
 
-- (AGXG18PFamilyRayTracingAccelerationStructure)initWithBuffer:(id)a3 device:(id)a4 length:(unint64_t)a5 resourceIndex:(unint64_t)a6
+- (AGXG18PFamilyRayTracingAccelerationStructure)initWithBuffer:(id)buffer device:(id)device length:(unint64_t)length resourceIndex:(unint64_t)index
 {
-  v27 = a5;
+  lengthCopy = length;
   v8 = *MEMORY[0x29EDC5638];
-  v9 = *(a3 + v8 + 24);
-  v26.gpu = *(a3 + v8 + 8);
+  v9 = *(buffer + v8 + 24);
+  v26.gpu = *(buffer + v8 + 8);
   v26.cpu = v9;
-  AGX::Mempool<16u,0u,true,0u,0u,AGX::HAL300::BVHStateHeapElem>::RangeAllocation::RangeAllocation(&v28, (*(a4 + 106) + 9408), a6);
+  AGX::Mempool<16u,0u,true,0u,0u,AGX::HAL300::BVHStateHeapElem>::RangeAllocation::RangeAllocation(&v28, (*(device + 106) + 9408), index);
   v10 = v29;
   os_unfair_lock_lock(v29 + 194);
   v11 = v29;
@@ -41,7 +41,7 @@
   os_unfair_lock_unlock(v10 + 194);
   v25.receiver = self;
   v25.super_class = AGXG18PFamilyRayTracingAccelerationStructure;
-  result = [(IOGPUMetalAccelerationStructure *)&v25 initWithBuffer:a3 offset:0 resourceIndex:v28];
+  result = [(IOGPUMetalAccelerationStructure *)&v25 initWithBuffer:buffer offset:0 resourceIndex:v28];
   if (!result)
   {
 LABEL_4:
@@ -55,11 +55,11 @@ LABEL_4:
 
   size = result->_impl.buffer.size;
   address = result->_impl.buffer.address;
-  v17 = v27;
+  v17 = lengthCopy;
   result->_impl.buffer.address = v26;
   result->_impl.buffer.size = v17;
   v26 = address;
-  v27 = size;
+  lengthCopy = size;
   cpu = result->_impl.bvh_state_heap_allocation.buffer_.address.cpu;
   result->_impl.bvh_state_heap_allocation.buffer_.address.cpu = 0;
   LOBYTE(v17) = result->_impl.bvh_state_heap_allocation.buffer_.size;
@@ -105,17 +105,17 @@ LABEL_7:
   return result;
 }
 
-- (AGXG18PFamilyRayTracingAccelerationStructure)initWithDevice:(id)a3 length:(unint64_t)a4 resourceIndex:(unint64_t)a5 storageMode:(unint64_t)a6
+- (AGXG18PFamilyRayTracingAccelerationStructure)initWithDevice:(id)device length:(unint64_t)length resourceIndex:(unint64_t)index storageMode:(unint64_t)mode
 {
   v11 = [objc_opt_new() init];
-  [v11 setResourceOptions:16 * a6];
-  [v11 setLength:a4];
+  [v11 setResourceOptions:16 * mode];
+  [v11 setLength:length];
   [v11 setAlignment:1024];
-  v12 = [a3 newBufferWithDescriptor:v11];
+  v12 = [device newBufferWithDescriptor:v11];
 
   if (v12)
   {
-    v13 = [(AGXG18PFamilyRayTracingAccelerationStructure *)self initWithBuffer:v12 device:a3 length:a4 resourceIndex:a5];
+    v13 = [(AGXG18PFamilyRayTracingAccelerationStructure *)self initWithBuffer:v12 device:device length:length resourceIndex:index];
 
     return v13;
   }

@@ -1,22 +1,22 @@
 @interface AMSoundReductionIndex
-- (AMSoundReductionIndex)initWithMaterialName:(id)a3;
-- (AMSoundReductionIndex)initWithValues:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validatedWithoutError:(id *)a3;
+- (AMSoundReductionIndex)initWithMaterialName:(id)name;
+- (AMSoundReductionIndex)initWithValues:(id)values error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validatedWithoutError:(id *)error;
 @end
 
 @implementation AMSoundReductionIndex
 
-- (AMSoundReductionIndex)initWithValues:(id)a3 error:(id *)a4
+- (AMSoundReductionIndex)initWithValues:(id)values error:(id *)error
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  valuesCopy = values;
   v48.receiver = self;
   v48.super_class = AMSoundReductionIndex;
   v7 = [(AMSoundReductionIndex *)&v48 init];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v6 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [valuesCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
   v11 = MEMORY[0x277CBEB98];
   v12 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"materialName", @"materialDescription", @"materialDepth", @"uncertaintyMaterialDepth", @"frequencyBands", @"soundReductionIndexUserData", @"soundReductionIndexReferenceData", @"uncertaintyReferenceData", @"averageSoundReductionIndex", @"numDataPointsReferenceData", @"totalNumDataSetsReferenceData", 0}];
   v13 = [v11 setWithArray:v12];
@@ -24,7 +24,7 @@
 
   if ((v14 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -33,85 +33,85 @@
     v49 = *MEMORY[0x277CCA450];
     v50[0] = @"At least one mandatory key was not found in input dictionary.";
     v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
-    *a4 = [v44 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:5 userInfo:v45];
+    *error = [v44 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:5 userInfo:v45];
 
 LABEL_6:
-    a4 = 0;
+    error = 0;
     goto LABEL_7;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"materialName"];
+  v15 = [valuesCopy objectForKeyedSubscript:@"materialName"];
   materialName = v7->_materialName;
   v7->_materialName = v15;
 
-  v17 = [v6 objectForKeyedSubscript:@"materialDescription"];
+  v17 = [valuesCopy objectForKeyedSubscript:@"materialDescription"];
   materialDescription = v7->_materialDescription;
   v7->_materialDescription = v17;
 
-  v19 = [v6 objectForKeyedSubscript:@"materialDepth"];
+  v19 = [valuesCopy objectForKeyedSubscript:@"materialDepth"];
   materialDepth = v7->_materialDepth;
   v7->_materialDepth = v19;
 
-  v21 = [v6 objectForKeyedSubscript:@"uncertaintyMaterialDepth"];
+  v21 = [valuesCopy objectForKeyedSubscript:@"uncertaintyMaterialDepth"];
   uncertaintyMaterialDepth = v7->_uncertaintyMaterialDepth;
   v7->_uncertaintyMaterialDepth = v21;
 
-  v23 = [v6 objectForKeyedSubscript:@"frequencyBands"];
+  v23 = [valuesCopy objectForKeyedSubscript:@"frequencyBands"];
   v24 = decimalValuesFromCSV(v23);
   frequencyBands = v7->_frequencyBands;
   v7->_frequencyBands = v24;
 
-  v26 = [v6 objectForKeyedSubscript:@"soundReductionIndexUserData"];
+  v26 = [valuesCopy objectForKeyedSubscript:@"soundReductionIndexUserData"];
   v27 = decimalValuesFromCSV(v26);
   v28 = clampArrayValues(v27, &unk_285016A10, &unk_285016A28);
   soundReductionIndexUserData = v7->_soundReductionIndexUserData;
   v7->_soundReductionIndexUserData = v28;
 
-  v30 = [v6 objectForKeyedSubscript:@"soundReductionIndexReferenceData"];
+  v30 = [valuesCopy objectForKeyedSubscript:@"soundReductionIndexReferenceData"];
   v31 = decimalValuesFromCSV(v30);
   v32 = clampArrayValues(v31, &unk_285016A10, &unk_285016A28);
   soundReductionIndexReferenceData = v7->_soundReductionIndexReferenceData;
   v7->_soundReductionIndexReferenceData = v32;
 
-  v34 = [v6 objectForKeyedSubscript:@"uncertaintyReferenceData"];
+  v34 = [valuesCopy objectForKeyedSubscript:@"uncertaintyReferenceData"];
   v35 = decimalValuesFromCSV(v34);
   v36 = clampArrayValues(v35, &unk_285016A10, &unk_285016A28);
   uncertaintyReferenceData = v7->_uncertaintyReferenceData;
   v7->_uncertaintyReferenceData = v36;
 
-  v38 = [v6 objectForKeyedSubscript:@"averageSoundReductionIndex"];
+  v38 = [valuesCopy objectForKeyedSubscript:@"averageSoundReductionIndex"];
   averageSoundReductionIndex = v7->_averageSoundReductionIndex;
   v7->_averageSoundReductionIndex = v38;
 
-  v40 = [v6 objectForKeyedSubscript:@"numDataPointsReferenceData"];
+  v40 = [valuesCopy objectForKeyedSubscript:@"numDataPointsReferenceData"];
   v41 = integerValuesFromCSV(v40);
   numDataPointsReferenceData = v7->_numDataPointsReferenceData;
   v7->_numDataPointsReferenceData = v41;
 
-  v43 = [v6 objectForKeyedSubscript:@"totalNumDataSetsReferenceData"];
+  v43 = [valuesCopy objectForKeyedSubscript:@"totalNumDataSetsReferenceData"];
   v7->_totalNumDataSetsReferenceData = [v43 intValue];
 
-  if (![(AMSoundReductionIndex *)v7 validatedWithoutError:a4])
+  if (![(AMSoundReductionIndex *)v7 validatedWithoutError:error])
   {
     goto LABEL_6;
   }
 
-  a4 = v7;
+  error = v7;
 LABEL_7:
 
   v46 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (AMSoundReductionIndex)initWithMaterialName:(id)a3
+- (AMSoundReductionIndex)initWithMaterialName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = AMSoundReductionIndex;
   v5 = [(AMSoundReductionIndex *)&v18 init];
   materialName = v5->_materialName;
-  v5->_materialName = v4;
-  v7 = v4;
+  v5->_materialName = nameCopy;
+  v7 = nameCopy;
 
   materialDescription = v5->_materialDescription;
   v5->_materialDescription = 0;
@@ -144,21 +144,21 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v28 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     materialName = self->_materialName;
-    v8 = [(AMSoundReductionIndex *)v6 materialName];
-    LODWORD(materialName) = [(NSString *)materialName isEqualToString:v8];
+    materialName = [(AMSoundReductionIndex *)v6 materialName];
+    LODWORD(materialName) = [(NSString *)materialName isEqualToString:materialName];
 
     if (!materialName)
     {
@@ -166,8 +166,8 @@ LABEL_7:
     }
 
     materialDescription = self->_materialDescription;
-    v10 = [(AMSoundReductionIndex *)v6 materialDescription];
-    LODWORD(materialDescription) = [(NSString *)materialDescription isEqualToString:v10];
+    materialDescription = [(AMSoundReductionIndex *)v6 materialDescription];
+    LODWORD(materialDescription) = [(NSString *)materialDescription isEqualToString:materialDescription];
 
     if (!materialDescription)
     {
@@ -175,8 +175,8 @@ LABEL_7:
     }
 
     materialDepth = self->_materialDepth;
-    v12 = [(AMSoundReductionIndex *)v6 materialDepth];
-    LODWORD(materialDepth) = [(NSNumber *)materialDepth isEqualToNumber:v12];
+    materialDepth = [(AMSoundReductionIndex *)v6 materialDepth];
+    LODWORD(materialDepth) = [(NSNumber *)materialDepth isEqualToNumber:materialDepth];
 
     if (!materialDepth)
     {
@@ -184,8 +184,8 @@ LABEL_7:
     }
 
     uncertaintyMaterialDepth = self->_uncertaintyMaterialDepth;
-    v14 = [(AMSoundReductionIndex *)v6 uncertaintyMaterialDepth];
-    LODWORD(uncertaintyMaterialDepth) = [(NSNumber *)uncertaintyMaterialDepth isEqualToNumber:v14];
+    uncertaintyMaterialDepth = [(AMSoundReductionIndex *)v6 uncertaintyMaterialDepth];
+    LODWORD(uncertaintyMaterialDepth) = [(NSNumber *)uncertaintyMaterialDepth isEqualToNumber:uncertaintyMaterialDepth];
 
     if (!uncertaintyMaterialDepth)
     {
@@ -193,8 +193,8 @@ LABEL_7:
     }
 
     frequencyBands = self->_frequencyBands;
-    v16 = [(AMSoundReductionIndex *)v6 frequencyBands];
-    LODWORD(frequencyBands) = [(NSArray *)frequencyBands isEqualToArray:v16];
+    frequencyBands = [(AMSoundReductionIndex *)v6 frequencyBands];
+    LODWORD(frequencyBands) = [(NSArray *)frequencyBands isEqualToArray:frequencyBands];
 
     if (!frequencyBands)
     {
@@ -202,8 +202,8 @@ LABEL_7:
     }
 
     soundReductionIndexUserData = self->_soundReductionIndexUserData;
-    v18 = [(AMSoundReductionIndex *)v6 soundReductionIndexUserData];
-    LODWORD(soundReductionIndexUserData) = [(NSArray *)soundReductionIndexUserData isEqualToArray:v18];
+    soundReductionIndexUserData = [(AMSoundReductionIndex *)v6 soundReductionIndexUserData];
+    LODWORD(soundReductionIndexUserData) = [(NSArray *)soundReductionIndexUserData isEqualToArray:soundReductionIndexUserData];
 
     if (!soundReductionIndexUserData)
     {
@@ -211,8 +211,8 @@ LABEL_7:
     }
 
     soundReductionIndexReferenceData = self->_soundReductionIndexReferenceData;
-    v20 = [(AMSoundReductionIndex *)v6 soundReductionIndexReferenceData];
-    LODWORD(soundReductionIndexReferenceData) = [(NSArray *)soundReductionIndexReferenceData isEqualToArray:v20];
+    soundReductionIndexReferenceData = [(AMSoundReductionIndex *)v6 soundReductionIndexReferenceData];
+    LODWORD(soundReductionIndexReferenceData) = [(NSArray *)soundReductionIndexReferenceData isEqualToArray:soundReductionIndexReferenceData];
 
     if (!soundReductionIndexReferenceData)
     {
@@ -220,8 +220,8 @@ LABEL_7:
     }
 
     uncertaintyReferenceData = self->_uncertaintyReferenceData;
-    v22 = [(AMSoundReductionIndex *)v6 uncertaintyReferenceData];
-    LODWORD(uncertaintyReferenceData) = [(NSArray *)uncertaintyReferenceData isEqualToArray:v22];
+    uncertaintyReferenceData = [(AMSoundReductionIndex *)v6 uncertaintyReferenceData];
+    LODWORD(uncertaintyReferenceData) = [(NSArray *)uncertaintyReferenceData isEqualToArray:uncertaintyReferenceData];
 
     if (!uncertaintyReferenceData)
     {
@@ -229,8 +229,8 @@ LABEL_7:
     }
 
     averageSoundReductionIndex = self->_averageSoundReductionIndex;
-    v24 = [(AMSoundReductionIndex *)v6 averageSoundReductionIndex];
-    LODWORD(averageSoundReductionIndex) = [(NSNumber *)averageSoundReductionIndex isEqualToNumber:v24];
+    averageSoundReductionIndex = [(AMSoundReductionIndex *)v6 averageSoundReductionIndex];
+    LODWORD(averageSoundReductionIndex) = [(NSNumber *)averageSoundReductionIndex isEqualToNumber:averageSoundReductionIndex];
 
     if (!averageSoundReductionIndex)
     {
@@ -238,8 +238,8 @@ LABEL_7:
     }
 
     numDataPointsReferenceData = self->_numDataPointsReferenceData;
-    v26 = [(AMSoundReductionIndex *)v6 numDataPointsReferenceData];
-    LODWORD(numDataPointsReferenceData) = [(NSArray *)numDataPointsReferenceData isEqualToArray:v26];
+    numDataPointsReferenceData = [(AMSoundReductionIndex *)v6 numDataPointsReferenceData];
+    LODWORD(numDataPointsReferenceData) = [(NSArray *)numDataPointsReferenceData isEqualToArray:numDataPointsReferenceData];
 
     if (numDataPointsReferenceData)
     {
@@ -262,7 +262,7 @@ LABEL_17:
   return v28;
 }
 
-- (BOOL)validatedWithoutError:(id *)a3
+- (BOOL)validatedWithoutError:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
   v5 = [(NSArray *)self->_frequencyBands count];
@@ -270,7 +270,7 @@ LABEL_17:
   {
     if (([(NSString *)self->_materialName isEqual:&stru_285015AD0]& 1) != 0 || [(NSString *)self->_materialDescription isEqual:&stru_285015AD0])
     {
-      if (a3)
+      if (error)
       {
         v6 = MEMORY[0x277CCA9B8];
         v37 = *MEMORY[0x277CCA450];
@@ -279,7 +279,7 @@ LABEL_17:
         v8 = v6;
         v9 = 2;
 LABEL_11:
-        *a3 = [v8 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:v9 userInfo:{v7, v30}];
+        *error = [v8 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:v9 userInfo:{v7, v30}];
       }
     }
 
@@ -288,7 +288,7 @@ LABEL_11:
       [(NSNumber *)self->_materialDepth floatValue];
       if (v13 < 0.0 || ([(NSNumber *)self->_uncertaintyMaterialDepth floatValue], v14 < 0.0) || ([(NSNumber *)self->_averageSoundReductionIndex floatValue], v15 < 0.0))
       {
-        if (!a3)
+        if (!error)
         {
           goto LABEL_12;
         }
@@ -304,7 +304,7 @@ LABEL_11:
 
       if (self->_totalNumDataSetsReferenceData < 0)
       {
-        if (!a3)
+        if (!error)
         {
           goto LABEL_12;
         }
@@ -372,7 +372,7 @@ LABEL_33:
       }
 
 LABEL_35:
-      if (a3)
+      if (error)
       {
         v29 = MEMORY[0x277CCA9B8];
         v31 = *MEMORY[0x277CCA450];
@@ -385,7 +385,7 @@ LABEL_35:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
     v39 = *MEMORY[0x277CCA450];

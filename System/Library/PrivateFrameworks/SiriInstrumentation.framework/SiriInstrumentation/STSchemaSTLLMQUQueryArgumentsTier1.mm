@@ -1,28 +1,28 @@
 @interface STSchemaSTLLMQUQueryArgumentsTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTLLMQUQueryArgumentsTier1)initWithDictionary:(id)a3;
-- (STSchemaSTLLMQUQueryArgumentsTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTLLMQUQueryArgumentsTier1)initWithDictionary:(id)dictionary;
+- (STSchemaSTLLMQUQueryArgumentsTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasLlmquAppEntityStatus:(BOOL)a3;
-- (void)setHasLlmquAppEntityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasLlmquAppEntityStatus:(BOOL)status;
+- (void)setHasLlmquAppEntityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTLLMQUQueryArgumentsTier1
 
-- (STSchemaSTLLMQUQueryArgumentsTier1)initWithDictionary:(id)a3
+- (STSchemaSTLLMQUQueryArgumentsTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = STSchemaSTLLMQUQueryArgumentsTier1;
   v5 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,21 +30,21 @@
       [(STSchemaSTLLMQUQueryArgumentsTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"eventType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTLLMQUQueryArgumentsTier1 setEventType:](v5, "setEventType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"llmquAppEntityType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"llmquAppEntityType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTLLMQUQueryArgumentsTier1 setLlmquAppEntityType:](v5, "setLlmquAppEntityType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"llmquAppEntityStatus"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"llmquAppEntityStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (STSchemaSTLLMQUQueryArgumentsTier1)initWithJSON:(id)a3
+- (STSchemaSTLLMQUQueryArgumentsTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,7 +93,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self eventType]- 1;
@@ -107,22 +107,22 @@
       v5 = off_1E78E7900[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"eventType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"eventType"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
@@ -140,7 +140,7 @@
       v11 = off_1E78E7920[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"llmquAppEntityStatus"];
+    [dictionary setObject:v11 forKeyedSubscript:@"llmquAppEntityStatus"];
     has = self->_has;
   }
 
@@ -157,12 +157,12 @@
       v13 = off_1E78E79E8[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"llmquAppEntityType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"llmquAppEntityType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -206,30 +206,30 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
-  v6 = [v4 linkId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  v7 = linkId2;
+  if ((linkId != 0) == (linkId2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
-  if (v8)
+  linkId3 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
+  if (linkId3)
   {
-    v9 = v8;
-    v10 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
-    v11 = [v4 linkId];
-    v12 = [v10 isEqual:v11];
+    v9 = linkId3;
+    linkId4 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v12 = [linkId4 isEqual:linkId5];
 
     if (!v12)
     {
@@ -242,7 +242,7 @@ LABEL_4:
   }
 
   has = self->_has;
-  v14 = v4[28];
+  v14 = equalCopy[28];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -253,13 +253,13 @@ LABEL_20:
   if (*&has)
   {
     eventType = self->_eventType;
-    if (eventType != [v4 eventType])
+    if (eventType != [equalCopy eventType])
     {
       goto LABEL_20;
     }
 
     has = self->_has;
-    v14 = v4[28];
+    v14 = equalCopy[28];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -271,10 +271,10 @@ LABEL_20:
   if (v16)
   {
     llmquAppEntityType = self->_llmquAppEntityType;
-    if (llmquAppEntityType == [v4 llmquAppEntityType])
+    if (llmquAppEntityType == [equalCopy llmquAppEntityType])
     {
       has = self->_has;
-      v14 = v4[28];
+      v14 = equalCopy[28];
       goto LABEL_16;
     }
 
@@ -291,7 +291,7 @@ LABEL_16:
   if (v18)
   {
     llmquAppEntityStatus = self->_llmquAppEntityStatus;
-    if (llmquAppEntityStatus != [v4 llmquAppEntityStatus])
+    if (llmquAppEntityStatus != [equalCopy llmquAppEntityStatus])
     {
       goto LABEL_20;
     }
@@ -303,14 +303,14 @@ LABEL_21:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
+    linkId2 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -321,24 +321,24 @@ LABEL_21:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasLlmquAppEntityStatus:(BOOL)a3
+- (void)setHasLlmquAppEntityStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -351,9 +351,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLlmquAppEntityType:(BOOL)a3
+- (void)setHasLlmquAppEntityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -366,52 +366,52 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = STSchemaSTLLMQUQueryArgumentsTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteEventType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityStatus];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteEventType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityStatus];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteEventType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityStatus];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteEventType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityStatus];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteEventType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityType];
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLlmquAppEntityStatus];
   }
 
-  v6 = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(STSchemaSTLLMQUQueryArgumentsTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(STSchemaSTLLMQUQueryArgumentsTier1 *)self deleteLinkId];
   }

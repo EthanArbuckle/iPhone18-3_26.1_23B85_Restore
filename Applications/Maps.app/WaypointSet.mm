@@ -1,34 +1,34 @@
 @interface WaypointSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GEOComposedWaypoint)destination;
-- (WaypointSet)initWithWaypoints:(id)a3;
+- (WaypointSet)initWithWaypoints:(id)waypoints;
 - (id)description;
-- (id)waypointAtIndex:(unint64_t)a3;
+- (id)waypointAtIndex:(unint64_t)index;
 - (unint64_t)count;
 @end
 
 @implementation WaypointSet
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(WaypointSet *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(WaypointSet *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
+      v6 = equalCopy;
       v7 = v6;
       waypointsOrNull = self->_waypointsOrNull;
       v9 = waypointsOrNull;
       if (!waypointsOrNull)
       {
-        v3 = [(WaypointSet *)v6 waypointsOrNull];
-        if (!v3)
+        waypointsOrNull = [(WaypointSet *)v6 waypointsOrNull];
+        if (!waypointsOrNull)
         {
           v11 = 1;
           goto LABEL_11;
@@ -37,8 +37,8 @@
         v9 = self->_waypointsOrNull;
       }
 
-      v10 = [(WaypointSet *)v7 waypointsOrNull];
-      v11 = [(NSArray *)v9 isEqual:v10];
+      waypointsOrNull2 = [(WaypointSet *)v7 waypointsOrNull];
+      v11 = [(NSArray *)v9 isEqual:waypointsOrNull2];
 
       if (waypointsOrNull)
       {
@@ -62,8 +62,8 @@ LABEL_13:
 
 - (unint64_t)count
 {
-  v2 = [(WaypointSet *)self waypointsOrNull];
-  v3 = [v2 count];
+  waypointsOrNull = [(WaypointSet *)self waypointsOrNull];
+  v3 = [waypointsOrNull count];
 
   return v3;
 }
@@ -79,26 +79,26 @@ LABEL_13:
 
 - (GEOComposedWaypoint)destination
 {
-  v3 = [(WaypointSet *)self waypointsOrNull];
-  v4 = -[WaypointSet waypointAtIndex:](self, "waypointAtIndex:", [v3 count] - 1);
+  waypointsOrNull = [(WaypointSet *)self waypointsOrNull];
+  v4 = -[WaypointSet waypointAtIndex:](self, "waypointAtIndex:", [waypointsOrNull count] - 1);
 
   return v4;
 }
 
-- (id)waypointAtIndex:(unint64_t)a3
+- (id)waypointAtIndex:(unint64_t)index
 {
-  v5 = [(WaypointSet *)self waypointsOrNull];
-  v6 = [v5 count];
+  waypointsOrNull = [(WaypointSet *)self waypointsOrNull];
+  v6 = [waypointsOrNull count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [(WaypointSet *)self waypointsOrNull];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    waypointsOrNull2 = [(WaypointSet *)self waypointsOrNull];
+    v8 = [waypointsOrNull2 objectAtIndexedSubscript:index];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -117,15 +117,15 @@ LABEL_13:
   return v10;
 }
 
-- (WaypointSet)initWithWaypoints:(id)a3
+- (WaypointSet)initWithWaypoints:(id)waypoints
 {
-  v4 = a3;
+  waypointsCopy = waypoints;
   v19.receiver = self;
   v19.super_class = WaypointSet;
   v5 = [(WaypointSet *)&v19 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [waypointsCopy copy];
     waypointsOrNull = v5->_waypointsOrNull;
     v5->_waypointsOrNull = v6;
 

@@ -1,18 +1,18 @@
 @interface BuddyGreenController
 - (BFFFlowItemDelegate)delegate;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyGreenController
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyGreenController *)v5 writeGreenInformedDefaultPlistIfNecessaryBlock];
-  v3[2](v3);
+  objc_storeStrong(location, completion);
+  writeGreenInformedDefaultPlistIfNecessaryBlock = [(BuddyGreenController *)selfCopy writeGreenInformedDefaultPlistIfNecessaryBlock];
+  writeGreenInformedDefaultPlistIfNecessaryBlock[2](writeGreenInformedDefaultPlistIfNecessaryBlock);
 
   (*(location[0] + 2))(location[0], 0);
   objc_storeStrong(location, 0);

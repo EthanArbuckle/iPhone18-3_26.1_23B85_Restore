@@ -1,14 +1,14 @@
 @interface PSURLManager
 + (id)sharedManager;
 - (id)currentSpecifierIDPath;
-- (id)keyValueDictionaryForURL:(id)a3;
+- (id)keyValueDictionaryForURL:(id)l;
 - (id)urlForCurrentNavStack;
-- (void)handleDeferredURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 objectOffsetPair:(id)a5 withCompletion:(id)a6;
-- (void)handleDeferredURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 withCompletion:(id)a5;
-- (void)performURLHandlingForController:(id)a3 dictionary:(id)a4 items:(id)a5 controllerNeedsPush:(BOOL)a6 withCompletion:(id)a7;
-- (void)popToRootAndSelectDefaultCategory:(BOOL)a3 performWithoutDeferringTransitions:(BOOL)a4;
-- (void)processURL:(id)a3 animated:(BOOL)a4 fromSearch:(BOOL)a5 withCompletion:(id)a6;
-- (void)setOffsetForController:(id)a3 fromObjectPair:(id)a4;
+- (void)handleDeferredURLForSpecifierID:(id)d resourceDictionary:(id)dictionary objectOffsetPair:(id)pair withCompletion:(id)completion;
+- (void)handleDeferredURLForSpecifierID:(id)d resourceDictionary:(id)dictionary withCompletion:(id)completion;
+- (void)performURLHandlingForController:(id)controller dictionary:(id)dictionary items:(id)items controllerNeedsPush:(BOOL)push withCompletion:(id)completion;
+- (void)popToRootAndSelectDefaultCategory:(BOOL)category performWithoutDeferringTransitions:(BOOL)transitions;
+- (void)processURL:(id)l animated:(BOOL)animated fromSearch:(BOOL)search withCompletion:(id)completion;
+- (void)setOffsetForController:(id)controller fromObjectPair:(id)pair;
 @end
 
 @implementation PSURLManager
@@ -32,21 +32,21 @@ void __29__PSURLManager_sharedManager__block_invoke()
   sharedManager_manager_0 = v0;
 }
 
-- (void)processURL:(id)a3 animated:(BOOL)a4 fromSearch:(BOOL)a5 withCompletion:(id)a6
+- (void)processURL:(id)l animated:(BOOL)animated fromSearch:(BOOL)search withCompletion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
+  searchCopy = search;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DFF8];
-  v11 = [a3 absoluteString];
-  v12 = [v11 stringByReplacingOccurrencesOfString:@"%00" withString:&stru_1EFE45030];
+  absoluteString = [l absoluteString];
+  v12 = [absoluteString stringByReplacingOccurrencesOfString:@"%00" withString:&stru_1EFE45030];
   v13 = [v10 URLWithString:v12];
 
   v14 = [(PSURLManager *)self keyValueDictionaryForURL:v13];
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v15 = [MEMORY[0x1E696AD98] numberWithBool:searchCopy];
   [v14 setObject:v15 forKeyedSubscript:@"fromSearch"];
 
   v16 = [v14 objectForKey:@"root"];
-  v17 = [v16 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v16 stringByRemovingPercentEncoding];
 
   v18 = SFObjectAndOffsetForURLPair();
   v19 = [v18 objectForKey:@"object"];
@@ -56,36 +56,36 @@ void __29__PSURLManager_sharedManager__block_invoke()
   {
     v34 = v20;
     v32 = v13;
-    v22 = [(PSURLManager *)self rootController];
-    v23 = [(PSURLManager *)self topLevelController];
+    rootController = [(PSURLManager *)self rootController];
+    topLevelController = [(PSURLManager *)self topLevelController];
     *buf = 0;
     v54 = buf;
     v55 = 0x3032000000;
     v56 = __Block_byref_object_copy__10;
     v57 = __Block_byref_object_dispose__10;
-    v58 = [v23 specifierForID:v19];
+    v58 = [topLevelController specifierForID:v19];
     v51[0] = 0;
     v51[1] = v51;
     v51[2] = 0x3032000000;
     v51[3] = __Block_byref_object_copy__10;
     v51[4] = __Block_byref_object_dispose__10;
-    v52 = [v23 indexPathForIndex:{objc_msgSend(v23, "indexOfSpecifier:", *(v54 + 5))}];
+    v52 = [topLevelController indexPathForIndex:{objc_msgSend(topLevelController, "indexOfSpecifier:", *(v54 + 5))}];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__PSURLManager_processURL_animated_fromSearch_withCompletion___block_invoke;
     aBlock[3] = &unk_1E71DED18;
     v48 = buf;
-    v24 = v23;
+    v24 = topLevelController;
     v39 = v24;
     v40 = v19;
-    v41 = v17;
-    v25 = v22;
+    v41 = stringByRemovingPercentEncoding;
+    v25 = rootController;
     v42 = v25;
     v43 = v34;
     v44 = v14;
-    v45 = self;
-    v50 = a4;
-    v47 = v9;
+    selfCopy = self;
+    animatedCopy = animated;
+    v47 = completionCopy;
     v49 = v51;
     v46 = v18;
     v26 = _Block_copy(aBlock);
@@ -99,7 +99,7 @@ void __29__PSURLManager_sharedManager__block_invoke()
     v37 = v28;
     v29 = _Block_copy(v35);
     v30 = v29;
-    if (v6 || (v29 = v28, !v24))
+    if (searchCopy || (v29 = v28, !v24))
     {
       (*(v29 + 2))();
     }
@@ -125,9 +125,9 @@ void __29__PSURLManager_sharedManager__block_invoke()
       _os_log_impl(&dword_18B008000, v31, OS_LOG_TYPE_DEFAULT, "PSURLManager: No root object in url", buf, 2u);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -552,13 +552,13 @@ uint64_t __62__PSURLManager_processURL_animated_fromSearch_withCompletion___bloc
   }
 }
 
-- (id)keyValueDictionaryForURL:(id)a3
+- (id)keyValueDictionaryForURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [v3 resourceSpecifier];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  lCopy = l;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  resourceSpecifier = [lCopy resourceSpecifier];
+  v6 = [resourceSpecifier componentsSeparatedByString:@"&"];
 
   v19 = 0u;
   v20 = 0u;
@@ -583,10 +583,10 @@ uint64_t __62__PSURLManager_processURL_animated_fromSearch_withCompletion___bloc
         if ([v12 count] == 2)
         {
           v13 = [v12 objectAtIndex:1];
-          v14 = [v13 stringByRemovingPercentEncoding];
+          stringByRemovingPercentEncoding = [v13 stringByRemovingPercentEncoding];
 
           v15 = [v12 objectAtIndex:0];
-          [v4 setObject:v14 forKey:v15];
+          [dictionary setObject:stringByRemovingPercentEncoding forKey:v15];
         }
       }
 
@@ -596,14 +596,14 @@ uint64_t __62__PSURLManager_processURL_animated_fromSearch_withCompletion___bloc
     while (v9);
   }
 
-  return v4;
+  return dictionary;
 }
 
 - (id)currentSpecifierIDPath
 {
-  v2 = [(PSURLManager *)self rootController];
-  v3 = [v2 viewControllers];
-  v4 = [v3 mutableCopy];
+  rootController = [(PSURLManager *)self rootController];
+  viewControllers = [rootController viewControllers];
+  v4 = [viewControllers mutableCopy];
 
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
@@ -643,62 +643,62 @@ void __38__PSURLManager_currentSpecifierIDPath__block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)setOffsetForController:(id)a3 fromObjectPair:(id)a4
+- (void)setOffsetForController:(id)controller fromObjectPair:(id)pair
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"offsetValue"];
+  controllerCopy = controller;
+  pairCopy = pair;
+  v6 = [pairCopy objectForKeyedSubscript:@"offsetValue"];
   [v6 floatValue];
   v8 = v7;
 
-  v9 = [v5 objectForKeyedSubscript:@"offsetItem"];
+  v9 = [pairCopy objectForKeyedSubscript:@"offsetItem"];
 
-  if ([v11 conformsToProtocol:&unk_1EFE6EBF8])
+  if ([controllerCopy conformsToProtocol:&unk_1EFE6EBF8])
   {
     if (v8 == 0.0)
     {
       if ([v9 length])
       {
-        [v11 setDesiredVerticalContentOffsetItemNamed:v9];
+        [controllerCopy setDesiredVerticalContentOffsetItemNamed:v9];
       }
     }
 
     else
     {
       *&v10 = v8;
-      [v11 setDesiredVerticalContentOffset:v10];
+      [controllerCopy setDesiredVerticalContentOffset:v10];
     }
   }
 
   if ([v9 length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v11 highlightSpecifierWithID:v9];
+    [controllerCopy highlightSpecifierWithID:v9];
   }
 }
 
-- (void)performURLHandlingForController:(id)a3 dictionary:(id)a4 items:(id)a5 controllerNeedsPush:(BOOL)a6 withCompletion:(id)a7
+- (void)performURLHandlingForController:(id)controller dictionary:(id)dictionary items:(id)items controllerNeedsPush:(BOOL)push withCompletion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [v13 objectForKeyedSubscript:@"animate"];
-  v17 = [v16 BOOLValue];
+  pushCopy = push;
+  controllerCopy = controller;
+  dictionaryCopy = dictionary;
+  itemsCopy = items;
+  completionCopy = completion;
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"animate"];
+  bOOLValue = [v16 BOOLValue];
 
-  v18 = [v13 objectForKeyedSubscript:@"fromSearch"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"fromSearch"];
   [v18 BOOLValue];
 
   v23 = 0;
-  if ([v14 count] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([itemsCopy count] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v19 = [v14 objectAtIndexedSubscript:0];
+    v19 = [itemsCopy objectAtIndexedSubscript:0];
     v20 = SFObjectAndOffsetForURLPair();
 
     v21 = [v20 objectForKeyedSubscript:@"object"];
     if (v21)
     {
-      v22 = [v12 prepareHandlingURLForSpecifierID:v21 resourceDictionary:v13 animatePush:&v23 withCompletion:v15] ^ 1;
+      v22 = [controllerCopy prepareHandlingURLForSpecifierID:v21 resourceDictionary:dictionaryCopy animatePush:&v23 withCompletion:completionCopy] ^ 1;
     }
 
     else
@@ -712,26 +712,26 @@ void __38__PSURLManager_currentSpecifierIDPath__block_invoke(uint64_t a1, void *
     v22 = 0;
   }
 
-  if (!v8)
+  if (!pushCopy)
   {
-    [MEMORY[0x1E69DD250] setAnimationsEnabled:v17];
+    [MEMORY[0x1E69DD250] setAnimationsEnabled:bOOLValue];
     if (v22)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    [v12 handleURL:v13 withCompletion:v15];
+    [controllerCopy handleURL:dictionaryCopy withCompletion:completionCopy];
     goto LABEL_16;
   }
 
-  if ((v23 & v22 & 1) == 0 && ((v17 ^ 1) & 1) == 0)
+  if ((v23 & v22 & 1) == 0 && ((bOOLValue ^ 1) & 1) == 0)
   {
-    [v14 count];
+    [itemsCopy count];
   }
 
-  [MEMORY[0x1E69DD250] setAnimationsEnabled:v17];
-  [(PSSplitViewController *)self->_splitViewController showInitialViewController:v12];
+  [MEMORY[0x1E69DD250] setAnimationsEnabled:bOOLValue];
+  [(PSSplitViewController *)self->_splitViewController showInitialViewController:controllerCopy];
   if ((v22 & 1) == 0)
   {
     goto LABEL_15;
@@ -741,44 +741,44 @@ LABEL_16:
   [MEMORY[0x1E69DD250] enableAnimation];
 }
 
-- (void)handleDeferredURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 objectOffsetPair:(id)a5 withCompletion:(id)a6
+- (void)handleDeferredURLForSpecifierID:(id)d resourceDictionary:(id)dictionary objectOffsetPair:(id)pair withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PSURLManager *)self topLevelController];
-  v15 = [v14 specifierForID:v10];
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  pairCopy = pair;
+  completionCopy = completion;
+  topLevelController = [(PSURLManager *)self topLevelController];
+  v15 = [topLevelController specifierForID:dCopy];
   if (v15)
   {
-    v16 = [v14 selectSpecifier:v15];
+    v16 = [topLevelController selectSpecifier:v15];
     if (v16)
     {
-      v17 = [v14 indexPathForIndex:{objc_msgSend(v14, "indexOfSpecifier:", v15)}];
-      v18 = [v14 table];
-      [v18 selectRowAtIndexPath:v17 animated:0 scrollPosition:0];
+      v17 = [topLevelController indexPathForIndex:{objc_msgSend(topLevelController, "indexOfSpecifier:", v15)}];
+      table = [topLevelController table];
+      [table selectRowAtIndexPath:v17 animated:0 scrollPosition:0];
 
-      [v16 setParentController:v14];
-      v19 = [(PSURLManager *)self rootController];
-      [v16 setRootController:v19];
+      [v16 setParentController:topLevelController];
+      rootController = [(PSURLManager *)self rootController];
+      [v16 setRootController:rootController];
 
       [v16 setSpecifier:v15];
-      v25 = v12;
-      [(PSURLManager *)self setOffsetForController:v16 fromObjectPair:v12];
-      v20 = [v11 objectForKeyedSubscript:@"path"];
-      v21 = [v20 pathComponents];
+      v25 = pairCopy;
+      [(PSURLManager *)self setOffsetForController:v16 fromObjectPair:pairCopy];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"path"];
+      pathComponents = [v20 pathComponents];
 
       v22 = _PSLoggingFacility();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v10;
+        v27 = dCopy;
         _os_log_impl(&dword_18B008000, v22, OS_LOG_TYPE_DEFAULT, "PSURLManager: Handling deferred url for %@", buf, 0xCu);
       }
 
-      [(PSURLManager *)self performURLHandlingForController:v16 dictionary:v11 items:v21 controllerNeedsPush:1 withCompletion:v13];
-      v12 = v25;
+      [(PSURLManager *)self performURLHandlingForController:v16 dictionary:dictionaryCopy items:pathComponents controllerNeedsPush:1 withCompletion:completionCopy];
+      pairCopy = v25;
     }
 
     else
@@ -787,13 +787,13 @@ LABEL_16:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v10;
+        v27 = dCopy;
         _os_log_impl(&dword_18B008000, v24, OS_LOG_TYPE_DEFAULT, "PSURLManager: No controller for deferred URL-handling ID %@", buf, 0xCu);
       }
 
-      if (v13)
+      if (completionCopy)
       {
-        v13[2](v13);
+        completionCopy[2](completionCopy);
       }
     }
   }
@@ -804,48 +804,48 @@ LABEL_16:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v10;
+      v27 = dCopy;
       _os_log_impl(&dword_18B008000, v23, OS_LOG_TYPE_DEFAULT, "PSURLManager: No specifier for deferred URL-handling ID %@", buf, 0xCu);
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)handleDeferredURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 withCompletion:(id)a5
+- (void)handleDeferredURLForSpecifierID:(id)d resourceDictionary:(id)dictionary withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 objectForKey:@"root"];
-  v14 = [v11 stringByRemovingPercentEncoding];
+  completionCopy = completion;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  v11 = [dictionaryCopy objectForKey:@"root"];
+  stringByRemovingPercentEncoding = [v11 stringByRemovingPercentEncoding];
 
   v12 = SFObjectAndOffsetForURLPair();
-  v13 = [v9 mutableCopy];
+  v13 = [dictionaryCopy mutableCopy];
 
-  [(PSURLManager *)self handleDeferredURLForSpecifierID:v10 resourceDictionary:v13 objectOffsetPair:v12 withCompletion:v8];
+  [(PSURLManager *)self handleDeferredURLForSpecifierID:dCopy resourceDictionary:v13 objectOffsetPair:v12 withCompletion:completionCopy];
 }
 
-- (void)popToRootAndSelectDefaultCategory:(BOOL)a3 performWithoutDeferringTransitions:(BOOL)a4
+- (void)popToRootAndSelectDefaultCategory:(BOOL)category performWithoutDeferringTransitions:(BOOL)transitions
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PSURLManager *)self topLevelController];
-  v8 = v7;
-  if (v4)
+  transitionsCopy = transitions;
+  categoryCopy = category;
+  topLevelController = [(PSURLManager *)self topLevelController];
+  v8 = topLevelController;
+  if (transitionsCopy)
   {
     v9 = MEMORY[0x1E69DD258];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__PSURLManager_popToRootAndSelectDefaultCategory_performWithoutDeferringTransitions___block_invoke;
     v12[3] = &unk_1E71DBE20;
-    v13 = v7;
+    v13 = topLevelController;
     [v9 _performWithoutDeferringTransitions:v12];
 
-    if (!v5)
+    if (!categoryCopy)
     {
       goto LABEL_7;
     }
@@ -853,10 +853,10 @@ LABEL_16:
 
   else
   {
-    v10 = [v7 navigationController];
-    v11 = [v10 popToRootViewControllerAnimated:0];
+    navigationController = [topLevelController navigationController];
+    v11 = [navigationController popToRootViewControllerAnimated:0];
 
-    if (!v5)
+    if (!categoryCopy)
     {
       goto LABEL_7;
     }
@@ -879,32 +879,32 @@ void __85__PSURLManager_popToRootAndSelectDefaultCategory_performWithoutDeferrin
 - (id)urlForCurrentNavStack
 {
   v71 = *MEMORY[0x1E69E9840];
-  v3 = [(PSURLManager *)self splitViewController];
-  v4 = [v3 containerNavigationController];
-  v5 = [v4 topViewController];
+  splitViewController = [(PSURLManager *)self splitViewController];
+  containerNavigationController = [splitViewController containerNavigationController];
+  topViewController = [containerNavigationController topViewController];
 
-  v6 = v5;
+  v6 = topViewController;
   v7 = 0.0;
-  if ([v5 conformsToProtocol:&unk_1EFE6EBF8])
+  if ([topViewController conformsToProtocol:&unk_1EFE6EBF8])
   {
-    [v5 verticalContentOffset];
+    [topViewController verticalContentOffset];
     v7 = v8;
   }
 
   v61 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v9 = [(PSURLManager *)self splitViewController];
-  v10 = [v9 categoryController];
+  splitViewController2 = [(PSURLManager *)self splitViewController];
+  categoryController = [splitViewController2 categoryController];
 
-  v59 = v10;
-  if ([v10 conformsToProtocol:&unk_1EFE6C730])
+  v59 = categoryController;
+  if ([categoryController conformsToProtocol:&unk_1EFE6C730])
   {
-    v11 = [v10 specifier];
-    v12 = [v11 identifier];
-    v13 = v12;
+    specifier = [categoryController specifier];
+    identifier = [specifier identifier];
+    v13 = identifier;
     v14 = @"ROOT";
-    if (v12)
+    if (identifier)
     {
-      v14 = v12;
+      v14 = identifier;
     }
 
     v15 = v14;
@@ -928,24 +928,24 @@ void __85__PSURLManager_popToRootAndSelectDefaultCategory_performWithoutDeferrin
   }
 
   v19 = 0x1E696A000uLL;
-  v20 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
   v58 = v15;
-  v21 = [(__CFString *)v15 stringByAddingPercentEncodingWithAllowedCharacters:v20];
+  v21 = [(__CFString *)v15 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   [v61 appendFormat:@"prefs:root=%@", v21];
 
   if (v7 != 0.0)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%0.0f", v7];
-    v23 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v24 = [v22 stringByAddingPercentEncodingWithAllowedCharacters:v23];
+    uRLPathAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v24 = [v22 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
     [v61 appendString:v24];
   }
 
   v25 = MEMORY[0x1E695DEC8];
-  v26 = [(PSURLManager *)self splitViewController];
-  v27 = [v26 containerNavigationController];
-  v28 = [v27 viewControllers];
-  v29 = [v25 arrayWithArray:v28];
+  splitViewController3 = [(PSURLManager *)self splitViewController];
+  containerNavigationController2 = [splitViewController3 containerNavigationController];
+  viewControllers = [containerNavigationController2 viewControllers];
+  v29 = [v25 arrayWithArray:viewControllers];
 
   if ([v29 count] >= 2)
   {
@@ -979,18 +979,18 @@ void __85__PSURLManager_popToRootAndSelectDefaultCategory_performWithoutDeferrin
           if (objc_opt_isKindOfClass())
           {
             v38 = v19;
-            v39 = [v37 specifier];
-            v40 = [v39 identifier];
+            specifier2 = [v37 specifier];
+            identifier2 = [specifier2 identifier];
 
-            v41 = [v37 specifier];
-            v42 = [v41 propertyForKey:@"id"];
+            specifier3 = [v37 specifier];
+            v42 = [specifier3 propertyForKey:@"id"];
 
             if (!v42)
             {
-              v43 = [v37 specifier];
-              v44 = [v37 specifier];
-              v45 = [v44 identifier];
-              [v43 setProperty:v45 forKey:@"id"];
+              specifier4 = [v37 specifier];
+              specifier5 = [v37 specifier];
+              identifier3 = [specifier5 identifier];
+              [specifier4 setProperty:identifier3 forKey:@"id"];
             }
 
             if (![v37 canBeShownFromSuspendedState])
@@ -1008,8 +1008,8 @@ void __85__PSURLManager_popToRootAndSelectDefaultCategory_performWithoutDeferrin
             }
 
             v19 = v38;
-            v48 = [*(v38 + 2824) URLPathAllowedCharacterSet];
-            v49 = [v40 stringByAddingPercentEncodingWithAllowedCharacters:v48];
+            uRLPathAllowedCharacterSet3 = [*(v38 + 2824) URLPathAllowedCharacterSet];
+            v49 = [identifier2 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet3];
             v50 = v49;
             if (v35)
             {
@@ -1026,8 +1026,8 @@ void __85__PSURLManager_popToRootAndSelectDefaultCategory_performWithoutDeferrin
             if (v46 != 0.0)
             {
               v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%0.0f", v46];
-              v53 = [*(v38 + 2824) URLPathAllowedCharacterSet];
-              v54 = [v52 stringByAddingPercentEncodingWithAllowedCharacters:v53];
+              uRLPathAllowedCharacterSet4 = [*(v38 + 2824) URLPathAllowedCharacterSet];
+              v54 = [v52 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet4];
               [v61 appendString:v54];
 
               v19 = v38;

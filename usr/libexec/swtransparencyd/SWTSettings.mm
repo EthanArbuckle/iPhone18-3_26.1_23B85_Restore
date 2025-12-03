@@ -1,16 +1,16 @@
 @interface SWTSettings
 - (SWTSettings)init;
-- (SWTSettings)initWithTransparencySettings:(id)a3;
-- (void)determineATEnvironmentFromPCCEnvironment:(id)a3 completion:(id)a4;
-- (void)initializeATEnvironmentWithCompletion:(id)a3;
-- (void)readPCCPreferences:(id)a3;
+- (SWTSettings)initWithTransparencySettings:(id)settings;
+- (void)determineATEnvironmentFromPCCEnvironment:(id)environment completion:(id)completion;
+- (void)initializeATEnvironmentWithCompletion:(id)completion;
+- (void)readPCCPreferences:(id)preferences;
 @end
 
 @implementation SWTSettings
 
-- (SWTSettings)initWithTransparencySettings:(id)a3
+- (SWTSettings)initWithTransparencySettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v8.receiver = self;
   v8.super_class = SWTSettings;
   v5 = [(SWTSettings *)&v8 init];
@@ -19,7 +19,7 @@
   {
     [(SWTSettings *)v5 setPccEnvironment:0];
     [(SWTSettings *)v6 setAtEnvironment:0];
-    [(SWTSettings *)v6 setTransparencySettings:v4];
+    [(SWTSettings *)v6 setTransparencySettings:settingsCopy];
   }
 
   return v6;
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)readPCCPreferences:(id)a3
+- (void)readPCCPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if (qword_100156100 != -1)
   {
     sub_1000F2E94();
@@ -51,7 +51,7 @@
   v6 = CFPreferencesCopyAppValue(@"environment", @"com.apple.privateCloudCompute");
   if (v6 && (v7 = v6, v8 = CFGetTypeID(v6), v8 == CFStringGetTypeID()))
   {
-    [(SWTSettings *)self determineATEnvironmentFromPCCEnvironment:v7 completion:v4];
+    [(SWTSettings *)self determineATEnvironmentFromPCCEnvironment:v7 completion:preferencesCopy];
   }
 
   else
@@ -70,15 +70,15 @@
 
     [(SWTSettings *)self setPccEnvironment:6];
     [(SWTSettings *)self setAtEnvironment:[(SWTSettings *)self pccEnvironment]];
-    v4[2](v4, [(SWTSettings *)self atEnvironment]);
+    preferencesCopy[2](preferencesCopy, [(SWTSettings *)self atEnvironment]);
   }
 }
 
-- (void)determineATEnvironmentFromPCCEnvironment:(id)a3 completion:(id)a4
+- (void)determineATEnvironmentFromPCCEnvironment:(id)environment completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (([(__CFString *)v6 isEqualToString:@"dev"]& 1) != 0)
+  environmentCopy = environment;
+  completionCopy = completion;
+  if (([(__CFString *)environmentCopy isEqualToString:@"dev"]& 1) != 0)
   {
     v8 = 1;
 LABEL_10:
@@ -86,49 +86,49 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([(__CFString *)v6 isEqualToString:@"ephemeral"]& 1) != 0)
+  if (([(__CFString *)environmentCopy isEqualToString:@"ephemeral"]& 1) != 0)
   {
     v8 = 2;
     goto LABEL_10;
   }
 
-  if (([(__CFString *)v6 isEqualToString:@"perf"]& 1) != 0)
+  if (([(__CFString *)environmentCopy isEqualToString:@"perf"]& 1) != 0)
   {
     v8 = 3;
     goto LABEL_10;
   }
 
-  if (([(__CFString *)v6 isEqualToString:@"qa"]& 1) != 0 || ([(__CFString *)v6 isEqual:@"quarantine"]& 1) != 0)
+  if (([(__CFString *)environmentCopy isEqualToString:@"qa"]& 1) != 0 || ([(__CFString *)environmentCopy isEqual:@"quarantine"]& 1) != 0)
   {
     v8 = 4;
     goto LABEL_10;
   }
 
-  if (([(__CFString *)v6 isEqualToString:@"staging"]& 1) != 0)
+  if (([(__CFString *)environmentCopy isEqualToString:@"staging"]& 1) != 0)
   {
     v8 = 5;
     goto LABEL_10;
   }
 
-  if (([(__CFString *)v6 isEqualToString:@"production"]& 1) != 0)
+  if (([(__CFString *)environmentCopy isEqualToString:@"production"]& 1) != 0)
   {
     v8 = 7;
     goto LABEL_10;
   }
 
-  if (([(__CFString *)v6 isEqualToString:@"qa2Primary"]& 1) != 0)
+  if (([(__CFString *)environmentCopy isEqualToString:@"qa2Primary"]& 1) != 0)
   {
     v8 = 8;
     goto LABEL_10;
   }
 
-  if (([(__CFString *)v6 isEqualToString:@"qa2Internal"]& 1) != 0)
+  if (([(__CFString *)environmentCopy isEqualToString:@"qa2Internal"]& 1) != 0)
   {
     v8 = 9;
     goto LABEL_10;
   }
 
-  if (([(__CFString *)v6 isEqual:@"carry"]& 1) != 0 || ([(__CFString *)v6 isEqual:@"uat"]& 1) != 0 || [(__CFString *)v6 isEqual:@"liveon"])
+  if (([(__CFString *)environmentCopy isEqual:@"carry"]& 1) != 0 || ([(__CFString *)environmentCopy isEqual:@"uat"]& 1) != 0 || [(__CFString *)environmentCopy isEqual:@"liveon"])
   {
     v8 = 6;
     goto LABEL_10;
@@ -139,7 +139,7 @@ LABEL_11:
   {
     [(SWTSettings *)self setPccEnvironment:7];
 
-    v6 = @"production";
+    environmentCopy = @"production";
   }
 
   [(SWTSettings *)self setAtEnvironment:[(SWTSettings *)self pccEnvironment]];
@@ -152,20 +152,20 @@ LABEL_11:
   if (os_log_type_enabled(qword_100156108, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v6;
+    v11 = environmentCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Using PrivateCloudCompute environment: %{public}@", &v10, 0xCu);
   }
 
-  v7[2](v7, [(SWTSettings *)self atEnvironment]);
+  completionCopy[2](completionCopy, [(SWTSettings *)self atEnvironment]);
 }
 
-- (void)initializeATEnvironmentWithCompletion:(id)a3
+- (void)initializeATEnvironmentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SWTSettings *)self transparencySettings];
-  v6 = [v5 allowsInternalSecurityPolicies];
+  completionCopy = completion;
+  transparencySettings = [(SWTSettings *)self transparencySettings];
+  allowsInternalSecurityPolicies = [transparencySettings allowsInternalSecurityPolicies];
 
-  if (!v6)
+  if (!allowsInternalSecurityPolicies)
   {
     goto LABEL_24;
   }
@@ -237,7 +237,7 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Using PrivateCloudCompute environment (swt override): %{public}@", buf, 0xCu);
     }
 
-    v4[2](v4, [(SWTSettings *)self atEnvironment]);
+    completionCopy[2](completionCopy, [(SWTSettings *)self atEnvironment]);
     goto LABEL_27;
   }
 
@@ -250,7 +250,7 @@ LABEL_24:
     v12[2] = sub_100013D38;
     v12[3] = &unk_100132CA0;
     v12[4] = self;
-    v13 = v4;
+    v13 = completionCopy;
     [v8 selectedEnvironmentNameWithCompletionHandler:v12];
 
 LABEL_27:
@@ -258,7 +258,7 @@ LABEL_27:
   }
 
   [(SWTSettings *)self setAtEnvironment:[(SWTSettings *)self pccEnvironment]];
-  v4[2](v4, [(SWTSettings *)self atEnvironment]);
+  completionCopy[2](completionCopy, [(SWTSettings *)self atEnvironment]);
 LABEL_28:
 }
 

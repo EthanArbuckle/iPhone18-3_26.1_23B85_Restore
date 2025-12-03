@@ -5,18 +5,18 @@
 - (NSArray)outputDescriptors;
 - (NSArray)outputs;
 - (NSDictionary)metadata;
-- (VisionCoreE5RTFunction)initWithProgramLibrary:(id)a3 name:(id)a4 ownedFunctionHandle:(e5rt_program_function *)a5;
-- (e5rt_execution_stream_operation)createOperationExecutionStreamWithError:(id *)a3;
-- (id)_tensorDescriptorOfClass:(uint64_t)a3 providedByBlock:(uint64_t)a4 error:;
+- (VisionCoreE5RTFunction)initWithProgramLibrary:(id)library name:(id)name ownedFunctionHandle:(e5rt_program_function *)handle;
+- (e5rt_execution_stream_operation)createOperationExecutionStreamWithError:(id *)error;
+- (id)_tensorDescriptorOfClass:(uint64_t)class providedByBlock:(uint64_t)block error:;
 - (id)description;
-- (id)descriptorForInput:(id)a3 error:(id *)a4;
-- (id)descriptorForOutput:(id)a3 error:(id *)a4;
-- (id)descriptorOfClass:(Class)a3 forInput:(id)a4 error:(id *)a5;
-- (id)descriptorOfClass:(Class)a3 forOutput:(id)a4 error:(id *)a5;
-- (id)descriptorsForInputs:(id)a3 error:(id *)a4;
-- (id)descriptorsForOutputs:(id)a3 error:(id *)a4;
-- (id)prepareForExecutionWithError:(id *)a3;
-- (uint64_t)_newDescriptorForIOPort:(void *)a3 named:(void *)a4 error:;
+- (id)descriptorForInput:(id)input error:(id *)error;
+- (id)descriptorForOutput:(id)output error:(id *)error;
+- (id)descriptorOfClass:(Class)class forInput:(id)input error:(id *)error;
+- (id)descriptorOfClass:(Class)class forOutput:(id)output error:(id *)error;
+- (id)descriptorsForInputs:(id)inputs error:(id *)error;
+- (id)descriptorsForOutputs:(id)outputs error:(id *)error;
+- (id)prepareForExecutionWithError:(id *)error;
+- (uint64_t)_newDescriptorForIOPort:(void *)port named:(void *)named error:;
 - (void)_buildDescriptorsCaches;
 - (void)dealloc;
 @end
@@ -25,8 +25,8 @@
 
 - (BOOL)requiresPostProcessing
 {
-  v2 = [(VisionCoreE5RTFunction *)self name];
-  v3 = [v2 containsString:@"update"];
+  name = [(VisionCoreE5RTFunction *)self name];
+  v3 = [name containsString:@"update"];
 
   return v3;
 }
@@ -37,13 +37,13 @@
   v8.receiver = self;
   v8.super_class = VisionCoreE5RTFunction;
   v4 = [(VisionCoreE5RTFunction *)&v8 description];
-  v5 = [(VisionCoreE5RTFunction *)self name];
-  v6 = [v3 initWithFormat:@"%@ %@", v4, v5];
+  name = [(VisionCoreE5RTFunction *)self name];
+  v6 = [v3 initWithFormat:@"%@ %@", v4, name];
 
   return v6;
 }
 
-- (e5rt_execution_stream_operation)createOperationExecutionStreamWithError:(id *)a3
+- (e5rt_execution_stream_operation)createOperationExecutionStreamWithError:(id *)error
 {
   v4 = _VisionCoreSignpostLog();
   if (os_signpost_enabled(v4))
@@ -56,10 +56,10 @@
   v5 = e5rt_precompiled_compute_op_create_options_create_with_program_function();
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v5];
-      *a3 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else
@@ -74,10 +74,10 @@
     precompiled_compute_operation_with_options = e5rt_execution_stream_operation_create_precompiled_compute_operation_with_options();
     if (precompiled_compute_operation_with_options)
     {
-      if (a3)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:precompiled_compute_operation_with_options];
-        *a3 = v6 = 0;
+        *error = v6 = 0;
       }
 
       else
@@ -103,31 +103,31 @@
   return v6;
 }
 
-- (VisionCoreE5RTFunction)initWithProgramLibrary:(id)a3 name:(id)a4 ownedFunctionHandle:(e5rt_program_function *)a5
+- (VisionCoreE5RTFunction)initWithProgramLibrary:(id)library name:(id)name ownedFunctionHandle:(e5rt_program_function *)handle
 {
-  v9 = a3;
-  v10 = a4;
+  libraryCopy = library;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = VisionCoreE5RTFunction;
   v11 = [(VisionCoreE5RTFunction *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_programLibrary, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_programLibrary, library);
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v12->_functionHandle = *a5;
-    *a5 = 0;
+    v12->_functionHandle = *handle;
+    *handle = 0;
   }
 
   return v12;
 }
 
-- (id)prepareForExecutionWithError:(id *)a3
+- (id)prepareForExecutionWithError:(id *)error
 {
-  v3 = [[VisionCoreE5RTExecutionPrewarmedState alloc] initWithExecutionStreamOperation:[(VisionCoreE5RTFunction *)self createOperationExecutionStreamWithError:a3]];
+  v3 = [[VisionCoreE5RTExecutionPrewarmedState alloc] initWithExecutionStreamOperation:[(VisionCoreE5RTFunction *)self createOperationExecutionStreamWithError:error]];
 
   return v3;
 }
@@ -135,13 +135,13 @@
 - (NSArray)outputDescriptors
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(VisionCoreE5RTFunction *)self outputs];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  outputs = [(VisionCoreE5RTFunction *)self outputs];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(outputs, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = outputs;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -175,13 +175,13 @@
 - (NSArray)inputDescriptors
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(VisionCoreE5RTFunction *)self inputs];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  inputs = [(VisionCoreE5RTFunction *)self inputs];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(inputs, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = inputs;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -212,16 +212,16 @@
   return v4;
 }
 
-- (id)descriptorsForOutputs:(id)a3 error:(id *)a4
+- (id)descriptorsForOutputs:(id)outputs error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  outputsCopy = outputs;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = outputsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -236,7 +236,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(VisionCoreE5RTFunction *)self descriptorForOutput:*(*(&v17 + 1) + 8 * i) error:a4, v17];
+        v13 = [(VisionCoreE5RTFunction *)self descriptorForOutput:*(*(&v17 + 1) + 8 * i) error:error, v17];
         if (!v13)
         {
 
@@ -264,28 +264,28 @@ LABEL_11:
   return v15;
 }
 
-- (id)descriptorOfClass:(Class)a3 forOutput:(id)a4 error:(id *)a5
+- (id)descriptorOfClass:(Class)class forOutput:(id)output error:(id *)error
 {
-  v8 = a4;
+  outputCopy = output;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__VisionCoreE5RTFunction_descriptorOfClass_forOutput_error___block_invoke;
   v13[3] = &unk_1E8698BC0;
   v13[4] = self;
-  v14 = v8;
-  v9 = v8;
+  v14 = outputCopy;
+  v9 = outputCopy;
   v10 = MEMORY[0x1E12C8870](v13);
-  v11 = [(VisionCoreE5RTFunction *)self _tensorDescriptorOfClass:a3 providedByBlock:v10 error:a5];
+  v11 = [(VisionCoreE5RTFunction *)self _tensorDescriptorOfClass:class providedByBlock:v10 error:error];
 
   return v11;
 }
 
-- (id)_tensorDescriptorOfClass:(uint64_t)a3 providedByBlock:(uint64_t)a4 error:
+- (id)_tensorDescriptorOfClass:(uint64_t)class providedByBlock:(uint64_t)block error:
 {
-  if (a1)
+  if (self)
   {
-    v6 = (*(a3 + 16))(a3, a4);
-    if (v6 && [VisionCoreValidationUtilities validateObject:v6 isKindOfClass:a2 basedOnClass:objc_opt_class() error:a4])
+    v6 = (*(class + 16))(class, block);
+    if (v6 && [VisionCoreValidationUtilities validateObject:v6 isKindOfClass:a2 basedOnClass:objc_opt_class() error:block])
     {
       v7 = v6;
     }
@@ -304,24 +304,24 @@ LABEL_11:
   return v7;
 }
 
-- (id)descriptorForOutput:(id)a3 error:(id *)a4
+- (id)descriptorForOutput:(id)output error:(id *)error
 {
-  v6 = a3;
+  outputCopy = output;
   [(VisionCoreE5RTFunction *)self _buildDescriptorsCaches];
-  v7 = [(NSDictionary *)self->_cachedOutputDescriptors objectForKey:v6];
+  v7 = [(NSDictionary *)self->_cachedOutputDescriptors objectForKey:outputCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v11 = [(VisionCoreE5RTFunction *)self name];
-    v12 = [v10 initWithFormat:@"Could not provide a descriptor for %@ output %@", v11, v6];
+    name = [(VisionCoreE5RTFunction *)self name];
+    outputCopy = [v10 initWithFormat:@"Could not provide a descriptor for %@ output %@", name, outputCopy];
 
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v12];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:outputCopy];
   }
 
   return v8;
@@ -329,26 +329,26 @@ LABEL_11:
 
 - (void)_buildDescriptorsCaches
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    if (!v1[6])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy[6])
     {
-      v2 = [v1 inputs];
-      v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v2, "count")}];
-      v4 = [v1 outputs];
-      v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+      inputs = [selfCopy inputs];
+      v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(inputs, "count")}];
+      outputs = [selfCopy outputs];
+      v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(outputs, "count")}];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __49__VisionCoreE5RTFunction__buildDescriptorsCaches__block_invoke;
       v24[3] = &unk_1E8698B98;
-      v6 = v2;
+      v6 = inputs;
       v25 = v6;
-      v26 = v1;
+      v26 = selfCopy;
       v7 = v3;
       v27 = v7;
-      v8 = v4;
+      v8 = outputs;
       v28 = v8;
       v9 = v5;
       v29 = v9;
@@ -356,7 +356,7 @@ LABEL_11:
       NSStringFromSelector(sel__buildDescriptorsCaches);
       v11 = v23 = 0;
       v12 = v10;
-      v13 = [v1 createOperationExecutionStreamWithError:&v23];
+      v13 = [selfCopy createOperationExecutionStreamWithError:&v23];
       v30 = v13;
       if (v13)
       {
@@ -372,22 +372,22 @@ LABEL_11:
       v15 = v23;
       if ((v14 & 1) == 0)
       {
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
-        v20 = [v1 name];
-        v21 = [v15 localizedDescription];
-        [v22 handleFailureInMethod:sel__buildDescriptorsCaches object:v1 file:@"VisionCoreE5RTFunction.m" lineNumber:305 description:{@"could not build descriptors for %@: %@", v20, v21}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        name = [selfCopy name];
+        localizedDescription = [v15 localizedDescription];
+        [currentHandler handleFailureInMethod:sel__buildDescriptorsCaches object:selfCopy file:@"VisionCoreE5RTFunction.m" lineNumber:305 description:{@"could not build descriptors for %@: %@", name, localizedDescription}];
       }
 
       v16 = [v7 copy];
-      v17 = v1[6];
-      v1[6] = v16;
+      v17 = selfCopy[6];
+      selfCopy[6] = v16;
 
       v18 = [v9 copy];
-      v19 = v1[7];
-      v1[7] = v18;
+      v19 = selfCopy[7];
+      selfCopy[7] = v18;
     }
 
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -540,28 +540,28 @@ LABEL_33:
   return v29;
 }
 
-- (uint64_t)_newDescriptorForIOPort:(void *)a3 named:(void *)a4 error:
+- (uint64_t)_newDescriptorForIOPort:(void *)port named:(void *)named error:
 {
-  v7 = a3;
-  if (!a1)
+  portCopy = port;
+  if (!self)
   {
     goto LABEL_19;
   }
 
   v27 = 0;
-  if (![VisionCoreE5RTUtils getType:&v27 ofIOPort:a2 error:a4])
+  if (![VisionCoreE5RTUtils getType:&v27 ofIOPort:a2 error:named])
   {
     goto LABEL_19;
   }
 
   if (v27 == 2)
   {
-    v8 = v7;
+    v8 = portCopy;
     v33 = 0;
     v9 = e5rt_io_port_retain_surface_desc();
     if (v9)
     {
-      if (a4)
+      if (named)
       {
         goto LABEL_7;
       }
@@ -573,7 +573,7 @@ LABEL_33:
     width = e5rt_surface_desc_get_width();
     if (width)
     {
-      if (a4)
+      if (named)
       {
         goto LABEL_36;
       }
@@ -585,7 +585,7 @@ LABEL_33:
       width = e5rt_surface_desc_get_height();
       if (width)
       {
-        if (a4)
+        if (named)
         {
           goto LABEL_36;
         }
@@ -597,11 +597,11 @@ LABEL_33:
         width = e5rt_surface_desc_get_format();
         if (width)
         {
-          if (a4)
+          if (named)
           {
 LABEL_36:
             [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:width];
-            *a4 = v11 = 0;
+            *named = v11 = 0;
 LABEL_43:
             e5rt_surface_desc_release();
             goto LABEL_50;
@@ -611,7 +611,7 @@ LABEL_43:
         else
         {
           LODWORD(v29) = 0;
-          if ([VisionCoreE5RTUtils getPixelFormatType:&v29 forSurfaceFormat:v30 error:a4])
+          if ([VisionCoreE5RTUtils getPixelFormatType:&v29 forSurfaceFormat:v30 error:named])
           {
             v24 = [VisionCoreImageTensorDescriptor alloc];
             v11 = [(VisionCoreImageTensorDescriptor *)v24 initWithName:v8 pixelFormatType:v29 pixelWidth:v32 pixelHeight:v31];
@@ -627,18 +627,18 @@ LABEL_43:
 
   if (v27 == 1)
   {
-    v8 = v7;
+    v8 = portCopy;
     v33 = 0;
     v9 = e5rt_io_port_retain_tensor_desc();
     if (v9)
     {
-      if (a4)
+      if (named)
       {
 LABEL_7:
         v10 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v9];
 LABEL_18:
         v11 = 0;
-        *a4 = v10;
+        *named = v10;
         goto LABEL_50;
       }
 
@@ -650,7 +650,7 @@ LABEL_50:
     }
 
     v32 = 0;
-    if (![VisionCoreE5RTUtils getTensorDataType:&v32 forTensorDescriptor:v33 error:a4])
+    if (![VisionCoreE5RTUtils getTensorDataType:&v32 forTensorDescriptor:v33 error:named])
     {
       goto LABEL_27;
     }
@@ -666,10 +666,10 @@ LABEL_50:
       strides = e5rt_tensor_desc_get_strides();
       if (strides)
       {
-        if (a4)
+        if (named)
         {
           [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:strides];
-          *a4 = v11 = 0;
+          *named = v11 = 0;
         }
 
         else
@@ -686,10 +686,10 @@ LABEL_50:
         size = e5rt_tensor_desc_get_size();
         if (size)
         {
-          if (a4)
+          if (named)
           {
             [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:size];
-            *a4 = v11 = 0;
+            *named = v11 = 0;
           }
 
           else
@@ -708,10 +708,10 @@ LABEL_50:
       goto LABEL_49;
     }
 
-    if (a4)
+    if (named)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:shape];
-      *a4 = v11 = 0;
+      *named = v11 = 0;
     }
 
     else
@@ -725,7 +725,7 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  if (a4)
+  if (named)
   {
     v12 = objc_alloc(MEMORY[0x1E696AEC0]);
     v13 = @"VisionCoreE5RTIOPortTypeUnknown";
@@ -758,16 +758,16 @@ LABEL_51:
   return v11;
 }
 
-- (id)descriptorsForInputs:(id)a3 error:(id *)a4
+- (id)descriptorsForInputs:(id)inputs error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  inputsCopy = inputs;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = inputsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -782,7 +782,7 @@ LABEL_51:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(VisionCoreE5RTFunction *)self descriptorForInput:*(*(&v17 + 1) + 8 * i) error:a4, v17];
+        v13 = [(VisionCoreE5RTFunction *)self descriptorForInput:*(*(&v17 + 1) + 8 * i) error:error, v17];
         if (!v13)
         {
 
@@ -810,40 +810,40 @@ LABEL_11:
   return v15;
 }
 
-- (id)descriptorOfClass:(Class)a3 forInput:(id)a4 error:(id *)a5
+- (id)descriptorOfClass:(Class)class forInput:(id)input error:(id *)error
 {
-  v8 = a4;
+  inputCopy = input;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__VisionCoreE5RTFunction_descriptorOfClass_forInput_error___block_invoke;
   v13[3] = &unk_1E8698BC0;
   v13[4] = self;
-  v14 = v8;
-  v9 = v8;
+  v14 = inputCopy;
+  v9 = inputCopy;
   v10 = MEMORY[0x1E12C8870](v13);
-  v11 = [(VisionCoreE5RTFunction *)self _tensorDescriptorOfClass:a3 providedByBlock:v10 error:a5];
+  v11 = [(VisionCoreE5RTFunction *)self _tensorDescriptorOfClass:class providedByBlock:v10 error:error];
 
   return v11;
 }
 
-- (id)descriptorForInput:(id)a3 error:(id *)a4
+- (id)descriptorForInput:(id)input error:(id *)error
 {
-  v6 = a3;
+  inputCopy = input;
   [(VisionCoreE5RTFunction *)self _buildDescriptorsCaches];
-  v7 = [(NSDictionary *)self->_cachedInputDescriptors objectForKey:v6];
+  v7 = [(NSDictionary *)self->_cachedInputDescriptors objectForKey:inputCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v11 = [(VisionCoreE5RTFunction *)self name];
-    v12 = [v10 initWithFormat:@"Could not provide a descriptor for %@ input %@", v11, v6];
+    name = [(VisionCoreE5RTFunction *)self name];
+    inputCopy = [v10 initWithFormat:@"Could not provide a descriptor for %@ input %@", name, inputCopy];
 
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v12];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:inputCopy];
   }
 
   return v8;
@@ -883,9 +883,9 @@ LABEL_11:
 
 - (NSDictionary)metadata
 {
-  v3 = [(VisionCoreE5RTFunction *)self programLibrary];
-  v4 = [(VisionCoreE5RTFunction *)self name];
-  v5 = [v3 metadataForFunctionNamed:v4 error:0];
+  programLibrary = [(VisionCoreE5RTFunction *)self programLibrary];
+  name = [(VisionCoreE5RTFunction *)self name];
+  v5 = [programLibrary metadataForFunctionNamed:name error:0];
 
   if (v5)
   {

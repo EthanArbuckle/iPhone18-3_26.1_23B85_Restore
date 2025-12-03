@@ -1,26 +1,26 @@
 @interface HUStatusItemModule
-- (HUStatusItemModule)initWithContext:(id)a3 itemUpdater:(id)a4;
-- (id)_itemsToHideInSet:(id)a3;
+- (HUStatusItemModule)initWithContext:(id)context itemUpdater:(id)updater;
+- (id)_itemsToHideInSet:(id)set;
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)statusItems;
 - (void)_invalidateItemsIfNecessary;
 - (void)_updateInvalidationTimer;
-- (void)updateNeedsInvalidation:(BOOL)a3 forStatusItem:(id)a4;
+- (void)updateNeedsInvalidation:(BOOL)invalidation forStatusItem:(id)item;
 @end
 
 @implementation HUStatusItemModule
 
-- (HUStatusItemModule)initWithContext:(id)a3 itemUpdater:(id)a4
+- (HUStatusItemModule)initWithContext:(id)context itemUpdater:(id)updater
 {
-  v7 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = HUStatusItemModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a4];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a3);
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v9;
@@ -37,11 +37,11 @@
   objc_copyWeak(&v23, &location);
   v3 = _Block_copy(aBlock);
   v4 = objc_alloc(MEMORY[0x277D14B60]);
-  v5 = [(HUStatusItemModule *)self context];
-  v6 = [v5 home];
-  v7 = [(HUStatusItemModule *)self context];
-  v8 = [v7 room];
-  v9 = [v4 initWithHome:v6 room:v8 filter:v3];
+  context = [(HUStatusItemModule *)self context];
+  home = [context home];
+  context2 = [(HUStatusItemModule *)self context];
+  room = [context2 room];
+  v9 = [v4 initWithHome:home room:room filter:v3];
   [(HUStatusItemModule *)self setStatusItemProvider:v9];
 
   v10 = objc_alloc(MEMORY[0x277D14B38]);
@@ -53,13 +53,13 @@
 
   v13 = objc_alloc(MEMORY[0x277D14B40]);
   v14 = MEMORY[0x277CBEB98];
-  v15 = [(HUStatusItemModule *)self placeholderItem];
-  v16 = [v14 setWithObject:v15];
+  placeholderItem = [(HUStatusItemModule *)self placeholderItem];
+  v16 = [v14 setWithObject:placeholderItem];
   v17 = [v13 initWithItems:v16];
 
   v18 = MEMORY[0x277CBEB98];
-  v19 = [(HUStatusItemModule *)self statusItemProvider];
-  v20 = [v18 setWithObjects:{v19, v17, 0}];
+  statusItemProvider = [(HUStatusItemModule *)self statusItemProvider];
+  v20 = [v18 setWithObjects:{statusItemProvider, v17, 0}];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -76,18 +76,18 @@ uint64_t __40__HUStatusItemModule_buildItemProviders__block_invoke(uint64_t a1, 
   return a2 ^ 1;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(HFItemModule *)self allItems];
+  allItems = [(HFItemModule *)self allItems];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__HUStatusItemModule__itemsToHideInSet___block_invoke;
   v11[3] = &unk_277DBC410;
   v6 = v4;
   v12 = v6;
-  v13 = v5;
-  v7 = v5;
+  v13 = allItems;
+  v7 = allItems;
   [v7 na_each:v11];
   v8 = v13;
   v9 = v6;
@@ -113,35 +113,35 @@ void __40__HUStatusItemModule__itemsToHideInSet___block_invoke(uint64_t a1, void
   }
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUStatusItemModule *)self statusItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 na_setByIntersectingWithSet:v4];
+  itemsCopy = items;
+  statusItemProvider = [(HUStatusItemModule *)self statusItemProvider];
+  items = [statusItemProvider items];
+  v7 = [items na_setByIntersectingWithSet:itemsCopy];
 
   v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"statusSection"];
-  v9 = [v7 allObjects];
-  v10 = [MEMORY[0x277D14B60] statusItemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
+  allObjects = [v7 allObjects];
+  statusItemComparator = [MEMORY[0x277D14B60] statusItemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:statusItemComparator];
   [v8 setItems:v11];
 
-  v12 = [v8 items];
-  if ([v12 count])
+  items2 = [v8 items];
+  if ([items2 count])
   {
   }
 
   else
   {
-    v13 = [(HUStatusItemModule *)self statusItemProvider];
-    v14 = [v13 items];
-    v15 = [v14 count];
+    statusItemProvider2 = [(HUStatusItemModule *)self statusItemProvider];
+    items3 = [statusItemProvider2 items];
+    v15 = [items3 count];
 
     if (v15)
     {
-      v16 = [(HUStatusItemModule *)self placeholderItem];
-      v23[0] = v16;
+      placeholderItem = [(HUStatusItemModule *)self placeholderItem];
+      v23[0] = placeholderItem;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
       [v8 setItems:v17];
     }
@@ -150,37 +150,37 @@ void __40__HUStatusItemModule__itemsToHideInSet___block_invoke(uint64_t a1, void
   v18 = MEMORY[0x277D14778];
   v22 = v8;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
-  v20 = [v18 filterSections:v19 toDisplayedItems:v4];
+  v20 = [v18 filterSections:v19 toDisplayedItems:itemsCopy];
 
   return v20;
 }
 
-- (void)updateNeedsInvalidation:(BOOL)a3 forStatusItem:(id)a4
+- (void)updateNeedsInvalidation:(BOOL)invalidation forStatusItem:(id)item
 {
-  v4 = a3;
+  invalidationCopy = invalidation;
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  itemCopy = item;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:invalidationCopy];
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v8;
     v13 = 2112;
-    v14 = v6;
+    v14 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@ Asked to update needsInvalidation: %@ for status item: %@", &v9, 0x20u);
   }
 
-  [v6 setNeedsInvalidation:v4];
+  [itemCopy setNeedsInvalidation:invalidationCopy];
   [(HUStatusItemModule *)self _updateInvalidationTimer];
 }
 
 - (id)statusItems
 {
-  v2 = [(HFItemModule *)self allItems];
-  v3 = [v2 na_filter:&__block_literal_global_272];
+  allItems = [(HFItemModule *)self allItems];
+  v3 = [allItems na_filter:&__block_literal_global_272];
 
   return v3;
 }
@@ -197,22 +197,22 @@ uint64_t __33__HUStatusItemModule_statusItems__block_invoke(uint64_t a1, void *a
 - (void)_updateInvalidationTimer
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HUStatusItemModule *)self statusItems];
-  v4 = [v3 na_filter:&__block_literal_global_95_2];
-  v5 = [v4 allObjects];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_98_2];
+  statusItems = [(HUStatusItemModule *)self statusItems];
+  v4 = [statusItems na_filter:&__block_literal_global_95_2];
+  allObjects = [v4 allObjects];
+  v6 = [allObjects sortedArrayUsingComparator:&__block_literal_global_98_2];
 
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 invalidationDate];
+    firstObject = [v6 firstObject];
+    invalidationDate = [firstObject invalidationDate];
 
-    v9 = [(HUStatusItemModule *)self invalidationTimer];
-    if (v9 && (-[HUStatusItemModule invalidationTimer](self, "invalidationTimer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isValid], v10, v9, v11))
+    invalidationTimer = [(HUStatusItemModule *)self invalidationTimer];
+    if (invalidationTimer && (-[HUStatusItemModule invalidationTimer](self, "invalidationTimer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isValid], v10, invalidationTimer, v11))
     {
-      v12 = [(HUStatusItemModule *)self invalidationTimer];
-      v13 = [v12 fireDate];
-      v14 = [v13 isEqualToDate:v8];
+      invalidationTimer2 = [(HUStatusItemModule *)self invalidationTimer];
+      fireDate = [invalidationTimer2 fireDate];
+      v14 = [fireDate isEqualToDate:invalidationDate];
 
       if ((v14 & 1) == 0)
       {
@@ -220,14 +220,14 @@ uint64_t __33__HUStatusItemModule_statusItems__block_invoke(uint64_t a1, void *a
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v28 = self;
+          selfCopy3 = self;
           v29 = 2112;
-          v30 = v8;
+          v30 = invalidationDate;
           _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%@ Updating item invalidation timer to fire at date: %@", buf, 0x16u);
         }
 
-        v16 = [(HUStatusItemModule *)self invalidationTimer];
-        [v16 setFireDate:v8];
+        invalidationTimer3 = [(HUStatusItemModule *)self invalidationTimer];
+        [invalidationTimer3 setFireDate:invalidationDate];
       }
     }
 
@@ -237,13 +237,13 @@ uint64_t __33__HUStatusItemModule_statusItems__block_invoke(uint64_t a1, void *a
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v28 = self;
+        selfCopy3 = self;
         v29 = 2112;
-        v30 = v8;
+        v30 = invalidationDate;
         _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%@ Scheduling item invalidation timer to fire at date: %@", buf, 0x16u);
       }
 
-      [v8 timeIntervalSinceNow];
+      [invalidationDate timeIntervalSinceNow];
       v19 = v18;
       objc_initWeak(buf, self);
       v20 = MEMORY[0x277CBEBB8];
@@ -262,20 +262,20 @@ uint64_t __33__HUStatusItemModule_statusItems__block_invoke(uint64_t a1, void *a
 
   else
   {
-    v22 = [(HUStatusItemModule *)self invalidationTimer];
+    invalidationTimer4 = [(HUStatusItemModule *)self invalidationTimer];
 
-    if (v22)
+    if (invalidationTimer4)
     {
       v23 = HFLogForCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v28 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "%@ Clearing item invalidation timer due to reason: No items pending invalidation.", buf, 0xCu);
       }
 
-      v24 = [(HUStatusItemModule *)self invalidationTimer];
-      [v24 invalidate];
+      invalidationTimer5 = [(HUStatusItemModule *)self invalidationTimer];
+      [invalidationTimer5 invalidate];
 
       [(HUStatusItemModule *)self setInvalidationTimer:0];
     }
@@ -348,23 +348,23 @@ void __46__HUStatusItemModule__updateInvalidationTimer__block_invoke_100(uint64_
 - (void)_invalidateItemsIfNecessary
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [(HUStatusItemModule *)self statusItems];
-  v5 = [v4 na_filter:&__block_literal_global_103_1];
+  statusItems = [(HUStatusItemModule *)self statusItems];
+  v5 = [statusItems na_filter:&__block_literal_global_103_1];
 
   [v5 na_each:&__block_literal_global_107_4];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v5;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@ Invalidating status items: %@", &v10, 0x16u);
   }
 
   v7 = [MEMORY[0x277D14788] requestToUpdateItems:v5 senderSelector:a2];
-  v8 = [(HFItemModule *)self itemUpdater];
-  v9 = [v8 performItemUpdateRequest:v7];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v9 = [itemUpdater performItemUpdateRequest:v7];
 }
 
 BOOL __49__HUStatusItemModule__invalidateItemsIfNecessary__block_invoke(uint64_t a1, void *a2)

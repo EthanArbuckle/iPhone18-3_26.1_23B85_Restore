@@ -1,19 +1,19 @@
 @interface ARCResponse
-- (ARCResponse)initWithResponseData:(id)a3;
+- (ARCResponse)initWithResponseData:(id)data;
 @end
 
 @implementation ARCResponse
 
-- (ARCResponse)initWithResponseData:(id)a3
+- (ARCResponse)initWithResponseData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ARCResponse;
   v6 = [(ARCResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseData, a3);
+    objc_storeStrong(&v6->_responseData, data);
   }
 
   return v7;

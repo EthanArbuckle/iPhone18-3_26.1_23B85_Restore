@@ -36,10 +36,10 @@
 + (id)settingsControllerModule
 {
   v84[12] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v75 = [MEMORY[0x1E696AE18] predicateWithValue:(v3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v75 = [MEMORY[0x1E696AE18] predicateWithValue:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   PLPhysicalScreenScale();
   v73 = MEMORY[0x1E69C6638];
   v5 = 1.0 / v4;
@@ -125,8 +125,8 @@
   v46 = [v41 sectionWithRows:v45];
 
   v47 = objc_alloc(MEMORY[0x1E69BE898]);
-  v48 = [MEMORY[0x1E69BE670] systemPhotoLibrary];
-  v49 = [v47 initWithPhotoLibrary:v48];
+  systemPhotoLibrary = [MEMORY[0x1E69BE670] systemPhotoLibrary];
+  v49 = [v47 initWithPhotoLibrary:systemPhotoLibrary];
 
   v50 = MEMORY[0x1E69C6638];
   v51 = MEMORY[0x1E69C65E8];

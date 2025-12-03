@@ -1,18 +1,18 @@
 @interface CCUIIconScrollView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CCUIIconScrollViewHostingDelegate)hostingDelegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setFrame:(CGRect)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CCUIIconScrollView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CCUIIconScrollView *)self frame];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -26,20 +26,20 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CCUIIconScrollView *)self hostingDelegate];
+  beginCopy = begin;
+  hostingDelegate = [(CCUIIconScrollView *)self hostingDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 scrollView:self gestureRecognizerShouldBegin:v4];
+    v6 = [hostingDelegate scrollView:self gestureRecognizerShouldBegin:beginCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CCUIIconScrollView;
-    v6 = [(CCUIIconScrollView *)&v9 gestureRecognizerShouldBegin:v4];
+    v6 = [(CCUIIconScrollView *)&v9 gestureRecognizerShouldBegin:beginCopy];
   }
 
   v7 = v6;
@@ -47,20 +47,20 @@
   return v7;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = CCUIIconScrollView;
-  v8 = [(CCUIIconScrollView *)&v12 hitTest:v7 withEvent:x, y];
-  if (v8 == self && [v7 type] == 9)
+  v8 = [(CCUIIconScrollView *)&v12 hitTest:eventCopy withEvent:x, y];
+  if (v8 == self && [eventCopy type] == 9)
   {
-    v9 = [(CCUIIconScrollView *)self hostingDelegate];
+    hostingDelegate = [(CCUIIconScrollView *)self hostingDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 fallbackDragHitTestViewForScrollView:self];
+      v10 = [hostingDelegate fallbackDragHitTestViewForScrollView:self];
 
       v8 = v10;
     }

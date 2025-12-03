@@ -4,29 +4,29 @@
 + (BOOL)isInRetailDemoMode;
 + (BOOL)isIpadInterface;
 + (BOOL)isIpadPortrait;
-+ (BOOL)isPortraitIgnoringFlatOrientation:(int64_t)a3 viewSize:(CGSize)a4;
++ (BOOL)isPortraitIgnoringFlatOrientation:(int64_t)orientation viewSize:(CGSize)size;
 + (BOOL)isRemoteApp;
 + (BOOL)isStoreOrPressDemoMode;
-+ (BOOL)shouldInvalidateLayoutWithPreviousTraitCollection:(id)a3 newTraitCollection:(id)a4;
++ (BOOL)shouldInvalidateLayoutWithPreviousTraitCollection:(id)collection newTraitCollection:(id)traitCollection;
 + (BOOL)shouldPlayerTabsUseVerticalLayout;
-+ (BOOL)shouldPlayerTabsUseVerticalLayoutForSize:(CGSize)a3 isPhoneSizeClass:(BOOL)a4;
-+ (CGRect)vuiRectCenteredXInRect:(CGRect)a3 boundsToCenterIn:(CGRect)a4 offset:(double)a5;
-+ (CGSize)imageSizeWithAspectRatio:(double)a3 scaleToSize:(CGSize)a4;
-+ (TVCornerRadii)imageCornerRadiiWithStyle:(int64_t)a3;
-+ (double)imageCornerRadiusWithStyle:(int64_t)a3;
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4;
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4 maximumContentSizeCategory:(id)a5;
++ (BOOL)shouldPlayerTabsUseVerticalLayoutForSize:(CGSize)size isPhoneSizeClass:(BOOL)class;
++ (CGRect)vuiRectCenteredXInRect:(CGRect)rect boundsToCenterIn:(CGRect)in offset:(double)offset;
++ (CGSize)imageSizeWithAspectRatio:(double)ratio scaleToSize:(CGSize)size;
++ (TVCornerRadii)imageCornerRadiiWithStyle:(int64_t)style;
++ (double)imageCornerRadiusWithStyle:(int64_t)style;
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection;
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection maximumContentSizeCategory:(id)category;
 + (id)VideosUIBundle;
-+ (id)colorFromHexStr:(id)a3;
-+ (id)colorFromRGBStr:(id)a3;
++ (id)colorFromHexStr:(id)str;
++ (id)colorFromRGBStr:(id)str;
 + (id)getCurrentQueueLabel;
 + (id)getOSVersion;
-+ (id)gradientLayerLocationsFromSpacings:(id)a3 height:(double)a4;
-+ (id)placeholderImageResourceName:(int64_t)a3;
++ (id)gradientLayerLocationsFromSpacings:(id)spacings height:(double)height;
++ (id)placeholderImageResourceName:(int64_t)name;
 + (id)randomColor;
-+ (int64_t)interfaceStyleFromTheme:(id)a3 defaultInterfaceStyle:(int64_t)a4;
-+ (int64_t)textAlignmentWithSemanticContentAttribute:(int64_t)a3;
-+ (void)gradientConfigForCollection:(id)a3 gradientMask:(int64_t)a4 properties:(id)a5 configuration:(id *)a6;
++ (int64_t)interfaceStyleFromTheme:(id)theme defaultInterfaceStyle:(int64_t)style;
++ (int64_t)textAlignmentWithSemanticContentAttribute:(int64_t)attribute;
++ (void)gradientConfigForCollection:(id)collection gradientMask:(int64_t)mask properties:(id)properties configuration:(id *)configuration;
 @end
 
 @implementation VUIUtilities
@@ -64,16 +64,16 @@ void __28__VUIUtilities_getOSVersion__block_invoke()
 + (BOOL)isInRetailDemoMode
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698C8A8] isRunningInStoreDemoMode];
+  isRunningInStoreDemoMode = [MEMORY[0x1E698C8A8] isRunningInStoreDemoMode];
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5[0] = 67109120;
-    v5[1] = v2;
+    v5[1] = isRunningInStoreDemoMode;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_INFO, "VUIUtilities::isInRetailDemoMode=%hhd", v5, 8u);
   }
 
-  return v2;
+  return isRunningInStoreDemoMode;
 }
 
 + (id)randomColor
@@ -86,17 +86,17 @@ void __28__VUIUtilities_getOSVersion__block_invoke()
   return [v5 colorWithRed:v2 green:v3 blue:v4 alpha:0.4];
 }
 
-+ (BOOL)shouldInvalidateLayoutWithPreviousTraitCollection:(id)a3 newTraitCollection:(id)a4
++ (BOOL)shouldInvalidateLayoutWithPreviousTraitCollection:(id)collection newTraitCollection:(id)traitCollection
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  if (collectionCopy)
   {
-    v7 = [v5 horizontalSizeClass];
-    if (v7 == [v6 horizontalSizeClass])
+    horizontalSizeClass = [collectionCopy horizontalSizeClass];
+    if (horizontalSizeClass == [traitCollectionCopy horizontalSizeClass])
     {
-      v8 = [v5 verticalSizeClass];
-      v9 = v8 != [v6 verticalSizeClass];
+      verticalSizeClass = [collectionCopy verticalSizeClass];
+      v9 = verticalSizeClass != [traitCollectionCopy verticalSizeClass];
     }
 
     else
@@ -104,10 +104,10 @@ void __28__VUIUtilities_getOSVersion__block_invoke()
       v9 = 1;
     }
 
-    v11 = [v5 preferredContentSizeCategory];
-    v12 = [v6 preferredContentSizeCategory];
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [traitCollectionCopy preferredContentSizeCategory];
 
-    v10 = v11 != v12 || v9;
+    v10 = preferredContentSizeCategory != preferredContentSizeCategory2 || v9;
   }
 
   else
@@ -118,61 +118,61 @@ void __28__VUIUtilities_getOSVersion__block_invoke()
   return v10;
 }
 
-+ (CGSize)imageSizeWithAspectRatio:(double)a3 scaleToSize:(CGSize)a4
++ (CGSize)imageSizeWithAspectRatio:(double)ratio scaleToSize:(CGSize)size
 {
-  if (a3 == 0.0 || a4.height != 0.0)
+  if (ratio == 0.0 || size.height != 0.0)
   {
-    if (a4.width == 0.0)
+    if (size.width == 0.0)
     {
-      a4.width = round(a4.height * a3);
+      size.width = round(size.height * ratio);
     }
   }
 
   else
   {
-    a4.height = round(a4.width / a3);
+    size.height = round(size.width / ratio);
   }
 
-  width = a4.width;
-  height = a4.height;
+  width = size.width;
+  height = size.height;
   result.height = height;
   result.width = width;
   return result;
 }
 
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection
 {
-  v5 = a4;
-  [objc_opt_class() scaleContentSizeValue:v5 forTraitCollection:*MEMORY[0x1E69DDC90] maximumContentSizeCategory:a3];
+  collectionCopy = collection;
+  [objc_opt_class() scaleContentSizeValue:collectionCopy forTraitCollection:*MEMORY[0x1E69DDC90] maximumContentSizeCategory:value];
   v7 = v6;
 
   return v7;
 }
 
-+ (double)scaleContentSizeValue:(double)a3 forTraitCollection:(id)a4 maximumContentSizeCategory:(id)a5
++ (double)scaleContentSizeValue:(double)value forTraitCollection:(id)collection maximumContentSizeCategory:(id)category
 {
-  v7 = a4;
-  v8 = a5;
+  collectionCopy = collection;
+  categoryCopy = category;
   if (scaleContentSizeValue_forTraitCollection_maximumContentSizeCategory__onceToken != -1)
   {
     +[VUIUtilities scaleContentSizeValue:forTraitCollection:maximumContentSizeCategory:];
   }
 
-  v9 = [v7 preferredContentSizeCategory];
-  v10 = v9;
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+  v10 = preferredContentSizeCategory;
   v11 = *MEMORY[0x1E69DDC90];
-  if (!v9 || [v9 isEqual:*MEMORY[0x1E69DDC90]])
+  if (!preferredContentSizeCategory || [preferredContentSizeCategory isEqual:*MEMORY[0x1E69DDC90]])
   {
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v13 = [v12 traitCollection];
-    v14 = [v13 preferredContentSizeCategory];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-    v10 = v14;
+    v10 = preferredContentSizeCategory2;
   }
 
-  if (v11 != v8 && UIContentSizeCategoryCompareToCategory(v8, v10) == NSOrderedAscending)
+  if (v11 != categoryCopy && UIContentSizeCategoryCompareToCategory(categoryCopy, v10) == NSOrderedAscending)
   {
-    v15 = v8;
+    v15 = categoryCopy;
 
     v10 = v15;
   }
@@ -190,7 +190,7 @@ void __28__VUIUtilities_getOSVersion__block_invoke()
   [v19 floatValue];
   v21 = v20;
 
-  return ceil(v21 * a3);
+  return ceil(v21 * value);
 }
 
 void __84__VUIUtilities_scaleContentSizeValue_forTraitCollection_maximumContentSizeCategory___block_invoke()
@@ -215,10 +215,10 @@ void __84__VUIUtilities_scaleContentSizeValue_forTraitCollection_maximumContentS
 
 + (BOOL)isIpadInterface
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3 == 1;
+  return userInterfaceIdiom == 1;
 }
 
 + (BOOL)isIpadPortrait
@@ -232,20 +232,20 @@ void __84__VUIUtilities_scaleContentSizeValue_forTraitCollection_maximumContentS
   return v2;
 }
 
-+ (int64_t)textAlignmentWithSemanticContentAttribute:(int64_t)a3
++ (int64_t)textAlignmentWithSemanticContentAttribute:(int64_t)attribute
 {
-  if (a3 == 4)
+  if (attribute == 4)
   {
     return 2;
   }
 
-  if (a3 == 3)
+  if (attribute == 3)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v5 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
   return 2 * v5;
 }
@@ -272,39 +272,39 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
 + (BOOL)isInFullscreenOrPipPlayback
 {
   v2 = +[VUIPlaybackManager sharedInstance];
-  v3 = [v2 isPlaybackUIBeingShown];
+  isPlaybackUIBeingShown = [v2 isPlaybackUIBeingShown];
 
-  return v3;
+  return isPlaybackUIBeingShown;
 }
 
-+ (BOOL)isPortraitIgnoringFlatOrientation:(int64_t)a3 viewSize:(CGSize)a4
++ (BOOL)isPortraitIgnoringFlatOrientation:(int64_t)orientation viewSize:(CGSize)size
 {
-  if ((a3 - 5) >= 2)
+  if ((orientation - 5) >= 2)
   {
-    return (a3 - 1) < 2;
+    return (orientation - 1) < 2;
   }
 
   else
   {
-    return a4.width < a4.height;
+    return size.width < size.height;
   }
 }
 
-+ (void)gradientConfigForCollection:(id)a3 gradientMask:(int64_t)a4 properties:(id)a5 configuration:(id *)a6
++ (void)gradientConfigForCollection:(id)collection gradientMask:(int64_t)mask properties:(id)properties configuration:(id *)configuration
 {
-  v7 = a4;
-  v9 = a5;
-  [a3 contentInset];
+  maskCopy = mask;
+  propertiesCopy = properties;
+  [collection contentInset];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v47 = v16;
-  [v9 minPadding];
+  [propertiesCopy minPadding];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v9 minLengths];
+  [propertiesCopy minLengths];
   v46 = v25;
   v27 = v26;
 
@@ -324,7 +324,7 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v33 = *MEMORY[0x1E69DDCE0];
   }
 
-  if (v7)
+  if (maskCopy)
   {
     v34 = v27;
   }
@@ -334,7 +334,7 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v34 = v32;
   }
 
-  if (v7)
+  if (maskCopy)
   {
     v28 = v32;
   }
@@ -356,7 +356,7 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v36 = *(MEMORY[0x1E69DDCE0] + 16);
   }
 
-  if ((v7 & 4) != 0)
+  if ((maskCopy & 4) != 0)
   {
     v37 = v27;
   }
@@ -366,7 +366,7 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v37 = v35;
   }
 
-  if ((v7 & 4) != 0)
+  if ((maskCopy & 4) != 0)
   {
     v30 = v35;
   }
@@ -388,7 +388,7 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v39 = *(MEMORY[0x1E69DDCE0] + 8);
   }
 
-  if ((v7 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
     v40 = v46;
   }
@@ -398,7 +398,7 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v40 = v38;
   }
 
-  if ((v7 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
     v29 = v38;
   }
@@ -414,15 +414,15 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v41 = *(MEMORY[0x1E69DDCE0] + 24);
   }
 
-  a6->var0.top = v34;
-  a6->var0.left = v40;
+  configuration->var0.top = v34;
+  configuration->var0.left = v40;
   v42 = v24 - v47 + v31;
   if (v47 >= v24)
   {
     v42 = v31;
   }
 
-  if ((v7 & 0x10) != 0)
+  if ((maskCopy & 0x10) != 0)
   {
     v43 = v46;
   }
@@ -432,11 +432,11 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v43 = v41;
   }
 
-  a6->var0.bottom = v37;
-  a6->var0.right = v43;
-  a6->var1.top = v33;
-  a6->var1.left = v39;
-  if ((v7 & 0x10) != 0)
+  configuration->var0.bottom = v37;
+  configuration->var0.right = v43;
+  configuration->var1.top = v33;
+  configuration->var1.left = v39;
+  if ((maskCopy & 0x10) != 0)
   {
     v44 = v42;
   }
@@ -446,11 +446,11 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v44 = v31;
   }
 
-  a6->var1.bottom = v36;
-  a6->var1.right = v44;
-  a6->var2.top = v28;
-  a6->var2.left = v29;
-  if ((v7 & 0x10) != 0)
+  configuration->var1.bottom = v36;
+  configuration->var1.right = v44;
+  configuration->var2.top = v28;
+  configuration->var2.left = v29;
+  if ((maskCopy & 0x10) != 0)
   {
     v45 = v41;
   }
@@ -460,14 +460,14 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
     v45 = v31;
   }
 
-  a6->var2.bottom = v30;
-  a6->var2.right = v45;
+  configuration->var2.bottom = v30;
+  configuration->var2.right = v45;
 }
 
-+ (TVCornerRadii)imageCornerRadiiWithStyle:(int64_t)a3
++ (TVCornerRadii)imageCornerRadiiWithStyle:(int64_t)style
 {
   v3 = MEMORY[0x1E69D5930];
-  [objc_opt_class() imageCornerRadiusWithStyle:a3];
+  [objc_opt_class() imageCornerRadiusWithStyle:style];
 
   [v3 radiiFromRadius:?];
   result.var3 = v7;
@@ -477,18 +477,18 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
   return result;
 }
 
-+ (id)placeholderImageResourceName:(int64_t)a3
++ (id)placeholderImageResourceName:(int64_t)name
 {
-  v3 = a3;
-  if (!a3)
+  nameCopy = name;
+  if (!name)
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v5 = [v4 traitCollection];
-    v3 = [v5 userInterfaceStyle];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    nameCopy = [traitCollection userInterfaceStyle];
   }
 
   v6 = VUIImageResourceMapGenericPlaceholder16x9;
-  if (v3 != 1)
+  if (nameCopy != 1)
   {
     v6 = &VUIImageResourceMapDarkGenericPlaceholder16x9;
   }
@@ -498,21 +498,21 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
   return v7;
 }
 
-+ (id)colorFromRGBStr:(id)a3
++ (id)colorFromRGBStr:(id)str
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  if ([v3 length])
+  strCopy = str;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  if ([strCopy length])
   {
     v5 = objc_msgSend(MEMORY[0x1E696AB08], "characterSetWithCharactersInString:", @"(");
-    v6 = [v3 rangeOfCharacterFromSet:v5];
+    v6 = [strCopy rangeOfCharacterFromSet:v5];
 
     v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@""]);
-    v8 = [v3 rangeOfCharacterFromSet:v7];
+    v8 = [strCopy rangeOfCharacterFromSet:v7];
 
     if (v6 != 0x7FFFFFFFFFFFFFFFLL && v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v3 substringWithRange:{v6 + 1, v8 + ~v6}];
+      v10 = [strCopy substringWithRange:{v6 + 1, v8 + ~v6}];
       v11 = [v10 componentsSeparatedByString:{@", "}];
       if ([v11 count] == 3)
       {
@@ -527,21 +527,21 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
 
         v18 = [MEMORY[0x1E69DC888] colorWithRed:v13 green:v15 blue:v17 alpha:1.0];
 
-        v4 = v18;
+        clearColor = v18;
       }
     }
   }
 
-  return v4;
+  return clearColor;
 }
 
-+ (id)colorFromHexStr:(id)a3
++ (id)colorFromHexStr:(id)str
 {
-  v3 = a3;
-  if ([v3 length] && objc_msgSend(v3, "hasPrefix:", @"#"))
+  strCopy = str;
+  if ([strCopy length] && objc_msgSend(strCopy, "hasPrefix:", @"#"))
   {
     v8 = 0;
-    v4 = [MEMORY[0x1E696AE88] scannerWithString:v3];
+    v4 = [MEMORY[0x1E696AE88] scannerWithString:strCopy];
     v5 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"#"];
     [v4 setCharactersToBeSkipped:v5];
 
@@ -557,26 +557,26 @@ void __30__VUIUtilities_VideosUIBundle__block_invoke()
   return v6;
 }
 
-+ (int64_t)interfaceStyleFromTheme:(id)a3 defaultInterfaceStyle:(int64_t)a4
++ (int64_t)interfaceStyleFromTheme:(id)theme defaultInterfaceStyle:(int64_t)style
 {
-  v5 = a3;
+  themeCopy = theme;
   if (interfaceStyleFromTheme_defaultInterfaceStyle__onceToken != -1)
   {
     +[VUIUtilities interfaceStyleFromTheme:defaultInterfaceStyle:];
   }
 
-  if ([v5 length])
+  if ([themeCopy length])
   {
-    v6 = [interfaceStyleFromTheme_defaultInterfaceStyle__sTypeMap objectForKeyedSubscript:v5];
+    v6 = [interfaceStyleFromTheme_defaultInterfaceStyle__sTypeMap objectForKeyedSubscript:themeCopy];
 
     if (v6)
     {
-      v7 = [interfaceStyleFromTheme_defaultInterfaceStyle__sTypeMap objectForKeyedSubscript:v5];
-      a4 = [v7 unsignedIntegerValue];
+      v7 = [interfaceStyleFromTheme_defaultInterfaceStyle__sTypeMap objectForKeyedSubscript:themeCopy];
+      style = [v7 unsignedIntegerValue];
     }
   }
 
-  return a4;
+  return style;
 }
 
 void __62__VUIUtilities_interfaceStyleFromTheme_defaultInterfaceStyle___block_invoke()
@@ -593,23 +593,23 @@ void __62__VUIUtilities_interfaceStyleFromTheme_defaultInterfaceStyle___block_in
 
 + (BOOL)isRemoteApp
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.TVRemoteUIService"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqualToString:@"com.apple.TVRemoteUIService"];
+  return mainBundle;
 }
 
-+ (id)gradientLayerLocationsFromSpacings:(id)a3 height:(double)a4
++ (id)gradientLayerLocationsFromSpacings:(id)spacings height:(double)height
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  spacingsCopy = spacings;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(spacingsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = spacingsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -627,8 +627,8 @@ void __62__VUIUtilities_interfaceStyleFromTheme_defaultInterfaceStyle___block_in
 
         [*(*(&v17 + 1) + 8 * i) floatValue];
         v11 = v11 + v13;
-        v14 = [MEMORY[0x1E696AD98] numberWithDouble:v11 / a4];
-        [v6 addObject:v14];
+        height = [MEMORY[0x1E696AD98] numberWithDouble:v11 / height];
+        [v6 addObject:height];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -642,12 +642,12 @@ void __62__VUIUtilities_interfaceStyleFromTheme_defaultInterfaceStyle___block_in
   return v15;
 }
 
-+ (double)imageCornerRadiusWithStyle:(int64_t)a3
++ (double)imageCornerRadiusWithStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    return dbl_1E4297210[a3];
+    return dbl_1E4297210[style];
   }
 
   return result;
@@ -667,7 +667,7 @@ void __62__VUIUtilities_interfaceStyleFromTheme_defaultInterfaceStyle___block_in
   block[1] = 3221225472;
   block[2] = __38__VUIUtilities_isStoreOrPressDemoMode__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isStoreOrPressDemoMode_onceToken != -1)
   {
     dispatch_once(&isStoreOrPressDemoMode_onceToken, block);
@@ -693,17 +693,17 @@ uint64_t __38__VUIUtilities_isStoreOrPressDemoMode__block_invoke(uint64_t a1)
 
 + (BOOL)allowsAccountModification
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] != 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] != 2;
 
   return v3;
 }
 
-+ (CGRect)vuiRectCenteredXInRect:(CGRect)a3 boundsToCenterIn:(CGRect)a4 offset:(double)a5
++ (CGRect)vuiRectCenteredXInRect:(CGRect)rect boundsToCenterIn:(CGRect)in offset:(double)offset
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
   VUIRoundValue();
   v9 = y;
   v10 = width;
@@ -715,16 +715,16 @@ uint64_t __38__VUIUtilities_isStoreOrPressDemoMode__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (BOOL)shouldPlayerTabsUseVerticalLayoutForSize:(CGSize)a3 isPhoneSizeClass:(BOOL)a4
++ (BOOL)shouldPlayerTabsUseVerticalLayoutForSize:(CGSize)size isPhoneSizeClass:(BOOL)class
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 orientation];
+  classCopy = class;
+  height = size.height;
+  width = size.width;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  orientation = [currentDevice orientation];
 
   result = 1;
-  if (!+[VUIUtilities isPortraitIgnoringFlatOrientation:viewSize:](VUIUtilities, "isPortraitIgnoringFlatOrientation:viewSize:", v8, width, height) && (![MEMORY[0x1E69DF6F0] isPad] || !v4))
+  if (!+[VUIUtilities isPortraitIgnoringFlatOrientation:viewSize:](VUIUtilities, "isPortraitIgnoringFlatOrientation:viewSize:", orientation, width, height) && (![MEMORY[0x1E69DF6F0] isPad] || !classCopy))
   {
     return 0;
   }
@@ -734,10 +734,10 @@ uint64_t __38__VUIUtilities_isStoreOrPressDemoMode__block_invoke(uint64_t a1)
 
 + (BOOL)shouldPlayerTabsUseVerticalLayout
 {
-  v2 = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
+  vui_currentSizeClass = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
   v3 = +[VUITVAppLauncher sharedInstance];
-  v4 = [v3 appWindow];
-  [v4 bounds];
+  appWindow = [v3 appWindow];
+  [appWindow bounds];
   v6 = v5;
   v8 = v7;
 
@@ -747,7 +747,7 @@ uint64_t __38__VUIUtilities_isStoreOrPressDemoMode__block_invoke(uint64_t a1)
   }
 
   result = [MEMORY[0x1E69DF6F0] isPad];
-  if (v2 >= 3)
+  if (vui_currentSizeClass >= 3)
   {
     return 0;
   }

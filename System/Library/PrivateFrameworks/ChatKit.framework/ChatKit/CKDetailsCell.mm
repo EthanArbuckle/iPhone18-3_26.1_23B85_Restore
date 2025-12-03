@@ -1,5 +1,5 @@
 @interface CKDetailsCell
-- (CKDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIView)bottomSeperator;
 - (UIView)topSeperator;
 - (void)layoutSubviews;
@@ -8,30 +8,30 @@
 
 @implementation CKDetailsCell
 
-- (CKDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = CKDetailsCell;
-  v4 = [(CKDetailsCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [v6 detailsSelectedCellColor];
+    theme = [v5 theme];
+    detailsSelectedCellColor = [theme detailsSelectedCellColor];
 
-    if (v7)
+    if (detailsSelectedCellColor)
     {
       v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
       v9 = +[CKUIBehavior sharedBehaviors];
-      v10 = [v9 theme];
-      v11 = [v10 detailsSelectedCellColor];
-      [v8 setBackgroundColor:v11];
+      theme2 = [v9 theme];
+      detailsSelectedCellColor2 = [theme2 detailsSelectedCellColor];
+      [v8 setBackgroundColor:detailsSelectedCellColor2];
 
       [(CKDetailsCell *)v4 setSelectedBackgroundView:v8];
       v12 = +[CKUIBehavior sharedBehaviors];
-      v13 = [v12 theme];
-      v14 = [v13 iosMacDetailsCellColor];
-      [(CKDetailsCell *)v4 setBackgroundColor:v14];
+      theme3 = [v12 theme];
+      iosMacDetailsCellColor = [theme3 iosMacDetailsCellColor];
+      [(CKDetailsCell *)v4 setBackgroundColor:iosMacDetailsCellColor];
     }
   }
 
@@ -52,7 +52,7 @@
   v37 = v12;
   v38 = v11;
   v13 = +[CKUIBehavior sharedBehaviors];
-  v14 = [v13 detailsSeperatorsFollowLayoutMargins];
+  detailsSeperatorsFollowLayoutMargins = [v13 detailsSeperatorsFollowLayoutMargins];
 
   v15 = *(MEMORY[0x1E695F058] + 8);
   if (CKPixelWidth_once_1 != -1)
@@ -68,10 +68,10 @@
   v40.size.height = v10;
   v36 = v10;
   Width = CGRectGetWidth(v40);
-  v18 = [(CKDetailsCell *)self indentTopSeperator];
+  indentTopSeperator = [(CKDetailsCell *)self indentTopSeperator];
   v19 = 0.0;
   v20 = v8;
-  if ((v18 | v14))
+  if ((indentTopSeperator | detailsSeperatorsFollowLayoutMargins))
   {
     v21 = v38;
   }
@@ -81,14 +81,14 @@
     v21 = 0.0;
   }
 
-  if (v14)
+  if (detailsSeperatorsFollowLayoutMargins)
   {
     v19 = v37;
   }
 
   v22 = Width - v21 - v19;
-  v23 = [(CKDetailsCell *)self topSeperator];
-  [v23 setFrame:{v21, v15, v22, v16}];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator setFrame:{v21, v15, v22, v16}];
 
   v41.origin.x = v4;
   v41.origin.y = v6;
@@ -105,7 +105,7 @@
   v43.size.width = v20;
   v43.size.height = v36;
   v26 = CGRectGetWidth(v43);
-  v27 = [(CKDetailsCell *)self indentBottomSeperator]| v14;
+  v27 = [(CKDetailsCell *)self indentBottomSeperator]| detailsSeperatorsFollowLayoutMargins;
   v28 = 0.0;
   if (v27)
   {
@@ -123,14 +123,14 @@
   }
 
   v30 = v26 - v29 - v28;
-  v31 = [(CKDetailsCell *)self bottomSeperator];
-  [v31 setFrame:{v29, v25, v30, v35}];
+  bottomSeperator = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator setFrame:{v29, v25, v30, v35}];
 
-  v32 = [(CKDetailsCell *)self topSeperator];
-  [(CKDetailsCell *)self bringSubviewToFront:v32];
+  topSeperator2 = [(CKDetailsCell *)self topSeperator];
+  [(CKDetailsCell *)self bringSubviewToFront:topSeperator2];
 
-  v33 = [(CKDetailsCell *)self bottomSeperator];
-  [(CKDetailsCell *)self bringSubviewToFront:v33];
+  bottomSeperator2 = [(CKDetailsCell *)self bottomSeperator];
+  [(CKDetailsCell *)self bringSubviewToFront:bottomSeperator2];
 }
 
 - (void)prepareForReuse
@@ -138,11 +138,11 @@
   v5.receiver = self;
   v5.super_class = CKDetailsCell;
   [(CKDetailsCell *)&v5 prepareForReuse];
-  v3 = [(CKDetailsCell *)self topSeperator];
-  [v3 setHidden:0];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator setHidden:0];
 
-  v4 = [(CKDetailsCell *)self bottomSeperator];
-  [v4 setHidden:0];
+  bottomSeperator = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator setHidden:0];
 
   [(CKDetailsCell *)self setIndentTopSeperator:0];
   [(CKDetailsCell *)self setIndentBottomSeperator:0];
@@ -155,8 +155,8 @@
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v6 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v5 setBackgroundColor:separatorColor];
 
     [(CKDetailsCell *)self addSubview:v5];
     v7 = self->_topSeperator;
@@ -175,8 +175,8 @@
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v6 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v5 setBackgroundColor:separatorColor];
 
     [(CKDetailsCell *)self addSubview:v5];
     v7 = self->_bottomSeperator;
